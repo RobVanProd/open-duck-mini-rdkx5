@@ -205,6 +205,12 @@ printed before they are available as telemetry counters. A replay is not clean
 if terminal output shows CRC/control-budget warnings that are missing from the
 JSONL telemetry.
 
+When the HWI bus counter patch is deployed, telemetry `bus.read_error_count`,
+`bus.write_error_count`, and `bus.last_error` count retry exceptions already
+handled by the servo wrapper. These counters do not add bus traffic. Keep the
+terminal log anyway because lower-level libraries may print CRC lines without
+exposing them as Python exceptions.
+
 First, zero forward command:
 
 ```bash

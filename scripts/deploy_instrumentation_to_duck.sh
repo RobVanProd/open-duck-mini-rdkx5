@@ -16,6 +16,7 @@ SOURCE_FILES=(
   "instrumentation/mini_bdx_runtime/telemetry.py|mini_bdx_runtime/mini_bdx_runtime/telemetry.py"
   "instrumentation/scripts/sim2real_diagnostics.py|scripts/sim2real_diagnostics.py"
   "runtime/scripts/v2_rl_walk_mujoco.py|scripts/v2_rl_walk_mujoco.py"
+  "runtime/mini_bdx_runtime/mini_bdx_runtime/rustypot_position_hwi.py|mini_bdx_runtime/mini_bdx_runtime/rustypot_position_hwi.py"
 )
 
 COMMANDS_RUN=()
@@ -289,6 +290,7 @@ Apply mode backs up existing destination files before copying.
 No policy files, duck_config.json, raw logs, SSH keys, or videos are copied.
 No hardware-moving diagnostic is run.
 The walker patch is opt-in telemetry support only; telemetry is disabled by default.
+The HWI patch only exposes existing retry error counters; it does not add bus traffic.
 PLAN
 }
 
@@ -342,6 +344,7 @@ write_summary() {
     echo
     echo "- This workflow deploys diagnostic/instrumentation files and the opt-in walker telemetry patch."
     echo "- Walker telemetry is disabled by default and must be enabled with CLI flags."
+    echo "- HWI bus counters observe existing retry failures without adding bus reads/writes."
     echo "- It does not copy policy files or \`duck_config.json\`."
     echo "- It does not start walking, unpause the robot, or run moving diagnostics."
   } > "$summary"
