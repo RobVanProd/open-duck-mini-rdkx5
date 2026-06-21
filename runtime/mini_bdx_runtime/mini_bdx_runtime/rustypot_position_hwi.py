@@ -80,14 +80,33 @@ class HWI:
         self.low_torque_kps = np.ones(len(self.joints)) * 2
 
         self.io = rustypot.feetech(usb_port, 1000000)
+        self.read_error_count = 0
+        self.write_error_count = 0
+        self.last_error = None
+        self.last_error_op = None
+        self.last_error_time_monotonic_s = None
+        self.retry_error_counts = {}
+
+    def _record_retry_error(self, op_name, exc):
+        kind = "read" if op_name.lower().startswith(("read", "get")) else "write"
+        if kind == "read":
+            self.read_error_count += 1
+        else:
+            self.write_error_count += 1
+        self.last_error_op = op_name
+        self.last_error = f"{op_name}: {exc}"
+        self.last_error_time_monotonic_s = time.monotonic()
+        self.retry_error_counts[op_name] = self.retry_error_counts.get(op_name, 0) + 1
 
     def _retry(self, fn, *args, tries=8):
         """Retry a servo-bus op through intermittent checksum/serial glitches."""
         last = None
+        op_name = getattr(fn, "__name__", fn.__class__.__name__)
         for _ in range(tries):
             try:
                 return fn(*args)
             except Exception as e:
+                self._record_retry_error(op_name, e)
                 last = e
                 time.sleep(0.003)
         raise last

@@ -79,6 +79,7 @@ This backlog is ordered around evidence gates. Do not skip ahead to tuning.
 
 - Capture terminal logs beside suspended replay JSONL.
 - Count CRC/read/write/control-budget warnings.
+- Expose HWI retry error counters in telemetry without adding bus traffic.
 - Correlate timing spikes with tracking spikes.
 - Hold `x=0.08` replay until `x=0.0` has a clean gate summary.
 

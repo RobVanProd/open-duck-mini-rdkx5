@@ -6,6 +6,7 @@ This deploy step is required before the first evidence packet if the board runti
 
 ```text
 /home/sunrise/project/Open_Duck_Mini_Runtime-2_RDK_X5/mini_bdx_runtime/mini_bdx_runtime/telemetry.py
+/home/sunrise/project/Open_Duck_Mini_Runtime-2_RDK_X5/mini_bdx_runtime/mini_bdx_runtime/rustypot_position_hwi.py
 /home/sunrise/project/Open_Duck_Mini_Runtime-2_RDK_X5/scripts/sim2real_diagnostics.py
 /home/sunrise/project/Open_Duck_Mini_Runtime-2_RDK_X5/scripts/v2_rl_walk_mujoco.py
 ```
@@ -20,6 +21,7 @@ This deploy step is required before the first evidence packet if the board runti
 - Do not change gains, offsets, IMU remaps, action scale, phase timing, or policy files.
 - Back up existing board files before overwriting them.
 - Walker telemetry must stay disabled unless `--log-telemetry` is explicitly passed.
+- HWI bus counters must only observe existing retry failures; they must not add servo bus traffic.
 - Keep SSH keys, known_hosts files, raw JSONL logs, videos, and secrets outside git.
 
 ## Local Contract Check
@@ -126,6 +128,12 @@ For the opt-in walker telemetry patch, restore:
 
 ```text
 /home/sunrise/duck_backups/<timestamp>/scripts/v2_rl_walk_mujoco.py
+```
+
+For the HWI bus counter patch, restore:
+
+```text
+/home/sunrise/duck_backups/<timestamp>/mini_bdx_runtime/mini_bdx_runtime/rustypot_position_hwi.py
 ```
 
 ## Next Step

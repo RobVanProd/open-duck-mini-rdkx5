@@ -148,6 +148,7 @@ Pass gates:
 - Actual joints track targets.
 - Bus errors do not burst during policy replay.
 - Terminal CRC/read/control-budget warnings are captured and reviewed.
+- HWI retry error counters are present in telemetry when deployed.
 - The robot does not drive an obvious forward-biased posture in the air.
 - Replay does not run if full runtime telemetry support is missing.
 - Do not run `x=0.08` unless the `x=0.0` gate summary recommends `PASS_X0`.
