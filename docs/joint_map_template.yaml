@@ -1,0 +1,195 @@
+metadata:
+  project: open_duck_mini
+  generated: "2026-06-21"
+  source_runtime: Open_Duck_Mini_Runtime/mini_bdx_runtime/mini_bdx_runtime/rustypot_position_hwi.py
+  source_sim: Open_Duck_Playground/playground/open_duck_mini_v2/xmls/scene_flat_terrain.xml
+  units: radians
+  notes:
+    - Explicit Python sign flips were not found in the runtime path.
+    - Live board runtime defines joints_dir as all +1.0; no software sign flip is intended.
+    - Real robot zero offsets were filled from the live RDK-X5 duck_config.json snapshot.
+    - Physical positive direction must be verified by joint_identity_test.
+  live_board_snapshot: outputs/evidence/20260621T180046Z_rdkx5_config_snapshot.json
+  live_board_ssh_target: sunrise@192.168.1.50
+  live_board_runtime: /home/sunrise/project/Open_Duck_Mini_Runtime-2_RDK_X5
+  live_board_python: /home/sunrise/duck_env/bin/python
+
+policy:
+  onnx_path: Open_Duck_Mini/BEST_WALK_ONNX_2.onnx
+  onnx_sha256: 3c606f9381a1710cc8fecdb7442787dcbfce3ee9bc02a6f1224774ab2b3a1067
+  input_name: obs
+  input_shape: [1, 101]
+  output_name: continuous_actions
+  output_shape: [1, 14]
+  action_scale_default_rad: 0.25
+  max_motor_velocity_rad_s: 5.24
+
+joints:
+  - policy_index: 0
+    name: left_hip_yaw
+    side: left
+    physical_joint: hip_yaw
+    servo_id: 20
+    home_rad: 0.002
+    sim_min_rad: -0.523599
+    sim_max_rad: 0.523599
+    runtime_explicit_sign_flip: false
+    real_zero_offset_rad: 0.0844
+    positive_physical_direction: UNKNOWN
+    feedback_available: true
+  - policy_index: 1
+    name: left_hip_roll
+    side: left
+    physical_joint: hip_roll
+    servo_id: 21
+    home_rad: 0.053
+    sim_min_rad: -0.436332
+    sim_max_rad: 0.436332
+    runtime_explicit_sign_flip: false
+    real_zero_offset_rad: 0.0721
+    positive_physical_direction: UNKNOWN
+    feedback_available: true
+  - policy_index: 2
+    name: left_hip_pitch
+    side: left
+    physical_joint: hip_pitch
+    servo_id: 22
+    home_rad: -0.63
+    sim_min_rad: -1.22173
+    sim_max_rad: 0.523599
+    runtime_explicit_sign_flip: false
+    real_zero_offset_rad: -0.089
+    positive_physical_direction: UNKNOWN
+    feedback_available: true
+  - policy_index: 3
+    name: left_knee
+    side: left
+    physical_joint: knee_pitch
+    servo_id: 23
+    home_rad: 1.368
+    sim_min_rad: -1.570796
+    sim_max_rad: 1.570796
+    runtime_explicit_sign_flip: false
+    real_zero_offset_rad: -1.488
+    positive_physical_direction: UNKNOWN
+    feedback_available: true
+  - policy_index: 4
+    name: left_ankle
+    side: left
+    physical_joint: ankle_pitch
+    servo_id: 24
+    home_rad: -0.784
+    sim_min_rad: -1.570796
+    sim_max_rad: 1.570796
+    runtime_explicit_sign_flip: false
+    real_zero_offset_rad: -0.0767
+    positive_physical_direction: UNKNOWN
+    feedback_available: true
+  - policy_index: 5
+    name: neck_pitch
+    side: center
+    physical_joint: neck_pitch
+    servo_id: 30
+    home_rad: 0.0
+    sim_min_rad: -0.349066
+    sim_max_rad: 1.134464
+    runtime_explicit_sign_flip: false
+    real_zero_offset_rad: 0.0245
+    positive_physical_direction: UNKNOWN
+    feedback_available: true
+  - policy_index: 6
+    name: head_pitch
+    side: center
+    physical_joint: head_pitch
+    servo_id: 31
+    home_rad: 0.0
+    sim_min_rad: -0.785398
+    sim_max_rad: 0.785398
+    runtime_explicit_sign_flip: false
+    real_zero_offset_rad: 0.0
+    positive_physical_direction: UNKNOWN
+    feedback_available: true
+  - policy_index: 7
+    name: head_yaw
+    side: center
+    physical_joint: head_yaw
+    servo_id: 32
+    home_rad: 0.0
+    sim_min_rad: -2.792527
+    sim_max_rad: 2.792527
+    runtime_explicit_sign_flip: false
+    real_zero_offset_rad: -0.089
+    positive_physical_direction: UNKNOWN
+    feedback_available: true
+  - policy_index: 8
+    name: head_roll
+    side: center
+    physical_joint: head_roll
+    servo_id: 33
+    home_rad: 0.0
+    sim_min_rad: -0.523599
+    sim_max_rad: 0.523599
+    runtime_explicit_sign_flip: false
+    real_zero_offset_rad: -0.0399
+    positive_physical_direction: UNKNOWN
+    feedback_available: true
+  - policy_index: 9
+    name: right_hip_yaw
+    side: right
+    physical_joint: hip_yaw
+    servo_id: 10
+    home_rad: -0.003
+    sim_min_rad: -0.523599
+    sim_max_rad: 0.523599
+    runtime_explicit_sign_flip: false
+    real_zero_offset_rad: 0.0951
+    positive_physical_direction: UNKNOWN
+    feedback_available: true
+  - policy_index: 10
+    name: right_hip_roll
+    side: right
+    physical_joint: hip_roll
+    servo_id: 11
+    home_rad: -0.065
+    sim_min_rad: -0.436332
+    sim_max_rad: 0.436332
+    runtime_explicit_sign_flip: false
+    real_zero_offset_rad: -0.0476
+    positive_physical_direction: UNKNOWN
+    feedback_available: true
+  - policy_index: 11
+    name: right_hip_pitch
+    side: right
+    physical_joint: hip_pitch
+    servo_id: 12
+    home_rad: 0.635
+    sim_min_rad: -0.523599
+    sim_max_rad: 1.22173
+    runtime_explicit_sign_flip: false
+    real_zero_offset_rad: 0.066
+    positive_physical_direction: UNKNOWN
+    feedback_available: true
+  - policy_index: 12
+    name: right_knee
+    side: right
+    physical_joint: knee_pitch
+    servo_id: 13
+    home_rad: 1.379
+    sim_min_rad: -1.570796
+    sim_max_rad: 1.570796
+    runtime_explicit_sign_flip: false
+    real_zero_offset_rad: 0.0798
+    positive_physical_direction: UNKNOWN
+    feedback_available: true
+  - policy_index: 13
+    name: right_ankle
+    side: right
+    physical_joint: ankle_pitch
+    servo_id: 14
+    home_rad: -0.796
+    sim_min_rad: -1.570796
+    sim_max_rad: 1.570796
+    runtime_explicit_sign_flip: false
+    real_zero_offset_rad: 0.1887
+    positive_physical_direction: UNKNOWN
+    feedback_available: true

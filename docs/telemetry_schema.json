@@ -1,0 +1,263 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local/open-duck-mini/telemetry.schema.json",
+  "title": "Open Duck Mini Sim-to-Real Telemetry Tick",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema_version",
+    "tick",
+    "timestamp_monotonic_s",
+    "dt_s",
+    "policy",
+    "control",
+    "imu",
+    "joints",
+    "observation",
+    "action"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "sim2real.telemetry.v1"
+    },
+    "tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "timestamp_monotonic_s": {
+      "type": "number"
+    },
+    "timestamp_wall": {
+      "type": "string",
+      "description": "ISO-8601 wall-clock timestamp if available."
+    },
+    "dt_s": {
+      "type": ["number", "null"],
+      "minimum": 0
+    },
+    "policy": {
+      "type": "object",
+      "required": ["onnx_path", "onnx_sha256", "input_name", "output_name"],
+      "properties": {
+        "onnx_path": { "type": ["string", "null"] },
+        "onnx_sha256": { "type": ["string", "null"] },
+        "input_name": { "type": "string" },
+        "output_name": { "type": ["string", "null"] },
+        "observation_dim": { "type": "integer", "const": 101 },
+        "action_dim": { "type": "integer", "const": 14 }
+      }
+    },
+    "control": {
+      "type": "object",
+      "properties": {
+        "control_freq_hz": { "type": "number" },
+        "paused": { "type": "boolean" },
+        "action_scale": { "type": ["number", "null"] },
+        "max_motor_velocity_rad_s": { "type": ["number", "null"] },
+        "cutoff_frequency_hz": { "type": ["number", "null"] },
+        "commands": {
+          "type": "array",
+          "minItems": 7,
+          "maxItems": 7,
+          "items": { "type": "number" }
+        },
+        "imitation_i": { "type": "number" },
+        "imitation_phase": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": { "type": "number" }
+        },
+        "feet_contacts": {
+          "type": ["array", "null"],
+          "minItems": 2,
+          "maxItems": 2,
+          "items": { "type": "boolean" }
+        },
+        "safety_state": {
+          "type": ["string", "null"]
+        }
+      }
+    },
+    "imu": {
+      "type": "object",
+      "properties": {
+        "imu_upside_down": { "type": "boolean" },
+        "raw_gyro": {
+          "type": ["array", "null"],
+          "minItems": 3,
+          "maxItems": 3,
+          "items": { "type": "number" }
+        },
+        "raw_accelero": {
+          "type": ["array", "null"],
+          "minItems": 3,
+          "maxItems": 3,
+          "items": { "type": "number" }
+        },
+        "policy_gyro": {
+          "type": ["array", "null"],
+          "minItems": 3,
+          "maxItems": 3,
+          "items": { "type": "number" }
+        },
+        "policy_accelero": {
+          "type": ["array", "null"],
+          "minItems": 3,
+          "maxItems": 3,
+          "items": { "type": "number" }
+        },
+        "raw_quaternion": {
+          "type": ["array", "null"],
+          "minItems": 4,
+          "maxItems": 4,
+          "items": { "type": "number" }
+        },
+        "raw_rpy_rad": {
+          "type": ["array", "null"],
+          "minItems": 3,
+          "maxItems": 3,
+          "items": { "type": "number" }
+        }
+      }
+    },
+    "joints": {
+      "type": "object",
+      "properties": {
+        "names": {
+          "type": "array",
+          "minItems": 14,
+          "maxItems": 14,
+          "items": { "type": "string" }
+        },
+        "servo_ids": {
+          "type": ["array", "null"],
+          "minItems": 14,
+          "maxItems": 14,
+          "items": { "type": "integer" }
+        },
+        "offsets_rad": {
+          "type": ["array", "null"],
+          "minItems": 14,
+          "maxItems": 14,
+          "items": { "type": "number" }
+        },
+        "home_rad": {
+          "type": ["array", "null"],
+          "minItems": 14,
+          "maxItems": 14,
+          "items": { "type": "number" }
+        },
+        "commanded_position_rad": {
+          "type": ["array", "null"],
+          "minItems": 14,
+          "maxItems": 14,
+          "items": { "type": "number" }
+        },
+        "actual_position_rad": {
+          "type": ["array", "null"],
+          "minItems": 14,
+          "maxItems": 14,
+          "items": { "type": "number" }
+        },
+        "actual_velocity_rad_s": {
+          "type": ["array", "null"],
+          "minItems": 14,
+          "maxItems": 14,
+          "items": { "type": "number" }
+        },
+        "tracking_error_rad": {
+          "type": ["array", "null"],
+          "minItems": 14,
+          "maxItems": 14,
+          "items": { "type": "number" }
+        },
+        "battery_voltage_v": {
+          "type": ["array", "null"],
+          "minItems": 14,
+          "maxItems": 14,
+          "items": { "type": "number" }
+        }
+      }
+    },
+    "observation": {
+      "type": "object",
+      "properties": {
+        "raw_vector": {
+          "type": ["array", "null"],
+          "minItems": 6,
+          "maxItems": 101,
+          "items": { "type": "number" }
+        },
+        "full_raw_vector": {
+          "type": ["array", "null"],
+          "minItems": 101,
+          "maxItems": 101,
+          "items": { "type": "number" }
+        },
+        "normalized_vector": {
+          "type": ["array", "null"],
+          "minItems": 101,
+          "maxItems": 101,
+          "items": { "type": "number" }
+        },
+        "normalization_mean": {
+          "type": ["array", "null"],
+          "minItems": 101,
+          "maxItems": 101,
+          "items": { "type": "number" }
+        },
+        "normalization_std_recip": {
+          "type": ["array", "null"],
+          "minItems": 101,
+          "maxItems": 101,
+          "items": { "type": "number" }
+        }
+      }
+    },
+    "action": {
+      "type": "object",
+      "properties": {
+        "onnx_action": {
+          "type": ["array", "null"],
+          "minItems": 14,
+          "maxItems": 14,
+          "items": { "type": "number" }
+        },
+        "scaled_delta_rad": {
+          "type": ["array", "null"],
+          "minItems": 14,
+          "maxItems": 14,
+          "items": { "type": "number" }
+        },
+        "motor_targets_pre_rate_limit_rad": {
+          "type": ["array", "null"],
+          "minItems": 14,
+          "maxItems": 14,
+          "items": { "type": "number" }
+        },
+        "motor_targets_post_rate_limit_rad": {
+          "type": ["array", "null"],
+          "minItems": 14,
+          "maxItems": 14,
+          "items": { "type": "number" }
+        },
+        "motor_targets_sent_rad": {
+          "type": ["array", "null"],
+          "minItems": 14,
+          "maxItems": 14,
+          "items": { "type": "number" }
+        }
+      }
+    },
+    "bus": {
+      "type": "object",
+      "properties": {
+        "read_error_count": { "type": ["integer", "null"], "minimum": 0 },
+        "write_error_count": { "type": ["integer", "null"], "minimum": 0 },
+        "last_error": { "type": ["string", "null"] }
+      }
+    }
+  }
+}

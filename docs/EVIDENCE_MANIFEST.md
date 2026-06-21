@@ -1,0 +1,83 @@
+# Evidence Manifest
+
+## Live Snapshot
+
+`evidence/20260621T180046Z_rdkx5_config_snapshot.json`
+
+Captured from `sunrise@192.168.1.50`.
+
+Important fields:
+
+```text
+hostname: ubuntu
+runtime_path: /home/sunrise/project/Open_Duck_Mini_Runtime-2_RDK_X5
+python_env_path: /home/sunrise/duck_env/bin/python
+onnx_policy_path: /home/sunrise/BEST_WALK_ONNX_2.onnx
+onnx_policy_sha256: 3c606f9381a1710cc8fecdb7442787dcbfce3ee9bc02a6f1224774ab2b3a1067
+imu_upside_down: true
+start_paused: true
+phase_frequency_factor_offset: 0.0
+imu_calib_data_path: null
+```
+
+## Live Config
+
+`evidence/duck_config_20260621T180046Z.json`
+
+SHA256:
+
+```text
+087868f8178598f49a2ab4eab1c77b73ed8cd3af33174c543119cb016d69e9e9
+```
+
+Notable offsets:
+
+```text
+left_knee: -1.4880 rad
+right_knee: 0.0798 rad
+left_ankle: -0.0767 rad
+right_ankle: 0.1887 rad
+```
+
+## Policy
+
+`policy/BEST_WALK_ONNX_2.onnx`
+
+SHA256:
+
+```text
+3c606f9381a1710cc8fecdb7442787dcbfce3ee9bc02a6f1224774ab2b3a1067
+```
+
+This matches the board policy snapshot.
+
+## Board Runtime
+
+`runtime/`
+
+Copied from:
+
+```text
+/home/sunrise/project/Open_Duck_Mini_Runtime-2_RDK_X5
+```
+
+This board runtime is an RDK-X5 fork and is not a git repository on the board.
+
+Notable differences from the local reference runtime:
+
+- RDK I2C compatibility layer for IMU.
+- RDK GPIO support for foot contacts.
+- Servo-bus retry wrapper in HWI.
+- `joints_dir` all `+1.0`, with comments saying the left knee was physically re-flipped.
+
+## Excluded
+
+The following are intentionally not committed:
+
+```text
+/home/lsd/robots/.duck_access/rdk_key
+/home/lsd/robots/.duck_access/known_hosts
+raw telemetry JSONL logs
+videos
+large ad hoc run outputs
+```
