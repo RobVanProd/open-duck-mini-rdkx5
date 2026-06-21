@@ -4,6 +4,29 @@ Private working repository for the Open Duck Mini RDK-X5 board runtime, robot-sp
 
 This repository exists because the live board runtime at `/home/sunrise/project/Open_Duck_Mini_Runtime-2_RDK_X5` is an RDK-X5 fork and is not a git repository. The goal is to preserve the exact board-side runtime and make diagnostics reproducible before changing training, gains, offsets, IMU remaps, friction, phase timing, or policy behavior.
 
+The repository and its documentation are part of the robot's working state. Keep them current when the board runtime, config, evidence, analysis results, or next diagnostic gate changes.
+
+## Current Next Step
+
+Collect the first non-walking evidence packet:
+
+```text
+config snapshot -> home pose log + analysis -> IMU tilt log + analysis -> foot contact test
+```
+
+Do not train, tune, patch IMU remaps, edit offsets, change gains, change action scale, or run grounded walking yet.
+
+Primary docs:
+
+- [Project goal](PROJECT_GOAL.md)
+- [Roadmap](ROADMAP.md)
+- [Safety rules](docs/SAFETY_RULES.md)
+- [Evidence flow](docs/EVIDENCE_FLOW.md)
+- [Issue backlog](docs/ISSUE_BACKLOG.md)
+- [Roboticist playbook](docs/ROBOTICIST_PLAYBOOK.md)
+- [Diagnostic runbook](docs/run_sim2real_diagnostics.md)
+- [Agent instructions](AGENTS.md)
+
 ## Current Board State
 
 - Board: D-Robotics RDK-X5, hostname `ubuntu`
