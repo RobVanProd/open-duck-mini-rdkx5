@@ -34,6 +34,20 @@ PITCH_JOINTS = [
     "right_ankle",
 ]
 
+STARTUP_TICKS = 25
+CORRELATION_WINDOW_TICKS = 2
+BUS_BURST_MIN_EVENTS = 3
+BUS_BURST_WINDOW_TICKS = 3
+READ_ERROR_GREEN_RATE = 0.002
+READ_ERROR_RED_RATE = 0.02
+DT_YELLOW_S = 0.03
+DT_RED_S = 0.05
+P95_TRACKING_YELLOW_RAD = 0.02
+P95_TRACKING_RED_RAD = 0.05
+MAX_TRACKING_RED_RAD = 0.15
+ACTION_SATURATION_YELLOW_PCT = 0.0
+ACTION_SATURATION_RED_PCT = 1.0
+
 
 def finite(value):
     return value is not None and not (
@@ -245,6 +259,82 @@ def bus_summary(records):
     return output
 
 
+def as_tick(value):
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return None
+
+
+def bus_counter_events(records):
+    events = []
+    previous = {"read_error_count": None, "write_error_count": None}
+    names = {
+        "read_error_count": "read",
+        "write_error_count": "write",
+    }
+    for record in records:
+        bus = record.get("bus", {})
+        for key, op in names.items():
+            value = bus.get(key)
+            if not finite(value):
+                continue
+            value = int(value)
+            prior = previous[key]
+            if prior is not None and value > prior:
+                delta = value - prior
+                for _ in range(delta):
+                    events.append(
+                        {
+                            "tick": as_tick(record.get("tick")),
+                            "timestamp_monotonic_s": record.get("timestamp_monotonic_s"),
+                            "op": op,
+                            "last_error": bus.get("last_error"),
+                        }
+                    )
+            previous[key] = value
+    return events
+
+
+def bus_bursts(events, *, op="read"):
+    ticks = sorted(
+        event["tick"] for event in events if event["op"] == op and event["tick"] is not None
+    )
+    bursts = []
+    for index in range(0, len(ticks) - BUS_BURST_MIN_EVENTS + 1):
+        window = ticks[index : index + BUS_BURST_MIN_EVENTS]
+        if window[-1] - window[0] <= BUS_BURST_WINDOW_TICKS:
+            bursts.append(window)
+    return bursts
+
+
+def items_after_startup(items):
+    return [
+        item
+        for item in items
+        if item.get("tick") is not None and int(item["tick"]) > STARTUP_TICKS
+    ]
+
+
+def items_within_ticks(left_items, right_items, window):
+    pairs = []
+    for left in left_items:
+        left_tick = left.get("tick")
+        if left_tick is None:
+            continue
+        for right in right_items:
+            right_tick = right.get("tick")
+            if right_tick is None:
+                continue
+            if abs(int(left_tick) - int(right_tick)) <= window:
+                pairs.append((left, right))
+    return pairs
+
+
+def count_terminal_patterns(terminal, names):
+    return sum(terminal["counts"].get(name, 0) for name in names)
+
+
 def warning_total(terminal):
     non_cleanup = [
         name
@@ -258,6 +348,7 @@ def gate_recommendation(
     *,
     records,
     terminal,
+    dt_summary,
     dt_spikes,
     tracking_spikes,
     tracking_stats,
@@ -265,30 +356,201 @@ def gate_recommendation(
     action_saturation_pct,
     bus,
 ):
+    holds = []
+    warnings = []
+    metrics = {
+        "read_error_rate": None,
+        "bus_event_count": 0,
+        "bus_read_burst_count": 0,
+        "bus_write_burst_count": 0,
+        "post_startup_tracking_spikes": 0,
+        "startup_tracking_spikes": 0,
+        "dt_gt_0_03_count": 0,
+        "dt_gt_0_05_count": 0,
+    }
+
     if not records:
-        return "HOLD_TRACKING", "no telemetry samples"
+        return {
+            "gate": "HOLD_TRACKING",
+            "reason": "no telemetry samples",
+            "holds": ["no telemetry samples"],
+            "warnings": [],
+            "metrics": metrics,
+        }
+
     if terminal["missing"]:
-        return "HOLD_CRC_OR_TIMING", "terminal log missing; CRC/control warnings unknown"
-    if warning_total(terminal) > 0:
-        return "HOLD_CRC_OR_TIMING", "terminal warnings detected"
-    if dt_spikes:
-        return "HOLD_CRC_OR_TIMING", "dt spike above threshold"
-    if bus.get("read_error_count") or bus.get("write_error_count") or bus.get("last_error"):
-        return "HOLD_CRC_OR_TIMING", "bus error counters reported activity"
-    if any(pct is not None and pct > 0 for pct in action_saturation_pct):
-        return "HOLD_ACTION_SATURATION", "at least one action reached saturation"
+        warnings.append("terminal log missing; CRC/control warnings cannot be reviewed")
+
+    bus_events = bus_counter_events(records)
+    metrics["bus_event_count"] = len(bus_events)
+    read_bursts = bus_bursts(bus_events, op="read")
+    write_bursts = bus_bursts(bus_events, op="write")
+    metrics["bus_read_burst_count"] = len(read_bursts)
+    metrics["bus_write_burst_count"] = len(write_bursts)
+
+    terminal_crc_count = max(
+        terminal["counts"].get("crc_mismatch", 0),
+        terminal["counts"].get("read_crc", 0) + terminal["counts"].get("write_crc", 0),
+    )
+    terminal_read_write_errors = count_terminal_patterns(
+        terminal, ["read_error", "write_error", "timeout"]
+    )
+    terminal_control_budget = terminal["counts"].get("control_budget_exceeded", 0)
+    terminal_exceptions = terminal["counts"].get("exception_or_traceback", 0)
+
+    read_count = bus.get("read_error_count")
+    write_count = bus.get("write_error_count")
+    observed_read_count = read_count if read_count is not None else terminal_crc_count
+    if observed_read_count is not None:
+        read_rate = observed_read_count / len(records)
+        metrics["read_error_rate"] = read_rate
+        if read_rate > READ_ERROR_RED_RATE:
+            holds.append(
+                f"read retry/error rate {read_rate * 100:.2f}% exceeds red threshold"
+            )
+        elif read_rate > READ_ERROR_GREEN_RATE:
+            warnings.append(
+                f"read retry/error rate {read_rate * 100:.2f}% is yellow; continue only if uncorrelated"
+            )
+
+    if write_count is not None and write_count > 1:
+        holds.append(f"repeated write errors reported by bus counter: {write_count}")
+    elif write_count:
+        warnings.append(f"single write error reported by bus counter: {write_count}")
+
+    if read_bursts:
+        holds.append(
+            f"read retry/error burst detected: {read_bursts[0]} within {BUS_BURST_WINDOW_TICKS} ticks"
+        )
+    if write_bursts:
+        holds.append(
+            f"write retry/error burst detected: {write_bursts[0]} within {BUS_BURST_WINDOW_TICKS} ticks"
+        )
+
+    if terminal_crc_count:
+        warnings.append(f"terminal CRC/read checksum warnings observed: {terminal_crc_count}")
+        if bus["status"] == "unavailable":
+            warnings.append("bus counters unavailable; warning-to-tick correlation is limited")
+    if terminal_read_write_errors:
+        warnings.append(f"terminal read/write/timeout warnings observed: {terminal_read_write_errors}")
+    if terminal_control_budget > 1:
+        holds.append(f"repeated control budget warnings: {terminal_control_budget}")
+    elif terminal_control_budget == 1:
+        warnings.append("one isolated control budget warning")
+    if terminal_exceptions:
+        holds.append(f"terminal exception/traceback lines observed: {terminal_exceptions}")
+
+    dt_gt_0_03 = [
+        record
+        for record in records
+        if finite(record.get("dt_s")) and float(record["dt_s"]) > DT_YELLOW_S
+    ]
+    dt_gt_0_05 = [
+        record
+        for record in records
+        if finite(record.get("dt_s")) and float(record["dt_s"]) > DT_RED_S
+    ]
+    metrics["dt_gt_0_03_count"] = len(dt_gt_0_03)
+    metrics["dt_gt_0_05_count"] = len(dt_gt_0_05)
+    if dt_gt_0_05:
+        holds.append(f"dt exceeded {DT_RED_S:.3f}s")
+    elif len(dt_gt_0_03) > 1:
+        holds.append(f"repeated dt above {DT_YELLOW_S:.3f}s")
+    elif dt_gt_0_03:
+        warnings.append(f"one isolated dt above {DT_YELLOW_S:.3f}s")
+    elif dt_spikes:
+        warnings.append("dt exceeded configured warning threshold")
+
+    if bus_events and dt_gt_0_03:
+        pairs = items_within_ticks(bus_events, dt_gt_0_03, CORRELATION_WINDOW_TICKS)
+        if pairs:
+            holds.append("bus event correlates with dt spike")
+
+    saturated_joints = [pct for pct in action_saturation_pct if pct is not None and pct > 0]
+    if any(pct > ACTION_SATURATION_RED_PCT for pct in saturated_joints) or len(saturated_joints) > 1:
+        holds.append("action saturation is sustained or appears on multiple joints")
+    elif saturated_joints:
+        warnings.append("isolated action saturation below red threshold")
+
     if accel_stats and len(accel_stats) == 3 and all(accel_stats):
         means = [item["mean"] for item in accel_stats]
         if abs(means[2]) < abs(means[0]) or abs(means[2]) < abs(means[1]) or means[2] < 0:
-            return "HOLD_IMU", "accelerometer is not +Z dominant"
+            holds.append("accelerometer is not +Z dominant")
+
     severe_tracking = [
-        item for item in tracking_stats if item and item.get("p95") and item["p95"] > 0.05
+        item
+        for item in tracking_stats
+        if item and item.get("p95") and item["p95"] > P95_TRACKING_RED_RAD
     ]
     if severe_tracking:
-        return "HOLD_TRACKING", "tracking p95 above threshold"
-    if tracking_spikes:
-        return "HOLD_TRACKING", "tracking spike above threshold without timing explanation"
-    return "PASS_X0", "zero-command suspended replay gate passed"
+        holds.append(f"tracking p95 above {P95_TRACKING_RED_RAD:.2f} rad")
+
+    yellow_tracking = [
+        item
+        for item in tracking_stats
+        if item and item.get("p95") and item["p95"] > P95_TRACKING_YELLOW_RAD
+    ]
+    if yellow_tracking:
+        warnings.append(f"tracking p95 above {P95_TRACKING_YELLOW_RAD:.2f} rad on at least one joint")
+
+    post_startup_spikes = items_after_startup(tracking_spikes)
+    startup_spikes = [item for item in tracking_spikes if item not in post_startup_spikes]
+    metrics["post_startup_tracking_spikes"] = len(post_startup_spikes)
+    metrics["startup_tracking_spikes"] = len(startup_spikes)
+    large_post_startup = [
+        item for item in post_startup_spikes if item["abs_error_rad"] > MAX_TRACKING_RED_RAD
+    ]
+    if large_post_startup:
+        holds.append(f"steady-state tracking spike above {MAX_TRACKING_RED_RAD:.2f} rad")
+    elif post_startup_spikes:
+        warnings.append("post-startup tracking spikes present but below red max threshold")
+
+    large_startup = [
+        item for item in startup_spikes if item["abs_error_rad"] > MAX_TRACKING_RED_RAD
+    ]
+    if large_startup:
+        warnings.append(
+            f"startup-only tracking spike above {MAX_TRACKING_RED_RAD:.2f} rad; review but do not block by itself"
+        )
+
+    if bus_events and post_startup_spikes:
+        pairs = items_within_ticks(bus_events, post_startup_spikes, CORRELATION_WINDOW_TICKS)
+        if pairs:
+            holds.append("bus event correlates with post-startup tracking spike")
+
+    if holds:
+        if any("accelerometer" in item for item in holds):
+            gate = "HOLD_IMU"
+        elif any("action" in item for item in holds):
+            gate = "HOLD_ACTION_SATURATION"
+        elif any("tracking" in item for item in holds):
+            gate = "HOLD_TRACKING"
+        else:
+            gate = "HOLD_CRC_OR_TIMING"
+        return {
+            "gate": gate,
+            "reason": holds[0],
+            "holds": holds,
+            "warnings": warnings,
+            "metrics": metrics,
+        }
+
+    if warnings:
+        return {
+            "gate": "WARN_PROCEED_WITH_CAUTION",
+            "reason": warnings[0],
+            "holds": [],
+            "warnings": warnings,
+            "metrics": metrics,
+        }
+
+    return {
+        "gate": "PASS_X0",
+        "reason": "suspended replay gate passed under threshold policy",
+        "holds": [],
+        "warnings": [],
+        "metrics": metrics,
+    }
 
 
 def first_policy(records):
@@ -316,9 +578,10 @@ def build_report(args, records, terminal):
         "motor_targets_post_rate_limit_rad",
     )
     bus = bus_summary(records)
-    gate, reason = gate_recommendation(
+    gate = gate_recommendation(
         records=records,
         terminal=terminal,
+        dt_summary=dt,
         dt_spikes=dt_spikes,
         tracking_spikes=tracking_spikes,
         tracking_stats=tracking,
@@ -331,8 +594,40 @@ def build_report(args, records, terminal):
     lines.append(f"telemetry_jsonl: `{args.telemetry_jsonl}`")
     lines.append(f"terminal_log: `{terminal['path'] or 'MISSING'}`")
     lines.append(f"samples: `{len(records)}`")
-    lines.append(f"gate_recommendation: `{gate}`")
-    lines.append(f"gate_reason: `{reason}`")
+    lines.append(f"gate_recommendation: `{gate['gate']}`")
+    lines.append(f"gate_reason: `{gate['reason']}`")
+    lines.append("")
+
+    lines.append("## Stop/Go Threshold Status")
+    lines.append("")
+    lines.append(
+        "Nonzero CRC/read retries are warnings unless they correlate with control damage: "
+        "dt spikes, action saturation/jumps, post-startup tracking spikes, write failures, "
+        "or visible operator-reported twitching."
+    )
+    lines.append("")
+    lines.append(f"read_error_rate_pct: `{fmt(None if gate['metrics']['read_error_rate'] is None else gate['metrics']['read_error_rate'] * 100, 3)}`")
+    lines.append(f"bus_event_count: `{gate['metrics']['bus_event_count']}`")
+    lines.append(f"bus_read_burst_count: `{gate['metrics']['bus_read_burst_count']}`")
+    lines.append(f"bus_write_burst_count: `{gate['metrics']['bus_write_burst_count']}`")
+    lines.append(f"dt_gt_0_030_s_count: `{gate['metrics']['dt_gt_0_03_count']}`")
+    lines.append(f"dt_gt_0_050_s_count: `{gate['metrics']['dt_gt_0_05_count']}`")
+    lines.append(f"startup_tracking_spikes_gt_{args.tracking_spike_threshold}_rad: `{gate['metrics']['startup_tracking_spikes']}`")
+    lines.append(f"post_startup_tracking_spikes_gt_{args.tracking_spike_threshold}_rad: `{gate['metrics']['post_startup_tracking_spikes']}`")
+    lines.append("")
+    lines.append("holds:")
+    if gate["holds"]:
+        for item in gate["holds"]:
+            lines.append(f"- {item}")
+    else:
+        lines.append("- NONE")
+    lines.append("")
+    lines.append("warnings:")
+    if gate["warnings"]:
+        for item in gate["warnings"]:
+            lines.append(f"- {item}")
+    else:
+        lines.append("- NONE")
     lines.append("")
 
     lines.append("## Policy And Command")

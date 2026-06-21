@@ -50,7 +50,7 @@ Pass indicators:
 - Actual joint positions settle near home.
 - Tracking error is small and stable.
 - Upright accel vector is stable and matches expected axis/sign.
-- No repeated servo bus read failures.
+- No repeated servo bus read failures that correlate with control damage.
 
 ## imu_tilt_test
 
@@ -149,7 +149,9 @@ Pass indicators:
 
 - Actions are bounded and periodic.
 - Actual joints track targets without large lag or asymmetry.
-- No bus error bursts.
+- No bus error bursts. Isolated CRC/read retries are warnings unless they
+  align with dt spikes, action jumps, post-startup tracking spikes, write
+  failures, or visible twitching.
 
 ## grounded_policy_replay
 
@@ -217,4 +219,3 @@ Pass indicators:
 - `grounded_policy_replay.jsonl`
 - short side-view video of grounded failure
 - live RDK-X5 `duck_config.json` snapshot
-

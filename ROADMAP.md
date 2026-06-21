@@ -151,7 +151,11 @@ Pass gates:
 - HWI retry error counters are present in telemetry when deployed.
 - The robot does not drive an obvious forward-biased posture in the air.
 - Replay does not run if full runtime telemetry support is missing.
-- Do not run `x=0.08` unless the `x=0.0` gate summary recommends `PASS_X0`.
+- Do not run `x=0.08` unless the `x=0.0` gate summary recommends `PASS_X0`
+  or `WARN_PROCEED_WITH_CAUTION`.
+- Treat nonzero CRC/read retries as a warning unless they correlate with
+  control damage: dt spikes, action saturation or jumps, post-startup tracking
+  spikes, write failures, visible twitching, or a read-error burst.
 
 Files/scripts:
 

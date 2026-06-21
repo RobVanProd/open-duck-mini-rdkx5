@@ -104,6 +104,13 @@ Suspended replay evidence must include both JSONL telemetry and terminal log
 capture so servo CRC/read warnings and control-budget warnings are visible in
 the gate summary before increasing command speed.
 
+CRC/read retry warnings are not an automatic stop. The suspended replay gate
+holds only when they correlate with control damage such as dt spikes, action
+saturation or jumps, post-startup tracking spikes, write failures, visible
+twitching, or a read-error burst. Otherwise the gate reports
+`WARN_PROCEED_WITH_CAUTION` and the next low-risk suspended command can be
+considered.
+
 ## Key Live Calibration Facts
 
 The live `duck_config.json` offsets are recorded in `evidence/duck_config_20260621T180046Z.json` and `docs/joint_map_template.yaml`.
