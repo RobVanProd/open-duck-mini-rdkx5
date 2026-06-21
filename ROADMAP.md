@@ -136,6 +136,8 @@ Required evidence:
 - Runtime telemetry contract check passed.
 - Opt-in walker telemetry patch deployed with a deployment summary.
 - `suspended_policy_replay_x0.jsonl`.
+- `suspended_policy_replay_x0_terminal.log`.
+- `suspended_policy_replay_x0_gate.md`.
 - Optional `suspended_policy_replay_x008.jsonl` only if `x=0.0` is sane.
 - Analyzer summary.
 
@@ -145,8 +147,10 @@ Pass gates:
 - Left/right motion is plausibly symmetric.
 - Actual joints track targets.
 - Bus errors do not burst during policy replay.
+- Terminal CRC/read/control-budget warnings are captured and reviewed.
 - The robot does not drive an obvious forward-biased posture in the air.
 - Replay does not run if full runtime telemetry support is missing.
+- Do not run `x=0.08` unless the `x=0.0` gate summary recommends `PASS_X0`.
 
 Files/scripts:
 
@@ -154,6 +158,8 @@ Files/scripts:
 - `runtime/scripts/v2_rl_walk_mujoco.py`
 - `tools/analyze_telemetry_obs.py`
 - `tools/check_runtime_telemetry_contract.py`
+- `tools/analyze_runtime_warnings.py`
+- `tools/analyze_suspended_replay.py`
 
 Do not change yet:
 

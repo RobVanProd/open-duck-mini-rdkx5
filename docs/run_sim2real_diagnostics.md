@@ -193,9 +193,22 @@ python3 tools/check_runtime_telemetry_contract.py
 Deploy the telemetry patch with [DEPLOY_INSTRUMENTATION.md](DEPLOY_INSTRUMENTATION.md)
 and confirm the deployment summary before running this section.
 
+Suspended replay evidence must include both:
+
+```text
+suspended_policy_replay_x0.jsonl
+suspended_policy_replay_x0_terminal.log
+```
+
+The terminal log is required because lower-level servo CRC/read warnings may be
+printed before they are available as telemetry counters. A replay is not clean
+if terminal output shows CRC/control-budget warnings that are missing from the
+JSONL telemetry.
+
 First, zero forward command:
 
 ```bash
+set -o pipefail
 cd ~/project/Open_Duck_Mini_Runtime-2_RDK_X5/scripts
 ~/duck_env/bin/python sim2real_diagnostics.py suspended_policy_replay \
   --onnx_model_path ~/BEST_WALK_ONNX_2.onnx \
@@ -203,12 +216,28 @@ cd ~/project/Open_Duck_Mini_Runtime-2_RDK_X5/scripts
   --telemetry-every-n 1 \
   --command-x 0.0 \
   --duration 15 \
-  --i-understand-this-moves-the-robot
+  --i-understand-this-moves-the-robot \
+  2>&1 | tee ~/duck_logs/suspended_policy_replay_x0_terminal.log
 ```
 
-Only if safe, repeat with `0.08 m/s`:
+Analyze the replay before running any faster suspended command:
 
 ```bash
+python3 tools/analyze_suspended_replay.py \
+  outputs/first_evidence/<timestamp>/suspended_policy_replay_x0.jsonl \
+  --terminal-log outputs/first_evidence/<timestamp>/suspended_policy_replay_x0_terminal.log \
+  --output outputs/first_evidence/<timestamp>/suspended_policy_replay_x0_gate.md
+
+python3 tools/analyze_runtime_warnings.py \
+  outputs/first_evidence/<timestamp>/suspended_policy_replay_x0_terminal.log \
+  --telemetry-jsonl outputs/first_evidence/<timestamp>/suspended_policy_replay_x0.jsonl \
+  --output outputs/first_evidence/<timestamp>/suspended_policy_replay_x0_warnings.md
+```
+
+Only if the x0 gate summary recommends `PASS_X0`, repeat with `0.08 m/s`:
+
+```bash
+set -o pipefail
 cd ~/project/Open_Duck_Mini_Runtime-2_RDK_X5/scripts
 ~/duck_env/bin/python sim2real_diagnostics.py suspended_policy_replay \
   --onnx_model_path ~/BEST_WALK_ONNX_2.onnx \
@@ -216,7 +245,8 @@ cd ~/project/Open_Duck_Mini_Runtime-2_RDK_X5/scripts
   --telemetry-every-n 1 \
   --command-x 0.08 \
   --duration 15 \
-  --i-understand-this-moves-the-robot
+  --i-understand-this-moves-the-robot \
+  2>&1 | tee ~/duck_logs/suspended_policy_replay_x008_terminal.log
 ```
 
 ## 8. Grounded Policy Replay

@@ -100,6 +100,30 @@ Commit small summaries only when they support a project decision. Keep raw
 JSONL logs, videos, and ad hoc hardware outputs outside git unless they are
 explicitly reviewed and reduced to a safe excerpt.
 
+## Suspended Replay Evidence
+
+Expected files for zero-command suspended replay:
+
+```text
+outputs/first_evidence/<timestamp>/suspended_policy_replay_x0.jsonl
+outputs/first_evidence/<timestamp>/suspended_policy_replay_x0_terminal.log
+outputs/first_evidence/<timestamp>/suspended_policy_replay_x0_gate.md
+outputs/first_evidence/<timestamp>/suspended_policy_replay_x0_warnings.md
+```
+
+Expected files for optional `x=0.08` suspended replay:
+
+```text
+outputs/first_evidence/<timestamp>/suspended_policy_replay_x008.jsonl
+outputs/first_evidence/<timestamp>/suspended_policy_replay_x008_terminal.log
+outputs/first_evidence/<timestamp>/suspended_policy_replay_x008_gate.md
+outputs/first_evidence/<timestamp>/suspended_policy_replay_x008_warnings.md
+```
+
+Do not run `x=0.08` unless the `x=0.0` gate summary recommends `PASS_X0`.
+Terminal logs are intentionally part of the evidence because servo CRC/read
+warnings may be printed before they are exposed as telemetry counters.
+
 ## Instrumentation Deployment
 
 Expected local deployment evidence:
