@@ -13,7 +13,10 @@ joint identity, and run suspended `x=0.0` with clean timing and good tracking.
 
 The first nonzero suspended command, `x=0.08`, looked like normal walking in
 the air to the operator, but telemetry shows sustained dynamic tracking lag and
-increased servo-bus read errors. This makes ground/contact testing premature.
+increased servo-bus read errors. Follow-up single-joint actuator sine sweeps at
+`0.25 Hz` and `0.5 Hz` tracked well at small amplitude, which narrows the issue:
+the robot can follow simple single-joint smooth targets, but the walking policy
+target waveform is much more aggressive and exposes the effective delay.
 
 ## Evidence Files
 
@@ -26,6 +29,9 @@ Small summaries:
 - `outputs/first_evidence/20260621T215022Z/suspended_policy_replay_x008_thresholds_gate.md`
 - `outputs/first_evidence/20260621T215022Z/suspended_policy_replay_x008_thresholds_analysis.md`
 - `outputs/first_evidence/20260621T215022Z/suspended_policy_replay_x008_thresholds_warnings.md`
+- `outputs/first_evidence/20260621T215022Z/suspended_policy_replay_x008_target_waveform_analysis.md`
+- `outputs/first_evidence/20260621T215022Z/actuator_sine_sweep_025_summary.md`
+- `outputs/first_evidence/20260621T215022Z/actuator_sine_sweep_05_summary.md`
 
 Raw JSONL logs and terminal logs remain outside git by default.
 
@@ -186,44 +192,139 @@ Status: **HOLD**.
 Interpretation: do not move to grounded replay. The nonzero command already
 shows sustained actuator/feedback tracking lag in suspension.
 
+## Suspended `x=0.08` Target Waveform
+
+From
+`outputs/first_evidence/20260621T215022Z/suspended_policy_replay_x008_target_waveform_analysis.md`.
+Post-startup ticks only.
+
+For comparison, a `0.03 rad` sine wave has max target velocity:
+
+- `0.25 Hz`: `0.047 rad/s`
+- `0.5 Hz`: `0.094 rad/s`
+
+The suspended `x=0.08` target waveform is much sharper:
+
+| joint | sent step p95 | sent velocity p95 | rate-limit active | tracking p95 |
+|---|---:|---:|---:|---:|
+| left_hip_pitch | `0.1048 rad` | `5.22 rad/s` | `6.4%` | `0.1456 rad` |
+| left_knee | `0.0759 rad` | `3.78 rad/s` | `0.4%` | `0.1428 rad` |
+| left_ankle | `0.0744 rad` | `3.70 rad/s` | `2.6%` | `0.1132 rad` |
+| right_hip_pitch | `0.0621 rad` | `3.09 rad/s` | `0.1%` | `0.1309 rad` |
+| right_knee | `0.0956 rad` | `4.76 rad/s` | `3.1%` | `0.1680 rad` |
+| right_ankle | `0.0707 rad` | `3.52 rad/s` | `0.3%` | `0.1227 rad` |
+
+Maximum p95 target velocity ratio:
+
+- vs `0.25 Hz` sine target: `110.7x`
+- vs `0.5 Hz` sine target: `55.4x`
+
+Interpretation: the `x=0.08` gait lag is not contradicted by the smooth sine
+sweep pass. The walking policy target waveform is dramatically faster and is
+already near the configured motor velocity limit in several joints.
+
+## Actuator Sine Sweep
+
+Policy disabled. Robot supported on the stand. Motors were turned off after
+each command. Amplitude was `0.03 rad`; each joint moved one at a time.
+
+From
+`outputs/first_evidence/20260621T215022Z/actuator_sine_sweep_025_summary.md`:
+
+| joint | freq | p95 error | amp ratio | best lag |
+|---|---:|---:|---:|---:|
+| left_hip_pitch | `0.25 Hz` | `0.0074 rad` | `0.934` | `2 ticks / 91.6 ms` |
+| right_hip_pitch | `0.25 Hz` | `0.0076 rad` | `0.983` | `2 ticks / 79.8 ms` |
+| left_knee | `0.25 Hz` | `0.0102 rad` | `0.933` | `3 ticks / 132.1 ms` |
+| right_knee | `0.25 Hz` | `0.0095 rad` | `0.917` | `3 ticks / 122.3 ms` |
+| left_ankle | `0.25 Hz` | `0.0063 rad` | `0.917` | `2 ticks / 83.8 ms` |
+| right_ankle | `0.25 Hz` | `0.0072 rad` | `0.917` | `3 ticks / 116.9 ms` |
+
+Gate: `PASS_025_PROCEED_TO_05_HZ_WITH_CAUTION`.
+
+From
+`outputs/first_evidence/20260621T215022Z/actuator_sine_sweep_05_summary.md`:
+
+| joint | freq | p95 error | amp ratio | best lag |
+|---|---:|---:|---:|---:|
+| left_hip_pitch | `0.5 Hz` | `0.0091 rad` | `1.033` | `2 ticks / 91.7 ms` |
+| right_hip_pitch | `0.5 Hz` | `0.0085 rad` | `1.050` | `2 ticks / 90.7 ms` |
+| left_knee | `0.5 Hz` | `0.0110 rad` | `0.917` | `2 ticks / 91.5 ms` |
+| right_knee | `0.5 Hz` | `0.0102 rad` | `0.967` | `2 ticks / 81.9 ms` |
+| left_ankle | `0.5 Hz` | `0.0083 rad` | `0.934` | `2 ticks / 85.4 ms` |
+| right_ankle | `0.5 Hz` | `0.0096 rad` | `0.950` | `2 ticks / 79.0 ms` |
+
+Gate: `PASS_05_HZ`.
+
+The sine sweep loop logs one sample every roughly `0.039-0.046 s` because it
+sets a target and then reads feedback inside the same Python loop. These lag
+numbers should be treated as effective target-to-feedback lag for this
+diagnostic, not as a precise servo-internal latency measurement.
+
+Interpretation:
+
+- Smooth single-joint tracking at `0.03 rad` is good through `0.5 Hz`.
+- Effective lag is still visible, around `80-130 ms`.
+- At sine-sweep target velocities, that delay produces only `~0.006-0.011 rad`
+  p95 error.
+- In suspended `x=0.08`, target steps are more than `55x` faster than the
+  `0.5 Hz` sine target at p95, so the same delay produces much larger
+  hip/knee/ankle errors.
+- Read CRCs continue to appear during motion, but write errors stayed zero and
+  low-frequency sine tracking stayed good.
+
 ## Root-Cause Ranking
 
-1. **Dynamic actuator tracking / phase lag at nonzero command**
-   - Evidence: `x=0.08` pitch joints show p95 errors of `0.1179-0.1673 rad`
-     and best target-to-actual lag of `3-4` ticks.
-2. **Servo bus read reliability under motion**
+1. **Policy target waveform too aggressive for the measured effective delay**
+   - Evidence: `x=0.08` pitch joints show p95 errors of `0.1179-0.1673 rad`,
+     while smooth single-joint sine sweeps at `0.25-0.5 Hz` stay near
+     `0.006-0.011 rad` p95 error.
+2. **Dynamic actuator/feedback delay**
+   - Evidence: sine sweeps show best target-to-actual alignment at roughly
+     `80-130 ms`; this is harmless for slow small sine waves but important for
+     walking targets.
+3. **Servo bus read reliability under motion**
    - Evidence: read errors rise from `8/747` at `x=0.0` to `20/747` at
      `x=0.08`, with one read burst. Write errors remain zero and dt is clean,
      so this is not the only explanation, but it is now a serious watch item.
-3. **Policy command magnitude / action saturation at `x=0.08`**
+4. **Policy command magnitude / action saturation at `x=0.08`**
    - Evidence: `right_hip_pitch` hits action saturation `2.01%`, while `x=0.0`
      had `0%`.
-4. **Joint offsets/home pose**
+5. **Joint offsets/home pose**
    - Evidence: large left-knee offset is suspicious, but home pose and small
      identity movements track well after compensation.
-5. **Joint sign/order**
+6. **Joint sign/order**
    - Evidence: software feedback identity passed all joints; physical visual
      sign notes remain incomplete.
-6. **IMU frame/offset**
+7. **IMU frame/offset**
    - Evidence: home pose and labeled tilt are +Z dominant and axis-separated.
-7. **Foot contacts**
+8. **Foot contacts**
    - Evidence: electrical responsiveness passed; suspended replay does not
      depend on ground contact.
-8. **Ground contact/friction/load**
+9. **Ground contact/friction/load**
    - Evidence: not tested yet; do not test until suspended `x=0.08` dynamics
      are understood.
 
 ## Next Action
 
-Choose exactly one next hardware gate: **actuator_sine_sweep**, supported on
-the stand, with small default amplitude and telemetry + terminal logging.
+Choose exactly one next step: **create the sim bridge patch/spec for actuator
+delay and action-rate limits**, without changing robot behavior yet.
 
 Purpose:
 
-- isolate actuator tracking from policy output
-- measure phase lag versus frequency on hip pitch, knee, and ankle
-- see whether read CRC rate rises with motion speed/amplitude
-- decide whether the next minimal fix is bus reliability, velocity/rate limits,
-  actuator command shaping, or sim actuator modeling
+- encode the measured `80-130 ms` effective delay as a sim/training hypothesis
+- encode the real motor target velocity limit and observed target-step
+  distribution
+- add action-rate / target-velocity diagnostics to the training bridge notes
+- decide whether the next runtime experiment should be a command limit,
+  target smoothing experiment, or pure retraining/sim randomization
+
+Do not patch runtime behavior, action scale, gains, offsets, or phase timing
+until the bridge spec is reviewed.
+
+Optional next hardware gate, after that offline analysis: `1.0 Hz` single-joint
+sine sweep at `0.03 rad`, still supported on the stand, with telemetry and
+terminal logging. Do not run grounded replay until the suspended policy target
+waveform is explained.
 
 Do not run grounded replay until this is understood.
