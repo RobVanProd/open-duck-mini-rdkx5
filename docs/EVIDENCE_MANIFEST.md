@@ -108,6 +108,7 @@ Expected local deployment evidence:
 outputs/deployments/<timestamp>/DEPLOYMENT_SUMMARY.md
 outputs/deployments/<timestamp>/import_check.txt
 outputs/deployments/<timestamp>/sim2real_diagnostics_help.txt
+outputs/deployments/<timestamp>/v2_rl_walk_mujoco_help.txt
 ```
 
 Expected board backup path:
@@ -126,6 +127,7 @@ copied file paths
 source SHA256 hashes
 destination SHA256 hashes
 non-moving validation commands
+runtime telemetry contract status
 ```
 
 Commit `DEPLOYMENT_SUMMARY.md` only when it is small and useful for a project

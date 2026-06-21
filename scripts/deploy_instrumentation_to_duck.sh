@@ -15,6 +15,7 @@ APPLY=0
 SOURCE_FILES=(
   "instrumentation/mini_bdx_runtime/telemetry.py|mini_bdx_runtime/mini_bdx_runtime/telemetry.py"
   "instrumentation/scripts/sim2real_diagnostics.py|scripts/sim2real_diagnostics.py"
+  "runtime/scripts/v2_rl_walk_mujoco.py|scripts/v2_rl_walk_mujoco.py"
 )
 
 COMMANDS_RUN=()
@@ -221,6 +222,13 @@ remote_help_check_cmd() {
     "$ROBOT_PYTHON"
 }
 
+remote_walker_help_check_cmd() {
+  printf "cd %q && PYTHONPATH=%q %q v2_rl_walk_mujoco.py --help" \
+    "$ROBOT_RUNTIME/scripts" \
+    "$ROBOT_RUNTIME/mini_bdx_runtime" \
+    "$ROBOT_PYTHON"
+}
+
 validate_local() {
   require_tool awk
   require_tool date
@@ -280,6 +288,7 @@ Dry-run does not run SSH and does not copy files.
 Apply mode backs up existing destination files before copying.
 No policy files, duck_config.json, raw logs, SSH keys, or videos are copied.
 No hardware-moving diagnostic is run.
+The walker patch is opt-in telemetry support only; telemetry is disabled by default.
 PLAN
 }
 
@@ -331,7 +340,8 @@ write_summary() {
     echo
     echo "## Notes"
     echo
-    echo "- This workflow only deploys additive diagnostic/instrumentation files."
+    echo "- This workflow deploys diagnostic/instrumentation files and the opt-in walker telemetry patch."
+    echo "- Walker telemetry is disabled by default and must be enabled with CLI flags."
     echo "- It does not copy policy files or \`duck_config.json\`."
     echo "- It does not start walking, unpause the robot, or run moving diagnostics."
   } > "$summary"
@@ -342,7 +352,7 @@ write_summary() {
 apply_deployment() {
   echo
   echo "APPLY MODE"
-  echo "This copies diagnostic files to the board after backing up existing destinations."
+  echo "This copies diagnostic files and opt-in walker telemetry support to the board after backups."
   echo "It does not run moving diagnostics."
   read -r -p "Type DEPLOY_INSTRUMENTATION to continue: " confirmation
   if [[ "$confirmation" != "DEPLOY_INSTRUMENTATION" ]]; then
@@ -391,6 +401,7 @@ apply_deployment() {
 
   local import_output="$OUTPUT_DIR/import_check.txt"
   local help_output="$OUTPUT_DIR/sim2real_diagnostics_help.txt"
+  local walker_help_output="$OUTPUT_DIR/v2_rl_walk_mujoco_help.txt"
   mkdir -p "$OUTPUT_DIR"
 
   ssh_run "$(remote_import_check_cmd)" > "$import_output"
@@ -398,6 +409,9 @@ apply_deployment() {
 
   ssh_run "$(remote_help_check_cmd)" > "$help_output"
   CHECK_ROWS+=("- sim2real_diagnostics.py --help: passed, output \`$help_output\`")
+
+  ssh_run "$(remote_walker_help_check_cmd)" > "$walker_help_output"
+  CHECK_ROWS+=("- v2_rl_walk_mujoco.py --help: passed, output \`$walker_help_output\`")
 
   write_summary "applied"
 }

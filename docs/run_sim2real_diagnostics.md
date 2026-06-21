@@ -179,6 +179,20 @@ While watching/videoing, fill the `visual_positive_direction` fields afterward.
 
 Robot must be suspended with feet free. Policy starts paused and waits for Enter.
 
+Do not run this gate until home pose, IMU tilt, foot contact, and joint identity
+have passed. Suspended replay also requires the opt-in runtime telemetry patch
+in `v2_rl_walk_mujoco.py`; otherwise the replay helper must fail fast instead
+of running unlogged policy motion.
+
+Workstation contract check before deployment:
+
+```bash
+python3 tools/check_runtime_telemetry_contract.py
+```
+
+Deploy the telemetry patch with [DEPLOY_INSTRUMENTATION.md](DEPLOY_INSTRUMENTATION.md)
+and confirm the deployment summary before running this section.
+
 First, zero forward command:
 
 ```bash
@@ -186,6 +200,7 @@ cd ~/project/Open_Duck_Mini_Runtime-2_RDK_X5/scripts
 ~/duck_env/bin/python sim2real_diagnostics.py suspended_policy_replay \
   --onnx_model_path ~/BEST_WALK_ONNX_2.onnx \
   --telemetry-path ~/duck_logs/suspended_policy_replay_x0.jsonl \
+  --telemetry-every-n 1 \
   --command-x 0.0 \
   --duration 15 \
   --i-understand-this-moves-the-robot
@@ -198,6 +213,7 @@ cd ~/project/Open_Duck_Mini_Runtime-2_RDK_X5/scripts
 ~/duck_env/bin/python sim2real_diagnostics.py suspended_policy_replay \
   --onnx_model_path ~/BEST_WALK_ONNX_2.onnx \
   --telemetry-path ~/duck_logs/suspended_policy_replay_x008.jsonl \
+  --telemetry-every-n 1 \
   --command-x 0.08 \
   --duration 15 \
   --i-understand-this-moves-the-robot
@@ -232,14 +248,17 @@ cd ~/project/Open_Duck_Mini_Runtime-2_RDK_X5/scripts
 
 ## Normal Walker With Telemetry
 
-Default behavior is unchanged unless `--log-telemetry` or `--telemetry-path` is used.
+Default behavior is unchanged unless `--log-telemetry` is used. Passing only a
+telemetry path does not enable logging; the walker must be started with
+`--log-telemetry` for runtime JSONL output.
 
 ```bash
 cd ~/project/Open_Duck_Mini_Runtime-2_RDK_X5/scripts
 ~/duck_env/bin/python v2_rl_walk_mujoco.py \
   --onnx_model_path ~/BEST_WALK_ONNX_2.onnx \
   --log-telemetry \
-  --telemetry-path ~/duck_logs/rl_walk_telemetry.jsonl
+  --telemetry-path ~/duck_logs/rl_walk_telemetry.jsonl \
+  --telemetry-every-n 1
 ```
 
 Add `--telemetry-read-voltage` only when extra servo voltage bus reads are acceptable.
