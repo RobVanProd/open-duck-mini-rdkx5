@@ -8,10 +8,14 @@ The repository and its documentation are part of the robot's working state. Keep
 
 ## Current Next Step
 
-Collect the first non-walking evidence packet:
+Stage diagnostics onto the board, then collect the first non-walking evidence packet:
 
 ```text
-config snapshot -> home pose log + analysis -> IMU tilt log + analysis -> foot contact test
+merge project control docs
+  -> merge first-evidence workflow
+  -> deploy instrumentation with dry-run first
+  -> collect first evidence packet
+  -> decide the next diagnostic gate from evidence
 ```
 
 Do not train, tune, patch IMU remaps, edit offsets, change gains, change action scale, or run grounded walking yet.
@@ -24,6 +28,7 @@ Primary docs:
 - [Evidence flow](docs/EVIDENCE_FLOW.md)
 - [Issue backlog](docs/ISSUE_BACKLOG.md)
 - [Roboticist playbook](docs/ROBOTICIST_PLAYBOOK.md)
+- [Deploy instrumentation](docs/DEPLOY_INSTRUMENTATION.md)
 - [Diagnostic runbook](docs/run_sim2real_diagnostics.md)
 - [Agent instructions](AGENTS.md)
 
@@ -119,7 +124,19 @@ See `docs/SIM2REAL_AUDIT.md` for the full map.
 
 ## Deployment
 
-Read `docs/DEPLOYMENT.md` before copying instrumentation to the board. The instrumentation is designed to be additive and disabled by default, but board runtime files should still be backed up before any overwrite.
+Read `docs/DEPLOY_INSTRUMENTATION.md` before copying instrumentation to the board. The instrumentation is designed to be additive and disabled by default, but board runtime files should still be backed up before any overwrite.
+
+Dry-run first:
+
+```bash
+bash scripts/deploy_instrumentation_to_duck.sh --dry-run
+```
+
+Apply only after the plan is reviewed:
+
+```bash
+bash scripts/deploy_instrumentation_to_duck.sh --apply
+```
 
 ## Analysis
 

@@ -100,6 +100,37 @@ Commit small summaries only when they support a project decision. Keep raw
 JSONL logs, videos, and ad hoc hardware outputs outside git unless they are
 explicitly reviewed and reduced to a safe excerpt.
 
+## Instrumentation Deployment
+
+Expected local deployment evidence:
+
+```text
+outputs/deployments/<timestamp>/DEPLOYMENT_SUMMARY.md
+outputs/deployments/<timestamp>/import_check.txt
+outputs/deployments/<timestamp>/sim2real_diagnostics_help.txt
+```
+
+Expected board backup path:
+
+```text
+/home/sunrise/duck_backups/<timestamp>/
+```
+
+Deployment evidence should record:
+
+```text
+SSH target
+board runtime path
+board backup path
+copied file paths
+source SHA256 hashes
+destination SHA256 hashes
+non-moving validation commands
+```
+
+Commit `DEPLOYMENT_SUMMARY.md` only when it is small and useful for a project
+decision. Do not commit private SSH material, raw telemetry logs, or videos.
+
 ## Excluded
 
 The following are intentionally not committed:

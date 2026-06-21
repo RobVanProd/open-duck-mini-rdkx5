@@ -2,6 +2,11 @@
 
 These notes are for deploying the additive diagnostic instrumentation from this repository to the live RDK-X5 board.
 
+Use [DEPLOY_INSTRUMENTATION.md](DEPLOY_INSTRUMENTATION.md) as the canonical
+safe workflow. It provides dry-run planning, backups, checksum verification,
+and non-moving import/help checks. The manual commands below are reference
+material and should not replace the scripted workflow unless reviewed.
+
 ## Current Board Access
 
 Use Wi-Fi first:
