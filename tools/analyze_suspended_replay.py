@@ -335,6 +335,17 @@ def count_terminal_patterns(terminal, names):
     return sum(terminal["counts"].get(name, 0) for name in names)
 
 
+def gate_for_hold_reason(reason):
+    reason = reason.lower()
+    if "accelerometer" in reason:
+        return "HOLD_IMU"
+    if "action" in reason:
+        return "HOLD_ACTION_SATURATION"
+    if "tracking" in reason:
+        return "HOLD_TRACKING"
+    return "HOLD_CRC_OR_TIMING"
+
+
 def warning_total(terminal):
     non_cleanup = [
         name
@@ -519,14 +530,7 @@ def gate_recommendation(
             holds.append("bus event correlates with post-startup tracking spike")
 
     if holds:
-        if any("accelerometer" in item for item in holds):
-            gate = "HOLD_IMU"
-        elif any("action" in item for item in holds):
-            gate = "HOLD_ACTION_SATURATION"
-        elif any("tracking" in item for item in holds):
-            gate = "HOLD_TRACKING"
-        else:
-            gate = "HOLD_CRC_OR_TIMING"
+        gate = gate_for_hold_reason(holds[0])
         return {
             "gate": gate,
             "reason": holds[0],
