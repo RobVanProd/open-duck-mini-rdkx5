@@ -75,6 +75,13 @@ This backlog is ordered around evidence gates. Do not skip ahead to tuning.
 - Phase values.
 - Forward-bias assessment.
 
+### Capture Servo Bus Warning Evidence
+
+- Capture terminal logs beside suspended replay JSONL.
+- Count CRC/read/write/control-budget warnings.
+- Correlate timing spikes with tracking spikes.
+- Hold `x=0.08` replay until `x=0.0` has a clean gate summary.
+
 ### Create `SIM2REAL_RESULTS_SUMMARY.md`
 
 - Summarize completed gates.

@@ -100,6 +100,10 @@ obs[4] accel_y ~= -0.079717
 obs[5] accel_z ~=  9.490142
 ```
 
+Suspended replay evidence must include both JSONL telemetry and terminal log
+capture so servo CRC/read warnings and control-budget warnings are visible in
+the gate summary before increasing command speed.
+
 ## Key Live Calibration Facts
 
 The live `duck_config.json` offsets are recorded in `evidence/duck_config_20260621T180046Z.json` and `docs/joint_map_template.yaml`.
