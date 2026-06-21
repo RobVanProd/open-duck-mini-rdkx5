@@ -201,15 +201,31 @@ suspended_policy_replay_x0_terminal.log
 ```
 
 The terminal log is required because lower-level servo CRC/read warnings may be
-printed before they are available as telemetry counters. A replay is not clean
-if terminal output shows CRC/control-budget warnings that are missing from the
-JSONL telemetry.
+printed before they are available as telemetry counters. Nonzero CRC/read retry
+warnings are not an automatic blocker. They are blocking only when they
+correlate with control damage: dt spikes, action saturation or jumps,
+post-startup tracking spikes, repeated write failures, visible twitching, or a
+read-error burst.
 
 When the HWI bus counter patch is deployed, telemetry `bus.read_error_count`,
 `bus.write_error_count`, and `bus.last_error` count retry exceptions already
 handled by the servo wrapper. These counters do not add bus traffic. Keep the
 terminal log anyway because lower-level libraries may print CRC lines without
 exposing them as Python exceptions.
+
+Suspended replay stop/go thresholds:
+
+| Metric | Green | Yellow / proceed carefully | Red / stop |
+|---|---:|---:|---:|
+| Read CRC/retry errors | 0-0.2% ticks | 0.2-2% ticks, isolated, no control impact | >2%, bursts, or correlated with bad behavior |
+| Write errors | 0 | one isolated warning only | repeated write errors |
+| dt at 50 Hz | p99 < 0.022s, max < 0.030s | one isolated 0.030-0.040s | repeated >0.030s or any >0.050s |
+| Control budget warning | 0 | one isolated warning | repeated warnings |
+| Action saturation | 0% | isolated <1% | sustained or multiple joints |
+| Free-air p95 tracking | <0.02 rad | 0.02-0.05 rad | >0.05 rad sustained |
+| Free-air max tracking | startup spike allowed | <0.15-0.20 rad if startup-only | steady-state >0.15 rad or visible twitch |
+| IMU upright accel | +Z dominant | small x/y bias but stable | wrong axis or negative Z |
+| Bus event correlation | none | unclear | aligns with dt/action/tracking spike |
 
 First, zero forward command:
 
@@ -240,7 +256,14 @@ python3 tools/analyze_runtime_warnings.py \
   --output outputs/first_evidence/<timestamp>/suspended_policy_replay_x0_warnings.md
 ```
 
-Only if the x0 gate summary recommends `PASS_X0`, repeat with `0.08 m/s`:
+The `x=0.0` gate can recommend `PASS_X0`, `WARN_PROCEED_WITH_CAUTION`, or a
+hard hold. `WARN_PROCEED_WITH_CAUTION` is acceptable for the next low-risk
+suspended command when read retries are isolated, write errors are zero, dt is
+clean, action saturation is low, and tracking damage is not correlated with the
+bus warnings.
+
+Only if the x0 gate summary recommends `PASS_X0` or
+`WARN_PROCEED_WITH_CAUTION`, repeat with `0.08 m/s`:
 
 ```bash
 set -o pipefail

@@ -120,7 +120,11 @@ outputs/first_evidence/<timestamp>/suspended_policy_replay_x008_gate.md
 outputs/first_evidence/<timestamp>/suspended_policy_replay_x008_warnings.md
 ```
 
-Do not run `x=0.08` unless the `x=0.0` gate summary recommends `PASS_X0`.
+Do not run `x=0.08` unless the `x=0.0` gate summary recommends `PASS_X0`
+or `WARN_PROCEED_WITH_CAUTION`. Nonzero CRC/read retries are a warning, not an
+automatic hold, unless they correlate with dt spikes, action saturation or
+target jumps, post-startup tracking spikes, repeated write failures, visible
+twitching, or a bus-error burst.
 Terminal logs are intentionally part of the evidence because servo CRC/read
 warnings may be printed before they are exposed as telemetry counters.
 
