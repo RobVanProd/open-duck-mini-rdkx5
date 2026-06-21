@@ -70,6 +70,36 @@ Notable differences from the local reference runtime:
 - Servo-bus retry wrapper in HWI.
 - `joints_dir` all `+1.0`, with comments saying the left knee was physically re-flipped.
 
+## First Evidence Packet
+
+Expected local packet directory:
+
+```text
+outputs/first_evidence/<timestamp>/
+```
+
+Expected packet files:
+
+```text
+<timestamp>_rdkx5_config_snapshot.json
+home_pose_log_test.jsonl
+home_pose_analysis.md
+imu_tilt_test.jsonl
+imu_tilt_analysis.md
+foot_contact_test.jsonl
+foot_contact_summary.md
+```
+
+Expected generated summary:
+
+```text
+outputs/analysis/FIRST_EVIDENCE_SUMMARY.md
+```
+
+Commit small summaries only when they support a project decision. Keep raw
+JSONL logs, videos, and ad hoc hardware outputs outside git unless they are
+explicitly reviewed and reduced to a safe excerpt.
+
 ## Excluded
 
 The following are intentionally not committed:

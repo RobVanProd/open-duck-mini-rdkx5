@@ -29,6 +29,22 @@ can run over SSH from this workstation and does not require deployment.
 - Default movement amplitudes are intentionally small.
 - Prefer JSONL logs in `outputs/telemetry/`.
 
+## First Evidence Packet
+
+Start here before any walking or grounded replay. The first packet collects the
+config snapshot, home pose log, IMU tilt log, and foot contact summary needed to
+decide whether the real observation vector matches the policy contract.
+
+- Procedure: [FIRST_EVIDENCE_PACKET.md](FIRST_EVIDENCE_PACKET.md)
+- Workstation helper: [../scripts/collect_first_evidence.sh](../scripts/collect_first_evidence.sh)
+- Summary tool: [../tools/summarize_first_evidence.py](../tools/summarize_first_evidence.py)
+
+Default helper usage prints the command plan and does not run moving tests:
+
+```bash
+bash scripts/collect_first_evidence.sh --dry-run
+```
+
 ## 1. Snapshot Live Config
 
 From this workstation, use the current Wi-Fi SSH path first:
