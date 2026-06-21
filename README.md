@@ -13,8 +13,9 @@ Stage diagnostics onto the board, then collect the first non-walking evidence pa
 ```text
 merge project control docs
   -> merge first-evidence workflow
-  -> deploy instrumentation with dry-run first
+  -> deploy instrumentation/runtime telemetry with dry-run first
   -> collect first evidence packet
+  -> deploy opt-in RLWalk telemetry before suspended replay
   -> decide the next diagnostic gate from evidence
 ```
 
@@ -60,6 +61,7 @@ policy/                  Matching BEST_WALK_ONNX_2 baseline policy
 ## Safety Rules
 
 - Do not run walking tests until home pose, IMU tilt, foot contact, joint identity, and suspended replay checks pass.
+- Do not run suspended replay unless `v2_rl_walk_mujoco.py` exposes opt-in telemetry support and the replay command writes JSONL telemetry.
 - Do not tune gains, offsets, action scale, friction, phase timing, IMU remaps, or policy code during evidence collection.
 - Any moving diagnostic must be run with the robot physically supported unless the test explicitly says grounded.
 - Keep fingers clear and be ready to cut power.
@@ -125,6 +127,12 @@ See `docs/SIM2REAL_AUDIT.md` for the full map.
 ## Deployment
 
 Read `docs/DEPLOY_INSTRUMENTATION.md` before copying instrumentation to the board. The instrumentation is designed to be additive and disabled by default, but board runtime files should still be backed up before any overwrite.
+
+Check the runtime telemetry contract locally before deploying:
+
+```bash
+python3 tools/check_runtime_telemetry_contract.py
+```
 
 Dry-run first:
 

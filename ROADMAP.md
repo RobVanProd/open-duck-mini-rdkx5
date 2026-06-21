@@ -133,6 +133,8 @@ Goal: run `BEST_WALK_ONNX_2` with the feet free to separate observation/action/j
 
 Required evidence:
 
+- Runtime telemetry contract check passed.
+- Opt-in walker telemetry patch deployed with a deployment summary.
 - `suspended_policy_replay_x0.jsonl`.
 - Optional `suspended_policy_replay_x008.jsonl` only if `x=0.0` is sane.
 - Analyzer summary.
@@ -144,12 +146,14 @@ Pass gates:
 - Actual joints track targets.
 - Bus errors do not burst during policy replay.
 - The robot does not drive an obvious forward-biased posture in the air.
+- Replay does not run if full runtime telemetry support is missing.
 
 Files/scripts:
 
 - `instrumentation/scripts/sim2real_diagnostics.py`
 - `runtime/scripts/v2_rl_walk_mujoco.py`
 - `tools/analyze_telemetry_obs.py`
+- `tools/check_runtime_telemetry_contract.py`
 
 Do not change yet:
 

@@ -497,17 +497,26 @@ def cmd_policy_replay(args):
         "max_runtime_seconds": args.duration,
         "force_unpaused": False,
     }
+    required_telemetry_args = {
+        "log_telemetry",
+        "telemetry_path",
+        "telemetry_read_voltage",
+        "telemetry_every_n",
+    }
     supported = set(inspect.signature(RLWalk.__init__).parameters)
-    if "log_telemetry" not in supported:
+    missing = sorted(required_telemetry_args - supported)
+    if missing:
         raise SystemExit(
-            "v2_rl_walk_mujoco.RLWalk does not support telemetry yet. "
-            "Deploy the instrumented walker before policy replay."
+            "suspended_policy_replay requires RLWalk telemetry support. "
+            "Deploy runtime telemetry patch first. "
+            f"Missing args: {', '.join(missing)}"
         )
     kwargs.update(
         {
             "log_telemetry": True,
             "telemetry_path": args.telemetry_path,
             "telemetry_read_voltage": args.telemetry_read_voltage,
+            "telemetry_every_n": args.telemetry_every_n,
         }
     )
     rl = RLWalk(args.onnx_model_path, **kwargs)
@@ -637,6 +646,7 @@ def main():
         p.add_argument("--action_scale", type=float, default=0.25)
         p.add_argument("--max_motor_velocity", type=float, default=5.24)
         p.add_argument("--telemetry-read-voltage", action="store_true")
+        p.add_argument("--telemetry-every-n", type=int, default=1)
         p.add_argument("--i-understand-this-moves-the-robot", action="store_true")
         p.set_defaults(func=cmd_policy_replay, mode=name)
 

@@ -1,12 +1,13 @@
 # Deploy Instrumentation To The RDK-X5
 
-Purpose: safely stage additive sim-to-real diagnostic files onto the live RDK-X5 runtime without starting motors, walking, or changing robot behavior by default.
+Purpose: safely stage sim-to-real diagnostic files and the opt-in walker telemetry patch onto the live RDK-X5 runtime without starting motors, walking, or changing robot behavior by default.
 
 This deploy step is required before the first evidence packet if the board runtime does not already contain:
 
 ```text
 /home/sunrise/project/Open_Duck_Mini_Runtime-2_RDK_X5/mini_bdx_runtime/mini_bdx_runtime/telemetry.py
 /home/sunrise/project/Open_Duck_Mini_Runtime-2_RDK_X5/scripts/sim2real_diagnostics.py
+/home/sunrise/project/Open_Duck_Mini_Runtime-2_RDK_X5/scripts/v2_rl_walk_mujoco.py
 ```
 
 ## Safety Rules
@@ -18,7 +19,17 @@ This deploy step is required before the first evidence packet if the board runti
 - Do not copy `duck_config.json`.
 - Do not change gains, offsets, IMU remaps, action scale, phase timing, or policy files.
 - Back up existing board files before overwriting them.
+- Walker telemetry must stay disabled unless `--log-telemetry` is explicitly passed.
 - Keep SSH keys, known_hosts files, raw JSONL logs, videos, and secrets outside git.
+
+## Local Contract Check
+
+Before deploying the walker telemetry patch, verify the runtime exposes the
+required default-off telemetry contract without importing hardware modules:
+
+```bash
+python3 tools/check_runtime_telemetry_contract.py
+```
 
 ## Dry Run
 
@@ -73,7 +84,7 @@ Apply mode:
 - validates the board runtime path and Python path,
 - creates a board backup directory,
 - backs up any destination file that already exists,
-- copies only the intended additive instrumentation files,
+- copies only the intended instrumentation files and opt-in walker telemetry patch,
 - verifies source and destination SHA256 hashes,
 - runs non-moving import/help checks,
 - writes a local deployment summary.
@@ -86,6 +97,7 @@ Local deployment evidence:
 outputs/deployments/<timestamp>/DEPLOYMENT_SUMMARY.md
 outputs/deployments/<timestamp>/import_check.txt
 outputs/deployments/<timestamp>/sim2real_diagnostics_help.txt
+outputs/deployments/<timestamp>/v2_rl_walk_mujoco_help.txt
 ```
 
 Board backup path:
@@ -109,6 +121,12 @@ ssh -i /home/lsd/robots/.duck_access/rdk_key \
 ```
 
 Only restore files that exist in the backup. Do not replace the whole runtime tree.
+
+For the opt-in walker telemetry patch, restore:
+
+```text
+/home/sunrise/duck_backups/<timestamp>/scripts/v2_rl_walk_mujoco.py
+```
 
 ## Next Step
 

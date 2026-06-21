@@ -38,6 +38,10 @@ class RLWalk:
         fixed_command_x=None,
         max_runtime_seconds=None,
         force_unpaused=False,
+        log_telemetry: bool = False,
+        telemetry_path: str | None = None,
+        telemetry_read_voltage: bool = False,
+        telemetry_every_n: int = 1,
     ):
 
         self.duck_config = DuckConfig(config_json_path=duck_config_path)
@@ -46,6 +50,7 @@ class RLWalk:
         self.fixed_command_x = fixed_command_x
         self.max_runtime_seconds = max_runtime_seconds
         self.pitch_bias = pitch_bias
+        self.cutoff_frequency = cutoff_frequency
 
         self.onnx_model_path = onnx_model_path
         self.policy = OnnxInfer(self.onnx_model_path, awd=True)
@@ -70,6 +75,22 @@ class RLWalk:
             self.action_filter = LowPassActionFilter(
                 self.control_freq, cutoff_frequency
             )
+
+        self.log_telemetry = bool(log_telemetry)
+        self.telemetry_path = telemetry_path
+        self.telemetry_read_voltage = bool(telemetry_read_voltage)
+        self.telemetry_every_n = max(1, int(telemetry_every_n or 1))
+        self.telemetry_logger = None
+        self.telemetry_norm = None
+        self._telemetry_utc_timestamp = None
+        self._telemetry_normalize_observation = None
+        self._telemetry_policy_sha256 = None
+        self._telemetry_policy_output_name = None
+        self._telemetry_last_tick_monotonic = None
+        self._telemetry_last_imu_data = None
+        self._telemetry_last_dof_pos = None
+        self._telemetry_last_dof_vel = None
+        self._telemetry_last_feet_contacts = None
 
         self.hwi = HWI(self.duck_config, serial_port)
 
@@ -128,6 +149,159 @@ class RLWalk:
         if self.duck_config.antennas:
             self.antennas = Antennas()
 
+        self._setup_telemetry()
+
+    def _setup_telemetry(self):
+        if not self.log_telemetry:
+            return
+
+        from mini_bdx_runtime.telemetry import (
+            JsonlTelemetryLogger,
+            extract_onnx_obs_normalization,
+            normalize_observation,
+            sha256_file,
+            timestamp_slug,
+            utc_timestamp,
+        )
+
+        if self.telemetry_path is None:
+            self.telemetry_path = os.path.join(
+                HOME_DIR, "duck_logs", f"{timestamp_slug()}_rl_walk.jsonl"
+            )
+
+        self._telemetry_utc_timestamp = utc_timestamp
+        self._telemetry_normalize_observation = normalize_observation
+        self._telemetry_policy_sha256 = sha256_file(self.onnx_model_path)
+        self._telemetry_policy_output_name = self._policy_output_name()
+        self.telemetry_norm = extract_onnx_obs_normalization(self.onnx_model_path)
+        self.telemetry_logger = JsonlTelemetryLogger(self.telemetry_path)
+        print("telemetry:", self.telemetry_logger.path, flush=True)
+
+    def _policy_output_name(self):
+        try:
+            return self.policy.ort_session.get_outputs()[0].name
+        except Exception:
+            return None
+
+    def _telemetry_voltage(self):
+        # Voltage reads are intentionally opt-in and currently unavailable
+        # through the local HWI wrapper without adding new bus traffic.
+        if not self.telemetry_read_voltage:
+            return None
+        return None
+
+    def _log_policy_tick(
+        self,
+        *,
+        tick,
+        t_mono,
+        obs,
+        action,
+        scaled_delta,
+        motor_targets_pre_rate_limit,
+        motor_targets_post_rate_limit,
+        motor_targets_sent,
+        previous_motor_targets_for_tracking,
+    ):
+        if not self.log_telemetry or self.telemetry_logger is None:
+            return
+        if tick % self.telemetry_every_n != 0:
+            return
+
+        if self._telemetry_last_tick_monotonic is None:
+            dt_s = None
+        else:
+            dt_s = t_mono - self._telemetry_last_tick_monotonic
+        self._telemetry_last_tick_monotonic = t_mono
+
+        mean = None if self.telemetry_norm is None else self.telemetry_norm.get("mean")
+        std_recip = (
+            None if self.telemetry_norm is None else self.telemetry_norm.get("std_recip")
+        )
+        normalized = None
+        if self._telemetry_normalize_observation is not None:
+            normalized = self._telemetry_normalize_observation(obs, mean, std_recip)
+
+        joint_names = list(self.hwi.joints.keys())
+        actual_pos = self._telemetry_last_dof_pos
+        actual_vel = self._telemetry_last_dof_vel
+        tracking_error = None
+        if actual_pos is not None and previous_motor_targets_for_tracking is not None:
+            tracking_error = actual_pos - previous_motor_targets_for_tracking
+
+        imu_data = self._telemetry_last_imu_data or {}
+        feet_contacts = self._telemetry_last_feet_contacts
+        record = {
+            "schema_version": "sim2real.telemetry.v1",
+            "tick": int(tick),
+            "timestamp_monotonic_s": t_mono,
+            "timestamp_wall": self._telemetry_utc_timestamp(),
+            "dt_s": dt_s,
+            "policy": {
+                "onnx_path": self.onnx_model_path,
+                "onnx_sha256": self._telemetry_policy_sha256,
+                "input_name": getattr(self.policy, "input_name", "obs"),
+                "output_name": self._telemetry_policy_output_name,
+                "observation_dim": 101,
+                "action_dim": 14,
+            },
+            "control": {
+                "control_freq_hz": self.control_freq,
+                "paused": self.paused,
+                "action_scale": self.action_scale,
+                "max_motor_velocity_rad_s": self.max_motor_velocity,
+                "cutoff_frequency_hz": self.cutoff_frequency,
+                "commands": self.last_commands,
+                "imitation_i": self.imitation_i,
+                "imitation_phase": self.imitation_phase,
+                "feet_contacts": feet_contacts,
+            },
+            "imu": {
+                "imu_upside_down": self.duck_config.imu_upside_down,
+                "raw_gyro": imu_data.get("gyro"),
+                "raw_accelero": imu_data.get("accelero"),
+                "policy_gyro": None if obs is None or len(obs) < 3 else obs[0:3],
+                "policy_accelero": None if obs is None or len(obs) < 6 else obs[3:6],
+            },
+            "joints": {
+                "names": joint_names,
+                "servo_ids": list(self.hwi.joints.values()),
+                "offsets_rad": [self.hwi.joints_offsets.get(name) for name in joint_names],
+                "home_rad": self.init_pos,
+                "commanded_position_rad": motor_targets_sent,
+                "actual_position_rad": actual_pos,
+                "actual_velocity_rad_s": actual_vel,
+                "tracking_error_rad": tracking_error,
+                "battery_voltage_v": self._telemetry_voltage(),
+            },
+            "observation": {
+                "raw_vector": obs,
+                "full_raw_vector": obs,
+                "normalized_vector": normalized,
+                "normalization_mean": mean,
+                "normalization_std_recip": std_recip,
+                "normalization_source": None
+                if self.telemetry_norm is None
+                else self.telemetry_norm.get("source"),
+                "normalization_error": None
+                if self.telemetry_norm is None
+                else self.telemetry_norm.get("error"),
+            },
+            "action": {
+                "onnx_action": action,
+                "scaled_delta_rad": scaled_delta,
+                "motor_targets_pre_rate_limit_rad": motor_targets_pre_rate_limit,
+                "motor_targets_post_rate_limit_rad": motor_targets_post_rate_limit,
+                "motor_targets_sent_rad": motor_targets_sent,
+            },
+            "bus": {
+                "read_error_count": getattr(self.hwi, "read_error_count", None),
+                "write_error_count": getattr(self.hwi, "write_error_count", None),
+                "last_error": getattr(self.hwi, "last_error", None),
+            },
+        }
+        self.telemetry_logger.log(record)
+
     def get_obs(self):
 
         imu_data = self.imu.get_data()
@@ -160,6 +334,15 @@ class RLWalk:
         cmds = self.last_commands
 
         feet_contacts = self.feet_contacts.get()
+
+        if self.log_telemetry:
+            self._telemetry_last_imu_data = {
+                "gyro": imu_data["gyro"].copy(),
+                "accelero": imu_data["accelero"].copy(),
+            }
+            self._telemetry_last_dof_pos = dof_pos.copy()
+            self._telemetry_last_dof_vel = dof_vel.copy()
+            self._telemetry_last_feet_contacts = list(feet_contacts)
 
         obs = np.concatenate(
             [
@@ -275,6 +458,7 @@ class RLWalk:
                     time.sleep(0.1)
                     continue
 
+                telemetry_t_mono = time.monotonic() if self.log_telemetry else None
                 obs = self.get_obs()
                 if obs is None:
                     continue
@@ -312,7 +496,10 @@ class RLWalk:
 
                 # action = np.zeros(10)
 
-                self.motor_targets = self.init_pos + action * self.action_scale
+                previous_motor_targets_for_tracking = self.motor_targets.copy()
+                scaled_delta = action * self.action_scale
+                motor_targets_pre_rate_limit = self.init_pos + scaled_delta
+                self.motor_targets = motor_targets_pre_rate_limit
 
                 self.motor_targets = np.clip(
                     self.motor_targets,
@@ -330,16 +517,30 @@ class RLWalk:
                     ):  # give time to the filter to stabilize
                         self.motor_targets = filtered_motor_targets
 
+                motor_targets_post_rate_limit = self.motor_targets.copy()
                 self.prev_motor_targets = self.motor_targets.copy()
 
                 head_motor_targets = self.last_commands[3:] + self.motor_targets[5:9]
                 self.motor_targets[5:9] = head_motor_targets
+                motor_targets_sent = self.motor_targets.copy()
 
                 action_dict = make_action_dict(
                     self.motor_targets, list(self.hwi.joints.keys())
                 )
 
                 self.hwi.set_position_all(action_dict)
+
+                self._log_policy_tick(
+                    tick=i,
+                    t_mono=telemetry_t_mono,
+                    obs=obs,
+                    action=action,
+                    scaled_delta=scaled_delta,
+                    motor_targets_pre_rate_limit=motor_targets_pre_rate_limit,
+                    motor_targets_post_rate_limit=motor_targets_post_rate_limit,
+                    motor_targets_sent=motor_targets_sent,
+                    previous_motor_targets_for_tracking=previous_motor_targets_for_tracking,
+                )
 
                 i += 1
 
@@ -385,6 +586,11 @@ class RLWalk:
             self.hwi.turn_off()
         except Exception as exc:
             print("Motor turn_off cleanup failed:", exc)
+        try:
+            if self.telemetry_logger is not None:
+                self.telemetry_logger.close()
+        except Exception as exc:
+            print("Telemetry cleanup failed:", exc)
 
 
 if __name__ == "__main__":
@@ -428,6 +634,10 @@ if __name__ == "__main__":
     parser.add_argument("--fixed_command_x", type=float, default=None)
     parser.add_argument("--max_runtime_seconds", type=float, default=None)
     parser.add_argument("--force_unpaused", action="store_true")
+    parser.add_argument("--log-telemetry", action="store_true")
+    parser.add_argument("--telemetry-path", default=None)
+    parser.add_argument("--telemetry-read-voltage", action="store_true")
+    parser.add_argument("--telemetry-every-n", type=int, default=1)
     parser.add_argument(
         "--controller",
         type=str,
@@ -454,6 +664,10 @@ if __name__ == "__main__":
         fixed_command_x=args.fixed_command_x,
         max_runtime_seconds=args.max_runtime_seconds,
         force_unpaused=args.force_unpaused,
+        log_telemetry=args.log_telemetry,
+        telemetry_path=args.telemetry_path,
+        telemetry_read_voltage=args.telemetry_read_voltage,
+        telemetry_every_n=args.telemetry_every_n,
     )
     print("Done instantiating RLWalk")
     
