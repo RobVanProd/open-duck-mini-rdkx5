@@ -13,3 +13,15 @@ Current next step:
 ```text
 Collect and analyze home pose plus IMU tilt evidence. Do not tune yet.
 ```
+
+Robotics operating model:
+
+```text
+Use docs/ROBOTICIST_PLAYBOOK.md. Keep search and agent iteration out of the live robot loop, preserve frozen inspectable deployment code, and accept changes only through evidence gates.
+```
+
+Documentation rule:
+
+```text
+Keep README.md, PROJECT_GOAL.md, ROADMAP.md, evidence docs, and runbooks current with the latest robot state. Do not let important state live only in chat.
+```

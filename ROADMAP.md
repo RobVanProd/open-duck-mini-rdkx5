@@ -12,6 +12,7 @@ Required evidence:
 - Policy hash match.
 - Runtime path and package versions.
 - Clear safety and evidence rules.
+- RHO-inspired roboticist operating model.
 
 Pass gates:
 
@@ -27,6 +28,7 @@ Files/scripts:
 - `ROADMAP.md`
 - `docs/SAFETY_RULES.md`
 - `docs/EVIDENCE_FLOW.md`
+- `docs/ROBOTICIST_PLAYBOOK.md`
 - `tools/snapshot_robot_config.py`
 
 Do not change yet:

@@ -6,6 +6,8 @@ Turn this repository into a safe, repeatable sim-to-real diagnostic and bridging
 
 The project is not trying to train a new policy yet. The current mission is to prove the deployed robot's sensor observations, policy actions, joint commands, and real joint movement match the policy and simulation contract closely enough to rerun the known baseline responsibly.
 
+The repository itself is part of the robot state. Keep documentation, evidence manifests, snapshots, runbooks, and status notes current whenever the board runtime, robot config, diagnostic results, or recommended next gate changes.
+
 ## Current Robot Status
 
 - Robot is mostly assembled.
@@ -90,6 +92,9 @@ The sim-to-real bridge is done when:
 - Grounded replay is attempted only after the above gates pass.
 - Any fix is a minimal reviewed patch tied to a specific failed gate.
 - `BEST_WALK_ONNX_2` is rerun after each minimal fix before training new policy variants.
+- The README, roadmap, audit, evidence flow, and agent instructions match the latest known board state.
+- Every evidence packet and decision is traceable to committed docs or manifests.
+- No critical robot state exists only in chat history, local scratch files, or an untracked board directory.
 
 ## Non-Goals For Now
 

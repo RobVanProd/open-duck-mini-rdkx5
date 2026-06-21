@@ -97,3 +97,16 @@ Example:
 ```text
 IMU upright accel failed because home_pose_analysis.md shows obs[5] mean = -9.6 m/s^2.
 ```
+
+## Documentation Update Rule
+
+When evidence changes the project state, update documentation in the same PR or evidence handoff.
+
+Examples:
+
+- New board IP: update `README.md`, deployment docs, and status docs.
+- New config snapshot: update evidence manifest and joint map if offsets changed.
+- New failed gate: update issue backlog and results summary.
+- New accepted fix: update roadmap phase status and runbook commands.
+
+The goal is that a future agent can start from the repository alone and recover the current robot state without searching chat history.

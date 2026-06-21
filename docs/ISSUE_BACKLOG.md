@@ -4,6 +4,13 @@ This backlog is ordered around evidence gates. Do not skip ahead to tuning.
 
 ## P0: First Evidence Gates
 
+### Keep Docs And Repo State Current
+
+- Update README current next step when the active gate changes.
+- Update evidence manifests when snapshots or summaries are added.
+- Update root-cause ranking after analysis.
+- Keep `docs/ROBOTICIST_PLAYBOOK.md` and `AGENTS.md` aligned with the actual workflow.
+
 ### Run Config Snapshot
 
 - Capture live `duck_config.json`.
