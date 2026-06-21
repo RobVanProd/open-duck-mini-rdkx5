@@ -5,6 +5,7 @@ Last updated: 2026-06-21
 ## Executive Summary
 
 Current recommendation: **do not run grounded replay yet**.
+No more robot motion is recommended until the actuator bridge spec is reviewed.
 
 The first evidence gates no longer point to a gross IMU axis flip, policy hash
 mismatch, joint order failure, or zero-command policy explosion. The Duck can
@@ -30,6 +31,7 @@ Small summaries:
 - `outputs/first_evidence/20260621T215022Z/suspended_policy_replay_x008_thresholds_analysis.md`
 - `outputs/first_evidence/20260621T215022Z/suspended_policy_replay_x008_thresholds_warnings.md`
 - `outputs/first_evidence/20260621T215022Z/suspended_policy_replay_x008_target_waveform_analysis.md`
+- `outputs/first_evidence/20260621T215022Z/suspended_policy_replay_x008_target_velocity_analysis.md`
 - `outputs/first_evidence/20260621T215022Z/actuator_sine_sweep_025_summary.md`
 - `outputs/first_evidence/20260621T215022Z/actuator_sine_sweep_05_summary.md`
 
@@ -195,7 +197,7 @@ shows sustained actuator/feedback tracking lag in suspension.
 ## Suspended `x=0.08` Target Waveform
 
 From
-`outputs/first_evidence/20260621T215022Z/suspended_policy_replay_x008_target_waveform_analysis.md`.
+`outputs/first_evidence/20260621T215022Z/suspended_policy_replay_x008_target_velocity_analysis.md`.
 Post-startup ticks only.
 
 For comparison, a `0.03 rad` sine wave has max target velocity:
@@ -222,6 +224,14 @@ Maximum p95 target velocity ratio:
 Interpretation: the `x=0.08` gait lag is not contradicted by the smooth sine
 sweep pass. The walking policy target waveform is dramatically faster and is
 already near the configured motor velocity limit in several joints.
+
+Reusable analyzer:
+
+```bash
+python3 tools/analyze_policy_target_velocity.py \
+  outputs/first_evidence/<timestamp>/suspended_policy_replay_x008_thresholds.jsonl \
+  --output outputs/first_evidence/<timestamp>/suspended_policy_replay_x008_target_velocity_analysis.md
+```
 
 ## Actuator Sine Sweep
 
@@ -307,8 +317,9 @@ Interpretation:
 
 ## Next Action
 
-Choose exactly one next step: **create the sim bridge patch/spec for actuator
-delay and action-rate limits**, without changing robot behavior yet.
+Choose exactly one next step: **review
+`docs/ACTUATOR_SIM_BRIDGE_SPEC.md` and create the first sim/training bridge
+implementation PR**, without changing robot behavior yet.
 
 Purpose:
 
