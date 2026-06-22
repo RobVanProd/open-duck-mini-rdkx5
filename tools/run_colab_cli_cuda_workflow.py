@@ -365,6 +365,7 @@ def build_remote_driver(args: argparse.Namespace, workflow_name: str, rdk_tar: s
                 "--target-rate-scale", "{args.candidate_target_rate_scale}",
                 "--actuator-tracking-scale", "{args.candidate_actuator_tracking_scale}",
                 "--tracking-lin-vel-scale", "{args.candidate_tracking_lin_vel_scale}",
+                "--tracking-ang-vel-scale", "{args.candidate_tracking_ang_vel_scale}",
                 "--tracking-sigma", "{args.candidate_tracking_sigma}",
                 "--forward-progress-scale", "{args.candidate_forward_progress_scale}",
                 "--forward-progress-deadband", "{args.candidate_forward_progress_deadband}",
@@ -535,6 +536,7 @@ def main() -> int:
     parser.add_argument("--candidate-target-rate-scale", type=float, default=-0.001)
     parser.add_argument("--candidate-actuator-tracking-scale", type=float, default=0.0)
     parser.add_argument("--candidate-tracking-lin-vel-scale", type=float, default=12.0)
+    parser.add_argument("--candidate-tracking-ang-vel-scale", type=float, default=0.0)
     parser.add_argument("--candidate-tracking-sigma", type=float, default=0.0025)
     parser.add_argument("--candidate-forward-progress-scale", type=float, default=2.0)
     parser.add_argument("--candidate-forward-progress-deadband", type=float, default=0.02)

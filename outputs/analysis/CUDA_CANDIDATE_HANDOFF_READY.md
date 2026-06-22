@@ -85,6 +85,7 @@ tracking_sigma=0.0025
 forward_progress_scale=2.0
 forward_progress_deadband=0.02
 tracking_lin_vel_scale=12.0
+tracking_ang_vel_scale=0.0
 target_rate_scale=-0.001
 action_rate_scale=-0.1
 alive_scale=0.5
