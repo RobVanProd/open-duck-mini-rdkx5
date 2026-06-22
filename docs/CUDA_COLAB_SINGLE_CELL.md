@@ -140,7 +140,10 @@ python3 tools/print_cuda_colab_cell.py --run-candidate --no-auto-download
 The generated cell builds this bundle from an `EXIT` trap. Download the bundle
 even if the notebook cell exits early or reports a command failure. The archive
 contains `CUDA_CELL_EXIT_STATUS.txt` so the importer/reviewer can distinguish a
-clean run from a partial evidence bundle.
+clean run from a partial evidence bundle. That file also records the RDK and
+Playground repo URLs, branches, commits, dirty-file counts, Python/JAX/MuJoCo
+metadata when importable, and the visible GPU name when `nvidia-smi` is
+available.
 
 Import it locally with:
 
