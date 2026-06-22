@@ -1,0 +1,31 @@
+{
+  "status": "PASS_ROCM_HOST_LOOP_TINY_SMOKE",
+  "purpose": "Verify local ROCm closed-loop policy/eval can complete when MJX substeps are host-driven instead of lowered through JAX control flow.",
+  "policy": "policy/BEST_WALK_ONNX_2.onnx",
+  "command_x": 0.08,
+  "duration_s": 0.2,
+  "bridge_mode": "vanilla",
+  "backend": "rocm:0",
+  "results": [
+    {
+      "mjx_step_loop_mode": "python",
+      "closed_loop_status": "PASS_CLOSED_LOOP_REPRODUCTION",
+      "samples": 10,
+      "termination": "duration_complete",
+      "wall_clock_s": 104.79
+    },
+    {
+      "mjx_step_loop_mode": "python_block_each",
+      "closed_loop_status": "PASS_CLOSED_LOOP_REPRODUCTION",
+      "samples": 10,
+      "termination": "duration_complete",
+      "wall_clock_s": 107.02
+    }
+  ],
+  "interpretation": "Host-driven MJX substeps can carry tiny local ROCm correctness probes, but the mode is far too slow for full-horizon evaluation or training. CUDA remains the confirmed full eval/training backend.",
+  "no_robot_tests": true,
+  "no_ssh": true,
+  "no_deploy": true,
+  "no_training": true,
+  "no_runtime_behavior_change": true
+}

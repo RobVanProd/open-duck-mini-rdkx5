@@ -54,6 +54,7 @@ class ClosedLoopConfig:
     task: str = "flat_terrain"
     seed: int = 0
     eval_role: str = "reproduction"
+    mjx_step_loop_mode: str = "default"
 
 
 @contextlib.contextmanager
@@ -166,6 +167,16 @@ def available_modes(requested: str) -> list[str]:
     if requested == "all":
         return ["vanilla", "fitted", "stress"]
     return [requested]
+
+
+def block_tree(jax_module, value):
+    """Materialize a JAX pytree without importing JAX at module import time."""
+    return jax_module.tree_util.tree_map(
+        lambda leaf: leaf.block_until_ready()
+        if hasattr(leaf, "block_until_ready")
+        else leaf,
+        value,
+    )
 
 
 def per_joint_mode_summary(records: list[dict], dt_s: float) -> dict:
@@ -379,6 +390,16 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             "status": "HOLD_SIM_RUNTIME_ERROR",
             "error": f"unsupported bridge mode {config.bridge_mode}",
         }
+    if config.mjx_step_loop_mode not in {
+        "default",
+        "scan",
+        "python",
+        "python_block_each",
+    }:
+        return {
+            "status": "HOLD_SIM_RUNTIME_ERROR",
+            "error": f"unsupported mjx step loop mode {config.mjx_step_loop_mode}",
+        }
     if not config.playground_root.exists():
         return {
             "status": "HOLD_ENV_NOT_READY",
@@ -394,6 +415,7 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
         import jax
         import jax.numpy as jp
         import onnxruntime as ort
+        from mujoco import mjx
         from mujoco_playground._src import mjx_env
         from mujoco_playground._src.collision import geoms_colliding
     except Exception as exc:  # pragma: no cover - environment-dependent
@@ -531,8 +553,23 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             sent_target = pre_rate_limit
         return state, action_w_delay, pre_rate_limit, sent_target
 
+    def step_mjx_host_loop(data, ctrl, block_each: bool):
+        for _ in range(int(env.n_substeps)):
+            data = data.replace(ctrl=ctrl)
+            data = mjx.step(env.mjx_model, data)
+            if block_each:
+                data = block_tree(jax, data)
+        return data
+
     def apply_motor_target(state, action, sent_target, applied_target):
-        data = mjx_env.step(env.mjx_model, state.data, applied_target, env.n_substeps)
+        if config.mjx_step_loop_mode in {"default", "scan"}:
+            data = mjx_env.step(env.mjx_model, state.data, applied_target, env.n_substeps)
+        else:
+            data = step_mjx_host_loop(
+                state.data,
+                applied_target,
+                block_each=config.mjx_step_loop_mode == "python_block_each",
+            )
         state.info["motor_targets"] = sent_target
         contact = jp.array(
             [
@@ -579,7 +616,11 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
 
     refresh_obs_jit = jax.jit(refresh_obs)
     prepare_step_jit = jax.jit(prepare_step)
-    apply_motor_target_jit = jax.jit(apply_motor_target)
+    apply_motor_target_runner = (
+        jax.jit(apply_motor_target)
+        if config.mjx_step_loop_mode in {"default", "scan"}
+        else apply_motor_target
+    )
 
     modes = {}
     sim_steps = max(1, int(round(config.duration_s / float(env.dt))))
@@ -593,6 +634,13 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             "keeps the sent target so obs[83:97] remains commanded target history."
         ),
         "double_rate_limit": False,
+        "mjx_step_loop_mode": config.mjx_step_loop_mode,
+        "mjx_step_loop_description": (
+            "default/scan uses mujoco_playground._src.mjx_env.step, which "
+            "wraps substeps in jax.lax.scan. python/python_block_each are "
+            "eval-only ROCm workarounds that drive raw mujoco.mjx.step from "
+            "the host for each substep."
+        ),
         "push_disabled": True,
         "noise_disabled": True,
         "action_delay_disabled": True,
@@ -634,7 +682,7 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                 if mode == "vanilla"
                 else bridge.step(sent_np, float(env.dt))
             )
-            state = apply_motor_target_jit(
+            state = apply_motor_target_runner(
                 state,
                 jp.asarray(action),
                 sent_target,
@@ -768,6 +816,7 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             "ctrl_dt": float(env.dt),
             "sim_dt": float(env.sim_dt),
             "n_substeps": int(env.n_substeps),
+            "mjx_step_loop_mode": config.mjx_step_loop_mode,
             "action_scale": float(env._config.action_scale),
             "max_motor_velocity": float(env._config.max_motor_velocity),
             "jax_backend": jax.default_backend(),

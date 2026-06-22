@@ -816,3 +816,33 @@ Choose one of these before training:
 
 Do not run robot motion, grounded replay, deployment, or training as part of
 this backend debug step.
+
+## Closed-Loop Host-Loop Workaround
+
+The reduced loop-mode finding was promoted into the closed-loop actuator bridge
+evaluator as a default-off option:
+
+```text
+--mjx-step-loop-mode default
+--mjx-step-loop-mode scan
+--mjx-step-loop-mode python
+--mjx-step-loop-mode python_block_each
+```
+
+`default` and `scan` preserve the normal Playground helper path through
+`mujoco_playground._src.mjx_env.step(...)`, which wraps substeps in
+`jax.lax.scan`. `python` and `python_block_each` bypass that scanned helper for
+eval only and call raw `mujoco.mjx.step` one substep at a time from the host.
+
+Local `7900 XTX` smoke result:
+
+| closed-loop mode | result | samples | wall clock |
+|---|---|---:|---:|
+| `python` | `PASS_CLOSED_LOOP_REPRODUCTION` | 10 | 104.79s |
+| `python_block_each` | `PASS_CLOSED_LOOP_REPRODUCTION` | 10 | 107.02s |
+
+This is useful for tiny local correctness checks and confirms the full
+closed-loop policy/eval code can survive on ROCm when repeated MJX substeps are
+not lowered through XLA control flow. It does not make local ROCm practical for
+training or full-horizon closed-loop evaluation. CUDA remains the confirmed
+backend for full eval and candidate training.

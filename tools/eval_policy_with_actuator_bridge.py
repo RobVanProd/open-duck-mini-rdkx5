@@ -12,6 +12,7 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import os
 from pathlib import Path
 import statistics
 import subprocess
@@ -467,6 +468,8 @@ def run_closed_loop_worker(args) -> dict:
         str(args.expected_action_dim),
         "--eval-role",
         str(args.eval_role),
+        "--mjx-step-loop-mode",
+        str(args.mjx_step_loop_mode),
         "--_closed-loop-worker",
         "--_closed-loop-worker-json",
         str(worker_json),
@@ -629,6 +632,7 @@ def build_markdown(payload: dict) -> str:
         lines.append(f"actuator_names: `{env.get('actuator_names')}`")
         lines.append(f"ctrl_dt: `{env.get('ctrl_dt')}`")
         lines.append(f"sim_dt: `{env.get('sim_dt')}`")
+        lines.append(f"mjx_step_loop_mode: `{env.get('mjx_step_loop_mode')}`")
         lines.append(f"jax: `{env.get('jax_backend')}` `{env.get('jax_devices')}`")
         lines.append(f"insertion_point: `{insertion.get('type')}`")
         lines.append(f"double_rate_limit: `{insertion.get('double_rate_limit')}`")
@@ -872,6 +876,16 @@ def main() -> int:
         ),
     )
     parser.add_argument(
+        "--mjx-step-loop-mode",
+        choices=["default", "scan", "python", "python_block_each"],
+        default="default",
+        help=(
+            "closed-loop MJX substep mode. default/scan uses the Playground "
+            "lax.scan helper; python/python_block_each use a slow host-driven "
+            "substep loop for local ROCm correctness checks."
+        ),
+    )
+    parser.add_argument(
         "--sim-preflight-timeout-s",
         type=int,
         default=90,
@@ -936,6 +950,7 @@ def main() -> int:
                     expected_observation_dim=args.expected_observation_dim,
                     expected_action_dim=args.expected_action_dim,
                     eval_role=args.eval_role,
+                    mjx_step_loop_mode=args.mjx_step_loop_mode,
                 )
             )
             if args._closed_loop_worker_json:
@@ -968,6 +983,7 @@ def main() -> int:
         "duration_s": args.duration,
         "eval_role": args.eval_role,
         "jax_platform": args.jax_platform,
+        "mjx_step_loop_mode": args.mjx_step_loop_mode,
         "telemetry_replay": telemetry_replay,
         "closed_loop_sim": closed_loop_sim,
     }

@@ -407,6 +407,26 @@ on an MJX convex-collision `-inf` path that also appears on CPU. They also show
 that strict IEEE compiler flags and reset-state finite sanitation do not fix the
 GPU scan-step failure.
 
+The evaluator now also supports a default-off ROCm workaround:
+
+```bash
+--mjx-step-loop-mode python
+--mjx-step-loop-mode python_block_each
+```
+
+These modes preserve the policy/action/target bridge logic but replace the
+Playground scanned substep helper with a host-driven loop over raw
+`mujoco.mjx.step`. A 10-tick local `7900 XTX` smoke passed in both host-loop
+modes:
+
+```text
+python:            PASS_CLOSED_LOOP_REPRODUCTION, 10 samples, 104.79s
+python_block_each: PASS_CLOSED_LOOP_REPRODUCTION, 10 samples, 107.02s
+```
+
+That makes ROCm usable for very small local correctness probes. It remains too
+slow for full 15-second reproduction, candidate validation, or training.
+
 Current telemetry replay output still shows:
 
 ```text

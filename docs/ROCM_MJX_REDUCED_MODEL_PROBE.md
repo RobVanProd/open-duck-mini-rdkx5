@@ -98,3 +98,36 @@ using a host Python substep loop. It is not a training-throughput solution.
 
 CUDA remains the full closed-loop eval/training backend. CPU remains useful for
 small correctness checks.
+
+## Closed-Loop Host-Loop Smoke
+
+The closed-loop actuator bridge evaluator now has an explicit eval-only
+substep mode:
+
+```bash
+../envs/open-duck-playground/bin/python tools/eval_policy_with_actuator_bridge.py \
+  --mode closed-loop-sim \
+  --policy policy/BEST_WALK_ONNX_2.onnx \
+  --fit-json outputs/analysis/actuator_response_fit.json \
+  --playground-path ../Open_Duck_Playground \
+  --env-python ../envs/open-duck-playground/bin/python \
+  --command-x 0.08 \
+  --duration 0.2 \
+  --bridge-mode vanilla \
+  --jax-platform gpu \
+  --mjx-step-loop-mode python \
+  --closed-loop-timeout-s 300 \
+  --sim-preflight-timeout-s 300 \
+  --output-dir outputs/analysis/rocm_host_loop_closed_loop_smoke_python
+```
+
+Result on the local `7900 XTX`:
+
+| mode | result | samples | wall clock |
+|---|---|---:|---:|
+| `python` | `PASS_CLOSED_LOOP_REPRODUCTION` | 10 | 104.79s |
+| `python_block_each` | `PASS_CLOSED_LOOP_REPRODUCTION` | 10 | 107.02s |
+
+This confirms the host-loop workaround can carry the full closed-loop eval path
+for tiny correctness probes on ROCm. It is far too slow for full 15-second evals
+or training.
