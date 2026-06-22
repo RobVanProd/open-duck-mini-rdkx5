@@ -38,6 +38,18 @@ host-loop closed-loop smoke: PASS for 10 ticks, about 105s wall-clock
 status: useful for tiny correctness probes only, not training
 ```
 
+Post-reset ROCm recheck:
+
+```text
+outputs/analysis/ROCM_AFTER_RESET_RECHECK_20260622.md
+basic JAX / JIT / minimal MJX: PASS
+Open Duck reset: PASS
+Open Duck direct mjx_env.step: TIMEOUT
+Open Duck direct mjx_env.step JIT: ROCm abort
+HSA_OVERRIDE_GFX_VERSION=11.0.0: harmful, aborts even basic JAX
+gate: HOLD_PLAYGROUND_GPU_STEP
+```
+
 Local CPU update:
 
 ```text
@@ -189,6 +201,19 @@ basic JAX GPU: PASS
 minimal MJX GPU: PASS
 Playground one-step vanilla: TIMEOUT
 Playground one-step JIT: FAIL
+gate: HOLD_PLAYGROUND_GPU_STEP
+```
+
+Post-reset recheck:
+
+```text
+outputs/analysis/ROCM_AFTER_RESET_RECHECK_20260622.md
+basic JAX GPU: PASS
+JAX jit/scan GPU: PASS
+minimal MJX GPU: PASS
+Playground reset GPU: PASS
+Playground direct mjx_env.step GPU: TIMEOUT
+Playground direct mjx_env.step JIT GPU: FAIL
 gate: HOLD_PLAYGROUND_GPU_STEP
 ```
 
