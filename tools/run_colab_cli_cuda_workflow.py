@@ -270,20 +270,22 @@ def build_remote_driver(args: argparse.Namespace, workflow_name: str, rdk_tar: s
         if {install_deps!r}:
             run([PYTHON, "-m", "pip", "install", "-U", "pip"], timeout=600)
             run([
-                PYTHON, "-m", "pip", "install", "-U",
+                PYTHON, "-m", "pip", "install",
                 "jax[cuda12]=={PINNED_JAX_VERSION}",
                 "jaxlib=={PINNED_JAX_VERSION}",
                 "playground==0.0.5",
-                "mujoco>=3.2.7,<3.10",
-                "mujoco-mjx>=3.2.7",
-                "onnxruntime",
-                "ml-collections",
-                "numpy",
-                "matplotlib",
-                "mediapy",
-                "tensorflow",
-                "tf2onnx",
+                "mujoco==3.9.0",
+                "mujoco-mjx==3.9.0",
+                "onnxruntime==1.27.0",
+                "ml-collections==1.1.0",
+                "numpy==2.0.2",
+                "matplotlib==3.10.0",
+                "mediapy==1.2.6",
+                "tensorflow==2.20.0",
+                "protobuf==5.29.6",
+                "onnx==1.22.0",
             ], timeout=1800)
+            run([PYTHON, "-m", "pip", "install", "--no-deps", "tf2onnx==1.17.0"], timeout=600)
             run([PYTHON, "-m", "pip", "install", "--no-deps", "-e", str(PLAYGROUND)], timeout=600)
 
         print("=== Versions ===", flush=True)

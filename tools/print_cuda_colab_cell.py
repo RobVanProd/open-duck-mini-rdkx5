@@ -267,19 +267,21 @@ clone_or_update_repo "$PLAYGROUND_REPO" /content/Open_Duck_Playground "$PLAYGROU
 
 echo "=== Install CUDA eval/training deps ==="
 "$PYTHON_BIN" -m pip install -U pip
-"$PYTHON_BIN" -m pip install -U \\
+"$PYTHON_BIN" -m pip install \\
   "jax[cuda12]=={DEFAULT_CUDA_JAX_VERSION}" \\
   "jaxlib=={DEFAULT_CUDA_JAX_VERSION}" \\
   "playground==0.0.5" \\
-  "mujoco>=3.2.7,<3.10" \\
-  "mujoco-mjx>=3.2.7" \\
-  onnxruntime \\
-  ml-collections \\
-  numpy \\
-  matplotlib \\
-  mediapy \\
-  tensorflow \\
-  tf2onnx
+  "mujoco==3.9.0" \\
+  "mujoco-mjx==3.9.0" \\
+  "onnxruntime==1.27.0" \\
+  "ml-collections==1.1.0" \\
+  "numpy==2.0.2" \\
+  "matplotlib==3.10.0" \\
+  "mediapy==1.2.6" \\
+  "tensorflow==2.20.0" \\
+  "protobuf==5.29.6" \\
+  "onnx==1.22.0"
+"$PYTHON_BIN" -m pip install --no-deps "tf2onnx==1.17.0"
 "$PYTHON_BIN" -m pip install --no-deps -e /content/Open_Duck_Playground
 
 echo "=== Verify key imports ==="
