@@ -113,6 +113,7 @@ The tool checks:
 - RDK and Playground source commits
 - training manifest presence
 - sim-gate evidence presence
+- candidate sim-gate status when an actuator bridge eval report is supplied
 
 Use the closed-loop eval helper in candidate mode before considering any
 robot-side validation:
@@ -139,8 +140,8 @@ status such as `HOLD_CANDIDATE_FALL_OR_TERMINATION`,
 `HOLD_CANDIDATE_ACTION_SATURATION`, or `HOLD_CANDIDATE_TRACKING` blocks robot
 testing.
 
-If evidence is missing, the package status is a `HOLD`, not a robot-test
-approval.
+If evidence is missing, or the supplied candidate eval report has a `HOLD_*`
+status, the package status is a `HOLD`, not a robot-test approval.
 
 ## Candidate Naming
 

@@ -15,6 +15,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import re
 import subprocess
 import sys
 from typing import Any
@@ -164,6 +165,47 @@ def file_evidence(path: Path | None, label: str) -> dict[str, Any]:
     }
 
 
+def extract_gate_status(path: Path | None) -> dict[str, Any]:
+    if path is None:
+        return {"status": "MISSING", "path": None}
+    if not path.exists():
+        return {"status": "MISSING", "path": str(path)}
+    if path.suffix.lower() == ".json":
+        data = load_json(path)
+        if isinstance(data, dict):
+            closed_loop = data.get("closed_loop_sim") or data
+            candidate_gate = closed_loop.get("candidate_gate") or {}
+            return {
+                "status": "PASS_PARSED_GATE_STATUS",
+                "path": str(path),
+                "overall_status": data.get("overall_status") or closed_loop.get("status"),
+                "candidate_gate_status": candidate_gate.get("status"),
+                "eval_role": data.get("eval_role") or closed_loop.get("eval_role"),
+            }
+    text = path.read_text(errors="replace")
+    overall = None
+    gate = None
+    eval_role = None
+    match = re.search(r"^overall_status:\s*`([^`]+)`", text, flags=re.MULTILINE)
+    if match:
+        overall = match.group(1)
+    match = re.search(r"^eval_role:\s*`([^`]+)`", text, flags=re.MULTILINE)
+    if match:
+        eval_role = match.group(1)
+    gate_section = text.split("### Candidate Gate", 1)
+    if len(gate_section) == 2:
+        match = re.search(r"^status:\s*`([^`]+)`", gate_section[1], flags=re.MULTILINE)
+        if match:
+            gate = match.group(1)
+    return {
+        "status": "PASS_PARSED_GATE_STATUS",
+        "path": str(path),
+        "overall_status": overall,
+        "candidate_gate_status": gate,
+        "eval_role": eval_role,
+    }
+
+
 def decide_status(payload: dict[str, Any], allow_missing_evidence: bool) -> str:
     if payload["candidate"]["sha256"] == payload["baseline"]["sha256"]:
         return "HOLD_BASELINE_OVERWRITE_RISK"
@@ -176,6 +218,19 @@ def decide_status(payload: dict[str, Any], allow_missing_evidence: bool) -> str:
     ]
     if missing and not allow_missing_evidence:
         return "HOLD_MISSING_SIM_GATE_EVIDENCE"
+    gate_status = (
+        payload.get("sim_gate", {})
+        .get("actuator_bridge_eval", {})
+        .get("candidate_gate_status")
+    )
+    overall_status = (
+        payload.get("sim_gate", {})
+        .get("actuator_bridge_eval", {})
+        .get("overall_status")
+    )
+    for status in [gate_status, overall_status]:
+        if isinstance(status, str) and status.startswith("HOLD"):
+            return status
     if payload.get("non_deployable_reason"):
         return "INFO_NON_DEPLOYABLE_ARTIFACT"
     return "READY_FOR_SIM_GATE_REVIEW"
@@ -252,6 +307,19 @@ def markdown(payload: dict[str, Any]) -> str:
     for item in payload["evidence"].values():
         lines.append(f"| `{item['label']}` | `{item['status']}` | `{item['path']}` |")
 
+    sim_gate = payload.get("sim_gate", {}).get("actuator_bridge_eval") or {}
+    if sim_gate.get("status") == "PASS_PARSED_GATE_STATUS":
+        lines.extend(
+            [
+                "",
+                "## Sim Gate Status",
+                "",
+                f"- eval_role: `{sim_gate.get('eval_role')}`",
+                f"- overall_status: `{sim_gate.get('overall_status')}`",
+                f"- candidate_gate_status: `{sim_gate.get('candidate_gate_status')}`",
+            ]
+        )
+
     training_manifest = payload.get("training_manifest")
     if training_manifest:
         lines.extend(["", "## Training Manifest", ""])
@@ -320,6 +388,7 @@ def main() -> int:
     baseline_path = Path(args.baseline).expanduser().resolve()
     baseline_sha = sha256_file(baseline_path) if baseline_path.exists() else None
     manifest_path = as_path(args.training_manifest)
+    actuator_bridge_eval_path = as_path(args.actuator_bridge_eval)
 
     payload: dict[str, Any] = {
         "generated_at": timestamp(),
@@ -344,9 +413,12 @@ def main() -> int:
                 as_path(args.target_velocity_summary), "target_velocity_summary"
             ),
             "actuator_bridge_eval": file_evidence(
-                as_path(args.actuator_bridge_eval), "actuator_bridge_eval"
+                actuator_bridge_eval_path, "actuator_bridge_eval"
             ),
             "training_manifest": file_evidence(manifest_path, "training_manifest"),
+        },
+        "sim_gate": {
+            "actuator_bridge_eval": extract_gate_status(actuator_bridge_eval_path)
         },
         "training_manifest": load_json(manifest_path),
         "non_deployable_reason": args.non_deployable_reason,
