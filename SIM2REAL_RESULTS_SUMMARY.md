@@ -1,6 +1,6 @@
 # Sim-To-Real Results Summary
 
-Last updated: 2026-06-21
+Last updated: 2026-06-22
 
 ## Executive Summary
 
@@ -385,9 +385,100 @@ Latest closed-loop actuator bridge eval result:
 - Closed-loop gate result: `HOLD_SIM_RUNTIME_ERROR`.
 - Worker failure: `ROCM_ERROR_ILLEGAL_ADDRESS` during the JAX/MJX GPU step.
 
-Choose exactly one next step: **fix the local ROCm/JAX/MJX closed-loop runtime
-fault and rerun the closed-loop actuator bridge eval**, without changing robot
-behavior yet and without training.
+Latest ROCm/MJX isolation result:
+
+- `tools/isolate_rocm_mjx_failure.py` was run with GPU and CPU platforms,
+  steps `1,2,10,100`, and bridge tests enabled.
+- Summary artifact:
+  `outputs/analysis/ROCM_MJX_RUNTIME_ISOLATION.md`.
+- JSON artifact:
+  `outputs/analysis/rocm_mjx_runtime_isolation.json`.
+- Gate result: `HOLD_PLAYGROUND_GPU_STEP`.
+- Smallest failing subtest:
+  `default_gpu_playground_one_step_vanilla`.
+- Passing GPU subtests:
+  - basic JAX arithmetic
+  - JAX jit/scan
+  - minimal MJX step/scan
+  - Open Duck Playground contract construction
+  - Open Duck Playground reset
+- Failing GPU subtests:
+  - Open Duck Playground one-step vanilla times out
+  - Open Duck Playground multi-step vanilla times out
+  - Open Duck Playground bridge path times out
+  - closed-loop GPU policy eval aborts with `ROCM_ERROR_ILLEGAL_ADDRESS`
+- CPU subtests show reduced-horizon usefulness:
+  - CPU Playground reset and one-step pass
+  - CPU closed-loop vanilla short matrix passes
+  - CPU bridge/multi-step path progresses through short steps but times out
+    before the full requested horizon under `120 s`
+- Focused JAX allocation variants on the smallest failing GPU subtest
+  `playground_one_step_vanilla` did not clear the hang:
+  - `XLA_PYTHON_CLIENT_PREALLOCATE=false`: timeout
+  - `XLA_PYTHON_CLIENT_MEM_FRACTION=0.50`: timeout
+  - `XLA_PYTHON_CLIENT_MEM_FRACTION=0.60`: timeout
+  - `XLA_PYTHON_CLIENT_ALLOCATOR=platform`: timeout
+- The host currently reports `amdgpu` `cwsr_enable = 1`; changing this is a
+  system-level module setting and was not attempted.
+- Follow-up execution-mode checks did not clear the failure:
+  - `playground_one_step_jit`: `ROCM_ERROR_ILLEGAL_ADDRESS`
+  - `playground_scan_step_vanilla`: `ROCM_ERROR_ILLEGAL_ADDRESS`
+- Compiler/debug variants on `playground_scan_step_vanilla` did not produce a
+  usable GPU pass:
+  - `JAX_DEBUG_NANS=true,JAX_DEBUG_INFS=true`: `FloatingPointError` inside MJX
+    convex collision
+  - `MIOPEN_DEBUG_FUSION_ENGINE_DISABLE=1`: `ROCM_ERROR_ILLEGAL_ADDRESS`
+  - `MIOPEN_DEBUG_FUSION_ENGINE_DISABLE=1` plus conservative XLA flags: timeout
+- The debug nan/inf failure also occurs on CPU during Playground reset because
+  MJX convex collision uses a `-inf` sentinel path. Treat it as a locator for
+  the collision code path, not as proof that the model state is corrupt.
+- Local JAX `0.8.2` does not expose a `jax_three_fry_gpu_global_pool` config
+  key, so that suggested knob was not added.
+- Additional strict/Triton variants did not clear the fault:
+  - `--xla_gpu_enable_triton_softmax=false`: unknown XLA flag
+  - `ROCM_CHIP_COMPILER_FLAGS=-fno-fast-math -fhonor-infinities -fhonor-nans`:
+    `ROCM_ERROR_ILLEGAL_ADDRESS`
+  - `--xla_gpu_target_cuda_data_dir=/opt/rocm/lib`: unknown XLA flag
+- Reset-state finite checks show `qpos`, `qvel`, `qacc`, `ctrl`, and
+  `qfrc_constraint` are finite after reset on CPU and GPU.
+- Post-reset sanitation of `qpos`, `qvel`, `qacc`, `ctrl`, and `act` does not
+  fix the GPU scan-step fault. CPU sanitized scan passes; GPU sanitized scan
+  still hits `ROCM_ERROR_ILLEGAL_ADDRESS`.
+- MJCF contact audit found seven contact-relevant floor/foot entries without
+  explicit `solref` or `solimp`. This is now a candidate offline sim-model
+  probe, not a robot-runtime or training fix.
+- After a full GPU unplug/replug power-cycle, the smallest Open Duck Playground
+  GPU probes were rerun. `playground_reset` still passed, but
+  `playground_one_step_vanilla` timed out, `playground_one_step_jit` failed with
+  returncode `-6`, and `playground_scan_step_vanilla` timed out. This weakens
+  the stale-device-state hypothesis for the MJX step failure.
+- A focused RX `7900 XTX` architecture-override check was run after confirming
+  `/dev/kfd` and `/dev/dri/renderD*` are visible through the `render` group.
+  Plain JAX still reports `RocmDevice(id=0)`.
+- `TENSOR_PARALLEL_SIZE=1` passed a basic JAX GPU smoke test.
+- `HSA_OVERRIDE_GFX_VERSION=11.0.0` failed basic JAX with
+  `ROCM_ERROR_ILLEGAL_ADDRESS`, both alone and with
+  `XLA_PYTHON_CLIENT_PREALLOCATE=false` plus
+  `XLA_PYTHON_CLIENT_MEM_FRACTION=0.60`.
+- Do not use `HSA_OVERRIDE_GFX_VERSION=11.0.0` in this local env. The GPU is
+  already detected without it, and the override breaks the smallest GPU test.
+- Summary artifact:
+  `outputs/analysis/rocm_mjx_isolation_gfx_override/ROCM_MJX_RUNTIME_ISOLATION.md`.
+- A Google Colab NVIDIA L4 / CUDA run completed the full closed-loop actuator
+  bridge eval and returned `PASS_CLOSED_LOOP_REPRODUCTION`.
+- CUDA contract/eval details:
+  - `state` observation size: `101`
+  - action size: `14`
+  - actuator order matches `BEST_WALK_ONNX_2`
+  - bridge insertion point: `target_stage_direct`
+  - `double_rate_limit: False`
+  - vanilla, fitted, and stress modes each completed `750` samples
+  - fitted pitch-chain lag: `3-4` ticks
+- Summary artifact:
+  `outputs/analysis/CUDA_L4_CLOSED_LOOP_ACTUATOR_BRIDGE_EVAL.md`.
+
+Choose exactly one next step: **implement the training-time actuator wrapper**,
+without robot motion and without changing robot runtime behavior yet.
 
 Purpose:
 
@@ -398,13 +489,12 @@ Purpose:
   when selecting training randomization ranges
 - add action-rate / target-velocity diagnostics to the training bridge notes
 - use the verified `101` observation / `14` action sim environment
-- rerun the current policy in that sim with and without the fitted actuator
-  bridge after the ROCm/MJX runtime fault is fixed
-- only then implement the JAX/MJX training actuator wrapper
+- use the CUDA L4 `PASS_CLOSED_LOOP_REPRODUCTION` result as the current
+  closed-loop sim proof
+- implement the JAX/MJX training actuator wrapper next
 
 Do not patch runtime behavior, action scale, gains, offsets, or phase timing
 until the bridge spec is reviewed.
 
-Do not run more robot motion, grounded replay, or training until the
-closed-loop sim actuator bridge eval runs without the ROCm/MJX runtime fault
-and is reviewed.
+Do not run more robot motion or grounded replay until a candidate policy is
+trained with the actuator bridge and passes suspended validation.

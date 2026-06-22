@@ -1,0 +1,77 @@
+/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast
+  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)
+/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast
+  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)
+E0621 23:40:03.754363 1243484 pjrt_stream_executor_client.cc:2091] Execution of replica 0 failed: INTERNAL: Failed to retrieve branch_index value on stream 0x2dfd8000: Could not synchronize on ROCM stream: ROCM_ERROR_ILLEGAL_ADDRESS.
+Traceback (most recent call last):
+  File "<string>", line 106, in <module>
+jax.errors.JaxRuntimeError: INTERNAL: Failed to retrieve branch_index value on stream 0x2dfd8000: Could not synchronize on ROCM stream: ROCM_ERROR_ILLEGAL_ADDRESS.
+--------------------
+For simplicity, JAX has removed its internal frames from the traceback of the following exception. Set JAX_TRACEBACK_FILTERING=off to include these.
+F0621 23:40:03.774489 1243484 rocm_context.cc:137] Check failed: ToStatus(wrap::hipCtxSetCurrent(context_), "Failed setting context") is OK (INTERNAL: Failed setting context: ROCM_ERROR_ILLEGAL_ADDRESS)
+[symbolize_elf.inc : 379] RAW: Unable to get high fd: rc=0, limit=1024
+*** Check failure stack trace: ***
+    @     0x75bbcfb357a4  absl::lts_20250814::log_internal::LogMessage::SendToLog()
+    @     0x75bbcfb35726  absl::lts_20250814::log_internal::LogMessage::Flush()
+    @     0x75bbce0baa49  stream_executor::gpu::RocmContext::SetActive()
+    @     0x75bbce0c6e56  stream_executor::gpu::ScopedActivateContext::ScopedActivateContext()
+    @     0x75bbcdd2f7db  stream_executor::gpu::(anonymous namespace)::UnloadRocmModule()
+    @     0x75bbcdd2fc29  stream_executor::gpu::RocmExecutor::UnloadGpuBinary()
+    @     0x75bbcdd2f9ea  stream_executor::gpu::RocmExecutor::UnloadModule()
+    @     0x75bbc380b2df  absl::lts_20250814::container_internal::raw_hash_set<>::destructor_impl()
+    @     0x75bbc37ff7c4  xla::gpu::GpuExecutable::~GpuExecutable()
+    @     0x75bbc37ffb4e  xla::gpu::GpuExecutable::~GpuExecutable()
+    @     0x75bbc2d24c06  std::_Sp_counted_deleter<>::_M_dispose()
+    @     0x75bbc2d1a211  xla::PjRtStreamExecutorLoadedExecutable::~PjRtStreamExecutorLoadedExecutable()
+    @     0x75bbc2d1a2fe  xla::PjRtStreamExecutorLoadedExecutable::~PjRtStreamExecutorLoadedExecutable()
+    @     0x75bbc2cb9c7d  pjrt::PJRT_LoadedExecutable_Destroy()
+    @     0x75bd323e8390  std::_Function_handler<>::_M_invoke()
+    @     0x75bd323d870b  xla::PjRtCApiLoadedExecutable::~PjRtCApiLoadedExecutable()
+    @     0x75bd323d877e  xla::PjRtCApiLoadedExecutable::~PjRtCApiLoadedExecutable()
+    @     0x75bd2ec0a89e  xla::ifrt::PjRtLoadedExecutable::~PjRtLoadedExecutable()
+    @     0x75bd2ec13397  std::_Sp_counted_ptr<>::_M_dispose()
+    @     0x75bd2eacd405  jax::PyLoadedExecutable::~PyLoadedExecutable()
+    @     0x75bd2eb92860  nanobind::detail::inst_dealloc()
+    @     0x75bd322ee641  nanobind::detail::py_deleter::operator()()
+    @     0x75bd32352eca  std::_Sp_counted_ptr_inplace<>::_M_dispose()
+    @     0x75bd32351065  absl::lts_20250814::inlined_vector_internal::Storage<>::DestroyContents()
+    @     0x75bd32356155  absl::lts_20250814::container_internal::raw_hash_set<>::destructor_impl()
+    @     0x75bd323560d0  xla::LRUCache<>::Clear()
+    @     0x75bd3235a532  std::_Sp_counted_ptr_inplace<>::_M_dispose()
+    @     0x75bd32356385  std::default_delete<>::operator()()
+    @     0x75bd3235aa70  nanobind::detail::func_create<>()::{lambda()#1}::__invoke()
+    @     0x75bd2eb8845d  nanobind::detail::nb_func_vectorcall_simple_1()
+    @          0x1853754  PyObject_CallOneArg
+    @          0x1aac007  PyObject_ClearWeakRefs.warm
+    @          0x1a89a88  func_dealloc.warm
+    @     0x75bd38548fef  std::_Sp_counted_ptr_inplace<>::_M_dispose()
+    @     0x75bd38545f32  absl::lts_20250814::inlined_vector_internal::Storage<>::DestroyContents()
+    @     0x75bd38545fd5  absl::lts_20250814::container_internal::raw_hash_set<>::destructor_impl()
+    @     0x75bd38545cbb  xla::LRUCache<>::Clear()
+    @     0x75bd38545a72  std::_Sp_counted_ptr_inplace<>::_M_dispose()
+    @     0x75bd38548008  nanobind::detail::func_create<>()::{lambda()#1}::__invoke()
+    @     0x75bd2eb8845d  nanobind::detail::nb_func_vectorcall_simple_1()
+    @          0x1853754  PyObject_CallOneArg
+    @           0x45b024  handle_callback.llvm.6155425969336250027
+    @          0x1b22206  subtype_dealloc.cold
+    @          0x180137f  tupledealloc
+    @     0x75bd38548fef  std::_Sp_counted_ptr_inplace<>::_M_dispose()
+    @     0x75bd38545f32  absl::lts_20250814::inlined_vector_internal::Storage<>::DestroyContents()
+    @     0x75bd38546047  absl::lts_20250814::functional_internal::InvokeObject<>()
+    @     0x75bd322a04bf  absl::lts_20250814::container_internal::IterateOverFullSlots()
+    @     0x75bd38545ff3  absl::lts_20250814::container_internal::raw_hash_set<>::destructor_impl()
+    @     0x75bd38545cbb  xla::LRUCache<>::Clear()
+    @     0x75bd38545a72  std::_Sp_counted_ptr_inplace<>::_M_dispose()
+    @     0x75bd385492a8  std::pair<>::~pair()
+    @     0x75bd38544fe8  jax::WeakrefLRUCache::Clear()
+    @     0x75bd38547146  nanobind::detail::func_create<>()::{lambda()#1}::__invoke()
+    @     0x75bd2eb8845d  nanobind::detail::nb_func_vectorcall_simple_1()
+    @          0x1816073  _PyEval_EvalFrameDefault
+    @          0x1ad68ff  atexit_callfuncs.llvm.9450642270383810775.warm
+    @          0x190e896  Py_FinalizeEx
+    @          0x198c54c  Py_RunMain
+    @          0x198c198  pymain_main.llvm.11489439184168853189
+    @          0x198bfac  main
+    @     0x75bd3a82a601  (unknown)
+    @     0x75bd3a82a718  __libc_start_main
+    @          0x19a9269  _start

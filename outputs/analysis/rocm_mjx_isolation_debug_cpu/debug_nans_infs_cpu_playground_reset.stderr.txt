@@ -1,0 +1,50 @@
+Traceback (most recent call last):
+  File "<string>", line 92, in <module>
+  File "/home/lsd/robots/open-duck-mini-rdkx5/../Open_Duck_Playground/playground/open_duck_mini_v2/joystick.py", line 258, in reset
+    data = mjx_env.init(self.mjx_model, qpos=qpos, qvel=qvel, ctrl=ctrl)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/mujoco_playground/_src/mjx_env.py", line 155, in init
+    data = mjx.forward(model, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/mujoco/mjx/_src/forward.py", line 63, in wrapper
+    res = fn(*args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^
+  File "/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/mujoco/mjx/_src/forward.py", line 440, in forward
+    d = fwd_position(m, d)
+        ^^^^^^^^^^^^^^^^^^
+  File "/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/mujoco/mjx/_src/forward.py", line 63, in wrapper
+    res = fn(*args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^
+  File "/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/mujoco/mjx/_src/forward.py", line 80, in fwd_position
+    d = collision_driver.collision(m, d)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/mujoco/mjx/_src/collision_driver.py", line 437, in collision
+    dist, pos, frame = func(m, d, key, contact.geom)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/mujoco/mjx/_src/collision_convex.py", line 74, in collide
+    dist, pos, frame = jax.vmap(fn, in_axes=in_axes)(*infos)  # pytype: disable=wrong-keyword-args
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/mujoco/mjx/_src/collision_convex.py", line 946, in convex_convex
+    dist, pos, n = _convex_convex(c1, c2)
+                   ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/mujoco/mjx/_src/collision_convex.py", line 912, in _convex_convex
+    dist, pos, normal = _sat_gaussmap(
+                        ^^^^^^^^^^^^^^
+  File "/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/mujoco/mjx/_src/collision_convex.py", line 846, in _sat_gaussmap
+    edge_dist = jp.where(is_minkowski_face, edge_dist, -jp.inf)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/numpy/lax_numpy.py", line 2785, in where
+    return util._where(condition, x, y)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/numpy/util.py", line 299, in _where
+    condition, x_arr, y_arr = _broadcast_arrays(condition, x, y)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/numpy/util.py", line 253, in _broadcast_arrays
+    return [_broadcast_to(arg, result_shape, result_sharding) for arg in args]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/numpy/util.py", line 278, in _broadcast_to
+    return lax.broadcast_in_dim(arr, shape, tuple(range(nlead, len(shape))),
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FloatingPointError: invalid value (inf) encountered in broadcast_in_dim
+--------------------
+For simplicity, JAX has removed its internal frames from the traceback of the following exception. Set JAX_TRACEBACK_FILTERING=off to include these.

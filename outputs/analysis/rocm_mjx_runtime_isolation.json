@@ -1,0 +1,1329 @@
+{
+  "mission": "ROCm/MJX closed-loop runtime isolation",
+  "host_info": {
+    "python": "3.12.13 (main, May 10 2026, 19:30:01) [Clang 22.1.3 ]",
+    "platform": "Linux-7.0.0-22-generic-x86_64-with-glibc2.43",
+    "kernel": "7.0.0-22-generic",
+    "machine": "x86_64",
+    "env": {},
+    "rocm_smi": {
+      "command": [
+        "rocm-smi",
+        "--showproductname"
+      ],
+      "returncode": 0,
+      "stdout": "\n\n============================ ROCm System Management Interface ============================\n====================================== Product Info ======================================\nGPU[0]\t\t: Card Series: \t\tRadeon RX 7900 XTX\nGPU[0]\t\t: Card Model: \t\t0x744c\nGPU[0]\t\t: Card Vendor: \t\tAdvanced Micro Devices, Inc. [AMD/ATI]\nGPU[0]\t\t: Card SKU: \t\t31XFSHBS1\nGPU[0]\t\t: Subsystem ID: \t0x7901\nGPU[0]\t\t: Device Rev: \t\t0xc8\nGPU[0]\t\t: Node ID: \t\t1\nGPU[0]\t\t: GUID: \t\t45220\nGPU[0]\t\t: GFX Version: \t\tgfx1100\nGPU[1]\t\t: Card Series: \t\tAMD Radeon Graphics\nGPU[1]\t\t: Card Model: \t\t0x13c0\nGPU[1]\t\t: Card Vendor: \t\tAdvanced Micro Devices, Inc. [AMD/ATI]\nGPU[1]\t\t: Card SKU: \t\tRAPHAEL\nGPU[1]\t\t: Subsystem ID: \t-0x7789\nGPU[1]\t\t: Device Rev: \t\t0xc1\nGPU[1]\t\t: Node ID: \t\t2\nGPU[1]\t\t: GUID: \t\t41556\nGPU[1]\t\t: GFX Version: \t\tgfx1036\n==========================================================================================\n================================== End of ROCm SMI Log ===================================\n",
+      "stderr": ""
+    },
+    "rocminfo": {
+      "command": [
+        "bash",
+        "-lc",
+        "rocminfo | head -80"
+      ],
+      "returncode": 0,
+      "stdout": "\u001b[37mROCk module is loaded\u001b[0m\n=====================    \nHSA System Attributes    \n=====================    \nRuntime Version:         1.18\nRuntime Ext Version:     1.15\nSystem Timestamp Freq.:  1000.000000MHz\nSig. Max Wait Duration:  18446744073709551615 (0xFFFFFFFFFFFFFFFF) (timestamp count)\nMachine Model:           LARGE                              \nSystem Endianness:       LITTLE                             \nMwaitx:                  DISABLED\nXNACK enabled:           NO\nDMAbuf Support:          YES\nVMM Support:             YES\n\n==========               \nHSA Agents               \n==========               \n*******                  \nAgent 1                  \n*******                  \n  Name:                    AMD Ryzen 9 9950X 16-Core Processor\n  Uuid:                    CPU-XX                             \n  Marketing Name:          AMD Ryzen 9 9950X 16-Core Processor\n  Vendor Name:             CPU                                \n  Feature:                 None specified                     \n  Profile:                 FULL_PROFILE                       \n  Float Round Mode:        NEAR                               \n  Max Queue Number:        0(0x0)                             \n  Queue Min Size:          0(0x0)                             \n  Queue Max Size:          0(0x0)                             \n  Queue Type:              MULTI                              \n  Node:                    0                                  \n  Device Type:             CPU                                \n  Cache Info:              \n    L1:                      49152(0xc000) KB                   \n  Chip ID:                 0(0x0)                             \n  ASIC Revision:           0(0x0)                             \n  Cacheline Size:          64(0x40)                           \n  Max Clock Freq. (MHz):   5756                               \n  BDFID:                   0                                  \n  Internal Node ID:        0                                  \n  Compute Unit:            32                                 \n  SIMDs per CU:            0                                  \n  Shader Engines:          0                                  \n  Shader Arrs. per Eng.:   0                                  \n  WatchPts on Addr. Ranges:1                                  \n  Memory Properties:       \n  Features:                None\n  Pool Info:               \n    Pool 1                   \n      Segment:                 GLOBAL; FLAGS: FINE GRAINED        \n      Size:                    127090776(0x7934058) KB            \n      Allocatable:             TRUE                               \n      Alloc Granule:           4KB                                \n      Alloc Recommended Granule:4KB                                \n      Alloc Alignment:         4KB                                \n      Accessible by all:       TRUE                               \n    Pool 2                   \n      Segment:                 GLOBAL; FLAGS: EXTENDED FINE GRAINED\n      Size:                    127090776(0x7934058) KB            \n      Allocatable:             TRUE                               \n      Alloc Granule:           4KB                                \n      Alloc Recommended Granule:4KB                                \n      Alloc Alignment:         4KB                                \n      Accessible by all:       TRUE                               \n    Pool 3                   \n      Segment:                 GLOBAL; FLAGS: KERNARG, FINE GRAINED\n      Size:                    127090776(0x7934058) KB            \n      Allocatable:             TRUE                               \n      Alloc Granule:           4KB                                \n      Alloc Recommended Granule:4KB                                \n      Alloc Alignment:         4KB                                \n      Accessible by all:       TRUE                               \n    Pool 4                   \n      Segment:                 GLOBAL; FLAGS: COARSE GRAINED      \n      Size:                    127090776(0x7934058) KB            \n      Allocatable:             TRUE                               \n      Alloc Granule:           4KB                                \n      Alloc Recommended Granule:4KB                                \n",
+      "stderr": ""
+    },
+    "uname": {
+      "command": [
+        "uname",
+        "-a"
+      ],
+      "returncode": 0,
+      "stdout": "Linux LSD 7.0.0-22-generic #22-Ubuntu SMP PREEMPT_DYNAMIC Mon May 25 15:54:34 UTC 2026 x86_64 GNU/Linux\n",
+      "stderr": ""
+    }
+  },
+  "inputs": {
+    "playground_path": "/home/lsd/robots/open-duck-mini-rdkx5/../Open_Duck_Playground",
+    "env_python": "/home/lsd/robots/open-duck-mini-rdkx5/../envs/open-duck-playground/bin/python",
+    "policy": "/home/lsd/robots/open-duck-mini-rdkx5/policy/BEST_WALK_ONNX_2.onnx",
+    "fit_json": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/actuator_response_fit.json",
+    "output_dir": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/rocm_mjx_isolation",
+    "command_x": 0.08,
+    "steps": [
+      1,
+      2,
+      10,
+      100
+    ],
+    "platforms": [
+      "gpu",
+      "cpu"
+    ],
+    "include_bridge": true,
+    "timeout_s": 120
+  },
+  "variants_run": [
+    "default"
+  ],
+  "results": [
+    {
+      "id": "default_gpu_basic_jax",
+      "name": "basic_jax",
+      "platform": "gpu",
+      "variant": "default",
+      "status": "PASS",
+      "returncode": 0,
+      "elapsed_s": 1.6123147800099105,
+      "command": [
+        "/home/lsd/robots/open-duck-mini-rdkx5/../envs/open-duck-playground/bin/python",
+        "-c",
+        "\nimport json\nimport os\nimport platform\nimport sys\nfrom pathlib import Path\n\nREPO_ROOT = '/home/lsd/robots/open-duck-mini-rdkx5'\nTOOLS_PATH = str(Path(REPO_ROOT) / \"tools\")\nPLAYGROUND_PATH = '/home/lsd/robots/open-duck-mini-rdkx5/../Open_Duck_Playground'\nif TOOLS_PATH not in sys.path:\n    sys.path.insert(0, TOOLS_PATH)\nif PLAYGROUND_PATH not in sys.path:\n    sys.path.insert(0, PLAYGROUND_PATH)\n\ndef emit(tag, payload):\n    print(tag)\n    print(json.dumps(payload, sort_keys=True, default=str))\n    print(tag.replace(\"START\", \"END\"))\n    sys.stdout.flush()\n\ndef block_tree(value):\n    import jax\n    def block_item(item):\n        return item.block_until_ready() if hasattr(item, \"block_until_ready\") else item\n    return jax.tree_util.tree_map(block_item, value)\n\ndef emit_info(extra=None):\n    info = {\n        \"python\": sys.version,\n        \"python_executable\": sys.executable,\n        \"platform\": platform.platform(),\n        \"env\": {key: os.environ.get(key) for key in ['JAX_PLATFORM_NAME', 'JAX_PLATFORMS', 'JAX_DISABLE_JIT', 'JAX_DEBUG_NANS', 'JAX_DEBUG_INFS', 'XLA_PYTHON_CLIENT_PREALLOCATE', 'XLA_PYTHON_CLIENT_MEM_FRACTION', 'XLA_FLAGS', 'HIP_VISIBLE_DEVICES', 'ROCR_VISIBLE_DEVICES', 'HSA_OVERRIDE_GFX_VERSION', 'MUJOCO_GL'] if key in os.environ},\n    }\n    try:\n        import jax\n        info[\"jax_version\"] = getattr(jax, \"__version__\", None)\n        try:\n            import jaxlib\n            info[\"jaxlib_version\"] = getattr(jaxlib, \"__version__\", None)\n        except Exception as exc:\n            info[\"jaxlib_error\"] = f\"{type(exc).__name__}: {exc}\"\n        info[\"jax_backend\"] = jax.default_backend()\n        info[\"jax_devices\"] = [str(device) for device in jax.devices()]\n    except Exception as exc:\n        info[\"jax_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        import mujoco\n        info[\"mujoco_version\"] = getattr(mujoco, \"__version__\", None)\n    except Exception as exc:\n        info[\"mujoco_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        from mujoco import mjx\n        info[\"mujoco_mjx_available\"] = True\n        info[\"mujoco_mjx_has_step\"] = hasattr(mjx, \"step\")\n    except Exception as exc:\n        info[\"mujoco_mjx_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        import ml_collections\n        info[\"ml_collections_version\"] = getattr(ml_collections, \"__version__\", None)\n    except Exception as exc:\n        info[\"ml_collections_error\"] = f\"{type(exc).__name__}: {exc}\"\n    if extra:\n        info.update(extra)\n    emit(\"SUBTEST_INFO_JSON_START\", info)\n\nemit_info({\"subtest\": \"basic_jax\"})\nimport jax\nimport jax.numpy as jnp\nx = jnp.arange(2048, dtype=jnp.float32)\ny = jnp.sin(x) * jnp.cos(x)\nz = jnp.sum(y)\nz.block_until_ready()\nemit(\"SUBTEST_RESULT_JSON_START\", {\"status\": \"PASS\", \"value\": float(z)})\n"
+      ],
+      "env_overrides": {
+        "JAX_PLATFORM_NAME": "gpu"
+      },
+      "stdout_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/rocm_mjx_isolation/default_gpu_basic_jax.stdout.txt",
+      "stderr_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/rocm_mjx_isolation/default_gpu_basic_jax.stderr.txt",
+      "info": {
+        "env": {
+          "JAX_PLATFORM_NAME": "gpu"
+        },
+        "jax_backend": "gpu",
+        "jax_devices": [
+          "rocm:0"
+        ],
+        "jax_version": "0.8.2",
+        "jaxlib_version": "0.8.2",
+        "ml_collections_version": "1.1.0",
+        "mujoco_mjx_available": true,
+        "mujoco_mjx_has_step": true,
+        "mujoco_version": "3.9.0",
+        "platform": "Linux-7.0.0-22-generic-x86_64-with-glibc2.43",
+        "python": "3.12.13 (main, May 10 2026, 19:30:01) [Clang 22.1.3 ]",
+        "python_executable": "/home/lsd/robots/envs/open-duck-playground/bin/python",
+        "subtest": "basic_jax"
+      },
+      "result": {
+        "status": "PASS",
+        "value": 0.18012501299381256
+      },
+      "progress": [],
+      "stdout_tail": "Failed to import warp: No module named 'warp'\nFailed to import mujoco_warp: No module named 'warp'\nSUBTEST_INFO_JSON_START\n{\"env\": {\"JAX_PLATFORM_NAME\": \"gpu\"}, \"jax_backend\": \"gpu\", \"jax_devices\": [\"rocm:0\"], \"jax_version\": \"0.8.2\", \"jaxlib_version\": \"0.8.2\", \"ml_collections_version\": \"1.1.0\", \"mujoco_mjx_available\": true, \"mujoco_mjx_has_step\": true, \"mujoco_version\": \"3.9.0\", \"platform\": \"Linux-7.0.0-22-generic-x86_64-with-glibc2.43\", \"python\": \"3.12.13 (main, May 10 2026, 19:30:01) [Clang 22.1.3 ]\", \"python_executable\": \"/home/lsd/robots/envs/open-duck-playground/bin/python\", \"subtest\": \"basic_jax\"}\nSUBTEST_INFO_JSON_END\nSUBTEST_RESULT_JSON_START\n{\"status\": \"PASS\", \"value\": 0.18012501299381256}\nSUBTEST_RESULT_JSON_END\n",
+      "stderr_tail": ""
+    },
+    {
+      "id": "default_gpu_jax_jit_scan",
+      "name": "jax_jit_scan",
+      "platform": "gpu",
+      "variant": "default",
+      "status": "PASS",
+      "returncode": 0,
+      "elapsed_s": 1.6996530129981693,
+      "command": [
+        "/home/lsd/robots/open-duck-mini-rdkx5/../envs/open-duck-playground/bin/python",
+        "-c",
+        "\nimport json\nimport os\nimport platform\nimport sys\nfrom pathlib import Path\n\nREPO_ROOT = '/home/lsd/robots/open-duck-mini-rdkx5'\nTOOLS_PATH = str(Path(REPO_ROOT) / \"tools\")\nPLAYGROUND_PATH = '/home/lsd/robots/open-duck-mini-rdkx5/../Open_Duck_Playground'\nif TOOLS_PATH not in sys.path:\n    sys.path.insert(0, TOOLS_PATH)\nif PLAYGROUND_PATH not in sys.path:\n    sys.path.insert(0, PLAYGROUND_PATH)\n\ndef emit(tag, payload):\n    print(tag)\n    print(json.dumps(payload, sort_keys=True, default=str))\n    print(tag.replace(\"START\", \"END\"))\n    sys.stdout.flush()\n\ndef block_tree(value):\n    import jax\n    def block_item(item):\n        return item.block_until_ready() if hasattr(item, \"block_until_ready\") else item\n    return jax.tree_util.tree_map(block_item, value)\n\ndef emit_info(extra=None):\n    info = {\n        \"python\": sys.version,\n        \"python_executable\": sys.executable,\n        \"platform\": platform.platform(),\n        \"env\": {key: os.environ.get(key) for key in ['JAX_PLATFORM_NAME', 'JAX_PLATFORMS', 'JAX_DISABLE_JIT', 'JAX_DEBUG_NANS', 'JAX_DEBUG_INFS', 'XLA_PYTHON_CLIENT_PREALLOCATE', 'XLA_PYTHON_CLIENT_MEM_FRACTION', 'XLA_FLAGS', 'HIP_VISIBLE_DEVICES', 'ROCR_VISIBLE_DEVICES', 'HSA_OVERRIDE_GFX_VERSION', 'MUJOCO_GL'] if key in os.environ},\n    }\n    try:\n        import jax\n        info[\"jax_version\"] = getattr(jax, \"__version__\", None)\n        try:\n            import jaxlib\n            info[\"jaxlib_version\"] = getattr(jaxlib, \"__version__\", None)\n        except Exception as exc:\n            info[\"jaxlib_error\"] = f\"{type(exc).__name__}: {exc}\"\n        info[\"jax_backend\"] = jax.default_backend()\n        info[\"jax_devices\"] = [str(device) for device in jax.devices()]\n    except Exception as exc:\n        info[\"jax_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        import mujoco\n        info[\"mujoco_version\"] = getattr(mujoco, \"__version__\", None)\n    except Exception as exc:\n        info[\"mujoco_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        from mujoco import mjx\n        info[\"mujoco_mjx_available\"] = True\n        info[\"mujoco_mjx_has_step\"] = hasattr(mjx, \"step\")\n    except Exception as exc:\n        info[\"mujoco_mjx_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        import ml_collections\n        info[\"ml_collections_version\"] = getattr(ml_collections, \"__version__\", None)\n    except Exception as exc:\n        info[\"ml_collections_error\"] = f\"{type(exc).__name__}: {exc}\"\n    if extra:\n        info.update(extra)\n    emit(\"SUBTEST_INFO_JSON_START\", info)\n\nemit_info({\"subtest\": \"jax_jit_scan\", \"steps\": [1, 2, 10, 100]})\nimport jax\nimport jax.numpy as jnp\n\ndef body(carry, _):\n    carry = jnp.tanh(carry * 1.001 + 0.001)\n    return carry, jnp.sum(carry)\n\nout = {}\nfor n in [1, 2, 10, 100]:\n    fn = jax.jit(lambda x, n=n: jax.lax.scan(body, x, None, length=n))\n    carry, ys = fn(jnp.ones((64,), dtype=jnp.float32))\n    block_tree((carry, ys))\n    out[str(n)] = float(jnp.sum(carry))\n    emit(\"SUBTEST_PROGRESS_JSON_START\", {\"steps\": n, \"status\": \"PASS\"})\nemit(\"SUBTEST_RESULT_JSON_START\", {\"status\": \"PASS\", \"steps\": out})\n"
+      ],
+      "env_overrides": {
+        "JAX_PLATFORM_NAME": "gpu"
+      },
+      "stdout_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/rocm_mjx_isolation/default_gpu_jax_jit_scan.stdout.txt",
+      "stderr_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/rocm_mjx_isolation/default_gpu_jax_jit_scan.stderr.txt",
+      "info": {
+        "env": {
+          "JAX_PLATFORM_NAME": "gpu"
+        },
+        "jax_backend": "gpu",
+        "jax_devices": [
+          "rocm:0"
+        ],
+        "jax_version": "0.8.2",
+        "jaxlib_version": "0.8.2",
+        "ml_collections_version": "1.1.0",
+        "mujoco_mjx_available": true,
+        "mujoco_mjx_has_step": true,
+        "mujoco_version": "3.9.0",
+        "platform": "Linux-7.0.0-22-generic-x86_64-with-glibc2.43",
+        "python": "3.12.13 (main, May 10 2026, 19:30:01) [Clang 22.1.3 ]",
+        "python_executable": "/home/lsd/robots/envs/open-duck-playground/bin/python",
+        "steps": [
+          1,
+          2,
+          10,
+          100
+        ],
+        "subtest": "jax_jit_scan"
+      },
+      "result": {
+        "status": "PASS",
+        "steps": {
+          "1": 48.79570388793945,
+          "10": 23.177963256835938,
+          "100": 10.384608268737793,
+          "2": 41.1866569519043
+        }
+      },
+      "progress": [
+        {
+          "status": "PASS",
+          "steps": 1
+        },
+        {
+          "status": "PASS",
+          "steps": 2
+        },
+        {
+          "status": "PASS",
+          "steps": 10
+        },
+        {
+          "status": "PASS",
+          "steps": 100
+        }
+      ],
+      "stdout_tail": "Failed to import warp: No module named 'warp'\nFailed to import mujoco_warp: No module named 'warp'\nSUBTEST_INFO_JSON_START\n{\"env\": {\"JAX_PLATFORM_NAME\": \"gpu\"}, \"jax_backend\": \"gpu\", \"jax_devices\": [\"rocm:0\"], \"jax_version\": \"0.8.2\", \"jaxlib_version\": \"0.8.2\", \"ml_collections_version\": \"1.1.0\", \"mujoco_mjx_available\": true, \"mujoco_mjx_has_step\": true, \"mujoco_version\": \"3.9.0\", \"platform\": \"Linux-7.0.0-22-generic-x86_64-with-glibc2.43\", \"python\": \"3.12.13 (main, May 10 2026, 19:30:01) [Clang 22.1.3 ]\", \"python_executable\": \"/home/lsd/robots/envs/open-duck-playground/bin/python\", \"steps\": [1, 2, 10, 100], \"subtest\": \"jax_jit_scan\"}\nSUBTEST_INFO_JSON_END\nSUBTEST_PROGRESS_JSON_START\n{\"status\": \"PASS\", \"steps\": 1}\nSUBTEST_PROGRESS_JSON_END\nSUBTEST_PROGRESS_JSON_START\n{\"status\": \"PASS\", \"steps\": 2}\nSUBTEST_PROGRESS_JSON_END\nSUBTEST_PROGRESS_JSON_START\n{\"status\": \"PASS\", \"steps\": 10}\nSUBTEST_PROGRESS_JSON_END\nSUBTEST_PROGRESS_JSON_START\n{\"status\": \"PASS\", \"steps\": 100}\nSUBTEST_PROGRESS_JSON_END\nSUBTEST_RESULT_JSON_START\n{\"status\": \"PASS\", \"steps\": {\"1\": 48.79570388793945, \"10\": 23.177963256835938, \"100\": 10.384608268737793, \"2\": 41.1866569519043}}\nSUBTEST_RESULT_JSON_END\n",
+      "stderr_tail": ""
+    },
+    {
+      "id": "default_gpu_minimal_mjx_step",
+      "name": "minimal_mjx_step",
+      "platform": "gpu",
+      "variant": "default",
+      "status": "PASS",
+      "returncode": 0,
+      "elapsed_s": 16.90938023698982,
+      "command": [
+        "/home/lsd/robots/open-duck-mini-rdkx5/../envs/open-duck-playground/bin/python",
+        "-c",
+        "\nimport json\nimport os\nimport platform\nimport sys\nfrom pathlib import Path\n\nREPO_ROOT = '/home/lsd/robots/open-duck-mini-rdkx5'\nTOOLS_PATH = str(Path(REPO_ROOT) / \"tools\")\nPLAYGROUND_PATH = '/home/lsd/robots/open-duck-mini-rdkx5/../Open_Duck_Playground'\nif TOOLS_PATH not in sys.path:\n    sys.path.insert(0, TOOLS_PATH)\nif PLAYGROUND_PATH not in sys.path:\n    sys.path.insert(0, PLAYGROUND_PATH)\n\ndef emit(tag, payload):\n    print(tag)\n    print(json.dumps(payload, sort_keys=True, default=str))\n    print(tag.replace(\"START\", \"END\"))\n    sys.stdout.flush()\n\ndef block_tree(value):\n    import jax\n    def block_item(item):\n        return item.block_until_ready() if hasattr(item, \"block_until_ready\") else item\n    return jax.tree_util.tree_map(block_item, value)\n\ndef emit_info(extra=None):\n    info = {\n        \"python\": sys.version,\n        \"python_executable\": sys.executable,\n        \"platform\": platform.platform(),\n        \"env\": {key: os.environ.get(key) for key in ['JAX_PLATFORM_NAME', 'JAX_PLATFORMS', 'JAX_DISABLE_JIT', 'JAX_DEBUG_NANS', 'JAX_DEBUG_INFS', 'XLA_PYTHON_CLIENT_PREALLOCATE', 'XLA_PYTHON_CLIENT_MEM_FRACTION', 'XLA_FLAGS', 'HIP_VISIBLE_DEVICES', 'ROCR_VISIBLE_DEVICES', 'HSA_OVERRIDE_GFX_VERSION', 'MUJOCO_GL'] if key in os.environ},\n    }\n    try:\n        import jax\n        info[\"jax_version\"] = getattr(jax, \"__version__\", None)\n        try:\n            import jaxlib\n            info[\"jaxlib_version\"] = getattr(jaxlib, \"__version__\", None)\n        except Exception as exc:\n            info[\"jaxlib_error\"] = f\"{type(exc).__name__}: {exc}\"\n        info[\"jax_backend\"] = jax.default_backend()\n        info[\"jax_devices\"] = [str(device) for device in jax.devices()]\n    except Exception as exc:\n        info[\"jax_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        import mujoco\n        info[\"mujoco_version\"] = getattr(mujoco, \"__version__\", None)\n    except Exception as exc:\n        info[\"mujoco_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        from mujoco import mjx\n        info[\"mujoco_mjx_available\"] = True\n        info[\"mujoco_mjx_has_step\"] = hasattr(mjx, \"step\")\n    except Exception as exc:\n        info[\"mujoco_mjx_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        import ml_collections\n        info[\"ml_collections_version\"] = getattr(ml_collections, \"__version__\", None)\n    except Exception as exc:\n        info[\"ml_collections_error\"] = f\"{type(exc).__name__}: {exc}\"\n    if extra:\n        info.update(extra)\n    emit(\"SUBTEST_INFO_JSON_START\", info)\n\nemit_info({\"subtest\": \"minimal_mjx_step\", \"steps\": [1, 2, 10, 100]})\nimport jax\nimport jax.numpy as jnp\nimport mujoco\nfrom mujoco import mjx\n\nxml = '''\n<mujoco>\n  <option timestep=\"0.002\"/>\n  <worldbody>\n    <body name=\"body\" pos=\"0 0 0.2\">\n      <joint name=\"hinge\" type=\"hinge\" axis=\"0 1 0\"/>\n      <geom type=\"capsule\" size=\"0.02 0.08\" fromto=\"0 0 0 0 0 0.16\"/>\n    </body>\n  </worldbody>\n  <actuator>\n    <motor name=\"motor\" joint=\"hinge\" gear=\"1\"/>\n  </actuator>\n</mujoco>\n'''\nmodel = mujoco.MjModel.from_xml_string(xml)\nmx = mjx.put_model(model)\ndata = mjx.make_data(mx)\ndata = data.replace(ctrl=jnp.array([0.1], dtype=jnp.float32))\ndata = mjx.step(mx, data)\nblock_tree(data)\none = jax.jit(lambda d: mjx.step(mx, d))\ndata = one(data)\nblock_tree(data)\n\ndef body(carry, _):\n    return mjx.step(mx, carry), None\n\nout = {}\nfor n in [1, 2, 10, 100]:\n    scan_fn = jax.jit(lambda d, n=n: jax.lax.scan(body, d, None, length=n)[0])\n    data = scan_fn(data)\n    block_tree(data)\n    out[str(n)] = float(data.qpos[0])\n    emit(\"SUBTEST_PROGRESS_JSON_START\", {\"steps\": n, \"status\": \"PASS\"})\nemit(\"SUBTEST_RESULT_JSON_START\", {\"status\": \"PASS\", \"steps\": out})\n"
+      ],
+      "env_overrides": {
+        "JAX_PLATFORM_NAME": "gpu"
+      },
+      "stdout_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/rocm_mjx_isolation/default_gpu_minimal_mjx_step.stdout.txt",
+      "stderr_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/rocm_mjx_isolation/default_gpu_minimal_mjx_step.stderr.txt",
+      "info": {
+        "env": {
+          "JAX_PLATFORM_NAME": "gpu"
+        },
+        "jax_backend": "gpu",
+        "jax_devices": [
+          "rocm:0"
+        ],
+        "jax_version": "0.8.2",
+        "jaxlib_version": "0.8.2",
+        "ml_collections_version": "1.1.0",
+        "mujoco_mjx_available": true,
+        "mujoco_mjx_has_step": true,
+        "mujoco_version": "3.9.0",
+        "platform": "Linux-7.0.0-22-generic-x86_64-with-glibc2.43",
+        "python": "3.12.13 (main, May 10 2026, 19:30:01) [Clang 22.1.3 ]",
+        "python_executable": "/home/lsd/robots/envs/open-duck-playground/bin/python",
+        "steps": [
+          1,
+          2,
+          10,
+          100
+        ],
+        "subtest": "minimal_mjx_step"
+      },
+      "result": {
+        "status": "PASS",
+        "steps": {
+          "1": 0.0010861072223633528,
+          "10": 0.021859969943761826,
+          "100": 1.6809815168380737,
+          "2": 0.002716624876484275
+        }
+      },
+      "progress": [
+        {
+          "status": "PASS",
+          "steps": 1
+        },
+        {
+          "status": "PASS",
+          "steps": 2
+        },
+        {
+          "status": "PASS",
+          "steps": 10
+        },
+        {
+          "status": "PASS",
+          "steps": 100
+        }
+      ],
+      "stdout_tail": "Failed to import warp: No module named 'warp'\nFailed to import mujoco_warp: No module named 'warp'\nSUBTEST_INFO_JSON_START\n{\"env\": {\"JAX_PLATFORM_NAME\": \"gpu\"}, \"jax_backend\": \"gpu\", \"jax_devices\": [\"rocm:0\"], \"jax_version\": \"0.8.2\", \"jaxlib_version\": \"0.8.2\", \"ml_collections_version\": \"1.1.0\", \"mujoco_mjx_available\": true, \"mujoco_mjx_has_step\": true, \"mujoco_version\": \"3.9.0\", \"platform\": \"Linux-7.0.0-22-generic-x86_64-with-glibc2.43\", \"python\": \"3.12.13 (main, May 10 2026, 19:30:01) [Clang 22.1.3 ]\", \"python_executable\": \"/home/lsd/robots/envs/open-duck-playground/bin/python\", \"steps\": [1, 2, 10, 100], \"subtest\": \"minimal_mjx_step\"}\nSUBTEST_INFO_JSON_END\nSUBTEST_PROGRESS_JSON_START\n{\"status\": \"PASS\", \"steps\": 1}\nSUBTEST_PROGRESS_JSON_END\nSUBTEST_PROGRESS_JSON_START\n{\"status\": \"PASS\", \"steps\": 2}\nSUBTEST_PROGRESS_JSON_END\nSUBTEST_PROGRESS_JSON_START\n{\"status\": \"PASS\", \"steps\": 10}\nSUBTEST_PROGRESS_JSON_END\nSUBTEST_PROGRESS_JSON_START\n{\"status\": \"PASS\", \"steps\": 100}\nSUBTEST_PROGRESS_JSON_END\nSUBTEST_RESULT_JSON_START\n{\"status\": \"PASS\", \"steps\": {\"1\": 0.0010861072223633528, \"10\": 0.021859969943761826, \"100\": 1.6809815168380737, \"2\": 0.002716624876484275}}\nSUBTEST_RESULT_JSON_END\n",
+      "stderr_tail": ""
+    },
+    {
+      "id": "default_gpu_playground_contract_only",
+      "name": "playground_contract_only",
+      "platform": "gpu",
+      "variant": "default",
+      "status": "PASS",
+      "returncode": 0,
+      "elapsed_s": 5.448413439007709,
+      "command": [
+        "/home/lsd/robots/open-duck-mini-rdkx5/../envs/open-duck-playground/bin/python",
+        "-c",
+        "\nimport json\nimport os\nimport platform\nimport sys\nfrom pathlib import Path\n\nREPO_ROOT = '/home/lsd/robots/open-duck-mini-rdkx5'\nTOOLS_PATH = str(Path(REPO_ROOT) / \"tools\")\nPLAYGROUND_PATH = '/home/lsd/robots/open-duck-mini-rdkx5/../Open_Duck_Playground'\nif TOOLS_PATH not in sys.path:\n    sys.path.insert(0, TOOLS_PATH)\nif PLAYGROUND_PATH not in sys.path:\n    sys.path.insert(0, PLAYGROUND_PATH)\n\ndef emit(tag, payload):\n    print(tag)\n    print(json.dumps(payload, sort_keys=True, default=str))\n    print(tag.replace(\"START\", \"END\"))\n    sys.stdout.flush()\n\ndef block_tree(value):\n    import jax\n    def block_item(item):\n        return item.block_until_ready() if hasattr(item, \"block_until_ready\") else item\n    return jax.tree_util.tree_map(block_item, value)\n\ndef emit_info(extra=None):\n    info = {\n        \"python\": sys.version,\n        \"python_executable\": sys.executable,\n        \"platform\": platform.platform(),\n        \"env\": {key: os.environ.get(key) for key in ['JAX_PLATFORM_NAME', 'JAX_PLATFORMS', 'JAX_DISABLE_JIT', 'JAX_DEBUG_NANS', 'JAX_DEBUG_INFS', 'XLA_PYTHON_CLIENT_PREALLOCATE', 'XLA_PYTHON_CLIENT_MEM_FRACTION', 'XLA_FLAGS', 'HIP_VISIBLE_DEVICES', 'ROCR_VISIBLE_DEVICES', 'HSA_OVERRIDE_GFX_VERSION', 'MUJOCO_GL'] if key in os.environ},\n    }\n    try:\n        import jax\n        info[\"jax_version\"] = getattr(jax, \"__version__\", None)\n        try:\n            import jaxlib\n            info[\"jaxlib_version\"] = getattr(jaxlib, \"__version__\", None)\n        except Exception as exc:\n            info[\"jaxlib_error\"] = f\"{type(exc).__name__}: {exc}\"\n        info[\"jax_backend\"] = jax.default_backend()\n        info[\"jax_devices\"] = [str(device) for device in jax.devices()]\n    except Exception as exc:\n        info[\"jax_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        import mujoco\n        info[\"mujoco_version\"] = getattr(mujoco, \"__version__\", None)\n    except Exception as exc:\n        info[\"mujoco_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        from mujoco import mjx\n        info[\"mujoco_mjx_available\"] = True\n        info[\"mujoco_mjx_has_step\"] = hasattr(mjx, \"step\")\n    except Exception as exc:\n        info[\"mujoco_mjx_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        import ml_collections\n        info[\"ml_collections_version\"] = getattr(ml_collections, \"__version__\", None)\n    except Exception as exc:\n        info[\"ml_collections_error\"] = f\"{type(exc).__name__}: {exc}\"\n    if extra:\n        info.update(extra)\n    emit(\"SUBTEST_INFO_JSON_START\", info)\n\nimport os\nfrom pathlib import Path\nos.chdir('/home/lsd/robots/open-duck-mini-rdkx5/../Open_Duck_Playground')\n\ndef make_env():\n    from playground.open_duck_mini_v2.joystick import Joystick\n    return Joystick('flat_terrain', config_overrides={\n        'push_config.enable': False,\n        'lin_vel_x': [0.08, 0.08],\n        'lin_vel_y': [0.0, 0.0],\n        'ang_vel_yaw': [0.0, 0.0],\n        'neck_pitch_range': [0.0, 0.0],\n        'head_pitch_range': [0.0, 0.0],\n        'head_yaw_range': [0.0, 0.0],\n        'head_roll_range': [0.0, 0.0],\n        'noise_config.level': 0.0,\n        'noise_config.action_min_delay': 0,\n        'noise_config.action_max_delay': 1,\n        'noise_config.imu_min_delay': 0,\n        'noise_config.imu_max_delay': 1,\n    })\n\nemit_info({\"subtest\": \"playground_contract_only\"})\nenv = make_env()\nemit(\"SUBTEST_RESULT_JSON_START\", {\n    \"status\": \"PASS\",\n    \"action_size\": int(env.action_size),\n    \"mjcf\": {\"nu\": int(env.mj_model.nu), \"nq\": int(env.mj_model.nq), \"nv\": int(env.mj_model.nv)},\n    \"actuator_names\": list(env.actuator_names),\n})\n"
+      ],
+      "env_overrides": {
+        "JAX_PLATFORM_NAME": "gpu"
+      },
+      "stdout_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/rocm_mjx_isolation/default_gpu_playground_contract_only.stdout.txt",
+      "stderr_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/rocm_mjx_isolation/default_gpu_playground_contract_only.stderr.txt",
+      "info": {
+        "env": {
+          "JAX_PLATFORM_NAME": "gpu"
+        },
+        "jax_backend": "gpu",
+        "jax_devices": [
+          "rocm:0"
+        ],
+        "jax_version": "0.8.2",
+        "jaxlib_version": "0.8.2",
+        "ml_collections_version": "1.1.0",
+        "mujoco_mjx_available": true,
+        "mujoco_mjx_has_step": true,
+        "mujoco_version": "3.9.0",
+        "platform": "Linux-7.0.0-22-generic-x86_64-with-glibc2.43",
+        "python": "3.12.13 (main, May 10 2026, 19:30:01) [Clang 22.1.3 ]",
+        "python_executable": "/home/lsd/robots/envs/open-duck-playground/bin/python",
+        "subtest": "playground_contract_only"
+      },
+      "result": {
+        "action_size": 14,
+        "actuator_names": [
+          "left_hip_yaw",
+          "left_hip_roll",
+          "left_hip_pitch",
+          "left_knee",
+          "left_ankle",
+          "neck_pitch",
+          "head_pitch",
+          "head_yaw",
+          "head_roll",
+          "right_hip_yaw",
+          "right_hip_roll",
+          "right_hip_pitch",
+          "right_knee",
+          "right_ankle"
+        ],
+        "mjcf": {
+          "nq": 21,
+          "nu": 14,
+          "nv": 20
+        },
+        "status": "PASS"
+      },
+      "progress": [],
+      "stdout_tail": "arp: No module named 'warp'\nSUBTEST_INFO_JSON_START\n{\"env\": {\"JAX_PLATFORM_NAME\": \"gpu\"}, \"jax_backend\": \"gpu\", \"jax_devices\": [\"rocm:0\"], \"jax_version\": \"0.8.2\", \"jaxlib_version\": \"0.8.2\", \"ml_collections_version\": \"1.1.0\", \"mujoco_mjx_available\": true, \"mujoco_mjx_has_step\": true, \"mujoco_version\": \"3.9.0\", \"platform\": \"Linux-7.0.0-22-generic-x86_64-with-glibc2.43\", \"python\": \"3.12.13 (main, May 10 2026, 19:30:01) [Clang 22.1.3 ]\", \"python_executable\": \"/home/lsd/robots/envs/open-duck-playground/bin/python\", \"subtest\": \"playground_contract_only\"}\nSUBTEST_INFO_JSON_END\nxml: /home/lsd/robots/open-duck-mini-rdkx5/../Open_Duck_Playground/playground/open_duck_mini_v2/xmls/scene_flat_terrain.xml\nactuators: ['left_hip_yaw', 'left_hip_roll', 'left_hip_pitch', 'left_knee', 'left_ankle', 'neck_pitch', 'head_pitch', 'head_yaw', 'head_roll', 'right_hip_yaw', 'right_hip_roll', 'right_hip_pitch', 'right_knee', 'right_ankle']\njoints: ['floating_base', 'left_hip_yaw', 'left_hip_roll', 'left_hip_pitch', 'left_knee', 'left_ankle', 'neck_pitch', 'head_pitch', 'head_yaw', 'head_roll', 'right_hip_yaw', 'right_hip_roll', 'right_hip_pitch', 'right_knee', 'right_ankle']\nbacklash joints: []\nactuator joints ids: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]\nactuator joints dict: {'left_hip_yaw': 1, 'left_hip_roll': 2, 'left_hip_pitch': 3, 'left_knee': 4, 'left_ankle': 5, 'neck_pitch': 6, 'head_pitch': 7, 'head_yaw': 8, 'head_roll': 9, 'right_hip_yaw': 10, 'right_hip_roll': 11, 'right_hip_pitch': 12, 'right_knee': 13, 'right_ankle': 14}\nfloating qpos addr: 0 qvel addr: 0\n[Poly ref data] Processing ...\n[Poly ref data] Done processing\nSUBTEST_RESULT_JSON_START\n{\"action_size\": 14, \"actuator_names\": [\"left_hip_yaw\", \"left_hip_roll\", \"left_hip_pitch\", \"left_knee\", \"left_ankle\", \"neck_pitch\", \"head_pitch\", \"head_yaw\", \"head_roll\", \"right_hip_yaw\", \"right_hip_roll\", \"right_hip_pitch\", \"right_knee\", \"right_ankle\"], \"mjcf\": {\"nq\": 21, \"nu\": 14, \"nv\": 20}, \"status\": \"PASS\"}\nSUBTEST_RESULT_JSON_END\n",
+      "stderr_tail": ""
+    },
+    {
+      "id": "default_gpu_playground_reset",
+      "name": "playground_reset",
+      "platform": "gpu",
+      "variant": "default",
+      "status": "PASS",
+      "returncode": 0,
+      "elapsed_s": 74.36260429499089,
+      "command": [
+        "/home/lsd/robots/open-duck-mini-rdkx5/../envs/open-duck-playground/bin/python",
+        "-c",
+        "\nimport json\nimport os\nimport platform\nimport sys\nfrom pathlib import Path\n\nREPO_ROOT = '/home/lsd/robots/open-duck-mini-rdkx5'\nTOOLS_PATH = str(Path(REPO_ROOT) / \"tools\")\nPLAYGROUND_PATH = '/home/lsd/robots/open-duck-mini-rdkx5/../Open_Duck_Playground'\nif TOOLS_PATH not in sys.path:\n    sys.path.insert(0, TOOLS_PATH)\nif PLAYGROUND_PATH not in sys.path:\n    sys.path.insert(0, PLAYGROUND_PATH)\n\ndef emit(tag, payload):\n    print(tag)\n    print(json.dumps(payload, sort_keys=True, default=str))\n    print(tag.replace(\"START\", \"END\"))\n    sys.stdout.flush()\n\ndef block_tree(value):\n    import jax\n    def block_item(item):\n        return item.block_until_ready() if hasattr(item, \"block_until_ready\") else item\n    return jax.tree_util.tree_map(block_item, value)\n\ndef emit_info(extra=None):\n    info = {\n        \"python\": sys.version,\n        \"python_executable\": sys.executable,\n        \"platform\": platform.platform(),\n        \"env\": {key: os.environ.get(key) for key in ['JAX_PLATFORM_NAME', 'JAX_PLATFORMS', 'JAX_DISABLE_JIT', 'JAX_DEBUG_NANS', 'JAX_DEBUG_INFS', 'XLA_PYTHON_CLIENT_PREALLOCATE', 'XLA_PYTHON_CLIENT_MEM_FRACTION', 'XLA_FLAGS', 'HIP_VISIBLE_DEVICES', 'ROCR_VISIBLE_DEVICES', 'HSA_OVERRIDE_GFX_VERSION', 'MUJOCO_GL'] if key in os.environ},\n    }\n    try:\n        import jax\n        info[\"jax_version\"] = getattr(jax, \"__version__\", None)\n        try:\n            import jaxlib\n            info[\"jaxlib_version\"] = getattr(jaxlib, \"__version__\", None)\n        except Exception as exc:\n            info[\"jaxlib_error\"] = f\"{type(exc).__name__}: {exc}\"\n        info[\"jax_backend\"] = jax.default_backend()\n        info[\"jax_devices\"] = [str(device) for device in jax.devices()]\n    except Exception as exc:\n        info[\"jax_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        import mujoco\n        info[\"mujoco_version\"] = getattr(mujoco, \"__version__\", None)\n    except Exception as exc:\n        info[\"mujoco_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        from mujoco import mjx\n        info[\"mujoco_mjx_available\"] = True\n        info[\"mujoco_mjx_has_step\"] = hasattr(mjx, \"step\")\n    except Exception as exc:\n        info[\"mujoco_mjx_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        import ml_collections\n        info[\"ml_collections_version\"] = getattr(ml_collections, \"__version__\", None)\n    except Exception as exc:\n        info[\"ml_collections_error\"] = f\"{type(exc).__name__}: {exc}\"\n    if extra:\n        info.update(extra)\n    emit(\"SUBTEST_INFO_JSON_START\", info)\n\nimport os\nfrom pathlib import Path\nos.chdir('/home/lsd/robots/open-duck-mini-rdkx5/../Open_Duck_Playground')\n\ndef make_env():\n    from playground.open_duck_mini_v2.joystick import Joystick\n    return Joystick('flat_terrain', config_overrides={\n        'push_config.enable': False,\n        'lin_vel_x': [0.08, 0.08],\n        'lin_vel_y': [0.0, 0.0],\n        'ang_vel_yaw': [0.0, 0.0],\n        'neck_pitch_range': [0.0, 0.0],\n        'head_pitch_range': [0.0, 0.0],\n        'head_yaw_range': [0.0, 0.0],\n        'head_roll_range': [0.0, 0.0],\n        'noise_config.level': 0.0,\n        'noise_config.action_min_delay': 0,\n        'noise_config.action_max_delay': 1,\n        'noise_config.imu_min_delay': 0,\n        'noise_config.imu_max_delay': 1,\n    })\n\nemit_info({\"subtest\": \"playground_reset\"})\nimport jax\nenv = make_env()\nstate = env.reset(jax.random.PRNGKey(0))\nblock_tree(state.obs)\nemit(\"SUBTEST_RESULT_JSON_START\", {\n    \"status\": \"PASS\",\n    \"observation_size\": {key: list(value.shape) for key, value in state.obs.items()},\n    \"action_size\": int(env.action_size),\n})\n"
+      ],
+      "env_overrides": {
+        "JAX_PLATFORM_NAME": "gpu"
+      },
+      "stdout_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/rocm_mjx_isolation/default_gpu_playground_reset.stdout.txt",
+      "stderr_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/rocm_mjx_isolation/default_gpu_playground_reset.stderr.txt",
+      "info": {
+        "env": {
+          "JAX_PLATFORM_NAME": "gpu"
+        },
+        "jax_backend": "gpu",
+        "jax_devices": [
+          "rocm:0"
+        ],
+        "jax_version": "0.8.2",
+        "jaxlib_version": "0.8.2",
+        "ml_collections_version": "1.1.0",
+        "mujoco_mjx_available": true,
+        "mujoco_mjx_has_step": true,
+        "mujoco_version": "3.9.0",
+        "platform": "Linux-7.0.0-22-generic-x86_64-with-glibc2.43",
+        "python": "3.12.13 (main, May 10 2026, 19:30:01) [Clang 22.1.3 ]",
+        "python_executable": "/home/lsd/robots/envs/open-duck-playground/bin/python",
+        "subtest": "playground_reset"
+      },
+      "result": {
+        "action_size": 14,
+        "observation_size": {
+          "privileged_state": [
+            212
+          ],
+          "state": [
+            101
+          ]
+        },
+        "status": "PASS"
+      },
+      "progress": [],
+      "stdout_tail": "Failed to import warp: No module named 'warp'\nFailed to import mujoco_warp: No module named 'warp'\nSUBTEST_INFO_JSON_START\n{\"env\": {\"JAX_PLATFORM_NAME\": \"gpu\"}, \"jax_backend\": \"gpu\", \"jax_devices\": [\"rocm:0\"], \"jax_version\": \"0.8.2\", \"jaxlib_version\": \"0.8.2\", \"ml_collections_version\": \"1.1.0\", \"mujoco_mjx_available\": true, \"mujoco_mjx_has_step\": true, \"mujoco_version\": \"3.9.0\", \"platform\": \"Linux-7.0.0-22-generic-x86_64-with-glibc2.43\", \"python\": \"3.12.13 (main, May 10 2026, 19:30:01) [Clang 22.1.3 ]\", \"python_executable\": \"/home/lsd/robots/envs/open-duck-playground/bin/python\", \"subtest\": \"playground_reset\"}\nSUBTEST_INFO_JSON_END\nxml: /home/lsd/robots/open-duck-mini-rdkx5/../Open_Duck_Playground/playground/open_duck_mini_v2/xmls/scene_flat_terrain.xml\nactuators: ['left_hip_yaw', 'left_hip_roll', 'left_hip_pitch', 'left_knee', 'left_ankle', 'neck_pitch', 'head_pitch', 'head_yaw', 'head_roll', 'right_hip_yaw', 'right_hip_roll', 'right_hip_pitch', 'right_knee', 'right_ankle']\njoints: ['floating_base', 'left_hip_yaw', 'left_hip_roll', 'left_hip_pitch', 'left_knee', 'left_ankle', 'neck_pitch', 'head_pitch', 'head_yaw', 'head_roll', 'right_hip_yaw', 'right_hip_roll', 'right_hip_pitch', 'right_knee', 'right_ankle']\nbacklash joints: []\nactuator joints ids: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]\nactuator joints dict: {'left_hip_yaw': 1, 'left_hip_roll': 2, 'left_hip_pitch': 3, 'left_knee': 4, 'left_ankle': 5, 'neck_pitch': 6, 'head_pitch': 7, 'head_yaw': 8, 'head_roll': 9, 'right_hip_yaw': 10, 'right_hip_roll': 11, 'right_hip_pitch': 12, 'right_knee': 13, 'right_ankle': 14}\nfloating qpos addr: 0 qvel addr: 0\n[Poly ref data] Processing ...\n[Poly ref data] Done processing\nSUBTEST_RESULT_JSON_START\n{\"action_size\": 14, \"observation_size\": {\"privileged_state\": [212], \"state\": [101]}, \"status\": \"PASS\"}\nSUBTEST_RESULT_JSON_END\n",
+      "stderr_tail": "/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n"
+    },
+    {
+      "id": "default_gpu_playground_one_step_vanilla",
+      "name": "playground_one_step_vanilla",
+      "platform": "gpu",
+      "variant": "default",
+      "status": "TIMEOUT",
+      "returncode": null,
+      "elapsed_s": 120.35219704601332,
+      "command": [
+        "/home/lsd/robots/open-duck-mini-rdkx5/../envs/open-duck-playground/bin/python",
+        "-c",
+        "\nimport json\nimport os\nimport platform\nimport sys\nfrom pathlib import Path\n\nREPO_ROOT = '/home/lsd/robots/open-duck-mini-rdkx5'\nTOOLS_PATH = str(Path(REPO_ROOT) / \"tools\")\nPLAYGROUND_PATH = '/home/lsd/robots/open-duck-mini-rdkx5/../Open_Duck_Playground'\nif TOOLS_PATH not in sys.path:\n    sys.path.insert(0, TOOLS_PATH)\nif PLAYGROUND_PATH not in sys.path:\n    sys.path.insert(0, PLAYGROUND_PATH)\n\ndef emit(tag, payload):\n    print(tag)\n    print(json.dumps(payload, sort_keys=True, default=str))\n    print(tag.replace(\"START\", \"END\"))\n    sys.stdout.flush()\n\ndef block_tree(value):\n    import jax\n    def block_item(item):\n        return item.block_until_ready() if hasattr(item, \"block_until_ready\") else item\n    return jax.tree_util.tree_map(block_item, value)\n\ndef emit_info(extra=None):\n    info = {\n        \"python\": sys.version,\n        \"python_executable\": sys.executable,\n        \"platform\": platform.platform(),\n        \"env\": {key: os.environ.get(key) for key in ['JAX_PLATFORM_NAME', 'JAX_PLATFORMS', 'JAX_DISABLE_JIT', 'JAX_DEBUG_NANS', 'JAX_DEBUG_INFS', 'XLA_PYTHON_CLIENT_PREALLOCATE', 'XLA_PYTHON_CLIENT_MEM_FRACTION', 'XLA_FLAGS', 'HIP_VISIBLE_DEVICES', 'ROCR_VISIBLE_DEVICES', 'HSA_OVERRIDE_GFX_VERSION', 'MUJOCO_GL'] if key in os.environ},\n    }\n    try:\n        import jax\n        info[\"jax_version\"] = getattr(jax, \"__version__\", None)\n        try:\n            import jaxlib\n            info[\"jaxlib_version\"] = getattr(jaxlib, \"__version__\", None)\n        except Exception as exc:\n            info[\"jaxlib_error\"] = f\"{type(exc).__name__}: {exc}\"\n        info[\"jax_backend\"] = jax.default_backend()\n        info[\"jax_devices\"] = [str(device) for device in jax.devices()]\n    except Exception as exc:\n        info[\"jax_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        import mujoco\n        info[\"mujoco_version\"] = getattr(mujoco, \"__version__\", None)\n    except Exception as exc:\n        info[\"mujoco_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        from mujoco import mjx\n        info[\"mujoco_mjx_available\"] = True\n        info[\"mujoco_mjx_has_step\"] = hasattr(mjx, \"step\")\n    except Exception as exc:\n        info[\"mujoco_mjx_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        import ml_collections\n        info[\"ml_collections_version\"] = getattr(ml_collections, \"__version__\", None)\n    except Exception as exc:\n        info[\"ml_collections_error\"] = f\"{type(exc).__name__}: {exc}\"\n    if extra:\n        info.update(extra)\n    emit(\"SUBTEST_INFO_JSON_START\", info)\n\nimport os\nfrom pathlib import Path\nos.chdir('/home/lsd/robots/open-duck-mini-rdkx5/../Open_Duck_Playground')\n\ndef make_env():\n    from playground.open_duck_mini_v2.joystick import Joystick\n    return Joystick('flat_terrain', config_overrides={\n        'push_config.enable': False,\n        'lin_vel_x': [0.08, 0.08],\n        'lin_vel_y': [0.0, 0.0],\n        'ang_vel_yaw': [0.0, 0.0],\n        'neck_pitch_range': [0.0, 0.0],\n        'head_pitch_range': [0.0, 0.0],\n        'head_yaw_range': [0.0, 0.0],\n        'head_roll_range': [0.0, 0.0],\n        'noise_config.level': 0.0,\n        'noise_config.action_min_delay': 0,\n        'noise_config.action_max_delay': 1,\n        'noise_config.imu_min_delay': 0,\n        'noise_config.imu_max_delay': 1,\n    })\n\nemit_info({\"subtest\": \"playground_one_step_vanilla\"})\nimport jax\nimport jax.numpy as jnp\nenv = make_env()\nstate = env.reset(jax.random.PRNGKey(0))\naction = jnp.zeros(env.action_size)\nstate = env.step(state, action)\nblock_tree((state.obs, state.data.qpos, state.done))\nemit(\"SUBTEST_RESULT_JSON_START\", {\n    \"status\": \"PASS\",\n    \"done\": bool(state.done),\n    \"qpos0\": float(state.data.qpos[0]),\n})\n"
+      ],
+      "env_overrides": {
+        "JAX_PLATFORM_NAME": "gpu"
+      },
+      "stdout_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/rocm_mjx_isolation/default_gpu_playground_one_step_vanilla.stdout.txt",
+      "stderr_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/rocm_mjx_isolation/default_gpu_playground_one_step_vanilla.stderr.txt",
+      "info": {
+        "env": {
+          "JAX_PLATFORM_NAME": "gpu"
+        },
+        "jax_backend": "gpu",
+        "jax_devices": [
+          "rocm:0"
+        ],
+        "jax_version": "0.8.2",
+        "jaxlib_version": "0.8.2",
+        "ml_collections_version": "1.1.0",
+        "mujoco_mjx_available": true,
+        "mujoco_mjx_has_step": true,
+        "mujoco_version": "3.9.0",
+        "platform": "Linux-7.0.0-22-generic-x86_64-with-glibc2.43",
+        "python": "3.12.13 (main, May 10 2026, 19:30:01) [Clang 22.1.3 ]",
+        "python_executable": "/home/lsd/robots/envs/open-duck-playground/bin/python",
+        "subtest": "playground_one_step_vanilla"
+      },
+      "result": null,
+      "progress": [],
+      "stdout_tail": "Failed to import warp: No module named 'warp'\nFailed to import mujoco_warp: No module named 'warp'\nSUBTEST_INFO_JSON_START\n{\"env\": {\"JAX_PLATFORM_NAME\": \"gpu\"}, \"jax_backend\": \"gpu\", \"jax_devices\": [\"rocm:0\"], \"jax_version\": \"0.8.2\", \"jaxlib_version\": \"0.8.2\", \"ml_collections_version\": \"1.1.0\", \"mujoco_mjx_available\": true, \"mujoco_mjx_has_step\": true, \"mujoco_version\": \"3.9.0\", \"platform\": \"Linux-7.0.0-22-generic-x86_64-with-glibc2.43\", \"python\": \"3.12.13 (main, May 10 2026, 19:30:01) [Clang 22.1.3 ]\", \"python_executable\": \"/home/lsd/robots/envs/open-duck-playground/bin/python\", \"subtest\": \"playground_one_step_vanilla\"}\nSUBTEST_INFO_JSON_END\n",
+      "stderr_tail": "/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n"
+    },
+    {
+      "id": "default_gpu_playground_multi_step_vanilla",
+      "name": "playground_multi_step_vanilla",
+      "platform": "gpu",
+      "variant": "default",
+      "status": "TIMEOUT",
+      "returncode": null,
+      "elapsed_s": 120.29252989697852,
+      "command": [
+        "/home/lsd/robots/open-duck-mini-rdkx5/../envs/open-duck-playground/bin/python",
+        "-c",
+        "\nimport json\nimport os\nimport platform\nimport sys\nfrom pathlib import Path\n\nREPO_ROOT = '/home/lsd/robots/open-duck-mini-rdkx5'\nTOOLS_PATH = str(Path(REPO_ROOT) / \"tools\")\nPLAYGROUND_PATH = '/home/lsd/robots/open-duck-mini-rdkx5/../Open_Duck_Playground'\nif TOOLS_PATH not in sys.path:\n    sys.path.insert(0, TOOLS_PATH)\nif PLAYGROUND_PATH not in sys.path:\n    sys.path.insert(0, PLAYGROUND_PATH)\n\ndef emit(tag, payload):\n    print(tag)\n    print(json.dumps(payload, sort_keys=True, default=str))\n    print(tag.replace(\"START\", \"END\"))\n    sys.stdout.flush()\n\ndef block_tree(value):\n    import jax\n    def block_item(item):\n        return item.block_until_ready() if hasattr(item, \"block_until_ready\") else item\n    return jax.tree_util.tree_map(block_item, value)\n\ndef emit_info(extra=None):\n    info = {\n        \"python\": sys.version,\n        \"python_executable\": sys.executable,\n        \"platform\": platform.platform(),\n        \"env\": {key: os.environ.get(key) for key in ['JAX_PLATFORM_NAME', 'JAX_PLATFORMS', 'JAX_DISABLE_JIT', 'JAX_DEBUG_NANS', 'JAX_DEBUG_INFS', 'XLA_PYTHON_CLIENT_PREALLOCATE', 'XLA_PYTHON_CLIENT_MEM_FRACTION', 'XLA_FLAGS', 'HIP_VISIBLE_DEVICES', 'ROCR_VISIBLE_DEVICES', 'HSA_OVERRIDE_GFX_VERSION', 'MUJOCO_GL'] if key in os.environ},\n    }\n    try:\n        import jax\n        info[\"jax_version\"] = getattr(jax, \"__version__\", None)\n        try:\n            import jaxlib\n            info[\"jaxlib_version\"] = getattr(jaxlib, \"__version__\", None)\n        except Exception as exc:\n            info[\"jaxlib_error\"] = f\"{type(exc).__name__}: {exc}\"\n        info[\"jax_backend\"] = jax.default_backend()\n        info[\"jax_devices\"] = [str(device) for device in jax.devices()]\n    except Exception as exc:\n        info[\"jax_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        import mujoco\n        info[\"mujoco_version\"] = getattr(mujoco, \"__version__\", None)\n    except Exception as exc:\n        info[\"mujoco_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        from mujoco import mjx\n        info[\"mujoco_mjx_available\"] = True\n        info[\"mujoco_mjx_has_step\"] = hasattr(mjx, \"step\")\n    except Exception as exc:\n        info[\"mujoco_mjx_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        import ml_collections\n        info[\"ml_collections_version\"] = getattr(ml_collections, \"__version__\", None)\n    except Exception as exc:\n        info[\"ml_collections_error\"] = f\"{type(exc).__name__}: {exc}\"\n    if extra:\n        info.update(extra)\n    emit(\"SUBTEST_INFO_JSON_START\", info)\n\nimport os\nfrom pathlib import Path\nos.chdir('/home/lsd/robots/open-duck-mini-rdkx5/../Open_Duck_Playground')\n\ndef make_env():\n    from playground.open_duck_mini_v2.joystick import Joystick\n    return Joystick('flat_terrain', config_overrides={\n        'push_config.enable': False,\n        'lin_vel_x': [0.08, 0.08],\n        'lin_vel_y': [0.0, 0.0],\n        'ang_vel_yaw': [0.0, 0.0],\n        'neck_pitch_range': [0.0, 0.0],\n        'head_pitch_range': [0.0, 0.0],\n        'head_yaw_range': [0.0, 0.0],\n        'head_roll_range': [0.0, 0.0],\n        'noise_config.level': 0.0,\n        'noise_config.action_min_delay': 0,\n        'noise_config.action_max_delay': 1,\n        'noise_config.imu_min_delay': 0,\n        'noise_config.imu_max_delay': 1,\n    })\n\nemit_info({\"subtest\": \"playground_multi_step_vanilla\", \"steps\": [1, 2, 10, 100]})\nimport jax\nimport jax.numpy as jnp\nenv = make_env()\nstate = env.reset(jax.random.PRNGKey(0))\naction = jnp.zeros(env.action_size)\ntarget_steps = [1, 2, 10, 100]\ncurrent = 0\nout = {}\nfor target in target_steps:\n    while current < target:\n        state = env.step(state, action)\n        current += 1\n    block_tree((state.obs, state.data.qpos, state.done))\n    out[str(target)] = {\"done\": bool(state.done), \"qpos0\": float(state.data.qpos[0])}\n    emit(\"SUBTEST_PROGRESS_JSON_START\", {\"steps\": target, \"status\": \"PASS\"})\nemit(\"SUBTEST_RESULT_JSON_START\", {\"status\": \"PASS\", \"steps\": out})\n"
+      ],
+      "env_overrides": {
+        "JAX_PLATFORM_NAME": "gpu"
+      },
+      "stdout_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/rocm_mjx_isolation/default_gpu_playground_multi_step_vanilla.stdout.txt",
+      "stderr_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/rocm_mjx_isolation/default_gpu_playground_multi_step_vanilla.stderr.txt",
+      "info": {
+        "env": {
+          "JAX_PLATFORM_NAME": "gpu"
+        },
+        "jax_backend": "gpu",
+        "jax_devices": [
+          "rocm:0"
+        ],
+        "jax_version": "0.8.2",
+        "jaxlib_version": "0.8.2",
+        "ml_collections_version": "1.1.0",
+        "mujoco_mjx_available": true,
+        "mujoco_mjx_has_step": true,
+        "mujoco_version": "3.9.0",
+        "platform": "Linux-7.0.0-22-generic-x86_64-with-glibc2.43",
+        "python": "3.12.13 (main, May 10 2026, 19:30:01) [Clang 22.1.3 ]",
+        "python_executable": "/home/lsd/robots/envs/open-duck-playground/bin/python",
+        "steps": [
+          1,
+          2,
+          10,
+          100
+        ],
+        "subtest": "playground_multi_step_vanilla"
+      },
+      "result": null,
+      "progress": [],
+      "stdout_tail": "Failed to import warp: No module named 'warp'\nFailed to import mujoco_warp: No module named 'warp'\nSUBTEST_INFO_JSON_START\n{\"env\": {\"JAX_PLATFORM_NAME\": \"gpu\"}, \"jax_backend\": \"gpu\", \"jax_devices\": [\"rocm:0\"], \"jax_version\": \"0.8.2\", \"jaxlib_version\": \"0.8.2\", \"ml_collections_version\": \"1.1.0\", \"mujoco_mjx_available\": true, \"mujoco_mjx_has_step\": true, \"mujoco_version\": \"3.9.0\", \"platform\": \"Linux-7.0.0-22-generic-x86_64-with-glibc2.43\", \"python\": \"3.12.13 (main, May 10 2026, 19:30:01) [Clang 22.1.3 ]\", \"python_executable\": \"/home/lsd/robots/envs/open-duck-playground/bin/python\", \"steps\": [1, 2, 10, 100], \"subtest\": \"playground_multi_step_vanilla\"}\nSUBTEST_INFO_JSON_END\n",
+      "stderr_tail": "/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n"
+    },
+    {
+      "id": "default_gpu_playground_multi_step_bridge",
+      "name": "playground_multi_step_bridge",
+      "platform": "gpu",
+      "variant": "default",
+      "status": "TIMEOUT",
+      "returncode": null,
+      "elapsed_s": 120.40069298498565,
+      "command": [
+        "/home/lsd/robots/open-duck-mini-rdkx5/../envs/open-duck-playground/bin/python",
+        "-c",
+        "\nimport json\nimport os\nimport platform\nimport sys\nfrom pathlib import Path\n\nREPO_ROOT = '/home/lsd/robots/open-duck-mini-rdkx5'\nTOOLS_PATH = str(Path(REPO_ROOT) / \"tools\")\nPLAYGROUND_PATH = '/home/lsd/robots/open-duck-mini-rdkx5/../Open_Duck_Playground'\nif TOOLS_PATH not in sys.path:\n    sys.path.insert(0, TOOLS_PATH)\nif PLAYGROUND_PATH not in sys.path:\n    sys.path.insert(0, PLAYGROUND_PATH)\n\ndef emit(tag, payload):\n    print(tag)\n    print(json.dumps(payload, sort_keys=True, default=str))\n    print(tag.replace(\"START\", \"END\"))\n    sys.stdout.flush()\n\ndef block_tree(value):\n    import jax\n    def block_item(item):\n        return item.block_until_ready() if hasattr(item, \"block_until_ready\") else item\n    return jax.tree_util.tree_map(block_item, value)\n\ndef emit_info(extra=None):\n    info = {\n        \"python\": sys.version,\n        \"python_executable\": sys.executable,\n        \"platform\": platform.platform(),\n        \"env\": {key: os.environ.get(key) for key in ['JAX_PLATFORM_NAME', 'JAX_PLATFORMS', 'JAX_DISABLE_JIT', 'JAX_DEBUG_NANS', 'JAX_DEBUG_INFS', 'XLA_PYTHON_CLIENT_PREALLOCATE', 'XLA_PYTHON_CLIENT_MEM_FRACTION', 'XLA_FLAGS', 'HIP_VISIBLE_DEVICES', 'ROCR_VISIBLE_DEVICES', 'HSA_OVERRIDE_GFX_VERSION', 'MUJOCO_GL'] if key in os.environ},\n    }\n    try:\n        import jax\n        info[\"jax_version\"] = getattr(jax, \"__version__\", None)\n        try:\n            import jaxlib\n            info[\"jaxlib_version\"] = getattr(jaxlib, \"__version__\", None)\n        except Exception as exc:\n            info[\"jaxlib_error\"] = f\"{type(exc).__name__}: {exc}\"\n        info[\"jax_backend\"] = jax.default_backend()\n        info[\"jax_devices\"] = [str(device) for device in jax.devices()]\n    except Exception as exc:\n        info[\"jax_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        import mujoco\n        info[\"mujoco_version\"] = getattr(mujoco, \"__version__\", None)\n    except Exception as exc:\n        info[\"mujoco_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        from mujoco import mjx\n        info[\"mujoco_mjx_available\"] = True\n        info[\"mujoco_mjx_has_step\"] = hasattr(mjx, \"step\")\n    except Exception as exc:\n        info[\"mujoco_mjx_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        import ml_collections\n        info[\"ml_collections_version\"] = getattr(ml_collections, \"__version__\", None)\n    except Exception as exc:\n        info[\"ml_collections_error\"] = f\"{type(exc).__name__}: {exc}\"\n    if extra:\n        info.update(extra)\n    emit(\"SUBTEST_INFO_JSON_START\", info)\n\nemit_info({\"subtest\": \"closed_loop_policy_eval\", \"steps\": [1, 2, 10, 100], \"bridge_mode\": 'fitted'})\nimport json\nfrom pathlib import Path\nfrom closed_loop_sim_eval import ClosedLoopConfig, run_closed_loop_sim\nfit = json.load(open('/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/actuator_response_fit.json'))\nout = {}\nfor n in [1, 2, 10, 100]:\n    result = run_closed_loop_sim(ClosedLoopConfig(\n        policy_path=Path('/home/lsd/robots/open-duck-mini-rdkx5/policy/BEST_WALK_ONNX_2.onnx'),\n        fit=fit,\n        playground_root=Path('/home/lsd/robots/open-duck-mini-rdkx5/../Open_Duck_Playground'),\n        command_x=0.08,\n        duration_s=float(n) * 0.02,\n        bridge_mode='fitted',\n    ))\n    out[str(n)] = {\n        \"status\": result.get(\"status\"),\n        \"modes\": {\n            key: {\n                \"samples\": value.get(\"samples\"),\n                \"termination_reason\": value.get(\"termination_reason\"),\n                \"pitch_chain_summary\": value.get(\"pitch_chain_summary\"),\n            }\n            for key, value in (result.get(\"modes\") or {}).items()\n        },\n        \"error\": result.get(\"error\"),\n    }\n    emit(\"SUBTEST_PROGRESS_JSON_START\", {\"steps\": n, \"status\": result.get(\"status\")})\nemit(\"SUBTEST_RESULT_JSON_START\", {\"status\": \"PASS\", \"steps\": out})\n"
+      ],
+      "env_overrides": {
+        "JAX_PLATFORM_NAME": "gpu"
+      },
+      "stdout_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/rocm_mjx_isolation/default_gpu_playground_multi_step_bridge.stdout.txt",
+      "stderr_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/rocm_mjx_isolation/default_gpu_playground_multi_step_bridge.stderr.txt",
+      "info": {
+        "bridge_mode": "fitted",
+        "env": {
+          "JAX_PLATFORM_NAME": "gpu"
+        },
+        "jax_backend": "gpu",
+        "jax_devices": [
+          "rocm:0"
+        ],
+        "jax_version": "0.8.2",
+        "jaxlib_version": "0.8.2",
+        "ml_collections_version": "1.1.0",
+        "mujoco_mjx_available": true,
+        "mujoco_mjx_has_step": true,
+        "mujoco_version": "3.9.0",
+        "platform": "Linux-7.0.0-22-generic-x86_64-with-glibc2.43",
+        "python": "3.12.13 (main, May 10 2026, 19:30:01) [Clang 22.1.3 ]",
+        "python_executable": "/home/lsd/robots/envs/open-duck-playground/bin/python",
+        "steps": [
+          1,
+          2,
+          10,
+          100
+        ],
+        "subtest": "closed_loop_policy_eval"
+      },
+      "result": null,
+      "progress": [],
+      "stdout_tail": "Failed to import warp: No module named 'warp'\nFailed to import mujoco_warp: No module named 'warp'\nSUBTEST_INFO_JSON_START\n{\"bridge_mode\": \"fitted\", \"env\": {\"JAX_PLATFORM_NAME\": \"gpu\"}, \"jax_backend\": \"gpu\", \"jax_devices\": [\"rocm:0\"], \"jax_version\": \"0.8.2\", \"jaxlib_version\": \"0.8.2\", \"ml_collections_version\": \"1.1.0\", \"mujoco_mjx_available\": true, \"mujoco_mjx_has_step\": true, \"mujoco_version\": \"3.9.0\", \"platform\": \"Linux-7.0.0-22-generic-x86_64-with-glibc2.43\", \"python\": \"3.12.13 (main, May 10 2026, 19:30:01) [Clang 22.1.3 ]\", \"python_executable\": \"/home/lsd/robots/envs/open-duck-playground/bin/python\", \"steps\": [1, 2, 10, 100], \"subtest\": \"closed_loop_policy_eval\"}\nSUBTEST_INFO_JSON_END\n",
+      "stderr_tail": "/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n"
+    },
+    {
+      "id": "default_gpu_closed_loop_policy_eval_gpu",
+      "name": "closed_loop_policy_eval_gpu",
+      "platform": "gpu",
+      "variant": "default",
+      "status": "FAIL",
+      "returncode": -6,
+      "elapsed_s": 112.09162947299774,
+      "command": [
+        "/home/lsd/robots/open-duck-mini-rdkx5/../envs/open-duck-playground/bin/python",
+        "-c",
+        "\nimport json\nimport os\nimport platform\nimport sys\nfrom pathlib import Path\n\nREPO_ROOT = '/home/lsd/robots/open-duck-mini-rdkx5'\nTOOLS_PATH = str(Path(REPO_ROOT) / \"tools\")\nPLAYGROUND_PATH = '/home/lsd/robots/open-duck-mini-rdkx5/../Open_Duck_Playground'\nif TOOLS_PATH not in sys.path:\n    sys.path.insert(0, TOOLS_PATH)\nif PLAYGROUND_PATH not in sys.path:\n    sys.path.insert(0, PLAYGROUND_PATH)\n\ndef emit(tag, payload):\n    print(tag)\n    print(json.dumps(payload, sort_keys=True, default=str))\n    print(tag.replace(\"START\", \"END\"))\n    sys.stdout.flush()\n\ndef block_tree(value):\n    import jax\n    def block_item(item):\n        return item.block_until_ready() if hasattr(item, \"block_until_ready\") else item\n    return jax.tree_util.tree_map(block_item, value)\n\ndef emit_info(extra=None):\n    info = {\n        \"python\": sys.version,\n        \"python_executable\": sys.executable,\n        \"platform\": platform.platform(),\n        \"env\": {key: os.environ.get(key) for key in ['JAX_PLATFORM_NAME', 'JAX_PLATFORMS', 'JAX_DISABLE_JIT', 'JAX_DEBUG_NANS', 'JAX_DEBUG_INFS', 'XLA_PYTHON_CLIENT_PREALLOCATE', 'XLA_PYTHON_CLIENT_MEM_FRACTION', 'XLA_FLAGS', 'HIP_VISIBLE_DEVICES', 'ROCR_VISIBLE_DEVICES', 'HSA_OVERRIDE_GFX_VERSION', 'MUJOCO_GL'] if key in os.environ},\n    }\n    try:\n        import jax\n        info[\"jax_version\"] = getattr(jax, \"__version__\", None)\n        try:\n            import jaxlib\n            info[\"jaxlib_version\"] = getattr(jaxlib, \"__version__\", None)\n        except Exception as exc:\n            info[\"jaxlib_error\"] = f\"{type(exc).__name__}: {exc}\"\n        info[\"jax_backend\"] = jax.default_backend()\n        info[\"jax_devices\"] = [str(device) for device in jax.devices()]\n    except Exception as exc:\n        info[\"jax_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        import mujoco\n        info[\"mujoco_version\"] = getattr(mujoco, \"__version__\", None)\n    except Exception as exc:\n        info[\"mujoco_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        from mujoco import mjx\n        info[\"mujoco_mjx_available\"] = True\n        info[\"mujoco_mjx_has_step\"] = hasattr(mjx, \"step\")\n    except Exception as exc:\n        info[\"mujoco_mjx_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        import ml_collections\n        info[\"ml_collections_version\"] = getattr(ml_collections, \"__version__\", None)\n    except Exception as exc:\n        info[\"ml_collections_error\"] = f\"{type(exc).__name__}: {exc}\"\n    if extra:\n        info.update(extra)\n    emit(\"SUBTEST_INFO_JSON_START\", info)\n\nemit_info({\"subtest\": \"closed_loop_policy_eval\", \"steps\": [1, 2, 10, 100], \"bridge_mode\": 'all'})\nimport json\nfrom pathlib import Path\nfrom closed_loop_sim_eval import ClosedLoopConfig, run_closed_loop_sim\nfit = json.load(open('/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/actuator_response_fit.json'))\nout = {}\nfor n in [1, 2, 10, 100]:\n    result = run_closed_loop_sim(ClosedLoopConfig(\n        policy_path=Path('/home/lsd/robots/open-duck-mini-rdkx5/policy/BEST_WALK_ONNX_2.onnx'),\n        fit=fit,\n        playground_root=Path('/home/lsd/robots/open-duck-mini-rdkx5/../Open_Duck_Playground'),\n        command_x=0.08,\n        duration_s=float(n) * 0.02,\n        bridge_mode='all',\n    ))\n    out[str(n)] = {\n        \"status\": result.get(\"status\"),\n        \"modes\": {\n            key: {\n                \"samples\": value.get(\"samples\"),\n                \"termination_reason\": value.get(\"termination_reason\"),\n                \"pitch_chain_summary\": value.get(\"pitch_chain_summary\"),\n            }\n            for key, value in (result.get(\"modes\") or {}).items()\n        },\n        \"error\": result.get(\"error\"),\n    }\n    emit(\"SUBTEST_PROGRESS_JSON_START\", {\"steps\": n, \"status\": result.get(\"status\")})\nemit(\"SUBTEST_RESULT_JSON_START\", {\"status\": \"PASS\", \"steps\": out})\n"
+      ],
+      "env_overrides": {
+        "JAX_PLATFORM_NAME": "gpu"
+      },
+      "stdout_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/rocm_mjx_isolation/default_gpu_closed_loop_policy_eval_gpu.stdout.txt",
+      "stderr_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/rocm_mjx_isolation/default_gpu_closed_loop_policy_eval_gpu.stderr.txt",
+      "info": {
+        "bridge_mode": "all",
+        "env": {
+          "JAX_PLATFORM_NAME": "gpu"
+        },
+        "jax_backend": "gpu",
+        "jax_devices": [
+          "rocm:0"
+        ],
+        "jax_version": "0.8.2",
+        "jaxlib_version": "0.8.2",
+        "ml_collections_version": "1.1.0",
+        "mujoco_mjx_available": true,
+        "mujoco_mjx_has_step": true,
+        "mujoco_version": "3.9.0",
+        "platform": "Linux-7.0.0-22-generic-x86_64-with-glibc2.43",
+        "python": "3.12.13 (main, May 10 2026, 19:30:01) [Clang 22.1.3 ]",
+        "python_executable": "/home/lsd/robots/envs/open-duck-playground/bin/python",
+        "steps": [
+          1,
+          2,
+          10,
+          100
+        ],
+        "subtest": "closed_loop_policy_eval"
+      },
+      "result": null,
+      "progress": [],
+      "stdout_tail": "Failed to import warp: No module named 'warp'\nFailed to import mujoco_warp: No module named 'warp'\nSUBTEST_INFO_JSON_START\n{\"bridge_mode\": \"all\", \"env\": {\"JAX_PLATFORM_NAME\": \"gpu\"}, \"jax_backend\": \"gpu\", \"jax_devices\": [\"rocm:0\"], \"jax_version\": \"0.8.2\", \"jaxlib_version\": \"0.8.2\", \"ml_collections_version\": \"1.1.0\", \"mujoco_mjx_available\": true, \"mujoco_mjx_has_step\": true, \"mujoco_version\": \"3.9.0\", \"platform\": \"Linux-7.0.0-22-generic-x86_64-with-glibc2.43\", \"python\": \"3.12.13 (main, May 10 2026, 19:30:01) [Clang 22.1.3 ]\", \"python_executable\": \"/home/lsd/robots/envs/open-duck-playground/bin/python\", \"steps\": [1, 2, 10, 100], \"subtest\": \"closed_loop_policy_eval\"}\nSUBTEST_INFO_JSON_END\n",
+      "stderr_tail": " @     0x7291f760b2df  absl::lts_20250814::container_internal::raw_hash_set<>::destructor_impl()\n    @     0x7291f75ff7c4  xla::gpu::GpuExecutable::~GpuExecutable()\n    @     0x7291f75ffb4e  xla::gpu::GpuExecutable::~GpuExecutable()\n    @     0x7291f6b24c06  std::_Sp_counted_deleter<>::_M_dispose()\n    @     0x7291f6b1a211  xla::PjRtStreamExecutorLoadedExecutable::~PjRtStreamExecutorLoadedExecutable()\n    @     0x7291f6b1a2fe  xla::PjRtStreamExecutorLoadedExecutable::~PjRtStreamExecutorLoadedExecutable()\n    @     0x7291f6ab9c7d  pjrt::PJRT_LoadedExecutable_Destroy()\n    @     0x7293661e8390  std::_Function_handler<>::_M_invoke()\n    @     0x7293661d870b  xla::PjRtCApiLoadedExecutable::~PjRtCApiLoadedExecutable()\n    @     0x7293661d877e  xla::PjRtCApiLoadedExecutable::~PjRtCApiLoadedExecutable()\n    @     0x729362a0a89e  xla::ifrt::PjRtLoadedExecutable::~PjRtLoadedExecutable()\n    @     0x729362a13397  std::_Sp_counted_ptr<>::_M_dispose()\n    @     0x7293628cd405  jax::PyLoadedExecutable::~PyLoadedExecutable()\n    @     0x729362992860  nanobind::detail::inst_dealloc()\n    @     0x7293660ee641  nanobind::detail::py_deleter::operator()()\n    @     0x729366152eca  std::_Sp_counted_ptr_inplace<>::_M_dispose()\n    @     0x729366151065  absl::lts_20250814::inlined_vector_internal::Storage<>::DestroyContents()\n    @     0x7293661561c7  absl::lts_20250814::functional_internal::InvokeObject<>()\n    @     0x7293660a04bf  absl::lts_20250814::container_internal::IterateOverFullSlots()\n    @     0x729366156173  absl::lts_20250814::container_internal::raw_hash_set<>::destructor_impl()\n    @     0x7293661560d0  xla::LRUCache<>::Clear()\n    @     0x72936615a532  std::_Sp_counted_ptr_inplace<>::_M_dispose()\n    @     0x729366156385  std::default_delete<>::operator()()\n    @     0x72936615aa70  nanobind::detail::func_create<>()::{lambda()#1}::__invoke()\n    @     0x72936298845d  nanobind::detail::nb_func_vectorcall_simple_1()\n    @          0x1853754  PyObject_CallOneArg\n    @          0x1aac007  PyObject_ClearWeakRefs.warm\n    @          0x1a89a88  func_dealloc.warm\n    @     0x72936c348fef  std::_Sp_counted_ptr_inplace<>::_M_dispose()\n    @     0x72936c345f32  absl::lts_20250814::inlined_vector_internal::Storage<>::DestroyContents()\n    @     0x72936c345fd5  absl::lts_20250814::container_internal::raw_hash_set<>::destructor_impl()\n    @     0x72936c345cbb  xla::LRUCache<>::Clear()\n    @     0x72936c345a72  std::_Sp_counted_ptr_inplace<>::_M_dispose()\n    @     0x72936c348008  nanobind::detail::func_create<>()::{lambda()#1}::__invoke()\n    @     0x72936298845d  nanobind::detail::nb_func_vectorcall_simple_1()\n    @          0x1853754  PyObject_CallOneArg\n    @           0x45b024  handle_callback.llvm.6155425969336250027\n    @          0x1b22206  subtype_dealloc.cold\n    @          0x180137f  tupledealloc\n    @     0x72936c348fef  std::_Sp_counted_ptr_inplace<>::_M_dispose()\n    @     0x72936c345f32  absl::lts_20250814::inlined_vector_internal::Storage<>::DestroyContents()\n    @     0x72936c346047  absl::lts_20250814::functional_internal::InvokeObject<>()\n    @     0x7293660a04bf  absl::lts_20250814::container_internal::IterateOverFullSlots()\n    @     0x72936c345ff3  absl::lts_20250814::container_internal::raw_hash_set<>::destructor_impl()\n    @     0x72936c345cbb  xla::LRUCache<>::Clear()\n    @     0x72936c345a72  std::_Sp_counted_ptr_inplace<>::_M_dispose()\n    @     0x72936c3492a8  std::pair<>::~pair()\n    @     0x72936c344fe8  jax::WeakrefLRUCache::Clear()\n    @     0x72936c347146  nanobind::detail::func_create<>()::{lambda()#1}::__invoke()\n    @     0x72936298845d  nanobind::detail::nb_func_vectorcall_simple_1()\n    @          0x1816073  _PyEval_EvalFrameDefault\n    @          0x1ad68ff  atexit_callfuncs.llvm.9450642270383810775.warm\n    @          0x190e896  Py_FinalizeEx\n    @          0x198c54c  Py_RunMain\n    @          0x198c198  pymain_main.llvm.11489439184168853189\n    @          0x198bfac  main\n    @     0x72936e62a601  (unknown)\n"
+    },
+    {
+      "id": "default_cpu_basic_jax",
+      "name": "basic_jax",
+      "platform": "cpu",
+      "variant": "default",
+      "status": "PASS",
+      "returncode": 0,
+      "elapsed_s": 1.6986167639843188,
+      "command": [
+        "/home/lsd/robots/open-duck-mini-rdkx5/../envs/open-duck-playground/bin/python",
+        "-c",
+        "\nimport json\nimport os\nimport platform\nimport sys\nfrom pathlib import Path\n\nREPO_ROOT = '/home/lsd/robots/open-duck-mini-rdkx5'\nTOOLS_PATH = str(Path(REPO_ROOT) / \"tools\")\nPLAYGROUND_PATH = '/home/lsd/robots/open-duck-mini-rdkx5/../Open_Duck_Playground'\nif TOOLS_PATH not in sys.path:\n    sys.path.insert(0, TOOLS_PATH)\nif PLAYGROUND_PATH not in sys.path:\n    sys.path.insert(0, PLAYGROUND_PATH)\n\ndef emit(tag, payload):\n    print(tag)\n    print(json.dumps(payload, sort_keys=True, default=str))\n    print(tag.replace(\"START\", \"END\"))\n    sys.stdout.flush()\n\ndef block_tree(value):\n    import jax\n    def block_item(item):\n        return item.block_until_ready() if hasattr(item, \"block_until_ready\") else item\n    return jax.tree_util.tree_map(block_item, value)\n\ndef emit_info(extra=None):\n    info = {\n        \"python\": sys.version,\n        \"python_executable\": sys.executable,\n        \"platform\": platform.platform(),\n        \"env\": {key: os.environ.get(key) for key in ['JAX_PLATFORM_NAME', 'JAX_PLATFORMS', 'JAX_DISABLE_JIT', 'JAX_DEBUG_NANS', 'JAX_DEBUG_INFS', 'XLA_PYTHON_CLIENT_PREALLOCATE', 'XLA_PYTHON_CLIENT_MEM_FRACTION', 'XLA_FLAGS', 'HIP_VISIBLE_DEVICES', 'ROCR_VISIBLE_DEVICES', 'HSA_OVERRIDE_GFX_VERSION', 'MUJOCO_GL'] if key in os.environ},\n    }\n    try:\n        import jax\n        info[\"jax_version\"] = getattr(jax, \"__version__\", None)\n        try:\n            import jaxlib\n            info[\"jaxlib_version\"] = getattr(jaxlib, \"__version__\", None)\n        except Exception as exc:\n            info[\"jaxlib_error\"] = f\"{type(exc).__name__}: {exc}\"\n        info[\"jax_backend\"] = jax.default_backend()\n        info[\"jax_devices\"] = [str(device) for device in jax.devices()]\n    except Exception as exc:\n        info[\"jax_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        import mujoco\n        info[\"mujoco_version\"] = getattr(mujoco, \"__version__\", None)\n    except Exception as exc:\n        info[\"mujoco_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        from mujoco import mjx\n        info[\"mujoco_mjx_available\"] = True\n        info[\"mujoco_mjx_has_step\"] = hasattr(mjx, \"step\")\n    except Exception as exc:\n        info[\"mujoco_mjx_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        import ml_collections\n        info[\"ml_collections_version\"] = getattr(ml_collections, \"__version__\", None)\n    except Exception as exc:\n        info[\"ml_collections_error\"] = f\"{type(exc).__name__}: {exc}\"\n    if extra:\n        info.update(extra)\n    emit(\"SUBTEST_INFO_JSON_START\", info)\n\nemit_info({\"subtest\": \"basic_jax\"})\nimport jax\nimport jax.numpy as jnp\nx = jnp.arange(2048, dtype=jnp.float32)\ny = jnp.sin(x) * jnp.cos(x)\nz = jnp.sum(y)\nz.block_until_ready()\nemit(\"SUBTEST_RESULT_JSON_START\", {\"status\": \"PASS\", \"value\": float(z)})\n"
+      ],
+      "env_overrides": {
+        "JAX_PLATFORM_NAME": "cpu"
+      },
+      "stdout_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/rocm_mjx_isolation/default_cpu_basic_jax.stdout.txt",
+      "stderr_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/rocm_mjx_isolation/default_cpu_basic_jax.stderr.txt",
+      "info": {
+        "env": {
+          "JAX_PLATFORM_NAME": "cpu"
+        },
+        "jax_backend": "cpu",
+        "jax_devices": [
+          "TFRT_CPU_0"
+        ],
+        "jax_version": "0.8.2",
+        "jaxlib_version": "0.8.2",
+        "ml_collections_version": "1.1.0",
+        "mujoco_mjx_available": true,
+        "mujoco_mjx_has_step": true,
+        "mujoco_version": "3.9.0",
+        "platform": "Linux-7.0.0-22-generic-x86_64-with-glibc2.43",
+        "python": "3.12.13 (main, May 10 2026, 19:30:01) [Clang 22.1.3 ]",
+        "python_executable": "/home/lsd/robots/envs/open-duck-playground/bin/python",
+        "subtest": "basic_jax"
+      },
+      "result": {
+        "status": "PASS",
+        "value": 0.18012553453445435
+      },
+      "progress": [],
+      "stdout_tail": "Failed to import warp: No module named 'warp'\nFailed to import mujoco_warp: No module named 'warp'\nSUBTEST_INFO_JSON_START\n{\"env\": {\"JAX_PLATFORM_NAME\": \"cpu\"}, \"jax_backend\": \"cpu\", \"jax_devices\": [\"TFRT_CPU_0\"], \"jax_version\": \"0.8.2\", \"jaxlib_version\": \"0.8.2\", \"ml_collections_version\": \"1.1.0\", \"mujoco_mjx_available\": true, \"mujoco_mjx_has_step\": true, \"mujoco_version\": \"3.9.0\", \"platform\": \"Linux-7.0.0-22-generic-x86_64-with-glibc2.43\", \"python\": \"3.12.13 (main, May 10 2026, 19:30:01) [Clang 22.1.3 ]\", \"python_executable\": \"/home/lsd/robots/envs/open-duck-playground/bin/python\", \"subtest\": \"basic_jax\"}\nSUBTEST_INFO_JSON_END\nSUBTEST_RESULT_JSON_START\n{\"status\": \"PASS\", \"value\": 0.18012553453445435}\nSUBTEST_RESULT_JSON_END\n",
+      "stderr_tail": ""
+    },
+    {
+      "id": "default_cpu_jax_jit_scan",
+      "name": "jax_jit_scan",
+      "platform": "cpu",
+      "variant": "default",
+      "status": "PASS",
+      "returncode": 0,
+      "elapsed_s": 1.7513539530045819,
+      "command": [
+        "/home/lsd/robots/open-duck-mini-rdkx5/../envs/open-duck-playground/bin/python",
+        "-c",
+        "\nimport json\nimport os\nimport platform\nimport sys\nfrom pathlib import Path\n\nREPO_ROOT = '/home/lsd/robots/open-duck-mini-rdkx5'\nTOOLS_PATH = str(Path(REPO_ROOT) / \"tools\")\nPLAYGROUND_PATH = '/home/lsd/robots/open-duck-mini-rdkx5/../Open_Duck_Playground'\nif TOOLS_PATH not in sys.path:\n    sys.path.insert(0, TOOLS_PATH)\nif PLAYGROUND_PATH not in sys.path:\n    sys.path.insert(0, PLAYGROUND_PATH)\n\ndef emit(tag, payload):\n    print(tag)\n    print(json.dumps(payload, sort_keys=True, default=str))\n    print(tag.replace(\"START\", \"END\"))\n    sys.stdout.flush()\n\ndef block_tree(value):\n    import jax\n    def block_item(item):\n        return item.block_until_ready() if hasattr(item, \"block_until_ready\") else item\n    return jax.tree_util.tree_map(block_item, value)\n\ndef emit_info(extra=None):\n    info = {\n        \"python\": sys.version,\n        \"python_executable\": sys.executable,\n        \"platform\": platform.platform(),\n        \"env\": {key: os.environ.get(key) for key in ['JAX_PLATFORM_NAME', 'JAX_PLATFORMS', 'JAX_DISABLE_JIT', 'JAX_DEBUG_NANS', 'JAX_DEBUG_INFS', 'XLA_PYTHON_CLIENT_PREALLOCATE', 'XLA_PYTHON_CLIENT_MEM_FRACTION', 'XLA_FLAGS', 'HIP_VISIBLE_DEVICES', 'ROCR_VISIBLE_DEVICES', 'HSA_OVERRIDE_GFX_VERSION', 'MUJOCO_GL'] if key in os.environ},\n    }\n    try:\n        import jax\n        info[\"jax_version\"] = getattr(jax, \"__version__\", None)\n        try:\n            import jaxlib\n            info[\"jaxlib_version\"] = getattr(jaxlib, \"__version__\", None)\n        except Exception as exc:\n            info[\"jaxlib_error\"] = f\"{type(exc).__name__}: {exc}\"\n        info[\"jax_backend\"] = jax.default_backend()\n        info[\"jax_devices\"] = [str(device) for device in jax.devices()]\n    except Exception as exc:\n        info[\"jax_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        import mujoco\n        info[\"mujoco_version\"] = getattr(mujoco, \"__version__\", None)\n    except Exception as exc:\n        info[\"mujoco_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        from mujoco import mjx\n        info[\"mujoco_mjx_available\"] = True\n        info[\"mujoco_mjx_has_step\"] = hasattr(mjx, \"step\")\n    except Exception as exc:\n        info[\"mujoco_mjx_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        import ml_collections\n        info[\"ml_collections_version\"] = getattr(ml_collections, \"__version__\", None)\n    except Exception as exc:\n        info[\"ml_collections_error\"] = f\"{type(exc).__name__}: {exc}\"\n    if extra:\n        info.update(extra)\n    emit(\"SUBTEST_INFO_JSON_START\", info)\n\nemit_info({\"subtest\": \"jax_jit_scan\", \"steps\": [1, 2, 10, 100]})\nimport jax\nimport jax.numpy as jnp\n\ndef body(carry, _):\n    carry = jnp.tanh(carry * 1.001 + 0.001)\n    return carry, jnp.sum(carry)\n\nout = {}\nfor n in [1, 2, 10, 100]:\n    fn = jax.jit(lambda x, n=n: jax.lax.scan(body, x, None, length=n))\n    carry, ys = fn(jnp.ones((64,), dtype=jnp.float32))\n    block_tree((carry, ys))\n    out[str(n)] = float(jnp.sum(carry))\n    emit(\"SUBTEST_PROGRESS_JSON_START\", {\"steps\": n, \"status\": \"PASS\"})\nemit(\"SUBTEST_RESULT_JSON_START\", {\"status\": \"PASS\", \"steps\": out})\n"
+      ],
+      "env_overrides": {
+        "JAX_PLATFORM_NAME": "cpu"
+      },
+      "stdout_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/rocm_mjx_isolation/default_cpu_jax_jit_scan.stdout.txt",
+      "stderr_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/rocm_mjx_isolation/default_cpu_jax_jit_scan.stderr.txt",
+      "info": {
+        "env": {
+          "JAX_PLATFORM_NAME": "cpu"
+        },
+        "jax_backend": "cpu",
+        "jax_devices": [
+          "TFRT_CPU_0"
+        ],
+        "jax_version": "0.8.2",
+        "jaxlib_version": "0.8.2",
+        "ml_collections_version": "1.1.0",
+        "mujoco_mjx_available": true,
+        "mujoco_mjx_has_step": true,
+        "mujoco_version": "3.9.0",
+        "platform": "Linux-7.0.0-22-generic-x86_64-with-glibc2.43",
+        "python": "3.12.13 (main, May 10 2026, 19:30:01) [Clang 22.1.3 ]",
+        "python_executable": "/home/lsd/robots/envs/open-duck-playground/bin/python",
+        "steps": [
+          1,
+          2,
+          10,
+          100
+        ],
+        "subtest": "jax_jit_scan"
+      },
+      "result": {
+        "status": "PASS",
+        "steps": {
+          "1": 48.795692443847656,
+          "10": 23.1779727935791,
+          "100": 10.384610176086426,
+          "2": 41.186649322509766
+        }
+      },
+      "progress": [
+        {
+          "status": "PASS",
+          "steps": 1
+        },
+        {
+          "status": "PASS",
+          "steps": 2
+        },
+        {
+          "status": "PASS",
+          "steps": 10
+        },
+        {
+          "status": "PASS",
+          "steps": 100
+        }
+      ],
+      "stdout_tail": "Failed to import warp: No module named 'warp'\nFailed to import mujoco_warp: No module named 'warp'\nSUBTEST_INFO_JSON_START\n{\"env\": {\"JAX_PLATFORM_NAME\": \"cpu\"}, \"jax_backend\": \"cpu\", \"jax_devices\": [\"TFRT_CPU_0\"], \"jax_version\": \"0.8.2\", \"jaxlib_version\": \"0.8.2\", \"ml_collections_version\": \"1.1.0\", \"mujoco_mjx_available\": true, \"mujoco_mjx_has_step\": true, \"mujoco_version\": \"3.9.0\", \"platform\": \"Linux-7.0.0-22-generic-x86_64-with-glibc2.43\", \"python\": \"3.12.13 (main, May 10 2026, 19:30:01) [Clang 22.1.3 ]\", \"python_executable\": \"/home/lsd/robots/envs/open-duck-playground/bin/python\", \"steps\": [1, 2, 10, 100], \"subtest\": \"jax_jit_scan\"}\nSUBTEST_INFO_JSON_END\nSUBTEST_PROGRESS_JSON_START\n{\"status\": \"PASS\", \"steps\": 1}\nSUBTEST_PROGRESS_JSON_END\nSUBTEST_PROGRESS_JSON_START\n{\"status\": \"PASS\", \"steps\": 2}\nSUBTEST_PROGRESS_JSON_END\nSUBTEST_PROGRESS_JSON_START\n{\"status\": \"PASS\", \"steps\": 10}\nSUBTEST_PROGRESS_JSON_END\nSUBTEST_PROGRESS_JSON_START\n{\"status\": \"PASS\", \"steps\": 100}\nSUBTEST_PROGRESS_JSON_END\nSUBTEST_RESULT_JSON_START\n{\"status\": \"PASS\", \"steps\": {\"1\": 48.795692443847656, \"10\": 23.1779727935791, \"100\": 10.384610176086426, \"2\": 41.186649322509766}}\nSUBTEST_RESULT_JSON_END\n",
+      "stderr_tail": ""
+    },
+    {
+      "id": "default_cpu_minimal_mjx_step",
+      "name": "minimal_mjx_step",
+      "platform": "cpu",
+      "variant": "default",
+      "status": "PASS",
+      "returncode": 0,
+      "elapsed_s": 13.957750928995665,
+      "command": [
+        "/home/lsd/robots/open-duck-mini-rdkx5/../envs/open-duck-playground/bin/python",
+        "-c",
+        "\nimport json\nimport os\nimport platform\nimport sys\nfrom pathlib import Path\n\nREPO_ROOT = '/home/lsd/robots/open-duck-mini-rdkx5'\nTOOLS_PATH = str(Path(REPO_ROOT) / \"tools\")\nPLAYGROUND_PATH = '/home/lsd/robots/open-duck-mini-rdkx5/../Open_Duck_Playground'\nif TOOLS_PATH not in sys.path:\n    sys.path.insert(0, TOOLS_PATH)\nif PLAYGROUND_PATH not in sys.path:\n    sys.path.insert(0, PLAYGROUND_PATH)\n\ndef emit(tag, payload):\n    print(tag)\n    print(json.dumps(payload, sort_keys=True, default=str))\n    print(tag.replace(\"START\", \"END\"))\n    sys.stdout.flush()\n\ndef block_tree(value):\n    import jax\n    def block_item(item):\n        return item.block_until_ready() if hasattr(item, \"block_until_ready\") else item\n    return jax.tree_util.tree_map(block_item, value)\n\ndef emit_info(extra=None):\n    info = {\n        \"python\": sys.version,\n        \"python_executable\": sys.executable,\n        \"platform\": platform.platform(),\n        \"env\": {key: os.environ.get(key) for key in ['JAX_PLATFORM_NAME', 'JAX_PLATFORMS', 'JAX_DISABLE_JIT', 'JAX_DEBUG_NANS', 'JAX_DEBUG_INFS', 'XLA_PYTHON_CLIENT_PREALLOCATE', 'XLA_PYTHON_CLIENT_MEM_FRACTION', 'XLA_FLAGS', 'HIP_VISIBLE_DEVICES', 'ROCR_VISIBLE_DEVICES', 'HSA_OVERRIDE_GFX_VERSION', 'MUJOCO_GL'] if key in os.environ},\n    }\n    try:\n        import jax\n        info[\"jax_version\"] = getattr(jax, \"__version__\", None)\n        try:\n            import jaxlib\n            info[\"jaxlib_version\"] = getattr(jaxlib, \"__version__\", None)\n        except Exception as exc:\n            info[\"jaxlib_error\"] = f\"{type(exc).__name__}: {exc}\"\n        info[\"jax_backend\"] = jax.default_backend()\n        info[\"jax_devices\"] = [str(device) for device in jax.devices()]\n    except Exception as exc:\n        info[\"jax_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        import mujoco\n        info[\"mujoco_version\"] = getattr(mujoco, \"__version__\", None)\n    except Exception as exc:\n        info[\"mujoco_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        from mujoco import mjx\n        info[\"mujoco_mjx_available\"] = True\n        info[\"mujoco_mjx_has_step\"] = hasattr(mjx, \"step\")\n    except Exception as exc:\n        info[\"mujoco_mjx_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        import ml_collections\n        info[\"ml_collections_version\"] = getattr(ml_collections, \"__version__\", None)\n    except Exception as exc:\n        info[\"ml_collections_error\"] = f\"{type(exc).__name__}: {exc}\"\n    if extra:\n        info.update(extra)\n    emit(\"SUBTEST_INFO_JSON_START\", info)\n\nemit_info({\"subtest\": \"minimal_mjx_step\", \"steps\": [1, 2, 10, 100]})\nimport jax\nimport jax.numpy as jnp\nimport mujoco\nfrom mujoco import mjx\n\nxml = '''\n<mujoco>\n  <option timestep=\"0.002\"/>\n  <worldbody>\n    <body name=\"body\" pos=\"0 0 0.2\">\n      <joint name=\"hinge\" type=\"hinge\" axis=\"0 1 0\"/>\n      <geom type=\"capsule\" size=\"0.02 0.08\" fromto=\"0 0 0 0 0 0.16\"/>\n    </body>\n  </worldbody>\n  <actuator>\n    <motor name=\"motor\" joint=\"hinge\" gear=\"1\"/>\n  </actuator>\n</mujoco>\n'''\nmodel = mujoco.MjModel.from_xml_string(xml)\nmx = mjx.put_model(model)\ndata = mjx.make_data(mx)\ndata = data.replace(ctrl=jnp.array([0.1], dtype=jnp.float32))\ndata = mjx.step(mx, data)\nblock_tree(data)\none = jax.jit(lambda d: mjx.step(mx, d))\ndata = one(data)\nblock_tree(data)\n\ndef body(carry, _):\n    return mjx.step(mx, carry), None\n\nout = {}\nfor n in [1, 2, 10, 100]:\n    scan_fn = jax.jit(lambda d, n=n: jax.lax.scan(body, d, None, length=n)[0])\n    data = scan_fn(data)\n    block_tree(data)\n    out[str(n)] = float(data.qpos[0])\n    emit(\"SUBTEST_PROGRESS_JSON_START\", {\"steps\": n, \"status\": \"PASS\"})\nemit(\"SUBTEST_RESULT_JSON_START\", {\"status\": \"PASS\", \"steps\": out})\n"
+      ],
+      "env_overrides": {
+        "JAX_PLATFORM_NAME": "cpu"
+      },
+      "stdout_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/rocm_mjx_isolation/default_cpu_minimal_mjx_step.stdout.txt",
+      "stderr_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/rocm_mjx_isolation/default_cpu_minimal_mjx_step.stderr.txt",
+      "info": {
+        "env": {
+          "JAX_PLATFORM_NAME": "cpu"
+        },
+        "jax_backend": "cpu",
+        "jax_devices": [
+          "TFRT_CPU_0"
+        ],
+        "jax_version": "0.8.2",
+        "jaxlib_version": "0.8.2",
+        "ml_collections_version": "1.1.0",
+        "mujoco_mjx_available": true,
+        "mujoco_mjx_has_step": true,
+        "mujoco_version": "3.9.0",
+        "platform": "Linux-7.0.0-22-generic-x86_64-with-glibc2.43",
+        "python": "3.12.13 (main, May 10 2026, 19:30:01) [Clang 22.1.3 ]",
+        "python_executable": "/home/lsd/robots/envs/open-duck-playground/bin/python",
+        "steps": [
+          1,
+          2,
+          10,
+          100
+        ],
+        "subtest": "minimal_mjx_step"
+      },
+      "result": {
+        "status": "PASS",
+        "steps": {
+          "1": 0.0010861072223633528,
+          "10": 0.021859968081116676,
+          "100": 1.6809815168380737,
+          "2": 0.0027166251093149185
+        }
+      },
+      "progress": [
+        {
+          "status": "PASS",
+          "steps": 1
+        },
+        {
+          "status": "PASS",
+          "steps": 2
+        },
+        {
+          "status": "PASS",
+          "steps": 10
+        },
+        {
+          "status": "PASS",
+          "steps": 100
+        }
+      ],
+      "stdout_tail": "Failed to import warp: No module named 'warp'\nFailed to import mujoco_warp: No module named 'warp'\nSUBTEST_INFO_JSON_START\n{\"env\": {\"JAX_PLATFORM_NAME\": \"cpu\"}, \"jax_backend\": \"cpu\", \"jax_devices\": [\"TFRT_CPU_0\"], \"jax_version\": \"0.8.2\", \"jaxlib_version\": \"0.8.2\", \"ml_collections_version\": \"1.1.0\", \"mujoco_mjx_available\": true, \"mujoco_mjx_has_step\": true, \"mujoco_version\": \"3.9.0\", \"platform\": \"Linux-7.0.0-22-generic-x86_64-with-glibc2.43\", \"python\": \"3.12.13 (main, May 10 2026, 19:30:01) [Clang 22.1.3 ]\", \"python_executable\": \"/home/lsd/robots/envs/open-duck-playground/bin/python\", \"steps\": [1, 2, 10, 100], \"subtest\": \"minimal_mjx_step\"}\nSUBTEST_INFO_JSON_END\nSUBTEST_PROGRESS_JSON_START\n{\"status\": \"PASS\", \"steps\": 1}\nSUBTEST_PROGRESS_JSON_END\nSUBTEST_PROGRESS_JSON_START\n{\"status\": \"PASS\", \"steps\": 2}\nSUBTEST_PROGRESS_JSON_END\nSUBTEST_PROGRESS_JSON_START\n{\"status\": \"PASS\", \"steps\": 10}\nSUBTEST_PROGRESS_JSON_END\nSUBTEST_PROGRESS_JSON_START\n{\"status\": \"PASS\", \"steps\": 100}\nSUBTEST_PROGRESS_JSON_END\nSUBTEST_RESULT_JSON_START\n{\"status\": \"PASS\", \"steps\": {\"1\": 0.0010861072223633528, \"10\": 0.021859968081116676, \"100\": 1.6809815168380737, \"2\": 0.0027166251093149185}}\nSUBTEST_RESULT_JSON_END\n",
+      "stderr_tail": ""
+    },
+    {
+      "id": "default_cpu_playground_contract_only",
+      "name": "playground_contract_only",
+      "platform": "cpu",
+      "variant": "default",
+      "status": "PASS",
+      "returncode": 0,
+      "elapsed_s": 3.595608757023001,
+      "command": [
+        "/home/lsd/robots/open-duck-mini-rdkx5/../envs/open-duck-playground/bin/python",
+        "-c",
+        "\nimport json\nimport os\nimport platform\nimport sys\nfrom pathlib import Path\n\nREPO_ROOT = '/home/lsd/robots/open-duck-mini-rdkx5'\nTOOLS_PATH = str(Path(REPO_ROOT) / \"tools\")\nPLAYGROUND_PATH = '/home/lsd/robots/open-duck-mini-rdkx5/../Open_Duck_Playground'\nif TOOLS_PATH not in sys.path:\n    sys.path.insert(0, TOOLS_PATH)\nif PLAYGROUND_PATH not in sys.path:\n    sys.path.insert(0, PLAYGROUND_PATH)\n\ndef emit(tag, payload):\n    print(tag)\n    print(json.dumps(payload, sort_keys=True, default=str))\n    print(tag.replace(\"START\", \"END\"))\n    sys.stdout.flush()\n\ndef block_tree(value):\n    import jax\n    def block_item(item):\n        return item.block_until_ready() if hasattr(item, \"block_until_ready\") else item\n    return jax.tree_util.tree_map(block_item, value)\n\ndef emit_info(extra=None):\n    info = {\n        \"python\": sys.version,\n        \"python_executable\": sys.executable,\n        \"platform\": platform.platform(),\n        \"env\": {key: os.environ.get(key) for key in ['JAX_PLATFORM_NAME', 'JAX_PLATFORMS', 'JAX_DISABLE_JIT', 'JAX_DEBUG_NANS', 'JAX_DEBUG_INFS', 'XLA_PYTHON_CLIENT_PREALLOCATE', 'XLA_PYTHON_CLIENT_MEM_FRACTION', 'XLA_FLAGS', 'HIP_VISIBLE_DEVICES', 'ROCR_VISIBLE_DEVICES', 'HSA_OVERRIDE_GFX_VERSION', 'MUJOCO_GL'] if key in os.environ},\n    }\n    try:\n        import jax\n        info[\"jax_version\"] = getattr(jax, \"__version__\", None)\n        try:\n            import jaxlib\n            info[\"jaxlib_version\"] = getattr(jaxlib, \"__version__\", None)\n        except Exception as exc:\n            info[\"jaxlib_error\"] = f\"{type(exc).__name__}: {exc}\"\n        info[\"jax_backend\"] = jax.default_backend()\n        info[\"jax_devices\"] = [str(device) for device in jax.devices()]\n    except Exception as exc:\n        info[\"jax_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        import mujoco\n        info[\"mujoco_version\"] = getattr(mujoco, \"__version__\", None)\n    except Exception as exc:\n        info[\"mujoco_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        from mujoco import mjx\n        info[\"mujoco_mjx_available\"] = True\n        info[\"mujoco_mjx_has_step\"] = hasattr(mjx, \"step\")\n    except Exception as exc:\n        info[\"mujoco_mjx_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        import ml_collections\n        info[\"ml_collections_version\"] = getattr(ml_collections, \"__version__\", None)\n    except Exception as exc:\n        info[\"ml_collections_error\"] = f\"{type(exc).__name__}: {exc}\"\n    if extra:\n        info.update(extra)\n    emit(\"SUBTEST_INFO_JSON_START\", info)\n\nimport os\nfrom pathlib import Path\nos.chdir('/home/lsd/robots/open-duck-mini-rdkx5/../Open_Duck_Playground')\n\ndef make_env():\n    from playground.open_duck_mini_v2.joystick import Joystick\n    return Joystick('flat_terrain', config_overrides={\n        'push_config.enable': False,\n        'lin_vel_x': [0.08, 0.08],\n        'lin_vel_y': [0.0, 0.0],\n        'ang_vel_yaw': [0.0, 0.0],\n        'neck_pitch_range': [0.0, 0.0],\n        'head_pitch_range': [0.0, 0.0],\n        'head_yaw_range': [0.0, 0.0],\n        'head_roll_range': [0.0, 0.0],\n        'noise_config.level': 0.0,\n        'noise_config.action_min_delay': 0,\n        'noise_config.action_max_delay': 1,\n        'noise_config.imu_min_delay': 0,\n        'noise_config.imu_max_delay': 1,\n    })\n\nemit_info({\"subtest\": \"playground_contract_only\"})\nenv = make_env()\nemit(\"SUBTEST_RESULT_JSON_START\", {\n    \"status\": \"PASS\",\n    \"action_size\": int(env.action_size),\n    \"mjcf\": {\"nu\": int(env.mj_model.nu), \"nq\": int(env.mj_model.nq), \"nv\": int(env.mj_model.nv)},\n    \"actuator_names\": list(env.actuator_names),\n})\n"
+      ],
+      "env_overrides": {
+        "JAX_PLATFORM_NAME": "cpu"
+      },
+      "stdout_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/rocm_mjx_isolation/default_cpu_playground_contract_only.stdout.txt",
+      "stderr_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/rocm_mjx_isolation/default_cpu_playground_contract_only.stderr.txt",
+      "info": {
+        "env": {
+          "JAX_PLATFORM_NAME": "cpu"
+        },
+        "jax_backend": "cpu",
+        "jax_devices": [
+          "TFRT_CPU_0"
+        ],
+        "jax_version": "0.8.2",
+        "jaxlib_version": "0.8.2",
+        "ml_collections_version": "1.1.0",
+        "mujoco_mjx_available": true,
+        "mujoco_mjx_has_step": true,
+        "mujoco_version": "3.9.0",
+        "platform": "Linux-7.0.0-22-generic-x86_64-with-glibc2.43",
+        "python": "3.12.13 (main, May 10 2026, 19:30:01) [Clang 22.1.3 ]",
+        "python_executable": "/home/lsd/robots/envs/open-duck-playground/bin/python",
+        "subtest": "playground_contract_only"
+      },
+      "result": {
+        "action_size": 14,
+        "actuator_names": [
+          "left_hip_yaw",
+          "left_hip_roll",
+          "left_hip_pitch",
+          "left_knee",
+          "left_ankle",
+          "neck_pitch",
+          "head_pitch",
+          "head_yaw",
+          "head_roll",
+          "right_hip_yaw",
+          "right_hip_roll",
+          "right_hip_pitch",
+          "right_knee",
+          "right_ankle"
+        ],
+        "mjcf": {
+          "nq": 21,
+          "nu": 14,
+          "nv": 20
+        },
+        "status": "PASS"
+      },
+      "progress": [],
+      "stdout_tail": " No module named 'warp'\nSUBTEST_INFO_JSON_START\n{\"env\": {\"JAX_PLATFORM_NAME\": \"cpu\"}, \"jax_backend\": \"cpu\", \"jax_devices\": [\"TFRT_CPU_0\"], \"jax_version\": \"0.8.2\", \"jaxlib_version\": \"0.8.2\", \"ml_collections_version\": \"1.1.0\", \"mujoco_mjx_available\": true, \"mujoco_mjx_has_step\": true, \"mujoco_version\": \"3.9.0\", \"platform\": \"Linux-7.0.0-22-generic-x86_64-with-glibc2.43\", \"python\": \"3.12.13 (main, May 10 2026, 19:30:01) [Clang 22.1.3 ]\", \"python_executable\": \"/home/lsd/robots/envs/open-duck-playground/bin/python\", \"subtest\": \"playground_contract_only\"}\nSUBTEST_INFO_JSON_END\nxml: /home/lsd/robots/open-duck-mini-rdkx5/../Open_Duck_Playground/playground/open_duck_mini_v2/xmls/scene_flat_terrain.xml\nactuators: ['left_hip_yaw', 'left_hip_roll', 'left_hip_pitch', 'left_knee', 'left_ankle', 'neck_pitch', 'head_pitch', 'head_yaw', 'head_roll', 'right_hip_yaw', 'right_hip_roll', 'right_hip_pitch', 'right_knee', 'right_ankle']\njoints: ['floating_base', 'left_hip_yaw', 'left_hip_roll', 'left_hip_pitch', 'left_knee', 'left_ankle', 'neck_pitch', 'head_pitch', 'head_yaw', 'head_roll', 'right_hip_yaw', 'right_hip_roll', 'right_hip_pitch', 'right_knee', 'right_ankle']\nbacklash joints: []\nactuator joints ids: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]\nactuator joints dict: {'left_hip_yaw': 1, 'left_hip_roll': 2, 'left_hip_pitch': 3, 'left_knee': 4, 'left_ankle': 5, 'neck_pitch': 6, 'head_pitch': 7, 'head_yaw': 8, 'head_roll': 9, 'right_hip_yaw': 10, 'right_hip_roll': 11, 'right_hip_pitch': 12, 'right_knee': 13, 'right_ankle': 14}\nfloating qpos addr: 0 qvel addr: 0\n[Poly ref data] Processing ...\n[Poly ref data] Done processing\nSUBTEST_RESULT_JSON_START\n{\"action_size\": 14, \"actuator_names\": [\"left_hip_yaw\", \"left_hip_roll\", \"left_hip_pitch\", \"left_knee\", \"left_ankle\", \"neck_pitch\", \"head_pitch\", \"head_yaw\", \"head_roll\", \"right_hip_yaw\", \"right_hip_roll\", \"right_hip_pitch\", \"right_knee\", \"right_ankle\"], \"mjcf\": {\"nq\": 21, \"nu\": 14, \"nv\": 20}, \"status\": \"PASS\"}\nSUBTEST_RESULT_JSON_END\n",
+      "stderr_tail": ""
+    },
+    {
+      "id": "default_cpu_playground_reset",
+      "name": "playground_reset",
+      "platform": "cpu",
+      "variant": "default",
+      "status": "PASS",
+      "returncode": 0,
+      "elapsed_s": 70.65237685499596,
+      "command": [
+        "/home/lsd/robots/open-duck-mini-rdkx5/../envs/open-duck-playground/bin/python",
+        "-c",
+        "\nimport json\nimport os\nimport platform\nimport sys\nfrom pathlib import Path\n\nREPO_ROOT = '/home/lsd/robots/open-duck-mini-rdkx5'\nTOOLS_PATH = str(Path(REPO_ROOT) / \"tools\")\nPLAYGROUND_PATH = '/home/lsd/robots/open-duck-mini-rdkx5/../Open_Duck_Playground'\nif TOOLS_PATH not in sys.path:\n    sys.path.insert(0, TOOLS_PATH)\nif PLAYGROUND_PATH not in sys.path:\n    sys.path.insert(0, PLAYGROUND_PATH)\n\ndef emit(tag, payload):\n    print(tag)\n    print(json.dumps(payload, sort_keys=True, default=str))\n    print(tag.replace(\"START\", \"END\"))\n    sys.stdout.flush()\n\ndef block_tree(value):\n    import jax\n    def block_item(item):\n        return item.block_until_ready() if hasattr(item, \"block_until_ready\") else item\n    return jax.tree_util.tree_map(block_item, value)\n\ndef emit_info(extra=None):\n    info = {\n        \"python\": sys.version,\n        \"python_executable\": sys.executable,\n        \"platform\": platform.platform(),\n        \"env\": {key: os.environ.get(key) for key in ['JAX_PLATFORM_NAME', 'JAX_PLATFORMS', 'JAX_DISABLE_JIT', 'JAX_DEBUG_NANS', 'JAX_DEBUG_INFS', 'XLA_PYTHON_CLIENT_PREALLOCATE', 'XLA_PYTHON_CLIENT_MEM_FRACTION', 'XLA_FLAGS', 'HIP_VISIBLE_DEVICES', 'ROCR_VISIBLE_DEVICES', 'HSA_OVERRIDE_GFX_VERSION', 'MUJOCO_GL'] if key in os.environ},\n    }\n    try:\n        import jax\n        info[\"jax_version\"] = getattr(jax, \"__version__\", None)\n        try:\n            import jaxlib\n            info[\"jaxlib_version\"] = getattr(jaxlib, \"__version__\", None)\n        except Exception as exc:\n            info[\"jaxlib_error\"] = f\"{type(exc).__name__}: {exc}\"\n        info[\"jax_backend\"] = jax.default_backend()\n        info[\"jax_devices\"] = [str(device) for device in jax.devices()]\n    except Exception as exc:\n        info[\"jax_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        import mujoco\n        info[\"mujoco_version\"] = getattr(mujoco, \"__version__\", None)\n    except Exception as exc:\n        info[\"mujoco_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        from mujoco import mjx\n        info[\"mujoco_mjx_available\"] = True\n        info[\"mujoco_mjx_has_step\"] = hasattr(mjx, \"step\")\n    except Exception as exc:\n        info[\"mujoco_mjx_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        import ml_collections\n        info[\"ml_collections_version\"] = getattr(ml_collections, \"__version__\", None)\n    except Exception as exc:\n        info[\"ml_collections_error\"] = f\"{type(exc).__name__}: {exc}\"\n    if extra:\n        info.update(extra)\n    emit(\"SUBTEST_INFO_JSON_START\", info)\n\nimport os\nfrom pathlib import Path\nos.chdir('/home/lsd/robots/open-duck-mini-rdkx5/../Open_Duck_Playground')\n\ndef make_env():\n    from playground.open_duck_mini_v2.joystick import Joystick\n    return Joystick('flat_terrain', config_overrides={\n        'push_config.enable': False,\n        'lin_vel_x': [0.08, 0.08],\n        'lin_vel_y': [0.0, 0.0],\n        'ang_vel_yaw': [0.0, 0.0],\n        'neck_pitch_range': [0.0, 0.0],\n        'head_pitch_range': [0.0, 0.0],\n        'head_yaw_range': [0.0, 0.0],\n        'head_roll_range': [0.0, 0.0],\n        'noise_config.level': 0.0,\n        'noise_config.action_min_delay': 0,\n        'noise_config.action_max_delay': 1,\n        'noise_config.imu_min_delay': 0,\n        'noise_config.imu_max_delay': 1,\n    })\n\nemit_info({\"subtest\": \"playground_reset\"})\nimport jax\nenv = make_env()\nstate = env.reset(jax.random.PRNGKey(0))\nblock_tree(state.obs)\nemit(\"SUBTEST_RESULT_JSON_START\", {\n    \"status\": \"PASS\",\n    \"observation_size\": {key: list(value.shape) for key, value in state.obs.items()},\n    \"action_size\": int(env.action_size),\n})\n"
+      ],
+      "env_overrides": {
+        "JAX_PLATFORM_NAME": "cpu"
+      },
+      "stdout_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/rocm_mjx_isolation/default_cpu_playground_reset.stdout.txt",
+      "stderr_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/rocm_mjx_isolation/default_cpu_playground_reset.stderr.txt",
+      "info": {
+        "env": {
+          "JAX_PLATFORM_NAME": "cpu"
+        },
+        "jax_backend": "cpu",
+        "jax_devices": [
+          "TFRT_CPU_0"
+        ],
+        "jax_version": "0.8.2",
+        "jaxlib_version": "0.8.2",
+        "ml_collections_version": "1.1.0",
+        "mujoco_mjx_available": true,
+        "mujoco_mjx_has_step": true,
+        "mujoco_version": "3.9.0",
+        "platform": "Linux-7.0.0-22-generic-x86_64-with-glibc2.43",
+        "python": "3.12.13 (main, May 10 2026, 19:30:01) [Clang 22.1.3 ]",
+        "python_executable": "/home/lsd/robots/envs/open-duck-playground/bin/python",
+        "subtest": "playground_reset"
+      },
+      "result": {
+        "action_size": 14,
+        "observation_size": {
+          "privileged_state": [
+            212
+          ],
+          "state": [
+            101
+          ]
+        },
+        "status": "PASS"
+      },
+      "progress": [],
+      "stdout_tail": "Failed to import warp: No module named 'warp'\nFailed to import mujoco_warp: No module named 'warp'\nSUBTEST_INFO_JSON_START\n{\"env\": {\"JAX_PLATFORM_NAME\": \"cpu\"}, \"jax_backend\": \"cpu\", \"jax_devices\": [\"TFRT_CPU_0\"], \"jax_version\": \"0.8.2\", \"jaxlib_version\": \"0.8.2\", \"ml_collections_version\": \"1.1.0\", \"mujoco_mjx_available\": true, \"mujoco_mjx_has_step\": true, \"mujoco_version\": \"3.9.0\", \"platform\": \"Linux-7.0.0-22-generic-x86_64-with-glibc2.43\", \"python\": \"3.12.13 (main, May 10 2026, 19:30:01) [Clang 22.1.3 ]\", \"python_executable\": \"/home/lsd/robots/envs/open-duck-playground/bin/python\", \"subtest\": \"playground_reset\"}\nSUBTEST_INFO_JSON_END\nxml: /home/lsd/robots/open-duck-mini-rdkx5/../Open_Duck_Playground/playground/open_duck_mini_v2/xmls/scene_flat_terrain.xml\nactuators: ['left_hip_yaw', 'left_hip_roll', 'left_hip_pitch', 'left_knee', 'left_ankle', 'neck_pitch', 'head_pitch', 'head_yaw', 'head_roll', 'right_hip_yaw', 'right_hip_roll', 'right_hip_pitch', 'right_knee', 'right_ankle']\njoints: ['floating_base', 'left_hip_yaw', 'left_hip_roll', 'left_hip_pitch', 'left_knee', 'left_ankle', 'neck_pitch', 'head_pitch', 'head_yaw', 'head_roll', 'right_hip_yaw', 'right_hip_roll', 'right_hip_pitch', 'right_knee', 'right_ankle']\nbacklash joints: []\nactuator joints ids: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]\nactuator joints dict: {'left_hip_yaw': 1, 'left_hip_roll': 2, 'left_hip_pitch': 3, 'left_knee': 4, 'left_ankle': 5, 'neck_pitch': 6, 'head_pitch': 7, 'head_yaw': 8, 'head_roll': 9, 'right_hip_yaw': 10, 'right_hip_roll': 11, 'right_hip_pitch': 12, 'right_knee': 13, 'right_ankle': 14}\nfloating qpos addr: 0 qvel addr: 0\n[Poly ref data] Processing ...\n[Poly ref data] Done processing\nSUBTEST_RESULT_JSON_START\n{\"action_size\": 14, \"observation_size\": {\"privileged_state\": [212], \"state\": [101]}, \"status\": \"PASS\"}\nSUBTEST_RESULT_JSON_END\n",
+      "stderr_tail": "/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n"
+    },
+    {
+      "id": "default_cpu_playground_one_step_vanilla",
+      "name": "playground_one_step_vanilla",
+      "platform": "cpu",
+      "variant": "default",
+      "status": "PASS",
+      "returncode": 0,
+      "elapsed_s": 65.45281182197505,
+      "command": [
+        "/home/lsd/robots/open-duck-mini-rdkx5/../envs/open-duck-playground/bin/python",
+        "-c",
+        "\nimport json\nimport os\nimport platform\nimport sys\nfrom pathlib import Path\n\nREPO_ROOT = '/home/lsd/robots/open-duck-mini-rdkx5'\nTOOLS_PATH = str(Path(REPO_ROOT) / \"tools\")\nPLAYGROUND_PATH = '/home/lsd/robots/open-duck-mini-rdkx5/../Open_Duck_Playground'\nif TOOLS_PATH not in sys.path:\n    sys.path.insert(0, TOOLS_PATH)\nif PLAYGROUND_PATH not in sys.path:\n    sys.path.insert(0, PLAYGROUND_PATH)\n\ndef emit(tag, payload):\n    print(tag)\n    print(json.dumps(payload, sort_keys=True, default=str))\n    print(tag.replace(\"START\", \"END\"))\n    sys.stdout.flush()\n\ndef block_tree(value):\n    import jax\n    def block_item(item):\n        return item.block_until_ready() if hasattr(item, \"block_until_ready\") else item\n    return jax.tree_util.tree_map(block_item, value)\n\ndef emit_info(extra=None):\n    info = {\n        \"python\": sys.version,\n        \"python_executable\": sys.executable,\n        \"platform\": platform.platform(),\n        \"env\": {key: os.environ.get(key) for key in ['JAX_PLATFORM_NAME', 'JAX_PLATFORMS', 'JAX_DISABLE_JIT', 'JAX_DEBUG_NANS', 'JAX_DEBUG_INFS', 'XLA_PYTHON_CLIENT_PREALLOCATE', 'XLA_PYTHON_CLIENT_MEM_FRACTION', 'XLA_FLAGS', 'HIP_VISIBLE_DEVICES', 'ROCR_VISIBLE_DEVICES', 'HSA_OVERRIDE_GFX_VERSION', 'MUJOCO_GL'] if key in os.environ},\n    }\n    try:\n        import jax\n        info[\"jax_version\"] = getattr(jax, \"__version__\", None)\n        try:\n            import jaxlib\n            info[\"jaxlib_version\"] = getattr(jaxlib, \"__version__\", None)\n        except Exception as exc:\n            info[\"jaxlib_error\"] = f\"{type(exc).__name__}: {exc}\"\n        info[\"jax_backend\"] = jax.default_backend()\n        info[\"jax_devices\"] = [str(device) for device in jax.devices()]\n    except Exception as exc:\n        info[\"jax_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        import mujoco\n        info[\"mujoco_version\"] = getattr(mujoco, \"__version__\", None)\n    except Exception as exc:\n        info[\"mujoco_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        from mujoco import mjx\n        info[\"mujoco_mjx_available\"] = True\n        info[\"mujoco_mjx_has_step\"] = hasattr(mjx, \"step\")\n    except Exception as exc:\n        info[\"mujoco_mjx_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        import ml_collections\n        info[\"ml_collections_version\"] = getattr(ml_collections, \"__version__\", None)\n    except Exception as exc:\n        info[\"ml_collections_error\"] = f\"{type(exc).__name__}: {exc}\"\n    if extra:\n        info.update(extra)\n    emit(\"SUBTEST_INFO_JSON_START\", info)\n\nimport os\nfrom pathlib import Path\nos.chdir('/home/lsd/robots/open-duck-mini-rdkx5/../Open_Duck_Playground')\n\ndef make_env():\n    from playground.open_duck_mini_v2.joystick import Joystick\n    return Joystick('flat_terrain', config_overrides={\n        'push_config.enable': False,\n        'lin_vel_x': [0.08, 0.08],\n        'lin_vel_y': [0.0, 0.0],\n        'ang_vel_yaw': [0.0, 0.0],\n        'neck_pitch_range': [0.0, 0.0],\n        'head_pitch_range': [0.0, 0.0],\n        'head_yaw_range': [0.0, 0.0],\n        'head_roll_range': [0.0, 0.0],\n        'noise_config.level': 0.0,\n        'noise_config.action_min_delay': 0,\n        'noise_config.action_max_delay': 1,\n        'noise_config.imu_min_delay': 0,\n        'noise_config.imu_max_delay': 1,\n    })\n\nemit_info({\"subtest\": \"playground_one_step_vanilla\"})\nimport jax\nimport jax.numpy as jnp\nenv = make_env()\nstate = env.reset(jax.random.PRNGKey(0))\naction = jnp.zeros(env.action_size)\nstate = env.step(state, action)\nblock_tree((state.obs, state.data.qpos, state.done))\nemit(\"SUBTEST_RESULT_JSON_START\", {\n    \"status\": \"PASS\",\n    \"done\": bool(state.done),\n    \"qpos0\": float(state.data.qpos[0]),\n})\n"
+      ],
+      "env_overrides": {
+        "JAX_PLATFORM_NAME": "cpu"
+      },
+      "stdout_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/rocm_mjx_isolation/default_cpu_playground_one_step_vanilla.stdout.txt",
+      "stderr_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/rocm_mjx_isolation/default_cpu_playground_one_step_vanilla.stderr.txt",
+      "info": {
+        "env": {
+          "JAX_PLATFORM_NAME": "cpu"
+        },
+        "jax_backend": "cpu",
+        "jax_devices": [
+          "TFRT_CPU_0"
+        ],
+        "jax_version": "0.8.2",
+        "jaxlib_version": "0.8.2",
+        "ml_collections_version": "1.1.0",
+        "mujoco_mjx_available": true,
+        "mujoco_mjx_has_step": true,
+        "mujoco_version": "3.9.0",
+        "platform": "Linux-7.0.0-22-generic-x86_64-with-glibc2.43",
+        "python": "3.12.13 (main, May 10 2026, 19:30:01) [Clang 22.1.3 ]",
+        "python_executable": "/home/lsd/robots/envs/open-duck-playground/bin/python",
+        "subtest": "playground_one_step_vanilla"
+      },
+      "result": {
+        "done": false,
+        "qpos0": -0.0484071746468544,
+        "status": "PASS"
+      },
+      "progress": [],
+      "stdout_tail": "Failed to import warp: No module named 'warp'\nFailed to import mujoco_warp: No module named 'warp'\nSUBTEST_INFO_JSON_START\n{\"env\": {\"JAX_PLATFORM_NAME\": \"cpu\"}, \"jax_backend\": \"cpu\", \"jax_devices\": [\"TFRT_CPU_0\"], \"jax_version\": \"0.8.2\", \"jaxlib_version\": \"0.8.2\", \"ml_collections_version\": \"1.1.0\", \"mujoco_mjx_available\": true, \"mujoco_mjx_has_step\": true, \"mujoco_version\": \"3.9.0\", \"platform\": \"Linux-7.0.0-22-generic-x86_64-with-glibc2.43\", \"python\": \"3.12.13 (main, May 10 2026, 19:30:01) [Clang 22.1.3 ]\", \"python_executable\": \"/home/lsd/robots/envs/open-duck-playground/bin/python\", \"subtest\": \"playground_one_step_vanilla\"}\nSUBTEST_INFO_JSON_END\nxml: /home/lsd/robots/open-duck-mini-rdkx5/../Open_Duck_Playground/playground/open_duck_mini_v2/xmls/scene_flat_terrain.xml\nactuators: ['left_hip_yaw', 'left_hip_roll', 'left_hip_pitch', 'left_knee', 'left_ankle', 'neck_pitch', 'head_pitch', 'head_yaw', 'head_roll', 'right_hip_yaw', 'right_hip_roll', 'right_hip_pitch', 'right_knee', 'right_ankle']\njoints: ['floating_base', 'left_hip_yaw', 'left_hip_roll', 'left_hip_pitch', 'left_knee', 'left_ankle', 'neck_pitch', 'head_pitch', 'head_yaw', 'head_roll', 'right_hip_yaw', 'right_hip_roll', 'right_hip_pitch', 'right_knee', 'right_ankle']\nbacklash joints: []\nactuator joints ids: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]\nactuator joints dict: {'left_hip_yaw': 1, 'left_hip_roll': 2, 'left_hip_pitch': 3, 'left_knee': 4, 'left_ankle': 5, 'neck_pitch': 6, 'head_pitch': 7, 'head_yaw': 8, 'head_roll': 9, 'right_hip_yaw': 10, 'right_hip_roll': 11, 'right_hip_pitch': 12, 'right_knee': 13, 'right_ankle': 14}\nfloating qpos addr: 0 qvel addr: 0\n[Poly ref data] Processing ...\n[Poly ref data] Done processing\nSUBTEST_RESULT_JSON_START\n{\"done\": false, \"qpos0\": -0.0484071746468544, \"status\": \"PASS\"}\nSUBTEST_RESULT_JSON_END\n",
+      "stderr_tail": "/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n"
+    },
+    {
+      "id": "default_cpu_playground_multi_step_vanilla",
+      "name": "playground_multi_step_vanilla",
+      "platform": "cpu",
+      "variant": "default",
+      "status": "TIMEOUT",
+      "returncode": null,
+      "elapsed_s": 120.32957979600178,
+      "command": [
+        "/home/lsd/robots/open-duck-mini-rdkx5/../envs/open-duck-playground/bin/python",
+        "-c",
+        "\nimport json\nimport os\nimport platform\nimport sys\nfrom pathlib import Path\n\nREPO_ROOT = '/home/lsd/robots/open-duck-mini-rdkx5'\nTOOLS_PATH = str(Path(REPO_ROOT) / \"tools\")\nPLAYGROUND_PATH = '/home/lsd/robots/open-duck-mini-rdkx5/../Open_Duck_Playground'\nif TOOLS_PATH not in sys.path:\n    sys.path.insert(0, TOOLS_PATH)\nif PLAYGROUND_PATH not in sys.path:\n    sys.path.insert(0, PLAYGROUND_PATH)\n\ndef emit(tag, payload):\n    print(tag)\n    print(json.dumps(payload, sort_keys=True, default=str))\n    print(tag.replace(\"START\", \"END\"))\n    sys.stdout.flush()\n\ndef block_tree(value):\n    import jax\n    def block_item(item):\n        return item.block_until_ready() if hasattr(item, \"block_until_ready\") else item\n    return jax.tree_util.tree_map(block_item, value)\n\ndef emit_info(extra=None):\n    info = {\n        \"python\": sys.version,\n        \"python_executable\": sys.executable,\n        \"platform\": platform.platform(),\n        \"env\": {key: os.environ.get(key) for key in ['JAX_PLATFORM_NAME', 'JAX_PLATFORMS', 'JAX_DISABLE_JIT', 'JAX_DEBUG_NANS', 'JAX_DEBUG_INFS', 'XLA_PYTHON_CLIENT_PREALLOCATE', 'XLA_PYTHON_CLIENT_MEM_FRACTION', 'XLA_FLAGS', 'HIP_VISIBLE_DEVICES', 'ROCR_VISIBLE_DEVICES', 'HSA_OVERRIDE_GFX_VERSION', 'MUJOCO_GL'] if key in os.environ},\n    }\n    try:\n        import jax\n        info[\"jax_version\"] = getattr(jax, \"__version__\", None)\n        try:\n            import jaxlib\n            info[\"jaxlib_version\"] = getattr(jaxlib, \"__version__\", None)\n        except Exception as exc:\n            info[\"jaxlib_error\"] = f\"{type(exc).__name__}: {exc}\"\n        info[\"jax_backend\"] = jax.default_backend()\n        info[\"jax_devices\"] = [str(device) for device in jax.devices()]\n    except Exception as exc:\n        info[\"jax_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        import mujoco\n        info[\"mujoco_version\"] = getattr(mujoco, \"__version__\", None)\n    except Exception as exc:\n        info[\"mujoco_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        from mujoco import mjx\n        info[\"mujoco_mjx_available\"] = True\n        info[\"mujoco_mjx_has_step\"] = hasattr(mjx, \"step\")\n    except Exception as exc:\n        info[\"mujoco_mjx_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        import ml_collections\n        info[\"ml_collections_version\"] = getattr(ml_collections, \"__version__\", None)\n    except Exception as exc:\n        info[\"ml_collections_error\"] = f\"{type(exc).__name__}: {exc}\"\n    if extra:\n        info.update(extra)\n    emit(\"SUBTEST_INFO_JSON_START\", info)\n\nimport os\nfrom pathlib import Path\nos.chdir('/home/lsd/robots/open-duck-mini-rdkx5/../Open_Duck_Playground')\n\ndef make_env():\n    from playground.open_duck_mini_v2.joystick import Joystick\n    return Joystick('flat_terrain', config_overrides={\n        'push_config.enable': False,\n        'lin_vel_x': [0.08, 0.08],\n        'lin_vel_y': [0.0, 0.0],\n        'ang_vel_yaw': [0.0, 0.0],\n        'neck_pitch_range': [0.0, 0.0],\n        'head_pitch_range': [0.0, 0.0],\n        'head_yaw_range': [0.0, 0.0],\n        'head_roll_range': [0.0, 0.0],\n        'noise_config.level': 0.0,\n        'noise_config.action_min_delay': 0,\n        'noise_config.action_max_delay': 1,\n        'noise_config.imu_min_delay': 0,\n        'noise_config.imu_max_delay': 1,\n    })\n\nemit_info({\"subtest\": \"playground_multi_step_vanilla\", \"steps\": [1, 2, 10, 100]})\nimport jax\nimport jax.numpy as jnp\nenv = make_env()\nstate = env.reset(jax.random.PRNGKey(0))\naction = jnp.zeros(env.action_size)\ntarget_steps = [1, 2, 10, 100]\ncurrent = 0\nout = {}\nfor target in target_steps:\n    while current < target:\n        state = env.step(state, action)\n        current += 1\n    block_tree((state.obs, state.data.qpos, state.done))\n    out[str(target)] = {\"done\": bool(state.done), \"qpos0\": float(state.data.qpos[0])}\n    emit(\"SUBTEST_PROGRESS_JSON_START\", {\"steps\": target, \"status\": \"PASS\"})\nemit(\"SUBTEST_RESULT_JSON_START\", {\"status\": \"PASS\", \"steps\": out})\n"
+      ],
+      "env_overrides": {
+        "JAX_PLATFORM_NAME": "cpu"
+      },
+      "stdout_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/rocm_mjx_isolation/default_cpu_playground_multi_step_vanilla.stdout.txt",
+      "stderr_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/rocm_mjx_isolation/default_cpu_playground_multi_step_vanilla.stderr.txt",
+      "info": {
+        "env": {
+          "JAX_PLATFORM_NAME": "cpu"
+        },
+        "jax_backend": "cpu",
+        "jax_devices": [
+          "TFRT_CPU_0"
+        ],
+        "jax_version": "0.8.2",
+        "jaxlib_version": "0.8.2",
+        "ml_collections_version": "1.1.0",
+        "mujoco_mjx_available": true,
+        "mujoco_mjx_has_step": true,
+        "mujoco_version": "3.9.0",
+        "platform": "Linux-7.0.0-22-generic-x86_64-with-glibc2.43",
+        "python": "3.12.13 (main, May 10 2026, 19:30:01) [Clang 22.1.3 ]",
+        "python_executable": "/home/lsd/robots/envs/open-duck-playground/bin/python",
+        "steps": [
+          1,
+          2,
+          10,
+          100
+        ],
+        "subtest": "playground_multi_step_vanilla"
+      },
+      "result": null,
+      "progress": [
+        {
+          "status": "PASS",
+          "steps": 1
+        },
+        {
+          "status": "PASS",
+          "steps": 2
+        },
+        {
+          "status": "PASS",
+          "steps": 10
+        }
+      ],
+      "stdout_tail": "Failed to import warp: No module named 'warp'\nFailed to import mujoco_warp: No module named 'warp'\nSUBTEST_INFO_JSON_START\n{\"env\": {\"JAX_PLATFORM_NAME\": \"cpu\"}, \"jax_backend\": \"cpu\", \"jax_devices\": [\"TFRT_CPU_0\"], \"jax_version\": \"0.8.2\", \"jaxlib_version\": \"0.8.2\", \"ml_collections_version\": \"1.1.0\", \"mujoco_mjx_available\": true, \"mujoco_mjx_has_step\": true, \"mujoco_version\": \"3.9.0\", \"platform\": \"Linux-7.0.0-22-generic-x86_64-with-glibc2.43\", \"python\": \"3.12.13 (main, May 10 2026, 19:30:01) [Clang 22.1.3 ]\", \"python_executable\": \"/home/lsd/robots/envs/open-duck-playground/bin/python\", \"steps\": [1, 2, 10, 100], \"subtest\": \"playground_multi_step_vanilla\"}\nSUBTEST_INFO_JSON_END\nxml: /home/lsd/robots/open-duck-mini-rdkx5/../Open_Duck_Playground/playground/open_duck_mini_v2/xmls/scene_flat_terrain.xml\nactuators: ['left_hip_yaw', 'left_hip_roll', 'left_hip_pitch', 'left_knee', 'left_ankle', 'neck_pitch', 'head_pitch', 'head_yaw', 'head_roll', 'right_hip_yaw', 'right_hip_roll', 'right_hip_pitch', 'right_knee', 'right_ankle']\njoints: ['floating_base', 'left_hip_yaw', 'left_hip_roll', 'left_hip_pitch', 'left_knee', 'left_ankle', 'neck_pitch', 'head_pitch', 'head_yaw', 'head_roll', 'right_hip_yaw', 'right_hip_roll', 'right_hip_pitch', 'right_knee', 'right_ankle']\nbacklash joints: []\nactuator joints ids: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]\nactuator joints dict: {'left_hip_yaw': 1, 'left_hip_roll': 2, 'left_hip_pitch': 3, 'left_knee': 4, 'left_ankle': 5, 'neck_pitch': 6, 'head_pitch': 7, 'head_yaw': 8, 'head_roll': 9, 'right_hip_yaw': 10, 'right_hip_roll': 11, 'right_hip_pitch': 12, 'right_knee': 13, 'right_ankle': 14}\nfloating qpos addr: 0 qvel addr: 0\n[Poly ref data] Processing ...\n[Poly ref data] Done processing\nSUBTEST_PROGRESS_JSON_START\n{\"status\": \"PASS\", \"steps\": 1}\nSUBTEST_PROGRESS_JSON_END\nSUBTEST_PROGRESS_JSON_START\n{\"status\": \"PASS\", \"steps\": 2}\nSUBTEST_PROGRESS_JSON_END\nSUBTEST_PROGRESS_JSON_START\n{\"status\": \"PASS\", \"steps\": 10}\nSUBTEST_PROGRESS_JSON_END\n",
+      "stderr_tail": "/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n"
+    },
+    {
+      "id": "default_cpu_playground_multi_step_bridge",
+      "name": "playground_multi_step_bridge",
+      "platform": "cpu",
+      "variant": "default",
+      "status": "TIMEOUT",
+      "returncode": null,
+      "elapsed_s": 120.2732255209994,
+      "command": [
+        "/home/lsd/robots/open-duck-mini-rdkx5/../envs/open-duck-playground/bin/python",
+        "-c",
+        "\nimport json\nimport os\nimport platform\nimport sys\nfrom pathlib import Path\n\nREPO_ROOT = '/home/lsd/robots/open-duck-mini-rdkx5'\nTOOLS_PATH = str(Path(REPO_ROOT) / \"tools\")\nPLAYGROUND_PATH = '/home/lsd/robots/open-duck-mini-rdkx5/../Open_Duck_Playground'\nif TOOLS_PATH not in sys.path:\n    sys.path.insert(0, TOOLS_PATH)\nif PLAYGROUND_PATH not in sys.path:\n    sys.path.insert(0, PLAYGROUND_PATH)\n\ndef emit(tag, payload):\n    print(tag)\n    print(json.dumps(payload, sort_keys=True, default=str))\n    print(tag.replace(\"START\", \"END\"))\n    sys.stdout.flush()\n\ndef block_tree(value):\n    import jax\n    def block_item(item):\n        return item.block_until_ready() if hasattr(item, \"block_until_ready\") else item\n    return jax.tree_util.tree_map(block_item, value)\n\ndef emit_info(extra=None):\n    info = {\n        \"python\": sys.version,\n        \"python_executable\": sys.executable,\n        \"platform\": platform.platform(),\n        \"env\": {key: os.environ.get(key) for key in ['JAX_PLATFORM_NAME', 'JAX_PLATFORMS', 'JAX_DISABLE_JIT', 'JAX_DEBUG_NANS', 'JAX_DEBUG_INFS', 'XLA_PYTHON_CLIENT_PREALLOCATE', 'XLA_PYTHON_CLIENT_MEM_FRACTION', 'XLA_FLAGS', 'HIP_VISIBLE_DEVICES', 'ROCR_VISIBLE_DEVICES', 'HSA_OVERRIDE_GFX_VERSION', 'MUJOCO_GL'] if key in os.environ},\n    }\n    try:\n        import jax\n        info[\"jax_version\"] = getattr(jax, \"__version__\", None)\n        try:\n            import jaxlib\n            info[\"jaxlib_version\"] = getattr(jaxlib, \"__version__\", None)\n        except Exception as exc:\n            info[\"jaxlib_error\"] = f\"{type(exc).__name__}: {exc}\"\n        info[\"jax_backend\"] = jax.default_backend()\n        info[\"jax_devices\"] = [str(device) for device in jax.devices()]\n    except Exception as exc:\n        info[\"jax_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        import mujoco\n        info[\"mujoco_version\"] = getattr(mujoco, \"__version__\", None)\n    except Exception as exc:\n        info[\"mujoco_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        from mujoco import mjx\n        info[\"mujoco_mjx_available\"] = True\n        info[\"mujoco_mjx_has_step\"] = hasattr(mjx, \"step\")\n    except Exception as exc:\n        info[\"mujoco_mjx_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        import ml_collections\n        info[\"ml_collections_version\"] = getattr(ml_collections, \"__version__\", None)\n    except Exception as exc:\n        info[\"ml_collections_error\"] = f\"{type(exc).__name__}: {exc}\"\n    if extra:\n        info.update(extra)\n    emit(\"SUBTEST_INFO_JSON_START\", info)\n\nemit_info({\"subtest\": \"closed_loop_policy_eval\", \"steps\": [1, 2, 10, 100], \"bridge_mode\": 'fitted'})\nimport json\nfrom pathlib import Path\nfrom closed_loop_sim_eval import ClosedLoopConfig, run_closed_loop_sim\nfit = json.load(open('/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/actuator_response_fit.json'))\nout = {}\nfor n in [1, 2, 10, 100]:\n    result = run_closed_loop_sim(ClosedLoopConfig(\n        policy_path=Path('/home/lsd/robots/open-duck-mini-rdkx5/policy/BEST_WALK_ONNX_2.onnx'),\n        fit=fit,\n        playground_root=Path('/home/lsd/robots/open-duck-mini-rdkx5/../Open_Duck_Playground'),\n        command_x=0.08,\n        duration_s=float(n) * 0.02,\n        bridge_mode='fitted',\n    ))\n    out[str(n)] = {\n        \"status\": result.get(\"status\"),\n        \"modes\": {\n            key: {\n                \"samples\": value.get(\"samples\"),\n                \"termination_reason\": value.get(\"termination_reason\"),\n                \"pitch_chain_summary\": value.get(\"pitch_chain_summary\"),\n            }\n            for key, value in (result.get(\"modes\") or {}).items()\n        },\n        \"error\": result.get(\"error\"),\n    }\n    emit(\"SUBTEST_PROGRESS_JSON_START\", {\"steps\": n, \"status\": result.get(\"status\")})\nemit(\"SUBTEST_RESULT_JSON_START\", {\"status\": \"PASS\", \"steps\": out})\n"
+      ],
+      "env_overrides": {
+        "JAX_PLATFORM_NAME": "cpu"
+      },
+      "stdout_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/rocm_mjx_isolation/default_cpu_playground_multi_step_bridge.stdout.txt",
+      "stderr_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/rocm_mjx_isolation/default_cpu_playground_multi_step_bridge.stderr.txt",
+      "info": {
+        "bridge_mode": "fitted",
+        "env": {
+          "JAX_PLATFORM_NAME": "cpu"
+        },
+        "jax_backend": "cpu",
+        "jax_devices": [
+          "TFRT_CPU_0"
+        ],
+        "jax_version": "0.8.2",
+        "jaxlib_version": "0.8.2",
+        "ml_collections_version": "1.1.0",
+        "mujoco_mjx_available": true,
+        "mujoco_mjx_has_step": true,
+        "mujoco_version": "3.9.0",
+        "platform": "Linux-7.0.0-22-generic-x86_64-with-glibc2.43",
+        "python": "3.12.13 (main, May 10 2026, 19:30:01) [Clang 22.1.3 ]",
+        "python_executable": "/home/lsd/robots/envs/open-duck-playground/bin/python",
+        "steps": [
+          1,
+          2,
+          10,
+          100
+        ],
+        "subtest": "closed_loop_policy_eval"
+      },
+      "result": null,
+      "progress": [
+        {
+          "status": "HOLD_MODEL_DOES_NOT_REPRODUCE",
+          "steps": 1
+        },
+        {
+          "status": "HOLD_MODEL_DOES_NOT_REPRODUCE",
+          "steps": 2
+        },
+        {
+          "status": "HOLD_MODEL_DOES_NOT_REPRODUCE",
+          "steps": 10
+        }
+      ],
+      "stdout_tail": "nkle']\njoints: ['floating_base', 'left_hip_yaw', 'left_hip_roll', 'left_hip_pitch', 'left_knee', 'left_ankle', 'neck_pitch', 'head_pitch', 'head_yaw', 'head_roll', 'right_hip_yaw', 'right_hip_roll', 'right_hip_pitch', 'right_knee', 'right_ankle']\nbacklash joints: []\nactuator joints ids: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]\nactuator joints dict: {'left_hip_yaw': 1, 'left_hip_roll': 2, 'left_hip_pitch': 3, 'left_knee': 4, 'left_ankle': 5, 'neck_pitch': 6, 'head_pitch': 7, 'head_yaw': 8, 'head_roll': 9, 'right_hip_yaw': 10, 'right_hip_roll': 11, 'right_hip_pitch': 12, 'right_knee': 13, 'right_ankle': 14}\nfloating qpos addr: 0 qvel addr: 0\n[Poly ref data] Processing ...\n[Poly ref data] Done processing\nSUBTEST_PROGRESS_JSON_START\n{\"status\": \"HOLD_MODEL_DOES_NOT_REPRODUCE\", \"steps\": 2}\nSUBTEST_PROGRESS_JSON_END\nxml: /home/lsd/robots/open-duck-mini-rdkx5/../Open_Duck_Playground/playground/open_duck_mini_v2/xmls/scene_flat_terrain.xml\nactuators: ['left_hip_yaw', 'left_hip_roll', 'left_hip_pitch', 'left_knee', 'left_ankle', 'neck_pitch', 'head_pitch', 'head_yaw', 'head_roll', 'right_hip_yaw', 'right_hip_roll', 'right_hip_pitch', 'right_knee', 'right_ankle']\njoints: ['floating_base', 'left_hip_yaw', 'left_hip_roll', 'left_hip_pitch', 'left_knee', 'left_ankle', 'neck_pitch', 'head_pitch', 'head_yaw', 'head_roll', 'right_hip_yaw', 'right_hip_roll', 'right_hip_pitch', 'right_knee', 'right_ankle']\nbacklash joints: []\nactuator joints ids: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]\nactuator joints dict: {'left_hip_yaw': 1, 'left_hip_roll': 2, 'left_hip_pitch': 3, 'left_knee': 4, 'left_ankle': 5, 'neck_pitch': 6, 'head_pitch': 7, 'head_yaw': 8, 'head_roll': 9, 'right_hip_yaw': 10, 'right_hip_roll': 11, 'right_hip_pitch': 12, 'right_knee': 13, 'right_ankle': 14}\nfloating qpos addr: 0 qvel addr: 0\n[Poly ref data] Processing ...\n[Poly ref data] Done processing\nSUBTEST_PROGRESS_JSON_START\n{\"status\": \"HOLD_MODEL_DOES_NOT_REPRODUCE\", \"steps\": 10}\nSUBTEST_PROGRESS_JSON_END\n",
+      "stderr_tail": "/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n"
+    },
+    {
+      "id": "default_cpu_closed_loop_policy_eval_cpu",
+      "name": "closed_loop_policy_eval_cpu",
+      "platform": "cpu",
+      "variant": "default",
+      "status": "PASS",
+      "returncode": 0,
+      "elapsed_s": 116.1736113569932,
+      "command": [
+        "/home/lsd/robots/open-duck-mini-rdkx5/../envs/open-duck-playground/bin/python",
+        "-c",
+        "\nimport json\nimport os\nimport platform\nimport sys\nfrom pathlib import Path\n\nREPO_ROOT = '/home/lsd/robots/open-duck-mini-rdkx5'\nTOOLS_PATH = str(Path(REPO_ROOT) / \"tools\")\nPLAYGROUND_PATH = '/home/lsd/robots/open-duck-mini-rdkx5/../Open_Duck_Playground'\nif TOOLS_PATH not in sys.path:\n    sys.path.insert(0, TOOLS_PATH)\nif PLAYGROUND_PATH not in sys.path:\n    sys.path.insert(0, PLAYGROUND_PATH)\n\ndef emit(tag, payload):\n    print(tag)\n    print(json.dumps(payload, sort_keys=True, default=str))\n    print(tag.replace(\"START\", \"END\"))\n    sys.stdout.flush()\n\ndef block_tree(value):\n    import jax\n    def block_item(item):\n        return item.block_until_ready() if hasattr(item, \"block_until_ready\") else item\n    return jax.tree_util.tree_map(block_item, value)\n\ndef emit_info(extra=None):\n    info = {\n        \"python\": sys.version,\n        \"python_executable\": sys.executable,\n        \"platform\": platform.platform(),\n        \"env\": {key: os.environ.get(key) for key in ['JAX_PLATFORM_NAME', 'JAX_PLATFORMS', 'JAX_DISABLE_JIT', 'JAX_DEBUG_NANS', 'JAX_DEBUG_INFS', 'XLA_PYTHON_CLIENT_PREALLOCATE', 'XLA_PYTHON_CLIENT_MEM_FRACTION', 'XLA_FLAGS', 'HIP_VISIBLE_DEVICES', 'ROCR_VISIBLE_DEVICES', 'HSA_OVERRIDE_GFX_VERSION', 'MUJOCO_GL'] if key in os.environ},\n    }\n    try:\n        import jax\n        info[\"jax_version\"] = getattr(jax, \"__version__\", None)\n        try:\n            import jaxlib\n            info[\"jaxlib_version\"] = getattr(jaxlib, \"__version__\", None)\n        except Exception as exc:\n            info[\"jaxlib_error\"] = f\"{type(exc).__name__}: {exc}\"\n        info[\"jax_backend\"] = jax.default_backend()\n        info[\"jax_devices\"] = [str(device) for device in jax.devices()]\n    except Exception as exc:\n        info[\"jax_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        import mujoco\n        info[\"mujoco_version\"] = getattr(mujoco, \"__version__\", None)\n    except Exception as exc:\n        info[\"mujoco_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        from mujoco import mjx\n        info[\"mujoco_mjx_available\"] = True\n        info[\"mujoco_mjx_has_step\"] = hasattr(mjx, \"step\")\n    except Exception as exc:\n        info[\"mujoco_mjx_error\"] = f\"{type(exc).__name__}: {exc}\"\n    try:\n        import ml_collections\n        info[\"ml_collections_version\"] = getattr(ml_collections, \"__version__\", None)\n    except Exception as exc:\n        info[\"ml_collections_error\"] = f\"{type(exc).__name__}: {exc}\"\n    if extra:\n        info.update(extra)\n    emit(\"SUBTEST_INFO_JSON_START\", info)\n\nemit_info({\"subtest\": \"closed_loop_policy_eval\", \"steps\": [1, 2, 10, 100], \"bridge_mode\": 'vanilla'})\nimport json\nfrom pathlib import Path\nfrom closed_loop_sim_eval import ClosedLoopConfig, run_closed_loop_sim\nfit = json.load(open('/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/actuator_response_fit.json'))\nout = {}\nfor n in [1, 2, 10, 100]:\n    result = run_closed_loop_sim(ClosedLoopConfig(\n        policy_path=Path('/home/lsd/robots/open-duck-mini-rdkx5/policy/BEST_WALK_ONNX_2.onnx'),\n        fit=fit,\n        playground_root=Path('/home/lsd/robots/open-duck-mini-rdkx5/../Open_Duck_Playground'),\n        command_x=0.08,\n        duration_s=float(n) * 0.02,\n        bridge_mode='vanilla',\n    ))\n    out[str(n)] = {\n        \"status\": result.get(\"status\"),\n        \"modes\": {\n            key: {\n                \"samples\": value.get(\"samples\"),\n                \"termination_reason\": value.get(\"termination_reason\"),\n                \"pitch_chain_summary\": value.get(\"pitch_chain_summary\"),\n            }\n            for key, value in (result.get(\"modes\") or {}).items()\n        },\n        \"error\": result.get(\"error\"),\n    }\n    emit(\"SUBTEST_PROGRESS_JSON_START\", {\"steps\": n, \"status\": result.get(\"status\")})\nemit(\"SUBTEST_RESULT_JSON_START\", {\"status\": \"PASS\", \"steps\": out})\n"
+      ],
+      "env_overrides": {
+        "JAX_PLATFORM_NAME": "cpu"
+      },
+      "stdout_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/rocm_mjx_isolation/default_cpu_closed_loop_policy_eval_cpu.stdout.txt",
+      "stderr_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/rocm_mjx_isolation/default_cpu_closed_loop_policy_eval_cpu.stderr.txt",
+      "info": {
+        "bridge_mode": "vanilla",
+        "env": {
+          "JAX_PLATFORM_NAME": "cpu"
+        },
+        "jax_backend": "cpu",
+        "jax_devices": [
+          "TFRT_CPU_0"
+        ],
+        "jax_version": "0.8.2",
+        "jaxlib_version": "0.8.2",
+        "ml_collections_version": "1.1.0",
+        "mujoco_mjx_available": true,
+        "mujoco_mjx_has_step": true,
+        "mujoco_version": "3.9.0",
+        "platform": "Linux-7.0.0-22-generic-x86_64-with-glibc2.43",
+        "python": "3.12.13 (main, May 10 2026, 19:30:01) [Clang 22.1.3 ]",
+        "python_executable": "/home/lsd/robots/envs/open-duck-playground/bin/python",
+        "steps": [
+          1,
+          2,
+          10,
+          100
+        ],
+        "subtest": "closed_loop_policy_eval"
+      },
+      "result": {
+        "status": "PASS",
+        "steps": {
+          "1": {
+            "error": null,
+            "modes": {
+              "vanilla": {
+                "pitch_chain_summary": {
+                  "action_saturation_pct": {
+                    "max": 0.0,
+                    "mean": 0.0,
+                    "min": 0.0,
+                    "p50": 0.0,
+                    "p95": 0.0,
+                    "p99": 0.0,
+                    "std": 0.0
+                  },
+                  "bridge_tracking_p95_rad": {
+                    "max": 0.0,
+                    "mean": 0.0,
+                    "min": 0.0,
+                    "p50": 0.0,
+                    "p95": 0.0,
+                    "p99": 0.0,
+                    "std": 0.0
+                  },
+                  "estimated_lag_ticks": null,
+                  "joint_target_tracking_p95_rad": {
+                    "max": 0.4777284860610962,
+                    "mean": 0.23296471436818442,
+                    "min": 0.05056262016296387,
+                    "p50": 0.1674574315547943,
+                    "p95": 0.45998717844486237,
+                    "p99": 0.47418022453784947,
+                    "std": 0.15442524510077885
+                  },
+                  "sent_target_velocity_p95_rad_s": {
+                    "max": 0.0,
+                    "mean": 0.0,
+                    "min": 0.0,
+                    "p50": 0.0,
+                    "p95": 0.0,
+                    "p99": 0.0,
+                    "std": 0.0
+                  }
+                },
+                "samples": 1,
+                "termination_reason": "duration_complete"
+              }
+            },
+            "status": "PASS_CLOSED_LOOP_REPRODUCTION"
+          },
+          "10": {
+            "error": null,
+            "modes": {
+              "vanilla": {
+                "pitch_chain_summary": {
+                  "action_saturation_pct": {
+                    "max": 0.0,
+                    "mean": 0.0,
+                    "min": 0.0,
+                    "p50": 0.0,
+                    "p95": 0.0,
+                    "p99": 0.0,
+                    "std": 0.0
+                  },
+                  "bridge_tracking_p95_rad": {
+                    "max": 0.0,
+                    "mean": 0.0,
+                    "min": 0.0,
+                    "p50": 0.0,
+                    "p95": 0.0,
+                    "p99": 0.0,
+                    "std": 0.0
+                  },
+                  "estimated_lag_ticks": null,
+                  "joint_target_tracking_p95_rad": {
+                    "max": 0.44882741570472723,
+                    "mean": 0.23239836444457374,
+                    "min": 0.12983351647853858,
+                    "p50": 0.16632044315338138,
+                    "p95": 0.4225298345088959,
+                    "p99": 0.44356789946556097,
+                    "std": 0.12122874571267682
+                  },
+                  "sent_target_velocity_p95_rad_s": {
+                    "max": 5.239999294281006,
+                    "mean": 4.320712288220723,
+                    "min": 2.263777405023575,
+                    "p50": 4.5876942574977875,
+                    "p95": 5.18051091581583,
+                    "p99": 5.228101618587971,
+                    "std": 0.9801368962579846
+                  }
+                },
+                "samples": 10,
+                "termination_reason": "duration_complete"
+              }
+            },
+            "status": "PASS_CLOSED_LOOP_REPRODUCTION"
+          },
+          "100": {
+            "error": null,
+            "modes": {
+              "vanilla": {
+                "pitch_chain_summary": {
+                  "action_saturation_pct": {
+                    "max": 0.0,
+                    "mean": 0.0,
+                    "min": 0.0,
+                    "p50": 0.0,
+                    "p95": 0.0,
+                    "p99": 0.0,
+                    "std": 0.0
+                  },
+                  "bridge_tracking_p95_rad": {
+                    "max": 0.0,
+                    "mean": 0.0,
+                    "min": 0.0,
+                    "p50": 0.0,
+                    "p95": 0.0,
+                    "p99": 0.0,
+                    "std": 0.0
+                  },
+                  "estimated_lag_ticks": {
+                    "max": 0.0,
+                    "mean": 0.0,
+                    "min": 0.0,
+                    "p50": 0.0,
+                    "p95": 0.0,
+                    "p99": 0.0,
+                    "std": 0.0
+                  },
+                  "joint_target_tracking_p95_rad": {
+                    "max": 0.2021010935306549,
+                    "mean": 0.14001532196998595,
+                    "min": 0.08463665544986725,
+                    "p50": 0.14500374495983123,
+                    "p95": 0.19583047628402708,
+                    "p99": 0.20084697008132932,
+                    "std": 0.04368515800152308
+                  },
+                  "sent_target_velocity_p95_rad_s": {
+                    "max": 5.239999294281006,
+                    "mean": 3.3387709160645804,
+                    "min": 2.1429811418056484,
+                    "p50": 3.093049973249435,
+                    "p95": 4.93971474468708,
+                    "p99": 5.179942384362221,
+                    "std": 1.0449285684110272
+                  }
+                },
+                "samples": 100,
+                "termination_reason": "duration_complete"
+              }
+            },
+            "status": "PASS_CLOSED_LOOP_REPRODUCTION"
+          },
+          "2": {
+            "error": null,
+            "modes": {
+              "vanilla": {
+                "pitch_chain_summary": {
+                  "action_saturation_pct": {
+                    "max": 0.0,
+                    "mean": 0.0,
+                    "min": 0.0,
+                    "p50": 0.0,
+                    "p95": 0.0,
+                    "p99": 0.0,
+                    "std": 0.0
+                  },
+                  "bridge_tracking_p95_rad": {
+                    "max": 0.0,
+                    "mean": 0.0,
+                    "min": 0.0,
+                    "p50": 0.0,
+                    "p95": 0.0,
+                    "p99": 0.0,
+                    "std": 0.0
+                  },
+                  "estimated_lag_ticks": null,
+                  "joint_target_tracking_p95_rad": {
+                    "max": 0.47451725602149963,
+                    "mean": 0.23451795528332395,
+                    "min": 0.05047157406806946,
+                    "p50": 0.17998093366622925,
+                    "p95": 0.4556598499417305,
+                    "p99": 0.4707457748055458,
+                    "std": 0.15157675294835943
+                  },
+                  "sent_target_velocity_p95_rad_s": {
+                    "max": 4.977999329566956,
+                    "mean": 3.8686912258466086,
+                    "min": 2.175436317920685,
+                    "p50": 3.990042060613632,
+                    "p95": 4.977999329566956,
+                    "p99": 4.977999329566956,
+                    "std": 1.0071505503653542
+                  }
+                },
+                "samples": 2,
+                "termination_reason": "duration_complete"
+              }
+            },
+            "status": "PASS_CLOSED_LOOP_REPRODUCTION"
+          }
+        }
+      },
+      "progress": [
+        {
+          "status": "PASS_CLOSED_LOOP_REPRODUCTION",
+          "steps": 1
+        },
+        {
+          "status": "PASS_CLOSED_LOOP_REPRODUCTION",
+          "steps": 2
+        },
+        {
+          "status": "PASS_CLOSED_LOOP_REPRODUCTION",
+          "steps": 10
+        },
+        {
+          "status": "PASS_CLOSED_LOOP_REPRODUCTION",
+          "steps": 100
+        }
+      ],
+      "stdout_tail": ", \"std\": 0.9801368962579846}}, \"samples\": 10, \"termination_reason\": \"duration_complete\"}}, \"status\": \"PASS_CLOSED_LOOP_REPRODUCTION\"}, \"100\": {\"error\": null, \"modes\": {\"vanilla\": {\"pitch_chain_summary\": {\"action_saturation_pct\": {\"max\": 0.0, \"mean\": 0.0, \"min\": 0.0, \"p50\": 0.0, \"p95\": 0.0, \"p99\": 0.0, \"std\": 0.0}, \"bridge_tracking_p95_rad\": {\"max\": 0.0, \"mean\": 0.0, \"min\": 0.0, \"p50\": 0.0, \"p95\": 0.0, \"p99\": 0.0, \"std\": 0.0}, \"estimated_lag_ticks\": {\"max\": 0.0, \"mean\": 0.0, \"min\": 0.0, \"p50\": 0.0, \"p95\": 0.0, \"p99\": 0.0, \"std\": 0.0}, \"joint_target_tracking_p95_rad\": {\"max\": 0.2021010935306549, \"mean\": 0.14001532196998595, \"min\": 0.08463665544986725, \"p50\": 0.14500374495983123, \"p95\": 0.19583047628402708, \"p99\": 0.20084697008132932, \"std\": 0.04368515800152308}, \"sent_target_velocity_p95_rad_s\": {\"max\": 5.239999294281006, \"mean\": 3.3387709160645804, \"min\": 2.1429811418056484, \"p50\": 3.093049973249435, \"p95\": 4.93971474468708, \"p99\": 5.179942384362221, \"std\": 1.0449285684110272}}, \"samples\": 100, \"termination_reason\": \"duration_complete\"}}, \"status\": \"PASS_CLOSED_LOOP_REPRODUCTION\"}, \"2\": {\"error\": null, \"modes\": {\"vanilla\": {\"pitch_chain_summary\": {\"action_saturation_pct\": {\"max\": 0.0, \"mean\": 0.0, \"min\": 0.0, \"p50\": 0.0, \"p95\": 0.0, \"p99\": 0.0, \"std\": 0.0}, \"bridge_tracking_p95_rad\": {\"max\": 0.0, \"mean\": 0.0, \"min\": 0.0, \"p50\": 0.0, \"p95\": 0.0, \"p99\": 0.0, \"std\": 0.0}, \"estimated_lag_ticks\": null, \"joint_target_tracking_p95_rad\": {\"max\": 0.47451725602149963, \"mean\": 0.23451795528332395, \"min\": 0.05047157406806946, \"p50\": 0.17998093366622925, \"p95\": 0.4556598499417305, \"p99\": 0.4707457748055458, \"std\": 0.15157675294835943}, \"sent_target_velocity_p95_rad_s\": {\"max\": 4.977999329566956, \"mean\": 3.8686912258466086, \"min\": 2.175436317920685, \"p50\": 3.990042060613632, \"p95\": 4.977999329566956, \"p99\": 4.977999329566956, \"std\": 1.0071505503653542}}, \"samples\": 2, \"termination_reason\": \"duration_complete\"}}, \"status\": \"PASS_CLOSED_LOOP_REPRODUCTION\"}}}\nSUBTEST_RESULT_JSON_END\n",
+      "stderr_tail": "/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n"
+    }
+  ],
+  "capabilities": {
+    "basic_jax_gpu": "PASS",
+    "jax_jit_scan_gpu": "PASS",
+    "minimal_mjx_gpu": "PASS",
+    "playground_reset_gpu": "PASS",
+    "playground_step_gpu": "FAIL",
+    "playground_bridge_gpu": "FAIL",
+    "closed_loop_gpu": "FAIL",
+    "closed_loop_cpu": "PASS"
+  },
+  "assessment": {
+    "gate_result": "HOLD_PLAYGROUND_GPU_STEP",
+    "smallest_failing_subtest": "default_gpu_playground_one_step_vanilla",
+    "smallest_failing_status": "TIMEOUT"
+  }
+}

@@ -1,6 +1,6 @@
 # Sim Actuator Bridge Eval
 
-Last updated: 2026-06-21
+Last updated: 2026-06-22
 
 ## Purpose
 
@@ -113,6 +113,93 @@ Meaning: the correct sim contract exists and the bridge insertion point is
 implemented, but the local ROCm/JAX/MJX execution failed during the closed-loop
 GPU step with `ROCM_ERROR_ILLEGAL_ADDRESS`.
 
+Follow-up isolation narrowed this further:
+
+```text
+gate_result: HOLD_PLAYGROUND_GPU_STEP
+smallest_failing_subtest: default_gpu_playground_one_step_vanilla
+```
+
+Basic JAX GPU, JAX jit/scan, minimal MJX GPU, Playground contract
+construction, and Playground reset all pass. The first failing GPU operation is
+one Open Duck Playground step, before the actuator bridge is involved.
+
+Additional execution-mode checks show the same backend fault when the
+Playground step is wrapped differently:
+
+```text
+playground_one_step_jit:      FAIL, ROCM_ERROR_ILLEGAL_ADDRESS
+playground_scan_step_vanilla: FAIL, ROCM_ERROR_ILLEGAL_ADDRESS
+```
+
+So `jax.lax.scan` is not enough to clear the ROCm/MJX issue. Debug nan/inf
+flags identify MJX convex collision as the involved code path, but the same
+flags also fail on CPU during reset because that collision code uses `-inf`
+sentinels internally.
+
+Additional strict-math and reset-state probes did not clear the GPU failure:
+
+```text
+ROCM_CHIP_COMPILER_FLAGS=-fno-fast-math -fhonor-infinities -fhonor-nans:
+  still ROCM_ERROR_ILLEGAL_ADDRESS
+
+post-reset finite-state sanitation:
+  CPU sanitized scan passes
+  GPU sanitized scan still ROCM_ERROR_ILLEGAL_ADDRESS
+```
+
+The reset state fields checked (`qpos`, `qvel`, `qacc`, `ctrl`, and
+`qfrc_constraint`) are finite on both CPU and GPU. The active Open Duck Mini v2
+MJCFs also leave several foot/floor `solref` and `solimp` values implicit,
+which is now a candidate offline sim-model probe, not a runtime fix.
+
+## CUDA L4 Closed-Loop Result
+
+A Google Colab / NVIDIA L4 run was used as an independent CUDA backend check
+after the local ROCm/MJX path failed.
+
+Colab setup notes:
+
+- JAX detected `cuda:0`.
+- The `playground` package had to be pinned to `0.0.3-0.0.5` because
+  `playground>=0.1.0` removes `mujoco_playground._src.collision`, while the
+  Open Duck Playground code imports that module.
+- The eval preflight needed a longer contract-instantiation timeout on Colab
+  due to first-run JAX/MJX compile latency.
+
+Result:
+
+```text
+overall_status: PASS_CLOSED_LOOP_REPRODUCTION
+gpu: NVIDIA L4 / cuda:0
+samples per mode: 750
+vanilla / fitted / stress all completed duration
+```
+
+The CUDA run confirmed:
+
+- instantiated observation contract: `state[101]`, `privileged_state[212]`
+- action size: `14`
+- actuator order matches `BEST_WALK_ONNX_2`
+- bridge insertion point: `target_stage_direct`
+- `double_rate_limit: False`
+- fitted bridge lag: `3-4` ticks on the pitch chain
+
+Summary artifact:
+
+```text
+outputs/analysis/CUDA_L4_CLOSED_LOOP_ACTUATOR_BRIDGE_EVAL.md
+```
+
+Interpretation:
+
+```text
+The closed-loop bridge/eval logic works on CUDA.
+The local 7900 XTX failure is a ROCm/MJX backend issue.
+Proceed to training-wrapper implementation using the verified 101/14 contract.
+Do not run robot motion yet.
+```
+
 ## Expected Behavior
 
 Vanilla sim expectation:
@@ -179,6 +266,13 @@ effective_velocity_limit_rad_s: about 2.25-4.7
 
 - sim reproduction is plausible
 - next PR should implement the JAX/MJX training actuator wrapper
+
+Current cross-backend status:
+
+```text
+CUDA L4: PASS_CLOSED_LOOP_REPRODUCTION
+local 7900 XTX ROCm: HOLD_PLAYGROUND_GPU_STEP / ROCM_ERROR_ILLEGAL_ADDRESS
+```
 
 ## Commands
 
@@ -280,6 +374,31 @@ insertion point: target-stage bridge before mjx_env.step
 worker error: ROCM_ERROR_ILLEGAL_ADDRESS
 ```
 
+Current ROCm/MJX isolation output shows:
+
+```text
+outputs/analysis/ROCM_MJX_RUNTIME_ISOLATION.md
+outputs/analysis/rocm_mjx_runtime_isolation.json
+gate_result: HOLD_PLAYGROUND_GPU_STEP
+closed-loop CPU short matrix: PASS
+```
+
+Additional focused outputs:
+
+```text
+outputs/analysis/rocm_mjx_isolation_step_modes_default/ROCM_MJX_RUNTIME_ISOLATION.md
+outputs/analysis/rocm_mjx_isolation_scan_variants/ROCM_MJX_RUNTIME_ISOLATION.md
+outputs/analysis/rocm_mjx_isolation_debug_cpu/ROCM_MJX_RUNTIME_ISOLATION.md
+outputs/analysis/rocm_mjx_isolation_triton_strict_variants/ROCM_MJX_RUNTIME_ISOLATION.md
+outputs/analysis/rocm_mjx_isolation_sanitized_state/ROCM_MJX_RUNTIME_ISOLATION.md
+```
+
+They show that JIT and `lax.scan` wrappers do not fix the Open Duck Playground
+GPU step, MIOpen fusion disable does not fix it, and debug nan/inf checks trip
+on an MJX convex-collision `-inf` path that also appears on CPU. They also show
+that strict IEEE compiler flags and reset-state finite sanitation do not fix the
+GPU scan-step failure.
+
 Current telemetry replay output still shows:
 
 ```text
@@ -294,6 +413,7 @@ Interpretation:
   from real telemetry
 - the local Playground contract matches `BEST_WALK_ONNX_2`
 - closed-loop MuJoCo policy reproduction is blocked by the local ROCm/JAX/MJX
-  runtime fault, not by robot evidence or policy/sim contract mismatch
+  Playground step runtime fault, not by robot evidence, policy/sim contract
+  mismatch, or the actuator bridge insertion
 - training remains blocked until the closed-loop runtime fault is fixed and the
   sim reproduction result is reviewed
