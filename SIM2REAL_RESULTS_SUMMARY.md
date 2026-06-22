@@ -634,6 +634,30 @@ not clear the local 7900 XTX Open Duck MJX direct-step hang while MuJoCo/MJX is
 still `3.9.0`. Future ROCm work should test older MuJoCo/MJX versions in
 disposable envs; do not mutate the known `../envs/open-duck-playground` env.
 
+A second disposable ROCm env tested older MuJoCo/MJX:
+
+```text
+env: ../envs/open-duck-playground-rocm-mujoco337
+jax/jaxlib: 0.8.2
+jax-rocm7-pjrt/plugin: 0.8.2+rocm7.2.1
+mujoco/mujoco-mjx: 3.3.7
+playground: 0.0.5
+evidence: outputs/analysis/rocm_mjx_version_matrix_mujoco337/
+```
+
+Result:
+
+- `basic_jax`: `PASS`
+- `minimal_mjx_step`: `PASS`
+- `playground_contract_only`: `PASS`
+- `playground_reset`: `PASS`
+- `playground_direct_mjx_step` on GPU: `TIMEOUT`
+- `playground_direct_mjx_step` on CPU: `PASS`
+- gate: `HOLD_PLAYGROUND_GPU_STEP`
+
+Interpretation: downgrading MuJoCo/MJX to `3.3.7` with `playground==0.0.5`
+also does not clear the local 7900 XTX direct Open Duck MJX step hang.
+
 ## CUDA Candidate Handoff
 
 The current CUDA candidate handoff is recorded in:
