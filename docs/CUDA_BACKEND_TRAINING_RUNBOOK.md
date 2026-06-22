@@ -292,7 +292,9 @@ If target-velocity analysis exists, add:
 Prefer sending the generated `.tar.gz` bundle and importing it locally first:
 
 ```bash
-python3 tools/import_cuda_artifact_bundle.py /path/to/open_duck_cuda_artifacts_<timestamp>.tar.gz
+python3 tools/import_cuda_artifact_bundle.py \
+  /path/to/open_duck_cuda_artifacts_<timestamp>.tar.gz \
+  --expected-sha256 <CUDA_ARTIFACT_BUNDLE_SHA256>
 ```
 
 Open the generated `CUDA_ARTIFACT_IMPORT_SUMMARY.md` first. It reports a
