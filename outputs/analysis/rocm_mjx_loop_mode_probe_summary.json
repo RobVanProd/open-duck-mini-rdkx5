@@ -1,0 +1,38 @@
+{
+  "generated_at": "2026-06-22T12:02:00Z",
+  "mission": "Open Duck ROCm MJX loop mode probe",
+  "result": "HOLD_ROCM_JAX_CONTROL_FLOW",
+  "interpretation": "GPU host Python loops over repeated MJX steps pass, while JAX control-flow loops using scan or fori time out. The local 7900 XTX blocker is tied to JAX/XLA control-flow lowering around repeated mjx.step.",
+  "matrix": [
+    {
+      "loop_mode": "scan",
+      "platform": "gpu",
+      "n_substeps": 10,
+      "status": "TIMEOUT",
+      "elapsed_s": 60.13
+    },
+    {
+      "loop_mode": "fori",
+      "platform": "gpu",
+      "n_substeps": 10,
+      "status": "TIMEOUT",
+      "elapsed_s": 60.08
+    },
+    {
+      "loop_mode": "python",
+      "platform": "gpu",
+      "n_substeps": 10,
+      "status": "PASS",
+      "elapsed_s": 43.82
+    },
+    {
+      "loop_mode": "python_block_each",
+      "platform": "gpu",
+      "n_substeps": 10,
+      "status": "PASS",
+      "elapsed_s": 43.40
+    }
+  ],
+  "workaround_lead": "A host Python substep loop may be usable for slow local ROCm correctness eval, but not for training throughput.",
+  "safety": "No robot tests, SSH, deployment, runtime behavior changes, policy changes, or training were run."
+}

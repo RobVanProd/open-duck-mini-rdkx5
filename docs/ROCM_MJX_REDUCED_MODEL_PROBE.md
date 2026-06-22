@@ -36,6 +36,8 @@ Current summary:
 ```text
 outputs/analysis/ROCM_MJX_REDUCED_MODEL_PROBE_SUMMARY.md
 outputs/analysis/rocm_mjx_reduced_model_probe_summary.json
+outputs/analysis/ROCM_MJX_LOOP_MODE_PROBE_SUMMARY.md
+outputs/analysis/rocm_mjx_loop_mode_probe_summary.json
 ```
 
 Result:
@@ -72,6 +74,27 @@ either.
 
 The next ROCm debug target is therefore the JAX/ROCm substep-scan execution
 path around `mjx.step`, not foot contact alone.
+
+## Loop-Mode Follow-Up
+
+The loop-mode probe tested the baseline model with `n_substeps=10`:
+
+| loop mode | GPU result |
+|---|---|
+| `scan` | `TIMEOUT` |
+| `fori` | `TIMEOUT` |
+| `python` | `PASS` |
+| `python_block_each` | `PASS` |
+
+Interpretation:
+
+```text
+10 sequential MJX steps can run on ROCm when driven from the host.
+JAX control-flow lowering of the repeated MJX step is the local blocker.
+```
+
+This suggests a slow local ROCm correctness-eval workaround may be possible by
+using a host Python substep loop. It is not a training-throughput solution.
 
 CUDA remains the full closed-loop eval/training backend. CPU remains useful for
 small correctness checks.

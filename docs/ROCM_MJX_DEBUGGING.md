@@ -334,6 +334,20 @@ foot mesh collision geoms with simple boxes did not clear it either. This moves
 the next local ROCm debug target from "foot mesh contact alone" to the
 JAX/ROCm `lax.scan` substep execution path around `mjx.step`.
 
+Loop-mode follow-up:
+
+```text
+GPU baseline n_substeps=10 loop_mode=scan: TIMEOUT
+GPU baseline n_substeps=10 loop_mode=fori: TIMEOUT
+GPU baseline n_substeps=10 loop_mode=python: PASS
+GPU baseline n_substeps=10 loop_mode=python_block_each: PASS
+```
+
+So repeated MJX stepping can run on ROCm when driven by a host Python loop. The
+local hold is tied to JAX/XLA control-flow lowering of repeated `mjx.step`, not
+to sequential stepping itself. A host-loop workaround may be useful for slow
+local correctness eval, but it is not a training-throughput solution.
+
 ## PufferLib / Torch ROCm Note
 
 The workstation also has a local PufferLib HIP/ROCm tree:

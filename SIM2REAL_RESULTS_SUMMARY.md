@@ -754,6 +754,20 @@ either. The local ROCm blocker is now narrowed to the JAX/ROCm scanned substep
 execution path around `mjx.step`, not MJCF compile, single raw MJX stepping, or
 foot contact alone.
 
+Loop-mode follow-up:
+
+```text
+GPU baseline n_substeps=10 loop_mode=scan: TIMEOUT
+GPU baseline n_substeps=10 loop_mode=fori: TIMEOUT
+GPU baseline n_substeps=10 loop_mode=python: PASS
+GPU baseline n_substeps=10 loop_mode=python_block_each: PASS
+```
+
+Interpretation: repeated MJX stepping can run on ROCm when driven by a host
+Python loop. The local hold is tied to JAX/XLA control-flow lowering of repeated
+`mjx.step`, so a slow local ROCm correctness-eval workaround may be possible.
+CUDA remains the full closed-loop eval/training backend.
+
 ## CUDA Candidate Handoff
 
 The current CUDA candidate handoff is recorded in:
