@@ -105,10 +105,15 @@ python3 tools/package_candidate_policy.py \
   --candidate-name open_duck_mini_actuator_bridge_<date>_<shortsha> \
   --training-manifest path/to/smoke_or_training_manifest.json \
   --contract-audit outputs/analysis/<candidate>_contract.md \
-  --target-velocity-summary outputs/analysis/<candidate>_target_velocity.md \
   --actuator-bridge-eval outputs/analysis/<candidate>_candidate_gate_x008.md \
   --output-md outputs/analysis/<candidate>_policy_package.md \
   --output-json outputs/analysis/<candidate>_policy_metadata.json
+```
+
+If a standalone target-velocity summary exists, add:
+
+```text
+--target-velocity-summary outputs/analysis/<candidate>_target_velocity.md
 ```
 
 The tool checks:
@@ -119,6 +124,7 @@ The tool checks:
 - RDK and Playground source commits
 - training manifest presence
 - sim-gate evidence presence
+- optional target-velocity summary presence
 - candidate sim-gate status when an actuator bridge eval report is supplied
 
 Use the closed-loop eval helper in candidate mode before considering any
