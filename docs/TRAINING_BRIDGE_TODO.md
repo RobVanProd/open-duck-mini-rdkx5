@@ -21,10 +21,16 @@ Before starting training:
 Local references observed on this workstation:
 
 ```text
+../envs/open-duck-playground
 ../envs/rocm-baseline
 ../verify_scratch/render_mujoco_egl.py
 ../amdgpu-install_7.2.1.70201-1_all.deb
 ```
+
+Use `../envs/open-duck-playground/bin/python` for Open Duck Playground eval and
+future training. `../envs/rocm-baseline` sees the ROCm device, but currently
+lacks project-specific packages such as `mujoco_playground`, `ml_collections`,
+and `onnxruntime`.
 
 ## P0: Inspect Current Training Contract
 
@@ -67,28 +73,41 @@ Local references observed on this workstation:
 
 ### Check Local Training Environment
 
-- Run `python3 tools/check_training_env.py`.
+- Run `../envs/open-duck-playground/bin/python tools/check_training_env.py`.
 - Confirm the intended `7900 XTX` / ROCm environment is active.
 - Confirm JAX sees a GPU/ROCm backend.
 - Confirm MuJoCo imports and can load a small model.
 - Run the optional offscreen render check before any render-dependent eval:
 
 ```bash
-python3 tools/check_training_env.py --render-check
+../envs/open-duck-playground/bin/python tools/check_training_env.py --render-check
 ```
 
 Do not start training from an interpreter that reports `HOLD_ENV_NOT_READY`.
+
+### Reconcile Policy / Sim Contract
+
+- Run `tools/audit_policy_sim_contract.py`.
+- Confirm `BEST_WALK_ONNX_2` contract:
+  - `obs[1,101]`
+  - `continuous_actions[1,14]`
+- Confirm local Playground `Joystick(flat_terrain)` contract under
+  `../envs/open-duck-playground/bin/python`:
+  - state observation length `101`
+  - action size `14`
+  - actuator order matches runtime / policy
+  - `JAX backend = gpu`, `device = rocm:0`
+- Current status: `PASS_POLICY_SIM_CONTRACT`.
 
 ### Sim Actuator Bridge Eval Harness
 
 - Run `tools/eval_policy_with_actuator_bridge.py` in preflight mode.
 - Run telemetry replay mode against existing suspended `x=0.08` evidence.
-- Resolve any `HOLD_POLICY_SIM_CONTRACT_MISMATCH` before training.
-- Current local sibling `../Open_Duck_Playground` appears to expose a `10`
-  actuator no-head contract, while `BEST_WALK_ONNX_2` is audited as
-  `101` observations and `14` actions.
-- Do not train until the exact `101` observation / `14` action sim environment
-  is found or reconstructed.
+- Current status:
+  - `PASS_TELEMETRY_REPLAY_REPRODUCTION`
+  - `HOLD_SIM_INTEGRATION_PENDING`
+- Next implementation task: wire the fitted actuator bridge into the closed-loop
+  JAX/MJX policy eval path. Do not train until that eval is reviewed.
 
 ## P1: Add Actuator Model Controls
 
@@ -133,7 +152,8 @@ alpha = 1 - exp(-dt / tau)
   the same way it degraded on the real suspended Duck.
 - Treat this as the key validation that the sim bridge captures the gap.
 - Required sequence:
-  - run `tools/check_training_env.py`
+  - run `../envs/open-duck-playground/bin/python tools/check_training_env.py`
+  - run `tools/audit_policy_sim_contract.py`
   - run `tools/eval_policy_with_actuator_bridge.py` in vanilla/preflight mode
   - run fitted bridge mode
   - compare fitted-bridge metrics to real suspended `x=0.08`
