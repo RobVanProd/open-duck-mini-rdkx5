@@ -148,7 +148,8 @@ def start_remote_job(args: argparse.Namespace, run_dir: Path, rdk_remote_tar: st
 def build_remote_driver(args: argparse.Namespace, workflow_name: str, rdk_tar: str, playground_tar: str, remote_bundle: str) -> str:
     run_smoke = args.workflow in {"smoke", "all", "candidate"}
     run_candidate = args.workflow in {"candidate", "candidate-only", "all"}
-    run_eval = args.workflow in {"eval", "smoke", "candidate", "all"}
+    run_audit = args.workflow in {"eval", "smoke", "candidate", "candidate-only", "all"}
+    run_baseline_eval = args.workflow in {"eval", "smoke", "candidate", "all"}
     install_deps = not args.skip_deps
     smoke_steps = args.smoke_num_timesteps
     candidate_steps = args.candidate_num_timesteps
@@ -249,7 +250,7 @@ def build_remote_driver(args: argparse.Namespace, workflow_name: str, rdk_tar: s
                 print(name, type(exc).__name__, exc, flush=True)
         run([PYTHON, "-c", "import jax; print('backend', jax.default_backend(), jax.devices()); print('has_device_put_replicated', hasattr(jax, 'device_put_replicated'))"])
 
-        if {run_eval!r}:
+        if {run_audit!r}:
             run([
                 PYTHON, "tools/audit_policy_sim_contract.py",
                 "--policy", "policy/BEST_WALK_ONNX_2.onnx",
@@ -259,6 +260,7 @@ def build_remote_driver(args: argparse.Namespace, workflow_name: str, rdk_tar: s
                 "--output-md", str(OUT / "POLICY_SIM_CONTRACT_AUDIT_CUDA.md"),
                 "--output-json", str(OUT / "policy_sim_contract_audit_cuda.json"),
             ], cwd=RDK, timeout=900)
+        if {run_baseline_eval!r}:
             run([
                 PYTHON, "tools/eval_policy_with_actuator_bridge.py",
                 "--mode", "closed-loop-sim",
@@ -316,9 +318,11 @@ def build_remote_driver(args: argparse.Namespace, workflow_name: str, rdk_tar: s
                 "--ppo-batch-size", "{args.candidate_ppo_batch_size}",
                 "--ppo-num-minibatches", "{args.candidate_ppo_num_minibatches}",
                 "--ppo-num-updates-per-batch", "{args.candidate_ppo_num_updates_per_batch}",
-                "--target-rate-scale", "-0.01",
-                "--actuator-tracking-scale", "0.0",
+                "--target-rate-scale", "{args.candidate_target_rate_scale}",
+                "--actuator-tracking-scale", "{args.candidate_actuator_tracking_scale}",
                 "--tracking-lin-vel-scale", "{args.candidate_tracking_lin_vel_scale}",
+                "--action-rate-scale", "{args.candidate_action_rate_scale}",
+                "--stand-still-scale", "{args.candidate_stand_still_scale}",
                 "--alive-scale", "{args.candidate_alive_scale}",
                 "--imitation-scale", "{args.candidate_imitation_scale}",
                 "--lin-vel-x-min", "{args.candidate_lin_vel_x_min}",
@@ -450,7 +454,11 @@ def main() -> int:
     parser.add_argument("--candidate-ppo-num-minibatches", type=int, default=4)
     parser.add_argument("--candidate-ppo-num-updates-per-batch", type=int, default=4)
     parser.add_argument("--candidate-timeout-s", type=int, default=10800)
+    parser.add_argument("--candidate-target-rate-scale", type=float, default=-0.01)
+    parser.add_argument("--candidate-actuator-tracking-scale", type=float, default=0.0)
     parser.add_argument("--candidate-tracking-lin-vel-scale", type=float, default=3.0)
+    parser.add_argument("--candidate-action-rate-scale", type=float, default=-0.5)
+    parser.add_argument("--candidate-stand-still-scale", type=float, default=-0.2)
     parser.add_argument("--candidate-alive-scale", type=float, default=1.0)
     parser.add_argument("--candidate-imitation-scale", type=float, default=1.0)
     parser.add_argument("--candidate-lin-vel-x-min", type=float, default=0.0)
