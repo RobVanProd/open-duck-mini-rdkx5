@@ -20,6 +20,16 @@ merge/review Playground actuator bridge PR
   -> only then request suspended robot validation
 ```
 
+Manual CUDA/Colab helper:
+
+```text
+docs/CUDA_COLAB_SINGLE_CELL.md
+tools/print_cuda_colab_cell.py
+```
+
+Use this path when local `7900 XTX` ROCm/MJX remains blocked and a trusted
+Colab/L4/A100 session is available.
+
 ## Current Leading Finding
 
 The forward-fall investigation no longer points first at a gross IMU, joint

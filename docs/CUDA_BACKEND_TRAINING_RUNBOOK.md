@@ -42,6 +42,25 @@ GitHub flow. Do not paste tokens into committed files.
 
 ## One-Cell CUDA Smoke
 
+Prefer generating the cell from the checked-in helper so branch names,
+dependency pins, and candidate defaults stay in one place:
+
+```bash
+python3 tools/print_cuda_colab_cell.py
+```
+
+To generate a cell that also runs the first candidate-training shape:
+
+```bash
+python3 tools/print_cuda_colab_cell.py --run-candidate
+```
+
+See:
+
+```text
+docs/CUDA_COLAB_SINGLE_CELL.md
+```
+
 Run this as one Colab cell or one shell block on a CUDA host:
 
 ```bash
@@ -74,9 +93,21 @@ git checkout codex/training-actuator-bridge
 git pull --ff-only
 
 python -m pip install -U pip
-python -m pip install -U "jax[cuda12]" mujoco mujoco-mjx onnxruntime \
-  ml-collections numpy matplotlib mediapy
+python -m pip install -U "jax[cuda12]" "playground==0.0.5" \
+  "mujoco>=3.2.7,<3.10" "mujoco-mjx>=3.2.7" onnxruntime \
+  ml-collections numpy matplotlib mediapy tensorflow tf2onnx
 python -m pip install --no-deps -e /content/Open_Duck_Playground
+
+python - <<'PY'
+import jax
+import mujoco
+import mujoco_playground
+import mujoco_playground._src.collision as collision
+print("jax", jax.__version__, jax.default_backend(), jax.devices())
+print("mujoco", mujoco.__version__)
+print("mujoco_playground", mujoco_playground.__file__)
+print("collision", collision.__file__)
+PY
 
 cd /content/open-duck-mini-rdkx5
 
