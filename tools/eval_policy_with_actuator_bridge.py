@@ -471,12 +471,19 @@ def run_closed_loop_worker(args) -> dict:
         "--_closed-loop-worker-json",
         str(worker_json),
     ]
+    if args.jax_platform:
+        cmd.extend(["--jax-platform", str(args.jax_platform)])
     if args.inspect_policy_io:
         cmd.append("--inspect-policy-io")
+    env = None
+    if args.jax_platform:
+        env = os.environ.copy()
+        env["JAX_PLATFORM_NAME"] = str(args.jax_platform)
     try:
         result = subprocess.run(
             cmd,
             cwd=str(Path.cwd()),
+            env=env,
             text=True,
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
@@ -545,6 +552,7 @@ def build_markdown(payload: dict) -> str:
     lines.append(f"command_x: `{payload['command_x']}`")
     lines.append(f"duration_s: `{payload['duration_s']}`")
     lines.append(f"eval_role: `{payload.get('eval_role')}`")
+    lines.append(f"jax_platform_requested: `{payload.get('jax_platform')}`")
     lines.append("")
     lines.append("## Contract Preflight")
     lines.append("")
@@ -854,6 +862,16 @@ def main() -> int:
         help="timeout for the contained closed-loop worker process",
     )
     parser.add_argument(
+        "--jax-platform",
+        choices=["cpu", "gpu", "tpu"],
+        default=None,
+        help=(
+            "set JAX_PLATFORM_NAME for closed-loop worker subprocesses. Use "
+            "`--jax-platform cpu` for local CPU candidate gates when the default "
+            "environment would otherwise select the blocked ROCm backend."
+        ),
+    )
+    parser.add_argument(
         "--sim-preflight-timeout-s",
         type=int,
         default=90,
@@ -870,6 +888,8 @@ def main() -> int:
         help=argparse.SUPPRESS,
     )
     args = parser.parse_args()
+    if args.jax_platform:
+        os.environ["JAX_PLATFORM_NAME"] = str(args.jax_platform)
 
     policy_path = Path(args.policy).expanduser().resolve()
     fit_path = Path(args.fit_json).expanduser().resolve()
@@ -947,6 +967,7 @@ def main() -> int:
         "command_x": args.command_x,
         "duration_s": args.duration,
         "eval_role": args.eval_role,
+        "jax_platform": args.jax_platform,
         "telemetry_replay": telemetry_replay,
         "closed_loop_sim": closed_loop_sim,
     }

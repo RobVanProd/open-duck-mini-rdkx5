@@ -326,11 +326,15 @@ Run closed-loop sim eval:
   --command-x 0.08 \
   --duration 15 \
   --bridge-mode all \
+  --jax-platform cpu \
   --output-dir outputs/analysis
 ```
 
 The closed-loop worker is contained in a subprocess so GPU runtime faults are
 captured as evidence instead of aborting the parent tool.
+Use `--jax-platform gpu` on a CUDA host. Use `--jax-platform cpu` for local
+CPU gates so the command does not accidentally select the blocked local ROCm
+backend.
 
 Run telemetry replay bridge check using existing suspended `x=0.08` evidence:
 
