@@ -19,6 +19,28 @@ This is still offline-only work:
 - no policy overwrite
 - no grounded replay
 
+## Playground Patch
+
+The actual training-environment patch is preserved in the RobVanProd fork:
+
+```text
+repo: https://github.com/RobVanProd/Open_Duck_Playground
+PR: https://github.com/RobVanProd/Open_Duck_Playground/pull/1
+branch: codex/training-actuator-bridge
+```
+
+That PR adds:
+
+- default-off actuator bridge in `playground/open_duck_mini_v2/joystick.py`
+- runner flags to enable/tune the bridge
+- PPO override flags for small smoke-training runs
+
+The original upstream remains:
+
+```text
+https://github.com/apirrone/Open_Duck_Playground
+```
+
 ## Insertion Point
 
 The target-stage insertion point in
@@ -80,6 +102,28 @@ actuator_tracking = 0.0
 
 These are intentionally disabled by default so existing training behavior is
 unchanged unless config overrides enable the bridge and assign nonzero costs.
+
+The Playground runner PR adds these relevant flags:
+
+```text
+--enable_actuator_bridge
+--actuator_bridge_delay_min_ticks
+--actuator_bridge_delay_max_ticks
+--actuator_bridge_tau_min_s
+--actuator_bridge_tau_max_s
+--actuator_bridge_velocity_limit_min_rad_s
+--actuator_bridge_velocity_limit_max_rad_s
+--actuator_bridge_per_joint_variation
+--target_rate_scale
+--actuator_tracking_scale
+--ppo_num_envs
+--ppo_num_evals
+--ppo_episode_length
+--ppo_unroll_length
+--ppo_batch_size
+--ppo_num_minibatches
+--ppo_num_updates_per_batch
+```
 
 ## Validation After Applying
 
