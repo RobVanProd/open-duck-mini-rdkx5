@@ -221,6 +221,33 @@ Conclusion: aligning the external `mujoco_playground` package to the
 CUDA-passing `playground==0.0.5` does not clear the local 7900 XTX direct Open
 Duck MJX step hang when MuJoCo/MJX remains at `3.9.0`.
 
+Second disposable matrix result:
+
+```text
+env: ../envs/open-duck-playground-rocm-mujoco337
+jax/jaxlib: 0.8.2
+jax-rocm7-pjrt/plugin: 0.8.2+rocm7.2.1
+mujoco/mujoco-mjx: 3.3.7
+playground: 0.0.5
+evidence: outputs/analysis/rocm_mjx_version_matrix_mujoco337/
+gate_result: HOLD_PLAYGROUND_GPU_STEP
+smallest_failing_subtest: default_gpu_playground_direct_mjx_step
+```
+
+Result split:
+
+```text
+GPU basic JAX: PASS
+GPU minimal MJX: PASS
+GPU Open Duck contract: PASS
+GPU Open Duck reset: PASS
+GPU direct mjx_env.step: TIMEOUT after 120s
+CPU direct mjx_env.step: PASS
+```
+
+Conclusion: downgrading MuJoCo/MJX to `3.3.7` with `playground==0.0.5` also
+does not clear the local 7900 XTX direct Open Duck MJX step hang.
+
 The current `amdgpu` module parameter is:
 
 ```text
