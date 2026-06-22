@@ -87,6 +87,44 @@ So the next GPU debug target is the raw Open Duck MJX physics step on ROCm,
 not basic ROCm visibility, policy inference, reward code, rollout-loop shape,
 or the fitted actuator bridge.
 
+## Post-Reset ROCm Recheck
+
+After a full device power/reset cycle, the local ROCm path was rechecked on
+2026-06-22. The reset did not clear the Open Duck MJX stepping blocker.
+
+Curated evidence:
+
+```text
+outputs/analysis/ROCM_AFTER_RESET_RECHECK_20260622.md
+```
+
+Default ROCm result:
+
+```text
+basic JAX arithmetic: PASS
+JAX jit/scan: PASS
+minimal MJX step: PASS
+Open Duck contract-only: PASS
+Open Duck XML/contact audit: PASS
+Open Duck reset: PASS, about 42 s
+Open Duck reset finite-state probe: PASS, about 42 s
+Open Duck direct mjx_env.step: TIMEOUT at 120 s
+Open Duck direct mjx_env.step JIT: ROCm abort, return code -6
+Open Duck one-step vanilla: TIMEOUT at 120 s
+gate: HOLD_PLAYGROUND_GPU_STEP
+```
+
+Bad override result:
+
+```text
+HSA_OVERRIDE_GFX_VERSION=11.0.0 -> harmful
+basic JAX GPU -> ROCM_ERROR_ILLEGAL_ADDRESS
+CPU-labelled isolation rows -> ROCM_ERROR_ILLEGAL_ADDRESS
+```
+
+Do not use `HSA_OVERRIDE_GFX_VERSION=11.0.0` in this environment. ROCm already
+detects the RX `7900 XTX` as `gfx1100`.
+
 Independent CUDA check:
 
 ```text
