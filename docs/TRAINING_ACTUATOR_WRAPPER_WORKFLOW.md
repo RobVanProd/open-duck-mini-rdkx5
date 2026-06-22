@@ -149,12 +149,27 @@ Minimum checks:
 python -m py_compile \
   ../Open_Duck_Playground/playground/open_duck_mini_v2/joystick.py
 
+../envs/open-duck-playground/bin/python \
+  tools/check_playground_actuator_bridge_contract.py \
+  --playground-path ../Open_Duck_Playground
+
 python tools/audit_policy_sim_contract.py \
   --policy policy/BEST_WALK_ONNX_2.onnx \
   --playground-path ../Open_Duck_Playground \
   --env-python "$(command -v python)" \
   --instantiate-timeout-s 600
 ```
+
+The actuator bridge contract check verifies:
+
+- bridge is disabled by default
+- delay/tau/velocity-limit defaults match the fitted model ranges
+- `target_rate` and `actuator_tracking` reward scales default to `0.0`
+- runner exposes the expected opt-in CLI flags
+
+Use `tools/smoke_actuator_bridge_wrapper.py` for step-level behavior checks.
+The contract tool's `--step-check` option is intentionally optional because MJX
+CPU stepping can be slow on this workstation.
 
 Then run a short closed-loop eval with the bridge enabled in Playground config
 before starting any training job. The first training PR should add a small
