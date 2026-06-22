@@ -46,11 +46,42 @@ Target paths:
 /home/sunrise/project/Open_Duck_Mini_Runtime-2_RDK_X5/scripts/sim2real_diagnostics.py
 ```
 
-## Required Runtime Patch For Policy Replay Telemetry
+## Runtime Telemetry Patch Status
 
-`sim2real_diagnostics.py suspended_policy_replay` expects `v2_rl_walk_mujoco.RLWalk` to accept telemetry arguments. The live board file does not yet include that patch.
+The opt-in walker telemetry patch and HWI bus counters have been deployed to
+the live board runtime. Current evidence:
 
-Before patching `v2_rl_walk_mujoco.py`, make a dated backup:
+```text
+outputs/deployments/20260621T223541Z/DEPLOYMENT_SUMMARY.md
+outputs/deployments/20260621T223541Z/v2_rl_walk_mujoco_help.txt
+```
+
+That deployment copied:
+
+```text
+instrumentation/mini_bdx_runtime/telemetry.py
+instrumentation/scripts/sim2real_diagnostics.py
+runtime/scripts/v2_rl_walk_mujoco.py
+runtime/mini_bdx_runtime/mini_bdx_runtime/rustypot_position_hwi.py
+```
+
+and verified `--log-telemetry`, `--telemetry-path`,
+`--telemetry-read-voltage`, and `--telemetry-every-n` in the board-side
+`v2_rl_walk_mujoco.py --help` output.
+
+Telemetry remains opt-in and disabled by default. The deployment summary states
+that no hardware-moving tests were run and no default runtime behavior changed.
+
+If the board runtime is restored from an older backup or rebuilt, rerun
+[DEPLOY_INSTRUMENTATION.md](DEPLOY_INSTRUMENTATION.md) before any suspended
+policy replay.
+
+Historical note: before the 2026-06-21 telemetry deployment,
+`sim2real_diagnostics.py suspended_policy_replay` required a patch because the
+live `v2_rl_walk_mujoco.RLWalk` did not yet accept telemetry arguments.
+
+If manually patching, restoring, or redeploying `v2_rl_walk_mujoco.py` outside
+the scripted deploy workflow, make a dated backup first:
 
 ```bash
 ssh -i /home/lsd/robots/.duck_access/rdk_key \

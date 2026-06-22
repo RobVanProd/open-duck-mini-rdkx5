@@ -26,7 +26,12 @@ Live RDK-X5 snapshot update, 2026-06-21:
   - `feet_contacts.py` uses `Hobot.GPIO` on RDK-X5 with BCM pins 22/27.
   - `rustypot_position_hwi.py` has `_retry(..., tries=8)` around bus operations.
   - `rustypot_position_hwi.py` defines `joints_dir = {name: 1.0 for name in self.joints}` and comments that the left knee was physically re-flipped, so no software sign flip is intended.
-  - The telemetry/instrumentation changes in this workspace have not yet been deployed to the board runtime.
+  - Historical at audit time: the telemetry/instrumentation changes in this
+    workspace had not yet been deployed to the board runtime. Superseded by
+    deployment evidence in
+    `outputs/deployments/20260621T223541Z/DEPLOYMENT_SUMMARY.md`, which
+    verifies the opt-in walker telemetry patch and HWI bus counters on the
+    board.
 
 ## Repo Structure Summary
 
