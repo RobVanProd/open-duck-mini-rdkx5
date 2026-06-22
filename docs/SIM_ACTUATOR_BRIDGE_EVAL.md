@@ -124,6 +124,19 @@ Basic JAX GPU, JAX jit/scan, minimal MJX GPU, Playground contract
 construction, and Playground reset all pass. The first failing GPU operation is
 one Open Duck Playground step, before the actuator bridge is involved.
 
+Additional execution-mode checks show the same backend fault when the
+Playground step is wrapped differently:
+
+```text
+playground_one_step_jit:      FAIL, ROCM_ERROR_ILLEGAL_ADDRESS
+playground_scan_step_vanilla: FAIL, ROCM_ERROR_ILLEGAL_ADDRESS
+```
+
+So `jax.lax.scan` is not enough to clear the ROCm/MJX issue. Debug nan/inf
+flags identify MJX convex collision as the involved code path, but the same
+flags also fail on CPU during reset because that collision code uses `-inf`
+sentinels internally.
+
 ## Expected Behavior
 
 Vanilla sim expectation:
@@ -299,6 +312,18 @@ outputs/analysis/rocm_mjx_runtime_isolation.json
 gate_result: HOLD_PLAYGROUND_GPU_STEP
 closed-loop CPU short matrix: PASS
 ```
+
+Additional focused outputs:
+
+```text
+outputs/analysis/rocm_mjx_isolation_step_modes_default/ROCM_MJX_RUNTIME_ISOLATION.md
+outputs/analysis/rocm_mjx_isolation_scan_variants/ROCM_MJX_RUNTIME_ISOLATION.md
+outputs/analysis/rocm_mjx_isolation_debug_cpu/ROCM_MJX_RUNTIME_ISOLATION.md
+```
+
+They show that JIT and `lax.scan` wrappers do not fix the Open Duck Playground
+GPU step, MIOpen fusion disable does not fix it, and debug nan/inf checks trip
+on an MJX convex-collision `-inf` path that also appears on CPU.
 
 Current telemetry replay output still shows:
 

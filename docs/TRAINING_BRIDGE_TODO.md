@@ -114,6 +114,11 @@ Do not start training from an interpreter that reports `HOLD_ENV_NOT_READY`.
   GPU, JAX jit/scan, minimal MJX GPU, Playground contract construction, and
   Playground reset pass; Open Duck Playground one-step on GPU is the smallest
   failing operation.
+- Follow-up execution-mode checks show that a JIT-wrapped Playground step and a
+  `jax.lax.scan` Playground step both fail with `ROCM_ERROR_ILLEGAL_ADDRESS`.
+- Debug nan/inf flags fail during MJX convex collision on both GPU and CPU
+  because the collision path uses `-inf` sentinels internally; do not treat that
+  debug failure alone as proof of a corrupted robot model state.
 - CPU can run short correctness paths, including closed-loop vanilla short
   matrix, but CPU bridge/multi-step eval is slow under the current timeout.
 - Next implementation task: fix or route around the local Playground/MJX ROCm

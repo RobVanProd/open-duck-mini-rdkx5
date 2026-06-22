@@ -414,11 +414,26 @@ Latest ROCm/MJX isolation result:
     before the full requested horizon under `120 s`
 - Focused JAX allocation variants on the smallest failing GPU subtest
   `playground_one_step_vanilla` did not clear the hang:
+  - `XLA_PYTHON_CLIENT_PREALLOCATE=false`: timeout
   - `XLA_PYTHON_CLIENT_MEM_FRACTION=0.50`: timeout
   - `XLA_PYTHON_CLIENT_MEM_FRACTION=0.60`: timeout
   - `XLA_PYTHON_CLIENT_ALLOCATOR=platform`: timeout
 - The host currently reports `amdgpu` `cwsr_enable = 1`; changing this is a
   system-level module setting and was not attempted.
+- Follow-up execution-mode checks did not clear the failure:
+  - `playground_one_step_jit`: `ROCM_ERROR_ILLEGAL_ADDRESS`
+  - `playground_scan_step_vanilla`: `ROCM_ERROR_ILLEGAL_ADDRESS`
+- Compiler/debug variants on `playground_scan_step_vanilla` did not produce a
+  usable GPU pass:
+  - `JAX_DEBUG_NANS=true,JAX_DEBUG_INFS=true`: `FloatingPointError` inside MJX
+    convex collision
+  - `MIOPEN_DEBUG_FUSION_ENGINE_DISABLE=1`: `ROCM_ERROR_ILLEGAL_ADDRESS`
+  - `MIOPEN_DEBUG_FUSION_ENGINE_DISABLE=1` plus conservative XLA flags: timeout
+- The debug nan/inf failure also occurs on CPU during Playground reset because
+  MJX convex collision uses a `-inf` sentinel path. Treat it as a locator for
+  the collision code path, not as proof that the model state is corrupt.
+- Local JAX `0.8.2` does not expose a `jax_three_fry_gpu_global_pool` config
+  key, so that suggested knob was not added.
 
 Choose exactly one next step: **debug the Open Duck Playground MJX GPU step on
 ROCm or run a reviewed reduced-horizon CPU correctness eval**, without changing

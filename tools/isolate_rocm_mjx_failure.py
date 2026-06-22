@@ -33,6 +33,18 @@ VARIANT_ENVS = {
     "allocator_platform": {"XLA_PYTHON_CLIENT_ALLOCATOR": "platform"},
     "disable_jit": {"JAX_DISABLE_JIT": "true"},
     "debug_nans_infs": {"JAX_DEBUG_NANS": "true", "JAX_DEBUG_INFS": "true"},
+    "miopen_fusion_disabled": {"MIOPEN_DEBUG_FUSION_ENGINE_DISABLE": "1"},
+    "xla_disable_latency_scheduler": {
+        "XLA_FLAGS": "--xla_gpu_enable_latency_hiding_scheduler=false"
+    },
+    "xla_disable_triton_gemm": {"XLA_FLAGS": "--xla_gpu_enable_triton_gemm=false"},
+    "xla_compiler_conservative": {
+        "MIOPEN_DEBUG_FUSION_ENGINE_DISABLE": "1",
+        "XLA_FLAGS": (
+            "--xla_gpu_enable_latency_hiding_scheduler=false "
+            "--xla_gpu_enable_triton_gemm=false"
+        ),
+    },
 }
 
 
@@ -46,6 +58,7 @@ ROCM_ENV_KEYS = [
     "XLA_PYTHON_CLIENT_MEM_FRACTION",
     "XLA_PYTHON_CLIENT_ALLOCATOR",
     "XLA_FLAGS",
+    "MIOPEN_DEBUG_FUSION_ENGINE_DISABLE",
     "HIP_VISIBLE_DEVICES",
     "ROCR_VISIBLE_DEVICES",
     "HSA_OVERRIDE_GFX_VERSION",
@@ -341,6 +354,25 @@ emit("SUBTEST_RESULT_JSON_START", {
 """
 
 
+def code_playground_one_step_jit(playground: Path) -> str:
+    return playground_common_code(playground) + """
+emit_info({"subtest": "playground_one_step_jit"})
+import jax
+import jax.numpy as jnp
+env = make_env()
+state = env.reset(jax.random.PRNGKey(0))
+action = jnp.zeros(env.action_size)
+step_fn = jax.jit(lambda s, a: env.step(s, a))
+state = step_fn(state, action)
+block_tree((state.obs, state.data.qpos, state.done))
+emit("SUBTEST_RESULT_JSON_START", {
+    "status": "PASS",
+    "done": bool(state.done),
+    "qpos0": float(state.data.qpos[0]),
+})
+"""
+
+
 def code_playground_multi_step(playground: Path, steps: Sequence[int]) -> str:
     return playground_common_code(playground) + f"""
 emit_info({{"subtest": "playground_multi_step_vanilla", "steps": {list(steps)!r}}})
@@ -359,6 +391,37 @@ for target in target_steps:
     block_tree((state.obs, state.data.qpos, state.done))
     out[str(target)] = {{"done": bool(state.done), "qpos0": float(state.data.qpos[0])}}
     emit("SUBTEST_PROGRESS_JSON_START", {{"steps": target, "status": "PASS"}})
+emit("SUBTEST_RESULT_JSON_START", {{"status": "PASS", "steps": out}})
+"""
+
+
+def code_playground_scan_step(playground: Path, steps: Sequence[int]) -> str:
+    return playground_common_code(playground) + f"""
+emit_info({{"subtest": "playground_scan_step_vanilla", "steps": {list(steps)!r}}})
+import jax
+import jax.numpy as jnp
+env = make_env()
+state = env.reset(jax.random.PRNGKey(0))
+action = jnp.zeros(env.action_size)
+
+def body(carry, _):
+    next_state = env.step(carry, action)
+    return next_state, {{
+        "qpos0": next_state.data.qpos[0],
+        "done": next_state.done,
+    }}
+
+out = {{}}
+for n in {list(steps)!r}:
+    scan_fn = jax.jit(lambda s, n=n: jax.lax.scan(body, s, None, length=n))
+    state, traj = scan_fn(state)
+    block_tree((state.obs, state.data.qpos, state.done, traj["qpos0"], traj["done"]))
+    out[str(n)] = {{
+        "done": bool(state.done),
+        "qpos0": float(state.data.qpos[0]),
+        "traj_samples": int(traj["qpos0"].shape[0]),
+    }}
+    emit("SUBTEST_PROGRESS_JSON_START", {{"steps": n, "status": "PASS"}})
 emit("SUBTEST_RESULT_JSON_START", {{"status": "PASS", "steps": out}})
 """
 
@@ -434,9 +497,19 @@ def build_subtests(args) -> list[dict]:
                     "code": code_playground_one_step(args.playground_path),
                 },
                 {
+                    "name": "playground_one_step_jit",
+                    "platform": platform_name,
+                    "code": code_playground_one_step_jit(args.playground_path),
+                },
+                {
                     "name": "playground_multi_step_vanilla",
                     "platform": platform_name,
                     "code": code_playground_multi_step(args.playground_path, steps),
+                },
+                {
+                    "name": "playground_scan_step_vanilla",
+                    "platform": platform_name,
+                    "code": code_playground_scan_step(args.playground_path, steps),
                 },
             ]
         )
@@ -632,7 +705,9 @@ def classify(results: Sequence[dict], platforms: Sequence[str]) -> dict:
             for name in [
                 "playground_reset",
                 "playground_one_step_vanilla",
+                "playground_one_step_jit",
                 "playground_multi_step_vanilla",
+                "playground_scan_step_vanilla",
             ]
         ):
             gate = "HOLD_PLAYGROUND_GPU_STEP"
@@ -682,6 +757,8 @@ def summarize_capabilities(results: Sequence[dict]) -> dict:
         "minimal_mjx_gpu": status_for("minimal_mjx_step", "gpu"),
         "playground_reset_gpu": status_for("playground_reset", "gpu"),
         "playground_step_gpu": status_for("playground_one_step_vanilla", "gpu"),
+        "playground_step_jit_gpu": status_for("playground_one_step_jit", "gpu"),
+        "playground_scan_step_gpu": status_for("playground_scan_step_vanilla", "gpu"),
         "playground_bridge_gpu": status_for("playground_multi_step_bridge", "gpu"),
         "closed_loop_gpu": status_for("closed_loop_policy_eval_gpu", "gpu"),
         "closed_loop_cpu": status_for("closed_loop_policy_eval_cpu", "cpu"),
@@ -704,6 +781,8 @@ def build_markdown(payload: Mapping[str, Any]) -> str:
         f"- Minimal MJX GPU: `{capabilities['minimal_mjx_gpu']}`",
         f"- Playground reset GPU: `{capabilities['playground_reset_gpu']}`",
         f"- Playground one-step GPU: `{capabilities['playground_step_gpu']}`",
+        f"- Playground one-step JIT GPU: `{capabilities['playground_step_jit_gpu']}`",
+        f"- Playground scan-step GPU: `{capabilities['playground_scan_step_gpu']}`",
         f"- Playground bridge GPU: `{capabilities['playground_bridge_gpu']}`",
         f"- Closed-loop GPU: `{capabilities['closed_loop_gpu']}`",
         f"- Closed-loop CPU: `{capabilities['closed_loop_cpu']}`",
@@ -754,7 +833,9 @@ def build_markdown(payload: Mapping[str, Any]) -> str:
             "",
             "Supported variants are `default`, `preallocate_false`,",
             "`mem_fraction_050`, `mem_fraction_060`, `allocator_platform`,",
-            "`disable_jit`, and `debug_nans_infs`.",
+            "`disable_jit`, `debug_nans_infs`, `miopen_fusion_disabled`,",
+            "`xla_disable_latency_scheduler`, `xla_disable_triton_gemm`,",
+            "and `xla_compiler_conservative`.",
             "",
             "## Recommendation",
             "",
@@ -810,7 +891,9 @@ def main() -> int:
         help=(
             "comma-separated env variants: default, preallocate_false, "
             "mem_fraction_050, mem_fraction_060, allocator_platform, "
-            "disable_jit, debug_nans_infs"
+            "disable_jit, debug_nans_infs, miopen_fusion_disabled, "
+            "xla_disable_latency_scheduler, xla_disable_triton_gemm, "
+            "xla_compiler_conservative"
         ),
     )
     parser.add_argument(
@@ -818,7 +901,8 @@ def main() -> int:
         default="all",
         help=(
             "comma-separated subtests or all. Examples: basic_jax,"
-            "playground_one_step_vanilla,closed_loop_policy_eval_gpu"
+            "playground_one_step_vanilla,playground_one_step_jit,"
+            "playground_scan_step_vanilla,closed_loop_policy_eval_gpu"
         ),
     )
     parser.add_argument("--include-bridge", action="store_true")

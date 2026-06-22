@@ -85,6 +85,7 @@ Focused memory-allocation variants were tested on the smallest failing GPU
 subtest (`playground_one_step_vanilla`):
 
 ```text
+XLA_PYTHON_CLIENT_PREALLOCATE=false -> TIMEOUT
 XLA_PYTHON_CLIENT_MEM_FRACTION=0.50 -> TIMEOUT
 XLA_PYTHON_CLIENT_MEM_FRACTION=0.60 -> TIMEOUT
 XLA_PYTHON_CLIENT_ALLOCATOR=platform -> TIMEOUT
@@ -99,6 +100,27 @@ cwsr_enable = 1
 ```
 
 Do not change kernel/module settings such as CWSR from project scripts.
+
+Follow-up execution-mode checks show this is not fixed by changing the rollout
+wrapper alone:
+
+```text
+playground_one_step_jit -> ROCM_ERROR_ILLEGAL_ADDRESS
+playground_scan_step_vanilla -> ROCM_ERROR_ILLEGAL_ADDRESS
+```
+
+Compiler/debug toggles were also tested on the scan subtest:
+
+```text
+JAX_DEBUG_NANS=true,JAX_DEBUG_INFS=true -> FloatingPointError in MJX convex collision
+MIOPEN_DEBUG_FUSION_ENGINE_DISABLE=1 -> ROCM_ERROR_ILLEGAL_ADDRESS
+MIOPEN_DEBUG_FUSION_ENGINE_DISABLE=1 plus conservative XLA flags -> TIMEOUT
+```
+
+The debug-nan/inf result is not GPU-specific: CPU reset fails under the same
+debug flags because MJX convex collision uses a `-inf` sentinel internally.
+That makes it a locator for the collision code path, not proof of corrupted
+robot state.
 
 ## Readiness Check
 

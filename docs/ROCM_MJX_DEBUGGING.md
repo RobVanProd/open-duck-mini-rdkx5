@@ -134,6 +134,10 @@ mem_fraction_060               XLA_PYTHON_CLIENT_MEM_FRACTION=0.60
 allocator_platform             XLA_PYTHON_CLIENT_ALLOCATOR=platform
 disable_jit                    JAX_DISABLE_JIT=true
 debug_nans_infs                JAX_DEBUG_NANS=true, JAX_DEBUG_INFS=true
+miopen_fusion_disabled         MIOPEN_DEBUG_FUSION_ENGINE_DISABLE=1
+xla_disable_latency_scheduler  XLA_FLAGS=--xla_gpu_enable_latency_hiding_scheduler=false
+xla_disable_triton_gemm        XLA_FLAGS=--xla_gpu_enable_triton_gemm=false
+xla_compiler_conservative      MIOPEN_DEBUG_FUSION_ENGINE_DISABLE=1 plus both XLA flags
 ```
 
 JAX's GPU memory allocation docs describe preallocation behavior and these
@@ -188,6 +192,79 @@ Changing CWSR is a system/kernel-module setting, not a normal per-process
 Python environment switch. Do not change it from project tooling; it needs
 explicit system-level approval and a rollback plan.
 
+## Scan / Compiler Follow-Up
+
+The consultant hypothesis that a sequential `jax.lax.scan` rollout might avoid
+the illegal address was tested directly.
+
+Step-mode command:
+
+```bash
+../envs/open-duck-playground/bin/python tools/isolate_rocm_mjx_failure.py \
+  --playground-path ../Open_Duck_Playground \
+  --env-python ../envs/open-duck-playground/bin/python \
+  --policy policy/BEST_WALK_ONNX_2.onnx \
+  --fit-json outputs/analysis/actuator_response_fit.json \
+  --output-dir outputs/analysis/rocm_mjx_isolation_step_modes_default \
+  --command-x 0.08 \
+  --steps 1 \
+  --platforms gpu \
+  --variants default \
+  --subtests playground_one_step_jit,playground_scan_step_vanilla \
+  --timeout-s 180
+```
+
+Result:
+
+| subtest | result |
+|---|---|
+| `playground_one_step_jit` | `FAIL`, returncode `-6`, `ROCM_ERROR_ILLEGAL_ADDRESS` |
+| `playground_scan_step_vanilla` | `FAIL`, returncode `-6`, `ROCM_ERROR_ILLEGAL_ADDRESS` |
+
+So changing the rollout from direct step to JIT step or `lax.scan` does not fix
+the Open Duck Playground GPU failure in this environment.
+
+Compiler/debug variant command:
+
+```bash
+../envs/open-duck-playground/bin/python tools/isolate_rocm_mjx_failure.py \
+  --playground-path ../Open_Duck_Playground \
+  --env-python ../envs/open-duck-playground/bin/python \
+  --policy policy/BEST_WALK_ONNX_2.onnx \
+  --fit-json outputs/analysis/actuator_response_fit.json \
+  --output-dir outputs/analysis/rocm_mjx_isolation_scan_variants \
+  --command-x 0.08 \
+  --steps 1 \
+  --platforms gpu \
+  --variants debug_nans_infs,miopen_fusion_disabled,xla_compiler_conservative \
+  --subtests playground_scan_step_vanilla \
+  --timeout-s 120
+```
+
+Result:
+
+| variant | result |
+|---|---|
+| `debug_nans_infs` | `FAIL`, returncode `1`, `FloatingPointError` in MJX convex collision |
+| `miopen_fusion_disabled` | `FAIL`, returncode `-6`, `ROCM_ERROR_ILLEGAL_ADDRESS` |
+| `xla_compiler_conservative` | `TIMEOUT` |
+
+`debug_nans_infs` is not a clean root-cause proof here. The same debug flags
+also fail on CPU during Playground reset:
+
+```text
+FloatingPointError: invalid value (inf) encountered in broadcast_in_dim
+mujoco/mjx/_src/collision_convex.py:_sat_gaussmap
+edge_dist = jp.where(is_minkowski_face, edge_dist, -jp.inf)
+```
+
+That means the debug flags are catching an MJX convex-collision `-inf` sentinel
+path that exists on CPU too. Treat this as a useful locator for the collision
+code path, not as evidence that robot model state is numerically corrupt.
+
+Local JAX `0.8.2` does not expose a `jax_three_fry_gpu_global_pool` config key;
+it was not added as a supported variant.
+
 ## Local Alternate Leads
 
 Local PufferLib files exist:
@@ -215,12 +292,13 @@ for the current JAX/MJX backend issue.
 
 Choose one of these before training:
 
-1. Run focused ROCm/MJX variants on `default_gpu_playground_one_step_vanilla`.
-2. Inspect Open Duck Playground MJX model features that differ from the minimal
+1. Inspect Open Duck Playground MJX collision/model features that differ from the minimal
    MJX test.
-3. Use CPU only for short correctness probes while resolving GPU stepping.
-4. Investigate package/version compatibility for JAX 0.8.2, MuJoCo 3.9.0, and
+2. Use CPU only for short correctness probes while resolving GPU stepping.
+3. Investigate package/version compatibility for JAX 0.8.2, MuJoCo 3.9.0, and
    ROCm on the `7900 XTX`.
+4. If a system-level change such as CWSR is tested, do it outside project
+   tooling with explicit approval and a rollback plan.
 
 Do not run robot motion, grounded replay, deployment, or training as part of
 this backend debug step.
