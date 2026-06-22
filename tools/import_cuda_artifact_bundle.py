@@ -35,6 +35,20 @@ def sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
+def read_sha256_sidecar(path: Path) -> str:
+    text = path.read_text(errors="replace").strip()
+    if not text:
+        raise ValueError(f"empty SHA256 sidecar: {path}")
+    token = text.split()[0].lower()
+    if len(token) != 64 or any(char not in "0123456789abcdef" for char in token):
+        raise ValueError(f"invalid SHA256 sidecar content in {path}: {token!r}")
+    return token
+
+
+def default_sha256_sidecar(bundle: Path) -> Path:
+    return bundle.with_name(bundle.name + ".sha256")
+
+
 def safe_member_path(member_name: str) -> Path:
     candidate = Path(member_name)
     if candidate.is_absolute() or ".." in candidate.parts:
@@ -273,6 +287,7 @@ def build_summary(
     source_dir: Path | None,
     output_dir: Path,
     expected_sha256: str | None = None,
+    expected_sha256_source: str | None = None,
 ) -> tuple[str, dict[str, Any]]:
     files = collect_files(output_dir)
     markdown_statuses = []
@@ -334,6 +349,7 @@ def build_summary(
         },
         "source_dir": None if source_dir is None else str(source_dir),
         "expected_bundle_sha256": expected_sha256,
+        "expected_bundle_sha256_source": expected_sha256_source,
         "output_dir": str(output_dir),
         "markdown_statuses": markdown_statuses,
         "json_summaries": json_summaries,
@@ -359,6 +375,8 @@ def build_summary(
         )
         if expected_sha256:
             lines.append(f"- expected_bundle_sha256: `{expected_sha256}`")
+            if expected_sha256_source:
+                lines.append(f"- expected_bundle_sha256_source: `{expected_sha256_source}`")
     if source_dir:
         lines.append(f"- source_dir: `{source_dir}`")
     if exit_status:
@@ -446,6 +464,13 @@ def main() -> int:
             "CUDA_ARTIFACT_BUNDLE_SHA256 line printed by the generated cell."
         ),
     )
+    parser.add_argument(
+        "--expected-sha256-file",
+        help=(
+            "Path to a sidecar file containing the expected bundle SHA256. "
+            "If omitted, the importer automatically uses <bundle>.sha256 when present."
+        ),
+    )
     parser.add_argument("--output-dir", help="destination directory")
     args = parser.parse_args()
 
@@ -467,21 +492,46 @@ def main() -> int:
 
     bundle: Path | None = None
     source_dir: Path | None = None
+    expected_sha256: str | None = None
+    expected_sha256_source: str | None = None
     if source.is_dir():
-        if args.expected_sha256:
-            raise SystemExit("--expected-sha256 can only be used with a tar bundle")
+        if args.expected_sha256 or args.expected_sha256_file:
+            raise SystemExit(
+                "--expected-sha256 and --expected-sha256-file can only be used "
+                "with a tar bundle"
+            )
         source_dir = source
         copy_directory(source, output_dir)
     elif suffix.endswith(".tar.gz") or suffix.endswith(".tgz") or source.suffix == ".tar":
         bundle = source
         if args.expected_sha256:
-            actual_sha256 = sha256_file(source)
             expected_sha256 = args.expected_sha256.lower().strip()
+            expected_sha256_source = "cli"
+        elif args.expected_sha256_file:
+            sidecar = Path(args.expected_sha256_file).expanduser().resolve()
+            if not sidecar.exists():
+                raise SystemExit(f"expected SHA256 sidecar not found: {sidecar}")
+            try:
+                expected_sha256 = read_sha256_sidecar(sidecar)
+            except ValueError as exc:
+                raise SystemExit(str(exc)) from exc
+            expected_sha256_source = str(sidecar)
+        else:
+            sidecar = default_sha256_sidecar(source)
+            if sidecar.exists():
+                try:
+                    expected_sha256 = read_sha256_sidecar(sidecar)
+                except ValueError as exc:
+                    raise SystemExit(str(exc)) from exc
+                expected_sha256_source = str(sidecar)
+        if expected_sha256:
+            actual_sha256 = sha256_file(source)
             if actual_sha256.lower() != expected_sha256:
                 raise SystemExit(
                     "bundle SHA256 mismatch:\n"
                     f"  expected: {expected_sha256}\n"
                     f"  actual:   {actual_sha256}\n"
+                    f"  source:   {expected_sha256_source or 'UNKNOWN'}\n"
                     "Do not review or use this CUDA artifact bundle."
                 )
         extract_bundle(source, output_dir)
@@ -492,7 +542,8 @@ def main() -> int:
         bundle,
         source_dir,
         output_dir,
-        args.expected_sha256.lower().strip() if args.expected_sha256 else None,
+        expected_sha256,
+        expected_sha256_source,
     )
     (output_dir / "CUDA_ARTIFACT_IMPORT_SUMMARY.md").write_text(summary_md + "\n")
     (output_dir / "cuda_artifact_import_summary.json").write_text(

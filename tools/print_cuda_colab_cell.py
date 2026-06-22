@@ -149,15 +149,20 @@ PY
 import hashlib
 from pathlib import Path
 bundle = Path("$BUNDLE")
+sha256 = hashlib.sha256(bundle.read_bytes()).hexdigest()
+sidecar = Path(str(bundle) + ".sha256")
+sidecar.write_text(f"{{sha256}}  {{bundle.name}}\\n")
 print("CUDA_ARTIFACT_BUNDLE", bundle)
 print("CUDA_ARTIFACT_BUNDLE_SIZE_BYTES", bundle.stat().st_size)
-print("CUDA_ARTIFACT_BUNDLE_SHA256", hashlib.sha256(bundle.read_bytes()).hexdigest())
+print("CUDA_ARTIFACT_BUNDLE_SHA256", sha256)
+print("CUDA_ARTIFACT_BUNDLE_SHA256_FILE", sidecar)
 PY
     if [ "${{CUDA_AUTO_DOWNLOAD:-1}}" = "1" ]; then
       "$PYTHON_BIN" - <<PY
 from pathlib import Path
 
 bundle = Path("$BUNDLE")
+sidecar = Path(str(bundle) + ".sha256")
 try:
     from google.colab import files
 except Exception as exc:
@@ -166,6 +171,9 @@ else:
     try:
         files.download(str(bundle))
         print("CUDA_ARTIFACT_DOWNLOAD_TRIGGERED", bundle)
+        if sidecar.exists():
+            files.download(str(sidecar))
+            print("CUDA_ARTIFACT_SHA256_DOWNLOAD_TRIGGERED", sidecar)
     except Exception as exc:
         print("CUDA_ARTIFACT_DOWNLOAD_FAILED", type(exc).__name__, exc)
 PY
@@ -468,11 +476,14 @@ def write_handoff_dir(path: Path, cell: str, run_candidate: bool) -> None:
             ```text
             CUDA_ARTIFACT_BUNDLE /content/open_duck_cuda_artifacts_<timestamp>.tar.gz
             CUDA_ARTIFACT_BUNDLE_SHA256 <hash>
+            CUDA_ARTIFACT_BUNDLE_SHA256_FILE /content/open_duck_cuda_artifacts_<timestamp>.tar.gz.sha256
             CUDA_ARTIFACT_DOWNLOAD_TRIGGERED /content/open_duck_cuda_artifacts_<timestamp>.tar.gz
+            CUDA_ARTIFACT_SHA256_DOWNLOAD_TRIGGERED /content/open_duck_cuda_artifacts_<timestamp>.tar.gz.sha256
             ```
 
             If browser download is skipped or fails, download the printed
-            `CUDA_ARTIFACT_BUNDLE` path manually.
+            `CUDA_ARTIFACT_BUNDLE` and `CUDA_ARTIFACT_BUNDLE_SHA256_FILE`
+            paths manually.
 
             ## Import Locally
 
@@ -481,8 +492,7 @@ def write_handoff_dir(path: Path, cell: str, run_candidate: bool) -> None:
             ```bash
             cd /home/lsd/robots/open-duck-mini-rdkx5
             python3 tools/import_cuda_artifact_bundle.py \\
-              /path/to/open_duck_cuda_artifacts_<timestamp>.tar.gz \\
-              --expected-sha256 <CUDA_ARTIFACT_BUNDLE_SHA256>
+              /path/to/open_duck_cuda_artifacts_<timestamp>.tar.gz
             ```
 
             Start review from the generated:
