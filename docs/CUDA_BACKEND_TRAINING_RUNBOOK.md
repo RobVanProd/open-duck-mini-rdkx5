@@ -87,8 +87,8 @@ python3 tools/print_cuda_colab_cell.py \
 ```
 
 The generated candidate cell also runs candidate-mode closed-loop sim gates at
-`x=0.0` and `x=0.08` after training. It packages the candidate against the
-`x=0.08` gate report, so a nonzero-command hold such as
+`x=0.0` and `x=0.08` after training. It packages the candidate against both
+gate reports, so a zero-command fall or a nonzero-command hold such as
 `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` is carried into the package metadata.
 At the end, it creates a single `/content/open_duck_cuda_artifacts_<timestamp>.tar.gz`
 bundle plus a matching `.sha256` sidecar with small analysis files, candidate
@@ -339,7 +339,8 @@ LATEST_ONNX="$(ls -1 "$RUN_DIR"/*.onnx | sort | tail -n 1)"
   --candidate-name "$CANDIDATE" \
   --training-manifest "$RUN_DIR/smoke_manifest.final.json" \
   --contract-audit outputs/analysis/POLICY_SIM_CONTRACT_AUDIT_CUDA.md \
-  --actuator-bridge-eval outputs/analysis/<candidate>_candidate_gate_x008.md \
+  --candidate-gate-x0 outputs/analysis/<candidate>_candidate_gate_x0.md \
+  --candidate-gate-x008 outputs/analysis/<candidate>_candidate_gate_x008.md \
   --output-md outputs/analysis/${CANDIDATE}_policy_package.md \
   --output-json outputs/analysis/${CANDIDATE}_policy_metadata.json
 ```

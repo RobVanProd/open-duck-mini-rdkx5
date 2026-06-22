@@ -431,7 +431,8 @@ def build_remote_driver(args: argparse.Namespace, workflow_name: str, rdk_tar: s
                 "--candidate-name", candidate_name,
                 "--training-manifest", str(training_manifest),
                 "--contract-audit", str(OUT / "POLICY_SIM_CONTRACT_AUDIT_CUDA.md"),
-                "--actuator-bridge-eval", str(OUT / f"{{candidate_name}}_candidate_gate_x008.md"),
+                "--candidate-gate-x0", str(OUT / f"{{candidate_name}}_candidate_gate_x0.md"),
+                "--candidate-gate-x008", str(OUT / f"{{candidate_name}}_candidate_gate_x008.md"),
                 "--output-md", str(OUT / f"{{candidate_name}}_policy_package.md"),
                 "--output-json", str(OUT / f"{{candidate_name}}_policy_metadata.json"),
             ], cwd=RDK, timeout=300, check=False)

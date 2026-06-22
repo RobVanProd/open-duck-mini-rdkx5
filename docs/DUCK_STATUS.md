@@ -247,7 +247,8 @@ python3 tools/package_candidate_policy.py <candidate.onnx> \
   --candidate-name <candidate> \
   --training-manifest <run_dir>/smoke_manifest.final.json \
   --contract-audit outputs/analysis/<candidate>_contract.md \
-  --actuator-bridge-eval outputs/analysis/<candidate>_actuator_bridge_eval.md \
+  --candidate-gate-x0 outputs/analysis/<candidate>_candidate_gate_x0.md \
+  --candidate-gate-x008 outputs/analysis/<candidate>_candidate_gate_x008.md \
   --output-md outputs/analysis/<candidate>_policy_package.md \
   --output-json outputs/analysis/<candidate>_policy_metadata.json
 ```

@@ -155,7 +155,7 @@ The generated cell now:
 - runs CUDA smoke training
 - runs CUDA candidate training
 - gates the candidate at `x=0.0` and `x=0.08`
-- packages metadata against the `x=0.08` gate
+- packages metadata against both candidate gates
 - writes one downloadable artifact bundle and tries to trigger a Colab browser
   download:
 - records repo commits, dirty-file counts, package versions, `pip_freeze.txt`,

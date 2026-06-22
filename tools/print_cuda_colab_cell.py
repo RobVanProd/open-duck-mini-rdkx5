@@ -438,7 +438,8 @@ if [ "$RUN_CANDIDATE" = "1" ]; then
     --candidate-name "$CANDIDATE" \\
     --training-manifest "$TRAINING_MANIFEST" \\
     --contract-audit outputs/analysis/cuda_manual/POLICY_SIM_CONTRACT_AUDIT_CUDA.md \\
-    --actuator-bridge-eval "outputs/analysis/cuda_manual/${{CANDIDATE}}_candidate_gate_x008.md" \\
+    --candidate-gate-x0 "outputs/analysis/cuda_manual/${{CANDIDATE}}_candidate_gate_x0.md" \\
+    --candidate-gate-x008 "outputs/analysis/cuda_manual/${{CANDIDATE}}_candidate_gate_x008.md" \\
     --output-md "outputs/analysis/cuda_manual/${{CANDIDATE}}_policy_package.md" \\
     --output-json "outputs/analysis/cuda_manual/${{CANDIDATE}}_policy_metadata.json" || true
 

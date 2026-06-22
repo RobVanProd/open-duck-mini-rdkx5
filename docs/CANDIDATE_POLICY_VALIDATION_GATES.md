@@ -105,7 +105,8 @@ python3 tools/package_candidate_policy.py \
   --candidate-name open_duck_mini_actuator_bridge_<date>_<shortsha> \
   --training-manifest path/to/smoke_or_training_manifest.json \
   --contract-audit outputs/analysis/<candidate>_contract.md \
-  --actuator-bridge-eval outputs/analysis/<candidate>_candidate_gate_x008.md \
+  --candidate-gate-x0 outputs/analysis/<candidate>_candidate_gate_x0.md \
+  --candidate-gate-x008 outputs/analysis/<candidate>_candidate_gate_x008.md \
   --output-md outputs/analysis/<candidate>_policy_package.md \
   --output-json outputs/analysis/<candidate>_policy_metadata.json
 ```
@@ -125,7 +126,7 @@ The tool checks:
 - training manifest presence
 - sim-gate evidence presence
 - optional target-velocity summary presence
-- candidate sim-gate status when an actuator bridge eval report is supplied
+- candidate sim-gate status for both `x=0.0` and `x=0.08`
 
 Use the closed-loop eval helper in candidate mode before considering any
 robot-side validation:
