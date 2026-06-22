@@ -59,6 +59,8 @@ The generated candidate cell also runs candidate-mode closed-loop sim gates at
 `x=0.0` and `x=0.08` after training. It packages the candidate against the
 `x=0.08` gate report, so a nonzero-command hold such as
 `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` is carried into the package metadata.
+At the end, it creates a single `/content/open_duck_cuda_artifacts_<timestamp>.tar.gz`
+bundle with small analysis files, candidate ONNX exports, manifests, and logs.
 
 The default generated candidate recipe uses the Playground runner's opt-in
 training-recipe overrides to test the next hypothesis from the CPU pilots:
