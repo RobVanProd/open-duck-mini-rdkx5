@@ -140,6 +140,23 @@ This does not rule out a hipSolver/XLA memory interaction for later crashes,
 but it shows that JAX preallocation changes alone do not currently clear the
 first Open Duck Playground GPU step. The current `amdgpu` module parameter is:
 
+The same memory-allocation and conservative compiler variants were then tested
+on the narrower direct `mjx_env.step(...)` subtest:
+
+```text
+XLA_PYTHON_CLIENT_PREALLOCATE=false -> TIMEOUT
+XLA_PYTHON_CLIENT_MEM_FRACTION=0.50 -> TIMEOUT
+XLA_PYTHON_CLIENT_MEM_FRACTION=0.60 -> TIMEOUT
+XLA_PYTHON_CLIENT_ALLOCATOR=platform -> TIMEOUT
+ROCM_CHIP_COMPILER_FLAGS=-fno-fast-math -fhonor-infinities -fhonor-nans -> TIMEOUT
+MIOpen/XLA conservative flags -> TIMEOUT
+```
+
+So the simple per-process memory and strict-math workarounds also do not clear
+the raw Open Duck MJX physics step.
+
+The current `amdgpu` module parameter is:
+
 ```text
 cwsr_enable = 1
 ```
