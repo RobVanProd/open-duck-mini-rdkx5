@@ -716,6 +716,21 @@ def build_markdown(payload: dict) -> str:
                 f"{fmt(reward.get('mean'))} |"
             )
         lines.append("")
+        reward_rows = []
+        for mode_name, mode in (closed_loop.get("modes") or {}).items():
+            for term_name, stats in (mode.get("reward_terms") or {}).items():
+                stats = stats or {}
+                reward_rows.append(
+                    f"| {mode_name} | `{term_name}` | {fmt(stats.get('mean'))} | "
+                    f"{fmt(stats.get('p95'))} | {fmt(stats.get('max'))} |"
+                )
+        if reward_rows:
+            lines.append("### Reward-Term Summary")
+            lines.append("")
+            lines.append("| mode | term | mean | p95 | max |")
+            lines.append("|---|---|---:|---:|---:|")
+            lines.extend(reward_rows)
+            lines.append("")
         lines.append("### Pitch-Chain Summary")
         lines.append("")
         lines.append(

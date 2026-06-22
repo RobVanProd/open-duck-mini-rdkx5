@@ -255,6 +255,9 @@ before launching another candidate:
   standing into the easiest optimum
 - keep `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` as a hard offline block for robot
   validation
+- review the closed-loop eval `reward_terms` table/JSON for each candidate so
+  total reward cannot hide a weak forward-tracking term behind `alive` or other
+  stabilizing rewards
 
 ### Action-Rate Penalty
 

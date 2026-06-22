@@ -245,6 +245,26 @@ def pitch_chain_summary(joints: Mapping[str, Mapping[str, Any]]) -> dict:
     return output
 
 
+def reward_term_summary(records: list[dict]) -> dict:
+    keys = sorted(
+        {
+            key
+            for record in records
+            for key in (record.get("reward_terms") or {}).keys()
+        }
+    )
+    return {
+        key: signed_stats(
+            [
+                (record.get("reward_terms") or {}).get(key)
+                for record in records
+                if finite((record.get("reward_terms") or {}).get(key))
+            ]
+        )
+        for key in keys
+    }
+
+
 def classify_closed_loop(modes: Mapping[str, Mapping[str, Any]]) -> str:
     fitted = modes.get("fitted")
     if not fitted:
@@ -698,6 +718,13 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             contacts = np.asarray(jax.device_get(state.info["last_contact"]), dtype=bool)
             done = bool(np.asarray(jax.device_get(state.done)))
             reward = float(np.asarray(jax.device_get(state.reward)))
+            reward_terms = {}
+            for key, value in state.metrics.items():
+                if str(key).startswith(("reward/", "cost/")):
+                    try:
+                        reward_terms[str(key)] = float(np.asarray(jax.device_get(value)))
+                    except Exception:
+                        pass
             records.append(
                 {
                     "tick": tick,
@@ -718,6 +745,7 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                     "base_height_m": float(qpos[base_addr + 2]),
                     "foot_contacts": contacts.astype(int).tolist(),
                     "reward": reward,
+                    "reward_terms": reward_terms,
                     "done": done,
                 }
             )
@@ -732,6 +760,7 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
         base_y = signed_stats([record["base_y_m"] for record in records])
         base_height = signed_stats([record["base_height_m"] for record in records])
         reward_stats = signed_stats([record["reward"] for record in records])
+        reward_terms = reward_term_summary(records)
         if len(records) >= 2:
             elapsed_s = max(
                 float(records[-1]["time_s"]) - float(records[0]["time_s"]),
@@ -779,6 +808,7 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                 "command_tracking_ratio": ratio,
             },
             "reward": reward_stats,
+            "reward_terms": reward_terms,
             "foot_contact_counts": {
                 "left": int(contact_counts[0]) if len(contact_counts) > 0 else 0,
                 "right": int(contact_counts[1]) if len(contact_counts) > 1 else 0,
