@@ -167,6 +167,28 @@ export HSA_OVERRIDE_GFX_VERSION=11.0.0
 The card is already detected through normal ROCm/JAX device discovery. Forcing
 the override breaks basic JAX before MuJoCo or MJX enter the picture.
 
+## PufferLib ROCm Archive Lead
+
+The local archive `/home/lsd/Downloads/PufferLib.rar` was inspected as a
+possible `7900 XT/XTX` ROCm clue.
+
+Review artifact:
+
+```text
+outputs/analysis/PUFFERLIB_ROCM_ARCHIVE_REVIEW.md
+```
+
+The archive contains a PufferLib ROCm port runbook for AMD Radeon RX `7900 XT`
+/ RDNA3 / `gfx1100`, focused on native Windows ROCm, PyTorch HIP, HIP graph
+capture, PufferLib Ocean environments, and WSL ROCm/RCCL. It is useful context
+for `gfx1100` ROCm work, but it does not document JAX, XLA, MuJoCo MJX,
+`mjx_env.step(...)`, or a fix for the local Open Duck Playground ROCm step
+failure.
+
+Do not treat the PufferLib archive as the missing Open Duck MJX fix. It may be
+useful only if the project intentionally starts a separate PufferLib/PyTorch
+training integration later.
+
 Focused memory-allocation variants were tested on the smallest failing GPU
 subtest (`playground_one_step_vanilla`):
 

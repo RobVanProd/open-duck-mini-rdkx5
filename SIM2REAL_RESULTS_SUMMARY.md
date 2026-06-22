@@ -795,6 +795,22 @@ XLA control flow. This is a correctness workaround for tiny local probes only.
 It is not fast enough for full-horizon eval or training. CUDA remains the
 confirmed backend for full candidate evaluation and training.
 
+## PufferLib ROCm Archive Review
+
+The local `PufferLib.rar` lead was inspected and summarized in:
+
+```text
+outputs/analysis/PUFFERLIB_ROCM_ARCHIVE_REVIEW.md
+```
+
+Result: the archive documents a PufferLib-specific PyTorch/HIP ROCm port for
+Windows/WSL on `gfx1100` hardware. It is useful context for RDNA3 ROCm work, but
+it does not address JAX/XLA/MuJoCo MJX or the local Open Duck
+`mjx_env.step(...)` blocker. It does not change the current backend decision:
+CUDA/Colab remains the full candidate eval/training backend, CPU remains for
+reduced local checks, and local RX `7900 XTX` ROCm remains a backend-debug
+workstream.
+
 ## CUDA Candidate Handoff
 
 The current CUDA candidate handoff is recorded in:
