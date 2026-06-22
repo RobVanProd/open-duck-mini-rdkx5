@@ -279,32 +279,39 @@ def main() -> int:
     write_manifest(output_dir / "smoke_manifest.start.json", manifest)
 
     start_s = time.monotonic()
-    result = subprocess.run(
-        command,
-        cwd=Path(args.playground_path),
-        env=env,
-        text=True,
-        capture_output=True,
-        timeout=args.timeout_s,
-        check=False,
-    )
+    stdout_path = output_dir / "stdout.txt"
+    stderr_path = output_dir / "stderr.txt"
+    with stdout_path.open("w") as stdout_handle, stderr_path.open("w") as stderr_handle:
+        process = subprocess.Popen(
+            command,
+            cwd=Path(args.playground_path),
+            env=env,
+            text=True,
+            stdout=stdout_handle,
+            stderr=stderr_handle,
+        )
+        try:
+            returncode = process.wait(timeout=args.timeout_s)
+        except subprocess.TimeoutExpired:
+            process.kill()
+            process.wait()
+            raise
     elapsed_s = time.monotonic() - start_s
-    (output_dir / "stdout.txt").write_text(result.stdout)
-    (output_dir / "stderr.txt").write_text(result.stderr)
+    stdout_text = stdout_path.read_text(errors="replace")
 
     manifest.update(
         {
-            "status": "PASS_SMOKE_RUN" if result.returncode == 0 else "HOLD_SMOKE_RUN",
-            "returncode": result.returncode,
+            "status": "PASS_SMOKE_RUN" if returncode == 0 else "HOLD_SMOKE_RUN",
+            "returncode": returncode,
             "elapsed_s": elapsed_s,
-            "stdout_path": str(output_dir / "stdout.txt"),
-            "stderr_path": str(output_dir / "stderr.txt"),
-            "summary": extract_summary(result.stdout),
+            "stdout_path": str(stdout_path),
+            "stderr_path": str(stderr_path),
+            "summary": extract_summary(stdout_text),
         }
     )
     write_manifest(output_dir / "smoke_manifest.final.json", manifest)
     print(json.dumps(manifest, indent=2, sort_keys=True))
-    return result.returncode
+    return returncode
 
 
 if __name__ == "__main__":

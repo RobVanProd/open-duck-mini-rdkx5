@@ -387,7 +387,7 @@ if [ "$RUN_CANDIDATE" = "1" ]; then
 
   "$PYTHON_BIN" tools/summarize_training_run.py "$RUN_DIR" \\
     --output-md "outputs/analysis/cuda_manual/${{CANDIDATE}}_training_run_summary.md" \\
-    --output-json "outputs/analysis/cuda_manual/${{CANDIDATE}}_training_run_summary.json"
+    --output-json "outputs/analysis/cuda_manual/${{CANDIDATE}}_training_run_summary.json" || true
 
   echo "=== Candidate closed-loop sim gate: x=0.0 ==="
   "$PYTHON_BIN" tools/eval_policy_with_actuator_bridge.py \\
@@ -429,9 +429,14 @@ if [ "$RUN_CANDIDATE" = "1" ]; then
   cp "outputs/analysis/cuda_manual/${{CANDIDATE}}_gate_x008/closed_loop_actuator_bridge_eval.json" \\
     "outputs/analysis/cuda_manual/${{CANDIDATE}}_candidate_gate_x008.json"
 
+  TRAINING_MANIFEST="$RUN_DIR/smoke_manifest.final.json"
+  if [ ! -f "$TRAINING_MANIFEST" ]; then
+    TRAINING_MANIFEST="$RUN_DIR/smoke_manifest.start.json"
+  fi
+
   "$PYTHON_BIN" tools/package_candidate_policy.py "$LATEST_ONNX" \\
     --candidate-name "$CANDIDATE" \\
-    --training-manifest "$RUN_DIR/smoke_manifest.final.json" \\
+    --training-manifest "$TRAINING_MANIFEST" \\
     --contract-audit outputs/analysis/cuda_manual/POLICY_SIM_CONTRACT_AUDIT_CUDA.md \\
     --actuator-bridge-eval "outputs/analysis/cuda_manual/${{CANDIDATE}}_candidate_gate_x008.md" \\
     --output-md "outputs/analysis/cuda_manual/${{CANDIDATE}}_policy_package.md" \\

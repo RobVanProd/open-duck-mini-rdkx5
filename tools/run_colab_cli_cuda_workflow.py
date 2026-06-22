@@ -250,13 +250,15 @@ def build_remote_driver(args: argparse.Namespace, workflow_name: str, rdk_tar: s
 
         atexit.register(bundle_artifacts)
 
-        def run(cmd, cwd=None, timeout=None, env=None):
+        def run(cmd, cwd=None, timeout=None, env=None, check=True):
             print("\\n>>>", " ".join(str(x) for x in cmd), flush=True)
             completed = subprocess.run(cmd, cwd=cwd, timeout=timeout, env=env, text=True)
             print("<<< returncode", completed.returncode, flush=True)
             if completed.returncode != 0:
                 RUN_STATUS["exit_status"] = completed.returncode
-                raise SystemExit(completed.returncode)
+                if check:
+                    raise SystemExit(completed.returncode)
+            return completed
 
         run(["rm", "-rf", str(RDK), str(PLAYGROUND)])
         run(["tar", "-xzf", "{rdk_tar}", "-C", "/content"])
@@ -391,7 +393,7 @@ def build_remote_driver(args: argparse.Namespace, workflow_name: str, rdk_tar: s
                 PYTHON, "tools/summarize_training_run.py", str(run_dir),
                 "--output-md", str(OUT / f"{{candidate_name}}_training_run_summary.md"),
                 "--output-json", str(OUT / f"{{candidate_name}}_training_run_summary.json"),
-            ], cwd=RDK, timeout=300)
+            ], cwd=RDK, timeout=300, check=False)
             copy_training_outputs(
                 "/content/open_duck_training_runs_cli",
                 OUT / "open_duck_training_runs_cli",
@@ -418,15 +420,18 @@ def build_remote_driver(args: argparse.Namespace, workflow_name: str, rdk_tar: s
                 run(["cp", str(gate_dir / "CLOSED_LOOP_ACTUATOR_BRIDGE_EVAL.md"), str(OUT / f"{{candidate_name}}_candidate_gate_{{suffix}}.md")])
                 run(["cp", str(gate_dir / "closed_loop_actuator_bridge_eval.json"), str(OUT / f"{{candidate_name}}_candidate_gate_{{suffix}}.json")])
                 bundle_artifacts()
+            training_manifest = run_dir / "smoke_manifest.final.json"
+            if not training_manifest.exists():
+                training_manifest = run_dir / "smoke_manifest.start.json"
             run([
                 PYTHON, "tools/package_candidate_policy.py", str(latest_onnx),
                 "--candidate-name", candidate_name,
-                "--training-manifest", str(run_dir / "smoke_manifest.final.json"),
+                "--training-manifest", str(training_manifest),
                 "--contract-audit", str(OUT / "POLICY_SIM_CONTRACT_AUDIT_CUDA.md"),
                 "--actuator-bridge-eval", str(OUT / f"{{candidate_name}}_candidate_gate_x008.md"),
                 "--output-md", str(OUT / f"{{candidate_name}}_policy_package.md"),
                 "--output-json", str(OUT / f"{{candidate_name}}_policy_metadata.json"),
-            ], cwd=RDK, timeout=300)
+            ], cwd=RDK, timeout=300, check=False)
             copy_training_outputs(
                 "/content/open_duck_training_runs_cli",
                 OUT / "open_duck_training_runs_cli",
