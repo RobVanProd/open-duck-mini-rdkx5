@@ -14,6 +14,8 @@ Recent handoff fixes merged:
   summary as required evidence.
 - PR #42: imported CUDA artifact bundles produce a conservative review gate in
   `CUDA_ARTIFACT_IMPORT_SUMMARY.md`.
+- PR #53: local ROCm host-loop closed-loop smoke passed for 10 ticks, but is
+  too slow for full eval/training.
 
 ## Why Manual CUDA Is Still Required
 
@@ -38,7 +40,7 @@ The generated cell now:
 
 - pins the known-good CUDA dependency path, including `playground==0.0.5`
 - runs the baseline closed-loop actuator bridge reproduction with
-  `--jax-platform gpu`
+  `--jax-platform gpu` and `--sim-preflight-timeout-s 600`
 - runs CUDA smoke training
 - runs CUDA candidate training
 - gates the candidate at `x=0.0` and `x=0.08`

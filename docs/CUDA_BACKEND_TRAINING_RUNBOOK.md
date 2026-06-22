@@ -146,6 +146,7 @@ python tools/eval_policy_with_actuator_bridge.py \
   --duration 15 \
   --bridge-mode all \
   --jax-platform gpu \
+  --sim-preflight-timeout-s 600 \
   --closed-loop-timeout-s 1800 \
   --output-dir outputs/analysis/cuda_eval
 
@@ -225,6 +226,7 @@ python tools/eval_policy_with_actuator_bridge.py \
   --duration 15 \
   --bridge-mode all \
   --jax-platform gpu \
+  --sim-preflight-timeout-s 600 \
   --output-dir outputs/analysis/<candidate>_gate_x0
 
 python tools/eval_policy_with_actuator_bridge.py \
@@ -238,6 +240,7 @@ python tools/eval_policy_with_actuator_bridge.py \
   --duration 15 \
   --bridge-mode all \
   --jax-platform gpu \
+  --sim-preflight-timeout-s 600 \
   --output-dir outputs/analysis/<candidate>_gate_x008
 ```
 
