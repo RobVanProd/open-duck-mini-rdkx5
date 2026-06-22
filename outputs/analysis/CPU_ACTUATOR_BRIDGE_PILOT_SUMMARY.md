@@ -48,6 +48,7 @@ closed-loop reproduction status was only meaningful for the baseline policy.
 
 Small committed reports:
 
+- `outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_ZERO_X0_15S.md`
 - `outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_ZERO_15S.md`
 - `outputs/analysis/CPU_CANDIDATE_GATE_STEP32800_HOLD.md`
 
@@ -55,7 +56,8 @@ Results:
 
 | pilot | duration | status | main reason |
 |---|---:|---|---|
-| `step8240_zero_penalty` | `15 s` | `PASS_CANDIDATE_SIM_GATE` | survived vanilla/fitted/stress with low action saturation and pitch tracking below threshold |
+| `step8240_zero_penalty`, `x=0.0` | `15 s` | `PASS_CANDIDATE_SIM_GATE` | survived vanilla/fitted/stress with low action saturation and pitch tracking below threshold |
+| `step8240_zero_penalty`, `x=0.08` | `15 s` | `PASS_CANDIDATE_SIM_GATE` | survived vanilla/fitted/stress with low action saturation and pitch tracking below threshold |
 | `step32800_zero_penalty` | `2 s` | `HOLD_CANDIDATE_FALL_OR_TERMINATION` | fell/terminated early with high action saturation and large pitch tracking error |
 
 The passing `step8240_zero_penalty` pilot is still not robot-approved. It needs
