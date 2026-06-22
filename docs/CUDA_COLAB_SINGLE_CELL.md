@@ -145,7 +145,9 @@ clean run from a partial evidence bundle.
 Import it locally with:
 
 ```bash
-python3 tools/import_cuda_artifact_bundle.py /path/to/open_duck_cuda_artifacts_<timestamp>.tar.gz
+python3 tools/import_cuda_artifact_bundle.py \
+  /path/to/open_duck_cuda_artifacts_<timestamp>.tar.gz \
+  --expected-sha256 <CUDA_ARTIFACT_BUNDLE_SHA256>
 ```
 
 That writes:
