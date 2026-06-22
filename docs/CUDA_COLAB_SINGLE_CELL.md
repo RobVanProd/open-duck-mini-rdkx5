@@ -37,6 +37,7 @@ The generated cell runs:
 9. optional CUDA candidate training
 10. optional candidate sim gates at `x=0.0` and `x=0.08`
 11. optional candidate package metadata
+12. a single downloadable artifact bundle
 
 To include the first candidate-training shape in the generated cell:
 
@@ -100,7 +101,31 @@ stable but does not track nonzero forward commands must hold, for example
 
 ## Files To Bring Back
 
-Small summaries first:
+The generated cell now prints one bundle path plus its SHA256:
+
+```text
+CUDA_ARTIFACT_BUNDLE /content/open_duck_cuda_artifacts_<timestamp>.tar.gz
+CUDA_ARTIFACT_BUNDLE_SHA256 <hash>
+```
+
+Download that `.tar.gz` first. It includes the small analysis directory plus
+candidate ONNX/manifests/stdout/stderr from the smoke and candidate runs. It
+intentionally leaves large raw checkpoint files out of the bundle.
+
+Import it locally with:
+
+```bash
+python3 tools/import_cuda_artifact_bundle.py /path/to/open_duck_cuda_artifacts_<timestamp>.tar.gz
+```
+
+That writes:
+
+```text
+outputs/analysis/cuda_imports/<timestamp>_<bundle>/CUDA_ARTIFACT_IMPORT_SUMMARY.md
+outputs/analysis/cuda_imports/<timestamp>_<bundle>/cuda_artifact_import_summary.json
+```
+
+If you cannot download the bundle, bring back these small summaries first:
 
 ```text
 outputs/analysis/cuda_manual/POLICY_SIM_CONTRACT_AUDIT_CUDA.md
