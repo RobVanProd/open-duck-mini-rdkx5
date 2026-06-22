@@ -117,12 +117,15 @@ Follow-up isolation narrowed this further:
 
 ```text
 gate_result: HOLD_PLAYGROUND_GPU_STEP
-smallest_failing_subtest: default_gpu_playground_one_step_vanilla
+smallest_failing_subtest: default_gpu_playground_direct_mjx_step
 ```
 
 Basic JAX GPU, JAX jit/scan, minimal MJX GPU, Playground contract
-construction, and Playground reset all pass. The first failing GPU operation is
-one Open Duck Playground step, before the actuator bridge is involved.
+construction, and Playground reset all pass. A direct Open Duck
+`mjx_env.step(...)` times out on GPU, while the same direct step passes on CPU.
+The first failing GPU operation is therefore the raw Open Duck MJX physics
+step, before `Joystick.step()`, reward code, policy inference, or the actuator
+bridge are involved.
 
 Additional execution-mode checks show the same backend fault when the
 Playground step is wrapped differently:
@@ -386,6 +389,7 @@ closed-loop CPU short matrix: PASS
 Additional focused outputs:
 
 ```text
+outputs/analysis/rocm_mjx_direct_step_probe/ROCM_MJX_RUNTIME_ISOLATION.md
 outputs/analysis/rocm_mjx_isolation_step_modes_default/ROCM_MJX_RUNTIME_ISOLATION.md
 outputs/analysis/rocm_mjx_isolation_scan_variants/ROCM_MJX_RUNTIME_ISOLATION.md
 outputs/analysis/rocm_mjx_isolation_debug_cpu/ROCM_MJX_RUNTIME_ISOLATION.md

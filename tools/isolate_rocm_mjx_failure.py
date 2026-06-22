@@ -484,6 +484,41 @@ emit("SUBTEST_RESULT_JSON_START", {"status": "PASS", "finite_report": report})
 """
 
 
+def code_playground_direct_mjx_step(playground: Path) -> str:
+    return playground_common_code(playground) + """
+emit_info({"subtest": "playground_direct_mjx_step"})
+import jax
+from mujoco_playground._src import mjx_env
+env = make_env()
+state = env.reset(jax.random.PRNGKey(0))
+data = mjx_env.step(env.mjx_model, state.data, state.data.ctrl, env.n_substeps)
+block_tree((data.qpos, data.qvel, data.ctrl))
+emit("SUBTEST_RESULT_JSON_START", {
+    "status": "PASS",
+    "qpos0": float(data.qpos[0]),
+    "base_height": float(data.qpos[2]),
+})
+"""
+
+
+def code_playground_direct_mjx_step_jit(playground: Path) -> str:
+    return playground_common_code(playground) + """
+emit_info({"subtest": "playground_direct_mjx_step_jit"})
+import jax
+from mujoco_playground._src import mjx_env
+env = make_env()
+state = env.reset(jax.random.PRNGKey(0))
+step_fn = jax.jit(lambda data, ctrl: mjx_env.step(env.mjx_model, data, ctrl, env.n_substeps))
+data = step_fn(state.data, state.data.ctrl)
+block_tree((data.qpos, data.qvel, data.ctrl))
+emit("SUBTEST_RESULT_JSON_START", {
+    "status": "PASS",
+    "qpos0": float(data.qpos[0]),
+    "base_height": float(data.qpos[2]),
+})
+"""
+
+
 def code_playground_one_step(playground: Path) -> str:
     return playground_common_code(playground) + """
 emit_info({"subtest": "playground_one_step_vanilla"})
@@ -688,6 +723,16 @@ def build_subtests(args) -> list[dict]:
                     "name": "playground_reset_state_finite",
                     "platform": platform_name,
                     "code": code_playground_reset_state_finite(args.playground_path),
+                },
+                {
+                    "name": "playground_direct_mjx_step",
+                    "platform": platform_name,
+                    "code": code_playground_direct_mjx_step(args.playground_path),
+                },
+                {
+                    "name": "playground_direct_mjx_step_jit",
+                    "platform": platform_name,
+                    "code": code_playground_direct_mjx_step_jit(args.playground_path),
                 },
                 {
                     "name": "playground_one_step_vanilla",
@@ -907,6 +952,8 @@ def classify(results: Sequence[dict], platforms: Sequence[str]) -> dict:
             result_failed(results, name, "gpu")
             for name in [
                 "playground_reset",
+                "playground_direct_mjx_step",
+                "playground_direct_mjx_step_jit",
                 "playground_one_step_vanilla",
                 "playground_one_step_jit",
                 "playground_multi_step_vanilla",
@@ -960,6 +1007,12 @@ def summarize_capabilities(results: Sequence[dict]) -> dict:
         "jax_jit_scan_gpu": status_for("jax_jit_scan", "gpu"),
         "minimal_mjx_gpu": status_for("minimal_mjx_step", "gpu"),
         "playground_reset_gpu": status_for("playground_reset", "gpu"),
+        "playground_direct_mjx_step_gpu": status_for(
+            "playground_direct_mjx_step", "gpu"
+        ),
+        "playground_direct_mjx_step_jit_gpu": status_for(
+            "playground_direct_mjx_step_jit", "gpu"
+        ),
         "playground_step_gpu": status_for("playground_one_step_vanilla", "gpu"),
         "playground_step_jit_gpu": status_for("playground_one_step_jit", "gpu"),
         "playground_scan_step_gpu": status_for("playground_scan_step_vanilla", "gpu"),
@@ -987,6 +1040,8 @@ def build_markdown(payload: Mapping[str, Any]) -> str:
         f"- JAX jit/scan GPU: `{capabilities['jax_jit_scan_gpu']}`",
         f"- Minimal MJX GPU: `{capabilities['minimal_mjx_gpu']}`",
         f"- Playground reset GPU: `{capabilities['playground_reset_gpu']}`",
+        f"- Playground direct MJX step GPU: `{capabilities['playground_direct_mjx_step_gpu']}`",
+        f"- Playground direct MJX step JIT GPU: `{capabilities['playground_direct_mjx_step_jit_gpu']}`",
         f"- Playground one-step GPU: `{capabilities['playground_step_gpu']}`",
         f"- Playground one-step JIT GPU: `{capabilities['playground_step_jit_gpu']}`",
         f"- Playground scan-step GPU: `{capabilities['playground_scan_step_gpu']}`",
@@ -1114,6 +1169,7 @@ def main() -> int:
         help=(
             "comma-separated subtests or all. Examples: basic_jax,"
             "playground_one_step_vanilla,playground_one_step_jit,"
+            "playground_direct_mjx_step,playground_direct_mjx_step_jit,"
             "playground_scan_step_vanilla,playground_scan_step_sanitized,"
             "playground_xml_contact_audit,closed_loop_policy_eval_gpu"
         ),

@@ -20,6 +20,18 @@ increased servo-bus read errors. Follow-up single-joint actuator sine sweeps at
 the robot can follow simple single-joint smooth targets, but the walking policy
 target waveform is much more aggressive and exposes the effective delay.
 
+Offline sim work has now reproduced the actuator-bridge degradation on a CUDA
+backend and narrowed the local `7900 XTX` hold to the raw Open Duck
+`mjx_env.step(...)` path on ROCm:
+
+- CUDA L4 closed-loop eval: `PASS_CLOSED_LOOP_REPRODUCTION`
+- local ROCm reset: `PASS`
+- local ROCm direct Open Duck `mjx_env.step(...)`: `TIMEOUT`
+- local CPU direct Open Duck `mjx_env.step(...)`: `PASS`
+
+This keeps the robot parked. The local ROCm blocker is a backend workstream,
+not a reason to revisit robot testing.
+
 ## Evidence Files
 
 Small summaries:

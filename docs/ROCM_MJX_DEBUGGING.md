@@ -161,6 +161,51 @@ This confirms the local blocker is still the Open Duck Playground
 reduced correctness checks. CUDA remains the backend that completed the full
 closed-loop reproduction.
 
+## Direct MJX Step Probe
+
+The isolation tool now includes direct Open Duck `mjx_env.step(...)` probes so
+the failing layer can be separated from the higher-level `Joystick.step()`
+wrapper, reward code, policy inference, and actuator bridge.
+
+Command:
+
+```bash
+../envs/open-duck-playground/bin/python tools/isolate_rocm_mjx_failure.py \
+  --playground-path ../Open_Duck_Playground \
+  --env-python ../envs/open-duck-playground/bin/python \
+  --policy policy/BEST_WALK_ONNX_2.onnx \
+  --fit-json outputs/analysis/actuator_response_fit.json \
+  --output-dir outputs/analysis/rocm_mjx_direct_step_probe \
+  --command-x 0.08 \
+  --steps 1 \
+  --platforms gpu,cpu \
+  --subtests playground_reset,playground_direct_mjx_step,playground_direct_mjx_step_jit,playground_one_step_vanilla \
+  --timeout-s 180
+```
+
+Result:
+
+```text
+gate_result: HOLD_PLAYGROUND_GPU_STEP
+smallest_failing_subtest: default_gpu_playground_direct_mjx_step
+```
+
+Current direct-step split:
+
+| test | GPU | CPU |
+|---|---|---|
+| Playground reset | `PASS` | `PASS` |
+| direct `mjx_env.step(...)` | `TIMEOUT` | `PASS` |
+| direct jitted `mjx_env.step(...)` | `TIMEOUT` | `PASS` |
+| `Joystick.step(...)` one-step | `TIMEOUT` | `PASS` |
+
+This narrows the local 7900 XTX issue further than the original closed-loop
+failure. The full Open Duck MJX model can be instantiated and reset on ROCm,
+but a single physics step of that model does not complete. The same model and
+same step path pass on CPU. Therefore the smallest local blocker is the Open
+Duck MJX physics step on ROCm, before policy inference, reward logic, actuator
+bridge insertion, or rollout-loop structure matter.
+
 ## PufferLib / Torch ROCm Note
 
 The workstation also has a local PufferLib HIP/ROCm tree:
@@ -196,12 +241,16 @@ Per-subtest logs:
 ```text
 outputs/analysis/rocm_mjx_isolation/*.stdout.txt
 outputs/analysis/rocm_mjx_isolation/*.stderr.txt
+outputs/analysis/rocm_mjx_direct_step_probe/*.stdout.txt
+outputs/analysis/rocm_mjx_direct_step_probe/*.stderr.txt
 ```
 
 Important failure logs:
 
 ```text
 default_gpu_playground_one_step_vanilla
+default_gpu_playground_direct_mjx_step
+default_gpu_playground_direct_mjx_step_jit
 default_gpu_playground_multi_step_vanilla
 default_gpu_playground_multi_step_bridge
 default_gpu_closed_loop_policy_eval_gpu
