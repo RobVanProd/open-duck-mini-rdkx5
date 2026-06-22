@@ -38,7 +38,19 @@ export RUN_CANDIDATE={candidate_flag}
 export CANDIDATE_NUM_TIMESTEPS={candidate_steps}
 export CUDA_AUTO_DOWNLOAD={auto_download_flag}
 export ARTIFACT_ROOT="/content/open_duck_cuda_artifacts"
-export BUNDLE="/content/open_duck_cuda_artifacts_$(date -u +%Y%m%dT%H%M%SZ).tar.gz"
+BUNDLE="/content/open_duck_cuda_artifacts_$(date -u +%Y%m%dT%H%M%SZ).tar.gz"
+export BUNDLE
+if [ -z "${{PYTHON_BIN:-}}" ]; then
+  if [ -x /usr/bin/python3 ]; then
+    PYTHON_BIN=/usr/bin/python3
+  elif command -v python3 >/dev/null 2>&1; then
+    PYTHON_BIN="$(command -v python3)"
+  else
+    PYTHON_BIN="$(command -v python)"
+  fi
+  export PYTHON_BIN
+fi
+echo "PYTHON_BIN=$PYTHON_BIN"
 
 bundle_cuda_artifacts() {{
   local exit_status="${{1:-0}}"
@@ -70,8 +82,8 @@ bundle_cuda_artifacts() {{
     echo "run_candidate=$RUN_CANDIDATE"
   }} > "$ARTIFACT_ROOT/CUDA_CELL_EXIT_STATUS.txt"
   {{
-    echo "python_executable=$(command -v python || echo UNKNOWN)"
-    python - <<'PY' 2>/dev/null || true
+    echo "python_executable=${{PYTHON_BIN:-UNKNOWN}}"
+    "$PYTHON_BIN" - <<'PY' 2>/dev/null || true
 import sys
 from importlib import metadata
 
@@ -101,7 +113,7 @@ PY
       echo "gpu_name=UNKNOWN"
     fi
   }} >> "$ARTIFACT_ROOT/CUDA_CELL_EXIT_STATUS.txt"
-  python -m pip freeze > "$ARTIFACT_ROOT/pip_freeze.txt" 2>&1 || true
+  "$PYTHON_BIN" -m pip freeze > "$ARTIFACT_ROOT/pip_freeze.txt" 2>&1 || true
   if command -v nvidia-smi >/dev/null 2>&1; then
     nvidia-smi > "$ARTIFACT_ROOT/nvidia_smi.txt" 2>&1 || true
   else
@@ -131,7 +143,7 @@ PY
   done
 
   if tar -czf "$BUNDLE" -C /content "$(basename "$ARTIFACT_ROOT")"; then
-    python - <<PY
+    "$PYTHON_BIN" - <<PY
 import hashlib
 from pathlib import Path
 bundle = Path("$BUNDLE")
@@ -140,7 +152,7 @@ print("CUDA_ARTIFACT_BUNDLE_SIZE_BYTES", bundle.stat().st_size)
 print("CUDA_ARTIFACT_BUNDLE_SHA256", hashlib.sha256(bundle.read_bytes()).hexdigest())
 PY
     if [ "${{CUDA_AUTO_DOWNLOAD:-1}}" = "1" ]; then
-      python - <<PY
+      "$PYTHON_BIN" - <<PY
 from pathlib import Path
 
 bundle = Path("$BUNDLE")
@@ -161,13 +173,19 @@ PY
   fi
 }}
 
-trap 'rc=$?; bundle_cuda_artifacts "$rc"; exit "$rc"' EXIT
+on_cuda_cell_exit() {{
+  local rc
+  rc=$?
+  bundle_cuda_artifacts "$rc"
+  exit "$rc"
+}}
+trap on_cuda_cell_exit EXIT
 
 echo "=== GPU ==="
 nvidia-smi || true
 
 echo "=== Python/JAX before setup ==="
-python - <<'PY'
+"$PYTHON_BIN" - <<'PY'
 try:
     import jax
     print("jax", jax.__version__)
@@ -196,8 +214,8 @@ git checkout "$PLAYGROUND_BRANCH"
 git pull --ff-only
 
 echo "=== Install CUDA eval/training deps ==="
-python -m pip install -U pip
-python -m pip install -U \\
+"$PYTHON_BIN" -m pip install -U pip
+"$PYTHON_BIN" -m pip install -U \\
   "jax[cuda12]" \\
   "playground==0.0.5" \\
   "mujoco>=3.2.7,<3.10" \\
@@ -209,10 +227,10 @@ python -m pip install -U \\
   mediapy \\
   tensorflow \\
   tf2onnx
-python -m pip install --no-deps -e /content/Open_Duck_Playground
+"$PYTHON_BIN" -m pip install --no-deps -e /content/Open_Duck_Playground
 
 echo "=== Verify key imports ==="
-python - <<'PY'
+"$PYTHON_BIN" - <<'PY'
 import jax
 import mujoco
 import mujoco_playground
@@ -227,25 +245,25 @@ cd /content/open-duck-mini-rdkx5
 mkdir -p outputs/analysis/cuda_manual
 
 echo "=== Environment check ==="
-python tools/check_training_env.py \\
+"$PYTHON_BIN" tools/check_training_env.py \\
   --playground-root /content/Open_Duck_Playground
 
 echo "=== Policy/sim contract audit ==="
-python tools/audit_policy_sim_contract.py \\
+"$PYTHON_BIN" tools/audit_policy_sim_contract.py \\
   --policy policy/BEST_WALK_ONNX_2.onnx \\
   --playground-path /content/Open_Duck_Playground \\
-  --env-python "$(command -v python)" \\
+  --env-python "$PYTHON_BIN" \\
   --instantiate-timeout-s 600 \\
   --output-md outputs/analysis/cuda_manual/POLICY_SIM_CONTRACT_AUDIT_CUDA.md \\
   --output-json outputs/analysis/cuda_manual/policy_sim_contract_audit_cuda.json
 
 echo "=== Closed-loop baseline bridge reproduction ==="
-python tools/eval_policy_with_actuator_bridge.py \\
+"$PYTHON_BIN" tools/eval_policy_with_actuator_bridge.py \\
   --mode closed-loop-sim \\
   --policy policy/BEST_WALK_ONNX_2.onnx \\
   --fit-json outputs/analysis/actuator_response_fit.json \\
   --playground-path /content/Open_Duck_Playground \\
-  --env-python "$(command -v python)" \\
+  --env-python "$PYTHON_BIN" \\
   --command-x 0.08 \\
   --duration 15 \\
   --bridge-mode all \\
@@ -255,9 +273,9 @@ python tools/eval_policy_with_actuator_bridge.py \\
   --output-dir outputs/analysis/cuda_manual
 
 echo "=== CUDA smoke training ==="
-python tools/run_actuator_bridge_training_smoke.py \\
+"$PYTHON_BIN" tools/run_actuator_bridge_training_smoke.py \\
   --playground-path /content/Open_Duck_Playground \\
-  --env-python "$(command -v python)" \\
+  --env-python "$PYTHON_BIN" \\
   --platform gpu \\
   --run \\
   --output-root /content/open_duck_training_smokes \\
@@ -275,9 +293,9 @@ python tools/run_actuator_bridge_training_smoke.py \\
 
 if [ "$RUN_CANDIDATE" = "1" ]; then
   echo "=== CUDA candidate training ==="
-  python tools/run_actuator_bridge_training_smoke.py \\
+  "$PYTHON_BIN" tools/run_actuator_bridge_training_smoke.py \\
     --playground-path /content/Open_Duck_Playground \\
-    --env-python "$(command -v python)" \\
+    --env-python "$PYTHON_BIN" \\
     --platform gpu \\
     --run \\
     --output-root /content/open_duck_training_runs \\
@@ -305,20 +323,20 @@ if [ "$RUN_CANDIDATE" = "1" ]; then
 
   RUN_DIR="$(find /content/open_duck_training_runs -maxdepth 1 -type d -name 'smoke_*_gpu' | sort | tail -n 1)"
   CANDIDATE="open_duck_mini_actuator_bridge_$(date -u +%Y%m%dT%H%M%SZ)"
-  LATEST_ONNX="$(ls -1 "$RUN_DIR"/*.onnx | sort | tail -n 1)"
+  LATEST_ONNX="$(find "$RUN_DIR" -maxdepth 1 -type f -name '*.onnx' -print | sort | tail -n 1)"
 
-  python tools/summarize_training_run.py "$RUN_DIR" \\
+  "$PYTHON_BIN" tools/summarize_training_run.py "$RUN_DIR" \\
     --output-md "outputs/analysis/cuda_manual/${{CANDIDATE}}_training_run_summary.md" \\
     --output-json "outputs/analysis/cuda_manual/${{CANDIDATE}}_training_run_summary.json"
 
   echo "=== Candidate closed-loop sim gate: x=0.0 ==="
-  python tools/eval_policy_with_actuator_bridge.py \\
+  "$PYTHON_BIN" tools/eval_policy_with_actuator_bridge.py \\
     --mode closed-loop-sim \\
     --eval-role candidate \\
     --policy "$LATEST_ONNX" \\
     --fit-json outputs/analysis/actuator_response_fit.json \\
     --playground-path /content/Open_Duck_Playground \\
-    --env-python "$(command -v python)" \\
+    --env-python "$PYTHON_BIN" \\
     --command-x 0.0 \\
     --duration 15 \\
     --bridge-mode all \\
@@ -332,13 +350,13 @@ if [ "$RUN_CANDIDATE" = "1" ]; then
     "outputs/analysis/cuda_manual/${{CANDIDATE}}_candidate_gate_x0.json"
 
   echo "=== Candidate closed-loop sim gate: x=0.08 ==="
-  python tools/eval_policy_with_actuator_bridge.py \\
+  "$PYTHON_BIN" tools/eval_policy_with_actuator_bridge.py \\
     --mode closed-loop-sim \\
     --eval-role candidate \\
     --policy "$LATEST_ONNX" \\
     --fit-json outputs/analysis/actuator_response_fit.json \\
     --playground-path /content/Open_Duck_Playground \\
-    --env-python "$(command -v python)" \\
+    --env-python "$PYTHON_BIN" \\
     --command-x 0.08 \\
     --duration 15 \\
     --bridge-mode all \\
@@ -351,7 +369,7 @@ if [ "$RUN_CANDIDATE" = "1" ]; then
   cp "outputs/analysis/cuda_manual/${{CANDIDATE}}_gate_x008/closed_loop_actuator_bridge_eval.json" \\
     "outputs/analysis/cuda_manual/${{CANDIDATE}}_candidate_gate_x008.json"
 
-  python tools/package_candidate_policy.py "$LATEST_ONNX" \\
+  "$PYTHON_BIN" tools/package_candidate_policy.py "$LATEST_ONNX" \\
     --candidate-name "$CANDIDATE" \\
     --training-manifest "$RUN_DIR/smoke_manifest.final.json" \\
     --contract-audit outputs/analysis/cuda_manual/POLICY_SIM_CONTRACT_AUDIT_CUDA.md \\
@@ -360,7 +378,7 @@ if [ "$RUN_CANDIDATE" = "1" ]; then
     --output-json "outputs/analysis/cuda_manual/${{CANDIDATE}}_policy_metadata.json" || true
 
   echo "=== Candidate small outputs ==="
-  ls -1 outputs/analysis/cuda_manual/${{CANDIDATE}}_* || true
+  find outputs/analysis/cuda_manual -maxdepth 1 -type f -name "${{CANDIDATE}}_*" -print | sort || true
 else
   echo "RUN_CANDIDATE=0, so candidate training was skipped."
   echo "After smoke passes, rerun this cell with --run-candidate generated or set RUN_CANDIDATE=1 near the top."

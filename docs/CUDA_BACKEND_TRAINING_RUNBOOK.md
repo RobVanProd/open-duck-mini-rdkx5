@@ -83,9 +83,10 @@ Run this as one Colab cell or one shell block on a CUDA host:
 ```bash
 set -euo pipefail
 cd /content
+export PYTHON_BIN="${PYTHON_BIN:-/usr/bin/python3}"
 
 nvidia-smi || true
-python - <<'PY'
+"$PYTHON_BIN" - <<'PY'
 import jax
 print("jax", jax.__version__)
 print("backend", jax.default_backend())
@@ -109,13 +110,13 @@ git fetch origin
 git checkout main
 git pull --ff-only
 
-python -m pip install -U pip
-python -m pip install -U "jax[cuda12]" "playground==0.0.5" \
+"$PYTHON_BIN" -m pip install -U pip
+"$PYTHON_BIN" -m pip install -U "jax[cuda12]" "playground==0.0.5" \
   "mujoco>=3.2.7,<3.10" "mujoco-mjx>=3.2.7" onnxruntime \
   ml-collections numpy matplotlib mediapy tensorflow tf2onnx
-python -m pip install --no-deps -e /content/Open_Duck_Playground
+"$PYTHON_BIN" -m pip install --no-deps -e /content/Open_Duck_Playground
 
-python - <<'PY'
+"$PYTHON_BIN" - <<'PY'
 import jax
 import mujoco
 import mujoco_playground
@@ -128,23 +129,23 @@ PY
 
 cd /content/open-duck-mini-rdkx5
 
-python tools/check_training_env.py \
+"$PYTHON_BIN" tools/check_training_env.py \
   --playground-root /content/Open_Duck_Playground
 
-python tools/audit_policy_sim_contract.py \
+"$PYTHON_BIN" tools/audit_policy_sim_contract.py \
   --policy policy/BEST_WALK_ONNX_2.onnx \
   --playground-path /content/Open_Duck_Playground \
-  --env-python "$(command -v python)" \
+  --env-python "$PYTHON_BIN" \
   --instantiate-timeout-s 600 \
   --output-md outputs/analysis/POLICY_SIM_CONTRACT_AUDIT_CUDA.md \
   --output-json outputs/analysis/policy_sim_contract_audit_cuda.json
 
-python tools/eval_policy_with_actuator_bridge.py \
+"$PYTHON_BIN" tools/eval_policy_with_actuator_bridge.py \
   --mode closed-loop-sim \
   --policy policy/BEST_WALK_ONNX_2.onnx \
   --fit-json outputs/analysis/actuator_response_fit.json \
   --playground-path /content/Open_Duck_Playground \
-  --env-python "$(command -v python)" \
+  --env-python "$PYTHON_BIN" \
   --command-x 0.08 \
   --duration 15 \
   --bridge-mode all \
@@ -153,9 +154,9 @@ python tools/eval_policy_with_actuator_bridge.py \
   --closed-loop-timeout-s 1800 \
   --output-dir outputs/analysis/cuda_eval
 
-python tools/run_actuator_bridge_training_smoke.py \
+"$PYTHON_BIN" tools/run_actuator_bridge_training_smoke.py \
   --playground-path /content/Open_Duck_Playground \
-  --env-python "$(command -v python)" \
+  --env-python "$PYTHON_BIN" \
   --platform gpu \
   --run \
   --num-timesteps 64 \
@@ -181,9 +182,10 @@ Example shape:
 
 ```bash
 cd /content/open-duck-mini-rdkx5
-python tools/run_actuator_bridge_training_smoke.py \
+export PYTHON_BIN="${PYTHON_BIN:-/usr/bin/python3}"
+"$PYTHON_BIN" tools/run_actuator_bridge_training_smoke.py \
   --playground-path /content/Open_Duck_Playground \
-  --env-python "$(command -v python)" \
+  --env-python "$PYTHON_BIN" \
   --platform gpu \
   --run \
   --output-root /content/open_duck_training_runs \
@@ -218,13 +220,13 @@ After candidate training, run the offline candidate gates before any packaging
 or robot discussion:
 
 ```bash
-python tools/eval_policy_with_actuator_bridge.py \
+"$PYTHON_BIN" tools/eval_policy_with_actuator_bridge.py \
   --mode closed-loop-sim \
   --eval-role candidate \
   --policy "$LATEST_ONNX" \
   --fit-json outputs/analysis/actuator_response_fit.json \
   --playground-path /content/Open_Duck_Playground \
-  --env-python "$(command -v python)" \
+  --env-python "$PYTHON_BIN" \
   --command-x 0.0 \
   --duration 15 \
   --bridge-mode all \
@@ -232,13 +234,13 @@ python tools/eval_policy_with_actuator_bridge.py \
   --sim-preflight-timeout-s 600 \
   --output-dir outputs/analysis/<candidate>_gate_x0
 
-python tools/eval_policy_with_actuator_bridge.py \
+"$PYTHON_BIN" tools/eval_policy_with_actuator_bridge.py \
   --mode closed-loop-sim \
   --eval-role candidate \
   --policy "$LATEST_ONNX" \
   --fit-json outputs/analysis/actuator_response_fit.json \
   --playground-path /content/Open_Duck_Playground \
-  --env-python "$(command -v python)" \
+  --env-python "$PYTHON_BIN" \
   --command-x 0.08 \
   --duration 15 \
   --bridge-mode all \
@@ -267,16 +269,17 @@ After a CUDA run, copy or use the output directory path and run:
 ```bash
 RUN_DIR=/content/open_duck_training_runs/<run_dir>
 CANDIDATE=open_duck_mini_actuator_bridge_<date>_<shortsha>
+export PYTHON_BIN="${PYTHON_BIN:-/usr/bin/python3}"
 
 cd /content/open-duck-mini-rdkx5
 
-python tools/summarize_training_run.py "$RUN_DIR" \
+"$PYTHON_BIN" tools/summarize_training_run.py "$RUN_DIR" \
   --output-md outputs/analysis/${CANDIDATE}_training_run_summary.md \
   --output-json outputs/analysis/${CANDIDATE}_training_run_summary.json
 
 LATEST_ONNX="$(ls -1 "$RUN_DIR"/*.onnx | sort | tail -n 1)"
 
-python tools/package_candidate_policy.py "$LATEST_ONNX" \
+"$PYTHON_BIN" tools/package_candidate_policy.py "$LATEST_ONNX" \
   --candidate-name "$CANDIDATE" \
   --training-manifest "$RUN_DIR/smoke_manifest.final.json" \
   --contract-audit outputs/analysis/POLICY_SIM_CONTRACT_AUDIT_CUDA.md \
