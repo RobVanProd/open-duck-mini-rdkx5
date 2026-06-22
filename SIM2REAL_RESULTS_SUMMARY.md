@@ -536,6 +536,7 @@ Results:
 - candidate-mode closed-loop CPU eval now distinguishes a sim-gate pass from
   failed candidate behavior:
   - `step8240_zero_penalty`, `x=0.0`: `PASS_CANDIDATE_SIM_GATE` over `15 s`
+  - `step8240_zero_penalty`, `x=0.04`: `PASS_CANDIDATE_SIM_GATE` over `15 s`
   - `step8240_zero_penalty`, `x=0.08`: `PASS_CANDIDATE_SIM_GATE` over `15 s`
   - `step32800_zero_penalty`: `HOLD_CANDIDATE_FALL_OR_TERMINATION` over `2 s`
 - the review-only `step8240_zero_penalty` ONNX is preserved under
@@ -545,9 +546,9 @@ Interpretation:
 
 - The merged training loop, ONNX export, summary, and package tooling work.
 - The small CPU PPO shape is a correctness path, not a candidate generator.
-- One short CPU pilot passed an initial sim-side candidate gate, but it is
-  still not robot-approved because candidate packaging and broader sim evidence
-  have not been reviewed.
+- One short CPU pilot passed initial sim-side candidate gates at zero,
+  midpoint, and small forward command, but it is still not robot-approved
+  because candidate packaging and broader sim evidence have not been reviewed.
 
 Next offline move: use CUDA for meaningful candidate training/evaluation when
 available, and use `--eval-role candidate` for every exported candidate before
