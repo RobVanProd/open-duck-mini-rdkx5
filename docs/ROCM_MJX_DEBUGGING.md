@@ -116,6 +116,51 @@ The reset changed some GPU failures from hard aborts into timeouts, but it did
 not clear the local ROCm/MJX blocker. CPU remains valid for reduced-horizon
 correctness checks; CUDA remains the confirmed full closed-loop backend.
 
+## Current Reduced Recheck
+
+After the browser/Colab automated login path was blocked, the same reduced
+one-step isolation was rerun locally:
+
+```bash
+../envs/open-duck-playground/bin/python tools/isolate_rocm_mjx_failure.py \
+  --playground-path ../Open_Duck_Playground \
+  --env-python ../envs/open-duck-playground/bin/python \
+  --policy policy/BEST_WALK_ONNX_2.onnx \
+  --fit-json outputs/analysis/actuator_response_fit.json \
+  --output-dir outputs/analysis/rocm_mjx_recheck_current \
+  --command-x 0.08 \
+  --steps 1 \
+  --platforms gpu,cpu \
+  --include-bridge \
+  --timeout-s 120
+```
+
+The result is unchanged:
+
+```text
+gate_result: HOLD_PLAYGROUND_GPU_STEP
+smallest_failing_subtest: default_gpu_playground_one_step_vanilla
+```
+
+Current split:
+
+| test | result |
+|---|---|
+| basic JAX GPU arithmetic | `PASS` |
+| JAX GPU jit/scan | `PASS` |
+| minimal MJX GPU step | `PASS` |
+| Playground contract/reset/finite-state checks on GPU | `PASS` |
+| Playground one-step vanilla/JIT/scan on GPU | `TIMEOUT` |
+| Playground sanitized scan-step on GPU | `FAIL`, returncode `-6` |
+| Playground bridge path on GPU | `TIMEOUT` |
+| closed-loop GPU policy eval | `TIMEOUT` |
+| CPU one-step / JIT / scan / bridge / closed-loop | `PASS` |
+
+This confirms the local blocker is still the Open Duck Playground
+`mjx_env.step(...)` path on ROCm, not the actuator bridge. CPU is usable for
+reduced correctness checks. CUDA remains the backend that completed the full
+closed-loop reproduction.
+
 ## Evidence Files
 
 Primary summaries:

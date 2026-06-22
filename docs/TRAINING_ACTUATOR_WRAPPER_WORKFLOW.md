@@ -311,6 +311,83 @@ input_dim: 101
 output_dim: 14
 ```
 
+## CPU Pilot Checks
+
+Two additional local CPU checks were run after browser-based Colab login was
+blocked and the local `7900 XTX` ROCm/MJX path remained blocked at Playground
+stepping. These are not candidate policies and do not approve robot testing.
+
+First, a tiny nonzero-cost smoke verified that both optional cost terms can be
+enabled without breaking PPO startup or ONNX export:
+
+```bash
+python3 tools/run_actuator_bridge_training_smoke.py \
+  --run \
+  --platform cpu \
+  --num-timesteps 256 \
+  --target-rate-scale 0.01 \
+  --actuator-tracking-scale 0.01
+```
+
+Result:
+
+```text
+status: PASS_SMOKE_RUN
+step: 320
+reward: 15.466194152832031
+reward_std: 9.922707557678223
+latest_onnx_sha256: e263f0af7fefa1e529c4605d1a3b2d4d94350ef2b45e63ca3777920824b4acf9
+package_status: HOLD_MISSING_SIM_GATE_EVIDENCE
+contract: PASS_POLICY_CONTRACT
+```
+
+Then a slightly longer CPU pilot used the first candidate-training penalty
+shape from the CUDA runbook:
+
+```bash
+python3 tools/run_actuator_bridge_training_smoke.py \
+  --run \
+  --platform cpu \
+  --output-root /tmp/open_duck_actuator_bridge_cpu_pilots \
+  --num-timesteps 2048 \
+  --ppo-num-envs 32 \
+  --ppo-num-evals 2 \
+  --ppo-episode-length 200 \
+  --ppo-unroll-length 5 \
+  --ppo-batch-size 32 \
+  --ppo-num-minibatches 2 \
+  --ppo-num-updates-per-batch 2 \
+  --target-rate-scale 0.01 \
+  --actuator-tracking-scale 0.0
+```
+
+Result:
+
+```text
+status: PASS_SMOKE_RUN
+step: 2240
+reward: 20.75942611694336
+reward_std: 16.115612030029297
+latest_onnx_sha256: 93f968685431192007ee6e848d721df9f403247fc3fbcf8ff24e53c1413d6da6
+package_status: HOLD_MISSING_SIM_GATE_EVIDENCE
+contract: PASS_POLICY_CONTRACT
+```
+
+A reduced CPU closed-loop evaluator smoke against the step-2240 ONNX completed
+for 0.2 seconds / 10 samples:
+
+```text
+status: HOLD_MODEL_DOES_NOT_REPRODUCE
+jax: cpu / TFRT_CPU_0
+vanilla/fitted/stress: duration_complete
+```
+
+That short eval only proves the exported-policy evaluation path runs on CPU.
+It is too short for gait or reproduction metrics. Meaningful candidate
+evaluation remains CUDA-backed, and robot-side suspended validation remains
+blocked until the sim-side gates in `docs/CANDIDATE_POLICY_VALIDATION_GATES.md`
+are satisfied.
+
 Command shape:
 
 ```bash
