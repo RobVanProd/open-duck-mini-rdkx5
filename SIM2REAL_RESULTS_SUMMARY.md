@@ -705,6 +705,31 @@ python3 tools/run_rocm_version_matrix.py --apply
 Add `--force-recreate` only when intentionally replacing existing disposable
 matrix envs.
 
+## ROCm MJX Model Feature Audit
+
+An offline model-feature audit was added for the Open Duck MJCF/MuJoCo model:
+
+```text
+docs/ROCM_MJX_MODEL_FEATURE_AUDIT.md
+outputs/analysis/ROCM_MJX_MODEL_FEATURE_AUDIT.md
+outputs/analysis/rocm_mjx_model_feature_audit.json
+```
+
+Result:
+
+```text
+compile_status: PASS_MUJOCO_COMPILE
+nq / nv / nu: 21 / 20 / 14
+bodies / joints / geoms / sites / sensors: 18 / 15 / 47 / 5 / 15
+mesh assets: 28
+contact-relevant compiled geoms: left_foot_bottom_tpu, right_foot_bottom_tpu, floor
+```
+
+Interpretation: the current model compiles without stepping physics. The most
+useful future ROCm minimization probe is mesh TPU foot collision against the
+floor plane, because the local hold remains inside the full Open Duck
+`mjx_env.step(...)` path.
+
 ## CUDA Candidate Handoff
 
 The current CUDA candidate handoff is recorded in:
