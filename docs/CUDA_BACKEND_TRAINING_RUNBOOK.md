@@ -247,6 +247,12 @@ python tools/eval_policy_with_actuator_bridge.py \
 The generated single cell performs these two gates automatically when
 `--run-candidate` is used.
 
+The generated cell now bundles artifacts from an `EXIT` trap. If a CUDA smoke,
+candidate training, gate, or packaging command fails, still download the
+printed `/content/open_duck_cuda_artifacts_<timestamp>.tar.gz` bundle. It
+contains `CUDA_CELL_EXIT_STATUS.txt` plus whatever small summaries, ONNX files,
+manifests, stdout, and stderr existed before the failure.
+
 ## Summarize And Package
 
 After a CUDA run, copy or use the output directory path and run:
@@ -288,8 +294,10 @@ python3 tools/import_cuda_artifact_bundle.py /path/to/open_duck_cuda_artifacts_<
 
 Open the generated `CUDA_ARTIFACT_IMPORT_SUMMARY.md` first. It reports a
 review gate such as `READY_FOR_SIM_GATE_REVIEW`, `INFO_SMOKE_ONLY`, or the
-specific `HOLD_*` reason from the candidate package or sim gates. This is still
-an offline review gate, not approval for robot testing.
+specific `HOLD_*` reason from the candidate package, sim gates, or notebook
+exit status. `HOLD_CUDA_CELL_FAILED` means the bundle is partial; inspect logs
+before using any candidate result. This is still an offline review gate, not
+approval for robot testing.
 
 If the bundle cannot be downloaded, send small summaries first:
 

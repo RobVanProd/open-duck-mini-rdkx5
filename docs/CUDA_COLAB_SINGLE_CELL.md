@@ -125,6 +125,11 @@ Download that `.tar.gz` first. It includes the small analysis directory plus
 candidate ONNX/manifests/stdout/stderr from the smoke and candidate runs. It
 intentionally leaves large raw checkpoint files out of the bundle.
 
+The generated cell builds this bundle from an `EXIT` trap. Download the bundle
+even if the notebook cell exits early or reports a command failure. The archive
+contains `CUDA_CELL_EXIT_STATUS.txt` so the importer/reviewer can distinguish a
+clean run from a partial evidence bundle.
+
 Import it locally with:
 
 ```bash
@@ -144,6 +149,7 @@ Start review from `CUDA_ARTIFACT_IMPORT_SUMMARY.md`. Its review gate reports:
 READY_FOR_SIM_GATE_REVIEW
 INFO_SMOKE_ONLY
 INFO_BASELINE_EVAL_ONLY
+HOLD_CUDA_CELL_FAILED
 HOLD_NO_CANDIDATE_PACKAGE
 HOLD_MISSING_CANDIDATE_GATE_X0
 HOLD_MISSING_CANDIDATE_GATE_X008

@@ -35,6 +35,60 @@ export RDK_BRANCH={args.rdk_branch!r}
 export PLAYGROUND_BRANCH={args.playground_branch!r}
 export RUN_CANDIDATE={candidate_flag}
 export CANDIDATE_NUM_TIMESTEPS={candidate_steps}
+export ARTIFACT_ROOT="/content/open_duck_cuda_artifacts"
+export BUNDLE="/content/open_duck_cuda_artifacts_$(date -u +%Y%m%dT%H%M%SZ).tar.gz"
+
+bundle_cuda_artifacts() {{
+  local exit_status="${{1:-0}}"
+  set +e
+  echo "=== Build CUDA artifact bundle (exit_status=$exit_status) ==="
+  rm -rf "$ARTIFACT_ROOT"
+  mkdir -p "$ARTIFACT_ROOT"
+  {{
+    echo "exit_status=$exit_status"
+    echo "timestamp_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+    echo "rdk_branch=$RDK_BRANCH"
+    echo "playground_branch=$PLAYGROUND_BRANCH"
+    echo "run_candidate=$RUN_CANDIDATE"
+  }} > "$ARTIFACT_ROOT/CUDA_CELL_EXIT_STATUS.txt"
+
+  if [ -d /content/open-duck-mini-rdkx5/outputs/analysis/cuda_manual ]; then
+    cp -a /content/open-duck-mini-rdkx5/outputs/analysis/cuda_manual "$ARTIFACT_ROOT/"
+  else
+    echo "missing /content/open-duck-mini-rdkx5/outputs/analysis/cuda_manual" >> "$ARTIFACT_ROOT/CUDA_CELL_EXIT_STATUS.txt"
+  fi
+
+  for TRAINING_ROOT in /content/open_duck_training_smokes /content/open_duck_training_runs; do
+    if [ -d "$TRAINING_ROOT" ]; then
+      DEST_ROOT="$ARTIFACT_ROOT/$(basename "$TRAINING_ROOT")"
+      mkdir -p "$DEST_ROOT"
+      for RUN in "$TRAINING_ROOT"/smoke_*_gpu; do
+        [ -d "$RUN" ] || continue
+        DEST="$DEST_ROOT/$(basename "$RUN")"
+        mkdir -p "$DEST"
+        cp "$RUN"/*.onnx "$DEST/" 2>/dev/null || true
+        cp "$RUN"/smoke_manifest*.json "$DEST/" 2>/dev/null || true
+        cp "$RUN"/stdout.txt "$DEST/" 2>/dev/null || true
+        cp "$RUN"/stderr.txt "$DEST/" 2>/dev/null || true
+      done
+    fi
+  done
+
+  if tar -czf "$BUNDLE" -C /content "$(basename "$ARTIFACT_ROOT")"; then
+    python - <<PY
+import hashlib
+from pathlib import Path
+bundle = Path("$BUNDLE")
+print("CUDA_ARTIFACT_BUNDLE", bundle)
+print("CUDA_ARTIFACT_BUNDLE_SIZE_BYTES", bundle.stat().st_size)
+print("CUDA_ARTIFACT_BUNDLE_SHA256", hashlib.sha256(bundle.read_bytes()).hexdigest())
+PY
+  else
+    echo "CUDA_ARTIFACT_BUNDLE_FAILED $BUNDLE"
+  fi
+}}
+
+trap 'rc=$?; bundle_cuda_artifacts "$rc"; exit "$rc"' EXIT
 
 echo "=== GPU ==="
 nvidia-smi || true
@@ -241,39 +295,6 @@ fi
 
 echo "=== Small output files ==="
 find outputs/analysis/cuda_manual -maxdepth 1 -type f -printf '%p\\n' | sort
-
-echo "=== Build CUDA artifact bundle ==="
-ARTIFACT_ROOT="/content/open_duck_cuda_artifacts"
-BUNDLE="/content/open_duck_cuda_artifacts_$(date -u +%Y%m%dT%H%M%SZ).tar.gz"
-rm -rf "$ARTIFACT_ROOT"
-mkdir -p "$ARTIFACT_ROOT"
-cp -a outputs/analysis/cuda_manual "$ARTIFACT_ROOT/"
-
-for TRAINING_ROOT in /content/open_duck_training_smokes /content/open_duck_training_runs; do
-  if [ -d "$TRAINING_ROOT" ]; then
-    DEST_ROOT="$ARTIFACT_ROOT/$(basename "$TRAINING_ROOT")"
-    mkdir -p "$DEST_ROOT"
-    for RUN in "$TRAINING_ROOT"/smoke_*_gpu; do
-      [ -d "$RUN" ] || continue
-      DEST="$DEST_ROOT/$(basename "$RUN")"
-      mkdir -p "$DEST"
-      cp "$RUN"/*.onnx "$DEST/" 2>/dev/null || true
-      cp "$RUN"/smoke_manifest*.json "$DEST/" 2>/dev/null || true
-      cp "$RUN"/stdout.txt "$DEST/" 2>/dev/null || true
-      cp "$RUN"/stderr.txt "$DEST/" 2>/dev/null || true
-    done
-  fi
-done
-
-tar -czf "$BUNDLE" -C /content "$(basename "$ARTIFACT_ROOT")"
-python - <<PY
-import hashlib
-from pathlib import Path
-bundle = Path("$BUNDLE")
-print("CUDA_ARTIFACT_BUNDLE", bundle)
-print("CUDA_ARTIFACT_BUNDLE_SIZE_BYTES", bundle.stat().st_size)
-print("CUDA_ARTIFACT_BUNDLE_SHA256", hashlib.sha256(bundle.read_bytes()).hexdigest())
-PY
 
 echo "=== Final safety note ==="
 echo "This cell does not approve robot testing. Package and sim gates must be reviewed before any suspended validation."

@@ -94,10 +94,28 @@ def collect_files(output_dir: Path) -> dict[str, list[Path]]:
         "markdown": sorted(output_dir.rglob("*.md")),
         "json": sorted(output_dir.rglob("*.json")),
         "onnx": sorted(output_dir.rglob("*.onnx")),
+        "exit_status": sorted(output_dir.rglob("CUDA_CELL_EXIT_STATUS.txt")),
         "stdout_stderr": sorted(
             list(output_dir.rglob("stdout.txt")) + list(output_dir.rglob("stderr.txt"))
         ),
     }
+
+
+def parse_exit_status(path: Path | None) -> dict[str, Any] | None:
+    if path is None:
+        return None
+    values: dict[str, Any] = {"path": relative(path)}
+    for line in path.read_text(errors="replace").splitlines():
+        if "=" not in line:
+            continue
+        key, value = line.split("=", 1)
+        values[key.strip()] = value.strip()
+    raw_exit = values.get("exit_status")
+    try:
+        values["exit_status"] = int(raw_exit)
+    except (TypeError, ValueError):
+        values["exit_status"] = raw_exit
+    return values
 
 
 def status_fields_from_json(payload: Any) -> dict[str, Any]:
@@ -277,6 +295,21 @@ def build_summary(
     ]
 
     review = determine_review_status(markdown_statuses, json_summaries, onnx_summaries)
+    exit_status = parse_exit_status(files["exit_status"][0] if files["exit_status"] else None)
+    if (
+        exit_status is not None
+        and exit_status.get("exit_status") not in (0, "0", None)
+    ):
+        review = {
+            "status": "HOLD_CUDA_CELL_FAILED",
+            "reason": (
+                "CUDA cell exited nonzero; inspect partial artifacts and logs before "
+                "treating any candidate result as usable"
+            ),
+            "previous_review": review,
+            "candidate_gate_x0": review.get("candidate_gate_x0"),
+            "candidate_gate_x008": review.get("candidate_gate_x008"),
+        }
 
     payload = {
         "schema_version": "cuda_artifact_import.v1",
@@ -293,6 +326,7 @@ def build_summary(
         "markdown_statuses": markdown_statuses,
         "json_summaries": json_summaries,
         "onnx_files": onnx_summaries,
+        "cuda_cell_exit_status": exit_status,
         "stdout_stderr_files": [relative(path) for path in files["stdout_stderr"]],
         "review": review,
     }
@@ -312,6 +346,8 @@ def build_summary(
         )
     if source_dir:
         lines.append(f"- source_dir: `{source_dir}`")
+    if exit_status:
+        lines.append(f"- cuda_cell_exit_status: `{exit_status.get('exit_status')}`")
 
     lines.extend(
         [
