@@ -81,6 +81,32 @@ outputs/analysis/<candidate>_policy_metadata.json
 Large training checkpoints, raw TensorBoard logs, and videos should stay outside
 git unless explicitly approved.
 
+Use the packaging helper to create the metadata packet:
+
+```bash
+python3 tools/package_candidate_policy.py \
+  path/to/candidate.onnx \
+  --candidate-name open_duck_mini_actuator_bridge_<date>_<shortsha> \
+  --training-manifest path/to/smoke_or_training_manifest.json \
+  --contract-audit outputs/analysis/<candidate>_contract.md \
+  --target-velocity-summary outputs/analysis/<candidate>_target_velocity.md \
+  --actuator-bridge-eval outputs/analysis/<candidate>_actuator_bridge_eval.md \
+  --output-md outputs/analysis/<candidate>_policy_package.md \
+  --output-json outputs/analysis/<candidate>_policy_metadata.json
+```
+
+The tool checks:
+
+- ONNX input/output contract, expected `101 -> 14`
+- SHA256 hash
+- baseline overwrite risk
+- RDK and Playground source commits
+- training manifest presence
+- sim-gate evidence presence
+
+If evidence is missing, the package status is a `HOLD`, not a robot-test
+approval.
+
 ## Candidate Naming
 
 Do not overwrite the baseline policy.

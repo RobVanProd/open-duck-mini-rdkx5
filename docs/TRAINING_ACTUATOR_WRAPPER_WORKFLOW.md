@@ -254,6 +254,29 @@ checkpoints:
   /tmp/open_duck_actuator_bridge_smoke/smoke_20260622T054611Z_cpu/..._80
 ```
 
+The exported smoke ONNX was also run through the candidate package helper with
+an explicit non-deployable label:
+
+```bash
+python3 tools/package_candidate_policy.py \
+  /tmp/open_duck_actuator_bridge_smoke/smoke_20260622T054611Z_cpu/2026_06_22_014652_80.onnx \
+  --candidate-name smoke_not_deployable \
+  --training-manifest /tmp/open_duck_actuator_bridge_smoke/smoke_20260622T054611Z_cpu/smoke_manifest.final.json \
+  --output-md /tmp/open_duck_candidate_package_smoke.md \
+  --output-json /tmp/open_duck_candidate_package_smoke.json \
+  --allow-missing-evidence \
+  --non-deployable-reason "Tiny CPU smoke artifact only; not a deployable robot policy."
+```
+
+Result:
+
+```text
+status: INFO_NON_DEPLOYABLE_ARTIFACT
+contract: PASS_POLICY_CONTRACT
+input_dim: 101
+output_dim: 14
+```
+
 Command shape:
 
 ```bash
