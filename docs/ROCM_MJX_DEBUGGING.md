@@ -15,6 +15,12 @@ ROCM_ERROR_ILLEGAL_ADDRESS
 This is a backend/runtime failure. It is not a robot hardware result, not a
 policy contract mismatch, and not evidence that the actuator model is wrong.
 
+Tracking issue:
+
+```text
+https://github.com/RobVanProd/open-duck-mini-rdkx5/issues/19
+```
+
 ## Isolation Result
 
 Run:
