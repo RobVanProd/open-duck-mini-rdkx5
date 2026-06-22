@@ -144,6 +144,11 @@ Do not start training from an interpreter that reports `HOLD_ENV_NOT_READY`.
   offline sim-model PR, not as a training or robot-runtime change.
 - CPU can run short correctness paths, including closed-loop vanilla short
   matrix, but CPU bridge/multi-step eval is slow under the current timeout.
+- A post-reset one-step isolation rerun still reports
+  `HOLD_PLAYGROUND_GPU_STEP`: GPU contract/reset/finite-state checks pass, but
+  Playground one-step vanilla times out and JIT/scan variants fail with
+  returncode `-6`. CPU one-step, JIT, scan, bridge, and closed-loop reduced
+  checks pass.
 - Next implementation task: implement the training-time actuator wrapper using
   the verified `101` observation / `14` action contract. Keep local ROCm/MJX
   debugging as a backend workstream, not as a blocker for the actuator bridge

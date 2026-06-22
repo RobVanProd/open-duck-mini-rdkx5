@@ -65,6 +65,51 @@ Open Duck Playground GPU stepping is the smallest failing operation
 the fitted bridge is not the smallest failure
 ```
 
+## Post-Reset Recheck
+
+After the workstation/GPU was fully power-cycled, the reduced one-step matrix
+was rerun:
+
+```bash
+../envs/open-duck-playground/bin/python tools/isolate_rocm_mjx_failure.py \
+  --playground-path ../Open_Duck_Playground \
+  --env-python ../envs/open-duck-playground/bin/python \
+  --policy policy/BEST_WALK_ONNX_2.onnx \
+  --fit-json outputs/analysis/actuator_response_fit.json \
+  --output-dir outputs/analysis/rocm_mjx_recheck_after_reset \
+  --command-x 0.08 \
+  --steps 1 \
+  --platforms gpu,cpu \
+  --include-bridge \
+  --timeout-s 120
+```
+
+Result:
+
+```text
+gate_result: HOLD_PLAYGROUND_GPU_STEP
+smallest_failing_subtest: default_gpu_playground_one_step_vanilla
+```
+
+Updated split:
+
+| test | post-reset result |
+|---|---|
+| basic JAX GPU arithmetic | `PASS` |
+| JAX GPU jit/scan | `PASS` |
+| minimal MJX GPU step | `PASS` |
+| Playground contract/reset/finite-state checks on GPU | `PASS` |
+| Playground one-step vanilla on GPU | `TIMEOUT` |
+| Playground one-step JIT on GPU | `FAIL`, returncode `-6` |
+| Playground scan-step on GPU | `FAIL`, returncode `-6` |
+| Playground bridge path on GPU | `TIMEOUT` |
+| closed-loop GPU policy eval | `FAIL`, returncode `-6` |
+| CPU one-step / JIT / scan / bridge / closed-loop | `PASS` |
+
+The reset changed some GPU failures from hard aborts into timeouts, but it did
+not clear the local ROCm/MJX blocker. CPU remains valid for reduced-horizon
+correctness checks; CUDA remains the confirmed full closed-loop backend.
+
 ## Evidence Files
 
 Primary summaries:
