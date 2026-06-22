@@ -229,6 +229,25 @@ It writes `smoke_manifest.start.json`, `stdout.txt`, `stderr.txt`, and
 `smoke_manifest.final.json` under `/tmp`. These are smoke artifacts, not
 deployable policy outputs.
 
+Summarize a smoke or training output directory with:
+
+```bash
+python3 tools/summarize_training_run.py \
+  /tmp/open_duck_actuator_bridge_smoke/smoke_20260622T054611Z_cpu \
+  --output-md /tmp/open_duck_training_run_smoke_summary.md \
+  --output-json /tmp/open_duck_training_run_smoke_summary.json
+```
+
+For the tiny CPU smoke run, this produced:
+
+```text
+status: INFO_NON_DEPLOYABLE_TRAINING_RUN
+latest_onnx_step: 80
+latest_onnx_sha256: 22dd18a33ea5fadd98a2f94bc43205b5b71b6bbc37968cd49ae632eea23498ee
+reward: 11.377256
+reward_std: 4.541440
+```
+
 The launcher was validated with a smaller CPU run:
 
 ```bash

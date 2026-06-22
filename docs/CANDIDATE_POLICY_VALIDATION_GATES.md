@@ -72,6 +72,7 @@ reviewed sim-side gates:
 For each candidate, save small summaries:
 
 ```text
+outputs/analysis/<candidate>_training_run_summary.md
 outputs/analysis/<candidate>_contract.md
 outputs/analysis/<candidate>_target_velocity.md
 outputs/analysis/<candidate>_actuator_bridge_eval.md
@@ -80,6 +81,15 @@ outputs/analysis/<candidate>_policy_metadata.json
 
 Large training checkpoints, raw TensorBoard logs, and videos should stay outside
 git unless explicitly approved.
+
+First summarize the output directory:
+
+```bash
+python3 tools/summarize_training_run.py \
+  path/to/training_output_dir \
+  --output-md outputs/analysis/<candidate>_training_run_summary.md \
+  --output-json outputs/analysis/<candidate>_training_run_summary.json
+```
 
 Use the packaging helper to create the metadata packet:
 
