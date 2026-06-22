@@ -166,7 +166,7 @@ def generate_variant(source_xml_dir: Path, output_dir: Path, name: str) -> dict[
     }
 
 
-def worker_probe(xml_path: Path, n_substeps: int) -> int:
+def worker_probe(xml_path: Path, n_substeps: int, loop_mode: str) -> int:
     import jax
     import jax.numpy as jnp
     import mujoco
@@ -186,8 +186,24 @@ def worker_probe(xml_path: Path, n_substeps: int) -> int:
 
     if n_substeps <= 1:
         data = mjx.step(mx, data)
-    else:
+    elif loop_mode == "scan":
         data = jax.lax.scan(body, data, (), length=n_substeps)[0]
+    elif loop_mode == "fori":
+        data = jax.lax.fori_loop(0, n_substeps, lambda _, carry: mjx.step(mx, carry), data)
+    elif loop_mode == "python":
+        for _ in range(n_substeps):
+            data = mjx.step(mx, data)
+    elif loop_mode == "python_block_each":
+        for _ in range(n_substeps):
+            data = mjx.step(mx, data)
+            jax.tree_util.tree_map(
+                lambda value: value.block_until_ready()
+                if hasattr(value, "block_until_ready")
+                else value,
+                (data.qpos, data.qvel, data.ctrl),
+            )
+    else:
+        raise ValueError(f"Unknown loop_mode: {loop_mode}")
     jax.tree_util.tree_map(
         lambda value: value.block_until_ready()
         if hasattr(value, "block_until_ready")
@@ -200,6 +216,7 @@ def worker_probe(xml_path: Path, n_substeps: int) -> int:
         "jax_devices": [str(device) for device in jax.devices()],
         "mujoco_version": getattr(mujoco, "__version__", None),
         "n_substeps": n_substeps,
+        "loop_mode": loop_mode,
         "counts": {
             "nq": int(model.nq),
             "nv": int(model.nv),
@@ -239,6 +256,7 @@ def run_probe(
     log_dir: Path,
     variant: str,
     n_substeps: int,
+    loop_mode: str,
 ) -> dict[str, Any]:
     log_dir.mkdir(parents=True, exist_ok=True)
     test_id = f"{variant}_{platform}"
@@ -253,6 +271,8 @@ def run_probe(
         str(xml_path),
         "--worker-n-substeps",
         str(n_substeps),
+        "--worker-loop-mode",
+        loop_mode,
     ]
     start = time.monotonic()
     timed_out = False
@@ -283,6 +303,7 @@ def run_probe(
         "variant": variant,
         "platform": platform,
         "n_substeps": n_substeps,
+        "loop_mode": loop_mode,
         "status": status,
         "returncode": returncode,
         "elapsed_s": elapsed,
@@ -305,19 +326,20 @@ def build_markdown(payload: dict[str, Any]) -> str:
         "## Executive Summary",
         "",
         "This is an offline reduced-MJCF probe. It generates model variants and",
-        "runs raw `mjx.step(...)` or a scanned substep loop in subprocesses",
+        "runs raw `mjx.step(...)` or a selected substep loop in subprocesses",
         "with explicit timeouts.",
         "No training, policy inference, robot SSH, deployment, or robot motion is",
         "involved.",
         "",
         "## Result Matrix",
         "",
-        "| variant | platform | n_substeps | status | elapsed_s | returncode |",
-        "|---|---|---:|---|---:|---:|",
+        "| variant | platform | loop_mode | n_substeps | status | elapsed_s | returncode |",
+        "|---|---|---|---:|---|---:|---:|",
     ]
     for row in payload["results"]:
         lines.append(
-            f"| `{row['variant']}` | `{row['platform']}` | {row['n_substeps']} | `{row['status']}` | "
+            f"| `{row['variant']}` | `{row['platform']}` | `{row['loop_mode']}` | "
+            f"{row['n_substeps']} | `{row['status']}` | "
             f"{row['elapsed_s']:.2f} | `{row.get('returncode')}` |"
         )
     lines.extend(["", "## Variants", "", "| variant | description | xml |", "|---|---|---|"])
@@ -362,15 +384,25 @@ def main() -> int:
     parser.add_argument("--variants", default="baseline,no_contact,floor_contact_off,box_feet,box_feet_no_visual,no_visual_meshes")
     parser.add_argument("--platforms", default="cpu")
     parser.add_argument("--n-substeps", type=int, default=1)
+    parser.add_argument(
+        "--loop-mode",
+        choices=["scan", "fori", "python", "python_block_each"],
+        default="scan",
+    )
     parser.add_argument("--timeout-s", type=int, default=60)
     parser.add_argument("--output-md", type=Path)
     parser.add_argument("--output-json", type=Path)
     parser.add_argument("--worker-probe", type=Path, help=argparse.SUPPRESS)
     parser.add_argument("--worker-n-substeps", type=int, default=1, help=argparse.SUPPRESS)
+    parser.add_argument("--worker-loop-mode", default="scan", help=argparse.SUPPRESS)
     args = parser.parse_args()
 
     if args.worker_probe:
-        return worker_probe(args.worker_probe, args.worker_n_substeps)
+        return worker_probe(
+            args.worker_probe,
+            args.worker_n_substeps,
+            args.worker_loop_mode,
+        )
 
     args.source_xml_dir = args.source_xml_dir.expanduser().absolute()
     args.output_dir = args.output_dir.expanduser().absolute()
@@ -410,6 +442,7 @@ def main() -> int:
                 args.output_dir / "logs",
                 variant["name"],
                 args.n_substeps,
+                args.loop_mode,
             )
             results.append(row)
             print(
@@ -427,6 +460,7 @@ def main() -> int:
             "variants": variant_names,
             "platforms": split_csv(args.platforms),
             "n_substeps": args.n_substeps,
+            "loop_mode": args.loop_mode,
             "timeout_s": args.timeout_s,
         },
         "variants": variants,
