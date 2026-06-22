@@ -237,6 +237,8 @@ alpha = 1 - exp(-dt / tau)
   actuator model.
 - Avoid rewarding artificially frozen gaits; pair with forward progress and
   stability metrics.
+- Treat near-zero mean forward velocity under nonzero `x` commands as a
+  candidate hold, even when target velocity and tracking metrics look good.
 
 ### Command Curriculum
 
@@ -247,7 +249,7 @@ x = 0.00 -> 0.04 -> 0.08 -> higher
 ```
 
 Do not export a robot candidate unless `x=0.08` passes sim-side actuator
-robustness gates.
+robustness gates and forward command tracking gates.
 
 ## P3: Evaluation And Export
 
@@ -259,6 +261,8 @@ robustness gates.
 - Include pitch-chain summary by default.
 - Include explicit target velocity p95/p99/max gates.
 - Include simulated tracking p95/p99/max gates.
+- Include base forward progress, mean forward velocity, and command tracking
+  ratio for nonzero command evaluations.
 
 ### Short Training Experiment
 

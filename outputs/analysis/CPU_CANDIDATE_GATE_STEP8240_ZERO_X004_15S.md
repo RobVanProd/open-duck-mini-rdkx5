@@ -1,6 +1,6 @@
 # Sim Actuator Bridge Eval
 
-overall_status: `PASS_CANDIDATE_SIM_GATE`
+overall_status: `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS`
 policy: `/home/lsd/robots/open-duck-mini-rdkx5/policy/candidates/open_duck_mini_actuator_bridge_cpu_pilot_20260622_step8240/candidate.onnx`
 fit_json: `/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/actuator_response_fit.json`
 command_x: `0.04`
@@ -24,7 +24,7 @@ eval_role: `candidate`
 
 ## Closed-Loop Sim Eval
 
-status: `PASS_CANDIDATE_SIM_GATE`
+status: `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS`
 eval_role: `candidate`
 env: `playground.open_duck_mini_v2.joystick.Joystick` / task `flat_terrain`
 obs/action dims: `{'privileged_state': [212], 'state': [101]}` / `14`
@@ -45,7 +45,7 @@ Failed to import mujoco_warp: No module named 'warp'
 
 ### Candidate Gate
 
-status: `PASS_CANDIDATE_SIM_GATE`
+status: `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS`
 
 | metric | value | threshold |
 |---|---:|---:|
@@ -55,14 +55,16 @@ status: `PASS_CANDIDATE_SIM_GATE`
 | `max_abs_body_pitch_p95_rad` | 0.0190 | 0.2500 |
 | `min_base_height_m` | 0.1536 | 0.1200 |
 | `min_reward_mean` | 0.5565 | 0.3000 |
+| `min_forward_command_tracking_ratio` | -0.0014 | 0.2500 |
+| `max_abs_forward_velocity_error_m_s` | 0.0401 | NA |
 
 ### Mode Summary
 
-| mode | samples | termination | body_pitch_p95 | base_height_min | reward_mean |
-|---|---:|---|---:|---:|---:|
-| vanilla | 750 | duration_complete | 0.0190 | 0.1538 | 0.5565 |
-| fitted | 750 | duration_complete | 0.0190 | 0.1536 | 0.5593 |
-| stress | 750 | duration_complete | 0.0147 | 0.1536 | 0.5638 |
+| mode | samples | termination | body_pitch_p95 | base_height_min | mean_vx | track_ratio | reward_mean |
+|---|---:|---|---:|---:|---:|---:|---:|
+| vanilla | 750 | duration_complete | 0.0190 | 0.1538 | 0.0001 | 0.0033 | 0.5565 |
+| fitted | 750 | duration_complete | 0.0190 | 0.1536 | -0.0001 | -0.0014 | 0.5593 |
+| stress | 750 | duration_complete | 0.0147 | 0.1536 | -0.0000 | -0.0009 | 0.5638 |
 
 ### Pitch-Chain Summary
 
@@ -89,5 +91,5 @@ status: `PASS_CANDIDATE_SIM_GATE`
 
 ## Interpretation
 
-- Candidate sim gate passed for this offline eval horizon. This does not approve robot testing; it only means the candidate cleared the configured sim-side tracking, saturation, posture, and reward checks.
+- Candidate sim gate is holding. Do not use this policy on the robot.
 - No robot motion, deployment, runtime behavior change, or training was performed.

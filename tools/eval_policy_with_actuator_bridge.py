@@ -675,6 +675,8 @@ def build_markdown(payload: dict) -> str:
                 "max_abs_body_pitch_p95_rad",
                 "min_base_height_m",
                 "min_reward_mean",
+                "min_forward_command_tracking_ratio",
+                "max_abs_forward_velocity_error_m_s",
             ]:
                 lines.append(
                     f"| `{key}` | {fmt(metrics.get(key))} | {fmt(thresholds.get(key))} |"
@@ -682,15 +684,22 @@ def build_markdown(payload: dict) -> str:
             lines.append("")
         lines.append("### Mode Summary")
         lines.append("")
-        lines.append("| mode | samples | termination | body_pitch_p95 | base_height_min | reward_mean |")
-        lines.append("|---|---:|---|---:|---:|---:|")
+        lines.append(
+            "| mode | samples | termination | body_pitch_p95 | base_height_min | "
+            "mean_vx | track_ratio | reward_mean |"
+        )
+        lines.append("|---|---:|---|---:|---:|---:|---:|---:|")
         for mode_name, mode in (closed_loop.get("modes") or {}).items():
             body = mode.get("body_pitch_rad") or {}
             height = mode.get("base_height_m") or {}
+            forward = mode.get("forward_motion") or {}
             reward = mode.get("reward") or {}
             lines.append(
                 f"| {mode_name} | {mode.get('samples')} | {mode.get('termination_reason')} | "
-                f"{fmt(body.get('p95'))} | {fmt(height.get('min'))} | {fmt(reward.get('mean'))} |"
+                f"{fmt(body.get('p95'))} | {fmt(height.get('min'))} | "
+                f"{fmt(forward.get('mean_velocity_x_m_s'))} | "
+                f"{fmt(forward.get('command_tracking_ratio'))} | "
+                f"{fmt(reward.get('mean'))} |"
             )
         lines.append("")
         lines.append("### Pitch-Chain Summary")
@@ -740,7 +749,8 @@ def build_markdown(payload: dict) -> str:
             lines.append(
                 "- Candidate sim gate passed for this offline eval horizon. This "
                 "does not approve robot testing; it only means the candidate cleared "
-                "the configured sim-side tracking, saturation, posture, and reward checks."
+                "the configured sim-side tracking, saturation, posture, reward, "
+                "and command-tracking checks."
             )
         elif str(status).startswith("HOLD_CANDIDATE"):
             lines.append(
