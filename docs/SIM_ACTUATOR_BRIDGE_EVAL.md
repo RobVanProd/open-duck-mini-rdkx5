@@ -65,25 +65,37 @@ If that happens, the actuator bridge captures an important part of the
 sim-to-real gap. If it does not happen, the bridge model is incomplete and
 training against it would be premature.
 
-## Current Sim Contract Hold
+## Current Sim Contract Status
 
-The local sibling `../Open_Duck_Playground` currently exposes
-`JOINTS_ORDER_NO_HEAD` with `10` actuators. The audited deployed policy contract
-is:
+The local sibling `../Open_Duck_Playground` has a constant named
+`JOINTS_ORDER_NO_HEAD` with `10` joints, but that is not the full instantiated
+environment contract.
+
+The policy/sim contract audit instantiates `Joystick(flat_terrain)` with:
+
+```text
+../envs/open-duck-playground/bin/python
+```
+
+and confirms:
 
 ```text
 observation: [1, 101]
 action:      [1, 14]
+MJCF nu:     14
+home ctrl:   14
+JAX backend: gpu / rocm:0
 ```
 
-That means the first eval gate is currently:
+So the previous `HOLD_POLICY_SIM_CONTRACT_MISMATCH` is resolved. The current
+eval gate is:
 
 ```text
-HOLD_POLICY_SIM_CONTRACT_MISMATCH
+HOLD_SIM_INTEGRATION_PENDING
 ```
 
-Do not train until the exact `101` observation / `14` action training
-environment is found or reconstructed.
+Meaning: the correct sim contract exists, but the fitted actuator bridge is not
+yet wired into the closed-loop JAX/MJX policy eval path.
 
 ## Expected Behavior
 
@@ -127,6 +139,11 @@ effective_velocity_limit_rad_s: about 2.25-4.7
 - available sim environment action/observation contract does not match
   `BEST_WALK_ONNX_2`
 
+`HOLD_SIM_INTEGRATION_PENDING`:
+
+- sim contract matches, but fitted actuator bridge is not yet inserted into the
+  closed-loop policy eval path
+
 `HOLD_MODEL_INCOMPLETE`:
 
 - fitted actuator bridge does not reproduce the real degradation
@@ -145,13 +162,24 @@ effective_velocity_limit_rad_s: about 2.25-4.7
 Check local training/eval environment without training:
 
 ```bash
-python3 tools/check_training_env.py
+../envs/open-duck-playground/bin/python tools/check_training_env.py
 ```
 
 Optional MuJoCo offscreen context check:
 
 ```bash
-python3 tools/check_training_env.py --render-check
+../envs/open-duck-playground/bin/python tools/check_training_env.py --render-check
+```
+
+Audit policy/sim contract:
+
+```bash
+python3 tools/audit_policy_sim_contract.py \
+  --policy policy/BEST_WALK_ONNX_2.onnx \
+  --playground-path ../Open_Duck_Playground \
+  --env-python ../envs/open-duck-playground/bin/python \
+  --output-md outputs/analysis/POLICY_SIM_CONTRACT_AUDIT.md \
+  --output-json outputs/analysis/policy_sim_contract_audit.json
 ```
 
 Run sim/contract preflight only:
@@ -160,6 +188,7 @@ Run sim/contract preflight only:
 python3 tools/eval_policy_with_actuator_bridge.py \
   --policy policy/BEST_WALK_ONNX_2.onnx \
   --fit-json outputs/analysis/actuator_response_fit.json \
+  --env-python ../envs/open-duck-playground/bin/python \
   --command-x 0.08 \
   --duration 15 \
   --output-dir outputs/analysis
@@ -172,6 +201,7 @@ python3 tools/eval_policy_with_actuator_bridge.py \
   --mode telemetry-replay \
   --telemetry-jsonl outputs/first_evidence/20260621T215022Z/suspended_policy_replay_x008_thresholds.jsonl \
   --fit-json outputs/analysis/actuator_response_fit.json \
+  --env-python ../envs/open-duck-playground/bin/python \
   --output-dir outputs/analysis
 ```
 
@@ -201,7 +231,7 @@ outputs/analysis/sim_actuator_bridge_eval.json
 Current committed telemetry replay output shows:
 
 ```text
-overall_status: HOLD_POLICY_SIM_CONTRACT_MISMATCH
+overall_status: HOLD_SIM_INTEGRATION_PENDING
 telemetry_replay: PASS_TELEMETRY_REPLAY_REPRODUCTION
 median fitted sim/real p95 tracking ratio: about 0.981
 max p95 fitted model error: about 0.035 rad
@@ -211,6 +241,7 @@ Interpretation:
 
 - the actuator bridge reproduces the recorded target-to-actual relationship
   from real telemetry
-- closed-loop MuJoCo policy reproduction is still blocked by sim contract
-  mismatch
-- training remains blocked until that sim contract is resolved
+- the local Playground contract matches `BEST_WALK_ONNX_2`
+- closed-loop MuJoCo policy reproduction is still blocked because the actuator
+  bridge is not wired into the JAX/MJX eval path yet
+- training remains blocked until closed-loop sim reproduction is reviewed

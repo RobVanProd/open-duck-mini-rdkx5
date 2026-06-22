@@ -25,6 +25,7 @@ target waveform is much more aggressive and exposes the effective delay.
 Small summaries:
 
 - `outputs/analysis/ACTUATOR_RESPONSE_FIT.md`
+- `outputs/analysis/POLICY_SIM_CONTRACT_AUDIT.md`
 - `outputs/analysis/SIM_ACTUATOR_BRIDGE_EVAL.md`
 - `outputs/analysis/FIRST_EVIDENCE_SUMMARY.md`
 - `outputs/first_evidence/20260621T202826Z/imu_tilt_labeled_summary.md`
@@ -344,17 +345,31 @@ Latest sim/eval harness result:
 - Telemetry replay status: `PASS_TELEMETRY_REPLAY_REPRODUCTION`.
 - Fitted bridge median sim/real pitch-chain p95 tracking ratio: about `0.981`.
 - Fitted bridge max p95 model error: about `0.035 rad`.
-- Full MuJoCo policy-loop reproduction is currently blocked by
-  `HOLD_POLICY_SIM_CONTRACT_MISMATCH`: the local sibling
-  `../Open_Duck_Playground` exposes a `10` actuator no-head contract, while
-  `BEST_WALK_ONNX_2` is audited as `101` observations and `14` actions.
-- `tools/check_training_env.py` reports `HOLD_ENV_NOT_READY` under system
-  Python because JAX, MuJoCo, `ml_collections`, and `mujoco_playground` are not
-  installed in that interpreter. ROCm tools and the local `7900 XTX` hints are
-  present, so the next training-phase work should use the intended ROCm env.
 
-Choose exactly one next step: **resolve the exact sim contract / training
-environment gate**, without changing robot behavior yet.
+Latest policy/sim contract and environment result:
+
+- `tools/audit_policy_sim_contract.py` was run against
+  `../Open_Duck_Playground` with `../envs/open-duck-playground/bin/python`.
+- Summary artifact: `outputs/analysis/POLICY_SIM_CONTRACT_AUDIT.md`.
+- JSON artifact: `outputs/analysis/policy_sim_contract_audit.json`.
+- Contract status: `PASS_POLICY_SIM_CONTRACT`.
+- Instantiated sim state observation length: `101`.
+- Instantiated sim action size: `14`.
+- Instantiated actuator order matches the runtime/policy order, including
+  `neck_pitch`, `head_pitch`, `head_yaw`, and `head_roll`.
+- MJCF `nu/nq/nv`: `14/21/20`.
+- Home keyframe ctrl length: `14`.
+- JAX backend under `../envs/open-duck-playground/bin/python`: `gpu`.
+- JAX device: `rocm:0`.
+- `../envs/rocm-baseline` sees the ROCm device but lacks several
+  project-specific packages, so use `../envs/open-duck-playground/bin/python`
+  for Open Duck sim eval and future training.
+- Full MuJoCo policy-loop reproduction is now blocked by
+  `HOLD_SIM_INTEGRATION_PENDING`, not by contract mismatch.
+
+Choose exactly one next step: **wire the fitted actuator bridge into the
+closed-loop JAX/MJX policy eval path**, without changing robot behavior yet and
+without training.
 
 Purpose:
 
@@ -364,12 +379,12 @@ Purpose:
 - use fitted effective velocity limits around `2.25-3.75 rad/s` as evidence
   when selecting training randomization ranges
 - add action-rate / target-velocity diagnostics to the training bridge notes
-- find or reconstruct the exact `101` observation / `14` action sim environment
+- use the verified `101` observation / `14` action sim environment
 - run the current policy in that sim with and without the fitted actuator bridge
 - only then implement the JAX/MJX training actuator wrapper
 
 Do not patch runtime behavior, action scale, gains, offsets, or phase timing
 until the bridge spec is reviewed.
 
-Do not run more robot motion or grounded replay until this offline sim contract
-gate is resolved.
+Do not run more robot motion or grounded replay until the closed-loop sim
+actuator bridge eval is reviewed.

@@ -1,6 +1,6 @@
 # Sim Actuator Bridge Eval
 
-overall_status: `HOLD_POLICY_SIM_CONTRACT_MISMATCH`
+overall_status: `HOLD_SIM_INTEGRATION_PENDING`
 policy: `/home/lsd/robots/open-duck-mini-rdkx5/policy/BEST_WALK_ONNX_2.onnx`
 fit_json: `/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/actuator_response_fit.json`
 command_x: `0.08`
@@ -11,10 +11,15 @@ duration_s: `15.0`
 - policy_status: `PASS_POLICY_CONTRACT_ASSUMED`
 - policy_input_shape: `[1, 101]`
 - policy_output_shape: `[1, 14]`
-- playground_status: `PASS_PLAYGROUND_CONTRACT_READ`
-- playground_action_dim_inferred: `10`
-- sim_preflight_status: `HOLD_POLICY_SIM_CONTRACT_MISMATCH`
-- sim_preflight_reason: policy action dim is 14, but discovered playground JOINTS_ORDER_NO_HEAD has 10 actuators
+- playground_static_path: `/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2`
+- playground_env_python: `/home/lsd/robots/open-duck-mini-rdkx5/../envs/open-duck-playground/bin/python`
+- playground_instantiated_status: `PASS_ENV_INSTANTIATED`
+- playground_action_size: `14`
+- playground_observation_size: `{'privileged_state': [212], 'state': [101]}`
+- playground_actuator_names: `['left_hip_yaw', 'left_hip_roll', 'left_hip_pitch', 'left_knee', 'left_ankle', 'neck_pitch', 'head_pitch', 'head_yaw', 'head_roll', 'right_hip_yaw', 'right_hip_roll', 'right_hip_pitch', 'right_knee', 'right_ankle']`
+- sim_preflight_status: `HOLD_SIM_INTEGRATION_PENDING`
+- sim_preflight_reason: Policy and local Playground dimensions appear compatible, but the closed-loop JAX/MJX policy eval path with actuator bridge is not wired yet.
+- recommended_next_command: `python3 tools/audit_policy_sim_contract.py --policy policy/BEST_WALK_ONNX_2.onnx --playground-path ../Open_Duck_Playground`
 
 ## Telemetry Replay Bridge Check
 
@@ -49,6 +54,6 @@ samples_after_startup_filter: `696`
 
 ## Interpretation
 
-- Full MuJoCo policy-loop reproduction is blocked by a policy/playground contract mismatch. Do not train until the exact 101-observation / 14-action training environment is located or reconstructed.
+- Full MuJoCo policy-loop reproduction is not complete yet.
 - Telemetry replay validates the actuator bridge against existing real sent-target / actual-position evidence, but it is not a replacement for closed-loop sim reproduction.
 - No robot motion, deployment, runtime behavior change, or training was performed.

@@ -17,6 +17,8 @@ import traceback
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_PLAYGROUND_ROOT = ROOT.parent / "Open_Duck_Playground"
 DEFAULT_ROCM_ENV = ROOT.parent / "envs" / "rocm-baseline"
+DEFAULT_PLAYGROUND_ENV = ROOT.parent / "envs" / "open-duck-playground"
+DEFAULT_PLAYGROUND_ENV_PYTHON = DEFAULT_PLAYGROUND_ENV / "bin" / "python"
 DEFAULT_RENDER_SMOKE = ROOT.parent / "verify_scratch" / "render_mujoco_egl.py"
 
 
@@ -160,6 +162,9 @@ def print_markdown(payload: dict) -> None:
     print(f"target_gpu: `{payload['target_gpu']}`")
     print(f"playground_root: `{payload['playground_root']}`")
     print(f"rocm_env_hint: `{payload['rocm_env_hint']}`")
+    print(f"playground_env_hint: `{payload['playground_env_hint']}`")
+    print(f"recommended_python: `{payload['recommended_python']}`")
+    print(f"recommended_check_command: `{payload['recommended_check_command']}`")
     print(f"mujoco_render_smoke_hint: `{payload['mujoco_render_smoke_hint']}`")
     print()
     print("| status | check | detail |")
@@ -202,6 +207,43 @@ def main() -> int:
     )
     checks.append(
         row(
+            "PASS" if DEFAULT_PLAYGROUND_ENV_PYTHON.exists() else "WARN",
+            "local.playground_env_python",
+            str(DEFAULT_PLAYGROUND_ENV_PYTHON),
+        )
+    )
+    if Path(sys.executable).resolve() == DEFAULT_PLAYGROUND_ENV_PYTHON.resolve():
+        checks.append(
+            row(
+                "PASS",
+                "python.recommended_env",
+                "running inside the project Open Duck Playground env",
+            )
+        )
+    else:
+        checks.append(
+            row(
+                "WARN",
+                "python.recommended_env",
+                (
+                    "not running inside the project Open Duck Playground env; use "
+                    f"{DEFAULT_PLAYGROUND_ENV_PYTHON} for sim eval/training checks"
+                ),
+            )
+        )
+    if DEFAULT_ROCM_ENV.exists() and DEFAULT_ROCM_ENV != DEFAULT_PLAYGROUND_ENV:
+        checks.append(
+            row(
+                "WARN",
+                "local.rocm_baseline_note",
+                (
+                    "rocm-baseline is useful for GPU smoke tests, but it may not "
+                    "include Open Duck Playground dependencies"
+                ),
+            )
+        )
+    checks.append(
+        row(
             "PASS" if DEFAULT_RENDER_SMOKE.exists() else "WARN",
             "local.mujoco_render_smoke_hint",
             str(DEFAULT_RENDER_SMOKE),
@@ -224,6 +266,11 @@ def main() -> int:
         "target_gpu": "AMD Radeon RX 7900 XTX / ROCm",
         "playground_root": str(playground_root),
         "rocm_env_hint": str(DEFAULT_ROCM_ENV),
+        "playground_env_hint": str(DEFAULT_PLAYGROUND_ENV),
+        "recommended_python": str(DEFAULT_PLAYGROUND_ENV_PYTHON),
+        "recommended_check_command": (
+            f"{DEFAULT_PLAYGROUND_ENV_PYTHON} tools/check_training_env.py"
+        ),
         "mujoco_render_smoke_hint": str(DEFAULT_RENDER_SMOKE),
         "checks": checks,
     }

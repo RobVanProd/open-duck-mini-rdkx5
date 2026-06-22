@@ -10,7 +10,6 @@ MuJoCo policy-loop integration is being wired.
 from __future__ import annotations
 
 import argparse
-import ast
 import json
 import math
 from pathlib import Path
@@ -28,6 +27,11 @@ from actuator_bridge_model import (
     load_fit_json,
     params_from_fit,
     stress_params,
+)
+from audit_policy_sim_contract import (
+    DEFAULT_ENV_PYTHON,
+    instantiate_env_contract,
+    static_playground_contract,
 )
 
 
@@ -301,50 +305,70 @@ def inspect_policy(
     return payload
 
 
-def parse_playground_joint_count(playground_root: Path) -> dict:
-    constants_path = playground_root / "playground" / "open_duck_mini_v2" / "constants.py"
-    payload = {"playground_root": str(playground_root), "constants_path": str(constants_path)}
-    if not constants_path.exists():
-        payload["status"] = "HOLD_SIM_CODE_MISSING"
-        payload["error"] = f"missing {constants_path}"
-        return payload
-    try:
-        tree = ast.parse(constants_path.read_text())
-        names = None
-        for node in tree.body:
-            if isinstance(node, ast.Assign):
-                for target in node.targets:
-                    if isinstance(target, ast.Name) and target.id == "JOINTS_ORDER_NO_HEAD":
-                        names = ast.literal_eval(node.value)
-        payload["joints_order_no_head"] = names
-        payload["action_dim_inferred"] = len(names or [])
-        payload["status"] = "PASS_PLAYGROUND_CONTRACT_READ"
-    except Exception as exc:
-        payload["status"] = "HOLD_PLAYGROUND_CONTRACT_READ_FAILED"
-        payload["error"] = f"{type(exc).__name__}: {exc}"
-    return payload
-
-
 def run_sim_preflight(policy: dict, playground: dict) -> dict:
     policy_action_dim = None
     output_shape = policy.get("output_shape") or []
     if output_shape and isinstance(output_shape[-1], int):
         policy_action_dim = output_shape[-1]
-    sim_action_dim = playground.get("action_dim_inferred")
+    policy_obs_dim = None
+    input_shape = policy.get("input_shape") or []
+    if input_shape and isinstance(input_shape[-1], int):
+        policy_obs_dim = input_shape[-1]
+
+    instantiated = playground.get("instantiated", {})
+    static = playground.get("static", {})
+    sim_action_dim = instantiated.get("action_size")
+    sim_obs_shape = (instantiated.get("observation_size") or {}).get("state")
+    sim_obs_dim = sim_obs_shape[0] if isinstance(sim_obs_shape, list) and sim_obs_shape else None
+    actuator_names = instantiated.get("actuator_names") or []
     if policy_action_dim and sim_action_dim and policy_action_dim != sim_action_dim:
         return {
             "status": "HOLD_POLICY_SIM_CONTRACT_MISMATCH",
             "reason": (
-                f"policy action dim is {policy_action_dim}, but discovered playground "
-                f"JOINTS_ORDER_NO_HEAD has {sim_action_dim} actuators"
+                f"policy action dim is {policy_action_dim}, but instantiated playground "
+                f"action_size is {sim_action_dim}"
             ),
+            "policy_action_dim": policy_action_dim,
+            "sim_action_dim": sim_action_dim,
+            "sim_env_path": static.get("open_duck_dir"),
+            "sim_actuator_names": actuator_names,
+            "recommended_next_command": "python3 tools/audit_policy_sim_contract.py --policy policy/BEST_WALK_ONNX_2.onnx --playground-path ../Open_Duck_Playground",
         }
+    if policy_obs_dim and sim_obs_dim and policy_obs_dim != sim_obs_dim:
+        return {
+            "status": "HOLD_POLICY_SIM_CONTRACT_MISMATCH",
+            "reason": (
+                f"policy observation dim is {policy_obs_dim}, but instantiated playground "
+                f"state observation dim is {sim_obs_dim}"
+            ),
+            "policy_obs_dim": policy_obs_dim,
+            "sim_obs_dim": sim_obs_dim,
+            "sim_env_path": static.get("open_duck_dir"),
+            "sim_actuator_names": actuator_names,
+            "recommended_next_command": "python3 tools/audit_policy_sim_contract.py --policy policy/BEST_WALK_ONNX_2.onnx --playground-path ../Open_Duck_Playground",
+        }
+    if instantiated.get("status", "").startswith("HOLD"):
+        return {
+            "status": instantiated["status"],
+            "reason": instantiated.get("error", "playground env could not be instantiated"),
+            "sim_env_path": static.get("open_duck_dir"),
+            "recommended_next_command": "python3 tools/audit_policy_sim_contract.py --policy policy/BEST_WALK_ONNX_2.onnx --playground-path ../Open_Duck_Playground",
+        }
+    static_14 = bool(static.get("candidate_14_actuator_xmls"))
     return {
         "status": "HOLD_SIM_INTEGRATION_PENDING",
         "reason": (
-            "This PR adds the bridge model and evaluation harness, but does not yet "
-            "patch Open_Duck_Playground's JAX/MJX step function."
+            "Policy and local Playground dimensions appear compatible, but the "
+            "closed-loop JAX/MJX policy eval path with actuator bridge is not wired yet."
         ),
+        "policy_obs_dim": policy_obs_dim,
+        "policy_action_dim": policy_action_dim,
+        "sim_obs_dim": sim_obs_dim,
+        "sim_action_dim": sim_action_dim,
+        "sim_env_path": static.get("open_duck_dir"),
+        "sim_actuator_names": actuator_names,
+        "static_14_actuator_xml_found": static_14,
+        "recommended_next_command": "python3 tools/audit_policy_sim_contract.py --policy policy/BEST_WALK_ONNX_2.onnx --playground-path ../Open_Duck_Playground",
     }
 
 
@@ -405,10 +429,21 @@ def build_markdown(payload: dict) -> str:
     lines.append(f"- policy_status: `{payload['policy'].get('status')}`")
     lines.append(f"- policy_input_shape: `{payload['policy'].get('input_shape')}`")
     lines.append(f"- policy_output_shape: `{payload['policy'].get('output_shape')}`")
-    lines.append(f"- playground_status: `{payload['playground'].get('status')}`")
-    lines.append(f"- playground_action_dim_inferred: `{payload['playground'].get('action_dim_inferred')}`")
+    playground_static = payload["playground"].get("static", {})
+    playground_instantiated = payload["playground"].get("instantiated", {})
+    lines.append(f"- playground_static_path: `{playground_static.get('open_duck_dir')}`")
+    lines.append(f"- playground_env_python: `{payload['playground'].get('env_python')}`")
+    lines.append(f"- playground_instantiated_status: `{playground_instantiated.get('status')}`")
+    lines.append(f"- playground_action_size: `{playground_instantiated.get('action_size')}`")
+    lines.append(f"- playground_observation_size: `{playground_instantiated.get('observation_size')}`")
+    lines.append(f"- playground_actuator_names: `{playground_instantiated.get('actuator_names')}`")
     lines.append(f"- sim_preflight_status: `{payload['sim_preflight'].get('status')}`")
     lines.append(f"- sim_preflight_reason: {payload['sim_preflight'].get('reason', 'NA')}")
+    if payload["sim_preflight"].get("recommended_next_command"):
+        lines.append(
+            "- recommended_next_command: "
+            f"`{payload['sim_preflight']['recommended_next_command']}`"
+        )
     lines.append("")
     if payload.get("telemetry_replay"):
         replay = payload["telemetry_replay"]
@@ -487,6 +522,7 @@ def main() -> int:
     parser.add_argument("--policy", default=str(DEFAULT_POLICY))
     parser.add_argument("--fit-json", default=str(DEFAULT_FIT_JSON))
     parser.add_argument("--playground-root", default=str(DEFAULT_PLAYGROUND_ROOT))
+    parser.add_argument("--env-python", default=str(DEFAULT_ENV_PYTHON))
     parser.add_argument("--command-x", type=float, default=0.08)
     parser.add_argument("--duration", type=float, default=15.0)
     parser.add_argument("--output-dir", default=str(DEFAULT_OUTPUT_DIR))
@@ -519,6 +555,7 @@ def main() -> int:
     policy_path = Path(args.policy).expanduser().resolve()
     fit_path = Path(args.fit_json).expanduser().resolve()
     playground_root = Path(args.playground_root).expanduser().resolve()
+    env_python = Path(args.env_python).expanduser().absolute()
     fit = load_fit_json(fit_path)
 
     policy = inspect_policy(
@@ -527,7 +564,11 @@ def main() -> int:
         args.expected_action_dim,
         args.inspect_policy_io,
     )
-    playground = parse_playground_joint_count(playground_root)
+    playground = {
+        "static": static_playground_contract(playground_root),
+        "instantiated": instantiate_env_contract(env_python, playground_root, 90),
+        "env_python": str(env_python),
+    }
     sim_preflight = run_sim_preflight(policy, playground)
     run_replay = args.mode == "telemetry-replay" or (
         args.mode == "auto" and args.telemetry_jsonl
