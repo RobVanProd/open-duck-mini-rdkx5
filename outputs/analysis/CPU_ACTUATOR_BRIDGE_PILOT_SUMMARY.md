@@ -39,6 +39,7 @@ Raw outputs, TensorBoard logs, checkpoints, and ONNX exports were left under
 | tiny smoke | 256 | `0.0` | `0.0` | 320 | `15.308966636657715` | `a6e44dd3866838f4bfd76641f6d0175a7c4df0395ee64f766ac0360819dd4c89` | non-deployable |
 | pilot target-rate | 8192 | `0.01` | `0.0` | 8240 | `14.813603401184082` | `32191fc9bc930fc2018bc3cc06acafaa49277aafad057456ab05f4d1cb6f8b74` | non-deployable |
 | pilot zero-penalty | 8192 | `0.0` | `0.0` | 8240 | `16.19684600830078` | `ae48fe2678ef3ab1ef2d791b7eefb92218f790774ddaa6525ce6d2838bef2590` | non-deployable |
+| longer target-rate | 8192 | `0.01` | `0.0` | 8960 | `17.0665283203125` | `6b29a93a8a79cd671639eaca268ca073d48cd0a58e5cc38ea3df3dcbe326a749` | non-deployable |
 | longer zero-penalty | 32768 | `0.0` | `0.0` | 32800 | `11.204126358032227` | `eedb5cd560607b41edee1c43d5abcb57a1fd314e0f35c883b67d02097dad6580` | non-deployable |
 
 ## Candidate-Mode Closed-Loop CPU Eval
@@ -53,6 +54,7 @@ Small committed reports:
 - `outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_ZERO_15S.md`
 - `outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_TARGET_RATE_X008_HOLD.md`
 - `outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_NEG_TARGET_RATE_X008_HOLD.md`
+- `outputs/analysis/CPU_CANDIDATE_GATE_STEP8960_POS_TARGET_RATE_X008_HOLD.md`
 - `outputs/analysis/CPU_CANDIDATE_GATE_STEP32800_HOLD.md`
 
 Results:
@@ -64,13 +66,14 @@ Results:
 | `step8240_zero_penalty`, `x=0.08` | `15 s` | `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` | stable but mean forward velocity stayed near zero |
 | `step8240_target_rate`, `x=0.08` | `15 s` | `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` | positive target-rate scale did not produce command-tracking walking in this tiny CPU run |
 | `step8240_negative_target_rate`, `x=0.08` | `15 s` | `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` | true negative target-rate penalty still produced near-zero mean forward velocity in this tiny CPU run |
+| `step8960_positive_target_rate`, `x=0.08` | `15 s` | `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` | stable and smooth, but mean forward velocity stayed near zero |
 | `step32800_zero_penalty` | `2 s` | `HOLD_CANDIDATE_FALL_OR_TERMINATION` | fell/terminated early with high action saturation and large pitch tracking error |
 
 The `step8240_zero_penalty` pilot is preserved only as a pipeline artifact. It
 is not robot-approved because it does not track nonzero forward commands. The
 target-rate pilots confirm that neither the first positive-scale control
-(`+0.01`) nor a matching true negative penalty (`-0.01`) solves command tracking
-in this tiny CPU run.
+(`+0.01`), a slightly longer positive-scale run, nor a matching true negative
+penalty (`-0.01`) solves command tracking in this tiny CPU run.
 
 ## Interpretation
 
@@ -82,6 +85,8 @@ in this tiny CPU run.
   producing a robot candidate.
 - The positive and negative target-rate scale pilots did not improve reward or
   nonzero-command forward progress in this small CPU configuration.
+- The step8960 positive target-rate pilot produced low target velocities and
+  stable posture, but still did not walk forward under `x=0.08`.
 - The longer zero-penalty pilot reward decreased, so continuing to scale this
   exact CPU smoke shape is not the right candidate-training path.
 

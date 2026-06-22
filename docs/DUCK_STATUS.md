@@ -103,6 +103,7 @@ outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_ZERO_X004_15S.md
 outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_ZERO_15S.md
 outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_TARGET_RATE_X008_HOLD.md
 outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_NEG_TARGET_RATE_X008_HOLD.md
+outputs/analysis/CPU_CANDIDATE_GATE_STEP8960_POS_TARGET_RATE_X008_HOLD.md
 outputs/analysis/CPU_CANDIDATE_GATE_STEP32800_HOLD.md
 ```
 
@@ -110,8 +111,10 @@ outputs/analysis/CPU_CANDIDATE_GATE_STEP32800_HOLD.md
 but `x=0.04` and `x=0.08` now hold on
 `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS`: mean forward velocity remains near zero.
 The positive-scale and negative-penalty target-rate pilots also hold at
-`x=0.08`. Treat these as offline training/export evidence, not deployable
-policies.
+`x=0.08`. The step8960 positive target-rate pilot also holds on
+`HOLD_CANDIDATE_LOW_FORWARD_PROGRESS`: it is stable and smooth, but its mean
+forward velocity remains near zero. Treat these as offline training/export
+evidence, not deployable policies.
 
 ## Active PRs
 
