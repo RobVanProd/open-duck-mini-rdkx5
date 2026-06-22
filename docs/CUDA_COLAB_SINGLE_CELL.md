@@ -34,6 +34,9 @@ The generated cell runs:
 6. policy/sim contract audit
 7. closed-loop baseline actuator bridge reproduction
 8. CUDA smoke training
+9. optional CUDA candidate training
+10. optional candidate sim gates at `x=0.0` and `x=0.08`
+11. optional candidate package metadata
 
 To include the first candidate-training shape in the generated cell:
 
@@ -82,12 +85,15 @@ Candidate cell:
 ```text
 PASS_SMOKE_RUN
 PASS_POLICY_CONTRACT
+PASS_CANDIDATE_SIM_GATE
 READY_FOR_SIM_GATE_REVIEW
 ```
 
 or a documented `HOLD_*` status with enough evidence to decide the next config
-change. A candidate that is stable but does not track nonzero forward commands
-must hold, for example `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS`.
+change. The generated candidate cell now runs candidate-mode closed-loop sim
+gates for both `x=0.0` and `x=0.08` before packaging. A candidate that is
+stable but does not track nonzero forward commands must hold, for example
+`HOLD_CANDIDATE_LOW_FORWARD_PROGRESS`.
 
 ## Files To Bring Back
 
@@ -97,6 +103,8 @@ Small summaries first:
 outputs/analysis/cuda_manual/POLICY_SIM_CONTRACT_AUDIT_CUDA.md
 outputs/analysis/cuda_manual/CLOSED_LOOP_ACTUATOR_BRIDGE_EVAL.md
 outputs/analysis/cuda_manual/<candidate>_training_run_summary.md
+outputs/analysis/cuda_manual/<candidate>_candidate_gate_x0.md
+outputs/analysis/cuda_manual/<candidate>_candidate_gate_x008.md
 outputs/analysis/cuda_manual/<candidate>_policy_package.md
 outputs/analysis/cuda_manual/<candidate>_policy_metadata.json
 ```

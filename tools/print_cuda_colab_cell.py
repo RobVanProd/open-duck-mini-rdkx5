@@ -172,11 +172,47 @@ if [ "$RUN_CANDIDATE" = "1" ]; then
     --output-md "outputs/analysis/cuda_manual/${{CANDIDATE}}_training_run_summary.md" \\
     --output-json "outputs/analysis/cuda_manual/${{CANDIDATE}}_training_run_summary.json"
 
+  echo "=== Candidate closed-loop sim gate: x=0.0 ==="
+  python tools/eval_policy_with_actuator_bridge.py \\
+    --mode closed-loop-sim \\
+    --eval-role candidate \\
+    --policy "$LATEST_ONNX" \\
+    --fit-json outputs/analysis/actuator_response_fit.json \\
+    --playground-path /content/Open_Duck_Playground \\
+    --env-python "$(command -v python)" \\
+    --command-x 0.0 \\
+    --duration 15 \\
+    --bridge-mode all \\
+    --closed-loop-timeout-s 1800 \\
+    --output-dir "outputs/analysis/cuda_manual/${{CANDIDATE}}_gate_x0"
+  cp "outputs/analysis/cuda_manual/${{CANDIDATE}}_gate_x0/CLOSED_LOOP_ACTUATOR_BRIDGE_EVAL.md" \\
+    "outputs/analysis/cuda_manual/${{CANDIDATE}}_candidate_gate_x0.md"
+  cp "outputs/analysis/cuda_manual/${{CANDIDATE}}_gate_x0/closed_loop_actuator_bridge_eval.json" \\
+    "outputs/analysis/cuda_manual/${{CANDIDATE}}_candidate_gate_x0.json"
+
+  echo "=== Candidate closed-loop sim gate: x=0.08 ==="
+  python tools/eval_policy_with_actuator_bridge.py \\
+    --mode closed-loop-sim \\
+    --eval-role candidate \\
+    --policy "$LATEST_ONNX" \\
+    --fit-json outputs/analysis/actuator_response_fit.json \\
+    --playground-path /content/Open_Duck_Playground \\
+    --env-python "$(command -v python)" \\
+    --command-x 0.08 \\
+    --duration 15 \\
+    --bridge-mode all \\
+    --closed-loop-timeout-s 1800 \\
+    --output-dir "outputs/analysis/cuda_manual/${{CANDIDATE}}_gate_x008"
+  cp "outputs/analysis/cuda_manual/${{CANDIDATE}}_gate_x008/CLOSED_LOOP_ACTUATOR_BRIDGE_EVAL.md" \\
+    "outputs/analysis/cuda_manual/${{CANDIDATE}}_candidate_gate_x008.md"
+  cp "outputs/analysis/cuda_manual/${{CANDIDATE}}_gate_x008/closed_loop_actuator_bridge_eval.json" \\
+    "outputs/analysis/cuda_manual/${{CANDIDATE}}_candidate_gate_x008.json"
+
   python tools/package_candidate_policy.py "$LATEST_ONNX" \\
     --candidate-name "$CANDIDATE" \\
     --training-manifest "$RUN_DIR/smoke_manifest.final.json" \\
     --contract-audit outputs/analysis/cuda_manual/POLICY_SIM_CONTRACT_AUDIT_CUDA.md \\
-    --actuator-bridge-eval outputs/analysis/cuda_manual/CLOSED_LOOP_ACTUATOR_BRIDGE_EVAL.md \\
+    --actuator-bridge-eval "outputs/analysis/cuda_manual/${{CANDIDATE}}_candidate_gate_x008.md" \\
     --output-md "outputs/analysis/cuda_manual/${{CANDIDATE}}_policy_package.md" \\
     --output-json "outputs/analysis/cuda_manual/${{CANDIDATE}}_policy_metadata.json" || true
 

@@ -80,7 +80,8 @@ For each candidate, save small summaries:
 outputs/analysis/<candidate>_training_run_summary.md
 outputs/analysis/<candidate>_contract.md
 outputs/analysis/<candidate>_target_velocity.md
-outputs/analysis/<candidate>_actuator_bridge_eval.md
+outputs/analysis/<candidate>_candidate_gate_x0.md
+outputs/analysis/<candidate>_candidate_gate_x008.md
 outputs/analysis/<candidate>_policy_metadata.json
 ```
 
@@ -105,7 +106,7 @@ python3 tools/package_candidate_policy.py \
   --training-manifest path/to/smoke_or_training_manifest.json \
   --contract-audit outputs/analysis/<candidate>_contract.md \
   --target-velocity-summary outputs/analysis/<candidate>_target_velocity.md \
-  --actuator-bridge-eval outputs/analysis/<candidate>_actuator_bridge_eval.md \
+  --actuator-bridge-eval outputs/analysis/<candidate>_candidate_gate_x008.md \
   --output-md outputs/analysis/<candidate>_policy_package.md \
   --output-json outputs/analysis/<candidate>_policy_metadata.json
 ```
@@ -137,6 +138,10 @@ JAX_PLATFORM_NAME=cpu ../envs/open-duck-playground/bin/python \
   --bridge-mode all \
   --output-dir outputs/analysis/<candidate>_closed_loop_eval
 ```
+
+Run at least `x=0.0` and `x=0.08`. Package metadata should point at the
+`x=0.08` candidate gate so nonzero-command failures are not hidden by a
+zero-command pass.
 
 Candidate mode reports `PASS_CANDIDATE_SIM_GATE` only when the policy survives
 the requested horizon with low action saturation, trackable pitch-chain targets,
