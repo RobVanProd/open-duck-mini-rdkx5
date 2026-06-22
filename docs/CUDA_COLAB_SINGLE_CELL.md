@@ -102,6 +102,16 @@ Generated CUDA eval commands pass `--jax-platform gpu` explicitly. Local CPU
 candidate gates should pass `--jax-platform cpu` explicitly so they do not
 accidentally select the blocked local ROCm backend.
 
+The generated closed-loop eval commands also pass:
+
+```text
+--sim-preflight-timeout-s 600
+```
+
+Manual Colab L4 runs showed that the correct environment can take longer than
+the default 90 seconds to instantiate after dependency installation. A preflight
+timeout should not be mistaken for a policy/sim contract mismatch.
+
 ## Files To Bring Back
 
 The generated cell now prints one bundle path plus its SHA256:
