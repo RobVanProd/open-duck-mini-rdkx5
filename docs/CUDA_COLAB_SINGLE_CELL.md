@@ -45,6 +45,18 @@ To include the first candidate-training shape in the generated cell:
 python3 tools/print_cuda_colab_cell.py --run-candidate
 ```
 
+If uploading a notebook is easier than copy/pasting a long cell, generate a
+one-code-cell notebook:
+
+```bash
+python3 tools/print_cuda_colab_cell.py \
+  --run-candidate \
+  --notebook-output /tmp/open_duck_cuda_candidate.ipynb
+```
+
+Then upload or open that `.ipynb` in the already-authenticated CUDA/Colab
+session and run its single cell.
+
 The default candidate shape matches `docs/CUDA_BACKEND_TRAINING_RUNBOOK.md`.
 It still does not approve robot testing; it only produces artifacts for review.
 That candidate shape now includes opt-in reward and command-curriculum
