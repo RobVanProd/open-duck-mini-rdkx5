@@ -560,3 +560,24 @@ Next offline move: run a larger CUDA-backed candidate training job with
 command-tracking retained under the actuator bridge, and keep
 `--eval-role candidate` command-tracking gates in front of any robot-side
 approval discussion.
+
+## Current ROCm / MJX Recheck
+
+After the local GPU/device reset and cost-scale sign fix, a compact 7900 XTX
+ROCm/MJX recheck was run:
+
+```text
+outputs/analysis/rocm_mjx_recheck_after_cost_sign/ROCM_MJX_RUNTIME_ISOLATION.md
+```
+
+Result:
+
+- `basic_jax`: `PASS`
+- `minimal_mjx_step`: `PASS`
+- `playground_one_step_vanilla`: `TIMEOUT`
+- `playground_one_step_jit`: `FAIL`
+- gate: `HOLD_PLAYGROUND_GPU_STEP`
+
+Interpretation: the local GPU can run basic JAX and a minimal MJX model, but
+the Open Duck Playground GPU step path remains blocked. Use CPU or CUDA-backed
+eval/training for correctness until the Playground ROCm step failure is fixed.
