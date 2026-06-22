@@ -1,6 +1,6 @@
 # Sim Actuator Bridge Eval
 
-Last updated: 2026-06-21
+Last updated: 2026-06-22
 
 ## Purpose
 
@@ -153,6 +153,53 @@ The reset state fields checked (`qpos`, `qvel`, `qacc`, `ctrl`, and
 MJCFs also leave several foot/floor `solref` and `solimp` values implicit,
 which is now a candidate offline sim-model probe, not a runtime fix.
 
+## CUDA L4 Closed-Loop Result
+
+A Google Colab / NVIDIA L4 run was used as an independent CUDA backend check
+after the local ROCm/MJX path failed.
+
+Colab setup notes:
+
+- JAX detected `cuda:0`.
+- The `playground` package had to be pinned to `0.0.3-0.0.5` because
+  `playground>=0.1.0` removes `mujoco_playground._src.collision`, while the
+  Open Duck Playground code imports that module.
+- The eval preflight needed a longer contract-instantiation timeout on Colab
+  due to first-run JAX/MJX compile latency.
+
+Result:
+
+```text
+overall_status: PASS_CLOSED_LOOP_REPRODUCTION
+gpu: NVIDIA L4 / cuda:0
+samples per mode: 750
+vanilla / fitted / stress all completed duration
+```
+
+The CUDA run confirmed:
+
+- instantiated observation contract: `state[101]`, `privileged_state[212]`
+- action size: `14`
+- actuator order matches `BEST_WALK_ONNX_2`
+- bridge insertion point: `target_stage_direct`
+- `double_rate_limit: False`
+- fitted bridge lag: `3-4` ticks on the pitch chain
+
+Summary artifact:
+
+```text
+outputs/analysis/CUDA_L4_CLOSED_LOOP_ACTUATOR_BRIDGE_EVAL.md
+```
+
+Interpretation:
+
+```text
+The closed-loop bridge/eval logic works on CUDA.
+The local 7900 XTX failure is a ROCm/MJX backend issue.
+Proceed to training-wrapper implementation using the verified 101/14 contract.
+Do not run robot motion yet.
+```
+
 ## Expected Behavior
 
 Vanilla sim expectation:
@@ -219,6 +266,13 @@ effective_velocity_limit_rad_s: about 2.25-4.7
 
 - sim reproduction is plausible
 - next PR should implement the JAX/MJX training actuator wrapper
+
+Current cross-backend status:
+
+```text
+CUDA L4: PASS_CLOSED_LOOP_REPRODUCTION
+local 7900 XTX ROCm: HOLD_PLAYGROUND_GPU_STEP / ROCM_ERROR_ILLEGAL_ADDRESS
+```
 
 ## Commands
 

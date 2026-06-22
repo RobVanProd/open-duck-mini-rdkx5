@@ -1,6 +1,6 @@
 # Training Bridge TODO
 
-Last updated: 2026-06-21
+Last updated: 2026-06-22
 
 Purpose: convert the measured Open Duck Mini actuator evidence into small,
 reviewable sim/training changes. Do not retrain blindly and do not change
@@ -31,6 +31,19 @@ Use `../envs/open-duck-playground/bin/python` for Open Duck Playground eval and
 future training. `../envs/rocm-baseline` sees the ROCm device, but currently
 lacks project-specific packages such as `mujoco_playground`, `ml_collections`,
 and `onnxruntime`.
+
+Cross-backend correctness result:
+
+```text
+Google Colab NVIDIA L4: PASS_CLOSED_LOOP_REPRODUCTION
+local RX 7900 XTX ROCm: HOLD_PLAYGROUND_GPU_STEP / ROCM_ERROR_ILLEGAL_ADDRESS
+```
+
+This means the actuator-bridge eval path is valid on CUDA and the local ROCm
+failure should not block the next design step. The local `7900 XTX` remains the
+preferred target for eventual training, but if ROCm/MJX remains unstable, use a
+reviewed CUDA backend for correctness/training experiments while keeping the
+same policy/sim contract and actuator model.
 
 ## P0: Inspect Current Training Contract
 
@@ -106,7 +119,8 @@ Do not start training from an interpreter that reports `HOLD_ENV_NOT_READY`.
 - Current status:
   - `PASS_TELEMETRY_REPLAY_REPRODUCTION`
   - `PASS_POLICY_SIM_CONTRACT`
-  - `HOLD_SIM_RUNTIME_ERROR`
+  - `PASS_CLOSED_LOOP_REPRODUCTION` on Colab NVIDIA L4 / CUDA
+  - `HOLD_SIM_RUNTIME_ERROR` on local `7900 XTX` ROCm
 - The closed-loop eval now has a target-stage bridge insertion point before
   `mjx_env.step(...)`, but the local ROCm/JAX/MJX worker currently fails with
   `ROCM_ERROR_ILLEGAL_ADDRESS`.
@@ -130,9 +144,10 @@ Do not start training from an interpreter that reports `HOLD_ENV_NOT_READY`.
   offline sim-model PR, not as a training or robot-runtime change.
 - CPU can run short correctness paths, including closed-loop vanilla short
   matrix, but CPU bridge/multi-step eval is slow under the current timeout.
-- Next implementation task: fix or route around the local Playground/MJX ROCm
-  step failure without changing robot behavior. Do not train until that eval is
-  reviewed.
+- Next implementation task: implement the training-time actuator wrapper using
+  the verified `101` observation / `14` action contract. Keep local ROCm/MJX
+  debugging as a backend workstream, not as a blocker for the actuator bridge
+  design.
 
 ## P1: Add Actuator Model Controls
 
@@ -181,8 +196,8 @@ alpha = 1 - exp(-dt / tau)
   - run `tools/audit_policy_sim_contract.py`
   - run `tools/isolate_rocm_mjx_failure.py`
   - run `tools/eval_policy_with_actuator_bridge.py` in closed-loop mode
-  - resolve `HOLD_SIM_RUNTIME_ERROR` before treating any sim result as evidence
-  - rerun vanilla/fitted/stress bridge modes
+  - use the CUDA L4 `PASS_CLOSED_LOOP_REPRODUCTION` result as the current
+    correctness evidence if local ROCm remains blocked
   - compare fitted-bridge metrics to real suspended `x=0.08`
   - proceed to JAX/MJX training wrapper only if sim reproduction is plausible
 

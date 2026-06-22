@@ -81,6 +81,17 @@ closed-loop CPU short matrix: PASS
 So the next GPU debug target is the Open Duck Playground MJX step, not basic
 ROCm visibility and not the fitted actuator bridge.
 
+Independent CUDA check:
+
+```text
+Google Colab NVIDIA L4
+JAX backend: gpu / cuda:0
+closed-loop actuator bridge eval: PASS_CLOSED_LOOP_REPRODUCTION
+```
+
+This confirms the policy/sim/eval path is viable on a CUDA backend. The local
+`7900 XTX` issue is specific to the ROCm/MJX Playground step path.
+
 Device-node visibility has been checked locally:
 
 ```text
@@ -231,8 +242,9 @@ Before any training job:
 
 1. Run `tools/check_training_env.py` from `../envs/open-duck-playground/bin/python`.
 2. Run policy/sim contract audit and confirm `PASS_POLICY_SIM_CONTRACT`.
-3. Run closed-loop actuator bridge eval and confirm it no longer reports
-   `HOLD_SIM_RUNTIME_ERROR`.
+3. Run closed-loop actuator bridge eval. If local ROCm still reports
+   `HOLD_SIM_RUNTIME_ERROR`, use the CUDA L4 `PASS_CLOSED_LOOP_REPRODUCTION`
+   result as the current correctness reference.
 4. Confirm current policy degrades in lagged sim like the real suspended
    `x=0.08` replay.
 5. Only then implement or run a short ROCm smoke training job.

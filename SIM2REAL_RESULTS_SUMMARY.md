@@ -464,10 +464,21 @@ Latest ROCm/MJX isolation result:
   already detected without it, and the override breaks the smallest GPU test.
 - Summary artifact:
   `outputs/analysis/rocm_mjx_isolation_gfx_override/ROCM_MJX_RUNTIME_ISOLATION.md`.
+- A Google Colab NVIDIA L4 / CUDA run completed the full closed-loop actuator
+  bridge eval and returned `PASS_CLOSED_LOOP_REPRODUCTION`.
+- CUDA contract/eval details:
+  - `state` observation size: `101`
+  - action size: `14`
+  - actuator order matches `BEST_WALK_ONNX_2`
+  - bridge insertion point: `target_stage_direct`
+  - `double_rate_limit: False`
+  - vanilla, fitted, and stress modes each completed `750` samples
+  - fitted pitch-chain lag: `3-4` ticks
+- Summary artifact:
+  `outputs/analysis/CUDA_L4_CLOSED_LOOP_ACTUATOR_BRIDGE_EVAL.md`.
 
-Choose exactly one next step: **debug the Open Duck Playground MJX GPU step on
-ROCm or run a reviewed reduced-horizon CPU correctness eval**, without changing
-robot behavior yet and without training.
+Choose exactly one next step: **implement the training-time actuator wrapper**,
+without robot motion and without changing robot runtime behavior yet.
 
 Purpose:
 
@@ -478,14 +489,12 @@ Purpose:
   when selecting training randomization ranges
 - add action-rate / target-velocity diagnostics to the training bridge notes
 - use the verified `101` observation / `14` action sim environment
-- rerun the current policy in that sim with and without the fitted actuator
-  bridge after the Open Duck Playground ROCm/MJX step fault is fixed, or run a
-  clearly labeled reduced-horizon CPU correctness eval
-- only then implement the JAX/MJX training actuator wrapper
+- use the CUDA L4 `PASS_CLOSED_LOOP_REPRODUCTION` result as the current
+  closed-loop sim proof
+- implement the JAX/MJX training actuator wrapper next
 
 Do not patch runtime behavior, action scale, gains, offsets, or phase timing
 until the bridge spec is reviewed.
 
-Do not run more robot motion, grounded replay, or training until the
-closed-loop sim actuator bridge eval runs without the ROCm/MJX runtime fault,
-or a reduced-horizon CPU eval is explicitly reviewed as sufficient evidence.
+Do not run more robot motion or grounded replay until a candidate policy is
+trained with the actuator bridge and passes suspended validation.

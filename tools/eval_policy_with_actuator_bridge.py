@@ -681,13 +681,14 @@ def build_markdown(payload: dict) -> str:
         lines.append("")
     lines.append("## Interpretation")
     lines.append("")
+    closed_status = (payload.get("closed_loop_sim") or {}).get("status")
     if payload["sim_preflight"].get("status") == "HOLD_POLICY_SIM_CONTRACT_MISMATCH":
         lines.append(
             "- Full MuJoCo policy-loop reproduction is blocked by a policy/playground "
             "contract mismatch. Do not train until the exact 101-observation / "
             "14-action training environment is located or reconstructed."
         )
-    elif payload["sim_preflight"].get("status", "").startswith("HOLD"):
+    elif payload["sim_preflight"].get("status", "").startswith("HOLD") and not closed_status:
         lines.append("- Full MuJoCo policy-loop reproduction is not complete yet.")
     if payload.get("telemetry_replay"):
         lines.append(
@@ -795,6 +796,12 @@ def main() -> int:
         help="timeout for the contained closed-loop worker process",
     )
     parser.add_argument(
+        "--sim-preflight-timeout-s",
+        type=int,
+        default=90,
+        help="timeout for the Playground contract instantiation preflight",
+    )
+    parser.add_argument(
         "--_closed-loop-worker",
         action="store_true",
         help=argparse.SUPPRESS,
@@ -820,7 +827,9 @@ def main() -> int:
     )
     playground = {
         "static": static_playground_contract(playground_root),
-        "instantiated": instantiate_env_contract(env_python, playground_root, 90),
+        "instantiated": instantiate_env_contract(
+            env_python, playground_root, args.sim_preflight_timeout_s
+        ),
         "env_python": str(env_python),
     }
     sim_preflight = run_sim_preflight(policy, playground)

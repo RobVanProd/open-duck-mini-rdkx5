@@ -100,10 +100,14 @@ The current stack is split cleanly:
 | actuator response fit | explains most target/actual lag |
 | policy/sim contract | `PASS_POLICY_SIM_CONTRACT` |
 | closed-loop bridge insertion point | implemented at target stage |
+| CUDA closed-loop bridge eval | `PASS_CLOSED_LOOP_REPRODUCTION` |
 | ROCm/MJX closed-loop step | blocked |
 
-Do not train until the backend/runtime failure is resolved or a reviewed CPU
-correctness fallback produces enough evidence.
+The local ROCm/MJX failure is no longer a blocker for correctness: the same
+closed-loop bridge eval passed on Google Colab with an NVIDIA L4 / CUDA backend.
+Do not train on the robot-facing path until the training-time actuator wrapper
+is implemented and reviewed, but treat local ROCm debugging as a backend
+workstream rather than a policy/sim-contract blocker.
 
 ## CPU Fallback
 
