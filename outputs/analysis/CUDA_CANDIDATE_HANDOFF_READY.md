@@ -1,6 +1,6 @@
 # CUDA Candidate Handoff Ready
 
-generated_at: `2026-06-22T13:13:00Z`
+generated_at: `2026-06-22T13:20:07Z`
 
 ## Status
 
@@ -20,8 +20,13 @@ Recent handoff fixes merged:
   request for the artifact bundle.
 - PR #62: local artifact import can verify the bundle SHA256 printed by the
   CUDA cell.
-- PR #63: CUDA bundles record RDK/Playground commits and runtime metadata in
-  `CUDA_CELL_EXIT_STATUS.txt`.
+- PR #63: CUDA bundles record RDK/Playground commits in
+  `CUDA_CELL_EXIT_STATUS.txt`; PR #66 keeps the metadata capture package-only
+  so the failure trap does not reinitialize JAX/MJX.
+- PR #65: CUDA bundles include `pip_freeze.txt` and `nvidia_smi.txt` so the
+  package/runtime environment can be reviewed after import.
+- PR #66: CUDA bundle status records package metadata with
+  `importlib.metadata` instead of importing JAX/MJX runtime in the EXIT trap.
 
 ## Why Manual CUDA Is Still Required
 
@@ -53,6 +58,9 @@ The generated cell now:
 - packages metadata against the `x=0.08` gate
 - writes one downloadable artifact bundle and tries to trigger a Colab browser
   download:
+- records repo commits, dirty-file counts, package versions, `pip_freeze.txt`,
+  and `nvidia_smi.txt` in the evidence bundle without importing JAX/MJX runtime
+  from the EXIT trap
 
 ```text
 /content/open_duck_cuda_artifacts_<timestamp>.tar.gz
