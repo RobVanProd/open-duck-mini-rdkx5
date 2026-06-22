@@ -60,6 +60,13 @@ The generated candidate cell also runs candidate-mode closed-loop sim gates at
 `x=0.08` gate report, so a nonzero-command hold such as
 `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` is carried into the package metadata.
 
+The default generated candidate recipe uses the Playground runner's opt-in
+training-recipe overrides to test the next hypothesis from the CPU pilots:
+stable standing was over-rewarded relative to nonzero forward command tracking.
+It therefore increases forward velocity tracking pressure, reduces alive and
+imitation scales, samples straight-ahead positive `x` commands, and freezes
+head-command randomization for the first candidate attempt.
+
 See:
 
 ```text
@@ -183,6 +190,16 @@ python tools/run_actuator_bridge_training_smoke.py \
   --ppo-num-updates-per-batch 4 \
   --target-rate-scale -0.01 \
   --actuator-tracking-scale 0.0 \
+  --tracking-lin-vel-scale 6.0 \
+  --alive-scale 5.0 \
+  --imitation-scale 0.5 \
+  --lin-vel-x-min 0.04 \
+  --lin-vel-x-max 0.12 \
+  --lin-vel-y-min 0.0 \
+  --lin-vel-y-max 0.0 \
+  --ang-vel-yaw-min 0.0 \
+  --ang-vel-yaw-max 0.0 \
+  --head-range-factor 0.0 \
   --timeout-s 7200
 ```
 

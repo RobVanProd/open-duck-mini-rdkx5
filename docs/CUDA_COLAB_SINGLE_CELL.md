@@ -46,6 +46,9 @@ python3 tools/print_cuda_colab_cell.py --run-candidate
 
 The default candidate shape matches `docs/CUDA_BACKEND_TRAINING_RUNBOOK.md`.
 It still does not approve robot testing; it only produces artifacts for review.
+That candidate shape now includes opt-in reward and command-curriculum
+overrides intended to avoid the smooth stand-still behavior seen in the local
+CPU pilots.
 
 ## Why This Exists
 
