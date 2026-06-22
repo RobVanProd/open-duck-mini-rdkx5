@@ -142,7 +142,7 @@ even if the notebook cell exits early or reports a command failure. The archive
 contains `CUDA_CELL_EXIT_STATUS.txt` so the importer/reviewer can distinguish a
 clean run from a partial evidence bundle. That file also records the RDK and
 Playground repo URLs, branches, commits, dirty-file counts, Python/JAX/MuJoCo
-metadata when importable, and the visible GPU name when `nvidia-smi` is
+package metadata when available, and the visible GPU name when `nvidia-smi` is
 available. The bundle also includes `pip_freeze.txt` and `nvidia_smi.txt` when
 those commands are available.
 
