@@ -53,6 +53,7 @@ class ClosedLoopConfig:
     expected_action_dim: int = 14
     task: str = "flat_terrain"
     seed: int = 0
+    eval_role: str = "reproduction"
 
 
 @contextlib.contextmanager
@@ -253,6 +254,94 @@ def classify_closed_loop(modes: Mapping[str, Mapping[str, Any]]) -> str:
     if tracking_ok and lag_ok and velocity_ok:
         return "PASS_CLOSED_LOOP_REPRODUCTION"
     return "HOLD_MODEL_DOES_NOT_REPRODUCE"
+
+
+def max_finite(values: Iterable[float]) -> float | None:
+    data = [float(value) for value in values if finite(value)]
+    return max(data) if data else None
+
+
+def classify_candidate_gate(modes: Mapping[str, Mapping[str, Any]]) -> dict:
+    """Classify a candidate policy directly instead of asking it to reproduce failure."""
+    thresholds = {
+        "max_action_saturation_pct": 1.0,
+        "max_pitch_tracking_p95_rad": 0.08,
+        "max_sent_target_velocity_p95_rad_s": 2.5,
+        "max_abs_body_pitch_p95_rad": 0.25,
+        "min_base_height_m": 0.12,
+        "min_reward_mean": 0.30,
+    }
+    if not modes:
+        return {"status": "HOLD_CANDIDATE_NO_EVAL", "thresholds": thresholds}
+
+    terminations = {
+        name: mode.get("termination_reason") for name, mode in modes.items()
+    }
+    incomplete = {
+        name: reason
+        for name, reason in terminations.items()
+        if reason != "duration_complete"
+    }
+
+    pitch_tracking = []
+    sent_velocity = []
+    action_saturation = []
+    body_pitch_abs = []
+    base_height_min = []
+    reward_mean = []
+    for mode in modes.values():
+        body = mode.get("body_pitch_rad") or {}
+        height = mode.get("base_height_m") or {}
+        reward = mode.get("reward") or {}
+        if finite(body.get("p95")):
+            body_pitch_abs.append(abs(float(body["p95"])))
+        if finite(height.get("min")):
+            base_height_min.append(float(height["min"]))
+        if finite(reward.get("mean")):
+            reward_mean.append(float(reward["mean"]))
+        for joint in PITCH_CHAIN_JOINTS:
+            item = (mode.get("joints") or {}).get(joint, {})
+            tracking = (item.get("joint_target_tracking_error_rad") or {}).get("p95")
+            velocity = (item.get("sent_target_velocity_rad_s") or {}).get("p95")
+            saturation = item.get("action_saturation_pct")
+            if finite(tracking):
+                pitch_tracking.append(float(tracking))
+            if finite(velocity):
+                sent_velocity.append(float(velocity))
+            if finite(saturation):
+                action_saturation.append(float(saturation))
+
+    metrics = {
+        "max_action_saturation_pct": max_finite(action_saturation),
+        "max_pitch_tracking_p95_rad": max_finite(pitch_tracking),
+        "max_sent_target_velocity_p95_rad_s": max_finite(sent_velocity),
+        "max_abs_body_pitch_p95_rad": max_finite(body_pitch_abs),
+        "min_base_height_m": min(base_height_min) if base_height_min else None,
+        "min_reward_mean": min(reward_mean) if reward_mean else None,
+        "terminations": terminations,
+    }
+    if incomplete:
+        status = "HOLD_CANDIDATE_FALL_OR_TERMINATION"
+    elif not finite(metrics["max_action_saturation_pct"]):
+        status = "HOLD_CANDIDATE_NO_METRICS"
+    elif metrics["max_action_saturation_pct"] > thresholds["max_action_saturation_pct"]:
+        status = "HOLD_CANDIDATE_ACTION_SATURATION"
+    elif metrics["max_pitch_tracking_p95_rad"] > thresholds["max_pitch_tracking_p95_rad"]:
+        status = "HOLD_CANDIDATE_TRACKING"
+    elif (
+        metrics["max_sent_target_velocity_p95_rad_s"]
+        > thresholds["max_sent_target_velocity_p95_rad_s"]
+    ):
+        status = "HOLD_CANDIDATE_TARGET_VELOCITY"
+    elif metrics["max_abs_body_pitch_p95_rad"] > thresholds["max_abs_body_pitch_p95_rad"]:
+        status = "HOLD_CANDIDATE_POSTURE"
+    elif metrics["min_base_height_m"] < thresholds["min_base_height_m"]:
+        status = "HOLD_CANDIDATE_BASE_HEIGHT"
+    elif metrics["min_reward_mean"] < thresholds["min_reward_mean"]:
+        status = "HOLD_CANDIDATE_LOW_REWARD"
+    else:
+        status = "PASS_CANDIDATE_SIM_GATE"
+    return {"status": status, "thresholds": thresholds, "metrics": metrics}
 
 
 def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
@@ -585,9 +674,16 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             "pitch_chain_summary": pitch_chain_summary(joints),
         }
 
-    status = classify_closed_loop(modes) if "fitted" in modes else "PASS_CLOSED_LOOP_REPRODUCTION"
+    candidate_gate = None
+    if config.eval_role == "candidate":
+        candidate_gate = classify_candidate_gate(modes)
+        status = candidate_gate["status"]
+    else:
+        status = classify_closed_loop(modes) if "fitted" in modes else "PASS_CLOSED_LOOP_REPRODUCTION"
     return {
         "status": status,
+        "eval_role": config.eval_role,
+        "candidate_gate": candidate_gate,
         "policy": policy,
         "env": {
             "playground_root": str(config.playground_root),

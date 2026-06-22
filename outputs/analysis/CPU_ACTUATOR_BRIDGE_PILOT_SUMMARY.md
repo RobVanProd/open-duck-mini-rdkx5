@@ -41,6 +41,27 @@ Raw outputs, TensorBoard logs, checkpoints, and ONNX exports were left under
 | pilot zero-penalty | 8192 | `0.0` | `0.0` | 8240 | `16.19684600830078` | `ae48fe2678ef3ab1ef2d791b7eefb92218f790774ddaa6525ce6d2838bef2590` | non-deployable |
 | longer zero-penalty | 32768 | `0.0` | `0.0` | 32800 | `11.204126358032227` | `eedb5cd560607b41edee1c43d5abcb57a1fd314e0f35c883b67d02097dad6580` | non-deployable |
 
+## Candidate-Mode Closed-Loop CPU Eval
+
+Candidate-mode eval was added after these pilots because the original
+closed-loop reproduction status was only meaningful for the baseline policy.
+
+Small committed reports:
+
+- `outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_ZERO_15S.md`
+- `outputs/analysis/CPU_CANDIDATE_GATE_STEP32800_HOLD.md`
+
+Results:
+
+| pilot | duration | status | main reason |
+|---|---:|---|---|
+| `step8240_zero_penalty` | `15 s` | `PASS_CANDIDATE_SIM_GATE` | survived vanilla/fitted/stress with low action saturation and pitch tracking below threshold |
+| `step32800_zero_penalty` | `2 s` | `HOLD_CANDIDATE_FALL_OR_TERMINATION` | fell/terminated early with high action saturation and large pitch tracking error |
+
+The passing `step8240_zero_penalty` pilot is still not robot-approved. It needs
+reviewed candidate packaging, full sim-side evidence, and explicit approval
+before suspended robot validation.
+
 ## Interpretation
 
 - The merged actuator bridge can be used by the training runner without
@@ -57,9 +78,23 @@ Raw outputs, TensorBoard logs, checkpoints, and ONNX exports were left under
 ## Next Step
 
 Use CUDA for meaningful candidate training/evaluation where possible. If CUDA
-is unavailable, improve the offline candidate workflow by adding sim-side
-target-velocity and actuator-tracking evaluation for each exported ONNX before
-running longer CPU pilots.
+is unavailable, run candidate-mode closed-loop eval for each exported ONNX
+before spending more CPU time.
 
 Robot motion remains blocked until a candidate passes the documented sim-side
 gates and Rob explicitly approves suspended validation.
+
+## Follow-Up Candidate Eval Note
+
+The first closed-loop CPU candidate evals showed why candidate-specific gates
+are needed. The baseline reproduction status `HOLD_MODEL_DOES_NOT_REPRODUCE`
+is not meaningful for new candidate policies because a good candidate should
+avoid reproducing the original `x=0.08` failure.
+
+The eval tool now supports:
+
+```bash
+--eval-role candidate
+```
+
+Use that mode for candidate ONNX files.
