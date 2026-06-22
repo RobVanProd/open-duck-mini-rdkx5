@@ -45,6 +45,27 @@ So future Open Duck sim eval/training should use:
 
 not system Python.
 
+## Current ROCm / MJX Hold
+
+The basic environment check sees the `7900 XTX`:
+
+```text
+JAX backend: gpu
+JAX device: rocm:0
+```
+
+However, the closed-loop actuator bridge eval currently fails inside the
+JAX/MJX GPU step:
+
+```text
+HOLD_SIM_RUNTIME_ERROR
+ROCM_ERROR_ILLEGAL_ADDRESS
+```
+
+This means the environment is import-ready, but not yet cleared for closed-loop
+MJX eval or training. Treat `tools/check_training_env.py` as a necessary
+preflight, not as sufficient proof that long JAX/MJX jobs are safe.
+
 ## Readiness Check
 
 Run:
@@ -98,9 +119,11 @@ Before any training job:
 
 1. Run `tools/check_training_env.py` from `../envs/open-duck-playground/bin/python`.
 2. Run policy/sim contract audit and confirm `PASS_POLICY_SIM_CONTRACT`.
-3. Run closed-loop actuator bridge eval and confirm current policy degrades in
-   lagged sim like the real suspended `x=0.08` replay.
-4. Only then implement or run a short ROCm smoke training job.
+3. Run closed-loop actuator bridge eval and confirm it no longer reports
+   `HOLD_SIM_RUNTIME_ERROR`.
+4. Confirm current policy degrades in lagged sim like the real suspended
+   `x=0.08` replay.
+5. Only then implement or run a short ROCm smoke training job.
 
 No policy should be exported for robot testing until suspended validation gates
 are defined and passed.

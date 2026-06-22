@@ -87,15 +87,31 @@ home ctrl:   14
 JAX backend: gpu / rocm:0
 ```
 
-So the previous `HOLD_POLICY_SIM_CONTRACT_MISMATCH` is resolved. The current
-eval gate is:
+So the previous `HOLD_POLICY_SIM_CONTRACT_MISMATCH` is resolved.
+
+The closed-loop eval tool now implements a target-stage bridge insertion by
+mirroring `Joystick.step()` through:
 
 ```text
-HOLD_SIM_INTEGRATION_PENDING
+action delay
+target = home + delayed_action * action_scale
+max_motor_velocity rate limit
 ```
 
-Meaning: the correct sim contract exists, but the fitted actuator bridge is not
-yet wired into the closed-loop JAX/MJX policy eval path.
+and then inserting the actuator bridge before `mjx_env.step(...)`.
+`state.info["motor_targets"]` remains the sent target, so obs `83:97` continues
+to represent commanded motor targets rather than bridged physical response.
+This avoids silent action padding/truncation and avoids double-rate-limiting.
+
+The current eval gate is:
+
+```text
+HOLD_SIM_RUNTIME_ERROR
+```
+
+Meaning: the correct sim contract exists and the bridge insertion point is
+implemented, but the local ROCm/JAX/MJX execution failed during the closed-loop
+GPU step with `ROCM_ERROR_ILLEGAL_ADDRESS`.
 
 ## Expected Behavior
 
@@ -143,6 +159,13 @@ effective_velocity_limit_rad_s: about 2.25-4.7
 
 - sim contract matches, but fitted actuator bridge is not yet inserted into the
   closed-loop policy eval path
+
+`HOLD_SIM_RUNTIME_ERROR`:
+
+- the sim contract and insertion point exist, but the closed-loop JAX/MJX eval
+  fails at runtime
+- current observed failure: ROCm stream synchronization failure with
+  `ROCM_ERROR_ILLEGAL_ADDRESS`
 
 `HOLD_MODEL_INCOMPLETE`:
 
@@ -194,6 +217,24 @@ python3 tools/eval_policy_with_actuator_bridge.py \
   --output-dir outputs/analysis
 ```
 
+Run closed-loop sim eval:
+
+```bash
+../envs/open-duck-playground/bin/python tools/eval_policy_with_actuator_bridge.py \
+  --mode closed-loop-sim \
+  --policy policy/BEST_WALK_ONNX_2.onnx \
+  --fit-json outputs/analysis/actuator_response_fit.json \
+  --playground-path ../Open_Duck_Playground \
+  --env-python ../envs/open-duck-playground/bin/python \
+  --command-x 0.08 \
+  --duration 15 \
+  --bridge-mode all \
+  --output-dir outputs/analysis
+```
+
+The closed-loop worker is contained in a subprocess so GPU runtime faults are
+captured as evidence instead of aborting the parent tool.
+
 Run telemetry replay bridge check using existing suspended `x=0.08` evidence:
 
 ```bash
@@ -226,12 +267,22 @@ The eval harness writes:
 ```text
 outputs/analysis/SIM_ACTUATOR_BRIDGE_EVAL.md
 outputs/analysis/sim_actuator_bridge_eval.json
+outputs/analysis/CLOSED_LOOP_ACTUATOR_BRIDGE_EVAL.md
+outputs/analysis/closed_loop_actuator_bridge_eval.json
 ```
 
-Current committed telemetry replay output shows:
+Current committed closed-loop output shows:
 
 ```text
-overall_status: HOLD_SIM_INTEGRATION_PENDING
+overall_status: HOLD_SIM_RUNTIME_ERROR
+contract preflight: PASS_ENV_INSTANTIATED, obs=101, actions=14
+insertion point: target-stage bridge before mjx_env.step
+worker error: ROCM_ERROR_ILLEGAL_ADDRESS
+```
+
+Current telemetry replay output still shows:
+
+```text
 telemetry_replay: PASS_TELEMETRY_REPLAY_REPRODUCTION
 median fitted sim/real p95 tracking ratio: about 0.981
 max p95 fitted model error: about 0.035 rad
@@ -242,6 +293,7 @@ Interpretation:
 - the actuator bridge reproduces the recorded target-to-actual relationship
   from real telemetry
 - the local Playground contract matches `BEST_WALK_ONNX_2`
-- closed-loop MuJoCo policy reproduction is still blocked because the actuator
-  bridge is not wired into the JAX/MJX eval path yet
-- training remains blocked until closed-loop sim reproduction is reviewed
+- closed-loop MuJoCo policy reproduction is blocked by the local ROCm/JAX/MJX
+  runtime fault, not by robot evidence or policy/sim contract mismatch
+- training remains blocked until the closed-loop runtime fault is fixed and the
+  sim reproduction result is reviewed
