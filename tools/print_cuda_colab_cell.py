@@ -376,6 +376,8 @@ if [ "$RUN_CANDIDATE" = "1" ]; then
     --lin-vel-y-max 0.0 \\
     --ang-vel-yaw-min 0.0 \\
     --ang-vel-yaw-max 0.0 \\
+    --command-resample-steps {args.candidate_command_resample_steps} \\
+    --zero-command-probability {args.candidate_zero_command_probability} \\
     --head-range-factor 0.0 \\
     --timeout-s {args.candidate_timeout_s}
 
@@ -594,6 +596,8 @@ def main() -> int:
     parser.add_argument("--candidate-imitation-scale", type=float, default=0.25)
     parser.add_argument("--candidate-lin-vel-x-min", type=float, default=0.04)
     parser.add_argument("--candidate-lin-vel-x-max", type=float, default=0.12)
+    parser.add_argument("--candidate-command-resample-steps", type=int, default=500)
+    parser.add_argument("--candidate-zero-command-probability", type=float, default=0.1)
     parser.add_argument("--candidate-timeout-s", type=int, default=7200)
     parser.add_argument(
         "--no-auto-download",

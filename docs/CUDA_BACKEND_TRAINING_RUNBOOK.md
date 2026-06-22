@@ -250,6 +250,8 @@ export PYTHON_BIN="${PYTHON_BIN:-/usr/bin/python3}"
   --lin-vel-y-max 0.0 \
   --ang-vel-yaw-min 0.0 \
   --ang-vel-yaw-max 0.0 \
+  --command-resample-steps 500 \
+  --zero-command-probability 0.1 \
   --head-range-factor 0.0 \
   --timeout-s 7200
 ```
@@ -257,6 +259,18 @@ export PYTHON_BIN="${PYTHON_BIN:-/usr/bin/python3}"
 This is a first candidate-training shape, not a guaranteed final config.
 Review reward, target velocity, action saturation, and simulated actuator
 tracking before increasing runtime.
+
+If a candidate still holds at `x=0.08` with low forward progress, the next
+offline-only escalation is to disable the historical zero-command curriculum for
+that candidate run:
+
+```bash
+  --zero-command-probability 0.0 \
+  --command-resample-steps 600
+```
+
+Those flags are training-curriculum controls only. They must not be confused
+with robot runtime changes.
 
 After candidate training, run the offline candidate gates before any packaging
 or robot discussion:

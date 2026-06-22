@@ -87,6 +87,8 @@ def build_command(args: argparse.Namespace, output_dir: Path) -> list[str]:
         "--lin_vel_y_max": args.lin_vel_y_max,
         "--ang_vel_yaw_min": args.ang_vel_yaw_min,
         "--ang_vel_yaw_max": args.ang_vel_yaw_max,
+        "--command_resample_steps": args.command_resample_steps,
+        "--zero_command_probability": args.zero_command_probability,
         "--head_range_factor": args.head_range_factor,
     }
     for flag, value in optional_runner_overrides.items():
@@ -216,6 +218,8 @@ def main() -> int:
     parser.add_argument("--lin-vel-y-max", type=float, default=None)
     parser.add_argument("--ang-vel-yaw-min", type=float, default=None)
     parser.add_argument("--ang-vel-yaw-max", type=float, default=None)
+    parser.add_argument("--command-resample-steps", type=int, default=None)
+    parser.add_argument("--zero-command-probability", type=float, default=None)
     parser.add_argument("--head-range-factor", type=float, default=None)
     args = parser.parse_args()
 
@@ -256,6 +260,8 @@ def main() -> int:
             "lin_vel_y_max": args.lin_vel_y_max,
             "ang_vel_yaw_min": args.ang_vel_yaw_min,
             "ang_vel_yaw_max": args.ang_vel_yaw_max,
+            "command_resample_steps": args.command_resample_steps,
+            "zero_command_probability": args.zero_command_probability,
             "head_range_factor": args.head_range_factor,
         },
         "command": command,

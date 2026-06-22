@@ -264,6 +264,9 @@ before launching another candidate:
   nonzero commands
 - review command sampling so training cannot spend most useful updates near
   standing
+- use the default-off `zero_command_probability` and
+  `command_resample_steps` runner overrides for candidate-only experiments if
+  zero-command curriculum still pulls the learned behavior toward standing
 - keep the actuator bridge active, but reduce smoothness pressure if it turns
   standing into the easiest optimum
 - keep `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` as a hard offline block for robot

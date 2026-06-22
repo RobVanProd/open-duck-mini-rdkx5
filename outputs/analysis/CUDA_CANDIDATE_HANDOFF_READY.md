@@ -146,6 +146,10 @@ The generated cell now:
   and `playground==0.0.5`
 - uses the stricter nonzero-command recipe above so another candidate cannot
   pass offline actuator gates by standing nearly still at `x=0.08`
+- exposes command-curriculum knobs so a follow-up candidate can set
+  `--candidate-zero-command-probability 0.0` and
+  `--candidate-command-resample-steps 600` if the historical 10% zero-command
+  sampling is still biasing learning toward standing
 - runs the baseline closed-loop actuator bridge reproduction with
   `--jax-platform gpu` and `--sim-preflight-timeout-s 600`
 - runs CUDA smoke training
