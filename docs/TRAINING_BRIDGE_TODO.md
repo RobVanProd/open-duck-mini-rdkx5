@@ -110,8 +110,14 @@ Do not start training from an interpreter that reports `HOLD_ENV_NOT_READY`.
 - The closed-loop eval now has a target-stage bridge insertion point before
   `mjx_env.step(...)`, but the local ROCm/JAX/MJX worker currently fails with
   `ROCM_ERROR_ILLEGAL_ADDRESS`.
-- Next implementation task: fix or route around the local ROCm/MJX closed-loop
-  runtime fault without changing robot behavior. Do not train until that eval is
+- ROCm/MJX isolation narrowed this to `HOLD_PLAYGROUND_GPU_STEP`: basic JAX
+  GPU, JAX jit/scan, minimal MJX GPU, Playground contract construction, and
+  Playground reset pass; Open Duck Playground one-step on GPU is the smallest
+  failing operation.
+- CPU can run short correctness paths, including closed-loop vanilla short
+  matrix, but CPU bridge/multi-step eval is slow under the current timeout.
+- Next implementation task: fix or route around the local Playground/MJX ROCm
+  step failure without changing robot behavior. Do not train until that eval is
   reviewed.
 
 ## P1: Add Actuator Model Controls
@@ -159,6 +165,7 @@ alpha = 1 - exp(-dt / tau)
 - Required sequence:
   - run `../envs/open-duck-playground/bin/python tools/check_training_env.py`
   - run `tools/audit_policy_sim_contract.py`
+  - run `tools/isolate_rocm_mjx_failure.py`
   - run `tools/eval_policy_with_actuator_bridge.py` in closed-loop mode
   - resolve `HOLD_SIM_RUNTIME_ERROR` before treating any sim result as evidence
   - rerun vanilla/fitted/stress bridge modes

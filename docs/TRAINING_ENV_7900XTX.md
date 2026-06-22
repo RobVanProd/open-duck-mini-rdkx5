@@ -66,6 +66,40 @@ This means the environment is import-ready, but not yet cleared for closed-loop
 MJX eval or training. Treat `tools/check_training_env.py` as a necessary
 preflight, not as sufficient proof that long JAX/MJX jobs are safe.
 
+ROCm/MJX isolation narrowed the failure:
+
+```text
+basic JAX GPU: PASS
+JAX jit/scan GPU: PASS
+minimal MJX GPU: PASS
+Open Duck Playground reset GPU: PASS
+Open Duck Playground one-step GPU: TIMEOUT
+closed-loop GPU: ROCM_ERROR_ILLEGAL_ADDRESS
+closed-loop CPU short matrix: PASS
+```
+
+So the next GPU debug target is the Open Duck Playground MJX step, not basic
+ROCm visibility and not the fitted actuator bridge.
+
+Focused memory-allocation variants were tested on the smallest failing GPU
+subtest (`playground_one_step_vanilla`):
+
+```text
+XLA_PYTHON_CLIENT_MEM_FRACTION=0.50 -> TIMEOUT
+XLA_PYTHON_CLIENT_MEM_FRACTION=0.60 -> TIMEOUT
+XLA_PYTHON_CLIENT_ALLOCATOR=platform -> TIMEOUT
+```
+
+This does not rule out a hipSolver/XLA memory interaction for later crashes,
+but it shows that JAX preallocation changes alone do not currently clear the
+first Open Duck Playground GPU step. The current `amdgpu` module parameter is:
+
+```text
+cwsr_enable = 1
+```
+
+Do not change kernel/module settings such as CWSR from project scripts.
+
 ## Readiness Check
 
 Run:

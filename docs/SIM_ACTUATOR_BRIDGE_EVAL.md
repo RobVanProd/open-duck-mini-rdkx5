@@ -113,6 +113,17 @@ Meaning: the correct sim contract exists and the bridge insertion point is
 implemented, but the local ROCm/JAX/MJX execution failed during the closed-loop
 GPU step with `ROCM_ERROR_ILLEGAL_ADDRESS`.
 
+Follow-up isolation narrowed this further:
+
+```text
+gate_result: HOLD_PLAYGROUND_GPU_STEP
+smallest_failing_subtest: default_gpu_playground_one_step_vanilla
+```
+
+Basic JAX GPU, JAX jit/scan, minimal MJX GPU, Playground contract
+construction, and Playground reset all pass. The first failing GPU operation is
+one Open Duck Playground step, before the actuator bridge is involved.
+
 ## Expected Behavior
 
 Vanilla sim expectation:
@@ -280,6 +291,15 @@ insertion point: target-stage bridge before mjx_env.step
 worker error: ROCM_ERROR_ILLEGAL_ADDRESS
 ```
 
+Current ROCm/MJX isolation output shows:
+
+```text
+outputs/analysis/ROCM_MJX_RUNTIME_ISOLATION.md
+outputs/analysis/rocm_mjx_runtime_isolation.json
+gate_result: HOLD_PLAYGROUND_GPU_STEP
+closed-loop CPU short matrix: PASS
+```
+
 Current telemetry replay output still shows:
 
 ```text
@@ -294,6 +314,7 @@ Interpretation:
   from real telemetry
 - the local Playground contract matches `BEST_WALK_ONNX_2`
 - closed-loop MuJoCo policy reproduction is blocked by the local ROCm/JAX/MJX
-  runtime fault, not by robot evidence or policy/sim contract mismatch
+  Playground step runtime fault, not by robot evidence, policy/sim contract
+  mismatch, or the actuator bridge insertion
 - training remains blocked until the closed-loop runtime fault is fixed and the
   sim reproduction result is reviewed

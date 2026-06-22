@@ -385,9 +385,44 @@ Latest closed-loop actuator bridge eval result:
 - Closed-loop gate result: `HOLD_SIM_RUNTIME_ERROR`.
 - Worker failure: `ROCM_ERROR_ILLEGAL_ADDRESS` during the JAX/MJX GPU step.
 
-Choose exactly one next step: **fix the local ROCm/JAX/MJX closed-loop runtime
-fault and rerun the closed-loop actuator bridge eval**, without changing robot
-behavior yet and without training.
+Latest ROCm/MJX isolation result:
+
+- `tools/isolate_rocm_mjx_failure.py` was run with GPU and CPU platforms,
+  steps `1,2,10,100`, and bridge tests enabled.
+- Summary artifact:
+  `outputs/analysis/ROCM_MJX_RUNTIME_ISOLATION.md`.
+- JSON artifact:
+  `outputs/analysis/rocm_mjx_runtime_isolation.json`.
+- Gate result: `HOLD_PLAYGROUND_GPU_STEP`.
+- Smallest failing subtest:
+  `default_gpu_playground_one_step_vanilla`.
+- Passing GPU subtests:
+  - basic JAX arithmetic
+  - JAX jit/scan
+  - minimal MJX step/scan
+  - Open Duck Playground contract construction
+  - Open Duck Playground reset
+- Failing GPU subtests:
+  - Open Duck Playground one-step vanilla times out
+  - Open Duck Playground multi-step vanilla times out
+  - Open Duck Playground bridge path times out
+  - closed-loop GPU policy eval aborts with `ROCM_ERROR_ILLEGAL_ADDRESS`
+- CPU subtests show reduced-horizon usefulness:
+  - CPU Playground reset and one-step pass
+  - CPU closed-loop vanilla short matrix passes
+  - CPU bridge/multi-step path progresses through short steps but times out
+    before the full requested horizon under `120 s`
+- Focused JAX allocation variants on the smallest failing GPU subtest
+  `playground_one_step_vanilla` did not clear the hang:
+  - `XLA_PYTHON_CLIENT_MEM_FRACTION=0.50`: timeout
+  - `XLA_PYTHON_CLIENT_MEM_FRACTION=0.60`: timeout
+  - `XLA_PYTHON_CLIENT_ALLOCATOR=platform`: timeout
+- The host currently reports `amdgpu` `cwsr_enable = 1`; changing this is a
+  system-level module setting and was not attempted.
+
+Choose exactly one next step: **debug the Open Duck Playground MJX GPU step on
+ROCm or run a reviewed reduced-horizon CPU correctness eval**, without changing
+robot behavior yet and without training.
 
 Purpose:
 
@@ -399,12 +434,13 @@ Purpose:
 - add action-rate / target-velocity diagnostics to the training bridge notes
 - use the verified `101` observation / `14` action sim environment
 - rerun the current policy in that sim with and without the fitted actuator
-  bridge after the ROCm/MJX runtime fault is fixed
+  bridge after the Open Duck Playground ROCm/MJX step fault is fixed, or run a
+  clearly labeled reduced-horizon CPU correctness eval
 - only then implement the JAX/MJX training actuator wrapper
 
 Do not patch runtime behavior, action scale, gains, offsets, or phase timing
 until the bridge spec is reviewed.
 
 Do not run more robot motion, grounded replay, or training until the
-closed-loop sim actuator bridge eval runs without the ROCm/MJX runtime fault
-and is reviewed.
+closed-loop sim actuator bridge eval runs without the ROCm/MJX runtime fault,
+or a reduced-horizon CPU eval is explicitly reviewed as sufficient evidence.
