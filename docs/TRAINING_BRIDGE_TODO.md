@@ -220,6 +220,42 @@ alpha = 1 - exp(-dt / tau)
 
 ## P2: Reward And Curriculum
 
+### Current Candidate Lesson
+
+June 22, 2026 CUDA/Colab candidate gates found a consistent failure mode:
+
+- 50k actuator-bridge candidate: `x=0.0` passed, `x=0.08` held for low forward
+  progress.
+- 300k strengthened candidate: actuator-safe and stable, but `x=0.08`
+  fitted/stress mean forward velocity stayed approximately zero.
+- archived `verify_scratch/odm_phase_b` sweep: five selected compatible ONNX
+  checkpoints all held at `x=0.08` for low forward progress.
+
+Small summary:
+
+```text
+outputs/analysis/PHASE_B_CHECKPOINT_SWEEP_SUMMARY.md
+```
+
+Interpretation: the current actuator bridge and smoothness penalties can
+produce policies that are easy for the real actuators to track, but the reward
+landscape still allows near-standing behavior to score well enough under a
+nonzero forward command. Do not spend more GPU time on the same recipe.
+
+Next training PR should make the nonzero-command locomotion objective stricter
+before launching another candidate:
+
+- inspect the `tracking_lin_vel` reward formula and command tracking sigma
+- verify whether near-zero velocity at `x=0.08` still receives a large reward
+- tighten forward-velocity reward or add an explicit minimum-progress term for
+  nonzero commands
+- review command sampling so training cannot spend most useful updates near
+  standing
+- keep the actuator bridge active, but reduce smoothness pressure if it turns
+  standing into the easiest optimum
+- keep `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` as a hard offline block for robot
+  validation
+
 ### Action-Rate Penalty
 
 - Penalize large action deltas.

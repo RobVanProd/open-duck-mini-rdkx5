@@ -32,11 +32,23 @@ backend and narrowed the local `7900 XTX` hold to the raw Open Duck
 This keeps the robot parked. The local ROCm blocker is a backend workstream,
 not a reason to revisit robot testing.
 
+CUDA candidate work on June 22, 2026 adds a second conclusion: simply adding
+the actuator bridge and smoothness pressure is not enough. The 50k and 300k
+Colab candidate runs produced actuator-safe near-standstill policies, and a
+five-checkpoint sweep of archived compatible `odm_phase_b` ONNX policies did
+the same. All selected candidates held at `x=0.08` for
+`HOLD_CANDIDATE_LOW_FORWARD_PROGRESS`.
+
+Current offline training recommendation: adjust reward/curriculum so nonzero
+forward command tracking is required before launching another candidate run.
+Do not run any of these candidates on the robot.
+
 ## Evidence Files
 
 Small summaries:
 
 - `outputs/analysis/ACTUATOR_RESPONSE_FIT.md`
+- `outputs/analysis/PHASE_B_CHECKPOINT_SWEEP_SUMMARY.md`
 - `outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_ZERO_X0_15S.md`
 - `outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_ZERO_15S.md`
 - `outputs/analysis/CPU_CANDIDATE_GATE_STEP8960_POS_TARGET_RATE_X008_HOLD.md`

@@ -1,10 +1,11 @@
 # CUDA Candidate Handoff Ready
 
-generated_at: `2026-06-22T13:32:33Z`
+generated_at: `2026-06-22T18:45:00Z`
 
 ## Status
 
-The repo is ready for the next manual CUDA/Colab candidate run.
+The repo is ready for the next CUDA/Colab candidate run, but not another
+blind repeat of the current reward recipe.
 
 Recent handoff fixes merged:
 
@@ -39,6 +40,26 @@ Recent handoff fixes merged:
   pins `jax/jaxlib==0.7.2`.
 - Patched Colab L4 closed-loop eval rerun: `PASS_CLOSED_LOOP_REPRODUCTION`
   with `worker_returncode=0`, `gpu/cuda:0`, and non-empty worker JSON.
+- Colab CLI 50k candidate run: exported a 101/14 ONNX and passed `x=0.0`, but
+  held at `x=0.08` with `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS`.
+- Colab CLI 300k strengthened candidate run: exported step `307200`, passed
+  the actuator-safe parts of the `x=0.08` gate, but again held for low forward
+  progress. The fitted/stress mean forward velocity was approximately zero.
+- Archived `verify_scratch/odm_phase_b` checkpoint sweep on Colab L4: five
+  selected compatible ONNX checkpoints all held at `x=0.08` for
+  `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS`.
+
+Small committed summary:
+
+```text
+outputs/analysis/PHASE_B_CHECKPOINT_SWEEP_SUMMARY.md
+```
+
+Raw Colab artifacts remain ignored under:
+
+```text
+outputs/analysis/colab_cli/phase_b_eval_20260622T173551Z/
+```
 
 ## Why Manual CUDA Is Still Required
 
@@ -51,7 +72,13 @@ Recent handoff fixes merged:
 
 ## Next Command
 
-Generate the current one-cell CUDA workflow from `main`:
+Before launching another candidate, update the training objective/curriculum so
+near-zero forward velocity is not a good solution for `x=0.08`. The current
+recipe can make policies smooth enough for actuator gates while still failing
+locomotion.
+
+After the reward/curriculum patch, generate the current one-cell CUDA workflow
+from `main`:
 
 ```bash
 python3 tools/print_cuda_colab_cell.py --run-candidate
