@@ -39,6 +39,7 @@ export RDK_BRANCH={args.rdk_branch!r}
 export PLAYGROUND_BRANCH={args.playground_branch!r}
 export RUN_CANDIDATE={candidate_flag}
 export CANDIDATE_NUM_TIMESTEPS={candidate_steps}
+export CANDIDATE_RESTORE_CHECKPOINT_PATH={args.candidate_restore_checkpoint_path!r}
 export CUDA_AUTO_DOWNLOAD={auto_download_flag}
 export ARTIFACT_ROOT="/content/open_duck_cuda_artifacts"
 BUNDLE="/content/open_duck_cuda_artifacts_$(date -u +%Y%m%dT%H%M%SZ).tar.gz"
@@ -54,6 +55,11 @@ if [ -z "${{PYTHON_BIN:-}}" ]; then
   export PYTHON_BIN
 fi
 echo "PYTHON_BIN=$PYTHON_BIN"
+if [ -n "$CANDIDATE_RESTORE_CHECKPOINT_PATH" ]; then
+  CANDIDATE_RESTORE_ARGS=(--restore-checkpoint-path "$CANDIDATE_RESTORE_CHECKPOINT_PATH")
+else
+  CANDIDATE_RESTORE_ARGS=()
+fi
 
 prompt_for_github_token() {{
   if [ -n "${{GITHUB_TOKEN:-}}" ]; then
@@ -383,6 +389,7 @@ if [ "$RUN_CANDIDATE" = "1" ]; then
     --command-resample-steps {args.candidate_command_resample_steps} \\
     --zero-command-probability {args.candidate_zero_command_probability} \\
     --head-range-factor 0.0 \\
+    "${{CANDIDATE_RESTORE_ARGS[@]}}" \\
     --timeout-s {args.candidate_timeout_s}
 
   RUN_DIR="$(find /content/open_duck_training_runs -maxdepth 1 -type d -name 'smoke_*_gpu' | sort | tail -n 1)"
@@ -594,6 +601,14 @@ def main() -> int:
     parser.add_argument("--candidate-ppo-batch-size", type=int, default=512)
     parser.add_argument("--candidate-ppo-num-minibatches", type=int, default=16)
     parser.add_argument("--candidate-ppo-num-updates-per-batch", type=int, default=4)
+    parser.add_argument(
+        "--candidate-restore-checkpoint-path",
+        default="",
+        help=(
+            "Optional checkpoint path visible inside the Colab runtime for "
+            "offline fine-tuning."
+        ),
+    )
     parser.add_argument("--candidate-target-rate-scale", type=float, default=-0.001)
     parser.add_argument("--candidate-actuator-tracking-scale", type=float, default=0.0)
     parser.add_argument("--candidate-tracking-lin-vel-scale", type=float, default=12.0)

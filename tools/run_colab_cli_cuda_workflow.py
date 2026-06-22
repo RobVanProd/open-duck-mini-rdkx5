@@ -349,7 +349,7 @@ def build_remote_driver(args: argparse.Namespace, workflow_name: str, rdk_tar: s
             )
 
         if {run_candidate!r}:
-            run([
+            candidate_training_cmd = [
                 PYTHON, "tools/run_actuator_bridge_training_smoke.py",
                 "--playground-path", str(PLAYGROUND),
                 "--env-python", PYTHON,
@@ -386,7 +386,13 @@ def build_remote_driver(args: argparse.Namespace, workflow_name: str, rdk_tar: s
                 "--zero-command-probability", "{args.candidate_zero_command_probability}",
                 "--head-range-factor", "0.0",
                 "--timeout-s", "{args.candidate_timeout_s}",
-            ], cwd=RDK, timeout={args.candidate_timeout_s + 300})
+            ]
+            if {args.candidate_restore_checkpoint_path!r}:
+                candidate_training_cmd.extend([
+                    "--restore-checkpoint-path",
+                    {args.candidate_restore_checkpoint_path!r},
+                ])
+            run(candidate_training_cmd, cwd=RDK, timeout={args.candidate_timeout_s + 300})
             run_dirs = sorted(Path("/content/open_duck_training_runs_cli").glob("smoke_*_gpu"))
             if not run_dirs:
                 raise SystemExit("candidate training produced no smoke_*_gpu run directory")
@@ -535,6 +541,14 @@ def main() -> int:
     parser.add_argument("--candidate-ppo-batch-size", type=int, default=256)
     parser.add_argument("--candidate-ppo-num-minibatches", type=int, default=4)
     parser.add_argument("--candidate-ppo-num-updates-per-batch", type=int, default=4)
+    parser.add_argument(
+        "--candidate-restore-checkpoint-path",
+        default=None,
+        help=(
+            "Optional checkpoint path visible inside the Colab runtime. Use "
+            "this only after uploading or packaging the checkpoint separately."
+        ),
+    )
     parser.add_argument("--candidate-timeout-s", type=int, default=10800)
     parser.add_argument("--candidate-target-rate-scale", type=float, default=-0.001)
     parser.add_argument("--candidate-actuator-tracking-scale", type=float, default=0.0)

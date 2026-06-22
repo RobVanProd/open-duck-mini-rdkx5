@@ -71,6 +71,7 @@ def build_command(args: argparse.Namespace, output_dir: Path) -> list[str]:
         "--actuator_tracking_scale",
         str(args.actuator_tracking_scale),
     ]
+    append_optional(command, "--restore_checkpoint_path", args.restore_checkpoint_path)
     optional_runner_overrides = {
         "--tracking_lin_vel_scale": args.tracking_lin_vel_scale,
         "--tracking_ang_vel_scale": args.tracking_ang_vel_scale,
@@ -173,6 +174,15 @@ def main() -> int:
     parser.add_argument("--ppo-batch-size", type=int, default=16)
     parser.add_argument("--ppo-num-minibatches", type=int, default=1)
     parser.add_argument("--ppo-num-updates-per-batch", type=int, default=1)
+    parser.add_argument(
+        "--restore-checkpoint-path",
+        default=None,
+        help=(
+            "Optional Orbax checkpoint path to pass through to the Playground "
+            "runner for offline fine-tuning. The path must exist in the "
+            "execution environment."
+        ),
+    )
     parser.add_argument("--disable-actuator-bridge", action="store_true")
     parser.add_argument("--actuator-bridge-delay-min-ticks", type=int, default=3)
     parser.add_argument("--actuator-bridge-delay-max-ticks", type=int, default=8)
@@ -245,6 +255,7 @@ def main() -> int:
         "platform": args.platform,
         "timeout_s": args.timeout_s,
         "actuator_bridge_enabled": not args.disable_actuator_bridge,
+        "restore_checkpoint_path": args.restore_checkpoint_path,
         "target_rate_scale": args.target_rate_scale,
         "actuator_tracking_scale": args.actuator_tracking_scale,
         "training_recipe_overrides": {
