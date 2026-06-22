@@ -574,6 +574,11 @@ Interpretation:
 - The step8960 positive target-rate pilot stayed stable and smooth but still had
   effectively no forward progress at `x=0.08`
   (`min_forward_command_tracking_ratio = -0.0027`).
+- A stronger CPU forward-curriculum probe reached step `61440` and is recorded
+  in `outputs/analysis/CPU_FORWARD_PROBE_STEP61440_HOLD.md`. It passed the
+  corrected CPU `x=0.0` candidate gate but still held at `x=0.08`:
+  `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS`, with
+  `min_forward_command_tracking_ratio = -0.0005`.
 
 Next offline move: run a larger CUDA-backed candidate training job with
 command-tracking retained under the actuator bridge, and keep
