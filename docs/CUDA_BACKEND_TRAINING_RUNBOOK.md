@@ -104,7 +104,8 @@ nonzero `exit_status`; import that bundle locally if the failure needs review.
 The default generated candidate recipe uses the Playground runner's opt-in
 training-recipe overrides to test the next hypothesis from the CPU pilots:
 stable standing was over-rewarded relative to nonzero forward command tracking.
-It therefore increases forward velocity tracking pressure, reduces alive and
+It therefore tightens `tracking_sigma`, adds an explicit default-off
+`forward_progress` reward term for nonzero commands, reduces alive and
 imitation scales, samples straight-ahead positive `x` commands, and freezes
 head-command randomization for the first candidate attempt.
 
@@ -233,11 +234,16 @@ export PYTHON_BIN="${PYTHON_BIN:-/usr/bin/python3}"
   --ppo-batch-size 512 \
   --ppo-num-minibatches 16 \
   --ppo-num-updates-per-batch 4 \
-  --target-rate-scale -0.01 \
+  --target-rate-scale -0.001 \
   --actuator-tracking-scale 0.0 \
-  --tracking-lin-vel-scale 6.0 \
-  --alive-scale 5.0 \
-  --imitation-scale 0.5 \
+  --tracking-lin-vel-scale 12.0 \
+  --tracking-sigma 0.0025 \
+  --forward-progress-scale 2.0 \
+  --forward-progress-deadband 0.02 \
+  --action-rate-scale -0.1 \
+  --stand-still-scale -0.2 \
+  --alive-scale 0.5 \
+  --imitation-scale 0.25 \
   --lin-vel-x-min 0.04 \
   --lin-vel-x-max 0.12 \
   --lin-vel-y-min 0.0 \

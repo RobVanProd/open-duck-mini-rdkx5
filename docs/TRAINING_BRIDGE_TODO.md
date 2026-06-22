@@ -271,6 +271,12 @@ before launching another candidate:
 - review the closed-loop eval `reward_terms` table/JSON for each candidate so
   total reward cannot hide a weak forward-tracking term behind `alive` or other
   stabilizing rewards
+- next candidate recipe should use the default-off Playground
+  `forward_progress` reward term plus a stricter velocity-tracking shape:
+  `tracking_sigma=0.0025`, `forward_progress_scale=2.0`,
+  `forward_progress_deadband=0.02`, `tracking_lin_vel_scale=12.0`,
+  `alive_scale=0.5`, `imitation_scale=0.25`, and reduced smoothness pressure
+  such as `target_rate_scale=-0.001` and `action_rate_scale=-0.1`
 
 ### Action-Rate Penalty
 

@@ -360,9 +360,14 @@ if [ "$RUN_CANDIDATE" = "1" ]; then
     --ppo-batch-size {args.candidate_ppo_batch_size} \\
     --ppo-num-minibatches {args.candidate_ppo_num_minibatches} \\
     --ppo-num-updates-per-batch {args.candidate_ppo_num_updates_per_batch} \\
-    --target-rate-scale -0.01 \\
-    --actuator-tracking-scale 0.0 \\
+    --target-rate-scale {args.candidate_target_rate_scale} \\
+    --actuator-tracking-scale {args.candidate_actuator_tracking_scale} \\
     --tracking-lin-vel-scale {args.candidate_tracking_lin_vel_scale} \\
+    --tracking-sigma {args.candidate_tracking_sigma} \\
+    --forward-progress-scale {args.candidate_forward_progress_scale} \\
+    --forward-progress-deadband {args.candidate_forward_progress_deadband} \\
+    --action-rate-scale {args.candidate_action_rate_scale} \\
+    --stand-still-scale {args.candidate_stand_still_scale} \\
     --alive-scale {args.candidate_alive_scale} \\
     --imitation-scale {args.candidate_imitation_scale} \\
     --lin-vel-x-min {args.candidate_lin_vel_x_min} \\
@@ -577,9 +582,16 @@ def main() -> int:
     parser.add_argument("--candidate-ppo-batch-size", type=int, default=512)
     parser.add_argument("--candidate-ppo-num-minibatches", type=int, default=16)
     parser.add_argument("--candidate-ppo-num-updates-per-batch", type=int, default=4)
-    parser.add_argument("--candidate-tracking-lin-vel-scale", type=float, default=6.0)
-    parser.add_argument("--candidate-alive-scale", type=float, default=5.0)
-    parser.add_argument("--candidate-imitation-scale", type=float, default=0.5)
+    parser.add_argument("--candidate-target-rate-scale", type=float, default=-0.001)
+    parser.add_argument("--candidate-actuator-tracking-scale", type=float, default=0.0)
+    parser.add_argument("--candidate-tracking-lin-vel-scale", type=float, default=12.0)
+    parser.add_argument("--candidate-tracking-sigma", type=float, default=0.0025)
+    parser.add_argument("--candidate-forward-progress-scale", type=float, default=2.0)
+    parser.add_argument("--candidate-forward-progress-deadband", type=float, default=0.02)
+    parser.add_argument("--candidate-action-rate-scale", type=float, default=-0.1)
+    parser.add_argument("--candidate-stand-still-scale", type=float, default=-0.2)
+    parser.add_argument("--candidate-alive-scale", type=float, default=0.5)
+    parser.add_argument("--candidate-imitation-scale", type=float, default=0.25)
     parser.add_argument("--candidate-lin-vel-x-min", type=float, default=0.04)
     parser.add_argument("--candidate-lin-vel-x-max", type=float, default=0.12)
     parser.add_argument("--candidate-timeout-s", type=int, default=7200)

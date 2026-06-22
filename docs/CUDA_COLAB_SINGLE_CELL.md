@@ -116,6 +116,19 @@ That candidate shape now includes opt-in reward and command-curriculum
 overrides intended to avoid the smooth stand-still behavior seen in the local
 CPU pilots.
 
+The generated candidate recipe currently uses:
+
+```text
+tracking_sigma=0.0025
+forward_progress_scale=2.0
+tracking_lin_vel_scale=12.0
+target_rate_scale=-0.001
+action_rate_scale=-0.1
+alive_scale=0.5
+imitation_scale=0.25
+lin_vel_x=[0.04, 0.12]
+```
+
 ## Why This Exists
 
 The browser automation path for Google login was blocked by Google's

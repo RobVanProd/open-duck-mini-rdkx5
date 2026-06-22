@@ -50,6 +50,15 @@ from that term alone. Tightening the velocity-tracking reward shape or adding
 an explicit nonzero-command progress term should happen before another
 candidate run.
 
+The next offline training patch adds exactly that as default-off simulator
+training controls: configurable `tracking_sigma` plus a `forward_progress`
+reward term that gives no reward for standing still under nonzero `x` command.
+The next CUDA candidate recipe should use `tracking_sigma=0.0025`,
+`forward_progress_scale=2.0`, reduced alive/imitation scales, positive
+straight-ahead command sampling, and lighter smoothness pressure. This remains
+offline-only; no candidate is cleared for robot testing until it passes the
+existing suspended `x=0.0` and `x=0.08` gates.
+
 ## Evidence Files
 
 Small summaries:

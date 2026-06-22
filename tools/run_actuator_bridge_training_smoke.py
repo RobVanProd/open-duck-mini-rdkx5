@@ -74,6 +74,9 @@ def build_command(args: argparse.Namespace, output_dir: Path) -> list[str]:
     optional_runner_overrides = {
         "--tracking_lin_vel_scale": args.tracking_lin_vel_scale,
         "--tracking_ang_vel_scale": args.tracking_ang_vel_scale,
+        "--tracking_sigma": args.tracking_sigma,
+        "--forward_progress_scale": args.forward_progress_scale,
+        "--forward_progress_deadband": args.forward_progress_deadband,
         "--action_rate_scale": args.action_rate_scale,
         "--stand_still_scale": args.stand_still_scale,
         "--alive_scale": args.alive_scale,
@@ -200,6 +203,9 @@ def main() -> int:
     )
     parser.add_argument("--tracking-lin-vel-scale", type=float, default=None)
     parser.add_argument("--tracking-ang-vel-scale", type=float, default=None)
+    parser.add_argument("--tracking-sigma", type=float, default=None)
+    parser.add_argument("--forward-progress-scale", type=float, default=None)
+    parser.add_argument("--forward-progress-deadband", type=float, default=None)
     parser.add_argument("--action-rate-scale", type=float, default=None)
     parser.add_argument("--stand-still-scale", type=float, default=None)
     parser.add_argument("--alive-scale", type=float, default=None)
@@ -237,6 +243,9 @@ def main() -> int:
         "training_recipe_overrides": {
             "tracking_lin_vel_scale": args.tracking_lin_vel_scale,
             "tracking_ang_vel_scale": args.tracking_ang_vel_scale,
+            "tracking_sigma": args.tracking_sigma,
+            "forward_progress_scale": args.forward_progress_scale,
+            "forward_progress_deadband": args.forward_progress_deadband,
             "action_rate_scale": args.action_rate_scale,
             "stand_still_scale": args.stand_still_scale,
             "alive_scale": args.alive_scale,

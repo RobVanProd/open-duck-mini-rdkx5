@@ -77,6 +77,21 @@ near-zero forward velocity is not a good solution for `x=0.08`. The current
 recipe can make policies smooth enough for actuator gates while still failing
 locomotion.
 
+The next recipe should use the Playground runner's default-off forward-progress
+term and a stricter tracking shape:
+
+```text
+tracking_sigma=0.0025
+forward_progress_scale=2.0
+forward_progress_deadband=0.02
+tracking_lin_vel_scale=12.0
+target_rate_scale=-0.001
+action_rate_scale=-0.1
+alive_scale=0.5
+imitation_scale=0.25
+lin_vel_x=[0.04, 0.12]
+```
+
 After the reward/curriculum patch, generate the current one-cell CUDA workflow
 from `main`:
 
@@ -117,6 +132,8 @@ The generated cell now:
 
 - pins the known-good CUDA dependency path, including `jax/jaxlib==0.7.2`
   and `playground==0.0.5`
+- uses the stricter nonzero-command recipe above so another candidate cannot
+  pass offline actuator gates by standing nearly still at `x=0.08`
 - runs the baseline closed-loop actuator bridge reproduction with
   `--jax-platform gpu` and `--sim-preflight-timeout-s 600`
 - runs CUDA smoke training
