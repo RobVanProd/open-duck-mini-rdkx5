@@ -55,6 +55,11 @@ To generate a cell that also runs the first candidate-training shape:
 python3 tools/print_cuda_colab_cell.py --run-candidate
 ```
 
+The generated candidate cell also runs candidate-mode closed-loop sim gates at
+`x=0.0` and `x=0.08` after training. It packages the candidate against the
+`x=0.08` gate report, so a nonzero-command hold such as
+`HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` is carried into the package metadata.
+
 See:
 
 ```text
@@ -185,6 +190,38 @@ This is a first candidate-training shape, not a guaranteed final config.
 Review reward, target velocity, action saturation, and simulated actuator
 tracking before increasing runtime.
 
+After candidate training, run the offline candidate gates before any packaging
+or robot discussion:
+
+```bash
+python tools/eval_policy_with_actuator_bridge.py \
+  --mode closed-loop-sim \
+  --eval-role candidate \
+  --policy "$LATEST_ONNX" \
+  --fit-json outputs/analysis/actuator_response_fit.json \
+  --playground-path /content/Open_Duck_Playground \
+  --env-python "$(command -v python)" \
+  --command-x 0.0 \
+  --duration 15 \
+  --bridge-mode all \
+  --output-dir outputs/analysis/<candidate>_gate_x0
+
+python tools/eval_policy_with_actuator_bridge.py \
+  --mode closed-loop-sim \
+  --eval-role candidate \
+  --policy "$LATEST_ONNX" \
+  --fit-json outputs/analysis/actuator_response_fit.json \
+  --playground-path /content/Open_Duck_Playground \
+  --env-python "$(command -v python)" \
+  --command-x 0.08 \
+  --duration 15 \
+  --bridge-mode all \
+  --output-dir outputs/analysis/<candidate>_gate_x008
+```
+
+The generated single cell performs these two gates automatically when
+`--run-candidate` is used.
+
 ## Summarize And Package
 
 After a CUDA run, copy or use the output directory path and run:
@@ -205,7 +242,7 @@ python tools/package_candidate_policy.py "$LATEST_ONNX" \
   --candidate-name "$CANDIDATE" \
   --training-manifest "$RUN_DIR/smoke_manifest.final.json" \
   --contract-audit outputs/analysis/POLICY_SIM_CONTRACT_AUDIT_CUDA.md \
-  --actuator-bridge-eval outputs/analysis/cuda_eval/CLOSED_LOOP_ACTUATOR_BRIDGE_EVAL.md \
+  --actuator-bridge-eval outputs/analysis/<candidate>_candidate_gate_x008.md \
   --output-md outputs/analysis/${CANDIDATE}_policy_package.md \
   --output-json outputs/analysis/${CANDIDATE}_policy_metadata.json
 ```
@@ -224,6 +261,8 @@ Send small summaries first:
 outputs/analysis/POLICY_SIM_CONTRACT_AUDIT_CUDA.md
 outputs/analysis/cuda_eval/CLOSED_LOOP_ACTUATOR_BRIDGE_EVAL.md
 outputs/analysis/<candidate>_training_run_summary.md
+outputs/analysis/<candidate>_candidate_gate_x0.md
+outputs/analysis/<candidate>_candidate_gate_x008.md
 outputs/analysis/<candidate>_policy_package.md
 outputs/analysis/<candidate>_policy_metadata.json
 ```
