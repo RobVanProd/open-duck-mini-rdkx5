@@ -73,13 +73,16 @@ basic JAX GPU: PASS
 JAX jit/scan GPU: PASS
 minimal MJX GPU: PASS
 Open Duck Playground reset GPU: PASS
+Open Duck direct mjx_env.step GPU: TIMEOUT
+Open Duck direct mjx_env.step CPU: PASS
 Open Duck Playground one-step GPU: TIMEOUT
 closed-loop GPU: ROCM_ERROR_ILLEGAL_ADDRESS
 closed-loop CPU short matrix: PASS
 ```
 
-So the next GPU debug target is the Open Duck Playground MJX step, not basic
-ROCm visibility and not the fitted actuator bridge.
+So the next GPU debug target is the raw Open Duck MJX physics step on ROCm,
+not basic ROCm visibility, policy inference, reward code, rollout-loop shape,
+or the fitted actuator bridge.
 
 Independent CUDA check:
 
@@ -147,9 +150,16 @@ Follow-up execution-mode checks show this is not fixed by changing the rollout
 wrapper alone:
 
 ```text
+playground_direct_mjx_step -> TIMEOUT
+playground_direct_mjx_step_jit -> TIMEOUT
 playground_one_step_jit -> ROCM_ERROR_ILLEGAL_ADDRESS
 playground_scan_step_vanilla -> ROCM_ERROR_ILLEGAL_ADDRESS
 ```
+
+The direct-step probe shows the same Open Duck model and direct `mjx_env.step`
+call pass on CPU, so the MJCF/model is valid enough for CPU and CUDA-backed
+correctness work. The local hold is specific to the ROCm execution of the full
+Open Duck MJX physics step.
 
 Compiler/debug toggles were also tested on the scan subtest:
 
