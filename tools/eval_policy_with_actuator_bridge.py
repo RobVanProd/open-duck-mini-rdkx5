@@ -1,0 +1,564 @@
+#!/usr/bin/env python3
+"""Offline actuator bridge evaluation harness.
+
+The full target is current-policy MuJoCo evaluation with and without the fitted
+actuator bridge. This tool also supports a no-robot telemetry replay mode that
+uses existing suspended replay logs to validate the bridge metrics while the
+MuJoCo policy-loop integration is being wired.
+"""
+
+from __future__ import annotations
+
+import argparse
+import ast
+import json
+import math
+from pathlib import Path
+import statistics
+import sys
+from typing import Sequence
+
+import numpy as np
+
+from actuator_bridge_model import (
+    JOINT_NAMES,
+    PITCH_CHAIN_JOINTS,
+    JointActuatorParams,
+    bridge_targets,
+    load_fit_json,
+    params_from_fit,
+    stress_params,
+)
+
+
+ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_POLICY = ROOT / "policy" / "BEST_WALK_ONNX_2.onnx"
+DEFAULT_FIT_JSON = ROOT / "outputs" / "analysis" / "actuator_response_fit.json"
+DEFAULT_OUTPUT_DIR = ROOT / "outputs" / "analysis"
+DEFAULT_PLAYGROUND_ROOT = ROOT.parent / "Open_Duck_Playground"
+
+
+def finite(value) -> bool:
+    return value is not None and not (
+        isinstance(value, float) and (math.isnan(value) or math.isinf(value))
+    )
+
+
+def percentile(values: Sequence[float], pct: float):
+    values = sorted(float(value) for value in values if finite(value))
+    if not values:
+        return None
+    if len(values) == 1:
+        return values[0]
+    k = (len(values) - 1) * pct / 100.0
+    lo = math.floor(k)
+    hi = math.ceil(k)
+    if lo == hi:
+        return values[lo]
+    return values[lo] * (hi - k) + values[hi] * (k - lo)
+
+
+def stats(values: Sequence[float]):
+    values = [float(value) for value in values if finite(value)]
+    if not values:
+        return None
+    return {
+        "p50": percentile(values, 50),
+        "p95": percentile(values, 95),
+        "p99": percentile(values, 99),
+        "max": max(values),
+    }
+
+
+def fmt(value, digits: int = 4) -> str:
+    if value is None:
+        return "NA"
+    return f"{float(value):.{digits}f}"
+
+
+def load_records(path: Path, startup_ticks: int) -> list[dict]:
+    records = []
+    with open(path) as f:
+        for line_no, line in enumerate(f, 1):
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                record = json.loads(line)
+            except json.JSONDecodeError as exc:
+                print(f"Skipping invalid JSON line {line_no}: {exc}", file=sys.stderr)
+                continue
+            tick = record.get("tick")
+            if tick is not None and int(tick) <= startup_ticks:
+                continue
+            records.append(record)
+    return records
+
+
+def record_dt(prev: dict | None, cur: dict) -> float:
+    dt_s = cur.get("dt_s")
+    if finite(dt_s) and float(dt_s) > 0:
+        return float(dt_s)
+    if prev is not None:
+        prev_t = prev.get("timestamp_monotonic_s")
+        cur_t = cur.get("timestamp_monotonic_s")
+        if finite(prev_t) and finite(cur_t) and float(cur_t) > float(prev_t):
+            return float(cur_t) - float(prev_t)
+    return 0.02
+
+
+def nested_vector(record: dict, group: str, field: str):
+    values = record.get(group, {}).get(field)
+    if values is None:
+        return None
+    return np.asarray(values, dtype=float)
+
+
+def telemetry_arrays(records: list[dict]) -> dict:
+    sent = []
+    actual = []
+    actions = []
+    dts = []
+    ticks = []
+    previous = None
+    for record in records:
+        sent_target = nested_vector(record, "action", "motor_targets_sent_rad")
+        if sent_target is None:
+            sent_target = nested_vector(record, "joints", "commanded_position_rad")
+        actual_position = nested_vector(record, "joints", "actual_position_rad")
+        action = nested_vector(record, "action", "onnx_action")
+        if sent_target is None or actual_position is None:
+            previous = record
+            continue
+        if sent_target.shape[0] != len(JOINT_NAMES) or actual_position.shape[0] != len(JOINT_NAMES):
+            previous = record
+            continue
+        sent.append(sent_target)
+        actual.append(actual_position)
+        actions.append(action if action is not None and action.shape[0] == len(JOINT_NAMES) else np.full(len(JOINT_NAMES), np.nan))
+        dts.append(record_dt(previous, record))
+        ticks.append(record.get("tick"))
+        previous = record
+    if not sent:
+        raise ValueError("telemetry did not contain usable sent target / actual joint vectors")
+    return {
+        "sent_target": np.vstack(sent),
+        "actual_position": np.vstack(actual),
+        "onnx_action": np.vstack(actions),
+        "dt_s": np.asarray(dts, dtype=float),
+        "ticks": ticks,
+    }
+
+
+def abs_velocity(values: np.ndarray, dt_s: np.ndarray) -> np.ndarray:
+    if values.shape[0] < 2:
+        return np.zeros_like(values)
+    dt = np.maximum(dt_s[1:], 1e-6)
+    vel = np.abs(np.diff(values, axis=0) / dt[:, None])
+    first = np.zeros((1, values.shape[1]))
+    return np.vstack([first, vel])
+
+
+def best_lag(target: np.ndarray, actual: np.ndarray, dt_s: np.ndarray, max_lag_ticks: int) -> dict:
+    best = None
+    for lag in range(-max_lag_ticks, max_lag_ticks + 1):
+        pairs = []
+        for index, target_value in enumerate(target):
+            actual_index = index + lag
+            if 0 <= actual_index < len(actual):
+                pairs.append((target_value, actual[actual_index]))
+        if len(pairs) < 20:
+            continue
+        rmse = math.sqrt(sum((left - right) ** 2 for left, right in pairs) / len(pairs))
+        if best is None or rmse < best["rmse"]:
+            best = {"ticks": lag, "rmse": rmse, "samples": len(pairs)}
+    if best is None:
+        return {"ticks": None, "ms": None, "rmse": None, "samples": 0}
+    median_dt = statistics.median(float(value) for value in dt_s if value > 0)
+    best["ms"] = best["ticks"] * median_dt * 1000.0
+    return best
+
+
+def action_saturation(actions: np.ndarray, joint_index: int, threshold: float = 0.98):
+    values = actions[:, joint_index]
+    values = values[np.isfinite(values)]
+    if values.size == 0:
+        return None
+    return float(np.mean(np.abs(values) >= threshold) * 100.0)
+
+
+def summarize_mode(
+    name: str,
+    sent_target: np.ndarray,
+    modeled_position: np.ndarray,
+    actual_position: np.ndarray | None,
+    onnx_action: np.ndarray | None,
+    dt_s: np.ndarray,
+    max_lag_ticks: int,
+) -> dict:
+    target_velocity = abs_velocity(sent_target, dt_s)
+    applied_velocity = abs_velocity(modeled_position, dt_s)
+    tracking = np.abs(sent_target - modeled_position)
+    model_error = None if actual_position is None else np.abs(actual_position - modeled_position)
+    raw_tracking = None if actual_position is None else np.abs(sent_target - actual_position)
+    joints = {}
+    for index, joint in enumerate(JOINT_NAMES):
+        joints[joint] = {
+            "target_velocity_rad_s": stats(target_velocity[:, index]),
+            "applied_target_velocity_rad_s": stats(applied_velocity[:, index]),
+            "simulated_tracking_error_rad": stats(tracking[:, index]),
+            "model_error_vs_real_actual_rad": (
+                None if model_error is None else stats(model_error[:, index])
+            ),
+            "real_raw_tracking_error_rad": (
+                None if raw_tracking is None else stats(raw_tracking[:, index])
+            ),
+            "estimated_lag": best_lag(
+                sent_target[:, index], modeled_position[:, index], dt_s, max_lag_ticks
+            ),
+            "action_saturation_pct": (
+                None if onnx_action is None else action_saturation(onnx_action, index)
+            ),
+        }
+    return {"mode": name, "joints": joints}
+
+
+def pitch_chain_gate(fitted_summary: dict) -> dict:
+    ratios = []
+    p95_model_errors = []
+    for joint in PITCH_CHAIN_JOINTS:
+        item = fitted_summary["joints"].get(joint, {})
+        sim_tracking = item.get("simulated_tracking_error_rad") or {}
+        real_tracking = item.get("real_raw_tracking_error_rad") or {}
+        sim_p95 = sim_tracking.get("p95")
+        real_p95 = real_tracking.get("p95")
+        model_error = item.get("model_error_vs_real_actual_rad") or {}
+        if finite(sim_p95) and finite(real_p95) and real_p95 > 1e-9:
+            ratios.append(sim_p95 / real_p95)
+        if finite(model_error.get("p95")):
+            p95_model_errors.append(model_error["p95"])
+    if not ratios:
+        return {
+            "status": "HOLD_NO_REAL_COMPARISON",
+            "median_sim_to_real_p95_tracking_ratio": None,
+            "max_p95_model_error": None,
+        }
+    median_ratio = statistics.median(ratios)
+    max_model_error = max(p95_model_errors) if p95_model_errors else None
+    if 0.65 <= median_ratio <= 1.35 and (max_model_error is None or max_model_error < 0.05):
+        status = "PASS_TELEMETRY_REPLAY_REPRODUCTION"
+    else:
+        status = "HOLD_MODEL_INCOMPLETE"
+    return {
+        "status": status,
+        "median_sim_to_real_p95_tracking_ratio": median_ratio,
+        "max_p95_model_error": max_model_error,
+    }
+
+
+def inspect_policy(
+    policy_path: Path,
+    expected_observation_dim: int,
+    expected_action_dim: int,
+    inspect_policy_io: bool,
+) -> dict:
+    payload = {"path": str(policy_path), "exists": policy_path.exists()}
+    if not policy_path.exists():
+        payload["status"] = "HOLD_POLICY_MISSING"
+        return payload
+    if not inspect_policy_io:
+        payload.update(
+            {
+                "status": "PASS_POLICY_CONTRACT_ASSUMED",
+                "input_shape": [1, expected_observation_dim],
+                "output_shape": [1, expected_action_dim],
+                "note": (
+                    "Policy IO inspection skipped; using audited BEST_WALK_ONNX_2 "
+                    "contract. Pass --inspect-policy-io to query ONNX Runtime."
+                ),
+            }
+        )
+        return payload
+    try:
+        import onnxruntime as ort
+
+        session = ort.InferenceSession(str(policy_path), providers=["CPUExecutionProvider"])
+        inputs = session.get_inputs()
+        outputs = session.get_outputs()
+        payload.update(
+            {
+                "status": "PASS_POLICY_IO",
+                "input_name": inputs[0].name if inputs else None,
+                "input_shape": inputs[0].shape if inputs else None,
+                "input_type": inputs[0].type if inputs else None,
+                "output_name": outputs[0].name if outputs else None,
+                "output_shape": outputs[0].shape if outputs else None,
+                "output_type": outputs[0].type if outputs else None,
+            }
+        )
+    except Exception as exc:  # pragma: no cover - environment-dependent
+        payload.update({"status": "WARN_POLICY_IO_UNAVAILABLE", "error": f"{type(exc).__name__}: {exc}"})
+    return payload
+
+
+def parse_playground_joint_count(playground_root: Path) -> dict:
+    constants_path = playground_root / "playground" / "open_duck_mini_v2" / "constants.py"
+    payload = {"playground_root": str(playground_root), "constants_path": str(constants_path)}
+    if not constants_path.exists():
+        payload["status"] = "HOLD_SIM_CODE_MISSING"
+        payload["error"] = f"missing {constants_path}"
+        return payload
+    try:
+        tree = ast.parse(constants_path.read_text())
+        names = None
+        for node in tree.body:
+            if isinstance(node, ast.Assign):
+                for target in node.targets:
+                    if isinstance(target, ast.Name) and target.id == "JOINTS_ORDER_NO_HEAD":
+                        names = ast.literal_eval(node.value)
+        payload["joints_order_no_head"] = names
+        payload["action_dim_inferred"] = len(names or [])
+        payload["status"] = "PASS_PLAYGROUND_CONTRACT_READ"
+    except Exception as exc:
+        payload["status"] = "HOLD_PLAYGROUND_CONTRACT_READ_FAILED"
+        payload["error"] = f"{type(exc).__name__}: {exc}"
+    return payload
+
+
+def run_sim_preflight(policy: dict, playground: dict) -> dict:
+    policy_action_dim = None
+    output_shape = policy.get("output_shape") or []
+    if output_shape and isinstance(output_shape[-1], int):
+        policy_action_dim = output_shape[-1]
+    sim_action_dim = playground.get("action_dim_inferred")
+    if policy_action_dim and sim_action_dim and policy_action_dim != sim_action_dim:
+        return {
+            "status": "HOLD_POLICY_SIM_CONTRACT_MISMATCH",
+            "reason": (
+                f"policy action dim is {policy_action_dim}, but discovered playground "
+                f"JOINTS_ORDER_NO_HEAD has {sim_action_dim} actuators"
+            ),
+        }
+    return {
+        "status": "HOLD_SIM_INTEGRATION_PENDING",
+        "reason": (
+            "This PR adds the bridge model and evaluation harness, but does not yet "
+            "patch Open_Duck_Playground's JAX/MJX step function."
+        ),
+    }
+
+
+def run_telemetry_replay(args, fit: dict) -> dict:
+    records = load_records(Path(args.telemetry_jsonl), args.startup_ticks)
+    arrays = telemetry_arrays(records)
+    sent = arrays["sent_target"]
+    actual = arrays["actual_position"]
+    dts = arrays["dt_s"]
+    actions = arrays["onnx_action"]
+
+    vanilla = sent.copy()
+    fitted = bridge_targets(sent, dts, params_from_fit(fit, JOINT_NAMES))
+    stress = bridge_targets(
+        sent,
+        dts,
+        stress_params(
+            JOINT_NAMES,
+            delay_ticks=args.stress_delay_ticks,
+            tau_s=args.stress_tau_s,
+            default_velocity_limit_rad_s=args.stress_velocity_limit_rad_s,
+        ),
+    )
+    summaries = {
+        "vanilla_no_bridge": summarize_mode(
+            "vanilla_no_bridge", sent, vanilla, actual, actions, dts, args.max_lag_ticks
+        ),
+        "fitted_bridge": summarize_mode(
+            "fitted_bridge", sent, fitted, actual, actions, dts, args.max_lag_ticks
+        ),
+        "stress_bridge": summarize_mode(
+            "stress_bridge", sent, stress, actual, actions, dts, args.max_lag_ticks
+        ),
+    }
+    gate = pitch_chain_gate(summaries["fitted_bridge"])
+    return {
+        "status": gate["status"],
+        "telemetry_jsonl": str(args.telemetry_jsonl),
+        "samples_after_startup_filter": len(records),
+        "startup_ticks": args.startup_ticks,
+        "command_x": args.command_x,
+        "duration_s": args.duration,
+        "gate": gate,
+        "modes": summaries,
+    }
+
+
+def build_markdown(payload: dict) -> str:
+    lines = ["# Sim Actuator Bridge Eval", ""]
+    lines.append(f"overall_status: `{payload['overall_status']}`")
+    lines.append(f"policy: `{payload['policy'].get('path')}`")
+    lines.append(f"fit_json: `{payload['fit_json']}`")
+    lines.append(f"command_x: `{payload['command_x']}`")
+    lines.append(f"duration_s: `{payload['duration_s']}`")
+    lines.append("")
+    lines.append("## Contract Preflight")
+    lines.append("")
+    lines.append(f"- policy_status: `{payload['policy'].get('status')}`")
+    lines.append(f"- policy_input_shape: `{payload['policy'].get('input_shape')}`")
+    lines.append(f"- policy_output_shape: `{payload['policy'].get('output_shape')}`")
+    lines.append(f"- playground_status: `{payload['playground'].get('status')}`")
+    lines.append(f"- playground_action_dim_inferred: `{payload['playground'].get('action_dim_inferred')}`")
+    lines.append(f"- sim_preflight_status: `{payload['sim_preflight'].get('status')}`")
+    lines.append(f"- sim_preflight_reason: {payload['sim_preflight'].get('reason', 'NA')}")
+    lines.append("")
+    if payload.get("telemetry_replay"):
+        replay = payload["telemetry_replay"]
+        lines.append("## Telemetry Replay Bridge Check")
+        lines.append("")
+        lines.append(f"status: `{replay['status']}`")
+        lines.append(f"telemetry_jsonl: `{replay['telemetry_jsonl']}`")
+        lines.append(f"samples_after_startup_filter: `{replay['samples_after_startup_filter']}`")
+        gate = replay["gate"]
+        lines.append(
+            "- fitted_bridge median sim/real p95 tracking ratio: "
+            f"`{fmt(gate.get('median_sim_to_real_p95_tracking_ratio'), 3)}`"
+        )
+        lines.append(
+            f"- fitted_bridge max p95 model error: `{fmt(gate.get('max_p95_model_error'))}`"
+        )
+        lines.append("")
+        lines.append("### Pitch-Chain Summary")
+        lines.append("")
+        lines.append(
+            "| mode | joint | target_vel_p95 | applied_vel_p95 | "
+            "sim_tracking_p95 | real_tracking_p95 | model_error_p95 | lag_ticks |"
+        )
+        lines.append("|---|---|---:|---:|---:|---:|---:|---:|")
+        for mode_name in ["vanilla_no_bridge", "fitted_bridge", "stress_bridge"]:
+            mode = replay["modes"][mode_name]
+            for joint in PITCH_CHAIN_JOINTS:
+                item = mode["joints"][joint]
+                target_vel = item["target_velocity_rad_s"] or {}
+                applied_vel = item["applied_target_velocity_rad_s"] or {}
+                sim_tracking = item["simulated_tracking_error_rad"] or {}
+                real_tracking = item["real_raw_tracking_error_rad"] or {}
+                model_error = item["model_error_vs_real_actual_rad"] or {}
+                lag = item["estimated_lag"] or {}
+                lines.append(
+                    f"| {mode_name} | {joint} | {fmt(target_vel.get('p95'))} | "
+                    f"{fmt(applied_vel.get('p95'))} | {fmt(sim_tracking.get('p95'))} | "
+                    f"{fmt(real_tracking.get('p95'))} | {fmt(model_error.get('p95'))} | "
+                    f"{fmt(lag.get('ticks'), 0)} |"
+                )
+        lines.append("")
+    lines.append("## Interpretation")
+    lines.append("")
+    if payload["sim_preflight"].get("status") == "HOLD_POLICY_SIM_CONTRACT_MISMATCH":
+        lines.append(
+            "- Full MuJoCo policy-loop reproduction is blocked by a policy/playground "
+            "contract mismatch. Do not train until the exact 101-observation / "
+            "14-action training environment is located or reconstructed."
+        )
+    elif payload["sim_preflight"].get("status", "").startswith("HOLD"):
+        lines.append("- Full MuJoCo policy-loop reproduction is not complete yet.")
+    if payload.get("telemetry_replay"):
+        lines.append(
+            "- Telemetry replay validates the actuator bridge against existing real "
+            "sent-target / actual-position evidence, but it is not a replacement for "
+            "closed-loop sim reproduction."
+        )
+    lines.append("- No robot motion, deployment, runtime behavior change, or training was performed.")
+    return "\n".join(lines).rstrip()
+
+
+def write_outputs(payload: dict, output_dir: Path) -> None:
+    output_dir.mkdir(parents=True, exist_ok=True)
+    md_path = output_dir / "SIM_ACTUATOR_BRIDGE_EVAL.md"
+    json_path = output_dir / "sim_actuator_bridge_eval.json"
+    md_path.write_text(build_markdown(payload) + "\n")
+    json_path.write_text(json.dumps(payload, indent=2) + "\n")
+    print(md_path)
+    print(json_path)
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(
+        description="Evaluate current policy target dynamics with fitted actuator bridge offline."
+    )
+    parser.add_argument("--policy", default=str(DEFAULT_POLICY))
+    parser.add_argument("--fit-json", default=str(DEFAULT_FIT_JSON))
+    parser.add_argument("--playground-root", default=str(DEFAULT_PLAYGROUND_ROOT))
+    parser.add_argument("--command-x", type=float, default=0.08)
+    parser.add_argument("--duration", type=float, default=15.0)
+    parser.add_argument("--output-dir", default=str(DEFAULT_OUTPUT_DIR))
+    parser.add_argument(
+        "--mode",
+        choices=["auto", "sim", "telemetry-replay"],
+        default="auto",
+        help="auto uses telemetry replay when --telemetry-jsonl is provided; otherwise sim preflight only",
+    )
+    parser.add_argument("--telemetry-jsonl", default=None)
+    parser.add_argument("--startup-ticks", type=int, default=50)
+    parser.add_argument("--max-lag-ticks", type=int, default=12)
+    parser.add_argument("--stress-delay-ticks", type=int, default=6)
+    parser.add_argument("--stress-tau-s", type=float, default=0.10)
+    parser.add_argument("--stress-velocity-limit-rad-s", type=float, default=3.2)
+    parser.add_argument("--expected-observation-dim", type=int, default=101)
+    parser.add_argument("--expected-action-dim", type=int, default=14)
+    parser.add_argument(
+        "--inspect-policy-io",
+        action="store_true",
+        help="query ONNX Runtime for model IO metadata; default uses audited contract",
+    )
+    parser.add_argument(
+        "--strict",
+        action="store_true",
+        help="return nonzero on HOLD status; default is report-only",
+    )
+    args = parser.parse_args()
+
+    policy_path = Path(args.policy).expanduser().resolve()
+    fit_path = Path(args.fit_json).expanduser().resolve()
+    playground_root = Path(args.playground_root).expanduser().resolve()
+    fit = load_fit_json(fit_path)
+
+    policy = inspect_policy(
+        policy_path,
+        args.expected_observation_dim,
+        args.expected_action_dim,
+        args.inspect_policy_io,
+    )
+    playground = parse_playground_joint_count(playground_root)
+    sim_preflight = run_sim_preflight(policy, playground)
+    run_replay = args.mode == "telemetry-replay" or (
+        args.mode == "auto" and args.telemetry_jsonl
+    )
+    telemetry_replay = run_telemetry_replay(args, fit) if run_replay else None
+
+    if args.mode == "sim" and sim_preflight["status"].startswith("HOLD"):
+        overall = sim_preflight["status"]
+    elif telemetry_replay:
+        if sim_preflight["status"].startswith("HOLD"):
+            overall = sim_preflight["status"]
+        else:
+            overall = telemetry_replay["status"]
+    else:
+        overall = sim_preflight["status"]
+
+    payload = {
+        "overall_status": overall,
+        "policy": policy,
+        "fit_json": str(fit_path),
+        "playground": playground,
+        "sim_preflight": sim_preflight,
+        "command_x": args.command_x,
+        "duration_s": args.duration,
+        "telemetry_replay": telemetry_replay,
+    }
+    write_outputs(payload, Path(args.output_dir))
+    if args.strict and str(overall).startswith("HOLD"):
+        return 2
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

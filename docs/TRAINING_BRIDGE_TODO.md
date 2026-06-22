@@ -65,6 +65,31 @@ Local references observed on this workstation:
 - Compare sim p95 target velocity and tracking error against real suspended
   `x=0.08`.
 
+### Check Local Training Environment
+
+- Run `python3 tools/check_training_env.py`.
+- Confirm the intended `7900 XTX` / ROCm environment is active.
+- Confirm JAX sees a GPU/ROCm backend.
+- Confirm MuJoCo imports and can load a small model.
+- Run the optional offscreen render check before any render-dependent eval:
+
+```bash
+python3 tools/check_training_env.py --render-check
+```
+
+Do not start training from an interpreter that reports `HOLD_ENV_NOT_READY`.
+
+### Sim Actuator Bridge Eval Harness
+
+- Run `tools/eval_policy_with_actuator_bridge.py` in preflight mode.
+- Run telemetry replay mode against existing suspended `x=0.08` evidence.
+- Resolve any `HOLD_POLICY_SIM_CONTRACT_MISMATCH` before training.
+- Current local sibling `../Open_Duck_Playground` appears to expose a `10`
+  actuator no-head contract, while `BEST_WALK_ONNX_2` is audited as
+  `101` observations and `14` actions.
+- Do not train until the exact `101` observation / `14` action sim environment
+  is found or reconstructed.
+
 ## P1: Add Actuator Model Controls
 
 ### Configurable Target Delay Wrapper
@@ -107,6 +132,12 @@ alpha = 1 - exp(-dt / tau)
 - Check whether it degrades in sim under measured delay/lag/velocity limits in
   the same way it degraded on the real suspended Duck.
 - Treat this as the key validation that the sim bridge captures the gap.
+- Required sequence:
+  - run `tools/check_training_env.py`
+  - run `tools/eval_policy_with_actuator_bridge.py` in vanilla/preflight mode
+  - run fitted bridge mode
+  - compare fitted-bridge metrics to real suspended `x=0.08`
+  - proceed to JAX/MJX training wrapper only if sim reproduction is plausible
 
 ### Acceleration / Jerk Limit
 
@@ -158,6 +189,9 @@ robustness gates.
 
 ### Short Training Experiment
 
+- Only start after the sim actuator bridge eval reaches a reviewed
+  `PASS_SIM_REPRODUCTION` or equivalent.
+- First run a short ROCm smoke training job on the `7900 XTX` setup.
 - Train with the actuator model enabled.
 - Compare against a baseline with the current actuator assumptions.
 - Save:
