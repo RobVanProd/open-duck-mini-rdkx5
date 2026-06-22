@@ -49,7 +49,9 @@ closed-loop reproduction status was only meaningful for the baseline policy.
 Small committed reports:
 
 - `outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_ZERO_X0_15S.md`
+- `outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_ZERO_X004_15S.md`
 - `outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_ZERO_15S.md`
+- `outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_TARGET_RATE_X008_HOLD.md`
 - `outputs/analysis/CPU_CANDIDATE_GATE_STEP32800_HOLD.md`
 
 Results:
@@ -57,12 +59,15 @@ Results:
 | pilot | duration | status | main reason |
 |---|---:|---|---|
 | `step8240_zero_penalty`, `x=0.0` | `15 s` | `PASS_CANDIDATE_SIM_GATE` | survived vanilla/fitted/stress with low action saturation and pitch tracking below threshold |
-| `step8240_zero_penalty`, `x=0.08` | `15 s` | `PASS_CANDIDATE_SIM_GATE` | survived vanilla/fitted/stress with low action saturation and pitch tracking below threshold |
+| `step8240_zero_penalty`, `x=0.04` | `15 s` | `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` | stable but mean forward velocity stayed near zero |
+| `step8240_zero_penalty`, `x=0.08` | `15 s` | `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` | stable but mean forward velocity stayed near zero |
+| `step8240_target_rate`, `x=0.08` | `15 s` | `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` | target-rate penalty alone did not produce command-tracking walking in this tiny CPU run |
 | `step32800_zero_penalty` | `2 s` | `HOLD_CANDIDATE_FALL_OR_TERMINATION` | fell/terminated early with high action saturation and large pitch tracking error |
 
-The passing `step8240_zero_penalty` pilot is still not robot-approved. It needs
-reviewed candidate packaging, full sim-side evidence, and explicit approval
-before suspended robot validation.
+The `step8240_zero_penalty` pilot is preserved only as a pipeline artifact. It
+is not robot-approved because it does not track nonzero forward commands. The
+target-rate pilot confirms that the first small CPU target-rate setting also
+does not solve command tracking.
 
 ## Interpretation
 
@@ -72,16 +77,16 @@ before suspended robot validation.
   `obs[1,101] -> continuous_actions[1,14]`.
 - The tiny CPU training shape is useful for correctness checks, not for
   producing a robot candidate.
-- The target-rate penalty pilot did not improve reward in this small CPU
-  configuration.
+- The target-rate penalty pilot did not improve reward or nonzero-command
+  forward progress in this small CPU configuration.
 - The longer zero-penalty pilot reward decreased, so continuing to scale this
   exact CPU smoke shape is not the right candidate-training path.
 
 ## Next Step
 
 Use CUDA for meaningful candidate training/evaluation where possible. If CUDA
-is unavailable, run candidate-mode closed-loop eval for each exported ONNX
-before spending more CPU time.
+is unavailable, adjust the training recipe before spending more CPU time:
+the next candidate needs command-tracking pressure, not just smoother targets.
 
 Robot motion remains blocked until a candidate passes the documented sim-side
 gates and Rob explicitly approves suspended validation.
