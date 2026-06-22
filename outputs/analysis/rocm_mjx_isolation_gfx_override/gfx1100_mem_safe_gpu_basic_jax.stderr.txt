@@ -1,0 +1,37 @@
+F0622 00:01:58.091830   21876 rocm_context.cc:137] Check failed: ToStatus(wrap::hipCtxSetCurrent(context_), "Failed setting context") is OK (INTERNAL: Failed setting context: ROCM_ERROR_ILLEGAL_ADDRESS)
+[symbolize_elf.inc : 379] RAW: Unable to get high fd: rc=0, limit=1024
+*** Check failure stack trace: ***
+    @     0x794dc6b357a4  absl::lts_20250814::log_internal::LogMessage::SendToLog()
+    @     0x794dc6b35726  absl::lts_20250814::log_internal::LogMessage::Flush()
+    @     0x794dc50baa49  stream_executor::gpu::RocmContext::SetActive()
+    @     0x794dc50c6e56  stream_executor::gpu::ScopedActivateContext::ScopedActivateContext()
+    @     0x794dc4d2f99c  stream_executor::gpu::RocmExecutor::Activate()
+    @     0x794dc50befff  stream_executor::gpu::RocmStream::BlockHostUntilDone()
+    @     0x794db9d5c830  xla::LocalDeviceState::SynchronizeAllActivity()
+    @     0x794db9d5c388  xla::LocalDeviceState::~LocalDeviceState()
+    @     0x794db9d5cb7e  xla::LocalDeviceState::~LocalDeviceState()
+    @     0x794db9cec79f  std::_Rb_tree<>::_M_erase()
+    @     0x794db9ce2d1d  std::map<>::~map()
+    @     0x794db9ce2bb4  xla::GetStreamExecutorGpuClient()
+    @     0x794db9cd4c24  xla::GetXlaPjrtGpuClient()
+    @     0x794db9c67b0c  pjrt::gpu_plugin::PJRT_Client_Create()
+    @     0x794f291d74a4  xla::WrapClientAroundCApi()
+    @     0x794f291d717d  xla::GetCApiClient()
+    @     0x794f290f1788  nanobind::detail::func_create<>()::{lambda()#1}::__invoke()
+    @     0x794f25988131  nanobind::detail::nb_func_vectorcall_complex()
+    @          0x1816073  _PyEval_EvalFrameDefault
+    @          0x18503f4  PyObject_Call
+    @          0x1894fa4  partial_call
+    @          0x185321c  _PyObject_MakeTpCall
+    @          0x1816073  _PyEval_EvalFrameDefault
+    @          0x1894b95  infinite_lru_cache_wrapper
+    @          0x1815ee8  _PyEval_EvalFrameDefault
+    @          0x1897ea0  PyEval_EvalCode
+    @          0x18ac109  run_mod.llvm.15281556494959932569
+    @          0x196bb20  PyRun_SimpleStringFlags
+    @          0x1ae2d55  Py_RunMain.warm
+    @          0x198c198  pymain_main.llvm.11489439184168853189
+    @          0x198bfac  main
+    @     0x794f3182a601  (unknown)
+    @     0x794f3182a718  __libc_start_main
+    @          0x19a9269  _start

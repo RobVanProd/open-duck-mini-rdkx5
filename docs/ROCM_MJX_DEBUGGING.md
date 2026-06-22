@@ -1,6 +1,6 @@
 # ROCm / MJX Debugging
 
-Last updated: 2026-06-21
+Last updated: 2026-06-22
 
 ## Current Failure
 
@@ -195,6 +195,75 @@ The host currently reports:
 Changing CWSR is a system/kernel-module setting, not a normal per-process
 Python environment switch. Do not change it from project tooling; it needs
 explicit system-level approval and a rollback plan.
+
+## 7900 XTX `gfx1100` Override Follow-Up
+
+The host can see the RX `7900 XTX` device through the normal ROCm path without
+forcing an architecture override:
+
+```text
+JAX backend: gpu
+JAX devices: [RocmDevice(id=0)]
+```
+
+The local device nodes are present and readable through the `render` group:
+
+```text
+/dev/kfd
+/dev/dri/renderD128
+/dev/dri/renderD129
+```
+
+User `lsd` is already in the `render` group. This weakens the hypothesis that
+the current MJX failure is caused by basic GPU visibility or device-node
+permissions.
+
+The suggested `TENSOR_PARALLEL_SIZE=1` and `HSA_OVERRIDE_GFX_VERSION=11.0.0`
+settings were tested as isolated basic-JAX variants:
+
+```bash
+../envs/open-duck-playground/bin/python tools/isolate_rocm_mjx_failure.py \
+  --playground-path ../Open_Duck_Playground \
+  --env-python ../envs/open-duck-playground/bin/python \
+  --policy policy/BEST_WALK_ONNX_2.onnx \
+  --fit-json outputs/analysis/actuator_response_fit.json \
+  --output-dir outputs/analysis/rocm_mjx_isolation_gfx_override \
+  --command-x 0.08 \
+  --steps 1 \
+  --platforms gpu \
+  --variants tensor_parallel_one,gfx1100_override,gfx1100_mem_safe \
+  --subtests basic_jax \
+  --timeout-s 60
+```
+
+Result:
+
+| variant | result |
+|---|---|
+| `tensor_parallel_one` | `PASS` |
+| `gfx1100_override` | `FAIL`, `ROCM_ERROR_ILLEGAL_ADDRESS` |
+| `gfx1100_mem_safe` | `FAIL`, `ROCM_ERROR_ILLEGAL_ADDRESS` |
+
+The combined memory-safe override variant used:
+
+```text
+HSA_OVERRIDE_GFX_VERSION=11.0.0
+TENSOR_PARALLEL_SIZE=1
+XLA_PYTHON_CLIENT_PREALLOCATE=false
+XLA_PYTHON_CLIENT_MEM_FRACTION=0.60
+```
+
+It still failed during basic JAX GPU startup. In this local JAX `0.8.2` /
+ROCm setup, do not export `HSA_OVERRIDE_GFX_VERSION=11.0.0`. The card is
+already detected as a ROCm device without it, and the override makes the
+smallest possible GPU smoke test fail.
+
+Evidence:
+
+```text
+outputs/analysis/rocm_mjx_isolation_gfx_override/ROCM_MJX_RUNTIME_ISOLATION.md
+outputs/analysis/rocm_mjx_isolation_gfx_override/rocm_mjx_runtime_isolation.json
+```
 
 ## Scan / Compiler Follow-Up
 

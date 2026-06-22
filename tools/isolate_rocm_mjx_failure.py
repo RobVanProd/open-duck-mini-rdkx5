@@ -33,6 +33,17 @@ VARIANT_ENVS = {
     "allocator_platform": {"XLA_PYTHON_CLIENT_ALLOCATOR": "platform"},
     "disable_jit": {"JAX_DISABLE_JIT": "true"},
     "debug_nans_infs": {"JAX_DEBUG_NANS": "true", "JAX_DEBUG_INFS": "true"},
+    "tensor_parallel_one": {"TENSOR_PARALLEL_SIZE": "1"},
+    "gfx1100_override": {
+        "HSA_OVERRIDE_GFX_VERSION": "11.0.0",
+        "TENSOR_PARALLEL_SIZE": "1",
+    },
+    "gfx1100_mem_safe": {
+        "HSA_OVERRIDE_GFX_VERSION": "11.0.0",
+        "TENSOR_PARALLEL_SIZE": "1",
+        "XLA_PYTHON_CLIENT_PREALLOCATE": "false",
+        "XLA_PYTHON_CLIENT_MEM_FRACTION": "0.60",
+    },
     "miopen_fusion_disabled": {"MIOPEN_DEBUG_FUSION_ENGINE_DISABLE": "1"},
     "xla_disable_latency_scheduler": {
         "XLA_FLAGS": "--xla_gpu_enable_latency_hiding_scheduler=false"
@@ -72,6 +83,7 @@ ROCM_ENV_KEYS = [
     "JAX_DISABLE_JIT",
     "JAX_DEBUG_NANS",
     "JAX_DEBUG_INFS",
+    "TENSOR_PARALLEL_SIZE",
     "XLA_PYTHON_CLIENT_PREALLOCATE",
     "XLA_PYTHON_CLIENT_MEM_FRACTION",
     "XLA_PYTHON_CLIENT_ALLOCATOR",
@@ -1029,7 +1041,8 @@ def build_markdown(payload: Mapping[str, Any]) -> str:
             "",
             "Supported variants are `default`, `preallocate_false`,",
             "`mem_fraction_050`, `mem_fraction_060`, `allocator_platform`,",
-            "`disable_jit`, `debug_nans_infs`, `miopen_fusion_disabled`,",
+            "`disable_jit`, `debug_nans_infs`, `tensor_parallel_one`,",
+            "`gfx1100_override`, `gfx1100_mem_safe`, `miopen_fusion_disabled`,",
             "`xla_disable_latency_scheduler`, `xla_disable_triton_gemm`,",
             "`xla_disable_triton_gemm_softmax`, `xla_compiler_conservative`,",
             "`rocm_strict_ieee`, `xla_rocm_data_dir`, and `xla_triton_strict_ieee`.",
@@ -1088,7 +1101,8 @@ def main() -> int:
         help=(
             "comma-separated env variants: default, preallocate_false, "
             "mem_fraction_050, mem_fraction_060, allocator_platform, "
-            "disable_jit, debug_nans_infs, miopen_fusion_disabled, "
+            "disable_jit, debug_nans_infs, tensor_parallel_one, "
+            "gfx1100_override, gfx1100_mem_safe, miopen_fusion_disabled, "
             "xla_disable_latency_scheduler, xla_disable_triton_gemm, "
             "xla_disable_triton_gemm_softmax, xla_compiler_conservative, "
             "rocm_strict_ieee, xla_rocm_data_dir, xla_triton_strict_ieee"

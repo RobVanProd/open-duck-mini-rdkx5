@@ -1,6 +1,6 @@
 # Sim-To-Real Results Summary
 
-Last updated: 2026-06-21
+Last updated: 2026-06-22
 
 ## Executive Summary
 
@@ -452,6 +452,18 @@ Latest ROCm/MJX isolation result:
   `playground_one_step_vanilla` timed out, `playground_one_step_jit` failed with
   returncode `-6`, and `playground_scan_step_vanilla` timed out. This weakens
   the stale-device-state hypothesis for the MJX step failure.
+- A focused RX `7900 XTX` architecture-override check was run after confirming
+  `/dev/kfd` and `/dev/dri/renderD*` are visible through the `render` group.
+  Plain JAX still reports `RocmDevice(id=0)`.
+- `TENSOR_PARALLEL_SIZE=1` passed a basic JAX GPU smoke test.
+- `HSA_OVERRIDE_GFX_VERSION=11.0.0` failed basic JAX with
+  `ROCM_ERROR_ILLEGAL_ADDRESS`, both alone and with
+  `XLA_PYTHON_CLIENT_PREALLOCATE=false` plus
+  `XLA_PYTHON_CLIENT_MEM_FRACTION=0.60`.
+- Do not use `HSA_OVERRIDE_GFX_VERSION=11.0.0` in this local env. The GPU is
+  already detected without it, and the override breaks the smallest GPU test.
+- Summary artifact:
+  `outputs/analysis/rocm_mjx_isolation_gfx_override/ROCM_MJX_RUNTIME_ISOLATION.md`.
 
 Choose exactly one next step: **debug the Open Duck Playground MJX GPU step on
 ROCm or run a reviewed reduced-horizon CPU correctness eval**, without changing
