@@ -360,6 +360,41 @@ simulator-model probe because the GPU failure is localized to Open Duck
 Playground stepping/collision, but changing them would alter the sim contract
 and needs a separate reviewed PR.
 
+## Power-Cycle Retest
+
+The `7900 XTX` was fully unplugged for about 30 seconds after another ROCm
+training job had previously died with a Torch/HIP launch failure. After
+replugging, the smallest Open Duck Playground GPU probes were rerun:
+
+```bash
+../envs/open-duck-playground/bin/python tools/isolate_rocm_mjx_failure.py \
+  --playground-path ../Open_Duck_Playground \
+  --env-python ../envs/open-duck-playground/bin/python \
+  --policy policy/BEST_WALK_ONNX_2.onnx \
+  --fit-json outputs/analysis/actuator_response_fit.json \
+  --output-dir outputs/analysis/rocm_mjx_isolation_after_power_reset \
+  --command-x 0.08 \
+  --steps 1 \
+  --platforms gpu \
+  --variants default \
+  --subtests playground_reset,playground_one_step_vanilla,playground_one_step_jit,playground_scan_step_vanilla \
+  --timeout-s 180
+```
+
+Result:
+
+| subtest | result |
+|---|---|
+| `playground_reset` | `PASS` |
+| `playground_one_step_vanilla` | `TIMEOUT` |
+| `playground_one_step_jit` | `FAIL`, returncode `-6` |
+| `playground_scan_step_vanilla` | `TIMEOUT` |
+
+The power-cycle retest therefore did not clear the Open Duck Playground MJX GPU
+step failure. That weakens the stale-device-state hypothesis for this specific
+MJX issue, while still leaving ROCm runtime stability as a separate concern for
+long Torch/PufferLib training jobs.
+
 ## Local Alternate Leads
 
 Local PufferLib files exist:

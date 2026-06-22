@@ -447,6 +447,11 @@ Latest ROCm/MJX isolation result:
 - MJCF contact audit found seven contact-relevant floor/foot entries without
   explicit `solref` or `solimp`. This is now a candidate offline sim-model
   probe, not a robot-runtime or training fix.
+- After a full GPU unplug/replug power-cycle, the smallest Open Duck Playground
+  GPU probes were rerun. `playground_reset` still passed, but
+  `playground_one_step_vanilla` timed out, `playground_one_step_jit` failed with
+  returncode `-6`, and `playground_scan_step_vanilla` timed out. This weakens
+  the stale-device-state hypothesis for the MJX step failure.
 
 Choose exactly one next step: **debug the Open Duck Playground MJX GPU step on
 ROCm or run a reviewed reduced-horizon CPU correctness eval**, without changing
