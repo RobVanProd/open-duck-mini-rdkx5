@@ -55,6 +55,15 @@ To generate a cell that also runs the first candidate-training shape:
 python3 tools/print_cuda_colab_cell.py --run-candidate
 ```
 
+To generate an uploadable one-code-cell notebook instead of copying a long
+cell through the clipboard:
+
+```bash
+python3 tools/print_cuda_colab_cell.py \
+  --run-candidate \
+  --notebook-output /tmp/open_duck_cuda_candidate.ipynb
+```
+
 The generated candidate cell also runs candidate-mode closed-loop sim gates at
 `x=0.0` and `x=0.08` after training. It packages the candidate against the
 `x=0.08` gate report, so a nonzero-command hold such as

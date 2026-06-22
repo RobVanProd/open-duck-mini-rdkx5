@@ -1,6 +1,6 @@
 # CUDA Candidate Handoff Ready
 
-generated_at: `2026-06-22T13:24:21Z`
+generated_at: `2026-06-22T13:32:33Z`
 
 ## Status
 
@@ -30,6 +30,8 @@ Recent handoff fixes merged:
 - Current generator: selects `PYTHON_BIN` once, prefers `/usr/bin/python3` on
   Colab, and passes it explicitly through `--env-python` for eval/training
   subprocesses.
+- Current generator: can write an uploadable one-code-cell notebook with
+  `--notebook-output`.
 
 ## Why Manual CUDA Is Still Required
 
@@ -46,6 +48,14 @@ Generate the current one-cell CUDA workflow from `main`:
 
 ```bash
 python3 tools/print_cuda_colab_cell.py --run-candidate
+```
+
+Or generate an uploadable notebook:
+
+```bash
+python3 tools/print_cuda_colab_cell.py \
+  --run-candidate \
+  --notebook-output /tmp/open_duck_cuda_candidate.ipynb
 ```
 
 Run the generated cell in the already-authenticated CUDA/Colab session.

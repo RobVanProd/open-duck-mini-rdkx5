@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 from pathlib import Path
 import textwrap
 
@@ -393,6 +394,35 @@ echo "This cell does not approve robot testing. Package and sim gates must be re
     return textwrap.dedent(cell).strip() + "\n"
 
 
+def write_notebook(path: Path, cell: str) -> None:
+    notebook = {
+        "cells": [
+            {
+                "cell_type": "code",
+                "execution_count": None,
+                "metadata": {},
+                "outputs": [],
+                "source": cell.splitlines(keepends=True),
+            }
+        ],
+        "metadata": {
+            "kernelspec": {
+                "display_name": "Python 3",
+                "language": "python",
+                "name": "python3",
+            },
+            "language_info": {"name": "python"},
+            "open_duck": {
+                "purpose": "offline CUDA/Colab actuator-bridge candidate workflow",
+                "robot_tests": "not approved",
+            },
+        },
+        "nbformat": 4,
+        "nbformat_minor": 5,
+    }
+    path.write_text(json.dumps(notebook, indent=2) + "\n")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         description="Print a copy-paste CUDA/Colab cell for Open Duck actuator bridge work."
@@ -429,12 +459,22 @@ def main() -> int:
         ),
     )
     parser.add_argument("--output", help="Write the cell to this file instead of stdout.")
+    parser.add_argument(
+        "--notebook-output",
+        help=(
+            "Write a one-code-cell .ipynb containing the generated CUDA/Colab "
+            "cell. This is useful when uploading a notebook is easier than "
+            "copying a large cell into Colab."
+        ),
+    )
     args = parser.parse_args()
 
     cell = build_cell(args)
     if args.output:
         Path(args.output).write_text(cell)
-    else:
+    if args.notebook_output:
+        write_notebook(Path(args.notebook_output), cell)
+    if not args.output and not args.notebook_output:
         print(cell, end="")
     return 0
 
