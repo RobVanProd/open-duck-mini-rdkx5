@@ -271,6 +271,10 @@ robustness gates and forward command tracking gates.
 - First run a short ROCm smoke training job on the `7900 XTX` setup.
 - If ROCm/MJX remains blocked, use the CUDA-backed correctness result for
   design decisions and run only small CPU smoke jobs locally.
+- The local ROCm host-loop eval mode
+  (`--mjx-step-loop-mode python` or `python_block_each`) is only for tiny
+  correctness probes. It passed 10 closed-loop ticks but took about 105 seconds,
+  so it is not a training-throughput path.
 - Use `tools/run_actuator_bridge_training_smoke.py` to print and optionally
   execute the tiny smoke command. This records the exact command and output
   manifest under `/tmp` and does not create a deployable policy.

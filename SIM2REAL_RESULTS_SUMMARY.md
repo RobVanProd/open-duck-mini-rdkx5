@@ -768,6 +768,26 @@ Python loop. The local hold is tied to JAX/XLA control-flow lowering of repeated
 `mjx.step`, so a slow local ROCm correctness-eval workaround may be possible.
 CUDA remains the full closed-loop eval/training backend.
 
+Closed-loop host-loop follow-up:
+
+```text
+tools/eval_policy_with_actuator_bridge.py --mjx-step-loop-mode python
+tools/eval_policy_with_actuator_bridge.py --mjx-step-loop-mode python_block_each
+```
+
+Tiny local `7900 XTX` smoke results:
+
+```text
+python:            PASS_CLOSED_LOOP_REPRODUCTION, 10 samples, 104.79s
+python_block_each: PASS_CLOSED_LOOP_REPRODUCTION, 10 samples, 107.02s
+```
+
+Interpretation: the full closed-loop policy/eval path can run on local ROCm
+when repeated MJX substeps are driven from the host instead of lowered through
+XLA control flow. This is a correctness workaround for tiny local probes only.
+It is not fast enough for full-horizon eval or training. CUDA remains the
+confirmed backend for full candidate evaluation and training.
+
 ## CUDA Candidate Handoff
 
 The current CUDA candidate handoff is recorded in:
