@@ -125,6 +125,19 @@ The Playground runner PR adds these relevant flags:
 --ppo_num_updates_per_batch
 ```
 
+It also adds always-on scalar diagnostics:
+
+```text
+diagnostic/target_velocity_cost
+diagnostic/actuator_bridge_tracking_cost
+diagnostic/actuator_bridge_delay_ticks
+diagnostic/actuator_bridge_tau_mean_s
+diagnostic/actuator_bridge_velocity_limit_mean_rad_s
+```
+
+These are diagnostics, not reward terms. Reward scales remain default `0.0`
+unless explicitly changed.
+
 ## Validation After Applying
 
 Use a CUDA backend first because the local `7900 XTX` ROCm/MJX path is still
