@@ -270,6 +270,7 @@ def classify_candidate_gate(modes: Mapping[str, Mapping[str, Any]]) -> dict:
         "max_abs_body_pitch_p95_rad": 0.25,
         "min_base_height_m": 0.12,
         "min_reward_mean": 0.30,
+        "min_forward_command_tracking_ratio": 0.25,
     }
     if not modes:
         return {"status": "HOLD_CANDIDATE_NO_EVAL", "thresholds": thresholds}
@@ -289,16 +290,28 @@ def classify_candidate_gate(modes: Mapping[str, Mapping[str, Any]]) -> dict:
     body_pitch_abs = []
     base_height_min = []
     reward_mean = []
+    command_x_values = []
+    forward_ratios = []
+    forward_velocity_errors = []
     for mode in modes.values():
         body = mode.get("body_pitch_rad") or {}
         height = mode.get("base_height_m") or {}
         reward = mode.get("reward") or {}
+        forward = mode.get("forward_motion") or {}
+        command = mode.get("command") or []
+        command_x = command[0] if command else forward.get("command_x_m_s")
+        if finite(command_x):
+            command_x_values.append(float(command_x))
         if finite(body.get("p95")):
             body_pitch_abs.append(abs(float(body["p95"])))
         if finite(height.get("min")):
             base_height_min.append(float(height["min"]))
         if finite(reward.get("mean")):
             reward_mean.append(float(reward["mean"]))
+        if finite(forward.get("command_tracking_ratio")):
+            forward_ratios.append(float(forward["command_tracking_ratio"]))
+        if finite(forward.get("velocity_error_m_s")):
+            forward_velocity_errors.append(abs(float(forward["velocity_error_m_s"])))
         for joint in PITCH_CHAIN_JOINTS:
             item = (mode.get("joints") or {}).get(joint, {})
             tracking = (item.get("joint_target_tracking_error_rad") or {}).get("p95")
@@ -318,12 +331,28 @@ def classify_candidate_gate(modes: Mapping[str, Mapping[str, Any]]) -> dict:
         "max_abs_body_pitch_p95_rad": max_finite(body_pitch_abs),
         "min_base_height_m": min(base_height_min) if base_height_min else None,
         "min_reward_mean": min(reward_mean) if reward_mean else None,
+        "min_forward_command_tracking_ratio": (
+            min(forward_ratios) if forward_ratios else None
+        ),
+        "max_abs_forward_velocity_error_m_s": max_finite(forward_velocity_errors),
         "terminations": terminations,
     }
+    command_x = command_x_values[0] if command_x_values else 0.0
+    requires_forward_tracking = abs(command_x) >= 0.02
     if incomplete:
         status = "HOLD_CANDIDATE_FALL_OR_TERMINATION"
     elif not finite(metrics["max_action_saturation_pct"]):
         status = "HOLD_CANDIDATE_NO_METRICS"
+    elif requires_forward_tracking and not finite(
+        metrics["min_forward_command_tracking_ratio"]
+    ):
+        status = "HOLD_CANDIDATE_NO_FORWARD_TRACKING"
+    elif (
+        requires_forward_tracking
+        and metrics["min_forward_command_tracking_ratio"]
+        < thresholds["min_forward_command_tracking_ratio"]
+    ):
+        status = "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS"
     elif metrics["max_action_saturation_pct"] > thresholds["max_action_saturation_pct"]:
         status = "HOLD_CANDIDATE_ACTION_SATURATION"
     elif metrics["max_pitch_tracking_p95_rad"] > thresholds["max_pitch_tracking_p95_rad"]:
@@ -636,6 +665,8 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                     "applied_target_rad": applied_np.tolist(),
                     "actual_position_rad": actual.tolist(),
                     "body_pitch_rad": quat_wxyz_to_pitch(quat),
+                    "base_x_m": float(qpos[base_addr]),
+                    "base_y_m": float(qpos[base_addr + 1]),
                     "base_height_m": float(qpos[base_addr + 2]),
                     "foot_contacts": contacts.astype(int).tolist(),
                     "reward": reward,
@@ -649,8 +680,31 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
         wall_clock = time.monotonic() - start
         joints = per_joint_mode_summary(records, float(env.dt))
         body_pitch = signed_stats([record["body_pitch_rad"] for record in records])
+        base_x = signed_stats([record["base_x_m"] for record in records])
+        base_y = signed_stats([record["base_y_m"] for record in records])
         base_height = signed_stats([record["base_height_m"] for record in records])
         reward_stats = signed_stats([record["reward"] for record in records])
+        if len(records) >= 2:
+            elapsed_s = max(
+                float(records[-1]["time_s"]) - float(records[0]["time_s"]),
+                float(env.dt),
+            )
+            progress_x = float(records[-1]["base_x_m"]) - float(records[0]["base_x_m"])
+            progress_y = float(records[-1]["base_y_m"]) - float(records[0]["base_y_m"])
+            mean_vx = progress_x / elapsed_s
+            ratio = (
+                mean_vx / float(config.command_x)
+                if abs(float(config.command_x)) >= 1e-9
+                else None
+            )
+            velocity_error = mean_vx - float(config.command_x)
+        else:
+            elapsed_s = 0.0
+            progress_x = None
+            progress_y = None
+            mean_vx = None
+            ratio = None
+            velocity_error = None
         contact_counts = (
             np.sum(np.asarray([record["foot_contacts"] for record in records]), axis=0).tolist()
             if records
@@ -664,7 +718,18 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             "wall_clock_s": wall_clock,
             "command": [config.command_x, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
             "body_pitch_rad": body_pitch,
+            "base_x_m": base_x,
+            "base_y_m": base_y,
             "base_height_m": base_height,
+            "forward_motion": {
+                "elapsed_s": elapsed_s,
+                "progress_x_m": progress_x,
+                "progress_y_m": progress_y,
+                "mean_velocity_x_m_s": mean_vx,
+                "command_x_m_s": float(config.command_x),
+                "velocity_error_m_s": velocity_error,
+                "command_tracking_ratio": ratio,
+            },
             "reward": reward_stats,
             "foot_contact_counts": {
                 "left": int(contact_counts[0]) if len(contact_counts) > 0 else 0,

@@ -1,6 +1,6 @@
 # Candidate Policy Package
 
-status: `READY_FOR_SIM_GATE_REVIEW`
+status: `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS`
 generated_at: `2026-06-22T08:02:44Z`
 
 ## Candidate
@@ -36,14 +36,19 @@ generated_at: `2026-06-22T08:02:44Z`
 |---|---|---|
 | `contract_audit` | `PRESENT` | `/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/POLICY_SIM_CONTRACT_AUDIT.md` |
 | `target_velocity_summary` | `PRESENT` | `/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/ACTUATOR_RESPONSE_FIT.md` |
-| `actuator_bridge_eval` | `PRESENT` | `/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_ZERO_15S.md` |
+| `candidate_gate_x0` | `PASS_CANDIDATE_SIM_GATE` | `/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_ZERO_X0_15S.md` |
+| `candidate_gate_x004` | `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` | `/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_ZERO_X004_15S.md` |
+| `candidate_gate_x008` | `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` | `/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_ZERO_15S.md` |
 | `training_manifest` | `PRESENT` | `/home/lsd/robots/open-duck-mini-rdkx5/policy/candidates/open_duck_mini_actuator_bridge_cpu_pilot_20260622_step8240/training_manifest.json` |
 
 ## Sim Gate Status
 
 - eval_role: `candidate`
-- overall_status: `PASS_CANDIDATE_SIM_GATE`
-- candidate_gate_status: `PASS_CANDIDATE_SIM_GATE`
+- `x=0.0`: `PASS_CANDIDATE_SIM_GATE`
+- `x=0.04`: `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS`
+- `x=0.08`: `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS`
+- non-deployable reason: nonzero forward commands produce near-zero mean
+  forward velocity in sim.
 
 ## Training Manifest
 
@@ -62,3 +67,7 @@ JAX_PLATFORM_NAME=cpu /home/lsd/robots/envs/open-duck-playground/bin/python /hom
 This package does not approve robot testing. Robot-side suspended
 validation still requires reviewed sim gates, Rob physically present,
 and explicit approval for the specific test.
+
+Current decision: do not deploy this candidate. It is useful evidence that the
+training/export/package path works, but the policy learned a stable standing
+behavior rather than command-tracking walking.

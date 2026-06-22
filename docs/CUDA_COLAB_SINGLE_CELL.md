@@ -86,7 +86,8 @@ READY_FOR_SIM_GATE_REVIEW
 ```
 
 or a documented `HOLD_*` status with enough evidence to decide the next config
-change.
+change. A candidate that is stable but does not track nonzero forward commands
+must hold, for example `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS`.
 
 ## Files To Bring Back
 

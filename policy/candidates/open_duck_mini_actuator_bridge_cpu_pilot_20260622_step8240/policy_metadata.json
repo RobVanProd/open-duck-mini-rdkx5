@@ -35,12 +35,26 @@
     "status": "PASS_POLICY_CONTRACT"
   },
   "evidence": {
-    "actuator_bridge_eval": {
-      "label": "actuator_bridge_eval",
-      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_ZERO_15S.md",
-      "sha256": "688ed97e0a3f3be7873febb5ab09c53f847252afc4a94ec7d6db29c277a25942",
-      "size_bytes": 4704,
-      "status": "PRESENT"
+        "candidate_gate_x0": {
+            "label": "candidate_gate_x0",
+            "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_ZERO_X0_15S.md",
+            "sha256": "4473bb708b1bd4f6cebf1c4d38234f27c3aef738b5907e89e7bc1f2d384e6665",
+            "size_bytes": 4946,
+            "status": "PASS_CANDIDATE_SIM_GATE"
+        },
+        "candidate_gate_x004": {
+            "label": "candidate_gate_x004",
+            "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_ZERO_X004_15S.md",
+            "sha256": "a3b5290630790969d9f801c6ee31ce8f362808aa160ccb21c76121608692a7bc",
+            "size_bytes": 4848,
+            "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS"
+        },
+        "candidate_gate_x008": {
+            "label": "candidate_gate_x008",
+            "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_ZERO_15S.md",
+            "sha256": "0922ce24b6518a3d0861a5063a4e87b8bfed471766814818744f7911a51b1064",
+            "size_bytes": 4848,
+            "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS"
     },
     "contract_audit": {
       "label": "contract_audit",
@@ -65,15 +79,29 @@
     }
   },
   "generated_at": "2026-06-22T08:02:44Z",
-  "non_deployable_reason": null,
-  "sim_gate": {
-    "actuator_bridge_eval": {
-      "candidate_gate_status": "PASS_CANDIDATE_SIM_GATE",
-      "eval_role": "candidate",
-      "overall_status": "PASS_CANDIDATE_SIM_GATE",
-      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_ZERO_15S.md",
-      "status": "PASS_PARSED_GATE_STATUS"
-    }
+    "non_deployable_reason": "Nonzero command sim gates hold for low forward progress; mean forward velocity stays near zero at x=0.04 and x=0.08.",
+    "sim_gate": {
+        "candidate_gate_x0": {
+            "candidate_gate_status": "PASS_CANDIDATE_SIM_GATE",
+            "eval_role": "candidate",
+            "overall_status": "PASS_CANDIDATE_SIM_GATE",
+            "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_ZERO_X0_15S.md",
+            "status": "PASS_PARSED_GATE_STATUS"
+        },
+        "candidate_gate_x004": {
+            "candidate_gate_status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+            "eval_role": "candidate",
+            "overall_status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+            "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_ZERO_X004_15S.md",
+            "status": "HOLD_PARSED_GATE_STATUS"
+        },
+        "candidate_gate_x008": {
+            "candidate_gate_status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+            "eval_role": "candidate",
+            "overall_status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+            "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_ZERO_15S.md",
+            "status": "HOLD_PARSED_GATE_STATUS"
+        }
   },
   "sources": {
     "playground_repo": {
@@ -89,7 +117,7 @@
       "status_short": "?? policy/candidates/"
     }
   },
-  "status": "READY_FOR_SIM_GATE_REVIEW",
+    "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
   "training_manifest": {
     "actuator_bridge_enabled": true,
     "actuator_tracking_scale": 0.0,

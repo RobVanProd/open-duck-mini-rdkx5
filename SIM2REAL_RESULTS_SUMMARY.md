@@ -536,8 +536,10 @@ Results:
 - candidate-mode closed-loop CPU eval now distinguishes a sim-gate pass from
   failed candidate behavior:
   - `step8240_zero_penalty`, `x=0.0`: `PASS_CANDIDATE_SIM_GATE` over `15 s`
-  - `step8240_zero_penalty`, `x=0.04`: `PASS_CANDIDATE_SIM_GATE` over `15 s`
-  - `step8240_zero_penalty`, `x=0.08`: `PASS_CANDIDATE_SIM_GATE` over `15 s`
+  - `step8240_zero_penalty`, `x=0.04`:
+    `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` over `15 s`
+  - `step8240_zero_penalty`, `x=0.08`:
+    `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` over `15 s`
   - `step32800_zero_penalty`: `HOLD_CANDIDATE_FALL_OR_TERMINATION` over `2 s`
 - the review-only `step8240_zero_penalty` ONNX is preserved under
   `policy/candidates/open_duck_mini_actuator_bridge_cpu_pilot_20260622_step8240/`
@@ -546,10 +548,10 @@ Interpretation:
 
 - The merged training loop, ONNX export, summary, and package tooling work.
 - The small CPU PPO shape is a correctness path, not a candidate generator.
-- One short CPU pilot passed initial sim-side candidate gates at zero,
-  midpoint, and small forward command, but it is still not robot-approved
-  because candidate packaging and broader sim evidence have not been reviewed.
+- One short CPU pilot passed the zero-command stability gate but failed nonzero
+  forward-command gates because mean forward velocity stayed near zero. It is
+  preserved as training/export evidence, not as a walking candidate.
 
-Next offline move: use CUDA for meaningful candidate training/evaluation when
-available, and use `--eval-role candidate` for every exported candidate before
-any robot-side approval discussion.
+Next offline move: train a candidate with command-tracking retained under the
+actuator bridge, and keep `--eval-role candidate` command-tracking gates in
+front of any robot-side approval discussion.

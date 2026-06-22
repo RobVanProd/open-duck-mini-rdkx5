@@ -79,8 +79,8 @@ Review-only candidate preserved in git:
 policy/candidates/open_duck_mini_actuator_bridge_cpu_pilot_20260622_step8240/
 ```
 
-Status: `READY_FOR_SIM_GATE_REVIEW`. This candidate is not deployed and is not
-approved for robot-side validation.
+Status: `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS`. This candidate is not deployed
+and is not approved for robot-side validation.
 
 Tiny CPU smoke ONNX exports exist under `/tmp/open_duck_actuator_bridge_smoke/`.
 They are explicitly non-deployable and were used only to validate the training
@@ -104,9 +104,10 @@ outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_ZERO_15S.md
 outputs/analysis/CPU_CANDIDATE_GATE_STEP32800_HOLD.md
 ```
 
-`step8240_zero_penalty` passed `15 s` CPU candidate sim gates at `x=0.0`,
-`x=0.04`, and `x=0.08`, but it is still not approved for the robot. Treat it
-as an offline candidate for review, not a deployable policy.
+`step8240_zero_penalty` passed the `15 s` CPU candidate sim gate at `x=0.0`,
+but `x=0.04` and `x=0.08` now hold on
+`HOLD_CANDIDATE_LOW_FORWARD_PROGRESS`: mean forward velocity remains near zero.
+Treat it as offline training/export evidence, not a deployable policy.
 
 ## Active PRs
 
