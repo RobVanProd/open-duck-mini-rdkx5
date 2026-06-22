@@ -605,3 +605,30 @@ Result:
 Interpretation: the local GPU can run basic JAX and a minimal MJX model, but
 the Open Duck Playground GPU step path remains blocked. Use CPU or CUDA-backed
 eval/training for correctness until the Playground ROCm step failure is fixed.
+
+## CUDA Candidate Handoff
+
+The current CUDA candidate handoff is recorded in:
+
+```text
+outputs/analysis/CUDA_CANDIDATE_HANDOFF_READY.md
+```
+
+Recent repo fixes prepared the next manual Colab/CUDA run:
+
+- explicit `--jax-platform` support prevents accidental local ROCm use in CPU
+  gates and makes CUDA gates request GPU explicitly
+- candidate packaging treats standalone target-velocity summaries as optional,
+  while still enforcing the training manifest, contract audit, and candidate
+  sim gate evidence
+- CUDA artifact import now reports a conservative review gate from the bundle
+
+Next useful action remains:
+
+```bash
+python3 tools/print_cuda_colab_cell.py --run-candidate
+```
+
+Run that generated cell only in a trusted manual CUDA/Colab session. Browser
+automation is still blocked by Google's secure-login warning, and robot motion
+remains blocked until a candidate reaches reviewed sim-gate status.
