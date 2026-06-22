@@ -5,7 +5,8 @@ Last updated: 2026-06-21
 ## Executive Summary
 
 Current recommendation: **do not run grounded replay yet**.
-No more robot motion is recommended until the actuator bridge spec is reviewed.
+No more robot motion is recommended until the sim actuator bridge eval is
+reviewed.
 
 The first evidence gates no longer point to a gross IMU axis flip, policy hash
 mismatch, joint order failure, or zero-command policy explosion. The Duck can
@@ -24,6 +25,7 @@ target waveform is much more aggressive and exposes the effective delay.
 Small summaries:
 
 - `outputs/analysis/ACTUATOR_RESPONSE_FIT.md`
+- `outputs/analysis/SIM_ACTUATOR_BRIDGE_EVAL.md`
 - `outputs/analysis/FIRST_EVIDENCE_SUMMARY.md`
 - `outputs/first_evidence/20260621T202826Z/imu_tilt_labeled_summary.md`
 - `outputs/first_evidence/20260621T202826Z/joint_identity_summary.md`
@@ -333,8 +335,26 @@ Latest offline fit:
   overinterpret fitted tau; use the broader `0.06-0.14 s` training stress range
   from the bridge spec.
 
-Choose exactly one next step: **review the fit and create the first
-sim/training bridge implementation PR**, without changing robot behavior yet.
+Latest sim/eval harness result:
+
+- `tools/eval_policy_with_actuator_bridge.py` was run in telemetry replay mode
+  on suspended `x=0.08`.
+- Summary artifact: `outputs/analysis/SIM_ACTUATOR_BRIDGE_EVAL.md`.
+- JSON artifact: `outputs/analysis/sim_actuator_bridge_eval.json`.
+- Telemetry replay status: `PASS_TELEMETRY_REPLAY_REPRODUCTION`.
+- Fitted bridge median sim/real pitch-chain p95 tracking ratio: about `0.981`.
+- Fitted bridge max p95 model error: about `0.035 rad`.
+- Full MuJoCo policy-loop reproduction is currently blocked by
+  `HOLD_POLICY_SIM_CONTRACT_MISMATCH`: the local sibling
+  `../Open_Duck_Playground` exposes a `10` actuator no-head contract, while
+  `BEST_WALK_ONNX_2` is audited as `101` observations and `14` actions.
+- `tools/check_training_env.py` reports `HOLD_ENV_NOT_READY` under system
+  Python because JAX, MuJoCo, `ml_collections`, and `mujoco_playground` are not
+  installed in that interpreter. ROCm tools and the local `7900 XTX` hints are
+  present, so the next training-phase work should use the intended ROCm env.
+
+Choose exactly one next step: **resolve the exact sim contract / training
+environment gate**, without changing robot behavior yet.
 
 Purpose:
 
@@ -344,15 +364,12 @@ Purpose:
 - use fitted effective velocity limits around `2.25-3.75 rad/s` as evidence
   when selecting training randomization ranges
 - add action-rate / target-velocity diagnostics to the training bridge notes
-- decide whether the next runtime experiment should be a command limit,
-  target smoothing experiment, or pure retraining/sim randomization
+- find or reconstruct the exact `101` observation / `14` action sim environment
+- run the current policy in that sim with and without the fitted actuator bridge
+- only then implement the JAX/MJX training actuator wrapper
 
 Do not patch runtime behavior, action scale, gains, offsets, or phase timing
 until the bridge spec is reviewed.
 
-Optional next hardware gate, after that offline analysis: `1.0 Hz` single-joint
-sine sweep at `0.03 rad`, still supported on the stand, with telemetry and
-terminal logging. Do not run grounded replay until the suspended policy target
-waveform is explained.
-
-Do not run grounded replay until this is understood.
+Do not run more robot motion or grounded replay until this offline sim contract
+gate is resolved.
