@@ -27,6 +27,7 @@ Small summaries:
 - `outputs/analysis/ACTUATOR_RESPONSE_FIT.md`
 - `outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_ZERO_X0_15S.md`
 - `outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_ZERO_15S.md`
+- `outputs/analysis/CPU_CANDIDATE_GATE_STEP8960_POS_TARGET_RATE_X008_HOLD.md`
 - `outputs/analysis/CPU_CANDIDATE_GATE_STEP32800_HOLD.md`
 - `outputs/analysis/CPU_ACTUATOR_BRIDGE_PILOT_SUMMARY.md`
 - `outputs/analysis/POLICY_SIM_CONTRACT_AUDIT.md`
@@ -531,6 +532,7 @@ Results:
 - tiny `256` timestep PPO smoke: `PASS_SMOKE_RUN`
 - `8192` timestep target-rate pilot: `PASS_SMOKE_RUN`, non-deployable
 - `8192` timestep zero-penalty pilot: `PASS_SMOKE_RUN`, non-deployable
+- `8960` step positive target-rate pilot: `PASS_SMOKE_RUN`, non-deployable
 - `32768` timestep zero-penalty pilot: `PASS_SMOKE_RUN`, non-deployable
 - all exported ONNX files preserved the `101 -> 14` policy contract
 - candidate-mode closed-loop CPU eval now distinguishes a sim-gate pass from
@@ -544,6 +546,8 @@ Results:
     `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` over `15 s`
   - `step8240_negative_target_rate`, `x=0.08`:
     `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` over `15 s`
+  - `step8960_positive_target_rate`, `x=0.08`:
+    `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` over `15 s`
   - `step32800_zero_penalty`: `HOLD_CANDIDATE_FALL_OR_TERMINATION` over `2 s`
 - the review-only `step8240_zero_penalty` ONNX is preserved under
   `policy/candidates/open_duck_mini_actuator_bridge_cpu_pilot_20260622_step8240/`
@@ -555,6 +559,9 @@ Interpretation:
 - The short CPU pilots either passed the zero-command stability gate or held on
   nonzero forward-command gates because mean forward velocity stayed near zero.
   They are preserved as training/export evidence, not as walking candidates.
+- The step8960 positive target-rate pilot stayed stable and smooth but still had
+  effectively no forward progress at `x=0.08`
+  (`min_forward_command_tracking_ratio = -0.0027`).
 
 Next offline move: run a larger CUDA-backed candidate training job with
 command-tracking retained under the actuator bridge, and keep
