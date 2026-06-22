@@ -235,12 +235,25 @@ Small summary:
 
 ```text
 outputs/analysis/PHASE_B_CHECKPOINT_SWEEP_SUMMARY.md
+outputs/analysis/FORWARD_REWARD_LANDSCAPE.md
 ```
 
 Interpretation: the current actuator bridge and smoothness penalties can
 produce policies that are easy for the real actuators to track, but the reward
 landscape still allows near-standing behavior to score well enough under a
 nonzero forward command. Do not spend more GPU time on the same recipe.
+
+Current reward-shape calculation:
+
+```bash
+python3 tools/analyze_forward_reward_landscape.py \
+  --output-md outputs/analysis/FORWARD_REWARD_LANDSCAPE.md \
+  --output-json outputs/analysis/forward_reward_landscape.json
+```
+
+With `tracking_sigma=0.01`, `tracking_lin_vel_scale=12`, and `x=0.08`, zero
+forward velocity keeps `52.7%` of the raw velocity-tracking reward. That is too
+permissive for the next candidate recipe.
 
 Next training PR should make the nonzero-command locomotion objective stricter
 before launching another candidate:

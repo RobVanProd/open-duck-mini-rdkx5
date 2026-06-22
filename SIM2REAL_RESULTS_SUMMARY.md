@@ -43,11 +43,19 @@ Current offline training recommendation: adjust reward/curriculum so nonzero
 forward command tracking is required before launching another candidate run.
 Do not run any of these candidates on the robot.
 
+Reward-shape analysis confirms the issue. With `tracking_sigma=0.01`,
+`tracking_lin_vel_scale=12`, and `x=0.08`, zero forward velocity still receives
+`52.7%` of the raw target velocity-tracking reward and about `0.1266` per tick
+from that term alone. Tightening the velocity-tracking reward shape or adding
+an explicit nonzero-command progress term should happen before another
+candidate run.
+
 ## Evidence Files
 
 Small summaries:
 
 - `outputs/analysis/ACTUATOR_RESPONSE_FIT.md`
+- `outputs/analysis/FORWARD_REWARD_LANDSCAPE.md`
 - `outputs/analysis/PHASE_B_CHECKPOINT_SWEEP_SUMMARY.md`
 - `outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_ZERO_X0_15S.md`
 - `outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_ZERO_15S.md`
