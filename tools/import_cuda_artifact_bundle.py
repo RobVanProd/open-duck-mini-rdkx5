@@ -95,6 +95,10 @@ def collect_files(output_dir: Path) -> dict[str, list[Path]]:
         "json": sorted(output_dir.rglob("*.json")),
         "onnx": sorted(output_dir.rglob("*.onnx")),
         "exit_status": sorted(output_dir.rglob("CUDA_CELL_EXIT_STATUS.txt")),
+        "environment": sorted(
+            list(output_dir.rglob("pip_freeze.txt"))
+            + list(output_dir.rglob("nvidia_smi.txt"))
+        ),
         "stdout_stderr": sorted(
             list(output_dir.rglob("stdout.txt")) + list(output_dir.rglob("stderr.txt"))
         ),
@@ -335,6 +339,7 @@ def build_summary(
         "json_summaries": json_summaries,
         "onnx_files": onnx_summaries,
         "cuda_cell_exit_status": exit_status,
+        "environment_files": [relative(path) for path in files["environment"]],
         "stdout_stderr_files": [relative(path) for path in files["stdout_stderr"]],
         "review": review,
     }
@@ -377,6 +382,13 @@ def build_summary(
         lines.append("|---|---|")
         for key in sorted(exit_status):
             lines.append(f"| `{markdown_cell(key)}` | `{markdown_cell(exit_status[key])}` |")
+
+    lines.extend(["", "## Environment Files", ""])
+    if files["environment"]:
+        for path in files["environment"]:
+            lines.append(f"- `{relative(path)}`")
+    else:
+        lines.append("No environment snapshot files found.")
 
     lines.extend(["", "## Markdown Statuses", ""])
     if markdown_statuses:

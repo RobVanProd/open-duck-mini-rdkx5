@@ -257,7 +257,8 @@ contains `CUDA_CELL_EXIT_STATUS.txt` plus whatever small summaries, ONNX files,
 manifests, stdout, and stderr existed before the failure. The exit-status file
 also records the RDK and Playground commits, dirty-file counts, Python/JAX/MuJoCo
 metadata when importable, and the visible GPU name when `nvidia-smi` is
-available.
+available. The bundle also includes `pip_freeze.txt` and `nvidia_smi.txt` when
+those commands are available.
 
 ## Summarize And Package
 

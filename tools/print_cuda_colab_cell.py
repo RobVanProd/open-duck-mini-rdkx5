@@ -96,6 +96,12 @@ PY
       echo "gpu_name=UNKNOWN"
     fi
   }} >> "$ARTIFACT_ROOT/CUDA_CELL_EXIT_STATUS.txt"
+  python -m pip freeze > "$ARTIFACT_ROOT/pip_freeze.txt" 2>&1 || true
+  if command -v nvidia-smi >/dev/null 2>&1; then
+    nvidia-smi > "$ARTIFACT_ROOT/nvidia_smi.txt" 2>&1 || true
+  else
+    echo "nvidia-smi not found" > "$ARTIFACT_ROOT/nvidia_smi.txt"
+  fi
 
   if [ -d /content/open-duck-mini-rdkx5/outputs/analysis/cuda_manual ]; then
     cp -a /content/open-duck-mini-rdkx5/outputs/analysis/cuda_manual "$ARTIFACT_ROOT/"
