@@ -64,6 +64,14 @@ python3 tools/print_cuda_colab_cell.py \
   --notebook-output /tmp/open_duck_cuda_candidate.ipynb
 ```
 
+To generate the notebook, raw cell text, and a local handoff checklist together:
+
+```bash
+python3 tools/print_cuda_colab_cell.py \
+  --run-candidate \
+  --handoff-dir /home/lsd/robots/cuda_colab_handoff
+```
+
 The generated candidate cell also runs candidate-mode closed-loop sim gates at
 `x=0.0` and `x=0.08` after training. It packages the candidate against the
 `x=0.08` gate report, so a nonzero-command hold such as

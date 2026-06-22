@@ -57,6 +57,25 @@ python3 tools/print_cuda_colab_cell.py \
 Then upload or open that `.ipynb` in the already-authenticated CUDA/Colab
 session and run its single cell.
 
+Preferred local handoff bundle:
+
+```bash
+python3 tools/print_cuda_colab_cell.py \
+  --run-candidate \
+  --handoff-dir /home/lsd/robots/cuda_colab_handoff
+```
+
+That writes:
+
+```text
+/home/lsd/robots/cuda_colab_handoff/open_duck_cuda_candidate.ipynb
+/home/lsd/robots/cuda_colab_handoff/open_duck_cuda_candidate_cell.txt
+/home/lsd/robots/cuda_colab_handoff/CUDA_COLAB_HANDOFF.md
+```
+
+Use the notebook for Colab upload and keep the markdown handoff next to it for
+the bundle download/import checklist.
+
 The default candidate shape matches `docs/CUDA_BACKEND_TRAINING_RUNBOOK.md`.
 It still does not approve robot testing; it only produces artifacts for review.
 That candidate shape now includes opt-in reward and command-curriculum

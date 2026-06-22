@@ -32,6 +32,8 @@ Recent handoff fixes merged:
   subprocesses.
 - Current generator: can write an uploadable one-code-cell notebook with
   `--notebook-output`.
+- Current generator: can write a complete local handoff directory with
+  `--handoff-dir`, including notebook, raw cell text, and import checklist.
 
 ## Why Manual CUDA Is Still Required
 
@@ -56,6 +58,14 @@ Or generate an uploadable notebook:
 python3 tools/print_cuda_colab_cell.py \
   --run-candidate \
   --notebook-output /tmp/open_duck_cuda_candidate.ipynb
+```
+
+Preferred local handoff directory:
+
+```bash
+python3 tools/print_cuda_colab_cell.py \
+  --run-candidate \
+  --handoff-dir /home/lsd/robots/cuda_colab_handoff
 ```
 
 Run the generated cell in the already-authenticated CUDA/Colab session.

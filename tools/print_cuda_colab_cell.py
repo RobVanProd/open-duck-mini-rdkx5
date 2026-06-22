@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+from datetime import datetime, timezone
 import json
 from pathlib import Path
 import textwrap
@@ -423,6 +424,83 @@ def write_notebook(path: Path, cell: str) -> None:
     path.write_text(json.dumps(notebook, indent=2) + "\n")
 
 
+def write_handoff_dir(path: Path, cell: str, run_candidate: bool) -> None:
+    path.mkdir(parents=True, exist_ok=True)
+    stem = "open_duck_cuda_candidate" if run_candidate else "open_duck_cuda_smoke"
+    cell_path = path / f"{stem}_cell.txt"
+    notebook_path = path / f"{stem}.ipynb"
+    manifest_path = path / "CUDA_COLAB_HANDOFF.md"
+
+    cell_path.write_text(cell)
+    write_notebook(notebook_path, cell)
+
+    generated_at = datetime.now(timezone.utc).replace(microsecond=0).isoformat()
+    mode = "candidate" if run_candidate else "smoke"
+    manifest_path.write_text(
+        textwrap.dedent(
+            f"""\
+            # CUDA / Colab Handoff
+
+            generated_at: `{generated_at}`
+            mode: `{mode}`
+
+            ## Files
+
+            - notebook: `{notebook_path.name}`
+            - raw cell text: `{cell_path.name}`
+
+            ## Run
+
+            Upload/open `{notebook_path.name}` in a trusted, manually
+            authenticated CUDA/Colab session and run its single code cell.
+
+            The cell is offline-only for the robot project:
+
+            - no robot SSH
+            - no robot deploy
+            - no robot tests
+            - no policy overwrite on the robot
+
+            ## Expected Bundle Lines
+
+            At the end of the cell, copy these printed values:
+
+            ```text
+            CUDA_ARTIFACT_BUNDLE /content/open_duck_cuda_artifacts_<timestamp>.tar.gz
+            CUDA_ARTIFACT_BUNDLE_SHA256 <hash>
+            CUDA_ARTIFACT_DOWNLOAD_TRIGGERED /content/open_duck_cuda_artifacts_<timestamp>.tar.gz
+            ```
+
+            If browser download is skipped or fails, download the printed
+            `CUDA_ARTIFACT_BUNDLE` path manually.
+
+            ## Import Locally
+
+            After downloading the bundle to this machine:
+
+            ```bash
+            cd /home/lsd/robots/open-duck-mini-rdkx5
+            python3 tools/import_cuda_artifact_bundle.py \\
+              /path/to/open_duck_cuda_artifacts_<timestamp>.tar.gz \\
+              --expected-sha256 <CUDA_ARTIFACT_BUNDLE_SHA256>
+            ```
+
+            Start review from the generated:
+
+            ```text
+            outputs/analysis/cuda_imports/<timestamp>_<bundle>/CUDA_ARTIFACT_IMPORT_SUMMARY.md
+            ```
+
+            ## Safety
+
+            This handoff does not approve robot testing. Robot-side validation
+            remains blocked until a candidate passes reviewed sim gates and Rob
+            explicitly approves a specific suspended validation run.
+            """
+        )
+    )
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         description="Print a copy-paste CUDA/Colab cell for Open Duck actuator bridge work."
@@ -467,6 +545,13 @@ def main() -> int:
             "copying a large cell into Colab."
         ),
     )
+    parser.add_argument(
+        "--handoff-dir",
+        help=(
+            "Write an uploadable notebook, raw cell text, and "
+            "CUDA_COLAB_HANDOFF.md into this directory."
+        ),
+    )
     args = parser.parse_args()
 
     cell = build_cell(args)
@@ -474,7 +559,9 @@ def main() -> int:
         Path(args.output).write_text(cell)
     if args.notebook_output:
         write_notebook(Path(args.notebook_output), cell)
-    if not args.output and not args.notebook_output:
+    if args.handoff_dir:
+        write_handoff_dir(Path(args.handoff_dir), cell, args.run_candidate)
+    if not args.output and not args.notebook_output and not args.handoff_dir:
         print(cell, end="")
     return 0
 

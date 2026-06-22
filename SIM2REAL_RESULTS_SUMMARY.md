@@ -834,6 +834,8 @@ Recent repo fixes prepared the next manual Colab/CUDA run:
   `/usr/bin/python3` on Colab, and passes it explicitly to `--env-python`
 - the generator can also write an uploadable one-code-cell Colab notebook with
   `--notebook-output`
+- the generator can write a complete local handoff directory with
+  `--handoff-dir`, including notebook, raw cell, and bundle import checklist
 
 Next useful action remains:
 
