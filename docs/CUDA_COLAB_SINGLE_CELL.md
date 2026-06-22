@@ -164,3 +164,9 @@ outputs/analysis/cuda_manual/<candidate>_policy_metadata.json
 
 Do not commit or upload giant raw checkpoint directories unless explicitly
 requested.
+
+Training summaries separate actionable stderr lines from known environment
+noise such as TensorFlow oneDNN notices, missing CUDA-driver messages during
+CPU-only runs, and XLA CPU AOT feature-mismatch chatter. Treat actionable lines
+as review signals; known-noise counts are recorded so logs remain auditable
+without burying candidate status in repetitive backend messages.

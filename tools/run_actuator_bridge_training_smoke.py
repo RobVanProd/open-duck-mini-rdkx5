@@ -16,6 +16,7 @@ from pathlib import Path
 import shlex
 import subprocess
 import sys
+import time
 from typing import Any
 
 
@@ -262,6 +263,7 @@ def main() -> int:
     output_dir.mkdir(parents=True, exist_ok=True)
     write_manifest(output_dir / "smoke_manifest.start.json", manifest)
 
+    start_s = time.monotonic()
     result = subprocess.run(
         command,
         cwd=Path(args.playground_path),
@@ -271,6 +273,7 @@ def main() -> int:
         timeout=args.timeout_s,
         check=False,
     )
+    elapsed_s = time.monotonic() - start_s
     (output_dir / "stdout.txt").write_text(result.stdout)
     (output_dir / "stderr.txt").write_text(result.stderr)
 
@@ -278,6 +281,7 @@ def main() -> int:
         {
             "status": "PASS_SMOKE_RUN" if result.returncode == 0 else "HOLD_SMOKE_RUN",
             "returncode": result.returncode,
+            "elapsed_s": elapsed_s,
             "stdout_path": str(output_dir / "stdout.txt"),
             "stderr_path": str(output_dir / "stderr.txt"),
             "summary": extract_summary(result.stdout),

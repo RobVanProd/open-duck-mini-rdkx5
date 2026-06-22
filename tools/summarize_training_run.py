@@ -23,6 +23,16 @@ STEP_RE = re.compile(
 )
 CHECKPOINT_RE = re.compile(r"Saving checkpoint \(step:\s*(?P<step>\d+)\):\s*(?P<path>.+)")
 EXPORT_RE = re.compile(r"Model exported to:\s*(?P<path>.+)")
+WARNING_RE = re.compile(
+    r"\b(warning|error|traceback|exception|illegal|nan|inf|oom|segfault)\b",
+    re.IGNORECASE,
+)
+KNOWN_NOISE_PATTERNS = {
+    "absl_preinit": "All log messages before absl::InitializeLog()",
+    "tensorflow_onednn": "oneDNN custom operations are on",
+    "tensorflow_cuda_stub_cpu": "cudart_stub.cc:31] Could not find cuda drivers",
+    "xla_cpu_aot_feature_mismatch": "cpu_aot_loader.cc:210] Loading XLA:CPU AOT result. Target machine feature",
+}
 
 
 def timestamp() -> str:
@@ -128,19 +138,58 @@ def collect_files(run_dir: Path) -> dict[str, Any]:
     }
 
 
+def truncate_line(line: str, max_chars: int) -> str:
+    return line[:max_chars] + ("..." if len(line) > max_chars else "")
+
+
+def known_noise_category(line: str) -> str | None:
+    for category, pattern in KNOWN_NOISE_PATTERNS.items():
+        if pattern in line:
+            return category
+    return None
+
+
 def warning_summary(path: Path | None, max_lines: int = 50, max_chars: int = 240) -> dict[str, Any]:
     if path is None or not path.exists():
-        return {"count": 0, "lines": []}
-    needles = ("warning", "error", "traceback", "exception", "illegal", "nan", "inf")
-    lines = []
-    count = 0
+        return {
+            "count": 0,
+            "lines": [],
+            "actionable_count": 0,
+            "actionable_lines": [],
+            "known_noise_count": 0,
+            "known_noise_by_category": {},
+            "total_signal_count": 0,
+        }
+    actionable_lines = []
+    known_noise_lines = []
+    known_noise_by_category: dict[str, int] = {}
+    actionable_count = 0
+    known_noise_count = 0
+    total_signal_count = 0
     for line in path.read_text(errors="replace").splitlines():
-        low = line.lower()
-        if any(needle in low for needle in needles):
-            count += 1
-            if len(lines) < max_lines:
-                lines.append(line[:max_chars] + ("..." if len(line) > max_chars else ""))
-    return {"count": count, "lines": lines}
+        category = known_noise_category(line)
+        if category is not None:
+            known_noise_count += 1
+            total_signal_count += 1
+            known_noise_by_category[category] = known_noise_by_category.get(category, 0) + 1
+            if len(known_noise_lines) < max_lines:
+                known_noise_lines.append(truncate_line(line, max_chars))
+            continue
+        if WARNING_RE.search(line):
+            actionable_count += 1
+            total_signal_count += 1
+            if len(actionable_lines) < max_lines:
+                actionable_lines.append(truncate_line(line, max_chars))
+    return {
+        "count": actionable_count,
+        "lines": actionable_lines,
+        "actionable_count": actionable_count,
+        "actionable_lines": actionable_lines,
+        "known_noise_count": known_noise_count,
+        "known_noise_lines": known_noise_lines,
+        "known_noise_by_category": known_noise_by_category,
+        "total_signal_count": total_signal_count,
+    }
 
 
 def latest_onnx(onnx_files: list[dict[str, Any]]) -> dict[str, Any] | None:
@@ -174,6 +223,7 @@ def markdown(payload: dict[str, Any]) -> str:
         "",
         f"- platform: `{payload['manifest'].get('platform')}`",
         f"- returncode: `{payload['manifest'].get('returncode')}`",
+        f"- elapsed_s: `{payload['manifest'].get('elapsed_s', 'UNKNOWN')}`",
         f"- actuator_bridge_enabled: `{payload['manifest'].get('actuator_bridge_enabled')}`",
         f"- target_rate_scale: `{payload['manifest'].get('target_rate_scale')}`",
         f"- actuator_tracking_scale: `{payload['manifest'].get('actuator_tracking_scale')}`",
@@ -204,16 +254,28 @@ def markdown(payload: dict[str, Any]) -> str:
 
     warnings = payload["stderr_warnings"]
     lines.extend(["", "## Warning Lines", ""])
-    if warnings["lines"]:
-        lines.append(f"Warning/error-like stderr lines found: `{warnings['count']}`")
+    known_noise = warnings.get("known_noise_by_category") or {}
+    lines.append(
+        f"Actionable warning/error-like stderr lines found: "
+        f"`{warnings.get('actionable_count', warnings.get('count', 0))}`"
+    )
+    lines.append(f"Known benign/log-noise stderr lines found: `{warnings.get('known_noise_count', 0)}`")
+    if known_noise:
         lines.append("")
-        lines.append("First lines, truncated:")
+        lines.append("| known noise category | count |")
+        lines.append("|---|---:|")
+        for category, count in sorted(known_noise.items()):
+            lines.append(f"| `{category}` | {count} |")
+    if warnings.get("actionable_lines"):
+        lines.append("")
+        lines.append("First actionable lines, truncated:")
         lines.append("")
         lines.append("```text")
-        lines.extend(warnings["lines"][:20])
+        lines.extend(warnings["actionable_lines"][:20])
         lines.append("```")
     else:
-        lines.append("No warning/error-like stderr lines found.")
+        lines.append("")
+        lines.append("No actionable warning/error-like stderr lines found.")
 
     lines.extend(
         [
