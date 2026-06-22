@@ -169,6 +169,7 @@ scp_cmd_string() {
 ssh_run() {
   local remote_command="$1"
   COMMANDS_RUN+=("$(ssh_cmd_string) $(quote "$remote_command")")
+  # shellcheck disable=SC2029
   ssh "${SSH_OPTS[@]}" "$SSH_TARGET" "$remote_command"
 }
 

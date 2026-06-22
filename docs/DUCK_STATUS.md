@@ -1,145 +1,203 @@
-# Open Duck Mini Local Status
+# Open Duck Mini Current Status
 
-Updated: 2026-06-16 16:00 EDT
+Updated: 2026-06-22
 
 ## Current Priority
 
-Validate the current sim-qualified Open Duck Mini policy on hardware in ordered stages.
-Do not call the policy hardware-validated until the required hardware trial records pass in order.
+The robot is parked. Do not run more robot motion until a new candidate policy
+passes the offline actuator-bridge gates and Rob explicitly approves suspended
+validation.
 
-Next required stage:
+Current work is offline:
+
+```text
+merge/review Playground actuator bridge PR
+  -> run CUDA or CPU smoke/correctness checks
+  -> train candidate with actuator bridge enabled
+  -> summarize training run
+  -> package candidate ONNX metadata
+  -> review sim-side gates
+  -> only then request suspended robot validation
+```
+
+Manual CUDA/Colab helper:
+
+```text
+docs/CUDA_COLAB_SINGLE_CELL.md
+tools/print_cuda_colab_cell.py
+```
+
+Use this path when local `7900 XTX` ROCm/MJX remains blocked and a trusted
+Colab/L4/A100 session is available.
+
+## Current Leading Finding
+
+The forward-fall investigation no longer points first at a gross IMU, joint
+mapping, or policy-file mismatch.
+
+Evidence now points to actuator dynamics:
+
+```text
+slow sine sweeps:
+  pass at low target velocity
+
+suspended x=0.0:
+  mostly healthy / warning only
+
+suspended x=0.08:
+  coherent air-walking visually
+  sustained pitch-chain lag
+  target waveform faster than the real actuator chain can track
+
+fitted actuator model:
+  explains most of the suspended x=0.08 target/actual lag
+
+CUDA closed-loop actuator bridge eval:
+  PASS_CLOSED_LOOP_REPRODUCTION
+```
+
+Grounded replay remains blocked.
+
+## Active Policy State
+
+Baseline policy:
+
+```text
+policy/BEST_WALK_ONNX_2.onnx
+sha256: 3c606f9381a1710cc8fecdb7442787dcbfce3ee9bc02a6f1224774ab2b3a1067
+contract: obs[1,101] -> continuous_actions[1,14]
+```
+
+Do not overwrite this file.
+
+No new deployable candidate policy is active as of this update.
+
+Tiny CPU smoke ONNX exports exist under `/tmp/open_duck_actuator_bridge_smoke/`.
+They are explicitly non-deployable and were used only to validate the training
+loop, summarizer, and package tooling.
+
+## Active PRs
+
+RDK diagnostics/workflow repo:
+
+```text
+PR: https://github.com/RobVanProd/open-duck-mini-rdkx5/pull/18
+branch: main after PR #18 merges
+purpose: training workflow, smoke launcher, candidate packaging gates, docs
+```
+
+Playground fork:
+
+```text
+PR: https://github.com/RobVanProd/Open_Duck_Playground/pull/1
+branch: main
+purpose: default-off actuator bridge in joystick env and runner controls
+```
+
+Local ROCm/MJX backend issue:
+
+```text
+issue: https://github.com/RobVanProd/open-duck-mini-rdkx5/issues/19
+status: HOLD_PLAYGROUND_GPU_STEP on local RX 7900 XTX
+```
+
+## Backend State
+
+CUDA:
+
+```text
+Google Colab NVIDIA L4:
+  PASS_CLOSED_LOOP_REPRODUCTION
+```
+
+Local RX `7900 XTX` / ROCm:
+
+```text
+basic JAX GPU: PASS
+minimal MJX GPU: PASS
+Playground reset GPU: PASS
+Playground step GPU: HOLD_PLAYGROUND_GPU_STEP
+```
+
+CPU:
+
+```text
+reduced-horizon correctness checks: usable
+full training: not practical
+```
+
+Use `docs/CUDA_BACKEND_TRAINING_RUNBOOK.md` for CUDA runs while issue #19
+remains open.
+
+## Candidate Gate Order
+
+Before any robot-side validation:
+
+1. Summarize training run:
 
 ```bash
-cd /home/lsd/robots/open_duck_peer/bundle/open_duck_mini_candidate
-OPEN_DUCK_MINI_RUNTIME=/home/lsd/robots/Open_Duck_Mini_Runtime STAGE_ARMED=imu_static ./run_hardware_stage.sh imu_static
+python3 tools/summarize_training_run.py <run_dir> \
+  --output-md outputs/analysis/<candidate>_training_run_summary.md \
+  --output-json outputs/analysis/<candidate>_training_run_summary.json
 ```
 
-`imu_static` is the first safe stage. It samples the IMU while the robot is fixed upright. It is not a walking test.
+2. Package latest ONNX:
 
-## Active Candidate
+```bash
+python3 tools/package_candidate_policy.py <candidate.onnx> \
+  --candidate-name <candidate> \
+  --training-manifest <run_dir>/smoke_manifest.final.json \
+  --contract-audit outputs/analysis/<candidate>_contract.md \
+  --target-velocity-summary outputs/analysis/<candidate>_target_velocity.md \
+  --actuator-bridge-eval outputs/analysis/<candidate>_actuator_bridge_eval.md \
+  --output-md outputs/analysis/<candidate>_policy_package.md \
+  --output-json outputs/analysis/<candidate>_policy_metadata.json
+```
 
-- Candidate ONNX: `/home/lsd/robots/open_duck_peer/bundle/open_duck_mini_candidate/candidate.onnx`
-- Candidate SHA256: `6c90e252c023f405ae8ffe9c81e1c6771c2aee0dcfdd9f9f5081d36224f068ce`
-- Bundle archive: `/home/lsd/robots/open_duck_peer/open_duck_mini_candidate_bundle.tar.gz`
-- Bundle SHA256: `fa1a8946be523dcc2345d126599665ff262ec452bbd4baadf77530b1592db23d`
-- Status: `sim_qualified_not_hardware_validated`
-- ONNX contract: obs dim `101`, action dim `14`
+3. Review `docs/CANDIDATE_POLICY_VALIDATION_GATES.md`.
 
-Dry preflight on this workstation passes:
+4. If all sim-side gates pass, request Rob's approval for suspended `x=0.0`.
 
-- Result: `/home/lsd/robots/open_duck_peer/preflight/preflight_2026-06-16T195743Z.json`
-- ONNX smoke shape: `[1, 101] -> [1, 14]`
-- Smoke max abs action: `0.7081195712089539`
-- Sanity sweep max abs action: `0.7456612586975098`
-
-ONNX Runtime currently prints many schema warnings to stderr, but inference succeeds and preflight exits `0`.
-
-## Sim Analysis
-
-The current candidate beats the old baseline in the Mac-side durability gate:
-
-- Candidate durable score: `174.51887604448532`
-- Baseline `BEST_WALK_ONNX_2` durable score: `99.87989546827899`
-- Score delta: `+74.63898057620633`
-- Candidate hard failures: `0`
-- Baseline hard failures: `4`
-- Candidate mean fall rate: `0.0`
-- Candidate mean forward velocity: `0.1372611974008192`
-
-Durability cases all passed:
-
-| Case | Score | Fall Rate | Mean Velocity |
-| --- | ---: | ---: | ---: |
-| `flat_backlash_015_random` | `174.517` | `0.0` | `0.140` |
-| `flat_backlash_015_home` | `179.778` | `0.0` | `0.150` |
-| `flat_backlash_012_random` | `178.977` | `0.0` | `0.118` |
-| `flat_backlash_018_random` | `167.991` | `0.0` | `0.153` |
-| `rough_backlash_light_seed11` | `173.129` | `0.0` | `0.130` |
-| `rough_backlash_light_seed17` | `171.659` | `0.0` | `0.133` |
-
-Quality-search note from the Mac bundle: later quality branches did not improve the retained candidate. They repeatedly failed the rough-light backlash cases, so the recommendation is to prioritize ordered hardware validation before wider search.
-
-## Hardware Validation Order
-
-Required ordered records:
-
-1. `imu_static`, fixed upright, 10 seconds, max falls `0`
-2. `blocks_static`, on blocks, 10 seconds, max falls `0`
-3. `flat_tether_0.08`, tethered flat floor, 10 seconds, command x `0.08`, max falls `0`
-4. `flat_tether_0.12`, tethered flat floor, 10 seconds, command x `0.12`, max falls `0`
-5. `flat_stop`, flat floor stop, 5 seconds, command x `0.0`, max falls `0`
-
-Use `./hardware_status.py` inside the bundle to print the exact next command.
-
-## Local Runtime State
-
-Runtime repo:
+Robot validation order remains:
 
 ```text
-/home/lsd/robots/Open_Duck_Mini_Runtime
+1. suspended x=0.0
+2. suspended x=0.08
+3. grounded replay only after suspended dynamic tracking passes
 ```
 
-Local patch applied to:
+## Board State
+
+Last known board facts from the RDK-X5 evidence snapshot:
 
 ```text
-/home/lsd/robots/Open_Duck_Mini_Runtime/scripts/v2_rl_walk_mujoco.py
+board: D-Robotics RDK-X5
+hostname: ubuntu
+SSH target: sunrise@192.168.1.50
+runtime: /home/sunrise/project/Open_Duck_Mini_Runtime-2_RDK_X5
+board Python: /home/sunrise/duck_env/bin/python
+board policy: /home/sunrise/BEST_WALK_ONNX_2.onnx
+imu_upside_down: true
+start_paused: true
 ```
 
-Patch purpose:
+The live RDK-X5 `duck_config.json` captured real calibrated offsets. Treat it
+as physical truth unless a later snapshot proves otherwise.
 
-- Adds `--fixed_command_x`
-- Adds `--max_runtime_seconds`
-- Adds `--force_unpaused`
-- Enables motor target velocity clamping
-- Adds `finally` cleanup with `self.hwi.turn_off()`
+## Superseded Historical Note
 
-This repo is intentionally dirty because the deploy bundle preflight requires these safety hooks.
+The old `open_duck_peer` candidate bundle from 2026-06-16 is superseded for the
+current actuator-bridge workflow. Do not use its hardware validation commands as
+the current runbook.
 
-Robot config:
+Historical details remain available in git history before this file was updated
+on 2026-06-22.
 
-```text
-/home/lsd/duck_config.json
-```
+## Hard Stops
 
-It is conservative and starts paused. Joint offsets are zero placeholders. This is acceptable for the local Ubuntu preflight path, but it is not a substitute for the RDK-X5 robot's real calibrated `~/duck_config.json`.
-
-Known board-side history from `/home/lsd/robots/outputs/duck_rdkx5_status.md` says servo zero calibration was completed on the RDK-X5 on 2026-06-14, including mechanical correction of two mis-clocked left-leg parts. Treat the board's config as the physical truth; treat this workstation's config as a safe local guard file.
-
-## Prior Hardware Work
-
-Detailed index:
-
-```text
-/home/lsd/robots/outputs/DUCK_OUTPUTS_INDEX.md
-```
-
-Key points from existing logs:
-
-- RDK-X5 board access: primary Wi-Fi `192.168.1.50`, SSH user `sunrise`; key material is in `/home/lsd/robots/.duck_access/`. Direct Ethernet `192.168.127.10` is fallback only when a cable is connected.
-- Board-only/no-motor Ethernet stability test passed for 359 samples from 2026-06-15 02:01 to 08:02 EDT with `0` ping failures, `0` SSH failures, `0` boot ID changes, and `0` uptime resets.
-- Earlier Wi-Fi disappearance was determined to be network reachability, not a board power loss.
-- Battery/UBEC/Dupont power path remained suspect for real resets under the battery harness.
-- Board logs showed a dirty FAT unmount warning; do not run fsck against mounted live filesystems.
-- Some previous walking experiments reached unpaused motion, but logs include tilt spikes up to `88.5 deg` in one responsive run and repeated blocked unpause events when controller commands were not neutral.
-- Current disciplined path should use the staged deploy bundle, not the older ad hoc walk scripts.
-
-## Main Local Folders
-
-| Path | Purpose |
-| --- | --- |
-| `/home/lsd/robots/open_duck_peer` | Current Mac bridge handoff and deploy bundle |
-| `/home/lsd/robots/Open_Duck_Mini_Runtime` | Physical robot runtime |
-| `/home/lsd/robots/Open_Duck_Mini` | Open Duck Mini repo and older ONNX baselines |
-| `/home/lsd/robots/Open_Duck_Playground` | Simulation/playground repo |
-| `/home/lsd/robots/Open_Duck_reference_motion_generator` | Reference motion generator |
-| `/home/lsd/robots/outputs` | Prior hardware logs, prints, runbooks, and generated outputs |
-| `/home/lsd/robots/verify_scratch` | Older verification scratch data and ONNX checkpoints |
-| `/home/lsd/robots/housekeeping_archive/2026-06-16-duck-tidy` | Files moved during cleanup, preserved not deleted |
-
-## Housekeeping Done
-
-- Archived empty accidental `=version` files from `Open_Duck_Playground`.
-- Archived reference-motion generator `placo_presets/tmp`.
-- Archived generated `__pycache__` from the extracted peer bundle.
-- Copied the successful preflight JSON and stderr log out of `/tmp` into `open_duck_peer/preflight`.
-- Added this status file and a focused peer-bundle README.
+- Do not run grounded replay yet.
+- Do not deploy smoke ONNX files.
+- Do not overwrite `BEST_WALK_ONNX_2.onnx`.
+- Do not tune hardware gains, offsets, IMU remaps, action scale, or phase
+  timing as part of candidate policy work.
+- Do not treat local ROCm/MJX failure as robot evidence.

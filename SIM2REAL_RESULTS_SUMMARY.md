@@ -447,11 +447,21 @@ Latest ROCm/MJX isolation result:
 - MJCF contact audit found seven contact-relevant floor/foot entries without
   explicit `solref` or `solimp`. This is now a candidate offline sim-model
   probe, not a robot-runtime or training fix.
-- After a full GPU unplug/replug power-cycle, the smallest Open Duck Playground
-  GPU probes were rerun. `playground_reset` still passed, but
-  `playground_one_step_vanilla` timed out, `playground_one_step_jit` failed with
-  returncode `-6`, and `playground_scan_step_vanilla` timed out. This weakens
-  the stale-device-state hypothesis for the MJX step failure.
+- After a full GPU unplug/replug power-cycle, a reduced one-step isolation
+  matrix was rerun under
+  `outputs/analysis/rocm_mjx_recheck_after_reset/`.
+- Result remains `HOLD_PLAYGROUND_GPU_STEP`.
+- GPU still passes basic JAX, JAX jit/scan, minimal MJX, Playground contract,
+  Playground reset, and reset finite-state checks.
+- GPU still fails at the Playground step layer:
+  - `playground_one_step_vanilla`: timeout
+  - `playground_one_step_jit`: returncode `-6`
+  - `playground_scan_step_vanilla`: returncode `-6`
+  - `playground_multi_step_bridge`: timeout
+  - `closed_loop_policy_eval_gpu`: returncode `-6`
+- CPU passes the same reduced one-step path, including one-step, JIT, scan,
+  bridge, and closed-loop CPU. This weakens the stale-device-state hypothesis
+  and keeps the blocker isolated to local ROCm/MJX Playground stepping.
 - A focused RX `7900 XTX` architecture-override check was run after confirming
   `/dev/kfd` and `/dev/dri/renderD*` are visible through the `render` group.
   Plain JAX still reports `RocmDevice(id=0)`.

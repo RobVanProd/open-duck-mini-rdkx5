@@ -45,6 +45,12 @@ preferred target for eventual training, but if ROCm/MJX remains unstable, use a
 reviewed CUDA backend for correctness/training experiments while keeping the
 same policy/sim contract and actuator model.
 
+CUDA fallback/runbook:
+
+```text
+docs/CUDA_BACKEND_TRAINING_RUNBOOK.md
+```
+
 ## P0: Inspect Current Training Contract
 
 ### Fit Real Actuator Response From Telemetry
@@ -144,6 +150,11 @@ Do not start training from an interpreter that reports `HOLD_ENV_NOT_READY`.
   offline sim-model PR, not as a training or robot-runtime change.
 - CPU can run short correctness paths, including closed-loop vanilla short
   matrix, but CPU bridge/multi-step eval is slow under the current timeout.
+- A post-reset one-step isolation rerun still reports
+  `HOLD_PLAYGROUND_GPU_STEP`: GPU contract/reset/finite-state checks pass, but
+  Playground one-step vanilla times out and JIT/scan variants fail with
+  returncode `-6`. CPU one-step, JIT, scan, bridge, and closed-loop reduced
+  checks pass.
 - Next implementation task: implement the training-time actuator wrapper using
   the verified `101` observation / `14` action contract. Keep local ROCm/MJX
   debugging as a backend workstream, not as a blocker for the actuator bridge
@@ -254,6 +265,11 @@ robustness gates.
 - Only start after the sim actuator bridge eval reaches a reviewed
   `PASS_SIM_REPRODUCTION` or equivalent.
 - First run a short ROCm smoke training job on the `7900 XTX` setup.
+- If ROCm/MJX remains blocked, use the CUDA-backed correctness result for
+  design decisions and run only small CPU smoke jobs locally.
+- Use `tools/run_actuator_bridge_training_smoke.py` to print and optionally
+  execute the tiny smoke command. This records the exact command and output
+  manifest under `/tmp` and does not create a deployable policy.
 - Train with the actuator model enabled.
 - Compare against a baseline with the current actuator assumptions.
 - Save:
@@ -268,6 +284,8 @@ robustness gates.
 - Export only after sim-side gates pass.
 - Store policy metadata and hash.
 - Do not overwrite `BEST_WALK_ONNX_2.onnx`.
+- Follow `docs/CANDIDATE_POLICY_VALIDATION_GATES.md` before requesting any
+  robot-side suspended validation.
 
 ## P4: Robot Validation
 

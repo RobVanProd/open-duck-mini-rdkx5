@@ -1,0 +1,233 @@
+#!/usr/bin/env python3
+"""Print a single CUDA/Colab cell for actuator-bridge training checks."""
+
+from __future__ import annotations
+
+import argparse
+from pathlib import Path
+import textwrap
+
+
+DEFAULT_RDK_REPO = "https://github.com/RobVanProd/open-duck-mini-rdkx5.git"
+DEFAULT_PLAYGROUND_REPO = "https://github.com/RobVanProd/Open_Duck_Playground.git"
+DEFAULT_RDK_BRANCH = "main"
+DEFAULT_PLAYGROUND_BRANCH = "main"
+
+
+def bash_bool(value: bool) -> str:
+    return "1" if value else "0"
+
+
+def build_cell(args: argparse.Namespace) -> str:
+    candidate_flag = bash_bool(args.run_candidate)
+    smoke_steps = args.smoke_num_timesteps
+    candidate_steps = args.candidate_num_timesteps
+    cell = f"""%%bash
+set -euo pipefail
+
+# Open Duck Mini CUDA actuator-bridge workflow.
+# This is offline-only: no robot SSH, deploy, runtime changes, or policy overwrite.
+cd /content
+
+export RDK_REPO={args.rdk_repo!r}
+export PLAYGROUND_REPO={args.playground_repo!r}
+export RDK_BRANCH={args.rdk_branch!r}
+export PLAYGROUND_BRANCH={args.playground_branch!r}
+export RUN_CANDIDATE={candidate_flag}
+export CANDIDATE_NUM_TIMESTEPS={candidate_steps}
+
+echo "=== GPU ==="
+nvidia-smi || true
+
+echo "=== Python/JAX before setup ==="
+python - <<'PY'
+try:
+    import jax
+    print("jax", jax.__version__)
+    print("backend", jax.default_backend())
+    print("devices", jax.devices())
+except Exception as exc:
+    print("jax_pre_setup_error", type(exc).__name__, exc)
+PY
+
+echo "=== Clone / update repos ==="
+if [ ! -d /content/open-duck-mini-rdkx5 ]; then
+  git clone "$RDK_REPO" /content/open-duck-mini-rdkx5
+fi
+if [ ! -d /content/Open_Duck_Playground ]; then
+  git clone "$PLAYGROUND_REPO" /content/Open_Duck_Playground
+fi
+
+cd /content/open-duck-mini-rdkx5
+git fetch origin
+git checkout "$RDK_BRANCH"
+git pull --ff-only
+
+cd /content/Open_Duck_Playground
+git fetch origin
+git checkout "$PLAYGROUND_BRANCH"
+git pull --ff-only
+
+echo "=== Install CUDA eval/training deps ==="
+python -m pip install -U pip
+python -m pip install -U \\
+  "jax[cuda12]" \\
+  "playground==0.0.5" \\
+  "mujoco>=3.2.7,<3.10" \\
+  "mujoco-mjx>=3.2.7" \\
+  onnxruntime \\
+  ml-collections \\
+  numpy \\
+  matplotlib \\
+  mediapy \\
+  tensorflow \\
+  tf2onnx
+python -m pip install --no-deps -e /content/Open_Duck_Playground
+
+echo "=== Verify key imports ==="
+python - <<'PY'
+import jax
+import mujoco
+import mujoco_playground
+import mujoco_playground._src.collision as collision
+print("jax", jax.__version__, jax.default_backend(), jax.devices())
+print("mujoco", mujoco.__version__)
+print("mujoco_playground", mujoco_playground.__file__)
+print("collision", collision.__file__)
+PY
+
+cd /content/open-duck-mini-rdkx5
+mkdir -p outputs/analysis/cuda_manual
+
+echo "=== Environment check ==="
+python tools/check_training_env.py \\
+  --playground-root /content/Open_Duck_Playground
+
+echo "=== Policy/sim contract audit ==="
+python tools/audit_policy_sim_contract.py \\
+  --policy policy/BEST_WALK_ONNX_2.onnx \\
+  --playground-path /content/Open_Duck_Playground \\
+  --env-python "$(command -v python)" \\
+  --instantiate-timeout-s 600 \\
+  --output-md outputs/analysis/cuda_manual/POLICY_SIM_CONTRACT_AUDIT_CUDA.md \\
+  --output-json outputs/analysis/cuda_manual/policy_sim_contract_audit_cuda.json
+
+echo "=== Closed-loop baseline bridge reproduction ==="
+python tools/eval_policy_with_actuator_bridge.py \\
+  --mode closed-loop-sim \\
+  --policy policy/BEST_WALK_ONNX_2.onnx \\
+  --fit-json outputs/analysis/actuator_response_fit.json \\
+  --playground-path /content/Open_Duck_Playground \\
+  --env-python "$(command -v python)" \\
+  --command-x 0.08 \\
+  --duration 15 \\
+  --bridge-mode all \\
+  --closed-loop-timeout-s 1800 \\
+  --output-dir outputs/analysis/cuda_manual
+
+echo "=== CUDA smoke training ==="
+python tools/run_actuator_bridge_training_smoke.py \\
+  --playground-path /content/Open_Duck_Playground \\
+  --env-python "$(command -v python)" \\
+  --platform gpu \\
+  --run \\
+  --output-root /content/open_duck_training_smokes \\
+  --num-timesteps {smoke_steps} \\
+  --ppo-num-envs {args.smoke_ppo_num_envs} \\
+  --ppo-num-evals 1 \\
+  --ppo-episode-length {args.smoke_episode_length} \\
+  --ppo-unroll-length 5 \\
+  --ppo-batch-size {args.smoke_ppo_batch_size} \\
+  --ppo-num-minibatches 1 \\
+  --ppo-num-updates-per-batch 1 \\
+  --target-rate-scale 0.01 \\
+  --actuator-tracking-scale 0.0 \\
+  --timeout-s 1200
+
+if [ "$RUN_CANDIDATE" = "1" ]; then
+  echo "=== CUDA candidate training ==="
+  python tools/run_actuator_bridge_training_smoke.py \\
+    --playground-path /content/Open_Duck_Playground \\
+    --env-python "$(command -v python)" \\
+    --platform gpu \\
+    --run \\
+    --output-root /content/open_duck_training_runs \\
+    --num-timesteps "$CANDIDATE_NUM_TIMESTEPS" \\
+    --ppo-num-envs {args.candidate_ppo_num_envs} \\
+    --ppo-num-evals {args.candidate_ppo_num_evals} \\
+    --ppo-episode-length {args.candidate_episode_length} \\
+    --ppo-unroll-length {args.candidate_unroll_length} \\
+    --ppo-batch-size {args.candidate_ppo_batch_size} \\
+    --ppo-num-minibatches {args.candidate_ppo_num_minibatches} \\
+    --ppo-num-updates-per-batch {args.candidate_ppo_num_updates_per_batch} \\
+    --target-rate-scale 0.01 \\
+    --actuator-tracking-scale 0.0 \\
+    --timeout-s {args.candidate_timeout_s}
+
+  RUN_DIR="$(find /content/open_duck_training_runs -maxdepth 1 -type d -name 'smoke_*_gpu' | sort | tail -n 1)"
+  CANDIDATE="open_duck_mini_actuator_bridge_$(date -u +%Y%m%dT%H%M%SZ)"
+  LATEST_ONNX="$(ls -1 "$RUN_DIR"/*.onnx | sort | tail -n 1)"
+
+  python tools/summarize_training_run.py "$RUN_DIR" \\
+    --output-md "outputs/analysis/cuda_manual/${{CANDIDATE}}_training_run_summary.md" \\
+    --output-json "outputs/analysis/cuda_manual/${{CANDIDATE}}_training_run_summary.json"
+
+  python tools/package_candidate_policy.py "$LATEST_ONNX" \\
+    --candidate-name "$CANDIDATE" \\
+    --training-manifest "$RUN_DIR/smoke_manifest.final.json" \\
+    --contract-audit outputs/analysis/cuda_manual/POLICY_SIM_CONTRACT_AUDIT_CUDA.md \\
+    --actuator-bridge-eval outputs/analysis/cuda_manual/CLOSED_LOOP_ACTUATOR_BRIDGE_EVAL.md \\
+    --output-md "outputs/analysis/cuda_manual/${{CANDIDATE}}_policy_package.md" \\
+    --output-json "outputs/analysis/cuda_manual/${{CANDIDATE}}_policy_metadata.json" || true
+
+  echo "=== Candidate small outputs ==="
+  ls -1 outputs/analysis/cuda_manual/${{CANDIDATE}}_* || true
+else
+  echo "RUN_CANDIDATE=0, so candidate training was skipped."
+  echo "After smoke passes, rerun this cell with --run-candidate generated or set RUN_CANDIDATE=1 near the top."
+fi
+
+echo "=== Small output files ==="
+find outputs/analysis/cuda_manual -maxdepth 1 -type f -printf '%p\\n' | sort
+
+echo "=== Final safety note ==="
+echo "This cell does not approve robot testing. Package and sim gates must be reviewed before any suspended validation."
+"""
+    return textwrap.dedent(cell).strip() + "\n"
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(
+        description="Print a copy-paste CUDA/Colab cell for Open Duck actuator bridge work."
+    )
+    parser.add_argument("--rdk-repo", default=DEFAULT_RDK_REPO)
+    parser.add_argument("--playground-repo", default=DEFAULT_PLAYGROUND_REPO)
+    parser.add_argument("--rdk-branch", default=DEFAULT_RDK_BRANCH)
+    parser.add_argument("--playground-branch", default=DEFAULT_PLAYGROUND_BRANCH)
+    parser.add_argument("--run-candidate", action="store_true")
+    parser.add_argument("--smoke-num-timesteps", type=int, default=64)
+    parser.add_argument("--smoke-ppo-num-envs", type=int, default=8)
+    parser.add_argument("--smoke-ppo-batch-size", type=int, default=8)
+    parser.add_argument("--smoke-episode-length", type=int, default=50)
+    parser.add_argument("--candidate-num-timesteps", type=int, default=200_000)
+    parser.add_argument("--candidate-ppo-num-envs", type=int, default=512)
+    parser.add_argument("--candidate-ppo-num-evals", type=int, default=5)
+    parser.add_argument("--candidate-episode-length", type=int, default=500)
+    parser.add_argument("--candidate-unroll-length", type=int, default=10)
+    parser.add_argument("--candidate-ppo-batch-size", type=int, default=512)
+    parser.add_argument("--candidate-ppo-num-minibatches", type=int, default=16)
+    parser.add_argument("--candidate-ppo-num-updates-per-batch", type=int, default=4)
+    parser.add_argument("--candidate-timeout-s", type=int, default=7200)
+    parser.add_argument("--output", help="Write the cell to this file instead of stdout.")
+    args = parser.parse_args()
+
+    cell = build_cell(args)
+    if args.output:
+        Path(args.output).write_text(cell)
+    else:
+        print(cell, end="")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

@@ -307,6 +307,7 @@ run_moving_sequence() {
 
   run_readonly
 
+  # shellcheck disable=SC2029
   ssh "${SSH_OPTS[@]}" "$SSH_TARGET" "$(remote_home_pose_cmd)"
   scp "${SSH_OPTS[@]}" "$SSH_TARGET:$ROBOT_LOG_DIR/home_pose_log_test.jsonl" "$home_log"
   python3 tools/analyze_telemetry_obs.py "$home_log" \
@@ -322,6 +323,7 @@ run_moving_sequence() {
     exit 0
   fi
 
+  # shellcheck disable=SC2029
   ssh "${SSH_OPTS[@]}" "$SSH_TARGET" "$(remote_imu_tilt_cmd)"
   scp "${SSH_OPTS[@]}" "$SSH_TARGET:$ROBOT_LOG_DIR/imu_tilt_test.jsonl" "$imu_log"
   python3 tools/analyze_telemetry_obs.py "$imu_log" \
@@ -337,6 +339,7 @@ run_moving_sequence() {
     exit 0
   fi
 
+  # shellcheck disable=SC2029
   ssh "${SSH_OPTS[@]}" "$SSH_TARGET" "$(remote_foot_contact_cmd)"
   scp "${SSH_OPTS[@]}" "$SSH_TARGET:$ROBOT_LOG_DIR/foot_contact_test.jsonl" "$foot_log"
   {
