@@ -206,6 +206,41 @@ same step path pass on CPU. Therefore the smallest local blocker is the Open
 Duck MJX physics step on ROCm, before policy inference, reward logic, actuator
 bridge insertion, or rollout-loop structure matter.
 
+## Direct Step Variant Probe
+
+The smallest failing direct-step subtest was rerun with the main per-process
+ROCm/JAX workaround variants:
+
+```bash
+../envs/open-duck-playground/bin/python tools/isolate_rocm_mjx_failure.py \
+  --playground-path ../Open_Duck_Playground \
+  --env-python ../envs/open-duck-playground/bin/python \
+  --policy policy/BEST_WALK_ONNX_2.onnx \
+  --fit-json outputs/analysis/actuator_response_fit.json \
+  --output-dir outputs/analysis/rocm_mjx_direct_step_variants \
+  --command-x 0.08 \
+  --steps 1 \
+  --platforms gpu \
+  --subtests playground_direct_mjx_step \
+  --variants preallocate_false,mem_fraction_050,mem_fraction_060,allocator_platform,rocm_strict_ieee,xla_compiler_conservative \
+  --timeout-s 120
+```
+
+Result:
+
+| variant | direct Open Duck `mjx_env.step(...)` result |
+|---|---|
+| `XLA_PYTHON_CLIENT_PREALLOCATE=false` | `TIMEOUT` |
+| `XLA_PYTHON_CLIENT_MEM_FRACTION=0.50` | `TIMEOUT` |
+| `XLA_PYTHON_CLIENT_MEM_FRACTION=0.60` | `TIMEOUT` |
+| `XLA_PYTHON_CLIENT_ALLOCATOR=platform` | `TIMEOUT` |
+| `ROCM_CHIP_COMPILER_FLAGS=-fno-fast-math -fhonor-infinities -fhonor-nans` | `TIMEOUT` |
+| conservative MIOpen/XLA flags | `TIMEOUT` |
+
+This does not prove the ROCm failure is impossible to fix, but it rules out the
+simple per-process memory allocation and strict-math toggles as sufficient fixes
+for the smallest failing Open Duck physics step in the current environment.
+
 ## PufferLib / Torch ROCm Note
 
 The workstation also has a local PufferLib HIP/ROCm tree:
@@ -243,6 +278,8 @@ outputs/analysis/rocm_mjx_isolation/*.stdout.txt
 outputs/analysis/rocm_mjx_isolation/*.stderr.txt
 outputs/analysis/rocm_mjx_direct_step_probe/*.stdout.txt
 outputs/analysis/rocm_mjx_direct_step_probe/*.stderr.txt
+outputs/analysis/rocm_mjx_direct_step_variants/*.stdout.txt
+outputs/analysis/rocm_mjx_direct_step_variants/*.stderr.txt
 ```
 
 Important failure logs:
