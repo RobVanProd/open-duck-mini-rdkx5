@@ -712,6 +712,10 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                 jax.device_get(env.get_actuator_joints_qpos(state.data.qpos)),
                 dtype=float,
             )
+            local_linvel = np.asarray(
+                jax.device_get(env.get_local_linvel(state.data)),
+                dtype=float,
+            )
             qpos = np.asarray(jax.device_get(state.data.qpos), dtype=float)
             base_addr = int(env._floating_base_qpos_addr)
             quat = qpos[base_addr + 3 : base_addr + 7]
@@ -743,6 +747,7 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                     "base_x_m": float(qpos[base_addr]),
                     "base_y_m": float(qpos[base_addr + 1]),
                     "base_height_m": float(qpos[base_addr + 2]),
+                    "local_linvel_m_s": local_linvel.astype(float).tolist(),
                     "foot_contacts": contacts.astype(int).tolist(),
                     "reward": reward,
                     "reward_terms": reward_terms,
@@ -759,6 +764,12 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
         base_x = signed_stats([record["base_x_m"] for record in records])
         base_y = signed_stats([record["base_y_m"] for record in records])
         base_height = signed_stats([record["base_height_m"] for record in records])
+        local_vx_values = [
+            record["local_linvel_m_s"][0]
+            for record in records
+            if record.get("local_linvel_m_s")
+        ]
+        local_vx = signed_stats(local_vx_values)
         reward_stats = signed_stats([record["reward"] for record in records])
         reward_terms = reward_term_summary(records)
         if len(records) >= 2:
@@ -768,7 +779,12 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             )
             progress_x = float(records[-1]["base_x_m"]) - float(records[0]["base_x_m"])
             progress_y = float(records[-1]["base_y_m"]) - float(records[0]["base_y_m"])
-            mean_vx = progress_x / elapsed_s
+            world_mean_vx = progress_x / elapsed_s
+            mean_vx = (
+                float(np.mean(local_vx_values))
+                if local_vx_values
+                else world_mean_vx
+            )
             ratio = (
                 mean_vx / float(config.command_x)
                 if abs(float(config.command_x)) >= 1e-9
@@ -779,6 +795,7 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             elapsed_s = 0.0
             progress_x = None
             progress_y = None
+            world_mean_vx = None
             mean_vx = None
             ratio = None
             velocity_error = None
@@ -798,14 +815,17 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             "base_x_m": base_x,
             "base_y_m": base_y,
             "base_height_m": base_height,
+            "local_forward_velocity_m_s": local_vx,
             "forward_motion": {
                 "elapsed_s": elapsed_s,
                 "progress_x_m": progress_x,
                 "progress_y_m": progress_y,
+                "world_mean_velocity_x_m_s": world_mean_vx,
                 "mean_velocity_x_m_s": mean_vx,
                 "command_x_m_s": float(config.command_x),
                 "velocity_error_m_s": velocity_error,
                 "command_tracking_ratio": ratio,
+                "measurement_frame": "local_base_x",
             },
             "reward": reward_stats,
             "reward_terms": reward_terms,

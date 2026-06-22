@@ -700,7 +700,7 @@ def build_markdown(payload: dict) -> str:
         lines.append("")
         lines.append(
             "| mode | samples | termination | body_pitch_p95 | base_height_min | "
-            "mean_vx | track_ratio | reward_mean |"
+            "mean_local_vx | track_ratio | reward_mean |"
         )
         lines.append("|---|---:|---|---:|---:|---:|---:|---:|")
         for mode_name, mode in (closed_loop.get("modes") or {}).items():

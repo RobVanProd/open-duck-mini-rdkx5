@@ -63,7 +63,7 @@ reviewed sim-side gates:
 | target velocity | p95/p99 reduced versus `BEST_WALK_ONNX_2` x=0.08 baseline |
 | simulated pitch tracking | p95 preferably `<0.05 rad`, acceptable `<0.08 rad` |
 | post-startup tracking | no sustained pitch-chain error `>0.10 rad` |
-| forward command tracking | mean forward velocity tracks at least part of nonzero `x` command |
+| forward command tracking | mean local-base-x velocity tracks at least part of nonzero `x` command |
 | gait stability | stable at `x=0.00`, `x=0.04`, and `x=0.08` in sim |
 | reward | no obvious frozen or collapsed gait exploit |
 | metadata | ONNX hash, config, seed, and eval summary saved |
@@ -71,6 +71,11 @@ reviewed sim-side gates:
 The offline candidate gate currently holds nonzero commands when the measured
 forward command tracking ratio is below `0.25`. This prevents a policy from
 passing by standing still with smooth, easy-to-track actions.
+
+Forward command tracking is measured in the robot local base-x frame via
+`env.get_local_linvel(...)`, not by world `base_x` displacement. The Playground
+reset randomizes yaw, so world-frame displacement can have the wrong sign for a
+valid forward command.
 
 ## Required Offline Artifacts
 
