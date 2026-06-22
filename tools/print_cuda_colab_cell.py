@@ -54,6 +54,66 @@ if [ -z "${{PYTHON_BIN:-}}" ]; then
 fi
 echo "PYTHON_BIN=$PYTHON_BIN"
 
+prompt_for_github_token() {{
+  if [ -n "${{GITHUB_TOKEN:-}}" ]; then
+    echo "GitHub token: provided by environment"
+    return 0
+  fi
+  if [ -n "${{GH_TOKEN:-}}" ]; then
+    GITHUB_TOKEN="$GH_TOKEN"
+    export GITHUB_TOKEN
+    echo "GitHub token: provided by GH_TOKEN"
+    return 0
+  fi
+  GITHUB_TOKEN="$("$PYTHON_BIN" - <<'PY'
+import getpass
+
+token = getpass.getpass("GitHub token for private repos, or press Enter if public: ")
+print(token.strip())
+PY
+)"
+  export GITHUB_TOKEN
+  if [ -n "$GITHUB_TOKEN" ]; then
+    echo "GitHub token: provided interactively"
+  else
+    echo "GitHub token: empty, assuming public repo access"
+  fi
+}}
+
+setup_git_auth() {{
+  export GIT_TERMINAL_PROMPT=0
+  if [ -z "${{GITHUB_TOKEN:-}}" ]; then
+    unset GIT_ASKPASS
+    return 0
+  fi
+  GIT_ASKPASS=/tmp/open_duck_git_askpass.sh
+  cat > "$GIT_ASKPASS" <<'SH'
+#!/bin/sh
+case "$1" in
+  *Username*) printf '%s\n' "x-access-token" ;;
+  *Password*) printf '%s\n' "$GITHUB_TOKEN" ;;
+  *) printf '\n' ;;
+esac
+SH
+  chmod 700 "$GIT_ASKPASS"
+  export GIT_ASKPASS
+}}
+
+clone_or_update_repo() {{
+  local repo="$1"
+  local path="$2"
+  local branch="$3"
+  local name="$4"
+  echo "=== Sync $name ==="
+  if [ ! -d "$path/.git" ]; then
+    rm -rf "$path"
+    git clone "$repo" "$path"
+  fi
+  git -C "$path" fetch origin
+  git -C "$path" checkout "$branch"
+  git -C "$path" pull --ff-only
+}}
+
 bundle_cuda_artifacts() {{
   local exit_status="${{1:-0}}"
   set +e
@@ -65,6 +125,11 @@ bundle_cuda_artifacts() {{
     echo "timestamp_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
     echo "rdk_repo=$RDK_REPO"
     echo "rdk_branch=$RDK_BRANCH"
+    if [ -n "${{GITHUB_TOKEN:-}}" ]; then
+      echo "github_token_present=yes"
+    else
+      echo "github_token_present=no"
+    fi
     if [ -d /content/open-duck-mini-rdkx5/.git ]; then
       echo "rdk_commit=$(git -C /content/open-duck-mini-rdkx5 rev-parse HEAD 2>/dev/null || echo UNKNOWN)"
       echo "rdk_dirty_files=$(git -C /content/open-duck-mini-rdkx5 status --short 2>/dev/null | wc -l | tr -d ' ')"
@@ -184,8 +249,7 @@ PY
 }}
 
 on_cuda_cell_exit() {{
-  local rc
-  rc=$?
+  local rc="$?"
   bundle_cuda_artifacts "$rc"
   exit "$rc"
 }}
@@ -206,22 +270,10 @@ except Exception as exc:
 PY
 
 echo "=== Clone / update repos ==="
-if [ ! -d /content/open-duck-mini-rdkx5 ]; then
-  git clone "$RDK_REPO" /content/open-duck-mini-rdkx5
-fi
-if [ ! -d /content/Open_Duck_Playground ]; then
-  git clone "$PLAYGROUND_REPO" /content/Open_Duck_Playground
-fi
-
-cd /content/open-duck-mini-rdkx5
-git fetch origin
-git checkout "$RDK_BRANCH"
-git pull --ff-only
-
-cd /content/Open_Duck_Playground
-git fetch origin
-git checkout "$PLAYGROUND_BRANCH"
-git pull --ff-only
+prompt_for_github_token
+setup_git_auth
+clone_or_update_repo "$RDK_REPO" /content/open-duck-mini-rdkx5 "$RDK_BRANCH" "RDK repo"
+clone_or_update_repo "$PLAYGROUND_REPO" /content/Open_Duck_Playground "$PLAYGROUND_BRANCH" "Playground repo"
 
 echo "=== Install CUDA eval/training deps ==="
 "$PYTHON_BIN" -m pip install -U pip
@@ -461,6 +513,8 @@ def write_handoff_dir(path: Path, cell: str, run_candidate: bool) -> None:
 
             Upload/open `{notebook_path.name}` in a trusted, manually
             authenticated CUDA/Colab session and run its single code cell.
+            If either repo is private, paste a temporary GitHub token into the
+            cell's hidden prompt. Do not edit the token into the notebook file.
 
             The cell is offline-only for the robot project:
 
