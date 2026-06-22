@@ -1,0 +1,46 @@
+name: Validate
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - codex/**
+
+jobs:
+  static-checks:
+    name: Static Checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install shellcheck
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y shellcheck
+
+      - name: Compile Python tools
+        run: python3 -m py_compile tools/*.py
+
+      - name: Validate telemetry schema JSON
+        run: python3 -m json.tool docs/telemetry_schema.json >/tmp/open_duck_rdk_telemetry_schema.validated.json
+
+      - name: Check shell scripts
+        run: |
+          bash -n scripts/*.sh
+          shellcheck scripts/*.sh
+
+      - name: Check generated CUDA Colab cells
+        run: |
+          python3 tools/print_cuda_colab_cell.py --output /tmp/open_duck_cuda_colab_cell.txt
+          sed '1{/^%%bash$/d;}' /tmp/open_duck_cuda_colab_cell.txt | bash -n
+          python3 tools/print_cuda_colab_cell.py --run-candidate --output /tmp/open_duck_cuda_colab_candidate_cell.txt
+          sed '1{/^%%bash$/d;}' /tmp/open_duck_cuda_colab_candidate_cell.txt | bash -n
