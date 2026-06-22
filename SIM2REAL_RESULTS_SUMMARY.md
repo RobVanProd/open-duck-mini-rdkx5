@@ -538,6 +538,8 @@ Results:
   - `step8240_zero_penalty`, `x=0.0`: `PASS_CANDIDATE_SIM_GATE` over `15 s`
   - `step8240_zero_penalty`, `x=0.08`: `PASS_CANDIDATE_SIM_GATE` over `15 s`
   - `step32800_zero_penalty`: `HOLD_CANDIDATE_FALL_OR_TERMINATION` over `2 s`
+- the review-only `step8240_zero_penalty` ONNX is preserved under
+  `policy/candidates/open_duck_mini_actuator_bridge_cpu_pilot_20260622_step8240/`
 
 Interpretation:
 

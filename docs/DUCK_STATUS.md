@@ -73,6 +73,15 @@ Do not overwrite this file.
 
 No new deployable candidate policy is active as of this update.
 
+Review-only candidate preserved in git:
+
+```text
+policy/candidates/open_duck_mini_actuator_bridge_cpu_pilot_20260622_step8240/
+```
+
+Status: `READY_FOR_SIM_GATE_REVIEW`. This candidate is not deployed and is not
+approved for robot-side validation.
+
 Tiny CPU smoke ONNX exports exist under `/tmp/open_duck_actuator_bridge_smoke/`.
 They are explicitly non-deployable and were used only to validate the training
 loop, summarizer, and package tooling.

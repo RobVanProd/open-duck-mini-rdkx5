@@ -1,0 +1,168 @@
+{
+  "baseline": {
+    "path": "/home/lsd/robots/open-duck-mini-rdkx5/policy/BEST_WALK_ONNX_2.onnx",
+    "sha256": "3c606f9381a1710cc8fecdb7442787dcbfce3ee9bc02a6f1224774ab2b3a1067"
+  },
+  "candidate": {
+    "name": "open_duck_mini_actuator_bridge_cpu_pilot_20260622_step8240",
+    "path": "/home/lsd/robots/open-duck-mini-rdkx5/policy/candidates/open_duck_mini_actuator_bridge_cpu_pilot_20260622_step8240/candidate.onnx",
+    "sha256": "ae48fe2678ef3ab1ef2d791b7eefb92218f790774ddaa6525ce6d2838bef2590",
+    "size_bytes": 884094
+  },
+  "contract": {
+    "input_dim": 101,
+    "inputs": [
+      {
+        "dtype": "tensor(float)",
+        "name": "obs",
+        "shape": [
+          1,
+          101
+        ]
+      }
+    ],
+    "output_dim": 14,
+    "outputs": [
+      {
+        "dtype": "tensor(float)",
+        "name": "continuous_actions",
+        "shape": [
+          1,
+          14
+        ]
+      }
+    ],
+    "status": "PASS_POLICY_CONTRACT"
+  },
+  "evidence": {
+    "actuator_bridge_eval": {
+      "label": "actuator_bridge_eval",
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_ZERO_15S.md",
+      "sha256": "688ed97e0a3f3be7873febb5ab09c53f847252afc4a94ec7d6db29c277a25942",
+      "size_bytes": 4704,
+      "status": "PRESENT"
+    },
+    "contract_audit": {
+      "label": "contract_audit",
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/POLICY_SIM_CONTRACT_AUDIT.md",
+      "sha256": "a0f844aa56a937a8e7ece4c1f0486c1b9e66960701366e0a97ffb272002372bf",
+      "size_bytes": 5093,
+      "status": "PRESENT"
+    },
+    "target_velocity_summary": {
+      "label": "target_velocity_summary",
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/ACTUATOR_RESPONSE_FIT.md",
+      "sha256": "d9ee103f5b6b8213b9df19f08e311498c9b7679c5d254d33405111d049693e0e",
+      "size_bytes": 4364,
+      "status": "PRESENT"
+    },
+    "training_manifest": {
+      "label": "training_manifest",
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/policy/candidates/open_duck_mini_actuator_bridge_cpu_pilot_20260622_step8240/training_manifest.json",
+      "sha256": "dd906e80c060f3dea62576221a0ac9635f87a2fdfde47426dc0b15efe0d1c313",
+      "size_bytes": 3233,
+      "status": "PRESENT"
+    }
+  },
+  "generated_at": "2026-06-22T08:02:44Z",
+  "non_deployable_reason": null,
+  "sim_gate": {
+    "actuator_bridge_eval": {
+      "candidate_gate_status": "PASS_CANDIDATE_SIM_GATE",
+      "eval_role": "candidate",
+      "overall_status": "PASS_CANDIDATE_SIM_GATE",
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_ZERO_15S.md",
+      "status": "PASS_PARSED_GATE_STATUS"
+    }
+  },
+  "sources": {
+    "playground_repo": {
+      "branch": "main",
+      "commit": "bdf37aa850dae0cc383d3817d97c4f3f35edd487",
+      "path": "/home/lsd/robots/Open_Duck_Playground",
+      "status_short": ""
+    },
+    "rdk_repo": {
+      "branch": "codex/preserve-review-candidate-step8240",
+      "commit": "c40cbabdd7cc6b9c0e81146eebfd14391369d8c2",
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5",
+      "status_short": "?? policy/candidates/"
+    }
+  },
+  "status": "READY_FOR_SIM_GATE_REVIEW",
+  "training_manifest": {
+    "actuator_bridge_enabled": true,
+    "actuator_tracking_scale": 0.0,
+    "command": [
+      "/home/lsd/robots/envs/open-duck-playground/bin/python",
+      "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/runner.py",
+      "--task",
+      "flat_terrain",
+      "--env",
+      "joystick",
+      "--output_dir",
+      "/tmp/open_duck_actuator_bridge_pilots/smoke_20260622T073127Z_cpu",
+      "--num_timesteps",
+      "8192",
+      "--ppo_num_envs",
+      "16",
+      "--ppo_num_evals",
+      "1",
+      "--ppo_episode_length",
+      "100",
+      "--ppo_unroll_length",
+      "5",
+      "--ppo_batch_size",
+      "16",
+      "--ppo_num_minibatches",
+      "1",
+      "--ppo_num_updates_per_batch",
+      "1",
+      "--target_rate_scale",
+      "0.0",
+      "--actuator_tracking_scale",
+      "0.0",
+      "--enable_actuator_bridge",
+      "--actuator_bridge_delay_min_ticks",
+      "3",
+      "--actuator_bridge_delay_max_ticks",
+      "8",
+      "--actuator_bridge_tau_min_s",
+      "0.06",
+      "--actuator_bridge_tau_max_s",
+      "0.14",
+      "--actuator_bridge_velocity_limit_min_rad_s",
+      "2.5",
+      "--actuator_bridge_velocity_limit_max_rad_s",
+      "4.7",
+      "--actuator_bridge_per_joint_variation",
+      "0.15"
+    ],
+    "command_shell": "JAX_PLATFORM_NAME=cpu /home/lsd/robots/envs/open-duck-playground/bin/python /home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/runner.py --task flat_terrain --env joystick --output_dir /tmp/open_duck_actuator_bridge_pilots/smoke_20260622T073127Z_cpu --num_timesteps 8192 --ppo_num_envs 16 --ppo_num_evals 1 --ppo_episode_length 100 --ppo_unroll_length 5 --ppo_batch_size 16 --ppo_num_minibatches 1 --ppo_num_updates_per_batch 1 --target_rate_scale 0.0 --actuator_tracking_scale 0.0 --enable_actuator_bridge --actuator_bridge_delay_min_ticks 3 --actuator_bridge_delay_max_ticks 8 --actuator_bridge_tau_min_s 0.06 --actuator_bridge_tau_max_s 0.14 --actuator_bridge_velocity_limit_min_rad_s 2.5 --actuator_bridge_velocity_limit_max_rad_s 4.7 --actuator_bridge_per_joint_variation 0.15",
+    "deploy_performed": false,
+    "env_python_configured": "/home/lsd/robots/envs/open-duck-playground/bin/python",
+    "env_python_resolved": "/home/lsd/.local/share/uv/python/cpython-3.12.13-linux-x86_64-gnu/bin/python3.12",
+    "output_dir": "/tmp/open_duck_actuator_bridge_pilots/smoke_20260622T073127Z_cpu",
+    "platform": "cpu",
+    "playground_path": "/home/lsd/robots/Open_Duck_Playground",
+    "purpose": "offline actuator bridge PPO smoke; not a deployable policy",
+    "returncode": 0,
+    "robot_touched": false,
+    "status": "PASS_SMOKE_RUN",
+    "stderr_path": "/tmp/open_duck_actuator_bridge_pilots/smoke_20260622T073127Z_cpu/stderr.txt",
+    "stdout_path": "/tmp/open_duck_actuator_bridge_pilots/smoke_20260622T073127Z_cpu/stdout.txt",
+    "summary": {
+      "checkpoint_lines": [
+        "Saving checkpoint (step: 0): /tmp/open_duck_actuator_bridge_pilots/smoke_20260622T073127Z_cpu/2026_06_22_033148_0",
+        "Saving checkpoint (step: 8240): /tmp/open_duck_actuator_bridge_pilots/smoke_20260622T073127Z_cpu/2026_06_22_033206_8240"
+      ],
+      "export_lines": [],
+      "step_lines": [
+        "STEP: 8240 reward: 16.19684600830078 reward_std: 10.468647956848145"
+      ]
+    },
+    "target_rate_scale": 0.0,
+    "timeout_s": 3600,
+    "timestamp": "20260622T073127Z"
+  }
+}
