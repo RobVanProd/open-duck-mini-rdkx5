@@ -128,6 +128,13 @@ twitching, or a bus-error burst.
 Terminal logs are intentionally part of the evidence because servo CRC/read
 warnings may be printed before they are exposed as telemetry counters.
 
+Current threshold definitions and source notes live in:
+
+```text
+docs/DIAGNOSTIC_THRESHOLDS.md
+docs/RESEARCH_NOTES.md
+```
+
 ## Instrumentation Deployment
 
 Expected local deployment evidence:
