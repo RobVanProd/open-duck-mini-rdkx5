@@ -254,6 +254,11 @@ robustness gates.
 - Only start after the sim actuator bridge eval reaches a reviewed
   `PASS_SIM_REPRODUCTION` or equivalent.
 - First run a short ROCm smoke training job on the `7900 XTX` setup.
+- If ROCm/MJX remains blocked, use the CUDA-backed correctness result for
+  design decisions and run only small CPU smoke jobs locally.
+- Use `tools/run_actuator_bridge_training_smoke.py` to print and optionally
+  execute the tiny smoke command. This records the exact command and output
+  manifest under `/tmp` and does not create a deployable policy.
 - Train with the actuator model enabled.
 - Compare against a baseline with the current actuator assumptions.
 - Save:

@@ -202,6 +202,58 @@ A tiny CPU PPO smoke run was executed against the patched Playground branch.
 This is not a candidate policy; it only proves the patched training loop can
 start, export, and reach a finite eval callback with the bridge enabled.
 
+Use the RDK helper to print the exact command first:
+
+```bash
+cd /home/lsd/robots/open-duck-mini-rdkx5
+python3 tools/run_actuator_bridge_training_smoke.py
+```
+
+Run the tiny smoke only after the printed command is reviewed:
+
+```bash
+python3 tools/run_actuator_bridge_training_smoke.py --run
+```
+
+The helper defaults to:
+
+```text
+platform: cpu
+output root: /tmp/open_duck_actuator_bridge_smoke
+actuator bridge: enabled
+target_rate_scale: 0.0
+actuator_tracking_scale: 0.0
+```
+
+It writes `smoke_manifest.start.json`, `stdout.txt`, `stderr.txt`, and
+`smoke_manifest.final.json` under `/tmp`. These are smoke artifacts, not
+deployable policy outputs.
+
+The launcher was validated with a smaller CPU run:
+
+```bash
+python3 tools/run_actuator_bridge_training_smoke.py \
+  --run \
+  --num-timesteps 64 \
+  --ppo-num-envs 8 \
+  --ppo-batch-size 8 \
+  --ppo-episode-length 50 \
+  --ppo-unroll-length 5 \
+  --timeout-s 900
+```
+
+Result:
+
+```text
+status: PASS_SMOKE_RUN
+step: 80
+reward: 11.377256393432617
+reward_std: 4.541440010070801
+checkpoints:
+  /tmp/open_duck_actuator_bridge_smoke/smoke_20260622T054611Z_cpu/..._0
+  /tmp/open_duck_actuator_bridge_smoke/smoke_20260622T054611Z_cpu/..._80
+```
+
 Command shape:
 
 ```bash
