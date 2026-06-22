@@ -162,6 +162,16 @@ if [ "$RUN_CANDIDATE" = "1" ]; then
     --ppo-num-updates-per-batch {args.candidate_ppo_num_updates_per_batch} \\
     --target-rate-scale -0.01 \\
     --actuator-tracking-scale 0.0 \\
+    --tracking-lin-vel-scale {args.candidate_tracking_lin_vel_scale} \\
+    --alive-scale {args.candidate_alive_scale} \\
+    --imitation-scale {args.candidate_imitation_scale} \\
+    --lin-vel-x-min {args.candidate_lin_vel_x_min} \\
+    --lin-vel-x-max {args.candidate_lin_vel_x_max} \\
+    --lin-vel-y-min 0.0 \\
+    --lin-vel-y-max 0.0 \\
+    --ang-vel-yaw-min 0.0 \\
+    --ang-vel-yaw-max 0.0 \\
+    --head-range-factor 0.0 \\
     --timeout-s {args.candidate_timeout_s}
 
   RUN_DIR="$(find /content/open_duck_training_runs -maxdepth 1 -type d -name 'smoke_*_gpu' | sort | tail -n 1)"
@@ -253,6 +263,11 @@ def main() -> int:
     parser.add_argument("--candidate-ppo-batch-size", type=int, default=512)
     parser.add_argument("--candidate-ppo-num-minibatches", type=int, default=16)
     parser.add_argument("--candidate-ppo-num-updates-per-batch", type=int, default=4)
+    parser.add_argument("--candidate-tracking-lin-vel-scale", type=float, default=6.0)
+    parser.add_argument("--candidate-alive-scale", type=float, default=5.0)
+    parser.add_argument("--candidate-imitation-scale", type=float, default=0.5)
+    parser.add_argument("--candidate-lin-vel-x-min", type=float, default=0.04)
+    parser.add_argument("--candidate-lin-vel-x-max", type=float, default=0.12)
     parser.add_argument("--candidate-timeout-s", type=int, default=7200)
     parser.add_argument("--output", help="Write the cell to this file instead of stdout.")
     args = parser.parse_args()

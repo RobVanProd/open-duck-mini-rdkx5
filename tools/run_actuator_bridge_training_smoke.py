@@ -33,6 +33,11 @@ def shell_join(command: list[str]) -> str:
     return " ".join(shlex.quote(part) for part in command)
 
 
+def append_optional(command: list[str], flag: str, value: Any) -> None:
+    if value is not None:
+        command.extend([flag, str(value)])
+
+
 def build_command(args: argparse.Namespace, output_dir: Path) -> list[str]:
     runner = Path(args.playground_path) / "playground/open_duck_mini_v2/runner.py"
     command = [
@@ -65,6 +70,23 @@ def build_command(args: argparse.Namespace, output_dir: Path) -> list[str]:
         "--actuator_tracking_scale",
         str(args.actuator_tracking_scale),
     ]
+    optional_runner_overrides = {
+        "--tracking_lin_vel_scale": args.tracking_lin_vel_scale,
+        "--tracking_ang_vel_scale": args.tracking_ang_vel_scale,
+        "--action_rate_scale": args.action_rate_scale,
+        "--stand_still_scale": args.stand_still_scale,
+        "--alive_scale": args.alive_scale,
+        "--imitation_scale": args.imitation_scale,
+        "--lin_vel_x_min": args.lin_vel_x_min,
+        "--lin_vel_x_max": args.lin_vel_x_max,
+        "--lin_vel_y_min": args.lin_vel_y_min,
+        "--lin_vel_y_max": args.lin_vel_y_max,
+        "--ang_vel_yaw_min": args.ang_vel_yaw_min,
+        "--ang_vel_yaw_max": args.ang_vel_yaw_max,
+        "--head_range_factor": args.head_range_factor,
+    }
+    for flag, value in optional_runner_overrides.items():
+        append_optional(command, flag, value)
     if not args.disable_actuator_bridge:
         command.append("--enable_actuator_bridge")
         command.extend(
@@ -175,6 +197,19 @@ def main() -> int:
             "reward the cost."
         ),
     )
+    parser.add_argument("--tracking-lin-vel-scale", type=float, default=None)
+    parser.add_argument("--tracking-ang-vel-scale", type=float, default=None)
+    parser.add_argument("--action-rate-scale", type=float, default=None)
+    parser.add_argument("--stand-still-scale", type=float, default=None)
+    parser.add_argument("--alive-scale", type=float, default=None)
+    parser.add_argument("--imitation-scale", type=float, default=None)
+    parser.add_argument("--lin-vel-x-min", type=float, default=None)
+    parser.add_argument("--lin-vel-x-max", type=float, default=None)
+    parser.add_argument("--lin-vel-y-min", type=float, default=None)
+    parser.add_argument("--lin-vel-y-max", type=float, default=None)
+    parser.add_argument("--ang-vel-yaw-min", type=float, default=None)
+    parser.add_argument("--ang-vel-yaw-max", type=float, default=None)
+    parser.add_argument("--head-range-factor", type=float, default=None)
     args = parser.parse_args()
 
     validate_paths(args)
@@ -198,6 +233,21 @@ def main() -> int:
         "actuator_bridge_enabled": not args.disable_actuator_bridge,
         "target_rate_scale": args.target_rate_scale,
         "actuator_tracking_scale": args.actuator_tracking_scale,
+        "training_recipe_overrides": {
+            "tracking_lin_vel_scale": args.tracking_lin_vel_scale,
+            "tracking_ang_vel_scale": args.tracking_ang_vel_scale,
+            "action_rate_scale": args.action_rate_scale,
+            "stand_still_scale": args.stand_still_scale,
+            "alive_scale": args.alive_scale,
+            "imitation_scale": args.imitation_scale,
+            "lin_vel_x_min": args.lin_vel_x_min,
+            "lin_vel_x_max": args.lin_vel_x_max,
+            "lin_vel_y_min": args.lin_vel_y_min,
+            "lin_vel_y_max": args.lin_vel_y_max,
+            "ang_vel_yaw_min": args.ang_vel_yaw_min,
+            "ang_vel_yaw_max": args.ang_vel_yaw_max,
+            "head_range_factor": args.head_range_factor,
+        },
         "command": command,
         "command_shell": f"JAX_PLATFORM_NAME={args.platform} {shell_join(command)}",
         "robot_touched": False,
