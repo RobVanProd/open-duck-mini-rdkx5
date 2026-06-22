@@ -156,7 +156,9 @@ The generated cell now prints one bundle path plus its SHA256:
 ```text
 CUDA_ARTIFACT_BUNDLE /content/open_duck_cuda_artifacts_<timestamp>.tar.gz
 CUDA_ARTIFACT_BUNDLE_SHA256 <hash>
+CUDA_ARTIFACT_BUNDLE_SHA256_FILE /content/open_duck_cuda_artifacts_<timestamp>.tar.gz.sha256
 CUDA_ARTIFACT_DOWNLOAD_TRIGGERED /content/open_duck_cuda_artifacts_<timestamp>.tar.gz
+CUDA_ARTIFACT_SHA256_DOWNLOAD_TRIGGERED /content/open_duck_cuda_artifacts_<timestamp>.tar.gz.sha256
 ```
 
 Download that `.tar.gz` first. It includes the small analysis directory plus
@@ -167,8 +169,9 @@ In Colab, the generated cell also makes a best-effort
 `google.colab.files.download(...)` call after creating the bundle. If the
 session is not Colab or the browser blocks the download, the cell prints
 `CUDA_ARTIFACT_DOWNLOAD_SKIPPED` or `CUDA_ARTIFACT_DOWNLOAD_FAILED`; in that
-case, download the printed `CUDA_ARTIFACT_BUNDLE` path manually. To omit the
-download trigger in generated cells, pass:
+case, download the printed `CUDA_ARTIFACT_BUNDLE` and
+`CUDA_ARTIFACT_BUNDLE_SHA256_FILE` paths manually. To omit the download trigger
+in generated cells, pass:
 
 ```bash
 python3 tools/print_cuda_colab_cell.py --run-candidate --no-auto-download
@@ -187,9 +190,13 @@ Import it locally with:
 
 ```bash
 python3 tools/import_cuda_artifact_bundle.py \
-  /path/to/open_duck_cuda_artifacts_<timestamp>.tar.gz \
-  --expected-sha256 <CUDA_ARTIFACT_BUNDLE_SHA256>
+  /path/to/open_duck_cuda_artifacts_<timestamp>.tar.gz
 ```
+
+If the `.sha256` file is next to the bundle, the importer verifies it
+automatically. If the sidecar was downloaded somewhere else, pass
+`--expected-sha256-file /path/to/open_duck_cuda_artifacts_<timestamp>.tar.gz.sha256`.
+If no sidecar is available, pass `--expected-sha256 <CUDA_ARTIFACT_BUNDLE_SHA256>`.
 
 That writes:
 

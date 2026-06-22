@@ -827,7 +827,8 @@ Recent repo fixes prepared the next manual Colab/CUDA run:
   while still enforcing the training manifest, contract audit, and candidate
   sim gate evidence
 - CUDA artifact import now reports a conservative review gate from the bundle
-- CUDA artifact import can verify the bundle SHA256 printed by the CUDA cell
+- CUDA artifact import can verify the generated `.sha256` sidecar
+  automatically, with manual `--expected-sha256` still available as a fallback
 - CUDA bundles include `pip_freeze.txt`, `nvidia_smi.txt`, repo commits, and
   package metadata; the failure EXIT trap no longer imports JAX/MJX runtime
 - the generated CUDA cell now selects one `PYTHON_BIN`, preferring

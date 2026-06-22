@@ -96,11 +96,13 @@ The generated cell prints:
 ```text
 CUDA_ARTIFACT_BUNDLE /content/open_duck_cuda_artifacts_<timestamp>.tar.gz
 CUDA_ARTIFACT_BUNDLE_SHA256 <hash>
+CUDA_ARTIFACT_BUNDLE_SHA256_FILE /content/open_duck_cuda_artifacts_<timestamp>.tar.gz.sha256
 CUDA_ARTIFACT_DOWNLOAD_TRIGGERED /content/open_duck_cuda_artifacts_<timestamp>.tar.gz
+CUDA_ARTIFACT_SHA256_DOWNLOAD_TRIGGERED /content/open_duck_cuda_artifacts_<timestamp>.tar.gz.sha256
 ```
 
 If the browser download is skipped or fails, download the printed
-`CUDA_ARTIFACT_BUNDLE` path manually.
+`CUDA_ARTIFACT_BUNDLE` and `CUDA_ARTIFACT_BUNDLE_SHA256_FILE` paths manually.
 
 ## Import Command
 
@@ -108,9 +110,12 @@ After downloading the bundle:
 
 ```bash
 python3 tools/import_cuda_artifact_bundle.py \
-  /path/to/open_duck_cuda_artifacts_<timestamp>.tar.gz \
-  --expected-sha256 <CUDA_ARTIFACT_BUNDLE_SHA256>
+  /path/to/open_duck_cuda_artifacts_<timestamp>.tar.gz
 ```
+
+If the `.sha256` sidecar is next to the bundle, the importer verifies it
+automatically. If the sidecar is elsewhere, pass `--expected-sha256-file`.
+If no sidecar is available, pass `--expected-sha256` with the printed hash.
 
 Start review from:
 
