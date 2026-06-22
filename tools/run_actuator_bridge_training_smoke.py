@@ -169,7 +169,7 @@ def main() -> int:
     env["JAX_PLATFORM_NAME"] = args.platform
 
     manifest: dict[str, Any] = {
-        "status": "DRY_RUN",
+        "status": "RUN_PLANNED" if args.run else "DRY_RUN",
         "purpose": "offline actuator bridge PPO smoke; not a deployable policy",
         "timestamp": timestamp(),
         "playground_path": str(Path(args.playground_path).resolve()),
