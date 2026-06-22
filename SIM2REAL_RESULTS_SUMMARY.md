@@ -658,6 +658,30 @@ Result:
 Interpretation: downgrading MuJoCo/MJX to `3.3.7` with `playground==0.0.5`
 also does not clear the local 7900 XTX direct Open Duck MJX step hang.
 
+A third disposable ROCm env tested MuJoCo/MJX `3.2.7`:
+
+```text
+env: ../envs/open-duck-playground-rocm-mujoco327
+jax/jaxlib: 0.8.2
+jax-rocm7-pjrt/plugin: 0.8.2+rocm7.2.1
+mujoco/mujoco-mjx: 3.2.7
+playground: 0.0.5
+evidence: outputs/analysis/rocm_mjx_version_matrix_mujoco327/
+```
+
+Result:
+
+- `basic_jax`: `PASS`
+- `minimal_mjx_step`: `PASS`
+- `playground_contract_only`: `PASS`
+- `playground_reset`: `FAIL` on GPU and CPU
+- `playground_direct_mjx_step`: `FAIL` on GPU and CPU
+- failure: `AttributeError: 'Data' object has no attribute '_impl'`
+
+Interpretation: MuJoCo/MJX `3.2.7` is incompatible with the current
+`playground==0.0.5` collision helper / Open Duck env path, so it is not a
+candidate local ROCm fix.
+
 ## CUDA Candidate Handoff
 
 The current CUDA candidate handoff is recorded in:
