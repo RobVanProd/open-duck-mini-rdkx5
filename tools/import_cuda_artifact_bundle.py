@@ -118,6 +118,10 @@ def parse_exit_status(path: Path | None) -> dict[str, Any] | None:
     return values
 
 
+def markdown_cell(value: Any) -> str:
+    return str(value).replace("|", "\\|").replace("\n", " ")
+
+
 def status_fields_from_json(payload: Any) -> dict[str, Any]:
     if not isinstance(payload, dict):
         return {}
@@ -366,6 +370,13 @@ def build_summary(
             f"- candidate_gate_x008: `{review.get('candidate_gate_x008')}`",
         ]
     )
+
+    if exit_status:
+        lines.extend(["", "## CUDA Cell Metadata", ""])
+        lines.append("| key | value |")
+        lines.append("|---|---|")
+        for key in sorted(exit_status):
+            lines.append(f"| `{markdown_cell(key)}` | `{markdown_cell(exit_status[key])}` |")
 
     lines.extend(["", "## Markdown Statuses", ""])
     if markdown_statuses:

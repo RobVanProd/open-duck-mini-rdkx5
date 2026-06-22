@@ -254,7 +254,10 @@ The generated cell now bundles artifacts from an `EXIT` trap. If a CUDA smoke,
 candidate training, gate, or packaging command fails, still download the
 printed `/content/open_duck_cuda_artifacts_<timestamp>.tar.gz` bundle. It
 contains `CUDA_CELL_EXIT_STATUS.txt` plus whatever small summaries, ONNX files,
-manifests, stdout, and stderr existed before the failure.
+manifests, stdout, and stderr existed before the failure. The exit-status file
+also records the RDK and Playground commits, dirty-file counts, Python/JAX/MuJoCo
+metadata when importable, and the visible GPU name when `nvidia-smi` is
+available.
 
 ## Summarize And Package
 

@@ -49,10 +49,53 @@ bundle_cuda_artifacts() {{
   {{
     echo "exit_status=$exit_status"
     echo "timestamp_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+    echo "rdk_repo=$RDK_REPO"
     echo "rdk_branch=$RDK_BRANCH"
+    if [ -d /content/open-duck-mini-rdkx5/.git ]; then
+      echo "rdk_commit=$(git -C /content/open-duck-mini-rdkx5 rev-parse HEAD 2>/dev/null || echo UNKNOWN)"
+      echo "rdk_dirty_files=$(git -C /content/open-duck-mini-rdkx5 status --short 2>/dev/null | wc -l | tr -d ' ')"
+    else
+      echo "rdk_commit=UNKNOWN"
+      echo "rdk_dirty_files=UNKNOWN"
+    fi
+    echo "playground_repo=$PLAYGROUND_REPO"
     echo "playground_branch=$PLAYGROUND_BRANCH"
+    if [ -d /content/Open_Duck_Playground/.git ]; then
+      echo "playground_commit=$(git -C /content/Open_Duck_Playground rev-parse HEAD 2>/dev/null || echo UNKNOWN)"
+      echo "playground_dirty_files=$(git -C /content/Open_Duck_Playground status --short 2>/dev/null | wc -l | tr -d ' ')"
+    else
+      echo "playground_commit=UNKNOWN"
+      echo "playground_dirty_files=UNKNOWN"
+    fi
     echo "run_candidate=$RUN_CANDIDATE"
   }} > "$ARTIFACT_ROOT/CUDA_CELL_EXIT_STATUS.txt"
+  {{
+    echo "python_executable=$(command -v python || echo UNKNOWN)"
+    python - <<'PY' 2>/dev/null || true
+import sys
+print("python_version=" + sys.version.replace("\\n", " "))
+try:
+    import jax
+    print("jax_version=" + getattr(jax, "__version__", "UNKNOWN"))
+    try:
+        print("jax_backend=" + str(jax.default_backend()))
+        print("jax_devices=" + ",".join(str(device) for device in jax.devices()))
+    except Exception as exc:
+        print("jax_device_error=" + type(exc).__name__ + ":" + str(exc))
+except Exception as exc:
+    print("jax_import_error=" + type(exc).__name__ + ":" + str(exc))
+try:
+    import mujoco
+    print("mujoco_version=" + getattr(mujoco, "__version__", "UNKNOWN"))
+except Exception as exc:
+    print("mujoco_import_error=" + type(exc).__name__ + ":" + str(exc))
+PY
+    if command -v nvidia-smi >/dev/null 2>&1; then
+      nvidia-smi --query-gpu=name --format=csv,noheader 2>/dev/null | head -n 1 | sed 's/^/gpu_name=/'
+    else
+      echo "gpu_name=UNKNOWN"
+    fi
+  }} >> "$ARTIFACT_ROOT/CUDA_CELL_EXIT_STATUS.txt"
 
   if [ -d /content/open-duck-mini-rdkx5/outputs/analysis/cuda_manual ]; then
     cp -a /content/open-duck-mini-rdkx5/outputs/analysis/cuda_manual "$ARTIFACT_ROOT/"
