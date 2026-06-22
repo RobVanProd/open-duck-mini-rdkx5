@@ -833,15 +833,48 @@ Recent repo fixes prepared the next manual Colab/CUDA run:
   package metadata; the failure EXIT trap no longer imports JAX/MJX runtime
 - the generated CUDA cell now selects one `PYTHON_BIN`, preferring
   `/usr/bin/python3` on Colab, and passes it explicitly to `--env-python`
-- the generated CUDA cell prompts for a GitHub token for private repos, uses it
-  through `GIT_ASKPASS`, and records early setup failures with nonzero
-  `exit_status` in the artifact bundle
+- the generated CUDA cell uses `GIT_ASKPASS` only when `GITHUB_TOKEN` or
+  `GH_TOKEN` is already set; Colab `%%bash` interactive token prompts were
+  removed because `getpass`/TTY input failed in practice
+- CUDA artifact ingest can now find the newest downloaded bundle, verify its
+  `.sha256` sidecar, and skip already-imported bundles by SHA256
 - the generator can also write an uploadable one-code-cell Colab notebook with
   `--notebook-output`
 - the generator can write a complete local handoff directory with
   `--handoff-dir`, including notebook, raw cell, and bundle import checklist
+- `tools/run_colab_cli_cuda_workflow.py` now provides the preferred headless
+  route: upload local RDK/Playground tarballs through `google-colab-cli`, avoid
+  GitHub tokens in Colab, pin `jax/jaxlib==0.7.2`, and download the artifact
+  bundle after remote eval/smoke/candidate gates
+- Colab L4 smoke training passed with `jax/jaxlib==0.7.2`; an unpinned newer
+  JAX install failed Brax training because `jax.device_put_replicated` had been
+  removed
+- patched Colab L4 closed-loop eval reran successfully after the worker JSON
+  fix:
 
-Next useful action remains:
+```text
+overall_status: PASS_CLOSED_LOOP_REPRODUCTION
+worker_returncode: 0
+jax backend/device: gpu / cuda:0
+samples: 750 per mode
+fitted pitch-chain lag: 3-4 ticks
+fitted pitch-chain joint_tracking_p95: 0.1069-0.2143 rad
+```
+
+Interpretation: the L4 path can reproduce the current policy's actuator-lag
+failure signature in closed loop, and the false empty-worker-JSON hold is fixed
+for future runs.
+
+Next useful headless action:
+
+```bash
+python3 tools/run_colab_cli_cuda_workflow.py --workflow eval --run
+```
+
+After the eval artifact reports `PASS_CLOSED_LOOP_REPRODUCTION`, move to
+`--workflow smoke` and then `--workflow candidate`.
+
+Manual notebook fallback:
 
 ```bash
 python3 tools/print_cuda_colab_cell.py --run-candidate

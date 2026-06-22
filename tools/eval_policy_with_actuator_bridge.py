@@ -470,6 +470,8 @@ def run_closed_loop_worker(args) -> dict:
         str(args.eval_role),
         "--mjx-step-loop-mode",
         str(args.mjx_step_loop_mode),
+        "--sim-preflight-timeout-s",
+        str(args.sim_preflight_timeout_s),
         "--_closed-loop-worker",
         "--_closed-loop-worker-json",
         str(worker_json),
@@ -794,6 +796,8 @@ def write_outputs(payload: dict, output_dir: Path) -> None:
             "command_x": payload["command_x"],
             "duration_s": payload["duration_s"],
             "eval_role": payload.get("eval_role"),
+            "jax_platform": payload.get("jax_platform"),
+            "mjx_step_loop_mode": payload.get("mjx_step_loop_mode"),
             "telemetry_replay": None,
             "closed_loop_sim": payload["closed_loop_sim"],
         }
@@ -931,33 +935,43 @@ def main() -> int:
     telemetry_replay = run_telemetry_replay(args, fit) if run_replay else None
     closed_loop_sim = None
     if args.mode == "closed-loop-sim":
-        if sim_preflight.get("status") not in {"HOLD_SIM_INTEGRATION_PENDING"} and str(
-            sim_preflight.get("status", "")
-        ).startswith("HOLD"):
-            closed_loop_sim = {
-                "status": sim_preflight["status"],
-                "error": sim_preflight.get("reason", "contract preflight failed"),
-            }
-        elif args._closed_loop_worker:
-            closed_loop_sim = run_closed_loop_sim(
-                ClosedLoopConfig(
-                    policy_path=policy_path,
-                    fit=fit,
-                    playground_root=playground_root,
-                    command_x=args.command_x,
-                    duration_s=args.duration,
-                    bridge_mode=args.bridge_mode,
-                    expected_observation_dim=args.expected_observation_dim,
-                    expected_action_dim=args.expected_action_dim,
-                    eval_role=args.eval_role,
-                    mjx_step_loop_mode=args.mjx_step_loop_mode,
+        preflight_status = str(sim_preflight.get("status", ""))
+        preflight_hold = (
+            sim_preflight.get("status") not in {"HOLD_SIM_INTEGRATION_PENDING"}
+            and preflight_status.startswith("HOLD")
+        )
+        if args._closed_loop_worker:
+            if preflight_hold:
+                closed_loop_sim = {
+                    "status": sim_preflight["status"],
+                    "error": sim_preflight.get("reason", "contract preflight failed"),
+                    "sim_preflight": sim_preflight,
+                }
+            else:
+                closed_loop_sim = run_closed_loop_sim(
+                    ClosedLoopConfig(
+                        policy_path=policy_path,
+                        fit=fit,
+                        playground_root=playground_root,
+                        command_x=args.command_x,
+                        duration_s=args.duration,
+                        bridge_mode=args.bridge_mode,
+                        expected_observation_dim=args.expected_observation_dim,
+                        expected_action_dim=args.expected_action_dim,
+                        eval_role=args.eval_role,
+                        mjx_step_loop_mode=args.mjx_step_loop_mode,
+                    )
                 )
-            )
             if args._closed_loop_worker_json:
                 Path(args._closed_loop_worker_json).write_text(
                     json.dumps(closed_loop_sim, indent=2) + "\n"
                 )
                 return 0
+        elif preflight_hold:
+            closed_loop_sim = {
+                "status": sim_preflight["status"],
+                "error": sim_preflight.get("reason", "contract preflight failed"),
+            }
         else:
             closed_loop_sim = run_closed_loop_worker(args)
 

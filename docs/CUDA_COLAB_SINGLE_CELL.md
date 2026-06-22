@@ -16,18 +16,40 @@ This path is offline-only:
 - no overwrite of `policy/BEST_WALK_ONNX_2.onnx`
 - no robot-side validation approval
 
-If either GitHub repo is private, the generated cell prompts:
+For headless/private-repo runs, prefer the Colab CLI tarball workflow in
+`tools/run_colab_cli_cuda_workflow.py`. It uploads the local RDK and Playground
+worktrees directly and does not require a GitHub token inside the notebook.
 
-```text
-GitHub token for private repos, or press Enter if public:
+The copy-paste notebook cell can still clone repos from GitHub. If either repo
+is private, set `GITHUB_TOKEN` or `GH_TOKEN` in the Colab environment before
+running the generated `%%bash` cell. The cell uses `GIT_ASKPASS` for
+clone/fetch/pull and does not write the token into git remotes. It no longer
+tries an interactive password prompt because Colab `%%bash` cells can fail on
+`getpass`/TTY input. Do not hard-code tokens into committed docs.
+
+## Preferred Headless Colab CLI Path
+
+When `google-colab-cli` is authenticated and an `open-duck-l4` session is
+running, use the local tarball workflow instead of cloning private repos from
+inside the notebook:
+
+```bash
+python3 tools/run_colab_cli_cuda_workflow.py --workflow eval --run
 ```
 
-Paste a temporary GitHub token into that hidden prompt. The cell uses
-`GIT_ASKPASS` for clone/fetch/pull and does not write the token into git
-remotes. Do not hard-code tokens into the generated notebook or committed docs.
-If a token was pasted into chat/logs, revoke or rotate it after the run.
+Then run the smoke/candidate stages only after the previous gate passes:
 
-## Generate The Cell
+```bash
+python3 tools/run_colab_cli_cuda_workflow.py --workflow smoke --run
+python3 tools/run_colab_cli_cuda_workflow.py --workflow candidate-only --run
+```
+
+The CLI workflow uploads local RDK/Playground tarballs, pins
+`jax/jaxlib==0.7.2`, writes a remote log/artifact bundle, downloads the bundle,
+and does not require a GitHub token in Colab. This is the preferred route for
+agents and unattended runs.
+
+## Browser Notebook Fallback
 
 From the RDK repo:
 
@@ -39,7 +61,8 @@ The generated cell runs:
 
 1. GPU/JAX visibility check
 2. RDK and Playground fork checkout
-3. CUDA dependency install, including `playground==0.0.5`
+3. CUDA dependency install, including `jax/jaxlib==0.7.2` and
+   `playground==0.0.5`
 4. `mujoco_playground._src.collision` import check
 5. training environment check
 6. policy/sim contract audit
@@ -110,11 +133,14 @@ import mujoco_playground._src.collision
 The generated cell pins:
 
 ```text
+jax[cuda12]==0.7.2
+jaxlib==0.7.2
 playground==0.0.5
 ```
 
-because the successful CUDA path used that dependency and verified the
-`collision.py` import before running the Open Duck eval.
+because the successful CUDA path used that stack. A newer unpinned JAX install
+completed environment setup but broke Brax training through a removed
+`jax.device_put_replicated` API.
 
 The generated cell also defines `PYTHON_BIN` once near the top and passes that
 same interpreter to every subprocess via `--env-python`. On Colab it prefers
@@ -200,14 +226,14 @@ those commands are available.
 Import it locally with:
 
 ```bash
-python3 tools/import_cuda_artifact_bundle.py \
-  /path/to/open_duck_cuda_artifacts_<timestamp>.tar.gz
+python3 tools/ingest_latest_cuda_artifact.py
 ```
 
-If the `.sha256` file is next to the bundle, the importer verifies it
-automatically. If the sidecar was downloaded somewhere else, pass
-`--expected-sha256-file /path/to/open_duck_cuda_artifacts_<timestamp>.tar.gz.sha256`.
-If no sidecar is available, pass `--expected-sha256 <CUDA_ARTIFACT_BUNDLE_SHA256>`.
+The helper searches common download locations for the newest
+`open_duck_cuda_artifacts_*.tar.gz`, verifies the neighboring `.sha256` sidecar
+when present, skips bundles already imported by SHA256, and writes the review
+summary under `outputs/analysis/cuda_imports/`. If the bundle is elsewhere,
+pass `--bundle /path/to/open_duck_cuda_artifacts_<timestamp>.tar.gz`.
 
 That writes:
 

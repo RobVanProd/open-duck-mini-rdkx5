@@ -34,6 +34,11 @@ Recent handoff fixes merged:
   `--notebook-output`.
 - Current generator: can write a complete local handoff directory with
   `--handoff-dir`, including notebook, raw cell text, and import checklist.
+- Current headless path: `tools/run_colab_cli_cuda_workflow.py` uploads local
+  repo tarballs through `google-colab-cli`, avoids GitHub token prompts, and
+  pins `jax/jaxlib==0.7.2`.
+- Patched Colab L4 closed-loop eval rerun: `PASS_CLOSED_LOOP_REPRODUCTION`
+  with `worker_returncode=0`, `gpu/cuda:0`, and non-empty worker JSON.
 
 ## Why Manual CUDA Is Still Required
 
@@ -70,9 +75,21 @@ python3 tools/print_cuda_colab_cell.py \
 
 Run the generated cell in the already-authenticated CUDA/Colab session.
 
+For an agent/headless Colab session, prefer the staged CLI path:
+
+```bash
+python3 tools/run_colab_cli_cuda_workflow.py --workflow eval --run
+python3 tools/run_colab_cli_cuda_workflow.py --workflow smoke --run
+python3 tools/run_colab_cli_cuda_workflow.py --workflow candidate-only --run
+```
+
+Move one line at a time only after the previous artifact gate passes. This route
+uploads local repo tarballs and does not clone from GitHub inside Colab.
+
 The generated cell now:
 
-- pins the known-good CUDA dependency path, including `playground==0.0.5`
+- pins the known-good CUDA dependency path, including `jax/jaxlib==0.7.2`
+  and `playground==0.0.5`
 - runs the baseline closed-loop actuator bridge reproduction with
   `--jax-platform gpu` and `--sim-preflight-timeout-s 600`
 - runs CUDA smoke training
@@ -86,8 +103,8 @@ The generated cell now:
   from the EXIT trap
 - uses one selected `PYTHON_BIN` for installs, checks, training, gates, and
   subprocess env instantiation
-- prompts for a GitHub token for private repos and uses it through `GIT_ASKPASS`
-  without writing it into git remotes
+- uses `GIT_ASKPASS` only if `GITHUB_TOKEN` or `GH_TOKEN` is already set;
+  otherwise it attempts public repo access and fails clearly if a repo is private
 - records nonzero `exit_status` correctly if setup/training exits early
 
 ```text
@@ -112,13 +129,12 @@ If the browser download is skipped or fails, download the printed
 After downloading the bundle:
 
 ```bash
-python3 tools/import_cuda_artifact_bundle.py \
-  /path/to/open_duck_cuda_artifacts_<timestamp>.tar.gz
+python3 tools/ingest_latest_cuda_artifact.py
 ```
 
-If the `.sha256` sidecar is next to the bundle, the importer verifies it
-automatically. If the sidecar is elsewhere, pass `--expected-sha256-file`.
-If no sidecar is available, pass `--expected-sha256` with the printed hash.
+The ingest helper searches common download locations for the newest bundle,
+verifies the neighboring sidecar when present, and skips already-imported
+bundles by SHA256. If the bundle is elsewhere, pass `--bundle`.
 
 Start review from:
 

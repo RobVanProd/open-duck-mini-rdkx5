@@ -14,6 +14,7 @@ DEFAULT_RDK_REPO = "https://github.com/RobVanProd/open-duck-mini-rdkx5.git"
 DEFAULT_PLAYGROUND_REPO = "https://github.com/RobVanProd/Open_Duck_Playground.git"
 DEFAULT_RDK_BRANCH = "main"
 DEFAULT_PLAYGROUND_BRANCH = "main"
+DEFAULT_CUDA_JAX_VERSION = "0.7.2"
 
 
 def bash_bool(value: bool) -> str:
@@ -65,19 +66,8 @@ prompt_for_github_token() {{
     echo "GitHub token: provided by GH_TOKEN"
     return 0
   fi
-  GITHUB_TOKEN="$("$PYTHON_BIN" - <<'PY'
-import getpass
-
-token = getpass.getpass("GitHub token for private repos, or press Enter if public: ")
-print(token.strip())
-PY
-)"
-  export GITHUB_TOKEN
-  if [ -n "$GITHUB_TOKEN" ]; then
-    echo "GitHub token: provided interactively"
-  else
-    echo "GitHub token: empty, assuming public repo access"
-  fi
+  echo "GitHub token: not provided; attempting public repo access only"
+  echo "For private repos, set GITHUB_TOKEN or GH_TOKEN before running this cell."
 }}
 
 setup_git_auth() {{
@@ -278,7 +268,8 @@ clone_or_update_repo "$PLAYGROUND_REPO" /content/Open_Duck_Playground "$PLAYGROU
 echo "=== Install CUDA eval/training deps ==="
 "$PYTHON_BIN" -m pip install -U pip
 "$PYTHON_BIN" -m pip install -U \\
-  "jax[cuda12]" \\
+  "jax[cuda12]=={DEFAULT_CUDA_JAX_VERSION}" \\
+  "jaxlib=={DEFAULT_CUDA_JAX_VERSION}" \\
   "playground==0.0.5" \\
   "mujoco>=3.2.7,<3.10" \\
   "mujoco-mjx>=3.2.7" \\
@@ -513,8 +504,9 @@ def write_handoff_dir(path: Path, cell: str, run_candidate: bool) -> None:
 
             Upload/open `{notebook_path.name}` in a trusted, manually
             authenticated CUDA/Colab session and run its single code cell.
-            If either repo is private, paste a temporary GitHub token into the
-            cell's hidden prompt. Do not edit the token into the notebook file.
+            If either repo is private, set `GITHUB_TOKEN` or `GH_TOKEN` in the
+            Colab environment before running the `%%bash` cell. The cell does
+            not use an interactive hidden token prompt.
 
             The cell is offline-only for the robot project:
 
@@ -545,8 +537,7 @@ def write_handoff_dir(path: Path, cell: str, run_candidate: bool) -> None:
 
             ```bash
             cd /home/lsd/robots/open-duck-mini-rdkx5
-            python3 tools/import_cuda_artifact_bundle.py \\
-              /path/to/open_duck_cuda_artifacts_<timestamp>.tar.gz
+            python3 tools/ingest_latest_cuda_artifact.py
             ```
 
             Start review from the generated:

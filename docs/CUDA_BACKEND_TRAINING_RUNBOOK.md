@@ -11,6 +11,7 @@ Current backend split:
 
 ```text
 CUDA L4 closed-loop eval: PASS_CLOSED_LOOP_REPRODUCTION
+CUDA L4 training smoke: PASS_SMOKE_RUN with jax/jaxlib==0.7.2
 local RX 7900 XTX ROCm/MJX: HOLD_PLAYGROUND_GPU_STEP
 CPU: usable for reduced-horizon correctness checks only
 ```
@@ -37,12 +38,21 @@ Playground fork:
   branch: main
 ```
 
-If a repo is private, authenticate in the notebook/session using your normal
-GitHub flow. The generated cell prompts for a GitHub token when it reaches repo
-sync and uses it through `GIT_ASKPASS`, so the token is not written into git
-remotes. Do not paste tokens into committed files or hard-code them into a
-notebook. Treat any token pasted into chat or logs as temporary and revoke it
-after the run.
+For headless/private-repo runs, prefer the Colab CLI tarball workflow:
+
+```bash
+python3 tools/run_colab_cli_cuda_workflow.py --workflow eval
+```
+
+Pass `--run` only when an authenticated `colab` CLI session is active. This
+path uploads local RDK and Playground worktree tarballs and does not need a
+GitHub token inside the notebook.
+
+The generated notebook cell can still clone repos. If a repo is private, set
+`GITHUB_TOKEN` or `GH_TOKEN` in the Colab environment before running it; the
+cell uses `GIT_ASKPASS` and does not write the token into git remotes. It does
+not try an interactive token prompt inside `%%bash`, because Colab bash cells
+can fail on `getpass`/TTY input.
 
 ## One-Cell CUDA Smoke
 
@@ -137,7 +147,7 @@ git checkout main
 git pull --ff-only
 
 "$PYTHON_BIN" -m pip install -U pip
-"$PYTHON_BIN" -m pip install -U "jax[cuda12]" "playground==0.0.5" \
+"$PYTHON_BIN" -m pip install -U "jax[cuda12]==0.7.2" "jaxlib==0.7.2" "playground==0.0.5" \
   "mujoco>=3.2.7,<3.10" "mujoco-mjx>=3.2.7" onnxruntime \
   ml-collections numpy matplotlib mediapy tensorflow tf2onnx
 "$PYTHON_BIN" -m pip install --no-deps -e /content/Open_Duck_Playground
@@ -325,13 +335,15 @@ If target-velocity analysis exists, add:
 Prefer sending the generated `.tar.gz` bundle and importing it locally first:
 
 ```bash
-python3 tools/import_cuda_artifact_bundle.py \
-  /path/to/open_duck_cuda_artifacts_<timestamp>.tar.gz
+python3 tools/ingest_latest_cuda_artifact.py
 ```
 
-When the generated `.sha256` sidecar is next to the bundle, the importer
-verifies it automatically. Otherwise use `--expected-sha256-file` for a sidecar
-in another location, or `--expected-sha256` with the printed hash.
+The ingest helper searches common download locations for the newest
+`open_duck_cuda_artifacts_*.tar.gz`, verifies the neighboring `.sha256` sidecar
+when present, and skips bundles already imported by SHA256. If the download is
+elsewhere, pass `--bundle /path/to/open_duck_cuda_artifacts_<timestamp>.tar.gz`.
+For manual imports, `tools/import_cuda_artifact_bundle.py` still accepts
+`--expected-sha256-file` or `--expected-sha256`.
 
 Open the generated `CUDA_ARTIFACT_IMPORT_SUMMARY.md` first. It reports a
 review gate such as `READY_FOR_SIM_GATE_REVIEW`, `INFO_SMOKE_ONLY`, or the
