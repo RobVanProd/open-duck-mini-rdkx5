@@ -608,6 +608,12 @@ eval/training for correctness until the Playground ROCm step failure is fixed.
 
 ## ROCm Version-Matrix Probe
 
+Consolidated matrix summary:
+
+```text
+outputs/analysis/ROCM_VERSION_MATRIX_SUMMARY.md
+```
+
 A disposable ROCm env tested the first version-matrix lead:
 
 ```text
