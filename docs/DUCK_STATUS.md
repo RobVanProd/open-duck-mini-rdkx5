@@ -120,6 +120,8 @@ outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_TARGET_RATE_X008_HOLD.md
 outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_NEG_TARGET_RATE_X008_HOLD.md
 outputs/analysis/CPU_CANDIDATE_GATE_STEP8960_POS_TARGET_RATE_X008_HOLD.md
 outputs/analysis/CPU_CANDIDATE_GATE_STEP32800_HOLD.md
+outputs/analysis/CPU_FORWARD_PROBE_STEP61440_HOLD.md
+outputs/analysis/CPU_AGGRESSIVE_FORWARD_PROBE_STEP61440_HOLD.md
 ```
 
 `step8240_zero_penalty` passed the `15 s` CPU candidate sim gate at `x=0.0`,
@@ -130,6 +132,11 @@ The positive-scale and negative-penalty target-rate pilots also hold at
 `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS`: it is stable and smooth, but its mean
 forward velocity remains near zero. Treat these as offline training/export
 evidence, not deployable policies.
+
+Two stronger CPU forward-curriculum probes also reached step `61440`; both
+passed the `x=0.0` gate but still held at `x=0.08` because forward velocity
+remained near zero. This strengthens the conclusion that local CPU is a
+plumbing/correctness backend, not the next useful candidate-training backend.
 
 ## Active PRs
 
