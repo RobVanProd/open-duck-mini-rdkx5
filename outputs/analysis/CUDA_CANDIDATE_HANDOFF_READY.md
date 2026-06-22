@@ -92,6 +92,18 @@ imitation_scale=0.25
 lin_vel_x=[0.04, 0.12]
 ```
 
+Local CPU smoke validation for this recipe passed on June 22, 2026:
+
+```text
+status: PASS_SMOKE_RUN
+step: 320
+reward: 1.6719996929168701
+output_dir: /tmp/open_duck_actuator_bridge_smoke/smoke_20260622T184905Z_cpu
+```
+
+The smoke ONNX exports remain temporary validation artifacts only; they are not
+candidate policies and are not approved for robot testing.
+
 After the reward/curriculum patch, generate the current one-cell CUDA workflow
 from `main`:
 
