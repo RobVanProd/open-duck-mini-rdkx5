@@ -156,6 +156,17 @@ Playground reset GPU: PASS
 Playground step GPU: HOLD_PLAYGROUND_GPU_STEP
 ```
 
+Latest compact recheck:
+
+```text
+outputs/analysis/rocm_mjx_recheck_after_cost_sign/ROCM_MJX_RUNTIME_ISOLATION.md
+basic JAX GPU: PASS
+minimal MJX GPU: PASS
+Playground one-step vanilla: TIMEOUT
+Playground one-step JIT: FAIL
+gate: HOLD_PLAYGROUND_GPU_STEP
+```
+
 CPU:
 
 ```text
