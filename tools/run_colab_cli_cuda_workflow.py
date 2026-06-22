@@ -187,7 +187,10 @@ def start_remote_job(args: argparse.Namespace, run_dir: Path, rdk_remote_tar: st
 def build_remote_driver(args: argparse.Namespace, workflow_name: str, rdk_tar: str, playground_tar: str, remote_bundle: str) -> str:
     run_smoke = args.workflow in {"smoke", "all", "candidate"}
     run_candidate = args.workflow in {"candidate", "candidate-only", "all"}
-    run_audit = args.workflow in {"eval", "smoke", "candidate", "candidate-only", "all"}
+    run_audit = (
+        args.workflow in {"eval", "smoke", "candidate", "candidate-only", "all"}
+        and not args.skip_audit
+    )
     run_baseline_eval = args.workflow in {"eval", "smoke", "candidate", "all"}
     install_deps = not args.skip_deps
     smoke_steps = args.smoke_num_timesteps
@@ -507,6 +510,14 @@ def main() -> int:
     )
     parser.add_argument("--run", action="store_true", help="execute; default is plan-only")
     parser.add_argument("--skip-deps", action="store_true", help="reuse remote dependencies")
+    parser.add_argument(
+        "--skip-audit",
+        action="store_true",
+        help=(
+            "Skip the repeated policy/sim contract audit in the remote workflow. "
+            "Use only after the 101/14 contract has already been verified."
+        ),
+    )
     parser.add_argument("--no-poll", action="store_true", help="start remote job and return")
     parser.add_argument("--poll-interval-s", type=int, default=60)
     parser.add_argument("--timeout-s", type=int, default=7200)
