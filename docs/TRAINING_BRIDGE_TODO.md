@@ -45,6 +45,12 @@ preferred target for eventual training, but if ROCm/MJX remains unstable, use a
 reviewed CUDA backend for correctness/training experiments while keeping the
 same policy/sim contract and actuator model.
 
+CUDA fallback/runbook:
+
+```text
+docs/CUDA_BACKEND_TRAINING_RUNBOOK.md
+```
+
 ## P0: Inspect Current Training Contract
 
 ### Fit Real Actuator Response From Telemetry

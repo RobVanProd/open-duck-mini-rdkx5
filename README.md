@@ -38,6 +38,7 @@ Primary docs:
 - [Diagnostic runbook](docs/run_sim2real_diagnostics.md)
 - [Training actuator wrapper workflow](docs/TRAINING_ACTUATOR_WRAPPER_WORKFLOW.md)
 - [Candidate policy validation gates](docs/CANDIDATE_POLICY_VALIDATION_GATES.md)
+- [CUDA backend training runbook](docs/CUDA_BACKEND_TRAINING_RUNBOOK.md)
 - [Agent instructions](AGENTS.md)
 
 ## Current Board State
