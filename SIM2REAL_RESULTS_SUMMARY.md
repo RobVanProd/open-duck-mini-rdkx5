@@ -683,10 +683,27 @@ Result:
 - `playground_reset`: `FAIL` on GPU and CPU
 - `playground_direct_mjx_step`: `FAIL` on GPU and CPU
 - failure: `AttributeError: 'Data' object has no attribute '_impl'`
+- reclassified gate: `HOLD_ENV_API_INCOMPATIBLE`
 
 Interpretation: MuJoCo/MJX `3.2.7` is incompatible with the current
 `playground==0.0.5` collision helper / Open Duck env path, so it is not a
 candidate local ROCm fix.
+
+Future disposable ROCm package probes should use the dry-run-first helper:
+
+```bash
+python3 tools/run_rocm_version_matrix.py
+```
+
+Apply mode creates only disposable `../envs/open-duck-playground-rocm-*` envs
+and then runs the direct-step matrix:
+
+```bash
+python3 tools/run_rocm_version_matrix.py --apply
+```
+
+Add `--force-recreate` only when intentionally replacing existing disposable
+matrix envs.
 
 ## CUDA Candidate Handoff
 

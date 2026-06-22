@@ -97,6 +97,17 @@ ROCM_ENV_KEYS = [
 ]
 
 
+API_INCOMPATIBLE_PATTERNS = [
+    "AttributeError: 'Data' object has no attribute '_impl'",
+]
+
+DEPENDENCY_MISSING_PATTERNS = [
+    "ModuleNotFoundError:",
+    "ImportError:",
+    "No module named",
+]
+
+
 def split_csv(value: str) -> list[str]:
     return [item.strip() for item in value.split(",") if item.strip()]
 
@@ -937,11 +948,77 @@ def result_failed(results: Sequence[dict], name: str, platform_name: str) -> boo
     )
 
 
+def result_text(item: Mapping[str, Any]) -> str:
+    return "\n".join(
+        str(item.get(key) or "")
+        for key in ["stdout_tail", "stderr_tail"]
+    )
+
+
+def result_has_pattern(item: Mapping[str, Any], patterns: Sequence[str]) -> bool:
+    text = result_text(item)
+    return any(pattern in text for pattern in patterns)
+
+
+def failing_results(
+    results: Sequence[dict],
+    names: Sequence[str],
+    platforms: Sequence[str] | None = None,
+) -> list[dict]:
+    allowed_platforms = set(platforms or [])
+    allowed_names = set(names)
+    return [
+        item
+        for item in results
+        if item["name"] in allowed_names
+        and item["status"] != "PASS"
+        and (not allowed_platforms or item["platform"] in allowed_platforms)
+    ]
+
+
+def has_dependency_missing(results: Sequence[dict]) -> bool:
+    relevant = failing_results(
+        results,
+        [
+            "playground_contract_only",
+            "playground_xml_contact_audit",
+            "playground_reset",
+            "playground_direct_mjx_step",
+        ],
+    )
+    return any(
+        item.get("status") == "FAIL"
+        and result_has_pattern(item, DEPENDENCY_MISSING_PATTERNS)
+        for item in relevant
+    )
+
+
+def has_env_api_incompatibility(results: Sequence[dict]) -> bool:
+    relevant_names = [
+        "playground_contract_only",
+        "playground_reset",
+        "playground_reset_state_finite",
+        "playground_direct_mjx_step",
+        "playground_direct_mjx_step_jit",
+        "playground_one_step_vanilla",
+    ]
+    relevant = failing_results(results, relevant_names)
+    if not any(result_has_pattern(item, API_INCOMPATIBLE_PATTERNS) for item in relevant):
+        return False
+    cpu_failed = any(item["platform"] == "cpu" for item in relevant)
+    gpu_failed = any(item["platform"] == "gpu" for item in relevant)
+    return cpu_failed and gpu_failed
+
+
 def classify(results: Sequence[dict], platforms: Sequence[str]) -> dict:
     gpu = "gpu" in platforms
     cpu = "cpu" in platforms
     smallest = next((item for item in results if item["status"] != "PASS"), None)
-    if gpu:
+    if has_env_api_incompatibility(results):
+        gate = "HOLD_ENV_API_INCOMPATIBLE"
+    elif has_dependency_missing(results):
+        gate = "HOLD_ENV_DEPENDENCY_MISSING"
+    elif gpu:
         if result_failed(results, "basic_jax", "gpu"):
             gate = "HOLD_BASIC_JAX_GPU"
         elif result_failed(results, "jax_jit_scan", "gpu"):
@@ -1109,6 +1186,10 @@ def build_markdown(payload: Mapping[str, Any]) -> str:
     gate = assessment["gate_result"]
     if gate == "PASS_CPU_EVAL_ONLY":
         lines.append("Use CPU for the next correctness eval while the ROCm/MJX GPU path is fixed. Do not train yet.")
+    elif gate == "HOLD_ENV_DEPENDENCY_MISSING":
+        lines.append("A required Playground/MuJoCo dependency is missing. Fix the env import set before classifying ROCm.")
+    elif gate == "HOLD_ENV_API_INCOMPATIBLE":
+        lines.append("The selected MuJoCo/MJX and Playground versions are API-incompatible on CPU and GPU. Try a different package set before ROCm debugging.")
     elif gate == "HOLD_BASIC_JAX_GPU":
         lines.append("Fix the local JAX/ROCm install before debugging MuJoCo or Playground.")
     elif gate == "HOLD_JAX_JIT_SCAN":

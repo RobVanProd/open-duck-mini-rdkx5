@@ -188,6 +188,22 @@ use a disposable env and rerun the smallest direct-step gate first:
 playground_direct_mjx_step on gpu
 ```
 
+Repeatable dry-run-first helper:
+
+```bash
+python3 tools/run_rocm_version_matrix.py
+```
+
+To create and run the disposable matrix:
+
+```bash
+python3 tools/run_rocm_version_matrix.py --apply
+```
+
+The helper uses `../envs/open-duck-playground-rocm-*` and does not mutate the
+known `../envs/open-duck-playground` env. Add `--force-recreate` only when you
+intentionally want to replace existing disposable matrix envs.
+
 Suggested first disposable matrix:
 
 ```text
@@ -282,6 +298,8 @@ Failure:
 ```text
 AttributeError: 'Data' object has no attribute '_impl'
 ```
+
+Updated classification: `HOLD_ENV_API_INCOMPATIBLE`.
 
 Conclusion: MuJoCo/MJX `3.2.7` is incompatible with the current
 `playground==0.0.5` collision helper / Open Duck env path, so it is not a
