@@ -73,22 +73,27 @@ bundle_cuda_artifacts() {{
     echo "python_executable=$(command -v python || echo UNKNOWN)"
     python - <<'PY' 2>/dev/null || true
 import sys
+from importlib import metadata
+
 print("python_version=" + sys.version.replace("\\n", " "))
-try:
-    import jax
-    print("jax_version=" + getattr(jax, "__version__", "UNKNOWN"))
+for package in [
+    "jax",
+    "jaxlib",
+    "mujoco",
+    "mujoco-mjx",
+    "playground",
+    "mujoco-playground",
+    "onnxruntime",
+    "tensorflow",
+]:
+    key = package.replace("-", "_") + "_version"
     try:
-        print("jax_backend=" + str(jax.default_backend()))
-        print("jax_devices=" + ",".join(str(device) for device in jax.devices()))
+        value = metadata.version(package)
+    except metadata.PackageNotFoundError:
+        value = "NOT_INSTALLED"
     except Exception as exc:
-        print("jax_device_error=" + type(exc).__name__ + ":" + str(exc))
-except Exception as exc:
-    print("jax_import_error=" + type(exc).__name__ + ":" + str(exc))
-try:
-    import mujoco
-    print("mujoco_version=" + getattr(mujoco, "__version__", "UNKNOWN"))
-except Exception as exc:
-    print("mujoco_import_error=" + type(exc).__name__ + ":" + str(exc))
+        value = type(exc).__name__ + ":" + str(exc)
+    print(key + "=" + value)
 PY
     if command -v nvidia-smi >/dev/null 2>&1; then
       nvidia-smi --query-gpu=name --format=csv,noheader 2>/dev/null | head -n 1 | sed 's/^/gpu_name=/'
