@@ -162,6 +162,12 @@ the raw Open Duck MJX physics step.
 
 The current local ROCm env differs from the passing CUDA/Colab path:
 
+Current consolidated matrix summary:
+
+```text
+outputs/analysis/ROCM_VERSION_MATRIX_SUMMARY.md
+```
+
 ```text
 local 7900 XTX:
   jax/jaxlib 0.8.2
