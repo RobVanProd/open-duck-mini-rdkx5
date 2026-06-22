@@ -16,6 +16,17 @@ This path is offline-only:
 - no overwrite of `policy/BEST_WALK_ONNX_2.onnx`
 - no robot-side validation approval
 
+If either GitHub repo is private, the generated cell prompts:
+
+```text
+GitHub token for private repos, or press Enter if public:
+```
+
+Paste a temporary GitHub token into that hidden prompt. The cell uses
+`GIT_ASKPASS` for clone/fetch/pull and does not write the token into git
+remotes. Do not hard-code tokens into the generated notebook or committed docs.
+If a token was pasted into chat/logs, revoke or rotate it after the run.
+
 ## Generate The Cell
 
 From the RDK repo:

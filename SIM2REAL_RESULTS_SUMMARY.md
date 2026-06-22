@@ -833,6 +833,9 @@ Recent repo fixes prepared the next manual Colab/CUDA run:
   package metadata; the failure EXIT trap no longer imports JAX/MJX runtime
 - the generated CUDA cell now selects one `PYTHON_BIN`, preferring
   `/usr/bin/python3` on Colab, and passes it explicitly to `--env-python`
+- the generated CUDA cell prompts for a GitHub token for private repos, uses it
+  through `GIT_ASKPASS`, and records early setup failures with nonzero
+  `exit_status` in the artifact bundle
 - the generator can also write an uploadable one-code-cell Colab notebook with
   `--notebook-output`
 - the generator can write a complete local handoff directory with

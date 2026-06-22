@@ -38,7 +38,11 @@ Playground fork:
 ```
 
 If a repo is private, authenticate in the notebook/session using your normal
-GitHub flow. Do not paste tokens into committed files.
+GitHub flow. The generated cell prompts for a GitHub token when it reaches repo
+sync and uses it through `GIT_ASKPASS`, so the token is not written into git
+remotes. Do not paste tokens into committed files or hard-code them into a
+notebook. Treat any token pasted into chat or logs as temporary and revoke it
+after the run.
 
 ## One-Cell CUDA Smoke
 
@@ -82,6 +86,10 @@ ONNX exports, manifests, and logs. In Colab, the generated cell also makes a
 best-effort browser download request for the bundle and sidecar; if it prints
 `CUDA_ARTIFACT_DOWNLOAD_SKIPPED` or `CUDA_ARTIFACT_DOWNLOAD_FAILED`, download
 the printed bundle and sidecar paths manually.
+
+If the repo sync or setup step fails before training, the `EXIT` trap still
+builds a small evidence bundle. Its `CUDA_CELL_EXIT_STATUS.txt` should show a
+nonzero `exit_status`; import that bundle locally if the failure needs review.
 
 The default generated candidate recipe uses the Playground runner's opt-in
 training-recipe overrides to test the next hypothesis from the CPU pilots:

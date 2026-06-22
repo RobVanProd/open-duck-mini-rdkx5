@@ -86,6 +86,9 @@ The generated cell now:
   from the EXIT trap
 - uses one selected `PYTHON_BIN` for installs, checks, training, gates, and
   subprocess env instantiation
+- prompts for a GitHub token for private repos and uses it through `GIT_ASKPASS`
+  without writing it into git remotes
+- records nonzero `exit_status` correctly if setup/training exits early
 
 ```text
 /content/open_duck_cuda_artifacts_<timestamp>.tar.gz
