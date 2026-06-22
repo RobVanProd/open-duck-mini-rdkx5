@@ -13,11 +13,10 @@ Current work is offline:
 ```text
 Playground actuator bridge merged
   -> RDK training workflow merged
-  -> run CUDA or CPU smoke/correctness checks
-  -> train candidate with actuator bridge enabled
-  -> summarize training run
-  -> package candidate ONNX metadata
-  -> review sim-side gates
+  -> manual CUDA/Colab candidate run
+  -> import CUDA artifact bundle locally
+  -> review x=0.0 and x=0.08 candidate sim gates
+  -> package candidate ONNX metadata only if gates pass
   -> only then request suspended robot validation
 ```
 
@@ -30,6 +29,22 @@ tools/print_cuda_colab_cell.py
 
 Use this path when local `7900 XTX` ROCm/MJX remains blocked and a trusted
 Colab/L4/A100 session is available.
+
+Local `7900 XTX` update:
+
+```text
+default scanned MJX substep path: still blocked on ROCm
+host-loop closed-loop smoke: PASS for 10 ticks, about 105s wall-clock
+status: useful for tiny correctness probes only, not training
+```
+
+Local CPU update:
+
+```text
+training/export/package plumbing: works
+candidate behavior: stable near-standing policies so far
+status: not a useful candidate-training backend
+```
 
 ## Current Leading Finding
 
