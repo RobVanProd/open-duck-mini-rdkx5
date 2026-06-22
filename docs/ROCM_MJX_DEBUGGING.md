@@ -161,6 +161,27 @@ This confirms the local blocker is still the Open Duck Playground
 reduced correctness checks. CUDA remains the backend that completed the full
 closed-loop reproduction.
 
+## PufferLib / Torch ROCm Note
+
+The workstation also has a local PufferLib HIP/ROCm tree:
+
+```text
+/home/lsd/Downloads/PufferLib.rar
+/home/lsd/external/PufferLib-hip-4
+```
+
+That tree is useful evidence that this machine can run some ROCm RL workloads:
+older six-pendulum reports under `/home/lsd/robotics-six-pendulums/reports/`
+show stable PufferLib ROCm smoke/training runs. However, PufferLib is a
+separate Torch-based RL stack with its own vectorized environment path. It does
+not directly fix this issue, because the current blocker is inside the Open
+Duck Playground JAX/MJX `mjx_env.step(...)` path.
+
+Treat PufferLib as a future backend lead only if the project intentionally
+ports or wraps the Open Duck environment outside MJX/JAX. For the current
+actuator-bridge work, keep using CPU for reduced local correctness checks and
+CUDA for full closed-loop eval/training.
+
 ## Evidence Files
 
 Primary summaries:
