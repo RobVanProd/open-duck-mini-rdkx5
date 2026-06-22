@@ -37,7 +37,26 @@ CPU for reduced local correctness checks
 | `../envs/open-duck-playground` | `0.8.2 / rocm7.2.1` | `3.9.0` | `0.0.3` | PASS | TIMEOUT / illegal address in broader runs | PASS | `HOLD_PLAYGROUND_GPU_STEP` |
 | `../envs/open-duck-playground-rocm-playground005` | `0.8.2 / rocm7.2.1` | `3.9.0` | `0.0.5` | PASS | TIMEOUT | PASS | `HOLD_PLAYGROUND_GPU_STEP` |
 | `../envs/open-duck-playground-rocm-mujoco337` | `0.8.2 / rocm7.2.1` | `3.3.7` | `0.0.5` | PASS | TIMEOUT | PASS | `HOLD_PLAYGROUND_GPU_STEP` |
-| `../envs/open-duck-playground-rocm-mujoco327` | `0.8.2 / rocm7.2.1` | `3.2.7` | `0.0.5` | FAIL | FAIL | FAIL | incompatible API |
+| `../envs/open-duck-playground-rocm-mujoco327` | `0.8.2 / rocm7.2.1` | `3.2.7` | `0.0.5` | FAIL | FAIL | FAIL | `HOLD_ENV_API_INCOMPATIBLE` |
+
+## Repeatable Runner
+
+Future local ROCm package probes should use the dry-run-first helper:
+
+```bash
+python3 tools/run_rocm_version_matrix.py
+```
+
+Apply mode intentionally uses disposable envs under
+`../envs/open-duck-playground-rocm-*` and leaves
+`../envs/open-duck-playground` unchanged:
+
+```bash
+python3 tools/run_rocm_version_matrix.py --apply
+```
+
+Add `--force-recreate` only when intentionally replacing existing disposable
+matrix envs.
 
 ## Evidence
 
@@ -63,6 +82,9 @@ collision helper path:
 ```text
 AttributeError: 'Data' object has no attribute '_impl'
 ```
+
+That case is now classified as `HOLD_ENV_API_INCOMPATIBLE`, not as a ROCm-only
+GPU-step failure.
 
 So the quick version-matrix hypothesis is exhausted. Future local ROCm work
 should focus on the Open Duck model features inside `mjx_env.step(...)`, ROCm

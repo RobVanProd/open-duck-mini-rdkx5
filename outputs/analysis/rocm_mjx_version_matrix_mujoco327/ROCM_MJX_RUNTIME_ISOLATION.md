@@ -1,6 +1,6 @@
 # ROCm / MJX Runtime Isolation
 
-gate_result: `HOLD_PLAYGROUND_GPU_STEP`
+gate_result: `HOLD_ENV_API_INCOMPATIBLE`
 smallest_failing_subtest: `default_gpu_playground_reset`
 
 ## Executive Summary
@@ -125,4 +125,4 @@ Supported variants are `default`, `preallocate_false`,
 
 ## Recommendation
 
-Minimal MJX works, but Playground stepping fails. Inspect Open Duck MJX model features on ROCm.
+The selected MuJoCo/MJX and Playground versions are API-incompatible on CPU and GPU. Try a different package set before ROCm debugging.

@@ -241,6 +241,52 @@ This does not prove the ROCm failure is impossible to fix, but it rules out the
 simple per-process memory allocation and strict-math toggles as sufficient fixes
 for the smallest failing Open Duck physics step in the current environment.
 
+## Repeatable Version Matrix
+
+Use this runner for future disposable package-version probes:
+
+```bash
+python3 tools/run_rocm_version_matrix.py
+```
+
+Default mode is dry-run only. It prints the commands for the known matrix cases
+without creating envs or running probes. To create and run the current matrix:
+
+```bash
+python3 tools/run_rocm_version_matrix.py --apply
+```
+
+The runner uses disposable envs under:
+
+```text
+../envs/open-duck-playground-rocm-*
+```
+
+and leaves the known local env untouched:
+
+```text
+../envs/open-duck-playground
+```
+
+If you intentionally want to replace existing disposable matrix envs, add
+`--force-recreate`.
+
+Known case outcomes:
+
+| case | outcome |
+|---|---|
+| `playground005` | `HOLD_PLAYGROUND_GPU_STEP` |
+| `mujoco337` | `HOLD_PLAYGROUND_GPU_STEP` |
+| `mujoco327` | `HOLD_ENV_API_INCOMPATIBLE` |
+
+The `mujoco327` case fails on both CPU and GPU with:
+
+```text
+AttributeError: 'Data' object has no attribute '_impl'
+```
+
+That is a package/API mismatch, not a ROCm-only Open Duck physics-step hold.
+
 ## PufferLib / Torch ROCm Note
 
 The workstation also has a local PufferLib HIP/ROCm tree:
