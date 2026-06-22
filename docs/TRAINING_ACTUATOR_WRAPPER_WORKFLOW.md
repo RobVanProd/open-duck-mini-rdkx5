@@ -111,6 +111,31 @@ action-rate metrics
 simulated actuator tracking metrics
 ```
 
+Minimum enabled-bridge smoke check:
+
+```bash
+cd ../Open_Duck_Playground
+JAX_PLATFORM_NAME=cpu ../envs/open-duck-playground/bin/python - <<'PY'
+import jax
+import jax.numpy as jp
+from playground.open_duck_mini_v2 import joystick
+
+cfg = joystick.default_config()
+cfg.actuator_bridge.enable = True
+cfg.push_config.enable = False
+cfg.noise_config.action_min_delay = 0
+cfg.noise_config.action_max_delay = 1
+
+env = joystick.Joystick(config=cfg)
+state = env.reset(jax.random.PRNGKey(0))
+state = env.step(state, jp.zeros(env.action_size))
+print(state.obs["state"].shape, state.info["actuator_bridge_applied_targets"].shape)
+PY
+```
+
+This catches regressions where the wrapper tries to assign fields on the frozen
+MJX `State` dataclass instead of updating the existing `info` dictionary.
+
 ## Acceptance Gate
 
 Proceed toward training only when:

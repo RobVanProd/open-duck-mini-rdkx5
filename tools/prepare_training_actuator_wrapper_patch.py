@@ -147,7 +147,7 @@ BRIDGE_STEP_BLOCK = '''        # motor_targets.at[5:9].set(state.info["command"]
         target_velocity = (sent_motor_targets - prev_motor_targets) / self.dt
         applied_motor_targets = sent_motor_targets
         if self._config.actuator_bridge.enable:
-            applied_motor_targets, state.info = self._apply_actuator_bridge(
+            applied_motor_targets, _ = self._apply_actuator_bridge(
                 state.info, sent_motor_targets
             )
         state.info["target_velocity_cost"] = jp.mean(jp.square(target_velocity))
