@@ -343,7 +343,7 @@ def gate_for_hold_reason(reason):
         return "HOLD_ACTION_SATURATION"
     if "tracking" in reason:
         return "HOLD_TRACKING"
-    return "HOLD_CRC_OR_TIMING"
+    return "HOLD_CONTROL_IMPACT"
 
 
 def warning_total(terminal):
@@ -382,7 +382,7 @@ def gate_recommendation(
 
     if not records:
         return {
-            "gate": "HOLD_TRACKING",
+            "gate": "HOLD_INSUFFICIENT_CONTEXT",
             "reason": "no telemetry samples",
             "holds": ["no telemetry samples"],
             "warnings": [],

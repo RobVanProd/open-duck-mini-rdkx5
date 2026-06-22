@@ -262,6 +262,11 @@ suspended command when read retries are isolated, write errors are zero, dt is
 clean, action saturation is low, and tracking damage is not correlated with the
 bus warnings.
 
+Current threshold definitions and source notes:
+
+- [DIAGNOSTIC_THRESHOLDS.md](DIAGNOSTIC_THRESHOLDS.md)
+- [RESEARCH_NOTES.md](RESEARCH_NOTES.md)
+
 Only if the x0 gate summary recommends `PASS_X0` or
 `WARN_PROCEED_WITH_CAUTION`, repeat with `0.08 m/s`:
 
