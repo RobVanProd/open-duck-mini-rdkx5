@@ -7,7 +7,39 @@ reviewable sim/training changes. Do not retrain blindly and do not change
 robot runtime behavior as part of these items unless a later PR explicitly
 requests a reviewed runtime experiment.
 
+## Training Environment Constraint
+
+Future training runs should use the local `7900 XTX` / ROCm-capable setup.
+Before starting training:
+
+- verify the AMD/ROCm environment is active
+- verify the MuJoCo render fix for this GPU
+- run a short MuJoCo smoke test before launching long training
+- keep driver packages, local envs, render screenshots, and cache files out of
+  git
+
+Local references observed on this workstation:
+
+```text
+../envs/rocm-baseline
+../verify_scratch/render_mujoco_egl.py
+../amdgpu-install_7.2.1.70201-1_all.deb
+```
+
 ## P0: Inspect Current Training Contract
+
+### Fit Real Actuator Response From Telemetry
+
+- Use `tools/fit_actuator_response_model.py` on suspended `x=0.08` telemetry.
+- Save the small markdown/JSON summary under `outputs/analysis/`.
+- Extract per-joint:
+  - delay ticks
+  - first-order tau
+  - effective velocity limit
+  - model RMSE
+  - p95 model error
+  - amplitude ratio
+  - asymmetry notes
 
 ### Extract Current Actuator Delay Model
 
@@ -68,6 +100,14 @@ alpha = 1 - exp(-dt / tau)
 - Allow knees and ankles to sample lower limits than hips.
 - Log clipping percentage per joint.
 
+### Current Policy Lagged-Sim Replay
+
+- Run the current `BEST_WALK_ONNX_2` behavior through the lagged actuator
+  wrapper in sim.
+- Check whether it degrades in sim under measured delay/lag/velocity limits in
+  the same way it degraded on the real suspended Duck.
+- Treat this as the key validation that the sim bridge captures the gap.
+
 ### Acceleration / Jerk Limit
 
 - Add optional target acceleration and jerk clipping.
@@ -113,6 +153,8 @@ robustness gates.
 - Report target velocity, action deltas, rate-limit activation, and simulated
   actuator tracking error per joint.
 - Include pitch-chain summary by default.
+- Include explicit target velocity p95/p99/max gates.
+- Include simulated tracking p95/p99/max gates.
 
 ### Short Training Experiment
 

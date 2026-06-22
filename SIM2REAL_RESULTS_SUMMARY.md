@@ -23,6 +23,7 @@ target waveform is much more aggressive and exposes the effective delay.
 
 Small summaries:
 
+- `outputs/analysis/ACTUATOR_RESPONSE_FIT.md`
 - `outputs/analysis/FIRST_EVIDENCE_SUMMARY.md`
 - `outputs/first_evidence/20260621T202826Z/imu_tilt_labeled_summary.md`
 - `outputs/first_evidence/20260621T202826Z/joint_identity_summary.md`
@@ -317,15 +318,31 @@ Interpretation:
 
 ## Next Action
 
-Choose exactly one next step: **review
-`docs/ACTUATOR_SIM_BRIDGE_SPEC.md` and create the first sim/training bridge
-implementation PR**, without changing robot behavior yet.
+Latest offline fit:
+
+- `tools/fit_actuator_response_model.py` was run on suspended `x=0.08` replay
+  and compared with suspended `x=0.0`.
+- Summary artifact: `outputs/analysis/ACTUATOR_RESPONSE_FIT.md`.
+- JSON artifact: `outputs/analysis/actuator_response_fit.json`.
+- Fit confidence: `MEDIUM`.
+- Combined delayed/lagged/velocity-limited model reduces pitch-chain model p95
+  error to about `0.019-0.035 rad`.
+- Best combined fit chose `delay_ticks = 3` for all pitch-chain joints.
+- Best effective velocity limits were `2.25-3.75 rad/s`.
+- Best tau hit the lower grid bound (`0.020 s`) in this fit, so do not
+  overinterpret fitted tau; use the broader `0.06-0.14 s` training stress range
+  from the bridge spec.
+
+Choose exactly one next step: **review the fit and create the first
+sim/training bridge implementation PR**, without changing robot behavior yet.
 
 Purpose:
 
 - encode the measured `80-130 ms` effective delay as a sim/training hypothesis
 - encode the real motor target velocity limit and observed target-step
   distribution
+- use fitted effective velocity limits around `2.25-3.75 rad/s` as evidence
+  when selecting training randomization ranges
 - add action-rate / target-velocity diagnostics to the training bridge notes
 - decide whether the next runtime experiment should be a command limit,
   target smoothing experiment, or pure retraining/sim randomization
