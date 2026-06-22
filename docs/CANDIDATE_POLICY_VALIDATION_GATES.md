@@ -125,8 +125,7 @@ Use the closed-loop eval helper in candidate mode before considering any
 robot-side validation:
 
 ```bash
-JAX_PLATFORM_NAME=cpu ../envs/open-duck-playground/bin/python \
-  tools/eval_policy_with_actuator_bridge.py \
+../envs/open-duck-playground/bin/python tools/eval_policy_with_actuator_bridge.py \
   --mode closed-loop-sim \
   --eval-role candidate \
   --policy path/to/candidate.onnx \
@@ -136,6 +135,7 @@ JAX_PLATFORM_NAME=cpu ../envs/open-duck-playground/bin/python \
   --command-x 0.08 \
   --duration 15 \
   --bridge-mode all \
+  --jax-platform cpu \
   --output-dir outputs/analysis/<candidate>_closed_loop_eval
 ```
 

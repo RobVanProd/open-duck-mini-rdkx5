@@ -122,6 +122,7 @@ python tools/eval_policy_with_actuator_bridge.py \\
   --command-x 0.08 \\
   --duration 15 \\
   --bridge-mode all \\
+  --jax-platform gpu \\
   --closed-loop-timeout-s 1800 \\
   --output-dir outputs/analysis/cuda_manual
 
@@ -193,6 +194,7 @@ if [ "$RUN_CANDIDATE" = "1" ]; then
     --command-x 0.0 \\
     --duration 15 \\
     --bridge-mode all \\
+    --jax-platform gpu \\
     --closed-loop-timeout-s 1800 \\
     --output-dir "outputs/analysis/cuda_manual/${{CANDIDATE}}_gate_x0"
   cp "outputs/analysis/cuda_manual/${{CANDIDATE}}_gate_x0/CLOSED_LOOP_ACTUATOR_BRIDGE_EVAL.md" \\
@@ -211,6 +213,7 @@ if [ "$RUN_CANDIDATE" = "1" ]; then
     --command-x 0.08 \\
     --duration 15 \\
     --bridge-mode all \\
+    --jax-platform gpu \\
     --closed-loop-timeout-s 1800 \\
     --output-dir "outputs/analysis/cuda_manual/${{CANDIDATE}}_gate_x008"
   cp "outputs/analysis/cuda_manual/${{CANDIDATE}}_gate_x008/CLOSED_LOOP_ACTUATOR_BRIDGE_EVAL.md" \\

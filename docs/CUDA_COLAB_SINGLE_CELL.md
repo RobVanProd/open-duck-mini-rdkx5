@@ -98,6 +98,9 @@ change. The generated candidate cell now runs candidate-mode closed-loop sim
 gates for both `x=0.0` and `x=0.08` before packaging. A candidate that is
 stable but does not track nonzero forward commands must hold, for example
 `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS`.
+Generated CUDA eval commands pass `--jax-platform gpu` explicitly. Local CPU
+candidate gates should pass `--jax-platform cpu` explicitly so they do not
+accidentally select the blocked local ROCm backend.
 
 ## Files To Bring Back
 

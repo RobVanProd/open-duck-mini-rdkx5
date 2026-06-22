@@ -145,6 +145,7 @@ python tools/eval_policy_with_actuator_bridge.py \
   --command-x 0.08 \
   --duration 15 \
   --bridge-mode all \
+  --jax-platform gpu \
   --closed-loop-timeout-s 1800 \
   --output-dir outputs/analysis/cuda_eval
 
@@ -223,6 +224,7 @@ python tools/eval_policy_with_actuator_bridge.py \
   --command-x 0.0 \
   --duration 15 \
   --bridge-mode all \
+  --jax-platform gpu \
   --output-dir outputs/analysis/<candidate>_gate_x0
 
 python tools/eval_policy_with_actuator_bridge.py \
@@ -235,6 +237,7 @@ python tools/eval_policy_with_actuator_bridge.py \
   --command-x 0.08 \
   --duration 15 \
   --bridge-mode all \
+  --jax-platform gpu \
   --output-dir outputs/analysis/<candidate>_gate_x008
 ```
 
