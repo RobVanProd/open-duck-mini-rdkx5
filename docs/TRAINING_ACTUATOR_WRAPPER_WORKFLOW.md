@@ -114,27 +114,30 @@ simulated actuator tracking metrics
 Minimum enabled-bridge smoke check:
 
 ```bash
-cd ../Open_Duck_Playground
-JAX_PLATFORM_NAME=cpu ../envs/open-duck-playground/bin/python - <<'PY'
-import jax
-import jax.numpy as jp
-from playground.open_duck_mini_v2 import joystick
-
-cfg = joystick.default_config()
-cfg.actuator_bridge.enable = True
-cfg.push_config.enable = False
-cfg.noise_config.action_min_delay = 0
-cfg.noise_config.action_max_delay = 1
-
-env = joystick.Joystick(config=cfg)
-state = env.reset(jax.random.PRNGKey(0))
-state = env.step(state, jp.zeros(env.action_size))
-print(state.obs["state"].shape, state.info["actuator_bridge_applied_targets"].shape)
-PY
+cd /home/lsd/robots/open-duck-mini-rdkx5
+JAX_PLATFORM_NAME=cpu ../envs/open-duck-playground/bin/python \
+  tools/smoke_actuator_bridge_wrapper.py \
+  --playground-path ../Open_Duck_Playground \
+  --platform cpu \
+  --steps 10
 ```
 
 This catches regressions where the wrapper tries to assign fields on the frozen
 MJX `State` dataclass instead of updating the existing `info` dictionary.
+
+Current local result:
+
+```text
+status: PASS_ACTUATOR_BRIDGE_SMOKE
+steps: 10
+platform: cpu
+obs_state_shape: [101]
+obs_privileged_shape: [212]
+action_size: 14
+applied_targets_shape: [14]
+max_target_velocity_cost: 1.4459760189056396
+max_actuator_bridge_tracking_cost: 0.002514034043997526
+```
 
 ## Acceptance Gate
 
