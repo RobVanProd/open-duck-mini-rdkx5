@@ -25,8 +25,11 @@ Current observed state:
   Python 3.12.13
   JAX 0.8.2
   MuJoCo 3.9.0
+  mujoco-mjx 3.9.0
+  playground 0.0.3
   ONNX Runtime 1.26.0
   ml_collections 1.1.0
+  NumPy 2.4.6
   mujoco_playground importable
   JAX backend: gpu
   JAX device: RocmDevice(id=0)
@@ -154,6 +157,41 @@ MIOpen/XLA conservative flags -> TIMEOUT
 
 So the simple per-process memory and strict-math workarounds also do not clear
 the raw Open Duck MJX physics step.
+
+## Version-Matrix Lead
+
+The current local ROCm env differs from the passing CUDA/Colab path:
+
+```text
+local 7900 XTX:
+  jax/jaxlib 0.8.2
+  mujoco/mujoco-mjx 3.9.0
+  playground 0.0.3
+
+passing CUDA/L4 cell:
+  jax[cuda12] from the active pip index
+  mujoco/mujoco-mjx constrained to >=3.2.7,<3.10
+  playground==0.0.5
+```
+
+This is a useful ROCm follow-up lead, but do not mutate
+`../envs/open-duck-playground` in place. Any package-version experiment should
+use a disposable env and rerun the smallest direct-step gate first:
+
+```text
+playground_direct_mjx_step on gpu
+```
+
+Suggested first disposable matrix:
+
+```text
+playground==0.0.5 with current mujoco/mujoco-mjx
+mujoco/mujoco-mjx==3.3.7 with matching playground dependency
+mujoco/mujoco-mjx==3.2.7 with matching playground dependency
+```
+
+Only promote a version set if `playground_direct_mjx_step` passes on ROCm and
+the CPU/CUDA contract remains `obs=101`, `actions=14`.
 
 The current `amdgpu` module parameter is:
 
