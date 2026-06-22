@@ -278,6 +278,8 @@ robustness gates.
 - Export only after sim-side gates pass.
 - Store policy metadata and hash.
 - Do not overwrite `BEST_WALK_ONNX_2.onnx`.
+- Follow `docs/CANDIDATE_POLICY_VALIDATION_GATES.md` before requesting any
+  robot-side suspended validation.
 
 ## P4: Robot Validation
 

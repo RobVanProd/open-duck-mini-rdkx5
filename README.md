@@ -8,18 +8,23 @@ The repository and its documentation are part of the robot's working state. Keep
 
 ## Current Next Step
 
-Stage diagnostics onto the board, then collect the first non-walking evidence packet:
+The first evidence and suspended replay phases have shifted the leading root
+cause from "unknown deployed contract mismatch" to "dynamic actuator mismatch."
+The current work is offline:
 
 ```text
-merge project control docs
-  -> merge first-evidence workflow
-  -> deploy instrumentation/runtime telemetry with dry-run first
-  -> collect first evidence packet
-  -> deploy opt-in RLWalk telemetry before suspended replay
-  -> decide the next diagnostic gate from evidence
+merge Playground actuator bridge PR
+  -> keep RDK workflow/docs PR current
+  -> run only small smoke/correctness checks
+  -> train a candidate with the actuator bridge enabled
+  -> export under a new candidate policy name
+  -> pass sim-side candidate gates
+  -> only then request suspended robot validation
 ```
 
-Do not train, tune, patch IMU remaps, edit offsets, change gains, change action scale, or run grounded walking yet.
+Do not tune hardware gains, patch IMU remaps, edit offsets, change action
+scale, change phase timing, overwrite `BEST_WALK_ONNX_2.onnx`, or run grounded
+walking yet.
 
 Primary docs:
 
@@ -31,6 +36,8 @@ Primary docs:
 - [Roboticist playbook](docs/ROBOTICIST_PLAYBOOK.md)
 - [Deploy instrumentation](docs/DEPLOY_INSTRUMENTATION.md)
 - [Diagnostic runbook](docs/run_sim2real_diagnostics.md)
+- [Training actuator wrapper workflow](docs/TRAINING_ACTUATOR_WRAPPER_WORKFLOW.md)
+- [Candidate policy validation gates](docs/CANDIDATE_POLICY_VALIDATION_GATES.md)
 - [Agent instructions](AGENTS.md)
 
 ## Current Board State
