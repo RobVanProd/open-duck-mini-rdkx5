@@ -13,14 +13,18 @@ cause from "unknown deployed contract mismatch" to "dynamic actuator mismatch."
 The current work is offline:
 
 ```text
-merge Playground actuator bridge PR
-  -> keep RDK workflow/docs PR current
-  -> run only small smoke/correctness checks
-  -> train a candidate with the actuator bridge enabled
-  -> export under a new candidate policy name
-  -> pass sim-side candidate gates
+manual CUDA/Colab candidate run
+  -> import the CUDA artifact bundle locally
+  -> review x=0.0 and x=0.08 candidate sim gates
+  -> only if gates pass, package a candidate ONNX under a new name
   -> only then request suspended robot validation
 ```
+
+Local CPU pilots validate the training/export/package plumbing but repeatedly
+learn near-standing policies. Local `7900 XTX` ROCm can run tiny host-loop
+closed-loop smoke probes, but it is too slow for full-horizon eval or training.
+Use `tools/print_cuda_colab_cell.py --run-candidate` in a manually
+authenticated CUDA notebook/session for the next candidate attempt.
 
 Do not tune hardware gains, patch IMU remaps, edit offsets, change action
 scale, change phase timing, overwrite `BEST_WALK_ONNX_2.onnx`, or run grounded
