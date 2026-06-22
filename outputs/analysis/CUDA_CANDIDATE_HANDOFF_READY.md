@@ -1,6 +1,6 @@
 # CUDA Candidate Handoff Ready
 
-generated_at: `2026-06-22T11:05:00Z`
+generated_at: `2026-06-22T13:13:00Z`
 
 ## Status
 
@@ -16,6 +16,12 @@ Recent handoff fixes merged:
   `CUDA_ARTIFACT_IMPORT_SUMMARY.md`.
 - PR #53: local ROCm host-loop closed-loop smoke passed for 10 ticks, but is
   too slow for full eval/training.
+- PR #61: generated CUDA cells make a best-effort Colab browser download
+  request for the artifact bundle.
+- PR #62: local artifact import can verify the bundle SHA256 printed by the
+  CUDA cell.
+- PR #63: CUDA bundles record RDK/Playground commits and runtime metadata in
+  `CUDA_CELL_EXIT_STATUS.txt`.
 
 ## Why Manual CUDA Is Still Required
 
@@ -45,11 +51,23 @@ The generated cell now:
 - runs CUDA candidate training
 - gates the candidate at `x=0.0` and `x=0.08`
 - packages metadata against the `x=0.08` gate
-- writes one downloadable artifact bundle:
+- writes one downloadable artifact bundle and tries to trigger a Colab browser
+  download:
 
 ```text
 /content/open_duck_cuda_artifacts_<timestamp>.tar.gz
 ```
+
+The generated cell prints:
+
+```text
+CUDA_ARTIFACT_BUNDLE /content/open_duck_cuda_artifacts_<timestamp>.tar.gz
+CUDA_ARTIFACT_BUNDLE_SHA256 <hash>
+CUDA_ARTIFACT_DOWNLOAD_TRIGGERED /content/open_duck_cuda_artifacts_<timestamp>.tar.gz
+```
+
+If the browser download is skipped or fails, download the printed
+`CUDA_ARTIFACT_BUNDLE` path manually.
 
 ## Import Command
 
@@ -75,6 +93,7 @@ The importer reports one of:
 READY_FOR_SIM_GATE_REVIEW
 INFO_SMOKE_ONLY
 INFO_BASELINE_EVAL_ONLY
+HOLD_CUDA_CELL_FAILED
 HOLD_NO_CANDIDATE_PACKAGE
 HOLD_NO_CANDIDATE_ONNX
 HOLD_MISSING_CANDIDATE_GATE_X0
