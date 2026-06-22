@@ -11,7 +11,8 @@ validation.
 Current work is offline:
 
 ```text
-merge/review Playground actuator bridge PR
+Playground actuator bridge merged
+  -> RDK training workflow merged
   -> run CUDA or CPU smoke/correctness checks
   -> train candidate with actuator bridge enabled
   -> summarize training run
@@ -76,13 +77,22 @@ Tiny CPU smoke ONNX exports exist under `/tmp/open_duck_actuator_bridge_smoke/`.
 They are explicitly non-deployable and were used only to validate the training
 loop, summarizer, and package tooling.
 
+Post-merge CPU pilot summaries are recorded here:
+
+```text
+outputs/analysis/CPU_ACTUATOR_BRIDGE_PILOT_SUMMARY.md
+```
+
+Those pilots passed the offline training/export/package path but did not
+produce a robot-ready candidate.
+
 ## Active PRs
 
 RDK diagnostics/workflow repo:
 
 ```text
 PR: https://github.com/RobVanProd/open-duck-mini-rdkx5/pull/18
-branch: main after PR #18 merges
+status: merged into main
 purpose: training workflow, smoke launcher, candidate packaging gates, docs
 ```
 
@@ -90,7 +100,7 @@ Playground fork:
 
 ```text
 PR: https://github.com/RobVanProd/Open_Duck_Playground/pull/1
-branch: main
+status: merged into main
 purpose: default-off actuator bridge in joystick env and runner controls
 ```
 
@@ -123,7 +133,8 @@ CPU:
 
 ```text
 reduced-horizon correctness checks: usable
-full training: not practical
+post-merge PPO pilots: pass tooling, not deployable
+full training: not practical as the primary path
 ```
 
 Use `docs/CUDA_BACKEND_TRAINING_RUNBOOK.md` for CUDA runs while issue #19

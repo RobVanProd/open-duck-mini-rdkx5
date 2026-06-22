@@ -25,6 +25,7 @@ target waveform is much more aggressive and exposes the effective delay.
 Small summaries:
 
 - `outputs/analysis/ACTUATOR_RESPONSE_FIT.md`
+- `outputs/analysis/CPU_ACTUATOR_BRIDGE_PILOT_SUMMARY.md`
 - `outputs/analysis/POLICY_SIM_CONTRACT_AUDIT.md`
 - `outputs/analysis/SIM_ACTUATOR_BRIDGE_EVAL.md`
 - `outputs/analysis/FIRST_EVIDENCE_SUMMARY.md`
@@ -508,3 +509,35 @@ until the bridge spec is reviewed.
 
 Do not run more robot motion or grounded replay until a candidate policy is
 trained with the actuator bridge and passes suspended validation.
+
+## Post-Merge CPU Pilot Runs
+
+After the default-off Playground actuator bridge and RDK training workflow were
+merged, small local CPU pilots were run to validate the offline training/export
+and packaging path on `main`.
+
+Summary artifact:
+
+```text
+outputs/analysis/CPU_ACTUATOR_BRIDGE_PILOT_SUMMARY.md
+```
+
+Results:
+
+- step-level CPU bridge smoke: `PASS_ACTUATOR_BRIDGE_SMOKE`
+- tiny `256` timestep PPO smoke: `PASS_SMOKE_RUN`
+- `8192` timestep target-rate pilot: `PASS_SMOKE_RUN`, non-deployable
+- `8192` timestep zero-penalty pilot: `PASS_SMOKE_RUN`, non-deployable
+- `32768` timestep zero-penalty pilot: `PASS_SMOKE_RUN`, non-deployable
+- all exported ONNX files preserved the `101 -> 14` policy contract
+
+Interpretation:
+
+- The merged training loop, ONNX export, summary, and package tooling work.
+- The small CPU PPO shape is a correctness path, not a candidate generator.
+- The pilot rewards did not justify robot validation or further scaling of the
+  same CPU smoke shape.
+
+Next offline move: use CUDA for meaningful candidate training/evaluation when
+available, or add per-candidate sim-side target-velocity and actuator-tracking
+evaluation before spending more CPU time.
