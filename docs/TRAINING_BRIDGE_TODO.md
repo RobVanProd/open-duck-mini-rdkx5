@@ -280,7 +280,15 @@ before launching another candidate:
   `forward_progress_deadband=0.02`, `tracking_lin_vel_scale=12.0`,
   `tracking_ang_vel_scale=0.0`,
   `alive_scale=0.5`, `imitation_scale=0.25`, and reduced smoothness pressure
-  such as `target_rate_scale=-0.001` and `action_rate_scale=-0.1`
+  such as `target_rate_scale=-0.001`, `action_rate_scale=-0.1`, and
+  `action_magnitude_scale=-0.05`
+
+### Action-Magnitude Penalty
+
+The June 22 CUDA candidates showed saturated sample actions after the first
+training checkpoint. `action_rate` alone is insufficient because a constant
+saturated action can have low rate cost. Add and use a default-off
+`action_magnitude` cost for candidate recipes before launching another GPU run.
 
 ### Action-Rate Penalty
 

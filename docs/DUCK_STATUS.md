@@ -100,6 +100,24 @@ Do not overwrite this file.
 
 No new deployable candidate policy is active as of this update.
 
+June 22 CUDA candidates:
+
+- `open_duck_mini_actuator_bridge_cli_20260622T202101Z`
+  (`sha256=e444d47f14846721ee1c71a4f15ed3da62b7abc07b7f2e8ecc9d122a818b125a`)
+  is not deployable. It trained on Colab L4 to step `307200`, then held in sim:
+  `x=0.0` fell/terminated and `x=0.08` had low forward progress.
+- `open_duck_mini_actuator_bridge_cli_20260622T205753Z`
+  (`sha256=bdfb5655a07bbff564e58ac8ff0f6b398fa36fcd8380c98c0c0194364ff2cd83`)
+  is not deployable. It trained on Colab L4 to step `614400` with yaw tracking
+  disabled, then held in local CPU gates: `x=0.0` fell/terminated and `x=0.08`
+  had near-zero/negative forward progress.
+
+The checkpoint scan for the second CUDA candidate found that the step-0 export
+passed `x=0.0`, but every trained checkpoint from `153600` onward failed
+`x=0.0`. Exported sample actions saturated after the first checkpoint, so the
+next training recipe needs an action-magnitude penalty in addition to
+action-rate and target-rate penalties.
+
 Review-only candidate preserved in git:
 
 ```text

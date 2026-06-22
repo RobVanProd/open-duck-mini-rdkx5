@@ -88,10 +88,24 @@ tracking_lin_vel_scale=12.0
 tracking_ang_vel_scale=0.0
 target_rate_scale=-0.001
 action_rate_scale=-0.1
+action_magnitude_scale=-0.05
 alive_scale=0.5
 imitation_scale=0.25
 lin_vel_x=[0.04, 0.12]
 ```
+
+June 22 CUDA candidate follow-up:
+
+- `open_duck_mini_actuator_bridge_cli_20260622T202101Z` trained to step
+  `307200` and held offline: `x=0.0` fell/terminated and `x=0.08` had near-zero
+  forward progress.
+- `open_duck_mini_actuator_bridge_cli_20260622T205753Z` trained to step
+  `614400` with yaw tracking disabled, but still held offline: all trained
+  checkpoints from `153600` onward failed the `x=0.0` gate; the final checkpoint
+  also held at `x=0.08` with near-zero/negative forward tracking.
+- The exported sample actions saturated after the first training checkpoint.
+  The next recipe should penalize action magnitude, not only action rate,
+  because a constant saturated action can have low action-rate cost.
 
 Local CPU smoke validation for this recipe passed on June 22, 2026:
 

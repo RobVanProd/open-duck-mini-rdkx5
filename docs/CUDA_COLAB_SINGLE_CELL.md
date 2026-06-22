@@ -125,6 +125,7 @@ tracking_lin_vel_scale=12.0
 tracking_ang_vel_scale=0.0
 target_rate_scale=-0.001
 action_rate_scale=-0.1
+action_magnitude_scale=-0.05
 alive_scale=0.5
 imitation_scale=0.25
 lin_vel_x=[0.04, 0.12]

@@ -78,6 +78,7 @@ def build_command(args: argparse.Namespace, output_dir: Path) -> list[str]:
         "--forward_progress_scale": args.forward_progress_scale,
         "--forward_progress_deadband": args.forward_progress_deadband,
         "--action_rate_scale": args.action_rate_scale,
+        "--action_magnitude_scale": args.action_magnitude_scale,
         "--stand_still_scale": args.stand_still_scale,
         "--alive_scale": args.alive_scale,
         "--imitation_scale": args.imitation_scale,
@@ -209,6 +210,7 @@ def main() -> int:
     parser.add_argument("--forward-progress-scale", type=float, default=None)
     parser.add_argument("--forward-progress-deadband", type=float, default=None)
     parser.add_argument("--action-rate-scale", type=float, default=None)
+    parser.add_argument("--action-magnitude-scale", type=float, default=None)
     parser.add_argument("--stand-still-scale", type=float, default=None)
     parser.add_argument("--alive-scale", type=float, default=None)
     parser.add_argument("--imitation-scale", type=float, default=None)
@@ -252,6 +254,7 @@ def main() -> int:
             "forward_progress_scale": args.forward_progress_scale,
             "forward_progress_deadband": args.forward_progress_deadband,
             "action_rate_scale": args.action_rate_scale,
+            "action_magnitude_scale": args.action_magnitude_scale,
             "stand_still_scale": args.stand_still_scale,
             "alive_scale": args.alive_scale,
             "imitation_scale": args.imitation_scale,

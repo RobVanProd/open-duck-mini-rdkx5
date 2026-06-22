@@ -106,9 +106,10 @@ training-recipe overrides to test the next hypothesis from the CPU pilots:
 stable standing was over-rewarded relative to nonzero forward command tracking.
 It therefore tightens `tracking_sigma`, adds an explicit default-off
 `forward_progress` reward term for nonzero commands, disables yaw tracking for
-the straight-ahead command slice, reduces alive and imitation scales, samples
-straight-ahead positive `x` commands, and freezes head-command randomization for
-the first candidate attempt.
+the straight-ahead command slice, adds an opt-in action-magnitude penalty to
+discourage saturated constant actions, reduces alive and imitation scales,
+samples straight-ahead positive `x` commands, and freezes head-command
+randomization for the first candidate attempt.
 
 See:
 
@@ -243,6 +244,7 @@ export PYTHON_BIN="${PYTHON_BIN:-/usr/bin/python3}"
   --forward-progress-scale 2.0 \
   --forward-progress-deadband 0.02 \
   --action-rate-scale -0.1 \
+  --action-magnitude-scale -0.05 \
   --stand-still-scale -0.2 \
   --alive-scale 0.5 \
   --imitation-scale 0.25 \

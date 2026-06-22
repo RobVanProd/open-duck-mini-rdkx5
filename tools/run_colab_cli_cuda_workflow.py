@@ -370,6 +370,7 @@ def build_remote_driver(args: argparse.Namespace, workflow_name: str, rdk_tar: s
                 "--forward-progress-scale", "{args.candidate_forward_progress_scale}",
                 "--forward-progress-deadband", "{args.candidate_forward_progress_deadband}",
                 "--action-rate-scale", "{args.candidate_action_rate_scale}",
+                "--action-magnitude-scale", "{args.candidate_action_magnitude_scale}",
                 "--stand-still-scale", "{args.candidate_stand_still_scale}",
                 "--alive-scale", "{args.candidate_alive_scale}",
                 "--imitation-scale", "{args.candidate_imitation_scale}",
@@ -541,6 +542,7 @@ def main() -> int:
     parser.add_argument("--candidate-forward-progress-scale", type=float, default=2.0)
     parser.add_argument("--candidate-forward-progress-deadband", type=float, default=0.02)
     parser.add_argument("--candidate-action-rate-scale", type=float, default=-0.1)
+    parser.add_argument("--candidate-action-magnitude-scale", type=float, default=-0.05)
     parser.add_argument("--candidate-stand-still-scale", type=float, default=-0.2)
     parser.add_argument("--candidate-alive-scale", type=float, default=0.5)
     parser.add_argument("--candidate-imitation-scale", type=float, default=0.25)
