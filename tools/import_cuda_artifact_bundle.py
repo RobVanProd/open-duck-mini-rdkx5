@@ -73,6 +73,8 @@ def first_status_from_md(path: Path) -> str | None:
                 return stripped.split("overall_status:", 1)[1].strip().strip("`")
             if "assessment_status:" in stripped:
                 return stripped.split("assessment_status:", 1)[1].strip().strip("`")
+            if stripped.startswith("status:"):
+                return stripped.split("status:", 1)[1].strip().strip("`")
             if "candidate_gate_status:" in stripped:
                 return stripped.split("candidate_gate_status:", 1)[1].strip().strip("`")
     except Exception:
@@ -98,6 +100,148 @@ def collect_files(output_dir: Path) -> dict[str, list[Path]]:
     }
 
 
+def status_fields_from_json(payload: Any) -> dict[str, Any]:
+    if not isinstance(payload, dict):
+        return {}
+
+    fields: dict[str, Any] = {}
+    for key in [
+        "overall_status",
+        "assessment_status",
+        "status",
+        "candidate_gate_status",
+    ]:
+        if key in payload:
+            fields[key] = payload[key]
+
+    closed_loop = payload.get("closed_loop_sim")
+    if isinstance(closed_loop, dict):
+        if "status" in closed_loop:
+            fields.setdefault("closed_loop_status", closed_loop["status"])
+        candidate_gate = closed_loop.get("candidate_gate")
+        if isinstance(candidate_gate, dict) and "status" in candidate_gate:
+            fields.setdefault("candidate_gate_status", candidate_gate["status"])
+
+    sim_gate = payload.get("sim_gate")
+    if isinstance(sim_gate, dict):
+        actuator_eval = sim_gate.get("actuator_bridge_eval")
+        if isinstance(actuator_eval, dict):
+            if "candidate_gate_status" in actuator_eval:
+                fields.setdefault(
+                    "candidate_gate_status",
+                    actuator_eval["candidate_gate_status"],
+                )
+            if "overall_status" in actuator_eval:
+                fields.setdefault("overall_status", actuator_eval["overall_status"])
+
+    candidate = payload.get("candidate")
+    if isinstance(candidate, dict):
+        fields["candidate_name"] = candidate.get("name")
+        fields["candidate_sha256"] = candidate.get("sha256")
+    return fields
+
+
+def primary_status(item: dict[str, Any]) -> str:
+    return str(
+        item.get("overall_status")
+        or item.get("assessment_status")
+        or item.get("candidate_gate_status")
+        or item.get("status")
+        or item.get("closed_loop_status")
+        or "UNKNOWN"
+    )
+
+
+def gate_status_by_suffix(markdown_statuses: list[dict[str, Any]], suffix: str) -> str | None:
+    matches = [
+        item.get("status")
+        for item in markdown_statuses
+        if suffix in str(item.get("path", ""))
+    ]
+    for status in matches:
+        if isinstance(status, str) and status != "UNKNOWN":
+            return status
+    return None
+
+
+def determine_review_status(
+    markdown_statuses: list[dict[str, Any]],
+    json_summaries: list[dict[str, Any]],
+    onnx_summaries: list[dict[str, Any]],
+) -> dict[str, Any]:
+    package_jsons = [
+        item
+        for item in json_summaries
+        if item.get("candidate_name") and item.get("status")
+    ]
+    package_statuses = [str(item.get("status")) for item in package_jsons]
+
+    x0_status = gate_status_by_suffix(markdown_statuses, "_candidate_gate_x0")
+    x008_status = gate_status_by_suffix(markdown_statuses, "_candidate_gate_x008")
+
+    for status in package_statuses:
+        if status.startswith("HOLD"):
+            return {
+                "status": status,
+                "reason": "candidate package reported a hold",
+                "candidate_gate_x0": x0_status,
+                "candidate_gate_x008": x008_status,
+            }
+
+    if package_jsons and not onnx_summaries:
+        return {
+            "status": "HOLD_NO_CANDIDATE_ONNX",
+            "reason": "candidate package exists but no ONNX file was found in the bundle",
+            "candidate_gate_x0": x0_status,
+            "candidate_gate_x008": x008_status,
+        }
+
+    if package_jsons:
+        if x0_status != "PASS_CANDIDATE_SIM_GATE":
+            return {
+                "status": x0_status or "HOLD_MISSING_CANDIDATE_GATE_X0",
+                "reason": "candidate x=0.0 sim gate is missing or not passing",
+                "candidate_gate_x0": x0_status,
+                "candidate_gate_x008": x008_status,
+            }
+        if x008_status != "PASS_CANDIDATE_SIM_GATE":
+            return {
+                "status": x008_status or "HOLD_MISSING_CANDIDATE_GATE_X008",
+                "reason": "candidate x=0.08 sim gate is missing or not passing",
+                "candidate_gate_x0": x0_status,
+                "candidate_gate_x008": x008_status,
+            }
+        return {
+            "status": "READY_FOR_SIM_GATE_REVIEW",
+            "reason": "candidate package and both candidate gates are present and passing",
+            "candidate_gate_x0": x0_status,
+            "candidate_gate_x008": x008_status,
+        }
+
+    if any(item.get("status") == "PASS_SMOKE_RUN" for item in json_summaries):
+        return {
+            "status": "INFO_SMOKE_ONLY",
+            "reason": "bundle contains smoke evidence but no candidate package",
+            "candidate_gate_x0": x0_status,
+            "candidate_gate_x008": x008_status,
+        }
+
+    if any(item.get("status") == "PASS_CLOSED_LOOP_REPRODUCTION" for item in json_summaries):
+        return {
+            "status": "INFO_BASELINE_EVAL_ONLY",
+            "reason": "bundle contains baseline eval evidence but no candidate package",
+            "candidate_gate_x0": x0_status,
+            "candidate_gate_x008": x008_status,
+        }
+
+    return {
+        "status": "HOLD_NO_CANDIDATE_PACKAGE",
+        "reason": "no candidate package metadata was found in the bundle",
+        "candidate_gate_x0": x0_status,
+        "candidate_gate_x008": x008_status,
+    }
+
+
 def build_summary(
     bundle: Path | None, source_dir: Path | None, output_dir: Path
 ) -> tuple[str, dict[str, Any]]:
@@ -120,19 +264,7 @@ def build_summary(
             "path": relative(path),
             "size_bytes": path.stat().st_size,
         }
-        if isinstance(payload, dict):
-            for key in [
-                "overall_status",
-                "assessment_status",
-                "status",
-                "candidate_gate_status",
-            ]:
-                if key in payload:
-                    item[key] = payload[key]
-            candidate = payload.get("candidate")
-            if isinstance(candidate, dict):
-                item["candidate_name"] = candidate.get("name")
-                item["candidate_sha256"] = candidate.get("sha256")
+        item.update(status_fields_from_json(payload))
         json_summaries.append(item)
 
     onnx_summaries = [
@@ -143,6 +275,8 @@ def build_summary(
         }
         for path in files["onnx"]
     ]
+
+    review = determine_review_status(markdown_statuses, json_summaries, onnx_summaries)
 
     payload = {
         "schema_version": "cuda_artifact_import.v1",
@@ -160,6 +294,7 @@ def build_summary(
         "json_summaries": json_summaries,
         "onnx_files": onnx_summaries,
         "stdout_stderr_files": [relative(path) for path in files["stdout_stderr"]],
+        "review": review,
     }
 
     lines = [
@@ -178,6 +313,18 @@ def build_summary(
     if source_dir:
         lines.append(f"- source_dir: `{source_dir}`")
 
+    lines.extend(
+        [
+            "",
+            "## Review Gate",
+            "",
+            f"- status: `{review['status']}`",
+            f"- reason: {review['reason']}",
+            f"- candidate_gate_x0: `{review.get('candidate_gate_x0')}`",
+            f"- candidate_gate_x008: `{review.get('candidate_gate_x008')}`",
+        ]
+    )
+
     lines.extend(["", "## Markdown Statuses", ""])
     if markdown_statuses:
         lines.append("| file | status |")
@@ -192,13 +339,7 @@ def build_summary(
         lines.append("| file | status | candidate |")
         lines.append("|---|---|---|")
         for item in json_summaries:
-            status = (
-                item.get("overall_status")
-                or item.get("assessment_status")
-                or item.get("candidate_gate_status")
-                or item.get("status")
-                or "UNKNOWN"
-            )
+            status = primary_status(item)
             candidate = item.get("candidate_name") or ""
             lines.append(f"| `{item['path']}` | `{status}` | `{candidate}` |")
     else:

@@ -128,6 +128,18 @@ outputs/analysis/cuda_imports/<timestamp>_<bundle>/CUDA_ARTIFACT_IMPORT_SUMMARY.
 outputs/analysis/cuda_imports/<timestamp>_<bundle>/cuda_artifact_import_summary.json
 ```
 
+Start review from `CUDA_ARTIFACT_IMPORT_SUMMARY.md`. Its review gate reports:
+
+```text
+READY_FOR_SIM_GATE_REVIEW
+INFO_SMOKE_ONLY
+INFO_BASELINE_EVAL_ONLY
+HOLD_NO_CANDIDATE_PACKAGE
+HOLD_MISSING_CANDIDATE_GATE_X0
+HOLD_MISSING_CANDIDATE_GATE_X008
+or the candidate package/gate HOLD_* status
+```
+
 If you cannot download the bundle, bring back these small summaries first:
 
 ```text

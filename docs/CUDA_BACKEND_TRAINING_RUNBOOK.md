@@ -277,7 +277,18 @@ If target-velocity analysis exists, add:
 
 ## Files To Send Back
 
-Send small summaries first:
+Prefer sending the generated `.tar.gz` bundle and importing it locally first:
+
+```bash
+python3 tools/import_cuda_artifact_bundle.py /path/to/open_duck_cuda_artifacts_<timestamp>.tar.gz
+```
+
+Open the generated `CUDA_ARTIFACT_IMPORT_SUMMARY.md` first. It reports a
+review gate such as `READY_FOR_SIM_GATE_REVIEW`, `INFO_SMOKE_ONLY`, or the
+specific `HOLD_*` reason from the candidate package or sim gates. This is still
+an offline review gate, not approval for robot testing.
+
+If the bundle cannot be downloaded, send small summaries first:
 
 ```text
 outputs/analysis/POLICY_SIM_CONTRACT_AUDIT_CUDA.md
