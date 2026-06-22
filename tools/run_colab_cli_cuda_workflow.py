@@ -348,6 +348,11 @@ def build_remote_driver(args: argparse.Namespace, workflow_name: str, rdk_tar: s
                 "--output-md", str(OUT / f"{{candidate_name}}_training_run_summary.md"),
                 "--output-json", str(OUT / f"{{candidate_name}}_training_run_summary.json"),
             ], cwd=RDK, timeout=300)
+            copy_training_outputs(
+                "/content/open_duck_training_runs_cli",
+                OUT / "open_duck_training_runs_cli",
+            )
+            bundle_artifacts()
             for command_x, suffix in [("0.0", "x0"), ("0.08", "x008")]:
                 gate_dir = OUT / f"{{candidate_name}}_gate_{{suffix}}"
                 run([
@@ -368,6 +373,7 @@ def build_remote_driver(args: argparse.Namespace, workflow_name: str, rdk_tar: s
                 ], cwd=RDK, timeout=2400)
                 run(["cp", str(gate_dir / "CLOSED_LOOP_ACTUATOR_BRIDGE_EVAL.md"), str(OUT / f"{{candidate_name}}_candidate_gate_{{suffix}}.md")])
                 run(["cp", str(gate_dir / "closed_loop_actuator_bridge_eval.json"), str(OUT / f"{{candidate_name}}_candidate_gate_{{suffix}}.json")])
+                bundle_artifacts()
             run([
                 PYTHON, "tools/package_candidate_policy.py", str(latest_onnx),
                 "--candidate-name", candidate_name,
@@ -408,6 +414,17 @@ def poll_remote(session: str, run_dir: Path, remote_log: str, remote_exit: str, 
             if log_dest.exists():
                 lines = log_dest.read_text(errors="replace").splitlines()
                 print("\n".join(lines[-12:]), flush=True)
+        if colab_file_exists(session, remote_bundle):
+            partial_dest = run_dir / (Path(remote_bundle).name + ".partial")
+            subprocess.run(
+                ["colab", "download", "-s", session, remote_bundle, str(partial_dest)],
+                check=False,
+                text=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+            )
+            if partial_dest.exists():
+                print(f"PARTIAL_ARTIFACT {partial_dest} size={partial_dest.stat().st_size}", flush=True)
         time.sleep(interval_s)
     else:
         raise SystemExit(f"Timed out waiting for {remote_exit}")
