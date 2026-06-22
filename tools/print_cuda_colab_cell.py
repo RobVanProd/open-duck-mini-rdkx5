@@ -20,6 +20,7 @@ def bash_bool(value: bool) -> str:
 
 def build_cell(args: argparse.Namespace) -> str:
     candidate_flag = bash_bool(args.run_candidate)
+    auto_download_flag = bash_bool(not args.no_auto_download)
     smoke_steps = args.smoke_num_timesteps
     candidate_steps = args.candidate_num_timesteps
     cell = f"""%%bash
@@ -35,6 +36,7 @@ export RDK_BRANCH={args.rdk_branch!r}
 export PLAYGROUND_BRANCH={args.playground_branch!r}
 export RUN_CANDIDATE={candidate_flag}
 export CANDIDATE_NUM_TIMESTEPS={candidate_steps}
+export CUDA_AUTO_DOWNLOAD={auto_download_flag}
 export ARTIFACT_ROOT="/content/open_duck_cuda_artifacts"
 export BUNDLE="/content/open_duck_cuda_artifacts_$(date -u +%Y%m%dT%H%M%SZ).tar.gz"
 
@@ -83,6 +85,23 @@ print("CUDA_ARTIFACT_BUNDLE", bundle)
 print("CUDA_ARTIFACT_BUNDLE_SIZE_BYTES", bundle.stat().st_size)
 print("CUDA_ARTIFACT_BUNDLE_SHA256", hashlib.sha256(bundle.read_bytes()).hexdigest())
 PY
+    if [ "${{CUDA_AUTO_DOWNLOAD:-1}}" = "1" ]; then
+      python - <<PY
+from pathlib import Path
+
+bundle = Path("$BUNDLE")
+try:
+    from google.colab import files
+except Exception as exc:
+    print("CUDA_ARTIFACT_DOWNLOAD_SKIPPED", type(exc).__name__, exc)
+else:
+    try:
+        files.download(str(bundle))
+        print("CUDA_ARTIFACT_DOWNLOAD_TRIGGERED", bundle)
+    except Exception as exc:
+        print("CUDA_ARTIFACT_DOWNLOAD_FAILED", type(exc).__name__, exc)
+PY
+    fi
   else
     echo "CUDA_ARTIFACT_BUNDLE_FAILED $BUNDLE"
   fi
@@ -329,6 +348,14 @@ def main() -> int:
     parser.add_argument("--candidate-lin-vel-x-min", type=float, default=0.04)
     parser.add_argument("--candidate-lin-vel-x-max", type=float, default=0.12)
     parser.add_argument("--candidate-timeout-s", type=int, default=7200)
+    parser.add_argument(
+        "--no-auto-download",
+        action="store_true",
+        help=(
+            "Do not include the best-effort google.colab.files.download call "
+            "after building the artifact bundle."
+        ),
+    )
     parser.add_argument("--output", help="Write the cell to this file instead of stdout.")
     args = parser.parse_args()
 

@@ -119,11 +119,23 @@ The generated cell now prints one bundle path plus its SHA256:
 ```text
 CUDA_ARTIFACT_BUNDLE /content/open_duck_cuda_artifacts_<timestamp>.tar.gz
 CUDA_ARTIFACT_BUNDLE_SHA256 <hash>
+CUDA_ARTIFACT_DOWNLOAD_TRIGGERED /content/open_duck_cuda_artifacts_<timestamp>.tar.gz
 ```
 
 Download that `.tar.gz` first. It includes the small analysis directory plus
 candidate ONNX/manifests/stdout/stderr from the smoke and candidate runs. It
 intentionally leaves large raw checkpoint files out of the bundle.
+
+In Colab, the generated cell also makes a best-effort
+`google.colab.files.download(...)` call after creating the bundle. If the
+session is not Colab or the browser blocks the download, the cell prints
+`CUDA_ARTIFACT_DOWNLOAD_SKIPPED` or `CUDA_ARTIFACT_DOWNLOAD_FAILED`; in that
+case, download the printed `CUDA_ARTIFACT_BUNDLE` path manually. To omit the
+download trigger in generated cells, pass:
+
+```bash
+python3 tools/print_cuda_colab_cell.py --run-candidate --no-auto-download
+```
 
 The generated cell builds this bundle from an `EXIT` trap. Download the bundle
 even if the notebook cell exits early or reports a command failure. The archive

@@ -61,6 +61,9 @@ The generated candidate cell also runs candidate-mode closed-loop sim gates at
 `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` is carried into the package metadata.
 At the end, it creates a single `/content/open_duck_cuda_artifacts_<timestamp>.tar.gz`
 bundle with small analysis files, candidate ONNX exports, manifests, and logs.
+In Colab, the generated cell also makes a best-effort browser download request
+for that bundle; if it prints `CUDA_ARTIFACT_DOWNLOAD_SKIPPED` or
+`CUDA_ARTIFACT_DOWNLOAD_FAILED`, download the printed bundle path manually.
 
 The default generated candidate recipe uses the Playground runner's opt-in
 training-recipe overrides to test the next hypothesis from the CPU pilots:
