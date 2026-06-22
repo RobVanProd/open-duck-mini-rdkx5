@@ -606,6 +606,34 @@ Interpretation: the local GPU can run basic JAX and a minimal MJX model, but
 the Open Duck Playground GPU step path remains blocked. Use CPU or CUDA-backed
 eval/training for correctness until the Playground ROCm step failure is fixed.
 
+## ROCm Version-Matrix Probe
+
+A disposable ROCm env tested the first version-matrix lead:
+
+```text
+env: ../envs/open-duck-playground-rocm-playground005
+jax/jaxlib: 0.8.2
+jax-rocm7-pjrt/plugin: 0.8.2+rocm7.2.1
+mujoco/mujoco-mjx: 3.9.0
+playground: 0.0.5
+evidence: outputs/analysis/rocm_mjx_version_matrix_playground005/
+```
+
+Result:
+
+- `basic_jax`: `PASS`
+- `minimal_mjx_step`: `PASS`
+- `playground_contract_only`: `PASS`
+- `playground_reset`: `PASS`
+- `playground_direct_mjx_step` on GPU: `TIMEOUT`
+- `playground_direct_mjx_step` on CPU: `PASS`
+- gate: `HOLD_PLAYGROUND_GPU_STEP`
+
+Interpretation: matching the CUDA-passing `playground==0.0.5` dependency does
+not clear the local 7900 XTX Open Duck MJX direct-step hang while MuJoCo/MJX is
+still `3.9.0`. Future ROCm work should test older MuJoCo/MJX versions in
+disposable envs; do not mutate the known `../envs/open-duck-playground` env.
+
 ## CUDA Candidate Handoff
 
 The current CUDA candidate handoff is recorded in:
