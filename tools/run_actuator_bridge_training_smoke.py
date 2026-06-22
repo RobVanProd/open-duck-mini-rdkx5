@@ -156,8 +156,25 @@ def main() -> int:
         "--actuator-bridge-velocity-limit-max-rad-s", type=float, default=4.7
     )
     parser.add_argument("--actuator-bridge-per-joint-variation", type=float, default=0.15)
-    parser.add_argument("--target-rate-scale", type=float, default=0.0)
-    parser.add_argument("--actuator-tracking-scale", type=float, default=0.0)
+    parser.add_argument(
+        "--target-rate-scale",
+        type=float,
+        default=0.0,
+        help=(
+            "Scale applied to the target-velocity cost. Use a negative value "
+            "to penalize target velocity; positive values reward the cost."
+        ),
+    )
+    parser.add_argument(
+        "--actuator-tracking-scale",
+        type=float,
+        default=0.0,
+        help=(
+            "Scale applied to the sent-vs-applied actuator tracking cost. Use "
+            "a negative value to penalize tracking error; positive values "
+            "reward the cost."
+        ),
+    )
     args = parser.parse_args()
 
     validate_paths(args)
