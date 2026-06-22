@@ -230,6 +230,7 @@ def main() -> int:
     command = build_command(args, output_dir)
     env = os.environ.copy()
     env["JAX_PLATFORM_NAME"] = args.platform
+    env["PYTHONUNBUFFERED"] = "1"
 
     manifest: dict[str, Any] = {
         "status": "RUN_PLANNED" if args.run else "DRY_RUN",
