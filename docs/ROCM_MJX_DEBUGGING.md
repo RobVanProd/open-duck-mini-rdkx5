@@ -287,6 +287,30 @@ AttributeError: 'Data' object has no attribute '_impl'
 
 That is a package/API mismatch, not a ROCm-only Open Duck physics-step hold.
 
+## Model Feature Audit
+
+The static/compiled MJCF feature audit is documented in:
+
+```text
+docs/ROCM_MJX_MODEL_FEATURE_AUDIT.md
+outputs/analysis/ROCM_MJX_MODEL_FEATURE_AUDIT.md
+outputs/analysis/rocm_mjx_model_feature_audit.json
+```
+
+Current compiled model inventory:
+
+```text
+nq / nv / nu: 21 / 20 / 14
+bodies / joints / geoms / sites / sensors: 18 / 15 / 47 / 5 / 15
+meshes: 28
+contact pairs: 0
+equality constraints: 0
+```
+
+The only contact-relevant compiled geoms are the two mesh TPU feet and the
+floor plane. This makes mesh-foot collision against the plane the highest-value
+future reduced-model probe for the ROCm `mjx_env.step(...)` hold.
+
 ## PufferLib / Torch ROCm Note
 
 The workstation also has a local PufferLib HIP/ROCm tree:
