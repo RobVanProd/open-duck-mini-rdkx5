@@ -87,6 +87,51 @@ def write_console_script(path: Path, remote_script: str) -> None:
     path.write_text(remote_script.strip() + "\nexit\n")
 
 
+def run_console_script(
+    session: str,
+    console_script: Path,
+    log_path: Path,
+    *,
+    timeout_s: int = 120,
+) -> subprocess.CompletedProcess:
+    print(">>>", f"colab console -s {session} < {console_script}", flush=True)
+    completed = subprocess.run(
+        ["colab", "console", "-s", session],
+        input=console_script.read_text(),
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        timeout=timeout_s,
+        check=False,
+    )
+    log_path.write_text(completed.stdout or "")
+    print(completed.stdout[-2000:] if completed.stdout else "", flush=True)
+    return completed
+
+
+def initialize_content_api(session: str, run_dir: Path) -> None:
+    """Touch /content once so google-colab-cli file upload/download can see it."""
+
+    console_script = run_dir / "initialize_content_api_console.sh"
+    write_console_script(
+        console_script,
+        """
+        set -euo pipefail
+        mkdir -p /content
+        printf 'ready\\n' > /content/open_duck_colab_cli_content_ready.txt
+        ls -l /content/open_duck_colab_cli_content_ready.txt
+        """,
+    )
+    completed = run_console_script(
+        session,
+        console_script,
+        run_dir / "console_initialize_content_api.log",
+        timeout_s=120,
+    )
+    if completed.returncode != 0:
+        raise SystemExit(completed.returncode)
+
+
 def start_remote_job(args: argparse.Namespace, run_dir: Path, rdk_remote_tar: str, playground_remote_tar: str) -> None:
     workflow_name = f"open_duck_colab_cli_{args.workflow}_{timestamp()}"
     remote_driver = f"/content/{workflow_name}_driver.py"
@@ -124,18 +169,12 @@ def start_remote_job(args: argparse.Namespace, run_dir: Path, rdk_remote_tar: st
         """,
     )
     # colab console reads from stdin, so feed the small start script directly.
-    print(">>>", f"colab console -s {args.session} < {console_script}", flush=True)
-    completed = subprocess.run(
-        ["colab", "console", "-s", args.session],
-        input=console_script.read_text(),
-        text=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-        timeout=120,
-        check=False,
+    completed = run_console_script(
+        args.session,
+        console_script,
+        run_dir / "console_start.log",
+        timeout_s=120,
     )
-    (run_dir / "console_start.log").write_text(completed.stdout or "")
-    print(completed.stdout[-2000:] if completed.stdout else "", flush=True)
     if completed.returncode != 0:
         raise SystemExit(completed.returncode)
 
@@ -510,6 +549,7 @@ def main() -> int:
         return 0
 
     run_dir.mkdir(parents=True, exist_ok=True)
+    initialize_content_api(args.session, run_dir)
     make_tarball(rdk_root, rdk_tar, "open-duck-mini-rdkx5")
     make_tarball(playground_root, playground_tar, "Open_Duck_Playground")
     rdk_remote = "/content/open-duck-mini-rdkx5_cli.tar.gz"
