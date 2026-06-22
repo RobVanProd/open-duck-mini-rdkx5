@@ -542,6 +542,8 @@ Results:
     `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` over `15 s`
   - `step8240_target_rate`, `x=0.08`:
     `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` over `15 s`
+  - `step8240_negative_target_rate`, `x=0.08`:
+    `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` over `15 s`
   - `step32800_zero_penalty`: `HOLD_CANDIDATE_FALL_OR_TERMINATION` over `2 s`
 - the review-only `step8240_zero_penalty` ONNX is preserved under
   `policy/candidates/open_duck_mini_actuator_bridge_cpu_pilot_20260622_step8240/`
@@ -554,6 +556,7 @@ Interpretation:
   nonzero forward-command gates because mean forward velocity stayed near zero.
   They are preserved as training/export evidence, not as walking candidates.
 
-Next offline move: train a candidate with command-tracking retained under the
-actuator bridge, and keep `--eval-role candidate` command-tracking gates in
-front of any robot-side approval discussion.
+Next offline move: run a larger CUDA-backed candidate training job with
+command-tracking retained under the actuator bridge, and keep
+`--eval-role candidate` command-tracking gates in front of any robot-side
+approval discussion.

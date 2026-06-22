@@ -102,16 +102,16 @@ outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_ZERO_X0_15S.md
 outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_ZERO_X004_15S.md
 outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_ZERO_15S.md
 outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_TARGET_RATE_X008_HOLD.md
+outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_NEG_TARGET_RATE_X008_HOLD.md
 outputs/analysis/CPU_CANDIDATE_GATE_STEP32800_HOLD.md
 ```
 
 `step8240_zero_penalty` passed the `15 s` CPU candidate sim gate at `x=0.0`,
 but `x=0.04` and `x=0.08` now hold on
 `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS`: mean forward velocity remains near zero.
-The `step8240_target_rate` pilot also holds at `x=0.08`. That run used a
-positive target-rate scale, which rewards the positive target-velocity cost
-rather than penalizing it. Treat these as offline training/export evidence, not
-deployable policies.
+The positive-scale and negative-penalty target-rate pilots also hold at
+`x=0.08`. Treat these as offline training/export evidence, not deployable
+policies.
 
 ## Active PRs
 
