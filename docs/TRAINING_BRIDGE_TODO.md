@@ -105,9 +105,14 @@ Do not start training from an interpreter that reports `HOLD_ENV_NOT_READY`.
 - Run telemetry replay mode against existing suspended `x=0.08` evidence.
 - Current status:
   - `PASS_TELEMETRY_REPLAY_REPRODUCTION`
-  - `HOLD_SIM_INTEGRATION_PENDING`
-- Next implementation task: wire the fitted actuator bridge into the closed-loop
-  JAX/MJX policy eval path. Do not train until that eval is reviewed.
+  - `PASS_POLICY_SIM_CONTRACT`
+  - `HOLD_SIM_RUNTIME_ERROR`
+- The closed-loop eval now has a target-stage bridge insertion point before
+  `mjx_env.step(...)`, but the local ROCm/JAX/MJX worker currently fails with
+  `ROCM_ERROR_ILLEGAL_ADDRESS`.
+- Next implementation task: fix or route around the local ROCm/MJX closed-loop
+  runtime fault without changing robot behavior. Do not train until that eval is
+  reviewed.
 
 ## P1: Add Actuator Model Controls
 
@@ -154,8 +159,9 @@ alpha = 1 - exp(-dt / tau)
 - Required sequence:
   - run `../envs/open-duck-playground/bin/python tools/check_training_env.py`
   - run `tools/audit_policy_sim_contract.py`
-  - run `tools/eval_policy_with_actuator_bridge.py` in vanilla/preflight mode
-  - run fitted bridge mode
+  - run `tools/eval_policy_with_actuator_bridge.py` in closed-loop mode
+  - resolve `HOLD_SIM_RUNTIME_ERROR` before treating any sim result as evidence
+  - rerun vanilla/fitted/stress bridge modes
   - compare fitted-bridge metrics to real suspended `x=0.08`
   - proceed to JAX/MJX training wrapper only if sim reproduction is plausible
 

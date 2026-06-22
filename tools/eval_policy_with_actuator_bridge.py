@@ -14,7 +14,9 @@ import json
 import math
 from pathlib import Path
 import statistics
+import subprocess
 import sys
+import tempfile
 from typing import Sequence
 
 import numpy as np
@@ -33,6 +35,7 @@ from audit_policy_sim_contract import (
     instantiate_env_contract,
     static_playground_contract,
 )
+from closed_loop_sim_eval import ClosedLoopConfig, run_closed_loop_sim
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -416,6 +419,122 @@ def run_telemetry_replay(args, fit: dict) -> dict:
     }
 
 
+def run_closed_loop_worker(args) -> dict:
+    output_dir = Path(args.output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    with tempfile.NamedTemporaryFile(
+        mode="w",
+        prefix="closed_loop_worker_",
+        suffix=".json",
+        dir=output_dir,
+        delete=False,
+    ) as tmp:
+        worker_json = Path(tmp.name)
+    cmd = [
+        sys.executable,
+        str(Path(__file__).resolve()),
+        "--mode",
+        "closed-loop-sim",
+        "--policy",
+        str(args.policy),
+        "--fit-json",
+        str(args.fit_json),
+        "--playground-root",
+        str(args.playground_root),
+        "--env-python",
+        str(args.env_python),
+        "--command-x",
+        str(args.command_x),
+        "--duration",
+        str(args.duration),
+        "--bridge-mode",
+        str(args.bridge_mode),
+        "--output-dir",
+        str(args.output_dir),
+        "--startup-ticks",
+        str(args.startup_ticks),
+        "--max-lag-ticks",
+        str(args.max_lag_ticks),
+        "--stress-delay-ticks",
+        str(args.stress_delay_ticks),
+        "--stress-tau-s",
+        str(args.stress_tau_s),
+        "--stress-velocity-limit-rad-s",
+        str(args.stress_velocity_limit_rad_s),
+        "--expected-observation-dim",
+        str(args.expected_observation_dim),
+        "--expected-action-dim",
+        str(args.expected_action_dim),
+        "--_closed-loop-worker",
+        "--_closed-loop-worker-json",
+        str(worker_json),
+    ]
+    if args.inspect_policy_io:
+        cmd.append("--inspect-policy-io")
+    try:
+        result = subprocess.run(
+            cmd,
+            cwd=str(Path.cwd()),
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            timeout=args.closed_loop_timeout_s,
+            check=False,
+        )
+    except subprocess.TimeoutExpired as exc:
+        return {
+            "status": "HOLD_SIM_RUNTIME_ERROR",
+            "error": f"closed-loop worker timed out after {args.closed_loop_timeout_s}s",
+            "worker_command": cmd,
+            "worker_output_tail": (exc.stdout or "")[-12000:]
+            if isinstance(exc.stdout, str)
+            else None,
+        }
+    if worker_json.exists() and worker_json.stat().st_size > 0:
+        try:
+            payload = json.loads(worker_json.read_text())
+            payload["worker_returncode"] = result.returncode
+            payload["worker_output_tail"] = (result.stdout or "")[-12000:]
+            payload["worker_command"] = cmd
+            return payload
+        except json.JSONDecodeError:
+            pass
+    return {
+        "status": "HOLD_SIM_RUNTIME_ERROR",
+        "error": f"closed-loop worker exited {result.returncode} before writing JSON",
+        "worker_returncode": result.returncode,
+        "worker_command": cmd,
+        "worker_output_tail": (result.stdout or "")[-12000:],
+    }
+
+
+def fmt_status(value) -> str:
+    return "NA" if value is None else str(value)
+
+
+def closed_loop_pitch_rows(closed_loop: dict) -> list[str]:
+    rows = []
+    modes = closed_loop.get("modes", {})
+    for mode_name in ["vanilla", "fitted", "stress"]:
+        mode = modes.get(mode_name)
+        if not mode:
+            continue
+        for joint in PITCH_CHAIN_JOINTS:
+            item = (mode.get("joints") or {}).get(joint, {})
+            sent_vel = item.get("sent_target_velocity_rad_s") or {}
+            applied_vel = item.get("applied_target_velocity_rad_s") or {}
+            bridge = item.get("bridge_tracking_error_rad") or {}
+            joint_tracking = item.get("joint_target_tracking_error_rad") or {}
+            lag_applied = item.get("estimated_lag_sent_to_applied") or {}
+            rows.append(
+                f"| {mode_name} | {joint} | {fmt(sent_vel.get('p95'))} | "
+                f"{fmt(applied_vel.get('p95'))} | {fmt(bridge.get('p95'))} | "
+                f"{fmt(joint_tracking.get('p95'))} | {fmt(lag_applied.get('ticks'), 0)} | "
+                f"{fmt(item.get('action_saturation_pct'), 2)} |"
+            )
+    return rows
+
+
 def build_markdown(payload: dict) -> str:
     lines = ["# Sim Actuator Bridge Eval", ""]
     lines.append(f"overall_status: `{payload['overall_status']}`")
@@ -485,6 +604,81 @@ def build_markdown(payload: dict) -> str:
                     f"{fmt(lag.get('ticks'), 0)} |"
                 )
         lines.append("")
+    if payload.get("closed_loop_sim"):
+        closed_loop = payload["closed_loop_sim"]
+        lines.append("## Closed-Loop Sim Eval")
+        lines.append("")
+        lines.append(f"status: `{closed_loop.get('status')}`")
+        env = closed_loop.get("env", {})
+        insertion = closed_loop.get("insertion_point", {})
+        lines.append(f"env: `{env.get('env_class')}` / task `{env.get('task')}`")
+        lines.append(f"obs/action dims: `{env.get('observation_size')}` / `{env.get('action_size')}`")
+        lines.append(f"actuator_names: `{env.get('actuator_names')}`")
+        lines.append(f"ctrl_dt: `{env.get('ctrl_dt')}`")
+        lines.append(f"sim_dt: `{env.get('sim_dt')}`")
+        lines.append(f"jax: `{env.get('jax_backend')}` `{env.get('jax_devices')}`")
+        lines.append(f"insertion_point: `{insertion.get('type')}`")
+        lines.append(f"double_rate_limit: `{insertion.get('double_rate_limit')}`")
+        if closed_loop.get("error"):
+            lines.append(f"worker_error: `{closed_loop.get('error')}`")
+        if closed_loop.get("worker_returncode") is not None:
+            lines.append(f"worker_returncode: `{closed_loop.get('worker_returncode')}`")
+        worker_tail = closed_loop.get("worker_output_tail") or ""
+        if worker_tail:
+            interesting = [
+                line
+                for line in worker_tail.splitlines()
+                if any(
+                    token in line
+                    for token in [
+                        "ROCM_ERROR",
+                        "JaxRuntimeError",
+                        "Traceback",
+                        "HOLD",
+                        "Exception",
+                        "error",
+                        "failed",
+                        "Failed",
+                    ]
+                )
+            ]
+            if interesting:
+                excerpt = "\n".join(line.rstrip() for line in interesting[:20])
+            else:
+                excerpt = "\n".join(line.rstrip() for line in worker_tail[-1000:].splitlines())
+            lines.append("")
+            lines.append("Worker output excerpt:")
+            lines.append("")
+            lines.append("```text")
+            lines.append(excerpt)
+            lines.append("```")
+        lines.append("")
+        lines.append("### Mode Summary")
+        lines.append("")
+        lines.append("| mode | samples | termination | body_pitch_p95 | base_height_min | reward_mean |")
+        lines.append("|---|---:|---|---:|---:|---:|")
+        for mode_name, mode in (closed_loop.get("modes") or {}).items():
+            body = mode.get("body_pitch_rad") or {}
+            height = mode.get("base_height_m") or {}
+            reward = mode.get("reward") or {}
+            lines.append(
+                f"| {mode_name} | {mode.get('samples')} | {mode.get('termination_reason')} | "
+                f"{fmt(body.get('p95'))} | {fmt(height.get('min'))} | {fmt(reward.get('mean'))} |"
+            )
+        lines.append("")
+        lines.append("### Pitch-Chain Summary")
+        lines.append("")
+        lines.append(
+            "| mode | joint | sent_vel_p95 | applied_vel_p95 | bridge_tracking_p95 | "
+            "joint_tracking_p95 | lag_ticks | action_sat_pct |"
+        )
+        lines.append("|---|---|---:|---:|---:|---:|---:|---:|")
+        rows = closed_loop_pitch_rows(closed_loop)
+        if rows:
+            lines.extend(rows)
+        else:
+            lines.append("| NA | NA | NA | NA | NA | NA | NA | NA |")
+        lines.append("")
     lines.append("## Interpretation")
     lines.append("")
     if payload["sim_preflight"].get("status") == "HOLD_POLICY_SIM_CONTRACT_MISMATCH":
@@ -501,6 +695,21 @@ def build_markdown(payload: dict) -> str:
             "sent-target / actual-position evidence, but it is not a replacement for "
             "closed-loop sim reproduction."
         )
+    if payload.get("closed_loop_sim"):
+        status = payload["closed_loop_sim"].get("status")
+        if status == "PASS_CLOSED_LOOP_REPRODUCTION":
+            lines.append(
+                "- The fitted actuator bridge produces closed-loop degradation in "
+                "the same range as the real suspended x=0.08 evidence. Next step is "
+                "a training-time actuator wrapper, not robot motion."
+            )
+        elif status == "HOLD_BRIDGE_INSERTION_UNCLEAR":
+            lines.append(
+                "- The eval could not safely map the bridge insertion point. Add a "
+                "small Playground adapter before training."
+            )
+        elif status:
+            lines.append(f"- Closed-loop sim gate result: `{status}`.")
     lines.append("- No robot motion, deployment, runtime behavior change, or training was performed.")
     return "\n".join(lines).rstrip()
 
@@ -513,6 +722,24 @@ def write_outputs(payload: dict, output_dir: Path) -> None:
     json_path.write_text(json.dumps(payload, indent=2) + "\n")
     print(md_path)
     print(json_path)
+    if payload.get("closed_loop_sim"):
+        closed_md = output_dir / "CLOSED_LOOP_ACTUATOR_BRIDGE_EVAL.md"
+        closed_json = output_dir / "closed_loop_actuator_bridge_eval.json"
+        closed_payload = {
+            "overall_status": payload["overall_status"],
+            "policy": payload["policy"],
+            "fit_json": payload["fit_json"],
+            "playground": payload["playground"],
+            "sim_preflight": payload["sim_preflight"],
+            "command_x": payload["command_x"],
+            "duration_s": payload["duration_s"],
+            "telemetry_replay": None,
+            "closed_loop_sim": payload["closed_loop_sim"],
+        }
+        closed_md.write_text(build_markdown(closed_payload) + "\n")
+        closed_json.write_text(json.dumps(closed_payload, indent=2) + "\n")
+        print(closed_md)
+        print(closed_json)
 
 
 def main() -> int:
@@ -521,16 +748,27 @@ def main() -> int:
     )
     parser.add_argument("--policy", default=str(DEFAULT_POLICY))
     parser.add_argument("--fit-json", default=str(DEFAULT_FIT_JSON))
-    parser.add_argument("--playground-root", default=str(DEFAULT_PLAYGROUND_ROOT))
+    parser.add_argument(
+        "--playground-root",
+        "--playground-path",
+        dest="playground_root",
+        default=str(DEFAULT_PLAYGROUND_ROOT),
+    )
     parser.add_argument("--env-python", default=str(DEFAULT_ENV_PYTHON))
     parser.add_argument("--command-x", type=float, default=0.08)
     parser.add_argument("--duration", type=float, default=15.0)
     parser.add_argument("--output-dir", default=str(DEFAULT_OUTPUT_DIR))
     parser.add_argument(
         "--mode",
-        choices=["auto", "sim", "telemetry-replay"],
+        choices=["auto", "sim", "telemetry-replay", "closed-loop-sim"],
         default="auto",
         help="auto uses telemetry replay when --telemetry-jsonl is provided; otherwise sim preflight only",
+    )
+    parser.add_argument(
+        "--bridge-mode",
+        choices=["vanilla", "fitted", "stress", "all"],
+        default="all",
+        help="closed-loop sim actuator bridge mode",
     )
     parser.add_argument("--telemetry-jsonl", default=None)
     parser.add_argument("--startup-ticks", type=int, default=50)
@@ -549,6 +787,22 @@ def main() -> int:
         "--strict",
         action="store_true",
         help="return nonzero on HOLD status; default is report-only",
+    )
+    parser.add_argument(
+        "--closed-loop-timeout-s",
+        type=int,
+        default=900,
+        help="timeout for the contained closed-loop worker process",
+    )
+    parser.add_argument(
+        "--_closed-loop-worker",
+        action="store_true",
+        help=argparse.SUPPRESS,
+    )
+    parser.add_argument(
+        "--_closed-loop-worker-json",
+        default=None,
+        help=argparse.SUPPRESS,
     )
     args = parser.parse_args()
 
@@ -574,8 +828,39 @@ def main() -> int:
         args.mode == "auto" and args.telemetry_jsonl
     )
     telemetry_replay = run_telemetry_replay(args, fit) if run_replay else None
+    closed_loop_sim = None
+    if args.mode == "closed-loop-sim":
+        if sim_preflight.get("status") not in {"HOLD_SIM_INTEGRATION_PENDING"} and str(
+            sim_preflight.get("status", "")
+        ).startswith("HOLD"):
+            closed_loop_sim = {
+                "status": sim_preflight["status"],
+                "error": sim_preflight.get("reason", "contract preflight failed"),
+            }
+        elif args._closed_loop_worker:
+            closed_loop_sim = run_closed_loop_sim(
+                ClosedLoopConfig(
+                    policy_path=policy_path,
+                    fit=fit,
+                    playground_root=playground_root,
+                    command_x=args.command_x,
+                    duration_s=args.duration,
+                    bridge_mode=args.bridge_mode,
+                    expected_observation_dim=args.expected_observation_dim,
+                    expected_action_dim=args.expected_action_dim,
+                )
+            )
+            if args._closed_loop_worker_json:
+                Path(args._closed_loop_worker_json).write_text(
+                    json.dumps(closed_loop_sim, indent=2) + "\n"
+                )
+                return 0
+        else:
+            closed_loop_sim = run_closed_loop_worker(args)
 
-    if args.mode == "sim" and sim_preflight["status"].startswith("HOLD"):
+    if closed_loop_sim:
+        overall = closed_loop_sim.get("status", "HOLD_SIM_RUNTIME_ERROR")
+    elif args.mode == "sim" and sim_preflight["status"].startswith("HOLD"):
         overall = sim_preflight["status"]
     elif telemetry_replay:
         if sim_preflight["status"].startswith("HOLD"):
@@ -594,6 +879,7 @@ def main() -> int:
         "command_x": args.command_x,
         "duration_s": args.duration,
         "telemetry_replay": telemetry_replay,
+        "closed_loop_sim": closed_loop_sim,
     }
     write_outputs(payload, Path(args.output_dir))
     if args.strict and str(overall).startswith("HOLD"):

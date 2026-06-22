@@ -364,12 +364,30 @@ Latest policy/sim contract and environment result:
 - `../envs/rocm-baseline` sees the ROCm device but lacks several
   project-specific packages, so use `../envs/open-duck-playground/bin/python`
   for Open Duck sim eval and future training.
-- Full MuJoCo policy-loop reproduction is now blocked by
-  `HOLD_SIM_INTEGRATION_PENDING`, not by contract mismatch.
+- Full MuJoCo policy-loop reproduction is no longer blocked by contract
+  mismatch.
 
-Choose exactly one next step: **wire the fitted actuator bridge into the
-closed-loop JAX/MJX policy eval path**, without changing robot behavior yet and
-without training.
+Latest closed-loop actuator bridge eval result:
+
+- `tools/eval_policy_with_actuator_bridge.py --mode closed-loop-sim` was run
+  with `--bridge-mode all`.
+- Summary artifact:
+  `outputs/analysis/CLOSED_LOOP_ACTUATOR_BRIDGE_EVAL.md`.
+- JSON artifact:
+  `outputs/analysis/closed_loop_actuator_bridge_eval.json`.
+- Contract preflight still passes: instantiated Playground state obs `101`,
+  actions `14`, matching actuator order.
+- Bridge insertion point is implemented at target stage: after
+  `target = home + delayed_action * action_scale` and the built-in
+  `max_motor_velocity` rate limit, before `mjx_env.step(...)`.
+- `state.info["motor_targets"]` remains the sent target so obs `83:97` keeps
+  commanded target history.
+- Closed-loop gate result: `HOLD_SIM_RUNTIME_ERROR`.
+- Worker failure: `ROCM_ERROR_ILLEGAL_ADDRESS` during the JAX/MJX GPU step.
+
+Choose exactly one next step: **fix the local ROCm/JAX/MJX closed-loop runtime
+fault and rerun the closed-loop actuator bridge eval**, without changing robot
+behavior yet and without training.
 
 Purpose:
 
@@ -380,11 +398,13 @@ Purpose:
   when selecting training randomization ranges
 - add action-rate / target-velocity diagnostics to the training bridge notes
 - use the verified `101` observation / `14` action sim environment
-- run the current policy in that sim with and without the fitted actuator bridge
+- rerun the current policy in that sim with and without the fitted actuator
+  bridge after the ROCm/MJX runtime fault is fixed
 - only then implement the JAX/MJX training actuator wrapper
 
 Do not patch runtime behavior, action scale, gains, offsets, or phase timing
 until the bridge spec is reviewed.
 
-Do not run more robot motion or grounded replay until the closed-loop sim
-actuator bridge eval is reviewed.
+Do not run more robot motion, grounded replay, or training until the
+closed-loop sim actuator bridge eval runs without the ROCm/MJX runtime fault
+and is reviewed.
