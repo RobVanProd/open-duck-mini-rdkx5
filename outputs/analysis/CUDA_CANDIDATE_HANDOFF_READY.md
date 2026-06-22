@@ -1,6 +1,6 @@
 # CUDA Candidate Handoff Ready
 
-generated_at: `2026-06-22T13:20:07Z`
+generated_at: `2026-06-22T13:24:21Z`
 
 ## Status
 
@@ -27,6 +27,9 @@ Recent handoff fixes merged:
   package/runtime environment can be reviewed after import.
 - PR #66: CUDA bundle status records package metadata with
   `importlib.metadata` instead of importing JAX/MJX runtime in the EXIT trap.
+- Current generator: selects `PYTHON_BIN` once, prefers `/usr/bin/python3` on
+  Colab, and passes it explicitly through `--env-python` for eval/training
+  subprocesses.
 
 ## Why Manual CUDA Is Still Required
 
@@ -61,6 +64,8 @@ The generated cell now:
 - records repo commits, dirty-file counts, package versions, `pip_freeze.txt`,
   and `nvidia_smi.txt` in the evidence bundle without importing JAX/MJX runtime
   from the EXIT trap
+- uses one selected `PYTHON_BIN` for installs, checks, training, gates, and
+  subprocess env instantiation
 
 ```text
 /content/open_duck_cuda_artifacts_<timestamp>.tar.gz

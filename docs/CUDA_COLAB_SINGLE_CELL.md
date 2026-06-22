@@ -74,6 +74,12 @@ playground==0.0.5
 because the successful CUDA path used that dependency and verified the
 `collision.py` import before running the Open Duck eval.
 
+The generated cell also defines `PYTHON_BIN` once near the top and passes that
+same interpreter to every subprocess via `--env-python`. On Colab it prefers
+`/usr/bin/python3`, which was the interpreter used by the successful CUDA
+closed-loop eval, instead of relying on whichever `python` appears first in
+`PATH`.
+
 ## Expected Gates
 
 Smoke-only cell:

@@ -814,6 +814,8 @@ Recent repo fixes prepared the next manual Colab/CUDA run:
 - CUDA artifact import can verify the bundle SHA256 printed by the CUDA cell
 - CUDA bundles include `pip_freeze.txt`, `nvidia_smi.txt`, repo commits, and
   package metadata; the failure EXIT trap no longer imports JAX/MJX runtime
+- the generated CUDA cell now selects one `PYTHON_BIN`, preferring
+  `/usr/bin/python3` on Colab, and passes it explicitly to `--env-python`
 
 Next useful action remains:
 
