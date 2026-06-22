@@ -25,6 +25,8 @@ target waveform is much more aggressive and exposes the effective delay.
 Small summaries:
 
 - `outputs/analysis/ACTUATOR_RESPONSE_FIT.md`
+- `outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_ZERO_15S.md`
+- `outputs/analysis/CPU_CANDIDATE_GATE_STEP32800_HOLD.md`
 - `outputs/analysis/CPU_ACTUATOR_BRIDGE_PILOT_SUMMARY.md`
 - `outputs/analysis/POLICY_SIM_CONTRACT_AUDIT.md`
 - `outputs/analysis/SIM_ACTUATOR_BRIDGE_EVAL.md`
@@ -530,14 +532,19 @@ Results:
 - `8192` timestep zero-penalty pilot: `PASS_SMOKE_RUN`, non-deployable
 - `32768` timestep zero-penalty pilot: `PASS_SMOKE_RUN`, non-deployable
 - all exported ONNX files preserved the `101 -> 14` policy contract
+- candidate-mode closed-loop CPU eval now distinguishes a sim-gate pass from
+  failed candidate behavior:
+  - `step8240_zero_penalty`: `PASS_CANDIDATE_SIM_GATE` over `15 s`
+  - `step32800_zero_penalty`: `HOLD_CANDIDATE_FALL_OR_TERMINATION` over `2 s`
 
 Interpretation:
 
 - The merged training loop, ONNX export, summary, and package tooling work.
 - The small CPU PPO shape is a correctness path, not a candidate generator.
-- The pilot rewards did not justify robot validation or further scaling of the
-  same CPU smoke shape.
+- One short CPU pilot passed an initial sim-side candidate gate, but it is
+  still not robot-approved because candidate packaging and broader sim evidence
+  have not been reviewed.
 
 Next offline move: use CUDA for meaningful candidate training/evaluation when
-available, or add per-candidate sim-side target-velocity and actuator-tracking
-evaluation before spending more CPU time.
+available, and use `--eval-role candidate` for every exported candidate before
+any robot-side approval discussion.

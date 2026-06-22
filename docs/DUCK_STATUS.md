@@ -86,6 +86,17 @@ outputs/analysis/CPU_ACTUATOR_BRIDGE_PILOT_SUMMARY.md
 Those pilots passed the offline training/export/package path but did not
 produce a robot-ready candidate.
 
+Initial candidate-mode CPU eval reports:
+
+```text
+outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_ZERO_15S.md
+outputs/analysis/CPU_CANDIDATE_GATE_STEP32800_HOLD.md
+```
+
+`step8240_zero_penalty` passed a `15 s` CPU candidate sim gate, but it is still
+not approved for the robot. Treat it as an offline candidate for review, not a
+deployable policy.
+
 ## Active PRs
 
 RDK diagnostics/workflow repo:

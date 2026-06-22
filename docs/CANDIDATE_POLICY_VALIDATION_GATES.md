@@ -114,6 +114,31 @@ The tool checks:
 - training manifest presence
 - sim-gate evidence presence
 
+Use the closed-loop eval helper in candidate mode before considering any
+robot-side validation:
+
+```bash
+JAX_PLATFORM_NAME=cpu ../envs/open-duck-playground/bin/python \
+  tools/eval_policy_with_actuator_bridge.py \
+  --mode closed-loop-sim \
+  --eval-role candidate \
+  --policy path/to/candidate.onnx \
+  --fit-json outputs/analysis/actuator_response_fit.json \
+  --playground-path ../Open_Duck_Playground \
+  --env-python ../envs/open-duck-playground/bin/python \
+  --command-x 0.08 \
+  --duration 15 \
+  --bridge-mode all \
+  --output-dir outputs/analysis/<candidate>_closed_loop_eval
+```
+
+Candidate mode reports `PASS_CANDIDATE_SIM_GATE` only when the policy survives
+the requested horizon with low action saturation, trackable pitch-chain targets,
+reasonable body posture, usable base height, and non-collapsed reward. A hold
+status such as `HOLD_CANDIDATE_FALL_OR_TERMINATION`,
+`HOLD_CANDIDATE_ACTION_SATURATION`, or `HOLD_CANDIDATE_TRACKING` blocks robot
+testing.
+
 If evidence is missing, the package status is a `HOLD`, not a robot-test
 approval.
 

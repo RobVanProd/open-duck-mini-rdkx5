@@ -465,6 +465,8 @@ def run_closed_loop_worker(args) -> dict:
         str(args.expected_observation_dim),
         "--expected-action-dim",
         str(args.expected_action_dim),
+        "--eval-role",
+        str(args.eval_role),
         "--_closed-loop-worker",
         "--_closed-loop-worker-json",
         str(worker_json),
@@ -542,6 +544,7 @@ def build_markdown(payload: dict) -> str:
     lines.append(f"fit_json: `{payload['fit_json']}`")
     lines.append(f"command_x: `{payload['command_x']}`")
     lines.append(f"duration_s: `{payload['duration_s']}`")
+    lines.append(f"eval_role: `{payload.get('eval_role')}`")
     lines.append("")
     lines.append("## Contract Preflight")
     lines.append("")
@@ -609,6 +612,8 @@ def build_markdown(payload: dict) -> str:
         lines.append("## Closed-Loop Sim Eval")
         lines.append("")
         lines.append(f"status: `{closed_loop.get('status')}`")
+        if closed_loop.get("eval_role"):
+            lines.append(f"eval_role: `{closed_loop.get('eval_role')}`")
         env = closed_loop.get("env", {})
         insertion = closed_loop.get("insertion_point", {})
         lines.append(f"env: `{env.get('env_class')}` / task `{env.get('task')}`")
@@ -653,6 +658,28 @@ def build_markdown(payload: dict) -> str:
             lines.append(excerpt)
             lines.append("```")
         lines.append("")
+        if closed_loop.get("candidate_gate"):
+            gate = closed_loop["candidate_gate"]
+            metrics = gate.get("metrics") or {}
+            thresholds = gate.get("thresholds") or {}
+            lines.append("### Candidate Gate")
+            lines.append("")
+            lines.append(f"status: `{gate.get('status')}`")
+            lines.append("")
+            lines.append("| metric | value | threshold |")
+            lines.append("|---|---:|---:|")
+            for key in [
+                "max_action_saturation_pct",
+                "max_pitch_tracking_p95_rad",
+                "max_sent_target_velocity_p95_rad_s",
+                "max_abs_body_pitch_p95_rad",
+                "min_base_height_m",
+                "min_reward_mean",
+            ]:
+                lines.append(
+                    f"| `{key}` | {fmt(metrics.get(key))} | {fmt(thresholds.get(key))} |"
+                )
+            lines.append("")
         lines.append("### Mode Summary")
         lines.append("")
         lines.append("| mode | samples | termination | body_pitch_p95 | base_height_min | reward_mean |")
@@ -709,6 +736,16 @@ def build_markdown(payload: dict) -> str:
                 "- The eval could not safely map the bridge insertion point. Add a "
                 "small Playground adapter before training."
             )
+        elif status == "PASS_CANDIDATE_SIM_GATE":
+            lines.append(
+                "- Candidate sim gate passed for this offline eval horizon. This "
+                "does not approve robot testing; it only means the candidate cleared "
+                "the configured sim-side tracking, saturation, posture, and reward checks."
+            )
+        elif str(status).startswith("HOLD_CANDIDATE"):
+            lines.append(
+                "- Candidate sim gate is holding. Do not use this policy on the robot."
+            )
         elif status:
             lines.append(f"- Closed-loop sim gate result: `{status}`.")
     lines.append("- No robot motion, deployment, runtime behavior change, or training was performed.")
@@ -734,6 +771,7 @@ def write_outputs(payload: dict, output_dir: Path) -> None:
             "sim_preflight": payload["sim_preflight"],
             "command_x": payload["command_x"],
             "duration_s": payload["duration_s"],
+            "eval_role": payload.get("eval_role"),
             "telemetry_replay": None,
             "closed_loop_sim": payload["closed_loop_sim"],
         }
@@ -770,6 +808,16 @@ def main() -> int:
         choices=["vanilla", "fitted", "stress", "all"],
         default="all",
         help="closed-loop sim actuator bridge mode",
+    )
+    parser.add_argument(
+        "--eval-role",
+        choices=["reproduction", "candidate"],
+        default="reproduction",
+        help=(
+            "reproduction checks whether the fitted bridge reproduces real x=0.08 "
+            "baseline degradation; candidate checks whether a new policy clears "
+            "offline sim-side gates"
+        ),
     )
     parser.add_argument("--telemetry-jsonl", default=None)
     parser.add_argument("--startup-ticks", type=int, default=50)
@@ -857,6 +905,7 @@ def main() -> int:
                     bridge_mode=args.bridge_mode,
                     expected_observation_dim=args.expected_observation_dim,
                     expected_action_dim=args.expected_action_dim,
+                    eval_role=args.eval_role,
                 )
             )
             if args._closed_loop_worker_json:
@@ -887,6 +936,7 @@ def main() -> int:
         "sim_preflight": sim_preflight,
         "command_x": args.command_x,
         "duration_s": args.duration,
+        "eval_role": args.eval_role,
         "telemetry_replay": telemetry_replay,
         "closed_loop_sim": closed_loop_sim,
     }
