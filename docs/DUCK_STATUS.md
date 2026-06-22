@@ -101,13 +101,16 @@ Initial candidate-mode CPU eval reports:
 outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_ZERO_X0_15S.md
 outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_ZERO_X004_15S.md
 outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_ZERO_15S.md
+outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_TARGET_RATE_X008_HOLD.md
 outputs/analysis/CPU_CANDIDATE_GATE_STEP32800_HOLD.md
 ```
 
 `step8240_zero_penalty` passed the `15 s` CPU candidate sim gate at `x=0.0`,
 but `x=0.04` and `x=0.08` now hold on
 `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS`: mean forward velocity remains near zero.
-Treat it as offline training/export evidence, not a deployable policy.
+The `step8240_target_rate` pilot also holds at `x=0.08`, so target-rate penalty
+alone did not produce a walking candidate in this tiny CPU run. Treat these as
+offline training/export evidence, not deployable policies.
 
 ## Active PRs
 
