@@ -2,9 +2,17 @@
 
 ## Mission
 
-Turn this repository into a safe, repeatable sim-to-real diagnostic and bridging pipeline for the Open Duck Mini running `BEST_WALK_ONNX_2` on the RDK-X5.
+Turn this repository into a safe, repeatable sim-to-real diagnostic and
+bridging pipeline for the Open Duck Mini running `BEST_WALK_ONNX_2` on the
+RDK-X5, then use the measured bridge to produce and validate a replacement
+candidate policy.
 
-The project is not trying to train a new policy yet. The current mission is to prove the deployed robot's sensor observations, policy actions, joint commands, and real joint movement match the policy and simulation contract closely enough to rerun the known baseline responsibly.
+The initial mission was to prove the deployed robot's sensor observations,
+policy actions, joint commands, and real joint movement matched the policy and
+simulation contract closely enough to rerun the known baseline responsibly.
+That evidence has now shifted the project into the offline actuator-bridge
+training phase: generate a CUDA-backed candidate policy, review its `x=0.0`
+and `x=0.08` sim gates, and only then request robot-side suspended validation.
 
 The repository itself is part of the robot state. Keep documentation, evidence manifests, snapshots, runbooks, and status notes current whenever the board runtime, robot config, diagnostic results, or recommended next gate changes.
 
@@ -24,7 +32,12 @@ The repository itself is part of the robot state. Keep documentation, evidence m
 
 `BEST_WALK_ONNX_2` leans the robot forward and the robot falls during walking.
 
-The key unresolved question is whether this is policy behavior or whether the deployed robot is feeding/receiving data that differs from the sim and policy contract.
+The original unresolved question was whether this came from policy behavior or
+from deployed observations/actions differing from the sim and policy contract.
+The current evidence no longer points first at gross IMU, foot-contact, joint
+order, or policy-file mismatch. It points to actuator dynamics: the `x=0.08`
+policy target waveform is much faster than the real pitch-chain actuator path
+can track.
 
 ## Known Policy Contract
 
@@ -71,13 +84,19 @@ Runtime then applies rate limiting before sending servo targets.
 
 ## Current Root-Cause Ranking
 
-1. IMU accelerometer frame or offset mismatch.
-2. Live joint offset or home pose mismatch.
-3. Joint physical direction mismatch.
-4. Servo bus feedback/read reliability.
-5. Gait phase timing mismatch.
-6. Actuator tracking under load.
-7. Contact/friction and TPU effects, only after the above are ruled out.
+1. Dynamic actuator bandwidth / delay mismatch between sim and the real
+   pitch-chain joints.
+2. Policy target waveform too sharp for the measured effective velocity limits.
+3. Sim actuator model and training reward did not penalize target rate enough.
+4. Servo bus CRC/read retries are a watch item, but not the leading cause
+   unless they correlate with control damage.
+5. Ground contact/load dynamics remain untested with a new candidate.
+6. Contact/friction and TPU effects come later, after suspended candidate gates
+   pass.
+
+Previously suspected gross IMU frame, foot-contact polarity, joint identity, and
+zero-command policy explosion are now downranked by home pose, IMU tilt, foot
+contact, joint identity, and suspended replay evidence.
 
 ## Definition Of Done
 
@@ -88,10 +107,17 @@ The sim-to-real bridge is done when:
 - IMU tilt telemetry maps physical nose-forward/back and left/right tilt to the expected accelerometer axes and signs.
 - Foot contact telemetry proves left/right polarity.
 - Joint identity testing proves policy index, joint name, servo ID, physical joint, command sign, and measured response.
-- Suspended policy replay shows bounded actions, reasonable tracking, no bus-error bursts, and no obvious forward-biased posture in the air.
-- Grounded replay is attempted only after the above gates pass.
-- Any fix is a minimal reviewed patch tied to a specific failed gate.
-- `BEST_WALK_ONNX_2` is rerun after each minimal fix before training new policy variants.
+- Suspended policy replay shows bounded actions, reviewed bus-error behavior,
+  and the measured actuator tracking limit is modeled in sim.
+- CUDA closed-loop sim reproduction confirms that the fitted actuator bridge
+  degrades `BEST_WALK_ONNX_2` in the same range as real suspended `x=0.08`.
+- A CUDA-backed candidate policy is trained with the actuator bridge and passes
+  offline `x=0.0` and `x=0.08` candidate gates.
+- Robot-side suspended validation is attempted only after offline candidate
+  gates pass and Rob explicitly approves the moving test.
+- Grounded replay is attempted only after suspended candidate validation passes.
+- Any runtime or hardware fix is a minimal reviewed patch tied to a specific
+  failed gate.
 - The README, roadmap, audit, evidence flow, and agent instructions match the latest known board state.
 - Every evidence packet and decision is traceable to committed docs or manifests.
 - No critical robot state exists only in chat history, local scratch files, or an untracked board directory.
