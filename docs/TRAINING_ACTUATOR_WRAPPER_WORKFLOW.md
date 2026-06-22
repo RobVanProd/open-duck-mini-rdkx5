@@ -183,6 +183,51 @@ max_target_velocity_cost: 1.4459760189056396
 max_actuator_bridge_tracking_cost: 0.002514034043997526
 ```
 
+## Tiny PPO Smoke
+
+A tiny CPU PPO smoke run was executed against the patched Playground branch.
+This is not a candidate policy; it only proves the patched training loop can
+start, export, and reach a finite eval callback with the bridge enabled.
+
+Command shape:
+
+```bash
+cd /home/lsd/robots/Open_Duck_Playground
+JAX_PLATFORM_NAME=cpu timeout 900s ../envs/open-duck-playground/bin/python \
+  playground/open_duck_mini_v2/runner.py \
+  --task flat_terrain \
+  --env joystick \
+  --output_dir /tmp/open_duck_ppo_bridge_smoke \
+  --num_timesteps 256 \
+  --enable_actuator_bridge \
+  --ppo_num_envs 16 \
+  --ppo_num_evals 1 \
+  --ppo_episode_length 100 \
+  --ppo_unroll_length 5 \
+  --ppo_batch_size 16 \
+  --ppo_num_minibatches 1 \
+  --ppo_num_updates_per_batch 1 \
+  --target_rate_scale 0.0 \
+  --actuator_tracking_scale 0.0
+```
+
+Result:
+
+```text
+PPO params reflect the small overrides.
+Checkpoint/export at step 0 completed.
+Checkpoint/export at step 320 completed.
+STEP: 320 reward: 15.308966636657715 reward_std: 9.823185920715332
+```
+
+Artifacts were written only to:
+
+```text
+/tmp/open_duck_ppo_bridge_smoke
+```
+
+Do not treat those exported ONNX files as deployable policies.
+
 ## Acceptance Gate
 
 Proceed toward training only when:
