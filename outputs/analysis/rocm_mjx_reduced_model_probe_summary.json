@@ -1,0 +1,40 @@
+{
+  "generated_at": "2026-06-22T11:55:00Z",
+  "mission": "Open Duck reduced MJX model probe",
+  "result": "HOLD_ROCM_SUBSTEP_SCAN",
+  "interpretation": "Single raw MJX step passes on GPU, CPU scanned substeps pass, but GPU scanned substeps timeout or fail with ROCM_ERROR_ILLEGAL_ADDRESS.",
+  "matrix": [
+    {
+      "probe": "raw_single_step",
+      "platform": "gpu",
+      "n_substeps": 1,
+      "variants": {
+        "baseline": "PASS",
+        "no_contact": "PASS",
+        "box_feet_no_visual": "PASS"
+      }
+    },
+    {
+      "probe": "scanned_substep_loop",
+      "platform": "cpu",
+      "n_substeps": 10,
+      "variants": {
+        "baseline": "PASS",
+        "no_contact": "PASS",
+        "box_feet_no_visual": "PASS"
+      }
+    },
+    {
+      "probe": "scanned_substep_loop",
+      "platform": "gpu",
+      "n_substeps": 10,
+      "variants": {
+        "baseline": "TIMEOUT",
+        "no_contact": "TIMEOUT",
+        "box_feet_no_visual": "FAIL_ROCM_ERROR_ILLEGAL_ADDRESS"
+      }
+    }
+  ],
+  "conclusion": "The local 7900 XTX ROCm blocker is narrowed to JAX/ROCm execution of the lax.scan substep path around mjx.step, not MJCF compile, a single raw MJX step, or foot contact alone.",
+  "safety": "No robot tests, SSH, deployment, runtime behavior changes, policy changes, or training were run."
+}

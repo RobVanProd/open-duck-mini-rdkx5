@@ -730,6 +730,30 @@ useful future ROCm minimization probe is mesh TPU foot collision against the
 floor plane, because the local hold remains inside the full Open Duck
 `mjx_env.step(...)` path.
 
+## ROCm Reduced Model Probe
+
+An offline reduced-model probe was added:
+
+```text
+docs/ROCM_MJX_REDUCED_MODEL_PROBE.md
+outputs/analysis/ROCM_MJX_REDUCED_MODEL_PROBE_SUMMARY.md
+outputs/analysis/rocm_mjx_reduced_model_probe_summary.json
+```
+
+Result:
+
+```text
+single raw mjx.step on GPU: PASS
+10-step lax.scan of mjx.step on CPU: PASS
+10-step lax.scan of mjx.step on GPU: TIMEOUT / ROCM_ERROR_ILLEGAL_ADDRESS
+```
+
+Disabling contact did not clear the GPU 10-substep hold, and replacing TPU foot
+collision meshes with simple boxes plus removing visual meshes did not clear it
+either. The local ROCm blocker is now narrowed to the JAX/ROCm scanned substep
+execution path around `mjx.step`, not MJCF compile, single raw MJX stepping, or
+foot contact alone.
+
 ## CUDA Candidate Handoff
 
 The current CUDA candidate handoff is recorded in:

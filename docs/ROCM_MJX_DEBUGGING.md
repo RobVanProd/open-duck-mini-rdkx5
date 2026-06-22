@@ -311,6 +311,29 @@ The only contact-relevant compiled geoms are the two mesh TPU feet and the
 floor plane. This makes mesh-foot collision against the plane the highest-value
 future reduced-model probe for the ROCm `mjx_env.step(...)` hold.
 
+## Reduced Model Probe
+
+The reduced-model probe is documented in:
+
+```text
+docs/ROCM_MJX_REDUCED_MODEL_PROBE.md
+outputs/analysis/ROCM_MJX_REDUCED_MODEL_PROBE_SUMMARY.md
+outputs/analysis/rocm_mjx_reduced_model_probe_summary.json
+```
+
+Current result:
+
+```text
+single raw mjx.step on GPU: PASS
+10-step lax.scan of mjx.step on CPU: PASS
+10-step lax.scan of mjx.step on GPU: TIMEOUT / ROCM_ERROR_ILLEGAL_ADDRESS
+```
+
+Disabling contact did not clear the GPU 10-substep hold, and replacing the TPU
+foot mesh collision geoms with simple boxes did not clear it either. This moves
+the next local ROCm debug target from "foot mesh contact alone" to the
+JAX/ROCm `lax.scan` substep execution path around `mjx.step`.
+
 ## PufferLib / Torch ROCm Note
 
 The workstation also has a local PufferLib HIP/ROCm tree:
