@@ -89,13 +89,14 @@ produce a robot-ready candidate.
 Initial candidate-mode CPU eval reports:
 
 ```text
+outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_ZERO_X0_15S.md
 outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_ZERO_15S.md
 outputs/analysis/CPU_CANDIDATE_GATE_STEP32800_HOLD.md
 ```
 
-`step8240_zero_penalty` passed a `15 s` CPU candidate sim gate, but it is still
-not approved for the robot. Treat it as an offline candidate for review, not a
-deployable policy.
+`step8240_zero_penalty` passed `15 s` CPU candidate sim gates at `x=0.0` and
+`x=0.08`, but it is still not approved for the robot. Treat it as an offline
+candidate for review, not a deployable policy.
 
 ## Active PRs
 

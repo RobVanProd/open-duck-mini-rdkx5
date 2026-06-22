@@ -25,6 +25,7 @@ target waveform is much more aggressive and exposes the effective delay.
 Small summaries:
 
 - `outputs/analysis/ACTUATOR_RESPONSE_FIT.md`
+- `outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_ZERO_X0_15S.md`
 - `outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_ZERO_15S.md`
 - `outputs/analysis/CPU_CANDIDATE_GATE_STEP32800_HOLD.md`
 - `outputs/analysis/CPU_ACTUATOR_BRIDGE_PILOT_SUMMARY.md`
@@ -534,7 +535,8 @@ Results:
 - all exported ONNX files preserved the `101 -> 14` policy contract
 - candidate-mode closed-loop CPU eval now distinguishes a sim-gate pass from
   failed candidate behavior:
-  - `step8240_zero_penalty`: `PASS_CANDIDATE_SIM_GATE` over `15 s`
+  - `step8240_zero_penalty`, `x=0.0`: `PASS_CANDIDATE_SIM_GATE` over `15 s`
+  - `step8240_zero_penalty`, `x=0.08`: `PASS_CANDIDATE_SIM_GATE` over `15 s`
   - `step32800_zero_penalty`: `HOLD_CANDIDATE_FALL_OR_TERMINATION` over `2 s`
 
 Interpretation:
