@@ -200,11 +200,13 @@ python3 tools/package_candidate_policy.py <candidate.onnx> \
   --candidate-name <candidate> \
   --training-manifest <run_dir>/smoke_manifest.final.json \
   --contract-audit outputs/analysis/<candidate>_contract.md \
-  --target-velocity-summary outputs/analysis/<candidate>_target_velocity.md \
   --actuator-bridge-eval outputs/analysis/<candidate>_actuator_bridge_eval.md \
   --output-md outputs/analysis/<candidate>_policy_package.md \
   --output-json outputs/analysis/<candidate>_policy_metadata.json
 ```
+
+Add `--target-velocity-summary outputs/analysis/<candidate>_target_velocity.md`
+when a standalone target-velocity analysis exists.
 
 3. Review `docs/CANDIDATE_POLICY_VALIDATION_GATES.md`.
 

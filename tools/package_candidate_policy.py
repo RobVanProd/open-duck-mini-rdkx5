@@ -26,6 +26,11 @@ DEFAULT_BASELINE = ROOT / "policy/BEST_WALK_ONNX_2.onnx"
 DEFAULT_PLAYGROUND = ROOT.parent / "Open_Duck_Playground"
 EXPECTED_INPUT_DIM = 101
 EXPECTED_OUTPUT_DIM = 14
+REQUIRED_EVIDENCE = {
+    "actuator_bridge_eval",
+    "contract_audit",
+    "training_manifest",
+}
 
 
 def sha256_file(path: Path) -> str:
@@ -212,9 +217,9 @@ def decide_status(payload: dict[str, Any], allow_missing_evidence: bool) -> str:
     if payload["contract"]["status"] != "PASS_POLICY_CONTRACT":
         return payload["contract"]["status"]
     missing = [
-        item["label"]
-        for item in payload["evidence"].values()
-        if item.get("status") != "PRESENT"
+        key
+        for key in payload["required_evidence"]
+        if payload["evidence"].get(key, {}).get("status") != "PRESENT"
     ]
     if missing and not allow_missing_evidence:
         return "HOLD_MISSING_SIM_GATE_EVIDENCE"
@@ -300,12 +305,15 @@ def markdown(payload: dict[str, Any]) -> str:
             "",
             "## Evidence",
             "",
-            "| evidence | status | path |",
-            "|---|---|---|",
+            "| evidence | required | status | path |",
+            "|---|---|---|---|",
         ]
     )
-    for item in payload["evidence"].values():
-        lines.append(f"| `{item['label']}` | `{item['status']}` | `{item['path']}` |")
+    required = set(payload.get("required_evidence") or [])
+    for key, item in payload["evidence"].items():
+        lines.append(
+            f"| `{item['label']}` | `{key in required}` | `{item['status']}` | `{item['path']}` |"
+        )
 
     sim_gate = payload.get("sim_gate", {}).get("actuator_bridge_eval") or {}
     if sim_gate.get("status") == "PASS_PARSED_GATE_STATUS":
@@ -420,6 +428,7 @@ def main() -> int:
         "sim_gate": {
             "actuator_bridge_eval": extract_gate_status(actuator_bridge_eval_path)
         },
+        "required_evidence": sorted(REQUIRED_EVIDENCE),
         "training_manifest": load_json(manifest_path),
         "non_deployable_reason": args.non_deployable_reason,
     }
