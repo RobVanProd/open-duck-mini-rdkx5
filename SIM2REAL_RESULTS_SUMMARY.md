@@ -579,6 +579,13 @@ Interpretation:
   corrected CPU `x=0.0` candidate gate but still held at `x=0.08`:
   `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS`, with
   `min_forward_command_tracking_ratio = -0.0005`.
+- A more aggressive CPU forward-pressure ablation also reached step `61440` and
+  is recorded in
+  `outputs/analysis/CPU_AGGRESSIVE_FORWARD_PROBE_STEP61440_HOLD.md`. It used
+  `tracking_lin_vel_scale = 30.0`, `alive_scale = 0.5`,
+  `stand_still_scale = 0.0`, `imitation_scale = 0.0`, and
+  `lin_vel_x = 0.08-0.16`. It passed `x=0.0` but still held at `x=0.08` with
+  `min_forward_command_tracking_ratio = -0.0014`.
 
 Next offline move: run a larger CUDA-backed candidate training job with
 command-tracking retained under the actuator bridge, and keep
