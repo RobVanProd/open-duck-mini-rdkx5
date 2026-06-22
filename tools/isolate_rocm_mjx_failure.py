@@ -38,11 +38,29 @@ VARIANT_ENVS = {
         "XLA_FLAGS": "--xla_gpu_enable_latency_hiding_scheduler=false"
     },
     "xla_disable_triton_gemm": {"XLA_FLAGS": "--xla_gpu_enable_triton_gemm=false"},
+    "xla_disable_triton_gemm_softmax": {
+        "XLA_FLAGS": (
+            "--xla_gpu_enable_triton_gemm=false "
+            "--xla_gpu_enable_triton_softmax=false"
+        )
+    },
     "xla_compiler_conservative": {
         "MIOPEN_DEBUG_FUSION_ENGINE_DISABLE": "1",
         "XLA_FLAGS": (
             "--xla_gpu_enable_latency_hiding_scheduler=false "
             "--xla_gpu_enable_triton_gemm=false"
+        ),
+    },
+    "rocm_strict_ieee": {
+        "ROCM_CHIP_COMPILER_FLAGS": "-fno-fast-math -fhonor-infinities -fhonor-nans"
+    },
+    "xla_rocm_data_dir": {"XLA_FLAGS": "--xla_gpu_target_cuda_data_dir=/opt/rocm/lib"},
+    "xla_triton_strict_ieee": {
+        "ROCM_CHIP_COMPILER_FLAGS": "-fno-fast-math -fhonor-infinities -fhonor-nans",
+        "XLA_FLAGS": (
+            "--xla_gpu_enable_triton_gemm=false "
+            "--xla_gpu_enable_triton_softmax=false "
+            "--xla_gpu_target_cuda_data_dir=/opt/rocm/lib"
         ),
     },
 }
@@ -59,6 +77,7 @@ ROCM_ENV_KEYS = [
     "XLA_PYTHON_CLIENT_ALLOCATOR",
     "XLA_FLAGS",
     "MIOPEN_DEBUG_FUSION_ENGINE_DISABLE",
+    "ROCM_CHIP_COMPILER_FLAGS",
     "HIP_VISIBLE_DEVICES",
     "ROCR_VISIBLE_DEVICES",
     "HSA_OVERRIDE_GFX_VERSION",
@@ -308,6 +327,69 @@ def make_env():
 """
 
 
+def code_playground_xml_contact_audit(playground: Path) -> str:
+    return info_prologue(playground) + f"""
+emit_info({{"subtest": "playground_xml_contact_audit"}})
+import json
+from pathlib import Path
+import xml.etree.ElementTree as ET
+
+xml_dir = Path({str(playground)!r}) / "playground" / "open_duck_mini_v2" / "xmls"
+files = sorted(xml_dir.glob("*.xml"))
+rows = []
+for path in files:
+    root = ET.fromstring(path.read_text())
+    for elem in root.iter():
+        if elem.tag not in {{"default", "geom", "pair"}}:
+            continue
+        name = (
+            elem.attrib.get("name")
+            or elem.attrib.get("class")
+            or elem.attrib.get("type")
+            or ""
+        )
+        attrs = {{
+            "file": str(path),
+            "tag": elem.tag,
+            "name": name,
+            "type": elem.attrib.get("type"),
+            "class": elem.attrib.get("class"),
+            "contype": elem.attrib.get("contype"),
+            "conaffinity": elem.attrib.get("conaffinity"),
+            "condim": elem.attrib.get("condim"),
+            "friction": elem.attrib.get("friction"),
+            "solref": elem.attrib.get("solref"),
+            "solimp": elem.attrib.get("solimp"),
+        }}
+        is_contact_relevant = (
+            elem.tag == "pair"
+            or attrs["contype"] not in (None, "0")
+            or attrs["conaffinity"] not in (None, "0")
+            or name in {{"floor", "left_foot_bottom_tpu", "right_foot_bottom_tpu"}}
+            or attrs["condim"] is not None
+        )
+        if is_contact_relevant:
+            rows.append(attrs)
+
+missing_solref = [row for row in rows if row["solref"] is None]
+missing_solimp = [row for row in rows if row["solimp"] is None]
+emit("SUBTEST_RESULT_JSON_START", {{
+    "status": "PASS",
+    "xml_dir": str(xml_dir),
+    "files": [str(path) for path in files],
+    "contact_relevant_items": rows,
+    "missing_solref_count": len(missing_solref),
+    "missing_solimp_count": len(missing_solimp),
+    "floor_items": [row for row in rows if row["name"] == "floor"],
+    "foot_items": [
+        row
+        for row in rows
+        if row["name"] in {{"left_foot_bottom_tpu", "right_foot_bottom_tpu"}}
+    ],
+}})
+"""
+
+
 def code_playground_contract(playground: Path) -> str:
     return playground_common_code(playground) + """
 emit_info({"subtest": "playground_contract_only"})
@@ -333,6 +415,60 @@ emit("SUBTEST_RESULT_JSON_START", {
     "observation_size": {key: list(value.shape) for key, value in state.obs.items()},
     "action_size": int(env.action_size),
 })
+"""
+
+
+def state_finite_report_code() -> str:
+    return """
+def finite_report(state):
+    import jax
+    import jax.numpy as jnp
+    report = {}
+    for name in ["qpos", "qvel", "qacc", "ctrl", "act", "qfrc_constraint"]:
+        value = getattr(state.data, name, None)
+        if value is None:
+            continue
+        arr = jax.device_get(value)
+        item = {
+            "shape": list(arr.shape),
+            "size": int(arr.size),
+            "finite": bool(jnp.all(jnp.isfinite(value))),
+            "nan_count": int(jax.device_get(jnp.sum(jnp.isnan(value)))),
+            "posinf_count": int(jax.device_get(jnp.sum(jnp.isposinf(value)))),
+            "neginf_count": int(jax.device_get(jnp.sum(jnp.isneginf(value)))),
+        }
+        if arr.size:
+            item["min"] = float(jax.device_get(jnp.nanmin(jnp.nan_to_num(value))))
+            item["max"] = float(jax.device_get(jnp.nanmax(jnp.nan_to_num(value))))
+        else:
+            item["min"] = None
+            item["max"] = None
+        report[name] = item
+    return report
+
+def sanitize_state(state):
+    import jax.numpy as jnp
+    updates = {}
+    for name in ["qpos", "qvel", "qacc", "ctrl", "act"]:
+        value = getattr(state.data, name, None)
+        if value is None:
+            continue
+        updates[name] = jnp.nan_to_num(value, nan=0.0, posinf=0.0, neginf=0.0)
+    if updates:
+        state = state.replace(data=state.data.replace(**updates))
+    return state
+"""
+
+
+def code_playground_reset_state_finite(playground: Path) -> str:
+    return playground_common_code(playground) + state_finite_report_code() + """
+emit_info({"subtest": "playground_reset_state_finite"})
+import jax
+env = make_env()
+state = env.reset(jax.random.PRNGKey(0))
+block_tree((state.obs, state.data.qpos, state.data.qvel, state.done))
+report = finite_report(state)
+emit("SUBTEST_RESULT_JSON_START", {"status": "PASS", "finite_report": report})
 """
 
 
@@ -426,6 +562,46 @@ emit("SUBTEST_RESULT_JSON_START", {{"status": "PASS", "steps": out}})
 """
 
 
+def code_playground_scan_step_sanitized(playground: Path, steps: Sequence[int]) -> str:
+    return playground_common_code(playground) + state_finite_report_code() + f"""
+emit_info({{"subtest": "playground_scan_step_sanitized", "steps": {list(steps)!r}}})
+import jax
+import jax.numpy as jnp
+env = make_env()
+state = env.reset(jax.random.PRNGKey(0))
+state = sanitize_state(state)
+action = jnp.zeros(env.action_size)
+
+def body(carry, _):
+    next_state = sanitize_state(carry)
+    next_state = env.step(next_state, action)
+    next_state = sanitize_state(next_state)
+    return next_state, {{
+        "qpos0": next_state.data.qpos[0],
+        "done": next_state.done,
+    }}
+
+out = {{}}
+initial_report = finite_report(state)
+for n in {list(steps)!r}:
+    scan_fn = jax.jit(lambda s, n=n: jax.lax.scan(body, s, None, length=n))
+    state, traj = scan_fn(state)
+    block_tree((state.obs, state.data.qpos, state.done, traj["qpos0"], traj["done"]))
+    out[str(n)] = {{
+        "done": bool(state.done),
+        "qpos0": float(state.data.qpos[0]),
+        "traj_samples": int(traj["qpos0"].shape[0]),
+        "finite_report": finite_report(state),
+    }}
+    emit("SUBTEST_PROGRESS_JSON_START", {{"steps": n, "status": "PASS"}})
+emit("SUBTEST_RESULT_JSON_START", {{
+    "status": "PASS",
+    "initial_finite_report": initial_report,
+    "steps": out,
+}})
+"""
+
+
 def code_closed_loop(playground: Path, policy: Path, fit_json: Path, steps: Sequence[int], bridge_mode: str, command_x: float) -> str:
     return info_prologue(playground) + f"""
 emit_info({{"subtest": "closed_loop_policy_eval", "steps": {list(steps)!r}, "bridge_mode": {bridge_mode!r}}})
@@ -487,9 +663,19 @@ def build_subtests(args) -> list[dict]:
                     "code": code_playground_contract(args.playground_path),
                 },
                 {
+                    "name": "playground_xml_contact_audit",
+                    "platform": platform_name,
+                    "code": code_playground_xml_contact_audit(args.playground_path),
+                },
+                {
                     "name": "playground_reset",
                     "platform": platform_name,
                     "code": code_playground_reset(args.playground_path),
+                },
+                {
+                    "name": "playground_reset_state_finite",
+                    "platform": platform_name,
+                    "code": code_playground_reset_state_finite(args.playground_path),
                 },
                 {
                     "name": "playground_one_step_vanilla",
@@ -510,6 +696,11 @@ def build_subtests(args) -> list[dict]:
                     "name": "playground_scan_step_vanilla",
                     "platform": platform_name,
                     "code": code_playground_scan_step(args.playground_path, steps),
+                },
+                {
+                    "name": "playground_scan_step_sanitized",
+                    "platform": platform_name,
+                    "code": code_playground_scan_step_sanitized(args.playground_path, steps),
                 },
             ]
         )
@@ -708,6 +899,7 @@ def classify(results: Sequence[dict], platforms: Sequence[str]) -> dict:
                 "playground_one_step_jit",
                 "playground_multi_step_vanilla",
                 "playground_scan_step_vanilla",
+                "playground_scan_step_sanitized",
             ]
         ):
             gate = "HOLD_PLAYGROUND_GPU_STEP"
@@ -759,6 +951,9 @@ def summarize_capabilities(results: Sequence[dict]) -> dict:
         "playground_step_gpu": status_for("playground_one_step_vanilla", "gpu"),
         "playground_step_jit_gpu": status_for("playground_one_step_jit", "gpu"),
         "playground_scan_step_gpu": status_for("playground_scan_step_vanilla", "gpu"),
+        "playground_scan_step_sanitized_gpu": status_for(
+            "playground_scan_step_sanitized", "gpu"
+        ),
         "playground_bridge_gpu": status_for("playground_multi_step_bridge", "gpu"),
         "closed_loop_gpu": status_for("closed_loop_policy_eval_gpu", "gpu"),
         "closed_loop_cpu": status_for("closed_loop_policy_eval_cpu", "cpu"),
@@ -783,6 +978,7 @@ def build_markdown(payload: Mapping[str, Any]) -> str:
         f"- Playground one-step GPU: `{capabilities['playground_step_gpu']}`",
         f"- Playground one-step JIT GPU: `{capabilities['playground_step_jit_gpu']}`",
         f"- Playground scan-step GPU: `{capabilities['playground_scan_step_gpu']}`",
+        f"- Playground sanitized scan-step GPU: `{capabilities['playground_scan_step_sanitized_gpu']}`",
         f"- Playground bridge GPU: `{capabilities['playground_bridge_gpu']}`",
         f"- Closed-loop GPU: `{capabilities['closed_loop_gpu']}`",
         f"- Closed-loop CPU: `{capabilities['closed_loop_cpu']}`",
@@ -835,7 +1031,8 @@ def build_markdown(payload: Mapping[str, Any]) -> str:
             "`mem_fraction_050`, `mem_fraction_060`, `allocator_platform`,",
             "`disable_jit`, `debug_nans_infs`, `miopen_fusion_disabled`,",
             "`xla_disable_latency_scheduler`, `xla_disable_triton_gemm`,",
-            "and `xla_compiler_conservative`.",
+            "`xla_disable_triton_gemm_softmax`, `xla_compiler_conservative`,",
+            "`rocm_strict_ieee`, `xla_rocm_data_dir`, and `xla_triton_strict_ieee`.",
             "",
             "## Recommendation",
             "",
@@ -893,7 +1090,8 @@ def main() -> int:
             "mem_fraction_050, mem_fraction_060, allocator_platform, "
             "disable_jit, debug_nans_infs, miopen_fusion_disabled, "
             "xla_disable_latency_scheduler, xla_disable_triton_gemm, "
-            "xla_compiler_conservative"
+            "xla_disable_triton_gemm_softmax, xla_compiler_conservative, "
+            "rocm_strict_ieee, xla_rocm_data_dir, xla_triton_strict_ieee"
         ),
     )
     parser.add_argument(
@@ -902,7 +1100,8 @@ def main() -> int:
         help=(
             "comma-separated subtests or all. Examples: basic_jax,"
             "playground_one_step_vanilla,playground_one_step_jit,"
-            "playground_scan_step_vanilla,closed_loop_policy_eval_gpu"
+            "playground_scan_step_vanilla,playground_scan_step_sanitized,"
+            "playground_xml_contact_audit,closed_loop_policy_eval_gpu"
         ),
     )
     parser.add_argument("--include-bridge", action="store_true")

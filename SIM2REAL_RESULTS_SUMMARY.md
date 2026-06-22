@@ -434,6 +434,19 @@ Latest ROCm/MJX isolation result:
   the collision code path, not as proof that the model state is corrupt.
 - Local JAX `0.8.2` does not expose a `jax_three_fry_gpu_global_pool` config
   key, so that suggested knob was not added.
+- Additional strict/Triton variants did not clear the fault:
+  - `--xla_gpu_enable_triton_softmax=false`: unknown XLA flag
+  - `ROCM_CHIP_COMPILER_FLAGS=-fno-fast-math -fhonor-infinities -fhonor-nans`:
+    `ROCM_ERROR_ILLEGAL_ADDRESS`
+  - `--xla_gpu_target_cuda_data_dir=/opt/rocm/lib`: unknown XLA flag
+- Reset-state finite checks show `qpos`, `qvel`, `qacc`, `ctrl`, and
+  `qfrc_constraint` are finite after reset on CPU and GPU.
+- Post-reset sanitation of `qpos`, `qvel`, `qacc`, `ctrl`, and `act` does not
+  fix the GPU scan-step fault. CPU sanitized scan passes; GPU sanitized scan
+  still hits `ROCM_ERROR_ILLEGAL_ADDRESS`.
+- MJCF contact audit found seven contact-relevant floor/foot entries without
+  explicit `solref` or `solimp`. This is now a candidate offline sim-model
+  probe, not a robot-runtime or training fix.
 
 Choose exactly one next step: **debug the Open Duck Playground MJX GPU step on
 ROCm or run a reviewed reduced-horizon CPU correctness eval**, without changing

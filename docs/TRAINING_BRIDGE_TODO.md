@@ -119,6 +119,15 @@ Do not start training from an interpreter that reports `HOLD_ENV_NOT_READY`.
 - Debug nan/inf flags fail during MJX convex collision on both GPU and CPU
   because the collision path uses `-inf` sentinels internally; do not treat that
   debug failure alone as proof of a corrupted robot model state.
+- Triton softmax and ROCm data-dir XLA flags suggested for testing are not
+  accepted by the local JAX/XLA build. Strict IEEE ROCm compiler flags still hit
+  `ROCM_ERROR_ILLEGAL_ADDRESS`.
+- Reset-state finite checks show `qpos`, `qvel`, `qacc`, `ctrl`, and
+  `qfrc_constraint` are finite after reset. Post-reset sanitation does not fix
+  the GPU scan-step failure, while the CPU sanitized scan passes.
+- MJCF contact audit found implicit `solref` / `solimp` values on foot/floor
+  contact geoms. Treat explicit contact-parameter experiments as a separate
+  offline sim-model PR, not as a training or robot-runtime change.
 - CPU can run short correctness paths, including closed-loop vanilla short
   matrix, but CPU bridge/multi-step eval is slow under the current timeout.
 - Next implementation task: fix or route around the local Playground/MJX ROCm

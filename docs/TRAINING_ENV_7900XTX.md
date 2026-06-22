@@ -122,6 +122,31 @@ debug flags because MJX convex collision uses a `-inf` sentinel internally.
 That makes it a locator for the collision code path, not proof of corrupted
 robot state.
 
+Additional Triton/strict-IEEE variants were tested:
+
+```text
+--xla_gpu_enable_triton_softmax=false -> unknown XLA flag
+ROCM_CHIP_COMPILER_FLAGS=-fno-fast-math -fhonor-infinities -fhonor-nans -> ROCM_ERROR_ILLEGAL_ADDRESS
+--xla_gpu_target_cuda_data_dir=/opt/rocm/lib -> unknown XLA flag
+```
+
+Finite reset-state probes found no raw NaN/Inf in the checked MJX reset state
+fields:
+
+```text
+qpos, qvel, qacc, ctrl, qfrc_constraint: finite
+nan_count / posinf_count / neginf_count: 0
+```
+
+Post-reset sanitation of `qpos`, `qvel`, `qacc`, `ctrl`, and `act` does not
+fix the GPU scan-step failure. The CPU sanitized scan passes; the GPU sanitized
+scan still hits `ROCM_ERROR_ILLEGAL_ADDRESS`.
+
+The active Open Duck Mini v2 XMLs rely on MuJoCo defaults for several
+contact-relevant floor/foot `solref` and `solimp` values. That is now a
+reasonable offline simulator-model probe, but do not change MJCF contact
+parameters inside the training environment setup doc.
+
 ## Readiness Check
 
 Run:

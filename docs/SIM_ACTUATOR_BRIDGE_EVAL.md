@@ -137,6 +137,22 @@ flags identify MJX convex collision as the involved code path, but the same
 flags also fail on CPU during reset because that collision code uses `-inf`
 sentinels internally.
 
+Additional strict-math and reset-state probes did not clear the GPU failure:
+
+```text
+ROCM_CHIP_COMPILER_FLAGS=-fno-fast-math -fhonor-infinities -fhonor-nans:
+  still ROCM_ERROR_ILLEGAL_ADDRESS
+
+post-reset finite-state sanitation:
+  CPU sanitized scan passes
+  GPU sanitized scan still ROCM_ERROR_ILLEGAL_ADDRESS
+```
+
+The reset state fields checked (`qpos`, `qvel`, `qacc`, `ctrl`, and
+`qfrc_constraint`) are finite on both CPU and GPU. The active Open Duck Mini v2
+MJCFs also leave several foot/floor `solref` and `solimp` values implicit,
+which is now a candidate offline sim-model probe, not a runtime fix.
+
 ## Expected Behavior
 
 Vanilla sim expectation:
@@ -319,11 +335,15 @@ Additional focused outputs:
 outputs/analysis/rocm_mjx_isolation_step_modes_default/ROCM_MJX_RUNTIME_ISOLATION.md
 outputs/analysis/rocm_mjx_isolation_scan_variants/ROCM_MJX_RUNTIME_ISOLATION.md
 outputs/analysis/rocm_mjx_isolation_debug_cpu/ROCM_MJX_RUNTIME_ISOLATION.md
+outputs/analysis/rocm_mjx_isolation_triton_strict_variants/ROCM_MJX_RUNTIME_ISOLATION.md
+outputs/analysis/rocm_mjx_isolation_sanitized_state/ROCM_MJX_RUNTIME_ISOLATION.md
 ```
 
 They show that JIT and `lax.scan` wrappers do not fix the Open Duck Playground
 GPU step, MIOpen fusion disable does not fix it, and debug nan/inf checks trip
-on an MJX convex-collision `-inf` path that also appears on CPU.
+on an MJX convex-collision `-inf` path that also appears on CPU. They also show
+that strict IEEE compiler flags and reset-state finite sanitation do not fix the
+GPU scan-step failure.
 
 Current telemetry replay output still shows:
 

@@ -137,7 +137,11 @@ debug_nans_infs                JAX_DEBUG_NANS=true, JAX_DEBUG_INFS=true
 miopen_fusion_disabled         MIOPEN_DEBUG_FUSION_ENGINE_DISABLE=1
 xla_disable_latency_scheduler  XLA_FLAGS=--xla_gpu_enable_latency_hiding_scheduler=false
 xla_disable_triton_gemm        XLA_FLAGS=--xla_gpu_enable_triton_gemm=false
+xla_disable_triton_gemm_softmax XLA_FLAGS=--xla_gpu_enable_triton_gemm=false plus --xla_gpu_enable_triton_softmax=false
 xla_compiler_conservative      MIOPEN_DEBUG_FUSION_ENGINE_DISABLE=1 plus both XLA flags
+rocm_strict_ieee               ROCM_CHIP_COMPILER_FLAGS=-fno-fast-math -fhonor-infinities -fhonor-nans
+xla_rocm_data_dir              XLA_FLAGS=--xla_gpu_target_cuda_data_dir=/opt/rocm/lib
+xla_triton_strict_ieee         strict IEEE flags plus Triton/data-dir XLA flags
 ```
 
 JAX's GPU memory allocation docs describe preallocation behavior and these
@@ -265,6 +269,97 @@ code path, not as evidence that robot model state is numerically corrupt.
 Local JAX `0.8.2` does not expose a `jax_three_fry_gpu_global_pool` config key;
 it was not added as a supported variant.
 
+## Triton / Strict Math Follow-Up
+
+The suggested Triton and strict-IEEE compiler flags were tested on the
+`playground_scan_step_vanilla` subtest:
+
+```bash
+../envs/open-duck-playground/bin/python tools/isolate_rocm_mjx_failure.py \
+  --playground-path ../Open_Duck_Playground \
+  --env-python ../envs/open-duck-playground/bin/python \
+  --policy policy/BEST_WALK_ONNX_2.onnx \
+  --fit-json outputs/analysis/actuator_response_fit.json \
+  --output-dir outputs/analysis/rocm_mjx_isolation_triton_strict_variants \
+  --command-x 0.08 \
+  --steps 1 \
+  --platforms gpu \
+  --variants xla_disable_triton_gemm_softmax,rocm_strict_ieee,xla_rocm_data_dir,xla_triton_strict_ieee \
+  --subtests playground_scan_step_vanilla \
+  --timeout-s 90
+```
+
+Result:
+
+| variant | result |
+|---|---|
+| `xla_disable_triton_gemm_softmax` | `FAIL`, unknown XLA flag `--xla_gpu_enable_triton_softmax=false` |
+| `rocm_strict_ieee` | `FAIL`, `ROCM_ERROR_ILLEGAL_ADDRESS` |
+| `xla_rocm_data_dir` | `FAIL`, unknown XLA flag `--xla_gpu_target_cuda_data_dir=/opt/rocm/lib` |
+| `xla_triton_strict_ieee` | `FAIL`, unknown XLA flags for Triton softmax and data-dir |
+
+So strict IEEE compiler flags alone do not clear the GPU fault, and the two
+additional XLA flags suggested by the consultant are not accepted by this local
+JAX/XLA build.
+
+## Reset Finite-State / MJCF Contact Audit
+
+The suggested reset-state sanitation was tested without changing simulator
+source files:
+
+```bash
+../envs/open-duck-playground/bin/python tools/isolate_rocm_mjx_failure.py \
+  --playground-path ../Open_Duck_Playground \
+  --env-python ../envs/open-duck-playground/bin/python \
+  --policy policy/BEST_WALK_ONNX_2.onnx \
+  --fit-json outputs/analysis/actuator_response_fit.json \
+  --output-dir outputs/analysis/rocm_mjx_isolation_sanitized_state \
+  --command-x 0.08 \
+  --steps 1 \
+  --platforms gpu,cpu \
+  --variants default \
+  --subtests playground_xml_contact_audit,playground_reset_state_finite,playground_scan_step_sanitized \
+  --timeout-s 120
+```
+
+Result:
+
+| subtest | GPU | CPU |
+|---|---|---|
+| `playground_xml_contact_audit` | `PASS` | `PASS` |
+| `playground_reset_state_finite` | `PASS` | `PASS` |
+| `playground_scan_step_sanitized` | `FAIL`, `ROCM_ERROR_ILLEGAL_ADDRESS` | `PASS` |
+
+Reset state fields checked by `playground_reset_state_finite` are finite on
+both GPU and CPU:
+
+```text
+qpos, qvel, qacc, ctrl, qfrc_constraint: finite
+nan_count / posinf_count / neginf_count: 0
+```
+
+Post-reset sanitation of `qpos`, `qvel`, `qacc`, `ctrl`, and `act` therefore
+does not fix the GPU step fault. This weakens the idea that raw infinities in
+reset state are the immediate trigger.
+
+The XML contact audit found seven contact-relevant floor/foot entries without
+explicit `solref` or `solimp`:
+
+```text
+scene_flat_terrain.xml floor
+scene_flat_terrain_backlash.xml floor
+scene_rough_terrain_backlash.xml floor
+open_duck_mini_v2.xml left_foot_bottom_tpu
+open_duck_mini_v2.xml right_foot_bottom_tpu
+open_duck_mini_v2_backlash.xml left_foot_bottom_tpu
+open_duck_mini_v2_backlash.xml right_foot_bottom_tpu
+```
+
+Do not patch these values blindly. They are now a plausible next offline
+simulator-model probe because the GPU failure is localized to Open Duck
+Playground stepping/collision, but changing them would alter the sim contract
+and needs a separate reviewed PR.
+
 ## Local Alternate Leads
 
 Local PufferLib files exist:
@@ -292,8 +387,9 @@ for the current JAX/MJX backend issue.
 
 Choose one of these before training:
 
-1. Inspect Open Duck Playground MJX collision/model features that differ from the minimal
-   MJX test.
+1. Inspect Open Duck Playground MJX collision/model features that differ from
+   the minimal MJX test, especially mesh/convex contacts and missing explicit
+   `solref` / `solimp` on foot/floor contact geoms.
 2. Use CPU only for short correctness probes while resolving GPU stepping.
 3. Investigate package/version compatibility for JAX 0.8.2, MuJoCo 3.9.0, and
    ROCm on the `7900 XTX`.
