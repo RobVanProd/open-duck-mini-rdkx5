@@ -61,13 +61,15 @@ Results:
 | `step8240_zero_penalty`, `x=0.0` | `15 s` | `PASS_CANDIDATE_SIM_GATE` | survived vanilla/fitted/stress with low action saturation and pitch tracking below threshold |
 | `step8240_zero_penalty`, `x=0.04` | `15 s` | `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` | stable but mean forward velocity stayed near zero |
 | `step8240_zero_penalty`, `x=0.08` | `15 s` | `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` | stable but mean forward velocity stayed near zero |
-| `step8240_target_rate`, `x=0.08` | `15 s` | `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` | target-rate penalty alone did not produce command-tracking walking in this tiny CPU run |
+| `step8240_target_rate`, `x=0.08` | `15 s` | `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` | positive target-rate scale did not produce command-tracking walking in this tiny CPU run |
 | `step32800_zero_penalty` | `2 s` | `HOLD_CANDIDATE_FALL_OR_TERMINATION` | fell/terminated early with high action saturation and large pitch tracking error |
 
 The `step8240_zero_penalty` pilot is preserved only as a pipeline artifact. It
 is not robot-approved because it does not track nonzero forward commands. The
 target-rate pilot confirms that the first small CPU target-rate setting also
-does not solve command tracking.
+does not solve command tracking. That run used `target_rate_scale=+0.01`, which
+rewards the positive target-velocity cost; future penalty runs should use a
+negative scale.
 
 ## Interpretation
 
@@ -77,7 +79,7 @@ does not solve command tracking.
   `obs[1,101] -> continuous_actions[1,14]`.
 - The tiny CPU training shape is useful for correctness checks, not for
   producing a robot candidate.
-- The target-rate penalty pilot did not improve reward or nonzero-command
+- The positive target-rate scale pilot did not improve reward or nonzero-command
   forward progress in this small CPU configuration.
 - The longer zero-penalty pilot reward decreased, so continuing to scale this
   exact CPU smoke shape is not the right candidate-training path.

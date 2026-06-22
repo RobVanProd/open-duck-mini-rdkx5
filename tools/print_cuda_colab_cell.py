@@ -140,7 +140,7 @@ python tools/run_actuator_bridge_training_smoke.py \\
   --ppo-batch-size {args.smoke_ppo_batch_size} \\
   --ppo-num-minibatches 1 \\
   --ppo-num-updates-per-batch 1 \\
-  --target-rate-scale 0.01 \\
+  --target-rate-scale -0.01 \\
   --actuator-tracking-scale 0.0 \\
   --timeout-s 1200
 
@@ -160,7 +160,7 @@ if [ "$RUN_CANDIDATE" = "1" ]; then
     --ppo-batch-size {args.candidate_ppo_batch_size} \\
     --ppo-num-minibatches {args.candidate_ppo_num_minibatches} \\
     --ppo-num-updates-per-batch {args.candidate_ppo_num_updates_per_batch} \\
-    --target-rate-scale 0.01 \\
+    --target-rate-scale -0.01 \\
     --actuator-tracking-scale 0.0 \\
     --timeout-s {args.candidate_timeout_s}
 

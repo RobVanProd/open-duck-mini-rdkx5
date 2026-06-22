@@ -176,7 +176,7 @@ python tools/run_actuator_bridge_training_smoke.py \
   --ppo-batch-size 512 \
   --ppo-num-minibatches 16 \
   --ppo-num-updates-per-batch 4 \
-  --target-rate-scale 0.01 \
+  --target-rate-scale -0.01 \
   --actuator-tracking-scale 0.0 \
   --timeout-s 7200
 ```

@@ -325,8 +325,8 @@ python3 tools/run_actuator_bridge_training_smoke.py \
   --run \
   --platform cpu \
   --num-timesteps 256 \
-  --target-rate-scale 0.01 \
-  --actuator-tracking-scale 0.01
+  --target-rate-scale -0.01 \
+  --actuator-tracking-scale -0.01
 ```
 
 Result:
@@ -341,8 +341,8 @@ package_status: HOLD_MISSING_SIM_GATE_EVIDENCE
 contract: PASS_POLICY_CONTRACT
 ```
 
-Then a slightly longer CPU pilot used the first candidate-training penalty
-shape from the CUDA runbook:
+Then a slightly longer CPU pilot used the first target-rate scale shape from
+the CUDA runbook:
 
 ```bash
 python3 tools/run_actuator_bridge_training_smoke.py \
@@ -387,6 +387,11 @@ It is too short for gait or reproduction metrics. Meaningful candidate
 evaluation remains CUDA-backed, and robot-side suspended validation remains
 blocked until the sim-side gates in `docs/CANDIDATE_POLICY_VALIDATION_GATES.md`
 are satisfied.
+
+Later sign review found the optional `target_rate` and `actuator_tracking`
+terms are positive costs multiplied by their configured reward scales. Future
+penalty runs should use negative scales. Positive scales reward those costs and
+should be treated as experimental controls, not smoothing penalties.
 
 Command shape:
 
