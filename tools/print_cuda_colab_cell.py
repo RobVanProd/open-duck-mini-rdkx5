@@ -10,8 +10,8 @@ import textwrap
 
 DEFAULT_RDK_REPO = "https://github.com/RobVanProd/open-duck-mini-rdkx5.git"
 DEFAULT_PLAYGROUND_REPO = "https://github.com/RobVanProd/Open_Duck_Playground.git"
-DEFAULT_RDK_BRANCH = "codex/training-actuator-wrapper-workflow"
-DEFAULT_PLAYGROUND_BRANCH = "codex/training-actuator-bridge"
+DEFAULT_RDK_BRANCH = "main"
+DEFAULT_PLAYGROUND_BRANCH = "main"
 
 
 def bash_bool(value: bool) -> str:

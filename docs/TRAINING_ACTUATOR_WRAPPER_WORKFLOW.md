@@ -26,7 +26,7 @@ The actual training-environment patch is preserved in the RobVanProd fork:
 ```text
 repo: https://github.com/RobVanProd/Open_Duck_Playground
 PR: https://github.com/RobVanProd/Open_Duck_Playground/pull/1
-branch: codex/training-actuator-bridge
+branch: main
 ```
 
 That PR adds:

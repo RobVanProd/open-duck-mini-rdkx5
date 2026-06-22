@@ -82,7 +82,7 @@ RDK diagnostics/workflow repo:
 
 ```text
 PR: https://github.com/RobVanProd/open-duck-mini-rdkx5/pull/18
-branch: codex/training-actuator-wrapper-workflow
+branch: main after PR #18 merges
 purpose: training workflow, smoke launcher, candidate packaging gates, docs
 ```
 
@@ -90,7 +90,7 @@ Playground fork:
 
 ```text
 PR: https://github.com/RobVanProd/Open_Duck_Playground/pull/1
-branch: codex/training-actuator-bridge
+branch: main
 purpose: default-off actuator bridge in joystick env and runner controls
 ```
 

@@ -30,11 +30,11 @@ Repositories:
 ```text
 RDK repo:
   https://github.com/RobVanProd/open-duck-mini-rdkx5
-  branch: codex/training-actuator-wrapper-workflow
+  branch: main
 
 Playground fork:
   https://github.com/RobVanProd/Open_Duck_Playground
-  branch: codex/training-actuator-bridge
+  branch: main
 ```
 
 If a repo is private, authenticate in the notebook/session using your normal
@@ -84,12 +84,12 @@ fi
 
 cd /content/open-duck-mini-rdkx5
 git fetch origin
-git checkout codex/training-actuator-wrapper-workflow
+git checkout main
 git pull --ff-only
 
 cd /content/Open_Duck_Playground
 git fetch origin
-git checkout codex/training-actuator-bridge
+git checkout main
 git pull --ff-only
 
 python -m pip install -U pip
