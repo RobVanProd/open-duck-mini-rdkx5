@@ -217,6 +217,11 @@ def decide_status(payload: dict[str, Any], allow_missing_evidence: bool) -> str:
         return "HOLD_BASELINE_OVERWRITE_RISK"
     if payload["contract"]["status"] != "PASS_POLICY_CONTRACT":
         return payload["contract"]["status"]
+    for gate_name in ["candidate_gate_x0", "candidate_gate_x008", "actuator_bridge_eval"]:
+        gate = payload.get("sim_gate", {}).get(gate_name, {})
+        for status in [gate.get("candidate_gate_status"), gate.get("overall_status")]:
+            if isinstance(status, str) and status.startswith("HOLD"):
+                return status
     missing = [
         key
         for key in payload["required_evidence"]
@@ -224,11 +229,6 @@ def decide_status(payload: dict[str, Any], allow_missing_evidence: bool) -> str:
     ]
     if missing and not allow_missing_evidence:
         return "HOLD_MISSING_SIM_GATE_EVIDENCE"
-    for gate_name in ["candidate_gate_x0", "candidate_gate_x008", "actuator_bridge_eval"]:
-        gate = payload.get("sim_gate", {}).get(gate_name, {})
-        for status in [gate.get("candidate_gate_status"), gate.get("overall_status")]:
-            if isinstance(status, str) and status.startswith("HOLD"):
-                return status
     if payload.get("non_deployable_reason"):
         return "INFO_NON_DEPLOYABLE_ARTIFACT"
     return "READY_FOR_SIM_GATE_REVIEW"

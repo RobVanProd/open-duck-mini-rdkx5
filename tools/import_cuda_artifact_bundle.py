@@ -219,6 +219,21 @@ def determine_review_status(
     x0_status = gate_status_by_suffix(markdown_statuses, "_candidate_gate_x0")
     x008_status = gate_status_by_suffix(markdown_statuses, "_candidate_gate_x008")
 
+    if isinstance(x0_status, str) and x0_status.startswith("HOLD"):
+        return {
+            "status": x0_status,
+            "reason": "candidate x=0.0 sim gate is holding",
+            "candidate_gate_x0": x0_status,
+            "candidate_gate_x008": x008_status,
+        }
+    if isinstance(x008_status, str) and x008_status.startswith("HOLD"):
+        return {
+            "status": x008_status,
+            "reason": "candidate x=0.08 sim gate is holding",
+            "candidate_gate_x0": x0_status,
+            "candidate_gate_x008": x008_status,
+        }
+
     for status in package_statuses:
         if status.startswith("HOLD"):
             return {
