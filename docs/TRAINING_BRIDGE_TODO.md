@@ -574,6 +574,18 @@ forward velocity. Zero and tiny command cases fell with above-envelope target
 spikes. This candidate is not deployable and counts as feasibility-targeted
 attempt `1 / 3`.
 
+The phase-checkpoint audit matters:
+
+```text
+phase 1 x=0.08: below envelope, mean local vx 0.1892 m/s, falls after 80 samples
+phase 2 x=0.08: above envelope, mean local vx 0.2628 m/s, falls after 61 samples
+final x=0.08: below envelope, mean local vx 0.0031 m/s, stable standstill
+```
+
+So the next recipe should not simply increase progress scales. It should try to
+preserve the phase-1 in-envelope motion and add stability around it, or use
+phase-1 as the checkpoint for a smaller stabilizing transition.
+
 ### Candidate ONNX Export
 
 - Export only after sim-side gates pass.

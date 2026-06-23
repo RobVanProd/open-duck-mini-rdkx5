@@ -84,7 +84,7 @@ outputs/analysis/movement_bootstrap_v5_a100_command_feasibility_curve_cpu/comman
 
 ## Decision
 
-V5 did not find an in-envelope forward gait.
+Final v5 did not find a stable in-envelope forward gait.
 
 It avoids the original `BEST_WALK_ONNX_2` target-rate failure at nonzero
 commands, but the learned behavior is near-standstill. At `x=0.0` and `x=0.02`,
@@ -100,9 +100,51 @@ feasibility-targeted recipe attempts: 1 / 3
 breakthrough: no
 ```
 
+## Phase Checkpoint Audit
+
+After the final v5 hold, the phase checkpoints were swept at low commands.
+
+Evidence:
+
+```text
+outputs/analysis/movement_bootstrap_v5_a100_phase1_command_curve_cpu/COMMAND_FEASIBILITY_CURVE.md
+outputs/analysis/movement_bootstrap_v5_a100_phase1_x0_curve_cpu/COMMAND_FEASIBILITY_CURVE.md
+outputs/analysis/movement_bootstrap_v5_a100_phase2_command_curve_cpu/COMMAND_FEASIBILITY_CURVE.md
+```
+
+Phase 1 is the useful lead:
+
+```text
+x=0.0:  duration_complete, pitch p95 target velocity 0.3714 rad/s,
+        max tracking p95 0.0830 rad
+x=0.04: duration_complete, pitch p95 target velocity 0.2780 rad/s,
+        mean local vx 0.0018 m/s
+x=0.06: duration_complete, pitch p95 target velocity 0.3107 rad/s,
+        mean local vx 0.0028 m/s
+x=0.08: fall_or_nan after 80 samples, pitch p95 target velocity 1.9529 rad/s,
+        mean local vx 0.1892 m/s
+```
+
+Interpretation: phase 1 briefly produced meaningful forward motion at `x=0.08`
+while staying below the measured actuator envelope, but it was unstable. That is
+not deployable, but it is different from the final standstill. It suggests the
+next recipe should preserve and stabilize the phase-1 motion pattern instead of
+continuing to optimize the final v5 standstill.
+
+Phase 2 regressed:
+
+```text
+x=0.04: duration_complete, mean local vx 0.0026 m/s
+x=0.06: duration_complete, mean local vx 0.0030 m/s
+x=0.08: fall_or_nan after 61 samples, pitch p95 target velocity 4.1595 rad/s
+```
+
+Interpretation: the fitted-bridge phase did not preserve the phase-1 motion. At
+`x=0.08`, it both fell and moved back above the measured actuator envelope.
+
 The next offline choice should be deliberate:
 
 ```text
-either one more feasibility-targeted recipe with a clearly different mechanism
-or stop escalating curricula if the next attempts repeat this shape
+preserve/stabilize the phase-1 in-envelope motion, or stop escalating curricula
+if later attempts repeat standstill/fall without stable in-envelope progress
 ```

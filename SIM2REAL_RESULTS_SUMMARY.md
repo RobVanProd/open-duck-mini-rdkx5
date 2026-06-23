@@ -1218,3 +1218,17 @@ At `x=0.0` and `x=0.02`, it produces above-envelope target spikes and falls.
 Interpretation: v5 did not find an in-envelope forward gait. It counts as
 feasibility-targeted attempt `1 / 3` under the stop rule. Robot validation
 remains blocked.
+
+Phase checkpoint audit refined that conclusion:
+
+```text
+phase 1 x=0.0:  duration_complete, below envelope, tracking hold only
+phase 1 x=0.08: fall after 80 samples, below envelope, mean local vx 0.1892 m/s
+phase 2 x=0.08: fall after 61 samples, above envelope, mean local vx 0.2628 m/s
+final x=0.08:   duration_complete, below envelope, mean local vx 0.0031 m/s
+```
+
+This means v5 did briefly find in-envelope forward motion in phase 1, but it was
+unstable and then lost during later fitted-bridge consolidation. The next
+training attempt should be framed as preserving and stabilizing the phase-1
+motion pattern, not as another generic progress-reward escalation.
