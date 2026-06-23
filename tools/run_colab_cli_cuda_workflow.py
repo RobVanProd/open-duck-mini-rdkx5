@@ -36,6 +36,17 @@ def shell_join(command: list[str]) -> str:
     return " ".join(shlex.quote(part) for part in command)
 
 
+def cli_value(value: object) -> str:
+    """Return a command-line-safe scalar string for generated remote scripts."""
+
+    if isinstance(value, float):
+        # argparse can treat scientific negative strings such as "-5e-05" as
+        # option-like tokens. Use fixed decimal form for small negative scales.
+        text = f"{value:.12f}".rstrip("0").rstrip(".")
+        return text if text not in {"", "-0"} else "0"
+    return str(value)
+
+
 def run(command: list[str], *, check: bool = True, timeout: int | None = None) -> subprocess.CompletedProcess:
     print(">>>", shell_join(command), flush=True)
     completed = subprocess.run(command, text=True, timeout=timeout, check=False)
@@ -222,6 +233,36 @@ def build_remote_driver(
     install_deps = not args.skip_deps
     smoke_steps = args.smoke_num_timesteps
     candidate_steps = args.candidate_num_timesteps
+    candidate_target_rate_scale = cli_value(args.candidate_target_rate_scale)
+    candidate_actuator_tracking_scale = cli_value(args.candidate_actuator_tracking_scale)
+    candidate_tracking_lin_vel_scale = cli_value(args.candidate_tracking_lin_vel_scale)
+    candidate_tracking_ang_vel_scale = cli_value(args.candidate_tracking_ang_vel_scale)
+    candidate_tracking_sigma = cli_value(args.candidate_tracking_sigma)
+    candidate_forward_progress_scale = cli_value(args.candidate_forward_progress_scale)
+    candidate_forward_progress_deadband = cli_value(args.candidate_forward_progress_deadband)
+    candidate_action_rate_scale = cli_value(args.candidate_action_rate_scale)
+    candidate_action_magnitude_scale = cli_value(args.candidate_action_magnitude_scale)
+    candidate_stand_still_scale = cli_value(args.candidate_stand_still_scale)
+    candidate_alive_scale = cli_value(args.candidate_alive_scale)
+    candidate_imitation_scale = cli_value(args.candidate_imitation_scale)
+    candidate_lin_vel_x_min = cli_value(args.candidate_lin_vel_x_min)
+    candidate_lin_vel_x_max = cli_value(args.candidate_lin_vel_x_max)
+    candidate_zero_command_probability = cli_value(args.candidate_zero_command_probability)
+    candidate_actuator_bridge_tau_min_s = cli_value(
+        args.candidate_actuator_bridge_tau_min_s
+    )
+    candidate_actuator_bridge_tau_max_s = cli_value(
+        args.candidate_actuator_bridge_tau_max_s
+    )
+    candidate_actuator_bridge_velocity_limit_min_rad_s = cli_value(
+        args.candidate_actuator_bridge_velocity_limit_min_rad_s
+    )
+    candidate_actuator_bridge_velocity_limit_max_rad_s = cli_value(
+        args.candidate_actuator_bridge_velocity_limit_max_rad_s
+    )
+    candidate_actuator_bridge_per_joint_variation = cli_value(
+        args.candidate_actuator_bridge_per_joint_variation
+    )
     return textwrap.dedent(
         f"""
         import atexit
@@ -395,34 +436,34 @@ def build_remote_driver(
                 "--ppo-batch-size", "{args.candidate_ppo_batch_size}",
                 "--ppo-num-minibatches", "{args.candidate_ppo_num_minibatches}",
                 "--ppo-num-updates-per-batch", "{args.candidate_ppo_num_updates_per_batch}",
-                "--target-rate-scale", "{args.candidate_target_rate_scale}",
-                "--actuator-tracking-scale", "{args.candidate_actuator_tracking_scale}",
-                "--tracking-lin-vel-scale", "{args.candidate_tracking_lin_vel_scale}",
-                "--tracking-ang-vel-scale", "{args.candidate_tracking_ang_vel_scale}",
-                "--tracking-sigma", "{args.candidate_tracking_sigma}",
-                "--forward-progress-scale", "{args.candidate_forward_progress_scale}",
-                "--forward-progress-deadband", "{args.candidate_forward_progress_deadband}",
-                "--action-rate-scale", "{args.candidate_action_rate_scale}",
-                "--action-magnitude-scale", "{args.candidate_action_magnitude_scale}",
-                "--stand-still-scale", "{args.candidate_stand_still_scale}",
-                "--alive-scale", "{args.candidate_alive_scale}",
-                "--imitation-scale", "{args.candidate_imitation_scale}",
-                "--lin-vel-x-min", "{args.candidate_lin_vel_x_min}",
-                "--lin-vel-x-max", "{args.candidate_lin_vel_x_max}",
+                "--target-rate-scale", "{candidate_target_rate_scale}",
+                "--actuator-tracking-scale", "{candidate_actuator_tracking_scale}",
+                "--tracking-lin-vel-scale", "{candidate_tracking_lin_vel_scale}",
+                "--tracking-ang-vel-scale", "{candidate_tracking_ang_vel_scale}",
+                "--tracking-sigma", "{candidate_tracking_sigma}",
+                "--forward-progress-scale", "{candidate_forward_progress_scale}",
+                "--forward-progress-deadband", "{candidate_forward_progress_deadband}",
+                "--action-rate-scale", "{candidate_action_rate_scale}",
+                "--action-magnitude-scale", "{candidate_action_magnitude_scale}",
+                "--stand-still-scale", "{candidate_stand_still_scale}",
+                "--alive-scale", "{candidate_alive_scale}",
+                "--imitation-scale", "{candidate_imitation_scale}",
+                "--lin-vel-x-min", "{candidate_lin_vel_x_min}",
+                "--lin-vel-x-max", "{candidate_lin_vel_x_max}",
                 "--lin-vel-y-min", "0.0",
                 "--lin-vel-y-max", "0.0",
                 "--ang-vel-yaw-min", "0.0",
                 "--ang-vel-yaw-max", "0.0",
                 "--command-resample-steps", "{args.candidate_command_resample_steps}",
-                "--zero-command-probability", "{args.candidate_zero_command_probability}",
+                "--zero-command-probability", "{candidate_zero_command_probability}",
                 "--head-range-factor", "0.0",
                 "--actuator-bridge-delay-min-ticks", "{args.candidate_actuator_bridge_delay_min_ticks}",
                 "--actuator-bridge-delay-max-ticks", "{args.candidate_actuator_bridge_delay_max_ticks}",
-                "--actuator-bridge-tau-min-s", "{args.candidate_actuator_bridge_tau_min_s}",
-                "--actuator-bridge-tau-max-s", "{args.candidate_actuator_bridge_tau_max_s}",
-                "--actuator-bridge-velocity-limit-min-rad-s", "{args.candidate_actuator_bridge_velocity_limit_min_rad_s}",
-                "--actuator-bridge-velocity-limit-max-rad-s", "{args.candidate_actuator_bridge_velocity_limit_max_rad_s}",
-                "--actuator-bridge-per-joint-variation", "{args.candidate_actuator_bridge_per_joint_variation}",
+                "--actuator-bridge-tau-min-s", "{candidate_actuator_bridge_tau_min_s}",
+                "--actuator-bridge-tau-max-s", "{candidate_actuator_bridge_tau_max_s}",
+                "--actuator-bridge-velocity-limit-min-rad-s", "{candidate_actuator_bridge_velocity_limit_min_rad_s}",
+                "--actuator-bridge-velocity-limit-max-rad-s", "{candidate_actuator_bridge_velocity_limit_max_rad_s}",
+                "--actuator-bridge-per-joint-variation", "{candidate_actuator_bridge_per_joint_variation}",
                 "--timeout-s", "{args.candidate_timeout_s}",
             ]
             if {args.candidate_restore_checkpoint_path!r}:
