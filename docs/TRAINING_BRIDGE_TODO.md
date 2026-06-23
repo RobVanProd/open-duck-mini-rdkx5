@@ -1,6 +1,6 @@
 # Training Bridge TODO
 
-Last updated: 2026-06-22
+Last updated: 2026-06-23
 
 Purpose: convert the measured Open Duck Mini actuator evidence into small,
 reviewable sim/training changes. Do not retrain blindly and do not change
@@ -161,6 +161,69 @@ Do not start training from an interpreter that reports `HOLD_ENV_NOT_READY`.
   design.
 
 ## P1: Add Actuator Model Controls
+
+### Candidate Search Status: Escape Safe Standstill
+
+Current offline candidate gates show two local optima:
+
+```text
+aggressive policy:
+  moves
+  violates posture/tracking/fall gates
+
+actuator-aware policy:
+  stable at x=0.0
+  remains near standstill at x=0.08
+```
+
+`tools/analyze_policy_command_sensitivity.py` now checks whether an ONNX policy
+changes action under synthetic `command_x` changes. The June 23 report shows the
+latest safe candidates are command-sensitive at the static ONNX level, so the
+next training work should not assume command blindness. The likely missing
+piece is a locomotion bootstrap/curriculum that produces gait structure before
+the full actuator bridge and smoothness pressure make standing the easiest
+solution.
+
+Recommended next training work:
+
+- add a staged curriculum runner that can continue from checkpoints across
+  phases in one remote job
+- phase 1: positive straight-ahead commands, no or weak bridge, strong
+  forward-progress requirement
+- phase 2: mild bridge and moderate target/action penalties
+- phase 3: fitted bridge with the existing candidate gates
+- keep `zero_command_probability` low or zero during movement bootstrap
+- keep robot validation blocked until both `x=0.0` and `x=0.08` sim gates pass
+
+Supporting evidence:
+
+- `outputs/analysis/CANDIDATE_RECIPE_SEARCH_SUMMARY.md`
+- `outputs/analysis/POLICY_COMMAND_SENSITIVITY.md`
+
+June 23 staged-curriculum result:
+
+- Colab L4 three-phase run completed and produced a final ONNX.
+- The final policy passed the offline `x=0.0` candidate sim gate.
+- The same policy failed `x=0.08` with
+  `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS`.
+- `x=0.08` fitted-bridge track ratio was `0.0277` against the `0.25`
+  threshold, with mean local forward velocity about `0.0022 m/s`.
+- Interpretation: the staged recipe improved infrastructure and x0 stability,
+  but still lands in the safe standstill optimum. It is not a robot candidate.
+
+June 23 follow-up:
+
+- Added a default-off `forward_shortfall` cost to the Playground reward stack.
+- Updated the staged curriculum to enable `forward_shortfall` explicitly:
+  - phase 1: scale `-2.0`, required ratio `0.4`
+  - phase 2: scale `-3.0`, required ratio `0.45`
+  - phase 3: scale `-4.0`, required ratio `0.5`
+- A tiny CPU plumbing smoke passed and confirmed phase restore, bridge
+  transition, and CLI propagation:
+  `outputs/analysis/STAGED_CURRICULUM_SHORTFALL_SMOKE.md`
+- This is not a policy result. The next result needed is a full CUDA/Colab
+  staged run with the shortfall term, followed by the packaged `x=0.0` and
+  `x=0.08` candidate gates.
 
 ### Configurable Target Delay Wrapper
 

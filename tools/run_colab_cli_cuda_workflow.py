@@ -222,8 +222,11 @@ def build_remote_driver(
 ) -> str:
     run_smoke = args.workflow in {"smoke", "all", "candidate"}
     run_candidate_training = args.workflow in {"candidate", "candidate-only", "all"}
+    run_staged_curriculum = args.workflow == "staged-curriculum"
     run_candidate_eval_only = args.workflow == "candidate-eval-only"
-    run_candidate_gates = run_candidate_training or run_candidate_eval_only
+    run_candidate_gates = (
+        run_candidate_training or run_staged_curriculum or run_candidate_eval_only
+    )
     run_audit = (
         args.workflow
         in {"eval", "smoke", "candidate", "candidate-only", "candidate-eval-only", "all"}
@@ -240,6 +243,10 @@ def build_remote_driver(
     candidate_tracking_sigma = cli_value(args.candidate_tracking_sigma)
     candidate_forward_progress_scale = cli_value(args.candidate_forward_progress_scale)
     candidate_forward_progress_deadband = cli_value(args.candidate_forward_progress_deadband)
+    candidate_forward_shortfall_scale = cli_value(args.candidate_forward_shortfall_scale)
+    candidate_forward_shortfall_required_ratio = cli_value(
+        args.candidate_forward_shortfall_required_ratio
+    )
     candidate_action_rate_scale = cli_value(args.candidate_action_rate_scale)
     candidate_action_magnitude_scale = cli_value(args.candidate_action_magnitude_scale)
     candidate_stand_still_scale = cli_value(args.candidate_stand_still_scale)
@@ -290,9 +297,10 @@ def build_remote_driver(
             if not src.exists():
                 return
             dest.mkdir(parents=True, exist_ok=True)
-            for run_dir in sorted(src.glob("smoke_*_gpu")):
-                run_dest = dest / run_dir.name
-                run_dest.mkdir(exist_ok=True)
+            for run_dir in sorted(src.glob("**/smoke_*_gpu")):
+                rel_parent = run_dir.parent.relative_to(src)
+                run_dest = dest / rel_parent / run_dir.name
+                run_dest.mkdir(parents=True, exist_ok=True)
                 for pattern in ["*.onnx", "smoke_manifest*.json", "stdout.txt", "stderr.txt"]:
                     for item in sorted(run_dir.glob(pattern)):
                         try:
@@ -446,6 +454,8 @@ def build_remote_driver(
                 "--tracking-sigma", "{candidate_tracking_sigma}",
                 "--forward-progress-scale", "{candidate_forward_progress_scale}",
                 "--forward-progress-deadband", "{candidate_forward_progress_deadband}",
+                "--forward-shortfall-scale", "{candidate_forward_shortfall_scale}",
+                "--forward-shortfall-required-ratio", "{candidate_forward_shortfall_required_ratio}",
                 "--action-rate-scale", "{candidate_action_rate_scale}",
                 "--action-magnitude-scale", "{candidate_action_magnitude_scale}",
                 "--stand-still-scale", "{candidate_stand_still_scale}",
@@ -499,6 +509,49 @@ def build_remote_driver(
             copy_training_outputs(
                 "/content/open_duck_training_runs_cli",
                 OUT / "open_duck_training_runs_cli",
+            )
+            bundle_artifacts()
+
+        elif {run_staged_curriculum!r}:
+            candidate_name = {args.candidate_name!r} or (
+                "open_duck_mini_staged_curriculum_cli_"
+                + dt.datetime.now(dt.UTC).strftime("%Y%m%dT%H%M%SZ")
+            )
+            staged_root = Path("/content/open_duck_staged_curriculum_cli")
+            run([
+                PYTHON, "tools/plan_staged_curriculum_training.py",
+                "--run",
+                "--playground-path", str(PLAYGROUND),
+                "--env-python", PYTHON,
+                "--platform", "gpu",
+                "--timesteps-scale", "{args.staged_timesteps_scale}",
+                "--phase-timeout-s", "{args.staged_phase_timeout_s}",
+                "--output-root", str(staged_root),
+                "--output-md", str(OUT / f"{{candidate_name}}_staged_curriculum_plan.md"),
+                "--output-json", str(OUT / f"{{candidate_name}}_staged_curriculum_plan.json"),
+                "--ppo-num-envs", "{args.candidate_ppo_num_envs}",
+                "--ppo-num-evals", "{args.candidate_ppo_num_evals}",
+                "--ppo-episode-length", "{args.candidate_episode_length}",
+                "--ppo-unroll-length", "{args.candidate_unroll_length}",
+                "--ppo-batch-size", "{args.candidate_ppo_batch_size}",
+                "--ppo-num-minibatches", "{args.candidate_ppo_num_minibatches}",
+                "--ppo-num-updates-per-batch", "{args.candidate_ppo_num_updates_per_batch}",
+            ], cwd=RDK, timeout={args.staged_phase_timeout_s * 3 + 900})
+            staged_plan = OUT / f"{{candidate_name}}_staged_curriculum_plan.json"
+            payload = json.loads(staged_plan.read_text())
+            latest_onnx = Path(payload.get("final_candidate_onnx") or "")
+            if not latest_onnx.exists():
+                raise SystemExit(
+                    f"staged curriculum produced no final ONNX: {{latest_onnx}}"
+                )
+            training_manifest = latest_onnx.parent / "smoke_manifest.final.json"
+            if not training_manifest.exists():
+                training_manifest = latest_onnx.parent / "smoke_manifest.start.json"
+            if not training_manifest.exists():
+                training_manifest = None
+            copy_training_outputs(
+                str(staged_root),
+                OUT / "open_duck_staged_curriculum_cli",
             )
             bundle_artifacts()
 
@@ -640,7 +693,15 @@ def main() -> int:
     parser.add_argument("--upload-root", default=str(DEFAULT_UPLOAD_ROOT))
     parser.add_argument(
         "--workflow",
-        choices=["eval", "smoke", "candidate", "candidate-only", "candidate-eval-only", "all"],
+        choices=[
+            "eval",
+            "smoke",
+            "candidate",
+            "candidate-only",
+            "candidate-eval-only",
+            "staged-curriculum",
+            "all",
+        ],
         default="eval",
     )
     parser.add_argument("--run", action="store_true", help="execute; default is plan-only")
@@ -658,6 +719,21 @@ def main() -> int:
     parser.add_argument("--timeout-s", type=int, default=7200)
     parser.add_argument("--smoke-num-timesteps", type=int, default=64)
     parser.add_argument("--candidate-num-timesteps", type=int, default=200000)
+    parser.add_argument(
+        "--staged-timesteps-scale",
+        type=float,
+        default=1.0,
+        help=(
+            "Scale the three staged-curriculum phase lengths. The base phases "
+            "are 300k, 250k, and 300k timesteps."
+        ),
+    )
+    parser.add_argument(
+        "--staged-phase-timeout-s",
+        type=int,
+        default=10800,
+        help="Per-phase timeout for --workflow staged-curriculum.",
+    )
     parser.add_argument("--candidate-ppo-num-envs", type=int, default=256)
     parser.add_argument("--candidate-ppo-num-evals", type=int, default=4)
     parser.add_argument("--candidate-episode-length", type=int, default=600)
@@ -700,6 +776,12 @@ def main() -> int:
     parser.add_argument("--candidate-tracking-sigma", type=float, default=0.0025)
     parser.add_argument("--candidate-forward-progress-scale", type=float, default=2.0)
     parser.add_argument("--candidate-forward-progress-deadband", type=float, default=0.02)
+    parser.add_argument("--candidate-forward-shortfall-scale", type=float, default=0.0)
+    parser.add_argument(
+        "--candidate-forward-shortfall-required-ratio",
+        type=float,
+        default=0.5,
+    )
     parser.add_argument("--candidate-action-rate-scale", type=float, default=-0.1)
     parser.add_argument("--candidate-action-magnitude-scale", type=float, default=-0.05)
     parser.add_argument("--candidate-stand-still-scale", type=float, default=-0.2)

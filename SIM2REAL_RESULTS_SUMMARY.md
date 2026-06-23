@@ -1,12 +1,16 @@
 # Sim-To-Real Results Summary
 
-Last updated: 2026-06-22
+Last updated: 2026-06-23
 
 ## Executive Summary
 
 Current recommendation: **do not run grounded replay yet**.
-No more robot motion is recommended until the sim actuator bridge eval is
-reviewed.
+No more robot motion is recommended until a candidate policy passes both
+offline suspended-style sim gates:
+
+- `x=0.0`: stable, low target velocity, low tracking error
+- `x=0.08`: meaningful forward progress while staying inside the measured
+  actuator envelope
 
 The first evidence gates no longer point to a gross IMU axis flip, policy hash
 mismatch, joint order failure, or zero-command policy explosion. The Duck can
@@ -50,20 +54,65 @@ from that term alone. Tightening the velocity-tracking reward shape or adding
 an explicit nonzero-command progress term should happen before another
 candidate run.
 
-The next offline training patch adds exactly that as default-off simulator
-training controls: configurable `tracking_sigma` plus a `forward_progress`
-reward term that gives no reward for standing still under nonzero `x` command.
-The next CUDA candidate recipe should use `tracking_sigma=0.0025`,
-`forward_progress_scale=2.0`, reduced alive/imitation scales, positive
-straight-ahead command sampling, and lighter smoothness pressure. This remains
-offline-only; no candidate is cleared for robot testing until it passes the
-existing suspended `x=0.0` and `x=0.08` gates.
+June 23 candidate sweeps add a sharper conclusion. Multiple actuator-aware
+recipes can pass the `x=0.0` sim gate, but they collapse into near-standstill
+at `x=0.08`. More aggressive forward recipes produce motion, but fail posture
+or termination gates. The current search is stuck between:
+
+```text
+aggressive / moves / not safe
+safe / stable / does not walk
+```
+
+`tools/analyze_policy_command_sensitivity.py` shows that the latest safe
+candidates are not simply ignoring `obs[6]` command_x. They change their ONNX
+actions when `command_x` changes, often more than `BEST_WALK_ONNX_2` in a
+synthetic upright observation. The closed-loop failure is therefore not basic
+command blindness; it is that the command-conditioned action sequence does not
+become effective locomotion under the actuator bridge and environment dynamics.
+
+The next offline training direction should be a staged locomotion bootstrap:
+preserve forward intent first, then progressively add the measured actuator
+bridge and smoothness constraints. Do not run any current candidate on the
+robot.
+
+A June 23 staged-curriculum run on Colab L4 completed all three phases and
+produced a final ONNX at:
+
+```text
+outputs/analysis/colab_cli/open-duck-l4k-staged-curriculum-20260623T122935Z/artifact/open_duck_colab_cli_staged-curriculum_20260623T122947Z/open_duck_staged_curriculum_cli/03_phase3_fitted_bridge_consolidation/smoke_20260623T125713Z_gpu/2026_06_23_130935_307200.onnx
+```
+
+It passed the offline `x=0.0` candidate sim gate, but failed the `x=0.08`
+gate with `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS`. The `x=0.08` fitted-bridge
+track ratio was only `0.0277` against the `0.25` threshold, with mean local
+forward velocity about `0.0022 m/s` for a `0.08 m/s` command. This policy is
+not a robot candidate.
+
+Follow-up offline work added a default-off `forward_shortfall` reward term to
+penalize satisfying nonzero forward commands by standing still. The staged
+curriculum now enables that term explicitly across all three phases while
+keeping positive straight-ahead command sampling and the actuator bridge
+curriculum. A tiny CPU plumbing smoke passed on June 23, 2026:
+
+```text
+outputs/analysis/STAGED_CURRICULUM_SHORTFALL_SMOKE.md
+```
+
+This only proves the new reward/CLI/checkpoint path executes. The next useful
+GPU job is a full Colab/CUDA staged-curriculum run with the shortfall term, then
+the same `x=0.0` and `x=0.08` candidate gates. Robot validation remains blocked.
 
 ## Evidence Files
 
 Small summaries:
 
 - `outputs/analysis/ACTUATOR_RESPONSE_FIT.md`
+- `outputs/analysis/CANDIDATE_RECIPE_SEARCH_SUMMARY.md`
+- `outputs/analysis/POLICY_COMMAND_SENSITIVITY.md`
+- `outputs/analysis/STAGED_CURRICULUM_SHORTFALL_SMOKE.md`
+- `outputs/analysis/colab_cli/open-duck-l4m-candidate-eval-only-20260623T133849Z/artifact/open_duck_colab_cli_candidate-eval-only_20260623T133902Z/staged_curriculum_20260623T130935_candidate_gate_x0.md`
+- `outputs/analysis/colab_cli/open-duck-l4m-candidate-eval-only-20260623T133849Z/artifact/open_duck_colab_cli_candidate-eval-only_20260623T133902Z/staged_curriculum_20260623T130935_candidate_gate_x008.md`
 - `outputs/analysis/FORWARD_REWARD_LANDSCAPE.md`
 - `outputs/analysis/PHASE_B_CHECKPOINT_SWEEP_SUMMARY.md`
 - `outputs/analysis/CPU_CANDIDATE_GATE_STEP8240_ZERO_X0_15S.md`

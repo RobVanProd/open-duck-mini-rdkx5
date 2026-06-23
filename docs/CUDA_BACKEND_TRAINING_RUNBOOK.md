@@ -1,6 +1,6 @@
 # CUDA Backend Training Runbook
 
-Last updated: 2026-06-22
+Last updated: 2026-06-23
 
 ## Purpose
 
@@ -47,6 +47,69 @@ python3 tools/run_colab_cli_cuda_workflow.py --workflow eval
 Pass `--run` only when an authenticated `colab` CLI session is active. This
 path uploads local RDK and Playground worktree tarballs and does not need a
 GitHub token inside the notebook.
+
+## Staged Curriculum Candidate
+
+Current candidate evidence is stuck between unsafe motion and safe standstill.
+The next preferred CUDA candidate shape is the staged curriculum:
+
+```text
+phase 1: locomotion bootstrap, no actuator bridge
+phase 2: mild actuator bridge transition
+phase 3: fitted actuator bridge consolidation
+```
+
+The workflow trains all three phases in one Colab job, restoring each phase from
+the previous phase checkpoint, then runs the existing `x=0.0` and `x=0.08`
+candidate gates.
+
+The current staged recipe includes an explicit default-off Playground
+`forward_shortfall` cost when launched through
+`tools/plan_staged_curriculum_training.py`. The local plumbing smoke passed in:
+
+```text
+outputs/analysis/STAGED_CURRICULUM_SHORTFALL_SMOKE.md
+```
+
+Expect roughly 45-70 minutes for a full L4 run: the previous three-phase Colab
+training took about 39 minutes, plus setup, packaging, and candidate gates.
+
+Plan-only:
+
+```bash
+python3 tools/run_colab_cli_cuda_workflow.py \
+  --workflow staged-curriculum \
+  --session open-duck-l4j \
+  --staged-timesteps-scale 1.0 \
+  --timeout-s 14400
+```
+
+Run on an authenticated Colab CLI session:
+
+```bash
+python3 tools/run_colab_cli_cuda_workflow.py \
+  --workflow staged-curriculum \
+  --session open-duck-l4j \
+  --run \
+  --staged-timesteps-scale 1.0 \
+  --staged-phase-timeout-s 10800 \
+  --timeout-s 14400
+```
+
+For a fast plumbing-only remote smoke, reduce phase lengths:
+
+```bash
+python3 tools/run_colab_cli_cuda_workflow.py \
+  --workflow staged-curriculum \
+  --session open-duck-l4j \
+  --run \
+  --staged-timesteps-scale 0.001 \
+  --staged-phase-timeout-s 1200 \
+  --timeout-s 7200
+```
+
+Robot validation remains blocked even if the Colab run completes. A candidate
+must pass both packaged sim gates before any suspended robot validation.
 
 The generated notebook cell can still clone repos. If a repo is private, set
 `GITHUB_TOKEN` or `GH_TOKEN` in the Colab environment before running it; the

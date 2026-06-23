@@ -84,7 +84,9 @@ def build_command(args: argparse.Namespace, output_dir: Path) -> list[str]:
         "--tracking_ang_vel_scale": args.tracking_ang_vel_scale,
         "--tracking_sigma": args.tracking_sigma,
         "--forward_progress_scale": args.forward_progress_scale,
+        "--forward_shortfall_scale": args.forward_shortfall_scale,
         "--forward_progress_deadband": args.forward_progress_deadband,
+        "--forward_shortfall_required_ratio": args.forward_shortfall_required_ratio,
         "--action_rate_scale": args.action_rate_scale,
         "--action_magnitude_scale": args.action_magnitude_scale,
         "--stand_still_scale": args.stand_still_scale,
@@ -225,7 +227,9 @@ def main() -> int:
     parser.add_argument("--tracking-ang-vel-scale", type=float, default=None)
     parser.add_argument("--tracking-sigma", type=float, default=None)
     parser.add_argument("--forward-progress-scale", type=float, default=None)
+    parser.add_argument("--forward-shortfall-scale", type=float, default=None)
     parser.add_argument("--forward-progress-deadband", type=float, default=None)
+    parser.add_argument("--forward-shortfall-required-ratio", type=float, default=None)
     parser.add_argument("--action-rate-scale", type=float, default=None)
     parser.add_argument("--action-magnitude-scale", type=float, default=None)
     parser.add_argument("--stand-still-scale", type=float, default=None)
@@ -271,6 +275,8 @@ def main() -> int:
             "tracking_sigma": args.tracking_sigma,
             "forward_progress_scale": args.forward_progress_scale,
             "forward_progress_deadband": args.forward_progress_deadband,
+            "forward_shortfall_scale": args.forward_shortfall_scale,
+            "forward_shortfall_required_ratio": args.forward_shortfall_required_ratio,
             "action_rate_scale": args.action_rate_scale,
             "action_magnitude_scale": args.action_magnitude_scale,
             "stand_still_scale": args.stand_still_scale,
