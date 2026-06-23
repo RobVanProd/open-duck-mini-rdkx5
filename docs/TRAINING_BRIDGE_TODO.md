@@ -256,10 +256,12 @@ June 23 A100 staged shortfall result:
 
 Next recipe now staged:
 
-- `tools/plan_staged_curriculum_training.py --recipe movement_bootstrap_v2`
-  remains available, but it is no longer an untested default hypothesis.
+- `tools/plan_staged_curriculum_training.py --recipe movement_bootstrap_v3`
+  is the current offline plan.
 - `shortfall_v1` remains available to reproduce the June 23 A100 run.
-- `movement_bootstrap_v2` raises the command floor, tightens
+- `movement_bootstrap_v2` remains available to reproduce the failed A100
+  movement-bootstrap run.
+- `movement_bootstrap_v2` raised the command floor, tightened
   `tracking_sigma`, reduces alive dominance, and keeps a stronger
   imitation/motion prior before reintroducing the fitted actuator bridge.
 - Planning artifacts:
@@ -273,15 +275,21 @@ Next recipe now staged:
     forward velocity `0.0023 m/s`, tracking ratio `0.0286`
   - Decision: not a robot candidate.
 
-Do not repeat `movement_bootstrap_v2` unchanged. The next recipe should add an
-episode-level forward displacement / minimum-progress objective or a stronger
-movement prior before spending another long CUDA/A100 run. If using Colab CLI
-again, create a new recipe name and run it explicitly:
+Do not repeat `movement_bootstrap_v2` unchanged. `movement_bootstrap_v3` adds
+default-off command-window cumulative progress and shortfall terms to the
+Playground training env, then uses those terms in a new three-phase staged
+recipe. This requires the sibling Playground branch:
+
+```text
+RobVanProd/Open_Duck_Playground codex/forward-progress-reward @ 4c99d40
+```
+
+If using Colab CLI again, run v3 explicitly:
 
 ```bash
 python3 tools/run_colab_cli_cuda_workflow.py \
   --workflow staged-curriculum \
-  --staged-recipe <new-recipe-name> \
+  --staged-recipe movement_bootstrap_v3 \
   --session <colab-session> \
   --run \
   --timeout-s 14400

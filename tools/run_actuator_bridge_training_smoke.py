@@ -87,6 +87,10 @@ def build_command(args: argparse.Namespace, output_dir: Path) -> list[str]:
         "--forward_shortfall_scale": args.forward_shortfall_scale,
         "--forward_progress_deadband": args.forward_progress_deadband,
         "--forward_shortfall_required_ratio": args.forward_shortfall_required_ratio,
+        "--command_progress_scale": args.command_progress_scale,
+        "--command_progress_shortfall_scale": args.command_progress_shortfall_scale,
+        "--command_progress_required_ratio": args.command_progress_required_ratio,
+        "--command_progress_warmup_steps": args.command_progress_warmup_steps,
         "--action_rate_scale": args.action_rate_scale,
         "--action_magnitude_scale": args.action_magnitude_scale,
         "--stand_still_scale": args.stand_still_scale,
@@ -230,6 +234,10 @@ def main() -> int:
     parser.add_argument("--forward-shortfall-scale", type=float, default=None)
     parser.add_argument("--forward-progress-deadband", type=float, default=None)
     parser.add_argument("--forward-shortfall-required-ratio", type=float, default=None)
+    parser.add_argument("--command-progress-scale", type=float, default=None)
+    parser.add_argument("--command-progress-shortfall-scale", type=float, default=None)
+    parser.add_argument("--command-progress-required-ratio", type=float, default=None)
+    parser.add_argument("--command-progress-warmup-steps", type=int, default=None)
     parser.add_argument("--action-rate-scale", type=float, default=None)
     parser.add_argument("--action-magnitude-scale", type=float, default=None)
     parser.add_argument("--stand-still-scale", type=float, default=None)
@@ -277,6 +285,10 @@ def main() -> int:
             "forward_progress_deadband": args.forward_progress_deadband,
             "forward_shortfall_scale": args.forward_shortfall_scale,
             "forward_shortfall_required_ratio": args.forward_shortfall_required_ratio,
+            "command_progress_scale": args.command_progress_scale,
+            "command_progress_shortfall_scale": args.command_progress_shortfall_scale,
+            "command_progress_required_ratio": args.command_progress_required_ratio,
+            "command_progress_warmup_steps": args.command_progress_warmup_steps,
             "action_rate_scale": args.action_rate_scale,
             "action_magnitude_scale": args.action_magnitude_scale,
             "stand_still_scale": args.stand_still_scale,

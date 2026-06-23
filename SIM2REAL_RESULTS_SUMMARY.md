@@ -144,19 +144,6 @@ target reward before alive/imitation terms. That supports shifting the next
 recipe toward a stronger movement bootstrap or a higher minimum command rather
 than simply repeating the same staged run.
 
-The next staged plan now defaults to `movement_bootstrap_v2`:
-
-```text
-outputs/analysis/STAGED_CURRICULUM_TRAINING_PLAN.md
-outputs/analysis/FORWARD_REWARD_LANDSCAPE_MOVEMENT_BOOTSTRAP_V2.md
-```
-
-This recipe raises the phase-3 minimum command to `x=0.06`, tightens
-`tracking_sigma` to `0.00125`, and uses stronger progress/shortfall shaping.
-In the offline landscape, zero velocity at the new phase-3 minimum command is
-negative before alive/imitation terms instead of keeping a positive shaped
-reward.
-
 The `movement_bootstrap_v2` A100 run completed on June 23, 2026:
 
 ```text
@@ -176,6 +163,20 @@ local optimum while also missing tracking/posture gates. The next offline work
 should add a stronger episode-level displacement or minimum-progress objective,
 or use a movement prior/distillation from `BEST_WALK_ONNX_2`, before launching
 another large candidate run.
+
+The next staged plan now defaults to `movement_bootstrap_v3`:
+
+```text
+outputs/analysis/STAGED_CURRICULUM_TRAINING_PLAN.md
+```
+
+This recipe keeps `movement_bootstrap_v2` reproducible but adds default-off
+command-window cumulative progress and shortfall terms in the Playground
+training env. The intended change is to reward sustained displacement over the
+active command window, not just instantaneous forward-velocity samples. The
+corresponding Playground implementation is on
+`RobVanProd/Open_Duck_Playground` branch `codex/forward-progress-reward` at
+commit `4c99d40`.
 
 ## Evidence Files
 

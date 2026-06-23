@@ -122,16 +122,21 @@ actuator bridge.
 The staged Colab workflow now defaults to:
 
 ```text
-movement_bootstrap_v2
+movement_bootstrap_v3
 ```
 
-This keeps `shortfall_v1` available for reproduction but makes the next run use
-a higher command floor and stronger movement bootstrap. The corresponding
-planning and reward-shape artifacts are:
+This keeps `shortfall_v1` and `movement_bootstrap_v2` available for
+reproduction, but makes the next run use command-window cumulative progress
+terms. The corresponding planning artifact is:
 
 ```text
 outputs/analysis/STAGED_CURRICULUM_TRAINING_PLAN.md
-outputs/analysis/FORWARD_REWARD_LANDSCAPE_MOVEMENT_BOOTSTRAP_V2.md
+```
+
+The command-window reward hooks are in the sibling Playground branch:
+
+```text
+RobVanProd/Open_Duck_Playground codex/forward-progress-reward @ 4c99d40
 ```
 
 Plan-only:
@@ -140,7 +145,7 @@ Plan-only:
 python3 tools/run_colab_cli_cuda_workflow.py \
   --workflow staged-curriculum \
   --session open-duck-l4j \
-  --staged-recipe movement_bootstrap_v2 \
+  --staged-recipe movement_bootstrap_v3 \
   --staged-timesteps-scale 1.0 \
   --timeout-s 14400
 ```
@@ -152,7 +157,7 @@ python3 tools/run_colab_cli_cuda_workflow.py \
   --workflow staged-curriculum \
   --session open-duck-l4j \
   --run \
-  --staged-recipe movement_bootstrap_v2 \
+  --staged-recipe movement_bootstrap_v3 \
   --staged-timesteps-scale 1.0 \
   --staged-phase-timeout-s 10800 \
   --timeout-s 14400
@@ -165,7 +170,7 @@ python3 tools/run_colab_cli_cuda_workflow.py \
   --workflow staged-curriculum \
   --session open-duck-l4j \
   --run \
-  --staged-recipe movement_bootstrap_v2 \
+  --staged-recipe movement_bootstrap_v3 \
   --staged-timesteps-scale 0.001 \
   --staged-phase-timeout-s 1200 \
   --timeout-s 7200

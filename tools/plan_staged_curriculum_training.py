@@ -69,6 +69,10 @@ class Phase:
     imitation_scale: float
     lin_vel_x: tuple[float, float]
     zero_command_probability: float
+    command_progress_scale: float = 0.0
+    command_progress_shortfall_scale: float = 0.0
+    command_progress_required_ratio: float = 0.6
+    command_progress_warmup_steps: int = 50
 
 
 SHORTFALL_V1_PHASES = [
@@ -226,7 +230,102 @@ MOVEMENT_BOOTSTRAP_V2_PHASES = [
 ]
 
 
+MOVEMENT_BOOTSTRAP_V3_PHASES = [
+    Phase(
+        name="phase1_window_progress_no_bridge",
+        purpose=(
+            "force sustained command-window displacement before adding "
+            "actuator constraints"
+        ),
+        num_timesteps=450_000,
+        bridge=False,
+        delay=(0, 0),
+        tau_s=(0.0, 0.0),
+        velocity_limit_rad_s=(5.24, 5.24),
+        target_rate_scale=0.0,
+        actuator_tracking_scale=0.0,
+        tracking_lin_vel_scale=26.0,
+        tracking_sigma=0.00125,
+        forward_progress_scale=8.0,
+        forward_shortfall_scale=-6.0,
+        forward_shortfall_required_ratio=0.65,
+        action_rate_scale=-0.003,
+        action_magnitude_scale=-0.001,
+        stand_still_scale=-1.0,
+        alive_scale=0.03,
+        imitation_scale=0.85,
+        lin_vel_x=(0.08, 0.16),
+        zero_command_probability=0.0,
+        command_progress_scale=10.0,
+        command_progress_shortfall_scale=-10.0,
+        command_progress_required_ratio=0.65,
+        command_progress_warmup_steps=40,
+    ),
+    Phase(
+        name="phase2_window_progress_mild_bridge",
+        purpose=(
+            "preserve sustained displacement while introducing mild actuator "
+            "delay and target smoothing"
+        ),
+        num_timesteps=350_000,
+        bridge=True,
+        delay=(1, 2),
+        tau_s=(0.02, 0.05),
+        velocity_limit_rad_s=(4.5, 5.24),
+        target_rate_scale=-0.0015,
+        actuator_tracking_scale=-0.10,
+        tracking_lin_vel_scale=28.0,
+        tracking_sigma=0.00125,
+        forward_progress_scale=7.0,
+        forward_shortfall_scale=-6.0,
+        forward_shortfall_required_ratio=0.65,
+        action_rate_scale=-0.015,
+        action_magnitude_scale=-0.004,
+        stand_still_scale=-0.8,
+        alive_scale=0.08,
+        imitation_scale=0.65,
+        lin_vel_x=(0.07, 0.14),
+        zero_command_probability=0.0,
+        command_progress_scale=8.0,
+        command_progress_shortfall_scale=-8.0,
+        command_progress_required_ratio=0.6,
+        command_progress_warmup_steps=40,
+    ),
+    Phase(
+        name="phase3_window_progress_fitted_bridge",
+        purpose=(
+            "train under the fitted actuator envelope while making sustained "
+            "forward progress a non-negotiable objective"
+        ),
+        num_timesteps=400_000,
+        bridge=True,
+        delay=(3, 6),
+        tau_s=(0.06, 0.14),
+        velocity_limit_rad_s=(3.0, 4.7),
+        target_rate_scale=-0.004,
+        actuator_tracking_scale=-0.35,
+        tracking_lin_vel_scale=26.0,
+        tracking_sigma=0.00125,
+        forward_progress_scale=6.0,
+        forward_shortfall_scale=-5.0,
+        forward_shortfall_required_ratio=0.6,
+        action_rate_scale=-0.03,
+        action_magnitude_scale=-0.008,
+        stand_still_scale=-0.5,
+        alive_scale=0.12,
+        imitation_scale=0.45,
+        lin_vel_x=(0.06, 0.12),
+        zero_command_probability=0.0,
+        command_progress_scale=6.0,
+        command_progress_shortfall_scale=-8.0,
+        command_progress_required_ratio=0.6,
+        command_progress_warmup_steps=40,
+    ),
+]
+
+
 RECIPES = {
+    "movement_bootstrap_v3": MOVEMENT_BOOTSTRAP_V3_PHASES,
     "movement_bootstrap_v2": MOVEMENT_BOOTSTRAP_V2_PHASES,
     "shortfall_v1": SHORTFALL_V1_PHASES,
 }
@@ -286,6 +385,14 @@ def phase_command(
         "0.02",
         "--forward-shortfall-required-ratio",
         cli_value(phase.forward_shortfall_required_ratio),
+        "--command-progress-scale",
+        cli_value(phase.command_progress_scale),
+        "--command-progress-shortfall-scale",
+        cli_value(phase.command_progress_shortfall_scale),
+        "--command-progress-required-ratio",
+        cli_value(phase.command_progress_required_ratio),
+        "--command-progress-warmup-steps",
+        str(phase.command_progress_warmup_steps),
         "--action-rate-scale",
         cli_value(phase.action_rate_scale),
         "--action-magnitude-scale",
@@ -375,6 +482,10 @@ def phase_payload(phase: Phase, command: list[str], output_root: Path) -> dict[s
         "zero_command_probability": phase.zero_command_probability,
         "forward_shortfall_scale": phase.forward_shortfall_scale,
         "forward_shortfall_required_ratio": phase.forward_shortfall_required_ratio,
+        "command_progress_scale": phase.command_progress_scale,
+        "command_progress_shortfall_scale": phase.command_progress_shortfall_scale,
+        "command_progress_required_ratio": phase.command_progress_required_ratio,
+        "command_progress_warmup_steps": phase.command_progress_warmup_steps,
         "num_timesteps": phase.num_timesteps,
         "restore_checkpoint": (
             command[command.index("--restore-checkpoint-path") + 1]
@@ -408,20 +519,19 @@ def write_plan(payload: dict[str, Any], output_md: Path, output_json: Path) -> N
         "stationary at `x=0.08`. The staged recipe bootstraps forward motion before",
         "tightening actuator realism.",
         "",
-        "The default `movement_bootstrap_v2` recipe is a follow-up to the A100",
-        "`shortfall_v1` result. It raises the command floor, tightens the",
-        "tracking reward, reduces alive dominance, and keeps a stronger",
-        "imitation/motion prior in the early phases so the optimizer has to",
-        "discover forward locomotion before the full fitted bridge is applied.",
+        "The default `movement_bootstrap_v3` recipe is a follow-up to the A100",
+        "`movement_bootstrap_v2` result. It adds command-window cumulative",
+        "progress terms so the optimizer cannot satisfy a nonzero command with",
+        "brief bursts while average displacement remains near zero.",
         "",
         "## Phases",
         "",
-        "| phase | bridge | timesteps | x command range | shortfall | delay | tau | velocity limit | purpose |",
-        "|---|---|---:|---|---|---|---|---|---|",
+        "| phase | bridge | timesteps | x command range | shortfall | window progress | delay | tau | velocity limit | purpose |",
+        "|---|---|---:|---|---|---|---|---|---|---|",
     ]
     for phase in payload["phases"]:
         lines.append(
-            "| `{name}` | {bridge} | {steps} | `{x}` | `{shortfall}` | `{delay}` | `{tau}` | `{vel}` | {purpose} |".format(
+            "| `{name}` | {bridge} | {steps} | `{x}` | `{shortfall}` | `{progress}` | `{delay}` | `{tau}` | `{vel}` | {purpose} |".format(
                 name=phase["name"],
                 bridge="yes" if phase["bridge_enabled"] else "no",
                 steps=phase["num_timesteps"],
@@ -429,6 +539,12 @@ def write_plan(payload: dict[str, Any], output_md: Path, output_json: Path) -> N
                 shortfall={
                     "scale": phase["forward_shortfall_scale"],
                     "required_ratio": phase["forward_shortfall_required_ratio"],
+                },
+                progress={
+                    "scale": phase["command_progress_scale"],
+                    "shortfall": phase["command_progress_shortfall_scale"],
+                    "required_ratio": phase["command_progress_required_ratio"],
+                    "warmup_steps": phase["command_progress_warmup_steps"],
                 },
                 delay=phase["delay_ticks"],
                 tau=phase["tau_s"],
@@ -504,11 +620,12 @@ def main() -> int:
     parser.add_argument(
         "--recipe",
         choices=sorted(RECIPES),
-        default="movement_bootstrap_v2",
+        default="movement_bootstrap_v3",
         help=(
             "Staged recipe to emit/run. shortfall_v1 preserves the June 23 A100 "
-            "recipe that landed in standstill; movement_bootstrap_v2 is the "
-            "next offline attempt."
+            "recipe that landed in standstill; movement_bootstrap_v2 preserves "
+            "the first movement-bootstrap attempt; movement_bootstrap_v3 adds "
+            "command-window progress pressure."
         ),
     )
     parser.add_argument("--timesteps-scale", type=float, default=1.0)
