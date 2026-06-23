@@ -493,6 +493,24 @@ robustness gates and forward command tracking gates.
   - policy hash
   - target velocity metrics
 
+### Next Candidate Recipe
+
+`movement_bootstrap_v3` completed all three A100 phases but failed the
+fitted-bridge `x=0.0` candidate gate with
+`HOLD_CANDIDATE_FALL_OR_TERMINATION`. The next candidate should not simply push
+harder on forward progress. It should separate stability and motion:
+
+- Stage A: fitted-bridge `x=0.0` stability recovery.
+- Stage B: introduce low positive commands only after Stage A passes.
+- Stage C: add command-window progress while preserving fitted-bridge stability.
+- Keep the no-robot rule until both `x=0.0` and `x=0.08` candidate gates pass.
+
+Current v3 evidence:
+
+```text
+outputs/analysis/MOVEMENT_BOOTSTRAP_V3_A100_SUMMARY.md
+```
+
 ### Candidate ONNX Export
 
 - Export only after sim-side gates pass.

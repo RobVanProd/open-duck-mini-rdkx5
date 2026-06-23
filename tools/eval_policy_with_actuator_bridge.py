@@ -431,8 +431,11 @@ def run_closed_loop_worker(args) -> dict:
         delete=False,
     ) as tmp:
         worker_json = Path(tmp.name)
+    # Preserve virtualenv launcher/symlink semantics. Resolving this path can
+    # bypass the environment's site-packages and launch the bare base Python.
+    worker_python = Path(args.env_python).expanduser().absolute()
     cmd = [
-        sys.executable,
+        str(worker_python),
         str(Path(__file__).resolve()),
         "--mode",
         "closed-loop-sim",

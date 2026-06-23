@@ -1040,3 +1040,35 @@ python3 tools/print_cuda_colab_cell.py --run-candidate
 Run that generated cell only in a trusted manual CUDA/Colab session. Browser
 automation is still blocked by Google's secure-login warning, and robot motion
 remains blocked until a candidate reaches reviewed sim-gate status.
+
+## Movement Bootstrap V3 A100 Result
+
+The `movement_bootstrap_v3` command-window progress curriculum completed all
+three A100 training phases, but the final candidate failed the first no-command
+candidate gate.
+
+Evidence:
+
+```text
+outputs/analysis/MOVEMENT_BOOTSTRAP_V3_A100_SUMMARY.md
+outputs/analysis/movement_bootstrap_v3_a100_summary.json
+```
+
+Key result:
+
+```text
+final candidate ONNX sha256: 85e2e29d1539edba991576583cad1869fec2f80e0d4fc0b7c0cd499018a2964d
+x=0.0 fitted-bridge gate: HOLD_CANDIDATE_FALL_OR_TERMINATION
+samples before termination: 79
+body pitch p95: 1.1393 rad
+min base height: 0.0298 m
+max pitch tracking p95: 0.1190 rad
+```
+
+Interpretation: v3 escaped pure standstill but lost zero-command stability under
+the fitted actuator bridge. Because `x=0.0` failed, `x=0.08` was not run. This
+candidate is not deployable and should not be tested on the robot.
+
+Next training direction: add a staged stability requirement before the
+forward-progress curriculum, then reintroduce positive-command progress only
+after fitted-bridge `x=0.0` passes.
