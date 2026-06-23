@@ -562,6 +562,18 @@ feasibility-curve-targeted recipes only move above the measured actuator
 envelope, treat the forward-gait target as actuator-envelope limited rather
 than continuing to escalate training recipes.
 
+V5 result:
+
+```text
+outputs/analysis/MOVEMENT_BOOTSTRAP_V5_A100_SUMMARY.md
+```
+
+The run completed, but it did not find an in-envelope forward gait. Nonzero
+commands remained below the target-velocity envelope but produced near-zero
+forward velocity. Zero and tiny command cases fell with above-envelope target
+spikes. This candidate is not deployable and counts as feasibility-targeted
+attempt `1 / 3`.
+
 ### Candidate ONNX Export
 
 - Export only after sim-side gates pass.

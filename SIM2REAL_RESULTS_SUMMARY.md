@@ -1178,3 +1178,43 @@ Stop rule:
 ```text
 docs/CANDIDATE_FEASIBILITY_STOP_RULE.md
 ```
+
+## Movement Bootstrap V5 A100 Result
+
+The A100 `movement_bootstrap_v5` run completed, but the candidate is not
+deployable.
+
+Evidence:
+
+```text
+outputs/analysis/MOVEMENT_BOOTSTRAP_V5_A100_SUMMARY.md
+outputs/analysis/movement_bootstrap_v5_a100_command_feasibility_curve_cpu/COMMAND_FEASIBILITY_CURVE.md
+```
+
+Final candidate:
+
+```text
+sha256: 622661f17a59b82dc9e920f694a9c849336f9bb7d580e52c5e04beeef62b9750
+```
+
+Gate results:
+
+```text
+x=0.0:  HOLD_CANDIDATE_FALL_OR_TERMINATION
+x=0.08: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
+```
+
+The candidate is actuator-safe at nonzero commands but nearly stationary:
+
+```text
+x=0.04 mean local vx: 0.0017 m/s, pitch p95 target velocity 1.0697 rad/s
+x=0.06 mean local vx: 0.0023 m/s, pitch p95 target velocity 1.2235 rad/s
+x=0.08 mean local vx: 0.0031 m/s, pitch p95 target velocity 1.4159 rad/s
+x=0.12 mean local vx: 0.0070 m/s, pitch p95 target velocity 1.0454 rad/s
+```
+
+At `x=0.0` and `x=0.02`, it produces above-envelope target spikes and falls.
+
+Interpretation: v5 did not find an in-envelope forward gait. It counts as
+feasibility-targeted attempt `1 / 3` under the stop rule. Robot validation
+remains blocked.
