@@ -623,6 +623,34 @@ smaller PPO updates. If V6 again loses the moving gait, the next task should be
 to implement an action-level behavior-cloning/trust-region mechanism using the
 phase-1 policy as teacher, rather than adding v7 reward terms.
 
+V6 result:
+
+```text
+outputs/analysis/MOVEMENT_BOOTSTRAP_V6_A100_SUMMARY.md
+```
+
+The A100 run completed all three phases but is not deployable:
+
+```text
+final x=0.0:  HOLD_CANDIDATE_FALL_OR_TERMINATION, 78 samples
+final x=0.08: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS, stable standstill
+phase 1 x=0.08: stable standstill, mean local vx 0.0009 m/s
+phase 2 x=0.08: stable standstill, mean local vx 0.0010 m/s
+```
+
+The stricter fitted-envelope phase 1 did not recover the v5 phase-1 motion
+lead. This makes the next task more specific:
+
+```text
+1. Preserve staged training checkpoint directories in Colab artifacts.
+2. Reproduce or recover the moving v5 phase-1 checkpoint with its trainable
+   checkpoint state, not only ONNX export.
+3. Add an action-level teacher/trust-region continuity mechanism around that
+   checkpoint before adding more stability pressure.
+```
+
+Do not request robot validation for v6.
+
 ### Candidate ONNX Export
 
 - Export only after sim-side gates pass.

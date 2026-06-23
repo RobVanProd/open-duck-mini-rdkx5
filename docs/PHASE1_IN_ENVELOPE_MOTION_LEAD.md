@@ -82,3 +82,33 @@ policy is not implemented yet. V6 approximates continuity with checkpoint
 continuation, small PPO update sizes, and conservative stability rewards. If V6
 again loses phase-1 motion, the next offline task should implement a real
 teacher-policy/action-anchor mechanism rather than another generic curriculum.
+
+## V6 Result
+
+`movement_bootstrap_v6` completed offline A100 training, but it did not recover
+the phase-1 moving gait.
+
+Final candidate gates:
+
+```text
+x=0.0:  HOLD_CANDIDATE_FALL_OR_TERMINATION, 78 samples, mean local vx 0.1935 m/s
+x=0.08: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS, duration complete, mean local vx 0.0009 m/s
+```
+
+Phase checkpoint curves also stayed in standstill:
+
+```text
+phase 1 x=0.06: mean local vx 0.0004 m/s, max pitch p95 target velocity 0.1254 rad/s
+phase 1 x=0.08: mean local vx 0.0009 m/s, max pitch p95 target velocity 0.1077 rad/s
+phase 2 x=0.06: mean local vx 0.0005 m/s, max pitch p95 target velocity 0.1741 rad/s
+phase 2 x=0.08: mean local vx 0.0010 m/s, max pitch p95 target velocity 0.1390 rad/s
+```
+
+Interpretation:
+
+V6 kept the measured actuator envelope active, but the stricter envelope from
+phase 1 over-constrained the search and collapsed directly into standstill. The
+next useful offline task is to preserve a training checkpoint for the moving
+phase-1 behavior and add a real teacher-policy/action-anchor or trust-region
+continuity mechanism. Another generic stability/reward recipe is unlikely to
+answer the actual continuity problem.

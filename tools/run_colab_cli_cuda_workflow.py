@@ -270,6 +270,7 @@ def build_remote_driver(
     candidate_actuator_bridge_per_joint_variation = cli_value(
         args.candidate_actuator_bridge_per_joint_variation
     )
+    artifact_checkpoint_mode = args.artifact_checkpoint_mode
     candidate_disable_bridge_arg = (
         '"--disable-actuator-bridge",' if args.candidate_disable_actuator_bridge else ""
     )
@@ -278,6 +279,7 @@ def build_remote_driver(
         import atexit
         import datetime as dt
         import json
+        import shutil
         import subprocess
         import sys
         from pathlib import Path
@@ -290,6 +292,45 @@ def build_remote_driver(
         OUT.mkdir(parents=True, exist_ok=True)
         REMOTE_BUNDLE = Path("{remote_bundle}")
         RUN_STATUS = {{"exit_status": 0}}
+        ARTIFACT_CHECKPOINT_MODE = {artifact_checkpoint_mode!r}
+
+        def checkpoint_dirs_for_run(run_dir):
+            onnx_stems = {{path.stem for path in run_dir.glob("*.onnx")}}
+            candidates = []
+            for child in run_dir.iterdir():
+                if child.is_dir() and child.name in onnx_stems:
+                    candidates.append(child)
+            return sorted(candidates, key=lambda path: path.stat().st_mtime)
+
+        def copy_checkpoint_dirs(run_dir, run_dest):
+            manifest = {{
+                "mode": ARTIFACT_CHECKPOINT_MODE,
+                "copied": [],
+                "available": [],
+            }}
+            candidates = checkpoint_dirs_for_run(run_dir)
+            manifest["available"] = [path.name for path in candidates]
+            if ARTIFACT_CHECKPOINT_MODE == "none":
+                selected = []
+            elif ARTIFACT_CHECKPOINT_MODE == "all":
+                selected = candidates
+            else:
+                selected = candidates[-1:]
+            for item in selected:
+                try:
+                    dest = run_dest / item.name
+                    if dest.exists():
+                        shutil.rmtree(dest)
+                    shutil.copytree(item, dest)
+                    manifest["copied"].append(item.name)
+                except Exception as exc:
+                    print("copy_checkpoint_warning", item, type(exc).__name__, exc, flush=True)
+            try:
+                (run_dest / "checkpoint_artifact_manifest.json").write_text(
+                    json.dumps(manifest, indent=2) + "\\n"
+                )
+            except Exception as exc:
+                print("checkpoint_manifest_warning", type(exc).__name__, exc, flush=True)
 
         def copy_training_outputs(src, dest):
             src = Path(src)
@@ -307,6 +348,7 @@ def build_remote_driver(
                             (run_dest / item.name).write_bytes(item.read_bytes())
                         except Exception as exc:
                             print("copy_training_outputs_warning", item, type(exc).__name__, exc, flush=True)
+                copy_checkpoint_dirs(run_dir, run_dest)
 
         def bundle_artifacts():
             try:
@@ -786,6 +828,16 @@ def main() -> int:
     parser.add_argument(
         "--candidate-name",
         help="Optional stable candidate name for training or eval-only packages.",
+    )
+    parser.add_argument(
+        "--artifact-checkpoint-mode",
+        choices=["none", "latest", "all"],
+        default="latest",
+        help=(
+            "Checkpoint directories to include in downloaded Colab artifacts. "
+            "latest preserves one continuation point per training run without "
+            "copying every intermediate checkpoint."
+        ),
     )
     parser.add_argument("--candidate-timeout-s", type=int, default=10800)
     parser.add_argument("--candidate-target-rate-scale", type=float, default=-0.001)

@@ -1280,3 +1280,43 @@ small PPO updates plus light orientation/base-height costs during consolidation.
 A true teacher-policy/action-anchor loss is still not implemented; if V6 loses
 the phase-1 motion again, the next offline task should add that mechanism
 instead of escalating generic reward terms.
+
+## Movement Bootstrap V6 Result
+
+The A100 `movement_bootstrap_v6` run completed all three phases, but the final
+candidate is not deployable:
+
+```text
+outputs/analysis/MOVEMENT_BOOTSTRAP_V6_A100_SUMMARY.md
+```
+
+Final gates:
+
+```text
+x=0.0:  HOLD_CANDIDATE_FALL_OR_TERMINATION, 78 samples, mean local vx 0.1935 m/s
+x=0.08: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS, 750 samples, mean local vx 0.0009 m/s
+```
+
+Phase checkpoint curves show that v6 did not recover the v5 phase-1 moving
+gait:
+
+```text
+phase 1 x=0.06: mean local vx 0.0004 m/s, max pitch p95 target velocity 0.1254 rad/s
+phase 1 x=0.08: mean local vx 0.0009 m/s, max pitch p95 target velocity 0.1077 rad/s
+phase 2 x=0.06: mean local vx 0.0005 m/s, max pitch p95 target velocity 0.1741 rad/s
+phase 2 x=0.08: mean local vx 0.0010 m/s, max pitch p95 target velocity 0.1390 rad/s
+```
+
+Interpretation: v6 kept the actuator envelope active, but the stricter phase-1
+search collapsed directly into standstill. This is evidence against another
+generic stability/reward escalation. The next useful offline work is:
+
+```text
+1. Preserve staged training checkpoint directories in Colab artifacts.
+2. Reproduce or recover the moving v5 phase-1 checkpoint with trainable state,
+   not only ONNX export.
+3. Add an action-level teacher/trust-region continuity mechanism before adding
+   more stability pressure.
+```
+
+Robot validation remains blocked.
