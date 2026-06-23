@@ -225,6 +225,23 @@ June 23 follow-up:
   staged run with the shortfall term, followed by the packaged `x=0.0` and
   `x=0.08` candidate gates.
 
+June 23 A100 staged shortfall result:
+
+- Colab A100 completed all three phases in about `1609 s` of training time.
+- Final policy sha256:
+  `5b7d67d2f3bc8f4fc27f7cda0f8cb5af651915deada70a68cf3031e6a8a148c6`.
+- `x=0.0` gate: `HOLD_CANDIDATE_TRACKING`; max pitch tracking p95
+  `0.0851 rad` versus the `0.0800 rad` threshold.
+- `x=0.08` gate: `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS`; fitted-bridge mean
+  local forward velocity about `0.0017 m/s`, command tracking ratio `0.0211`.
+- Max sent target velocity p95 stayed low (`0.4080 rad/s` at `x=0.08`), and
+  action saturation was `0%`, so the policy is actuator-safe but still does not
+  walk.
+- Summary: `outputs/analysis/STAGED_CURRICULUM_SHORTFALL_A100_SUMMARY.md`.
+- Interpretation: increasing explicit shortfall pressure inside the current
+  staged recipe is not enough. The next recipe needs a stronger locomotion
+  bootstrap or motion prior, not robot validation.
+
 ### Configurable Target Delay Wrapper
 
 - Add per-episode random delay:

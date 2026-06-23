@@ -74,6 +74,25 @@ outputs/analysis/STAGED_CURRICULUM_SHORTFALL_SMOKE.md
 Expect roughly 45-70 minutes for a full L4 run: the previous three-phase Colab
 training took about 39 minutes, plus setup, packaging, and candidate gates.
 
+A June 23 Colab A100 run of the staged shortfall recipe completed the three
+training phases in about `26.8 minutes` of training time, but the final policy
+was not robot-ready:
+
+```text
+outputs/analysis/STAGED_CURRICULUM_SHORTFALL_A100_SUMMARY.md
+```
+
+Gate results:
+
+- `x=0.0`: `HOLD_CANDIDATE_TRACKING`, max pitch tracking p95 `0.0851 rad`
+  against the `0.0800 rad` threshold
+- `x=0.08`: `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS`, fitted-bridge forward
+  tracking ratio `0.0211` against the `0.25` threshold
+
+Use A100 for faster iteration when available, but do not treat the current
+staged shortfall recipe as solved. It still lands in the actuator-safe
+standstill optimum.
+
 Plan-only:
 
 ```bash

@@ -103,6 +103,25 @@ This only proves the new reward/CLI/checkpoint path executes. The next useful
 GPU job is a full Colab/CUDA staged-curriculum run with the shortfall term, then
 the same `x=0.0` and `x=0.08` candidate gates. Robot validation remains blocked.
 
+That full staged shortfall run completed on a Colab A100 on June 23, 2026:
+
+```text
+outputs/analysis/STAGED_CURRICULUM_SHORTFALL_A100_SUMMARY.md
+```
+
+The final policy is still **not a robot candidate**. It held the zero-command
+gate at low target velocity but narrowly missed pitch tracking:
+`HOLD_CANDIDATE_TRACKING`, with max pitch tracking p95 `0.0851 rad` against the
+`0.0800 rad` threshold. At `x=0.08`, it again failed for low forward progress:
+`HOLD_CANDIDATE_LOW_FORWARD_PROGRESS`, with fitted-bridge mean local forward
+velocity about `0.0017 m/s` and command tracking ratio `0.0211`.
+
+The A100 run confirms that simply adding `forward_shortfall` to the staged
+actuator curriculum did not escape the safe standstill optimum. The next
+offline training work should investigate locomotion bootstrapping, a stronger
+motion prior, or an episode-level progress requirement before launching another
+large run.
+
 ## Evidence Files
 
 Small summaries:
@@ -110,6 +129,7 @@ Small summaries:
 - `outputs/analysis/ACTUATOR_RESPONSE_FIT.md`
 - `outputs/analysis/CANDIDATE_RECIPE_SEARCH_SUMMARY.md`
 - `outputs/analysis/POLICY_COMMAND_SENSITIVITY.md`
+- `outputs/analysis/STAGED_CURRICULUM_SHORTFALL_A100_SUMMARY.md`
 - `outputs/analysis/STAGED_CURRICULUM_SHORTFALL_SMOKE.md`
 - `outputs/analysis/colab_cli/open-duck-l4m-candidate-eval-only-20260623T133849Z/artifact/open_duck_colab_cli_candidate-eval-only_20260623T133902Z/staged_curriculum_20260623T130935_candidate_gate_x0.md`
 - `outputs/analysis/colab_cli/open-duck-l4m-candidate-eval-only-20260623T133849Z/artifact/open_duck_colab_cli_candidate-eval-only_20260623T133902Z/staged_curriculum_20260623T130935_candidate_gate_x008.md`
