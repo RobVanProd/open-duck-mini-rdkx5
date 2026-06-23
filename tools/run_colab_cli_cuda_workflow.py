@@ -68,8 +68,16 @@ def tar_filter(member: tarfile.TarInfo) -> tarfile.TarInfo | None:
     }
     if any(part in blocked for part in parts):
         return None
-    if "outputs" in parts and "analysis" in parts and "colab_cli" in parts:
-        return None
+    if "outputs" in parts and "analysis" in parts:
+        allowed_analysis = {
+            ("outputs", "analysis", "actuator_response_fit.json"),
+            ("outputs", "analysis", "ACTUATOR_RESPONSE_FIT.md"),
+        }
+        rel_parts = tuple(parts[1:]) if len(parts) > 1 else tuple(parts)
+        is_allowed_path = rel_parts in allowed_analysis
+        is_allowed_parent = any(path[: len(rel_parts)] == rel_parts for path in allowed_analysis)
+        if not is_allowed_path and not is_allowed_parent:
+            return None
     if member.name.endswith((".pyc", ".pyo")):
         return None
     return member
