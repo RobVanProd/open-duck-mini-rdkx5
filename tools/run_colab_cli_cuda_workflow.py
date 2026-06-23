@@ -731,12 +731,17 @@ def main() -> int:
     )
     parser.add_argument(
         "--staged-recipe",
-        choices=["movement_bootstrap_v3", "movement_bootstrap_v2", "shortfall_v1"],
-        default="movement_bootstrap_v3",
+        choices=[
+            "movement_bootstrap_v4",
+            "movement_bootstrap_v3",
+            "movement_bootstrap_v2",
+            "shortfall_v1",
+        ],
+        default="movement_bootstrap_v4",
         help=(
             "Recipe passed to tools/plan_staged_curriculum_training.py for "
-            "--workflow staged-curriculum. movement_bootstrap_v3 is the next "
-            "attempt after the A100 movement_bootstrap_v2 hold result."
+            "--workflow staged-curriculum. movement_bootstrap_v4 is the next "
+            "attempt after the A100 movement_bootstrap_v3 x0 stability hold."
         ),
     )
     parser.add_argument(

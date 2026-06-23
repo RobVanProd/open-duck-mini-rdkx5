@@ -324,7 +324,102 @@ MOVEMENT_BOOTSTRAP_V3_PHASES = [
 ]
 
 
+MOVEMENT_BOOTSTRAP_V4_PHASES = [
+    Phase(
+        name="phase1_fitted_bridge_x0_stability",
+        purpose=(
+            "recover zero-command stability under the fitted actuator bridge "
+            "before asking for forward motion"
+        ),
+        num_timesteps=300_000,
+        bridge=True,
+        delay=(3, 6),
+        tau_s=(0.06, 0.14),
+        velocity_limit_rad_s=(3.0, 4.7),
+        target_rate_scale=-0.004,
+        actuator_tracking_scale=-0.45,
+        tracking_lin_vel_scale=12.0,
+        tracking_sigma=0.0025,
+        forward_progress_scale=0.0,
+        forward_shortfall_scale=0.0,
+        forward_shortfall_required_ratio=0.0,
+        action_rate_scale=-0.04,
+        action_magnitude_scale=-0.012,
+        stand_still_scale=-1.5,
+        alive_scale=0.25,
+        imitation_scale=0.8,
+        lin_vel_x=(0.0, 0.0),
+        zero_command_probability=1.0,
+        command_progress_scale=0.0,
+        command_progress_shortfall_scale=0.0,
+        command_progress_required_ratio=0.0,
+        command_progress_warmup_steps=50,
+    ),
+    Phase(
+        name="phase2_low_command_mild_bridge",
+        purpose=(
+            "introduce low positive commands after the stable x0 prior, while "
+            "using only mild actuator constraints"
+        ),
+        num_timesteps=350_000,
+        bridge=True,
+        delay=(1, 3),
+        tau_s=(0.02, 0.06),
+        velocity_limit_rad_s=(4.2, 5.24),
+        target_rate_scale=-0.002,
+        actuator_tracking_scale=-0.18,
+        tracking_lin_vel_scale=24.0,
+        tracking_sigma=0.0015,
+        forward_progress_scale=5.0,
+        forward_shortfall_scale=-4.0,
+        forward_shortfall_required_ratio=0.45,
+        action_rate_scale=-0.02,
+        action_magnitude_scale=-0.006,
+        stand_still_scale=-0.6,
+        alive_scale=0.12,
+        imitation_scale=0.65,
+        lin_vel_x=(0.04, 0.10),
+        zero_command_probability=0.0,
+        command_progress_scale=5.0,
+        command_progress_shortfall_scale=-5.0,
+        command_progress_required_ratio=0.45,
+        command_progress_warmup_steps=50,
+    ),
+    Phase(
+        name="phase3_fitted_bridge_stable_progress",
+        purpose=(
+            "restore the fitted actuator envelope while preserving both x0 "
+            "stability and low-command forward progress"
+        ),
+        num_timesteps=450_000,
+        bridge=True,
+        delay=(3, 6),
+        tau_s=(0.06, 0.14),
+        velocity_limit_rad_s=(3.0, 4.7),
+        target_rate_scale=-0.004,
+        actuator_tracking_scale=-0.35,
+        tracking_lin_vel_scale=22.0,
+        tracking_sigma=0.0015,
+        forward_progress_scale=4.0,
+        forward_shortfall_scale=-4.0,
+        forward_shortfall_required_ratio=0.45,
+        action_rate_scale=-0.035,
+        action_magnitude_scale=-0.01,
+        stand_still_scale=-0.6,
+        alive_scale=0.16,
+        imitation_scale=0.55,
+        lin_vel_x=(0.04, 0.10),
+        zero_command_probability=0.10,
+        command_progress_scale=4.0,
+        command_progress_shortfall_scale=-5.0,
+        command_progress_required_ratio=0.45,
+        command_progress_warmup_steps=50,
+    ),
+]
+
+
 RECIPES = {
+    "movement_bootstrap_v4": MOVEMENT_BOOTSTRAP_V4_PHASES,
     "movement_bootstrap_v3": MOVEMENT_BOOTSTRAP_V3_PHASES,
     "movement_bootstrap_v2": MOVEMENT_BOOTSTRAP_V2_PHASES,
     "shortfall_v1": SHORTFALL_V1_PHASES,
@@ -519,10 +614,10 @@ def write_plan(payload: dict[str, Any], output_md: Path, output_json: Path) -> N
         "stationary at `x=0.08`. The staged recipe bootstraps forward motion before",
         "tightening actuator realism.",
         "",
-        "The default `movement_bootstrap_v3` recipe is a follow-up to the A100",
-        "`movement_bootstrap_v2` result. It adds command-window cumulative",
-        "progress terms so the optimizer cannot satisfy a nonzero command with",
-        "brief bursts while average displacement remains near zero.",
+        "The default `movement_bootstrap_v4` recipe follows the A100",
+        "`movement_bootstrap_v3` result. V3 completed training but failed the",
+        "fitted-bridge `x=0.0` gate, so V4 first recovers fitted-bridge",
+        "zero-command stability before reintroducing low positive commands.",
         "",
         "## Phases",
         "",
@@ -620,12 +715,13 @@ def main() -> int:
     parser.add_argument(
         "--recipe",
         choices=sorted(RECIPES),
-        default="movement_bootstrap_v3",
+        default="movement_bootstrap_v4",
         help=(
             "Staged recipe to emit/run. shortfall_v1 preserves the June 23 A100 "
             "recipe that landed in standstill; movement_bootstrap_v2 preserves "
             "the first movement-bootstrap attempt; movement_bootstrap_v3 adds "
-            "command-window progress pressure."
+            "command-window progress pressure; movement_bootstrap_v4 adds a "
+            "fitted-bridge x0 stability phase before low-command progress."
         ),
     )
     parser.add_argument("--timesteps-scale", type=float, default=1.0)

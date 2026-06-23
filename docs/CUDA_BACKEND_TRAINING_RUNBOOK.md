@@ -122,12 +122,14 @@ actuator bridge.
 The staged Colab workflow now defaults to:
 
 ```text
-movement_bootstrap_v3
+movement_bootstrap_v4
 ```
 
-This keeps `shortfall_v1` and `movement_bootstrap_v2` available for
-reproduction, but makes the next run use command-window cumulative progress
-terms. The corresponding planning artifact is:
+This keeps `shortfall_v1`, `movement_bootstrap_v2`, and
+`movement_bootstrap_v3` available for reproduction. V4 follows the A100 v3
+result, which completed training but failed the fitted-bridge `x=0.0` gate. The
+next run therefore starts with fitted-bridge zero-command stability before
+reintroducing low positive commands. The corresponding planning artifact is:
 
 ```text
 outputs/analysis/STAGED_CURRICULUM_TRAINING_PLAN.md
@@ -145,7 +147,7 @@ Plan-only:
 python3 tools/run_colab_cli_cuda_workflow.py \
   --workflow staged-curriculum \
   --session open-duck-l4j \
-  --staged-recipe movement_bootstrap_v3 \
+  --staged-recipe movement_bootstrap_v4 \
   --staged-timesteps-scale 1.0 \
   --timeout-s 14400
 ```
@@ -157,7 +159,7 @@ python3 tools/run_colab_cli_cuda_workflow.py \
   --workflow staged-curriculum \
   --session open-duck-l4j \
   --run \
-  --staged-recipe movement_bootstrap_v3 \
+  --staged-recipe movement_bootstrap_v4 \
   --staged-timesteps-scale 1.0 \
   --staged-phase-timeout-s 10800 \
   --timeout-s 14400
@@ -170,7 +172,7 @@ python3 tools/run_colab_cli_cuda_workflow.py \
   --workflow staged-curriculum \
   --session open-duck-l4j \
   --run \
-  --staged-recipe movement_bootstrap_v3 \
+  --staged-recipe movement_bootstrap_v4 \
   --staged-timesteps-scale 0.001 \
   --staged-phase-timeout-s 1200 \
   --timeout-s 7200

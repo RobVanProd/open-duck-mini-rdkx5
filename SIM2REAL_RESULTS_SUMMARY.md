@@ -1072,3 +1072,14 @@ candidate is not deployable and should not be tested on the robot.
 Next training direction: add a staged stability requirement before the
 forward-progress curriculum, then reintroduce positive-command progress only
 after fitted-bridge `x=0.0` passes.
+
+The next planned recipe is now `movement_bootstrap_v4`:
+
+```text
+phase 1: fitted-bridge x=0.0 stability
+phase 2: low-command mild-bridge movement
+phase 3: fitted-bridge stable progress
+```
+
+This is an offline training plan only. It does not change robot runtime behavior
+and does not authorize robot validation.

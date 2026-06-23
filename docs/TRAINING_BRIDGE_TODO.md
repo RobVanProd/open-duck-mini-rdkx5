@@ -511,6 +511,11 @@ Current v3 evidence:
 outputs/analysis/MOVEMENT_BOOTSTRAP_V3_A100_SUMMARY.md
 ```
 
+The next planned recipe is `movement_bootstrap_v4` in
+`tools/plan_staged_curriculum_training.py`. It starts with fitted-bridge
+`x=0.0` stability before low-command movement. Run it only offline and only gate
+candidate ONNX files in sim until both `x=0.0` and `x=0.08` pass.
+
 ### Candidate ONNX Export
 
 - Export only after sim-side gates pass.
