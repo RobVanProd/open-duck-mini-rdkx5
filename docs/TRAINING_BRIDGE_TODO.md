@@ -745,6 +745,33 @@ overshoot is controlled.
 
 Do not request robot validation for v6 or v7.
 
+### Movement Bootstrap V8
+
+V8 targets the specific failure shown by the v7 onset trace:
+
+```text
+forward velocity overshoots the x=0.08 command before the pitch collapse
+```
+
+Planned recipe:
+
+```text
+outputs/analysis/MOVEMENT_BOOTSTRAP_V8_PLAN.md
+```
+
+It starts from the v7 anchored checkpoint, keeps the fitted actuator bridge
+active, and adds opt-in costs for:
+
+```text
+forward_overshoot
+forward_pitch
+forward_pitch_rate
+```
+
+V8 should be judged by whether it reduces `track_ratio`, body-pitch growth, and
+fall/termination at `x=0.08` without returning to standstill. It should not
+relax the fitted target-velocity envelope to buy motion.
+
 ### Candidate ONNX Export
 
 - Export only after sim-side gates pass.

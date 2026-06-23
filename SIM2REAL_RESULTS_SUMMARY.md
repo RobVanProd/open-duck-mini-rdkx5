@@ -1411,3 +1411,14 @@ It shows the `x=0.08` rollout exceeding the commanded forward velocity by tick
 forward velocity reaching `1.3183 m/s` at the terminal tick. This points the
 next recipe toward velocity-overshoot and pitch/pitch-rate stabilization under
 forward command before adding more contact-timing terms.
+
+`movement_bootstrap_v8` is now planned as that exact offline continuation:
+
+```text
+outputs/analysis/MOVEMENT_BOOTSTRAP_V8_PLAN.md
+```
+
+It starts from the v7 anchored checkpoint, keeps the fitted actuator bridge and
+`2.5-3.75 rad/s` velocity envelope active, and adds default-off Playground
+reward terms for forward overshoot plus forward-command pitch and pitch-rate
+costs. Robot validation remains blocked.

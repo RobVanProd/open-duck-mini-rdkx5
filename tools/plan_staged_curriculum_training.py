@@ -69,8 +69,12 @@ class Phase:
     imitation_scale: float
     lin_vel_x: tuple[float, float]
     zero_command_probability: float
+    forward_overshoot_scale: float = 0.0
+    forward_overshoot_allowed_ratio: float = 1.5
     orientation_scale: float = 0.0
     base_height_scale: float = 0.0
+    forward_pitch_scale: float = 0.0
+    forward_pitch_rate_scale: float = 0.0
     ppo_learning_rate: float | None = None
     ppo_entropy_cost: float | None = None
     ppo_clipping_epsilon: float | None = None
@@ -84,6 +88,9 @@ class Phase:
     target_rate_huber_delta: float = 0.0
     actuator_tracking_huber_delta: float = 0.0
     forward_shortfall_huber_delta: float = 0.0
+    forward_overshoot_huber_delta: float = 0.0
+    forward_pitch_huber_delta: float = 0.0
+    forward_pitch_rate_huber_delta: float = 0.0
     command_progress_shortfall_huber_delta: float = 0.0
 
 
@@ -755,7 +762,109 @@ MOVEMENT_BOOTSTRAP_V7_PHASES = [
 ]
 
 
+MOVEMENT_BOOTSTRAP_V8_PHASES = [
+    Phase(
+        name="phase1_v7_lunge_damping_fitted_bridge",
+        purpose=(
+            "continue from the v7 anchor and directly penalize the observed "
+            "x=0.08 lunge: local forward speed above command, pitch tilt, and "
+            "pitch-rate growth under the fitted actuator bridge"
+        ),
+        num_timesteps=120_000,
+        bridge=True,
+        delay=(3, 6),
+        tau_s=(0.06, 0.14),
+        velocity_limit_rad_s=(2.5, 3.75),
+        target_rate_scale=-0.0015,
+        actuator_tracking_scale=-0.15,
+        tracking_lin_vel_scale=28.0,
+        tracking_sigma=0.0015,
+        forward_progress_scale=5.5,
+        forward_shortfall_scale=-5.0,
+        forward_shortfall_required_ratio=0.35,
+        action_rate_scale=-0.020,
+        action_magnitude_scale=-0.005,
+        stand_still_scale=-0.8,
+        alive_scale=0.06,
+        imitation_scale=0.48,
+        lin_vel_x=(0.04, 0.08),
+        zero_command_probability=0.0,
+        forward_overshoot_scale=-3.0,
+        forward_overshoot_allowed_ratio=1.35,
+        orientation_scale=-0.08,
+        base_height_scale=-0.8,
+        forward_pitch_scale=-0.35,
+        forward_pitch_rate_scale=-0.035,
+        command_progress_scale=6.0,
+        command_progress_shortfall_scale=-7.0,
+        command_progress_required_ratio=0.35,
+        command_progress_warmup_steps=35,
+        action_rate_huber_delta=0.08,
+        action_magnitude_huber_delta=0.50,
+        target_rate_huber_delta=1.0,
+        actuator_tracking_huber_delta=0.08,
+        forward_shortfall_huber_delta=0.35,
+        forward_overshoot_huber_delta=0.50,
+        forward_pitch_huber_delta=0.25,
+        forward_pitch_rate_huber_delta=1.0,
+        command_progress_shortfall_huber_delta=0.35,
+        ppo_learning_rate=3.0e-5,
+        ppo_clipping_epsilon=0.035,
+        ppo_max_grad_norm=0.45,
+    ),
+    Phase(
+        name="phase2_v7_lunge_damping_consolidate",
+        purpose=(
+            "consolidate the damped gait with the same fitted bridge and "
+            "slightly lower overshoot pressure so forward motion is not erased"
+        ),
+        num_timesteps=120_000,
+        bridge=True,
+        delay=(3, 6),
+        tau_s=(0.06, 0.14),
+        velocity_limit_rad_s=(2.5, 3.75),
+        target_rate_scale=-0.0015,
+        actuator_tracking_scale=-0.15,
+        tracking_lin_vel_scale=28.0,
+        tracking_sigma=0.0015,
+        forward_progress_scale=6.0,
+        forward_shortfall_scale=-5.0,
+        forward_shortfall_required_ratio=0.38,
+        action_rate_scale=-0.020,
+        action_magnitude_scale=-0.005,
+        stand_still_scale=-0.8,
+        alive_scale=0.06,
+        imitation_scale=0.48,
+        lin_vel_x=(0.04, 0.08),
+        zero_command_probability=0.0,
+        forward_overshoot_scale=-2.2,
+        forward_overshoot_allowed_ratio=1.5,
+        orientation_scale=-0.08,
+        base_height_scale=-0.8,
+        forward_pitch_scale=-0.30,
+        forward_pitch_rate_scale=-0.030,
+        command_progress_scale=6.5,
+        command_progress_shortfall_scale=-7.0,
+        command_progress_required_ratio=0.38,
+        command_progress_warmup_steps=35,
+        action_rate_huber_delta=0.08,
+        action_magnitude_huber_delta=0.50,
+        target_rate_huber_delta=1.0,
+        actuator_tracking_huber_delta=0.08,
+        forward_shortfall_huber_delta=0.35,
+        forward_overshoot_huber_delta=0.50,
+        forward_pitch_huber_delta=0.25,
+        forward_pitch_rate_huber_delta=1.0,
+        command_progress_shortfall_huber_delta=0.35,
+        ppo_learning_rate=2.5e-5,
+        ppo_clipping_epsilon=0.03,
+        ppo_max_grad_norm=0.45,
+    ),
+]
+
+
 RECIPES = {
+    "movement_bootstrap_v8": MOVEMENT_BOOTSTRAP_V8_PHASES,
     "movement_bootstrap_v7": MOVEMENT_BOOTSTRAP_V7_PHASES,
     "movement_bootstrap_v6": MOVEMENT_BOOTSTRAP_V6_PHASES,
     "movement_bootstrap_v5": MOVEMENT_BOOTSTRAP_V5_PHASES,
@@ -820,6 +929,10 @@ def phase_command(
         "0.02",
         "--forward-shortfall-required-ratio",
         cli_value(phase.forward_shortfall_required_ratio),
+        "--forward-overshoot-scale",
+        cli_value(phase.forward_overshoot_scale),
+        "--forward-overshoot-allowed-ratio",
+        cli_value(phase.forward_overshoot_allowed_ratio),
         "--command-progress-scale",
         cli_value(phase.command_progress_scale),
         "--command-progress-shortfall-scale",
@@ -838,6 +951,12 @@ def phase_command(
         cli_value(phase.actuator_tracking_huber_delta),
         "--forward-shortfall-huber-delta",
         cli_value(phase.forward_shortfall_huber_delta),
+        "--forward-overshoot-huber-delta",
+        cli_value(phase.forward_overshoot_huber_delta),
+        "--forward-pitch-huber-delta",
+        cli_value(phase.forward_pitch_huber_delta),
+        "--forward-pitch-rate-huber-delta",
+        cli_value(phase.forward_pitch_rate_huber_delta),
         "--command-progress-shortfall-huber-delta",
         cli_value(phase.command_progress_shortfall_huber_delta),
         "--action-rate-scale",
@@ -850,6 +969,10 @@ def phase_command(
         cli_value(phase.orientation_scale),
         "--base-height-scale",
         cli_value(phase.base_height_scale),
+        "--forward-pitch-scale",
+        cli_value(phase.forward_pitch_scale),
+        "--forward-pitch-rate-scale",
+        cli_value(phase.forward_pitch_rate_scale),
         "--alive-scale",
         cli_value(phase.alive_scale),
         "--imitation-scale",
@@ -941,6 +1064,8 @@ def phase_payload(phase: Phase, command: list[str], output_root: Path) -> dict[s
         "zero_command_probability": phase.zero_command_probability,
         "forward_shortfall_scale": phase.forward_shortfall_scale,
         "forward_shortfall_required_ratio": phase.forward_shortfall_required_ratio,
+        "forward_overshoot_scale": phase.forward_overshoot_scale,
+        "forward_overshoot_allowed_ratio": phase.forward_overshoot_allowed_ratio,
         "command_progress_scale": phase.command_progress_scale,
         "command_progress_shortfall_scale": phase.command_progress_shortfall_scale,
         "command_progress_required_ratio": phase.command_progress_required_ratio,
@@ -950,11 +1075,16 @@ def phase_payload(phase: Phase, command: list[str], output_root: Path) -> dict[s
         "target_rate_huber_delta": phase.target_rate_huber_delta,
         "actuator_tracking_huber_delta": phase.actuator_tracking_huber_delta,
         "forward_shortfall_huber_delta": phase.forward_shortfall_huber_delta,
+        "forward_overshoot_huber_delta": phase.forward_overshoot_huber_delta,
+        "forward_pitch_huber_delta": phase.forward_pitch_huber_delta,
+        "forward_pitch_rate_huber_delta": phase.forward_pitch_rate_huber_delta,
         "command_progress_shortfall_huber_delta": (
             phase.command_progress_shortfall_huber_delta
         ),
         "orientation_scale": phase.orientation_scale,
         "base_height_scale": phase.base_height_scale,
+        "forward_pitch_scale": phase.forward_pitch_scale,
+        "forward_pitch_rate_scale": phase.forward_pitch_rate_scale,
         "ppo_learning_rate": phase.ppo_learning_rate,
         "ppo_entropy_cost": phase.ppo_entropy_cost,
         "ppo_clipping_epsilon": phase.ppo_clipping_epsilon,
@@ -971,6 +1101,14 @@ def phase_payload(phase: Phase, command: list[str], output_root: Path) -> dict[s
 
 
 def recipe_rationale(recipe: str) -> str:
+    if recipe == "movement_bootstrap_v8":
+        return (
+            "`movement_bootstrap_v8` starts from the v7 anchored checkpoint. "
+            "The v7 x=0.08 trace showed an in-envelope, unsaturated lunge: "
+            "local forward speed exceeded the command before the large pitch "
+            "collapse. V8 keeps the fitted actuator bridge active and adds "
+            "explicit forward-overshoot, pitch, and pitch-rate costs."
+        )
     if recipe == "movement_bootstrap_v6":
         return (
             "`movement_bootstrap_v6` starts from the v5 phase-checkpoint "
@@ -1126,7 +1264,9 @@ def main() -> int:
             "range first; movement_bootstrap_v6 tries to preserve the v5 "
             "phase-1 in-envelope motion while adding stability pressure; "
             "movement_bootstrap_v7 is a checkpoint-anchored stabilization "
-            "recipe intended to start from the recovered v5 phase-1 checkpoint."
+            "recipe intended to start from the recovered v5 phase-1 checkpoint; "
+            "movement_bootstrap_v8 starts from v7 and targets the measured "
+            "velocity-overshoot/pitch-over failure."
         ),
     )
     parser.add_argument("--timesteps-scale", type=float, default=1.0)
@@ -1197,6 +1337,8 @@ def main() -> int:
             restore_checkpoint = find_latest_checkpoint(phase_root)
             if restore_checkpoint is None:
                 raise SystemExit(f"{phase.name} produced no checkpoint under {phase_root}")
+        elif index < len(RECIPES[args.recipe]):
+            restore_checkpoint = Path(f"<latest_checkpoint_from_phase_{index}>")
 
     if args.run:
         payload["status"] = "PASS_STAGED_CURRICULUM_RUN"

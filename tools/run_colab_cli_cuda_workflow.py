@@ -795,6 +795,7 @@ def main() -> int:
     parser.add_argument(
         "--staged-recipe",
         choices=[
+            "movement_bootstrap_v8",
             "movement_bootstrap_v7",
             "movement_bootstrap_v6",
             "movement_bootstrap_v5",
@@ -811,7 +812,8 @@ def main() -> int:
             "remains v5 for backward-compatible script behavior. "
             "movement_bootstrap_v7 is intended to be run with "
             "--staged-initial-restore-checkpoint pointing at the recovered "
-            "v5 phase-1 checkpoint."
+            "v5 phase-1 checkpoint; movement_bootstrap_v8 is intended to start "
+            "from the v7 anchored checkpoint and target the x=0.08 lunge."
         ),
     )
     parser.add_argument(
