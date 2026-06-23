@@ -1353,3 +1353,11 @@ action saturation: 0%
 This is now the trainable anchor for the next offline task: add continuity
 pressure around this moving behavior while improving stability. Do not request
 robot validation for this policy.
+
+The next planned recipe is `movement_bootstrap_v7`: a checkpoint-anchored
+continuation run that starts from
+`policy/candidates/movement_bootstrap_v5_phase1_trainable_recovery_20260623/checkpoint_2026_06_23_205634_368640/`
+with small PPO updates, low clipping, and light stability pressure. It is not a
+true teacher-action loss yet. If v7 also collapses to standstill or remains
+unstable, the next offline implementation should add an explicit teacher-action
+regularizer rather than more generic reward terms.

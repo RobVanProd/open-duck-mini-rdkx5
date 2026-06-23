@@ -667,7 +667,96 @@ MOVEMENT_BOOTSTRAP_V6_PHASES = [
 ]
 
 
+MOVEMENT_BOOTSTRAP_V7_PHASES = [
+    Phase(
+        name="phase1_checkpoint_anchor_mild_stability",
+        purpose=(
+            "continue from the recovered v5 phase-1 moving checkpoint with "
+            "small PPO updates, mild bridge dynamics, and light stability "
+            "pressure without allowing standstill to satisfy the objective"
+        ),
+        num_timesteps=160_000,
+        bridge=True,
+        delay=(1, 3),
+        tau_s=(0.02, 0.06),
+        velocity_limit_rad_s=(4.0, 5.24),
+        target_rate_scale=-0.0015,
+        actuator_tracking_scale=-0.12,
+        tracking_lin_vel_scale=28.0,
+        tracking_sigma=0.0015,
+        forward_progress_scale=6.5,
+        forward_shortfall_scale=-5.0,
+        forward_shortfall_required_ratio=0.45,
+        action_rate_scale=-0.018,
+        action_magnitude_scale=-0.004,
+        stand_still_scale=-0.9,
+        alive_scale=0.06,
+        imitation_scale=0.55,
+        lin_vel_x=(0.04, 0.08),
+        zero_command_probability=0.0,
+        orientation_scale=-0.08,
+        base_height_scale=-0.5,
+        command_progress_scale=8.0,
+        command_progress_shortfall_scale=-8.0,
+        command_progress_required_ratio=0.45,
+        command_progress_warmup_steps=35,
+        action_rate_huber_delta=0.08,
+        action_magnitude_huber_delta=0.50,
+        target_rate_huber_delta=1.0,
+        actuator_tracking_huber_delta=0.08,
+        forward_shortfall_huber_delta=0.35,
+        command_progress_shortfall_huber_delta=0.35,
+        ppo_learning_rate=5.0e-5,
+        ppo_clipping_epsilon=0.05,
+        ppo_max_grad_norm=0.5,
+    ),
+    Phase(
+        name="phase2_checkpoint_anchor_fitted_bridge",
+        purpose=(
+            "move the anchored policy toward the fitted actuator envelope "
+            "while preserving nonzero forward progress and keeping PPO updates "
+            "small"
+        ),
+        num_timesteps=180_000,
+        bridge=True,
+        delay=(3, 6),
+        tau_s=(0.06, 0.14),
+        velocity_limit_rad_s=(2.5, 3.75),
+        target_rate_scale=-0.002,
+        actuator_tracking_scale=-0.18,
+        tracking_lin_vel_scale=26.0,
+        tracking_sigma=0.0015,
+        forward_progress_scale=6.0,
+        forward_shortfall_scale=-5.5,
+        forward_shortfall_required_ratio=0.40,
+        action_rate_scale=-0.020,
+        action_magnitude_scale=-0.005,
+        stand_still_scale=-0.8,
+        alive_scale=0.08,
+        imitation_scale=0.50,
+        lin_vel_x=(0.04, 0.08),
+        zero_command_probability=0.0,
+        orientation_scale=-0.12,
+        base_height_scale=-0.8,
+        command_progress_scale=7.0,
+        command_progress_shortfall_scale=-8.0,
+        command_progress_required_ratio=0.40,
+        command_progress_warmup_steps=35,
+        action_rate_huber_delta=0.08,
+        action_magnitude_huber_delta=0.50,
+        target_rate_huber_delta=1.0,
+        actuator_tracking_huber_delta=0.08,
+        forward_shortfall_huber_delta=0.35,
+        command_progress_shortfall_huber_delta=0.35,
+        ppo_learning_rate=4.0e-5,
+        ppo_clipping_epsilon=0.04,
+        ppo_max_grad_norm=0.5,
+    ),
+]
+
+
 RECIPES = {
+    "movement_bootstrap_v7": MOVEMENT_BOOTSTRAP_V7_PHASES,
     "movement_bootstrap_v6": MOVEMENT_BOOTSTRAP_V6_PHASES,
     "movement_bootstrap_v5": MOVEMENT_BOOTSTRAP_V5_PHASES,
     "movement_bootstrap_v4": MOVEMENT_BOOTSTRAP_V4_PHASES,
@@ -1035,10 +1124,21 @@ def main() -> int:
             "fitted-bridge x0 stability phase before low-command progress; "
             "movement_bootstrap_v5 targets the measured low-command feasible "
             "range first; movement_bootstrap_v6 tries to preserve the v5 "
-            "phase-1 in-envelope motion while adding stability pressure."
+            "phase-1 in-envelope motion while adding stability pressure; "
+            "movement_bootstrap_v7 is a checkpoint-anchored stabilization "
+            "recipe intended to start from the recovered v5 phase-1 checkpoint."
         ),
     )
     parser.add_argument("--timesteps-scale", type=float, default=1.0)
+    parser.add_argument(
+        "--initial-restore-checkpoint",
+        type=Path,
+        default=None,
+        help=(
+            "Optional checkpoint path to use as the starting policy for phase 1. "
+            "Later phases still continue from the previous phase output."
+        ),
+    )
     parser.add_argument(
         "--stop-after-phase",
         type=int,
@@ -1070,12 +1170,19 @@ def main() -> int:
         "deploy_performed": False,
         "platform": args.platform,
         "recipe": args.recipe,
+        "initial_restore_checkpoint": (
+            str(args.initial_restore_checkpoint)
+            if args.initial_restore_checkpoint is not None
+            else None
+        ),
         "stop_after_phase": args.stop_after_phase,
         "output_root": str(output_root),
         "phases": [],
     }
 
-    restore_checkpoint: Path | None = None
+    restore_checkpoint: Path | None = args.initial_restore_checkpoint
+    if args.run and restore_checkpoint is not None and not restore_checkpoint.exists():
+        raise SystemExit(f"Initial restore checkpoint missing: {restore_checkpoint}")
     for index, phase in enumerate(RECIPES[args.recipe], 1):
         if args.stop_after_phase is not None and index > args.stop_after_phase:
             break

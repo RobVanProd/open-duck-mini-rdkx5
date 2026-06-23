@@ -284,6 +284,11 @@ def build_remote_driver(
         if args.staged_stop_after_phase is not None
         else ""
     )
+    staged_initial_restore_arg = (
+        f'"--initial-restore-checkpoint", "{args.staged_initial_restore_checkpoint}",'
+        if args.staged_initial_restore_checkpoint
+        else ""
+    )
     staged_timeout_multiplier = args.staged_stop_after_phase or 3
     candidate_disable_bridge_arg = (
         '"--disable-actuator-bridge",' if args.candidate_disable_actuator_bridge else ""
@@ -582,6 +587,7 @@ def build_remote_driver(
                 "--env-python", PYTHON,
                 "--platform", "gpu",
                 "--timesteps-scale", "{args.staged_timesteps_scale}",
+                {staged_initial_restore_arg}
                 {staged_stop_after_phase_arg}
                 "--phase-timeout-s", "{args.staged_phase_timeout_s}",
                 "--output-root", str(staged_root),
@@ -789,6 +795,7 @@ def main() -> int:
     parser.add_argument(
         "--staged-recipe",
         choices=[
+            "movement_bootstrap_v7",
             "movement_bootstrap_v6",
             "movement_bootstrap_v5",
             "movement_bootstrap_v4",
@@ -801,7 +808,10 @@ def main() -> int:
             "Recipe passed to tools/plan_staged_curriculum_training.py for "
             "--workflow staged-curriculum. movement_bootstrap_v6 explicitly "
             "targets continuity from the in-envelope phase-1 lead; the default "
-            "remains v5 for backward-compatible script behavior."
+            "remains v5 for backward-compatible script behavior. "
+            "movement_bootstrap_v7 is intended to be run with "
+            "--staged-initial-restore-checkpoint pointing at the recovered "
+            "v5 phase-1 checkpoint."
         ),
     )
     parser.add_argument(
@@ -817,6 +827,14 @@ def main() -> int:
         help=(
             "Pass through to the staged planner to stop after this 1-based "
             "phase. Useful for recovering a trainable intermediate checkpoint."
+        ),
+    )
+    parser.add_argument(
+        "--staged-initial-restore-checkpoint",
+        default=None,
+        help=(
+            "Checkpoint path visible inside the Colab runtime to use as the "
+            "starting point for phase 1 of a staged-curriculum workflow."
         ),
     )
     parser.add_argument("--candidate-ppo-num-envs", type=int, default=256)

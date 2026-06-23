@@ -679,6 +679,30 @@ anchor for a continuity/trust-region stabilization run:
 x=0.08 fitted bridge: 52 samples, mean local vx 0.2989 m/s, max pitch p95 target velocity 1.7912 rad/s
 ```
 
+Next checkpoint-anchored recipe:
+
+```text
+movement_bootstrap_v7
+```
+
+Run it with the recovered checkpoint as the initial restore point:
+
+```bash
+python3 tools/run_colab_cli_cuda_workflow.py \
+  --session open-duck-a100-v7-anchor \
+  --workflow staged-curriculum \
+  --staged-recipe movement_bootstrap_v7 \
+  --staged-initial-restore-checkpoint /content/open-duck-mini-rdkx5/policy/candidates/movement_bootstrap_v5_phase1_trainable_recovery_20260623/checkpoint_2026_06_23_205634_368640 \
+  --artifact-checkpoint-mode latest \
+  --run
+```
+
+This is still not a full teacher-action behavior-cloning loss. It is a
+checkpoint-anchored trust-region-style continuation experiment: small PPO
+updates, low clip, low learning rate, and stability pressure added around the
+recovered moving policy. If v7 also destroys motion, implement an actual
+teacher-action regularizer rather than adding more reward terms.
+
 Do not request robot validation for v6.
 
 ### Candidate ONNX Export
