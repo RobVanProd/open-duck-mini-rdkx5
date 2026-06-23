@@ -649,6 +649,23 @@ lead. This makes the next task more specific:
    checkpoint before adding more stability pressure.
 ```
 
+The Colab wrapper now supports this recovery path:
+
+```bash
+python3 tools/run_colab_cli_cuda_workflow.py \
+  --session open-duck-a100-v5-phase1-recovery \
+  --workflow staged-curriculum \
+  --staged-recipe movement_bootstrap_v5 \
+  --staged-stop-after-phase 1 \
+  --artifact-checkpoint-mode latest \
+  --run
+```
+
+That command should produce the v5 phase-1 ONNX plus the latest matching
+trainable checkpoint directory in the artifact bundle. Use it before any new
+continuity/stabilization experiment that needs to resume from the moving
+phase-1 behavior.
+
 Do not request robot validation for v6.
 
 ### Candidate ONNX Export

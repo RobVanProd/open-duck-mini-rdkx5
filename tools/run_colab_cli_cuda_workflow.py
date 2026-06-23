@@ -271,6 +271,12 @@ def build_remote_driver(
         args.candidate_actuator_bridge_per_joint_variation
     )
     artifact_checkpoint_mode = args.artifact_checkpoint_mode
+    staged_stop_after_phase_arg = (
+        f'"--stop-after-phase", "{args.staged_stop_after_phase}",'
+        if args.staged_stop_after_phase is not None
+        else ""
+    )
+    staged_timeout_multiplier = args.staged_stop_after_phase or 3
     candidate_disable_bridge_arg = (
         '"--disable-actuator-bridge",' if args.candidate_disable_actuator_bridge else ""
     )
@@ -568,6 +574,7 @@ def build_remote_driver(
                 "--env-python", PYTHON,
                 "--platform", "gpu",
                 "--timesteps-scale", "{args.staged_timesteps_scale}",
+                {staged_stop_after_phase_arg}
                 "--phase-timeout-s", "{args.staged_phase_timeout_s}",
                 "--output-root", str(staged_root),
                 "--output-md", str(OUT / f"{{candidate_name}}_staged_curriculum_plan.md"),
@@ -579,7 +586,7 @@ def build_remote_driver(
                 "--ppo-batch-size", "{args.candidate_ppo_batch_size}",
                 "--ppo-num-minibatches", "{args.candidate_ppo_num_minibatches}",
                 "--ppo-num-updates-per-batch", "{args.candidate_ppo_num_updates_per_batch}",
-            ], cwd=RDK, timeout={args.staged_phase_timeout_s * 3 + 900})
+            ], cwd=RDK, timeout={args.staged_phase_timeout_s * staged_timeout_multiplier + 900})
             staged_plan = OUT / f"{{candidate_name}}_staged_curriculum_plan.json"
             payload = json.loads(staged_plan.read_text())
             latest_onnx = Path(payload.get("final_candidate_onnx") or "")
@@ -794,6 +801,15 @@ def main() -> int:
         type=int,
         default=10800,
         help="Per-phase timeout for --workflow staged-curriculum.",
+    )
+    parser.add_argument(
+        "--staged-stop-after-phase",
+        type=int,
+        default=None,
+        help=(
+            "Pass through to the staged planner to stop after this 1-based "
+            "phase. Useful for recovering a trainable intermediate checkpoint."
+        ),
     )
     parser.add_argument("--candidate-ppo-num-envs", type=int, default=256)
     parser.add_argument("--candidate-ppo-num-evals", type=int, default=4)

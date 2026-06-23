@@ -1039,6 +1039,16 @@ def main() -> int:
         ),
     )
     parser.add_argument("--timesteps-scale", type=float, default=1.0)
+    parser.add_argument(
+        "--stop-after-phase",
+        type=int,
+        default=None,
+        help=(
+            "Stop after this 1-based phase index. Useful for preserving a "
+            "trainable phase checkpoint without running later known-bad "
+            "consolidation phases."
+        ),
+    )
     parser.add_argument("--phase-timeout-s", type=int, default=3600)
     parser.add_argument("--run", action="store_true")
     parser.add_argument("--ppo-num-envs", type=int, default=256)
@@ -1049,6 +1059,8 @@ def main() -> int:
     parser.add_argument("--ppo-num-minibatches", type=int, default=4)
     parser.add_argument("--ppo-num-updates-per-batch", type=int, default=4)
     args = parser.parse_args()
+    if args.stop_after_phase is not None and args.stop_after_phase < 1:
+        raise SystemExit("--stop-after-phase must be >= 1")
 
     output_root = Path(args.output_root).expanduser().resolve()
     payload: dict[str, Any] = {
@@ -1058,12 +1070,15 @@ def main() -> int:
         "deploy_performed": False,
         "platform": args.platform,
         "recipe": args.recipe,
+        "stop_after_phase": args.stop_after_phase,
         "output_root": str(output_root),
         "phases": [],
     }
 
     restore_checkpoint: Path | None = None
     for index, phase in enumerate(RECIPES[args.recipe], 1):
+        if args.stop_after_phase is not None and index > args.stop_after_phase:
+            break
         phase_root = output_root / f"{index:02d}_{phase.name}"
         restore_for_command = restore_checkpoint
         if restore_for_command is None and not args.run and index > 1:
