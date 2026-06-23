@@ -112,3 +112,35 @@ next useful offline task is to preserve a training checkpoint for the moving
 phase-1 behavior and add a real teacher-policy/action-anchor or trust-region
 continuity mechanism. Another generic stability/reward recipe is unlikely to
 answer the actual continuity problem.
+
+## Trainable Recovery Checkpoint
+
+A one-phase A100 rerun of `movement_bootstrap_v5` recovered a trainable phase-1
+checkpoint:
+
+```text
+policy/candidates/movement_bootstrap_v5_phase1_trainable_recovery_20260623/
+candidate sha256: 0b7d9c3b24ac047a0a7d5e2e2c15f8e03280a2e30389d4c102dd44a733ce03e5
+checkpoint: checkpoint_2026_06_23_205634_368640/
+```
+
+This recovered candidate is still not deployable:
+
+```text
+x=0.0:  HOLD_CANDIDATE_FALL_OR_TERMINATION
+x=0.08: HOLD_CANDIDATE_FALL_OR_TERMINATION
+```
+
+But at `x=0.08` with the fitted bridge it again shows in-envelope forward
+motion:
+
+```text
+samples: 52
+mean local vx: 0.2989 m/s
+track ratio: 3.7362
+max pitch-chain p95 target velocity: 1.7912 rad/s
+action saturation: 0%
+```
+
+Use this checkpoint as the continuation anchor for the next stabilization
+experiment. Do not use it for robot validation.

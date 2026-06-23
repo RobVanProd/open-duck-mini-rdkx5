@@ -666,6 +666,19 @@ trainable checkpoint directory in the artifact bundle. Use it before any new
 continuity/stabilization experiment that needs to resume from the moving
 phase-1 behavior.
 
+This recovery has now been completed and preserved:
+
+```text
+policy/candidates/movement_bootstrap_v5_phase1_trainable_recovery_20260623/
+```
+
+The recovered checkpoint is not deployable, but it is the correct trainable
+anchor for a continuity/trust-region stabilization run:
+
+```text
+x=0.08 fitted bridge: 52 samples, mean local vx 0.2989 m/s, max pitch p95 target velocity 1.7912 rad/s
+```
+
 Do not request robot validation for v6.
 
 ### Candidate ONNX Export
