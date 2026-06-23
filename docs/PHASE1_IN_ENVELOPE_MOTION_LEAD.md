@@ -1,0 +1,84 @@
+# Phase-1 In-Envelope Motion Lead
+
+This note records the current strongest training lead.
+
+## Finding
+
+`movement_bootstrap_v5` did not produce a deployable final policy, but its
+phase-1 checkpoint produced meaningful forward motion at `command_x=0.08` while
+remaining inside the measured actuator target-velocity envelope.
+
+Preserved candidate:
+
+```text
+policy/candidates/movement_bootstrap_v5_phase1_in_envelope_unstable_20260623/candidate.onnx
+sha256: dcaa47993f65f4eedf980a78255d723409873b9b65e6a7d3d1002beeea7a3b48
+```
+
+Key evidence:
+
+```text
+outputs/analysis/PHASE1_X008_FAILURE_TRACE.md
+outputs/analysis/phase1_x008_failure_trace.json
+outputs/analysis/movement_bootstrap_v5_a100_phase1_command_curve_cpu/COMMAND_FEASIBILITY_CURVE.md
+```
+
+## Metrics
+
+At `command_x=0.08` with the fitted actuator bridge:
+
+```text
+samples: 80
+termination: fall_or_nan at tick 79 / 1.58 s
+mean local forward velocity: 0.1892 m/s
+pitch-chain p95 target velocity max: 1.9529 rad/s
+velocity envelope: 2.25-3.75 rad/s
+action saturation: 0%
+body pitch abs p95: 1.1841 rad
+body pitch abs max: 1.4642 rad
+base height min: 0.0434 m
+contact events: 13
+```
+
+Interpretation:
+
+The failure is not an above-envelope actuator-rate failure and not action
+saturation. It is an unstable forward-motion rollout that pitches over within
+about 1.6 seconds. That makes this a stabilization/contact-timing problem, not
+proof that in-envelope forward motion is impossible.
+
+## Why Later V5 Phases Failed
+
+The phase checkpoint audit showed:
+
+```text
+phase 1 x=0.08: below envelope, moving, unstable
+phase 2 x=0.08: above envelope, moving, unstable
+final x=0.08: below envelope, stable standstill
+```
+
+So the phase transition destroyed the useful behavior in two different ways:
+
+- first by drifting back above the actuator envelope,
+- then by consolidating into standstill.
+
+## V6 Design Target
+
+`movement_bootstrap_v6` should recover and stabilize the phase-1 behavior.
+
+Design constraints:
+
+- keep the `2.5-3.75 rad/s` fitted envelope active in every phase,
+- do not expand the command range after phase 1,
+- add stability pressure gradually,
+- use lower PPO learning rate / clip during consolidation,
+- do not count a stable standstill as success,
+- do not request robot validation until `x=0.0` and `x=0.08` sim gates pass.
+
+Open mechanism gap:
+
+A true action-level trust-region or behavior-cloning anchor against the phase-1
+policy is not implemented yet. V6 approximates continuity with checkpoint
+continuation, small PPO update sizes, and conservative stability rewards. If V6
+again loses phase-1 motion, the next offline task should implement a real
+teacher-policy/action-anchor mechanism rather than another generic curriculum.

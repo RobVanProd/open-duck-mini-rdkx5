@@ -69,6 +69,12 @@ class Phase:
     imitation_scale: float
     lin_vel_x: tuple[float, float]
     zero_command_probability: float
+    orientation_scale: float = 0.0
+    base_height_scale: float = 0.0
+    ppo_learning_rate: float | None = None
+    ppo_entropy_cost: float | None = None
+    ppo_clipping_epsilon: float | None = None
+    ppo_max_grad_norm: float | None = None
     command_progress_scale: float = 0.0
     command_progress_shortfall_scale: float = 0.0
     command_progress_required_ratio: float = 0.6
@@ -536,7 +542,133 @@ MOVEMENT_BOOTSTRAP_V5_PHASES = [
 ]
 
 
+MOVEMENT_BOOTSTRAP_V6_PHASES = [
+    Phase(
+        name="phase1_recover_in_envelope_motion",
+        purpose=(
+            "recover the v5 phase-1 lead inside the measured actuator envelope "
+            "instead of using a relaxed velocity budget"
+        ),
+        num_timesteps=350_000,
+        bridge=True,
+        delay=(1, 3),
+        tau_s=(0.03, 0.08),
+        velocity_limit_rad_s=(2.5, 3.75),
+        target_rate_scale=-0.0015,
+        actuator_tracking_scale=-0.12,
+        tracking_lin_vel_scale=30.0,
+        tracking_sigma=0.0015,
+        forward_progress_scale=7.0,
+        forward_shortfall_scale=-5.0,
+        forward_shortfall_required_ratio=0.45,
+        action_rate_scale=-0.016,
+        action_magnitude_scale=-0.004,
+        stand_still_scale=-0.8,
+        alive_scale=0.06,
+        imitation_scale=0.60,
+        lin_vel_x=(0.06, 0.08),
+        zero_command_probability=0.0,
+        command_progress_scale=8.0,
+        command_progress_shortfall_scale=-8.0,
+        command_progress_required_ratio=0.45,
+        command_progress_warmup_steps=35,
+        action_rate_huber_delta=0.08,
+        action_magnitude_huber_delta=0.50,
+        target_rate_huber_delta=1.0,
+        actuator_tracking_huber_delta=0.08,
+        forward_shortfall_huber_delta=0.35,
+        command_progress_shortfall_huber_delta=0.35,
+        ppo_learning_rate=2.0e-4,
+        ppo_clipping_epsilon=0.16,
+    ),
+    Phase(
+        name="phase2_stabilize_motion_low_step",
+        purpose=(
+            "continue from phase 1 with small PPO updates and light "
+            "orientation/base-height costs so stability cannot be bought by "
+            "leaving the measured envelope"
+        ),
+        num_timesteps=300_000,
+        bridge=True,
+        delay=(2, 5),
+        tau_s=(0.05, 0.12),
+        velocity_limit_rad_s=(2.5, 3.75),
+        target_rate_scale=-0.002,
+        actuator_tracking_scale=-0.20,
+        tracking_lin_vel_scale=28.0,
+        tracking_sigma=0.0015,
+        forward_progress_scale=6.5,
+        forward_shortfall_scale=-5.5,
+        forward_shortfall_required_ratio=0.45,
+        action_rate_scale=-0.020,
+        action_magnitude_scale=-0.005,
+        stand_still_scale=-0.7,
+        alive_scale=0.08,
+        imitation_scale=0.55,
+        lin_vel_x=(0.06, 0.08),
+        zero_command_probability=0.0,
+        orientation_scale=-0.15,
+        base_height_scale=-1.0,
+        command_progress_scale=7.0,
+        command_progress_shortfall_scale=-8.0,
+        command_progress_required_ratio=0.45,
+        command_progress_warmup_steps=35,
+        action_rate_huber_delta=0.08,
+        action_magnitude_huber_delta=0.50,
+        target_rate_huber_delta=1.0,
+        actuator_tracking_huber_delta=0.08,
+        forward_shortfall_huber_delta=0.35,
+        command_progress_shortfall_huber_delta=0.35,
+        ppo_learning_rate=1.2e-4,
+        ppo_clipping_epsilon=0.10,
+        ppo_max_grad_norm=0.8,
+    ),
+    Phase(
+        name="phase3_hold_motion_fitted_bridge",
+        purpose=(
+            "hold the same x=0.06-0.08 command window under fitted bridge "
+            "rather than expanding the task after the gait has not stabilized"
+        ),
+        num_timesteps=300_000,
+        bridge=True,
+        delay=(3, 6),
+        tau_s=(0.06, 0.14),
+        velocity_limit_rad_s=(2.5, 3.75),
+        target_rate_scale=-0.0025,
+        actuator_tracking_scale=-0.24,
+        tracking_lin_vel_scale=26.0,
+        tracking_sigma=0.0015,
+        forward_progress_scale=6.0,
+        forward_shortfall_scale=-5.5,
+        forward_shortfall_required_ratio=0.42,
+        action_rate_scale=-0.022,
+        action_magnitude_scale=-0.006,
+        stand_still_scale=-0.6,
+        alive_scale=0.10,
+        imitation_scale=0.50,
+        lin_vel_x=(0.06, 0.08),
+        zero_command_probability=0.0,
+        orientation_scale=-0.25,
+        base_height_scale=-1.5,
+        command_progress_scale=6.5,
+        command_progress_shortfall_scale=-8.0,
+        command_progress_required_ratio=0.42,
+        command_progress_warmup_steps=35,
+        action_rate_huber_delta=0.08,
+        action_magnitude_huber_delta=0.50,
+        target_rate_huber_delta=1.0,
+        actuator_tracking_huber_delta=0.08,
+        forward_shortfall_huber_delta=0.35,
+        command_progress_shortfall_huber_delta=0.35,
+        ppo_learning_rate=8.0e-5,
+        ppo_clipping_epsilon=0.08,
+        ppo_max_grad_norm=0.8,
+    ),
+]
+
+
 RECIPES = {
+    "movement_bootstrap_v6": MOVEMENT_BOOTSTRAP_V6_PHASES,
     "movement_bootstrap_v5": MOVEMENT_BOOTSTRAP_V5_PHASES,
     "movement_bootstrap_v4": MOVEMENT_BOOTSTRAP_V4_PHASES,
     "movement_bootstrap_v3": MOVEMENT_BOOTSTRAP_V3_PHASES,
@@ -625,6 +757,10 @@ def phase_command(
         cli_value(phase.action_magnitude_scale),
         "--stand-still-scale",
         cli_value(phase.stand_still_scale),
+        "--orientation-scale",
+        cli_value(phase.orientation_scale),
+        "--base-height-scale",
+        cli_value(phase.base_height_scale),
         "--alive-scale",
         cli_value(phase.alive_scale),
         "--imitation-scale",
@@ -648,6 +784,14 @@ def phase_command(
         "--head-range-factor",
         "0.25",
     ]
+    if phase.ppo_learning_rate is not None:
+        command.extend(["--ppo-learning-rate", cli_value(phase.ppo_learning_rate)])
+    if phase.ppo_entropy_cost is not None:
+        command.extend(["--ppo-entropy-cost", cli_value(phase.ppo_entropy_cost)])
+    if phase.ppo_clipping_epsilon is not None:
+        command.extend(["--ppo-clipping-epsilon", cli_value(phase.ppo_clipping_epsilon)])
+    if phase.ppo_max_grad_norm is not None:
+        command.extend(["--ppo-max-grad-norm", cli_value(phase.ppo_max_grad_norm)])
     if not phase.bridge:
         command.append("--disable-actuator-bridge")
     else:
@@ -720,6 +864,12 @@ def phase_payload(phase: Phase, command: list[str], output_root: Path) -> dict[s
         "command_progress_shortfall_huber_delta": (
             phase.command_progress_shortfall_huber_delta
         ),
+        "orientation_scale": phase.orientation_scale,
+        "base_height_scale": phase.base_height_scale,
+        "ppo_learning_rate": phase.ppo_learning_rate,
+        "ppo_entropy_cost": phase.ppo_entropy_cost,
+        "ppo_clipping_epsilon": phase.ppo_clipping_epsilon,
+        "ppo_max_grad_norm": phase.ppo_max_grad_norm,
         "num_timesteps": phase.num_timesteps,
         "restore_checkpoint": (
             command[command.index("--restore-checkpoint-path") + 1]
@@ -729,6 +879,31 @@ def phase_payload(phase: Phase, command: list[str], output_root: Path) -> dict[s
         "command": command,
         "command_shell": shell_join(command),
     }
+
+
+def recipe_rationale(recipe: str) -> str:
+    if recipe == "movement_bootstrap_v6":
+        return (
+            "`movement_bootstrap_v6` starts from the v5 phase-checkpoint "
+            "finding: in-envelope x=0.08 forward motion exists but falls after "
+            "about 80 samples. It keeps the fitted actuator envelope active "
+            "through every phase, adds light orientation/base-height pressure, "
+            "and lowers PPO update size in later phases so stability pressure "
+            "is less likely to erase the moving gait."
+        )
+    if recipe == "movement_bootstrap_v5":
+        return (
+            "`movement_bootstrap_v5` follows the command feasibility curve: "
+            "`BEST_WALK_ONNX_2` stays below the actuator target velocity "
+            "envelope through roughly `x=0.06`, then crosses it at `x=0.08`. "
+            "V5 therefore learns low-command motion first, using Huber-shaped "
+            "smoothness costs, before expanding toward `x=0.08`."
+        )
+    return (
+        f"`{recipe}` is a preserved staged curriculum recipe for offline "
+        "candidate generation and comparison against the measured actuator "
+        "envelope."
+    )
 
 
 def write_plan(payload: dict[str, Any], output_md: Path, output_json: Path) -> None:
@@ -753,11 +928,7 @@ def write_plan(payload: dict[str, Any], output_md: Path, output_json: Path) -> N
         "stationary at `x=0.08`. The staged recipe bootstraps forward motion before",
         "tightening actuator realism.",
         "",
-        "The default `movement_bootstrap_v5` recipe follows the command",
-        "feasibility curve: `BEST_WALK_ONNX_2` stays below the actuator target",
-        "velocity envelope through roughly `x=0.06`, then crosses it at `x=0.08`.",
-        "V5 therefore learns low-command motion first, using Huber-shaped",
-        "smoothness costs, before expanding toward `x=0.08`.",
+        recipe_rationale(payload["recipe"]),
         "",
         "## Phases",
         "",
@@ -863,7 +1034,8 @@ def main() -> int:
             "command-window progress pressure; movement_bootstrap_v4 adds a "
             "fitted-bridge x0 stability phase before low-command progress; "
             "movement_bootstrap_v5 targets the measured low-command feasible "
-            "range first."
+            "range first; movement_bootstrap_v6 tries to preserve the v5 "
+            "phase-1 in-envelope motion while adding stability pressure."
         ),
     )
     parser.add_argument("--timesteps-scale", type=float, default=1.0)

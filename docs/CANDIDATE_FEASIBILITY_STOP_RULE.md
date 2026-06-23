@@ -86,11 +86,25 @@ path, before more training.
 ## Current Count
 
 `movement_bootstrap_v5` is the first recipe explicitly targeted at this
-feasibility curve. It starts the count at:
+feasibility curve. The final v5 policy did not pass, but its phase-1 checkpoint
+did find unstable forward motion below the measured envelope:
 
 ```text
-feasibility-targeted recipe attempts: 1 / 3
+phase 1 x=0.08: mean local vx 0.1892 m/s,
+                pitch-chain p95 target velocity 1.9529 rad/s,
+                fall after 80 samples
 ```
 
-The count increments only after a candidate completes training and its command
-feasibility curve is analyzed.
+That means the current question is no longer just "does in-envelope motion
+exist?" It is "can the phase-1 in-envelope motion be stabilized without
+collapsing to standstill or leaving the envelope?"
+
+Current count:
+
+```text
+stable in-envelope candidate attempts: 1 / 3
+breakthrough lead: unstable phase-1 in-envelope motion exists
+```
+
+The count increments only after a candidate completes training, its command
+feasibility curve is analyzed, and any useful phase checkpoints are checked.

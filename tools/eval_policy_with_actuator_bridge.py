@@ -485,6 +485,8 @@ def run_closed_loop_worker(args) -> dict:
         "--_closed-loop-worker-json",
         str(worker_json),
     ]
+    if args.trace_jsonl:
+        cmd.extend(["--trace-jsonl", str(args.trace_jsonl)])
     if args.jax_platform:
         cmd.extend(["--jax-platform", str(args.jax_platform)])
     if args.max_motor_velocity_override_rad_s is not None:
@@ -1000,6 +1002,14 @@ def main() -> int:
         help="timeout for the Playground contract instantiation preflight",
     )
     parser.add_argument(
+        "--trace-jsonl",
+        default=None,
+        help=(
+            "Optional closed-loop per-tick trace output. This is intended for "
+            "small failure forensics; normal eval summaries stay compact."
+        ),
+    )
+    parser.add_argument(
         "--_closed-loop-worker",
         action="store_true",
         help=argparse.SUPPRESS,
@@ -1073,6 +1083,9 @@ def main() -> int:
                         ),
                         forward_diagnostic_deadband=(
                             args.forward_diagnostic_deadband
+                        ),
+                        trace_jsonl=(
+                            None if args.trace_jsonl is None else Path(args.trace_jsonl)
                         ),
                     )
                 )

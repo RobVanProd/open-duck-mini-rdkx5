@@ -732,6 +732,7 @@ def main() -> int:
     parser.add_argument(
         "--staged-recipe",
         choices=[
+            "movement_bootstrap_v6",
             "movement_bootstrap_v5",
             "movement_bootstrap_v4",
             "movement_bootstrap_v3",
@@ -741,8 +742,9 @@ def main() -> int:
         default="movement_bootstrap_v5",
         help=(
             "Recipe passed to tools/plan_staged_curriculum_training.py for "
-            "--workflow staged-curriculum. movement_bootstrap_v5 targets the "
-            "measured low-command feasible range before expanding toward x=0.08."
+            "--workflow staged-curriculum. movement_bootstrap_v6 explicitly "
+            "targets continuity from the in-envelope phase-1 lead; the default "
+            "remains v5 for backward-compatible script behavior."
         ),
     )
     parser.add_argument(

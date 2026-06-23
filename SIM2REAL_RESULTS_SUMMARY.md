@@ -1232,3 +1232,51 @@ This means v5 did briefly find in-envelope forward motion in phase 1, but it was
 unstable and then lost during later fitted-bridge consolidation. The next
 training attempt should be framed as preserving and stabilizing the phase-1
 motion pattern, not as another generic progress-reward escalation.
+
+## Phase-1 In-Envelope Motion Lead
+
+The phase-1 checkpoint is now preserved as a first-class evidence artifact:
+
+```text
+policy/candidates/movement_bootstrap_v5_phase1_in_envelope_unstable_20260623/candidate.onnx
+sha256: dcaa47993f65f4eedf980a78255d723409873b9b65e6a7d3d1002beeea7a3b48
+```
+
+The traced `x=0.08` failure shows:
+
+```text
+samples: 80
+done tick: 79 / 1.58 s
+mean local vx: 0.1892 m/s
+max pitch-chain p95 target velocity: 1.9529 rad/s
+body pitch abs p95/max: 1.1841 / 1.4642 rad
+base height min: 0.0434 m
+action saturation: 0%
+```
+
+Evidence:
+
+```text
+docs/PHASE1_IN_ENVELOPE_MOTION_LEAD.md
+outputs/analysis/PHASE1_X008_FAILURE_TRACE.md
+outputs/analysis/phase1_x008_failure_trace.json
+```
+
+Current conclusion: stable in-envelope walking has not been produced yet, but
+unstable in-envelope forward motion exists. That shifts the next target from
+"prove feasibility" to "stabilize phase-1 motion without leaving the measured
+actuator envelope or collapsing to standstill."
+
+The next planned recipe is `movement_bootstrap_v6`, documented in:
+
+```text
+outputs/analysis/MOVEMENT_BOOTSTRAP_V6_PLAN.md
+outputs/analysis/movement_bootstrap_v6_plan.json
+```
+
+V6 is deliberately not the default recipe. It must be selected explicitly. It
+keeps the fitted actuator velocity envelope active in every phase and uses
+small PPO updates plus light orientation/base-height costs during consolidation.
+A true teacher-policy/action-anchor loss is still not implemented; if V6 loses
+the phase-1 motion again, the next offline task should add that mechanism
+instead of escalating generic reward terms.

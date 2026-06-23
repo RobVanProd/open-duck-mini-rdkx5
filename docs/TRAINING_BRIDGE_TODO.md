@@ -586,6 +586,43 @@ So the next recipe should not simply increase progress scales. It should try to
 preserve the phase-1 in-envelope motion and add stability around it, or use
 phase-1 as the checkpoint for a smaller stabilizing transition.
 
+The phase-1 checkpoint has been preserved:
+
+```text
+policy/candidates/movement_bootstrap_v5_phase1_in_envelope_unstable_20260623/candidate.onnx
+```
+
+The traced failure is summarized in:
+
+```text
+docs/PHASE1_IN_ENVELOPE_MOTION_LEAD.md
+outputs/analysis/PHASE1_X008_FAILURE_TRACE.md
+```
+
+Next staged recipe:
+
+```text
+movement_bootstrap_v6
+```
+
+V6 constraints:
+
+```text
+- keep fitted velocity envelope active in every phase: 2.5-3.75 rad/s
+- train only in x=0.06-0.08 rather than expanding the command window
+- add orientation/base-height costs gradually
+- lower PPO learning rate and clipping in consolidation phases
+- do not count stable standstill as success
+```
+
+Important limitation:
+
+V6 does not implement a true teacher-policy action anchor against the preserved
+phase-1 policy. It approximates continuity through checkpoint continuation and
+smaller PPO updates. If V6 again loses the moving gait, the next task should be
+to implement an action-level behavior-cloning/trust-region mechanism using the
+phase-1 policy as teacher, rather than adding v7 reward terms.
+
 ### Candidate ONNX Export
 
 - Export only after sim-side gates pass.

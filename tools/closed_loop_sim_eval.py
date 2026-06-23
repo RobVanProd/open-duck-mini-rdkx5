@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import contextlib
 from dataclasses import dataclass
+import json
 import math
 import os
 from pathlib import Path
@@ -59,6 +60,7 @@ class ClosedLoopConfig:
     max_motor_velocity_override_rad_s: float | None = None
     forward_diagnostic_required_ratio: float = 0.5
     forward_diagnostic_deadband: float = 0.02
+    trace_jsonl: Path | None = None
 
 
 @contextlib.contextmanager
@@ -267,6 +269,14 @@ def reward_term_summary(records: list[dict]) -> dict:
         )
         for key in keys
     }
+
+
+def append_trace_records(path: Path, mode: str, records: list[dict]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a") as handle:
+        for record in records:
+            payload = {"mode": mode, **record}
+            handle.write(json.dumps(payload, sort_keys=True) + "\n")
 
 
 def forward_shortfall_diagnostic(
@@ -722,6 +732,8 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
 
     modes = {}
     sim_steps = max(1, int(round(config.duration_s / float(env.dt))))
+    if config.trace_jsonl is not None and config.trace_jsonl.exists():
+        config.trace_jsonl.unlink()
     insertion_point = {
         "type": "target_stage_direct",
         "description": (
@@ -853,6 +865,8 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
         local_vx = signed_stats(local_vx_values)
         reward_stats = signed_stats([record["reward"] for record in records])
         reward_terms = reward_term_summary(records)
+        if config.trace_jsonl is not None:
+            append_trace_records(config.trace_jsonl, mode, records)
         if len(records) >= 2:
             elapsed_s = max(
                 float(records[-1]["time_s"]) - float(records[0]["time_s"]),

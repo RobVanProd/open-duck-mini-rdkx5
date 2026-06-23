@@ -79,6 +79,14 @@ def build_command(args: argparse.Namespace, output_dir: Path) -> list[str]:
         cli_value(args.actuator_tracking_scale),
     ]
     append_optional(command, "--restore_checkpoint_path", args.restore_checkpoint_path)
+    optional_ppo_overrides = {
+        "--ppo_learning_rate": args.ppo_learning_rate,
+        "--ppo_entropy_cost": args.ppo_entropy_cost,
+        "--ppo_clipping_epsilon": args.ppo_clipping_epsilon,
+        "--ppo_max_grad_norm": args.ppo_max_grad_norm,
+    }
+    for flag, value in optional_ppo_overrides.items():
+        append_optional(command, flag, value)
     optional_runner_overrides = {
         "--tracking_lin_vel_scale": args.tracking_lin_vel_scale,
         "--tracking_ang_vel_scale": args.tracking_ang_vel_scale,
@@ -102,6 +110,8 @@ def build_command(args: argparse.Namespace, output_dir: Path) -> list[str]:
         "--action_rate_scale": args.action_rate_scale,
         "--action_magnitude_scale": args.action_magnitude_scale,
         "--stand_still_scale": args.stand_still_scale,
+        "--orientation_scale": args.orientation_scale,
+        "--base_height_scale": args.base_height_scale,
         "--alive_scale": args.alive_scale,
         "--imitation_scale": args.imitation_scale,
         "--lin_vel_x_min": args.lin_vel_x_min,
@@ -195,6 +205,10 @@ def main() -> int:
     parser.add_argument("--ppo-batch-size", type=int, default=16)
     parser.add_argument("--ppo-num-minibatches", type=int, default=1)
     parser.add_argument("--ppo-num-updates-per-batch", type=int, default=1)
+    parser.add_argument("--ppo-learning-rate", type=float, default=None)
+    parser.add_argument("--ppo-entropy-cost", type=float, default=None)
+    parser.add_argument("--ppo-clipping-epsilon", type=float, default=None)
+    parser.add_argument("--ppo-max-grad-norm", type=float, default=None)
     parser.add_argument(
         "--restore-checkpoint-path",
         default=None,
@@ -257,6 +271,8 @@ def main() -> int:
     parser.add_argument("--action-rate-scale", type=float, default=None)
     parser.add_argument("--action-magnitude-scale", type=float, default=None)
     parser.add_argument("--stand-still-scale", type=float, default=None)
+    parser.add_argument("--orientation-scale", type=float, default=None)
+    parser.add_argument("--base-height-scale", type=float, default=None)
     parser.add_argument("--alive-scale", type=float, default=None)
     parser.add_argument("--imitation-scale", type=float, default=None)
     parser.add_argument("--lin-vel-x-min", type=float, default=None)
@@ -293,6 +309,12 @@ def main() -> int:
         "restore_checkpoint_path": args.restore_checkpoint_path,
         "target_rate_scale": args.target_rate_scale,
         "actuator_tracking_scale": args.actuator_tracking_scale,
+        "ppo_overrides": {
+            "learning_rate": args.ppo_learning_rate,
+            "entropy_cost": args.ppo_entropy_cost,
+            "clipping_epsilon": args.ppo_clipping_epsilon,
+            "max_grad_norm": args.ppo_max_grad_norm,
+        },
         "training_recipe_overrides": {
             "tracking_lin_vel_scale": args.tracking_lin_vel_scale,
             "tracking_ang_vel_scale": args.tracking_ang_vel_scale,
@@ -316,6 +338,8 @@ def main() -> int:
             "action_rate_scale": args.action_rate_scale,
             "action_magnitude_scale": args.action_magnitude_scale,
             "stand_still_scale": args.stand_still_scale,
+            "orientation_scale": args.orientation_scale,
+            "base_height_scale": args.base_height_scale,
             "alive_scale": args.alive_scale,
             "imitation_scale": args.imitation_scale,
             "lin_vel_x_min": args.lin_vel_x_min,

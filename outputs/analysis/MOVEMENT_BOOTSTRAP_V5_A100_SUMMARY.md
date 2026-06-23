@@ -148,3 +148,33 @@ The next offline choice should be deliberate:
 preserve/stabilize the phase-1 in-envelope motion, or stop escalating curricula
 if later attempts repeat standstill/fall without stable in-envelope progress
 ```
+
+## Phase-1 Failure Trace
+
+The phase-1 `x=0.08` lead was rerun with opt-in closed-loop trace logging.
+
+Evidence:
+
+```text
+outputs/analysis/PHASE1_X008_FAILURE_TRACE.md
+outputs/analysis/phase1_x008_failure_trace.json
+policy/candidates/movement_bootstrap_v5_phase1_in_envelope_unstable_20260623/
+```
+
+Trace summary:
+
+```text
+samples: 80
+done tick/time: 79 / 1.58 s
+mean local vx: 0.1892 m/s
+max pitch-chain p95 target velocity: 1.9529 rad/s
+body pitch abs p95/max: 1.1841 / 1.4642 rad
+base height min: 0.0434 m
+contact events: 13
+action saturation: 0%
+```
+
+The fall is not caused by action saturation or above-envelope target velocity.
+It is an unstable in-envelope forward-motion rollout that pitches over quickly.
+That makes the next training target a continuity/stabilization problem, not a
+generic "try more progress reward" problem.
