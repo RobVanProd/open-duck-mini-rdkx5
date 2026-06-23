@@ -516,6 +516,34 @@ The next planned recipe is `movement_bootstrap_v4` in
 `x=0.0` stability before low-command movement. Run it only offline and only gate
 candidate ONNX files in sim until both `x=0.0` and `x=0.08` pass.
 
+Before spending another large training run, produce the command-feasibility
+curve:
+
+```bash
+python3 tools/analyze_command_feasibility_curve.py \
+  --policy policy/BEST_WALK_ONNX_2.onnx \
+  --commands 0,0.02,0.04,0.06,0.08,0.10,0.12 \
+  --duration 5 \
+  --bridge-mode fitted \
+  --jax-platform cpu \
+  --run
+```
+
+The curve should identify where pitch-chain p95 target velocity crosses the
+robust fitted actuator envelope (`~2.25-3.75 rad/s`) and whether `x=0.08` is
+inside or above that envelope.
+
+Current BEST_WALK result:
+
+```text
+outputs/analysis/best_walk_command_feasibility_curve_cpu/COMMAND_FEASIBILITY_CURVE.md
+```
+
+`x=0.08` is the first swept command above the fitted actuator envelope. Commands
+through `x=0.06` stay below the envelope but do not produce meaningful forward
+progress. The next training objective should target stable low-command motion
+below the envelope before trying to recover `x=0.08`.
+
 ### Candidate ONNX Export
 
 - Export only after sim-side gates pass.

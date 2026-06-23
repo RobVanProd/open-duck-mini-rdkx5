@@ -1083,3 +1083,59 @@ phase 3: fitted-bridge stable progress
 
 This is an offline training plan only. It does not change robot runtime behavior
 and does not authorize robot validation.
+
+## Robust Actuator Fit Check
+
+The actuator response fit now supports robust selection metrics. A rerun with
+trimmed RMSE and p95 absolute error selection did not raise the fitted
+velocity-limit range:
+
+```text
+original RMSE:       2.25-3.75 rad/s
+trimmed RMSE 95:    2.50-3.50 rad/s
+p95 absolute error: 2.25-3.25 rad/s
+```
+
+Evidence:
+
+```text
+outputs/analysis/ROBUST_ACTUATOR_FIT_CHECK.md
+outputs/analysis/ACTUATOR_RESPONSE_FIT_TRIMMED_RMSE95.md
+outputs/analysis/ACTUATOR_RESPONSE_FIT_P95.md
+```
+
+Interpretation: the measured velocity ceiling is not obviously an
+outlier-contaminated RMSE artifact. The next missing analysis is a
+command-feasibility curve that sweeps command_x and reports where pitch-chain
+target velocity crosses the fitted actuator envelope.
+
+## BEST_WALK Command Feasibility Curve
+
+The first command-feasibility curve was run for `BEST_WALK_ONNX_2` on CPU with
+the fitted actuator bridge:
+
+```text
+outputs/analysis/best_walk_command_feasibility_curve_cpu/COMMAND_FEASIBILITY_CURVE.md
+```
+
+Result:
+
+```text
+x=0.00 max pitch p95 target velocity: 0.5331 rad/s
+x=0.02 max pitch p95 target velocity: 0.5229 rad/s
+x=0.04 max pitch p95 target velocity: 0.6609 rad/s
+x=0.06 max pitch p95 target velocity: 0.7821 rad/s
+x=0.08 max pitch p95 target velocity: 4.7277 rad/s
+x=0.10 max pitch p95 target velocity: 5.2400 rad/s
+x=0.12 max pitch p95 target velocity: 5.2400 rad/s
+```
+
+Interpretation: `x=0.08` is the first swept command where the pitch-chain p95
+target velocity jumps above the measured fitted actuator envelope
+(`~2.25-3.75 rad/s`). This directly supports the actuator-ceiling hypothesis for
+the current baseline policy. Commands up to `x=0.06` stay inside the target-rate
+envelope but show almost no forward progress in this closed-loop sim gate.
+
+Do not spend more large training runs until the next candidate objective is
+explicitly tied to this feasibility curve: make low-command movement below the
+envelope work first, then raise the command ceiling gradually.
