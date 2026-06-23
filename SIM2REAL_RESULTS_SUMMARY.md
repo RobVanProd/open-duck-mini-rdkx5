@@ -1165,3 +1165,16 @@ Key changes:
 A tiny CPU smoke validated that the new Huber reward flags are accepted by the
 Playground runner and complete a minimal offline PPO run. No robot work was
 performed.
+
+The post-v5 decision is not just `pass` or `hold` on `x=0.08`. The candidate
+must get its own command feasibility curve. The useful breakthrough is any
+nonzero forward motion below the measured target-velocity envelope. If multiple
+feasibility-curve-targeted recipes only produce motion above the envelope, the
+project should stop escalating curricula and move the conclusion toward actuator
+bandwidth, not another training recipe.
+
+Stop rule:
+
+```text
+docs/CANDIDATE_FEASIBILITY_STOP_RULE.md
+```

@@ -555,6 +555,13 @@ action-rate, target-rate, actuator-tracking, and shortfall terms so a few large
 residuals do not dominate the reward gradient while still discouraging sharp
 actuator-hostile commands.
 
+After v5 or any later candidate completes, run its command feasibility curve and
+apply [CANDIDATE_FEASIBILITY_STOP_RULE.md](CANDIDATE_FEASIBILITY_STOP_RULE.md).
+Do not keep adding curriculum variants indefinitely. If three
+feasibility-curve-targeted recipes only move above the measured actuator
+envelope, treat the forward-gait target as actuator-envelope limited rather
+than continuing to escalate training recipes.
+
 ### Candidate ONNX Export
 
 - Export only after sim-side gates pass.
