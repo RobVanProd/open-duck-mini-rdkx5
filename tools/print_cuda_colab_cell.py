@@ -26,6 +26,11 @@ def build_cell(args: argparse.Namespace) -> str:
     auto_download_flag = bash_bool(not args.no_auto_download)
     smoke_steps = args.smoke_num_timesteps
     candidate_steps = args.candidate_num_timesteps
+    candidate_disable_bridge_line = (
+        "    --disable-actuator-bridge \\\n"
+        if args.candidate_disable_actuator_bridge
+        else ""
+    )
     cell = f"""%%bash
 set -euo pipefail
 
@@ -389,6 +394,7 @@ if [ "$RUN_CANDIDATE" = "1" ]; then
     --command-resample-steps {args.candidate_command_resample_steps} \\
     --zero-command-probability {args.candidate_zero_command_probability} \\
     --head-range-factor 0.0 \\
+{candidate_disable_bridge_line.rstrip()}
     --actuator-bridge-delay-min-ticks {args.candidate_actuator_bridge_delay_min_ticks} \\
     --actuator-bridge-delay-max-ticks {args.candidate_actuator_bridge_delay_max_ticks} \\
     --actuator-bridge-tau-min-s {args.candidate_actuator_bridge_tau_min_s} \\
@@ -632,6 +638,14 @@ def main() -> int:
     parser.add_argument("--candidate-lin-vel-x-max", type=float, default=0.12)
     parser.add_argument("--candidate-command-resample-steps", type=int, default=500)
     parser.add_argument("--candidate-zero-command-probability", type=float, default=0.1)
+    parser.add_argument(
+        "--candidate-disable-actuator-bridge",
+        action="store_true",
+        help=(
+            "Disable the default candidate actuator bridge for a locomotion "
+            "bootstrap run. Sim gates still evaluate fitted/stress bridge modes."
+        ),
+    )
     parser.add_argument("--candidate-actuator-bridge-delay-min-ticks", type=int, default=3)
     parser.add_argument("--candidate-actuator-bridge-delay-max-ticks", type=int, default=8)
     parser.add_argument("--candidate-actuator-bridge-tau-min-s", type=float, default=0.06)
