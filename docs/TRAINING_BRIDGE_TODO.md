@@ -257,7 +257,7 @@ June 23 A100 staged shortfall result:
 Next recipe now staged:
 
 - `tools/plan_staged_curriculum_training.py --recipe movement_bootstrap_v2`
-  is the default staged recipe.
+  remains available, but it is no longer an untested default hypothesis.
 - `shortfall_v1` remains available to reproduce the June 23 A100 run.
 - `movement_bootstrap_v2` raises the command floor, tightens
   `tracking_sigma`, reduces alive dominance, and keeps a stronger
@@ -265,12 +265,23 @@ Next recipe now staged:
 - Planning artifacts:
   - `outputs/analysis/STAGED_CURRICULUM_TRAINING_PLAN.md`
   - `outputs/analysis/FORWARD_REWARD_LANDSCAPE_MOVEMENT_BOOTSTRAP_V2.md`
-- Next CUDA run should use:
+- A100 result:
+  - `outputs/analysis/MOVEMENT_BOOTSTRAP_V2_A100_SUMMARY.md`
+  - `x=0.0`: `HOLD_CANDIDATE_TRACKING`, max pitch tracking p95
+    `0.1388 rad` vs `0.0800 rad`
+  - `x=0.08`: `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS`, fitted-bridge mean local
+    forward velocity `0.0023 m/s`, tracking ratio `0.0286`
+  - Decision: not a robot candidate.
+
+Do not repeat `movement_bootstrap_v2` unchanged. The next recipe should add an
+episode-level forward displacement / minimum-progress objective or a stronger
+movement prior before spending another long CUDA/A100 run. If using Colab CLI
+again, create a new recipe name and run it explicitly:
 
 ```bash
 python3 tools/run_colab_cli_cuda_workflow.py \
   --workflow staged-curriculum \
-  --staged-recipe movement_bootstrap_v2 \
+  --staged-recipe <new-recipe-name> \
   --session <colab-session> \
   --run \
   --timeout-s 14400

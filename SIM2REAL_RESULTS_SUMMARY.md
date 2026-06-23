@@ -155,8 +155,27 @@ This recipe raises the phase-3 minimum command to `x=0.06`, tightens
 `tracking_sigma` to `0.00125`, and uses stronger progress/shortfall shaping.
 In the offline landscape, zero velocity at the new phase-3 minimum command is
 negative before alive/imitation terms instead of keeping a positive shaped
-reward. This is only a recipe-level hypothesis; it still requires a CUDA/A100
-training run and the same `x=0.0` / `x=0.08` candidate gates.
+reward.
+
+The `movement_bootstrap_v2` A100 run completed on June 23, 2026:
+
+```text
+outputs/analysis/MOVEMENT_BOOTSTRAP_V2_A100_SUMMARY.md
+```
+
+It is also **not a robot candidate**. It failed `x=0.0` with
+`HOLD_CANDIDATE_TRACKING`: max pitch tracking p95 was `0.1388 rad` against the
+`0.0800 rad` threshold, and body pitch p95 was `0.2623 rad` against the
+`0.2500 rad` threshold. It failed `x=0.08` with
+`HOLD_CANDIDATE_LOW_FORWARD_PROGRESS`: fitted-bridge mean local forward
+velocity was only `0.0023 m/s` for a `0.08 m/s` command, with command tracking
+ratio `0.0286`.
+
+This result means the current bootstrap recipe still lands in a low-motion
+local optimum while also missing tracking/posture gates. The next offline work
+should add a stronger episode-level displacement or minimum-progress objective,
+or use a movement prior/distillation from `BEST_WALK_ONNX_2`, before launching
+another large candidate run.
 
 ## Evidence Files
 
@@ -166,6 +185,7 @@ Small summaries:
 - `outputs/analysis/CANDIDATE_RECIPE_SEARCH_SUMMARY.md`
 - `outputs/analysis/FORWARD_REWARD_LANDSCAPE_SHORTFALL_CURRENT.md`
 - `outputs/analysis/FORWARD_REWARD_LANDSCAPE_MOVEMENT_BOOTSTRAP_V2.md`
+- `outputs/analysis/MOVEMENT_BOOTSTRAP_V2_A100_SUMMARY.md`
 - `outputs/analysis/POLICY_COMMAND_SENSITIVITY.md`
 - `outputs/analysis/STAGED_CURRICULUM_SHORTFALL_A100_SUMMARY.md`
 - `outputs/analysis/STAGED_CURRICULUM_SHORTFALL_SMOKE.md`
