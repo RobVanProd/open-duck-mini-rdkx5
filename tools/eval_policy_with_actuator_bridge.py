@@ -470,6 +470,8 @@ def run_closed_loop_worker(args) -> dict:
         str(args.eval_role),
         "--mjx-step-loop-mode",
         str(args.mjx_step_loop_mode),
+        "--policy-action-gain",
+        str(args.policy_action_gain),
         "--sim-preflight-timeout-s",
         str(args.sim_preflight_timeout_s),
         "--_closed-loop-worker",
@@ -478,6 +480,13 @@ def run_closed_loop_worker(args) -> dict:
     ]
     if args.jax_platform:
         cmd.extend(["--jax-platform", str(args.jax_platform)])
+    if args.max_motor_velocity_override_rad_s is not None:
+        cmd.extend(
+            [
+                "--max-motor-velocity-override-rad-s",
+                str(args.max_motor_velocity_override_rad_s),
+            ]
+        )
     if args.inspect_policy_io:
         cmd.append("--inspect-policy-io")
     env = None
@@ -627,6 +636,8 @@ def build_markdown(payload: dict) -> str:
         lines.append(f"status: `{closed_loop.get('status')}`")
         if closed_loop.get("eval_role"):
             lines.append(f"eval_role: `{closed_loop.get('eval_role')}`")
+        if closed_loop.get("policy_action_gain") is not None:
+            lines.append(f"policy_action_gain: `{closed_loop.get('policy_action_gain')}`")
         env = closed_loop.get("env", {})
         insertion = closed_loop.get("insertion_point", {})
         lines.append(f"env: `{env.get('env_class')}` / task `{env.get('task')}`")
@@ -635,6 +646,12 @@ def build_markdown(payload: dict) -> str:
         lines.append(f"ctrl_dt: `{env.get('ctrl_dt')}`")
         lines.append(f"sim_dt: `{env.get('sim_dt')}`")
         lines.append(f"mjx_step_loop_mode: `{env.get('mjx_step_loop_mode')}`")
+        lines.append(f"max_motor_velocity: `{env.get('max_motor_velocity')}`")
+        if env.get("max_motor_velocity_override_rad_s") is not None:
+            lines.append(
+                "max_motor_velocity_override_rad_s: "
+                f"`{env.get('max_motor_velocity_override_rad_s')}`"
+            )
         lines.append(f"jax: `{env.get('jax_backend')}` `{env.get('jax_devices')}`")
         lines.append(f"insertion_point: `{insertion.get('type')}`")
         lines.append(f"double_rate_limit: `{insertion.get('double_rate_limit')}`")
@@ -905,6 +922,27 @@ def main() -> int:
         ),
     )
     parser.add_argument(
+        "--policy-action-gain",
+        type=float,
+        default=1.0,
+        help=(
+            "Eval-only multiplier applied to ONNX policy actions before the "
+            "sim step. Default 1.0 preserves the policy exactly; values below "
+            "1.0 approximate an ONNX output-damping wrapper and do not modify "
+            "the policy file or robot runtime."
+        ),
+    )
+    parser.add_argument(
+        "--max-motor-velocity-override-rad-s",
+        type=float,
+        default=None,
+        help=(
+            "Eval-only override for the Playground max_motor_velocity target "
+            "slew limit. Default None preserves the env/runtime value. Use this "
+            "only for offline diagnostics of lower target-rate limits."
+        ),
+    )
+    parser.add_argument(
         "--sim-preflight-timeout-s",
         type=int,
         default=90,
@@ -975,6 +1013,10 @@ def main() -> int:
                         expected_action_dim=args.expected_action_dim,
                         eval_role=args.eval_role,
                         mjx_step_loop_mode=args.mjx_step_loop_mode,
+                        policy_action_gain=args.policy_action_gain,
+                        max_motor_velocity_override_rad_s=(
+                            args.max_motor_velocity_override_rad_s
+                        ),
                     )
                 )
             if args._closed_loop_worker_json:

@@ -55,6 +55,8 @@ class ClosedLoopConfig:
     seed: int = 0
     eval_role: str = "reproduction"
     mjx_step_loop_mode: str = "default"
+    policy_action_gain: float = 1.0
+    max_motor_velocity_override_rad_s: float | None = None
 
 
 @contextlib.contextmanager
@@ -469,6 +471,10 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
         "noise_config.imu_min_delay": 0,
         "noise_config.imu_max_delay": 1,
     }
+    if config.max_motor_velocity_override_rad_s is not None:
+        overrides["max_motor_velocity"] = float(
+            config.max_motor_velocity_override_rad_s
+        )
 
     try:
         with temporary_cwd(config.playground_root):
@@ -692,6 +698,9 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                     "status": "HOLD_POLICY_SIM_CONTRACT_MISMATCH",
                     "error": f"action shape {action.shape} != {(config.expected_action_dim,)}",
                 }
+            action = np.clip(
+                action * float(config.policy_action_gain), -1.0, 1.0
+            ).astype(np.float32)
             state, action_w_delay, pre_rate, sent_target = prepare_step_jit(
                 state, jp.asarray(action)
             )
@@ -848,6 +857,7 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
         "eval_role": config.eval_role,
         "candidate_gate": candidate_gate,
         "policy": policy,
+        "policy_action_gain": float(config.policy_action_gain),
         "env": {
             "playground_root": str(config.playground_root),
             "env_class": "playground.open_duck_mini_v2.joystick.Joystick",
@@ -869,6 +879,11 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             "mjx_step_loop_mode": config.mjx_step_loop_mode,
             "action_scale": float(env._config.action_scale),
             "max_motor_velocity": float(env._config.max_motor_velocity),
+            "max_motor_velocity_override_rad_s": (
+                None
+                if config.max_motor_velocity_override_rad_s is None
+                else float(config.max_motor_velocity_override_rad_s)
+            ),
             "jax_backend": jax.default_backend(),
             "jax_devices": [str(device) for device in jax.devices()],
         },
