@@ -385,6 +385,13 @@ def build_remote_driver(args: argparse.Namespace, workflow_name: str, rdk_tar: s
                 "--command-resample-steps", "{args.candidate_command_resample_steps}",
                 "--zero-command-probability", "{args.candidate_zero_command_probability}",
                 "--head-range-factor", "0.0",
+                "--actuator-bridge-delay-min-ticks", "{args.candidate_actuator_bridge_delay_min_ticks}",
+                "--actuator-bridge-delay-max-ticks", "{args.candidate_actuator_bridge_delay_max_ticks}",
+                "--actuator-bridge-tau-min-s", "{args.candidate_actuator_bridge_tau_min_s}",
+                "--actuator-bridge-tau-max-s", "{args.candidate_actuator_bridge_tau_max_s}",
+                "--actuator-bridge-velocity-limit-min-rad-s", "{args.candidate_actuator_bridge_velocity_limit_min_rad_s}",
+                "--actuator-bridge-velocity-limit-max-rad-s", "{args.candidate_actuator_bridge_velocity_limit_max_rad_s}",
+                "--actuator-bridge-per-joint-variation", "{args.candidate_actuator_bridge_per_joint_variation}",
                 "--timeout-s", "{args.candidate_timeout_s}",
             ]
             if {args.candidate_restore_checkpoint_path!r}:
@@ -566,6 +573,25 @@ def main() -> int:
     parser.add_argument("--candidate-lin-vel-x-max", type=float, default=0.12)
     parser.add_argument("--candidate-command-resample-steps", type=int, default=500)
     parser.add_argument("--candidate-zero-command-probability", type=float, default=0.1)
+    parser.add_argument("--candidate-actuator-bridge-delay-min-ticks", type=int, default=3)
+    parser.add_argument("--candidate-actuator-bridge-delay-max-ticks", type=int, default=8)
+    parser.add_argument("--candidate-actuator-bridge-tau-min-s", type=float, default=0.06)
+    parser.add_argument("--candidate-actuator-bridge-tau-max-s", type=float, default=0.14)
+    parser.add_argument(
+        "--candidate-actuator-bridge-velocity-limit-min-rad-s",
+        type=float,
+        default=2.5,
+    )
+    parser.add_argument(
+        "--candidate-actuator-bridge-velocity-limit-max-rad-s",
+        type=float,
+        default=4.7,
+    )
+    parser.add_argument(
+        "--candidate-actuator-bridge-per-joint-variation",
+        type=float,
+        default=0.15,
+    )
     args = parser.parse_args()
 
     rdk_root = Path(args.rdk_root).resolve()
