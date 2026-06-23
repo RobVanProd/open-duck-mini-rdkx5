@@ -511,13 +511,8 @@ Current v3 evidence:
 outputs/analysis/MOVEMENT_BOOTSTRAP_V3_A100_SUMMARY.md
 ```
 
-The next planned recipe is `movement_bootstrap_v4` in
-`tools/plan_staged_curriculum_training.py`. It starts with fitted-bridge
-`x=0.0` stability before low-command movement. Run it only offline and only gate
-candidate ONNX files in sim until both `x=0.0` and `x=0.08` pass.
-
-Before spending another large training run, produce the command-feasibility
-curve:
+The command-feasibility curve should be checked before spending another large
+training run:
 
 ```bash
 python3 tools/analyze_command_feasibility_curve.py \
@@ -543,6 +538,22 @@ outputs/analysis/best_walk_command_feasibility_curve_cpu/COMMAND_FEASIBILITY_CUR
 through `x=0.06` stay below the envelope but do not produce meaningful forward
 progress. The next training objective should target stable low-command motion
 below the envelope before trying to recover `x=0.08`.
+
+The next planned recipe is `movement_bootstrap_v5` in
+`tools/plan_staged_curriculum_training.py`. It replaces the v4 `x=0.0`-first
+stage with low-command movement in the measured feasible range:
+
+```text
+phase 1: x=0.04-0.06, mild bridge, Huber-shaped smoothness costs
+phase 2: x=0.04-0.06, robust fitted velocity envelope
+phase 3: x=0.04-0.08, expand only after low-command motion exists
+```
+
+The Huber controls are opt-in. With all deltas left at `0.0`, the Playground
+reward costs remain the existing squared penalties. V5 enables deltas for
+action-rate, target-rate, actuator-tracking, and shortfall terms so a few large
+residuals do not dominate the reward gradient while still discouraging sharp
+actuator-hostile commands.
 
 ### Candidate ONNX Export
 

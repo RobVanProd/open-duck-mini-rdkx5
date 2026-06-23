@@ -73,6 +73,12 @@ class Phase:
     command_progress_shortfall_scale: float = 0.0
     command_progress_required_ratio: float = 0.6
     command_progress_warmup_steps: int = 50
+    action_rate_huber_delta: float = 0.0
+    action_magnitude_huber_delta: float = 0.0
+    target_rate_huber_delta: float = 0.0
+    actuator_tracking_huber_delta: float = 0.0
+    forward_shortfall_huber_delta: float = 0.0
+    command_progress_shortfall_huber_delta: float = 0.0
 
 
 SHORTFALL_V1_PHASES = [
@@ -418,7 +424,120 @@ MOVEMENT_BOOTSTRAP_V4_PHASES = [
 ]
 
 
+MOVEMENT_BOOTSTRAP_V5_PHASES = [
+    Phase(
+        name="phase1_feasible_low_command_mild_bridge",
+        purpose=(
+            "learn visible forward motion in the target-rate-feasible "
+            "x=0.04-0.06 range before pushing toward x=0.08"
+        ),
+        num_timesteps=350_000,
+        bridge=True,
+        delay=(1, 3),
+        tau_s=(0.02, 0.06),
+        velocity_limit_rad_s=(4.0, 5.24),
+        target_rate_scale=-0.0015,
+        actuator_tracking_scale=-0.12,
+        tracking_lin_vel_scale=28.0,
+        tracking_sigma=0.0015,
+        forward_progress_scale=6.0,
+        forward_shortfall_scale=-5.0,
+        forward_shortfall_required_ratio=0.50,
+        action_rate_scale=-0.018,
+        action_magnitude_scale=-0.004,
+        stand_still_scale=-0.8,
+        alive_scale=0.08,
+        imitation_scale=0.60,
+        lin_vel_x=(0.04, 0.06),
+        zero_command_probability=0.0,
+        command_progress_scale=7.0,
+        command_progress_shortfall_scale=-7.0,
+        command_progress_required_ratio=0.50,
+        command_progress_warmup_steps=40,
+        action_rate_huber_delta=0.08,
+        action_magnitude_huber_delta=0.50,
+        target_rate_huber_delta=1.0,
+        actuator_tracking_huber_delta=0.08,
+        forward_shortfall_huber_delta=0.35,
+        command_progress_shortfall_huber_delta=0.35,
+    ),
+    Phase(
+        name="phase2_feasible_low_command_fitted_bridge",
+        purpose=(
+            "preserve low-command forward progress while moving to the robust "
+            "fitted actuator envelope"
+        ),
+        num_timesteps=450_000,
+        bridge=True,
+        delay=(3, 6),
+        tau_s=(0.06, 0.14),
+        velocity_limit_rad_s=(2.5, 3.75),
+        target_rate_scale=-0.003,
+        actuator_tracking_scale=-0.28,
+        tracking_lin_vel_scale=26.0,
+        tracking_sigma=0.0015,
+        forward_progress_scale=5.0,
+        forward_shortfall_scale=-5.0,
+        forward_shortfall_required_ratio=0.50,
+        action_rate_scale=-0.026,
+        action_magnitude_scale=-0.006,
+        stand_still_scale=-0.6,
+        alive_scale=0.12,
+        imitation_scale=0.50,
+        lin_vel_x=(0.04, 0.06),
+        zero_command_probability=0.0,
+        command_progress_scale=6.0,
+        command_progress_shortfall_scale=-7.0,
+        command_progress_required_ratio=0.50,
+        command_progress_warmup_steps=40,
+        action_rate_huber_delta=0.08,
+        action_magnitude_huber_delta=0.50,
+        target_rate_huber_delta=1.0,
+        actuator_tracking_huber_delta=0.08,
+        forward_shortfall_huber_delta=0.35,
+        command_progress_shortfall_huber_delta=0.35,
+    ),
+    Phase(
+        name="phase3_expand_toward_x008_fitted_bridge",
+        purpose=(
+            "expand the command window toward x=0.08 only after the lower "
+            "feasible range has a moving gait"
+        ),
+        num_timesteps=450_000,
+        bridge=True,
+        delay=(3, 6),
+        tau_s=(0.06, 0.14),
+        velocity_limit_rad_s=(2.5, 3.75),
+        target_rate_scale=-0.004,
+        actuator_tracking_scale=-0.32,
+        tracking_lin_vel_scale=24.0,
+        tracking_sigma=0.0015,
+        forward_progress_scale=4.5,
+        forward_shortfall_scale=-5.0,
+        forward_shortfall_required_ratio=0.45,
+        action_rate_scale=-0.030,
+        action_magnitude_scale=-0.008,
+        stand_still_scale=-0.5,
+        alive_scale=0.14,
+        imitation_scale=0.45,
+        lin_vel_x=(0.04, 0.08),
+        zero_command_probability=0.0,
+        command_progress_scale=5.0,
+        command_progress_shortfall_scale=-7.0,
+        command_progress_required_ratio=0.45,
+        command_progress_warmup_steps=40,
+        action_rate_huber_delta=0.08,
+        action_magnitude_huber_delta=0.50,
+        target_rate_huber_delta=1.0,
+        actuator_tracking_huber_delta=0.08,
+        forward_shortfall_huber_delta=0.35,
+        command_progress_shortfall_huber_delta=0.35,
+    ),
+]
+
+
 RECIPES = {
+    "movement_bootstrap_v5": MOVEMENT_BOOTSTRAP_V5_PHASES,
     "movement_bootstrap_v4": MOVEMENT_BOOTSTRAP_V4_PHASES,
     "movement_bootstrap_v3": MOVEMENT_BOOTSTRAP_V3_PHASES,
     "movement_bootstrap_v2": MOVEMENT_BOOTSTRAP_V2_PHASES,
@@ -488,6 +607,18 @@ def phase_command(
         cli_value(phase.command_progress_required_ratio),
         "--command-progress-warmup-steps",
         str(phase.command_progress_warmup_steps),
+        "--action-rate-huber-delta",
+        cli_value(phase.action_rate_huber_delta),
+        "--action-magnitude-huber-delta",
+        cli_value(phase.action_magnitude_huber_delta),
+        "--target-rate-huber-delta",
+        cli_value(phase.target_rate_huber_delta),
+        "--actuator-tracking-huber-delta",
+        cli_value(phase.actuator_tracking_huber_delta),
+        "--forward-shortfall-huber-delta",
+        cli_value(phase.forward_shortfall_huber_delta),
+        "--command-progress-shortfall-huber-delta",
+        cli_value(phase.command_progress_shortfall_huber_delta),
         "--action-rate-scale",
         cli_value(phase.action_rate_scale),
         "--action-magnitude-scale",
@@ -581,6 +712,14 @@ def phase_payload(phase: Phase, command: list[str], output_root: Path) -> dict[s
         "command_progress_shortfall_scale": phase.command_progress_shortfall_scale,
         "command_progress_required_ratio": phase.command_progress_required_ratio,
         "command_progress_warmup_steps": phase.command_progress_warmup_steps,
+        "action_rate_huber_delta": phase.action_rate_huber_delta,
+        "action_magnitude_huber_delta": phase.action_magnitude_huber_delta,
+        "target_rate_huber_delta": phase.target_rate_huber_delta,
+        "actuator_tracking_huber_delta": phase.actuator_tracking_huber_delta,
+        "forward_shortfall_huber_delta": phase.forward_shortfall_huber_delta,
+        "command_progress_shortfall_huber_delta": (
+            phase.command_progress_shortfall_huber_delta
+        ),
         "num_timesteps": phase.num_timesteps,
         "restore_checkpoint": (
             command[command.index("--restore-checkpoint-path") + 1]
@@ -614,10 +753,11 @@ def write_plan(payload: dict[str, Any], output_md: Path, output_json: Path) -> N
         "stationary at `x=0.08`. The staged recipe bootstraps forward motion before",
         "tightening actuator realism.",
         "",
-        "The default `movement_bootstrap_v4` recipe follows the A100",
-        "`movement_bootstrap_v3` result. V3 completed training but failed the",
-        "fitted-bridge `x=0.0` gate, so V4 first recovers fitted-bridge",
-        "zero-command stability before reintroducing low positive commands.",
+        "The default `movement_bootstrap_v5` recipe follows the command",
+        "feasibility curve: `BEST_WALK_ONNX_2` stays below the actuator target",
+        "velocity envelope through roughly `x=0.06`, then crosses it at `x=0.08`.",
+        "V5 therefore learns low-command motion first, using Huber-shaped",
+        "smoothness costs, before expanding toward `x=0.08`.",
         "",
         "## Phases",
         "",
@@ -715,13 +855,15 @@ def main() -> int:
     parser.add_argument(
         "--recipe",
         choices=sorted(RECIPES),
-        default="movement_bootstrap_v4",
+        default="movement_bootstrap_v5",
         help=(
             "Staged recipe to emit/run. shortfall_v1 preserves the June 23 A100 "
             "recipe that landed in standstill; movement_bootstrap_v2 preserves "
             "the first movement-bootstrap attempt; movement_bootstrap_v3 adds "
             "command-window progress pressure; movement_bootstrap_v4 adds a "
-            "fitted-bridge x0 stability phase before low-command progress."
+            "fitted-bridge x0 stability phase before low-command progress; "
+            "movement_bootstrap_v5 targets the measured low-command feasible "
+            "range first."
         ),
     )
     parser.add_argument("--timesteps-scale", type=float, default=1.0)

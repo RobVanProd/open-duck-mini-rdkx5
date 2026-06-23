@@ -1069,16 +1069,16 @@ Interpretation: v3 escaped pure standstill but lost zero-command stability under
 the fitted actuator bridge. Because `x=0.0` failed, `x=0.08` was not run. This
 candidate is not deployable and should not be tested on the robot.
 
-Next training direction: add a staged stability requirement before the
-forward-progress curriculum, then reintroduce positive-command progress only
-after fitted-bridge `x=0.0` passes.
+The subsequent v4 attempt recovered a fitted-bridge `x=0.0` stability stage but
+was stopped before continuing because the missing feasibility-curve analysis was
+more important than another blind curriculum escalation.
 
-The next planned recipe is now `movement_bootstrap_v4`:
+The next planned recipe is now `movement_bootstrap_v5`:
 
 ```text
-phase 1: fitted-bridge x=0.0 stability
-phase 2: low-command mild-bridge movement
-phase 3: fitted-bridge stable progress
+phase 1: x=0.04-0.06, mild bridge, Huber-shaped smoothness costs
+phase 2: x=0.04-0.06, robust fitted actuator envelope
+phase 3: x=0.04-0.08, expand only after low-command motion exists
 ```
 
 This is an offline training plan only. It does not change robot runtime behavior
@@ -1139,3 +1139,29 @@ envelope but show almost no forward progress in this closed-loop sim gate.
 Do not spend more large training runs until the next candidate objective is
 explicitly tied to this feasibility curve: make low-command movement below the
 envelope work first, then raise the command ceiling gradually.
+
+## Movement Bootstrap V5 Plan
+
+`movement_bootstrap_v5` is now the default staged recipe in
+`tools/plan_staged_curriculum_training.py`.
+
+Evidence:
+
+```text
+outputs/analysis/MOVEMENT_BOOTSTRAP_V5_PLAN.md
+outputs/analysis/movement_bootstrap_v5_plan.json
+```
+
+Key changes:
+
+```text
+- starts at x=0.04-0.06 instead of x=0.08
+- uses the robust fitted velocity envelope, 2.5-3.75 rad/s, before expansion
+- adds opt-in pseudo-Huber costs for action-rate, target-rate,
+  actuator-tracking, and forward/command shortfall terms
+- expands toward x=0.08 only after low-command motion exists
+```
+
+A tiny CPU smoke validated that the new Huber reward flags are accepted by the
+Playground runner and complete a minimal offline PPO run. No robot work was
+performed.

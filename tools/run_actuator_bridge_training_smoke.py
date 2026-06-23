@@ -91,6 +91,14 @@ def build_command(args: argparse.Namespace, output_dir: Path) -> list[str]:
         "--command_progress_shortfall_scale": args.command_progress_shortfall_scale,
         "--command_progress_required_ratio": args.command_progress_required_ratio,
         "--command_progress_warmup_steps": args.command_progress_warmup_steps,
+        "--action_rate_huber_delta": args.action_rate_huber_delta,
+        "--action_magnitude_huber_delta": args.action_magnitude_huber_delta,
+        "--target_rate_huber_delta": args.target_rate_huber_delta,
+        "--actuator_tracking_huber_delta": args.actuator_tracking_huber_delta,
+        "--forward_shortfall_huber_delta": args.forward_shortfall_huber_delta,
+        "--command_progress_shortfall_huber_delta": (
+            args.command_progress_shortfall_huber_delta
+        ),
         "--action_rate_scale": args.action_rate_scale,
         "--action_magnitude_scale": args.action_magnitude_scale,
         "--stand_still_scale": args.stand_still_scale,
@@ -238,6 +246,14 @@ def main() -> int:
     parser.add_argument("--command-progress-shortfall-scale", type=float, default=None)
     parser.add_argument("--command-progress-required-ratio", type=float, default=None)
     parser.add_argument("--command-progress-warmup-steps", type=int, default=None)
+    parser.add_argument("--action-rate-huber-delta", type=float, default=None)
+    parser.add_argument("--action-magnitude-huber-delta", type=float, default=None)
+    parser.add_argument("--target-rate-huber-delta", type=float, default=None)
+    parser.add_argument("--actuator-tracking-huber-delta", type=float, default=None)
+    parser.add_argument("--forward-shortfall-huber-delta", type=float, default=None)
+    parser.add_argument(
+        "--command-progress-shortfall-huber-delta", type=float, default=None
+    )
     parser.add_argument("--action-rate-scale", type=float, default=None)
     parser.add_argument("--action-magnitude-scale", type=float, default=None)
     parser.add_argument("--stand-still-scale", type=float, default=None)
@@ -289,6 +305,14 @@ def main() -> int:
             "command_progress_shortfall_scale": args.command_progress_shortfall_scale,
             "command_progress_required_ratio": args.command_progress_required_ratio,
             "command_progress_warmup_steps": args.command_progress_warmup_steps,
+            "action_rate_huber_delta": args.action_rate_huber_delta,
+            "action_magnitude_huber_delta": args.action_magnitude_huber_delta,
+            "target_rate_huber_delta": args.target_rate_huber_delta,
+            "actuator_tracking_huber_delta": args.actuator_tracking_huber_delta,
+            "forward_shortfall_huber_delta": args.forward_shortfall_huber_delta,
+            "command_progress_shortfall_huber_delta": (
+                args.command_progress_shortfall_huber_delta
+            ),
             "action_rate_scale": args.action_rate_scale,
             "action_magnitude_scale": args.action_magnitude_scale,
             "stand_still_scale": args.stand_still_scale,
