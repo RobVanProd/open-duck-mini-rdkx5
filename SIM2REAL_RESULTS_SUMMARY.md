@@ -122,6 +122,14 @@ offline training work should investigate locomotion bootstrapping, a stronger
 motion prior, or an episode-level progress requirement before launching another
 large run.
 
+Follow-up inspection found that the A100 training manifests did include
+`--forward_shortfall_scale`, but the packaged candidate-gate reward-term table
+used the evaluator's default reward config and therefore did not list
+`cost/forward_shortfall`. The gate decision remains valid because it is based
+on measured local forward velocity and command tracking ratio. The evaluator now
+adds a reward-config-independent forward-shortfall diagnostic to future
+candidate gates.
+
 ## Evidence Files
 
 Small summaries:

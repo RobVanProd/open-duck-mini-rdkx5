@@ -90,6 +90,14 @@ optimum.
 
 Do not run this policy on the robot.
 
+One reporting caveat: the packaged candidate gates were run with the evaluator's
+default reward config, so their reward-term tables do not include
+`cost/forward_shortfall` even though the training manifests did pass
+`--forward_shortfall_scale`. The gate decision is still valid because it uses
+measured local forward velocity and command tracking ratio. Future gates should
+use the evaluator's explicit forward-shortfall diagnostic so this distinction is
+visible in the markdown/JSON output.
+
 Next offline work should focus on a stronger locomotion bootstrap or motion
 prior instead of simply increasing smoothness/actuator penalties:
 

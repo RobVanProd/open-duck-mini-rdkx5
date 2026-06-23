@@ -241,6 +241,12 @@ June 23 A100 staged shortfall result:
 - Interpretation: increasing explicit shortfall pressure inside the current
   staged recipe is not enough. The next recipe needs a stronger locomotion
   bootstrap or motion prior, not robot validation.
+- Reporting caveat: the A100 packaged candidate gates used the evaluator's
+  default reward config, so their reward-term tables did not list
+  `cost/forward_shortfall` even though the training manifests passed
+  `--forward_shortfall_scale`. The gate decision is still valid because it is
+  based on measured local forward velocity and command tracking ratio. Future
+  gates now include a reward-config-independent forward-shortfall diagnostic.
 
 ### Configurable Target Delay Wrapper
 

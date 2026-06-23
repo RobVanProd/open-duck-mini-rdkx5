@@ -93,6 +93,20 @@ Use A100 for faster iteration when available, but do not treat the current
 staged shortfall recipe as solved. It still lands in the actuator-safe
 standstill optimum.
 
+Candidate gate markdown now includes a `Forward Shortfall Diagnostic` section
+that is independent of the environment reward config. Use that section to
+distinguish these two cases:
+
+```text
+training manifest includes --forward_shortfall_scale
+candidate gate reward-term table omits cost/forward_shortfall because eval uses default reward scales
+candidate gate still reports measured progress_ratio and shortfall_cost
+```
+
+The gate decision should continue to be driven by measured local forward
+velocity and command tracking ratio, not by whether a diagnostic reward term is
+present in the default eval reward table.
+
 Plan-only:
 
 ```bash

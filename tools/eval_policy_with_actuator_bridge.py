@@ -472,6 +472,10 @@ def run_closed_loop_worker(args) -> dict:
         str(args.mjx_step_loop_mode),
         "--policy-action-gain",
         str(args.policy_action_gain),
+        "--forward-diagnostic-required-ratio",
+        str(args.forward_diagnostic_required_ratio),
+        "--forward-diagnostic-deadband",
+        str(args.forward_diagnostic_deadband),
         "--sim-preflight-timeout-s",
         str(args.sim_preflight_timeout_s),
         "--_closed-loop-worker",
@@ -708,6 +712,7 @@ def build_markdown(payload: dict) -> str:
                 "min_reward_mean",
                 "min_forward_command_tracking_ratio",
                 "max_abs_forward_velocity_error_m_s",
+                "max_forward_shortfall_cost_mean",
             ]:
                 lines.append(
                     f"| `{key}` | {fmt(metrics.get(key))} | {fmt(thresholds.get(key))} |"
@@ -747,6 +752,28 @@ def build_markdown(payload: dict) -> str:
             lines.append("| mode | term | mean | p95 | max |")
             lines.append("|---|---|---:|---:|---:|")
             lines.extend(reward_rows)
+            lines.append("")
+        shortfall_rows = []
+        for mode_name, mode in (closed_loop.get("modes") or {}).items():
+            diag = mode.get("forward_shortfall_diagnostic") or {}
+            progress = diag.get("progress_ratio") or {}
+            shortfall = diag.get("normalized_shortfall") or {}
+            cost = diag.get("shortfall_cost") or {}
+            shortfall_rows.append(
+                f"| {mode_name} | `{diag.get('status')}` | "
+                f"{fmt(diag.get('required_ratio'))} | "
+                f"{fmt(progress.get('mean'))} | {fmt(progress.get('p95'))} | "
+                f"{fmt(shortfall.get('mean'))} | {fmt(cost.get('mean'))} |"
+            )
+        if shortfall_rows:
+            lines.append("### Forward Shortfall Diagnostic")
+            lines.append("")
+            lines.append(
+                "| mode | status | required_ratio | progress_ratio_mean | "
+                "progress_ratio_p95 | normalized_shortfall_mean | shortfall_cost_mean |"
+            )
+            lines.append("|---|---|---:|---:|---:|---:|---:|")
+            lines.extend(shortfall_rows)
             lines.append("")
         lines.append("### Pitch-Chain Summary")
         lines.append("")
@@ -943,6 +970,27 @@ def main() -> int:
         ),
     )
     parser.add_argument(
+        "--forward-diagnostic-required-ratio",
+        type=float,
+        default=0.5,
+        help=(
+            "Reward-config-independent forward shortfall diagnostic ratio. "
+            "At command x, the diagnostic reports shortfall below "
+            "abs(command_x) * this ratio. It does not change policy or robot "
+            "behavior."
+        ),
+    )
+    parser.add_argument(
+        "--forward-diagnostic-deadband",
+        type=float,
+        default=0.02,
+        help=(
+            "Deadband for the reward-config-independent forward shortfall "
+            "diagnostic. Commands below this magnitude are treated as no "
+            "forward-progress requirement."
+        ),
+    )
+    parser.add_argument(
         "--sim-preflight-timeout-s",
         type=int,
         default=90,
@@ -1016,6 +1064,12 @@ def main() -> int:
                         policy_action_gain=args.policy_action_gain,
                         max_motor_velocity_override_rad_s=(
                             args.max_motor_velocity_override_rad_s
+                        ),
+                        forward_diagnostic_required_ratio=(
+                            args.forward_diagnostic_required_ratio
+                        ),
+                        forward_diagnostic_deadband=(
+                            args.forward_diagnostic_deadband
                         ),
                     )
                 )

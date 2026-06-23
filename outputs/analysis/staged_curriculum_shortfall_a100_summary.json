@@ -53,5 +53,6 @@
     }
   },
   "decision": "not_robot_candidate",
-  "conclusion": "The staged shortfall curriculum completed on A100, but the final policy remains near standstill at x=0.08 while staying actuator-safe. Next work should target locomotion bootstrap or motion prior rather than robot testing."
+  "conclusion": "The staged shortfall curriculum completed on A100, but the final policy remains near standstill at x=0.08 while staying actuator-safe. Next work should target locomotion bootstrap or motion prior rather than robot testing.",
+  "reporting_caveat": "Training manifests included --forward_shortfall_scale, but the packaged candidate-gate reward-term table used default eval reward scales and did not list cost/forward_shortfall. The gate decision is still valid because it uses measured local forward velocity and command tracking ratio. Future gates include a reward-config-independent forward-shortfall diagnostic."
 }

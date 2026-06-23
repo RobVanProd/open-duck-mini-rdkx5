@@ -57,6 +57,8 @@ class ClosedLoopConfig:
     mjx_step_loop_mode: str = "default"
     policy_action_gain: float = 1.0
     max_motor_velocity_override_rad_s: float | None = None
+    forward_diagnostic_required_ratio: float = 0.5
+    forward_diagnostic_deadband: float = 0.02
 
 
 @contextlib.contextmanager
@@ -267,6 +269,70 @@ def reward_term_summary(records: list[dict]) -> dict:
     }
 
 
+def forward_shortfall_diagnostic(
+    local_vx_values: Sequence[float],
+    command_x: float,
+    *,
+    required_ratio: float,
+    deadband: float,
+) -> dict:
+    """Compute a reward-config-independent forward progress diagnostic.
+
+    Candidate gates may instantiate the Playground with default reward scales,
+    so reward-term summaries do not necessarily include a training-time
+    `cost/forward_shortfall` metric. This diagnostic keeps the standstill
+    failure visible using only the commanded x velocity and measured local
+    forward velocity.
+    """
+    if not finite(command_x):
+        return {
+            "status": "MISSING_COMMAND",
+            "required_ratio": required_ratio,
+            "deadband": deadband,
+        }
+    command_x = float(command_x)
+    required_ratio = float(required_ratio)
+    deadband = float(deadband)
+    values = [float(value) for value in local_vx_values if finite(value)]
+    needs_progress = abs(command_x) > deadband
+    if not needs_progress:
+        return {
+            "status": "NO_FORWARD_COMMAND",
+            "required_ratio": required_ratio,
+            "deadband": deadband,
+            "command_x_m_s": command_x,
+        }
+    if not values:
+        return {
+            "status": "MISSING_VELOCITY",
+            "required_ratio": required_ratio,
+            "deadband": deadband,
+            "command_x_m_s": command_x,
+        }
+
+    target_speed = max(abs(command_x), 1.0e-9)
+    sign = 1.0 if command_x >= 0.0 else -1.0
+    signed = np.asarray(values, dtype=float) * sign
+    progress_ratio = signed / target_speed
+    clipped_progress_ratio = np.clip(progress_ratio, 0.0, 1.0)
+    required_speed = target_speed * required_ratio
+    shortfall_m_s = np.clip(required_speed - signed, 0.0, None)
+    normalized_shortfall = shortfall_m_s / target_speed
+    shortfall_cost = np.square(normalized_shortfall)
+    return {
+        "status": "PASS_DIAGNOSTIC",
+        "required_ratio": required_ratio,
+        "deadband": deadband,
+        "command_x_m_s": command_x,
+        "required_speed_m_s": required_speed,
+        "progress_ratio": signed_stats(progress_ratio),
+        "clipped_progress_ratio": signed_stats(clipped_progress_ratio),
+        "shortfall_m_s": signed_stats(shortfall_m_s),
+        "normalized_shortfall": signed_stats(normalized_shortfall),
+        "shortfall_cost": signed_stats(shortfall_cost),
+    }
+
+
 def classify_closed_loop(modes: Mapping[str, Mapping[str, Any]]) -> str:
     fitted = modes.get("fitted")
     if not fitted:
@@ -326,6 +392,7 @@ def classify_candidate_gate(modes: Mapping[str, Mapping[str, Any]]) -> dict:
     command_x_values = []
     forward_ratios = []
     forward_velocity_errors = []
+    forward_shortfall_cost_means = []
     for mode in modes.values():
         body = mode.get("body_pitch_rad") or {}
         height = mode.get("base_height_m") or {}
@@ -345,6 +412,10 @@ def classify_candidate_gate(modes: Mapping[str, Mapping[str, Any]]) -> dict:
             forward_ratios.append(float(forward["command_tracking_ratio"]))
         if finite(forward.get("velocity_error_m_s")):
             forward_velocity_errors.append(abs(float(forward["velocity_error_m_s"])))
+        shortfall = mode.get("forward_shortfall_diagnostic") or {}
+        shortfall_cost = shortfall.get("shortfall_cost") or {}
+        if finite(shortfall_cost.get("mean")):
+            forward_shortfall_cost_means.append(float(shortfall_cost["mean"]))
         for joint in PITCH_CHAIN_JOINTS:
             item = (mode.get("joints") or {}).get(joint, {})
             tracking = (item.get("joint_target_tracking_error_rad") or {}).get("p95")
@@ -368,6 +439,7 @@ def classify_candidate_gate(modes: Mapping[str, Mapping[str, Any]]) -> dict:
             min(forward_ratios) if forward_ratios else None
         ),
         "max_abs_forward_velocity_error_m_s": max_finite(forward_velocity_errors),
+        "max_forward_shortfall_cost_mean": max_finite(forward_shortfall_cost_means),
         "terminations": terminations,
     }
     command_x = command_x_values[0] if command_x_values else 0.0
@@ -836,6 +908,12 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                 "command_tracking_ratio": ratio,
                 "measurement_frame": "local_base_x",
             },
+            "forward_shortfall_diagnostic": forward_shortfall_diagnostic(
+                local_vx_values,
+                float(config.command_x),
+                required_ratio=config.forward_diagnostic_required_ratio,
+                deadband=config.forward_diagnostic_deadband,
+            ),
             "reward": reward_stats,
             "reward_terms": reward_terms,
             "foot_contact_counts": {
@@ -858,6 +936,10 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
         "candidate_gate": candidate_gate,
         "policy": policy,
         "policy_action_gain": float(config.policy_action_gain),
+        "forward_diagnostic": {
+            "required_ratio": float(config.forward_diagnostic_required_ratio),
+            "deadband": float(config.forward_diagnostic_deadband),
+        },
         "env": {
             "playground_root": str(config.playground_root),
             "env_class": "playground.open_duck_mini_v2.joystick.Joystick",
