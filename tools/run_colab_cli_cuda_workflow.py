@@ -521,6 +521,7 @@ def build_remote_driver(
             run([
                 PYTHON, "tools/plan_staged_curriculum_training.py",
                 "--run",
+                "--recipe", "{args.staged_recipe}",
                 "--playground-path", str(PLAYGROUND),
                 "--env-python", PYTHON,
                 "--platform", "gpu",
@@ -725,7 +726,17 @@ def main() -> int:
         default=1.0,
         help=(
             "Scale the three staged-curriculum phase lengths. The base phases "
-            "are 300k, 250k, and 300k timesteps."
+            "depend on --staged-recipe."
+        ),
+    )
+    parser.add_argument(
+        "--staged-recipe",
+        choices=["movement_bootstrap_v2", "shortfall_v1"],
+        default="movement_bootstrap_v2",
+        help=(
+            "Recipe passed to tools/plan_staged_curriculum_training.py for "
+            "--workflow staged-curriculum. movement_bootstrap_v2 is the next "
+            "attempt after the A100 shortfall_v1 standstill result."
         ),
     )
     parser.add_argument(

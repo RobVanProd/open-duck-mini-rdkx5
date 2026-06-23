@@ -71,7 +71,7 @@ class Phase:
     zero_command_probability: float
 
 
-PHASES = [
+SHORTFALL_V1_PHASES = [
     Phase(
         name="phase1_locomotion_bootstrap_no_bridge",
         purpose="force forward intent before actuator constraints make standing easy",
@@ -142,6 +142,94 @@ PHASES = [
         zero_command_probability=0.05,
     ),
 ]
+
+
+MOVEMENT_BOOTSTRAP_V2_PHASES = [
+    Phase(
+        name="phase1_motion_prior_no_bridge",
+        purpose=(
+            "force visible gait-like forward motion at a higher command floor "
+            "before actuator constraints are introduced"
+        ),
+        num_timesteps=400_000,
+        bridge=False,
+        delay=(0, 0),
+        tau_s=(0.0, 0.0),
+        velocity_limit_rad_s=(5.24, 5.24),
+        target_rate_scale=0.0,
+        actuator_tracking_scale=0.0,
+        tracking_lin_vel_scale=30.0,
+        tracking_sigma=0.00125,
+        forward_progress_scale=10.0,
+        forward_shortfall_scale=-8.0,
+        forward_shortfall_required_ratio=0.75,
+        action_rate_scale=-0.005,
+        action_magnitude_scale=-0.001,
+        stand_still_scale=-1.0,
+        alive_scale=0.05,
+        imitation_scale=0.75,
+        lin_vel_x=(0.08, 0.16),
+        zero_command_probability=0.0,
+    ),
+    Phase(
+        name="phase2_mild_bridge_keep_motion",
+        purpose=(
+            "retain discovered forward motion while adding mild delay, lag, "
+            "and target-rate pressure"
+        ),
+        num_timesteps=300_000,
+        bridge=True,
+        delay=(1, 2),
+        tau_s=(0.02, 0.05),
+        velocity_limit_rad_s=(4.5, 5.24),
+        target_rate_scale=-0.002,
+        actuator_tracking_scale=-0.15,
+        tracking_lin_vel_scale=30.0,
+        tracking_sigma=0.00125,
+        forward_progress_scale=8.0,
+        forward_shortfall_scale=-8.0,
+        forward_shortfall_required_ratio=0.70,
+        action_rate_scale=-0.02,
+        action_magnitude_scale=-0.005,
+        stand_still_scale=-0.8,
+        alive_scale=0.10,
+        imitation_scale=0.60,
+        lin_vel_x=(0.06, 0.14),
+        zero_command_probability=0.0,
+    ),
+    Phase(
+        name="phase3_fitted_bridge_preserve_motion",
+        purpose=(
+            "move toward the measured actuator envelope while keeping the "
+            "minimum command high enough to avoid the standstill basin"
+        ),
+        num_timesteps=350_000,
+        bridge=True,
+        delay=(3, 6),
+        tau_s=(0.06, 0.14),
+        velocity_limit_rad_s=(3.0, 4.7),
+        target_rate_scale=-0.006,
+        actuator_tracking_scale=-0.45,
+        tracking_lin_vel_scale=28.0,
+        tracking_sigma=0.00125,
+        forward_progress_scale=6.0,
+        forward_shortfall_scale=-6.0,
+        forward_shortfall_required_ratio=0.60,
+        action_rate_scale=-0.04,
+        action_magnitude_scale=-0.01,
+        stand_still_scale=-0.5,
+        alive_scale=0.15,
+        imitation_scale=0.40,
+        lin_vel_x=(0.06, 0.12),
+        zero_command_probability=0.0,
+    ),
+]
+
+
+RECIPES = {
+    "movement_bootstrap_v2": MOVEMENT_BOOTSTRAP_V2_PHASES,
+    "shortfall_v1": SHORTFALL_V1_PHASES,
+}
 
 
 def phase_command(
@@ -311,6 +399,7 @@ def write_plan(payload: dict[str, Any], output_md: Path, output_json: Path) -> N
         "",
         f"status: `{payload['status']}`",
         f"platform: `{payload['platform']}`",
+        f"recipe: `{payload['recipe']}`",
         f"output_root: `{payload['output_root']}`",
         "",
         "## Why",
@@ -318,6 +407,12 @@ def write_plan(payload: dict[str, Any], output_md: Path, output_json: Path) -> N
         "Current candidates are either aggressive and unsafe, or stable and nearly",
         "stationary at `x=0.08`. The staged recipe bootstraps forward motion before",
         "tightening actuator realism.",
+        "",
+        "The default `movement_bootstrap_v2` recipe is a follow-up to the A100",
+        "`shortfall_v1` result. It raises the command floor, tightens the",
+        "tracking reward, reduces alive dominance, and keeps a stronger",
+        "imitation/motion prior in the early phases so the optimizer has to",
+        "discover forward locomotion before the full fitted bridge is applied.",
         "",
         "## Phases",
         "",
@@ -406,6 +501,16 @@ def main() -> int:
     parser.add_argument("--output-md", type=Path, default=DEFAULT_PLAN_MD)
     parser.add_argument("--output-json", type=Path, default=DEFAULT_PLAN_JSON)
     parser.add_argument("--platform", choices=["cpu", "gpu"], default="gpu")
+    parser.add_argument(
+        "--recipe",
+        choices=sorted(RECIPES),
+        default="movement_bootstrap_v2",
+        help=(
+            "Staged recipe to emit/run. shortfall_v1 preserves the June 23 A100 "
+            "recipe that landed in standstill; movement_bootstrap_v2 is the "
+            "next offline attempt."
+        ),
+    )
     parser.add_argument("--timesteps-scale", type=float, default=1.0)
     parser.add_argument("--phase-timeout-s", type=int, default=3600)
     parser.add_argument("--run", action="store_true")
@@ -425,12 +530,13 @@ def main() -> int:
         "robot_touched": False,
         "deploy_performed": False,
         "platform": args.platform,
+        "recipe": args.recipe,
         "output_root": str(output_root),
         "phases": [],
     }
 
     restore_checkpoint: Path | None = None
-    for index, phase in enumerate(PHASES, 1):
+    for index, phase in enumerate(RECIPES[args.recipe], 1):
         phase_root = output_root / f"{index:02d}_{phase.name}"
         restore_for_command = restore_checkpoint
         if restore_for_command is None and not args.run and index > 1:

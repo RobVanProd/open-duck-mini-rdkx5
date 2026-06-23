@@ -130,12 +130,42 @@ on measured local forward velocity and command tracking ratio. The evaluator now
 adds a reward-config-independent forward-shortfall diagnostic to future
 candidate gates.
 
+The combined reward landscape for the failed final phase is now recorded in:
+
+```text
+outputs/analysis/FORWARD_REWARD_LANDSCAPE_SHORTFALL_CURRENT.md
+```
+
+It shows that the current final-phase shaping still leaves zero velocity
+attractive at the lower end of the command curriculum. For `command_x=0.04`,
+`tracking_sigma=0.0025`, `tracking_scale=25`, `forward_progress_scale=4`, and
+`forward_shortfall_scale=-4`, zero velocity retains about `42%` of the shaped
+target reward before alive/imitation terms. That supports shifting the next
+recipe toward a stronger movement bootstrap or a higher minimum command rather
+than simply repeating the same staged run.
+
+The next staged plan now defaults to `movement_bootstrap_v2`:
+
+```text
+outputs/analysis/STAGED_CURRICULUM_TRAINING_PLAN.md
+outputs/analysis/FORWARD_REWARD_LANDSCAPE_MOVEMENT_BOOTSTRAP_V2.md
+```
+
+This recipe raises the phase-3 minimum command to `x=0.06`, tightens
+`tracking_sigma` to `0.00125`, and uses stronger progress/shortfall shaping.
+In the offline landscape, zero velocity at the new phase-3 minimum command is
+negative before alive/imitation terms instead of keeping a positive shaped
+reward. This is only a recipe-level hypothesis; it still requires a CUDA/A100
+training run and the same `x=0.0` / `x=0.08` candidate gates.
+
 ## Evidence Files
 
 Small summaries:
 
 - `outputs/analysis/ACTUATOR_RESPONSE_FIT.md`
 - `outputs/analysis/CANDIDATE_RECIPE_SEARCH_SUMMARY.md`
+- `outputs/analysis/FORWARD_REWARD_LANDSCAPE_SHORTFALL_CURRENT.md`
+- `outputs/analysis/FORWARD_REWARD_LANDSCAPE_MOVEMENT_BOOTSTRAP_V2.md`
 - `outputs/analysis/POLICY_COMMAND_SENSITIVITY.md`
 - `outputs/analysis/STAGED_CURRICULUM_SHORTFALL_A100_SUMMARY.md`
 - `outputs/analysis/STAGED_CURRICULUM_SHORTFALL_SMOKE.md`

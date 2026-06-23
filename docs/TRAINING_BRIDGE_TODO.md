@@ -247,6 +247,37 @@ June 23 A100 staged shortfall result:
   `--forward_shortfall_scale`. The gate decision is still valid because it is
   based on measured local forward velocity and command tracking ratio. Future
   gates now include a reward-config-independent forward-shortfall diagnostic.
+- Reward landscape caveat:
+  `outputs/analysis/FORWARD_REWARD_LANDSCAPE_SHORTFALL_CURRENT.md` shows that
+  the current final phase still gives zero velocity about `42%` of the shaped
+  target reward at `command_x=0.04` before alive/imitation terms. The next
+  recipe should raise the bootstrap command floor and/or tighten early reward
+  shaping instead of only increasing the same shortfall scale.
+
+Next recipe now staged:
+
+- `tools/plan_staged_curriculum_training.py --recipe movement_bootstrap_v2`
+  is the default staged recipe.
+- `shortfall_v1` remains available to reproduce the June 23 A100 run.
+- `movement_bootstrap_v2` raises the command floor, tightens
+  `tracking_sigma`, reduces alive dominance, and keeps a stronger
+  imitation/motion prior before reintroducing the fitted actuator bridge.
+- Planning artifacts:
+  - `outputs/analysis/STAGED_CURRICULUM_TRAINING_PLAN.md`
+  - `outputs/analysis/FORWARD_REWARD_LANDSCAPE_MOVEMENT_BOOTSTRAP_V2.md`
+- Next CUDA run should use:
+
+```bash
+python3 tools/run_colab_cli_cuda_workflow.py \
+  --workflow staged-curriculum \
+  --staged-recipe movement_bootstrap_v2 \
+  --session <colab-session> \
+  --run \
+  --timeout-s 14400
+```
+
+Robot validation remains blocked until the resulting candidate passes both
+offline gates.
 
 ### Configurable Target Delay Wrapper
 
