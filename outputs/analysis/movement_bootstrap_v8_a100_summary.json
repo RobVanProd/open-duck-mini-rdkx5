@@ -1,0 +1,36 @@
+{
+  "status": "HOLD_NON_DEPLOYABLE",
+  "recipe": "movement_bootstrap_v8",
+  "candidate_dir": "policy/candidates/movement_bootstrap_v8_overshoot_stabilized_standstill_20260623",
+  "candidate_sha256": "b8528e43083e3b9ea920a2847e6a9cfb30e11f7960433565f0945eb529bc4642",
+  "initial_checkpoint": "policy/candidates/movement_bootstrap_v7_checkpoint_anchor_20260623/checkpoint_2026_06_23_213846_184320",
+  "robot_validation": "BLOCKED",
+  "robot_touched": false,
+  "deploy_performed": false,
+  "runtime_behavior_changed": false,
+  "gates": {
+    "x0": {
+      "status": "HOLD_CANDIDATE_TRACKING",
+      "samples": 750,
+      "termination": "duration_complete",
+      "mean_local_vx_m_s": 0.0003,
+      "max_pitch_velocity_p95_rad_s": 0.2186,
+      "max_tracking_p95_rad": 0.0863,
+      "body_pitch_p95_rad": 0.0539,
+      "base_height_min_m": 0.1537
+    },
+    "x008": {
+      "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "samples": 750,
+      "termination": "duration_complete",
+      "mean_local_vx_m_s": 0.0015,
+      "command_tracking_ratio": 0.0190,
+      "max_pitch_velocity_p95_rad_s": 0.2760,
+      "max_tracking_p95_rad": 0.0871,
+      "body_pitch_p95_rad": 0.2062,
+      "base_height_min_m": 0.1486,
+      "action_saturation_pct": 0.0
+    }
+  },
+  "interpretation": "V8 damped the v7 lunge and prevented the x=0.08 fall, but overcorrected into near-standstill. The next offline recipe should preserve overshoot damping while increasing or staging command-progress pressure."
+}

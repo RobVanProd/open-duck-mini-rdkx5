@@ -1422,3 +1422,38 @@ It starts from the v7 anchored checkpoint, keeps the fitted actuator bridge and
 `2.5-3.75 rad/s` velocity envelope active, and adds default-off Playground
 reward terms for forward overshoot plus forward-command pitch and pitch-rate
 costs. Robot validation remains blocked.
+
+## Movement Bootstrap V8 Result
+
+The A100 `movement_bootstrap_v8` overshoot-stabilization run completed and is
+preserved as:
+
+```text
+policy/candidates/movement_bootstrap_v8_overshoot_stabilized_standstill_20260623/
+sha256: b8528e43083e3b9ea920a2847e6a9cfb30e11f7960433565f0945eb529bc4642
+summary: outputs/analysis/MOVEMENT_BOOTSTRAP_V8_A100_SUMMARY.md
+```
+
+Gate result:
+
+```text
+x=0.0:  HOLD_CANDIDATE_TRACKING, 750 samples, max pitch tracking p95 0.0863 rad
+x=0.08: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS, 750 samples, fitted mean local vx 0.0015 m/s
+```
+
+Interpretation: V8 did what it was designed to do mechanically: it eliminated
+the v7 `x=0.08` lunge/fall. The fitted-bridge `x=0.08` rollout completed the
+full duration with `0%` action saturation, body pitch p95 `0.1953 rad`, and
+healthy base height. However, it overcorrected into near-standstill:
+
+```text
+x=0.08 fitted command tracking ratio: 0.0190
+candidate threshold: 0.25
+max pitch-chain p95 target velocity: 0.2760 rad/s
+```
+
+The current blocker is now tightly defined: preserve V8's overshoot damping
+without erasing forward progress. The next offline recipe should either anneal
+the overshoot/pitch stabilizers or increase command-window progress pressure so
+standing still at nonzero command is no longer an attractive solution. Robot
+validation remains blocked.

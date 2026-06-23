@@ -191,3 +191,30 @@ terminal local_vx: 1.3183 m/s
 Use v7 as the next continuation anchor only with explicit pressure against
 velocity overshoot and pitch/pitch-rate growth under forward command. Do not
 spend the next recipe on more actuator-envelope tightening.
+
+## V8 Overshoot-Stabilized Result
+
+`movement_bootstrap_v8` started from the v7 anchored checkpoint and added
+forward-overshoot, pitch, and pitch-rate costs under the fitted actuator bridge.
+It is preserved here:
+
+```text
+policy/candidates/movement_bootstrap_v8_overshoot_stabilized_standstill_20260623/
+outputs/analysis/MOVEMENT_BOOTSTRAP_V8_A100_SUMMARY.md
+```
+
+V8 confirms that the v7 lunge is controllable: the `x=0.08` rollout completed
+the full duration without falling, with `0%` action saturation and pitch/base
+height inside the candidate limits. It also shows the current stabilizers were
+too strong:
+
+```text
+x=0.08 fitted mean local vx: 0.0015 m/s
+x=0.08 fitted command tracking ratio: 0.0190
+max pitch-chain p95 target velocity: 0.2760 rad/s
+```
+
+This preserves the lead while sharpening the next problem. The target is no
+longer "prove in-envelope motion exists" or "stop the lunge" in isolation. The
+next recipe must keep V8's no-lunge behavior while making nonzero command
+tracking materially above standstill.

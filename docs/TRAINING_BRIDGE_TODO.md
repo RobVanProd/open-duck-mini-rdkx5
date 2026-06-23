@@ -772,6 +772,35 @@ V8 should be judged by whether it reduces `track_ratio`, body-pitch growth, and
 fall/termination at `x=0.08` without returning to standstill. It should not
 relax the fitted target-velocity envelope to buy motion.
 
+V8 result:
+
+```text
+outputs/analysis/MOVEMENT_BOOTSTRAP_V8_A100_SUMMARY.md
+policy/candidates/movement_bootstrap_v8_overshoot_stabilized_standstill_20260623/
+```
+
+The run completed, but it is still not deployable:
+
+```text
+x=0.0:  HOLD_CANDIDATE_TRACKING, duration complete, max pitch tracking p95 0.0863 rad
+x=0.08: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS, duration complete, fitted mean local vx 0.0015 m/s
+```
+
+The useful signal is that V8 removed the v7 lunge/fall under `x=0.08`, with
+body pitch and base height inside the candidate limits and `0%` action
+saturation. The failure moved from "overdriven lunge" to "stable near
+standstill." Next recipe work should keep the fitted bridge and velocity
+envelope active while rebalancing progress and overshoot:
+
+```text
+1. anneal or reduce forward_overshoot / forward_pitch / forward_pitch_rate
+2. increase command-window progress or shortfall pressure after stabilization
+3. stage x commands from 0.04-0.06 before expanding to 0.08
+4. preserve V8's no-lunge behavior but require measurable nonzero vx
+```
+
+Do not request robot validation for v8.
+
 ### Candidate ONNX Export
 
 - Export only after sim-side gates pass.
