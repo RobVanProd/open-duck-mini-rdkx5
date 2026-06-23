@@ -34,9 +34,16 @@ def shell_join(command: list[str]) -> str:
     return " ".join(shlex.quote(part) for part in command)
 
 
+def cli_value(value: Any) -> str:
+    """Format values so argparse never mistakes negative floats for flags."""
+    if isinstance(value, float):
+        return format(value, ".12f").rstrip("0").rstrip(".")
+    return str(value)
+
+
 def append_optional(command: list[str], flag: str, value: Any) -> None:
     if value is not None:
-        command.extend([flag, str(value)])
+        command.extend([flag, cli_value(value)])
 
 
 def build_command(args: argparse.Namespace, output_dir: Path) -> list[str]:
@@ -67,9 +74,9 @@ def build_command(args: argparse.Namespace, output_dir: Path) -> list[str]:
         "--ppo_num_updates_per_batch",
         str(args.ppo_num_updates_per_batch),
         "--target_rate_scale",
-        str(args.target_rate_scale),
+        cli_value(args.target_rate_scale),
         "--actuator_tracking_scale",
-        str(args.actuator_tracking_scale),
+        cli_value(args.actuator_tracking_scale),
     ]
     append_optional(command, "--restore_checkpoint_path", args.restore_checkpoint_path)
     optional_runner_overrides = {
@@ -104,15 +111,15 @@ def build_command(args: argparse.Namespace, output_dir: Path) -> list[str]:
                 "--actuator_bridge_delay_max_ticks",
                 str(args.actuator_bridge_delay_max_ticks),
                 "--actuator_bridge_tau_min_s",
-                str(args.actuator_bridge_tau_min_s),
+                cli_value(args.actuator_bridge_tau_min_s),
                 "--actuator_bridge_tau_max_s",
-                str(args.actuator_bridge_tau_max_s),
+                cli_value(args.actuator_bridge_tau_max_s),
                 "--actuator_bridge_velocity_limit_min_rad_s",
-                str(args.actuator_bridge_velocity_limit_min_rad_s),
+                cli_value(args.actuator_bridge_velocity_limit_min_rad_s),
                 "--actuator_bridge_velocity_limit_max_rad_s",
-                str(args.actuator_bridge_velocity_limit_max_rad_s),
+                cli_value(args.actuator_bridge_velocity_limit_max_rad_s),
                 "--actuator_bridge_per_joint_variation",
-                str(args.actuator_bridge_per_joint_variation),
+                cli_value(args.actuator_bridge_per_joint_variation),
             ]
         )
     return command
