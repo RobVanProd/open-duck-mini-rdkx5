@@ -144,3 +144,50 @@ action saturation: 0%
 
 Use this checkpoint as the continuation anchor for the next stabilization
 experiment. Do not use it for robot validation.
+
+## V7 Checkpoint-Anchored Result
+
+`movement_bootstrap_v7` used the trainable recovery checkpoint as its initial
+restore point. It did not produce a deployable policy, but it did improve the
+failure shape:
+
+```text
+x=0.0:  duration complete, HOLD_CANDIDATE_TRACKING, max pitch tracking p95 0.0860 rad
+x=0.08: fitted bridge fall after 60 samples, mean local vx 0.2640 m/s
+```
+
+The `x=0.08` fitted rollout was still inside the measured target-velocity
+envelope:
+
+```text
+max pitch-chain p95 target velocity: 2.2663 rad/s
+action saturation: 0%
+```
+
+Preserved candidate:
+
+```text
+policy/candidates/movement_bootstrap_v7_checkpoint_anchor_20260623/
+```
+
+The next question is no longer whether in-envelope forward motion exists. It is
+why the in-envelope gait falls under fitted actuator dynamics, especially around
+pitch/body stability and contact timing.
+
+The `x=0.08` fitted-rollout onset analysis is preserved in:
+
+```text
+outputs/analysis/V7_X008_ONSET_ANALYSIS.md
+```
+
+The forward-speed overshoot begins before the large pitch collapse:
+
+```text
+local_vx > 0.08 m/s: tick 3 / 0.06s
+body_pitch_abs > 0.25 rad: tick 15 / 0.30s
+terminal local_vx: 1.3183 m/s
+```
+
+Use v7 as the next continuation anchor only with explicit pressure against
+velocity overshoot and pitch/pitch-rate growth under forward command. Do not
+spend the next recipe on more actuator-envelope tightening.

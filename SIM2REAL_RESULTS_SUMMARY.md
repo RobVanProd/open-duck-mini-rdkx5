@@ -1361,3 +1361,53 @@ with small PPO updates, low clipping, and light stability pressure. It is not a
 true teacher-action loss yet. If v7 also collapses to standstill or remains
 unstable, the next offline implementation should add an explicit teacher-action
 regularizer rather than more generic reward terms.
+
+## Movement Bootstrap V7 Result
+
+The A100 `movement_bootstrap_v7` checkpoint-anchored run completed and is
+preserved as:
+
+```text
+policy/candidates/movement_bootstrap_v7_checkpoint_anchor_20260623/
+sha256: fa1157ea81dacbf7e7fc1dd2835963017616c8d0be3b3dc19e2389db0307def8
+```
+
+Summary:
+
+```text
+outputs/analysis/MOVEMENT_BOOTSTRAP_V7_A100_SUMMARY.md
+```
+
+Gate result:
+
+```text
+x=0.0:  HOLD_CANDIDATE_TRACKING, 750 samples, max pitch tracking p95 0.0860 rad
+x=0.08: HOLD_CANDIDATE_FALL_OR_TERMINATION, 60 samples, mean local vx 0.2640 m/s
+```
+
+Interpretation: checkpoint anchoring improved the zero-command case from a fall
+to a near-pass tracking hold, and it preserved in-envelope forward motion at
+`x=0.08`, but nonzero-command walking still falls quickly. The `x=0.08` fitted
+rollout stayed under the target-velocity envelope:
+
+```text
+max pitch-chain p95 target velocity: 2.2663 rad/s
+action saturation: 0%
+```
+
+So the remaining blocker is now more specifically forward-motion stability and
+contact timing under fitted actuator dynamics, not actuator target-rate
+violation. Robot validation remains blocked.
+
+The compact onset trace is preserved here:
+
+```text
+outputs/analysis/V7_X008_ONSET_ANALYSIS.md
+```
+
+It shows the `x=0.08` rollout exceeding the commanded forward velocity by tick
+`3` / `0.06s`, while body pitch does not exceed `0.25 rad` until tick `15` /
+`0.30s`. The largest velocity and pitch collapse happen later, with local
+forward velocity reaching `1.3183 m/s` at the terminal tick. This points the
+next recipe toward velocity-overshoot and pitch/pitch-rate stabilization under
+forward command before adding more contact-timing terms.

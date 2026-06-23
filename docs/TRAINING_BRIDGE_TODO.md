@@ -703,7 +703,47 @@ updates, low clip, low learning rate, and stability pressure added around the
 recovered moving policy. If v7 also destroys motion, implement an actual
 teacher-action regularizer rather than adding more reward terms.
 
-Do not request robot validation for v6.
+V7 result:
+
+```text
+outputs/analysis/MOVEMENT_BOOTSTRAP_V7_A100_SUMMARY.md
+policy/candidates/movement_bootstrap_v7_checkpoint_anchor_20260623/
+```
+
+The run completed, but it is still not deployable:
+
+```text
+x=0.0:  HOLD_CANDIDATE_TRACKING, duration complete, max pitch tracking p95 0.0860 rad
+x=0.08: HOLD_CANDIDATE_FALL_OR_TERMINATION, fitted bridge fall after 60 samples
+```
+
+The useful signal is that v7 preserved in-envelope forward motion:
+
+```text
+x=0.08 fitted mean local vx: 0.2640 m/s
+x=0.08 fitted max pitch p95 target velocity: 2.2663 rad/s
+action saturation: 0%
+```
+
+Next offline target:
+
+```text
+stabilize the x=0.08 velocity-overshoot/pitch-over failure under fitted bridge
+```
+
+The compact trace analysis is preserved in:
+
+```text
+outputs/analysis/V7_X008_ONSET_ANALYSIS.md
+```
+
+The onset sequence shows forward velocity exceeding the command at tick `3` /
+`0.06s`, while body pitch does not cross `0.25 rad` until tick `15` /
+`0.30s`. That makes the next recipe a velocity-overshoot and pitch/pitch-rate
+stabilization problem first, with contact-timing terms added only after the
+overshoot is controlled.
+
+Do not request robot validation for v6 or v7.
 
 ### Candidate ONNX Export
 
