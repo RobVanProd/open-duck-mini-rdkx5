@@ -312,6 +312,22 @@ or robot discussion:
 The generated single cell performs these two gates automatically when
 `--run-candidate` is used.
 
+If a Colab run finishes training but disconnects during gate evaluation, use the
+CLI eval-only workflow instead of rerunning training:
+
+```bash
+python3 tools/run_colab_cli_cuda_workflow.py \
+  --workflow candidate-eval-only \
+  --candidate-existing-policy path/to/candidate.onnx \
+  --candidate-training-manifest path/to/smoke_manifest.final.json \
+  --candidate-name open_duck_mini_actuator_bridge_<run> \
+  --run
+```
+
+The eval-only workflow uploads the selected ONNX and optional manifest, reruns
+the `x=0.0` and `x=0.08` closed-loop candidate gates, and packages the results.
+It does not train and does not touch the robot.
+
 The generated cell now bundles artifacts from an `EXIT` trap. If a CUDA smoke,
 candidate training, gate, or packaging command fails, still download the
 printed `/content/open_duck_cuda_artifacts_<timestamp>.tar.gz` bundle. It

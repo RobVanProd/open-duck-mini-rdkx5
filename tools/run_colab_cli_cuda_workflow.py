@@ -132,7 +132,14 @@ def initialize_content_api(session: str, run_dir: Path) -> None:
         raise SystemExit(completed.returncode)
 
 
-def start_remote_job(args: argparse.Namespace, run_dir: Path, rdk_remote_tar: str, playground_remote_tar: str) -> None:
+def start_remote_job(
+    args: argparse.Namespace,
+    run_dir: Path,
+    rdk_remote_tar: str,
+    playground_remote_tar: str,
+    candidate_remote_policy: str | None = None,
+    candidate_remote_manifest: str | None = None,
+) -> None:
     workflow_name = f"open_duck_colab_cli_{args.workflow}_{timestamp()}"
     remote_driver = f"/content/{workflow_name}_driver.py"
     remote_log = f"/content/{workflow_name}.log"
@@ -153,7 +160,15 @@ def start_remote_job(args: argparse.Namespace, run_dir: Path, rdk_remote_tar: st
         + "\n"
     )
 
-    driver = build_remote_driver(args, workflow_name, rdk_remote_tar, playground_remote_tar, remote_bundle)
+    driver = build_remote_driver(
+        args,
+        workflow_name,
+        rdk_remote_tar,
+        playground_remote_tar,
+        remote_bundle,
+        candidate_remote_policy=candidate_remote_policy,
+        candidate_remote_manifest=candidate_remote_manifest,
+    )
     driver_local = run_dir / f"{workflow_name}_driver.py"
     driver_local.write_text(driver)
     run(["colab", "upload", "-s", args.session, str(driver_local), remote_driver])
@@ -184,11 +199,23 @@ def start_remote_job(args: argparse.Namespace, run_dir: Path, rdk_remote_tar: st
     poll_remote(args.session, run_dir, remote_log, remote_exit, remote_bundle, args.poll_interval_s, args.timeout_s)
 
 
-def build_remote_driver(args: argparse.Namespace, workflow_name: str, rdk_tar: str, playground_tar: str, remote_bundle: str) -> str:
+def build_remote_driver(
+    args: argparse.Namespace,
+    workflow_name: str,
+    rdk_tar: str,
+    playground_tar: str,
+    remote_bundle: str,
+    *,
+    candidate_remote_policy: str | None = None,
+    candidate_remote_manifest: str | None = None,
+) -> str:
     run_smoke = args.workflow in {"smoke", "all", "candidate"}
-    run_candidate = args.workflow in {"candidate", "candidate-only", "all"}
+    run_candidate_training = args.workflow in {"candidate", "candidate-only", "all"}
+    run_candidate_eval_only = args.workflow == "candidate-eval-only"
+    run_candidate_gates = run_candidate_training or run_candidate_eval_only
     run_audit = (
-        args.workflow in {"eval", "smoke", "candidate", "candidate-only", "all"}
+        args.workflow
+        in {"eval", "smoke", "candidate", "candidate-only", "candidate-eval-only", "all"}
         and not args.skip_audit
     )
     run_baseline_eval = args.workflow in {"eval", "smoke", "candidate", "all"}
@@ -348,7 +375,11 @@ def build_remote_driver(args: argparse.Namespace, workflow_name: str, rdk_tar: s
                 OUT / "open_duck_training_smokes_cli",
             )
 
-        if {run_candidate!r}:
+        latest_onnx = None
+        candidate_name = None
+        training_manifest = None
+
+        if {run_candidate_training!r}:
             candidate_training_cmd = [
                 PYTHON, "tools/run_actuator_bridge_training_smoke.py",
                 "--playground-path", str(PLAYGROUND),
@@ -408,7 +439,13 @@ def build_remote_driver(args: argparse.Namespace, workflow_name: str, rdk_tar: s
             if not onnx_files:
                 raise SystemExit(f"candidate training produced no ONNX files in {{run_dir}}")
             latest_onnx = onnx_files[-1]
-            candidate_name = "open_duck_mini_actuator_bridge_cli_" + dt.datetime.now(dt.UTC).strftime("%Y%m%dT%H%M%SZ")
+            candidate_name = {args.candidate_name!r} or (
+                "open_duck_mini_actuator_bridge_cli_"
+                + dt.datetime.now(dt.UTC).strftime("%Y%m%dT%H%M%SZ")
+            )
+            training_manifest = run_dir / "smoke_manifest.final.json"
+            if not training_manifest.exists():
+                training_manifest = run_dir / "smoke_manifest.start.json"
             run([
                 PYTHON, "tools/summarize_training_run.py", str(run_dir),
                 "--output-md", str(OUT / f"{{candidate_name}}_training_run_summary.md"),
@@ -419,6 +456,31 @@ def build_remote_driver(args: argparse.Namespace, workflow_name: str, rdk_tar: s
                 OUT / "open_duck_training_runs_cli",
             )
             bundle_artifacts()
+
+        elif {run_candidate_eval_only!r}:
+            latest_onnx = Path({candidate_remote_policy!r}) if {candidate_remote_policy!r} else None
+            if latest_onnx is None or not latest_onnx.exists():
+                raise SystemExit(
+                    "candidate-eval-only requires --candidate-existing-policy "
+                    "and the uploaded ONNX must exist in the Colab runtime"
+                )
+            candidate_name = {args.candidate_name!r} or (
+                "open_duck_mini_actuator_bridge_eval_"
+                + latest_onnx.stem
+                + "_"
+                + dt.datetime.now(dt.UTC).strftime("%Y%m%dT%H%M%SZ")
+            )
+            if {candidate_remote_manifest!r}:
+                training_manifest = Path({candidate_remote_manifest!r})
+                if not training_manifest.exists():
+                    print("candidate_eval_only_manifest_missing", training_manifest, flush=True)
+                    training_manifest = None
+            (OUT / f"{{candidate_name}}_existing_policy_path.txt").write_text(
+                str(latest_onnx) + "\\n"
+            )
+            bundle_artifacts()
+
+        if {run_candidate_gates!r}:
             for command_x, suffix in [("0.0", "x0"), ("0.08", "x008")]:
                 gate_dir = OUT / f"{{candidate_name}}_gate_{{suffix}}"
                 run([
@@ -440,23 +502,33 @@ def build_remote_driver(args: argparse.Namespace, workflow_name: str, rdk_tar: s
                 run(["cp", str(gate_dir / "CLOSED_LOOP_ACTUATOR_BRIDGE_EVAL.md"), str(OUT / f"{{candidate_name}}_candidate_gate_{{suffix}}.md")])
                 run(["cp", str(gate_dir / "closed_loop_actuator_bridge_eval.json"), str(OUT / f"{{candidate_name}}_candidate_gate_{{suffix}}.json")])
                 bundle_artifacts()
-            training_manifest = run_dir / "smoke_manifest.final.json"
-            if not training_manifest.exists():
-                training_manifest = run_dir / "smoke_manifest.start.json"
-            run([
+            package_cmd = [
                 PYTHON, "tools/package_candidate_policy.py", str(latest_onnx),
                 "--candidate-name", candidate_name,
-                "--training-manifest", str(training_manifest),
                 "--contract-audit", str(OUT / "POLICY_SIM_CONTRACT_AUDIT_CUDA.md"),
                 "--candidate-gate-x0", str(OUT / f"{{candidate_name}}_candidate_gate_x0.md"),
                 "--candidate-gate-x008", str(OUT / f"{{candidate_name}}_candidate_gate_x008.md"),
                 "--output-md", str(OUT / f"{{candidate_name}}_policy_package.md"),
                 "--output-json", str(OUT / f"{{candidate_name}}_policy_metadata.json"),
-            ], cwd=RDK, timeout=300, check=False)
-            copy_training_outputs(
-                "/content/open_duck_training_runs_cli",
-                OUT / "open_duck_training_runs_cli",
-            )
+            ]
+            if training_manifest is not None and training_manifest.exists():
+                package_cmd.extend(["--training-manifest", str(training_manifest)])
+            else:
+                package_cmd.extend([
+                    "--allow-missing-evidence",
+                    "--non-deployable-reason",
+                    (
+                        "Eval-only package: training manifest was not provided "
+                        "in this Colab run. Sim gates must be reviewed before "
+                        "any robot validation."
+                    ),
+                ])
+            run(package_cmd, cwd=RDK, timeout=300, check=False)
+            if {run_candidate_training!r}:
+                copy_training_outputs(
+                    "/content/open_duck_training_runs_cli",
+                    OUT / "open_duck_training_runs_cli",
+                )
 
         run([PYTHON, "-m", "pip", "freeze"], cwd=RDK)
         run(["bash", "-lc", f"nvidia-smi > {{OUT / 'nvidia_smi.txt'}} 2>&1 || true"], cwd=RDK)
@@ -523,7 +595,7 @@ def main() -> int:
     parser.add_argument("--upload-root", default=str(DEFAULT_UPLOAD_ROOT))
     parser.add_argument(
         "--workflow",
-        choices=["eval", "smoke", "candidate", "candidate-only", "all"],
+        choices=["eval", "smoke", "candidate", "candidate-only", "candidate-eval-only", "all"],
         default="eval",
     )
     parser.add_argument("--run", action="store_true", help="execute; default is plan-only")
@@ -555,6 +627,25 @@ def main() -> int:
             "Optional checkpoint path visible inside the Colab runtime. Use "
             "this only after uploading or packaging the checkpoint separately."
         ),
+    )
+    parser.add_argument(
+        "--candidate-existing-policy",
+        help=(
+            "Local ONNX path to upload and evaluate with --workflow "
+            "candidate-eval-only. This avoids rerunning training when a prior "
+            "Colab job disconnected during gate evaluation."
+        ),
+    )
+    parser.add_argument(
+        "--candidate-training-manifest",
+        help=(
+            "Optional local smoke_manifest JSON to upload with "
+            "--workflow candidate-eval-only for candidate packaging."
+        ),
+    )
+    parser.add_argument(
+        "--candidate-name",
+        help="Optional stable candidate name for training or eval-only packages.",
     )
     parser.add_argument("--candidate-timeout-s", type=int, default=10800)
     parser.add_argument("--candidate-target-rate-scale", type=float, default=-0.001)
@@ -600,6 +691,25 @@ def main() -> int:
         raise SystemExit(f"RDK repo missing: {rdk_root}")
     if not playground_root.exists():
         raise SystemExit(f"Playground repo missing: {playground_root}")
+    candidate_existing_policy = (
+        Path(args.candidate_existing_policy).expanduser().resolve()
+        if args.candidate_existing_policy
+        else None
+    )
+    candidate_training_manifest = (
+        Path(args.candidate_training_manifest).expanduser().resolve()
+        if args.candidate_training_manifest
+        else None
+    )
+    if args.workflow == "candidate-eval-only" and candidate_existing_policy is None:
+        raise SystemExit("--workflow candidate-eval-only requires --candidate-existing-policy")
+    if candidate_existing_policy is not None and not candidate_existing_policy.exists():
+        raise SystemExit(f"Candidate ONNX missing: {candidate_existing_policy}")
+    if (
+        candidate_training_manifest is not None
+        and not candidate_training_manifest.exists()
+    ):
+        raise SystemExit(f"Candidate training manifest missing: {candidate_training_manifest}")
 
     ts = timestamp()
     run_dir = Path(args.output_root).resolve() / f"{args.session}-{args.workflow}-{ts}"
@@ -623,7 +733,36 @@ def main() -> int:
     playground_remote = "/content/Open_Duck_Playground_cli.tar.gz"
     run(["colab", "upload", "-s", args.session, str(rdk_tar), rdk_remote])
     run(["colab", "upload", "-s", args.session, str(playground_tar), playground_remote])
-    start_remote_job(args, run_dir, rdk_remote, playground_remote)
+    candidate_remote_policy = None
+    candidate_remote_manifest = None
+    if candidate_existing_policy is not None:
+        candidate_remote_policy = "/content/open_duck_candidate_existing_policy.onnx"
+        run([
+            "colab",
+            "upload",
+            "-s",
+            args.session,
+            str(candidate_existing_policy),
+            candidate_remote_policy,
+        ])
+    if candidate_training_manifest is not None:
+        candidate_remote_manifest = "/content/open_duck_candidate_training_manifest.json"
+        run([
+            "colab",
+            "upload",
+            "-s",
+            args.session,
+            str(candidate_training_manifest),
+            candidate_remote_manifest,
+        ])
+    start_remote_job(
+        args,
+        run_dir,
+        rdk_remote,
+        playground_remote,
+        candidate_remote_policy=candidate_remote_policy,
+        candidate_remote_manifest=candidate_remote_manifest,
+    )
     return 0
 
 

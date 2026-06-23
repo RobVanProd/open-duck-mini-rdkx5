@@ -44,6 +44,22 @@ python3 tools/run_colab_cli_cuda_workflow.py --workflow smoke --run
 python3 tools/run_colab_cli_cuda_workflow.py --workflow candidate-only --run
 ```
 
+If candidate training finishes but the Colab session disconnects during one of
+the sim gates, do not rerun training just to recover the missing gate. Use the
+eval-only workflow with the local ONNX downloaded from the partial artifact:
+
+```bash
+python3 tools/run_colab_cli_cuda_workflow.py \
+  --workflow candidate-eval-only \
+  --candidate-existing-policy path/to/candidate.onnx \
+  --candidate-training-manifest path/to/smoke_manifest.final.json \
+  --candidate-name open_duck_mini_actuator_bridge_<run> \
+  --run
+```
+
+This uploads only the local worktrees plus the selected ONNX/manifest, then
+runs the `x=0.0` and `x=0.08` candidate gates. It does not train.
+
 The CLI workflow uploads local RDK/Playground tarballs, pins
 `jax/jaxlib==0.7.2`, writes a remote log/artifact bundle, downloads the bundle,
 and does not require a GitHub token in Colab. This is the preferred route for
