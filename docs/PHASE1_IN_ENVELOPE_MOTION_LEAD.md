@@ -218,3 +218,13 @@ This preserves the lead while sharpening the next problem. The target is no
 longer "prove in-envelope motion exists" or "stop the lunge" in isolation. The
 next recipe must keep V8's no-lunge behavior while making nonzero command
 tracking materially above standstill.
+
+`movement_bootstrap_v9` is the next planned test of that middle ground:
+
+```text
+outputs/analysis/MOVEMENT_BOOTSTRAP_V9_PLAN.md
+```
+
+It starts from the V7 moving anchor again, keeps the fitted actuator envelope
+active, and uses lighter overshoot/pitch damping than V8 with stronger
+command-window progress pressure.

@@ -1457,3 +1457,15 @@ without erasing forward progress. The next offline recipe should either anneal
 the overshoot/pitch stabilizers or increase command-window progress pressure so
 standing still at nonzero command is no longer an attractive solution. Robot
 validation remains blocked.
+
+`movement_bootstrap_v9` is now planned as the next offline A100 recipe:
+
+```text
+outputs/analysis/MOVEMENT_BOOTSTRAP_V9_PLAN.md
+```
+
+It starts from the v7 anchored checkpoint again, not from the V8 standstill,
+and keeps the fitted actuator bridge plus `2.5-3.75 rad/s` envelope active. The
+deliberate difference from V8 is lighter overshoot/pitch damping paired with
+stronger command-window progress pressure, to search the narrow region between
+V7's lunge and V8's near-standstill.

@@ -863,7 +863,157 @@ MOVEMENT_BOOTSTRAP_V8_PHASES = [
 ]
 
 
+MOVEMENT_BOOTSTRAP_V9_PHASES = [
+    Phase(
+        name="phase1_v7_progress_recovery_light_damping",
+        purpose=(
+            "restart from the v7 moving anchor with fitted actuator dynamics, "
+            "but use much lighter overshoot/pitch damping than v8 so forward "
+            "motion is not erased"
+        ),
+        num_timesteps=140_000,
+        bridge=True,
+        delay=(3, 6),
+        tau_s=(0.06, 0.14),
+        velocity_limit_rad_s=(2.5, 3.75),
+        target_rate_scale=-0.0012,
+        actuator_tracking_scale=-0.12,
+        tracking_lin_vel_scale=34.0,
+        tracking_sigma=0.0012,
+        forward_progress_scale=8.5,
+        forward_shortfall_scale=-8.0,
+        forward_shortfall_required_ratio=0.28,
+        action_rate_scale=-0.016,
+        action_magnitude_scale=-0.004,
+        stand_still_scale=-1.0,
+        alive_scale=0.05,
+        imitation_scale=0.45,
+        lin_vel_x=(0.04, 0.06),
+        zero_command_probability=0.0,
+        forward_overshoot_scale=-0.9,
+        forward_overshoot_allowed_ratio=1.9,
+        orientation_scale=-0.06,
+        base_height_scale=-0.6,
+        forward_pitch_scale=-0.10,
+        forward_pitch_rate_scale=-0.010,
+        command_progress_scale=11.0,
+        command_progress_shortfall_scale=-12.0,
+        command_progress_required_ratio=0.28,
+        command_progress_warmup_steps=30,
+        action_rate_huber_delta=0.08,
+        action_magnitude_huber_delta=0.50,
+        target_rate_huber_delta=1.0,
+        actuator_tracking_huber_delta=0.08,
+        forward_shortfall_huber_delta=0.35,
+        forward_overshoot_huber_delta=0.50,
+        forward_pitch_huber_delta=0.25,
+        forward_pitch_rate_huber_delta=1.0,
+        command_progress_shortfall_huber_delta=0.35,
+        ppo_learning_rate=3.0e-5,
+        ppo_clipping_epsilon=0.035,
+        ppo_max_grad_norm=0.45,
+    ),
+    Phase(
+        name="phase2_expand_x008_moderate_damping",
+        purpose=(
+            "expand back to x=0.08 while increasing damping only enough to "
+            "avoid the v7 lunge, keeping command-window progress dominant"
+        ),
+        num_timesteps=160_000,
+        bridge=True,
+        delay=(3, 6),
+        tau_s=(0.06, 0.14),
+        velocity_limit_rad_s=(2.5, 3.75),
+        target_rate_scale=-0.0013,
+        actuator_tracking_scale=-0.13,
+        tracking_lin_vel_scale=32.0,
+        tracking_sigma=0.0012,
+        forward_progress_scale=8.0,
+        forward_shortfall_scale=-8.0,
+        forward_shortfall_required_ratio=0.30,
+        action_rate_scale=-0.018,
+        action_magnitude_scale=-0.0045,
+        stand_still_scale=-1.0,
+        alive_scale=0.05,
+        imitation_scale=0.44,
+        lin_vel_x=(0.04, 0.08),
+        zero_command_probability=0.0,
+        forward_overshoot_scale=-1.3,
+        forward_overshoot_allowed_ratio=1.7,
+        orientation_scale=-0.07,
+        base_height_scale=-0.7,
+        forward_pitch_scale=-0.16,
+        forward_pitch_rate_scale=-0.016,
+        command_progress_scale=10.0,
+        command_progress_shortfall_scale=-12.0,
+        command_progress_required_ratio=0.30,
+        command_progress_warmup_steps=30,
+        action_rate_huber_delta=0.08,
+        action_magnitude_huber_delta=0.50,
+        target_rate_huber_delta=1.0,
+        actuator_tracking_huber_delta=0.08,
+        forward_shortfall_huber_delta=0.35,
+        forward_overshoot_huber_delta=0.50,
+        forward_pitch_huber_delta=0.25,
+        forward_pitch_rate_huber_delta=1.0,
+        command_progress_shortfall_huber_delta=0.35,
+        ppo_learning_rate=2.5e-5,
+        ppo_clipping_epsilon=0.03,
+        ppo_max_grad_norm=0.45,
+    ),
+    Phase(
+        name="phase3_consolidate_progress_no_lunge",
+        purpose=(
+            "consolidate the middle ground between v7 and v8: measurable "
+            "forward progress, no lunge, no relaxation of the actuator envelope"
+        ),
+        num_timesteps=120_000,
+        bridge=True,
+        delay=(3, 6),
+        tau_s=(0.06, 0.14),
+        velocity_limit_rad_s=(2.5, 3.75),
+        target_rate_scale=-0.0015,
+        actuator_tracking_scale=-0.15,
+        tracking_lin_vel_scale=30.0,
+        tracking_sigma=0.0012,
+        forward_progress_scale=7.5,
+        forward_shortfall_scale=-8.0,
+        forward_shortfall_required_ratio=0.32,
+        action_rate_scale=-0.020,
+        action_magnitude_scale=-0.005,
+        stand_still_scale=-1.0,
+        alive_scale=0.05,
+        imitation_scale=0.43,
+        lin_vel_x=(0.04, 0.08),
+        zero_command_probability=0.0,
+        forward_overshoot_scale=-1.6,
+        forward_overshoot_allowed_ratio=1.6,
+        orientation_scale=-0.08,
+        base_height_scale=-0.8,
+        forward_pitch_scale=-0.20,
+        forward_pitch_rate_scale=-0.020,
+        command_progress_scale=9.0,
+        command_progress_shortfall_scale=-11.0,
+        command_progress_required_ratio=0.32,
+        command_progress_warmup_steps=30,
+        action_rate_huber_delta=0.08,
+        action_magnitude_huber_delta=0.50,
+        target_rate_huber_delta=1.0,
+        actuator_tracking_huber_delta=0.08,
+        forward_shortfall_huber_delta=0.35,
+        forward_overshoot_huber_delta=0.50,
+        forward_pitch_huber_delta=0.25,
+        forward_pitch_rate_huber_delta=1.0,
+        command_progress_shortfall_huber_delta=0.35,
+        ppo_learning_rate=2.0e-5,
+        ppo_clipping_epsilon=0.025,
+        ppo_max_grad_norm=0.45,
+    ),
+]
+
+
 RECIPES = {
+    "movement_bootstrap_v9": MOVEMENT_BOOTSTRAP_V9_PHASES,
     "movement_bootstrap_v8": MOVEMENT_BOOTSTRAP_V8_PHASES,
     "movement_bootstrap_v7": MOVEMENT_BOOTSTRAP_V7_PHASES,
     "movement_bootstrap_v6": MOVEMENT_BOOTSTRAP_V6_PHASES,
@@ -1101,6 +1251,15 @@ def phase_payload(phase: Phase, command: list[str], output_root: Path) -> dict[s
 
 
 def recipe_rationale(recipe: str) -> str:
+    if recipe == "movement_bootstrap_v9":
+        return (
+            "`movement_bootstrap_v9` starts from the v7 anchored checkpoint "
+            "again, because v8 overcorrected into standstill. It keeps the "
+            "fitted actuator bridge and velocity envelope active, but uses "
+            "lighter overshoot/pitch damping and stronger command-window "
+            "progress pressure to search the narrow region between v7's lunge "
+            "and v8's no-motion solution."
+        )
     if recipe == "movement_bootstrap_v8":
         return (
             "`movement_bootstrap_v8` starts from the v7 anchored checkpoint. "
@@ -1266,7 +1425,9 @@ def main() -> int:
             "movement_bootstrap_v7 is a checkpoint-anchored stabilization "
             "recipe intended to start from the recovered v5 phase-1 checkpoint; "
             "movement_bootstrap_v8 starts from v7 and targets the measured "
-            "velocity-overshoot/pitch-over failure."
+            "velocity-overshoot/pitch-over failure; movement_bootstrap_v9 "
+            "starts from v7 again with lighter damping after v8 stabilized "
+            "into standstill."
         ),
     )
     parser.add_argument("--timesteps-scale", type=float, default=1.0)

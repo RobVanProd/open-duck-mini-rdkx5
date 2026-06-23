@@ -801,6 +801,30 @@ envelope active while rebalancing progress and overshoot:
 
 Do not request robot validation for v8.
 
+### Movement Bootstrap V9
+
+V9 is planned here:
+
+```text
+outputs/analysis/MOVEMENT_BOOTSTRAP_V9_PLAN.md
+```
+
+It starts from the V7 anchored checkpoint again instead of the V8 standstill.
+The recipe keeps the fitted actuator bridge and `2.5-3.75 rad/s` velocity
+envelope active, but reduces V8's overshoot/pitch damping and increases
+command-window progress pressure.
+
+V9 should be judged by whether it can land between the two recent failure
+shapes:
+
+```text
+V7: moves in-envelope, but lunges/falls
+V8: does not lunge/fall, but returns to standstill
+V9 target: measurable x=0.08 progress, no lunge, no envelope relaxation
+```
+
+Robot validation remains blocked unless both candidate gates pass.
+
 ### Candidate ONNX Export
 
 - Export only after sim-side gates pass.
