@@ -1300,3 +1300,32 @@ Intent:
 V13 remains an offline mechanics test. It should answer whether explicit
 negative low-progress failure can make forward motion cheaper than standing
 still inside the measured actuator envelope.
+
+### V13 A100 Phase-1 Gate Result
+
+V13 was launched on an A100 from PR #74 head `dff8d69`. Phase 1 completed and
+exported an ONNX, but the per-phase gate stopped the staged run before phase 2:
+
+```text
+status: HOLD_PHASE_FREEZE_OR_LOW_PROGRESS
+candidate_gate_status: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
+termination: duration_complete
+forward_tracking_ratio: 0.01601
+mean local vx: 0.0013 m/s
+max_action_saturation_pct: 0.0
+max_pitch_tracking_p95_rad: 0.07430
+max_sent_target_velocity_p95_rad_s: 0.14604
+max_abs_body_pitch_p95_rad: 0.05504
+min_base_height_m: 0.15368
+```
+
+Training rewards were negative throughout phase 1, which confirms the signed
+failure / negative reward path was active. The resulting policy still chose
+near-standstill at `x=0.08`, so V13 does not solve the no-motion basin.
+
+Next offline task: inspect whether the command-progress failure signal actually
+appears frequently enough during training and whether alive/tracking/imitation
+terms still make low-motion behavior locally preferable despite the signed
+failure penalty.
+
+Summary artifact: `outputs/analysis/MOVEMENT_BOOTSTRAP_V13_A100_PHASE1_SUMMARY.md`.

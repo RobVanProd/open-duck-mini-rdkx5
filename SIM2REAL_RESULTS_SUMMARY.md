@@ -1883,3 +1883,33 @@ phase3 failure scale: -160.0
 The per-phase gate remains enabled. If phase 1 freezes again, the staged run
 should stop before spending later A100 phases consolidating no-motion behavior.
 Robot validation and grounded replay remain blocked.
+
+### V13 A100 Phase-1 Gate Result
+
+V13 was launched on an A100 from PR #74 head `dff8d69`. Phase 1 completed and
+exported an ONNX, but the per-phase gate stopped the staged run before phase 2:
+
+```text
+status: HOLD_PHASE_FREEZE_OR_LOW_PROGRESS
+candidate_gate_status: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
+termination: duration_complete
+forward_tracking_ratio: 0.01601
+mean local vx: 0.0013 m/s
+max_action_saturation_pct: 0.0
+max_pitch_tracking_p95_rad: 0.07430
+max_sent_target_velocity_p95_rad_s: 0.14604
+max_abs_body_pitch_p95_rad: 0.05504
+min_base_height_m: 0.15368
+```
+
+Training rewards were negative through phase 1, confirming the signed
+failure / negative reward path was active. The candidate still learned
+near-standstill at `x=0.08`, so V13 did not escape the no-motion basin.
+
+Current conclusion: the reward/termination plumbing now works well enough to
+make low-progress training reward negative, but it still does not generate
+coherent forward motion. The next offline task is to inspect command-progress
+failure frequency and reward-term dominance during training before another A100
+recipe is launched. Robot validation remains blocked.
+
+Summary artifact: `outputs/analysis/MOVEMENT_BOOTSTRAP_V13_A100_PHASE1_SUMMARY.md`.
