@@ -64,6 +64,22 @@ The next recipe should not proceed to V17 phase 2. It should first address why
 the policy can still settle into low/reverse progress under the hard-progress
 phase-1 objective.
 
+## Low-Command Follow-Up
+
+The same reward-overridden replay was run at `x=0.04`, the low end of V17's
+phase-1 training command range. It also held on all four seeds:
+
+```text
+runs: 4
+falls_or_terminations: 4
+duration_complete: 0
+track_ratio_mean: -0.6911
+mean_local_vx_mean: -0.0276 m/s
+```
+
+This means V17 did not merely fail because the phase gate asked for `x=0.08`.
+It failed to learn coherent forward motion even at the easiest trained command.
+
 ## Next Offline Work
 
 - Verify the training and evaluator local-forward-velocity sign convention from

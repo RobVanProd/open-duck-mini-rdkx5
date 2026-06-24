@@ -2867,3 +2867,46 @@ PPO to escape low/reverse progress.
 
 Summary artifact:
 `outputs/analysis/V17_PHASE1_REWARD_OVERRIDE_AUDIT_SUMMARY.md`.
+
+### V17 Reward Sign And Low-Command Audit
+
+The reward source and evaluator were inspected for a local-forward sign
+mismatch. No sign mismatch was found:
+
+```text
+command-window progress: local_vx * sign(command_x)
+forward progress reward: local_vel[0] * sign(command_x)
+forward shortfall cost: local_vel[0] * sign(command_x)
+wrong-direction cost: local_vel[0] * sign(command_x)
+candidate evaluator: get_local_linvel(data)[0] / command_x
+```
+
+The command-progress failure is active but delayed and one-tick. In V17 phase 1
+it fires after `60` steps if cumulative progress ratio is below `0.40`; the
+`-260` scale is multiplied by `dt=0.02`, so the terminating tick contributes
+about `-5.2` reward before clipping.
+
+The same reward-overridden seed sweep was run at `x=0.04`, the low end of V17's
+training command range:
+
+```text
+runs: 4
+falls_or_terminations: 4
+duration_complete: 0
+track_ratio_mean: -0.6911
+mean_local_vx_mean: -0.0276 m/s
+```
+
+Conclusion: V17 did not just fail an over-hard `x=0.08` phase gate. It failed to
+learn coherent forward motion even at the easiest command it trained on, under
+the intended reward config and a consistent local-forward sign convention.
+
+Next offline target: a simpler low-command discovery recipe, graded at the same
+low command it trains on, before adding bridge transfer or `x=0.08` again.
+
+Summary artifacts:
+
+```text
+outputs/analysis/V17_REWARD_SIGN_AND_LOW_COMMAND_AUDIT.md
+outputs/analysis/V17_PHASE1_REWARD_OVERRIDE_SEED_SWEEP_X004.md
+```

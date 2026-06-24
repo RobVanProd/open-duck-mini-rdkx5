@@ -2048,3 +2048,42 @@ Next offline tasks before another A100 run:
 
 Summary artifact:
 `outputs/analysis/V17_PHASE1_REWARD_OVERRIDE_AUDIT_SUMMARY.md`.
+
+### V17 Sign And Low-Command Audit
+
+The reward/evaluator sign convention was audited after the V17 reward-overridden
+replay. The local-forward sign is consistent:
+
+```text
+command-progress window: local_vx * sign(command_x)
+dense forward progress: local_vel[0] * sign(command_x)
+dense shortfall/wrong-direction costs: local_vel[0] * sign(command_x)
+candidate evaluator: local_forward_velocity / command_x
+```
+
+The same V17 phase-1 checkpoint was then replayed at `x=0.04`, the low end of
+the command range it trained on. It still failed all four seeds:
+
+```text
+runs: 4
+falls_or_terminations: 4
+duration_complete: 0
+track_ratio_mean: -0.6911
+mean_local_vx_mean: -0.0276 m/s
+```
+
+Conclusion: V17 did not fail because of a sign bug or because the `x=0.08` gate
+was too aggressive. It failed to learn coherent forward motion at the easiest
+trained command under the intended reward config.
+
+Next recipe should be designed as a minimal low-command discovery experiment:
+
+- train and gate on the same low command first, such as `x=0.04`
+- keep bridge disabled until low-command motion exists
+- remove or minimize any survival reward that can make standing competitive
+- make wrong-direction motion immediately expensive
+- prefer dense per-step signed progress over delayed terminal progress failure
+- only return to `x=0.08` after low-command motion passes across seeds
+
+Summary artifact:
+`outputs/analysis/V17_REWARD_SIGN_AND_LOW_COMMAND_AUDIT.md`.
