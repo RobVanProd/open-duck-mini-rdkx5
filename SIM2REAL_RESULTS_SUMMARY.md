@@ -2370,3 +2370,28 @@ minimum smoke. The next scale point is 4 env / 32 timesteps.
 
 Summary artifact:
 `outputs/analysis/L4_2ENV16_CUDA_TRAINING_SMOKE_SUMMARY.md`.
+
+### L4 4-Env / 32-Step CUDA Training Smoke Pass
+
+The Colab L4 scale sweep also passed four environments and thirty-two
+timesteps:
+
+```text
+00_python_jax_device: PASS
+01_import_training_stack: PASS
+02_smoke_dry_run: PASS
+03_smoke_run: PASS
+num_timesteps: 32
+num_envs: 4
+batch_size: 4
+status: PASS_SMOKE_RUN
+elapsed_s: 437.48
+STEP: 40 reward: 11.187263488769531 reward_std: 4.4381818771362305
+checkpoint: saved at step 40
+```
+
+The original 8-env / 64-step hold should be rerun with the corrected quiet
+compile polling before treating it as a real scale limit.
+
+Summary artifact:
+`outputs/analysis/L4_4ENV32_CUDA_TRAINING_SMOKE_SUMMARY.md`.
