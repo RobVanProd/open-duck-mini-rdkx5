@@ -1712,3 +1712,43 @@ plugin. The next cloud check should rerun `training-smoke` after this
 
 Summary artifact:
 `outputs/analysis/LOCAL_CPU_TRAINING_SMOKE_SUMMARY.md`.
+
+### L4 Platform Mapping Hold
+
+The first cloud rerun after the local CPU platform fix used:
+
+```text
+JAX_PLATFORM_NAME=gpu
+JAX_PLATFORMS=gpu
+```
+
+That is invalid for CUDA JAX. The recovered stderr showed:
+
+```text
+Backend 'rocm' is not in the list of known backends: ['cpu', 'tpu', 'cuda'].
+```
+
+Fix now in the tools:
+
+- `run_actuator_bridge_training_smoke.py --jax-platforms`
+- CPU defaults to `JAX_PLATFORMS=cpu`
+- Colab CUDA workflow passes `--jax-platforms cuda`
+- staged curriculum passes `--jax-platforms` through to each phase
+- remote artifact bundling recreates `OUT` after repo extraction
+
+Next command:
+
+```bash
+python3 tools/run_colab_cli_cuda_workflow.py \
+  --session open-duck-l4-smoke-cuda-platform \
+  --workflow training-smoke \
+  --run \
+  --foreground-remote \
+  --foreground-remote-timeout-s 1800 \
+  --timeout-s 1800 \
+  --smoke-num-timesteps 64 \
+  --smoke-export-min-step 1
+```
+
+Summary artifact:
+`outputs/analysis/L4_PLATFORMFIX_TRAINING_SMOKE_SUMMARY.md`.

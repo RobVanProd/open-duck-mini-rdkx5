@@ -228,6 +228,15 @@ def main() -> int:
     parser.add_argument("--output-root", default=str(DEFAULT_OUTPUT_ROOT))
     parser.add_argument("--run", action="store_true", help="Execute the smoke run.")
     parser.add_argument("--platform", choices=["cpu", "gpu"], default="cpu")
+    parser.add_argument(
+        "--jax-platforms",
+        default=None,
+        help=(
+            "Optional JAX_PLATFORMS override. Use cpu for local CPU-only runs, "
+            "cuda for NVIDIA/Colab GPU, and rocm for ROCm. If omitted, CPU "
+            "runs force cpu and GPU runs leave JAX_PLATFORMS unset."
+        ),
+    )
     parser.add_argument("--timeout-s", type=int, default=900)
     parser.add_argument("--task", default="flat_terrain")
     parser.add_argument("--env", default="joystick")
@@ -372,7 +381,13 @@ def main() -> int:
     command = build_command(args, output_dir)
     env = os.environ.copy()
     env["JAX_PLATFORM_NAME"] = args.platform
-    env["JAX_PLATFORMS"] = args.platform
+    jax_platforms = args.jax_platforms
+    if jax_platforms is None and args.platform == "cpu":
+        jax_platforms = "cpu"
+    if jax_platforms:
+        env["JAX_PLATFORMS"] = jax_platforms
+    else:
+        env.pop("JAX_PLATFORMS", None)
     env["PYTHONUNBUFFERED"] = "1"
 
     manifest: dict[str, Any] = {
@@ -386,7 +401,7 @@ def main() -> int:
         "platform": args.platform,
         "jax_platform_env": {
             "JAX_PLATFORM_NAME": env["JAX_PLATFORM_NAME"],
-            "JAX_PLATFORMS": env["JAX_PLATFORMS"],
+            "JAX_PLATFORMS": env.get("JAX_PLATFORMS"),
         },
         "timeout_s": args.timeout_s,
         "export_min_step": args.export_min_step,
@@ -469,7 +484,11 @@ def main() -> int:
             "head_range_factor": args.head_range_factor,
         },
         "command": command,
-        "command_shell": f"JAX_PLATFORM_NAME={args.platform} {shell_join(command)}",
+        "command_shell": (
+            f"JAX_PLATFORM_NAME={env['JAX_PLATFORM_NAME']} "
+            f"JAX_PLATFORMS={env.get('JAX_PLATFORMS', '')} "
+            f"{shell_join(command)}"
+        ),
         "robot_touched": False,
         "deploy_performed": False,
     }

@@ -1996,6 +1996,8 @@ def phase_command(
         "--head-range-factor",
         "0.25",
     ]
+    if args.jax_platforms:
+        command.extend(["--jax-platforms", args.jax_platforms])
     if phase.ppo_learning_rate is not None:
         command.extend(["--ppo-learning-rate", cli_value(phase.ppo_learning_rate)])
     if phase.ppo_entropy_cost is not None:
@@ -2455,6 +2457,14 @@ def main() -> int:
     parser.add_argument("--output-md", type=Path, default=DEFAULT_PLAN_MD)
     parser.add_argument("--output-json", type=Path, default=DEFAULT_PLAN_JSON)
     parser.add_argument("--platform", choices=["cpu", "gpu"], default="gpu")
+    parser.add_argument(
+        "--jax-platforms",
+        default=None,
+        help=(
+            "Optional JAX_PLATFORMS override passed to each phase smoke. "
+            "Use cuda for Colab/NVIDIA GPU, rocm for ROCm, or cpu for CPU."
+        ),
+    )
     parser.add_argument(
         "--recipe",
         choices=sorted(RECIPES),

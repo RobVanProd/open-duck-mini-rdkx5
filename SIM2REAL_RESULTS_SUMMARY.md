@@ -2183,3 +2183,24 @@ also has explicit `JAX_PLATFORMS=gpu`.
 
 Summary artifact:
 `outputs/analysis/LOCAL_CPU_TRAINING_SMOKE_SUMMARY.md`.
+
+### L4 Platform Mapping Hold
+
+The next foreground L4 smoke recovered a real exit code and stdout/stderr. It
+failed because the first platform fix mapped logical `gpu` to
+`JAX_PLATFORMS=gpu`, which is not valid for CUDA JAX:
+
+```text
+Backend 'rocm' is not in the list of known backends: ['cpu', 'tpu', 'cuda'].
+```
+
+The launcher now has an explicit `--jax-platforms` override. CPU runs default
+to `cpu`; GPU runs leave it unset unless specified; the Colab CUDA workflow now
+passes `cuda`; and staged phases pass that through to their smoke commands. The
+remote artifact bundler was also fixed to recreate `OUT` after repo extraction
+so failed runs can package logs.
+
+Next check is foreground L4 `training-smoke` with `JAX_PLATFORMS=cuda`.
+
+Summary artifact:
+`outputs/analysis/L4_PLATFORMFIX_TRAINING_SMOKE_SUMMARY.md`.

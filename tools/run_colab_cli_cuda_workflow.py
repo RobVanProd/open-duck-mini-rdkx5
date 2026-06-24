@@ -472,6 +472,7 @@ def build_remote_driver(
 
         def bundle_artifacts():
             try:
+                OUT.mkdir(parents=True, exist_ok=True)
                 (OUT / "COLAB_CLI_EXIT_STATUS.txt").write_text(
                     "exit_status=" + str(RUN_STATUS.get("exit_status", 0)) + "\\n"
                 )
@@ -507,6 +508,7 @@ def build_remote_driver(
         run(["rm", "-rf", str(RDK), str(PLAYGROUND)])
         run(["tar", "-xzf", "{rdk_tar}", "-C", "/content"])
         run(["tar", "-xzf", "{playground_tar}", "-C", "/content"])
+        OUT.mkdir(parents=True, exist_ok=True)
 
         if {install_deps!r}:
             run([PYTHON, "-m", "pip", "install", "-U", "pip"], timeout=600)
@@ -592,6 +594,7 @@ def build_remote_driver(
                 "--playground-path", str(PLAYGROUND),
                 "--env-python", PYTHON,
                 "--platform", "gpu",
+                "--jax-platforms", "cuda",
                 "--run",
                 "--output-root", "/content/open_duck_training_smokes_cli",
                 "--num-timesteps", "{smoke_steps}",
@@ -622,6 +625,7 @@ def build_remote_driver(
                 "--playground-path", str(PLAYGROUND),
                 "--env-python", PYTHON,
                 "--platform", "gpu",
+                "--jax-platforms", "cuda",
                 "--run",
                 "--output-root", "/content/open_duck_training_runs_cli",
                 "--num-timesteps", "{candidate_steps}",
@@ -710,6 +714,7 @@ def build_remote_driver(
                 "--playground-path", str(PLAYGROUND),
                 "--env-python", PYTHON,
                 "--platform", "gpu",
+                "--jax-platforms", "cuda",
                 "--timesteps-scale", "{args.staged_timesteps_scale}",
                 {staged_initial_restore_arg}
                 {staged_stop_after_phase_arg}
