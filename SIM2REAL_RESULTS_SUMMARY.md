@@ -2259,3 +2259,22 @@ smoke candidate is still only a plumbing artifact and is not a robot candidate.
 
 Summary artifact:
 `outputs/analysis/LOCAL_V15_CPU_GATE_AFTER_JAX_PLATFORMS_FIX_SUMMARY.md`.
+
+### Colab GPU Startup Diagnostic Added
+
+The next Colab step should use the new startup diagnostic workflow instead of
+rerunning a full staged recipe:
+
+```bash
+python3 tools/run_colab_cli_cuda_workflow.py \
+  --workflow training-smoke-diagnostic \
+  --run \
+  --foreground-remote \
+  --smoke-num-timesteps 64 \
+  --smoke-export-min-step 1
+```
+
+It records staged evidence for CUDA/JAX device compute, training-stack imports,
+smoke dry-run startup, and the tiny PPO smoke. This should narrow the current
+`HOLD_REMOTE_NO_SENTINEL` to a concrete startup stage before more cloud GPU
+training time is spent.

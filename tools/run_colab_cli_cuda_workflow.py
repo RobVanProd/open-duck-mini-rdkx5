@@ -288,6 +288,7 @@ def build_remote_driver(
     candidate_remote_manifest: str | None = None,
 ) -> str:
     run_smoke = args.workflow in {"smoke", "training-smoke", "all", "candidate"}
+    run_training_smoke_diagnostic = args.workflow == "training-smoke-diagnostic"
     run_candidate_training = args.workflow in {"candidate", "candidate-only", "all"}
     run_staged_curriculum = args.workflow == "staged-curriculum"
     run_candidate_eval_only = args.workflow == "candidate-eval-only"
@@ -538,6 +539,22 @@ def build_remote_driver(
             except Exception as exc:
                 print(name, type(exc).__name__, exc, flush=True)
         run([PYTHON, "-c", "import jax; print('backend', jax.default_backend(), jax.devices()); print('has_device_put_replicated', hasattr(jax, 'device_put_replicated'))"])
+
+        if {run_training_smoke_diagnostic!r}:
+            run([
+                PYTHON, "tools/diagnose_training_smoke_startup.py",
+                "--playground-path", str(PLAYGROUND),
+                "--env-python", PYTHON,
+                "--platform", "gpu",
+                "--jax-platforms", "cuda",
+                "--output-dir", str(OUT / "training_smoke_startup_diagnostic"),
+                "--smoke-num-timesteps", "{smoke_steps}",
+                "--export-min-step", "{args.smoke_export_min_step}",
+                "--ppo-num-envs", "8",
+                "--ppo-batch-size", "8",
+                "--run-smoke",
+            ], cwd=RDK, timeout=1800)
+            bundle_artifacts()
 
         if {run_audit!r}:
             run([
@@ -988,6 +1005,7 @@ def main() -> int:
             "eval",
             "smoke",
             "training-smoke",
+            "training-smoke-diagnostic",
             "candidate",
             "candidate-only",
             "candidate-eval-only",

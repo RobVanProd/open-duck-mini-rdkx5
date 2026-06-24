@@ -1803,3 +1803,33 @@ or full CPU checks while Colab GPU remains a separate runtime issue.
 
 Summary artifact:
 `outputs/analysis/LOCAL_V15_CPU_GATE_AFTER_JAX_PLATFORMS_FIX_SUMMARY.md`.
+
+### Colab GPU Startup Diagnostic
+
+Added a narrower diagnostic path for the Colab GPU smoke hold:
+
+```bash
+python3 tools/run_colab_cli_cuda_workflow.py \
+  --session <colab-session> \
+  --workflow training-smoke-diagnostic \
+  --run \
+  --foreground-remote \
+  --foreground-remote-timeout-s 1800 \
+  --timeout-s 1800 \
+  --smoke-num-timesteps 64 \
+  --smoke-export-min-step 1
+```
+
+This workflow runs `tools/diagnose_training_smoke_startup.py`, which creates
+its output directory first and writes one artifact per stage:
+
+```text
+00_python_jax_device
+01_import_training_stack
+02_smoke_dry_run
+03_smoke_run
+```
+
+Use this before another full recipe launch. The goal is to determine whether
+Colab disappears during CUDA/JAX device computation, Playground imports, smoke
+runner dry-run startup, or the tiny PPO loop itself.
