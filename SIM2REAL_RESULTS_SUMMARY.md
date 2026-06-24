@@ -1,6 +1,6 @@
 # Sim-To-Real Results Summary
 
-Last updated: 2026-06-23
+Last updated: 2026-06-24
 
 ## Executive Summary
 
@@ -2785,3 +2785,48 @@ phase 3: fitted bridge low-command transfer
 
 V17 intentionally does not restore from V5. It tests whether a fresh hard-progress
 lineage can escape the V5/V16 low-reverse-progress basin.
+
+### A100 V17 Phase-1 Multi-Seed Hold
+
+V17 phase 1 was run on A100 as a structural break from the V5/V16 anchored
+continuation:
+
+```text
+recipe: movement_bootstrap_v17
+restore: none
+phase 1: no bridge, x=0.04-0.06, hard signed positive progress
+gate: x=0.08, vanilla bridge, seeds 0-3, 5 seconds
+```
+
+Training completed and exported ONNX checkpoints at `92160`, `184320`, and
+`276480`, but the multi-seed phase gate held:
+
+```text
+status: HOLD_PHASE_MULTI_SEED_FALLS
+runs: 4
+falls: 1
+duration_complete: 3
+track_ratio_mean: -0.2876
+mean_local_vx_mean: -0.0230 m/s
+```
+
+Per-seed result:
+
+```text
+seed 0: low progress, duration complete, track_ratio  0.0358
+seed 1: fall at 33 samples, reverse vx, track_ratio -1.2270
+seed 2: low progress, duration complete, track_ratio  0.0560
+seed 3: low/reverse progress, duration complete, track_ratio -0.0152
+```
+
+Interpretation: V17 escaped the V5 restore dependency but not the low/reverse
+progress basin. Hard signed-progress shaping without a bridge in phase 1 still
+failed to produce coherent positive forward locomotion across seeds.
+
+Next offline work should inspect V17 phase-1 reward components and sign
+conventions before launching another large recipe. In particular, verify why
+the reward still permits near-zero or negative local forward velocity despite
+the command-progress failure term.
+
+Summary artifact:
+`outputs/analysis/A100_V17_PHASE1_MULTI_SEED_HOLD_SUMMARY.md`.

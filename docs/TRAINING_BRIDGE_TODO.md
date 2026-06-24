@@ -1,6 +1,6 @@
 # Training Bridge TODO
 
-Last updated: 2026-06-23
+Last updated: 2026-06-24
 
 Purpose: convert the measured Open Duck Mini actuator evidence into small,
 reviewable sim/training changes. Do not retrain blindly and do not change
@@ -1979,3 +1979,39 @@ phase 3: fitted bridge low-command transfer only if phase 2 passes
 
 It intentionally does not restore from the V5 checkpoint. The goal is to escape
 the V5/V16 low-reverse-progress basin rather than regularize toward it.
+
+The A100 V17 phase-1 run completed but held the multi-seed gate:
+
+```text
+status: HOLD_PHASE_MULTI_SEED_FALLS
+falls: 1/4
+track_ratio_mean: -0.2876
+mean_local_vx_mean: -0.0230 m/s
+```
+
+Per-seed outcome:
+
+```text
+seed 0: low progress, track_ratio  0.0358
+seed 1: fall at 33 samples, reverse vx, track_ratio -1.2270
+seed 2: low progress, track_ratio  0.0560
+seed 3: low/reverse progress, track_ratio -0.0152
+```
+
+Conclusion: removing the V5 restore and making phase-1 progress pressure much
+harder was still insufficient. Do not proceed to V17 phase 2; phase 1 failed
+the discovery gate.
+
+Next offline task before another large A100 run:
+
+- replay V17 phase-1 rollouts with reward-component logging for seeds `0-3`
+- verify the local forward-velocity sign convention used by training reward and
+  candidate evaluator
+- compare command-progress failure penalties against posture, base-height, and
+  contact-support terms
+- inspect whether the policy is rewarded for crouched support / low motion more
+  than stepping
+- design the next recipe only after that reward audit
+
+Summary artifact:
+`outputs/analysis/A100_V17_PHASE1_MULTI_SEED_HOLD_SUMMARY.md`.
