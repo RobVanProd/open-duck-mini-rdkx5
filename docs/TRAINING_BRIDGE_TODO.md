@@ -867,6 +867,26 @@ python3 tools/sweep_candidate_checkpoints.py \
 Run it with `--run` only on a known-good CUDA session or CPU fallback. The local
 ROCm/MJX path remains a backend issue.
 
+Short CPU fallback sweep result:
+
+```text
+outputs/analysis/candidate_checkpoint_sweep_cpu_short/CANDIDATE_CHECKPOINT_SWEEP.md
+```
+
+At `x=0.08`, fitted bridge, one-second horizon:
+
+```text
+V7: vx 0.1469 m/s, track ratio 1.8356, pitch vel p95 1.9357 rad/s, tracking p95 0.2449 rad
+V8: vx 0.0203 m/s, track ratio 0.2539, pitch vel p95 2.1929 rad/s, tracking p95 0.2391 rad
+V9: vx 0.0730 m/s, track ratio 0.9129, pitch vel p95 2.1496 rad/s, tracking p95 0.2369 rad
+```
+
+This is not a candidate pass. It is a checkpoint-selection signal: V7 still
+has the strongest motion, V8 is nearly standstill, and V9 may be the more
+balanced moving anchor to inspect next. All three remain tracking holds over
+the short horizon, so the next recipe should still use teacher/trust-region
+continuity rather than another small reward-weight tweak.
+
 Do not request robot validation for v9.
 
 ### Candidate ONNX Export
