@@ -1555,9 +1555,20 @@ smoke that must write a normal sentinel/final manifest.
 Next debugging steps:
 
 - run a minimal A100 runner smoke that is smaller than V15C and verifies normal
-  sentinel/final-manifest behavior
-- add/fix poller handling for remote-idle/no-sentinel cases that do not return
-  promptly
+  sentinel/final-manifest behavior:
+
+```bash
+python3 tools/run_colab_cli_cuda_workflow.py \
+  --session open-duck-a100-smoke \
+  --workflow training-smoke \
+  --run \
+  --timeout-s 1800 \
+  --smoke-num-timesteps 64 \
+  --smoke-export-min-step 1
+```
+
+- use the hardened poller behavior for remote-idle/no-sentinel cases instead
+  of waiting for the full timeout
 - use a different backend for recipe iteration if the minimal A100 smoke still
   disappears
 - keep the robot parked

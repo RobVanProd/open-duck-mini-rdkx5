@@ -2088,5 +2088,10 @@ for a reduced V15 phase-1 smoke. Treat this as cloud training infrastructure,
 not a V15 policy-quality result. Do not spend another full A100 recipe run until
 a tiny training smoke can produce a normal sentinel/final manifest.
 
+The workflow now has a smaller `training-smoke` mode intended for that exact
+infrastructure check. It runs only the tiny PPO smoke path, skips the policy
+contract audit/baseline eval, and defaults to skipping step-0 ONNX export so the
+test isolates training process survival and final-manifest behavior.
+
 Summary artifact:
 `outputs/analysis/MOVEMENT_BOOTSTRAP_V15C_A100_REDUCED_NO_SENTINEL_SUMMARY.md`.

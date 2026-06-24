@@ -115,10 +115,7 @@ def colab_status_text(session: str) -> str:
 
 
 def colab_status_is_idle(status_text: str) -> bool:
-    for line in status_text.splitlines():
-        if "status" in line.lower() and "idle" in line.lower():
-            return True
-    return False
+    return "idle" in status_text.lower()
 
 
 def write_console_script(path: Path, remote_script: str) -> None:
@@ -256,7 +253,7 @@ def build_remote_driver(
     candidate_remote_policy: str | None = None,
     candidate_remote_manifest: str | None = None,
 ) -> str:
-    run_smoke = args.workflow in {"smoke", "all", "candidate"}
+    run_smoke = args.workflow in {"smoke", "training-smoke", "all", "candidate"}
     run_candidate_training = args.workflow in {"candidate", "candidate-only", "all"}
     run_staged_curriculum = args.workflow == "staged-curriculum"
     run_candidate_eval_only = args.workflow == "candidate-eval-only"
@@ -564,6 +561,7 @@ def build_remote_driver(
                 "--run",
                 "--output-root", "/content/open_duck_training_smokes_cli",
                 "--num-timesteps", "{smoke_steps}",
+                "--export-min-step", "{args.smoke_export_min_step}",
                 "--ppo-num-envs", "8",
                 "--ppo-num-evals", "1",
                 "--ppo-episode-length", "50",
@@ -807,11 +805,12 @@ def poll_remote(
     deadline = time.time() + timeout_s
     last_log_size: int | None = None
     unchanged_log_polls = 0
+    idle_no_exit_polls = 0
     last_status = ""
+    log_dest = run_dir / "remote_live.log"
     while time.time() < deadline:
         if colab_file_exists(session, remote_exit):
             break
-        log_dest = run_dir / "remote_live.log"
         if colab_file_exists(session, remote_log):
             subprocess.run(
                 ["colab", "download", "-s", session, remote_log, str(log_dest)],
@@ -841,10 +840,18 @@ def poll_remote(
             if partial_dest.exists():
                 print(f"PARTIAL_ARTIFACT {partial_dest} size={partial_dest.stat().st_size}", flush=True)
         last_status = colab_status_text(session)
+        remote_is_idle = colab_status_is_idle(last_status)
+        if remote_is_idle and not colab_file_exists(session, remote_exit):
+            idle_no_exit_polls += 1
+        else:
+            idle_no_exit_polls = 0
         if (
-            unchanged_log_polls >= 3
-            and colab_status_is_idle(last_status)
+            remote_is_idle
             and not colab_file_exists(session, remote_exit)
+            and (
+                unchanged_log_polls >= 2
+                or (idle_no_exit_polls >= 2 and not colab_file_exists(session, remote_bundle))
+            )
         ):
             evidence = {
                 "status": "HOLD_REMOTE_NO_SENTINEL",
@@ -854,6 +861,7 @@ def poll_remote(
                 "remote_pid": remote_pid,
                 "remote_bundle": remote_bundle,
                 "unchanged_log_polls": unchanged_log_polls,
+                "idle_no_exit_polls": idle_no_exit_polls,
                 "poll_interval_s": interval_s,
                 "local_live_log": str(log_dest),
                 "colab_status": last_status,
@@ -880,6 +888,7 @@ def poll_remote(
                         f"- remote_pid: `{remote_pid}`",
                         f"- remote_bundle: `{remote_bundle}`",
                         f"- unchanged_log_polls: `{unchanged_log_polls}`",
+                        f"- idle_no_exit_polls: `{idle_no_exit_polls}`",
                         f"- poll_interval_s: `{interval_s}`",
                         "",
                         "The Colab session reported idle while the workflow "
@@ -939,6 +948,7 @@ def main() -> int:
         choices=[
             "eval",
             "smoke",
+            "training-smoke",
             "candidate",
             "candidate-only",
             "candidate-eval-only",
@@ -962,6 +972,16 @@ def main() -> int:
     parser.add_argument("--poll-interval-s", type=int, default=60)
     parser.add_argument("--timeout-s", type=int, default=7200)
     parser.add_argument("--smoke-num-timesteps", type=int, default=64)
+    parser.add_argument(
+        "--smoke-export-min-step",
+        type=int,
+        default=1,
+        help=(
+            "Pass --export-min-step to the tiny training-smoke run. The "
+            "default skips step-0 ONNX export so the smoke isolates PPO "
+            "execution and final-manifest behavior."
+        ),
+    )
     parser.add_argument("--candidate-num-timesteps", type=int, default=200000)
     parser.add_argument(
         "--checkpoint-sweep-policies",
