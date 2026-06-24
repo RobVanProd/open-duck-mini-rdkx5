@@ -1916,10 +1916,16 @@ Summary artifact: `outputs/analysis/MOVEMENT_BOOTSTRAP_V13_A100_PHASE1_SUMMARY.m
 
 ### V13 Training-Reward Replay
 
-The closed-loop evaluator was corrected to replay training reward overrides and
-the command-progress failure path while manually inserting the actuator bridge.
-With the V13 phase-1 reward settings applied, the phase-1 candidate terminates
-at the configured 80-step low-progress boundary:
+The closed-loop evaluator and staged-plan manifest were corrected to replay the
+complete V13 phase reward contract while manually inserting the actuator bridge.
+The initial replay path applied command-progress/posture terms but the
+staged-plan JSON had omitted core fields such as `tracking_lin_vel_scale`,
+`alive_scale`, and `target_rate_scale`, and it did not record the hardcoded
+`tracking_ang_vel_scale=0.0` training flag. The manifest now carries the full
+phase dataclass payload plus the reward-relevant hardcoded command settings.
+
+With the complete V13 phase-1 reward settings applied, the phase-1 candidate
+terminates at the configured 80-step low-progress boundary:
 
 ```text
 status: HOLD_CANDIDATE_FALL_OR_TERMINATION
@@ -1929,13 +1935,14 @@ forward_tracking_ratio: 0.04657
 mean local vx: 0.0037 m/s
 diagnostic/command_progress_failure max: 1.0
 cost/command_progress_failure max: 120.0
-reward_min: -2.24327
+reward_mean: -0.38404
+reward_min: -2.76543
 ```
 
-This confirms V13's signed failure mechanism is active. The remaining problem is
-not missing termination; it is that PPO still learns a short-lived low-motion
-behavior that reaches the failure boundary instead of discovering forward motion.
-Do not launch another A100 recipe until the next change directly targets that
-local optimum.
+This confirms V13's signed failure mechanism and negative terminal reward are
+active. The remaining problem is not missing termination or missing reward
+plumbing; PPO still learns a short-lived low-motion behavior that reaches the
+failure boundary instead of discovering forward motion. Do not launch another
+A100 recipe until the next change directly targets that local optimum.
 
 Summary artifact: `outputs/analysis/V13_TRAINING_REWARD_REPLAY_SUMMARY.md`.

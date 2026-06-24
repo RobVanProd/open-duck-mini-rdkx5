@@ -13,7 +13,7 @@ By default this writes a plan only. Pass ``--run`` to execute the phases through
 from __future__ import annotations
 
 import argparse
-from dataclasses import dataclass, replace
+from dataclasses import asdict, dataclass, replace
 import datetime as dt
 import json
 from pathlib import Path
@@ -1664,7 +1664,9 @@ def find_latest_onnx(root: Path) -> Path | None:
 
 
 def phase_payload(phase: Phase, command: list[str], output_root: Path) -> dict[str, Any]:
-    return {
+    payload = asdict(phase)
+    payload.update(
+        {
         "name": phase.name,
         "purpose": phase.purpose,
         "output_root": str(output_root),
@@ -1674,6 +1676,8 @@ def phase_payload(phase: Phase, command: list[str], output_root: Path) -> dict[s
         "velocity_limit_rad_s": list(phase.velocity_limit_rad_s),
         "lin_vel_x": list(phase.lin_vel_x),
         "zero_command_probability": phase.zero_command_probability,
+        "tracking_ang_vel_scale": 0.0,
+        "forward_progress_deadband": 0.02,
         "forward_shortfall_scale": phase.forward_shortfall_scale,
         "forward_shortfall_required_ratio": phase.forward_shortfall_required_ratio,
         "forward_overshoot_scale": phase.forward_overshoot_scale,
@@ -1731,7 +1735,9 @@ def phase_payload(phase: Phase, command: list[str], output_root: Path) -> dict[s
         ),
         "command": command,
         "command_shell": shell_join(command),
-    }
+        }
+    )
+    return payload
 
 
 def recipe_rationale(recipe: str) -> str:
