@@ -46,6 +46,31 @@ def shell_join(command: list[str]) -> str:
     return " ".join(shlex.quote(part) for part in command)
 
 
+def parse_seed_text(value: str | None) -> list[int]:
+    if value is None:
+        return []
+    seeds: list[int] = []
+    for part in value.split(","):
+        part = part.strip()
+        if not part:
+            continue
+        if "-" in part:
+            start_text, end_text = part.split("-", 1)
+            start = int(start_text)
+            end = int(end_text)
+            step = 1 if end >= start else -1
+            seeds.extend(range(start, end + step, step))
+        else:
+            seeds.append(int(part))
+    deduped: list[int] = []
+    seen: set[int] = set()
+    for seed in seeds:
+        if seed not in seen:
+            deduped.append(seed)
+            seen.add(seed)
+    return deduped
+
+
 @dataclass(frozen=True)
 class Phase:
     name: str
@@ -2451,6 +2476,121 @@ def run_phase_freeze_gate(
     }
 
 
+def run_phase_seed_gate(
+    args: argparse.Namespace,
+    phase: Phase,
+    policy: Path,
+    phase_root: Path,
+    phase_index: int,
+) -> dict[str, Any]:
+    seeds = parse_seed_text(args.phase_gate_seeds)
+    if not seeds:
+        return run_phase_freeze_gate(args, phase, policy, phase_root, phase_index)
+
+    output_dir = phase_root / f"phase_{phase_index:02d}_seed_gate_x008"
+    output_md = output_dir / "PHASE_SEED_GATE.md"
+    output_json = output_dir / "phase_seed_gate.json"
+    bridge_mode = phase.phase_gate_bridge_mode or args.phase_gate_bridge_mode
+    policy_label = f"phase_{phase_index:02d}"
+    mode_name = "fitted" if bridge_mode == "all" else bridge_mode
+    command = [
+        str(Path(args.env_python)),
+        str(ROOT / "tools" / "run_candidate_seed_sweep.py"),
+        "--run",
+        "--policies",
+        f"{policy_label}={policy}",
+        "--seeds",
+        args.phase_gate_seeds,
+        "--fit-json",
+        str(ROOT / "outputs" / "analysis" / "actuator_response_fit.json"),
+        "--playground-path",
+        str(Path(args.playground_path)),
+        "--env-python",
+        str(Path(args.env_python)),
+        "--command-x",
+        cli_value(args.phase_gate_command_x),
+        "--duration",
+        cli_value(args.phase_gate_duration_s),
+        "--bridge-mode",
+        bridge_mode,
+        "--mode-name",
+        mode_name,
+        "--jax-platform",
+        args.phase_gate_platform,
+        "--sim-preflight-timeout-s",
+        "600",
+        "--closed-loop-timeout-s",
+        str(args.phase_gate_timeout_s),
+        "--output-dir",
+        str(output_dir),
+        "--output-md",
+        str(output_md),
+        "--output-json",
+        str(output_json),
+    ]
+    print(">>>", shell_join(command), flush=True)
+    completed = subprocess.run(
+        command,
+        cwd=ROOT,
+        text=True,
+        timeout=(args.phase_gate_timeout_s + 120) * max(1, len(seeds)),
+        check=False,
+    )
+    print("<<<", completed.returncode, flush=True)
+    if not output_json.exists():
+        return {
+            "status": "HOLD_PHASE_MULTI_SEED_NO_RESULT",
+            "command": command,
+            "bridge_mode": bridge_mode,
+            "seeds": seeds,
+            "output_dir": str(output_dir),
+            "returncode": completed.returncode,
+        }
+
+    result = json.loads(output_json.read_text())
+    aggregate = (result.get("aggregate") or {}).get(policy_label) or {}
+    runs = int(aggregate.get("runs") or 0)
+    fall_count = int(aggregate.get("fall_count") or 0)
+    fall_fraction = (fall_count / runs) if runs else 1.0
+    track_ratio_mean = ((aggregate.get("track_ratio") or {}).get("mean"))
+    vx_mean = ((aggregate.get("mean_local_vx_m_s") or {}).get("mean"))
+
+    gate_status = "PASS_PHASE_MULTI_SEED_CHECK"
+    if runs != len(seeds):
+        gate_status = "HOLD_PHASE_MULTI_SEED_INCOMPLETE"
+    elif fall_fraction > args.phase_gate_max_fall_fraction:
+        gate_status = "HOLD_PHASE_MULTI_SEED_FALLS"
+    elif not isinstance(track_ratio_mean, (int, float)):
+        gate_status = "HOLD_PHASE_MULTI_SEED_NO_PROGRESS_METRIC"
+    elif float(track_ratio_mean) < args.phase_gate_min_track_ratio_mean:
+        gate_status = "HOLD_PHASE_MULTI_SEED_LOW_TRACK_RATIO"
+    elif not isinstance(vx_mean, (int, float)):
+        gate_status = "HOLD_PHASE_MULTI_SEED_NO_VX_METRIC"
+    elif float(vx_mean) < args.phase_gate_min_vx_mean:
+        gate_status = "HOLD_PHASE_MULTI_SEED_LOW_FORWARD_SPEED"
+
+    return {
+        "status": gate_status,
+        "aggregate": aggregate,
+        "fall_fraction": fall_fraction,
+        "track_ratio_mean": track_ratio_mean,
+        "mean_local_vx_m_s": vx_mean,
+        "thresholds": {
+            "max_fall_fraction": args.phase_gate_max_fall_fraction,
+            "min_track_ratio_mean": args.phase_gate_min_track_ratio_mean,
+            "min_vx_mean": args.phase_gate_min_vx_mean,
+        },
+        "command": command,
+        "bridge_mode": bridge_mode,
+        "mode_name": mode_name,
+        "seeds": seeds,
+        "output_dir": str(output_dir),
+        "result_json": str(output_json),
+        "result_md": str(output_md),
+        "returncode": completed.returncode,
+    }
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--playground-path", default=str(DEFAULT_PLAYGROUND))
@@ -2564,6 +2704,33 @@ def main() -> int:
         ),
     )
     parser.add_argument("--phase-gate-timeout-s", type=int, default=900)
+    parser.add_argument(
+        "--phase-gate-seeds",
+        default=None,
+        help=(
+            "Optional comma/range seed list such as 0-3. When set, the phase "
+            "gate runs tools/run_candidate_seed_sweep.py and grades the "
+            "distribution instead of a single rollout."
+        ),
+    )
+    parser.add_argument(
+        "--phase-gate-max-fall-fraction",
+        type=float,
+        default=0.0,
+        help="Maximum allowed fraction of multi-seed phase-gate rollouts that fall.",
+    )
+    parser.add_argument(
+        "--phase-gate-min-track-ratio-mean",
+        type=float,
+        default=0.25,
+        help="Minimum mean command-tracking ratio for a multi-seed phase gate.",
+    )
+    parser.add_argument(
+        "--phase-gate-min-vx-mean",
+        type=float,
+        default=0.02,
+        help="Minimum mean local forward velocity for a multi-seed phase gate.",
+    )
     args = parser.parse_args()
     if args.stop_after_phase is not None and args.stop_after_phase < 1:
         raise SystemExit("--stop-after-phase must be >= 1")
@@ -2584,6 +2751,12 @@ def main() -> int:
         "export_min_step": args.export_min_step,
         "stop_after_phase": args.stop_after_phase,
         "phase_gate_freeze_check": args.phase_gate_freeze_check,
+        "phase_gate_seeds": args.phase_gate_seeds,
+        "phase_gate_distribution_thresholds": {
+            "max_fall_fraction": args.phase_gate_max_fall_fraction,
+            "min_track_ratio_mean": args.phase_gate_min_track_ratio_mean,
+            "min_vx_mean": args.phase_gate_min_vx_mean,
+        },
         "output_root": str(output_root),
         "phases": [],
     }
@@ -2609,9 +2782,13 @@ def main() -> int:
                 phase_onnx = find_latest_onnx(phase_root)
                 if phase_onnx is None:
                     raise SystemExit(f"{phase.name} produced no ONNX under {phase_root}")
-                gate_result = run_phase_freeze_gate(args, phase, phase_onnx, phase_root, index)
+                gate_result = run_phase_seed_gate(args, phase, phase_onnx, phase_root, index)
                 payload["phases"][-1]["phase_freeze_gate"] = gate_result
-                if gate_result["status"] != "PASS_PHASE_FREEZE_CHECK":
+                pass_statuses = {
+                    "PASS_PHASE_FREEZE_CHECK",
+                    "PASS_PHASE_MULTI_SEED_CHECK",
+                }
+                if gate_result["status"] not in pass_statuses:
                     payload["status"] = gate_result["status"]
                     payload["final_checkpoint"] = str(restore_checkpoint)
                     payload["final_candidate_onnx"] = str(phase_onnx)

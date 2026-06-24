@@ -2548,3 +2548,25 @@ stabilization or introduce a structurally different movement prior.
 
 Comparison artifact:
 `outputs/analysis/V5_VS_V15_SEED_SWEEP.md`.
+
+### Multi-Seed Staged Phase Gates
+
+The staged curriculum gate now supports distribution checks through
+`tools/run_candidate_seed_sweep.py`. The Colab staged workflow defaults to a
+four-seed phase gate:
+
+```text
+staged_phase_gate_seeds: 0-3
+max_fall_fraction: 0.0
+min_track_ratio_mean: 0.25
+min_vx_mean: 0.02 m/s
+```
+
+This replaces the old default where a single rollout could promote or reject a
+phase. The change is based on the V9/V10/V15 evidence: short or single-seed
+rollouts made unstable/frozen candidates look better than they were, while
+multi-seed sweeps exposed freeze, reverse, collapse, and lunge regimes.
+
+Single-rollout gates remain available by passing an empty seed list, but future
+substantial A100 staged runs should use the multi-seed gate unless there is a
+specific reason to run a cheap exploratory check.

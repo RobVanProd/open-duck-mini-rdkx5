@@ -48,6 +48,25 @@ def cli_value(value: object) -> str:
     return str(value)
 
 
+def seed_count(seed_text: str | None) -> int:
+    if not seed_text:
+        return 1
+    seeds: list[int] = []
+    for part in seed_text.split(","):
+        part = part.strip()
+        if not part:
+            continue
+        if "-" in part:
+            start_text, end_text = part.split("-", 1)
+            start = int(start_text)
+            end = int(end_text)
+            step = 1 if end >= start else -1
+            seeds.extend(range(start, end + step, step))
+        else:
+            seeds.append(int(part))
+    return max(1, len(dict.fromkeys(seeds)))
+
+
 def run(command: list[str], *, check: bool = True, timeout: int | None = None) -> subprocess.CompletedProcess:
     print(">>>", shell_join(command), flush=True)
     completed = subprocess.run(command, text=True, timeout=timeout, check=False)
@@ -451,12 +470,19 @@ def build_remote_driver(
         f'"--phase-gate-bridge-mode", "{args.staged_phase_gate_bridge_mode}",'
         f'"--phase-gate-platform", "{args.staged_phase_gate_platform}",'
         f'"--phase-gate-timeout-s", "{args.staged_phase_gate_timeout_s}",'
+        f'"--phase-gate-seeds", "{args.staged_phase_gate_seeds}",'
+        f'"--phase-gate-max-fall-fraction", "{cli_value(args.staged_phase_gate_max_fall_fraction)}",'
+        f'"--phase-gate-min-track-ratio-mean", "{cli_value(args.staged_phase_gate_min_track_ratio_mean)}",'
+        f'"--phase-gate-min-vx-mean", "{cli_value(args.staged_phase_gate_min_vx_mean)}",'
         if args.staged_phase_gate_freeze_check
         else ""
     )
     staged_timeout_multiplier = args.staged_stop_after_phase or 3
+    staged_gate_seed_count = seed_count(args.staged_phase_gate_seeds)
     staged_phase_gate_timeout_total = (
-        args.staged_phase_gate_timeout_s * staged_timeout_multiplier
+        args.staged_phase_gate_timeout_s
+        * staged_timeout_multiplier
+        * staged_gate_seed_count
         if args.staged_phase_gate_freeze_check
         else 0
     )
@@ -548,16 +574,22 @@ def build_remote_driver(
             dest = Path(dest)
             if not src.exists():
                 return
-            for gate_dir in sorted(src.glob("**/phase_*_freeze_gate_*")):
+            gate_dirs = list(src.glob("**/phase_*_freeze_gate_*"))
+            gate_dirs.extend(src.glob("**/phase_*_seed_gate_*"))
+            for gate_dir in sorted(set(gate_dirs)):
                 rel = gate_dir.relative_to(src)
                 gate_dest = dest / rel
                 gate_dest.mkdir(parents=True, exist_ok=True)
-                for pattern in ["*.md", "*.json", "*.txt"]:
-                    for item in sorted(gate_dir.glob(pattern)):
-                        try:
-                            (gate_dest / item.name).write_bytes(item.read_bytes())
-                        except Exception as exc:
-                            print("copy_staged_gate_warning", item, type(exc).__name__, exc, flush=True)
+                for item in sorted(gate_dir.rglob("*")):
+                    if item.is_dir() or item.suffix not in {{".md", ".json", ".txt"}}:
+                        continue
+                    try:
+                        rel_item = item.relative_to(gate_dir)
+                        dest_item = gate_dest / rel_item
+                        dest_item.parent.mkdir(parents=True, exist_ok=True)
+                        dest_item.write_bytes(item.read_bytes())
+                    except Exception as exc:
+                        print("copy_staged_gate_warning", item, type(exc).__name__, exc, flush=True)
 
         def bundle_artifacts():
             try:
@@ -1292,6 +1324,29 @@ def main() -> int:
         default="gpu",
     )
     parser.add_argument("--staged-phase-gate-timeout-s", type=int, default=900)
+    parser.add_argument(
+        "--staged-phase-gate-seeds",
+        default="0-3",
+        help=(
+            "Seeds for staged multi-seed phase gates. Use an empty string to "
+            "fall back to the legacy single-rollout gate."
+        ),
+    )
+    parser.add_argument(
+        "--staged-phase-gate-max-fall-fraction",
+        type=float,
+        default=0.0,
+    )
+    parser.add_argument(
+        "--staged-phase-gate-min-track-ratio-mean",
+        type=float,
+        default=0.25,
+    )
+    parser.add_argument(
+        "--staged-phase-gate-min-vx-mean",
+        type=float,
+        default=0.02,
+    )
     parser.add_argument("--candidate-ppo-num-envs", type=int, default=256)
     parser.add_argument("--candidate-ppo-num-evals", type=int, default=4)
     parser.add_argument("--candidate-episode-length", type=int, default=600)

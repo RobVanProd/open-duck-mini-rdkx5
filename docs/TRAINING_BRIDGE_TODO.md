@@ -1855,3 +1855,25 @@ directory into `partial_remote_output` before declaring
 
 Summary artifact:
 `outputs/analysis/LOCAL_TRAINING_SMOKE_STARTUP_DIAGNOSTIC_SUMMARY.md`.
+
+### Multi-Seed Phase Gates
+
+Substantial staged A100 runs should no longer trust a single phase-gate rollout.
+The staged planner can now run a seed-sweep gate after each phase:
+
+```bash
+python3 tools/plan_staged_curriculum_training.py \
+  --run \
+  --phase-gate-freeze-check \
+  --phase-gate-seeds 0-3 \
+  --phase-gate-max-fall-fraction 0.0 \
+  --phase-gate-min-track-ratio-mean 0.25 \
+  --phase-gate-min-vx-mean 0.02
+```
+
+The Colab staged workflow passes `--staged-phase-gate-seeds 0-3` by default and
+bundles the seed-gate markdown/JSON artifacts on both pass and hold exits.
+
+Use this gate before promoting any future V16+ staged phase. The phase must
+show consistent forward motion across seeds, not merely avoid falling by
+freezing or drifting backward.
