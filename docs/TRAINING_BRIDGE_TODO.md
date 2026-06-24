@@ -1833,3 +1833,19 @@ its output directory first and writes one artifact per stage:
 Use this before another full recipe launch. The goal is to determine whether
 Colab disappears during CUDA/JAX device computation, Playground imports, smoke
 runner dry-run startup, or the tiny PPO loop itself.
+
+Local validation:
+
+```text
+00_python_jax_device: PASS
+01_import_training_stack: PASS
+02_smoke_dry_run: PASS
+03_smoke_run: PASS
+```
+
+The Colab poller also now attempts to download the remote workflow output
+directory into `partial_remote_output` before declaring
+`HOLD_REMOTE_NO_SENTINEL` or `HOLD_REMOTE_TIMEOUT`.
+
+Summary artifact:
+`outputs/analysis/LOCAL_TRAINING_SMOKE_STARTUP_DIAGNOSTIC_SUMMARY.md`.

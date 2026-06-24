@@ -118,6 +118,36 @@ def colab_status_is_idle(status_text: str) -> bool:
     return "idle" in status_text.lower()
 
 
+def remote_output_dir_for_bundle(remote_bundle: str) -> str:
+    name = Path(remote_bundle).name
+    if name.endswith("_artifacts.tar.gz"):
+        workflow_name = name[: -len("_artifacts.tar.gz")]
+    else:
+        workflow_name = Path(remote_bundle).stem
+    return f"/content/open-duck-mini-rdkx5/outputs/analysis/{workflow_name}"
+
+
+def download_partial_output_dir(session: str, remote_bundle: str, run_dir: Path) -> Path | None:
+    remote_output_dir = remote_output_dir_for_bundle(remote_bundle)
+    if not colab_file_exists(session, remote_output_dir):
+        return None
+    partial_dir = run_dir / "partial_remote_output"
+    partial_dir.mkdir(parents=True, exist_ok=True)
+    completed = subprocess.run(
+        ["colab", "download", "-s", session, remote_output_dir, str(partial_dir)],
+        check=False,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+    )
+    (run_dir / "partial_remote_output_download.log").write_text(
+        completed.stdout or ""
+    )
+    if completed.returncode == 0:
+        return partial_dir
+    return None
+
+
 def write_console_script(path: Path, remote_script: str) -> None:
     path.write_text(remote_script.strip() + "\nexit\n")
 
@@ -909,6 +939,9 @@ def poll_remote(
                 or (idle_no_exit_polls >= 2 and not colab_file_exists(session, remote_bundle))
             )
         ):
+            partial_output_dir = download_partial_output_dir(
+                session, remote_bundle, run_dir
+            )
             evidence = {
                 "status": "HOLD_REMOTE_NO_SENTINEL",
                 "session": session,
@@ -916,6 +949,10 @@ def poll_remote(
                 "remote_exit": remote_exit,
                 "remote_pid": remote_pid,
                 "remote_bundle": remote_bundle,
+                "remote_output_dir": remote_output_dir_for_bundle(remote_bundle),
+                "local_partial_output_dir": str(partial_output_dir)
+                if partial_output_dir
+                else None,
                 "unchanged_log_polls": unchanged_log_polls,
                 "idle_no_exit_polls": idle_no_exit_polls,
                 "poll_interval_s": interval_s,
@@ -943,6 +980,8 @@ def poll_remote(
                         f"- remote_exit: `{remote_exit}`",
                         f"- remote_pid: `{remote_pid}`",
                         f"- remote_bundle: `{remote_bundle}`",
+                        f"- remote_output_dir: `{remote_output_dir_for_bundle(remote_bundle)}`",
+                        f"- local_partial_output_dir: `{partial_output_dir}`",
                         f"- unchanged_log_polls: `{unchanged_log_polls}`",
                         f"- idle_no_exit_polls: `{idle_no_exit_polls}`",
                         f"- poll_interval_s: `{interval_s}`",
@@ -962,6 +1001,7 @@ def poll_remote(
             raise SystemExit("HOLD_REMOTE_NO_SENTINEL: Colab workflow disappeared without exit sentinel")
         time.sleep(interval_s)
     else:
+        partial_output_dir = download_partial_output_dir(session, remote_bundle, run_dir)
         timeout_evidence = {
             "status": "HOLD_REMOTE_TIMEOUT",
             "session": session,
@@ -969,6 +1009,10 @@ def poll_remote(
             "remote_exit": remote_exit,
             "remote_pid": remote_pid,
             "remote_bundle": remote_bundle,
+            "remote_output_dir": remote_output_dir_for_bundle(remote_bundle),
+            "local_partial_output_dir": str(partial_output_dir)
+            if partial_output_dir
+            else None,
             "timeout_s": timeout_s,
             "last_colab_status": last_status,
         }

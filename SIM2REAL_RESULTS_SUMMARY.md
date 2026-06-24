@@ -2278,3 +2278,11 @@ It records staged evidence for CUDA/JAX device compute, training-stack imports,
 smoke dry-run startup, and the tiny PPO smoke. This should narrow the current
 `HOLD_REMOTE_NO_SENTINEL` to a concrete startup stage before more cloud GPU
 training time is spent.
+
+Local CPU validation of the diagnostic passed all stages, including the actual
+tiny PPO smoke. The Colab poller now also tries to recover the remote workflow
+output directory as `partial_remote_output` before declaring
+`HOLD_REMOTE_NO_SENTINEL` or `HOLD_REMOTE_TIMEOUT`.
+
+Summary artifact:
+`outputs/analysis/LOCAL_TRAINING_SMOKE_STARTUP_DIAGNOSTIC_SUMMARY.md`.
