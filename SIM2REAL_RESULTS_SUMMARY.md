@@ -2624,3 +2624,43 @@ Summary artifact:
 Follow-up workflow fix: foreground Colab jobs now write a remote PID file, and
 the poller checks that PID before treating an idle/no-sentinel session as lost.
 This prevents starting a second job over a still-running raw-console process.
+
+### A100 V16 Tiny Restore Hold And Local CPU Restore Pass
+
+A tiny V16 restored run was launched to separate workload size from restore-path
+issues:
+
+```text
+ppo_num_envs: 4
+num_timesteps: 120
+phase_gate: disabled
+restore: V5 trainable checkpoint
+```
+
+It reproduced the same post-step-0 stall/no-sentinel pattern:
+
+```text
+Observation size: 101
+PPO params: {... num_envs: 4, num_timesteps: 120 ...}
+Skipping checkpoint/export at step 0; export_min_step=1
+```
+
+Follow-up: the planner now resolves `--initial-restore-checkpoint` to an
+absolute path before handing it to the Playground runner. With that fix, the
+same tiny restored V16 phase-1 path passes locally on CPU:
+
+```text
+status: PASS_STAGED_CURRICULUM_RUN
+platform: cpu
+num_timesteps: 120
+checkpoint: /tmp/open_duck_v16_tiny_cpu_fixed/01_phase1_v5_anchor_mild_bridge_consistency/smoke_20260624T113100Z_cpu/2026_06_24_073135_120
+onnx: /tmp/open_duck_v16_tiny_cpu_fixed/01_phase1_v5_anchor_mild_bridge_consistency/smoke_20260624T113100Z_cpu/2026_06_24_073135_120.onnx
+```
+
+Interpretation: V16's restored-checkpoint recipe path is not currently the
+primary blocker. The remaining hold is A100/Colab/CUDA workflow behavior or
+remote session state. Before a full V16 relaunch, run one tiny A100 restored
+smoke with the PID-aware poller and timeout-safe PID probe.
+
+Summary artifact:
+`outputs/analysis/A100_V16_TINY_RESTORE_HOLD_SUMMARY.md`.

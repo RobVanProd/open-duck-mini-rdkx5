@@ -148,14 +148,17 @@ def remote_process_is_running(session: str, remote_pid: str, run_dir: Path) -> b
     if not colab_file_exists(session, remote_pid):
         return None
     local_pid = run_dir / "remote_workflow.pid"
-    downloaded = subprocess.run(
-        ["colab", "download", "-s", session, remote_pid, str(local_pid)],
-        text=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-        timeout=20,
-        check=False,
-    )
+    try:
+        downloaded = subprocess.run(
+            ["colab", "download", "-s", session, remote_pid, str(local_pid)],
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            timeout=20,
+            check=False,
+        )
+    except subprocess.TimeoutExpired:
+        return None
     if downloaded.returncode != 0 or not local_pid.exists():
         return None
     try:
@@ -180,14 +183,17 @@ def remote_process_is_running(session: str, remote_pid: str, run_dir: Path) -> b
         )
         + "\n"
     )
-    checked = subprocess.run(
-        ["colab", "exec", "-s", session, "--file", str(probe), "--timeout", "15"],
-        text=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-        timeout=25,
-        check=False,
-    )
+    try:
+        checked = subprocess.run(
+            ["colab", "exec", "-s", session, "--file", str(probe), "--timeout", "15"],
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            timeout=25,
+            check=False,
+        )
+    except subprocess.TimeoutExpired:
+        return None
     if checked.returncode != 0:
         return None
     output = checked.stdout or ""

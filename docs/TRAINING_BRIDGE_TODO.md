@@ -1903,3 +1903,17 @@ or artifact bundle. Treat it as `HOLD_A100_V16_PHASE1_NO_SENTINEL`, not as a
 policy result. Before relaunching, improve the Colab workflow so it detects an
 alive remote process without a sentinel and does not start a second job in the
 same session.
+
+A tiny restored V16 A100 smoke also reached step 0 without a final sentinel, but
+the same restored V16 path passed locally on CPU after resolving the restore
+checkpoint to an absolute path before invoking the Playground runner. Current
+interpretation:
+
+```text
+V16 restore/training path: locally validated
+A100/Colab/CUDA path: still needs one tiny restored smoke rerun
+```
+
+Next A100 action should be a tiny restored V16 smoke with the PID-aware poller
+and timeout-safe PID probe, not a full phase-1 launch. If that tiny A100 smoke
+passes, relaunch full V16 phase 1 with the multi-seed phase gate enabled.

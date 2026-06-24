@@ -2985,6 +2985,8 @@ def main() -> int:
     restore_checkpoint: Path | None = args.initial_restore_checkpoint
     if args.run and restore_checkpoint is not None and not restore_checkpoint.exists():
         raise SystemExit(f"Initial restore checkpoint missing: {restore_checkpoint}")
+    if args.run and restore_checkpoint is not None:
+        restore_checkpoint = restore_checkpoint.resolve()
     for index, phase in enumerate(RECIPES[args.recipe], 1):
         if args.stop_after_phase is not None and index > args.stop_after_phase:
             break
