@@ -66,7 +66,7 @@ reviewed sim-side gates:
 | forward command tracking | mean local-base-x velocity tracks at least part of nonzero `x` command |
 | gait stability | stable at `x=0.00`, `x=0.04`, and `x=0.08` in sim |
 | reward | no obvious frozen or collapsed gait exploit |
-| metadata | ONNX hash, config, seed, and eval summary saved |
+| metadata | ONNX hash, config, seed set, and eval summary saved |
 
 The offline candidate gate currently holds nonzero commands when the measured
 forward command tracking ratio is below `0.25`. This prevents a policy from
@@ -155,6 +155,35 @@ Run at least `x=0.0` and `x=0.08`. Package metadata should point at the
 `x=0.08` candidate gate so nonzero-command failures are not hidden by a
 zero-command pass.
 
+For nonzero command promotion, a single seed is not enough. The V7/V9 baseline
+showed the same policy can lunge, buckle, or stand still depending on reset
+seed. Use the seed-sweep helper before treating a candidate as a robot-side
+candidate:
+
+```bash
+python3 tools/run_candidate_seed_sweep.py \
+  --policies path/to/candidate.onnx \
+  --seeds 0-7 \
+  --command-x 0.08 \
+  --duration 15 \
+  --bridge-mode fitted \
+  --jax-platform cpu \
+  --run \
+  --output-dir outputs/analysis/<candidate>_seed_sweep_x008
+```
+
+Grade new candidates against the current baseline:
+
+```text
+V7/V9 baseline at x=0.08 fitted bridge:
+  fall rate: 5/8
+  standstill duration-complete rate: 3/8
+  mean lifetime: about 312 samples
+```
+
+A meaningful candidate should shift that distribution, not merely pass one
+lucky seed.
+
 Candidate mode reports `PASS_CANDIDATE_SIM_GATE` only when the policy survives
 the requested horizon with low action saturation, trackable pitch-chain targets,
 reasonable body posture, usable base height, and non-collapsed reward. A hold
@@ -181,7 +210,7 @@ Record:
 - source RDK tools commit
 - training command
 - config overrides
-- seed
+- seed set
 - ONNX SHA256
 
 ## Robot-Side Validation Order

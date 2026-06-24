@@ -323,13 +323,38 @@ target velocity p95 stayed under threshold in both runs
 action saturation was 0%
 ```
 
+The eight-seed V7/V9 baseline is now preserved in:
+
+```text
+outputs/analysis/V7_V9_MULTI_SEED_STABILITY_BASELINE.md
+```
+
+Baseline to beat:
+
+```text
+V7: 5/8 falls, 3/8 standstill completions, mean samples 311.75
+V9: 5/8 falls, 3/8 standstill completions, mean samples 312.00
+```
+
+Observed failure surfaces:
+
+```text
+seeds 0 and 6: lunge / pitch-over
+seed 5: reverse or negative local velocity failure
+seeds 1 and 7: early base-height/contact collapse
+seeds 2, 3, and 4: low-forward-progress standstill
+```
+
 Interpretation:
 
 - the one-second checkpoint sweep is useful for triage but not sufficient,
 - V9 is not a stable robot candidate,
 - the remaining failure is not target-velocity budget or saturation,
 - the next recipe must stabilize the `60-100` sample fall window without
-  erasing forward motion.
+  erasing forward motion,
+- V10 should be graded by multi-seed distribution shift: fewer falls, later
+  falls, fewer standstill completions, and useful forward tracking across more
+  seeds.
 
 Immediate tooling work:
 
@@ -346,6 +371,8 @@ Next recipe direction:
   structure,
 - penalize forward-speed overshoot, pitch growth, pitch-rate growth, and
   base-height collapse during the first `60-100` samples,
+- include contact/support timing or stance-support terms because seed 1 and
+  seed 7 fail by base-height/contact collapse rather than pure speed overshoot,
 - keep the fitted actuator bridge and velocity envelope active,
 - reject both failure modes: above-command lunge and near-zero standstill.
 

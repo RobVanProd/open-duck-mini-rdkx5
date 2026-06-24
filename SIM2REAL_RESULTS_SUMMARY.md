@@ -1548,3 +1548,49 @@ Next offline target: design V10 around the `60-100` sample fall window. Preserve
 early in-envelope forward motion with a teacher/trust-region term, then add
 stability pressure for forward-speed overshoot, pitch/pitch-rate growth, and
 base-height collapse without returning to the V8/V9 standstill basin.
+
+## V7 / V9 Multi-Seed Stability Baseline
+
+The two-seed V9 result showed two different failure modes, so the next question
+was distribution, not another single rollout. An eight-seed `x=0.08`
+fitted-bridge CPU baseline is now recorded in:
+
+```text
+outputs/analysis/V7_V9_MULTI_SEED_STABILITY_BASELINE.md
+```
+
+Summary:
+
+```text
+V7: 8 seeds, 5 falls, 3 duration-complete standstill holds,
+    mean samples 311.75, mean track ratio 0.2351
+
+V9: 8 seeds, 5 falls, 3 duration-complete standstill holds,
+    mean samples 312.00, mean track ratio 0.3282
+```
+
+V9 did not materially improve the stability distribution versus V7. Both
+policies fail across multiple surfaces:
+
+```text
+seeds 0 and 6: lunge / pitch-over
+seed 5: reverse or negative local velocity failure
+seeds 1 and 7: early base-height/contact collapse
+seeds 2, 3, and 4: stable low-forward-progress standstill
+```
+
+Trace analysis confirms the two main V9 failure modes:
+
+```text
+V9 seed 0: 73 samples, track ratio 2.7707,
+           body pitch abs p95 1.2604 rad, base height min 0.0305 m
+
+V9 seed 1: 32 samples, track ratio 0.2314,
+           body pitch abs p95 0.0496 rad, base height min 0.0672 m
+```
+
+This means V10 should be judged by multi-seed distribution shift. The baseline
+to beat is `5/8` falls, mean lifetime about `312` samples, and `3/8` seeds
+surviving only by standing still. V10 should keep the broad stabilizer set:
+forward-speed overshoot, pitch/pitch-rate growth, base-height collapse, contact
+support timing, and teacher/trust-region continuity for gait shape.

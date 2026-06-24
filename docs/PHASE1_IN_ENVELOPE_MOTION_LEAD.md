@@ -283,3 +283,43 @@ in-envelope forward motion with a teacher/trust-region term while penalizing
 forward-speed overshoot, pitch growth, pitch-rate growth, and base-height
 collapse. Another target-velocity-envelope tweak is unlikely to address the
 remaining failure.
+
+## V7 / V9 Multi-Seed Baseline
+
+The single-seed and two-seed results were not enough to grade stabilization, so
+V7 and V9 were both run across seeds `0-7` at `x=0.08` with the fitted bridge.
+
+Evidence:
+
+```text
+outputs/analysis/V7_V9_MULTI_SEED_STABILITY_BASELINE.md
+```
+
+Result:
+
+```text
+V7: 5/8 falls, 3/8 standstill completions, mean samples 311.75
+V9: 5/8 falls, 3/8 standstill completions, mean samples 312.00
+```
+
+V9 did not improve the stability distribution versus V7. Both policies show
+the same failure surfaces:
+
+```text
+lunge / pitch-over
+early base-height or contact-support collapse
+reverse/negative local velocity failure
+duration-complete standstill
+```
+
+This changes the V10 gate. V10 should not be judged against one cherry-picked
+seed. It should be judged by distribution shift across the same seed set:
+
+```text
+fewer falls
+later fall samples
+fewer standstill completions
+useful forward tracking on more seeds
+lower pitch on lunge seeds
+better base height / support on collapse seeds
+```
