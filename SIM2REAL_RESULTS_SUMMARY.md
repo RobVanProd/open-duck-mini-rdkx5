@@ -2725,3 +2725,63 @@ per-seed start/done markers, kills the full subprocess group on timeout, records
 
 Summary artifact:
 `outputs/analysis/A100_V16_PHASE1_SEED_GATE_STALL_SUMMARY.md`.
+
+### A100 V16 Phase-1 Multi-Seed Hold
+
+After hardening the seed-sweep gate, V16 phase 1 was rerun on A100. Training
+completed and exported ONNX checkpoints at steps `40960`, `81920`, and
+`122880`, but the phase gate held:
+
+```text
+status: HOLD_PHASE_MULTI_SEED_FALLS
+gate: x=0.08, vanilla bridge, seeds 0-3, 5 seconds
+runs: 4
+falls: 1
+duration_complete: 3
+track_ratio_mean: -0.1269
+mean_local_vx_mean: -0.0102 m/s
+```
+
+Per-seed result:
+
+```text
+seed 0: low progress, duration complete, track_ratio  0.0748
+seed 1: fall at 35 samples, reverse vx, track_ratio -0.6297
+seed 2: low progress, duration complete, track_ratio  0.0898
+seed 3: low/reverse progress, duration complete, track_ratio -0.0426
+```
+
+Interpretation: V16 fixed the infrastructure path but not the behavior. The
+V5-anchored mild-bridge continuation still collapses into low/reverse progress
+across seeds and is not deployable.
+
+Next offline check: sweep the intermediate V16 ONNX exports at `40960` and
+`81920`. If no intermediate checkpoint has a better forward-progress
+distribution, stop extending the V5-anchor continuation.
+
+Summary artifact:
+`outputs/analysis/A100_V16_PHASE1_MULTI_SEED_HOLD_SUMMARY.md`.
+
+Intermediate checkpoint follow-up:
+
+```text
+40960:  falls 1/4, track_ratio_mean -0.0508, vx_mean -0.0041 m/s
+81920:  falls 1/4, track_ratio_mean -0.1072, vx_mean -0.0086 m/s
+122880: falls 1/4, track_ratio_mean -0.1269, vx_mean -0.0102 m/s
+```
+
+Conclusion: the V16 failure is present throughout phase 1. There is no better
+intermediate V16 checkpoint to branch from. The next recipe should be a
+structural break from the V5-anchor continuation, with hard signed positive
+progress from the start.
+
+Planned next recipe: `movement_bootstrap_v17`.
+
+```text
+phase 1: no bridge, x=0.04-0.06, hard signed positive progress
+phase 2: mild bridge transfer
+phase 3: fitted bridge low-command transfer
+```
+
+V17 intentionally does not restore from V5. It tests whether a fresh hard-progress
+lineage can escape the V5/V16 low-reverse-progress basin.

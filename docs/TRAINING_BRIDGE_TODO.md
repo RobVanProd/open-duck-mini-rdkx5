@@ -1939,3 +1939,43 @@ policy verdict.
 Seed-gate tooling has been patched to emit per-seed start/done markers, kill
 subprocess groups on timeout, and write partial seed-sweep JSON after each seed.
 Rerun full V16 phase 1 with the patched gate before changing the recipe.
+
+The patched rerun completed phase-1 training and produced the full multi-seed
+gate. V16 phase 1 held:
+
+```text
+falls: 1/4
+track_ratio_mean: -0.1269
+mean_local_vx_mean: -0.0102 m/s
+```
+
+Before designing V17, sweep the V16 intermediate ONNX exports from steps 40960
+and 81920. If an intermediate checkpoint has better forward-progress
+distribution than the final 122880 checkpoint, branch from it. If all V16
+checkpoints are low/reverse progress, stop extending the V5-anchor continuation.
+
+The intermediate sweep found no better V16 branch point:
+
+```text
+40960:  falls 1/4, track_ratio_mean -0.0508, vx_mean -0.0041 m/s
+81920:  falls 1/4, track_ratio_mean -0.1072, vx_mean -0.0086 m/s
+122880: falls 1/4, track_ratio_mean -0.1269, vx_mean -0.0102 m/s
+```
+
+Next recipe should not be another V5-anchor continuation. V17 should be a
+structural break that makes signed positive progress non-negotiable from the
+start while keeping enough pitch/base-height/contact pressure to avoid the old
+lunge and collapse modes.
+
+### V17 Structural Break
+
+V17 is the next offline recipe:
+
+```text
+phase 1: no bridge, x=0.04-0.06, hard signed positive progress
+phase 2: mild bridge transfer only if phase 1 passes
+phase 3: fitted bridge low-command transfer only if phase 2 passes
+```
+
+It intentionally does not restore from the V5 checkpoint. The goal is to escape
+the V5/V16 low-reverse-progress basin rather than regularize toward it.

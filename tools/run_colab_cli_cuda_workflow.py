@@ -1316,6 +1316,7 @@ def main() -> int:
     parser.add_argument(
         "--staged-recipe",
         choices=[
+            "movement_bootstrap_v17",
             "movement_bootstrap_v16",
             "movement_bootstrap_v15",
             "movement_bootstrap_v14",
@@ -1333,11 +1334,13 @@ def main() -> int:
             "movement_bootstrap_v2",
             "shortfall_v1",
         ],
-        default="movement_bootstrap_v16",
+        default="movement_bootstrap_v17",
         help=(
             "Recipe passed to tools/plan_staged_curriculum_training.py for "
             "--workflow staged-curriculum. The current default is "
-            "movement_bootstrap_v16, which returns to the recovered V5 moving "
+            "movement_bootstrap_v17, a fresh hard signed-progress structural "
+            "break after V16 showed no usable V5-anchor branch point. "
+            "movement_bootstrap_v16 returns to the recovered V5 moving "
             "checkpoint and should be run with --staged-initial-restore-checkpoint. "
             "movement_bootstrap_v15 separates no-bridge gait discovery from "
             "mild/fitted actuator transfer after the V14 partial checkpoint "
