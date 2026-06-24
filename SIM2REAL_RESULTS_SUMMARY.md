@@ -2159,3 +2159,27 @@ tiny smoke locally on CPU.
 
 Summary artifact:
 `outputs/analysis/L4_FOREGROUND_TRAINING_SMOKE_NO_SENTINEL_SUMMARY.md`.
+
+### Local CPU Training Smoke Pass
+
+The same tiny PPO smoke was run locally on CPU. The first local attempt exposed
+a platform-selection bug: `JAX_PLATFORM_NAME=cpu` was not enough because JAX
+still tried to initialize the installed ROCm plugin and failed with
+`No visible GPU devices`. The smoke launcher now sets both `JAX_PLATFORM_NAME`
+and `JAX_PLATFORMS`.
+
+After that fix, local CPU passed:
+
+```text
+status: PASS_SMOKE_RUN
+returncode: 0
+elapsed_s: 54.36
+STEP: 80 reward: 11.251152038574219 reward_std: 4.502880573272705
+```
+
+This proves the runner itself is valid outside Colab. The next cloud check is
+to rerun the minimal GPU smoke with the patched launcher so the remote runtime
+also has explicit `JAX_PLATFORMS=gpu`.
+
+Summary artifact:
+`outputs/analysis/LOCAL_CPU_TRAINING_SMOKE_SUMMARY.md`.

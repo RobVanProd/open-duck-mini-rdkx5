@@ -372,6 +372,7 @@ def main() -> int:
     command = build_command(args, output_dir)
     env = os.environ.copy()
     env["JAX_PLATFORM_NAME"] = args.platform
+    env["JAX_PLATFORMS"] = args.platform
     env["PYTHONUNBUFFERED"] = "1"
 
     manifest: dict[str, Any] = {
@@ -383,6 +384,10 @@ def main() -> int:
         "env_python_resolved": str(Path(args.env_python).resolve()),
         "output_dir": str(output_dir),
         "platform": args.platform,
+        "jax_platform_env": {
+            "JAX_PLATFORM_NAME": env["JAX_PLATFORM_NAME"],
+            "JAX_PLATFORMS": env["JAX_PLATFORMS"],
+        },
         "timeout_s": args.timeout_s,
         "export_min_step": args.export_min_step,
         "actuator_bridge_enabled": not args.disable_actuator_bridge,

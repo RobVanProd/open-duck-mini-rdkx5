@@ -1685,3 +1685,30 @@ Next debugging steps:
 
 Summary artifact:
 `outputs/analysis/L4_FOREGROUND_TRAINING_SMOKE_NO_SENTINEL_SUMMARY.md`.
+
+### Local CPU Training Smoke Pass
+
+The tiny smoke was rerun locally on CPU after fixing the launcher to set both
+JAX platform environment variables:
+
+```text
+JAX_PLATFORM_NAME=cpu
+JAX_PLATFORMS=cpu
+```
+
+Result:
+
+```text
+status: PASS_SMOKE_RUN
+returncode: 0
+elapsed_s: 54.36
+STEP: 80 reward: 11.251152038574219 reward_std: 4.502880573272705
+```
+
+Interpretation: the runner is valid. The first local CPU failure was an
+environment selection issue from JAX trying to initialize the installed ROCm
+plugin. The next cloud check should rerun `training-smoke` after this
+`JAX_PLATFORMS` fix is present in the uploaded repo.
+
+Summary artifact:
+`outputs/analysis/LOCAL_CPU_TRAINING_SMOKE_SUMMARY.md`.
