@@ -289,14 +289,28 @@ def build_remote_driver(
         args.candidate_actuator_bridge_per_joint_variation
     )
     artifact_checkpoint_mode = args.artifact_checkpoint_mode
+    staged_initial_restore_checkpoint = args.staged_initial_restore_checkpoint
+    if staged_initial_restore_checkpoint and not Path(
+        staged_initial_restore_checkpoint
+    ).is_absolute():
+        staged_initial_restore_checkpoint = (
+            f"/content/open-duck-mini-rdkx5/{staged_initial_restore_checkpoint}"
+        )
+    candidate_restore_checkpoint_path = args.candidate_restore_checkpoint_path
+    if candidate_restore_checkpoint_path and not Path(
+        candidate_restore_checkpoint_path
+    ).is_absolute():
+        candidate_restore_checkpoint_path = (
+            f"/content/open-duck-mini-rdkx5/{candidate_restore_checkpoint_path}"
+        )
     staged_stop_after_phase_arg = (
         f'"--stop-after-phase", "{args.staged_stop_after_phase}",'
         if args.staged_stop_after_phase is not None
         else ""
     )
     staged_initial_restore_arg = (
-        f'"--initial-restore-checkpoint", "{args.staged_initial_restore_checkpoint}",'
-        if args.staged_initial_restore_checkpoint
+        f'"--initial-restore-checkpoint", "{staged_initial_restore_checkpoint}",'
+        if staged_initial_restore_checkpoint
         else ""
     )
     staged_timeout_multiplier = args.staged_stop_after_phase or 3
@@ -577,10 +591,10 @@ def build_remote_driver(
                 "--actuator-bridge-per-joint-variation", "{candidate_actuator_bridge_per_joint_variation}",
                 "--timeout-s", "{args.candidate_timeout_s}",
             ]
-            if {args.candidate_restore_checkpoint_path!r}:
+            if {candidate_restore_checkpoint_path!r}:
                 candidate_training_cmd.extend([
                     "--restore-checkpoint-path",
-                    {args.candidate_restore_checkpoint_path!r},
+                    {candidate_restore_checkpoint_path!r},
                 ])
             run(candidate_training_cmd, cwd=RDK, timeout={args.candidate_timeout_s + 300})
             run_dirs = sorted(Path("/content/open_duck_training_runs_cli").glob("smoke_*_gpu"))
