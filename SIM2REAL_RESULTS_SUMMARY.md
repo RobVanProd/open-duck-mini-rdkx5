@@ -2458,3 +2458,43 @@ runtime/session capacity issue, not a generic Open Duck training failure.
 
 Summary artifact:
 `outputs/analysis/A100_8ENV64_CUDA_TRAINING_SMOKE_SUMMARY.md`.
+
+### A100 V15 Phase-1 Result
+
+After the A100 smoke pass, `movement_bootstrap_v15` phase 1 was run as the next
+offline candidate-training gate:
+
+```text
+phase: phase1_no_bridge_high_entropy_gait_discovery
+num_timesteps: 320000
+ppo_num_envs: 256
+actuator bridge: disabled
+command x range: 0.06 to 0.10
+zero_command_probability: 0
+```
+
+Training completed and exported a checkpoint/ONNX at step `337920`, but the
+automatic vanilla `x=0.08` candidate gate returned:
+
+```text
+overall_status: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
+mean_local_vx: 0.0009 m/s
+track_ratio: 0.0111
+max_sent_target_velocity_p95_rad_s: 0.0988
+max_pitch_tracking_p95_rad: 0.0540
+max_action_saturation_pct: 0.0000
+body_pitch_p95: 0.0818 rad
+base_height_min: 0.1534 m
+```
+
+Interpretation: A100 is now validated for substantial phase execution, but V15
+phase 1 still falls into the standstill basin. The checkpoint is not suitable
+for V15 phase 2/3 transfer or robot validation.
+
+The run exposed an artifact hygiene bug: staged phase outputs were not copied
+into the exit bundle when the phase gate raised `HOLD_PHASE_FREEZE_OR_LOW_PROGRESS`.
+The Colab workflow now copies staged smoke outputs and phase-gate summaries
+during `atexit` bundling, including failure exits.
+
+Summary artifact:
+`outputs/analysis/A100_V15_PHASE1_HOLD_SUMMARY.md`.

@@ -543,6 +543,22 @@ def build_remote_driver(
                             print("copy_training_outputs_warning", item, type(exc).__name__, exc, flush=True)
                 copy_checkpoint_dirs(run_dir, run_dest)
 
+        def copy_staged_gate_outputs(src, dest):
+            src = Path(src)
+            dest = Path(dest)
+            if not src.exists():
+                return
+            for gate_dir in sorted(src.glob("**/phase_*_freeze_gate_*")):
+                rel = gate_dir.relative_to(src)
+                gate_dest = dest / rel
+                gate_dest.mkdir(parents=True, exist_ok=True)
+                for pattern in ["*.md", "*.json", "*.txt"]:
+                    for item in sorted(gate_dir.glob(pattern)):
+                        try:
+                            (gate_dest / item.name).write_bytes(item.read_bytes())
+                        except Exception as exc:
+                            print("copy_staged_gate_warning", item, type(exc).__name__, exc, flush=True)
+
         def bundle_artifacts():
             try:
                 OUT.mkdir(parents=True, exist_ok=True)
@@ -556,6 +572,14 @@ def build_remote_driver(
                 copy_training_outputs(
                     "/content/open_duck_training_runs_cli",
                     OUT / "open_duck_training_runs_cli",
+                )
+                copy_training_outputs(
+                    "/content/open_duck_staged_curriculum_cli",
+                    OUT / "open_duck_staged_curriculum_cli",
+                )
+                copy_staged_gate_outputs(
+                    "/content/open_duck_staged_curriculum_cli",
+                    OUT / "open_duck_staged_curriculum_cli",
                 )
                 subprocess.run(
                     ["tar", "-czf", str(REMOTE_BUNDLE), "-C", str(OUT.parent), OUT.name],

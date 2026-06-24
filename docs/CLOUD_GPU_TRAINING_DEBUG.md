@@ -24,12 +24,17 @@ Known-good:
   - actuator bridge enabled
   - final manifest written
   - checkpoint saved at step 80
+- Colab A100 staged curriculum phase execution: `PASS_INFRA`
+  - `movement_bootstrap_v15` phase 1 trained to step 337920
+  - exported ONNX/checkpoint
+  - automatic gate ran and returned `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS`
 
 Current hold:
 
 ```text
 Colab L4 8-env / 64-timestep training-smoke: HOLD_REMOTE_NO_SENTINEL
 Colab L4 8-env training-smoke diagnostic: HOLD_REMOTE_NO_SENTINEL
+movement_bootstrap_v15 phase 1 on A100: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
 ```
 
 The minimal L4 runs prove CUDA/JAX/Brax/Playground are usable at very small
@@ -218,6 +223,40 @@ A100 result:
 8 env / 64 timesteps: PASS
 STEP: 80 reward: 11.273723602294922 reward_std: 4.483529567718506
 ```
+
+### A100 V15 Phase-1 Hold
+
+`movement_bootstrap_v15` phase 1 was run on A100 after the smoke ladder passed:
+
+```text
+phase: phase1_no_bridge_high_entropy_gait_discovery
+num_timesteps: 320000
+ppo_num_envs: 256
+actuator bridge: disabled
+command x range: 0.06 to 0.10
+zero_command_probability: 0
+```
+
+Training completed and exported `2026_06_24_100138_337920.onnx`, but the
+automatic vanilla `x=0.08` gate held:
+
+```text
+overall_status: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
+mean_local_vx: 0.0009 m/s
+track_ratio: 0.0111
+max_sent_target_velocity_p95_rad_s: 0.0988
+max_pitch_tracking_p95_rad: 0.0540
+max_action_saturation_pct: 0.0000
+body_pitch_p95: 0.0818 rad
+base_height_min: 0.1534 m
+```
+
+Interpretation: the A100 training infrastructure is usable for full phase runs,
+but this V15 phase-1 recipe learned a quiet standstill. Do not run V15 phases 2
+or 3 from this checkpoint.
+
+Summary artifact:
+`outputs/analysis/A100_V15_PHASE1_HOLD_SUMMARY.md`.
 
 ## Related Upstream Notes
 
