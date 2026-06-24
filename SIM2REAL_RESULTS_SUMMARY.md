@@ -2286,3 +2286,6 @@ output directory as `partial_remote_output` before declaring
 
 Summary artifact:
 `outputs/analysis/LOCAL_TRAINING_SMOKE_STARTUP_DIAGNOSTIC_SUMMARY.md`.
+
+Runbook:
+`docs/CLOUD_GPU_TRAINING_DEBUG.md`.

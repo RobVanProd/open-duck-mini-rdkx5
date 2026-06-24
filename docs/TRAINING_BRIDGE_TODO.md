@@ -51,6 +51,12 @@ CUDA fallback/runbook:
 docs/CUDA_BACKEND_TRAINING_RUNBOOK.md
 ```
 
+Cloud GPU smoke/debug notes:
+
+```text
+docs/CLOUD_GPU_TRAINING_DEBUG.md
+```
+
 ## P0: Inspect Current Training Contract
 
 ### Fit Real Actuator Response From Telemetry
