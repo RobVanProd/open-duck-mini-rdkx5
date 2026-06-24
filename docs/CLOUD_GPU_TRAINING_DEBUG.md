@@ -184,6 +184,33 @@ The next cloud isolation step should sweep upward conservatively, for example:
 Stop at the first scale that disappears or times out and preserve the partial
 output bundle.
 
+## Related Upstream Notes
+
+This behavior is not unique to this repo. A Brax issue reports an NVIDIA L4
+Colab PPO locomotion run that stayed very slow or never finished even after the
+author reduced `num_timesteps` to `10`:
+https://github.com/google/brax/issues/520
+
+JAX/XLA has also had historical reports of GPU compilation hangs where a
+program compiles successfully for some shapes and hangs for others:
+https://github.com/jax-ml/jax/issues/6823
+
+MuJoCo's MJX documentation notes that `MJX-Warp` is specifically optimized for
+NVIDIA GPUs and resolves several performance bottlenecks of `MJX-JAX`, but it
+does not support automatic differentiation:
+https://mujoco.readthedocs.io/en/stable/mjx.html
+
+Current Open Duck Colab smoke stdout says:
+
+```text
+Failed to import warp: No module named 'warp'
+Failed to import mujoco_warp: No module named 'warp'
+```
+
+Do not switch simulator implementation in the training path casually. Treat
+Warp as a separate backend experiment only after the current JAX/MJX baseline is
+well characterized.
+
 ## Non-Goals
 
 - Do not run robot validation from cloud GPU diagnostics.
