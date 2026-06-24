@@ -1135,3 +1135,34 @@ for this policy.
 Next training work should not continue simple V7/V9 anchor consolidation as the
 main path. Switch to a structurally different bootstrap/objective that first
 creates one coherent forward behavior across seeds, then adds stability margin.
+
+## V11 Fresh Hard-Progress Bootstrap
+
+V11 is prepared as the next structurally different experiment:
+
+```text
+recipe: movement_bootstrap_v11
+plan: outputs/analysis/MOVEMENT_BOOTSTRAP_V11_TRAINING_PLAN.md
+json: outputs/analysis/movement_bootstrap_v11_training_plan.json
+initial restore checkpoint: none by default
+```
+
+Design intent:
+
+```text
+- do not continue the V7/V9/V10 anchor lineage
+- keep fitted actuator limits active from phase 1
+- train only positive x commands
+- remove Huber smoothing from the forward shortfall and command-window
+  shortfall floors
+- strongly penalize reverse motion
+- add stability only after forward motion is made expensive to abandon
+```
+
+Evaluation rule:
+
+```text
+Run the same eight-seed x=0.08 fitted-bridge seed sweep.
+V11 is only useful if it produces more coherent forward tracking across seeds,
+not merely longer standstill survival.
+```

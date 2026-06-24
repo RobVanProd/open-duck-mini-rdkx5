@@ -1188,7 +1188,177 @@ MOVEMENT_BOOTSTRAP_V10_PHASES = [
 ]
 
 
+MOVEMENT_BOOTSTRAP_V11_PHASES = [
+    Phase(
+        name="phase1_fresh_hard_progress_floor_low_command",
+        purpose=(
+            "start a fresh lineage instead of restoring the fragile V7/V9/V10 "
+            "anchor. Use a hard non-Huberized forward-progress floor in the "
+            "x=0.04-0.06 range so standing still cannot satisfy the objective."
+        ),
+        num_timesteps=260_000,
+        bridge=True,
+        delay=(2, 5),
+        tau_s=(0.05, 0.12),
+        velocity_limit_rad_s=(2.5, 3.75),
+        target_rate_scale=-0.0010,
+        actuator_tracking_scale=-0.08,
+        tracking_lin_vel_scale=42.0,
+        tracking_sigma=0.0009,
+        forward_progress_scale=18.0,
+        forward_shortfall_scale=-36.0,
+        forward_shortfall_required_ratio=0.55,
+        action_rate_scale=-0.010,
+        action_magnitude_scale=-0.0025,
+        stand_still_scale=-1.4,
+        alive_scale=0.02,
+        imitation_scale=0.08,
+        lin_vel_x=(0.04, 0.06),
+        zero_command_probability=0.0,
+        forward_overshoot_scale=-4.0,
+        forward_overshoot_allowed_ratio=1.45,
+        forward_wrong_direction_scale=-20.0,
+        forward_wrong_direction_allowed_reverse_ratio=0.0,
+        orientation_scale=-0.05,
+        base_height_scale=-0.45,
+        forward_pitch_scale=-0.08,
+        forward_pitch_rate_scale=-0.008,
+        forward_contact_support_scale=-0.20,
+        forward_contact_support_no_contact_weight=1.0,
+        forward_contact_support_asymmetry_weight=0.02,
+        command_progress_scale=24.0,
+        command_progress_shortfall_scale=-50.0,
+        command_progress_required_ratio=0.55,
+        command_progress_warmup_steps=20,
+        action_rate_huber_delta=0.08,
+        action_magnitude_huber_delta=0.50,
+        target_rate_huber_delta=1.0,
+        actuator_tracking_huber_delta=0.08,
+        forward_shortfall_huber_delta=0.0,
+        forward_overshoot_huber_delta=0.50,
+        forward_wrong_direction_huber_delta=0.0,
+        forward_pitch_huber_delta=0.25,
+        forward_pitch_rate_huber_delta=1.0,
+        command_progress_shortfall_huber_delta=0.0,
+        ppo_learning_rate=1.2e-4,
+        ppo_clipping_epsilon=0.12,
+        ppo_max_grad_norm=0.7,
+    ),
+    Phase(
+        name="phase2_fresh_expand_command_keep_progress_floor",
+        purpose=(
+            "expand toward x=0.08 after the hard progress floor has made "
+            "forward motion dominant. Keep the fitted actuator envelope fixed "
+            "and retain strong wrong-direction pressure."
+        ),
+        num_timesteps=280_000,
+        bridge=True,
+        delay=(3, 6),
+        tau_s=(0.06, 0.14),
+        velocity_limit_rad_s=(2.5, 3.75),
+        target_rate_scale=-0.0012,
+        actuator_tracking_scale=-0.10,
+        tracking_lin_vel_scale=40.0,
+        tracking_sigma=0.0009,
+        forward_progress_scale=16.0,
+        forward_shortfall_scale=-34.0,
+        forward_shortfall_required_ratio=0.50,
+        action_rate_scale=-0.012,
+        action_magnitude_scale=-0.003,
+        stand_still_scale=-1.3,
+        alive_scale=0.02,
+        imitation_scale=0.06,
+        lin_vel_x=(0.04, 0.08),
+        zero_command_probability=0.0,
+        forward_overshoot_scale=-5.0,
+        forward_overshoot_allowed_ratio=1.35,
+        forward_wrong_direction_scale=-22.0,
+        forward_wrong_direction_allowed_reverse_ratio=0.0,
+        orientation_scale=-0.06,
+        base_height_scale=-0.55,
+        forward_pitch_scale=-0.10,
+        forward_pitch_rate_scale=-0.010,
+        forward_contact_support_scale=-0.25,
+        forward_contact_support_no_contact_weight=1.0,
+        forward_contact_support_asymmetry_weight=0.02,
+        command_progress_scale=22.0,
+        command_progress_shortfall_scale=-48.0,
+        command_progress_required_ratio=0.50,
+        command_progress_warmup_steps=20,
+        action_rate_huber_delta=0.08,
+        action_magnitude_huber_delta=0.50,
+        target_rate_huber_delta=1.0,
+        actuator_tracking_huber_delta=0.08,
+        forward_shortfall_huber_delta=0.0,
+        forward_overshoot_huber_delta=0.50,
+        forward_wrong_direction_huber_delta=0.0,
+        forward_pitch_huber_delta=0.25,
+        forward_pitch_rate_huber_delta=1.0,
+        command_progress_shortfall_huber_delta=0.0,
+        ppo_learning_rate=8.0e-5,
+        ppo_clipping_epsilon=0.08,
+        ppo_max_grad_norm=0.7,
+    ),
+    Phase(
+        name="phase3_fresh_stability_without_freeze",
+        purpose=(
+            "add stability margin only after forward motion is established. "
+            "Keep hard progress and wrong-direction floors active so stability "
+            "cannot be purchased by freezing or reversing."
+        ),
+        num_timesteps=220_000,
+        bridge=True,
+        delay=(3, 6),
+        tau_s=(0.06, 0.14),
+        velocity_limit_rad_s=(2.5, 3.75),
+        target_rate_scale=-0.0015,
+        actuator_tracking_scale=-0.14,
+        tracking_lin_vel_scale=36.0,
+        tracking_sigma=0.0010,
+        forward_progress_scale=14.0,
+        forward_shortfall_scale=-30.0,
+        forward_shortfall_required_ratio=0.45,
+        action_rate_scale=-0.018,
+        action_magnitude_scale=-0.004,
+        stand_still_scale=-1.2,
+        alive_scale=0.02,
+        imitation_scale=0.05,
+        lin_vel_x=(0.04, 0.08),
+        zero_command_probability=0.0,
+        forward_overshoot_scale=-6.0,
+        forward_overshoot_allowed_ratio=1.30,
+        forward_wrong_direction_scale=-22.0,
+        forward_wrong_direction_allowed_reverse_ratio=0.0,
+        orientation_scale=-0.10,
+        base_height_scale=-0.85,
+        forward_pitch_scale=-0.18,
+        forward_pitch_rate_scale=-0.018,
+        forward_contact_support_scale=-0.40,
+        forward_contact_support_no_contact_weight=1.0,
+        forward_contact_support_asymmetry_weight=0.04,
+        command_progress_scale=18.0,
+        command_progress_shortfall_scale=-42.0,
+        command_progress_required_ratio=0.45,
+        command_progress_warmup_steps=20,
+        action_rate_huber_delta=0.08,
+        action_magnitude_huber_delta=0.50,
+        target_rate_huber_delta=1.0,
+        actuator_tracking_huber_delta=0.08,
+        forward_shortfall_huber_delta=0.0,
+        forward_overshoot_huber_delta=0.50,
+        forward_wrong_direction_huber_delta=0.0,
+        forward_pitch_huber_delta=0.25,
+        forward_pitch_rate_huber_delta=1.0,
+        command_progress_shortfall_huber_delta=0.0,
+        ppo_learning_rate=5.0e-5,
+        ppo_clipping_epsilon=0.05,
+        ppo_max_grad_norm=0.6,
+    ),
+]
+
+
 RECIPES = {
+    "movement_bootstrap_v11": MOVEMENT_BOOTSTRAP_V11_PHASES,
     "movement_bootstrap_v10": MOVEMENT_BOOTSTRAP_V10_PHASES,
     "movement_bootstrap_v9": MOVEMENT_BOOTSTRAP_V9_PHASES,
     "movement_bootstrap_v8": MOVEMENT_BOOTSTRAP_V8_PHASES,
@@ -1454,6 +1624,15 @@ def phase_payload(phase: Phase, command: list[str], output_root: Path) -> dict[s
 
 
 def recipe_rationale(recipe: str) -> str:
+    if recipe == "movement_bootstrap_v11":
+        return (
+            "`movement_bootstrap_v11` starts a fresh hard-progress-floor "
+            "lineage after V10 hit the pre-committed exit condition. It does "
+            "not restore from the V7/V9 anchor by default. The recipe removes "
+            "Huber smoothing from the forward shortfall and command-window "
+            "shortfall floors so zero or reverse progress is expensive enough "
+            "to compete with the safe standstill basin."
+        )
     if recipe == "movement_bootstrap_v10":
         return (
             "`movement_bootstrap_v10` is the final planned pass in the V7/V9 "
@@ -1643,7 +1822,8 @@ def main() -> int:
             "starts from v7 again with lighter damping after v8 stabilized "
             "into standstill; movement_bootstrap_v10 targets the multi-seed "
             "V7/V9 failure surfaces: lunge, reverse, support collapse, and "
-            "standstill."
+            "standstill; movement_bootstrap_v11 starts a fresh hard-progress "
+            "lineage after V10 failed mostly by freezing."
         ),
     )
     parser.add_argument("--timesteps-scale", type=float, default=1.0)

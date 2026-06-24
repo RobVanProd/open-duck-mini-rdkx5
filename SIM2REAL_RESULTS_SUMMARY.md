@@ -1321,6 +1321,39 @@ generic stability/reward escalation. The next useful offline work is:
 
 Robot validation remains blocked.
 
+## V11 Fresh-Lineage Plan
+
+V11 has been prepared as the next offline training experiment:
+
+```text
+recipe: movement_bootstrap_v11
+plan: outputs/analysis/MOVEMENT_BOOTSTRAP_V11_TRAINING_PLAN.md
+json: outputs/analysis/movement_bootstrap_v11_training_plan.json
+restore checkpoint: none by default
+```
+
+This is intentionally not another V7/V9/V10 continuation. The main change is a
+hard progress floor:
+
+```text
+forward_shortfall_huber_delta: 0.0
+command_progress_shortfall_huber_delta: 0.0
+strong wrong-direction penalty
+positive x command only
+fitted actuator envelope active in all phases
+```
+
+Hypothesis:
+
+```text
+V10 froze because the Huberized shortfall penalties were too gentle near zero
+speed. V11 makes zero/reverse progress expensive enough to compete with the
+safe standstill basin before adding stronger stability pressure.
+```
+
+This is still an offline-only candidate-generation plan. No robot validation is
+allowed until a candidate passes the multi-seed sim gates.
+
 ## V5 Phase-1 Trainable Recovery
 
 A one-phase A100 rerun of `movement_bootstrap_v5` stopped after phase 1 and
