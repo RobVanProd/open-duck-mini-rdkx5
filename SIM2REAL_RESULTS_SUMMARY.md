@@ -1671,3 +1671,35 @@ target: fewer falls, fewer standstill seeds, later failures, useful forward
 If V10 lands back at roughly the same distribution with the same four failure
 surfaces, stop this V7/V9 anchor lineage and switch to a structurally different
 bootstrap. Robot validation remains blocked.
+
+## V10 Seed Sweep Result
+
+V10 completed all three A100 staged-training phases, but it did not produce a
+usable candidate. The final Phase 3 ONNX was:
+
+```text
+checkpoint: 2026_06_24_024457_153600
+onnx_sha256: 54f5619c0a50f8064aa4b11e02b5a66125f0a27526ad83416e8d3e049e92254e
+```
+
+The eight-seed `x=0.08` fitted-bridge CPU gate is recorded in:
+
+```text
+outputs/analysis/MOVEMENT_BOOTSTRAP_V10_SEED_SWEEP_SUMMARY.md
+```
+
+Result:
+
+```text
+V10: 8 seeds, 3 falls, 5 duration-complete low-progress holds,
+     mean samples 482.75, mean track ratio -0.4610
+```
+
+This is not a deployable improvement. V10 reduced falls compared with V7/V9
+mostly by freezing, and seed 5 still produced a strong reverse-motion failure.
+The current V7/V9/V10 anchor lineage should no longer be the primary training
+path. Next work should use a structurally different bootstrap/objective that
+establishes one coherent forward behavior across seeds before strong stability
+consolidation.
+
+Robot validation remains blocked.

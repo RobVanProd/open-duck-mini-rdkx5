@@ -1108,3 +1108,30 @@ Exit condition:
 ```text
 If V10 is statistically similar to V7/V9, stop iterating on this anchor lineage.
 ```
+
+### V10 Result
+
+V10 was trained on A100 and evaluated with the same eight-seed `x=0.08`
+fitted-bridge gate used for the V7/V9 baseline:
+
+```text
+summary: outputs/analysis/MOVEMENT_BOOTSTRAP_V10_SEED_SWEEP_SUMMARY.md
+candidate: 2026_06_24_024457_153600
+onnx_sha256: 54f5619c0a50f8064aa4b11e02b5a66125f0a27526ad83416e8d3e049e92254e
+```
+
+Result:
+
+```text
+V10: 3/8 falls, 5/8 duration-complete low-progress holds
+mean samples: 482.75
+mean track ratio: -0.4610
+```
+
+V10 is not a useful candidate. It improved lifetime mostly by freezing, and one
+seed still failed by moving strongly backward. Do not request robot validation
+for this policy.
+
+Next training work should not continue simple V7/V9 anchor consolidation as the
+main path. Switch to a structurally different bootstrap/objective that first
+creates one coherent forward behavior across seeds, then adds stability margin.
