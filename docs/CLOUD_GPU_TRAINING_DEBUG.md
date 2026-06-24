@@ -18,12 +18,17 @@ Known-good:
   - actuator bridge enabled
   - final manifest written
   - checkpoint saved at step 40
+- Colab A100 CUDA PPO smoke: `PASS`
+  - `num_envs=8`
+  - `num_timesteps=64`
+  - actuator bridge enabled
+  - final manifest written
+  - checkpoint saved at step 80
 
 Current hold:
 
 ```text
-Colab A100 training-smoke: HOLD_REMOTE_NO_SENTINEL
-Colab L4 training-smoke: HOLD_REMOTE_NO_SENTINEL
+Colab L4 8-env / 64-timestep training-smoke: HOLD_REMOTE_NO_SENTINEL
 Colab L4 8-env training-smoke diagnostic: HOLD_REMOTE_NO_SENTINEL
 ```
 
@@ -32,6 +37,9 @@ scale. The remaining problem is scale-sensitive or long-compile/runtime related:
 the 4-env / 32-timestep diagnostic completed after a long quiet window. The
 8-env / 64-timestep diagnostic still disappears without a final sentinel after
 the poller fix, and the expected remote output paths are missing afterward.
+
+An A100 session passed the same 8-env / 64-timestep smoke, so the current
+recommended cloud backend for substantial candidate training is A100.
 
 ## Required Next Command
 
@@ -203,6 +211,13 @@ Current first hold:
 The helper found no exit sentinel, no artifact bundle, and no recoverable
 partial output directory. Treat this as a cloud runtime/session loss until an
 A100 run or an intermediate scale says otherwise.
+
+A100 result:
+
+```text
+8 env / 64 timesteps: PASS
+STEP: 80 reward: 11.273723602294922 reward_std: 4.483529567718506
+```
 
 ## Related Upstream Notes
 

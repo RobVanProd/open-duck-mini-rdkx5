@@ -2432,3 +2432,29 @@ Colab runtime/session loss.
 
 Summary artifact:
 `outputs/analysis/L4_8ENV64_CUDA_TRAINING_SMOKE_HOLD_SUMMARY.md`.
+
+### A100 8-Env / 64-Step CUDA Training Smoke Pass
+
+The same 8-env / 64-step smoke that held on L4 completed on A100:
+
+```text
+00_python_jax_device: PASS
+01_import_training_stack: PASS
+02_smoke_dry_run: PASS
+03_smoke_run: PASS
+num_timesteps: 64
+num_envs: 8
+batch_size: 8
+status: PASS_SMOKE_RUN
+elapsed_s: 362.05
+STEP: 80 reward: 11.273723602294922 reward_std: 4.483529567718506
+checkpoint: saved at step 80
+GPU: NVIDIA A100-SXM4-40GB
+```
+
+Interpretation: A100 is the better cloud backend for the next substantial
+candidate training run. The L4 hold at the same scale is likely a Colab L4
+runtime/session capacity issue, not a generic Open Duck training failure.
+
+Summary artifact:
+`outputs/analysis/A100_8ENV64_CUDA_TRAINING_SMOKE_SUMMARY.md`.
