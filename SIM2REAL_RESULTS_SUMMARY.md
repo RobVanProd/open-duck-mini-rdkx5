@@ -2518,3 +2518,33 @@ Summary artifact:
 
 Seed sweep artifact:
 `outputs/analysis/V15_PHASE1_SEED_SWEEP_VALID.md`.
+
+### V5 vs V15 Same-Gate Comparison
+
+A four-seed local CPU sweep compared the older V5 recovery checkpoint against
+the recovered V15 phase-1 policy under the same vanilla `x=0.08`, 5-second gate:
+
+```text
+V5 recovery:
+  falls: 2 / 4
+  duration_complete: 2 / 4
+  track_ratio_mean: 0.6045
+  vx_mean: 0.0484 m/s
+  body_pitch_p95_mean: 0.4744 rad
+
+V15 phase 1:
+  falls: 1 / 4
+  duration_complete: 3 / 4
+  track_ratio_mean: -0.3265
+  vx_mean: -0.0261 m/s
+  body_pitch_p95_mean: 0.0534 rad
+```
+
+Interpretation: V15 looks calmer because it mostly freezes or drifts backward.
+V5 remains the more useful movement anchor despite instability, because it at
+least produces forward-motion seeds. The next recipe should not continue V15
+phases 2/3; it should either return to the moving-anchor family with better
+stabilization or introduce a structurally different movement prior.
+
+Comparison artifact:
+`outputs/analysis/V5_VS_V15_SEED_SWEEP.md`.
