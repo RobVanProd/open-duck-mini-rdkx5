@@ -13,7 +13,7 @@ By default this writes a plan only. Pass ``--run`` to execute the phases through
 from __future__ import annotations
 
 import argparse
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 import datetime as dt
 import json
 from pathlib import Path
@@ -1360,7 +1360,51 @@ MOVEMENT_BOOTSTRAP_V11_PHASES = [
 ]
 
 
+MOVEMENT_BOOTSTRAP_V12_PHASES = [
+    replace(
+        MOVEMENT_BOOTSTRAP_V11_PHASES[0],
+        name="phase1_progress_failure_low_command",
+        purpose=(
+            "mechanics test after V11 froze: keep the fresh hard-progress "
+            "low-command setup, but enable command-progress failure so standing "
+            "still ends the episode instead of remaining a viable basin."
+        ),
+        num_timesteps=220_000,
+        command_progress_failure_enable=True,
+        command_progress_failure_min_ratio=0.25,
+        command_progress_failure_warmup_steps=120,
+    ),
+    replace(
+        MOVEMENT_BOOTSTRAP_V11_PHASES[1],
+        name="phase2_progress_failure_expand_command",
+        purpose=(
+            "expand toward x=0.08 only if phase 1 survives the progress-failure "
+            "mechanic. Keep fitted actuator limits and terminate persistent "
+            "low-progress episodes."
+        ),
+        num_timesteps=240_000,
+        command_progress_failure_enable=True,
+        command_progress_failure_min_ratio=0.30,
+        command_progress_failure_warmup_steps=140,
+    ),
+    replace(
+        MOVEMENT_BOOTSTRAP_V11_PHASES[2],
+        name="phase3_progress_failure_stability",
+        purpose=(
+            "add stability margin without allowing consolidation to freeze: "
+            "command-progress failure stays active while posture/support costs "
+            "increase."
+        ),
+        num_timesteps=180_000,
+        command_progress_failure_enable=True,
+        command_progress_failure_min_ratio=0.35,
+        command_progress_failure_warmup_steps=150,
+    ),
+]
+
+
 RECIPES = {
+    "movement_bootstrap_v12": MOVEMENT_BOOTSTRAP_V12_PHASES,
     "movement_bootstrap_v11": MOVEMENT_BOOTSTRAP_V11_PHASES,
     "movement_bootstrap_v10": MOVEMENT_BOOTSTRAP_V10_PHASES,
     "movement_bootstrap_v9": MOVEMENT_BOOTSTRAP_V9_PHASES,
@@ -1638,6 +1682,15 @@ def phase_payload(phase: Phase, command: list[str], output_root: Path) -> dict[s
 
 
 def recipe_rationale(recipe: str) -> str:
+    if recipe == "movement_bootstrap_v12":
+        return (
+            "`movement_bootstrap_v12` is a mechanics test after V11 learned "
+            "stable no-motion. It keeps the V11 fresh hard-progress structure "
+            "but enables default-off command-progress failure so positive-command "
+            "standstill terminates. It should be run with "
+            "`--phase-gate-freeze-check` so frozen phases stop before later A100 "
+            "phases spend time consolidating them."
+        )
     if recipe == "movement_bootstrap_v11":
         return (
             "`movement_bootstrap_v11` starts a fresh hard-progress-floor "
@@ -1812,6 +1865,93 @@ def run_phase(command: list[str], cwd: Path, timeout_s: int) -> None:
         raise SystemExit(completed.returncode)
 
 
+def run_phase_freeze_gate(
+    args: argparse.Namespace,
+    policy: Path,
+    phase_root: Path,
+    phase_index: int,
+) -> dict[str, Any]:
+    output_dir = phase_root / f"phase_{phase_index:02d}_freeze_gate_x008"
+    command = [
+        str(Path(args.env_python)),
+        str(ROOT / "tools" / "eval_policy_with_actuator_bridge.py"),
+        "--mode",
+        "closed-loop-sim",
+        "--eval-role",
+        "candidate",
+        "--policy",
+        str(policy),
+        "--fit-json",
+        str(ROOT / "outputs" / "analysis" / "actuator_response_fit.json"),
+        "--playground-path",
+        str(Path(args.playground_path)),
+        "--env-python",
+        str(Path(args.env_python)),
+        "--command-x",
+        cli_value(args.phase_gate_command_x),
+        "--duration",
+        cli_value(args.phase_gate_duration_s),
+        "--bridge-mode",
+        args.phase_gate_bridge_mode,
+        "--jax-platform",
+        args.phase_gate_platform,
+        "--sim-preflight-timeout-s",
+        "600",
+        "--closed-loop-timeout-s",
+        str(args.phase_gate_timeout_s),
+        "--output-dir",
+        str(output_dir),
+    ]
+    print(">>>", shell_join(command), flush=True)
+    completed = subprocess.run(
+        command,
+        cwd=ROOT,
+        text=True,
+        timeout=args.phase_gate_timeout_s + 120,
+        check=False,
+    )
+    print("<<<", completed.returncode, flush=True)
+    result_path = output_dir / "closed_loop_actuator_bridge_eval.json"
+    if not result_path.exists():
+        return {
+            "status": "HOLD_PHASE_GATE_NO_RESULT",
+            "command": command,
+            "output_dir": str(output_dir),
+            "returncode": completed.returncode,
+        }
+    result = json.loads(result_path.read_text())
+    closed = result.get("closed_loop_sim") or {}
+    gate = closed.get("candidate_gate") or {}
+    metrics = gate.get("metrics") or {}
+    diagnostic_failure = 0.0
+    for mode in (closed.get("modes") or {}).values():
+        terms = mode.get("reward_terms") or {}
+        failure = (terms.get("diagnostic/command_progress_failure") or {}).get("max")
+        if isinstance(failure, (int, float)):
+            diagnostic_failure = max(diagnostic_failure, float(failure))
+    gate_status = gate.get("status") or closed.get("status") or result.get("overall_status")
+    low_progress = gate_status in {
+        "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+        "HOLD_CANDIDATE_NO_FORWARD_TRACKING",
+    }
+    progress_failure = diagnostic_failure > 0.0
+    phase_status = (
+        "HOLD_PHASE_FREEZE_OR_LOW_PROGRESS"
+        if low_progress or progress_failure
+        else "PASS_PHASE_FREEZE_CHECK"
+    )
+    return {
+        "status": phase_status,
+        "candidate_gate_status": gate_status,
+        "metrics": metrics,
+        "diagnostic_command_progress_failure_max": diagnostic_failure,
+        "command": command,
+        "output_dir": str(output_dir),
+        "result_json": str(result_path),
+        "returncode": completed.returncode,
+    }
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--playground-path", default=str(DEFAULT_PLAYGROUND))
@@ -1823,7 +1963,7 @@ def main() -> int:
     parser.add_argument(
         "--recipe",
         choices=sorted(RECIPES),
-        default="movement_bootstrap_v5",
+        default="movement_bootstrap_v12",
         help=(
             "Staged recipe to emit/run. shortfall_v1 preserves the June 23 A100 "
             "recipe that landed in standstill; movement_bootstrap_v2 preserves "
@@ -1841,7 +1981,9 @@ def main() -> int:
             "into standstill; movement_bootstrap_v10 targets the multi-seed "
             "V7/V9 failure surfaces: lunge, reverse, support collapse, and "
             "standstill; movement_bootstrap_v11 starts a fresh hard-progress "
-            "lineage after V10 failed mostly by freezing."
+            "lineage after V10 failed mostly by freezing; movement_bootstrap_v12 "
+            "adds command-progress failure to invalidate V11-style no-motion "
+            "and is the current default."
         ),
     )
     parser.add_argument("--timesteps-scale", type=float, default=1.0)
@@ -1873,6 +2015,24 @@ def main() -> int:
     parser.add_argument("--ppo-batch-size", type=int, default=256)
     parser.add_argument("--ppo-num-minibatches", type=int, default=4)
     parser.add_argument("--ppo-num-updates-per-batch", type=int, default=4)
+    parser.add_argument(
+        "--phase-gate-freeze-check",
+        action="store_true",
+        help=(
+            "After each completed phase, run a short closed-loop candidate gate "
+            "and stop the staged run if the phase freezes or trips command "
+            "progress failure. Default off."
+        ),
+    )
+    parser.add_argument("--phase-gate-command-x", type=float, default=0.08)
+    parser.add_argument("--phase-gate-duration-s", type=float, default=5.0)
+    parser.add_argument(
+        "--phase-gate-bridge-mode",
+        choices=["vanilla", "fitted", "stress", "all"],
+        default="fitted",
+    )
+    parser.add_argument("--phase-gate-platform", choices=["cpu", "gpu"], default="cpu")
+    parser.add_argument("--phase-gate-timeout-s", type=int, default=900)
     args = parser.parse_args()
     if args.stop_after_phase is not None and args.stop_after_phase < 1:
         raise SystemExit("--stop-after-phase must be >= 1")
@@ -1891,6 +2051,7 @@ def main() -> int:
             else None
         ),
         "stop_after_phase": args.stop_after_phase,
+        "phase_gate_freeze_check": args.phase_gate_freeze_check,
         "output_root": str(output_root),
         "phases": [],
     }
@@ -1912,6 +2073,18 @@ def main() -> int:
             restore_checkpoint = find_latest_checkpoint(phase_root)
             if restore_checkpoint is None:
                 raise SystemExit(f"{phase.name} produced no checkpoint under {phase_root}")
+            if args.phase_gate_freeze_check:
+                phase_onnx = find_latest_onnx(phase_root)
+                if phase_onnx is None:
+                    raise SystemExit(f"{phase.name} produced no ONNX under {phase_root}")
+                gate_result = run_phase_freeze_gate(args, phase_onnx, phase_root, index)
+                payload["phases"][-1]["phase_freeze_gate"] = gate_result
+                if gate_result["status"] != "PASS_PHASE_FREEZE_CHECK":
+                    payload["status"] = gate_result["status"]
+                    payload["final_checkpoint"] = str(restore_checkpoint)
+                    payload["final_candidate_onnx"] = str(phase_onnx)
+                    write_plan(payload, args.output_md, args.output_json)
+                    raise SystemExit(gate_result["status"])
         elif index < len(RECIPES[args.recipe]):
             restore_checkpoint = Path(f"<latest_checkpoint_from_phase_{index}>")
 

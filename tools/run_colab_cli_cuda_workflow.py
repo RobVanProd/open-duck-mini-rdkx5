@@ -313,7 +313,22 @@ def build_remote_driver(
         if staged_initial_restore_checkpoint
         else ""
     )
+    staged_phase_gate_arg = (
+        '"--phase-gate-freeze-check",'
+        f'"--phase-gate-command-x", "{cli_value(args.staged_phase_gate_command_x)}",'
+        f'"--phase-gate-duration-s", "{cli_value(args.staged_phase_gate_duration_s)}",'
+        f'"--phase-gate-bridge-mode", "{args.staged_phase_gate_bridge_mode}",'
+        f'"--phase-gate-platform", "{args.staged_phase_gate_platform}",'
+        f'"--phase-gate-timeout-s", "{args.staged_phase_gate_timeout_s}",'
+        if args.staged_phase_gate_freeze_check
+        else ""
+    )
     staged_timeout_multiplier = args.staged_stop_after_phase or 3
+    staged_phase_gate_timeout_total = (
+        args.staged_phase_gate_timeout_s * staged_timeout_multiplier
+        if args.staged_phase_gate_freeze_check
+        else 0
+    )
     checkpoint_sweep_policies = json.dumps(args.checkpoint_sweep_policies)
     checkpoint_sweep_commands = cli_value(args.checkpoint_sweep_commands)
     checkpoint_sweep_duration = cli_value(args.checkpoint_sweep_duration)
@@ -639,6 +654,7 @@ def build_remote_driver(
                 "--timesteps-scale", "{args.staged_timesteps_scale}",
                 {staged_initial_restore_arg}
                 {staged_stop_after_phase_arg}
+                {staged_phase_gate_arg}
                 "--phase-timeout-s", "{args.staged_phase_timeout_s}",
                 "--output-root", str(staged_root),
                 "--output-md", str(OUT / f"{{candidate_name}}_staged_curriculum_plan.md"),
@@ -650,7 +666,7 @@ def build_remote_driver(
                 "--ppo-batch-size", "{args.candidate_ppo_batch_size}",
                 "--ppo-num-minibatches", "{args.candidate_ppo_num_minibatches}",
                 "--ppo-num-updates-per-batch", "{args.candidate_ppo_num_updates_per_batch}",
-            ], cwd=RDK, timeout={args.staged_phase_timeout_s * staged_timeout_multiplier + 900})
+            ], cwd=RDK, timeout={args.staged_phase_timeout_s * staged_timeout_multiplier + staged_phase_gate_timeout_total + 900})
             staged_plan = OUT / f"{{candidate_name}}_staged_curriculum_plan.json"
             payload = json.loads(staged_plan.read_text())
             latest_onnx = Path(payload.get("final_candidate_onnx") or "")
@@ -863,6 +879,7 @@ def main() -> int:
     parser.add_argument(
         "--staged-recipe",
         choices=[
+            "movement_bootstrap_v12",
             "movement_bootstrap_v11",
             "movement_bootstrap_v10",
             "movement_bootstrap_v9",
@@ -875,12 +892,13 @@ def main() -> int:
             "movement_bootstrap_v2",
             "shortfall_v1",
         ],
-        default="movement_bootstrap_v5",
+        default="movement_bootstrap_v12",
         help=(
             "Recipe passed to tools/plan_staged_curriculum_training.py for "
-            "--workflow staged-curriculum. movement_bootstrap_v6 explicitly "
-            "targets continuity from the in-envelope phase-1 lead; the default "
-            "remains v5 for backward-compatible script behavior. "
+            "--workflow staged-curriculum. The current default is "
+            "movement_bootstrap_v12, which enables command-progress failure "
+            "after V11 froze. movement_bootstrap_v6 explicitly "
+            "targets continuity from the in-envelope phase-1 lead. "
             "movement_bootstrap_v7 is intended to be run with "
             "--staged-initial-restore-checkpoint pointing at the recovered "
             "v5 phase-1 checkpoint; movement_bootstrap_v8 is intended to start "
@@ -889,7 +907,8 @@ def main() -> int:
             "after v8 stabilized into standstill; movement_bootstrap_v10 "
             "targets the multi-seed V7/V9 failure surfaces; "
             "movement_bootstrap_v11 starts a fresh hard-progress lineage after "
-            "V10 failed mostly by freezing."
+            "V10 failed mostly by freezing; movement_bootstrap_v12 adds "
+            "command-progress failure to invalidate V11-style no-motion."
         ),
     )
     parser.add_argument(
@@ -915,6 +934,28 @@ def main() -> int:
             "starting point for phase 1 of a staged-curriculum workflow."
         ),
     )
+    parser.add_argument(
+        "--staged-phase-gate-freeze-check",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help=(
+            "Run a short candidate gate after each staged phase and stop on "
+            "low forward progress. Enabled by default for staged workflows."
+        ),
+    )
+    parser.add_argument("--staged-phase-gate-command-x", type=float, default=0.08)
+    parser.add_argument("--staged-phase-gate-duration-s", type=float, default=5.0)
+    parser.add_argument(
+        "--staged-phase-gate-bridge-mode",
+        choices=["vanilla", "fitted", "stress", "all"],
+        default="fitted",
+    )
+    parser.add_argument(
+        "--staged-phase-gate-platform",
+        choices=["cpu", "gpu"],
+        default="gpu",
+    )
+    parser.add_argument("--staged-phase-gate-timeout-s", type=int, default=900)
     parser.add_argument("--candidate-ppo-num-envs", type=int, default=256)
     parser.add_argument("--candidate-ppo-num-evals", type=int, default=4)
     parser.add_argument("--candidate-episode-length", type=int, default=600)

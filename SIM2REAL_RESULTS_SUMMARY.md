@@ -1806,3 +1806,25 @@ Next change should be mechanics-first:
 ```
 
 Do not deploy V11. Robot validation remains blocked.
+
+## V12 Mechanics-Test Plan
+
+V12 is prepared as a dry-run plan, not yet trained:
+
+```text
+recipe: movement_bootstrap_v12
+plan: outputs/analysis/MOVEMENT_BOOTSTRAP_V12_TRAINING_PLAN.md
+json: outputs/analysis/movement_bootstrap_v12_training_plan.json
+training_started: false
+robot_touched: false
+```
+
+V12 keeps the V11 fresh hard-progress structure but enables the default-off
+command-progress failure hook in every phase. Persistent low progress under a
+positive command should now terminate the episode instead of remaining a viable
+standstill basin. The staged runner also has an opt-in per-phase freeze gate;
+the V12 plan is generated with that gate enabled so a frozen phase can stop the
+curriculum before later A100 phases consolidate it.
+
+Next offline step is an A100 V12 run only after PR #74 and Playground PR #4 are
+reviewed. Robot validation remains blocked.

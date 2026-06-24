@@ -817,7 +817,7 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             reward = float(np.asarray(jax.device_get(state.reward)))
             reward_terms = {}
             for key, value in state.metrics.items():
-                if str(key).startswith(("reward/", "cost/")):
+                if str(key).startswith(("reward/", "cost/", "diagnostic/")):
                     try:
                         reward_terms[str(key)] = float(np.asarray(jax.device_get(value)))
                     except Exception:

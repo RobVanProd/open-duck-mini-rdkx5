@@ -1224,3 +1224,23 @@ Before V12:
 4. Keep fitted actuator limits active.
 5. Do not start another A100 recipe until those mechanics are explicit.
 ```
+
+### V12 Mechanics-Test Plan
+
+V12 is now planned but not trained:
+
+```text
+recipe: movement_bootstrap_v12
+plan: outputs/analysis/MOVEMENT_BOOTSTRAP_V12_TRAINING_PLAN.md
+json: outputs/analysis/movement_bootstrap_v12_training_plan.json
+```
+
+Intent:
+
+```text
+- keep the V11 fresh hard-progress bootstrap
+- enable command-progress failure in every phase
+- keep fitted actuator limits active
+- run per-phase freeze checks so a frozen phase stops the staged run early
+- do not request robot validation until x=0.0 and x=0.08 candidate gates pass
+```
