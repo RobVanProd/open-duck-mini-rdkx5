@@ -1873,6 +1873,8 @@ def phase_command(
         str(args.phase_timeout_s),
         "--num-timesteps",
         str(int(phase.num_timesteps * args.timesteps_scale)),
+        "--export-min-step",
+        str(args.export_min_step),
         "--ppo-num-envs",
         str(args.ppo_num_envs),
         "--ppo-num-evals",
@@ -2486,6 +2488,16 @@ def main() -> int:
     )
     parser.add_argument("--timesteps-scale", type=float, default=1.0)
     parser.add_argument(
+        "--export-min-step",
+        type=int,
+        default=1,
+        help=(
+            "Skip checkpoint/ONNX export callbacks before this PPO step. The "
+            "default skips only step 0 to avoid cloud GPU/TensorFlow export "
+            "handoff failures while preserving later candidate exports."
+        ),
+    )
+    parser.add_argument(
         "--initial-restore-checkpoint",
         type=Path,
         default=None,
@@ -2548,6 +2560,7 @@ def main() -> int:
             if args.initial_restore_checkpoint is not None
             else None
         ),
+        "export_min_step": args.export_min_step,
         "stop_after_phase": args.stop_after_phase,
         "phase_gate_freeze_check": args.phase_gate_freeze_check,
         "output_root": str(output_root),

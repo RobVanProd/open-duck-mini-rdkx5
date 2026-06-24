@@ -1477,3 +1477,29 @@ first survives the phase gates and then passes the standard offline `x=0.0` and
 `x=0.08` candidate gates.
 
 Plan artifact: `outputs/analysis/MOVEMENT_BOOTSTRAP_V15_TRAINING_PLAN.md`.
+
+### V15 A100 No-Sentinel Export Handoff
+
+The first V15 phase-1 A100 launch did not complete. It reached `STEP: 0`,
+saved/exported a step-0 ONNX, then the detached Colab process disappeared
+without writing the workflow exit sentinel or final artifact bundle.
+
+This should be treated as an export-handoff infrastructure hold, not a V15
+policy result:
+
+```text
+status: HOLD_REMOTE_NO_SENTINEL_EXPORT_HANDOFF
+step: 0 only
+later checkpoints: none
+usable candidate: no
+```
+
+Follow-up training hygiene:
+
+- keep TensorFlow ONNX export CPU-only by default in `Open_Duck_Playground`
+- pass `--export-min-step 1` from staged training so step-0 checkpoint/ONNX
+  export is skipped
+- preserve later checkpoint/ONNX exports for candidate packaging and gates
+
+Summary artifact:
+`outputs/analysis/MOVEMENT_BOOTSTRAP_V15_A100_NO_SENTINEL_SUMMARY.md`.

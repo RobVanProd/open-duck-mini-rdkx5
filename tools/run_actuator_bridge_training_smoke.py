@@ -57,6 +57,8 @@ def build_command(args: argparse.Namespace, output_dir: Path) -> list[str]:
         args.env,
         "--output_dir",
         str(output_dir),
+        "--export_min_step",
+        str(args.export_min_step),
         "--num_timesteps",
         str(args.num_timesteps),
         "--ppo_num_envs",
@@ -230,6 +232,15 @@ def main() -> int:
     parser.add_argument("--task", default="flat_terrain")
     parser.add_argument("--env", default="joystick")
     parser.add_argument("--num-timesteps", type=int, default=256)
+    parser.add_argument(
+        "--export-min-step",
+        type=int,
+        default=0,
+        help=(
+            "Pass through to runner.py --export_min_step. A value above 0 skips "
+            "the step-0 checkpoint/ONNX export."
+        ),
+    )
     parser.add_argument("--ppo-num-envs", type=int, default=16)
     parser.add_argument("--ppo-num-evals", type=int, default=1)
     parser.add_argument("--ppo-episode-length", type=int, default=100)
@@ -373,6 +384,7 @@ def main() -> int:
         "output_dir": str(output_dir),
         "platform": args.platform,
         "timeout_s": args.timeout_s,
+        "export_min_step": args.export_min_step,
         "actuator_bridge_enabled": not args.disable_actuator_bridge,
         "restore_checkpoint_path": args.restore_checkpoint_path,
         "target_rate_scale": args.target_rate_scale,

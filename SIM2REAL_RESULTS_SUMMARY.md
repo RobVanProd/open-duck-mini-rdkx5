@@ -2017,3 +2017,26 @@ This is still an offline-only training plan. Robot validation remains blocked
 until a final candidate passes the `x=0.0` and `x=0.08` sim gates.
 
 Plan artifact: `outputs/analysis/MOVEMENT_BOOTSTRAP_V15_TRAINING_PLAN.md`.
+
+### V15 A100 No-Sentinel Export Handoff
+
+The first V15 A100 phase-1 launch did not produce a candidate result. It reached
+only `STEP: 0`, saved/exported a step-0 ONNX, then the detached Colab workflow
+disappeared without writing the `.exit` sentinel or artifact bundle.
+
+Recovered evidence shows the log stops immediately after TensorFlow ONNX export:
+
+```text
+status: HOLD_REMOTE_NO_SENTINEL_EXPORT_HANDOFF
+step: 0 only
+later checkpoints: none
+python traceback: none
+```
+
+This is infrastructure evidence, not a V15 policy verdict. The follow-up fix is
+to keep TensorFlow ONNX export CPU-only by default and skip only the step-0
+export in staged training (`--export-min-step 1`), while preserving later
+candidate exports.
+
+Summary artifact:
+`outputs/analysis/MOVEMENT_BOOTSTRAP_V15_A100_NO_SENTINEL_SUMMARY.md`.
