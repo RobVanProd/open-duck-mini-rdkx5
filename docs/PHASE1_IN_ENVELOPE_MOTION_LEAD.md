@@ -323,3 +323,31 @@ useful forward tracking on more seeds
 lower pitch on lunge seeds
 better base height / support on collapse seeds
 ```
+
+The follow-up onset comparison is preserved in:
+
+```text
+outputs/analysis/v9_four_surface_trace_recheck_x008_fitted/V9_FOUR_SURFACE_ONSET_COMPARISON.md
+```
+
+It shows the V9 regimes branch almost immediately by contact/support state and
+velocity sign. This is not one common lunge with late variations; it is a
+behavior-fragmentation problem:
+
+```text
+lunge
+reverse velocity
+contact/base-height collapse
+standstill
+```
+
+The V10 plan is preserved in:
+
+```text
+outputs/analysis/MOVEMENT_BOOTSTRAP_V10_PLAN.md
+```
+
+One more phase-1-lineage attempt is reasonable only if it explicitly targets
+cross-seed behavioral consistency. If V10 does not improve the multi-seed
+distribution, treat this anchor lineage as exhausted and switch bootstrap
+strategy.

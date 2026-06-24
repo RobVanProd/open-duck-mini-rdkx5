@@ -1594,3 +1594,32 @@ to beat is `5/8` falls, mean lifetime about `312` samples, and `3/8` seeds
 surviving only by standing still. V10 should keep the broad stabilizer set:
 forward-speed overshoot, pitch/pitch-rate growth, base-height collapse, contact
 support timing, and teacher/trust-region continuity for gait shape.
+
+A follow-up V9 four-surface trace comparison is recorded in:
+
+```text
+outputs/analysis/v9_four_surface_trace_recheck_x008_fitted/V9_FOUR_SURFACE_ONSET_COMPARISON.md
+```
+
+It shows the regimes branch within the first few ticks by contact/support state
+and velocity sign. The failures are not one common lunge mechanism with several
+late endings:
+
+```text
+seed 0: forward lunge, pitch >0.25 rad at tick 15
+seed 1: contact-asymmetric collapse, height <0.12 m at tick 29, no pitch >0.25
+seed 2: standstill, full duration, no height collapse
+seed 5: reverse/negative velocity by tick 25, then pitch/base-height failure
+seed 6: lunge after initial negative velocity and contact switching
+seed 7: contact-asymmetric collapse, height <0.12 m at tick 25, no pitch >0.25
+```
+
+The next planned offline recipe is now:
+
+```text
+outputs/analysis/MOVEMENT_BOOTSTRAP_V10_PLAN.md
+```
+
+V10 should target behavioral consistency across seeds first. If it does not
+move the distribution away from the V7/V9 baseline, stop iterating on this
+anchor lineage and switch to a structurally different bootstrap.

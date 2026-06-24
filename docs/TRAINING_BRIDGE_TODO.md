@@ -345,6 +345,16 @@ seeds 1 and 7: early base-height/contact collapse
 seeds 2, 3, and 4: low-forward-progress standstill
 ```
 
+Four-surface onset comparison:
+
+```text
+outputs/analysis/v9_four_surface_trace_recheck_x008_fitted/V9_FOUR_SURFACE_ONSET_COMPARISON.md
+```
+
+This shows the regimes branch within the first few ticks. V10 is not merely a
+"reduce overshoot" run; it must produce the same forward-moving behavior family
+across reset seeds.
+
 Interpretation:
 
 - the one-second checkpoint sweep is useful for triage but not sufficient,
@@ -375,6 +385,17 @@ Next recipe direction:
   seed 7 fail by base-height/contact collapse rather than pure speed overshoot,
 - keep the fitted actuator bridge and velocity envelope active,
 - reject both failure modes: above-command lunge and near-zero standstill.
+
+V10 plan and exit rule:
+
+```text
+outputs/analysis/MOVEMENT_BOOTSTRAP_V10_PLAN.md
+```
+
+If V10 still lands near the V7/V9 distribution (`5/8` falls, `3/8` standstill
+completions, mean lifetime around `312` samples, same four surfaces), stop
+iterating this phase-1/V7/V9 anchor lineage. Switch to a structurally different
+bootstrap rather than launching V11 with another small scalar adjustment.
 
 ### Configurable Target Delay Wrapper
 
