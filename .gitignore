@@ -9,6 +9,14 @@ outputs/evidence/
 outputs/analysis/FIRST_EVIDENCE_SUMMARY.md
 outputs/analysis/colab_cli/
 outputs/analysis/cuda_imports/
+# Generated per-run analyzer/eval directories can contain large JSON, traces,
+# logs, checkpoints, and worker dumps. Keep curated summaries as root-level
+# files under outputs/analysis, and force-add nested artifacts only when a
+# specific evidence packet needs them.
+outputs/analysis/*/
+outputs/analysis/*_PLAN.md
+outputs/analysis/*_plan.json
+outputs/analysis/v*_forward_reward_landscape.json
 outputs/analysis/rocm_mjx_recheck_*/
 outputs/analysis/rocm_mjx_isolation_step_modes/
 outputs/deployments/*
