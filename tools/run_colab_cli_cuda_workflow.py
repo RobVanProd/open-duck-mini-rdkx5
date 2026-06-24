@@ -380,6 +380,8 @@ def build_remote_driver(
     run_baseline_eval = args.workflow in {"eval", "smoke", "candidate", "all"}
     install_deps = not args.skip_deps
     smoke_steps = args.smoke_num_timesteps
+    smoke_ppo_num_envs = args.smoke_ppo_num_envs
+    smoke_ppo_batch_size = args.smoke_ppo_batch_size
     candidate_steps = args.candidate_num_timesteps
     candidate_target_rate_scale = cli_value(args.candidate_target_rate_scale)
     candidate_actuator_tracking_scale = cli_value(args.candidate_actuator_tracking_scale)
@@ -618,8 +620,8 @@ def build_remote_driver(
                 "--output-dir", str(OUT / "training_smoke_startup_diagnostic"),
                 "--smoke-num-timesteps", "{smoke_steps}",
                 "--export-min-step", "{args.smoke_export_min_step}",
-                "--ppo-num-envs", "8",
-                "--ppo-batch-size", "8",
+                "--ppo-num-envs", "{smoke_ppo_num_envs}",
+                "--ppo-batch-size", "{smoke_ppo_batch_size}",
                 "--run-smoke",
             ], cwd=RDK, timeout=1800)
             bundle_artifacts()
@@ -684,11 +686,11 @@ def build_remote_driver(
                 "--output-root", "/content/open_duck_training_smokes_cli",
                 "--num-timesteps", "{smoke_steps}",
                 "--export-min-step", "{args.smoke_export_min_step}",
-                "--ppo-num-envs", "8",
+                "--ppo-num-envs", "{smoke_ppo_num_envs}",
                 "--ppo-num-evals", "1",
                 "--ppo-episode-length", "50",
                 "--ppo-unroll-length", "5",
-                "--ppo-batch-size", "8",
+                "--ppo-batch-size", "{smoke_ppo_batch_size}",
                 "--ppo-num-minibatches", "1",
                 "--ppo-num-updates-per-batch", "1",
                 "--target-rate-scale", "-0.01",
@@ -1126,6 +1128,8 @@ def main() -> int:
     parser.add_argument("--poll-interval-s", type=int, default=60)
     parser.add_argument("--timeout-s", type=int, default=7200)
     parser.add_argument("--smoke-num-timesteps", type=int, default=64)
+    parser.add_argument("--smoke-ppo-num-envs", type=int, default=8)
+    parser.add_argument("--smoke-ppo-batch-size", type=int, default=8)
     parser.add_argument(
         "--smoke-export-min-step",
         type=int,

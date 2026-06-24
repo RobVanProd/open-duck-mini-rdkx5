@@ -44,7 +44,9 @@ python3 tools/run_colab_cli_cuda_workflow.py \
   --foreground-remote \
   --foreground-remote-timeout-s 1800 \
   --timeout-s 1800 \
-  --smoke-num-timesteps 64 \
+  --smoke-num-timesteps 8 \
+  --smoke-ppo-num-envs 1 \
+  --smoke-ppo-batch-size 1 \
   --smoke-export-min-step 1
 ```
 
@@ -168,10 +170,11 @@ The failing diagnostic used `num_envs=8` and `num_timesteps=64`.
 The next cloud isolation step should sweep upward conservatively, for example:
 
 ```text
+1 env / 8 timesteps   known PASS
 1 env / 16 timesteps
 2 env / 16 timesteps
 4 env / 32 timesteps
-8 env / 64 timesteps
+8 env / 64 timesteps  known HOLD so far
 ```
 
 Stop at the first scale that disappears or times out and preserve the partial
