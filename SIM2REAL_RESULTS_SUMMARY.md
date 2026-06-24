@@ -1623,3 +1623,51 @@ outputs/analysis/MOVEMENT_BOOTSTRAP_V10_PLAN.md
 V10 should target behavioral consistency across seeds first. If it does not
 move the distribution away from the V7/V9 baseline, stop iterating on this
 anchor lineage and switch to a structurally different bootstrap.
+
+## V10 Training Recipe Prepared
+
+V10 is now an executable staged recipe, not only a plan:
+
+```text
+recipe: movement_bootstrap_v10
+plan: outputs/analysis/MOVEMENT_BOOTSTRAP_V10_TRAINING_PLAN.md
+json: outputs/analysis/movement_bootstrap_v10_training_plan.json
+starting checkpoint:
+  policy/candidates/movement_bootstrap_v7_checkpoint_anchor_20260623/checkpoint_2026_06_23_213846_184320
+```
+
+The recipe keeps the fitted actuator envelope active in every phase:
+
+```text
+delay: 3-6 ticks
+tau: 0.06-0.14 s
+velocity limit: 2.5-3.75 rad/s
+command_x: 0.04-0.08
+zero_command_probability: 0.0
+```
+
+Two default-off Playground reward hooks were added for the V10 failure surfaces:
+
+```text
+forward_wrong_direction: penalizes reverse motion under positive command
+forward_contact_support: penalizes no-contact support collapse, with only a
+                         tiny one-sided-contact weight
+Playground dependency: RobVanProd/Open_Duck_Playground
+                       codex/forward-progress-reward @ f7b817d
+```
+
+A tiny CPU smoke run with these hooks passed, so the new config path is viable.
+This was not candidate training and produced no deployable policy.
+
+V10 must be judged against the established eight-seed V7/V9 baseline, not one
+rollout:
+
+```text
+baseline to beat: 5/8 falls, 3/8 standstill completions, mean ~312 samples
+target: fewer falls, fewer standstill seeds, later failures, useful forward
+        tracking on more seeds
+```
+
+If V10 lands back at roughly the same distribution with the same four failure
+surfaces, stop this V7/V9 anchor lineage and switch to a structurally different
+bootstrap. Robot validation remains blocked.

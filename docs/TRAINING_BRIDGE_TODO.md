@@ -1045,3 +1045,66 @@ Required evidence:
 - No phase timing changes.
 - No action-scale changes.
 - No TPU/friction claims until suspended dynamic tracking is acceptable.
+
+## V10 Seed-Consistency Recipe
+
+Status:
+
+```text
+V10 recipe implemented: movement_bootstrap_v10
+dry-run plan: outputs/analysis/MOVEMENT_BOOTSTRAP_V10_TRAINING_PLAN.md
+smoke status: PASS_SMOKE_RUN for new reward hooks on CPU
+robot touched: no
+```
+
+V10 adds two default-off Playground reward terms:
+
+```text
+forward_wrong_direction
+forward_contact_support
+Playground dependency: RobVanProd/Open_Duck_Playground
+                       codex/forward-progress-reward @ f7b817d
+```
+
+Use them only for recipes that explicitly need the V7/V9 failure-surface
+pressure. Existing recipes remain behavior-compatible unless these scales are
+nonzero.
+
+Next execution step:
+
+```bash
+python3 tools/plan_staged_curriculum_training.py \
+  --recipe movement_bootstrap_v10 \
+  --platform gpu \
+  --initial-restore-checkpoint \
+    policy/candidates/movement_bootstrap_v7_checkpoint_anchor_20260623/checkpoint_2026_06_23_213846_184320 \
+  --output-root /tmp/open_duck_movement_bootstrap_v10 \
+  --run
+```
+
+After training, run the same seed-sweep gate used for V7/V9:
+
+```bash
+python3 tools/run_candidate_seed_sweep.py \
+  --policies path/to/v10_candidate.onnx \
+  --seeds 0,1,2,3,4,5,6,7 \
+  --command-x 0.08 \
+  --duration 15 \
+  --bridge-mode fitted \
+  --output-dir outputs/analysis/movement_bootstrap_v10_seed_sweep_x008_fitted
+```
+
+Promotion condition:
+
+```text
+Material distribution shift versus V7/V9:
+- fewer than 5/8 falls, or
+- fewer than 3/8 standstill completions, or
+- mean lifetime materially above ~312 samples with useful forward tracking
+```
+
+Exit condition:
+
+```text
+If V10 is statistically similar to V7/V9, stop iterating on this anchor lineage.
+```

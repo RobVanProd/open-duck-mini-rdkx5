@@ -94,9 +94,13 @@ def build_command(args: argparse.Namespace, output_dir: Path) -> list[str]:
         "--forward_progress_scale": args.forward_progress_scale,
         "--forward_shortfall_scale": args.forward_shortfall_scale,
         "--forward_overshoot_scale": args.forward_overshoot_scale,
+        "--forward_wrong_direction_scale": args.forward_wrong_direction_scale,
         "--forward_progress_deadband": args.forward_progress_deadband,
         "--forward_shortfall_required_ratio": args.forward_shortfall_required_ratio,
         "--forward_overshoot_allowed_ratio": args.forward_overshoot_allowed_ratio,
+        "--forward_wrong_direction_allowed_reverse_ratio": (
+            args.forward_wrong_direction_allowed_reverse_ratio
+        ),
         "--command_progress_scale": args.command_progress_scale,
         "--command_progress_shortfall_scale": args.command_progress_shortfall_scale,
         "--command_progress_required_ratio": args.command_progress_required_ratio,
@@ -107,6 +111,9 @@ def build_command(args: argparse.Namespace, output_dir: Path) -> list[str]:
         "--actuator_tracking_huber_delta": args.actuator_tracking_huber_delta,
         "--forward_shortfall_huber_delta": args.forward_shortfall_huber_delta,
         "--forward_overshoot_huber_delta": args.forward_overshoot_huber_delta,
+        "--forward_wrong_direction_huber_delta": (
+            args.forward_wrong_direction_huber_delta
+        ),
         "--forward_pitch_huber_delta": args.forward_pitch_huber_delta,
         "--forward_pitch_rate_huber_delta": args.forward_pitch_rate_huber_delta,
         "--command_progress_shortfall_huber_delta": (
@@ -119,6 +126,13 @@ def build_command(args: argparse.Namespace, output_dir: Path) -> list[str]:
         "--base_height_scale": args.base_height_scale,
         "--forward_pitch_scale": args.forward_pitch_scale,
         "--forward_pitch_rate_scale": args.forward_pitch_rate_scale,
+        "--forward_contact_support_scale": args.forward_contact_support_scale,
+        "--forward_contact_support_no_contact_weight": (
+            args.forward_contact_support_no_contact_weight
+        ),
+        "--forward_contact_support_asymmetry_weight": (
+            args.forward_contact_support_asymmetry_weight
+        ),
         "--alive_scale": args.alive_scale,
         "--imitation_scale": args.imitation_scale,
         "--lin_vel_x_min": args.lin_vel_x_min,
@@ -265,6 +279,10 @@ def main() -> int:
     parser.add_argument("--forward-shortfall-required-ratio", type=float, default=None)
     parser.add_argument("--forward-overshoot-scale", type=float, default=None)
     parser.add_argument("--forward-overshoot-allowed-ratio", type=float, default=None)
+    parser.add_argument("--forward-wrong-direction-scale", type=float, default=None)
+    parser.add_argument(
+        "--forward-wrong-direction-allowed-reverse-ratio", type=float, default=None
+    )
     parser.add_argument("--command-progress-scale", type=float, default=None)
     parser.add_argument("--command-progress-shortfall-scale", type=float, default=None)
     parser.add_argument("--command-progress-required-ratio", type=float, default=None)
@@ -275,6 +293,7 @@ def main() -> int:
     parser.add_argument("--actuator-tracking-huber-delta", type=float, default=None)
     parser.add_argument("--forward-shortfall-huber-delta", type=float, default=None)
     parser.add_argument("--forward-overshoot-huber-delta", type=float, default=None)
+    parser.add_argument("--forward-wrong-direction-huber-delta", type=float, default=None)
     parser.add_argument("--forward-pitch-huber-delta", type=float, default=None)
     parser.add_argument("--forward-pitch-rate-huber-delta", type=float, default=None)
     parser.add_argument(
@@ -287,6 +306,13 @@ def main() -> int:
     parser.add_argument("--base-height-scale", type=float, default=None)
     parser.add_argument("--forward-pitch-scale", type=float, default=None)
     parser.add_argument("--forward-pitch-rate-scale", type=float, default=None)
+    parser.add_argument("--forward-contact-support-scale", type=float, default=None)
+    parser.add_argument(
+        "--forward-contact-support-no-contact-weight", type=float, default=None
+    )
+    parser.add_argument(
+        "--forward-contact-support-asymmetry-weight", type=float, default=None
+    )
     parser.add_argument("--alive-scale", type=float, default=None)
     parser.add_argument("--imitation-scale", type=float, default=None)
     parser.add_argument("--lin-vel-x-min", type=float, default=None)
@@ -339,6 +365,10 @@ def main() -> int:
             "forward_shortfall_required_ratio": args.forward_shortfall_required_ratio,
             "forward_overshoot_scale": args.forward_overshoot_scale,
             "forward_overshoot_allowed_ratio": args.forward_overshoot_allowed_ratio,
+            "forward_wrong_direction_scale": args.forward_wrong_direction_scale,
+            "forward_wrong_direction_allowed_reverse_ratio": (
+                args.forward_wrong_direction_allowed_reverse_ratio
+            ),
             "command_progress_scale": args.command_progress_scale,
             "command_progress_shortfall_scale": args.command_progress_shortfall_scale,
             "command_progress_required_ratio": args.command_progress_required_ratio,
@@ -349,6 +379,9 @@ def main() -> int:
             "actuator_tracking_huber_delta": args.actuator_tracking_huber_delta,
             "forward_shortfall_huber_delta": args.forward_shortfall_huber_delta,
             "forward_overshoot_huber_delta": args.forward_overshoot_huber_delta,
+            "forward_wrong_direction_huber_delta": (
+                args.forward_wrong_direction_huber_delta
+            ),
             "forward_pitch_huber_delta": args.forward_pitch_huber_delta,
             "forward_pitch_rate_huber_delta": args.forward_pitch_rate_huber_delta,
             "command_progress_shortfall_huber_delta": (
@@ -361,6 +394,13 @@ def main() -> int:
             "base_height_scale": args.base_height_scale,
             "forward_pitch_scale": args.forward_pitch_scale,
             "forward_pitch_rate_scale": args.forward_pitch_rate_scale,
+            "forward_contact_support_scale": args.forward_contact_support_scale,
+            "forward_contact_support_no_contact_weight": (
+                args.forward_contact_support_no_contact_weight
+            ),
+            "forward_contact_support_asymmetry_weight": (
+                args.forward_contact_support_asymmetry_weight
+            ),
             "alive_scale": args.alive_scale,
             "imitation_scale": args.imitation_scale,
             "lin_vel_x_min": args.lin_vel_x_min,

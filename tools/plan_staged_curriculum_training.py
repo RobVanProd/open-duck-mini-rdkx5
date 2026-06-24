@@ -71,10 +71,15 @@ class Phase:
     zero_command_probability: float
     forward_overshoot_scale: float = 0.0
     forward_overshoot_allowed_ratio: float = 1.5
+    forward_wrong_direction_scale: float = 0.0
+    forward_wrong_direction_allowed_reverse_ratio: float = 0.1
     orientation_scale: float = 0.0
     base_height_scale: float = 0.0
     forward_pitch_scale: float = 0.0
     forward_pitch_rate_scale: float = 0.0
+    forward_contact_support_scale: float = 0.0
+    forward_contact_support_no_contact_weight: float = 1.0
+    forward_contact_support_asymmetry_weight: float = 0.0
     ppo_learning_rate: float | None = None
     ppo_entropy_cost: float | None = None
     ppo_clipping_epsilon: float | None = None
@@ -89,6 +94,7 @@ class Phase:
     actuator_tracking_huber_delta: float = 0.0
     forward_shortfall_huber_delta: float = 0.0
     forward_overshoot_huber_delta: float = 0.0
+    forward_wrong_direction_huber_delta: float = 0.0
     forward_pitch_huber_delta: float = 0.0
     forward_pitch_rate_huber_delta: float = 0.0
     command_progress_shortfall_huber_delta: float = 0.0
@@ -1012,7 +1018,178 @@ MOVEMENT_BOOTSTRAP_V9_PHASES = [
 ]
 
 
+MOVEMENT_BOOTSTRAP_V10_PHASES = [
+    Phase(
+        name="phase1_v7_seed_consistency_recover",
+        purpose=(
+            "restart from the v7 moving anchor, but target the four observed "
+            "V7/V9 seed regimes: lunge, reverse, early support collapse, and "
+            "standstill. Keep forward progress dominant while adding explicit "
+            "wrong-direction and no-contact support costs."
+        ),
+        num_timesteps=160_000,
+        bridge=True,
+        delay=(3, 6),
+        tau_s=(0.06, 0.14),
+        velocity_limit_rad_s=(2.5, 3.75),
+        target_rate_scale=-0.0012,
+        actuator_tracking_scale=-0.12,
+        tracking_lin_vel_scale=34.0,
+        tracking_sigma=0.0012,
+        forward_progress_scale=8.8,
+        forward_shortfall_scale=-8.5,
+        forward_shortfall_required_ratio=0.30,
+        action_rate_scale=-0.016,
+        action_magnitude_scale=-0.004,
+        stand_still_scale=-1.1,
+        alive_scale=0.05,
+        imitation_scale=0.42,
+        lin_vel_x=(0.04, 0.08),
+        zero_command_probability=0.0,
+        forward_overshoot_scale=-1.0,
+        forward_overshoot_allowed_ratio=1.8,
+        forward_wrong_direction_scale=-3.0,
+        forward_wrong_direction_allowed_reverse_ratio=0.05,
+        orientation_scale=-0.06,
+        base_height_scale=-0.75,
+        forward_pitch_scale=-0.12,
+        forward_pitch_rate_scale=-0.012,
+        forward_contact_support_scale=-0.35,
+        forward_contact_support_no_contact_weight=1.0,
+        forward_contact_support_asymmetry_weight=0.05,
+        command_progress_scale=12.0,
+        command_progress_shortfall_scale=-12.5,
+        command_progress_required_ratio=0.30,
+        command_progress_warmup_steps=25,
+        action_rate_huber_delta=0.08,
+        action_magnitude_huber_delta=0.50,
+        target_rate_huber_delta=1.0,
+        actuator_tracking_huber_delta=0.08,
+        forward_shortfall_huber_delta=0.35,
+        forward_overshoot_huber_delta=0.50,
+        forward_wrong_direction_huber_delta=0.35,
+        forward_pitch_huber_delta=0.25,
+        forward_pitch_rate_huber_delta=1.0,
+        command_progress_shortfall_huber_delta=0.35,
+        ppo_learning_rate=2.5e-5,
+        ppo_clipping_epsilon=0.03,
+        ppo_max_grad_norm=0.45,
+    ),
+    Phase(
+        name="phase2_consistency_stability_balance",
+        purpose=(
+            "preserve the forward-moving family while tightening lunge and "
+            "collapse margins. Keep the fitted actuator envelope fixed and do "
+            "not let stability be purchased by freezing."
+        ),
+        num_timesteps=180_000,
+        bridge=True,
+        delay=(3, 6),
+        tau_s=(0.06, 0.14),
+        velocity_limit_rad_s=(2.5, 3.75),
+        target_rate_scale=-0.0014,
+        actuator_tracking_scale=-0.14,
+        tracking_lin_vel_scale=32.0,
+        tracking_sigma=0.0012,
+        forward_progress_scale=8.4,
+        forward_shortfall_scale=-8.5,
+        forward_shortfall_required_ratio=0.32,
+        action_rate_scale=-0.018,
+        action_magnitude_scale=-0.0045,
+        stand_still_scale=-1.1,
+        alive_scale=0.05,
+        imitation_scale=0.40,
+        lin_vel_x=(0.04, 0.08),
+        zero_command_probability=0.0,
+        forward_overshoot_scale=-1.4,
+        forward_overshoot_allowed_ratio=1.65,
+        forward_wrong_direction_scale=-3.5,
+        forward_wrong_direction_allowed_reverse_ratio=0.03,
+        orientation_scale=-0.08,
+        base_height_scale=-0.9,
+        forward_pitch_scale=-0.18,
+        forward_pitch_rate_scale=-0.018,
+        forward_contact_support_scale=-0.45,
+        forward_contact_support_no_contact_weight=1.0,
+        forward_contact_support_asymmetry_weight=0.05,
+        command_progress_scale=11.0,
+        command_progress_shortfall_scale=-12.0,
+        command_progress_required_ratio=0.32,
+        command_progress_warmup_steps=25,
+        action_rate_huber_delta=0.08,
+        action_magnitude_huber_delta=0.50,
+        target_rate_huber_delta=1.0,
+        actuator_tracking_huber_delta=0.08,
+        forward_shortfall_huber_delta=0.35,
+        forward_overshoot_huber_delta=0.50,
+        forward_wrong_direction_huber_delta=0.35,
+        forward_pitch_huber_delta=0.25,
+        forward_pitch_rate_huber_delta=1.0,
+        command_progress_shortfall_huber_delta=0.35,
+        ppo_learning_rate=2.0e-5,
+        ppo_clipping_epsilon=0.025,
+        ppo_max_grad_norm=0.45,
+    ),
+    Phase(
+        name="phase3_consolidate_consistent_forward_gait",
+        purpose=(
+            "final consolidation pass for one coherent in-envelope forward "
+            "behavior across seeds. This is the last planned run in the V7/V9 "
+            "lineage unless the eight-seed distribution moves materially."
+        ),
+        num_timesteps=140_000,
+        bridge=True,
+        delay=(3, 6),
+        tau_s=(0.06, 0.14),
+        velocity_limit_rad_s=(2.5, 3.75),
+        target_rate_scale=-0.0015,
+        actuator_tracking_scale=-0.15,
+        tracking_lin_vel_scale=30.0,
+        tracking_sigma=0.0012,
+        forward_progress_scale=8.0,
+        forward_shortfall_scale=-8.2,
+        forward_shortfall_required_ratio=0.34,
+        action_rate_scale=-0.020,
+        action_magnitude_scale=-0.005,
+        stand_still_scale=-1.0,
+        alive_scale=0.05,
+        imitation_scale=0.38,
+        lin_vel_x=(0.04, 0.08),
+        zero_command_probability=0.0,
+        forward_overshoot_scale=-1.7,
+        forward_overshoot_allowed_ratio=1.55,
+        forward_wrong_direction_scale=-3.5,
+        forward_wrong_direction_allowed_reverse_ratio=0.03,
+        orientation_scale=-0.09,
+        base_height_scale=-0.95,
+        forward_pitch_scale=-0.22,
+        forward_pitch_rate_scale=-0.022,
+        forward_contact_support_scale=-0.5,
+        forward_contact_support_no_contact_weight=1.0,
+        forward_contact_support_asymmetry_weight=0.05,
+        command_progress_scale=10.0,
+        command_progress_shortfall_scale=-11.0,
+        command_progress_required_ratio=0.34,
+        command_progress_warmup_steps=25,
+        action_rate_huber_delta=0.08,
+        action_magnitude_huber_delta=0.50,
+        target_rate_huber_delta=1.0,
+        actuator_tracking_huber_delta=0.08,
+        forward_shortfall_huber_delta=0.35,
+        forward_overshoot_huber_delta=0.50,
+        forward_wrong_direction_huber_delta=0.35,
+        forward_pitch_huber_delta=0.25,
+        forward_pitch_rate_huber_delta=1.0,
+        command_progress_shortfall_huber_delta=0.35,
+        ppo_learning_rate=1.8e-5,
+        ppo_clipping_epsilon=0.025,
+        ppo_max_grad_norm=0.45,
+    ),
+]
+
+
 RECIPES = {
+    "movement_bootstrap_v10": MOVEMENT_BOOTSTRAP_V10_PHASES,
     "movement_bootstrap_v9": MOVEMENT_BOOTSTRAP_V9_PHASES,
     "movement_bootstrap_v8": MOVEMENT_BOOTSTRAP_V8_PHASES,
     "movement_bootstrap_v7": MOVEMENT_BOOTSTRAP_V7_PHASES,
@@ -1083,6 +1260,10 @@ def phase_command(
         cli_value(phase.forward_overshoot_scale),
         "--forward-overshoot-allowed-ratio",
         cli_value(phase.forward_overshoot_allowed_ratio),
+        "--forward-wrong-direction-scale",
+        cli_value(phase.forward_wrong_direction_scale),
+        "--forward-wrong-direction-allowed-reverse-ratio",
+        cli_value(phase.forward_wrong_direction_allowed_reverse_ratio),
         "--command-progress-scale",
         cli_value(phase.command_progress_scale),
         "--command-progress-shortfall-scale",
@@ -1103,6 +1284,8 @@ def phase_command(
         cli_value(phase.forward_shortfall_huber_delta),
         "--forward-overshoot-huber-delta",
         cli_value(phase.forward_overshoot_huber_delta),
+        "--forward-wrong-direction-huber-delta",
+        cli_value(phase.forward_wrong_direction_huber_delta),
         "--forward-pitch-huber-delta",
         cli_value(phase.forward_pitch_huber_delta),
         "--forward-pitch-rate-huber-delta",
@@ -1123,6 +1306,12 @@ def phase_command(
         cli_value(phase.forward_pitch_scale),
         "--forward-pitch-rate-scale",
         cli_value(phase.forward_pitch_rate_scale),
+        "--forward-contact-support-scale",
+        cli_value(phase.forward_contact_support_scale),
+        "--forward-contact-support-no-contact-weight",
+        cli_value(phase.forward_contact_support_no_contact_weight),
+        "--forward-contact-support-asymmetry-weight",
+        cli_value(phase.forward_contact_support_asymmetry_weight),
         "--alive-scale",
         cli_value(phase.alive_scale),
         "--imitation-scale",
@@ -1216,6 +1405,10 @@ def phase_payload(phase: Phase, command: list[str], output_root: Path) -> dict[s
         "forward_shortfall_required_ratio": phase.forward_shortfall_required_ratio,
         "forward_overshoot_scale": phase.forward_overshoot_scale,
         "forward_overshoot_allowed_ratio": phase.forward_overshoot_allowed_ratio,
+        "forward_wrong_direction_scale": phase.forward_wrong_direction_scale,
+        "forward_wrong_direction_allowed_reverse_ratio": (
+            phase.forward_wrong_direction_allowed_reverse_ratio
+        ),
         "command_progress_scale": phase.command_progress_scale,
         "command_progress_shortfall_scale": phase.command_progress_shortfall_scale,
         "command_progress_required_ratio": phase.command_progress_required_ratio,
@@ -1226,6 +1419,9 @@ def phase_payload(phase: Phase, command: list[str], output_root: Path) -> dict[s
         "actuator_tracking_huber_delta": phase.actuator_tracking_huber_delta,
         "forward_shortfall_huber_delta": phase.forward_shortfall_huber_delta,
         "forward_overshoot_huber_delta": phase.forward_overshoot_huber_delta,
+        "forward_wrong_direction_huber_delta": (
+            phase.forward_wrong_direction_huber_delta
+        ),
         "forward_pitch_huber_delta": phase.forward_pitch_huber_delta,
         "forward_pitch_rate_huber_delta": phase.forward_pitch_rate_huber_delta,
         "command_progress_shortfall_huber_delta": (
@@ -1235,6 +1431,13 @@ def phase_payload(phase: Phase, command: list[str], output_root: Path) -> dict[s
         "base_height_scale": phase.base_height_scale,
         "forward_pitch_scale": phase.forward_pitch_scale,
         "forward_pitch_rate_scale": phase.forward_pitch_rate_scale,
+        "forward_contact_support_scale": phase.forward_contact_support_scale,
+        "forward_contact_support_no_contact_weight": (
+            phase.forward_contact_support_no_contact_weight
+        ),
+        "forward_contact_support_asymmetry_weight": (
+            phase.forward_contact_support_asymmetry_weight
+        ),
         "ppo_learning_rate": phase.ppo_learning_rate,
         "ppo_entropy_cost": phase.ppo_entropy_cost,
         "ppo_clipping_epsilon": phase.ppo_clipping_epsilon,
@@ -1251,6 +1454,17 @@ def phase_payload(phase: Phase, command: list[str], output_root: Path) -> dict[s
 
 
 def recipe_rationale(recipe: str) -> str:
+    if recipe == "movement_bootstrap_v10":
+        return (
+            "`movement_bootstrap_v10` is the final planned pass in the V7/V9 "
+            "moving-checkpoint lineage unless the eight-seed distribution moves "
+            "materially. The V7/V9 multi-seed baseline showed four regimes: "
+            "lunge, early contact/base-height collapse, reverse motion, and "
+            "standstill. V10 keeps the fitted actuator envelope active, keeps "
+            "forward progress dominant, and adds explicit wrong-direction and "
+            "support-contact costs so stability cannot be bought by freezing "
+            "or backing up."
+        )
     if recipe == "movement_bootstrap_v9":
         return (
             "`movement_bootstrap_v9` starts from the v7 anchored checkpoint "
@@ -1427,7 +1641,9 @@ def main() -> int:
             "movement_bootstrap_v8 starts from v7 and targets the measured "
             "velocity-overshoot/pitch-over failure; movement_bootstrap_v9 "
             "starts from v7 again with lighter damping after v8 stabilized "
-            "into standstill."
+            "into standstill; movement_bootstrap_v10 targets the multi-seed "
+            "V7/V9 failure surfaces: lunge, reverse, support collapse, and "
+            "standstill."
         ),
     )
     parser.add_argument("--timesteps-scale", type=float, default=1.0)
