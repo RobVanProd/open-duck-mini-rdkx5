@@ -2830,3 +2830,40 @@ the command-progress failure term.
 
 Summary artifact:
 `outputs/analysis/A100_V17_PHASE1_MULTI_SEED_HOLD_SUMMARY.md`.
+
+### V17 Phase-1 Reward Override Audit
+
+V17 phase 1 was replayed locally on CPU with the exact
+`phase1_hard_signed_progress_discovery` reward overrides from the staged
+curriculum plan:
+
+```text
+gate: x=0.08, vanilla bridge, seeds 0-3, 5 seconds
+runs: 4
+falls_or_terminations: 4
+duration_complete: 0
+track_ratio_mean: -0.2367
+mean_local_vx_mean: -0.0189 m/s
+```
+
+Per-seed result:
+
+```text
+seed 0: terminates at sample 60, command-progress failure boundary
+seed 1: reverse/collapse at sample 32 before command-progress failure
+seed 2: terminates at sample 60, command-progress failure boundary
+seed 3: terminates at sample 60, command-progress failure boundary
+```
+
+Interpretation: the reward overrides are active. V17 did not fail because it
+was evaluated under the wrong phase reward config. Seeds `0`, `2`, and `3` are
+stable enough to reach the progress-gate warmup boundary but fail sustained
+command progress; seed `1` reverses and collapses before that gate can act.
+
+Conclusion: do not run V17 phase 2. The next work remains offline reward/sign
+auditing: verify the local-forward sign convention in the reward source and
+inspect whether the delayed command-progress terminal failure is too sparse for
+PPO to escape low/reverse progress.
+
+Summary artifact:
+`outputs/analysis/V17_PHASE1_REWARD_OVERRIDE_AUDIT_SUMMARY.md`.

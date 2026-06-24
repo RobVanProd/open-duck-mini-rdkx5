@@ -2015,3 +2015,36 @@ Next offline task before another large A100 run:
 
 Summary artifact:
 `outputs/analysis/A100_V17_PHASE1_MULTI_SEED_HOLD_SUMMARY.md`.
+
+### V17 Reward Override Audit
+
+V17 phase 1 was replayed with the actual phase-1 reward override config. This
+removed a possible evaluation mismatch:
+
+```text
+x=0.08, vanilla bridge, seeds 0-3, 5 seconds
+falls_or_terminations: 4/4
+track_ratio_mean: -0.2367
+mean_local_vx_mean: -0.0189 m/s
+```
+
+Seeds `0`, `2`, and `3` terminate at sample `60`, which is the
+command-progress failure warmup boundary. Seed `1` reverses and collapses at
+sample `32`, before that failure term activates.
+
+Conclusion:
+
+- the reward overrides are active
+- V17 is failing the intended progress objective
+- the failure is still low/reverse progress, not an actuator envelope violation
+- do not run V17 phase 2
+
+Next offline tasks before another A100 run:
+
+- audit the reward source for the local-forward-velocity sign convention
+- compare the dense signed-progress terms with posture/contact survival terms
+- decide whether delayed terminal command-progress failure is too sparse for PPO
+- design the next recipe only after the reward/sign audit
+
+Summary artifact:
+`outputs/analysis/V17_PHASE1_REWARD_OVERRIDE_AUDIT_SUMMARY.md`.

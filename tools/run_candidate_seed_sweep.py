@@ -182,6 +182,10 @@ def run_one(
     ]
     if seed in set(args.trace_seeds):
         command.extend(["--trace-jsonl", str(output_dir / "trace.jsonl")])
+    if args.reward_overrides_json:
+        command.extend(["--reward-overrides-json", str(Path(args.reward_overrides_json))])
+    if args.reward_overrides_phase:
+        command.extend(["--reward-overrides-phase", str(args.reward_overrides_phase)])
     result: dict[str, Any] = {
         "policy": str(policy),
         "policy_label": label,
@@ -302,6 +306,8 @@ def build_report(results: list[dict[str, Any]], args: argparse.Namespace) -> str
         "",
         f"command_x: `{args.command_x}`",
         f"bridge_mode: `{args.bridge_mode}`",
+        f"reward_overrides_json: `{args.reward_overrides_json or 'None'}`",
+        f"reward_overrides_phase: `{args.reward_overrides_phase or 'None'}`",
         f"duration_s: `{args.duration}`",
         f"seeds: `{args.seeds}`",
         f"run: `{args.run}`",
@@ -376,6 +382,19 @@ def main() -> int:
     parser.add_argument("--mode-name", default="fitted")
     parser.add_argument("--jax-platform", default="cpu")
     parser.add_argument("--trace-seeds", type=parse_int_list, default=[])
+    parser.add_argument(
+        "--reward-overrides-json",
+        default=None,
+        help=(
+            "Optional staged-curriculum JSON whose phase reward config should be "
+            "replayed by eval_policy_with_actuator_bridge.py."
+        ),
+    )
+    parser.add_argument(
+        "--reward-overrides-phase",
+        default=None,
+        help="Phase name to select from --reward-overrides-json.",
+    )
     parser.add_argument("--sim-preflight-timeout-s", type=int, default=600)
     parser.add_argument("--closed-loop-timeout-s", type=int, default=1800)
     parser.add_argument("--output-dir", default="outputs/analysis/candidate_seed_sweep")
@@ -401,6 +420,8 @@ def main() -> int:
                     "command_x": args.command_x,
                     "duration_s": args.duration,
                     "bridge_mode": args.bridge_mode,
+                    "reward_overrides_json": args.reward_overrides_json,
+                    "reward_overrides_phase": args.reward_overrides_phase,
                     "jax_platform": args.jax_platform,
                     "run": args.run,
                 },
@@ -416,6 +437,8 @@ def main() -> int:
             "command_x": args.command_x,
             "duration_s": args.duration,
             "bridge_mode": args.bridge_mode,
+            "reward_overrides_json": args.reward_overrides_json,
+            "reward_overrides_phase": args.reward_overrides_phase,
             "jax_platform": args.jax_platform,
             "run": args.run,
         },
