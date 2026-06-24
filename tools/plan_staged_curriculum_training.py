@@ -1446,7 +1446,196 @@ MOVEMENT_BOOTSTRAP_V13_PHASES = [
 ]
 
 
+MOVEMENT_BOOTSTRAP_V14_PHASES = [
+    Phase(
+        name="phase1_mild_bridge_motion_discovery",
+        purpose=(
+            "V13 proved signed progress failure works but did not discover "
+            "motion under the fitted bridge from step zero. Start with a mild "
+            "bridge so PPO can find low-command forward motion before the full "
+            "measured actuator envelope is enforced."
+        ),
+        num_timesteps=280_000,
+        bridge=True,
+        delay=(1, 3),
+        tau_s=(0.03, 0.08),
+        velocity_limit_rad_s=(3.8, 5.24),
+        target_rate_scale=-0.0008,
+        actuator_tracking_scale=-0.05,
+        tracking_lin_vel_scale=36.0,
+        tracking_sigma=0.0012,
+        forward_progress_scale=16.0,
+        forward_shortfall_scale=-24.0,
+        forward_shortfall_required_ratio=0.45,
+        action_rate_scale=-0.006,
+        action_magnitude_scale=-0.0015,
+        stand_still_scale=-1.2,
+        alive_scale=0.01,
+        imitation_scale=0.20,
+        lin_vel_x=(0.04, 0.06),
+        zero_command_probability=0.0,
+        forward_overshoot_scale=-3.0,
+        forward_overshoot_allowed_ratio=1.60,
+        forward_wrong_direction_scale=-18.0,
+        forward_wrong_direction_allowed_reverse_ratio=0.0,
+        orientation_scale=-0.04,
+        base_height_scale=-0.35,
+        forward_pitch_scale=-0.06,
+        forward_pitch_rate_scale=-0.006,
+        forward_contact_support_scale=-0.12,
+        forward_contact_support_no_contact_weight=1.0,
+        forward_contact_support_asymmetry_weight=0.02,
+        command_progress_scale=18.0,
+        command_progress_shortfall_scale=-32.0,
+        command_progress_required_ratio=0.45,
+        command_progress_warmup_steps=20,
+        command_progress_failure_scale=-80.0,
+        command_progress_failure_enable=True,
+        command_progress_failure_min_ratio=0.20,
+        command_progress_failure_warmup_steps=120,
+        reward_clip_min=-8.0,
+        reward_clip_max=10000.0,
+        action_rate_huber_delta=0.08,
+        action_magnitude_huber_delta=0.50,
+        target_rate_huber_delta=1.0,
+        actuator_tracking_huber_delta=0.08,
+        forward_shortfall_huber_delta=0.0,
+        forward_overshoot_huber_delta=0.50,
+        forward_wrong_direction_huber_delta=0.0,
+        forward_pitch_huber_delta=0.25,
+        forward_pitch_rate_huber_delta=1.0,
+        command_progress_shortfall_huber_delta=0.0,
+        ppo_learning_rate=1.2e-4,
+        ppo_clipping_epsilon=0.12,
+        ppo_max_grad_norm=0.7,
+    ),
+    Phase(
+        name="phase2_fitted_bridge_motion_transfer",
+        purpose=(
+            "Transfer the discovered low-command gait into the fitted actuator "
+            "envelope while keeping progress failure active. This phase should "
+            "be skipped automatically if phase 1 freezes or fails its gate."
+        ),
+        num_timesteps=260_000,
+        bridge=True,
+        delay=(2, 5),
+        tau_s=(0.05, 0.12),
+        velocity_limit_rad_s=(2.5, 3.75),
+        target_rate_scale=-0.0010,
+        actuator_tracking_scale=-0.08,
+        tracking_lin_vel_scale=38.0,
+        tracking_sigma=0.0010,
+        forward_progress_scale=16.0,
+        forward_shortfall_scale=-28.0,
+        forward_shortfall_required_ratio=0.45,
+        action_rate_scale=-0.009,
+        action_magnitude_scale=-0.002,
+        stand_still_scale=-1.2,
+        alive_scale=0.01,
+        imitation_scale=0.14,
+        lin_vel_x=(0.04, 0.06),
+        zero_command_probability=0.0,
+        forward_overshoot_scale=-4.0,
+        forward_overshoot_allowed_ratio=1.45,
+        forward_wrong_direction_scale=-20.0,
+        forward_wrong_direction_allowed_reverse_ratio=0.0,
+        orientation_scale=-0.05,
+        base_height_scale=-0.45,
+        forward_pitch_scale=-0.08,
+        forward_pitch_rate_scale=-0.008,
+        forward_contact_support_scale=-0.18,
+        forward_contact_support_no_contact_weight=1.0,
+        forward_contact_support_asymmetry_weight=0.02,
+        command_progress_scale=20.0,
+        command_progress_shortfall_scale=-38.0,
+        command_progress_required_ratio=0.45,
+        command_progress_warmup_steps=20,
+        command_progress_failure_scale=-120.0,
+        command_progress_failure_enable=True,
+        command_progress_failure_min_ratio=0.25,
+        command_progress_failure_warmup_steps=100,
+        reward_clip_min=-10.0,
+        reward_clip_max=10000.0,
+        action_rate_huber_delta=0.08,
+        action_magnitude_huber_delta=0.50,
+        target_rate_huber_delta=1.0,
+        actuator_tracking_huber_delta=0.08,
+        forward_shortfall_huber_delta=0.0,
+        forward_overshoot_huber_delta=0.50,
+        forward_wrong_direction_huber_delta=0.0,
+        forward_pitch_huber_delta=0.25,
+        forward_pitch_rate_huber_delta=1.0,
+        command_progress_shortfall_huber_delta=0.0,
+        ppo_learning_rate=8.0e-5,
+        ppo_clipping_epsilon=0.08,
+        ppo_max_grad_norm=0.65,
+    ),
+    Phase(
+        name="phase3_expand_command_with_fitted_bridge",
+        purpose=(
+            "Expand toward x=0.08 only after low-command fitted-bridge motion "
+            "survives. Keep progress failure and wrong-direction pressure active "
+            "so stability cannot be bought by freezing or backing up."
+        ),
+        num_timesteps=220_000,
+        bridge=True,
+        delay=(3, 6),
+        tau_s=(0.06, 0.14),
+        velocity_limit_rad_s=(2.5, 3.75),
+        target_rate_scale=-0.0013,
+        actuator_tracking_scale=-0.12,
+        tracking_lin_vel_scale=36.0,
+        tracking_sigma=0.0010,
+        forward_progress_scale=14.0,
+        forward_shortfall_scale=-30.0,
+        forward_shortfall_required_ratio=0.42,
+        action_rate_scale=-0.014,
+        action_magnitude_scale=-0.003,
+        stand_still_scale=-1.1,
+        alive_scale=0.01,
+        imitation_scale=0.10,
+        lin_vel_x=(0.04, 0.08),
+        zero_command_probability=0.0,
+        forward_overshoot_scale=-5.0,
+        forward_overshoot_allowed_ratio=1.35,
+        forward_wrong_direction_scale=-22.0,
+        forward_wrong_direction_allowed_reverse_ratio=0.0,
+        orientation_scale=-0.08,
+        base_height_scale=-0.65,
+        forward_pitch_scale=-0.14,
+        forward_pitch_rate_scale=-0.014,
+        forward_contact_support_scale=-0.30,
+        forward_contact_support_no_contact_weight=1.0,
+        forward_contact_support_asymmetry_weight=0.03,
+        command_progress_scale=18.0,
+        command_progress_shortfall_scale=-42.0,
+        command_progress_required_ratio=0.42,
+        command_progress_warmup_steps=20,
+        command_progress_failure_scale=-150.0,
+        command_progress_failure_enable=True,
+        command_progress_failure_min_ratio=0.30,
+        command_progress_failure_warmup_steps=120,
+        reward_clip_min=-10.0,
+        reward_clip_max=10000.0,
+        action_rate_huber_delta=0.08,
+        action_magnitude_huber_delta=0.50,
+        target_rate_huber_delta=1.0,
+        actuator_tracking_huber_delta=0.08,
+        forward_shortfall_huber_delta=0.0,
+        forward_overshoot_huber_delta=0.50,
+        forward_wrong_direction_huber_delta=0.0,
+        forward_pitch_huber_delta=0.25,
+        forward_pitch_rate_huber_delta=1.0,
+        command_progress_shortfall_huber_delta=0.0,
+        ppo_learning_rate=5.0e-5,
+        ppo_clipping_epsilon=0.06,
+        ppo_max_grad_norm=0.6,
+    ),
+]
+
+
 RECIPES = {
+    "movement_bootstrap_v14": MOVEMENT_BOOTSTRAP_V14_PHASES,
     "movement_bootstrap_v13": MOVEMENT_BOOTSTRAP_V13_PHASES,
     "movement_bootstrap_v12": MOVEMENT_BOOTSTRAP_V12_PHASES,
     "movement_bootstrap_v11": MOVEMENT_BOOTSTRAP_V11_PHASES,
@@ -1741,6 +1930,15 @@ def phase_payload(phase: Phase, command: list[str], output_root: Path) -> dict[s
 
 
 def recipe_rationale(recipe: str) -> str:
+    if recipe == "movement_bootstrap_v14":
+        return (
+            "`movement_bootstrap_v14` responds to the corrected V13 replay: "
+            "V13's signed progress failure and negative reward were active, "
+            "but PPO still learned a short-lived low-motion behavior under the "
+            "fitted bridge from step zero. V14 therefore uses a mild-bridge "
+            "motion-discovery phase first, then transfers to the fitted actuator "
+            "envelope only if the phase gate shows real forward progress."
+        )
     if recipe == "movement_bootstrap_v13":
         return (
             "`movement_bootstrap_v13` is a mechanics test after V12 showed "
@@ -2042,7 +2240,7 @@ def main() -> int:
     parser.add_argument(
         "--recipe",
         choices=sorted(RECIPES),
-        default="movement_bootstrap_v13",
+        default="movement_bootstrap_v14",
         help=(
             "Staged recipe to emit/run. shortfall_v1 preserves the June 23 A100 "
             "recipe that landed in standstill; movement_bootstrap_v2 preserves "
@@ -2063,7 +2261,9 @@ def main() -> int:
             "lineage after V10 failed mostly by freezing; movement_bootstrap_v12 "
             "adds command-progress failure to invalidate V11-style no-motion; "
             "movement_bootstrap_v13 adds a signed command-progress failure "
-            "penalty after V12 still froze. V13 is the current default."
+            "penalty after V12 still froze; movement_bootstrap_v14 starts with "
+            "a mild bridge for motion discovery before transferring to the "
+            "fitted actuator envelope. V14 is the current default."
         ),
     )
     parser.add_argument("--timesteps-scale", type=float, default=1.0)

@@ -879,6 +879,7 @@ def main() -> int:
     parser.add_argument(
         "--staged-recipe",
         choices=[
+            "movement_bootstrap_v14",
             "movement_bootstrap_v13",
             "movement_bootstrap_v12",
             "movement_bootstrap_v11",
@@ -893,12 +894,13 @@ def main() -> int:
             "movement_bootstrap_v2",
             "shortfall_v1",
         ],
-        default="movement_bootstrap_v13",
+        default="movement_bootstrap_v14",
         help=(
             "Recipe passed to tools/plan_staged_curriculum_training.py for "
             "--workflow staged-curriculum. The current default is "
-            "movement_bootstrap_v13, which adds a signed command-progress "
-            "failure penalty after V12 froze. movement_bootstrap_v6 explicitly "
+            "movement_bootstrap_v14, which starts with a mild bridge for motion "
+            "discovery before transferring to the fitted actuator envelope. "
+            "movement_bootstrap_v6 explicitly "
             "targets continuity from the in-envelope phase-1 lead. "
             "movement_bootstrap_v7 is intended to be run with "
             "--staged-initial-restore-checkpoint pointing at the recovered "

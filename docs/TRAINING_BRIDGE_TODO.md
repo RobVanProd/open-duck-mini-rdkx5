@@ -1362,3 +1362,41 @@ remaining failure is a short-lived low-motion local optimum: the policy survives
 until the low-progress boundary rather than learning forward motion.
 
 Summary artifact: `outputs/analysis/V13_TRAINING_REWARD_REPLAY_SUMMARY.md`.
+
+### V14 Motion-Discovery Ladder
+
+Next planned offline recipe: `movement_bootstrap_v14`.
+
+Why this is different from V13:
+
+- V13 proved the signed command-progress failure path works.
+- V13 still learned low motion until the 80-step failure boundary.
+- Starting directly under the fitted actuator bridge appears too hard for fresh
+  PPO discovery.
+- V14 starts with a milder actuator bridge to discover low-command forward
+  motion, then transfers to the fitted envelope only if phase gates preserve
+  progress.
+
+Planned phases:
+
+```text
+phase1_mild_bridge_motion_discovery:
+  x = 0.04-0.06
+  delay = 1-3 ticks
+  velocity limit = 3.8-5.24 rad/s
+
+phase2_fitted_bridge_motion_transfer:
+  x = 0.04-0.06
+  delay = 2-5 ticks
+  velocity limit = 2.5-3.75 rad/s
+
+phase3_expand_command_with_fitted_bridge:
+  x = 0.04-0.08
+  delay = 3-6 ticks
+  velocity limit = 2.5-3.75 rad/s
+```
+
+Do not run robot validation. Do not launch a follow-on phase if the phase gate
+freezes, falls, reverses, or fails the forward-progress gate.
+
+Plan artifact: `outputs/analysis/MOVEMENT_BOOTSTRAP_V14_TRAINING_PLAN.md`.

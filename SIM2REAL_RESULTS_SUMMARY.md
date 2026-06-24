@@ -1946,3 +1946,24 @@ failure boundary instead of discovering forward motion. Do not launch another
 A100 recipe until the next change directly targets that local optimum.
 
 Summary artifact: `outputs/analysis/V13_TRAINING_REWARD_REPLAY_SUMMARY.md`.
+
+### V14 Motion-Discovery Ladder Plan
+
+The next staged recipe is `movement_bootstrap_v14`. It is not another signed
+penalty test. V13 already proved that signed command-progress failure and
+negative reward are active, but the policy still learned a short-lived
+low-motion behavior under the fitted bridge from step zero.
+
+V14 changes the training question:
+
+```text
+phase 1: mild bridge, x=0.04-0.06, discover forward motion
+phase 2: fitted bridge, x=0.04-0.06, transfer the discovered gait
+phase 3: fitted bridge, x=0.04-0.08, expand only after phase-2 survives
+```
+
+The planner default is now V14 so an unqualified staged run does not repeat the
+known-bad V13 path. Training is still manual/explicit; the generated plan is a
+dry run unless launched with `--run` or through the Colab workflow.
+
+Plan artifact: `outputs/analysis/MOVEMENT_BOOTSTRAP_V14_TRAINING_PLAN.md`.
