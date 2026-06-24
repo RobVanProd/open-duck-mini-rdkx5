@@ -2346,3 +2346,27 @@ sentinel.
 
 Summary artifact:
 `outputs/analysis/L4_1ENV16_CUDA_TRAINING_SMOKE_SUMMARY.md`.
+
+### L4 2-Env / 16-Step CUDA Training Smoke Pass
+
+The Colab L4 scale sweep also passed two environments and sixteen timesteps:
+
+```text
+00_python_jax_device: PASS
+01_import_training_stack: PASS
+02_smoke_dry_run: PASS
+03_smoke_run: PASS
+num_timesteps: 16
+num_envs: 2
+batch_size: 2
+status: PASS_SMOKE_RUN
+elapsed_s: 445.78
+STEP: 20 reward: 8.948163986206055 reward_std: 3.5841026306152344
+checkpoint: saved at step 20
+```
+
+This means the Colab L4 CUDA training path is now verified beyond the absolute
+minimum smoke. The next scale point is 4 env / 32 timesteps.
+
+Summary artifact:
+`outputs/analysis/L4_2ENV16_CUDA_TRAINING_SMOKE_SUMMARY.md`.
