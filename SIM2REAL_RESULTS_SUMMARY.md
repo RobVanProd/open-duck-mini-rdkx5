@@ -2095,3 +2095,32 @@ test isolates training process survival and final-manifest behavior.
 
 Summary artifact:
 `outputs/analysis/MOVEMENT_BOOTSTRAP_V15C_A100_REDUCED_NO_SENTINEL_SUMMARY.md`.
+
+### Minimal A100 Training Smoke Hold
+
+The new `training-smoke` workflow was run on a fresh A100 session:
+
+```bash
+python3 tools/run_colab_cli_cuda_workflow.py \
+  --session open-duck-a100-smoke \
+  --workflow training-smoke \
+  --run \
+  --timeout-s 1800 \
+  --smoke-num-timesteps 64 \
+  --smoke-export-min-step 1
+```
+
+The pinned stack initialized correctly (`jax/jaxlib 0.7.2`, GPU visible,
+`device_put_replicated` present), then the tiny PPO smoke disappeared without a
+workflow exit sentinel, final manifest, artifact bundle, ONNX, or checkpoint.
+The hardened poller detected `HOLD_REMOTE_NO_SENTINEL` with Colab reporting
+`IDLE`.
+
+This isolates the current cloud hold below the recipe level. The issue is now
+in or immediately after the minimal A100 GPU PPO training path, not in V15,
+step-0 export, large PPO batch sizing, contract audit, or baseline eval. Do not
+spend more A100 time on curriculum recipes until a minimal training smoke can
+exit normally.
+
+Summary artifact:
+`outputs/analysis/A100_TRAINING_SMOKE_NO_SENTINEL_SUMMARY.md`.

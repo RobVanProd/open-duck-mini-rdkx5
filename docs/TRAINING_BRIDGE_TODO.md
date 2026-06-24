@@ -1575,3 +1575,46 @@ python3 tools/run_colab_cli_cuda_workflow.py \
 
 Summary artifact:
 `outputs/analysis/MOVEMENT_BOOTSTRAP_V15C_A100_REDUCED_NO_SENTINEL_SUMMARY.md`.
+
+### Minimal A100 Training Smoke Hold
+
+The `training-smoke` workflow was run on a fresh A100 session with the pinned
+JAX stack and the smallest current PPO smoke:
+
+```bash
+python3 tools/run_colab_cli_cuda_workflow.py \
+  --session open-duck-a100-smoke \
+  --workflow training-smoke \
+  --run \
+  --timeout-s 1800 \
+  --smoke-num-timesteps 64 \
+  --smoke-export-min-step 1
+```
+
+The pinned stack initialized:
+
+```text
+jax 0.7.2
+jaxlib 0.7.2
+backend gpu [CudaDevice(id=0)]
+has_device_put_replicated True
+```
+
+The remote session still disappeared while running the tiny PPO smoke and the
+hardened poller recorded `HOLD_REMOTE_NO_SENTINEL`.
+
+Interpretation: this is not a V15 recipe result. The A100 hold is now isolated
+to the minimal GPU PPO training path or Colab runtime around it.
+
+Next debugging options:
+
+- run the same `training-smoke` on L4 or CPU to separate A100-specific failure
+  from generic Colab/Brax runner failure
+- if L4/CPU passes, keep recipe iteration off A100 until the A100 PPO smoke is
+  fixed
+- if all Colab backends fail, reproduce the tiny smoke locally and inspect
+  stdout/stderr directly
+- keep the robot parked
+
+Summary artifact:
+`outputs/analysis/A100_TRAINING_SMOKE_NO_SENTINEL_SUMMARY.md`.
