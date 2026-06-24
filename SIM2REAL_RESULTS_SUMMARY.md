@@ -1828,3 +1828,26 @@ curriculum before later A100 phases consolidate it.
 
 Next offline step is an A100 V12 run only after PR #74 and Playground PR #4 are
 reviewed. Robot validation remains blocked.
+
+### V12 A100 Phase-1 Gate Result
+
+V12 was launched on an A100 from PR #74 head `79c0e21` with the corrected
+per-phase gate. Phase 1 completed and exported an ONNX, but the gate stopped the
+staged run before phase 2:
+
+```text
+status: HOLD_PHASE_FREEZE_OR_LOW_PROGRESS
+candidate_gate_status: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
+termination: duration_complete
+forward_tracking_ratio: 0.04537
+max_action_saturation_pct: 0.0
+max_pitch_tracking_p95_rad: 0.07263
+max_sent_target_velocity_p95_rad_s: 0.17286
+```
+
+Interpretation: V12 did not escape the stable low-motion basin. The policy stayed
+upright and inside the actuator envelope, but it barely moved at `x=0.08`. The
+corrected gate did its job by stopping the staged curriculum before later phases
+consolidated the no-motion behavior. Robot validation remains blocked.
+
+Summary artifact: `outputs/analysis/MOVEMENT_BOOTSTRAP_V12_A100_PHASE1_SUMMARY.md`.
