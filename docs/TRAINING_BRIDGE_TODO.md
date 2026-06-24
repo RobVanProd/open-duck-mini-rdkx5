@@ -1215,7 +1215,8 @@ failure before treating it as another coefficient-search failure.
 Before V12:
 
 ```text
-1. Add a command-progress failure/truncation path after a warmup window.
+1. Use the default-off command-progress failure/truncation path after a warmup
+   window.
 2. Add eval support for replaying the same reward override config used during
    training.
 3. Add per-phase freeze detection so the staged curriculum stops if a phase

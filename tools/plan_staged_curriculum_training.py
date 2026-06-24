@@ -88,6 +88,9 @@ class Phase:
     command_progress_shortfall_scale: float = 0.0
     command_progress_required_ratio: float = 0.6
     command_progress_warmup_steps: int = 50
+    command_progress_failure_enable: bool = False
+    command_progress_failure_min_ratio: float = 0.25
+    command_progress_failure_warmup_steps: int = 120
     action_rate_huber_delta: float = 0.0
     action_magnitude_huber_delta: float = 0.0
     target_rate_huber_delta: float = 0.0
@@ -1442,6 +1445,10 @@ def phase_command(
         cli_value(phase.command_progress_required_ratio),
         "--command-progress-warmup-steps",
         str(phase.command_progress_warmup_steps),
+        "--command-progress-failure-min-ratio",
+        cli_value(phase.command_progress_failure_min_ratio),
+        "--command-progress-failure-warmup-steps",
+        str(phase.command_progress_failure_warmup_steps),
         "--action-rate-huber-delta",
         cli_value(phase.action_rate_huber_delta),
         "--action-magnitude-huber-delta",
@@ -1513,6 +1520,8 @@ def phase_command(
         command.extend(["--ppo-clipping-epsilon", cli_value(phase.ppo_clipping_epsilon)])
     if phase.ppo_max_grad_norm is not None:
         command.extend(["--ppo-max-grad-norm", cli_value(phase.ppo_max_grad_norm)])
+    if phase.command_progress_failure_enable:
+        command.append("--command-progress-failure-enable")
     if not phase.bridge:
         command.append("--disable-actuator-bridge")
     else:
@@ -1583,6 +1592,11 @@ def phase_payload(phase: Phase, command: list[str], output_root: Path) -> dict[s
         "command_progress_shortfall_scale": phase.command_progress_shortfall_scale,
         "command_progress_required_ratio": phase.command_progress_required_ratio,
         "command_progress_warmup_steps": phase.command_progress_warmup_steps,
+        "command_progress_failure_enable": phase.command_progress_failure_enable,
+        "command_progress_failure_min_ratio": phase.command_progress_failure_min_ratio,
+        "command_progress_failure_warmup_steps": (
+            phase.command_progress_failure_warmup_steps
+        ),
         "action_rate_huber_delta": phase.action_rate_huber_delta,
         "action_magnitude_huber_delta": phase.action_magnitude_huber_delta,
         "target_rate_huber_delta": phase.target_rate_huber_delta,
@@ -1730,6 +1744,10 @@ def write_plan(payload: dict[str, Any], output_md: Path, output_json: Path) -> N
                     "shortfall": phase["command_progress_shortfall_scale"],
                     "required_ratio": phase["command_progress_required_ratio"],
                     "warmup_steps": phase["command_progress_warmup_steps"],
+                    "failure": phase["command_progress_failure_enable"],
+                    "failure_min_ratio": phase[
+                        "command_progress_failure_min_ratio"
+                    ],
                 },
                 delay=phase["delay_ticks"],
                 tau=phase["tau_s"],

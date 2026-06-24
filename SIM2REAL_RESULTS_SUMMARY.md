@@ -1799,7 +1799,7 @@ V11 training reward override configuration.
 Next change should be mechanics-first:
 
 ```text
-1. add a command-progress failure or truncation after warmup
+1. use the default-off command-progress failure or truncation path after warmup
 2. evaluate reward terms under the same config used for training
 3. add a cheap per-phase freeze detector before later A100 phases
 4. only then launch another candidate recipe

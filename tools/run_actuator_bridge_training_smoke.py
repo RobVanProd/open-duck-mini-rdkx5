@@ -105,6 +105,12 @@ def build_command(args: argparse.Namespace, output_dir: Path) -> list[str]:
         "--command_progress_shortfall_scale": args.command_progress_shortfall_scale,
         "--command_progress_required_ratio": args.command_progress_required_ratio,
         "--command_progress_warmup_steps": args.command_progress_warmup_steps,
+        "--command_progress_failure_min_ratio": (
+            args.command_progress_failure_min_ratio
+        ),
+        "--command_progress_failure_warmup_steps": (
+            args.command_progress_failure_warmup_steps
+        ),
         "--action_rate_huber_delta": args.action_rate_huber_delta,
         "--action_magnitude_huber_delta": args.action_magnitude_huber_delta,
         "--target_rate_huber_delta": args.target_rate_huber_delta,
@@ -147,6 +153,8 @@ def build_command(args: argparse.Namespace, output_dir: Path) -> list[str]:
     }
     for flag, value in optional_runner_overrides.items():
         append_optional(command, flag, value)
+    if args.command_progress_failure_enable:
+        command.append("--command_progress_failure_enable")
     if not args.disable_actuator_bridge:
         command.append("--enable_actuator_bridge")
         command.extend(
@@ -287,6 +295,20 @@ def main() -> int:
     parser.add_argument("--command-progress-shortfall-scale", type=float, default=None)
     parser.add_argument("--command-progress-required-ratio", type=float, default=None)
     parser.add_argument("--command-progress-warmup-steps", type=int, default=None)
+    parser.add_argument(
+        "--command-progress-failure-enable",
+        action="store_true",
+        help=(
+            "Enable default-off termination for positive-command episodes that "
+            "remain below the command-progress floor after warmup."
+        ),
+    )
+    parser.add_argument(
+        "--command-progress-failure-min-ratio", type=float, default=None
+    )
+    parser.add_argument(
+        "--command-progress-failure-warmup-steps", type=int, default=None
+    )
     parser.add_argument("--action-rate-huber-delta", type=float, default=None)
     parser.add_argument("--action-magnitude-huber-delta", type=float, default=None)
     parser.add_argument("--target-rate-huber-delta", type=float, default=None)
@@ -373,6 +395,13 @@ def main() -> int:
             "command_progress_shortfall_scale": args.command_progress_shortfall_scale,
             "command_progress_required_ratio": args.command_progress_required_ratio,
             "command_progress_warmup_steps": args.command_progress_warmup_steps,
+            "command_progress_failure_enable": args.command_progress_failure_enable,
+            "command_progress_failure_min_ratio": (
+                args.command_progress_failure_min_ratio
+            ),
+            "command_progress_failure_warmup_steps": (
+                args.command_progress_failure_warmup_steps
+            ),
             "action_rate_huber_delta": args.action_rate_huber_delta,
             "action_magnitude_huber_delta": args.action_magnitude_huber_delta,
             "target_rate_huber_delta": args.target_rate_huber_delta,
