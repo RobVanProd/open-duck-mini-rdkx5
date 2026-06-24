@@ -2910,3 +2910,29 @@ Summary artifacts:
 outputs/analysis/V17_REWARD_SIGN_AND_LOW_COMMAND_AUDIT.md
 outputs/analysis/V17_PHASE1_REWARD_OVERRIDE_SEED_SWEEP_X004.md
 ```
+
+### V18 Low-Command Discovery Recipe
+
+The next offline recipe is `movement_bootstrap_v18`. It is a direct response to
+the V17 low-command audit:
+
+```text
+phase 1: x=0.035-0.045, no bridge, no restore
+phase gate: x=0.04, vanilla bridge, multi-seed
+goal: prove any coherent low-command forward motion before x=0.08
+```
+
+V18 intentionally does not restore from V5/V7/V9/V17 and does not begin with
+the actuator bridge. It tests only the discovery question that V17 failed:
+whether dense per-step signed progress and immediate wrong-direction pressure
+can produce low-command forward motion at the same command used for training.
+
+Do not interpret V18 at `x=0.08` until it first passes `x=0.04` across seeds.
+Robot validation remains blocked.
+
+Plan artifacts:
+
+```text
+outputs/analysis/STAGED_CURRICULUM_TRAINING_PLAN_V18.md
+outputs/analysis/staged_curriculum_training_plan_v18.json
+```

@@ -71,6 +71,11 @@ def parse_seed_text(value: str | None) -> list[int]:
     return deduped
 
 
+def command_label(command_x: float) -> str:
+    text = f"{command_x:+.3f}".replace("+", "p").replace("-", "m").replace(".", "p")
+    return f"x{text}"
+
+
 @dataclass(frozen=True)
 class Phase:
     name: str
@@ -130,6 +135,11 @@ class Phase:
     forward_pitch_rate_huber_delta: float = 0.0
     command_progress_shortfall_huber_delta: float = 0.0
     phase_gate_bridge_mode: str | None = None
+
+
+RECIPE_DEFAULT_PHASE_GATE_COMMAND_X = {
+    "movement_bootstrap_v18": 0.04,
+}
 
 
 SHORTFALL_V1_PHASES = [
@@ -2250,7 +2260,202 @@ MOVEMENT_BOOTSTRAP_V16_PHASES = [
 ]
 
 
+MOVEMENT_BOOTSTRAP_V18_PHASES = [
+    Phase(
+        name="phase1_x004_dense_progress_discovery",
+        purpose=(
+            "minimal low-command discovery after V17 failed even at x=0.04. "
+            "Train and gate on the same easy positive command, with no restore "
+            "and no actuator bridge, so the run answers only whether dense "
+            "signed-progress pressure can discover coherent forward motion."
+        ),
+        num_timesteps=260_000,
+        bridge=False,
+        delay=(0, 0),
+        tau_s=(0.0, 0.0),
+        velocity_limit_rad_s=(5.24, 5.24),
+        target_rate_scale=-0.0002,
+        actuator_tracking_scale=0.0,
+        tracking_lin_vel_scale=42.0,
+        tracking_sigma=0.0012,
+        forward_progress_scale=60.0,
+        forward_shortfall_scale=-120.0,
+        forward_shortfall_required_ratio=0.65,
+        action_rate_scale=-0.003,
+        action_magnitude_scale=-0.0005,
+        stand_still_scale=-1.0,
+        alive_scale=0.0,
+        imitation_scale=0.0,
+        lin_vel_x=(0.035, 0.045),
+        zero_command_probability=0.0,
+        forward_overshoot_scale=-3.0,
+        forward_overshoot_allowed_ratio=1.70,
+        forward_wrong_direction_scale=-120.0,
+        forward_wrong_direction_allowed_reverse_ratio=0.0,
+        orientation_scale=-0.035,
+        base_height_scale=-0.25,
+        forward_pitch_scale=-0.06,
+        forward_pitch_rate_scale=-0.006,
+        forward_contact_support_scale=-0.10,
+        forward_contact_support_no_contact_weight=1.0,
+        forward_contact_support_asymmetry_weight=0.02,
+        command_progress_scale=12.0,
+        command_progress_shortfall_scale=-80.0,
+        command_progress_required_ratio=0.60,
+        command_progress_warmup_steps=5,
+        command_progress_failure_scale=-160.0,
+        command_progress_failure_enable=True,
+        command_progress_failure_min_ratio=0.25,
+        command_progress_failure_warmup_steps=50,
+        reward_clip_min=-20.0,
+        reward_clip_max=10000.0,
+        action_rate_huber_delta=0.08,
+        action_magnitude_huber_delta=0.50,
+        target_rate_huber_delta=1.0,
+        actuator_tracking_huber_delta=0.08,
+        forward_shortfall_huber_delta=0.0,
+        forward_overshoot_huber_delta=0.50,
+        forward_wrong_direction_huber_delta=0.0,
+        forward_pitch_huber_delta=0.25,
+        forward_pitch_rate_huber_delta=1.0,
+        command_progress_shortfall_huber_delta=0.0,
+        ppo_learning_rate=1.5e-4,
+        ppo_entropy_cost=0.020,
+        ppo_clipping_epsilon=0.14,
+        ppo_max_grad_norm=0.80,
+        phase_gate_bridge_mode="vanilla",
+    ),
+    Phase(
+        name="phase2_x004_motion_cleanup",
+        purpose=(
+            "only run if phase 1 passes at x=0.04. Preserve low-command "
+            "forward motion while adding modest posture/contact cleanup, still "
+            "without actuator bridge or command expansion."
+        ),
+        num_timesteps=180_000,
+        bridge=False,
+        delay=(0, 0),
+        tau_s=(0.0, 0.0),
+        velocity_limit_rad_s=(5.24, 5.24),
+        target_rate_scale=-0.0004,
+        actuator_tracking_scale=0.0,
+        tracking_lin_vel_scale=40.0,
+        tracking_sigma=0.0012,
+        forward_progress_scale=48.0,
+        forward_shortfall_scale=-95.0,
+        forward_shortfall_required_ratio=0.60,
+        action_rate_scale=-0.005,
+        action_magnitude_scale=-0.0010,
+        stand_still_scale=-1.0,
+        alive_scale=0.0,
+        imitation_scale=0.0,
+        lin_vel_x=(0.035, 0.045),
+        zero_command_probability=0.0,
+        forward_overshoot_scale=-4.0,
+        forward_overshoot_allowed_ratio=1.55,
+        forward_wrong_direction_scale=-100.0,
+        forward_wrong_direction_allowed_reverse_ratio=0.0,
+        orientation_scale=-0.055,
+        base_height_scale=-0.40,
+        forward_pitch_scale=-0.09,
+        forward_pitch_rate_scale=-0.009,
+        forward_contact_support_scale=-0.18,
+        forward_contact_support_no_contact_weight=1.0,
+        forward_contact_support_asymmetry_weight=0.03,
+        command_progress_scale=12.0,
+        command_progress_shortfall_scale=-70.0,
+        command_progress_required_ratio=0.55,
+        command_progress_warmup_steps=5,
+        command_progress_failure_scale=-160.0,
+        command_progress_failure_enable=True,
+        command_progress_failure_min_ratio=0.25,
+        command_progress_failure_warmup_steps=55,
+        reward_clip_min=-20.0,
+        reward_clip_max=10000.0,
+        action_rate_huber_delta=0.08,
+        action_magnitude_huber_delta=0.50,
+        target_rate_huber_delta=1.0,
+        actuator_tracking_huber_delta=0.08,
+        forward_shortfall_huber_delta=0.0,
+        forward_overshoot_huber_delta=0.50,
+        forward_wrong_direction_huber_delta=0.0,
+        forward_pitch_huber_delta=0.25,
+        forward_pitch_rate_huber_delta=1.0,
+        command_progress_shortfall_huber_delta=0.0,
+        ppo_learning_rate=8.0e-5,
+        ppo_entropy_cost=0.010,
+        ppo_clipping_epsilon=0.10,
+        ppo_max_grad_norm=0.70,
+        phase_gate_bridge_mode="vanilla",
+    ),
+    Phase(
+        name="phase3_x004_mild_bridge_probe",
+        purpose=(
+            "only run if phase 2 passes. Add a mild actuator bridge at the "
+            "same x=0.04 command to test whether the discovered low-command "
+            "gait survives small delay/lag before any x=0.08 expansion."
+        ),
+        num_timesteps=180_000,
+        bridge=True,
+        delay=(1, 3),
+        tau_s=(0.03, 0.08),
+        velocity_limit_rad_s=(3.6, 4.7),
+        target_rate_scale=-0.0008,
+        actuator_tracking_scale=-0.04,
+        tracking_lin_vel_scale=38.0,
+        tracking_sigma=0.0014,
+        forward_progress_scale=42.0,
+        forward_shortfall_scale=-85.0,
+        forward_shortfall_required_ratio=0.55,
+        action_rate_scale=-0.007,
+        action_magnitude_scale=-0.0015,
+        stand_still_scale=-1.0,
+        alive_scale=0.0,
+        imitation_scale=0.0,
+        lin_vel_x=(0.035, 0.045),
+        zero_command_probability=0.0,
+        forward_overshoot_scale=-4.5,
+        forward_overshoot_allowed_ratio=1.50,
+        forward_wrong_direction_scale=-95.0,
+        forward_wrong_direction_allowed_reverse_ratio=0.0,
+        orientation_scale=-0.065,
+        base_height_scale=-0.50,
+        forward_pitch_scale=-0.11,
+        forward_pitch_rate_scale=-0.011,
+        forward_contact_support_scale=-0.22,
+        forward_contact_support_no_contact_weight=1.0,
+        forward_contact_support_asymmetry_weight=0.03,
+        command_progress_scale=10.0,
+        command_progress_shortfall_scale=-65.0,
+        command_progress_required_ratio=0.50,
+        command_progress_warmup_steps=5,
+        command_progress_failure_scale=-180.0,
+        command_progress_failure_enable=True,
+        command_progress_failure_min_ratio=0.22,
+        command_progress_failure_warmup_steps=60,
+        reward_clip_min=-20.0,
+        reward_clip_max=10000.0,
+        action_rate_huber_delta=0.08,
+        action_magnitude_huber_delta=0.50,
+        target_rate_huber_delta=1.0,
+        actuator_tracking_huber_delta=0.08,
+        forward_shortfall_huber_delta=0.0,
+        forward_overshoot_huber_delta=0.50,
+        forward_wrong_direction_huber_delta=0.0,
+        forward_pitch_huber_delta=0.25,
+        forward_pitch_rate_huber_delta=1.0,
+        command_progress_shortfall_huber_delta=0.0,
+        ppo_learning_rate=5.0e-5,
+        ppo_entropy_cost=0.006,
+        ppo_clipping_epsilon=0.08,
+        ppo_max_grad_norm=0.65,
+        phase_gate_bridge_mode="vanilla",
+    ),
+]
+
+
 RECIPES = {
+    "movement_bootstrap_v18": MOVEMENT_BOOTSTRAP_V18_PHASES,
     "movement_bootstrap_v17": MOVEMENT_BOOTSTRAP_V17_PHASES,
     "movement_bootstrap_v16": MOVEMENT_BOOTSTRAP_V16_PHASES,
     "movement_bootstrap_v15": MOVEMENT_BOOTSTRAP_V15_PHASES,
@@ -2553,6 +2758,18 @@ def phase_payload(phase: Phase, command: list[str], output_root: Path) -> dict[s
 
 
 def recipe_rationale(recipe: str) -> str:
+    if recipe == "movement_bootstrap_v18":
+        return (
+            "`movement_bootstrap_v18` follows the V17 reward/sign audit. V17 "
+            "used the intended reward config and a consistent local-forward "
+            "sign convention, but still failed at x=0.04, the easiest command "
+            "it trained on. V18 therefore stops treating x=0.08 as the first "
+            "target and runs a minimal x=0.04 discovery experiment: no restore, "
+            "no actuator bridge, dense per-step signed progress, immediate "
+            "wrong-direction pressure, and phase gates at the same low command "
+            "as training. Do not expand to x=0.08 until low-command motion "
+            "passes across seeds."
+        )
     if recipe == "movement_bootstrap_v17":
         return (
             "`movement_bootstrap_v17` is a structural break after V16 showed "
@@ -2779,8 +2996,8 @@ def write_plan(payload: dict[str, Any], output_md: Path, output_json: Path) -> N
             "  --output-dir outputs/analysis/<candidate>_gate_x0",
             "```",
             "",
-            "Then repeat with `--command-x 0.08`. Robot validation remains blocked until",
-            "both gates pass.",
+            f"Then repeat with `--command-x {cli_value(payload.get('phase_gate_command_x', 0.08))}`. "
+            "Robot validation remains blocked until both gates pass.",
             "",
         ]
     )
@@ -2802,7 +3019,8 @@ def run_phase_freeze_gate(
     phase_root: Path,
     phase_index: int,
 ) -> dict[str, Any]:
-    output_dir = phase_root / f"phase_{phase_index:02d}_freeze_gate_x008"
+    label = command_label(float(args.phase_gate_command_x))
+    output_dir = phase_root / f"phase_{phase_index:02d}_freeze_gate_{label}"
     bridge_mode = phase.phase_gate_bridge_mode or args.phase_gate_bridge_mode
     command = [
         str(Path(args.env_python)),
@@ -2906,7 +3124,8 @@ def run_phase_seed_gate(
     if not seeds:
         return run_phase_freeze_gate(args, phase, policy, phase_root, phase_index)
 
-    output_dir = phase_root / f"phase_{phase_index:02d}_seed_gate_x008"
+    label = command_label(float(args.phase_gate_command_x))
+    output_dir = phase_root / f"phase_{phase_index:02d}_seed_gate_{label}"
     output_md = output_dir / "PHASE_SEED_GATE.md"
     output_json = output_dir / "phase_seed_gate.json"
     bridge_mode = phase.phase_gate_bridge_mode or args.phase_gate_bridge_mode
@@ -3029,7 +3248,7 @@ def main() -> int:
     parser.add_argument(
         "--recipe",
         choices=sorted(RECIPES),
-        default="movement_bootstrap_v17",
+        default="movement_bootstrap_v18",
         help=(
             "Staged recipe to emit/run. shortfall_v1 preserves the June 23 A100 "
             "recipe that landed in standstill; movement_bootstrap_v2 preserves "
@@ -3058,7 +3277,9 @@ def main() -> int:
             "returns to the recovered V5 moving checkpoint and must be run with "
             "--initial-restore-checkpoint; movement_bootstrap_v17 is a fresh "
             "hard signed-progress structural break after V16 showed no usable "
-            "V5-anchor branch point. V17 is the current default."
+            "V5-anchor branch point; movement_bootstrap_v18 is a minimal "
+            "x=0.04 low-command discovery experiment after V17 failed even at "
+            "the easiest trained command. V18 is the current default."
         ),
     )
     parser.add_argument("--timesteps-scale", type=float, default=1.0)
@@ -3109,7 +3330,15 @@ def main() -> int:
             "progress failure. Default off."
         ),
     )
-    parser.add_argument("--phase-gate-command-x", type=float, default=0.08)
+    parser.add_argument(
+        "--phase-gate-command-x",
+        type=float,
+        default=None,
+        help=(
+            "Command x for phase gates. Defaults to a recipe-specific value "
+            "when available, otherwise 0.08."
+        ),
+    )
     parser.add_argument("--phase-gate-duration-s", type=float, default=5.0)
     parser.add_argument(
         "--phase-gate-bridge-mode",
@@ -3157,6 +3386,10 @@ def main() -> int:
     args = parser.parse_args()
     if args.stop_after_phase is not None and args.stop_after_phase < 1:
         raise SystemExit("--stop-after-phase must be >= 1")
+    if args.phase_gate_command_x is None:
+        args.phase_gate_command_x = RECIPE_DEFAULT_PHASE_GATE_COMMAND_X.get(
+            args.recipe, 0.08
+        )
     if (
         args.run
         and args.recipe == "movement_bootstrap_v16"
@@ -3183,6 +3416,7 @@ def main() -> int:
         "export_min_step": args.export_min_step,
         "stop_after_phase": args.stop_after_phase,
         "phase_gate_freeze_check": args.phase_gate_freeze_check,
+        "phase_gate_command_x": args.phase_gate_command_x,
         "phase_gate_seeds": args.phase_gate_seeds,
         "phase_gate_distribution_thresholds": {
             "max_fall_fraction": args.phase_gate_max_fall_fraction,

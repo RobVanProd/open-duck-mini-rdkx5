@@ -532,9 +532,14 @@ def build_remote_driver(
         if staged_initial_restore_checkpoint
         else ""
     )
+    staged_phase_gate_command_arg = (
+        f'"--phase-gate-command-x", "{cli_value(args.staged_phase_gate_command_x)}",'
+        if args.staged_phase_gate_command_x is not None
+        else ""
+    )
     staged_phase_gate_arg = (
         '"--phase-gate-freeze-check",'
-        f'"--phase-gate-command-x", "{cli_value(args.staged_phase_gate_command_x)}",'
+        f"{staged_phase_gate_command_arg}"
         f'"--phase-gate-duration-s", "{cli_value(args.staged_phase_gate_duration_s)}",'
         f'"--phase-gate-bridge-mode", "{args.staged_phase_gate_bridge_mode}",'
         f'"--phase-gate-platform", "{args.staged_phase_gate_platform}",'
@@ -1316,6 +1321,7 @@ def main() -> int:
     parser.add_argument(
         "--staged-recipe",
         choices=[
+            "movement_bootstrap_v18",
             "movement_bootstrap_v17",
             "movement_bootstrap_v16",
             "movement_bootstrap_v15",
@@ -1334,11 +1340,13 @@ def main() -> int:
             "movement_bootstrap_v2",
             "shortfall_v1",
         ],
-        default="movement_bootstrap_v17",
+        default="movement_bootstrap_v18",
         help=(
             "Recipe passed to tools/plan_staged_curriculum_training.py for "
             "--workflow staged-curriculum. The current default is "
-            "movement_bootstrap_v17, a fresh hard signed-progress structural "
+            "movement_bootstrap_v18, a minimal x=0.04 low-command discovery "
+            "experiment after V17 failed even at the easiest trained command. "
+            "movement_bootstrap_v17 is a fresh hard signed-progress structural "
             "break after V16 showed no usable V5-anchor branch point. "
             "movement_bootstrap_v16 returns to the recovered V5 moving "
             "checkpoint and should be run with --staged-initial-restore-checkpoint. "
@@ -1395,7 +1403,7 @@ def main() -> int:
             "low forward progress. Enabled by default for staged workflows."
         ),
     )
-    parser.add_argument("--staged-phase-gate-command-x", type=float, default=0.08)
+    parser.add_argument("--staged-phase-gate-command-x", type=float, default=None)
     parser.add_argument("--staged-phase-gate-duration-s", type=float, default=5.0)
     parser.add_argument(
         "--staged-phase-gate-bridge-mode",

@@ -2087,3 +2087,46 @@ Next recipe should be designed as a minimal low-command discovery experiment:
 
 Summary artifact:
 `outputs/analysis/V17_REWARD_SIGN_AND_LOW_COMMAND_AUDIT.md`.
+
+### V18 Minimal Low-Command Discovery
+
+The next staged recipe is `movement_bootstrap_v18`.
+
+Purpose:
+
+```text
+Answer the smallest remaining discovery question:
+can the policy learn coherent forward motion at x=0.04 at all?
+```
+
+Phase-1 constraints:
+
+```text
+restore: none
+bridge: disabled
+training command range: x=0.035-0.045
+phase gate command: x=0.04
+phase gate bridge: vanilla
+zero command probability: 0
+alive/imitation rewards: 0
+```
+
+Reward intent:
+
+```text
+dense per-step signed progress
+immediate wrong-direction pressure
+reduced posture/contact shaping compared with V17
+delayed command-progress failure retained only as a backstop
+```
+
+Stop rule:
+
+```text
+If V18 phase 1 fails x=0.04 across seeds, do not run phase 2.
+Do not test x=0.08 until x=0.04 passes.
+Do not add actuator bridge until low-command motion exists.
+```
+
+Plan artifact:
+`outputs/analysis/STAGED_CURRICULUM_TRAINING_PLAN_V18.md`.
