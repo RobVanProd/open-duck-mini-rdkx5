@@ -255,8 +255,23 @@ Interpretation: the A100 training infrastructure is usable for full phase runs,
 but this V15 phase-1 recipe learned a quiet standstill. Do not run V15 phases 2
 or 3 from this checkpoint.
 
+An eight-seed local CPU sweep of the recovered phase-1 ONNX confirmed the hold:
+
+```text
+falls: 3 / 8
+duration_complete low-progress runs: 5 / 8
+track_ratio_mean: -0.7433
+vx_mean: -0.0595 m/s
+```
+
+So the V15 phase-1 output should be treated as a freeze/reverse/collapse
+distribution rather than a single unlucky seed.
+
 Summary artifact:
 `outputs/analysis/A100_V15_PHASE1_HOLD_SUMMARY.md`.
+
+Seed sweep artifact:
+`outputs/analysis/V15_PHASE1_SEED_SWEEP_VALID.md`.
 
 ## Related Upstream Notes
 

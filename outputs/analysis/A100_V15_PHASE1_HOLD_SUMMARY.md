@@ -78,6 +78,39 @@ forward tracking: effectively zero
 This means the current no-bridge high-entropy discovery recipe still falls into
 the standstill basin. Do not run phases 2 or 3 from this checkpoint.
 
+## Eight-Seed Check
+
+The recovered phase-1 ONNX was also evaluated locally on CPU across seeds `0-7`
+with the same vanilla `x=0.08`, 5-second gate.
+
+```text
+runs: 8
+falls: 3
+duration_complete: 5
+samples_mean: 170.125
+samples_min: 33
+samples_max: 250
+track_ratio_mean: -0.7433
+vx_mean: -0.0595 m/s
+body_pitch_p95_mean: 0.0520 rad
+base_height_min_mean: 0.1224 m
+```
+
+The completed seeds mostly froze or drifted slightly backward. The failed seeds
+fell early with reverse or support-collapse behavior:
+
+```text
+seed 1: fall at 33 samples, vx -0.1037 m/s, track_ratio -1.2957
+seed 5: fall at 44 samples, vx -0.3632 m/s, track_ratio -4.5403
+seed 7: fall at 34 samples, vx -0.0094 m/s, track_ratio -0.1175
+```
+
+This strengthens the conclusion: V15 phase 1 is not a useful gait-discovery
+anchor. It is a freeze/reverse/collapse policy distribution.
+
+Seed sweep artifact:
+`outputs/analysis/V15_PHASE1_SEED_SWEEP_VALID.md`.
+
 ## Artifact Notes
 
 The workflow exit bundle originally missed staged phase outputs after the phase

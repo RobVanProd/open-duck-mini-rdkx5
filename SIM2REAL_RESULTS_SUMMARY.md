@@ -2491,6 +2491,23 @@ Interpretation: A100 is now validated for substantial phase execution, but V15
 phase 1 still falls into the standstill basin. The checkpoint is not suitable
 for V15 phase 2/3 transfer or robot validation.
 
+An eight-seed local CPU sweep of the recovered V15 phase-1 ONNX confirmed that
+the seed-0 gate was not a fluke:
+
+```text
+seeds: 0-7
+bridge_mode: vanilla
+duration: 5 s
+falls: 3 / 8
+duration_complete low-progress runs: 5 / 8
+track_ratio_mean: -0.7433
+vx_mean: -0.0595 m/s
+samples_mean: 170.125
+```
+
+Interpretation: V15 phase 1 is a freeze/reverse/collapse distribution, not a
+useful gait-discovery anchor.
+
 The run exposed an artifact hygiene bug: staged phase outputs were not copied
 into the exit bundle when the phase gate raised `HOLD_PHASE_FREEZE_OR_LOW_PROGRESS`.
 The Colab workflow now copies staged smoke outputs and phase-gate summaries
@@ -2498,3 +2515,6 @@ during `atexit` bundling, including failure exits.
 
 Summary artifact:
 `outputs/analysis/A100_V15_PHASE1_HOLD_SUMMARY.md`.
+
+Seed sweep artifact:
+`outputs/analysis/V15_PHASE1_SEED_SWEEP_VALID.md`.
