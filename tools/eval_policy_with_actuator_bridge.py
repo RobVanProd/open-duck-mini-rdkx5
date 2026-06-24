@@ -465,6 +465,34 @@ def run_telemetry_replay(args, fit: dict) -> dict:
     }
 
 
+def resolve_jax_platforms(jax_platform: str | None, jax_platforms: str | None) -> str | None:
+    if jax_platforms:
+        return str(jax_platforms)
+    if jax_platform == "cpu":
+        return "cpu"
+    return None
+
+
+def build_jax_env(jax_platform: str | None, jax_platforms: str | None) -> dict[str, str] | None:
+    resolved_platforms = resolve_jax_platforms(jax_platform, jax_platforms)
+    if not jax_platform and not resolved_platforms:
+        return None
+    env = os.environ.copy()
+    if jax_platform:
+        env["JAX_PLATFORM_NAME"] = str(jax_platform)
+    if resolved_platforms:
+        env["JAX_PLATFORMS"] = resolved_platforms
+    return env
+
+
+def apply_jax_platform_env(jax_platform: str | None, jax_platforms: str | None) -> None:
+    resolved_platforms = resolve_jax_platforms(jax_platform, jax_platforms)
+    if jax_platform:
+        os.environ["JAX_PLATFORM_NAME"] = str(jax_platform)
+    if resolved_platforms:
+        os.environ["JAX_PLATFORMS"] = resolved_platforms
+
+
 def run_closed_loop_worker(args) -> dict:
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -540,6 +568,8 @@ def run_closed_loop_worker(args) -> dict:
         cmd.extend(["--trace-jsonl", str(args.trace_jsonl)])
     if args.jax_platform:
         cmd.extend(["--jax-platform", str(args.jax_platform)])
+    if args.jax_platforms:
+        cmd.extend(["--jax-platforms", str(args.jax_platforms)])
     if args.max_motor_velocity_override_rad_s is not None:
         cmd.extend(
             [
@@ -549,10 +579,7 @@ def run_closed_loop_worker(args) -> dict:
         )
     if args.inspect_policy_io:
         cmd.append("--inspect-policy-io")
-    env = None
-    if args.jax_platform:
-        env = os.environ.copy()
-        env["JAX_PLATFORM_NAME"] = str(args.jax_platform)
+    env = build_jax_env(args.jax_platform, args.jax_platforms)
     try:
         result = subprocess.run(
             cmd,
@@ -1003,6 +1030,16 @@ def main() -> int:
         ),
     )
     parser.add_argument(
+        "--jax-platforms",
+        default=None,
+        help=(
+            "Optional JAX_PLATFORMS override for closed-loop worker subprocesses. "
+            "When omitted, `--jax-platform cpu` automatically uses "
+            "`JAX_PLATFORMS=cpu` so local CPU gates do not probe a broken GPU "
+            "backend."
+        ),
+    )
+    parser.add_argument(
         "--mjx-step-loop-mode",
         choices=["default", "scan", "python", "python_block_each"],
         default="default",
@@ -1098,8 +1135,7 @@ def main() -> int:
         help=argparse.SUPPRESS,
     )
     args = parser.parse_args()
-    if args.jax_platform:
-        os.environ["JAX_PLATFORM_NAME"] = str(args.jax_platform)
+    apply_jax_platform_env(args.jax_platform, args.jax_platforms)
 
     policy_path = Path(args.policy).expanduser().resolve()
     fit_path = Path(args.fit_json).expanduser().resolve()

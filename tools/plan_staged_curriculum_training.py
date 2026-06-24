@@ -2390,6 +2390,8 @@ def run_phase_freeze_gate(
         "--output-dir",
         str(output_dir),
     ]
+    if args.phase_gate_jax_platforms:
+        command.extend(["--jax-platforms", args.phase_gate_jax_platforms])
     print(">>>", shell_join(command), flush=True)
     completed = subprocess.run(
         command,
@@ -2552,6 +2554,15 @@ def main() -> int:
         default="fitted",
     )
     parser.add_argument("--phase-gate-platform", choices=["cpu", "gpu"], default="cpu")
+    parser.add_argument(
+        "--phase-gate-jax-platforms",
+        default=None,
+        help=(
+            "Optional JAX_PLATFORMS override for phase candidate gates. "
+            "Usually unnecessary for CPU gates because the evaluator infers "
+            "JAX_PLATFORMS=cpu from --phase-gate-platform cpu."
+        ),
+    )
     parser.add_argument("--phase-gate-timeout-s", type=int, default=900)
     args = parser.parse_args()
     if args.stop_after_phase is not None and args.stop_after_phase < 1:

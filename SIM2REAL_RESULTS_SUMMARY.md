@@ -2235,3 +2235,27 @@ a stable backend while treating Colab GPU as a separate runtime issue.
 
 Summary artifact:
 `outputs/analysis/L4_CUDA_TRAINING_SMOKE_NO_SENTINEL_SUMMARY.md`.
+
+### Local CPU Candidate Gate Platform Fix
+
+The V15 local CPU smoke produced a tiny phase-1 ONNX, but its first candidate
+gate originally failed before evaluation because the closed-loop evaluator only
+set `JAX_PLATFORM_NAME=cpu`; JAX still probed the installed ROCm plugin. The
+evaluator now also constrains `JAX_PLATFORMS=cpu` when `--jax-platform cpu` is
+requested, and staged phase gates can pass an explicit `--phase-gate-jax-platforms`.
+
+Rerunning the existing V15 smoke checkpoint gate completed on CPU:
+
+```text
+jax: cpu ['TFRT_CPU_0']
+overall_status: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
+mean_local_vx: -0.0083 m/s
+track_ratio: -0.1033
+worker_returncode: 0
+```
+
+Interpretation: local CPU gate plumbing is now usable. The tiny 320-step V15
+smoke candidate is still only a plumbing artifact and is not a robot candidate.
+
+Summary artifact:
+`outputs/analysis/LOCAL_V15_CPU_GATE_AFTER_JAX_PLATFORMS_FIX_SUMMARY.md`.

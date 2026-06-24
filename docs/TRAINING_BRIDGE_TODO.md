@@ -1774,3 +1774,32 @@ and treat Colab GPU as a separate infrastructure issue.
 
 Summary artifact:
 `outputs/analysis/L4_CUDA_TRAINING_SMOKE_NO_SENTINEL_SUMMARY.md`.
+
+### Local CPU Candidate Gate Fix
+
+The closed-loop candidate evaluator now maps `--jax-platform cpu` to both:
+
+```text
+JAX_PLATFORM_NAME=cpu
+JAX_PLATFORMS=cpu
+```
+
+This prevents local CPU candidate gates from probing the blocked ROCm backend.
+The staged planner also accepts `--phase-gate-jax-platforms` for explicit gate
+overrides when needed.
+
+Rerunning the V15 local CPU smoke checkpoint gate now reaches the real policy
+verdict:
+
+```text
+status: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
+jax: cpu ['TFRT_CPU_0']
+mean_local_vx: -0.0083 m/s
+track_ratio: -0.1033
+```
+
+Next training task: use this fixed local gate path for short recipe debugging
+or full CPU checks while Colab GPU remains a separate runtime issue.
+
+Summary artifact:
+`outputs/analysis/LOCAL_V15_CPU_GATE_AFTER_JAX_PLATFORMS_FIX_SUMMARY.md`.
