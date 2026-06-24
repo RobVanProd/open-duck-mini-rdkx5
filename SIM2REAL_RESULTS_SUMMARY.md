@@ -2599,3 +2599,28 @@ V16 phases:
 The intended A100 launch must keep the multi-seed phase gate enabled. A phase
 only promotes if its seed distribution has no falls and maintains positive
 forward tracking. Robot validation remains blocked.
+
+### A100 V16 Phase-1 No-Sentinel Hold
+
+The first V16 phase-1 A100 launch restored the V5 trainable checkpoint and
+reached PPO startup, but did not produce a final manifest, ONNX, exit sentinel,
+or artifact bundle.
+
+Confirmed partial output:
+
+```text
+Observation size: 101
+STEP: 0 reward: -52.476234436035156 reward_std: 93.70592498779297
+Skipping checkpoint/export at step 0; export_min_step=1
+```
+
+Interpretation: this is an A100/Colab workflow hold, not a V16 recipe verdict.
+The session state became ambiguous, so the A100 session was terminated to avoid
+overlapping orphaned jobs. No robot work was performed.
+
+Summary artifact:
+`outputs/analysis/A100_V16_PHASE1_NO_SENTINEL_SUMMARY.md`.
+
+Follow-up workflow fix: foreground Colab jobs now write a remote PID file, and
+the poller checks that PID before treating an idle/no-sentinel session as lost.
+This prevents starting a second job over a still-running raw-console process.

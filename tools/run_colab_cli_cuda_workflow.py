@@ -137,6 +137,67 @@ def colab_status_is_idle(status_text: str) -> bool:
     return "idle" in status_text.lower()
 
 
+def remote_process_is_running(session: str, remote_pid: str, run_dir: Path) -> bool | None:
+    """Return remote PID liveness when a PID file is available.
+
+    `None` means the PID could not be checked. This intentionally probes the
+    remote process table instead of trusting only Colab's session status, which
+    can report idle while a raw-console shell job is still alive.
+    """
+
+    if not colab_file_exists(session, remote_pid):
+        return None
+    local_pid = run_dir / "remote_workflow.pid"
+    downloaded = subprocess.run(
+        ["colab", "download", "-s", session, remote_pid, str(local_pid)],
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        timeout=20,
+        check=False,
+    )
+    if downloaded.returncode != 0 or not local_pid.exists():
+        return None
+    try:
+        pid = int(local_pid.read_text().strip())
+    except ValueError:
+        return None
+    probe = run_dir / "remote_pid_probe.py"
+    probe.write_text(
+        "\n".join(
+            [
+                "import os",
+                f"pid = {pid}",
+                "try:",
+                "    os.kill(pid, 0)",
+                "except ProcessLookupError:",
+                "    print('NOT_RUNNING')",
+                "except PermissionError:",
+                "    print('RUNNING')",
+                "else:",
+                "    print('RUNNING')",
+            ]
+        )
+        + "\n"
+    )
+    checked = subprocess.run(
+        ["colab", "exec", "-s", session, "--file", str(probe), "--timeout", "15"],
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        timeout=25,
+        check=False,
+    )
+    if checked.returncode != 0:
+        return None
+    output = checked.stdout or ""
+    if "RUNNING" in output:
+        return True
+    if "NOT_RUNNING" in output:
+        return False
+    return None
+
+
 def remote_output_dir_for_bundle(remote_bundle: str) -> str:
     name = Path(remote_bundle).name
     if name.endswith("_artifacts.tar.gz"):
@@ -301,7 +362,9 @@ def start_remote_job(
             console_script,
             f"""
             set -uo pipefail
-            /usr/bin/python3 {remote_driver} > {remote_log} 2>&1
+            /usr/bin/python3 {remote_driver} > {remote_log} 2>&1 &
+            echo $! > {remote_pid}
+            wait $(cat {remote_pid})
             status=$?
             echo $status > {remote_exit}
             echo COLAB_CLI_WORKFLOW_EXIT $status
@@ -1026,7 +1089,14 @@ def poll_remote(
                 print(f"PARTIAL_ARTIFACT {partial_dest} size={partial_dest.stat().st_size}", flush=True)
         last_status = colab_status_text(session)
         remote_is_idle = colab_status_is_idle(last_status)
-        if remote_is_idle and not colab_file_exists(session, remote_exit):
+        remote_running = (
+            remote_process_is_running(session, remote_pid, run_dir)
+            if remote_is_idle and not colab_file_exists(session, remote_exit)
+            else None
+        )
+        if remote_is_idle and remote_running:
+            idle_no_exit_polls = 0
+        elif remote_is_idle and not colab_file_exists(session, remote_exit):
             idle_no_exit_polls += 1
         else:
             idle_no_exit_polls = 0
@@ -1053,6 +1123,7 @@ def poll_remote(
                 "unchanged_log_polls": unchanged_log_polls,
                 "idle_no_exit_polls": idle_no_exit_polls,
                 "idle_no_sentinel_polls_limit": idle_no_sentinel_polls_limit,
+                "remote_process_running": remote_running,
                 "poll_interval_s": interval_s,
                 "local_live_log": str(log_dest),
                 "colab_status": last_status,
@@ -1083,6 +1154,7 @@ def poll_remote(
                         f"- unchanged_log_polls: `{unchanged_log_polls}`",
                         f"- idle_no_exit_polls: `{idle_no_exit_polls}`",
                         f"- idle_no_sentinel_polls_limit: `{idle_no_sentinel_polls_limit}`",
+                        f"- remote_process_running: `{remote_running}`",
                         f"- poll_interval_s: `{interval_s}`",
                         "",
                         "The Colab session reported idle while the workflow "

@@ -1897,3 +1897,9 @@ python3 tools/run_colab_cli_cuda_workflow.py \
 Do not treat a fall-count improvement as sufficient. V16 must improve the
 multi-seed distribution while preserving positive mean forward velocity and
 command tracking.
+
+The first V16 A100 phase-1 attempt reached step 0 but produced no exit sentinel
+or artifact bundle. Treat it as `HOLD_A100_V16_PHASE1_NO_SENTINEL`, not as a
+policy result. Before relaunching, improve the Colab workflow so it detects an
+alive remote process without a sentinel and does not start a second job in the
+same session.
