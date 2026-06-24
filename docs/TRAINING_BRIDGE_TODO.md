@@ -1400,3 +1400,38 @@ Do not run robot validation. Do not launch a follow-on phase if the phase gate
 freezes, falls, reverses, or fails the forward-progress gate.
 
 Plan artifact: `outputs/analysis/MOVEMENT_BOOTSTRAP_V14_TRAINING_PLAN.md`.
+
+### V14 A100 Phase-1 Partial
+
+V14 phase 1 was launched on an A100 as a phase-1-only offline run. The remote
+job reached step `102400`, exported an ONNX, then disappeared without writing
+the workflow exit sentinel or final artifact bundle. The partial ONNX and
+stdout/stderr were recovered manually.
+
+Recovered checkpoint:
+
+```text
+outputs/analysis/movement_bootstrap_v14_a100_phase1_partial/2026_06_24_064318_102400.onnx
+sha256: fe265e85d0d2e6f8b3d4c2f4b85550adcca6fd56232778be34c1a4634f273161
+```
+
+CPU gate on `x=0.08`, fitted bridge, V14 phase-1 reward overrides:
+
+```text
+status: HOLD_CANDIDATE_FALL_OR_TERMINATION
+samples: 120
+termination: fall_or_nan
+mean local vx: 0.0014 m/s
+forward_tracking_ratio: 0.0181
+reward_mean: -0.1850
+max_sent_target_velocity_p95_rad_s: 0.2466
+diagnostic/command_progress_failure max: 1.0
+```
+
+Interpretation: this is not a complete V14 verdict, but the recovered partial
+checkpoint is still low-motion and should not be used as a restore anchor. Before
+another A100 run, either fix the Colab no-sentinel failure handling or make a
+more structural discovery change.
+
+Summary artifact:
+`outputs/analysis/MOVEMENT_BOOTSTRAP_V14_A100_PHASE1_PARTIAL_SUMMARY.md`.

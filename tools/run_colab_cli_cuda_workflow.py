@@ -103,6 +103,24 @@ def colab_file_exists(session: str, remote_path: str) -> bool:
     return completed.returncode == 0
 
 
+def colab_status_text(session: str) -> str:
+    completed = subprocess.run(
+        ["colab", "status", "-s", session],
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        check=False,
+    )
+    return completed.stdout or ""
+
+
+def colab_status_is_idle(status_text: str) -> bool:
+    for line in status_text.splitlines():
+        if "status" in line.lower() and "idle" in line.lower():
+            return True
+    return False
+
+
 def write_console_script(path: Path, remote_script: str) -> None:
     path.write_text(remote_script.strip() + "\nexit\n")
 
@@ -216,7 +234,16 @@ def start_remote_job(
     if args.no_poll:
         print(f"Remote job started. Bundle will be {remote_bundle}", flush=True)
         return
-    poll_remote(args.session, run_dir, remote_log, remote_exit, remote_bundle, args.poll_interval_s, args.timeout_s)
+    poll_remote(
+        args.session,
+        run_dir,
+        remote_log,
+        remote_exit,
+        remote_bundle,
+        remote_pid,
+        args.poll_interval_s,
+        args.timeout_s,
+    )
 
 
 def build_remote_driver(
@@ -767,13 +794,25 @@ def build_remote_driver(
     ).strip() + "\n"
 
 
-def poll_remote(session: str, run_dir: Path, remote_log: str, remote_exit: str, remote_bundle: str, interval_s: int, timeout_s: int) -> None:
+def poll_remote(
+    session: str,
+    run_dir: Path,
+    remote_log: str,
+    remote_exit: str,
+    remote_bundle: str,
+    remote_pid: str,
+    interval_s: int,
+    timeout_s: int,
+) -> None:
     deadline = time.time() + timeout_s
+    last_log_size: int | None = None
+    unchanged_log_polls = 0
+    last_status = ""
     while time.time() < deadline:
         if colab_file_exists(session, remote_exit):
             break
+        log_dest = run_dir / "remote_live.log"
         if colab_file_exists(session, remote_log):
-            log_dest = run_dir / "remote_live.log"
             subprocess.run(
                 ["colab", "download", "-s", session, remote_log, str(log_dest)],
                 check=False,
@@ -782,6 +821,12 @@ def poll_remote(session: str, run_dir: Path, remote_log: str, remote_exit: str, 
                 stderr=subprocess.STDOUT,
             )
             if log_dest.exists():
+                log_size = log_dest.stat().st_size
+                if last_log_size == log_size:
+                    unchanged_log_polls += 1
+                else:
+                    unchanged_log_polls = 0
+                    last_log_size = log_size
                 lines = log_dest.read_text(errors="replace").splitlines()
                 print("\n".join(lines[-12:]), flush=True)
         if colab_file_exists(session, remote_bundle):
@@ -795,8 +840,76 @@ def poll_remote(session: str, run_dir: Path, remote_log: str, remote_exit: str, 
             )
             if partial_dest.exists():
                 print(f"PARTIAL_ARTIFACT {partial_dest} size={partial_dest.stat().st_size}", flush=True)
+        last_status = colab_status_text(session)
+        if (
+            unchanged_log_polls >= 3
+            and colab_status_is_idle(last_status)
+            and not colab_file_exists(session, remote_exit)
+        ):
+            evidence = {
+                "status": "HOLD_REMOTE_NO_SENTINEL",
+                "session": session,
+                "remote_log": remote_log,
+                "remote_exit": remote_exit,
+                "remote_pid": remote_pid,
+                "remote_bundle": remote_bundle,
+                "unchanged_log_polls": unchanged_log_polls,
+                "poll_interval_s": interval_s,
+                "local_live_log": str(log_dest),
+                "colab_status": last_status,
+                "interpretation": (
+                    "The Colab session reported idle while the workflow exit "
+                    "sentinel was missing and the remote log stopped growing. "
+                    "Treat the run as incomplete and inspect/download any "
+                    "partial artifacts manually before reusing checkpoints."
+                ),
+            }
+            (run_dir / "REMOTE_NO_SENTINEL.json").write_text(
+                json.dumps(evidence, indent=2, sort_keys=True) + "\n"
+            )
+            (run_dir / "REMOTE_NO_SENTINEL.md").write_text(
+                "\n".join(
+                    [
+                        "# Remote Colab Workflow Lost Sentinel",
+                        "",
+                        "status: `HOLD_REMOTE_NO_SENTINEL`",
+                        "",
+                        f"- session: `{session}`",
+                        f"- remote_log: `{remote_log}`",
+                        f"- remote_exit: `{remote_exit}`",
+                        f"- remote_pid: `{remote_pid}`",
+                        f"- remote_bundle: `{remote_bundle}`",
+                        f"- unchanged_log_polls: `{unchanged_log_polls}`",
+                        f"- poll_interval_s: `{interval_s}`",
+                        "",
+                        "The Colab session reported idle while the workflow "
+                        "exit sentinel was missing and the downloaded remote "
+                        "log stopped growing. This means the remote job should "
+                        "be treated as incomplete, even if partial checkpoints "
+                        "or logs exist.",
+                        "",
+                        "Do not promote partial checkpoints without an "
+                        "explicit local gate and evidence summary.",
+                        "",
+                    ]
+                )
+            )
+            raise SystemExit("HOLD_REMOTE_NO_SENTINEL: Colab workflow disappeared without exit sentinel")
         time.sleep(interval_s)
     else:
+        timeout_evidence = {
+            "status": "HOLD_REMOTE_TIMEOUT",
+            "session": session,
+            "remote_log": remote_log,
+            "remote_exit": remote_exit,
+            "remote_pid": remote_pid,
+            "remote_bundle": remote_bundle,
+            "timeout_s": timeout_s,
+            "last_colab_status": last_status,
+        }
+        (run_dir / "REMOTE_TIMEOUT.json").write_text(
+            json.dumps(timeout_evidence, indent=2, sort_keys=True) + "\n"
+        )
         raise SystemExit(f"Timed out waiting for {remote_exit}")
 
     run(["colab", "download", "-s", session, remote_exit, str(run_dir / Path(remote_exit).name)])

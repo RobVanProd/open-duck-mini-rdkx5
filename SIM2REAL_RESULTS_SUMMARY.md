@@ -1967,3 +1967,30 @@ known-bad V13 path. Training is still manual/explicit; the generated plan is a
 dry run unless launched with `--run` or through the Colab workflow.
 
 Plan artifact: `outputs/analysis/MOVEMENT_BOOTSTRAP_V14_TRAINING_PLAN.md`.
+
+### V14 A100 Phase-1 Partial
+
+V14 phase 1 was launched on an A100 as an offline phase-1-only run. The run
+reached a step-102400 checkpoint/export, then the detached Colab process
+disappeared without writing the workflow exit sentinel or artifact bundle.
+Partial stdout/stderr and the step-102400 ONNX were recovered manually.
+
+The recovered checkpoint is not useful as a motion anchor:
+
+```text
+status: HOLD_CANDIDATE_FALL_OR_TERMINATION
+samples: 120
+termination: fall_or_nan
+mean local vx: 0.0014 m/s
+forward_tracking_ratio: 0.0181
+reward_mean: -0.1850
+max_sent_target_velocity_p95_rad_s: 0.2466
+diagnostic/command_progress_failure max: 1.0
+```
+
+This is a partial result, not a complete V14 phase-1 verdict. It does show that
+the available step-102400 checkpoint is still in the low-motion basin. Do not
+use it on the robot or as a restore anchor.
+
+Summary artifact:
+`outputs/analysis/MOVEMENT_BOOTSTRAP_V14_A100_PHASE1_PARTIAL_SUMMARY.md`.
