@@ -2570,3 +2570,32 @@ multi-seed sweeps exposed freeze, reverse, collapse, and lunge regimes.
 Single-rollout gates remain available by passing an empty seed list, but future
 substantial A100 staged runs should use the multi-seed gate unless there is a
 specific reason to run a cheap exploratory check.
+
+### Movement Bootstrap V16 Plan
+
+V16 is the next offline recipe and is now the staged-curriculum default, but it
+is not a fresh PPO discovery run. It must restore the recovered V5 trainable
+checkpoint:
+
+```text
+policy/candidates/movement_bootstrap_v5_phase1_trainable_recovery_20260623/checkpoint_2026_06_23_205634_368640
+```
+
+Reasoning:
+
+```text
+V15 fresh/no-bridge discovery: stable but mostly standstill/reverse/collapse
+V5 recovery: unstable, but still the only preserved anchor with forward-motion seeds
+```
+
+V16 phases:
+
+```text
+1. mild-bridge consistency repair from V5
+2. fitted-bridge consistency transfer
+3. fitted-bridge low-step margin consolidation
+```
+
+The intended A100 launch must keep the multi-seed phase gate enabled. A phase
+only promotes if its seed distribution has no falls and maintains positive
+forward tracking. Robot validation remains blocked.

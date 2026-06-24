@@ -1857,7 +1857,204 @@ MOVEMENT_BOOTSTRAP_V15_PHASES = [
 ]
 
 
+MOVEMENT_BOOTSTRAP_V16_PHASES = [
+    Phase(
+        name="phase1_v5_anchor_mild_bridge_consistency",
+        purpose=(
+            "continue from the recovered V5 moving checkpoint and repair the "
+            "multi-seed lunge/reverse/collapse/freeze split without letting "
+            "the objective collapse into standstill. This phase keeps a mild "
+            "bridge and strong imitation so the gait shape survives while "
+            "wrong-direction, support, and pitch costs reduce fragility."
+        ),
+        num_timesteps=120_000,
+        bridge=True,
+        delay=(1, 3),
+        tau_s=(0.03, 0.08),
+        velocity_limit_rad_s=(3.6, 4.7),
+        target_rate_scale=-0.0012,
+        actuator_tracking_scale=-0.10,
+        tracking_lin_vel_scale=32.0,
+        tracking_sigma=0.0012,
+        forward_progress_scale=9.0,
+        forward_shortfall_scale=-8.0,
+        forward_shortfall_required_ratio=0.35,
+        action_rate_scale=-0.014,
+        action_magnitude_scale=-0.0035,
+        stand_still_scale=-1.0,
+        alive_scale=0.04,
+        imitation_scale=0.55,
+        lin_vel_x=(0.04, 0.08),
+        zero_command_probability=0.0,
+        forward_overshoot_scale=-1.0,
+        forward_overshoot_allowed_ratio=1.75,
+        forward_wrong_direction_scale=-8.0,
+        forward_wrong_direction_allowed_reverse_ratio=0.02,
+        orientation_scale=-0.05,
+        base_height_scale=-0.45,
+        forward_pitch_scale=-0.08,
+        forward_pitch_rate_scale=-0.008,
+        forward_contact_support_scale=-0.25,
+        forward_contact_support_no_contact_weight=1.0,
+        forward_contact_support_asymmetry_weight=0.04,
+        command_progress_scale=11.0,
+        command_progress_shortfall_scale=-12.0,
+        command_progress_required_ratio=0.35,
+        command_progress_warmup_steps=25,
+        command_progress_failure_scale=-80.0,
+        command_progress_failure_enable=True,
+        command_progress_failure_min_ratio=0.20,
+        command_progress_failure_warmup_steps=90,
+        reward_clip_min=-10.0,
+        reward_clip_max=10000.0,
+        action_rate_huber_delta=0.08,
+        action_magnitude_huber_delta=0.50,
+        target_rate_huber_delta=1.0,
+        actuator_tracking_huber_delta=0.08,
+        forward_shortfall_huber_delta=0.35,
+        forward_overshoot_huber_delta=0.50,
+        forward_wrong_direction_huber_delta=0.0,
+        forward_pitch_huber_delta=0.25,
+        forward_pitch_rate_huber_delta=1.0,
+        command_progress_shortfall_huber_delta=0.35,
+        ppo_learning_rate=2.0e-5,
+        ppo_entropy_cost=0.004,
+        ppo_clipping_epsilon=0.025,
+        ppo_max_grad_norm=0.45,
+        phase_gate_bridge_mode="vanilla",
+    ),
+    Phase(
+        name="phase2_v5_anchor_fitted_bridge_consistency",
+        purpose=(
+            "transfer the repaired V5-anchor behavior into the fitted actuator "
+            "envelope while keeping the same multi-seed consistency objective. "
+            "This phase should fail fast if the gait survives only in the "
+            "relaxed mild-bridge dynamics."
+        ),
+        num_timesteps=140_000,
+        bridge=True,
+        delay=(3, 6),
+        tau_s=(0.06, 0.14),
+        velocity_limit_rad_s=(2.5, 3.75),
+        target_rate_scale=-0.0014,
+        actuator_tracking_scale=-0.12,
+        tracking_lin_vel_scale=30.0,
+        tracking_sigma=0.0012,
+        forward_progress_scale=8.5,
+        forward_shortfall_scale=-8.0,
+        forward_shortfall_required_ratio=0.35,
+        action_rate_scale=-0.016,
+        action_magnitude_scale=-0.004,
+        stand_still_scale=-1.0,
+        alive_scale=0.04,
+        imitation_scale=0.50,
+        lin_vel_x=(0.04, 0.08),
+        zero_command_probability=0.0,
+        forward_overshoot_scale=-1.3,
+        forward_overshoot_allowed_ratio=1.65,
+        forward_wrong_direction_scale=-9.0,
+        forward_wrong_direction_allowed_reverse_ratio=0.02,
+        orientation_scale=-0.06,
+        base_height_scale=-0.55,
+        forward_pitch_scale=-0.10,
+        forward_pitch_rate_scale=-0.010,
+        forward_contact_support_scale=-0.30,
+        forward_contact_support_no_contact_weight=1.0,
+        forward_contact_support_asymmetry_weight=0.04,
+        command_progress_scale=10.0,
+        command_progress_shortfall_scale=-12.0,
+        command_progress_required_ratio=0.35,
+        command_progress_warmup_steps=25,
+        command_progress_failure_scale=-90.0,
+        command_progress_failure_enable=True,
+        command_progress_failure_min_ratio=0.20,
+        command_progress_failure_warmup_steps=90,
+        reward_clip_min=-10.0,
+        reward_clip_max=10000.0,
+        action_rate_huber_delta=0.08,
+        action_magnitude_huber_delta=0.50,
+        target_rate_huber_delta=1.0,
+        actuator_tracking_huber_delta=0.08,
+        forward_shortfall_huber_delta=0.35,
+        forward_overshoot_huber_delta=0.50,
+        forward_wrong_direction_huber_delta=0.0,
+        forward_pitch_huber_delta=0.25,
+        forward_pitch_rate_huber_delta=1.0,
+        command_progress_shortfall_huber_delta=0.35,
+        ppo_learning_rate=1.5e-5,
+        ppo_entropy_cost=0.003,
+        ppo_clipping_epsilon=0.020,
+        ppo_max_grad_norm=0.40,
+        phase_gate_bridge_mode="fitted",
+    ),
+    Phase(
+        name="phase3_v5_anchor_fitted_bridge_margin",
+        purpose=(
+            "final low-step consolidation from the V5 anchor: keep the fitted "
+            "envelope, preserve positive command tracking, and add only modest "
+            "extra margin so the policy cannot buy stability by freezing."
+        ),
+        num_timesteps=120_000,
+        bridge=True,
+        delay=(3, 6),
+        tau_s=(0.06, 0.14),
+        velocity_limit_rad_s=(2.5, 3.75),
+        target_rate_scale=-0.0015,
+        actuator_tracking_scale=-0.13,
+        tracking_lin_vel_scale=28.0,
+        tracking_sigma=0.0012,
+        forward_progress_scale=8.0,
+        forward_shortfall_scale=-8.0,
+        forward_shortfall_required_ratio=0.36,
+        action_rate_scale=-0.018,
+        action_magnitude_scale=-0.0045,
+        stand_still_scale=-0.95,
+        alive_scale=0.04,
+        imitation_scale=0.48,
+        lin_vel_x=(0.04, 0.08),
+        zero_command_probability=0.0,
+        forward_overshoot_scale=-1.5,
+        forward_overshoot_allowed_ratio=1.55,
+        forward_wrong_direction_scale=-9.0,
+        forward_wrong_direction_allowed_reverse_ratio=0.02,
+        orientation_scale=-0.07,
+        base_height_scale=-0.60,
+        forward_pitch_scale=-0.12,
+        forward_pitch_rate_scale=-0.012,
+        forward_contact_support_scale=-0.34,
+        forward_contact_support_no_contact_weight=1.0,
+        forward_contact_support_asymmetry_weight=0.04,
+        command_progress_scale=9.0,
+        command_progress_shortfall_scale=-11.0,
+        command_progress_required_ratio=0.36,
+        command_progress_warmup_steps=25,
+        command_progress_failure_scale=-90.0,
+        command_progress_failure_enable=True,
+        command_progress_failure_min_ratio=0.22,
+        command_progress_failure_warmup_steps=100,
+        reward_clip_min=-10.0,
+        reward_clip_max=10000.0,
+        action_rate_huber_delta=0.08,
+        action_magnitude_huber_delta=0.50,
+        target_rate_huber_delta=1.0,
+        actuator_tracking_huber_delta=0.08,
+        forward_shortfall_huber_delta=0.35,
+        forward_overshoot_huber_delta=0.50,
+        forward_wrong_direction_huber_delta=0.0,
+        forward_pitch_huber_delta=0.25,
+        forward_pitch_rate_huber_delta=1.0,
+        command_progress_shortfall_huber_delta=0.35,
+        ppo_learning_rate=1.2e-5,
+        ppo_entropy_cost=0.002,
+        ppo_clipping_epsilon=0.018,
+        ppo_max_grad_norm=0.40,
+        phase_gate_bridge_mode="fitted",
+    ),
+]
+
+
 RECIPES = {
+    "movement_bootstrap_v16": MOVEMENT_BOOTSTRAP_V16_PHASES,
     "movement_bootstrap_v15": MOVEMENT_BOOTSTRAP_V15_PHASES,
     "movement_bootstrap_v14": MOVEMENT_BOOTSTRAP_V14_PHASES,
     "movement_bootstrap_v13": MOVEMENT_BOOTSTRAP_V13_PHASES,
@@ -2158,6 +2355,18 @@ def phase_payload(phase: Phase, command: list[str], output_root: Path) -> dict[s
 
 
 def recipe_rationale(recipe: str) -> str:
+    if recipe == "movement_bootstrap_v16":
+        return (
+            "`movement_bootstrap_v16` returns to the recovered V5 moving "
+            "checkpoint after V15's fresh no-bridge discovery learned "
+            "standstill/reverse/collapse. It is intentionally a checkpoint-"
+            "anchored recipe: phase 1 preserves the V5 gait shape under a mild "
+            "bridge while reducing the multi-seed lunge/reverse/collapse/freeze "
+            "split, then phase 2 and phase 3 transfer only a distributionally "
+            "consistent mover into the fitted actuator envelope. Run this with "
+            "`--initial-restore-checkpoint` pointing at the V5 recovery "
+            "checkpoint and with multi-seed phase gates enabled."
+        )
     if recipe == "movement_bootstrap_v15":
         return (
             "`movement_bootstrap_v15` responds to the incomplete V14 A100 "
@@ -2610,7 +2819,7 @@ def main() -> int:
     parser.add_argument(
         "--recipe",
         choices=sorted(RECIPES),
-        default="movement_bootstrap_v15",
+        default="movement_bootstrap_v16",
         help=(
             "Staged recipe to emit/run. shortfall_v1 preserves the June 23 A100 "
             "recipe that landed in standstill; movement_bootstrap_v2 preserves "
@@ -2635,7 +2844,10 @@ def main() -> int:
             "a mild bridge for motion discovery before transferring to the "
             "fitted actuator envelope; movement_bootstrap_v15 separates "
             "vanilla gait discovery from actuator transfer after the V14 "
-            "partial checkpoint remained low-motion. V15 is the current default."
+            "partial checkpoint remained low-motion; movement_bootstrap_v16 "
+            "returns to the recovered V5 moving checkpoint and must be run with "
+            "--initial-restore-checkpoint. V16 is the current default to avoid "
+            "accidentally spending more A100 time on the V15 standstill lineage."
         ),
     )
     parser.add_argument("--timesteps-scale", type=float, default=1.0)
@@ -2734,6 +2946,15 @@ def main() -> int:
     args = parser.parse_args()
     if args.stop_after_phase is not None and args.stop_after_phase < 1:
         raise SystemExit("--stop-after-phase must be >= 1")
+    if (
+        args.run
+        and args.recipe == "movement_bootstrap_v16"
+        and args.initial_restore_checkpoint is None
+    ):
+        raise SystemExit(
+            "movement_bootstrap_v16 requires --initial-restore-checkpoint "
+            "pointing at the recovered V5 trainable checkpoint"
+        )
 
     output_root = Path(args.output_root).expanduser().resolve()
     payload: dict[str, Any] = {

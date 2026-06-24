@@ -1877,3 +1877,23 @@ bundles the seed-gate markdown/JSON artifacts on both pass and hold exits.
 Use this gate before promoting any future V16+ staged phase. The phase must
 show consistent forward motion across seeds, not merely avoid falling by
 freezing or drifting backward.
+
+### V16 Anchored Continuation
+
+The next recipe is `movement_bootstrap_v16`. It deliberately returns to the
+recovered V5 moving checkpoint instead of continuing V15's standstill lineage.
+Run it only with an explicit restore checkpoint:
+
+```bash
+python3 tools/run_colab_cli_cuda_workflow.py \
+  --session open-duck-a100 \
+  --workflow staged-curriculum \
+  --staged-recipe movement_bootstrap_v16 \
+  --staged-initial-restore-checkpoint \
+    policy/candidates/movement_bootstrap_v5_phase1_trainable_recovery_20260623/checkpoint_2026_06_23_205634_368640 \
+  --staged-phase-gate-seeds 0-3
+```
+
+Do not treat a fall-count improvement as sufficient. V16 must improve the
+multi-seed distribution while preserving positive mean forward velocity and
+command tracking.
