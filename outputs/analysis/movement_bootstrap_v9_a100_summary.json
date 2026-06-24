@@ -1,0 +1,36 @@
+{
+  "status": "HOLD_NON_DEPLOYABLE",
+  "recipe": "movement_bootstrap_v9",
+  "candidate_dir": "policy/candidates/movement_bootstrap_v9_progress_balanced_standstill_20260623",
+  "candidate_sha256": "e281667087140800d5b06d547ea6644fdf40af7c49897e6774ea913e5fb41839",
+  "initial_checkpoint": "policy/candidates/movement_bootstrap_v7_checkpoint_anchor_20260623/checkpoint_2026_06_23_213846_184320",
+  "robot_validation": "BLOCKED",
+  "robot_touched": false,
+  "deploy_performed": false,
+  "runtime_behavior_changed": false,
+  "gates": {
+    "x0": {
+      "status": "HOLD_CANDIDATE_TRACKING",
+      "samples": 750,
+      "termination": "duration_complete",
+      "mean_local_vx_m_s": 0.0003,
+      "max_pitch_velocity_p95_rad_s": 0.2534,
+      "max_tracking_p95_rad": 0.0932,
+      "body_pitch_p95_rad": 0.0493,
+      "base_height_min_m": 0.1537
+    },
+    "x008": {
+      "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "samples": 750,
+      "termination": "duration_complete",
+      "mean_local_vx_m_s": 0.0017,
+      "command_tracking_ratio": 0.0206,
+      "max_pitch_velocity_p95_rad_s": 0.2879,
+      "max_tracking_p95_rad": 0.0921,
+      "body_pitch_p95_rad": 0.2172,
+      "base_height_min_m": 0.1479,
+      "action_saturation_pct": 0.0
+    }
+  },
+  "interpretation": "V9 preserved stability but did not recover meaningful forward progress. The next offline step should use checkpoint selection or teacher-action continuity instead of another small reward-weight tweak."
+}

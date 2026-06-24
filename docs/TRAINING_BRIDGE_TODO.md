@@ -825,6 +825,34 @@ V9 target: measurable x=0.08 progress, no lunge, no envelope relaxation
 
 Robot validation remains blocked unless both candidate gates pass.
 
+V9 result:
+
+```text
+outputs/analysis/MOVEMENT_BOOTSTRAP_V9_A100_SUMMARY.md
+policy/candidates/movement_bootstrap_v9_progress_balanced_standstill_20260623/
+```
+
+The run completed, but it is still not deployable:
+
+```text
+x=0.0:  HOLD_CANDIDATE_TRACKING, duration complete, max pitch tracking p95 0.0932 rad
+x=0.08: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS, duration complete, fitted mean local vx 0.0017 m/s
+```
+
+V9 did not land between V7 and V8. It behaved like V8: stable, low target
+velocity, and nearly stationary. This is evidence that another small
+overshoot/progress weight tweak is unlikely to be the next best move.
+
+Next offline work should prioritize:
+
+```text
+1. checkpoint sweep/selection across V7/V8/V9 phase checkpoints
+2. explicit teacher-action or trust-region regularization from a moving policy
+3. separate stabilization from motion preservation instead of blending them only through reward weights
+```
+
+Do not request robot validation for v9.
+
 ### Candidate ONNX Export
 
 - Export only after sim-side gates pass.

@@ -1469,3 +1469,34 @@ and keeps the fitted actuator bridge plus `2.5-3.75 rad/s` envelope active. The
 deliberate difference from V8 is lighter overshoot/pitch damping paired with
 stronger command-window progress pressure, to search the narrow region between
 V7's lunge and V8's near-standstill.
+
+## Movement Bootstrap V9 Result
+
+The A100 `movement_bootstrap_v9` run completed and is preserved as:
+
+```text
+policy/candidates/movement_bootstrap_v9_progress_balanced_standstill_20260623/
+sha256: e281667087140800d5b06d547ea6644fdf40af7c49897e6774ea913e5fb41839
+summary: outputs/analysis/MOVEMENT_BOOTSTRAP_V9_A100_SUMMARY.md
+```
+
+Gate result:
+
+```text
+x=0.0:  HOLD_CANDIDATE_TRACKING, 750 samples, max pitch tracking p95 0.0932 rad
+x=0.08: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS, 750 samples, fitted mean local vx 0.0017 m/s
+```
+
+Interpretation: V9 did not recover the moving gait. Lighter damping plus
+stronger command-window progress still converged to the same stable
+near-standstill basin:
+
+```text
+V8 x=0.08 fitted track ratio: 0.0190
+V9 x=0.08 fitted track ratio: 0.0206
+```
+
+The next offline work should stop making small reward-weight adjustments in the
+same family. The more useful direction is checkpoint selection or explicit
+teacher-action/trust-region continuity from a moving checkpoint, so
+stabilization cannot silently erase the gait. Robot validation remains blocked.

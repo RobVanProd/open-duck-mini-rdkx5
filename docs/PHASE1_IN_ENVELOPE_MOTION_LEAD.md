@@ -228,3 +228,16 @@ outputs/analysis/MOVEMENT_BOOTSTRAP_V9_PLAN.md
 It starts from the V7 moving anchor again, keeps the fitted actuator envelope
 active, and uses lighter overshoot/pitch damping than V8 with stronger
 command-window progress pressure.
+
+V9 completed and is preserved here:
+
+```text
+policy/candidates/movement_bootstrap_v9_progress_balanced_standstill_20260623/
+outputs/analysis/MOVEMENT_BOOTSTRAP_V9_A100_SUMMARY.md
+```
+
+It did not recover the moving gait. At `x=0.08`, the fitted rollout completed
+the full duration but produced only `0.0017 m/s` mean local forward velocity
+and a command tracking ratio of `0.0206`. This keeps the phase-1/V7 moving
+policies as the key lead and points the next work toward checkpoint selection or
+explicit teacher-action continuity, not more small reward-weight tuning.
