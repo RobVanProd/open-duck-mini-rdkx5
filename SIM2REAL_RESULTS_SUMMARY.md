@@ -2695,3 +2695,33 @@ V16 phase-1 A100 run with the multi-seed phase gate enabled.
 
 Summary artifact:
 `outputs/analysis/A100_V16_TINY_RESTORE_PASS_GATE_HOLD_SUMMARY.md`.
+
+### A100 V16 Full Phase-1 Seed-Gate Stall
+
+A full V16 phase-1 A100 run was launched after the tiny smoke cleared:
+
+```text
+phase_1_timesteps: 120000
+restore: V5 trainable checkpoint
+phase_gate_seeds: 0-3
+phase_gate_command_x: 0.08
+phase_gate_bridge: vanilla
+```
+
+The remote log shows phase-1 training completed and the workflow entered the
+multi-seed gate using the exported phase-1 candidate:
+
+```text
+/content/open_duck_staged_curriculum_cli/01_phase1_v5_anchor_mild_bridge_consistency/smoke_20260624T120332Z_gpu/2026_06_24_121150_122880.onnx
+```
+
+The seed gate did not emit a result before the Colab session was lost. No final
+artifact bundle or seed-gate result was downloaded, so this is not a policy
+verdict.
+
+Follow-up tooling patch: `tools/run_candidate_seed_sweep.py` now prints
+per-seed start/done markers, kills the full subprocess group on timeout, records
+`HOLD_SEED_TIMEOUT`, and writes a partial JSON file after every seed.
+
+Summary artifact:
+`outputs/analysis/A100_V16_PHASE1_SEED_GATE_STALL_SUMMARY.md`.

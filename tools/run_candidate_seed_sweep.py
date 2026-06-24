@@ -13,8 +13,10 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import os
 from pathlib import Path
 import shlex
+import signal
 import subprocess
 import sys
 from typing import Any, Iterable
@@ -191,30 +193,75 @@ def run_one(
     if not args.run:
         result["status"] = "DRY_RUN"
         return result
-    proc = subprocess.run(
+    timeout_s = args.closed_loop_timeout_s + 120
+    print(
+        f"SEED_SWEEP_START policy={label} seed={seed} timeout_s={timeout_s} "
+        f"output_dir={output_dir}",
+        flush=True,
+    )
+    proc = subprocess.Popen(
         command,
         cwd=str(ROOT),
         text=True,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
-        timeout=args.closed_loop_timeout_s + 120,
-        check=False,
+        start_new_session=True,
     )
+    try:
+        stdout, _ = proc.communicate(timeout=timeout_s)
+    except subprocess.TimeoutExpired:
+        try:
+            os.killpg(proc.pid, signal.SIGTERM)
+        except ProcessLookupError:
+            pass
+        try:
+            stdout, _ = proc.communicate(timeout=15)
+        except subprocess.TimeoutExpired:
+            try:
+                os.killpg(proc.pid, signal.SIGKILL)
+            except ProcessLookupError:
+                pass
+            stdout, _ = proc.communicate()
+        result["returncode"] = proc.returncode
+        result["status"] = "HOLD_SEED_TIMEOUT"
+        result["timeout_s"] = timeout_s
+        result["stdout_tail"] = (stdout or "")[-12000:]
+        print(
+            f"SEED_SWEEP_DONE policy={label} seed={seed} "
+            f"status={result['status']} returncode={result.get('returncode')}",
+            flush=True,
+        )
+        return result
     result["returncode"] = proc.returncode
-    result["stdout_tail"] = (proc.stdout or "")[-12000:]
+    result["stdout_tail"] = (stdout or "")[-12000:]
     json_path = output_dir / "closed_loop_actuator_bridge_eval.json"
     result["result_json"] = str(json_path)
     if not json_path.exists():
         result["status"] = "HOLD_NO_RESULT_JSON"
+        print(
+            f"SEED_SWEEP_DONE policy={label} seed={seed} "
+            f"status={result['status']} returncode={result.get('returncode')}",
+            flush=True,
+        )
         return result
     try:
         payload = json.loads(json_path.read_text())
     except json.JSONDecodeError as exc:
         result["status"] = "HOLD_BAD_RESULT_JSON"
         result["error"] = str(exc)
+        print(
+            f"SEED_SWEEP_DONE policy={label} seed={seed} "
+            f"status={result['status']} returncode={result.get('returncode')}",
+            flush=True,
+        )
         return result
     result["status"] = payload.get("overall_status")
     result["summary"] = summarize_payload(payload, args.mode_name)
+    print(
+        f"SEED_SWEEP_DONE policy={label} seed={seed} "
+        f"status={result['status']} returncode={result.get('returncode')}",
+        flush=True,
+    )
     return result
 
 
@@ -340,11 +387,27 @@ def main() -> int:
     policies = [parse_policy(value) for value in args.policies]
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
-    results = [
-        run_one(args, policy, seed)
-        for policy in policies
-        for seed in args.seeds
-    ]
+    results: list[dict[str, Any]] = []
+    partial_json = output_dir / "candidate_seed_sweep.partial.json"
+    for policy in policies:
+        for seed in args.seeds:
+            result = run_one(args, policy, seed)
+            results.append(result)
+            partial_payload = {
+                "config": {
+                    "policies": [str(path) for _, path in policies],
+                    "policy_labels": [label for label, _ in policies],
+                    "seeds": args.seeds,
+                    "command_x": args.command_x,
+                    "duration_s": args.duration,
+                    "bridge_mode": args.bridge_mode,
+                    "jax_platform": args.jax_platform,
+                    "run": args.run,
+                },
+                "partial": True,
+                "results": results,
+            }
+            partial_json.write_text(json.dumps(partial_payload, indent=2) + "\n")
     payload = {
         "config": {
             "policies": [str(path) for _, path in policies],

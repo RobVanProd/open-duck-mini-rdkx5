@@ -1930,3 +1930,12 @@ Run full V16 phase 1 on A100.
 Keep multi-seed phase gates enabled.
 Do not deploy or test on the robot.
 ```
+
+The first full V16 phase-1 A100 run reached the multi-seed phase gate with a
+phase-1 ONNX, but the Colab session was lost before seed-gate artifacts were
+downloaded. Treat this as `HOLD_A100_V16_PHASE1_SEED_GATE_STALL`, not as a V16
+policy verdict.
+
+Seed-gate tooling has been patched to emit per-seed start/done markers, kill
+subprocess groups on timeout, and write partial seed-sweep JSON after each seed.
+Rerun full V16 phase 1 with the patched gate before changing the recipe.
