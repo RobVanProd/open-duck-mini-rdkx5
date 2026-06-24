@@ -44,6 +44,37 @@ python3 tools/run_colab_cli_cuda_workflow.py --workflow smoke --run
 python3 tools/run_colab_cli_cuda_workflow.py --workflow candidate-only --run
 ```
 
+### Candidate Checkpoint Sweep
+
+Use this after a training sequence produces multiple preserved candidate
+checkpoints and the final checkpoint may not be the best behavior. The workflow
+uploads the local RDK and Playground worktrees, runs
+`tools/sweep_candidate_checkpoints.py` on the CUDA session, and bundles only the
+small sweep report artifacts. It does not train, deploy, SSH, or touch the
+robot.
+
+Plan first:
+
+```bash
+python3 tools/run_colab_cli_cuda_workflow.py --workflow checkpoint-sweep
+```
+
+Run on the connected Colab CUDA session:
+
+```bash
+python3 tools/run_colab_cli_cuda_workflow.py \
+  --workflow checkpoint-sweep \
+  --session open-duck-l4 \
+  --checkpoint-sweep-commands 0.08 \
+  --checkpoint-sweep-duration 5 \
+  --checkpoint-sweep-bridge-mode fitted \
+  --run
+```
+
+Default policies are the preserved V7, V8, and V9 candidate ONNX files. Override
+them with `--checkpoint-sweep-policies` when testing phase checkpoints or a new
+candidate set.
+
 If candidate training finishes but the Colab session disconnects during one of
 the sim gates, do not rerun training just to recover the missing gate. Use the
 eval-only workflow with the local ONNX downloaded from the partial artifact:

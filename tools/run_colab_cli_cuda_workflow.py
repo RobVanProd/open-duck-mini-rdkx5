@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
+import json
 from pathlib import Path
 import shlex
 import subprocess
@@ -232,12 +233,21 @@ def build_remote_driver(
     run_candidate_training = args.workflow in {"candidate", "candidate-only", "all"}
     run_staged_curriculum = args.workflow == "staged-curriculum"
     run_candidate_eval_only = args.workflow == "candidate-eval-only"
+    run_checkpoint_sweep = args.workflow == "checkpoint-sweep"
     run_candidate_gates = (
         run_candidate_training or run_staged_curriculum or run_candidate_eval_only
     )
     run_audit = (
         args.workflow
-        in {"eval", "smoke", "candidate", "candidate-only", "candidate-eval-only", "all"}
+        in {
+            "eval",
+            "smoke",
+            "candidate",
+            "candidate-only",
+            "candidate-eval-only",
+            "checkpoint-sweep",
+            "all",
+        }
         and not args.skip_audit
     )
     run_baseline_eval = args.workflow in {"eval", "smoke", "candidate", "all"}
@@ -290,6 +300,10 @@ def build_remote_driver(
         else ""
     )
     staged_timeout_multiplier = args.staged_stop_after_phase or 3
+    checkpoint_sweep_policies = json.dumps(args.checkpoint_sweep_policies)
+    checkpoint_sweep_commands = cli_value(args.checkpoint_sweep_commands)
+    checkpoint_sweep_duration = cli_value(args.checkpoint_sweep_duration)
+    checkpoint_sweep_bridge_mode = args.checkpoint_sweep_bridge_mode
     candidate_disable_bridge_arg = (
         '"--disable-actuator-bridge",' if args.candidate_disable_actuator_bridge else ""
     )
@@ -446,6 +460,28 @@ def build_remote_driver(
                 "--output-md", str(OUT / "POLICY_SIM_CONTRACT_AUDIT_CUDA.md"),
                 "--output-json", str(OUT / "policy_sim_contract_audit_cuda.json"),
             ], cwd=RDK, timeout=900)
+
+        if {run_checkpoint_sweep!r}:
+            sweep_policies = {checkpoint_sweep_policies}
+            sweep_cmd = [
+                PYTHON, "tools/sweep_candidate_checkpoints.py",
+                "--policies", *sweep_policies,
+                "--fit-json", "outputs/analysis/actuator_response_fit.json",
+                "--playground-path", str(PLAYGROUND),
+                "--env-python", PYTHON,
+                "--commands", "{checkpoint_sweep_commands}",
+                "--duration", "{checkpoint_sweep_duration}",
+                "--bridge-mode", "{checkpoint_sweep_bridge_mode}",
+                "--mode-name", "{checkpoint_sweep_bridge_mode}",
+                "--jax-platform", "gpu",
+                "--sim-preflight-timeout-s", "600",
+                "--closed-loop-timeout-s", "1800",
+                "--output-dir", str(OUT / "candidate_checkpoint_sweep"),
+                "--run",
+            ]
+            run(sweep_cmd, cwd=RDK, timeout={args.checkpoint_sweep_timeout_s})
+            bundle_artifacts()
+
         if {run_baseline_eval!r}:
             run([
                 PYTHON, "tools/eval_policy_with_actuator_bridge.py",
@@ -763,6 +799,7 @@ def main() -> int:
             "candidate",
             "candidate-only",
             "candidate-eval-only",
+            "checkpoint-sweep",
             "staged-curriculum",
             "all",
         ],
@@ -783,6 +820,23 @@ def main() -> int:
     parser.add_argument("--timeout-s", type=int, default=7200)
     parser.add_argument("--smoke-num-timesteps", type=int, default=64)
     parser.add_argument("--candidate-num-timesteps", type=int, default=200000)
+    parser.add_argument(
+        "--checkpoint-sweep-policies",
+        nargs="+",
+        default=[
+            "policy/candidates/movement_bootstrap_v7_checkpoint_anchor_20260623/candidate.onnx",
+            "policy/candidates/movement_bootstrap_v8_overshoot_stabilized_standstill_20260623/candidate.onnx",
+            "policy/candidates/movement_bootstrap_v9_progress_balanced_standstill_20260623/candidate.onnx",
+        ],
+        help=(
+            "Policy ONNX paths, relative to the uploaded RDK repo unless "
+            "absolute, for --workflow checkpoint-sweep."
+        ),
+    )
+    parser.add_argument("--checkpoint-sweep-commands", default="0.08")
+    parser.add_argument("--checkpoint-sweep-duration", type=float, default=5.0)
+    parser.add_argument("--checkpoint-sweep-bridge-mode", default="fitted")
+    parser.add_argument("--checkpoint-sweep-timeout-s", type=int, default=3600)
     parser.add_argument(
         "--staged-timesteps-scale",
         type=float,
