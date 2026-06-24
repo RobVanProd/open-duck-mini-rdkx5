@@ -12,18 +12,25 @@ Known-good:
 - local CPU `training-smoke`: `PASS`
 - local CPU candidate gates: `PASS_PLUMBING`
 - Colab CUDA JAX device detection: `PASS` in prior manual notebook checks
+- Colab L4 minimal CUDA PPO smoke: `PASS`
+  - `num_envs=1`
+  - `num_timesteps=8`
+  - actuator bridge enabled
+  - final manifest written
+  - checkpoint saved at step 10
 
 Current hold:
 
 ```text
 Colab A100 training-smoke: HOLD_REMOTE_NO_SENTINEL
 Colab L4 training-smoke: HOLD_REMOTE_NO_SENTINEL
-Colab L4 foreground + JAX_PLATFORMS=cuda: HOLD_REMOTE_NO_SENTINEL
+Colab L4 8-env training-smoke diagnostic: HOLD_REMOTE_NO_SENTINEL
 ```
 
-The L4 foreground run reached the tiny PPO smoke command but produced no smoke
-output directory, manifest, stdout/stderr, ONNX, checkpoint, artifact bundle, or
-exit sentinel.
+The minimal L4 run proves CUDA/JAX/Brax/Playground are usable at very small
+scale. The remaining problem is scale-sensitive or long-compile/runtime related:
+the 8-env / 64-timestep diagnostic disappeared without a final sentinel, while
+the 1-env / 8-timestep diagnostic completed.
 
 ## Required Next Command
 
@@ -52,7 +59,9 @@ It records one stage at a time:
 
 The poller also attempts to recover the remote workflow output directory into
 `partial_remote_output` before declaring `HOLD_REMOTE_NO_SENTINEL` or
-`HOLD_REMOTE_TIMEOUT`.
+`HOLD_REMOTE_TIMEOUT`. Because `google-colab-cli` cannot download directories
+directly, the helper now falls back to tarring the remote output directory and
+downloading that archive.
 
 If a notebook is connected in the browser but `google-colab-cli` reports no
 active sessions, generate a diagnostic single-cell notebook instead:
@@ -139,13 +148,34 @@ If `02_smoke_dry_run` fails:
 If `03_smoke_run` fails or disappears:
 
 - the issue is inside the tiny PPO/Brax/MJX training path.
-- keep recipe search on a stable backend until the cloud runtime is fixed.
+- compare against the passing 1-env / 8-timestep smoke before changing recipe
+  code.
+- keep recipe search on a stable backend or a known-good cloud scale until the
+  cloud runtime is fixed.
 
 If the run disappears without a sentinel:
 
 - do not promote any partial checkpoint.
 - inspect `remote_live.log`, `REMOTE_NO_SENTINEL.md`, and
   `partial_remote_output` if present.
+
+## Current Scale Question
+
+The passing L4 smoke used `num_envs=1` and `num_timesteps=8`.
+
+The failing diagnostic used `num_envs=8` and `num_timesteps=64`.
+
+The next cloud isolation step should sweep upward conservatively, for example:
+
+```text
+1 env / 16 timesteps
+2 env / 16 timesteps
+4 env / 32 timesteps
+8 env / 64 timesteps
+```
+
+Stop at the first scale that disappears or times out and preserve the partial
+output bundle.
 
 ## Non-Goals
 

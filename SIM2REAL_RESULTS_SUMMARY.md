@@ -2289,3 +2289,33 @@ Summary artifact:
 
 Runbook:
 `docs/CLOUD_GPU_TRAINING_DEBUG.md`.
+
+### L4 Minimal CUDA Training Smoke Pass
+
+The Colab L4 session completed the smallest real CUDA PPO smoke after the
+startup diagnostic was reduced to one environment and eight timesteps:
+
+```text
+00_python_jax_device: PASS
+01_import_training_stack: PASS
+02_smoke_dry_run: PASS
+03_smoke_run: PASS
+JAX_PLATFORM_NAME=gpu
+JAX_PLATFORMS=cuda
+status: PASS_SMOKE_RUN
+elapsed_s: 361.21
+STEP: 10 reward: 7.2996506690979 reward_std: 2.555509090423584
+checkpoint: saved at step 10
+```
+
+This means Colab L4 CUDA/JAX/Brax/Playground is not globally broken. The
+remaining cloud hold is scale-sensitive or long-compile/runtime related: the
+larger 8-env / 64-timestep diagnostic disappeared without a final manifest,
+while the 1-env / 8-timestep diagnostic completed.
+
+The Colab workflow recovery path now falls back to tarring the remote output
+directory before downloading it, because `google-colab-cli` cannot download
+directories directly.
+
+Summary artifact:
+`outputs/analysis/L4_MINIMAL_CUDA_TRAINING_SMOKE_SUMMARY.md`.

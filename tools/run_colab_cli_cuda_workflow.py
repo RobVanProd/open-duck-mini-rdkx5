@@ -145,7 +145,45 @@ def download_partial_output_dir(session: str, remote_bundle: str, run_dir: Path)
     )
     if completed.returncode == 0:
         return partial_dir
-    return None
+    remote_archive = (
+        f"/content/{Path(remote_bundle).name.removesuffix('.tar.gz')}"
+        "_partial_output.tar.gz"
+    )
+    console_script = run_dir / "partial_remote_output_tar_console.sh"
+    write_console_script(
+        console_script,
+        f"""
+        set -euo pipefail
+        test -d {shlex.quote(remote_output_dir)}
+        rm -f {shlex.quote(remote_archive)}
+        tar -czf {shlex.quote(remote_archive)} -C {shlex.quote(str(Path(remote_output_dir).parent))} {shlex.quote(Path(remote_output_dir).name)}
+        ls -l {shlex.quote(remote_archive)}
+        """,
+    )
+    tar_completed = run_console_script(
+        session,
+        console_script,
+        run_dir / "partial_remote_output_tar_console.log",
+        timeout_s=300,
+    )
+    if tar_completed.returncode != 0:
+        return None
+    archive_dest = run_dir / Path(remote_archive).name
+    archive_completed = subprocess.run(
+        ["colab", "download", "-s", session, remote_archive, str(archive_dest)],
+        check=False,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+    )
+    (run_dir / "partial_remote_output_archive_download.log").write_text(
+        archive_completed.stdout or ""
+    )
+    if archive_completed.returncode != 0 or not archive_dest.exists():
+        return None
+    with tarfile.open(archive_dest) as tf:
+        tf.extractall(partial_dir)
+    return partial_dir
 
 
 def write_console_script(path: Path, remote_script: str) -> None:
