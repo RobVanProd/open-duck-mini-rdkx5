@@ -1917,3 +1917,16 @@ A100/Colab/CUDA path: still needs one tiny restored smoke rerun
 Next A100 action should be a tiny restored V16 smoke with the PID-aware poller
 and timeout-safe PID probe, not a full phase-1 launch. If that tiny A100 smoke
 passes, relaunch full V16 phase 1 with the multi-seed phase gate enabled.
+
+The tiny A100 restored smoke now passes the workflow gate: it restores the V5
+checkpoint, runs V16 phase-1 training on GPU for 120 timesteps, exports ONNX,
+runs x=0 and x=0.08 sim gates, and downloads artifacts. The toy 120-step policy
+correctly holds both gates and is not a robot candidate.
+
+Next:
+
+```text
+Run full V16 phase 1 on A100.
+Keep multi-seed phase gates enabled.
+Do not deploy or test on the robot.
+```

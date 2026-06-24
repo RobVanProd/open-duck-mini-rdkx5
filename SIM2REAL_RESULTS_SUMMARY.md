@@ -2664,3 +2664,34 @@ smoke with the PID-aware poller and timeout-safe PID probe.
 
 Summary artifact:
 `outputs/analysis/A100_V16_TINY_RESTORE_HOLD_SUMMARY.md`.
+
+### A100 V16 Tiny Restore Pass / Toy Gate Hold
+
+After the timeout-safe PID probe and absolute restore-path fix, a fresh A100
+session reran the tiny restored V16 phase-1 smoke:
+
+```text
+recipe: movement_bootstrap_v16
+restore: V5 trainable checkpoint
+num_timesteps: 120
+ppo_num_envs: 4
+phase_gate: disabled
+```
+
+Result:
+
+```text
+training_manifest: PASS_SMOKE_RUN
+platform: gpu
+candidate_sha256: c81a9fe92bf726725273ce87389a4edd7aff012a59b09fbbf00a4de0dc42b5a9
+x=0.0 gate: HOLD_CANDIDATE_FALL_OR_TERMINATION
+x=0.08 gate: HOLD_CANDIDATE_FALL_OR_TERMINATION
+```
+
+Interpretation: the A100 workflow can now restore, train past step 0, export
+ONNX, run sim gates, and download final artifacts. The 120-step candidate is a
+toy smoke artifact and is not a policy result. The next offline action is a full
+V16 phase-1 A100 run with the multi-seed phase gate enabled.
+
+Summary artifact:
+`outputs/analysis/A100_V16_TINY_RESTORE_PASS_GATE_HOLD_SUMMARY.md`.
