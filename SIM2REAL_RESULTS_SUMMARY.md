@@ -2144,3 +2144,18 @@ curriculum runs.
 
 Summary artifact:
 `outputs/analysis/L4_TRAINING_SMOKE_NO_SENTINEL_SUMMARY.md`.
+
+### L4 Foreground Training Smoke Hold
+
+The L4 `training-smoke` was repeated with `--foreground-remote` so the remote
+driver ran directly inside `colab console` rather than through a detached
+`setsid` shell. It still reached the tiny PPO smoke command, then the session
+became idle without writing the foreground exit sentinel or artifact bundle.
+
+This rules out the detached wrapper as the sole cause. The current split is now
+between a Colab GPU PPO/Brax runtime/session failure and a runner-level failure
+that Colab drops before stdout/stderr can be packaged. Next check is the same
+tiny smoke locally on CPU.
+
+Summary artifact:
+`outputs/analysis/L4_FOREGROUND_TRAINING_SMOKE_NO_SENTINEL_SUMMARY.md`.

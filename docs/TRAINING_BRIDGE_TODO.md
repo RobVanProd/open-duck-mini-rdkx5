@@ -1651,3 +1651,37 @@ python3 tools/run_colab_cli_cuda_workflow.py \
 
 Summary artifact:
 `outputs/analysis/L4_TRAINING_SMOKE_NO_SENTINEL_SUMMARY.md`.
+
+### L4 Foreground Training Smoke Hold
+
+Foreground remote execution was tested on L4:
+
+```bash
+python3 tools/run_colab_cli_cuda_workflow.py \
+  --session open-duck-l4-smoke-foreground \
+  --workflow training-smoke \
+  --run \
+  --foreground-remote \
+  --foreground-remote-timeout-s 1800 \
+  --timeout-s 1800 \
+  --smoke-num-timesteps 64 \
+  --smoke-export-min-step 1
+```
+
+It still disappeared without a foreground exit sentinel after reaching the tiny
+PPO smoke command.
+
+Interpretation: the detached `setsid` wrapper is not the sole cause. The next
+split is local CPU smoke versus Colab GPU smoke.
+
+Next debugging steps:
+
+- run the same tiny smoke locally on CPU
+- if local CPU passes, use it to keep recipe/debug work moving while Colab GPU
+  smoke observability is fixed separately
+- if local CPU fails, inspect local stdout/stderr directly before any further
+  cloud runs
+- keep the robot parked
+
+Summary artifact:
+`outputs/analysis/L4_FOREGROUND_TRAINING_SMOKE_NO_SENTINEL_SUMMARY.md`.
