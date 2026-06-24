@@ -1851,3 +1851,35 @@ corrected gate did its job by stopping the staged curriculum before later phases
 consolidated the no-motion behavior. Robot validation remains blocked.
 
 Summary artifact: `outputs/analysis/MOVEMENT_BOOTSTRAP_V12_A100_PHASE1_SUMMARY.md`.
+
+## V13 Signed-Failure Mechanics Plan
+
+The V12 phase-1 gate narrowed the current blocker to reward mechanics. Episode
+termination for low command progress was not enough: the candidate stayed
+upright, inside the actuator envelope, and nearly motionless at `x=0.08`.
+Inspection of the Playground reward path showed the scalar reward is clipped at
+zero by default, so a low-progress terminal event can still fail to become a
+meaningful signed cost.
+
+V13 is prepared as a dry-run plan:
+
+```text
+recipe: movement_bootstrap_v13
+plan: outputs/analysis/MOVEMENT_BOOTSTRAP_V13_TRAINING_PLAN.md
+json: outputs/analysis/movement_bootstrap_v13_training_plan.json
+training_started: false
+robot_touched: false
+```
+
+V13 keeps the V12 fitted-bridge curriculum but adds signed
+command-progress-failure penalties and lowers `reward_clip_min` to `-10.0`:
+
+```text
+phase1 failure scale: -120.0
+phase2 failure scale: -140.0
+phase3 failure scale: -160.0
+```
+
+The per-phase gate remains enabled. If phase 1 freezes again, the staged run
+should stop before spending later A100 phases consolidating no-motion behavior.
+Robot validation and grounded replay remain blocked.

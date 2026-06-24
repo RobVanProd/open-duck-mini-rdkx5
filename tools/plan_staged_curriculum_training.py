@@ -86,11 +86,14 @@ class Phase:
     ppo_max_grad_norm: float | None = None
     command_progress_scale: float = 0.0
     command_progress_shortfall_scale: float = 0.0
+    command_progress_failure_scale: float = 0.0
     command_progress_required_ratio: float = 0.6
     command_progress_warmup_steps: int = 50
     command_progress_failure_enable: bool = False
     command_progress_failure_min_ratio: float = 0.25
     command_progress_failure_warmup_steps: int = 120
+    reward_clip_min: float = 0.0
+    reward_clip_max: float = 10000.0
     action_rate_huber_delta: float = 0.0
     action_magnitude_huber_delta: float = 0.0
     target_rate_huber_delta: float = 0.0
@@ -1403,7 +1406,48 @@ MOVEMENT_BOOTSTRAP_V12_PHASES = [
 ]
 
 
+MOVEMENT_BOOTSTRAP_V13_PHASES = [
+    replace(
+        MOVEMENT_BOOTSTRAP_V12_PHASES[0],
+        name="phase1_signed_failure_low_command",
+        purpose=(
+            "mechanics test after V12 froze: keep the same low-command setup, "
+            "but make command-progress termination carry a signed penalty and "
+            "allow negative terminal reward so standing until failure is not a "
+            "cheap local optimum."
+        ),
+        command_progress_failure_scale=-120.0,
+        command_progress_failure_warmup_steps=80,
+        reward_clip_min=-10.0,
+    ),
+    replace(
+        MOVEMENT_BOOTSTRAP_V12_PHASES[1],
+        name="phase2_signed_failure_expand_command",
+        purpose=(
+            "expand toward x=0.08 only if the signed failure mechanic survives "
+            "phase 1. Keep fitted actuator limits and preserve negative terminal "
+            "cost for persistent low-progress episodes."
+        ),
+        command_progress_failure_scale=-140.0,
+        command_progress_failure_warmup_steps=100,
+        reward_clip_min=-10.0,
+    ),
+    replace(
+        MOVEMENT_BOOTSTRAP_V12_PHASES[2],
+        name="phase3_signed_failure_stability",
+        purpose=(
+            "add stability margin while signed low-progress termination remains "
+            "active, so consolidation cannot buy stability by freezing."
+        ),
+        command_progress_failure_scale=-160.0,
+        command_progress_failure_warmup_steps=120,
+        reward_clip_min=-10.0,
+    ),
+]
+
+
 RECIPES = {
+    "movement_bootstrap_v13": MOVEMENT_BOOTSTRAP_V13_PHASES,
     "movement_bootstrap_v12": MOVEMENT_BOOTSTRAP_V12_PHASES,
     "movement_bootstrap_v11": MOVEMENT_BOOTSTRAP_V11_PHASES,
     "movement_bootstrap_v10": MOVEMENT_BOOTSTRAP_V10_PHASES,
@@ -1485,6 +1529,8 @@ def phase_command(
         cli_value(phase.command_progress_scale),
         "--command-progress-shortfall-scale",
         cli_value(phase.command_progress_shortfall_scale),
+        "--command-progress-failure-scale",
+        cli_value(phase.command_progress_failure_scale),
         "--command-progress-required-ratio",
         cli_value(phase.command_progress_required_ratio),
         "--command-progress-warmup-steps",
@@ -1513,6 +1559,10 @@ def phase_command(
         cli_value(phase.forward_pitch_rate_huber_delta),
         "--command-progress-shortfall-huber-delta",
         cli_value(phase.command_progress_shortfall_huber_delta),
+        "--reward-clip-min",
+        cli_value(phase.reward_clip_min),
+        "--reward-clip-max",
+        cli_value(phase.reward_clip_max),
         "--action-rate-scale",
         cli_value(phase.action_rate_scale),
         "--action-magnitude-scale",
@@ -1634,6 +1684,7 @@ def phase_payload(phase: Phase, command: list[str], output_root: Path) -> dict[s
         ),
         "command_progress_scale": phase.command_progress_scale,
         "command_progress_shortfall_scale": phase.command_progress_shortfall_scale,
+        "command_progress_failure_scale": phase.command_progress_failure_scale,
         "command_progress_required_ratio": phase.command_progress_required_ratio,
         "command_progress_warmup_steps": phase.command_progress_warmup_steps,
         "command_progress_failure_enable": phase.command_progress_failure_enable,
@@ -1641,6 +1692,8 @@ def phase_payload(phase: Phase, command: list[str], output_root: Path) -> dict[s
         "command_progress_failure_warmup_steps": (
             phase.command_progress_failure_warmup_steps
         ),
+        "reward_clip_min": phase.reward_clip_min,
+        "reward_clip_max": phase.reward_clip_max,
         "action_rate_huber_delta": phase.action_rate_huber_delta,
         "action_magnitude_huber_delta": phase.action_magnitude_huber_delta,
         "target_rate_huber_delta": phase.target_rate_huber_delta,
@@ -1682,6 +1735,15 @@ def phase_payload(phase: Phase, command: list[str], output_root: Path) -> dict[s
 
 
 def recipe_rationale(recipe: str) -> str:
+    if recipe == "movement_bootstrap_v13":
+        return (
+            "`movement_bootstrap_v13` is a mechanics test after V12 showed "
+            "that episode termination alone did not defeat stable no-motion. "
+            "It keeps the V12 fitted-bridge low-command curriculum, but adds "
+            "a signed command-progress failure penalty and lowers the reward "
+            "clip floor so standing until failure has an explicit negative "
+            "consequence."
+        )
     if recipe == "movement_bootstrap_v12":
         return (
             "`movement_bootstrap_v12` is a mechanics test after V11 learned "
@@ -1778,12 +1840,12 @@ def write_plan(payload: dict[str, Any], output_md: Path, output_json: Path) -> N
         "",
         "## Phases",
         "",
-        "| phase | bridge | timesteps | x command range | shortfall | window progress | delay | tau | velocity limit | purpose |",
-        "|---|---|---:|---|---|---|---|---|---|---|",
+        "| phase | bridge | timesteps | x command range | shortfall | window progress | failure penalty | delay | tau | velocity limit | purpose |",
+        "|---|---|---:|---|---|---|---|---|---|---|---|",
     ]
     for phase in payload["phases"]:
         lines.append(
-            "| `{name}` | {bridge} | {steps} | `{x}` | `{shortfall}` | `{progress}` | `{delay}` | `{tau}` | `{vel}` | {purpose} |".format(
+            "| `{name}` | {bridge} | {steps} | `{x}` | `{shortfall}` | `{progress}` | `{failure}` | `{delay}` | `{tau}` | `{vel}` | {purpose} |".format(
                 name=phase["name"],
                 bridge="yes" if phase["bridge_enabled"] else "no",
                 steps=phase["num_timesteps"],
@@ -1801,6 +1863,10 @@ def write_plan(payload: dict[str, Any], output_md: Path, output_json: Path) -> N
                     "failure_min_ratio": phase[
                         "command_progress_failure_min_ratio"
                     ],
+                },
+                failure={
+                    "scale": phase["command_progress_failure_scale"],
+                    "clip_min": phase["reward_clip_min"],
                 },
                 delay=phase["delay_ticks"],
                 tau=phase["tau_s"],
@@ -1970,7 +2036,7 @@ def main() -> int:
     parser.add_argument(
         "--recipe",
         choices=sorted(RECIPES),
-        default="movement_bootstrap_v12",
+        default="movement_bootstrap_v13",
         help=(
             "Staged recipe to emit/run. shortfall_v1 preserves the June 23 A100 "
             "recipe that landed in standstill; movement_bootstrap_v2 preserves "
@@ -1989,8 +2055,9 @@ def main() -> int:
             "V7/V9 failure surfaces: lunge, reverse, support collapse, and "
             "standstill; movement_bootstrap_v11 starts a fresh hard-progress "
             "lineage after V10 failed mostly by freezing; movement_bootstrap_v12 "
-            "adds command-progress failure to invalidate V11-style no-motion "
-            "and is the current default."
+            "adds command-progress failure to invalidate V11-style no-motion; "
+            "movement_bootstrap_v13 adds a signed command-progress failure "
+            "penalty after V12 still froze. V13 is the current default."
         ),
     )
     parser.add_argument("--timesteps-scale", type=float, default=1.0)

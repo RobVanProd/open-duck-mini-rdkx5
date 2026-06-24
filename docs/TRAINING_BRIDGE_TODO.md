@@ -1267,3 +1267,36 @@ corrected gate did its job by stopping the staged curriculum before later phases
 consolidated the no-motion behavior. Robot validation remains blocked.
 
 Summary artifact: `outputs/analysis/MOVEMENT_BOOTSTRAP_V12_A100_PHASE1_SUMMARY.md`.
+
+### V13 Signed-Failure Mechanics Plan
+
+The V12 result exposed a narrower mechanics failure: low-progress episodes were
+terminated, but standing until termination still did not carry enough negative
+consequence to defeat the no-motion basin. Source inspection showed that the
+environment clipped scalar reward at zero by default, so a terminal low-progress
+event could still be flattened instead of becoming an explicit signed penalty.
+
+V13 is prepared as a dry-run plan:
+
+```text
+recipe: movement_bootstrap_v13
+plan: outputs/analysis/MOVEMENT_BOOTSTRAP_V13_TRAINING_PLAN.md
+json: outputs/analysis/movement_bootstrap_v13_training_plan.json
+training_started: false
+robot_touched: false
+```
+
+Intent:
+
+```text
+- keep the V12 fitted-bridge low-command curriculum
+- keep command-progress failure enabled in every phase
+- add signed command-progress failure penalties: -120, -140, -160
+- lower reward_clip_min to -10.0 so failure can be negative
+- keep the per-phase candidate gate so frozen phases stop early
+- do not request robot validation until x=0.0 and x=0.08 gates pass
+```
+
+V13 remains an offline mechanics test. It should answer whether explicit
+negative low-progress failure can make forward motion cheaper than standing
+still inside the measured actuator envelope.

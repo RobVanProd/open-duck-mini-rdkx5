@@ -103,6 +103,7 @@ def build_command(args: argparse.Namespace, output_dir: Path) -> list[str]:
         ),
         "--command_progress_scale": args.command_progress_scale,
         "--command_progress_shortfall_scale": args.command_progress_shortfall_scale,
+        "--command_progress_failure_scale": args.command_progress_failure_scale,
         "--command_progress_required_ratio": args.command_progress_required_ratio,
         "--command_progress_warmup_steps": args.command_progress_warmup_steps,
         "--command_progress_failure_min_ratio": (
@@ -125,6 +126,8 @@ def build_command(args: argparse.Namespace, output_dir: Path) -> list[str]:
         "--command_progress_shortfall_huber_delta": (
             args.command_progress_shortfall_huber_delta
         ),
+        "--reward_clip_min": args.reward_clip_min,
+        "--reward_clip_max": args.reward_clip_max,
         "--action_rate_scale": args.action_rate_scale,
         "--action_magnitude_scale": args.action_magnitude_scale,
         "--stand_still_scale": args.stand_still_scale,
@@ -293,6 +296,7 @@ def main() -> int:
     )
     parser.add_argument("--command-progress-scale", type=float, default=None)
     parser.add_argument("--command-progress-shortfall-scale", type=float, default=None)
+    parser.add_argument("--command-progress-failure-scale", type=float, default=None)
     parser.add_argument("--command-progress-required-ratio", type=float, default=None)
     parser.add_argument("--command-progress-warmup-steps", type=int, default=None)
     parser.add_argument(
@@ -321,6 +325,8 @@ def main() -> int:
     parser.add_argument(
         "--command-progress-shortfall-huber-delta", type=float, default=None
     )
+    parser.add_argument("--reward-clip-min", type=float, default=None)
+    parser.add_argument("--reward-clip-max", type=float, default=None)
     parser.add_argument("--action-rate-scale", type=float, default=None)
     parser.add_argument("--action-magnitude-scale", type=float, default=None)
     parser.add_argument("--stand-still-scale", type=float, default=None)
@@ -393,6 +399,7 @@ def main() -> int:
             ),
             "command_progress_scale": args.command_progress_scale,
             "command_progress_shortfall_scale": args.command_progress_shortfall_scale,
+            "command_progress_failure_scale": args.command_progress_failure_scale,
             "command_progress_required_ratio": args.command_progress_required_ratio,
             "command_progress_warmup_steps": args.command_progress_warmup_steps,
             "command_progress_failure_enable": args.command_progress_failure_enable,
@@ -416,6 +423,8 @@ def main() -> int:
             "command_progress_shortfall_huber_delta": (
                 args.command_progress_shortfall_huber_delta
             ),
+            "reward_clip_min": args.reward_clip_min,
+            "reward_clip_max": args.reward_clip_max,
             "action_rate_scale": args.action_rate_scale,
             "action_magnitude_scale": args.action_magnitude_scale,
             "stand_still_scale": args.stand_still_scale,
