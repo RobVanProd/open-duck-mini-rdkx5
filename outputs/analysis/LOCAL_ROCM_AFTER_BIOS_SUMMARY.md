@@ -20,6 +20,7 @@ What works locally:
 - A minimal MJX model step passes on GPU.
 - Open Duck Playground reset and finite-state checks pass on GPU.
 - The same Open Duck Playground step tests pass on CPU.
+- CPU closed-loop policy eval passes for the small isolation horizon.
 
 What still fails locally:
 
@@ -29,7 +30,8 @@ What still fails locally:
 - Jitted Open Duck Playground direct MJX step produced
   `ROCM_ERROR_ILLEGAL_ADDRESS`.
 - Closed-loop policy eval on GPU produced
-  `ROCM_ERROR_ILLEGAL_ADDRESS`.
+  `ROCM_ERROR_ILLEGAL_ADDRESS` in one bridge path and timed out in the final
+  closed-loop GPU row.
 
 Current practical decision:
 
@@ -79,7 +81,22 @@ Key completed rows:
 | Open Duck direct MJX step | no pass payload / timeout | PASS | GPU-specific Open Duck MJX step failure |
 | Open Duck direct MJX step, jitted | `ROCM_ERROR_ILLEGAL_ADDRESS` | PASS | GPU-specific compiled step failure |
 | Open Duck one-step / scan variants | timeout/no pass payload | PASS for completed CPU rows | local GPU path unreliable |
-| closed-loop policy eval | `ROCM_ERROR_ILLEGAL_ADDRESS` | not needed for decision yet | local GPU closed-loop blocked |
+| closed-loop policy eval | timeout / `ROCM_ERROR_ILLEGAL_ADDRESS` | PASS | local GPU closed-loop blocked; CPU correctness fallback works |
+
+The generated isolation report concluded:
+
+```text
+gate_result: HOLD_PLAYGROUND_GPU_STEP
+smallest_failing_subtest: default_gpu_playground_direct_mjx_step
+```
+
+Generated report files, intentionally left out of git because they include raw
+subprocess logs:
+
+```text
+outputs/analysis/rocm_mjx_isolation_after_bios/ROCM_MJX_RUNTIME_ISOLATION.md
+outputs/analysis/rocm_mjx_isolation_after_bios/rocm_mjx_runtime_isolation.json
+```
 
 ## Online Research Notes
 
