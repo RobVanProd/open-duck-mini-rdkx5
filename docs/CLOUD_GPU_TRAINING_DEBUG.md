@@ -66,6 +66,11 @@ The poller also attempts to recover the remote workflow output directory into
 directly, the helper now falls back to tarring the remote output directory and
 downloading that archive.
 
+Long JAX/Brax compiles can produce no new stdout for minutes. The poller records
+unchanged log polls as evidence, but it does not declare `HOLD_REMOTE_NO_SENTINEL`
+from unchanged logs alone; it waits for repeated `IDLE` status without an exit
+sentinel or artifact bundle.
+
 If a notebook is connected in the browser but `google-colab-cli` reports no
 active sessions, generate a diagnostic single-cell notebook instead:
 

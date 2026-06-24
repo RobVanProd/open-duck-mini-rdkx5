@@ -977,13 +977,8 @@ def poll_remote(
         if (
             remote_is_idle
             and not colab_file_exists(session, remote_exit)
-            and (
-                unchanged_log_polls >= 2
-                or (
-                    idle_no_exit_polls >= idle_no_sentinel_polls_limit
-                    and not colab_file_exists(session, remote_bundle)
-                )
-            )
+            and idle_no_exit_polls >= idle_no_sentinel_polls_limit
+            and not colab_file_exists(session, remote_bundle)
         ):
             partial_output_dir = download_partial_output_dir(
                 session, remote_bundle, run_dir
