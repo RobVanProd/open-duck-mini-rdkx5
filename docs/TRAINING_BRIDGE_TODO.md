@@ -887,6 +887,19 @@ balanced moving anchor to inspect next. All three remain tracking holds over
 the short horizon, so the next recipe should still use teacher/trust-region
 continuity rather than another small reward-weight tweak.
 
+Detailed short-horizon gate metrics sharpen that read:
+
+```text
+V7 body pitch p95: 0.723 rad, forward ratio: 1.836
+V8 body pitch p95: 0.293 rad, forward ratio: 0.254
+V9 body pitch p95: 0.448 rad, forward ratio: 0.913
+```
+
+V9 is not stable enough, but it is closer to commanded-speed behavior than V7
+without falling all the way back to V8's standstill. Treat it as a candidate
+teacher/anchor source for the next continuity experiment, not as a deployable
+policy.
+
 Do not request robot validation for v9.
 
 ### Candidate ONNX Export
