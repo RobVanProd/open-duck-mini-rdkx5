@@ -241,3 +241,45 @@ the full duration but produced only `0.0017 m/s` mean local forward velocity
 and a command tracking ratio of `0.0206`. This keeps the phase-1/V7 moving
 policies as the key lead and points the next work toward checkpoint selection or
 explicit teacher-action continuity, not more small reward-weight tuning.
+
+## V9 Short-Sweep And Full-Duration Recheck
+
+A later one-second checkpoint sweep showed V9 sitting between V7's overdrive
+and V8's standstill:
+
+```text
+V7 1s x=0.08 track ratio: 1.8356
+V8 1s x=0.08 track ratio: 0.2539
+V9 1s x=0.08 track ratio: 0.9129
+```
+
+That made V9 the right checkpoint to recheck, but not a deployable result. The
+one-second horizon ends at about `50` samples, while earlier moving candidates
+failed around `60-80` samples.
+
+The full-duration CPU recheck is preserved in:
+
+```text
+outputs/analysis/MOVEMENT_BOOTSTRAP_V9_FULL_DURATION_RECHECK.md
+```
+
+It found two `x=0.08` fitted-bridge failure cases:
+
+```text
+seed 0: fall_or_nan after 73 samples, track ratio 2.7707,
+        body pitch p95 1.2604 rad, max pitch target velocity p95 2.3669 rad/s
+
+seed 1: fall_or_nan after 32 samples, track ratio 0.2314,
+        base height min 0.0672 m, max pitch target velocity p95 1.7712 rad/s
+```
+
+Both runs stayed under the candidate target-velocity threshold and had `0%`
+action saturation. The exact failure shape is rollout-sensitive, but the
+decision is not: V9 is not stable through the normal `x=0.08` gate and remains
+blocked from robot validation.
+
+The next recipe should target the fall window directly: preserve early
+in-envelope forward motion with a teacher/trust-region term while penalizing
+forward-speed overshoot, pitch growth, pitch-rate growth, and base-height
+collapse. Another target-velocity-envelope tweak is unlikely to address the
+remaining failure.

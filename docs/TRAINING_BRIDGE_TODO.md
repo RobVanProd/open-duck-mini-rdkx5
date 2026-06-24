@@ -298,6 +298,57 @@ python3 tools/run_colab_cli_cuda_workflow.py \
 Robot validation remains blocked until the resulting candidate passes both
 offline gates.
 
+### V7/V8/V9 Candidate Lessons
+
+The latest movement-bootstrap sequence narrowed the remaining problem:
+
+```text
+V7: in-envelope forward motion, but lunge/fall at x=0.08
+V8: lunge suppressed, but collapsed into safe standstill
+V9: short-horizon speed looked balanced, but full-duration recheck still fell
+```
+
+The V9 full-duration recheck is preserved in:
+
+```text
+outputs/analysis/MOVEMENT_BOOTSTRAP_V9_FULL_DURATION_RECHECK.md
+```
+
+Key result:
+
+```text
+seed 0: fall at 73 samples, track ratio 2.7707, body pitch p95 1.2604 rad
+seed 1: fall at 32 samples, track ratio 0.2314, base height min 0.0672 m
+target velocity p95 stayed under threshold in both runs
+action saturation was 0%
+```
+
+Interpretation:
+
+- the one-second checkpoint sweep is useful for triage but not sufficient,
+- V9 is not a stable robot candidate,
+- the remaining failure is not target-velocity budget or saturation,
+- the next recipe must stabilize the `60-100` sample fall window without
+  erasing forward motion.
+
+Immediate tooling work:
+
+- keep `--seed` available in `tools/eval_policy_with_actuator_bridge.py`,
+- add or use a multi-seed wrapper for candidate gates,
+- require candidate promotion to include full-duration `x=0.0` and `x=0.08`
+  gates across more than one seed,
+- record seed values in every gate summary.
+
+Next recipe direction:
+
+- start from the best moving checkpoint, not from a final standstill policy,
+- add an explicit teacher-action / trust-region term to preserve early gait
+  structure,
+- penalize forward-speed overshoot, pitch growth, pitch-rate growth, and
+  base-height collapse during the first `60-100` samples,
+- keep the fitted actuator bridge and velocity envelope active,
+- reject both failure modes: above-command lunge and near-zero standstill.
+
 ### Configurable Target Delay Wrapper
 
 - Add per-episode random delay:

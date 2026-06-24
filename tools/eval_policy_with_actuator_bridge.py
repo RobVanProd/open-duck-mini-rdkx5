@@ -451,6 +451,8 @@ def run_closed_loop_worker(args) -> dict:
         str(args.command_x),
         "--duration",
         str(args.duration),
+        "--seed",
+        str(args.seed),
         "--bridge-mode",
         str(args.bridge_mode),
         "--output-dir",
@@ -574,6 +576,7 @@ def build_markdown(payload: dict) -> str:
     lines.append(f"fit_json: `{payload['fit_json']}`")
     lines.append(f"command_x: `{payload['command_x']}`")
     lines.append(f"duration_s: `{payload['duration_s']}`")
+    lines.append(f"seed: `{payload.get('seed')}`")
     lines.append(f"eval_role: `{payload.get('eval_role')}`")
     lines.append(f"jax_platform_requested: `{payload.get('jax_platform')}`")
     lines.append("")
@@ -859,6 +862,7 @@ def write_outputs(payload: dict, output_dir: Path) -> None:
             "sim_preflight": payload["sim_preflight"],
             "command_x": payload["command_x"],
             "duration_s": payload["duration_s"],
+            "seed": payload.get("seed"),
             "eval_role": payload.get("eval_role"),
             "jax_platform": payload.get("jax_platform"),
             "mjx_step_loop_mode": payload.get("mjx_step_loop_mode"),
@@ -886,6 +890,12 @@ def main() -> int:
     parser.add_argument("--env-python", default=str(DEFAULT_ENV_PYTHON))
     parser.add_argument("--command-x", type=float, default=0.08)
     parser.add_argument("--duration", type=float, default=15.0)
+    parser.add_argument(
+        "--seed",
+        type=int,
+        default=0,
+        help="JAX PRNG seed for closed-loop sim reset and delay sampling",
+    )
     parser.add_argument("--output-dir", default=str(DEFAULT_OUTPUT_DIR))
     parser.add_argument(
         "--mode",
@@ -1069,6 +1079,7 @@ def main() -> int:
                         playground_root=playground_root,
                         command_x=args.command_x,
                         duration_s=args.duration,
+                        seed=args.seed,
                         bridge_mode=args.bridge_mode,
                         expected_observation_dim=args.expected_observation_dim,
                         expected_action_dim=args.expected_action_dim,
@@ -1122,6 +1133,7 @@ def main() -> int:
         "sim_preflight": sim_preflight,
         "command_x": args.command_x,
         "duration_s": args.duration,
+        "seed": args.seed,
         "eval_role": args.eval_role,
         "jax_platform": args.jax_platform,
         "mjx_step_loop_mode": args.mjx_step_loop_mode,

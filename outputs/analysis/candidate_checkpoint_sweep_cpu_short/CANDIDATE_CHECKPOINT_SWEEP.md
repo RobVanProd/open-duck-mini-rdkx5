@@ -30,3 +30,7 @@ run: `True`
 - If no checkpoint shows meaningful in-envelope motion, the next
   training change should add a teacher-action or trust-region
   continuity mechanism rather than another small scalar reward tweak.
+- Follow-up full-duration `x=0.08` rechecks found V9 fails after the one-second
+  sweep window. See
+  `outputs/analysis/MOVEMENT_BOOTSTRAP_V9_FULL_DURATION_RECHECK.md`. Treat V9
+  as a useful probe, not as a deployable anchor.

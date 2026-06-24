@@ -1500,3 +1500,51 @@ The next offline work should stop making small reward-weight adjustments in the
 same family. The more useful direction is checkpoint selection or explicit
 teacher-action/trust-region continuity from a moving checkpoint, so
 stabilization cannot silently erase the gait. Robot validation remains blocked.
+
+## Movement Bootstrap V9 Full-Duration Recheck
+
+A short one-second checkpoint sweep initially made V9 look like the best
+middle point between V7's lunge and V8's standstill:
+
+```text
+V7 1s x=0.08 track ratio: 1.8356
+V8 1s x=0.08 track ratio: 0.2539
+V9 1s x=0.08 track ratio: 0.9129
+```
+
+That was useful for checkpoint selection, but it did not clear V9. The short
+horizon ends at about `50` samples, while the moving candidates have been
+failing around `60-80` samples.
+
+Full-duration CPU recheck:
+
+```text
+outputs/analysis/MOVEMENT_BOOTSTRAP_V9_FULL_DURATION_RECHECK.md
+```
+
+Result:
+
+```text
+seed 0: HOLD_CANDIDATE_FALL_OR_TERMINATION, 73 samples,
+        mean local vx 0.2217 m/s, track ratio 2.7707,
+        body pitch p95 1.2604 rad, target velocity p95 2.3669 rad/s
+
+seed 1: HOLD_CANDIDATE_FALL_OR_TERMINATION, 32 samples,
+        mean local vx 0.0185 m/s, track ratio 0.2314,
+        base height min 0.0672 m, target velocity p95 1.7712 rad/s
+```
+
+Both rechecks had `0%` action saturation and stayed within the actuator target
+velocity threshold. The failure is therefore not the original actuator-envelope
+wall. It is full-horizon stability under forward command: either the rollout
+lunges and pitches over, or it collapses before establishing useful forward
+tracking.
+
+This also exposes a tooling gap: candidate evaluation needs explicit seed
+control and multi-seed full-duration gates. A single short rollout is useful for
+triage but cannot promote a checkpoint to robot-candidate status.
+
+Next offline target: design V10 around the `60-100` sample fall window. Preserve
+early in-envelope forward motion with a teacher/trust-region term, then add
+stability pressure for forward-speed overshoot, pitch/pitch-rate growth, and
+base-height collapse without returning to the V8/V9 standstill basin.
