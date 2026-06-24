@@ -1930,19 +1930,26 @@ def run_phase_freeze_gate(
         if isinstance(failure, (int, float)):
             diagnostic_failure = max(diagnostic_failure, float(failure))
     gate_status = gate.get("status") or closed.get("status") or result.get("overall_status")
-    low_progress = gate_status in {
-        "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
-        "HOLD_CANDIDATE_NO_FORWARD_TRACKING",
-    }
+    candidate_gate_passed = gate_status == "PASS_CANDIDATE_SIM_GATE"
     progress_failure = diagnostic_failure > 0.0
     phase_status = (
-        "HOLD_PHASE_FREEZE_OR_LOW_PROGRESS"
-        if low_progress or progress_failure
-        else "PASS_PHASE_FREEZE_CHECK"
+        "PASS_PHASE_FREEZE_CHECK"
+        if candidate_gate_passed and not progress_failure
+        else "HOLD_PHASE_CANDIDATE_GATE"
     )
+    if progress_failure:
+        phase_status = "HOLD_PHASE_FREEZE_OR_LOW_PROGRESS"
+    elif gate_status in {
+        "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+        "HOLD_CANDIDATE_NO_FORWARD_TRACKING",
+    }:
+        phase_status = "HOLD_PHASE_FREEZE_OR_LOW_PROGRESS"
+    elif not candidate_gate_passed:
+        phase_status = "HOLD_PHASE_CANDIDATE_GATE"
     return {
         "status": phase_status,
         "candidate_gate_status": gate_status,
+        "candidate_gate_passed": candidate_gate_passed,
         "metrics": metrics,
         "diagnostic_command_progress_failure_max": diagnostic_failure,
         "command": command,
