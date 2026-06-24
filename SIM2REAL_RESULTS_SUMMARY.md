@@ -2981,6 +2981,13 @@ with the actuator bridge disabled. Do not run V18 phase 2, do not test V18 at
 objective/task diagnosis: why the policy still prefers low/reverse progress
 despite dense signed progress and wrong-direction pressure.
 
+Reward-diagnostic caveat: the A100 seed-gate command for this run did not pass
+the V18 phase reward overrides into the evaluator, so raw per-term reward
+diagnostics in the seed artifacts reflect default eval rewards. The hold remains
+valid because it is based on independent velocity/progress/fall metrics.
+Future phase gates should pass phase-local reward overrides before using reward
+term summaries diagnostically.
+
 Summary artifacts:
 
 ```text

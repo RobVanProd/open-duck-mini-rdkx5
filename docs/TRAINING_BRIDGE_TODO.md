@@ -2169,6 +2169,16 @@ Do not test V18 at x=0.08.
 Do not send V18 to the robot.
 ```
 
+Tooling caveat:
+
+```text
+The V18 A100 seed gate did not pass phase reward overrides into the evaluator.
+The hold is still valid because the failure is from motion/fall metrics, but
+raw reward-term diagnostics from that gate are not the V18 training reward.
+Future phase gates should pass phase-local reward overrides before reward-term
+diagnostics are interpreted.
+```
+
 Next offline tasks:
 
 - inspect whether the low-command task can be solved at all with the current

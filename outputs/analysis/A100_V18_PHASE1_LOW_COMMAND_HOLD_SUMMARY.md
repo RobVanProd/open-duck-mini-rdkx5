@@ -55,6 +55,16 @@ reversed/collapsed early. This is not an actuator-envelope failure and not an
 `x=0.08` target-speed issue. The lowest-command discovery setup still lands in
 low-progress/reverse behavior.
 
+Reward-diagnostic caveat:
+
+The seed-gate command used for this run did not pass the phase reward overrides
+back into the evaluator, so per-term reward summaries in the raw seed artifacts
+reflect default eval rewards rather than the V18 training reward config. This
+does not change the hold decision above: the gate failed on independent
+motion/fall metrics, not on reward mean. Future phase gates should pass
+phase-local reward overrides so reward-term diagnostics match the trained
+phase.
+
 Stop rule:
 
 ```text

@@ -3128,6 +3128,12 @@ def run_phase_seed_gate(
     output_dir = phase_root / f"phase_{phase_index:02d}_seed_gate_{label}"
     output_md = output_dir / "PHASE_SEED_GATE.md"
     output_json = output_dir / "phase_seed_gate.json"
+    reward_overrides_json = output_dir / "phase_reward_overrides.json"
+    output_dir.mkdir(parents=True, exist_ok=True)
+    reward_overrides_json.write_text(
+        json.dumps({"phases": [phase_payload(phase, [], phase_root)]}, indent=2)
+        + "\n"
+    )
     bridge_mode = phase.phase_gate_bridge_mode or args.phase_gate_bridge_mode
     policy_label = f"phase_{phase_index:02d}"
     mode_name = "fitted" if bridge_mode == "all" else bridge_mode
@@ -3153,6 +3159,10 @@ def run_phase_seed_gate(
         bridge_mode,
         "--mode-name",
         mode_name,
+        "--reward-overrides-json",
+        str(reward_overrides_json),
+        "--reward-overrides-phase",
+        phase.name,
         "--jax-platform",
         args.phase_gate_platform,
         "--sim-preflight-timeout-s",
@@ -3179,6 +3189,8 @@ def run_phase_seed_gate(
         return {
             "status": "HOLD_PHASE_MULTI_SEED_NO_RESULT",
             "command": command,
+            "reward_overrides_json": str(reward_overrides_json),
+            "reward_overrides_phase": phase.name,
             "bridge_mode": bridge_mode,
             "seeds": seeds,
             "output_dir": str(output_dir),
@@ -3219,6 +3231,8 @@ def run_phase_seed_gate(
             "min_vx_mean": args.phase_gate_min_vx_mean,
         },
         "command": command,
+        "reward_overrides_json": str(reward_overrides_json),
+        "reward_overrides_phase": phase.name,
         "bridge_mode": bridge_mode,
         "mode_name": mode_name,
         "seeds": seeds,
