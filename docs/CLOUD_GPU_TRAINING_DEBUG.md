@@ -54,6 +54,25 @@ The poller also attempts to recover the remote workflow output directory into
 `partial_remote_output` before declaring `HOLD_REMOTE_NO_SENTINEL` or
 `HOLD_REMOTE_TIMEOUT`.
 
+If a notebook is connected in the browser but `google-colab-cli` reports no
+active sessions, generate a diagnostic single-cell notebook instead:
+
+```bash
+python3 tools/print_cuda_colab_cell.py \
+  --training-smoke-diagnostic \
+  --rdk-branch codex/colab-cli-cuda-workflow \
+  --playground-branch codex/forward-progress-reward \
+  --handoff-dir /home/lsd/robots/cuda_colab_diagnostic_handoff
+```
+
+Then upload/open:
+
+```text
+/home/lsd/robots/cuda_colab_diagnostic_handoff/open_duck_cuda_smoke.ipynb
+```
+
+See `docs/CUDA_COLAB_SINGLE_CELL.md` for the manual notebook fallback.
+
 ## Backend Selection Rules
 
 Use explicit JAX backend selection for every smoke/gate command.

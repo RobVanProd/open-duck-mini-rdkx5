@@ -1,6 +1,6 @@
 # CUDA / Colab Single Cell
 
-Last updated: 2026-06-22
+Last updated: 2026-06-24
 
 ## Purpose
 
@@ -97,6 +97,45 @@ and does not require a GitHub token in Colab. This is the preferred route for
 agents and unattended runs.
 
 ## Browser Notebook Fallback
+
+Use this path when a Colab notebook is connected in the browser but
+`google-colab-cli` cannot see an active session.
+
+The next recommended fallback is diagnostic-only:
+
+```bash
+python3 tools/print_cuda_colab_cell.py \
+  --training-smoke-diagnostic \
+  --rdk-branch codex/colab-cli-cuda-workflow \
+  --playground-branch codex/forward-progress-reward \
+  --handoff-dir /home/lsd/robots/cuda_colab_diagnostic_handoff
+```
+
+Upload/open:
+
+```text
+/home/lsd/robots/cuda_colab_diagnostic_handoff/open_duck_cuda_smoke.ipynb
+```
+
+Then run its single cell in the manually authenticated CUDA/Colab notebook. It
+runs only:
+
+```text
+00_python_jax_device
+01_import_training_stack
+02_smoke_dry_run
+03_smoke_run
+```
+
+and skips baseline eval and candidate training.
+
+The cell writes diagnostic output under:
+
+```text
+outputs/analysis/cuda_manual/training_smoke_startup_diagnostic
+```
+
+and packages it into the downloadable artifact bundle.
 
 From the RDK repo:
 

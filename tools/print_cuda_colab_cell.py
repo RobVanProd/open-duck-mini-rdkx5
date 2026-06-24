@@ -23,6 +23,7 @@ def bash_bool(value: bool) -> str:
 
 def build_cell(args: argparse.Namespace) -> str:
     candidate_flag = bash_bool(args.run_candidate)
+    training_smoke_diagnostic_flag = bash_bool(args.training_smoke_diagnostic)
     auto_download_flag = bash_bool(not args.no_auto_download)
     smoke_steps = args.smoke_num_timesteps
     candidate_steps = args.candidate_num_timesteps
@@ -43,6 +44,7 @@ export PLAYGROUND_REPO={args.playground_repo!r}
 export RDK_BRANCH={args.rdk_branch!r}
 export PLAYGROUND_BRANCH={args.playground_branch!r}
 export RUN_CANDIDATE={candidate_flag}
+export TRAINING_SMOKE_DIAGNOSTIC={training_smoke_diagnostic_flag}
 export CANDIDATE_NUM_TIMESTEPS={candidate_steps}
 export CANDIDATE_RESTORE_CHECKPOINT_PATH={args.candidate_restore_checkpoint_path!r}
 export CUDA_AUTO_DOWNLOAD={auto_download_flag}
@@ -314,6 +316,25 @@ echo "=== Environment check ==="
 "$PYTHON_BIN" tools/check_training_env.py \\
   --playground-root /content/Open_Duck_Playground
 
+if [ "$TRAINING_SMOKE_DIAGNOSTIC" = "1" ]; then
+  echo "=== CUDA training smoke startup diagnostic ==="
+  "$PYTHON_BIN" tools/diagnose_training_smoke_startup.py \\
+    --playground-path /content/Open_Duck_Playground \\
+    --env-python "$PYTHON_BIN" \\
+    --platform gpu \\
+    --jax-platforms cuda \\
+    --output-dir outputs/analysis/cuda_manual/training_smoke_startup_diagnostic \\
+    --timeout-s 300 \\
+    --smoke-timeout-s 1200 \\
+    --smoke-num-timesteps {smoke_steps} \\
+    --export-min-step 1 \\
+    --ppo-num-envs {args.smoke_ppo_num_envs} \\
+    --ppo-batch-size {args.smoke_ppo_batch_size} \\
+    --run-smoke
+  echo "TRAINING_SMOKE_DIAGNOSTIC=1, so baseline eval/candidate training were skipped."
+  exit 0
+fi
+
 echo "=== Policy/sim contract audit ==="
 "$PYTHON_BIN" tools/audit_policy_sim_contract.py \\
   --policy policy/BEST_WALK_ONNX_2.onnx \\
@@ -334,6 +355,7 @@ echo "=== Closed-loop baseline bridge reproduction ==="
   --duration 15 \\
   --bridge-mode all \\
   --jax-platform gpu \\
+  --jax-platforms cuda \\
   --sim-preflight-timeout-s 600 \\
   --closed-loop-timeout-s 1800 \\
   --output-dir outputs/analysis/cuda_manual
@@ -343,6 +365,7 @@ echo "=== CUDA smoke training ==="
   --playground-path /content/Open_Duck_Playground \\
   --env-python "$PYTHON_BIN" \\
   --platform gpu \\
+  --jax-platforms cuda \\
   --run \\
   --output-root /content/open_duck_training_smokes \\
   --num-timesteps {smoke_steps} \\
@@ -363,6 +386,7 @@ if [ "$RUN_CANDIDATE" = "1" ]; then
     --playground-path /content/Open_Duck_Playground \\
     --env-python "$PYTHON_BIN" \\
     --platform gpu \\
+    --jax-platforms cuda \\
     --run \\
     --output-root /content/open_duck_training_runs \\
     --num-timesteps "$CANDIDATE_NUM_TIMESTEPS" \\
@@ -425,6 +449,7 @@ if [ "$RUN_CANDIDATE" = "1" ]; then
     --duration 15 \\
     --bridge-mode all \\
     --jax-platform gpu \\
+    --jax-platforms cuda \\
     --sim-preflight-timeout-s 600 \\
     --closed-loop-timeout-s 1800 \\
     --output-dir "outputs/analysis/cuda_manual/${{CANDIDATE}}_gate_x0"
@@ -445,6 +470,7 @@ if [ "$RUN_CANDIDATE" = "1" ]; then
     --duration 15 \\
     --bridge-mode all \\
     --jax-platform gpu \\
+    --jax-platforms cuda \\
     --sim-preflight-timeout-s 600 \\
     --closed-loop-timeout-s 1800 \\
     --output-dir "outputs/analysis/cuda_manual/${{CANDIDATE}}_gate_x008"
@@ -602,6 +628,14 @@ def main() -> int:
     parser.add_argument("--rdk-branch", default=DEFAULT_RDK_BRANCH)
     parser.add_argument("--playground-branch", default=DEFAULT_PLAYGROUND_BRANCH)
     parser.add_argument("--run-candidate", action="store_true")
+    parser.add_argument(
+        "--training-smoke-diagnostic",
+        action="store_true",
+        help=(
+            "Generate a single cell that runs the staged CUDA training-smoke "
+            "startup diagnostic and skips baseline eval/candidate training."
+        ),
+    )
     parser.add_argument("--smoke-num-timesteps", type=int, default=64)
     parser.add_argument("--smoke-ppo-num-envs", type=int, default=8)
     parser.add_argument("--smoke-ppo-batch-size", type=int, default=8)
