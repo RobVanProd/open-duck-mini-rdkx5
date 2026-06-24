@@ -851,6 +851,22 @@ Next offline work should prioritize:
 3. separate stabilization from motion preservation instead of blending them only through reward weights
 ```
 
+Use the checkpoint-sweep helper for the first item:
+
+```bash
+python3 tools/sweep_candidate_checkpoints.py \
+  --policies policy/candidates/movement_bootstrap_v7_checkpoint_anchor_20260623/candidate.onnx \
+             policy/candidates/movement_bootstrap_v8_overshoot_stabilized_standstill_20260623/candidate.onnx \
+             policy/candidates/movement_bootstrap_v9_progress_balanced_standstill_20260623/candidate.onnx \
+  --commands 0.08 \
+  --duration 5 \
+  --bridge-mode fitted \
+  --output-dir outputs/analysis/candidate_checkpoint_sweep
+```
+
+Run it with `--run` only on a known-good CUDA session or CPU fallback. The local
+ROCm/MJX path remains a backend issue.
+
 Do not request robot validation for v9.
 
 ### Candidate ONNX Export
