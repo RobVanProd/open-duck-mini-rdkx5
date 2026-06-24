@@ -1913,3 +1913,29 @@ failure frequency and reward-term dominance during training before another A100
 recipe is launched. Robot validation remains blocked.
 
 Summary artifact: `outputs/analysis/MOVEMENT_BOOTSTRAP_V13_A100_PHASE1_SUMMARY.md`.
+
+### V13 Training-Reward Replay
+
+The closed-loop evaluator was corrected to replay training reward overrides and
+the command-progress failure path while manually inserting the actuator bridge.
+With the V13 phase-1 reward settings applied, the phase-1 candidate terminates
+at the configured 80-step low-progress boundary:
+
+```text
+status: HOLD_CANDIDATE_FALL_OR_TERMINATION
+samples: 80
+termination: fall_or_nan
+forward_tracking_ratio: 0.04657
+mean local vx: 0.0037 m/s
+diagnostic/command_progress_failure max: 1.0
+cost/command_progress_failure max: 120.0
+reward_min: -2.24327
+```
+
+This confirms V13's signed failure mechanism is active. The remaining problem is
+not missing termination; it is that PPO still learns a short-lived low-motion
+behavior that reaches the failure boundary instead of discovering forward motion.
+Do not launch another A100 recipe until the next change directly targets that
+local optimum.
+
+Summary artifact: `outputs/analysis/V13_TRAINING_REWARD_REPLAY_SUMMARY.md`.

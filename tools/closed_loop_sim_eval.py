@@ -60,6 +60,7 @@ class ClosedLoopConfig:
     max_motor_velocity_override_rad_s: float | None = None
     forward_diagnostic_required_ratio: float = 0.5
     forward_diagnostic_deadband: float = 0.02
+    reward_overrides: Mapping[str, Any] | None = None
     trace_jsonl: Path | None = None
 
 
@@ -173,6 +174,86 @@ def available_modes(requested: str) -> list[str]:
     if requested == "all":
         return ["vanilla", "fitted", "stress"]
     return [requested]
+
+
+REWARD_SCALE_OVERRIDES = {
+    "tracking_lin_vel_scale": "tracking_lin_vel",
+    "tracking_ang_vel_scale": "tracking_ang_vel",
+    "target_rate_scale": "target_rate",
+    "actuator_tracking_scale": "actuator_tracking",
+    "forward_progress_scale": "forward_progress",
+    "forward_shortfall_scale": "forward_shortfall",
+    "forward_overshoot_scale": "forward_overshoot",
+    "forward_wrong_direction_scale": "forward_wrong_direction",
+    "command_progress_scale": "command_progress",
+    "command_progress_shortfall_scale": "command_progress_shortfall",
+    "command_progress_failure_scale": "command_progress_failure",
+    "action_rate_scale": "action_rate",
+    "action_magnitude_scale": "action_magnitude",
+    "stand_still_scale": "stand_still",
+    "orientation_scale": "orientation",
+    "base_height_scale": "base_height",
+    "forward_pitch_scale": "forward_pitch",
+    "forward_pitch_rate_scale": "forward_pitch_rate",
+    "forward_contact_support_scale": "forward_contact_support",
+    "alive_scale": "alive",
+    "imitation_scale": "imitation",
+}
+
+
+REWARD_CONFIG_OVERRIDES = {
+    "tracking_sigma",
+    "forward_progress_deadband",
+    "forward_shortfall_required_ratio",
+    "forward_overshoot_allowed_ratio",
+    "forward_wrong_direction_allowed_reverse_ratio",
+    "command_progress_required_ratio",
+    "command_progress_warmup_steps",
+    "command_progress_failure_enable",
+    "command_progress_failure_min_ratio",
+    "command_progress_failure_warmup_steps",
+    "reward_clip_min",
+    "reward_clip_max",
+    "forward_contact_support_no_contact_weight",
+    "forward_contact_support_asymmetry_weight",
+    "action_rate_huber_delta",
+    "action_magnitude_huber_delta",
+    "target_rate_huber_delta",
+    "actuator_tracking_huber_delta",
+    "forward_shortfall_huber_delta",
+    "forward_overshoot_huber_delta",
+    "forward_wrong_direction_huber_delta",
+    "forward_pitch_huber_delta",
+    "forward_pitch_rate_huber_delta",
+    "command_progress_shortfall_huber_delta",
+}
+
+
+def apply_reward_overrides(env_config, overrides: Mapping[str, Any] | None) -> dict:
+    """Apply training reward overrides to an eval env config.
+
+    The closed-loop eval inserts the actuator bridge manually, so normal
+    Playground runner CLI overrides are not available here. This function accepts
+    the same snake_case keys emitted by staged-curriculum phase JSON payloads.
+    """
+
+    applied: dict[str, Any] = {}
+    if not overrides:
+        return applied
+    reward_config = env_config.reward_config
+    for override_key, scale_key in REWARD_SCALE_OVERRIDES.items():
+        value = overrides.get(override_key)
+        if value is None:
+            continue
+        reward_config.scales[scale_key] = value
+        applied[override_key] = value
+    for key in REWARD_CONFIG_OVERRIDES:
+        value = overrides.get(key)
+        if value is None:
+            continue
+        reward_config[key] = value
+        applied[key] = value
+    return applied
 
 
 def block_tree(jax_module, value):
@@ -560,7 +641,13 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
 
     try:
         with temporary_cwd(config.playground_root):
-            env = joystick.Joystick(task=config.task, config_overrides=overrides)
+            env_config = joystick.default_config()
+            applied_reward_overrides = apply_reward_overrides(
+                env_config, config.reward_overrides
+            )
+            env = joystick.Joystick(
+                task=config.task, config=env_config, config_overrides=overrides
+            )
     except Exception as exc:  # pragma: no cover - environment-dependent
         return {
             "status": "HOLD_SIM_RUNTIME_ERROR",
@@ -691,8 +778,14 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
         p_f = data.site_xpos[env._feet_site_id]
         p_fz = p_f[..., -1]
         state.info["swing_peak"] = jp.maximum(state.info["swing_peak"], p_fz)
+        env._update_command_window_progress(state.info, data)
         obs = env._get_obs(data, state.info, contact)
         done = env._get_termination(data)
+        command_progress_failure = env._get_command_progress_failure(state.info)
+        state.info["command_progress_failure"] = command_progress_failure.astype(
+            state.info["command_progress_ratio"].dtype
+        )
+        done = done | command_progress_failure
         rewards = env._get_reward(
             data, action, state.info, state.metrics, done, first_contact, contact
         )
@@ -700,7 +793,11 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             key: value * env._config.reward_config.scales[key]
             for key, value in rewards.items()
         }
-        reward = jp.clip(sum(rewards.values()) * env.dt, 0.0, 10000.0)
+        reward = jp.clip(
+            sum(rewards.values()) * env.dt,
+            env._config.reward_config.reward_clip_min,
+            env._config.reward_config.reward_clip_max,
+        )
         state.info["push"] = jp.array([0.0, 0.0])
         state.info["step"] += 1
         state.info["push_step"] += 1
@@ -719,6 +816,30 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                 else:
                     state.metrics[f"cost/{key}"] = -value
         state.metrics["swing_peak"] = jp.mean(state.info["swing_peak"])
+        state.metrics["diagnostic/target_velocity_cost"] = state.info[
+            "target_velocity_cost"
+        ]
+        state.metrics["diagnostic/actuator_bridge_tracking_cost"] = state.info[
+            "actuator_bridge_tracking_cost"
+        ]
+        state.metrics["diagnostic/actuator_bridge_delay_ticks"] = state.info[
+            "actuator_bridge_delay_ticks"
+        ].astype(reward.dtype)
+        state.metrics["diagnostic/actuator_bridge_tau_mean_s"] = jp.mean(
+            state.info["actuator_bridge_tau_s"]
+        )
+        state.metrics["diagnostic/actuator_bridge_velocity_limit_mean_rad_s"] = jp.mean(
+            state.info["actuator_bridge_velocity_limit_rad_s"]
+        )
+        state.metrics["diagnostic/command_progress_ratio"] = state.info[
+            "command_progress_ratio"
+        ]
+        state.metrics["diagnostic/command_progress_shortfall_cost"] = state.info[
+            "command_progress_shortfall_cost"
+        ]
+        state.metrics["diagnostic/command_progress_failure"] = (
+            command_progress_failure.astype(reward.dtype)
+        )
         done = done.astype(reward.dtype)
         return state.replace(data=data, obs=obs, reward=reward, done=done)
 
@@ -755,6 +876,7 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
         "noise_disabled": True,
         "action_delay_disabled": True,
         "command_pinned": [config.command_x, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+        "reward_overrides_applied": applied_reward_overrides,
     }
 
     for mode in available_modes(config.bridge_mode):

@@ -84,6 +84,51 @@ def fmt(value, digits: int = 4) -> str:
     return f"{float(value):.{digits}f}"
 
 
+def load_reward_overrides(path: Path | None, phase_name: str | None) -> dict:
+    if path is None:
+        return {}
+    path = path.expanduser().resolve()
+    payload = json.loads(path.read_text())
+    selected = payload
+    if isinstance(payload, dict) and isinstance(payload.get("phases"), list):
+        phases = payload["phases"]
+        if phase_name:
+            matches = [phase for phase in phases if phase.get("name") == phase_name]
+            if not matches:
+                raise SystemExit(
+                    f"--reward-overrides-phase {phase_name!r} not found in {path}"
+                )
+            selected = matches[0]
+        elif phases:
+            selected = phases[0]
+    if isinstance(selected, dict) and isinstance(
+        selected.get("training_recipe_overrides"), dict
+    ):
+        selected = selected["training_recipe_overrides"]
+    if not isinstance(selected, dict):
+        raise SystemExit(f"reward override JSON did not contain an object: {path}")
+    return {
+        key: value
+        for key, value in selected.items()
+        if value is not None
+        and (
+            key.endswith("_scale")
+            or key.endswith("_huber_delta")
+            or key.startswith("command_progress_")
+            or key.startswith("forward_")
+            or key.startswith("reward_clip_")
+            or key
+            in {
+                "tracking_sigma",
+                "action_rate_huber_delta",
+                "action_magnitude_huber_delta",
+                "target_rate_huber_delta",
+                "actuator_tracking_huber_delta",
+            }
+        )
+    }
+
+
 def load_records(path: Path, startup_ticks: int) -> list[dict]:
     records = []
     with open(path) as f:
@@ -487,6 +532,10 @@ def run_closed_loop_worker(args) -> dict:
         "--_closed-loop-worker-json",
         str(worker_json),
     ]
+    if args.reward_overrides_json:
+        cmd.extend(["--reward-overrides-json", str(args.reward_overrides_json)])
+    if args.reward_overrides_phase:
+        cmd.extend(["--reward-overrides-phase", str(args.reward_overrides_phase)])
     if args.trace_jsonl:
         cmd.extend(["--trace-jsonl", str(args.trace_jsonl)])
     if args.jax_platform:
@@ -1020,6 +1069,25 @@ def main() -> int:
         ),
     )
     parser.add_argument(
+        "--reward-overrides-json",
+        default=None,
+        help=(
+            "Optional JSON file containing staged-curriculum phase reward "
+            "overrides. When provided, closed-loop eval replays the same reward "
+            "scales, command-progress failure settings, and reward clip bounds "
+            "used during training."
+        ),
+    )
+    parser.add_argument(
+        "--reward-overrides-phase",
+        default=None,
+        help=(
+            "Phase name to select from --reward-overrides-json when the file "
+            "contains a staged plan with a phases array. Defaults to the first "
+            "phase."
+        ),
+    )
+    parser.add_argument(
         "--_closed-loop-worker",
         action="store_true",
         help=argparse.SUPPRESS,
@@ -1038,6 +1106,10 @@ def main() -> int:
     playground_root = Path(args.playground_root).expanduser().resolve()
     env_python = Path(args.env_python).expanduser().absolute()
     fit = load_fit_json(fit_path)
+    reward_overrides = load_reward_overrides(
+        None if args.reward_overrides_json is None else Path(args.reward_overrides_json),
+        args.reward_overrides_phase,
+    )
 
     policy = inspect_policy(
         policy_path,
@@ -1095,6 +1167,7 @@ def main() -> int:
                         forward_diagnostic_deadband=(
                             args.forward_diagnostic_deadband
                         ),
+                        reward_overrides=reward_overrides,
                         trace_jsonl=(
                             None if args.trace_jsonl is None else Path(args.trace_jsonl)
                         ),
@@ -1137,6 +1210,9 @@ def main() -> int:
         "eval_role": args.eval_role,
         "jax_platform": args.jax_platform,
         "mjx_step_loop_mode": args.mjx_step_loop_mode,
+        "reward_overrides_json": args.reward_overrides_json,
+        "reward_overrides_phase": args.reward_overrides_phase,
+        "reward_overrides": reward_overrides,
         "telemetry_replay": telemetry_replay,
         "closed_loop_sim": closed_loop_sim,
     }

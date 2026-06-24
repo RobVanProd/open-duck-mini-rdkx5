@@ -1329,3 +1329,28 @@ terms still make low-motion behavior locally preferable despite the signed
 failure penalty.
 
 Summary artifact: `outputs/analysis/MOVEMENT_BOOTSTRAP_V13_A100_PHASE1_SUMMARY.md`.
+
+### V13 Training-Reward Replay
+
+The closed-loop evaluator was updated after V13 because the original candidate
+gate replayed default reward settings and did not execute the command-progress
+failure path while manually inserting the actuator bridge. With the V13 phase-1
+reward overrides applied, the same candidate now terminates exactly at the
+configured command-progress failure boundary:
+
+```text
+status: HOLD_CANDIDATE_FALL_OR_TERMINATION
+samples: 80
+termination: fall_or_nan
+forward_tracking_ratio: 0.04657
+mean local vx: 0.0037 m/s
+diagnostic/command_progress_failure max: 1.0
+cost/command_progress_failure max: 120.0
+reward_min: -2.24327
+```
+
+Interpretation: V13's failure mechanic is active and visible in training-equivalent
+eval. The remaining failure is a short-lived low-motion local optimum: the policy
+survives until the low-progress boundary rather than learning forward motion.
+
+Summary artifact: `outputs/analysis/V13_TRAINING_REWARD_REPLAY_SUMMARY.md`.
