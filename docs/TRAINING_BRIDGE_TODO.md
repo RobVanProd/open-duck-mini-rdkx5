@@ -1752,3 +1752,25 @@ python3 tools/run_colab_cli_cuda_workflow.py \
 
 Summary artifact:
 `outputs/analysis/L4_PLATFORMFIX_TRAINING_SMOKE_SUMMARY.md`.
+
+### L4 CUDA Training Smoke Hold
+
+The foreground L4 smoke was rerun with `JAX_PLATFORMS=cuda`. It still
+disappeared during or immediately before the tiny PPO smoke; the expected smoke
+output directory was never created.
+
+Current backend matrix:
+
+```text
+local CPU training-smoke: PASS
+Colab A100 training-smoke: HOLD_REMOTE_NO_SENTINEL
+Colab L4 training-smoke: HOLD_REMOTE_NO_SENTINEL
+Colab L4 foreground + cuda selector: HOLD_REMOTE_NO_SENTINEL
+```
+
+Interpretation: this is now a cloud GPU training-runtime hold, not a recipe
+result. Continue recipe/debug iteration on a stable backend such as local CPU,
+and treat Colab GPU as a separate infrastructure issue.
+
+Summary artifact:
+`outputs/analysis/L4_CUDA_TRAINING_SMOKE_NO_SENTINEL_SUMMARY.md`.

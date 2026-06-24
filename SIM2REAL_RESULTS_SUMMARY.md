@@ -2204,3 +2204,34 @@ Next check is foreground L4 `training-smoke` with `JAX_PLATFORMS=cuda`.
 
 Summary artifact:
 `outputs/analysis/L4_PLATFORMFIX_TRAINING_SMOKE_SUMMARY.md`.
+
+### L4 CUDA Training Smoke Hold
+
+The foreground L4 smoke was rerun with the corrected CUDA selector:
+
+```text
+JAX_PLATFORM_NAME=gpu
+JAX_PLATFORMS=cuda
+```
+
+The pinned stack initialized and JAX saw `CudaDevice(id=0)`. The run reached the
+tiny PPO smoke command, then Colab reported `IDLE` without a workflow exit
+sentinel, artifact bundle, smoke stdout/stderr, start manifest, final manifest,
+ONNX, or checkpoint. Direct download of the expected smoke output paths failed
+because the smoke output directory had not been created.
+
+This leaves a clean matrix:
+
+```text
+local CPU training-smoke: PASS
+Colab A100 training-smoke: HOLD_REMOTE_NO_SENTINEL
+Colab L4 training-smoke: HOLD_REMOTE_NO_SENTINEL
+Colab L4 foreground + cuda selector: HOLD_REMOTE_NO_SENTINEL before smoke output dir
+```
+
+Interpretation: the Open Duck runner works, but Colab GPU training is currently
+not reliable enough for recipe iteration. Keep the robot parked and continue on
+a stable backend while treating Colab GPU as a separate runtime issue.
+
+Summary artifact:
+`outputs/analysis/L4_CUDA_TRAINING_SMOKE_NO_SENTINEL_SUMMARY.md`.
