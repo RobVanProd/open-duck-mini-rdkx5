@@ -2320,31 +2320,29 @@ directories directly.
 Summary artifact:
 `outputs/analysis/L4_MINIMAL_CUDA_TRAINING_SMOKE_SUMMARY.md`.
 
-### L4 1-Env / 16-Step CUDA Training Smoke Hold
+### L4 1-Env / 16-Step CUDA Training Smoke Pass
 
-The next Colab L4 scale point used one environment and sixteen timesteps. It
-passed the startup stages and reached the same runner setup point as the
-passing 1-env / 8-step run:
+The next Colab L4 scale point used one environment and sixteen timesteps. After
+the Colab helper stopped treating unchanged logs alone as a lost-sentinel
+condition, this scale passed:
 
 ```text
 00_python_jax_device: PASS
 01_import_training_stack: PASS
 02_smoke_dry_run: PASS
-Observation size: 101
+03_smoke_run: PASS
 num_timesteps: 16
 num_envs: 1
 batch_size: 1
-Skipping checkpoint/export at step 0; export_min_step=1
+status: PASS_SMOKE_RUN
+elapsed_s: 423.93
+STEP: 20 reward: 7.24683952331543 reward_std: 2.536440372467041
+checkpoint: saved at step 20
 ```
-
-But it produced no `STEP:` line, final manifest, workflow exit sentinel, or
-artifact bundle. The 1-env / 8-step run remains the known passing Colab CUDA
-scale; 1-env / 16-step is a hold until repeated with a less aggressive
-no-sentinel poll threshold or another cloud runtime.
 
 The Colab workflow now exposes `--idle-no-sentinel-polls` so long/no-output GPU
 compile windows can be given more slack before the helper declares a lost
 sentinel.
 
 Summary artifact:
-`outputs/analysis/L4_1ENV16_CUDA_TRAINING_SMOKE_HOLD_SUMMARY.md`.
+`outputs/analysis/L4_1ENV16_CUDA_TRAINING_SMOKE_SUMMARY.md`.

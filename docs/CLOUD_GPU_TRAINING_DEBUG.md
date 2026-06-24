@@ -14,10 +14,10 @@ Known-good:
 - Colab CUDA JAX device detection: `PASS` in prior manual notebook checks
 - Colab L4 minimal CUDA PPO smoke: `PASS`
   - `num_envs=1`
-  - `num_timesteps=8`
+  - `num_timesteps=16`
   - actuator bridge enabled
   - final manifest written
-  - checkpoint saved at step 10
+  - checkpoint saved at step 20
 
 Current hold:
 
@@ -27,10 +27,10 @@ Colab L4 training-smoke: HOLD_REMOTE_NO_SENTINEL
 Colab L4 8-env training-smoke diagnostic: HOLD_REMOTE_NO_SENTINEL
 ```
 
-The minimal L4 run proves CUDA/JAX/Brax/Playground are usable at very small
+The minimal L4 runs prove CUDA/JAX/Brax/Playground are usable at very small
 scale. The remaining problem is scale-sensitive or long-compile/runtime related:
 the 8-env / 64-timestep diagnostic disappeared without a final sentinel, while
-the 1-env / 8-timestep diagnostic completed.
+the 1-env / 16-timestep diagnostic completed after a long quiet window.
 
 ## Required Next Command
 
@@ -171,8 +171,8 @@ If the run disappears without a sentinel:
 
 The passing L4 smoke used `num_envs=1` and `num_timesteps=8`.
 
-The next point, `num_envs=1` and `num_timesteps=16`, reached runner setup but
-disappeared before a `STEP:` line or final manifest.
+The next point, `num_envs=1` and `num_timesteps=16`, also passed once the poller
+stopped treating unchanged logs alone as a lost-sentinel condition.
 
 The failing diagnostic used `num_envs=8` and `num_timesteps=64`.
 
@@ -180,7 +180,7 @@ The next cloud isolation step should sweep upward conservatively, for example:
 
 ```text
 1 env / 8 timesteps   known PASS
-1 env / 16 timesteps  known HOLD so far
+1 env / 16 timesteps  known PASS
 2 env / 16 timesteps
 4 env / 32 timesteps
 8 env / 64 timesteps  known HOLD so far
