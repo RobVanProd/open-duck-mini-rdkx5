@@ -2395,3 +2395,40 @@ compile polling before treating it as a real scale limit.
 
 Summary artifact:
 `outputs/analysis/L4_4ENV32_CUDA_TRAINING_SMOKE_SUMMARY.md`.
+
+### L4 8-Env / 64-Step CUDA Training Smoke Hold
+
+The original 8-env / 64-step Colab L4 smoke was rerun after the quiet-compile
+poller fix:
+
+```text
+jax: 0.7.2
+jaxlib: 0.7.2
+brax: 0.14.2
+mujoco: 3.9.0
+mujoco-mjx: 3.9.0
+playground: 0.0.5
+backend: gpu [CudaDevice(id=0)]
+smoke-num-timesteps: 64
+ppo-num-envs: 8
+ppo-batch-size: 8
+```
+
+The run reached the actual smoke command, then ended with:
+
+```text
+status: HOLD_REMOTE_NO_SENTINEL
+idle_no_exit_polls: 18
+idle_no_sentinel_polls_limit: 18
+workflow exit sentinel: MISSING
+artifact bundle: MISSING
+local_partial_output_dir: None
+```
+
+Read-only side inspection found the expected remote diagnostic/output directory
+and exit/artifact files were missing. Current L4 CUDA smoke capacity is therefore
+verified through 4 env / 32 timesteps, with 8 env / 64 timesteps still held by
+Colab runtime/session loss.
+
+Summary artifact:
+`outputs/analysis/L4_8ENV64_CUDA_TRAINING_SMOKE_HOLD_SUMMARY.md`.

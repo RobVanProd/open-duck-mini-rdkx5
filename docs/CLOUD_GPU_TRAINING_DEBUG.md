@@ -29,9 +29,9 @@ Colab L4 8-env training-smoke diagnostic: HOLD_REMOTE_NO_SENTINEL
 
 The minimal L4 runs prove CUDA/JAX/Brax/Playground are usable at very small
 scale. The remaining problem is scale-sensitive or long-compile/runtime related:
-the 8-env / 64-timestep diagnostic disappeared without a final sentinel before
-the poller fix, while the 4-env / 32-timestep diagnostic completed after a long
-quiet window.
+the 4-env / 32-timestep diagnostic completed after a long quiet window. The
+8-env / 64-timestep diagnostic still disappears without a final sentinel after
+the poller fix, and the expected remote output paths are missing afterward.
 
 ## Required Next Command
 
@@ -188,11 +188,21 @@ The next cloud isolation step should sweep upward conservatively, for example:
 1 env / 16 timesteps  known PASS
 2 env / 16 timesteps  known PASS
 4 env / 32 timesteps  known PASS
-8 env / 64 timesteps  rerun with fixed poller
+8 env / 64 timesteps  HOLD_REMOTE_NO_SENTINEL
 ```
 
 Stop at the first scale that disappears or times out and preserve the partial
 output bundle.
+
+Current first hold:
+
+```text
+8 env / 64 timesteps
+```
+
+The helper found no exit sentinel, no artifact bundle, and no recoverable
+partial output directory. Treat this as a cloud runtime/session loss until an
+A100 run or an intermediate scale says otherwise.
 
 ## Related Upstream Notes
 
