@@ -2040,3 +2040,53 @@ candidate exports.
 
 Summary artifact:
 `outputs/analysis/MOVEMENT_BOOTSTRAP_V15_A100_NO_SENTINEL_SUMMARY.md`.
+
+### V15B A100 Post-Step0 Hold
+
+After the export-handoff fix, V15 phase 1 was relaunched as `open-duck-a100-v15b`.
+The run confirmed the new export guard was active:
+
+```text
+STEP: 0 reward: -191.49404907226562 reward_std: 169.26931762695312
+Skipping checkpoint/export at step 0; export_min_step=1
+```
+
+It still disappeared afterward without writing a workflow exit sentinel or
+artifact bundle. No ONNX/checkpoint beyond the start manifest was produced.
+
+This means the step-0 ONNX export was not the full cause. The current hold is
+now the A100/JAX training path after the initial eval callback, with no Python
+traceback. Treat this as an offline training-infrastructure issue. The next
+reasonable check is a smaller A100 smoke/phase-1 run with reduced env and batch
+size before spending another full phase.
+
+Summary artifact:
+`outputs/analysis/MOVEMENT_BOOTSTRAP_V15B_A100_NO_SENTINEL_SUMMARY.md`.
+
+### V15C A100 Reduced PPO Hold
+
+V15 phase 1 was relaunched again as `open-duck-a100-v15c` with a reduced PPO
+configuration:
+
+```text
+timesteps_scale: 0.25
+ppo_num_envs: 64
+ppo_batch_size: 64
+ppo_num_minibatches: 2
+ppo_num_updates_per_batch: 2
+export_min_step: 1
+```
+
+The remote Colab session became idle without a workflow exit sentinel, final
+manifest, artifact bundle, ONNX, or checkpoint. The captured log reached the
+reduced runner command but did not show a `STEP: 0` reward line. The stale local
+poller and remote session were stopped manually after the session reported
+`IDLE`.
+
+This broadens the current hold: the A100/Colab/JAX training path is failing even
+for a reduced V15 phase-1 smoke. Treat this as cloud training infrastructure,
+not a V15 policy-quality result. Do not spend another full A100 recipe run until
+a tiny training smoke can produce a normal sentinel/final manifest.
+
+Summary artifact:
+`outputs/analysis/MOVEMENT_BOOTSTRAP_V15C_A100_REDUCED_NO_SENTINEL_SUMMARY.md`.

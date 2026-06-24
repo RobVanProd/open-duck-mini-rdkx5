@@ -1503,3 +1503,64 @@ Follow-up training hygiene:
 
 Summary artifact:
 `outputs/analysis/MOVEMENT_BOOTSTRAP_V15_A100_NO_SENTINEL_SUMMARY.md`.
+
+### V15B A100 Post-Step0 Hold
+
+The fixed V15 relaunch used `--export-min-step 1` and proved the step-0 export
+guard is active:
+
+```text
+STEP: 0 reward: -191.49404907226562 reward_std: 169.26931762695312
+Skipping checkpoint/export at step 0; export_min_step=1
+```
+
+The process still disappeared after step 0 without a workflow exit sentinel,
+artifact bundle, Python traceback, checkpoint, or ONNX.
+
+Interpretation: the first failure was not solely step-0 export. The current
+offline hold is the A100/JAX training path immediately after initial eval.
+
+Next debugging step:
+
+- run a smaller A100 V15 phase-1 smoke with reduced PPO envs/batch size
+- only promote back to full phase if the smaller run reaches at least one
+  nonzero PPO progress/export step
+- keep the robot parked
+
+Summary artifact:
+`outputs/analysis/MOVEMENT_BOOTSTRAP_V15B_A100_NO_SENTINEL_SUMMARY.md`.
+
+### V15C A100 Reduced PPO Hold
+
+The next V15 check used a smaller A100 phase-1 smoke:
+
+```text
+timesteps_scale: 0.25
+ppo_num_envs: 64
+ppo_batch_size: 64
+ppo_num_minibatches: 2
+ppo_num_updates_per_batch: 2
+export_min_step: 1
+```
+
+The Colab session again became idle without a workflow exit sentinel, artifact
+bundle, final manifest, ONNX, or checkpoint. The captured log reached the runner
+command but not a visible `STEP: 0` reward line.
+
+Interpretation: the A100 hold is broader than the step-0 export handoff and
+broader than the original larger PPO configuration. Before any more full A100
+recipe launches, isolate the cloud training path with a tiny known-good PPO
+smoke that must write a normal sentinel/final manifest.
+
+Next debugging steps:
+
+- run a minimal A100 runner smoke that is smaller than V15C and verifies normal
+  sentinel/final-manifest behavior
+- add/fix poller handling for remote-idle/no-sentinel cases that do not return
+  promptly
+- use a different backend for recipe iteration if the minimal A100 smoke still
+  disappears
+- keep the robot parked
+
+Summary artifact:
+`outputs/analysis/MOVEMENT_BOOTSTRAP_V15C_A100_REDUCED_NO_SENTINEL_SUMMARY.md`.
