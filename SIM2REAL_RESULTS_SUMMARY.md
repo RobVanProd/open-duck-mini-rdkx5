@@ -1736,3 +1736,73 @@ establishes one coherent forward behavior across seeds before strong stability
 consolidation.
 
 Robot validation remains blocked.
+
+## V11 A100 Result
+
+V11 was the first fresh hard-progress bootstrap after exiting the V7/V9/V10
+anchor lineage. It trained successfully on Colab A100 with the known-good stack:
+
+```text
+jax/jaxlib: 0.7.2
+brax: 0.14.2
+mujoco/mujoco-mjx: 3.9.0
+candidate: movement_bootstrap_v11_hard_progress_a100_20260624
+onnx_sha256: a3f30d64f21334a5263df15d0b8c11576a04c4fe280c2a082cecb4e2038a13c7
+summary: outputs/analysis/MOVEMENT_BOOTSTRAP_V11_A100_SUMMARY.md
+```
+
+Gate result:
+
+```text
+x=0.0:  PASS_CANDIDATE_SIM_GATE
+x=0.08: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
+```
+
+At `x=0.08`, V11 survived the full 750-sample gate in vanilla, fitted, and
+stress modes, but only by barely moving:
+
+```text
+track ratio: ~0.0107-0.0115
+mean local vx: ~0.0009 m/s
+max target velocity p95: 0.2749 rad/s
+action saturation: 0%
+max pitch tracking p95: 0.0734 rad
+base height min: 0.1536 m
+```
+
+This is another stable no-motion solution, not a walking candidate. The hard
+progress floor and reverse-motion penalties did not make forward locomotion the
+cheapest solution. Robot validation remains blocked.
+
+Next work should inspect the reward/episode mechanics instead of launching a
+V12 blind recipe. In particular, determine why `x=0.08` standstill can still
+survive the objective, then make low-progress command failure impossible to
+score as a viable episode.
+
+### V11 Reward Mechanics Audit
+
+The first V11 postmortem is recorded in:
+
+```text
+outputs/analysis/V11_REWARD_MECHANICS_AUDIT.md
+outputs/analysis/V11_FORWARD_REWARD_LANDSCAPE.md
+```
+
+The scalar reward-landscape check says the intended V11 phase scales should
+prefer forward progress over zero velocity. The failure is therefore not well
+explained by simply making `forward_shortfall_scale` larger again. The current
+working diagnosis is that positive-command no-motion remains viable because the
+task mechanics do not terminate or otherwise invalidate low-progress episodes,
+and because the closed-loop gate reward-term table is not replaying the exact
+V11 training reward override configuration.
+
+Next change should be mechanics-first:
+
+```text
+1. add a command-progress failure or truncation after warmup
+2. evaluate reward terms under the same config used for training
+3. add a cheap per-phase freeze detector before later A100 phases
+4. only then launch another candidate recipe
+```
+
+Do not deploy V11. Robot validation remains blocked.

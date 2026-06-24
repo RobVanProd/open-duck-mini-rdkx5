@@ -1166,3 +1166,60 @@ Run the same eight-seed x=0.08 fitted-bridge seed sweep.
 V11 is only useful if it produces more coherent forward tracking across seeds,
 not merely longer standstill survival.
 ```
+
+### V11 Result
+
+V11 completed all three A100 phases and produced a valid `101 -> 14` ONNX, but
+it is not a deployable candidate:
+
+```text
+summary: outputs/analysis/MOVEMENT_BOOTSTRAP_V11_A100_SUMMARY.md
+candidate: movement_bootstrap_v11_hard_progress_a100_20260624
+onnx_sha256: a3f30d64f21334a5263df15d0b8c11576a04c4fe280c2a082cecb4e2038a13c7
+x=0.0 gate: PASS_CANDIDATE_SIM_GATE
+x=0.08 gate: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
+```
+
+At `x=0.08`, the policy stayed upright for the full gate but only reached a
+track ratio of about `0.011` with mean local velocity around `0.0009 m/s`.
+Action saturation stayed at `0%` and target-velocity p95 stayed below
+`0.275 rad/s`, so the hold is a freeze/no-motion failure rather than an
+actuator-envelope or saturation failure.
+
+Next work:
+
+```text
+1. Audit V11 reward-term magnitudes and PPO logs.
+2. Identify why low-progress positive-command episodes remain viable.
+3. Change the training mechanics so command-progress failure cannot be solved
+   by standing still.
+4. Add cheap per-phase freeze detection before spending full A100 phases.
+5. Only after that, design another training run.
+```
+
+Do not request robot validation for V11.
+
+### V11 Reward Mechanics Follow-Up
+
+Initial audit:
+
+```text
+outputs/analysis/V11_REWARD_MECHANICS_AUDIT.md
+outputs/analysis/V11_FORWARD_REWARD_LANDSCAPE.md
+```
+
+The scalar reward-landscape check indicates the intended V11 phase scales should
+make zero velocity worse than target-speed motion. Treat V11 as a mechanics
+failure before treating it as another coefficient-search failure.
+
+Before V12:
+
+```text
+1. Add a command-progress failure/truncation path after a warmup window.
+2. Add eval support for replaying the same reward override config used during
+   training.
+3. Add per-phase freeze detection so the staged curriculum stops if a phase
+   produces low progress at positive command.
+4. Keep fitted actuator limits active.
+5. Do not start another A100 recipe until those mechanics are explicit.
+```
