@@ -94,6 +94,17 @@ def policy_label(path: Path) -> str:
     return path.parent.name if path.name == "candidate.onnx" else path.stem
 
 
+def parse_policy(value: str) -> tuple[str, Path]:
+    if "=" in value:
+        label, path = value.split("=", 1)
+        label = label.strip()
+        path = path.strip()
+        if label and path:
+            return label, Path(path)
+    path = Path(value)
+    return policy_label(path), path
+
+
 def extract_mode(payload: dict[str, Any], mode_name: str) -> dict[str, Any] | None:
     closed = payload.get("closed_loop_sim") or {}
     modes = closed.get("modes") or {}
@@ -129,8 +140,10 @@ def summarize_payload(payload: dict[str, Any], mode_name: str) -> dict[str, Any]
     }
 
 
-def run_one(args: argparse.Namespace, policy: Path, seed: int) -> dict[str, Any]:
-    label = policy_label(policy)
+def run_one(
+    args: argparse.Namespace, policy_item: tuple[str, Path], seed: int
+) -> dict[str, Any]:
+    label, policy = policy_item
     output_dir = Path(args.output_dir) / label / f"seed_{seed:03d}"
     output_dir.mkdir(parents=True, exist_ok=True)
     command = [
@@ -300,7 +313,12 @@ def main() -> int:
     parser = argparse.ArgumentParser(
         description="Run offline candidate gates across multiple explicit seeds."
     )
-    parser.add_argument("--policies", nargs="+", required=True)
+    parser.add_argument(
+        "--policies",
+        nargs="+",
+        required=True,
+        help="ONNX policy paths, optionally as label=/path/to/policy.onnx",
+    )
     parser.add_argument("--seeds", type=parse_int_list, default=parse_int_list("0-7"))
     parser.add_argument("--fit-json", default="outputs/analysis/actuator_response_fit.json")
     parser.add_argument("--playground-path", default="../Open_Duck_Playground")
@@ -319,7 +337,7 @@ def main() -> int:
     parser.add_argument("--run", action="store_true")
     args = parser.parse_args()
 
-    policies = [Path(value) for value in args.policies]
+    policies = [parse_policy(value) for value in args.policies]
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
     results = [
@@ -329,7 +347,8 @@ def main() -> int:
     ]
     payload = {
         "config": {
-            "policies": [str(path) for path in policies],
+            "policies": [str(path) for _, path in policies],
+            "policy_labels": [label for label, _ in policies],
             "seeds": args.seeds,
             "command_x": args.command_x,
             "duration_s": args.duration,
