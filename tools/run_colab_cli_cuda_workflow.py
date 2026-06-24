@@ -209,6 +209,40 @@ def start_remote_job(
     run(["colab", "upload", "-s", args.session, str(driver_local), remote_driver])
 
     console_script = run_dir / f"{workflow_name}_start_console.sh"
+    if args.foreground_remote:
+        write_console_script(
+            console_script,
+            f"""
+            set -uo pipefail
+            /usr/bin/python3 {remote_driver} > {remote_log} 2>&1
+            status=$?
+            echo $status > {remote_exit}
+            echo COLAB_CLI_WORKFLOW_EXIT $status
+            """,
+        )
+        completed = run_console_script(
+            args.session,
+            console_script,
+            run_dir / "console_start.log",
+            timeout_s=args.foreground_remote_timeout_s,
+        )
+        if completed.returncode != 0:
+            raise SystemExit(completed.returncode)
+        if args.no_poll:
+            print(f"Remote foreground job finished. Bundle will be {remote_bundle}", flush=True)
+            return
+        poll_remote(
+            args.session,
+            run_dir,
+            remote_log,
+            remote_exit,
+            remote_bundle,
+            remote_pid,
+            args.poll_interval_s,
+            args.timeout_s,
+        )
+        return
+
     write_console_script(
         console_script,
         f"""
@@ -969,6 +1003,21 @@ def main() -> int:
         ),
     )
     parser.add_argument("--no-poll", action="store_true", help="start remote job and return")
+    parser.add_argument(
+        "--foreground-remote",
+        action="store_true",
+        help=(
+            "Run the remote driver in the foreground inside colab console. "
+            "Use this for tiny smoke tests when detached setsid jobs disappear "
+            "without writing an exit sentinel."
+        ),
+    )
+    parser.add_argument(
+        "--foreground-remote-timeout-s",
+        type=int,
+        default=1800,
+        help="Console timeout for --foreground-remote.",
+    )
     parser.add_argument("--poll-interval-s", type=int, default=60)
     parser.add_argument("--timeout-s", type=int, default=7200)
     parser.add_argument("--smoke-num-timesteps", type=int, default=64)

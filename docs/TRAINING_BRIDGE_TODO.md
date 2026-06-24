@@ -1618,3 +1618,36 @@ Next debugging options:
 
 Summary artifact:
 `outputs/analysis/A100_TRAINING_SMOKE_NO_SENTINEL_SUMMARY.md`.
+
+### Minimal L4 Training Smoke Hold
+
+The same `training-smoke` check was run on L4 and reproduced the no-sentinel
+failure after the pinned stack initialized successfully.
+
+Interpretation: the minimal smoke failure is not A100-specific. The current
+debug target is the Colab remote execution/capture path or a generic GPU PPO
+smoke failure.
+
+Next debugging steps:
+
+- add a foreground remote execution mode for tiny smokes so Colab console
+  captures the driver exit status directly
+- rerun `training-smoke` in foreground mode before launching any more staged
+  recipes:
+
+```bash
+python3 tools/run_colab_cli_cuda_workflow.py \
+  --session open-duck-l4-smoke-foreground \
+  --workflow training-smoke \
+  --run \
+  --foreground-remote \
+  --foreground-remote-timeout-s 1800 \
+  --timeout-s 1800 \
+  --smoke-num-timesteps 64 \
+  --smoke-export-min-step 1
+```
+
+- keep the robot parked
+
+Summary artifact:
+`outputs/analysis/L4_TRAINING_SMOKE_NO_SENTINEL_SUMMARY.md`.

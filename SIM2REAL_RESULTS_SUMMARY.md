@@ -2124,3 +2124,23 @@ exit normally.
 
 Summary artifact:
 `outputs/analysis/A100_TRAINING_SMOKE_NO_SENTINEL_SUMMARY.md`.
+
+### Minimal L4 Training Smoke Hold
+
+The same `training-smoke` workflow was run on a fresh L4 Colab session. The
+pinned stack again initialized correctly (`jax/jaxlib 0.7.2`, GPU visible,
+`device_put_replicated` present), then the tiny PPO smoke disappeared without a
+workflow exit sentinel, final manifest, artifact bundle, ONNX, or checkpoint.
+The hardened poller recorded `HOLD_REMOTE_NO_SENTINEL`.
+
+This means the cloud training-smoke failure is not A100-specific. The current
+debugging target is now the Colab remote execution/capture path or a generic GPU
+PPO smoke failure. The next infrastructure fix should support foreground remote
+execution for tiny smokes so the console captures the driver exit status
+directly instead of relying on a detached `setsid` job.
+
+That foreground mode is now the next offline check before any more staged
+curriculum runs.
+
+Summary artifact:
+`outputs/analysis/L4_TRAINING_SMOKE_NO_SENTINEL_SUMMARY.md`.
