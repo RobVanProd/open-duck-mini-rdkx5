@@ -1435,3 +1435,45 @@ more structural discovery change.
 
 Summary artifact:
 `outputs/analysis/MOVEMENT_BOOTSTRAP_V14_A100_PHASE1_PARTIAL_SUMMARY.md`.
+
+### V15 No-Bridge Gait-Discovery Plan
+
+Next planned offline recipe: `movement_bootstrap_v15`.
+
+V14's recovered step-102400 checkpoint was already low-motion, so repeating the
+same mild-bridge discovery recipe is not the best next use of A100 time. V15
+separates the search into an explicit gait-discovery phase and actuator-transfer
+phases:
+
+```text
+phase1_no_bridge_high_entropy_gait_discovery:
+  bridge = disabled
+  x = 0.06-0.10
+  alive = 0
+  imitation = 0
+  entropy = 0.02
+  gate bridge = vanilla
+
+phase2_mild_bridge_gait_transfer:
+  bridge = mild
+  x = 0.05-0.08
+  velocity limit = 3.6-5.24 rad/s
+  gate bridge = fitted
+
+phase3_fitted_bridge_gait_consolidation:
+  bridge = fitted
+  x = 0.04-0.08
+  velocity limit = 2.5-3.75 rad/s
+  gate bridge = fitted
+```
+
+The staged planner now records a per-phase `phase_gate_bridge_mode`, so phase 1
+can be evaluated as a vanilla motion-discovery gate without prematurely
+rejecting a useful gait before actuator transfer. Later phases still gate under
+the fitted bridge.
+
+Robot validation remains blocked. A V15 policy only becomes interesting if it
+first survives the phase gates and then passes the standard offline `x=0.0` and
+`x=0.08` candidate gates.
+
+Plan artifact: `outputs/analysis/MOVEMENT_BOOTSTRAP_V15_TRAINING_PLAN.md`.

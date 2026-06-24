@@ -992,6 +992,7 @@ def main() -> int:
     parser.add_argument(
         "--staged-recipe",
         choices=[
+            "movement_bootstrap_v15",
             "movement_bootstrap_v14",
             "movement_bootstrap_v13",
             "movement_bootstrap_v12",
@@ -1007,12 +1008,15 @@ def main() -> int:
             "movement_bootstrap_v2",
             "shortfall_v1",
         ],
-        default="movement_bootstrap_v14",
+        default="movement_bootstrap_v15",
         help=(
             "Recipe passed to tools/plan_staged_curriculum_training.py for "
             "--workflow staged-curriculum. The current default is "
-            "movement_bootstrap_v14, which starts with a mild bridge for motion "
-            "discovery before transferring to the fitted actuator envelope. "
+            "movement_bootstrap_v15, which separates no-bridge gait discovery "
+            "from mild/fitted actuator transfer after the V14 partial "
+            "checkpoint remained low-motion. movement_bootstrap_v14 starts "
+            "with a mild bridge for motion discovery before transferring to "
+            "the fitted actuator envelope. "
             "movement_bootstrap_v6 explicitly "
             "targets continuity from the in-envelope phase-1 lead. "
             "movement_bootstrap_v7 is intended to be run with "

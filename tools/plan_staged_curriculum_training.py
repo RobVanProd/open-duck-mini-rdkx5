@@ -104,6 +104,7 @@ class Phase:
     forward_pitch_huber_delta: float = 0.0
     forward_pitch_rate_huber_delta: float = 0.0
     command_progress_shortfall_huber_delta: float = 0.0
+    phase_gate_bridge_mode: str | None = None
 
 
 SHORTFALL_V1_PHASES = [
@@ -1634,7 +1635,205 @@ MOVEMENT_BOOTSTRAP_V14_PHASES = [
 ]
 
 
+MOVEMENT_BOOTSTRAP_V15_PHASES = [
+    Phase(
+        name="phase1_no_bridge_high_entropy_gait_discovery",
+        purpose=(
+            "V14's partial A100 checkpoint was still low-motion under a mild "
+            "bridge. Remove actuator-bridge pressure for the first phase, remove "
+            "alive/imitation crutches, and raise entropy so PPO has a cleaner "
+            "chance to discover any coherent positive-command gait before "
+            "actuator realism is reintroduced."
+        ),
+        num_timesteps=320_000,
+        bridge=False,
+        delay=(0, 0),
+        tau_s=(0.0, 0.0),
+        velocity_limit_rad_s=(5.24, 5.24),
+        target_rate_scale=-0.0002,
+        actuator_tracking_scale=0.0,
+        tracking_lin_vel_scale=42.0,
+        tracking_sigma=0.0010,
+        forward_progress_scale=22.0,
+        forward_shortfall_scale=-34.0,
+        forward_shortfall_required_ratio=0.50,
+        action_rate_scale=-0.003,
+        action_magnitude_scale=-0.0005,
+        stand_still_scale=-1.8,
+        alive_scale=0.0,
+        imitation_scale=0.0,
+        lin_vel_x=(0.06, 0.10),
+        zero_command_probability=0.0,
+        forward_overshoot_scale=-2.0,
+        forward_overshoot_allowed_ratio=1.80,
+        forward_wrong_direction_scale=-28.0,
+        forward_wrong_direction_allowed_reverse_ratio=0.0,
+        orientation_scale=-0.02,
+        base_height_scale=-0.20,
+        forward_pitch_scale=-0.03,
+        forward_pitch_rate_scale=-0.003,
+        forward_contact_support_scale=-0.06,
+        forward_contact_support_no_contact_weight=1.0,
+        forward_contact_support_asymmetry_weight=0.01,
+        command_progress_scale=28.0,
+        command_progress_shortfall_scale=-48.0,
+        command_progress_required_ratio=0.50,
+        command_progress_warmup_steps=20,
+        command_progress_failure_scale=-180.0,
+        command_progress_failure_enable=True,
+        command_progress_failure_min_ratio=0.30,
+        command_progress_failure_warmup_steps=100,
+        reward_clip_min=-12.0,
+        reward_clip_max=10000.0,
+        action_rate_huber_delta=0.08,
+        action_magnitude_huber_delta=0.50,
+        target_rate_huber_delta=1.0,
+        actuator_tracking_huber_delta=0.08,
+        forward_shortfall_huber_delta=0.0,
+        forward_overshoot_huber_delta=0.50,
+        forward_wrong_direction_huber_delta=0.0,
+        forward_pitch_huber_delta=0.25,
+        forward_pitch_rate_huber_delta=1.0,
+        command_progress_shortfall_huber_delta=0.0,
+        ppo_learning_rate=1.5e-4,
+        ppo_entropy_cost=0.02,
+        ppo_clipping_epsilon=0.14,
+        ppo_max_grad_norm=0.8,
+        phase_gate_bridge_mode="vanilla",
+    ),
+    Phase(
+        name="phase2_mild_bridge_gait_transfer",
+        purpose=(
+            "Only after vanilla discovery survives, reintroduce a mild actuator "
+            "bridge while preserving the progress floor. This should reveal "
+            "whether the discovered gait is structurally portable before the "
+            "full fitted envelope is applied."
+        ),
+        num_timesteps=260_000,
+        bridge=True,
+        delay=(1, 3),
+        tau_s=(0.03, 0.08),
+        velocity_limit_rad_s=(3.6, 5.24),
+        target_rate_scale=-0.0008,
+        actuator_tracking_scale=-0.04,
+        tracking_lin_vel_scale=40.0,
+        tracking_sigma=0.0010,
+        forward_progress_scale=20.0,
+        forward_shortfall_scale=-34.0,
+        forward_shortfall_required_ratio=0.48,
+        action_rate_scale=-0.006,
+        action_magnitude_scale=-0.0015,
+        stand_still_scale=-1.5,
+        alive_scale=0.0,
+        imitation_scale=0.04,
+        lin_vel_x=(0.05, 0.08),
+        zero_command_probability=0.0,
+        forward_overshoot_scale=-3.0,
+        forward_overshoot_allowed_ratio=1.60,
+        forward_wrong_direction_scale=-26.0,
+        forward_wrong_direction_allowed_reverse_ratio=0.0,
+        orientation_scale=-0.04,
+        base_height_scale=-0.35,
+        forward_pitch_scale=-0.06,
+        forward_pitch_rate_scale=-0.006,
+        forward_contact_support_scale=-0.12,
+        forward_contact_support_no_contact_weight=1.0,
+        forward_contact_support_asymmetry_weight=0.02,
+        command_progress_scale=24.0,
+        command_progress_shortfall_scale=-48.0,
+        command_progress_required_ratio=0.48,
+        command_progress_warmup_steps=20,
+        command_progress_failure_scale=-180.0,
+        command_progress_failure_enable=True,
+        command_progress_failure_min_ratio=0.30,
+        command_progress_failure_warmup_steps=100,
+        reward_clip_min=-12.0,
+        reward_clip_max=10000.0,
+        action_rate_huber_delta=0.08,
+        action_magnitude_huber_delta=0.50,
+        target_rate_huber_delta=1.0,
+        actuator_tracking_huber_delta=0.08,
+        forward_shortfall_huber_delta=0.0,
+        forward_overshoot_huber_delta=0.50,
+        forward_wrong_direction_huber_delta=0.0,
+        forward_pitch_huber_delta=0.25,
+        forward_pitch_rate_huber_delta=1.0,
+        command_progress_shortfall_huber_delta=0.0,
+        ppo_learning_rate=1.0e-4,
+        ppo_entropy_cost=0.01,
+        ppo_clipping_epsilon=0.10,
+        ppo_max_grad_norm=0.7,
+        phase_gate_bridge_mode="fitted",
+    ),
+    Phase(
+        name="phase3_fitted_bridge_gait_consolidation",
+        purpose=(
+            "Consolidate only a gait that has survived discovery and mild-bridge "
+            "transfer. Keep the fitted actuator envelope, progress failure, and "
+            "wrong-direction pressure active so the final policy cannot buy "
+            "stability by freezing or backing up."
+        ),
+        num_timesteps=240_000,
+        bridge=True,
+        delay=(3, 6),
+        tau_s=(0.06, 0.14),
+        velocity_limit_rad_s=(2.5, 3.75),
+        target_rate_scale=-0.0012,
+        actuator_tracking_scale=-0.10,
+        tracking_lin_vel_scale=38.0,
+        tracking_sigma=0.0010,
+        forward_progress_scale=18.0,
+        forward_shortfall_scale=-34.0,
+        forward_shortfall_required_ratio=0.45,
+        action_rate_scale=-0.012,
+        action_magnitude_scale=-0.003,
+        stand_still_scale=-1.3,
+        alive_scale=0.0,
+        imitation_scale=0.04,
+        lin_vel_x=(0.04, 0.08),
+        zero_command_probability=0.0,
+        forward_overshoot_scale=-5.0,
+        forward_overshoot_allowed_ratio=1.35,
+        forward_wrong_direction_scale=-28.0,
+        forward_wrong_direction_allowed_reverse_ratio=0.0,
+        orientation_scale=-0.08,
+        base_height_scale=-0.65,
+        forward_pitch_scale=-0.14,
+        forward_pitch_rate_scale=-0.014,
+        forward_contact_support_scale=-0.30,
+        forward_contact_support_no_contact_weight=1.0,
+        forward_contact_support_asymmetry_weight=0.03,
+        command_progress_scale=22.0,
+        command_progress_shortfall_scale=-52.0,
+        command_progress_required_ratio=0.45,
+        command_progress_warmup_steps=20,
+        command_progress_failure_scale=-200.0,
+        command_progress_failure_enable=True,
+        command_progress_failure_min_ratio=0.32,
+        command_progress_failure_warmup_steps=120,
+        reward_clip_min=-12.0,
+        reward_clip_max=10000.0,
+        action_rate_huber_delta=0.08,
+        action_magnitude_huber_delta=0.50,
+        target_rate_huber_delta=1.0,
+        actuator_tracking_huber_delta=0.08,
+        forward_shortfall_huber_delta=0.0,
+        forward_overshoot_huber_delta=0.50,
+        forward_wrong_direction_huber_delta=0.0,
+        forward_pitch_huber_delta=0.25,
+        forward_pitch_rate_huber_delta=1.0,
+        command_progress_shortfall_huber_delta=0.0,
+        ppo_learning_rate=6.0e-5,
+        ppo_entropy_cost=0.004,
+        ppo_clipping_epsilon=0.07,
+        ppo_max_grad_norm=0.65,
+        phase_gate_bridge_mode="fitted",
+    ),
+]
+
+
 RECIPES = {
+    "movement_bootstrap_v15": MOVEMENT_BOOTSTRAP_V15_PHASES,
     "movement_bootstrap_v14": MOVEMENT_BOOTSTRAP_V14_PHASES,
     "movement_bootstrap_v13": MOVEMENT_BOOTSTRAP_V13_PHASES,
     "movement_bootstrap_v12": MOVEMENT_BOOTSTRAP_V12_PHASES,
@@ -1930,6 +2129,18 @@ def phase_payload(phase: Phase, command: list[str], output_root: Path) -> dict[s
 
 
 def recipe_rationale(recipe: str) -> str:
+    if recipe == "movement_bootstrap_v15":
+        return (
+            "`movement_bootstrap_v15` responds to the incomplete V14 A100 "
+            "phase-1 run: the recovered step-102400 checkpoint was still "
+            "low-motion even under a mild bridge. V15 therefore separates "
+            "gait discovery from actuator transfer. Phase 1 removes the "
+            "actuator bridge, alive reward, and imitation reward while raising "
+            "entropy and progress pressure. If it cannot produce vanilla "
+            "forward motion, later actuator-transfer phases should not run. "
+            "If it does, phase 2 and phase 3 reintroduce the mild and fitted "
+            "actuator envelopes."
+        )
     if recipe == "movement_bootstrap_v14":
         return (
             "`movement_bootstrap_v14` responds to the corrected V13 replay: "
@@ -2044,14 +2255,15 @@ def write_plan(payload: dict[str, Any], output_md: Path, output_json: Path) -> N
         "",
         "## Phases",
         "",
-        "| phase | bridge | timesteps | x command range | shortfall | window progress | failure penalty | delay | tau | velocity limit | purpose |",
-        "|---|---|---:|---|---|---|---|---|---|---|---|",
+        "| phase | bridge | gate bridge | timesteps | x command range | shortfall | window progress | failure penalty | delay | tau | velocity limit | purpose |",
+        "|---|---|---|---:|---|---|---|---|---|---|---|---|",
     ]
     for phase in payload["phases"]:
         lines.append(
-            "| `{name}` | {bridge} | {steps} | `{x}` | `{shortfall}` | `{progress}` | `{failure}` | `{delay}` | `{tau}` | `{vel}` | {purpose} |".format(
+            "| `{name}` | {bridge} | `{gate_bridge}` | {steps} | `{x}` | `{shortfall}` | `{progress}` | `{failure}` | `{delay}` | `{tau}` | `{vel}` | {purpose} |".format(
                 name=phase["name"],
                 bridge="yes" if phase["bridge_enabled"] else "no",
+                gate_bridge=phase.get("phase_gate_bridge_mode") or "global",
                 steps=phase["num_timesteps"],
                 x=phase["lin_vel_x"],
                 shortfall={
@@ -2137,11 +2349,13 @@ def run_phase(command: list[str], cwd: Path, timeout_s: int) -> None:
 
 def run_phase_freeze_gate(
     args: argparse.Namespace,
+    phase: Phase,
     policy: Path,
     phase_root: Path,
     phase_index: int,
 ) -> dict[str, Any]:
     output_dir = phase_root / f"phase_{phase_index:02d}_freeze_gate_x008"
+    bridge_mode = phase.phase_gate_bridge_mode or args.phase_gate_bridge_mode
     command = [
         str(Path(args.env_python)),
         str(ROOT / "tools" / "eval_policy_with_actuator_bridge.py"),
@@ -2162,7 +2376,7 @@ def run_phase_freeze_gate(
         "--duration",
         cli_value(args.phase_gate_duration_s),
         "--bridge-mode",
-        args.phase_gate_bridge_mode,
+        bridge_mode,
         "--jax-platform",
         args.phase_gate_platform,
         "--sim-preflight-timeout-s",
@@ -2185,9 +2399,10 @@ def run_phase_freeze_gate(
     if not result_path.exists():
         return {
             "status": "HOLD_PHASE_GATE_NO_RESULT",
-            "command": command,
-            "output_dir": str(output_dir),
-            "returncode": completed.returncode,
+        "command": command,
+        "bridge_mode": bridge_mode,
+        "output_dir": str(output_dir),
+        "returncode": completed.returncode,
         }
     result = json.loads(result_path.read_text())
     closed = result.get("closed_loop_sim") or {}
@@ -2223,6 +2438,7 @@ def run_phase_freeze_gate(
         "metrics": metrics,
         "diagnostic_command_progress_failure_max": diagnostic_failure,
         "command": command,
+        "bridge_mode": bridge_mode,
         "output_dir": str(output_dir),
         "result_json": str(result_path),
         "returncode": completed.returncode,
@@ -2240,7 +2456,7 @@ def main() -> int:
     parser.add_argument(
         "--recipe",
         choices=sorted(RECIPES),
-        default="movement_bootstrap_v14",
+        default="movement_bootstrap_v15",
         help=(
             "Staged recipe to emit/run. shortfall_v1 preserves the June 23 A100 "
             "recipe that landed in standstill; movement_bootstrap_v2 preserves "
@@ -2263,7 +2479,9 @@ def main() -> int:
             "movement_bootstrap_v13 adds a signed command-progress failure "
             "penalty after V12 still froze; movement_bootstrap_v14 starts with "
             "a mild bridge for motion discovery before transferring to the "
-            "fitted actuator envelope. V14 is the current default."
+            "fitted actuator envelope; movement_bootstrap_v15 separates "
+            "vanilla gait discovery from actuator transfer after the V14 "
+            "partial checkpoint remained low-motion. V15 is the current default."
         ),
     )
     parser.add_argument("--timesteps-scale", type=float, default=1.0)
@@ -2357,7 +2575,7 @@ def main() -> int:
                 phase_onnx = find_latest_onnx(phase_root)
                 if phase_onnx is None:
                     raise SystemExit(f"{phase.name} produced no ONNX under {phase_root}")
-                gate_result = run_phase_freeze_gate(args, phase_onnx, phase_root, index)
+                gate_result = run_phase_freeze_gate(args, phase, phase_onnx, phase_root, index)
                 payload["phases"][-1]["phase_freeze_gate"] = gate_result
                 if gate_result["status"] != "PASS_PHASE_FREEZE_CHECK":
                     payload["status"] = gate_result["status"]

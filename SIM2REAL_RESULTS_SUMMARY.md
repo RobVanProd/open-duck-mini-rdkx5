@@ -1994,3 +1994,26 @@ use it on the robot or as a restore anchor.
 
 Summary artifact:
 `outputs/analysis/MOVEMENT_BOOTSTRAP_V14_A100_PHASE1_PARTIAL_SUMMARY.md`.
+
+### V15 No-Bridge Gait-Discovery Plan
+
+The current default staged recipe is now `movement_bootstrap_v15`.
+
+V14's partial A100 checkpoint showed that even a mild actuator bridge can still
+leave fresh PPO in the low-motion basin. V15 makes a more structural split:
+
+```text
+phase 1: no actuator bridge, no alive/imitation crutch, higher entropy,
+         x=0.06-0.10, gate under vanilla sim
+phase 2: mild bridge transfer, x=0.05-0.08, gate under fitted bridge
+phase 3: fitted bridge consolidation, x=0.04-0.08, gate under fitted bridge
+```
+
+The planner now supports per-phase gate bridge modes so discovery is judged in
+the environment it trained in, while transfer/consolidation are still judged
+against the measured fitted actuator envelope.
+
+This is still an offline-only training plan. Robot validation remains blocked
+until a final candidate passes the `x=0.0` and `x=0.08` sim gates.
+
+Plan artifact: `outputs/analysis/MOVEMENT_BOOTSTRAP_V15_TRAINING_PLAN.md`.
