@@ -2130,3 +2130,55 @@ Do not add actuator bridge until low-command motion exists.
 
 Plan artifact:
 `outputs/analysis/STAGED_CURRICULUM_TRAINING_PLAN_V18.md`.
+
+### V18 A100 Result
+
+V18 phase 1 was run on A100 and gated at `x=0.04`, the same low-command region
+used for phase-1 training.
+
+Result:
+
+```text
+HOLD_PHASE_MULTI_SEED_FALLS
+```
+
+Per-seed result:
+
+```text
+seed 0: low forward progress, duration complete, track ratio 0.0165
+seed 1: fall/termination at 33 samples, track ratio -2.4426
+seed 2: low forward progress, duration complete, track ratio 0.0575
+seed 3: low/reverse progress, duration complete, track ratio -0.1171
+```
+
+Distribution:
+
+```text
+runs: 4
+falls: 1
+duration_complete: 3
+track_ratio_mean: -0.6214
+vx_mean: -0.0249 m/s
+```
+
+Stop rule outcome:
+
+```text
+Do not run V18 phase 2.
+Do not test V18 at x=0.08.
+Do not send V18 to the robot.
+```
+
+Next offline tasks:
+
+- inspect whether the low-command task can be solved at all with the current
+  observation/action/reward construction
+- audit reward term magnitudes during V18 rollouts, especially signed progress,
+  wrong-direction cost, posture/contact terms, and clipping
+- compare learned action distributions against a simple hand-authored forward
+  stepping target pattern to see whether PPO is discovering a gait seed
+- consider a supervised or reference-gait bootstrap if pure reward discovery
+  continues to produce low/reverse progress
+
+Summary artifact:
+`outputs/analysis/A100_V18_PHASE1_LOW_COMMAND_HOLD_SUMMARY.md`.

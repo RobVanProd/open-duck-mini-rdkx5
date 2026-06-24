@@ -2936,3 +2936,55 @@ Plan artifacts:
 outputs/analysis/STAGED_CURRICULUM_TRAINING_PLAN_V18.md
 outputs/analysis/staged_curriculum_training_plan_v18.json
 ```
+
+### V18 A100 Phase-1 Result
+
+V18 phase 1 was run on the A100 as a low-command discovery test. It trained only
+phase 1 and gated the exported policy at the same command range it trained on:
+
+```text
+recipe: movement_bootstrap_v18
+gate command: x=0.04
+bridge: vanilla
+seeds: 0-3
+duration: 5 s
+```
+
+Gate result:
+
+```text
+HOLD_PHASE_MULTI_SEED_FALLS
+```
+
+Per-seed outcome:
+
+```text
+seed 0: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS, vx 0.0007 m/s, track ratio 0.0165
+seed 1: HOLD_CANDIDATE_FALL_OR_TERMINATION, vx -0.0977 m/s, track ratio -2.4426
+seed 2: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS, vx 0.0023 m/s, track ratio 0.0575
+seed 3: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS, vx -0.0047 m/s, track ratio -0.1171
+```
+
+Distribution:
+
+```text
+runs: 4
+falls: 1
+duration_complete: 3
+track_ratio_mean: -0.6214
+vx_mean: -0.0249 m/s
+```
+
+Conclusion: V18 did not discover coherent forward locomotion even at `x=0.04`
+with the actuator bridge disabled. Do not run V18 phase 2, do not test V18 at
+`x=0.08`, and do not move to robot validation. The next work is offline
+objective/task diagnosis: why the policy still prefers low/reverse progress
+despite dense signed progress and wrong-direction pressure.
+
+Summary artifacts:
+
+```text
+outputs/analysis/A100_V18_PHASE1_LOW_COMMAND_HOLD_SUMMARY.md
+outputs/analysis/V18_PHASE1_LOW_COMMAND_SEED_GATE.md
+outputs/analysis/v18_phase1_low_command_seed_gate.json
+```
