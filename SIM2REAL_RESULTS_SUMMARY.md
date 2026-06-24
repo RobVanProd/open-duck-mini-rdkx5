@@ -2319,3 +2319,32 @@ directories directly.
 
 Summary artifact:
 `outputs/analysis/L4_MINIMAL_CUDA_TRAINING_SMOKE_SUMMARY.md`.
+
+### L4 1-Env / 16-Step CUDA Training Smoke Hold
+
+The next Colab L4 scale point used one environment and sixteen timesteps. It
+passed the startup stages and reached the same runner setup point as the
+passing 1-env / 8-step run:
+
+```text
+00_python_jax_device: PASS
+01_import_training_stack: PASS
+02_smoke_dry_run: PASS
+Observation size: 101
+num_timesteps: 16
+num_envs: 1
+batch_size: 1
+Skipping checkpoint/export at step 0; export_min_step=1
+```
+
+But it produced no `STEP:` line, final manifest, workflow exit sentinel, or
+artifact bundle. The 1-env / 8-step run remains the known passing Colab CUDA
+scale; 1-env / 16-step is a hold until repeated with a less aggressive
+no-sentinel poll threshold or another cloud runtime.
+
+The Colab workflow now exposes `--idle-no-sentinel-polls` so long/no-output GPU
+compile windows can be given more slack before the helper declares a lost
+sentinel.
+
+Summary artifact:
+`outputs/analysis/L4_1ENV16_CUDA_TRAINING_SMOKE_HOLD_SUMMARY.md`.

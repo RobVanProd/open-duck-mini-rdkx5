@@ -43,6 +43,7 @@ python3 tools/run_colab_cli_cuda_workflow.py \
   --run \
   --foreground-remote \
   --foreground-remote-timeout-s 1800 \
+  --idle-no-sentinel-polls 5 \
   --timeout-s 1800 \
   --smoke-num-timesteps 8 \
   --smoke-ppo-num-envs 1 \
@@ -165,13 +166,16 @@ If the run disappears without a sentinel:
 
 The passing L4 smoke used `num_envs=1` and `num_timesteps=8`.
 
+The next point, `num_envs=1` and `num_timesteps=16`, reached runner setup but
+disappeared before a `STEP:` line or final manifest.
+
 The failing diagnostic used `num_envs=8` and `num_timesteps=64`.
 
 The next cloud isolation step should sweep upward conservatively, for example:
 
 ```text
 1 env / 8 timesteps   known PASS
-1 env / 16 timesteps
+1 env / 16 timesteps  known HOLD so far
 2 env / 16 timesteps
 4 env / 32 timesteps
 8 env / 64 timesteps  known HOLD so far

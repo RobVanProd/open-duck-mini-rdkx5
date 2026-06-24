@@ -308,6 +308,7 @@ def start_remote_job(
             remote_pid,
             args.poll_interval_s,
             args.timeout_s,
+            args.idle_no_sentinel_polls,
         )
         return
 
@@ -342,6 +343,7 @@ def start_remote_job(
         remote_pid,
         args.poll_interval_s,
         args.timeout_s,
+        args.idle_no_sentinel_polls,
     )
 
 
@@ -927,6 +929,7 @@ def poll_remote(
     remote_pid: str,
     interval_s: int,
     timeout_s: int,
+    idle_no_sentinel_polls_limit: int,
 ) -> None:
     deadline = time.time() + timeout_s
     last_log_size: int | None = None
@@ -976,7 +979,10 @@ def poll_remote(
             and not colab_file_exists(session, remote_exit)
             and (
                 unchanged_log_polls >= 2
-                or (idle_no_exit_polls >= 2 and not colab_file_exists(session, remote_bundle))
+                or (
+                    idle_no_exit_polls >= idle_no_sentinel_polls_limit
+                    and not colab_file_exists(session, remote_bundle)
+                )
             )
         ):
             partial_output_dir = download_partial_output_dir(
@@ -995,6 +1001,7 @@ def poll_remote(
                 else None,
                 "unchanged_log_polls": unchanged_log_polls,
                 "idle_no_exit_polls": idle_no_exit_polls,
+                "idle_no_sentinel_polls_limit": idle_no_sentinel_polls_limit,
                 "poll_interval_s": interval_s,
                 "local_live_log": str(log_dest),
                 "colab_status": last_status,
@@ -1024,6 +1031,7 @@ def poll_remote(
                         f"- local_partial_output_dir: `{partial_output_dir}`",
                         f"- unchanged_log_polls: `{unchanged_log_polls}`",
                         f"- idle_no_exit_polls: `{idle_no_exit_polls}`",
+                        f"- idle_no_sentinel_polls_limit: `{idle_no_sentinel_polls_limit}`",
                         f"- poll_interval_s: `{interval_s}`",
                         "",
                         "The Colab session reported idle while the workflow "
@@ -1126,6 +1134,15 @@ def main() -> int:
         help="Console timeout for --foreground-remote.",
     )
     parser.add_argument("--poll-interval-s", type=int, default=60)
+    parser.add_argument(
+        "--idle-no-sentinel-polls",
+        type=int,
+        default=5,
+        help=(
+            "Number of consecutive IDLE polls without an exit sentinel before "
+            "declaring HOLD_REMOTE_NO_SENTINEL when no artifact bundle exists."
+        ),
+    )
     parser.add_argument("--timeout-s", type=int, default=7200)
     parser.add_argument("--smoke-num-timesteps", type=int, default=64)
     parser.add_argument("--smoke-ppo-num-envs", type=int, default=8)
