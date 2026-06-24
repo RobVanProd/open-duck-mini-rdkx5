@@ -849,6 +849,7 @@ def main() -> int:
     parser.add_argument(
         "--staged-recipe",
         choices=[
+            "movement_bootstrap_v10",
             "movement_bootstrap_v9",
             "movement_bootstrap_v8",
             "movement_bootstrap_v7",
@@ -870,7 +871,8 @@ def main() -> int:
             "v5 phase-1 checkpoint; movement_bootstrap_v8 is intended to start "
             "from the v7 anchored checkpoint and target the x=0.08 lunge; "
             "movement_bootstrap_v9 starts from v7 again with lighter damping "
-            "after v8 stabilized into standstill."
+            "after v8 stabilized into standstill; movement_bootstrap_v10 "
+            "targets the multi-seed V7/V9 failure surfaces."
         ),
     )
     parser.add_argument(
