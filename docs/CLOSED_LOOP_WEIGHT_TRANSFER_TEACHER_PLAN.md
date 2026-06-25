@@ -337,6 +337,37 @@ displacement on seeds `0 / 2`, with `vy95 = 0.1917 / 0.1859 m/s`. The current
 blocker is therefore not "no way to move forward"; it is forward displacement
 remaining coupled to lateral impulse.
 
+A focused lateral-refine run then searched near the forward-intent branch with
+stronger lateral/body-y feedback and push gating:
+
+```text
+artifact: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_LATERAL_REFINE.md
+score_100: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_LATERAL_REFINE_SCORE_100.md
+score_150: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_LATERAL_REFINE_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+It did not solve the tradeoff:
+
+```text
+top scored 100-tick vx/dx:
+  seed0: 0.0131 m/s / 0.0261 m
+  seed2: 0.0186 m/s / 0.0371 m
+
+top scored 150-tick vx/dx:
+  seed0: 0.0137 m/s / 0.0411 m
+  seed2: 0.0124 m/s / 0.0372 m
+
+highest individual displacement windows:
+  100 ticks: dx 0.0850 m, vy95 0.3083 m/s
+  150 ticks: dx 0.0912 m, vy95 0.2634 m/s
+```
+
+The nearby teacher-grid family is therefore exhausted for now. It can either
+produce forward displacement with excessive lateral momentum, or preserve
+lateral/contact gates while losing forward displacement. The next branch should
+change the controller/objective structure, not widen the same teacher grid.
+
 ## Next Branch After a Pass
 
 If the teacher probe passes, use its traces as a target source:
@@ -364,4 +395,6 @@ do not run x=0.08
 do not change BEST_WALK_ONNX_2
 do not relax target-source gates to make a pass
 do not treat contact matching alone as success
+do not launch another nearby teacher-grid run without a new weight-transfer
+objective or controller structure
 ```

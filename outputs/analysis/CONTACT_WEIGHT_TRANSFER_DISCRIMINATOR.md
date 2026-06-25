@@ -25,8 +25,9 @@ Existing evidence produces a third, sharper branch:
 
 ```text
 clean-fragment contact + low closed-loop contact mismatch + low forward motion:
-  binary contact matching is not sufficient; optimize sustained weight transfer
-  and forward progress, not just contact labels or stronger joint priors.
+  binary contact matching is not sufficient; optimize sustained weight transfer,
+  lateral momentum, and forward progress together, not just contact labels,
+  stronger joint priors, or nearby teacher-grid terms.
 ```
 
 ## Evidence
@@ -88,6 +89,38 @@ schedule, but matching that schedule does not produce enough forward progress.
 The current short fragment table remains evidence, not a sufficient gait
 controller or training label source.
 
+### Forward-Intent and Lateral-Refine Teacher Path
+
+The later teacher probes answer the next question: can a closed-loop teacher
+force forward displacement while keeping lateral/contact gates?
+
+Forward-intent did force local-frame displacement:
+
+| artifact | window | seed0 dx | seed2 dx | seed0 vy95 | seed2 vy95 | result |
+|---|---:|---:|---:|---:|---:|---|
+| `CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_FORWARD_INTENT_SCORE_100.md` | 100 | 0.0518 m | 0.0420 m | 0.1917 | 0.1859 | lateral gate fail |
+| `CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_FORWARD_INTENT_SCORE_150.md` | 150 | 0.0757 m | 0.0648 m | 0.2578 | 0.2530 | lateral gate fail |
+
+A focused lateral-refine pass then added stronger lateral/body-y feedback and
+push gating:
+
+| artifact | window | robust modes | top seed0 vx / dx | top seed2 vx / dx | result |
+|---|---:|---:|---:|---:|---|
+| `CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_LATERAL_REFINE_SCORE_100.md` | 100 | 0 | 0.0131 / 0.0261 | 0.0186 / 0.0371 | low forward displacement / double support |
+| `CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_LATERAL_REFINE_SCORE_150.md` | 150 | 0 | 0.0137 / 0.0411 | 0.0124 / 0.0372 | low forward displacement / lateral fail |
+
+The highest-displacement windows in the lateral-refine search still had large
+lateral velocity:
+
+```text
+100 ticks: best dx 0.0850 m, vy95 0.3083 m/s
+150 ticks: best dx 0.0912 m, vy95 0.2634 m/s
+```
+
+Interpretation: the teacher path can create forward impulse, but current
+variants do it through lateral momentum. When lateral motion is controlled, the
+same family falls back toward low-displacement or double-support behavior.
+
 ### Soft-Prior PPO Path
 
 The weak V21 soft-prior learner did not stay close to the fragment prior:
@@ -142,7 +175,8 @@ and toward:
   objectives over 100-150 ticks,
 - or a closed-loop learner objective that directly rewards forward weight
   transfer, penalizes unproductive double-support dwell during commanded motion,
-  and preserves base height/pitch stability.
+  controls lateral velocity/base-y drift, and preserves base height/pitch
+  stability.
 ```
 
 ## Next Gate
@@ -160,4 +194,3 @@ If that gate cannot be met by the generator, do not launch PPO from the short
 fragment table. If it can be met, then PPO/BC can be evaluated against a target
 that actually asks for sustained weight transfer rather than only short contact
 labels.
-

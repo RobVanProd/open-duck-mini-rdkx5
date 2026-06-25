@@ -5395,3 +5395,54 @@ window reached `0.0757 / 0.0648 m`. But both windows failed lateral velocity
 badly (`vy95` around `0.19-0.26 m/s`). This is the cleanest statement of the
 current target-source blocker: forward displacement exists, but remains coupled
 to lateral impulse.
+
+### Lateral-Refined Forward-Intent Teacher
+
+A focused CPU-only lateral-refine search tested whether stronger lateral/body-y
+feedback and push gating could preserve the forward-intent branch while
+bringing lateral velocity back inside gate:
+
+```text
+artifact: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_LATERAL_REFINE.md
+score_100: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_LATERAL_REFINE_SCORE_100.md
+score_150: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_LATERAL_REFINE_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+Result:
+
+```text
+100-tick robust modes: 0
+150-tick robust modes: 0
+
+top scored 100-tick seed0 / seed2:
+  vx: 0.0131 / 0.0186 m/s
+  local dx: 0.0261 / 0.0371 m
+  vy95: 0.1270 / 0.1093 m/s
+
+top scored 150-tick seed0 / seed2:
+  vx: 0.0137 / 0.0124 m/s
+  local dx: 0.0411 / 0.0372 m
+  vy95: 0.1562 / 0.1650 m/s
+```
+
+The highest-displacement individual windows still exceeded the lateral gate:
+
+```text
+100 ticks: dx 0.0850 m, vy95 0.3083 m/s
+150 ticks: dx 0.0912 m, vy95 0.2634 m/s
+```
+
+This confirms the target-source Pareto surface:
+
+```text
+enough forward displacement -> lateral impulse too high
+lateral/contact gates -> too little forward displacement / too much double support
+```
+
+Do not launch another nearby teacher-grid or prior-scale run as the next main
+step. The next useful offline branch must change the contact/weight-transfer
+objective or controller structure so single-support alternation, lateral
+momentum control, and forward displacement are optimized together over
+100-150 ticks. Robot motion and training remain blocked until a target source
+passes that gate.

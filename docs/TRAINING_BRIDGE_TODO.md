@@ -4292,3 +4292,34 @@ It still failed:
 Do not keep adding scalar terms to this sinusoid primitive as the main path.
 The next implementation should be a structurally different target generator or
 teacher that plans contact phase, body lean/pitch, and stance push together.
+
+The later closed-loop teacher/optimizer sequence refined the same decision:
+
+```text
+optimizer displacement probe:
+  HOLD_OPTIMIZER_NO_ROBUST_TARGET
+  best local dx: -0.0070 / 0.0030 m
+
+forward-intent teacher:
+  HOLD_NO_SEED_ROBUST_TARGETS
+  top 100-tick local dx: 0.0518 / 0.0420 m
+  top 100-tick vy95: 0.1917 / 0.1859 m/s
+
+lateral-refined forward-intent teacher:
+  HOLD_NO_SEED_ROBUST_TARGETS
+  top scored 100-tick local dx: 0.0261 / 0.0371 m
+  top scored 150-tick local dx: 0.0411 / 0.0372 m
+```
+
+The current target-source conclusion is:
+
+```text
+forward displacement can be forced, but current target families do it through
+lateral momentum; when lateral motion is controlled, forward displacement
+collapses.
+```
+
+Before another CUDA PPO/BC run, require a structurally different
+contact/weight-transfer objective or controller that can pass the 100-150 tick
+target gate. Do not run another nearby teacher-grid expansion as training
+preparation.

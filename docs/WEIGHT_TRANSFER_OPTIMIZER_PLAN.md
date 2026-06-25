@@ -281,3 +281,37 @@ lateral velocity acceptable -> forward displacement too low
 
 The next branch needs to control lateral momentum while preserving forward
 displacement, not merely increase forward push.
+
+## Lateral-Refine Confirmation
+
+A focused lateral-refine teacher search was run after the forward-intent probe:
+
+```text
+artifact: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_LATERAL_REFINE.md
+score_100: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_LATERAL_REFINE_SCORE_100.md
+score_150: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_LATERAL_REFINE_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+The best objective-ranked windows became conservative and missed the forward
+displacement gate, while the highest-displacement windows still violated the
+lateral gate:
+
+```text
+100-tick top scored dx seed0 / seed2: 0.0261 / 0.0371 m
+150-tick top scored dx seed0 / seed2: 0.0411 / 0.0372 m
+best individual 100-tick dx: 0.0850 m with vy95 0.3083 m/s
+best individual 150-tick dx: 0.0912 m with vy95 0.2634 m/s
+```
+
+This confirms that the current hand-shaped teacher/planner family has hit the
+same Pareto surface:
+
+```text
+enough forward displacement -> excessive lateral impulse
+lateral/contact gates -> too little forward displacement
+```
+
+The next optimizer/controller should explicitly model lateral momentum and
+support transfer as state variables. Do not spend the next iteration on another
+nearby parameter sweep over the same periodic teacher terms.

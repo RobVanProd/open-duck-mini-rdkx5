@@ -463,3 +463,77 @@ forward-intent teacher probe:
 This confirms the target-source blocker with a corrected local-frame
 displacement metric: forward displacement can be forced, but not yet while
 preserving the lateral gate.
+
+## Lateral-Refined Forward-Intent Teacher Probe
+
+A focused CPU-only refinement then searched around the forward-intent teacher
+family with stronger lateral/body-y feedback and push gating:
+
+```text
+artifact: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_LATERAL_REFINE.md
+score_100: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_LATERAL_REFINE_SCORE_100.md
+score_150: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_LATERAL_REFINE_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+Result:
+
+| window | robust modes | top scored seed0 vx / dx | top scored seed2 vx / dx | top scored seed0 / seed2 vy95 | dominant result |
+|---|---:|---:|---:|---:|---|
+| 100 ticks | 0 | 0.0131 m/s / 0.0261 m | 0.0186 m/s / 0.0371 m | 0.1270 / 0.1093 m/s | low forward displacement, mostly double support |
+| 150 ticks | 0 | 0.0137 m/s / 0.0411 m | 0.0124 m/s / 0.0372 m | 0.1562 / 0.1650 m/s | low forward displacement, high lateral velocity |
+
+The highest-displacement individual windows still fail the same tradeoff:
+
+```text
+100 ticks:
+  best local dx: 0.0850 m on seed2
+  vy95: 0.3083 m/s
+
+150 ticks:
+  best local dx: 0.0912 m on seed0
+  vy95: 0.2634 m/s
+```
+
+Interpretation: targeted lateral/body-y refinement did not decouple forward
+displacement from lateral impulse. The best objective-ranked windows become
+more conservative and miss forward progress; the best displacement windows
+still exceed the lateral gate badly. This is a stop sign for more nearby
+teacher-grid expansion.
+
+## Current Decision
+
+The target-source campaign now has the trace read requested by the contact
+hypothesis:
+
+```text
+raw polynomial reference path:
+  asks for alternating single support, but closed-loop rollout remains mostly
+  double support; direct reference/BC labels are not valid.
+
+dynamic-roll / teacher target path:
+  short fragments and some teacher windows can produce forward displacement,
+  but sustained seed-robust targets either stay double-support/conservative or
+  spend too much lateral velocity.
+```
+
+So the next branch should not be:
+
+```text
+- stronger pitch-chain prior scale
+- another contact-bit adapter around the same short table
+- another nearby random grid over the same teacher terms
+```
+
+The next useful work is a structurally different contact/weight-transfer
+objective or controller that explicitly prices:
+
+```text
+1. useful left/right single-support alternation,
+2. low lateral velocity/base-y drift,
+3. forward displacement over 100-150 ticks,
+4. base-height and pitch stability,
+5. in-envelope target velocity.
+```
+
+Training remains blocked until a target source passes this gate.
