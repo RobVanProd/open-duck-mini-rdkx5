@@ -3751,3 +3751,9 @@ The prior is not a controller or label source. It should only become a weak
 auxiliary term in a closed-loop learner that still rewards real progress,
 posture, and survival.
 ```
+
+Patch spec for the next cross-repo change:
+
+```text
+docs/SOFT_PRIOR_TRAINING_PATCH_SPEC.md
+```

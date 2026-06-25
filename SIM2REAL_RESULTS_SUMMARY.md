@@ -4728,3 +4728,9 @@ The prior can produce short forward motion, but it is not sufficient as a
 standalone controller or hard target. Use it only as a weak closed-loop
 auxiliary term.
 ```
+
+Next cross-repo patch spec:
+
+```text
+docs/SOFT_PRIOR_TRAINING_PATCH_SPEC.md
+```
