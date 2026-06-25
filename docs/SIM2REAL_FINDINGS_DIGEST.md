@@ -168,4 +168,44 @@ See:
 
 ```text
 docs/WEIGHT_TRANSFER_OBJECTIVE_BRIEF.md
+docs/TARGET_SOURCE_EXIT_DECISION.md
+```
+
+## Finding 4: The Current Target-Source Branch Is Exhausted
+
+Evidence:
+
+```text
+artifact: outputs/analysis/CONTACT_TIMED_REFERENCE_SNIPPETS.md
+artifact: outputs/analysis/TARGET_GENERATOR_SINGLE_SUPPORT_PROBE.md
+artifact: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_SUPPORT_GATED_PROBE.md
+artifact: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STATEFUL_STRICT_PROBE.md
+artifact: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STATEFUL_TIMEOUT_PROBE.md
+doc: docs/TARGET_SOURCE_EXIT_DECISION.md
+```
+
+Result:
+
+```text
+dynamic-roll fragments:
+  mostly double support
+
+open-loop single-support primitives:
+  still double-support dominated and low displacement
+
+support-readiness gate:
+  improves contact discipline but freezes forward motion
+
+stateful support phase:
+  phase transitions alone do not create propulsion
+```
+
+Interpretation:
+
+```text
+The missing piece is no longer just a better scalar gate, prior scale, phase
+clock, or pitch-chain stance push. The next branch needs a structurally
+different propulsion/contact model: a horizon-based teacher/optimizer,
+explicit contact/weight-transfer objective, or closed-loop reference generator
+that reacts to body and contact state.
 ```

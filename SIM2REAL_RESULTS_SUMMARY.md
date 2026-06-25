@@ -1,6 +1,6 @@
 # Sim-To-Real Results Summary
 
-Last updated: 2026-06-24
+Last updated: 2026-06-25
 
 ## Executive Summary
 
@@ -5813,3 +5813,39 @@ can hold/advance support state, but its pitch-chain stance push is not creating
 propulsion. The next source needs a different propulsion/contact model, likely
 explicit ankle/foot placement or a richer teacher/trajectory optimizer, not
 more phase-state plumbing around the same stance push.
+
+The current target-source branch is now explicitly held:
+
+```text
+decision: HOLD_TARGET_SOURCE_BRANCH_EXHAUSTED
+doc: docs/TARGET_SOURCE_EXIT_DECISION.md
+```
+
+This is a branch decision, not a claim that walking is impossible. It means the
+tested target families are no longer the highest-information next step:
+
+```text
+dynamic-roll fragments:
+  short snippets exist, but they are mostly double support
+
+open-loop lift / roll / stance-push primitives:
+  remain double-support dominated and low displacement
+
+CoM / stance-relative controllers:
+  improve lateral/contact discipline, but forward displacement collapses
+
+support-readiness and stateful phase gates:
+  create more contact discipline, but freeze or drift backward
+```
+
+Do not spend the next run on another nearby scalar gate, stance-push sign,
+phase-state wrapper, prior-scale change, or passive readiness gate around the
+same primitive. The next offline branch should be structurally different:
+
+```text
+1. horizon-based teacher / optimizer over stance side, body placement,
+   foot placement, and push,
+2. explicit contact/weight-transfer objective in the learning environment, or
+3. closed-loop reference generator that reacts to pitch, height, lateral
+   velocity, and foot contacts.
+```
