@@ -3080,3 +3080,35 @@ outputs/analysis/realized_window_collection_x004_v5_v7_mine.json
 outputs/analysis/REALIZED_WINDOW_COLLECTION_X004_V5_V7_CURATION.md
 outputs/analysis/realized_window_collection_x004_v5_v7_curation.json
 ```
+
+### Target Dataset BC Smoke
+
+The observation-ready target manifest was tested with a tiny linear behavior
+cloning smoke:
+
+```text
+tool: tools/run_target_dataset_bc_smoke.py
+dataset_id: 6c43c18e8f2b72ec
+samples: 275
+source files: 2
+source skew: seed_000=10 windows, seed_002=1 window
+fit: near-exact train reconstruction
+closed-loop replay: HOLD_BC_REPLAY_LOW_FORWARD_MOTION
+```
+
+The closed-loop CPU replay completed without falling but produced essentially
+zero actions:
+
+```text
+seed_000: vx=-0.0023 m/s, action_abs_mean=0.0001
+seed_002: vx=+0.0014 m/s, action_abs_mean=0.0001
+```
+
+Do next:
+
+```text
+1. treat this as a hold for one-shot linear BC from the tiny target manifest
+2. improve temporal/source diversity before scaling supervised pretraining
+3. consider sequence-aware imitation or explicit rollout-preserving objectives
+4. do not launch larger PPO from this dataset just because supervised loss is low
+```

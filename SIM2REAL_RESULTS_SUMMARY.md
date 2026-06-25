@@ -3964,3 +3964,36 @@ outputs/analysis/realized_window_collection_x004_v5_v7_mine.json
 outputs/analysis/REALIZED_WINDOW_COLLECTION_X004_V5_V7_CURATION.md
 outputs/analysis/realized_window_collection_x004_v5_v7_curation.json
 ```
+
+### Target Dataset BC Smoke
+
+A tiny offline behavior-cloning smoke was run from the observation-ready target
+manifest. This was a linear ridge fit over curated `obs[101] -> action[14]`
+samples followed by short CPU closed-loop replay at `x=0.04`.
+
+Result:
+
+```text
+tool: tools/run_target_dataset_bc_smoke.py
+dataset_id: 6c43c18e8f2b72ec
+samples: 275
+source files: 2
+source distribution: seed_000=10 windows, seed_002=1 window
+sample/parameter ratio: 0.1926
+supervised fit: near-exact on train samples
+closed-loop status: HOLD_BC_REPLAY_LOW_FORWARD_MOTION
+seed_000 replay: vx=-0.0023 m/s, ratio=-0.0565, duration complete
+seed_002 replay: vx=+0.0014 m/s, ratio=+0.0340, duration complete
+rollout action_abs_mean: about 0.0001
+```
+
+Conclusion:
+
+```text
+The compact target dataset is BC-ready by schema, but a simple one-shot linear
+BC policy overfits short curated windows and collapses to near-zero actions in
+closed-loop replay. This is a useful hold: do not scale this directly into PPO
+or a larger supervised run. The next target-data step should improve temporal
+coverage/diversity or use a sequence-aware imitation design that preserves the
+curated target motion through closed-loop replay.
+```

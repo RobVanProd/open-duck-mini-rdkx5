@@ -379,6 +379,40 @@ loss alone.
 Do not commit raw trace slices unless explicitly approved. Commit compact
 manifests and summaries only.
 
+## Target Dataset BC Smoke
+
+The observation-ready manifest was tested with a deliberately small
+behavior-cloning smoke:
+
+```text
+tool: tools/run_target_dataset_bc_smoke.py
+dataset_id: 6c43c18e8f2b72ec
+samples: 275
+fit type: linear ridge, obs[101] -> action[14]
+closed-loop replay: CPU, x=0.04, seeds 0 and 2, 3 s
+status: HOLD_BC_REPLAY_LOW_FORWARD_MOTION
+```
+
+Result:
+
+```text
+supervised train error: near zero
+sample/parameter ratio: 0.1926
+seed_000 closed-loop vx: -0.0023 m/s
+seed_002 closed-loop vx: +0.0014 m/s
+rollout action_abs_mean: about 0.0001
+```
+
+Interpretation:
+
+```text
+The current target dataset is schema-ready but too small/skewed for a standalone
+linear BC seed. It can reconstruct the short target snippets but does not
+produce a closed-loop forward-motion policy. Future target generation should
+increase source diversity and temporal coverage, or move to a sequence-aware
+imitation design that keeps the target motion alive during rollout.
+```
+
 ## First Primitive Search Result
 
 A bounded low-dimensional sine primitive search was run as the first generator
