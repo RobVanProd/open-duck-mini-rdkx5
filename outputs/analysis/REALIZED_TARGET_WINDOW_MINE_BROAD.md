@@ -32,6 +32,14 @@ a manifest, not a raw BC dataset.
 | trace.jsonl | `vanilla` | 35 | 1 | -0.1641 | -0.0110 | 0.1059 | 0 |
 | trace.jsonl | `vanilla` | 250 | 0 | 0.0019 | 0.0882 | 0.1526 | 0 |
 | trace.jsonl | `vanilla` | 250 | 0 | -0.0090 | 0.0269 | 0.1558 | 0 |
+| reference_seed_000.jsonl | `reference_target_contact_gated_projected` | 85 | 1 | 0.0078 | 0.1186 | 0.1535 | 1 |
+| reference_seed_001.jsonl | `reference_target_contact_gated_projected` | 29 | 1 | -0.0124 | 0.0494 | 0.0820 | 0 |
+| reference_seed_002.jsonl | `reference_target_contact_gated_projected` | 140 | 1 | 0.0077 | 0.1548 | 0.1527 | 1 |
+| reference_seed_003.jsonl | `reference_target_contact_gated_projected` | 70 | 1 | -0.0132 | 0.1112 | 0.1562 | 0 |
+| reference_seed_004.jsonl | `reference_target_contact_gated_projected` | 168 | 1 | 0.0079 | 0.1650 | 0.1518 | 5 |
+| reference_seed_005.jsonl | `reference_target_contact_gated_projected` | 250 | 0 | 0.0092 | 0.2119 | 0.1471 | 5 |
+| reference_seed_006.jsonl | `reference_target_contact_gated_projected` | 70 | 1 | -0.0107 | 0.0988 | 0.1573 | 0 |
+| reference_seed_007.jsonl | `reference_target_contact_gated_projected` | 32 | 1 | 0.0129 | 0.0923 | 0.1007 | 0 |
 | reference_seed_000.jsonl | `reference_target_cycle_projected` | 70 | 1 | 0.0055 | 0.0964 | 0.1559 | 1 |
 | reference_seed_001.jsonl | `reference_target_cycle_projected` | 34 | 1 | -0.0991 | 0.0059 | 0.0995 | 0 |
 | reference_seed_002.jsonl | `reference_target_cycle_projected` | 111 | 1 | 0.0074 | 0.1434 | 0.1527 | 1 |
@@ -112,15 +120,15 @@ a manifest, not a raw BC dataset.
 | phase1_x008_trace.jsonl | `fitted` | 10-34 | 0.0857 | 0.1609 | 0.3853 | 0.1474 | 0.0000 | 0.7491 | 0.0674 | 45 | `{'10': 4.0, '11': 96.0}` |
 | trace.jsonl | `fitted` | 15-39 | 0.0791 | 0.2578 | 0.3279 | 0.1508 | 0.0000 | 1.1456 | 0.0674 | None | `{'01': 8.0, '10': 4.0, '11': 88.0}` |
 | trace.jsonl | `fitted` | 10-34 | 0.0790 | 0.1013 | 0.3752 | 0.1492 | 0.0000 | 0.8458 | 0.0876 | 38 | `{'01': 4.0, '11': 96.0}` |
+| reference_seed_005.jsonl | `reference_target_contact_gated_projected` | 15-39 | 0.0782 | 0.1569 | 0.1470 | 0.1579 | 0.2857 | 2.4978 | 0.1292 | None | `{'10': 12.0, '11': 88.0}` |
 | reference_seed_005.jsonl | `reference_target_cycle_projected` | 0-24 | 0.0780 | 0.2192 | 0.2279 | 0.1471 | 1.1429 | 3.1142 | 0.2287 | 155 | `{'00': 8.0, '01': 24.0, '10': 32.0, '11': 36.0}` |
 | trace.jsonl | `fitted` | 5-29 | 0.0770 | 0.2578 | 0.3033 | 0.1509 | 0.0000 | 1.3935 | 0.0694 | None | `{'01': 48.0, '10': 4.0, '11': 48.0}` |
 | reference_seed_004.jsonl | `reference_target_cycle_projected` | 0-24 | 0.0759 | 0.1601 | 0.1102 | 0.1517 | 1.1429 | 3.0002 | 0.1631 | 87 | `{'01': 4.0, '10': 12.0, '11': 84.0}` |
 | reference_seed_005.jsonl | `reference_target_cycle_projected` | 5-29 | 0.0718 | 0.2271 | 0.2177 | 0.1596 | 1.1429 | 3.1142 | 0.1509 | 165 | `{'01': 20.0, '10': 24.0, '11': 56.00000000000001}` |
+| reference_seed_005.jsonl | `reference_target_contact_gated_projected` | 0-24 | 0.0713 | 0.1997 | 0.2142 | 0.1471 | 1.1429 | 4.1206 | 0.1912 | None | `{'00': 8.0, '01': 12.0, '10': 16.0, '11': 64.0}` |
+| reference_seed_005.jsonl | `reference_target_contact_gated_projected` | 5-29 | 0.0708 | 0.1997 | 0.2142 | 0.1619 | 0.8571 | 3.3223 | 0.1378 | None | `{'01': 12.0, '10': 16.0, '11': 72.0}` |
 | phase1_x008_trace.jsonl | `fitted` | 15-39 | 0.0694 | 0.0289 | 0.4085 | 0.1471 | 0.0000 | 0.2365 | 0.0698 | 40 | `{'11': 100.0}` |
 | reference_seed_005.jsonl | `reference_target_cycle_projected` | 0-24 | 0.0694 | 0.2278 | 0.2177 | 0.1471 | 1.1429 | 3.0992 | 0.1968 | 170 | `{'00': 8.0, '01': 20.0, '10': 24.0, '11': 48.0}` |
-| trace.jsonl | `fitted` | 0-24 | 0.0693 | 0.1393 | 0.2442 | 0.1514 | 0.0000 | 2.6412 | 0.1119 | None | `{'01': 8.0, '10': 12.0, '11': 80.0}` |
-| reference_seed_005.jsonl | `reference_target_cycle_projected` | 15-39 | 0.0689 | 0.1400 | 0.1055 | 0.1559 | 1.1429 | 2.9990 | 0.1466 | 140 | `{'10': 20.0, '11': 80.0}` |
-| reference_seed_004.jsonl | `reference_target_cycle_projected` | 0-24 | 0.0687 | 0.1625 | 0.1137 | 0.1517 | 1.1429 | 3.1142 | 0.1682 | 85 | `{'01': 12.0, '10': 20.0, '11': 68.0}` |
 
 ## Interpretation
 

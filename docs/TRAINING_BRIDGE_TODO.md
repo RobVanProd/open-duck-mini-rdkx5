@@ -2690,10 +2690,10 @@ compatible JSONL traces currently available under `outputs/analysis`:
 
 ```text
 status: HOLD_INSUFFICIENT_CURATED_WINDOWS
-compatible candidate windows: 64
+compatible candidate windows: 76
 curated_seed_windows: 1
-review_motion_hints: 35
-rejected_dataset_seeds: 28
+review_motion_hints: 37
+rejected_dataset_seeds: 38
 ```
 
 This rules out the easy path where enough clean seed data was already present
@@ -2716,6 +2716,51 @@ outputs/analysis/REALIZED_TARGET_WINDOW_MINE_BROAD.md
 outputs/analysis/realized_target_window_mine_broad.json
 outputs/analysis/REALIZED_TARGET_WINDOW_CURATION_BROAD.md
 outputs/analysis/realized_target_window_curation_broad.json
+```
+
+### Contact-Gated Reference Projection
+
+`tools/eval_reference_motion_rollout.py` now has an explicit
+`contact_gated_projected` diagnostic mode. It starts from the cycle-projected
+reference and damps a leg's target delta when the reference expects that foot to
+swing but the sim still reports it in contact.
+
+```text
+mode: contact_gated_projected
+contact_gate_swing_scale: 0.35
+command_x: 0.04
+seeds: 0-7
+status: HOLD_REFERENCE_TARGET_TERMINATES
+falls: 7/8
+mean vx: 0.0012 m/s
+mean contact mismatch: 69.4217%
+curated seed windows: 0
+```
+
+Compared with the previous reference-target contact runs:
+
+```text
+raw:                    68.03% mismatch
+cycle_projected:        67.77% mismatch
+projected phase 5:      67.23% mismatch
+projected phase 19:     67.57% mismatch
+contact_gated_projected:66.35% mismatch
+```
+
+The small mismatch reduction is not enough to recover the gait, and actual
+double support rises to `84.95%`. Do not continue this exact damping rule as a
+training path. Use it as evidence that the reference needs a stronger stateful
+target-generation/adaptation method.
+
+Artifacts:
+
+```text
+outputs/analysis/REFERENCE_MOTION_ROLLOUT_V20_CONTACT_GATED_PROJECTED.md
+outputs/analysis/reference_motion_rollout_v20_contact_gated_projected.json
+outputs/analysis/REFERENCE_CONTACT_COMPATIBILITY_V20_WITH_CONTACT_GATED.md
+outputs/analysis/reference_contact_compatibility_v20_with_contact_gated.json
+outputs/analysis/REALIZED_WINDOW_CONTACT_GATED_REFERENCE_CURATION.md
+outputs/analysis/realized_window_contact_gated_reference_curation.json
 ```
 
 ### V5/V7 Low-Command Trace Collection

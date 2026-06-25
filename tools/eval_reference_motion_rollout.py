@@ -4,9 +4,9 @@
 This is an offline mechanism diagnostic for the V20 result. It does not train,
 SSH, deploy, or touch the robot. It asks:
 
-    If the policy action is replaced with actions derived from the matched
-    reference joint targets, can the sim follow the reference and satisfy the
-    low-command gate?
+If the policy action is replaced with actions derived from the matched
+reference joint targets, can the sim follow the reference and satisfy the
+low-command gate?
 
 The rollout still uses the runtime-style action contract:
 
@@ -425,11 +425,37 @@ def run_rollout(args: argparse.Namespace) -> dict[str, Any]:
                 reference_target = reference_frame_to_actuator_target(
                     ref, env._default_actuator, jp
                 )
-                if reference_target_mode == "cycle_projected":
+                if reference_target_mode in ("cycle_projected", "contact_gated_projected"):
                     reference_target = env._default_actuator + (
                         reference_target - env._default_actuator
                     ) * projection_scales
                 reference_foot_contacts = jp.where(ref[32:34] > 0.5, 1, 0)
+                current_contact = jp.array(
+                    [
+                        geoms_colliding(state.data, geom_id, env._floor_geom_id)
+                        for geom_id in env._feet_geom_id
+                    ]
+                )
+                if reference_target_mode == "contact_gated_projected":
+                    # If the reference asks a foot to swing but the sim still has
+                    # that foot loaded, damp that leg's target delta instead of
+                    # forcing the single-support schedule immediately.
+                    leg_scale = jp.ones_like(reference_target)
+                    left_scale = jp.where(
+                        current_contact[0] & (reference_foot_contacts[0] == 0),
+                        args.contact_gate_swing_scale,
+                        1.0,
+                    )
+                    right_scale = jp.where(
+                        current_contact[1] & (reference_foot_contacts[1] == 0),
+                        args.contact_gate_swing_scale,
+                        1.0,
+                    )
+                    leg_scale = leg_scale.at[:5].set(left_scale)
+                    leg_scale = leg_scale.at[9:14].set(right_scale)
+                    reference_target = env._default_actuator + (
+                        reference_target - env._default_actuator
+                    ) * leg_scale
                 action = jp.clip(
                     (reference_target - env._default_actuator) / env._config.action_scale,
                     -1.0,
@@ -620,7 +646,12 @@ def run_rollout(args: argparse.Namespace) -> dict[str, Any]:
         "reference": args.reference_motion_override,
         "reference_target_mode": args.reference_target_mode,
         "first_reference_phase": args.first_reference_phase,
-        "projection": projection_summary if args.reference_target_mode == "cycle_projected" else None,
+        "contact_gate_swing_scale": args.contact_gate_swing_scale,
+        "projection": (
+            projection_summary
+            if args.reference_target_mode in ("cycle_projected", "contact_gated_projected")
+            else None
+        ),
         "reward_overrides_json": args.reward_overrides_json,
         "reward_overrides_phase": args.reward_overrides_phase,
         "override": override_info,
@@ -714,6 +745,7 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
             "- This rollout replaces the ONNX policy with reference-derived actions.",
             "- It still respects action scale and the motor target rate limiter.",
             "- `cycle_projected` mode scales each joint's reference cycle to fit the action and target-rate envelope.",
+            "- `contact_gated_projected` additionally damps a swing-leg target if that foot is still loaded in the sim.",
             "- A pass would show that the matched reference is dynamically trackable in the sim contract.",
             "- A hold means behavior cloning must account for the target/action contract, phase, or contact dynamics before PPO.",
         ]
@@ -732,8 +764,18 @@ def main() -> int:
     parser.add_argument("--command-x", type=float, default=0.04)
     parser.add_argument(
         "--reference-target-mode",
-        choices=["raw", "cycle_projected"],
+        choices=["raw", "cycle_projected", "contact_gated_projected"],
         default="raw",
+    )
+    parser.add_argument(
+        "--contact-gate-swing-scale",
+        type=float,
+        default=0.35,
+        help=(
+            "For contact_gated_projected mode, scale a leg's target delta by this "
+            "factor when the reference expects that foot off the floor but the "
+            "simulated foot is still in contact."
+        ),
     )
     parser.add_argument(
         "--first-reference-phase",

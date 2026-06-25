@@ -20,10 +20,10 @@ motion windows. It does not export raw traces or start training.
 
 ## Counts
 
-- mined_windows: `64`
+- mined_windows: `76`
 - pass_curated_seed_windows: `1`
-- review_motion_hints: `35`
-- rejected_dataset_seeds: `28`
+- review_motion_hints: `37`
+- rejected_dataset_seeds: `38`
 
 ## Curated Seed Windows
 
@@ -49,7 +49,7 @@ motion windows. It does not export raw traces or start training.
 | v7_x008_trace.jsonl | `stress` | 0-24 | 0.0534 | `high_lateral_velocity` |
 | v7_x008_trace.jsonl | `vanilla` | 5-29 | 0.0515 | `single_contact_pattern_dominates` |
 | v7_x008_trace.jsonl | `stress` | 15-39 | 0.0451 | `single_contact_pattern_dominates` |
-| trace_seed0.jsonl | `fitted` | 5-29 | 0.0535 | `high_lateral_velocity` |
+| reference_seed_004.jsonl | `reference_target_contact_gated_projected` | 20-44 | 0.0452 | `high_lateral_velocity` |
 
 ## Interpretation
 

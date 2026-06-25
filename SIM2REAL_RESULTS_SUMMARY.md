@@ -3533,10 +3533,10 @@ compatible JSONL traces already in `outputs/analysis`.
 
 ```text
 status: HOLD_INSUFFICIENT_CURATED_WINDOWS
-compatible mined windows: 64
+compatible mined windows: 76
 curated seed windows: 1
-review-only motion hints: 35
-rejected dataset seeds: 28
+review-only motion hints: 37
+rejected dataset seeds: 38
 ```
 
 Conclusion:
@@ -3562,6 +3562,65 @@ outputs/analysis/REALIZED_TARGET_WINDOW_MINE_BROAD.md
 outputs/analysis/realized_target_window_mine_broad.json
 outputs/analysis/REALIZED_TARGET_WINDOW_CURATION_BROAD.md
 outputs/analysis/realized_target_window_curation_broad.json
+```
+
+### Contact-Gated Reference Projection
+
+A simple contact-aware target adaptation was tested offline:
+
+```text
+mode: contact_gated_projected
+rule: damp a leg's projected reference target when the reference expects that
+      foot to swing but the simulated foot is still loaded
+contact_gate_swing_scale: 0.35
+command: x=0.04
+seeds: 0-7
+```
+
+Result:
+
+```text
+status: HOLD_REFERENCE_TARGET_TERMINATES
+falls: 7/8
+duration complete: 1/8
+mean vx: 0.0012 m/s
+mean track ratio: 0.0288
+mean lateral p95_abs velocity: 0.3960 m/s
+mean contact mismatch: 69.4217%
+curated seed windows: 0
+```
+
+Contact comparison:
+
+```text
+raw reference mismatch:               68.03%
+cycle projected mismatch:             67.77%
+projected phase 5 mismatch:           67.23%
+projected phase 19 mismatch:          67.57%
+contact-gated projected mismatch:     66.35%
+contact-gated actual double support:  84.95%
+```
+
+Conclusion:
+
+```text
+Simple contact-gated swing damping is not enough. It slightly reduces contact
+mismatch but mostly keeps the sim in double support and still fails the target
+rollout. The next target-generation approach must be more stateful than this
+one-step damping rule.
+```
+
+Additional artifacts:
+
+```text
+outputs/analysis/REFERENCE_MOTION_ROLLOUT_V20_CONTACT_GATED_PROJECTED.md
+outputs/analysis/reference_motion_rollout_v20_contact_gated_projected.json
+outputs/analysis/REFERENCE_CONTACT_COMPATIBILITY_V20_WITH_CONTACT_GATED.md
+outputs/analysis/reference_contact_compatibility_v20_with_contact_gated.json
+outputs/analysis/REALIZED_WINDOW_CONTACT_GATED_REFERENCE_MINE.md
+outputs/analysis/realized_window_contact_gated_reference_mine.json
+outputs/analysis/REALIZED_WINDOW_CONTACT_GATED_REFERENCE_CURATION.md
+outputs/analysis/realized_window_contact_gated_reference_curation.json
 ```
 
 ### V5/V7 Low-Command Trace Collection
