@@ -2914,6 +2914,31 @@ Do next:
    pass produces windows that are not all from seed_000
 ```
 
+### Seed-2 Rescue Search
+
+A targeted seed-2 rescue grid swept stronger opposite hip-roll bias and finer
+phase offsets around the best biased primitive family.
+
+Result:
+
+```text
+seed: 2
+candidates: 50
+curated windows: 0
+review hints: 80
+rejected windows: 11
+status: HOLD_INSUFFICIENT_CURATED_WINDOWS
+```
+
+Conclusion:
+
+```text
+Do not keep expanding hand grids. The seed-2 failure splits between high lateral
+velocity in early windows and single-contact dominance in later windows. The
+next generator should optimize a score that includes forward velocity, lateral
+velocity, contact diversity, base height, and actuator envelope terms.
+```
+
 ### V5/V7 Low-Command Trace Collection
 
 The old moving-lineage policies were replayed at `x=0.04` with vanilla dynamics

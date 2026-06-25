@@ -219,6 +219,41 @@ either seed-diversity search or lateral/contact objective terms before any
 supervised pretraining run.
 ```
 
+## Seed-2 Rescue Search Result
+
+A targeted rescue grid attempted to convert seed_002 review-only motion hints
+into curated windows by sweeping stronger opposite hip-roll bias and finer phase
+offsets around the best biased primitive family:
+
+```text
+seed: 2
+periods: 0.7, 0.9 s
+hip_roll_bias: -0.16, -0.12, -0.08, -0.04, 0.0 rad
+phase_offsets: 0.0, 0.3927, 0.7854, 1.1781, 1.5708 rad
+candidates: 50
+```
+
+Result:
+
+```text
+search status: PASS_TARGET_SEARCH_RAN
+window mine: PASS_REALIZED_WINDOWS_AVAILABLE
+curated windows: 0
+review hints: 80
+rejected windows: 11
+status: HOLD_INSUFFICIENT_CURATED_WINDOWS
+```
+
+Interpretation:
+
+```text
+Hand-swept roll and phase offsets are not enough to make seed_002 pass the
+curation gate. Early windows fail lateral velocity; later windows reduce lateral
+velocity but become single-contact dominated. The next generator should score
+lateral/contact criteria directly rather than continue expanding this manual
+grid.
+```
+
 Do not commit raw trace slices unless explicitly approved. Commit compact
 manifests and summaries only.
 

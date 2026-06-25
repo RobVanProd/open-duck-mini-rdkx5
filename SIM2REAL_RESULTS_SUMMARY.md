@@ -3783,6 +3783,33 @@ build a deliberate compact target dataset from windows that are not all from one
 seed.
 ```
 
+### Seed-2 Rescue Search
+
+A targeted seed-2 grid swept stronger opposite hip-roll bias and finer phase
+offsets around the best biased primitive family.
+
+Result:
+
+```text
+seed: 2
+candidates: 50
+window mine: PASS_REALIZED_WINDOWS_AVAILABLE
+curated windows: 0
+review hints: 80
+rejected windows: 11
+status: HOLD_INSUFFICIENT_CURATED_WINDOWS
+```
+
+Conclusion:
+
+```text
+Manual roll/phase expansion did not produce seed_002 curated windows. Early
+motion windows fail lateral velocity; later lower-lateral windows become
+single-contact dominated. The next target-generator step should be an optimizer
+or scored search over lateral/contact criteria, not another reward-training run
+and not a broader blind hand grid.
+```
+
 ### V5/V7 Low-Command Trace Collection
 
 A no-training CPU trace collection replayed the old moving-lineage policies at
