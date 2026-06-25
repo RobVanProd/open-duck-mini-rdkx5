@@ -321,6 +321,31 @@ sanity check and, if accepted, a tiny supervised/imitation smoke run before any
 larger PPO or bridge curriculum work.
 ```
 
+## Target Dataset Sanity Check
+
+The compact manifest was checked against the local ignored source traces without
+copying raw trace contents:
+
+```text
+tool: tools/check_target_dataset_manifest.py
+dataset_id: e84d27e27fd73419
+status: WARN_TARGET_DATASET_SANITY_SOURCE_SKEW
+entries checked: 11
+entries with errors: 0
+source files: 2
+max source fraction: 0.9091
+warning: source_distribution_skew
+```
+
+Interpretation:
+
+```text
+The manifest entries match the source traces and all compact metrics recompute
+cleanly. The only sanity warning is the known source skew. This clears the
+manifest for review and a tiny supervised/imitation smoke experiment if the
+skew is accepted, but it does not justify a larger PPO run.
+```
+
 Do not commit raw trace slices unless explicitly approved. Commit compact
 manifests and summaries only.
 

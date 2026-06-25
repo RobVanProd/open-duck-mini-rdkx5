@@ -3864,6 +3864,30 @@ check, then at most a tiny supervised/imitation smoke experiment. Do not jump
 straight to a larger PPO run.
 ```
 
+### Target Dataset Sanity Check
+
+The manifest was checked against the local ignored source traces:
+
+```text
+tool: tools/check_target_dataset_manifest.py
+dataset_id: e84d27e27fd73419
+status: WARN_TARGET_DATASET_SANITY_SOURCE_SKEW
+entries checked: 11
+entries with errors: 0
+source files: 2
+source distribution: seed_000=10, seed_002=1
+max source fraction: 0.9091
+```
+
+Conclusion:
+
+```text
+The compact target manifest is internally consistent with the local source
+traces. The only sanity warning is the known source skew. This permits review
+and, if accepted, a tiny supervised/imitation smoke experiment only. It does not
+justify a larger PPO run.
+```
+
 ### V5/V7 Low-Command Trace Collection
 
 A no-training CPU trace collection replayed the old moving-lineage policies at

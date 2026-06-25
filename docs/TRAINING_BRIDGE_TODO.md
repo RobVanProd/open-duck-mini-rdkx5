@@ -2990,6 +2990,28 @@ Do next:
 4. do not launch a larger PPO run directly from this manifest
 ```
 
+### Target Dataset Sanity Check
+
+The compact manifest was checked against the local ignored traces:
+
+```text
+tool: tools/check_target_dataset_manifest.py
+status: WARN_TARGET_DATASET_SANITY_SOURCE_SKEW
+entries checked: 11
+entries with errors: 0
+source files: 2
+max source fraction: 0.9091
+```
+
+Do next:
+
+```text
+1. treat the manifest as technically valid but source-skewed
+2. if using it, run only a tiny supervised/imitation smoke experiment
+3. grade the smoke run on whether it preserves low-command forward motion
+4. stop if it collapses into standstill/reverse
+```
+
 ### V5/V7 Low-Command Trace Collection
 
 The old moving-lineage policies were replayed at `x=0.04` with vanilla dynamics
