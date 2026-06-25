@@ -55,7 +55,7 @@ it does not run simulation, training, robot SSH, deployment, or hardware tests.
 | `com_weight_transfer_controller_stateful_timeout_score_150` | `HOLD_NO_SEED_ROBUST_TARGETS` | 150 | 0 | 3 | 0 |
 | `com_weight_transfer_controller_support_gated_score_100` | `HOLD_NO_SEED_ROBUST_TARGETS` | 100 | 0 | 3 | 0 |
 | `com_weight_transfer_controller_support_gated_score_150` | `HOLD_NO_SEED_ROBUST_TARGETS` | 150 | 0 | 3 | 0 |
-| `score` | `HOLD_NO_SEED_ROBUST_TARGETS` | 100 | 0 | 3 | 0 |
+| `contact_weight_transfer_sequence_optimizer_smoke_iteration_00_score` | `HOLD_NO_SEED_ROBUST_TARGETS` | 100 | 0 | 3 | 0 |
 | `staged_weight_transfer_planner_score_100` | `HOLD_NO_SEED_ROBUST_TARGETS` | 100 | 0 | 3 | 0 |
 | `staged_weight_transfer_planner_score_150` | `HOLD_NO_SEED_ROBUST_TARGETS` | 150 | 0 | 3 | 0 |
 | `support_loaded_weight_transfer_probe_score_100` | `HOLD_NO_SEED_ROBUST_TARGETS` | 100 | 0 | 3 | 0 |

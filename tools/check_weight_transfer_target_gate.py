@@ -53,6 +53,12 @@ def expand_default_inputs() -> list[Path]:
     return sorted(paths)
 
 
+def artifact_label(path: Path) -> str:
+    if path.stem == "score" and path.parent.name.startswith("iteration_"):
+        return f"{path.parent.parent.name}_{path.parent.name}_score"
+    return path.stem
+
+
 def pass_seed(seed: dict[str, Any], args: argparse.Namespace) -> tuple[bool, list[str]]:
     failures: list[str] = []
     checks = [
@@ -161,7 +167,7 @@ def evaluate_result(result: dict[str, Any], args: argparse.Namespace) -> dict[st
 
 def evaluate_file(path: Path, args: argparse.Namespace) -> dict[str, Any]:
     if not path.exists():
-        return {"path": str(path), "label": path.stem, "status": "MISSING", "results": []}
+        return {"path": str(path), "label": artifact_label(path), "status": "MISSING", "results": []}
     payload = json.loads(path.read_text())
     results = payload.get("results") or []
     if not isinstance(results, list):
@@ -169,7 +175,7 @@ def evaluate_file(path: Path, args: argparse.Namespace) -> dict[str, Any]:
     evaluated = [evaluate_result(result, args) for result in results[: args.max_results_per_file]]
     return {
         "path": str(path),
-        "label": path.stem,
+        "label": artifact_label(path),
         "status": payload.get("status", "UNKNOWN"),
         "window_samples": payload.get("window_samples"),
         "mode_count": payload.get("mode_count"),
