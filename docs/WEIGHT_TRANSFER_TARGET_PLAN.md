@@ -285,6 +285,18 @@ Relaxing readiness and increasing stance push improved seed 2 but made lateral
 velocity worse and did not move seed 0 forward. The next revision should improve
 coupled lateral balance and foot placement, not simply increase push amplitude.
 
+Orientation diagnostic:
+
+```text
+artifact: outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_ORIENTATION_SMOKE_SCORE_100.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+robust modes: 0 / 2
+```
+
+The trace/scorer now reports roll p95, yaw-change p95, and world-x displacement
+next to local-forward displacement. Use these fields to distinguish real
+forward progress from heading/lateral drift in future teacher revisions.
+
 ## Stop Conditions
 
 Stop target generation and do not train if:

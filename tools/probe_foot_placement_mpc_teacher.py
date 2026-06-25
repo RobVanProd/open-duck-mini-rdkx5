@@ -20,7 +20,12 @@ from typing import Any
 
 import numpy as np
 
-from closed_loop_sim_eval import quat_wxyz_to_pitch, temporary_cwd
+from closed_loop_sim_eval import (
+    quat_wxyz_to_pitch,
+    quat_wxyz_to_roll,
+    quat_wxyz_to_yaw,
+    temporary_cwd,
+)
 from eval_reference_motion_rollout import fmt, parse_int_list
 from probe_closed_loop_weight_transfer_teacher import label_float, parse_float_list
 from search_low_command_target_primitives import policy_observation_list, summarize_records
@@ -592,7 +597,9 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                             jax.device_get(sent_target), dtype=float
                         ).tolist(),
                         "actual_position_rad": actual.tolist(),
+                        "body_roll_rad": quat_wxyz_to_roll(quat),
                         "body_pitch_rad": quat_wxyz_to_pitch(quat),
+                        "body_yaw_rad": quat_wxyz_to_yaw(quat),
                         "base_x_m": float(qpos[base_addr]),
                         "base_y_m": float(qpos[base_addr + 1]),
                         "base_height_m": float(qpos[base_addr + 2]),

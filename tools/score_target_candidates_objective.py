@@ -112,7 +112,21 @@ def window_metrics(
     window = records[start : start + window_samples]
     vx = [record["local_linvel_m_s"][0] for record in window]
     vy = [record["local_linvel_m_s"][1] for record in window]
+    roll = [
+        abs(record["body_roll_rad"])
+        for record in window
+        if finite(record.get("body_roll_rad"))
+    ]
     pitch = [abs(record["body_pitch_rad"]) for record in window]
+    yaw_values = [
+        float(record["body_yaw_rad"])
+        for record in window
+        if finite(record.get("body_yaw_rad"))
+    ]
+    yaw_change = []
+    if yaw_values:
+        yaw_unwrapped = np.unwrap(np.asarray(yaw_values, dtype=float))
+        yaw_change = np.abs(yaw_unwrapped - yaw_unwrapped[0]).tolist()
     height = [record["base_height_m"] for record in window]
     base_x = [record.get("base_x_m") for record in window if finite(record.get("base_x_m"))]
     action = np.asarray([record.get("action", []) for record in window], dtype=float)
@@ -150,7 +164,9 @@ def window_metrics(
             float(base_x[-1] - base_x[0]) if len(base_x) >= 2 else None
         ),
         "vy_abs_p95_m_s": percentile([abs(value) for value in vy], 95),
+        "body_roll_abs_p95_rad": percentile(roll, 95) if roll else None,
         "body_pitch_abs_p95_rad": percentile(pitch, 95),
+        "body_yaw_change_abs_p95_rad": percentile(yaw_change, 95) if yaw_change else None,
         "base_height_min_m": float(np.min(height)) if height else None,
         "action_saturation_pct": (
             float(np.mean(np.abs(action) >= 0.999) * 100.0) if action.size else None
@@ -450,17 +466,17 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         [
             "## Top Worst-Seed Candidates",
             "",
-            "| mode | pass_seeds | worst_seed | min_score | mean_score | seed0_vx | seed0_dx | seed2_vx | seed2_dx | seed2_vy95 | seed2_contact | seed2_transitions | seed2_foot_z95 | seed2_failures |",
-            "|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|",
+            "| mode | pass_seeds | worst_seed | min_score | mean_score | seed0_vx | seed0_dx | seed0_wdx | seed2_vx | seed2_dx | seed2_wdx | seed2_vy95 | seed2_yaw95 | seed2_contact | seed2_transitions | seed2_foot_z95 | seed2_failures |",
+            "|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|",
         ]
     )
     if not payload["results"]:
-        lines.append("| NA | 0 | NA | NA | NA | NA | NA | NA | NA | NA |")
+        lines.append("| NA | 0 | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA |")
     for row in payload["results"][:25]:
         seed0 = row["seeds"].get("seed_000") or {}
         seed2 = row["seeds"].get("seed_002") or {}
         lines.append(
-            "| {mode} | {pass_count} | {worst} | {min_score} | {mean_score} | {seed0_vx} | {seed0_dx} | {seed2_vx} | {seed2_dx} | {seed2_vy} | {seed2_contact} | {seed2_transitions} | {seed2_foot_z} | `{seed2_fail}` |".format(
+            "| {mode} | {pass_count} | {worst} | {min_score} | {mean_score} | {seed0_vx} | {seed0_dx} | {seed0_wdx} | {seed2_vx} | {seed2_dx} | {seed2_wdx} | {seed2_vy} | {seed2_yaw} | {seed2_contact} | {seed2_transitions} | {seed2_foot_z} | `{seed2_fail}` |".format(
                 mode=row["mode"],
                 pass_count=row["pass_seed_count"],
                 worst=row["worst_seed"],
@@ -468,9 +484,12 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
                 mean_score=fmt(row["mean_seed_score"]),
                 seed0_vx=fmt(seed0.get("mean_vx_m_s")),
                 seed0_dx=fmt(seed0.get("forward_displacement_m")),
+                seed0_wdx=fmt(seed0.get("world_x_displacement_m")),
                 seed2_vx=fmt(seed2.get("mean_vx_m_s")),
                 seed2_dx=fmt(seed2.get("forward_displacement_m")),
+                seed2_wdx=fmt(seed2.get("world_x_displacement_m")),
                 seed2_vy=fmt(seed2.get("vy_abs_p95_m_s")),
+                seed2_yaw=fmt(seed2.get("body_yaw_change_abs_p95_rad")),
                 seed2_contact=fmt(seed2.get("contact_dominance_pct")),
                 seed2_transitions=fmt(seed2.get("contact_transitions"), digits=0),
                 seed2_foot_z=fmt(seed2.get("foot_site_z_p95_m")),

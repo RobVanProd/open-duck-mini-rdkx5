@@ -276,7 +276,7 @@ dominant failure: low_forward_velocity on seeds 0 and 2
 
 The probe is useful as an offline target-source instrument, but the initial
 candidate set is still not a supervised target source. The aggregate target
-gate now includes 45 compact score artifacts and remains held.
+gate now includes 46 compact score artifacts and remains held.
 
 Stronger-push diagnostic:
 
@@ -289,5 +289,18 @@ robust modes: 0 / 16
 
 It improved seed 2 partial motion but left seed 0 near-zero/backward and raised
 lateral velocity. The current blocker is not just push amplitude.
+
+Orientation diagnostic:
+
+```text
+artifact: outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_ORIENTATION_SMOKE_SCORE_100.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+robust modes: 0 / 2
+```
+
+The traces now include roll/pitch/yaw, and the scorer reports roll p95,
+yaw-change p95, and world-x displacement. This matters because local-forward
+progress can diverge from world-frame x motion when heading/lateral drift is
+present.
 
 Robot validation remains blocked.

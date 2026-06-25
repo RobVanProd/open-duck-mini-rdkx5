@@ -4502,6 +4502,18 @@ but left seed 0 near-zero/backward and raised lateral velocity, so the next
 teacher revision must couple forward push to lateral support placement more
 tightly.
 
+Orientation diagnostic:
+
+```text
+artifact: outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_ORIENTATION_SMOKE_SCORE_100.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+robust modes: 0 / 2
+```
+
+Future target-source scoring should inspect local vx, world-x displacement,
+roll p95, yaw-change p95, and lateral velocity together. Do not treat local
+forward velocity alone as proof of usable walking motion.
+
 The current compact handoff docs are:
 
 ```text

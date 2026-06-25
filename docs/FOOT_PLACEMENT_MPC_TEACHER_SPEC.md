@@ -34,9 +34,9 @@ forward push timing in one scored horizon.
 The current evidence says:
 
 ```text
-checked target score artifacts: 45
+checked target score artifacts: 46
 passing target sources: 0
-failure analysis rows scanned: 2068
+failure analysis rows scanned: 2072
 stable + actuator-safe rows: 964
 support-ready rows: 492
 forward-ready rows: 15
@@ -330,3 +330,30 @@ seed 0 remained near-zero or backward and lateral velocity rose. This rules out
 "just push harder" as a sufficient local fix. The next useful revision needs a
 better coupled stance-load / foot-placement / lateral-balance controller, not
 only larger stance hip/knee/ankle pushes.
+
+The probe and scorer now also log orientation diagnostics:
+
+```text
+trace fields:
+  body_roll_rad
+  body_pitch_rad
+  body_yaw_rad
+score metrics:
+  body_roll_abs_p95_rad
+  body_yaw_change_abs_p95_rad
+  world_x_displacement_m
+```
+
+The first orientation smoke held:
+
+```text
+artifact: outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_ORIENTATION_SMOKE_SCORE_100.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+modes: 2
+robust modes: 0
+```
+
+It confirmed that local-forward progress can diverge from world-x displacement
+when heading changes. Future teacher revisions should preserve both local
+forward velocity and heading/lateral stability rather than optimizing one in
+isolation.
