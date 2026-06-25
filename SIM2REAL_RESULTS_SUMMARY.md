@@ -4816,3 +4816,20 @@ status: HOLD_COLAB_SESSION_MISSING
 The preflight confirms the local V21 plan, compact soft-prior config,
 Playground patch, and PR checks are ready. The only current launch blocker is
 that `google-colab-cli` reports no active `open-duck-l4` session.
+
+A tiny planner-level CPU smoke now verifies the full staged planner path for
+V21, not just the lower-level wrapper:
+
+```text
+artifact: outputs/analysis/V21_PLANNER_CPU_SMOKE.md
+status: PASS_V21_PLANNER_CPU_SMOKE
+```
+
+The planner invoked phase 1 with `--enable-soft-prior`, the wrapper resolved
+the compact prior to an absolute path before entering the sibling Playground
+checkout, and the Playground runner completed a 22-timestep CPU smoke. The
+generated checkpoint/ONNX stayed under `/tmp` and is not a candidate.
+
+The next required result remains unchanged: a real CUDA/Colab V21 run followed
+by an `x=0.04` multi-seed sim gate. Do not run `x=0.08`, fitted-bridge
+expansion, grounded replay, deployment, or robot validation from this smoke.

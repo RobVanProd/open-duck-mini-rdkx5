@@ -3856,3 +3856,19 @@ Colab session open-duck-l4: MISSING
 ```
 
 Once a Colab session is active again, rerun the readiness check before launch.
+
+Planner-level CPU smoke:
+
+```text
+artifact: outputs/analysis/V21_PLANNER_CPU_SMOKE.md
+status: PASS_V21_PLANNER_CPU_SMOKE
+```
+
+This verifies the full staged planner path invokes the V21 phase-1 recipe with
+the soft-prior flags and that the wrapper resolves the compact prior config to
+an absolute path before calling the sibling Playground runner. It was a
+22-timestep CPU smoke only; the generated `/tmp` checkpoint and ONNX are not
+candidate artifacts.
+
+Next step remains a real CUDA/Colab V21 run and an `x=0.04` multi-seed sim
+gate after `tools/check_v21_launch_readiness.py` reports an active session.
