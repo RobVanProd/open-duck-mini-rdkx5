@@ -4749,3 +4749,23 @@ outputs/analysis/SOFT_PRIOR_TRAINING_PATCH.diff
 
 The helper is read-only by default and validated against the current sibling
 Playground checkout with `PASS_PATCH_PREPARED`.
+
+The default-off soft-prior Playground patch has now been applied and pushed:
+
+```text
+repo: RobVanProd/Open_Duck_Playground
+branch: codex/forward-progress-reward
+pr: https://github.com/RobVanProd/Open_Duck_Playground/pull/4
+commit: 11ebae1 training: add default-off soft prior reward
+```
+
+Verification:
+
+```text
+outputs/analysis/SOFT_PRIOR_PLAYGROUND_PATCH_VERIFY.md
+```
+
+The patched runner exposes the soft-prior flags and loads the compact prior
+without training while preserving the `101` observation / `14` action contract.
+No robot tests, SSH, deployment, runtime behavior changes, policy changes, or
+training runs were performed for this patch application.

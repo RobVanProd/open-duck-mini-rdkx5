@@ -3775,3 +3775,22 @@ Read-only validation result:
 ```text
 PASS_PATCH_PREPARED
 ```
+
+Applied Playground patch:
+
+```text
+repo: RobVanProd/Open_Duck_Playground
+branch: codex/forward-progress-reward
+pr: https://github.com/RobVanProd/Open_Duck_Playground/pull/4
+commit: 11ebae1 training: add default-off soft prior reward
+```
+
+Verification artifact:
+
+```text
+outputs/analysis/SOFT_PRIOR_PLAYGROUND_PATCH_VERIFY.md
+```
+
+Next offline gate is a small learner run that explicitly enables the weak
+soft-prior term and grades multi-seed forward motion. Robot validation remains
+blocked.

@@ -229,3 +229,27 @@ playground/open_duck_mini_v2/runner.py
 ```
 
 and the patched temp files passed `py_compile`.
+
+## Playground Patch Status
+
+The patch has now been applied to the sibling `Open_Duck_Playground` checkout
+and pushed to:
+
+```text
+https://github.com/RobVanProd/Open_Duck_Playground/pull/4
+```
+
+Playground commit:
+
+```text
+11ebae1 training: add default-off soft prior reward
+```
+
+Verification artifact:
+
+```text
+outputs/analysis/SOFT_PRIOR_PLAYGROUND_PATCH_VERIFY.md
+```
+
+The hook remains default-off and the runner config-load smoke confirmed the
+expected `101` observation / `14` action contract.
