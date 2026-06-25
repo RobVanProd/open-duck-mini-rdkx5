@@ -200,6 +200,20 @@ def build_cycle_projection_scales(env, jp, command, *, action_scale: float, max_
     }
 
 
+def build_projected_reference_cycle(env, jp, command, projection_scales_np):
+    targets = []
+    contacts = []
+    for phase in range(int(env.PRM.nb_steps_in_period)):
+        ref = env.PRM.get_reference_motion(command[0], command[1], command[2], phase)
+        target = reference_frame_to_actuator_target(ref, env._default_actuator, jp)
+        projected = env._default_actuator + (target - env._default_actuator) * jp.asarray(
+            projection_scales_np
+        )
+        targets.append(np.asarray(projected, dtype=float))
+        contacts.append(np.asarray(ref[32:34] > 0.5, dtype=int))
+    return np.asarray(targets, dtype=float), np.asarray(contacts, dtype=int)
+
+
 def summarize_records(
     *,
     seed: int,
@@ -395,6 +409,11 @@ def run_rollout(args: argparse.Namespace) -> dict[str, Any]:
                     dt_s=float(env.dt),
                 )
                 projection_scales = jp.asarray(projection_scales_np)
+                projected_cycle_np, projected_contacts_np = build_projected_reference_cycle(
+                    env, jp, command, projection_scales_np
+                )
+                projected_cycle_targets = jp.asarray(projected_cycle_np)
+                projected_cycle_contacts = jp.asarray(projected_contacts_np)
                 reference_target_mode = args.reference_target_mode
 
             def refresh_obs(state):
@@ -410,8 +429,25 @@ def run_rollout(args: argparse.Namespace) -> dict[str, Any]:
 
             def step_reference(state):
                 state.info["command"] = command
-                state.info["imitation_i"] += 1
-                state.info["imitation_i"] = state.info["imitation_i"] % env.PRM.nb_steps_in_period
+                proposed_i = (state.info["imitation_i"] + 1) % env.PRM.nb_steps_in_period
+                current_contact = jp.array(
+                    [
+                        geoms_colliding(state.data, geom_id, env._floor_geom_id)
+                        for geom_id in env._feet_geom_id
+                    ]
+                )
+                if reference_target_mode == "contact_synchronized_projected":
+                    phases = jp.arange(env.PRM.nb_steps_in_period)
+                    phase_distance = (phases - proposed_i) % env.PRM.nb_steps_in_period
+                    contact_error = jp.sum(
+                        jp.abs(projected_cycle_contacts - current_contact.astype(int)),
+                        axis=1,
+                    )
+                    state.info["imitation_i"] = jp.argmin(
+                        contact_error * 100 + phase_distance
+                    ).astype(state.info["imitation_i"].dtype)
+                else:
+                    state.info["imitation_i"] = proposed_i
                 state.info["imitation_phase"] = jp.array(
                     [
                         jp.cos((state.info["imitation_i"] / env.PRM.nb_steps_in_period) * 2 * jp.pi),
@@ -425,17 +461,15 @@ def run_rollout(args: argparse.Namespace) -> dict[str, Any]:
                 reference_target = reference_frame_to_actuator_target(
                     ref, env._default_actuator, jp
                 )
-                if reference_target_mode in ("cycle_projected", "contact_gated_projected"):
+                if reference_target_mode in (
+                    "cycle_projected",
+                    "contact_gated_projected",
+                    "contact_synchronized_projected",
+                ):
                     reference_target = env._default_actuator + (
                         reference_target - env._default_actuator
                     ) * projection_scales
                 reference_foot_contacts = jp.where(ref[32:34] > 0.5, 1, 0)
-                current_contact = jp.array(
-                    [
-                        geoms_colliding(state.data, geom_id, env._floor_geom_id)
-                        for geom_id in env._feet_geom_id
-                    ]
-                )
                 if reference_target_mode == "contact_gated_projected":
                     # If the reference asks a foot to swing but the sim still has
                     # that foot loaded, damp that leg's target delta instead of
@@ -456,6 +490,9 @@ def run_rollout(args: argparse.Namespace) -> dict[str, Any]:
                     reference_target = env._default_actuator + (
                         reference_target - env._default_actuator
                     ) * leg_scale
+                if reference_target_mode == "contact_synchronized_projected":
+                    reference_target = projected_cycle_targets[state.info["imitation_i"]]
+                    reference_foot_contacts = projected_cycle_contacts[state.info["imitation_i"]]
                 action = jp.clip(
                     (reference_target - env._default_actuator) / env._config.action_scale,
                     -1.0,
@@ -649,7 +686,8 @@ def run_rollout(args: argparse.Namespace) -> dict[str, Any]:
         "contact_gate_swing_scale": args.contact_gate_swing_scale,
         "projection": (
             projection_summary
-            if args.reference_target_mode in ("cycle_projected", "contact_gated_projected")
+            if args.reference_target_mode
+            in ("cycle_projected", "contact_gated_projected", "contact_synchronized_projected")
             else None
         ),
         "reward_overrides_json": args.reward_overrides_json,
@@ -746,6 +784,7 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
             "- It still respects action scale and the motor target rate limiter.",
             "- `cycle_projected` mode scales each joint's reference cycle to fit the action and target-rate envelope.",
             "- `contact_gated_projected` additionally damps a swing-leg target if that foot is still loaded in the sim.",
+            "- `contact_synchronized_projected` retimes the projected reference phase toward the current simulated contact pattern.",
             "- A pass would show that the matched reference is dynamically trackable in the sim contract.",
             "- A hold means behavior cloning must account for the target/action contract, phase, or contact dynamics before PPO.",
         ]
@@ -764,7 +803,12 @@ def main() -> int:
     parser.add_argument("--command-x", type=float, default=0.04)
     parser.add_argument(
         "--reference-target-mode",
-        choices=["raw", "cycle_projected", "contact_gated_projected"],
+        choices=[
+            "raw",
+            "cycle_projected",
+            "contact_gated_projected",
+            "contact_synchronized_projected",
+        ],
         default="raw",
     )
     parser.add_argument(

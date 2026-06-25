@@ -3533,10 +3533,10 @@ compatible JSONL traces already in `outputs/analysis`.
 
 ```text
 status: HOLD_INSUFFICIENT_CURATED_WINDOWS
-compatible mined windows: 76
+compatible mined windows: 94
 curated seed windows: 1
 review-only motion hints: 37
-rejected dataset seeds: 38
+rejected dataset seeds: 56
 ```
 
 Conclusion:
@@ -3621,6 +3621,55 @@ outputs/analysis/REALIZED_WINDOW_CONTACT_GATED_REFERENCE_MINE.md
 outputs/analysis/realized_window_contact_gated_reference_mine.json
 outputs/analysis/REALIZED_WINDOW_CONTACT_GATED_REFERENCE_CURATION.md
 outputs/analysis/realized_window_contact_gated_reference_curation.json
+```
+
+### Contact-Synchronized Reference Projection
+
+A stronger stateful adaptation was tested after simple contact gating:
+
+```text
+mode: contact_synchronized_projected
+rule: retime the projected reference phase toward the current simulated contact
+      pattern, using forward phase distance as a tie-break
+command: x=0.04
+seeds: 0-7
+```
+
+Result:
+
+```text
+status: HOLD_REFERENCE_TARGET_TERMINATES
+falls: 7/8
+duration complete: 1/8
+mean vx: -0.0152 m/s
+mean track ratio: -0.3788
+mean lateral p95_abs velocity: 0.3867 m/s
+mean joint tracking p95: 0.1059 rad
+mean per-seed contact mismatch: 7.7531%
+aggregate contact mismatch: 4.36%
+curated seed windows: 0
+```
+
+Conclusion:
+
+```text
+Reference phase/contact retiming is not sufficient. It fixes most contact
+mismatch, but does so while losing forward locomotion and still terminating in
+7/8 seeds. The next target generator must jointly optimize forward progress,
+lateral stability, body pitch/height, and contact transitions.
+```
+
+Additional artifacts:
+
+```text
+outputs/analysis/REFERENCE_MOTION_ROLLOUT_V20_CONTACT_SYNCHRONIZED_PROJECTED.md
+outputs/analysis/reference_motion_rollout_v20_contact_synchronized_projected.json
+outputs/analysis/REFERENCE_CONTACT_COMPATIBILITY_V20_WITH_CONTACT_ADAPTATIONS.md
+outputs/analysis/reference_contact_compatibility_v20_with_contact_adaptations.json
+outputs/analysis/REALIZED_WINDOW_CONTACT_SYNCHRONIZED_REFERENCE_MINE.md
+outputs/analysis/realized_window_contact_synchronized_reference_mine.json
+outputs/analysis/REALIZED_WINDOW_CONTACT_SYNCHRONIZED_REFERENCE_CURATION.md
+outputs/analysis/realized_window_contact_synchronized_reference_curation.json
 ```
 
 ### V5/V7 Low-Command Trace Collection

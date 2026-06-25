@@ -676,10 +676,10 @@ multi-seed candidate traces:
 
 ```text
 status: HOLD_INSUFFICIENT_CURATED_WINDOWS
-compatible candidate windows: 76
+compatible candidate windows: 94
 curated seed windows: 1
 review-only motion hints: 37
-rejected dataset seeds: 38
+rejected dataset seeds: 56
 ```
 
 This broader pass does not reveal a hidden stable target dataset. It confirms
@@ -763,6 +763,58 @@ outputs/analysis/REALIZED_WINDOW_CONTACT_GATED_REFERENCE_MINE.md
 outputs/analysis/realized_window_contact_gated_reference_mine.json
 outputs/analysis/REALIZED_WINDOW_CONTACT_GATED_REFERENCE_CURATION.md
 outputs/analysis/realized_window_contact_gated_reference_curation.json
+```
+
+## Contact-Synchronized Reference Rollout
+
+A stronger stateful phase-retiming diagnostic was then tested:
+
+```text
+mode: contact_synchronized_projected
+rule: choose the projected reference phase whose expected contacts best match
+      the current simulated contacts, with a forward phase-distance tie-break
+seeds: 0-7
+command: x=0.04
+```
+
+Result:
+
+```text
+status: HOLD_REFERENCE_TARGET_TERMINATES
+falls: 7/8
+duration complete: 1/8
+mean vx: -0.0152 m/s
+mean track ratio: -0.3788
+mean lateral p95_abs velocity: 0.3867 m/s
+mean joint tracking p95: 0.1059 rad
+mean per-seed contact mismatch: 7.7531%
+aggregate contact mismatch: 4.36%
+curated seed windows: 0
+```
+
+Interpretation:
+
+```text
+Contact synchronization solves most of the contact-label mismatch, but it does
+not create forward locomotion. The policy/reference problem is therefore not
+just "wrong reference phase" or "contact-bit mismatch." Once the reference clock
+is retimed to match realized contacts, the motion collapses into mostly
+double-support/low-or-negative-forward behavior. The next target-generation
+strategy must include forward progress and contact transitions together, not
+optimize contact matching alone.
+```
+
+Additional artifacts:
+
+```text
+outputs/analysis/REFERENCE_MOTION_ROLLOUT_V20_CONTACT_SYNCHRONIZED_PROJECTED.md
+outputs/analysis/reference_motion_rollout_v20_contact_synchronized_projected.json
+outputs/analysis/REFERENCE_CONTACT_COMPATIBILITY_V20_WITH_CONTACT_ADAPTATIONS.md
+outputs/analysis/reference_contact_compatibility_v20_with_contact_adaptations.json
+outputs/analysis/REALIZED_WINDOW_CONTACT_SYNCHRONIZED_REFERENCE_MINE.md
+outputs/analysis/realized_window_contact_synchronized_reference_mine.json
+outputs/analysis/REALIZED_WINDOW_CONTACT_SYNCHRONIZED_REFERENCE_CURATION.md
+outputs/analysis/realized_window_contact_synchronized_reference_curation.json
 ```
 
 ## Low-Command V5/V7 Trace Collection

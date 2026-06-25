@@ -40,6 +40,14 @@ a manifest, not a raw BC dataset.
 | reference_seed_005.jsonl | `reference_target_contact_gated_projected` | 250 | 0 | 0.0092 | 0.2119 | 0.1471 | 5 |
 | reference_seed_006.jsonl | `reference_target_contact_gated_projected` | 70 | 1 | -0.0107 | 0.0988 | 0.1573 | 0 |
 | reference_seed_007.jsonl | `reference_target_contact_gated_projected` | 32 | 1 | 0.0129 | 0.0923 | 0.1007 | 0 |
+| reference_seed_000.jsonl | `reference_target_contact_synchronized_projected` | 91 | 1 | 0.0078 | 0.1305 | 0.1559 | 3 |
+| reference_seed_001.jsonl | `reference_target_contact_synchronized_projected` | 31 | 1 | -0.1310 | 0.0085 | 0.1031 | 0 |
+| reference_seed_002.jsonl | `reference_target_contact_synchronized_projected` | 168 | 1 | 0.0079 | 0.1404 | 0.1527 | 2 |
+| reference_seed_003.jsonl | `reference_target_contact_synchronized_projected` | 70 | 1 | -0.0106 | 0.0620 | 0.1595 | 0 |
+| reference_seed_004.jsonl | `reference_target_contact_synchronized_projected` | 245 | 1 | 0.0079 | 0.1867 | 0.1518 | 5 |
+| reference_seed_005.jsonl | `reference_target_contact_synchronized_projected` | 250 | 0 | 0.0095 | 0.2114 | 0.1471 | 5 |
+| reference_seed_006.jsonl | `reference_target_contact_synchronized_projected` | 70 | 1 | -0.0041 | 0.1478 | 0.1585 | 3 |
+| reference_seed_007.jsonl | `reference_target_contact_synchronized_projected` | 38 | 1 | -0.0087 | 0.0498 | 0.0646 | 0 |
 | reference_seed_000.jsonl | `reference_target_cycle_projected` | 70 | 1 | 0.0055 | 0.0964 | 0.1559 | 1 |
 | reference_seed_001.jsonl | `reference_target_cycle_projected` | 34 | 1 | -0.0991 | 0.0059 | 0.0995 | 0 |
 | reference_seed_002.jsonl | `reference_target_cycle_projected` | 111 | 1 | 0.0074 | 0.1434 | 0.1527 | 1 |
@@ -113,22 +121,22 @@ a manifest, not a raw BC dataset.
 | trace.jsonl | `fitted` | 5-29 | 0.0995 | 0.2814 | 0.3655 | 0.1497 | 0.0000 | 1.5740 | 0.0750 | 28 | `{'01': 48.0, '11': 52.0}` |
 | v7_x008_trace.jsonl | `fitted` | 0-24 | 0.0985 | 0.1792 | 0.3629 | 0.1500 | 0.0000 | 2.0062 | 0.1111 | 34 | `{'01': 28.000000000000004, '11': 72.0}` |
 | trace.jsonl | `fitted` | 0-24 | 0.0985 | 0.1792 | 0.3629 | 0.1500 | 0.0000 | 2.0062 | 0.1111 | 34 | `{'01': 28.000000000000004, '11': 72.0}` |
+| reference_seed_005.jsonl | `reference_target_contact_synchronized_projected` | 0-24 | 0.0931 | 0.2370 | 0.2243 | 0.1471 | 1.1429 | 5.2400 | 0.1912 | None | `{'00': 8.0, '01': 28.000000000000004, '10': 36.0, '11': 28.000000000000004}` |
 | trace.jsonl | `fitted` | 5-29 | 0.0911 | 0.1862 | 0.3644 | 0.1492 | 0.0000 | 1.4711 | 0.1037 | 43 | `{'01': 20.0, '11': 80.0}` |
 | phase1_x008_trace.jsonl | `fitted` | 0-24 | 0.0906 | 0.1676 | 0.3144 | 0.1506 | 0.0000 | 2.3110 | 0.1095 | 55 | `{'01': 28.000000000000004, '10': 4.0, '11': 68.0}` |
 | trace.jsonl | `fitted` | 10-34 | 0.0901 | 0.2578 | 0.3262 | 0.1508 | 0.0000 | 1.1649 | 0.0664 | None | `{'01': 28.000000000000004, '10': 4.0, '11': 68.0}` |
 | trace.jsonl | `fitted` | 0-24 | 0.0890 | 0.1934 | 0.3455 | 0.1492 | 0.0000 | 2.2965 | 0.1203 | 48 | `{'01': 28.000000000000004, '11': 72.0}` |
+| reference_seed_004.jsonl | `reference_target_contact_synchronized_projected` | 15-39 | 0.0867 | 0.0834 | 0.1345 | 0.1587 | 0.8571 | 2.7182 | 0.0828 | 205 | `{'11': 100.0}` |
+| reference_seed_005.jsonl | `reference_target_contact_synchronized_projected` | 5-29 | 0.0863 | 0.2086 | 0.2243 | 0.1590 | 1.1429 | 5.1861 | 0.1645 | None | `{'01': 28.000000000000004, '10': 32.0, '11': 40.0}` |
 | phase1_x008_trace.jsonl | `fitted` | 10-34 | 0.0857 | 0.1609 | 0.3853 | 0.1474 | 0.0000 | 0.7491 | 0.0674 | 45 | `{'10': 4.0, '11': 96.0}` |
+| reference_seed_004.jsonl | `reference_target_contact_synchronized_projected` | 10-34 | 0.0846 | 0.0853 | 0.1347 | 0.1592 | 0.5714 | 2.8451 | 0.0821 | 210 | `{'11': 100.0}` |
+| reference_seed_005.jsonl | `reference_target_contact_synchronized_projected` | 10-34 | 0.0834 | 0.1539 | 0.1884 | 0.1590 | 1.1429 | 4.0332 | 0.1612 | None | `{'01': 16.0, '10': 28.000000000000004, '11': 56.00000000000001}` |
+| reference_seed_005.jsonl | `reference_target_contact_synchronized_projected` | 15-39 | 0.0832 | 0.1218 | 0.1594 | 0.1590 | 0.8571 | 3.6675 | 0.1456 | None | `{'10': 28.000000000000004, '11': 72.0}` |
 | trace.jsonl | `fitted` | 15-39 | 0.0791 | 0.2578 | 0.3279 | 0.1508 | 0.0000 | 1.1456 | 0.0674 | None | `{'01': 8.0, '10': 4.0, '11': 88.0}` |
 | trace.jsonl | `fitted` | 10-34 | 0.0790 | 0.1013 | 0.3752 | 0.1492 | 0.0000 | 0.8458 | 0.0876 | 38 | `{'01': 4.0, '11': 96.0}` |
 | reference_seed_005.jsonl | `reference_target_contact_gated_projected` | 15-39 | 0.0782 | 0.1569 | 0.1470 | 0.1579 | 0.2857 | 2.4978 | 0.1292 | None | `{'10': 12.0, '11': 88.0}` |
 | reference_seed_005.jsonl | `reference_target_cycle_projected` | 0-24 | 0.0780 | 0.2192 | 0.2279 | 0.1471 | 1.1429 | 3.1142 | 0.2287 | 155 | `{'00': 8.0, '01': 24.0, '10': 32.0, '11': 36.0}` |
 | trace.jsonl | `fitted` | 5-29 | 0.0770 | 0.2578 | 0.3033 | 0.1509 | 0.0000 | 1.3935 | 0.0694 | None | `{'01': 48.0, '10': 4.0, '11': 48.0}` |
-| reference_seed_004.jsonl | `reference_target_cycle_projected` | 0-24 | 0.0759 | 0.1601 | 0.1102 | 0.1517 | 1.1429 | 3.0002 | 0.1631 | 87 | `{'01': 4.0, '10': 12.0, '11': 84.0}` |
-| reference_seed_005.jsonl | `reference_target_cycle_projected` | 5-29 | 0.0718 | 0.2271 | 0.2177 | 0.1596 | 1.1429 | 3.1142 | 0.1509 | 165 | `{'01': 20.0, '10': 24.0, '11': 56.00000000000001}` |
-| reference_seed_005.jsonl | `reference_target_contact_gated_projected` | 0-24 | 0.0713 | 0.1997 | 0.2142 | 0.1471 | 1.1429 | 4.1206 | 0.1912 | None | `{'00': 8.0, '01': 12.0, '10': 16.0, '11': 64.0}` |
-| reference_seed_005.jsonl | `reference_target_contact_gated_projected` | 5-29 | 0.0708 | 0.1997 | 0.2142 | 0.1619 | 0.8571 | 3.3223 | 0.1378 | None | `{'01': 12.0, '10': 16.0, '11': 72.0}` |
-| phase1_x008_trace.jsonl | `fitted` | 15-39 | 0.0694 | 0.0289 | 0.4085 | 0.1471 | 0.0000 | 0.2365 | 0.0698 | 40 | `{'11': 100.0}` |
-| reference_seed_005.jsonl | `reference_target_cycle_projected` | 0-24 | 0.0694 | 0.2278 | 0.2177 | 0.1471 | 1.1429 | 3.0992 | 0.1968 | 170 | `{'00': 8.0, '01': 20.0, '10': 24.0, '11': 48.0}` |
 
 ## Interpretation
 

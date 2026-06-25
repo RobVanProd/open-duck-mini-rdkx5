@@ -2690,10 +2690,10 @@ compatible JSONL traces currently available under `outputs/analysis`:
 
 ```text
 status: HOLD_INSUFFICIENT_CURATED_WINDOWS
-compatible candidate windows: 76
+compatible candidate windows: 94
 curated_seed_windows: 1
 review_motion_hints: 37
-rejected_dataset_seeds: 38
+rejected_dataset_seeds: 56
 ```
 
 This rules out the easy path where enough clean seed data was already present
@@ -2761,6 +2761,49 @@ outputs/analysis/REFERENCE_CONTACT_COMPATIBILITY_V20_WITH_CONTACT_GATED.md
 outputs/analysis/reference_contact_compatibility_v20_with_contact_gated.json
 outputs/analysis/REALIZED_WINDOW_CONTACT_GATED_REFERENCE_CURATION.md
 outputs/analysis/realized_window_contact_gated_reference_curation.json
+```
+
+### Contact-Synchronized Reference Projection
+
+`tools/eval_reference_motion_rollout.py` also has a
+`contact_synchronized_projected` mode. It retimes the projected reference phase
+to match the current simulated contact pattern as closely as possible.
+
+```text
+mode: contact_synchronized_projected
+command_x: 0.04
+seeds: 0-7
+status: HOLD_REFERENCE_TARGET_TERMINATES
+falls: 7/8
+mean vx: -0.0152 m/s
+mean track ratio: -0.3788
+mean contact mismatch: 7.7531% per-seed mean / 4.36% aggregate
+curated seed windows: 0
+```
+
+This is a useful negative result. It shows that matching the reference contact
+schedule is achievable by retiming, but it does not preserve forward motion.
+Do not build the next target generator around contact matching alone.
+
+Next target-generation requirements:
+
+```text
+1. preserve positive forward velocity
+2. maintain low lateral velocity
+3. keep body pitch and base height inside curation bounds
+4. realize contact transitions instead of freezing into double support
+5. pass the realized-window curation gate before BC/PPO
+```
+
+Artifacts:
+
+```text
+outputs/analysis/REFERENCE_MOTION_ROLLOUT_V20_CONTACT_SYNCHRONIZED_PROJECTED.md
+outputs/analysis/reference_motion_rollout_v20_contact_synchronized_projected.json
+outputs/analysis/REFERENCE_CONTACT_COMPATIBILITY_V20_WITH_CONTACT_ADAPTATIONS.md
+outputs/analysis/reference_contact_compatibility_v20_with_contact_adaptations.json
+outputs/analysis/REALIZED_WINDOW_CONTACT_SYNCHRONIZED_REFERENCE_CURATION.md
+outputs/analysis/realized_window_contact_synchronized_reference_curation.json
 ```
 
 ### V5/V7 Low-Command Trace Collection
