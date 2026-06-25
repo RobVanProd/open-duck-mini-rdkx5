@@ -92,6 +92,9 @@ def tar_filter(member: tarfile.TarInfo) -> tarfile.TarInfo | None:
         allowed_analysis = {
             ("outputs", "analysis", "actuator_response_fit.json"),
             ("outputs", "analysis", "ACTUATOR_RESPONSE_FIT.md"),
+            ("outputs", "analysis", "reference_motion_x004_override.pkl"),
+            ("outputs", "analysis", "reference_motion_override.json"),
+            ("outputs", "analysis", "REFERENCE_MOTION_OVERRIDE.md"),
         }
         rel_parts = tuple(parts[1:]) if len(parts) > 1 else tuple(parts)
         is_allowed_path = rel_parts in allowed_analysis
