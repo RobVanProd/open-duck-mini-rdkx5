@@ -5633,10 +5633,22 @@ status: HOLD_NO_SEED_ROBUST_TARGETS
 top 100-tick local dx: 0.0209 / 0.0218 m
 ```
 
+A sagittal stance-foot-relative push-off probe also held:
+
+```text
+artifact: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_SAGITTAL_PROBE.md
+score_100: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_SAGITTAL_PROBE_SCORE_100.md
+score_150: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_SAGITTAL_PROBE_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+top 100-tick local dx: 0.0209 / 0.0208 m
+top 100-tick vy95: 0.0913 / 0.0865 m/s
+top 150-tick local dx: 0.0012 / 0.0134 m
+```
+
 This is now sharper negative evidence. Stance-foot-relative lateral control
 reduces the earlier lateral/contact failure and can produce cleaner
 single-support windows, but the generated forward impulse is still too small
-and not sustained over 150 ticks. The next controller needs
-stance-foot-relative sagittal body/foot geometry or explicit stance-leg
-push-off mechanics. Another nearby lateral gate/prior-scale sweep is not
-justified.
+and not sustained over 150 ticks. The tested sagittal body-over-stance-foot and
+ankle push-off terms do not close the gap. The next offline step should be a
+different higher-level controller/reference design rather than another nearby
+lateral gate, prior-scale, or push-sign sweep.

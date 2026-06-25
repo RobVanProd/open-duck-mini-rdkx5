@@ -129,6 +129,7 @@ relaxed artifact: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_RELAXED_PROBE.
 stance artifact: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STANCE_PROBE.md
 aggressive stance artifact: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STANCE_AGGRESSIVE_PROBE.md
 reverse-push stance artifact: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STANCE_REVERSE_PUSH_PROBE.md
+sagittal push-off artifact: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_SAGITTAL_PROBE.md
 status: HOLD_NO_SEED_ROBUST_TARGETS
 ```
 
@@ -141,14 +142,18 @@ relaxed top 100-tick local dx: 0.0088 / 0.0121 m
 stance-relative top 100-tick local dx: 0.0145 / 0.0129 m
 aggressive stance-relative top 100-tick local dx: 0.0254 / 0.0209 m
 reverse-push stance-relative top 100-tick local dx: 0.0209 / 0.0218 m
+sagittal push-off top 100-tick local dx: 0.0209 / 0.0208 m
+sagittal push-off top 150-tick local dx: 0.0012 / 0.0134 m
 ```
 
 This points to `HOLD_FORWARD_IMPULSE_STILL_LOW`: stance-foot-relative lateral
 control improves contact and lateral behavior, and aggressive push can roughly
 double short-window forward displacement, but no variant reaches seed-robust
-forward displacement or sustained 150-tick progress. The next controller should
-model stance-foot-relative sagittal body/foot geometry or explicit push-off
-mechanics, not another nearby scalar gate expansion.
+forward displacement or sustained 150-tick progress. The tested sagittal
+body-over-stance-foot and ankle push-off terms did not beat the aggressive
+stance-relative baseline, so the next step should be a different
+higher-level controller/reference design, not another nearby scalar gate or
+push-sign expansion.
 
 ## Required Gate
 

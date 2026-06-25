@@ -43,18 +43,20 @@ does not run simulation, training, robot SSH, deployment, or hardware tests.
 | `com_weight_transfer_controller_stance_aggressive_probe_score_150` | 150 | `HOLD_NO_SEED_ROBUST_TARGETS` | 0 | 24 | 0.0006/0.0018 | 0.0039/0.0117 | 0.1093/0.1238 | high_lateral_velocity, low_forward_displacement, low_forward_velocity |
 | `com_weight_transfer_controller_stance_reverse_push_probe_score_100` | 100 | `HOLD_NO_SEED_ROBUST_TARGETS` | 0 | 16 | 0.0104/0.0209 | 0.0109/0.0218 | 0.0913/0.0865 | low_forward_displacement, low_forward_velocity |
 | `com_weight_transfer_controller_stance_reverse_push_probe_score_150` | 150 | `HOLD_NO_SEED_ROBUST_TARGETS` | 0 | 16 | 0.0004/0.0013 | 0.0029/0.0088 | 0.0715/0.0887 | low_forward_displacement, low_forward_velocity |
+| `com_weight_transfer_controller_sagittal_probe_score_100` | 100 | `HOLD_NO_SEED_ROBUST_TARGETS` | 0 | 24 | 0.0104/0.0209 | 0.0104/0.0208 | 0.0913/0.0865 | low_forward_displacement, low_forward_velocity |
+| `com_weight_transfer_controller_sagittal_probe_score_150` | 150 | `HOLD_NO_SEED_ROBUST_TARGETS` | 0 | 24 | 0.0004/0.0012 | 0.0045/0.0134 | 0.0976/0.0945 | low_forward_displacement, low_forward_velocity |
 
 ## Aggregate Failure Counts
 
 | reason | count |
 |---|---:|
-| `low_forward_velocity` | 2429 |
-| `double_support_dominates` | 1439 |
-| `too_little_single_support` | 1206 |
-| `single_support_not_balanced` | 879 |
+| `low_forward_velocity` | 2525 |
+| `double_support_dominates` | 1468 |
+| `too_little_single_support` | 1224 |
+| `single_support_not_balanced` | 886 |
 | `high_lateral_velocity` | 879 |
+| `low_forward_displacement` | 677 |
 | `single_contact_pattern_dominates` | 659 |
-| `low_forward_displacement` | 581 |
 | `high_sent_target_velocity` | 72 |
 | `too_few_contact_transitions` | 67 |
 | `action_saturation` | 52 |

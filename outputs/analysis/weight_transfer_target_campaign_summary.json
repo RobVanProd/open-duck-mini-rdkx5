@@ -34,7 +34,9 @@
     "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/com_weight_transfer_controller_stance_aggressive_probe_score_100.json",
     "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/com_weight_transfer_controller_stance_aggressive_probe_score_150.json",
     "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/com_weight_transfer_controller_stance_reverse_push_probe_score_100.json",
-    "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/com_weight_transfer_controller_stance_reverse_push_probe_score_150.json"
+    "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/com_weight_transfer_controller_stance_reverse_push_probe_score_150.json",
+    "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/com_weight_transfer_controller_sagittal_probe_score_100.json",
+    "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/com_weight_transfer_controller_sagittal_probe_score_150.json"
   ],
   "summaries": [
     {
@@ -1886,16 +1888,117 @@
           ]
         }
       ]
+    },
+    {
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/com_weight_transfer_controller_sagittal_probe_score_100.json",
+      "label": "com_weight_transfer_controller_sagittal_probe_score_100",
+      "status": "HOLD_NO_SEED_ROBUST_TARGETS",
+      "missing": false,
+      "window_samples": 100,
+      "mode_count": 24,
+      "robust_mode_count": 0,
+      "reason_counts": {
+        "double_support_dominates": 20,
+        "low_forward_displacement": 48,
+        "low_forward_velocity": 48,
+        "too_little_single_support": 17,
+        "single_support_not_balanced": 7
+      },
+      "top_mode": "com_lrstance_foot_relative_p0p56_lf0p3_uf0p2_lo0p01_byg0p03_lvg0p1_so0p02_kpy2_kdy0p2_kpx0_kpvx1_ffp0p03_sap0p03_sk0p1_sa0_shr0p1_srs0p3_pt0_pd1",
+      "top_min_seed_score": -0.37943280552339276,
+      "top_mean_seed_score": -0.3792264323134441,
+      "top_seeds": [
+        {
+          "seed": "seed_000",
+          "mean_vx_m_s": 0.010439197635860183,
+          "forward_displacement_m": 0.020878395271720366,
+          "vy_abs_p95_m_s": 0.09127724282443521,
+          "double_support_pct": 79.0,
+          "single_support_pct": 21.0,
+          "min_single_support_side_pct": 8.0,
+          "contact_transitions": 25,
+          "sent_target_velocity_p95_rad_s": 0.7154993712902069,
+          "hard_failures": [
+            "low_forward_displacement",
+            "low_forward_velocity"
+          ]
+        },
+        {
+          "seed": "seed_002",
+          "mean_vx_m_s": 0.01042268777906429,
+          "forward_displacement_m": 0.02084537555812858,
+          "vy_abs_p95_m_s": 0.0865287099033594,
+          "double_support_pct": 78.0,
+          "single_support_pct": 22.0,
+          "min_single_support_side_pct": 10.0,
+          "contact_transitions": 19,
+          "sent_target_velocity_p95_rad_s": 1.2242529075592756,
+          "hard_failures": [
+            "low_forward_displacement",
+            "low_forward_velocity"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/com_weight_transfer_controller_sagittal_probe_score_150.json",
+      "label": "com_weight_transfer_controller_sagittal_probe_score_150",
+      "status": "HOLD_NO_SEED_ROBUST_TARGETS",
+      "missing": false,
+      "window_samples": 150,
+      "mode_count": 24,
+      "robust_mode_count": 0,
+      "reason_counts": {
+        "double_support_dominates": 9,
+        "low_forward_displacement": 48,
+        "low_forward_velocity": 48,
+        "too_little_single_support": 1
+      },
+      "top_mode": "com_lrstance_foot_relative_p0p56_lf0p3_uf0p2_lo0p02_byg0p03_lvg0p12_so0_kpy2_kdy0p2_kpx2_kpvx2_ffp0p03_sap0p03_sk0p1_sa0_shr0p1_srs0p3_pt0_pd1",
+      "top_min_seed_score": -0.6267816632674658,
+      "top_mean_seed_score": -0.5599375144444638,
+      "top_seeds": [
+        {
+          "seed": "seed_000",
+          "mean_vx_m_s": 0.00040055565856164324,
+          "forward_displacement_m": 0.0012016669756849297,
+          "vy_abs_p95_m_s": 0.09759012088179592,
+          "double_support_pct": 80.0,
+          "single_support_pct": 20.0,
+          "min_single_support_side_pct": 6.666666666666667,
+          "contact_transitions": 37,
+          "sent_target_velocity_p95_rad_s": 1.0995879769325256,
+          "hard_failures": [
+            "low_forward_displacement",
+            "low_forward_velocity"
+          ]
+        },
+        {
+          "seed": "seed_002",
+          "mean_vx_m_s": 0.00445171619328903,
+          "forward_displacement_m": 0.01335514857986709,
+          "vy_abs_p95_m_s": 0.09445175342261791,
+          "double_support_pct": 81.33333333333333,
+          "single_support_pct": 18.666666666666668,
+          "min_single_support_side_pct": 8.0,
+          "contact_transitions": 30,
+          "sent_target_velocity_p95_rad_s": 1.260000467300415,
+          "hard_failures": [
+            "low_forward_displacement",
+            "low_forward_velocity"
+          ]
+        }
+      ]
     }
   ],
   "aggregate_failures": {
-    "low_forward_velocity": 2429,
-    "double_support_dominates": 1439,
-    "too_little_single_support": 1206,
-    "single_support_not_balanced": 879,
+    "low_forward_velocity": 2525,
+    "double_support_dominates": 1468,
+    "too_little_single_support": 1224,
+    "single_support_not_balanced": 886,
     "high_lateral_velocity": 879,
+    "low_forward_displacement": 677,
     "single_contact_pattern_dominates": 659,
-    "low_forward_displacement": 581,
     "high_sent_target_velocity": 72,
     "too_few_contact_transitions": 67,
     "action_saturation": 52,

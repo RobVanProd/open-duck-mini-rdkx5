@@ -379,6 +379,27 @@ reverse-push stance-relative:
   top 100-tick local dx seed0 / seed2: 0.0209 / 0.0218 m
 ```
 
+A final sagittal stance-foot-relative push-off probe added:
+
+```text
+base_x_relative_to_stance = base_x - stance_foot_site_x
+raw_push += kp_x * (sagittal_offset - base_x_relative_to_stance)
+optional stance ankle push during PUSH_FORWARD
+```
+
+It did not improve the best 100-tick displacement:
+
+```text
+sagittal push-off:
+  artifact: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_SAGITTAL_PROBE.md
+  score_100: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_SAGITTAL_PROBE_SCORE_100.md
+  score_150: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_SAGITTAL_PROBE_SCORE_150.md
+  status: HOLD_NO_SEED_ROBUST_TARGETS
+  top 100-tick local dx seed0 / seed2: 0.0209 / 0.0208 m
+  top 100-tick vy95 seed0 / seed2: 0.0913 / 0.0865 m/s
+  top 150-tick local dx seed0 / seed2: 0.0012 / 0.0134 m
+```
+
 Interpretation:
 
 ```text
@@ -386,9 +407,9 @@ Stance-foot-relative control is a real improvement for contact/lateral quality,
 not a pass. It reduces the earlier contact/lateral failure but exposes a
 remaining forward-impulse problem: the controller can create short-window
 single-support transfer, but not enough sustained sagittal displacement. The
-next implementation needs stance-foot-relative sagittal body/foot geometry,
-explicit stance-leg push-off mechanics, or a different higher-level controller
-structure. More nearby scalar gate widening is not justified.
+tested sagittal and ankle push-off terms do not close the gap. The next
+implementation should be a different higher-level controller/reference design,
+not another nearby scalar gate or push-sign expansion.
 ```
 
 ## Non-Goals

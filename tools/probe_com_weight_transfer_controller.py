@@ -44,11 +44,14 @@ class Controller:
     lateral_offset_m: float
     base_y_gate_m: float
     lateral_velocity_gate_m_s: float
+    sagittal_offset_m: float
     kp_y: float
     kd_y: float
+    kp_x: float
     kp_vx: float
     feedforward_push_rad: float
     stance_push_limit_rad: float
+    stance_ankle_push_rad: float
     swing_knee_rad: float
     swing_ankle_rad: float
     swing_hip_reach_rad: float
@@ -93,72 +96,85 @@ def controller_grid(args: argparse.Namespace) -> list[Controller]:
                             for lateral_velocity_gate in parse_float_list(
                                 args.lateral_velocity_gates
                             ):
-                                for kp_y in parse_float_list(args.kp_y_values):
-                                    for kd_y in parse_float_list(args.kd_y_values):
-                                        for kp_vx in parse_float_list(args.kp_vx_values):
-                                            for feedforward_push in parse_float_list(
-                                                args.feedforward_pushes
-                                            ):
-                                                for swing_knee in parse_float_list(args.swing_knees):
-                                                    for swing_ankle in parse_float_list(
-                                                        args.swing_ankles
+                                for sagittal_offset in parse_float_list(args.sagittal_offsets):
+                                    for kp_y in parse_float_list(args.kp_y_values):
+                                        for kd_y in parse_float_list(args.kd_y_values):
+                                            for kp_x in parse_float_list(args.kp_x_values):
+                                                for kp_vx in parse_float_list(args.kp_vx_values):
+                                                    for feedforward_push in parse_float_list(
+                                                        args.feedforward_pushes
                                                     ):
-                                                        for swing_hip_reach in parse_float_list(
-                                                            args.swing_hip_reaches
+                                                        for stance_ankle_push in parse_float_list(
+                                                            args.stance_ankle_pushes
                                                         ):
-                                                            for stance_retract_scale in parse_float_list(
-                                                                args.stance_retract_scales
+                                                            for swing_knee in parse_float_list(
+                                                                args.swing_knees
                                                             ):
-                                                                for pitch_target in parse_float_list(
-                                                                    args.pitch_targets
+                                                                for swing_ankle in parse_float_list(
+                                                                    args.swing_ankles
                                                                 ):
-                                                                    for pitch_damping in parse_float_list(
-                                                                        args.pitch_dampings
+                                                                    for swing_hip_reach in parse_float_list(
+                                                                        args.swing_hip_reaches
                                                                     ):
-                                                                        label = (
-                                                                            f"com_lr{lateral_reference}"
-                                                                            f"_p{label_float(period_s)}"
-                                                                            f"_lf{label_float(load_fraction)}"
-                                                                            f"_uf{label_float(unweight_fraction)}"
-                                                                            f"_lo{label_float(lateral_offset)}"
-                                                                            f"_byg{label_float(base_y_gate)}"
-                                                                            f"_lvg{label_float(lateral_velocity_gate)}"
-                                                                            f"_kpy{label_float(kp_y)}"
-                                                                            f"_kdy{label_float(kd_y)}"
-                                                                            f"_kpvx{label_float(kp_vx)}"
-                                                                            f"_ffp{label_float(feedforward_push)}"
-                                                                            f"_sk{label_float(swing_knee)}"
-                                                                            f"_sa{label_float(swing_ankle)}"
-                                                                            f"_shr{label_float(swing_hip_reach)}"
-                                                                            f"_srs{label_float(stance_retract_scale)}"
-                                                                            f"_pt{label_float(pitch_target)}"
-                                                                            f"_pd{label_float(pitch_damping)}"
-                                                                        )
-                                                                        rows.append(
-                                                                            Controller(
-                                                                                label=label,
-                                                                                lateral_reference=lateral_reference,
-                                                                                period_s=period_s,
-                                                                                load_fraction=load_fraction,
-                                                                                unweight_fraction=unweight_fraction,
-                                                                                lateral_offset_m=lateral_offset,
-                                                                                base_y_gate_m=base_y_gate,
-                                                                                lateral_velocity_gate_m_s=lateral_velocity_gate,
-                                                                                kp_y=kp_y,
-                                                                                kd_y=kd_y,
-                                                                                kp_vx=kp_vx,
-                                                                                feedforward_push_rad=feedforward_push,
-                                                                                stance_push_limit_rad=args.stance_push_limit,
-                                                                                swing_knee_rad=swing_knee,
-                                                                                swing_ankle_rad=swing_ankle,
-                                                                                swing_hip_reach_rad=swing_hip_reach,
-                                                                                stance_retract_scale=stance_retract_scale,
-                                                                                pitch_gate_rad=args.pitch_gate,
-                                                                                pitch_target_rad=pitch_target,
-                                                                                pitch_damping=pitch_damping,
-                                                                                clearance_gate_m=args.clearance_gate,
-                                                                            )
-                                                                        )
+                                                                        for stance_retract_scale in parse_float_list(
+                                                                            args.stance_retract_scales
+                                                                        ):
+                                                                            for pitch_target in parse_float_list(
+                                                                                args.pitch_targets
+                                                                            ):
+                                                                                for pitch_damping in parse_float_list(
+                                                                                    args.pitch_dampings
+                                                                                ):
+                                                                                    label = (
+                                                                                        f"com_lr{lateral_reference}"
+                                                                                        f"_p{label_float(period_s)}"
+                                                                                        f"_lf{label_float(load_fraction)}"
+                                                                                        f"_uf{label_float(unweight_fraction)}"
+                                                                                        f"_lo{label_float(lateral_offset)}"
+                                                                                        f"_byg{label_float(base_y_gate)}"
+                                                                                        f"_lvg{label_float(lateral_velocity_gate)}"
+                                                                                        f"_so{label_float(sagittal_offset)}"
+                                                                                        f"_kpy{label_float(kp_y)}"
+                                                                                        f"_kdy{label_float(kd_y)}"
+                                                                                        f"_kpx{label_float(kp_x)}"
+                                                                                        f"_kpvx{label_float(kp_vx)}"
+                                                                                        f"_ffp{label_float(feedforward_push)}"
+                                                                                        f"_sap{label_float(stance_ankle_push)}"
+                                                                                        f"_sk{label_float(swing_knee)}"
+                                                                                        f"_sa{label_float(swing_ankle)}"
+                                                                                        f"_shr{label_float(swing_hip_reach)}"
+                                                                                        f"_srs{label_float(stance_retract_scale)}"
+                                                                                        f"_pt{label_float(pitch_target)}"
+                                                                                        f"_pd{label_float(pitch_damping)}"
+                                                                                    )
+                                                                                    rows.append(
+                                                                                        Controller(
+                                                                                            label=label,
+                                                                                            lateral_reference=lateral_reference,
+                                                                                            period_s=period_s,
+                                                                                            load_fraction=load_fraction,
+                                                                                            unweight_fraction=unweight_fraction,
+                                                                                            lateral_offset_m=lateral_offset,
+                                                                                            base_y_gate_m=base_y_gate,
+                                                                                            lateral_velocity_gate_m_s=lateral_velocity_gate,
+                                                                                            sagittal_offset_m=sagittal_offset,
+                                                                                            kp_y=kp_y,
+                                                                                            kd_y=kd_y,
+                                                                                            kp_x=kp_x,
+                                                                                            kp_vx=kp_vx,
+                                                                                            feedforward_push_rad=feedforward_push,
+                                                                                            stance_push_limit_rad=args.stance_push_limit,
+                                                                                            stance_ankle_push_rad=stance_ankle_push,
+                                                                                            swing_knee_rad=swing_knee,
+                                                                                            swing_ankle_rad=swing_ankle,
+                                                                                            swing_hip_reach_rad=swing_hip_reach,
+                                                                                            stance_retract_scale=stance_retract_scale,
+                                                                                            pitch_gate_rad=args.pitch_gate,
+                                                                                            pitch_target_rad=pitch_target,
+                                                                                            pitch_damping=pitch_damping,
+                                                                                            clearance_gate_m=args.clearance_gate,
+                                                                                        )
+                                                                                )
     if args.shuffle_candidates:
         random.Random(args.grid_seed).shuffle(rows)
     return rows[: args.max_candidates]
@@ -254,11 +270,14 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
             lateral_offset_m,
             base_y_gate_m,
             lateral_velocity_gate_m_s,
+            sagittal_offset_m,
             kp_y,
             kd_y,
+            kp_x,
             kp_vx,
             feedforward_push_rad,
             stance_push_limit_rad,
+            stance_ankle_push_rad,
             swing_knee_rad,
             swing_ankle_rad,
             swing_hip_reach_rad,
@@ -270,6 +289,7 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
             local_vx,
             local_vy,
             body_pitch,
+            base_x,
             base_y,
             base_height,
             contact,
@@ -291,11 +311,15 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
             right_contact = contact[1].astype(jp.float32)
             stance_contact = left_stance * left_contact + right_stance * right_contact
             swing_contact = left_swing * left_contact + right_swing * right_contact
+            foot_site_x = foot_site_pos[:, 0]
             foot_site_y = foot_site_pos[:, 1]
             foot_site_z = foot_site_pos[:, 2]
+            stance_foot_x = left_stance * foot_site_x[0] + right_stance * foot_site_x[1]
             stance_foot_y = left_stance * foot_site_y[0] + right_stance * foot_site_y[1]
             swing_foot_z = left_swing * foot_site_z[0] + right_swing * foot_site_z[1]
 
+            base_x_relative_to_stance = base_x - stance_foot_x
+            sagittal_error = sagittal_offset_m - base_x_relative_to_stance
             base_y_relative_to_stance = base_y - stance_foot_y
             controlled_base_y = jp.where(
                 use_stance_foot_relative > 0.5,
@@ -317,11 +341,12 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
             roll_cmd = jp.clip(kp_y * lateral_error - kd_y * local_vy, -0.08, 0.08)
             forward_error = command[0] - local_vx
             raw_push = jp.clip(
-                kp_vx * forward_error + feedforward_push_rad,
+                kp_vx * forward_error + kp_x * sagittal_error + feedforward_push_rad,
                 -stance_push_limit_rad,
                 stance_push_limit_rad,
             )
             stance_push = jp.where(push_allowed, raw_push, 0.0)
+            stance_ankle_push = jp.where(push_allowed, stance_ankle_push_rad, 0.0)
             swing_lift = jp.where(in_unweight | in_push, swing_knee_rad, 0.0)
             swing_ankle = jp.where(in_unweight | in_push, swing_ankle_rad, 0.0)
             swing_reach = jp.where(in_unweight | in_push, swing_hip_reach_rad, 0.0)
@@ -338,6 +363,7 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
             )
             target = target.at[3].set(default_actuator[3] + left_swing * swing_lift)
             target = target.at[4].set(default_actuator[4] + left_swing * swing_ankle + pitch_ankle)
+            target = target.at[4].add(left_stance * stance_ankle_push)
             target = target.at[10].set(default_actuator[10] - roll_cmd)
             target = target.at[11].set(
                 default_actuator[11]
@@ -346,6 +372,7 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
             )
             target = target.at[12].set(default_actuator[12] + right_swing * swing_lift)
             target = target.at[13].set(default_actuator[13] + right_swing * swing_ankle + pitch_ankle)
+            target = target.at[13].add(right_stance * stance_ankle_push)
             phase_id = jp.where(in_load, 0, jp.where(in_unweight, 1, 2))
             return (
                 target,
@@ -353,9 +380,12 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                 load_ready,
                 unweight_ready,
                 push_allowed,
+                stance_foot_x,
                 stance_foot_y,
+                base_x_relative_to_stance,
                 base_y_relative_to_stance,
                 controlled_base_y,
+                sagittal_error,
                 lateral_error,
             )
 
@@ -368,11 +398,14 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
             lateral_offset_m,
             base_y_gate_m,
             lateral_velocity_gate_m_s,
+            sagittal_offset_m,
             kp_y,
             kd_y,
+            kp_x,
             kp_vx,
             feedforward_push_rad,
             stance_push_limit_rad,
+            stance_ankle_push_rad,
             swing_knee_rad,
             swing_ankle_rad,
             swing_hip_reach_rad,
@@ -396,9 +429,12 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                 load_ready,
                 unweight_ready,
                 push_allowed,
+                stance_foot_x,
                 stance_foot_y,
+                base_x_relative_to_stance,
                 base_y_relative_to_stance,
                 controlled_base_y,
+                sagittal_error,
                 lateral_error,
             ) = controller_target(
                 env._default_actuator,
@@ -410,11 +446,14 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                 lateral_offset_m,
                 base_y_gate_m,
                 lateral_velocity_gate_m_s,
+                sagittal_offset_m,
                 kp_y,
                 kd_y,
+                kp_x,
                 kp_vx,
                 feedforward_push_rad,
                 stance_push_limit_rad,
+                stance_ankle_push_rad,
                 swing_knee_rad,
                 swing_ankle_rad,
                 swing_hip_reach_rad,
@@ -426,6 +465,7 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                 local_linvel[0],
                 local_linvel[1],
                 pitch_from_quat_wxyz(quat),
+                qpos[base_addr],
                 qpos[base_addr + 1],
                 qpos[base_addr + 2],
                 contact_in,
@@ -497,9 +537,12 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                 load_ready,
                 unweight_ready,
                 push_allowed,
+                stance_foot_x,
                 stance_foot_y,
+                base_x_relative_to_stance,
                 base_y_relative_to_stance,
                 controlled_base_y,
+                sagittal_error,
                 lateral_error,
             )
 
@@ -526,9 +569,12 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                         load_ready,
                         unweight_ready,
                         push_allowed,
+                        stance_foot_x,
                         stance_foot_y,
+                        base_x_relative_to_stance,
                         base_y_relative_to_stance,
                         controlled_base_y,
+                        sagittal_error,
                         lateral_error,
                     ) = step_controller_jit(
                         state,
@@ -539,11 +585,14 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                         controller.lateral_offset_m,
                         controller.base_y_gate_m,
                         controller.lateral_velocity_gate_m_s,
+                        controller.sagittal_offset_m,
                         controller.kp_y,
                         controller.kd_y,
+                        controller.kp_x,
                         controller.kp_vx,
                         controller.feedforward_push_rad,
                         controller.stance_push_limit_rad,
+                        controller.stance_ankle_push_rad,
                         controller.swing_knee_rad,
                         controller.swing_ankle_rad,
                         controller.swing_hip_reach_rad,
@@ -595,6 +644,11 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                         "actual_position_rad": actual.tolist(),
                         "body_pitch_rad": quat_wxyz_to_pitch(quat),
                         "base_x_m": float(qpos[base_addr]),
+                        "stance_foot_x_m": float(np.asarray(jax.device_get(stance_foot_x))),
+                        "base_x_relative_to_stance_m": float(
+                            np.asarray(jax.device_get(base_x_relative_to_stance))
+                        ),
+                        "sagittal_error_m": float(np.asarray(jax.device_get(sagittal_error))),
                         "base_y_m": float(qpos[base_addr + 1]),
                         "stance_foot_y_m": float(np.asarray(jax.device_get(stance_foot_y))),
                         "base_y_relative_to_stance_m": float(
@@ -663,7 +717,8 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
         "candidate_count": len(controllers),
         "limitations": [
             "controller uses base_y or stance-foot-relative base_y as lateral CoM proxies",
-            "body_roll and stance-foot-relative sagittal position are not yet modeled",
+            "controller can optionally use stance-foot-relative sagittal position as a push term",
+            "body_roll and true center-of-mass projection are not yet modeled",
             "stance-foot-relative mode uses contact phase's stance foot site y, not a true CoM projection",
         ],
         "results": ranked,
@@ -741,11 +796,14 @@ def main() -> int:
     parser.add_argument("--lateral-offsets", default="0.01,0.02")
     parser.add_argument("--base-y-gates", default="0.02")
     parser.add_argument("--lateral-velocity-gates", default="0.08")
+    parser.add_argument("--sagittal-offsets", default="0.0")
     parser.add_argument("--kp-y-values", default="2.0,3.0")
     parser.add_argument("--kd-y-values", default="0.5,1.0")
+    parser.add_argument("--kp-x-values", default="0.0")
     parser.add_argument("--kp-vx-values", default="0.5,1.0")
     parser.add_argument("--feedforward-pushes", default="0.005,0.01")
     parser.add_argument("--stance-push-limit", type=float, default=0.04)
+    parser.add_argument("--stance-ankle-pushes", default="0.0")
     parser.add_argument("--swing-knees", default="0.08")
     parser.add_argument("--swing-ankles", default="0.0")
     parser.add_argument("--swing-hip-reaches", default="0.06")
