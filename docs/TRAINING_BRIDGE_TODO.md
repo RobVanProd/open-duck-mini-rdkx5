@@ -2370,13 +2370,25 @@ This preserves the original grid shape by replacing the key that
 should use this override only as a training/reference artifact; it is not a
 runtime or robot file.
 
-Next before training:
+Implemented workflow support:
 
 ```text
-add explicit Colab/workflow support to copy this override over the Playground
-reference pickle for V20, and record the source/destination hash in the run
-manifest.
+V20 recipe: movement_bootstrap_v20
+override: outputs/analysis/reference_motion_x004_override.pkl
+wrapper flag: --reference-motion-override
+behavior:
+  - back up Playground polynomial_coefficients.pkl
+  - copy the override only for the training subprocess
+  - record source/destination/backup sha256 in the run manifest
+  - restore the original reference file after the subprocess exits
 ```
+
+V20 is the next A100 candidate, but it is still an offline training test only.
+Do not run robot validation, x=0.08, or the fitted actuator bridge until the
+x=0.04 vanilla multi-seed gate passes with coherent forward motion.
 
 Artifact:
 `outputs/analysis/REFERENCE_MOTION_OVERRIDE.md`.
+
+V20 plan:
+`outputs/analysis/STAGED_CURRICULUM_TRAINING_PLAN_V20.md`.

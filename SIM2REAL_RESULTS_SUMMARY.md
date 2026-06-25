@@ -3158,6 +3158,35 @@ This artifact is not a robot/runtime file. The next implementation step is to
 make the Colab workflow apply it explicitly for a V20 training run and record
 its hash in the run manifest.
 
+That workflow support now exists:
+
+```text
+recipe: movement_bootstrap_v20
+wrapper flag: --reference-motion-override
+override: outputs/analysis/reference_motion_x004_override.pkl
+manifest tracking:
+  - source sha256
+  - destination sha256
+  - backup sha256
+  - restored destination sha256
+```
+
+V20 is the next offline A100 candidate. It repeats the reference-imitation split
+with the synthesized straight `x=0.04` reference override instead of the raw
+side-biased nearest reference. It must still be judged by the x=0.04 vanilla
+multi-seed phase gate:
+
+```text
+PASS:
+  coherent positive forward motion across seeds
+
+HOLD:
+  standstill, reverse, collapse, low progress, or command-progress failure
+```
+
+Do not run x=0.08, fitted bridge, or robot validation from V20 unless that
+low-command vanilla gate passes.
+
 Do not deploy V19. Do not run x=0.08. Do not run robot validation.
 
 Additional artifact:
@@ -3167,4 +3196,5 @@ outputs/analysis/A100_V19_REFERENCE_SEED_PARTIAL_HOLD_SUMMARY.md
 outputs/analysis/a100_v19_reference_seed_partial_hold_summary.json
 outputs/analysis/REFERENCE_GRID_INTERPOLATION.md
 outputs/analysis/REFERENCE_MOTION_OVERRIDE.md
+outputs/analysis/STAGED_CURRICULUM_TRAINING_PLAN_V20.md
 ```

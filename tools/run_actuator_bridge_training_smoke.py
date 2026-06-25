@@ -10,9 +10,11 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
+import hashlib
 import json
 import os
 from pathlib import Path
+import shutil
 import shlex
 import subprocess
 import sys
@@ -24,6 +26,9 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_PLAYGROUND = ROOT.parent / "Open_Duck_Playground"
 DEFAULT_ENV_PYTHON = ROOT.parent / "envs/open-duck-playground/bin/python"
 DEFAULT_OUTPUT_ROOT = Path("/tmp/open_duck_actuator_bridge_smoke")
+REFERENCE_RELATIVE_PATH = Path(
+    "playground/open_duck_mini_v2/data/polynomial_coefficients.pkl"
+)
 
 
 def timestamp() -> str:
@@ -202,6 +207,56 @@ def write_manifest(path: Path, manifest: dict[str, Any]) -> None:
     path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n")
 
 
+def sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def apply_reference_override(args: argparse.Namespace, output_dir: Path) -> dict[str, Any]:
+    if not args.reference_motion_override:
+        return {"enabled": False}
+
+    source = Path(args.reference_motion_override)
+    if not source.exists():
+        raise SystemExit(f"Missing reference motion override: {source}")
+    destination = Path(args.playground_path) / REFERENCE_RELATIVE_PATH
+    if not destination.exists():
+        raise SystemExit(f"Missing Playground reference file: {destination}")
+
+    backup = output_dir / "polynomial_coefficients.original.pkl"
+    output_dir.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(destination, backup)
+    before_sha = sha256(destination)
+    source_sha = sha256(source)
+    shutil.copy2(source, destination)
+    after_sha = sha256(destination)
+    return {
+        "enabled": True,
+        "source": str(source),
+        "source_sha256": source_sha,
+        "destination": str(destination),
+        "destination_sha256_before": before_sha,
+        "destination_sha256_after": after_sha,
+        "backup": str(backup),
+        "backup_sha256": sha256(backup),
+        "restored": False,
+    }
+
+
+def restore_reference_override(reference_override: dict[str, Any]) -> dict[str, Any]:
+    if not reference_override.get("enabled"):
+        return reference_override
+    backup = Path(reference_override["backup"])
+    destination = Path(reference_override["destination"])
+    shutil.copy2(backup, destination)
+    reference_override["restored"] = True
+    reference_override["destination_sha256_restored"] = sha256(destination)
+    return reference_override
+
+
 def extract_summary(stdout: str) -> dict[str, Any]:
     step_lines = [line for line in stdout.splitlines() if line.startswith("STEP:")]
     export_lines = [
@@ -268,6 +323,16 @@ def main() -> int:
             "Optional Orbax checkpoint path to pass through to the Playground "
             "runner for offline fine-tuning. The path must exist in the "
             "execution environment."
+        ),
+    )
+    parser.add_argument(
+        "--reference-motion-override",
+        default=None,
+        help=(
+            "Optional training-only polynomial_coefficients.pkl override. The "
+            "wrapper backs up the Playground reference file, copies this file "
+            "before training, records hashes, and restores the original after "
+            "the run. Default is unchanged behavior."
         ),
     )
     parser.add_argument("--disable-actuator-bridge", action="store_true")
@@ -407,6 +472,10 @@ def main() -> int:
         "export_min_step": args.export_min_step,
         "actuator_bridge_enabled": not args.disable_actuator_bridge,
         "restore_checkpoint_path": args.restore_checkpoint_path,
+        "reference_motion_override": {
+            "enabled": bool(args.reference_motion_override),
+            "source": args.reference_motion_override,
+        },
         "target_rate_scale": args.target_rate_scale,
         "actuator_tracking_scale": args.actuator_tracking_scale,
         "ppo_overrides": {
@@ -499,26 +568,33 @@ def main() -> int:
         return 0
 
     output_dir.mkdir(parents=True, exist_ok=True)
+    reference_override = apply_reference_override(args, output_dir)
+    manifest["reference_motion_override"] = reference_override
     write_manifest(output_dir / "smoke_manifest.start.json", manifest)
 
     start_s = time.monotonic()
     stdout_path = output_dir / "stdout.txt"
     stderr_path = output_dir / "stderr.txt"
-    with stdout_path.open("w") as stdout_handle, stderr_path.open("w") as stderr_handle:
-        process = subprocess.Popen(
-            command,
-            cwd=Path(args.playground_path),
-            env=env,
-            text=True,
-            stdout=stdout_handle,
-            stderr=stderr_handle,
-        )
-        try:
-            returncode = process.wait(timeout=args.timeout_s)
-        except subprocess.TimeoutExpired:
-            process.kill()
-            process.wait()
-            raise
+    try:
+        with stdout_path.open("w") as stdout_handle, stderr_path.open(
+            "w"
+        ) as stderr_handle:
+            process = subprocess.Popen(
+                command,
+                cwd=Path(args.playground_path),
+                env=env,
+                text=True,
+                stdout=stdout_handle,
+                stderr=stderr_handle,
+            )
+            try:
+                returncode = process.wait(timeout=args.timeout_s)
+            except subprocess.TimeoutExpired:
+                process.kill()
+                process.wait()
+                raise
+    finally:
+        reference_override = restore_reference_override(reference_override)
     elapsed_s = time.monotonic() - start_s
     stdout_text = stdout_path.read_text(errors="replace")
 
@@ -529,6 +605,7 @@ def main() -> int:
             "elapsed_s": elapsed_s,
             "stdout_path": str(stdout_path),
             "stderr_path": str(stderr_path),
+            "reference_motion_override": reference_override,
             "summary": extract_summary(stdout_text),
         }
     )

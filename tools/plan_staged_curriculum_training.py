@@ -135,9 +135,11 @@ class Phase:
     forward_pitch_rate_huber_delta: float = 0.0
     command_progress_shortfall_huber_delta: float = 0.0
     phase_gate_bridge_mode: str | None = None
+    reference_motion_override: str | None = None
 
 
 RECIPE_DEFAULT_PHASE_GATE_COMMAND_X = {
+    "movement_bootstrap_v20": 0.04,
     "movement_bootstrap_v19": 0.04,
     "movement_bootstrap_v18": 0.04,
 }
@@ -2525,7 +2527,79 @@ MOVEMENT_BOOTSTRAP_V19_PHASES = [
 ]
 
 
+MOVEMENT_BOOTSTRAP_V20_PHASES = [
+    Phase(
+        name="phase1_interpolated_reference_seed_x004",
+        purpose=(
+            "repeat the V19 reference-imitation split with a synthesized "
+            "straight x=0.04 reference override. V19 used the raw nearest "
+            "reference key, which was faster and side-biased; V20 applies the "
+            "training-only override that preserves PolyReferenceMotion grid "
+            "shape while replacing the selected key with an interpolated "
+            "low-speed straight reference."
+        ),
+        num_timesteps=320_000,
+        bridge=False,
+        delay=(0, 0),
+        tau_s=(0.0, 0.0),
+        velocity_limit_rad_s=(5.24, 5.24),
+        target_rate_scale=-0.0002,
+        actuator_tracking_scale=0.0,
+        tracking_lin_vel_scale=24.0,
+        tracking_sigma=0.0015,
+        forward_progress_scale=24.0,
+        forward_shortfall_scale=-45.0,
+        forward_shortfall_required_ratio=0.55,
+        action_rate_scale=-0.006,
+        action_magnitude_scale=-0.0010,
+        stand_still_scale=-1.0,
+        alive_scale=0.0,
+        imitation_scale=4.0,
+        lin_vel_x=(0.035, 0.045),
+        zero_command_probability=0.0,
+        forward_overshoot_scale=-2.0,
+        forward_overshoot_allowed_ratio=1.70,
+        forward_wrong_direction_scale=-80.0,
+        forward_wrong_direction_allowed_reverse_ratio=0.0,
+        orientation_scale=-0.04,
+        base_height_scale=-0.25,
+        forward_pitch_scale=-0.06,
+        forward_pitch_rate_scale=-0.006,
+        forward_contact_support_scale=-0.12,
+        forward_contact_support_no_contact_weight=1.0,
+        forward_contact_support_asymmetry_weight=0.02,
+        command_progress_scale=10.0,
+        command_progress_shortfall_scale=-45.0,
+        command_progress_required_ratio=0.45,
+        command_progress_warmup_steps=10,
+        command_progress_failure_scale=-140.0,
+        command_progress_failure_enable=True,
+        command_progress_failure_min_ratio=0.20,
+        command_progress_failure_warmup_steps=70,
+        reward_clip_min=-20.0,
+        reward_clip_max=10000.0,
+        action_rate_huber_delta=0.08,
+        action_magnitude_huber_delta=0.50,
+        target_rate_huber_delta=1.0,
+        actuator_tracking_huber_delta=0.08,
+        forward_shortfall_huber_delta=0.0,
+        forward_overshoot_huber_delta=0.50,
+        forward_wrong_direction_huber_delta=0.0,
+        forward_pitch_huber_delta=0.25,
+        forward_pitch_rate_huber_delta=1.0,
+        command_progress_shortfall_huber_delta=0.0,
+        ppo_learning_rate=1.0e-4,
+        ppo_entropy_cost=0.012,
+        ppo_clipping_epsilon=0.10,
+        ppo_max_grad_norm=0.70,
+        phase_gate_bridge_mode="vanilla",
+        reference_motion_override="outputs/analysis/reference_motion_x004_override.pkl",
+    ),
+]
+
+
 RECIPES = {
+    "movement_bootstrap_v20": MOVEMENT_BOOTSTRAP_V20_PHASES,
     "movement_bootstrap_v19": MOVEMENT_BOOTSTRAP_V19_PHASES,
     "movement_bootstrap_v18": MOVEMENT_BOOTSTRAP_V18_PHASES,
     "movement_bootstrap_v17": MOVEMENT_BOOTSTRAP_V17_PHASES,
@@ -2705,6 +2779,10 @@ def phase_command(
         command.extend(["--ppo-max-grad-norm", cli_value(phase.ppo_max_grad_norm)])
     if phase.command_progress_failure_enable:
         command.append("--command-progress-failure-enable")
+    if phase.reference_motion_override:
+        command.extend(
+            ["--reference-motion-override", phase.reference_motion_override]
+        )
     if not phase.bridge:
         command.append("--disable-actuator-bridge")
     else:
@@ -2830,6 +2908,19 @@ def phase_payload(phase: Phase, command: list[str], output_root: Path) -> dict[s
 
 
 def recipe_rationale(recipe: str) -> str:
+    if recipe == "movement_bootstrap_v20":
+        return (
+            "`movement_bootstrap_v20` repeats the V19 reference-imitation "
+            "experiment with the command-matched reference override. V19 held "
+            "with fall/reverse/low-progress seeds, but its raw nearest "
+            "reference was faster and side-biased. V20 applies "
+            "`outputs/analysis/reference_motion_x004_override.pkl`, which "
+            "replaces the selected raw key with an interpolated reference whose "
+            "mean velocity is close to x=0.04 and y=0. This tests whether the "
+            "reference-bootstrap idea failed because the seed was mismatched or "
+            "because the task/reward landscape still destroys a matched "
+            "low-command gait."
+        )
     if recipe == "movement_bootstrap_v19":
         return (
             "`movement_bootstrap_v19` is the imitation/reference-gait seed "
@@ -3066,10 +3157,10 @@ def write_plan(payload: dict[str, Any], output_md: Path, output_json: Path) -> N
             ]
         )
     lines.extend(["## Next Gate", ""])
-    if payload.get("recipe") == "movement_bootstrap_v19":
+    if payload.get("recipe") in {"movement_bootstrap_v19", "movement_bootstrap_v20"}:
         lines.extend(
             [
-                "V19 is a reference-imitation discovery split, so the first gate is the built-in multi-seed phase gate:",
+                f"{payload.get('recipe')} is a reference-imitation discovery split, so the first gate is the built-in multi-seed phase gate:",
                 "",
                 f"- command_x: `{cli_value(payload.get('phase_gate_command_x', 0.04))}`",
                 f"- bridge_mode: `{payload.get('phase_gate_bridge_mode') or 'vanilla'}`",
@@ -3362,7 +3453,7 @@ def main() -> int:
     parser.add_argument(
         "--recipe",
         choices=sorted(RECIPES),
-        default="movement_bootstrap_v19",
+        default="movement_bootstrap_v20",
         help=(
             "Staged recipe to emit/run. shortfall_v1 preserves the June 23 A100 "
             "recipe that landed in standstill; movement_bootstrap_v2 preserves "
@@ -3395,8 +3486,10 @@ def main() -> int:
             "x=0.04 low-command discovery experiment after V17 failed even at "
             "the easiest trained command; movement_bootstrap_v19 is the "
             "reference/imitation-gait seed experiment after V18 proved the "
-            "reward signal itself prefers forward motion. V19 is the current "
-            "default."
+            "reward signal itself prefers forward motion; movement_bootstrap_v20 "
+            "repeats V19 with a command-matched reference override after the "
+            "V19 seed was found to be faster and side-biased. V20 is the "
+            "current default."
         ),
     )
     parser.add_argument("--timesteps-scale", type=float, default=1.0)

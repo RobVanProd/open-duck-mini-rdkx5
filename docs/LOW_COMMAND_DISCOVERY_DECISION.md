@@ -250,6 +250,28 @@ validated lookup command: x=0.04, y=0.0, yaw=0.0
 validated mean velocity: x=0.0426 m/s, y=-0.0021 m/s
 ```
 
-V20 should not launch until the Colab workflow has explicit support for applying
-this override and recording its source/destination hash. Do not silently patch
-the Playground reference file.
+V20 now has explicit workflow support for applying this override:
+
+```text
+recipe: movement_bootstrap_v20
+override: outputs/analysis/reference_motion_x004_override.pkl
+wrapper flag: --reference-motion-override
+manifest: records source, destination, backup, and sha256 hashes
+restore: original Playground reference file restored after the training subprocess
+```
+
+This keeps the override explicit and auditable. Do not silently patch the
+Playground reference file outside the wrapper.
+
+V20 is still a low-command offline discovery test:
+
+```text
+command: x=0.04
+dynamics: vanilla
+bridge: disabled
+gate seeds: 0-7
+pass criterion: coherent positive forward motion across seeds
+```
+
+Do not run x=0.08, fitted bridge, or robot validation until V20 passes the
+x=0.04 vanilla multi-seed gate.
