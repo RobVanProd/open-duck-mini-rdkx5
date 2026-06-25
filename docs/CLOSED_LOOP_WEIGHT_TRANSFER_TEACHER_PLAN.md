@@ -259,6 +259,26 @@ load shift too strongly. The next teacher revision should explicitly damp
 local lateral velocity and center the body/CoM while preserving support
 transitions.
 
+The second probe added body-y centering and lateral-speed push gating:
+
+```text
+flags:
+  --body-y-gains
+  --push-lateral-gates
+
+artifact: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_V2_PROBE.md
+score_100: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_V2_SCORE_100.md
+score_150: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_V2_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+V2 raised the best raw rollout mean velocity to `0.0305 m/s`, but robust
+objective scoring still found zero passing 100/150 tick modes. The tradeoff is
+now explicit: moving candidates fail lateral velocity, and lateral-stable
+candidates lose forward displacement. The next teacher design should add an
+explicit forward step geometry or foot-placement/CoM planner rather than only
+more roll and stance-push feedback.
+
 ## Next Branch After a Pass
 
 If the teacher probe passes, use its traces as a target source:

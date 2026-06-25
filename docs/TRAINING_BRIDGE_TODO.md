@@ -181,6 +181,20 @@ Next teacher work should reduce lateral impulse while keeping contact
 transitions: stronger local-vy damping, push gating when lateral velocity is
 high, and body-y / CoM centering feedback.
 
+Second teacher-probe result:
+
+```text
+artifact: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_V2_PROBE.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+V2 added body-y centering and lateral-speed push gating. It improved the top
+raw rollout mean velocity to `0.0305 m/s`, but robust 100/150 tick scoring
+still found zero passing modes. Objective-ranked candidates control lateral
+velocity only by losing forward displacement. The next teacher design needs
+forward step geometry or foot-placement/CoM planning, not another roll/push
+feedback term.
+
 ### Reconcile Policy / Sim Contract
 
 - Run `tools/audit_policy_sim_contract.py`.

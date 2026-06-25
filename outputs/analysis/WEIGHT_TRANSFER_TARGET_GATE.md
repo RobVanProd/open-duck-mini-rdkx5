@@ -334,3 +334,37 @@ add a stronger local_vy damping term
 gate stance push until lateral velocity is bounded
 add body-y / CoM-centering feedback, not only hip-roll correction
 ```
+
+## Closed-Loop Weight-Transfer Teacher V2 Probe
+
+The teacher was then extended with body-y centering and lateral-speed push
+gating:
+
+```text
+tool flags:
+  --body-y-gains
+  --push-lateral-gates
+
+artifact: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_V2_PROBE.md
+score_100: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_V2_SCORE_100.md
+score_150: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_V2_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+Result:
+
+| metric | value |
+|---|---:|
+| top aggregate rollout mean vx | 0.0305 m/s |
+| 100-tick robust modes | 0 |
+| 150-tick robust modes | 0 |
+| best scored 100-tick seed0 / seed2 vx | -0.0006 / 0.0002 m/s |
+| best scored 150-tick seed0 / seed2 vx | 0.0003 / 0.0011 m/s |
+
+Interpretation: v2 exposes the current tradeoff. Some candidates move closer
+to the `0.04 m/s` target in raw rollout summaries, but those same candidates
+fail lateral velocity in the objective score. The objective-ranked candidates
+that keep lateral velocity near gate lose forward motion. This suggests the
+next teacher cannot be only roll/push feedback; it needs a more explicit
+forward step geometry or foot-placement/CoM planner that can generate forward
+displacement without side impulse.

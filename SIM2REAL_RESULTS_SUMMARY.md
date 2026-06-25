@@ -5258,3 +5258,27 @@ probes, but the first version pays for that with lateral motion and still does
 not produce a sustained seed-robust target. The next teacher revision should
 separate lateral load shift from forward push and add explicit local-y/CoM
 centering before any learner or A100 run.
+
+That revision was implemented as v2 with body-y centering and lateral-speed
+push gating:
+
+```text
+artifact: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_V2_PROBE.md
+score_100: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_V2_SCORE_100.md
+score_150: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_V2_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+V2 result:
+
+```text
+top aggregate rollout mean vx: 0.0305 m/s
+100/150 robust modes: 0
+best scored 100-tick vx: -0.0006 / 0.0002 m/s
+best scored 150-tick vx: 0.0003 / 0.0011 m/s
+```
+
+The tradeoff is now clearer: candidates that move toward the target forward
+speed fail lateral velocity; candidates that satisfy lateral velocity lose
+forward displacement. The next generator should move beyond hip-roll/stance
+push feedback and add explicit foot-placement or CoM/step-geometry planning.
