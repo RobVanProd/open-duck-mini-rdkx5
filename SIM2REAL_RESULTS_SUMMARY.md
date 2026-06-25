@@ -4899,3 +4899,22 @@ This V21 failure is not an actuator-envelope violation: the failed gate showed
 `0%` action saturation and sent pitch-chain target velocity p95 below
 `0.67 rad/s`. The remaining blocker is low-command behavior
 discovery/stability, not target velocity.
+
+CPU trace replays of the final V21 phase-1 ONNX for seeds 0-3 sharpened that
+diagnosis:
+
+```text
+artifact: outputs/analysis/V21_TRACE_SET_SUMMARY.md
+status: HOLD_TRACE_SET_LOW_COMMAND_FAILURES
+failure_surfaces:
+  LOW_PROGRESS_TERMINATION: 3
+  REVERSE_HEIGHT_COLLAPSE: 1
+track_ratio_mean: -0.6216
+mean_local_vx: -0.0249 m/s
+action_saturation_pct_mean: 0.0
+```
+
+V21 therefore did not discover a coherent low-command forward behavior. The next
+offline work should address behavior discovery or imitation/reference locking
+directly; it should not continue actuator-envelope tuning, and it still does not
+authorize robot validation.

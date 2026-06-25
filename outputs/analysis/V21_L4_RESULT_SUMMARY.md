@@ -80,3 +80,24 @@ This is not an actuator-envelope failure. Across the failed seeds, action
 saturation stayed at `0%` and sent pitch-chain target velocity p95 stayed below
 `0.67 rad/s`, far under the fitted actuator envelope. The blocker remains
 low-command behavior discovery/stability, not target velocity.
+
+## Trace Follow-Up
+
+Four CPU replay traces were generated from the final V21 phase-1 ONNX for seeds
+0-3. The compact trace summaries are tracked; the raw per-tick trace JSONL files
+remain local generated evidence.
+
+```text
+trace_summary: outputs/analysis/V21_TRACE_SET_SUMMARY.md
+status: HOLD_TRACE_SET_LOW_COMMAND_FAILURES
+failure_surfaces:
+  LOW_PROGRESS_TERMINATION: 3
+  REVERSE_HEIGHT_COLLAPSE: 1
+track_ratio_mean: -0.6216
+mean_local_vx: -0.0249 m/s
+action_saturation_pct_mean: 0.0
+```
+
+The trace follow-up confirms V21 is not failing from action saturation or target
+velocity. The learned behavior mostly fails to make progress; one seed reverses
+immediately, loses height, and terminates.
