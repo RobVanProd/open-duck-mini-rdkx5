@@ -4100,3 +4100,29 @@ then fails lateral/contact criteria. The next useful target-generation work
 should stop broad random sweeps and add a seed-robust scoring/objective term
 for lateral velocity and contact alternation.
 ```
+
+### Target Seed Robustness Audit
+
+A compact seed-robustness audit grouped the latest 50-sample curation outputs by
+primitive mode and source seed.
+
+Result:
+
+```text
+tool: tools/analyze_target_seed_robustness.py
+status: HOLD_SEED2_LATERAL_CONTACT
+robust modes across seed_000 and seed_002: 0
+seed0-curated / seed2-review near misses: 12
+seed2 reason counts:
+  single_contact_pattern_dominates: 64
+  high_lateral_velocity: 40
+```
+
+Conclusion:
+
+```text
+The seed-diversity blocker is now specific: seed2 near misses either need
+lateral p95 reduced from roughly 0.16-0.18 toward <=0.12 m/s, or contact
+dominance reduced from 100% toward <=95%. This should be the next target
+objective, not another generic grid expansion.
+```

@@ -520,6 +520,38 @@ optimize for worst-seed lateral velocity/contact alternation, not just generate
 more candidates.
 ```
 
+## Seed Robustness Audit
+
+The two latest 50-sample curation outputs were grouped by primitive mode and
+source seed:
+
+```text
+tool: tools/analyze_target_seed_robustness.py
+status: HOLD_SEED2_LATERAL_CONTACT
+robust modes: 0
+seed0-curated / seed2-review near misses: 12
+```
+
+Seed 2 failure counts:
+
+```text
+single_contact_pattern_dominates: 64
+high_lateral_velocity: 40
+```
+
+Interpretation:
+
+```text
+The next target generator should optimize against the measured near-miss
+metrics. Two concrete correction targets are:
+
+1. reduce seed2 lateral p95 from about 0.16-0.18 m/s toward <=0.12 m/s
+2. reduce seed2 contact dominance from 100% toward <=95%
+
+Do not continue broad random grid expansion unless it is wrapped in a
+worst-seed score that directly rewards those two improvements.
+```
+
 ## First Primitive Search Result
 
 A bounded low-dimensional sine primitive search was run as the first generator

@@ -3162,6 +3162,28 @@ Do next:
 4. require seed_002 to contribute curated windows before any supervised seed
 ```
 
+### Target Seed Robustness Audit
+
+The latest 50-sample curation outputs were audited by primitive mode and seed:
+
+```text
+tool: tools/analyze_target_seed_robustness.py
+status: HOLD_SEED2_LATERAL_CONTACT
+robust modes across seed_000 and seed_002: 0
+seed0-curated / seed2-review near misses: 12
+seed2 single_contact_pattern_dominates count: 64
+seed2 high_lateral_velocity count: 40
+```
+
+Do next:
+
+```text
+1. make the next generator objective-driven, not just broader
+2. target seed2 lateral p95 <= 0.12 m/s
+3. target seed2 contact dominance <= 95%
+4. keep all supervised/imitation training blocked until robust modes exist
+```
+
 ### Target Dataset BC Smoke
 
 The observation-ready target manifest was tested with tiny linear and KNN
