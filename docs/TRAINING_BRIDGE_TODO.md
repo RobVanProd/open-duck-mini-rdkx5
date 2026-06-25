@@ -2350,3 +2350,33 @@ Next implementation work:
 
 Artifact:
 `outputs/analysis/REFERENCE_GRID_INTERPOLATION.md`.
+
+### Reference Override Artifact
+
+A training-only override pickle now exists:
+
+```text
+outputs/analysis/reference_motion_x004_override.pkl
+sha256: see outputs/analysis/REFERENCE_MOTION_OVERRIDE.md
+replaced key: 0.074_-0.037_-0.074
+validated PolyReferenceMotion command lookup:
+  command x=0.04, y=0.0, yaw=0.0
+  mean linvel_x = 0.0426 m/s
+  mean linvel_y = -0.0021 m/s
+```
+
+This preserves the original grid shape by replacing the key that
+`PolyReferenceMotion` already selects for the straight x=0.04 command. V20
+should use this override only as a training/reference artifact; it is not a
+runtime or robot file.
+
+Next before training:
+
+```text
+add explicit Colab/workflow support to copy this override over the Playground
+reference pickle for V20, and record the source/destination hash in the run
+manifest.
+```
+
+Artifact:
+`outputs/analysis/REFERENCE_MOTION_OVERRIDE.md`.

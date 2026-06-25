@@ -239,3 +239,17 @@ Artifact:
 ```text
 outputs/analysis/REFERENCE_GRID_INTERPOLATION.md
 ```
+
+The interpolated reference has also been materialized as a training-only
+override:
+
+```text
+outputs/analysis/reference_motion_x004_override.pkl
+replaced key: 0.074_-0.037_-0.074
+validated lookup command: x=0.04, y=0.0, yaw=0.0
+validated mean velocity: x=0.0426 m/s, y=-0.0021 m/s
+```
+
+V20 should not launch until the Colab workflow has explicit support for applying
+this override and recording its source/destination hash. Do not silently patch
+the Playground reference file.

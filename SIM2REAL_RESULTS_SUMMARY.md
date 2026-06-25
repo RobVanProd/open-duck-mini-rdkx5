@@ -3144,6 +3144,20 @@ The next useful offline step is to synthesize/score an interpolated straight
 x=0.04 reference, then decide whether V20 should train against that reference.
 ```
 
+A synthesized training-only reference override has been built and validated:
+
+```text
+override: outputs/analysis/reference_motion_x004_override.pkl
+replaced key: 0.074_-0.037_-0.074
+validated command lookup: x=0.04, y=0.0, yaw=0.0
+mean linvel_x: 0.0426 m/s
+mean linvel_y: -0.0021 m/s
+```
+
+This artifact is not a robot/runtime file. The next implementation step is to
+make the Colab workflow apply it explicitly for a V20 training run and record
+its hash in the run manifest.
+
 Do not deploy V19. Do not run x=0.08. Do not run robot validation.
 
 Additional artifact:
@@ -3152,4 +3166,5 @@ Additional artifact:
 outputs/analysis/A100_V19_REFERENCE_SEED_PARTIAL_HOLD_SUMMARY.md
 outputs/analysis/a100_v19_reference_seed_partial_hold_summary.json
 outputs/analysis/REFERENCE_GRID_INTERPOLATION.md
+outputs/analysis/REFERENCE_MOTION_OVERRIDE.md
 ```
