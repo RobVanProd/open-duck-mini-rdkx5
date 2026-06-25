@@ -246,4 +246,17 @@ dominant failures: low_forward_velocity and high_lateral_velocity
 So "add knee/ankle push-off to the existing support-state teacher" is not the
 missing mechanism either.
 
+The next branch decision is now explicit:
+
+```text
+tool: tools/decide_next_weight_transfer_branch.py
+artifact: outputs/analysis/NEXT_WEIGHT_TRANSFER_BRANCH.md
+status: PLAN_FOOT_PLACEMENT_MPC_TEACHER
+```
+
+That means the next offline implementation should be a finite-horizon
+state-feedback teacher/optimizer that chooses stance side, lateral body
+placement, swing-foot placement, and push timing together. Do not launch PPO/BC
+or robot validation from current target sources.
+
 Robot validation remains blocked.

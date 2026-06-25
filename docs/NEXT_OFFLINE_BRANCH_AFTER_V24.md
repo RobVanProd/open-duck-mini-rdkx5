@@ -116,7 +116,35 @@ Blocked result:
 HOLD_REWARD_TERMS_MISSING
 ```
 
-## Recommended Branches
+## Branch Decision
+
+The current branch choice is now executable:
+
+```bash
+python3 tools/decide_next_weight_transfer_branch.py
+```
+
+Current artifact:
+
+```text
+outputs/analysis/NEXT_WEIGHT_TRANSFER_BRANCH.md
+status: PLAN_FOOT_PLACEMENT_MPC_TEACHER
+```
+
+This decision uses the full target gate, the failure-mode scan, and the latest
+stance leg-extension teacher probe. It resolves the earlier Branch A / Branch B
+fork for the next implementation step:
+
+```text
+choose Branch A, but not as another nearby scalar teacher grid
+```
+
+The next branch should be a finite-horizon state-feedback teacher/optimizer
+that chooses stance side, lateral body placement, swing-foot placement, and
+forward push timing together. It must still clear `PASS_WEIGHT_TRANSFER_TARGET`
+before any PPO/BC or robot validation.
+
+## Candidate Branches
 
 ### Branch A: Closed-Loop Teacher / Optimizer
 
@@ -192,18 +220,26 @@ reward activation preflight passes
 
 ## Next Concrete Step
 
-The next highest-information offline task is:
+The next highest-information offline task is no longer to choose between Branch
+A and Branch B. The choice is recorded in:
 
 ```text
-pick Branch A or Branch B and produce a small reviewed plan artifact before
-launching another cloud job.
+outputs/analysis/NEXT_WEIGHT_TRANSFER_BRANCH.md
 ```
 
-For Branch A, update the teacher/optimizer plan around explicit stance-side,
-foot-placement, and push-timing state.
+Implement the Branch A design as a reviewed, default-off, CPU-bounded target
+source:
 
-For Branch B, find or construct a low-command stepping demonstration and audit
-its command/contact/envelope compatibility before training.
+```text
+finite-horizon state-feedback teacher/optimizer
+stateful stance-side selection
+explicit lateral body placement over the stance foot
+swing-foot placement and clearance objective
+forward push timed after support loading
+lateral velocity/base-y drift penalties
+pitch and base-height guards
+measured actuator-envelope scoring
+```
 
 The concrete target-generation plan is:
 

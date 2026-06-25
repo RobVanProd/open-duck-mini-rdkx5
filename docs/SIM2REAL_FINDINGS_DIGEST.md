@@ -164,6 +164,18 @@ objective or controller:
 6. keep sent target velocity inside the measured actuator envelope.
 ```
 
+The current executable branch decision is:
+
+```text
+tool: tools/decide_next_weight_transfer_branch.py
+artifact: outputs/analysis/NEXT_WEIGHT_TRANSFER_BRANCH.md
+status: PLAN_FOOT_PLACEMENT_MPC_TEACHER
+```
+
+That selects a finite-horizon state-feedback teacher/optimizer with stance
+side, lateral body placement, swing-foot placement, and push timing optimized
+together before any new PPO/BC run.
+
 See:
 
 ```text

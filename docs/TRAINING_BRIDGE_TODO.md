@@ -4446,6 +4446,26 @@ seed-robust target. It should be used for reviewed structural target-source
 experiments only. Do not treat it as permission to launch BC/PPO unless a
 100-150 tick target gate passes.
 
+The current executable next-branch decision is:
+
+```text
+tool: tools/decide_next_weight_transfer_branch.py
+artifact: outputs/analysis/NEXT_WEIGHT_TRANSFER_BRANCH.md
+status: PLAN_FOOT_PLACEMENT_MPC_TEACHER
+```
+
+This picks the next target-source branch explicitly:
+
+```text
+finite-horizon state-feedback teacher/optimizer
+stance side + lateral body placement + swing-foot placement + push timing
+all optimized/scored together
+```
+
+Do not launch PPO/BC from the current target sources. Do not widen the same
+local teacher grid again unless the implementation adds a new state variable or
+objective. Training re-entry still requires `PASS_WEIGHT_TRANSFER_TARGET`.
+
 The current compact handoff docs are:
 
 ```text

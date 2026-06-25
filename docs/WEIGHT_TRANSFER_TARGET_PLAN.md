@@ -216,6 +216,39 @@ does not produce the missing mechanism. The next branch should not widen this
 nearby teacher grid again. It needs a different body-state/contact/propulsion
 controller or optimizer.
 
+## Executable Next-Branch Decision
+
+The next branch is selected by:
+
+```bash
+python3 tools/decide_next_weight_transfer_branch.py
+```
+
+Current decision artifact:
+
+```text
+outputs/analysis/NEXT_WEIGHT_TRANSFER_BRANCH.md
+status: PLAN_FOOT_PLACEMENT_MPC_TEACHER
+```
+
+The required next design is:
+
+```text
+finite-horizon state-feedback teacher/optimizer
+stateful stance-side selection
+explicit lateral body placement over the stance foot
+swing-foot placement and clearance objective
+forward push timed after support loading
+lateral velocity and base-y drift penalties
+pitch and base-height guards
+measured actuator-envelope scoring
+100-150 tick seed-robust PASS_WEIGHT_TRANSFER_TARGET gate
+```
+
+This is intentionally stronger than "try Branch A." It rules out another nearby
+scalar teacher-grid expansion and points at a foot-placement/body-state
+optimizer as the next reviewed implementation target.
+
 ## Stop Conditions
 
 Stop target generation and do not train if:
