@@ -402,6 +402,29 @@ This is useful negative evidence: contact-reactive stance selection alone is
 not enough. The next controller must add deliberate center-of-mass/lateral
 momentum control and stance-foot loading, not only select stance from contact.
 
+The first stance-foot loading hook was also tested:
+
+```text
+flag: --single-support-push-scales
+artifact: outputs/analysis/SUPPORT_LOADED_WEIGHT_TRANSFER_PROBE.md
+score_100: outputs/analysis/SUPPORT_LOADED_WEIGHT_TRANSFER_PROBE_SCORE_100.md
+score_150: outputs/analysis/SUPPORT_LOADED_WEIGHT_TRANSFER_PROBE_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+Scale `0.5` ranked best, but still held:
+
+```text
+100-tick local dx: 0.0230 / 0.0258 m
+100-tick vy95: 0.1424 / 0.1543 m/s
+150-tick local dx: 0.0309 / 0.0362 m
+150-tick vy95: 0.1586 / 0.1635 m/s
+```
+
+Support-loaded push increases single-support dwell slightly, but does not
+solve forward displacement or lateral velocity. The next controller needs
+explicit CoM placement/regulation over the stance foot.
+
 ## Next Branch After a Pass
 
 If the teacher probe passes, use its traces as a target source:

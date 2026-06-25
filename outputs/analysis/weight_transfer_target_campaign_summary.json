@@ -22,7 +22,9 @@
     "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/closed_loop_weight_transfer_teacher_lateral_refine_score_100.json",
     "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/closed_loop_weight_transfer_teacher_lateral_refine_score_150.json",
     "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/support_state_weight_transfer_probe_score_100.json",
-    "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/support_state_weight_transfer_probe_score_150.json"
+    "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/support_state_weight_transfer_probe_score_150.json",
+    "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/support_loaded_weight_transfer_probe_score_100.json",
+    "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/support_loaded_weight_transfer_probe_score_150.json"
   ],
   "summaries": [
     {
@@ -1217,17 +1219,120 @@
           ]
         }
       ]
+    },
+    {
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/support_loaded_weight_transfer_probe_score_100.json",
+      "label": "support_loaded_weight_transfer_probe_score_100",
+      "status": "HOLD_NO_SEED_ROBUST_TARGETS",
+      "missing": false,
+      "window_samples": 100,
+      "mode_count": 3,
+      "robust_mode_count": 0,
+      "reason_counts": {
+        "high_lateral_velocity": 6,
+        "low_forward_displacement": 6,
+        "low_forward_velocity": 6
+      },
+      "top_mode": "teacher_ssm1_p0p56_rs0p02_sk0p08_sa0_shr0p06_srs0p5_spg1_ssps0p5_mfs0p25_ffp0p01_pt0_pd1_lgm1_bygm1_plg0p06_clb1",
+      "top_min_seed_score": -0.7627474329306279,
+      "top_mean_seed_score": -0.7490787364964309,
+      "top_seeds": [
+        {
+          "seed": "seed_000",
+          "mean_vx_m_s": 0.011512063680020218,
+          "forward_displacement_m": 0.02302412736004044,
+          "vy_abs_p95_m_s": 0.14243764504790307,
+          "double_support_pct": 89.0,
+          "single_support_pct": 11.0,
+          "min_single_support_side_pct": 5.0,
+          "contact_transitions": 20,
+          "sent_target_velocity_p95_rad_s": 1.9999999552965164,
+          "hard_failures": [
+            "high_lateral_velocity",
+            "low_forward_displacement",
+            "low_forward_velocity"
+          ]
+        },
+        {
+          "seed": "seed_002",
+          "mean_vx_m_s": 0.01288752400665544,
+          "forward_displacement_m": 0.02577504801331088,
+          "vy_abs_p95_m_s": 0.15427951365709305,
+          "double_support_pct": 90.0,
+          "single_support_pct": 10.0,
+          "min_single_support_side_pct": 4.0,
+          "contact_transitions": 18,
+          "sent_target_velocity_p95_rad_s": 1.6344564966857433,
+          "hard_failures": [
+            "high_lateral_velocity",
+            "low_forward_displacement",
+            "low_forward_velocity"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/support_loaded_weight_transfer_probe_score_150.json",
+      "label": "support_loaded_weight_transfer_probe_score_150",
+      "status": "HOLD_NO_SEED_ROBUST_TARGETS",
+      "missing": false,
+      "window_samples": 150,
+      "mode_count": 3,
+      "robust_mode_count": 0,
+      "reason_counts": {
+        "high_lateral_velocity": 6,
+        "low_forward_displacement": 6,
+        "low_forward_velocity": 6,
+        "high_sent_target_velocity": 1
+      },
+      "top_mode": "teacher_ssm1_p0p56_rs0p02_sk0p08_sa0_shr0p06_srs0p5_spg1_ssps0p5_mfs0p25_ffp0p01_pt0_pd1_lgm1_bygm1_plg0p06_clb1",
+      "top_min_seed_score": -1.1176184937597284,
+      "top_mean_seed_score": -1.0762411764209174,
+      "top_seeds": [
+        {
+          "seed": "seed_000",
+          "mean_vx_m_s": 0.01030945923414644,
+          "forward_displacement_m": 0.030928377702439322,
+          "vy_abs_p95_m_s": 0.1586213976144791,
+          "double_support_pct": 86.0,
+          "single_support_pct": 14.0,
+          "min_single_support_side_pct": 4.666666666666667,
+          "contact_transitions": 31,
+          "sent_target_velocity_p95_rad_s": 2.1764589473605156,
+          "hard_failures": [
+            "high_lateral_velocity",
+            "low_forward_displacement",
+            "low_forward_velocity"
+          ]
+        },
+        {
+          "seed": "seed_002",
+          "mean_vx_m_s": 0.012074146724771709,
+          "forward_displacement_m": 0.036222440174315126,
+          "vy_abs_p95_m_s": 0.1634974978864193,
+          "double_support_pct": 82.66666666666667,
+          "single_support_pct": 17.333333333333336,
+          "min_single_support_side_pct": 8.0,
+          "contact_transitions": 29,
+          "sent_target_velocity_p95_rad_s": 2.3146349005401134,
+          "hard_failures": [
+            "high_lateral_velocity",
+            "low_forward_displacement",
+            "low_forward_velocity"
+          ]
+        }
+      ]
     }
   ],
   "aggregate_failures": {
-    "low_forward_velocity": 2081,
+    "low_forward_velocity": 2093,
     "double_support_dominates": 1238,
     "too_little_single_support": 1051,
-    "high_lateral_velocity": 838,
+    "high_lateral_velocity": 850,
     "single_support_not_balanced": 774,
     "single_contact_pattern_dominates": 590,
-    "low_forward_displacement": 233,
-    "high_sent_target_velocity": 71,
+    "low_forward_displacement": 245,
+    "high_sent_target_velocity": 72,
     "action_saturation": 52,
     "too_few_contact_transitions": 45,
     "low_base_height": 45,

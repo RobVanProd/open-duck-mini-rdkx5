@@ -41,6 +41,8 @@ DEFAULT_SCORE_JSONS = [
     "outputs/analysis/closed_loop_weight_transfer_teacher_lateral_refine_score_150.json",
     "outputs/analysis/support_state_weight_transfer_probe_score_100.json",
     "outputs/analysis/support_state_weight_transfer_probe_score_150.json",
+    "outputs/analysis/support_loaded_weight_transfer_probe_score_100.json",
+    "outputs/analysis/support_loaded_weight_transfer_probe_score_150.json",
 ]
 
 

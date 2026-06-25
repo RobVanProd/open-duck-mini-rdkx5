@@ -5493,3 +5493,43 @@ This confirms that reacting to actual single-foot support improves contact
 alternation but does not solve the weight-transfer target. The next controller
 needs explicit center-of-mass/lateral momentum and stance-foot loading logic,
 not just contact-state stance selection.
+
+### Support-Loaded Push Probe
+
+The teacher tool now also supports a default-off stance-loading hook:
+
+```text
+flag: --single-support-push-scales
+scale 0: historical stance push
+scale 1: only push while actual single support is loaded
+```
+
+A bounded CPU probe tested scales `0`, `0.5`, and `1.0`:
+
+```text
+artifact: outputs/analysis/SUPPORT_LOADED_WEIGHT_TRANSFER_PROBE.md
+score_100: outputs/analysis/SUPPORT_LOADED_WEIGHT_TRANSFER_PROBE_SCORE_100.md
+score_150: outputs/analysis/SUPPORT_LOADED_WEIGHT_TRANSFER_PROBE_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+Best scored windows:
+
+```text
+100 ticks:
+  scale: 0.5
+  vx: 0.0115 / 0.0129 m/s
+  local dx: 0.0230 / 0.0258 m
+  vy95: 0.1424 / 0.1543 m/s
+
+150 ticks:
+  scale: 0.5
+  vx: 0.0103 / 0.0121 m/s
+  local dx: 0.0309 / 0.0362 m
+  vy95: 0.1586 / 0.1635 m/s
+```
+
+Support-loaded push slightly improves support dwell, but it still misses the
+forward displacement gate and fails lateral velocity. The controller must
+actively place/regulate the body over the stance foot rather than only wait for
+single support before pushing.

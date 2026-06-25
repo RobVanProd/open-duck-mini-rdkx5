@@ -74,6 +74,46 @@ still failed lateral velocity. The next controller must not merely follow
 actual contact state; it must decide when and how to move the center of mass,
 load the stance foot, and push forward without side impulse.
 
+## First Support-Loaded Push Probe
+
+The next default-off hook was added to test stance-foot loading:
+
+```text
+flag: --single-support-push-scales
+```
+
+Scale `0` preserves the existing stance-push behavior. Scale `1` only applies
+stance push while the sim is in actual single support. A bounded CPU probe
+tested scales `0`, `0.5`, and `1.0`:
+
+```text
+artifact: outputs/analysis/SUPPORT_LOADED_WEIGHT_TRANSFER_PROBE.md
+score_100: outputs/analysis/SUPPORT_LOADED_WEIGHT_TRANSFER_PROBE_SCORE_100.md
+score_150: outputs/analysis/SUPPORT_LOADED_WEIGHT_TRANSFER_PROBE_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+Result:
+
+```text
+100-tick best scale: 0.5
+  vx: 0.0115 / 0.0129 m/s
+  local dx: 0.0230 / 0.0258 m
+  vy95: 0.1424 / 0.1543 m/s
+  single support: 11.0% / 10.0%
+
+150-tick best scale: 0.5
+  vx: 0.0103 / 0.0121 m/s
+  local dx: 0.0309 / 0.0362 m
+  vy95: 0.1586 / 0.1635 m/s
+  single support: 14.0% / 17.3%
+```
+
+Interpretation: requiring confirmed single-support loading improves support
+dwell/transition metrics, but it still leaves the same forward/lateral failure.
+It is not enough to wait for single support; the controller must actively place
+and regulate the body over the stance foot.
+
 ## Required Gate
 
 The next target source must pass:
