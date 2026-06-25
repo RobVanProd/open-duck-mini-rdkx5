@@ -20,10 +20,10 @@ motion windows. It does not export raw traces or start training.
 
 ## Counts
 
-- mined_windows: `17`
+- mined_windows: `64`
 - pass_curated_seed_windows: `1`
-- review_motion_hints: `15`
-- rejected_dataset_seeds: `1`
+- review_motion_hints: `35`
+- rejected_dataset_seeds: `28`
 
 ## Curated Seed Windows
 

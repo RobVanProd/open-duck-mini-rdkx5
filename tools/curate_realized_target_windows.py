@@ -98,6 +98,26 @@ def compact_window(window: dict[str, Any], tier: str, reasons: list[str]) -> dic
     }
 
 
+def manifest_windows(source: dict[str, Any]) -> list[dict[str, Any]]:
+    windows = []
+    seen = set()
+    for trace in source.get("traces", []):
+        for window in trace.get("candidate_windows", []):
+            key = (
+                window.get("source_path"),
+                window.get("mode"),
+                window.get("start_tick"),
+                window.get("end_tick"),
+            )
+            if key in seen:
+                continue
+            seen.add(key)
+            windows.append(window)
+    if windows:
+        return windows
+    return list(source.get("top_windows", []))
+
+
 def write_markdown(payload: dict[str, Any], path: Path) -> None:
     counts = payload["counts"]
     lines = [
@@ -202,7 +222,7 @@ def main() -> int:
     args = parser.parse_args()
 
     source = json.loads(Path(args.input_json).read_text())
-    windows = source.get("top_windows", [])
+    windows = manifest_windows(source)
     classified = [compact_window(window, *classify(window, args)) for window in windows]
     curated = [window for window in classified if window["tier"] == "PASS_CURATED_SEED_WINDOW"]
     review = [window for window in classified if window["tier"] == "REVIEW_MOTION_HINT_ONLY"]

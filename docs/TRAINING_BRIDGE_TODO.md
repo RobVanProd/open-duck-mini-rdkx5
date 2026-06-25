@@ -2682,3 +2682,38 @@ Artifacts:
 outputs/analysis/REALIZED_TARGET_WINDOW_CURATION.md
 outputs/analysis/realized_target_window_curation.json
 ```
+
+### Broad Realized-Window Archive Sweep
+
+The same curation gate was applied to a broader trace manifest built from all
+compatible JSONL traces currently available under `outputs/analysis`:
+
+```text
+status: HOLD_INSUFFICIENT_CURATED_WINDOWS
+compatible candidate windows: 64
+curated_seed_windows: 1
+review_motion_hints: 35
+rejected_dataset_seeds: 28
+```
+
+This rules out the easy path where enough clean seed data was already present
+in previous candidate/reference traces. The current archive is useful for
+understanding failure surfaces, not for direct supervised pretraining.
+
+Next target-data tasks:
+
+```text
+1. generate new low-command rollouts specifically for target-window collection
+2. stop each generation run with the same curation gate, not subjective review
+3. require enough curated windows across seeds/modes before BC
+4. keep broad trace mining as an audit, not as an automatic label exporter
+```
+
+Artifacts:
+
+```text
+outputs/analysis/REALIZED_TARGET_WINDOW_MINE_BROAD.md
+outputs/analysis/realized_target_window_mine_broad.json
+outputs/analysis/REALIZED_TARGET_WINDOW_CURATION_BROAD.md
+outputs/analysis/realized_target_window_curation_broad.json
+```

@@ -667,3 +667,39 @@ Additional artifacts:
 outputs/analysis/REALIZED_TARGET_WINDOW_CURATION.md
 outputs/analysis/realized_target_window_curation.json
 ```
+
+## Broad Realized Window Sweep
+
+The miner was also run across the broader set of compatible JSONL traces already
+present under `outputs/analysis`, including reference-target rollouts and
+multi-seed candidate traces:
+
+```text
+status: HOLD_INSUFFICIENT_CURATED_WINDOWS
+compatible candidate windows: 64
+curated seed windows: 1
+review-only motion hints: 35
+rejected dataset seeds: 28
+```
+
+This broader pass does not reveal a hidden stable target dataset. It confirms
+that the current trace archive contains many short motion hints, but almost no
+clean, low-lateral, low-pitch, survivable windows that are suitable as direct
+supervised seed material.
+
+Decision:
+
+```text
+Do not mine the current trace archive into BC labels. The next target-data work
+must generate new stable low-command rollouts deliberately, or add a contact-
+aware reference adaptation that actually realizes the intended contact schedule.
+```
+
+Additional artifacts:
+
+```text
+outputs/analysis/REALIZED_TARGET_WINDOW_MINE_BROAD.md
+outputs/analysis/realized_target_window_mine_broad.json
+outputs/analysis/REALIZED_TARGET_WINDOW_CURATION_BROAD.md
+outputs/analysis/realized_target_window_curation_broad.json
+```

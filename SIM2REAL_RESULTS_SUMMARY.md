@@ -3525,3 +3525,41 @@ Additional artifacts:
 outputs/analysis/REALIZED_TARGET_WINDOW_CURATION.md
 outputs/analysis/realized_target_window_curation.json
 ```
+
+### Broad Realized-Window Archive Sweep
+
+The realized-window miner and curation gate were rerun across the broader set of
+compatible JSONL traces already in `outputs/analysis`.
+
+```text
+status: HOLD_INSUFFICIENT_CURATED_WINDOWS
+compatible mined windows: 64
+curated seed windows: 1
+review-only motion hints: 35
+rejected dataset seeds: 28
+```
+
+Conclusion:
+
+```text
+There is not enough clean seed data hiding in the existing trace archive. The
+archive contains useful motion hints and failure evidence, but only one window
+passes the conservative seed-material filter.
+```
+
+Next offline step:
+
+```text
+generate new low-command realized target traces deliberately, or adapt the
+reference/contact path until it produces stable realized contacts, then rerun
+the same curation gate
+```
+
+Additional artifacts:
+
+```text
+outputs/analysis/REALIZED_TARGET_WINDOW_MINE_BROAD.md
+outputs/analysis/realized_target_window_mine_broad.json
+outputs/analysis/REALIZED_TARGET_WINDOW_CURATION_BROAD.md
+outputs/analysis/realized_target_window_curation_broad.json
+```
