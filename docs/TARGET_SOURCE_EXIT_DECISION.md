@@ -164,6 +164,28 @@ The next useful branch should test one of these, in this order:
 3. A closed-loop reference generator that reacts to base pitch, base height,
    lateral velocity, and foot contacts, instead of replaying fixed snippets.
 
+The first default-off learning-objective hook for option 2 is in the companion
+Playground branch:
+
+```text
+repo: RobVanProd/Open_Duck_Playground
+branch: codex/forward-progress-reward
+commit: b4a96ca training: add forward support contact rewards
+```
+
+It adds:
+
+```text
+forward_single_support:
+  positive scale rewards exactly one support foot during forward commands
+
+forward_double_support:
+  negative scale penalizes double-support dwell during forward commands
+```
+
+Both scales default to `0.0`, so existing training behavior is unchanged unless
+the runner flags enable them explicitly.
+
 Any branch must report:
 
 ```text
