@@ -70,6 +70,7 @@ def sample_uniform(rng: np.random.Generator, label: str, push_limit: float) -> P
     values = {key: rng.uniform(lo, hi) for key, (lo, hi) in BOUNDS.items()}
     return Planner(
         label=label,
+        step_gate_mode=int(rng.choice([0, 1, 2])),
         stance_push_limit_rad=push_limit,
         **{key: float(value) for key, value in values.items()},
     )
@@ -93,6 +94,7 @@ def sample_from_elites(
         values[key] = clip_param(key, float(rng.normal(center, sigma)))
     return Planner(
         label=label,
+        step_gate_mode=int(rng.choice([0, 1, 2])),
         stance_push_limit_rad=push_limit,
         **values,
     )

@@ -40,6 +40,7 @@ DEFAULT_TRACE_DIR = (
 @dataclass
 class Planner:
     label: str
+    step_gate_mode: int
     period_s: float
     balance_fraction: float
     roll_shift_rad: float
@@ -75,6 +76,7 @@ def planner_grid(args: argparse.Namespace) -> list[Planner]:
             rows.append(
                 Planner(
                     label=label,
+                    step_gate_mode=int(item.get("step_gate_mode", 0)),
                     period_s=float(item["period_s"]),
                     balance_fraction=float(item["balance_fraction"]),
                     roll_shift_rad=float(item["roll_shift_rad"]),
@@ -145,6 +147,7 @@ def planner_grid(args: argparse.Namespace) -> list[Planner]:
                                                                 rows.append(
                                                                     Planner(
                                                                         label=label,
+                                                                        step_gate_mode=0,
                                                                         period_s=period_s,
                                                                         balance_fraction=balance_fraction,
                                                                         roll_shift_rad=roll_shift,
@@ -230,6 +233,7 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
         def planner_target(
             default_actuator,
             tick,
+            step_gate_mode,
             period_s,
             balance_fraction,
             roll_shift_rad,
@@ -265,7 +269,37 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
             height_ok = base_height >= args.min_height_m
             pitch_ok = jp.abs(body_pitch - pitch_target_rad) <= pitch_gate_rad
             step_enabled = (~in_balance_phase) & lateral_ok & base_y_ok & height_ok & pitch_ok
-            step_scale = step_enabled.astype(jp.float32)
+            hard_step_scale = step_enabled.astype(jp.float32)
+            lateral_scale = jp.clip(
+                1.0 - jp.abs(local_vy) / jp.maximum(lateral_gate_m_s, 1.0e-6),
+                0.0,
+                1.0,
+            )
+            base_y_scale = jp.clip(
+                1.0 - jp.abs(base_y) / jp.maximum(base_y_gate_m, 1.0e-6),
+                0.0,
+                1.0,
+            )
+            pitch_scale = jp.clip(
+                1.0
+                - jp.abs(body_pitch - pitch_target_rad)
+                / jp.maximum(pitch_gate_rad, 1.0e-6),
+                0.0,
+                1.0,
+            )
+            soft_step_scale = (
+                (~in_balance_phase).astype(jp.float32)
+                * height_ok.astype(jp.float32)
+                * lateral_scale
+                * base_y_scale
+                * pitch_scale
+            )
+            ungated_step_scale = (~in_balance_phase).astype(jp.float32)
+            step_scale = jp.where(
+                step_gate_mode <= 0,
+                hard_step_scale,
+                jp.where(step_gate_mode == 1, soft_step_scale, ungated_step_scale),
+            )
 
             lateral_correction = jp.clip(
                 lateral_gain * local_vy + body_y_gain * base_y,
@@ -329,6 +363,7 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
 
         def step_planner(
             state,
+            step_gate_mode,
             period_s,
             balance_fraction,
             roll_shift_rad,
@@ -355,6 +390,7 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
             target, diagnostics = planner_target(
                 env._default_actuator,
                 tick,
+                step_gate_mode,
                 period_s,
                 balance_fraction,
                 roll_shift_rad,
@@ -456,6 +492,7 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                 for tick in range(sim_steps):
                     state, action, target, pre_rate, sent_target, diagnostics = step_planner_jit(
                         state,
+                        planner.step_gate_mode,
                         planner.period_s,
                         planner.balance_fraction,
                         planner.roll_shift_rad,
@@ -496,6 +533,7 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                         "time_s": tick * float(env.dt),
                         "seed": seed,
                         "mode": planner.label,
+                        "planner_step_gate_mode": planner.step_gate_mode,
                         "command": [args.command_x, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
                         "action": np.asarray(jax.device_get(action), dtype=float).tolist(),
                         "reference_target_rad": np.asarray(

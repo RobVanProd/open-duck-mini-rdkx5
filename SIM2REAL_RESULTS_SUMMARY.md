@@ -5348,3 +5348,15 @@ candidate still had near-zero forward velocity (`-0.0029 / 0.0022 m/s`) while
 staying close to the lateral gate (`vy95 = 0.1096 / 0.1113 m/s`). This confirms
 that the first optimizer parameterization is still trapped in the conservative
 balance basin.
+
+A gate-mode extension then let the optimizer sample hard, soft, and ungated
+step phases:
+
+```text
+artifact: outputs/analysis/WEIGHT_TRANSFER_OPTIMIZER_GATE_MODE.md
+status: HOLD_OPTIMIZER_NO_ROBUST_TARGET
+```
+
+This also held. The global best soft-gated candidate had seed0/seed2 forward
+velocity of `-0.0036 / 0.0043 m/s` with lateral velocity still near gate. This
+shows that relaxing the step gate alone does not escape the conservative basin.

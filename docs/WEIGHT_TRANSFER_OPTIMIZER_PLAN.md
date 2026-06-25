@@ -176,3 +176,35 @@ gate, actuator target velocity is low, but forward displacement is nearly zero.
 The next optimizer revision needs a less restrictive parameterization or a
 stronger terminal forward-displacement term; simply iterating this small search
 is unlikely to solve the target-source problem.
+
+## Gate-Mode Probe
+
+The optimizer was extended to sample planner step-gate modes:
+
+```text
+0: hard gate
+1: soft gate
+2: ungated step phase
+```
+
+Artifact:
+
+```text
+outputs/analysis/WEIGHT_TRANSFER_OPTIMIZER_GATE_MODE.md
+outputs/analysis/weight_transfer_optimizer_gate_mode.json
+```
+
+Result:
+
+```text
+status: HOLD_OPTIMIZER_NO_ROBUST_TARGET
+global best seed0 vx: -0.0036 m/s
+global best seed2 vx: 0.0043 m/s
+global best seed0 / seed2 vy95: 0.1065 / 0.1106 m/s
+```
+
+The best candidate used soft gating. Relaxing the hard gate did not restore
+forward displacement in this compact parameterization. The next useful change
+is not more gate-mode sampling; it is an objective/parameterization change that
+explicitly pays for terminal forward displacement while preserving the lateral
+and support gates.

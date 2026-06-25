@@ -246,6 +246,18 @@ The wrapper works and produces scored traces, but the first small run stayed in
 the conservative basin: lateral velocity near gate, target velocity low, and
 forward velocity near zero. Do not train from these traces.
 
+Gate-mode optimizer extension:
+
+```text
+artifact: outputs/analysis/WEIGHT_TRANSFER_OPTIMIZER_GATE_MODE.md
+status: HOLD_OPTIMIZER_NO_ROBUST_TARGET
+```
+
+Sampling soft and ungated step phases did not restore forward displacement. The
+next optimizer change should add an explicit terminal forward-displacement
+objective or a richer target-sequence parameterization, not just more gate-mode
+sampling.
+
 ### Reconcile Policy / Sim Contract
 
 - Run `tools/audit_policy_sim_contract.py`.
