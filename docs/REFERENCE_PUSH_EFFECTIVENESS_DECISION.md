@@ -258,6 +258,19 @@ mean local vx: 0.0540 m/s
 mean single-support 0.1s future vx delta: +0.0042 m/s
 ```
 
+The policy/reference mechanism comparison then narrowed the difference:
+
+```text
+outputs/analysis/POLICY_REFERENCE_MECHANISM_COMPARISON.md
+status: PASS_POLICY_REFERENCE_MECHANISM_SPLIT
+policy actual single-support fraction: 44.8%
+reference contact-synchronized actual single-support fraction: 19.25%
+policy single-support 0.1s future vx delta: +0.0042 m/s
+reference requested-single 0.1s future vx delta: -0.0051 m/s
+policy pitch-chain target velocity p95 mean: 3.0488 rad/s
+reference contact-synchronized pitch-chain target velocity p95 mean: 4.9811 rad/s
+```
+
 Answers to the original discriminator:
 
 ```text
@@ -266,7 +279,9 @@ Answers to the original discriminator:
    Yes, in closed loop.
 2. If yes, what closed-loop contact/propulsion mechanism does the policy use
    that the reference-target path lacks?
-   Still open; this is the next offline analysis task.
+   It creates substantially more actual single-support time and keeps
+   pitch-chain target-rate lower while preserving forward motion. The exact
+   state/action template still needs extraction.
 3. If no, is the sim contract or morphology/feasibility assumption the real
    blocker?
    Not the current read. Published policy locomotion rules out a broad
@@ -278,8 +293,9 @@ Answers to the original discriminator:
 Recommended next offline task:
 
 ```text
-compare published-policy closed-loop contact/CoM/action mechanism against the
-failed reference-target rollouts
+extract a compact published-policy state/action/contact template and test it as
+an imitation or trust-region source before returning to open-loop teacher
+generation
 ```
 
 Robot validation remains blocked.

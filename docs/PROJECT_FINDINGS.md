@@ -556,6 +556,19 @@ mean single-support fraction: 44.8%
 mean single-support 0.1s future vx delta: +0.0042 m/s
 ```
 
+The follow-up mechanism comparison makes the split sharper:
+
+```text
+outputs/analysis/POLICY_REFERENCE_MECHANISM_COMPARISON.md
+status: PASS_POLICY_REFERENCE_MECHANISM_SPLIT
+policy actual single-support fraction: 44.8%
+reference contact-synchronized actual single-support fraction: 19.25%
+policy single-support 0.1s future vx delta: +0.0042 m/s
+reference requested-single 0.1s future vx delta: -0.0051 m/s
+policy pitch-chain target velocity p95 mean: 3.0488 rad/s
+reference contact-synchronized pitch-chain target velocity p95 mean: 4.9811 rad/s
+```
+
 This is the current pivot. The upstream-main sim/morphology can produce stable
 closed-loop forward locomotion under the published `BEST_WALK_ONNX_2` policy.
 The reference-target/open-loop path still fails the same contact/propulsion
@@ -563,8 +576,13 @@ question, and the first contact-friction/solver substitution did not rescue it.
 So the blocker is no longer "sim cannot propel forward" in general. It is the
 mismatch between the published policy's closed-loop contact/CoM strategy and
 the controller/reference-target pathways used by the local teacher campaign.
+The closed-loop policy gets more actual single support and keeps the pitch-chain
+target-rate closer to the measured actuator envelope; the reference-target path
+asks for single support but does not convert those windows into forward
+acceleration.
 
 Current decision: do not continue with another stance-relative lateral-damping
 teacher variant by default. The next offline gate is to mine the published
-policy's closed-loop propulsion mechanism and compare it against the failed
-reference-target path. Robot validation remains blocked.
+policy's state-action/contact timing as a teacher or constraint source instead
+of generating another nearby open-loop target variant. Robot validation remains
+blocked.

@@ -54,6 +54,12 @@ training, robot SSH, deployment, or hardware tests.
 | `published_policy_mean_local_vx_m_s` | `0.053972023295584225` |
 | `published_policy_mean_tracking_ratio` | `0.7293516661565436` |
 | `published_policy_single_support_future_vx_delta_m_s` | `0.004151348076938894` |
+| `mechanism_comparison_status` | `PASS_POLICY_REFERENCE_MECHANISM_SPLIT` |
+| `policy_actual_single_support_pct` | `44.8` |
+| `reference_contact_synchronized_actual_single_support_pct` | `19.25` |
+| `reference_requested_single_future_vx_delta_m_s` | `-0.005149568369172915` |
+| `policy_pitch_chain_target_velocity_p95_rad_s` | `3.0488` |
+| `reference_contact_synchronized_pitch_chain_target_velocity_p95_rad_s` | `4.9811` |
 
 ## Decision
 
@@ -76,18 +82,21 @@ does produce stable closed-loop forward locomotion in that task.
   `flat_terrain_backlash` seeds. Seven of eight seeds tracked the command with
   local x ratio >= 0.5, mean local vx was `0.0540 m/s`, and mean
   single-support 0.1s future vx delta was positive at `+0.0042 m/s`.
+- The mechanism comparison shows the policy creates more actual single-support
+  time (`44.8%` vs `19.25%` for the best reference-target variant), while the
+  reference-requested single-support windows still have negative 0.1s future vx
+  delta (`-0.0051 m/s`). The policy also keeps pitch-chain p95 target velocity
+  lower (`3.0488 rad/s` vs `4.9811 rad/s`).
 
 ## Required Next Design
 
-- compare published-policy contact timing, support windows, base/CoM motion,
-  yaw/lateral behavior, action history, and target-rate behavior against the
-  failed reference-target rollouts
-- isolate what closed-loop feedback path lets the published policy move when
-  the reference-target path does not
-- decide whether the teacher should imitate policy state-action behavior,
-  reproduce the policy contact schedule, or use a new closed-loop teacher
-- only return to teacher generation after this policy/reference mechanism split
-  is explained
+- extract a compact published-policy state/action/contact template from the
+  successful closed-loop traces
+- test whether imitation/BC or a trust-region teacher around that template can
+  preserve the policy's actual single-support schedule without exceeding the
+  measured actuator envelope
+- only return to open-loop teacher generation if the state-action/contact
+  template path fails a defined offline gate
 
 ## Stop Rules
 
