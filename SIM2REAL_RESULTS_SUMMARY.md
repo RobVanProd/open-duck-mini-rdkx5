@@ -3075,3 +3075,44 @@ outputs/analysis/REFERENCE_MOTION_SEED_AUDIT.md
 outputs/analysis/STAGED_CURRICULUM_TRAINING_PLAN_V19.md
 docs/LOW_COMMAND_DISCOVERY_DECISION.md
 ```
+
+### V19 A100 Partial Result
+
+V19 phase 1 trained on A100 and reached the x=0.04 multi-seed phase gate using
+vanilla dynamics and the V19 reward overrides. The Colab session was lost before
+final artifact bundling/download, so seeds 6-7 and the final ONNX were not
+recovered. The six completed seed results were enough to reject the candidate as
+a pass:
+
+| seed | samples | vx mean m/s | track ratio | result |
+|---:|---:|---:|---:|---|
+| 0 | 70 | -0.0010 | -0.0239 | fall/termination |
+| 1 | 34 | -0.0898 | -2.2442 | reverse/collapse |
+| 2 | 70 | 0.0077 | 0.1931 | low progress/fall |
+| 3 | 70 | -0.0161 | -0.4032 | reverse/fall |
+| 4 | 149 | 0.0080 | 0.1999 | low progress/fall |
+| 5 | 46 | -0.3257 | -8.1420 | hard reverse/collapse |
+
+Interpretation:
+
+```text
+V19 does not support PASS_SEEDED_GAIT_REFINES.
+The reference-imitation reward did not produce coherent low-command forward
+motion in the observed seeds.
+```
+
+The next offline question is now sharper:
+
+```text
+Does the current environment/reward preserve and reward the upstream reference
+trajectory when it is followed, or does the task landscape destroy it?
+```
+
+Do not deploy V19. Do not run x=0.08. Do not run robot validation.
+
+Additional artifact:
+
+```text
+outputs/analysis/A100_V19_REFERENCE_SEED_PARTIAL_HOLD_SUMMARY.md
+outputs/analysis/a100_v19_reference_seed_partial_hold_summary.json
+```

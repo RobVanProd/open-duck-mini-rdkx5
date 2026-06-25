@@ -162,3 +162,40 @@ outputs/analysis/LOW_COMMAND_REWARD_SIGNAL_V18.md
 outputs/analysis/REFERENCE_MOTION_SEED_AUDIT.md
 outputs/analysis/STAGED_CURRICULUM_TRAINING_PLAN_V19.md
 ```
+
+## V19 Partial Result
+
+V19 was launched on an A100 through the pinned Colab helper. Phase 1 trained to
+completion and entered the x=0.04 multi-seed gate, but the Colab session was
+lost before final artifact bundling/download.
+
+Recovered gate evidence:
+
+```text
+completed seeds: 0-5
+seed 0: fall/termination, track ratio -0.0239
+seed 1: reverse/collapse, track ratio -2.2442
+seed 2: low progress/fall, track ratio 0.1931
+seed 3: reverse/fall, track ratio -0.4032
+seed 4: low progress/fall, track ratio 0.1999
+seed 5: hard reverse/collapse, track ratio -8.1420
+```
+
+This does not support `PASS_SEEDED_GAIT_REFINES`. The reference-imitation reward
+did not produce coherent low-command forward motion in the observed seeds.
+
+Next offline question:
+
+```text
+Does the environment/reward preserve and reward the upstream reference
+trajectory when it is followed, or does the task landscape destroy it?
+```
+
+V19 remains non-deployable. Do not run x=0.08, fitted bridge, or robot
+validation from this candidate.
+
+Additional artifact:
+
+```text
+outputs/analysis/A100_V19_REFERENCE_SEED_PARTIAL_HOLD_SUMMARY.md
+```

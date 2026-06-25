@@ -2274,3 +2274,40 @@ Reference audit:
 `outputs/analysis/REFERENCE_MOTION_SEED_AUDIT.md`.
 V19 plan:
 `outputs/analysis/STAGED_CURRICULUM_TRAINING_PLAN_V19.md`.
+
+### V19 A100 Partial Result
+
+V19 phase 1 trained on A100 and reached the x=0.04 multi-seed gate. The Colab
+session was lost before final artifact download, but six completed seeds were
+captured from the remote monitor:
+
+```text
+seed 0: fall/termination, track ratio -0.0239
+seed 1: reverse/collapse, track ratio -2.2442
+seed 2: low progress/fall, track ratio 0.1931
+seed 3: reverse/fall, track ratio -0.4032
+seed 4: low progress/fall, track ratio 0.1999
+seed 5: hard reverse/collapse, track ratio -8.1420
+```
+
+Decision:
+
+```text
+V19 is a partial hold. The reference-imitation reward did not refine into
+coherent low-command forward motion in the observed seed distribution.
+```
+
+Do not rerun x=0.08, fitted bridge, or robot validation from V19.
+
+Next training-bridge task:
+
+```text
+debug the reference/reward path directly:
+  - score the upstream reference trajectory under the current task rewards
+  - confirm whether following the reference is rewarded above standing/reverse
+  - identify whether termination/contact/base-height terms destroy it
+  - only then decide whether to modify the task or use behavior cloning
+```
+
+V19 artifact:
+`outputs/analysis/A100_V19_REFERENCE_SEED_PARTIAL_HOLD_SUMMARY.md`.
