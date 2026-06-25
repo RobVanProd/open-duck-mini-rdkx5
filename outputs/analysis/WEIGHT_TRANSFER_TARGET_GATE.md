@@ -21,6 +21,8 @@ PASS_WEIGHT_TRANSFER_TARGET:
 |---|---:|---|
 | `target_objective_score_dynamic_roll_lateral_fix_100.json` | 100 ticks | `HOLD_NO_SEED_ROBUST_TARGETS` |
 | `target_objective_score_dynamic_roll_lateral_fix_150.json` | 150 ticks | `HOLD_NO_SEED_ROBUST_TARGETS` |
+| `target_objective_score_weight_transfer_dynamic_roll_lateral_fix_100.json` | 100 ticks | `HOLD_NO_SEED_ROBUST_TARGETS` |
+| `target_objective_score_weight_transfer_dynamic_roll_lateral_fix_150.json` | 150 ticks | `HOLD_NO_SEED_ROBUST_TARGETS` |
 | `target_generator_dynamic_roll_lateral_fix_window_curation_100.json` | 100 ticks | `HOLD_INSUFFICIENT_CURATED_WINDOWS` |
 | `target_generator_dynamic_roll_lateral_fix_window_curation_150.json` | 150 ticks | `HOLD_INSUFFICIENT_CURATED_WINDOWS` |
 | `TARGET_GENERATOR_BIASED_MULTISEED_WINDOW_MINE.md` | 25 ticks | `PASS_REALIZED_WINDOWS_AVAILABLE` |
@@ -53,6 +55,21 @@ The top-ranked mode still failed both required seeds:
 | seed_000 | 0.0211 m/s | `{'01': 6.0, '10': 3.0, '11': 91.0}` | 7 | low_forward_velocity |
 | seed_002 | 0.0238 m/s | `{'01': 2.0, '10': 2.0, '11': 96.0}` | 5 | low_forward_velocity, single_contact_pattern_dominates |
 
+The explicit weight-transfer rescore made the support failure visible:
+
+| metric | count |
+|---|---:|
+| double_support_dominates | 310 |
+| too_little_single_support | 294 |
+| single_support_not_balanced | 198 |
+
+Top explicit-rescore mode:
+
+| seed | mean vx | double support | single support | min side-only support | hard failures |
+|---|---:|---:|---:|---:|---|
+| seed_000 | 0.0176 m/s | 90.0% | 10.0% | 4.0% | low_base_height, low_forward_velocity |
+| seed_002 | 0.0213 m/s | 94.0% | 6.0% | 2.0% | double_support_dominates, low_forward_velocity, too_little_single_support |
+
 ## 150-Tick Result
 
 The dynamic-roll lateral-fix 150-tick objective score also found no robust
@@ -80,6 +97,21 @@ The top-ranked mode still failed both required seeds:
 |---|---:|---|---:|---|
 | seed_000 | 0.0132 m/s | `{'01': 4.0, '10': 2.67, '11': 93.33}` | 9 | low_base_height, low_forward_velocity |
 | seed_002 | 0.0147 m/s | `{'01': 1.33, '10': 2.67, '11': 96.0}` | 7 | low_forward_velocity, single_contact_pattern_dominates |
+
+The explicit weight-transfer rescore is stronger at 150 ticks:
+
+| metric | count |
+|---|---:|
+| double_support_dominates | 312 |
+| too_little_single_support | 312 |
+| single_support_not_balanced | 293 |
+
+Top explicit-rescore mode:
+
+| seed | mean vx | double support | single support | min side-only support | hard failures |
+|---|---:|---:|---:|---:|---|
+| seed_000 | 0.0093 m/s | 95.33% | 4.67% | 2.0% | double_support_dominates, low_forward_velocity, single_contact_pattern_dominates, too_little_single_support |
+| seed_002 | 0.0117 m/s | 95.33% | 4.67% | 1.33% | double_support_dominates, low_forward_velocity, single_contact_pattern_dominates, single_support_not_balanced, too_little_single_support |
 
 ## Short-Window Contrast
 
@@ -118,3 +150,22 @@ Do not launch PPO/BC from the existing short fragment table as if it were a
 full walking target. Generate or verify a sustained weight-transfer target
 first.
 
+## Tooling Update
+
+`tools/score_target_candidates_objective.py` now exposes support-shape criteria
+without changing the default historical behavior:
+
+```text
+--max-double-support-pct
+--max-no-support-pct
+--min-single-support-pct
+--min-each-single-support-pct
+```
+
+The stricter rescoring used:
+
+```text
+max_double_support_pct: 90
+min_single_support_pct: 8
+min_each_single_support_pct: 2
+```

@@ -90,6 +90,19 @@ def contact_dominance(contact_pct: dict[str, float]) -> float:
     return max(float(value) for value in contact_pct.values())
 
 
+def support_metrics(contact_pct: dict[str, float]) -> dict[str, float]:
+    support_a = float(contact_pct.get("10", 0.0))
+    support_b = float(contact_pct.get("01", 0.0))
+    return {
+        "double_support_pct": float(contact_pct.get("11", 0.0)),
+        "no_support_pct": float(contact_pct.get("00", 0.0)),
+        "single_support_pct": support_a + support_b,
+        "support_a_only_pct": support_a,
+        "support_b_only_pct": support_b,
+        "min_single_support_side_pct": min(support_a, support_b),
+    }
+
+
 def window_metrics(
     records: list[dict[str, Any]],
     start: int,
@@ -121,6 +134,7 @@ def window_metrics(
     }
     end = start + window_samples - 1
     margin = done_margin(records, end)
+    support = support_metrics(contact_pct)
     return {
         "samples": total,
         "start_tick": int(window[0].get("tick", start)),
@@ -146,6 +160,7 @@ def window_metrics(
         ),
         "contact_pct": contact_pct,
         "contact_dominance_pct": contact_dominance(contact_pct),
+        **support,
         "contact_transitions": sum(
             1 for a, b in zip(contact_patterns, contact_patterns[1:]) if a != b
         ),
@@ -164,6 +179,10 @@ def objective_score(metrics: dict[str, Any], args: argparse.Namespace) -> dict[s
     sent_vel = float(metrics.get("sent_target_velocity_p95_rad_s") or 999.0)
     tracking = float(metrics.get("joint_tracking_p95_rad") or 999.0)
     contact = float(metrics.get("contact_dominance_pct") or 999.0)
+    double_support = float(metrics.get("double_support_pct") or 0.0)
+    no_support = float(metrics.get("no_support_pct") or 0.0)
+    single_support = float(metrics.get("single_support_pct") or 0.0)
+    min_single_side = float(metrics.get("min_single_support_side_pct") or 0.0)
     contact_transitions = int(metrics.get("contact_transitions") or 0)
     foot_site_z_p95 = metrics.get("foot_site_z_p95_m")
     margin = metrics.get("ticks_until_done_after_window")
@@ -171,6 +190,22 @@ def objective_score(metrics: dict[str, Any], args: argparse.Namespace) -> dict[s
     penalties["forward_shortfall"] = max(0.0, args.min_mean_vx - mean_vx) * args.forward_weight
     penalties["lateral"] = max(0.0, vy95 - args.max_vy_abs_p95) * args.lateral_weight
     penalties["contact"] = max(0.0, contact - args.max_contact_dominance_pct) * args.contact_weight
+    penalties["double_support"] = (
+        max(0.0, double_support - args.max_double_support_pct)
+        * args.double_support_weight
+    )
+    penalties["no_support"] = (
+        max(0.0, no_support - args.max_no_support_pct)
+        * args.no_support_weight
+    )
+    penalties["single_support"] = (
+        max(0.0, args.min_single_support_pct - single_support)
+        * args.single_support_weight
+    )
+    penalties["single_support_balance"] = (
+        max(0.0, args.min_each_single_support_pct - min_single_side)
+        * args.single_support_balance_weight
+    )
     penalties["contact_transitions"] = (
         max(0.0, args.min_contact_transitions - float(contact_transitions))
         * args.contact_transition_weight
@@ -200,6 +235,14 @@ def objective_score(metrics: dict[str, Any], args: argparse.Namespace) -> dict[s
         hard_failures.append("high_lateral_velocity")
     if contact > args.max_contact_dominance_pct:
         hard_failures.append("single_contact_pattern_dominates")
+    if double_support > args.max_double_support_pct:
+        hard_failures.append("double_support_dominates")
+    if no_support > args.max_no_support_pct:
+        hard_failures.append("no_support_too_high")
+    if single_support < args.min_single_support_pct:
+        hard_failures.append("too_little_single_support")
+    if min_single_side < args.min_each_single_support_pct:
+        hard_failures.append("single_support_not_balanced")
     if contact_transitions < args.min_contact_transitions:
         hard_failures.append("too_few_contact_transitions")
     if (
@@ -331,6 +374,10 @@ def score_traces(args: argparse.Namespace) -> dict[str, Any]:
             "min_mean_vx": args.min_mean_vx,
             "max_vy_abs_p95": args.max_vy_abs_p95,
             "max_contact_dominance_pct": args.max_contact_dominance_pct,
+            "max_double_support_pct": args.max_double_support_pct,
+            "max_no_support_pct": args.max_no_support_pct,
+            "min_single_support_pct": args.min_single_support_pct,
+            "min_each_single_support_pct": args.min_each_single_support_pct,
             "max_pitch_abs_p95": args.max_pitch_abs_p95,
             "min_base_height": args.min_base_height,
             "max_sent_velocity_p95": args.max_sent_velocity_p95,
@@ -435,6 +482,10 @@ def main() -> int:
     parser.add_argument("--max-track-ratio", type=float, default=1.5)
     parser.add_argument("--max-vy-abs-p95", type=float, default=0.12)
     parser.add_argument("--max-contact-dominance-pct", type=float, default=95.0)
+    parser.add_argument("--max-double-support-pct", type=float, default=100.0)
+    parser.add_argument("--max-no-support-pct", type=float, default=100.0)
+    parser.add_argument("--min-single-support-pct", type=float, default=0.0)
+    parser.add_argument("--min-each-single-support-pct", type=float, default=0.0)
     parser.add_argument("--min-contact-transitions", type=int, default=0)
     parser.add_argument("--min-foot-site-z-p95", type=float, default=-1.0)
     parser.add_argument("--max-pitch-abs-p95", type=float, default=0.35)
@@ -446,6 +497,10 @@ def main() -> int:
     parser.add_argument("--forward-weight", type=float, default=8.0)
     parser.add_argument("--lateral-weight", type=float, default=8.0)
     parser.add_argument("--contact-weight", type=float, default=0.02)
+    parser.add_argument("--double-support-weight", type=float, default=0.02)
+    parser.add_argument("--no-support-weight", type=float, default=0.02)
+    parser.add_argument("--single-support-weight", type=float, default=0.02)
+    parser.add_argument("--single-support-balance-weight", type=float, default=0.02)
     parser.add_argument("--contact-transition-weight", type=float, default=0.02)
     parser.add_argument("--foot-clearance-weight", type=float, default=2.0)
     parser.add_argument("--pitch-weight", type=float, default=4.0)

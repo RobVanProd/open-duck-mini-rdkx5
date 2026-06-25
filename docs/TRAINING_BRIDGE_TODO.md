@@ -4019,3 +4019,25 @@ generator/objective directly:
    inside the existing gates,
 5. only then create a new manifest for BC/PPO.
 ```
+
+`tools/score_target_candidates_objective.py` now supports explicit
+weight-transfer criteria:
+
+```text
+--max-double-support-pct
+--max-no-support-pct
+--min-single-support-pct
+--min-each-single-support-pct
+```
+
+The first explicit rescore also failed:
+
+```text
+100 ticks:
+  double_support_dominates: 310
+  too_little_single_support: 294
+
+150 ticks:
+  double_support_dominates: 312
+  too_little_single_support: 312
+```

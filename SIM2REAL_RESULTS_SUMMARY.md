@@ -5080,9 +5080,20 @@ Result:
 150-tick dynamic-roll lateral-fix:
   robust_mode_count: 0
   main failures: low_forward_velocity 312, single_contact_pattern_dominates 295
+
+explicit weight-transfer rescore:
+  100-tick double_support_dominates: 310
+  100-tick too_little_single_support: 294
+  150-tick double_support_dominates: 312
+  150-tick too_little_single_support: 312
 ```
 
 The short-window target search still contains useful evidence, but the longer
 gate confirms those windows do not yet compose into a sustained low-command
 weight-transfer target. The next offline task is generator/objective work, not
 another V22-style prior-lock training run.
+
+The scorer now has explicit default-off support-shape criteria
+(`--max-double-support-pct`, `--min-single-support-pct`, and
+`--min-each-single-support-pct`) so future target searches can gate on support
+transfer directly.
