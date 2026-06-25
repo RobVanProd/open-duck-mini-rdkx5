@@ -249,6 +249,12 @@ This is intentionally stronger than "try Branch A." It rules out another nearby
 scalar teacher-grid expansion and points at a foot-placement/body-state
 optimizer as the next reviewed implementation target.
 
+Implementation spec:
+
+```text
+docs/FOOT_PLACEMENT_MPC_TEACHER_SPEC.md
+```
+
 ## Stop Conditions
 
 Stop target generation and do not train if:

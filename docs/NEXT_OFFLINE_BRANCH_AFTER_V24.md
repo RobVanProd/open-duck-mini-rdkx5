@@ -241,6 +241,12 @@ pitch and base-height guards
 measured actuator-envelope scoring
 ```
 
+Implementation spec:
+
+```text
+docs/FOOT_PLACEMENT_MPC_TEACHER_SPEC.md
+```
+
 The concrete target-generation plan is:
 
 ```text

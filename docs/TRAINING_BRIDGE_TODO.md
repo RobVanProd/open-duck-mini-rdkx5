@@ -4466,6 +4466,12 @@ Do not launch PPO/BC from the current target sources. Do not widen the same
 local teacher grid again unless the implementation adds a new state variable or
 objective. Training re-entry still requires `PASS_WEIGHT_TRANSFER_TARGET`.
 
+Implementation spec:
+
+```text
+docs/FOOT_PLACEMENT_MPC_TEACHER_SPEC.md
+```
+
 The current compact handoff docs are:
 
 ```text

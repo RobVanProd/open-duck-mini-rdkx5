@@ -259,4 +259,10 @@ state-feedback teacher/optimizer that chooses stance side, lateral body
 placement, swing-foot placement, and push timing together. Do not launch PPO/BC
 or robot validation from current target sources.
 
+Implementation spec:
+
+```text
+docs/FOOT_PLACEMENT_MPC_TEACHER_SPEC.md
+```
+
 Robot validation remains blocked.

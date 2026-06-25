@@ -1,0 +1,278 @@
+# Foot-Placement MPC Teacher Spec
+
+This is an offline implementation spec. It does not authorize robot tests, SSH,
+deployment, runtime changes, policy deployment, PPO/BC training, grounded
+replay, or `x=0.08`.
+
+## Purpose
+
+The current target-source branch is held at:
+
+```text
+outputs/analysis/NEXT_WEIGHT_TRANSFER_BRANCH.md
+status: PLAN_FOOT_PLACEMENT_MPC_TEACHER
+```
+
+The next implementation should build a finite-horizon state-feedback
+teacher/optimizer that generates a 100-150 tick target source with:
+
+```text
+forward progress
+useful left/right single-support alternation
+low lateral velocity
+stable pitch and base height
+actuator-safe target velocities
+seed robustness across at least seeds 0 and 2
+```
+
+This is not another scalar expansion of the existing support-state teacher. It
+must couple stance side, lateral body placement, swing-foot placement, and
+forward push timing in one scored horizon.
+
+## Why This Branch
+
+The current evidence says:
+
+```text
+checked target score artifacts: 39
+passing target sources: 0
+failure analysis rows scanned: 1956
+stable + actuator-safe rows: 964
+support-ready rows: 492
+forward-ready rows: 15
+stable + support rows: 7
+stable + forward rows: 0
+support + forward rows: 1
+all three rows: 0
+```
+
+The latest stance leg-extension probe also held:
+
+```text
+100-tick robust modes: 0 / 18
+150-tick robust modes: 0 / 18
+dominant failures: low_forward_velocity and high_lateral_velocity
+```
+
+So the missing mechanism is not binary contact labels, phase-state plumbing,
+hip-pitch stance push, or local knee/ankle push-off in the current teacher. The
+missing mechanism is coordinated weight transfer plus propulsion.
+
+## Proposed Tool
+
+```text
+tools/probe_foot_placement_mpc_teacher.py
+```
+
+Default behavior:
+
+```text
+offline only
+CPU platform by default
+no training
+no robot access
+no deployment
+write raw traces under ignored trace directories
+commit compact markdown/json summaries only
+```
+
+Required flags:
+
+```text
+--playground-path ../Open_Duck_Playground
+--task flat_terrain
+--command-x 0.04
+--duration-s 3.0
+--seeds 0,2
+--horizon-ticks 100
+--iterations 1
+--candidates-per-iteration 4
+--jax-platform cpu
+--output-dir outputs/analysis/foot_placement_mpc_teacher
+--output-md outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_PROBE.md
+--output-json outputs/analysis/foot_placement_mpc_teacher_probe.json
+```
+
+## State Inputs
+
+The teacher must read sim state every tick:
+
+```text
+local_vx
+local_vy
+base_x
+base_y
+base_height
+body_pitch
+body_pitch_rate if available
+left/right foot contacts
+left/right foot site xyz
+current support side
+time in current support state
+previous motor targets
+```
+
+It should derive:
+
+```text
+base_y_relative_to_stance
+base_x_relative_to_stance
+swing_foot_clearance
+stance_loaded
+lateral_ready
+pitch_ready
+height_ready
+push_window
+transition_allowed
+```
+
+## Candidate Parameters
+
+Each finite-horizon candidate should choose at least:
+
+```text
+cycle_ticks
+stance_side_sequence
+load_shift_y_m
+stance_body_x_offset_m
+swing_foot_x_target_m
+swing_foot_z_clearance_m
+stance_push_hip_rad
+stance_push_knee_rad
+stance_push_ankle_rad
+push_start_fraction
+push_end_fraction
+lateral_damping_gain
+base_y_gain
+pitch_damping_gain
+height_guard_m
+max_target_velocity_rad_s
+```
+
+The search should mutate these parameters between iterations rather than
+randomly sampling unrelated action tables forever.
+
+## Control Structure
+
+Each candidate rollout should use a small state machine:
+
+```text
+LOAD_STANCE:
+  move body laterally toward stance foot
+  keep pitch and height within gates
+  do not request swing until stance is loaded
+
+UNWEIGHT_SWING:
+  lift swing foot and place it slightly forward
+  keep lateral velocity bounded
+  abort/hold if base height or pitch leaves gate
+
+PUSH_FORWARD:
+  apply forward push only after stance loading
+  push with coordinated hip/knee/ankle terms
+  reduce push when lateral velocity or pitch grows
+
+RECOVER_OR_SWITCH:
+  switch sides only after useful support transition or safe timeout
+  otherwise recover base-y/pitch/height before another push
+```
+
+This differs from the existing teacher because stance selection, foot placement,
+and push timing are optimized/scored as a horizon, not just phase-scheduled
+from a scalar grid.
+
+## Scoring
+
+The tool should emit JSONL traces compatible with:
+
+```bash
+python3 tools/score_target_candidates_objective.py
+```
+
+Primary gate:
+
+```text
+PASS_WEIGHT_TRANSFER_TARGET:
+  seeds 0 and 2
+  100-150 tick window
+  mean vx >= 0.04 m/s
+  local forward displacement >= 0.004 m
+  vy_abs_p95 <= 0.12 m/s
+  body_pitch_abs_p95 <= 0.35 rad
+  base_height_min >= 0.145 m
+  double_support_pct <= 75%
+  single_support_pct >= 20%
+  min_each_single_support_pct >= 5%
+  contact_transitions >= 2
+  sent_target_velocity_p95 <= 3.75 rad/s
+  joint_tracking_p95 <= 0.12 rad
+```
+
+Secondary diagnostics:
+
+```text
+phase occupancy
+stance_loaded_pct
+lateral_ready_pct
+push_allowed_pct
+push_used_pct
+transition_count
+forced_transition_count
+forward_displacement_per_cycle
+lateral_displacement_per_cycle
+support side dwell times
+```
+
+## Status Results
+
+The probe should output exactly one top-level status:
+
+```text
+PASS_FOOT_PLACEMENT_MPC_TARGET
+  At least one candidate passes PASS_WEIGHT_TRANSFER_TARGET.
+
+HOLD_FORWARD_IMPULSE_LOW
+  Support/lateral gates are acceptable, but forward velocity remains low.
+
+HOLD_LATERAL_UNSTABLE
+  Forward motion exists, but lateral velocity/base-y fails.
+
+HOLD_SUPPORT_TRANSFER_FAILED
+  Candidate remains double-support dominated or misses one support side.
+
+HOLD_PITCH_OR_HEIGHT_UNSTABLE
+  Candidate moves/supports but loses pitch or base height.
+
+HOLD_ACTUATOR_ENVELOPE
+  Candidate only works by exceeding target velocity or tracking gates.
+
+HOLD_NO_CANDIDATES
+  Tool did not evaluate any candidate.
+```
+
+## Stop Rules
+
+Stop the branch and do not train if:
+
+```text
+100-150 tick windows still have zero robust modes
+forward motion only appears with vy_abs_p95 > 0.12 m/s
+one support side is missing
+target velocity exceeds the measured actuator envelope
+the best candidates repeat the existing double-support shuffle
+```
+
+## Training Re-Entry Rule
+
+Only after `PASS_WEIGHT_TRANSFER_TARGET`:
+
+```text
+1. build a compact reviewed target manifest
+2. run CPU closed-loop replay
+3. run a small supervised/imitation smoke
+4. gate x=0.04 vanilla across seeds
+5. reintroduce mild/fitted actuator bridge only after coherent motion exists
+```
+
+Robot validation remains blocked until offline low-command multi-seed gates
+pass.
