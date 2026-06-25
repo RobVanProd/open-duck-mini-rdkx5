@@ -169,3 +169,37 @@ max_double_support_pct: 90
 min_single_support_pct: 8
 min_each_single_support_pct: 2
 ```
+
+## Weight-Transfer Probe Search
+
+A bounded CPU-only probe searched 72 new support-biased primitives with larger
+hip-roll bias/amp and lift pulses:
+
+```text
+artifact: outputs/analysis/TARGET_GENERATOR_WEIGHT_TRANSFER_PROBE.md
+score_100: outputs/analysis/TARGET_OBJECTIVE_SCORE_WEIGHT_TRANSFER_PROBE_100.md
+score_150: outputs/analysis/TARGET_OBJECTIVE_SCORE_WEIGHT_TRANSFER_PROBE_150.md
+seeds: 0,2
+duration: 3.0 s
+status: PASS_TARGET_SEARCH_RAN
+```
+
+This probe improved the support-shape failure on the top candidates, but it did
+not produce forward motion:
+
+| window | robust modes | top seed0 vx | top seed2 vx | top seed0 support | top seed2 support | result |
+|---|---:|---:|---:|---|---|---|
+| 100 ticks | 0 | 0.0045 m/s | 0.0043 m/s | 85% double / 15% single | 87% double / 12% single | low forward velocity |
+| 150 ticks | 0 | 0.0018 m/s | 0.0035 m/s | 86% double / 14% single | 88% double / 12% single | low forward velocity |
+
+Reason counts:
+
+| artifact | low_forward_velocity | double_support_dominates | too_little_single_support |
+|---|---:|---:|---:|
+| `target_objective_score_weight_transfer_probe_100.json` | 144 | 95 | 62 |
+| `target_objective_score_weight_transfer_probe_150.json` | 144 | 107 | 94 |
+
+Interpretation: simply adding stronger roll/lift pulses to this primitive family
+can create more support transitions, but it does not create useful forward
+locomotion. The generator needs a different objective/mechanism that couples
+support transfer to forward displacement, not just stronger foot unweighting.

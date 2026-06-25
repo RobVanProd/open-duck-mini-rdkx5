@@ -5097,3 +5097,30 @@ The scorer now has explicit default-off support-shape criteria
 (`--max-double-support-pct`, `--min-single-support-pct`, and
 `--min-each-single-support-pct`) so future target searches can gate on support
 transfer directly.
+
+A bounded CPU-only weight-transfer probe then searched 72 support-biased
+primitives with larger hip-roll/lift pulses:
+
+```text
+artifact: outputs/analysis/TARGET_GENERATOR_WEIGHT_TRANSFER_PROBE.md
+score_100: outputs/analysis/TARGET_OBJECTIVE_SCORE_WEIGHT_TRANSFER_PROBE_100.md
+score_150: outputs/analysis/TARGET_OBJECTIVE_SCORE_WEIGHT_TRANSFER_PROBE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+The probe reduced the binary support-shape problem on its top candidates, but
+forward progress collapsed:
+
+```text
+100-tick top candidate:
+  seed_000 / seed_002 vx: 0.0045 / 0.0043 m/s
+  seed_000 / seed_002 single support: 15% / 12%
+
+150-tick top candidate:
+  seed_000 / seed_002 vx: 0.0018 / 0.0035 m/s
+  seed_000 / seed_002 single support: 14% / 12%
+```
+
+This confirms that stronger roll/lift pulses alone are not the missing
+generator mechanism. The next target-generation work must couple support
+transfer to forward displacement, not merely increase foot unweighting.

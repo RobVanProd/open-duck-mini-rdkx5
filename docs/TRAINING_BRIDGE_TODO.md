@@ -4041,3 +4041,29 @@ The first explicit rescore also failed:
   double_support_dominates: 312
   too_little_single_support: 312
 ```
+
+A bounded CPU-only weight-transfer probe tested the obvious next primitive
+change: stronger hip-roll/lift pulses. It also failed:
+
+```text
+artifact: outputs/analysis/TARGET_GENERATOR_WEIGHT_TRANSFER_PROBE.md
+score_100: outputs/analysis/TARGET_OBJECTIVE_SCORE_WEIGHT_TRANSFER_PROBE_100.md
+score_150: outputs/analysis/TARGET_OBJECTIVE_SCORE_WEIGHT_TRANSFER_PROBE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+The top candidates had more single-support time than the previous sustained
+dynamic-roll gate, but still almost no forward progress:
+
+```text
+100 ticks:
+  top seed vx: 0.0045 / 0.0043 m/s
+
+150 ticks:
+  top seed vx: 0.0018 / 0.0035 m/s
+```
+
+Do not repeat this exact primitive-family probe. The next generator change
+should explicitly couple support transfer to forward displacement, for example
+by searching over stance push-off timing, pelvis/body lean timing, or a
+closed-loop teacher that adjusts targets based on body velocity/contact state.
