@@ -360,11 +360,12 @@ pre-terminal unclipped reward sum mean: 50.8050
 This means:
 
 ```text
-the matched reference itself satisfies the low-command progress signal
+the matched reference kinematics satisfy the low-command progress signal
 PPO still failed to lock onto or preserve it
 ```
 
-The next branch is not reward-weight tuning. It is reference-locking:
+The next branch is not reward-weight tuning. It is reference-locking and
+reference/action-contract debugging:
 
 ```text
 1. behavior-cloning / supervised action pretraining from the reference
@@ -377,3 +378,44 @@ The next branch is not reward-weight tuning. It is reference-locking:
 
 Artifact:
 `outputs/analysis/REFERENCE_LOCK_SIGNAL_V20.md`.
+
+## Reference-Target Rollout
+
+A direct reference-target rollout was added to test the next mechanism below
+PPO. It replaces the ONNX policy with actions derived from the matched
+reference joint targets while still respecting the runtime-style contract:
+
+```text
+target = home + action * action_scale
+max_motor_velocity rate limit remains active
+no teleporting qpos to the reference trajectory
+```
+
+Result at `x=0.04`, vanilla dynamics, seeds `0-7`:
+
+```text
+status: HOLD_REFERENCE_TARGET_TERMINATES
+runs: 8
+falls/early terminations: 8
+duration_complete: 0
+mean vx: -0.0105 m/s
+mean track ratio: -0.2614
+mean lateral p95_abs velocity: 0.3918 m/s
+mean action saturation: 6.4967%
+mean target clip p95: 0.0314 rad
+mean sent target velocity p95: about 4.85 rad/s
+mean joint tracking p95: 0.1876 rad
+```
+
+Interpretation:
+
+```text
+The matched reference is coherent as a kinematic/reward signal, but direct
+reference-derived actions do not produce a stable rollout through the current
+action-scale and target-rate contract. This is no longer just a PPO discovery
+problem. Before behavior cloning, inspect reference-to-action conversion,
+phase/reset alignment, target-rate demand, lateral sway, and contact timing.
+```
+
+Additional artifact:
+`outputs/analysis/REFERENCE_MOTION_ROLLOUT_V20.md`.

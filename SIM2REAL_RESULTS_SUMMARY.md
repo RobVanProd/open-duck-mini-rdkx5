@@ -3237,12 +3237,54 @@ lateral p95_abs velocity: 0.2350 m/s
 Interpretation:
 
 ```text
-The matched reference itself is coherent for x=0.04.
-PPO failed to acquire/preserve that valid reference.
-Next path: behavior-cloning or explicit reference-locking, not reward tuning.
+The matched reference kinematics are coherent for x=0.04 as a reward/progress
+signal. PPO failed to acquire/preserve that reference, but the next playback
+diagnostic shows the raw reference targets are not yet a stable action-contract
+input. Do not jump directly to behavior cloning before resolving that
+conversion/phase/contact issue.
 ```
 
 Do not deploy V19. Do not run x=0.08. Do not run robot validation.
+
+### V20 Reference-Target Rollout
+
+An offline mechanism diagnostic replaced the ONNX policy with actions derived
+from the matched reference joint targets. It still used the runtime-style
+contract:
+
+```text
+target = home + action * action_scale
+max_motor_velocity rate limit active
+no qpos teleporting to the reference
+```
+
+Result at `x=0.04`, vanilla dynamics, seeds `0-7`:
+
+```text
+status: HOLD_REFERENCE_TARGET_TERMINATES
+runs: 8
+early terminations: 8
+duration_complete: 0
+mean vx: -0.0105 m/s
+mean track ratio: -0.2614
+mean lateral p95_abs velocity: 0.3918 m/s
+mean action saturation: 6.4967%
+mean target clip p95: 0.0314 rad
+mean joint tracking p95: 0.1876 rad
+```
+
+Interpretation:
+
+```text
+The V20 matched reference passes analytic progress/reward checks, but direct
+reference-derived actions do not produce stable simulated motion through the
+current action-scale and target-rate contract. The next branch is not another
+reward-weight PPO run. Inspect reference-to-action mapping, reference phase and
+reset alignment, lateral/contact timing, and target velocity before BC or PPO.
+```
+
+Artifact:
+`outputs/analysis/REFERENCE_MOTION_ROLLOUT_V20.md`.
 
 Additional artifact:
 
@@ -3255,4 +3297,5 @@ outputs/analysis/STAGED_CURRICULUM_TRAINING_PLAN_V20.md
 outputs/analysis/V20_MANUAL_SEED_GATE_CPU_TRACE_FULL.md
 outputs/analysis/V20_MATCHED_REFERENCE_TRACE_SUMMARY.md
 outputs/analysis/REFERENCE_LOCK_SIGNAL_V20.md
+outputs/analysis/REFERENCE_MOTION_ROLLOUT_V20.md
 ```

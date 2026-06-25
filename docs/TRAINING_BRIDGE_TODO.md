@@ -2436,10 +2436,47 @@ pre_terminal_unclipped_sum_mean: 50.8050
 lateral p95_abs velocity: 0.2350 m/s
 ```
 
-This says the matched reference itself is not the blocker. PPO did not acquire
-or preserve a valid reference. The next implementation direction is
-behavior-cloning / supervised reference pretraining or an explicit
-reference-lock phase, not another reward-weight-only PPO variant.
+This says the matched reference kinematics are coherent as a low-command
+progress/reward signal. PPO did not acquire or preserve that reference, but the
+next direct playback diagnostic shows there is also a reference/action-contract
+problem to resolve before behavior cloning.
 
 Artifact:
 `outputs/analysis/REFERENCE_LOCK_SIGNAL_V20.md`.
+
+Reference-target rollout:
+
+```text
+tool: tools/eval_reference_motion_rollout.py
+status: HOLD_REFERENCE_TARGET_TERMINATES
+command: x=0.04
+dynamics: vanilla
+seeds: 0-7
+runs: 8
+early terminations: 8
+duration_complete: 0
+mean vx: -0.0105 m/s
+mean track ratio: -0.2614
+mean lateral p95_abs velocity: 0.3918 m/s
+mean action saturation: 6.4967%
+mean target clip p95: 0.0314 rad
+mean joint tracking p95: 0.1876 rad
+```
+
+Interpretation:
+
+```text
+Direct reference-derived actions still fail when passed through the current
+action_scale and max_motor_velocity contract. Do not launch another PPO or BC
+run yet. First inspect:
+  - whether the 16-dof reference-to-14-action mapping is correct
+  - whether the reference phase/reset index aligns with env reset
+  - whether the reference target velocities exceed the intended low-command
+    budget even though the mean reference velocity is x=0.04
+  - whether lateral sway/contact timing causes the early collapses
+  - whether the reference should be converted into a supervised action dataset
+    from realized stable targets rather than raw reference joint positions
+```
+
+Artifact:
+`outputs/analysis/REFERENCE_MOTION_ROLLOUT_V20.md`.
