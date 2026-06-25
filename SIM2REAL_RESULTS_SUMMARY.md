@@ -4309,3 +4309,78 @@ contact-state diversity on seed2. The next target generator should operate on
 measured foot-site clearance/contact timing, or use a different reference/IK
 primitive, rather than adding more knee-lift amplitude.
 ```
+
+### Dynamic Hip-Roll Target Source
+
+The target primitive generator was extended with default-off dynamic hip-roll
+controls:
+
+```text
+new flags: --hip-roll-amps, --hip-roll-phase-offsets
+default behavior: unchanged when hip-roll amplitude is 0
+```
+
+Broad dynamic-roll search result:
+
+```text
+tool: tools/search_low_command_target_primitives.py
+command: x=0.04
+duration: 4 s
+seeds: 0,2
+candidates: 72
+objective score: HOLD_NO_SEED_ROBUST_TARGETS
+robust same-mode modes: 0
+50-sample curation: PASS_CURATED_DATASET_SEED_READY
+50-sample curated windows: 42
+curated source files: 2
+curated modes: 36
+```
+
+Best same-mode near pass:
+
+```text
+mode: primitive_p0p52_hrb0_hra0p04_hrphm0p7854_hb0p08_h0p035_kb0p06_k0p14_ab0p04_a0p007_ph0p3927_ld0p3_ls0p65
+
+seed_000:
+  mean vx: 0.0413 m/s
+  vy p95: 0.1234 m/s
+  contact dominance: 92%
+  contact transitions: 3
+  failure: high_lateral_velocity
+
+seed_002:
+  mean vx: 0.0417 m/s
+  vy p95: 0.1110 m/s
+  contact dominance: 94%
+  contact transitions: 4
+  failures: none
+```
+
+Focused refinement around the near-pass did not improve the target source:
+
+```text
+refine objective score: HOLD_NO_SEED_ROBUST_TARGETS
+refine 50-sample curation: HOLD_INSUFFICIENT_CURATED_WINDOWS
+refine 50-sample curated windows: 3
+refine 25-sample curation: PASS_CURATED_DATASET_SEED_READY
+refine 25-sample curated windows: 207
+```
+
+Conclusion:
+
+```text
+Dynamic hip-roll is the strongest current generated target-source family and
+the first to produce 50-sample curated windows from both seed_000 and seed_002.
+It is still not training permission under the strict same-mode gate. The next
+offline target search should stay broad in the dynamic-roll family and reduce
+seed_000 lateral velocity by a small amount while preserving seed_000 forward
+motion and seed_002 contact transitions.
+```
+
+Updated audit:
+
+```text
+outputs/analysis/TARGET_SOURCE_AUDIT.md
+status: HOLD_NO_TARGET_SOURCE_READY
+training_permission: false
+```

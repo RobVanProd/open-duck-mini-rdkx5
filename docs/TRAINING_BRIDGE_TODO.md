@@ -3396,3 +3396,53 @@ Do next:
 4. consider sequence-aware imitation or explicit rollout-preserving objectives
 5. do not launch larger PPO from this dataset just because supervised loss is low
 ```
+
+### Dynamic Hip-Roll Target Source
+
+The latest target-source search added default-off dynamic hip-roll controls to
+the primitive generator:
+
+```text
+--hip-roll-amps
+--hip-roll-phase-offsets
+```
+
+Current evidence:
+
+```text
+broad dynamic-roll curation: PASS_CURATED_DATASET_SEED_READY
+50-sample curated windows: 42
+curated source files: 2
+objective score: HOLD_NO_SEED_ROBUST_TARGETS
+robust same-mode modes: 0
+best same-mode near-pass:
+  seed0: vx=0.0413 m/s, vy95=0.1234 m/s, contact_dominance=92%, transitions=3
+  seed2: vx=0.0417 m/s, vy95=0.1110 m/s, contact_dominance=94%, transitions=4
+```
+
+Focused refinement around that near-pass did not clear the 50-sample gate:
+
+```text
+refine 50-sample curated windows: 3
+refine 25-sample curated windows: 207
+remaining blocker moved from seed0 lateral to seed0 low forward velocity
+```
+
+Training status:
+
+```text
+BC/PPO remains blocked under the strict same-mode seed-robust target-source gate.
+Do not train from the dynamic-roll windows unless a reviewed experiment
+explicitly relaxes the gate to source-diverse, non-same-mode windows.
+```
+
+Do next:
+
+```text
+1. keep the broad dynamic-roll family
+2. reduce seed0 lateral p95 from 0.1234 to <=0.12 m/s
+3. preserve seed0 vx >=0.04 m/s
+4. preserve seed2 contact dominance <=95% and transitions >=3
+5. prefer 50-sample robustness over 25-sample window count
+6. rerun the target-source audit before any supervised or PPO launch
+```

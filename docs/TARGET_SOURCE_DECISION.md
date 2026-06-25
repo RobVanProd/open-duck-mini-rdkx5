@@ -178,3 +178,54 @@ seed2 contact_transitions >= 3 over 50 samples
 sent_target_velocity_p95 <= 2.5 rad/s
 joint_tracking_p95 <= 0.12 rad
 ```
+
+## Dynamic Hip-Roll Target Source
+
+The primitive generator now supports default-off dynamic hip-roll shaping:
+
+```text
+--hip-roll-amps
+--hip-roll-phase-offsets
+```
+
+This is the first primitive axis that produced 50-sample curated windows from
+both seed_000 and seed_002:
+
+```text
+broad dynamic-roll curation: PASS_CURATED_DATASET_SEED_READY
+50-sample curated windows: 42
+curated source files: 2
+curated modes: 36
+```
+
+The strict same-mode seed-robust objective still holds:
+
+```text
+objective score: HOLD_NO_SEED_ROBUST_TARGETS
+robust modes: 0
+best near-pass:
+  mode: primitive_p0p52_hrb0_hra0p04_hrphm0p7854_hb0p08_h0p035_kb0p06_k0p14_ab0p04_a0p007_ph0p3927_ld0p3_ls0p65
+  seed_000: vx=0.0413 m/s, vy95=0.1234 m/s, contact_dominance=92%, contact_transitions=3
+  seed_002: vx=0.0417 m/s, vy95=0.1110 m/s, contact_dominance=94%, contact_transitions=4
+  remaining failure: seed_000 high_lateral_velocity by about 0.0034 m/s
+```
+
+A focused refinement around that near-pass did not improve the 50-sample gate:
+
+```text
+refine objective score: HOLD_NO_SEED_ROBUST_TARGETS
+refine 50-sample curation: HOLD_INSUFFICIENT_CURATED_WINDOWS
+refine 50-sample curated windows: 3
+refine 25-sample curation: PASS_CURATED_DATASET_SEED_READY
+```
+
+Decision:
+
+```text
+Do not train from the dynamic-roll dataset yet under the current strict gate.
+Treat it as the strongest target-source evidence so far.
+Next search should stay broad in the dynamic-roll family, reduce seed_000
+lateral velocity on the best near-pass, and preserve seed_002 contact
+transitions/forward progress. Do not narrow so aggressively that 50-sample
+curated coverage disappears.
+```

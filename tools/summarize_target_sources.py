@@ -50,6 +50,18 @@ DEFAULT_SOURCES = [
         curation_json="outputs/analysis/target_generator_foot_clearance_probe_window_curation_50.json",
     ),
     SourceSpec(
+        name="dynamic_roll",
+        kind="primitive",
+        objective_json="outputs/analysis/target_objective_score_dynamic_roll_50.json",
+        curation_json="outputs/analysis/target_generator_dynamic_roll_window_curation_50.json",
+    ),
+    SourceSpec(
+        name="dynamic_roll_refine",
+        kind="primitive",
+        objective_json="outputs/analysis/target_objective_score_dynamic_roll_refine_50.json",
+        curation_json="outputs/analysis/target_generator_dynamic_roll_refine_window_curation_50.json",
+    ),
+    SourceSpec(
         name="reference_contact_gated_projected",
         kind="reference",
         rollout_json="outputs/analysis/reference_motion_rollout_v20_contact_gated_projected.json",
@@ -180,6 +192,10 @@ def source_summary(spec: SourceSpec) -> dict[str, Any]:
         "best_mode": (best or {}).get("mode"),
         "best_pass_seed_count": (best or {}).get("pass_seed_count"),
         "seed0_vx": seed0.get("mean_vx_m_s"),
+        "seed0_vy95": seed0.get("vy_abs_p95_m_s"),
+        "seed0_contact_dominance": seed0.get("contact_dominance_pct"),
+        "seed0_contact_transitions": seed0.get("contact_transitions"),
+        "seed0_failures": seed0.get("hard_failures") or [],
         "seed2_vx": seed2.get("mean_vx_m_s"),
         "seed2_vy95": seed2.get("vy_abs_p95_m_s"),
         "seed2_contact_dominance": seed2.get("contact_dominance_pct"),
@@ -210,6 +226,19 @@ def gate_status(summaries: list[dict[str, Any]]) -> str:
 
 
 def recommendation(summaries: list[dict[str, Any]]) -> str:
+    dynamic_roll = next(
+        (item for item in summaries if item.get("name") == "dynamic_roll"),
+        None,
+    )
+    if dynamic_roll and dynamic_roll.get("curation_status") == "PASS_CURATED_DATASET_SEED_READY":
+        return (
+            "Dynamic hip-roll is the strongest current target-source family: "
+            "it produced 50-sample curated windows from seed_000 and seed_002, "
+            "but no same-mode robust pass. The next search should stay in the "
+            "broad dynamic-roll family and optimize the best near-pass by "
+            "reducing seed_000 lateral velocity while preserving seed_002 "
+            "forward progress and contact transitions."
+        )
     primitive_seed2_failures = [
         reason
         for item in summaries
@@ -246,20 +275,22 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         "",
         "## Source Summary",
         "",
-        "| source | kind | status | robust_modes | curated_50 | sources | seed2_vx | seed2_vy95 | seed2_contact | seed2_trans | seed2_foot_z95 | rollout_falls | contact_mismatch |",
-        "|---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|",
+        "| source | kind | status | robust_modes | curated_50 | sources | seed0_vx | seed0_vy95 | seed2_vx | seed2_vy95 | seed2_contact | seed2_trans | seed2_foot_z95 | rollout_falls | contact_mismatch |",
+        "|---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|",
     ]
     for item in payload["sources"]:
         lines.append(
-            "| {name} | {kind} | `{status}` | {robust} | {curated} | {sources} | {vx} | {vy} | {contact} | {trans} | {foot_z} | {falls} | {mismatch} |".format(
+            "| {name} | {kind} | `{status}` | {robust} | {curated} | {sources} | {seed0_vx} | {seed0_vy} | {seed2_vx} | {seed2_vy} | {contact} | {trans} | {foot_z} | {falls} | {mismatch} |".format(
                 name=item["name"],
                 kind=item["kind"],
                 status=item["status"],
                 robust=fmt(item.get("robust_mode_count"), 0),
                 curated=fmt(item.get("curated_50_windows"), 0),
                 sources=fmt(item.get("curated_source_files"), 0),
-                vx=fmt(item.get("seed2_vx")),
-                vy=fmt(item.get("seed2_vy95")),
+                seed0_vx=fmt(item.get("seed0_vx")),
+                seed0_vy=fmt(item.get("seed0_vy95")),
+                seed2_vx=fmt(item.get("seed2_vx")),
+                seed2_vy=fmt(item.get("seed2_vy95")),
                 contact=fmt(item.get("seed2_contact_dominance")),
                 trans=fmt(item.get("seed2_contact_transitions"), 0),
                 foot_z=fmt(item.get("seed2_foot_z95")),
@@ -275,13 +306,16 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
             "",
             "## Seed 2 Failures",
             "",
-            "| source | failures |",
-            "|---|---|",
+            "| source | seed0_failures | seed2_failures |",
+            "|---|---|---|",
         ]
     )
     for item in payload["sources"]:
-        failures = ", ".join(item.get("seed2_failures") or [])
-        lines.append(f"| {item['name']} | `{failures or 'NA'}` |")
+        seed0_failures = ", ".join(item.get("seed0_failures") or [])
+        seed2_failures = ", ".join(item.get("seed2_failures") or [])
+        lines.append(
+            f"| {item['name']} | `{seed0_failures or 'NA'}` | `{seed2_failures or 'NA'}` |"
+        )
     lines.extend(
         [
             "",
@@ -293,6 +327,7 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
             "",
             "- Training remains blocked until a target source has robust 50-sample windows across seed_000 and seed_002.",
             "- A source with only seed_000 curated windows is evidence, not permission to train.",
+            "- A source-diverse dataset without a same-mode robust pass is evidence, not permission to train, unless that gate is explicitly relaxed in a reviewed experiment.",
             "- A reference rollout with low contact mismatch but falls/negative progress is not a BC target.",
         ]
     )

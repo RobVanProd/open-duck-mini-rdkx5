@@ -34,6 +34,8 @@ class Primitive:
     label: str
     period_s: float
     hip_roll_bias: float
+    hip_roll_amp: float
+    hip_roll_phase_offset: float
     hip_pitch_bias: float
     hip_pitch_amp: float
     knee_bias: float
@@ -69,6 +71,10 @@ def stats(values: Iterable[float], *, abs_value: bool = False) -> dict[str, floa
 def candidate_grid(args: argparse.Namespace) -> list[Primitive]:
     periods = [float(item) for item in args.periods.split(",") if item.strip()]
     hip_roll_biases = [float(item) for item in args.hip_roll_biases.split(",") if item.strip()]
+    hip_roll_amps = [float(item) for item in args.hip_roll_amps.split(",") if item.strip()]
+    hip_roll_phase_offsets = [
+        float(item) for item in args.hip_roll_phase_offsets.split(",") if item.strip()
+    ]
     hip_biases = [float(item) for item in args.hip_pitch_biases.split(",") if item.strip()]
     hip_amps = [float(item) for item in args.hip_pitch_amps.split(",") if item.strip()]
     knee_biases = [float(item) for item in args.knee_biases.split(",") if item.strip()]
@@ -81,43 +87,57 @@ def candidate_grid(args: argparse.Namespace) -> list[Primitive]:
     rows = []
     for period_s in periods:
         for hip_roll_bias in hip_roll_biases:
-            for hip_bias in hip_biases:
-                for hip_amp in hip_amps:
-                    for knee_bias in knee_biases:
-                        for knee_amp in knee_amps:
-                            for ankle_bias in ankle_biases:
-                                for ankle_scale in ankle_scales:
-                                    for phase_offset in phase_offsets:
-                                        for lift_duty in lift_duties:
-                                            for lift_scale in lift_scales:
-                                                ankle_amp = ankle_scale * hip_amp
-                                                lift_label = (
-                                                    ""
-                                                    if lift_scale == 0.0 and lift_duty == 0.5
-                                                    else f"_ld{lift_duty:g}_ls{lift_scale:g}"
-                                                )
-                                                rows.append(
-                                                    Primitive(
-                                                        label=(
-                                                            f"p{period_s:g}_hrb{hip_roll_bias:g}_"
-                                                            f"hb{hip_bias:g}_h{hip_amp:g}_"
-                                                            f"kb{knee_bias:g}_k{knee_amp:g}_"
-                                                            f"ab{ankle_bias:g}_a{ankle_amp:g}_"
-                                                            f"ph{phase_offset:g}{lift_label}"
-                                                        ).replace(".", "p").replace("-", "m"),
-                                                        period_s=period_s,
-                                                        hip_roll_bias=hip_roll_bias,
-                                                        hip_pitch_bias=hip_bias,
-                                                        hip_pitch_amp=hip_amp,
-                                                        knee_bias=knee_bias,
-                                                        knee_amp=knee_amp,
-                                                        ankle_bias=ankle_bias,
-                                                        ankle_amp=ankle_amp,
-                                                        phase_offset=phase_offset,
-                                                        lift_duty=lift_duty,
-                                                        lift_scale=lift_scale,
-                                                    )
-                                                )
+            for hip_roll_amp in hip_roll_amps:
+                for hip_roll_phase_offset in hip_roll_phase_offsets:
+                    for hip_bias in hip_biases:
+                        for hip_amp in hip_amps:
+                            for knee_bias in knee_biases:
+                                for knee_amp in knee_amps:
+                                    for ankle_bias in ankle_biases:
+                                        for ankle_scale in ankle_scales:
+                                            for phase_offset in phase_offsets:
+                                                for lift_duty in lift_duties:
+                                                    for lift_scale in lift_scales:
+                                                        ankle_amp = ankle_scale * hip_amp
+                                                        lift_label = (
+                                                            ""
+                                                            if lift_scale == 0.0 and lift_duty == 0.5
+                                                            else f"_ld{lift_duty:g}_ls{lift_scale:g}"
+                                                        )
+                                                        roll_label = (
+                                                            ""
+                                                            if hip_roll_amp == 0.0
+                                                            and hip_roll_phase_offset == 0.0
+                                                            else (
+                                                                f"_hra{hip_roll_amp:g}"
+                                                                f"_hrph{hip_roll_phase_offset:g}"
+                                                            )
+                                                        )
+                                                        rows.append(
+                                                            Primitive(
+                                                                label=(
+                                                                    f"p{period_s:g}_hrb{hip_roll_bias:g}"
+                                                                    f"{roll_label}_"
+                                                                    f"hb{hip_bias:g}_h{hip_amp:g}_"
+                                                                    f"kb{knee_bias:g}_k{knee_amp:g}_"
+                                                                    f"ab{ankle_bias:g}_a{ankle_amp:g}_"
+                                                                    f"ph{phase_offset:g}{lift_label}"
+                                                                ).replace(".", "p").replace("-", "m"),
+                                                                period_s=period_s,
+                                                                hip_roll_bias=hip_roll_bias,
+                                                                hip_roll_amp=hip_roll_amp,
+                                                                hip_roll_phase_offset=hip_roll_phase_offset,
+                                                                hip_pitch_bias=hip_bias,
+                                                                hip_pitch_amp=hip_amp,
+                                                                knee_bias=knee_bias,
+                                                                knee_amp=knee_amp,
+                                                                ankle_bias=ankle_bias,
+                                                                ankle_amp=ankle_amp,
+                                                                phase_offset=phase_offset,
+                                                                lift_duty=lift_duty,
+                                                                lift_scale=lift_scale,
+                                                            )
+                                                        )
     if args.shuffle_candidates:
         random.Random(args.grid_seed).shuffle(rows)
     return rows[: args.max_candidates]
@@ -235,6 +255,8 @@ def run_search(args: argparse.Namespace) -> dict[str, Any]:
         tick,
         period_s,
         hip_roll_bias,
+        hip_roll_amp,
+        hip_roll_phase_offset,
         hip_bias,
         hip_amp,
         knee_bias,
@@ -249,6 +271,7 @@ def run_search(args: argparse.Namespace) -> dict[str, Any]:
         phase = 2.0 * jp.pi * (t / period_s) + phase_offset
         left = jp.sin(phase)
         right = jp.sin(phase + jp.pi)
+        roll = jp.sin(phase + hip_roll_phase_offset)
 
         def lift_pulse(angle):
             phase01 = jp.mod(angle / (2.0 * jp.pi), 1.0)
@@ -264,11 +287,11 @@ def run_search(args: argparse.Namespace) -> dict[str, Any]:
         right_ankle = (1.0 - lift_scale) * right + lift_scale * lift_pulse(phase + jp.pi)
 
         target = jp.asarray(default_actuator)
-        target = target.at[1].set(default_actuator[1] + hip_roll_bias)
+        target = target.at[1].set(default_actuator[1] + hip_roll_bias + hip_roll_amp * roll)
         target = target.at[2].set(default_actuator[2] + hip_bias + hip_amp * left)
         target = target.at[3].set(default_actuator[3] + knee_bias + knee_amp * left_lift)
         target = target.at[4].set(default_actuator[4] + ankle_bias + ankle_amp * left_ankle)
-        target = target.at[10].set(default_actuator[10] - hip_roll_bias)
+        target = target.at[10].set(default_actuator[10] - hip_roll_bias - hip_roll_amp * roll)
         target = target.at[11].set(default_actuator[11] + hip_bias + hip_amp * right)
         target = target.at[12].set(default_actuator[12] + knee_bias + knee_amp * right_lift)
         target = target.at[13].set(default_actuator[13] + ankle_bias + ankle_amp * right_ankle)
@@ -278,6 +301,8 @@ def run_search(args: argparse.Namespace) -> dict[str, Any]:
         state,
         period_s,
         hip_roll_bias,
+        hip_roll_amp,
+        hip_roll_phase_offset,
         hip_bias,
         hip_amp,
         knee_bias,
@@ -295,6 +320,8 @@ def run_search(args: argparse.Namespace) -> dict[str, Any]:
             tick,
             period_s,
             hip_roll_bias,
+            hip_roll_amp,
+            hip_roll_phase_offset,
             hip_bias,
             hip_amp,
             knee_bias,
@@ -379,6 +406,8 @@ def run_search(args: argparse.Namespace) -> dict[str, Any]:
                     state,
                     primitive.period_s,
                     primitive.hip_roll_bias,
+                    primitive.hip_roll_amp,
+                    primitive.hip_roll_phase_offset,
                     primitive.hip_pitch_bias,
                     primitive.hip_pitch_amp,
                     primitive.knee_bias,
@@ -524,6 +553,8 @@ def main() -> int:
     parser.add_argument("--seeds", default="0")
     parser.add_argument("--periods", default="0.7,0.9,1.1")
     parser.add_argument("--hip-roll-biases", default="0.0")
+    parser.add_argument("--hip-roll-amps", default="0.0")
+    parser.add_argument("--hip-roll-phase-offsets", default="0.0")
     parser.add_argument("--hip-pitch-biases", default="0.0")
     parser.add_argument("--hip-pitch-amps", default="0.03,0.05,0.07")
     parser.add_argument("--knee-biases", default="0.0")

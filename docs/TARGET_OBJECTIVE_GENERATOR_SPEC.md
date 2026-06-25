@@ -324,3 +324,53 @@ contact_dominance_pct
 contact pattern counts
 worst-seed score
 ```
+
+## Dynamic Hip-Roll Objective Finding
+
+The primitive generator now exposes default-off dynamic hip-roll parameters:
+
+```text
+--hip-roll-amps
+--hip-roll-phase-offsets
+```
+
+The broad dynamic-roll search is the first target-source run to satisfy the
+source-diverse curation condition:
+
+```text
+50-sample curation: PASS_CURATED_DATASET_SEED_READY
+curated windows: 42
+curated source files: 2
+curated modes: 36
+```
+
+The same-mode robust objective remains the controlling gate:
+
+```text
+objective score: HOLD_NO_SEED_ROBUST_TARGETS
+robust 50-sample modes: 0
+best same-mode near pass:
+  seed0 vx=0.0413 m/s, vy95=0.1234 m/s, contact_dominance=92%, transitions=3
+  seed2 vx=0.0417 m/s, vy95=0.1110 m/s, contact_dominance=94%, transitions=4
+  blocker: seed0 high_lateral_velocity
+```
+
+The dynamic-roll refinement shows why the next search should stay broad:
+
+```text
+refine objective score: HOLD_NO_SEED_ROBUST_TARGETS
+refine 50-sample curation: HOLD_INSUFFICIENT_CURATED_WINDOWS
+refine 50-sample curated windows: 3
+refine 25-sample curation: PASS_CURATED_DATASET_SEED_READY
+```
+
+Next objective change:
+
+```text
+rank broad dynamic-roll candidates by same-mode worst seed
+give explicit priority to seed0 lateral p95 <= 0.12 m/s
+preserve seed0 mean vx >= 0.04 m/s
+preserve seed2 contact_dominance <= 95%
+preserve seed2 contact_transitions >= 3
+avoid optimizing only short 25-sample windows
+```

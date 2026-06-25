@@ -792,3 +792,93 @@ outputs/analysis/target_generator_window_mine.json
 outputs/analysis/TARGET_GENERATOR_WINDOW_CURATION.md
 outputs/analysis/target_generator_window_curation.json
 ```
+
+## Dynamic Hip-Roll Search Result
+
+The primitive generator was extended with default-off dynamic hip-roll terms:
+
+```text
+--hip-roll-amps
+--hip-roll-phase-offsets
+```
+
+A bounded CPU search used those terms with lift pulses and the seed-robust
+objective:
+
+```text
+tool: tools/search_low_command_target_primitives.py
+command_x: 0.04
+duration: 4 s
+seeds: 0,2
+candidates: 72
+objective score: HOLD_NO_SEED_ROBUST_TARGETS
+robust modes: 0
+```
+
+Best same-mode near pass:
+
+```text
+mode: primitive_p0p52_hrb0_hra0p04_hrphm0p7854_hb0p08_h0p035_kb0p06_k0p14_ab0p04_a0p007_ph0p3927_ld0p3_ls0p65
+seed0: vx=0.0413 m/s, vy95=0.1234 m/s, contact_dominance=92%, contact_transitions=3
+seed2: vx=0.0417 m/s, vy95=0.1110 m/s, contact_dominance=94%, contact_transitions=4
+remaining failure: seed0 high_lateral_velocity
+```
+
+Curation result:
+
+```text
+50-sample curation: PASS_CURATED_DATASET_SEED_READY
+50-sample curated windows: 42
+curated source files: 2
+curated modes: 36
+25-sample curated windows: 80
+```
+
+Interpretation:
+
+```text
+Dynamic hip-roll is the first primitive axis to create source-diverse
+50-sample curated target windows. It also produced the closest same-mode
+near-pass so far: seed2 fully passes and seed0 misses only the lateral gate by
+about 0.0034 m/s. This is strong target-source evidence, but not training
+permission under the current same-mode robust gate.
+```
+
+## Dynamic Hip-Roll Refinement
+
+A narrower follow-up around the best near-pass tested finer roll amplitude,
+roll phase, pitch, knee, ankle, lift-duty, and lift-scale values:
+
+```text
+candidates: 96
+objective score: HOLD_NO_SEED_ROBUST_TARGETS
+robust modes: 0
+```
+
+Best refined mode:
+
+```text
+mode: primitive_p0p52_hrb0_hra0p04_hrphm0p7854_hb0p08_h0p03_kb0p06_k0p16_ab0p04_a0p006_ph0p3927_ld0p26_ls0p75
+seed0: vx=0.0365 m/s
+seed2: vx=0.0403 m/s, vy95=0.1122 m/s, contact_dominance=94%, contact_transitions=4
+remaining failure: seed0 low_forward_velocity
+```
+
+Curation result:
+
+```text
+50-sample curation: HOLD_INSUFFICIENT_CURATED_WINDOWS
+50-sample curated windows: 3
+25-sample curation: PASS_CURATED_DATASET_SEED_READY
+25-sample curated windows: 207
+```
+
+Interpretation:
+
+```text
+The refinement improved some short-window behavior but lost the 50-sample
+coverage that made the broader search useful. The next search should not
+over-narrow around one mode. Keep the broad dynamic-roll family, but explicitly
+score seed0 lateral reduction without sacrificing seed0 forward velocity or
+seed2 contact transitions.
+```
