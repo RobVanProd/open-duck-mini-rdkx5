@@ -3124,6 +3124,26 @@ trajectory when it is followed, or does the task landscape destroy it?
 That investigation must account for the reference-command mismatch above before
 concluding that all imitation/bootstrap approaches are exhausted.
 
+An interpolation audit found a cleaner possible reference candidate:
+
+```text
+source keys:
+  0.0_-0.037_-0.074
+  0.0_0.037_-0.074
+  0.074_-0.037_-0.074
+  0.074_0.037_-0.074
+composite mean linvel_x: 0.0426 m/s
+composite mean linvel_y: -0.0021 m/s
+```
+
+Interpretation:
+
+```text
+Do not rerun V19 unchanged.
+The next useful offline step is to synthesize/score an interpolated straight
+x=0.04 reference, then decide whether V20 should train against that reference.
+```
+
 Do not deploy V19. Do not run x=0.08. Do not run robot validation.
 
 Additional artifact:
@@ -3131,4 +3151,5 @@ Additional artifact:
 ```text
 outputs/analysis/A100_V19_REFERENCE_SEED_PARTIAL_HOLD_SUMMARY.md
 outputs/analysis/a100_v19_reference_seed_partial_hold_summary.json
+outputs/analysis/REFERENCE_GRID_INTERPOLATION.md
 ```

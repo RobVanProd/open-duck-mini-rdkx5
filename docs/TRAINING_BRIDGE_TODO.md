@@ -2321,3 +2321,32 @@ debug the reference/reward path directly:
 
 V19 artifact:
 `outputs/analysis/A100_V19_REFERENCE_SEED_PARTIAL_HOLD_SUMMARY.md`.
+
+### Reference Grid Interpolation
+
+The nearest raw reference key was not a clean `x=0.04,y=0,yaw=0` gait. A grid
+interpolation audit shows a better candidate can be synthesized from symmetric
+lateral references and the `dx=0.0` / `dx=0.074` rows:
+
+```text
+source keys:
+  0.0_-0.037_-0.074
+  0.0_0.037_-0.074
+  0.074_-0.037_-0.074
+  0.074_0.037_-0.074
+composite mean linvel_x: 0.0426 m/s
+composite mean linvel_y: -0.0021 m/s
+```
+
+Next implementation work:
+
+```text
+1. create a synthesized reference artifact for straight x=0.04, or add a
+   reference interpolation path to the training environment
+2. score the synthesized reference under the current task rewards before
+   training
+3. only then launch a V20 reference-imitation run
+```
+
+Artifact:
+`outputs/analysis/REFERENCE_GRID_INTERPOLATION.md`.

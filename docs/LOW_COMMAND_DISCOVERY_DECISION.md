@@ -213,3 +213,29 @@ Additional artifact:
 ```text
 outputs/analysis/A100_V19_REFERENCE_SEED_PARTIAL_HOLD_SUMMARY.md
 ```
+
+## Reference Interpolation Finding
+
+The raw nearest reference was command-mismatched, but the grid has enough
+structure to synthesize a cleaner straight low-speed reference candidate:
+
+```text
+source keys:
+  0.0_-0.037_-0.074
+  0.0_0.037_-0.074
+  0.074_-0.037_-0.074
+  0.074_0.037_-0.074
+interpolated mean velocity:
+  x = 0.0426 m/s
+  y = -0.0021 m/s
+```
+
+This means the next run should not repeat V19 as-is. Before V20, add explicit
+support for a synthesized/interpolated straight `x=0.04` reference artifact or
+score that artifact offline against the task rewards.
+
+Artifact:
+
+```text
+outputs/analysis/REFERENCE_GRID_INTERPOLATION.md
+```
