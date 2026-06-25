@@ -165,3 +165,46 @@ outputs/analysis/target_generator_window_curation.json
 
 Do not commit raw trace slices unless explicitly approved. Commit compact
 manifests and summaries only.
+
+## First Primitive Search Result
+
+A bounded low-dimensional sine primitive search was run as the first generator
+implementation:
+
+```text
+tool: tools/search_low_command_target_primitives.py
+command_x: 0.04
+duration: 3 s
+seeds: 0
+candidates: 12
+```
+
+Result:
+
+```text
+search status: PASS_TARGET_SEARCH_RAN
+best mean vx: 0.0018 m/s
+window mine: HOLD_NO_REALIZED_WINDOWS
+curated seed windows: 0
+```
+
+Interpretation:
+
+```text
+Small anti-phase hip/knee/ankle pitch sine primitives are stable but behave like
+standstill. They do not produce low-command target windows. The next primitive
+search must add a stronger mechanism for forward displacement, such as stance
+asymmetry, body pitch bias, foot clearance/placement terms, or an optimizer that
+scores forward progress directly instead of only sweeping symmetric waveforms.
+```
+
+Artifacts:
+
+```text
+outputs/analysis/TARGET_GENERATOR_SEARCH.md
+outputs/analysis/target_generator_search.json
+outputs/analysis/TARGET_GENERATOR_WINDOW_MINE.md
+outputs/analysis/target_generator_window_mine.json
+outputs/analysis/TARGET_GENERATOR_WINDOW_CURATION.md
+outputs/analysis/target_generator_window_curation.json
+```

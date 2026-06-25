@@ -3698,6 +3698,47 @@ Promotion gate:
 PASS_CURATED_DATASET_SEED_READY
 ```
 
+### First Primitive Target Search
+
+A bounded low-dimensional target primitive search was implemented and run
+offline:
+
+```text
+tool: tools/search_low_command_target_primitives.py
+command: x=0.04
+duration: 3 s
+seeds: 0
+candidates: 12
+```
+
+Result:
+
+```text
+search status: PASS_TARGET_SEARCH_RAN
+best mean vx: 0.0018 m/s
+window mine: HOLD_NO_REALIZED_WINDOWS
+curated seed windows: 0
+```
+
+Conclusion:
+
+```text
+The tested anti-phase hip/knee/ankle sine primitives are stable but do not
+produce forward locomotion. The next target generator needs explicit forward
+displacement pressure or stance/foot-placement asymmetry.
+```
+
+Additional artifacts:
+
+```text
+outputs/analysis/TARGET_GENERATOR_SEARCH.md
+outputs/analysis/target_generator_search.json
+outputs/analysis/TARGET_GENERATOR_WINDOW_MINE.md
+outputs/analysis/target_generator_window_mine.json
+outputs/analysis/TARGET_GENERATOR_WINDOW_CURATION.md
+outputs/analysis/target_generator_window_curation.json
+```
+
 ### V5/V7 Low-Command Trace Collection
 
 A no-training CPU trace collection replayed the old moving-lineage policies at

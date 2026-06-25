@@ -2831,6 +2831,48 @@ The plan ranks the next generator options:
 4. reference adaptation with an explicit forward objective
 ```
 
+### First Primitive Target Search
+
+The first generator implementation is:
+
+```text
+tool: tools/search_low_command_target_primitives.py
+command_x: 0.04
+duration: 3 s
+seeds: 0
+candidates: 12
+```
+
+Result:
+
+```text
+search status: PASS_TARGET_SEARCH_RAN
+best mean vx: 0.0018 m/s
+window mine: HOLD_NO_REALIZED_WINDOWS
+curated seed windows: 0
+```
+
+Interpretation:
+
+```text
+The initial symmetric pitch-chain primitive grid is stable but produces
+standstill. Do not expand this exact grid blindly. The next target-search
+iteration needs a forward-displacement mechanism such as stance asymmetry,
+body-pitch bias, foot placement bias, or an optimizer that scores realized
+forward progress directly.
+```
+
+Artifacts:
+
+```text
+outputs/analysis/TARGET_GENERATOR_SEARCH.md
+outputs/analysis/target_generator_search.json
+outputs/analysis/TARGET_GENERATOR_WINDOW_MINE.md
+outputs/analysis/target_generator_window_mine.json
+outputs/analysis/TARGET_GENERATOR_WINDOW_CURATION.md
+outputs/analysis/target_generator_window_curation.json
+```
+
 ### V5/V7 Low-Command Trace Collection
 
 The old moving-lineage policies were replayed at `x=0.04` with vanilla dynamics
