@@ -318,6 +318,25 @@ nearly eliminating forward displacement. This confirms the next target-source
 work should move to short-horizon optimization or a richer body-state
 controller, not another random sweep of hand-shaped periodic/planner terms.
 
+A later forward-intent teacher branch added:
+
+```text
+flags:
+  --min-forward-scales
+  --feedforward-pushes
+
+artifact: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_FORWARD_INTENT.md
+score_100: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_FORWARD_INTENT_SCORE_100.md
+score_150: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_FORWARD_INTENT_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+That branch reached the local-frame displacement gate but failed lateral
+velocity: the top 100-tick scored window had `0.0518 / 0.0420 m` local forward
+displacement on seeds `0 / 2`, with `vy95 = 0.1917 / 0.1859 m/s`. The current
+blocker is therefore not "no way to move forward"; it is forward displacement
+remaining coupled to lateral impulse.
+
 ## Next Branch After a Pass
 
 If the teacher probe passes, use its traces as a target source:

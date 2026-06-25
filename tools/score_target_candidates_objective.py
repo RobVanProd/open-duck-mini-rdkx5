@@ -145,7 +145,8 @@ def window_metrics(
         "done_inside_window": any(record.get("done") for record in window),
         "ticks_until_done_after_window": margin,
         "mean_vx_m_s": float(np.mean(vx)) if vx else None,
-        "forward_displacement_m": (
+        "forward_displacement_m": float(np.sum(vx) * dt_s) if vx else None,
+        "world_x_displacement_m": (
             float(base_x[-1] - base_x[0]) if len(base_x) >= 2 else None
         ),
         "vy_abs_p95_m_s": percentile([abs(value) for value in vy], 95),

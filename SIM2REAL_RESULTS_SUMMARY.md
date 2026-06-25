@@ -5361,7 +5361,7 @@ This also held. The global best soft-gated candidate had seed0/seed2 forward
 velocity of `-0.0036 / 0.0043 m/s` with lateral velocity still near gate. This
 shows that relaxing the step gate alone does not escape the conservative basin.
 
-The scorer was then extended with optional base-x displacement terms and a
+The scorer was then extended with optional local-frame displacement terms and a
 small displacement-weighted optimizer probe was run:
 
 ```text
@@ -5369,7 +5369,29 @@ artifact: outputs/analysis/WEIGHT_TRANSFER_OPTIMIZER_DISPLACEMENT.md
 status: HOLD_OPTIMIZER_NO_ROBUST_TARGET
 ```
 
-All sampled candidates failed the forward-displacement gate. The best candidate
-had seed0/seed2 displacement of `0.0008 / -0.0041 m`, so the current compact
+All sampled candidates failed the forward-displacement gate. After correcting
+the metric to integrated local `vx`, the best candidate had seed0/seed2
+displacement of `-0.0070 / 0.0030 m`, so the current compact
 planner/optimizer parameterization is not producing an actionable target
 source.
+
+The closed-loop teacher was then extended with minimum forward scale and
+feed-forward push:
+
+```text
+tool flags:
+  --min-forward-scales
+  --feedforward-pushes
+
+artifact: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_FORWARD_INTENT.md
+score_100: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_FORWARD_INTENT_SCORE_100.md
+score_150: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_FORWARD_INTENT_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+This did produce local-frame forward displacement: the top 100-tick scored
+window reached `0.0518 / 0.0420 m` on seeds `0 / 2`, and the top 150-tick
+window reached `0.0757 / 0.0648 m`. But both windows failed lateral velocity
+badly (`vy95` around `0.19-0.26 m/s`). This is the cleanest statement of the
+current target-source blocker: forward displacement exists, but remains coupled
+to lateral impulse.

@@ -211,7 +211,7 @@ and support gates.
 
 ## Displacement-Weighted Probe
 
-The scorer was extended with optional base-x displacement metrics:
+The scorer was extended with optional local-frame forward displacement metrics:
 
 ```text
 --min-forward-displacement-m
@@ -229,11 +229,55 @@ Result:
 
 ```text
 status: HOLD_OPTIMIZER_NO_ROBUST_TARGET
-best seed0 vx / dx: -0.0025 m/s / 0.0008 m
-best seed2 vx / dx: 0.0014 m/s / -0.0041 m
+best seed0 vx / dx: -0.0035 m/s / -0.0070 m
+best seed2 vx / dx: 0.0015 m/s / 0.0030 m
 ```
 
 All eight sampled candidates failed the forward-displacement gate. This makes
-the conservative-basin diagnosis stronger: even when terminal base progress is
-priced directly, the current compact planner parameterization does not discover
-a useful forward step.
+the conservative-basin diagnosis stronger: even when terminal local forward
+progress is priced directly, the current compact planner parameterization does
+not discover a useful forward step.
+
+Important correction: this gate uses integrated local `vx`, not world-frame
+`base_x`. Earlier world-x reporting was misleading when candidates yawed or
+moved laterally.
+
+## Forward-Intent Teacher Probe
+
+The closed-loop teacher was extended with:
+
+```text
+--min-forward-scales
+--feedforward-pushes
+```
+
+Artifact:
+
+```text
+outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_FORWARD_INTENT.md
+outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_FORWARD_INTENT_SCORE_100.md
+outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_FORWARD_INTENT_SCORE_150.md
+```
+
+Result:
+
+```text
+status: HOLD_NO_SEED_ROBUST_TARGETS
+top aggregate rollout mean vx: 0.0320 m/s
+100-tick top local dx seed0 / seed2: 0.0518 / 0.0420 m
+100-tick top vy95 seed0 / seed2: 0.1917 / 0.1859 m/s
+150-tick top local dx seed0 / seed2: 0.0757 / 0.0648 m
+150-tick top vy95 seed0 / seed2: 0.2578 / 0.2530 m/s
+```
+
+Interpretation: forcing minimum forward intent does escape the no-displacement
+basin, but only by recreating the lateral-impulse failure. This confirms the
+core tradeoff with a corrected local-frame displacement metric:
+
+```text
+enough forward displacement -> lateral velocity too high
+lateral velocity acceptable -> forward displacement too low
+```
+
+The next branch needs to control lateral momentum while preserving forward
+displacement, not merely increase forward push.

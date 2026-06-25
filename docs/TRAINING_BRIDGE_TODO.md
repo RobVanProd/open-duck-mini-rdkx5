@@ -270,6 +270,22 @@ the current compact planner parameterization is not sufficient as a target
 source. The next branch should change the target representation or move to a
 closed-loop state-feedback teacher.
 
+Forward-intent teacher result:
+
+```text
+tool flags:
+  --min-forward-scales
+  --feedforward-pushes
+artifact: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_FORWARD_INTENT.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+This branch restored local-frame forward displacement but failed lateral
+velocity. The top scored 100-tick windows reached `0.0518 / 0.0420 m` local
+forward displacement on seeds `0 / 2`, while `vy95` remained around
+`0.19 m/s`. Do not train from these traces; they prove the tradeoff, not a
+usable target source.
+
 ### Reconcile Policy / Sim Contract
 
 - Run `tools/audit_policy_sim_contract.py`.

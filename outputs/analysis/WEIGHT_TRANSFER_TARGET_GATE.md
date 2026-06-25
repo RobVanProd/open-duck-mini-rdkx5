@@ -446,3 +446,20 @@ The next branch is specified in:
 ```text
 docs/WEIGHT_TRANSFER_OPTIMIZER_PLAN.md
 ```
+
+The first optimizer and forward-intent teacher runs refined the conclusion:
+
+```text
+optimizer displacement probe:
+  HOLD_OPTIMIZER_NO_ROBUST_TARGET
+  best local dx: -0.0070 / 0.0030 m
+
+forward-intent teacher probe:
+  HOLD_NO_SEED_ROBUST_TARGETS
+  top 100-tick local dx: 0.0518 / 0.0420 m
+  top 100-tick vy95: 0.1917 / 0.1859 m/s
+```
+
+This confirms the target-source blocker with a corrected local-frame
+displacement metric: forward displacement can be forced, but not yet while
+preserving the lateral gate.
