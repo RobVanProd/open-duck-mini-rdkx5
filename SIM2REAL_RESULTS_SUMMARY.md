@@ -4803,3 +4803,16 @@ status: PASS_SOFT_PRIOR_CPU_SMOKE
 
 This was a 16-timestep CPU-forced smoke only. It did not produce a deployable
 candidate and did not touch the robot.
+
+V21 launch readiness is now captured:
+
+```text
+tool: tools/check_v21_launch_readiness.py
+artifact: outputs/analysis/V21_LAUNCH_READINESS.md
+json: outputs/analysis/v21_launch_readiness.json
+status: HOLD_COLAB_SESSION_MISSING
+```
+
+The preflight confirms the local V21 plan, compact soft-prior config,
+Playground patch, and PR checks are ready. The only current launch blocker is
+that `google-colab-cli` reports no active `open-duck-l4` session.

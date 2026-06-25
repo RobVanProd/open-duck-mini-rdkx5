@@ -3834,3 +3834,25 @@ status: PASS_SOFT_PRIOR_CPU_SMOKE
 
 This confirms the patched Playground runner accepts the soft-prior config in an
 actual tiny training invocation. It is not a candidate run.
+
+V21 launch readiness:
+
+```text
+tool: tools/check_v21_launch_readiness.py
+artifact: outputs/analysis/V21_LAUNCH_READINESS.md
+json: outputs/analysis/v21_launch_readiness.json
+status: HOLD_COLAB_SESSION_MISSING
+```
+
+The readiness check confirms:
+
+```text
+soft-prior config: PASS
+V21 plan: PASS
+Playground soft-prior patch: PASS
+RDK PR checks: PASS
+Playground PR checks: PASS
+Colab session open-duck-l4: MISSING
+```
+
+Once a Colab session is active again, rerun the readiness check before launch.
