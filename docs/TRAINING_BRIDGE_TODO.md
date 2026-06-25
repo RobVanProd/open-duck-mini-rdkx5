@@ -4455,7 +4455,7 @@ The current executable next-branch decision is:
 ```text
 tool: tools/decide_next_weight_transfer_branch.py
 artifact: outputs/analysis/NEXT_WEIGHT_TRANSFER_BRANCH.md
-status: PLAN_REPLACE_STANCE_PROPULSION_PRIMITIVE
+status: PLAN_LATERAL_CONTAINED_STANCE_PROPULSION
 ```
 
 This picks the next target-source branch explicitly:
@@ -4463,13 +4463,13 @@ This picks the next target-source branch explicitly:
 ```text
 finite-horizon state-feedback teacher/optimizer
 stance side + lateral body placement + swing-foot placement
-new stance-support propulsion primitive
+active lateral containment while stance propulsion remains enabled
 all optimized/scored together
 ```
 
 Do not launch PPO/BC from the current target sources. Do not widen the same
-local teacher grid again unless the implementation replaces the ineffective
-pitch-chain push primitive with a new, measured propulsion mechanism. Training
+local teacher grid again unless the implementation adds an active lateral
+support mechanism that lets stance propulsion remain enabled. Training
 re-entry still requires `PASS_WEIGHT_TRANSFER_TARGET`.
 
 Implementation spec:

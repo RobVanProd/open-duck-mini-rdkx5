@@ -10,7 +10,7 @@ The current target-source branch is held at:
 
 ```text
 outputs/analysis/NEXT_WEIGHT_TRANSFER_BRANCH.md
-status: PLAN_REPLACE_STANCE_PROPULSION_PRIMITIVE
+status: PLAN_LATERAL_CONTAINED_STANCE_PROPULSION
 ```
 
 The next implementation should build a finite-horizon state-feedback
@@ -328,7 +328,7 @@ mean 0.1s future vx delta during push: -0.0003 m/s
 
 Push is frequent enough to evaluate, but it either does not accelerate the body
 or it couples into lateral velocity / target-velocity violations. The next
-teacher revision must replace the propulsion mechanism under stance support,
+teacher revision must preserve lateral support while propulsion remains active,
 not only make the same pitch-chain push happen earlier, later, or more often.
 
 The first replacement propulsion test added a default-off sagittal

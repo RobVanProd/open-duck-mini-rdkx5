@@ -326,12 +326,12 @@ The next branch decision is now explicit:
 ```text
 tool: tools/decide_next_weight_transfer_branch.py
 artifact: outputs/analysis/NEXT_WEIGHT_TRANSFER_BRANCH.md
-status: PLAN_REPLACE_STANCE_PROPULSION_PRIMITIVE
+status: PLAN_LATERAL_CONTAINED_STANCE_PROPULSION
 ```
 
 That means the next offline implementation should be a finite-horizon
 state-feedback teacher/optimizer that chooses stance side, lateral body
-placement, swing-foot placement, and a new stance-support propulsion primitive.
+placement, swing-foot placement, and lateral-contained stance propulsion.
 Do not launch PPO/BC or robot validation from current target sources.
 
 Implementation spec:

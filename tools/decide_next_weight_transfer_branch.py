@@ -29,6 +29,18 @@ DEFAULT_LEG_EXTENSION_150_JSON = (
 DEFAULT_PUSH_EFFECTIVENESS_JSON = (
     ROOT / "outputs" / "analysis" / "foot_placement_push_effectiveness_analysis.json"
 )
+DEFAULT_SAGITTAL_PROPULSION_EFFECTIVENESS_JSON = (
+    ROOT
+    / "outputs"
+    / "analysis"
+    / "foot_placement_sagittal_propulsion_effectiveness_analysis.json"
+)
+DEFAULT_SAGITTAL_SOFTGATE_EFFECTIVENESS_JSON = (
+    ROOT
+    / "outputs"
+    / "analysis"
+    / "foot_placement_sagittal_softgate_effectiveness_analysis.json"
+)
 DEFAULT_OUTPUT_MD = ROOT / "outputs" / "analysis" / "NEXT_WEIGHT_TRANSFER_BRANCH.md"
 DEFAULT_OUTPUT_JSON = ROOT / "outputs" / "analysis" / "next_weight_transfer_branch.json"
 
@@ -56,6 +68,8 @@ def decide(
     leg100: dict[str, Any],
     leg150: dict[str, Any],
     push_effectiveness: dict[str, Any],
+    sagittal_propulsion_effectiveness: dict[str, Any],
+    sagittal_softgate_effectiveness: dict[str, Any],
 ) -> dict[str, Any]:
     gate_status = status_of(gate)
     failure_status = status_of(failure)
@@ -64,6 +78,10 @@ def decide(
     leg150_status = status_of(leg150)
     push_effectiveness_status = status_of(push_effectiveness)
     push_summary = push_effectiveness.get("aggregate") or {}
+    sagittal_propulsion_status = status_of(sagittal_propulsion_effectiveness)
+    sagittal_propulsion_summary = sagittal_propulsion_effectiveness.get("aggregate") or {}
+    sagittal_softgate_status = status_of(sagittal_softgate_effectiveness)
+    sagittal_softgate_summary = sagittal_softgate_effectiveness.get("aggregate") or {}
 
     if gate_status == "PASS_WEIGHT_TRANSFER_TARGET":
         decision = "PROCEED_TARGET_DATASET_SMOKE"
@@ -75,6 +93,33 @@ def decide(
         stop_rules = [
             "Do not train until the exact passing source and seeds are reviewed.",
             "Do not run robot validation from this artifact alone.",
+        ]
+    elif (
+        failure_status == "HOLD_FORWARD_IMPULSE_PRIMARY"
+        and int(class_summary.get("all_three_rows", 0) or 0) == 0
+        and sagittal_propulsion_status == "HOLD_PUSH_INEFFECTIVE"
+        and sagittal_softgate_status == "HOLD_PUSH_INEFFECTIVE"
+    ):
+        decision = "PLAN_LATERAL_CONTAINED_STANCE_PROPULSION"
+        next_branch = (
+            "Design a stance propulsion controller with active lateral support "
+            "containment. The sagittal stance-feedback primitive creates small "
+            "local impulse, but it is not seed robust, and soft gating mostly "
+            "removes the impulse."
+        )
+        rationale = [
+            "No checked target source passes PASS_WEIGHT_TRANSFER_TARGET.",
+            "The aggregate failure remains HOLD_FORWARD_IMPULSE_PRIMARY with zero rows satisfying stability, support, and forward progress together.",
+            "The original foot-placement push measured as ineffective.",
+            "The sagittal stance-feedback replacement improved mean future vx delta slightly, but still produced zero seed-robust 100/150 tick modes.",
+            "The softgated sagittal follow-up kept the hold and reduced the already-small forward impulse.",
+            "This means the missing mechanism is lateral containment that permits propulsion to stay active, not another direct push-amplitude or push-throttle sweep.",
+        ]
+        stop_rules = [
+            "Do not launch PPO/BC from current target sources.",
+            "Do not run robot validation, grounded replay, or x=0.08.",
+            "Do not widen the same sagittal/softgate grid without adding an active lateral support mechanism.",
+            "Require PASS_WEIGHT_TRANSFER_TARGET before training re-entry.",
         ]
     elif (
         failure_status == "HOLD_FORWARD_IMPULSE_PRIMARY"
@@ -170,13 +215,32 @@ def decide(
             "push_mean_future_vx_delta_m_s": push_summary.get(
                 "mean_push_future_vx_delta_m_s"
             ),
+            "sagittal_propulsion_status": sagittal_propulsion_status,
+            "sagittal_propulsion_mean_future_vx_delta_m_s": (
+                sagittal_propulsion_summary.get("mean_push_future_vx_delta_m_s")
+            ),
+            "sagittal_propulsion_pass_count": (
+                sagittal_propulsion_summary.get("status_counts", {}).get(
+                    "PASS_PUSH_EFFECTIVE"
+                )
+            ),
+            "sagittal_softgate_status": sagittal_softgate_status,
+            "sagittal_softgate_mean_future_vx_delta_m_s": (
+                sagittal_softgate_summary.get("mean_push_future_vx_delta_m_s")
+            ),
+            "sagittal_softgate_pass_count": (
+                sagittal_softgate_summary.get("status_counts", {}).get(
+                    "PASS_PUSH_EFFECTIVE"
+                )
+            ),
         },
         "rationale": rationale,
         "required_next_design": [
             "stateful stance-side selection",
             "explicit lateral body placement over the stance foot",
             "swing-foot placement and clearance objective",
-            "new stance-support propulsion primitive, not the existing pitch-chain push",
+            "active lateral containment while stance propulsion remains enabled",
+            "stance-support propulsion that is not only a direct push-amplitude increase",
             "lateral velocity and base-y drift penalties",
             "pitch and base-height guards",
             "measured actuator-envelope scoring",
@@ -245,6 +309,14 @@ def main() -> int:
     parser.add_argument("--leg-extension-100-json", default=str(DEFAULT_LEG_EXTENSION_100_JSON))
     parser.add_argument("--leg-extension-150-json", default=str(DEFAULT_LEG_EXTENSION_150_JSON))
     parser.add_argument("--push-effectiveness-json", default=str(DEFAULT_PUSH_EFFECTIVENESS_JSON))
+    parser.add_argument(
+        "--sagittal-propulsion-effectiveness-json",
+        default=str(DEFAULT_SAGITTAL_PROPULSION_EFFECTIVENESS_JSON),
+    )
+    parser.add_argument(
+        "--sagittal-softgate-effectiveness-json",
+        default=str(DEFAULT_SAGITTAL_SOFTGATE_EFFECTIVENESS_JSON),
+    )
     parser.add_argument("--output-md", default=str(DEFAULT_OUTPUT_MD))
     parser.add_argument("--output-json", default=str(DEFAULT_OUTPUT_JSON))
     args = parser.parse_args()
@@ -255,6 +327,8 @@ def main() -> int:
         load_json(Path(args.leg_extension_100_json)),
         load_json(Path(args.leg_extension_150_json)),
         load_json(Path(args.push_effectiveness_json)),
+        load_json(Path(args.sagittal_propulsion_effectiveness_json)),
+        load_json(Path(args.sagittal_softgate_effectiveness_json)),
     )
     output_json = Path(args.output_json)
     output_json.parent.mkdir(parents=True, exist_ok=True)

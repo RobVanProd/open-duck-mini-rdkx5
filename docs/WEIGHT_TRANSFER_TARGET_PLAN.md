@@ -228,7 +228,7 @@ Current decision artifact:
 
 ```text
 outputs/analysis/NEXT_WEIGHT_TRANSFER_BRANCH.md
-status: PLAN_REPLACE_STANCE_PROPULSION_PRIMITIVE
+status: PLAN_LATERAL_CONTAINED_STANCE_PROPULSION
 ```
 
 The required next design is:
@@ -238,7 +238,8 @@ finite-horizon state-feedback teacher/optimizer
 stateful stance-side selection
 explicit lateral body placement over the stance foot
 swing-foot placement and clearance objective
-new stance-support propulsion primitive, not the existing pitch-chain push
+active lateral containment while stance propulsion remains enabled
+stance-support propulsion that is not only a direct push-amplitude increase
 lateral velocity and base-y drift penalties
 pitch and base-height guards
 measured actuator-envelope scoring
@@ -247,7 +248,7 @@ measured actuator-envelope scoring
 
 This is intentionally stronger than "try Branch A." It rules out another nearby
 scalar teacher-grid expansion and, after the push-effectiveness trace read,
-points at replacing the stance propulsion primitive as the next reviewed
+points at lateral-contained stance propulsion as the next reviewed
 implementation target.
 
 Implementation spec:
