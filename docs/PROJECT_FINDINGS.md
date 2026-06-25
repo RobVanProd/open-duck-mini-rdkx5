@@ -205,7 +205,7 @@ Current gate artifact:
 ```text
 outputs/analysis/WEIGHT_TRANSFER_TARGET_GATE_CHECK.md
 status: HOLD_NO_SUSTAINED_WEIGHT_TRANSFER_TARGET
-checked score artifacts: 39
+checked score artifacts: 52
 passing target sources: 0
 ```
 
@@ -214,7 +214,7 @@ The failure-mode analysis scans the same compact score family:
 ```text
 outputs/analysis/WEIGHT_TRANSFER_GATE_FAILURE_ANALYSIS.md
 status: HOLD_FORWARD_IMPULSE_PRIMARY
-seed rows scanned: 1956
+seed rows scanned: 2456
 ```
 
 It found:
@@ -245,6 +245,29 @@ dominant failures: low_forward_velocity and high_lateral_velocity
 
 So "add knee/ankle push-off to the existing support-state teacher" is not the
 missing mechanism either.
+
+The latest foot-placement MPC diagnostics also ruled out two nearby fixes:
+
+```text
+wide swing-foot advance:
+  outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_ADVANCE_WIDE_PROBE_SCORE_100.md
+  outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_ADVANCE_WIDE_PROBE_SCORE_150.md
+  robust modes: 0 / 16
+
+lateral/yaw push attenuation:
+  outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_STABILITY_PROBE_SCORE_100.md
+  outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_STABILITY_PROBE_SCORE_150.md
+  robust modes: 0 / 64
+```
+
+Wide swing advance made seed 0 move slightly forward but still far below the
+gate. Lateral/yaw push attenuation made the traces more conservative and
+actuator-safe, but starved propulsion; the best windows stayed around
+`0.003-0.008 m/s`, not `0.04 m/s`.
+
+So the next teacher cannot be just "more advance" or "less push when unstable."
+It needs an active lateral/heading support controller that enables push, plus a
+propulsion model that moves the body while preserving the support state.
 
 The next branch decision is now explicit:
 

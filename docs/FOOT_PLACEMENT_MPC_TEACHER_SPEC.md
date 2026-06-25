@@ -249,6 +249,44 @@ HOLD_NO_CANDIDATES
   Tool did not evaluate any candidate.
 ```
 
+## Current Probe Findings
+
+The first probe family has been useful as a diagnostic, but it has not produced
+`PASS_WEIGHT_TRANSFER_TARGET`.
+
+```text
+corrected stance-interleaved smoke:
+  robust 100/150 tick modes: 0 / 8
+
+stronger push:
+  robust 100/150 tick modes: 0 / 16
+
+swing-foot advance:
+  robust 100/150 tick modes: 0 / 16
+
+wide swing-foot advance:
+  robust 100/150 tick modes: 0 / 16
+
+lateral/yaw push attenuation:
+  robust 100/150 tick modes: 0 / 64
+```
+
+The latest stability probe added default-off fields:
+
+```text
+push_lateral_soft_gate_m_s
+push_yaw_soft_gate_rad
+push_min_scale
+```
+
+Those fields are useful for diagnosis and trace logging, but the result was a
+hold: attenuation reduced push aggressiveness and kept target velocity low, but
+it reduced forward velocity to roughly `0.003-0.008 m/s` in the best windows.
+
+Conclusion: the next revision should not keep widening this scalar grid. It
+needs an active lateral/heading support controller that creates a pushable
+stance, then applies propulsion without losing the support state.
+
 ## Stop Rules
 
 Stop the branch and do not train if:

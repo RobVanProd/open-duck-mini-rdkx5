@@ -10,11 +10,11 @@ training, robot SSH, deployment, or hardware tests.
 | field | value |
 |---|---:|
 | `gate_status` | `HOLD_NO_SUSTAINED_WEIGHT_TRANSFER_TARGET` |
-| `gate_artifacts` | `50` |
+| `gate_artifacts` | `52` |
 | `failure_status` | `HOLD_FORWARD_IMPULSE_PRIMARY` |
-| `seed_rows_scanned` | `2136` |
-| `stable_actuator_rows` | `1029` |
-| `support_ready_rows` | `548` |
+| `seed_rows_scanned` | `2200` |
+| `stable_actuator_rows` | `1041` |
+| `support_ready_rows` | `570` |
 | `forward_ready_rows` | `15` |
 | `stable_and_support_rows` | `9` |
 | `stable_and_forward_rows` | `0` |

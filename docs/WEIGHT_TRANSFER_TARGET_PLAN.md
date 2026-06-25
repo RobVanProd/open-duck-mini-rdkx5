@@ -326,6 +326,36 @@ Larger swing advance improved the worst-seed score but did not produce enough
 forward velocity. The next controller should stabilize lateral/yaw behavior
 while using swing advance, not keep increasing advance alone.
 
+Lateral/yaw push-stability diagnostic:
+
+```text
+artifacts:
+  outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_STABILITY_PROBE_SCORE_100.md
+  outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_STABILITY_PROBE_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+robust modes: 0 / 64
+```
+
+This added default-off push attenuation based on lateral velocity and yaw. It
+made the best windows more conservative:
+
+```text
+100-tick top windows:
+  seed 0 vx: about 0.0045 m/s
+  seed 2 vx: about 0.0053-0.0081 m/s
+  sent target velocity p95: about 0.66-0.71 rad/s
+  lateral p95: near or under the 0.12 m/s gate
+
+150-tick top windows:
+  vx: about 0.0037 m/s on both seeds
+  sent target velocity p95: about 0.76-1.07 rad/s
+```
+
+Interpretation: push attenuation can reduce lateral/actuator stress, but it
+solves the wrong side of the tradeoff by starving forward impulse. The next
+controller needs active lateral/heading support stabilization that enables
+propulsion, not only a push throttle that turns propulsion down.
+
 ## Stop Conditions
 
 Stop target generation and do not train if:

@@ -4705,3 +4705,20 @@ body placement, foot placement, and push timing, or an imitation/demonstration
 path that can hold a coherent single-support stepping behavior before PPO
 tries to refine it. Also require reward-term activation/observability for any
 new contact objective before trusting another long cloud run.
+
+Foot-placement MPC teacher diagnostics:
+
+```text
+artifacts:
+  outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_ADVANCE_WIDE_PROBE_SCORE_100.md
+  outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_ADVANCE_WIDE_PROBE_SCORE_150.md
+  outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_STABILITY_PROBE_SCORE_100.md
+  outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_STABILITY_PROBE_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+Wide swing advance improved seed 0 only to a small positive local velocity.
+Lateral/yaw push attenuation reduced target velocity and lateral stress, but
+starved forward impulse. Do not resume BC/PPO from these traces. The next
+offline target-source task is an active lateral/heading support controller
+coupled to propulsion, not another scalar push/advance grid.

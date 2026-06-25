@@ -59,6 +59,9 @@ class Candidate:
     stance_hip_push_rad: float
     stance_knee_push_rad: float
     stance_ankle_push_rad: float
+    push_lateral_soft_gate_m_s: float
+    push_yaw_soft_gate_rad: float
+    push_min_scale: float
     roll_gain: float
     vy_damping_gain: float
     body_y_gain: float
@@ -90,52 +93,67 @@ def candidate_grid(args: argparse.Namespace) -> list[Candidate]:
                                 for roll_gain in parse_float_list(args.roll_gains):
                                     for vy_damping_gain in parse_float_list(args.vy_damping_gains):
                                         for body_y_gain in parse_float_list(args.body_y_gains):
-                                            for swing_min_advance in swing_min_advances:
-                                                for initial_stance_side in initial_stance_sides:
-                                                    label = (
-                                                        f"fpm_is{label_float(initial_stance_side)}"
-                                                        f"_p{label_float(period_s)}"
-                                                        f"_ly{label_float(load_shift_y)}"
-                                                        f"_fpx{label_float(foot_place_x)}"
-                                                        f"_fpg{label_float(foot_place_gain)}"
-                                                        f"_sma{label_float(swing_min_advance)}"
-                                                        f"_shp{label_float(stance_hip_push)}"
-                                                        f"_skp{label_float(stance_knee_push)}"
-                                                        f"_sap{label_float(stance_ankle_push)}"
-                                                        f"_rg{label_float(roll_gain)}"
-                                                        f"_vyg{label_float(vy_damping_gain)}"
-                                                        f"_byg{label_float(body_y_gain)}"
-                                                    )
-                                                    rows.append(
-                                                        Candidate(
-                                                            label=label,
-                                                            initial_stance_side=initial_stance_side,
-                                                            period_s=period_s,
-                                                            load_s=args.load_s,
-                                                            unweight_s=args.unweight_s,
-                                                            push_s=args.push_s,
-                                                            load_shift_y_m=load_shift_y,
-                                                            base_y_gate_m=args.base_y_gate,
-                                                            lateral_velocity_gate_m_s=args.lateral_velocity_gate,
-                                                            foot_place_x_m=foot_place_x,
-                                                            foot_place_gain=foot_place_gain,
-                                                            swing_min_advance_m=swing_min_advance,
-                                                            swing_knee_rad=args.swing_knee,
-                                                            swing_ankle_rad=args.swing_ankle,
-                                                            swing_reach_limit_rad=args.swing_reach_limit,
-                                                            stance_retract_rad=args.stance_retract,
-                                                            stance_hip_push_rad=stance_hip_push,
-                                                            stance_knee_push_rad=stance_knee_push,
-                                                            stance_ankle_push_rad=stance_ankle_push,
-                                                            roll_gain=roll_gain,
-                                                            vy_damping_gain=vy_damping_gain,
-                                                            body_y_gain=body_y_gain,
-                                                            pitch_target_rad=args.pitch_target,
-                                                            pitch_damping=args.pitch_damping,
-                                                            clearance_gate_m=args.clearance_gate,
-                                                            min_height_m=args.min_height,
-                                                        )
-                                                    )
+                                            for push_lateral_soft_gate in parse_float_list(
+                                                args.push_lateral_soft_gates
+                                            ):
+                                                for push_yaw_soft_gate in parse_float_list(
+                                                    args.push_yaw_soft_gates
+                                                ):
+                                                    for push_min_scale in parse_float_list(
+                                                        args.push_min_scales
+                                                    ):
+                                                        for swing_min_advance in swing_min_advances:
+                                                            for initial_stance_side in initial_stance_sides:
+                                                                label = (
+                                                                    f"fpm_is{label_float(initial_stance_side)}"
+                                                                    f"_p{label_float(period_s)}"
+                                                                    f"_ly{label_float(load_shift_y)}"
+                                                                    f"_fpx{label_float(foot_place_x)}"
+                                                                    f"_fpg{label_float(foot_place_gain)}"
+                                                                    f"_sma{label_float(swing_min_advance)}"
+                                                                    f"_shp{label_float(stance_hip_push)}"
+                                                                    f"_skp{label_float(stance_knee_push)}"
+                                                                    f"_sap{label_float(stance_ankle_push)}"
+                                                                    f"_plg{label_float(push_lateral_soft_gate)}"
+                                                                    f"_pyg{label_float(push_yaw_soft_gate)}"
+                                                                    f"_pms{label_float(push_min_scale)}"
+                                                                    f"_rg{label_float(roll_gain)}"
+                                                                    f"_vyg{label_float(vy_damping_gain)}"
+                                                                    f"_byg{label_float(body_y_gain)}"
+                                                                )
+                                                                rows.append(
+                                                                    Candidate(
+                                                                        label=label,
+                                                                        initial_stance_side=initial_stance_side,
+                                                                        period_s=period_s,
+                                                                        load_s=args.load_s,
+                                                                        unweight_s=args.unweight_s,
+                                                                        push_s=args.push_s,
+                                                                        load_shift_y_m=load_shift_y,
+                                                                        base_y_gate_m=args.base_y_gate,
+                                                                        lateral_velocity_gate_m_s=args.lateral_velocity_gate,
+                                                                        foot_place_x_m=foot_place_x,
+                                                                        foot_place_gain=foot_place_gain,
+                                                                        swing_min_advance_m=swing_min_advance,
+                                                                        swing_knee_rad=args.swing_knee,
+                                                                        swing_ankle_rad=args.swing_ankle,
+                                                                        swing_reach_limit_rad=args.swing_reach_limit,
+                                                                        stance_retract_rad=args.stance_retract,
+                                                                        stance_hip_push_rad=stance_hip_push,
+                                                                        stance_knee_push_rad=stance_knee_push,
+                                                                        stance_ankle_push_rad=stance_ankle_push,
+                                                                        push_lateral_soft_gate_m_s=push_lateral_soft_gate,
+                                                                        push_yaw_soft_gate_rad=push_yaw_soft_gate,
+                                                                        push_min_scale=push_min_scale,
+                                                                        roll_gain=roll_gain,
+                                                                        vy_damping_gain=vy_damping_gain,
+                                                                        body_y_gain=body_y_gain,
+                                                                        pitch_target_rad=args.pitch_target,
+                                                                        pitch_damping=args.pitch_damping,
+                                                                        clearance_gate_m=args.clearance_gate,
+                                                                        min_height_m=args.min_height,
+                                                                    )
+                                                                )
     if args.shuffle_candidates:
         random.Random(args.grid_seed).shuffle(rows)
     return rows[: args.max_candidates]
@@ -222,6 +240,13 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
             w, x, y, z = quat
             return jp.arcsin(jp.clip(2.0 * (w * y - z * x), -1.0, 1.0))
 
+        def yaw_from_quat_wxyz(quat):
+            w, x, y, z = quat
+            return jp.arctan2(
+                2.0 * (w * z + x * y),
+                1.0 - 2.0 * (y * y + z * z),
+            )
+
         def teacher_target(
             default_actuator,
             phase_id,
@@ -239,6 +264,9 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
             stance_hip_push_rad,
             stance_knee_push_rad,
             stance_ankle_push_rad,
+            push_lateral_soft_gate_m_s,
+            push_yaw_soft_gate_rad,
+            push_min_scale,
             roll_gain,
             vy_damping_gain,
             body_y_gain,
@@ -249,6 +277,7 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
             local_vx,
             local_vy,
             body_pitch,
+            body_yaw,
             base_y,
             base_height,
             contact,
@@ -313,6 +342,20 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
             push_scale = jp.where(push_allowed, 1.0, 0.0)
             forward_error = jp.clip(command[0] - local_vx, 0.0, 0.08)
             forward_scale = jp.clip(forward_error / 0.04, 0.25, 1.25)
+            lateral_scale = jp.clip(
+                1.0
+                - jp.abs(local_vy) / jp.maximum(push_lateral_soft_gate_m_s, 1.0e-6),
+                push_min_scale,
+                1.0,
+            )
+            yaw_scale = jp.clip(
+                1.0
+                - jp.abs(body_yaw) / jp.maximum(push_yaw_soft_gate_rad, 1.0e-6),
+                push_min_scale,
+                1.0,
+            )
+            stability_scale = lateral_scale * yaw_scale
+            forward_scale = forward_scale * stability_scale
             pitch_error = body_pitch - pitch_target_rad
             pitch_ankle = jp.clip(-pitch_damping * pitch_error * 0.03, -0.04, 0.04)
 
@@ -363,6 +406,10 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                 swing_foot_x,
                 swing_x_error,
                 desired_swing_x,
+                forward_scale,
+                stability_scale,
+                lateral_scale,
+                yaw_scale,
             )
 
         def step_teacher(
@@ -382,6 +429,9 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
             stance_hip_push_rad,
             stance_knee_push_rad,
             stance_ankle_push_rad,
+            push_lateral_soft_gate_m_s,
+            push_yaw_soft_gate_rad,
+            push_min_scale,
             roll_gain,
             vy_damping_gain,
             body_y_gain,
@@ -407,6 +457,10 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                 swing_foot_x,
                 swing_x_error,
                 desired_swing_x,
+                forward_scale,
+                stability_scale,
+                lateral_scale,
+                yaw_scale,
             ) = teacher_target(
                 env._default_actuator,
                 phase_id,
@@ -424,6 +478,9 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                 stance_hip_push_rad,
                 stance_knee_push_rad,
                 stance_ankle_push_rad,
+                push_lateral_soft_gate_m_s,
+                push_yaw_soft_gate_rad,
+                push_min_scale,
                 roll_gain,
                 vy_damping_gain,
                 body_y_gain,
@@ -434,6 +491,7 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                 local_linvel[0],
                 local_linvel[1],
                 pitch_from_quat_wxyz(quat),
+                yaw_from_quat_wxyz(quat),
                 qpos[base_addr + 1],
                 qpos[base_addr + 2],
                 contact_in,
@@ -508,6 +566,10 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                 swing_foot_x,
                 swing_x_error,
                 desired_swing_x,
+                forward_scale,
+                stability_scale,
+                lateral_scale,
+                yaw_scale,
             )
 
         refresh_obs_jit = jax.jit(refresh_obs)
@@ -542,6 +604,10 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                         swing_foot_x,
                         swing_x_error,
                         desired_swing_x,
+                        forward_scale,
+                        stability_scale,
+                        lateral_scale,
+                        yaw_scale,
                     ) = step_teacher_jit(
                         state,
                         phase_id,
@@ -559,6 +625,9 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                         candidate.stance_hip_push_rad,
                         candidate.stance_knee_push_rad,
                         candidate.stance_ankle_push_rad,
+                        candidate.push_lateral_soft_gate_m_s,
+                        candidate.push_yaw_soft_gate_rad,
+                        candidate.push_min_scale,
                         candidate.roll_gain,
                         candidate.vy_damping_gain,
                         candidate.body_y_gain,
@@ -604,6 +673,14 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                             np.asarray(jax.device_get(desired_swing_x))
                         ),
                         "swing_x_error_m": float(np.asarray(jax.device_get(swing_x_error))),
+                        "forward_scale": float(np.asarray(jax.device_get(forward_scale))),
+                        "push_stability_scale": float(
+                            np.asarray(jax.device_get(stability_scale))
+                        ),
+                        "push_lateral_scale": float(
+                            np.asarray(jax.device_get(lateral_scale))
+                        ),
+                        "push_yaw_scale": float(np.asarray(jax.device_get(yaw_scale))),
                         "command": [args.command_x, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
                         "action": np.asarray(jax.device_get(action), dtype=float).tolist(),
                         "reference_target_rad": np.asarray(
@@ -813,6 +890,30 @@ def main() -> int:
     parser.add_argument("--stance-hip-pushes", default="0.02,0.04")
     parser.add_argument("--stance-knee-pushes", default="-0.02,0.0")
     parser.add_argument("--stance-ankle-pushes", default="-0.02,0.02")
+    parser.add_argument(
+        "--push-lateral-soft-gates",
+        default="1000.0",
+        help=(
+            "Comma-separated lateral velocity soft-gate widths for push scaling. "
+            "Large default preserves previous behavior."
+        ),
+    )
+    parser.add_argument(
+        "--push-yaw-soft-gates",
+        default="1000.0",
+        help=(
+            "Comma-separated yaw soft-gate widths for push scaling. Large default "
+            "preserves previous behavior."
+        ),
+    )
+    parser.add_argument(
+        "--push-min-scales",
+        default="1.0",
+        help=(
+            "Comma-separated minimum push stability scales. Default 1.0 preserves "
+            "previous behavior; values below 1.0 allow lateral/yaw push attenuation."
+        ),
+    )
     parser.add_argument("--roll-gains", default="1.5")
     parser.add_argument("--vy-damping-gains", default="0.5,1.0")
     parser.add_argument("--body-y-gains", default="0.5")
