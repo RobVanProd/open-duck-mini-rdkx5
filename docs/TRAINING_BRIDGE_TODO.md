@@ -3081,6 +3081,35 @@ outputs/analysis/REALIZED_WINDOW_COLLECTION_X004_V5_V7_CURATION.md
 outputs/analysis/realized_window_collection_x004_v5_v7_curation.json
 ```
 
+### Longer Target Window Remine
+
+The observation-ready shuffled broad traces were remined for 50-sample windows
+to check whether the current trace set already has longer BC material:
+
+```text
+tool: tools/mine_realized_target_windows.py
+window_samples: 50
+mine status: PASS_REALIZED_WINDOWS_AVAILABLE
+curation status: HOLD_INSUFFICIENT_CURATED_WINDOWS
+mined windows: 5
+curated seed windows: 0
+review motion hints: 5
+```
+
+The longer hints are all review-only because they fail lateral/contact criteria:
+
+```text
+failure reasons: high_lateral_velocity, single_contact_pattern_dominates
+```
+
+Do next:
+
+```text
+1. do not train from the current longer-window hints
+2. make the next target generator score lateral velocity and contact alternation
+3. require longer curated windows before sequence-aware imitation/pretraining
+```
+
 ### Target Dataset BC Smoke
 
 The observation-ready target manifest was tested with tiny linear and KNN

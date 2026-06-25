@@ -4005,3 +4005,33 @@ target-data step should improve temporal coverage/diversity or use a
 sequence-aware imitation design that preserves the curated target motion through
 closed-loop replay.
 ```
+
+### Longer Target Window Remine
+
+The observation-ready shuffled broad traces were remined for 50-sample windows
+to test whether the current trace set contains enough temporal coverage for a
+better supervised seed.
+
+Result:
+
+```text
+tool: tools/mine_realized_target_windows.py
+trace set: target_generator_shuffled_broad_obs_traces
+window length: 50 samples
+mine status: PASS_REALIZED_WINDOWS_AVAILABLE
+curation status: HOLD_INSUFFICIENT_CURATED_WINDOWS
+mined windows: 5
+curated seed windows: 0
+review motion hints: 5
+source: seed_002 only
+failure reasons: high_lateral_velocity and/or single_contact_pattern_dominates
+```
+
+Conclusion:
+
+```text
+The current trace set does not contain longer seed-quality forward-motion
+windows. The next target-generation change should directly reduce lateral
+motion and single-contact dominance over longer horizons instead of trying to
+train from the existing short snippets.
+```

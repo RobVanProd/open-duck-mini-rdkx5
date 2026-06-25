@@ -416,6 +416,39 @@ source diversity and temporal coverage, or move to a sequence-aware imitation
 design that keeps the target motion alive during rollout.
 ```
 
+## Longer Window Remine
+
+The same observation-ready shuffled broad traces were remined for 50-sample
+windows:
+
+```text
+tool: tools/mine_realized_target_windows.py
+window_samples: 50
+mine status: PASS_REALIZED_WINDOWS_AVAILABLE
+curation status: HOLD_INSUFFICIENT_CURATED_WINDOWS
+mined windows: 5
+curated seed windows: 0
+review motion hints: 5
+```
+
+All longer review hints came from `seed_002` and failed curation because of
+high lateral velocity, single-contact dominance, or both:
+
+```text
+best review vx range: 0.0401-0.0595 m/s
+pitch_abs_p95 range: 0.2157-0.3240 rad
+base_height_min range: 0.1456-0.1468 m
+contact patterns: mostly 90-100% double support
+```
+
+Interpretation:
+
+```text
+The current trace set has short motion snippets but no longer seed-quality
+windows. The next generator change should explicitly optimize lateral velocity
+and contact alternation over longer horizons before another BC/PPO attempt.
+```
+
 ## First Primitive Search Result
 
 A bounded low-dimensional sine primitive search was run as the first generator
