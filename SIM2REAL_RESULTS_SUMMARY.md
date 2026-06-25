@@ -4956,3 +4956,40 @@ prior-lock gate:
 If V22 does not materially reduce prior distance, the next branch should move
 away from soft reward shaping toward explicit supervised pretraining, behavior
 cloning, or a stronger imitation mechanism. Robot motion remains blocked.
+
+### V22 A100 Partial Run
+
+The first A100 V22 launch was not a valid full V22 verdict. It reached an
+intermediate checkpoint/ONNX export, then the remote driver disappeared without
+an exit sentinel or artifact bundle. The partial checkpoint was recovered and
+evaluated only as diagnostic evidence:
+
+```text
+partial_policy: 2026_06_25_102301_61440.onnx
+checkpoint_step: 61440
+bundle_sha256: 7d6a918fcbc7730666a880b5f31a8f497c1aba15006c9e042a278c132499ce79
+seed_sweep: outputs/analysis/V22_PARTIAL_SEED_SWEEP.md
+trace_summary: outputs/analysis/V22_PARTIAL_TRACE_SET_SUMMARY.md
+status: HOLD_TRACE_SET_LOW_COMMAND_FAILURES
+falls_or_terminations: 4/4
+track_ratio_mean: -0.6618
+mean_local_vx: -0.0265 m/s
+soft_prior_abs_error_mean: 0.2711
+```
+
+The partial checkpoint did not show evidence that the stronger prior was
+locking the exported policy into the curated gait basin by step 61,440. Its
+prior distance was slightly worse than V21's `0.2609`, with the same broad
+failure surfaces:
+
+```text
+LOW_PROGRESS_TERMINATION: 3
+REVERSE_HEIGHT_COLLAPSE: 1
+```
+
+This is not enough to reject V22 as a full recipe, but it is enough to preserve
+the failure evidence and avoid treating the partial checkpoint as a candidate.
+The remote output also revealed a tooling issue: retries in the same Colab
+session shared `/content/open_duck_staged_curriculum_cli`, which mixed partial
+outputs. The Colab workflow was patched to use a unique staged output directory
+per run before any further V22 launch.

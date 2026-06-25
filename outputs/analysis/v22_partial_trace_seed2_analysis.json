@@ -1,0 +1,302 @@
+{
+  "action_saturation_pct": 0.0,
+  "base_height_m": {
+    "max": 0.16490580141544342,
+    "mean": 0.16080479174852372,
+    "min": 0.1526029109954834,
+    "p50": 0.16063537448644638,
+    "p95": 0.16383902132511138
+  },
+  "body_pitch_rad": {
+    "max": 0.010461021599923027,
+    "mean": 0.002031219698541153,
+    "min": -0.024881042093262973,
+    "p50": 0.0036115307878039015,
+    "p95": 0.00592366512091738
+  },
+  "command_x_m_s": 0.04,
+  "contact_counts": {
+    "(0, 1)": 2,
+    "(1, 0)": 3,
+    "(1, 1)": 65
+  },
+  "dominant_cost_means": [
+    {
+      "mean": 11.118425538284438,
+      "term": "cost/forward_shortfall"
+    },
+    {
+      "mean": 2.5004798315872905,
+      "term": "cost/forward_wrong_direction"
+    },
+    {
+      "mean": 2.142857142857143,
+      "term": "cost/command_progress_failure"
+    },
+    {
+      "mean": 1.9866618063833033,
+      "term": "cost/command_progress_shortfall"
+    },
+    {
+      "mean": 0.005723843404224941,
+      "term": "cost/forward_overshoot"
+    },
+    {
+      "mean": 0.0024451043539946635,
+      "term": "cost/torques"
+    },
+    {
+      "mean": 0.00014285714964249304,
+      "term": "cost/forward_contact_support"
+    },
+    {
+      "mean": 4.59219636014252e-05,
+      "term": "cost/forward_pitch_rate"
+    }
+  ],
+  "duration_s": 1.3800000000000001,
+  "eval_candidate_gate": {
+    "metrics": {
+      "max_abs_body_pitch_p95_rad": 0.00592366512091738,
+      "max_abs_forward_velocity_error_m_s": 0.036444297176328425,
+      "max_action_saturation_pct": 0.0,
+      "max_forward_shortfall_cost_mean": 0.2779606312708109,
+      "max_pitch_tracking_p95_rad": 0.09126601219177229,
+      "max_sent_target_velocity_p95_rad_s": 0.36392748355865434,
+      "min_base_height_m": 0.1526029109954834,
+      "min_forward_command_tracking_ratio": 0.08889257059178947,
+      "min_reward_mean": -0.1068044490779617,
+      "terminations": {
+        "vanilla": "fall_or_nan"
+      }
+    },
+    "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+    "thresholds": {
+      "max_abs_body_pitch_p95_rad": 0.25,
+      "max_action_saturation_pct": 1.0,
+      "max_pitch_tracking_p95_rad": 0.08,
+      "max_sent_target_velocity_p95_rad_s": 2.5,
+      "min_base_height_m": 0.12,
+      "min_forward_command_tracking_ratio": 0.25,
+      "min_reward_mean": 0.3
+    }
+  },
+  "events": {
+    "first_done_tick": 69,
+    "first_done_time_s": 1.3800000000000001,
+    "first_low_height_tick": null,
+    "first_low_height_time_s": null,
+    "first_no_contact_tick": null,
+    "first_one_foot_tick": 0,
+    "first_reverse_tick": 6,
+    "first_reverse_time_s": 0.12
+  },
+  "failure_surface": "LOW_PROGRESS_TERMINATION",
+  "local_forward_velocity_m_s": {
+    "max": 0.09396544098854065,
+    "mean": 0.003555702823671579,
+    "min": -0.030578680336475372,
+    "p50": 0.0006541788461618125,
+    "p95": 0.03165175775066016
+  },
+  "pitch_chain": {
+    "left_ankle": {
+      "target_velocity_rad_s": {
+        "max": 0.4914343357086182,
+        "mean": 0.08120795954828676,
+        "min": 0.003445148468017575,
+        "p50": 0.05330443382263179,
+        "p95": 0.36122977733612016
+      },
+      "tracking_error_rad": {
+        "max": 0.07819771766662598,
+        "mean": 0.007887004102979387,
+        "min": 8.821487426757812e-06,
+        "p50": 0.005323350429534912,
+        "p95": 0.02122024595737457
+      }
+    },
+    "left_hip_pitch": {
+      "target_velocity_rad_s": {
+        "max": 0.7812917232513427,
+        "mean": 0.07702751436095306,
+        "min": 0.00019967555999755952,
+        "p50": 0.043565034866332966,
+        "p95": 0.37117779254913263
+      },
+      "tracking_error_rad": {
+        "max": 0.2974216341972351,
+        "mean": 0.022089128834860666,
+        "min": 0.001498103141784668,
+        "p50": 0.0072672367095947266,
+        "p95": 0.08054509162902823
+      }
+    },
+    "left_knee": {
+      "target_velocity_rad_s": {
+        "max": 0.79088807106018,
+        "mean": 0.10040981182153672,
+        "min": 0.000387430191040043,
+        "p50": 0.06962418556213411,
+        "p95": 0.34983754158019964
+      },
+      "tracking_error_rad": {
+        "max": 0.499825119972229,
+        "mean": 0.0459980913570949,
+        "min": 0.00417172908782959,
+        "p50": 0.034159302711486816,
+        "p95": 0.056117260456085144
+      }
+    },
+    "right_ankle": {
+      "target_velocity_rad_s": {
+        "max": 0.9327620267868043,
+        "mean": 0.08917627991109654,
+        "min": 0.0012874603271484364,
+        "p50": 0.05696713924407954,
+        "p95": 0.32870650291442843
+      },
+      "tracking_error_rad": {
+        "max": 0.3510945737361908,
+        "mean": 0.020863570060048783,
+        "min": 0.00013387203216552734,
+        "p50": 0.0046128928661346436,
+        "p95": 0.09126601219177227
+      }
+    },
+    "right_hip_pitch": {
+      "target_velocity_rad_s": {
+        "max": 0.7361590862274169,
+        "mean": 0.07749299208323161,
+        "min": 0.0009506940841674796,
+        "p50": 0.053194165229797315,
+        "p95": 0.30748009681701627
+      },
+      "tracking_error_rad": {
+        "max": 0.15291929244995117,
+        "mean": 0.01633293458393642,
+        "min": 0.0031191110610961914,
+        "p50": 0.009500116109848022,
+        "p95": 0.05662700831890104
+      }
+    },
+    "right_knee": {
+      "target_velocity_rad_s": {
+        "max": 1.5576004981994627,
+        "mean": 0.08086017940355383,
+        "min": 0.001460313796997069,
+        "p50": 0.038343667984008754,
+        "p95": 0.29877305030822715
+      },
+      "tracking_error_rad": {
+        "max": 0.2832130193710327,
+        "mean": 0.04557482004165649,
+        "min": 0.0014899969100952148,
+        "p50": 0.03912228345870972,
+        "p95": 0.05424830913543701
+      }
+    }
+  },
+  "reward": {
+    "max": 0.8319861888885498,
+    "mean": -0.1068044490779617,
+    "min": -3.0465197563171387,
+    "p50": -0.06451022252440453,
+    "p95": 0.6653992682695387
+  },
+  "reward_term_means": {
+    "cost/action_magnitude": 5.913218618453746e-06,
+    "cost/action_rate": 7.042916045309409e-06,
+    "cost/base_height": 2.9831896938503633e-05,
+    "cost/command_progress_failure": 2.142857142857143,
+    "cost/command_progress_shortfall": 1.9866618063833033,
+    "cost/forward_contact_support": 0.00014285714964249304,
+    "cost/forward_overshoot": 0.005723843404224941,
+    "cost/forward_pitch": 6.627610899740638e-07,
+    "cost/forward_pitch_rate": 4.59219636014252e-05,
+    "cost/forward_shortfall": 11.118425538284438,
+    "cost/forward_wrong_direction": 2.5004798315872905,
+    "cost/orientation": 5.0464328525988225e-06,
+    "cost/stand_still": 0.0,
+    "cost/target_rate": 0.0,
+    "cost/torques": 0.0024451043539946635,
+    "diagnostic/actuator_bridge_delay_ticks": 0.0,
+    "diagnostic/actuator_bridge_tau_mean_s": 0.019999999552965164,
+    "diagnostic/actuator_bridge_tracking_cost": 0.0,
+    "diagnostic/actuator_bridge_velocity_limit_mean_rad_s": 5.239999294281006,
+    "diagnostic/command_progress_failure": 0.014285714285714285,
+    "diagnostic/command_progress_ratio": 0.2848779296236379,
+    "diagnostic/command_progress_shortfall_cost": 0.04730147170235536,
+    "diagnostic/soft_prior_cost": 0.0,
+    "diagnostic/soft_prior_phase": 0.0,
+    "diagnostic/target_velocity_cost": 0.0,
+    "reward/command_progress": 2.279023436989103,
+    "reward/forward_progress": 2.593255002158029,
+    "reward/tracking_lin_vel": 7.544329452534606
+  },
+  "samples": 70,
+  "soft_prior_alignment": {
+    "mean_abs_error": {
+      "max": 0.493659808093475,
+      "mean": 0.2684992928218437,
+      "min": 0.047810181975364685,
+      "p50": 0.24820815958082676,
+      "p95": 0.46944627901539193
+    },
+    "method": "tick_mod_prior_window",
+    "per_joint_abs_error": {
+      "left_ankle": {
+        "max": 0.18071862682700157,
+        "mean": 0.14572425119408836,
+        "min": 0.047810181975364685,
+        "p50": 0.1508307028044429,
+        "p95": 0.17784898625686765
+      },
+      "left_hip_pitch": {
+        "max": 0.45575163782470757,
+        "mean": 0.2799273178963804,
+        "min": 0.1551057468685839,
+        "p50": 0.2622213673570918,
+        "p95": 0.4414385429247179
+      },
+      "left_knee": {
+        "max": 0.4843726239392304,
+        "mean": 0.3559832038942385,
+        "min": 0.23512127478089598,
+        "p50": 0.3364097984093759,
+        "p95": 0.47809390505576127
+      },
+      "right_ankle": {
+        "max": 0.2005177785952886,
+        "mean": 0.15092164514177953,
+        "min": 0.1263622757461336,
+        "p50": 0.14798285729355282,
+        "p95": 0.18218554066908027
+      },
+      "right_hip_pitch": {
+        "max": 0.4693177358971702,
+        "mean": 0.33273502405033456,
+        "min": 0.15211866713232464,
+        "p50": 0.3440245999954641,
+        "p95": 0.45990709437367816
+      },
+      "right_knee": {
+        "max": 0.493659808093475,
+        "mean": 0.34570431475424107,
+        "min": 0.11912231643994647,
+        "p50": 0.3537956638675597,
+        "p95": 0.4848825198856907
+      }
+    },
+    "period": 50,
+    "rms_error": {
+      "max": 0.3103323698858039,
+      "mean": 0.2929455930536913,
+      "min": 0.22842018867863847,
+      "p50": 0.29678196951621577,
+      "p95": 0.3051564423858296
+    }
+  },
+  "trace_jsonl": "outputs/analysis/v22_partial_seed_sweep_cpu/v22_partial_61440/seed_002/trace.jsonl",
+  "track_ratio": 0.08889257059178947
+}

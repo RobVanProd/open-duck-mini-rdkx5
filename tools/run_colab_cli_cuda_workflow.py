@@ -587,6 +587,7 @@ def build_remote_driver(
         RDK = Path("/content/open-duck-mini-rdkx5")
         PLAYGROUND = Path("/content/Open_Duck_Playground")
         OUT = RDK / "outputs/analysis/{workflow_name}"
+        STAGED_ROOT = Path("/content/open_duck_staged_curriculum_cli_{workflow_name}")
         OUT.mkdir(parents=True, exist_ok=True)
         REMOTE_BUNDLE = Path("{remote_bundle}")
         RUN_STATUS = {{"exit_status": 0}}
@@ -685,11 +686,11 @@ def build_remote_driver(
                     OUT / "open_duck_training_runs_cli",
                 )
                 copy_training_outputs(
-                    "/content/open_duck_staged_curriculum_cli",
+                    STAGED_ROOT,
                     OUT / "open_duck_staged_curriculum_cli",
                 )
                 copy_staged_gate_outputs(
-                    "/content/open_duck_staged_curriculum_cli",
+                    STAGED_ROOT,
                     OUT / "open_duck_staged_curriculum_cli",
                 )
                 subprocess.run(
@@ -930,7 +931,7 @@ def build_remote_driver(
                 "open_duck_mini_staged_curriculum_cli_"
                 + dt.datetime.now(dt.UTC).strftime("%Y%m%dT%H%M%SZ")
             )
-            staged_root = Path("/content/open_duck_staged_curriculum_cli")
+            staged_root = STAGED_ROOT
             run([
                 PYTHON, "tools/plan_staged_curriculum_training.py",
                 "--run",
