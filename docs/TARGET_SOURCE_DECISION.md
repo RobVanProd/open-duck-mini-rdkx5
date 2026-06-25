@@ -372,3 +372,22 @@ Next planning artifact:
 ```text
 docs/PHASE_CONTINUATION_ADAPTER_PLAN.md
 ```
+
+Phase-continuation adapter result:
+
+```text
+contact_hold: HOLD_SEQUENCE_REPLAY_LOW_FORWARD_MOTION
+contact_match: HOLD_SEQUENCE_REPLAY_LOW_FORWARD_MOTION
+state_match: HOLD_SEQUENCE_REPLAY_LOW_FORWARD_MOTION
+
+aggregate seed0/seed2 vx remains about 0.0117-0.0138 m/s
+contact mismatch is already low: seed0 about 2.76%, seed2 0.00%
+```
+
+Decision:
+
+```text
+The aggregate target table is not rescued by contact/phase matching. The current
+target-source pass remains useful evidence, but these tables are not training
+labels yet. Do not launch PPO/BC from them as-is.
+```

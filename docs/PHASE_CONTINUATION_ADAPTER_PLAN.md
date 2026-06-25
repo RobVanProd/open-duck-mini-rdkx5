@@ -113,3 +113,60 @@ do not change the physical robot
 do not run grounded replay
 do not relax the actuator envelope to make a target pass
 ```
+
+## Adapter Smoke Result
+
+Three default-off adapter modes were implemented in
+`tools/run_target_sequence_replay_smoke.py` and tested on the aggregate robust
+lateral-fix phase table over seeds 0 and 2:
+
+```text
+contact_hold:
+  status: HOLD_SEQUENCE_REPLAY_LOW_FORWARD_MOTION
+  seed0/seed2 vx: 0.0119 / 0.0138 m/s
+  seed0/seed2 contact mismatch: 2.76% / 0.00%
+  seed0/seed2 holds per second: 1.33 / 0.00
+
+contact_match:
+  status: HOLD_SEQUENCE_REPLAY_LOW_FORWARD_MOTION
+  seed0/seed2 vx: 0.0117 / 0.0138 m/s
+  seed0/seed2 contact mismatch: 2.76% / 0.00%
+  phase skips per second: 0.00 / 0.00
+
+state_match:
+  status: HOLD_SEQUENCE_REPLAY_LOW_FORWARD_MOTION
+  seed0/seed2 vx: 0.0117 / 0.0138 m/s
+  seed0/seed2 contact mismatch: 2.76% / 0.00%
+  phase skips per second: 0.00 / 0.00
+```
+
+Artifacts:
+
+```text
+outputs/analysis/TARGET_SEQUENCE_REPLAY_SMOKE_contact_hold.md
+outputs/analysis/target_sequence_replay_smoke_contact_hold.json
+outputs/analysis/TARGET_SEQUENCE_REPLAY_SMOKE_contact_match.md
+outputs/analysis/target_sequence_replay_smoke_contact_match.json
+outputs/analysis/TARGET_SEQUENCE_REPLAY_SMOKE_state_match.md
+outputs/analysis/target_sequence_replay_smoke_state_match.json
+```
+
+Interpretation:
+
+```text
+Contact/phase matching does not rescue the aggregate target table because the
+contact mismatch rate is already low. The replay is not failing because phase
+selection cannot find the right contact pattern; it is failing because the
+low-velocity aggregate target damps into low forward progress and marginal
+pitch. The current robust target table should not be promoted into PPO or BC
+labels.
+```
+
+Updated next step:
+
+```text
+Do not continue adapter work on the aggregate table alone. Either generate a
+longer self-consistent target trajectory directly, or build a learner/objective
+that uses the short target fragment as a soft motion prior while optimizing
+closed-loop forward progress and posture from the start.
+```

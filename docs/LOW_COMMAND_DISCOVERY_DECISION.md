@@ -917,3 +917,25 @@ outputs/analysis/target_sequence_replay_smoke.json
 outputs/analysis/TARGET_SEQUENCE_REPLAY_SMOKE_SEAM_CORRECTED.md
 outputs/analysis/target_sequence_replay_smoke_seam_corrected.json
 ```
+
+Phase-continuation adapters were then tested on the aggregate robust target
+table:
+
+```text
+contact_hold: HOLD_SEQUENCE_REPLAY_LOW_FORWARD_MOTION
+contact_match: HOLD_SEQUENCE_REPLAY_LOW_FORWARD_MOTION
+state_match: HOLD_SEQUENCE_REPLAY_LOW_FORWARD_MOTION
+
+contact mismatch is already low, so phase/contact matching does not explain the
+low-forward-progress replay failure.
+```
+
+Updated conclusion:
+
+```text
+The low-command discovery layer has found short in-envelope motion fragments,
+but not a reusable gait target. The next path is not another one-step BC run and
+not another contact-matching adapter on the aggregate table. Either generate a
+longer self-consistent target trajectory directly, or use these fragments as a
+soft prior inside a closed-loop learner/objective.
+```

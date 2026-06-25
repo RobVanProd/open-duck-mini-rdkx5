@@ -4560,3 +4560,36 @@ Next planning artifact:
 ```text
 docs/PHASE_CONTINUATION_ADAPTER_PLAN.md
 ```
+
+### Phase Continuation Adapter Smoke
+
+Default-off phase/contact adapters were implemented and tested on the aggregate
+robust target table:
+
+```text
+contact_hold:
+  status: HOLD_SEQUENCE_REPLAY_LOW_FORWARD_MOTION
+  seed_000 / seed_002 vx: 0.0119 / 0.0138 m/s
+  seed_000 / seed_002 contact mismatch: 2.76% / 0.00%
+
+contact_match:
+  status: HOLD_SEQUENCE_REPLAY_LOW_FORWARD_MOTION
+  seed_000 / seed_002 vx: 0.0117 / 0.0138 m/s
+  seed_000 / seed_002 contact mismatch: 2.76% / 0.00%
+
+state_match:
+  status: HOLD_SEQUENCE_REPLAY_LOW_FORWARD_MOTION
+  seed_000 / seed_002 vx: 0.0117 / 0.0138 m/s
+  seed_000 / seed_002 contact mismatch: 2.76% / 0.00%
+```
+
+Conclusion:
+
+```text
+The aggregate target table is not failing primarily because the contact phase
+selector cannot find the right foot-contact state; contact mismatch is already
+low. Contact/phase adapters do not recover forward progress. The current short
+target tables should remain evidence, not PPO/BC labels. The next offline work
+should either generate a longer self-consistent low-command target trajectory or
+use the short fragment as a soft prior inside a closed-loop objective.
+```

@@ -3606,3 +3606,43 @@ Do next:
    learner that preserves phase/time continuity
 6. keep full training and robot validation blocked
 ```
+
+### Phase Continuation Adapter Smoke
+
+Default-off `contact_hold`, `contact_match`, and `state_match` adapters were
+added to `tools/run_target_sequence_replay_smoke.py` and tested on the aggregate
+robust target table.
+
+Result:
+
+```text
+contact_hold: HOLD_SEQUENCE_REPLAY_LOW_FORWARD_MOTION
+  seed0/seed2 vx: 0.0119 / 0.0138 m/s
+  contact mismatch: 2.76% / 0.00%
+
+contact_match: HOLD_SEQUENCE_REPLAY_LOW_FORWARD_MOTION
+  seed0/seed2 vx: 0.0117 / 0.0138 m/s
+  contact mismatch: 2.76% / 0.00%
+
+state_match: HOLD_SEQUENCE_REPLAY_LOW_FORWARD_MOTION
+  seed0/seed2 vx: 0.0117 / 0.0138 m/s
+  contact mismatch: 2.76% / 0.00%
+```
+
+Interpretation:
+
+```text
+Contact/phase selection is not the primary blocker for the aggregate table.
+Contact mismatch is already low, and the adapters do not recover forward
+progress. Do not spend more runs trying to rescue the aggregate table with
+contact matching alone.
+```
+
+Do next:
+
+```text
+1. generate a longer self-consistent low-command target trajectory directly, or
+2. use the short target fragment only as a soft motion prior inside a
+   closed-loop objective that rewards forward progress and posture, and
+3. keep robot validation blocked
+```

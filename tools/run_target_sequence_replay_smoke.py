@@ -40,6 +40,11 @@ class SequencePolicy:
     mode: str
     prefix_actions: np.ndarray
     window_actions: np.ndarray
+    prefix_contacts: list[tuple[int, int]]
+    window_contacts: list[tuple[int, int]]
+    window_body_pitch_abs: np.ndarray
+    window_base_height: np.ndarray
+    window_vy_abs: np.ndarray
     entry_ids: list[str]
 
     def action_at(self, tick: int) -> np.ndarray:
@@ -49,6 +54,20 @@ class SequencePolicy:
             return self.prefix_actions[-1]
         index = (tick - self.prefix_actions.shape[0]) % self.window_actions.shape[0]
         return self.window_actions[index]
+
+
+@dataclass
+class PhaseState:
+    phase_index: int = 0
+    hold_count: int = 0
+    holds: int = 0
+    skips: int = 0
+    contact_mismatches: int = 0
+    phase_indices: list[int] | None = None
+
+    def __post_init__(self) -> None:
+        if self.phase_indices is None:
+            self.phase_indices = []
 
 
 def finite(value: Any) -> bool:
@@ -75,6 +94,14 @@ def read_jsonl(path: Path) -> list[dict[str, Any]]:
 
 def pattern(values: list[int] | tuple[int, ...]) -> str:
     return "".join(str(int(value)) for value in values)
+
+
+def contact_tuple(values: Any) -> tuple[int, int]:
+    if isinstance(values, np.ndarray):
+        values = values.astype(int).reshape(-1).tolist()
+    if not isinstance(values, list | tuple) or len(values) < 2:
+        return (0, 0)
+    return (int(values[0]), int(values[1]))
 
 
 def signed_stats(values: Iterable[float]) -> dict[str, float] | None:
@@ -111,6 +138,7 @@ def load_entry_sequence(entry: dict[str, Any]) -> SequencePolicy:
     ]
     by_tick = {int(record["tick"]): record for record in records if "tick" in record}
     prefix = []
+    prefix_contacts = []
     for tick in range(start_tick):
         record = by_tick.get(tick)
         if record is None:
@@ -118,7 +146,12 @@ def load_entry_sequence(entry: dict[str, Any]) -> SequencePolicy:
         action = np.asarray(record.get("action"), dtype=float).reshape(-1)
         if action.shape == (14,):
             prefix.append(action)
+            prefix_contacts.append(contact_tuple(record.get("foot_contacts")))
     window = []
+    window_contacts = []
+    window_body_pitch_abs = []
+    window_base_height = []
+    window_vy_abs = []
     for tick in range(start_tick, end_tick + 1):
         record = by_tick.get(tick)
         if record is None:
@@ -126,16 +159,27 @@ def load_entry_sequence(entry: dict[str, Any]) -> SequencePolicy:
         action = np.asarray(record.get("action"), dtype=float).reshape(-1)
         if action.shape == (14,):
             window.append(action)
+            window_contacts.append(contact_tuple(record.get("foot_contacts")))
+            window_body_pitch_abs.append(abs(float(record.get("body_pitch_rad", 0.0))))
+            window_base_height.append(float(record.get("base_height_m", 0.0)))
+            local_linvel = record.get("local_linvel_m_s") or [0.0, 0.0, 0.0]
+            window_vy_abs.append(abs(float(local_linvel[1])) if len(local_linvel) > 1 else 0.0)
     if not window:
         raise ValueError(f"entry {entry.get('entry_id')} has no usable action window")
     if not prefix:
         prefix = [window[0]]
+        prefix_contacts = [window_contacts[0]]
     return SequencePolicy(
         name=f"{entry.get('entry_id')}_{source_path.stem}_{start_tick}_{end_tick}",
         source=source_path.name,
         mode=mode,
         prefix_actions=np.asarray(prefix, dtype=np.float64),
         window_actions=np.asarray(window, dtype=np.float64),
+        prefix_contacts=prefix_contacts,
+        window_contacts=window_contacts,
+        window_body_pitch_abs=np.asarray(window_body_pitch_abs, dtype=np.float64),
+        window_base_height=np.asarray(window_base_height, dtype=np.float64),
+        window_vy_abs=np.asarray(window_vy_abs, dtype=np.float64),
         entry_ids=[str(entry.get("entry_id"))],
     )
 
@@ -147,12 +191,25 @@ def average_sequences(name: str, sequences: list[SequencePolicy]) -> SequencePol
     window_len = min(seq.window_actions.shape[0] for seq in sequences)
     prefix = np.mean([seq.prefix_actions[:prefix_len] for seq in sequences], axis=0)
     window = np.mean([seq.window_actions[:window_len] for seq in sequences], axis=0)
+    prefix_contacts = []
+    for index in range(prefix_len):
+        counter = Counter(seq.prefix_contacts[index] for seq in sequences if len(seq.prefix_contacts) > index)
+        prefix_contacts.append(counter.most_common(1)[0][0] if counter else (0, 0))
+    window_contacts = []
+    for index in range(window_len):
+        counter = Counter(seq.window_contacts[index] for seq in sequences if len(seq.window_contacts) > index)
+        window_contacts.append(counter.most_common(1)[0][0] if counter else (0, 0))
     return SequencePolicy(
         name=name,
         source="aggregate",
         mode="aggregate",
         prefix_actions=np.asarray(prefix, dtype=np.float64),
         window_actions=np.asarray(window, dtype=np.float64),
+        prefix_contacts=prefix_contacts,
+        window_contacts=window_contacts,
+        window_body_pitch_abs=np.mean([seq.window_body_pitch_abs[:window_len] for seq in sequences], axis=0),
+        window_base_height=np.mean([seq.window_base_height[:window_len] for seq in sequences], axis=0),
+        window_vy_abs=np.mean([seq.window_vy_abs[:window_len] for seq in sequences], axis=0),
         entry_ids=[entry for seq in sequences for entry in seq.entry_ids],
     )
 
@@ -177,6 +234,11 @@ def apply_periodic_seam_correction(policy: SequencePolicy) -> SequencePolicy:
         mode=policy.mode,
         prefix_actions=policy.prefix_actions,
         window_actions=corrected,
+        prefix_contacts=policy.prefix_contacts,
+        window_contacts=policy.window_contacts,
+        window_body_pitch_abs=policy.window_body_pitch_abs,
+        window_base_height=policy.window_base_height,
+        window_vy_abs=policy.window_vy_abs,
         entry_ids=policy.entry_ids,
     )
 
@@ -196,6 +258,130 @@ def load_sequence_policies(manifest_path: Path, args: argparse.Namespace) -> tup
     if args.periodic_seam_correction:
         policies = [apply_periodic_seam_correction(policy) for policy in policies]
     return manifest, policies
+
+
+def contact_mismatch_count(left: tuple[int, int], right: tuple[int, int]) -> int:
+    return int(left[0] != right[0]) + int(left[1] != right[1])
+
+
+def choose_phase_action(
+    *,
+    policy: SequencePolicy,
+    tick: int,
+    phase_state: PhaseState,
+    actual_contact: tuple[int, int],
+    body_pitch_abs: float,
+    base_height: float,
+    vy_abs: float,
+    args: argparse.Namespace,
+) -> tuple[np.ndarray, dict[str, Any]]:
+    prefix_len = int(policy.prefix_actions.shape[0])
+    if tick < prefix_len:
+        prefix_index = min(tick, prefix_len - 1)
+        return policy.prefix_actions[prefix_index], {
+            "phase_mode": "prefix",
+            "phase_index": None,
+            "target_contact": policy.prefix_contacts[prefix_index],
+            "actual_contact": actual_contact,
+            "phase_hold": False,
+            "phase_skip": 0,
+            "contact_mismatch": contact_mismatch_count(
+                actual_contact, policy.prefix_contacts[prefix_index]
+            ),
+        }
+
+    window_len = int(policy.window_actions.shape[0])
+    base_index = phase_state.phase_index % window_len
+    phase_skip = 0
+    phase_hold = False
+    chosen = base_index
+
+    if args.phase_adapter == "fixed_time":
+        chosen = (tick - prefix_len) % window_len
+        phase_state.phase_index = (chosen + 1) % window_len
+    elif args.phase_adapter == "contact_hold":
+        mismatch = contact_mismatch_count(actual_contact, policy.window_contacts[base_index])
+        chosen = base_index
+        if mismatch and phase_state.hold_count < args.max_phase_hold_ticks:
+            phase_hold = True
+            phase_state.hold_count += 1
+            phase_state.holds += 1
+        else:
+            phase_state.hold_count = 0
+            phase_state.phase_index = (base_index + 1) % window_len
+    elif args.phase_adapter == "contact_match":
+        candidates = [(base_index + offset) % window_len for offset in range(args.phase_lookahead + 1)]
+        matches = [
+            (offset, index)
+            for offset, index in enumerate(candidates)
+            if contact_mismatch_count(actual_contact, policy.window_contacts[index]) == 0
+        ]
+        phase_skip, chosen = matches[0] if matches else (0, base_index)
+        phase_state.skips += phase_skip
+        phase_state.phase_index = (chosen + 1) % window_len
+    elif args.phase_adapter == "state_match":
+        best_score = None
+        best_offset = 0
+        best_index = base_index
+        for offset in range(args.phase_lookahead + 1):
+            index = (base_index + offset) % window_len
+            score = (
+                args.contact_mismatch_weight
+                * contact_mismatch_count(actual_contact, policy.window_contacts[index])
+            )
+            score += args.pitch_match_weight * abs(
+                float(body_pitch_abs) - float(policy.window_body_pitch_abs[index])
+            )
+            score += args.height_match_weight * abs(
+                float(base_height) - float(policy.window_base_height[index])
+            )
+            score += args.vy_match_weight * abs(float(vy_abs) - float(policy.window_vy_abs[index]))
+            score += args.phase_skip_weight * offset
+            if best_score is None or score < best_score:
+                best_score = score
+                best_offset = offset
+                best_index = index
+        phase_skip = best_offset
+        chosen = best_index
+        phase_state.skips += phase_skip
+        phase_state.phase_index = (chosen + 1) % window_len
+    else:
+        raise ValueError(f"unsupported phase adapter {args.phase_adapter}")
+
+    target_contact = policy.window_contacts[chosen]
+    mismatch_count = contact_mismatch_count(actual_contact, target_contact)
+    if mismatch_count:
+        phase_state.contact_mismatches += 1
+    phase_state.phase_indices.append(int(chosen))
+    return policy.window_actions[chosen], {
+        "phase_mode": args.phase_adapter,
+        "phase_index": int(chosen),
+        "target_contact": target_contact,
+        "actual_contact": actual_contact,
+        "phase_hold": phase_hold,
+        "phase_skip": int(phase_skip),
+        "contact_mismatch": int(mismatch_count),
+    }
+
+
+def phase_summary(phase_state: PhaseState, records: list[dict[str, Any]], dt_s: float) -> dict[str, Any]:
+    duration_s = max(len(records) * float(dt_s), 1.0e-9)
+    phase_records = [record for record in records if record.get("phase_index") is not None]
+    mismatches = [
+        int(record.get("contact_mismatch", 0)) > 0
+        for record in phase_records
+    ]
+    return {
+        "holds": int(phase_state.holds),
+        "skips": int(phase_state.skips),
+        "holds_per_s": float(phase_state.holds / duration_s),
+        "skips_per_s": float(phase_state.skips / duration_s),
+        "contact_mismatch_pct": float(np.mean(mismatches) * 100.0) if mismatches else None,
+        "phase_index_histogram": {
+            str(key): int(value)
+            for key, value in sorted(Counter(phase_state.phase_indices or []).items())
+        },
+    }
 
 
 def run_closed_loop_rollout(
@@ -323,15 +509,32 @@ def run_closed_loop_rollout(
     for policy in policies:
         seed_rows = {}
         for seed in seeds:
+            phase_state = PhaseState()
             state = env.reset(jax.random.PRNGKey(seed))
             state.info["command"] = command
             state = refresh_obs_jit(state)
             records = []
             for tick in range(sim_steps):
-                action = policy.action_at(tick).astype(np.float32)
+                pre_qpos = np.asarray(jax.device_get(state.data.qpos), dtype=float)
+                base_addr = int(env._floating_base_qpos_addr)
+                pre_quat = pre_qpos[base_addr + 3 : base_addr + 7]
+                pre_local_linvel = np.asarray(
+                    jax.device_get(env.get_local_linvel(state.data)), dtype=float
+                )
+                actual_contact = contact_tuple(np.asarray(jax.device_get(state.info["last_contact"])))
+                action, phase_info = choose_phase_action(
+                    policy=policy,
+                    tick=tick,
+                    phase_state=phase_state,
+                    actual_contact=actual_contact,
+                    body_pitch_abs=abs(quat_wxyz_to_pitch(pre_quat)),
+                    base_height=float(pre_qpos[base_addr + 2]),
+                    vy_abs=abs(float(pre_local_linvel[1])),
+                    args=args,
+                )
+                action = action.astype(np.float32)
                 state, pre_rate, sent_target = step_sequence_jit(state, jp.asarray(action))
                 qpos = np.asarray(jax.device_get(state.data.qpos), dtype=float)
-                base_addr = int(env._floating_base_qpos_addr)
                 quat = qpos[base_addr + 3 : base_addr + 7]
                 local_linvel = np.asarray(
                     jax.device_get(env.get_local_linvel(state.data)), dtype=float
@@ -347,6 +550,13 @@ def run_closed_loop_rollout(
                         "time_s": tick * float(env.dt),
                         "seed": seed,
                         "policy_name": policy.name,
+                        "phase_adapter": args.phase_adapter,
+                        "phase_index": phase_info["phase_index"],
+                        "phase_hold": phase_info["phase_hold"],
+                        "phase_skip": phase_info["phase_skip"],
+                        "target_contact": list(phase_info["target_contact"]),
+                        "actual_contact": list(phase_info["actual_contact"]),
+                        "contact_mismatch": phase_info["contact_mismatch"],
                         "action": action.astype(float).tolist(),
                         "target_pre_rate_limit_rad": np.asarray(
                             jax.device_get(pre_rate), dtype=float
@@ -367,7 +577,12 @@ def run_closed_loop_rollout(
                 )
                 if done:
                     break
-            seed_rows[f"seed_{seed:03d}"] = summarize_rollout(records, args.command_x, float(env.dt))
+            seed_rows[f"seed_{seed:03d}"] = summarize_rollout(
+                records,
+                args.command_x,
+                float(env.dt),
+                phase_state=phase_state,
+            )
         policy_results[policy.name] = {
             "source": policy.source,
             "mode": policy.mode,
@@ -397,7 +612,13 @@ def run_closed_loop_rollout(
     }
 
 
-def summarize_rollout(records: list[dict[str, Any]], command_x: float, dt_s: float) -> dict[str, Any]:
+def summarize_rollout(
+    records: list[dict[str, Any]],
+    command_x: float,
+    dt_s: float,
+    *,
+    phase_state: PhaseState | None = None,
+) -> dict[str, Any]:
     if not records:
         return {"status": "HOLD_NO_ROLLOUT_SAMPLES", "samples": 0}
     vx = [record["local_linvel_m_s"][0] for record in records]
@@ -412,7 +633,7 @@ def summarize_rollout(records: list[dict[str, Any]], command_x: float, dt_s: flo
     contacts = Counter(pattern(record.get("foot_contacts", [])) for record in records)
     mean_vx = float(np.mean(vx)) if vx else None
     done = bool(records[-1].get("done"))
-    return {
+    summary = {
         "status": "PASS_ROLLOUT_COMPLETED" if not done else "HOLD_ROLLOUT_TERMINATED",
         "samples": len(records),
         "termination_reason": "fall_or_progress_failure" if done else "duration_complete",
@@ -431,6 +652,9 @@ def summarize_rollout(records: list[dict[str, Any]], command_x: float, dt_s: flo
         else None,
         "contact_pct": {key: float(value / len(records) * 100.0) for key, value in sorted(contacts.items())},
     }
+    if phase_state is not None:
+        summary["phase"] = phase_summary(phase_state, records, dt_s)
+    return summary
 
 
 def classify_policy_rollout(rows: dict[str, Any], args: argparse.Namespace) -> str:
@@ -479,6 +703,7 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         f"- manifest_status: `{payload['manifest_status']}`",
         f"- policy_set: `{payload['policy_set']}`",
         f"- periodic_seam_correction: `{payload['periodic_seam_correction']}`",
+        f"- phase_adapter: `{payload['phase_adapter']}`",
         f"- sequence_policies: `{payload['sequence_policy_count']}`",
         f"- command_x: `{fmt(payload['command_x'])}`",
         f"- duration_s: `{fmt(payload['duration_s'])}`",
@@ -530,6 +755,28 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         lines.extend(
             [
                 "",
+                "### Phase Adapter Summary",
+                "",
+                "| policy | seed | holds/s | skips/s | contact_mismatch_pct | phase_bins |",
+                "|---|---|---:|---:|---:|---:|",
+            ]
+        )
+        for name, policy in sorted((rollout.get("policies") or {}).items()):
+            for seed, row in sorted((policy.get("seeds") or {}).items()):
+                phase = row.get("phase") or {}
+                lines.append(
+                    "| {policy} | {seed} | {holds} | {skips} | {mismatch} | {bins} |".format(
+                        policy=name[:42],
+                        seed=seed,
+                        holds=fmt(phase.get("holds_per_s")),
+                        skips=fmt(phase.get("skips_per_s")),
+                        mismatch=fmt(phase.get("contact_mismatch_pct")),
+                        bins=len(phase.get("phase_index_histogram") or {}),
+                    )
+                )
+        lines.extend(
+            [
+                "",
                 "### Policy Table Summary",
                 "",
                 "| policy | source | prefix_len | window_len | entry_count | status |",
@@ -575,6 +822,18 @@ def main() -> int:
     parser.add_argument("--seeds", default="0,2")
     parser.add_argument("--policy-set", choices=["aggregate", "per-entry", "all"], default="all")
     parser.add_argument(
+        "--phase-adapter",
+        choices=["fixed_time", "contact_hold", "contact_match", "state_match"],
+        default="fixed_time",
+    )
+    parser.add_argument("--max-phase-hold-ticks", type=int, default=3)
+    parser.add_argument("--phase-lookahead", type=int, default=8)
+    parser.add_argument("--contact-mismatch-weight", type=float, default=10.0)
+    parser.add_argument("--pitch-match-weight", type=float, default=2.0)
+    parser.add_argument("--height-match-weight", type=float, default=5.0)
+    parser.add_argument("--vy-match-weight", type=float, default=1.0)
+    parser.add_argument("--phase-skip-weight", type=float, default=0.1)
+    parser.add_argument(
         "--periodic-seam-correction",
         action="store_true",
         help="Linearly remove the action jump between the end and start of looped windows.",
@@ -609,6 +868,16 @@ def main() -> int:
         "manifest_status": manifest.get("status"),
         "policy_set": args.policy_set,
         "periodic_seam_correction": bool(args.periodic_seam_correction),
+        "phase_adapter": args.phase_adapter,
+        "phase_adapter_config": {
+            "max_phase_hold_ticks": args.max_phase_hold_ticks,
+            "phase_lookahead": args.phase_lookahead,
+            "contact_mismatch_weight": args.contact_mismatch_weight,
+            "pitch_match_weight": args.pitch_match_weight,
+            "height_match_weight": args.height_match_weight,
+            "vy_match_weight": args.vy_match_weight,
+            "phase_skip_weight": args.phase_skip_weight,
+        },
         "sequence_policy_count": len(policies),
         "command_x": float(args.command_x),
         "duration_s": float(args.duration_s),
