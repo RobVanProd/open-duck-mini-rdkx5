@@ -63,6 +63,12 @@ Support-contact reward preflight:
 docs/SUPPORT_REWARD_PREFLIGHT.md
 ```
 
+Post-V24 branch decision:
+
+```text
+docs/NEXT_OFFLINE_BRANCH_AFTER_V24.md
+```
+
 Cloud GPU smoke/debug notes:
 
 ```text

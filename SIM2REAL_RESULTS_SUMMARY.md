@@ -6058,3 +6058,14 @@ contact states:
 The corrected eval confirms the support-contact rewards are now observable, but
 the V24 policy still does not perform useful support transfer or propulsion. It
 terminates for low progress while remaining mostly in double support.
+
+The next offline branch is captured in:
+
+```text
+docs/NEXT_OFFLINE_BRANCH_AFTER_V24.md
+```
+
+It explicitly blocks rerunning V24 unchanged or making another nearby scalar
+contact-reward tweak. The next valid branch should be either a richer
+closed-loop teacher/optimizer or a demonstration/imitation path with verified
+contact/envelope compatibility.

@@ -391,6 +391,12 @@ Runbook:
 docs/SUPPORT_REWARD_PREFLIGHT.md
 ```
 
+Next offline branch handoff:
+
+```text
+docs/NEXT_OFFLINE_BRANCH_AFTER_V24.md
+```
+
 Corrected seed-0 V24 evidence:
 
 ```text

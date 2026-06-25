@@ -43,12 +43,12 @@ rm -rf /tmp/open_duck_support_reward_preflight
   --jax-platform cpu \
   --sim-preflight-timeout-s 300 \
   --closed-loop-timeout-s 300 \
-  --reward-overrides-json outputs/analysis/STAGED_CURRICULUM_TRAINING_PLAN.json \
+  --reward-overrides-json outputs/analysis/movement_bootstrap_v24_transition_propulsion_plan.json \
   --reward-overrides-phase phase1_transition_propulsion_probe \
   --output-dir /tmp/open_duck_support_reward_preflight
 
 python3 tools/audit_reward_term_activation.py \
-  --reward-overrides-json outputs/analysis/STAGED_CURRICULUM_TRAINING_PLAN.json \
+  --reward-overrides-json outputs/analysis/movement_bootstrap_v24_transition_propulsion_plan.json \
   --reward-overrides-phase phase1_transition_propulsion_probe \
   --eval-path /tmp/open_duck_support_reward_preflight \
   --output-md /tmp/open_duck_support_reward_preflight/REWARD_TERM_ACTIVATION.md \
