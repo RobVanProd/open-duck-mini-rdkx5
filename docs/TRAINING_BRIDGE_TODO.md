@@ -2191,18 +2191,30 @@ seeds 0-1 at x=0.04. Both seeds terminated:
 The corrected replay confirms the reward machinery is active. V18 still fails
 the low-command discovery task under its intended reward config.
 
+Low-command reward signal:
+
+```text
+At x=0.04, the analytic V18 reward signal prefers forward local velocity over
+standing:
+  standstill reward: -1.3686
+  required-speed reward at vx=0.026: 1.6494
+  command-speed reward at vx=0.040: 2.2800
+```
+
+Stop tuning the V18-style reward weights as the main strategy. The immediate
+signal is not the blocker; cold-start locomotion discovery is.
+
 Next offline tasks:
 
-- inspect whether the low-command task can be solved at all with the current
-  observation/action/reward construction
-- audit reward term magnitudes during V18 rollouts, especially signed progress,
-  wrong-direction cost, posture/contact terms, and clipping
-- compare learned action distributions against a simple hand-authored forward
-  stepping target pattern to see whether PPO is discovering a gait seed
-- consider a supervised or reference-gait bootstrap if pure reward discovery
-  continues to produce low/reverse progress
+- locate and audit the upstream Open Duck reference-motion / imitation path
+- build an imitation/reference-gait seed experiment at `x=0.04`, vanilla dynamics
+- gate the seeded candidate across seeds on coherent forward motion, not fall-count
+- if the seed refines, reintroduce the fitted actuator bridge later
+- if the seed degrades, debug the reward/task landscape against the reference behavior
 
 Summary artifact:
 `outputs/analysis/A100_V18_PHASE1_LOW_COMMAND_HOLD_SUMMARY.md`.
 Corrected reward replay:
 `outputs/analysis/V18_PHASE1_REWARD_OVERRIDE_REPLAY_SUMMARY.md`.
+Decision brief:
+`docs/LOW_COMMAND_DISCOVERY_DECISION.md`.

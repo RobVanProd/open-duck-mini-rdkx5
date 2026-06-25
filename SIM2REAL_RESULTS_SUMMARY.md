@@ -2999,6 +2999,23 @@ seed 1: 33 samples, vx -0.0954 m/s, track ratio -2.3845, reverse/collapse
 This strengthens the V18 hold. The reward terms are active, but the learned
 policy still fails low-command motion under the intended V18 objective.
 
+The analytic reward-signal check confirms that the intended V18 low-command
+reward prefers forward motion over standing before command-progress termination:
+
+```text
+x command: 0.04
+standstill reward: -1.3686
+required-speed reward at vx=0.026: 1.6494
+command-speed reward at vx=0.040: 2.2800
+```
+
+Conclusion: do not keep tuning reward weights in the same cold-start family.
+The next decisive experiment is an imitation/reference-gait seed test. If a
+seeded gait refines into stable low-command forward motion, the blocker was
+cold-start discovery. If a working seed degrades into standstill/reverse, the
+reward/task landscape is actively hostile and must be debugged from that
+reference behavior.
+
 Summary artifacts:
 
 ```text
@@ -3006,4 +3023,6 @@ outputs/analysis/A100_V18_PHASE1_LOW_COMMAND_HOLD_SUMMARY.md
 outputs/analysis/V18_PHASE1_LOW_COMMAND_SEED_GATE.md
 outputs/analysis/v18_phase1_low_command_seed_gate.json
 outputs/analysis/V18_PHASE1_REWARD_OVERRIDE_REPLAY_SUMMARY.md
+outputs/analysis/LOW_COMMAND_REWARD_SIGNAL_V18.md
+docs/LOW_COMMAND_DISCOVERY_DECISION.md
 ```
