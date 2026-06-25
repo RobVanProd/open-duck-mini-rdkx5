@@ -50,6 +50,8 @@ class ClosedLoopConfig:
     command_x: float
     duration_s: float
     bridge_mode: str
+    command_y: float = 0.0
+    command_yaw: float = 0.0
     expected_observation_dim: int = 101
     expected_action_dim: int = 14
     task: str = "flat_terrain"
@@ -634,12 +636,14 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             "error": f"{type(exc).__name__}: {exc}",
         }
 
-    command = jp.asarray([config.command_x, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+    command = jp.asarray(
+        [config.command_x, config.command_y, config.command_yaw, 0.0, 0.0, 0.0, 0.0]
+    )
     overrides = {
         "push_config.enable": False,
         "lin_vel_x": [config.command_x, config.command_x],
-        "lin_vel_y": [0.0, 0.0],
-        "ang_vel_yaw": [0.0, 0.0],
+        "lin_vel_y": [config.command_y, config.command_y],
+        "ang_vel_yaw": [config.command_yaw, config.command_yaw],
         "neck_pitch_range": [0.0, 0.0],
         "head_pitch_range": [0.0, 0.0],
         "head_yaw_range": [0.0, 0.0],
@@ -794,14 +798,16 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
         p_f = data.site_xpos[env._feet_site_id]
         p_fz = p_f[..., -1]
         state.info["swing_peak"] = jp.maximum(state.info["swing_peak"], p_fz)
-        env._update_command_window_progress(state.info, data)
+        if hasattr(env, "_update_command_window_progress"):
+            env._update_command_window_progress(state.info, data)
         obs = env._get_obs(data, state.info, contact)
         done = env._get_termination(data)
-        command_progress_failure = env._get_command_progress_failure(state.info)
-        state.info["command_progress_failure"] = command_progress_failure.astype(
-            state.info["command_progress_ratio"].dtype
-        )
-        done = done | command_progress_failure
+        if hasattr(env, "_get_command_progress_failure"):
+            command_progress_failure = env._get_command_progress_failure(state.info)
+            state.info["command_progress_failure"] = command_progress_failure.astype(
+                state.info["command_progress_ratio"].dtype
+            )
+            done = done | command_progress_failure
         rewards = env._get_reward(
             data, action, state.info, state.metrics, done, first_contact, contact
         )
@@ -809,11 +815,16 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             key: value * env._config.reward_config.scales[key]
             for key, value in rewards.items()
         }
-        reward = jp.clip(
-            sum(rewards.values()) * env.dt,
-            env._config.reward_config.reward_clip_min,
-            env._config.reward_config.reward_clip_max,
-        )
+        reward = sum(rewards.values()) * env.dt
+        if (
+            "reward_clip_min" in env._config.reward_config
+            and "reward_clip_max" in env._config.reward_config
+        ):
+            reward = jp.clip(
+                reward,
+                env._config.reward_config.reward_clip_min,
+                env._config.reward_config.reward_clip_max,
+            )
         state.info["push"] = jp.array([0.0, 0.0])
         state.info["step"] += 1
         state.info["push_step"] += 1
@@ -832,30 +843,38 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                 else:
                     state.metrics[f"cost/{key}"] = -value
         state.metrics["swing_peak"] = jp.mean(state.info["swing_peak"])
-        state.metrics["diagnostic/target_velocity_cost"] = state.info[
-            "target_velocity_cost"
-        ]
-        state.metrics["diagnostic/actuator_bridge_tracking_cost"] = state.info[
-            "actuator_bridge_tracking_cost"
-        ]
-        state.metrics["diagnostic/actuator_bridge_delay_ticks"] = state.info[
-            "actuator_bridge_delay_ticks"
-        ].astype(reward.dtype)
-        state.metrics["diagnostic/actuator_bridge_tau_mean_s"] = jp.mean(
-            state.info["actuator_bridge_tau_s"]
-        )
-        state.metrics["diagnostic/actuator_bridge_velocity_limit_mean_rad_s"] = jp.mean(
-            state.info["actuator_bridge_velocity_limit_rad_s"]
-        )
-        state.metrics["diagnostic/command_progress_ratio"] = state.info[
-            "command_progress_ratio"
-        ]
-        state.metrics["diagnostic/command_progress_shortfall_cost"] = state.info[
-            "command_progress_shortfall_cost"
-        ]
-        state.metrics["diagnostic/command_progress_failure"] = (
-            command_progress_failure.astype(reward.dtype)
-        )
+        if "target_velocity_cost" in state.info:
+            state.metrics["diagnostic/target_velocity_cost"] = state.info[
+                "target_velocity_cost"
+            ]
+        if "actuator_bridge_tracking_cost" in state.info:
+            state.metrics["diagnostic/actuator_bridge_tracking_cost"] = state.info[
+                "actuator_bridge_tracking_cost"
+            ]
+        if "actuator_bridge_delay_ticks" in state.info:
+            state.metrics["diagnostic/actuator_bridge_delay_ticks"] = state.info[
+                "actuator_bridge_delay_ticks"
+            ].astype(reward.dtype)
+        if "actuator_bridge_tau_s" in state.info:
+            state.metrics["diagnostic/actuator_bridge_tau_mean_s"] = jp.mean(
+                state.info["actuator_bridge_tau_s"]
+            )
+        if "actuator_bridge_velocity_limit_rad_s" in state.info:
+            state.metrics[
+                "diagnostic/actuator_bridge_velocity_limit_mean_rad_s"
+            ] = jp.mean(state.info["actuator_bridge_velocity_limit_rad_s"])
+        if "command_progress_ratio" in state.info:
+            state.metrics["diagnostic/command_progress_ratio"] = state.info[
+                "command_progress_ratio"
+            ]
+        if "command_progress_shortfall_cost" in state.info:
+            state.metrics["diagnostic/command_progress_shortfall_cost"] = state.info[
+                "command_progress_shortfall_cost"
+            ]
+        if "command_progress_failure" in state.info:
+            state.metrics["diagnostic/command_progress_failure"] = state.info[
+                "command_progress_failure"
+            ].astype(reward.dtype)
         done = done.astype(reward.dtype)
         return state.replace(data=data, obs=obs, reward=reward, done=done)
 
@@ -891,7 +910,15 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
         "push_disabled": True,
         "noise_disabled": True,
         "action_delay_disabled": True,
-        "command_pinned": [config.command_x, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+        "command_pinned": [
+            config.command_x,
+            config.command_y,
+            config.command_yaw,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+        ],
         "reward_overrides_applied": applied_reward_overrides,
     }
 
@@ -962,10 +989,19 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                         pass
             records.append(
                 {
+                    "seed": int(config.seed),
                     "tick": tick,
                     "time_s": tick * float(env.dt),
                     "obs0_6": obs[:6].astype(float).tolist(),
-                    "command": [config.command_x, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+                    "command": [
+                        config.command_x,
+                        config.command_y,
+                        config.command_yaw,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                    ],
                     "action": action.astype(float).tolist(),
                     "action_w_delay": np.asarray(
                         jax.device_get(action_w_delay), dtype=float
@@ -1043,7 +1079,15 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             "requested_steps": sim_steps,
             "termination_reason": termination_reason or "duration_complete",
             "wall_clock_s": wall_clock,
-            "command": [config.command_x, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+            "command": [
+                config.command_x,
+                config.command_y,
+                config.command_yaw,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+            ],
             "body_pitch_rad": body_pitch,
             "base_x_m": base_x,
             "base_y_m": base_y,
@@ -1088,6 +1132,15 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
         "candidate_gate": candidate_gate,
         "policy": policy,
         "policy_action_gain": float(config.policy_action_gain),
+        "command": [
+            float(config.command_x),
+            float(config.command_y),
+            float(config.command_yaw),
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+        ],
         "forward_diagnostic": {
             "required_ratio": float(config.forward_diagnostic_required_ratio),
             "deadband": float(config.forward_diagnostic_deadband),

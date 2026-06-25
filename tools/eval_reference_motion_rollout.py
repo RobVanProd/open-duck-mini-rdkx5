@@ -701,6 +701,8 @@ def run_rollout(args: argparse.Namespace) -> dict[str, Any]:
         status = "HOLD_REFERENCE_TARGET_LOW_PROGRESS"
     payload = {
         "status": status,
+        "playground_path": str(Path(args.playground_path).resolve()),
+        "task": args.task,
         "command_x": args.command_x,
         "command_y": args.command_y,
         "command_yaw": args.command_yaw,
@@ -745,7 +747,11 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         "# Reference Motion Rollout",
         "",
         f"status: `{payload['status']}`",
+        f"playground_path: `{payload['playground_path']}`",
+        f"task: `{payload['task']}`",
         f"command_x: `{payload['command_x']}`",
+        f"command_y: `{payload['command_y']}`",
+        f"command_yaw: `{payload['command_yaw']}`",
         f"duration_s: `{payload['duration_s']}`",
         f"reference: `{payload['reference']}`",
         f"reference_target_mode: `{payload['reference_target_mode']}`",

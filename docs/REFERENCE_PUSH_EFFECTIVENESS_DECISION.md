@@ -177,6 +177,51 @@ training branch, but it still does not produce net forward acceleration during
 reference single-support windows.
 ```
 
+### Upstream Main Backlash Task
+
+The upstream README documents the current winning training command as:
+
+```bash
+uv run playground/open_duck_mini_v2/runner.py \
+  --task flat_terrain_backlash \
+  --num_timesteps 300000000
+```
+
+The same upstream reference key was therefore also tested against the detached
+`origin/main` worktree using `flat_terrain_backlash`.
+
+Artifacts:
+
+```text
+outputs/analysis/REFERENCE_MOTION_ROLLOUT_UPSTREAM_MAIN_BACKLASH_NEAREST_raw.md
+outputs/analysis/REFERENCE_MOTION_ROLLOUT_UPSTREAM_MAIN_BACKLASH_NEAREST_cycle_projected.md
+outputs/analysis/REFERENCE_MOTION_ROLLOUT_UPSTREAM_MAIN_BACKLASH_NEAREST_contact_synchronized_projected.md
+outputs/analysis/REFERENCE_PUSH_EFFECTIVENESS_UPSTREAM_MAIN_BACKLASH_NEAREST.md
+```
+
+Result:
+
+```text
+status: HOLD_REFERENCE_CONTACT_MISMATCH
+best reference-single future vx delta: -0.0051 m/s
+```
+
+Summary:
+
+| mode | falls | mean vx | contact mismatch | ref-single future vx delta | ref-single vy p95 | ref-single pitch vel p95 |
+|---|---:|---:|---:|---:|---:|---:|
+| raw | 1/8 | -0.0500 | 66.9833% | -0.0390 | 0.1859 | 5.2400 |
+| cycle projected | 0/8 | -0.0114 | 72.9500% | -0.0356 | 0.1713 | 5.2400 |
+| contact synchronized projected | 1/8 | 0.0301 | 20.1366% | -0.0051 | 0.1696 | 5.2400 |
+
+Interpretation:
+
+```text
+The README's backlash task improves some duration/stability metrics, but it
+still does not make the upstream reference's single-support windows create net
+forward acceleration.
+```
+
 ## Decision
 
 Do not continue to `PLAN_STANCE_RELATIVE_LATERAL_DAMPING` as the default next
@@ -187,36 +232,54 @@ The current result is stronger than "teacher needs another damping term":
 ```text
 both the local teacher pushes and the upstream/reference gait fail the same
 forward-impulse question in this sim, including when evaluated against
-upstream `origin/main` Playground code
+upstream `origin/main` Playground code and the README's
+`flat_terrain_backlash` task
 ```
 
 The morphology/reference-file audit shows the local XML and polynomial
 reference file match upstream byte-for-byte, so the current blocker is not a
 local MJCF/reference-file edit. The next work should identify the exact
-upstream walking checkpoint/export path and any environment/config assumptions
-used to make that reference gait walk.
+upstream walking policy/export path and test whether the published ONNX policy
+uses closed-loop feedback to create forward propulsion that the open-loop
+reference-target path does not.
 
-## Next Work
+## Published-Policy Follow-Up
+
+The recommended published-policy audit has been run:
+
+```text
+outputs/analysis/PUBLISHED_POLICY_PROPULSION_AUDIT.md
+status: PASS_POLICY_CLOSED_LOOP_FORWARD_MOTION
+task: upstream-main flat_terrain_backlash
+seeds: 8
+duration complete: 8 / 8
+moving seeds with track ratio >= 0.5: 7 / 8
+mean local vx: 0.0540 m/s
+mean single-support 0.1s future vx delta: +0.0042 m/s
+```
+
+Answers to the original discriminator:
+
+```text
+1. Does BEST_WALK_ONNX_2 produce positive push-effectiveness in upstream-main
+   Playground, especially flat_terrain_backlash?
+   Yes, in closed loop.
+2. If yes, what closed-loop contact/propulsion mechanism does the policy use
+   that the reference-target path lacks?
+   Still open; this is the next offline analysis task.
+3. If no, is the sim contract or morphology/feasibility assumption the real
+   blocker?
+   Not the current read. Published policy locomotion rules out a broad
+   impossibility claim for upstream-main sim/morphology.
+4. Do not return to local teacher variants until this policy/reference split is
+   explained.
+```
 
 Recommended next offline task:
 
 ```text
-audit upstream walking setup vs local sim/morphology
-```
-
-Minimum questions:
-
-```text
-1. Which exact Playground commit/reference file/checkpoint produced the known
-   upstream walking behavior?
-2. Does that upstream setup use the same MJCF, actuator gains, solver options,
-   foot geometry, body masses, friction, and termination rules?
-3. Does the upstream reference produce positive push-effectiveness in its own
-   expected sim setup?
-4. If upstream works there but not locally, what changed in the local sim
-   contract?
-5. If upstream also fails under the current contract, stop treating another
-   teacher variant as the next default move.
+compare published-policy closed-loop contact/CoM/action mechanism against the
+failed reference-target rollouts
 ```
 
 Robot validation remains blocked.

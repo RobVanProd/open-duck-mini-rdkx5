@@ -500,6 +500,15 @@ local branch best reference-single future vx delta: -0.0099 m/s
 origin/main best reference-single future vx delta: -0.0158 m/s
 ```
 
+The upstream README's current-win command uses `flat_terrain_backlash`, so the
+same reference key was also tested on that task:
+
+```text
+outputs/analysis/REFERENCE_PUSH_EFFECTIVENESS_UPSTREAM_MAIN_BACKLASH_NEAREST.md
+status: HOLD_REFERENCE_CONTACT_MISMATCH
+best reference-single future vx delta: -0.0051 m/s
+```
+
 The upstream morphology audit adds one important constraint:
 
 ```text
@@ -509,8 +518,53 @@ morphology/reference mismatches: 0
 code drift: joystick.py, runner.py
 ```
 
+The first targeted contact-physics substitution has also been tested:
+
+```text
+docs/CONTACT_PHYSICS_AUDIT.md
+outputs/analysis/CONTACT_PHYSICS_AUDIT.md
+status: HOLD_CONTACT_FRICTION_SOLVER_NOT_SUFFICIENT
+```
+
+The probe copied upstream-main Playground to `/tmp`, changed floor friction
+from `0.6` to `1.5 0.01 0.0006`, and changed solver iterations from `1/5` to
+`100/50`, matching the older Open_Duck_Mini scene's stronger contact settings.
+It improved contact matching in the synchronized mode but did not create
+forward impulse:
+
+```text
+baseline best reference-single future vx delta:      -0.0051 m/s
+contact-probe best reference-single future vx delta: -0.0182 m/s
+```
+
+So low floor friction / low solver iterations alone are not the missing
+mechanism.
+
+The published-policy audit has now answered that gate:
+
+```text
+outputs/analysis/PUBLISHED_POLICY_PROPULSION_AUDIT.md
+status: PASS_POLICY_CLOSED_LOOP_FORWARD_MOTION
+task: upstream-main flat_terrain_backlash
+command: x=0.074, y=-0.037, yaw=-0.074
+seeds: 8
+duration complete: 8 / 8
+moving seeds with track ratio >= 0.5: 7 / 8
+mean local vx: 0.0540 m/s
+mean command-tracking ratio: 0.7294
+mean single-support fraction: 44.8%
+mean single-support 0.1s future vx delta: +0.0042 m/s
+```
+
+This is the current pivot. The upstream-main sim/morphology can produce stable
+closed-loop forward locomotion under the published `BEST_WALK_ONNX_2` policy.
+The reference-target/open-loop path still fails the same contact/propulsion
+question, and the first contact-friction/solver substitution did not rescue it.
+So the blocker is no longer "sim cannot propel forward" in general. It is the
+mismatch between the published policy's closed-loop contact/CoM strategy and
+the controller/reference-target pathways used by the local teacher campaign.
+
 Current decision: do not continue with another stance-relative lateral-damping
-teacher variant by default. The next offline task is to identify the exact
-upstream walking checkpoint/export path and environment/config assumptions,
-because this result is not explained by local XML/reference-file drift. Robot
-validation remains blocked.
+teacher variant by default. The next offline gate is to mine the published
+policy's closed-loop propulsion mechanism and compare it against the failed
+reference-target path. Robot validation remains blocked.

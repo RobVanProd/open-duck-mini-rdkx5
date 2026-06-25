@@ -522,8 +522,14 @@ def run_closed_loop_worker(args) -> dict:
         str(args.env_python),
         "--command-x",
         str(args.command_x),
+        "--command-y",
+        str(args.command_y),
+        "--command-yaw",
+        str(args.command_yaw),
         "--duration",
         str(args.duration),
+        "--task",
+        str(args.task),
         "--seed",
         str(args.seed),
         "--bridge-mode",
@@ -650,7 +656,13 @@ def build_markdown(payload: dict) -> str:
     lines.append(f"overall_status: `{payload['overall_status']}`")
     lines.append(f"policy: `{payload['policy'].get('path')}`")
     lines.append(f"fit_json: `{payload['fit_json']}`")
+    if payload.get("task") is not None:
+        lines.append(f"task: `{payload.get('task')}`")
     lines.append(f"command_x: `{payload['command_x']}`")
+    if payload.get("command_y") is not None:
+        lines.append(f"command_y: `{payload.get('command_y')}`")
+    if payload.get("command_yaw") is not None:
+        lines.append(f"command_yaw: `{payload.get('command_yaw')}`")
     lines.append(f"duration_s: `{payload['duration_s']}`")
     lines.append(f"seed: `{payload.get('seed')}`")
     lines.append(f"eval_role: `{payload.get('eval_role')}`")
@@ -892,11 +904,25 @@ def build_markdown(payload: dict) -> str:
     if payload.get("closed_loop_sim"):
         status = payload["closed_loop_sim"].get("status")
         if status == "PASS_CLOSED_LOOP_REPRODUCTION":
-            lines.append(
-                "- The fitted actuator bridge produces closed-loop degradation in "
-                "the same range as the real suspended x=0.08 evidence. Next step is "
-                "a training-time actuator wrapper, not robot motion."
-            )
+            modes = set((payload["closed_loop_sim"].get("modes") or {}).keys())
+            if modes == {"vanilla"}:
+                lines.append(
+                    "- Closed-loop vanilla sim eval completed for the requested "
+                    "policy, command, task, and horizon. Interpret this as an "
+                    "offline sim result only; it does not approve robot motion."
+                )
+            elif {"fitted", "stress"} & modes:
+                lines.append(
+                    "- The fitted/stress actuator bridge modes completed and can "
+                    "be compared against real suspended evidence. Next step is "
+                    "offline review, not robot motion."
+                )
+            else:
+                lines.append(
+                    "- Closed-loop sim reproduction completed for the requested "
+                    "mode set. Review the mode summary before choosing the next "
+                    "offline task."
+                )
         elif status == "HOLD_BRIDGE_INSERTION_UNCLEAR":
             lines.append(
                 "- The eval could not safely map the bridge insertion point. Add a "
@@ -937,6 +963,9 @@ def write_outputs(payload: dict, output_dir: Path) -> None:
             "playground": payload["playground"],
             "sim_preflight": payload["sim_preflight"],
             "command_x": payload["command_x"],
+            "command_y": payload["command_y"],
+            "command_yaw": payload["command_yaw"],
+            "task": payload["task"],
             "duration_s": payload["duration_s"],
             "seed": payload.get("seed"),
             "eval_role": payload.get("eval_role"),
@@ -965,6 +994,9 @@ def main() -> int:
     )
     parser.add_argument("--env-python", default=str(DEFAULT_ENV_PYTHON))
     parser.add_argument("--command-x", type=float, default=0.08)
+    parser.add_argument("--command-y", type=float, default=0.0)
+    parser.add_argument("--command-yaw", type=float, default=0.0)
+    parser.add_argument("--task", default="flat_terrain")
     parser.add_argument("--duration", type=float, default=15.0)
     parser.add_argument(
         "--seed",
@@ -1186,7 +1218,10 @@ def main() -> int:
                         fit=fit,
                         playground_root=playground_root,
                         command_x=args.command_x,
+                        command_y=args.command_y,
+                        command_yaw=args.command_yaw,
                         duration_s=args.duration,
+                        task=args.task,
                         seed=args.seed,
                         bridge_mode=args.bridge_mode,
                         expected_observation_dim=args.expected_observation_dim,
@@ -1241,6 +1276,9 @@ def main() -> int:
         "playground": playground,
         "sim_preflight": sim_preflight,
         "command_x": args.command_x,
+        "command_y": args.command_y,
+        "command_yaw": args.command_yaw,
+        "task": args.task,
         "duration_s": args.duration,
         "seed": args.seed,
         "eval_role": args.eval_role,
