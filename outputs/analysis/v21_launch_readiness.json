@@ -6,6 +6,17 @@
     "text": "[colab] Session 'open-duck-l4' not found."
   },
   "deploy_performed": false,
+  "fallback_command": [
+    "python3",
+    "tools/print_cuda_colab_cell.py",
+    "--staged-curriculum-v21",
+    "--rdk-branch",
+    "codex/colab-cli-cuda-workflow",
+    "--playground-branch",
+    "codex/forward-progress-reward",
+    "--handoff-dir",
+    "/home/lsd/robots/cuda_colab_handoff_v21"
+  ],
   "launch_command": [
     "python3",
     "tools/run_colab_cli_cuda_workflow.py",
@@ -67,13 +78,23 @@
     }
   ],
   "rdk_git": {
-    "dirty": false,
+    "dirty": true,
     "error": "",
-    "ok": true,
+    "ok": false,
     "repo": "/home/lsd/robots/open-duck-mini-rdkx5",
-    "status": ""
+    "status": " M tools/check_v21_launch_readiness.py\n"
   },
   "robot_touched": false,
+  "single_cell_fallback": {
+    "checks": {
+      "has_staged_curriculum_v21_arg": true,
+      "packages_staged_runs": true,
+      "runs_staged_planner": true,
+      "uses_v21_recipe": true
+    },
+    "ok": true,
+    "path": "/home/lsd/robots/open-duck-mini-rdkx5/tools/print_cuda_colab_cell.py"
+  },
   "soft_prior_config": {
     "dataset_id": "c4833a96744101d9",
     "joint_indices": [
@@ -90,7 +111,7 @@
     "window_len": 50
   },
   "status": "HOLD_COLAB_SESSION_MISSING",
-  "timestamp": "20260625T083335Z",
+  "timestamp": "20260625T085429Z",
   "training_started": false,
   "v21_plan": {
     "ok": true,

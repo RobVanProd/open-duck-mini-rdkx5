@@ -22,6 +22,7 @@ DEFAULT_OUTPUT_JSON = ROOT / "outputs" / "analysis" / "v21_launch_readiness.json
 DEFAULT_SESSION = "open-duck-l4"
 DEFAULT_SOFT_PRIOR_CONFIG = ROOT / "outputs" / "analysis" / "soft_prior_fragment_config.json"
 DEFAULT_V21_PLAN_JSON = ROOT / "outputs" / "analysis" / "staged_curriculum_training_plan_v21.json"
+DEFAULT_HANDOFF_DIR = ROOT.parent / "cuda_colab_handoff_v21"
 
 
 def timestamp() -> str:
@@ -203,6 +204,20 @@ def check_pr(repo: str, number: int) -> dict[str, Any]:
     }
 
 
+def check_single_cell_fallback() -> dict[str, Any]:
+    generator = ROOT / "tools" / "print_cuda_colab_cell.py"
+    if not generator.exists():
+        return {"ok": False, "error": f"missing generator: {generator}"}
+    text = generator.read_text()
+    checks = {
+        "has_staged_curriculum_v21_arg": "--staged-curriculum-v21" in text,
+        "runs_staged_planner": "plan_staged_curriculum_training.py" in text,
+        "uses_v21_recipe": "movement_bootstrap_v21" in text,
+        "packages_staged_runs": "open_duck_staged_runs" in text,
+    }
+    return {"ok": all(checks.values()), "checks": checks, "path": str(generator)}
+
+
 def launch_command(session: str) -> list[str]:
     return [
         "python3",
@@ -224,11 +239,26 @@ def launch_command(session: str) -> list[str]:
     ]
 
 
+def fallback_command(handoff_dir: Path) -> list[str]:
+    return [
+        "python3",
+        "tools/print_cuda_colab_cell.py",
+        "--staged-curriculum-v21",
+        "--rdk-branch",
+        "codex/colab-cli-cuda-workflow",
+        "--playground-branch",
+        "codex/forward-progress-reward",
+        "--handoff-dir",
+        str(handoff_dir),
+    ]
+
+
 def status_from_checks(checks: dict[str, Any]) -> str:
     required = [
         checks["soft_prior_config"]["ok"],
         checks["v21_plan"]["ok"],
         checks["playground_patch"]["ok"],
+        checks["single_cell_fallback"]["ok"],
     ]
     if not all(required):
         return "HOLD_V21_LOCAL_PRECHECK"
@@ -269,12 +299,27 @@ def write_reports(payload: dict[str, Any], output_md: Path, output_json: Path) -
             f"| Colab session | `{payload['colab_session']['ok']}` | "
             f"{payload['colab_session'].get('text') or 'active'} |"
         ),
+        (
+            f"| browser-Colab fallback | `{payload['single_cell_fallback']['ok']}` | "
+            f"`tools/print_cuda_colab_cell.py --staged-curriculum-v21` |"
+        ),
         "",
         "## Launch Command",
         "",
         "```bash",
         " ".join(payload["launch_command"]),
         "```",
+        "",
+        "## Browser-Colab Fallback",
+        "",
+        "Use this when `google-colab-cli` cannot see the session but a browser",
+        "Colab notebook is already authenticated:",
+        "",
+        "```bash",
+        " ".join(payload["fallback_command"]),
+        "```",
+        "",
+        "Then open the generated notebook and run its single cell.",
         "",
         "## Safety",
         "",
@@ -300,6 +345,7 @@ def main() -> int:
     parser.add_argument("--v21-plan-json", type=Path, default=DEFAULT_V21_PLAN_JSON)
     parser.add_argument("--output-md", type=Path, default=DEFAULT_OUTPUT_MD)
     parser.add_argument("--output-json", type=Path, default=DEFAULT_OUTPUT_JSON)
+    parser.add_argument("--handoff-dir", type=Path, default=DEFAULT_HANDOFF_DIR)
     parser.add_argument("--skip-pr-checks", action="store_true")
     args = parser.parse_args()
 
@@ -311,10 +357,12 @@ def main() -> int:
         "soft_prior_config": check_soft_prior_config(args.soft_prior_config),
         "v21_plan": check_v21_plan(args.v21_plan_json),
         "playground_patch": check_playground_patch(args.playground_path),
+        "single_cell_fallback": check_single_cell_fallback(),
         "colab_session": check_colab_session(args.session),
         "rdk_git": git_clean(ROOT),
         "playground_git": git_clean(args.playground_path),
         "launch_command": launch_command(args.session),
+        "fallback_command": fallback_command(args.handoff_dir),
     }
     if not args.skip_pr_checks:
         payload["prs"] = [

@@ -1,7 +1,7 @@
 # V21 Launch Readiness
 
 status: `HOLD_COLAB_SESSION_MISSING`
-timestamp: `20260625T083335Z`
+timestamp: `20260625T085429Z`
 
 ## Required Checks
 
@@ -11,12 +11,24 @@ timestamp: `20260625T083335Z`
 | V21 plan | `True` | recipe `movement_bootstrap_v21`, phase gate x `0.04` |
 | Playground soft-prior patch | `True` | default-off hook present |
 | Colab session | `False` | [colab] Session 'open-duck-l4' not found. |
+| browser-Colab fallback | `True` | `tools/print_cuda_colab_cell.py --staged-curriculum-v21` |
 
 ## Launch Command
 
 ```bash
 python3 tools/run_colab_cli_cuda_workflow.py --session open-duck-l4 --workflow staged-curriculum --staged-recipe movement_bootstrap_v21 --staged-phase-gate-seeds 0-3 --staged-phase-gate-command-x 0.04 --staged-phase-gate-bridge-mode vanilla --staged-phase-gate-freeze-check --run
 ```
+
+## Browser-Colab Fallback
+
+Use this when `google-colab-cli` cannot see the session but a browser
+Colab notebook is already authenticated:
+
+```bash
+python3 tools/print_cuda_colab_cell.py --staged-curriculum-v21 --rdk-branch codex/colab-cli-cuda-workflow --playground-branch codex/forward-progress-reward --handoff-dir /home/lsd/robots/cuda_colab_handoff_v21
+```
+
+Then open the generated notebook and run its single cell.
 
 ## Safety
 
