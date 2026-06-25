@@ -2894,15 +2894,15 @@ roll-bias probe:
   curated seed windows: 12
   curated source/mode pairs: 12
   curated source files: 1
-  status: PASS_CURATED_DATASET_SEED_READY
+  status: HOLD_INSUFFICIENT_CURATED_DIVERSITY
 ```
 
 Important caveat:
 
 ```text
-The pass is source/mode-diverse but not seed-diverse. All curated windows are
-from seed_000. Seed_002 produced review-only motion hints, mostly due to lateral
-velocity or contact-pattern dominance.
+The roll-bias probe is source/mode-diverse but not seed-diverse. All curated
+windows are from seed_000. Seed_002 produced review-only motion hints, mostly
+due to lateral velocity or contact-pattern dominance.
 ```
 
 Do next:

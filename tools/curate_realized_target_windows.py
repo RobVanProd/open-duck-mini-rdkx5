@@ -225,6 +225,7 @@ def main() -> int:
     parser.add_argument("--max-tracking-p95", type=float, default=0.12)
     parser.add_argument("--min-done-margin", type=int, default=50)
     parser.add_argument("--max-contact-dominance-pct", type=float, default=95.0)
+    parser.add_argument("--min-source-files", type=int, default=2)
     parser.add_argument("--min-source-mode-pairs", type=int, default=2)
     args = parser.parse_args()
 
@@ -242,6 +243,8 @@ def main() -> int:
 
     if len(curated) < args.min_curated_windows:
         status = "HOLD_INSUFFICIENT_CURATED_WINDOWS"
+    elif len(source_files) < args.min_source_files:
+        status = "HOLD_INSUFFICIENT_CURATED_DIVERSITY"
     elif len(source_mode_pairs) < args.min_source_mode_pairs:
         status = "HOLD_INSUFFICIENT_CURATED_DIVERSITY"
     else:
@@ -259,6 +262,7 @@ def main() -> int:
             "max_tracking_p95": args.max_tracking_p95,
             "min_done_margin": args.min_done_margin,
             "max_contact_dominance_pct": args.max_contact_dominance_pct,
+            "min_source_files": args.min_source_files,
             "min_source_mode_pairs": args.min_source_mode_pairs,
         },
         "input_json": str(Path(args.input_json)),

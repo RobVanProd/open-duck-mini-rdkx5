@@ -1,6 +1,6 @@
 # Realized Target Window Curation
 
-status: `PASS_CURATED_DATASET_SEED_READY`
+status: `HOLD_INSUFFICIENT_CURATED_DIVERSITY`
 
 This applies stricter dataset-readiness filters to the mined realized
 motion windows. It does not export raw traces or start training.
@@ -17,6 +17,7 @@ motion windows. It does not export raw traces or start training.
 - max_tracking_p95: `0.12`
 - min_done_margin: `50`
 - max_contact_dominance_pct: `95.0`
+- min_source_files: `2`
 - min_source_mode_pairs: `2`
 
 ## Counts

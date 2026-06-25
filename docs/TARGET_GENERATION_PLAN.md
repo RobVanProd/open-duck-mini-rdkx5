@@ -198,18 +198,17 @@ roll-bias probe:
   curated seed windows: 12
   curated source/mode pairs: 12
   curated source files: 1
-  status: PASS_CURATED_DATASET_SEED_READY
+  status: HOLD_INSUFFICIENT_CURATED_DIVERSITY
 ```
 
 Interpretation:
 
 ```text
 Forward-biased pitch-chain primitives can now produce short curated low-command
-target windows. Opposite hip-roll bias increases source/mode diversity enough
-to pass the current compact curation gate, but all curated windows are still
-from seed_000. Seed_002 remains review-only because lateral velocity or contact
-dominance fails. Treat this as target-generator proof of progress, not as a
-complete BC dataset launch.
+target windows. Opposite hip-roll bias increases source/mode diversity, but all
+curated windows are still from seed_000. Seed_002 remains review-only because
+lateral velocity or contact dominance fails. Treat this as target-generator
+proof of progress, not as a complete BC dataset launch.
 ```
 
 Next step:

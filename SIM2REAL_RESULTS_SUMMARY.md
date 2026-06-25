@@ -3761,18 +3761,18 @@ roll-bias probe:
   curated windows: 12
   curated source/mode pairs: 12
   curated source files: 1
-  status: PASS_CURATED_DATASET_SEED_READY
+  status: HOLD_INSUFFICIENT_CURATED_DIVERSITY
 ```
 
 Interpretation:
 
 ```text
 This is the first target-generation pass that produces enough compact curated
-windows under the current curation gate. However, all curated windows are from
-seed_000. Seed_002 contributes review-only hints but still fails lateral/contact
-criteria. Do not launch BC/PPO from this as if it were a diverse walking
-dataset; use it as evidence that forward-biased primitive targets can create
-safe low-command motion snippets.
+windows by count, but it fails the diversity gate because all curated windows
+are from seed_000. Seed_002 contributes review-only hints but still fails
+lateral/contact criteria. Do not launch BC/PPO from this as if it were a
+diverse walking dataset; use it as evidence that forward-biased primitive
+targets can create safe low-command motion snippets.
 ```
 
 Next:
