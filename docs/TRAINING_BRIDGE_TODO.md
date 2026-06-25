@@ -4524,3 +4524,27 @@ forward_double_support_dwell:
 
 Do not run V24 unless the plan is reviewed. It is still a sim-only x=0.04 probe;
 robot validation remains blocked.
+
+First V24 run:
+
+```text
+artifact: outputs/analysis/V24_L4_PARTIAL_RUN_SUMMARY.md
+status: HOLD_V24_TRANSITION_PROPULSION_FAILED_GATE
+training: PASS_SMOKE_RUN
+final ONNX sha256: 84bc62cffb5972711769dc4be73c7bcfc1986795d8482cc6c0b2a976d27cbf58
+gate: x=0.04, vanilla bridge
+recovered seeds:
+  seeds 0-5: HOLD_CANDIDATE_FALL_OR_TERMINATION
+  seeds 6-7: not recovered before Colab runtime disappeared
+remote: HOLD_REMOTE_NO_SENTINEL
+```
+
+The recovered V24 seeds still failed with near-zero or reverse local forward
+velocity, low pitch-chain target velocities, and 0% action saturation. This is
+not an actuator-envelope hold. It is another support/propulsion hold.
+
+Do not rerun V24 unchanged. The next branch should be structurally different:
+either a stronger closed-loop teacher / optimizer with explicit stance side,
+body placement, foot placement, and push timing, or an imitation/demonstration
+path that can hold a coherent single-support stepping behavior before PPO
+tries to refine it.

@@ -334,3 +334,29 @@ This branch is explicitly different from V23: contact-transition reward is
 conditioned on forward progress, and double-support penalty grows with dwell
 time. It should be graded on support transitions and forward displacement
 together, not on single-support occupancy alone.
+
+First V24 evidence:
+
+```text
+artifact: outputs/analysis/V24_L4_PARTIAL_RUN_SUMMARY.md
+status: HOLD_V24_TRANSITION_PROPULSION_FAILED_GATE
+training: completed and exported the 184320-step ONNX
+gate: seeds 0-5 all held with fall/termination
+remote: Colab disappeared before seeds 6-7 completed
+```
+
+The full 0-7 seed distribution is incomplete, but the gate failure is already
+proven because the configured pass condition allowed no failed seeds. V24 did
+not create coherent forward support transfer:
+
+```text
+recovered seeds: 6
+failed recovered seeds: 6
+mean local vx: near-zero or negative for every recovered seed
+action saturation: 0%
+pitch-chain target velocity: far below the measured actuator envelope
+```
+
+This closes the nearby "add transition reward / dwell penalty" branch. The next
+target-source or learning-objective branch should be structurally different,
+not another scalar reward tweak around V23/V24.

@@ -5990,3 +5990,24 @@ transition only when it coincides with body-frame forward progress and penalizes
 prolonged forward-command double-support dwell after a short grace window. The
 recipe remains offline, explicit-only, and low-command `x=0.04`; it does not
 authorize robot validation or any runtime behavior change.
+
+The first V24 L4 run completed training but failed the recovered seed gate:
+
+```text
+artifact: outputs/analysis/V24_L4_PARTIAL_RUN_SUMMARY.md
+status: HOLD_V24_TRANSITION_PROPULSION_FAILED_GATE
+training: PASS_SMOKE_RUN
+final ONNX sha256: 84bc62cffb5972711769dc4be73c7bcfc1986795d8482cc6c0b2a976d27cbf58
+gate: x=0.04, vanilla bridge
+recovered seeds: 0-5
+result: 6/6 HOLD_CANDIDATE_FALL_OR_TERMINATION
+remote: HOLD_REMOTE_NO_SENTINEL before seeds 6-7 completed
+```
+
+The gate failure is decisive despite the incomplete 0-7 distribution because
+the configured pass condition allowed no failed seeds. Recovered seeds showed
+near-zero or negative local forward velocity, low target velocities, and 0%
+action saturation. V24 therefore did not fail because of actuator envelope or
+saturation pressure; it failed because the transition/dwell rewards still did
+not create coherent low-command support transfer and propulsion. Do not rerun
+V24 unchanged.
