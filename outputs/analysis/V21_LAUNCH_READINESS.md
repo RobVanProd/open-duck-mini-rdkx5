@@ -1,7 +1,7 @@
 # V21 Launch Readiness
 
-status: `HOLD_COLAB_SESSION_MISSING`
-timestamp: `20260625T085622Z`
+status: `PASS_V21_READY_TO_LAUNCH`
+timestamp: `20260625T085941Z`
 
 ## Required Checks
 
@@ -10,7 +10,7 @@ timestamp: `20260625T085622Z`
 | soft prior config | `True` | 50 rows, dataset `c4833a96744101d9` |
 | V21 plan | `True` | recipe `movement_bootstrap_v21`, phase gate x `0.04` |
 | Playground soft-prior patch | `True` | default-off hook present |
-| Colab session | `False` | [colab] Session 'open-duck-l4' not found. |
+| Colab session | `True` | [open-duck-l4] gpu-l4-s-kkb-ass1a0-1gg47a8cm4zf7 | Hardware: L4 | Variant: GPU | Status: IDLE |
 | browser-Colab fallback | `True` | `tools/print_cuda_colab_cell.py --staged-curriculum-v21` |
 
 ## Launch Command
