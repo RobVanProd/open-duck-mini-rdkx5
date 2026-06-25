@@ -3441,3 +3441,46 @@ outputs/analysis/REFERENCE_MOTION_ROLLOUT_V20_PROJECTED_PHASE5.md
 outputs/analysis/REFERENCE_MOTION_ROLLOUT_V20_PROJECTED_PHASE19.md
 outputs/analysis/REFERENCE_CONTACT_COMPATIBILITY_V20.md
 ```
+
+### Realized Target Window Mine
+
+Existing simulated rollout traces were mined for short windows that already
+show realized forward motion under the current Joystick task and sim contact
+dynamics.
+
+```text
+tool: tools/mine_realized_target_windows.py
+status: PASS_REALIZED_WINDOWS_AVAILABLE
+window_samples: 25
+candidate windows: 17
+best mean vx: 0.1071 m/s
+best min base height: 0.1500 m
+best pitch p95: 0.3954 rad
+best action saturation: 0.0%
+best sent target velocity p95: 1.3416 rad/s
+best tracking p95: 0.0907 rad
+```
+
+Interpretation:
+
+```text
+The raw V20 polynomial reference remains a poor direct BC/action target, but
+the actual sim traces contain short realized forward-motion snippets. These
+are useful as motion hints or candidate dataset seeds only. They are not stable
+full-horizon walking evidence, and several are pre-fall windows, so termination
+margin and post-window outcome must be kept with any future dataset.
+```
+
+Next offline step:
+
+```text
+curate realized-target windows with stricter survival/contact filters before
+any supervised seed or new PPO run
+```
+
+Additional artifacts:
+
+```text
+outputs/analysis/REALIZED_TARGET_WINDOW_MINE.md
+outputs/analysis/realized_target_window_mine.json
+```

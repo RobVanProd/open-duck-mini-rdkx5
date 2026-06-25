@@ -2599,3 +2599,47 @@ targets from the actual sim dynamics.
 
 Artifact:
 `outputs/analysis/REFERENCE_CONTACT_COMPATIBILITY_V20.md`.
+
+### Realized Motion Window Mining
+
+The reference path now has a safer alternative to raw polynomial target BC:
+mine short realized-motion snippets from existing sim traces that already pass
+basic height, pitch, saturation, and forward-motion filters.
+
+```text
+tool: tools/mine_realized_target_windows.py
+status: PASS_REALIZED_WINDOWS_AVAILABLE
+candidate windows: 17
+window length: 25 samples
+best mean vx: 0.1071 m/s
+best min base height: 0.1500 m
+best pitch p95: 0.3954 rad
+best action saturation: 0.0%
+```
+
+Use these windows only as curated motion hints or seed material. They are not a
+complete walking dataset:
+
+```text
+some windows are pre-fall snippets
+most windows are very short
+contact state is mostly double support
+post-window outcome must stay attached to each snippet
+```
+
+Next dataset tasks:
+
+```text
+1. add stricter filters for post-window survival and contact diversity
+2. export a compact candidate manifest, not raw trace dumps
+3. build a supervised pretraining experiment only from curated windows
+4. keep V20 raw polynomial targets out of BC until contact compatibility is fixed
+5. gate any supervised seed by x=0.04 multi-seed forward-motion distribution
+```
+
+Artifacts:
+
+```text
+outputs/analysis/REALIZED_TARGET_WINDOW_MINE.md
+outputs/analysis/realized_target_window_mine.json
+```

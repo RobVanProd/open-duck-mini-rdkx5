@@ -578,3 +578,46 @@ dynamics.
 
 Additional artifact:
 `outputs/analysis/REFERENCE_CONTACT_COMPATIBILITY_V20.md`.
+
+## Realized Target Window Mine
+
+The next offline check mined existing simulated rollout traces for short windows
+that already show realized forward motion under the actual Joystick task and
+contact dynamics:
+
+```text
+tool: tools/mine_realized_target_windows.py
+status: PASS_REALIZED_WINDOWS_AVAILABLE
+window_samples: 25
+top candidate mean_vx: 0.1071 m/s
+top candidate pitch_p95: 0.3954 rad
+top candidate min_height: 0.1500 m
+top candidate action_saturation: 0.0%
+top candidate sent_target_velocity_p95: 1.3416 rad/s
+top candidate tracking_p95: 0.0907 rad
+candidate windows found: 17
+```
+
+The best windows come mostly from early `fitted` V5/V7 forward-motion traces.
+They are short motion snippets, not full-horizon stable walking trajectories.
+Several are explicitly pre-fall windows, so they should not be promoted into a
+behavior-cloning dataset without keeping termination margin, contact state, and
+post-window outcome labels.
+
+Interpretation:
+
+```text
+The raw polynomial reference is not a good direct action target for this task,
+but the actual sim traces contain short realized forward-motion snippets that
+respect the action/rate envelope better than the polynomial reference. These
+windows are useful as motion hints or dataset seeds. The next dataset step is
+curation/filtering, not another PPO reward-weight run and not direct BC from
+all mined windows.
+```
+
+Additional artifacts:
+
+```text
+outputs/analysis/REALIZED_TARGET_WINDOW_MINE.md
+outputs/analysis/realized_target_window_mine.json
+```
