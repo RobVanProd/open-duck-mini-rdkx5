@@ -276,7 +276,7 @@ dominant failure: low_forward_velocity on seeds 0 and 2
 
 The probe is useful as an offline target-source instrument, but the initial
 candidate set is still not a supervised target source. The aggregate target
-gate now includes 46 compact score artifacts and remains held.
+gate now includes 48 compact score artifacts and remains held.
 
 Stronger-push diagnostic:
 
@@ -302,5 +302,18 @@ The traces now include roll/pitch/yaw, and the scorer reports roll p95,
 yaw-change p95, and world-x displacement. This matters because local-forward
 progress can diverge from world-frame x motion when heading/lateral drift is
 present.
+
+Swing-foot advance diagnostic:
+
+```text
+artifact: outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_ADVANCE_PROBE_SCORE_100.md
+artifact: outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_ADVANCE_PROBE_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+robust modes: 0 / 16
+```
+
+Preventing backward swing-foot placement improved seed 0 slightly but did not
+clear the forward gate and introduced lateral/yaw tradeoffs. The blocker is now
+sharper: foot placement helps, but it needs lateral/heading stabilization.
 
 Robot validation remains blocked.

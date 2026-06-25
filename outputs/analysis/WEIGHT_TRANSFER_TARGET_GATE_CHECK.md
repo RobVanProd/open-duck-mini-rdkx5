@@ -58,6 +58,8 @@ it does not run simulation, training, robot SSH, deployment, or hardware tests.
 | `com_weight_transfer_controller_support_gated_score_100` | `HOLD_NO_SEED_ROBUST_TARGETS` | 100 | 0 | 3 | 0 |
 | `com_weight_transfer_controller_support_gated_score_150` | `HOLD_NO_SEED_ROBUST_TARGETS` | 150 | 0 | 3 | 0 |
 | `contact_weight_transfer_sequence_optimizer_smoke_iteration_00_score` | `HOLD_NO_SEED_ROBUST_TARGETS` | 100 | 0 | 3 | 0 |
+| `foot_placement_mpc_teacher_advance_probe_score_100` | `HOLD_NO_SEED_ROBUST_TARGETS` | 100 | 0 | 3 | 0 |
+| `foot_placement_mpc_teacher_advance_probe_score_150` | `HOLD_NO_SEED_ROBUST_TARGETS` | 150 | 0 | 3 | 0 |
 | `foot_placement_mpc_teacher_orientation_smoke_score_100` | `HOLD_NO_SEED_ROBUST_TARGETS` | 100 | 0 | 2 | 0 |
 | `foot_placement_mpc_teacher_push_probe_score_100` | `HOLD_NO_SEED_ROBUST_TARGETS` | 100 | 0 | 3 | 0 |
 | `foot_placement_mpc_teacher_push_probe_score_150` | `HOLD_NO_SEED_ROBUST_TARGETS` | 150 | 0 | 3 | 0 |

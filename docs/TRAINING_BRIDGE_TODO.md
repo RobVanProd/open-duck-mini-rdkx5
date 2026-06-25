@@ -4514,6 +4514,19 @@ Future target-source scoring should inspect local vx, world-x displacement,
 roll p95, yaw-change p95, and lateral velocity together. Do not treat local
 forward velocity alone as proof of usable walking motion.
 
+Swing-foot advance diagnostic:
+
+```text
+artifact: outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_ADVANCE_PROBE_SCORE_100.md
+artifact: outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_ADVANCE_PROBE_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+robust modes: 0 / 16
+```
+
+Keep `--swing-min-advance` available for the next teacher revision. It improves
+the seed-0 backward-step failure mode, but does not clear the target gate
+without better lateral/heading stabilization.
+
 The current compact handoff docs are:
 
 ```text

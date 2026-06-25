@@ -297,6 +297,21 @@ The trace/scorer now reports roll p95, yaw-change p95, and world-x displacement
 next to local-forward displacement. Use these fields to distinguish real
 forward progress from heading/lateral drift in future teacher revisions.
 
+Swing-foot advance diagnostic:
+
+```text
+artifacts:
+  outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_ADVANCE_PROBE_SCORE_100.md
+  outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_ADVANCE_PROBE_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+robust modes: 0 / 16
+```
+
+Preventing backward swing-foot placement improved seed 0 from near-zero/backward
+to small positive local vx in the best 100-tick window, but it remained below
+the forward gate and exposed lateral/yaw tradeoffs. Use it as a parameter in the
+next controller, not as a complete fix.
+
 ## Stop Conditions
 
 Stop target generation and do not train if:

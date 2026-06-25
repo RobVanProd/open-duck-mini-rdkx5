@@ -51,6 +51,7 @@ class Candidate:
     lateral_velocity_gate_m_s: float
     foot_place_x_m: float
     foot_place_gain: float
+    swing_min_advance_m: float
     swing_knee_rad: float
     swing_ankle_rad: float
     swing_reach_limit_rad: float
@@ -78,6 +79,7 @@ def pct(count: int, total: int) -> float:
 def candidate_grid(args: argparse.Namespace) -> list[Candidate]:
     rows: list[Candidate] = []
     initial_stance_sides = parse_float_list(args.initial_stance_sides)
+    swing_min_advances = parse_float_list(args.swing_min_advance)
     for period_s in parse_float_list(args.periods):
         for load_shift_y in parse_float_list(args.load_shift_y):
             for foot_place_x in parse_float_list(args.foot_place_x):
@@ -88,49 +90,52 @@ def candidate_grid(args: argparse.Namespace) -> list[Candidate]:
                                 for roll_gain in parse_float_list(args.roll_gains):
                                     for vy_damping_gain in parse_float_list(args.vy_damping_gains):
                                         for body_y_gain in parse_float_list(args.body_y_gains):
-                                            for initial_stance_side in initial_stance_sides:
-                                                label = (
-                                                    f"fpm_is{label_float(initial_stance_side)}"
-                                                    f"_p{label_float(period_s)}"
-                                                    f"_ly{label_float(load_shift_y)}"
-                                                    f"_fpx{label_float(foot_place_x)}"
-                                                    f"_fpg{label_float(foot_place_gain)}"
-                                                    f"_shp{label_float(stance_hip_push)}"
-                                                    f"_skp{label_float(stance_knee_push)}"
-                                                    f"_sap{label_float(stance_ankle_push)}"
-                                                    f"_rg{label_float(roll_gain)}"
-                                                    f"_vyg{label_float(vy_damping_gain)}"
-                                                    f"_byg{label_float(body_y_gain)}"
-                                                )
-                                                rows.append(
-                                                    Candidate(
-                                                        label=label,
-                                                        initial_stance_side=initial_stance_side,
-                                                        period_s=period_s,
-                                                        load_s=args.load_s,
-                                                        unweight_s=args.unweight_s,
-                                                        push_s=args.push_s,
-                                                        load_shift_y_m=load_shift_y,
-                                                        base_y_gate_m=args.base_y_gate,
-                                                        lateral_velocity_gate_m_s=args.lateral_velocity_gate,
-                                                        foot_place_x_m=foot_place_x,
-                                                        foot_place_gain=foot_place_gain,
-                                                        swing_knee_rad=args.swing_knee,
-                                                        swing_ankle_rad=args.swing_ankle,
-                                                        swing_reach_limit_rad=args.swing_reach_limit,
-                                                        stance_retract_rad=args.stance_retract,
-                                                        stance_hip_push_rad=stance_hip_push,
-                                                        stance_knee_push_rad=stance_knee_push,
-                                                        stance_ankle_push_rad=stance_ankle_push,
-                                                        roll_gain=roll_gain,
-                                                        vy_damping_gain=vy_damping_gain,
-                                                        body_y_gain=body_y_gain,
-                                                        pitch_target_rad=args.pitch_target,
-                                                        pitch_damping=args.pitch_damping,
-                                                        clearance_gate_m=args.clearance_gate,
-                                                        min_height_m=args.min_height,
+                                            for swing_min_advance in swing_min_advances:
+                                                for initial_stance_side in initial_stance_sides:
+                                                    label = (
+                                                        f"fpm_is{label_float(initial_stance_side)}"
+                                                        f"_p{label_float(period_s)}"
+                                                        f"_ly{label_float(load_shift_y)}"
+                                                        f"_fpx{label_float(foot_place_x)}"
+                                                        f"_fpg{label_float(foot_place_gain)}"
+                                                        f"_sma{label_float(swing_min_advance)}"
+                                                        f"_shp{label_float(stance_hip_push)}"
+                                                        f"_skp{label_float(stance_knee_push)}"
+                                                        f"_sap{label_float(stance_ankle_push)}"
+                                                        f"_rg{label_float(roll_gain)}"
+                                                        f"_vyg{label_float(vy_damping_gain)}"
+                                                        f"_byg{label_float(body_y_gain)}"
                                                     )
-                                                )
+                                                    rows.append(
+                                                        Candidate(
+                                                            label=label,
+                                                            initial_stance_side=initial_stance_side,
+                                                            period_s=period_s,
+                                                            load_s=args.load_s,
+                                                            unweight_s=args.unweight_s,
+                                                            push_s=args.push_s,
+                                                            load_shift_y_m=load_shift_y,
+                                                            base_y_gate_m=args.base_y_gate,
+                                                            lateral_velocity_gate_m_s=args.lateral_velocity_gate,
+                                                            foot_place_x_m=foot_place_x,
+                                                            foot_place_gain=foot_place_gain,
+                                                            swing_min_advance_m=swing_min_advance,
+                                                            swing_knee_rad=args.swing_knee,
+                                                            swing_ankle_rad=args.swing_ankle,
+                                                            swing_reach_limit_rad=args.swing_reach_limit,
+                                                            stance_retract_rad=args.stance_retract,
+                                                            stance_hip_push_rad=stance_hip_push,
+                                                            stance_knee_push_rad=stance_knee_push,
+                                                            stance_ankle_push_rad=stance_ankle_push,
+                                                            roll_gain=roll_gain,
+                                                            vy_damping_gain=vy_damping_gain,
+                                                            body_y_gain=body_y_gain,
+                                                            pitch_target_rad=args.pitch_target,
+                                                            pitch_damping=args.pitch_damping,
+                                                            clearance_gate_m=args.clearance_gate,
+                                                            min_height_m=args.min_height,
+                                                        )
+                                                    )
     if args.shuffle_candidates:
         random.Random(args.grid_seed).shuffle(rows)
     return rows[: args.max_candidates]
@@ -226,6 +231,7 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
             lateral_velocity_gate_m_s,
             foot_place_x_m,
             foot_place_gain,
+            swing_min_advance_m,
             swing_knee_rad,
             swing_ankle_rad,
             swing_reach_limit_rad,
@@ -289,7 +295,10 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                 -args.roll_limit,
                 args.roll_limit,
             )
-            desired_swing_x = stance_foot_x + foot_place_x_m
+            desired_swing_x = jp.maximum(
+                stance_foot_x + foot_place_x_m,
+                swing_foot_x + swing_min_advance_m,
+            )
             swing_x_error = desired_swing_x - swing_foot_x
             swing_reach = jp.clip(
                 foot_place_gain * swing_x_error,
@@ -353,6 +362,7 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                 stance_foot_x,
                 swing_foot_x,
                 swing_x_error,
+                desired_swing_x,
             )
 
         def step_teacher(
@@ -364,6 +374,7 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
             lateral_velocity_gate_m_s,
             foot_place_x_m,
             foot_place_gain,
+            swing_min_advance_m,
             swing_knee_rad,
             swing_ankle_rad,
             swing_reach_limit_rad,
@@ -395,6 +406,7 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                 stance_foot_x,
                 swing_foot_x,
                 swing_x_error,
+                desired_swing_x,
             ) = teacher_target(
                 env._default_actuator,
                 phase_id,
@@ -404,6 +416,7 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                 lateral_velocity_gate_m_s,
                 foot_place_x_m,
                 foot_place_gain,
+                swing_min_advance_m,
                 swing_knee_rad,
                 swing_ankle_rad,
                 swing_reach_limit_rad,
@@ -494,6 +507,7 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                 stance_foot_x,
                 swing_foot_x,
                 swing_x_error,
+                desired_swing_x,
             )
 
         refresh_obs_jit = jax.jit(refresh_obs)
@@ -527,6 +541,7 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                         stance_foot_x,
                         swing_foot_x,
                         swing_x_error,
+                        desired_swing_x,
                     ) = step_teacher_jit(
                         state,
                         phase_id,
@@ -536,6 +551,7 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                         candidate.lateral_velocity_gate_m_s,
                         candidate.foot_place_x_m,
                         candidate.foot_place_gain,
+                        candidate.swing_min_advance_m,
                         candidate.swing_knee_rad,
                         candidate.swing_ankle_rad,
                         candidate.swing_reach_limit_rad,
@@ -584,6 +600,9 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                         "lateral_error_m": float(np.asarray(jax.device_get(lateral_error))),
                         "stance_foot_x_m": float(np.asarray(jax.device_get(stance_foot_x))),
                         "swing_foot_x_m": float(np.asarray(jax.device_get(swing_foot_x))),
+                        "desired_swing_foot_x_m": float(
+                            np.asarray(jax.device_get(desired_swing_x))
+                        ),
                         "swing_x_error_m": float(np.asarray(jax.device_get(swing_x_error))),
                         "command": [args.command_x, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
                         "action": np.asarray(jax.device_get(action), dtype=float).tolist(),
@@ -779,6 +798,14 @@ def main() -> int:
     parser.add_argument("--lateral-velocity-gate", type=float, default=0.12)
     parser.add_argument("--foot-place-x", default="0.015,0.03")
     parser.add_argument("--foot-place-gains", default="0.8,1.2")
+    parser.add_argument(
+        "--swing-min-advance",
+        default="-0.08",
+        help=(
+            "Comma-separated minimum swing-foot x advance values. Negative default "
+            "preserves the original permissive placement behavior."
+        ),
+    )
     parser.add_argument("--swing-knee", type=float, default=0.10)
     parser.add_argument("--swing-ankle", type=float, default=0.0)
     parser.add_argument("--swing-reach-limit", type=float, default=0.08)

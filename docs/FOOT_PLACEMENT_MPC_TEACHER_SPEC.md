@@ -34,9 +34,9 @@ forward push timing in one scored horizon.
 The current evidence says:
 
 ```text
-checked target score artifacts: 46
+checked target score artifacts: 48
 passing target sources: 0
-failure analysis rows scanned: 2072
+failure analysis rows scanned: 2136
 stable + actuator-safe rows: 964
 support-ready rows: 492
 forward-ready rows: 15
@@ -357,3 +357,21 @@ It confirmed that local-forward progress can diverge from world-x displacement
 when heading changes. Future teacher revisions should preserve both local
 forward velocity and heading/lateral stability rather than optimizing one in
 isolation.
+
+A swing-foot minimum-advance diagnostic was also tested:
+
+```text
+artifacts:
+  outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_ADVANCE_PROBE_SCORE_100.md
+  outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_ADVANCE_PROBE_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+modes: 16
+robust modes: 0
+```
+
+This addressed a concrete seed-0 issue where `stance_foot_x + foot_place_x`
+could ask the swing foot to move backward when the stance foot started behind
+the swing foot. The best 100-tick candidate improved seed 0 to small positive
+local vx, but it still failed the forward gate and introduced lateral/yaw
+tradeoffs. Keep `--swing-min-advance` as a useful parameter, but do not treat it
+as sufficient without better lateral/heading stabilization.
