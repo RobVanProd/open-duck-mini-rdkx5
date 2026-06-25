@@ -3757,3 +3757,21 @@ Patch spec for the next cross-repo change:
 ```text
 docs/SOFT_PRIOR_TRAINING_PATCH_SPEC.md
 ```
+
+Patch helper:
+
+```text
+tools/prepare_training_soft_prior_patch.py
+```
+
+Review artifact:
+
+```text
+outputs/analysis/SOFT_PRIOR_TRAINING_PATCH.diff
+```
+
+Read-only validation result:
+
+```text
+PASS_PATCH_PREPARED
+```

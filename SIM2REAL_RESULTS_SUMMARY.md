@@ -4734,3 +4734,18 @@ Next cross-repo patch spec:
 ```text
 docs/SOFT_PRIOR_TRAINING_PATCH_SPEC.md
 ```
+
+Patch helper:
+
+```text
+tools/prepare_training_soft_prior_patch.py
+```
+
+Review artifact:
+
+```text
+outputs/analysis/SOFT_PRIOR_TRAINING_PATCH.diff
+```
+
+The helper is read-only by default and validated against the current sibling
+Playground checkout with `PASS_PATCH_PREPARED`.

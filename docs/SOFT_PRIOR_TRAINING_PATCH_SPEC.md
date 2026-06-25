@@ -38,6 +38,21 @@ Patch target:
 
 All changes must be default-off.
 
+Patch helper:
+
+```text
+tools/prepare_training_soft_prior_patch.py
+```
+
+Default mode prints a unified diff only. It does not modify the sibling
+Playground checkout unless `--apply` is passed.
+
+Review artifact:
+
+```text
+outputs/analysis/SOFT_PRIOR_TRAINING_PATCH.diff
+```
+
 ### Config
 
 Add:
@@ -185,3 +200,32 @@ do not relax actuator envelope
 do not train against raw trace labels
 do not use the compact prior as a hard controller
 ```
+
+## Patch Helper Validation
+
+The helper has been validated against the current sibling Playground checkout:
+
+```text
+python3 tools/prepare_training_soft_prior_patch.py --playground-path ../Open_Duck_Playground
+```
+
+Result:
+
+```text
+PASS_PATCH_PREPARED
+```
+
+The generated diff is committed as:
+
+```text
+outputs/analysis/SOFT_PRIOR_TRAINING_PATCH.diff
+```
+
+It was also applied to a temporary copy of:
+
+```text
+playground/open_duck_mini_v2/joystick.py
+playground/open_duck_mini_v2/runner.py
+```
+
+and the patched temp files passed `py_compile`.
