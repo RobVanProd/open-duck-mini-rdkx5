@@ -1,0 +1,320 @@
+{
+  "audit": {
+    "command": [
+      "/usr/bin/python3",
+      "/home/lsd/robots/open-duck-mini-rdkx5/tools/audit_reward_term_activation.py",
+      "--reward-overrides-json",
+      "outputs/analysis/movement_bootstrap_v24_transition_propulsion_plan.json",
+      "--reward-overrides-phase",
+      "phase1_transition_propulsion_probe",
+      "--eval-path",
+      "/tmp/open_duck_support_reward_preflight_tool_smoke/eval",
+      "--output-md",
+      "/tmp/open_duck_support_reward_preflight_tool_smoke/REWARD_TERM_ACTIVATION.md",
+      "--output-json",
+      "/tmp/open_duck_support_reward_preflight_tool_smoke/reward_term_activation.json"
+    ],
+    "command_shell": "/usr/bin/python3 /home/lsd/robots/open-duck-mini-rdkx5/tools/audit_reward_term_activation.py --reward-overrides-json outputs/analysis/movement_bootstrap_v24_transition_propulsion_plan.json --reward-overrides-phase phase1_transition_propulsion_probe --eval-path /tmp/open_duck_support_reward_preflight_tool_smoke/eval --output-md /tmp/open_duck_support_reward_preflight_tool_smoke/REWARD_TERM_ACTIVATION.md --output-json /tmp/open_duck_support_reward_preflight_tool_smoke/reward_term_activation.json",
+    "returncode": 0,
+    "stdout_tail": ""
+  },
+  "audit_json": "/tmp/open_duck_support_reward_preflight_tool_smoke/reward_term_activation.json",
+  "audit_md": "/tmp/open_duck_support_reward_preflight_tool_smoke/REWARD_TERM_ACTIVATION.md",
+  "audit_payload": {
+    "configured_nonzero_terms": {
+      "action_magnitude": -0.0008,
+      "action_rate": -0.004,
+      "base_height": -0.25,
+      "command_progress": 10.0,
+      "command_progress_failure": -150.0,
+      "command_progress_shortfall": -46.0,
+      "forward_contact_support": -0.06,
+      "forward_contact_transition": 4.0,
+      "forward_double_support": -0.5,
+      "forward_double_support_dwell": -2.0,
+      "forward_overshoot": -2.0,
+      "forward_pitch": -0.05,
+      "forward_pitch_rate": -0.005,
+      "forward_progress": 24.0,
+      "forward_shortfall": -46.0,
+      "forward_single_support": 0.25,
+      "forward_wrong_direction": -95.0,
+      "orientation": -0.04,
+      "stand_still": -1.0,
+      "target_rate": -0.0002,
+      "tracking_lin_vel": 24.0
+    },
+    "deploy_run": false,
+    "eval_files": [
+      {
+        "mode": "vanilla",
+        "overall_status": "HOLD_CANDIDATE_TRACKING",
+        "path": "/tmp/open_duck_support_reward_preflight_tool_smoke/eval/closed_loop_actuator_bridge_eval.json",
+        "reward_term_count": 33
+      }
+    ],
+    "eval_path": "/tmp/open_duck_support_reward_preflight_tool_smoke/eval",
+    "missing_terms": [],
+    "observed_zero_terms": [
+      "command_progress_failure",
+      "command_progress_shortfall",
+      "forward_contact_support",
+      "forward_double_support_dwell",
+      "stand_still",
+      "target_rate"
+    ],
+    "reward_overrides_json": "outputs/analysis/movement_bootstrap_v24_transition_propulsion_plan.json",
+    "reward_overrides_phase": "phase1_transition_propulsion_probe",
+    "robot_tests_run": false,
+    "runtime_behavior_changed": false,
+    "ssh_run": false,
+    "status": "WARN_REWARD_TERMS_ZERO",
+    "term_audit": [
+      {
+        "expected_metric": "cost/action_magnitude",
+        "max_abs_stat": 0.0010033105500042439,
+        "observed_count": 1,
+        "opposite_metric_seen_count": 0,
+        "scale": -0.0008,
+        "status": "OBSERVED_NONZERO",
+        "term": "action_magnitude"
+      },
+      {
+        "expected_metric": "cost/action_rate",
+        "max_abs_stat": 0.0010357373394072056,
+        "observed_count": 1,
+        "opposite_metric_seen_count": 0,
+        "scale": -0.004,
+        "status": "OBSERVED_NONZERO",
+        "term": "action_rate"
+      },
+      {
+        "expected_metric": "cost/base_height",
+        "max_abs_stat": 9.29261659621261e-05,
+        "observed_count": 1,
+        "opposite_metric_seen_count": 0,
+        "scale": -0.25,
+        "status": "OBSERVED_NONZERO",
+        "term": "base_height"
+      },
+      {
+        "expected_metric": "reward/command_progress",
+        "max_abs_stat": 13.389311790466309,
+        "observed_count": 1,
+        "opposite_metric_seen_count": 0,
+        "scale": 10.0,
+        "status": "OBSERVED_NONZERO",
+        "term": "command_progress"
+      },
+      {
+        "expected_metric": "cost/command_progress_failure",
+        "max_abs_stat": 0.0,
+        "observed_count": 1,
+        "opposite_metric_seen_count": 0,
+        "scale": -150.0,
+        "status": "OBSERVED_ZERO",
+        "term": "command_progress_failure"
+      },
+      {
+        "expected_metric": "cost/command_progress_shortfall",
+        "max_abs_stat": 0.0,
+        "observed_count": 1,
+        "opposite_metric_seen_count": 0,
+        "scale": -46.0,
+        "status": "OBSERVED_ZERO",
+        "term": "command_progress_shortfall"
+      },
+      {
+        "expected_metric": "cost/forward_contact_support",
+        "max_abs_stat": 0.0,
+        "observed_count": 1,
+        "opposite_metric_seen_count": 0,
+        "scale": -0.06,
+        "status": "OBSERVED_ZERO",
+        "term": "forward_contact_support"
+      },
+      {
+        "expected_metric": "reward/forward_contact_transition",
+        "max_abs_stat": 4.0,
+        "observed_count": 1,
+        "opposite_metric_seen_count": 0,
+        "scale": 4.0,
+        "status": "OBSERVED_NONZERO",
+        "term": "forward_contact_transition"
+      },
+      {
+        "expected_metric": "cost/forward_double_support",
+        "max_abs_stat": 0.5,
+        "observed_count": 1,
+        "opposite_metric_seen_count": 0,
+        "scale": -0.5,
+        "status": "OBSERVED_NONZERO",
+        "term": "forward_double_support"
+      },
+      {
+        "expected_metric": "cost/forward_double_support_dwell",
+        "max_abs_stat": 0.0,
+        "observed_count": 1,
+        "opposite_metric_seen_count": 0,
+        "scale": -2.0,
+        "status": "OBSERVED_ZERO",
+        "term": "forward_double_support_dwell"
+      },
+      {
+        "expected_metric": "cost/forward_overshoot",
+        "max_abs_stat": 2.559654474258423,
+        "observed_count": 1,
+        "opposite_metric_seen_count": 0,
+        "scale": -2.0,
+        "status": "OBSERVED_NONZERO",
+        "term": "forward_overshoot"
+      },
+      {
+        "expected_metric": "cost/forward_pitch",
+        "max_abs_stat": 4.388764500617981e-05,
+        "observed_count": 1,
+        "opposite_metric_seen_count": 0,
+        "scale": -0.05,
+        "status": "OBSERVED_NONZERO",
+        "term": "forward_pitch"
+      },
+      {
+        "expected_metric": "cost/forward_pitch_rate",
+        "max_abs_stat": 0.00034905076608993113,
+        "observed_count": 1,
+        "opposite_metric_seen_count": 0,
+        "scale": -0.005,
+        "status": "OBSERVED_NONZERO",
+        "term": "forward_pitch_rate"
+      },
+      {
+        "expected_metric": "reward/forward_progress",
+        "max_abs_stat": 24.0,
+        "observed_count": 1,
+        "opposite_metric_seen_count": 0,
+        "scale": 24.0,
+        "status": "OBSERVED_NONZERO",
+        "term": "forward_progress"
+      },
+      {
+        "expected_metric": "cost/forward_shortfall",
+        "max_abs_stat": 168.8170166015625,
+        "observed_count": 1,
+        "opposite_metric_seen_count": 0,
+        "scale": -46.0,
+        "status": "OBSERVED_NONZERO",
+        "term": "forward_shortfall"
+      },
+      {
+        "expected_metric": "reward/forward_single_support",
+        "max_abs_stat": 0.25,
+        "observed_count": 1,
+        "opposite_metric_seen_count": 0,
+        "scale": 0.25,
+        "status": "OBSERVED_NONZERO",
+        "term": "forward_single_support"
+      },
+      {
+        "expected_metric": "cost/forward_wrong_direction",
+        "max_abs_stat": 190.40164184570312,
+        "observed_count": 1,
+        "opposite_metric_seen_count": 0,
+        "scale": -95.0,
+        "status": "OBSERVED_NONZERO",
+        "term": "forward_wrong_direction"
+      },
+      {
+        "expected_metric": "cost/orientation",
+        "max_abs_stat": 8.871540921973065e-05,
+        "observed_count": 1,
+        "opposite_metric_seen_count": 0,
+        "scale": -0.04,
+        "status": "OBSERVED_NONZERO",
+        "term": "orientation"
+      },
+      {
+        "expected_metric": "cost/stand_still",
+        "max_abs_stat": 0.0,
+        "observed_count": 1,
+        "opposite_metric_seen_count": 0,
+        "scale": -1.0,
+        "status": "OBSERVED_ZERO",
+        "term": "stand_still"
+      },
+      {
+        "expected_metric": "cost/target_rate",
+        "max_abs_stat": 0.0,
+        "observed_count": 1,
+        "opposite_metric_seen_count": 0,
+        "scale": -0.0002,
+        "status": "OBSERVED_ZERO",
+        "term": "target_rate"
+      },
+      {
+        "expected_metric": "reward/tracking_lin_vel",
+        "max_abs_stat": 10.158967971801758,
+        "observed_count": 1,
+        "opposite_metric_seen_count": 0,
+        "scale": 24.0,
+        "status": "OBSERVED_NONZERO",
+        "term": "tracking_lin_vel"
+      }
+    ]
+  },
+  "audit_status": "WARN_REWARD_TERMS_ZERO",
+  "bridge_mode": "vanilla",
+  "command_x": 0.04,
+  "deploy_run": false,
+  "duration_s": 0.2,
+  "eval": {
+    "command": [
+      "/home/lsd/robots/envs/open-duck-playground/bin/python",
+      "/home/lsd/robots/open-duck-mini-rdkx5/tools/eval_policy_with_actuator_bridge.py",
+      "--mode",
+      "closed-loop-sim",
+      "--eval-role",
+      "candidate",
+      "--policy",
+      "/home/lsd/robots/open-duck-mini-rdkx5/policy/BEST_WALK_ONNX_2.onnx",
+      "--fit-json",
+      "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/actuator_response_fit.json",
+      "--playground-path",
+      "/home/lsd/robots/Open_Duck_Playground",
+      "--env-python",
+      "/home/lsd/robots/envs/open-duck-playground/bin/python",
+      "--command-x",
+      "0.04",
+      "--duration",
+      "0.2",
+      "--seed",
+      "0",
+      "--bridge-mode",
+      "vanilla",
+      "--jax-platform",
+      "cpu",
+      "--sim-preflight-timeout-s",
+      "600",
+      "--closed-loop-timeout-s",
+      "600",
+      "--reward-overrides-json",
+      "outputs/analysis/movement_bootstrap_v24_transition_propulsion_plan.json",
+      "--reward-overrides-phase",
+      "phase1_transition_propulsion_probe",
+      "--output-dir",
+      "/tmp/open_duck_support_reward_preflight_tool_smoke/eval"
+    ],
+    "command_shell": "/home/lsd/robots/envs/open-duck-playground/bin/python /home/lsd/robots/open-duck-mini-rdkx5/tools/eval_policy_with_actuator_bridge.py --mode closed-loop-sim --eval-role candidate --policy /home/lsd/robots/open-duck-mini-rdkx5/policy/BEST_WALK_ONNX_2.onnx --fit-json /home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/actuator_response_fit.json --playground-path /home/lsd/robots/Open_Duck_Playground --env-python /home/lsd/robots/envs/open-duck-playground/bin/python --command-x 0.04 --duration 0.2 --seed 0 --bridge-mode vanilla --jax-platform cpu --sim-preflight-timeout-s 600 --closed-loop-timeout-s 600 --reward-overrides-json outputs/analysis/movement_bootstrap_v24_transition_propulsion_plan.json --reward-overrides-phase phase1_transition_propulsion_probe --output-dir /tmp/open_duck_support_reward_preflight_tool_smoke/eval",
+    "returncode": 0,
+    "stdout_tail": "/tmp/open_duck_support_reward_preflight_tool_smoke/eval/SIM_ACTUATOR_BRIDGE_EVAL.md\n/tmp/open_duck_support_reward_preflight_tool_smoke/eval/sim_actuator_bridge_eval.json\n/tmp/open_duck_support_reward_preflight_tool_smoke/eval/CLOSED_LOOP_ACTUATOR_BRIDGE_EVAL.md\n/tmp/open_duck_support_reward_preflight_tool_smoke/eval/closed_loop_actuator_bridge_eval.json\n"
+  },
+  "eval_json": "/tmp/open_duck_support_reward_preflight_tool_smoke/eval/closed_loop_actuator_bridge_eval.json",
+  "jax_platform": "cpu",
+  "reward_overrides_json": "outputs/analysis/movement_bootstrap_v24_transition_propulsion_plan.json",
+  "reward_overrides_phase": "phase1_transition_propulsion_probe",
+  "robot_tests_run": false,
+  "runtime_behavior_changed": false,
+  "seed": 0,
+  "ssh_run": false,
+  "status": "WARN_REWARD_TERMS_ZERO",
+  "training_run": false
+}

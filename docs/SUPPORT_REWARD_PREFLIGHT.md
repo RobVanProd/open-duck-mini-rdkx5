@@ -23,40 +23,21 @@ did not apply them, so the recovered gate could not observe them.
 
 ## Command
 
-Use a tiny local CPU eval. It is slow to compile but cheap compared with a cloud
-training run:
+Use the helper. It runs a tiny local CPU eval and then audits the emitted reward
+terms. It is slow to compile but cheap compared with a cloud training run:
 
 ```bash
-rm -rf /tmp/open_duck_support_reward_preflight
-
-../envs/open-duck-playground/bin/python tools/eval_policy_with_actuator_bridge.py \
-  --mode closed-loop-sim \
-  --eval-role candidate \
-  --policy policy/BEST_WALK_ONNX_2.onnx \
-  --fit-json outputs/analysis/actuator_response_fit.json \
-  --playground-path ../Open_Duck_Playground \
-  --env-python ../envs/open-duck-playground/bin/python \
-  --command-x 0.04 \
-  --duration 0.2 \
-  --seed 0 \
-  --bridge-mode vanilla \
-  --jax-platform cpu \
-  --sim-preflight-timeout-s 300 \
-  --closed-loop-timeout-s 300 \
+python3 tools/run_support_reward_preflight.py \
   --reward-overrides-json outputs/analysis/movement_bootstrap_v24_transition_propulsion_plan.json \
   --reward-overrides-phase phase1_transition_propulsion_probe \
   --output-dir /tmp/open_duck_support_reward_preflight
-
-python3 tools/audit_reward_term_activation.py \
-  --reward-overrides-json outputs/analysis/movement_bootstrap_v24_transition_propulsion_plan.json \
-  --reward-overrides-phase phase1_transition_propulsion_probe \
-  --eval-path /tmp/open_duck_support_reward_preflight \
-  --output-md /tmp/open_duck_support_reward_preflight/REWARD_TERM_ACTIVATION.md \
-  --output-json /tmp/open_duck_support_reward_preflight/reward_term_activation.json
 ```
 
 Adjust the `--reward-overrides-json` and `--reward-overrides-phase` values for
 the specific recipe being tested.
+
+For lower-level debugging, call `tools/eval_policy_with_actuator_bridge.py`
+and `tools/audit_reward_term_activation.py` separately, as the helper does.
 
 ## Pass / Hold
 
@@ -100,3 +81,16 @@ validation command
 
 Do not commit `/tmp` outputs. Commit only a small summary under
 `outputs/analysis/` if the preflight changes a project decision.
+
+## V24 Smoke
+
+The helper was run against the V24 plan after the eval allow-list fix:
+
+```text
+artifact: outputs/analysis/SUPPORT_REWARD_PREFLIGHT_V24.md
+status: WARN_REWARD_TERMS_ZERO
+```
+
+The support-contact terms were present. `forward_double_support_dwell` remained
+zero in the short smoke, which is expected because it activates only after the
+configured grace window.

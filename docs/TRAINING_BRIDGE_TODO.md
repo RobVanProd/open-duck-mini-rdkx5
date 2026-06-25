@@ -61,6 +61,7 @@ Support-contact reward preflight:
 
 ```text
 docs/SUPPORT_REWARD_PREFLIGHT.md
+tools/run_support_reward_preflight.py
 ```
 
 Post-V24 branch decision:

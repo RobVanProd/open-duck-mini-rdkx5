@@ -6069,3 +6069,11 @@ It explicitly blocks rerunning V24 unchanged or making another nearby scalar
 contact-reward tweak. The next valid branch should be either a richer
 closed-loop teacher/optimizer or a demonstration/imitation path with verified
 contact/envelope compatibility.
+
+The support reward preflight helper has been validated on the V24 plan:
+
+```text
+tool: tools/run_support_reward_preflight.py
+artifact: outputs/analysis/SUPPORT_REWARD_PREFLIGHT_V24.md
+status: WARN_REWARD_TERMS_ZERO
+```
