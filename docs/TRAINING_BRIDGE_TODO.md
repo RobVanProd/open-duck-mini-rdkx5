@@ -3110,6 +3110,32 @@ Do next:
 3. require longer curated windows before sequence-aware imitation/pretraining
 ```
 
+### Targeted Lateral/Contact Search
+
+A targeted primitive search around lower hip-roll bias and lower lateral motion
+produced the first 50-sample curated windows by count:
+
+```text
+tool: tools/search_low_command_target_primitives.py
+command_x: 0.04
+duration: 4 s
+seeds: 0,2
+candidates: 48
+25-sample curated windows: 25
+50-sample curated windows: 8
+status: HOLD_INSUFFICIENT_CURATED_DIVERSITY
+curated source files: 1
+```
+
+Do next:
+
+```text
+1. keep this as target-generation progress, not training permission
+2. preserve the seed_000 50-sample families
+3. make seed_002 pass by reducing lateral velocity and single-contact dominance
+4. only build a longer-window target manifest after source diversity passes
+```
+
 ### Target Dataset BC Smoke
 
 The observation-ready target manifest was tested with tiny linear and KNN

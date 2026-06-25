@@ -449,6 +449,43 @@ windows. The next generator change should explicitly optimize lateral velocity
 and contact alternation over longer horizons before another BC/PPO attempt.
 ```
 
+## Targeted Lateral/Contact Search Result
+
+A follow-up primitive search reduced hip-roll bias and sampled around the
+families that produced longer review hints:
+
+```text
+tool: tools/search_low_command_target_primitives.py
+command_x: 0.04
+duration: 4 s
+seeds: 0,2
+candidates: 48
+```
+
+Result:
+
+```text
+25-sample mine: PASS_REALIZED_WINDOWS_AVAILABLE
+25-sample curation: HOLD_INSUFFICIENT_CURATED_DIVERSITY
+25-sample curated windows: 25
+
+50-sample mine: PASS_REALIZED_WINDOWS_AVAILABLE
+50-sample curation: HOLD_INSUFFICIENT_CURATED_DIVERSITY
+50-sample curated windows: 8
+50-sample curated modes: 5
+curated source files: 1
+```
+
+Interpretation:
+
+```text
+The target generator can now produce longer seed-quality windows by count, but
+only on seed_000. Seed_002 mostly appears as review-only hints failing
+high_lateral_velocity or single_contact_pattern_dominates. The next generator
+iteration should preserve the seed_000 50-sample families while adding a
+seed_002-specific lateral/contact correction.
+```
+
 ## First Primitive Search Result
 
 A bounded low-dimensional sine primitive search was run as the first generator

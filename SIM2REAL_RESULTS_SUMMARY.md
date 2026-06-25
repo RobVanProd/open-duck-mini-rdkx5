@@ -4035,3 +4035,35 @@ windows. The next target-generation change should directly reduce lateral
 motion and single-contact dominance over longer horizons instead of trying to
 train from the existing short snippets.
 ```
+
+### Targeted Lateral/Contact Primitive Search
+
+A targeted CPU-only primitive search narrowed the grid around lower hip-roll
+bias, lower lateral motion, and the primitive families that produced 50-sample
+review hints.
+
+Result:
+
+```text
+tool: tools/search_low_command_target_primitives.py
+command: x=0.04
+duration: 4 s
+seeds: 0,2
+candidates: 48
+search status: PASS_TARGET_SEARCH_RAN
+25-sample curation: HOLD_INSUFFICIENT_CURATED_DIVERSITY
+25-sample curated windows: 25
+50-sample curation: HOLD_INSUFFICIENT_CURATED_DIVERSITY
+50-sample curated windows: 8
+curated source files: 1
+```
+
+Conclusion:
+
+```text
+This is a meaningful target-generation improvement: 50-sample seed-quality
+windows now exist. The remaining blocker is seed/source diversity, not target
+rate, tracking, or lack of any longer forward snippets. Do not train from this
+yet; the next search should explicitly make the seed_002 review hints pass by
+reducing lateral velocity and single-contact dominance.
+```
