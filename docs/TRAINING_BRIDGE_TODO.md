@@ -3263,6 +3263,53 @@ Do next:
 5. require seed2 contact dominance <=95% before rebuilding a target manifest
 ```
 
+### Lift-Pulse Target Search
+
+The primitive generator now has default-off lift-pulse parameters:
+
+```text
+--lift-duties
+--lift-scales
+```
+
+The default `--lift-scales=0.0` preserves the old primitive. A bounded CPU
+search tested narrow lift pulses across seed0 and seed2:
+
+```text
+candidates: 96
+objective score: HOLD_NO_SEED_ROBUST_TARGETS
+robust 50-sample modes: 0
+```
+
+Best lift-pulse near pass:
+
+```text
+seed0: pass, vx=0.0508 m/s
+seed2: vx=0.0519 m/s, vy95=0.0937 m/s
+seed2 contact_dominance: 98%
+seed2 contact pattern: 98% double contact, 2% single contact
+failure: single_contact_pattern_dominates
+```
+
+Curation remained single-seed:
+
+```text
+50-sample curated windows: 59
+50-sample curated modes: 46
+curated source files: 1
+curated source: seed_000
+```
+
+Do next:
+
+```text
+1. keep supervised/BC/PPO training blocked
+2. treat lift-pulse as a useful generator capability, not a solved target set
+3. add a contact-state objective that rewards actual contact transitions
+4. consider a foot-clearance/site-height metric, not just joint-space lift
+5. require seed2 contact dominance <=95% before target-manifest rebuild
+```
+
 ### Target Dataset BC Smoke
 
 The observation-ready target manifest was tested with tiny linear and KNN

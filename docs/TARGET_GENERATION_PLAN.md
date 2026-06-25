@@ -638,6 +638,61 @@ generator should add an explicit contact-lift/contact-transition mechanism or a
 different primitive parameterization, rather than another local micro-grid.
 ```
 
+## Lift-Pulse Search Result
+
+The generator now supports optional swing-lift pulse controls:
+
+```text
+--lift-duties
+--lift-scales
+```
+
+When `--lift-scales=0.0`, the old sine primitive is unchanged. A bounded search
+tested narrow lift pulses as a first explicit contact-lift mechanism:
+
+```text
+tool: tools/search_low_command_target_primitives.py
+command_x: 0.04
+duration: 4 s
+seeds: 0,2
+candidates: 96
+objective score: HOLD_NO_SEED_ROBUST_TARGETS
+robust modes: 0
+```
+
+Best lift-pulse near pass:
+
+```text
+mode: primitive_p0p64_hrb0_hb0p08_h0p035_kb0p06_k0p14_ab0p04_am0p0035_ph0p47_ld0p3_ls0p35
+seed0: pass, vx=0.0508 m/s
+seed2: vx=0.0519 m/s
+seed2 vy95: 0.0937 m/s
+seed2 contact_dominance: 98%
+seed2 contact pattern: 98% double contact, 2% single contact
+failure: single_contact_pattern_dominates
+```
+
+Curation result:
+
+```text
+25-sample curated windows: 87
+50-sample curated windows: 59
+50-sample curated modes: 46
+status: HOLD_INSUFFICIENT_CURATED_DIVERSITY
+curated source files: 1
+curated source: seed_000
+```
+
+Interpretation:
+
+```text
+The lift pulse improved target-rate smoothness and kept some seed2 near misses
+inside the forward/lateral envelope, but every seed2 mode still failed contact
+dominance. This is not training permission. The next generator needs to
+explicitly change contact timing or foot clearance, not just narrow the lift
+waveform.
+```
+
 ## First Primitive Search Result
 
 A bounded low-dimensional sine primitive search was run as the first generator

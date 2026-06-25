@@ -4207,3 +4207,56 @@ double-support/contact-dominated on seed2. Do not spend the next iteration on
 another nearby grid; add a generator with an explicit contact-lift or
 contact-transition objective.
 ```
+
+### Lift-Pulse Target Search
+
+The primitive generator was extended with default-off swing-lift pulse controls:
+
+```text
+tool: tools/search_low_command_target_primitives.py
+new flags: --lift-duties, --lift-scales
+default behavior: unchanged sine primitive
+```
+
+A bounded CPU search tested narrow lift pulses:
+
+```text
+command: x=0.04
+duration: 4 s
+seeds: 0,2
+candidates: 96
+objective score: HOLD_NO_SEED_ROBUST_TARGETS
+robust 50-sample modes: 0
+```
+
+Best objective-scored lift-pulse candidate:
+
+```text
+mode: primitive_p0p64_hrb0_hb0p08_h0p035_kb0p06_k0p14_ab0p04_am0p0035_ph0p47_ld0p3_ls0p35
+seed0: pass, vx=0.0508 m/s
+seed2: vx=0.0519 m/s, vy95=0.0937 m/s, contact_dominance=98%
+seed2 contact pattern: 98% double contact, 2% single contact
+seed2 failure: single_contact_pattern_dominates
+```
+
+Curation result:
+
+```text
+50-sample curation: HOLD_INSUFFICIENT_CURATED_DIVERSITY
+50-sample curated windows: 59
+50-sample curated modes: 46
+curated source files: 1
+curated source: seed_000
+25-sample curated windows: 87
+```
+
+Conclusion:
+
+```text
+The lift pulse lowered target rates and preserved forward/lateral metrics on
+some seed2 near misses, but it did not create enough contact alternation.
+Seed2 failed single-contact-pattern dominance on every scored mode. The next
+generator must change the contact state itself, not just the shape of the knee
+lift waveform. Treat this as evidence for an explicit foot-clearance/contact
+reward or a different contact-timing primitive.
+```

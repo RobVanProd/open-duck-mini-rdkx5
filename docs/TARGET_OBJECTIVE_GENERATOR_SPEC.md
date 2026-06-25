@@ -230,3 +230,45 @@ sent_target_velocity_p95 <= 2.5 rad/s
 joint_tracking_p95 <= 0.12 rad
 50-sample curated source files >= 2
 ```
+
+## Lift-Pulse Search Finding
+
+The first explicit contact-lift implementation added optional lift-pulse
+controls to the primitive generator:
+
+```text
+--lift-duties
+--lift-scales
+```
+
+With `--lift-scales=0.0`, the legacy sine primitive is unchanged. The first
+lift-pulse search result:
+
+```text
+objective score: HOLD_NO_SEED_ROBUST_TARGETS
+robust 50-sample modes: 0
+best seed2 vx: 0.0519 m/s
+best seed2 vy95: 0.0937 m/s
+best seed2 contact_dominance: 98%
+best seed2 contact pattern: 98% double contact, 2% single contact
+seed2 failure count for single_contact_pattern_dominates: 96 / 96 modes
+```
+
+The lift-pulse family created seed0-only data:
+
+```text
+50-sample curated windows: 59
+50-sample curated modes: 46
+curated source files: 1
+curated source: seed_000
+```
+
+Interpretation:
+
+```text
+Joint-space lift shaping alone is not enough. It can preserve forward velocity
+and lateral velocity on seed2, but the simulated feet still remain in one
+dominant contact pattern. The next objective should score actual contact-state
+transitions and/or measured foot clearance, not assume knee lift produces
+contact alternation.
+```

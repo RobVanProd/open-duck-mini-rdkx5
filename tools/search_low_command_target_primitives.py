@@ -41,6 +41,8 @@ class Primitive:
     ankle_bias: float
     ankle_amp: float
     phase_offset: float
+    lift_duty: float
+    lift_scale: float
 
 
 def finite(value: Any) -> bool:
@@ -74,6 +76,8 @@ def candidate_grid(args: argparse.Namespace) -> list[Primitive]:
     ankle_biases = [float(item) for item in args.ankle_biases.split(",") if item.strip()]
     ankle_scales = [float(item) for item in args.ankle_scales.split(",") if item.strip()]
     phase_offsets = [float(item) for item in args.phase_offsets.split(",") if item.strip()]
+    lift_duties = [float(item) for item in args.lift_duties.split(",") if item.strip()]
+    lift_scales = [float(item) for item in args.lift_scales.split(",") if item.strip()]
     rows = []
     for period_s in periods:
         for hip_roll_bias in hip_roll_biases:
@@ -84,27 +88,36 @@ def candidate_grid(args: argparse.Namespace) -> list[Primitive]:
                             for ankle_bias in ankle_biases:
                                 for ankle_scale in ankle_scales:
                                     for phase_offset in phase_offsets:
-                                        ankle_amp = ankle_scale * hip_amp
-                                        rows.append(
-                                            Primitive(
-                                                label=(
-                                                    f"p{period_s:g}_hrb{hip_roll_bias:g}_"
-                                                    f"hb{hip_bias:g}_h{hip_amp:g}_"
-                                                    f"kb{knee_bias:g}_k{knee_amp:g}_"
-                                                    f"ab{ankle_bias:g}_a{ankle_amp:g}_"
-                                                    f"ph{phase_offset:g}"
-                                                ).replace(".", "p").replace("-", "m"),
-                                                period_s=period_s,
-                                                hip_roll_bias=hip_roll_bias,
-                                                hip_pitch_bias=hip_bias,
-                                                hip_pitch_amp=hip_amp,
-                                                knee_bias=knee_bias,
-                                                knee_amp=knee_amp,
-                                                ankle_bias=ankle_bias,
-                                                ankle_amp=ankle_amp,
-                                                phase_offset=phase_offset,
-                                            )
-                                        )
+                                        for lift_duty in lift_duties:
+                                            for lift_scale in lift_scales:
+                                                ankle_amp = ankle_scale * hip_amp
+                                                lift_label = (
+                                                    ""
+                                                    if lift_scale == 0.0 and lift_duty == 0.5
+                                                    else f"_ld{lift_duty:g}_ls{lift_scale:g}"
+                                                )
+                                                rows.append(
+                                                    Primitive(
+                                                        label=(
+                                                            f"p{period_s:g}_hrb{hip_roll_bias:g}_"
+                                                            f"hb{hip_bias:g}_h{hip_amp:g}_"
+                                                            f"kb{knee_bias:g}_k{knee_amp:g}_"
+                                                            f"ab{ankle_bias:g}_a{ankle_amp:g}_"
+                                                            f"ph{phase_offset:g}{lift_label}"
+                                                        ).replace(".", "p").replace("-", "m"),
+                                                        period_s=period_s,
+                                                        hip_roll_bias=hip_roll_bias,
+                                                        hip_pitch_bias=hip_bias,
+                                                        hip_pitch_amp=hip_amp,
+                                                        knee_bias=knee_bias,
+                                                        knee_amp=knee_amp,
+                                                        ankle_bias=ankle_bias,
+                                                        ankle_amp=ankle_amp,
+                                                        phase_offset=phase_offset,
+                                                        lift_duty=lift_duty,
+                                                        lift_scale=lift_scale,
+                                                    )
+                                                )
     if args.shuffle_candidates:
         random.Random(args.grid_seed).shuffle(rows)
     return rows[: args.max_candidates]
@@ -129,6 +142,7 @@ def summarize_records(records: list[dict[str, Any]], command_x: float) -> dict[s
     vy = [record["local_linvel_m_s"][1] for record in records]
     pitch = [abs(record["body_pitch_rad"]) for record in records]
     height = [record["base_height_m"] for record in records]
+    foot_z = np.asarray([record.get("foot_site_z_m", []) for record in records], dtype=float)
     action = np.asarray([record["action"] for record in records], dtype=float)
     sent = np.asarray([record["sent_target_rad"] for record in records], dtype=float)
     actual = np.asarray([record["actual_position_rad"] for record in records], dtype=float)
@@ -150,6 +164,9 @@ def summarize_records(records: list[dict[str, Any]], command_x: float) -> dict[s
         "vy_abs_p95_m_s": percentile([abs(value) for value in vy], 95),
         "body_pitch_abs_p95_rad": percentile(pitch, 95),
         "base_height_min_m": float(np.min(height)) if height else None,
+        "foot_site_z_p95_m": (
+            percentile(foot_z.reshape(-1).tolist(), 95) if foot_z.size else None
+        ),
         "action_saturation_pct": float(np.mean(np.abs(action) >= 0.999) * 100.0) if action.size else None,
         "target_clip_p95_rad": percentile(target_clip.reshape(-1).tolist(), 95) if target_clip.size else None,
         "sent_target_velocity_p95_rad_s": percentile(sent_velocity.reshape(-1).tolist(), 95) if sent_velocity.size else None,
@@ -225,20 +242,36 @@ def run_search(args: argparse.Namespace) -> dict[str, Any]:
         ankle_bias,
         ankle_amp,
         phase_offset,
+        lift_duty,
+        lift_scale,
     ):
         t = tick * env.dt
         phase = 2.0 * jp.pi * (t / period_s) + phase_offset
         left = jp.sin(phase)
         right = jp.sin(phase + jp.pi)
+
+        def lift_pulse(angle):
+            phase01 = jp.mod(angle / (2.0 * jp.pi), 1.0)
+            centered_dist = jp.abs(jp.mod(phase01 - 0.5 + 0.5, 1.0) - 0.5)
+            half_duty = jp.maximum(lift_duty * 0.5, 1.0e-6)
+            return jp.clip(1.0 - centered_dist / half_duty, 0.0, 1.0)
+
+        left_lift = (1.0 - lift_scale) * jp.maximum(0.0, left) + lift_scale * lift_pulse(phase)
+        right_lift = (1.0 - lift_scale) * jp.maximum(0.0, right) + lift_scale * lift_pulse(
+            phase + jp.pi
+        )
+        left_ankle = (1.0 - lift_scale) * left + lift_scale * lift_pulse(phase)
+        right_ankle = (1.0 - lift_scale) * right + lift_scale * lift_pulse(phase + jp.pi)
+
         target = jp.asarray(default_actuator)
         target = target.at[1].set(default_actuator[1] + hip_roll_bias)
         target = target.at[2].set(default_actuator[2] + hip_bias + hip_amp * left)
-        target = target.at[3].set(default_actuator[3] + knee_bias + knee_amp * jp.maximum(0.0, left))
-        target = target.at[4].set(default_actuator[4] + ankle_bias + ankle_amp * left)
+        target = target.at[3].set(default_actuator[3] + knee_bias + knee_amp * left_lift)
+        target = target.at[4].set(default_actuator[4] + ankle_bias + ankle_amp * left_ankle)
         target = target.at[10].set(default_actuator[10] - hip_roll_bias)
         target = target.at[11].set(default_actuator[11] + hip_bias + hip_amp * right)
-        target = target.at[12].set(default_actuator[12] + knee_bias + knee_amp * jp.maximum(0.0, right))
-        target = target.at[13].set(default_actuator[13] + ankle_bias + ankle_amp * right)
+        target = target.at[12].set(default_actuator[12] + knee_bias + knee_amp * right_lift)
+        target = target.at[13].set(default_actuator[13] + ankle_bias + ankle_amp * right_ankle)
         return target
 
     def step_primitive(
@@ -252,6 +285,8 @@ def run_search(args: argparse.Namespace) -> dict[str, Any]:
         ankle_bias,
         ankle_amp,
         phase_offset,
+        lift_duty,
+        lift_scale,
     ):
         state.info["command"] = command
         tick = state.info["step"]
@@ -267,6 +302,8 @@ def run_search(args: argparse.Namespace) -> dict[str, Any]:
             ankle_bias,
             ankle_amp,
             phase_offset,
+            lift_duty,
+            lift_scale,
         )
         action = jp.clip((target - env._default_actuator) / env._config.action_scale, -1.0, 1.0)
         pre_rate_limit = env._default_actuator + action * env._config.action_scale
@@ -349,6 +386,8 @@ def run_search(args: argparse.Namespace) -> dict[str, Any]:
                     primitive.ankle_bias,
                     primitive.ankle_amp,
                     primitive.phase_offset,
+                    primitive.lift_duty,
+                    primitive.lift_scale,
                 )
                 qpos = np.asarray(jax.device_get(state.data.qpos), dtype=float)
                 base_addr = int(env._floating_base_qpos_addr)
@@ -358,6 +397,9 @@ def run_search(args: argparse.Namespace) -> dict[str, Any]:
                 )
                 actual = np.asarray(
                     jax.device_get(env.get_actuator_joints_qpos(state.data.qpos)), dtype=float
+                )
+                foot_site_pos = np.asarray(
+                    jax.device_get(state.data.site_xpos[env._feet_site_id]), dtype=float
                 )
                 contacts = np.asarray(jax.device_get(state.info["last_contact"]), dtype=bool)
                 obs_host = jax.device_get(state.obs)
@@ -378,6 +420,7 @@ def run_search(args: argparse.Namespace) -> dict[str, Any]:
                     "base_x_m": float(qpos[base_addr]),
                     "base_y_m": float(qpos[base_addr + 1]),
                     "base_height_m": float(qpos[base_addr + 2]),
+                    "foot_site_z_m": foot_site_pos[:, 2].astype(float).tolist(),
                     "local_linvel_m_s": local_linvel.astype(float).tolist(),
                     "foot_contacts": contacts.astype(int).tolist(),
                     "observation": policy_obs,
@@ -488,6 +531,8 @@ def main() -> int:
     parser.add_argument("--ankle-biases", default="0.0")
     parser.add_argument("--ankle-scales", default="-0.5,-1.0")
     parser.add_argument("--phase-offsets", default="0.0,1.5708")
+    parser.add_argument("--lift-duties", default="0.5")
+    parser.add_argument("--lift-scales", default="0.0")
     parser.add_argument("--max-candidates", type=int, default=24)
     parser.add_argument("--shuffle-candidates", action="store_true")
     parser.add_argument("--grid-seed", type=int, default=0)
