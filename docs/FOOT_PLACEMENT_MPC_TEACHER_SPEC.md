@@ -10,7 +10,7 @@ The current target-source branch is held at:
 
 ```text
 outputs/analysis/NEXT_WEIGHT_TRANSFER_BRANCH.md
-status: PLAN_STANCE_RELATIVE_PROPULSION_SHAPING
+status: PLAN_STANCE_RELATIVE_LATERAL_DAMPING
 ```
 
 The next implementation should build a finite-horizon state-feedback
@@ -34,15 +34,15 @@ a replacement stance-support propulsion primitive in one scored horizon.
 The current evidence says:
 
 ```text
-checked target score artifacts: 62
+checked target score artifacts: 66
 passing target sources: 0
-failure analysis rows scanned: 3384
-stable + actuator-safe rows: 1250
-support-ready rows: 789
-forward-ready rows: 15
+failure analysis rows scanned: 3896
+stable + actuator-safe rows: 1380
+support-ready rows: 1464
+forward-ready rows: 23
 stable + support rows: 9
 stable + forward rows: 0
-support + forward rows: 1
+support + forward rows: 9
 all three rows: 0
 ```
 
@@ -287,6 +287,9 @@ sagittal stance-feedback propulsion with soft gates:
 
 stance-relative lateral + sagittal propulsion:
   robust 100/150 tick modes: 0 / 64
+
+stance-relative lateral + teacher target-velocity cap:
+  robust 100/150 tick modes: 0 / 64
 ```
 
 The latest stability probe added default-off fields:
@@ -390,6 +393,37 @@ But it still produced no seed-robust 100/150 tick target. The score failures
 shifted to high lateral velocity and high sent target velocity. That makes
 stance-relative lateral targeting the current best direction, but the next
 probe must shape it inside the lateral and actuator envelopes.
+
+The teacher-side target-velocity cap follow-up added:
+
+```text
+--teacher-target-velocity-limits
+```
+
+The probe preserved the same stance-foot-relative controller but clipped
+teacher sent-target steps to `2.5` or `3.0 rad/s`. It reduced target-velocity
+pressure in the push-effectiveness read:
+
+```text
+artifact: outputs/analysis/FOOT_PLACEMENT_STANCE_RELATIVE_VELOCITY_CAP_EFFECTIVENESS_ANALYSIS.md
+status: HOLD_PUSH_INEFFECTIVE
+mean future vx delta during push: +0.0083 m/s
+push target-velocity failures: 0
+```
+
+It still produced no seed-robust 100/150 tick target:
+
+```text
+artifact: outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_STANCE_RELATIVE_VELOCITY_CAP_PROBE_SCORE_100.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+robust modes: 0 / 64
+```
+
+Interpretation: velocity limiting made the candidate family more honest with
+respect to the actuator envelope, but the remaining failure is lateral
+containment and seed symmetry. The next probe should keep the cap near
+`2.5 rad/s`, strengthen lateral/roll/base-y damping, and avoid relaxing the
+actuator limit to recover forward speed.
 
 ## Stop Rules
 

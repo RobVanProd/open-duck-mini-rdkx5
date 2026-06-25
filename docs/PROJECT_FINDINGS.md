@@ -205,7 +205,7 @@ Current gate artifact:
 ```text
 outputs/analysis/WEIGHT_TRANSFER_TARGET_GATE_CHECK.md
 status: HOLD_NO_SUSTAINED_WEIGHT_TRANSFER_TARGET
-checked score artifacts: 64
+checked score artifacts: 66
 passing target sources: 0
 ```
 
@@ -214,18 +214,18 @@ The failure-mode analysis scans the same compact score family:
 ```text
 outputs/analysis/WEIGHT_TRANSFER_GATE_FAILURE_ANALYSIS.md
 status: HOLD_FORWARD_IMPULSE_PRIMARY
-seed rows scanned: 3640
+seed rows scanned: 3896
 ```
 
 It found:
 
 ```text
-stable + actuator-safe rows: 1250
-support-ready rows: 789
-forward-ready rows: 15
+stable + actuator-safe rows: 1380
+support-ready rows: 1464
+forward-ready rows: 23
 stable + support rows: 9
 stable + forward rows: 0
-support + forward rows: 1
+support + forward rows: 9
 all three: 0
 ```
 
@@ -326,12 +326,13 @@ The next branch decision is now explicit:
 ```text
 tool: tools/decide_next_weight_transfer_branch.py
 artifact: outputs/analysis/NEXT_WEIGHT_TRANSFER_BRANCH.md
-status: PLAN_STANCE_RELATIVE_PROPULSION_SHAPING
+status: PLAN_STANCE_RELATIVE_LATERAL_DAMPING
 ```
 
 That means the next offline implementation should be a finite-horizon
 state-feedback teacher/optimizer that chooses stance side, lateral body
-placement, swing-foot placement, and shaped stance-relative propulsion.
+placement, swing-foot placement, capped stance-relative propulsion, and
+stronger lateral damping together.
 Do not launch PPO/BC or robot validation from current target sources.
 
 Implementation spec:
@@ -450,3 +451,27 @@ It increased forward impulse and raw rollout speed, but the target scores fail
 on lateral velocity and sent target velocity. Current interpretation: keep the
 stance-foot-relative controller idea, but shape target velocity and lateral
 dynamics before any training re-entry.
+
+The follow-up teacher-side target-velocity cap tightened that conclusion:
+
+```text
+outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_STANCE_RELATIVE_VELOCITY_CAP_PROBE_SCORE_100.md
+outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_STANCE_RELATIVE_VELOCITY_CAP_PROBE_SCORE_150.md
+outputs/analysis/FOOT_PLACEMENT_STANCE_RELATIVE_VELOCITY_CAP_EFFECTIVENESS_ANALYSIS.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+robust modes: 0 / 64
+top raw rollout mean vx: 0.0257 m/s
+mean future vx delta during push: +0.0083 m/s
+```
+
+The cap reduced actuator-envelope pressure, but every push trace still failed
+the lateral-velocity check and seed 0 stayed weak. Current decision:
+
+```text
+outputs/analysis/NEXT_WEIGHT_TRANSFER_BRANCH.md
+status: PLAN_STANCE_RELATIVE_LATERAL_DAMPING
+```
+
+Next branch: keep stance-foot-relative targeting and a measured-envelope
+teacher cap, then add stronger lateral/roll/base-y containment and seed-symmetry
+shaping. Do not relax the target-velocity limit to manufacture speed.

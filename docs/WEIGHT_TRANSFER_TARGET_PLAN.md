@@ -62,7 +62,7 @@ Current result:
 ```text
 artifact: outputs/analysis/WEIGHT_TRANSFER_TARGET_GATE_CHECK.md
 status: HOLD_NO_SUSTAINED_WEIGHT_TRANSFER_TARGET
-checked score artifacts: 64
+checked score artifacts: 66
 passing target sources: 0
 ```
 
@@ -75,18 +75,18 @@ The current failure-mode scan is:
 tool: tools/analyze_weight_transfer_gate_failures.py
 artifact: outputs/analysis/WEIGHT_TRANSFER_GATE_FAILURE_ANALYSIS.md
 status: HOLD_FORWARD_IMPULSE_PRIMARY
-seed rows scanned: 3640
+seed rows scanned: 3896
 ```
 
 Key split:
 
 ```text
-stable + actuator-safe rows: 1250
-support-ready rows: 789
-forward-ready rows: 15
+stable + actuator-safe rows: 1380
+support-ready rows: 1464
+forward-ready rows: 23
 stable + support rows: 9
 stable + forward rows: 0
-support + forward rows: 1
+support + forward rows: 9
 all three: 0
 ```
 
@@ -228,7 +228,7 @@ Current decision artifact:
 
 ```text
 outputs/analysis/NEXT_WEIGHT_TRANSFER_BRANCH.md
-status: PLAN_STANCE_RELATIVE_PROPULSION_SHAPING
+status: PLAN_STANCE_RELATIVE_LATERAL_DAMPING
 ```
 
 The required next design is:
@@ -240,8 +240,9 @@ explicit lateral body placement over the stance foot
 swing-foot placement and clearance objective
 active lateral containment while stance propulsion remains enabled
 stance-support propulsion that is not only a direct push-amplitude increase
-target-velocity shaping for stance-relative propulsion
-lateral velocity and base-y drift penalties
+teacher-side target-velocity limiting near the measured actuator envelope
+stronger lateral velocity, roll, and base-y drift penalties
+seed-symmetry shaping so seed 0 does not stay weak while seed 2 moves
 pitch and base-height guards
 measured actuator-envelope scoring
 100-150 tick seed-robust PASS_WEIGHT_TRANSFER_TARGET gate
@@ -249,7 +250,7 @@ measured actuator-envelope scoring
 
 This is intentionally stronger than "try Branch A." It rules out another nearby
 scalar teacher-grid expansion and, after the push-effectiveness trace read,
-points at stance-relative propulsion shaping as the next reviewed
+points at capped stance-relative lateral damping as the next reviewed
 implementation target.
 
 Implementation spec:
@@ -371,6 +372,39 @@ not a training target. It increases forward impulse, but the current controller
 buys that impulse with lateral velocity and actuator-envelope violations. The
 next revision should keep the stance-relative idea while shaping target
 velocity and lateral dynamics, not simply increase propulsion.
+
+Stance-relative target-velocity cap diagnostic:
+
+```text
+artifacts:
+  outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_STANCE_RELATIVE_VELOCITY_CAP_PROBE_SCORE_100.md
+  outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_STANCE_RELATIVE_VELOCITY_CAP_PROBE_SCORE_150.md
+  outputs/analysis/FOOT_PLACEMENT_STANCE_RELATIVE_VELOCITY_CAP_EFFECTIVENESS_ANALYSIS.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+robust modes: 0 / 64
+```
+
+This added a default-off teacher-side sent-target velocity cap:
+
+```text
+--teacher-target-velocity-limits 2.5,3.0
+```
+
+The cap reduced actuator-envelope violations in the push-effectiveness read,
+but it did not produce a target source:
+
+```text
+top raw rollout mean vx: 0.0257 m/s
+mean push_allowed_pct: 41.2821
+mean future vx delta during push: +0.0083 m/s
+push target-velocity failures in effectiveness read: 0
+100/150 tick robust modes: 0
+```
+
+The closest seed-2 rows now satisfy most support, forward, pitch, height, and
+actuator checks, but fail lateral velocity. Seed 0 remains much weaker in the
+worst-seed ranking. Interpretation: do not relax the cap to buy speed. Keep a
+`2.5 rad/s` style cap and attack lateral containment plus seed symmetry.
 
 Stronger-push diagnostic:
 

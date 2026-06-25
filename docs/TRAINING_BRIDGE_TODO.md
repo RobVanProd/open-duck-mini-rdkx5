@@ -159,6 +159,11 @@ stance-foot-relative sagittal propulsion primitive:
 stance-relative lateral + sagittal propulsion:
   no seed-robust 100/150 tick target
   strongest forward impulse so far, but high lateral/target velocity
+
+stance-relative lateral + teacher target-velocity cap:
+  no seed-robust 100/150 tick target
+  actuator-envelope pressure reduced, but lateral velocity and seed symmetry
+  still fail
 ```
 
 Next implementation should follow:
@@ -4459,7 +4464,7 @@ The current executable next-branch decision is:
 ```text
 tool: tools/decide_next_weight_transfer_branch.py
 artifact: outputs/analysis/NEXT_WEIGHT_TRANSFER_BRANCH.md
-status: PLAN_STANCE_RELATIVE_PROPULSION_SHAPING
+status: PLAN_STANCE_RELATIVE_LATERAL_DAMPING
 ```
 
 This picks the next target-source branch explicitly:
@@ -4468,14 +4473,16 @@ This picks the next target-source branch explicitly:
 finite-horizon state-feedback teacher/optimizer
 stance side + lateral body placement + swing-foot placement
 active lateral containment while stance propulsion remains enabled
-target-velocity shaping for stance-relative propulsion
+teacher-side target-velocity limiting near the measured envelope
+stronger lateral/roll/base-y damping and seed-symmetry shaping
 all optimized/scored together
 ```
 
 Do not launch PPO/BC from the current target sources. Do not widen the same
 local teacher grid again unless the implementation adds an active lateral
-support mechanism that lets stance propulsion remain enabled. Training
-re-entry still requires `PASS_WEIGHT_TRANSFER_TARGET`.
+support mechanism that lets stance propulsion remain enabled inside the
+measured target-velocity cap. Training re-entry still requires
+`PASS_WEIGHT_TRANSFER_TARGET`.
 
 Implementation spec:
 

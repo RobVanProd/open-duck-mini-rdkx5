@@ -1,6 +1,6 @@
 # Next Weight-Transfer Branch Decision
 
-status: `PLAN_STANCE_RELATIVE_PROPULSION_SHAPING`
+status: `PLAN_STANCE_RELATIVE_LATERAL_DAMPING`
 
 This is an offline planning artifact. It does not run simulation,
 training, robot SSH, deployment, or hardware tests.
@@ -10,15 +10,15 @@ training, robot SSH, deployment, or hardware tests.
 | field | value |
 |---|---:|
 | `gate_status` | `HOLD_NO_SUSTAINED_WEIGHT_TRANSFER_TARGET` |
-| `gate_artifacts` | `64` |
+| `gate_artifacts` | `66` |
 | `failure_status` | `HOLD_FORWARD_IMPULSE_PRIMARY` |
-| `seed_rows_scanned` | `3640` |
-| `stable_actuator_rows` | `1371` |
-| `support_ready_rows` | `1250` |
-| `forward_ready_rows` | `18` |
+| `seed_rows_scanned` | `3896` |
+| `stable_actuator_rows` | `1380` |
+| `support_ready_rows` | `1464` |
+| `forward_ready_rows` | `23` |
 | `stable_and_support_rows` | `9` |
 | `stable_and_forward_rows` | `0` |
-| `support_and_forward_rows` | `4` |
+| `support_and_forward_rows` | `9` |
 | `all_three_rows` | `0` |
 | `leg_extension_100_status` | `HOLD_NO_SEED_ROBUST_TARGETS` |
 | `leg_extension_100_robust_modes` | `0` |
@@ -36,18 +36,22 @@ training, robot SSH, deployment, or hardware tests.
 | `stance_relative_status` | `HOLD_PUSH_INEFFECTIVE` |
 | `stance_relative_mean_future_vx_delta_m_s` | `0.009873367809772528` |
 | `stance_relative_pass_count` | `None` |
+| `stance_relative_velocity_cap_status` | `HOLD_PUSH_INEFFECTIVE` |
+| `stance_relative_velocity_cap_mean_future_vx_delta_m_s` | `0.008331105330308024` |
+| `stance_relative_velocity_cap_pass_count` | `None` |
 
 ## Decision
 
-Keep the stance-foot-relative lateral target as the promising direction, but shape it to satisfy lateral and actuator gates. It increased forward impulse and raw rollout speed, but still fails the target gate through lateral velocity and target-velocity violations.
+Keep stance-foot-relative lateral targeting and teacher-side target-velocity limiting, but add stronger lateral containment and seed-symmetry shaping. The velocity cap removed the main actuator-envelope failure from the push-effectiveness read, but the target gate still fails through lateral velocity and weak seed-robust forward motion.
 
 ## Rationale
 
 - No checked target source passes PASS_WEIGHT_TRANSFER_TARGET.
 - The aggregate failure remains HOLD_FORWARD_IMPULSE_PRIMARY with zero rows satisfying stability, support, and forward progress together.
-- Stance-foot-relative lateral targeting increased push scheduling and mean future vx delta beyond the sagittal-only variant.
-- The 100/150 tick scores still found zero robust modes, with high lateral velocity and high sent target velocity dominating.
-- This is evidence for a usable direction, not training permission: the next branch should shape the stance-relative controller inside lateral and actuator limits.
+- The stance-relative lateral probe remains the best local direction for forward impulse, but it exceeded lateral and target-velocity gates.
+- The teacher-side velocity-cap follow-up reduced actuator-envelope pressure while keeping a positive mean future-vx delta.
+- That capped follow-up still produced zero robust 100/150 tick modes, and every push-effectiveness trace still failed the lateral-velocity check.
+- The next branch should keep the cap near the measured envelope and attack lateral containment/seed asymmetry; it should not relax the actuator limit or simply increase propulsion.
 
 ## Required Next Design
 
@@ -56,8 +60,9 @@ Keep the stance-foot-relative lateral target as the promising direction, but sha
 - swing-foot placement and clearance objective
 - active lateral containment while stance propulsion remains enabled
 - stance-support propulsion that is not only a direct push-amplitude increase
-- target-velocity shaping for stance-relative propulsion
-- lateral velocity and base-y drift penalties
+- teacher-side target-velocity limiting near the measured actuator envelope
+- stronger lateral velocity, roll, and base-y drift penalties
+- seed-symmetry shaping so seed 0 does not stay weak while seed 2 moves
 - pitch and base-height guards
 - measured actuator-envelope scoring
 - 100-150 tick seed-robust PASS_WEIGHT_TRANSFER_TARGET gate
@@ -66,7 +71,8 @@ Keep the stance-foot-relative lateral target as the promising direction, but sha
 
 - Do not launch PPO/BC from current target sources.
 - Do not run robot validation, grounded replay, or x=0.08.
-- Do not increase stance-relative propulsion before target velocity and lateral velocity are bounded.
+- Do not relax teacher target velocity above the measured envelope to buy forward speed.
+- Do not widen the same stance-relative grid without adding lateral containment or seed-symmetry mechanisms.
 - Require PASS_WEIGHT_TRANSFER_TARGET before training re-entry.
 
 ## Non-Goals

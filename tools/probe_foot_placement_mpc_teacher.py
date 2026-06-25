@@ -65,6 +65,7 @@ class Candidate:
     vx_gain: float
     propulsion_limit_rad: float
     propulsion_pattern: float
+    teacher_target_velocity_limit_rad_s: float
     push_lateral_soft_gate_m_s: float
     push_yaw_soft_gate_rad: float
     push_min_scale: float
@@ -110,6 +111,7 @@ def candidate_grid(args: argparse.Namespace) -> list[Candidate]:
         ("vx_gain", parse_float_list(args.vx_gains)),
         ("propulsion_limit", parse_float_list(args.propulsion_limits)),
         ("propulsion_pattern", parse_float_list(args.propulsion_patterns)),
+        ("teacher_target_velocity_limit", parse_float_list(args.teacher_target_velocity_limits)),
         ("swing_min_advance", parse_float_list(args.swing_min_advance)),
         ("initial_stance_side", parse_float_list(args.initial_stance_sides)),
     ]
@@ -131,6 +133,7 @@ def candidate_grid(args: argparse.Namespace) -> list[Candidate]:
             f"_vxg{label_float(item['vx_gain'])}"
             f"_pl{label_float(item['propulsion_limit'])}"
             f"_pp{label_float(item['propulsion_pattern'])}"
+            f"_tvl{label_float(item['teacher_target_velocity_limit'])}"
             f"_plg{label_float(item['push_lateral_soft_gate'])}"
             f"_pyg{label_float(item['push_yaw_soft_gate'])}"
             f"_pms{label_float(item['push_min_scale'])}"
@@ -166,6 +169,7 @@ def candidate_grid(args: argparse.Namespace) -> list[Candidate]:
                 vx_gain=item["vx_gain"],
                 propulsion_limit_rad=item["propulsion_limit"],
                 propulsion_pattern=item["propulsion_pattern"],
+                teacher_target_velocity_limit_rad_s=item["teacher_target_velocity_limit"],
                 push_lateral_soft_gate_m_s=item["push_lateral_soft_gate"],
                 push_yaw_soft_gate_rad=item["push_yaw_soft_gate"],
                 push_min_scale=item["push_min_scale"],
@@ -507,6 +511,7 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
             vx_gain,
             propulsion_limit_rad,
             propulsion_pattern,
+            teacher_target_velocity_limit_rad_s,
             push_lateral_soft_gate_m_s,
             push_yaw_soft_gate_rad,
             push_min_scale,
@@ -598,8 +603,20 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
             prev_motor_targets = state.info["motor_targets"]
             sent_target = jp.clip(
                 pre_rate_limit,
-                prev_motor_targets - env._config.max_motor_velocity * env.dt,
-                prev_motor_targets + env._config.max_motor_velocity * env.dt,
+                prev_motor_targets
+                - jp.where(
+                    teacher_target_velocity_limit_rad_s > 0.0,
+                    teacher_target_velocity_limit_rad_s,
+                    env._config.max_motor_velocity,
+                )
+                * env.dt,
+                prev_motor_targets
+                + jp.where(
+                    teacher_target_velocity_limit_rad_s > 0.0,
+                    teacher_target_velocity_limit_rad_s,
+                    env._config.max_motor_velocity,
+                )
+                * env.dt,
             )
             data = mjx_env.step(env.mjx_model, state.data, sent_target, env.n_substeps)
             state.info["motor_targets"] = sent_target
@@ -743,6 +760,7 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                         candidate.vx_gain,
                         candidate.propulsion_limit_rad,
                         candidate.propulsion_pattern,
+                        candidate.teacher_target_velocity_limit_rad_s,
                         candidate.push_lateral_soft_gate_m_s,
                         candidate.push_yaw_soft_gate_rad,
                         candidate.push_min_scale,
@@ -828,6 +846,9 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                         ),
                         "propulsion_drive_rad": float(
                             np.asarray(jax.device_get(propulsion_drive))
+                        ),
+                        "teacher_target_velocity_limit_rad_s": (
+                            candidate.teacher_target_velocity_limit_rad_s
                         ),
                         "command": [args.command_x, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
                         "action": np.asarray(jax.device_get(action), dtype=float).tolist(),
@@ -1106,6 +1127,14 @@ def main() -> int:
         help=(
             "Comma-separated signs/pattern scales for the sagittal stance drive. "
             "Use 1 and -1 to test joint-sign convention offline."
+        ),
+    )
+    parser.add_argument(
+        "--teacher-target-velocity-limits",
+        default="0.0",
+        help=(
+            "Comma-separated teacher-side sent-target velocity limits in rad/s. "
+            "Use 0 to preserve the environment max_motor_velocity behavior."
         ),
     )
     parser.add_argument(
