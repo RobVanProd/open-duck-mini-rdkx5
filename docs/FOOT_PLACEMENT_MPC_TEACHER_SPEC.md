@@ -272,6 +272,9 @@ lateral/yaw push attenuation:
 
 higher swing clearance:
   robust 100/150 tick modes: 0 / 16
+
+hip-yaw heading support:
+  robust 100/150 tick modes: 0 / 72
 ```
 
 The latest stability probe added default-off fields:
@@ -291,7 +294,9 @@ single-support time, but the useful windows then fail on lateral velocity,
 forward velocity, and sometimes target velocity. Conclusion: the next revision
 should not keep widening this scalar grid. It needs an active lateral/heading
 support controller that creates a pushable stance, then applies propulsion
-without losing the support state.
+without losing the support state. A simple hip-yaw overlay did not provide that
+controller; it either suppresses motion back toward double-support or allows the
+same lateral/yaw drift when support transfer improves.
 
 ## Stop Rules
 

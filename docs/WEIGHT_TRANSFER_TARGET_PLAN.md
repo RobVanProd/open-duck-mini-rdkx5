@@ -398,6 +398,45 @@ Interpretation: swing clearance is a useful mechanism, but by itself it shifts
 the failure from "cannot enter single support" toward "enters support while
 losing lateral/heading margin and not producing enough forward impulse."
 
+Hip-yaw heading-support diagnostic:
+
+```text
+artifacts:
+  outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_YAW_SUPPORT_PROBE_SCORE_100.md
+  outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_YAW_SUPPORT_PROBE_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+robust modes: 0 / 72
+```
+
+This added default-off hip-yaw correction terms:
+
+```text
+yaw_gain
+yaw_vy_gain
+yaw_limit
+```
+
+The best 100-tick windows showed the same tradeoff:
+
+```text
+conservative heading-correction modes:
+  lateral velocity can stay near the gate
+  target velocities are low
+  but forward velocity is near zero and double-support dominates
+
+support-transfer modes:
+  seed 2 can reach about 23-35% single support in some windows
+  but lateral p95 remains about 0.24-0.28 m/s
+  yaw change can grow above 0.2 rad
+  forward velocity remains below the 0.04 m/s gate
+```
+
+Interpretation: simple hip-yaw feedback does not decouple heading/lateral drift
+from support transfer. The next revision needs a more stateful stance controller
+or optimization objective that explicitly keeps base-y/yaw bounded while
+choosing foot placement and stance push, rather than adding a single yaw target
+overlay.
+
 ## Stop Conditions
 
 Stop target generation and do not train if:

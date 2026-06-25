@@ -4716,6 +4716,8 @@ artifacts:
   outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_STABILITY_PROBE_SCORE_150.md
   outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_CLEARANCE_PROBE_SCORE_100.md
   outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_CLEARANCE_PROBE_SCORE_150.md
+  outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_YAW_SUPPORT_PROBE_SCORE_100.md
+  outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_YAW_SUPPORT_PROBE_SCORE_150.md
 status: HOLD_NO_SEED_ROBUST_TARGETS
 ```
 
@@ -4723,6 +4725,9 @@ Wide swing advance improved seed 0 only to a small positive local velocity.
 Lateral/yaw push attenuation reduced target velocity and lateral stress, but
 starved forward impulse. Higher swing clearance improved single support on some
 seed-2 windows, but introduced lateral/target-velocity tradeoffs and still did
-not solve seed robustness. Do not resume BC/PPO from these traces. The next
-offline target-source task is an active lateral/heading support controller
-coupled to propulsion, not another scalar push/advance/clearance grid.
+not solve seed robustness. Hip-yaw heading feedback also held: conservative
+modes returned to double-support/low-speed behavior, while support-transfer
+modes still failed lateral/yaw gates. Do not resume BC/PPO from these traces.
+The next offline target-source task is a more stateful lateral/heading support
+controller coupled to propulsion, not another scalar push/advance/clearance/yaw
+overlay grid.
