@@ -1,0 +1,1505 @@
+{
+  "status": "PASS_COM_CONTROLLER_PROBE_RAN",
+  "command_x": 0.04,
+  "duration_s": 3.0,
+  "seeds": [
+    0,
+    2
+  ],
+  "trace_dir": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/com_weight_transfer_controller_probe_traces",
+  "candidate_count": 16,
+  "limitations": [
+    "first implementation uses base_y/local_vy/contact as CoM proxies",
+    "body_roll and stance-foot-relative base position are not yet modeled"
+  ],
+  "results": [
+    {
+      "controller": {
+        "label": "com_p0p56_lf0p35_uf0p25_lo0p02_byg0p02_lvg0p08_kpy3_kdy0p5_kpvx0p5_ffp0p005_sk0p08_sa0_shr0p06_srs0p5_pt0_pd1",
+        "period_s": 0.56,
+        "load_fraction": 0.35,
+        "unweight_fraction": 0.25,
+        "lateral_offset_m": 0.02,
+        "base_y_gate_m": 0.02,
+        "lateral_velocity_gate_m_s": 0.08,
+        "kp_y": 3.0,
+        "kd_y": 0.5,
+        "kp_vx": 0.5,
+        "feedforward_push_rad": 0.005,
+        "stance_push_limit_rad": 0.04,
+        "swing_knee_rad": 0.08,
+        "swing_ankle_rad": 0.0,
+        "swing_hip_reach_rad": 0.06,
+        "stance_retract_scale": 0.5,
+        "pitch_gate_rad": 0.35,
+        "pitch_target_rad": 0.0,
+        "pitch_damping": 1.0,
+        "clearance_gate_m": 0.008
+      },
+      "runs": [
+        {
+          "samples": 150,
+          "termination_reason": "duration_complete",
+          "mean_vx_m_s": 8.158563481022915e-06,
+          "track_ratio": 0.00020396408702557287,
+          "vy_abs_p95_m_s": 0.06302937325090176,
+          "body_pitch_abs_p95_rad": 0.09095940394404259,
+          "base_height_min_m": 0.15371006727218628,
+          "foot_site_z_p95_m": 0.004576311074197294,
+          "action_saturation_pct": 0.0,
+          "target_clip_p95_rad": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.314534455537796,
+          "joint_tracking_p95_rad": 0.05936697535216805,
+          "contact_counts": {
+            "01": 3,
+            "11": 147
+          },
+          "contact_transitions": 3,
+          "phase_pct": {
+            "LOAD_STANCE": 40.0,
+            "PUSH_FORWARD": 36.666666666666664,
+            "UNWEIGHT_SWING": 23.333333333333332
+          },
+          "load_stance_ready_pct": 6.0,
+          "unweight_swing_ready_pct": 0.0,
+          "push_allowed_pct": 0.0,
+          "seed": 0,
+          "trace": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/com_weight_transfer_controller_probe_traces/com_p0p56_lf0p35_uf0p25_lo0p02_byg0p02_lvg0p08_kpy3_kdy0p5_kpvx0p5_ffp0p005_sk0p08_sa0_shr0p06_srs0p5_pt0_pd1/seed_000.jsonl"
+        },
+        {
+          "samples": 150,
+          "termination_reason": "duration_complete",
+          "mean_vx_m_s": 0.004463233526597226,
+          "track_ratio": 0.11158083816493065,
+          "vy_abs_p95_m_s": 0.13026126809418215,
+          "body_pitch_abs_p95_rad": 0.08892890157380769,
+          "base_height_min_m": 0.15257126092910767,
+          "foot_site_z_p95_m": 0.004797313548624516,
+          "action_saturation_pct": 0.0,
+          "target_clip_p95_rad": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.6180712720379233,
+          "joint_tracking_p95_rad": 0.08046724051237106,
+          "contact_counts": {
+            "01": 12,
+            "10": 4,
+            "11": 134
+          },
+          "contact_transitions": 15,
+          "phase_pct": {
+            "LOAD_STANCE": 40.0,
+            "PUSH_FORWARD": 36.666666666666664,
+            "UNWEIGHT_SWING": 23.333333333333332
+          },
+          "load_stance_ready_pct": 41.333333333333336,
+          "unweight_swing_ready_pct": 1.3333333333333335,
+          "push_allowed_pct": 1.3333333333333335,
+          "seed": 2,
+          "trace": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/com_weight_transfer_controller_probe_traces/com_p0p56_lf0p35_uf0p25_lo0p02_byg0p02_lvg0p08_kpy3_kdy0p5_kpvx0p5_ffp0p005_sk0p08_sa0_shr0p06_srs0p5_pt0_pd1/seed_002.jsonl"
+        }
+      ],
+      "aggregate": {
+        "runs": 2,
+        "falls": 0,
+        "duration_complete": 2,
+        "mean_vx_m_s": 0.0022356960450391245,
+        "max_mean_vx_m_s": 0.004463233526597226,
+        "mean_push_allowed_pct": 0.6666666666666667
+      }
+    },
+    {
+      "controller": {
+        "label": "com_p0p56_lf0p35_uf0p25_lo0p02_byg0p02_lvg0p08_kpy3_kdy0p5_kpvx1_ffp0p005_sk0p08_sa0_shr0p06_srs0p5_pt0_pd1",
+        "period_s": 0.56,
+        "load_fraction": 0.35,
+        "unweight_fraction": 0.25,
+        "lateral_offset_m": 0.02,
+        "base_y_gate_m": 0.02,
+        "lateral_velocity_gate_m_s": 0.08,
+        "kp_y": 3.0,
+        "kd_y": 0.5,
+        "kp_vx": 1.0,
+        "feedforward_push_rad": 0.005,
+        "stance_push_limit_rad": 0.04,
+        "swing_knee_rad": 0.08,
+        "swing_ankle_rad": 0.0,
+        "swing_hip_reach_rad": 0.06,
+        "stance_retract_scale": 0.5,
+        "pitch_gate_rad": 0.35,
+        "pitch_target_rad": 0.0,
+        "pitch_damping": 1.0,
+        "clearance_gate_m": 0.008
+      },
+      "runs": [
+        {
+          "samples": 150,
+          "termination_reason": "duration_complete",
+          "mean_vx_m_s": 8.158563481022915e-06,
+          "track_ratio": 0.00020396408702557287,
+          "vy_abs_p95_m_s": 0.06302937325090176,
+          "body_pitch_abs_p95_rad": 0.09095940394404259,
+          "base_height_min_m": 0.15371006727218628,
+          "foot_site_z_p95_m": 0.004576311074197294,
+          "action_saturation_pct": 0.0,
+          "target_clip_p95_rad": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.314534455537796,
+          "joint_tracking_p95_rad": 0.05936697535216805,
+          "contact_counts": {
+            "01": 3,
+            "11": 147
+          },
+          "contact_transitions": 3,
+          "phase_pct": {
+            "LOAD_STANCE": 40.0,
+            "PUSH_FORWARD": 36.666666666666664,
+            "UNWEIGHT_SWING": 23.333333333333332
+          },
+          "load_stance_ready_pct": 6.0,
+          "unweight_swing_ready_pct": 0.0,
+          "push_allowed_pct": 0.0,
+          "seed": 0,
+          "trace": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/com_weight_transfer_controller_probe_traces/com_p0p56_lf0p35_uf0p25_lo0p02_byg0p02_lvg0p08_kpy3_kdy0p5_kpvx1_ffp0p005_sk0p08_sa0_shr0p06_srs0p5_pt0_pd1/seed_000.jsonl"
+        },
+        {
+          "samples": 150,
+          "termination_reason": "duration_complete",
+          "mean_vx_m_s": 0.00443833499783068,
+          "track_ratio": 0.11095837494576699,
+          "vy_abs_p95_m_s": 0.13026126809418215,
+          "body_pitch_abs_p95_rad": 0.08892890157380769,
+          "base_height_min_m": 0.15257126092910767,
+          "foot_site_z_p95_m": 0.004797313548624516,
+          "action_saturation_pct": 0.0,
+          "target_clip_p95_rad": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.620478461496532,
+          "joint_tracking_p95_rad": 0.08081691898405552,
+          "contact_counts": {
+            "01": 12,
+            "10": 4,
+            "11": 134
+          },
+          "contact_transitions": 15,
+          "phase_pct": {
+            "LOAD_STANCE": 40.0,
+            "PUSH_FORWARD": 36.666666666666664,
+            "UNWEIGHT_SWING": 23.333333333333332
+          },
+          "load_stance_ready_pct": 41.333333333333336,
+          "unweight_swing_ready_pct": 1.3333333333333335,
+          "push_allowed_pct": 1.3333333333333335,
+          "seed": 2,
+          "trace": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/com_weight_transfer_controller_probe_traces/com_p0p56_lf0p35_uf0p25_lo0p02_byg0p02_lvg0p08_kpy3_kdy0p5_kpvx1_ffp0p005_sk0p08_sa0_shr0p06_srs0p5_pt0_pd1/seed_002.jsonl"
+        }
+      ],
+      "aggregate": {
+        "runs": 2,
+        "falls": 0,
+        "duration_complete": 2,
+        "mean_vx_m_s": 0.002223246780655851,
+        "max_mean_vx_m_s": 0.00443833499783068,
+        "mean_push_allowed_pct": 0.6666666666666667
+      }
+    },
+    {
+      "controller": {
+        "label": "com_p0p56_lf0p35_uf0p25_lo0p02_byg0p02_lvg0p08_kpy3_kdy0p5_kpvx1_ffp0p01_sk0p08_sa0_shr0p06_srs0p5_pt0_pd1",
+        "period_s": 0.56,
+        "load_fraction": 0.35,
+        "unweight_fraction": 0.25,
+        "lateral_offset_m": 0.02,
+        "base_y_gate_m": 0.02,
+        "lateral_velocity_gate_m_s": 0.08,
+        "kp_y": 3.0,
+        "kd_y": 0.5,
+        "kp_vx": 1.0,
+        "feedforward_push_rad": 0.01,
+        "stance_push_limit_rad": 0.04,
+        "swing_knee_rad": 0.08,
+        "swing_ankle_rad": 0.0,
+        "swing_hip_reach_rad": 0.06,
+        "stance_retract_scale": 0.5,
+        "pitch_gate_rad": 0.35,
+        "pitch_target_rad": 0.0,
+        "pitch_damping": 1.0,
+        "clearance_gate_m": 0.008
+      },
+      "runs": [
+        {
+          "samples": 150,
+          "termination_reason": "duration_complete",
+          "mean_vx_m_s": 8.158563481022915e-06,
+          "track_ratio": 0.00020396408702557287,
+          "vy_abs_p95_m_s": 0.06302937325090176,
+          "body_pitch_abs_p95_rad": 0.09095940394404259,
+          "base_height_min_m": 0.15371006727218628,
+          "foot_site_z_p95_m": 0.004576311074197294,
+          "action_saturation_pct": 0.0,
+          "target_clip_p95_rad": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.314534455537796,
+          "joint_tracking_p95_rad": 0.05936697535216805,
+          "contact_counts": {
+            "01": 3,
+            "11": 147
+          },
+          "contact_transitions": 3,
+          "phase_pct": {
+            "LOAD_STANCE": 40.0,
+            "PUSH_FORWARD": 36.666666666666664,
+            "UNWEIGHT_SWING": 23.333333333333332
+          },
+          "load_stance_ready_pct": 6.0,
+          "unweight_swing_ready_pct": 0.0,
+          "push_allowed_pct": 0.0,
+          "seed": 0,
+          "trace": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/com_weight_transfer_controller_probe_traces/com_p0p56_lf0p35_uf0p25_lo0p02_byg0p02_lvg0p08_kpy3_kdy0p5_kpvx1_ffp0p01_sk0p08_sa0_shr0p06_srs0p5_pt0_pd1/seed_000.jsonl"
+        },
+        {
+          "samples": 150,
+          "termination_reason": "duration_complete",
+          "mean_vx_m_s": 0.00443833499783068,
+          "track_ratio": 0.11095837494576699,
+          "vy_abs_p95_m_s": 0.13026126809418215,
+          "body_pitch_abs_p95_rad": 0.08892890157380769,
+          "base_height_min_m": 0.15257126092910767,
+          "foot_site_z_p95_m": 0.004797313548624516,
+          "action_saturation_pct": 0.0,
+          "target_clip_p95_rad": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.620478461496532,
+          "joint_tracking_p95_rad": 0.08081691898405552,
+          "contact_counts": {
+            "01": 12,
+            "10": 4,
+            "11": 134
+          },
+          "contact_transitions": 15,
+          "phase_pct": {
+            "LOAD_STANCE": 40.0,
+            "PUSH_FORWARD": 36.666666666666664,
+            "UNWEIGHT_SWING": 23.333333333333332
+          },
+          "load_stance_ready_pct": 41.333333333333336,
+          "unweight_swing_ready_pct": 1.3333333333333335,
+          "push_allowed_pct": 1.3333333333333335,
+          "seed": 2,
+          "trace": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/com_weight_transfer_controller_probe_traces/com_p0p56_lf0p35_uf0p25_lo0p02_byg0p02_lvg0p08_kpy3_kdy0p5_kpvx1_ffp0p01_sk0p08_sa0_shr0p06_srs0p5_pt0_pd1/seed_002.jsonl"
+        }
+      ],
+      "aggregate": {
+        "runs": 2,
+        "falls": 0,
+        "duration_complete": 2,
+        "mean_vx_m_s": 0.002223246780655851,
+        "max_mean_vx_m_s": 0.00443833499783068,
+        "mean_push_allowed_pct": 0.6666666666666667
+      }
+    },
+    {
+      "controller": {
+        "label": "com_p0p56_lf0p35_uf0p25_lo0p02_byg0p02_lvg0p08_kpy3_kdy0p5_kpvx0p5_ffp0p01_sk0p08_sa0_shr0p06_srs0p5_pt0_pd1",
+        "period_s": 0.56,
+        "load_fraction": 0.35,
+        "unweight_fraction": 0.25,
+        "lateral_offset_m": 0.02,
+        "base_y_gate_m": 0.02,
+        "lateral_velocity_gate_m_s": 0.08,
+        "kp_y": 3.0,
+        "kd_y": 0.5,
+        "kp_vx": 0.5,
+        "feedforward_push_rad": 0.01,
+        "stance_push_limit_rad": 0.04,
+        "swing_knee_rad": 0.08,
+        "swing_ankle_rad": 0.0,
+        "swing_hip_reach_rad": 0.06,
+        "stance_retract_scale": 0.5,
+        "pitch_gate_rad": 0.35,
+        "pitch_target_rad": 0.0,
+        "pitch_damping": 1.0,
+        "clearance_gate_m": 0.008
+      },
+      "runs": [
+        {
+          "samples": 150,
+          "termination_reason": "duration_complete",
+          "mean_vx_m_s": 8.158563481022915e-06,
+          "track_ratio": 0.00020396408702557287,
+          "vy_abs_p95_m_s": 0.06302937325090176,
+          "body_pitch_abs_p95_rad": 0.09095940394404259,
+          "base_height_min_m": 0.15371006727218628,
+          "foot_site_z_p95_m": 0.004576311074197294,
+          "action_saturation_pct": 0.0,
+          "target_clip_p95_rad": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.314534455537796,
+          "joint_tracking_p95_rad": 0.05936697535216805,
+          "contact_counts": {
+            "01": 3,
+            "11": 147
+          },
+          "contact_transitions": 3,
+          "phase_pct": {
+            "LOAD_STANCE": 40.0,
+            "PUSH_FORWARD": 36.666666666666664,
+            "UNWEIGHT_SWING": 23.333333333333332
+          },
+          "load_stance_ready_pct": 6.0,
+          "unweight_swing_ready_pct": 0.0,
+          "push_allowed_pct": 0.0,
+          "seed": 0,
+          "trace": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/com_weight_transfer_controller_probe_traces/com_p0p56_lf0p35_uf0p25_lo0p02_byg0p02_lvg0p08_kpy3_kdy0p5_kpvx0p5_ffp0p01_sk0p08_sa0_shr0p06_srs0p5_pt0_pd1/seed_000.jsonl"
+        },
+        {
+          "samples": 150,
+          "termination_reason": "duration_complete",
+          "mean_vx_m_s": 0.00440510544659143,
+          "track_ratio": 0.11012763616478574,
+          "vy_abs_p95_m_s": 0.13026126809418215,
+          "body_pitch_abs_p95_rad": 0.08892890157380769,
+          "base_height_min_m": 0.15257126092910767,
+          "foot_site_z_p95_m": 0.004797313548624516,
+          "action_saturation_pct": 0.0,
+          "target_clip_p95_rad": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.6176408380270004,
+          "joint_tracking_p95_rad": 0.0804587546736002,
+          "contact_counts": {
+            "01": 12,
+            "10": 4,
+            "11": 134
+          },
+          "contact_transitions": 15,
+          "phase_pct": {
+            "LOAD_STANCE": 40.0,
+            "PUSH_FORWARD": 36.666666666666664,
+            "UNWEIGHT_SWING": 23.333333333333332
+          },
+          "load_stance_ready_pct": 41.333333333333336,
+          "unweight_swing_ready_pct": 1.3333333333333335,
+          "push_allowed_pct": 1.3333333333333335,
+          "seed": 2,
+          "trace": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/com_weight_transfer_controller_probe_traces/com_p0p56_lf0p35_uf0p25_lo0p02_byg0p02_lvg0p08_kpy3_kdy0p5_kpvx0p5_ffp0p01_sk0p08_sa0_shr0p06_srs0p5_pt0_pd1/seed_002.jsonl"
+        }
+      ],
+      "aggregate": {
+        "runs": 2,
+        "falls": 0,
+        "duration_complete": 2,
+        "mean_vx_m_s": 0.0022066320050362262,
+        "max_mean_vx_m_s": 0.00440510544659143,
+        "mean_push_allowed_pct": 0.6666666666666667
+      }
+    },
+    {
+      "controller": {
+        "label": "com_p0p56_lf0p35_uf0p25_lo0p02_byg0p02_lvg0p08_kpy2_kdy0p5_kpvx0p5_ffp0p01_sk0p08_sa0_shr0p06_srs0p5_pt0_pd1",
+        "period_s": 0.56,
+        "load_fraction": 0.35,
+        "unweight_fraction": 0.25,
+        "lateral_offset_m": 0.02,
+        "base_y_gate_m": 0.02,
+        "lateral_velocity_gate_m_s": 0.08,
+        "kp_y": 2.0,
+        "kd_y": 0.5,
+        "kp_vx": 0.5,
+        "feedforward_push_rad": 0.01,
+        "stance_push_limit_rad": 0.04,
+        "swing_knee_rad": 0.08,
+        "swing_ankle_rad": 0.0,
+        "swing_hip_reach_rad": 0.06,
+        "stance_retract_scale": 0.5,
+        "pitch_gate_rad": 0.35,
+        "pitch_target_rad": 0.0,
+        "pitch_damping": 1.0,
+        "clearance_gate_m": 0.008
+      },
+      "runs": [
+        {
+          "samples": 150,
+          "termination_reason": "duration_complete",
+          "mean_vx_m_s": -0.00011427086389934024,
+          "track_ratio": -0.002856771597483506,
+          "vy_abs_p95_m_s": 0.10079393275082116,
+          "body_pitch_abs_p95_rad": 0.09483340788424278,
+          "base_height_min_m": 0.15371006727218628,
+          "foot_site_z_p95_m": 0.004387474991381168,
+          "action_saturation_pct": 0.0,
+          "target_clip_p95_rad": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.3205656073987484,
+          "joint_tracking_p95_rad": 0.06206075847148894,
+          "contact_counts": {
+            "01": 7,
+            "11": 143
+          },
+          "contact_transitions": 5,
+          "phase_pct": {
+            "LOAD_STANCE": 40.0,
+            "PUSH_FORWARD": 36.666666666666664,
+            "UNWEIGHT_SWING": 23.333333333333332
+          },
+          "load_stance_ready_pct": 2.0,
+          "unweight_swing_ready_pct": 0.6666666666666667,
+          "push_allowed_pct": 0.0,
+          "seed": 0,
+          "trace": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/com_weight_transfer_controller_probe_traces/com_p0p56_lf0p35_uf0p25_lo0p02_byg0p02_lvg0p08_kpy2_kdy0p5_kpvx0p5_ffp0p01_sk0p08_sa0_shr0p06_srs0p5_pt0_pd1/seed_000.jsonl"
+        },
+        {
+          "samples": 150,
+          "termination_reason": "duration_complete",
+          "mean_vx_m_s": 0.0030249532964080573,
+          "track_ratio": 0.07562383241020143,
+          "vy_abs_p95_m_s": 0.12482869736850268,
+          "body_pitch_abs_p95_rad": 0.09471872349886945,
+          "base_height_min_m": 0.15207986533641815,
+          "foot_site_z_p95_m": 0.004544015415012837,
+          "action_saturation_pct": 0.0,
+          "target_clip_p95_rad": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.6848375778645277,
+          "joint_tracking_p95_rad": 0.07808844130486249,
+          "contact_counts": {
+            "01": 9,
+            "10": 5,
+            "11": 136
+          },
+          "contact_transitions": 9,
+          "phase_pct": {
+            "LOAD_STANCE": 40.0,
+            "PUSH_FORWARD": 36.666666666666664,
+            "UNWEIGHT_SWING": 23.333333333333332
+          },
+          "load_stance_ready_pct": 41.333333333333336,
+          "unweight_swing_ready_pct": 0.0,
+          "push_allowed_pct": 0.0,
+          "seed": 2,
+          "trace": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/com_weight_transfer_controller_probe_traces/com_p0p56_lf0p35_uf0p25_lo0p02_byg0p02_lvg0p08_kpy2_kdy0p5_kpvx0p5_ffp0p01_sk0p08_sa0_shr0p06_srs0p5_pt0_pd1/seed_002.jsonl"
+        }
+      ],
+      "aggregate": {
+        "runs": 2,
+        "falls": 0,
+        "duration_complete": 2,
+        "mean_vx_m_s": 0.0014553412162543586,
+        "max_mean_vx_m_s": 0.0030249532964080573,
+        "mean_push_allowed_pct": 0.0
+      }
+    },
+    {
+      "controller": {
+        "label": "com_p0p56_lf0p35_uf0p25_lo0p02_byg0p02_lvg0p08_kpy2_kdy0p5_kpvx0p5_ffp0p005_sk0p08_sa0_shr0p06_srs0p5_pt0_pd1",
+        "period_s": 0.56,
+        "load_fraction": 0.35,
+        "unweight_fraction": 0.25,
+        "lateral_offset_m": 0.02,
+        "base_y_gate_m": 0.02,
+        "lateral_velocity_gate_m_s": 0.08,
+        "kp_y": 2.0,
+        "kd_y": 0.5,
+        "kp_vx": 0.5,
+        "feedforward_push_rad": 0.005,
+        "stance_push_limit_rad": 0.04,
+        "swing_knee_rad": 0.08,
+        "swing_ankle_rad": 0.0,
+        "swing_hip_reach_rad": 0.06,
+        "stance_retract_scale": 0.5,
+        "pitch_gate_rad": 0.35,
+        "pitch_target_rad": 0.0,
+        "pitch_damping": 1.0,
+        "clearance_gate_m": 0.008
+      },
+      "runs": [
+        {
+          "samples": 150,
+          "termination_reason": "duration_complete",
+          "mean_vx_m_s": -0.00011427086389934024,
+          "track_ratio": -0.002856771597483506,
+          "vy_abs_p95_m_s": 0.10079393275082116,
+          "body_pitch_abs_p95_rad": 0.09483340788424278,
+          "base_height_min_m": 0.15371006727218628,
+          "foot_site_z_p95_m": 0.004387474991381168,
+          "action_saturation_pct": 0.0,
+          "target_clip_p95_rad": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.3205656073987484,
+          "joint_tracking_p95_rad": 0.06206075847148894,
+          "contact_counts": {
+            "01": 7,
+            "11": 143
+          },
+          "contact_transitions": 5,
+          "phase_pct": {
+            "LOAD_STANCE": 40.0,
+            "PUSH_FORWARD": 36.666666666666664,
+            "UNWEIGHT_SWING": 23.333333333333332
+          },
+          "load_stance_ready_pct": 2.0,
+          "unweight_swing_ready_pct": 0.6666666666666667,
+          "push_allowed_pct": 0.0,
+          "seed": 0,
+          "trace": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/com_weight_transfer_controller_probe_traces/com_p0p56_lf0p35_uf0p25_lo0p02_byg0p02_lvg0p08_kpy2_kdy0p5_kpvx0p5_ffp0p005_sk0p08_sa0_shr0p06_srs0p5_pt0_pd1/seed_000.jsonl"
+        },
+        {
+          "samples": 150,
+          "termination_reason": "duration_complete",
+          "mean_vx_m_s": 0.0030249532964080573,
+          "track_ratio": 0.07562383241020143,
+          "vy_abs_p95_m_s": 0.12482869736850268,
+          "body_pitch_abs_p95_rad": 0.09471872349886945,
+          "base_height_min_m": 0.15207986533641815,
+          "foot_site_z_p95_m": 0.004544015415012837,
+          "action_saturation_pct": 0.0,
+          "target_clip_p95_rad": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.6848375778645277,
+          "joint_tracking_p95_rad": 0.07808844130486249,
+          "contact_counts": {
+            "01": 9,
+            "10": 5,
+            "11": 136
+          },
+          "contact_transitions": 9,
+          "phase_pct": {
+            "LOAD_STANCE": 40.0,
+            "PUSH_FORWARD": 36.666666666666664,
+            "UNWEIGHT_SWING": 23.333333333333332
+          },
+          "load_stance_ready_pct": 41.333333333333336,
+          "unweight_swing_ready_pct": 0.0,
+          "push_allowed_pct": 0.0,
+          "seed": 2,
+          "trace": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/com_weight_transfer_controller_probe_traces/com_p0p56_lf0p35_uf0p25_lo0p02_byg0p02_lvg0p08_kpy2_kdy0p5_kpvx0p5_ffp0p005_sk0p08_sa0_shr0p06_srs0p5_pt0_pd1/seed_002.jsonl"
+        }
+      ],
+      "aggregate": {
+        "runs": 2,
+        "falls": 0,
+        "duration_complete": 2,
+        "mean_vx_m_s": 0.0014553412162543586,
+        "max_mean_vx_m_s": 0.0030249532964080573,
+        "mean_push_allowed_pct": 0.0
+      }
+    },
+    {
+      "controller": {
+        "label": "com_p0p56_lf0p35_uf0p25_lo0p02_byg0p02_lvg0p08_kpy2_kdy0p5_kpvx1_ffp0p01_sk0p08_sa0_shr0p06_srs0p5_pt0_pd1",
+        "period_s": 0.56,
+        "load_fraction": 0.35,
+        "unweight_fraction": 0.25,
+        "lateral_offset_m": 0.02,
+        "base_y_gate_m": 0.02,
+        "lateral_velocity_gate_m_s": 0.08,
+        "kp_y": 2.0,
+        "kd_y": 0.5,
+        "kp_vx": 1.0,
+        "feedforward_push_rad": 0.01,
+        "stance_push_limit_rad": 0.04,
+        "swing_knee_rad": 0.08,
+        "swing_ankle_rad": 0.0,
+        "swing_hip_reach_rad": 0.06,
+        "stance_retract_scale": 0.5,
+        "pitch_gate_rad": 0.35,
+        "pitch_target_rad": 0.0,
+        "pitch_damping": 1.0,
+        "clearance_gate_m": 0.008
+      },
+      "runs": [
+        {
+          "samples": 150,
+          "termination_reason": "duration_complete",
+          "mean_vx_m_s": -0.00011427086389934024,
+          "track_ratio": -0.002856771597483506,
+          "vy_abs_p95_m_s": 0.10079393275082116,
+          "body_pitch_abs_p95_rad": 0.09483340788424278,
+          "base_height_min_m": 0.15371006727218628,
+          "foot_site_z_p95_m": 0.004387474991381168,
+          "action_saturation_pct": 0.0,
+          "target_clip_p95_rad": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.3205656073987484,
+          "joint_tracking_p95_rad": 0.06206075847148894,
+          "contact_counts": {
+            "01": 7,
+            "11": 143
+          },
+          "contact_transitions": 5,
+          "phase_pct": {
+            "LOAD_STANCE": 40.0,
+            "PUSH_FORWARD": 36.666666666666664,
+            "UNWEIGHT_SWING": 23.333333333333332
+          },
+          "load_stance_ready_pct": 2.0,
+          "unweight_swing_ready_pct": 0.6666666666666667,
+          "push_allowed_pct": 0.0,
+          "seed": 0,
+          "trace": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/com_weight_transfer_controller_probe_traces/com_p0p56_lf0p35_uf0p25_lo0p02_byg0p02_lvg0p08_kpy2_kdy0p5_kpvx1_ffp0p01_sk0p08_sa0_shr0p06_srs0p5_pt0_pd1/seed_000.jsonl"
+        },
+        {
+          "samples": 150,
+          "termination_reason": "duration_complete",
+          "mean_vx_m_s": 0.0030249532964080573,
+          "track_ratio": 0.07562383241020143,
+          "vy_abs_p95_m_s": 0.12482869736850268,
+          "body_pitch_abs_p95_rad": 0.09471872349886945,
+          "base_height_min_m": 0.15207986533641815,
+          "foot_site_z_p95_m": 0.004544015415012837,
+          "action_saturation_pct": 0.0,
+          "target_clip_p95_rad": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.6848375778645277,
+          "joint_tracking_p95_rad": 0.07808844130486249,
+          "contact_counts": {
+            "01": 9,
+            "10": 5,
+            "11": 136
+          },
+          "contact_transitions": 9,
+          "phase_pct": {
+            "LOAD_STANCE": 40.0,
+            "PUSH_FORWARD": 36.666666666666664,
+            "UNWEIGHT_SWING": 23.333333333333332
+          },
+          "load_stance_ready_pct": 41.333333333333336,
+          "unweight_swing_ready_pct": 0.0,
+          "push_allowed_pct": 0.0,
+          "seed": 2,
+          "trace": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/com_weight_transfer_controller_probe_traces/com_p0p56_lf0p35_uf0p25_lo0p02_byg0p02_lvg0p08_kpy2_kdy0p5_kpvx1_ffp0p01_sk0p08_sa0_shr0p06_srs0p5_pt0_pd1/seed_002.jsonl"
+        }
+      ],
+      "aggregate": {
+        "runs": 2,
+        "falls": 0,
+        "duration_complete": 2,
+        "mean_vx_m_s": 0.0014553412162543586,
+        "max_mean_vx_m_s": 0.0030249532964080573,
+        "mean_push_allowed_pct": 0.0
+      }
+    },
+    {
+      "controller": {
+        "label": "com_p0p56_lf0p35_uf0p25_lo0p02_byg0p02_lvg0p08_kpy2_kdy0p5_kpvx1_ffp0p005_sk0p08_sa0_shr0p06_srs0p5_pt0_pd1",
+        "period_s": 0.56,
+        "load_fraction": 0.35,
+        "unweight_fraction": 0.25,
+        "lateral_offset_m": 0.02,
+        "base_y_gate_m": 0.02,
+        "lateral_velocity_gate_m_s": 0.08,
+        "kp_y": 2.0,
+        "kd_y": 0.5,
+        "kp_vx": 1.0,
+        "feedforward_push_rad": 0.005,
+        "stance_push_limit_rad": 0.04,
+        "swing_knee_rad": 0.08,
+        "swing_ankle_rad": 0.0,
+        "swing_hip_reach_rad": 0.06,
+        "stance_retract_scale": 0.5,
+        "pitch_gate_rad": 0.35,
+        "pitch_target_rad": 0.0,
+        "pitch_damping": 1.0,
+        "clearance_gate_m": 0.008
+      },
+      "runs": [
+        {
+          "samples": 150,
+          "termination_reason": "duration_complete",
+          "mean_vx_m_s": -0.00011427086389934024,
+          "track_ratio": -0.002856771597483506,
+          "vy_abs_p95_m_s": 0.10079393275082116,
+          "body_pitch_abs_p95_rad": 0.09483340788424278,
+          "base_height_min_m": 0.15371006727218628,
+          "foot_site_z_p95_m": 0.004387474991381168,
+          "action_saturation_pct": 0.0,
+          "target_clip_p95_rad": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.3205656073987484,
+          "joint_tracking_p95_rad": 0.06206075847148894,
+          "contact_counts": {
+            "01": 7,
+            "11": 143
+          },
+          "contact_transitions": 5,
+          "phase_pct": {
+            "LOAD_STANCE": 40.0,
+            "PUSH_FORWARD": 36.666666666666664,
+            "UNWEIGHT_SWING": 23.333333333333332
+          },
+          "load_stance_ready_pct": 2.0,
+          "unweight_swing_ready_pct": 0.6666666666666667,
+          "push_allowed_pct": 0.0,
+          "seed": 0,
+          "trace": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/com_weight_transfer_controller_probe_traces/com_p0p56_lf0p35_uf0p25_lo0p02_byg0p02_lvg0p08_kpy2_kdy0p5_kpvx1_ffp0p005_sk0p08_sa0_shr0p06_srs0p5_pt0_pd1/seed_000.jsonl"
+        },
+        {
+          "samples": 150,
+          "termination_reason": "duration_complete",
+          "mean_vx_m_s": 0.0030249532964080573,
+          "track_ratio": 0.07562383241020143,
+          "vy_abs_p95_m_s": 0.12482869736850268,
+          "body_pitch_abs_p95_rad": 0.09471872349886945,
+          "base_height_min_m": 0.15207986533641815,
+          "foot_site_z_p95_m": 0.004544015415012837,
+          "action_saturation_pct": 0.0,
+          "target_clip_p95_rad": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.6848375778645277,
+          "joint_tracking_p95_rad": 0.07808844130486249,
+          "contact_counts": {
+            "01": 9,
+            "10": 5,
+            "11": 136
+          },
+          "contact_transitions": 9,
+          "phase_pct": {
+            "LOAD_STANCE": 40.0,
+            "PUSH_FORWARD": 36.666666666666664,
+            "UNWEIGHT_SWING": 23.333333333333332
+          },
+          "load_stance_ready_pct": 41.333333333333336,
+          "unweight_swing_ready_pct": 0.0,
+          "push_allowed_pct": 0.0,
+          "seed": 2,
+          "trace": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/com_weight_transfer_controller_probe_traces/com_p0p56_lf0p35_uf0p25_lo0p02_byg0p02_lvg0p08_kpy2_kdy0p5_kpvx1_ffp0p005_sk0p08_sa0_shr0p06_srs0p5_pt0_pd1/seed_002.jsonl"
+        }
+      ],
+      "aggregate": {
+        "runs": 2,
+        "falls": 0,
+        "duration_complete": 2,
+        "mean_vx_m_s": 0.0014553412162543586,
+        "max_mean_vx_m_s": 0.0030249532964080573,
+        "mean_push_allowed_pct": 0.0
+      }
+    },
+    {
+      "controller": {
+        "label": "com_p0p56_lf0p35_uf0p25_lo0p01_byg0p02_lvg0p08_kpy3_kdy0p5_kpvx0p5_ffp0p005_sk0p08_sa0_shr0p06_srs0p5_pt0_pd1",
+        "period_s": 0.56,
+        "load_fraction": 0.35,
+        "unweight_fraction": 0.25,
+        "lateral_offset_m": 0.01,
+        "base_y_gate_m": 0.02,
+        "lateral_velocity_gate_m_s": 0.08,
+        "kp_y": 3.0,
+        "kd_y": 0.5,
+        "kp_vx": 0.5,
+        "feedforward_push_rad": 0.005,
+        "stance_push_limit_rad": 0.04,
+        "swing_knee_rad": 0.08,
+        "swing_ankle_rad": 0.0,
+        "swing_hip_reach_rad": 0.06,
+        "stance_retract_scale": 0.5,
+        "pitch_gate_rad": 0.35,
+        "pitch_target_rad": 0.0,
+        "pitch_damping": 1.0,
+        "clearance_gate_m": 0.008
+      },
+      "runs": [
+        {
+          "samples": 150,
+          "termination_reason": "duration_complete",
+          "mean_vx_m_s": 0.00021985003259032964,
+          "track_ratio": 0.005496250814758241,
+          "vy_abs_p95_m_s": 0.0629046136513353,
+          "body_pitch_abs_p95_rad": 0.09557200347647947,
+          "base_height_min_m": 0.15371006727218628,
+          "foot_site_z_p95_m": 0.004505098424851895,
+          "action_saturation_pct": 0.0,
+          "target_clip_p95_rad": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.09539267048239708,
+          "joint_tracking_p95_rad": 0.06023274399340147,
+          "contact_counts": {
+            "01": 3,
+            "11": 147
+          },
+          "contact_transitions": 3,
+          "phase_pct": {
+            "LOAD_STANCE": 40.0,
+            "PUSH_FORWARD": 36.666666666666664,
+            "UNWEIGHT_SWING": 23.333333333333332
+          },
+          "load_stance_ready_pct": 0.0,
+          "unweight_swing_ready_pct": 0.0,
+          "push_allowed_pct": 0.0,
+          "seed": 0,
+          "trace": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/com_weight_transfer_controller_probe_traces/com_p0p56_lf0p35_uf0p25_lo0p01_byg0p02_lvg0p08_kpy3_kdy0p5_kpvx0p5_ffp0p005_sk0p08_sa0_shr0p06_srs0p5_pt0_pd1/seed_000.jsonl"
+        },
+        {
+          "samples": 150,
+          "termination_reason": "duration_complete",
+          "mean_vx_m_s": 0.0020460620949355264,
+          "track_ratio": 0.05115155237338816,
+          "vy_abs_p95_m_s": 0.11637571565806866,
+          "body_pitch_abs_p95_rad": 0.09928554037864792,
+          "base_height_min_m": 0.1524892896413803,
+          "foot_site_z_p95_m": 0.0045491429045796394,
+          "action_saturation_pct": 0.0,
+          "target_clip_p95_rad": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.7100440096110106,
+          "joint_tracking_p95_rad": 0.07401638627052307,
+          "contact_counts": {
+            "01": 7,
+            "10": 3,
+            "11": 140
+          },
+          "contact_transitions": 7,
+          "phase_pct": {
+            "LOAD_STANCE": 40.0,
+            "PUSH_FORWARD": 36.666666666666664,
+            "UNWEIGHT_SWING": 23.333333333333332
+          },
+          "load_stance_ready_pct": 61.33333333333333,
+          "unweight_swing_ready_pct": 2.0,
+          "push_allowed_pct": 0.6666666666666667,
+          "seed": 2,
+          "trace": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/com_weight_transfer_controller_probe_traces/com_p0p56_lf0p35_uf0p25_lo0p01_byg0p02_lvg0p08_kpy3_kdy0p5_kpvx0p5_ffp0p005_sk0p08_sa0_shr0p06_srs0p5_pt0_pd1/seed_002.jsonl"
+        }
+      ],
+      "aggregate": {
+        "runs": 2,
+        "falls": 0,
+        "duration_complete": 2,
+        "mean_vx_m_s": 0.001132956063762928,
+        "max_mean_vx_m_s": 0.0020460620949355264,
+        "mean_push_allowed_pct": 0.33333333333333337
+      }
+    },
+    {
+      "controller": {
+        "label": "com_p0p56_lf0p35_uf0p25_lo0p01_byg0p02_lvg0p08_kpy3_kdy0p5_kpvx1_ffp0p005_sk0p08_sa0_shr0p06_srs0p5_pt0_pd1",
+        "period_s": 0.56,
+        "load_fraction": 0.35,
+        "unweight_fraction": 0.25,
+        "lateral_offset_m": 0.01,
+        "base_y_gate_m": 0.02,
+        "lateral_velocity_gate_m_s": 0.08,
+        "kp_y": 3.0,
+        "kd_y": 0.5,
+        "kp_vx": 1.0,
+        "feedforward_push_rad": 0.005,
+        "stance_push_limit_rad": 0.04,
+        "swing_knee_rad": 0.08,
+        "swing_ankle_rad": 0.0,
+        "swing_hip_reach_rad": 0.06,
+        "stance_retract_scale": 0.5,
+        "pitch_gate_rad": 0.35,
+        "pitch_target_rad": 0.0,
+        "pitch_damping": 1.0,
+        "clearance_gate_m": 0.008
+      },
+      "runs": [
+        {
+          "samples": 150,
+          "termination_reason": "duration_complete",
+          "mean_vx_m_s": 0.00021985003259032964,
+          "track_ratio": 0.005496250814758241,
+          "vy_abs_p95_m_s": 0.0629046136513353,
+          "body_pitch_abs_p95_rad": 0.09557200347647947,
+          "base_height_min_m": 0.15371006727218628,
+          "foot_site_z_p95_m": 0.004505098424851895,
+          "action_saturation_pct": 0.0,
+          "target_clip_p95_rad": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.09539267048239708,
+          "joint_tracking_p95_rad": 0.06023274399340147,
+          "contact_counts": {
+            "01": 3,
+            "11": 147
+          },
+          "contact_transitions": 3,
+          "phase_pct": {
+            "LOAD_STANCE": 40.0,
+            "PUSH_FORWARD": 36.666666666666664,
+            "UNWEIGHT_SWING": 23.333333333333332
+          },
+          "load_stance_ready_pct": 0.0,
+          "unweight_swing_ready_pct": 0.0,
+          "push_allowed_pct": 0.0,
+          "seed": 0,
+          "trace": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/com_weight_transfer_controller_probe_traces/com_p0p56_lf0p35_uf0p25_lo0p01_byg0p02_lvg0p08_kpy3_kdy0p5_kpvx1_ffp0p005_sk0p08_sa0_shr0p06_srs0p5_pt0_pd1/seed_000.jsonl"
+        },
+        {
+          "samples": 150,
+          "termination_reason": "duration_complete",
+          "mean_vx_m_s": 0.00200755795231089,
+          "track_ratio": 0.05018894880777225,
+          "vy_abs_p95_m_s": 0.11637571565806866,
+          "body_pitch_abs_p95_rad": 0.0994902809170455,
+          "base_height_min_m": 0.1524999439716339,
+          "foot_site_z_p95_m": 0.004532301425933838,
+          "action_saturation_pct": 0.0,
+          "target_clip_p95_rad": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.6869829259812832,
+          "joint_tracking_p95_rad": 0.0740479940548539,
+          "contact_counts": {
+            "01": 7,
+            "10": 3,
+            "11": 140
+          },
+          "contact_transitions": 7,
+          "phase_pct": {
+            "LOAD_STANCE": 40.0,
+            "PUSH_FORWARD": 36.666666666666664,
+            "UNWEIGHT_SWING": 23.333333333333332
+          },
+          "load_stance_ready_pct": 62.0,
+          "unweight_swing_ready_pct": 2.0,
+          "push_allowed_pct": 0.6666666666666667,
+          "seed": 2,
+          "trace": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/com_weight_transfer_controller_probe_traces/com_p0p56_lf0p35_uf0p25_lo0p01_byg0p02_lvg0p08_kpy3_kdy0p5_kpvx1_ffp0p005_sk0p08_sa0_shr0p06_srs0p5_pt0_pd1/seed_002.jsonl"
+        }
+      ],
+      "aggregate": {
+        "runs": 2,
+        "falls": 0,
+        "duration_complete": 2,
+        "mean_vx_m_s": 0.0011137039924506097,
+        "max_mean_vx_m_s": 0.00200755795231089,
+        "mean_push_allowed_pct": 0.33333333333333337
+      }
+    },
+    {
+      "controller": {
+        "label": "com_p0p56_lf0p35_uf0p25_lo0p01_byg0p02_lvg0p08_kpy3_kdy0p5_kpvx1_ffp0p01_sk0p08_sa0_shr0p06_srs0p5_pt0_pd1",
+        "period_s": 0.56,
+        "load_fraction": 0.35,
+        "unweight_fraction": 0.25,
+        "lateral_offset_m": 0.01,
+        "base_y_gate_m": 0.02,
+        "lateral_velocity_gate_m_s": 0.08,
+        "kp_y": 3.0,
+        "kd_y": 0.5,
+        "kp_vx": 1.0,
+        "feedforward_push_rad": 0.01,
+        "stance_push_limit_rad": 0.04,
+        "swing_knee_rad": 0.08,
+        "swing_ankle_rad": 0.0,
+        "swing_hip_reach_rad": 0.06,
+        "stance_retract_scale": 0.5,
+        "pitch_gate_rad": 0.35,
+        "pitch_target_rad": 0.0,
+        "pitch_damping": 1.0,
+        "clearance_gate_m": 0.008
+      },
+      "runs": [
+        {
+          "samples": 150,
+          "termination_reason": "duration_complete",
+          "mean_vx_m_s": 0.00021985003259032964,
+          "track_ratio": 0.005496250814758241,
+          "vy_abs_p95_m_s": 0.0629046136513353,
+          "body_pitch_abs_p95_rad": 0.09557200347647947,
+          "base_height_min_m": 0.15371006727218628,
+          "foot_site_z_p95_m": 0.004505098424851895,
+          "action_saturation_pct": 0.0,
+          "target_clip_p95_rad": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.09539267048239708,
+          "joint_tracking_p95_rad": 0.06023274399340147,
+          "contact_counts": {
+            "01": 3,
+            "11": 147
+          },
+          "contact_transitions": 3,
+          "phase_pct": {
+            "LOAD_STANCE": 40.0,
+            "PUSH_FORWARD": 36.666666666666664,
+            "UNWEIGHT_SWING": 23.333333333333332
+          },
+          "load_stance_ready_pct": 0.0,
+          "unweight_swing_ready_pct": 0.0,
+          "push_allowed_pct": 0.0,
+          "seed": 0,
+          "trace": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/com_weight_transfer_controller_probe_traces/com_p0p56_lf0p35_uf0p25_lo0p01_byg0p02_lvg0p08_kpy3_kdy0p5_kpvx1_ffp0p01_sk0p08_sa0_shr0p06_srs0p5_pt0_pd1/seed_000.jsonl"
+        },
+        {
+          "samples": 150,
+          "termination_reason": "duration_complete",
+          "mean_vx_m_s": 0.0020031832108118883,
+          "track_ratio": 0.05007958027029721,
+          "vy_abs_p95_m_s": 0.11637571565806866,
+          "body_pitch_abs_p95_rad": 0.09741602515966899,
+          "base_height_min_m": 0.15233726799488068,
+          "foot_site_z_p95_m": 0.004409909248352051,
+          "action_saturation_pct": 0.0,
+          "target_clip_p95_rad": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.7077936083078384,
+          "joint_tracking_p95_rad": 0.07468130905181168,
+          "contact_counts": {
+            "01": 8,
+            "10": 3,
+            "11": 139
+          },
+          "contact_transitions": 7,
+          "phase_pct": {
+            "LOAD_STANCE": 40.0,
+            "PUSH_FORWARD": 36.666666666666664,
+            "UNWEIGHT_SWING": 23.333333333333332
+          },
+          "load_stance_ready_pct": 61.33333333333333,
+          "unweight_swing_ready_pct": 2.0,
+          "push_allowed_pct": 0.6666666666666667,
+          "seed": 2,
+          "trace": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/com_weight_transfer_controller_probe_traces/com_p0p56_lf0p35_uf0p25_lo0p01_byg0p02_lvg0p08_kpy3_kdy0p5_kpvx1_ffp0p01_sk0p08_sa0_shr0p06_srs0p5_pt0_pd1/seed_002.jsonl"
+        }
+      ],
+      "aggregate": {
+        "runs": 2,
+        "falls": 0,
+        "duration_complete": 2,
+        "mean_vx_m_s": 0.0011115166217011089,
+        "max_mean_vx_m_s": 0.0020031832108118883,
+        "mean_push_allowed_pct": 0.33333333333333337
+      }
+    },
+    {
+      "controller": {
+        "label": "com_p0p56_lf0p35_uf0p25_lo0p01_byg0p02_lvg0p08_kpy2_kdy0p5_kpvx1_ffp0p005_sk0p08_sa0_shr0p06_srs0p5_pt0_pd1",
+        "period_s": 0.56,
+        "load_fraction": 0.35,
+        "unweight_fraction": 0.25,
+        "lateral_offset_m": 0.01,
+        "base_y_gate_m": 0.02,
+        "lateral_velocity_gate_m_s": 0.08,
+        "kp_y": 2.0,
+        "kd_y": 0.5,
+        "kp_vx": 1.0,
+        "feedforward_push_rad": 0.005,
+        "stance_push_limit_rad": 0.04,
+        "swing_knee_rad": 0.08,
+        "swing_ankle_rad": 0.0,
+        "swing_hip_reach_rad": 0.06,
+        "stance_retract_scale": 0.5,
+        "pitch_gate_rad": 0.35,
+        "pitch_target_rad": 0.0,
+        "pitch_damping": 1.0,
+        "clearance_gate_m": 0.008
+      },
+      "runs": [
+        {
+          "samples": 150,
+          "termination_reason": "duration_complete",
+          "mean_vx_m_s": -5.993293055022756e-05,
+          "track_ratio": -0.001498323263755689,
+          "vy_abs_p95_m_s": 0.062118976376950796,
+          "body_pitch_abs_p95_rad": 0.09086750473139932,
+          "base_height_min_m": 0.15371006727218628,
+          "foot_site_z_p95_m": 0.004575276561081409,
+          "action_saturation_pct": 0.0,
+          "target_clip_p95_rad": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.354931503534317,
+          "joint_tracking_p95_rad": 0.05936103984713548,
+          "contact_counts": {
+            "01": 3,
+            "11": 147
+          },
+          "contact_transitions": 3,
+          "phase_pct": {
+            "LOAD_STANCE": 40.0,
+            "PUSH_FORWARD": 36.666666666666664,
+            "UNWEIGHT_SWING": 23.333333333333332
+          },
+          "load_stance_ready_pct": 0.0,
+          "unweight_swing_ready_pct": 0.0,
+          "push_allowed_pct": 0.0,
+          "seed": 0,
+          "trace": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/com_weight_transfer_controller_probe_traces/com_p0p56_lf0p35_uf0p25_lo0p01_byg0p02_lvg0p08_kpy2_kdy0p5_kpvx1_ffp0p005_sk0p08_sa0_shr0p06_srs0p5_pt0_pd1/seed_000.jsonl"
+        },
+        {
+          "samples": 150,
+          "termination_reason": "duration_complete",
+          "mean_vx_m_s": 0.002233026787483444,
+          "track_ratio": 0.0558256696870861,
+          "vy_abs_p95_m_s": 0.08706062249839314,
+          "body_pitch_abs_p95_rad": 0.09810597859453711,
+          "base_height_min_m": 0.15260253846645355,
+          "foot_site_z_p95_m": 0.004410541988909245,
+          "action_saturation_pct": 0.0,
+          "target_clip_p95_rad": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.6688401103019714,
+          "joint_tracking_p95_rad": 0.06303270971402526,
+          "contact_counts": {
+            "01": 6,
+            "10": 3,
+            "11": 141
+          },
+          "contact_transitions": 4,
+          "phase_pct": {
+            "LOAD_STANCE": 40.0,
+            "PUSH_FORWARD": 36.666666666666664,
+            "UNWEIGHT_SWING": 23.333333333333332
+          },
+          "load_stance_ready_pct": 92.66666666666666,
+          "unweight_swing_ready_pct": 0.0,
+          "push_allowed_pct": 0.0,
+          "seed": 2,
+          "trace": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/com_weight_transfer_controller_probe_traces/com_p0p56_lf0p35_uf0p25_lo0p01_byg0p02_lvg0p08_kpy2_kdy0p5_kpvx1_ffp0p005_sk0p08_sa0_shr0p06_srs0p5_pt0_pd1/seed_002.jsonl"
+        }
+      ],
+      "aggregate": {
+        "runs": 2,
+        "falls": 0,
+        "duration_complete": 2,
+        "mean_vx_m_s": 0.0010865469284666082,
+        "max_mean_vx_m_s": 0.002233026787483444,
+        "mean_push_allowed_pct": 0.0
+      }
+    },
+    {
+      "controller": {
+        "label": "com_p0p56_lf0p35_uf0p25_lo0p01_byg0p02_lvg0p08_kpy2_kdy0p5_kpvx1_ffp0p01_sk0p08_sa0_shr0p06_srs0p5_pt0_pd1",
+        "period_s": 0.56,
+        "load_fraction": 0.35,
+        "unweight_fraction": 0.25,
+        "lateral_offset_m": 0.01,
+        "base_y_gate_m": 0.02,
+        "lateral_velocity_gate_m_s": 0.08,
+        "kp_y": 2.0,
+        "kd_y": 0.5,
+        "kp_vx": 1.0,
+        "feedforward_push_rad": 0.01,
+        "stance_push_limit_rad": 0.04,
+        "swing_knee_rad": 0.08,
+        "swing_ankle_rad": 0.0,
+        "swing_hip_reach_rad": 0.06,
+        "stance_retract_scale": 0.5,
+        "pitch_gate_rad": 0.35,
+        "pitch_target_rad": 0.0,
+        "pitch_damping": 1.0,
+        "clearance_gate_m": 0.008
+      },
+      "runs": [
+        {
+          "samples": 150,
+          "termination_reason": "duration_complete",
+          "mean_vx_m_s": -5.993293055022756e-05,
+          "track_ratio": -0.001498323263755689,
+          "vy_abs_p95_m_s": 0.062118976376950796,
+          "body_pitch_abs_p95_rad": 0.09086750473139932,
+          "base_height_min_m": 0.15371006727218628,
+          "foot_site_z_p95_m": 0.004575276561081409,
+          "action_saturation_pct": 0.0,
+          "target_clip_p95_rad": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.354931503534317,
+          "joint_tracking_p95_rad": 0.05936103984713548,
+          "contact_counts": {
+            "01": 3,
+            "11": 147
+          },
+          "contact_transitions": 3,
+          "phase_pct": {
+            "LOAD_STANCE": 40.0,
+            "PUSH_FORWARD": 36.666666666666664,
+            "UNWEIGHT_SWING": 23.333333333333332
+          },
+          "load_stance_ready_pct": 0.0,
+          "unweight_swing_ready_pct": 0.0,
+          "push_allowed_pct": 0.0,
+          "seed": 0,
+          "trace": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/com_weight_transfer_controller_probe_traces/com_p0p56_lf0p35_uf0p25_lo0p01_byg0p02_lvg0p08_kpy2_kdy0p5_kpvx1_ffp0p01_sk0p08_sa0_shr0p06_srs0p5_pt0_pd1/seed_000.jsonl"
+        },
+        {
+          "samples": 150,
+          "termination_reason": "duration_complete",
+          "mean_vx_m_s": 0.002233026787483444,
+          "track_ratio": 0.0558256696870861,
+          "vy_abs_p95_m_s": 0.08706062249839314,
+          "body_pitch_abs_p95_rad": 0.09810597859453711,
+          "base_height_min_m": 0.15260253846645355,
+          "foot_site_z_p95_m": 0.004410541988909245,
+          "action_saturation_pct": 0.0,
+          "target_clip_p95_rad": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.6688401103019714,
+          "joint_tracking_p95_rad": 0.06303270971402526,
+          "contact_counts": {
+            "01": 6,
+            "10": 3,
+            "11": 141
+          },
+          "contact_transitions": 4,
+          "phase_pct": {
+            "LOAD_STANCE": 40.0,
+            "PUSH_FORWARD": 36.666666666666664,
+            "UNWEIGHT_SWING": 23.333333333333332
+          },
+          "load_stance_ready_pct": 92.66666666666666,
+          "unweight_swing_ready_pct": 0.0,
+          "push_allowed_pct": 0.0,
+          "seed": 2,
+          "trace": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/com_weight_transfer_controller_probe_traces/com_p0p56_lf0p35_uf0p25_lo0p01_byg0p02_lvg0p08_kpy2_kdy0p5_kpvx1_ffp0p01_sk0p08_sa0_shr0p06_srs0p5_pt0_pd1/seed_002.jsonl"
+        }
+      ],
+      "aggregate": {
+        "runs": 2,
+        "falls": 0,
+        "duration_complete": 2,
+        "mean_vx_m_s": 0.0010865469284666082,
+        "max_mean_vx_m_s": 0.002233026787483444,
+        "mean_push_allowed_pct": 0.0
+      }
+    },
+    {
+      "controller": {
+        "label": "com_p0p56_lf0p35_uf0p25_lo0p01_byg0p02_lvg0p08_kpy2_kdy0p5_kpvx0p5_ffp0p005_sk0p08_sa0_shr0p06_srs0p5_pt0_pd1",
+        "period_s": 0.56,
+        "load_fraction": 0.35,
+        "unweight_fraction": 0.25,
+        "lateral_offset_m": 0.01,
+        "base_y_gate_m": 0.02,
+        "lateral_velocity_gate_m_s": 0.08,
+        "kp_y": 2.0,
+        "kd_y": 0.5,
+        "kp_vx": 0.5,
+        "feedforward_push_rad": 0.005,
+        "stance_push_limit_rad": 0.04,
+        "swing_knee_rad": 0.08,
+        "swing_ankle_rad": 0.0,
+        "swing_hip_reach_rad": 0.06,
+        "stance_retract_scale": 0.5,
+        "pitch_gate_rad": 0.35,
+        "pitch_target_rad": 0.0,
+        "pitch_damping": 1.0,
+        "clearance_gate_m": 0.008
+      },
+      "runs": [
+        {
+          "samples": 150,
+          "termination_reason": "duration_complete",
+          "mean_vx_m_s": -5.993293055022756e-05,
+          "track_ratio": -0.001498323263755689,
+          "vy_abs_p95_m_s": 0.062118976376950796,
+          "body_pitch_abs_p95_rad": 0.09086750473139932,
+          "base_height_min_m": 0.15371006727218628,
+          "foot_site_z_p95_m": 0.004575276561081409,
+          "action_saturation_pct": 0.0,
+          "target_clip_p95_rad": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.354931503534317,
+          "joint_tracking_p95_rad": 0.05936103984713548,
+          "contact_counts": {
+            "01": 3,
+            "11": 147
+          },
+          "contact_transitions": 3,
+          "phase_pct": {
+            "LOAD_STANCE": 40.0,
+            "PUSH_FORWARD": 36.666666666666664,
+            "UNWEIGHT_SWING": 23.333333333333332
+          },
+          "load_stance_ready_pct": 0.0,
+          "unweight_swing_ready_pct": 0.0,
+          "push_allowed_pct": 0.0,
+          "seed": 0,
+          "trace": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/com_weight_transfer_controller_probe_traces/com_p0p56_lf0p35_uf0p25_lo0p01_byg0p02_lvg0p08_kpy2_kdy0p5_kpvx0p5_ffp0p005_sk0p08_sa0_shr0p06_srs0p5_pt0_pd1/seed_000.jsonl"
+        },
+        {
+          "samples": 150,
+          "termination_reason": "duration_complete",
+          "mean_vx_m_s": 0.002233026787483444,
+          "track_ratio": 0.0558256696870861,
+          "vy_abs_p95_m_s": 0.08706062249839314,
+          "body_pitch_abs_p95_rad": 0.09810597859453711,
+          "base_height_min_m": 0.15260253846645355,
+          "foot_site_z_p95_m": 0.004410541988909245,
+          "action_saturation_pct": 0.0,
+          "target_clip_p95_rad": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.6688401103019714,
+          "joint_tracking_p95_rad": 0.06303270971402526,
+          "contact_counts": {
+            "01": 6,
+            "10": 3,
+            "11": 141
+          },
+          "contact_transitions": 4,
+          "phase_pct": {
+            "LOAD_STANCE": 40.0,
+            "PUSH_FORWARD": 36.666666666666664,
+            "UNWEIGHT_SWING": 23.333333333333332
+          },
+          "load_stance_ready_pct": 92.66666666666666,
+          "unweight_swing_ready_pct": 0.0,
+          "push_allowed_pct": 0.0,
+          "seed": 2,
+          "trace": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/com_weight_transfer_controller_probe_traces/com_p0p56_lf0p35_uf0p25_lo0p01_byg0p02_lvg0p08_kpy2_kdy0p5_kpvx0p5_ffp0p005_sk0p08_sa0_shr0p06_srs0p5_pt0_pd1/seed_002.jsonl"
+        }
+      ],
+      "aggregate": {
+        "runs": 2,
+        "falls": 0,
+        "duration_complete": 2,
+        "mean_vx_m_s": 0.0010865469284666082,
+        "max_mean_vx_m_s": 0.002233026787483444,
+        "mean_push_allowed_pct": 0.0
+      }
+    },
+    {
+      "controller": {
+        "label": "com_p0p56_lf0p35_uf0p25_lo0p01_byg0p02_lvg0p08_kpy2_kdy0p5_kpvx0p5_ffp0p01_sk0p08_sa0_shr0p06_srs0p5_pt0_pd1",
+        "period_s": 0.56,
+        "load_fraction": 0.35,
+        "unweight_fraction": 0.25,
+        "lateral_offset_m": 0.01,
+        "base_y_gate_m": 0.02,
+        "lateral_velocity_gate_m_s": 0.08,
+        "kp_y": 2.0,
+        "kd_y": 0.5,
+        "kp_vx": 0.5,
+        "feedforward_push_rad": 0.01,
+        "stance_push_limit_rad": 0.04,
+        "swing_knee_rad": 0.08,
+        "swing_ankle_rad": 0.0,
+        "swing_hip_reach_rad": 0.06,
+        "stance_retract_scale": 0.5,
+        "pitch_gate_rad": 0.35,
+        "pitch_target_rad": 0.0,
+        "pitch_damping": 1.0,
+        "clearance_gate_m": 0.008
+      },
+      "runs": [
+        {
+          "samples": 150,
+          "termination_reason": "duration_complete",
+          "mean_vx_m_s": -5.993293055022756e-05,
+          "track_ratio": -0.001498323263755689,
+          "vy_abs_p95_m_s": 0.062118976376950796,
+          "body_pitch_abs_p95_rad": 0.09086750473139932,
+          "base_height_min_m": 0.15371006727218628,
+          "foot_site_z_p95_m": 0.004575276561081409,
+          "action_saturation_pct": 0.0,
+          "target_clip_p95_rad": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.354931503534317,
+          "joint_tracking_p95_rad": 0.05936103984713548,
+          "contact_counts": {
+            "01": 3,
+            "11": 147
+          },
+          "contact_transitions": 3,
+          "phase_pct": {
+            "LOAD_STANCE": 40.0,
+            "PUSH_FORWARD": 36.666666666666664,
+            "UNWEIGHT_SWING": 23.333333333333332
+          },
+          "load_stance_ready_pct": 0.0,
+          "unweight_swing_ready_pct": 0.0,
+          "push_allowed_pct": 0.0,
+          "seed": 0,
+          "trace": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/com_weight_transfer_controller_probe_traces/com_p0p56_lf0p35_uf0p25_lo0p01_byg0p02_lvg0p08_kpy2_kdy0p5_kpvx0p5_ffp0p01_sk0p08_sa0_shr0p06_srs0p5_pt0_pd1/seed_000.jsonl"
+        },
+        {
+          "samples": 150,
+          "termination_reason": "duration_complete",
+          "mean_vx_m_s": 0.002233026787483444,
+          "track_ratio": 0.0558256696870861,
+          "vy_abs_p95_m_s": 0.08706062249839314,
+          "body_pitch_abs_p95_rad": 0.09810597859453711,
+          "base_height_min_m": 0.15260253846645355,
+          "foot_site_z_p95_m": 0.004410541988909245,
+          "action_saturation_pct": 0.0,
+          "target_clip_p95_rad": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.6688401103019714,
+          "joint_tracking_p95_rad": 0.06303270971402526,
+          "contact_counts": {
+            "01": 6,
+            "10": 3,
+            "11": 141
+          },
+          "contact_transitions": 4,
+          "phase_pct": {
+            "LOAD_STANCE": 40.0,
+            "PUSH_FORWARD": 36.666666666666664,
+            "UNWEIGHT_SWING": 23.333333333333332
+          },
+          "load_stance_ready_pct": 92.66666666666666,
+          "unweight_swing_ready_pct": 0.0,
+          "push_allowed_pct": 0.0,
+          "seed": 2,
+          "trace": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/com_weight_transfer_controller_probe_traces/com_p0p56_lf0p35_uf0p25_lo0p01_byg0p02_lvg0p08_kpy2_kdy0p5_kpvx0p5_ffp0p01_sk0p08_sa0_shr0p06_srs0p5_pt0_pd1/seed_002.jsonl"
+        }
+      ],
+      "aggregate": {
+        "runs": 2,
+        "falls": 0,
+        "duration_complete": 2,
+        "mean_vx_m_s": 0.0010865469284666082,
+        "max_mean_vx_m_s": 0.002233026787483444,
+        "mean_push_allowed_pct": 0.0
+      }
+    },
+    {
+      "controller": {
+        "label": "com_p0p56_lf0p35_uf0p25_lo0p01_byg0p02_lvg0p08_kpy3_kdy0p5_kpvx0p5_ffp0p01_sk0p08_sa0_shr0p06_srs0p5_pt0_pd1",
+        "period_s": 0.56,
+        "load_fraction": 0.35,
+        "unweight_fraction": 0.25,
+        "lateral_offset_m": 0.01,
+        "base_y_gate_m": 0.02,
+        "lateral_velocity_gate_m_s": 0.08,
+        "kp_y": 3.0,
+        "kd_y": 0.5,
+        "kp_vx": 0.5,
+        "feedforward_push_rad": 0.01,
+        "stance_push_limit_rad": 0.04,
+        "swing_knee_rad": 0.08,
+        "swing_ankle_rad": 0.0,
+        "swing_hip_reach_rad": 0.06,
+        "stance_retract_scale": 0.5,
+        "pitch_gate_rad": 0.35,
+        "pitch_target_rad": 0.0,
+        "pitch_damping": 1.0,
+        "clearance_gate_m": 0.008
+      },
+      "runs": [
+        {
+          "samples": 150,
+          "termination_reason": "duration_complete",
+          "mean_vx_m_s": 0.00021985003259032964,
+          "track_ratio": 0.005496250814758241,
+          "vy_abs_p95_m_s": 0.0629046136513353,
+          "body_pitch_abs_p95_rad": 0.09557200347647947,
+          "base_height_min_m": 0.15371006727218628,
+          "foot_site_z_p95_m": 0.004505098424851895,
+          "action_saturation_pct": 0.0,
+          "target_clip_p95_rad": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.09539267048239708,
+          "joint_tracking_p95_rad": 0.06023274399340147,
+          "contact_counts": {
+            "01": 3,
+            "11": 147
+          },
+          "contact_transitions": 3,
+          "phase_pct": {
+            "LOAD_STANCE": 40.0,
+            "PUSH_FORWARD": 36.666666666666664,
+            "UNWEIGHT_SWING": 23.333333333333332
+          },
+          "load_stance_ready_pct": 0.0,
+          "unweight_swing_ready_pct": 0.0,
+          "push_allowed_pct": 0.0,
+          "seed": 0,
+          "trace": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/com_weight_transfer_controller_probe_traces/com_p0p56_lf0p35_uf0p25_lo0p01_byg0p02_lvg0p08_kpy3_kdy0p5_kpvx0p5_ffp0p01_sk0p08_sa0_shr0p06_srs0p5_pt0_pd1/seed_000.jsonl"
+        },
+        {
+          "samples": 150,
+          "termination_reason": "duration_complete",
+          "mean_vx_m_s": 0.0019244529519225277,
+          "track_ratio": 0.04811132379806319,
+          "vy_abs_p95_m_s": 0.11637571565806866,
+          "body_pitch_abs_p95_rad": 0.09696330245063145,
+          "base_height_min_m": 0.1523301750421524,
+          "foot_site_z_p95_m": 0.004458214342594147,
+          "action_saturation_pct": 0.0,
+          "target_clip_p95_rad": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.7232358679175377,
+          "joint_tracking_p95_rad": 0.07449490167200565,
+          "contact_counts": {
+            "01": 8,
+            "10": 3,
+            "11": 139
+          },
+          "contact_transitions": 7,
+          "phase_pct": {
+            "LOAD_STANCE": 40.0,
+            "PUSH_FORWARD": 36.666666666666664,
+            "UNWEIGHT_SWING": 23.333333333333332
+          },
+          "load_stance_ready_pct": 62.66666666666667,
+          "unweight_swing_ready_pct": 2.0,
+          "push_allowed_pct": 0.6666666666666667,
+          "seed": 2,
+          "trace": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/com_weight_transfer_controller_probe_traces/com_p0p56_lf0p35_uf0p25_lo0p01_byg0p02_lvg0p08_kpy3_kdy0p5_kpvx0p5_ffp0p01_sk0p08_sa0_shr0p06_srs0p5_pt0_pd1/seed_002.jsonl"
+        }
+      ],
+      "aggregate": {
+        "runs": 2,
+        "falls": 0,
+        "duration_complete": 2,
+        "mean_vx_m_s": 0.0010721514922564287,
+        "max_mean_vx_m_s": 0.0019244529519225277,
+        "mean_push_allowed_pct": 0.33333333333333337
+      }
+    }
+  ]
+}

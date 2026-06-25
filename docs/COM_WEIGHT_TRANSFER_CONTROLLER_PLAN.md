@@ -282,6 +282,60 @@ HOLD_ACTUATOR_ENVELOPE:
 Do not convert a hold into a training run. A hold should identify which state
 transition failed.
 
+## First Probe Result
+
+The first implementation was added as:
+
+```text
+tool: tools/probe_com_weight_transfer_controller.py
+artifact: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_PROBE.md
+score_100: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_PROBE_SCORE_100.md
+score_150: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_PROBE_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+It uses `base_y`, `local_vy`, and contact state as CoM proxies. It does not yet
+model body roll or stance-foot-relative base position.
+
+Result:
+
+```text
+strict gate:
+  push_allowed_mean: about 0.67%
+  top 100-tick local dx seed0 / seed2: 0.0074 / 0.0132 m
+  top 100-tick vy95 seed0 / seed2: 0.0591 / 0.0937 m/s
+  dominant hold: LOAD_STANCE rarely reaches UNWEIGHT/PUSH
+```
+
+A relaxed-gate pass then widened base-y and lateral-velocity gates:
+
+```text
+artifact: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_RELAXED_PROBE.md
+score_100: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_RELAXED_PROBE_SCORE_100.md
+score_150: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_RELAXED_PROBE_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+Result:
+
+```text
+relaxed gate:
+  push_allowed_mean: about 2.67%
+  top 100-tick local dx seed0 / seed2: 0.0088 / 0.0121 m
+  top 100-tick vy95 seed0 / seed2: 0.0621 / 0.0768 m/s
+  dominant hold: still low forward displacement and double-support dominated
+```
+
+Interpretation:
+
+```text
+The first CoM proxy controller is safe/conservative and can keep lateral
+velocity low, but it does not create enough single-support progression or
+forward displacement. The next implementation needs better stance-foot-relative
+state and stronger swing-foot clearance/transition logic, not looser gates
+alone.
+```
+
 ## Non-Goals
 
 ```text

@@ -5539,3 +5539,56 @@ The next implementation plan is:
 ```text
 docs/COM_WEIGHT_TRANSFER_CONTROLLER_PLAN.md
 ```
+
+### CoM Weight-Transfer Controller Probe
+
+The first CoM-style controller probe was implemented:
+
+```text
+tool: tools/probe_com_weight_transfer_controller.py
+artifact: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_PROBE.md
+score_100: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_PROBE_SCORE_100.md
+score_150: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_PROBE_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+It uses available proxy state (`base_y`, `local_vy`, contact state, pitch, and
+height) and logs controller phases:
+
+```text
+LOAD_STANCE
+UNWEIGHT_SWING
+PUSH_FORWARD
+```
+
+Strict gate result:
+
+```text
+push_allowed_mean: about 0.67%
+top 100-tick local dx: 0.0074 / 0.0132 m
+top 100-tick vy95: 0.0591 / 0.0937 m/s
+dominant hold: LOAD_STANCE rarely reaches PUSH_FORWARD
+```
+
+A relaxed-gate run widened base-y and lateral-velocity gates:
+
+```text
+artifact: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_RELAXED_PROBE.md
+score_100: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_RELAXED_PROBE_SCORE_100.md
+score_150: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_RELAXED_PROBE_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+Relaxed result:
+
+```text
+push_allowed_mean: about 2.67%
+top 100-tick local dx: 0.0088 / 0.0121 m
+top 100-tick vy95: 0.0621 / 0.0768 m/s
+dominant hold: low forward displacement and double-support dominance
+```
+
+This is useful negative evidence. The first CoM proxy controller controls
+lateral velocity better than the forward-intent teachers, but does so by being
+too conservative. The next controller needs stance-foot-relative base state or
+stronger swing-clearance/transition logic rather than looser gates alone.

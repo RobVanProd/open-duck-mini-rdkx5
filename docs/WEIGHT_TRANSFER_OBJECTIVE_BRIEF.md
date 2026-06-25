@@ -120,6 +120,28 @@ The next concrete implementation plan is:
 docs/COM_WEIGHT_TRANSFER_CONTROLLER_PLAN.md
 ```
 
+The first CoM controller implementation has now been tested:
+
+```text
+tool: tools/probe_com_weight_transfer_controller.py
+strict artifact: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_PROBE.md
+relaxed artifact: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_RELAXED_PROBE.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+Strict gates rarely allowed push. Relaxed gates allowed more push but still held
+with low displacement:
+
+```text
+strict top 100-tick local dx: 0.0074 / 0.0132 m
+relaxed top 100-tick local dx: 0.0088 / 0.0121 m
+```
+
+This points to `HOLD_LOAD_STANCE` / `HOLD_FORWARD_STILL_LOW`: the proxy
+controller keeps lateral velocity low but does not create sustained
+single-support progression. The next controller needs stance-foot-relative base
+state or stronger swing-clearance/transition logic.
+
 ## Required Gate
 
 The next target source must pass:

@@ -33,21 +33,25 @@ does not run simulation, training, robot SSH, deployment, or hardware tests.
 | `support_state_weight_transfer_probe_score_150` | 150 | `HOLD_NO_SEED_ROBUST_TARGETS` | 0 | 4 | 0.0102/0.0306 | 0.0103/0.0309 | 0.1548/0.1635 | high_lateral_velocity, low_forward_displacement, low_forward_velocity |
 | `support_loaded_weight_transfer_probe_score_100` | 100 | `HOLD_NO_SEED_ROBUST_TARGETS` | 0 | 3 | 0.0115/0.0230 | 0.0129/0.0258 | 0.1424/0.1543 | high_lateral_velocity, low_forward_displacement, low_forward_velocity |
 | `support_loaded_weight_transfer_probe_score_150` | 150 | `HOLD_NO_SEED_ROBUST_TARGETS` | 0 | 3 | 0.0103/0.0309 | 0.0121/0.0362 | 0.1586/0.1635 | high_lateral_velocity, low_forward_displacement, low_forward_velocity |
+| `com_weight_transfer_controller_probe_score_100` | 100 | `HOLD_NO_SEED_ROBUST_TARGETS` | 0 | 16 | 0.0037/0.0074 | 0.0066/0.0132 | 0.0591/0.0937 | double_support_dominates, low_forward_displacement, low_forward_velocity, single_contact_pattern_dominates |
+| `com_weight_transfer_controller_probe_score_150` | 150 | `HOLD_NO_SEED_ROBUST_TARGETS` | 0 | 16 | -0.0001/-0.0003 | 0.0030/0.0091 | 0.1008/0.1248 | double_support_dominates, high_lateral_velocity, low_forward_displacement, low_forward_velocity |
+| `com_weight_transfer_controller_relaxed_probe_score_100` | 100 | `HOLD_NO_SEED_ROBUST_TARGETS` | 0 | 12 | 0.0044/0.0088 | 0.0060/0.0121 | 0.0621/0.0768 | double_support_dominates, low_forward_displacement, low_forward_velocity, single_contact_pattern_dominates |
+| `com_weight_transfer_controller_relaxed_probe_score_150` | 150 | `HOLD_NO_SEED_ROBUST_TARGETS` | 0 | 12 | 0.0005/0.0015 | 0.0032/0.0096 | 0.1008/0.1195 | double_support_dominates, low_forward_displacement, low_forward_velocity, single_contact_pattern_dominates |
 
 ## Aggregate Failure Counts
 
 | reason | count |
 |---|---:|
-| `low_forward_velocity` | 2093 |
-| `double_support_dominates` | 1238 |
-| `too_little_single_support` | 1051 |
-| `high_lateral_velocity` | 850 |
-| `single_support_not_balanced` | 774 |
-| `single_contact_pattern_dominates` | 590 |
-| `low_forward_displacement` | 245 |
+| `low_forward_velocity` | 2205 |
+| `double_support_dominates` | 1334 |
+| `too_little_single_support` | 1131 |
+| `high_lateral_velocity` | 874 |
+| `single_support_not_balanced` | 847 |
+| `single_contact_pattern_dominates` | 639 |
+| `low_forward_displacement` | 357 |
 | `high_sent_target_velocity` | 72 |
+| `too_few_contact_transitions` | 66 |
 | `action_saturation` | 52 |
-| `too_few_contact_transitions` | 45 |
 | `low_base_height` | 45 |
 | `missing_seed_trace_or_window` | 20 |
 | `high_body_pitch` | 8 |
