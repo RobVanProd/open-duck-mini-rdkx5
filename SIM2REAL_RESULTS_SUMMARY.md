@@ -3187,6 +3187,41 @@ HOLD:
 Do not run x=0.08, fitted bridge, or robot validation from V20 unless that
 low-command vanilla gate passes.
 
+V20 has now run and held:
+
+```text
+training: A100, JAX 0.7.2, vanilla dynamics
+reference override: applied and restored with sha256 manifest
+candidate: 2026_06_25_033305_337920.onnx
+gate: x=0.04, vanilla, CPU trace fallback, seeds 0-7
+runs: 8
+early terminations: 8
+duration_complete: 0
+mean vx: -0.0539 m/s
+mean track ratio: -1.3468
+sample range: 33-152 ticks
+mean lateral p95_abs velocity: 0.3793 m/s
+```
+
+Interpretation:
+
+```text
+V20 corrected the V19 reference-command mismatch, but the matched reference
+still did not lock into coherent low-command forward motion. The failure is
+still low/reverse progress across seeds. Lateral motion is a tracked
+contributor, not a sufficient standalone explanation.
+```
+
+This closes the current reward-weight/reference-mismatch loop. The next work is
+to debug the imitation pathway directly:
+
+```text
+1. policy/reference phase alignment
+2. forced reference-following reward score
+3. early termination versus reference lock
+4. behavior-cloning/supervised pretraining before PPO
+```
+
 Do not deploy V19. Do not run x=0.08. Do not run robot validation.
 
 Additional artifact:
@@ -3197,4 +3232,6 @@ outputs/analysis/a100_v19_reference_seed_partial_hold_summary.json
 outputs/analysis/REFERENCE_GRID_INTERPOLATION.md
 outputs/analysis/REFERENCE_MOTION_OVERRIDE.md
 outputs/analysis/STAGED_CURRICULUM_TRAINING_PLAN_V20.md
+outputs/analysis/V20_MANUAL_SEED_GATE_CPU_TRACE_FULL.md
+outputs/analysis/V20_MATCHED_REFERENCE_TRACE_SUMMARY.md
 ```

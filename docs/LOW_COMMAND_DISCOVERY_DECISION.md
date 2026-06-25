@@ -275,3 +275,67 @@ pass criterion: coherent positive forward motion across seeds
 
 Do not run x=0.08, fitted bridge, or robot validation until V20 passes the
 x=0.04 vanilla multi-seed gate.
+
+## V20 Matched Reference Result
+
+V20 trained on A100 with the command-matched `x=0.04` reference override and
+vanilla dynamics. The override was applied through the wrapper, hash-recorded,
+and restored after training.
+
+The A100 training phase completed and produced:
+
+```text
+candidate ONNX: 2026_06_25_033305_337920.onnx
+reference override sha256: deb8553d72e162331e788ca2b7e3e055b765a2ae01642b15ae316f07afb55601
+original reference restored: yes
+```
+
+The remote GPU seed gate died during seed 0 without an exit sentinel, so the
+candidate was recovered from the partial artifact bundle and evaluated locally
+on CPU with per-seed traces.
+
+CPU trace gate at `x=0.04`, vanilla dynamics, seeds `0-7`:
+
+```text
+runs: 8
+falls/early terminations: 8
+duration_complete: 0
+mean vx: -0.0539 m/s
+mean track ratio: -1.3468
+sample range: 33-152 ticks
+mean lateral p95_abs velocity: 0.3793 m/s
+```
+
+Interpretation:
+
+```text
+V20 is HOLD_V20_MATCHED_REFERENCE_NO_LOCK.
+The matched reference did not refine into coherent low-command forward motion.
+The dominant failure is low/reverse forward progress, with lateral motion as a
+tracked contributor but not a standalone explanation.
+```
+
+This closes the V19/V20 reference-mismatch branch:
+
+```text
+V19 failed with a mismatched raw nearest reference.
+V20 corrected the reference command mismatch and still failed across seeds.
+```
+
+Next work should debug the imitation/reference-locking mechanism directly:
+
+```text
+1. verify phase alignment between policy rollout and reference clock
+2. score a forced/reference-following rollout under the task rewards
+3. inspect whether early command-progress termination prevents reference lock
+4. consider behavior-cloning or supervised pretraining before PPO
+5. do not launch another reward-weight-only variant
+```
+
+Artifacts:
+
+```text
+outputs/analysis/V20_MANUAL_SEED_GATE_CPU_TRACE_FULL.md
+outputs/analysis/V20_MATCHED_REFERENCE_TRACE_SUMMARY.md
+outputs/analysis/v20_matched_reference_trace_summary.json
+```

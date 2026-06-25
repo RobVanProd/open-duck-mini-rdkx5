@@ -2383,7 +2383,37 @@ behavior:
   - restore the original reference file after the subprocess exits
 ```
 
-V20 is the next A100 candidate, but it is still an offline training test only.
+V20 has now run. It is a hold, not a deployable candidate.
+
+```text
+V20 A100 training: completed
+matched reference override: applied, hash-recorded, restored
+gate: x=0.04, vanilla, seeds 0-7
+result: 8/8 early terminations
+mean vx: -0.0539 m/s
+mean track ratio: -1.3468
+mean lateral p95_abs velocity: 0.3793 m/s
+```
+
+Interpretation:
+
+```text
+The V19 raw-reference command mismatch was a real confound, but correcting it
+did not produce coherent low-command forward motion. The next work is not
+another reward-weight variant. Debug the reference/imitation mechanism itself.
+```
+
+Next tasks:
+
+```text
+1. verify policy/reference phase alignment
+2. score forced reference-following rollouts under current task rewards
+3. test whether command-progress termination prevents early reference lock
+4. add behavior-cloning or supervised pretraining if PPO cannot stay near the
+   matched reference
+5. only return to fitted actuator bridge after x=0.04 vanilla motion passes
+```
+
 Do not run robot validation, x=0.08, or the fitted actuator bridge until the
 x=0.04 vanilla multi-seed gate passes with coherent forward motion.
 
@@ -2392,3 +2422,6 @@ Artifact:
 
 V20 plan:
 `outputs/analysis/STAGED_CURRICULUM_TRAINING_PLAN_V20.md`.
+
+V20 result:
+`outputs/analysis/V20_MATCHED_REFERENCE_TRACE_SUMMARY.md`.
