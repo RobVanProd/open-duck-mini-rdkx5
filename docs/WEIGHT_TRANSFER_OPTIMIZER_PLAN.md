@@ -208,3 +208,32 @@ forward displacement in this compact parameterization. The next useful change
 is not more gate-mode sampling; it is an objective/parameterization change that
 explicitly pays for terminal forward displacement while preserving the lateral
 and support gates.
+
+## Displacement-Weighted Probe
+
+The scorer was extended with optional base-x displacement metrics:
+
+```text
+--min-forward-displacement-m
+--forward-displacement-weight
+```
+
+Artifact:
+
+```text
+outputs/analysis/WEIGHT_TRANSFER_OPTIMIZER_DISPLACEMENT.md
+outputs/analysis/weight_transfer_optimizer_displacement.json
+```
+
+Result:
+
+```text
+status: HOLD_OPTIMIZER_NO_ROBUST_TARGET
+best seed0 vx / dx: -0.0025 m/s / 0.0008 m
+best seed2 vx / dx: 0.0014 m/s / -0.0041 m
+```
+
+All eight sampled candidates failed the forward-displacement gate. This makes
+the conservative-basin diagnosis stronger: even when terminal base progress is
+priced directly, the current compact planner parameterization does not discover
+a useful forward step.

@@ -258,6 +258,18 @@ next optimizer change should add an explicit terminal forward-displacement
 objective or a richer target-sequence parameterization, not just more gate-mode
 sampling.
 
+Displacement-weighted scorer/optimizer result:
+
+```text
+artifact: outputs/analysis/WEIGHT_TRANSFER_OPTIMIZER_DISPLACEMENT.md
+status: HOLD_OPTIMIZER_NO_ROBUST_TARGET
+```
+
+Every sampled candidate failed the new displacement gate. This confirms that
+the current compact planner parameterization is not sufficient as a target
+source. The next branch should change the target representation or move to a
+closed-loop state-feedback teacher.
+
 ### Reconcile Policy / Sim Contract
 
 - Run `tools/audit_policy_sim_contract.py`.

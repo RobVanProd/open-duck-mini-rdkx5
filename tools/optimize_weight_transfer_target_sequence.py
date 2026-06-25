@@ -153,6 +153,7 @@ def make_score_args(args: argparse.Namespace, iteration_dir: Path) -> SimpleName
         dt_s=0.02,
         command_x=args.command_x,
         min_mean_vx=args.min_mean_vx,
+        min_forward_displacement_m=args.min_forward_displacement_m,
         max_track_ratio=1.5,
         max_vy_abs_p95=args.max_vy_abs_p95,
         max_contact_dominance_pct=95.0,
@@ -169,6 +170,7 @@ def make_score_args(args: argparse.Namespace, iteration_dir: Path) -> SimpleName
         max_tracking_p95=args.max_tracking_p95,
         min_done_margin=args.min_done_margin,
         forward_weight=8.0,
+        forward_displacement_weight=args.forward_displacement_weight,
         lateral_weight=8.0,
         contact_weight=0.02,
         double_support_weight=0.02,
@@ -357,6 +359,13 @@ def main() -> int:
     parser.add_argument("--window-samples", type=int, default=100)
     parser.add_argument("--stride-samples", type=int, default=5)
     parser.add_argument("--min-mean-vx", type=float, default=0.04)
+    parser.add_argument(
+        "--min-forward-displacement-m",
+        type=float,
+        default=-1.0,
+        help="Optional base-x displacement gate for each scoring window. Negative disables.",
+    )
+    parser.add_argument("--forward-displacement-weight", type=float, default=8.0)
     parser.add_argument("--max-vy-abs-p95", type=float, default=0.12)
     parser.add_argument("--max-double-support-pct", type=float, default=90.0)
     parser.add_argument("--min-single-support-pct", type=float, default=8.0)

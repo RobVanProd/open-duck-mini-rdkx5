@@ -5360,3 +5360,16 @@ status: HOLD_OPTIMIZER_NO_ROBUST_TARGET
 This also held. The global best soft-gated candidate had seed0/seed2 forward
 velocity of `-0.0036 / 0.0043 m/s` with lateral velocity still near gate. This
 shows that relaxing the step gate alone does not escape the conservative basin.
+
+The scorer was then extended with optional base-x displacement terms and a
+small displacement-weighted optimizer probe was run:
+
+```text
+artifact: outputs/analysis/WEIGHT_TRANSFER_OPTIMIZER_DISPLACEMENT.md
+status: HOLD_OPTIMIZER_NO_ROBUST_TARGET
+```
+
+All sampled candidates failed the forward-displacement gate. The best candidate
+had seed0/seed2 displacement of `0.0008 / -0.0041 m`, so the current compact
+planner/optimizer parameterization is not producing an actionable target
+source.

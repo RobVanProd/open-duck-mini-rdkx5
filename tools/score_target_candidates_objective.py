@@ -114,6 +114,7 @@ def window_metrics(
     vy = [record["local_linvel_m_s"][1] for record in window]
     pitch = [abs(record["body_pitch_rad"]) for record in window]
     height = [record["base_height_m"] for record in window]
+    base_x = [record.get("base_x_m") for record in window if finite(record.get("base_x_m"))]
     action = np.asarray([record.get("action", []) for record in window], dtype=float)
     sent = np.asarray([record.get("sent_target_rad", []) for record in window], dtype=float)
     actual = np.asarray([record.get("actual_position_rad", []) for record in window], dtype=float)
@@ -144,6 +145,9 @@ def window_metrics(
         "done_inside_window": any(record.get("done") for record in window),
         "ticks_until_done_after_window": margin,
         "mean_vx_m_s": float(np.mean(vx)) if vx else None,
+        "forward_displacement_m": (
+            float(base_x[-1] - base_x[0]) if len(base_x) >= 2 else None
+        ),
         "vy_abs_p95_m_s": percentile([abs(value) for value in vy], 95),
         "body_pitch_abs_p95_rad": percentile(pitch, 95),
         "base_height_min_m": float(np.min(height)) if height else None,
@@ -175,6 +179,7 @@ def objective_score(metrics: dict[str, Any], args: argparse.Namespace) -> dict[s
     vy95 = float(metrics.get("vy_abs_p95_m_s") or 999.0)
     pitch95 = float(metrics.get("body_pitch_abs_p95_rad") or 999.0)
     height_min = float(metrics.get("base_height_min_m") or -999.0)
+    displacement = metrics.get("forward_displacement_m")
     saturation = float(metrics.get("action_saturation_pct") or 0.0)
     sent_vel = float(metrics.get("sent_target_velocity_p95_rad_s") or 999.0)
     tracking = float(metrics.get("joint_tracking_p95_rad") or 999.0)
@@ -188,6 +193,12 @@ def objective_score(metrics: dict[str, Any], args: argparse.Namespace) -> dict[s
     margin = metrics.get("ticks_until_done_after_window")
 
     penalties["forward_shortfall"] = max(0.0, args.min_mean_vx - mean_vx) * args.forward_weight
+    penalties["forward_displacement"] = (
+        max(0.0, args.min_forward_displacement_m - float(displacement))
+        * args.forward_displacement_weight
+        if displacement is not None and args.min_forward_displacement_m >= 0.0
+        else 0.0
+    )
     penalties["lateral"] = max(0.0, vy95 - args.max_vy_abs_p95) * args.lateral_weight
     penalties["contact"] = max(0.0, contact - args.max_contact_dominance_pct) * args.contact_weight
     penalties["double_support"] = (
@@ -231,6 +242,12 @@ def objective_score(metrics: dict[str, Any], args: argparse.Namespace) -> dict[s
 
     if mean_vx < args.min_mean_vx:
         hard_failures.append("low_forward_velocity")
+    if (
+        displacement is not None
+        and args.min_forward_displacement_m >= 0.0
+        and float(displacement) < args.min_forward_displacement_m
+    ):
+        hard_failures.append("low_forward_displacement")
     if vy95 > args.max_vy_abs_p95:
         hard_failures.append("high_lateral_velocity")
     if contact > args.max_contact_dominance_pct:
@@ -372,6 +389,7 @@ def score_traces(args: argparse.Namespace) -> dict[str, Any]:
         "stride_samples": args.stride_samples,
         "criteria": {
             "min_mean_vx": args.min_mean_vx,
+            "min_forward_displacement_m": args.min_forward_displacement_m,
             "max_vy_abs_p95": args.max_vy_abs_p95,
             "max_contact_dominance_pct": args.max_contact_dominance_pct,
             "max_double_support_pct": args.max_double_support_pct,
@@ -431,8 +449,8 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         [
             "## Top Worst-Seed Candidates",
             "",
-            "| mode | pass_seeds | worst_seed | min_score | mean_score | seed0_vx | seed2_vx | seed2_vy95 | seed2_contact | seed2_transitions | seed2_foot_z95 | seed2_failures |",
-            "|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---|",
+            "| mode | pass_seeds | worst_seed | min_score | mean_score | seed0_vx | seed0_dx | seed2_vx | seed2_dx | seed2_vy95 | seed2_contact | seed2_transitions | seed2_foot_z95 | seed2_failures |",
+            "|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|",
         ]
     )
     if not payload["results"]:
@@ -441,14 +459,16 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         seed0 = row["seeds"].get("seed_000") or {}
         seed2 = row["seeds"].get("seed_002") or {}
         lines.append(
-            "| {mode} | {pass_count} | {worst} | {min_score} | {mean_score} | {seed0_vx} | {seed2_vx} | {seed2_vy} | {seed2_contact} | {seed2_transitions} | {seed2_foot_z} | `{seed2_fail}` |".format(
+            "| {mode} | {pass_count} | {worst} | {min_score} | {mean_score} | {seed0_vx} | {seed0_dx} | {seed2_vx} | {seed2_dx} | {seed2_vy} | {seed2_contact} | {seed2_transitions} | {seed2_foot_z} | `{seed2_fail}` |".format(
                 mode=row["mode"],
                 pass_count=row["pass_seed_count"],
                 worst=row["worst_seed"],
                 min_score=fmt(row["min_seed_score"]),
                 mean_score=fmt(row["mean_seed_score"]),
                 seed0_vx=fmt(seed0.get("mean_vx_m_s")),
+                seed0_dx=fmt(seed0.get("forward_displacement_m")),
                 seed2_vx=fmt(seed2.get("mean_vx_m_s")),
+                seed2_dx=fmt(seed2.get("forward_displacement_m")),
                 seed2_vy=fmt(seed2.get("vy_abs_p95_m_s")),
                 seed2_contact=fmt(seed2.get("contact_dominance_pct")),
                 seed2_transitions=fmt(seed2.get("contact_transitions"), digits=0),
@@ -479,6 +499,12 @@ def main() -> int:
     parser.add_argument("--dt-s", type=float, default=0.02)
     parser.add_argument("--command-x", type=float, default=0.04)
     parser.add_argument("--min-mean-vx", type=float, default=0.04)
+    parser.add_argument(
+        "--min-forward-displacement-m",
+        type=float,
+        default=-1.0,
+        help="Optional base-x displacement gate for the scoring window. Negative disables.",
+    )
     parser.add_argument("--max-track-ratio", type=float, default=1.5)
     parser.add_argument("--max-vy-abs-p95", type=float, default=0.12)
     parser.add_argument("--max-contact-dominance-pct", type=float, default=95.0)
@@ -495,6 +521,7 @@ def main() -> int:
     parser.add_argument("--max-tracking-p95", type=float, default=0.12)
     parser.add_argument("--min-done-margin", type=int, default=50)
     parser.add_argument("--forward-weight", type=float, default=8.0)
+    parser.add_argument("--forward-displacement-weight", type=float, default=8.0)
     parser.add_argument("--lateral-weight", type=float, default=8.0)
     parser.add_argument("--contact-weight", type=float, default=0.02)
     parser.add_argument("--double-support-weight", type=float, default=0.02)
