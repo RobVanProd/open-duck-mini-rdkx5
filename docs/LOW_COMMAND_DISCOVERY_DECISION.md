@@ -939,3 +939,29 @@ not another contact-matching adapter on the aggregate table. Either generate a
 longer self-consistent target trajectory directly, or use these fragments as a
 soft prior inside a closed-loop learner/objective.
 ```
+
+The longer-target branch was then tested:
+
+```text
+existing lateral-fix traces:
+  100-sample objective: HOLD_NO_SEED_ROBUST_TARGETS
+  100-sample curation: curated_seed_windows=0
+  150-sample objective: HOLD_NO_SEED_ROBUST_TARGETS
+  150-sample curation: curated_seed_windows=0
+
+new sustained primitive probe:
+  candidates: 180
+  100-sample objective: HOLD_NO_SEED_ROBUST_TARGETS
+  100-sample curation: curated_seed_windows=0
+  150-sample objective: HOLD_NO_SEED_ROBUST_TARGETS
+  150-sample curation: curated_seed_windows=0
+```
+
+Updated decision:
+
+```text
+The current primitive generator family is exhausted as a hard-label source.
+The next branch should not keep mining these fragments into BC labels. It should
+change the generator structure or use fragments as soft priors inside a
+closed-loop objective.
+```

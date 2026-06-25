@@ -4593,3 +4593,55 @@ target tables should remain evidence, not PPO/BC labels. The next offline work
 should either generate a longer self-consistent low-command target trajectory or
 use the short fragment as a soft prior inside a closed-loop objective.
 ```
+
+### Sustained Target Generation Probe
+
+The existing dynamic-roll lateral-fix traces and a new bounded sustained-motion
+primitive search were checked for longer target windows.
+
+Existing lateral-fix trace set:
+
+```text
+100-sample objective: HOLD_NO_SEED_ROBUST_TARGETS, robust_mode_count=0
+100-sample curation: HOLD_INSUFFICIENT_CURATED_WINDOWS, curated=0
+150-sample objective: HOLD_NO_SEED_ROBUST_TARGETS, robust_mode_count=0
+150-sample curation: HOLD_INSUFFICIENT_CURATED_WINDOWS, curated=0
+```
+
+New sustained probe:
+
+```text
+candidates: 180
+seeds: 0,2
+duration: 4.0 s
+100-sample objective: HOLD_NO_SEED_ROBUST_TARGETS, robust_mode_count=0
+100-sample curation: HOLD_INSUFFICIENT_CURATED_WINDOWS, curated=0
+150-sample objective: HOLD_NO_SEED_ROBUST_TARGETS, robust_mode_count=0
+150-sample curation: HOLD_INSUFFICIENT_CURATED_WINDOWS, curated=0
+```
+
+Top failure reasons:
+
+```text
+100-sample sustained probe:
+  low_forward_velocity: 304
+  low_base_height: 162
+  single_contact_pattern_dominates: 110
+  high_body_pitch: 65
+
+150-sample sustained probe:
+  low_forward_velocity: 301
+  single_contact_pattern_dominates: 256
+  low_base_height: 146
+  high_body_pitch: 34
+```
+
+Conclusion:
+
+```text
+The current primitive target family is exhausted as direct target-label source
+material. It can produce short in-envelope motion fragments, but not a robust
+100-150 sample low-command gait. Do not launch PPO/BC from these targets. The
+next offline branch should either change the generator structure or use the
+short fragments as soft priors in a closed-loop learner/objective.
+```

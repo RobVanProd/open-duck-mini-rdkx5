@@ -391,3 +391,34 @@ The aggregate target table is not rescued by contact/phase matching. The current
 target-source pass remains useful evidence, but these tables are not training
 labels yet. Do not launch PPO/BC from them as-is.
 ```
+
+## Sustained Target Probe
+
+The target-source branch was tested for longer windows in two ways:
+
+```text
+1. rescore existing dynamic-roll lateral-fix traces at 100 and 150 samples
+2. run a bounded sustained primitive search with 180 candidates
+```
+
+Result:
+
+```text
+existing 100-sample objective: HOLD_NO_SEED_ROBUST_TARGETS
+existing 100-sample curation: curated_seed_windows=0
+existing 150-sample objective: HOLD_NO_SEED_ROBUST_TARGETS
+existing 150-sample curation: curated_seed_windows=0
+
+sustained probe 100-sample objective: HOLD_NO_SEED_ROBUST_TARGETS
+sustained probe 100-sample curation: curated_seed_windows=0
+sustained probe 150-sample objective: HOLD_NO_SEED_ROBUST_TARGETS
+sustained probe 150-sample curation: curated_seed_windows=0
+```
+
+Decision:
+
+```text
+The primitive target family should be considered exhausted as direct action
+label source material. It can generate short in-envelope motion fragments, but
+not a robust 100-150 sample gait under the current gates.
+```

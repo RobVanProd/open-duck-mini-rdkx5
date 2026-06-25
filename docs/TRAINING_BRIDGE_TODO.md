@@ -3646,3 +3646,40 @@ Do next:
    closed-loop objective that rewards forward progress and posture, and
 3. keep robot validation blocked
 ```
+
+### Sustained Target Generation Probe
+
+The existing dynamic-roll lateral-fix trace set was rescored at 100 and 150
+samples, then a bounded sustained primitive search was run.
+
+Result:
+
+```text
+existing lateral-fix 100-sample objective: HOLD_NO_SEED_ROBUST_TARGETS
+existing lateral-fix 100-sample curation: curated_seed_windows=0
+existing lateral-fix 150-sample objective: HOLD_NO_SEED_ROBUST_TARGETS
+existing lateral-fix 150-sample curation: curated_seed_windows=0
+
+sustained probe candidates: 180
+sustained probe 100-sample objective: HOLD_NO_SEED_ROBUST_TARGETS
+sustained probe 100-sample curation: curated_seed_windows=0
+sustained probe 150-sample objective: HOLD_NO_SEED_ROBUST_TARGETS
+sustained probe 150-sample curation: curated_seed_windows=0
+```
+
+Interpretation:
+
+```text
+The current primitive target generator family is exhausted as a direct
+supervised-label source. It finds short fragments but not a robust sustained
+low-command gait. Do not run BC/PPO from these target tables.
+```
+
+Do next:
+
+```text
+1. change the target generator structure, or
+2. use the short fragments as a soft prior in a closed-loop learner/objective,
+   not as hard action labels, and
+3. keep robot validation blocked
+```

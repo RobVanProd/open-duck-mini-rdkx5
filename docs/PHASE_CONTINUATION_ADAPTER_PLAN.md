@@ -170,3 +170,79 @@ longer self-consistent target trajectory directly, or build a learner/objective
 that uses the short target fragment as a soft motion prior while optimizing
 closed-loop forward progress and posture from the start.
 ```
+
+## Sustained Target Probe Result
+
+The existing dynamic-roll lateral-fix trace set was rescored at longer windows,
+then a bounded sustained-motion primitive search was run with slightly faster
+cadence and larger hip/knee amplitudes.
+
+Existing lateral-fix traces:
+
+```text
+100-sample objective:
+  status: HOLD_NO_SEED_ROBUST_TARGETS
+  robust_mode_count: 0
+
+100-sample curation:
+  status: HOLD_INSUFFICIENT_CURATED_WINDOWS
+  curated_seed_windows: 0
+
+150-sample objective:
+  status: HOLD_NO_SEED_ROBUST_TARGETS
+  robust_mode_count: 0
+
+150-sample curation:
+  status: HOLD_INSUFFICIENT_CURATED_WINDOWS
+  curated_seed_windows: 0
+```
+
+New sustained probe:
+
+```text
+search candidates: 180
+seeds: 0,2
+duration: 4.0 s
+
+100-sample objective:
+  status: HOLD_NO_SEED_ROBUST_TARGETS
+  robust_mode_count: 0
+
+100-sample curation:
+  status: HOLD_INSUFFICIENT_CURATED_WINDOWS
+  curated_seed_windows: 0
+
+150-sample objective:
+  status: HOLD_NO_SEED_ROBUST_TARGETS
+  robust_mode_count: 0
+
+150-sample curation:
+  status: HOLD_INSUFFICIENT_CURATED_WINDOWS
+  curated_seed_windows: 0
+```
+
+Main failure reasons:
+
+```text
+100-sample sustained probe:
+  low_forward_velocity: 304
+  low_base_height: 162
+  single_contact_pattern_dominates: 110
+  high_body_pitch: 65
+
+150-sample sustained probe:
+  low_forward_velocity: 301
+  single_contact_pattern_dominates: 256
+  low_base_height: 146
+  high_body_pitch: 34
+```
+
+Interpretation:
+
+```text
+The primitive target-source family can produce short in-envelope motion
+fragments, but it does not produce a longer self-consistent gait under the
+current strict gates. The next branch should stop trying to convert these
+fragments directly into labels and should instead use them as soft priors or
+change the target generator structure.
+```
