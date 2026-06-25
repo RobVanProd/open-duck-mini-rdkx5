@@ -76,3 +76,7 @@ The soft-prior path is technically wired and trainable, but this weak
 soft-prior V21 recipe still converged to fragile/incorrect low-command behavior:
 short falls, near-zero or backward forward velocity, and no completed seed.
 
+This is not an actuator-envelope failure. Across the failed seeds, action
+saturation stayed at `0%` and sent pitch-chain target velocity p95 stayed below
+`0.67 rad/s`, far under the fitted actuator envelope. The blocker remains
+low-command behavior discovery/stability, not target velocity.

@@ -4894,3 +4894,8 @@ The soft-prior path is wired and trainable, but this weak soft-prior recipe did
 not solve low-command discovery. Phase 2 is blocked. No robot validation,
 deployment, x=0.08 expansion, or fitted-bridge progression is approved from
 this result.
+
+This V21 failure is not an actuator-envelope violation: the failed gate showed
+`0%` action saturation and sent pitch-chain target velocity p95 below
+`0.67 rad/s`. The remaining blocker is low-command behavior
+discovery/stability, not target velocity.
