@@ -4453,3 +4453,18 @@ single-support weight transfer at x=0.04. Keep this branch offline until the
 plan is reviewed. Do not reintroduce x=0.08, fitted bridge, or robot validation
 unless the x=0.04 multi-seed gate shows coherent forward motion and useful
 left/right single-support alternation.
+
+First V23 run:
+
+```text
+artifact: outputs/analysis/V23_L4_PARTIAL_RUN_SUMMARY.md
+status: HOLD_V23_SUPPORT_OBJECTIVE_FAILED_GATE
+training: completed and exported 184320-step ONNX
+gate: seeds 0-5 all held with fall/termination
+remote: Colab disappeared during seed 6, so the full 0-7 distribution is incomplete
+```
+
+The gate failure is still decisive because the configured pass condition allowed
+no failed seeds. Do not rerun V23 unchanged. Before another long cloud run,
+analyze at least one V23 fall trace for contact sequence, base height, pitch,
+local velocity, support dwell, and termination reason.

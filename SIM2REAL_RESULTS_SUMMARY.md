@@ -5897,3 +5897,25 @@ chasing and tests whether single-support reward plus double-support dwell cost
 can create low-command x=0.04 weight transfer under vanilla dynamics. It does
 not authorize x=0.08, fitted bridge, robot validation, deployment, or runtime
 changes.
+
+The first V23 L4 run completed training but failed the required seed gate before
+the Colab runtime disappeared:
+
+```text
+artifact: outputs/analysis/V23_L4_PARTIAL_RUN_SUMMARY.md
+status: HOLD_V23_SUPPORT_OBJECTIVE_FAILED_GATE
+training: PASS_SMOKE_RUN
+final checkpoint/ONNX step: 184320
+gate command: x=0.04, vanilla bridge
+observed gate seeds:
+  seeds 0-5: HOLD_CANDIDATE_FALL_OR_TERMINATION
+  seed 6: started, no final status captured
+  seed 7: not started
+remote status: HOLD_REMOTE_NO_SENTINEL
+```
+
+Because the configured pass gate allowed no failed seeds, the first six failed
+seeds are already enough to hold V23 even though the full eight-seed distribution
+was not captured. Do not rerun V23 unchanged. The next branch needs a more
+structural support/propulsion mechanism or a targeted fall-trace analysis of the
+V23 seed-0 failure.

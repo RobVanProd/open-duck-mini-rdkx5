@@ -1,0 +1,52 @@
+{
+  "status": "HOLD_V23_SUPPORT_OBJECTIVE_FAILED_GATE",
+  "workflow": "staged-curriculum",
+  "recipe": "movement_bootstrap_v23",
+  "session": "open-duck-l4",
+  "run_dir": "outputs/analysis/colab_cli/open-duck-l4-staged-curriculum-20260625T143703Z",
+  "remote_status": "HOLD_REMOTE_NO_SENTINEL",
+  "training": {
+    "status": "PASS_SMOKE_RUN",
+    "checkpoint_steps": [61440, 122880, 184320],
+    "final_onnx": "2026_06_25_145051_184320.onnx",
+    "reward_by_step": {
+      "0": -393.6160888671875,
+      "61440": -473.64703369140625,
+      "122880": -464.53936767578125,
+      "184320": -493.615478515625
+    }
+  },
+  "training_recipe_overrides": {
+    "forward_single_support_scale": 1.0,
+    "forward_double_support_scale": -1.0,
+    "forward_contact_support_scale": -0.06,
+    "lin_vel_x_min": 0.035,
+    "lin_vel_x_max": 0.045,
+    "actuator_bridge": false,
+    "soft_prior": false
+  },
+  "gate": {
+    "command_x": 0.04,
+    "bridge_mode": "vanilla",
+    "requested_seeds": "0-7",
+    "max_fall_fraction": 0.0,
+    "observed_seed_status": {
+      "0": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "1": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "2": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "3": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "4": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "5": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "6": "STARTED_NO_FINAL_STATUS_CAPTURED",
+      "7": "NOT_STARTED"
+    },
+    "completed_seed_count": 6,
+    "failed_seed_count": 6,
+    "distribution_complete": false,
+    "gate_failure_proven": true
+  },
+  "robot_touched": false,
+  "deploy_performed": false,
+  "runtime_behavior_changed": false,
+  "policy_promoted": false
+}

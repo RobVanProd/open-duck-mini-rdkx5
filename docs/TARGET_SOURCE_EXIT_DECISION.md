@@ -207,6 +207,21 @@ dwell cost can teach low-command weight transfer at x=0.04 under vanilla
 dynamics. It must be graded by contact alternation and coherent forward motion
 across seeds, not by fall-count alone.
 
+First V23 evidence:
+
+```text
+artifact: outputs/analysis/V23_L4_PARTIAL_RUN_SUMMARY.md
+status: HOLD_V23_SUPPORT_OBJECTIVE_FAILED_GATE
+training: completed and exported the 184320-step ONNX
+gate: seeds 0-5 all held with fall/termination
+remote: Colab disappeared during seed 6
+```
+
+The full 0-7 seed distribution is incomplete, but the gate failure is already
+proven because the configured pass condition allowed no failed seeds. This means
+the first explicit support-contact reward probe also failed to clear the
+weight-transfer blocker. Do not rerun V23 unchanged.
+
 Any branch must report:
 
 ```text
