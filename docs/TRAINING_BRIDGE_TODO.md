@@ -4394,6 +4394,26 @@ It created more single-support time but froze forward motion. The next target
 source must actively drive load shift/readiness and then push; do not treat a
 passive readiness gate as a training-ready reference.
 
+Stateful phase variants also held:
+
+```text
+strict:
+  artifact: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STATEFUL_STRICT_PROBE.md
+  score_100: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STATEFUL_STRICT_SCORE_100.md
+  score_150: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STATEFUL_STRICT_SCORE_150.md
+  status: HOLD_NO_SEED_ROBUST_TARGETS
+
+timeout:
+  artifact: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STATEFUL_TIMEOUT_PROBE.md
+  score_100: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STATEFUL_TIMEOUT_SCORE_100.md
+  score_150: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STATEFUL_TIMEOUT_SCORE_150.md
+  status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+Do not spend the next GPU run on phase-state plumbing around the same stance
+push primitive. The missing target source now appears to be the propulsion /
+foot-placement model itself.
+
 The current compact handoff docs are:
 
 ```text

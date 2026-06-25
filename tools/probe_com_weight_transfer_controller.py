@@ -57,6 +57,7 @@ class Controller:
     swing_hip_reach_rad: float
     stance_retract_scale: float
     gate_swing_on_ready: bool
+    stateful_support_phase: bool
     pitch_gate_rad: float
     pitch_target_rad: float
     pitch_damping: float
@@ -146,6 +147,7 @@ def controller_grid(args: argparse.Namespace) -> list[Controller]:
                                                                                         f"_shr{label_float(swing_hip_reach)}"
                                                                                         f"_srs{label_float(stance_retract_scale)}"
                                                                                         f"_gs{int(args.gate_swing_on_ready)}"
+                                                                                        f"_sf{int(args.stateful_support_phase)}"
                                                                                         f"_pt{label_float(pitch_target)}"
                                                                                         f"_pd{label_float(pitch_damping)}"
                                                                                     )
@@ -172,6 +174,7 @@ def controller_grid(args: argparse.Namespace) -> list[Controller]:
                                                                                             swing_hip_reach_rad=swing_hip_reach,
                                                                                             stance_retract_scale=stance_retract_scale,
                                                                                             gate_swing_on_ready=args.gate_swing_on_ready,
+                                                                                            stateful_support_phase=args.stateful_support_phase,
                                                                                             pitch_gate_rad=args.pitch_gate,
                                                                                             pitch_target_rad=pitch_target,
                                                                                             pitch_damping=pitch_damping,
@@ -190,6 +193,7 @@ def pct(count: int, total: int) -> float:
 def summarize_phase_records(records: list[dict[str, Any]]) -> dict[str, Any]:
     total = len(records)
     phases = Counter(record.get("controller_phase", "unknown") for record in records)
+    last_record = records[-1] if records else {}
     return {
         "phase_pct": {key: pct(value, total) for key, value in sorted(phases.items())},
         "load_stance_ready_pct": pct(
@@ -200,6 +204,11 @@ def summarize_phase_records(records: list[dict[str, Any]]) -> dict[str, Any]:
         ),
         "push_allowed_pct": pct(
             sum(1 for record in records if record.get("push_allowed")), total
+        ),
+        "stateful_support_phase": bool(last_record.get("stateful_support_phase", False)),
+        "stateful_transitions": int(last_record.get("stateful_transitions", 0) or 0),
+        "stateful_forced_transitions": int(
+            last_record.get("stateful_forced_transitions", 0) or 0
         ),
     }
 
@@ -266,6 +275,9 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
         def controller_target(
             default_actuator,
             tick,
+            manual_phase_id,
+            manual_stance_side,
+            use_stateful_phase,
             use_stance_foot_relative,
             period_s,
             load_fraction,
@@ -302,11 +314,23 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
             phase01 = jp.mod((tick * env.dt) / period_s, 1.0)
             load_end = load_fraction
             unweight_end = jp.minimum(load_fraction + unweight_fraction, 0.95)
-            in_load = phase01 < load_end
-            in_unweight = (phase01 >= load_end) & (phase01 < unweight_end)
-            in_push = phase01 >= unweight_end
+            timed_phase_id = jp.where(
+                phase01 < load_end,
+                0,
+                jp.where(phase01 < unweight_end, 1, 2),
+            )
+            phase_id = jp.where(use_stateful_phase > 0.5, manual_phase_id, timed_phase_id)
+            in_load = phase_id == 0
+            in_unweight = phase_id == 1
+            in_push = phase_id == 2
 
-            left_stance = jp.where(phase01 < 0.5, 1.0, 0.0)
+            timed_left_stance = jp.where(phase01 < 0.5, 1.0, 0.0)
+            manual_left_stance = jp.where(manual_stance_side >= 0.0, 1.0, 0.0)
+            left_stance = jp.where(
+                use_stateful_phase > 0.5,
+                manual_left_stance,
+                timed_left_stance,
+            )
             right_stance = 1.0 - left_stance
             left_swing = 1.0 - left_stance
             right_swing = 1.0 - right_stance
@@ -380,7 +404,6 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
             target = target.at[12].set(default_actuator[12] + right_swing * swing_lift)
             target = target.at[13].set(default_actuator[13] + right_swing * swing_ankle + pitch_ankle)
             target = target.at[13].add(right_stance * stance_ankle_push)
-            phase_id = jp.where(in_load, 0, jp.where(in_unweight, 1, 2))
             return (
                 target,
                 phase_id,
@@ -398,6 +421,9 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
 
         def step_controller(
             state,
+            manual_phase_id,
+            manual_stance_side,
+            use_stateful_phase,
             use_stance_foot_relative,
             period_s,
             load_fraction,
@@ -447,6 +473,9 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
             ) = controller_target(
                 env._default_actuator,
                 tick,
+                manual_phase_id,
+                manual_stance_side,
+                use_stateful_phase,
                 use_stance_foot_relative,
                 period_s,
                 load_fraction,
@@ -567,6 +596,11 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                 state.info["command"] = command
                 state = refresh_obs_jit(state)
                 records = []
+                manual_phase_id = 0
+                manual_stance_side = 1.0
+                stateful_phase_ticks = 0
+                stateful_transitions = 0
+                stateful_forced_transitions = 0
                 for tick in range(sim_steps):
                     (
                         state,
@@ -587,6 +621,9 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                         lateral_error,
                     ) = step_controller_jit(
                         state,
+                        manual_phase_id,
+                        manual_stance_side,
+                        1.0 if controller.stateful_support_phase else 0.0,
                         1.0 if controller.lateral_reference == "stance_foot_relative" else 0.0,
                         controller.period_s,
                         controller.load_fraction,
@@ -630,15 +667,23 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                     obs_host = jax.device_get(state.obs)
                     done = bool(np.asarray(jax.device_get(state.done)))
                     phase_id_host = int(np.asarray(jax.device_get(phase_id)))
+                    load_ready_host = bool(np.asarray(jax.device_get(load_ready)))
+                    unweight_ready_host = bool(np.asarray(jax.device_get(unweight_ready)))
+                    push_allowed_host = bool(np.asarray(jax.device_get(push_allowed)))
                     record = {
                         "tick": tick,
                         "time_s": tick * float(env.dt),
                         "seed": seed,
                         "mode": controller.label,
                         "controller_phase": phase_names.get(phase_id_host, "UNKNOWN"),
-                        "load_stance_ready": bool(np.asarray(jax.device_get(load_ready))),
-                        "unweight_swing_ready": bool(np.asarray(jax.device_get(unweight_ready))),
-                        "push_allowed": bool(np.asarray(jax.device_get(push_allowed))),
+                        "stateful_support_phase": bool(controller.stateful_support_phase),
+                        "stateful_phase_ticks": int(stateful_phase_ticks),
+                        "stateful_stance_side": "left" if manual_stance_side >= 0.0 else "right",
+                        "stateful_transitions": int(stateful_transitions),
+                        "stateful_forced_transitions": int(stateful_forced_transitions),
+                        "load_stance_ready": load_ready_host,
+                        "unweight_swing_ready": unweight_ready_host,
+                        "push_allowed": push_allowed_host,
                         "lateral_reference": controller.lateral_reference,
                         "command": [args.command_x, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
                         "action": np.asarray(jax.device_get(action), dtype=float).tolist(),
@@ -677,6 +722,47 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                     records.append(record)
                     if done:
                         break
+                    if controller.stateful_support_phase:
+                        stateful_phase_ticks += 1
+                        phase_changed = False
+                        forced = False
+                        max_load_ticks = max(1, int(round(args.stateful_max_load_s / float(env.dt))))
+                        max_unweight_ticks = max(
+                            1, int(round(args.stateful_max_unweight_s / float(env.dt)))
+                        )
+                        push_ticks = max(1, int(round(args.stateful_push_s / float(env.dt))))
+                        if manual_phase_id == 0:
+                            if load_ready_host:
+                                manual_phase_id = 1
+                                phase_changed = True
+                            elif (
+                                args.stateful_allow_timeout_transition
+                                and stateful_phase_ticks >= max_load_ticks
+                            ):
+                                manual_phase_id = 1
+                                phase_changed = True
+                                forced = True
+                        elif manual_phase_id == 1:
+                            if unweight_ready_host:
+                                manual_phase_id = 2
+                                phase_changed = True
+                            elif (
+                                args.stateful_allow_timeout_transition
+                                and stateful_phase_ticks >= max_unweight_ticks
+                            ):
+                                manual_phase_id = 2
+                                phase_changed = True
+                                forced = True
+                        else:
+                            if stateful_phase_ticks >= push_ticks:
+                                manual_phase_id = 0
+                                manual_stance_side *= -1.0
+                                phase_changed = True
+                        if phase_changed:
+                            stateful_transitions += 1
+                            stateful_phase_ticks = 0
+                            if forced:
+                                stateful_forced_transitions += 1
                 trace_path = trace_root / controller.label / f"seed_{seed:03d}.jsonl"
                 trace_path.parent.mkdir(parents=True, exist_ok=True)
                 trace_path.write_text("".join(json.dumps(record) + "\n" for record in records))
@@ -822,6 +908,19 @@ def main() -> int:
         "--gate-swing-on-ready",
         action="store_true",
         help="Only command swing lift/reach after stance load and swing-clear gates pass.",
+    )
+    parser.add_argument(
+        "--stateful-support-phase",
+        action="store_true",
+        help="Hold stance/phase until support readiness gates advance it instead of using the timer.",
+    )
+    parser.add_argument("--stateful-max-load-s", type=float, default=0.50)
+    parser.add_argument("--stateful-max-unweight-s", type=float, default=0.30)
+    parser.add_argument("--stateful-push-s", type=float, default=0.16)
+    parser.add_argument(
+        "--stateful-allow-timeout-transition",
+        action="store_true",
+        help="Allow timed fallback transitions if readiness gates never pass.",
     )
     parser.add_argument("--pitch-gate", type=float, default=0.35)
     parser.add_argument("--pitch-targets", default="0.0")

@@ -385,6 +385,53 @@ motion. The next controller needs an active load-shift recovery phase that
 drives readiness before swing/push, not just a hard gate that waits for it.
 ```
 
+## Stateful Support-Phase Probe
+
+The CoM controller now also supports a default-off stateful phase mode:
+
+```text
+tools/probe_com_weight_transfer_controller.py --stateful-support-phase
+```
+
+This holds the selected stance side and phase until readiness gates advance it,
+instead of switching stance by clock. Two bounded variants were tested:
+
+```text
+strict stateful:
+  artifact: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STATEFUL_STRICT_PROBE.md
+  score_100: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STATEFUL_STRICT_SCORE_100.md
+  score_150: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STATEFUL_STRICT_SCORE_150.md
+  status: HOLD_NO_SEED_ROBUST_TARGETS
+
+timeout stateful:
+  artifact: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STATEFUL_TIMEOUT_PROBE.md
+  score_100: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STATEFUL_TIMEOUT_SCORE_100.md
+  score_150: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STATEFUL_TIMEOUT_SCORE_150.md
+  status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+Top aggregates:
+
+```text
+strict:
+  mean_vx: about -0.0007 m/s
+  best seed vx: about 0.0013 m/s
+  push_allowed_mean: about 0.33%
+
+timeout:
+  mean_vx: about -0.0010 m/s
+  best seed vx: about 0.0012 m/s
+  push_allowed_mean: about 1.33%
+```
+
+Decision:
+
+```text
+holding stance state and forcing timed fallback transitions do not recover
+forward motion. The current pitch-chain stance push is not an effective
+propulsion primitive under these support gates.
+```
+
 ## Non-Goals
 
 ```text

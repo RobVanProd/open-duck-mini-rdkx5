@@ -5771,3 +5771,45 @@ top 150-tick scored windows:
 So a hard "only swing when ready" gate is not sufficient by itself. The next
 controller must actively drive the body into readiness and then push; otherwise
 the safe outcome is standstill/reverse drift.
+
+Stateful support-phase variants were then tested:
+
+```text
+strict stateful:
+  artifact: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STATEFUL_STRICT_PROBE.md
+  score_100: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STATEFUL_STRICT_SCORE_100.md
+  score_150: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STATEFUL_STRICT_SCORE_150.md
+  status: HOLD_NO_SEED_ROBUST_TARGETS
+
+timeout stateful:
+  artifact: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STATEFUL_TIMEOUT_PROBE.md
+  score_100: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STATEFUL_TIMEOUT_SCORE_100.md
+  score_150: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STATEFUL_TIMEOUT_SCORE_150.md
+  status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+Strict stateful mode sometimes reached readiness and transitioned, but not
+robustly across seeds, and still produced essentially no forward progress:
+
+```text
+top strict aggregate:
+  mean_vx: about -0.0007 m/s
+  best seed vx: about 0.0013 m/s
+  push_allowed_mean: about 0.33%
+```
+
+Timeout fallback increased phase transitions, but also failed to create useful
+forward progress:
+
+```text
+top timeout aggregate:
+  mean_vx: about -0.0010 m/s
+  best seed vx: about 0.0012 m/s
+  push_allowed_mean: about 1.33%
+```
+
+This closes the "timer flip was the only blocker" hypothesis. The controller
+can hold/advance support state, but its pitch-chain stance push is not creating
+propulsion. The next source needs a different propulsion/contact model, likely
+explicit ankle/foot placement or a richer teacher/trajectory optimizer, not
+more phase-state plumbing around the same stance push.

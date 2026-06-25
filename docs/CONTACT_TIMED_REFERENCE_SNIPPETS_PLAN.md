@@ -236,6 +236,51 @@ hard readiness gating is too passive. The next support-transfer source must
 actively drive the body into the ready state before requesting swing/push.
 ```
 
+## Stateful Support-Phase Result
+
+The CoM controller now supports default-off stateful phase progression:
+
+```text
+tools/probe_com_weight_transfer_controller.py --stateful-support-phase
+```
+
+Strict and timeout-transition variants were tested:
+
+```text
+strict:
+  artifact: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STATEFUL_STRICT_PROBE.md
+  score_100: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STATEFUL_STRICT_SCORE_100.md
+  score_150: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STATEFUL_STRICT_SCORE_150.md
+  status: HOLD_NO_SEED_ROBUST_TARGETS
+
+timeout:
+  artifact: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STATEFUL_TIMEOUT_PROBE.md
+  score_100: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STATEFUL_TIMEOUT_SCORE_100.md
+  score_150: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STATEFUL_TIMEOUT_SCORE_150.md
+  status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+The strict variant sometimes advanced phases, and the timeout variant forced
+more transitions, but both remained essentially non-moving:
+
+```text
+strict top aggregate:
+  mean_vx: ~-0.0007 m/s
+  push_allowed_mean: ~0.33%
+
+timeout top aggregate:
+  mean_vx: ~-0.0010 m/s
+  push_allowed_mean: ~1.33%
+```
+
+Decision:
+
+```text
+stateful phase mechanics are not enough. The next target source must change the
+propulsion primitive or contact/foot-placement model, not just the phase
+transition logic around the same pitch-chain stance push.
+```
+
 ## Candidate Generation Rules
 
 The generated snippet should keep:
