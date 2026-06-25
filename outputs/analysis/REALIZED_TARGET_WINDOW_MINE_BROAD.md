@@ -24,6 +24,14 @@ a manifest, not a raw BC dataset.
 | v7_x008_trace.jsonl | `vanilla` | 750 | 0 | 0.0018 | 0.1921 | 0.1506 | 2 |
 | v7_x008_trace.jsonl | `fitted` | 59 | 1 | 0.2654 | 1.3183 | 0.0388 | 3 |
 | v7_x008_trace.jsonl | `stress` | 750 | 0 | 0.0016 | 0.1558 | 0.1499 | 4 |
+| trace.jsonl | `vanilla` | 250 | 0 | 0.0018 | 0.1123 | 0.1537 | 0 |
+| trace.jsonl | `vanilla` | 34 | 1 | -0.1549 | 0.0064 | 0.0884 | 0 |
+| trace.jsonl | `vanilla` | 250 | 0 | 0.0033 | 0.0959 | 0.1526 | 0 |
+| trace.jsonl | `vanilla` | 250 | 0 | -0.0088 | 0.0096 | 0.1549 | 0 |
+| trace.jsonl | `vanilla` | 250 | 0 | 0.0013 | 0.0807 | 0.1539 | 0 |
+| trace.jsonl | `vanilla` | 35 | 1 | -0.1641 | -0.0110 | 0.1059 | 0 |
+| trace.jsonl | `vanilla` | 250 | 0 | 0.0019 | 0.0882 | 0.1526 | 0 |
+| trace.jsonl | `vanilla` | 250 | 0 | -0.0090 | 0.0269 | 0.1558 | 0 |
 | reference_seed_000.jsonl | `reference_target_cycle_projected` | 70 | 1 | 0.0055 | 0.0964 | 0.1559 | 1 |
 | reference_seed_001.jsonl | `reference_target_cycle_projected` | 34 | 1 | -0.0991 | 0.0059 | 0.0995 | 0 |
 | reference_seed_002.jsonl | `reference_target_cycle_projected` | 111 | 1 | 0.0074 | 0.1434 | 0.1527 | 1 |

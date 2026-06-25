@@ -2717,3 +2717,43 @@ outputs/analysis/realized_target_window_mine_broad.json
 outputs/analysis/REALIZED_TARGET_WINDOW_CURATION_BROAD.md
 outputs/analysis/realized_target_window_curation_broad.json
 ```
+
+### V5/V7 Low-Command Trace Collection
+
+The old moving-lineage policies were replayed at `x=0.04` with vanilla dynamics
+to see whether they can produce more realized low-command target snippets
+without new training:
+
+```text
+tool: tools/run_candidate_seed_sweep.py
+policies: v5_phase1, v7_anchor
+seeds: 0-3
+trace_seeds: 0-3
+command_x: 0.04
+bridge_mode: vanilla
+duration: 5 s
+```
+
+Result:
+
+```text
+v5_phase1: HOLD, no coherent low-command forward motion
+v7_anchor: HOLD, no coherent low-command forward motion
+window mine: HOLD_NO_REALIZED_WINDOWS
+curated seed windows: 0
+```
+
+This collection attempt did not add target seed data. Future target-data work
+should not keep replaying these old policies at low command; it should change
+the generation mechanism.
+
+Artifacts:
+
+```text
+outputs/analysis/REALIZED_WINDOW_COLLECTION_X004_V5_V7_CPU.md
+outputs/analysis/realized_window_collection_x004_v5_v7_cpu.json
+outputs/analysis/REALIZED_WINDOW_COLLECTION_X004_V5_V7_MINE.md
+outputs/analysis/realized_window_collection_x004_v5_v7_mine.json
+outputs/analysis/REALIZED_WINDOW_COLLECTION_X004_V5_V7_CURATION.md
+outputs/analysis/realized_window_collection_x004_v5_v7_curation.json
+```

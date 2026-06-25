@@ -703,3 +703,54 @@ outputs/analysis/realized_target_window_mine_broad.json
 outputs/analysis/REALIZED_TARGET_WINDOW_CURATION_BROAD.md
 outputs/analysis/realized_target_window_curation_broad.json
 ```
+
+## Low-Command V5/V7 Trace Collection
+
+A small no-training CPU trace collection was run to test whether the old moving
+lineage can produce additional low-command realized target windows:
+
+```text
+policies:
+  v5_phase1
+  v7_anchor
+command: x=0.04
+dynamics: vanilla
+seeds: 0-3
+duration: 5 s
+trace output: enabled for every seed
+```
+
+Candidate gate result:
+
+```text
+v5_phase1: 1/4 fall-or-termination, 3/4 low-forward-progress holds
+v7_anchor: 1/4 fall-or-termination, 3/4 low-forward-progress holds
+```
+
+Realized-window mining result:
+
+```text
+status: HOLD_NO_REALIZED_WINDOWS
+mined windows: 0
+curated seed windows: 0
+```
+
+Interpretation:
+
+```text
+Replaying the V5/V7 moving lineage at low command does not create usable target
+windows. This supports the current conclusion that target data must be generated
+deliberately with a new collection strategy, not harvested from these policies
+at x=0.04.
+```
+
+Additional artifacts:
+
+```text
+outputs/analysis/REALIZED_WINDOW_COLLECTION_X004_V5_V7_CPU.md
+outputs/analysis/realized_window_collection_x004_v5_v7_cpu.json
+outputs/analysis/REALIZED_WINDOW_COLLECTION_X004_V5_V7_MINE.md
+outputs/analysis/realized_window_collection_x004_v5_v7_mine.json
+outputs/analysis/REALIZED_WINDOW_COLLECTION_X004_V5_V7_CURATION.md
+outputs/analysis/realized_window_collection_x004_v5_v7_curation.json
+```
