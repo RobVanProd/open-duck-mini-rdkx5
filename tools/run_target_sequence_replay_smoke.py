@@ -16,6 +16,7 @@ import json
 import math
 import os
 from pathlib import Path
+import re
 from typing import Any, Iterable
 
 import numpy as np
@@ -83,6 +84,11 @@ def fmt(value: Any, digits: int = 4) -> str:
 
 def parse_csv_ints(value: str) -> list[int]:
     return [int(item.strip()) for item in value.split(",") if item.strip()]
+
+
+def safe_slug(value: str, *, max_len: int = 96) -> str:
+    slug = re.sub(r"[^A-Za-z0-9_.-]+", "_", value).strip("._")
+    return (slug or "unknown")[:max_len]
 
 
 def read_jsonl(path: Path) -> list[dict[str, Any]]:
@@ -446,6 +452,9 @@ def run_closed_loop_rollout(
 
     command = jp.asarray([args.command_x, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
     seeds = parse_csv_ints(args.seeds)
+    trace_root = Path(args.trace_dir).resolve() if args.trace_dir else None
+    if trace_root is not None:
+        trace_root.mkdir(parents=True, exist_ok=True)
 
     with temporary_cwd(playground_path):
         config = joystick.default_config()
@@ -588,7 +597,9 @@ def run_closed_loop_rollout(
                         "tick": tick,
                         "time_s": tick * float(env.dt),
                         "seed": seed,
+                        "mode": policy.name,
                         "policy_name": policy.name,
+                        "source_mode": policy.mode,
                         "phase_adapter": args.phase_adapter,
                         "phase_index": phase_info["phase_index"],
                         "phase_hold": phase_info["phase_hold"],
@@ -616,12 +627,19 @@ def run_closed_loop_rollout(
                 )
                 if done:
                     break
+            trace_path = None
+            if trace_root is not None:
+                trace_path = trace_root / safe_slug(policy.name) / f"seed_{seed:03d}.jsonl"
+                trace_path.parent.mkdir(parents=True, exist_ok=True)
+                trace_path.write_text("".join(json.dumps(record) + "\n" for record in records))
             seed_rows[f"seed_{seed:03d}"] = summarize_rollout(
                 records,
                 args.command_x,
                 float(env.dt),
                 phase_state=phase_state,
             )
+            if trace_path is not None:
+                seed_rows[f"seed_{seed:03d}"]["trace"] = str(trace_path)
         policy_results[policy.name] = {
             "source": policy.source,
             "mode": policy.mode,
@@ -757,6 +775,7 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         f"- periodic_seam_correction: `{payload['periodic_seam_correction']}`",
         f"- soft_prior_config: `{payload.get('soft_prior_config') or 'None'}`",
         f"- phase_adapter: `{payload['phase_adapter']}`",
+        f"- trace_dir: `{payload.get('trace_dir') or 'None'}`",
         f"- sequence_policies: `{payload['sequence_policy_count']}`",
         f"- command_x: `{fmt(payload['command_x'])}`",
         f"- duration_s: `{fmt(payload['duration_s'])}`",
@@ -901,6 +920,11 @@ def main() -> int:
     )
     parser.add_argument("--max-entries", type=int, default=0)
     parser.add_argument(
+        "--trace-dir",
+        default=None,
+        help="Optional JSONL trace output directory. Raw traces are not intended for git.",
+    )
+    parser.add_argument(
         "--jax-platform",
         choices=["auto", "cpu", "gpu"],
         default="cpu",
@@ -933,6 +957,7 @@ def main() -> int:
         "periodic_seam_correction": bool(args.periodic_seam_correction),
         "soft_prior_config": args.soft_prior_config,
         "phase_adapter": args.phase_adapter,
+        "trace_dir": args.trace_dir,
         "phase_adapter_config": {
             "max_phase_hold_ticks": args.max_phase_hold_ticks,
             "phase_lookahead": args.phase_lookahead,

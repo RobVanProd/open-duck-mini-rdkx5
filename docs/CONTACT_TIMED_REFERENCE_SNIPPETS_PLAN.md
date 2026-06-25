@@ -79,9 +79,9 @@ small forward displacement
 The next experiment should preserve that timing while generating a longer,
 state-aware target sequence that can be scored over 100-150 ticks.
 
-## Proposed Tool
+## Implemented First-Pass Audit Tool
 
-Add a future tool:
+The first-pass audit tool is now available:
 
 ```text
 tools/build_contact_timed_reference_snippets.py
@@ -90,15 +90,10 @@ tools/build_contact_timed_reference_snippets.py
 Inputs:
 
 ```text
---source-traces outputs/analysis/target_generator_dynamic_roll_lateral_fix_traces/*/seed_*.jsonl
 --curation-json outputs/analysis/target_generator_dynamic_roll_lateral_fix_window_curation_50.json
---playground-path ../Open_Duck_Playground
---seeds 0,2
---command-x 0.04
---duration-s 3.0
 --output-md outputs/analysis/CONTACT_TIMED_REFERENCE_SNIPPETS.md
 --output-json outputs/analysis/contact_timed_reference_snippets.json
---trace-dir outputs/analysis/contact_timed_reference_snippets_traces
+--manifest-json outputs/analysis/contact_timed_reference_snippets_manifest.json
 ```
 
 Behavior:
@@ -106,13 +101,64 @@ Behavior:
 ```text
 1. read curated 50-tick dynamic-roll windows
 2. extract contact timing, support side, roll phase, foot clearance, and local dx
-3. build a longer snippet by stitching or phase-warping contact-timed cycles
-4. replace exact joint targets with bounded, envelope-aware targets
-5. replay the generated snippet through the normal MJX/rate-limit path
-6. score with the existing 100/150 tick objective gate
+3. classify whether source fragments contain usable single-support alternation
+4. write a compact manifest for review/replay
+5. block training if the source fragments are double-support dominated
 ```
 
-This should be a target-source generator, not a training job.
+This is an audit and manifest builder, not a training job.
+
+## First-Pass Result
+
+The robust dynamic-roll fragments do not contain enough single-support timing
+to justify BC/PPO seeding:
+
+```text
+artifact: outputs/analysis/CONTACT_TIMED_REFERENCE_SNIPPETS.md
+status: HOLD_SOURCE_FRAGMENTS_DOUBLE_SUPPORT
+entries: 9
+pass_entries: 0
+double_support_hold_entries: 9
+single_support_pct_mean: 7.33%
+double_support_pct_mean: 92.67%
+```
+
+The aggregate sequence replay also held:
+
+```text
+artifact: outputs/analysis/CONTACT_TIMED_REFERENCE_SEQUENCE_REPLAY.md
+status: HOLD_SEQUENCE_REPLAY_TERMINATED
+seed_000: terminated at 85 samples after forward lunge/pitch
+seed_002: duration complete but low forward motion
+```
+
+Objective scoring over replay traces confirms no seed-robust target:
+
+```text
+100-tick score: outputs/analysis/CONTACT_TIMED_REFERENCE_SEQUENCE_SCORE_100.md
+150-tick score: outputs/analysis/CONTACT_TIMED_REFERENCE_SEQUENCE_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+Interpretation:
+
+```text
+the current "good" 50-tick fragments are stable mostly because they stay in
+double support; they are not clean stepping snippets that the policy merely
+fails to execute.
+```
+
+Therefore the next generator must explicitly search for or synthesize
+single-support / weight-transfer timing. Do not train from the current
+dynamic-roll 50-tick fragments.
+
+The replay smoke tool now supports default-off trace export:
+
+```text
+tools/run_target_sequence_replay_smoke.py --trace-dir <path>
+```
+
+Those traces can be scored with `tools/score_target_candidates_objective.py`.
 
 ## Candidate Generation Rules
 

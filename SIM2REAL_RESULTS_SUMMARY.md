@@ -5691,3 +5691,29 @@ actuator-envelope relaxation
 ```
 
 until a contact-timed source passes seed-robust 100/150 tick gates.
+
+The first-pass contact-timed audit has now run:
+
+```text
+artifact: outputs/analysis/CONTACT_TIMED_REFERENCE_SNIPPETS.md
+status: HOLD_SOURCE_FRAGMENTS_DOUBLE_SUPPORT
+entries: 9
+pass_entries: 0
+single_support_pct_mean: 7.33%
+double_support_pct_mean: 92.67%
+```
+
+The replay/score follow-up also held:
+
+```text
+replay: outputs/analysis/CONTACT_TIMED_REFERENCE_SEQUENCE_REPLAY.md
+score_100: outputs/analysis/CONTACT_TIMED_REFERENCE_SEQUENCE_SCORE_100.md
+score_150: outputs/analysis/CONTACT_TIMED_REFERENCE_SEQUENCE_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+This resolves the immediate ambiguity: the robust 50-tick dynamic-roll fragments
+are not hidden clean single-support gaits that the policy fails to execute.
+They are mostly double-support fragments. The next target-source branch must
+explicitly generate single-support / weight-transfer timing before another
+BC/PPO run is justified.

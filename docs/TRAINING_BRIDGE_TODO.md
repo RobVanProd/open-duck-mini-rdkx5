@@ -4339,10 +4339,38 @@ contact/weight-transfer objective or controller that can pass the 100-150 tick
 target gate. Do not run another nearby teacher-grid expansion as training
 preparation.
 
+The first-pass contact-timed audit closed the current dynamic-roll fragment
+path:
+
+```text
+tool: tools/build_contact_timed_reference_snippets.py
+artifact: outputs/analysis/CONTACT_TIMED_REFERENCE_SNIPPETS.md
+status: HOLD_SOURCE_FRAGMENTS_DOUBLE_SUPPORT
+single_support_pct_mean: 7.33%
+double_support_pct_mean: 92.67%
+```
+
+The aggregate replay with exported traces also held:
+
+```text
+replay: outputs/analysis/CONTACT_TIMED_REFERENCE_SEQUENCE_REPLAY.md
+score_100: outputs/analysis/CONTACT_TIMED_REFERENCE_SEQUENCE_SCORE_100.md
+score_150: outputs/analysis/CONTACT_TIMED_REFERENCE_SEQUENCE_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+Next training prerequisite:
+
+```text
+build a target source that explicitly creates single-support / weight-transfer
+timing; do not train from the existing 50-tick dynamic-roll fragments.
+```
+
 The current compact handoff docs are:
 
 ```text
 docs/SIM2REAL_FINDINGS_DIGEST.md
 docs/WEIGHT_TRANSFER_OBJECTIVE_BRIEF.md
 docs/COM_WEIGHT_TRANSFER_CONTROLLER_PLAN.md
+docs/CONTACT_TIMED_REFERENCE_SNIPPETS_PLAN.md
 ```

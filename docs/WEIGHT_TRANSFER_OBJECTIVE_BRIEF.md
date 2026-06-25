@@ -278,6 +278,37 @@ HOLD_ACTUATOR_ENVELOPE:
   The only successful target violates actuator limits; do not train from it.
 ```
 
+## Contact-Timed Fragment Audit
+
+The first-pass audit of robust dynamic-roll 50-tick fragments showed that the
+source fragments themselves are double-support dominated:
+
+```text
+tool: tools/build_contact_timed_reference_snippets.py
+artifact: outputs/analysis/CONTACT_TIMED_REFERENCE_SNIPPETS.md
+status: HOLD_SOURCE_FRAGMENTS_DOUBLE_SUPPORT
+entries: 9
+pass_entries: 0
+single_support_pct_mean: 7.33%
+double_support_pct_mean: 92.67%
+```
+
+Closed-loop aggregate replay and objective scoring also held:
+
+```text
+replay: outputs/analysis/CONTACT_TIMED_REFERENCE_SEQUENCE_REPLAY.md
+score_100: outputs/analysis/CONTACT_TIMED_REFERENCE_SEQUENCE_SCORE_100.md
+score_150: outputs/analysis/CONTACT_TIMED_REFERENCE_SEQUENCE_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+Decision:
+
+```text
+do not train from the current 50-tick dynamic-roll fragments; the next source
+must explicitly generate useful single-support / weight-transfer timing.
+```
+
 ## Non-Goals
 
 ```text
