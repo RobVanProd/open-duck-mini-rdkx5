@@ -4067,3 +4067,31 @@ Do not repeat this exact primitive-family probe. The next generator change
 should explicitly couple support transfer to forward displacement, for example
 by searching over stance push-off timing, pelvis/body lean timing, or a
 closed-loop teacher that adjusts targets based on body velocity/contact state.
+
+The first stance-push extension was implemented and tested:
+
+```text
+tool flags:
+  --stance-push-amps
+  --stance-ankle-scales
+
+artifact: outputs/analysis/TARGET_GENERATOR_STANCE_PUSH_PROBE.md
+score_100: outputs/analysis/TARGET_OBJECTIVE_SCORE_STANCE_PUSH_PROBE_100.md
+score_150: outputs/analysis/TARGET_OBJECTIVE_SCORE_STANCE_PUSH_PROBE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+This still failed:
+
+```text
+100 ticks:
+  top seed vx: 0.0089 / 0.0108 m/s
+
+150 ticks:
+  top seed vx: 0.0028 / 0.0061 m/s
+```
+
+Do not repeat open-loop sinusoid variants as the main strategy. The next
+generator should be closed-loop/phase-aware and should use body velocity,
+pitch, and foot contact state to decide stance push-off rather than applying a
+fixed stance offset.

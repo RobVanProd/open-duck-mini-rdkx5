@@ -203,3 +203,47 @@ Interpretation: simply adding stronger roll/lift pulses to this primitive family
 can create more support transitions, but it does not create useful forward
 locomotion. The generator needs a different objective/mechanism that couples
 support transfer to forward displacement, not just stronger foot unweighting.
+
+## Stance-Push Probe Search
+
+The primitive tool was extended with default-off stance-push parameters:
+
+```text
+--stance-push-amps
+--stance-ankle-scales
+```
+
+These add a stance-leg hip-pitch offset, with optional ankle coupling, only
+while that side is not in its lift phase. Historical/default primitive behavior
+is unchanged when the flags are left at `0.0`.
+
+A bounded CPU-only stance-push probe searched 48 candidates:
+
+```text
+artifact: outputs/analysis/TARGET_GENERATOR_STANCE_PUSH_PROBE.md
+score_100: outputs/analysis/TARGET_OBJECTIVE_SCORE_STANCE_PUSH_PROBE_100.md
+score_150: outputs/analysis/TARGET_OBJECTIVE_SCORE_STANCE_PUSH_PROBE_150.md
+seeds: 0,2
+duration: 3.0 s
+status: PASS_TARGET_SEARCH_RAN
+```
+
+Result:
+
+| window | robust modes | top seed0 vx | top seed2 vx | top seed0 support | top seed2 support | result |
+|---|---:|---:|---:|---|---|---|
+| 100 ticks | 0 | 0.0089 m/s | 0.0108 m/s | 88% double / 12% single | 92% double / 8% single | low forward velocity |
+| 150 ticks | 0 | 0.0028 m/s | 0.0061 m/s | 90% double / 10% single | 91.33% double / 8.67% single | low forward velocity |
+
+Reason counts:
+
+| artifact | low_forward_velocity | double_support_dominates | too_little_single_support |
+|---|---:|---:|---:|
+| `target_objective_score_stance_push_probe_100.json` | 96 | 81 | 47 |
+| `target_objective_score_stance_push_probe_150.json` | 96 | 94 | 80 |
+
+Interpretation: simple stance push is not enough either. It raises the top
+100-tick velocity from near-zero to about `0.01 m/s`, but it still misses the
+`0.04 m/s` gate badly and degrades over 150 ticks. The next generator needs
+closed-loop or phase-aware coupling between body velocity, body pitch, and
+contact state, rather than only open-loop per-joint sinusoid terms.

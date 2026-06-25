@@ -5124,3 +5124,37 @@ forward progress collapsed:
 This confirms that stronger roll/lift pulses alone are not the missing
 generator mechanism. The next target-generation work must couple support
 transfer to forward displacement, not merely increase foot unweighting.
+
+The primitive generator was then extended with default-off stance-push
+parameters:
+
+```text
+--stance-push-amps
+--stance-ankle-scales
+```
+
+A bounded CPU-only stance-push probe searched 48 candidates:
+
+```text
+artifact: outputs/analysis/TARGET_GENERATOR_STANCE_PUSH_PROBE.md
+score_100: outputs/analysis/TARGET_OBJECTIVE_SCORE_STANCE_PUSH_PROBE_100.md
+score_150: outputs/analysis/TARGET_OBJECTIVE_SCORE_STANCE_PUSH_PROBE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+The top candidates still fail low-command forward progress:
+
+```text
+100-tick top candidate:
+  seed_000 / seed_002 vx: 0.0089 / 0.0108 m/s
+  seed_000 / seed_002 single support: 12% / 8%
+
+150-tick top candidate:
+  seed_000 / seed_002 vx: 0.0028 / 0.0061 m/s
+  seed_000 / seed_002 single support: 10% / 8.67%
+```
+
+Open-loop stance push improves the top 100-tick velocity only slightly and still
+falls far short of the `0.04 m/s` gate. The next generator should be
+closed-loop or phase-aware: stance push-off, body lean, and contact timing must
+react to body velocity/pitch/contact state rather than be only fixed sinusoids.
