@@ -2212,9 +2212,65 @@ Next offline tasks:
 - if the seed refines, reintroduce the fitted actuator bridge later
 - if the seed degrades, debug the reward/task landscape against the reference behavior
 
+### V19 Reference-Imitation Discovery Split
+
+The upstream reference-motion artifact is present at:
+
+```text
+../Open_Duck_Playground/playground/open_duck_mini_v2/data/polynomial_coefficients.pkl
+```
+
+The audit found the nearest reference entry for the `x=0.04` low-command test:
+
+```text
+nearest_reference_key: 0.074_-0.037_-0.074
+period: 0.54 s
+steps_per_period: 27 at 50 Hz
+```
+
+Important interpretation:
+
+```text
+V19 is a reference-imitation reward seed, not a robot test and not a runtime
+behavior change. The reference contains the 14 runtime action joints plus
+antenna dimensions, while the active imitation reward compares leg joint
+pose/velocity, base motion, and foot contacts.
+```
+
+V19 phase 1:
+
+```text
+recipe: movement_bootstrap_v19
+phase: phase1_reference_imitation_seed_x004
+dynamics: vanilla
+actuator bridge: disabled
+command_x training range: 0.035-0.045
+phase gate command_x: 0.04
+phase gate seeds: 0-7
+imitation_scale: 4.0
+alive_scale: 0.0
+zero_command_probability: 0.0
+```
+
+Decision rule:
+
+```text
+If V19 refines into coherent multi-seed forward motion:
+  cold-start discovery was the blocker. Reintroduce the fitted actuator bridge
+  only after the low-command vanilla gait passes.
+
+If V19 degrades into standstill, reverse, collapse, or command-progress failure:
+  the reward/task landscape is hostile even to the reference gait. Stop
+  cold-start/reward-weight variants and debug against the reference path.
+```
+
 Summary artifact:
 `outputs/analysis/A100_V18_PHASE1_LOW_COMMAND_HOLD_SUMMARY.md`.
 Corrected reward replay:
 `outputs/analysis/V18_PHASE1_REWARD_OVERRIDE_REPLAY_SUMMARY.md`.
 Decision brief:
 `docs/LOW_COMMAND_DISCOVERY_DECISION.md`.
+Reference audit:
+`outputs/analysis/REFERENCE_MOTION_SEED_AUDIT.md`.
+V19 plan:
+`outputs/analysis/STAGED_CURRICULUM_TRAINING_PLAN_V19.md`.

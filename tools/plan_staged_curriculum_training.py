@@ -138,6 +138,7 @@ class Phase:
 
 
 RECIPE_DEFAULT_PHASE_GATE_COMMAND_X = {
+    "movement_bootstrap_v19": 0.04,
     "movement_bootstrap_v18": 0.04,
 }
 
@@ -2454,7 +2455,78 @@ MOVEMENT_BOOTSTRAP_V18_PHASES = [
 ]
 
 
+MOVEMENT_BOOTSTRAP_V19_PHASES = [
+    Phase(
+        name="phase1_reference_imitation_seed_x004",
+        purpose=(
+            "decisive cold-start discovery split after V18: use the upstream "
+            "polynomial reference-motion imitation path as a gait seed, with "
+            "vanilla dynamics and the same x=0.04 command gate. The reference "
+            "data's nearest positive dx is about 0.074, so this phase tests "
+            "whether reference-gait structure lets PPO refine any coherent "
+            "low-command forward motion instead of discovering gait from scratch."
+        ),
+        num_timesteps=320_000,
+        bridge=False,
+        delay=(0, 0),
+        tau_s=(0.0, 0.0),
+        velocity_limit_rad_s=(5.24, 5.24),
+        target_rate_scale=-0.0002,
+        actuator_tracking_scale=0.0,
+        tracking_lin_vel_scale=24.0,
+        tracking_sigma=0.0015,
+        forward_progress_scale=24.0,
+        forward_shortfall_scale=-45.0,
+        forward_shortfall_required_ratio=0.55,
+        action_rate_scale=-0.006,
+        action_magnitude_scale=-0.0010,
+        stand_still_scale=-1.0,
+        alive_scale=0.0,
+        imitation_scale=4.0,
+        lin_vel_x=(0.035, 0.045),
+        zero_command_probability=0.0,
+        forward_overshoot_scale=-2.0,
+        forward_overshoot_allowed_ratio=1.70,
+        forward_wrong_direction_scale=-80.0,
+        forward_wrong_direction_allowed_reverse_ratio=0.0,
+        orientation_scale=-0.04,
+        base_height_scale=-0.25,
+        forward_pitch_scale=-0.06,
+        forward_pitch_rate_scale=-0.006,
+        forward_contact_support_scale=-0.12,
+        forward_contact_support_no_contact_weight=1.0,
+        forward_contact_support_asymmetry_weight=0.02,
+        command_progress_scale=10.0,
+        command_progress_shortfall_scale=-45.0,
+        command_progress_required_ratio=0.45,
+        command_progress_warmup_steps=10,
+        command_progress_failure_scale=-140.0,
+        command_progress_failure_enable=True,
+        command_progress_failure_min_ratio=0.20,
+        command_progress_failure_warmup_steps=70,
+        reward_clip_min=-20.0,
+        reward_clip_max=10000.0,
+        action_rate_huber_delta=0.08,
+        action_magnitude_huber_delta=0.50,
+        target_rate_huber_delta=1.0,
+        actuator_tracking_huber_delta=0.08,
+        forward_shortfall_huber_delta=0.0,
+        forward_overshoot_huber_delta=0.50,
+        forward_wrong_direction_huber_delta=0.0,
+        forward_pitch_huber_delta=0.25,
+        forward_pitch_rate_huber_delta=1.0,
+        command_progress_shortfall_huber_delta=0.0,
+        ppo_learning_rate=1.0e-4,
+        ppo_entropy_cost=0.012,
+        ppo_clipping_epsilon=0.10,
+        ppo_max_grad_norm=0.70,
+        phase_gate_bridge_mode="vanilla",
+    ),
+]
+
+
 RECIPES = {
+    "movement_bootstrap_v19": MOVEMENT_BOOTSTRAP_V19_PHASES,
     "movement_bootstrap_v18": MOVEMENT_BOOTSTRAP_V18_PHASES,
     "movement_bootstrap_v17": MOVEMENT_BOOTSTRAP_V17_PHASES,
     "movement_bootstrap_v16": MOVEMENT_BOOTSTRAP_V16_PHASES,
@@ -2758,6 +2830,20 @@ def phase_payload(phase: Phase, command: list[str], output_root: Path) -> dict[s
 
 
 def recipe_rationale(recipe: str) -> str:
+    if recipe == "movement_bootstrap_v19":
+        return (
+            "`movement_bootstrap_v19` is the imitation/reference-gait seed "
+            "experiment after V18 showed the immediate low-command reward signal "
+            "already prefers forward motion, but cold-start PPO still learned "
+            "low/reverse progress. V19 activates the upstream polynomial "
+            "reference-motion imitation reward with vanilla dynamics and gates "
+            "at x=0.04. If it refines into multi-seed forward motion, cold-start "
+            "discovery was the blocker. If it degrades into standstill/reverse, "
+            "the reward/task landscape is actively hostile to forward gait. The "
+            "reference data's nearest positive dx is about 0.074, so the gait "
+            "seed is slightly faster than the x=0.04 command and must be judged "
+            "by command tracking, not just survival."
+        )
     if recipe == "movement_bootstrap_v18":
         return (
             "`movement_bootstrap_v18` follows the V17 reward/sign audit. V17 "
@@ -2979,28 +3065,42 @@ def write_plan(payload: dict[str, Any], output_md: Path, output_json: Path) -> N
                 "",
             ]
         )
-    lines.extend(
-        [
-            "## Next Gate",
-            "",
-            "After a staged run, evaluate the final ONNX with:",
-            "",
-            "```bash",
-            "JAX_PLATFORMS=cpu ../envs/open-duck-playground/bin/python tools/eval_policy_with_actuator_bridge.py \\",
-            "  --mode closed-loop-sim --eval-role candidate \\",
-            "  --policy <final_candidate.onnx> \\",
-            "  --fit-json outputs/analysis/actuator_response_fit.json \\",
-            "  --playground-path ../Open_Duck_Playground \\",
-            "  --env-python ../envs/open-duck-playground/bin/python \\",
-            "  --command-x 0.0 --duration 15 --bridge-mode all --jax-platform cpu \\",
-            "  --output-dir outputs/analysis/<candidate>_gate_x0",
-            "```",
-            "",
-            f"Then repeat with `--command-x {cli_value(payload.get('phase_gate_command_x', 0.08))}`. "
-            "Robot validation remains blocked until both gates pass.",
-            "",
-        ]
-    )
+    lines.extend(["## Next Gate", ""])
+    if payload.get("recipe") == "movement_bootstrap_v19":
+        lines.extend(
+            [
+                "V19 is a reference-imitation discovery split, so the first gate is the built-in multi-seed phase gate:",
+                "",
+                f"- command_x: `{cli_value(payload.get('phase_gate_command_x', 0.04))}`",
+                f"- bridge_mode: `{payload.get('phase_gate_bridge_mode') or 'vanilla'}`",
+                "- pass condition: coherent positive forward tracking across seeds, not fall-count alone",
+                "- hold condition: standstill, reverse, collapse, or command-progress failure across the seed distribution",
+                "",
+                "Do not run x=0.08, fitted bridge, or robot validation until the x=0.04 seeded gait passes across seeds.",
+                "",
+            ]
+        )
+    else:
+        lines.extend(
+            [
+                "After a staged run, evaluate the final ONNX with:",
+                "",
+                "```bash",
+                "JAX_PLATFORMS=cpu ../envs/open-duck-playground/bin/python tools/eval_policy_with_actuator_bridge.py \\",
+                "  --mode closed-loop-sim --eval-role candidate \\",
+                "  --policy <final_candidate.onnx> \\",
+                "  --fit-json outputs/analysis/actuator_response_fit.json \\",
+                "  --playground-path ../Open_Duck_Playground \\",
+                "  --env-python ../envs/open-duck-playground/bin/python \\",
+                "  --command-x 0.0 --duration 15 --bridge-mode all --jax-platform cpu \\",
+                "  --output-dir outputs/analysis/<candidate>_gate_x0",
+                "```",
+                "",
+                f"Then repeat with `--command-x {cli_value(payload.get('phase_gate_command_x', 0.08))}`. "
+                "Robot validation remains blocked until both gates pass.",
+                "",
+            ]
+        )
     output_md.write_text("\n".join(lines))
 
 
@@ -3262,7 +3362,7 @@ def main() -> int:
     parser.add_argument(
         "--recipe",
         choices=sorted(RECIPES),
-        default="movement_bootstrap_v18",
+        default="movement_bootstrap_v19",
         help=(
             "Staged recipe to emit/run. shortfall_v1 preserves the June 23 A100 "
             "recipe that landed in standstill; movement_bootstrap_v2 preserves "
@@ -3293,7 +3393,10 @@ def main() -> int:
             "hard signed-progress structural break after V16 showed no usable "
             "V5-anchor branch point; movement_bootstrap_v18 is a minimal "
             "x=0.04 low-command discovery experiment after V17 failed even at "
-            "the easiest trained command. V18 is the current default."
+            "the easiest trained command; movement_bootstrap_v19 is the "
+            "reference/imitation-gait seed experiment after V18 proved the "
+            "reward signal itself prefers forward motion. V19 is the current "
+            "default."
         ),
     )
     parser.add_argument("--timesteps-scale", type=float, default=1.0)

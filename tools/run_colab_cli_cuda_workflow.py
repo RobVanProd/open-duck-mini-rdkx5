@@ -1321,6 +1321,7 @@ def main() -> int:
     parser.add_argument(
         "--staged-recipe",
         choices=[
+            "movement_bootstrap_v19",
             "movement_bootstrap_v18",
             "movement_bootstrap_v17",
             "movement_bootstrap_v16",
@@ -1340,12 +1341,15 @@ def main() -> int:
             "movement_bootstrap_v2",
             "shortfall_v1",
         ],
-        default="movement_bootstrap_v18",
+        default="movement_bootstrap_v19",
         help=(
             "Recipe passed to tools/plan_staged_curriculum_training.py for "
             "--workflow staged-curriculum. The current default is "
-            "movement_bootstrap_v18, a minimal x=0.04 low-command discovery "
-            "experiment after V17 failed even at the easiest trained command. "
+            "movement_bootstrap_v19, a reference/imitation-gait seed experiment "
+            "after V18 showed the immediate reward signal already prefers "
+            "forward motion but cold-start PPO still failed at x=0.04. "
+            "movement_bootstrap_v18 is the preserved minimal x=0.04 "
+            "low-command discovery experiment that held. "
             "movement_bootstrap_v17 is a fresh hard signed-progress structural "
             "break after V16 showed no usable V5-anchor branch point. "
             "movement_bootstrap_v16 returns to the recovered V5 moving "

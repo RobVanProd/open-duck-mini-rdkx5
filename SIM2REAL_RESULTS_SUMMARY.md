@@ -3016,6 +3016,53 @@ cold-start discovery. If a working seed degrades into standstill/reverse, the
 reward/task landscape is actively hostile and must be debugged from that
 reference behavior.
 
+### V19 Reference-Imitation Seed Plan
+
+The upstream Open Duck reference-motion artifact is available and has been
+audited:
+
+```text
+reference_path:
+  ../Open_Duck_Playground/playground/open_duck_mini_v2/data/polynomial_coefficients.pkl
+nearest x=0.04 reference key:
+  0.074_-0.037_-0.074
+period:
+  0.54 s / 27 steps at 50 Hz
+```
+
+The reference file contains the 14 runtime action joints plus antenna
+dimensions. The active Playground imitation reward compares the leg joint
+pose/velocity, base velocity, base angular velocity, and foot contacts; the
+head/neck dimensions are present in the reference but excluded from the
+leg-imitation error term.
+
+V19 is now the planned decisive split:
+
+```text
+recipe: movement_bootstrap_v19
+phase: phase1_reference_imitation_seed_x004
+dynamics: vanilla
+actuator bridge: disabled
+train command range: x=0.035-0.045
+gate command: x=0.04
+gate seeds: 0-7
+imitation_scale: 4.0
+alive_scale: 0.0
+```
+
+Decision rule:
+
+```text
+PASS:
+  V19 refines the reference gait into coherent low-command forward motion
+  across seeds. Cold-start discovery was the blocker.
+
+HOLD:
+  V19 degrades into standstill, reverse, collapse, or command-progress failure.
+  The reward/task landscape is hostile even to the reference gait, and the next
+  work should debug the reference path rather than launch more reward variants.
+```
+
 Summary artifacts:
 
 ```text
@@ -3024,5 +3071,7 @@ outputs/analysis/V18_PHASE1_LOW_COMMAND_SEED_GATE.md
 outputs/analysis/v18_phase1_low_command_seed_gate.json
 outputs/analysis/V18_PHASE1_REWARD_OVERRIDE_REPLAY_SUMMARY.md
 outputs/analysis/LOW_COMMAND_REWARD_SIGNAL_V18.md
+outputs/analysis/REFERENCE_MOTION_SEED_AUDIT.md
+outputs/analysis/STAGED_CURRICULUM_TRAINING_PLAN_V19.md
 docs/LOW_COMMAND_DISCOVERY_DECISION.md
 ```

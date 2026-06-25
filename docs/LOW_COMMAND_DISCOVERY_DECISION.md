@@ -82,7 +82,8 @@ reward weights."
 
 ## Next Decisive Experiment
 
-Run an imitation/reference-gait seed test.
+Run an imitation/reference-gait seed test. This is now represented by the
+`movement_bootstrap_v19` staged recipe.
 
 Goal:
 
@@ -98,6 +99,19 @@ Use either:
 2. a hand-scripted toy gait bootstrap
 3. a supervised/behavior-cloning seed from any walking trajectory
 ```
+
+The upstream reference-motion path is available:
+
+```text
+reference artifact: playground/open_duck_mini_v2/data/polynomial_coefficients.pkl
+nearest reference to x=0.04: 0.074_-0.037_-0.074
+reference period: 0.54 s / 27 steps at 50 Hz
+```
+
+The active Playground imitation reward uses this reference for leg joint
+pose/velocity, base velocity, base angular velocity, and foot-contact terms.
+Head/neck dimensions exist in the reference data and runtime action vector, but
+the leg-imitation error term excludes head/neck and antenna dimensions.
 
 Initial gate:
 
@@ -145,4 +159,6 @@ use the pinned Colab helper / JAX 0.7.2 stack for GPU training
 outputs/analysis/A100_V18_PHASE1_LOW_COMMAND_HOLD_SUMMARY.md
 outputs/analysis/V18_PHASE1_REWARD_OVERRIDE_REPLAY_SUMMARY.md
 outputs/analysis/LOW_COMMAND_REWARD_SIGNAL_V18.md
+outputs/analysis/REFERENCE_MOTION_SEED_AUDIT.md
+outputs/analysis/STAGED_CURRICULUM_TRAINING_PLAN_V19.md
 ```
