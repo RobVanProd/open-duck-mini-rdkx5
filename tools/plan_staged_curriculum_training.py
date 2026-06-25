@@ -143,6 +143,7 @@ class Phase:
 
 
 RECIPE_DEFAULT_PHASE_GATE_COMMAND_X = {
+    "movement_bootstrap_v22": 0.04,
     "movement_bootstrap_v21": 0.04,
     "movement_bootstrap_v20": 0.04,
     "movement_bootstrap_v19": 0.04,
@@ -2743,7 +2744,81 @@ MOVEMENT_BOOTSTRAP_V21_PHASES = [
 ]
 
 
+MOVEMENT_BOOTSTRAP_V22_PHASES = [
+    Phase(
+        name="phase1_strong_step_prior_lock_probe",
+        purpose=(
+            "diagnostic follow-up after V21 trained but the exported policy "
+            "remained far from the compact pitch-chain prior. This phase uses "
+            "a much stronger step-phased soft prior to test whether PPO can be "
+            "kept in the curated low-command gait basin before any bridge or "
+            "x=0.08 expansion."
+        ),
+        num_timesteps=160_000,
+        bridge=False,
+        delay=(0, 0),
+        tau_s=(0.0, 0.0),
+        velocity_limit_rad_s=(5.24, 5.24),
+        target_rate_scale=-0.0002,
+        actuator_tracking_scale=0.0,
+        tracking_lin_vel_scale=22.0,
+        tracking_sigma=0.0015,
+        forward_progress_scale=22.0,
+        forward_shortfall_scale=-40.0,
+        forward_shortfall_required_ratio=0.50,
+        action_rate_scale=-0.004,
+        action_magnitude_scale=-0.0008,
+        stand_still_scale=-1.0,
+        alive_scale=0.0,
+        imitation_scale=0.0,
+        lin_vel_x=(0.035, 0.045),
+        zero_command_probability=0.0,
+        forward_overshoot_scale=-2.0,
+        forward_overshoot_allowed_ratio=1.60,
+        forward_wrong_direction_scale=-90.0,
+        forward_wrong_direction_allowed_reverse_ratio=0.0,
+        orientation_scale=-0.04,
+        base_height_scale=-0.25,
+        forward_pitch_scale=-0.05,
+        forward_pitch_rate_scale=-0.005,
+        forward_contact_support_scale=-0.10,
+        forward_contact_support_no_contact_weight=1.0,
+        forward_contact_support_asymmetry_weight=0.02,
+        command_progress_scale=8.0,
+        command_progress_shortfall_scale=-42.0,
+        command_progress_required_ratio=0.40,
+        command_progress_warmup_steps=10,
+        command_progress_failure_scale=-150.0,
+        command_progress_failure_enable=True,
+        command_progress_failure_min_ratio=0.18,
+        command_progress_failure_warmup_steps=70,
+        reward_clip_min=-20.0,
+        reward_clip_max=10000.0,
+        action_rate_huber_delta=0.08,
+        action_magnitude_huber_delta=0.50,
+        target_rate_huber_delta=1.0,
+        actuator_tracking_huber_delta=0.08,
+        forward_shortfall_huber_delta=0.0,
+        forward_overshoot_huber_delta=0.50,
+        forward_wrong_direction_huber_delta=0.0,
+        forward_pitch_huber_delta=0.25,
+        forward_pitch_rate_huber_delta=1.0,
+        command_progress_shortfall_huber_delta=0.0,
+        ppo_learning_rate=7.0e-5,
+        ppo_entropy_cost=0.008,
+        ppo_clipping_epsilon=0.08,
+        ppo_max_grad_norm=0.65,
+        phase_gate_bridge_mode="vanilla",
+        soft_prior_config_json="outputs/analysis/soft_prior_fragment_config.json",
+        soft_prior_scale=-0.50,
+        soft_prior_huber_delta=0.05,
+        soft_prior_phase_source="step",
+    ),
+]
+
+
 RECIPES = {
+    "movement_bootstrap_v22": MOVEMENT_BOOTSTRAP_V22_PHASES,
     "movement_bootstrap_v21": MOVEMENT_BOOTSTRAP_V21_PHASES,
     "movement_bootstrap_v20": MOVEMENT_BOOTSTRAP_V20_PHASES,
     "movement_bootstrap_v19": MOVEMENT_BOOTSTRAP_V19_PHASES,
@@ -3072,6 +3147,17 @@ def phase_payload(phase: Phase, command: list[str], output_root: Path) -> dict[s
 
 
 def recipe_rationale(recipe: str) -> str:
+    if recipe == "movement_bootstrap_v22":
+        return (
+            "`movement_bootstrap_v22` is a strong step-phased soft-prior lock "
+            "diagnostic after V21 trained but stayed far from the prior. V22 "
+            "uses the same compact pitch-chain fragment as V21, but raises the "
+            "prior scale and uses `phase_source=step` to test whether PPO can "
+            "be held near the curated low-command gait basin at x=0.04. It "
+            "must not progress to x=0.08, fitted bridge, or robot validation "
+            "unless the multi-seed gate and trace prior-distance check both "
+            "pass."
+        )
     if recipe == "movement_bootstrap_v21":
         return (
             "`movement_bootstrap_v21` is the first weak-soft-prior learner. "
@@ -3331,6 +3417,7 @@ def write_plan(payload: dict[str, Any], output_md: Path, output_json: Path) -> N
         )
     lines.extend(["## Next Gate", ""])
     if payload.get("recipe") in {
+        "movement_bootstrap_v22",
         "movement_bootstrap_v19",
         "movement_bootstrap_v20",
         "movement_bootstrap_v21",
@@ -3667,7 +3754,9 @@ def main() -> int:
             "repeats V19 with a command-matched reference override after the "
             "V19 seed was found to be faster and side-biased. "
             "movement_bootstrap_v21 is the explicit weak-soft-prior learner; "
-            "it is not the default. V20 is the current default."
+            "movement_bootstrap_v22 is a stronger step-phased prior-lock "
+            "diagnostic after V21 trained but remained far from the prior; "
+            "neither V21 nor V22 is the default. V20 is the current default."
         ),
     )
     parser.add_argument("--timesteps-scale", type=float, default=1.0)

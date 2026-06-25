@@ -4920,3 +4920,39 @@ offline work should address behavior discovery or imitation/reference locking
 directly. The exported policy remained far from the soft-prior pitch-chain
 actions, so simply keeping a weak soft-prior cost is not enough. Do not continue
 actuator-envelope tuning, and do not authorize robot validation from this result.
+
+### V22 Strong Step-Prior Lock Diagnostic Prepared
+
+V22 is now prepared as an explicit-only follow-up to the V21 trace result:
+
+```text
+recipe: movement_bootstrap_v22
+doc: docs/SOFT_PRIOR_LOCKING_V22_PLAN.md
+plan_md: outputs/analysis/STAGED_CURRICULUM_TRAINING_PLAN_V22.md
+plan_json: outputs/analysis/staged_curriculum_training_plan_v22.json
+default recipe changed: no
+```
+
+V22 keeps the task deliberately narrow: vanilla dynamics, `x=0.035-0.045`, no
+bridge, no `x=0.08`, and a stronger step-phased prior lock. The purpose is not
+to produce a robot candidate. It tests whether PPO can be held near the curated
+low-command pitch-chain gait basin at all.
+
+Required post-run gates:
+
+```text
+behavior gate:
+  coherent positive x=0.04 motion across seeds
+  no reverse seed
+  no low-progress termination distribution
+  no height-collapse seed
+
+prior-lock gate:
+  trace soft_prior_abs_error_mean materially below V21's 0.2609
+  <0.12 preferred
+  <0.18 useful but still a hold for robot validation
+```
+
+If V22 does not materially reduce prior distance, the next branch should move
+away from soft reward shaping toward explicit supervised pretraining, behavior
+cloning, or a stronger imitation mechanism. Robot motion remains blocked.

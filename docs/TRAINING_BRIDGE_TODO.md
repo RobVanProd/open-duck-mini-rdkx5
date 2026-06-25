@@ -3911,3 +3911,55 @@ status: HOLD_LOCAL_ROCM_KFD
 see a ROCm device. Treat this as a workstation backend issue below JAX/MJX.
 Do not run V21 on local ROCm until `rocminfo` and a minimal JAX device probe
 both pass.
+
+### V22 Strong Step-Prior Lock Diagnostic
+
+V21 trained, but CPU trace replay showed the exported policy was still far from
+the curated pitch-chain prior:
+
+```text
+artifact: outputs/analysis/V21_TRACE_SET_SUMMARY.md
+soft_prior_abs_error_mean: 0.2609
+failure_surfaces:
+  LOW_PROGRESS_TERMINATION: 3
+  REVERSE_HEIGHT_COLLAPSE: 1
+```
+
+The next explicit recipe is:
+
+```text
+recipe: movement_bootstrap_v22
+doc: docs/SOFT_PRIOR_LOCKING_V22_PLAN.md
+plan_md: outputs/analysis/STAGED_CURRICULUM_TRAINING_PLAN_V22.md
+plan_json: outputs/analysis/staged_curriculum_training_plan_v22.json
+```
+
+V22 is a diagnostic, not a candidate for robot validation. It uses vanilla
+dynamics, `x=0.035-0.045`, a strong step-phased soft prior, and the same x=0.04
+multi-seed gate. It must not progress to fitted bridge, `x=0.08`, deployment,
+or robot validation unless both the behavior gate and prior-lock trace gate
+pass.
+
+Expected launch shape after review:
+
+```bash
+python3 tools/run_colab_cli_cuda_workflow.py \
+  --workflow staged-curriculum \
+  --staged-recipe movement_bootstrap_v22 \
+  --staged-phase-gate-seeds 0-3 \
+  --staged-phase-gate-command-x 0.04 \
+  --staged-phase-gate-bridge-mode vanilla \
+  --staged-phase-gate-freeze-check \
+  --run
+```
+
+After importing artifacts, replay the exported V22 ONNX with trace capture and
+run `tools/analyze_candidate_trace.py --soft-prior-config
+outputs/analysis/soft_prior_fragment_config.json` for seeds 0-3. Compare
+`soft_prior_abs_error_mean` against V21's `0.2609`; `<0.12` is the preferred
+prior-lock target, and `<0.18` is useful but still a hold for robot work.
+
+If V22 does not materially reduce prior distance, stop treating soft reward
+shaping as sufficient imitation. The next branch should be explicit supervised
+pretraining, behavior cloning, or a stronger reference-locking mechanism before
+any actuator bridge or robot validation work resumes.
