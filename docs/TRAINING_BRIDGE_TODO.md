@@ -4718,6 +4718,8 @@ artifacts:
   outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_CLEARANCE_PROBE_SCORE_150.md
   outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_YAW_SUPPORT_PROBE_SCORE_100.md
   outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_YAW_SUPPORT_PROBE_SCORE_150.md
+  outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_RELATIVE_YAW_RECOVERY_PROBE_SCORE_100.md
+  outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_RELATIVE_YAW_RECOVERY_PROBE_SCORE_150.md
 status: HOLD_NO_SEED_ROBUST_TARGETS
 ```
 
@@ -4728,6 +4730,11 @@ seed-2 windows, but introduced lateral/target-velocity tradeoffs and still did
 not solve seed robustness. Hip-yaw heading feedback also held: conservative
 modes returned to double-support/low-speed behavior, while support-transfer
 modes still failed lateral/yaw gates. Do not resume BC/PPO from these traces.
-The next offline target-source task is a more stateful lateral/heading support
-controller coupled to propulsion, not another scalar push/advance/clearance/yaw
-overlay grid.
+The first recovery-gate attempt used absolute body yaw and was overconstrained.
+The corrected relative-yaw recovery probe uses wrapped yaw error relative to
+the rollout's initial heading. It showed high switch readiness in leading
+candidates, roughly `75-97%`, but still held because forward velocity stayed
+well below `0.04 m/s` and seed 2 remained laterally unstable. Do not resume
+BC/PPO from these traces. The next offline target-source task is a more
+stateful lateral/heading support controller coupled to propulsion, not another
+scalar push/advance/clearance/yaw/recovery overlay grid.

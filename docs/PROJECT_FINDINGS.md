@@ -205,7 +205,7 @@ Current gate artifact:
 ```text
 outputs/analysis/WEIGHT_TRANSFER_TARGET_GATE_CHECK.md
 status: HOLD_NO_SUSTAINED_WEIGHT_TRANSFER_TARGET
-checked score artifacts: 56
+checked score artifacts: 58
 passing target sources: 0
 ```
 
@@ -214,16 +214,16 @@ The failure-mode analysis scans the same compact score family:
 ```text
 outputs/analysis/WEIGHT_TRANSFER_GATE_FAILURE_ANALYSIS.md
 status: HOLD_FORWARD_IMPULSE_PRIMARY
-seed rows scanned: 2808
+seed rows scanned: 2872
 ```
 
 It found:
 
 ```text
-stable + actuator-safe rows: 964
-support-ready rows: 492
+stable + actuator-safe rows: 1250
+support-ready rows: 789
 forward-ready rows: 15
-stable + support rows: 7
+stable + support rows: 9
 stable + forward rows: 0
 support + forward rows: 1
 all three: 0
@@ -285,6 +285,24 @@ heading-support probe did not solve that coupling: the conservative modes
 reduced lateral velocity by returning to double-support/low-speed behavior,
 while the modes that created more support transfer still failed lateral/yaw and
 forward-speed gates.
+
+Relative-yaw recovery-gate diagnostic:
+
+```text
+artifact: outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_RELATIVE_YAW_RECOVERY_PROBE_SCORE_100.md
+artifact: outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_RELATIVE_YAW_RECOVERY_PROBE_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+robust modes: 0 / 16
+```
+
+This corrected a diagnostic flaw in the first recovery-gate attempt: switch
+readiness must use yaw error relative to the rollout's initial heading, not
+absolute world yaw. With the corrected relative-yaw gate, top candidates show
+high switch readiness, roughly `75-97%`, so the prior all-zero switch-ready
+result was overconstrained. The corrected run still holds because forward
+velocity remains far below `0.04 m/s` and seed 2 often fails lateral velocity.
+This keeps the blocker at forward impulse under support/lateral constraints,
+not at yaw-gate measurement.
 
 The next branch decision is now explicit:
 

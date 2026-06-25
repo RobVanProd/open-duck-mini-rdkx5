@@ -34,13 +34,13 @@ forward push timing in one scored horizon.
 The current evidence says:
 
 ```text
-checked target score artifacts: 50
+checked target score artifacts: 58
 passing target sources: 0
-failure analysis rows scanned: 2200
-stable + actuator-safe rows: 964
-support-ready rows: 492
+failure analysis rows scanned: 2872
+stable + actuator-safe rows: 1250
+support-ready rows: 789
 forward-ready rows: 15
-stable + support rows: 7
+stable + support rows: 9
 stable + forward rows: 0
 support + forward rows: 1
 all three rows: 0
@@ -275,6 +275,9 @@ higher swing clearance:
 
 hip-yaw heading support:
   robust 100/150 tick modes: 0 / 72
+
+relative-yaw recovery gating:
+  robust 100/150 tick modes: 0 / 16
 ```
 
 The latest stability probe added default-off fields:
@@ -297,6 +300,15 @@ support controller that creates a pushable stance, then applies propulsion
 without losing the support state. A simple hip-yaw overlay did not provide that
 controller; it either suppresses motion back toward double-support or allows the
 same lateral/yaw drift when support transfer improves.
+
+The relative-yaw recovery probe corrected an important diagnostic bug: switch
+readiness must be computed from yaw error relative to the rollout's initial
+heading, not from absolute world yaw. After that fix, switch readiness is high
+in the leading candidates, about `75-97%`, so yaw recovery is not the current
+primary blocker. The probe still fails because local forward velocity is far
+below the `0.04 m/s` gate and seed 2 remains laterally unstable. Do not spend
+the next branch on another yaw gate or recovery hold. The missing piece is
+forward impulse coupled to lateral/stance support.
 
 ## Stop Rules
 

@@ -179,8 +179,10 @@ def summarize_controller_records(records: list[dict[str, Any]]) -> dict[str, Any
         "push_allowed_pct": pct(
             sum(1 for record in records if record.get("push_allowed")), total
         ),
+        "switch_ready_pct": pct(sum(1 for record in records if record.get("switch_ready")), total),
         "state_transitions": int(records[-1].get("state_transitions", 0)) if records else 0,
         "forced_transitions": int(records[-1].get("forced_transitions", 0)) if records else 0,
+        "recovery_holds": int(records[-1].get("recovery_holds", 0)) if records else 0,
     }
 
 
@@ -257,6 +259,9 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                 1.0 - 2.0 * (y * y + z * z),
             )
 
+        def wrap_angle(angle):
+            return jp.arctan2(jp.sin(angle), jp.cos(angle))
+
         def teacher_target(
             default_actuator,
             phase_id,
@@ -290,6 +295,7 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
             local_vy,
             body_pitch,
             body_yaw,
+            yaw_target_rad,
             base_y,
             base_height,
             contact,
@@ -330,6 +336,7 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
             in_unweight = phase_id == 1
             in_push = phase_id == 2
             push_allowed = in_push & load_ready & velocity_ready & pitch_ready
+            yaw_error = wrap_angle(body_yaw - yaw_target_rad)
 
             roll = jp.clip(
                 roll_gain * lateral_error - vy_damping_gain * local_vy - body_y_gain * base_y,
@@ -362,14 +369,14 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
             )
             yaw_scale = jp.clip(
                 1.0
-                - jp.abs(body_yaw) / jp.maximum(push_yaw_soft_gate_rad, 1.0e-6),
+                - jp.abs(yaw_error) / jp.maximum(push_yaw_soft_gate_rad, 1.0e-6),
                 push_min_scale,
                 1.0,
             )
             stability_scale = lateral_scale * yaw_scale
             forward_scale = forward_scale * stability_scale
             yaw_correction = jp.clip(
-                -yaw_gain * body_yaw - yaw_vy_gain * local_vy,
+                -yaw_gain * yaw_error - yaw_vy_gain * local_vy,
                 -args.yaw_limit,
                 args.yaw_limit,
             )
@@ -430,6 +437,7 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                 lateral_scale,
                 yaw_scale,
                 yaw_correction,
+                yaw_error,
             )
 
         def step_teacher(
@@ -461,6 +469,7 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
             pitch_damping,
             clearance_gate_m,
             min_height_m,
+            yaw_target_rad,
         ):
             state.info["command"] = command
             contact_in = state.info["last_contact"]
@@ -484,6 +493,7 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                 lateral_scale,
                 yaw_scale,
                 yaw_correction,
+                yaw_error,
             ) = teacher_target(
                 env._default_actuator,
                 phase_id,
@@ -517,6 +527,7 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                 local_linvel[1],
                 pitch_from_quat_wxyz(quat),
                 yaw_from_quat_wxyz(quat),
+                yaw_target_rad,
                 qpos[base_addr + 1],
                 qpos[base_addr + 2],
                 contact_in,
@@ -596,6 +607,7 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                 lateral_scale,
                 yaw_scale,
                 yaw_correction,
+                yaw_error,
             )
 
         refresh_obs_jit = jax.jit(refresh_obs)
@@ -607,6 +619,10 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
             candidate_rows = []
             for seed in seeds:
                 state = env.reset(jax.random.PRNGKey(seed))
+                init_qpos = np.asarray(jax.device_get(state.data.qpos), dtype=float)
+                base_addr = int(env._floating_base_qpos_addr)
+                init_quat = init_qpos[base_addr + 3 : base_addr + 7]
+                yaw_target_rad = quat_wxyz_to_yaw(init_quat)
                 state.info["command"] = command
                 state = refresh_obs_jit(state)
                 records = []
@@ -615,6 +631,7 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                 stance_side = 1.0 if candidate.initial_stance_side >= 0.0 else -1.0
                 state_transitions = 0
                 forced_transitions = 0
+                recovery_holds = 0
                 for tick in range(sim_steps):
                     (
                         state,
@@ -635,6 +652,7 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                         lateral_scale,
                         yaw_scale,
                         yaw_correction,
+                        teacher_yaw_error,
                     ) = step_teacher_jit(
                         state,
                         phase_id,
@@ -664,6 +682,7 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                         candidate.pitch_damping,
                         candidate.clearance_gate_m,
                         candidate.min_height_m,
+                        yaw_target_rad,
                     )
                     qpos = np.asarray(jax.device_get(state.data.qpos), dtype=float)
                     base_addr = int(env._floating_base_qpos_addr)
@@ -682,6 +701,15 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                     contacts = np.asarray(jax.device_get(state.info["last_contact"]), dtype=bool)
                     obs_host = jax.device_get(state.obs)
                     done = bool(np.asarray(jax.device_get(state.done)))
+                    body_yaw = quat_wxyz_to_yaw(quat)
+                    body_yaw_error = math.atan2(
+                        math.sin(body_yaw - yaw_target_rad),
+                        math.cos(body_yaw - yaw_target_rad),
+                    )
+                    switch_ready = (
+                        abs(float(local_linvel[1])) <= args.switch_lateral_velocity_gate
+                        and abs(body_yaw_error) <= args.switch_yaw_gate
+                    )
                     record = {
                         "tick": tick,
                         "time_s": tick * float(env.dt),
@@ -690,11 +718,13 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                         "controller_phase": phase_names.get(phase_id, "UNKNOWN"),
                         "state_transitions": int(state_transitions),
                         "forced_transitions": int(forced_transitions),
+                        "recovery_holds": int(recovery_holds),
                         "stance_side": "left" if stance_side >= 0.0 else "right",
                         "phase_ticks": int(phase_ticks),
                         "load_ready": bool(np.asarray(jax.device_get(load_ready))),
                         "swing_ready": bool(np.asarray(jax.device_get(swing_ready))),
                         "push_allowed": bool(np.asarray(jax.device_get(push_allowed))),
+                        "switch_ready": bool(switch_ready),
                         "lateral_error_m": float(np.asarray(jax.device_get(lateral_error))),
                         "stance_foot_x_m": float(np.asarray(jax.device_get(stance_foot_x))),
                         "swing_foot_x_m": float(np.asarray(jax.device_get(swing_foot_x))),
@@ -713,6 +743,9 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                         "yaw_correction_rad": float(
                             np.asarray(jax.device_get(yaw_correction))
                         ),
+                        "teacher_yaw_error_rad": float(
+                            np.asarray(jax.device_get(teacher_yaw_error))
+                        ),
                         "command": [args.command_x, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
                         "action": np.asarray(jax.device_get(action), dtype=float).tolist(),
                         "reference_target_rad": np.asarray(
@@ -727,7 +760,9 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                         "actual_position_rad": actual.tolist(),
                         "body_roll_rad": quat_wxyz_to_roll(quat),
                         "body_pitch_rad": quat_wxyz_to_pitch(quat),
-                        "body_yaw_rad": quat_wxyz_to_yaw(quat),
+                        "body_yaw_rad": body_yaw,
+                        "body_yaw_target_rad": yaw_target_rad,
+                        "body_yaw_error_rad": body_yaw_error,
                         "base_x_m": float(qpos[base_addr]),
                         "base_y_m": float(qpos[base_addr + 1]),
                         "base_height_m": float(qpos[base_addr + 2]),
@@ -748,27 +783,45 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                     max_load_ticks = max(1, int(round(candidate.load_s / float(env.dt))))
                     max_unweight_ticks = max(1, int(round(candidate.unweight_s / float(env.dt))))
                     push_ticks = max(1, int(round(candidate.push_s / float(env.dt))))
+                    max_recovery_ticks = max(1, int(round(args.max_recovery_s / float(env.dt))))
+                    allow_unstable_switch = (
+                        not args.hold_switch_until_stable
+                        or switch_ready
+                    )
                     if phase_id == 0:
-                        if record["load_ready"]:
+                        if record["load_ready"] and allow_unstable_switch:
                             phase_id = 1
                             phase_changed = True
-                        elif phase_ticks >= max_load_ticks:
+                        elif phase_ticks >= max_load_ticks and allow_unstable_switch:
                             phase_id = 1
                             phase_changed = True
                             forced = True
+                        elif args.hold_switch_until_stable and phase_ticks >= max_load_ticks:
+                            recovery_holds += 1
                     elif phase_id == 1:
-                        if record["swing_ready"]:
+                        if record["swing_ready"] and allow_unstable_switch:
                             phase_id = 2
                             phase_changed = True
-                        elif phase_ticks >= max_unweight_ticks:
+                        elif phase_ticks >= max_unweight_ticks and allow_unstable_switch:
                             phase_id = 2
                             phase_changed = True
                             forced = True
+                        elif args.hold_switch_until_stable and phase_ticks >= max_unweight_ticks:
+                            phase_id = 0
+                            phase_changed = True
+                            recovery_holds += 1
                     else:
                         if phase_ticks >= push_ticks:
-                            phase_id = 0
-                            stance_side *= -1.0
-                            phase_changed = True
+                            if allow_unstable_switch or phase_ticks >= push_ticks + max_recovery_ticks:
+                                phase_id = 0
+                                stance_side *= -1.0
+                                phase_changed = True
+                                if not switch_ready:
+                                    forced = True
+                            else:
+                                phase_id = 0
+                                phase_changed = True
+                                recovery_holds += 1
                     if phase_changed:
                         phase_ticks = 0
                         state_transitions += 1
@@ -967,6 +1020,17 @@ def main() -> int:
     parser.add_argument("--body-y-gains", default="0.5")
     parser.add_argument("--roll-limit", type=float, default=0.08)
     parser.add_argument("--yaw-limit", type=float, default=0.06)
+    parser.add_argument(
+        "--hold-switch-until-stable",
+        action="store_true",
+        help=(
+            "Hold or recover stance transitions until lateral velocity and yaw are "
+            "inside the switch gates. Default off preserves previous fixed timing."
+        ),
+    )
+    parser.add_argument("--switch-lateral-velocity-gate", type=float, default=0.12)
+    parser.add_argument("--switch-yaw-gate", type=float, default=0.12)
+    parser.add_argument("--max-recovery-s", type=float, default=0.20)
     parser.add_argument("--pitch-target", type=float, default=0.0)
     parser.add_argument("--pitch-gate", type=float, default=0.35)
     parser.add_argument("--pitch-damping", type=float, default=1.0)

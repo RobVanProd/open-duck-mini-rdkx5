@@ -62,7 +62,7 @@ Current result:
 ```text
 artifact: outputs/analysis/WEIGHT_TRANSFER_TARGET_GATE_CHECK.md
 status: HOLD_NO_SUSTAINED_WEIGHT_TRANSFER_TARGET
-checked score artifacts: 39
+checked score artifacts: 58
 passing target sources: 0
 ```
 
@@ -75,16 +75,16 @@ The current failure-mode scan is:
 tool: tools/analyze_weight_transfer_gate_failures.py
 artifact: outputs/analysis/WEIGHT_TRANSFER_GATE_FAILURE_ANALYSIS.md
 status: HOLD_FORWARD_IMPULSE_PRIMARY
-seed rows scanned: 1956
+seed rows scanned: 2872
 ```
 
 Key split:
 
 ```text
-stable + actuator-safe rows: 964
-support-ready rows: 492
+stable + actuator-safe rows: 1250
+support-ready rows: 789
 forward-ready rows: 15
-stable + support rows: 7
+stable + support rows: 9
 stable + forward rows: 0
 support + forward rows: 1
 all three: 0
@@ -436,6 +436,38 @@ from support transfer. The next revision needs a more stateful stance controller
 or optimization objective that explicitly keeps base-y/yaw bounded while
 choosing foot placement and stance push, rather than adding a single yaw target
 overlay.
+
+Relative-yaw recovery-gate diagnostic:
+
+```text
+artifacts:
+  outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_RELATIVE_YAW_RECOVERY_PROBE_SCORE_100.md
+  outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_RELATIVE_YAW_RECOVERY_PROBE_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+robust modes: 0 / 16
+```
+
+This run fixed an instrumentation issue in the first recovery-gate attempt:
+transition readiness must use wrapped yaw error relative to the rollout's
+initial heading. The corrected probe shows high switch readiness in the leading
+candidates, roughly `75-97%`, so the recovery gate is no longer blocked by a
+spurious absolute-yaw condition. It still does not clear the target gate:
+
+```text
+100-tick dominant failures:
+  seed 0: low_forward_velocity across all modes
+  seed 2: low_forward_velocity and high_lateral_velocity across all modes
+
+best 100-tick windows:
+  seed0 vx: about -0.0001 to 0.0084 m/s
+  seed2 vx: about 0.0046 to 0.0213 m/s
+  seed2 vy95: about 0.1266 to 0.3395 m/s
+```
+
+Interpretation: the corrected yaw gate removes one false blocker but does not
+create propulsion. The next branch still needs a stance/foot-placement
+controller that generates forward impulse while preserving lateral support,
+not another yaw recovery or scalar push grid.
 
 ## Stop Conditions
 
