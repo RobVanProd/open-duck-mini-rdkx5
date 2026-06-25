@@ -37,6 +37,7 @@ DEFAULT_TRACE_DIR = (
 @dataclass
 class Teacher:
     label: str
+    support_state_mode: int
     period_s: float
     roll_shift_rad: float
     swing_knee_rad: float
@@ -69,73 +70,76 @@ def label_float(value: float) -> str:
 
 def teacher_grid(args: argparse.Namespace) -> list[Teacher]:
     rows: list[Teacher] = []
-    for period_s in parse_float_list(args.periods):
-        for roll_shift in parse_float_list(args.roll_shifts):
-            for swing_knee in parse_float_list(args.swing_knees):
-                for swing_ankle in parse_float_list(args.swing_ankles):
-                    for swing_hip_reach in parse_float_list(args.swing_hip_reaches):
-                        for stance_retract_scale in parse_float_list(args.stance_retract_scales):
-                            for stance_gain in parse_float_list(args.stance_push_gains):
-                                for min_forward_scale in parse_float_list(
-                                    args.min_forward_scales
-                                ):
-                                    for feedforward_push in parse_float_list(
-                                        args.feedforward_pushes
+    for support_state_mode in parse_int_list(args.support_state_modes):
+        for period_s in parse_float_list(args.periods):
+            for roll_shift in parse_float_list(args.roll_shifts):
+                for swing_knee in parse_float_list(args.swing_knees):
+                    for swing_ankle in parse_float_list(args.swing_ankles):
+                        for swing_hip_reach in parse_float_list(args.swing_hip_reaches):
+                            for stance_retract_scale in parse_float_list(args.stance_retract_scales):
+                                for stance_gain in parse_float_list(args.stance_push_gains):
+                                    for min_forward_scale in parse_float_list(
+                                        args.min_forward_scales
                                     ):
-                                        for pitch_target in parse_float_list(args.pitch_targets):
-                                            for pitch_damping in parse_float_list(
-                                                args.pitch_dampings
-                                            ):
-                                                for lateral_gain in parse_float_list(
-                                                    args.lateral_gains
+                                        for feedforward_push in parse_float_list(
+                                            args.feedforward_pushes
+                                        ):
+                                            for pitch_target in parse_float_list(args.pitch_targets):
+                                                for pitch_damping in parse_float_list(
+                                                    args.pitch_dampings
                                                 ):
-                                                    for body_y_gain in parse_float_list(
-                                                        args.body_y_gains
+                                                    for lateral_gain in parse_float_list(
+                                                        args.lateral_gains
                                                     ):
-                                                        for push_lateral_gate in parse_float_list(
-                                                            args.push_lateral_gates
+                                                        for body_y_gain in parse_float_list(
+                                                            args.body_y_gains
                                                         ):
-                                                            for contact_lift_boost in parse_float_list(
-                                                                args.contact_lift_boosts
+                                                            for push_lateral_gate in parse_float_list(
+                                                                args.push_lateral_gates
                                                             ):
-                                                                label = (
-                                                                    f"teacher_p{label_float(period_s)}"
-                                                                    f"_rs{label_float(roll_shift)}"
-                                                                    f"_sk{label_float(swing_knee)}"
-                                                                    f"_sa{label_float(swing_ankle)}"
-                                                                    f"_shr{label_float(swing_hip_reach)}"
-                                                                    f"_srs{label_float(stance_retract_scale)}"
-                                                                    f"_spg{label_float(stance_gain)}"
-                                                                    f"_mfs{label_float(min_forward_scale)}"
-                                                                    f"_ffp{label_float(feedforward_push)}"
-                                                                    f"_pt{label_float(pitch_target)}"
-                                                                    f"_pd{label_float(pitch_damping)}"
-                                                                    f"_lg{label_float(lateral_gain)}"
-                                                                    f"_byg{label_float(body_y_gain)}"
-                                                                    f"_plg{label_float(push_lateral_gate)}"
-                                                                    f"_clb{label_float(contact_lift_boost)}"
-                                                                )
-                                                                rows.append(
-                                                                    Teacher(
-                                                                        label=label,
-                                                                        period_s=period_s,
-                                                                        roll_shift_rad=roll_shift,
-                                                                        swing_knee_rad=swing_knee,
-                                                                        swing_ankle_rad=swing_ankle,
-                                                                        swing_hip_reach_rad=swing_hip_reach,
-                                                                        stance_retract_scale=stance_retract_scale,
-                                                                        stance_push_gain=stance_gain,
-                                                                        stance_push_limit_rad=args.stance_push_limit,
-                                                                        min_forward_scale=min_forward_scale,
-                                                                        feedforward_push_rad=feedforward_push,
-                                                                        pitch_target_rad=pitch_target,
-                                                                        pitch_damping=pitch_damping,
-                                                                        lateral_gain=lateral_gain,
-                                                                        body_y_gain=body_y_gain,
-                                                                        push_lateral_gate=push_lateral_gate,
-                                                                        contact_lift_boost=contact_lift_boost,
+                                                                for contact_lift_boost in parse_float_list(
+                                                                    args.contact_lift_boosts
+                                                                ):
+                                                                    label = (
+                                                                        f"teacher_ssm{support_state_mode}"
+                                                                        f"_p{label_float(period_s)}"
+                                                                        f"_rs{label_float(roll_shift)}"
+                                                                        f"_sk{label_float(swing_knee)}"
+                                                                        f"_sa{label_float(swing_ankle)}"
+                                                                        f"_shr{label_float(swing_hip_reach)}"
+                                                                        f"_srs{label_float(stance_retract_scale)}"
+                                                                        f"_spg{label_float(stance_gain)}"
+                                                                        f"_mfs{label_float(min_forward_scale)}"
+                                                                        f"_ffp{label_float(feedforward_push)}"
+                                                                        f"_pt{label_float(pitch_target)}"
+                                                                        f"_pd{label_float(pitch_damping)}"
+                                                                        f"_lg{label_float(lateral_gain)}"
+                                                                        f"_byg{label_float(body_y_gain)}"
+                                                                        f"_plg{label_float(push_lateral_gate)}"
+                                                                        f"_clb{label_float(contact_lift_boost)}"
                                                                     )
-                                                                )
+                                                                    rows.append(
+                                                                        Teacher(
+                                                                            label=label,
+                                                                            support_state_mode=support_state_mode,
+                                                                            period_s=period_s,
+                                                                            roll_shift_rad=roll_shift,
+                                                                            swing_knee_rad=swing_knee,
+                                                                            swing_ankle_rad=swing_ankle,
+                                                                            swing_hip_reach_rad=swing_hip_reach,
+                                                                            stance_retract_scale=stance_retract_scale,
+                                                                            stance_push_gain=stance_gain,
+                                                                            stance_push_limit_rad=args.stance_push_limit,
+                                                                            min_forward_scale=min_forward_scale,
+                                                                            feedforward_push_rad=feedforward_push,
+                                                                            pitch_target_rad=pitch_target,
+                                                                            pitch_damping=pitch_damping,
+                                                                            lateral_gain=lateral_gain,
+                                                                            body_y_gain=body_y_gain,
+                                                                            push_lateral_gate=push_lateral_gate,
+                                                                            contact_lift_boost=contact_lift_boost,
+                                                                        )
+                                                                    )
     if args.shuffle_candidates:
         random.Random(args.grid_seed).shuffle(rows)
     return rows[: args.max_candidates]
@@ -203,6 +207,7 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
         def teacher_target(
             default_actuator,
             tick,
+            support_state_mode,
             period_s,
             roll_shift_rad,
             swing_knee_rad,
@@ -227,12 +232,24 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
             contact,
         ):
             phase01 = jp.mod((tick * env.dt) / period_s, 1.0)
-            left_stance = jp.where(phase01 < 0.5, 1.0, 0.0)
+            phase_left_stance = jp.where(phase01 < 0.5, 1.0, 0.0)
+            left_contact = contact[0].astype(jp.float32)
+            right_contact = contact[1].astype(jp.float32)
+            left_only = (left_contact > 0.5) & (right_contact <= 0.5)
+            right_only = (right_contact > 0.5) & (left_contact <= 0.5)
+            contact_left_stance = jp.where(
+                left_only,
+                1.0,
+                jp.where(right_only, 0.0, phase_left_stance),
+            )
+            left_stance = jp.where(
+                support_state_mode >= 0.5,
+                contact_left_stance,
+                phase_left_stance,
+            )
             right_stance = 1.0 - left_stance
             left_swing = 1.0 - left_stance
             right_swing = 1.0 - right_stance
-            left_contact = contact[0].astype(jp.float32)
-            right_contact = contact[1].astype(jp.float32)
 
             forward_error = command[0] - local_vx
             raw_push = jp.clip(
@@ -297,6 +314,7 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
 
         def step_teacher(
             state,
+            support_state_mode,
             period_s,
             roll_shift_rad,
             swing_knee_rad,
@@ -324,6 +342,7 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
             target = teacher_target(
                 env._default_actuator,
                 tick,
+                support_state_mode,
                 period_s,
                 roll_shift_rad,
                 swing_knee_rad,
@@ -419,6 +438,7 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                 for tick in range(sim_steps):
                     state, action, target, pre_rate, sent_target = step_teacher_jit(
                         state,
+                        teacher.support_state_mode,
                         teacher.period_s,
                         teacher.roll_shift_rad,
                         teacher.swing_knee_rad,
@@ -577,6 +597,14 @@ def main() -> int:
     parser.add_argument("--command-x", type=float, default=0.04)
     parser.add_argument("--duration-s", type=float, default=3.0)
     parser.add_argument("--seeds", default="0")
+    parser.add_argument(
+        "--support-state-modes",
+        default="0",
+        help=(
+            "0 keeps phase-scheduled stance/swing; 1 uses actual single-foot "
+            "contact as the stance side and falls back to phase in double/no support."
+        ),
+    )
     parser.add_argument("--periods", default="0.48,0.56,0.64")
     parser.add_argument("--roll-shifts", default="0.02,0.04")
     parser.add_argument("--swing-knees", default="0.08,0.12")

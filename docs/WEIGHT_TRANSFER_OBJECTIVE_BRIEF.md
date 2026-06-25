@@ -28,6 +28,52 @@ status: HOLD_FORWARD_LATERAL_SUPPORT_TRADEOFF
 That summary aggregates the compact target-source score artifacts and should be
 checked before launching another target-source or training branch.
 
+## First Support-State Probe
+
+The first default-off support-state controller hook was added to:
+
+```text
+tools/probe_closed_loop_weight_transfer_teacher.py
+flag: --support-state-modes
+```
+
+Mode `0` preserves the historical phase-scheduled stance/swing behavior. Mode
+`1` uses actual single-foot contact as the stance side when the sim has already
+entered single support, and falls back to phase only during double/no support.
+
+Bounded CPU probe:
+
+```text
+artifact: outputs/analysis/SUPPORT_STATE_WEIGHT_TRANSFER_PROBE.md
+score_100: outputs/analysis/SUPPORT_STATE_WEIGHT_TRANSFER_PROBE_SCORE_100.md
+score_150: outputs/analysis/SUPPORT_STATE_WEIGHT_TRANSFER_PROBE_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+Result:
+
+```text
+100-tick top seed0 / seed2:
+  vx: 0.0137 / 0.0115 m/s
+  local dx: 0.0273 / 0.0230 m
+  vy95: 0.1479 / 0.1483 m/s
+  single support: 10.0% / 11.0%
+  contact transitions: 16 / 20
+
+150-tick top seed0 / seed2:
+  vx: 0.0102 / 0.0103 m/s
+  local dx: 0.0306 / 0.0309 m
+  vy95: 0.1548 / 0.1635 m/s
+  single support: 10.0% / 15.3%
+  contact transitions: 19 / 25
+```
+
+Interpretation: using actual support state increased useful contact transitions
+and single-support time, but did not create enough forward displacement and
+still failed lateral velocity. The next controller must not merely follow
+actual contact state; it must decide when and how to move the center of mass,
+load the stance foot, and push forward without side impulse.
+
 ## Required Gate
 
 The next target source must pass:

@@ -29,19 +29,21 @@ does not run simulation, training, robot SSH, deployment, or hardware tests.
 | `closed_loop_weight_transfer_teacher_forward_intent_score_150` | 150 | `HOLD_NO_SEED_ROBUST_TARGETS` | 0 | 36 | 0.0252/0.0757 | 0.0216/0.0648 | 0.2578/0.2530 | high_lateral_velocity, low_forward_velocity |
 | `closed_loop_weight_transfer_teacher_lateral_refine_score_100` | 100 | `HOLD_NO_SEED_ROBUST_TARGETS` | 0 | 48 | 0.0131/0.0261 | 0.0186/0.0371 | 0.1270/0.1093 | double_support_dominates, high_lateral_velocity, low_forward_displacement, low_forward_velocity |
 | `closed_loop_weight_transfer_teacher_lateral_refine_score_150` | 150 | `HOLD_NO_SEED_ROBUST_TARGETS` | 0 | 48 | 0.0137/0.0411 | 0.0124/0.0372 | 0.1562/0.1650 | high_lateral_velocity, low_forward_displacement, low_forward_velocity |
+| `support_state_weight_transfer_probe_score_100` | 100 | `HOLD_NO_SEED_ROBUST_TARGETS` | 0 | 4 | 0.0137/0.0273 | 0.0115/0.0230 | 0.1479/0.1483 | high_lateral_velocity, low_forward_displacement, low_forward_velocity |
+| `support_state_weight_transfer_probe_score_150` | 150 | `HOLD_NO_SEED_ROBUST_TARGETS` | 0 | 4 | 0.0102/0.0306 | 0.0103/0.0309 | 0.1548/0.1635 | high_lateral_velocity, low_forward_displacement, low_forward_velocity |
 
 ## Aggregate Failure Counts
 
 | reason | count |
 |---|---:|
-| `low_forward_velocity` | 2065 |
-| `double_support_dominates` | 1236 |
-| `too_little_single_support` | 1050 |
-| `high_lateral_velocity` | 822 |
+| `low_forward_velocity` | 2081 |
+| `double_support_dominates` | 1238 |
+| `too_little_single_support` | 1051 |
+| `high_lateral_velocity` | 838 |
 | `single_support_not_balanced` | 774 |
 | `single_contact_pattern_dominates` | 590 |
-| `low_forward_displacement` | 217 |
-| `high_sent_target_velocity` | 63 |
+| `low_forward_displacement` | 233 |
+| `high_sent_target_velocity` | 71 |
 | `action_saturation` | 52 |
 | `too_few_contact_transitions` | 45 |
 | `low_base_height` | 45 |

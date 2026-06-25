@@ -368,6 +368,40 @@ produce forward displacement with excessive lateral momentum, or preserve
 lateral/contact gates while losing forward displacement. The next branch should
 change the controller/objective structure, not widen the same teacher grid.
 
+## Support-State Mode
+
+The teacher now has a default-off support-state mode:
+
+```text
+flag: --support-state-modes
+mode 0: phase-scheduled stance/swing, historical behavior
+mode 1: use actual single-foot contact as stance side, phase fallback in double/no support
+```
+
+Bounded CPU evidence:
+
+```text
+artifact: outputs/analysis/SUPPORT_STATE_WEIGHT_TRANSFER_PROBE.md
+score_100: outputs/analysis/SUPPORT_STATE_WEIGHT_TRANSFER_PROBE_SCORE_100.md
+score_150: outputs/analysis/SUPPORT_STATE_WEIGHT_TRANSFER_PROBE_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+The mode improves contact alternation compared with fully conservative
+double-support behavior, but still holds:
+
+```text
+100-tick top seed0 / seed2 local dx: 0.0273 / 0.0230 m
+100-tick top seed0 / seed2 vy95: 0.1479 / 0.1483 m/s
+
+150-tick top seed0 / seed2 local dx: 0.0306 / 0.0309 m
+150-tick top seed0 / seed2 vy95: 0.1548 / 0.1635 m/s
+```
+
+This is useful negative evidence: contact-reactive stance selection alone is
+not enough. The next controller must add deliberate center-of-mass/lateral
+momentum control and stance-foot loading, not only select stance from contact.
+
 ## Next Branch After a Pass
 
 If the teacher probe passes, use its traces as a target source:

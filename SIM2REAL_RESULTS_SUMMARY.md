@@ -5453,3 +5453,43 @@ Compact handoff docs for the current state:
 docs/SIM2REAL_FINDINGS_DIGEST.md
 docs/WEIGHT_TRANSFER_OBJECTIVE_BRIEF.md
 ```
+
+### Support-State Weight-Transfer Probe
+
+The teacher tool now supports a default-off contact-reactive mode:
+
+```text
+tool: tools/probe_closed_loop_weight_transfer_teacher.py
+flag: --support-state-modes
+mode 1: use actual single-foot contact as stance side, phase fallback in double/no support
+```
+
+A bounded CPU probe tested mode `1` over seeds `0,2`:
+
+```text
+artifact: outputs/analysis/SUPPORT_STATE_WEIGHT_TRANSFER_PROBE.md
+score_100: outputs/analysis/SUPPORT_STATE_WEIGHT_TRANSFER_PROBE_SCORE_100.md
+score_150: outputs/analysis/SUPPORT_STATE_WEIGHT_TRANSFER_PROBE_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+Top scored windows:
+
+```text
+100 ticks:
+  vx: 0.0137 / 0.0115 m/s
+  local dx: 0.0273 / 0.0230 m
+  vy95: 0.1479 / 0.1483 m/s
+  contact transitions: 16 / 20
+
+150 ticks:
+  vx: 0.0102 / 0.0103 m/s
+  local dx: 0.0306 / 0.0309 m
+  vy95: 0.1548 / 0.1635 m/s
+  contact transitions: 19 / 25
+```
+
+This confirms that reacting to actual single-foot support improves contact
+alternation but does not solve the weight-transfer target. The next controller
+needs explicit center-of-mass/lateral momentum and stance-foot loading logic,
+not just contact-state stance selection.
