@@ -10,7 +10,7 @@ The current target-source branch is held at:
 
 ```text
 outputs/analysis/NEXT_WEIGHT_TRANSFER_BRANCH.md
-status: PLAN_FOOT_PLACEMENT_MPC_TEACHER
+status: PLAN_REPLACE_STANCE_PROPULSION_PRIMITIVE
 ```
 
 The next implementation should build a finite-horizon state-feedback
@@ -27,7 +27,7 @@ seed robustness across at least seeds 0 and 2
 
 This is not another scalar expansion of the existing support-state teacher. It
 must couple stance side, lateral body placement, swing-foot placement, and
-forward push timing in one scored horizon.
+a replacement stance-support propulsion primitive in one scored horizon.
 
 ## Why This Branch
 

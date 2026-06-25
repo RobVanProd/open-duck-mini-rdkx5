@@ -228,7 +228,7 @@ Current decision artifact:
 
 ```text
 outputs/analysis/NEXT_WEIGHT_TRANSFER_BRANCH.md
-status: PLAN_FOOT_PLACEMENT_MPC_TEACHER
+status: PLAN_REPLACE_STANCE_PROPULSION_PRIMITIVE
 ```
 
 The required next design is:
@@ -238,7 +238,7 @@ finite-horizon state-feedback teacher/optimizer
 stateful stance-side selection
 explicit lateral body placement over the stance foot
 swing-foot placement and clearance objective
-forward push timed after support loading
+new stance-support propulsion primitive, not the existing pitch-chain push
 lateral velocity and base-y drift penalties
 pitch and base-height guards
 measured actuator-envelope scoring
@@ -246,8 +246,9 @@ measured actuator-envelope scoring
 ```
 
 This is intentionally stronger than "try Branch A." It rules out another nearby
-scalar teacher-grid expansion and points at a foot-placement/body-state
-optimizer as the next reviewed implementation target.
+scalar teacher-grid expansion and, after the push-effectiveness trace read,
+points at replacing the stance propulsion primitive as the next reviewed
+implementation target.
 
 Implementation spec:
 
