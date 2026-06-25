@@ -2574,3 +2574,26 @@ Artifacts:
 outputs/analysis/REFERENCE_MOTION_ROLLOUT_V20_PROJECTED_PHASE5.md
 outputs/analysis/REFERENCE_MOTION_ROLLOUT_V20_PROJECTED_PHASE19.md
 ```
+
+Reference contact compatibility:
+
+```text
+tool: tools/analyze_reference_contact_compatibility.py
+raw reference: 68.03% mismatch, actual double support 73.86%, reference double support 35.43%
+projected phase 1: 67.77% mismatch, actual double support 75.90%, reference double support 35.54%
+projected phase 5: 67.23% mismatch, actual double support 74.89%, reference double support 37.52%
+projected phase 19: 67.57% mismatch, actual double support 74.41%, reference double support 38.38%
+```
+
+Interpretation:
+
+```text
+The reference expects alternating single support much more often than the
+simulated body realizes. Current reference targets keep the sim in double
+support, so raw/reference-projected BC is not the next training step. First
+either adapt the reference contact schedule to the Joystick task or generate
+realized stable targets from the actual sim dynamics.
+```
+
+Artifact:
+`outputs/analysis/REFERENCE_CONTACT_COMPATIBILITY_V20.md`.

@@ -3396,6 +3396,31 @@ outputs/analysis/REFERENCE_MOTION_ROLLOUT_V20_PROJECTED_PHASE5.md
 outputs/analysis/REFERENCE_MOTION_ROLLOUT_V20_PROJECTED_PHASE19.md
 ```
 
+### V20 Reference Contact Compatibility
+
+Trace-level contact analysis compares the polynomial reference contact schedule
+with realized simulated contacts:
+
+```text
+raw reference:        68.03% mismatch, actual double support 73.86%, reference double support 35.43%
+projected phase 1:   67.77% mismatch, actual double support 75.90%, reference double support 35.54%
+projected phase 5:   67.23% mismatch, actual double support 74.89%, reference double support 37.52%
+projected phase 19:  67.57% mismatch, actual double support 74.41%, reference double support 38.38%
+```
+
+Interpretation:
+
+```text
+The simulated body mostly remains in double support while the reference expects
+alternating single support. This explains why envelope projection and phase
+offsets did not recover the gait. Do not train BC against raw polynomial joint
+positions; use contact-aware reference adaptation or generated realized targets
+from stable simulated behavior.
+```
+
+Artifact:
+`outputs/analysis/REFERENCE_CONTACT_COMPATIBILITY_V20.md`.
+
 Additional artifact:
 
 ```text
@@ -3412,4 +3437,5 @@ outputs/analysis/REFERENCE_ACTION_ENVELOPE_V20.md
 outputs/analysis/REFERENCE_MOTION_ROLLOUT_V20_PROJECTED.md
 outputs/analysis/REFERENCE_MOTION_ROLLOUT_V20_PROJECTED_PHASE5.md
 outputs/analysis/REFERENCE_MOTION_ROLLOUT_V20_PROJECTED_PHASE19.md
+outputs/analysis/REFERENCE_CONTACT_COMPATIBILITY_V20.md
 ```

@@ -543,3 +543,35 @@ Additional artifacts:
 outputs/analysis/REFERENCE_MOTION_ROLLOUT_V20_PROJECTED_PHASE5.md
 outputs/analysis/REFERENCE_MOTION_ROLLOUT_V20_PROJECTED_PHASE19.md
 ```
+
+## Reference Contact Compatibility
+
+The rollout traces were summarized to compare the reference contact schedule
+against realized simulated contacts:
+
+```text
+raw reference:        68.03% mismatch, actual double support 73.86%, reference double support 35.43%
+projected phase 1:   67.77% mismatch, actual double support 75.90%, reference double support 35.54%
+projected phase 5:   67.23% mismatch, actual double support 74.89%, reference double support 37.52%
+projected phase 19:  67.57% mismatch, actual double support 74.41%, reference double support 38.38%
+```
+
+Dominant mismatch:
+
+```text
+reference expects single support -> sim remains in double support
+```
+
+Interpretation:
+
+```text
+The reference is asking for a single-support walking contact schedule, but the
+simulated body mostly remains in double support under raw/projected reference
+targets. This makes the current polynomial reference a poor direct BC target
+for the Joystick task. The next useful path is either contact-aware reference
+adaptation or generating a realized stable-target dataset from the actual sim
+dynamics.
+```
+
+Additional artifact:
+`outputs/analysis/REFERENCE_CONTACT_COMPATIBILITY_V20.md`.
