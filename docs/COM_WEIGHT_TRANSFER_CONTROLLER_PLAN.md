@@ -331,9 +331,64 @@ Interpretation:
 ```text
 The first CoM proxy controller is safe/conservative and can keep lateral
 velocity low, but it does not create enough single-support progression or
-forward displacement. The next implementation needs better stance-foot-relative
-state and stronger swing-foot clearance/transition logic, not looser gates
-alone.
+forward displacement.
+```
+
+A follow-up stance-foot-relative implementation then regulated:
+
+```text
+lateral_control_y = base_y - stance_foot_site_y
+```
+
+It produced the cleanest contact/lateral result, but still not enough forward
+motion:
+
+```text
+stance-relative:
+  artifact: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STANCE_PROBE.md
+  score_100: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STANCE_PROBE_SCORE_100.md
+  score_150: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STANCE_PROBE_SCORE_150.md
+  status: HOLD_NO_SEED_ROBUST_TARGETS
+  top 100-tick local dx seed0 / seed2: 0.0145 / 0.0129 m
+  top 100-tick vy95 seed0 / seed2: 0.0568 / 0.0585 m/s
+  top 100-tick double support seed0 / seed2: 89% / 87%
+```
+
+An aggressive stance-relative push sweep improved short-window forward
+displacement while staying laterally controlled:
+
+```text
+aggressive stance-relative:
+  artifact: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STANCE_AGGRESSIVE_PROBE.md
+  score_100: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STANCE_AGGRESSIVE_PROBE_SCORE_100.md
+  score_150: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STANCE_AGGRESSIVE_PROBE_SCORE_150.md
+  status: HOLD_NO_SEED_ROBUST_TARGETS
+  top 100-tick local dx seed0 / seed2: 0.0254 / 0.0209 m
+  top 100-tick vy95 seed0 / seed2: 0.0926 / 0.0960 m/s
+  top 100-tick double support seed0 / seed2: 79% / 79%
+```
+
+A reverse-push sign check was also negative:
+
+```text
+reverse-push stance-relative:
+  artifact: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STANCE_REVERSE_PUSH_PROBE.md
+  score_100: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STANCE_REVERSE_PUSH_PROBE_SCORE_100.md
+  score_150: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STANCE_REVERSE_PUSH_PROBE_SCORE_150.md
+  status: HOLD_NO_SEED_ROBUST_TARGETS
+  top 100-tick local dx seed0 / seed2: 0.0209 / 0.0218 m
+```
+
+Interpretation:
+
+```text
+Stance-foot-relative control is a real improvement for contact/lateral quality,
+not a pass. It reduces the earlier contact/lateral failure but exposes a
+remaining forward-impulse problem: the controller can create short-window
+single-support transfer, but not enough sustained sagittal displacement. The
+next implementation needs stance-foot-relative sagittal body/foot geometry,
+explicit stance-leg push-off mechanics, or a different higher-level controller
+structure. More nearby scalar gate widening is not justified.
 ```
 
 ## Non-Goals

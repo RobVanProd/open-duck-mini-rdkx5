@@ -47,6 +47,12 @@ DEFAULT_SCORE_JSONS = [
     "outputs/analysis/com_weight_transfer_controller_probe_score_150.json",
     "outputs/analysis/com_weight_transfer_controller_relaxed_probe_score_100.json",
     "outputs/analysis/com_weight_transfer_controller_relaxed_probe_score_150.json",
+    "outputs/analysis/com_weight_transfer_controller_stance_probe_score_100.json",
+    "outputs/analysis/com_weight_transfer_controller_stance_probe_score_150.json",
+    "outputs/analysis/com_weight_transfer_controller_stance_aggressive_probe_score_100.json",
+    "outputs/analysis/com_weight_transfer_controller_stance_aggressive_probe_score_150.json",
+    "outputs/analysis/com_weight_transfer_controller_stance_reverse_push_probe_score_100.json",
+    "outputs/analysis/com_weight_transfer_controller_stance_reverse_push_probe_score_150.json",
 ]
 
 

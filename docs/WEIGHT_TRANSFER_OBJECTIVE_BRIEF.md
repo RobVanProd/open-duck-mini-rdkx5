@@ -126,6 +126,9 @@ The first CoM controller implementation has now been tested:
 tool: tools/probe_com_weight_transfer_controller.py
 strict artifact: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_PROBE.md
 relaxed artifact: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_RELAXED_PROBE.md
+stance artifact: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STANCE_PROBE.md
+aggressive stance artifact: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STANCE_AGGRESSIVE_PROBE.md
+reverse-push stance artifact: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STANCE_REVERSE_PUSH_PROBE.md
 status: HOLD_NO_SEED_ROBUST_TARGETS
 ```
 
@@ -135,12 +138,17 @@ with low displacement:
 ```text
 strict top 100-tick local dx: 0.0074 / 0.0132 m
 relaxed top 100-tick local dx: 0.0088 / 0.0121 m
+stance-relative top 100-tick local dx: 0.0145 / 0.0129 m
+aggressive stance-relative top 100-tick local dx: 0.0254 / 0.0209 m
+reverse-push stance-relative top 100-tick local dx: 0.0209 / 0.0218 m
 ```
 
-This points to `HOLD_LOAD_STANCE` / `HOLD_FORWARD_STILL_LOW`: the proxy
-controller keeps lateral velocity low but does not create sustained
-single-support progression. The next controller needs stance-foot-relative base
-state or stronger swing-clearance/transition logic.
+This points to `HOLD_FORWARD_IMPULSE_STILL_LOW`: stance-foot-relative lateral
+control improves contact and lateral behavior, and aggressive push can roughly
+double short-window forward displacement, but no variant reaches seed-robust
+forward displacement or sustained 150-tick progress. The next controller should
+model stance-foot-relative sagittal body/foot geometry or explicit push-off
+mechanics, not another nearby scalar gate expansion.
 
 ## Required Gate
 

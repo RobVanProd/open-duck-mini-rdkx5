@@ -5590,5 +5590,53 @@ dominant hold: low forward displacement and double-support dominance
 
 This is useful negative evidence. The first CoM proxy controller controls
 lateral velocity better than the forward-intent teachers, but does so by being
-too conservative. The next controller needs stance-foot-relative base state or
-stronger swing-clearance/transition logic rather than looser gates alone.
+too conservative.
+
+The follow-up stance-foot-relative controller regulated:
+
+```text
+lateral_control_y = base_y - stance_foot_site_y
+```
+
+Stance-relative result:
+
+```text
+artifact: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STANCE_PROBE.md
+score_100: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STANCE_PROBE_SCORE_100.md
+score_150: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STANCE_PROBE_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+top 100-tick local dx: 0.0145 / 0.0129 m
+top 100-tick vy95: 0.0568 / 0.0585 m/s
+top 100-tick double support: 89% / 87%
+```
+
+Aggressive stance-relative push improved the short-window displacement but
+still did not pass:
+
+```text
+artifact: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STANCE_AGGRESSIVE_PROBE.md
+score_100: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STANCE_AGGRESSIVE_PROBE_SCORE_100.md
+score_150: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STANCE_AGGRESSIVE_PROBE_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+top 100-tick local dx: 0.0254 / 0.0209 m
+top 100-tick vy95: 0.0926 / 0.0960 m/s
+top 100-tick double support: 79% / 79%
+```
+
+A reverse-push sign check was negative:
+
+```text
+artifact: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STANCE_REVERSE_PUSH_PROBE.md
+score_100: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STANCE_REVERSE_PUSH_PROBE_SCORE_100.md
+score_150: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STANCE_REVERSE_PUSH_PROBE_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+top 100-tick local dx: 0.0209 / 0.0218 m
+```
+
+This is now sharper negative evidence. Stance-foot-relative lateral control
+reduces the earlier lateral/contact failure and can produce cleaner
+single-support windows, but the generated forward impulse is still too small
+and not sustained over 150 ticks. The next controller needs
+stance-foot-relative sagittal body/foot geometry or explicit stance-leg
+push-off mechanics. Another nearby lateral gate/prior-scale sweep is not
+justified.

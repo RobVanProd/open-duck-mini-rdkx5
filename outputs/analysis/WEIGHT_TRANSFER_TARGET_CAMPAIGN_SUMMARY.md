@@ -37,20 +37,26 @@ does not run simulation, training, robot SSH, deployment, or hardware tests.
 | `com_weight_transfer_controller_probe_score_150` | 150 | `HOLD_NO_SEED_ROBUST_TARGETS` | 0 | 16 | -0.0001/-0.0003 | 0.0030/0.0091 | 0.1008/0.1248 | double_support_dominates, high_lateral_velocity, low_forward_displacement, low_forward_velocity |
 | `com_weight_transfer_controller_relaxed_probe_score_100` | 100 | `HOLD_NO_SEED_ROBUST_TARGETS` | 0 | 12 | 0.0044/0.0088 | 0.0060/0.0121 | 0.0621/0.0768 | double_support_dominates, low_forward_displacement, low_forward_velocity, single_contact_pattern_dominates |
 | `com_weight_transfer_controller_relaxed_probe_score_150` | 150 | `HOLD_NO_SEED_ROBUST_TARGETS` | 0 | 12 | 0.0005/0.0015 | 0.0032/0.0096 | 0.1008/0.1195 | double_support_dominates, low_forward_displacement, low_forward_velocity, single_contact_pattern_dominates |
+| `com_weight_transfer_controller_stance_probe_score_100` | 100 | `HOLD_NO_SEED_ROBUST_TARGETS` | 0 | 16 | 0.0073/0.0145 | 0.0065/0.0129 | 0.0568/0.0585 | low_forward_displacement, low_forward_velocity |
+| `com_weight_transfer_controller_stance_probe_score_150` | 150 | `HOLD_NO_SEED_ROBUST_TARGETS` | 0 | 16 | -0.0004/-0.0012 | 0.0021/0.0064 | 0.0662/0.0804 | low_forward_displacement, low_forward_velocity |
+| `com_weight_transfer_controller_stance_aggressive_probe_score_100` | 100 | `HOLD_NO_SEED_ROBUST_TARGETS` | 0 | 24 | 0.0127/0.0254 | 0.0105/0.0209 | 0.0926/0.0960 | low_forward_displacement, low_forward_velocity |
+| `com_weight_transfer_controller_stance_aggressive_probe_score_150` | 150 | `HOLD_NO_SEED_ROBUST_TARGETS` | 0 | 24 | 0.0006/0.0018 | 0.0039/0.0117 | 0.1093/0.1238 | high_lateral_velocity, low_forward_displacement, low_forward_velocity |
+| `com_weight_transfer_controller_stance_reverse_push_probe_score_100` | 100 | `HOLD_NO_SEED_ROBUST_TARGETS` | 0 | 16 | 0.0104/0.0209 | 0.0109/0.0218 | 0.0913/0.0865 | low_forward_displacement, low_forward_velocity |
+| `com_weight_transfer_controller_stance_reverse_push_probe_score_150` | 150 | `HOLD_NO_SEED_ROBUST_TARGETS` | 0 | 16 | 0.0004/0.0013 | 0.0029/0.0088 | 0.0715/0.0887 | low_forward_displacement, low_forward_velocity |
 
 ## Aggregate Failure Counts
 
 | reason | count |
 |---|---:|
-| `low_forward_velocity` | 2205 |
-| `double_support_dominates` | 1334 |
-| `too_little_single_support` | 1131 |
-| `high_lateral_velocity` | 874 |
-| `single_support_not_balanced` | 847 |
-| `single_contact_pattern_dominates` | 639 |
-| `low_forward_displacement` | 357 |
+| `low_forward_velocity` | 2429 |
+| `double_support_dominates` | 1439 |
+| `too_little_single_support` | 1206 |
+| `single_support_not_balanced` | 879 |
+| `high_lateral_velocity` | 879 |
+| `single_contact_pattern_dominates` | 659 |
+| `low_forward_displacement` | 581 |
 | `high_sent_target_velocity` | 72 |
-| `too_few_contact_transitions` | 66 |
+| `too_few_contact_transitions` | 67 |
 | `action_saturation` | 52 |
 | `low_base_height` | 45 |
 | `missing_seed_trace_or_window` | 20 |
@@ -62,7 +68,7 @@ does not run simulation, training, robot SSH, deployment, or hardware tests.
 ## Extremes
 
 - best top-window forward displacement: `0.0757` from `closed_loop_weight_transfer_teacher_forward_intent_score_150` / `seed_000`
-- lowest top-window lateral p95: `0.0590` from `target_objective_score_weight_transfer_probe_100` / `seed_002`
+- lowest top-window lateral p95: `0.0568` from `com_weight_transfer_controller_stance_probe_score_100` / `seed_000`
 
 ## Decision
 
