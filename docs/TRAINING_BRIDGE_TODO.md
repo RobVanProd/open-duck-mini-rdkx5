@@ -4468,3 +4468,36 @@ The gate failure is still decisive because the configured pass condition allowed
 no failed seeds. Do not rerun V23 unchanged. Before another long cloud run,
 analyze at least one V23 fall trace for contact sequence, base height, pitch,
 local velocity, support dwell, and termination reason.
+
+Recovered V23 package:
+
+```text
+artifact: outputs/analysis/V23_L4_ARTIFACT_RECOVERY_SUMMARY.md
+status: HOLD_V23_ARTIFACT_RECOVERED_GATE_FAILED
+final ONNX sha256: d8a92162cfee07cb4c6f2643c5206a182882fd46c0098f93a1c65c03e99c86c7
+```
+
+The recovered candidate fails seed-0 `x=0.0` and `x=0.08` gates. At `x=0.08`
+it stays far below the measured actuator velocity envelope and has 0% action
+saturation, but local-frame forward velocity is negative and all bridge modes
+terminate with `fall_or_nan`. Treat this as evidence that the first explicit
+support-contact reward is insufficient, not as a reason to rerun V23 unchanged.
+
+Targeted V23 trace:
+
+```text
+artifact: outputs/analysis/V23_SEED0_X004_TRACE_SUMMARY.md
+status: HOLD_DOUBLE_SUPPORT_STANDSTILL
+command: x=0.04
+seed: 0
+bridge: vanilla
+samples: 750
+contact pattern: 99.33% double support
+mean local vx: -0.0002 m/s
+```
+
+This confirms the failure mode: V23 learned a stable double-support standstill,
+not alternating support transfer. The next recipe should not be an unchanged V23
+rerun or a nearby scalar-weight tweak. It needs support transition plus forward
+propulsion as a coupled objective or a closed-loop teacher that enforces stance
+side, foot placement, and body placement.

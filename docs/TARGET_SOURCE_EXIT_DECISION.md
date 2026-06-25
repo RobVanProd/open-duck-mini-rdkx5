@@ -284,3 +284,40 @@ the candidate improves fall count by freezing
 
 If those holds repeat, move away from target-source generation and test the
 contact/weight-transfer learning objective directly in sim.
+
+## First Support-Objective Result
+
+The first direct support-objective probe also held:
+
+```text
+artifact: outputs/analysis/V23_L4_ARTIFACT_RECOVERY_SUMMARY.md
+status: HOLD_V23_ARTIFACT_RECOVERED_GATE_FAILED
+x=0.0: all modes fall by 55-71 samples
+x=0.08: all modes fall by 98-140 samples and move backward in local frame
+max x=0.08 sent target velocity p95: 0.6026 rad/s
+action saturation: 0%
+```
+
+The recovered V23 candidate is not actuator-envelope limited and is not a
+candidate for robot validation. The next branch must add a structural
+support/propulsion mechanism or inspect the V23 fall trace before designing a
+new objective.
+
+The first V23 trace confirms why:
+
+```text
+artifact: outputs/analysis/V23_SEED0_X004_TRACE_SUMMARY.md
+status: HOLD_DOUBLE_SUPPORT_STANDSTILL
+command: x=0.04
+seed: 0
+samples: 750 / duration_complete
+double support: 99.33%
+single support: 0.67%
+mean local vx: -0.0002 m/s
+track ratio: -0.0051
+```
+
+The direct support objective did not create support transfer. It produced a
+stable double-support standstill. Future branches should require support-state
+transition and forward displacement together; single-support occupancy alone is
+not enough.

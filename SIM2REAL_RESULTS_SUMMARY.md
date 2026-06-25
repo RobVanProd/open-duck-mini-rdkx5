@@ -5919,3 +5919,57 @@ seeds are already enough to hold V23 even though the full eight-seed distributio
 was not captured. Do not rerun V23 unchanged. The next branch needs a more
 structural support/propulsion mechanism or a targeted fall-trace analysis of the
 V23 seed-0 failure.
+
+A second L4 artifact-recovery run preserved the final V23 package and confirms
+the hold:
+
+```text
+artifact: outputs/analysis/V23_L4_ARTIFACT_RECOVERY_SUMMARY.md
+status: HOLD_V23_ARTIFACT_RECOVERED_GATE_FAILED
+candidate sha256: d8a92162cfee07cb4c6f2643c5206a182882fd46c0098f93a1c65c03e99c86c7
+package exit status: 1
+
+x=0.0 gate:
+  vanilla/fitted/stress all terminated with fall_or_nan
+  samples: 71 / 55 / 66
+  min base height: 0.0405 m
+  max pitch tracking p95: 0.1632 rad
+
+x=0.08 gate:
+  vanilla/fitted/stress all terminated with fall_or_nan
+  samples: 125 / 98 / 140
+  local mean vx: -0.1429 / -0.1717 / -0.1232 m/s
+  track ratio: -1.7863 / -2.1467 / -1.5405
+  max sent target velocity p95: 0.6026 rad/s
+  action saturation: 0%
+```
+
+This is a stronger negative result than the interrupted seed sweep alone. V23
+does not fail because it exceeds the actuator envelope or saturates actions; it
+fails because the explicit single-support / double-support reward hook does not
+create stable support mechanics. The candidate is not promoted to a tracked
+policy. Robot validation remains blocked.
+
+A targeted CPU trace at the intended low-command gate isolates the V23 failure
+mechanism:
+
+```text
+artifact: outputs/analysis/V23_SEED0_X004_TRACE_SUMMARY.md
+status: HOLD_DOUBLE_SUPPORT_STANDSTILL
+command: x=0.04
+seed: 0
+bridge: vanilla
+samples: 750 / duration_complete
+mean local vx: -0.0002 m/s
+track ratio: -0.0051
+contact states:
+  01: 5 ticks / 0.67%
+  11: 745 ticks / 99.33%
+contact transitions: 3
+longest run: double support from tick 9 through 749
+```
+
+So the support reward branch did not create weight transfer; it produced stable
+double-support standstill. The next branch should force support-state transition
+and propulsion together, or use a closed-loop teacher/optimizer that explicitly
+chooses stance side, foot placement, body placement, and push timing.
