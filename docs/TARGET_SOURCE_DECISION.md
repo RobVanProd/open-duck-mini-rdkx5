@@ -3,6 +3,12 @@
 This note records the current offline target-source decision. It is not a robot
 test plan and not training permission.
 
+Generated audit artifact:
+
+```text
+outputs/analysis/TARGET_SOURCE_AUDIT.md
+```
+
 ## Status
 
 The project needs low-command target data before another supervised or PPO
@@ -172,4 +178,3 @@ seed2 contact_transitions >= 3 over 50 samples
 sent_target_velocity_p95 <= 2.5 rad/s
 joint_tracking_p95 <= 0.12 rad
 ```
-
