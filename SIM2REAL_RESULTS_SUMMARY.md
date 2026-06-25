@@ -5282,3 +5282,26 @@ The tradeoff is now clearer: candidates that move toward the target forward
 speed fail lateral velocity; candidates that satisfy lateral velocity lose
 forward displacement. The next generator should move beyond hip-roll/stance
 push feedback and add explicit foot-placement or CoM/step-geometry planning.
+
+V3 added that first explicit step-geometry layer:
+
+```text
+artifact: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_V3_PROBE.md
+score_100: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_V3_SCORE_100.md
+score_150: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_V3_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+Result:
+
+```text
+top aggregate rollout mean vx: 0.0337 m/s
+100/150 robust modes: 0
+top scored 100-tick vx: 0.0104 / 0.0155 m/s
+top scored 100-tick vy95: 0.1371 / 0.1341 m/s
+```
+
+V3 is closer in raw forward velocity, but still not a target source. It shows
+that foot-placement terms alone do not decouple forward motion from lateral
+impulse. The next useful generator should be a staged balance-then-step planner
+or offline optimizer, not another random sweep of the same teacher terms.

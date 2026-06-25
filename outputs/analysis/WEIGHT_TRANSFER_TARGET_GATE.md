@@ -368,3 +368,38 @@ that keep lateral velocity near gate lose forward motion. This suggests the
 next teacher cannot be only roll/push feedback; it needs a more explicit
 forward step geometry or foot-placement/CoM planner that can generate forward
 displacement without side impulse.
+
+## Closed-Loop Weight-Transfer Teacher V3 Probe
+
+V3 added explicit foot-placement geometry:
+
+```text
+tool flags:
+  --swing-hip-reaches
+  --stance-retract-scales
+  --pitch-targets
+
+artifact: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_V3_PROBE.md
+score_100: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_V3_SCORE_100.md
+score_150: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_V3_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+Result:
+
+| metric | value |
+|---|---:|
+| top aggregate rollout mean vx | 0.0337 m/s |
+| 100-tick robust modes | 0 |
+| 150-tick robust modes | 0 |
+| top scored 100-tick seed0 / seed2 vx | 0.0104 / 0.0155 m/s |
+| top scored 150-tick seed0 / seed2 vx | 0.0072 / 0.0102 m/s |
+| top scored 100-tick seed0 / seed2 vy95 | 0.1371 / 0.1341 m/s |
+
+Interpretation: explicit swing reach and stance retract improve raw forward
+motion again, but the same coupled failure remains. The best scored windows
+have useful support alternation and low target velocities, yet still miss both
+the `0.04 m/s` forward gate and the `0.12 m/s` lateral gate. This suggests the
+next generator needs a more principled planner, such as a lateral-first balance
+phase followed by a forward step phase, or an offline optimizer that explicitly
+penalizes lateral impulse while preserving forward displacement.

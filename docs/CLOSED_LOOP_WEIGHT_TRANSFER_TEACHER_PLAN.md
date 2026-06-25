@@ -279,6 +279,27 @@ candidates lose forward displacement. The next teacher design should add an
 explicit forward step geometry or foot-placement/CoM planner rather than only
 more roll and stance-push feedback.
 
+V3 added explicit step geometry:
+
+```text
+flags:
+  --swing-hip-reaches
+  --stance-retract-scales
+  --pitch-targets
+
+artifact: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_V3_PROBE.md
+score_100: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_V3_SCORE_100.md
+score_150: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_V3_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+V3 raised the top raw rollout mean velocity to `0.0337 m/s`, but the best
+scored 100-tick window still only reached `0.0104 / 0.0155 m/s` on seeds
+`0 / 2`, with lateral p95 around `0.13-0.14 m/s`. The next revision should not
+be a larger random grid over these same terms. It should change the structure
+to a staged planner or optimizer that first controls lateral balance, then
+executes a forward step while preserving the lateral gate.
+
 ## Next Branch After a Pass
 
 If the teacher probe passes, use its traces as a target source:

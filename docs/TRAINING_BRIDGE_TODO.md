@@ -195,6 +195,20 @@ velocity only by losing forward displacement. The next teacher design needs
 forward step geometry or foot-placement/CoM planning, not another roll/push
 feedback term.
 
+Third teacher-probe result:
+
+```text
+artifact: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_V3_PROBE.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+V3 added swing-hip reach, stance retract, and pitch target terms. It improved
+top raw rollout mean velocity to `0.0337 m/s`, but still produced zero robust
+100/150 tick modes. The best scored windows retained support transitions and
+low target velocities, but failed both forward velocity and lateral velocity.
+The next branch should be a staged or optimized planner, not a larger random
+grid over these same terms.
+
 ### Reconcile Policy / Sim Contract
 
 - Run `tools/audit_policy_sim_contract.py`.
