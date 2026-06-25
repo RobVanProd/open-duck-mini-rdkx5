@@ -4,6 +4,7 @@ status: `HOLD_REFERENCE_TARGET_TERMINATES`
 command_x: `0.04`
 duration_s: `5.0`
 reference: `/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/reference_motion_x004_override.pkl`
+reference_target_mode: `raw`
 
 ## Aggregate
 
@@ -54,5 +55,6 @@ reference: `/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/reference_mot
 
 - This rollout replaces the ONNX policy with reference-derived actions.
 - It still respects action scale and the motor target rate limiter.
+- `cycle_projected` mode scales each joint's reference cycle to fit the action and target-rate envelope.
 - A pass would show that the matched reference is dynamically trackable in the sim contract.
 - A hold means behavior cloning must account for the target/action contract, phase, or contact dynamics before PPO.

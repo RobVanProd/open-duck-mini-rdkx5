@@ -2518,3 +2518,32 @@ targets from realized stable rollouts.
 
 Artifact:
 `outputs/analysis/REFERENCE_ACTION_ENVELOPE_V20.md`.
+
+Projected reference rollout:
+
+```text
+tool: tools/eval_reference_motion_rollout.py --reference-target-mode cycle_projected
+status: HOLD_REFERENCE_TARGET_TERMINATES
+runs: 8
+early terminations: 8
+duration_complete: 0
+mean vx: -0.0100 m/s
+mean track ratio: -0.2495
+mean lateral p95_abs velocity: 0.4017 m/s
+mean action saturation: 1.1454%
+mean target clip p95: 0.0000 rad
+mean joint tracking p95: 0.1440 rad
+```
+
+Interpretation:
+
+```text
+Projection fixed most of the raw action/rate envelope violation, but the
+rollout still fails. Do not launch BC/PPO yet. The next diagnostic target is
+reference/task alignment: phase offset, reset state, contact timing, lateral
+sway, and whether this polynomial reference is dynamically compatible with the
+current flat-terrain Joystick initialization.
+```
+
+Artifact:
+`outputs/analysis/REFERENCE_MOTION_ROLLOUT_V20_PROJECTED.md`.

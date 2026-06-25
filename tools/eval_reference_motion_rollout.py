@@ -173,6 +173,32 @@ def reference_frame_to_actuator_target(ref, default_actuator, jp):
     return target
 
 
+def build_cycle_projection_scales(env, jp, command, *, action_scale: float, max_velocity: float, dt_s: float):
+    targets = []
+    for phase in range(int(env.PRM.nb_steps_in_period)):
+        ref = env.PRM.get_reference_motion(command[0], command[1], command[2], phase)
+        target = reference_frame_to_actuator_target(ref, env._default_actuator, jp)
+        targets.append(np.asarray(target, dtype=float))
+    cycle = np.asarray(targets, dtype=float)
+    home = np.asarray(env._default_actuator, dtype=float)
+    deltas = cycle - home
+    max_abs_delta = np.max(np.abs(deltas), axis=0)
+    cycle_velocity = np.abs(np.diff(np.vstack([cycle, cycle[:1]]), axis=0) / max(dt_s, 1.0e-9))
+    max_abs_velocity = np.max(cycle_velocity, axis=0)
+    scale = np.ones_like(max_abs_delta)
+    for index in range(len(scale)):
+        if max_abs_delta[index] > 1.0e-9:
+            scale[index] = min(scale[index], float(action_scale) / max_abs_delta[index])
+        if max_abs_velocity[index] > 1.0e-9:
+            scale[index] = min(scale[index], float(max_velocity) / max_abs_velocity[index])
+    scale = np.clip(scale, 0.0, 1.0)
+    return scale, {
+        "scale": scale.tolist(),
+        "max_abs_delta_rad": max_abs_delta.tolist(),
+        "max_abs_velocity_rad_s": max_abs_velocity.tolist(),
+    }
+
+
 def summarize_records(
     *,
     seed: int,
@@ -345,6 +371,16 @@ def run_rollout(args: argparse.Namespace) -> dict[str, Any]:
                         "noise_config.imu_max_delay": 1,
                     },
                 )
+                projection_scales_np, projection_summary = build_cycle_projection_scales(
+                    env,
+                    jp,
+                    command,
+                    action_scale=float(env._config.action_scale),
+                    max_velocity=float(env._config.max_motor_velocity),
+                    dt_s=float(env.dt),
+                )
+                projection_scales = jp.asarray(projection_scales_np)
+                reference_target_mode = args.reference_target_mode
 
             def refresh_obs(state):
                 state.info["command"] = command
@@ -374,6 +410,10 @@ def run_rollout(args: argparse.Namespace) -> dict[str, Any]:
                 reference_target = reference_frame_to_actuator_target(
                     ref, env._default_actuator, jp
                 )
+                if reference_target_mode == "cycle_projected":
+                    reference_target = env._default_actuator + (
+                        reference_target - env._default_actuator
+                    ) * projection_scales
                 action = jp.clip(
                     (reference_target - env._default_actuator) / env._config.action_scale,
                     -1.0,
@@ -492,7 +532,7 @@ def run_rollout(args: argparse.Namespace) -> dict[str, Any]:
                         "tick": tick,
                         "time_s": tick * float(env.dt),
                         "seed": seed,
-                        "mode": "reference_target",
+                        "mode": f"reference_target_{reference_target_mode}",
                         "command": [args.command_x, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
                         "imitation_i": int(np.asarray(jax.device_get(state.info["imitation_i"]))),
                         "action": np.asarray(jax.device_get(action), dtype=float).tolist(),
@@ -548,6 +588,8 @@ def run_rollout(args: argparse.Namespace) -> dict[str, Any]:
         "duration_s": args.duration_s,
         "seeds": parse_int_list(args.seeds),
         "reference": args.reference_motion_override,
+        "reference_target_mode": args.reference_target_mode,
+        "projection": projection_summary if args.reference_target_mode == "cycle_projected" else None,
         "reward_overrides_json": args.reward_overrides_json,
         "reward_overrides_phase": args.reward_overrides_phase,
         "override": override_info,
@@ -579,6 +621,7 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         f"command_x: `{payload['command_x']}`",
         f"duration_s: `{payload['duration_s']}`",
         f"reference: `{payload['reference']}`",
+        f"reference_target_mode: `{payload['reference_target_mode']}`",
         "",
         "## Aggregate",
         "",
@@ -636,6 +679,7 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
             "",
             "- This rollout replaces the ONNX policy with reference-derived actions.",
             "- It still respects action scale and the motor target rate limiter.",
+            "- `cycle_projected` mode scales each joint's reference cycle to fit the action and target-rate envelope.",
             "- A pass would show that the matched reference is dynamically trackable in the sim contract.",
             "- A hold means behavior cloning must account for the target/action contract, phase, or contact dynamics before PPO.",
         ]
@@ -652,6 +696,11 @@ def main() -> int:
     parser.add_argument("--reward-overrides-json", default=str(DEFAULT_REWARD_OVERRIDES))
     parser.add_argument("--reward-overrides-phase", default="phase1_interpolated_reference_seed_x004")
     parser.add_argument("--command-x", type=float, default=0.04)
+    parser.add_argument(
+        "--reference-target-mode",
+        choices=["raw", "cycle_projected"],
+        default="raw",
+    )
     parser.add_argument("--duration-s", type=float, default=5.0)
     parser.add_argument("--seeds", default="0-7")
     parser.add_argument("--min-track-ratio-mean", type=float, default=0.25)

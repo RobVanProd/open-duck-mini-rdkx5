@@ -467,3 +467,48 @@ the deployable action envelope or learn from realized stable targets.
 
 Additional artifact:
 `outputs/analysis/REFERENCE_ACTION_ENVELOPE_V20.md`.
+
+## Projected Reference Rollout
+
+An envelope-aware projection was then tested. Each joint's reference cycle was
+scaled to fit the action and target-rate envelope before applying the same
+runtime-style target path.
+
+Result at `x=0.04`, vanilla dynamics, seeds `0-7`:
+
+```text
+status: HOLD_REFERENCE_TARGET_TERMINATES
+runs: 8
+falls/early terminations: 8
+duration_complete: 0
+mean vx: -0.0100 m/s
+mean track ratio: -0.2495
+mean lateral p95_abs velocity: 0.4017 m/s
+mean action saturation: 1.1454%
+mean target clip p95: 0.0000 rad
+mean joint tracking p95: 0.1440 rad
+```
+
+Projection scales on the pitch chain:
+
+```text
+left_hip_pitch: 0.6339
+left_knee: 0.5852
+left_ankle: 0.8398
+right_hip_pitch: 0.5246
+right_knee: 0.3966
+right_ankle: 0.6882
+```
+
+Interpretation:
+
+```text
+Envelope projection reduced action saturation and tracking error, but it still
+did not produce stable forward motion. The blocker is now below reward tuning
+and below raw target-rate mismatch alone. Inspect reference phase/reset,
+contact timing, lateral sway, and whether the polynomial reference is valid for
+this MJCF/task initialization before launching BC or PPO.
+```
+
+Additional artifact:
+`outputs/analysis/REFERENCE_MOTION_ROLLOUT_V20_PROJECTED.md`.

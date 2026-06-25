@@ -3334,6 +3334,38 @@ against raw polynomial joint positions.
 Artifact:
 `outputs/analysis/REFERENCE_ACTION_ENVELOPE_V20.md`.
 
+### V20 Projected Reference Rollout
+
+An envelope-aware projection scaled each joint's reference cycle to fit the
+action/rate budget before replaying the same reference-derived target path.
+
+Result:
+
+```text
+status: HOLD_REFERENCE_TARGET_TERMINATES
+runs: 8
+early terminations: 8
+duration_complete: 0
+mean vx: -0.0100 m/s
+mean track ratio: -0.2495
+mean lateral p95_abs velocity: 0.4017 m/s
+mean action saturation: 1.1454%
+mean target clip p95: 0.0000 rad
+mean joint tracking p95: 0.1440 rad
+```
+
+Interpretation:
+
+```text
+Projection reduced saturation and tracking error, but it did not produce
+stable forward motion. The current blocker is not just target velocity. Inspect
+reference phase/reset alignment, contact timing, lateral sway, and reference
+compatibility with the current Joystick task before BC or another PPO run.
+```
+
+Artifact:
+`outputs/analysis/REFERENCE_MOTION_ROLLOUT_V20_PROJECTED.md`.
+
 Additional artifact:
 
 ```text
@@ -3347,4 +3379,5 @@ outputs/analysis/V20_MATCHED_REFERENCE_TRACE_SUMMARY.md
 outputs/analysis/REFERENCE_LOCK_SIGNAL_V20.md
 outputs/analysis/REFERENCE_MOTION_ROLLOUT_V20.md
 outputs/analysis/REFERENCE_ACTION_ENVELOPE_V20.md
+outputs/analysis/REFERENCE_MOTION_ROLLOUT_V20_PROJECTED.md
 ```
