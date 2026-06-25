@@ -4366,6 +4366,20 @@ build a target source that explicitly creates single-support / weight-transfer
 timing; do not train from the existing 50-tick dynamic-roll fragments.
 ```
 
+A bounded single-support-biased open-loop primitive probe also failed:
+
+```text
+artifact: outputs/analysis/TARGET_GENERATOR_SINGLE_SUPPORT_PROBE.md
+score_100: outputs/analysis/TARGET_GENERATOR_SINGLE_SUPPORT_PROBE_SCORE_100.md
+score_150: outputs/analysis/TARGET_GENERATOR_SINGLE_SUPPORT_PROBE_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+The best scored windows still had roughly 95-98% double support and low forward
+velocity. Do not launch another BC/PPO run from nearby open-loop lift-pulse /
+roll-assist / stance-push grids. The next source must be state-aware and must
+make support transfer a gate, not an incidental byproduct.
+
 The current compact handoff docs are:
 
 ```text

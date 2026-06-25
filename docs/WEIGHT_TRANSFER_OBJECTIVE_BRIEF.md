@@ -309,6 +309,40 @@ do not train from the current 50-tick dynamic-roll fragments; the next source
 must explicitly generate useful single-support / weight-transfer timing.
 ```
 
+## Open-Loop Single-Support Probe
+
+A bounded single-support-biased primitive probe tested higher lift pulse,
+roll assist, and stance push within the existing open-loop target family:
+
+```text
+artifact: outputs/analysis/TARGET_GENERATOR_SINGLE_SUPPORT_PROBE.md
+score_100: outputs/analysis/TARGET_GENERATOR_SINGLE_SUPPORT_PROBE_SCORE_100.md
+score_150: outputs/analysis/TARGET_GENERATOR_SINGLE_SUPPORT_PROBE_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+Best scored windows:
+
+```text
+100 ticks:
+  seed0 vx: ~0.022 m/s
+  seed2 vx: ~0.027 m/s
+  double support: 95-96%
+
+150 ticks:
+  seed0 vx: ~0.016 m/s
+  seed2 vx: ~0.019 m/s
+  double support: 96.7-97.3%
+```
+
+Decision:
+
+```text
+nearby open-loop lift-pulse / roll-assist / stance-push grids are not enough.
+The next controller must use state feedback and explicitly gate body-over-stance
+support before swing and push.
+```
+
 ## Non-Goals
 
 ```text

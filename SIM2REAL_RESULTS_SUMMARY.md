@@ -5717,3 +5717,26 @@ are not hidden clean single-support gaits that the policy fails to execute.
 They are mostly double-support fragments. The next target-source branch must
 explicitly generate single-support / weight-transfer timing before another
 BC/PPO run is justified.
+
+A bounded single-support-biased open-loop primitive probe also held:
+
+```text
+artifact: outputs/analysis/TARGET_GENERATOR_SINGLE_SUPPORT_PROBE.md
+score_100: outputs/analysis/TARGET_GENERATOR_SINGLE_SUPPORT_PROBE_SCORE_100.md
+score_150: outputs/analysis/TARGET_GENERATOR_SINGLE_SUPPORT_PROBE_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+best 100-tick windows:
+  seed0 vx: ~0.022 m/s
+  seed2 vx: ~0.027 m/s
+  double support: 95-96%
+
+best 150-tick windows:
+  seed0 vx: ~0.016 m/s
+  seed2 vx: ~0.019 m/s
+  double support: 96.7-97.3%
+```
+
+So the missing piece is not just stronger lift pulses, roll assist, or stance
+push in the existing open-loop primitive family. The next source needs a
+state-aware support-transfer controller/objective that explicitly makes the
+body commit weight to one stance leg before asking for swing and forward push.

@@ -160,6 +160,42 @@ tools/run_target_sequence_replay_smoke.py --trace-dir <path>
 
 Those traces can be scored with `tools/score_target_candidates_objective.py`.
 
+## Single-Support Primitive Probe
+
+A bounded probe tried to force single support using the existing open-loop
+primitive family:
+
+```text
+artifact: outputs/analysis/TARGET_GENERATOR_SINGLE_SUPPORT_PROBE.md
+score_100: outputs/analysis/TARGET_GENERATOR_SINGLE_SUPPORT_PROBE_SCORE_100.md
+score_150: outputs/analysis/TARGET_GENERATOR_SINGLE_SUPPORT_PROBE_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+The best scored windows still remained double-support dominated:
+
+```text
+100 ticks:
+  seed0 vx: ~0.022 m/s
+  seed2 vx: ~0.027 m/s
+  double support: 95-96%
+
+150 ticks:
+  seed0 vx: ~0.016 m/s
+  seed2 vx: ~0.019 m/s
+  double support: 96.7-97.3%
+```
+
+Decision:
+
+```text
+do not keep expanding nearby open-loop lift-pulse / roll-assist / stance-push
+grids as the main path.
+```
+
+The next source should be state-aware: it must confirm body-over-stance support
+before swing, and should score support transfer as a first-class objective.
+
 ## Candidate Generation Rules
 
 The generated snippet should keep:
