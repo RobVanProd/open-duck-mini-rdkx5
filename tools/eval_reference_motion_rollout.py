@@ -369,7 +369,9 @@ def run_rollout(args: argparse.Namespace) -> dict[str, Any]:
         Path(args.reward_overrides_json) if args.reward_overrides_json else None,
         args.reward_overrides_phase,
     )
-    command = jp.asarray([args.command_x, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+    command = jp.asarray(
+        [args.command_x, args.command_y, args.command_yaw, 0.0, 0.0, 0.0, 0.0]
+    )
     trace_root = Path(args.trace_dir) if args.trace_dir else None
     if trace_root:
         trace_root.mkdir(parents=True, exist_ok=True)
@@ -387,8 +389,8 @@ def run_rollout(args: argparse.Namespace) -> dict[str, Any]:
                     config_overrides={
                         "push_config.enable": False,
                         "lin_vel_x": [args.command_x, args.command_x],
-                        "lin_vel_y": [0.0, 0.0],
-                        "ang_vel_yaw": [0.0, 0.0],
+                        "lin_vel_y": [args.command_y, args.command_y],
+                        "ang_vel_yaw": [args.command_yaw, args.command_yaw],
                         "neck_pitch_range": [0.0, 0.0],
                         "head_pitch_range": [0.0, 0.0],
                         "head_yaw_range": [0.0, 0.0],
@@ -415,6 +417,15 @@ def run_rollout(args: argparse.Namespace) -> dict[str, Any]:
                 projected_cycle_targets = jp.asarray(projected_cycle_np)
                 projected_cycle_contacts = jp.asarray(projected_contacts_np)
                 reference_target_mode = args.reference_target_mode
+                has_command_progress = hasattr(env, "_update_command_window_progress") and hasattr(
+                    env, "_get_command_progress_failure"
+                )
+                reward_clip_min = float(
+                    getattr(env._config.reward_config, "reward_clip_min", 0.0)
+                )
+                reward_clip_max = float(
+                    getattr(env._config.reward_config, "reward_clip_max", 10000.0)
+                )
 
             def refresh_obs(state):
                 state.info["command"] = command
@@ -519,13 +530,17 @@ def run_rollout(args: argparse.Namespace) -> dict[str, Any]:
                 p_f = data.site_xpos[env._feet_site_id]
                 p_fz = p_f[..., -1]
                 state.info["swing_peak"] = jp.maximum(state.info["swing_peak"], p_fz)
-                env._update_command_window_progress(state.info, data)
+                if has_command_progress:
+                    env._update_command_window_progress(state.info, data)
                 obs = env._get_obs(data, state.info, contact)
                 done = env._get_termination(data)
-                command_progress_failure = env._get_command_progress_failure(state.info)
-                state.info["command_progress_failure"] = command_progress_failure.astype(
-                    state.info["command_progress_ratio"].dtype
-                )
+                if has_command_progress:
+                    command_progress_failure = env._get_command_progress_failure(state.info)
+                    state.info["command_progress_failure"] = command_progress_failure.astype(
+                        state.info["command_progress_ratio"].dtype
+                    )
+                else:
+                    command_progress_failure = jp.array(False)
                 done = done | command_progress_failure
                 rewards = env._get_reward(
                     data, action, state.info, state.metrics, done, first_contact, contact
@@ -536,8 +551,8 @@ def run_rollout(args: argparse.Namespace) -> dict[str, Any]:
                 }
                 reward = jp.clip(
                     sum(rewards.values()) * env.dt,
-                    env._config.reward_config.reward_clip_min,
-                    env._config.reward_config.reward_clip_max,
+                    reward_clip_min,
+                    reward_clip_max,
                 )
                 state.info["push"] = jp.array([0.0, 0.0])
                 state.info["step"] += 1
@@ -556,15 +571,16 @@ def run_rollout(args: argparse.Namespace) -> dict[str, Any]:
                             state.metrics[f"reward/{key}"] = value
                         else:
                             state.metrics[f"cost/{key}"] = -value
-                state.metrics["diagnostic/command_progress_ratio"] = state.info[
-                    "command_progress_ratio"
-                ]
-                state.metrics["diagnostic/command_progress_shortfall_cost"] = state.info[
-                    "command_progress_shortfall_cost"
-                ]
-                state.metrics["diagnostic/command_progress_failure"] = (
-                    command_progress_failure.astype(reward.dtype)
-                )
+                if has_command_progress:
+                    state.metrics["diagnostic/command_progress_ratio"] = state.info[
+                        "command_progress_ratio"
+                    ]
+                    state.metrics["diagnostic/command_progress_shortfall_cost"] = state.info[
+                        "command_progress_shortfall_cost"
+                    ]
+                    state.metrics["diagnostic/command_progress_failure"] = (
+                        command_progress_failure.astype(reward.dtype)
+                    )
                 done = done.astype(reward.dtype)
                 return (
                     state.replace(data=data, obs=obs, reward=reward, done=done),
@@ -623,7 +639,15 @@ def run_rollout(args: argparse.Namespace) -> dict[str, Any]:
                         "time_s": tick * float(env.dt),
                         "seed": seed,
                         "mode": f"reference_target_{reference_target_mode}",
-                        "command": [args.command_x, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+                        "command": [
+                            args.command_x,
+                            args.command_y,
+                            args.command_yaw,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                        ],
                         "imitation_i": int(np.asarray(jax.device_get(state.info["imitation_i"]))),
                         "action": np.asarray(jax.device_get(action), dtype=float).tolist(),
                         "reference_target_rad": np.asarray(
@@ -678,6 +702,8 @@ def run_rollout(args: argparse.Namespace) -> dict[str, Any]:
     payload = {
         "status": status,
         "command_x": args.command_x,
+        "command_y": args.command_y,
+        "command_yaw": args.command_yaw,
         "duration_s": args.duration_s,
         "seeds": parse_int_list(args.seeds),
         "reference": args.reference_motion_override,
@@ -798,9 +824,19 @@ def main() -> int:
     parser.add_argument("--playground-path", default=str(DEFAULT_PLAYGROUND))
     parser.add_argument("--task", default="flat_terrain")
     parser.add_argument("--reference-motion-override", default=str(DEFAULT_REFERENCE))
+    parser.add_argument(
+        "--use-playground-reference",
+        action="store_true",
+        help=(
+            "Do not apply the local reference-motion override; use the "
+            "Playground polynomial_coefficients.pkl in place."
+        ),
+    )
     parser.add_argument("--reward-overrides-json", default=str(DEFAULT_REWARD_OVERRIDES))
     parser.add_argument("--reward-overrides-phase", default="phase1_interpolated_reference_seed_x004")
     parser.add_argument("--command-x", type=float, default=0.04)
+    parser.add_argument("--command-y", type=float, default=0.0)
+    parser.add_argument("--command-yaw", type=float, default=0.0)
     parser.add_argument(
         "--reference-target-mode",
         choices=[
@@ -834,6 +870,8 @@ def main() -> int:
     parser.add_argument("--output-md", default=str(DEFAULT_OUTPUT_MD))
     parser.add_argument("--output-json", default=str(DEFAULT_OUTPUT_JSON))
     args = parser.parse_args()
+    if args.use_playground_reference:
+        args.reference_motion_override = None
     payload = run_rollout(args)
     output_json = Path(args.output_json)
     output_json.parent.mkdir(parents=True, exist_ok=True)

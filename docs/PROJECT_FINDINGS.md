@@ -472,6 +472,45 @@ outputs/analysis/NEXT_WEIGHT_TRANSFER_BRANCH.md
 status: PLAN_STANCE_RELATIVE_LATERAL_DAMPING
 ```
 
-Next branch: keep stance-foot-relative targeting and a measured-envelope
-teacher cap, then add stronger lateral/roll/base-y containment and seed-symmetry
-shaping. Do not relax the target-velocity limit to manufacture speed.
+That plan is now superseded by the reference push-effectiveness comparison:
+
+```text
+docs/REFERENCE_PUSH_EFFECTIVENESS_DECISION.md
+outputs/analysis/REFERENCE_PUSH_EFFECTIVENESS_V20_MATCHED.md
+outputs/analysis/REFERENCE_PUSH_EFFECTIVENESS_UPSTREAM_NEAREST.md
+```
+
+The matched x=0.04 reference had one positive forward-impulse variant, but only
+while violating lateral stability and the measured actuator envelope:
+
+```text
+status: HOLD_REFERENCE_PROPULSION_UNSTABLE
+best reference-single future vx delta: +0.0161 m/s
+reference-single vy p95: 0.2688 m/s
+reference-single pitch velocity p95: 5.1133 rad/s
+```
+
+The original upstream Playground reference key also failed the same physical
+question in this local sim and in a detached `origin/main` Playground worktree:
+
+```text
+command: x=0.074, y=-0.037, yaw=-0.074
+status: HOLD_REFERENCE_CONTACT_MISMATCH
+local branch best reference-single future vx delta: -0.0099 m/s
+origin/main best reference-single future vx delta: -0.0158 m/s
+```
+
+The upstream morphology audit adds one important constraint:
+
+```text
+outputs/analysis/UPSTREAM_SIM_MORPHOLOGY_AUDIT.md
+status: PASS_MORPHOLOGY_MATCHES_UPSTREAM_CODE_DRIFT_ONLY
+morphology/reference mismatches: 0
+code drift: joystick.py, runner.py
+```
+
+Current decision: do not continue with another stance-relative lateral-damping
+teacher variant by default. The next offline task is to identify the exact
+upstream walking checkpoint/export path and environment/config assumptions,
+because this result is not explained by local XML/reference-file drift. Robot
+validation remains blocked.

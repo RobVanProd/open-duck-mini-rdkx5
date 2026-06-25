@@ -1,6 +1,6 @@
 # Next Weight-Transfer Branch Decision
 
-status: `PLAN_STANCE_RELATIVE_LATERAL_DAMPING`
+status: `PLAN_UPSTREAM_SIM_MORPHOLOGY_AUDIT`
 
 This is an offline planning artifact. It does not run simulation,
 training, robot SSH, deployment, or hardware tests.
@@ -39,41 +39,37 @@ training, robot SSH, deployment, or hardware tests.
 | `stance_relative_velocity_cap_status` | `HOLD_PUSH_INEFFECTIVE` |
 | `stance_relative_velocity_cap_mean_future_vx_delta_m_s` | `0.008331105330308024` |
 | `stance_relative_velocity_cap_pass_count` | `None` |
+| `reference_push_status` | `HOLD_REFERENCE_CONTACT_MISMATCH` |
+| `reference_best_single_future_vx_delta_m_s` | `-0.015789685055672173` |
+| `reference_max_single_actual_double_pct` | `42.3161505981703` |
 
 ## Decision
 
-Keep stance-foot-relative lateral targeting and teacher-side target-velocity limiting, but add stronger lateral containment and seed-symmetry shaping. The velocity cap removed the main actuator-envelope failure from the push-effectiveness read, but the target gate still fails through lateral velocity and weak seed-robust forward motion.
+Stop the local stance-relative teacher loop and audit the upstream walking setup against the local sim/morphology/reference contract. The upstream/reference gait fails the same forward push-effectiveness question in this sim, so another lateral-damping teacher variant is not the default next move.
 
 ## Rationale
 
 - No checked target source passes PASS_WEIGHT_TRANSFER_TARGET.
-- The aggregate failure remains HOLD_FORWARD_IMPULSE_PRIMARY with zero rows satisfying stability, support, and forward progress together.
-- The stance-relative lateral probe remains the best local direction for forward impulse, but it exceeded lateral and target-velocity gates.
-- The teacher-side velocity-cap follow-up reduced actuator-envelope pressure while keeping a positive mean future-vx delta.
-- That capped follow-up still produced zero robust 100/150 tick modes, and every push-effectiveness trace still failed the lateral-velocity check.
-- The next branch should keep the cap near the measured envelope and attack lateral containment/seed asymmetry; it should not relax the actuator limit or simply increase propulsion.
+- The teacher push-effectiveness reads show weak forward acceleration and lateral leakage.
+- The matched x=0.04 reference only creates positive forward delta while violating lateral stability and the actuator envelope.
+- The original upstream Playground reference key also fails when evaluated against the detached origin/main code path: no positive reference-single future-vx delta and all tested modes remain holds.
+- This points above the local teacher recipe: compare the upstream walking setup, MJCF, contact parameters, reference file, and morphology before authorizing more teacher variants.
 
 ## Required Next Design
 
-- stateful stance-side selection
-- explicit lateral body placement over the stance foot
-- swing-foot placement and clearance objective
-- active lateral containment while stance propulsion remains enabled
-- stance-support propulsion that is not only a direct push-amplitude increase
-- teacher-side target-velocity limiting near the measured actuator envelope
-- stronger lateral velocity, roll, and base-y drift penalties
-- seed-symmetry shaping so seed 0 does not stay weak while seed 2 moves
-- pitch and base-height guards
-- measured actuator-envelope scoring
-- 100-150 tick seed-robust PASS_WEIGHT_TRANSFER_TARGET gate
+- identify the exact upstream walking Playground commit/reference/checkpoint
+- compare MJCF, masses, foot geometry, friction, solver settings, actuator config, and termination rules
+- run the same reference push-effectiveness read in the expected upstream setup if available
+- decide whether the blocker is controller design, local sim drift, or morphology/feasibility
+- only return to teacher generation after the sim/morphology contract is reviewed
 
 ## Stop Rules
 
+- Do not continue PLAN_STANCE_RELATIVE_LATERAL_DAMPING as the default branch.
 - Do not launch PPO/BC from current target sources.
 - Do not run robot validation, grounded replay, or x=0.08.
 - Do not relax teacher target velocity above the measured envelope to buy forward speed.
-- Do not widen the same stance-relative grid without adding lateral containment or seed-symmetry mechanisms.
-- Require PASS_WEIGHT_TRANSFER_TARGET before training re-entry.
+- Do not generate another nearby stance-relative teacher variant until the upstream/local contract is audited.
 
 ## Non-Goals
 

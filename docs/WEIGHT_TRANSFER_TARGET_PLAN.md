@@ -630,6 +630,42 @@ primitive itself. The next branch should change how propulsion is generated
 under stance support, not simply alter transition timing or make the existing
 pitch-chain push more frequent.
 
+Reference push-effectiveness follow-up:
+
+```text
+tool: tools/analyze_reference_push_effectiveness.py
+decision: docs/REFERENCE_PUSH_EFFECTIVENESS_DECISION.md
+matched-reference artifact: outputs/analysis/REFERENCE_PUSH_EFFECTIVENESS_V20_MATCHED.md
+upstream-reference artifact: outputs/analysis/REFERENCE_PUSH_EFFECTIVENESS_UPSTREAM_NEAREST.md
+```
+
+The matched x=0.04 reference can create a small forward impulse only in an
+unstable, over-envelope variant:
+
+```text
+status: HOLD_REFERENCE_PROPULSION_UNSTABLE
+best reference-single future vx delta: +0.0161 m/s
+reference-single vy p95: 0.2688 m/s
+reference-single pitch-chain target velocity p95: 5.1133 rad/s
+```
+
+The original upstream Playground reference key fails the same read in the local
+sim and in a detached `origin/main` Playground worktree:
+
+```text
+command: x=0.074, y=-0.037, yaw=-0.074
+status: HOLD_REFERENCE_CONTACT_MISMATCH
+local branch best reference-single future vx delta: -0.0099 m/s
+origin/main best reference-single future vx delta: -0.0158 m/s
+```
+
+This supersedes `PLAN_STANCE_RELATIVE_LATERAL_DAMPING` as the default next
+branch. Do not run another nearby teacher variant until the upstream walking
+setup is compared against the local sim/morphology/reference contract. The
+first morphology audit found zero XML/reference-file drift from upstream, so
+the next question is the exact upstream walking checkpoint/export path and
+environment/config assumptions, not another local push scalar.
+
 ## Stop Conditions
 
 Stop target generation and do not train if:

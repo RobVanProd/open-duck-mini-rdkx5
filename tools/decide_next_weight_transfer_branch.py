@@ -53,6 +53,9 @@ DEFAULT_STANCE_RELATIVE_VELOCITY_CAP_EFFECTIVENESS_JSON = (
     / "analysis"
     / "foot_placement_stance_relative_velocity_cap_effectiveness_analysis.json"
 )
+DEFAULT_REFERENCE_PUSH_EFFECTIVENESS_JSON = (
+    ROOT / "outputs" / "analysis" / "reference_push_effectiveness_upstream_main_nearest.json"
+)
 DEFAULT_OUTPUT_MD = ROOT / "outputs" / "analysis" / "NEXT_WEIGHT_TRANSFER_BRANCH.md"
 DEFAULT_OUTPUT_JSON = ROOT / "outputs" / "analysis" / "next_weight_transfer_branch.json"
 
@@ -84,6 +87,7 @@ def decide(
     sagittal_softgate_effectiveness: dict[str, Any],
     stance_relative_effectiveness: dict[str, Any],
     stance_relative_velocity_cap_effectiveness: dict[str, Any],
+    reference_push_effectiveness: dict[str, Any],
 ) -> dict[str, Any]:
     gate_status = status_of(gate)
     failure_status = status_of(failure)
@@ -104,10 +108,31 @@ def decide(
     stance_relative_velocity_cap_summary = (
         stance_relative_velocity_cap_effectiveness.get("aggregate") or {}
     )
+    reference_push_status = status_of(reference_push_effectiveness)
+    reference_push_summary = reference_push_effectiveness.get("aggregate") or {}
+    default_required_next_design = [
+        "stateful stance-side selection",
+        "explicit lateral body placement over the stance foot",
+        "swing-foot placement and clearance objective",
+        "active lateral containment while stance propulsion remains enabled",
+        "stance-support propulsion that is not only a direct push-amplitude increase",
+        "teacher-side target-velocity limiting near the measured actuator envelope",
+        "stronger lateral velocity, roll, and base-y drift penalties",
+        "seed-symmetry shaping so seed 0 does not stay weak while seed 2 moves",
+        "pitch and base-height guards",
+        "measured actuator-envelope scoring",
+        "100-150 tick seed-robust PASS_WEIGHT_TRANSFER_TARGET gate",
+    ]
+    required_next_design = default_required_next_design
 
     if gate_status == "PASS_WEIGHT_TRANSFER_TARGET":
         decision = "PROCEED_TARGET_DATASET_SMOKE"
         next_branch = "Build a compact target manifest and run CPU replay before any training."
+        required_next_design = [
+            "compact target manifest",
+            "offline CPU replay smoke",
+            "seed-robust target provenance review",
+        ]
         rationale = [
             "A target source has cleared the documented 100-150 tick gate.",
             "This still does not authorize robot validation.",
@@ -115,6 +140,40 @@ def decide(
         stop_rules = [
             "Do not train until the exact passing source and seeds are reviewed.",
             "Do not run robot validation from this artifact alone.",
+        ]
+    elif reference_push_status in (
+        "HOLD_REFERENCE_CONTACT_MISMATCH",
+        "HOLD_REFERENCE_PROPULSION_UNSTABLE",
+        "HOLD_REFERENCE_PROPULSION_INEFFECTIVE",
+    ):
+        decision = "PLAN_UPSTREAM_SIM_MORPHOLOGY_AUDIT"
+        next_branch = (
+            "Stop the local stance-relative teacher loop and audit the upstream "
+            "walking setup against the local sim/morphology/reference contract. "
+            "The upstream/reference gait fails the same forward push-effectiveness "
+            "question in this sim, so another lateral-damping teacher variant is "
+            "not the default next move."
+        )
+        rationale = [
+            "No checked target source passes PASS_WEIGHT_TRANSFER_TARGET.",
+            "The teacher push-effectiveness reads show weak forward acceleration and lateral leakage.",
+            "The matched x=0.04 reference only creates positive forward delta while violating lateral stability and the actuator envelope.",
+            "The original upstream Playground reference key also fails when evaluated against the detached origin/main code path: no positive reference-single future-vx delta and all tested modes remain holds.",
+            "This points above the local teacher recipe: compare the upstream walking setup, MJCF, contact parameters, reference file, and morphology before authorizing more teacher variants.",
+        ]
+        required_next_design = [
+            "identify the exact upstream walking Playground commit/reference/checkpoint",
+            "compare MJCF, masses, foot geometry, friction, solver settings, actuator config, and termination rules",
+            "run the same reference push-effectiveness read in the expected upstream setup if available",
+            "decide whether the blocker is controller design, local sim drift, or morphology/feasibility",
+            "only return to teacher generation after the sim/morphology contract is reviewed",
+        ]
+        stop_rules = [
+            "Do not continue PLAN_STANCE_RELATIVE_LATERAL_DAMPING as the default branch.",
+            "Do not launch PPO/BC from current target sources.",
+            "Do not run robot validation, grounded replay, or x=0.08.",
+            "Do not relax teacher target velocity above the measured envelope to buy forward speed.",
+            "Do not generate another nearby stance-relative teacher variant until the upstream/local contract is audited.",
         ]
     elif (
         failure_status == "HOLD_FORWARD_IMPULSE_PRIMARY"
@@ -335,21 +394,16 @@ def decide(
                     "PASS_PUSH_EFFECTIVE"
                 )
             ),
+            "reference_push_status": reference_push_status,
+            "reference_best_single_future_vx_delta_m_s": (
+                reference_push_summary.get("best_reference_single_future_vx_delta_m_s")
+            ),
+            "reference_max_single_actual_double_pct": (
+                reference_push_summary.get("max_reference_single_actual_double_pct")
+            ),
         },
         "rationale": rationale,
-        "required_next_design": [
-            "stateful stance-side selection",
-            "explicit lateral body placement over the stance foot",
-            "swing-foot placement and clearance objective",
-            "active lateral containment while stance propulsion remains enabled",
-            "stance-support propulsion that is not only a direct push-amplitude increase",
-            "teacher-side target-velocity limiting near the measured actuator envelope",
-            "stronger lateral velocity, roll, and base-y drift penalties",
-            "seed-symmetry shaping so seed 0 does not stay weak while seed 2 moves",
-            "pitch and base-height guards",
-            "measured actuator-envelope scoring",
-            "100-150 tick seed-robust PASS_WEIGHT_TRANSFER_TARGET gate",
-        ],
+        "required_next_design": required_next_design,
         "stop_rules": stop_rules,
         "non_goals": [
             "robot tests",
@@ -429,6 +483,10 @@ def main() -> int:
         "--stance-relative-velocity-cap-effectiveness-json",
         default=str(DEFAULT_STANCE_RELATIVE_VELOCITY_CAP_EFFECTIVENESS_JSON),
     )
+    parser.add_argument(
+        "--reference-push-effectiveness-json",
+        default=str(DEFAULT_REFERENCE_PUSH_EFFECTIVENESS_JSON),
+    )
     parser.add_argument("--output-md", default=str(DEFAULT_OUTPUT_MD))
     parser.add_argument("--output-json", default=str(DEFAULT_OUTPUT_JSON))
     args = parser.parse_args()
@@ -443,6 +501,7 @@ def main() -> int:
         load_json(Path(args.sagittal_softgate_effectiveness_json)),
         load_json(Path(args.stance_relative_effectiveness_json)),
         load_json(Path(args.stance_relative_velocity_cap_effectiveness_json)),
+        load_json(Path(args.reference_push_effectiveness_json)),
     )
     output_json = Path(args.output_json)
     output_json.parent.mkdir(parents=True, exist_ok=True)
