@@ -3872,3 +3872,17 @@ candidate artifacts.
 
 Next step remains a real CUDA/Colab V21 run and an `x=0.04` multi-seed sim
 gate after `tools/check_v21_launch_readiness.py` reports an active session.
+
+If `google-colab-cli` still cannot see the session but a browser Colab notebook
+is connected, use the single-cell fallback:
+
+```bash
+python3 tools/print_cuda_colab_cell.py \
+  --staged-curriculum-v21 \
+  --rdk-branch codex/colab-cli-cuda-workflow \
+  --playground-branch codex/forward-progress-reward \
+  --handoff-dir /home/lsd/robots/cuda_colab_handoff_v21
+```
+
+The generated notebook runs only the explicit V21 staged curriculum and bundles
+small staged artifacts for local import. It is not robot approval.

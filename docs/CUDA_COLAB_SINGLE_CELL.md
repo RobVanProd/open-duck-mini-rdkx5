@@ -165,6 +165,48 @@ To include the first candidate-training shape in the generated cell:
 python3 tools/print_cuda_colab_cell.py --run-candidate
 ```
 
+### V21 Staged-Curriculum Cell
+
+When `google-colab-cli` cannot see an active session but a browser Colab
+notebook is already authenticated, generate a V21-specific one-cell handoff:
+
+```bash
+python3 tools/print_cuda_colab_cell.py \
+  --staged-curriculum-v21 \
+  --rdk-branch codex/colab-cli-cuda-workflow \
+  --playground-branch codex/forward-progress-reward \
+  --handoff-dir /home/lsd/robots/cuda_colab_handoff_v21
+```
+
+This writes:
+
+```text
+/home/lsd/robots/cuda_colab_handoff_v21/open_duck_cuda_v21_staged.ipynb
+/home/lsd/robots/cuda_colab_handoff_v21/open_duck_cuda_v21_staged_cell.txt
+/home/lsd/robots/cuda_colab_handoff_v21/CUDA_COLAB_HANDOFF.md
+```
+
+The V21 cell runs the explicit weak-soft-prior staged planner:
+
+```bash
+python3 tools/plan_staged_curriculum_training.py \
+  --run \
+  --recipe movement_bootstrap_v21 \
+  --platform gpu \
+  --jax-platforms cuda \
+  --phase-gate-freeze-check \
+  --phase-gate-command-x 0.04 \
+  --phase-gate-bridge-mode vanilla \
+  --phase-gate-platform gpu \
+  --phase-gate-jax-platforms cuda \
+  --phase-gate-seeds 0-3
+```
+
+It skips the older baseline eval/smoke/candidate flow and bundles small V21
+plan, gate, manifest, stdout/stderr, and ONNX artifacts from
+`/content/open_duck_staged_runs`. This is still offline-only for the robot:
+no SSH, deploy, robot test, or policy overwrite is approved by the cell.
+
 If uploading a notebook is easier than copy/pasting a long cell, generate a
 one-code-cell notebook:
 

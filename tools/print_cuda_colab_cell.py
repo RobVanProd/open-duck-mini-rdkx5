@@ -24,12 +24,18 @@ def bash_bool(value: bool) -> str:
 def build_cell(args: argparse.Namespace) -> str:
     candidate_flag = bash_bool(args.run_candidate)
     training_smoke_diagnostic_flag = bash_bool(args.training_smoke_diagnostic)
+    staged_v21_flag = bash_bool(args.staged_curriculum_v21)
     auto_download_flag = bash_bool(not args.no_auto_download)
     smoke_steps = args.smoke_num_timesteps
     candidate_steps = args.candidate_num_timesteps
     candidate_disable_bridge_line = (
         "    --disable-actuator-bridge \\\n"
         if args.candidate_disable_actuator_bridge
+        else ""
+    )
+    staged_v21_stop_after_phase_line = (
+        f"    --stop-after-phase {args.staged_v21_stop_after_phase} \\\n"
+        if args.staged_v21_stop_after_phase
         else ""
     )
     cell = f"""%%bash
@@ -45,6 +51,7 @@ export RDK_BRANCH={args.rdk_branch!r}
 export PLAYGROUND_BRANCH={args.playground_branch!r}
 export RUN_CANDIDATE={candidate_flag}
 export TRAINING_SMOKE_DIAGNOSTIC={training_smoke_diagnostic_flag}
+export STAGED_CURRICULUM_V21={staged_v21_flag}
 export CANDIDATE_NUM_TIMESTEPS={candidate_steps}
 export CANDIDATE_RESTORE_CHECKPOINT_PATH={args.candidate_restore_checkpoint_path!r}
 export CUDA_AUTO_DOWNLOAD={auto_download_flag}
@@ -150,6 +157,7 @@ bundle_cuda_artifacts() {{
       echo "playground_dirty_files=UNKNOWN"
     fi
     echo "run_candidate=$RUN_CANDIDATE"
+    echo "staged_curriculum_v21=$STAGED_CURRICULUM_V21"
   }} > "$ARTIFACT_ROOT/CUDA_CELL_EXIT_STATUS.txt"
   {{
     echo "python_executable=${{PYTHON_BIN:-UNKNOWN}}"
@@ -211,6 +219,20 @@ PY
       done
     fi
   done
+
+  if [ -d /content/open_duck_staged_runs ]; then
+    DEST_ROOT="$ARTIFACT_ROOT/open_duck_staged_runs"
+    mkdir -p "$DEST_ROOT"
+    while IFS= read -r -d '' FILE; do
+      REL="${{FILE#/content/open_duck_staged_runs/}}"
+      mkdir -p "$DEST_ROOT/$(dirname "$REL")"
+      cp "$FILE" "$DEST_ROOT/$REL" 2>/dev/null || true
+    done < <(
+      find /content/open_duck_staged_runs -type f \\
+        \\( -name '*.md' -o -name '*.json' -o -name '*.onnx' -o -name 'stdout.txt' -o -name 'stderr.txt' \\) \\
+        -print0
+    )
+  fi
 
   if tar -czf "$BUNDLE" -C /content "$(basename "$ARTIFACT_ROOT")"; then
     "$PYTHON_BIN" - <<PY
@@ -315,6 +337,40 @@ mkdir -p outputs/analysis/cuda_manual
 echo "=== Environment check ==="
 "$PYTHON_BIN" tools/check_training_env.py \\
   --playground-root /content/Open_Duck_Playground
+
+if [ "$STAGED_CURRICULUM_V21" = "1" ]; then
+  echo "=== Policy/sim contract audit for V21 ==="
+  "$PYTHON_BIN" tools/audit_policy_sim_contract.py \\
+    --policy policy/BEST_WALK_ONNX_2.onnx \\
+    --playground-path /content/Open_Duck_Playground \\
+    --env-python "$PYTHON_BIN" \\
+    --instantiate-timeout-s 600 \\
+    --output-md outputs/analysis/cuda_manual/POLICY_SIM_CONTRACT_AUDIT_CUDA.md \\
+    --output-json outputs/analysis/cuda_manual/policy_sim_contract_audit_cuda.json
+
+  echo "=== V21 staged curriculum ==="
+  "$PYTHON_BIN" tools/plan_staged_curriculum_training.py \\
+    --run \\
+    --recipe movement_bootstrap_v21 \\
+    --playground-path /content/Open_Duck_Playground \\
+    --env-python "$PYTHON_BIN" \\
+    --output-root /content/open_duck_staged_runs/v21 \\
+    --output-md outputs/analysis/cuda_manual/STAGED_CURRICULUM_TRAINING_PLAN_V21_CUDA.md \\
+    --output-json outputs/analysis/cuda_manual/staged_curriculum_training_plan_v21_cuda.json \\
+    --platform gpu \\
+    --jax-platforms cuda \\
+    --timesteps-scale {args.staged_v21_timesteps_scale} \\
+    --phase-timeout-s {args.staged_v21_phase_timeout_s} \\
+{staged_v21_stop_after_phase_line}    --phase-gate-freeze-check \\
+    --phase-gate-command-x 0.04 \\
+    --phase-gate-bridge-mode vanilla \\
+    --phase-gate-platform gpu \\
+    --phase-gate-jax-platforms cuda \\
+    --phase-gate-seeds {args.staged_v21_phase_gate_seeds!r}
+
+  echo "STAGED_CURRICULUM_V21=1, so baseline eval/candidate training were skipped."
+  exit 0
+fi
 
 if [ "$TRAINING_SMOKE_DIAGNOSTIC" = "1" ]; then
   echo "=== CUDA training smoke startup diagnostic ==="
@@ -538,9 +594,19 @@ def write_notebook(path: Path, cell: str) -> None:
     path.write_text(json.dumps(notebook, indent=2) + "\n")
 
 
-def write_handoff_dir(path: Path, cell: str, run_candidate: bool) -> None:
+def write_handoff_dir(
+    path: Path, cell: str, run_candidate: bool, staged_curriculum_v21: bool
+) -> None:
     path.mkdir(parents=True, exist_ok=True)
-    stem = "open_duck_cuda_candidate" if run_candidate else "open_duck_cuda_smoke"
+    if staged_curriculum_v21:
+        stem = "open_duck_cuda_v21_staged"
+        mode = "v21-staged-curriculum"
+    elif run_candidate:
+        stem = "open_duck_cuda_candidate"
+        mode = "candidate"
+    else:
+        stem = "open_duck_cuda_smoke"
+        mode = "smoke"
     cell_path = path / f"{stem}_cell.txt"
     notebook_path = path / f"{stem}.ipynb"
     manifest_path = path / "CUDA_COLAB_HANDOFF.md"
@@ -549,7 +615,6 @@ def write_handoff_dir(path: Path, cell: str, run_candidate: bool) -> None:
     write_notebook(notebook_path, cell)
 
     generated_at = datetime.now(timezone.utc).replace(microsecond=0).isoformat()
-    mode = "candidate" if run_candidate else "smoke"
     manifest_path.write_text(
         textwrap.dedent(
             f"""\
@@ -629,6 +694,15 @@ def main() -> int:
     parser.add_argument("--playground-branch", default=DEFAULT_PLAYGROUND_BRANCH)
     parser.add_argument("--run-candidate", action="store_true")
     parser.add_argument(
+        "--staged-curriculum-v21",
+        action="store_true",
+        help=(
+            "Generate a single cell that runs the explicit V21 weak-soft-prior "
+            "staged curriculum through tools/plan_staged_curriculum_training.py. "
+            "This skips the older baseline eval/smoke/candidate flow."
+        ),
+    )
+    parser.add_argument(
         "--training-smoke-diagnostic",
         action="store_true",
         help=(
@@ -640,6 +714,15 @@ def main() -> int:
     parser.add_argument("--smoke-ppo-num-envs", type=int, default=8)
     parser.add_argument("--smoke-ppo-batch-size", type=int, default=8)
     parser.add_argument("--smoke-episode-length", type=int, default=50)
+    parser.add_argument("--staged-v21-timesteps-scale", type=float, default=1.0)
+    parser.add_argument("--staged-v21-phase-timeout-s", type=int, default=7200)
+    parser.add_argument(
+        "--staged-v21-stop-after-phase",
+        type=int,
+        default=0,
+        help="Optional 1-based V21 phase index to stop after; 0 runs all phases.",
+    )
+    parser.add_argument("--staged-v21-phase-gate-seeds", default="0-3")
     parser.add_argument("--candidate-num-timesteps", type=int, default=200_000)
     parser.add_argument("--candidate-ppo-num-envs", type=int, default=512)
     parser.add_argument("--candidate-ppo-num-evals", type=int, default=5)
@@ -732,7 +815,12 @@ def main() -> int:
     if args.notebook_output:
         write_notebook(Path(args.notebook_output), cell)
     if args.handoff_dir:
-        write_handoff_dir(Path(args.handoff_dir), cell, args.run_candidate)
+        write_handoff_dir(
+            Path(args.handoff_dir),
+            cell,
+            args.run_candidate,
+            args.staged_curriculum_v21,
+        )
     if not args.output and not args.notebook_output and not args.handoff_dir:
         print(cell, end="")
     return 0

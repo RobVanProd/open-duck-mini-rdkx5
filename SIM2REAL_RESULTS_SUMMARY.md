@@ -4833,3 +4833,17 @@ generated checkpoint/ONNX stayed under `/tmp` and is not a candidate.
 The next required result remains unchanged: a real CUDA/Colab V21 run followed
 by an `x=0.04` multi-seed sim gate. Do not run `x=0.08`, fitted-bridge
 expansion, grounded replay, deployment, or robot validation from this smoke.
+
+Manual browser-Colab fallback is now available when `google-colab-cli` cannot
+see a live session:
+
+```bash
+python3 tools/print_cuda_colab_cell.py \
+  --staged-curriculum-v21 \
+  --rdk-branch codex/colab-cli-cuda-workflow \
+  --playground-branch codex/forward-progress-reward \
+  --handoff-dir /home/lsd/robots/cuda_colab_handoff_v21
+```
+
+This generates a one-code-cell V21 staged-curriculum notebook outside the repo
+for a manually authenticated Colab session. It does not approve robot testing.
