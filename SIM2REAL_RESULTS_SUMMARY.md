@@ -4260,3 +4260,52 @@ generator must change the contact state itself, not just the shape of the knee
 lift waveform. Treat this as evidence for an explicit foot-clearance/contact
 reward or a different contact-timing primitive.
 ```
+
+### Foot-Clearance Probe
+
+A smaller CPU probe reran stronger/narrower lift pulses after the generator was
+updated to log foot-site height:
+
+```text
+tool: tools/search_low_command_target_primitives.py
+new trace field: foot_site_z_m
+command: x=0.04
+duration: 4 s
+seeds: 0,2
+candidates: 48
+objective score: HOLD_NO_SEED_ROBUST_TARGETS
+robust 50-sample modes: 0
+score gate included: min_contact_transitions=3
+```
+
+Best objective-scored probe candidate:
+
+```text
+mode: primitive_p0p52_hrb0_hb0p08_h0p035_kb0p06_k0p18_ab0p04_a0_ph0p47_ld0p3_ls0p65
+seed0: pass, vx=0.0475 m/s
+seed2: vx=0.0565 m/s, vy95=0.1166 m/s, contact_dominance=98%
+seed2 contact transitions: 2 / 50 samples
+seed2 foot_site_z_p95: 0.0159 m
+seed2 failures: high_body_pitch, short_done_margin, single_contact_pattern_dominates, too_few_contact_transitions
+```
+
+Curation result:
+
+```text
+50-sample curation: HOLD_INSUFFICIENT_CURATED_DIVERSITY
+50-sample curated windows: 23
+50-sample curated modes: 19
+curated source files: 1
+curated source: seed_000
+25-sample curated windows: 42
+```
+
+Conclusion:
+
+```text
+This probe closes the joint-lift hypothesis for the current primitive family:
+larger/narrower knee lift does not produce enough real foot clearance or
+contact-state diversity on seed2. The next target generator should operate on
+measured foot-site clearance/contact timing, or use a different reference/IK
+primitive, rather than adding more knee-lift amplitude.
+```

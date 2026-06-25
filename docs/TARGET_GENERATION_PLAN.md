@@ -693,6 +693,57 @@ explicitly change contact timing or foot clearance, not just narrow the lift
 waveform.
 ```
 
+## Foot-Clearance Probe Result
+
+After adding `foot_site_z_m` to generator traces, a smaller probe tested
+stronger lift pulses and scored contact transitions explicitly:
+
+```text
+tool: tools/search_low_command_target_primitives.py
+command_x: 0.04
+duration: 4 s
+seeds: 0,2
+candidates: 48
+objective score: HOLD_NO_SEED_ROBUST_TARGETS
+robust modes: 0
+min_contact_transitions: 3
+```
+
+Best probe near pass:
+
+```text
+mode: primitive_p0p52_hrb0_hb0p08_h0p035_kb0p06_k0p18_ab0p04_a0_ph0p47_ld0p3_ls0p65
+seed0: pass, vx=0.0475 m/s
+seed2: vx=0.0565 m/s
+seed2 vy95: 0.1166 m/s
+seed2 contact_dominance: 98%
+seed2 contact_transitions: 2
+seed2 foot_site_z_p95: 0.0159 m
+failure: high_body_pitch, short_done_margin, single_contact_pattern_dominates, too_few_contact_transitions
+```
+
+Curation result:
+
+```text
+25-sample curated windows: 42
+50-sample curated windows: 23
+50-sample curated modes: 19
+status: HOLD_INSUFFICIENT_CURATED_DIVERSITY
+curated source files: 1
+curated source: seed_000
+```
+
+Interpretation:
+
+```text
+The current joint-space primitive does not convert stronger knee/ankle lift
+into reliable seed2 foot clearance or contact alternation. The best windows
+still only show about 1-2 cm foot-site p95 height and two contact transitions in
+50 samples. The next generator should use measured foot clearance/contact
+timing as a primary objective, or switch to a different reference/IK-style
+primitive.
+```
+
 ## First Primitive Search Result
 
 A bounded low-dimensional sine primitive search was run as the first generator

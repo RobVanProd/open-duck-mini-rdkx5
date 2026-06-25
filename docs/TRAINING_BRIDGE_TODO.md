@@ -3310,6 +3310,46 @@ Do next:
 5. require seed2 contact dominance <=95% before target-manifest rebuild
 ```
 
+### Foot-Clearance Probe
+
+The generator now writes `foot_site_z_m` for future target traces. A smaller
+probe used stronger lift pulses and scored contact transitions explicitly:
+
+```text
+candidates: 48
+objective score: HOLD_NO_SEED_ROBUST_TARGETS
+robust 50-sample modes: 0
+min_contact_transitions: 3
+```
+
+Best probe near pass:
+
+```text
+seed0: pass, vx=0.0475 m/s
+seed2: vx=0.0565 m/s, vy95=0.1166 m/s
+seed2 contact_dominance: 98%
+seed2 contact_transitions: 2
+seed2 foot_site_z_p95: 0.0159 m
+```
+
+Curation remained single-seed:
+
+```text
+50-sample curated windows: 23
+50-sample curated modes: 19
+curated source files: 1
+curated source: seed_000
+```
+
+Do next:
+
+```text
+1. stop increasing knee-lift amplitude inside this primitive family
+2. use foot-site clearance and contact transitions as first-class objectives
+3. consider an IK/reference primitive that places swing feet, not only joint sinusoids
+4. keep all training blocked until seed2 contributes curated windows
+```
+
 ### Target Dataset BC Smoke
 
 The observation-ready target manifest was tested with tiny linear and KNN

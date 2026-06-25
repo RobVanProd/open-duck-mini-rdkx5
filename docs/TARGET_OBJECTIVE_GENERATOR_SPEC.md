@@ -272,3 +272,55 @@ dominant contact pattern. The next objective should score actual contact-state
 transitions and/or measured foot clearance, not assume knee lift produces
 contact alternation.
 ```
+
+## Foot-Clearance Probe Finding
+
+Future generator traces now include:
+
+```text
+foot_site_z_m
+```
+
+A stronger lift-pulse probe scored the same candidates with an explicit contact
+transition gate:
+
+```text
+min_contact_transitions: 3
+objective score: HOLD_NO_SEED_ROBUST_TARGETS
+robust 50-sample modes: 0
+seed2 single_contact_pattern_dominates: 48 / 48 modes
+seed2 too_few_contact_transitions: 48 / 48 modes
+```
+
+Best probe near pass:
+
+```text
+seed2 vx: 0.0565 m/s
+seed2 vy95: 0.1166 m/s
+seed2 contact_dominance: 98%
+seed2 contact_transitions: 2 / 50 samples
+seed2 foot_site_z_p95: 0.0159 m
+```
+
+Interpretation:
+
+```text
+The current joint-space sine/lift family is not producing enough foot clearance
+or contact-state diversity on seed2. More knee amplitude is not the next
+highest-value axis. The next generator should either:
+
+1. optimize foot-site trajectories directly, or
+2. synthesize an IK/reference primitive with explicit swing-foot placement, or
+3. use existing reference-motion snippets selected by contact timing rather
+   than low-dimensional joint sinusoids.
+```
+
+Any next search should report:
+
+```text
+foot_site_z_p95_m
+contact_transitions
+contact_dominance_pct
+contact pattern counts
+worst-seed score
+```

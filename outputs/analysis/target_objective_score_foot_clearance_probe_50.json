@@ -1,0 +1,4840 @@
+{
+  "status": "HOLD_NO_SEED_ROBUST_TARGETS",
+  "trace_globs": [
+    "outputs/analysis/target_generator_foot_clearance_probe_traces/**/*.jsonl"
+  ],
+  "trace_files": 96,
+  "required_seeds": [
+    0,
+    2
+  ],
+  "window_samples": 50,
+  "stride_samples": 5,
+  "criteria": {
+    "min_mean_vx": 0.04,
+    "max_vy_abs_p95": 0.12,
+    "max_contact_dominance_pct": 95.0,
+    "max_pitch_abs_p95": 0.35,
+    "min_base_height": 0.145,
+    "max_sent_velocity_p95": 2.5,
+    "max_tracking_p95": 0.12,
+    "min_done_margin": 50,
+    "min_contact_transitions": 3,
+    "min_foot_site_z_p95": -1.0
+  },
+  "reason_counts": {
+    "high_lateral_velocity": 19,
+    "low_forward_velocity": 13,
+    "single_contact_pattern_dominates": 53,
+    "too_few_contact_transitions": 73,
+    "high_body_pitch": 17,
+    "short_done_margin": 27,
+    "low_base_height": 12
+  },
+  "seed_reason_counts": {
+    "seed_000": {
+      "high_lateral_velocity": 19,
+      "low_forward_velocity": 10,
+      "too_few_contact_transitions": 25,
+      "single_contact_pattern_dominates": 5,
+      "short_done_margin": 13,
+      "high_body_pitch": 12,
+      "low_base_height": 7
+    },
+    "seed_002": {
+      "single_contact_pattern_dominates": 48,
+      "too_few_contact_transitions": 48,
+      "low_forward_velocity": 3,
+      "high_body_pitch": 5,
+      "short_done_margin": 14,
+      "low_base_height": 5
+    }
+  },
+  "mode_count": 48,
+  "robust_mode_count": 0,
+  "results": [
+    {
+      "mode": "primitive_p0p52_hrb0_hb0p08_h0p035_kb0p06_k0p18_ab0p04_a0_ph0p47_ld0p3_ls0p65",
+      "worst_seed": "seed_002",
+      "worst_seed_score": -0.0964507154407564,
+      "min_seed_score": -0.0964507154407564,
+      "mean_seed_score": -0.02449635607118846,
+      "pass_seed_count": 1,
+      "pass_seeds": [
+        "seed_000"
+      ],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 50,
+          "start_tick": 0,
+          "end_tick": 49,
+          "start_index": 0,
+          "end_index": 49,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.04745800329837948,
+          "vy_abs_p95_m_s": 0.11966993398964401,
+          "body_pitch_abs_p95_rad": 0.2851264509092734,
+          "base_height_min_m": 0.1474096029996872,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.6924375891685486,
+          "joint_tracking_p95_rad": 0.08245263099670405,
+          "contact_pct": {
+            "01": 10.0,
+            "11": 90.0
+          },
+          "contact_dominance_pct": 90.0,
+          "contact_transitions": 3,
+          "foot_site_z_p95_m": 0.013679970242083072,
+          "score": 0.04745800329837948,
+          "forward_bonus": 0.04745800329837948,
+          "penalty_total": 0.0,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.0,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [],
+          "passes_curation": true
+        },
+        "seed_002": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": 43,
+          "mean_vx_m_s": 0.05653590757399798,
+          "vy_abs_p95_m_s": 0.11660965941846357,
+          "body_pitch_abs_p95_rad": 0.3507466557536886,
+          "base_height_min_m": 0.14534161984920502,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.7135570049285889,
+          "joint_tracking_p95_rad": 0.07429470568895334,
+          "contact_pct": {
+            "01": 2.0,
+            "11": 98.0
+          },
+          "contact_dominance_pct": 98.0,
+          "contact_transitions": 2,
+          "foot_site_z_p95_m": 0.01594532672315836,
+          "score": -0.0964507154407564,
+          "forward_bonus": 0.05653590757399798,
+          "penalty_total": 0.15298662301475438,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.06,
+            "contact_transitions": 0.02,
+            "foot_clearance": 0.0,
+            "pitch": 0.002986623014754386,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.07
+          },
+          "hard_failures": [
+            "high_body_pitch",
+            "short_done_margin",
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p64_hrb0_hb0p08_h0p025_kb0p06_k0p22_ab0p04_a0_ph0p47_ld0p22_ls0p65",
+      "worst_seed": "seed_002",
+      "worst_seed_score": -0.10199174532666802,
+      "min_seed_score": -0.10199174532666802,
+      "mean_seed_score": -0.027616531667881642,
+      "pass_seed_count": 1,
+      "pass_seeds": [
+        "seed_000"
+      ],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 50,
+          "start_tick": 0,
+          "end_tick": 49,
+          "start_index": 0,
+          "end_index": 49,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.04675868199090474,
+          "vy_abs_p95_m_s": 0.11996874026954168,
+          "body_pitch_abs_p95_rad": 0.2826678458309413,
+          "base_height_min_m": 0.14670337736606598,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.4998907446861267,
+          "joint_tracking_p95_rad": 0.07363749742507933,
+          "contact_pct": {
+            "01": 10.0,
+            "11": 90.0
+          },
+          "contact_dominance_pct": 90.0,
+          "contact_transitions": 3,
+          "foot_site_z_p95_m": 0.01089426204562187,
+          "score": 0.04675868199090474,
+          "forward_bonus": 0.04675868199090474,
+          "penalty_total": 0.0,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.0,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [],
+          "passes_curation": true
+        },
+        "seed_002": {
+          "samples": 50,
+          "start_tick": 10,
+          "end_tick": 59,
+          "start_index": 10,
+          "end_index": 59,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.058008254673331976,
+          "vy_abs_p95_m_s": 0.06463313065469264,
+          "body_pitch_abs_p95_rad": 0.32391901035371423,
+          "base_height_min_m": 0.14608193933963776,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.4323124885559082,
+          "joint_tracking_p95_rad": 0.06672720313072202,
+          "contact_pct": {
+            "11": 100.0
+          },
+          "contact_dominance_pct": 100.0,
+          "contact_transitions": 0,
+          "foot_site_z_p95_m": 0.014584509842097759,
+          "score": -0.10199174532666802,
+          "forward_bonus": 0.058008254673331976,
+          "penalty_total": 0.16,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.1,
+            "contact_transitions": 0.06,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p52_hrb0_hb0p08_h0p035_kb0p06_k0p22_ab0p04_a0_ph0p3927_ld0p16_ls0p65",
+      "worst_seed": "seed_002",
+      "worst_seed_score": -0.10494012312032283,
+      "min_seed_score": -0.10494012312032283,
+      "mean_seed_score": -0.029329879034921763,
+      "pass_seed_count": 1,
+      "pass_seeds": [
+        "seed_000"
+      ],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 50,
+          "start_tick": 0,
+          "end_tick": 49,
+          "start_index": 0,
+          "end_index": 49,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.046280365050479305,
+          "vy_abs_p95_m_s": 0.11729906499385825,
+          "body_pitch_abs_p95_rad": 0.283594079169956,
+          "base_height_min_m": 0.1477777063846588,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.5719870328903198,
+          "joint_tracking_p95_rad": 0.08593792915344223,
+          "contact_pct": {
+            "01": 10.0,
+            "11": 90.0
+          },
+          "contact_dominance_pct": 90.0,
+          "contact_transitions": 3,
+          "foot_site_z_p95_m": 0.013182062283158302,
+          "score": 0.046280365050479305,
+          "forward_bonus": 0.046280365050479305,
+          "penalty_total": 0.0,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.0,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [],
+          "passes_curation": true
+        },
+        "seed_002": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.05505987687967718,
+          "vy_abs_p95_m_s": 0.10212995484471306,
+          "body_pitch_abs_p95_rad": 0.34081196567618,
+          "base_height_min_m": 0.145852193236351,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.675809383392334,
+          "joint_tracking_p95_rad": 0.07183886170387262,
+          "contact_pct": {
+            "11": 100.0
+          },
+          "contact_dominance_pct": 100.0,
+          "contact_transitions": 0,
+          "foot_site_z_p95_m": 0.015433861315250395,
+          "score": -0.10494012312032283,
+          "forward_bonus": 0.05505987687967718,
+          "penalty_total": 0.16,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.1,
+            "contact_transitions": 0.06,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p58_hrb0_hb0p08_h0p035_kb0p06_k0p22_ab0p04_a0p0105_ph0p3927_ld0p22_ls0p65",
+      "worst_seed": "seed_002",
+      "worst_seed_score": -0.22200807632878425,
+      "min_seed_score": -0.22200807632878425,
+      "mean_seed_score": -0.08549575666897,
+      "pass_seed_count": 1,
+      "pass_seeds": [
+        "seed_000"
+      ],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 50,
+          "start_tick": 0,
+          "end_tick": 49,
+          "start_index": 0,
+          "end_index": 49,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.05101656299084425,
+          "vy_abs_p95_m_s": 0.11901963874697677,
+          "body_pitch_abs_p95_rad": 0.29966058490168795,
+          "base_height_min_m": 0.14688071608543396,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.5127429962158203,
+          "joint_tracking_p95_rad": 0.0791117966175077,
+          "contact_pct": {
+            "01": 10.0,
+            "11": 90.0
+          },
+          "contact_dominance_pct": 90.0,
+          "contact_transitions": 3,
+          "foot_site_z_p95_m": 0.013210672512650488,
+          "score": 0.05101656299084425,
+          "forward_bonus": 0.05101656299084425,
+          "penalty_total": 0.0,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.0,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [],
+          "passes_curation": true
+        },
+        "seed_002": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": 38,
+          "mean_vx_m_s": 0.05799192367121577,
+          "vy_abs_p95_m_s": 0.10302279703319057,
+          "body_pitch_abs_p95_rad": 0.3316661263200603,
+          "base_height_min_m": 0.14589059352874756,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.49222856760025024,
+          "joint_tracking_p95_rad": 0.06698295027017591,
+          "contact_pct": {
+            "11": 100.0
+          },
+          "contact_dominance_pct": 100.0,
+          "contact_transitions": 0,
+          "foot_site_z_p95_m": 0.016106986813247202,
+          "score": -0.22200807632878425,
+          "forward_bonus": 0.05799192367121577,
+          "penalty_total": 0.28,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.1,
+            "contact_transitions": 0.06,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.12
+          },
+          "hard_failures": [
+            "short_done_margin",
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p52_hrb0_hb0p08_h0p025_kb0p06_k0p18_ab0p04_a0p0075_ph0p47_ld0p22_ls1",
+      "worst_seed": "seed_002",
+      "worst_seed_score": -0.03477341272184276,
+      "min_seed_score": -0.03477341272184276,
+      "mean_seed_score": -0.025610663809420647,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.0381724539003335,
+          "vy_abs_p95_m_s": 0.07950062938034534,
+          "body_pitch_abs_p95_rad": 0.27142210897919994,
+          "base_height_min_m": 0.14749939739704132,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.2986341714859009,
+          "joint_tracking_p95_rad": 0.07224283218383785,
+          "contact_pct": {
+            "01": 6.0,
+            "11": 94.0
+          },
+          "contact_dominance_pct": 94.0,
+          "contact_transitions": 1,
+          "foot_site_z_p95_m": 0.012514811754226685,
+          "score": -0.016447914896998532,
+          "forward_bonus": 0.0381724539003335,
+          "penalty_total": 0.05462036879733203,
+          "penalties": {
+            "forward_shortfall": 0.014620368797332028,
+            "lateral": 0.0,
+            "contact": 0.0,
+            "contact_transitions": 0.04,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "low_forward_velocity",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.04522658727815724,
+          "vy_abs_p95_m_s": 0.11630238443613047,
+          "body_pitch_abs_p95_rad": 0.2787079336015059,
+          "base_height_min_m": 0.14671207964420319,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.2986341714859009,
+          "joint_tracking_p95_rad": 0.07379804253578184,
+          "contact_pct": {
+            "01": 2.0,
+            "11": 98.0
+          },
+          "contact_dominance_pct": 98.0,
+          "contact_transitions": 2,
+          "foot_site_z_p95_m": 0.012657663598656655,
+          "score": -0.03477341272184276,
+          "forward_bonus": 0.04522658727815724,
+          "penalty_total": 0.08,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.06,
+            "contact_transitions": 0.02,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p52_hrb0_hb0p08_h0p035_kb0p06_k0p18_ab0p06_a0_ph0p47_ld0p16_ls0p65",
+      "worst_seed": "seed_002",
+      "worst_seed_score": -0.10322930590016768,
+      "min_seed_score": -0.10322930590016768,
+      "mean_seed_score": -0.032440107937436194,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 50,
+          "start_tick": 0,
+          "end_tick": 49,
+          "start_index": 0,
+          "end_index": 49,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.0548270348762162,
+          "vy_abs_p95_m_s": 0.12205974310636511,
+          "body_pitch_abs_p95_rad": 0.33843571339356743,
+          "base_height_min_m": 0.14641600847244263,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.47682076692581177,
+          "joint_tracking_p95_rad": 0.08537215590476979,
+          "contact_pct": {
+            "01": 10.0,
+            "11": 90.0
+          },
+          "contact_dominance_pct": 90.0,
+          "contact_transitions": 3,
+          "foot_site_z_p95_m": 0.015769089758396148,
+          "score": 0.03834909002529529,
+          "forward_bonus": 0.0548270348762162,
+          "penalty_total": 0.01647794485092091,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.01647794485092091,
+            "contact": 0.0,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "high_lateral_velocity"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": 68,
+          "mean_vx_m_s": 0.056770694099832326,
+          "vy_abs_p95_m_s": 0.08211782798171036,
+          "body_pitch_abs_p95_rad": 0.3465572512240336,
+          "base_height_min_m": 0.14538562297821045,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.5110904574394226,
+          "joint_tracking_p95_rad": 0.07239104509353637,
+          "contact_pct": {
+            "11": 100.0
+          },
+          "contact_dominance_pct": 100.0,
+          "contact_transitions": 0,
+          "foot_site_z_p95_m": 0.01493262853473425,
+          "score": -0.10322930590016768,
+          "forward_bonus": 0.056770694099832326,
+          "penalty_total": 0.16,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.1,
+            "contact_transitions": 0.06,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p64_hrb0_hb0p08_h0p025_kb0p06_k0p18_ab0p06_a0p0075_ph0p3927_ld0p16_ls0p65",
+      "worst_seed": "seed_002",
+      "worst_seed_score": -0.10487299727275967,
+      "min_seed_score": -0.10487299727275967,
+      "mean_seed_score": -0.04542416908312589,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.054024659106507895,
+          "vy_abs_p95_m_s": 0.061572473868727676,
+          "body_pitch_abs_p95_rad": 0.3326099149062657,
+          "base_height_min_m": 0.14622387290000916,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.39174556732177734,
+          "joint_tracking_p95_rad": 0.062428033351898185,
+          "contact_pct": {
+            "01": 8.0,
+            "11": 92.0
+          },
+          "contact_dominance_pct": 92.0,
+          "contact_transitions": 1,
+          "foot_site_z_p95_m": 0.014029096998274326,
+          "score": 0.014024659106507895,
+          "forward_bonus": 0.054024659106507895,
+          "penalty_total": 0.04,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.0,
+            "contact_transitions": 0.04,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 50,
+          "start_tick": 10,
+          "end_tick": 59,
+          "start_index": 10,
+          "end_index": 59,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.055127002727240325,
+          "vy_abs_p95_m_s": 0.05476253461092709,
+          "body_pitch_abs_p95_rad": 0.32316677604997573,
+          "base_height_min_m": 0.14629629254341125,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.39174556732177734,
+          "joint_tracking_p95_rad": 0.0681448459625244,
+          "contact_pct": {
+            "11": 100.0
+          },
+          "contact_dominance_pct": 100.0,
+          "contact_transitions": 0,
+          "foot_site_z_p95_m": 0.013732942380011081,
+          "score": -0.10487299727275967,
+          "forward_bonus": 0.055127002727240325,
+          "penalty_total": 0.16,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.1,
+            "contact_transitions": 0.06,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p64_hrb0_hb0p08_h0p025_kb0p06_k0p14_ab0p06_a0p0075_ph0p47_ld0p3_ls0p65",
+      "worst_seed": "seed_002",
+      "worst_seed_score": -0.10646040115971118,
+      "min_seed_score": -0.10646040115971118,
+      "mean_seed_score": -0.04634965539094992,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.05376109037781134,
+          "vy_abs_p95_m_s": 0.06317139342427254,
+          "body_pitch_abs_p95_rad": 0.3314878488353136,
+          "base_height_min_m": 0.14623260498046875,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.3851473331451416,
+          "joint_tracking_p95_rad": 0.06131579875946042,
+          "contact_pct": {
+            "01": 8.0,
+            "11": 92.0
+          },
+          "contact_dominance_pct": 92.0,
+          "contact_transitions": 1,
+          "foot_site_z_p95_m": 0.013968458212912082,
+          "score": 0.013761090377811341,
+          "forward_bonus": 0.05376109037781134,
+          "penalty_total": 0.04,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.0,
+            "contact_transitions": 0.04,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 50,
+          "start_tick": 10,
+          "end_tick": 59,
+          "start_index": 10,
+          "end_index": 59,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.05353959884028882,
+          "vy_abs_p95_m_s": 0.049766044318675984,
+          "body_pitch_abs_p95_rad": 0.31741993645390226,
+          "base_height_min_m": 0.1465907245874405,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.3851473331451416,
+          "joint_tracking_p95_rad": 0.06783499121665953,
+          "contact_pct": {
+            "11": 100.0
+          },
+          "contact_dominance_pct": 100.0,
+          "contact_transitions": 0,
+          "foot_site_z_p95_m": 0.013878407888114452,
+          "score": -0.10646040115971118,
+          "forward_bonus": 0.05353959884028882,
+          "penalty_total": 0.16,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.1,
+            "contact_transitions": 0.06,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p64_hrb0_hb0p08_h0p035_kb0p06_k0p14_ab0p06_a0p0105_ph0p47_ld0p22_ls0p65",
+      "worst_seed": "seed_002",
+      "worst_seed_score": -0.10835408919141629,
+      "min_seed_score": -0.10835408919141629,
+      "mean_seed_score": -0.04696773783885874,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.0544186135136988,
+          "vy_abs_p95_m_s": 0.06818908713757992,
+          "body_pitch_abs_p95_rad": 0.3359099524340983,
+          "base_height_min_m": 0.14646176993846893,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.3429830074310303,
+          "joint_tracking_p95_rad": 0.06480982303619384,
+          "contact_pct": {
+            "01": 8.0,
+            "11": 92.0
+          },
+          "contact_dominance_pct": 92.0,
+          "contact_transitions": 1,
+          "foot_site_z_p95_m": 0.01458358597010374,
+          "score": 0.014418613513698803,
+          "forward_bonus": 0.0544186135136988,
+          "penalty_total": 0.04,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.0,
+            "contact_transitions": 0.04,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 50,
+          "start_tick": 10,
+          "end_tick": 59,
+          "start_index": 10,
+          "end_index": 59,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.051645910808583724,
+          "vy_abs_p95_m_s": 0.04829913191497325,
+          "body_pitch_abs_p95_rad": 0.30010130565872883,
+          "base_height_min_m": 0.14719432592391968,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.3429830074310303,
+          "joint_tracking_p95_rad": 0.06903519630432128,
+          "contact_pct": {
+            "11": 100.0
+          },
+          "contact_dominance_pct": 100.0,
+          "contact_transitions": 0,
+          "foot_site_z_p95_m": 0.013536405004560947,
+          "score": -0.10835408919141629,
+          "forward_bonus": 0.051645910808583724,
+          "penalty_total": 0.16,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.1,
+            "contact_transitions": 0.06,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p58_hrb0_hb0p08_h0p025_kb0p06_k0p18_ab0p04_a0p0075_ph0p47_ld0p3_ls0p65",
+      "worst_seed": "seed_002",
+      "worst_seed_score": -0.10941030542366206,
+      "min_seed_score": -0.10941030542366206,
+      "mean_seed_score": -0.05101757536031073,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.04737515470304061,
+          "vy_abs_p95_m_s": 0.060037220455706114,
+          "body_pitch_abs_p95_rad": 0.2929714111103503,
+          "base_height_min_m": 0.14745822548866272,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.5267798900604248,
+          "joint_tracking_p95_rad": 0.062291201949119565,
+          "contact_pct": {
+            "01": 6.0,
+            "11": 94.0
+          },
+          "contact_dominance_pct": 94.0,
+          "contact_transitions": 1,
+          "foot_site_z_p95_m": 0.013051061704754828,
+          "score": 0.007375154703040607,
+          "forward_bonus": 0.04737515470304061,
+          "penalty_total": 0.04,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.0,
+            "contact_transitions": 0.04,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.05058969457633793,
+          "vy_abs_p95_m_s": 0.07002162933349605,
+          "body_pitch_abs_p95_rad": 0.3019547983548029,
+          "base_height_min_m": 0.14714905619621277,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.5267798900604248,
+          "joint_tracking_p95_rad": 0.0632706999778747,
+          "contact_pct": {
+            "11": 100.0
+          },
+          "contact_dominance_pct": 100.0,
+          "contact_transitions": 0,
+          "foot_site_z_p95_m": 0.013539474084973337,
+          "score": -0.10941030542366206,
+          "forward_bonus": 0.05058969457633793,
+          "penalty_total": 0.16,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.1,
+            "contact_transitions": 0.06,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p58_hrb0_hb0p08_h0p025_kb0p06_k0p22_ab0p04_a0_ph0p47_ld0p16_ls0p65",
+      "worst_seed": "seed_002",
+      "worst_seed_score": -0.1100480725709349,
+      "min_seed_score": -0.1100480725709349,
+      "mean_seed_score": -0.042104393796761896,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 50,
+          "start_tick": 0,
+          "end_tick": 49,
+          "start_index": 0,
+          "end_index": 49,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.045747927150223404,
+          "vy_abs_p95_m_s": 0.12248858027160153,
+          "body_pitch_abs_p95_rad": 0.2837727594392311,
+          "base_height_min_m": 0.14756923913955688,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.5153343081474304,
+          "joint_tracking_p95_rad": 0.08264560699462883,
+          "contact_pct": {
+            "01": 10.0,
+            "11": 90.0
+          },
+          "contact_dominance_pct": 90.0,
+          "contact_transitions": 3,
+          "foot_site_z_p95_m": 0.01236653383821249,
+          "score": 0.025839284977411107,
+          "forward_bonus": 0.045747927150223404,
+          "penalty_total": 0.019908642172812296,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.019908642172812296,
+            "contact": 0.0,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "high_lateral_velocity"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.04995192742906511,
+          "vy_abs_p95_m_s": 0.07184142488986249,
+          "body_pitch_abs_p95_rad": 0.303358256682117,
+          "base_height_min_m": 0.14683356881141663,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.5153343081474304,
+          "joint_tracking_p95_rad": 0.06871144175529477,
+          "contact_pct": {
+            "11": 100.0
+          },
+          "contact_dominance_pct": 100.0,
+          "contact_transitions": 0,
+          "foot_site_z_p95_m": 0.013205895759165287,
+          "score": -0.1100480725709349,
+          "forward_bonus": 0.04995192742906511,
+          "penalty_total": 0.16,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.1,
+            "contact_transitions": 0.06,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p58_hrb0_hb0p08_h0p025_kb0p06_k0p18_ab0p04_a0p00375_ph0p3927_ld0p3_ls0p65",
+      "worst_seed": "seed_002",
+      "worst_seed_score": -0.111284200376831,
+      "min_seed_score": -0.111284200376831,
+      "mean_seed_score": -0.05201204305165447,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.04726011427352205,
+          "vy_abs_p95_m_s": 0.06562782786786556,
+          "body_pitch_abs_p95_rad": 0.2924554457406783,
+          "base_height_min_m": 0.14736443758010864,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.5027011036872864,
+          "joint_tracking_p95_rad": 0.06394410133361815,
+          "contact_pct": {
+            "01": 6.0,
+            "11": 94.0
+          },
+          "contact_dominance_pct": 94.0,
+          "contact_transitions": 1,
+          "foot_site_z_p95_m": 0.013093008287250995,
+          "score": 0.00726011427352205,
+          "forward_bonus": 0.04726011427352205,
+          "penalty_total": 0.04,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.0,
+            "contact_transitions": 0.04,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.04871579962316901,
+          "vy_abs_p95_m_s": 0.07181930057704441,
+          "body_pitch_abs_p95_rad": 0.2935761998523233,
+          "base_height_min_m": 0.147279292345047,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.5027011036872864,
+          "joint_tracking_p95_rad": 0.06698807477951044,
+          "contact_pct": {
+            "11": 100.0
+          },
+          "contact_dominance_pct": 100.0,
+          "contact_transitions": 0,
+          "foot_site_z_p95_m": 0.01298220306634903,
+          "score": -0.111284200376831,
+          "forward_bonus": 0.04871579962316901,
+          "penalty_total": 0.16,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.1,
+            "contact_transitions": 0.06,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p52_hrb0_hb0p08_h0p035_kb0p06_k0p14_ab0p06_a0p00525_ph0p32_ld0p22_ls1",
+      "worst_seed": "seed_002",
+      "worst_seed_score": -0.11165301891851415,
+      "min_seed_score": -0.11165301891851415,
+      "mean_seed_score": -0.051519547686293674,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.04861392354592681,
+          "vy_abs_p95_m_s": 0.08480432182550429,
+          "body_pitch_abs_p95_rad": 0.34077232726174783,
+          "base_height_min_m": 0.1461585909128189,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.4214972257614136,
+          "joint_tracking_p95_rad": 0.07640838623046871,
+          "contact_pct": {
+            "01": 6.0,
+            "11": 94.0
+          },
+          "contact_dominance_pct": 94.0,
+          "contact_transitions": 1,
+          "foot_site_z_p95_m": 0.016105641238391397,
+          "score": 0.008613923545926806,
+          "forward_bonus": 0.04861392354592681,
+          "penalty_total": 0.04,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.0,
+            "contact_transitions": 0.04,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.048346981081485864,
+          "vy_abs_p95_m_s": 0.08614072352647772,
+          "body_pitch_abs_p95_rad": 0.28962389122735077,
+          "base_height_min_m": 0.14692528545856476,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.4214972257614136,
+          "joint_tracking_p95_rad": 0.07221712470054621,
+          "contact_pct": {
+            "11": 100.0
+          },
+          "contact_dominance_pct": 100.0,
+          "contact_transitions": 0,
+          "foot_site_z_p95_m": 0.013641604222357271,
+          "score": -0.11165301891851415,
+          "forward_bonus": 0.048346981081485864,
+          "penalty_total": 0.16,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.1,
+            "contact_transitions": 0.06,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p64_hrb0_hb0p08_h0p025_kb0p06_k0p18_ab0p06_a0p0075_ph0p32_ld0p16_ls1",
+      "worst_seed": "seed_002",
+      "worst_seed_score": -0.11173587394296192,
+      "min_seed_score": -0.11173587394296192,
+      "mean_seed_score": -0.05207836989251248,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.05579159519635141,
+          "vy_abs_p95_m_s": 0.08072228282690044,
+          "body_pitch_abs_p95_rad": 0.3520531152596036,
+          "base_height_min_m": 0.14516884088516235,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.23903846740722656,
+          "joint_tracking_p95_rad": 0.07291814684867856,
+          "contact_pct": {
+            "01": 4.0,
+            "11": 96.0
+          },
+          "contact_dominance_pct": 96.0,
+          "contact_transitions": 2,
+          "foot_site_z_p95_m": 0.01521195080131292,
+          "score": 0.007579134157936963,
+          "forward_bonus": 0.05579159519635141,
+          "penalty_total": 0.04821246103841444,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.02,
+            "contact_transitions": 0.02,
+            "foot_clearance": 0.0,
+            "pitch": 0.008212461038414443,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "high_body_pitch",
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.04826412605703809,
+          "vy_abs_p95_m_s": 0.09234943985939018,
+          "body_pitch_abs_p95_rad": 0.28624334256927875,
+          "base_height_min_m": 0.1470986008644104,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.23903846740722656,
+          "joint_tracking_p95_rad": 0.06784284114837646,
+          "contact_pct": {
+            "11": 100.0
+          },
+          "contact_dominance_pct": 100.0,
+          "contact_transitions": 0,
+          "foot_site_z_p95_m": 0.010513993166387079,
+          "score": -0.11173587394296192,
+          "forward_bonus": 0.04826412605703809,
+          "penalty_total": 0.16,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.1,
+            "contact_transitions": 0.06,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p52_hrb0_hb0p08_h0p025_kb0p06_k0p22_ab0p06_a0_ph0p32_ld0p16_ls1",
+      "worst_seed": "seed_002",
+      "worst_seed_score": -0.11193058158271016,
+      "min_seed_score": -0.11193058158271016,
+      "mean_seed_score": -0.052107721020001926,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.047715139542706314,
+          "vy_abs_p95_m_s": 0.08084325753152369,
+          "body_pitch_abs_p95_rad": 0.32255024046480607,
+          "base_height_min_m": 0.1466112583875656,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.2953827381134033,
+          "joint_tracking_p95_rad": 0.07729910016059874,
+          "contact_pct": {
+            "01": 4.0,
+            "11": 96.0
+          },
+          "contact_dominance_pct": 96.0,
+          "contact_transitions": 2,
+          "foot_site_z_p95_m": 0.015161799266934395,
+          "score": 0.007715139542706313,
+          "forward_bonus": 0.047715139542706314,
+          "penalty_total": 0.04,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.02,
+            "contact_transitions": 0.02,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.04806941841728985,
+          "vy_abs_p95_m_s": 0.09290123768150797,
+          "body_pitch_abs_p95_rad": 0.2885396877287679,
+          "base_height_min_m": 0.14680255949497223,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.2953827381134033,
+          "joint_tracking_p95_rad": 0.07377824187278746,
+          "contact_pct": {
+            "11": 100.0
+          },
+          "contact_dominance_pct": 100.0,
+          "contact_transitions": 0,
+          "foot_site_z_p95_m": 0.01318643894046545,
+          "score": -0.11193058158271016,
+          "forward_bonus": 0.04806941841728985,
+          "penalty_total": 0.16,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.1,
+            "contact_transitions": 0.06,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p64_hrb0_hb0p08_h0p025_kb0p06_k0p18_ab0p06_a0p00375_ph0p47_ld0p16_ls1",
+      "worst_seed": "seed_002",
+      "worst_seed_score": -0.111940678365645,
+      "min_seed_score": -0.111940678365645,
+      "mean_seed_score": -0.048853087228199005,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.054234503909246994,
+          "vy_abs_p95_m_s": 0.08145647495985028,
+          "body_pitch_abs_p95_rad": 0.34526985468062316,
+          "base_height_min_m": 0.1456063836812973,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.23928284645080566,
+          "joint_tracking_p95_rad": 0.07271760106086728,
+          "contact_pct": {
+            "01": 4.0,
+            "11": 96.0
+          },
+          "contact_dominance_pct": 96.0,
+          "contact_transitions": 2,
+          "foot_site_z_p95_m": 0.015101060457527637,
+          "score": 0.014234503909246993,
+          "forward_bonus": 0.054234503909246994,
+          "penalty_total": 0.04,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.02,
+            "contact_transitions": 0.02,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.048059321634355,
+          "vy_abs_p95_m_s": 0.08833770193159574,
+          "body_pitch_abs_p95_rad": 0.28781176908349904,
+          "base_height_min_m": 0.14707393944263458,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.23928284645080566,
+          "joint_tracking_p95_rad": 0.06731508374214171,
+          "contact_pct": {
+            "11": 100.0
+          },
+          "contact_dominance_pct": 100.0,
+          "contact_transitions": 0,
+          "foot_site_z_p95_m": 0.011007704213261603,
+          "score": -0.111940678365645,
+          "forward_bonus": 0.048059321634355,
+          "penalty_total": 0.16,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.1,
+            "contact_transitions": 0.06,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p52_hrb0_hb0p08_h0p035_kb0p06_k0p22_ab0p06_a0p00525_ph0p3927_ld0p16_ls1",
+      "worst_seed": "seed_002",
+      "worst_seed_score": -0.11198308621766045,
+      "min_seed_score": -0.11198308621766045,
+      "mean_seed_score": -0.05144020046456717,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.04910268528852612,
+          "vy_abs_p95_m_s": 0.08594522923231124,
+          "body_pitch_abs_p95_rad": 0.34144031825439125,
+          "base_height_min_m": 0.14600056409835815,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.41248202323913574,
+          "joint_tracking_p95_rad": 0.07917839288711548,
+          "contact_pct": {
+            "01": 6.0,
+            "11": 94.0
+          },
+          "contact_dominance_pct": 94.0,
+          "contact_transitions": 1,
+          "foot_site_z_p95_m": 0.01659503411501646,
+          "score": 0.009102685288526119,
+          "forward_bonus": 0.04910268528852612,
+          "penalty_total": 0.04,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.0,
+            "contact_transitions": 0.04,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.04801691378233954,
+          "vy_abs_p95_m_s": 0.09249720498919478,
+          "body_pitch_abs_p95_rad": 0.2862082673862102,
+          "base_height_min_m": 0.14683003723621368,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.41248202323913574,
+          "joint_tracking_p95_rad": 0.0760939300060272,
+          "contact_pct": {
+            "11": 100.0
+          },
+          "contact_dominance_pct": 100.0,
+          "contact_transitions": 0,
+          "foot_site_z_p95_m": 0.013417197391390799,
+          "score": -0.11198308621766045,
+          "forward_bonus": 0.04801691378233954,
+          "penalty_total": 0.16,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.1,
+            "contact_transitions": 0.06,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p52_hrb0_hb0p08_h0p035_kb0p06_k0p14_ab0p06_a0_ph0p32_ld0p22_ls0p65",
+      "worst_seed": "seed_002",
+      "worst_seed_score": -0.11231119830394165,
+      "min_seed_score": -0.11231119830394165,
+      "mean_seed_score": -0.05236741771805101,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.04757636286783964,
+          "vy_abs_p95_m_s": 0.06863258965313435,
+          "body_pitch_abs_p95_rad": 0.3269316596401209,
+          "base_height_min_m": 0.14660631120204926,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.4214972257614136,
+          "joint_tracking_p95_rad": 0.06569708585739129,
+          "contact_pct": {
+            "01": 8.0,
+            "11": 92.0
+          },
+          "contact_dominance_pct": 92.0,
+          "contact_transitions": 1,
+          "foot_site_z_p95_m": 0.014791372045874595,
+          "score": 0.007576362867839637,
+          "forward_bonus": 0.04757636286783964,
+          "penalty_total": 0.04,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.0,
+            "contact_transitions": 0.04,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.04768880169605836,
+          "vy_abs_p95_m_s": 0.07483083866536608,
+          "body_pitch_abs_p95_rad": 0.2936746703106511,
+          "base_height_min_m": 0.14673075079917908,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.4214972257614136,
+          "joint_tracking_p95_rad": 0.06724904179573052,
+          "contact_pct": {
+            "11": 100.0
+          },
+          "contact_dominance_pct": 100.0,
+          "contact_transitions": 0,
+          "foot_site_z_p95_m": 0.012589854188263416,
+          "score": -0.11231119830394165,
+          "forward_bonus": 0.04768880169605836,
+          "penalty_total": 0.16,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.1,
+            "contact_transitions": 0.06,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p58_hrb0_hb0p08_h0p035_kb0p06_k0p18_ab0p06_a0p00525_ph0p47_ld0p16_ls1",
+      "worst_seed": "seed_002",
+      "worst_seed_score": -0.11235281242086785,
+      "min_seed_score": -0.11235281242086785,
+      "mean_seed_score": -0.05302352033279022,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.046305771755287425,
+          "vy_abs_p95_m_s": 0.08088278919458389,
+          "body_pitch_abs_p95_rad": 0.32570192082602223,
+          "base_height_min_m": 0.14697597920894623,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.36058053374290466,
+          "joint_tracking_p95_rad": 0.07066115736961359,
+          "contact_pct": {
+            "01": 4.0,
+            "11": 96.0
+          },
+          "contact_dominance_pct": 96.0,
+          "contact_transitions": 2,
+          "foot_site_z_p95_m": 0.014178986847400665,
+          "score": 0.0063057717552874246,
+          "forward_bonus": 0.046305771755287425,
+          "penalty_total": 0.04,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.02,
+            "contact_transitions": 0.02,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.04764718757913215,
+          "vy_abs_p95_m_s": 0.09477828890085212,
+          "body_pitch_abs_p95_rad": 0.27670979276543595,
+          "base_height_min_m": 0.14761212468147278,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.36058053374290466,
+          "joint_tracking_p95_rad": 0.07109075188636779,
+          "contact_pct": {
+            "11": 100.0
+          },
+          "contact_dominance_pct": 100.0,
+          "contact_transitions": 0,
+          "foot_site_z_p95_m": 0.012978897802531718,
+          "score": -0.11235281242086785,
+          "forward_bonus": 0.04764718757913215,
+          "penalty_total": 0.16,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.1,
+            "contact_transitions": 0.06,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p52_hrb0_hb0p08_h0p025_kb0p06_k0p18_ab0p04_a0p0075_ph0p3927_ld0p22_ls1",
+      "worst_seed": "seed_002",
+      "worst_seed_score": -0.11403910660184921,
+      "min_seed_score": -0.11403910660184921,
+      "mean_seed_score": -0.06463316351640971,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.03830808661878109,
+          "vy_abs_p95_m_s": 0.07977528050541877,
+          "body_pitch_abs_p95_rad": 0.27502817576091143,
+          "base_height_min_m": 0.14754563570022583,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.3012031316757202,
+          "joint_tracking_p95_rad": 0.07194595932960508,
+          "contact_pct": {
+            "01": 6.0,
+            "11": 94.0
+          },
+          "contact_dominance_pct": 94.0,
+          "contact_transitions": 1,
+          "foot_site_z_p95_m": 0.012519989535212515,
+          "score": -0.015227220430970224,
+          "forward_bonus": 0.03830808661878109,
+          "penalty_total": 0.05353530704975131,
+          "penalties": {
+            "forward_shortfall": 0.01353530704975131,
+            "lateral": 0.0,
+            "contact": 0.0,
+            "contact_transitions": 0.04,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "low_forward_velocity",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 50,
+          "start_tick": 10,
+          "end_tick": 59,
+          "start_index": 10,
+          "end_index": 59,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.0459608933981508,
+          "vy_abs_p95_m_s": 0.07151837460696697,
+          "body_pitch_abs_p95_rad": 0.29981960318622203,
+          "base_height_min_m": 0.1466211974620819,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.2946317195892334,
+          "joint_tracking_p95_rad": 0.07593741416931149,
+          "contact_pct": {
+            "11": 100.0
+          },
+          "contact_dominance_pct": 100.0,
+          "contact_transitions": 0,
+          "foot_site_z_p95_m": 0.012740000523626803,
+          "score": -0.11403910660184921,
+          "forward_bonus": 0.0459608933981508,
+          "penalty_total": 0.16,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.1,
+            "contact_transitions": 0.06,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p52_hrb0_hb0p08_h0p035_kb0p06_k0p18_ab0p04_a0p0105_ph0p3927_ld0p16_ls0p65",
+      "worst_seed": "seed_002",
+      "worst_seed_score": -0.11481970118824393,
+      "min_seed_score": -0.11481970118824393,
+      "mean_seed_score": -0.03938748529151742,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 50,
+          "start_tick": 0,
+          "end_tick": 49,
+          "start_index": 0,
+          "end_index": 49,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.04212675815972034,
+          "vy_abs_p95_m_s": 0.1207602534443139,
+          "body_pitch_abs_p95_rad": 0.26651973112095184,
+          "base_height_min_m": 0.14865685999393463,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.4679873585700989,
+          "joint_tracking_p95_rad": 0.08257226347923273,
+          "contact_pct": {
+            "01": 10.0,
+            "11": 90.0
+          },
+          "contact_dominance_pct": 90.0,
+          "contact_transitions": 3,
+          "foot_site_z_p95_m": 0.012241930700838566,
+          "score": 0.03604473060520908,
+          "forward_bonus": 0.04212675815972034,
+          "penalty_total": 0.00608202755451126,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.00608202755451126,
+            "contact": 0.0,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "high_lateral_velocity"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 50,
+          "start_tick": 10,
+          "end_tick": 59,
+          "start_index": 10,
+          "end_index": 59,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.04518029881175607,
+          "vy_abs_p95_m_s": 0.060965327918529516,
+          "body_pitch_abs_p95_rad": 0.29385592812309785,
+          "base_height_min_m": 0.1471450924873352,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.4739701747894287,
+          "joint_tracking_p95_rad": 0.07356018424034112,
+          "contact_pct": {
+            "11": 100.0
+          },
+          "contact_dominance_pct": 100.0,
+          "contact_transitions": 0,
+          "foot_site_z_p95_m": 0.01311960481107235,
+          "score": -0.11481970118824393,
+          "forward_bonus": 0.04518029881175607,
+          "penalty_total": 0.16,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.1,
+            "contact_transitions": 0.06,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p64_hrb0_hb0p08_h0p035_kb0p06_k0p14_ab0p04_a0p00525_ph0p47_ld0p22_ls0p65",
+      "worst_seed": "seed_002",
+      "worst_seed_score": -0.11493211340159179,
+      "min_seed_score": -0.11493211340159179,
+      "mean_seed_score": -0.04873862956534104,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 50,
+          "start_tick": 0,
+          "end_tick": 49,
+          "start_index": 0,
+          "end_index": 49,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.04134491982171312,
+          "vy_abs_p95_m_s": 0.12298625819385042,
+          "body_pitch_abs_p95_rad": 0.2624121862793034,
+          "base_height_min_m": 0.14873215556144714,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.34298524260520935,
+          "joint_tracking_p95_rad": 0.07094223499298088,
+          "contact_pct": {
+            "01": 10.0,
+            "11": 90.0
+          },
+          "contact_dominance_pct": 90.0,
+          "contact_transitions": 3,
+          "foot_site_z_p95_m": 0.009742135182023047,
+          "score": 0.017454854270909703,
+          "forward_bonus": 0.04134491982171312,
+          "penalty_total": 0.02389006555080342,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.02389006555080342,
+            "contact": 0.0,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "high_lateral_velocity"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 50,
+          "start_tick": 10,
+          "end_tick": 59,
+          "start_index": 10,
+          "end_index": 59,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.04506788659840822,
+          "vy_abs_p95_m_s": 0.04667674023658036,
+          "body_pitch_abs_p95_rad": 0.25945267451004494,
+          "base_height_min_m": 0.14833314716815948,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.3429830074310303,
+          "joint_tracking_p95_rad": 0.06802831888198851,
+          "contact_pct": {
+            "11": 100.0
+          },
+          "contact_dominance_pct": 100.0,
+          "contact_transitions": 0,
+          "foot_site_z_p95_m": 0.011773929744958877,
+          "score": -0.11493211340159179,
+          "forward_bonus": 0.04506788659840822,
+          "penalty_total": 0.16,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.1,
+            "contact_transitions": 0.06,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p52_hrb0_hb0p08_h0p035_kb0p06_k0p18_ab0p04_a0p00525_ph0p47_ld0p16_ls0p65",
+      "worst_seed": "seed_002",
+      "worst_seed_score": -0.11571841727942228,
+      "min_seed_score": -0.11571841727942228,
+      "mean_seed_score": -0.049558919242408045,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 50,
+          "start_tick": 0,
+          "end_tick": 49,
+          "start_index": 0,
+          "end_index": 49,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.03985882140637841,
+          "vy_abs_p95_m_s": 0.12276610173284994,
+          "body_pitch_abs_p95_rad": 0.26445817498438273,
+          "base_height_min_m": 0.1485985666513443,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.47682076692581177,
+          "joint_tracking_p95_rad": 0.08090205788612365,
+          "contact_pct": {
+            "01": 8.0,
+            "11": 92.0
+          },
+          "contact_dominance_pct": 92.0,
+          "contact_transitions": 3,
+          "foot_site_z_p95_m": 0.011988380365073681,
+          "score": 0.016600578794606184,
+          "forward_bonus": 0.03985882140637841,
+          "penalty_total": 0.02325824261177223,
+          "penalties": {
+            "forward_shortfall": 0.001129428748972705,
+            "lateral": 0.022128813862799523,
+            "contact": 0.0,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "high_lateral_velocity",
+            "low_forward_velocity"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 50,
+          "start_tick": 10,
+          "end_tick": 59,
+          "start_index": 10,
+          "end_index": 59,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.044281582720577715,
+          "vy_abs_p95_m_s": 0.06033465340733527,
+          "body_pitch_abs_p95_rad": 0.2918688803364356,
+          "base_height_min_m": 0.14727044105529785,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.49594640731811523,
+          "joint_tracking_p95_rad": 0.07411876320838924,
+          "contact_pct": {
+            "11": 100.0
+          },
+          "contact_dominance_pct": 100.0,
+          "contact_transitions": 0,
+          "foot_site_z_p95_m": 0.012847543507814406,
+          "score": -0.11571841727942228,
+          "forward_bonus": 0.044281582720577715,
+          "penalty_total": 0.16,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.1,
+            "contact_transitions": 0.06,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p52_hrb0_hb0p08_h0p025_kb0p06_k0p14_ab0p04_a0p0075_ph0p3927_ld0p22_ls0p65",
+      "worst_seed": "seed_002",
+      "worst_seed_score": -0.1157823192224896,
+      "min_seed_score": -0.1157823192224896,
+      "mean_seed_score": -0.07059531788057893,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 50,
+          "start_tick": 0,
+          "end_tick": 49,
+          "start_index": 0,
+          "end_index": 49,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.039213611981831493,
+          "vy_abs_p95_m_s": 0.12729135304689396,
+          "body_pitch_abs_p95_rad": 0.2536047894087985,
+          "base_height_min_m": 0.14911577105522156,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.36399364471435547,
+          "joint_tracking_p95_rad": 0.077601283788681,
+          "contact_pct": {
+            "01": 8.0,
+            "11": 92.0
+          },
+          "contact_dominance_pct": 92.0,
+          "contact_transitions": 3,
+          "foot_site_z_p95_m": 0.011065820604562758,
+          "score": -0.025408316538668256,
+          "forward_bonus": 0.039213611981831493,
+          "penalty_total": 0.06462192852049975,
+          "penalties": {
+            "forward_shortfall": 0.006291104145348059,
+            "lateral": 0.05833082437515169,
+            "contact": 0.0,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "high_lateral_velocity",
+            "low_forward_velocity"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 50,
+          "start_tick": 10,
+          "end_tick": 59,
+          "start_index": 10,
+          "end_index": 59,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.0442176807775104,
+          "vy_abs_p95_m_s": 0.05339599512517451,
+          "body_pitch_abs_p95_rad": 0.2735912437487654,
+          "base_height_min_m": 0.14798764884471893,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.37255436182022095,
+          "joint_tracking_p95_rad": 0.06870670318603503,
+          "contact_pct": {
+            "11": 100.0
+          },
+          "contact_dominance_pct": 100.0,
+          "contact_transitions": 0,
+          "foot_site_z_p95_m": 0.011176295392215251,
+          "score": -0.1157823192224896,
+          "forward_bonus": 0.0442176807775104,
+          "penalty_total": 0.16,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.1,
+            "contact_transitions": 0.06,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p64_hrb0_hb0p08_h0p025_kb0p06_k0p18_ab0p04_a0_ph0p3927_ld0p3_ls1",
+      "worst_seed": "seed_002",
+      "worst_seed_score": -0.11600978911970743,
+      "min_seed_score": -0.11600978911970743,
+      "mean_seed_score": -0.056285006860671276,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.043439775398364876,
+          "vy_abs_p95_m_s": 0.08239287883043289,
+          "body_pitch_abs_p95_rad": 0.30759136076891125,
+          "base_height_min_m": 0.14658603072166443,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.24386346340179443,
+          "joint_tracking_p95_rad": 0.06982793211936945,
+          "contact_pct": {
+            "01": 8.0,
+            "11": 92.0
+          },
+          "contact_dominance_pct": 92.0,
+          "contact_transitions": 1,
+          "foot_site_z_p95_m": 0.0130240922793746,
+          "score": 0.003439775398364875,
+          "forward_bonus": 0.043439775398364876,
+          "penalty_total": 0.04,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.0,
+            "contact_transitions": 0.04,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 50,
+          "start_tick": 10,
+          "end_tick": 59,
+          "start_index": 10,
+          "end_index": 59,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.04399021088029258,
+          "vy_abs_p95_m_s": 0.07123402357101441,
+          "body_pitch_abs_p95_rad": 0.24628586740778569,
+          "base_height_min_m": 0.14771613478660583,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.24386346340179443,
+          "joint_tracking_p95_rad": 0.06852744221687314,
+          "contact_pct": {
+            "11": 100.0
+          },
+          "contact_dominance_pct": 100.0,
+          "contact_transitions": 0,
+          "foot_site_z_p95_m": 0.01234677992761135,
+          "score": -0.11600978911970743,
+          "forward_bonus": 0.04399021088029258,
+          "penalty_total": 0.16,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.1,
+            "contact_transitions": 0.06,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p58_hrb0_hb0p08_h0p035_kb0p06_k0p14_ab0p04_a0p00525_ph0p47_ld0p22_ls0p65",
+      "worst_seed": "seed_002",
+      "worst_seed_score": -0.1171052473038435,
+      "min_seed_score": -0.1171052473038435,
+      "mean_seed_score": -0.047628878296236146,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 50,
+          "start_tick": 0,
+          "end_tick": 49,
+          "start_index": 0,
+          "end_index": 49,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.041778690261999145,
+          "vy_abs_p95_m_s": 0.12249139994382849,
+          "body_pitch_abs_p95_rad": 0.26002095355948246,
+          "base_height_min_m": 0.14886918663978577,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.37798061966896057,
+          "joint_tracking_p95_rad": 0.07765709161758416,
+          "contact_pct": {
+            "01": 10.0,
+            "11": 90.0
+          },
+          "contact_dominance_pct": 90.0,
+          "contact_transitions": 3,
+          "foot_site_z_p95_m": 0.011275293491780755,
+          "score": 0.021847490711371202,
+          "forward_bonus": 0.041778690261999145,
+          "penalty_total": 0.019931199550627943,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.019931199550627943,
+            "contact": 0.0,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "high_lateral_velocity"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 50,
+          "start_tick": 10,
+          "end_tick": 59,
+          "start_index": 10,
+          "end_index": 59,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.0428947526961565,
+          "vy_abs_p95_m_s": 0.04921352006494997,
+          "body_pitch_abs_p95_rad": 0.25823172406594097,
+          "base_height_min_m": 0.14806732535362244,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.43515264987945557,
+          "joint_tracking_p95_rad": 0.06658415198326109,
+          "contact_pct": {
+            "11": 100.0
+          },
+          "contact_dominance_pct": 100.0,
+          "contact_transitions": 0,
+          "foot_site_z_p95_m": 0.01185402050614357,
+          "score": -0.1171052473038435,
+          "forward_bonus": 0.0428947526961565,
+          "penalty_total": 0.16,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.1,
+            "contact_transitions": 0.06,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p52_hrb0_hb0p08_h0p035_kb0p06_k0p14_ab0p04_a0p0105_ph0p47_ld0p3_ls1",
+      "worst_seed": "seed_002",
+      "worst_seed_score": -0.11711369152384578,
+      "min_seed_score": -0.11711369152384578,
+      "mean_seed_score": -0.060053787000797464,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.039667346391361206,
+          "vy_abs_p95_m_s": 0.08161221705377102,
+          "body_pitch_abs_p95_rad": 0.2794117472329615,
+          "base_height_min_m": 0.14722134172916412,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.4194431006908417,
+          "joint_tracking_p95_rad": 0.07312053442001343,
+          "contact_pct": {
+            "01": 6.0,
+            "11": 94.0
+          },
+          "contact_dominance_pct": 94.0,
+          "contact_transitions": 1,
+          "foot_site_z_p95_m": 0.01303952932357788,
+          "score": -0.002993882477749149,
+          "forward_bonus": 0.039667346391361206,
+          "penalty_total": 0.042661228869110356,
+          "penalties": {
+            "forward_shortfall": 0.0026612288691103547,
+            "lateral": 0.0,
+            "contact": 0.0,
+            "contact_transitions": 0.04,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "low_forward_velocity",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.042886308476154225,
+          "vy_abs_p95_m_s": 0.08828631788492197,
+          "body_pitch_abs_p95_rad": 0.2639458167091019,
+          "base_height_min_m": 0.1467381715774536,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.4194431006908417,
+          "joint_tracking_p95_rad": 0.07330811619758598,
+          "contact_pct": {
+            "11": 100.0
+          },
+          "contact_dominance_pct": 100.0,
+          "contact_transitions": 0,
+          "foot_site_z_p95_m": 0.01244738921523094,
+          "score": -0.11711369152384578,
+          "forward_bonus": 0.042886308476154225,
+          "penalty_total": 0.16,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.1,
+            "contact_transitions": 0.06,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p64_hrb0_hb0p08_h0p025_kb0p06_k0p14_ab0p04_a0p0075_ph0p3927_ld0p22_ls1",
+      "worst_seed": "seed_002",
+      "worst_seed_score": -0.1171818236409672,
+      "min_seed_score": -0.1171818236409672,
+      "mean_seed_score": -0.06522772747832277,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.03852515207603574,
+          "vy_abs_p95_m_s": 0.06897799894213677,
+          "body_pitch_abs_p95_rad": 0.2773521213912324,
+          "base_height_min_m": 0.14757239818572998,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.24386048316955566,
+          "joint_tracking_p95_rad": 0.06755134463310239,
+          "contact_pct": {
+            "01": 6.0,
+            "11": 94.0
+          },
+          "contact_dominance_pct": 94.0,
+          "contact_transitions": 1,
+          "foot_site_z_p95_m": 0.011242493614554405,
+          "score": -0.013273631315678346,
+          "forward_bonus": 0.03852515207603574,
+          "penalty_total": 0.051798783391714086,
+          "penalties": {
+            "forward_shortfall": 0.011798783391714085,
+            "lateral": 0.0,
+            "contact": 0.0,
+            "contact_transitions": 0.04,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "low_forward_velocity",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 50,
+          "start_tick": 10,
+          "end_tick": 59,
+          "start_index": 10,
+          "end_index": 59,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.0428181763590328,
+          "vy_abs_p95_m_s": 0.05838412661105394,
+          "body_pitch_abs_p95_rad": 0.22908258938034742,
+          "base_height_min_m": 0.14907993376255035,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.24386048316955566,
+          "joint_tracking_p95_rad": 0.06667964458465575,
+          "contact_pct": {
+            "11": 100.0
+          },
+          "contact_dominance_pct": 100.0,
+          "contact_transitions": 0,
+          "foot_site_z_p95_m": 0.010690526105463503,
+          "score": -0.1171818236409672,
+          "forward_bonus": 0.0428181763590328,
+          "penalty_total": 0.16,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.1,
+            "contact_transitions": 0.06,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p64_hrb0_hb0p08_h0p025_kb0p06_k0p22_ab0p04_a0_ph0p47_ld0p16_ls1",
+      "worst_seed": "seed_002",
+      "worst_seed_score": -0.11926971469307318,
+      "min_seed_score": -0.11926971469307318,
+      "mean_seed_score": -0.07293938817107119,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.03704343759454787,
+          "vy_abs_p95_m_s": 0.07188414484262466,
+          "body_pitch_abs_p95_rad": 0.26392490174857347,
+          "base_height_min_m": 0.14801302552223206,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.23928284645080566,
+          "joint_tracking_p95_rad": 0.07160307168960567,
+          "contact_pct": {
+            "01": 4.0,
+            "11": 96.0
+          },
+          "contact_dominance_pct": 96.0,
+          "contact_transitions": 2,
+          "foot_site_z_p95_m": 0.010603394359350204,
+          "score": -0.026609061649069204,
+          "forward_bonus": 0.03704343759454787,
+          "penalty_total": 0.06365249924361707,
+          "penalties": {
+            "forward_shortfall": 0.023652499243617064,
+            "lateral": 0.0,
+            "contact": 0.02,
+            "contact_transitions": 0.02,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "low_forward_velocity",
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 50,
+          "start_tick": 10,
+          "end_tick": 59,
+          "start_index": 10,
+          "end_index": 59,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.040730285306926815,
+          "vy_abs_p95_m_s": 0.06628448329865931,
+          "body_pitch_abs_p95_rad": 0.2166299829285775,
+          "base_height_min_m": 0.14915554225444794,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.23928284645080566,
+          "joint_tracking_p95_rad": 0.06983238458633423,
+          "contact_pct": {
+            "11": 100.0
+          },
+          "contact_dominance_pct": 100.0,
+          "contact_transitions": 0,
+          "foot_site_z_p95_m": 0.010163582302629946,
+          "score": -0.11926971469307318,
+          "forward_bonus": 0.040730285306926815,
+          "penalty_total": 0.16,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.1,
+            "contact_transitions": 0.06,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p64_hrb0_hb0p08_h0p025_kb0p06_k0p18_ab0p04_a0_ph0p47_ld0p16_ls1",
+      "worst_seed": "seed_002",
+      "worst_seed_score": -0.12118980239611118,
+      "min_seed_score": -0.12118980239611118,
+      "mean_seed_score": -0.076622120586253,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.03643839569151169,
+          "vy_abs_p95_m_s": 0.06982832998037337,
+          "body_pitch_abs_p95_rad": 0.25746085905464666,
+          "base_height_min_m": 0.1483367532491684,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.23928284645080566,
+          "joint_tracking_p95_rad": 0.06918017268180841,
+          "contact_pct": {
+            "01": 6.0,
+            "11": 94.0
+          },
+          "contact_dominance_pct": 94.0,
+          "contact_transitions": 1,
+          "foot_site_z_p95_m": 0.010245728492736816,
+          "score": -0.032054438776394835,
+          "forward_bonus": 0.03643839569151169,
+          "penalty_total": 0.06849283446790652,
+          "penalties": {
+            "forward_shortfall": 0.028492834467906514,
+            "lateral": 0.0,
+            "contact": 0.0,
+            "contact_transitions": 0.04,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "low_forward_velocity",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 50,
+          "start_tick": 10,
+          "end_tick": 59,
+          "start_index": 10,
+          "end_index": 59,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.039867799733765426,
+          "vy_abs_p95_m_s": 0.05868797637522219,
+          "body_pitch_abs_p95_rad": 0.2136371132550241,
+          "base_height_min_m": 0.14930732548236847,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.23928284645080566,
+          "joint_tracking_p95_rad": 0.0682784259319305,
+          "contact_pct": {
+            "11": 100.0
+          },
+          "contact_dominance_pct": 100.0,
+          "contact_transitions": 0,
+          "foot_site_z_p95_m": 0.009984412044286729,
+          "score": -0.12118980239611118,
+          "forward_bonus": 0.039867799733765426,
+          "penalty_total": 0.1610576021298766,
+          "penalties": {
+            "forward_shortfall": 0.0010576021298766003,
+            "lateral": 0.0,
+            "contact": 0.1,
+            "contact_transitions": 0.06,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "low_forward_velocity",
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p52_hrb0_hb0p08_h0p035_kb0p06_k0p14_ab0p04_a0p0105_ph0p47_ld0p16_ls1",
+      "worst_seed": "seed_002",
+      "worst_seed_score": -0.1241423252946697,
+      "min_seed_score": -0.1241423252946697,
+      "mean_seed_score": -0.09260971076320856,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.033213655974250286,
+          "vy_abs_p95_m_s": 0.07153678089380264,
+          "body_pitch_abs_p95_rad": 0.25563906976463735,
+          "base_height_min_m": 0.1493963599205017,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.41808784008026123,
+          "joint_tracking_p95_rad": 0.07307583689689633,
+          "contact_pct": {
+            "01": 6.0,
+            "11": 94.0
+          },
+          "contact_dominance_pct": 94.0,
+          "contact_transitions": 1,
+          "foot_site_z_p95_m": 0.011009570769965648,
+          "score": -0.06107709623174744,
+          "forward_bonus": 0.033213655974250286,
+          "penalty_total": 0.09429075220599772,
+          "penalties": {
+            "forward_shortfall": 0.05429075220599772,
+            "lateral": 0.0,
+            "contact": 0.0,
+            "contact_transitions": 0.04,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "low_forward_velocity",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 50,
+          "start_tick": 10,
+          "end_tick": 59,
+          "start_index": 10,
+          "end_index": 59,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.03953974163392559,
+          "vy_abs_p95_m_s": 0.0594961604103446,
+          "body_pitch_abs_p95_rad": 0.2593175271073653,
+          "base_height_min_m": 0.14898057281970978,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.4126712679862976,
+          "joint_tracking_p95_rad": 0.07442677021026606,
+          "contact_pct": {
+            "11": 100.0
+          },
+          "contact_dominance_pct": 100.0,
+          "contact_transitions": 0,
+          "foot_site_z_p95_m": 0.010466035641729831,
+          "score": -0.1241423252946697,
+          "forward_bonus": 0.03953974163392559,
+          "penalty_total": 0.1636820669285953,
+          "penalties": {
+            "forward_shortfall": 0.0036820669285952956,
+            "lateral": 0.0,
+            "contact": 0.1,
+            "contact_transitions": 0.06,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "low_forward_velocity",
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p52_hrb0_hb0p08_h0p035_kb0p06_k0p14_ab0p04_a0p00525_ph0p3927_ld0p16_ls1",
+      "worst_seed": "seed_002",
+      "worst_seed_score": -0.14088145938003435,
+      "min_seed_score": -0.14088145938003435,
+      "mean_seed_score": -0.1005394733848516,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.033311390290036796,
+          "vy_abs_p95_m_s": 0.07180846594274043,
+          "body_pitch_abs_p95_rad": 0.2540621192562903,
+          "base_height_min_m": 0.1495545357465744,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.41248202323913574,
+          "joint_tracking_p95_rad": 0.07234492897987364,
+          "contact_pct": {
+            "01": 6.0,
+            "11": 94.0
+          },
+          "contact_dominance_pct": 94.0,
+          "contact_transitions": 1,
+          "foot_site_z_p95_m": 0.010884889587759971,
+          "score": -0.06019748738966885,
+          "forward_bonus": 0.033311390290036796,
+          "penalty_total": 0.09350887767970564,
+          "penalties": {
+            "forward_shortfall": 0.053508877679705635,
+            "lateral": 0.0,
+            "contact": 0.0,
+            "contact_transitions": 0.04,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "low_forward_velocity",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 50,
+          "start_tick": 10,
+          "end_tick": 59,
+          "start_index": 10,
+          "end_index": 59,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.03767983784666285,
+          "vy_abs_p95_m_s": 0.056730063632130616,
+          "body_pitch_abs_p95_rad": 0.2479921139319362,
+          "base_height_min_m": 0.1492033451795578,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.4109576344490051,
+          "joint_tracking_p95_rad": 0.07206858992576592,
+          "contact_pct": {
+            "11": 100.0
+          },
+          "contact_dominance_pct": 100.0,
+          "contact_transitions": 0,
+          "foot_site_z_p95_m": 0.009913366101682187,
+          "score": -0.14088145938003435,
+          "forward_bonus": 0.03767983784666285,
+          "penalty_total": 0.1785612972266972,
+          "penalties": {
+            "forward_shortfall": 0.018561297226697193,
+            "lateral": 0.0,
+            "contact": 0.1,
+            "contact_transitions": 0.06,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "low_forward_velocity",
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p58_hrb0_hb0p08_h0p035_kb0p06_k0p22_ab0p04_a0p00525_ph0p32_ld0p22_ls0p65",
+      "worst_seed": "seed_002",
+      "worst_seed_score": -0.15191401497693732,
+      "min_seed_score": -0.15191401497693732,
+      "mean_seed_score": -0.06338375392864669,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 50,
+          "start_tick": 0,
+          "end_tick": 49,
+          "start_index": 0,
+          "end_index": 49,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.05086380073975306,
+          "vy_abs_p95_m_s": 0.12321466170251363,
+          "body_pitch_abs_p95_rad": 0.29943499593892947,
+          "base_height_min_m": 0.14680074155330658,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.5405381321907043,
+          "joint_tracking_p95_rad": 0.08083814978599545,
+          "contact_pct": {
+            "01": 10.0,
+            "11": 90.0
+          },
+          "contact_dominance_pct": 90.0,
+          "contact_transitions": 3,
+          "foot_site_z_p95_m": 0.013044390082359313,
+          "score": 0.025146507119643953,
+          "forward_bonus": 0.05086380073975306,
+          "penalty_total": 0.025717293620109105,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.025717293620109105,
+            "contact": 0.0,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "high_lateral_velocity"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": 37,
+          "mean_vx_m_s": 0.058085985023062676,
+          "vy_abs_p95_m_s": 0.10907850824296463,
+          "body_pitch_abs_p95_rad": 0.3324006923104874,
+          "base_height_min_m": 0.1458374261856079,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.4757881164550781,
+          "joint_tracking_p95_rad": 0.06547123193740842,
+          "contact_pct": {
+            "01": 2.0,
+            "11": 98.0
+          },
+          "contact_dominance_pct": 98.0,
+          "contact_transitions": 2,
+          "foot_site_z_p95_m": 0.016198758967220783,
+          "score": -0.15191401497693732,
+          "forward_bonus": 0.058085985023062676,
+          "penalty_total": 0.21,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.06,
+            "contact_transitions": 0.02,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.13
+          },
+          "hard_failures": [
+            "short_done_margin",
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p58_hrb0_hb0p08_h0p035_kb0p06_k0p18_ab0p06_a0_ph0p3927_ld0p3_ls0p65",
+      "worst_seed": "seed_002",
+      "worst_seed_score": -0.21017732642591003,
+      "min_seed_score": -0.21017732642591003,
+      "mean_seed_score": -0.09587666638777592,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": 54,
+          "mean_vx_m_s": 0.05842399365035817,
+          "vy_abs_p95_m_s": 0.0793935175985098,
+          "body_pitch_abs_p95_rad": 0.3470242374755857,
+          "base_height_min_m": 0.14535027742385864,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.5027011036872864,
+          "joint_tracking_p95_rad": 0.06928824186325061,
+          "contact_pct": {
+            "01": 8.0,
+            "11": 92.0
+          },
+          "contact_dominance_pct": 92.0,
+          "contact_transitions": 1,
+          "foot_site_z_p95_m": 0.0162117350846529,
+          "score": 0.01842399365035817,
+          "forward_bonus": 0.05842399365035817,
+          "penalty_total": 0.04,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.0,
+            "contact_transitions": 0.04,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": 39,
+          "mean_vx_m_s": 0.059822673574090005,
+          "vy_abs_p95_m_s": 0.07486070170998566,
+          "body_pitch_abs_p95_rad": 0.3343919257536426,
+          "base_height_min_m": 0.14557862281799316,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.5027011036872864,
+          "joint_tracking_p95_rad": 0.06436204314231858,
+          "contact_pct": {
+            "11": 100.0
+          },
+          "contact_dominance_pct": 100.0,
+          "contact_transitions": 0,
+          "foot_site_z_p95_m": 0.015119113959372044,
+          "score": -0.21017732642591003,
+          "forward_bonus": 0.059822673574090005,
+          "penalty_total": 0.27,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.1,
+            "contact_transitions": 0.06,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.11
+          },
+          "hard_failures": [
+            "short_done_margin",
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p58_hrb0_hb0p08_h0p035_kb0p06_k0p22_ab0p04_a0p0105_ph0p32_ld0p22_ls0p65",
+      "worst_seed": "seed_002",
+      "worst_seed_score": -0.21276603356120177,
+      "min_seed_score": -0.21276603356120177,
+      "mean_seed_score": -0.09866735962510545,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 50,
+          "start_tick": 0,
+          "end_tick": 49,
+          "start_index": 0,
+          "end_index": 49,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.05117457707878202,
+          "vy_abs_p95_m_s": 0.12446790784597389,
+          "body_pitch_abs_p95_rad": 0.30029368237455456,
+          "base_height_min_m": 0.1468479186296463,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.5405381321907043,
+          "joint_tracking_p95_rad": 0.08111478090286255,
+          "contact_pct": {
+            "01": 10.0,
+            "11": 90.0
+          },
+          "contact_dominance_pct": 90.0,
+          "contact_transitions": 3,
+          "foot_site_z_p95_m": 0.013091786392033098,
+          "score": 0.01543131431099086,
+          "forward_bonus": 0.05117457707878202,
+          "penalty_total": 0.03574326276779116,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.03574326276779116,
+            "contact": 0.0,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "high_lateral_velocity"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": 39,
+          "mean_vx_m_s": 0.05723396643879823,
+          "vy_abs_p95_m_s": 0.07807182781398292,
+          "body_pitch_abs_p95_rad": 0.32416593463375215,
+          "base_height_min_m": 0.14640937745571136,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.4757881164550781,
+          "joint_tracking_p95_rad": 0.06927791833877561,
+          "contact_pct": {
+            "11": 100.0
+          },
+          "contact_dominance_pct": 100.0,
+          "contact_transitions": 0,
+          "foot_site_z_p95_m": 0.015166404098272322,
+          "score": -0.21276603356120177,
+          "forward_bonus": 0.05723396643879823,
+          "penalty_total": 0.27,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.1,
+            "contact_transitions": 0.06,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.11
+          },
+          "hard_failures": [
+            "short_done_margin",
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p64_hrb0_hb0p08_h0p025_kb0p06_k0p22_ab0p06_a0p0075_ph0p32_ld0p16_ls0p65",
+      "worst_seed": "seed_002",
+      "worst_seed_score": -0.21291280775330962,
+      "min_seed_score": -0.21291280775330962,
+      "mean_seed_score": -0.20313460947050543,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 50,
+          "start_tick": 0,
+          "end_tick": 49,
+          "start_index": 0,
+          "end_index": 49,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": 38,
+          "mean_vx_m_s": 0.06009168537566438,
+          "vy_abs_p95_m_s": 0.12814743034541598,
+          "body_pitch_abs_p95_rad": 0.3670442421060933,
+          "base_height_min_m": 0.14518703520298004,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.46491920948028564,
+          "joint_tracking_p95_rad": 0.07691472768783567,
+          "contact_pct": {
+            "01": 12.0,
+            "11": 88.0
+          },
+          "contact_dominance_pct": 88.0,
+          "contact_transitions": 3,
+          "foot_site_z_p95_m": 0.015760286338627336,
+          "score": -0.19335641118770125,
+          "forward_bonus": 0.06,
+          "penalty_total": 0.25335641118770125,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.06517944276332788,
+            "contact": 0.0,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 0.06817696842437337,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.12
+          },
+          "hard_failures": [
+            "high_body_pitch",
+            "high_lateral_velocity",
+            "short_done_margin"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": 39,
+          "mean_vx_m_s": 0.05708719224669039,
+          "vy_abs_p95_m_s": 0.07063731998205182,
+          "body_pitch_abs_p95_rad": 0.3367610085918102,
+          "base_height_min_m": 0.14544476568698883,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.43515563011169434,
+          "joint_tracking_p95_rad": 0.06543415784835813,
+          "contact_pct": {
+            "11": 100.0
+          },
+          "contact_dominance_pct": 100.0,
+          "contact_transitions": 0,
+          "foot_site_z_p95_m": 0.0126253854483366,
+          "score": -0.21291280775330962,
+          "forward_bonus": 0.05708719224669039,
+          "penalty_total": 0.27,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.1,
+            "contact_transitions": 0.06,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.11
+          },
+          "hard_failures": [
+            "short_done_margin",
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p58_hrb0_hb0p08_h0p025_kb0p06_k0p18_ab0p06_a0_ph0p47_ld0p3_ls0p65",
+      "worst_seed": "seed_002",
+      "worst_seed_score": -0.22079416710883382,
+      "min_seed_score": -0.22079416710883382,
+      "mean_seed_score": -0.11638014191819822,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": 47,
+          "mean_vx_m_s": 0.05803388327243738,
+          "vy_abs_p95_m_s": 0.07425229176878928,
+          "body_pitch_abs_p95_rad": 0.34677541445714644,
+          "base_height_min_m": 0.14542223513126373,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.5267798900604248,
+          "joint_tracking_p95_rad": 0.06465827226638793,
+          "contact_pct": {
+            "01": 8.0,
+            "11": 92.0
+          },
+          "contact_dominance_pct": 92.0,
+          "contact_transitions": 1,
+          "foot_site_z_p95_m": 0.01561805810779333,
+          "score": -0.011966116727562627,
+          "forward_bonus": 0.05803388327243738,
+          "penalty_total": 0.07,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.0,
+            "contact_transitions": 0.04,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.03
+          },
+          "hard_failures": [
+            "short_done_margin",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": 38,
+          "mean_vx_m_s": 0.05920583289116621,
+          "vy_abs_p95_m_s": 0.07483865469694131,
+          "body_pitch_abs_p95_rad": 0.33956805242178756,
+          "base_height_min_m": 0.1457788199186325,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.5267798900604248,
+          "joint_tracking_p95_rad": 0.06379205584526057,
+          "contact_pct": {
+            "11": 100.0
+          },
+          "contact_dominance_pct": 100.0,
+          "contact_transitions": 0,
+          "foot_site_z_p95_m": 0.01455037146806717,
+          "score": -0.22079416710883382,
+          "forward_bonus": 0.05920583289116621,
+          "penalty_total": 0.28,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.1,
+            "contact_transitions": 0.06,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.12
+          },
+          "hard_failures": [
+            "short_done_margin",
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p58_hrb0_hb0p08_h0p035_kb0p06_k0p18_ab0p06_a0p0105_ph0p3927_ld0p3_ls0p65",
+      "worst_seed": "seed_000",
+      "worst_seed_score": -0.3234107334619068,
+      "min_seed_score": -0.3234107334619068,
+      "mean_seed_score": -0.28670536673095337,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": 29,
+          "mean_vx_m_s": 0.06792515411972999,
+          "vy_abs_p95_m_s": 0.07988053224980832,
+          "body_pitch_abs_p95_rad": 0.3833526833654767,
+          "base_height_min_m": 0.1450035572052002,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.5027011036872864,
+          "joint_tracking_p95_rad": 0.06446229219436644,
+          "contact_pct": {
+            "01": 8.0,
+            "11": 92.0
+          },
+          "contact_dominance_pct": 92.0,
+          "contact_transitions": 1,
+          "foot_site_z_p95_m": 0.019185580685734747,
+          "score": -0.3234107334619068,
+          "forward_bonus": 0.06,
+          "penalty_total": 0.3834107334619068,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.0,
+            "contact_transitions": 0.04,
+            "foot_clearance": 0.0,
+            "pitch": 0.1334107334619068,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.21
+          },
+          "hard_failures": [
+            "high_body_pitch",
+            "short_done_margin",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": 35,
+          "mean_vx_m_s": 0.0612157092243433,
+          "vy_abs_p95_m_s": 0.07966791223734607,
+          "body_pitch_abs_p95_rad": 0.34077230563885363,
+          "base_height_min_m": 0.14544661343097687,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.5027011036872864,
+          "joint_tracking_p95_rad": 0.06583091020584102,
+          "contact_pct": {
+            "11": 100.0
+          },
+          "contact_dominance_pct": 100.0,
+          "contact_transitions": 0,
+          "foot_site_z_p95_m": 0.015385880321264266,
+          "score": -0.25,
+          "forward_bonus": 0.06,
+          "penalty_total": 0.31,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.1,
+            "contact_transitions": 0.06,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.15
+          },
+          "hard_failures": [
+            "short_done_margin",
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p52_hrb0_hb0p08_h0p035_kb0p06_k0p18_ab0p06_a0_ph0p3927_ld0p3_ls0p65",
+      "worst_seed": "seed_002",
+      "worst_seed_score": -0.3238326611621716,
+      "min_seed_score": -0.3238326611621716,
+      "mean_seed_score": -0.2152115190527604,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 50,
+          "start_tick": 0,
+          "end_tick": 49,
+          "start_index": 0,
+          "end_index": 49,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": 41,
+          "mean_vx_m_s": 0.05981000080704689,
+          "vy_abs_p95_m_s": 0.1295500472187995,
+          "body_pitch_abs_p95_rad": 0.34482957472885595,
+          "base_height_min_m": 0.14544253051280975,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.5331933498382568,
+          "joint_tracking_p95_rad": 0.08375073671340937,
+          "contact_pct": {
+            "01": 12.0,
+            "11": 88.0
+          },
+          "contact_dominance_pct": 88.0,
+          "contact_transitions": 3,
+          "foot_site_z_p95_m": 0.01656697355210781,
+          "score": -0.1065903769433492,
+          "forward_bonus": 0.05981000080704689,
+          "penalty_total": 0.1664003777503961,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0764003777503961,
+            "contact": 0.0,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.09
+          },
+          "hard_failures": [
+            "high_lateral_velocity",
+            "short_done_margin"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": 34,
+          "mean_vx_m_s": 0.06114348132163286,
+          "vy_abs_p95_m_s": 0.0775227550417184,
+          "body_pitch_abs_p95_rad": 0.36451790011186247,
+          "base_height_min_m": 0.1442798674106598,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.660078227519989,
+          "joint_tracking_p95_rad": 0.06617426872253417,
+          "contact_pct": {
+            "11": 100.0
+          },
+          "contact_dominance_pct": 100.0,
+          "contact_transitions": 0,
+          "foot_site_z_p95_m": 0.015146965347230434,
+          "score": -0.3238326611621716,
+          "forward_bonus": 0.06,
+          "penalty_total": 0.3838326611621716,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.1,
+            "contact_transitions": 0.06,
+            "foot_clearance": 0.0,
+            "pitch": 0.05807160044744997,
+            "height": 0.0057610607147216,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.16
+          },
+          "hard_failures": [
+            "high_body_pitch",
+            "low_base_height",
+            "short_done_margin",
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p58_hrb0_hb0p08_h0p035_kb0p06_k0p14_ab0p06_a0_ph0p32_ld0p22_ls1",
+      "worst_seed": "seed_000",
+      "worst_seed_score": -0.38332326599393723,
+      "min_seed_score": -0.38332326599393723,
+      "mean_seed_score": -0.24795584089586853,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": 27,
+          "mean_vx_m_s": 0.07152640894055366,
+          "vy_abs_p95_m_s": 0.08687247522175312,
+          "body_pitch_abs_p95_rad": 0.39298244880744426,
+          "base_height_min_m": 0.14482581615447998,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.3684602677822113,
+          "joint_tracking_p95_rad": 0.07641366124153137,
+          "contact_pct": {
+            "01": 8.0,
+            "11": 92.0
+          },
+          "contact_dominance_pct": 92.0,
+          "contact_transitions": 1,
+          "foot_site_z_p95_m": 0.021201894246041773,
+          "score": -0.38332326599393723,
+          "forward_bonus": 0.06,
+          "penalty_total": 0.44332326599393723,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.0,
+            "contact_transitions": 0.04,
+            "foot_clearance": 0.0,
+            "pitch": 0.17192979522977714,
+            "height": 0.0013934707641600763,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.23
+          },
+          "hard_failures": [
+            "high_body_pitch",
+            "low_base_height",
+            "short_done_margin",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.04741158420220017,
+          "vy_abs_p95_m_s": 0.09358337670564643,
+          "body_pitch_abs_p95_rad": 0.28494863381638935,
+          "base_height_min_m": 0.14714491367340088,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.3684602677822113,
+          "joint_tracking_p95_rad": 0.07020201683044433,
+          "contact_pct": {
+            "11": 100.0
+          },
+          "contact_dominance_pct": 100.0,
+          "contact_transitions": 0,
+          "foot_site_z_p95_m": 0.01288132034242153,
+          "score": -0.11258841579779982,
+          "forward_bonus": 0.04741158420220017,
+          "penalty_total": 0.16,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.1,
+            "contact_transitions": 0.06,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p52_hrb0_hb0p08_h0p035_kb0p06_k0p22_ab0p06_a0_ph0p47_ld0p3_ls0p65",
+      "worst_seed": "seed_002",
+      "worst_seed_score": -0.5821151153324713,
+      "min_seed_score": -0.5821151153324713,
+      "mean_seed_score": -0.40613323126356177,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 50,
+          "start_tick": 0,
+          "end_tick": 49,
+          "start_index": 0,
+          "end_index": 49,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": 32,
+          "mean_vx_m_s": 0.0633017722889781,
+          "vy_abs_p95_m_s": 0.1266554024070501,
+          "body_pitch_abs_p95_rad": 0.36422703198456285,
+          "base_height_min_m": 0.14521902799606323,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.770789384841919,
+          "joint_tracking_p95_rad": 0.08322156667709342,
+          "contact_pct": {
+            "01": 12.0,
+            "11": 88.0
+          },
+          "contact_dominance_pct": 88.0,
+          "contact_transitions": 3,
+          "foot_site_z_p95_m": 0.017518452554941177,
+          "score": -0.23015134719465224,
+          "forward_bonus": 0.06,
+          "penalty_total": 0.29015134719465224,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.05324321925640074,
+            "contact": 0.0,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 0.05690812793825151,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.18
+          },
+          "hard_failures": [
+            "high_body_pitch",
+            "high_lateral_velocity",
+            "short_done_margin"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": 25,
+          "mean_vx_m_s": 0.07182631392031907,
+          "vy_abs_p95_m_s": 0.07578085400164125,
+          "body_pitch_abs_p95_rad": 0.40598135094043286,
+          "base_height_min_m": 0.14397628605365753,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.8721277117729187,
+          "joint_tracking_p95_rad": 0.06635008454322809,
+          "contact_pct": {
+            "11": 100.0
+          },
+          "contact_dominance_pct": 100.0,
+          "contact_transitions": 0,
+          "foot_site_z_p95_m": 0.01671022567898035,
+          "score": -0.5821151153324713,
+          "forward_bonus": 0.06,
+          "penalty_total": 0.6421151153324712,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.1,
+            "contact_transitions": 0.06,
+            "foot_clearance": 0.0,
+            "pitch": 0.22392540376173153,
+            "height": 0.008189711570739666,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.25
+          },
+          "hard_failures": [
+            "high_body_pitch",
+            "low_base_height",
+            "short_done_margin",
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p52_hrb0_hb0p08_h0p035_kb0p06_k0p22_ab0p06_a0_ph0p32_ld0p3_ls0p65",
+      "worst_seed": "seed_000",
+      "worst_seed_score": -0.7008017480658821,
+      "min_seed_score": -0.7008017480658821,
+      "mean_seed_score": -0.6422103791212267,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 50,
+          "start_tick": 0,
+          "end_tick": 49,
+          "start_index": 0,
+          "end_index": 49,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": 21,
+          "mean_vx_m_s": 0.08255108285695315,
+          "vy_abs_p95_m_s": 0.1303886167705059,
+          "body_pitch_abs_p95_rad": 0.44479137540577185,
+          "base_height_min_m": 0.14393408596515656,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.7202327251434326,
+          "joint_tracking_p95_rad": 0.08979546427726744,
+          "contact_pct": {
+            "01": 10.0,
+            "11": 90.0
+          },
+          "contact_dominance_pct": 90.0,
+          "contact_transitions": 3,
+          "foot_site_z_p95_m": 0.02373391091823578,
+          "score": -0.7008017480658821,
+          "forward_bonus": 0.06,
+          "penalty_total": 0.7608017480658822,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.08310893416404719,
+            "contact": 0.0,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 0.3791655016230875,
+            "height": 0.008527312278747479,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.29
+          },
+          "hard_failures": [
+            "high_body_pitch",
+            "high_lateral_velocity",
+            "low_base_height",
+            "short_done_margin"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": 24,
+          "mean_vx_m_s": 0.0724310389906168,
+          "vy_abs_p95_m_s": 0.07372344173491,
+          "body_pitch_abs_p95_rad": 0.40429139547703463,
+          "base_height_min_m": 0.14419332146644592,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.8096098899841309,
+          "joint_tracking_p95_rad": 0.06690320372581482,
+          "contact_pct": {
+            "11": 100.0
+          },
+          "contact_dominance_pct": 100.0,
+          "contact_transitions": 0,
+          "foot_site_z_p95_m": 0.017157122306525708,
+          "score": -0.5836190101765713,
+          "forward_bonus": 0.06,
+          "penalty_total": 0.6436190101765712,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.1,
+            "contact_transitions": 0.06,
+            "foot_clearance": 0.0,
+            "pitch": 0.21716558190813862,
+            "height": 0.006453428268432537,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.26
+          },
+          "hard_failures": [
+            "high_body_pitch",
+            "low_base_height",
+            "short_done_margin",
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p52_hrb0_hb0p08_h0p035_kb0p06_k0p22_ab0p06_a0p0105_ph0p47_ld0p3_ls0p65",
+      "worst_seed": "seed_002",
+      "worst_seed_score": -0.7121558307561964,
+      "min_seed_score": -0.7121558307561964,
+      "mean_seed_score": -0.49270552336651724,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 50,
+          "start_tick": 0,
+          "end_tick": 49,
+          "start_index": 0,
+          "end_index": 49,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": 31,
+          "mean_vx_m_s": 0.06502643160521984,
+          "vy_abs_p95_m_s": 0.12687774449586864,
+          "body_pitch_abs_p95_rad": 0.3720583150024722,
+          "base_height_min_m": 0.14507772028446198,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.770789384841919,
+          "joint_tracking_p95_rad": 0.08300251364707936,
+          "contact_pct": {
+            "01": 12.0,
+            "11": 88.0
+          },
+          "contact_dominance_pct": 88.0,
+          "contact_transitions": 3,
+          "foot_site_z_p95_m": 0.017866115644574163,
+          "score": -0.2732552159768381,
+          "forward_bonus": 0.06,
+          "penalty_total": 0.3332552159768381,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.05502195596694914,
+            "contact": 0.0,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 0.08823326000988896,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.19
+          },
+          "hard_failures": [
+            "high_body_pitch",
+            "high_lateral_velocity",
+            "short_done_margin"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": 22,
+          "mean_vx_m_s": 0.07810285728424787,
+          "vy_abs_p95_m_s": 0.07865501008927822,
+          "body_pitch_abs_p95_rad": 0.43016987976813537,
+          "base_height_min_m": 0.14356546103954315,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.8721277117729187,
+          "joint_tracking_p95_rad": 0.06663742661476131,
+          "contact_pct": {
+            "11": 100.0
+          },
+          "contact_dominance_pct": 100.0,
+          "contact_transitions": 0,
+          "foot_site_z_p95_m": 0.017904023826122287,
+          "score": -0.7121558307561964,
+          "forward_bonus": 0.06,
+          "penalty_total": 0.7721558307561963,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.1,
+            "contact_transitions": 0.06,
+            "foot_clearance": 0.0,
+            "pitch": 0.32067951907254155,
+            "height": 0.011476311683654705,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.28
+          },
+          "hard_failures": [
+            "high_body_pitch",
+            "low_base_height",
+            "short_done_margin",
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p58_hrb0_hb0p08_h0p025_kb0p06_k0p18_ab0p06_a0_ph0p3927_ld0p3_ls1",
+      "worst_seed": "seed_000",
+      "worst_seed_score": -0.8910562144364422,
+      "min_seed_score": -0.8910562144364422,
+      "mean_seed_score": -0.49893011392933345,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 50,
+          "start_tick": 0,
+          "end_tick": 49,
+          "start_index": 0,
+          "end_index": 49,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": 20,
+          "mean_vx_m_s": 0.08413285844027996,
+          "vy_abs_p95_m_s": 0.1419724024832248,
+          "body_pitch_abs_p95_rad": 0.46618489381287276,
+          "base_height_min_m": 0.1436828225851059,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.2699755132198334,
+          "joint_tracking_p95_rad": 0.0838546335697174,
+          "contact_pct": {
+            "01": 10.0,
+            "11": 90.0
+          },
+          "contact_dominance_pct": 90.0,
+          "contact_transitions": 3,
+          "foot_site_z_p95_m": 0.021537498012185092,
+          "score": -0.8910562144364422,
+          "forward_bonus": 0.06,
+          "penalty_total": 0.9510562144364423,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.17577921986579836,
+            "contact": 0.0,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 0.4647395752514911,
+            "height": 0.010537419319152752,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.3
+          },
+          "hard_failures": [
+            "high_body_pitch",
+            "high_lateral_velocity",
+            "low_base_height",
+            "short_done_margin"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.05319598657777533,
+          "vy_abs_p95_m_s": 0.0910632342100143,
+          "body_pitch_abs_p95_rad": 0.3057582566414496,
+          "base_height_min_m": 0.14597821235656738,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.2699755132198334,
+          "joint_tracking_p95_rad": 0.06809358000755307,
+          "contact_pct": {
+            "11": 100.0
+          },
+          "contact_dominance_pct": 100.0,
+          "contact_transitions": 0,
+          "foot_site_z_p95_m": 0.014553960412740706,
+          "score": -0.10680401342222468,
+          "forward_bonus": 0.05319598657777533,
+          "penalty_total": 0.16,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.1,
+            "contact_transitions": 0.06,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p64_hrb0_hb0p08_h0p025_kb0p06_k0p22_ab0p06_a0_ph0p32_ld0p22_ls1",
+      "worst_seed": "seed_000",
+      "worst_seed_score": -0.9591354977639874,
+      "min_seed_score": -0.9591354977639874,
+      "mean_seed_score": -0.5341846620267032,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 50,
+          "start_tick": 0,
+          "end_tick": 49,
+          "start_index": 0,
+          "end_index": 49,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": 21,
+          "mean_vx_m_s": 0.08150389842689038,
+          "vy_abs_p95_m_s": 0.15156162232160555,
+          "body_pitch_abs_p95_rad": 0.4647686532028608,
+          "base_height_min_m": 0.14280401170253754,
+          "action_saturation_pct": 0.4285714285714286,
+          "sent_target_velocity_p95_rad_s": 0.24147629737854004,
+          "joint_tracking_p95_rad": 0.08419598937034603,
+          "contact_pct": {
+            "01": 12.0,
+            "11": 88.0
+          },
+          "contact_dominance_pct": 88.0,
+          "contact_transitions": 3,
+          "foot_site_z_p95_m": 0.019556179456412793,
+          "score": -0.9591354977639874,
+          "forward_bonus": 0.06,
+          "penalty_total": 1.0191354977639875,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.2524929785728445,
+            "contact": 0.0,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 0.45907461281144335,
+            "height": 0.017567906379699627,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.29
+          },
+          "hard_failures": [
+            "high_body_pitch",
+            "high_lateral_velocity",
+            "low_base_height",
+            "short_done_margin"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.05076617371058092,
+          "vy_abs_p95_m_s": 0.0942918941378593,
+          "body_pitch_abs_p95_rad": 0.2973311108174622,
+          "base_height_min_m": 0.14608711004257202,
+          "action_saturation_pct": 0.4285714285714286,
+          "sent_target_velocity_p95_rad_s": 0.24147555232048035,
+          "joint_tracking_p95_rad": 0.0669438004493713,
+          "contact_pct": {
+            "11": 100.0
+          },
+          "contact_dominance_pct": 100.0,
+          "contact_transitions": 0,
+          "foot_site_z_p95_m": 0.011082689091563224,
+          "score": -0.10923382628941908,
+          "forward_bonus": 0.05076617371058092,
+          "penalty_total": 0.16,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.1,
+            "contact_transitions": 0.06,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p58_hrb0_hb0p08_h0p035_kb0p06_k0p14_ab0p06_a0_ph0p32_ld0p3_ls1",
+      "worst_seed": "seed_000",
+      "worst_seed_score": -1.3354703050574794,
+      "min_seed_score": -1.3354703050574794,
+      "mean_seed_score": -0.7220351850475438,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 50,
+          "start_tick": 0,
+          "end_tick": 49,
+          "start_index": 0,
+          "end_index": 49,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": 15,
+          "mean_vx_m_s": 0.10419973440468311,
+          "vy_abs_p95_m_s": 0.15144491493701923,
+          "body_pitch_abs_p95_rad": 0.5429948259820825,
+          "base_height_min_m": 0.14225853979587555,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.37639737129211426,
+          "joint_tracking_p95_rad": 0.08609992265701294,
+          "contact_pct": {
+            "01": 12.0,
+            "11": 88.0
+          },
+          "contact_dominance_pct": 88.0,
+          "contact_transitions": 3,
+          "foot_site_z_p95_m": 0.024607999622821806,
+          "score": -1.3354703050574794,
+          "forward_bonus": 0.06,
+          "penalty_total": 1.3954703050574795,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.25155931949615384,
+            "contact": 0.0,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 0.77197930392833,
+            "height": 0.021931681632995526,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.35000000000000003
+          },
+          "hard_failures": [
+            "high_body_pitch",
+            "high_lateral_velocity",
+            "low_base_height",
+            "short_done_margin"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.051399934962391855,
+          "vy_abs_p95_m_s": 0.09575116261839858,
+          "body_pitch_abs_p95_rad": 0.2930398362103852,
+          "base_height_min_m": 0.1462995707988739,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.37639737129211426,
+          "joint_tracking_p95_rad": 0.07049590349197388,
+          "contact_pct": {
+            "11": 100.0
+          },
+          "contact_dominance_pct": 100.0,
+          "contact_transitions": 0,
+          "foot_site_z_p95_m": 0.013786784559488296,
+          "score": -0.10860006503760815,
+          "forward_bonus": 0.051399934962391855,
+          "penalty_total": 0.16,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.1,
+            "contact_transitions": 0.06,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p64_hrb0_hb0p08_h0p025_kb0p06_k0p18_ab0p06_a0p0075_ph0p32_ld0p3_ls0p65",
+      "worst_seed": "seed_000",
+      "worst_seed_score": -1.8446118421958975,
+      "min_seed_score": -1.8446118421958975,
+      "mean_seed_score": -1.018712967714026,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 50,
+          "start_tick": 0,
+          "end_tick": 49,
+          "start_index": 0,
+          "end_index": 49,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": 11,
+          "mean_vx_m_s": 0.13303430031985045,
+          "vy_abs_p95_m_s": 0.14076075032353397,
+          "body_pitch_abs_p95_rad": 0.6648723353844657,
+          "base_height_min_m": 0.1338704377412796,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.504535436630249,
+          "joint_tracking_p95_rad": 0.07555426955223082,
+          "contact_pct": {
+            "01": 12.0,
+            "10": 2.0,
+            "11": 86.0
+          },
+          "contact_dominance_pct": 86.0,
+          "contact_transitions": 4,
+          "foot_site_z_p95_m": 0.02833697013556957,
+          "score": -1.8446118421958975,
+          "forward_bonus": 0.06,
+          "penalty_total": 1.9046118421958975,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.16608600258827177,
+            "contact": 0.0,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 1.2594893415378627,
+            "height": 0.0890364980697631,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.39
+          },
+          "hard_failures": [
+            "high_body_pitch",
+            "high_lateral_velocity",
+            "low_base_height",
+            "short_done_margin"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": 41,
+          "mean_vx_m_s": 0.05718590676784516,
+          "vy_abs_p95_m_s": 0.07313844319432969,
+          "body_pitch_abs_p95_rad": 0.3356685843664686,
+          "base_height_min_m": 0.14513498544692993,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.5045339465141296,
+          "joint_tracking_p95_rad": 0.06164875030517569,
+          "contact_pct": {
+            "11": 100.0
+          },
+          "contact_dominance_pct": 100.0,
+          "contact_transitions": 0,
+          "foot_site_z_p95_m": 0.012407301552593706,
+          "score": -0.19281409323215484,
+          "forward_bonus": 0.05718590676784516,
+          "penalty_total": 0.25,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.1,
+            "contact_transitions": 0.06,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.09
+          },
+          "hard_failures": [
+            "short_done_margin",
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p64_hrb0_hb0p08_h0p035_kb0p06_k0p22_ab0p06_a0_ph0p32_ld0p3_ls0p65",
+      "worst_seed": "seed_000",
+      "worst_seed_score": -2.847820861294824,
+      "min_seed_score": -2.847820861294824,
+      "mean_seed_score": -1.55949230787901,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 50,
+          "start_tick": 0,
+          "end_tick": 49,
+          "start_index": 0,
+          "end_index": 49,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": 8,
+          "mean_vx_m_s": 0.16832287073135377,
+          "vy_abs_p95_m_s": 0.18240413591265667,
+          "body_pitch_abs_p95_rad": 0.8003058501966196,
+          "base_height_min_m": 0.12157945334911346,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.6537914276123047,
+          "joint_tracking_p95_rad": 0.07950479984283446,
+          "contact_pct": {
+            "01": 14.000000000000002,
+            "10": 4.0,
+            "11": 82.0
+          },
+          "contact_dominance_pct": 82.0,
+          "contact_transitions": 6,
+          "foot_site_z_p95_m": 0.033984880894422524,
+          "score": -2.847820861294824,
+          "forward_bonus": 0.06,
+          "penalty_total": 2.907820861294824,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.4992330873012534,
+            "contact": 0.0,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 1.8012234007864785,
+            "height": 0.1873643732070922,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.42
+          },
+          "hard_failures": [
+            "high_body_pitch",
+            "high_lateral_velocity",
+            "low_base_height",
+            "short_done_margin"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 50,
+          "start_tick": 5,
+          "end_tick": 54,
+          "start_index": 5,
+          "end_index": 54,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": 33,
+          "mean_vx_m_s": 0.06102462850511074,
+          "vy_abs_p95_m_s": 0.07199272252619267,
+          "body_pitch_abs_p95_rad": 0.34799284370821626,
+          "base_height_min_m": 0.14485453069210052,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.6166517734527588,
+          "joint_tracking_p95_rad": 0.06157829463481901,
+          "contact_pct": {
+            "11": 100.0
+          },
+          "contact_dominance_pct": 100.0,
+          "contact_transitions": 0,
+          "foot_site_z_p95_m": 0.013066635280847547,
+          "score": -0.27116375446319574,
+          "forward_bonus": 0.06,
+          "penalty_total": 0.33116375446319574,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "lateral": 0.0,
+            "contact": 0.1,
+            "contact_transitions": 0.06,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0011637544631957208,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.17
+          },
+          "hard_failures": [
+            "low_base_height",
+            "short_done_margin",
+            "single_contact_pattern_dominates",
+            "too_few_contact_transitions"
+          ],
+          "passes_curation": false
+        }
+      }
+    }
+  ]
+}
