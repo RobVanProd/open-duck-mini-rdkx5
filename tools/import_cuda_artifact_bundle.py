@@ -178,6 +178,35 @@ def status_fields_from_json(payload: Any) -> dict[str, Any]:
     if isinstance(candidate, dict):
         fields["candidate_name"] = candidate.get("name")
         fields["candidate_sha256"] = candidate.get("sha256")
+
+    recipe = payload.get("recipe")
+    phases = payload.get("phases")
+    if isinstance(recipe, str) and isinstance(phases, list):
+        fields["recipe"] = recipe
+        fields["phase_count"] = len(phases)
+        phase_gate_statuses = []
+        for phase in phases:
+            if not isinstance(phase, dict):
+                continue
+            gate = phase.get("phase_freeze_gate")
+            if not isinstance(gate, dict):
+                continue
+            phase_gate_statuses.append(
+                {
+                    "phase": phase.get("name"),
+                    "status": gate.get("status"),
+                    "bridge_mode": gate.get("bridge_mode"),
+                    "result_json": gate.get("result_json"),
+                    "result_md": gate.get("result_md"),
+                    "fall_fraction": gate.get("fall_fraction"),
+                    "track_ratio_mean": gate.get("track_ratio_mean"),
+                    "mean_local_vx_m_s": gate.get("mean_local_vx_m_s"),
+                }
+            )
+        if phase_gate_statuses:
+            fields["phase_gate_statuses"] = phase_gate_statuses
+        if payload.get("final_candidate_onnx"):
+            fields["final_candidate_onnx"] = payload.get("final_candidate_onnx")
     return fields
 
 
@@ -202,6 +231,97 @@ def gate_status_by_suffix(markdown_statuses: list[dict[str, Any]], suffix: str) 
         if isinstance(status, str) and status != "UNKNOWN":
             return status
     return None
+
+
+def staged_plan_summaries(json_summaries: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    return [
+        item
+        for item in json_summaries
+        if isinstance(item.get("recipe"), str)
+        and str(item.get("recipe", "")).startswith("movement_bootstrap")
+    ]
+
+
+def determine_staged_review_status(
+    staged_plans: list[dict[str, Any]],
+    onnx_summaries: list[dict[str, Any]],
+) -> dict[str, Any] | None:
+    if not staged_plans:
+        return None
+
+    # Prefer the deepest staged run evidence over static/dry-run local plans.
+    plan = max(
+        staged_plans,
+        key=lambda item: (
+            bool(item.get("phase_gate_statuses")),
+            bool(item.get("final_candidate_onnx")),
+            int(item.get("phase_count") or 0),
+            int(item.get("size_bytes") or 0),
+        ),
+    )
+    plan_status = str(plan.get("status") or "UNKNOWN")
+    gates = plan.get("phase_gate_statuses") or []
+
+    for gate in gates:
+        status = str(gate.get("status") or "UNKNOWN")
+        if status.startswith("HOLD"):
+            return {
+                "status": status,
+                "reason": (
+                    "staged curriculum phase gate held; inspect the phase gate "
+                    "summary before considering any follow-on training"
+                ),
+                "staged_recipe": plan.get("recipe"),
+                "staged_plan": plan.get("path"),
+                "staged_phase_gate": gate,
+            }
+
+    if plan_status.startswith("HOLD"):
+        return {
+            "status": plan_status,
+            "reason": "staged curriculum planner reported a hold",
+            "staged_recipe": plan.get("recipe"),
+            "staged_plan": plan.get("path"),
+            "staged_phase_gates": gates,
+        }
+
+    if plan_status == "PASS_STAGED_CURRICULUM_RUN":
+        if not gates:
+            return {
+                "status": "INFO_STAGED_RUN_NO_PHASE_GATE",
+                "reason": (
+                    "staged curriculum ran, but no phase-gate result was found "
+                    "in the staged plan"
+                ),
+                "staged_recipe": plan.get("recipe"),
+                "staged_plan": plan.get("path"),
+            }
+        if not onnx_summaries:
+            return {
+                "status": "HOLD_STAGED_NO_ONNX",
+                "reason": "staged curriculum passed gates but no ONNX was found in the bundle",
+                "staged_recipe": plan.get("recipe"),
+                "staged_plan": plan.get("path"),
+                "staged_phase_gates": gates,
+            }
+        return {
+            "status": "READY_FOR_STAGED_GATE_REVIEW",
+            "reason": (
+                "staged curriculum completed and recorded passing phase gates; "
+                "review the staged artifacts before any next training phase"
+            ),
+            "staged_recipe": plan.get("recipe"),
+            "staged_plan": plan.get("path"),
+            "staged_phase_gates": gates,
+        }
+
+    return {
+        "status": "INFO_STAGED_PLAN_ONLY",
+        "reason": "staged curriculum plan evidence found, but no run verdict is available",
+        "staged_recipe": plan.get("recipe"),
+        "staged_plan": plan.get("path"),
+        "staged_status": plan_status,
+    }
 
 
 def determine_review_status(
@@ -289,6 +409,15 @@ def determine_review_status(
             "candidate_gate_x008": x008_status,
         }
 
+    staged_review = determine_staged_review_status(
+        staged_plan_summaries(json_summaries),
+        onnx_summaries,
+    )
+    if staged_review:
+        staged_review.setdefault("candidate_gate_x0", x0_status)
+        staged_review.setdefault("candidate_gate_x008", x008_status)
+        return staged_review
+
     return {
         "status": "HOLD_NO_CANDIDATE_PACKAGE",
         "reason": "no candidate package metadata was found in the bundle",
@@ -372,6 +501,7 @@ def build_summary(
         "cuda_cell_exit_status": exit_status,
         "environment_files": [relative(path) for path in files["environment"]],
         "stdout_stderr_files": [relative(path) for path in files["stdout_stderr"]],
+        "staged_plans": staged_plan_summaries(json_summaries),
         "review": review,
     }
 
@@ -408,6 +538,22 @@ def build_summary(
             f"- candidate_gate_x008: `{review.get('candidate_gate_x008')}`",
         ]
     )
+    if review.get("staged_recipe") or review.get("staged_plan"):
+        lines.extend(
+            [
+                f"- staged_recipe: `{review.get('staged_recipe')}`",
+                f"- staged_plan: `{review.get('staged_plan')}`",
+            ]
+        )
+    if review.get("staged_phase_gate"):
+        gate = review["staged_phase_gate"]
+        lines.extend(
+            [
+                f"- staged_phase: `{gate.get('phase')}`",
+                f"- staged_phase_gate_status: `{gate.get('status')}`",
+                f"- staged_phase_gate_bridge: `{gate.get('bridge_mode')}`",
+            ]
+        )
 
     if exit_status:
         lines.extend(["", "## CUDA Cell Metadata", ""])
@@ -442,6 +588,23 @@ def build_summary(
             lines.append(f"| `{item['path']}` | `{status}` | `{candidate}` |")
     else:
         lines.append("No JSON files found.")
+
+    lines.extend(["", "## Staged Plans", ""])
+    staged_plans = staged_plan_summaries(json_summaries)
+    if staged_plans:
+        lines.append("| file | recipe | status | phase gates |")
+        lines.append("|---|---|---|---|")
+        for item in staged_plans:
+            gates = item.get("phase_gate_statuses") or []
+            gate_text = ", ".join(
+                f"{gate.get('phase')}={gate.get('status')}" for gate in gates
+            )
+            lines.append(
+                f"| `{item['path']}` | `{item.get('recipe')}` | "
+                f"`{item.get('status')}` | `{markdown_cell(gate_text)}` |"
+            )
+    else:
+        lines.append("No staged curriculum plan JSON found.")
 
     lines.extend(["", "## ONNX Files", ""])
     if onnx_summaries:

@@ -4848,6 +4848,11 @@ python3 tools/print_cuda_colab_cell.py \
 This generates a one-code-cell V21 staged-curriculum notebook outside the repo
 for a manually authenticated Colab session. It does not approve robot testing.
 
+The CUDA artifact importer now recognizes staged-curriculum bundles directly.
+For V21 it reports `READY_FOR_STAGED_GATE_REVIEW`, the specific staged phase
+gate `HOLD_*` status, `INFO_STAGED_RUN_NO_PHASE_GATE`, or `HOLD_STAGED_NO_ONNX`
+instead of falling through to the old candidate-package-only review path.
+
 Local ROCm was rechecked after the firmware/BIOS update:
 
 ```text

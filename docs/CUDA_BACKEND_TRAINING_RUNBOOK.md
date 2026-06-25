@@ -520,11 +520,13 @@ For manual imports, `tools/import_cuda_artifact_bundle.py` still accepts
 `--expected-sha256-file` or `--expected-sha256`.
 
 Open the generated `CUDA_ARTIFACT_IMPORT_SUMMARY.md` first. It reports a
-review gate such as `READY_FOR_SIM_GATE_REVIEW`, `INFO_SMOKE_ONLY`, or the
-specific `HOLD_*` reason from the candidate package, sim gates, or notebook
-exit status. `HOLD_CUDA_CELL_FAILED` means the bundle is partial; inspect logs
-before using any candidate result. This is still an offline review gate, not
-approval for robot testing.
+review gate such as `READY_FOR_SIM_GATE_REVIEW`,
+`READY_FOR_STAGED_GATE_REVIEW`, `INFO_SMOKE_ONLY`,
+`INFO_STAGED_RUN_NO_PHASE_GATE`, or the specific `HOLD_*` reason from the
+staged phase gate, candidate package, sim gates, or notebook exit status.
+`HOLD_CUDA_CELL_FAILED` means the bundle is partial; inspect logs before using
+any candidate result. This is still an offline review gate, not approval for
+robot testing.
 
 If the bundle cannot be downloaded, send small summaries first:
 

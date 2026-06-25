@@ -3887,6 +3887,17 @@ python3 tools/print_cuda_colab_cell.py \
 The generated notebook runs only the explicit V21 staged curriculum and bundles
 small staged artifacts for local import. It is not robot approval.
 
+The artifact importer now understands V21 staged-curriculum outputs. After
+downloading a V21 browser-Colab bundle, run:
+
+```bash
+python3 tools/ingest_latest_cuda_artifact.py
+```
+
+Then start from `CUDA_ARTIFACT_IMPORT_SUMMARY.md`. Expected staged review
+statuses are `READY_FOR_STAGED_GATE_REVIEW`, the specific phase-gate `HOLD_*`
+reason, `INFO_STAGED_RUN_NO_PHASE_GATE`, or `HOLD_STAGED_NO_ONNX`.
+
 Local ROCm status after the firmware/BIOS update:
 
 ```text
