@@ -5652,3 +5652,42 @@ and not sustained over 150 ticks. The tested sagittal body-over-stance-foot and
 ankle push-off terms do not close the gap. The next offline step should be a
 different higher-level controller/reference design rather than another nearby
 lateral gate, prior-scale, or push-sign sweep.
+
+### Contact-Timed Reference Snippet Plan
+
+The next structural target-source branch is now specified in:
+
+```text
+docs/CONTACT_TIMED_REFERENCE_SNIPPETS_PLAN.md
+```
+
+Goal:
+
+```text
+preserve useful dynamic-roll contact timing from 50-tick curated fragments,
+but regenerate longer envelope-aware target snippets and score them over
+100-150 ticks.
+```
+
+This is the correct next offline branch because:
+
+```text
+dynamic-roll lateral-fix:
+  best 50-tick contact/motion evidence
+  not sustained
+
+CoM/stance-relative controller:
+  better contact/lateral discipline
+  insufficient forward impulse
+```
+
+The plan blocks:
+
+```text
+new scalar CoM sweeps
+training from 50-tick fragments
+robot validation
+actuator-envelope relaxation
+```
+
+until a contact-timed source passes seed-robust 100/150 tick gates.

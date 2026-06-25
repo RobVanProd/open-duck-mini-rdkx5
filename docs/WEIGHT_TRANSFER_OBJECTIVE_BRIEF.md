@@ -155,6 +155,30 @@ stance-relative baseline, so the next step should be a different
 higher-level controller/reference design, not another nearby scalar gate or
 push-sign expansion.
 
+## Next Structural Branch
+
+The next branch is specified in:
+
+```text
+docs/CONTACT_TIMED_REFERENCE_SNIPPETS_PLAN.md
+```
+
+Decision:
+
+```text
+try contact-timed reference snippets before any new scalar CoM/controller sweep
+```
+
+Reason:
+
+```text
+dynamic-roll lateral-fix fragments contain the best known 50-tick contact/motion
+timing, while CoM controller probes contain the best known lateral/contact
+discipline. The next target source should preserve useful contact timing from
+the curated fragments but regenerate longer envelope-aware targets that can be
+scored over 100-150 ticks.
+```
+
 ## Required Gate
 
 The next target source must pass:

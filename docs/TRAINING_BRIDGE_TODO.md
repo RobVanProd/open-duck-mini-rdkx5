@@ -4309,6 +4309,11 @@ lateral-refined forward-intent teacher:
   HOLD_NO_SEED_ROBUST_TARGETS
   top scored 100-tick local dx: 0.0261 / 0.0371 m
   top scored 150-tick local dx: 0.0411 / 0.0372 m
+
+CoM / stance-relative controller:
+  HOLD_NO_SEED_ROBUST_TARGETS
+  best controlled 100-tick local dx: 0.0254 / 0.0209 m
+  sagittal/ankle push-off did not improve the result
 ```
 
 The current target-source conclusion is:
@@ -4318,6 +4323,16 @@ forward displacement can be forced, but current target families do it through
 lateral momentum; when lateral motion is controlled, forward displacement
 collapses.
 ```
+
+The next target-source branch is specified in:
+
+```text
+docs/CONTACT_TIMED_REFERENCE_SNIPPETS_PLAN.md
+```
+
+It should preserve useful 50-tick dynamic-roll contact timing, regenerate
+longer envelope-aware snippets, and score them over 100-150 ticks before any
+new PPO/BC run.
 
 Before another CUDA PPO/BC run, require a structurally different
 contact/weight-transfer objective or controller that can pass the 100-150 tick
