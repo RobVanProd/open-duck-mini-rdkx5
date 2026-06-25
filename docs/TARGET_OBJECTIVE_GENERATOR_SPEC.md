@@ -374,3 +374,43 @@ preserve seed2 contact_dominance <= 95%
 preserve seed2 contact_transitions >= 3
 avoid optimizing only short 25-sample windows
 ```
+
+## Dynamic Hip-Roll Lateral-Fix Pass
+
+The follow-up broad dynamic-roll search cleared the objective:
+
+```text
+objective score: PASS_SEED_ROBUST_TARGETS
+robust 50-sample modes: 2
+trace files: 320
+mode count: 160
+```
+
+Best robust mode:
+
+```text
+mode: primitive_p0p58_hrb0_hra0p048_hrphm1p05_hb0p08_h0p038_kb0p06_k0p14_ab0p04_a0_ph0p47_ld0p36_ls0p55
+seed0 vx=0.0416 m/s, vy95=0.0716 m/s, contact_dominance=90%, transitions=3
+seed2 vx=0.0437 m/s, vy95=0.0736 m/s, contact_dominance=94%, transitions=4
+```
+
+The objective scorer now has a passing target-source family. Preserve these
+gates for the next smoke:
+
+```text
+min_mean_vx >= 0.04
+max_vy_abs_p95 <= 0.12
+max_contact_dominance_pct <= 95
+min_contact_transitions >= 3
+max_sent_velocity_p95 <= 2.5
+max_tracking_p95 <= 0.12
+min_done_margin >= 50
+```
+
+Next objective use:
+
+```text
+Build the first small offline target-window imitation/BC smoke from
+dynamic-roll lateral-fix curated windows. Grade it by closed-loop replay, not
+by supervised loss alone.
+```

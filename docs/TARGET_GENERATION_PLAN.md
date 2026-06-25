@@ -882,3 +882,48 @@ over-narrow around one mode. Keep the broad dynamic-roll family, but explicitly
 score seed0 lateral reduction without sacrificing seed0 forward velocity or
 seed2 contact transitions.
 ```
+
+## Dynamic Hip-Roll Lateral-Fix Search Result
+
+A follow-up CPU-only search stayed broad in the dynamic-roll family and targeted
+the remaining seed0 lateral miss.
+
+```text
+tool: tools/search_low_command_target_primitives.py
+command_x: 0.04
+duration: 4 s
+seeds: 0,2
+candidates: 160
+objective score: PASS_SEED_ROBUST_TARGETS
+robust modes: 2
+```
+
+Best robust objective-scored mode:
+
+```text
+mode: primitive_p0p58_hrb0_hra0p048_hrphm1p05_hb0p08_h0p038_kb0p06_k0p14_ab0p04_a0_ph0p47_ld0p36_ls0p55
+seed0: vx=0.0416 m/s, vy95=0.0716 m/s, contact_dominance=90%, contact_transitions=3
+seed2: vx=0.0437 m/s, vy95=0.0736 m/s, contact_dominance=94%, contact_transitions=4
+remaining failures: none
+```
+
+Curation and robustness:
+
+```text
+50-sample curation: PASS_CURATED_DATASET_SEED_READY
+50-sample curated windows: 70
+curated source files: 2
+curated modes: 63
+seed robustness audit: PASS_SEED_ROBUST_TARGETS
+robust curated modes: 3
+25-sample curated windows: 318
+```
+
+Interpretation:
+
+```text
+The dynamic-roll lateral-fix search is the first target-source pass under the
+strict same-mode seed-robust gate. It authorizes the next offline step: a small
+reviewed imitation/BC smoke against these target windows. It does not authorize
+robot validation or skipping candidate replay gates.
+```

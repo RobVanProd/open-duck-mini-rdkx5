@@ -1,6 +1,9 @@
 # Target Source Audit
 
-status: `HOLD_NO_TARGET_SOURCE_READY`
+status: `PASS_TARGET_SOURCE_READY`
+offline_imitation_smoke_permission: `True`
+full_training_permission: `False`
+robot_validation_permission: `False`
 
 This summarizes compact target-source evidence. It does not run
 simulation, training, SSH, deployment, or robot tests.
@@ -14,6 +17,7 @@ simulation, training, SSH, deployment, or robot tests.
 | foot_clearance_probe | primitive | `HOLD_NO_SEED_ROBUST_TARGETS` | 0 | 23 | 1 | 0.0475 | 0.1197 | 0.0565 | 0.1166 | 98.0000 | 2 | 0.0159 | NA | NA |
 | dynamic_roll | primitive | `HOLD_NO_SEED_ROBUST_TARGETS` | 0 | 42 | 2 | 0.0413 | 0.1234 | 0.0417 | 0.1110 | 94.0000 | 4 | 0.0123 | NA | NA |
 | dynamic_roll_refine | primitive | `HOLD_NO_SEED_ROBUST_TARGETS` | 0 | 3 | 2 | 0.0365 | 0.0667 | 0.0403 | 0.1122 | 94.0000 | 4 | 0.0118 | NA | NA |
+| dynamic_roll_lateral_fix | primitive | `PASS_SEED_ROBUST_TARGETS` | 2 | 70 | 2 | 0.0416 | 0.0716 | 0.0437 | 0.0736 | 94.0000 | 4 | 0.0114 | NA | NA |
 | reference_contact_gated_projected | reference | `HOLD_REFERENCE_TARGET_TERMINATES` | NA | 0 | 0 | NA | NA | NA | NA | NA | NA | NA | 7 | 69.4217 |
 | reference_contact_synchronized_projected | reference | `HOLD_REFERENCE_TARGET_TERMINATES` | NA | 0 | 0 | NA | NA | NA | NA | NA | NA | NA | 7 | 4.3614 |
 
@@ -26,16 +30,17 @@ simulation, training, SSH, deployment, or robot tests.
 | foot_clearance_probe | `NA` | `high_body_pitch, short_done_margin, single_contact_pattern_dominates, too_few_contact_transitions` |
 | dynamic_roll | `high_lateral_velocity` | `NA` |
 | dynamic_roll_refine | `low_forward_velocity` | `NA` |
+| dynamic_roll_lateral_fix | `NA` | `NA` |
 | reference_contact_gated_projected | `NA` | `NA` |
 | reference_contact_synchronized_projected | `NA` | `NA` |
 
 ## Recommendation
 
-Dynamic hip-roll is the strongest current target-source family: it produced 50-sample curated windows from seed_000 and seed_002, but no same-mode robust pass. The next search should stay in the broad dynamic-roll family and optimize the best near-pass by reducing seed_000 lateral velocity while preserving seed_002 forward progress and contact transitions.
+Dynamic-roll lateral-fix cleared the strict target-source gate. Use it as the first candidate target source for a small reviewed offline imitation/BC smoke, while keeping robot validation blocked.
 
 ## Gate
 
-- Training remains blocked until a target source has robust 50-sample windows across seed_000 and seed_002.
-- A source with only seed_000 curated windows is evidence, not permission to train.
-- A source-diverse dataset without a same-mode robust pass is evidence, not permission to train, unless that gate is explicitly relaxed in a reviewed experiment.
-- A reference rollout with low contact mismatch but falls/negative progress is not a BC target.
+- Target-source discovery is unblocked for a small offline imitation/BC smoke.
+- Full PPO remains blocked until the smoke produces a closed-loop replay pass.
+- Robot validation remains blocked.
+- Do not treat a source-diverse dataset as hardware permission.

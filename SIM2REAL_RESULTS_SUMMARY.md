@@ -4384,3 +4384,64 @@ outputs/analysis/TARGET_SOURCE_AUDIT.md
 status: HOLD_NO_TARGET_SOURCE_READY
 training_permission: false
 ```
+
+### Dynamic Hip-Roll Lateral-Fix Pass
+
+The next bounded CPU search stayed in the dynamic-roll family and directly
+targeted the seed_000 lateral miss.
+
+Result:
+
+```text
+tool: tools/search_low_command_target_primitives.py
+command: x=0.04
+duration: 4 s
+seeds: 0,2
+candidates: 160
+objective score: PASS_SEED_ROBUST_TARGETS
+robust objective modes: 2
+50-sample curation: PASS_CURATED_DATASET_SEED_READY
+50-sample curated windows: 70
+curated source files: 2
+curated modes: 63
+seed robustness audit: PASS_SEED_ROBUST_TARGETS
+robust curated modes: 3
+```
+
+Best objective-scored robust mode:
+
+```text
+mode: primitive_p0p58_hrb0_hra0p048_hrphm1p05_hb0p08_h0p038_kb0p06_k0p14_ab0p04_a0_ph0p47_ld0p36_ls0p55
+
+seed_000:
+  mean vx: 0.0416 m/s
+  vy p95: 0.0716 m/s
+  contact dominance: 90%
+  contact transitions: 3
+  failures: none
+
+seed_002:
+  mean vx: 0.0437 m/s
+  vy p95: 0.0736 m/s
+  contact dominance: 94%
+  contact transitions: 4
+  failures: none
+```
+
+Updated audit:
+
+```text
+outputs/analysis/TARGET_SOURCE_AUDIT.md
+status: PASS_TARGET_SOURCE_READY
+offline_imitation_smoke_permission: true
+full_training_permission: false
+robot_validation_permission: false
+```
+
+Conclusion:
+
+```text
+The target-source layer is now unblocked. The next safe milestone is a small
+offline imitation/BC smoke using the dynamic-roll lateral-fix curated windows,
+followed by closed-loop replay at x=0.04. Robot validation remains blocked.
+```

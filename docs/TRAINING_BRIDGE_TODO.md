@@ -3446,3 +3446,47 @@ Do next:
 5. prefer 50-sample robustness over 25-sample window count
 6. rerun the target-source audit before any supervised or PPO launch
 ```
+
+### Dynamic Hip-Roll Lateral-Fix Pass
+
+The broad lateral-fix search cleared the strict target-source gate:
+
+```text
+objective score: PASS_SEED_ROBUST_TARGETS
+robust objective modes: 2
+50-sample curation: PASS_CURATED_DATASET_SEED_READY
+50-sample curated windows: 70
+curated source files: 2
+curated modes: 63
+seed robustness audit: PASS_SEED_ROBUST_TARGETS
+robust curated modes: 3
+```
+
+Best robust target mode:
+
+```text
+mode: primitive_p0p58_hrb0_hra0p048_hrphm1p05_hb0p08_h0p038_kb0p06_k0p14_ab0p04_a0_ph0p47_ld0p36_ls0p55
+seed0: vx=0.0416 m/s, vy95=0.0716 m/s, contact_dominance=90%, contact_transitions=3
+seed2: vx=0.0437 m/s, vy95=0.0736 m/s, contact_dominance=94%, contact_transitions=4
+```
+
+Training status:
+
+```text
+Target-source discovery is unblocked.
+Robot validation remains blocked.
+Full PPO remains blocked until a small offline imitation/BC smoke proves the
+target windows produce a closed-loop policy that still moves forward.
+```
+
+Do next:
+
+```text
+1. build a target manifest from dynamic-roll lateral-fix 50-sample curation
+2. run the smallest supervised/BC smoke
+3. replay the BC policy in closed-loop vanilla x=0.04 over seed0 and seed2
+4. grade on forward motion, lateral velocity, contact transitions, posture,
+   target velocity, and tracking
+5. only if the smoke passes, consider a larger offline imitation or PPO run
+6. do not run robot validation
+```

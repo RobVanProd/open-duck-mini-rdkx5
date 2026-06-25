@@ -62,6 +62,12 @@ DEFAULT_SOURCES = [
         curation_json="outputs/analysis/target_generator_dynamic_roll_refine_window_curation_50.json",
     ),
     SourceSpec(
+        name="dynamic_roll_lateral_fix",
+        kind="primitive",
+        objective_json="outputs/analysis/target_objective_score_dynamic_roll_lateral_fix_50.json",
+        curation_json="outputs/analysis/target_generator_dynamic_roll_lateral_fix_window_curation_50.json",
+    ),
+    SourceSpec(
         name="reference_contact_gated_projected",
         kind="reference",
         rollout_json="outputs/analysis/reference_motion_rollout_v20_contact_gated_projected.json",
@@ -226,6 +232,16 @@ def gate_status(summaries: list[dict[str, Any]]) -> str:
 
 
 def recommendation(summaries: list[dict[str, Any]]) -> str:
+    lateral_fix = next(
+        (item for item in summaries if item.get("name") == "dynamic_roll_lateral_fix"),
+        None,
+    )
+    if lateral_fix and lateral_fix.get("robust_mode_count") and int(lateral_fix["robust_mode_count"]) > 0:
+        return (
+            "Dynamic-roll lateral-fix cleared the strict target-source gate. "
+            "Use it as the first candidate target source for a small reviewed "
+            "offline imitation/BC smoke, while keeping robot validation blocked."
+        )
     dynamic_roll = next(
         (item for item in summaries if item.get("name") == "dynamic_roll"),
         None,
@@ -256,10 +272,14 @@ def recommendation(summaries: list[dict[str, Any]]) -> str:
 
 def audit_sources() -> dict[str, Any]:
     summaries = [source_summary(spec) for spec in DEFAULT_SOURCES]
+    status = gate_status(summaries)
     return {
-        "status": gate_status(summaries),
+        "status": status,
         "sources": summaries,
         "recommendation": recommendation(summaries),
+        "offline_imitation_smoke_permission": status == "PASS_TARGET_SOURCE_READY",
+        "full_training_permission": False,
+        "robot_validation_permission": False,
         "training_permission": False,
     }
 
@@ -269,6 +289,9 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         "# Target Source Audit",
         "",
         f"status: `{payload['status']}`",
+        f"offline_imitation_smoke_permission: `{payload['offline_imitation_smoke_permission']}`",
+        f"full_training_permission: `{payload['full_training_permission']}`",
+        f"robot_validation_permission: `{payload['robot_validation_permission']}`",
         "",
         "This summarizes compact target-source evidence. It does not run",
         "simulation, training, SSH, deployment, or robot tests.",
@@ -316,21 +339,25 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         lines.append(
             f"| {item['name']} | `{seed0_failures or 'NA'}` | `{seed2_failures or 'NA'}` |"
         )
-    lines.extend(
-        [
-            "",
-            "## Recommendation",
-            "",
-            payload["recommendation"],
-            "",
-            "## Gate",
-            "",
-            "- Training remains blocked until a target source has robust 50-sample windows across seed_000 and seed_002.",
-            "- A source with only seed_000 curated windows is evidence, not permission to train.",
-            "- A source-diverse dataset without a same-mode robust pass is evidence, not permission to train, unless that gate is explicitly relaxed in a reviewed experiment.",
-            "- A reference rollout with low contact mismatch but falls/negative progress is not a BC target.",
-        ]
-    )
+    lines.extend(["", "## Recommendation", "", payload["recommendation"], "", "## Gate", ""])
+    if payload["status"] == "PASS_TARGET_SOURCE_READY":
+        lines.extend(
+            [
+                "- Target-source discovery is unblocked for a small offline imitation/BC smoke.",
+                "- Full PPO remains blocked until the smoke produces a closed-loop replay pass.",
+                "- Robot validation remains blocked.",
+                "- Do not treat a source-diverse dataset as hardware permission.",
+            ]
+        )
+    else:
+        lines.extend(
+            [
+                "- Training remains blocked until a target source has robust 50-sample windows across seed_000 and seed_002.",
+                "- A source with only seed_000 curated windows is evidence, not permission to train.",
+                "- A source-diverse dataset without a same-mode robust pass is evidence, not permission to train, unless that gate is explicitly relaxed in a reviewed experiment.",
+                "- A reference rollout with low contact mismatch but falls/negative progress is not a BC target.",
+            ]
+        )
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(lines) + "\n")
 
