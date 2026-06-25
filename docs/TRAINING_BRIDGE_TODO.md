@@ -2643,3 +2643,42 @@ Artifacts:
 outputs/analysis/REALIZED_TARGET_WINDOW_MINE.md
 outputs/analysis/realized_target_window_mine.json
 ```
+
+### Realized Motion Window Curation Gate
+
+A stricter curation pass has been added so mined snippets cannot silently become
+a weak BC dataset:
+
+```text
+tool: tools/curate_realized_target_windows.py
+status: HOLD_INSUFFICIENT_CURATED_WINDOWS
+min_curated_windows: 8
+curated_seed_windows: 1
+review_motion_hints: 15
+rejected_dataset_seeds: 1
+```
+
+This is a hold for supervised pretraining:
+
+```text
+do not train BC/PPO from the current realized-window manifest
+do not treat review-only motion hints as target labels
+generate or mine more stable low-command windows first
+```
+
+Next curation tasks:
+
+```text
+1. collect more low-command realized sim traces with explicit per-seed outcomes
+2. prefer windows with no later termination, low lateral velocity, and low pitch
+3. require contact-pattern diversity instead of mostly double-support snippets
+4. keep all snippets linked to the source trace, seed, mode, and future outcome
+5. only start supervised pretraining when the curated pool passes the count/diversity gate
+```
+
+Artifacts:
+
+```text
+outputs/analysis/REALIZED_TARGET_WINDOW_CURATION.md
+outputs/analysis/realized_target_window_curation.json
+```

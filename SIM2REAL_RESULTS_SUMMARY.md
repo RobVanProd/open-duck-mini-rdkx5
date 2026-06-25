@@ -3484,3 +3484,44 @@ Additional artifacts:
 outputs/analysis/REALIZED_TARGET_WINDOW_MINE.md
 outputs/analysis/realized_target_window_mine.json
 ```
+
+### Realized Target Window Curation
+
+The mined windows were filtered with stricter dataset-readiness criteria before
+allowing any supervised seed or BC interpretation.
+
+```text
+tool: tools/curate_realized_target_windows.py
+status: HOLD_INSUFFICIENT_CURATED_WINDOWS
+required curated windows: 8
+curated seed windows: 1
+review-only motion hints: 15
+rejected dataset seeds: 1
+```
+
+Only one short window currently passes the conservative seed-material gate. Most
+otherwise useful snippets fail because of high lateral velocity, high body
+pitch, short margin before termination, or a dominant double-support contact
+pattern.
+
+Decision:
+
+```text
+Do not launch BC/PPO from the current realized-window manifest. It is useful
+for diagnosing what motion exists, but not sufficient as a stable low-command
+target dataset.
+```
+
+Next offline step:
+
+```text
+generate or mine more stable realized low-command windows with stricter
+survival, lateral, pitch, and contact-diversity filters
+```
+
+Additional artifacts:
+
+```text
+outputs/analysis/REALIZED_TARGET_WINDOW_CURATION.md
+outputs/analysis/realized_target_window_curation.json
+```

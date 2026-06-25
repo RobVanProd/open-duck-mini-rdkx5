@@ -621,3 +621,49 @@ Additional artifacts:
 outputs/analysis/REALIZED_TARGET_WINDOW_MINE.md
 outputs/analysis/realized_target_window_mine.json
 ```
+
+## Realized Target Window Curation
+
+The mined windows were then passed through stricter dataset-readiness filters:
+
+```text
+tool: tools/curate_realized_target_windows.py
+status: HOLD_INSUFFICIENT_CURATED_WINDOWS
+min required curated windows: 8
+mined windows: 17
+curated seed windows: 1
+review-only motion hints: 15
+rejected dataset seeds: 1
+```
+
+Only one window passes the conservative curation gate:
+
+```text
+source: v7_x008_trace.jsonl
+mode: vanilla
+ticks: 0-24
+mean vx: 0.0656 m/s
+vy p95_abs: 0.0956 m/s
+pitch p95_abs: 0.2717 rad
+min height: 0.1513 m
+sent target velocity p95: 1.9668 rad/s
+tracking p95: 0.0971 rad
+dominant contact pattern: 92.0%
+```
+
+Interpretation:
+
+```text
+The mined traces contain useful motion hints, but they do not yet contain a
+sufficiently large or diverse realized target dataset. Do not launch BC or PPO
+from this manifest. The next offline work should deliberately generate or
+curate more stable low-command realized windows, with lateral velocity, pitch,
+contact dominance, and post-window survival as first-class filters.
+```
+
+Additional artifacts:
+
+```text
+outputs/analysis/REALIZED_TARGET_WINDOW_CURATION.md
+outputs/analysis/realized_target_window_curation.json
+```

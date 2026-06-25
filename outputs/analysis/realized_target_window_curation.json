@@ -1,0 +1,437 @@
+{
+  "status": "HOLD_INSUFFICIENT_CURATED_WINDOWS",
+  "criteria": {
+    "min_curated_windows": 8,
+    "min_mean_vx": 0.04,
+    "max_vy_abs_p95": 0.12,
+    "max_pitch_abs_p95": 0.35,
+    "min_base_height": 0.145,
+    "max_action_saturation_pct": 1.0,
+    "max_sent_velocity_p95": 2.5,
+    "max_tracking_p95": 0.12,
+    "min_done_margin": 50,
+    "max_contact_dominance_pct": 95.0
+  },
+  "input_json": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/realized_target_window_mine.json",
+  "counts": {
+    "mined_windows": 17,
+    "pass_curated_seed_windows": 1,
+    "review_motion_hints": 15,
+    "rejected_dataset_seeds": 1
+  },
+  "curated_seed_windows": [
+    {
+      "tier": "PASS_CURATED_SEED_WINDOW",
+      "reasons": [],
+      "source_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/movement_bootstrap_v7_x008_failure_trace/v7_x008_trace.jsonl",
+      "mode": "vanilla",
+      "start_tick": 0,
+      "end_tick": 24,
+      "mean_vx_m_s": 0.06558501033112407,
+      "vy_abs_p95_m_s": 0.09559884220361711,
+      "body_pitch_abs_p95_rad": 0.2716551745103784,
+      "base_height_min_m": 0.15133751928806305,
+      "action_saturation_pct": 0.0,
+      "sent_target_velocity_p95_rad_s": 1.9667506217956543,
+      "joint_tracking_p95_rad": 0.0971198215149343,
+      "ticks_until_done_after_window": null,
+      "contact_pct": {
+        "01": 8.0,
+        "11": 92.0
+      },
+      "contact_dominance_pct": 92.0
+    }
+  ],
+  "review_motion_hints": [
+    {
+      "tier": "REVIEW_MOTION_HINT_ONLY",
+      "reasons": [
+        "high_lateral_velocity",
+        "high_body_pitch",
+        "short_done_margin"
+      ],
+      "source_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/movement_bootstrap_v7_x008_failure_trace/v7_x008_trace.jsonl",
+      "mode": "fitted",
+      "start_tick": 5,
+      "end_tick": 29,
+      "mean_vx_m_s": 0.10711868286132813,
+      "vy_abs_p95_m_s": 0.1648835390806198,
+      "body_pitch_abs_p95_rad": 0.39536927432880364,
+      "base_height_min_m": 0.14998295903205872,
+      "action_saturation_pct": 0.0,
+      "sent_target_velocity_p95_rad_s": 1.34159573353827,
+      "joint_tracking_p95_rad": 0.09065327644348145,
+      "ticks_until_done_after_window": 29,
+      "contact_pct": {
+        "01": 20.0,
+        "11": 80.0
+      },
+      "contact_dominance_pct": 80.0
+    },
+    {
+      "tier": "REVIEW_MOTION_HINT_ONLY",
+      "reasons": [
+        "high_lateral_velocity",
+        "high_body_pitch",
+        "short_done_margin",
+        "single_contact_pattern_dominates"
+      ],
+      "source_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/movement_bootstrap_v7_x008_failure_trace/v7_x008_trace.jsonl",
+      "mode": "fitted",
+      "start_tick": 10,
+      "end_tick": 34,
+      "mean_vx_m_s": 0.10574462860822678,
+      "vy_abs_p95_m_s": 0.15003538578748707,
+      "body_pitch_abs_p95_rad": 0.4355659474827438,
+      "base_height_min_m": 0.14998295903205872,
+      "action_saturation_pct": 0.0,
+      "sent_target_velocity_p95_rad_s": 0.6808175239712,
+      "joint_tracking_p95_rad": 0.08179796934127809,
+      "ticks_until_done_after_window": 24,
+      "contact_pct": {
+        "01": 4.0,
+        "11": 96.0
+      },
+      "contact_dominance_pct": 96.0
+    },
+    {
+      "tier": "REVIEW_MOTION_HINT_ONLY",
+      "reasons": [
+        "high_lateral_velocity",
+        "high_body_pitch"
+      ],
+      "source_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/movement_bootstrap_v5_phase1_x008_failure_trace/phase1_x008_trace.jsonl",
+      "mode": "fitted",
+      "start_tick": 5,
+      "end_tick": 29,
+      "mean_vx_m_s": 0.1022938360273838,
+      "vy_abs_p95_m_s": 0.16757095158100127,
+      "body_pitch_abs_p95_rad": 0.3555283447594477,
+      "base_height_min_m": 0.1488674134016037,
+      "action_saturation_pct": 0.0,
+      "sent_target_velocity_p95_rad_s": 1.2030387297272682,
+      "joint_tracking_p95_rad": 0.08124520778656008,
+      "ticks_until_done_after_window": 50,
+      "contact_pct": {
+        "01": 20.0,
+        "10": 4.0,
+        "11": 76.0
+      },
+      "contact_dominance_pct": 76.0
+    },
+    {
+      "tier": "REVIEW_MOTION_HINT_ONLY",
+      "reasons": [
+        "high_lateral_velocity",
+        "high_body_pitch",
+        "short_done_margin"
+      ],
+      "source_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/movement_bootstrap_v7_x008_failure_trace/v7_x008_trace.jsonl",
+      "mode": "fitted",
+      "start_tick": 0,
+      "end_tick": 24,
+      "mean_vx_m_s": 0.0985308063030243,
+      "vy_abs_p95_m_s": 0.17916718125343326,
+      "body_pitch_abs_p95_rad": 0.3628655079764671,
+      "base_height_min_m": 0.14998295903205872,
+      "action_saturation_pct": 0.0,
+      "sent_target_velocity_p95_rad_s": 2.006236929446459,
+      "joint_tracking_p95_rad": 0.11113015711307529,
+      "ticks_until_done_after_window": 34,
+      "contact_pct": {
+        "01": 28.000000000000004,
+        "11": 72.0
+      },
+      "contact_dominance_pct": 72.0
+    },
+    {
+      "tier": "REVIEW_MOTION_HINT_ONLY",
+      "reasons": [
+        "high_lateral_velocity"
+      ],
+      "source_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/movement_bootstrap_v5_phase1_x008_failure_trace/phase1_x008_trace.jsonl",
+      "mode": "fitted",
+      "start_tick": 0,
+      "end_tick": 24,
+      "mean_vx_m_s": 0.09058760538697243,
+      "vy_abs_p95_m_s": 0.16757095158100127,
+      "body_pitch_abs_p95_rad": 0.31439878538303484,
+      "base_height_min_m": 0.15056216716766357,
+      "action_saturation_pct": 0.0,
+      "sent_target_velocity_p95_rad_s": 2.310986793600023,
+      "joint_tracking_p95_rad": 0.1094911992549897,
+      "ticks_until_done_after_window": 55,
+      "contact_pct": {
+        "01": 28.000000000000004,
+        "10": 4.0,
+        "11": 68.0
+      },
+      "contact_dominance_pct": 68.0
+    },
+    {
+      "tier": "REVIEW_MOTION_HINT_ONLY",
+      "reasons": [
+        "high_lateral_velocity",
+        "high_body_pitch",
+        "short_done_margin",
+        "single_contact_pattern_dominates"
+      ],
+      "source_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/movement_bootstrap_v5_phase1_x008_failure_trace/phase1_x008_trace.jsonl",
+      "mode": "fitted",
+      "start_tick": 10,
+      "end_tick": 34,
+      "mean_vx_m_s": 0.08566033750772477,
+      "vy_abs_p95_m_s": 0.1609054744243622,
+      "body_pitch_abs_p95_rad": 0.3852609599388116,
+      "base_height_min_m": 0.14744314551353455,
+      "action_saturation_pct": 0.0,
+      "sent_target_velocity_p95_rad_s": 0.7490778341889381,
+      "joint_tracking_p95_rad": 0.06742787659168245,
+      "ticks_until_done_after_window": 45,
+      "contact_pct": {
+        "10": 4.0,
+        "11": 96.0
+      },
+      "contact_dominance_pct": 96.0
+    },
+    {
+      "tier": "REVIEW_MOTION_HINT_ONLY",
+      "reasons": [
+        "high_body_pitch",
+        "short_done_margin",
+        "single_contact_pattern_dominates"
+      ],
+      "source_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/movement_bootstrap_v5_phase1_x008_failure_trace/phase1_x008_trace.jsonl",
+      "mode": "fitted",
+      "start_tick": 15,
+      "end_tick": 39,
+      "mean_vx_m_s": 0.06944294139742851,
+      "vy_abs_p95_m_s": 0.028922365233302116,
+      "body_pitch_abs_p95_rad": 0.4085331336563629,
+      "base_height_min_m": 0.14708299934864044,
+      "action_saturation_pct": 0.0,
+      "sent_target_velocity_p95_rad_s": 0.23654077667742968,
+      "joint_tracking_p95_rad": 0.0697688102722168,
+      "ticks_until_done_after_window": 40,
+      "contact_pct": {
+        "11": 100.0
+      },
+      "contact_dominance_pct": 100.0
+    },
+    {
+      "tier": "REVIEW_MOTION_HINT_ONLY",
+      "reasons": [
+        "high_lateral_velocity"
+      ],
+      "source_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/movement_bootstrap_v7_x008_failure_trace/v7_x008_trace.jsonl",
+      "mode": "stress",
+      "start_tick": 5,
+      "end_tick": 29,
+      "mean_vx_m_s": 0.056246123146265745,
+      "vy_abs_p95_m_s": 0.17007685601711275,
+      "body_pitch_abs_p95_rad": 0.2621126103748833,
+      "base_height_min_m": 0.1499103158712387,
+      "action_saturation_pct": 0.0,
+      "sent_target_velocity_p95_rad_s": 1.413672650232911,
+      "joint_tracking_p95_rad": 0.08925178647041322,
+      "ticks_until_done_after_window": null,
+      "contact_pct": {
+        "01": 16.0,
+        "10": 4.0,
+        "11": 80.0
+      },
+      "contact_dominance_pct": 80.0
+    },
+    {
+      "tier": "REVIEW_MOTION_HINT_ONLY",
+      "reasons": [
+        "high_lateral_velocity"
+      ],
+      "source_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/movement_bootstrap_v7_x008_failure_trace/v7_x008_trace.jsonl",
+      "mode": "stress",
+      "start_tick": 10,
+      "end_tick": 34,
+      "mean_vx_m_s": 0.055824590064585206,
+      "vy_abs_p95_m_s": 0.14951606541872028,
+      "body_pitch_abs_p95_rad": 0.26260620526561035,
+      "base_height_min_m": 0.1499103158712387,
+      "action_saturation_pct": 0.0,
+      "sent_target_velocity_p95_rad_s": 0.9816230973228812,
+      "joint_tracking_p95_rad": 0.07711417078971863,
+      "ticks_until_done_after_window": null,
+      "contact_pct": {
+        "01": 4.0,
+        "10": 4.0,
+        "11": 92.0
+      },
+      "contact_dominance_pct": 92.0
+    },
+    {
+      "tier": "REVIEW_MOTION_HINT_ONLY",
+      "reasons": [
+        "high_body_pitch",
+        "short_done_margin",
+        "single_contact_pattern_dominates"
+      ],
+      "source_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/movement_bootstrap_v5_phase1_x008_failure_trace/phase1_x008_trace.jsonl",
+      "mode": "fitted",
+      "start_tick": 20,
+      "end_tick": 44,
+      "mean_vx_m_s": 0.055246032550930975,
+      "vy_abs_p95_m_s": 0.028922365233302116,
+      "body_pitch_abs_p95_rad": 0.42456310713820866,
+      "base_height_min_m": 0.14708299934864044,
+      "action_saturation_pct": 0.0,
+      "sent_target_velocity_p95_rad_s": 0.1940995454788208,
+      "joint_tracking_p95_rad": 0.0733029842376709,
+      "ticks_until_done_after_window": 35,
+      "contact_pct": {
+        "11": 100.0
+      },
+      "contact_dominance_pct": 100.0
+    },
+    {
+      "tier": "REVIEW_MOTION_HINT_ONLY",
+      "reasons": [
+        "high_lateral_velocity"
+      ],
+      "source_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/v10_local_cpu_seed0_20260624T032503Z/trace_seed0.jsonl",
+      "mode": "fitted",
+      "start_tick": 5,
+      "end_tick": 29,
+      "mean_vx_m_s": 0.053516345545649525,
+      "vy_abs_p95_m_s": 0.12346943020820617,
+      "body_pitch_abs_p95_rad": 0.28051613107882745,
+      "base_height_min_m": 0.15109416842460632,
+      "action_saturation_pct": 0.0,
+      "sent_target_velocity_p95_rad_s": 1.7841961234807968,
+      "joint_tracking_p95_rad": 0.10110701024532319,
+      "ticks_until_done_after_window": null,
+      "contact_pct": {
+        "01": 16.0,
+        "10": 4.0,
+        "11": 80.0
+      },
+      "contact_dominance_pct": 80.0
+    },
+    {
+      "tier": "REVIEW_MOTION_HINT_ONLY",
+      "reasons": [
+        "high_lateral_velocity"
+      ],
+      "source_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/movement_bootstrap_v7_x008_failure_trace/v7_x008_trace.jsonl",
+      "mode": "stress",
+      "start_tick": 0,
+      "end_tick": 24,
+      "mean_vx_m_s": 0.05336217334959656,
+      "vy_abs_p95_m_s": 0.1844199001789093,
+      "body_pitch_abs_p95_rad": 0.21960794234837241,
+      "base_height_min_m": 0.15064270794391632,
+      "action_saturation_pct": 0.0,
+      "sent_target_velocity_p95_rad_s": 2.054285048507154,
+      "joint_tracking_p95_rad": 0.11984214782714847,
+      "ticks_until_done_after_window": null,
+      "contact_pct": {
+        "01": 24.0,
+        "10": 4.0,
+        "11": 72.0
+      },
+      "contact_dominance_pct": 72.0
+    },
+    {
+      "tier": "REVIEW_MOTION_HINT_ONLY",
+      "reasons": [
+        "single_contact_pattern_dominates"
+      ],
+      "source_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/movement_bootstrap_v7_x008_failure_trace/v7_x008_trace.jsonl",
+      "mode": "vanilla",
+      "start_tick": 5,
+      "end_tick": 29,
+      "mean_vx_m_s": 0.05153384542092681,
+      "vy_abs_p95_m_s": 0.03743259981274606,
+      "body_pitch_abs_p95_rad": 0.2716551745103784,
+      "base_height_min_m": 0.15133751928806305,
+      "action_saturation_pct": 0.0,
+      "sent_target_velocity_p95_rad_s": 0.8058348204940557,
+      "joint_tracking_p95_rad": 0.07085530534386636,
+      "ticks_until_done_after_window": null,
+      "contact_pct": {
+        "11": 100.0
+      },
+      "contact_dominance_pct": 100.0
+    },
+    {
+      "tier": "REVIEW_MOTION_HINT_ONLY",
+      "reasons": [
+        "single_contact_pattern_dominates"
+      ],
+      "source_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/movement_bootstrap_v7_x008_failure_trace/v7_x008_trace.jsonl",
+      "mode": "stress",
+      "start_tick": 15,
+      "end_tick": 39,
+      "mean_vx_m_s": 0.0450984200835228,
+      "vy_abs_p95_m_s": 0.040467509627342226,
+      "body_pitch_abs_p95_rad": 0.26260620526561035,
+      "base_height_min_m": 0.1499103158712387,
+      "action_saturation_pct": 0.0,
+      "sent_target_velocity_p95_rad_s": 0.3850863315165043,
+      "joint_tracking_p95_rad": 0.0777026116847992,
+      "ticks_until_done_after_window": null,
+      "contact_pct": {
+        "11": 100.0
+      },
+      "contact_dominance_pct": 100.0
+    },
+    {
+      "tier": "REVIEW_MOTION_HINT_ONLY",
+      "reasons": [
+        "high_body_pitch",
+        "short_done_margin",
+        "single_contact_pattern_dominates"
+      ],
+      "source_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/movement_bootstrap_v5_phase1_x008_failure_trace/phase1_x008_trace.jsonl",
+      "mode": "fitted",
+      "start_tick": 25,
+      "end_tick": 49,
+      "mean_vx_m_s": 0.0417990880459547,
+      "vy_abs_p95_m_s": 0.029235702008008957,
+      "body_pitch_abs_p95_rad": 0.4410951695077883,
+      "base_height_min_m": 0.14708299934864044,
+      "action_saturation_pct": 0.0,
+      "sent_target_velocity_p95_rad_s": 0.19264212169218808,
+      "joint_tracking_p95_rad": 0.0798631310462952,
+      "ticks_until_done_after_window": 30,
+      "contact_pct": {
+        "11": 100.0
+      },
+      "contact_dominance_pct": 100.0
+    }
+  ],
+  "rejected_dataset_seeds": [
+    {
+      "tier": "REJECT_DATASET_SEED",
+      "reasons": [
+        "high_lateral_velocity",
+        "high_tracking_error"
+      ],
+      "source_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/v10_local_cpu_seed0_20260624T032503Z/trace_seed0.jsonl",
+      "mode": "fitted",
+      "start_tick": 0,
+      "end_tick": 24,
+      "mean_vx_m_s": 0.06662572477012872,
+      "vy_abs_p95_m_s": 0.14392854422330859,
+      "body_pitch_abs_p95_rad": 0.2803213038010465,
+      "base_height_min_m": 0.15109416842460632,
+      "action_saturation_pct": 0.0,
+      "sent_target_velocity_p95_rad_s": 2.3502491414546967,
+      "joint_tracking_p95_rad": 0.12481268346309662,
+      "ticks_until_done_after_window": null,
+      "contact_pct": {
+        "01": 24.0,
+        "10": 4.0,
+        "11": 72.0
+      },
+      "contact_dominance_pct": 72.0
+    }
+  ]
+}
