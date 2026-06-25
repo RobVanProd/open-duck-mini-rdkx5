@@ -181,6 +181,7 @@ artifact: outputs/analysis/TARGET_GENERATOR_SINGLE_SUPPORT_PROBE.md
 artifact: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_SUPPORT_GATED_PROBE.md
 artifact: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STATEFUL_STRICT_PROBE.md
 artifact: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STATEFUL_TIMEOUT_PROBE.md
+artifact: outputs/analysis/CONTACT_WEIGHT_TRANSFER_SEQUENCE_OPTIMIZER.md
 doc: docs/TARGET_SOURCE_EXIT_DECISION.md
 ```
 
@@ -198,6 +199,10 @@ support-readiness gate:
 
 stateful support phase:
   phase transitions alone do not create propulsion
+
+horizon random-shoot sequences:
+  first bounded pass still held for low forward velocity and single-support
+  failures
 ```
 
 Interpretation:

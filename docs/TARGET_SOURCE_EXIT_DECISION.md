@@ -50,6 +50,10 @@ support-readiness gate:
 stateful support phase:
   confirms timer flipping is not the main blocker
   phase transitions alone do not create propulsion
+
+horizon random-shoot sequences:
+  first bounded pass is a structural tool, not another scalar gate
+  still produces low forward velocity and double-support dominance
 ```
 
 Key artifacts:
@@ -66,6 +70,8 @@ outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_SUPPORT_GATED_SCORE_100.md
 outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_SUPPORT_GATED_SCORE_150.md
 outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STATEFUL_STRICT_PROBE.md
 outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STATEFUL_TIMEOUT_PROBE.md
+outputs/analysis/CONTACT_WEIGHT_TRANSFER_SEQUENCE_OPTIMIZER.md
+outputs/analysis/contact_weight_transfer_sequence_optimizer.json
 ```
 
 ## Ruled Out
@@ -100,6 +106,49 @@ This is stronger than "the reward needs another weight." The current holds
 occur before PPO can use a good walking target: the target generators
 themselves are not producing sustained, actuator-safe single-support forward
 motion across seeds.
+
+## First Horizon Sequence Optimizer Result
+
+The first structural follow-up tool is:
+
+```text
+tools/optimize_contact_weight_transfer_sequence.py
+```
+
+It generates smooth finite-horizon action tables, replays them through the
+closed-loop sim sequence path, and scores the realized traces with the same
+seed-robust contact/forward objective. It is not training.
+
+First bounded CPU pass:
+
+```text
+artifact: outputs/analysis/CONTACT_WEIGHT_TRANSFER_SEQUENCE_OPTIMIZER.md
+status: HOLD_HORIZON_SEQUENCE_NO_ROBUST_TARGET
+candidates: 6
+seeds: 0,2
+window: 100 ticks
+```
+
+Result:
+
+```text
+robust_mode_count: 0
+best seed0 vx: 0.0020 m/s
+best seed2 vx: 0.0036 m/s
+dominant failures:
+  low_forward_velocity
+  double_support_dominates
+  too_little_single_support
+  single_support_not_balanced
+```
+
+Interpretation:
+
+```text
+The new instrument is working, but the first direct horizon search did not find
+a useful target source. The blocker remains contact/weight-transfer plus
+propulsion, not merely the lack of a sequence replay mechanism.
+```
 
 ## Next Structural Branch
 

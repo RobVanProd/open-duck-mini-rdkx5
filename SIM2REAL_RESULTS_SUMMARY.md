@@ -5849,3 +5849,33 @@ same primitive. The next offline branch should be structurally different:
 3. closed-loop reference generator that reacts to pitch, height, lateral
    velocity, and foot contacts.
 ```
+
+A first finite-horizon random-shoot sequence optimizer was added and tested:
+
+```text
+tool: tools/optimize_contact_weight_transfer_sequence.py
+artifact: outputs/analysis/CONTACT_WEIGHT_TRANSFER_SEQUENCE_OPTIMIZER.md
+status: HOLD_HORIZON_SEQUENCE_NO_ROBUST_TARGET
+```
+
+The tool is a structural instrument: it generates smooth target action tables,
+replays them through the existing closed-loop sim path, and scores realized
+contact/forward behavior. The first bounded CPU pass over six candidates also
+held:
+
+```text
+robust modes: 0
+best seed0 vx: 0.0020 m/s
+best seed2 vx: 0.0036 m/s
+dominant failures:
+  low_forward_velocity
+  double_support_dominates
+  too_little_single_support
+  single_support_not_balanced
+```
+
+This confirms the new replay/score instrument works, but it does not yet solve
+the target-source problem. The next high-information branch is either a richer
+horizon teacher/optimizer with explicit foot placement and support transition
+state, or the contact/weight-transfer learning objective directly in the
+Playground environment.

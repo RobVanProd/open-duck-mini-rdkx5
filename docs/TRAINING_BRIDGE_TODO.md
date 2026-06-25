@@ -4414,6 +4414,19 @@ Do not spend the next GPU run on phase-state plumbing around the same stance
 push primitive. The missing target source now appears to be the propulsion /
 foot-placement model itself.
 
+A first finite-horizon random-shoot sequence optimizer is now available:
+
+```text
+tool: tools/optimize_contact_weight_transfer_sequence.py
+artifact: outputs/analysis/CONTACT_WEIGHT_TRANSFER_SEQUENCE_OPTIMIZER.md
+status: HOLD_HORIZON_SEQUENCE_NO_ROBUST_TARGET
+```
+
+The initial bounded CPU pass confirmed the instrument works but found no
+seed-robust target. It should be used for reviewed structural target-source
+experiments only. Do not treat it as permission to launch BC/PPO unless a
+100-150 tick target gate passes.
+
 The current compact handoff docs are:
 
 ```text
