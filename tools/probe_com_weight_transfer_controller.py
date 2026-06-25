@@ -56,6 +56,7 @@ class Controller:
     swing_ankle_rad: float
     swing_hip_reach_rad: float
     stance_retract_scale: float
+    gate_swing_on_ready: bool
     pitch_gate_rad: float
     pitch_target_rad: float
     pitch_damping: float
@@ -144,6 +145,7 @@ def controller_grid(args: argparse.Namespace) -> list[Controller]:
                                                                                         f"_sa{label_float(swing_ankle)}"
                                                                                         f"_shr{label_float(swing_hip_reach)}"
                                                                                         f"_srs{label_float(stance_retract_scale)}"
+                                                                                        f"_gs{int(args.gate_swing_on_ready)}"
                                                                                         f"_pt{label_float(pitch_target)}"
                                                                                         f"_pd{label_float(pitch_damping)}"
                                                                                     )
@@ -169,6 +171,7 @@ def controller_grid(args: argparse.Namespace) -> list[Controller]:
                                                                                             swing_ankle_rad=swing_ankle,
                                                                                             swing_hip_reach_rad=swing_hip_reach,
                                                                                             stance_retract_scale=stance_retract_scale,
+                                                                                            gate_swing_on_ready=args.gate_swing_on_ready,
                                                                                             pitch_gate_rad=args.pitch_gate,
                                                                                             pitch_target_rad=pitch_target,
                                                                                             pitch_damping=pitch_damping,
@@ -282,6 +285,7 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
             swing_ankle_rad,
             swing_hip_reach_rad,
             stance_retract_scale,
+            gate_swing_on_ready,
             pitch_gate_rad,
             pitch_target_rad,
             pitch_damping,
@@ -347,9 +351,12 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
             )
             stance_push = jp.where(push_allowed, raw_push, 0.0)
             stance_ankle_push = jp.where(push_allowed, stance_ankle_push_rad, 0.0)
-            swing_lift = jp.where(in_unweight | in_push, swing_knee_rad, 0.0)
-            swing_ankle = jp.where(in_unweight | in_push, swing_ankle_rad, 0.0)
-            swing_reach = jp.where(in_unweight | in_push, swing_hip_reach_rad, 0.0)
+            swing_phase = in_unweight | in_push
+            swing_ready = jp.where(gate_swing_on_ready > 0.5, unweight_ready, True)
+            swing_enabled = swing_phase & swing_ready
+            swing_lift = jp.where(swing_enabled, swing_knee_rad, 0.0)
+            swing_ankle = jp.where(swing_enabled, swing_ankle_rad, 0.0)
+            swing_reach = jp.where(swing_enabled, swing_hip_reach_rad, 0.0)
             stance_retract = -stance_retract_scale * swing_reach
             pitch_error = body_pitch - pitch_target_rad
             pitch_ankle = jp.clip(-pitch_damping * pitch_error * 0.03, -0.04, 0.04)
@@ -410,6 +417,7 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
             swing_ankle_rad,
             swing_hip_reach_rad,
             stance_retract_scale,
+            gate_swing_on_ready,
             pitch_gate_rad,
             pitch_target_rad,
             pitch_damping,
@@ -458,6 +466,7 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                 swing_ankle_rad,
                 swing_hip_reach_rad,
                 stance_retract_scale,
+                gate_swing_on_ready,
                 pitch_gate_rad,
                 pitch_target_rad,
                 pitch_damping,
@@ -597,6 +606,7 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                         controller.swing_ankle_rad,
                         controller.swing_hip_reach_rad,
                         controller.stance_retract_scale,
+                        1.0 if controller.gate_swing_on_ready else 0.0,
                         controller.pitch_gate_rad,
                         controller.pitch_target_rad,
                         controller.pitch_damping,
@@ -808,6 +818,11 @@ def main() -> int:
     parser.add_argument("--swing-ankles", default="0.0")
     parser.add_argument("--swing-hip-reaches", default="0.06")
     parser.add_argument("--stance-retract-scales", default="0.5")
+    parser.add_argument(
+        "--gate-swing-on-ready",
+        action="store_true",
+        help="Only command swing lift/reach after stance load and swing-clear gates pass.",
+    )
     parser.add_argument("--pitch-gate", type=float, default=0.35)
     parser.add_argument("--pitch-targets", default="0.0")
     parser.add_argument("--pitch-dampings", default="1.0")

@@ -5740,3 +5740,34 @@ So the missing piece is not just stronger lift pulses, roll assist, or stance
 push in the existing open-loop primitive family. The next source needs a
 state-aware support-transfer controller/objective that explicitly makes the
 body commit weight to one stance leg before asking for swing and forward push.
+
+A first support-readiness-gated CoM controller variant was tested by making
+swing lift/reach wait until stance load and swing-clear gates were true:
+
+```text
+tool flag: --gate-swing-on-ready
+artifact: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_SUPPORT_GATED_PROBE.md
+score_100: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_SUPPORT_GATED_SCORE_100.md
+score_150: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_SUPPORT_GATED_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+This increased support-transfer discipline but froze the controller:
+
+```text
+top 100-tick scored windows:
+  seed0 vx: -0.0019 m/s
+  seed2 vx: 0.0009 m/s
+  single support: 20-26%
+  double support: 73-78%
+
+top 150-tick scored windows:
+  seed0 vx: -0.0053 m/s
+  seed2 vx: 0.0002 m/s
+  single support: ~20.7%
+  double support: 77.3-78.7%
+```
+
+So a hard "only swing when ready" gate is not sufficient by itself. The next
+controller must actively drive the body into readiness and then push; otherwise
+the safe outcome is standstill/reverse drift.

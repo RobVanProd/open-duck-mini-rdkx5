@@ -4380,6 +4380,20 @@ velocity. Do not launch another BC/PPO run from nearby open-loop lift-pulse /
 roll-assist / stance-push grids. The next source must be state-aware and must
 make support transfer a gate, not an incidental byproduct.
 
+The first support-readiness-gated controller also held:
+
+```text
+tool flag: --gate-swing-on-ready
+artifact: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_SUPPORT_GATED_PROBE.md
+score_100: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_SUPPORT_GATED_SCORE_100.md
+score_150: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_SUPPORT_GATED_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+It created more single-support time but froze forward motion. The next target
+source must actively drive load shift/readiness and then push; do not treat a
+passive readiness gate as a training-ready reference.
+
 The current compact handoff docs are:
 
 ```text

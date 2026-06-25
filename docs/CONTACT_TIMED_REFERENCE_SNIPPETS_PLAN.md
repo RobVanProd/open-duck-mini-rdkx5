@@ -196,6 +196,46 @@ grids as the main path.
 The next source should be state-aware: it must confirm body-over-stance support
 before swing, and should score support transfer as a first-class objective.
 
+## Support-Gated State Controller Result
+
+The CoM controller now has a default-off swing readiness gate:
+
+```text
+tools/probe_com_weight_transfer_controller.py --gate-swing-on-ready
+```
+
+The first support-gated probe held:
+
+```text
+artifact: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_SUPPORT_GATED_PROBE.md
+score_100: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_SUPPORT_GATED_SCORE_100.md
+score_150: outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_SUPPORT_GATED_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+It improved contact discipline but froze forward motion:
+
+```text
+100 ticks:
+  seed0 vx: -0.0019 m/s
+  seed2 vx: 0.0009 m/s
+  single support: 20-26%
+  double support: 73-78%
+
+150 ticks:
+  seed0 vx: -0.0053 m/s
+  seed2 vx: 0.0002 m/s
+  single support: ~20.7%
+  double support: 77.3-78.7%
+```
+
+Decision:
+
+```text
+hard readiness gating is too passive. The next support-transfer source must
+actively drive the body into the ready state before requesting swing/push.
+```
+
 ## Candidate Generation Rules
 
 The generated snippet should keep:
