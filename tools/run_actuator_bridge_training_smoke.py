@@ -220,6 +220,8 @@ def apply_reference_override(args: argparse.Namespace, output_dir: Path) -> dict
         return {"enabled": False}
 
     source = Path(args.reference_motion_override)
+    if not source.is_absolute() and not source.exists():
+        source = ROOT / source
     if not source.exists():
         raise SystemExit(f"Missing reference motion override: {source}")
     destination = Path(args.playground_path) / REFERENCE_RELATIVE_PATH
