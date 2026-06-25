@@ -95,6 +95,7 @@ class SeedResult:
     joint_tracking_p95: float | None
     contact_counts: dict[str, int]
     contact_transitions: int
+    reference_contact_mismatch_pct: float | None
     reward_terms_tail: dict[str, float]
 
 
@@ -223,8 +224,17 @@ def summarize_records(
     )
     tracking = np.abs(sent - actual)
     contacts = [tuple(int(value) for value in record["foot_contacts"]) for record in records]
+    reference_contacts = [
+        tuple(int(value) for value in record.get("reference_foot_contacts", []))
+        for record in records
+    ]
     contact_counts = {str(pattern): contacts.count(pattern) for pattern in sorted(set(contacts))}
     contact_transitions = sum(1 for a, b in zip(contacts, contacts[1:]) if a != b)
+    contact_mismatches = [
+        actual != expected
+        for actual, expected in zip(contacts, reference_contacts)
+        if len(actual) == len(expected) and expected
+    ]
     reward_keys = sorted(
         {
             key
@@ -273,6 +283,11 @@ def summarize_records(
         ),
         contact_counts=contact_counts,
         contact_transitions=contact_transitions,
+        reference_contact_mismatch_pct=(
+            float(np.mean(contact_mismatches) * 100.0)
+            if contact_mismatches
+            else None
+        ),
         reward_terms_tail=reward_tail,
     )
 
@@ -414,6 +429,7 @@ def run_rollout(args: argparse.Namespace) -> dict[str, Any]:
                     reference_target = env._default_actuator + (
                         reference_target - env._default_actuator
                     ) * projection_scales
+                reference_foot_contacts = jp.where(ref[32:34] > 0.5, 1, 0)
                 action = jp.clip(
                     (reference_target - env._default_actuator) / env._config.action_scale,
                     -1.0,
@@ -491,6 +507,7 @@ def run_rollout(args: argparse.Namespace) -> dict[str, Any]:
                     state.replace(data=data, obs=obs, reward=reward, done=done),
                     action,
                     reference_target,
+                    reference_foot_contacts,
                     pre_rate_limit,
                     sent_target,
                 )
@@ -511,7 +528,14 @@ def run_rollout(args: argparse.Namespace) -> dict[str, Any]:
                 ) % int(env.PRM.nb_steps_in_period)
                 state = refresh_obs_jit(state)
                 for tick in range(sim_steps):
-                    state, action, reference_target, pre_rate, sent_target = step_reference_jit(state)
+                    (
+                        state,
+                        action,
+                        reference_target,
+                        reference_foot_contacts,
+                        pre_rate,
+                        sent_target,
+                    ) = step_reference_jit(state)
                     qpos = np.asarray(jax.device_get(state.data.qpos), dtype=float)
                     base_addr = int(env._floating_base_qpos_addr)
                     quat = qpos[base_addr + 3 : base_addr + 7]
@@ -541,6 +565,9 @@ def run_rollout(args: argparse.Namespace) -> dict[str, Any]:
                         "action": np.asarray(jax.device_get(action), dtype=float).tolist(),
                         "reference_target_rad": np.asarray(
                             jax.device_get(reference_target), dtype=float
+                        ).tolist(),
+                        "reference_foot_contacts": np.asarray(
+                            jax.device_get(reference_foot_contacts), dtype=int
                         ).tolist(),
                         "target_pre_rate_limit_rad": np.asarray(
                             jax.device_get(pre_rate), dtype=float
@@ -609,6 +636,7 @@ def run_rollout(args: argparse.Namespace) -> dict[str, Any]:
             "action_saturation_pct_mean": float(np.mean([item.action_saturation_pct for item in seed_results if finite(item.action_saturation_pct)])),
             "reference_target_clip_p95_mean": float(np.mean([item.reference_target_clip_p95 for item in seed_results if finite(item.reference_target_clip_p95)])),
             "joint_tracking_p95_mean": float(np.mean([item.joint_tracking_p95 for item in seed_results if finite(item.joint_tracking_p95)])),
+            "reference_contact_mismatch_pct_mean": float(np.mean([item.reference_contact_mismatch_pct for item in seed_results if finite(item.reference_contact_mismatch_pct)])),
         },
         "per_joint": summarize_per_joint(all_records, dt_s=float(args.duration_s) / max(1, int(round(float(args.duration_s) / 0.02)))),
         "seed_results": seed_payloads,
@@ -638,13 +666,13 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
             "",
             "## Per Seed",
             "",
-            "| seed | samples | termination | vx_mean | track_ratio | vy_abs_p95 | base_height_min | action_sat_pct | target_clip_p95 | sent_vel_p95 | joint_track_p95 |",
-            "|---:|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|",
+            "| seed | samples | termination | vx_mean | track_ratio | vy_abs_p95 | base_height_min | action_sat_pct | target_clip_p95 | sent_vel_p95 | joint_track_p95 | contact_mismatch_pct |",
+            "|---:|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|",
         ]
     )
     for item in payload["seed_results"]:
         lines.append(
-            "| {seed} | {samples} | `{termination_reason}` | {vx} | {track} | {vy} | {height} | {sat} | {clip} | {vel} | {tracking} |".format(
+            "| {seed} | {samples} | `{termination_reason}` | {vx} | {track} | {vy} | {height} | {sat} | {clip} | {vel} | {tracking} | {contact_mismatch} |".format(
                 seed=item["seed"],
                 samples=item["samples"],
                 termination_reason=item["termination_reason"],
@@ -656,6 +684,7 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
                 clip=fmt(item["reference_target_clip_p95"]),
                 vel=fmt(item["sent_target_velocity_p95"]),
                 tracking=fmt(item["joint_tracking_p95"]),
+                contact_mismatch=fmt(item["reference_contact_mismatch_pct"]),
             )
         )
     lines.extend(

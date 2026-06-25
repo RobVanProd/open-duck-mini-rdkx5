@@ -2461,6 +2461,7 @@ mean lateral p95_abs velocity: 0.3918 m/s
 mean action saturation: 6.4967%
 mean target clip p95: 0.0314 rad
 mean joint tracking p95: 0.1876 rad
+mean reference contact mismatch: 69.50%
 ```
 
 Pitch-chain stress from direct reference playback:
@@ -2533,6 +2534,7 @@ mean lateral p95_abs velocity: 0.4017 m/s
 mean action saturation: 1.1454%
 mean target clip p95: 0.0000 rad
 mean joint tracking p95: 0.1440 rad
+mean reference contact mismatch: 68.85%
 ```
 
 Interpretation:
@@ -2551,18 +2553,19 @@ Artifact:
 Projected phase-offset check:
 
 ```text
-phase 1:  HOLD, samples mean 83.0000, track ratio -0.2495
-phase 5:  HOLD, samples mean 81.6250, track ratio -0.4917
-phase 19: HOLD, samples mean 69.3750, track ratio -1.2155
+phase 1:  HOLD, samples mean 83.0000, track ratio -0.2495, contact mismatch 68.85%
+phase 5:  HOLD, samples mean 81.6250, track ratio -0.4917, contact mismatch 68.15%
+phase 19: HOLD, samples mean 69.3750, track ratio -1.2155, contact mismatch 68.54%
 ```
 
 Interpretation:
 
 ```text
 Starting from a home-near reference phase does not fix the projected reference.
-The next reference-path work should target contact/lateral/reference
-compatibility, or build a realized stable-target dataset instead of replaying
-polynomial joint positions.
+The reference/actual contact pattern mismatch stays near 68-70% across raw,
+projected, and phase-offset variants. The next reference-path work should target
+contact/lateral/reference compatibility, or build a realized stable-target
+dataset instead of replaying polynomial joint positions.
 ```
 
 Artifacts:

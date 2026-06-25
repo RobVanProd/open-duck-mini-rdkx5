@@ -3271,6 +3271,7 @@ mean lateral p95_abs velocity: 0.3918 m/s
 mean action saturation: 6.4967%
 mean target clip p95: 0.0314 rad
 mean joint tracking p95: 0.1876 rad
+mean reference contact mismatch: 69.50%
 ```
 
 Pitch-chain stress:
@@ -3352,6 +3353,7 @@ mean lateral p95_abs velocity: 0.4017 m/s
 mean action saturation: 1.1454%
 mean target clip p95: 0.0000 rad
 mean joint tracking p95: 0.1440 rad
+mean reference contact mismatch: 68.85%
 ```
 
 Interpretation:
@@ -3372,9 +3374,9 @@ The projected reference was replayed starting at phases closest to the home
 pose:
 
 ```text
-phase 1:  HOLD, samples mean 83.0000, track ratio -0.2495, vx -0.0100 m/s
-phase 5:  HOLD, samples mean 81.6250, track ratio -0.4917, vx -0.0197 m/s
-phase 19: HOLD, samples mean 69.3750, track ratio -1.2155, vx -0.0486 m/s
+phase 1:  HOLD, samples mean 83.0000, track ratio -0.2495, contact mismatch 68.85%
+phase 5:  HOLD, samples mean 81.6250, track ratio -0.4917, contact mismatch 68.15%
+phase 19: HOLD, samples mean 69.3750, track ratio -1.2155, contact mismatch 68.54%
 ```
 
 Interpretation:
@@ -3382,8 +3384,9 @@ Interpretation:
 ```text
 Reference reset phase is not the sufficient fix. Even projected and started
 near home, the polynomial reference does not generate stable forward motion in
-the current Joystick task. Next: inspect contact/lateral/reference
-compatibility or build targets from realized stable rollouts.
+the current Joystick task, and reference/actual contact mismatch stays near
+68-70%. Next: inspect contact/lateral/reference compatibility or build targets
+from realized stable rollouts.
 ```
 
 Artifacts:

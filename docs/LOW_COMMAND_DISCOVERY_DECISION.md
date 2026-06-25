@@ -405,6 +405,7 @@ mean action saturation: 6.4967%
 mean target clip p95: 0.0314 rad
 mean sent target velocity p95: about 4.85 rad/s
 mean joint tracking p95: 0.1876 rad
+mean reference contact mismatch: 69.50%
 ```
 
 Pitch-chain details:
@@ -487,6 +488,7 @@ mean lateral p95_abs velocity: 0.4017 m/s
 mean action saturation: 1.1454%
 mean target clip p95: 0.0000 rad
 mean joint tracking p95: 0.1440 rad
+mean reference contact mismatch: 68.85%
 ```
 
 Projection scales on the pitch chain:
@@ -519,19 +521,20 @@ The projected reference was also replayed from home-near reference phases found
 by the action-envelope audit:
 
 ```text
-phase 1:  HOLD, samples mean 83.0000, track ratio -0.2495, vx -0.0100 m/s
-phase 5:  HOLD, samples mean 81.6250, track ratio -0.4917, vx -0.0197 m/s
-phase 19: HOLD, samples mean 69.3750, track ratio -1.2155, vx -0.0486 m/s
+phase 1:  HOLD, samples mean 83.0000, track ratio -0.2495, contact mismatch 68.85%
+phase 5:  HOLD, samples mean 81.6250, track ratio -0.4917, contact mismatch 68.15%
+phase 19: HOLD, samples mean 69.3750, track ratio -1.2155, contact mismatch 68.54%
 ```
 
 Interpretation:
 
 ```text
 Starting from a reference phase closer to home does not recover the gait. Phase
-alignment at reset is not sufficient. The remaining reference-path blocker is
-likely contact/lateral/reference compatibility with the Joystick task, or the
-need for a generated stable target dataset rather than replaying polynomial
-joint targets.
+alignment at reset is not sufficient, and all variants show roughly 68-70%
+reference/actual foot-contact mismatch. The remaining reference-path blocker is
+contact/lateral/reference compatibility with the Joystick task, or the need for
+a generated stable target dataset rather than replaying polynomial joint
+targets.
 ```
 
 Additional artifacts:

@@ -14,6 +14,7 @@
   ],
   "reference": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/reference_motion_x004_override.pkl",
   "reference_target_mode": "raw",
+  "first_reference_phase": 1,
   "projection": null,
   "reward_overrides_json": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/colab_cli/open-duck-a100-v20-staged-curriculum-20260625T032259Z/manual_partial/open_duck_staged_curriculum_cli/01_phase1_interpolated_reference_seed_x004/phase_01_seed_gate_xp0p040/phase_reward_overrides.json",
   "reward_overrides_phase": "phase1_interpolated_reference_seed_x004",
@@ -24,7 +25,7 @@
     "destination": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/data/polynomial_coefficients.pkl",
     "destination_sha256_before": "5850c0610ed89e2860e7047f9ee27d8412462e1199752952c3c2a0efd2cb7a25",
     "destination_sha256_after": "deb8553d72e162331e788ca2b7e3e055b765a2ae01642b15ae316f07afb55601",
-    "backup": "/tmp/open_duck_reference_rollout_wm75gk36/polynomial_coefficients.original.pkl",
+    "backup": "/tmp/open_duck_reference_rollout_1tggospi/polynomial_coefficients.original.pkl",
     "backup_sha256": "5850c0610ed89e2860e7047f9ee27d8412462e1199752952c3c2a0efd2cb7a25",
     "restored": true,
     "destination_sha256_restored": "5850c0610ed89e2860e7047f9ee27d8412462e1199752952c3c2a0efd2cb7a25"
@@ -51,30 +52,30 @@
     "forward_contact_support_scale": -0.12,
     "alive_scale": 0.0,
     "imitation_scale": 4.0,
-    "forward_wrong_direction_huber_delta": 0.0,
-    "target_rate_huber_delta": 1.0,
     "forward_contact_support_no_contact_weight": 1.0,
-    "action_rate_huber_delta": 0.08,
-    "forward_pitch_huber_delta": 0.25,
-    "command_progress_failure_enable": true,
-    "command_progress_warmup_steps": 10,
-    "forward_pitch_rate_huber_delta": 1.0,
-    "command_progress_required_ratio": 0.45,
-    "forward_wrong_direction_allowed_reverse_ratio": 0.0,
-    "forward_shortfall_huber_delta": 0.0,
-    "actuator_tracking_huber_delta": 0.08,
-    "tracking_sigma": 0.0015,
+    "target_rate_huber_delta": 1.0,
     "reward_clip_min": -20.0,
-    "forward_contact_support_asymmetry_weight": 0.02,
-    "command_progress_failure_warmup_steps": 70,
-    "forward_shortfall_required_ratio": 0.55,
-    "reward_clip_max": 10000.0,
-    "forward_progress_deadband": 0.02,
-    "forward_overshoot_allowed_ratio": 1.7,
-    "command_progress_failure_min_ratio": 0.2,
-    "forward_overshoot_huber_delta": 0.5,
+    "forward_shortfall_huber_delta": 0.0,
     "command_progress_shortfall_huber_delta": 0.0,
-    "action_magnitude_huber_delta": 0.5
+    "tracking_sigma": 0.0015,
+    "action_magnitude_huber_delta": 0.5,
+    "forward_pitch_rate_huber_delta": 1.0,
+    "forward_pitch_huber_delta": 0.25,
+    "forward_shortfall_required_ratio": 0.55,
+    "command_progress_failure_enable": true,
+    "action_rate_huber_delta": 0.08,
+    "forward_progress_deadband": 0.02,
+    "forward_overshoot_huber_delta": 0.5,
+    "command_progress_failure_min_ratio": 0.2,
+    "actuator_tracking_huber_delta": 0.08,
+    "command_progress_warmup_steps": 10,
+    "command_progress_required_ratio": 0.45,
+    "forward_wrong_direction_huber_delta": 0.0,
+    "forward_overshoot_allowed_ratio": 1.7,
+    "reward_clip_max": 10000.0,
+    "command_progress_failure_warmup_steps": 70,
+    "forward_contact_support_asymmetry_weight": 0.02,
+    "forward_wrong_direction_allowed_reverse_ratio": 0.0
   },
   "aggregate": {
     "runs": 8,
@@ -86,7 +87,8 @@
     "vy_abs_p95_mean": 0.3917602513916791,
     "action_saturation_pct_mean": 6.496702607281673,
     "reference_target_clip_p95_mean": 0.03144452273845676,
-    "joint_tracking_p95_mean": 0.18764531873166557
+    "joint_tracking_p95_mean": 0.18764531873166557,
+    "reference_contact_mismatch_pct_mean": 69.49641959301019
   },
   "per_joint": [
     {
@@ -224,6 +226,7 @@
         "(1, 1)": 61
       },
       "contact_transitions": 7,
+      "reference_contact_mismatch_pct": 65.71428571428571,
       "reward_terms_tail": {
         "cost/action_magnitude": 0.0009404763957718387,
         "cost/action_rate": 0.000359210618535144,
@@ -275,6 +278,7 @@
         "(1, 1)": 2
       },
       "contact_transitions": 5,
+      "reference_contact_mismatch_pct": 70.58823529411765,
       "reward_terms_tail": {
         "cost/action_magnitude": 0.0008929550967877731,
         "cost/action_rate": 0.0003676657411233464,
@@ -326,6 +330,7 @@
         "(1, 1)": 60
       },
       "contact_transitions": 15,
+      "reference_contact_mismatch_pct": 68.4931506849315,
       "reward_terms_tail": {
         "cost/action_magnitude": 0.0009383995900861918,
         "cost/action_rate": 0.0003495460764497693,
@@ -378,6 +383,7 @@
         "(1, 1)": 55
       },
       "contact_transitions": 10,
+      "reference_contact_mismatch_pct": 75.71428571428571,
       "reward_terms_tail": {
         "cost/action_magnitude": 0.0009404763957718387,
         "cost/action_rate": 0.000359210618535144,
@@ -429,6 +435,7 @@
         "(1, 1)": 82
       },
       "contact_transitions": 21,
+      "reference_contact_mismatch_pct": 63.366336633663366,
       "reward_terms_tail": {
         "cost/action_magnitude": 0.0009216931241098792,
         "cost/action_rate": 0.0003382944948498334,
@@ -481,6 +488,7 @@
         "(1, 1)": 152
       },
       "contact_transitions": 37,
+      "reference_contact_mismatch_pct": 65.74585635359117,
       "reward_terms_tail": {
         "cost/action_magnitude": 0.0009383995900861918,
         "cost/action_rate": 0.0003495460764497693,
@@ -533,6 +541,7 @@
         "(1, 1)": 54
       },
       "contact_transitions": 9,
+      "reference_contact_mismatch_pct": 68.57142857142857,
       "reward_terms_tail": {
         "cost/action_magnitude": 0.0009404763957718387,
         "cost/action_rate": 0.000359210618535144,
@@ -584,6 +593,7 @@
         "(1, 1)": 3
       },
       "contact_transitions": 4,
+      "reference_contact_mismatch_pct": 77.77777777777779,
       "reward_terms_tail": {
         "cost/action_magnitude": 0.0008683535270392895,
         "cost/action_rate": 0.0003780500661378028,
