@@ -4867,3 +4867,30 @@ argument`, JAX reports no visible ROCm devices, and kernel logs show a recent
 amdgpu reset failure. This is below Open Duck code. Do not use local ROCm for
 training until `rocminfo` and a minimal JAX device probe pass. CUDA/Colab
 remains the practical V21 path.
+
+V21 was then launched on a Colab L4 session after the CLI path became
+available. The first launch exposed a packaging bug: the Colab tarball did not
+include the tracked compact soft-prior config. That was fixed by adding
+`outputs/analysis/soft_prior_fragment_config.json` and its markdown summary to
+the Colab upload allowlist.
+
+The corrected V21 L4 run trained phase 1 and reached the required x=0.04
+vanilla multi-seed gate:
+
+```text
+artifact: outputs/analysis/V21_L4_RESULT_SUMMARY.md
+status: HOLD_PHASE_MULTI_SEED_FALLS
+recipe: movement_bootstrap_v21
+phase: phase1_soft_prior_low_command_probe
+seeds: 0-3
+falls: 4/4
+duration_complete: 0/4
+samples_mean: 61.0
+mean_local_vx: -0.0242 m/s
+track_ratio_mean: -0.6058
+```
+
+The soft-prior path is wired and trainable, but this weak soft-prior recipe did
+not solve low-command discovery. Phase 2 is blocked. No robot validation,
+deployment, x=0.08 expansion, or fitted-bridge progression is approved from
+this result.
