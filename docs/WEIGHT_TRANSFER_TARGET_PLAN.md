@@ -51,6 +51,24 @@ PASS_WEIGHT_TRANSFER_TARGET
 
 before BC, imitation, or PPO.
 
+The executable gate check is:
+
+```bash
+python3 tools/check_weight_transfer_target_gate.py
+```
+
+Current result:
+
+```text
+artifact: outputs/analysis/WEIGHT_TRANSFER_TARGET_GATE_CHECK.md
+status: HOLD_NO_SUSTAINED_WEIGHT_TRANSFER_TARGET
+checked score artifacts: 37
+passing target sources: 0
+```
+
+Treat missing required metrics as a hold. Older score artifacts that do not
+record local forward displacement do not prove this gate.
+
 ## Minimum Target Gate
 
 A target source must pass this gate before training:

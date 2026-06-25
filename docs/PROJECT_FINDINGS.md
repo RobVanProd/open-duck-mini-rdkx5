@@ -194,4 +194,19 @@ PASS_WEIGHT_TRANSFER_TARGET
 
 before supervised imitation, PPO, robot validation, or grounded replay.
 
+The executable gate checker is:
+
+```bash
+python3 tools/check_weight_transfer_target_gate.py
+```
+
+Current gate artifact:
+
+```text
+outputs/analysis/WEIGHT_TRANSFER_TARGET_GATE_CHECK.md
+status: HOLD_NO_SUSTAINED_WEIGHT_TRANSFER_TARGET
+checked score artifacts: 37
+passing target sources: 0
+```
+
 Robot validation remains blocked.
