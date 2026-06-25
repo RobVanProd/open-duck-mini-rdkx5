@@ -254,6 +254,45 @@ lateral/contact criteria directly rather than continue expanding this manual
 grid.
 ```
 
+## Shuffled Broad Primitive Search Result
+
+The primitive search was extended with deterministic candidate shuffling so a
+large grid can be sampled without inheriting nested-loop ordering bias.
+
+Run:
+
+```text
+seeds: 0,2
+candidates sampled: 40
+grid_seed: 20260625
+periods: 0.55, 0.7, 0.85, 1.0 s
+varied: hip roll bias, hip pitch bias/amplitude, knee bias/amplitude,
+        ankle bias/scale, phase offset
+```
+
+Result:
+
+```text
+search status: PASS_TARGET_SEARCH_RAN
+window mine: PASS_REALIZED_WINDOWS_AVAILABLE
+curation status: PASS_CURATED_DATASET_SEED_READY
+curated windows: 11
+curated source files: 2
+curated source/mode pairs: 11
+seed distribution: seed_000=10, seed_002=1
+```
+
+Interpretation:
+
+```text
+This is the first compact target-generation pass that satisfies the stricter
+curation gate with more than one seed file. The dataset is still skewed toward
+seed_000, so it should be treated as a seed dataset candidate, not a final
+walking corpus. The next step is to build a compact target-dataset manifest from
+these curated windows and run a no-training sanity check before supervised
+pretraining.
+```
+
 Do not commit raw trace slices unless explicitly approved. Commit compact
 manifests and summaries only.
 

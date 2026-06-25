@@ -13,6 +13,7 @@ from dataclasses import dataclass
 import json
 import math
 from pathlib import Path
+import random
 from typing import Any, Iterable
 
 import numpy as np
@@ -104,6 +105,8 @@ def candidate_grid(args: argparse.Namespace) -> list[Primitive]:
                                                 phase_offset=phase_offset,
                                             )
                                         )
+    if args.shuffle_candidates:
+        random.Random(args.grid_seed).shuffle(rows)
     return rows[: args.max_candidates]
 
 
@@ -473,6 +476,8 @@ def main() -> int:
     parser.add_argument("--ankle-scales", default="-0.5,-1.0")
     parser.add_argument("--phase-offsets", default="0.0,1.5708")
     parser.add_argument("--max-candidates", type=int, default=24)
+    parser.add_argument("--shuffle-candidates", action="store_true")
+    parser.add_argument("--grid-seed", type=int, default=0)
     parser.add_argument("--trace-dir", default=str(DEFAULT_TRACE_DIR))
     parser.add_argument("--output-md", default=str(DEFAULT_OUTPUT_MD))
     parser.add_argument("--output-json", default=str(DEFAULT_OUTPUT_JSON))

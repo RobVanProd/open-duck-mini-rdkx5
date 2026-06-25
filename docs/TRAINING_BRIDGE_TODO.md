@@ -2939,6 +2939,34 @@ next generator should optimize a score that includes forward velocity, lateral
 velocity, contact diversity, base height, and actuator envelope terms.
 ```
 
+### Shuffled Broad Primitive Search
+
+The primitive tool now supports deterministic candidate shuffling so broad grids
+can be sampled without nested-loop ordering bias.
+
+Result:
+
+```text
+seeds: 0,2
+sampled candidates: 40
+grid_seed: 20260625
+curated windows: 11
+curated source files: 2
+curated source/mode pairs: 11
+status: PASS_CURATED_DATASET_SEED_READY
+seed distribution: seed_000=10, seed_002=1
+```
+
+Do next:
+
+```text
+1. build a compact target-dataset manifest from the 11 curated windows
+2. verify the manifest keeps source/mode/seed metadata and does not copy raw
+   trace slices into git
+3. run a no-training dataset sanity check
+4. only then consider a small supervised/imitation seed experiment
+```
+
 ### V5/V7 Low-Command Trace Collection
 
 The old moving-lineage policies were replayed at `x=0.04` with vanilla dynamics

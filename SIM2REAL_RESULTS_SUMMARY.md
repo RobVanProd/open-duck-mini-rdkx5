@@ -3810,6 +3810,33 @@ or scored search over lateral/contact criteria, not another reward-training run
 and not a broader blind hand grid.
 ```
 
+### Shuffled Broad Primitive Search
+
+The primitive search added deterministic candidate shuffling and sampled a
+broader target grid across seeds 0 and 2.
+
+Result:
+
+```text
+sampled candidates: 40
+grid_seed: 20260625
+window mine: PASS_REALIZED_WINDOWS_AVAILABLE
+curation status: PASS_CURATED_DATASET_SEED_READY
+curated windows: 11
+curated source files: 2
+curated source/mode pairs: 11
+seed distribution: seed_000=10, seed_002=1
+```
+
+Conclusion:
+
+```text
+This is the first compact target-generation result that passes the stricter
+diversity gate. It is still skewed toward seed_000, but it provides a concrete
+candidate seed dataset for the next offline step: build a compact target-dataset
+manifest and sanity-check it before any supervised/imitation training.
+```
+
 ### V5/V7 Low-Command Trace Collection
 
 A no-training CPU trace collection replayed the old moving-lineage policies at
