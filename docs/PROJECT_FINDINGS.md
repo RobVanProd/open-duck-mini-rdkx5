@@ -278,4 +278,16 @@ The probe is useful as an offline target-source instrument, but the initial
 candidate set is still not a supervised target source. The aggregate target
 gate now includes 45 compact score artifacts and remains held.
 
+Stronger-push diagnostic:
+
+```text
+artifact: outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_PUSH_PROBE_SCORE_100.md
+artifact: outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_PUSH_PROBE_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+robust modes: 0 / 16
+```
+
+It improved seed 2 partial motion but left seed 0 near-zero/backward and raised
+lateral velocity. The current blocker is not just push amplitude.
+
 Robot validation remains blocked.

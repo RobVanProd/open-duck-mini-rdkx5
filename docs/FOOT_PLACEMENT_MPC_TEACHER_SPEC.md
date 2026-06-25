@@ -34,9 +34,9 @@ forward push timing in one scored horizon.
 The current evidence says:
 
 ```text
-checked target score artifacts: 43
+checked target score artifacts: 45
 passing target sources: 0
-failure analysis rows scanned: 2004
+failure analysis rows scanned: 2068
 stable + actuator-safe rows: 964
 support-ready rows: 492
 forward-ready rows: 15
@@ -313,3 +313,20 @@ forward motion and some single-support windows; seed 0 remained near stationary
 and mostly double-support. This means the tool is a useful probe, but the first
 candidate set is not a target source and does not authorize BC, PPO, x=0.08, or
 robot validation.
+
+A stronger-push / relaxed-readiness diagnostic also held:
+
+```text
+artifacts:
+  outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_PUSH_PROBE_SCORE_100.md
+  outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_PUSH_PROBE_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+modes: 16
+robust modes: 0
+```
+
+That probe increased seed 2 forward motion and single-support occupancy, but
+seed 0 remained near-zero or backward and lateral velocity rose. This rules out
+"just push harder" as a sufficient local fix. The next useful revision needs a
+better coupled stance-load / foot-placement / lateral-balance controller, not
+only larger stance hip/knee/ankle pushes.

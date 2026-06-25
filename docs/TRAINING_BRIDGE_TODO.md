@@ -4487,6 +4487,21 @@ This adds a reusable offline probe, not a target manifest. Do not resume BC/PPO
 from these traces. The next offline work is to improve the foot-placement /
 weight-transfer teacher until a 100-150 tick seed-robust target clears the gate.
 
+Stronger-push diagnostic:
+
+```text
+artifact: outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_PUSH_PROBE_SCORE_100.md
+artifact: outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_PUSH_PROBE_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+robust modes: 0 / 16
+dominant failures: low_forward_velocity and high_lateral_velocity
+```
+
+Do not respond by only increasing push amplitude. The push probe improved seed 2
+but left seed 0 near-zero/backward and raised lateral velocity, so the next
+teacher revision must couple forward push to lateral support placement more
+tightly.
+
 The current compact handoff docs are:
 
 ```text

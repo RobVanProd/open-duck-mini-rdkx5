@@ -271,6 +271,20 @@ The probe now interleaves left-start/right-start variants before candidate
 truncation, but the first candidate set still misses forward impulse across
 seeds. Treat this as an instrumented negative smoke, not permission to train.
 
+Stronger-push diagnostic:
+
+```text
+artifacts:
+  outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_PUSH_PROBE_SCORE_100.md
+  outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_PUSH_PROBE_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+robust modes: 0 / 16
+```
+
+Relaxing readiness and increasing stance push improved seed 2 but made lateral
+velocity worse and did not move seed 0 forward. The next revision should improve
+coupled lateral balance and foot placement, not simply increase push amplitude.
+
 ## Stop Conditions
 
 Stop target generation and do not train if:
