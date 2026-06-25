@@ -3083,8 +3083,8 @@ outputs/analysis/realized_window_collection_x004_v5_v7_curation.json
 
 ### Target Dataset BC Smoke
 
-The observation-ready target manifest was tested with a tiny linear behavior
-cloning smoke:
+The observation-ready target manifest was tested with tiny linear and KNN
+behavior-cloning smokes:
 
 ```text
 tool: tools/run_target_dataset_bc_smoke.py
@@ -3093,22 +3093,31 @@ samples: 275
 source files: 2
 source skew: seed_000=10 windows, seed_002=1 window
 fit: near-exact train reconstruction
-closed-loop replay: HOLD_BC_REPLAY_LOW_FORWARD_MOTION
+linear closed-loop replay: HOLD_BC_REPLAY_LOW_FORWARD_MOTION
+knn closed-loop replay: HOLD_BC_REPLAY_LOW_FORWARD_MOTION
 ```
 
-The closed-loop CPU replay completed without falling but produced essentially
-zero actions:
+The linear closed-loop CPU replay completed without falling but produced
+essentially zero actions:
 
 ```text
 seed_000: vx=-0.0023 m/s, action_abs_mean=0.0001
 seed_002: vx=+0.0014 m/s, action_abs_mean=0.0001
 ```
 
+KNN avoided the zero-action collapse but still stayed well below the command:
+
+```text
+seed_000: vx=+0.0139 m/s, ratio=0.3463, action_abs_mean=0.1209
+seed_002: vx=+0.0072 m/s, ratio=0.1798, action_abs_mean=0.0904
+```
+
 Do next:
 
 ```text
 1. treat this as a hold for one-shot linear BC from the tiny target manifest
-2. improve temporal/source diversity before scaling supervised pretraining
-3. consider sequence-aware imitation or explicit rollout-preserving objectives
-4. do not launch larger PPO from this dataset just because supervised loss is low
+2. treat KNN as evidence that the dataset has weak motion hints but poor coverage
+3. improve temporal/source diversity before scaling supervised pretraining
+4. consider sequence-aware imitation or explicit rollout-preserving objectives
+5. do not launch larger PPO from this dataset just because supervised loss is low
 ```

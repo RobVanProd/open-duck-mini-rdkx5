@@ -3968,8 +3968,10 @@ outputs/analysis/realized_window_collection_x004_v5_v7_curation.json
 ### Target Dataset BC Smoke
 
 A tiny offline behavior-cloning smoke was run from the observation-ready target
-manifest. This was a linear ridge fit over curated `obs[101] -> action[14]`
-samples followed by short CPU closed-loop replay at `x=0.04`.
+manifest. The first pass was a linear ridge fit over curated
+`obs[101] -> action[14]` samples followed by short CPU closed-loop replay at
+`x=0.04`. A second KNN replay tested whether the linear model was simply
+extrapolating badly from the tiny dataset.
 
 Result:
 
@@ -3985,6 +3987,10 @@ closed-loop status: HOLD_BC_REPLAY_LOW_FORWARD_MOTION
 seed_000 replay: vx=-0.0023 m/s, ratio=-0.0565, duration complete
 seed_002 replay: vx=+0.0014 m/s, ratio=+0.0340, duration complete
 rollout action_abs_mean: about 0.0001
+knn closed-loop status: HOLD_BC_REPLAY_LOW_FORWARD_MOTION
+knn seed_000 replay: vx=+0.0139 m/s, ratio=+0.3463, duration complete
+knn seed_002 replay: vx=+0.0072 m/s, ratio=+0.1798, duration complete
+knn action_abs_mean: 0.0904-0.1209
 ```
 
 Conclusion:
@@ -3992,8 +3998,10 @@ Conclusion:
 ```text
 The compact target dataset is BC-ready by schema, but a simple one-shot linear
 BC policy overfits short curated windows and collapses to near-zero actions in
-closed-loop replay. This is a useful hold: do not scale this directly into PPO
-or a larger supervised run. The next target-data step should improve temporal
-coverage/diversity or use a sequence-aware imitation design that preserves the
-curated target motion through closed-loop replay.
+closed-loop replay. KNN does produce nonzero actions and a little forward
+motion, but still does not reach useful low-command tracking. This is a useful
+hold: do not scale this directly into PPO or a larger supervised run. The next
+target-data step should improve temporal coverage/diversity or use a
+sequence-aware imitation design that preserves the curated target motion through
+closed-loop replay.
 ```

@@ -381,14 +381,14 @@ manifests and summaries only.
 
 ## Target Dataset BC Smoke
 
-The observation-ready manifest was tested with a deliberately small
-behavior-cloning smoke:
+The observation-ready manifest was tested with deliberately small behavior
+cloning smokes:
 
 ```text
 tool: tools/run_target_dataset_bc_smoke.py
 dataset_id: 6c43c18e8f2b72ec
 samples: 275
-fit type: linear ridge, obs[101] -> action[14]
+fit types: linear ridge and KNN, obs[101] -> action[14]
 closed-loop replay: CPU, x=0.04, seeds 0 and 2, 3 s
 status: HOLD_BC_REPLAY_LOW_FORWARD_MOTION
 ```
@@ -398,19 +398,22 @@ Result:
 ```text
 supervised train error: near zero
 sample/parameter ratio: 0.1926
-seed_000 closed-loop vx: -0.0023 m/s
-seed_002 closed-loop vx: +0.0014 m/s
-rollout action_abs_mean: about 0.0001
+linear seed_000 closed-loop vx: -0.0023 m/s
+linear seed_002 closed-loop vx: +0.0014 m/s
+linear rollout action_abs_mean: about 0.0001
+KNN seed_000 closed-loop vx: +0.0139 m/s, ratio 0.3463
+KNN seed_002 closed-loop vx: +0.0072 m/s, ratio 0.1798
 ```
 
 Interpretation:
 
 ```text
 The current target dataset is schema-ready but too small/skewed for a standalone
-linear BC seed. It can reconstruct the short target snippets but does not
-produce a closed-loop forward-motion policy. Future target generation should
-increase source diversity and temporal coverage, or move to a sequence-aware
-imitation design that keeps the target motion alive during rollout.
+BC seed. Linear BC reconstructs the short snippets but freezes in rollout. KNN
+produces weak forward motion, which suggests the dataset has motion hints but
+not enough closed-loop coverage. Future target generation should increase
+source diversity and temporal coverage, or move to a sequence-aware imitation
+design that keeps the target motion alive during rollout.
 ```
 
 ## First Primitive Search Result

@@ -37,19 +37,19 @@ It is not PPO training and does not produce a deployable policy.
 status: `HOLD_BC_REPLAY_LOW_FORWARD_MOTION`
 jax_backend: `cpu`
 jax_devices: `['TFRT_CPU_0']`
-model_kind: `linear`
+model_kind: `knn`
 
 | seed | samples | termination | vx | ratio | vy95 | pitch95 | height | sent_vel95 | track95 |
 |---|---:|---|---:|---:|---:|---:|---:|---:|---:|
-| seed_000 | 150 | duration_complete | -0.0023 | -0.0565 | 0.0908 | 0.0296 | 0.1536 | 0.0000 | 0.0367 |
-| seed_002 | 150 | duration_complete | 0.0014 | 0.0340 | 0.0707 | 0.0368 | 0.1526 | 0.0001 | 0.0375 |
+| seed_000 | 150 | duration_complete | 0.0139 | 0.3463 | 0.0743 | 0.3185 | 0.1488 | 0.0657 | 0.0682 |
+| seed_002 | 150 | duration_complete | 0.0072 | 0.1798 | 0.0857 | 0.0976 | 0.1527 | 0.0505 | 0.0761 |
 
 ### Rollout Action Summary
 
 | seed | action_abs_mean | action_delta_p95_per_s | action_saturation_pct |
 |---|---:|---:|---:|
-| seed_000 | 0.0001 | 0.0002 | 0.0000 |
-| seed_002 | 0.0001 | 0.0002 | 0.0000 |
+| seed_000 | 0.1209 | 0.2629 | 0.0000 |
+| seed_002 | 0.0904 | 0.2020 | 0.0000 |
 
 ## Gate
 

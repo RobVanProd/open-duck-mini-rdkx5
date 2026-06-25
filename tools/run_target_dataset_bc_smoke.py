@@ -176,6 +176,25 @@ def predict_ridge(x: np.ndarray, weights: np.ndarray, norm: np.ndarray) -> np.nd
     return np.clip(design @ weights, -1.0, 1.0)
 
 
+def predict_knn(
+    x: np.ndarray,
+    train_x: np.ndarray,
+    train_y: np.ndarray,
+    norm: np.ndarray,
+    k: int,
+) -> np.ndarray:
+    mean, std = norm
+    x_norm = (x - mean) / std
+    train_norm = (train_x - mean) / std
+    k = max(1, min(int(k), train_x.shape[0]))
+    rows = []
+    for row in x_norm:
+        dist = np.linalg.norm(train_norm - row.reshape(1, -1), axis=1)
+        idx = np.argpartition(dist, k - 1)[:k]
+        rows.append(np.mean(train_y[idx], axis=0))
+    return np.clip(np.asarray(rows, dtype=np.float64), -1.0, 1.0)
+
+
 def action_metrics(y_true: np.ndarray, y_pred: np.ndarray) -> dict[str, Any]:
     error = y_pred - y_true
     abs_error = np.abs(error)
@@ -235,8 +254,7 @@ def source_holdout(samples: SampleSet, alpha: float) -> list[dict[str, Any]]:
 
 def run_closed_loop_rollout(
     *,
-    weights: np.ndarray,
-    norm: np.ndarray,
+    model: dict[str, Any],
     args: argparse.Namespace,
 ) -> dict[str, Any]:
     if args.jax_platform != "auto":
@@ -352,6 +370,19 @@ def run_closed_loop_rollout(
         done = done.astype(reward.dtype)
         return state.replace(data=data, obs=obs, reward=reward, done=done), pre_rate_limit, sent_target
 
+    def predict_action(obs: np.ndarray) -> np.ndarray:
+        if model["kind"] == "linear":
+            return predict_ridge(obs, model["weights"], model["norm"]).reshape(-1)
+        if model["kind"] == "knn":
+            return predict_knn(
+                obs,
+                model["train_x"],
+                model["train_y"],
+                model["norm"],
+                int(model["k"]),
+            ).reshape(-1)
+        raise ValueError(f"unsupported model kind {model['kind']}")
+
     refresh_obs_jit = jax.jit(refresh_obs)
     step_bc_jit = jax.jit(step_bc)
     sim_steps = max(1, int(round(float(args.duration_s) / float(env.dt))))
@@ -363,7 +394,7 @@ def run_closed_loop_rollout(
         records = []
         for tick in range(sim_steps):
             obs = np.asarray(jax.device_get(state.obs["state"]), dtype=np.float64).reshape(1, -1)
-            action = predict_ridge(obs, weights, norm).reshape(-1).astype(np.float32)
+            action = predict_action(obs).astype(np.float32)
             state, pre_rate, sent_target = step_bc_jit(state, jp.asarray(action))
             qpos = np.asarray(jax.device_get(state.data.qpos), dtype=float)
             base_addr = int(env._floating_base_qpos_addr)
@@ -401,6 +432,7 @@ def run_closed_loop_rollout(
 
     return {
         "status": classify_rollout(modes),
+        "model_kind": model["kind"],
         "jax_backend": jax.default_backend(),
         "jax_devices": [str(device) for device in jax.devices()],
         "env": {
@@ -538,6 +570,7 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
                 f"status: `{rollout['status']}`",
                 f"jax_backend: `{rollout.get('jax_backend')}`",
                 f"jax_devices: `{rollout.get('jax_devices')}`",
+                f"model_kind: `{rollout.get('model_kind')}`",
                 "",
                 "| seed | samples | termination | vx | ratio | vy95 | pitch95 | height | sent_vel95 | track95 |",
                 "|---|---:|---|---:|---:|---:|---:|---:|---:|---:|",
@@ -603,6 +636,8 @@ def main() -> int:
     parser.add_argument("--duration-s", type=float, default=3.0)
     parser.add_argument("--seeds", default="0,2")
     parser.add_argument("--ridge-alphas", default="1e-6,1e-4,1e-2,1,100")
+    parser.add_argument("--model-kind", choices=["linear", "knn"], default="linear")
+    parser.add_argument("--knn-k", type=int, default=5)
     parser.add_argument(
         "--jax-platform",
         choices=["auto", "cpu", "gpu"],
@@ -626,7 +661,24 @@ def main() -> int:
     rollout = None
     status = "HOLD_BC_FIT_NO_CLOSED_LOOP"
     if not args.no_rollout:
-        rollout = run_closed_loop_rollout(weights=fit["weights"], norm=fit["norm"], args=args)
+        if args.model_kind == "linear":
+            model = {
+                "kind": "linear",
+                "weights": fit["weights"],
+                "norm": fit["norm"],
+            }
+        else:
+            mean = samples.observations.mean(axis=0)
+            std = samples.observations.std(axis=0)
+            std = np.where(std < 1.0e-8, 1.0, std)
+            model = {
+                "kind": "knn",
+                "train_x": samples.observations,
+                "train_y": samples.actions,
+                "norm": np.stack([mean, std], axis=0),
+                "k": int(args.knn_k),
+            }
+        rollout = run_closed_loop_rollout(model=model, args=args)
         status = rollout["status"]
 
     payload = {
@@ -666,6 +718,8 @@ def main() -> int:
             "coefficient_norm": float(np.linalg.norm(fit["weights"][:-1])),
             "intercept_norm": float(np.linalg.norm(fit["weights"][-1])),
         },
+        "smoke_model_kind": args.model_kind,
+        "knn_k": int(args.knn_k),
         "rollout": rollout,
     }
     output_json = Path(args.output_json)
