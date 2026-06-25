@@ -4769,3 +4769,27 @@ The patched runner exposes the soft-prior flags and loads the compact prior
 without training while preserving the `101` observation / `14` action contract.
 No robot tests, SSH, deployment, runtime behavior changes, policy changes, or
 training runs were performed for this patch application.
+
+### V21 Weak Soft-Prior Learner Prepared
+
+The next bounded offline training recipe is now prepared:
+
+```text
+recipe: movement_bootstrap_v21
+doc: docs/SOFT_PRIOR_LEARNER_V21_PLAN.md
+plan_md: outputs/analysis/STAGED_CURRICULUM_TRAINING_PLAN_V21.md
+plan_json: outputs/analysis/staged_curriculum_training_plan_v21.json
+```
+
+Purpose:
+
+```text
+Use the short curated pitch-chain fragments only as a weak closed-loop
+auxiliary prior while PPO still earns real forward progress, posture, contact,
+and survival reward.
+```
+
+V21 is explicit-only and does not change the current `movement_bootstrap_v20`
+default in the Colab workflow. The next allowed gate is a multi-seed x=0.04
+sim result. Robot validation, x=0.08, deployment, and policy changes remain
+blocked.

@@ -3794,3 +3794,33 @@ outputs/analysis/SOFT_PRIOR_PLAYGROUND_PATCH_VERIFY.md
 Next offline gate is a small learner run that explicitly enables the weak
 soft-prior term and grades multi-seed forward motion. Robot validation remains
 blocked.
+
+### V21 Weak Soft-Prior Learner
+
+The next offline recipe is now prepared but not launched:
+
+```text
+recipe: movement_bootstrap_v21
+doc: docs/SOFT_PRIOR_LEARNER_V21_PLAN.md
+plan_md: outputs/analysis/STAGED_CURRICULUM_TRAINING_PLAN_V21.md
+plan_json: outputs/analysis/staged_curriculum_training_plan_v21.json
+```
+
+V21 is explicit-only. It was added to the staged planner and Colab workflow
+without changing the default recipe from V20.
+
+Run only after reviewing the plan:
+
+```bash
+python3 tools/run_colab_cli_cuda_workflow.py \
+  --workflow staged-curriculum \
+  --staged-recipe movement_bootstrap_v21 \
+  --staged-phase-gate-seeds 0-3 \
+  --staged-phase-gate-command-x 0.04 \
+  --staged-phase-gate-bridge-mode vanilla \
+  --staged-phase-gate-freeze-check \
+  --run
+```
+
+Do not run robot validation from V21. The only acceptable next result is a
+multi-seed x=0.04 sim gate verdict.

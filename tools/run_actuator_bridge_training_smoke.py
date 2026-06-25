@@ -51,6 +51,15 @@ def append_optional(command: list[str], flag: str, value: Any) -> None:
         command.extend([flag, cli_value(value)])
 
 
+def resolve_rdk_path(path_text: str) -> Path:
+    path = Path(path_text)
+    if path.is_absolute():
+        return path
+    if path.exists():
+        return path.resolve()
+    return (ROOT / path).resolve()
+
+
 def build_command(args: argparse.Namespace, output_dir: Path) -> list[str]:
     runner = Path(args.playground_path) / "playground/open_duck_mini_v2/runner.py"
     command = [
@@ -165,6 +174,21 @@ def build_command(args: argparse.Namespace, output_dir: Path) -> list[str]:
         append_optional(command, flag, value)
     if args.command_progress_failure_enable:
         command.append("--command_progress_failure_enable")
+    if args.enable_soft_prior:
+        soft_prior_config_json = resolve_rdk_path(str(args.soft_prior_config_json))
+        command.append("--enable_soft_prior")
+        command.extend(
+            [
+                "--soft_prior_config_json",
+                str(soft_prior_config_json),
+                "--soft_prior_scale",
+                cli_value(args.soft_prior_scale),
+                "--soft_prior_huber_delta",
+                cli_value(args.soft_prior_huber_delta),
+                "--soft_prior_phase_source",
+                args.soft_prior_phase_source,
+            ]
+        )
     if not args.disable_actuator_bridge:
         command.append("--enable_actuator_bridge")
         command.extend(
@@ -199,6 +223,15 @@ def validate_paths(args: argparse.Namespace) -> None:
         for path in (playground, env_python, runner, joystick)
         if not path.exists()
     ]
+    if args.enable_soft_prior:
+        if args.soft_prior_config_json is None:
+            missing.append("--soft-prior-config-json")
+        else:
+            config_path = Path(args.soft_prior_config_json)
+            if not config_path.is_absolute() and not config_path.exists():
+                config_path = ROOT / config_path
+            if not config_path.exists():
+                missing.append(str(config_path))
     if missing:
         raise SystemExit("Missing required path(s):\n" + "\n".join(missing))
 
@@ -400,6 +433,22 @@ def main() -> int:
     parser.add_argument(
         "--command-progress-failure-warmup-steps", type=int, default=None
     )
+    parser.add_argument(
+        "--enable-soft-prior",
+        action="store_true",
+        help=(
+            "Enable the default-off Playground soft-prior hook. Requires "
+            "--soft-prior-config-json and a patched Playground checkout."
+        ),
+    )
+    parser.add_argument("--soft-prior-config-json", default=None)
+    parser.add_argument("--soft-prior-scale", type=float, default=-0.05)
+    parser.add_argument("--soft-prior-huber-delta", type=float, default=0.05)
+    parser.add_argument(
+        "--soft-prior-phase-source",
+        choices=["imitation_i", "step"],
+        default="imitation_i",
+    )
     parser.add_argument("--action-rate-huber-delta", type=float, default=None)
     parser.add_argument("--action-magnitude-huber-delta", type=float, default=None)
     parser.add_argument("--target-rate-huber-delta", type=float, default=None)
@@ -477,6 +526,13 @@ def main() -> int:
         "reference_motion_override": {
             "enabled": bool(args.reference_motion_override),
             "source": args.reference_motion_override,
+        },
+        "soft_prior": {
+            "enabled": args.enable_soft_prior,
+            "config_json": args.soft_prior_config_json,
+            "scale": args.soft_prior_scale,
+            "huber_delta": args.soft_prior_huber_delta,
+            "phase_source": args.soft_prior_phase_source,
         },
         "target_rate_scale": args.target_rate_scale,
         "actuator_tracking_scale": args.actuator_tracking_scale,

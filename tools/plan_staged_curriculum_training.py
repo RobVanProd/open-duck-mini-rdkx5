@@ -136,9 +136,14 @@ class Phase:
     command_progress_shortfall_huber_delta: float = 0.0
     phase_gate_bridge_mode: str | None = None
     reference_motion_override: str | None = None
+    soft_prior_config_json: str | None = None
+    soft_prior_scale: float = 0.0
+    soft_prior_huber_delta: float = 0.05
+    soft_prior_phase_source: str = "imitation_i"
 
 
 RECIPE_DEFAULT_PHASE_GATE_COMMAND_X = {
+    "movement_bootstrap_v21": 0.04,
     "movement_bootstrap_v20": 0.04,
     "movement_bootstrap_v19": 0.04,
     "movement_bootstrap_v18": 0.04,
@@ -2598,7 +2603,148 @@ MOVEMENT_BOOTSTRAP_V20_PHASES = [
 ]
 
 
+MOVEMENT_BOOTSTRAP_V21_PHASES = [
+    Phase(
+        name="phase1_soft_prior_low_command_probe",
+        purpose=(
+            "first weak-soft-prior learner after direct reference targets and "
+            "raw target labels held. This phase keeps vanilla dynamics and "
+            "x=0.04 only, uses the compact pitch-chain fragment prior as a "
+            "small auxiliary cost, and still grades by real closed-loop "
+            "forward motion rather than imitation loss."
+        ),
+        num_timesteps=220_000,
+        bridge=False,
+        delay=(0, 0),
+        tau_s=(0.0, 0.0),
+        velocity_limit_rad_s=(5.24, 5.24),
+        target_rate_scale=-0.0002,
+        actuator_tracking_scale=0.0,
+        tracking_lin_vel_scale=26.0,
+        tracking_sigma=0.0015,
+        forward_progress_scale=28.0,
+        forward_shortfall_scale=-55.0,
+        forward_shortfall_required_ratio=0.55,
+        action_rate_scale=-0.006,
+        action_magnitude_scale=-0.0010,
+        stand_still_scale=-1.0,
+        alive_scale=0.0,
+        imitation_scale=0.0,
+        lin_vel_x=(0.035, 0.045),
+        zero_command_probability=0.0,
+        forward_overshoot_scale=-2.0,
+        forward_overshoot_allowed_ratio=1.65,
+        forward_wrong_direction_scale=-90.0,
+        forward_wrong_direction_allowed_reverse_ratio=0.0,
+        orientation_scale=-0.04,
+        base_height_scale=-0.28,
+        forward_pitch_scale=-0.06,
+        forward_pitch_rate_scale=-0.006,
+        forward_contact_support_scale=-0.12,
+        forward_contact_support_no_contact_weight=1.0,
+        forward_contact_support_asymmetry_weight=0.02,
+        command_progress_scale=10.0,
+        command_progress_shortfall_scale=-50.0,
+        command_progress_required_ratio=0.45,
+        command_progress_warmup_steps=10,
+        command_progress_failure_scale=-150.0,
+        command_progress_failure_enable=True,
+        command_progress_failure_min_ratio=0.20,
+        command_progress_failure_warmup_steps=70,
+        reward_clip_min=-20.0,
+        reward_clip_max=10000.0,
+        action_rate_huber_delta=0.08,
+        action_magnitude_huber_delta=0.50,
+        target_rate_huber_delta=1.0,
+        actuator_tracking_huber_delta=0.08,
+        forward_shortfall_huber_delta=0.0,
+        forward_overshoot_huber_delta=0.50,
+        forward_wrong_direction_huber_delta=0.0,
+        forward_pitch_huber_delta=0.25,
+        forward_pitch_rate_huber_delta=1.0,
+        command_progress_shortfall_huber_delta=0.0,
+        ppo_learning_rate=1.0e-4,
+        ppo_entropy_cost=0.014,
+        ppo_clipping_epsilon=0.10,
+        ppo_max_grad_norm=0.70,
+        phase_gate_bridge_mode="vanilla",
+        soft_prior_config_json="outputs/analysis/soft_prior_fragment_config.json",
+        soft_prior_scale=-0.025,
+        soft_prior_huber_delta=0.05,
+        soft_prior_phase_source="imitation_i",
+    ),
+    Phase(
+        name="phase2_soft_prior_mild_bridge_probe",
+        purpose=(
+            "only run if phase 1 passes the multi-seed x=0.04 vanilla gate. "
+            "Keep the same weak prior while adding a mild actuator bridge at "
+            "the same command before any fitted-envelope or x=0.08 expansion."
+        ),
+        num_timesteps=160_000,
+        bridge=True,
+        delay=(1, 3),
+        tau_s=(0.03, 0.08),
+        velocity_limit_rad_s=(3.6, 4.7),
+        target_rate_scale=-0.0006,
+        actuator_tracking_scale=-0.04,
+        tracking_lin_vel_scale=24.0,
+        tracking_sigma=0.0015,
+        forward_progress_scale=24.0,
+        forward_shortfall_scale=-45.0,
+        forward_shortfall_required_ratio=0.50,
+        action_rate_scale=-0.008,
+        action_magnitude_scale=-0.0015,
+        stand_still_scale=-1.0,
+        alive_scale=0.0,
+        imitation_scale=0.0,
+        lin_vel_x=(0.035, 0.045),
+        zero_command_probability=0.0,
+        forward_overshoot_scale=-2.5,
+        forward_overshoot_allowed_ratio=1.55,
+        forward_wrong_direction_scale=-80.0,
+        forward_wrong_direction_allowed_reverse_ratio=0.0,
+        orientation_scale=-0.055,
+        base_height_scale=-0.38,
+        forward_pitch_scale=-0.08,
+        forward_pitch_rate_scale=-0.008,
+        forward_contact_support_scale=-0.16,
+        forward_contact_support_no_contact_weight=1.0,
+        forward_contact_support_asymmetry_weight=0.02,
+        command_progress_scale=8.0,
+        command_progress_shortfall_scale=-42.0,
+        command_progress_required_ratio=0.45,
+        command_progress_warmup_steps=10,
+        command_progress_failure_scale=-150.0,
+        command_progress_failure_enable=True,
+        command_progress_failure_min_ratio=0.18,
+        command_progress_failure_warmup_steps=80,
+        reward_clip_min=-20.0,
+        reward_clip_max=10000.0,
+        action_rate_huber_delta=0.08,
+        action_magnitude_huber_delta=0.50,
+        target_rate_huber_delta=1.0,
+        actuator_tracking_huber_delta=0.08,
+        forward_shortfall_huber_delta=0.0,
+        forward_overshoot_huber_delta=0.50,
+        forward_wrong_direction_huber_delta=0.0,
+        forward_pitch_huber_delta=0.25,
+        forward_pitch_rate_huber_delta=1.0,
+        command_progress_shortfall_huber_delta=0.0,
+        ppo_learning_rate=7.0e-5,
+        ppo_entropy_cost=0.010,
+        ppo_clipping_epsilon=0.09,
+        ppo_max_grad_norm=0.65,
+        phase_gate_bridge_mode="fitted",
+        soft_prior_config_json="outputs/analysis/soft_prior_fragment_config.json",
+        soft_prior_scale=-0.015,
+        soft_prior_huber_delta=0.05,
+        soft_prior_phase_source="imitation_i",
+    ),
+]
+
+
 RECIPES = {
+    "movement_bootstrap_v21": MOVEMENT_BOOTSTRAP_V21_PHASES,
     "movement_bootstrap_v20": MOVEMENT_BOOTSTRAP_V20_PHASES,
     "movement_bootstrap_v19": MOVEMENT_BOOTSTRAP_V19_PHASES,
     "movement_bootstrap_v18": MOVEMENT_BOOTSTRAP_V18_PHASES,
@@ -2783,6 +2929,20 @@ def phase_command(
         command.extend(
             ["--reference-motion-override", phase.reference_motion_override]
         )
+    if phase.soft_prior_config_json:
+        command.extend(
+            [
+                "--enable-soft-prior",
+                "--soft-prior-config-json",
+                phase.soft_prior_config_json,
+                "--soft-prior-scale",
+                cli_value(phase.soft_prior_scale),
+                "--soft-prior-huber-delta",
+                cli_value(phase.soft_prior_huber_delta),
+                "--soft-prior-phase-source",
+                phase.soft_prior_phase_source,
+            ]
+        )
     if not phase.bridge:
         command.append("--disable-actuator-bridge")
     else:
@@ -2894,6 +3054,10 @@ def phase_payload(phase: Phase, command: list[str], output_root: Path) -> dict[s
         "ppo_entropy_cost": phase.ppo_entropy_cost,
         "ppo_clipping_epsilon": phase.ppo_clipping_epsilon,
         "ppo_max_grad_norm": phase.ppo_max_grad_norm,
+        "soft_prior_config_json": phase.soft_prior_config_json,
+        "soft_prior_scale": phase.soft_prior_scale,
+        "soft_prior_huber_delta": phase.soft_prior_huber_delta,
+        "soft_prior_phase_source": phase.soft_prior_phase_source,
         "num_timesteps": phase.num_timesteps,
         "restore_checkpoint": (
             command[command.index("--restore-checkpoint-path") + 1]
@@ -2908,6 +3072,15 @@ def phase_payload(phase: Phase, command: list[str], output_root: Path) -> dict[s
 
 
 def recipe_rationale(recipe: str) -> str:
+    if recipe == "movement_bootstrap_v21":
+        return (
+            "`movement_bootstrap_v21` is the first weak-soft-prior learner. "
+            "V20 showed that a matched reference did not stay coherent under "
+            "PPO, and direct fragment targets were too short to use as labels. "
+            "V21 keeps the fragment data as a small pitch-chain auxiliary cost "
+            "only, keeps the task at x=0.04, and requires multi-seed real "
+            "forward motion before any actuator-envelope or x=0.08 expansion."
+        )
     if recipe == "movement_bootstrap_v20":
         return (
             "`movement_bootstrap_v20` repeats the V19 reference-imitation "
@@ -3157,10 +3330,14 @@ def write_plan(payload: dict[str, Any], output_md: Path, output_json: Path) -> N
             ]
         )
     lines.extend(["## Next Gate", ""])
-    if payload.get("recipe") in {"movement_bootstrap_v19", "movement_bootstrap_v20"}:
+    if payload.get("recipe") in {
+        "movement_bootstrap_v19",
+        "movement_bootstrap_v20",
+        "movement_bootstrap_v21",
+    }:
         lines.extend(
             [
-                f"{payload.get('recipe')} is a reference-imitation discovery split, so the first gate is the built-in multi-seed phase gate:",
+                f"{payload.get('recipe')} is an x=0.04 discovery split, so the first gate is the built-in multi-seed phase gate:",
                 "",
                 f"- command_x: `{cli_value(payload.get('phase_gate_command_x', 0.04))}`",
                 f"- bridge_mode: `{payload.get('phase_gate_bridge_mode') or 'vanilla'}`",
@@ -3488,8 +3665,9 @@ def main() -> int:
             "reference/imitation-gait seed experiment after V18 proved the "
             "reward signal itself prefers forward motion; movement_bootstrap_v20 "
             "repeats V19 with a command-matched reference override after the "
-            "V19 seed was found to be faster and side-biased. V20 is the "
-            "current default."
+            "V19 seed was found to be faster and side-biased. "
+            "movement_bootstrap_v21 is the explicit weak-soft-prior learner; "
+            "it is not the default. V20 is the current default."
         ),
     )
     parser.add_argument("--timesteps-scale", type=float, default=1.0)

@@ -1325,6 +1325,7 @@ def main() -> int:
         "--staged-recipe",
         choices=[
             "movement_bootstrap_v20",
+            "movement_bootstrap_v21",
             "movement_bootstrap_v19",
             "movement_bootstrap_v18",
             "movement_bootstrap_v17",
@@ -1352,6 +1353,10 @@ def main() -> int:
             "movement_bootstrap_v20, a reference/imitation-gait seed experiment "
             "using the synthesized x=0.04 reference override after V19 showed "
             "the raw nearest reference was command-mismatched. "
+            "movement_bootstrap_v21 is available as an explicit next recipe: "
+            "a weak-soft-prior x=0.04 learner using compact fragment priors, "
+            "but it is not the default so future launches do not change "
+            "silently. "
             "movement_bootstrap_v19 is the preserved raw-reference seed "
             "experiment after V18 showed the immediate reward signal already "
             "prefers forward motion but cold-start PPO still failed at x=0.04. "
