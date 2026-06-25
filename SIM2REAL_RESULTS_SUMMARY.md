@@ -6113,3 +6113,27 @@ training resumes:
 ```text
 docs/WEIGHT_TRANSFER_TARGET_PLAN.md
 ```
+
+A bounded finite-horizon sequence optimizer smoke was also run locally in
+CPU-only mode:
+
+```text
+tool: tools/optimize_contact_weight_transfer_sequence.py
+artifact: outputs/analysis/CONTACT_WEIGHT_TRANSFER_SEQUENCE_OPTIMIZER_SMOKE.md
+status: HOLD_HORIZON_SEQUENCE_NO_ROBUST_TARGET
+seeds: 0,2
+candidates: 4
+window: 100 ticks
+```
+
+Best candidate still failed by support transfer and progress:
+
+```text
+seed_000: mean vx -0.0035 m/s, double support 93%, single support 7%
+seed_002: mean vx  0.0038 m/s, double support 90%, single support 10%
+```
+
+This confirms that an unconditioned smooth action-table random shoot is not
+enough. The next target source must encode a more structured weight-shift and
+stance-transition mechanism rather than just sampling finite-horizon joint
+targets.

@@ -77,6 +77,35 @@ If this target gate fails, do not start policy training from that source.
 
 Use a richer closed-loop teacher/optimizer, not another reward-only learner.
 
+The first bounded finite-horizon sequence smoke did not clear the gate:
+
+```text
+tool: tools/optimize_contact_weight_transfer_sequence.py
+artifact: outputs/analysis/CONTACT_WEIGHT_TRANSFER_SEQUENCE_OPTIMIZER_SMOKE.md
+status: HOLD_HORIZON_SEQUENCE_NO_ROBUST_TARGET
+seeds: 0,2
+candidates: 4
+window: 100 ticks
+```
+
+Best candidate summary:
+
+```text
+seed_000:
+  mean vx: -0.0035 m/s
+  double support: 93%
+  single support: 7%
+
+seed_002:
+  mean vx: 0.0038 m/s
+  double support: 90%
+  single support: 10%
+```
+
+So a plain smooth horizon action-table random shoot still lands in the same
+double-support/low-progress basin. The next generator needs more structure than
+unconditioned finite-horizon action tables.
+
 The target generator should explicitly control:
 
 ```text
