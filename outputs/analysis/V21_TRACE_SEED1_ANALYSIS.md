@@ -49,6 +49,22 @@ status: `REVERSE_HEIGHT_COLLAPSE`
 | `right_knee` | 0.2362 | 0.0413 | 0.0877 |
 | `right_ankle` | 0.3633 | 0.1309 | 0.2551 |
 
+## Soft Prior Alignment
+
+- method: `tick_mod_prior_window`
+- period: `50`
+- mean_abs_error_mean: `0.2612`
+- rms_error_mean: `0.2918`
+
+| joint | abs_error_mean | abs_error_p95 |
+|---|---:|---:|
+| `left_hip_pitch` | 0.3091 | 0.4649 |
+| `left_knee` | 0.3545 | 0.4479 |
+| `left_ankle` | 0.1459 | 0.1656 |
+| `right_hip_pitch` | 0.3024 | 0.4563 |
+| `right_knee` | 0.3527 | 0.5135 |
+| `right_ankle` | 0.1028 | 0.1494 |
+
 ## Contact States
 
 | contact_state | count |

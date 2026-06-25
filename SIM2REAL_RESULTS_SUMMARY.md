@@ -4912,9 +4912,11 @@ failure_surfaces:
 track_ratio_mean: -0.6216
 mean_local_vx: -0.0249 m/s
 action_saturation_pct_mean: 0.0
+soft_prior_abs_error_mean: 0.2609
 ```
 
 V21 therefore did not discover a coherent low-command forward behavior. The next
 offline work should address behavior discovery or imitation/reference locking
-directly; it should not continue actuator-envelope tuning, and it still does not
-authorize robot validation.
+directly. The exported policy remained far from the soft-prior pitch-chain
+actions, so simply keeping a weak soft-prior cost is not enough. Do not continue
+actuator-envelope tuning, and do not authorize robot validation from this result.

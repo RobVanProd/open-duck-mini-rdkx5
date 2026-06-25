@@ -97,7 +97,64 @@ def vector_value(row: dict[str, Any], key: str, idx: int) -> float | None:
     return finite_float(value[idx])
 
 
-def analyze(rows: list[dict[str, Any]], *, eval_json: Path | None = None) -> dict[str, Any]:
+def load_soft_prior(path: Path | None) -> dict[str, Any] | None:
+    if path is None:
+        return None
+    payload = json.loads(path.read_text())
+    prior = payload.get("prior") or payload
+    if not isinstance(prior, dict) or not prior.get("action_mean"):
+        raise SystemExit(f"{path}: missing prior.action_mean")
+    return prior
+
+
+def soft_prior_alignment(
+    rows: list[dict[str, Any]], prior: dict[str, Any] | None
+) -> dict[str, Any] | None:
+    if prior is None:
+        return None
+    action_mean = prior.get("action_mean") or []
+    joint_indices = [int(v) for v in prior.get("joint_indices") or []]
+    joint_names = [str(v) for v in prior.get("joint_names") or []]
+    if not action_mean or not joint_indices:
+        return None
+    period = int(prior.get("window_len") or len(action_mean))
+    abs_errors: list[float] = []
+    rms_errors: list[float] = []
+    per_joint_errors: dict[str, list[float]] = {
+        joint_names[i] if i < len(joint_names) else str(idx): []
+        for i, idx in enumerate(joint_indices)
+    }
+    for row in rows:
+        action = row.get("action") or []
+        tick = int(row.get("tick") or 0)
+        reference = action_mean[tick % period]
+        squared = []
+        for i, idx in enumerate(joint_indices):
+            if idx >= len(action) or i >= len(reference):
+                continue
+            err = finite_float(action[idx])
+            ref = finite_float(reference[i])
+            if err is None or ref is None:
+                continue
+            delta = err - ref
+            abs_errors.append(abs(delta))
+            squared.append(delta * delta)
+            joint_name = joint_names[i] if i < len(joint_names) else str(idx)
+            per_joint_errors[joint_name].append(abs(delta))
+        if squared:
+            rms_errors.append(math.sqrt(sum(squared) / len(squared)))
+    return {
+        "method": "tick_mod_prior_window",
+        "period": period,
+        "mean_abs_error": stats(abs_errors),
+        "rms_error": stats(rms_errors),
+        "per_joint_abs_error": {name: stats(values) for name, values in per_joint_errors.items()},
+    }
+
+
+def analyze(
+    rows: list[dict[str, Any]], *, eval_json: Path | None = None, soft_prior: dict[str, Any] | None = None
+) -> dict[str, Any]:
     command = rows[0].get("command") or []
     command_x = finite_float(command[0]) if isinstance(command, list) and command else None
     times = [finite_float(row.get("time_s")) for row in rows]
@@ -242,6 +299,7 @@ def analyze(rows: list[dict[str, Any]], *, eval_json: Path | None = None) -> dic
         "reward": stats(reward),
         "reward_term_means": term_means,
         "samples": len(rows),
+        "soft_prior_alignment": soft_prior_alignment(rows, soft_prior),
         "track_ratio": track_ratio,
     }
 
@@ -319,6 +377,32 @@ def write_markdown(payload: dict[str, Any], path: Path, *, trace_path: Path) -> 
     lines.extend(
         [
             "",
+            "## Soft Prior Alignment",
+            "",
+        ]
+    )
+    prior = payload.get("soft_prior_alignment")
+    if prior:
+        lines.extend(
+            [
+                f"- method: `{prior.get('method')}`",
+                f"- period: `{prior.get('period')}`",
+                f"- mean_abs_error_mean: `{fmt((prior.get('mean_abs_error') or {}).get('mean'))}`",
+                f"- rms_error_mean: `{fmt((prior.get('rms_error') or {}).get('mean'))}`",
+                "",
+                "| joint | abs_error_mean | abs_error_p95 |",
+                "|---|---:|---:|",
+            ]
+        )
+        for joint, joint_stats in (prior.get("per_joint_abs_error") or {}).items():
+            lines.append(
+                f"| `{joint}` | {fmt(joint_stats.get('mean'))} | {fmt(joint_stats.get('p95'))} |"
+            )
+    else:
+        lines.append("- not provided")
+    lines.extend(
+        [
+            "",
             "## Contact States",
             "",
             "| contact_state | count |",
@@ -335,12 +419,13 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("trace_jsonl", type=Path)
     parser.add_argument("--eval-json", type=Path, default=None)
+    parser.add_argument("--soft-prior-config", type=Path, default=None)
     parser.add_argument("--output-md", type=Path, required=True)
     parser.add_argument("--output-json", type=Path, required=True)
     args = parser.parse_args()
 
     rows = load_trace(args.trace_jsonl)
-    payload = analyze(rows, eval_json=args.eval_json)
+    payload = analyze(rows, eval_json=args.eval_json, soft_prior=load_soft_prior(args.soft_prior_config))
     payload["trace_jsonl"] = str(args.trace_jsonl)
     args.output_json.parent.mkdir(parents=True, exist_ok=True)
     args.output_json.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")

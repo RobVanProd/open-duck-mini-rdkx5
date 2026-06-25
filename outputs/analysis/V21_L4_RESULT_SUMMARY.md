@@ -96,8 +96,11 @@ failure_surfaces:
 track_ratio_mean: -0.6216
 mean_local_vx: -0.0249 m/s
 action_saturation_pct_mean: 0.0
+soft_prior_abs_error_mean: 0.2609
 ```
 
 The trace follow-up confirms V21 is not failing from action saturation or target
 velocity. The learned behavior mostly fails to make progress; one seed reverses
-immediately, loses height, and terminates.
+immediately, loses height, and terminates. It also does not closely match the
+soft-prior pitch-chain action pattern, so the weak prior did not lock the final
+policy into the intended low-command gait basin.

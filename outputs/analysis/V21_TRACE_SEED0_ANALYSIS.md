@@ -49,6 +49,22 @@ status: `LOW_PROGRESS_TERMINATION`
 | `right_knee` | 0.4125 | 0.0628 | 0.0665 |
 | `right_ankle` | 0.1749 | 0.0647 | 0.3077 |
 
+## Soft Prior Alignment
+
+- method: `tick_mod_prior_window`
+- period: `50`
+- mean_abs_error_mean: `0.2614`
+- rms_error_mean: `0.2887`
+
+| joint | abs_error_mean | abs_error_p95 |
+|---|---:|---:|
+| `left_hip_pitch` | 0.2777 | 0.4361 |
+| `left_knee` | 0.3457 | 0.4597 |
+| `left_ankle` | 0.1394 | 0.1822 |
+| `right_hip_pitch` | 0.3387 | 0.4642 |
+| `right_knee` | 0.3347 | 0.4753 |
+| `right_ankle` | 0.1324 | 0.1598 |
+
 ## Contact States
 
 | contact_state | count |

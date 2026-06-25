@@ -56,6 +56,16 @@ def summarize(items: list[dict[str, Any]]) -> dict[str, Any]:
                 "mean_local_vx_m_s": (item.get("local_forward_velocity_m_s") or {}).get("mean"),
                 "samples": item.get("samples"),
                 "seed": seed,
+                "soft_prior_abs_error_mean": (
+                    (item.get("soft_prior_alignment") or {})
+                    .get("mean_abs_error", {})
+                    .get("mean")
+                ),
+                "soft_prior_rms_error_mean": (
+                    (item.get("soft_prior_alignment") or {})
+                    .get("rms_error", {})
+                    .get("mean")
+                ),
                 "track_ratio": item.get("track_ratio"),
                 "trace_jsonl": item.get("trace_jsonl"),
             }
@@ -67,6 +77,12 @@ def summarize(items: list[dict[str, Any]]) -> dict[str, Any]:
             "falls_or_terminations": len(rows),
             "mean_local_vx_m_s": mean_of([row["mean_local_vx_m_s"] for row in rows]),
             "samples_mean": mean_of([row["samples"] for row in rows]),
+            "soft_prior_abs_error_mean": mean_of(
+                [row["soft_prior_abs_error_mean"] for row in rows]
+            ),
+            "soft_prior_rms_error_mean": mean_of(
+                [row["soft_prior_rms_error_mean"] for row in rows]
+            ),
             "track_ratio_mean": mean_of([row["track_ratio"] for row in rows]),
         },
         "failure_surface_counts": dict(surfaces),
@@ -94,8 +110,8 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
             "",
             "## Per-Seed Rows",
             "",
-            "| seed | surface | samples | mean_vx | track_ratio | base_height_min | first_reverse_tick | first_low_height_tick | dominant_cost |",
-            "|---:|---|---:|---:|---:|---:|---:|---:|---|",
+            "| seed | surface | samples | mean_vx | track_ratio | prior_abs_err | base_height_min | first_reverse_tick | first_low_height_tick | dominant_cost |",
+            "|---:|---|---:|---:|---:|---:|---:|---:|---:|---|",
         ]
     )
     for row in payload["rows"]:
@@ -104,7 +120,8 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         lines.append(
             f"| {fmt(row.get('seed'))} | `{row.get('failure_surface')}` | "
             f"{fmt(row.get('samples'))} | {fmt(row.get('mean_local_vx_m_s'))} | "
-            f"{fmt(row.get('track_ratio'))} | {fmt(row.get('base_height_min_m'))} | "
+            f"{fmt(row.get('track_ratio'))} | {fmt(row.get('soft_prior_abs_error_mean'))} | "
+            f"{fmt(row.get('base_height_min_m'))} | "
             f"{fmt(row.get('first_reverse_tick'))} | {fmt(row.get('first_low_height_tick'))} | "
             f"`{dominant_text}` |"
         )
