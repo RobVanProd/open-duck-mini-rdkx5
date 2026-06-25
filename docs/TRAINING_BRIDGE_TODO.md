@@ -234,6 +234,18 @@ Implement a short-horizon optimizer that searches compact target-sequence
 parameters against the same seed-robust objective. This is the correct next
 step because prior probes have bracketed the tradeoff but not solved it.
 
+First optimizer slice:
+
+```text
+tool: tools/optimize_weight_transfer_target_sequence.py
+artifact: outputs/analysis/WEIGHT_TRANSFER_OPTIMIZER.md
+status: HOLD_OPTIMIZER_NO_ROBUST_TARGET
+```
+
+The wrapper works and produces scored traces, but the first small run stayed in
+the conservative basin: lateral velocity near gate, target velocity low, and
+forward velocity near zero. Do not train from these traces.
+
 ### Reconcile Policy / Sim Contract
 
 - Run `tools/audit_policy_sim_contract.py`.

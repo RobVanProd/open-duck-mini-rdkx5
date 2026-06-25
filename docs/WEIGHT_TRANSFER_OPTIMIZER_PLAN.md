@@ -140,3 +140,39 @@ duration: 2-3 s
 
 If this produces no directionally useful candidates, the next branch should be
 a closed-loop state-feedback teacher, not more target-shape random search.
+
+## First Small Probe
+
+Artifact:
+
+```text
+outputs/analysis/WEIGHT_TRANSFER_OPTIMIZER.md
+outputs/analysis/weight_transfer_optimizer.json
+```
+
+Run shape:
+
+```text
+iterations: 2
+candidates_per_iteration: 4
+seeds: 0,2
+duration: 2.0 s
+window: 100 ticks
+```
+
+Result:
+
+```text
+status: HOLD_OPTIMIZER_NO_ROBUST_TARGET
+global best seed0 vx: -0.0029 m/s
+global best seed2 vx: 0.0022 m/s
+global best seed0 / seed2 vy95: 0.1096 / 0.1113 m/s
+global best seed0 / seed2 double support: 88% / 92%
+```
+
+Interpretation: the first optimizer slice validates the tooling but not a
+target source. It again finds the conservative basin: lateral velocity is near
+gate, actuator target velocity is low, but forward displacement is nearly zero.
+The next optimizer revision needs a less restrictive parameterization or a
+stronger terminal forward-displacement term; simply iterating this small search
+is unlikely to solve the target-source problem.

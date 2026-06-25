@@ -63,6 +63,40 @@ def finite(value: Any) -> bool:
 
 
 def planner_grid(args: argparse.Namespace) -> list[Planner]:
+    if getattr(args, "candidate_json", None):
+        candidate_path = Path(args.candidate_json)
+        if not candidate_path.is_absolute():
+            candidate_path = ROOT / candidate_path
+        payload = json.loads(candidate_path.read_text())
+        items = payload.get("candidates", payload) if isinstance(payload, dict) else payload
+        rows = []
+        for index, item in enumerate(items):
+            label = item.get("label", f"planner_json_{index:03d}")
+            rows.append(
+                Planner(
+                    label=label,
+                    period_s=float(item["period_s"]),
+                    balance_fraction=float(item["balance_fraction"]),
+                    roll_shift_rad=float(item["roll_shift_rad"]),
+                    lateral_gate_m_s=float(item["lateral_gate_m_s"]),
+                    base_y_gate_m=float(item["base_y_gate_m"]),
+                    pitch_gate_rad=float(item["pitch_gate_rad"]),
+                    swing_knee_rad=float(item["swing_knee_rad"]),
+                    swing_ankle_rad=float(item["swing_ankle_rad"]),
+                    swing_hip_reach_rad=float(item["swing_hip_reach_rad"]),
+                    stance_retract_scale=float(item["stance_retract_scale"]),
+                    stance_push_gain=float(item["stance_push_gain"]),
+                    stance_push_limit_rad=float(
+                        item.get("stance_push_limit_rad", args.stance_push_limit)
+                    ),
+                    pitch_target_rad=float(item["pitch_target_rad"]),
+                    pitch_damping=float(item["pitch_damping"]),
+                    lateral_gain=float(item["lateral_gain"]),
+                    body_y_gain=float(item["body_y_gain"]),
+                )
+            )
+        return rows[: args.max_candidates]
+
     rows: list[Planner] = []
     for period_s in parse_float_list(args.periods):
         for balance_fraction in parse_float_list(args.balance_fractions):
@@ -635,6 +669,11 @@ def main() -> int:
     parser.add_argument("--body-y-gains", default="-0.5,0.0,0.5")
     parser.add_argument("--min-height-m", type=float, default=0.145)
     parser.add_argument("--max-candidates", type=int, default=24)
+    parser.add_argument(
+        "--candidate-json",
+        default=None,
+        help="Optional JSON list of explicit planner candidates to replay.",
+    )
     parser.add_argument("--shuffle-candidates", action="store_true")
     parser.add_argument("--grid-seed", type=int, default=0)
     parser.add_argument("--trace-dir", default=str(DEFAULT_TRACE_DIR))
