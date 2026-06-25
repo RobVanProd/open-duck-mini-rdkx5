@@ -20,6 +20,25 @@ nearest_reference_key: `0.074_-0.037_-0.074`
 - fps: `50.0`
 - steps_per_period: `27`
 
+## Reference Base Velocity
+
+| signal | min | max | mean | p95_abs |
+|---|---:|---:|---:|---:|
+| `linvel_x` | 0.0425 | 0.1116 | 0.0772 | 0.1081 |
+| `linvel_y` | -0.2881 | 0.1843 | -0.0417 | 0.2804 |
+| `linvel_z` | -0.0867 | 0.0575 | -0.0008 | 0.0645 |
+| `angvel_x` | -0.0000 | 0.0000 | -0.0000 | 0.0000 |
+| `angvel_y` | 0.0000 | 0.0000 | 0.0000 | 0.0000 |
+| `angvel_z` | -0.0001 | -0.0000 | -0.0000 | 0.0001 |
+
+## Command Mismatch
+
+- nearest_reference_command: `{'x': 0.074, 'y': -0.037, 'yaw': -0.074}`
+- reference_command_error: `{'x': 0.033999999999999996, 'y': -0.037, 'yaw': -0.074}`
+- sampled_mean_velocity_error: `{'x': 0.037188663891549435, 'y': -0.04172804311765476, 'yaw': -3.843949055183141e-05}`
+
+The nearest reference can still be dynamically useful, but it is not a perfect match for the requested straight low-speed command.
+
 ## 14-Action Joint Reference Ranges
 
 | joint | ref_dim | min | max | mean | p95_abs |
@@ -43,5 +62,6 @@ nearest_reference_key: `0.074_-0.037_-0.074`
 
 - The reference-motion data is present and contains the 14 runtime action joints plus two antenna dimensions.
 - The active Playground imitation reward compares leg joint pose/velocity, base velocity, base angular velocity, and foot contacts; head/neck and antenna dimensions are present in the reference but are not the leg-imitation error term.
-- The lowest positive reference `dx` is above the `x=0.04` low-command gate, so V19 uses a slightly faster gait shape as a reference-motion reward while grading command tracking at `x=0.04`.
+- The lowest positive reference `dx` is above the `x=0.04` low-command gate, and the nearest grid point also carries nonzero lateral/yaw command labels.
+- V19 therefore used a faster, slightly side-biased gait shape as a reference-motion reward while grading command tracking at straight `x=0.04`.
 - If the reference-imitation policy still degrades into standstill/reverse, the reward/task landscape should be debugged against this reference path rather than continuing cold-start reward tuning.

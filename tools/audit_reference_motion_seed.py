@@ -44,6 +44,15 @@ ACTION_REF_DIMS = {
     "right_ankle": 15,
 }
 
+REFERENCE_BASE_VELOCITY_DIMS = {
+    "linvel_x": 34,
+    "linvel_y": 35,
+    "linvel_z": 36,
+    "angvel_x": 37,
+    "angvel_y": 38,
+    "angvel_z": 39,
+}
+
 
 def parse_key(key: str) -> tuple[float, float, float]:
     dx, dy, dtheta = key.split("_")
@@ -113,11 +122,33 @@ def build_markdown(payload: dict[str, Any]) -> str:
         f"- fps: `{payload['fps']}`",
         f"- steps_per_period: `{payload['steps_per_period']}`",
         "",
-        "## 14-Action Joint Reference Ranges",
+        "## Reference Base Velocity",
         "",
-        "| joint | ref_dim | min | max | mean | p95_abs |",
-        "|---|---:|---:|---:|---:|---:|",
+        "| signal | min | max | mean | p95_abs |",
+        "|---|---:|---:|---:|---:|",
     ]
+    for name, item in payload["base_velocity_ranges"].items():
+        lines.append(
+            f"| `{name}` | {item['min']:.4f} | {item['max']:.4f} | "
+            f"{item['mean']:.4f} | {item['p95_abs']:.4f} |"
+        )
+    lines.extend(
+        [
+            "",
+            "## Command Mismatch",
+            "",
+            f"- nearest_reference_command: `{payload['nearest_reference_command']}`",
+            f"- reference_command_error: `{payload['reference_command_error']}`",
+            f"- sampled_mean_velocity_error: `{payload['sampled_mean_velocity_error']}`",
+            "",
+            "The nearest reference can still be dynamically useful, but it is not a perfect match for the requested straight low-speed command.",
+            "",
+            "## 14-Action Joint Reference Ranges",
+            "",
+            "| joint | ref_dim | min | max | mean | p95_abs |",
+            "|---|---:|---:|---:|---:|---:|",
+        ]
+    )
     for joint, item in payload["joint_ranges"].items():
         lines.append(
             f"| `{joint}` | {item['ref_dim']} | {item['min']:.4f} | "
@@ -126,11 +157,12 @@ def build_markdown(payload: dict[str, Any]) -> str:
     lines.extend(
         [
             "",
-        "## Interpretation",
-        "",
+            "## Interpretation",
+            "",
             "- The reference-motion data is present and contains the 14 runtime action joints plus two antenna dimensions.",
             "- The active Playground imitation reward compares leg joint pose/velocity, base velocity, base angular velocity, and foot contacts; head/neck and antenna dimensions are present in the reference but are not the leg-imitation error term.",
-            "- The lowest positive reference `dx` is above the `x=0.04` low-command gate, so V19 uses a slightly faster gait shape as a reference-motion reward while grading command tracking at `x=0.04`.",
+            "- The lowest positive reference `dx` is above the `x=0.04` low-command gate, and the nearest grid point also carries nonzero lateral/yaw command labels.",
+            "- V19 therefore used a faster, slightly side-biased gait shape as a reference-motion reward while grading command tracking at straight `x=0.04`.",
             "- If the reference-imitation policy still degrades into standstill/reverse, the reward/task landscape should be debugged against this reference path rather than continuing cold-start reward tuning.",
             "",
         ]
@@ -170,6 +202,14 @@ def main() -> int:
     joint_ranges = {}
     for joint, dim in ACTION_REF_DIMS.items():
         joint_ranges[joint] = {"ref_dim": dim, **stat(samples[:, dim])}
+    base_velocity_ranges = {}
+    for name, dim in REFERENCE_BASE_VELOCITY_DIMS.items():
+        base_velocity_ranges[name] = {"ref_dim": dim, **stat(samples[:, dim])}
+    sampled_mean_velocity_error = {
+        "x": base_velocity_ranges["linvel_x"]["mean"] - args.command_x,
+        "y": base_velocity_ranges["linvel_y"]["mean"] - args.command_y,
+        "yaw": base_velocity_ranges["angvel_z"]["mean"] - args.command_yaw,
+    }
     payload = {
         "status": "PASS_REFERENCE_MOTION_AVAILABLE",
         "reference_path": str(args.reference),
@@ -184,6 +224,12 @@ def main() -> int:
             "y": parsed[nearest_key][1],
             "yaw": parsed[nearest_key][2],
         },
+        "reference_command_error": {
+            "x": parsed[nearest_key][0] - args.command_x,
+            "y": parsed[nearest_key][1] - args.command_y,
+            "yaw": parsed[nearest_key][2] - args.command_yaw,
+        },
+        "sampled_mean_velocity_error": sampled_mean_velocity_error,
         "dx_values": dx_values,
         "dy_values": dy_values,
         "dtheta_values": dtheta_values,
@@ -193,6 +239,7 @@ def main() -> int:
         "period_s": float(entry["period"]),
         "fps": float(entry["fps"]),
         "steps_per_period": int(float(entry["period"]) * float(entry["fps"])),
+        "base_velocity_ranges": base_velocity_ranges,
         "joint_ranges": joint_ranges,
     }
     args.output_json.parent.mkdir(parents=True, exist_ok=True)

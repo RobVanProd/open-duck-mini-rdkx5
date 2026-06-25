@@ -113,6 +113,20 @@ pose/velocity, base velocity, base angular velocity, and foot-contact terms.
 Head/neck dimensions exist in the reference data and runtime action vector, but
 the leg-imitation error term excludes head/neck and antenna dimensions.
 
+Important caveat:
+
+```text
+requested command: x=0.04, y=0.0, yaw=0.0
+nearest reference command: x=0.074, y=-0.037, yaw=-0.074
+sampled reference mean velocity: x=0.0772, y=-0.0417
+reference lateral velocity p95_abs: 0.2804
+```
+
+So V19 tested whether a nearby reference gait could seed motion, but it did not
+test a perfectly matched straight `x=0.04` reference. The next reference-path
+debugging should account for this command mismatch before concluding that all
+imitation/bootstrap approaches are exhausted.
+
 Initial gate:
 
 ```text

@@ -2226,6 +2226,9 @@ The audit found the nearest reference entry for the `x=0.04` low-command test:
 nearest_reference_key: 0.074_-0.037_-0.074
 period: 0.54 s
 steps_per_period: 27 at 50 Hz
+sampled mean linvel_x: 0.0772 m/s
+sampled mean linvel_y: -0.0417 m/s
+sampled p95_abs linvel_y: 0.2804 m/s
 ```
 
 Important interpretation:
@@ -2236,6 +2239,11 @@ behavior change. The reference contains the 14 runtime action joints plus
 antenna dimensions, while the active imitation reward compares leg joint
 pose/velocity, base motion, and foot contacts.
 ```
+
+The nearest reference is not a perfect command match for straight low-speed
+walking. It is faster than `x=0.04` and side-biased. Treat V19 as a test of a
+nearby reference reward seed, not as proof that a perfectly matched reference
+trajectory would also fail.
 
 V19 phase 1:
 
@@ -2304,6 +2312,8 @@ Next training-bridge task:
 ```text
 debug the reference/reward path directly:
   - score the upstream reference trajectory under the current task rewards
+  - quantify the command mismatch from using the nearest reference grid point
+  - decide whether to add/interpolate a straight x=0.04 reference
   - confirm whether following the reference is rewarded above standing/reverse
   - identify whether termination/contact/base-height terms destroy it
   - only then decide whether to modify the task or use behavior cloning

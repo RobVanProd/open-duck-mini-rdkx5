@@ -3036,6 +3036,19 @@ pose/velocity, base velocity, base angular velocity, and foot contacts; the
 head/neck dimensions are present in the reference but excluded from the
 leg-imitation error term.
 
+The reference seed has an important command mismatch:
+
+```text
+requested command: x=0.04, y=0.0, yaw=0.0
+nearest reference command: x=0.074, y=-0.037, yaw=-0.074
+sampled reference mean linvel_x: 0.0772 m/s
+sampled reference mean linvel_y: -0.0417 m/s
+sampled reference p95_abs linvel_y: 0.2804 m/s
+```
+
+So V19 tested a nearby/faster/side-biased reference-motion reward, not a
+perfectly matched straight `x=0.04` gait reference.
+
 V19 is now the planned decisive split:
 
 ```text
@@ -3107,6 +3120,9 @@ The next offline question is now sharper:
 Does the current environment/reward preserve and reward the upstream reference
 trajectory when it is followed, or does the task landscape destroy it?
 ```
+
+That investigation must account for the reference-command mismatch above before
+concluding that all imitation/bootstrap approaches are exhausted.
 
 Do not deploy V19. Do not run x=0.08. Do not run robot validation.
 
