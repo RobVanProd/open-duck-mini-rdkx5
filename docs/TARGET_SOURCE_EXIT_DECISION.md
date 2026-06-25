@@ -186,6 +186,27 @@ forward_double_support:
 Both scales default to `0.0`, so existing training behavior is unchanged unless
 the runner flags enable them explicitly.
 
+The RDK training planner now exposes those default-off hooks through:
+
+```text
+tools/run_actuator_bridge_training_smoke.py
+tools/plan_staged_curriculum_training.py
+```
+
+The first planned probe is:
+
+```text
+recipe: movement_bootstrap_v23
+artifact: outputs/analysis/MOVEMENT_BOOTSTRAP_V23_SUPPORT_OBJECTIVE_PLAN.md
+status: plan-only / not trained
+```
+
+V23 is not another target-source variant. It removes the soft-prior target
+branch and tests whether explicit single-support reward plus double-support
+dwell cost can teach low-command weight transfer at x=0.04 under vanilla
+dynamics. It must be graded by contact alternation and coherent forward motion
+across seeds, not by fall-count alone.
+
 Any branch must report:
 
 ```text

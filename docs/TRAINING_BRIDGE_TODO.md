@@ -4436,3 +4436,20 @@ docs/COM_WEIGHT_TRANSFER_CONTROLLER_PLAN.md
 docs/CONTACT_TIMED_REFERENCE_SNIPPETS_PLAN.md
 docs/TARGET_SOURCE_EXIT_DECISION.md
 ```
+
+The first learning-objective probe after the target-source exit is:
+
+```text
+recipe: movement_bootstrap_v23
+planner: tools/plan_staged_curriculum_training.py
+new hooks:
+  --forward-single-support-scale
+  --forward-double-support-scale
+status: plan-only / not trained
+```
+
+V23 uses the companion Playground support-contact reward hooks to test explicit
+single-support weight transfer at x=0.04. Keep this branch offline until the
+plan is reviewed. Do not reintroduce x=0.08, fitted bridge, or robot validation
+unless the x=0.04 multi-seed gate shows coherent forward motion and useful
+left/right single-support alternation.

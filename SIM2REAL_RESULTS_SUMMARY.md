@@ -5879,3 +5879,21 @@ the target-source problem. The next high-information branch is either a richer
 horizon teacher/optimizer with explicit foot placement and support transition
 state, or the contact/weight-transfer learning objective directly in the
 Playground environment.
+
+The first default-off learning-objective hook is now wired through the RDK
+planner as a plan-only recipe:
+
+```text
+recipe: movement_bootstrap_v23
+artifact: outputs/analysis/MOVEMENT_BOOTSTRAP_V23_SUPPORT_OBJECTIVE_PLAN.md
+status: plan-only / not trained
+new runner flags:
+  --forward-single-support-scale
+  --forward-double-support-scale
+```
+
+V23 is the explicit contact/weight-transfer branch. It removes soft-prior target
+chasing and tests whether single-support reward plus double-support dwell cost
+can create low-command x=0.04 weight transfer under vanilla dynamics. It does
+not authorize x=0.08, fitted bridge, robot validation, deployment, or runtime
+changes.

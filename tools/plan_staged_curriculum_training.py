@@ -110,6 +110,8 @@ class Phase:
     forward_contact_support_scale: float = 0.0
     forward_contact_support_no_contact_weight: float = 1.0
     forward_contact_support_asymmetry_weight: float = 0.0
+    forward_single_support_scale: float = 0.0
+    forward_double_support_scale: float = 0.0
     ppo_learning_rate: float | None = None
     ppo_entropy_cost: float | None = None
     ppo_clipping_epsilon: float | None = None
@@ -143,6 +145,7 @@ class Phase:
 
 
 RECIPE_DEFAULT_PHASE_GATE_COMMAND_X = {
+    "movement_bootstrap_v23": 0.04,
     "movement_bootstrap_v22": 0.04,
     "movement_bootstrap_v21": 0.04,
     "movement_bootstrap_v20": 0.04,
@@ -2817,7 +2820,80 @@ MOVEMENT_BOOTSTRAP_V22_PHASES = [
 ]
 
 
+MOVEMENT_BOOTSTRAP_V23_PHASES = [
+    Phase(
+        name="phase1_explicit_single_support_probe",
+        purpose=(
+            "diagnostic after the target-source branch held on persistent "
+            "double-support/contact mismatch. This phase removes soft-prior "
+            "target chasing and tests whether explicit forward single-support "
+            "reward plus double-support dwell cost can teach low-command "
+            "weight transfer before any actuator bridge, x=0.08 expansion, "
+            "or robot validation."
+        ),
+        num_timesteps=180_000,
+        bridge=False,
+        delay=(0, 0),
+        tau_s=(0.0, 0.0),
+        velocity_limit_rad_s=(5.24, 5.24),
+        target_rate_scale=-0.0002,
+        actuator_tracking_scale=0.0,
+        tracking_lin_vel_scale=22.0,
+        tracking_sigma=0.0015,
+        forward_progress_scale=22.0,
+        forward_shortfall_scale=-42.0,
+        forward_shortfall_required_ratio=0.50,
+        action_rate_scale=-0.004,
+        action_magnitude_scale=-0.0008,
+        stand_still_scale=-1.0,
+        alive_scale=0.0,
+        imitation_scale=0.0,
+        lin_vel_x=(0.035, 0.045),
+        zero_command_probability=0.0,
+        forward_overshoot_scale=-2.0,
+        forward_overshoot_allowed_ratio=1.60,
+        forward_wrong_direction_scale=-90.0,
+        forward_wrong_direction_allowed_reverse_ratio=0.0,
+        orientation_scale=-0.04,
+        base_height_scale=-0.25,
+        forward_pitch_scale=-0.05,
+        forward_pitch_rate_scale=-0.005,
+        forward_contact_support_scale=-0.06,
+        forward_contact_support_no_contact_weight=1.0,
+        forward_contact_support_asymmetry_weight=0.0,
+        forward_single_support_scale=1.0,
+        forward_double_support_scale=-1.0,
+        command_progress_scale=8.0,
+        command_progress_shortfall_scale=-42.0,
+        command_progress_required_ratio=0.40,
+        command_progress_warmup_steps=10,
+        command_progress_failure_scale=-150.0,
+        command_progress_failure_enable=True,
+        command_progress_failure_min_ratio=0.18,
+        command_progress_failure_warmup_steps=70,
+        reward_clip_min=-20.0,
+        reward_clip_max=10000.0,
+        action_rate_huber_delta=0.08,
+        action_magnitude_huber_delta=0.50,
+        target_rate_huber_delta=1.0,
+        actuator_tracking_huber_delta=0.08,
+        forward_shortfall_huber_delta=0.0,
+        forward_overshoot_huber_delta=0.50,
+        forward_wrong_direction_huber_delta=0.0,
+        forward_pitch_huber_delta=0.25,
+        forward_pitch_rate_huber_delta=1.0,
+        command_progress_shortfall_huber_delta=0.0,
+        ppo_learning_rate=7.0e-5,
+        ppo_entropy_cost=0.010,
+        ppo_clipping_epsilon=0.08,
+        ppo_max_grad_norm=0.65,
+        phase_gate_bridge_mode="vanilla",
+    ),
+]
+
+
 RECIPES = {
+    "movement_bootstrap_v23": MOVEMENT_BOOTSTRAP_V23_PHASES,
     "movement_bootstrap_v22": MOVEMENT_BOOTSTRAP_V22_PHASES,
     "movement_bootstrap_v21": MOVEMENT_BOOTSTRAP_V21_PHASES,
     "movement_bootstrap_v20": MOVEMENT_BOOTSTRAP_V20_PHASES,
@@ -2965,6 +3041,10 @@ def phase_command(
         cli_value(phase.forward_contact_support_no_contact_weight),
         "--forward-contact-support-asymmetry-weight",
         cli_value(phase.forward_contact_support_asymmetry_weight),
+        "--forward-single-support-scale",
+        cli_value(phase.forward_single_support_scale),
+        "--forward-double-support-scale",
+        cli_value(phase.forward_double_support_scale),
         "--alive-scale",
         cli_value(phase.alive_scale),
         "--imitation-scale",
@@ -3125,6 +3205,8 @@ def phase_payload(phase: Phase, command: list[str], output_root: Path) -> dict[s
         "forward_contact_support_asymmetry_weight": (
             phase.forward_contact_support_asymmetry_weight
         ),
+        "forward_single_support_scale": phase.forward_single_support_scale,
+        "forward_double_support_scale": phase.forward_double_support_scale,
         "ppo_learning_rate": phase.ppo_learning_rate,
         "ppo_entropy_cost": phase.ppo_entropy_cost,
         "ppo_clipping_epsilon": phase.ppo_clipping_epsilon,
@@ -3147,6 +3229,18 @@ def phase_payload(phase: Phase, command: list[str], output_root: Path) -> dict[s
 
 
 def recipe_rationale(recipe: str) -> str:
+    if recipe == "movement_bootstrap_v23":
+        return (
+            "`movement_bootstrap_v23` is the first explicit contact/weight-"
+            "transfer learner after the target-source branch held. The direct "
+            "rollout and optimizer evidence showed persistent double support "
+            "when forward stepping needs single support, so V23 removes the "
+            "soft prior and tests whether rewarding forward single support "
+            "while penalizing double-support dwell can create low-command "
+            "weight transfer at x=0.04. It must not progress to x=0.08, fitted "
+            "bridge, or robot validation unless the multi-seed x=0.04 gate "
+            "shows coherent forward motion and contact alternation."
+        )
     if recipe == "movement_bootstrap_v22":
         return (
             "`movement_bootstrap_v22` is a strong step-phased soft-prior lock "
@@ -3417,6 +3511,7 @@ def write_plan(payload: dict[str, Any], output_md: Path, output_json: Path) -> N
         )
     lines.extend(["## Next Gate", ""])
     if payload.get("recipe") in {
+        "movement_bootstrap_v23",
         "movement_bootstrap_v22",
         "movement_bootstrap_v19",
         "movement_bootstrap_v20",
@@ -3756,7 +3851,9 @@ def main() -> int:
             "movement_bootstrap_v21 is the explicit weak-soft-prior learner; "
             "movement_bootstrap_v22 is a stronger step-phased prior-lock "
             "diagnostic after V21 trained but remained far from the prior; "
-            "neither V21 nor V22 is the default. V20 is the current default."
+            "movement_bootstrap_v23 is an explicit single-support/contact "
+            "objective probe after the target-source branch held; neither V21, "
+            "V22, nor V23 is the default. V20 is the current default."
         ),
     )
     parser.add_argument("--timesteps-scale", type=float, default=1.0)
