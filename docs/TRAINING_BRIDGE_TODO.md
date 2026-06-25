@@ -7,6 +7,12 @@ reviewable sim/training changes. Do not retrain blindly and do not change
 robot runtime behavior as part of these items unless a later PR explicitly
 requests a reviewed runtime experiment.
 
+Current low-command target-source decision:
+
+```text
+docs/TARGET_SOURCE_DECISION.md
+```
+
 ## Training Environment Constraint
 
 Future training runs should use the local `7900 XTX` / ROCm-capable setup.

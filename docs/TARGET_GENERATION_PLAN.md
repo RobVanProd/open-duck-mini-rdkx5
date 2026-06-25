@@ -9,6 +9,12 @@ the V20 reference and realized-window audits.
 
 This is not a robot-test plan and not a training launch plan.
 
+Current target-source decision:
+
+```text
+docs/TARGET_SOURCE_DECISION.md
+```
+
 ## Current Evidence
 
 The following paths have been tested and are not sufficient:
