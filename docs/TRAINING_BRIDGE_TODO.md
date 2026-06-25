@@ -3578,6 +3578,11 @@ Results:
   aggregate seed0/seed2 vx: 0.0117 / 0.0138 m/s
   aggregate seed0/seed2 vy95: 0.0645 / 0.0499 m/s
   aggregate sent target velocity p95: 0.3658 rad/s
+
+3.0 s aggregate replay with periodic seam correction:
+  status: HOLD_SEQUENCE_REPLAY_TERMINATED
+  seed0: terminated at 85 ticks, vx=0.1812 m/s, pitch95=1.1645 rad
+  seed2: completed, vx=0.0194 m/s, pitch95=0.3589 rad
 ```
 
 Interpretation:
@@ -3586,6 +3591,8 @@ Interpretation:
 Timing preservation improves over memoryless one-step BC on the short horizon,
 but the current target tables are not stable reusable gait labels. They miss
 lateral/pitch gates over 1.2 s and lose forward progress when looped to 3 s.
+Linear seam correction makes the aggregate replay worse, causing a seed0
+lunge/fall, so the loop seam is not the only blocker.
 ```
 
 Do next:

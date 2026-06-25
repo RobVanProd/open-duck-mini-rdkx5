@@ -346,6 +346,11 @@ Result:
   aggregate seed_000 / seed_002 vx: 0.0117 / 0.0138 m/s
   aggregate seed_000 / seed_002 vy95: 0.0645 / 0.0499 m/s
   sent target velocity p95: 0.3658 rad/s
+
+3.0 s aggregate replay with periodic seam correction:
+  status: HOLD_SEQUENCE_REPLAY_TERMINATED
+  seed_000: terminated at 85 ticks, vx=0.1812 m/s, pitch95=1.1645 rad
+  seed_002: completed, vx=0.0194 m/s, pitch95=0.3589 rad
 ```
 
 Interpretation:
@@ -354,7 +359,9 @@ Interpretation:
 Preserving target timing is better than memoryless one-step BC over the first
 60 ticks, but the current target tables are still not a stable reusable gait.
 They either miss lateral/pitch gates on the short horizon or lose forward
-progress when looped. Do not launch PPO from these target tables as-is.
+progress when looped. A simple linear seam correction turns seed0 into a
+lunge/fall, so the blocker is not just the hard loop seam. Do not launch PPO
+from these target tables as-is.
 The next useful offline step is a phase-continuation/contact-timing adapter or
 sequence-aware learner that is evaluated directly in closed loop before any
 training campaign.

@@ -888,6 +888,11 @@ sequence replay, 1.2 s:
 sequence replay, 3.0 s:
   result: HOLD_SEQUENCE_REPLAY_LOW_FORWARD_MOTION
   aggregate seed0/seed2 vx: 0.0117 / 0.0138 m/s
+
+sequence replay, 3.0 s with periodic seam correction:
+  result: HOLD_SEQUENCE_REPLAY_TERMINATED
+  seed0: terminated at 85 ticks, vx=0.1812 m/s, pitch95=1.1645 rad
+  seed2: completed, vx=0.0194 m/s, pitch95=0.3589 rad
 ```
 
 Interpretation:
@@ -896,7 +901,8 @@ Interpretation:
 The dynamic-roll target source is valid evidence that short in-envelope forward
 motion can be generated, but it is not yet a reusable training target. Timing
 preservation helps on the first 60 ticks, then the looped sequence loses
-forward progress. The next low-command discovery task is phase continuation and
+forward progress. Linear seam correction is not enough and can create a
+lunge/fall. The next low-command discovery task is phase continuation and
 contact timing, not another cold-start reward run or one-step BC pass.
 ```
 
@@ -908,4 +914,6 @@ outputs/analysis/TARGET_SEQUENCE_REPLAY_SMOKE_1P2S.md
 outputs/analysis/target_sequence_replay_smoke_1p2s.json
 outputs/analysis/TARGET_SEQUENCE_REPLAY_SMOKE.md
 outputs/analysis/target_sequence_replay_smoke.json
+outputs/analysis/TARGET_SEQUENCE_REPLAY_SMOKE_SEAM_CORRECTED.md
+outputs/analysis/target_sequence_replay_smoke_seam_corrected.json
 ```

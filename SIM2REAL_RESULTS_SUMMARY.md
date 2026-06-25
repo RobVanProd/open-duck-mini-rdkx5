@@ -4535,6 +4535,11 @@ Results:
   aggregate seed_000 vy95: 0.0645 m/s
   aggregate seed_002 vy95: 0.0499 m/s
   aggregate sent target velocity p95: 0.3658 rad/s
+
+3.0 s aggregate replay with periodic seam correction:
+  status: HOLD_SEQUENCE_REPLAY_TERMINATED
+  seed_000: terminated at 85 ticks, vx=0.1812 m/s, pitch95=1.1645 rad
+  seed_002: completed, vx=0.0194 m/s, pitch95=0.3589 rad
 ```
 
 Conclusion:
@@ -4543,7 +4548,9 @@ Conclusion:
 The robust target tables contain a short-horizon forward-motion sequence, but
 they are not yet a stable reusable gait. Timing preservation improves over
 one-step BC, yet the short horizon still misses lateral/pitch gates and the
-looped 3 s replay loses forward progress. Do not launch PPO or robot validation
-from these tables as-is. The next offline step should explicitly solve phase
-continuation/contact timing in closed loop before any larger training run.
+looped 3 s replay loses forward progress. A simple linear seam correction is
+not sufficient and causes a seed0 lunge/fall. Do not launch PPO or robot
+validation from these tables as-is. The next offline step should explicitly
+solve phase continuation/contact timing in closed loop before any larger
+training run.
 ```

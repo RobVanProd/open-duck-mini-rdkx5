@@ -157,6 +157,30 @@ def average_sequences(name: str, sequences: list[SequencePolicy]) -> SequencePol
     )
 
 
+def apply_periodic_seam_correction(policy: SequencePolicy) -> SequencePolicy:
+    """Remove the linear discontinuity between window end and next window start.
+
+    The curated windows are short successful segments, not guaranteed periodic
+    cycles. Looping them with a hard jump can erase forward progress. This
+    correction is a diagnostic adapter: it distributes the end-start action
+    delta across the window so the final action meets the first action.
+    """
+    window = np.asarray(policy.window_actions, dtype=np.float64)
+    if window.shape[0] < 2:
+        return policy
+    seam = window[-1] - window[0]
+    ramp = np.linspace(0.0, 1.0, window.shape[0], dtype=np.float64).reshape(-1, 1)
+    corrected = np.clip(window - ramp * seam.reshape(1, -1), -1.0, 1.0)
+    return SequencePolicy(
+        name=f"{policy.name}_seam_corrected",
+        source=policy.source,
+        mode=policy.mode,
+        prefix_actions=policy.prefix_actions,
+        window_actions=corrected,
+        entry_ids=policy.entry_ids,
+    )
+
+
 def load_sequence_policies(manifest_path: Path, args: argparse.Namespace) -> tuple[dict[str, Any], list[SequencePolicy]]:
     manifest = json.loads(manifest_path.read_text())
     entries = manifest.get("entries", [])
@@ -164,10 +188,14 @@ def load_sequence_policies(manifest_path: Path, args: argparse.Namespace) -> tup
         entries = entries[: args.max_entries]
     sequences = [load_entry_sequence(entry) for entry in entries]
     if args.policy_set == "per-entry":
-        return manifest, sequences
-    if args.policy_set == "aggregate":
-        return manifest, [average_sequences("aggregate_phase_table", sequences)]
-    return manifest, [average_sequences("aggregate_phase_table", sequences), *sequences]
+        policies = sequences
+    elif args.policy_set == "aggregate":
+        policies = [average_sequences("aggregate_phase_table", sequences)]
+    else:
+        policies = [average_sequences("aggregate_phase_table", sequences), *sequences]
+    if args.periodic_seam_correction:
+        policies = [apply_periodic_seam_correction(policy) for policy in policies]
+    return manifest, policies
 
 
 def run_closed_loop_rollout(
@@ -450,6 +478,7 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         f"- dataset_id: `{payload['dataset_id']}`",
         f"- manifest_status: `{payload['manifest_status']}`",
         f"- policy_set: `{payload['policy_set']}`",
+        f"- periodic_seam_correction: `{payload['periodic_seam_correction']}`",
         f"- sequence_policies: `{payload['sequence_policy_count']}`",
         f"- command_x: `{fmt(payload['command_x'])}`",
         f"- duration_s: `{fmt(payload['duration_s'])}`",
@@ -545,6 +574,11 @@ def main() -> int:
     parser.add_argument("--duration-s", type=float, default=3.0)
     parser.add_argument("--seeds", default="0,2")
     parser.add_argument("--policy-set", choices=["aggregate", "per-entry", "all"], default="all")
+    parser.add_argument(
+        "--periodic-seam-correction",
+        action="store_true",
+        help="Linearly remove the action jump between the end and start of looped windows.",
+    )
     parser.add_argument("--max-entries", type=int, default=0)
     parser.add_argument(
         "--jax-platform",
@@ -574,6 +608,7 @@ def main() -> int:
         "dataset_id": manifest.get("dataset_id"),
         "manifest_status": manifest.get("status"),
         "policy_set": args.policy_set,
+        "periodic_seam_correction": bool(args.periodic_seam_correction),
         "sequence_policy_count": len(policies),
         "command_x": float(args.command_x),
         "duration_s": float(args.duration_s),
