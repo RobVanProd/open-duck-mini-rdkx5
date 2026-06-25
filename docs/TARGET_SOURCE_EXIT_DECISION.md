@@ -357,6 +357,23 @@ action saturation: 0%
 pitch-chain target velocity: far below the measured actuator envelope
 ```
 
-This closes the nearby "add transition reward / dwell penalty" branch. The next
-target-source or learning-objective branch should be structurally different,
-not another scalar reward tweak around V23/V24.
+Reward-term activation audit:
+
+```text
+artifact: outputs/analysis/V24_REWARD_TERM_ACTIVATION_AUDIT.md
+status: HOLD_REWARD_TERMS_MISSING
+missing configured terms:
+  forward_contact_transition
+  forward_double_support
+  forward_double_support_dwell
+  forward_single_support
+```
+
+This means the recovered V24 gate is behaviorally failed, but the recovered
+reward-term trace did not prove that the configured transition/dwell terms were
+observed. Before treating another support-objective run as definitive, require
+the new contact terms to be visible in gate artifacts.
+
+This closes the nearby "add transition reward / dwell penalty and hope" branch.
+The next target-source or learning-objective branch should be structurally
+different, not another scalar reward tweak around V23/V24.

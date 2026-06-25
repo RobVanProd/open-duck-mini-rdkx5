@@ -4541,10 +4541,28 @@ remote: HOLD_REMOTE_NO_SENTINEL
 
 The recovered V24 seeds still failed with near-zero or reverse local forward
 velocity, low pitch-chain target velocities, and 0% action saturation. This is
-not an actuator-envelope hold. It is another support/propulsion hold.
+not an actuator-envelope hold.
+
+Reward-term activation audit:
+
+```text
+tool: tools/audit_reward_term_activation.py
+artifact: outputs/analysis/V24_REWARD_TERM_ACTIVATION_AUDIT.md
+status: HOLD_REWARD_TERMS_MISSING
+missing configured terms:
+  forward_contact_transition
+  forward_double_support
+  forward_double_support_dwell
+  forward_single_support
+```
+
+This means the recovered eval artifacts prove the candidate failed behaviorally,
+but they do not prove the newly configured transition/dwell terms were observed
+in the reward-term trace.
 
 Do not rerun V24 unchanged. The next branch should be structurally different:
 either a stronger closed-loop teacher / optimizer with explicit stance side,
 body placement, foot placement, and push timing, or an imitation/demonstration
 path that can hold a coherent single-support stepping behavior before PPO
-tries to refine it.
+tries to refine it. Also require reward-term activation/observability for any
+new contact objective before trusting another long cloud run.

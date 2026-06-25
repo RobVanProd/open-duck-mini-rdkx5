@@ -52,7 +52,8 @@ The gate evaluated the final 184320-step ONNX.
 
 V24 was designed to fix the V23 double-support standstill by coupling contact
 transition reward to forward progress and adding a double-support dwell cost.
-The recovered seed gate shows that this was still insufficient:
+The recovered seed gate shows that the resulting candidate was still
+insufficient:
 
 - `6/6` recovered seeds fell or terminated.
 - Mean local velocity was near-zero or negative for every recovered seed.
@@ -63,6 +64,23 @@ The recovered seed gate shows that this was still insufficient:
 So this hold is not an actuator-envelope failure. It is another support /
 propulsion failure: the policy still does not produce coherent low-command
 forward locomotion across seeds.
+
+An additional reward-term activation audit found an observability hold:
+
+```text
+artifact: outputs/analysis/V24_REWARD_TERM_ACTIVATION_AUDIT.md
+status: HOLD_REWARD_TERMS_MISSING
+missing configured terms:
+  forward_contact_transition
+  forward_double_support
+  forward_double_support_dwell
+  forward_single_support
+```
+
+The training manifest and reward override file requested these terms, but the
+recovered eval reward summaries did not expose them. The behavioral gate failure
+is still valid, but do not claim the recovered gate observed the transition /
+dwell terms firing without a trace that contains those reward metrics.
 
 ## Artifact Recovery
 
@@ -79,9 +97,9 @@ committed. This summary records the small durable evidence.
 
 ## Next Decision
 
-Do not rerun V24 unchanged. The next branch should not be another scalar
-contact-reward tweak around the same PPO setup. Current evidence points toward
-one of:
+Do not rerun V24 unchanged. Before launching another long PPO run, fix or
+explain reward-term observability for any newly configured contact terms.
+Current evidence points toward one of:
 
 - a richer closed-loop teacher/optimizer that explicitly chooses stance side,
   body placement, foot placement, and push timing;

@@ -6008,6 +6008,19 @@ The gate failure is decisive despite the incomplete 0-7 distribution because
 the configured pass condition allowed no failed seeds. Recovered seeds showed
 near-zero or negative local forward velocity, low target velocities, and 0%
 action saturation. V24 therefore did not fail because of actuator envelope or
-saturation pressure; it failed because the transition/dwell rewards still did
-not create coherent low-command support transfer and propulsion. Do not rerun
-V24 unchanged.
+saturation pressure.
+
+A follow-up reward-term activation audit found that the recovered eval reward
+summaries did not expose several configured nonzero contact terms:
+
+```text
+artifact: outputs/analysis/V24_REWARD_TERM_ACTIVATION_AUDIT.md
+status: HOLD_REWARD_TERMS_MISSING
+missing: forward_contact_transition, forward_double_support,
+         forward_double_support_dwell, forward_single_support
+```
+
+Treat the V24 behavior as a failed candidate gate, but do not claim the
+transition/dwell terms were observed in the recovered eval without a trace that
+contains those metrics. Before another long PPO run, fix or explain reward-term
+observability for newly configured contact objectives.
