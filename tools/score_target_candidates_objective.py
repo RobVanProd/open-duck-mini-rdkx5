@@ -104,7 +104,15 @@ def window_metrics(
     action = np.asarray([record.get("action", []) for record in window], dtype=float)
     sent = np.asarray([record.get("sent_target_rad", []) for record in window], dtype=float)
     actual = np.asarray([record.get("actual_position_rad", []) for record in window], dtype=float)
-    contacts = Counter(pattern(record.get("foot_contacts", [])) for record in window)
+    contact_patterns = [pattern(record.get("foot_contacts", [])) for record in window]
+    contacts = Counter(contact_patterns)
+    foot_z_values = []
+    for record in window:
+        foot_z_values.extend(
+            float(value)
+            for value in record.get("foot_site_z_m", [])
+            if finite(value)
+        )
     sent_velocity = abs_velocity(sent, dt_s) if sent.size else np.zeros((0, 0))
     tracking = np.abs(sent - actual) if sent.size and actual.size else np.zeros((0, 0))
     total = len(window)
@@ -138,6 +146,10 @@ def window_metrics(
         ),
         "contact_pct": contact_pct,
         "contact_dominance_pct": contact_dominance(contact_pct),
+        "contact_transitions": sum(
+            1 for a, b in zip(contact_patterns, contact_patterns[1:]) if a != b
+        ),
+        "foot_site_z_p95_m": percentile(foot_z_values, 95) if foot_z_values else None,
     }
 
 
@@ -152,11 +164,23 @@ def objective_score(metrics: dict[str, Any], args: argparse.Namespace) -> dict[s
     sent_vel = float(metrics.get("sent_target_velocity_p95_rad_s") or 999.0)
     tracking = float(metrics.get("joint_tracking_p95_rad") or 999.0)
     contact = float(metrics.get("contact_dominance_pct") or 999.0)
+    contact_transitions = int(metrics.get("contact_transitions") or 0)
+    foot_site_z_p95 = metrics.get("foot_site_z_p95_m")
     margin = metrics.get("ticks_until_done_after_window")
 
     penalties["forward_shortfall"] = max(0.0, args.min_mean_vx - mean_vx) * args.forward_weight
     penalties["lateral"] = max(0.0, vy95 - args.max_vy_abs_p95) * args.lateral_weight
     penalties["contact"] = max(0.0, contact - args.max_contact_dominance_pct) * args.contact_weight
+    penalties["contact_transitions"] = (
+        max(0.0, args.min_contact_transitions - float(contact_transitions))
+        * args.contact_transition_weight
+    )
+    penalties["foot_clearance"] = (
+        max(0.0, args.min_foot_site_z_p95 - float(foot_site_z_p95))
+        * args.foot_clearance_weight
+        if foot_site_z_p95 is not None and args.min_foot_site_z_p95 >= 0.0
+        else 0.0
+    )
     penalties["pitch"] = max(0.0, pitch95 - args.max_pitch_abs_p95) * args.pitch_weight
     penalties["height"] = max(0.0, args.min_base_height - height_min) * args.height_weight
     penalties["saturation"] = max(0.0, saturation - args.max_action_saturation_pct) * args.saturation_weight
@@ -176,6 +200,14 @@ def objective_score(metrics: dict[str, Any], args: argparse.Namespace) -> dict[s
         hard_failures.append("high_lateral_velocity")
     if contact > args.max_contact_dominance_pct:
         hard_failures.append("single_contact_pattern_dominates")
+    if contact_transitions < args.min_contact_transitions:
+        hard_failures.append("too_few_contact_transitions")
+    if (
+        args.min_foot_site_z_p95 >= 0.0
+        and foot_site_z_p95 is not None
+        and float(foot_site_z_p95) < args.min_foot_site_z_p95
+    ):
+        hard_failures.append("low_foot_clearance")
     if pitch95 > args.max_pitch_abs_p95:
         hard_failures.append("high_body_pitch")
     if height_min < args.min_base_height:
@@ -304,6 +336,8 @@ def score_traces(args: argparse.Namespace) -> dict[str, Any]:
             "max_sent_velocity_p95": args.max_sent_velocity_p95,
             "max_tracking_p95": args.max_tracking_p95,
             "min_done_margin": args.min_done_margin,
+            "min_contact_transitions": args.min_contact_transitions,
+            "min_foot_site_z_p95": args.min_foot_site_z_p95,
         },
         "reason_counts": dict(reason_counts),
         "seed_reason_counts": {
@@ -350,8 +384,8 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         [
             "## Top Worst-Seed Candidates",
             "",
-            "| mode | pass_seeds | worst_seed | min_score | mean_score | seed0_vx | seed2_vx | seed2_vy95 | seed2_contact | seed2_failures |",
-            "|---|---:|---|---:|---:|---:|---:|---:|---:|---|",
+            "| mode | pass_seeds | worst_seed | min_score | mean_score | seed0_vx | seed2_vx | seed2_vy95 | seed2_contact | seed2_transitions | seed2_foot_z95 | seed2_failures |",
+            "|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---|",
         ]
     )
     if not payload["results"]:
@@ -360,7 +394,7 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         seed0 = row["seeds"].get("seed_000") or {}
         seed2 = row["seeds"].get("seed_002") or {}
         lines.append(
-            "| {mode} | {pass_count} | {worst} | {min_score} | {mean_score} | {seed0_vx} | {seed2_vx} | {seed2_vy} | {seed2_contact} | `{seed2_fail}` |".format(
+            "| {mode} | {pass_count} | {worst} | {min_score} | {mean_score} | {seed0_vx} | {seed2_vx} | {seed2_vy} | {seed2_contact} | {seed2_transitions} | {seed2_foot_z} | `{seed2_fail}` |".format(
                 mode=row["mode"],
                 pass_count=row["pass_seed_count"],
                 worst=row["worst_seed"],
@@ -370,6 +404,8 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
                 seed2_vx=fmt(seed2.get("mean_vx_m_s")),
                 seed2_vy=fmt(seed2.get("vy_abs_p95_m_s")),
                 seed2_contact=fmt(seed2.get("contact_dominance_pct")),
+                seed2_transitions=fmt(seed2.get("contact_transitions"), digits=0),
+                seed2_foot_z=fmt(seed2.get("foot_site_z_p95_m")),
                 seed2_fail=", ".join(seed2.get("hard_failures") or []),
             )
         )
@@ -399,6 +435,8 @@ def main() -> int:
     parser.add_argument("--max-track-ratio", type=float, default=1.5)
     parser.add_argument("--max-vy-abs-p95", type=float, default=0.12)
     parser.add_argument("--max-contact-dominance-pct", type=float, default=95.0)
+    parser.add_argument("--min-contact-transitions", type=int, default=0)
+    parser.add_argument("--min-foot-site-z-p95", type=float, default=-1.0)
     parser.add_argument("--max-pitch-abs-p95", type=float, default=0.35)
     parser.add_argument("--min-base-height", type=float, default=0.145)
     parser.add_argument("--max-action-saturation-pct", type=float, default=1.0)
@@ -408,6 +446,8 @@ def main() -> int:
     parser.add_argument("--forward-weight", type=float, default=8.0)
     parser.add_argument("--lateral-weight", type=float, default=8.0)
     parser.add_argument("--contact-weight", type=float, default=0.02)
+    parser.add_argument("--contact-transition-weight", type=float, default=0.02)
+    parser.add_argument("--foot-clearance-weight", type=float, default=2.0)
     parser.add_argument("--pitch-weight", type=float, default=4.0)
     parser.add_argument("--height-weight", type=float, default=8.0)
     parser.add_argument("--saturation-weight", type=float, default=0.1)
