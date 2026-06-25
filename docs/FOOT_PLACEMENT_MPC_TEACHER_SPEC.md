@@ -34,9 +34,9 @@ a replacement stance-support propulsion primitive in one scored horizon.
 The current evidence says:
 
 ```text
-checked target score artifacts: 58
+checked target score artifacts: 62
 passing target sources: 0
-failure analysis rows scanned: 2872
+failure analysis rows scanned: 3384
 stable + actuator-safe rows: 1250
 support-ready rows: 789
 forward-ready rows: 15
@@ -278,6 +278,12 @@ hip-yaw heading support:
 
 relative-yaw recovery gating:
   robust 100/150 tick modes: 0 / 16
+
+sagittal stance-feedback propulsion:
+  robust 100/150 tick modes: 0 / 64
+
+sagittal stance-feedback propulsion with soft gates:
+  robust 100/150 tick modes: 0 / 64
 ```
 
 The latest stability probe added default-off fields:
@@ -324,6 +330,42 @@ Push is frequent enough to evaluate, but it either does not accelerate the body
 or it couples into lateral velocity / target-velocity violations. The next
 teacher revision must replace the propulsion mechanism under stance support,
 not only make the same pitch-chain push happen earlier, later, or more often.
+
+The first replacement propulsion test added a default-off sagittal
+stance-feedback drive:
+
+```text
+stance_base_x_offset_m
+sagittal_gain
+vx_gain
+propulsion_limit_rad
+propulsion_pattern
+```
+
+This improved the aggregate measured impulse versus the relative-yaw push
+diagnostic:
+
+```text
+relative-yaw mean future vx delta during push: -0.0003 m/s
+sagittal propulsion mean future vx delta during push: +0.0056 m/s
+```
+
+But the 100/150 tick target scores still found zero seed-robust modes. The best
+windows remained far below the `0.04 m/s` forward gate and seed 2 continued to
+trade forward motion against lateral velocity and target-velocity failures.
+
+A focused softgate follow-up held as well:
+
+```text
+softgated sagittal propulsion mean future vx delta: +0.0007 m/s
+PASS_PUSH_EFFECTIVE traces: 1 / 128
+```
+
+That result is useful because it separates two mechanisms. The sagittal drive
+can create small forward impulse in isolated traces, but gating it for
+lateral/yaw safety removes most of that impulse. The next design should not be
+a wider scalar sweep over these gains; it should create lateral containment and
+stance loading that allow propulsion to remain active.
 
 ## Stop Rules
 

@@ -69,6 +69,10 @@ it does not run simulation, training, robot SSH, deployment, or hardware tests.
 | `foot_placement_mpc_teacher_push_probe_score_150` | `HOLD_NO_SEED_ROBUST_TARGETS` | 150 | 0 | 3 | 0 |
 | `foot_placement_mpc_teacher_relative_yaw_recovery_probe_score_100` | `HOLD_NO_SEED_ROBUST_TARGETS` | 100 | 0 | 3 | 0 |
 | `foot_placement_mpc_teacher_relative_yaw_recovery_probe_score_150` | `HOLD_NO_SEED_ROBUST_TARGETS` | 150 | 0 | 3 | 0 |
+| `foot_placement_mpc_teacher_sagittal_propulsion_probe_score_100` | `HOLD_NO_SEED_ROBUST_TARGETS` | 100 | 0 | 3 | 0 |
+| `foot_placement_mpc_teacher_sagittal_propulsion_probe_score_150` | `HOLD_NO_SEED_ROBUST_TARGETS` | 150 | 0 | 3 | 0 |
+| `foot_placement_mpc_teacher_sagittal_softgate_probe_score_100` | `HOLD_NO_SEED_ROBUST_TARGETS` | 100 | 0 | 3 | 0 |
+| `foot_placement_mpc_teacher_sagittal_softgate_probe_score_150` | `HOLD_NO_SEED_ROBUST_TARGETS` | 150 | 0 | 3 | 0 |
 | `foot_placement_mpc_teacher_smoke_score_100` | `HOLD_NO_SEED_ROBUST_TARGETS` | 100 | 0 | 3 | 0 |
 | `foot_placement_mpc_teacher_smoke_score_150` | `HOLD_NO_SEED_ROBUST_TARGETS` | 150 | 0 | 3 | 0 |
 | `foot_placement_mpc_teacher_smoke_v3_score_100` | `HOLD_NO_SEED_ROBUST_TARGETS` | 100 | 0 | 3 | 0 |
@@ -92,6 +96,8 @@ it does not run simulation, training, robot SSH, deployment, or hardware tests.
 |---|---|---:|---:|---|---:|---:|---:|---:|---:|---|
 | `foot_placement_mpc_teacher_advance_wide_probe_score_100` | `fpm_is1_p0p56_ly0p015_fpx0p03_fpg1p2_sma0p04_shp0p04_skpm0p04_sapm0p04_rg1p5_vyg0p5_byg0p5` | no | -0.2301 | `0` | 0.0100 | 0.0200 | 94.00 | 6.00 | 2.00 | `low_forward_velocity, double_support_dominates, too_little_single_support, single_support_not_balanced` |
 | `foot_placement_mpc_teacher_advance_wide_probe_score_100` | `fpm_is1_p0p56_ly0p015_fpx0p03_fpg1p2_sma0p04_shp0p04_skpm0p04_sapm0p04_rg1p5_vyg0p5_byg0p5` | no | -0.2301 | `2` | 0.0136 | 0.0272 | 88.00 | 12.00 | 5.00 | `low_forward_velocity, double_support_dominates, too_little_single_support` |
+| `foot_placement_mpc_teacher_sagittal_propulsion_probe_score_100` | `fpm_is1_p0p56_ly0p015_fpx0p03_fpg1p2_sma0p04_shp0_skp0_sap0_sbx0p02_sg0p8_vxg1_pl0p05_pp1_plg1000_pyg1000_pms1_yg0_yvgm0p5_rg1p5_vyg1_byg0p5` | no | -0.2623 | `0` | 0.0064 | 0.0128 | 87.00 | 13.00 | 4.00 | `low_forward_velocity, double_support_dominates, too_little_single_support, single_support_not_balanced` |
+| `foot_placement_mpc_teacher_sagittal_propulsion_probe_score_100` | `fpm_is1_p0p56_ly0p015_fpx0p03_fpg1p2_sma0p04_shp0_skp0_sap0_sbx0p02_sg0p8_vxg1_pl0p05_pp1_plg1000_pyg1000_pms1_yg0_yvgm0p5_rg1p5_vyg1_byg0p5` | no | -0.2623 | `2` | 0.0106 | 0.0212 | 90.00 | 10.00 | 3.00 | `low_forward_velocity, double_support_dominates, too_little_single_support, single_support_not_balanced` |
 | `foot_placement_mpc_teacher_advance_wide_probe_score_100` | `fpm_ism1_p0p56_ly0p015_fpx0p03_fpg1p2_sma0p04_shp0p04_skpm0p04_sapm0p04_rg1p5_vyg0p5_byg0p5` | no | -0.2781 | `0` | 0.0107 | 0.0213 | 84.00 | 16.00 | 7.00 | `low_forward_velocity, high_lateral_velocity, double_support_dominates, too_little_single_support` |
 | `foot_placement_mpc_teacher_advance_wide_probe_score_100` | `fpm_ism1_p0p56_ly0p015_fpx0p03_fpg1p2_sma0p04_shp0p04_skpm0p04_sapm0p04_rg1p5_vyg0p5_byg0p5` | no | -0.2781 | `2` | 0.0064 | 0.0129 | 88.00 | 12.00 | 5.00 | `low_forward_velocity, double_support_dominates, too_little_single_support` |
 | `foot_placement_mpc_teacher_stability_probe_score_100` | `fpm_is1_p0p56_ly0p015_fpx0p03_fpg1p2_sma0p04_shp0p04_skpm0p04_sap0p04_plg0p08_pyg0p15_pms0p25_rg1p5_vyg0p5_byg0p5` | no | -0.2791 | `0` | 0.0045 | 0.0091 | 94.00 | 6.00 | 2.00 | `low_forward_velocity, double_support_dominates, too_little_single_support, single_support_not_balanced` |
@@ -104,8 +110,6 @@ it does not run simulation, training, robot SSH, deployment, or hardware tests.
 | `foot_placement_mpc_teacher_stability_probe_score_150` | `fpm_ism1_p0p56_ly0p015_fpx0p03_fpg1p2_sma0p06_shp0p04_skpm0p04_sap0p04_plg0p08_pyg0p15_pms0p5_rg1p5_vyg0p5_byg0p5` | no | -0.2864 | `2` | 0.0037 | 0.0112 | 92.00 | 8.00 | 4.00 | `low_forward_velocity, double_support_dominates, too_little_single_support, single_support_not_balanced` |
 | `foot_placement_mpc_teacher_stability_probe_score_150` | `fpm_ism1_p0p56_ly0p015_fpx0p03_fpg1p2_sma0p06_shp0p04_skpm0p04_sap0p04_plg0p08_pyg0p25_pms0p5_rg1p5_vyg0p5_byg0p5` | no | -0.2864 | `0` | 0.0037 | 0.0112 | 94.67 | 5.33 | 0.67 | `low_forward_velocity, double_support_dominates, too_little_single_support, single_support_not_balanced` |
 | `foot_placement_mpc_teacher_stability_probe_score_150` | `fpm_ism1_p0p56_ly0p015_fpx0p03_fpg1p2_sma0p06_shp0p04_skpm0p04_sap0p04_plg0p08_pyg0p25_pms0p5_rg1p5_vyg0p5_byg0p5` | no | -0.2864 | `2` | 0.0037 | 0.0112 | 92.00 | 8.00 | 4.00 | `low_forward_velocity, double_support_dominates, too_little_single_support, single_support_not_balanced` |
-| `foot_placement_mpc_teacher_stability_probe_score_150` | `fpm_ism1_p0p56_ly0p015_fpx0p03_fpg1p2_sma0p04_shp0p04_skpm0p04_sap0p04_plg0p08_pyg0p15_pms0p5_rg1p5_vyg0p5_byg0p5` | no | -0.2969 | `0` | 0.0033 | 0.0099 | 95.33 | 4.67 | 0.67 | `low_forward_velocity, double_support_dominates, too_little_single_support, single_support_not_balanced` |
-| `foot_placement_mpc_teacher_stability_probe_score_150` | `fpm_ism1_p0p56_ly0p015_fpx0p03_fpg1p2_sma0p04_shp0p04_skpm0p04_sap0p04_plg0p08_pyg0p15_pms0p5_rg1p5_vyg0p5_byg0p5` | no | -0.2969 | `2` | 0.0056 | 0.0167 | 84.00 | 16.00 | 4.00 | `low_forward_velocity, high_lateral_velocity, double_support_dominates, too_little_single_support, single_support_not_balanced` |
 
 ## Decision
 

@@ -205,7 +205,7 @@ Current gate artifact:
 ```text
 outputs/analysis/WEIGHT_TRANSFER_TARGET_GATE_CHECK.md
 status: HOLD_NO_SUSTAINED_WEIGHT_TRANSFER_TARGET
-checked score artifacts: 58
+checked score artifacts: 62
 passing target sources: 0
 ```
 
@@ -214,7 +214,7 @@ The failure-mode analysis scans the same compact score family:
 ```text
 outputs/analysis/WEIGHT_TRANSFER_GATE_FAILURE_ANALYSIS.md
 status: HOLD_FORWARD_IMPULSE_PRIMARY
-seed rows scanned: 2872
+seed rows scanned: 3384
 ```
 
 It found:
@@ -404,3 +404,31 @@ Larger swing advance improved the worst-seed score but still failed the forward
 gate. The next teacher should not keep increasing advance alone.
 
 Robot validation remains blocked.
+
+The first replacement stance-propulsion branch has now been tested offline:
+
+```text
+outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_SAGITTAL_PROPULSION_PROBE_SCORE_100.md
+outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_SAGITTAL_PROPULSION_PROBE_SCORE_150.md
+outputs/analysis/FOOT_PLACEMENT_SAGITTAL_PROPULSION_EFFECTIVENESS_ANALYSIS.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+robust modes: 0 / 64
+mean future vx delta during push: +0.0056 m/s
+```
+
+A softgated follow-up also held:
+
+```text
+outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_SAGITTAL_SOFTGATE_PROBE_SCORE_100.md
+outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_SAGITTAL_SOFTGATE_PROBE_SCORE_150.md
+outputs/analysis/FOOT_PLACEMENT_SAGITTAL_SOFTGATE_EFFECTIVENESS_ANALYSIS.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+robust modes: 0 / 64
+mean future vx delta during push: +0.0007 m/s
+```
+
+This sharpens the blocker: a stance-foot-relative sagittal drive can create a
+small impulse locally, but it is not seed-robust and safety gating largely
+removes the effect. The next offline target-source work needs lateral support
+containment that enables propulsion, not another direct increase in push
+amplitude.

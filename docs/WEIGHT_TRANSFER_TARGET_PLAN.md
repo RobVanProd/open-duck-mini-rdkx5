@@ -62,7 +62,7 @@ Current result:
 ```text
 artifact: outputs/analysis/WEIGHT_TRANSFER_TARGET_GATE_CHECK.md
 status: HOLD_NO_SUSTAINED_WEIGHT_TRANSFER_TARGET
-checked score artifacts: 58
+checked score artifacts: 62
 passing target sources: 0
 ```
 
@@ -75,7 +75,7 @@ The current failure-mode scan is:
 tool: tools/analyze_weight_transfer_gate_failures.py
 artifact: outputs/analysis/WEIGHT_TRANSFER_GATE_FAILURE_ANALYSIS.md
 status: HOLD_FORWARD_IMPULSE_PRIMARY
-seed rows scanned: 2872
+seed rows scanned: 3384
 ```
 
 Key split:
@@ -271,6 +271,67 @@ stance-interleaved robust modes: 0
 The probe now interleaves left-start/right-start variants before candidate
 truncation, but the first candidate set still misses forward impulse across
 seeds. Treat this as an instrumented negative smoke, not permission to train.
+
+Sagittal stance-feedback propulsion diagnostic:
+
+```text
+artifacts:
+  outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_SAGITTAL_PROPULSION_PROBE_SCORE_100.md
+  outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_SAGITTAL_PROPULSION_PROBE_SCORE_150.md
+  outputs/analysis/FOOT_PLACEMENT_SAGITTAL_PROPULSION_EFFECTIVENESS_ANALYSIS.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+robust modes: 0 / 64
+```
+
+This added a default-off stance-foot-relative sagittal drive:
+
+```text
+stance_base_x_offset_m
+sagittal_gain
+vx_gain
+propulsion_limit_rad
+propulsion_pattern
+```
+
+It was a better diagnostic than the old fixed pitch-chain push because it tied
+stance propulsion to base position and local forward-velocity error. It did
+move the aggregate push-effectiveness metric in the right direction:
+
+```text
+relative-yaw push diagnostic mean future vx delta: -0.0003 m/s
+sagittal propulsion mean future vx delta: +0.0056 m/s
+PASS_PUSH_EFFECTIVE traces: 1 / 128
+```
+
+But it still failed the target gate. The best robust-ranked windows stayed far
+below `0.04 m/s`, and the remaining failures were low forward velocity,
+lateral velocity, and target-velocity violations on seed 2. This is a useful
+partial mechanism, not a target source.
+
+Sagittal softgate follow-up:
+
+```text
+artifacts:
+  outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_SAGITTAL_SOFTGATE_PROBE_SCORE_100.md
+  outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_SAGITTAL_SOFTGATE_PROBE_SCORE_150.md
+  outputs/analysis/FOOT_PLACEMENT_SAGITTAL_SOFTGATE_EFFECTIVENESS_ANALYSIS.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+robust modes: 0 / 64
+```
+
+Reintroducing lateral/yaw soft gates around the sagittal drive reduced some
+lateral stress but starved forward impulse:
+
+```text
+sagittal propulsion mean future vx delta: +0.0056 m/s
+softgated sagittal mean future vx delta: +0.0007 m/s
+PASS_PUSH_EFFECTIVE traces: 1 / 128
+```
+
+Interpretation: the replacement stance propulsion direction is not enough by
+itself. The next useful branch needs a controller that actively preserves
+lateral support while pushing, instead of throttling push whenever lateral
+motion appears or pushing through a laterally uncontained stance.
 
 Stronger-push diagnostic:
 

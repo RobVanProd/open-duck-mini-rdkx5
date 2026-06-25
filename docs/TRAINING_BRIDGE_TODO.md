@@ -151,6 +151,10 @@ stance-push primitive:
 
 velocity-feedback stance-push primitive:
   no seed-robust 100/150 tick target
+
+stance-foot-relative sagittal propulsion primitive:
+  no seed-robust 100/150 tick target
+  small positive impulse in isolated traces, not seed robust
 ```
 
 Next implementation should follow:
