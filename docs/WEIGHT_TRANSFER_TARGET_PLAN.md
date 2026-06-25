@@ -469,6 +469,32 @@ create propulsion. The next branch still needs a stance/foot-placement
 controller that generates forward impulse while preserving lateral support,
 not another yaw recovery or scalar push grid.
 
+Push-effectiveness trace read:
+
+```text
+tool: tools/analyze_foot_placement_push_effectiveness.py
+artifact: outputs/analysis/FOOT_PLACEMENT_PUSH_EFFECTIVENESS_ANALYSIS.md
+status: HOLD_PUSH_INEFFECTIVE
+traces: 32
+mean push_allowed_pct: 27.5362
+mean push_future_vx_delta_m_s: -0.0003
+```
+
+This analyzed the corrected relative-yaw traces only. It found push was present
+often enough to evaluate, but the current push primitive does not produce
+reliable forward acceleration:
+
+```text
+push_does_not_accelerate: 19 / 32 traces
+push_lateral_velocity_high: 32 / 32 traces
+push_target_velocity_high: 18 / 32 traces
+```
+
+Interpretation: the missing forward impulse is now localized to the push
+primitive itself. The next branch should change how propulsion is generated
+under stance support, not simply alter transition timing or make the existing
+pitch-chain push more frequent.
+
 ## Stop Conditions
 
 Stop target generation and do not train if:

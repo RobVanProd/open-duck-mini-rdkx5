@@ -4735,6 +4735,19 @@ The corrected relative-yaw recovery probe uses wrapped yaw error relative to
 the rollout's initial heading. It showed high switch readiness in leading
 candidates, roughly `75-97%`, but still held because forward velocity stayed
 well below `0.04 m/s` and seed 2 remained laterally unstable. Do not resume
-BC/PPO from these traces. The next offline target-source task is a more
-stateful lateral/heading support controller coupled to propulsion, not another
-scalar push/advance/clearance/yaw/recovery overlay grid.
+BC/PPO from these traces.
+
+Push-effectiveness analysis:
+
+```text
+artifact: outputs/analysis/FOOT_PLACEMENT_PUSH_EFFECTIVENESS_ANALYSIS.md
+status: HOLD_PUSH_INEFFECTIVE
+mean push_allowed_pct: 27.5362
+mean 0.1s future vx delta during push: -0.0003 m/s
+```
+
+The existing push primitive is not only under-scheduled; it fires but does not
+create reliable forward acceleration, and all analyzed traces have high lateral
+velocity during push. The next offline target-source task is a more stateful
+lateral/heading support controller coupled to a different propulsion mechanism,
+not another scalar push/advance/clearance/yaw/recovery overlay grid.

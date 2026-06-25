@@ -310,6 +310,21 @@ below the `0.04 m/s` gate and seed 2 remains laterally unstable. Do not spend
 the next branch on another yaw gate or recovery hold. The missing piece is
 forward impulse coupled to lateral/stance support.
 
+The push-effectiveness analyzer then read those corrected traces and showed the
+existing push primitive is ineffective:
+
+```text
+artifact: outputs/analysis/FOOT_PLACEMENT_PUSH_EFFECTIVENESS_ANALYSIS.md
+status: HOLD_PUSH_INEFFECTIVE
+mean push_allowed_pct: 27.5362
+mean 0.1s future vx delta during push: -0.0003 m/s
+```
+
+Push is frequent enough to evaluate, but it either does not accelerate the body
+or it couples into lateral velocity / target-velocity violations. The next
+teacher revision must replace the propulsion mechanism under stance support,
+not only make the same pitch-chain push happen earlier, later, or more often.
+
 ## Stop Rules
 
 Stop the branch and do not train if:

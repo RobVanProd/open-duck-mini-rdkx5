@@ -304,6 +304,23 @@ velocity remains far below `0.04 m/s` and seed 2 often fails lateral velocity.
 This keeps the blocker at forward impulse under support/lateral constraints,
 not at yaw-gate measurement.
 
+Push-effectiveness trace read:
+
+```text
+artifact: outputs/analysis/FOOT_PLACEMENT_PUSH_EFFECTIVENESS_ANALYSIS.md
+status: HOLD_PUSH_INEFFECTIVE
+traces analyzed: 32
+mean push_allowed_pct: 27.5362
+mean 0.1s future vx delta during push: -0.0003 m/s
+```
+
+This shows the current foot-placement push primitive is not just under-used.
+Push phases occur, but they do not create reliable forward acceleration. Every
+trace also fails the push lateral-velocity check, and 18/32 traces exceed the
+pitch-chain target-velocity check during push. The next branch should redesign
+the propulsion primitive around stance support and lateral containment, not
+only schedule the existing push more often.
+
 The next branch decision is now explicit:
 
 ```text
