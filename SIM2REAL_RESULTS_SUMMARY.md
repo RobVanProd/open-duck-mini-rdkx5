@@ -6035,4 +6035,8 @@ status: PASS_LOCAL_REWARD_TERMS_OBSERVED_AFTER_ALLOWLIST_FIX
 The closed-loop eval runner had not been applying the V23/V24 support-contact
 reward overrides even though the phase JSON recorded them. A local CPU smoke
 after the patch observed the previously missing terms. Future support-contact
-training must run this reward activation smoke before a long cloud job.
+training must run this reward activation smoke before a long cloud job:
+
+```text
+docs/SUPPORT_REWARD_PREFLIGHT.md
+```

@@ -385,6 +385,12 @@ The issue was stale closed-loop eval reward override allow-listing, not missing
 Playground reward definitions. This makes reward activation smoke a required
 preflight for any next support-contact PPO branch.
 
+Runbook:
+
+```text
+docs/SUPPORT_REWARD_PREFLIGHT.md
+```
+
 This closes the nearby "add transition reward / dwell penalty and hope" branch.
 The next target-source or learning-objective branch should be structurally
 different, not another scalar reward tweak around V23/V24.

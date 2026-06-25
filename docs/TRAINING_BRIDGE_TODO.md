@@ -57,6 +57,12 @@ CUDA fallback/runbook:
 docs/CUDA_BACKEND_TRAINING_RUNBOOK.md
 ```
 
+Support-contact reward preflight:
+
+```text
+docs/SUPPORT_REWARD_PREFLIGHT.md
+```
+
 Cloud GPU smoke/debug notes:
 
 ```text
