@@ -3886,3 +3886,15 @@ python3 tools/print_cuda_colab_cell.py \
 
 The generated notebook runs only the explicit V21 staged curriculum and bundles
 small staged artifacts for local import. It is not robot approval.
+
+Local ROCm status after the firmware/BIOS update:
+
+```text
+artifact: outputs/analysis/LOCAL_ROCM_STATUS_20260625.md
+status: HOLD_LOCAL_ROCM_KFD
+```
+
+`rocminfo` currently fails on `/dev/kfd` with `Invalid argument`, and JAX cannot
+see a ROCm device. Treat this as a workstation backend issue below JAX/MJX.
+Do not run V21 on local ROCm until `rocminfo` and a minimal JAX device probe
+both pass.

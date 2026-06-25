@@ -4847,3 +4847,16 @@ python3 tools/print_cuda_colab_cell.py \
 
 This generates a one-code-cell V21 staged-curriculum notebook outside the repo
 for a manually authenticated Colab session. It does not approve robot testing.
+
+Local ROCm was rechecked after the firmware/BIOS update:
+
+```text
+artifact: outputs/analysis/LOCAL_ROCM_STATUS_20260625.md
+status: HOLD_LOCAL_ROCM_KFD
+```
+
+`rocm-smi` sees AMD devices, but `rocminfo` fails with `/dev/kfd` `Invalid
+argument`, JAX reports no visible ROCm devices, and kernel logs show a recent
+amdgpu reset failure. This is below Open Duck code. Do not use local ROCm for
+training until `rocminfo` and a minimal JAX device probe pass. CUDA/Colab
+remains the practical V21 path.
