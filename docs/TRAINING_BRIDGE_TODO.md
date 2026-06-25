@@ -4095,3 +4095,30 @@ Do not repeat open-loop sinusoid variants as the main strategy. The next
 generator should be closed-loop/phase-aware and should use body velocity,
 pitch, and foot contact state to decide stance push-off rather than applying a
 fixed stance offset.
+
+A first velocity-feedback stance-push hook was also tested:
+
+```text
+tool flags:
+  --velocity-push-gains
+  --velocity-push-limit
+
+artifact: outputs/analysis/TARGET_GENERATOR_VELOCITY_FEEDBACK_PROBE.md
+score_100: outputs/analysis/TARGET_OBJECTIVE_SCORE_VELOCITY_FEEDBACK_PROBE_100.md
+score_150: outputs/analysis/TARGET_OBJECTIVE_SCORE_VELOCITY_FEEDBACK_PROBE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+It still failed:
+
+```text
+100 ticks:
+  top seed vx: 0.0070 / 0.0061 m/s
+
+150 ticks:
+  top seed vx: 0.0031 / 0.0058 m/s
+```
+
+Do not keep adding scalar terms to this sinusoid primitive as the main path.
+The next implementation should be a structurally different target generator or
+teacher that plans contact phase, body lean/pitch, and stance push together.

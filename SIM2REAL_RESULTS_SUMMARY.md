@@ -5158,3 +5158,30 @@ Open-loop stance push improves the top 100-tick velocity only slightly and still
 falls far short of the `0.04 m/s` gate. The next generator should be
 closed-loop or phase-aware: stance push-off, body lean, and contact timing must
 react to body velocity/pitch/contact state rather than be only fixed sinusoids.
+
+A velocity-feedback stance-push term was added and tested next:
+
+```text
+tool flags:
+  --velocity-push-gains
+  --velocity-push-limit
+
+artifact: outputs/analysis/TARGET_GENERATOR_VELOCITY_FEEDBACK_PROBE.md
+score_100: outputs/analysis/TARGET_OBJECTIVE_SCORE_VELOCITY_FEEDBACK_PROBE_100.md
+score_150: outputs/analysis/TARGET_OBJECTIVE_SCORE_VELOCITY_FEEDBACK_PROBE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+It also failed:
+
+```text
+100-tick top candidate:
+  seed_000 / seed_002 vx: 0.0070 / 0.0061 m/s
+
+150-tick top candidate:
+  seed_000 / seed_002 vx: 0.0031 / 0.0058 m/s
+```
+
+Conclusion: feeding `command_x - local_vx` into the same primitive stance-push
+template does not produce sustained forward locomotion. The next generator must
+change structure, not only add another scalar feedback term to the sinusoid.

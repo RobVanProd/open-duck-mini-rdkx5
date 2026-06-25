@@ -247,3 +247,48 @@ Interpretation: simple stance push is not enough either. It raises the top
 `0.04 m/s` gate badly and degrades over 150 ticks. The next generator needs
 closed-loop or phase-aware coupling between body velocity, body pitch, and
 contact state, rather than only open-loop per-joint sinusoid terms.
+
+## Velocity-Feedback Stance-Push Probe
+
+The primitive tool was extended with another default-off term:
+
+```text
+--velocity-push-gains
+--velocity-push-limit
+```
+
+This adds a clipped stance-push correction proportional to
+`command_x - local_vx` before each primitive step. Historical/default primitive
+behavior is unchanged when the gain is `0.0`.
+
+A bounded CPU-only velocity-feedback probe searched 32 candidates:
+
+```text
+artifact: outputs/analysis/TARGET_GENERATOR_VELOCITY_FEEDBACK_PROBE.md
+score_100: outputs/analysis/TARGET_OBJECTIVE_SCORE_VELOCITY_FEEDBACK_PROBE_100.md
+score_150: outputs/analysis/TARGET_OBJECTIVE_SCORE_VELOCITY_FEEDBACK_PROBE_150.md
+seeds: 0,2
+duration: 3.0 s
+status: PASS_TARGET_SEARCH_RAN
+```
+
+Result:
+
+| window | robust modes | top seed0 vx | top seed2 vx | top seed0 support | top seed2 support | result |
+|---|---:|---:|---:|---|---|---|
+| 100 ticks | 0 | 0.0070 m/s | 0.0061 m/s | 89% double / 11% single | 90% double / 10% single | low forward velocity |
+| 150 ticks | 0 | 0.0031 m/s | 0.0058 m/s | 86.67% double / 13.33% single | 92% double / 8% single | low forward velocity |
+
+Reason counts:
+
+| artifact | low_forward_velocity | double_support_dominates | too_little_single_support |
+|---|---:|---:|---:|
+| `target_objective_score_velocity_feedback_probe_100.json` | 63 | 51 | 35 |
+| `target_objective_score_velocity_feedback_probe_150.json` | 63 | 57 | 49 |
+
+Interpretation: simple local-vx feedback into the same stance-push primitive is
+still not enough. The primitive family can produce safe, mostly upright
+standing/shuffling, but not sustained low-command forward locomotion. The next
+useful generator should change structure: plan contact phases and body motion
+together, or use a controller/teacher with state feedback over CoM, pitch, and
+stance-foot loading rather than only feeding velocity error into joint sinusoids.

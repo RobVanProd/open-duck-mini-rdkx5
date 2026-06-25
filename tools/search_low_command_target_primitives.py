@@ -47,6 +47,7 @@ class Primitive:
     lift_scale: float
     stance_push_amp: float
     stance_ankle_scale: float
+    velocity_push_gain: float
 
 
 def finite(value: Any) -> bool:
@@ -90,6 +91,9 @@ def candidate_grid(args: argparse.Namespace) -> list[Primitive]:
     stance_ankle_scales = [
         float(item) for item in args.stance_ankle_scales.split(",") if item.strip()
     ]
+    velocity_push_gains = [
+        float(item) for item in args.velocity_push_gains.split(",") if item.strip()
+    ]
     rows = []
     for period_s in periods:
         for hip_roll_bias in hip_roll_biases:
@@ -106,57 +110,66 @@ def candidate_grid(args: argparse.Namespace) -> list[Primitive]:
                                                     for lift_scale in lift_scales:
                                                         for stance_push_amp in stance_push_amps:
                                                             for stance_ankle_scale in stance_ankle_scales:
-                                                                ankle_amp = ankle_scale * hip_amp
-                                                                lift_label = (
-                                                                    ""
-                                                                    if lift_scale == 0.0 and lift_duty == 0.5
-                                                                    else f"_ld{lift_duty:g}_ls{lift_scale:g}"
-                                                                )
-                                                                roll_label = (
-                                                                    ""
-                                                                    if hip_roll_amp == 0.0
-                                                                    and hip_roll_phase_offset == 0.0
-                                                                    else (
-                                                                        f"_hra{hip_roll_amp:g}"
-                                                                        f"_hrph{hip_roll_phase_offset:g}"
+                                                                for velocity_push_gain in velocity_push_gains:
+                                                                    ankle_amp = ankle_scale * hip_amp
+                                                                    lift_label = (
+                                                                        ""
+                                                                        if lift_scale == 0.0
+                                                                        and lift_duty == 0.5
+                                                                        else f"_ld{lift_duty:g}_ls{lift_scale:g}"
                                                                     )
-                                                                )
-                                                                push_label = (
-                                                                    ""
-                                                                    if stance_push_amp == 0.0
-                                                                    and stance_ankle_scale == 0.0
-                                                                    else (
-                                                                        f"_sp{stance_push_amp:g}"
-                                                                        f"_sas{stance_ankle_scale:g}"
+                                                                    roll_label = (
+                                                                        ""
+                                                                        if hip_roll_amp == 0.0
+                                                                        and hip_roll_phase_offset == 0.0
+                                                                        else (
+                                                                            f"_hra{hip_roll_amp:g}"
+                                                                            f"_hrph{hip_roll_phase_offset:g}"
+                                                                        )
                                                                     )
-                                                                )
-                                                                rows.append(
-                                                                    Primitive(
-                                                                        label=(
-                                                                            f"p{period_s:g}_hrb{hip_roll_bias:g}"
-                                                                            f"{roll_label}_"
-                                                                            f"hb{hip_bias:g}_h{hip_amp:g}_"
-                                                                            f"kb{knee_bias:g}_k{knee_amp:g}_"
-                                                                            f"ab{ankle_bias:g}_a{ankle_amp:g}_"
-                                                                            f"ph{phase_offset:g}{lift_label}{push_label}"
-                                                                        ).replace(".", "p").replace("-", "m"),
-                                                                        period_s=period_s,
-                                                                        hip_roll_bias=hip_roll_bias,
-                                                                        hip_roll_amp=hip_roll_amp,
-                                                                        hip_roll_phase_offset=hip_roll_phase_offset,
-                                                                        hip_pitch_bias=hip_bias,
-                                                                        hip_pitch_amp=hip_amp,
-                                                                        knee_bias=knee_bias,
-                                                                        knee_amp=knee_amp,
-                                                                        ankle_bias=ankle_bias,
-                                                                        ankle_amp=ankle_amp,
-                                                                        phase_offset=phase_offset,
-                                                                        lift_duty=lift_duty,
-                                                                        lift_scale=lift_scale,
-                                                                        stance_push_amp=stance_push_amp,
-                                                                        stance_ankle_scale=stance_ankle_scale,
+                                                                    push_label = (
+                                                                        ""
+                                                                        if stance_push_amp == 0.0
+                                                                        and stance_ankle_scale == 0.0
+                                                                        else (
+                                                                            f"_sp{stance_push_amp:g}"
+                                                                            f"_sas{stance_ankle_scale:g}"
+                                                                        )
                                                                     )
-                                                                )
+                                                                    velocity_label = (
+                                                                        ""
+                                                                        if velocity_push_gain == 0.0
+                                                                        else f"_vpg{velocity_push_gain:g}"
+                                                                    )
+                                                                    rows.append(
+                                                                        Primitive(
+                                                                            label=(
+                                                                                f"p{period_s:g}_hrb{hip_roll_bias:g}"
+                                                                                f"{roll_label}_"
+                                                                                f"hb{hip_bias:g}_h{hip_amp:g}_"
+                                                                                f"kb{knee_bias:g}_k{knee_amp:g}_"
+                                                                                f"ab{ankle_bias:g}_a{ankle_amp:g}_"
+                                                                                f"ph{phase_offset:g}{lift_label}"
+                                                                                f"{push_label}{velocity_label}"
+                                                                            ).replace(".", "p").replace("-", "m"),
+                                                                            period_s=period_s,
+                                                                            hip_roll_bias=hip_roll_bias,
+                                                                            hip_roll_amp=hip_roll_amp,
+                                                                            hip_roll_phase_offset=hip_roll_phase_offset,
+                                                                            hip_pitch_bias=hip_bias,
+                                                                            hip_pitch_amp=hip_amp,
+                                                                            knee_bias=knee_bias,
+                                                                            knee_amp=knee_amp,
+                                                                            ankle_bias=ankle_bias,
+                                                                            ankle_amp=ankle_amp,
+                                                                            phase_offset=phase_offset,
+                                                                            lift_duty=lift_duty,
+                                                                            lift_scale=lift_scale,
+                                                                            stance_push_amp=stance_push_amp,
+                                                                            stance_ankle_scale=stance_ankle_scale,
+                                                                            velocity_push_gain=velocity_push_gain,
+                                                                        )
+                                                                    )
     if args.shuffle_candidates:
         random.Random(args.grid_seed).shuffle(rows)
     return rows[: args.max_candidates]
@@ -287,6 +300,8 @@ def run_search(args: argparse.Namespace) -> dict[str, Any]:
         lift_scale,
         stance_push_amp,
         stance_ankle_scale,
+        velocity_push_gain,
+        local_vx,
     ):
         t = tick * env.dt
         phase = 2.0 * jp.pi * (t / period_s) + phase_offset
@@ -306,8 +321,15 @@ def run_search(args: argparse.Namespace) -> dict[str, Any]:
         )
         left_stance = 1.0 - jp.clip(left_lift, 0.0, 1.0)
         right_stance = 1.0 - jp.clip(right_lift, 0.0, 1.0)
-        left_push = stance_push_amp * left_stance
-        right_push = stance_push_amp * right_stance
+        velocity_error = command[0] - local_vx
+        velocity_push = jp.clip(
+            velocity_push_gain * velocity_error,
+            -args.velocity_push_limit,
+            args.velocity_push_limit,
+        )
+        effective_push_amp = stance_push_amp + velocity_push
+        left_push = effective_push_amp * left_stance
+        right_push = effective_push_amp * right_stance
         left_ankle = (1.0 - lift_scale) * left + lift_scale * lift_pulse(phase)
         right_ankle = (1.0 - lift_scale) * right + lift_scale * lift_pulse(phase + jp.pi)
 
@@ -343,9 +365,11 @@ def run_search(args: argparse.Namespace) -> dict[str, Any]:
         lift_scale,
         stance_push_amp,
         stance_ankle_scale,
+        velocity_push_gain,
     ):
         state.info["command"] = command
         tick = state.info["step"]
+        local_vx = env.get_local_linvel(state.data)[0]
         target = primitive_target(
             env._default_actuator,
             tick,
@@ -364,6 +388,8 @@ def run_search(args: argparse.Namespace) -> dict[str, Any]:
             lift_scale,
             stance_push_amp,
             stance_ankle_scale,
+            velocity_push_gain,
+            local_vx,
         )
         action = jp.clip((target - env._default_actuator) / env._config.action_scale, -1.0, 1.0)
         pre_rate_limit = env._default_actuator + action * env._config.action_scale
@@ -452,6 +478,7 @@ def run_search(args: argparse.Namespace) -> dict[str, Any]:
                     primitive.lift_scale,
                     primitive.stance_push_amp,
                     primitive.stance_ankle_scale,
+                    primitive.velocity_push_gain,
                 )
                 qpos = np.asarray(jax.device_get(state.data.qpos), dtype=float)
                 base_addr = int(env._floating_base_qpos_addr)
@@ -601,6 +628,8 @@ def main() -> int:
     parser.add_argument("--lift-scales", default="0.0")
     parser.add_argument("--stance-push-amps", default="0.0")
     parser.add_argument("--stance-ankle-scales", default="0.0")
+    parser.add_argument("--velocity-push-gains", default="0.0")
+    parser.add_argument("--velocity-push-limit", type=float, default=0.04)
     parser.add_argument("--max-candidates", type=int, default=24)
     parser.add_argument("--shuffle-candidates", action="store_true")
     parser.add_argument("--grid-seed", type=int, default=0)
