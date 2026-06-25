@@ -6040,3 +6040,21 @@ training must run this reward activation smoke before a long cloud job:
 ```text
 docs/SUPPORT_REWARD_PREFLIGHT.md
 ```
+
+A corrected local seed-0 V24 trace was then run with the patched eval path:
+
+```text
+artifact: outputs/analysis/V24_CORRECTED_SEED0_TRACE.md
+reward audit: outputs/analysis/V24_CORRECTED_SEED0_REWARD_AUDIT.md
+status: LOW_PROGRESS_TERMINATION
+samples: 70
+mean local vx: -0.0008 m/s
+track ratio: -0.0194
+contact states:
+  double support: 65 / 70 ticks
+  right-only support: 5 / 70 ticks
+```
+
+The corrected eval confirms the support-contact rewards are now observable, but
+the V24 policy still does not perform useful support transfer or propulsion. It
+terminates for low progress while remaining mostly in double support.

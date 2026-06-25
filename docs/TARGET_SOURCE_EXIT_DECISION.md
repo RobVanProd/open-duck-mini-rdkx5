@@ -391,6 +391,20 @@ Runbook:
 docs/SUPPORT_REWARD_PREFLIGHT.md
 ```
 
+Corrected seed-0 V24 evidence:
+
+```text
+artifact: outputs/analysis/V24_CORRECTED_SEED0_TRACE.md
+reward audit: outputs/analysis/V24_CORRECTED_SEED0_REWARD_AUDIT.md
+status: LOW_PROGRESS_TERMINATION
+double support: 65 / 70 ticks
+mean local vx: -0.0008 m/s
+```
+
+After the allow-list fix, the support-contact reward terms are visible, but the
+candidate still fails by staying mostly in double support and making no useful
+forward progress.
+
 This closes the nearby "add transition reward / dwell penalty and hope" branch.
 The next target-source or learning-objective branch should be structurally
 different, not another scalar reward tweak around V23/V24.

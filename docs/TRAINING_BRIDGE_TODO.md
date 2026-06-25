@@ -4576,6 +4576,23 @@ status: PASS_LOCAL_REWARD_TERMS_OBSERVED_AFTER_ALLOWLIST_FIX
 Future support-contact runs must first pass a short reward activation smoke
 that confirms the intended nonzero reward terms are present in eval artifacts.
 
+Corrected V24 seed-0 trace after the allow-list patch:
+
+```text
+artifact: outputs/analysis/V24_CORRECTED_SEED0_TRACE.md
+reward audit: outputs/analysis/V24_CORRECTED_SEED0_REWARD_AUDIT.md
+status: LOW_PROGRESS_TERMINATION
+samples: 70
+mean local vx: -0.0008 m/s
+track ratio: -0.0194
+double support: 65 / 70 ticks
+right-only support: 5 / 70 ticks
+```
+
+This confirms the missing-term fix did not rescue V24 behavior. The contact
+terms are now observable, but the policy remains mostly double-support and
+terminates for low progress.
+
 Do not rerun V24 unchanged. The next branch should be structurally different:
 either a stronger closed-loop teacher / optimizer with explicit stance side,
 body placement, foot placement, and push timing, or an imitation/demonstration
