@@ -31,6 +31,8 @@ it does not run simulation, training, robot SSH, deployment, or hardware tests.
 | `closed_loop_weight_transfer_teacher_forward_intent_score_150` | `HOLD_NO_SEED_ROBUST_TARGETS` | 150 | 0 | 3 | 0 |
 | `closed_loop_weight_transfer_teacher_lateral_refine_score_100` | `HOLD_NO_SEED_ROBUST_TARGETS` | 100 | 0 | 3 | 0 |
 | `closed_loop_weight_transfer_teacher_lateral_refine_score_150` | `HOLD_NO_SEED_ROBUST_TARGETS` | 150 | 0 | 3 | 0 |
+| `closed_loop_weight_transfer_teacher_leg_extension_score_100` | `HOLD_NO_SEED_ROBUST_TARGETS` | 100 | 0 | 3 | 0 |
+| `closed_loop_weight_transfer_teacher_leg_extension_score_150` | `HOLD_NO_SEED_ROBUST_TARGETS` | 150 | 0 | 3 | 0 |
 | `closed_loop_weight_transfer_teacher_score_100` | `HOLD_NO_SEED_ROBUST_TARGETS` | 100 | 0 | 3 | 0 |
 | `closed_loop_weight_transfer_teacher_score_150` | `HOLD_NO_SEED_ROBUST_TARGETS` | 150 | 0 | 3 | 0 |
 | `closed_loop_weight_transfer_teacher_v2_score_100` | `HOLD_NO_SEED_ROBUST_TARGETS` | 100 | 0 | 3 | 0 |

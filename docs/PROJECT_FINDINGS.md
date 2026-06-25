@@ -205,7 +205,7 @@ Current gate artifact:
 ```text
 outputs/analysis/WEIGHT_TRANSFER_TARGET_GATE_CHECK.md
 status: HOLD_NO_SUSTAINED_WEIGHT_TRANSFER_TARGET
-checked score artifacts: 37
+checked score artifacts: 39
 passing target sources: 0
 ```
 
@@ -214,14 +214,14 @@ The failure-mode analysis scans the same compact score family:
 ```text
 outputs/analysis/WEIGHT_TRANSFER_GATE_FAILURE_ANALYSIS.md
 status: HOLD_FORWARD_IMPULSE_PRIMARY
-seed rows scanned: 1884
+seed rows scanned: 1956
 ```
 
 It found:
 
 ```text
 stable + actuator-safe rows: 964
-support-ready rows: 437
+support-ready rows: 492
 forward-ready rows: 15
 stable + support rows: 7
 stable + forward rows: 0
@@ -232,5 +232,18 @@ all three: 0
 This means the next target generator needs an explicit propulsion mechanism
 after support loading. More contact alternation alone is not enough, and the
 rows that move forward tend to spend lateral/pitch margin to do it.
+
+The latest default-off stance knee/ankle push-off probe was also a hold:
+
+```text
+outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_LEG_EXTENSION_SCORE_100.md
+outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_LEG_EXTENSION_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+robust modes: 0 / 18
+dominant failures: low_forward_velocity and high_lateral_velocity
+```
+
+So "add knee/ankle push-off to the existing support-state teacher" is not the
+missing mechanism either.
 
 Robot validation remains blocked.

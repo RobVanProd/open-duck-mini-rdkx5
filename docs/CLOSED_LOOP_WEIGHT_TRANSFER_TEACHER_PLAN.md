@@ -425,6 +425,53 @@ Support-loaded push increases single-support dwell slightly, but does not
 solve forward displacement or lateral velocity. The next controller needs
 explicit CoM placement/regulation over the stance foot.
 
+## Stance Leg-Extension Push-Off
+
+The teacher also has default-off coordinated stance-leg push-off hooks:
+
+```text
+flags:
+  --stance-knee-pushes
+  --stance-ankle-pushes
+
+artifact: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_LEG_EXTENSION_PROBE.md
+score_100: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_LEG_EXTENSION_SCORE_100.md
+score_150: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_LEG_EXTENSION_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+The bounded CPU probe used support-state mode, single-support-weighted push,
+body-y/lateral feedback, and small stance knee/ankle push-off sweeps. It did
+not clear the target gate:
+
+```text
+100-tick robust modes: 0 / 18
+150-tick robust modes: 0 / 18
+
+100-tick failures:
+  seed_000: high_lateral_velocity and low_forward_velocity for every mode
+  seed_002: high_lateral_velocity and low_forward_velocity for every mode
+
+150-tick failures:
+  seed_000: high_lateral_velocity and low_forward_velocity for every mode
+  seed_002: high_lateral_velocity and low_forward_velocity for every mode
+```
+
+The best 150-tick rows can reach useful-looking support occupancy, but not
+usable forward motion:
+
+```text
+double support: roughly 64-70%
+single support: roughly 30-36%
+mean vx: roughly 0.001-0.014 m/s
+vy95: roughly 0.21-0.26 m/s
+```
+
+Interpretation: stance knee/ankle push-off is not enough when embedded in the
+same teacher structure. The blocker is not just missing distal push-off; it is
+still the coupling between forward impulse, lateral momentum, and support
+timing.
+
 ## Next Branch After a Pass
 
 If the teacher probe passes, use its traces as a target source:

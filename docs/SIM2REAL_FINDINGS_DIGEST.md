@@ -203,14 +203,20 @@ stateful support phase:
 horizon random-shoot sequences:
   first bounded pass still held for low forward velocity and single-support
   failures
+
+stance leg-extension push-off:
+  default-off stance knee/ankle push-off terms were added to the closed-loop
+  teacher and tested in a bounded CPU probe
+  100/150 tick robust modes: 0 / 18
+  dominant failures: low_forward_velocity and high_lateral_velocity
 ```
 
 Interpretation:
 
 ```text
 The missing piece is no longer just a better scalar gate, prior scale, phase
-clock, or pitch-chain stance push. The next branch needs a structurally
-different propulsion/contact model: a horizon-based teacher/optimizer,
-explicit contact/weight-transfer objective, or closed-loop reference generator
-that reacts to body and contact state.
+clock, pitch-chain stance push, or local stance knee/ankle push-off. The next
+branch needs a structurally different propulsion/contact model: a horizon-based
+teacher/optimizer, explicit contact/weight-transfer objective, or closed-loop
+reference generator that reacts to body and contact state.
 ```

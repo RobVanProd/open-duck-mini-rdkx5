@@ -282,7 +282,7 @@ Current result:
 ```text
 artifact: outputs/analysis/WEIGHT_TRANSFER_TARGET_GATE_CHECK.md
 status: HOLD_NO_SUSTAINED_WEIGHT_TRANSFER_TARGET
-checked score artifacts: 37
+checked score artifacts: 39
 passing target sources: 0
 ```
 
@@ -295,14 +295,14 @@ The current failure-mode analysis is:
 tool: tools/analyze_weight_transfer_gate_failures.py
 artifact: outputs/analysis/WEIGHT_TRANSFER_GATE_FAILURE_ANALYSIS.md
 status: HOLD_FORWARD_IMPULSE_PRIMARY
-seed rows scanned: 1884
+seed rows scanned: 1956
 ```
 
 It found:
 
 ```text
 stable + actuator-safe rows: 964
-support-ready rows: 437
+support-ready rows: 492
 forward-ready rows: 15
 stable + support rows: 7
 stable + forward rows: 0
@@ -314,6 +314,25 @@ So the next structural branch should explicitly solve propulsion after support
 loading. Contact alternation alone is insufficient; forward rows currently
 trade into lateral or pitch failures, while stable/support-ready rows do not
 generate enough forward impulse.
+
+The latest default-off stance leg-extension push-off probe did not change that
+decision:
+
+```text
+tool: tools/probe_closed_loop_weight_transfer_teacher.py
+flags:
+  --stance-knee-pushes
+  --stance-ankle-pushes
+artifacts:
+  outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_LEG_EXTENSION_SCORE_100.md
+  outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_LEG_EXTENSION_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+robust modes: 0 / 18
+dominant failures: low_forward_velocity and high_lateral_velocity
+```
+
+That rules out "add knee/ankle push-off to the same support-state teacher" as
+the missing local mechanism.
 
 ## Stop Conditions
 

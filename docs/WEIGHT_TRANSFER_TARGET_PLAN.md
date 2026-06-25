@@ -62,7 +62,7 @@ Current result:
 ```text
 artifact: outputs/analysis/WEIGHT_TRANSFER_TARGET_GATE_CHECK.md
 status: HOLD_NO_SUSTAINED_WEIGHT_TRANSFER_TARGET
-checked score artifacts: 37
+checked score artifacts: 39
 passing target sources: 0
 ```
 
@@ -75,14 +75,14 @@ The current failure-mode scan is:
 tool: tools/analyze_weight_transfer_gate_failures.py
 artifact: outputs/analysis/WEIGHT_TRANSFER_GATE_FAILURE_ANALYSIS.md
 status: HOLD_FORWARD_IMPULSE_PRIMARY
-seed rows scanned: 1884
+seed rows scanned: 1956
 ```
 
 Key split:
 
 ```text
 stable + actuator-safe rows: 964
-support-ready rows: 437
+support-ready rows: 492
 forward-ready rows: 15
 stable + support rows: 7
 stable + forward rows: 0
@@ -172,6 +172,49 @@ single-support intervals must last long enough to be useful
 forward progress must occur during/after stance push
 no-support and lateral collapse remain hard failures
 ```
+
+## Latest Ruled-Out Local Mechanism
+
+The closed-loop teacher now exposes default-off stance leg-extension push-off
+terms:
+
+```text
+tool: tools/probe_closed_loop_weight_transfer_teacher.py
+flags:
+  --stance-knee-pushes
+  --stance-ankle-pushes
+```
+
+A bounded CPU-only probe tested support-state mode with coordinated stance
+knee/ankle push-off:
+
+```text
+artifact: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_LEG_EXTENSION_PROBE.md
+score_100: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_LEG_EXTENSION_SCORE_100.md
+score_150: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_LEG_EXTENSION_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+Result:
+
+```text
+100-tick robust modes: 0 / 18
+150-tick robust modes: 0 / 18
+
+dominant failures:
+  low_forward_velocity
+  high_lateral_velocity
+
+best 150-tick windows:
+  support/contact gates can improve to roughly 64-70% double support and
+  30-36% single support, but vx remains around 0.001-0.014 m/s and vy95
+  remains around 0.21-0.26 m/s.
+```
+
+Interpretation: adding knee/ankle push-off to the same support-state teacher
+does not produce the missing mechanism. The next branch should not widen this
+nearby teacher grid again. It needs a different body-state/contact/propulsion
+controller or optimizer.
 
 ## Stop Conditions
 
