@@ -407,6 +407,17 @@ mean sent target velocity p95: about 4.85 rad/s
 mean joint tracking p95: 0.1876 rad
 ```
 
+Pitch-chain details:
+
+```text
+left_hip_pitch action saturation: 23.1496%, sent velocity p95: 3.9927 rad/s
+left_knee action saturation: 15.2756%, sent velocity p95: 5.2400 rad/s
+left_ankle action saturation: 12.1260%, sent velocity p95: 3.9546 rad/s
+right_hip_pitch action saturation: 18.7402%, sent velocity p95: 5.1082 rad/s
+right_knee action saturation: 15.7480%, sent velocity p95: 5.2400 rad/s
+right_ankle action saturation: 5.9843%, sent velocity p95: 5.1066 rad/s
+```
+
 Interpretation:
 
 ```text

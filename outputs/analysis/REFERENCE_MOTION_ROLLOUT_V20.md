@@ -31,6 +31,25 @@ reference: `/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/reference_mot
 | 6 | 70 | `fall_or_nan` | -0.0050 | -0.1238 | 0.2491 | 0.1582 | 6.6327 | 0.0338 | 4.7461 | 0.1961 |
 | 7 | 36 | `fall_or_nan` | 0.0099 | 0.2475 | 1.0478 | 0.1021 | 6.3492 | 0.0289 | 4.8242 | 0.1905 |
 
+## Per Joint
+
+| joint | action_sat_pct | target_clip_p95 | sent_vel_p95 | joint_track_p95 |
+|---|---:|---:|---:|---:|
+| left_hip_yaw | 0.0000 | 0.0000 | 0.1429 | 0.0154 |
+| left_hip_roll | 0.0000 | 0.0000 | 1.3391 | 0.0875 |
+| left_hip_pitch | 23.1496 | 0.1366 | 3.9927 | 0.1695 |
+| left_knee | 15.2756 | 0.1540 | 5.2400 | 0.2909 |
+| left_ankle | 12.1260 | 0.0338 | 3.9546 | 0.1978 |
+| neck_pitch | 0.0000 | 0.0000 | 0.0000 | 0.0107 |
+| head_pitch | 0.0000 | 0.0000 | 0.0000 | 0.0088 |
+| head_yaw | 0.0000 | 0.0000 | 0.0000 | 0.0029 |
+| head_roll | 0.0000 | 0.0000 | 0.0000 | 0.0011 |
+| right_hip_yaw | 0.0000 | 0.0000 | 0.1353 | 0.0168 |
+| right_hip_roll | 0.0000 | 0.0000 | 1.3495 | 0.0824 |
+| right_hip_pitch | 18.7402 | 0.1914 | 5.1082 | 0.1414 |
+| right_knee | 15.7480 | 0.3093 | 5.2400 | 0.2411 |
+| right_ankle | 5.9843 | 0.0133 | 5.1066 | 0.2460 |
+
 ## Interpretation
 
 - This rollout replaces the ONNX policy with reference-derived actions.

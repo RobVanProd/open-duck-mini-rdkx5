@@ -59,6 +59,22 @@ DEFAULT_REWARD_OVERRIDES = (
 )
 DEFAULT_OUTPUT_MD = ROOT / "outputs" / "analysis" / "REFERENCE_MOTION_ROLLOUT_V20.md"
 DEFAULT_OUTPUT_JSON = ROOT / "outputs" / "analysis" / "reference_motion_rollout_v20.json"
+JOINT_NAMES = [
+    "left_hip_yaw",
+    "left_hip_roll",
+    "left_hip_pitch",
+    "left_knee",
+    "left_ankle",
+    "neck_pitch",
+    "head_pitch",
+    "head_yaw",
+    "head_roll",
+    "right_hip_yaw",
+    "right_hip_roll",
+    "right_hip_pitch",
+    "right_knee",
+    "right_ankle",
+]
 
 
 @dataclass
@@ -235,6 +251,46 @@ def summarize_records(
     )
 
 
+def summarize_per_joint(records: list[dict[str, Any]], dt_s: float) -> list[dict[str, Any]]:
+    if not records:
+        return []
+    actions = np.asarray([record["action"] for record in records], dtype=float)
+    reference_targets = np.asarray([record["reference_target_rad"] for record in records], dtype=float)
+    pre_rate = np.asarray([record["target_pre_rate_limit_rad"] for record in records], dtype=float)
+    sent = np.asarray([record["sent_target_rad"] for record in records], dtype=float)
+    actual = np.asarray([record["actual_position_rad"] for record in records], dtype=float)
+    clip_error = np.abs(reference_targets - pre_rate)
+    tracking = np.abs(sent - actual)
+    velocities: list[np.ndarray] = []
+    by_seed: dict[int, list[dict[str, Any]]] = {}
+    for record in records:
+        by_seed.setdefault(int(record["seed"]), []).append(record)
+    for seed_records in by_seed.values():
+        seed_sent = np.asarray(
+            [record["sent_target_rad"] for record in seed_records], dtype=float
+        )
+        if len(seed_sent) > 1:
+            velocities.append(np.abs(np.diff(seed_sent, axis=0) / max(dt_s, 1.0e-9)))
+    sent_velocity = np.vstack(velocities) if velocities else np.zeros((0, len(JOINT_NAMES)))
+    rows = []
+    for index, name in enumerate(JOINT_NAMES):
+        rows.append(
+            {
+                "joint": name,
+                "action_saturation_pct": float(np.mean(np.abs(actions[:, index]) >= 0.999) * 100.0),
+                "reference_target_clip_p95_rad": percentile(clip_error[:, index].tolist(), 95),
+                "reference_target_clip_max_rad": float(np.max(clip_error[:, index])),
+                "sent_target_velocity_p95_rad_s": (
+                    percentile(sent_velocity[:, index].tolist(), 95)
+                    if sent_velocity.size
+                    else 0.0
+                ),
+                "joint_tracking_p95_rad": percentile(tracking[:, index].tolist(), 95),
+            }
+        )
+    return rows
+
+
 def run_rollout(args: argparse.Namespace) -> dict[str, Any]:
     import jax
     import jax.numpy as jp
@@ -405,6 +461,7 @@ def run_rollout(args: argparse.Namespace) -> dict[str, Any]:
             seeds = parse_int_list(args.seeds)
             seed_results: list[SeedResult] = []
             seed_payloads: list[dict[str, Any]] = []
+            all_records: list[dict[str, Any]] = []
             for seed in seeds:
                 records: list[dict[str, Any]] = []
                 state = env.reset(jax.random.PRNGKey(seed))
@@ -458,6 +515,7 @@ def run_rollout(args: argparse.Namespace) -> dict[str, Any]:
                         "done": done,
                     }
                     records.append(record)
+                    all_records.append(record)
                     if done:
                         break
                 if trace_root:
@@ -506,6 +564,7 @@ def run_rollout(args: argparse.Namespace) -> dict[str, Any]:
             "reference_target_clip_p95_mean": float(np.mean([item.reference_target_clip_p95 for item in seed_results if finite(item.reference_target_clip_p95)])),
             "joint_tracking_p95_mean": float(np.mean([item.joint_tracking_p95 for item in seed_results if finite(item.joint_tracking_p95)])),
         },
+        "per_joint": summarize_per_joint(all_records, dt_s=float(args.duration_s) / max(1, int(round(float(args.duration_s) / 0.02)))),
         "seed_results": seed_payloads,
     }
     return payload
@@ -549,6 +608,25 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
                 clip=fmt(item["reference_target_clip_p95"]),
                 vel=fmt(item["sent_target_velocity_p95"]),
                 tracking=fmt(item["joint_tracking_p95"]),
+            )
+        )
+    lines.extend(
+        [
+            "",
+            "## Per Joint",
+            "",
+            "| joint | action_sat_pct | target_clip_p95 | sent_vel_p95 | joint_track_p95 |",
+            "|---|---:|---:|---:|---:|",
+        ]
+    )
+    for item in payload.get("per_joint", []):
+        lines.append(
+            "| {joint} | {sat} | {clip} | {vel} | {tracking} |".format(
+                joint=item["joint"],
+                sat=fmt(item["action_saturation_pct"]),
+                clip=fmt(item["reference_target_clip_p95_rad"]),
+                vel=fmt(item["sent_target_velocity_p95_rad_s"]),
+                tracking=fmt(item["joint_tracking_p95_rad"]),
             )
         )
     lines.extend(

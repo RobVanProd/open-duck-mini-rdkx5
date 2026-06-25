@@ -2463,6 +2463,17 @@ mean target clip p95: 0.0314 rad
 mean joint tracking p95: 0.1876 rad
 ```
 
+Pitch-chain stress from direct reference playback:
+
+```text
+left_hip_pitch: 23.1496% action saturation, 3.9927 rad/s sent velocity p95
+left_knee: 15.2756% action saturation, 5.2400 rad/s sent velocity p95
+left_ankle: 12.1260% action saturation, 3.9546 rad/s sent velocity p95
+right_hip_pitch: 18.7402% action saturation, 5.1082 rad/s sent velocity p95
+right_knee: 15.7480% action saturation, 5.2400 rad/s sent velocity p95
+right_ankle: 5.9843% action saturation, 5.1066 rad/s sent velocity p95
+```
+
 Interpretation:
 
 ```text
