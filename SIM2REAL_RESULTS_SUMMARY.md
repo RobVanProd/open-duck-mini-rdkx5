@@ -5323,3 +5323,14 @@ confirms the tradeoff: aggressive teacher terms create forward impulse with too
 much lateral motion, while staged gates control lateral motion by suppressing
 forward displacement. The next target-source path should be short-horizon
 trajectory optimization or a richer body-state planner.
+
+The optimizer branch is specified in:
+
+```text
+docs/WEIGHT_TRANSFER_OPTIMIZER_PLAN.md
+```
+
+The purpose is to stop expanding hand-shaped random grids and instead search
+the short-horizon tradeoff directly with the simulator in the loop. Training
+remains blocked until an optimized target source passes seed-robust 100/150
+tick gates.

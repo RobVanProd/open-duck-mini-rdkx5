@@ -440,3 +440,9 @@ Do not keep widening random grids over either form. The next target-source
 generator should optimize over a short horizon or use a richer body-state
 controller that explicitly trades lateral error, support state, and forward
 impulse.
+
+The next branch is specified in:
+
+```text
+docs/WEIGHT_TRANSFER_OPTIMIZER_PLAN.md
+```

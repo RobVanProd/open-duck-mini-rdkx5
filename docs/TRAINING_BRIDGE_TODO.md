@@ -224,6 +224,16 @@ seed0/seed2 windows). This means balance gating alone is not enough. The next
 target-source task should be a short-horizon optimizer or model-predictive
 planner, not a wider random search.
 
+Next target-source branch:
+
+```text
+doc: docs/WEIGHT_TRANSFER_OPTIMIZER_PLAN.md
+```
+
+Implement a short-horizon optimizer that searches compact target-sequence
+parameters against the same seed-robust objective. This is the correct next
+step because prior probes have bracketed the tradeoff but not solved it.
+
 ### Reconcile Policy / Sim Contract
 
 - Run `tools/audit_policy_sim_contract.py`.
