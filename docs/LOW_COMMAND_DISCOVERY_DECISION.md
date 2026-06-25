@@ -867,3 +867,45 @@ outputs/analysis/realized_window_collection_x004_v5_v7_mine.json
 outputs/analysis/REALIZED_WINDOW_COLLECTION_X004_V5_V7_CURATION.md
 outputs/analysis/realized_window_collection_x004_v5_v7_curation.json
 ```
+
+## Dynamic-Roll Target Sequence Replay
+
+The later dynamic-roll target search produced robust short target windows, but
+two offline learner smokes now define their current limit:
+
+```text
+one-step BC:
+  result: HOLD_BC_REPLAY_LOW_FORWARD_MOTION / HOLD_BC_REPLAY_TERMINATED
+  interpretation: independent obs[101] -> action[14] labels do not preserve
+                  the target gait in closed loop
+
+sequence replay, 1.2 s:
+  result: HOLD_SEQUENCE_REPLAY_LATERAL_UNSTABLE
+  aggregate seed0/seed2 vx: 0.0309 / 0.0363 m/s
+  aggregate seed0/seed2 vy95: 0.1183 / 0.1466 m/s
+  aggregate seed0/seed2 pitch95: 0.2967 / 0.2521 rad
+
+sequence replay, 3.0 s:
+  result: HOLD_SEQUENCE_REPLAY_LOW_FORWARD_MOTION
+  aggregate seed0/seed2 vx: 0.0117 / 0.0138 m/s
+```
+
+Interpretation:
+
+```text
+The dynamic-roll target source is valid evidence that short in-envelope forward
+motion can be generated, but it is not yet a reusable training target. Timing
+preservation helps on the first 60 ticks, then the looped sequence loses
+forward progress. The next low-command discovery task is phase continuation and
+contact timing, not another cold-start reward run or one-step BC pass.
+```
+
+Additional artifacts:
+
+```text
+tools/run_target_sequence_replay_smoke.py
+outputs/analysis/TARGET_SEQUENCE_REPLAY_SMOKE_1P2S.md
+outputs/analysis/target_sequence_replay_smoke_1p2s.json
+outputs/analysis/TARGET_SEQUENCE_REPLAY_SMOKE.md
+outputs/analysis/target_sequence_replay_smoke.json
+```

@@ -3540,9 +3540,61 @@ should be sequence-aware and rollout-preserving, not another one-step BC fit.
 Do next:
 
 ```text
-1. implement or specify a sequence/phase-aware imitation smoke
-2. preserve primitive phase or time index through the learner
+1. test whether preserving target sequence timing is sufficient
+2. preserve primitive phase or time index through any future learner
 3. train/evaluate against rollout metrics, not supervised loss
 4. keep PPO blocked until sequence-aware imitation passes x=0.04 replay
 5. keep robot validation blocked
+```
+
+### Dynamic-Roll Lateral-Fix Sequence Replay Smoke
+
+The sequence-preserving smoke was run from the robust-mode-only manifest. It
+replays each trace's startup prefix and then loops the curated 50-tick window in
+closed-loop CPU sim.
+
+Artifacts:
+
+```text
+tools/run_target_sequence_replay_smoke.py
+outputs/analysis/TARGET_SEQUENCE_REPLAY_SMOKE_1P2S.md
+outputs/analysis/target_sequence_replay_smoke_1p2s.json
+outputs/analysis/TARGET_SEQUENCE_REPLAY_SMOKE.md
+outputs/analysis/target_sequence_replay_smoke.json
+```
+
+Results:
+
+```text
+1.2 s replay:
+  status: HOLD_SEQUENCE_REPLAY_LATERAL_UNSTABLE
+  aggregate seed0/seed2 vx: 0.0309 / 0.0363 m/s
+  aggregate seed0/seed2 vy95: 0.1183 / 0.1466 m/s
+  aggregate seed0/seed2 pitch95: 0.2967 / 0.2521 rad
+  aggregate sent target velocity p95: 0.3668 rad/s
+
+3.0 s replay:
+  status: HOLD_SEQUENCE_REPLAY_LOW_FORWARD_MOTION
+  aggregate seed0/seed2 vx: 0.0117 / 0.0138 m/s
+  aggregate seed0/seed2 vy95: 0.0645 / 0.0499 m/s
+  aggregate sent target velocity p95: 0.3658 rad/s
+```
+
+Interpretation:
+
+```text
+Timing preservation improves over memoryless one-step BC on the short horizon,
+but the current target tables are not stable reusable gait labels. They miss
+lateral/pitch gates over 1.2 s and lose forward progress when looped to 3 s.
+```
+
+Do next:
+
+```text
+1. do not launch PPO or robot validation from these target tables as-is
+2. add a phase-continuation/contact-timing adapter before any learner
+3. grade the adapter by the same closed-loop x=0.04 replay metrics
+4. only after sequence replay passes, consider a compact supervised/imitation
+   learner that preserves phase/time continuity
+5. keep full training and robot validation blocked
 ```

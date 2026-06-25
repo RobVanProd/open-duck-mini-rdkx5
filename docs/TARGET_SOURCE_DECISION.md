@@ -313,3 +313,49 @@ The target-source pass stands, but direct one-step BC is not sufficient.
 The next offline training/imitation step must preserve sequence/phase rollout.
 Do not launch PPO or robot validation from the one-step BC artifacts.
 ```
+
+## Sequence Replay Smoke From Lateral-Fix Targets
+
+A phase-preserving replay smoke was added after one-step BC failed. Instead of
+fitting `obs[101] -> action[14]` independently, it replays each robust target
+trace with its startup prefix and then loops the curated 50-tick target window.
+
+Artifacts:
+
+```text
+tools/run_target_sequence_replay_smoke.py
+outputs/analysis/TARGET_SEQUENCE_REPLAY_SMOKE_1P2S.md
+outputs/analysis/target_sequence_replay_smoke_1p2s.json
+outputs/analysis/TARGET_SEQUENCE_REPLAY_SMOKE.md
+outputs/analysis/target_sequence_replay_smoke.json
+```
+
+Result:
+
+```text
+1.2 s replay:
+  status: HOLD_SEQUENCE_REPLAY_LATERAL_UNSTABLE
+  best aggregate min vx across seeds: 0.0309 m/s
+  seed_000 / seed_002 vx: 0.0309 / 0.0363 m/s
+  seed_000 / seed_002 vy95: 0.1183 / 0.1466 m/s
+  seed_000 / seed_002 pitch95: 0.2967 / 0.2521 rad
+  sent target velocity p95: 0.3668 rad/s
+
+3.0 s replay:
+  status: HOLD_SEQUENCE_REPLAY_LOW_FORWARD_MOTION
+  aggregate seed_000 / seed_002 vx: 0.0117 / 0.0138 m/s
+  aggregate seed_000 / seed_002 vy95: 0.0645 / 0.0499 m/s
+  sent target velocity p95: 0.3658 rad/s
+```
+
+Interpretation:
+
+```text
+Preserving target timing is better than memoryless one-step BC over the first
+60 ticks, but the current target tables are still not a stable reusable gait.
+They either miss lateral/pitch gates on the short horizon or lose forward
+progress when looped. Do not launch PPO from these target tables as-is.
+The next useful offline step is a phase-continuation/contact-timing adapter or
+sequence-aware learner that is evaluated directly in closed loop before any
+training campaign.
+```

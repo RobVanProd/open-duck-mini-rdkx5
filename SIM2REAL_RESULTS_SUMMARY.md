@@ -4498,3 +4498,52 @@ closed-loop replay. The next offline learner should be sequence-aware or
 rollout-preserving, with phase/time continuity treated as part of the target.
 Full PPO and robot validation remain blocked.
 ```
+
+### Dynamic-Roll Lateral-Fix Sequence Replay Smoke
+
+A sequence-preserving replay smoke was added after one-step BC failed. It uses
+the robust lateral-fix target manifest, replays each trace's startup prefix, and
+then loops the curated 50-tick target window in closed-loop CPU sim.
+
+Artifacts:
+
+```text
+tools/run_target_sequence_replay_smoke.py
+outputs/analysis/TARGET_SEQUENCE_REPLAY_SMOKE_1P2S.md
+outputs/analysis/target_sequence_replay_smoke_1p2s.json
+outputs/analysis/TARGET_SEQUENCE_REPLAY_SMOKE.md
+outputs/analysis/target_sequence_replay_smoke.json
+```
+
+Results:
+
+```text
+1.2 s sequence replay:
+  status: HOLD_SEQUENCE_REPLAY_LATERAL_UNSTABLE
+  aggregate seed_000 vx: 0.0309 m/s
+  aggregate seed_002 vx: 0.0363 m/s
+  aggregate seed_000 vy95: 0.1183 m/s
+  aggregate seed_002 vy95: 0.1466 m/s
+  aggregate seed_000 pitch95: 0.2967 rad
+  aggregate seed_002 pitch95: 0.2521 rad
+  aggregate sent target velocity p95: 0.3668 rad/s
+
+3.0 s sequence replay:
+  status: HOLD_SEQUENCE_REPLAY_LOW_FORWARD_MOTION
+  aggregate seed_000 vx: 0.0117 m/s
+  aggregate seed_002 vx: 0.0138 m/s
+  aggregate seed_000 vy95: 0.0645 m/s
+  aggregate seed_002 vy95: 0.0499 m/s
+  aggregate sent target velocity p95: 0.3658 rad/s
+```
+
+Conclusion:
+
+```text
+The robust target tables contain a short-horizon forward-motion sequence, but
+they are not yet a stable reusable gait. Timing preservation improves over
+one-step BC, yet the short horizon still misses lateral/pitch gates and the
+looped 3 s replay loses forward progress. Do not launch PPO or robot validation
+from these tables as-is. The next offline step should explicitly solve phase
+continuation/contact timing in closed loop before any larger training run.
+```
