@@ -5059,3 +5059,30 @@ build or run a bounded PASS_WEIGHT_TRANSFER_TARGET gate first
 optimize for sustained support transitions + forward progress + pitch/height
 only then launch PPO/BC from that target
 ```
+
+### Weight-Transfer Target Gate
+
+The bounded weight-transfer gate was checked against existing 100/150-tick
+dynamic-roll lateral-fix objective-score artifacts:
+
+```text
+artifact: outputs/analysis/WEIGHT_TRANSFER_TARGET_GATE.md
+status: HOLD_NO_SUSTAINED_WEIGHT_TRANSFER_TARGET
+```
+
+Result:
+
+```text
+100-tick dynamic-roll lateral-fix:
+  robust_mode_count: 0
+  main failures: low_forward_velocity 312, single_contact_pattern_dominates 148
+
+150-tick dynamic-roll lateral-fix:
+  robust_mode_count: 0
+  main failures: low_forward_velocity 312, single_contact_pattern_dominates 295
+```
+
+The short-window target search still contains useful evidence, but the longer
+gate confirms those windows do not yet compose into a sustained low-command
+weight-transfer target. The next offline task is generator/objective work, not
+another V22-style prior-lock training run.

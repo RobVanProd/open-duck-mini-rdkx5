@@ -3998,3 +3998,24 @@ PASS_WEIGHT_TRANSFER_TARGET:
 If this gate fails, improve the generator/objective before launching another
 CUDA PPO run. If it passes, use that target as the source for the next reviewed
 BC/PPO experiment.
+
+The first gate read over existing artifacts failed:
+
+```text
+artifact: outputs/analysis/WEIGHT_TRANSFER_TARGET_GATE.md
+status: HOLD_NO_SUSTAINED_WEIGHT_TRANSFER_TARGET
+```
+
+Existing 100/150-tick dynamic-roll lateral-fix objective-score artifacts have
+`robust_mode_count: 0`. The dominant failures are low forward velocity and
+single-contact-pattern dominance. Next implementation work should target the
+generator/objective directly:
+
+```text
+1. score useful single-support dwell and left/right support alternation,
+2. keep forward progress above the low-command gate for 100-150 ticks,
+3. reject mostly double-support sustained windows,
+4. keep lateral drift, pitch, height, action saturation, and target velocity
+   inside the existing gates,
+5. only then create a new manifest for BC/PPO.
+```
