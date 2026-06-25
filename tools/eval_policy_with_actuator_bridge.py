@@ -572,6 +572,8 @@ def run_closed_loop_worker(args) -> dict:
         cmd.extend(["--reward-overrides-phase", str(args.reward_overrides_phase)])
     if args.trace_jsonl:
         cmd.extend(["--trace-jsonl", str(args.trace_jsonl)])
+    if args.trace_full_obs:
+        cmd.append("--trace-full-obs")
     if args.jax_platform:
         cmd.extend(["--jax-platform", str(args.jax_platform)])
     if args.jax_platforms:
@@ -971,6 +973,7 @@ def write_outputs(payload: dict, output_dir: Path) -> None:
             "eval_role": payload.get("eval_role"),
             "jax_platform": payload.get("jax_platform"),
             "mjx_step_loop_mode": payload.get("mjx_step_loop_mode"),
+            "trace_full_obs": payload.get("trace_full_obs"),
             "telemetry_replay": None,
             "closed_loop_sim": payload["closed_loop_sim"],
         }
@@ -1138,6 +1141,14 @@ def main() -> int:
         ),
     )
     parser.add_argument(
+        "--trace-full-obs",
+        action="store_true",
+        help=(
+            "When --trace-jsonl is set, also write the full 101-element policy "
+            "observation as obs_state. Default off to keep traces compact."
+        ),
+    )
+    parser.add_argument(
         "--reward-overrides-json",
         default=None,
         help=(
@@ -1242,6 +1253,7 @@ def main() -> int:
                         trace_jsonl=(
                             None if args.trace_jsonl is None else Path(args.trace_jsonl)
                         ),
+                        trace_full_obs=args.trace_full_obs,
                     )
                 )
             if args._closed_loop_worker_json:
@@ -1284,6 +1296,7 @@ def main() -> int:
         "eval_role": args.eval_role,
         "jax_platform": args.jax_platform,
         "mjx_step_loop_mode": args.mjx_step_loop_mode,
+        "trace_full_obs": bool(args.trace_full_obs),
         "reward_overrides_json": args.reward_overrides_json,
         "reward_overrides_phase": args.reward_overrides_phase,
         "reward_overrides": reward_overrides,

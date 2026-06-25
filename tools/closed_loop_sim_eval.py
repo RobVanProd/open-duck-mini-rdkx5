@@ -64,6 +64,7 @@ class ClosedLoopConfig:
     forward_diagnostic_deadband: float = 0.02
     reward_overrides: Mapping[str, Any] | None = None
     trace_jsonl: Path | None = None
+    trace_full_obs: bool = False
 
 
 @contextlib.contextmanager
@@ -974,6 +975,10 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                 jax.device_get(env.get_local_linvel(state.data)),
                 dtype=float,
             )
+            foot_site_pos = np.asarray(
+                jax.device_get(state.data.site_xpos[env._feet_site_id]),
+                dtype=float,
+            )
             qpos = np.asarray(jax.device_get(state.data.qpos), dtype=float)
             base_addr = int(env._floating_base_qpos_addr)
             quat = qpos[base_addr + 3 : base_addr + 7]
@@ -987,40 +992,42 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                         reward_terms[str(key)] = float(np.asarray(jax.device_get(value)))
                     except Exception:
                         pass
-            records.append(
-                {
-                    "seed": int(config.seed),
-                    "tick": tick,
-                    "time_s": tick * float(env.dt),
-                    "obs0_6": obs[:6].astype(float).tolist(),
-                    "command": [
-                        config.command_x,
-                        config.command_y,
-                        config.command_yaw,
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                    ],
-                    "action": action.astype(float).tolist(),
-                    "action_w_delay": np.asarray(
-                        jax.device_get(action_w_delay), dtype=float
-                    ).tolist(),
-                    "target_pre_rate_limit_rad": pre_np.tolist(),
-                    "sent_target_rad": sent_np.tolist(),
-                    "applied_target_rad": applied_np.tolist(),
-                    "actual_position_rad": actual.tolist(),
-                    "body_pitch_rad": quat_wxyz_to_pitch(quat),
-                    "base_x_m": float(qpos[base_addr]),
-                    "base_y_m": float(qpos[base_addr + 1]),
-                    "base_height_m": float(qpos[base_addr + 2]),
-                    "local_linvel_m_s": local_linvel.astype(float).tolist(),
-                    "foot_contacts": contacts.astype(int).tolist(),
-                    "reward": reward,
-                    "reward_terms": reward_terms,
-                    "done": done,
-                }
-            )
+            record = {
+                "seed": int(config.seed),
+                "tick": tick,
+                "time_s": tick * float(env.dt),
+                "obs0_6": obs[:6].astype(float).tolist(),
+                "command": [
+                    config.command_x,
+                    config.command_y,
+                    config.command_yaw,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                ],
+                "action": action.astype(float).tolist(),
+                "action_w_delay": np.asarray(
+                    jax.device_get(action_w_delay), dtype=float
+                ).tolist(),
+                "target_pre_rate_limit_rad": pre_np.tolist(),
+                "sent_target_rad": sent_np.tolist(),
+                "applied_target_rad": applied_np.tolist(),
+                "actual_position_rad": actual.tolist(),
+                "body_pitch_rad": quat_wxyz_to_pitch(quat),
+                "base_x_m": float(qpos[base_addr]),
+                "base_y_m": float(qpos[base_addr + 1]),
+                "base_height_m": float(qpos[base_addr + 2]),
+                "local_linvel_m_s": local_linvel.astype(float).tolist(),
+                "foot_contacts": contacts.astype(int).tolist(),
+                "foot_site_pos_m": foot_site_pos.tolist(),
+                "reward": reward,
+                "reward_terms": reward_terms,
+                "done": done,
+            }
+            if config.trace_full_obs:
+                record["obs_state"] = obs.astype(float).tolist()
+            records.append(record)
             if done:
                 termination_reason = "fall_or_nan"
                 break

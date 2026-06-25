@@ -569,6 +569,44 @@ policy pitch-chain target velocity p95 mean: 3.0488 rad/s
 reference contact-synchronized pitch-chain target velocity p95 mean: 4.9811 rad/s
 ```
 
+The command sweep then scoped that result:
+
+```text
+outputs/analysis/PUBLISHED_POLICY_COMMAND_SWEEP.md
+status: WARN_COMMAND_SPECIFIC_PROPULSION_OVER_ENVELOPE
+```
+
+Results:
+
+```text
+upstream turning command x=0.074, y=-0.037, yaw=-0.074:
+  moving seeds: 7 / 8
+  mean local vx: 0.0540 m/s
+  mean tracking ratio: 0.7294
+  pitch-chain p95 target velocity mean: 3.0488 rad/s
+  pitch-chain p95 target velocity max-joint mean: 4.6157 rad/s
+
+straight x=0.04:
+  moving seeds: 0 / 8
+  mean local vx: 0.0019 m/s
+  mean tracking ratio: 0.0468
+  pitch-chain p95 target velocity max-joint mean: 1.2742 rad/s
+
+straight x=0.08:
+  moving seeds: 7 / 8
+  mean local vx: 0.0640 m/s
+  mean tracking ratio: 0.7998
+  pitch-chain p95 target velocity mean: 3.2246 rad/s
+  pitch-chain p95 target velocity max-joint mean: 5.1546 rad/s
+```
+
+This corrects the earlier shorthand. The published policy does prove
+command-specific closed-loop propulsion in vanilla sim, but it does not yet
+prove a real-envelope-safe gait. The moving cells exceed the measured
+`3.75 rad/s` per-joint pitch-chain p95 envelope. The straight `x=0.04` cell is
+inside the envelope but does not move, so it should not be treated as the easy
+first gate or as an existence-proven training target.
+
 This is the current pivot. The upstream-main sim/morphology can produce stable
 closed-loop forward locomotion under the published `BEST_WALK_ONNX_2` policy.
 The reference-target/open-loop path still fails the same contact/propulsion
@@ -582,7 +620,7 @@ asks for single support but does not convert those windows into forward
 acceleration.
 
 Current decision: do not continue with another stance-relative lateral-damping
-teacher variant by default. The next offline gate is to mine the published
-policy's state-action/contact timing as a teacher or constraint source instead
-of generating another nearby open-loop target variant. Robot validation remains
+teacher variant by default. The next offline gate is to search or train from a
+command cell the published policy actually moves in, while explicitly reducing
+the pitch-chain target-rate envelope violation. Robot validation remains
 blocked.

@@ -271,6 +271,37 @@ policy pitch-chain target velocity p95 mean: 3.0488 rad/s
 reference contact-synchronized pitch-chain target velocity p95 mean: 4.9811 rad/s
 ```
 
+The follow-up command sweep prevents overclaiming:
+
+```text
+outputs/analysis/PUBLISHED_POLICY_COMMAND_SWEEP.md
+status: WARN_COMMAND_SPECIFIC_PROPULSION_OVER_ENVELOPE
+```
+
+Summary:
+
+```text
+straight x=0.04:
+  moving seeds: 0 / 8
+  mean tracking ratio: 0.0468
+  max-joint pitch-chain p95 target velocity: 1.2742 rad/s
+
+straight x=0.08:
+  moving seeds: 7 / 8
+  mean tracking ratio: 0.7998
+  max-joint pitch-chain p95 target velocity: 5.1546 rad/s
+
+upstream turning command:
+  moving seeds: 7 / 8
+  mean tracking ratio: 0.7294
+  max-joint pitch-chain p95 target velocity: 4.6157 rad/s
+```
+
+So the published policy is a closed-loop movement existence proof, but it is
+not yet an envelope-safe robot candidate. Straight `x=0.04` is not cleared by
+the published policy either, while the moving command cells exceed the measured
+per-joint target-rate envelope.
+
 Answers to the original discriminator:
 
 ```text
@@ -293,9 +324,8 @@ Answers to the original discriminator:
 Recommended next offline task:
 
 ```text
-extract a compact published-policy state/action/contact template and test it as
-an imitation or trust-region source before returning to open-loop teacher
-generation
+search for an envelope-safe closed-loop command cell, then extract a compact
+state/action/contact template from that cell if one exists
 ```
 
 Robot validation remains blocked.

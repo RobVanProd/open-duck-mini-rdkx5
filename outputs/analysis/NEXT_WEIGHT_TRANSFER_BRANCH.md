@@ -1,6 +1,6 @@
 # Next Weight-Transfer Branch Decision
 
-status: `PLAN_MINE_PUBLISHED_POLICY_PROPULSION`
+status: `PLAN_SEARCH_ENVELOPE_SAFE_CLOSED_LOOP_COMMAND`
 
 This is an offline planning artifact. It does not run simulation,
 training, robot SSH, deployment, or hardware tests.
@@ -60,14 +60,23 @@ training, robot SSH, deployment, or hardware tests.
 | `reference_requested_single_future_vx_delta_m_s` | `-0.005149568369172915` |
 | `policy_pitch_chain_target_velocity_p95_rad_s` | `3.0488` |
 | `reference_contact_synchronized_pitch_chain_target_velocity_p95_rad_s` | `4.9811` |
+| `command_sweep_status` | `WARN_COMMAND_SPECIFIC_PROPULSION_OVER_ENVELOPE` |
+| `straight_x004_moving_seed_count_ratio_ge_0p5` | `0` |
+| `straight_x004_mean_tracking_ratio` | `0.0468` |
+| `straight_x004_pitch_chain_target_velocity_p95_max_joint_rad_s` | `1.2742` |
+| `straight_x008_moving_seed_count_ratio_ge_0p5` | `7` |
+| `straight_x008_mean_tracking_ratio` | `0.7998` |
+| `straight_x008_pitch_chain_target_velocity_p95_max_joint_rad_s` | `5.1546` |
+| `turning_command_pitch_chain_target_velocity_p95_max_joint_rad_s` | `4.6157` |
 
 ## Decision
 
-Stop the local stance-relative teacher loop and mine the published policy's
-closed-loop propulsion mechanism. The upstream/reference target path fails the
-same forward push-effectiveness question in this sim, including the README's
-`flat_terrain_backlash` task, but the published `BEST_WALK_ONNX_2` policy
-does produce stable closed-loop forward locomotion in that task.
+Stop the local stance-relative teacher loop and search for an envelope-safe
+closed-loop command cell. The upstream/reference target path fails the same
+forward push-effectiveness question in this sim, and the published
+`BEST_WALK_ONNX_2` policy proves closed-loop propulsion exists in vanilla sim,
+but the moving command cells still exceed the measured per-joint pitch-chain
+velocity envelope.
 
 ## Rationale
 
@@ -87,16 +96,22 @@ does produce stable closed-loop forward locomotion in that task.
   reference-requested single-support windows still have negative 0.1s future vx
   delta (`-0.0051 m/s`). The policy also keeps pitch-chain p95 target velocity
   lower (`3.0488 rad/s` vs `4.9811 rad/s`).
+- The command sweep shows straight `x=0.04` is not an easy existence-proven
+  gate: all eight seeds complete, but moving seeds with track ratio >= 0.5 are
+  `0 / 8`, and mean track ratio is only `0.0468`.
+- Straight `x=0.08` and the upstream turning command do move in vanilla sim,
+  but their max-joint pitch-chain p95 target velocities remain above the
+  measured envelope (`5.1546 rad/s` and `4.6157 rad/s` respectively).
 
 ## Required Next Design
 
-- extract a compact published-policy state/action/contact template from the
-  successful closed-loop traces
-- test whether imitation/BC or a trust-region teacher around that template can
-  preserve the policy's actual single-support schedule without exceeding the
-  measured actuator envelope
-- only return to open-loop teacher generation if the state-action/contact
-  template path fails a defined offline gate
+- run a small published-policy command-space sweep to find any command cell
+  with forward tracking and max-joint pitch-chain p95 target velocity inside
+  the measured envelope
+- if such a cell exists, extract its state/action/contact template and train or
+  constrain from that cell first
+- if no such cell exists, treat BEST_WALK as a movement teacher but explicitly
+  train a lower-target-rate student; do not claim the teacher is envelope-safe
 
 ## Stop Rules
 
@@ -104,9 +119,10 @@ does produce stable closed-loop forward locomotion in that task.
 - Do not launch PPO/BC from current target sources.
 - Do not run robot validation, grounded replay, or x=0.08.
 - Do not relax teacher target velocity above the measured envelope to buy forward speed.
-- Do not generate another nearby stance-relative teacher variant until the
-  published-policy propulsion mechanism is compared against the failed
-  reference-target path.
+- Do not treat straight `x=0.04` as the default first gate until a policy
+  actually clears it.
+- Do not treat the published moving command cells as robot-ready while their
+  max-joint pitch-chain p95 target velocities exceed the measured envelope.
 
 ## Non-Goals
 
