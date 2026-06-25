@@ -3222,6 +3222,26 @@ to debug the imitation pathway directly:
 4. behavior-cloning/supervised pretraining before PPO
 ```
 
+The first reference-lock diagnostic now passes analytically:
+
+```text
+status: PASS_REFERENCE_SIGNAL_COHERENT
+matched reference mean vx: 0.0426 m/s
+progress ratio over 70 ticks: 1.0512
+command-progress failure floor: 0.2000
+ideal imitation scaled reward: 24.0
+pre-terminal unclipped reward sum mean: 50.8050
+lateral p95_abs velocity: 0.2350 m/s
+```
+
+Interpretation:
+
+```text
+The matched reference itself is coherent for x=0.04.
+PPO failed to acquire/preserve that valid reference.
+Next path: behavior-cloning or explicit reference-locking, not reward tuning.
+```
+
 Do not deploy V19. Do not run x=0.08. Do not run robot validation.
 
 Additional artifact:
@@ -3234,4 +3254,5 @@ outputs/analysis/REFERENCE_MOTION_OVERRIDE.md
 outputs/analysis/STAGED_CURRICULUM_TRAINING_PLAN_V20.md
 outputs/analysis/V20_MANUAL_SEED_GATE_CPU_TRACE_FULL.md
 outputs/analysis/V20_MATCHED_REFERENCE_TRACE_SUMMARY.md
+outputs/analysis/REFERENCE_LOCK_SIGNAL_V20.md
 ```

@@ -2425,3 +2425,21 @@ V20 plan:
 
 V20 result:
 `outputs/analysis/V20_MATCHED_REFERENCE_TRACE_SUMMARY.md`.
+
+Reference-lock signal:
+
+```text
+status: PASS_REFERENCE_SIGNAL_COHERENT
+progress_ratio: 1.0512
+ideal_imitation_scaled: 24.0
+pre_terminal_unclipped_sum_mean: 50.8050
+lateral p95_abs velocity: 0.2350 m/s
+```
+
+This says the matched reference itself is not the blocker. PPO did not acquire
+or preserve a valid reference. The next implementation direction is
+behavior-cloning / supervised reference pretraining or an explicit
+reference-lock phase, not another reward-weight-only PPO variant.
+
+Artifact:
+`outputs/analysis/REFERENCE_LOCK_SIGNAL_V20.md`.

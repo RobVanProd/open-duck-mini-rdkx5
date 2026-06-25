@@ -339,3 +339,41 @@ outputs/analysis/V20_MANUAL_SEED_GATE_CPU_TRACE_FULL.md
 outputs/analysis/V20_MATCHED_REFERENCE_TRACE_SUMMARY.md
 outputs/analysis/v20_matched_reference_trace_summary.json
 ```
+
+## Reference Lock Signal
+
+An analytic score of the V20 matched reference itself passes:
+
+```text
+status: PASS_REFERENCE_SIGNAL_COHERENT
+linvel_x_mean: 0.0426 m/s
+linvel_y_mean: -0.0021 m/s
+linvel_y_abs_p95: 0.2350 m/s
+progress_ratio over 70 ticks: 1.0512
+command-progress failure floor: 0.2000
+forward required ratio: 0.5500
+ideal imitation raw reward: 6.0
+ideal imitation scaled reward: 24.0
+pre-terminal unclipped reward sum mean: 50.8050
+```
+
+This means:
+
+```text
+the matched reference itself satisfies the low-command progress signal
+PPO still failed to lock onto or preserve it
+```
+
+The next branch is not reward-weight tuning. It is reference-locking:
+
+```text
+1. behavior-cloning / supervised action pretraining from the reference
+2. phase-clock and reset alignment checks
+3. controlled relaxation of early command-progress termination only while
+   testing reference acquisition
+4. lateral-sway handling, because the matched reference still has high
+   lateral p95_abs velocity
+```
+
+Artifact:
+`outputs/analysis/REFERENCE_LOCK_SIGNAL_V20.md`.
