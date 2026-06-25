@@ -3672,6 +3672,32 @@ outputs/analysis/REALIZED_WINDOW_CONTACT_SYNCHRONIZED_REFERENCE_CURATION.md
 outputs/analysis/realized_window_contact_synchronized_reference_curation.json
 ```
 
+### Target Generation Plan
+
+The next offline path is now specified in:
+
+```text
+docs/TARGET_GENERATION_PLAN.md
+```
+
+The project should not launch another reward-only PPO run or BC run from the
+current mined snippets. The next implementation target is a deliberate
+low-command target generator that jointly preserves:
+
+```text
+positive forward velocity
+low lateral velocity
+safe body pitch and base height
+real contact transitions
+actuator/action envelope compliance
+```
+
+Promotion gate:
+
+```text
+PASS_CURATED_DATASET_SEED_READY
+```
+
 ### V5/V7 Low-Command Trace Collection
 
 A no-training CPU trace collection replayed the old moving-lineage policies at

@@ -2806,6 +2806,31 @@ outputs/analysis/REALIZED_WINDOW_CONTACT_SYNCHRONIZED_REFERENCE_CURATION.md
 outputs/analysis/realized_window_contact_synchronized_reference_curation.json
 ```
 
+### Target Generation Plan
+
+The next canonical offline path is now documented in:
+
+```text
+docs/TARGET_GENERATION_PLAN.md
+```
+
+Do not launch another reward-only PPO run or BC run from the current mined
+windows. The next implementation should generate short low-command target
+windows deliberately, then stop at the curation gate:
+
+```text
+PASS_CURATED_DATASET_SEED_READY
+```
+
+The plan ranks the next generator options:
+
+```text
+1. short-horizon target search around projected reference
+2. contact-transition constrained search
+3. low-dimensional gait primitive search
+4. reference adaptation with an explicit forward objective
+```
+
 ### V5/V7 Low-Command Trace Collection
 
 The old moving-lineage policies were replayed at `x=0.04` with vanilla dynamics
