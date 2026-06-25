@@ -167,3 +167,66 @@ The next generator change should focus on contact alternation for this family:
 one additional safe contact transition is likely enough to move seed2 from
 `98%` dominance to the `<=95%` gate, provided forward and lateral metrics are
 preserved.
+
+## Contact-Break Search Finding
+
+A focused contact-break micro-grid around the best near-pass family did not
+move the seed2 contact-dominance blocker:
+
+```text
+trace set: outputs/analysis/target_generator_contact_break_search_traces
+objective score: HOLD_NO_SEED_ROBUST_TARGETS
+robust 50-sample modes: 0
+best seed2 vx: 0.0453 m/s
+best seed2 vy95: 0.1028 m/s
+best seed2 contact_dominance: 98%
+best seed2 failure: single_contact_pattern_dominates
+```
+
+The same trace set produced many seed0-only curated windows:
+
+```text
+50-sample curated windows: 70
+50-sample curated modes: 38
+curated source files: 1
+curated source: seed_000
+```
+
+Interpretation:
+
+```text
+The current sine primitive family can generate forward, actuator-safe seed0
+windows, but the local contact-break perturbations did not produce seed-robust
+contact alternation. The next generator should not be another micro-grid around
+the same family. It should explicitly create and score contact transitions.
+```
+
+## Next Generator Requirement
+
+The next generator iteration should add at least one of these mechanisms:
+
+```text
+contact-lift term:
+  explicit swing-side knee/ankle lift or foot-clearance shaping
+
+contact-transition term:
+  reward windows that contain at least one safe transition between contact
+  patterns while preserving base height and pitch gates
+
+asymmetric stance timing:
+  separate stance/swing duty factors instead of a single sinusoidal phase
+
+seed-robust contact objective:
+  rank by worst-seed contact dominance and reject candidates that only improve
+  seed_000
+```
+
+Keep these gates unchanged:
+
+```text
+seed2 vy_abs_p95 <= 0.12
+seed2 contact_dominance_pct <= 95
+sent_target_velocity_p95 <= 2.5 rad/s
+joint_tracking_p95 <= 0.12 rad
+50-sample curated source files >= 2
+```

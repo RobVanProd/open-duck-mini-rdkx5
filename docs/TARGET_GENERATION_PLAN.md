@@ -589,6 +589,55 @@ transition in seed2 and bring contact dominance from 98% to <=95%, while
 preserving the seed0 pass.
 ```
 
+## Contact-Break Search Result
+
+A focused search around the best objective-scored near pass attempted to reduce
+seed2 contact dominance without changing the broader primitive family:
+
+```text
+tool: tools/search_low_command_target_primitives.py
+command_x: 0.04
+duration: 4 s
+seeds: 0,2
+candidates: 96
+objective score: HOLD_NO_SEED_ROBUST_TARGETS
+robust modes: 0
+```
+
+Best current near pass from this search:
+
+```text
+mode: primitive_p0p66_hrb0p005_hb0p08_h0p035_kb0p06_k0p1_ab0p04_am0p014_ph0p3927
+seed0: pass, vx=0.0531 m/s
+seed2: vx=0.0453 m/s
+seed2 vy95: 0.1028 m/s
+seed2 contact_dominance: 98%
+failure: single_contact_pattern_dominates
+```
+
+Curation result:
+
+```text
+25-sample curated windows: 82
+50-sample curated windows: 70
+50-sample curated modes: 38
+status: HOLD_INSUFFICIENT_CURATED_DIVERSITY
+curated source files: 1
+curated source: seed_000
+```
+
+Interpretation:
+
+```text
+The search created many more seed0-quality windows, but did not solve the
+seed2 contact-dominance blocker. The best seed2 candidate remains at 98%
+contact dominance, and the broad seed2 failure distribution remains dominated
+by single-contact-pattern failures. This suggests the current sine primitive
+family is not creating enough seed-robust contact alternation. The next
+generator should add an explicit contact-lift/contact-transition mechanism or a
+different primitive parameterization, rather than another local micro-grid.
+```
+
 ## First Primitive Search Result
 
 A bounded low-dimensional sine primitive search was run as the first generator

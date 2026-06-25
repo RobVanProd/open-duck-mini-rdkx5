@@ -3219,6 +3219,50 @@ Do next:
 4. preserve seed0 curation pass
 ```
 
+### Contact-Break Target Search
+
+A focused micro-grid around the best near-pass family tested whether small
+contact-break perturbations could move seed2 from 98% contact dominance to the
+<=95% gate:
+
+```text
+tool: tools/search_low_command_target_primitives.py
+command_x: 0.04
+duration: 4 s
+seeds: 0,2
+candidates: 96
+objective score: HOLD_NO_SEED_ROBUST_TARGETS
+robust 50-sample modes: 0
+```
+
+Best contact-break near pass:
+
+```text
+seed0: pass, vx=0.0531 m/s
+seed2: vx=0.0453 m/s, vy95=0.1028 m/s
+seed2 contact_dominance: 98%
+failure: single_contact_pattern_dominates
+```
+
+Curation improved seed0 coverage but not seed diversity:
+
+```text
+50-sample curated windows: 70
+50-sample curated modes: 38
+curated source files: 1
+curated source: seed_000
+```
+
+Do next:
+
+```text
+1. do not train from the contact-break windows; they are still single-seed
+2. stop local micro-grid searches around the same sine primitive family
+3. add a contact-lift/contact-transition primitive or objective
+4. continue ranking by worst-seed score across seed_000 and seed_002
+5. require seed2 contact dominance <=95% before rebuilding a target manifest
+```
+
 ### Target Dataset BC Smoke
 
 The observation-ready target manifest was tested with tiny linear and KNN

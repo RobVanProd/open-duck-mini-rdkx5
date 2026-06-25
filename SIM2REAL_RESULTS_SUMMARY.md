@@ -4159,3 +4159,51 @@ velocity. The remaining near-pass blocker is contact dominance: reduce the best
 seed2 contact dominance from 98% to <=95% without losing seed0. This is a more
 precise target than the earlier broad lateral/contact diagnosis.
 ```
+
+### Contact-Break Target Search
+
+A focused CPU-only search explored small contact-break perturbations around the
+best near-pass family:
+
+```text
+tool: tools/search_low_command_target_primitives.py
+command: x=0.04
+duration: 4 s
+seeds: 0,2
+candidates: 96
+search status: PASS_TARGET_SEARCH_RAN
+objective score: HOLD_NO_SEED_ROBUST_TARGETS
+robust 50-sample modes: 0
+```
+
+Best objective-scored candidate:
+
+```text
+mode: primitive_p0p66_hrb0p005_hb0p08_h0p035_kb0p06_k0p1_ab0p04_am0p014_ph0p3927
+seed0: pass, vx=0.0531 m/s
+seed2: vx=0.0453 m/s, vy95=0.1028 m/s, contact_dominance=98%
+seed2 failure: single_contact_pattern_dominates
+```
+
+Curation result:
+
+```text
+50-sample curation: HOLD_INSUFFICIENT_CURATED_DIVERSITY
+50-sample curated windows: 70
+50-sample curated modes: 38
+curated source files: 1
+curated source: seed_000
+25-sample curated windows: 82
+```
+
+Conclusion:
+
+```text
+The contact-break micro-grid increased seed0 target-window coverage but did not
+move the cross-seed blocker. Seed2 still fails the best near-pass at 98%
+contact dominance, and most seed2 failures remain 98-100% single-contact
+dominance. The current sine primitive family is likely structurally
+double-support/contact-dominated on seed2. Do not spend the next iteration on
+another nearby grid; add a generator with an explicit contact-lift or
+contact-transition objective.
+```
