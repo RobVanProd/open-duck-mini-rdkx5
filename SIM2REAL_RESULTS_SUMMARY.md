@@ -5185,3 +5185,49 @@ It also failed:
 Conclusion: feeding `command_x - local_vx` into the same primitive stance-push
 template does not produce sustained forward locomotion. The next generator must
 change structure, not only add another scalar feedback term to the sinusoid.
+
+### Closed-Loop Weight-Transfer Teacher Plan
+
+The next branch is now specified here:
+
+```text
+docs/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_PLAN.md
+```
+
+This locks the current decision:
+
+```text
+do not launch another V22-style prior-scale run
+do not extend the open-loop sinusoid grid with more scalar terms
+do not train from the current short fragments
+```
+
+The next offline experiment should build a state-feedback teacher probe that
+uses sim state directly:
+
+```text
+local_vx / local_vy
+body pitch and base height
+left/right foot contacts
+support-side dwell
+swing-side clearance
+stance push and pitch damping
+```
+
+The required first result is either:
+
+```text
+PASS_WEIGHT_TRANSFER_TEACHER_PROBE
+```
+
+or a useful hold that identifies the next limiting mechanism:
+
+```text
+HOLD_FORWARD_STILL_LOW
+HOLD_SUPPORT_TRANSFER_FAILED
+HOLD_PITCH_OR_HEIGHT_UNSTABLE
+HOLD_LATERAL_UNSTABLE
+HOLD_ACTUATOR_ENVELOPE
+```
+
+Robot validation, deployment, PPO/BC, and `x=0.08` remain blocked.

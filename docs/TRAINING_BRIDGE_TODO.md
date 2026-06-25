@@ -63,6 +63,12 @@ Cloud GPU smoke/debug notes:
 docs/CLOUD_GPU_TRAINING_DEBUG.md
 ```
 
+Closed-loop weight-transfer teacher plan:
+
+```text
+docs/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_PLAN.md
+```
+
 ## P0: Inspect Current Training Contract
 
 ### Fit Real Actuator Response From Telemetry
@@ -115,6 +121,43 @@ docs/CLOUD_GPU_TRAINING_DEBUG.md
 ```
 
 Do not start training from an interpreter that reports `HOLD_ENV_NOT_READY`.
+
+### Build Closed-Loop Weight-Transfer Teacher Probe
+
+Current target-source probes show that the open-loop primitive family is
+exhausted for this question:
+
+```text
+roll/lift support-biased primitive:
+  no seed-robust 100/150 tick target
+
+stance-push primitive:
+  no seed-robust 100/150 tick target
+
+velocity-feedback stance-push primitive:
+  no seed-robust 100/150 tick target
+```
+
+Next implementation should follow:
+
+```text
+docs/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_PLAN.md
+```
+
+Do not add another scalar term to `tools/search_low_command_target_primitives.py`
+unless it is part of a state-feedback teacher design. The next useful probe
+should couple support phase, body pitch/height, stance loading, swing
+clearance, and forward displacement in closed loop.
+
+Block PPO/BC/A100 runs until there is a compact offline result for:
+
+```text
+PASS_WEIGHT_TRANSFER_TEACHER_PROBE
+```
+
+or a specific teacher-probe hold such as `HOLD_SUPPORT_TRANSFER_FAILED`,
+`HOLD_FORWARD_STILL_LOW`, `HOLD_PITCH_OR_HEIGHT_UNSTABLE`, or
+`HOLD_ACTUATOR_ENVELOPE`.
 
 ### Reconcile Policy / Sim Contract
 
