@@ -31,6 +31,7 @@ DEFAULT_MANIFEST = (
 DEFAULT_OUTPUT_MD = ROOT / "outputs" / "analysis" / "TARGET_SEQUENCE_REPLAY_SMOKE.md"
 DEFAULT_OUTPUT_JSON = ROOT / "outputs" / "analysis" / "target_sequence_replay_smoke.json"
 DEFAULT_PLAYGROUND = ROOT.parent / "Open_Duck_Playground"
+DEFAULT_SOFT_PRIOR_CONFIG = ROOT / "outputs" / "analysis" / "soft_prior_fragment_config.json"
 
 
 @dataclass
@@ -245,6 +246,8 @@ def apply_periodic_seam_correction(policy: SequencePolicy) -> SequencePolicy:
 
 def load_sequence_policies(manifest_path: Path, args: argparse.Namespace) -> tuple[dict[str, Any], list[SequencePolicy]]:
     manifest = json.loads(manifest_path.read_text())
+    if args.soft_prior_config:
+        return manifest, [load_soft_prior_policy(Path(args.soft_prior_config))]
     entries = manifest.get("entries", [])
     if args.max_entries > 0:
         entries = entries[: args.max_entries]
@@ -258,6 +261,42 @@ def load_sequence_policies(manifest_path: Path, args: argparse.Namespace) -> tup
     if args.periodic_seam_correction:
         policies = [apply_periodic_seam_correction(policy) for policy in policies]
     return manifest, policies
+
+
+def load_soft_prior_policy(config_path: Path) -> SequencePolicy:
+    config = json.loads(config_path.read_text())
+    prior = config.get("prior") or {}
+    action_mean = np.asarray(prior.get("action_mean") or [], dtype=np.float64)
+    joint_indices = [int(index) for index in prior.get("joint_indices") or []]
+    if action_mean.ndim != 2 or action_mean.shape[1] != len(joint_indices):
+        raise ValueError(f"invalid soft-prior action_mean/joint_indices in {config_path}")
+    full_actions = np.zeros((action_mean.shape[0], 14), dtype=np.float64)
+    for column, joint_index in enumerate(joint_indices):
+        if joint_index < 0 or joint_index >= 14:
+            raise ValueError(f"soft-prior joint index out of range: {joint_index}")
+        full_actions[:, joint_index] = action_mean[:, column]
+    contacts = []
+    for item in prior.get("phase_contact_mode") or []:
+        text = str(item)
+        if len(text) >= 2 and all(char in "01" for char in text[:2]):
+            contacts.append((int(text[0]), int(text[1])))
+        else:
+            contacts.append((0, 0))
+    if len(contacts) != full_actions.shape[0]:
+        contacts = [(0, 0)] * full_actions.shape[0]
+    return SequencePolicy(
+        name=f"soft_prior_pitch_chain_{config.get('dataset_id', 'unknown')}",
+        source=str(config_path),
+        mode="soft_prior_pitch_chain_mean",
+        prefix_actions=full_actions[:1],
+        window_actions=full_actions,
+        prefix_contacts=contacts[:1],
+        window_contacts=contacts,
+        window_body_pitch_abs=np.zeros(full_actions.shape[0], dtype=np.float64),
+        window_base_height=np.zeros(full_actions.shape[0], dtype=np.float64),
+        window_vy_abs=np.zeros(full_actions.shape[0], dtype=np.float64),
+        entry_ids=[str(config.get("dataset_id", config_path.name))],
+    )
 
 
 def contact_mismatch_count(left: tuple[int, int], right: tuple[int, int]) -> int:
@@ -686,6 +725,19 @@ def classify_overall(policies: dict[str, Any]) -> str:
     return "HOLD_SEQUENCE_REPLAY_NO_PASS"
 
 
+def map_soft_prior_status(status: str) -> str:
+    mapping = {
+        "PASS_SEQUENCE_REPLAY_FORWARD_MOTION": "PASS_SOFT_PRIOR_SMOKE",
+        "HOLD_SEQUENCE_REPLAY_LOW_FORWARD_MOTION": "HOLD_SOFT_PRIOR_FREEZE",
+        "HOLD_SEQUENCE_REPLAY_LATERAL_UNSTABLE": "HOLD_SOFT_PRIOR_LATERAL_UNSTABLE",
+        "HOLD_SEQUENCE_REPLAY_PITCH_UNSTABLE": "HOLD_SOFT_PRIOR_LUNGE",
+        "HOLD_SEQUENCE_REPLAY_HEIGHT_COLLAPSE": "HOLD_SOFT_PRIOR_CONTACT_STUCK",
+        "HOLD_SEQUENCE_REPLAY_ABOVE_ENVELOPE": "HOLD_SOFT_PRIOR_PRIOR_TOO_FAST",
+        "HOLD_SEQUENCE_REPLAY_TERMINATED": "HOLD_SOFT_PRIOR_LUNGE",
+    }
+    return mapping.get(status, status)
+
+
 def write_markdown(payload: dict[str, Any], path: Path) -> None:
     thresholds = payload["thresholds"]
     lines = [
@@ -703,6 +755,7 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         f"- manifest_status: `{payload['manifest_status']}`",
         f"- policy_set: `{payload['policy_set']}`",
         f"- periodic_seam_correction: `{payload['periodic_seam_correction']}`",
+        f"- soft_prior_config: `{payload.get('soft_prior_config') or 'None'}`",
         f"- phase_adapter: `{payload['phase_adapter']}`",
         f"- sequence_policies: `{payload['sequence_policy_count']}`",
         f"- command_x: `{fmt(payload['command_x'])}`",
@@ -815,6 +868,14 @@ def main() -> int:
     parser.add_argument("--manifest", default=str(DEFAULT_MANIFEST))
     parser.add_argument("--output-md", default=str(DEFAULT_OUTPUT_MD))
     parser.add_argument("--output-json", default=str(DEFAULT_OUTPUT_JSON))
+    parser.add_argument(
+        "--soft-prior-config",
+        default=None,
+        help=(
+            "Optional compact soft-prior config. When set, ignore manifest action "
+            "tables and replay the pitch-chain mean prior as a default-off smoke."
+        ),
+    )
     parser.add_argument("--playground-path", default=str(DEFAULT_PLAYGROUND))
     parser.add_argument("--task", default="flat_terrain")
     parser.add_argument("--command-x", type=float, default=0.04)
@@ -860,6 +921,8 @@ def main() -> int:
     if not args.no_rollout:
         rollout = run_closed_loop_rollout(policies=policies, args=args)
         status = rollout["status"]
+    if args.soft_prior_config:
+        status = map_soft_prior_status(status)
 
     payload = {
         "status": status,
@@ -868,6 +931,7 @@ def main() -> int:
         "manifest_status": manifest.get("status"),
         "policy_set": args.policy_set,
         "periodic_seam_correction": bool(args.periodic_seam_correction),
+        "soft_prior_config": args.soft_prior_config,
         "phase_adapter": args.phase_adapter,
         "phase_adapter_config": {
             "max_phase_hold_ticks": args.max_phase_hold_ticks,

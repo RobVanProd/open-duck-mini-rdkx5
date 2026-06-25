@@ -3733,3 +3733,21 @@ Next implementation target:
 ```text
 default-off soft-prior smoke evaluator
 ```
+
+Soft-prior smoke result:
+
+```text
+1.2 s: HOLD_SOFT_PRIOR_LATERAL_UNSTABLE
+  seed0 vx=0.0325, seed2 vx=0.0414
+
+3.0 s: HOLD_SOFT_PRIOR_FREEZE
+  seed0 vx=0.0115, seed2 vx=0.0143
+```
+
+Interpretation:
+
+```text
+The prior is not a controller or label source. It should only become a weak
+auxiliary term in a closed-loop learner that still rewards real progress,
+posture, and survival.
+```

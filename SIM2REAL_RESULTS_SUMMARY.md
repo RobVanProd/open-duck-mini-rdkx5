@@ -4699,3 +4699,32 @@ outputs/analysis/soft_prior_fragment_config.json
 ```
 
 Next offline target: implement a default-off `PASS_SOFT_PRIOR_SMOKE` evaluator.
+
+The first prior-only smoke now holds:
+
+```text
+1.2 s: HOLD_SOFT_PRIOR_LATERAL_UNSTABLE
+  seed0 vx=0.0325 m/s
+  seed2 vx=0.0414 m/s
+
+3.0 s: HOLD_SOFT_PRIOR_FREEZE
+  seed0 vx=0.0115 m/s
+  seed2 vx=0.0143 m/s
+```
+
+Artifacts:
+
+```text
+outputs/analysis/SOFT_PRIOR_SMOKE_1P2S.md
+outputs/analysis/soft_prior_smoke_1p2s.json
+outputs/analysis/SOFT_PRIOR_SMOKE.md
+outputs/analysis/soft_prior_smoke.json
+```
+
+Conclusion:
+
+```text
+The prior can produce short forward motion, but it is not sufficient as a
+standalone controller or hard target. Use it only as a weak closed-loop
+auxiliary term.
+```

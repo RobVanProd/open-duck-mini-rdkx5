@@ -1,0 +1,254 @@
+{
+  "status": "HOLD_SOFT_PRIOR_FREEZE",
+  "manifest_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/target_dataset_manifest_dynamic_roll_lateral_fix_robust_modes.json",
+  "dataset_id": "47153f26ab48ef14",
+  "manifest_status": "PASS_TARGET_DATASET_MANIFEST_READY",
+  "policy_set": "aggregate",
+  "periodic_seam_correction": false,
+  "soft_prior_config": "outputs/analysis/soft_prior_fragment_config.json",
+  "phase_adapter": "fixed_time",
+  "phase_adapter_config": {
+    "max_phase_hold_ticks": 3,
+    "phase_lookahead": 8,
+    "contact_mismatch_weight": 10.0,
+    "pitch_match_weight": 2.0,
+    "height_match_weight": 5.0,
+    "vy_match_weight": 1.0,
+    "phase_skip_weight": 0.1
+  },
+  "sequence_policy_count": 1,
+  "command_x": 0.04,
+  "duration_s": 3.0,
+  "seeds": [
+    0,
+    2
+  ],
+  "thresholds": {
+    "min_mean_vx": 0.02,
+    "max_vy_abs_p95": 0.12,
+    "max_body_pitch_abs_p95": 0.25,
+    "min_base_height": 0.1,
+    "max_sent_velocity_p95": 3.75
+  },
+  "policies": [
+    {
+      "name": "soft_prior_pitch_chain_c4833a96744101d9",
+      "source": "outputs/analysis/soft_prior_fragment_config.json",
+      "mode": "soft_prior_pitch_chain_mean",
+      "prefix_len": 1,
+      "window_len": 50,
+      "entry_ids": [
+        "c4833a96744101d9"
+      ]
+    }
+  ],
+  "rollout": {
+    "status": "HOLD_SEQUENCE_REPLAY_LOW_FORWARD_MOTION",
+    "jax_backend": "cpu",
+    "jax_devices": [
+      "TFRT_CPU_0"
+    ],
+    "env": {
+      "playground_root": "/home/lsd/robots/Open_Duck_Playground",
+      "task": "flat_terrain",
+      "action_size": 14,
+      "observation_size": {
+        "privileged_state": [
+          212
+        ],
+        "state": [
+          101
+        ]
+      },
+      "actuator_names": [
+        "left_hip_yaw",
+        "left_hip_roll",
+        "left_hip_pitch",
+        "left_knee",
+        "left_ankle",
+        "neck_pitch",
+        "head_pitch",
+        "head_yaw",
+        "head_roll",
+        "right_hip_yaw",
+        "right_hip_roll",
+        "right_hip_pitch",
+        "right_knee",
+        "right_ankle"
+      ],
+      "ctrl_dt": 0.02,
+      "sim_dt": 0.002,
+      "action_scale": 0.25,
+      "max_motor_velocity": 5.24
+    },
+    "policies": {
+      "soft_prior_pitch_chain_c4833a96744101d9": {
+        "source": "outputs/analysis/soft_prior_fragment_config.json",
+        "mode": "soft_prior_pitch_chain_mean",
+        "entry_ids": [
+          "c4833a96744101d9"
+        ],
+        "prefix_len": 1,
+        "window_len": 50,
+        "status": "HOLD_SEQUENCE_REPLAY_LOW_FORWARD_MOTION",
+        "seeds": {
+          "seed_000": {
+            "status": "PASS_ROLLOUT_COMPLETED",
+            "samples": 150,
+            "termination_reason": "duration_complete",
+            "mean_vx_m_s": 0.01149525577299452,
+            "track_ratio": 0.287381394324863,
+            "vy_abs_p95_m_s": 0.05125007703900339,
+            "body_pitch_abs_p95_rad": 0.2685440986697364,
+            "base_height_min_m": 0.14770115911960602,
+            "action_saturation_pct": 0.0,
+            "action_abs_mean": 0.12118011315663656,
+            "sent_target_velocity_p95_rad_s": 0.35659074783325195,
+            "joint_tracking_p95_rad": 0.0719966173171997,
+            "contact_pct": {
+              "01": 3.3333333333333335,
+              "11": 96.66666666666667
+            },
+            "phase": {
+              "holds": 0,
+              "skips": 0,
+              "holds_per_s": 0.0,
+              "skips_per_s": 0.0,
+              "contact_mismatch_pct": 3.3557046979865772,
+              "phase_index_histogram": {
+                "0": 3,
+                "1": 3,
+                "2": 3,
+                "3": 3,
+                "4": 3,
+                "5": 3,
+                "6": 3,
+                "7": 3,
+                "8": 3,
+                "9": 3,
+                "10": 3,
+                "11": 3,
+                "12": 3,
+                "13": 3,
+                "14": 3,
+                "15": 3,
+                "16": 3,
+                "17": 3,
+                "18": 3,
+                "19": 3,
+                "20": 3,
+                "21": 3,
+                "22": 3,
+                "23": 3,
+                "24": 3,
+                "25": 3,
+                "26": 3,
+                "27": 3,
+                "28": 3,
+                "29": 3,
+                "30": 3,
+                "31": 3,
+                "32": 3,
+                "33": 3,
+                "34": 3,
+                "35": 3,
+                "36": 3,
+                "37": 3,
+                "38": 3,
+                "39": 3,
+                "40": 3,
+                "41": 3,
+                "42": 3,
+                "43": 3,
+                "44": 3,
+                "45": 3,
+                "46": 3,
+                "47": 3,
+                "48": 3,
+                "49": 2
+              }
+            }
+          },
+          "seed_002": {
+            "status": "PASS_ROLLOUT_COMPLETED",
+            "samples": 150,
+            "termination_reason": "duration_complete",
+            "mean_vx_m_s": 0.014317195404109952,
+            "track_ratio": 0.35792988510274876,
+            "vy_abs_p95_m_s": 0.07702154889702835,
+            "body_pitch_abs_p95_rad": 0.2830479990621635,
+            "base_height_min_m": 0.14726713299751282,
+            "action_saturation_pct": 0.0,
+            "action_abs_mean": 0.12118011315663656,
+            "sent_target_velocity_p95_rad_s": 0.35659074783325195,
+            "joint_tracking_p95_rad": 0.0718117594718933,
+            "contact_pct": {
+              "01": 1.3333333333333335,
+              "10": 0.6666666666666667,
+              "11": 98.0
+            },
+            "phase": {
+              "holds": 0,
+              "skips": 0,
+              "holds_per_s": 0.0,
+              "skips_per_s": 0.0,
+              "contact_mismatch_pct": 2.013422818791946,
+              "phase_index_histogram": {
+                "0": 3,
+                "1": 3,
+                "2": 3,
+                "3": 3,
+                "4": 3,
+                "5": 3,
+                "6": 3,
+                "7": 3,
+                "8": 3,
+                "9": 3,
+                "10": 3,
+                "11": 3,
+                "12": 3,
+                "13": 3,
+                "14": 3,
+                "15": 3,
+                "16": 3,
+                "17": 3,
+                "18": 3,
+                "19": 3,
+                "20": 3,
+                "21": 3,
+                "22": 3,
+                "23": 3,
+                "24": 3,
+                "25": 3,
+                "26": 3,
+                "27": 3,
+                "28": 3,
+                "29": 3,
+                "30": 3,
+                "31": 3,
+                "32": 3,
+                "33": 3,
+                "34": 3,
+                "35": 3,
+                "36": 3,
+                "37": 3,
+                "38": 3,
+                "39": 3,
+                "40": 3,
+                "41": 3,
+                "42": 3,
+                "43": 3,
+                "44": 3,
+                "45": 3,
+                "46": 3,
+                "47": 3,
+                "48": 3,
+                "49": 2
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

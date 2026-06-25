@@ -248,3 +248,49 @@ The robust target fragments can be distilled into a compact pitch-chain/contact
 phase prior inside the measured actuator envelope. This still does not permit
 training. It only unblocks the next default-off smoke evaluator.
 ```
+
+## Prior-Only Smoke Result
+
+The compact prior was replayed as a pitch-chain-only closed-loop controller in
+CPU sim. This is still not training; it only tests whether the prior itself is a
+usable controller-like target.
+
+Artifacts:
+
+```text
+outputs/analysis/SOFT_PRIOR_SMOKE_1P2S.md
+outputs/analysis/soft_prior_smoke_1p2s.json
+outputs/analysis/SOFT_PRIOR_SMOKE.md
+outputs/analysis/soft_prior_smoke.json
+```
+
+Results:
+
+```text
+1.2 s:
+  status: HOLD_SOFT_PRIOR_LATERAL_UNSTABLE
+  seed0 vx: 0.0325 m/s, vy95: 0.0981 m/s, pitch95: 0.2734 rad
+  seed2 vx: 0.0414 m/s, vy95: 0.1495 m/s, pitch95: 0.2888 rad
+
+3.0 s:
+  status: HOLD_SOFT_PRIOR_FREEZE
+  seed0 vx: 0.0115 m/s, vy95: 0.0513 m/s, pitch95: 0.2685 rad
+  seed2 vx: 0.0143 m/s, vy95: 0.0770 m/s, pitch95: 0.2830 rad
+```
+
+Interpretation:
+
+```text
+The compact prior is useful motion-shape material, but it is not sufficient as
+a direct controller. It creates short forward motion, then decays into low
+progress. A learner must use it as a weak auxiliary term while optimizing real
+closed-loop progress and posture.
+```
+
+Next step:
+
+```text
+Implement the soft prior as a default-off auxiliary reward/regularizer in a
+tiny one-phase learner. Do not run a large A100 job until that learner has a
+reviewed recipe and phase gate.
+```
