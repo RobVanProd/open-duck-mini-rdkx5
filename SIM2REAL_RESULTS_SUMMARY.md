@@ -6024,3 +6024,15 @@ Treat the V24 behavior as a failed candidate gate, but do not claim the
 transition/dwell terms were observed in the recovered eval without a trace that
 contains those metrics. Before another long PPO run, fix or explain reward-term
 observability for newly configured contact objectives.
+
+The eval override allow-list issue is now fixed:
+
+```text
+artifact: outputs/analysis/V24_REWARD_OVERRIDE_ALLOWLIST_FIX.md
+status: PASS_LOCAL_REWARD_TERMS_OBSERVED_AFTER_ALLOWLIST_FIX
+```
+
+The closed-loop eval runner had not been applying the V23/V24 support-contact
+reward overrides even though the phase JSON recorded them. A local CPU smoke
+after the patch observed the previously missing terms. Future support-contact
+training must run this reward activation smoke before a long cloud job.

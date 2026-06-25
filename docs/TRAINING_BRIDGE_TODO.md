@@ -4560,6 +4560,16 @@ This means the recovered eval artifacts prove the candidate failed behaviorally,
 but they do not prove the newly configured transition/dwell terms were observed
 in the reward-term trace.
 
+The closed-loop eval reward override allow-list has since been patched:
+
+```text
+artifact: outputs/analysis/V24_REWARD_OVERRIDE_ALLOWLIST_FIX.md
+status: PASS_LOCAL_REWARD_TERMS_OBSERVED_AFTER_ALLOWLIST_FIX
+```
+
+Future support-contact runs must first pass a short reward activation smoke
+that confirms the intended nonzero reward terms are present in eval artifacts.
+
 Do not rerun V24 unchanged. The next branch should be structurally different:
 either a stronger closed-loop teacher / optimizer with explicit stance side,
 body placement, foot placement, and push timing, or an imitation/demonstration

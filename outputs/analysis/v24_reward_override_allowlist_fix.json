@@ -1,0 +1,33 @@
+{
+  "status": "PASS_LOCAL_REWARD_TERMS_OBSERVED_AFTER_ALLOWLIST_FIX",
+  "robot_tests_run": false,
+  "ssh_run": false,
+  "deploy_run": false,
+  "runtime_behavior_changed": false,
+  "training_run": false,
+  "root_cause": "tools/closed_loop_sim_eval.py reward override allow-list did not include V23/V24 support-contact reward scales/config keys",
+  "allowlist_terms_added": [
+    "forward_single_support_scale",
+    "forward_double_support_scale",
+    "forward_contact_transition_scale",
+    "forward_double_support_dwell_scale",
+    "forward_contact_transition_min_progress_ratio",
+    "forward_double_support_dwell_grace_steps"
+  ],
+  "local_verification": {
+    "policy": "policy/BEST_WALK_ONNX_2.onnx",
+    "command_x": 0.04,
+    "duration_s": 0.2,
+    "seed": 0,
+    "bridge_mode": "vanilla",
+    "jax_platform": "cpu",
+    "audit_status": "WARN_REWARD_TERMS_ZERO",
+    "previously_missing_terms": {
+      "forward_contact_transition": "OBSERVED_NONZERO",
+      "forward_double_support": "OBSERVED_NONZERO",
+      "forward_single_support": "OBSERVED_NONZERO",
+      "forward_double_support_dwell": "OBSERVED_ZERO"
+    }
+  },
+  "interpretation": "The recovered V24 candidate gate remains behaviorally failed, but its eval reward-term trace was affected by a stale override allow-list. Future support-contact runs must pass reward activation smoke before long training."
+}

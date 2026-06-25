@@ -374,6 +374,17 @@ reward-term trace did not prove that the configured transition/dwell terms were
 observed. Before treating another support-objective run as definitive, require
 the new contact terms to be visible in gate artifacts.
 
+The missing-term cause is now identified and patched:
+
+```text
+artifact: outputs/analysis/V24_REWARD_OVERRIDE_ALLOWLIST_FIX.md
+status: PASS_LOCAL_REWARD_TERMS_OBSERVED_AFTER_ALLOWLIST_FIX
+```
+
+The issue was stale closed-loop eval reward override allow-listing, not missing
+Playground reward definitions. This makes reward activation smoke a required
+preflight for any next support-contact PPO branch.
+
 This closes the nearby "add transition reward / dwell penalty and hope" branch.
 The next target-source or learning-objective branch should be structurally
 different, not another scalar reward tweak around V23/V24.
