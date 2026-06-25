@@ -114,6 +114,12 @@ dwell/transition metrics, but it still leaves the same forward/lateral failure.
 It is not enough to wait for single support; the controller must actively place
 and regulate the body over the stance foot.
 
+The next concrete implementation plan is:
+
+```text
+docs/COM_WEIGHT_TRANSFER_CONTROLLER_PLAN.md
+```
+
 ## Required Gate
 
 The next target source must pass:

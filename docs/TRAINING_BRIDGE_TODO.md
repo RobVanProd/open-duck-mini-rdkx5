@@ -4329,4 +4329,5 @@ The current compact handoff docs are:
 ```text
 docs/SIM2REAL_FINDINGS_DIGEST.md
 docs/WEIGHT_TRANSFER_OBJECTIVE_BRIEF.md
+docs/COM_WEIGHT_TRANSFER_CONTROLLER_PLAN.md
 ```

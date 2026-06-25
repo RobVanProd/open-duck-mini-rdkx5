@@ -5533,3 +5533,9 @@ Support-loaded push slightly improves support dwell, but it still misses the
 forward displacement gate and fails lateral velocity. The controller must
 actively place/regulate the body over the stance foot rather than only wait for
 single support before pushing.
+
+The next implementation plan is:
+
+```text
+docs/COM_WEIGHT_TRANSFER_CONTROLLER_PLAN.md
+```
