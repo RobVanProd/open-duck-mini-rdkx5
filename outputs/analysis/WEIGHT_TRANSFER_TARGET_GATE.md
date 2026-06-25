@@ -537,3 +537,26 @@ objective or controller that explicitly prices:
 ```
 
 Training remains blocked until a target source passes this gate.
+
+## Campaign Summary Helper
+
+The compact campaign-level score summary is:
+
+```text
+tool: tools/summarize_weight_transfer_target_campaign.py
+artifact: outputs/analysis/WEIGHT_TRANSFER_TARGET_CAMPAIGN_SUMMARY.md
+status: HOLD_FORWARD_LATERAL_SUPPORT_TRADEOFF
+```
+
+It aggregates the current score artifacts and makes the repeated failure
+surface explicit:
+
+```text
+low_forward_velocity: 2065
+double_support_dominates: 1236
+too_little_single_support: 1050
+high_lateral_velocity: 822
+single_support_not_balanced: 774
+```
+
+Use that summary as the starting point for the next target-source branch.

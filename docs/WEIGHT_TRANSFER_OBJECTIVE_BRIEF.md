@@ -18,6 +18,16 @@ forward displacement collapses or double-support dominates.
 The next experiment should stop re-presenting the same kinematic targets and
 instead make weight transfer itself the object being optimized.
 
+Current aggregate evidence:
+
+```text
+artifact: outputs/analysis/WEIGHT_TRANSFER_TARGET_CAMPAIGN_SUMMARY.md
+status: HOLD_FORWARD_LATERAL_SUPPORT_TRADEOFF
+```
+
+That summary aggregates the compact target-source score artifacts and should be
+checked before launching another target-source or training branch.
+
 ## Required Gate
 
 The next target source must pass:
