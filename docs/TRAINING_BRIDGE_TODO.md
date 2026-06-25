@@ -4323,3 +4323,10 @@ Before another CUDA PPO/BC run, require a structurally different
 contact/weight-transfer objective or controller that can pass the 100-150 tick
 target gate. Do not run another nearby teacher-grid expansion as training
 preparation.
+
+The current compact handoff docs are:
+
+```text
+docs/SIM2REAL_FINDINGS_DIGEST.md
+docs/WEIGHT_TRANSFER_OBJECTIVE_BRIEF.md
+```

@@ -5446,3 +5446,10 @@ objective or controller structure so single-support alternation, lateral
 momentum control, and forward displacement are optimized together over
 100-150 ticks. Robot motion and training remain blocked until a target source
 passes that gate.
+
+Compact handoff docs for the current state:
+
+```text
+docs/SIM2REAL_FINDINGS_DIGEST.md
+docs/WEIGHT_TRANSFER_OBJECTIVE_BRIEF.md
+```
