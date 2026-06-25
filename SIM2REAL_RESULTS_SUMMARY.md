@@ -5231,3 +5231,30 @@ HOLD_ACTUATOR_ENVELOPE
 ```
 
 Robot validation, deployment, PPO/BC, and `x=0.08` remain blocked.
+
+The first implementation of that probe was added and run locally on CPU:
+
+```text
+tool: tools/probe_closed_loop_weight_transfer_teacher.py
+artifact: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_PROBE.md
+score_100: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_SCORE_100.md
+score_150: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+Key result:
+
+```text
+top aggregate rollout mean vx: 0.0232 m/s
+best scored 100-tick seed2 vx: 0.0050 m/s
+best scored 150-tick seed2 vx: 0.0047 m/s
+100/150 robust modes: 0
+dominant failures: low_forward_velocity and high_lateral_velocity
+```
+
+This is useful negative evidence. A state-feedback teacher can increase raw
+forward motion and contact transitions compared with the open-loop primitive
+probes, but the first version pays for that with lateral motion and still does
+not produce a sustained seed-robust target. The next teacher revision should
+separate lateral load shift from forward push and add explicit local-y/CoM
+centering before any learner or A100 run.

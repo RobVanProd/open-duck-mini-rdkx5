@@ -225,6 +225,40 @@ Do not keep expanding the open-loop sinusoid grid. The latest probes already
 show that scalar roll/lift/push/velocity terms do not produce the missing
 mechanism.
 
+## First Probe Result
+
+The first implementation is:
+
+```text
+tools/probe_closed_loop_weight_transfer_teacher.py
+```
+
+It ran a bounded local CPU probe with 24 candidates, seeds `0,2`, and
+`command_x=0.04`:
+
+```text
+artifact: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_PROBE.md
+score_100: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_SCORE_100.md
+score_150: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+Result:
+
+```text
+top aggregate rollout mean vx: 0.0232 m/s
+100-tick robust modes: 0
+150-tick robust modes: 0
+main failures: low_forward_velocity and high_lateral_velocity
+```
+
+This is not training permission. The probe shows that state feedback can create
+more contact transitions and more raw forward motion than the open-loop
+primitive probes, but the first controller couples forward push and lateral
+load shift too strongly. The next teacher revision should explicitly damp
+local lateral velocity and center the body/CoM while preserving support
+transitions.
+
 ## Next Branch After a Pass
 
 If the teacher probe passes, use its traces as a target source:

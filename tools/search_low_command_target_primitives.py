@@ -243,6 +243,8 @@ def run_search(args: argparse.Namespace) -> dict[str, Any]:
 
     command = jp.asarray([args.command_x, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
     trace_root = Path(args.trace_dir)
+    if not trace_root.is_absolute():
+        trace_root = ROOT / trace_root
     trace_root.mkdir(parents=True, exist_ok=True)
     primitives = candidate_grid(args)
     seeds = parse_int_list(args.seeds)

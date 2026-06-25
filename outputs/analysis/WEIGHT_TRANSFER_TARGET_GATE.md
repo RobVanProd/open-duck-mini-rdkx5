@@ -292,3 +292,45 @@ standing/shuffling, but not sustained low-command forward locomotion. The next
 useful generator should change structure: plan contact phases and body motion
 together, or use a controller/teacher with state feedback over CoM, pitch, and
 stance-foot loading rather than only feeding velocity error into joint sinusoids.
+
+## Closed-Loop Weight-Transfer Teacher Probe
+
+The next step added a separate state-feedback teacher probe rather than another
+scalar term on the primitive generator:
+
+```text
+tool: tools/probe_closed_loop_weight_transfer_teacher.py
+artifact: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_PROBE.md
+score_100: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_SCORE_100.md
+score_150: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_SCORE_150.md
+seeds: 0,2
+duration: 3.0 s
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+This first teacher couples support phase, local velocity, lateral velocity,
+body pitch, base height, and current contacts. It improved raw rollout forward
+velocity compared with the earlier primitive probes, but it still did not pass
+the sustained gate:
+
+| result | 100 ticks | 150 ticks |
+|---|---:|---:|
+| robust modes | 0 | 0 |
+| top aggregate rollout mean vx | 0.0232 m/s | 0.0232 m/s |
+| best scored seed2 vx | 0.0050 m/s | 0.0047 m/s |
+| dominant failures | low forward velocity, high lateral velocity | low forward velocity, high lateral velocity |
+
+Interpretation: state feedback is directionally useful, but the first teacher
+is not the answer. It creates more contact transitions and higher raw forward
+motion than the open-loop probes, but it trades that for side motion and still
+cannot produce seed-robust `0.04 m/s` forward displacement over 100-150 ticks.
+
+The next teacher revision should reduce lateral impulse while preserving the
+support transitions:
+
+```text
+separate lateral load shift from forward push
+add a stronger local_vy damping term
+gate stance push until lateral velocity is bounded
+add body-y / CoM-centering feedback, not only hip-roll correction
+```

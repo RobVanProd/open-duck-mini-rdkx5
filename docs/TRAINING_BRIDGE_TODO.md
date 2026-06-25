@@ -159,6 +159,28 @@ or a specific teacher-probe hold such as `HOLD_SUPPORT_TRANSFER_FAILED`,
 `HOLD_FORWARD_STILL_LOW`, `HOLD_PITCH_OR_HEIGHT_UNSTABLE`, or
 `HOLD_ACTUATOR_ENVELOPE`.
 
+First teacher-probe result:
+
+```text
+tool: tools/probe_closed_loop_weight_transfer_teacher.py
+artifact: outputs/analysis/CLOSED_LOOP_WEIGHT_TRANSFER_TEACHER_PROBE.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+The first state-feedback teacher improved raw rollout forward velocity versus
+the open-loop probes, but the scored windows still failed both seeds:
+
+```text
+top aggregate rollout mean vx: 0.0232 m/s
+100-tick robust modes: 0
+150-tick robust modes: 0
+dominant failures: low_forward_velocity and high_lateral_velocity
+```
+
+Next teacher work should reduce lateral impulse while keeping contact
+transitions: stronger local-vy damping, push gating when lateral velocity is
+high, and body-y / CoM centering feedback.
+
 ### Reconcile Policy / Sim Contract
 
 - Run `tools/audit_policy_sim_contract.py`.
