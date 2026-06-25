@@ -41,6 +41,36 @@ live blocker is:
 the policy still does not learn coherent support transfer and propulsion.
 ```
 
+## Contact Transfer Audit
+
+The cheap contact trace read is now captured here:
+
+```text
+tool: tools/analyze_contact_transfer_blocker.py
+artifact: outputs/analysis/CONTACT_TRANSFER_BLOCKER_AUDIT.md
+status: HOLD_TARGET_SOURCE_DOUBLE_SUPPORT
+```
+
+Result:
+
+```text
+50-tick dynamic-roll/lateral-fix robust snippets:
+  double support mean/p95: 92.67% / 94.00%
+  single support mean/p95: 7.33% / 11.20%
+  weight-transfer-pass windows: 0
+
+100-tick dynamic-roll/lateral-fix curation:
+  curated windows: 0
+
+150-tick dynamic-roll/lateral-fix curation:
+  curated windows: 0
+```
+
+This resolves the immediate branch split: the current "good" fragments mostly
+move forward by staying in double support. They are not yet coherent stepping
+demonstrations. Do not train BC/PPO from them as if they prove single-support
+weight transfer.
+
 ## Ruled Out For The Next Branch
 
 Do not spend the next long run on:
@@ -174,6 +204,12 @@ foot-placement, and push-timing state.
 
 For Branch B, find or construct a low-command stepping demonstration and audit
 its command/contact/envelope compatibility before training.
+
+The concrete target-generation plan is:
+
+```text
+docs/WEIGHT_TRANSFER_TARGET_PLAN.md
+```
 
 Robot validation remains blocked until a candidate passes offline low-command
 multi-seed gates.

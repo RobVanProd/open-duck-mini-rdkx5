@@ -1,0 +1,135 @@
+# Weight Transfer Target Plan
+
+This is an offline planning note. It does not authorize robot tests, SSH,
+deployment, runtime changes, policy deployment, or training by itself.
+
+## Current Finding
+
+The contact-transfer audit says:
+
+```text
+artifact: outputs/analysis/CONTACT_TRANSFER_BLOCKER_AUDIT.md
+status: HOLD_TARGET_SOURCE_DOUBLE_SUPPORT
+```
+
+The current dynamic-roll/lateral-fix target snippets are not valid stepping
+demonstrations yet:
+
+```text
+50-tick robust-mode curated snippets:
+  double support mean/p95: 92.67% / 94.00%
+  single support mean/p95: 7.33% / 11.20%
+  weight-transfer-pass windows: 0
+
+100-tick curation:
+  curated windows: 0
+
+150-tick curation:
+  curated windows: 0
+```
+
+The fragments can produce small forward displacement, but they mostly do it
+while staying in double support. Training BC/PPO from those snippets would teach
+a double-support shuffle, not a transferable stepping gait.
+
+## Decision
+
+Do not launch another PPO run from:
+
+```text
+current V24 recipe
+current dynamic-roll/lateral-fix fragments
+current 50-tick target dataset manifest
+another scalar contact reward tweak
+```
+
+The next offline target is:
+
+```text
+PASS_WEIGHT_TRANSFER_TARGET
+```
+
+before BC, imitation, or PPO.
+
+## Minimum Target Gate
+
+A target source must pass this gate before training:
+
+```text
+seeds: 0 and 2 minimum
+window length: 100-150 ticks
+mean vx >= 0.04 m/s
+local forward displacement >= 0.004 m
+vy_abs_p95 <= 0.12 m/s
+body_pitch_abs_p95 <= 0.35 rad
+base_height_min >= 0.145 m
+double_support_pct <= 75%
+single_support_pct >= 20%
+min_each_single_support_pct >= 5%
+contact_transitions >= 2
+sent_target_velocity_p95 <= 3.75 rad/s
+joint_tracking_p95 <= 0.12 rad
+```
+
+If this target gate fails, do not start policy training from that source.
+
+## Next Implementation Branch
+
+Use a richer closed-loop teacher/optimizer, not another reward-only learner.
+
+The target generator should explicitly control:
+
+```text
+stance side
+body lateral placement over stance foot
+swing-foot clearance
+swing-foot placement
+stance push timing
+support transition timing
+pitch and base-height guards
+actuator-envelope limits
+```
+
+The objective should score support transfer directly:
+
+```text
+double support dwell is a cost during commanded motion
+left-only and right-only support must both occur
+single-support intervals must last long enough to be useful
+forward progress must occur during/after stance push
+no-support and lateral collapse remain hard failures
+```
+
+## Stop Conditions
+
+Stop target generation and do not train if:
+
+```text
+100-150 tick candidates remain dominated by double support
+only one seed passes
+one single-support side is missing
+forward motion only appears in short 50-tick fragments
+target velocity leaves the measured actuator envelope
+base height or body pitch fails before the target window ends
+```
+
+## Training Re-entry Rule
+
+Training can resume only after a reviewed target source clears:
+
+```text
+PASS_WEIGHT_TRANSFER_TARGET
+```
+
+Then the next training path should be small and staged:
+
+```text
+1. supervised/imitation smoke from the verified target source
+2. seed sweep at x=0.04 vanilla
+3. mild bridge only after coherent low-command motion exists
+4. fitted bridge only after mild bridge passes
+5. x=0.08 only after x=0.04 is seed-robust
+```
+
+Robot validation remains blocked until the offline low-command multi-seed gates
+pass.

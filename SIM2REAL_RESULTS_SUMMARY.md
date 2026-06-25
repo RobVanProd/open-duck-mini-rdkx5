@@ -6077,3 +6077,39 @@ tool: tools/run_support_reward_preflight.py
 artifact: outputs/analysis/SUPPORT_REWARD_PREFLIGHT_V24.md
 status: WARN_REWARD_TERMS_ZERO
 ```
+
+## Contact Transfer Blocker Audit
+
+The cheap contact-trace split after V24 is now recorded:
+
+```text
+tool: tools/analyze_contact_transfer_blocker.py
+artifact: outputs/analysis/CONTACT_TRANSFER_BLOCKER_AUDIT.md
+status: HOLD_TARGET_SOURCE_DOUBLE_SUPPORT
+```
+
+The current dynamic-roll/lateral-fix target snippets do not yet prove coherent
+single-support stepping:
+
+```text
+50-tick robust-mode snippets:
+  double support mean/p95: 92.67% / 94.00%
+  single support mean/p95: 7.33% / 11.20%
+  weight-transfer-pass windows: 0
+
+100-tick curation:
+  curated windows: 0
+
+150-tick curation:
+  curated windows: 0
+```
+
+This resolves the immediate branch split. The best available snippets mostly
+move forward while staying in double support, so they are not valid stepping
+demonstrations for BC/PPO yet. The next offline branch should build or optimize
+a target source that explicitly produces seed-robust support alternation before
+training resumes:
+
+```text
+docs/WEIGHT_TRANSFER_TARGET_PLAN.md
+```
