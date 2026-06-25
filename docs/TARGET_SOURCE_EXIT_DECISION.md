@@ -321,3 +321,16 @@ The direct support objective did not create support transfer. It produced a
 stable double-support standstill. Future branches should require support-state
 transition and forward displacement together; single-support occupancy alone is
 not enough.
+
+The next planned support-objective branch is:
+
+```text
+artifact: outputs/analysis/MOVEMENT_BOOTSTRAP_V24_TRANSITION_PROPULSION_PLAN.md
+recipe: movement_bootstrap_v24
+status: DRY_RUN / not trained
+```
+
+This branch is explicitly different from V23: contact-transition reward is
+conditioned on forward progress, and double-support penalty grows with dwell
+time. It should be graded on support transitions and forward displacement
+together, not on single-support occupancy alone.

@@ -112,6 +112,10 @@ class Phase:
     forward_contact_support_asymmetry_weight: float = 0.0
     forward_single_support_scale: float = 0.0
     forward_double_support_scale: float = 0.0
+    forward_contact_transition_scale: float = 0.0
+    forward_contact_transition_min_progress_ratio: float = 0.25
+    forward_double_support_dwell_scale: float = 0.0
+    forward_double_support_dwell_grace_steps: int = 10
     ppo_learning_rate: float | None = None
     ppo_entropy_cost: float | None = None
     ppo_clipping_epsilon: float | None = None
@@ -145,6 +149,7 @@ class Phase:
 
 
 RECIPE_DEFAULT_PHASE_GATE_COMMAND_X = {
+    "movement_bootstrap_v24": 0.04,
     "movement_bootstrap_v23": 0.04,
     "movement_bootstrap_v22": 0.04,
     "movement_bootstrap_v21": 0.04,
@@ -2892,7 +2897,85 @@ MOVEMENT_BOOTSTRAP_V23_PHASES = [
 ]
 
 
+MOVEMENT_BOOTSTRAP_V24_PHASES = [
+    Phase(
+        name="phase1_transition_propulsion_probe",
+        purpose=(
+            "structural follow-up after V23 learned double-support standstill. "
+            "This phase couples support-state transition to body-frame forward "
+            "progress: landing transitions are rewarded only when forward "
+            "progress is present, and prolonged double-support dwell is "
+            "penalized after a short grace window. It remains a low-command "
+            "x=0.04 vanilla-dynamics probe and does not authorize robot "
+            "validation."
+        ),
+        num_timesteps=180_000,
+        bridge=False,
+        delay=(0, 0),
+        tau_s=(0.0, 0.0),
+        velocity_limit_rad_s=(5.24, 5.24),
+        target_rate_scale=-0.0002,
+        actuator_tracking_scale=0.0,
+        tracking_lin_vel_scale=24.0,
+        tracking_sigma=0.0015,
+        forward_progress_scale=24.0,
+        forward_shortfall_scale=-46.0,
+        forward_shortfall_required_ratio=0.50,
+        action_rate_scale=-0.004,
+        action_magnitude_scale=-0.0008,
+        stand_still_scale=-1.0,
+        alive_scale=0.0,
+        imitation_scale=0.0,
+        lin_vel_x=(0.035, 0.045),
+        zero_command_probability=0.0,
+        forward_overshoot_scale=-2.0,
+        forward_overshoot_allowed_ratio=1.60,
+        forward_wrong_direction_scale=-95.0,
+        forward_wrong_direction_allowed_reverse_ratio=0.0,
+        orientation_scale=-0.04,
+        base_height_scale=-0.25,
+        forward_pitch_scale=-0.05,
+        forward_pitch_rate_scale=-0.005,
+        forward_contact_support_scale=-0.06,
+        forward_contact_support_no_contact_weight=1.0,
+        forward_contact_support_asymmetry_weight=0.0,
+        forward_single_support_scale=0.25,
+        forward_double_support_scale=-0.5,
+        forward_contact_transition_scale=4.0,
+        forward_contact_transition_min_progress_ratio=0.20,
+        forward_double_support_dwell_scale=-2.0,
+        forward_double_support_dwell_grace_steps=8,
+        command_progress_scale=10.0,
+        command_progress_shortfall_scale=-46.0,
+        command_progress_required_ratio=0.40,
+        command_progress_warmup_steps=10,
+        command_progress_failure_scale=-150.0,
+        command_progress_failure_enable=True,
+        command_progress_failure_min_ratio=0.18,
+        command_progress_failure_warmup_steps=70,
+        reward_clip_min=-20.0,
+        reward_clip_max=10000.0,
+        action_rate_huber_delta=0.08,
+        action_magnitude_huber_delta=0.50,
+        target_rate_huber_delta=1.0,
+        actuator_tracking_huber_delta=0.08,
+        forward_shortfall_huber_delta=0.0,
+        forward_overshoot_huber_delta=0.50,
+        forward_wrong_direction_huber_delta=0.0,
+        forward_pitch_huber_delta=0.25,
+        forward_pitch_rate_huber_delta=1.0,
+        command_progress_shortfall_huber_delta=0.0,
+        ppo_learning_rate=7.0e-5,
+        ppo_entropy_cost=0.010,
+        ppo_clipping_epsilon=0.08,
+        ppo_max_grad_norm=0.65,
+        phase_gate_bridge_mode="vanilla",
+    ),
+]
+
+
 RECIPES = {
+    "movement_bootstrap_v24": MOVEMENT_BOOTSTRAP_V24_PHASES,
     "movement_bootstrap_v23": MOVEMENT_BOOTSTRAP_V23_PHASES,
     "movement_bootstrap_v22": MOVEMENT_BOOTSTRAP_V22_PHASES,
     "movement_bootstrap_v21": MOVEMENT_BOOTSTRAP_V21_PHASES,
@@ -3045,6 +3128,14 @@ def phase_command(
         cli_value(phase.forward_single_support_scale),
         "--forward-double-support-scale",
         cli_value(phase.forward_double_support_scale),
+        "--forward-contact-transition-scale",
+        cli_value(phase.forward_contact_transition_scale),
+        "--forward-contact-transition-min-progress-ratio",
+        cli_value(phase.forward_contact_transition_min_progress_ratio),
+        "--forward-double-support-dwell-scale",
+        cli_value(phase.forward_double_support_dwell_scale),
+        "--forward-double-support-dwell-grace-steps",
+        str(phase.forward_double_support_dwell_grace_steps),
         "--alive-scale",
         cli_value(phase.alive_scale),
         "--imitation-scale",
@@ -3207,6 +3298,16 @@ def phase_payload(phase: Phase, command: list[str], output_root: Path) -> dict[s
         ),
         "forward_single_support_scale": phase.forward_single_support_scale,
         "forward_double_support_scale": phase.forward_double_support_scale,
+        "forward_contact_transition_scale": phase.forward_contact_transition_scale,
+        "forward_contact_transition_min_progress_ratio": (
+            phase.forward_contact_transition_min_progress_ratio
+        ),
+        "forward_double_support_dwell_scale": (
+            phase.forward_double_support_dwell_scale
+        ),
+        "forward_double_support_dwell_grace_steps": (
+            phase.forward_double_support_dwell_grace_steps
+        ),
         "ppo_learning_rate": phase.ppo_learning_rate,
         "ppo_entropy_cost": phase.ppo_entropy_cost,
         "ppo_clipping_epsilon": phase.ppo_clipping_epsilon,

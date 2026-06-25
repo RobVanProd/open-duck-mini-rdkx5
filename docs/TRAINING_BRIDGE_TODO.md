@@ -4501,3 +4501,26 @@ not alternating support transfer. The next recipe should not be an unchanged V23
 rerun or a nearby scalar-weight tweak. It needs support transition plus forward
 propulsion as a coupled objective or a closed-loop teacher that enforces stance
 side, foot placement, and body placement.
+
+V24 plan:
+
+```text
+artifact: outputs/analysis/MOVEMENT_BOOTSTRAP_V24_TRANSITION_PROPULSION_PLAN.md
+status: DRY_RUN / not trained
+recipe: movement_bootstrap_v24
+```
+
+V24 adds default-off Playground terms for transition-coupled support:
+
+```text
+forward_contact_transition:
+  rewards landing transitions only when local forward velocity reaches a
+  command-normalized minimum progress ratio
+
+forward_double_support_dwell:
+  penalizes prolonged double-support dwell during forward commands after a
+  short grace window
+```
+
+Do not run V24 unless the plan is reviewed. It is still a sim-only x=0.04 probe;
+robot validation remains blocked.

@@ -5973,3 +5973,20 @@ So the support reward branch did not create weight transfer; it produced stable
 double-support standstill. The next branch should force support-state transition
 and propulsion together, or use a closed-loop teacher/optimizer that explicitly
 chooses stance side, foot placement, body placement, and push timing.
+
+The next explicit-only recipe is now planned:
+
+```text
+recipe: movement_bootstrap_v24
+artifact: outputs/analysis/MOVEMENT_BOOTSTRAP_V24_TRANSITION_PROPULSION_PLAN.md
+status: DRY_RUN / not trained
+new hooks:
+  forward_contact_transition
+  forward_double_support_dwell
+```
+
+V24 is a structural follow-up to the V23 standstill trace. It rewards a landing
+transition only when it coincides with body-frame forward progress and penalizes
+prolonged forward-command double-support dwell after a short grace window. The
+recipe remains offline, explicit-only, and low-command `x=0.04`; it does not
+authorize robot validation or any runtime behavior change.

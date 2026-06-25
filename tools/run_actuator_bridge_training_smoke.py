@@ -160,6 +160,16 @@ def build_command(args: argparse.Namespace, output_dir: Path) -> list[str]:
         ),
         "--forward_single_support_scale": args.forward_single_support_scale,
         "--forward_double_support_scale": args.forward_double_support_scale,
+        "--forward_contact_transition_scale": args.forward_contact_transition_scale,
+        "--forward_contact_transition_min_progress_ratio": (
+            args.forward_contact_transition_min_progress_ratio
+        ),
+        "--forward_double_support_dwell_scale": (
+            args.forward_double_support_dwell_scale
+        ),
+        "--forward_double_support_dwell_grace_steps": (
+            args.forward_double_support_dwell_grace_steps
+        ),
         "--alive_scale": args.alive_scale,
         "--imitation_scale": args.imitation_scale,
         "--lin_vel_x_min": args.lin_vel_x_min,
@@ -481,6 +491,18 @@ def main() -> int:
     )
     parser.add_argument("--forward-single-support-scale", type=float, default=None)
     parser.add_argument("--forward-double-support-scale", type=float, default=None)
+    parser.add_argument("--forward-contact-transition-scale", type=float, default=None)
+    parser.add_argument(
+        "--forward-contact-transition-min-progress-ratio",
+        type=float,
+        default=None,
+    )
+    parser.add_argument("--forward-double-support-dwell-scale", type=float, default=None)
+    parser.add_argument(
+        "--forward-double-support-dwell-grace-steps",
+        type=int,
+        default=None,
+    )
     parser.add_argument("--alive-scale", type=float, default=None)
     parser.add_argument("--imitation-scale", type=float, default=None)
     parser.add_argument("--lin-vel-x-min", type=float, default=None)
@@ -604,6 +626,18 @@ def main() -> int:
             ),
             "forward_single_support_scale": args.forward_single_support_scale,
             "forward_double_support_scale": args.forward_double_support_scale,
+            "forward_contact_transition_scale": (
+                args.forward_contact_transition_scale
+            ),
+            "forward_contact_transition_min_progress_ratio": (
+                args.forward_contact_transition_min_progress_ratio
+            ),
+            "forward_double_support_dwell_scale": (
+                args.forward_double_support_dwell_scale
+            ),
+            "forward_double_support_dwell_grace_steps": (
+                args.forward_double_support_dwell_grace_steps
+            ),
             "alive_scale": args.alive_scale,
             "imitation_scale": args.imitation_scale,
             "lin_vel_x_min": args.lin_vel_x_min,

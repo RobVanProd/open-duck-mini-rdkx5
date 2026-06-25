@@ -1327,6 +1327,7 @@ def main() -> int:
     parser.add_argument(
         "--staged-recipe",
         choices=[
+            "movement_bootstrap_v24",
             "movement_bootstrap_v23",
             "movement_bootstrap_v22",
             "movement_bootstrap_v20",
@@ -1366,6 +1367,9 @@ def main() -> int:
             "prior; it is also explicit-only. movement_bootstrap_v23 is the "
             "explicit single-support/contact objective probe after the "
             "target-source branch held; it is also explicit-only. "
+            "movement_bootstrap_v24 is the explicit transition/propulsion "
+            "follow-up after V23 learned double-support standstill; it is "
+            "also explicit-only. "
             "movement_bootstrap_v19 is the preserved raw-reference seed "
             "experiment after V18 showed the immediate reward signal already "
             "prefers forward motion but cold-start PPO still failed at x=0.04. "
