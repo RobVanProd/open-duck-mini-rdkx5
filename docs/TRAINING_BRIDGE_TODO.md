@@ -2491,3 +2491,30 @@ run yet. First inspect:
 
 Artifact:
 `outputs/analysis/REFERENCE_MOTION_ROLLOUT_V20.md`.
+
+Reference action-envelope audit:
+
+```text
+tool: tools/analyze_reference_action_envelope.py
+status: HOLD_REFERENCE_EXCEEDS_ACTION_ENVELOPE
+closest low-distance phases have 0 saturated joints
+left_knee target velocity p95/max: 8.0846 / 8.6417 rad/s
+right_knee target velocity p95/max: 9.8963 / 13.2122 rad/s
+right_hip_pitch target velocity p95/max: 5.4889 / 6.0116 rad/s
+right_ankle target velocity p95/max: 4.8676 / 7.6140 rad/s
+right_knee max_abs_action: 2.2704
+right_hip_pitch max_abs_action: 1.9062
+```
+
+Interpretation:
+
+```text
+The reference phase can be chosen near home, but the reference waveform still
+exceeds the policy action envelope and target-rate budget over the cycle. A BC
+or reference-lock phase must not train directly against raw polynomial joint
+positions. First build an envelope-aware reference projection/filter, or derive
+targets from realized stable rollouts.
+```
+
+Artifact:
+`outputs/analysis/REFERENCE_ACTION_ENVELOPE_V20.md`.
