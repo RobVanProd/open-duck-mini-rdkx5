@@ -142,3 +142,28 @@ whether any mode passes both seeds
 ```
 
 Only after that should the project rebuild a longer-window target manifest.
+
+## Implemented Scorer
+
+The first scorer implementation is:
+
+```text
+tools/score_target_candidates_objective.py
+```
+
+Current result on the latest seed2-balance traces:
+
+```text
+status: HOLD_NO_SEED_ROBUST_TARGETS
+robust 50-sample modes: 0
+best near-pass:
+  primitive_p0p6_hrb0_hb0p08_h0p03_kb0p06_k0p12_ab0p04_am0p009_ph0p3927
+  seed0: pass, vx=0.0565 m/s
+  seed2: vx=0.0515 m/s, vy95=0.0507 m/s, contact_dominance=98%
+  remaining failure: single_contact_pattern_dominates
+```
+
+The next generator change should focus on contact alternation for this family:
+one additional safe contact transition is likely enough to move seed2 from
+`98%` dominance to the `<=95%` gate, provided forward and lateral metrics are
+preserved.

@@ -558,6 +558,37 @@ Detailed next-step spec:
 docs/TARGET_OBJECTIVE_GENERATOR_SPEC.md
 ```
 
+## Target Objective Score
+
+The new objective scorer ranked existing trace sets by worst-seed score:
+
+```text
+tool: tools/score_target_candidates_objective.py
+window_samples: 50
+latest seed2-balance trace set: HOLD_NO_SEED_ROBUST_TARGETS
+robust modes: 0
+```
+
+Best current near pass:
+
+```text
+mode: primitive_p0p6_hrb0_hb0p08_h0p03_kb0p06_k0p12_ab0p04_am0p009_ph0p3927
+seed0: pass, vx=0.0565 m/s
+seed2: vx=0.0515 m/s
+seed2 vy95: 0.0507 m/s
+seed2 contact_dominance: 98%
+failure: single_contact_pattern_dominates
+```
+
+Interpretation:
+
+```text
+For the best candidate, seed2 forward velocity and lateral velocity already
+pass. The immediate generator target is therefore to create one safe contact
+transition in seed2 and bring contact dominance from 98% to <=95%, while
+preserving the seed0 pass.
+```
+
 ## First Primitive Search Result
 
 A bounded low-dimensional sine primitive search was run as the first generator

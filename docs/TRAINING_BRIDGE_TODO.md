@@ -3190,6 +3190,35 @@ Next target-generator spec:
 docs/TARGET_OBJECTIVE_GENERATOR_SPEC.md
 ```
 
+### Target Objective Score
+
+The worst-seed objective scorer was run on the latest target trace sets:
+
+```text
+tool: tools/score_target_candidates_objective.py
+seed2-balance 50-sample status: HOLD_NO_SEED_ROBUST_TARGETS
+lateral/contact 50-sample status: HOLD_NO_SEED_ROBUST_TARGETS
+robust modes: 0
+```
+
+Best current near pass:
+
+```text
+mode: primitive_p0p6_hrb0_hb0p08_h0p03_kb0p06_k0p12_ab0p04_am0p009_ph0p3927
+seed0: pass
+seed2: vx=0.0515 m/s, vy95=0.0507 m/s, contact_dominance=98%
+remaining failure: single_contact_pattern_dominates
+```
+
+Do next:
+
+```text
+1. tune contact alternation around the best near-pass candidate
+2. target seed2 contact dominance <= 95%
+3. preserve seed2 vx and vy95, which already pass on this candidate
+4. preserve seed0 curation pass
+```
+
 ### Target Dataset BC Smoke
 
 The observation-ready target manifest was tested with tiny linear and KNN

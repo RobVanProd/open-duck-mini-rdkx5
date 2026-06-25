@@ -4132,3 +4132,30 @@ Next target-generator spec:
 ```text
 docs/TARGET_OBJECTIVE_GENERATOR_SPEC.md
 ```
+
+### Target Objective Score
+
+An objective-driven scorer was added to rank existing target traces by worst
+seed rather than aggregate velocity.
+
+Result:
+
+```text
+tool: tools/score_target_candidates_objective.py
+latest seed2-balance trace set: HOLD_NO_SEED_ROBUST_TARGETS
+robust 50-sample modes: 0
+best worst-seed mode:
+  primitive_p0p6_hrb0_hb0p08_h0p03_kb0p06_k0p12_ab0p04_am0p009_ph0p3927
+  seed0: pass, vx=0.0565 m/s
+  seed2: vx=0.0515 m/s, vy95=0.0507 m/s, contact_dominance=98%
+  seed2 failure: single_contact_pattern_dominates
+```
+
+Conclusion:
+
+```text
+The best current candidate already clears seed2 forward velocity and lateral
+velocity. The remaining near-pass blocker is contact dominance: reduce the best
+seed2 contact dominance from 98% to <=95% without losing seed0. This is a more
+precise target than the earlier broad lateral/contact diagnosis.
+```
