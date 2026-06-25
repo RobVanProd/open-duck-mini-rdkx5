@@ -312,6 +312,20 @@ to small positive local vx in the best 100-tick window, but it remained below
 the forward gate and exposed lateral/yaw tradeoffs. Use it as a parameter in the
 next controller, not as a complete fix.
 
+Wide swing-advance diagnostic:
+
+```text
+artifacts:
+  outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_ADVANCE_WIDE_PROBE_SCORE_100.md
+  outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_ADVANCE_WIDE_PROBE_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+robust modes: 0 / 16
+```
+
+Larger swing advance improved the worst-seed score but did not produce enough
+forward velocity. The next controller should stabilize lateral/yaw behavior
+while using swing advance, not keep increasing advance alone.
+
 ## Stop Conditions
 
 Stop target generation and do not train if:

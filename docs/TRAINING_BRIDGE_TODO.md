@@ -4527,6 +4527,18 @@ Keep `--swing-min-advance` available for the next teacher revision. It improves
 the seed-0 backward-step failure mode, but does not clear the target gate
 without better lateral/heading stabilization.
 
+Wide swing-advance diagnostic:
+
+```text
+artifact: outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_ADVANCE_WIDE_PROBE_SCORE_100.md
+artifact: outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_ADVANCE_WIDE_PROBE_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+robust modes: 0 / 16
+```
+
+Do not continue with larger swing-advance sweeps alone. The next revision needs
+explicit lateral/heading stabilization coupled to foot placement.
+
 The current compact handoff docs are:
 
 ```text

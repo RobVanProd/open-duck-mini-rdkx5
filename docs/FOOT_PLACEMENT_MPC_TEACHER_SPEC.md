@@ -34,9 +34,9 @@ forward push timing in one scored horizon.
 The current evidence says:
 
 ```text
-checked target score artifacts: 48
+checked target score artifacts: 50
 passing target sources: 0
-failure analysis rows scanned: 2136
+failure analysis rows scanned: 2200
 stable + actuator-safe rows: 964
 support-ready rows: 492
 forward-ready rows: 15
@@ -375,3 +375,19 @@ the swing foot. The best 100-tick candidate improved seed 0 to small positive
 local vx, but it still failed the forward gate and introduced lateral/yaw
 tradeoffs. Keep `--swing-min-advance` as a useful parameter, but do not treat it
 as sufficient without better lateral/heading stabilization.
+
+A wider swing-advance probe also held:
+
+```text
+artifacts:
+  outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_ADVANCE_WIDE_PROBE_SCORE_100.md
+  outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_ADVANCE_WIDE_PROBE_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+modes: 16
+robust modes: 0
+```
+
+The best 100-tick wide-advance candidate improved the worst-seed score and kept
+seed 0 positive, but both seeds stayed well below the 0.04 m/s forward gate.
+This suggests foot advance has useful signal but saturates quickly without
+better lateral/heading stabilization.
