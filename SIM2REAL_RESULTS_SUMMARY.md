@@ -4645,3 +4645,57 @@ material. It can produce short in-envelope motion fragments, but not a robust
 next offline branch should either change the generator structure or use the
 short fragments as soft priors in a closed-loop learner/objective.
 ```
+
+### Soft-Prior Closed-Loop Learner Plan
+
+The next branch is constrained by:
+
+```text
+docs/SOFT_PRIOR_CLOSED_LOOP_LEARNER_PLAN.md
+```
+
+Decision:
+
+```text
+The target tables are no longer direct action labels.
+They may only be used as weak gait-shape priors inside closed-loop sim.
+```
+
+Before any new BC/PPO/A100 training run, the project needs:
+
+```text
+PASS_SOFT_PRIOR_SMOKE
+```
+
+Hold conditions remain:
+
+```text
+freeze
+lunge
+lateral instability
+single-contact lock
+target-velocity envelope violation
+```
+
+Robot validation remains blocked.
+
+The first compact fragment-prior config is ready:
+
+```text
+tool: tools/build_soft_prior_fragment_config.py
+status: PASS_SOFT_PRIOR_CONFIG_READY
+entries: 9
+source_files: 2
+source_mode_pairs: 6
+window_len: 50
+max pitch-chain target velocity p95: 2.4428 rad/s
+```
+
+Artifacts:
+
+```text
+outputs/analysis/SOFT_PRIOR_FRAGMENT_CONFIG.md
+outputs/analysis/soft_prior_fragment_config.json
+```
+
+Next offline target: implement a default-off `PASS_SOFT_PRIOR_SMOKE` evaluator.

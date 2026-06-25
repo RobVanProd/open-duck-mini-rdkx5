@@ -3683,3 +3683,53 @@ Do next:
    not as hard action labels, and
 3. keep robot validation blocked
 ```
+
+### Soft-Prior Closed-Loop Learner Gate
+
+The next branch is specified in:
+
+```text
+docs/SOFT_PRIOR_CLOSED_LOOP_LEARNER_PLAN.md
+```
+
+Current rule:
+
+```text
+do not launch BC/PPO directly from target tables
+do not launch an A100 run from the primitive fragments
+do not treat a 50-tick fragment as a loopable gait
+```
+
+Required next result:
+
+```text
+PASS_SOFT_PRIOR_SMOKE
+```
+
+before any small learner is authorized. The smoke must show that a default-off
+prior based on the short fragments can preserve forward motion in closed-loop
+sim without freezing, lunging, lateral instability, contact lock, or envelope
+violation.
+
+The first compact prior config is ready:
+
+```text
+tool: tools/build_soft_prior_fragment_config.py
+status: PASS_SOFT_PRIOR_CONFIG_READY
+entries: 9
+source_files: 2
+max pitch-chain target velocity p95: 2.4428 rad/s
+```
+
+Artifacts:
+
+```text
+outputs/analysis/SOFT_PRIOR_FRAGMENT_CONFIG.md
+outputs/analysis/soft_prior_fragment_config.json
+```
+
+Next implementation target:
+
+```text
+default-off soft-prior smoke evaluator
+```

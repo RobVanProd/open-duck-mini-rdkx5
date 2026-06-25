@@ -927,3 +927,42 @@ strict same-mode seed-robust gate. It authorizes the next offline step: a small
 reviewed imitation/BC smoke against these target windows. It does not authorize
 robot validation or skipping candidate replay gates.
 ```
+
+## Sustained Target Branch Conclusion
+
+The direct-label path has now been tested after the dynamic-roll lateral-fix
+source pass:
+
+```text
+one-step BC:
+  fails closed-loop replay
+
+sequence replay:
+  short forward fragments, but no stable loop
+
+seam correction:
+  worsens seed0 into lunge/fall
+
+contact/state phase adapters:
+  do not recover forward progress
+
+100-150 sample sustained primitive search:
+  no seed-robust longer gait
+```
+
+Conclusion:
+
+```text
+The current primitive target family is exhausted as a direct target-label
+source. The short windows are evidence and soft-prior material, not BC/PPO
+labels.
+```
+
+Next planning artifact:
+
+```text
+docs/SOFT_PRIOR_CLOSED_LOOP_LEARNER_PLAN.md
+```
+
+Do not run another BC/PPO launch from these target tables unless the soft-prior
+smoke gate in that plan passes first.
