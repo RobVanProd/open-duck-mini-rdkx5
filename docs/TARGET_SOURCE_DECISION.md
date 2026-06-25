@@ -366,3 +366,9 @@ The next useful offline step is a phase-continuation/contact-timing adapter or
 sequence-aware learner that is evaluated directly in closed loop before any
 training campaign.
 ```
+
+Next planning artifact:
+
+```text
+docs/PHASE_CONTINUATION_ADAPTER_PLAN.md
+```

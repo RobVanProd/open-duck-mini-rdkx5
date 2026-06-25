@@ -3599,9 +3599,10 @@ Do next:
 
 ```text
 1. do not launch PPO or robot validation from these target tables as-is
-2. add a phase-continuation/contact-timing adapter before any learner
-3. grade the adapter by the same closed-loop x=0.04 replay metrics
-4. only after sequence replay passes, consider a compact supervised/imitation
+2. follow docs/PHASE_CONTINUATION_ADAPTER_PLAN.md
+3. add a phase-continuation/contact-timing adapter before any learner
+4. grade the adapter by the same closed-loop x=0.04 replay metrics
+5. only after sequence replay passes, consider a compact supervised/imitation
    learner that preserves phase/time continuity
-5. keep full training and robot validation blocked
+6. keep full training and robot validation blocked
 ```

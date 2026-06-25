@@ -4554,3 +4554,9 @@ validation from these tables as-is. The next offline step should explicitly
 solve phase continuation/contact timing in closed loop before any larger
 training run.
 ```
+
+Next planning artifact:
+
+```text
+docs/PHASE_CONTINUATION_ADAPTER_PLAN.md
+```
