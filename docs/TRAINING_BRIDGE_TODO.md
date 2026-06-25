@@ -3184,6 +3184,12 @@ Do next:
 4. keep all supervised/imitation training blocked until robust modes exist
 ```
 
+Next target-generator spec:
+
+```text
+docs/TARGET_OBJECTIVE_GENERATOR_SPEC.md
+```
+
 ### Target Dataset BC Smoke
 
 The observation-ready target manifest was tested with tiny linear and KNN

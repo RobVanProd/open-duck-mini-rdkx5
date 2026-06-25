@@ -4126,3 +4126,9 @@ lateral p95 reduced from roughly 0.16-0.18 toward <=0.12 m/s, or contact
 dominance reduced from 100% toward <=95%. This should be the next target
 objective, not another generic grid expansion.
 ```
+
+Next target-generator spec:
+
+```text
+docs/TARGET_OBJECTIVE_GENERATOR_SPEC.md
+```

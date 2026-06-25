@@ -552,6 +552,12 @@ Do not continue broad random grid expansion unless it is wrapped in a
 worst-seed score that directly rewards those two improvements.
 ```
 
+Detailed next-step spec:
+
+```text
+docs/TARGET_OBJECTIVE_GENERATOR_SPEC.md
+```
+
 ## First Primitive Search Result
 
 A bounded low-dimensional sine primitive search was run as the first generator
