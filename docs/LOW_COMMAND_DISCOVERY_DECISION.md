@@ -560,6 +560,8 @@ Dominant mismatch:
 
 ```text
 reference expects single support -> sim remains in double support
+left/right swap only reduces mismatch to about 65-66%
+polarity inversion increases mismatch to about 91-94%
 ```
 
 Interpretation:
@@ -567,8 +569,9 @@ Interpretation:
 ```text
 The reference is asking for a single-support walking contact schedule, but the
 simulated body mostly remains in double support under raw/projected reference
-targets. This makes the current polynomial reference a poor direct BC target
-for the Joystick task. The next useful path is either contact-aware reference
+targets. The mismatch is not explained by a simple contact-bit swap or polarity
+error. This makes the current polynomial reference a poor direct BC target for
+the Joystick task. The next useful path is either contact-aware reference
 adaptation or generating a realized stable-target dataset from the actual sim
 dynamics.
 ```

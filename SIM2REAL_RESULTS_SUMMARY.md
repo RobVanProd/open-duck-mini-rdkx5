@@ -3413,9 +3413,11 @@ Interpretation:
 ```text
 The simulated body mostly remains in double support while the reference expects
 alternating single support. This explains why envelope projection and phase
-offsets did not recover the gait. Do not train BC against raw polynomial joint
-positions; use contact-aware reference adaptation or generated realized targets
-from stable simulated behavior.
+offsets did not recover the gait. Left/right swap only reduces mismatch to
+about 65-66%, and polarity inversion is worse, so this is not just contact-bit
+encoding. Do not train BC against raw polynomial joint positions; use
+contact-aware reference adaptation or generated realized targets from stable
+simulated behavior.
 ```
 
 Artifact:

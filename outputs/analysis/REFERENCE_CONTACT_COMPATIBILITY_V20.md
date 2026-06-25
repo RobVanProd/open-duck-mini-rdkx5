@@ -12,6 +12,15 @@ the foot-contact pattern encoded in the polynomial reference.
 | reference_motion_rollout_v20_projected_phase5_traces | 653 | 67.23 | 74.89 | 37.52 | 10.72 | 31.39 | 12.40 | 31.09 |
 | reference_motion_rollout_v20_projected_phase19_traces | 555 | 67.57 | 74.41 | 38.38 | 11.17 | 34.77 | 12.43 | 26.85 |
 
+## Encoding Transform Check
+
+| label | as_is | swap_lr | invert | swap_invert |
+|---|---:|---:|---:|---:|
+| reference_motion_rollout_v20_traces | 68.03 | 66.30 | 91.18 | 92.91 |
+| reference_motion_rollout_v20_projected_traces | 67.77 | 66.27 | 92.02 | 93.52 |
+| reference_motion_rollout_v20_projected_phase5_traces | 67.23 | 65.85 | 91.12 | 92.50 |
+| reference_motion_rollout_v20_projected_phase19_traces | 67.57 | 65.41 | 90.99 | 93.15 |
+
 ## Dominant Mismatch Pairs
 
 | label | pair | pct |

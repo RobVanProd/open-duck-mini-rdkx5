@@ -2590,9 +2590,11 @@ Interpretation:
 ```text
 The reference expects alternating single support much more often than the
 simulated body realizes. Current reference targets keep the sim in double
-support, so raw/reference-projected BC is not the next training step. First
-either adapt the reference contact schedule to the Joystick task or generate
-realized stable targets from the actual sim dynamics.
+support. A left/right swap only reduces mismatch to about 65-66%, and polarity
+inversion is much worse, so this is not a simple contact-bit encoding bug. Raw
+or reference-projected BC is not the next training step. First either adapt the
+reference contact schedule to the Joystick task or generate realized stable
+targets from the actual sim dynamics.
 ```
 
 Artifact:

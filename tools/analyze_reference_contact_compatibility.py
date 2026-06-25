@@ -83,6 +83,24 @@ def read_trace_dir(path: Path) -> dict[str, Any]:
                 "termination": terminations.get(seed),
             }
         )
+    transforms = {
+        "as_is": lambda expected: expected,
+        "swap_lr": lambda expected: expected[::-1],
+        "invert": lambda expected: tuple(1 - value for value in expected),
+        "swap_invert": lambda expected: tuple(1 - value for value in expected[::-1]),
+    }
+    transform_mismatch_pct = {}
+    pairs = [
+        (
+            tuple(int(value) for value in record.get("foot_contacts", [])),
+            tuple(int(value) for value in record.get("reference_foot_contacts", [])),
+        )
+        for record in records
+    ]
+    for name, transform in transforms.items():
+        valid = [(actual, expected) for actual, expected in pairs if len(actual) == len(expected)]
+        mismatch_count = sum(1 for actual, expected in valid if actual != transform(expected))
+        transform_mismatch_pct[name] = percent(mismatch_count, len(valid))
     return {
         "trace_dir": str(path),
         "label": path.name,
@@ -100,6 +118,7 @@ def read_trace_dir(path: Path) -> dict[str, Any]:
         "pair_pct": {
             key: percent(value, total) for key, value in sorted(pair.items())
         },
+        "transform_mismatch_pct": transform_mismatch_pct,
         "seed_rows": seed_rows,
     }
 
@@ -136,6 +155,26 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
                 r10=fmt(ref.get("10", 0.0)),
                 a01=fmt(actual.get("01", 0.0)),
                 r01=fmt(ref.get("01", 0.0)),
+            )
+        )
+    lines.extend(
+        [
+            "",
+            "## Encoding Transform Check",
+            "",
+            "| label | as_is | swap_lr | invert | swap_invert |",
+            "|---|---:|---:|---:|---:|",
+        ]
+    )
+    for run in payload["runs"]:
+        transform = run["transform_mismatch_pct"]
+        lines.append(
+            "| {label} | {as_is} | {swap_lr} | {invert} | {swap_invert} |".format(
+                label=run["label"],
+                as_is=fmt(transform.get("as_is")),
+                swap_lr=fmt(transform.get("swap_lr")),
+                invert=fmt(transform.get("invert")),
+                swap_invert=fmt(transform.get("swap_invert")),
             )
         )
     lines.extend(
