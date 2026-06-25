@@ -506,6 +506,9 @@ def run_rollout(args: argparse.Namespace) -> dict[str, Any]:
                 records: list[dict[str, Any]] = []
                 state = env.reset(jax.random.PRNGKey(seed))
                 state.info["command"] = command
+                state.info["imitation_i"] = (
+                    int(args.first_reference_phase) - 1
+                ) % int(env.PRM.nb_steps_in_period)
                 state = refresh_obs_jit(state)
                 for tick in range(sim_steps):
                     state, action, reference_target, pre_rate, sent_target = step_reference_jit(state)
@@ -589,6 +592,7 @@ def run_rollout(args: argparse.Namespace) -> dict[str, Any]:
         "seeds": parse_int_list(args.seeds),
         "reference": args.reference_motion_override,
         "reference_target_mode": args.reference_target_mode,
+        "first_reference_phase": args.first_reference_phase,
         "projection": projection_summary if args.reference_target_mode == "cycle_projected" else None,
         "reward_overrides_json": args.reward_overrides_json,
         "reward_overrides_phase": args.reward_overrides_phase,
@@ -622,6 +626,7 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         f"duration_s: `{payload['duration_s']}`",
         f"reference: `{payload['reference']}`",
         f"reference_target_mode: `{payload['reference_target_mode']}`",
+        f"first_reference_phase: `{payload['first_reference_phase']}`",
         "",
         "## Aggregate",
         "",
@@ -700,6 +705,12 @@ def main() -> int:
         "--reference-target-mode",
         choices=["raw", "cycle_projected"],
         default="raw",
+    )
+    parser.add_argument(
+        "--first-reference-phase",
+        type=int,
+        default=1,
+        help="Reference phase used on the first simulated step.",
     )
     parser.add_argument("--duration-s", type=float, default=5.0)
     parser.add_argument("--seeds", default="0-7")

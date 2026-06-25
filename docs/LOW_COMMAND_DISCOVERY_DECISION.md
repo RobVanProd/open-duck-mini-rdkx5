@@ -512,3 +512,31 @@ this MJCF/task initialization before launching BC or PPO.
 
 Additional artifact:
 `outputs/analysis/REFERENCE_MOTION_ROLLOUT_V20_PROJECTED.md`.
+
+## Projected Reference Phase-Offset Check
+
+The projected reference was also replayed from home-near reference phases found
+by the action-envelope audit:
+
+```text
+phase 1:  HOLD, samples mean 83.0000, track ratio -0.2495, vx -0.0100 m/s
+phase 5:  HOLD, samples mean 81.6250, track ratio -0.4917, vx -0.0197 m/s
+phase 19: HOLD, samples mean 69.3750, track ratio -1.2155, vx -0.0486 m/s
+```
+
+Interpretation:
+
+```text
+Starting from a reference phase closer to home does not recover the gait. Phase
+alignment at reset is not sufficient. The remaining reference-path blocker is
+likely contact/lateral/reference compatibility with the Joystick task, or the
+need for a generated stable target dataset rather than replaying polynomial
+joint targets.
+```
+
+Additional artifacts:
+
+```text
+outputs/analysis/REFERENCE_MOTION_ROLLOUT_V20_PROJECTED_PHASE5.md
+outputs/analysis/REFERENCE_MOTION_ROLLOUT_V20_PROJECTED_PHASE19.md
+```

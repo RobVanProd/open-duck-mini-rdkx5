@@ -5,6 +5,7 @@ command_x: `0.04`
 duration_s: `5.0`
 reference: `/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/reference_motion_x004_override.pkl`
 reference_target_mode: `cycle_projected`
+first_reference_phase: `1`
 
 ## Aggregate
 

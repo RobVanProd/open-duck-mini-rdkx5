@@ -2547,3 +2547,27 @@ current flat-terrain Joystick initialization.
 
 Artifact:
 `outputs/analysis/REFERENCE_MOTION_ROLLOUT_V20_PROJECTED.md`.
+
+Projected phase-offset check:
+
+```text
+phase 1:  HOLD, samples mean 83.0000, track ratio -0.2495
+phase 5:  HOLD, samples mean 81.6250, track ratio -0.4917
+phase 19: HOLD, samples mean 69.3750, track ratio -1.2155
+```
+
+Interpretation:
+
+```text
+Starting from a home-near reference phase does not fix the projected reference.
+The next reference-path work should target contact/lateral/reference
+compatibility, or build a realized stable-target dataset instead of replaying
+polynomial joint positions.
+```
+
+Artifacts:
+
+```text
+outputs/analysis/REFERENCE_MOTION_ROLLOUT_V20_PROJECTED_PHASE5.md
+outputs/analysis/REFERENCE_MOTION_ROLLOUT_V20_PROJECTED_PHASE19.md
+```

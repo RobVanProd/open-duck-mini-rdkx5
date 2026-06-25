@@ -3366,6 +3366,33 @@ compatibility with the current Joystick task before BC or another PPO run.
 Artifact:
 `outputs/analysis/REFERENCE_MOTION_ROLLOUT_V20_PROJECTED.md`.
 
+### V20 Projected Phase-Offset Check
+
+The projected reference was replayed starting at phases closest to the home
+pose:
+
+```text
+phase 1:  HOLD, samples mean 83.0000, track ratio -0.2495, vx -0.0100 m/s
+phase 5:  HOLD, samples mean 81.6250, track ratio -0.4917, vx -0.0197 m/s
+phase 19: HOLD, samples mean 69.3750, track ratio -1.2155, vx -0.0486 m/s
+```
+
+Interpretation:
+
+```text
+Reference reset phase is not the sufficient fix. Even projected and started
+near home, the polynomial reference does not generate stable forward motion in
+the current Joystick task. Next: inspect contact/lateral/reference
+compatibility or build targets from realized stable rollouts.
+```
+
+Artifacts:
+
+```text
+outputs/analysis/REFERENCE_MOTION_ROLLOUT_V20_PROJECTED_PHASE5.md
+outputs/analysis/REFERENCE_MOTION_ROLLOUT_V20_PROJECTED_PHASE19.md
+```
+
 Additional artifact:
 
 ```text
@@ -3380,4 +3407,6 @@ outputs/analysis/REFERENCE_LOCK_SIGNAL_V20.md
 outputs/analysis/REFERENCE_MOTION_ROLLOUT_V20.md
 outputs/analysis/REFERENCE_ACTION_ENVELOPE_V20.md
 outputs/analysis/REFERENCE_MOTION_ROLLOUT_V20_PROJECTED.md
+outputs/analysis/REFERENCE_MOTION_ROLLOUT_V20_PROJECTED_PHASE5.md
+outputs/analysis/REFERENCE_MOTION_ROLLOUT_V20_PROJECTED_PHASE19.md
 ```
