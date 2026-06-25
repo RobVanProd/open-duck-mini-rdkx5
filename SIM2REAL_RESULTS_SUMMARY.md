@@ -4993,3 +4993,21 @@ The remote output also revealed a tooling issue: retries in the same Colab
 session shared `/content/open_duck_staged_curriculum_cli`, which mixed partial
 outputs. The Colab workflow was patched to use a unique staged output directory
 per run before any further V22 launch.
+
+A clean rerun on a fresh A100 session with the unique remote output root and
+lazy TensorFlow export patch did not produce a V22 verdict:
+
+```text
+artifact: outputs/analysis/V22_A100_CLEAN_FAILED_RUN.md
+status: HOLD_A100_BACKEND_NO_SENTINEL
+checkpoint produced: no
+onnx produced: no
+first PPO progress line: no
+bundle_sha256: 1508c95113d7bd0f82af4298527b5eb7911261d317fd2348c427afc5ad56479d
+```
+
+The clean failed run reached environment construction and PPO configuration,
+then disappeared before the first checkpoint or progress line. Treat this as a
+cloud/backend failure, not a policy result. The next clean V22 attempt should
+use either the previously reliable L4 path, a shorter diagnostic first, or
+stronger automatic no-sentinel recovery.
