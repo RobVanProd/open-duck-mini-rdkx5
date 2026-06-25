@@ -78,10 +78,12 @@ def fmt(item: Any, digits: int = 4) -> str:
 
 
 def compact_window(window: dict[str, Any], tier: str, reasons: list[str]) -> dict[str, Any]:
+    source_name = Path(str(window.get("source_path"))).name
     return {
         "tier": tier,
         "reasons": reasons,
         "source_path": window.get("source_path"),
+        "source_name": source_name,
         "mode": window.get("mode"),
         "start_tick": window.get("start_tick"),
         "end_tick": window.get("end_tick"),
@@ -120,6 +122,7 @@ def manifest_windows(source: dict[str, Any]) -> list[dict[str, Any]]:
 
 def write_markdown(payload: dict[str, Any], path: Path) -> None:
     counts = payload["counts"]
+    diversity = payload["diversity"]
     lines = [
         "# Realized Target Window Curation",
         "",
@@ -142,6 +145,9 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
             f"- pass_curated_seed_windows: `{counts['pass_curated_seed_windows']}`",
             f"- review_motion_hints: `{counts['review_motion_hints']}`",
             f"- rejected_dataset_seeds: `{counts['rejected_dataset_seeds']}`",
+            f"- curated_source_files: `{diversity['curated_source_files']}`",
+            f"- curated_modes: `{diversity['curated_modes']}`",
+            f"- curated_source_mode_pairs: `{diversity['curated_source_mode_pairs']}`",
             "",
             "## Curated Seed Windows",
             "",
@@ -219,6 +225,7 @@ def main() -> int:
     parser.add_argument("--max-tracking-p95", type=float, default=0.12)
     parser.add_argument("--min-done-margin", type=int, default=50)
     parser.add_argument("--max-contact-dominance-pct", type=float, default=95.0)
+    parser.add_argument("--min-source-mode-pairs", type=int, default=2)
     args = parser.parse_args()
 
     source = json.loads(Path(args.input_json).read_text())
@@ -227,12 +234,18 @@ def main() -> int:
     curated = [window for window in classified if window["tier"] == "PASS_CURATED_SEED_WINDOW"]
     review = [window for window in classified if window["tier"] == "REVIEW_MOTION_HINT_ONLY"]
     rejected = [window for window in classified if window["tier"] == "REJECT_DATASET_SEED"]
+    source_files = {window["source_name"] for window in curated}
+    modes = {str(window["mode"]) for window in curated}
+    source_mode_pairs = {
+        (window["source_name"], str(window["mode"])) for window in curated
+    }
 
-    status = (
-        "PASS_CURATED_DATASET_SEED_READY"
-        if len(curated) >= args.min_curated_windows
-        else "HOLD_INSUFFICIENT_CURATED_WINDOWS"
-    )
+    if len(curated) < args.min_curated_windows:
+        status = "HOLD_INSUFFICIENT_CURATED_WINDOWS"
+    elif len(source_mode_pairs) < args.min_source_mode_pairs:
+        status = "HOLD_INSUFFICIENT_CURATED_DIVERSITY"
+    else:
+        status = "PASS_CURATED_DATASET_SEED_READY"
     payload = {
         "status": status,
         "criteria": {
@@ -246,6 +259,7 @@ def main() -> int:
             "max_tracking_p95": args.max_tracking_p95,
             "min_done_margin": args.min_done_margin,
             "max_contact_dominance_pct": args.max_contact_dominance_pct,
+            "min_source_mode_pairs": args.min_source_mode_pairs,
         },
         "input_json": str(Path(args.input_json)),
         "counts": {
@@ -253,6 +267,12 @@ def main() -> int:
             "pass_curated_seed_windows": len(curated),
             "review_motion_hints": len(review),
             "rejected_dataset_seeds": len(rejected),
+        },
+        "diversity": {
+            "curated_source_files": len(source_files),
+            "curated_source_file_names": sorted(source_files),
+            "curated_modes": len(modes),
+            "curated_source_mode_pairs": len(source_mode_pairs),
         },
         "curated_seed_windows": curated,
         "review_motion_hints": review,
@@ -267,6 +287,8 @@ def main() -> int:
     print(f"curated_seed_windows={len(curated)}")
     print(f"review_motion_hints={len(review)}")
     print(f"rejected_dataset_seeds={len(rejected)}")
+    print(f"curated_source_files={len(source_files)}")
+    print(f"curated_source_mode_pairs={len(source_mode_pairs)}")
     print(f"wrote {args.output_md}")
     print(f"wrote {args.output_json}")
     return 0

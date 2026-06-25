@@ -17,6 +17,7 @@ motion windows. It does not export raw traces or start training.
 - max_tracking_p95: `0.12`
 - min_done_margin: `50`
 - max_contact_dominance_pct: `95.0`
+- min_source_mode_pairs: `2`
 
 ## Counts
 
@@ -24,6 +25,9 @@ motion windows. It does not export raw traces or start training.
 - pass_curated_seed_windows: `1`
 - review_motion_hints: `37`
 - rejected_dataset_seeds: `56`
+- curated_source_files: `1`
+- curated_modes: `1`
+- curated_source_mode_pairs: `1`
 
 ## Curated Seed Windows
 

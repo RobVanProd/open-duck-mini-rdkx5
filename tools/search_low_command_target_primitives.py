@@ -32,8 +32,12 @@ DEFAULT_TRACE_DIR = ROOT / "outputs" / "analysis" / "target_generator_search_tra
 class Primitive:
     label: str
     period_s: float
+    hip_roll_bias: float
+    hip_pitch_bias: float
     hip_pitch_amp: float
+    knee_bias: float
     knee_amp: float
+    ankle_bias: float
     ankle_amp: float
     phase_offset: float
 
@@ -61,30 +65,45 @@ def stats(values: Iterable[float], *, abs_value: bool = False) -> dict[str, floa
 
 def candidate_grid(args: argparse.Namespace) -> list[Primitive]:
     periods = [float(item) for item in args.periods.split(",") if item.strip()]
+    hip_roll_biases = [float(item) for item in args.hip_roll_biases.split(",") if item.strip()]
+    hip_biases = [float(item) for item in args.hip_pitch_biases.split(",") if item.strip()]
     hip_amps = [float(item) for item in args.hip_pitch_amps.split(",") if item.strip()]
+    knee_biases = [float(item) for item in args.knee_biases.split(",") if item.strip()]
     knee_amps = [float(item) for item in args.knee_amps.split(",") if item.strip()]
+    ankle_biases = [float(item) for item in args.ankle_biases.split(",") if item.strip()]
     ankle_scales = [float(item) for item in args.ankle_scales.split(",") if item.strip()]
     phase_offsets = [float(item) for item in args.phase_offsets.split(",") if item.strip()]
     rows = []
     for period_s in periods:
-        for hip_amp in hip_amps:
-            for knee_amp in knee_amps:
-                for ankle_scale in ankle_scales:
-                    for phase_offset in phase_offsets:
-                        ankle_amp = ankle_scale * hip_amp
-                        rows.append(
-                            Primitive(
-                                label=(
-                                    f"p{period_s:g}_h{hip_amp:g}_k{knee_amp:g}_"
-                                    f"a{ankle_amp:g}_ph{phase_offset:g}"
-                                ).replace(".", "p").replace("-", "m"),
-                                period_s=period_s,
-                                hip_pitch_amp=hip_amp,
-                                knee_amp=knee_amp,
-                                ankle_amp=ankle_amp,
-                                phase_offset=phase_offset,
-                            )
-                        )
+        for hip_roll_bias in hip_roll_biases:
+            for hip_bias in hip_biases:
+                for hip_amp in hip_amps:
+                    for knee_bias in knee_biases:
+                        for knee_amp in knee_amps:
+                            for ankle_bias in ankle_biases:
+                                for ankle_scale in ankle_scales:
+                                    for phase_offset in phase_offsets:
+                                        ankle_amp = ankle_scale * hip_amp
+                                        rows.append(
+                                            Primitive(
+                                                label=(
+                                                    f"p{period_s:g}_hrb{hip_roll_bias:g}_"
+                                                    f"hb{hip_bias:g}_h{hip_amp:g}_"
+                                                    f"kb{knee_bias:g}_k{knee_amp:g}_"
+                                                    f"ab{ankle_bias:g}_a{ankle_amp:g}_"
+                                                    f"ph{phase_offset:g}"
+                                                ).replace(".", "p").replace("-", "m"),
+                                                period_s=period_s,
+                                                hip_roll_bias=hip_roll_bias,
+                                                hip_pitch_bias=hip_bias,
+                                                hip_pitch_amp=hip_amp,
+                                                knee_bias=knee_bias,
+                                                knee_amp=knee_amp,
+                                                ankle_bias=ankle_bias,
+                                                ankle_amp=ankle_amp,
+                                                phase_offset=phase_offset,
+                                            )
+                                        )
     return rows[: args.max_candidates]
 
 
@@ -181,25 +200,60 @@ def run_search(args: argparse.Namespace) -> dict[str, Any]:
         obs = env._get_obs(state.data, state.info, contact)
         return state.replace(obs=obs)
 
-    def primitive_target(default_actuator, tick, period_s, hip_amp, knee_amp, ankle_amp, phase_offset):
+    def primitive_target(
+        default_actuator,
+        tick,
+        period_s,
+        hip_roll_bias,
+        hip_bias,
+        hip_amp,
+        knee_bias,
+        knee_amp,
+        ankle_bias,
+        ankle_amp,
+        phase_offset,
+    ):
         t = tick * env.dt
         phase = 2.0 * jp.pi * (t / period_s) + phase_offset
         left = jp.sin(phase)
         right = jp.sin(phase + jp.pi)
         target = jp.asarray(default_actuator)
-        target = target.at[2].set(default_actuator[2] + hip_amp * left)
-        target = target.at[3].set(default_actuator[3] + knee_amp * jp.maximum(0.0, left))
-        target = target.at[4].set(default_actuator[4] + ankle_amp * left)
-        target = target.at[11].set(default_actuator[11] + hip_amp * right)
-        target = target.at[12].set(default_actuator[12] + knee_amp * jp.maximum(0.0, right))
-        target = target.at[13].set(default_actuator[13] + ankle_amp * right)
+        target = target.at[1].set(default_actuator[1] + hip_roll_bias)
+        target = target.at[2].set(default_actuator[2] + hip_bias + hip_amp * left)
+        target = target.at[3].set(default_actuator[3] + knee_bias + knee_amp * jp.maximum(0.0, left))
+        target = target.at[4].set(default_actuator[4] + ankle_bias + ankle_amp * left)
+        target = target.at[10].set(default_actuator[10] - hip_roll_bias)
+        target = target.at[11].set(default_actuator[11] + hip_bias + hip_amp * right)
+        target = target.at[12].set(default_actuator[12] + knee_bias + knee_amp * jp.maximum(0.0, right))
+        target = target.at[13].set(default_actuator[13] + ankle_bias + ankle_amp * right)
         return target
 
-    def step_primitive(state, period_s, hip_amp, knee_amp, ankle_amp, phase_offset):
+    def step_primitive(
+        state,
+        period_s,
+        hip_roll_bias,
+        hip_bias,
+        hip_amp,
+        knee_bias,
+        knee_amp,
+        ankle_bias,
+        ankle_amp,
+        phase_offset,
+    ):
         state.info["command"] = command
         tick = state.info["step"]
         target = primitive_target(
-            env._default_actuator, tick, period_s, hip_amp, knee_amp, ankle_amp, phase_offset
+            env._default_actuator,
+            tick,
+            period_s,
+            hip_roll_bias,
+            hip_bias,
+            hip_amp,
+            knee_bias,
+            knee_amp,
+            ankle_bias,
+            ankle_amp,
+            phase_offset,
         )
         action = jp.clip((target - env._default_actuator) / env._config.action_scale, -1.0, 1.0)
         pre_rate_limit = env._default_actuator + action * env._config.action_scale
@@ -274,8 +328,12 @@ def run_search(args: argparse.Namespace) -> dict[str, Any]:
                 state, action, target, pre_rate, sent_target = step_primitive_jit(
                     state,
                     primitive.period_s,
+                    primitive.hip_roll_bias,
+                    primitive.hip_pitch_bias,
                     primitive.hip_pitch_amp,
+                    primitive.knee_bias,
                     primitive.knee_amp,
+                    primitive.ankle_bias,
                     primitive.ankle_amp,
                     primitive.phase_offset,
                 )
@@ -406,8 +464,12 @@ def main() -> int:
     parser.add_argument("--duration-s", type=float, default=3.0)
     parser.add_argument("--seeds", default="0")
     parser.add_argument("--periods", default="0.7,0.9,1.1")
+    parser.add_argument("--hip-roll-biases", default="0.0")
+    parser.add_argument("--hip-pitch-biases", default="0.0")
     parser.add_argument("--hip-pitch-amps", default="0.03,0.05,0.07")
+    parser.add_argument("--knee-biases", default="0.0")
     parser.add_argument("--knee-amps", default="0.04,0.08")
+    parser.add_argument("--ankle-biases", default="0.0")
     parser.add_argument("--ankle-scales", default="-0.5,-1.0")
     parser.add_argument("--phase-offsets", default="0.0,1.5708")
     parser.add_argument("--max-candidates", type=int, default=24)

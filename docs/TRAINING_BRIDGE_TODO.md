@@ -2873,6 +2873,47 @@ outputs/analysis/TARGET_GENERATOR_WINDOW_CURATION.md
 outputs/analysis/target_generator_window_curation.json
 ```
 
+### Biased Primitive Target Search
+
+The generator was extended with common hip/knee/ankle pitch biases and a small
+opposite hip-roll bias probe.
+
+Key result:
+
+```text
+best useful family:
+  hip_pitch_bias: +0.06 rad
+  hip_pitch_amp: 0.05 rad
+  knee_amp: 0.08 rad
+  ankle_bias: +0.04 rad
+  ankle_amp: -0.025 rad
+
+roll-bias probe:
+  hip_roll_bias: -0.04, 0.0, +0.04 rad
+  seeds: 0,2
+  curated seed windows: 12
+  curated source/mode pairs: 12
+  curated source files: 1
+  status: PASS_CURATED_DATASET_SEED_READY
+```
+
+Important caveat:
+
+```text
+The pass is source/mode-diverse but not seed-diverse. All curated windows are
+from seed_000. Seed_002 produced review-only motion hints, mostly due to lateral
+velocity or contact-pattern dominance.
+```
+
+Do next:
+
+```text
+1. preserve the roll-bias probe artifacts as target-generator evidence
+2. add seed-diversity or lateral/contact scoring before BC
+3. build a deliberate compact target dataset only after the next generator
+   pass produces windows that are not all from seed_000
+```
+
 ### V5/V7 Low-Command Trace Collection
 
 The old moving-lineage policies were replayed at `x=0.04` with vanilla dynamics

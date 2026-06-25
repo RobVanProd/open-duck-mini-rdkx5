@@ -3739,6 +3739,50 @@ outputs/analysis/TARGET_GENERATOR_WINDOW_CURATION.md
 outputs/analysis/target_generator_window_curation.json
 ```
 
+### Biased Primitive Target Search
+
+The primitive generator was extended with common hip/knee/ankle pitch biases
+and a small opposite hip-roll bias probe.
+
+Result:
+
+```text
+biased pitch-chain search:
+  curated windows: 5
+  status: HOLD_INSUFFICIENT_CURATED_WINDOWS
+
+biased multiseed search:
+  seeds: 0,1,2,3
+  curated windows: 5
+  status: HOLD_INSUFFICIENT_CURATED_WINDOWS
+
+roll-bias probe:
+  seeds: 0,2
+  curated windows: 12
+  curated source/mode pairs: 12
+  curated source files: 1
+  status: PASS_CURATED_DATASET_SEED_READY
+```
+
+Interpretation:
+
+```text
+This is the first target-generation pass that produces enough compact curated
+windows under the current curation gate. However, all curated windows are from
+seed_000. Seed_002 contributes review-only hints but still fails lateral/contact
+criteria. Do not launch BC/PPO from this as if it were a diverse walking
+dataset; use it as evidence that forward-biased primitive targets can create
+safe low-command motion snippets.
+```
+
+Next:
+
+```text
+add seed-diversity and lateral/contact scoring to the target generator, then
+build a deliberate compact target dataset from windows that are not all from one
+seed.
+```
+
 ### V5/V7 Low-Command Trace Collection
 
 A no-training CPU trace collection replayed the old moving-lineage policies at

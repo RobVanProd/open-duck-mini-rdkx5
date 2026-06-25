@@ -163,6 +163,63 @@ outputs/analysis/TARGET_GENERATOR_WINDOW_CURATION.md
 outputs/analysis/target_generator_window_curation.json
 ```
 
+## Biased Primitive Search Result
+
+The next bounded search added common hip/knee/ankle pitch biases and then a
+small opposite hip-roll bias probe around the most promising family:
+
+```text
+command_x: 0.04
+duration: 3 s
+best common pitch/ankle pattern:
+  hip_pitch_bias: +0.06 rad
+  hip_pitch_amp: 0.05 rad
+  knee_amp: 0.08 rad
+  ankle_bias: +0.04 rad
+  ankle_amp: -0.025 rad
+hip_roll_bias probe: -0.04, 0.0, +0.04 rad
+```
+
+Result:
+
+```text
+biased search:
+  curated seed windows: 5
+  status: HOLD_INSUFFICIENT_CURATED_WINDOWS
+
+biased multiseed search:
+  seeds: 0,1,2,3
+  curated seed windows: 5
+  seed 2 produced review-only motion hints
+  status: HOLD_INSUFFICIENT_CURATED_WINDOWS
+
+roll-bias probe:
+  seeds: 0,2
+  curated seed windows: 12
+  curated source/mode pairs: 12
+  curated source files: 1
+  status: PASS_CURATED_DATASET_SEED_READY
+```
+
+Interpretation:
+
+```text
+Forward-biased pitch-chain primitives can now produce short curated low-command
+target windows. Opposite hip-roll bias increases source/mode diversity enough
+to pass the current compact curation gate, but all curated windows are still
+from seed_000. Seed_002 remains review-only because lateral velocity or contact
+dominance fails. Treat this as target-generator proof of progress, not as a
+complete BC dataset launch.
+```
+
+Next step:
+
+```text
+convert the roll-bias probe into a deliberate target dataset builder, then add
+either seed-diversity search or lateral/contact objective terms before any
+supervised pretraining run.
+```
+
 Do not commit raw trace slices unless explicitly approved. Commit compact
 manifests and summaries only.
 
