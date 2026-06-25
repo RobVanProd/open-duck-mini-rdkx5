@@ -95,6 +95,8 @@ def tar_filter(member: tarfile.TarInfo) -> tarfile.TarInfo | None:
             ("outputs", "analysis", "reference_motion_x004_override.pkl"),
             ("outputs", "analysis", "reference_motion_override.json"),
             ("outputs", "analysis", "REFERENCE_MOTION_OVERRIDE.md"),
+            ("outputs", "analysis", "soft_prior_fragment_config.json"),
+            ("outputs", "analysis", "SOFT_PRIOR_FRAGMENT_CONFIG.md"),
         }
         rel_parts = tuple(parts[1:]) if len(parts) > 1 else tuple(parts)
         is_allowed_path = rel_parts in allowed_analysis
