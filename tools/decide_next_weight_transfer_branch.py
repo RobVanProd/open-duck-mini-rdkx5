@@ -41,6 +41,12 @@ DEFAULT_SAGITTAL_SOFTGATE_EFFECTIVENESS_JSON = (
     / "analysis"
     / "foot_placement_sagittal_softgate_effectiveness_analysis.json"
 )
+DEFAULT_STANCE_RELATIVE_EFFECTIVENESS_JSON = (
+    ROOT
+    / "outputs"
+    / "analysis"
+    / "foot_placement_stance_relative_lateral_effectiveness_analysis.json"
+)
 DEFAULT_OUTPUT_MD = ROOT / "outputs" / "analysis" / "NEXT_WEIGHT_TRANSFER_BRANCH.md"
 DEFAULT_OUTPUT_JSON = ROOT / "outputs" / "analysis" / "next_weight_transfer_branch.json"
 
@@ -70,6 +76,7 @@ def decide(
     push_effectiveness: dict[str, Any],
     sagittal_propulsion_effectiveness: dict[str, Any],
     sagittal_softgate_effectiveness: dict[str, Any],
+    stance_relative_effectiveness: dict[str, Any],
 ) -> dict[str, Any]:
     gate_status = status_of(gate)
     failure_status = status_of(failure)
@@ -82,6 +89,8 @@ def decide(
     sagittal_propulsion_summary = sagittal_propulsion_effectiveness.get("aggregate") or {}
     sagittal_softgate_status = status_of(sagittal_softgate_effectiveness)
     sagittal_softgate_summary = sagittal_softgate_effectiveness.get("aggregate") or {}
+    stance_relative_status = status_of(stance_relative_effectiveness)
+    stance_relative_summary = stance_relative_effectiveness.get("aggregate") or {}
 
     if gate_status == "PASS_WEIGHT_TRANSFER_TARGET":
         decision = "PROCEED_TARGET_DATASET_SMOKE"
@@ -99,6 +108,7 @@ def decide(
         and int(class_summary.get("all_three_rows", 0) or 0) == 0
         and sagittal_propulsion_status == "HOLD_PUSH_INEFFECTIVE"
         and sagittal_softgate_status == "HOLD_PUSH_INEFFECTIVE"
+        and stance_relative_status == "MISSING"
     ):
         decision = "PLAN_LATERAL_CONTAINED_STANCE_PROPULSION"
         next_branch = (
@@ -119,6 +129,36 @@ def decide(
             "Do not launch PPO/BC from current target sources.",
             "Do not run robot validation, grounded replay, or x=0.08.",
             "Do not widen the same sagittal/softgate grid without adding an active lateral support mechanism.",
+            "Require PASS_WEIGHT_TRANSFER_TARGET before training re-entry.",
+        ]
+    elif (
+        failure_status == "HOLD_FORWARD_IMPULSE_PRIMARY"
+        and int(class_summary.get("all_three_rows", 0) or 0) == 0
+        and stance_relative_status == "HOLD_PUSH_INEFFECTIVE"
+        and float(
+            stance_relative_summary.get("mean_push_future_vx_delta_m_s") or 0.0
+        )
+        > float(sagittal_propulsion_summary.get("mean_push_future_vx_delta_m_s") or 0.0)
+    ):
+        decision = "PLAN_STANCE_RELATIVE_PROPULSION_SHAPING"
+        next_branch = (
+            "Keep the stance-foot-relative lateral target as the promising "
+            "direction, but shape it to satisfy lateral and actuator gates. "
+            "It increased forward impulse and raw rollout speed, but still "
+            "fails the target gate through lateral velocity and target-velocity "
+            "violations."
+        )
+        rationale = [
+            "No checked target source passes PASS_WEIGHT_TRANSFER_TARGET.",
+            "The aggregate failure remains HOLD_FORWARD_IMPULSE_PRIMARY with zero rows satisfying stability, support, and forward progress together.",
+            "Stance-foot-relative lateral targeting increased push scheduling and mean future vx delta beyond the sagittal-only variant.",
+            "The 100/150 tick scores still found zero robust modes, with high lateral velocity and high sent target velocity dominating.",
+            "This is evidence for a usable direction, not training permission: the next branch should shape the stance-relative controller inside lateral and actuator limits.",
+        ]
+        stop_rules = [
+            "Do not launch PPO/BC from current target sources.",
+            "Do not run robot validation, grounded replay, or x=0.08.",
+            "Do not increase stance-relative propulsion before target velocity and lateral velocity are bounded.",
             "Require PASS_WEIGHT_TRANSFER_TARGET before training re-entry.",
         ]
     elif (
@@ -233,6 +273,15 @@ def decide(
                     "PASS_PUSH_EFFECTIVE"
                 )
             ),
+            "stance_relative_status": stance_relative_status,
+            "stance_relative_mean_future_vx_delta_m_s": (
+                stance_relative_summary.get("mean_push_future_vx_delta_m_s")
+            ),
+            "stance_relative_pass_count": (
+                stance_relative_summary.get("status_counts", {}).get(
+                    "PASS_PUSH_EFFECTIVE"
+                )
+            ),
         },
         "rationale": rationale,
         "required_next_design": [
@@ -241,6 +290,7 @@ def decide(
             "swing-foot placement and clearance objective",
             "active lateral containment while stance propulsion remains enabled",
             "stance-support propulsion that is not only a direct push-amplitude increase",
+            "target-velocity shaping for stance-relative propulsion",
             "lateral velocity and base-y drift penalties",
             "pitch and base-height guards",
             "measured actuator-envelope scoring",
@@ -317,6 +367,10 @@ def main() -> int:
         "--sagittal-softgate-effectiveness-json",
         default=str(DEFAULT_SAGITTAL_SOFTGATE_EFFECTIVENESS_JSON),
     )
+    parser.add_argument(
+        "--stance-relative-effectiveness-json",
+        default=str(DEFAULT_STANCE_RELATIVE_EFFECTIVENESS_JSON),
+    )
     parser.add_argument("--output-md", default=str(DEFAULT_OUTPUT_MD))
     parser.add_argument("--output-json", default=str(DEFAULT_OUTPUT_JSON))
     args = parser.parse_args()
@@ -329,6 +383,7 @@ def main() -> int:
         load_json(Path(args.push_effectiveness_json)),
         load_json(Path(args.sagittal_propulsion_effectiveness_json)),
         load_json(Path(args.sagittal_softgate_effectiveness_json)),
+        load_json(Path(args.stance_relative_effectiveness_json)),
     )
     output_json = Path(args.output_json)
     output_json.parent.mkdir(parents=True, exist_ok=True)

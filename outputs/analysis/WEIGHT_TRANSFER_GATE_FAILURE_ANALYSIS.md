@@ -9,35 +9,35 @@ hardware tests.
 
 ## Dataset
 
-- score artifacts: `62`
-- seed rows scanned: `3384`
+- score artifacts: `64`
+- seed rows scanned: `3640`
 
 ## Constraint Pass Rates
 
 | constraint | threshold | observed | pass rows | pass pct | best | worst |
 |---|---|---:|---:|---:|---:|---:|
-| forward_velocity | `>= 0.0400` | 3282 | 15 | 0.44 | 0.1340 | -0.0725 |
-| forward_displacement | `>= 0.0040` | 2778 | 1779 | 52.57 | 0.2680 | -0.1451 |
-| lateral_velocity | `<= 0.1200` | 3282 | 1390 | 41.08 | 0.0234 | 0.4311 |
-| body_pitch | `<= 0.3500` | 3282 | 3252 | 96.10 | 0.0031 | 0.9207 |
-| base_height | `>= 0.1450` | 3282 | 3229 | 95.42 | 0.1602 | 0.0734 |
-| double_support | `<= 75.0000` | 3282 | 1029 | 30.41 | 31.3333 | 100.0000 |
-| single_support | `>= 20.0000` | 3282 | 1315 | 38.86 | 68.6667 | 0.0000 |
-| support_balance | `>= 5.0000` | 3282 | 1679 | 49.62 | 32.0000 | 0.0000 |
-| contact_transitions | `>= 2.0000` | 3282 | 3233 | 95.54 | 62.0000 | 0.0000 |
-| target_velocity | `<= 3.7500` | 3282 | 3203 | 94.65 | 0.0000 | 4.2949 |
-| joint_tracking | `<= 0.1200` | 3282 | 3281 | 96.96 | 0.0375 | 0.1223 |
+| forward_velocity | `>= 0.0400` | 3532 | 18 | 0.49 | 0.1340 | -0.0842 |
+| forward_displacement | `>= 0.0040` | 3028 | 2022 | 55.55 | 0.2680 | -0.2475 |
+| lateral_velocity | `<= 0.1200` | 3532 | 1391 | 38.21 | 0.0234 | 0.4311 |
+| body_pitch | `<= 0.3500` | 3532 | 3499 | 96.13 | 0.0031 | 0.9207 |
+| base_height | `>= 0.1450` | 3532 | 3476 | 95.49 | 0.1602 | 0.0692 |
+| double_support | `<= 75.0000` | 3532 | 1252 | 34.40 | 30.0000 | 100.0000 |
+| single_support | `>= 20.0000` | 3532 | 1556 | 42.75 | 68.6667 | 0.0000 |
+| support_balance | `>= 5.0000` | 3532 | 1922 | 52.80 | 32.0000 | 0.0000 |
+| contact_transitions | `>= 2.0000` | 3532 | 3483 | 95.69 | 63.0000 | 0.0000 |
+| target_velocity | `<= 3.7500` | 3532 | 3335 | 91.62 | 0.0000 | 4.2949 |
+| joint_tracking | `<= 0.1200` | 3532 | 3531 | 97.01 | 0.0375 | 0.1223 |
 
 ## Combination Counts
 
 | bucket | rows |
 |---|---:|
-| stable_actuator_rows | 1370 |
-| support_ready_rows | 1027 |
-| forward_ready_rows | 15 |
+| stable_actuator_rows | 1371 |
+| support_ready_rows | 1250 |
+| forward_ready_rows | 18 |
 | stable_and_support_rows | 9 |
 | stable_and_forward_rows | 0 |
-| support_and_forward_rows | 1 |
+| support_and_forward_rows | 4 |
 | all_three_rows | 0 |
 
 ## Best Forward Rows Among Stable/Actuator-Safe Rows
@@ -67,13 +67,13 @@ hardware tests.
 | `foot_placement_mpc_teacher_push_probe_score_100` | `seed_002` | 10 | 0.0182 | 74.00 | 26.00 | 11.00 | `forward_velocity` |
 | `foot_placement_mpc_teacher_smoke_score_100` | `seed_002` | 10 | 0.0169 | 75.00 | 25.00 | 9.00 | `forward_velocity` |
 | `com_weight_transfer_controller_stance_reverse_push_probe_score_150` | `seed_002` | 10 | 0.0038 | 74.00 | 26.00 | 12.00 | `forward_velocity` |
+| `foot_placement_mpc_teacher_stance_relative_lateral_probe_score_100` | `seed_002` | 9 | 0.0492 | 56.00 | 44.00 | 22.00 | `lateral_velocity, target_velocity` |
+| `foot_placement_mpc_teacher_stance_relative_lateral_probe_score_150` | `seed_002` | 9 | 0.0489 | 50.67 | 49.33 | 21.33 | `lateral_velocity, target_velocity` |
 | `closed_loop_weight_transfer_teacher_lateral_refine_score_100` | `seed_002` | 9 | 0.0425 | 66.00 | 34.00 | 7.00 | `lateral_velocity, body_pitch` |
+| `foot_placement_mpc_teacher_stance_relative_lateral_probe_score_100` | `seed_002` | 9 | 0.0417 | 52.00 | 48.00 | 23.00 | `lateral_velocity, target_velocity` |
+| `foot_placement_mpc_teacher_stance_relative_lateral_probe_score_100` | `seed_000` | 9 | 0.0396 | 49.00 | 51.00 | 25.00 | `forward_velocity, lateral_velocity` |
 | `closed_loop_weight_transfer_teacher_forward_intent_score_100` | `seed_002` | 9 | 0.0395 | 62.00 | 38.00 | 14.00 | `forward_velocity, lateral_velocity` |
 | `foot_placement_mpc_teacher_yaw_support_probe_score_100` | `seed_002` | 9 | 0.0393 | 48.00 | 52.00 | 18.00 | `forward_velocity, lateral_velocity` |
-| `closed_loop_weight_transfer_teacher_forward_intent_score_100` | `seed_002` | 9 | 0.0346 | 53.00 | 47.00 | 14.00 | `forward_velocity, lateral_velocity` |
-| `closed_loop_weight_transfer_teacher_forward_intent_score_100` | `seed_000` | 9 | 0.0345 | 67.00 | 33.00 | 9.00 | `forward_velocity, lateral_velocity` |
-| `closed_loop_weight_transfer_teacher_forward_intent_score_100` | `seed_002` | 9 | 0.0343 | 43.00 | 57.00 | 17.00 | `forward_velocity, lateral_velocity` |
-| `closed_loop_weight_transfer_teacher_forward_intent_score_150` | `seed_002` | 9 | 0.0336 | 43.33 | 56.67 | 18.00 | `forward_velocity, lateral_velocity` |
 
 ## Decision
 

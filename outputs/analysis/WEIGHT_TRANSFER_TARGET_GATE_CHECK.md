@@ -79,6 +79,8 @@ it does not run simulation, training, robot SSH, deployment, or hardware tests.
 | `foot_placement_mpc_teacher_smoke_v3_score_150` | `HOLD_NO_SEED_ROBUST_TARGETS` | 150 | 0 | 3 | 0 |
 | `foot_placement_mpc_teacher_stability_probe_score_100` | `HOLD_NO_SEED_ROBUST_TARGETS` | 100 | 0 | 3 | 0 |
 | `foot_placement_mpc_teacher_stability_probe_score_150` | `HOLD_NO_SEED_ROBUST_TARGETS` | 150 | 0 | 3 | 0 |
+| `foot_placement_mpc_teacher_stance_relative_lateral_probe_score_100` | `HOLD_NO_SEED_ROBUST_TARGETS` | 100 | 0 | 3 | 0 |
+| `foot_placement_mpc_teacher_stance_relative_lateral_probe_score_150` | `HOLD_NO_SEED_ROBUST_TARGETS` | 150 | 0 | 3 | 0 |
 | `foot_placement_mpc_teacher_yaw_support_probe_score_100` | `HOLD_NO_SEED_ROBUST_TARGETS` | 100 | 0 | 3 | 0 |
 | `foot_placement_mpc_teacher_yaw_support_probe_score_150` | `HOLD_NO_SEED_ROBUST_TARGETS` | 150 | 0 | 3 | 0 |
 | `staged_weight_transfer_planner_score_100` | `HOLD_NO_SEED_ROBUST_TARGETS` | 100 | 0 | 3 | 0 |

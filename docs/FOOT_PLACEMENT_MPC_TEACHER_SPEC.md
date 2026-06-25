@@ -10,7 +10,7 @@ The current target-source branch is held at:
 
 ```text
 outputs/analysis/NEXT_WEIGHT_TRANSFER_BRANCH.md
-status: PLAN_LATERAL_CONTAINED_STANCE_PROPULSION
+status: PLAN_STANCE_RELATIVE_PROPULSION_SHAPING
 ```
 
 The next implementation should build a finite-horizon state-feedback
@@ -284,6 +284,9 @@ sagittal stance-feedback propulsion:
 
 sagittal stance-feedback propulsion with soft gates:
   robust 100/150 tick modes: 0 / 64
+
+stance-relative lateral + sagittal propulsion:
+  robust 100/150 tick modes: 0 / 64
 ```
 
 The latest stability probe added default-off fields:
@@ -366,6 +369,27 @@ can create small forward impulse in isolated traces, but gating it for
 lateral/yaw safety removes most of that impulse. The next design should not be
 a wider scalar sweep over these gains; it should create lateral containment and
 stance loading that allow propulsion to remain active.
+
+The stance-relative lateral follow-up changed the lateral target to use the
+current stance foot as the reference:
+
+```text
+--stance-relative-lateral
+```
+
+This increased forward impulse more than the sagittal-only and softgated runs:
+
+```text
+mean future vx delta during push: +0.0099 m/s
+mean push_allowed_pct: 47.1292
+top raw rollout mean vx: 0.0312 m/s
+top raw rollout max seed vx: 0.0489 m/s
+```
+
+But it still produced no seed-robust 100/150 tick target. The score failures
+shifted to high lateral velocity and high sent target velocity. That makes
+stance-relative lateral targeting the current best direction, but the next
+probe must shape it inside the lateral and actuator envelopes.
 
 ## Stop Rules
 

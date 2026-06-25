@@ -205,7 +205,7 @@ Current gate artifact:
 ```text
 outputs/analysis/WEIGHT_TRANSFER_TARGET_GATE_CHECK.md
 status: HOLD_NO_SUSTAINED_WEIGHT_TRANSFER_TARGET
-checked score artifacts: 62
+checked score artifacts: 64
 passing target sources: 0
 ```
 
@@ -214,7 +214,7 @@ The failure-mode analysis scans the same compact score family:
 ```text
 outputs/analysis/WEIGHT_TRANSFER_GATE_FAILURE_ANALYSIS.md
 status: HOLD_FORWARD_IMPULSE_PRIMARY
-seed rows scanned: 3384
+seed rows scanned: 3640
 ```
 
 It found:
@@ -326,12 +326,12 @@ The next branch decision is now explicit:
 ```text
 tool: tools/decide_next_weight_transfer_branch.py
 artifact: outputs/analysis/NEXT_WEIGHT_TRANSFER_BRANCH.md
-status: PLAN_LATERAL_CONTAINED_STANCE_PROPULSION
+status: PLAN_STANCE_RELATIVE_PROPULSION_SHAPING
 ```
 
 That means the next offline implementation should be a finite-horizon
 state-feedback teacher/optimizer that chooses stance side, lateral body
-placement, swing-foot placement, and lateral-contained stance propulsion.
+placement, swing-foot placement, and shaped stance-relative propulsion.
 Do not launch PPO/BC or robot validation from current target sources.
 
 Implementation spec:
@@ -432,3 +432,21 @@ small impulse locally, but it is not seed-robust and safety gating largely
 removes the effect. The next offline target-source work needs lateral support
 containment that enables propulsion, not another direct increase in push
 amplitude.
+
+The latest stance-relative lateral follow-up is the best direction so far, but
+still a hold:
+
+```text
+outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_STANCE_RELATIVE_LATERAL_PROBE_SCORE_100.md
+outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_STANCE_RELATIVE_LATERAL_PROBE_SCORE_150.md
+outputs/analysis/FOOT_PLACEMENT_STANCE_RELATIVE_LATERAL_EFFECTIVENESS_ANALYSIS.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+robust modes: 0 / 64
+top raw rollout mean vx: 0.0312 m/s
+mean future vx delta during push: +0.0099 m/s
+```
+
+It increased forward impulse and raw rollout speed, but the target scores fail
+on lateral velocity and sent target velocity. Current interpretation: keep the
+stance-foot-relative controller idea, but shape target velocity and lateral
+dynamics before any training re-entry.

@@ -1,6 +1,6 @@
 # Next Weight-Transfer Branch Decision
 
-status: `PLAN_LATERAL_CONTAINED_STANCE_PROPULSION`
+status: `PLAN_STANCE_RELATIVE_PROPULSION_SHAPING`
 
 This is an offline planning artifact. It does not run simulation,
 training, robot SSH, deployment, or hardware tests.
@@ -10,15 +10,15 @@ training, robot SSH, deployment, or hardware tests.
 | field | value |
 |---|---:|
 | `gate_status` | `HOLD_NO_SUSTAINED_WEIGHT_TRANSFER_TARGET` |
-| `gate_artifacts` | `62` |
+| `gate_artifacts` | `64` |
 | `failure_status` | `HOLD_FORWARD_IMPULSE_PRIMARY` |
-| `seed_rows_scanned` | `3384` |
-| `stable_actuator_rows` | `1370` |
-| `support_ready_rows` | `1027` |
-| `forward_ready_rows` | `15` |
+| `seed_rows_scanned` | `3640` |
+| `stable_actuator_rows` | `1371` |
+| `support_ready_rows` | `1250` |
+| `forward_ready_rows` | `18` |
 | `stable_and_support_rows` | `9` |
 | `stable_and_forward_rows` | `0` |
-| `support_and_forward_rows` | `1` |
+| `support_and_forward_rows` | `4` |
 | `all_three_rows` | `0` |
 | `leg_extension_100_status` | `HOLD_NO_SEED_ROBUST_TARGETS` |
 | `leg_extension_100_robust_modes` | `0` |
@@ -33,19 +33,21 @@ training, robot SSH, deployment, or hardware tests.
 | `sagittal_softgate_status` | `HOLD_PUSH_INEFFECTIVE` |
 | `sagittal_softgate_mean_future_vx_delta_m_s` | `0.0006837656833296326` |
 | `sagittal_softgate_pass_count` | `1` |
+| `stance_relative_status` | `HOLD_PUSH_INEFFECTIVE` |
+| `stance_relative_mean_future_vx_delta_m_s` | `0.009873367809772528` |
+| `stance_relative_pass_count` | `None` |
 
 ## Decision
 
-Design a stance propulsion controller with active lateral support containment. The sagittal stance-feedback primitive creates small local impulse, but it is not seed robust, and soft gating mostly removes the impulse.
+Keep the stance-foot-relative lateral target as the promising direction, but shape it to satisfy lateral and actuator gates. It increased forward impulse and raw rollout speed, but still fails the target gate through lateral velocity and target-velocity violations.
 
 ## Rationale
 
 - No checked target source passes PASS_WEIGHT_TRANSFER_TARGET.
 - The aggregate failure remains HOLD_FORWARD_IMPULSE_PRIMARY with zero rows satisfying stability, support, and forward progress together.
-- The original foot-placement push measured as ineffective.
-- The sagittal stance-feedback replacement improved mean future vx delta slightly, but still produced zero seed-robust 100/150 tick modes.
-- The softgated sagittal follow-up kept the hold and reduced the already-small forward impulse.
-- This means the missing mechanism is lateral containment that permits propulsion to stay active, not another direct push-amplitude or push-throttle sweep.
+- Stance-foot-relative lateral targeting increased push scheduling and mean future vx delta beyond the sagittal-only variant.
+- The 100/150 tick scores still found zero robust modes, with high lateral velocity and high sent target velocity dominating.
+- This is evidence for a usable direction, not training permission: the next branch should shape the stance-relative controller inside lateral and actuator limits.
 
 ## Required Next Design
 
@@ -54,6 +56,7 @@ Design a stance propulsion controller with active lateral support containment. T
 - swing-foot placement and clearance objective
 - active lateral containment while stance propulsion remains enabled
 - stance-support propulsion that is not only a direct push-amplitude increase
+- target-velocity shaping for stance-relative propulsion
 - lateral velocity and base-y drift penalties
 - pitch and base-height guards
 - measured actuator-envelope scoring
@@ -63,7 +66,7 @@ Design a stance propulsion controller with active lateral support containment. T
 
 - Do not launch PPO/BC from current target sources.
 - Do not run robot validation, grounded replay, or x=0.08.
-- Do not widen the same sagittal/softgate grid without adding an active lateral support mechanism.
+- Do not increase stance-relative propulsion before target velocity and lateral velocity are bounded.
 - Require PASS_WEIGHT_TRANSFER_TARGET before training re-entry.
 
 ## Non-Goals

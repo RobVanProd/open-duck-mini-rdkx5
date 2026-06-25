@@ -155,6 +155,10 @@ velocity-feedback stance-push primitive:
 stance-foot-relative sagittal propulsion primitive:
   no seed-robust 100/150 tick target
   small positive impulse in isolated traces, not seed robust
+
+stance-relative lateral + sagittal propulsion:
+  no seed-robust 100/150 tick target
+  strongest forward impulse so far, but high lateral/target velocity
 ```
 
 Next implementation should follow:
@@ -4455,7 +4459,7 @@ The current executable next-branch decision is:
 ```text
 tool: tools/decide_next_weight_transfer_branch.py
 artifact: outputs/analysis/NEXT_WEIGHT_TRANSFER_BRANCH.md
-status: PLAN_LATERAL_CONTAINED_STANCE_PROPULSION
+status: PLAN_STANCE_RELATIVE_PROPULSION_SHAPING
 ```
 
 This picks the next target-source branch explicitly:
@@ -4464,6 +4468,7 @@ This picks the next target-source branch explicitly:
 finite-horizon state-feedback teacher/optimizer
 stance side + lateral body placement + swing-foot placement
 active lateral containment while stance propulsion remains enabled
+target-velocity shaping for stance-relative propulsion
 all optimized/scored together
 ```
 

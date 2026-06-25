@@ -62,7 +62,7 @@ Current result:
 ```text
 artifact: outputs/analysis/WEIGHT_TRANSFER_TARGET_GATE_CHECK.md
 status: HOLD_NO_SUSTAINED_WEIGHT_TRANSFER_TARGET
-checked score artifacts: 62
+checked score artifacts: 64
 passing target sources: 0
 ```
 
@@ -75,7 +75,7 @@ The current failure-mode scan is:
 tool: tools/analyze_weight_transfer_gate_failures.py
 artifact: outputs/analysis/WEIGHT_TRANSFER_GATE_FAILURE_ANALYSIS.md
 status: HOLD_FORWARD_IMPULSE_PRIMARY
-seed rows scanned: 3384
+seed rows scanned: 3640
 ```
 
 Key split:
@@ -228,7 +228,7 @@ Current decision artifact:
 
 ```text
 outputs/analysis/NEXT_WEIGHT_TRANSFER_BRANCH.md
-status: PLAN_LATERAL_CONTAINED_STANCE_PROPULSION
+status: PLAN_STANCE_RELATIVE_PROPULSION_SHAPING
 ```
 
 The required next design is:
@@ -240,6 +240,7 @@ explicit lateral body placement over the stance foot
 swing-foot placement and clearance objective
 active lateral containment while stance propulsion remains enabled
 stance-support propulsion that is not only a direct push-amplitude increase
+target-velocity shaping for stance-relative propulsion
 lateral velocity and base-y drift penalties
 pitch and base-height guards
 measured actuator-envelope scoring
@@ -248,7 +249,7 @@ measured actuator-envelope scoring
 
 This is intentionally stronger than "try Branch A." It rules out another nearby
 scalar teacher-grid expansion and, after the push-effectiveness trace read,
-points at lateral-contained stance propulsion as the next reviewed
+points at stance-relative propulsion shaping as the next reviewed
 implementation target.
 
 Implementation spec:
@@ -333,6 +334,43 @@ Interpretation: the replacement stance propulsion direction is not enough by
 itself. The next useful branch needs a controller that actively preserves
 lateral support while pushing, instead of throttling push whenever lateral
 motion appears or pushing through a laterally uncontained stance.
+
+Stance-relative lateral containment diagnostic:
+
+```text
+artifacts:
+  outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_STANCE_RELATIVE_LATERAL_PROBE_SCORE_100.md
+  outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_STANCE_RELATIVE_LATERAL_PROBE_SCORE_150.md
+  outputs/analysis/FOOT_PLACEMENT_STANCE_RELATIVE_LATERAL_EFFECTIVENESS_ANALYSIS.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+robust modes: 0 / 64
+```
+
+This changed the lateral target from a world/base-y target to a stance-foot
+relative target. It is the most promising local result so far:
+
+```text
+top raw rollout mean vx: 0.0312 m/s
+top raw rollout max seed vx: 0.0489 m/s
+mean push_allowed_pct: 47.1292
+mean future vx delta during push: +0.0099 m/s
+```
+
+But it still fails the target gate:
+
+```text
+100/150 tick robust modes: 0
+dominant 100-tick failures:
+  high_lateral_velocity
+  low_forward_velocity
+  high_sent_target_velocity
+```
+
+Interpretation: stance-foot-relative lateral targeting is a useful direction,
+not a training target. It increases forward impulse, but the current controller
+buys that impulse with lateral velocity and actuator-envelope violations. The
+next revision should keep the stance-relative idea while shaping target
+velocity and lateral dynamics, not simply increase propulsion.
 
 Stronger-push diagnostic:
 

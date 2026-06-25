@@ -333,12 +333,17 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
             swing_contact = left_swing * left_contact + right_swing * right_contact
 
             foot_x = foot_site_pos[:, 0]
+            foot_y = foot_site_pos[:, 1]
             foot_z = foot_site_pos[:, 2]
             stance_foot_x = left_stance * foot_x[0] + right_stance * foot_x[1]
+            stance_foot_y = left_stance * foot_y[0] + right_stance * foot_y[1]
             swing_foot_x = left_swing * foot_x[0] + right_swing * foot_x[1]
             swing_foot_z = left_swing * foot_z[0] + right_swing * foot_z[1]
 
-            desired_base_y = stance_side * load_shift_y_m
+            if args.stance_relative_lateral:
+                desired_base_y = stance_foot_y + stance_side * load_shift_y_m
+            else:
+                desired_base_y = stance_side * load_shift_y_m
             lateral_error = desired_base_y - base_y
             lateral_ready = jp.abs(lateral_error) <= base_y_gate_m
             velocity_ready = jp.abs(local_vy) <= lateral_velocity_gate_m_s
@@ -465,6 +470,8 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                 push_allowed,
                 lateral_error,
                 stance_foot_x,
+                stance_foot_y,
+                desired_base_y,
                 swing_foot_x,
                 swing_x_error,
                 desired_swing_x,
@@ -528,6 +535,8 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                 push_allowed,
                 lateral_error,
                 stance_foot_x,
+                stance_foot_y,
+                desired_base_y,
                 swing_foot_x,
                 swing_x_error,
                 desired_swing_x,
@@ -650,6 +659,8 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                 push_allowed,
                 lateral_error,
                 stance_foot_x,
+                stance_foot_y,
+                desired_base_y,
                 swing_foot_x,
                 swing_x_error,
                 desired_swing_x,
@@ -697,6 +708,8 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                         push_allowed,
                         lateral_error,
                         stance_foot_x,
+                        stance_foot_y,
+                        desired_base_y,
                         swing_foot_x,
                         swing_x_error,
                         desired_swing_x,
@@ -787,6 +800,10 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                         "switch_ready": bool(switch_ready),
                         "lateral_error_m": float(np.asarray(jax.device_get(lateral_error))),
                         "stance_foot_x_m": float(np.asarray(jax.device_get(stance_foot_x))),
+                        "stance_foot_y_m": float(np.asarray(jax.device_get(stance_foot_y))),
+                        "desired_base_y_m": float(
+                            np.asarray(jax.device_get(desired_base_y))
+                        ),
                         "swing_foot_x_m": float(np.asarray(jax.device_get(swing_foot_x))),
                         "desired_swing_foot_x_m": float(
                             np.asarray(jax.device_get(desired_swing_x))
@@ -1022,6 +1039,15 @@ def main() -> int:
     parser.add_argument("--unweight-s", type=float, default=0.22)
     parser.add_argument("--push-s", type=float, default=0.14)
     parser.add_argument("--load-shift-y", default="0.015,0.025")
+    parser.add_argument(
+        "--stance-relative-lateral",
+        action="store_true",
+        help=(
+            "Make load-shift-y a desired base-y offset from the current stance "
+            "foot instead of an absolute world/base-y target. Default is off "
+            "to preserve prior probe behavior."
+        ),
+    )
     parser.add_argument("--base-y-gate", type=float, default=0.03)
     parser.add_argument("--lateral-velocity-gate", type=float, default=0.12)
     parser.add_argument("--foot-place-x", default="0.015,0.03")
