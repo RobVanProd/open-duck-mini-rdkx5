@@ -2179,6 +2179,18 @@ Future phase gates should pass phase-local reward overrides before reward-term
 diagnostics are interpreted.
 ```
 
+Corrected replay:
+
+```text
+V18 phase-1 final ONNX was replayed with the intended V18 reward overrides for
+seeds 0-1 at x=0.04. Both seeds terminated:
+  seed 0: command-progress failure at 50 samples
+  seed 1: reverse/collapse at 33 samples
+```
+
+The corrected replay confirms the reward machinery is active. V18 still fails
+the low-command discovery task under its intended reward config.
+
 Next offline tasks:
 
 - inspect whether the low-command task can be solved at all with the current
@@ -2192,3 +2204,5 @@ Next offline tasks:
 
 Summary artifact:
 `outputs/analysis/A100_V18_PHASE1_LOW_COMMAND_HOLD_SUMMARY.md`.
+Corrected reward replay:
+`outputs/analysis/V18_PHASE1_REWARD_OVERRIDE_REPLAY_SUMMARY.md`.

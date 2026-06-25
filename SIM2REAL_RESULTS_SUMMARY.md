@@ -2988,10 +2988,22 @@ valid because it is based on independent velocity/progress/fall metrics.
 Future phase gates should pass phase-local reward overrides before using reward
 term summaries diagnostically.
 
+A corrected CPU replay was then run for V18 phase 1 with the intended reward
+overrides active for seeds `0-1` at `x=0.04`. Both seeds terminated:
+
+```text
+seed 0: 50 samples, vx 0.0034 m/s, track ratio 0.0845, command-progress failure
+seed 1: 33 samples, vx -0.0954 m/s, track ratio -2.3845, reverse/collapse
+```
+
+This strengthens the V18 hold. The reward terms are active, but the learned
+policy still fails low-command motion under the intended V18 objective.
+
 Summary artifacts:
 
 ```text
 outputs/analysis/A100_V18_PHASE1_LOW_COMMAND_HOLD_SUMMARY.md
 outputs/analysis/V18_PHASE1_LOW_COMMAND_SEED_GATE.md
 outputs/analysis/v18_phase1_low_command_seed_gate.json
+outputs/analysis/V18_PHASE1_REWARD_OVERRIDE_REPLAY_SUMMARY.md
 ```
