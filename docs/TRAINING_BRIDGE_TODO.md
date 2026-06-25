@@ -3963,3 +3963,38 @@ If V22 does not materially reduce prior distance, stop treating soft reward
 shaping as sufficient imitation. The next branch should be explicit supervised
 pretraining, behavior cloning, or a stronger reference-locking mechanism before
 any actuator bridge or robot validation work resumes.
+
+### Contact / Weight-Transfer Branch
+
+The contact discriminator result is now recorded:
+
+```text
+artifact: outputs/analysis/CONTACT_WEIGHT_TRANSFER_DISCRIMINATOR.md
+status: HOLD_CONTACT_NOT_BINARY_MISMATCH_ONLY
+```
+
+Use this distinction in the next branch:
+
+```text
+raw polynomial reference path:
+  contact mismatch around 67-68%, actual double support around 74-76%;
+  do not use as direct BC/controller labels.
+
+dynamic-roll lateral-fix fragment path:
+  binary contact mismatch is already low in closed-loop replay
+  (2.76% / 0.00% on seed_000 / seed_002), but forward progress is still low.
+```
+
+Do not spend the next run on stronger pitch-chain prior scale or another
+contact-bit adapter around the same short table. The next useful offline gate is:
+
+```text
+PASS_WEIGHT_TRANSFER_TARGET:
+  100-150 tick target or rollout has meaningful forward progress, low lateral
+  drift, stable pitch/height, in-envelope target velocities, and multiple
+  useful support transitions.
+```
+
+If this gate fails, improve the generator/objective before launching another
+CUDA PPO run. If it passes, use that target as the source for the next reviewed
+BC/PPO experiment.

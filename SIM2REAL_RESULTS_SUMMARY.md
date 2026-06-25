@@ -5011,3 +5011,51 @@ then disappeared before the first checkpoint or progress line. Treat this as a
 cloud/backend failure, not a policy result. The next clean V22 attempt should
 use either the previously reliable L4 path, a shorter diagnostic first, or
 stronger automatic no-sentinel recovery.
+
+### Contact Weight-Transfer Discriminator
+
+The contact-mismatch hypothesis was re-read against the existing target-source
+and replay artifacts before launching another training run:
+
+```text
+artifact: outputs/analysis/CONTACT_WEIGHT_TRANSFER_DISCRIMINATOR.md
+status: HOLD_CONTACT_NOT_BINARY_MISMATCH_ONLY
+```
+
+The raw polynomial reference path still has a real contact incompatibility:
+
+```text
+raw/projected reference contact mismatch: about 67-68%
+actual double support: about 74-76%
+reference double support: about 35-38%
+```
+
+But the later dynamic-roll lateral-fix path already shows low binary contact
+mismatch in closed-loop sequence replay:
+
+```text
+contact_hold/contact_match/state_match replay mismatch:
+  seed_000: 2.76%
+  seed_002: 0.00%
+
+contact_match replay vx:
+  seed_000: 0.0117 m/s
+  seed_002: 0.0138 m/s
+```
+
+So the current best short fragment path is not failing because the phase adapter
+cannot find the requested binary foot-contact state. Binary contact matching is
+already mostly achieved, but forward progress remains low and pitch stays
+near/over gate. The sharper blocker is sustained weight transfer: the current
+short fragments contain useful in-envelope evidence, but they do not yet provide
+a reusable 100-150 tick target or closed-loop objective that makes the body keep
+moving forward while transferring support.
+
+Next branch:
+
+```text
+do not launch another prior-scale-only V22-style run
+build or run a bounded PASS_WEIGHT_TRANSFER_TARGET gate first
+optimize for sustained support transitions + forward progress + pitch/height
+only then launch PPO/BC from that target
+```
