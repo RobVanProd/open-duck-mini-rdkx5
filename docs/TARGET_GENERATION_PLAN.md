@@ -332,6 +332,8 @@ dataset_id: e84d27e27fd73419
 status: WARN_TARGET_DATASET_SANITY_SOURCE_SKEW
 entries checked: 11
 entries with errors: 0
+bc readiness: HOLD_TARGET_DATASET_BC_OBSERVATIONS_MISSING
+bc ready entries: 0
 source files: 2
 max source fraction: 0.9091
 warning: source_distribution_skew
@@ -341,9 +343,37 @@ Interpretation:
 
 ```text
 The manifest entries match the source traces and all compact metrics recompute
-cleanly. The only sanity warning is the known source skew. This clears the
-manifest for review and a tiny supervised/imitation smoke experiment if the
-skew is accepted, but it does not justify a larger PPO run.
+cleanly. The compact target evidence is valid, but the source traces do not
+contain the 101-element policy observation vector needed for behavior cloning.
+Before any supervised/imitation smoke run, rerun or extend the target generator
+to record `obs[101]` alongside the action/target fields.
+```
+
+## Observation-Ready Target Dataset
+
+The shuffled broad target search was rerun after extending the primitive
+generator to write the policy observation vector:
+
+```text
+trace field added: observation[101]
+dataset_id: 6c43c18e8f2b72ec
+curation status: PASS_CURATED_DATASET_SEED_READY
+manifest status: PASS_TARGET_DATASET_MANIFEST_READY
+sanity status: WARN_TARGET_DATASET_SANITY_SOURCE_SKEW
+bc readiness: PASS_TARGET_DATASET_BC_READY
+entries: 11
+source files: 2
+source distribution: seed_000=10, seed_002=1
+```
+
+Interpretation:
+
+```text
+The dataset is now technically usable for a tiny supervised/imitation smoke
+experiment because each curated window has obs[101] and action[14]. The source
+skew remains the only warning, so the next experiment must stay tiny and must be
+graded on whether it preserves low-command forward motion rather than reducing
+loss alone.
 ```
 
 Do not commit raw trace slices unless explicitly approved. Commit compact

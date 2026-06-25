@@ -2999,6 +2999,8 @@ tool: tools/check_target_dataset_manifest.py
 status: WARN_TARGET_DATASET_SANITY_SOURCE_SKEW
 entries checked: 11
 entries with errors: 0
+bc readiness: HOLD_TARGET_DATASET_BC_OBSERVATIONS_MISSING
+bc ready entries: 0
 source files: 2
 max source fraction: 0.9091
 ```
@@ -3006,10 +3008,37 @@ max source fraction: 0.9091
 Do next:
 
 ```text
-1. treat the manifest as technically valid but source-skewed
-2. if using it, run only a tiny supervised/imitation smoke experiment
-3. grade the smoke run on whether it preserves low-command forward motion
-4. stop if it collapses into standstill/reverse
+1. treat the manifest as valid target evidence, not BC-ready data
+2. extend the target generator/traces to record policy obs[101]
+3. rebuild the manifest and sanity check until bc_readiness_status passes
+4. only then run a tiny supervised/imitation smoke experiment
+```
+
+### Observation-Ready Target Dataset
+
+The primitive generator now records `observation[101]`, and the shuffled broad
+search was rerun into an observation-bearing trace set.
+
+Result:
+
+```text
+dataset_id: 6c43c18e8f2b72ec
+curation status: PASS_CURATED_DATASET_SEED_READY
+manifest status: PASS_TARGET_DATASET_MANIFEST_READY
+sanity status: WARN_TARGET_DATASET_SANITY_SOURCE_SKEW
+bc readiness: PASS_TARGET_DATASET_BC_READY
+entries: 11
+source files: 2
+source distribution: seed_000=10, seed_002=1
+```
+
+Do next:
+
+```text
+1. run only a tiny supervised/imitation smoke experiment
+2. keep source skew visible in the smoke report
+3. evaluate whether the resulting policy reproduces low-command forward motion
+4. stop if the policy freezes, reverses, or only reduces supervised loss
 ```
 
 ### V5/V7 Low-Command Trace Collection

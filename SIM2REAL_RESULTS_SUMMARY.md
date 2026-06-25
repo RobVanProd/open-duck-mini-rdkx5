@@ -3874,6 +3874,8 @@ dataset_id: e84d27e27fd73419
 status: WARN_TARGET_DATASET_SANITY_SOURCE_SKEW
 entries checked: 11
 entries with errors: 0
+bc readiness: HOLD_TARGET_DATASET_BC_OBSERVATIONS_MISSING
+bc ready entries: 0
 source files: 2
 source distribution: seed_000=10, seed_002=1
 max source fraction: 0.9091
@@ -3883,9 +3885,37 @@ Conclusion:
 
 ```text
 The compact target manifest is internally consistent with the local source
-traces. The only sanity warning is the known source skew. This permits review
-and, if accepted, a tiny supervised/imitation smoke experiment only. It does not
-justify a larger PPO run.
+traces, but it is not behavior-cloning ready because the trace records do not
+include the 101-element policy observation vector. The next valid offline step
+is to record `obs[101]` in target-generation traces, rebuild the compact
+manifest, and rerun the sanity check until BC readiness passes.
+```
+
+### Observation-Ready Target Dataset
+
+The primitive generator was updated to include `observation[101]`, then the
+same shuffled broad search was rerun and remanifested.
+
+Result:
+
+```text
+dataset_id: 6c43c18e8f2b72ec
+curation status: PASS_CURATED_DATASET_SEED_READY
+manifest status: PASS_TARGET_DATASET_MANIFEST_READY
+sanity status: WARN_TARGET_DATASET_SANITY_SOURCE_SKEW
+bc readiness: PASS_TARGET_DATASET_BC_READY
+entries: 11
+source files: 2
+source distribution: seed_000=10, seed_002=1
+```
+
+Conclusion:
+
+```text
+The project now has a technically BC-ready low-command target seed manifest.
+It is still tiny and source-skewed, so the next offline experiment must be a
+tiny supervised/imitation smoke run only, followed by sim evaluation for
+low-command forward motion. Do not jump directly to larger PPO.
 ```
 
 ### V5/V7 Low-Command Trace Collection

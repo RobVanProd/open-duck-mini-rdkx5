@@ -140,6 +140,7 @@ def close_enough(a: Any, b: Any, tol: float) -> bool:
 def check_entry(entry: dict[str, Any], args: argparse.Namespace) -> dict[str, Any]:
     errors = []
     warnings = []
+    bc_errors = []
     source_path = Path(str(entry.get("source_path")))
     if entry_id(entry) != entry.get("entry_id"):
         errors.append("entry_id_mismatch")
@@ -174,6 +175,16 @@ def check_entry(entry: dict[str, Any], args: argparse.Namespace) -> dict[str, An
         if len(record.get("actual_position_rad", [])) != 14:
             errors.append("actual_position_dim_not_14")
             break
+        obs = (
+            record.get("observation")
+            or record.get("obs")
+            or record.get("raw_vector")
+            or record.get("observation_raw_vector")
+        )
+        if obs is None:
+            bc_errors.append("policy_observation_missing")
+        elif len(obs) != 101:
+            bc_errors.append("policy_observation_dim_not_101")
         command = record.get("command", [])
         if len(command) < 1 or not close_enough(command[0], args.command_x, args.metric_tolerance):
             errors.append("command_x_mismatch")
@@ -215,6 +226,7 @@ def check_entry(entry: dict[str, Any], args: argparse.Namespace) -> dict[str, An
         "ticks": f"{start_tick}-{end_tick}",
         "errors": sorted(set(errors)),
         "warnings": sorted(set(warnings)),
+        "bc_readiness_errors": sorted(set(bc_errors)),
         "metrics": metrics,
     }
 
@@ -234,6 +246,8 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         f"- dataset_id: `{payload['dataset_id']}`",
         f"- entries_checked: `{payload['summary']['entries_checked']}`",
         f"- entries_with_errors: `{payload['summary']['entries_with_errors']}`",
+        f"- bc_ready_entries: `{payload['summary']['bc_ready_entries']}`",
+        f"- bc_readiness_status: `{payload['bc_readiness_status']}`",
         f"- source_files: `{payload['summary']['source_files']}`",
         f"- max_source_fraction: `{fmt(payload['summary']['max_source_fraction'])}`",
         "",
@@ -257,6 +271,8 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
     for result in payload["entry_results"]:
         metrics = result.get("metrics", {})
         errors = ", ".join(result["errors"]) if result["errors"] else "none"
+        if result["bc_readiness_errors"]:
+            errors = f"{errors}; bc={','.join(result['bc_readiness_errors'])}"
         lines.append(
             "| {entry_id} | {source} | {ticks} | `{errors}` | {vx} | {vy} | {pitch} | {height} | {sent_vel} | {track} |".format(
                 entry_id=result["entry_id"],
@@ -277,7 +293,7 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
             "## Gate",
             "",
             "- A pass or warning-pass here only proves the compact manifest matches local trace evidence.",
-            "- It does not prove the dataset is sufficient for robust policy training.",
+            "- `bc_readiness_status` must pass before behavior cloning or supervised action training.",
             "- Review source skew before any supervised/imitation smoke run.",
         ]
     )
@@ -308,6 +324,12 @@ def main() -> int:
     entries = manifest.get("entries", [])
     entry_results = [check_entry(entry, args) for entry in entries]
     entries_with_errors = sum(1 for result in entry_results if result["errors"])
+    bc_ready_entries = sum(1 for result in entry_results if not result["bc_readiness_errors"])
+    bc_readiness_status = (
+        "PASS_TARGET_DATASET_BC_READY"
+        if bc_ready_entries == len(entry_results) and entry_results
+        else "HOLD_TARGET_DATASET_BC_OBSERVATIONS_MISSING"
+    )
     by_source = Counter(entry.get("source_name") for entry in entries)
     max_source_fraction = (
         max(by_source.values()) / len(entries) if entries else 0.0
@@ -332,6 +354,7 @@ def main() -> int:
         "summary": {
             "entries_checked": len(entry_results),
             "entries_with_errors": entries_with_errors,
+            "bc_ready_entries": bc_ready_entries,
             "source_files": len(by_source),
             "by_source": dict(sorted(by_source.items())),
             "max_source_fraction": max_source_fraction,
@@ -349,6 +372,7 @@ def main() -> int:
             "max_contact_dominance_pct": args.max_contact_dominance_pct,
             "warn_max_source_fraction": args.warn_max_source_fraction,
         },
+        "bc_readiness_status": bc_readiness_status,
         "warnings": warnings,
         "entry_results": entry_results,
     }
@@ -359,6 +383,7 @@ def main() -> int:
     print(f"status={status}")
     print(f"entries_checked={len(entry_results)}")
     print(f"entries_with_errors={entries_with_errors}")
+    print(f"bc_readiness_status={bc_readiness_status}")
     print(f"warnings={','.join(warnings) if warnings else 'none'}")
     print(f"wrote {args.output_md}")
     print(f"wrote {args.output_json}")

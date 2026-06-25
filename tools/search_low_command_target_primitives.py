@@ -114,6 +114,16 @@ def pattern(values: list[int] | tuple[int, ...]) -> str:
     return "".join(str(int(value)) for value in values)
 
 
+def policy_observation_list(obs: Any) -> list[float] | None:
+    obs_host = obs
+    if isinstance(obs_host, dict):
+        obs_host = obs_host.get("state")
+    if obs_host is None:
+        return None
+    data = np.asarray(obs_host, dtype=float).reshape(-1)
+    return data.astype(float).tolist()
+
+
 def summarize_records(records: list[dict[str, Any]], command_x: float) -> dict[str, Any]:
     vx = [record["local_linvel_m_s"][0] for record in records]
     vy = [record["local_linvel_m_s"][1] for record in records]
@@ -350,6 +360,8 @@ def run_search(args: argparse.Namespace) -> dict[str, Any]:
                     jax.device_get(env.get_actuator_joints_qpos(state.data.qpos)), dtype=float
                 )
                 contacts = np.asarray(jax.device_get(state.info["last_contact"]), dtype=bool)
+                obs_host = jax.device_get(state.obs)
+                policy_obs = policy_observation_list(obs_host)
                 done = bool(np.asarray(jax.device_get(state.done)))
                 record = {
                     "tick": tick,
@@ -368,6 +380,7 @@ def run_search(args: argparse.Namespace) -> dict[str, Any]:
                     "base_height_m": float(qpos[base_addr + 2]),
                     "local_linvel_m_s": local_linvel.astype(float).tolist(),
                     "foot_contacts": contacts.astype(int).tolist(),
+                    "observation": policy_obs,
                     "reward": float(np.asarray(jax.device_get(state.reward))),
                     "done": done,
                 }
