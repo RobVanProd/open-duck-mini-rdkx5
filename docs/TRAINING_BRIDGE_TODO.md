@@ -209,6 +209,21 @@ low target velocities, but failed both forward velocity and lateral velocity.
 The next branch should be a staged or optimized planner, not a larger random
 grid over these same terms.
 
+Staged planner probe:
+
+```text
+tool: tools/probe_staged_weight_transfer_planner.py
+artifact: outputs/analysis/STAGED_WEIGHT_TRANSFER_PLANNER_PROBE.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+The staged planner used lateral/base-y/height/pitch gates before enabling
+forward step targets. It met the lateral gate in the best windows, but forward
+velocity fell to near zero (`0.0015 / 0.0034 m/s` over the best 100-tick
+seed0/seed2 windows). This means balance gating alone is not enough. The next
+target-source task should be a short-horizon optimizer or model-predictive
+planner, not a wider random search.
+
 ### Reconcile Policy / Sim Contract
 
 - Run `tools/audit_policy_sim_contract.py`.

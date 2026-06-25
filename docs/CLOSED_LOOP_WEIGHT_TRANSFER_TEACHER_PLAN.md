@@ -300,6 +300,24 @@ be a larger random grid over these same terms. It should change the structure
 to a staged planner or optimizer that first controls lateral balance, then
 executes a forward step while preserving the lateral gate.
 
+That staged planner branch was tested in:
+
+```text
+tool: tools/probe_staged_weight_transfer_planner.py
+doc: docs/STAGED_WEIGHT_TRANSFER_PLANNER.md
+artifact: outputs/analysis/STAGED_WEIGHT_TRANSFER_PLANNER_PROBE.md
+score_100: outputs/analysis/STAGED_WEIGHT_TRANSFER_PLANNER_SCORE_100.md
+score_150: outputs/analysis/STAGED_WEIGHT_TRANSFER_PLANNER_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+The best 100-tick candidate met the lateral gate but had only
+`0.0015 / 0.0034 m/s` forward velocity on seeds `0 / 2`. The staged gates were
+too conservative: they preserved support transitions and lateral control by
+nearly eliminating forward displacement. This confirms the next target-source
+work should move to short-horizon optimization or a richer body-state
+controller, not another random sweep of hand-shaped periodic/planner terms.
+
 ## Next Branch After a Pass
 
 If the teacher probe passes, use its traces as a target source:

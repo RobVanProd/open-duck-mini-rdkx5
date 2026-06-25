@@ -403,3 +403,40 @@ the `0.04 m/s` forward gate and the `0.12 m/s` lateral gate. This suggests the
 next generator needs a more principled planner, such as a lateral-first balance
 phase followed by a forward step phase, or an offline optimizer that explicitly
 penalizes lateral impulse while preserving forward displacement.
+
+## Staged Weight-Transfer Planner Probe
+
+The staged planner tested that lateral-first branch directly:
+
+```text
+tool: tools/probe_staged_weight_transfer_planner.py
+artifact: outputs/analysis/STAGED_WEIGHT_TRANSFER_PLANNER_PROBE.md
+score_100: outputs/analysis/STAGED_WEIGHT_TRANSFER_PLANNER_SCORE_100.md
+score_150: outputs/analysis/STAGED_WEIGHT_TRANSFER_PLANNER_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+Result:
+
+| metric | value |
+|---|---:|
+| 100-tick robust modes | 0 |
+| 150-tick robust modes | 0 |
+| top 100-tick seed0 / seed2 vx | 0.0015 / 0.0034 m/s |
+| top 100-tick seed0 / seed2 vy95 | 0.1149 / 0.1197 m/s |
+| top 100-tick seed0 / seed2 double support | 89% / 85% |
+| top 100-tick seed0 / seed2 single support | 11% / 15% |
+
+Interpretation: explicit balance gating fixes the lateral gate for the best
+windows, but it suppresses forward displacement almost completely. This is a
+useful negative result. The project now has both sides of the tradeoff:
+
+```text
+aggressive teacher terms: more forward velocity, lateral impulse too high
+staged balance gates: lateral velocity acceptable, forward velocity near zero
+```
+
+Do not keep widening random grids over either form. The next target-source
+generator should optimize over a short horizon or use a richer body-state
+controller that explicitly trades lateral error, support state, and forward
+impulse.

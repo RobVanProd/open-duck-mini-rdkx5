@@ -5305,3 +5305,21 @@ V3 is closer in raw forward velocity, but still not a target source. It shows
 that foot-placement terms alone do not decouple forward motion from lateral
 impulse. The next useful generator should be a staged balance-then-step planner
 or offline optimizer, not another random sweep of the same teacher terms.
+
+The staged balance-then-step branch was tested next:
+
+```text
+tool: tools/probe_staged_weight_transfer_planner.py
+artifact: outputs/analysis/STAGED_WEIGHT_TRANSFER_PLANNER_PROBE.md
+score_100: outputs/analysis/STAGED_WEIGHT_TRANSFER_PLANNER_SCORE_100.md
+score_150: outputs/analysis/STAGED_WEIGHT_TRANSFER_PLANNER_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+```
+
+The best 100-tick candidate stayed within the lateral gate
+(`vy95 = 0.1149 / 0.1197 m/s`) and preserved some single support
+(`11% / 15%`), but forward velocity collapsed to `0.0015 / 0.0034 m/s`. This
+confirms the tradeoff: aggressive teacher terms create forward impulse with too
+much lateral motion, while staged gates control lateral motion by suppressing
+forward displacement. The next target-source path should be short-horizon
+trajectory optimization or a richer body-state planner.
