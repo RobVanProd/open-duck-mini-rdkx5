@@ -3837,6 +3837,33 @@ candidate seed dataset for the next offline step: build a compact target-dataset
 manifest and sanity-check it before any supervised/imitation training.
 ```
 
+### Target Dataset Manifest
+
+The curated windows were converted into a compact manifest that does not copy
+raw trace contents:
+
+```text
+tool: tools/build_target_dataset_manifest.py
+dataset_id: e84d27e27fd73419
+status: PASS_TARGET_DATASET_MANIFEST_READY
+entries: 11
+source files: 2
+source/mode pairs: 11
+source distribution: seed_000=10, seed_002=1
+mean vx: 0.0718 m/s
+sent target velocity p95: 0.6138 rad/s
+joint tracking p95 max: 0.0709 rad
+```
+
+Conclusion:
+
+```text
+The project now has a reviewable low-command target seed manifest. It is still
+small and seed-skewed, so the next valid action is a no-training manifest sanity
+check, then at most a tiny supervised/imitation smoke experiment. Do not jump
+straight to a larger PPO run.
+```
+
 ### V5/V7 Low-Command Trace Collection
 
 A no-training CPU trace collection replayed the old moving-lineage policies at

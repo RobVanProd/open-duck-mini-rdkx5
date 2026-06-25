@@ -2967,6 +2967,29 @@ Do next:
 4. only then consider a small supervised/imitation seed experiment
 ```
 
+### Target Dataset Manifest
+
+A compact manifest was generated from the shuffled broad curated windows:
+
+```text
+tool: tools/build_target_dataset_manifest.py
+dataset_id: e84d27e27fd73419
+status: PASS_TARGET_DATASET_MANIFEST_READY
+entries: 11
+source files: 2
+source/mode pairs: 11
+source distribution: seed_000=10, seed_002=1
+```
+
+Do next:
+
+```text
+1. run a no-training manifest sanity check
+2. review whether the 10:1 source skew is acceptable for a tiny smoke seed
+3. if accepted, run only a tiny supervised/imitation smoke experiment
+4. do not launch a larger PPO run directly from this manifest
+```
+
 ### V5/V7 Low-Command Trace Collection
 
 The old moving-lineage policies were replayed at `x=0.04` with vanilla dynamics

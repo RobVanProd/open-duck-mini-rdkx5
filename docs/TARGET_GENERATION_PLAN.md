@@ -293,6 +293,34 @@ these curated windows and run a no-training sanity check before supervised
 pretraining.
 ```
 
+## Target Dataset Manifest
+
+The curated windows were converted into a compact manifest without copying raw
+trace contents:
+
+```text
+tool: tools/build_target_dataset_manifest.py
+dataset_id: e84d27e27fd73419
+status: PASS_TARGET_DATASET_MANIFEST_READY
+entries: 11
+source files: 2
+source/mode pairs: 11
+source distribution: seed_000=10, seed_002=1
+mean vx: 0.0718 m/s
+vx p95: 0.0994 m/s
+sent target velocity p95: 0.6138 rad/s
+tracking p95 max: 0.0709 rad
+```
+
+Interpretation:
+
+```text
+This manifest is acceptable as a small seed-material candidate for review, but
+the 10:1 source skew is still real. The next step is a no-training dataset
+sanity check and, if accepted, a tiny supervised/imitation smoke run before any
+larger PPO or bridge curriculum work.
+```
+
 Do not commit raw trace slices unless explicitly approved. Commit compact
 manifests and summaries only.
 
