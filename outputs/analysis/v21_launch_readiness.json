@@ -1,0 +1,118 @@
+{
+  "colab_session": {
+    "ok": false,
+    "returncode": 0,
+    "session": "open-duck-l4",
+    "text": "[colab] Session 'open-duck-l4' not found."
+  },
+  "deploy_performed": false,
+  "launch_command": [
+    "python3",
+    "tools/run_colab_cli_cuda_workflow.py",
+    "--session",
+    "open-duck-l4",
+    "--workflow",
+    "staged-curriculum",
+    "--staged-recipe",
+    "movement_bootstrap_v21",
+    "--staged-phase-gate-seeds",
+    "0-3",
+    "--staged-phase-gate-command-x",
+    "0.04",
+    "--staged-phase-gate-bridge-mode",
+    "vanilla",
+    "--staged-phase-gate-freeze-check",
+    "--run"
+  ],
+  "playground_git": {
+    "dirty": false,
+    "error": "",
+    "ok": true,
+    "repo": "/home/lsd/robots/Open_Duck_Playground",
+    "status": ""
+  },
+  "playground_patch": {
+    "checks": {
+      "joystick_soft_prior_config": true,
+      "joystick_soft_prior_reward": true,
+      "runner_enable_soft_prior_arg": true,
+      "runner_soft_prior_config_arg": true
+    },
+    "ok": true
+  },
+  "prs": [
+    {
+      "check_count": 2,
+      "failures": [],
+      "headRefName": "codex/colab-cli-cuda-workflow",
+      "isDraft": true,
+      "mergeable": "MERGEABLE",
+      "number": 74,
+      "ok": true,
+      "pending": [],
+      "repo": "RobVanProd/open-duck-mini-rdkx5",
+      "state": "OPEN"
+    },
+    {
+      "check_count": 2,
+      "failures": [],
+      "headRefName": "codex/forward-progress-reward",
+      "isDraft": true,
+      "mergeable": "MERGEABLE",
+      "number": 4,
+      "ok": true,
+      "pending": [],
+      "repo": "RobVanProd/Open_Duck_Playground",
+      "state": "OPEN"
+    }
+  ],
+  "rdk_git": {
+    "dirty": false,
+    "error": "",
+    "ok": true,
+    "repo": "/home/lsd/robots/open-duck-mini-rdkx5",
+    "status": ""
+  },
+  "robot_touched": false,
+  "soft_prior_config": {
+    "dataset_id": "c4833a96744101d9",
+    "joint_indices": [
+      2,
+      3,
+      4,
+      11,
+      12,
+      13
+    ],
+    "ok": true,
+    "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/soft_prior_fragment_config.json",
+    "rows": 50,
+    "window_len": 50
+  },
+  "status": "HOLD_COLAB_SESSION_MISSING",
+  "timestamp": "20260625T083335Z",
+  "training_started": false,
+  "v21_plan": {
+    "ok": true,
+    "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/staged_curriculum_training_plan_v21.json",
+    "phase_gate_command_x": 0.04,
+    "phases": [
+      {
+        "has_enable_soft_prior_flag": true,
+        "name": "phase1_soft_prior_low_command_probe",
+        "phase_gate_bridge_mode": "vanilla",
+        "soft_prior_config_json": "outputs/analysis/soft_prior_fragment_config.json",
+        "soft_prior_scale": -0.025
+      },
+      {
+        "has_enable_soft_prior_flag": true,
+        "name": "phase2_soft_prior_mild_bridge_probe",
+        "phase_gate_bridge_mode": "fitted",
+        "soft_prior_config_json": "outputs/analysis/soft_prior_fragment_config.json",
+        "soft_prior_scale": -0.015
+      }
+    ],
+    "recipe": "movement_bootstrap_v21",
+    "status": "DRY_RUN"
+  }
+}
