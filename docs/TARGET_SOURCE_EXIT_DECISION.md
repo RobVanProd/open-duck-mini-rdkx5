@@ -72,6 +72,7 @@ outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STATEFUL_STRICT_PROBE.md
 outputs/analysis/COM_WEIGHT_TRANSFER_CONTROLLER_STATEFUL_TIMEOUT_PROBE.md
 outputs/analysis/CONTACT_WEIGHT_TRANSFER_SEQUENCE_OPTIMIZER.md
 outputs/analysis/contact_weight_transfer_sequence_optimizer.json
+outputs/analysis/WEIGHT_TRANSFER_TARGET_GATE_CHECK.md
 ```
 
 ## Ruled Out
@@ -269,6 +270,24 @@ local forward displacement >= 0.006 m
 
 Passing this gate does not authorize robot validation. It only authorizes a
 reviewed imitation or target-dataset smoke branch.
+
+Executable checker:
+
+```bash
+python3 tools/check_weight_transfer_target_gate.py
+```
+
+Current result:
+
+```text
+artifact: outputs/analysis/WEIGHT_TRANSFER_TARGET_GATE_CHECK.md
+status: HOLD_NO_SUSTAINED_WEIGHT_TRANSFER_TARGET
+checked score artifacts: 37
+passing target sources: 0
+```
+
+Missing required metrics are treated as a hold. Older score artifacts that do
+not record local forward displacement cannot prove the full gate.
 
 ## Stop Conditions
 

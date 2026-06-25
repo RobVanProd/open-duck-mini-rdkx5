@@ -1,6 +1,6 @@
 # Training Bridge TODO
 
-Last updated: 2026-06-24
+Last updated: 2026-06-25
 
 Purpose: convert the measured Open Duck Mini actuator evidence into small,
 reviewable sim/training changes. Do not retrain blindly and do not change
@@ -10,7 +10,9 @@ requests a reviewed runtime experiment.
 Current low-command target-source decision:
 
 ```text
-docs/TARGET_SOURCE_DECISION.md
+docs/PROJECT_FINDINGS.md
+docs/WEIGHT_TRANSFER_TARGET_PLAN.md
+outputs/analysis/WEIGHT_TRANSFER_TARGET_GATE_CHECK.md
 ```
 
 ## Training Environment Constraint
@@ -4185,14 +4187,18 @@ BC/PPO experiment.
 The first gate read over existing artifacts failed:
 
 ```text
-artifact: outputs/analysis/WEIGHT_TRANSFER_TARGET_GATE.md
+tool: tools/check_weight_transfer_target_gate.py
+artifact: outputs/analysis/WEIGHT_TRANSFER_TARGET_GATE_CHECK.md
 status: HOLD_NO_SUSTAINED_WEIGHT_TRANSFER_TARGET
+checked score artifacts: 37
+passing target sources: 0
 ```
 
-Existing 100/150-tick dynamic-roll lateral-fix objective-score artifacts have
-`robust_mode_count: 0`. The dominant failures are low forward velocity and
-single-contact-pattern dominance. Next implementation work should target the
-generator/objective directly:
+Existing 100/150-tick target-source artifacts have no passing target source.
+The dominant failures remain low forward velocity, double-support dominance,
+too little single support, and missing required forward-displacement evidence in
+older artifacts. Next implementation work should target the generator/objective
+directly:
 
 ```text
 1. score useful single-support dwell and left/right support alternation,
