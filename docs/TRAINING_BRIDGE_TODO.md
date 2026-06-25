@@ -4472,6 +4472,21 @@ Implementation spec:
 docs/FOOT_PLACEMENT_MPC_TEACHER_SPEC.md
 ```
 
+First implementation smoke:
+
+```text
+tool: tools/probe_foot_placement_mpc_teacher.py
+artifact: outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_SMOKE_V3_SCORE_100.md
+artifact: outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_SMOKE_V3_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+robust modes: 0 / 8
+dominant failure: low_forward_velocity
+```
+
+This adds a reusable offline probe, not a target manifest. Do not resume BC/PPO
+from these traces. The next offline work is to improve the foot-placement /
+weight-transfer teacher until a 100-150 tick seed-robust target clears the gate.
+
 The current compact handoff docs are:
 
 ```text

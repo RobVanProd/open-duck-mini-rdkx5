@@ -21,6 +21,8 @@ DEFAULT_OUTPUT_JSON = ROOT / "outputs" / "analysis" / "weight_transfer_target_ga
 DEFAULT_PATTERNS = [
     "outputs/analysis/*weight_transfer*_score_100.json",
     "outputs/analysis/*weight_transfer*_score_150.json",
+    "outputs/analysis/*foot_placement_mpc_teacher*_score_100.json",
+    "outputs/analysis/*foot_placement_mpc_teacher*_score_150.json",
     "outputs/analysis/target_generator_single_support_probe_score_100.json",
     "outputs/analysis/target_generator_single_support_probe_score_150.json",
     "outputs/analysis/contact_weight_transfer_sequence_optimizer_smoke/iteration_00/score.json",

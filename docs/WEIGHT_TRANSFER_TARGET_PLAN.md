@@ -255,6 +255,22 @@ Implementation spec:
 docs/FOOT_PLACEMENT_MPC_TEACHER_SPEC.md
 ```
 
+First implementation smoke:
+
+```text
+tool: tools/probe_foot_placement_mpc_teacher.py
+artifacts:
+  outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_SMOKE_V3_SCORE_100.md
+  outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_SMOKE_V3_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+stance-interleaved modes: 8
+stance-interleaved robust modes: 0
+```
+
+The probe now interleaves left-start/right-start variants before candidate
+truncation, but the first candidate set still misses forward impulse across
+seeds. Treat this as an instrumented negative smoke, not permission to train.
+
 ## Stop Conditions
 
 Stop target generation and do not train if:

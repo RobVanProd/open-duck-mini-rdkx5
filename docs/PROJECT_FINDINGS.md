@@ -265,4 +265,17 @@ Implementation spec:
 docs/FOOT_PLACEMENT_MPC_TEACHER_SPEC.md
 ```
 
+First implementation smoke:
+
+```text
+tool: tools/probe_foot_placement_mpc_teacher.py
+status: HOLD_NO_SEED_ROBUST_TARGETS
+stance-interleaved robust modes: 0 / 8
+dominant failure: low_forward_velocity on seeds 0 and 2
+```
+
+The probe is useful as an offline target-source instrument, but the initial
+candidate set is still not a supervised target source. The aggregate target
+gate now includes 45 compact score artifacts and remains held.
+
 Robot validation remains blocked.

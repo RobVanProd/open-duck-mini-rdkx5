@@ -34,9 +34,9 @@ forward push timing in one scored horizon.
 The current evidence says:
 
 ```text
-checked target score artifacts: 39
+checked target score artifacts: 43
 passing target sources: 0
-failure analysis rows scanned: 1956
+failure analysis rows scanned: 2004
 stable + actuator-safe rows: 964
 support-ready rows: 492
 forward-ready rows: 15
@@ -84,11 +84,10 @@ Required flags:
 --command-x 0.04
 --duration-s 3.0
 --seeds 0,2
---horizon-ticks 100
---iterations 1
---candidates-per-iteration 4
 --jax-platform cpu
---output-dir outputs/analysis/foot_placement_mpc_teacher
+--initial-stance-sides=-1.0,1.0
+--max-candidates 8
+--trace-dir outputs/analysis/foot_placement_mpc_teacher_smoke_v3_traces
 --output-md outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_PROBE.md
 --output-json outputs/analysis/foot_placement_mpc_teacher_probe.json
 ```
@@ -276,3 +275,41 @@ Only after `PASS_WEIGHT_TRANSFER_TARGET`:
 
 Robot validation remains blocked until offline low-command multi-seed gates
 pass.
+
+## First Implementation Smoke
+
+The first implementation is available as:
+
+```text
+tool: tools/probe_foot_placement_mpc_teacher.py
+```
+
+It is a bounded CPU state-feedback probe, not a full nonlinear MPC solver. It
+reads sim state each tick, selects a stance side, shifts the body laterally,
+places the swing foot forward with joint-space approximations, times a stance
+push, and writes traces compatible with:
+
+```bash
+python3 tools/score_target_candidates_objective.py
+```
+
+The first one-sided smoke and corrected stance-interleaved smoke both held:
+
+```text
+artifacts:
+  outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_SMOKE_SCORE_100.md
+  outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_SMOKE_SCORE_150.md
+  outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_SMOKE_V3_SCORE_100.md
+  outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_SMOKE_V3_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+stance-interleaved modes: 8
+stance-interleaved robust modes: 0
+```
+
+The corrected probe interleaves initial left/right stance candidates before
+`--max-candidates` truncation. It removed the initial-stance ambiguity but
+still failed for low forward velocity on both seeds. Seed 2 produced partial
+forward motion and some single-support windows; seed 0 remained near stationary
+and mostly double-support. This means the tool is a useful probe, but the first
+candidate set is not a target source and does not authorize BC, PPO, x=0.08, or
+robot validation.

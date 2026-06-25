@@ -9,33 +9,33 @@ hardware tests.
 
 ## Dataset
 
-- score artifacts: `39`
-- seed rows scanned: `1956`
+- score artifacts: `43`
+- seed rows scanned: `2004`
 
 ## Constraint Pass Rates
 
 | constraint | threshold | observed | pass rows | pass pct | best | worst |
 |---|---|---:|---:|---:|---:|---:|
-| forward_velocity | `>= 0.0400` | 1870 | 15 | 0.77 | 0.1340 | -0.0066 |
-| forward_displacement | `>= 0.0040` | 1366 | 794 | 40.59 | 0.2680 | -0.0159 |
-| lateral_velocity | `<= 0.1200` | 1870 | 984 | 50.31 | 0.0234 | 0.4311 |
-| body_pitch | `<= 0.3500` | 1870 | 1845 | 94.33 | 0.0031 | 0.9207 |
-| base_height | `>= 0.1450` | 1870 | 1817 | 92.89 | 0.1602 | 0.0734 |
-| double_support | `<= 75.0000` | 1870 | 494 | 25.26 | 36.0000 | 100.0000 |
-| single_support | `>= 20.0000` | 1870 | 695 | 35.53 | 64.0000 | 0.0000 |
-| support_balance | `>= 5.0000` | 1870 | 921 | 47.09 | 30.6667 | 0.0000 |
-| contact_transitions | `>= 2.0000` | 1870 | 1850 | 94.58 | 56.0000 | 0.0000 |
-| target_velocity | `<= 3.7500` | 1870 | 1848 | 94.48 | 0.0000 | 4.2949 |
-| joint_tracking | `<= 0.1200` | 1870 | 1869 | 95.55 | 0.0375 | 0.1223 |
+| forward_velocity | `>= 0.0400` | 1918 | 15 | 0.75 | 0.1340 | -0.0066 |
+| forward_displacement | `>= 0.0040` | 1414 | 818 | 40.82 | 0.2680 | -0.0159 |
+| lateral_velocity | `<= 0.1200` | 1918 | 1023 | 51.05 | 0.0234 | 0.4311 |
+| body_pitch | `<= 0.3500` | 1918 | 1893 | 94.46 | 0.0031 | 0.9207 |
+| base_height | `>= 0.1450` | 1918 | 1865 | 93.06 | 0.1602 | 0.0734 |
+| double_support | `<= 75.0000` | 1918 | 495 | 24.70 | 36.0000 | 100.0000 |
+| single_support | `>= 20.0000` | 1918 | 707 | 35.28 | 64.0000 | 0.0000 |
+| support_balance | `>= 5.0000` | 1918 | 944 | 47.11 | 30.6667 | 0.0000 |
+| contact_transitions | `>= 2.0000` | 1918 | 1898 | 94.71 | 56.0000 | 0.0000 |
+| target_velocity | `<= 3.7500` | 1918 | 1896 | 94.61 | 0.0000 | 4.2949 |
+| joint_tracking | `<= 0.1200` | 1918 | 1917 | 95.66 | 0.0375 | 0.1223 |
 
 ## Combination Counts
 
 | bucket | rows |
 |---|---:|
-| stable_actuator_rows | 964 |
-| support_ready_rows | 492 |
+| stable_actuator_rows | 1003 |
+| support_ready_rows | 493 |
 | forward_ready_rows | 15 |
-| stable_and_support_rows | 7 |
+| stable_and_support_rows | 8 |
 | stable_and_forward_rows | 0 |
 | support_and_forward_rows | 1 |
 | all_three_rows | 0 |
@@ -64,6 +64,7 @@ hardware tests.
 
 | artifact | seed | pass count | vx | double | single | min side | failures |
 |---|---|---:|---:|---:|---:|---:|---|
+| `foot_placement_mpc_teacher_smoke_score_100` | `seed_002` | 10 | 0.0169 | 75.00 | 25.00 | 9.00 | `forward_velocity` |
 | `com_weight_transfer_controller_stance_reverse_push_probe_score_150` | `seed_002` | 10 | 0.0038 | 74.00 | 26.00 | 12.00 | `forward_velocity` |
 | `closed_loop_weight_transfer_teacher_lateral_refine_score_100` | `seed_002` | 9 | 0.0425 | 66.00 | 34.00 | 7.00 | `lateral_velocity, body_pitch` |
 | `closed_loop_weight_transfer_teacher_forward_intent_score_100` | `seed_002` | 9 | 0.0395 | 62.00 | 38.00 | 14.00 | `forward_velocity, lateral_velocity` |
@@ -73,7 +74,6 @@ hardware tests.
 | `closed_loop_weight_transfer_teacher_forward_intent_score_150` | `seed_002` | 9 | 0.0336 | 43.33 | 56.67 | 18.00 | `forward_velocity, lateral_velocity` |
 | `closed_loop_weight_transfer_teacher_forward_intent_score_100` | `seed_002` | 9 | 0.0335 | 69.00 | 31.00 | 7.00 | `forward_velocity, lateral_velocity` |
 | `closed_loop_weight_transfer_teacher_forward_intent_score_150` | `seed_002` | 9 | 0.0325 | 55.33 | 44.67 | 14.67 | `forward_velocity, lateral_velocity` |
-| `closed_loop_weight_transfer_teacher_forward_intent_score_150` | `seed_002` | 9 | 0.0316 | 59.33 | 40.67 | 16.67 | `forward_velocity, lateral_velocity` |
 
 ## Decision
 
