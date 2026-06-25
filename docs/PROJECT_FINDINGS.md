@@ -209,4 +209,28 @@ checked score artifacts: 37
 passing target sources: 0
 ```
 
+The failure-mode analysis scans the same compact score family:
+
+```text
+outputs/analysis/WEIGHT_TRANSFER_GATE_FAILURE_ANALYSIS.md
+status: HOLD_FORWARD_IMPULSE_PRIMARY
+seed rows scanned: 1884
+```
+
+It found:
+
+```text
+stable + actuator-safe rows: 964
+support-ready rows: 437
+forward-ready rows: 15
+stable + support rows: 7
+stable + forward rows: 0
+support + forward rows: 1
+all three: 0
+```
+
+This means the next target generator needs an explicit propulsion mechanism
+after support loading. More contact alternation alone is not enough, and the
+rows that move forward tend to spend lateral/pitch margin to do it.
+
 Robot validation remains blocked.

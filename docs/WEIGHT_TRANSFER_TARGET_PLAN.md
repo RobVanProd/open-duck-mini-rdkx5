@@ -69,6 +69,32 @@ passing target sources: 0
 Treat missing required metrics as a hold. Older score artifacts that do not
 record local forward displacement do not prove this gate.
 
+The current failure-mode scan is:
+
+```text
+tool: tools/analyze_weight_transfer_gate_failures.py
+artifact: outputs/analysis/WEIGHT_TRANSFER_GATE_FAILURE_ANALYSIS.md
+status: HOLD_FORWARD_IMPULSE_PRIMARY
+seed rows scanned: 1884
+```
+
+Key split:
+
+```text
+stable + actuator-safe rows: 964
+support-ready rows: 437
+forward-ready rows: 15
+stable + support rows: 7
+stable + forward rows: 0
+support + forward rows: 1
+all three: 0
+```
+
+So the next generator should not only create more single-support time. The
+closest rows show that once support/stability/actuator gates are satisfied,
+forward impulse is still missing. Rows with forward motion tend to buy it by
+leaving lateral or pitch gates.
+
 ## Minimum Target Gate
 
 A target source must pass this gate before training:

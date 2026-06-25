@@ -289,6 +289,32 @@ passing target sources: 0
 Missing required metrics are treated as a hold. Older score artifacts that do
 not record local forward displacement cannot prove the full gate.
 
+The current failure-mode analysis is:
+
+```text
+tool: tools/analyze_weight_transfer_gate_failures.py
+artifact: outputs/analysis/WEIGHT_TRANSFER_GATE_FAILURE_ANALYSIS.md
+status: HOLD_FORWARD_IMPULSE_PRIMARY
+seed rows scanned: 1884
+```
+
+It found:
+
+```text
+stable + actuator-safe rows: 964
+support-ready rows: 437
+forward-ready rows: 15
+stable + support rows: 7
+stable + forward rows: 0
+support + forward rows: 1
+all three: 0
+```
+
+So the next structural branch should explicitly solve propulsion after support
+loading. Contact alternation alone is insufficient; forward rows currently
+trade into lateral or pitch failures, while stable/support-ready rows do not
+generate enough forward impulse.
+
 ## Stop Conditions
 
 Stop a candidate branch immediately if:
