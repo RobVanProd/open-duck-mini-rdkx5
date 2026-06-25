@@ -3824,3 +3824,13 @@ python3 tools/run_colab_cli_cuda_workflow.py \
 
 Do not run robot validation from V21. The only acceptable next result is a
 multi-seed x=0.04 sim gate verdict.
+
+Local CPU smoke:
+
+```text
+outputs/analysis/SOFT_PRIOR_CPU_SMOKE.md
+status: PASS_SOFT_PRIOR_CPU_SMOKE
+```
+
+This confirms the patched Playground runner accepts the soft-prior config in an
+actual tiny training invocation. It is not a candidate run.

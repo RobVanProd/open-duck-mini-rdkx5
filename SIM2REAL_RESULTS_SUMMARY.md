@@ -4793,3 +4793,13 @@ V21 is explicit-only and does not change the current `movement_bootstrap_v20`
 default in the Colab workflow. The next allowed gate is a multi-seed x=0.04
 sim result. Robot validation, x=0.08, deployment, and policy changes remain
 blocked.
+
+A tiny local CPU smoke verified the patched soft-prior training path:
+
+```text
+outputs/analysis/SOFT_PRIOR_CPU_SMOKE.md
+status: PASS_SOFT_PRIOR_CPU_SMOKE
+```
+
+This was a 16-timestep CPU-forced smoke only. It did not produce a deployable
+candidate and did not touch the robot.
