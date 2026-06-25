@@ -1326,6 +1326,7 @@ def main() -> int:
     parser.add_argument(
         "--staged-recipe",
         choices=[
+            "movement_bootstrap_v22",
             "movement_bootstrap_v20",
             "movement_bootstrap_v21",
             "movement_bootstrap_v19",
@@ -1358,7 +1359,9 @@ def main() -> int:
             "movement_bootstrap_v21 is available as an explicit next recipe: "
             "a weak-soft-prior x=0.04 learner using compact fragment priors, "
             "but it is not the default so future launches do not change "
-            "silently. "
+            "silently. movement_bootstrap_v22 is a stronger step-phased "
+            "prior-lock diagnostic after V21 trained but stayed far from the "
+            "prior; it is also explicit-only. "
             "movement_bootstrap_v19 is the preserved raw-reference seed "
             "experiment after V18 showed the immediate reward signal already "
             "prefers forward motion but cold-start PPO still failed at x=0.04. "
