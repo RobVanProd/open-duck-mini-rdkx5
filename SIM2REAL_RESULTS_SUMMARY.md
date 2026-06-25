@@ -4067,3 +4067,36 @@ rate, tracking, or lack of any longer forward snippets. Do not train from this
 yet; the next search should explicitly make the seed_002 review hints pass by
 reducing lateral velocity and single-contact dominance.
 ```
+
+### Seed 2 Balance Search
+
+A second bounded CPU-only search used finer phase offsets and smaller hip-roll
+bias around the seed 2 review hints.
+
+Result:
+
+```text
+tool: tools/search_low_command_target_primitives.py
+command: x=0.04
+duration: 4 s
+seeds: 0,2
+candidates: 80
+search status: PASS_TARGET_SEARCH_RAN
+25-sample curation: HOLD_INSUFFICIENT_CURATED_DIVERSITY
+25-sample curated windows: 45
+50-sample curation: HOLD_INSUFFICIENT_CURATED_DIVERSITY
+50-sample curated windows: 23
+curated source files: 1
+curated source: seed_000
+seed_002 status: review-only, mostly high_lateral_velocity or single_contact_pattern_dominates
+```
+
+Conclusion:
+
+```text
+The generator can now produce many short and longer seed-quality windows, but
+the cross-seed diversity blocker is robust. Seed 2 repeatedly gets close and
+then fails lateral/contact criteria. The next useful target-generation work
+should stop broad random sweeps and add a seed-robust scoring/objective term
+for lateral velocity and contact alternation.
+```

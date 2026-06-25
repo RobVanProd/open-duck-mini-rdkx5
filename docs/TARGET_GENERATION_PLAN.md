@@ -486,6 +486,40 @@ iteration should preserve the seed_000 50-sample families while adding a
 seed_002-specific lateral/contact correction.
 ```
 
+## Seed 2 Balance Search Result
+
+A second search used finer phase offsets and smaller hip-roll bias around the
+seed_2 review-only families:
+
+```text
+tool: tools/search_low_command_target_primitives.py
+command_x: 0.04
+duration: 4 s
+seeds: 0,2
+candidates: 80
+```
+
+Result:
+
+```text
+25-sample curated windows: 45
+50-sample curated windows: 23
+status: HOLD_INSUFFICIENT_CURATED_DIVERSITY
+curated source files: 1
+curated source: seed_000
+```
+
+Interpretation:
+
+```text
+More random/finer grid sampling improves seed_000 counts but does not make
+seed_002 pass. Seed_002 repeatedly appears as review-only forward motion that
+fails high_lateral_velocity or single_contact_pattern_dominates. The next target
+generator should become objective-driven: score candidates across seeds and
+optimize for worst-seed lateral velocity/contact alternation, not just generate
+more candidates.
+```
+
 ## First Primitive Search Result
 
 A bounded low-dimensional sine primitive search was run as the first generator

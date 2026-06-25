@@ -3136,6 +3136,32 @@ Do next:
 4. only build a longer-window target manifest after source diversity passes
 ```
 
+### Seed 2 Balance Search
+
+A larger but still bounded CPU search targeted the seed_2 review hints with
+finer phase offsets and smaller hip-roll bias:
+
+```text
+tool: tools/search_low_command_target_primitives.py
+command_x: 0.04
+duration: 4 s
+seeds: 0,2
+candidates: 80
+25-sample curated windows: 45
+50-sample curated windows: 23
+status: HOLD_INSUFFICIENT_CURATED_DIVERSITY
+curated source files: 1
+```
+
+Do next:
+
+```text
+1. stop treating broader random primitive grids as the main path
+2. add seed-robust candidate scoring for worst-seed lateral velocity
+3. add contact alternation/contact-dominance terms to the target objective
+4. require seed_002 to contribute curated windows before any supervised seed
+```
+
 ### Target Dataset BC Smoke
 
 The observation-ready target manifest was tested with tiny linear and KNN
