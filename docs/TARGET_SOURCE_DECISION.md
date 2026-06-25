@@ -277,3 +277,39 @@ Robot validation remains blocked.
 Do not skip the offline BC/replay gate.
 Do not treat this as permission for PPO or hardware tests.
 ```
+
+## First BC Smoke From Lateral-Fix Targets
+
+The first one-step behavior-cloning smoke was run from the lateral-fix target
+windows after the target-source gate passed.
+
+Manifests tested:
+
+```text
+full lateral-fix manifest:
+  dataset_id: 0ff1f1c3750dbfb1
+  entries: 70
+  samples: 3500
+
+robust-mode-only manifest:
+  dataset_id: 47153f26ab48ef14
+  entries: 9
+  samples: 450
+```
+
+Result:
+
+```text
+full manifest linear: HOLD_BC_REPLAY_LOW_FORWARD_MOTION
+full manifest KNN: HOLD_BC_REPLAY_LOW_FORWARD_MOTION
+robust-mode KNN: HOLD_BC_REPLAY_LOW_FORWARD_MOTION
+robust-mode linear: HOLD_BC_REPLAY_TERMINATED
+```
+
+Decision:
+
+```text
+The target-source pass stands, but direct one-step BC is not sufficient.
+The next offline training/imitation step must preserve sequence/phase rollout.
+Do not launch PPO or robot validation from the one-step BC artifacts.
+```

@@ -4445,3 +4445,56 @@ The target-source layer is now unblocked. The next safe milestone is a small
 offline imitation/BC smoke using the dynamic-roll lateral-fix curated windows,
 followed by closed-loop replay at x=0.04. Robot validation remains blocked.
 ```
+
+### Dynamic-Roll Lateral-Fix BC Smoke
+
+Two one-step behavior-cloning smokes were run from the lateral-fix target
+windows:
+
+```text
+full manifest:
+  dataset_id: 0ff1f1c3750dbfb1
+  entries: 70
+  samples: 3500
+  source skew: seed_000=60, seed_002=10
+
+robust-mode-only manifest:
+  dataset_id: 47153f26ab48ef14
+  entries: 9
+  samples: 450
+  source skew warning: false
+```
+
+Closed-loop replay results:
+
+```text
+full manifest linear:
+  status: HOLD_BC_REPLAY_LOW_FORWARD_MOTION
+  seed_000 vx: 0.0009 m/s
+  seed_002 vx: 0.0037 m/s
+
+full manifest KNN:
+  status: HOLD_BC_REPLAY_LOW_FORWARD_MOTION
+  seed_000 vx: 0.0064 m/s
+  seed_002 vx: 0.0084 m/s
+
+robust-mode KNN:
+  status: HOLD_BC_REPLAY_LOW_FORWARD_MOTION
+  seed_000 vx: 0.0070 m/s
+  seed_002 vx: 0.0097 m/s
+
+robust-mode linear:
+  status: HOLD_BC_REPLAY_TERMINATED
+  seed_000: terminated at 73 samples, vx=-0.2415 m/s
+  seed_002 vx: -0.0041 m/s
+```
+
+Conclusion:
+
+```text
+The dynamic-roll lateral-fix targets are valid source evidence, but direct
+one-step obs[101] -> action[14] cloning does not preserve the gait in
+closed-loop replay. The next offline learner should be sequence-aware or
+rollout-preserving, with phase/time continuity treated as part of the target.
+Full PPO and robot validation remain blocked.
+```

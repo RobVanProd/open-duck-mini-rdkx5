@@ -3490,3 +3490,59 @@ Do next:
 5. only if the smoke passes, consider a larger offline imitation or PPO run
 6. do not run robot validation
 ```
+
+### Dynamic-Roll Lateral-Fix BC Smoke
+
+Two compact manifests were tested:
+
+```text
+full lateral-fix manifest:
+  dataset_id: 0ff1f1c3750dbfb1
+  entries: 70
+  samples: 3500
+  source skew: seed_000=60 windows, seed_002=10 windows
+
+robust-mode-only manifest:
+  dataset_id: 47153f26ab48ef14
+  entries: 9
+  samples: 450
+  robust modes: 3
+  source skew warning: false
+```
+
+Closed-loop smoke results:
+
+```text
+full manifest linear: HOLD_BC_REPLAY_LOW_FORWARD_MOTION
+  seed0 vx=0.0009 m/s
+  seed2 vx=0.0037 m/s
+
+full manifest KNN: HOLD_BC_REPLAY_LOW_FORWARD_MOTION
+  seed0 vx=0.0064 m/s
+  seed2 vx=0.0084 m/s
+
+robust-mode KNN: HOLD_BC_REPLAY_LOW_FORWARD_MOTION
+  seed0 vx=0.0070 m/s
+  seed2 vx=0.0097 m/s
+
+robust-mode linear: HOLD_BC_REPLAY_TERMINATED
+  seed0 terminated at 73 samples with reverse velocity
+```
+
+Interpretation:
+
+```text
+The target windows are valid, but one-step obs[101] -> action[14] cloning does
+not preserve the generated gait in closed-loop replay. The next imitation step
+should be sequence-aware and rollout-preserving, not another one-step BC fit.
+```
+
+Do next:
+
+```text
+1. implement or specify a sequence/phase-aware imitation smoke
+2. preserve primitive phase or time index through the learner
+3. train/evaluate against rollout metrics, not supervised loss
+4. keep PPO blocked until sequence-aware imitation passes x=0.04 replay
+5. keep robot validation blocked
+```
