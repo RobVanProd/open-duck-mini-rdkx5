@@ -269,6 +269,9 @@ wide swing-foot advance:
 
 lateral/yaw push attenuation:
   robust 100/150 tick modes: 0 / 64
+
+higher swing clearance:
+  robust 100/150 tick modes: 0 / 16
 ```
 
 The latest stability probe added default-off fields:
@@ -283,9 +286,12 @@ Those fields are useful for diagnosis and trace logging, but the result was a
 hold: attenuation reduced push aggressiveness and kept target velocity low, but
 it reduced forward velocity to roughly `0.003-0.008 m/s` in the best windows.
 
-Conclusion: the next revision should not keep widening this scalar grid. It
-needs an active lateral/heading support controller that creates a pushable
-stance, then applies propulsion without losing the support state.
+The high-clearance probe shows that larger swing lift can create more
+single-support time, but the useful windows then fail on lateral velocity,
+forward velocity, and sometimes target velocity. Conclusion: the next revision
+should not keep widening this scalar grid. It needs an active lateral/heading
+support controller that creates a pushable stance, then applies propulsion
+without losing the support state.
 
 ## Stop Rules
 

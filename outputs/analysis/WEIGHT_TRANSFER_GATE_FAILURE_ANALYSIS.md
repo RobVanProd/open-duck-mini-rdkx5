@@ -9,31 +9,31 @@ hardware tests.
 
 ## Dataset
 
-- score artifacts: `52`
-- seed rows scanned: `2456`
+- score artifacts: `54`
+- seed rows scanned: `2520`
 
 ## Constraint Pass Rates
 
 | constraint | threshold | observed | pass rows | pass pct | best | worst |
 |---|---|---:|---:|---:|---:|---:|
-| forward_velocity | `>= 0.0400` | 2366 | 15 | 0.61 | 0.1340 | -0.0695 |
-| forward_displacement | `>= 0.0040` | 1862 | 1134 | 46.17 | 0.2680 | -0.1390 |
-| lateral_velocity | `<= 0.1200` | 2366 | 1179 | 48.00 | 0.0234 | 0.4311 |
-| body_pitch | `<= 0.3500` | 2366 | 2340 | 95.28 | 0.0031 | 0.9207 |
-| base_height | `>= 0.1450` | 2366 | 2313 | 94.18 | 0.1602 | 0.0734 |
-| double_support | `<= 75.0000` | 2366 | 620 | 25.24 | 36.0000 | 100.0000 |
-| single_support | `>= 20.0000` | 2366 | 876 | 35.67 | 64.0000 | 0.0000 |
-| support_balance | `>= 5.0000` | 2366 | 1170 | 47.64 | 30.6667 | 0.0000 |
-| contact_transitions | `>= 2.0000` | 2366 | 2341 | 95.32 | 58.0000 | 0.0000 |
-| target_velocity | `<= 3.7500` | 2366 | 2344 | 95.44 | 0.0000 | 4.2949 |
-| joint_tracking | `<= 0.1200` | 2366 | 2365 | 96.29 | 0.0375 | 0.1223 |
+| forward_velocity | `>= 0.0400` | 2427 | 15 | 0.60 | 0.1340 | -0.0695 |
+| forward_displacement | `>= 0.0040` | 1923 | 1185 | 47.02 | 0.2680 | -0.1390 |
+| lateral_velocity | `<= 0.1200` | 2427 | 1192 | 47.30 | 0.0234 | 0.4311 |
+| body_pitch | `<= 0.3500` | 2427 | 2401 | 95.28 | 0.0031 | 0.9207 |
+| base_height | `>= 0.1450` | 2427 | 2374 | 94.21 | 0.1602 | 0.0734 |
+| double_support | `<= 75.0000` | 2427 | 646 | 25.63 | 36.0000 | 100.0000 |
+| single_support | `>= 20.0000` | 2427 | 904 | 35.87 | 64.0000 | 0.0000 |
+| support_balance | `>= 5.0000` | 2427 | 1207 | 47.90 | 30.6667 | 0.0000 |
+| contact_transitions | `>= 2.0000` | 2427 | 2398 | 95.16 | 58.0000 | 0.0000 |
+| target_velocity | `<= 3.7500` | 2427 | 2405 | 95.44 | 0.0000 | 4.2949 |
+| joint_tracking | `<= 0.1200` | 2427 | 2426 | 96.27 | 0.0375 | 0.1223 |
 
 ## Combination Counts
 
 | bucket | rows |
 |---|---:|
-| stable_actuator_rows | 1159 |
-| support_ready_rows | 618 |
+| stable_actuator_rows | 1172 |
+| support_ready_rows | 644 |
 | forward_ready_rows | 15 |
 | stable_and_support_rows | 9 |
 | stable_and_forward_rows | 0 |

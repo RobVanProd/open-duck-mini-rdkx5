@@ -205,7 +205,7 @@ Current gate artifact:
 ```text
 outputs/analysis/WEIGHT_TRANSFER_TARGET_GATE_CHECK.md
 status: HOLD_NO_SUSTAINED_WEIGHT_TRANSFER_TARGET
-checked score artifacts: 52
+checked score artifacts: 54
 passing target sources: 0
 ```
 
@@ -214,7 +214,7 @@ The failure-mode analysis scans the same compact score family:
 ```text
 outputs/analysis/WEIGHT_TRANSFER_GATE_FAILURE_ANALYSIS.md
 status: HOLD_FORWARD_IMPULSE_PRIMARY
-seed rows scanned: 2456
+seed rows scanned: 2520
 ```
 
 It found:
@@ -258,6 +258,11 @@ lateral/yaw push attenuation:
   outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_STABILITY_PROBE_SCORE_100.md
   outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_STABILITY_PROBE_SCORE_150.md
   robust modes: 0 / 64
+
+higher swing clearance:
+  outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_CLEARANCE_PROBE_SCORE_100.md
+  outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_CLEARANCE_PROBE_SCORE_150.md
+  robust modes: 0 / 16
 ```
 
 Wide swing advance made seed 0 move slightly forward but still far below the
@@ -266,8 +271,11 @@ actuator-safe, but starved propulsion; the best windows stayed around
 `0.003-0.008 m/s`, not `0.04 m/s`.
 
 So the next teacher cannot be just "more advance" or "less push when unstable."
-It needs an active lateral/heading support controller that enables push, plus a
-propulsion model that moves the body while preserving the support state.
+Higher swing clearance confirms a useful submechanism: it can create more
+single-support time, especially on seed 2. It still fails because that support
+comes with lateral velocity and low forward speed. The next teacher needs an
+active lateral/heading support controller that enables push, plus a propulsion
+model that moves the body while preserving the support state.
 
 The next branch decision is now explicit:
 

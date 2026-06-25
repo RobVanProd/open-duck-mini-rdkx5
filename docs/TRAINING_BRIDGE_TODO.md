@@ -4714,11 +4714,15 @@ artifacts:
   outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_ADVANCE_WIDE_PROBE_SCORE_150.md
   outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_STABILITY_PROBE_SCORE_100.md
   outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_STABILITY_PROBE_SCORE_150.md
+  outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_CLEARANCE_PROBE_SCORE_100.md
+  outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_CLEARANCE_PROBE_SCORE_150.md
 status: HOLD_NO_SEED_ROBUST_TARGETS
 ```
 
 Wide swing advance improved seed 0 only to a small positive local velocity.
 Lateral/yaw push attenuation reduced target velocity and lateral stress, but
-starved forward impulse. Do not resume BC/PPO from these traces. The next
+starved forward impulse. Higher swing clearance improved single support on some
+seed-2 windows, but introduced lateral/target-velocity tradeoffs and still did
+not solve seed robustness. Do not resume BC/PPO from these traces. The next
 offline target-source task is an active lateral/heading support controller
-coupled to propulsion, not another scalar push/advance grid.
+coupled to propulsion, not another scalar push/advance/clearance grid.

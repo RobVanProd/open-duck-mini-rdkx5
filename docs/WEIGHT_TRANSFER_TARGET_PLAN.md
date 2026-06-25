@@ -356,6 +356,48 @@ solves the wrong side of the tradeoff by starving forward impulse. The next
 controller needs active lateral/heading support stabilization that enables
 propulsion, not only a push throttle that turns propulsion down.
 
+Higher swing-clearance diagnostic:
+
+```text
+artifacts:
+  outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_CLEARANCE_PROBE_SCORE_100.md
+  outputs/analysis/FOOT_PLACEMENT_MPC_TEACHER_CLEARANCE_PROBE_SCORE_150.md
+status: HOLD_NO_SEED_ROBUST_TARGETS
+robust modes: 0 / 16
+```
+
+This was prompted by a trace read of the best wide-advance mode:
+
+```text
+load_ready: 92-93%
+swing_ready: 6-12%
+dominant contact: double support
+foot clearance p95: below the 0.008 m clearance gate
+```
+
+Increasing swing knee lift to `0.18 rad` improved support transfer on some
+windows:
+
+```text
+seed 2 examples:
+  single support: about 31-42%
+  double support: about 58-69%
+  contact transitions: about 22-29
+```
+
+But it did not clear the gate:
+
+```text
+forward velocity: still below 0.04 m/s
+lateral p95: often 0.20-0.32 m/s
+some target velocity rows near or above the scoring threshold
+seed 0 still weak or mostly double-support
+```
+
+Interpretation: swing clearance is a useful mechanism, but by itself it shifts
+the failure from "cannot enter single support" toward "enters support while
+losing lateral/heading margin and not producing enough forward impulse."
+
 ## Stop Conditions
 
 Stop target generation and do not train if:
