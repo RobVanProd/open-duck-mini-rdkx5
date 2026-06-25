@@ -4851,7 +4851,9 @@ for a manually authenticated Colab session. It does not approve robot testing.
 Local ROCm was rechecked after the firmware/BIOS update:
 
 ```text
+tool: tools/check_local_rocm_status.py
 artifact: outputs/analysis/LOCAL_ROCM_STATUS_20260625.md
+json: outputs/analysis/local_rocm_status_20260625.json
 status: HOLD_LOCAL_ROCM_KFD
 ```
 

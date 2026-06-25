@@ -3891,6 +3891,8 @@ Local ROCm status after the firmware/BIOS update:
 
 ```text
 artifact: outputs/analysis/LOCAL_ROCM_STATUS_20260625.md
+json: outputs/analysis/local_rocm_status_20260625.json
+tool: tools/check_local_rocm_status.py
 status: HOLD_LOCAL_ROCM_KFD
 ```
 

@@ -1,0 +1,267 @@
+{
+  "commands": {
+    "amdgpu_params": {
+      "command": [
+        "bash",
+        "-lc",
+        "printf 'cwsr_enable='; cat /sys/module/amdgpu/parameters/cwsr_enable 2>/dev/null || true; printf 'amdgpu_version='; cat /sys/module/amdgpu/version 2>/dev/null || true"
+      ],
+      "env_overrides": {},
+      "ok": true,
+      "returncode": 0,
+      "stderr": "",
+      "stdout": "cwsr_enable=1\namdgpu_version=",
+      "timeout_s": 30
+    },
+    "device_nodes": {
+      "command": [
+        "bash",
+        "-lc",
+        "ls -l /dev/kfd /dev/dri/renderD* 2>/dev/null || true"
+      ],
+      "env_overrides": {},
+      "ok": true,
+      "returncode": 0,
+      "stderr": "",
+      "stdout": "crw-rw----+   1 root render 226, 128 Jun 24 21:25 /dev/dri/renderD128\ncrw-rw----+   1 root render 226, 129 Jun 24 21:25 /dev/dri/renderD129\ncrw-rw----+   1 root render 511,   0 Jun 24 21:25 /dev/kfd\n",
+      "timeout_s": 30
+    },
+    "groups": {
+      "command": [
+        "groups"
+      ],
+      "env_overrides": {},
+      "ok": true,
+      "returncode": 0,
+      "stderr": "",
+      "stdout": "lsd adm dialout cdrom sudo dip plugdev users lpadmin lxd render\n",
+      "timeout_s": 30
+    },
+    "id": {
+      "command": [
+        "id"
+      ],
+      "env_overrides": {},
+      "ok": true,
+      "returncode": 0,
+      "stderr": "",
+      "stdout": "uid=1000(lsd) gid=1000(lsd) groups=1000(lsd),4(adm),20(dialout),24(cdrom),27(sudo),30(dip),46(plugdev),100(users),111(lpadmin),114(lxd),990(render)\n",
+      "timeout_s": 30
+    },
+    "kernel_amdgpu_recent": {
+      "command": [
+        "bash",
+        "-lc",
+        "journalctl -k --since '2 hours ago' --no-pager 2>/dev/null | rg -i 'amdgpu|kfd|hsa|gpu|ring|gfx|reset|fault|ras|drm' | tail -n 180 || true"
+      ],
+      "env_overrides": {},
+      "ok": true,
+      "returncode": 0,
+      "stderr": "",
+      "stdout": "Jun 25 03:17:31 LSD kernel: amdgpu 0000:7c:00.0: Dumping IP State\nJun 25 03:17:36 LSD kernel: amdgpu 0000:7c:00.0: SMU: No response msg_reg: 17 resp_reg: 0\nJun 25 03:17:36 LSD kernel: amdgpu 0000:7c:00.0: Failed to disable gfxoff!\nJun 25 03:17:41 LSD kernel: amdgpu 0000:7c:00.0: SMU: No response msg_reg: 17 resp_reg: 0\nJun 25 03:17:41 LSD kernel: amdgpu 0000:7c:00.0: Failed to disable gfxoff!\nJun 25 03:17:46 LSD kernel: amdgpu 0000:7c:00.0: SMU: No response msg_reg: 17 resp_reg: 0\nJun 25 03:17:46 LSD kernel: amdgpu 0000:7c:00.0: Failed to disable gfxoff!\nJun 25 03:17:51 LSD kernel: amdgpu 0000:7c:00.0: SMU: No response msg_reg: 17 resp_reg: 0\nJun 25 03:17:51 LSD kernel: amdgpu 0000:7c:00.0: Failed to disable gfxoff!\nJun 25 03:17:51 LSD kernel: amdgpu 0000:7c:00.0: Dumping IP State Completed\nJun 25 03:17:51 LSD kernel: amdgpu 0000:7c:00.0: [drm] AMDGPU device coredump file has been created\nJun 25 03:17:51 LSD kernel: amdgpu 0000:7c:00.0: [drm] Check your /sys/class/drm/card2/device/devcoredump/data\nJun 25 03:17:51 LSD kernel: amdgpu 0000:7c:00.0: ring gfx_0.0.0 timeout, signaled seq=900246, emitted seq=900247\nJun 25 03:17:51 LSD kernel: amdgpu 0000:7c:00.0:  Process ptyxis pid 6099 thread ptyxis pid 6099\nJun 25 03:17:51 LSD kernel: amdgpu 0000:7c:00.0: Starting gfx_0.0.0 ring reset\nJun 25 03:17:52 LSD kernel: amdgpu 0000:7c:00.0: Ring gfx_0.0.0 reset failed\nJun 25 03:17:52 LSD kernel: amdgpu 0000:7c:00.0: GPU reset begin!. Source:  1\nJun 25 03:17:57 LSD kernel: amdgpu 0000:7c:00.0: SMU: No response msg_reg: 17 resp_reg: 0\nJun 25 03:17:57 LSD kernel: amdgpu 0000:7c:00.0: Failed to disable gfxoff!\nJun 25 03:18:02 LSD kernel: amdgpu 0000:7c:00.0: SMU: No response msg_reg: 17 resp_reg: 0\nJun 25 03:18:02 LSD kernel: amdgpu 0000:7c:00.0: Failed to disable smu features.\nJun 25 03:18:02 LSD kernel: amdgpu 0000:7c:00.0: MODE2 reset\nJun 25 03:18:07 LSD kernel: amdgpu 0000:7c:00.0: SMU: No response msg_reg: 17 resp_reg: 0\nJun 25 03:18:07 LSD kernel: amdgpu 0000:7c:00.0: Failed to mode reset!\nJun 25 03:18:07 LSD kernel: amdgpu 0000:7c:00.0: Mode2 reset failed!\nJun 25 03:18:07 LSD kernel: amdgpu 0000:7c:00.0: GPU mode2 reset failed\nJun 25 03:18:07 LSD kernel: amdgpu 0000:7c:00.0: ASIC reset failed with error, -62 for drm dev, 0000:7c:00.0\nJun 25 03:18:07 LSD kernel: amdgpu 0000:7c:00.0: GPU reset end with ret = -62\nJun 25 03:18:07 LSD kernel: amdgpu 0000:7c:00.0: GPU Recovery Failed: -62\nJun 25 03:18:09 LSD kernel: amdgpu 0000:7c:00.0: Dumping IP State\nJun 25 03:18:09 LSD kernel: amdgpu 0000:7c:00.0: Dumping IP State Completed\nJun 25 03:18:09 LSD kernel: amdgpu 0000:7c:00.0: [drm] AMDGPU device coredump file has been created\nJun 25 03:18:09 LSD kernel: amdgpu 0000:7c:00.0: [drm] Check your /sys/class/drm/card2/device/devcoredump/data\nJun 25 03:18:09 LSD kernel: amdgpu 0000:7c:00.0: ring gfx_0.0.0 timeout, signaled seq=900247, emitted seq=900247\nJun 25 03:18:09 LSD kernel: amdgpu 0000:7c:00.0:  Process ptyxis pid 6099 thread ptyxis pid 6099\nJun 25 03:18:09 LSD kernel: amdgpu 0000:7c:00.0: Starting gfx_0.0.0 ring reset\nJun 25 03:18:09 LSD kernel: amdgpu 0000:7c:00.0: Ring gfx_0.0.0 reset failed\nJun 25 03:18:09 LSD kernel: amdgpu 0000:7c:00.0: GPU reset begin!. Source:  1\nJun 25 03:21:49 LSD kernel:  dma_fence_default_wait+0x1a0/0x280\nJun 25 03:21:49 LSD kernel:  ? __pfx_dma_fence_default_wait_cb+0x10/0x10\nJun 25 03:21:49 LSD kernel:  amdgpu_vm_fini+0xed/0x600 [amdgpu]\nJun 25 03:21:49 LSD kernel:  ? amdgpu_vm_bo_del+0x2f8/0x390 [amdgpu]\nJun 25 03:21:49 LSD kernel:  amdgpu_driver_postclose_kms+0x1ab/0x290 [amdgpu]\nJun 25 03:21:49 LSD kernel:  drm_file_free+0x240/0x2d0\nJun 25 03:21:49 LSD kernel:  drm_release+0xcb/0x160\nJun 25 03:21:49 LSD kernel:  amdgpu_drm_release+0x5b/0xb0 [amdgpu]\nJun 25 03:21:49 LSD kernel:  dma_fence_default_wait+0x1a0/0x280\nJun 25 03:21:49 LSD kernel:  ? __pfx_dma_fence_default_wait_cb+0x10/0x10\nJun 25 03:21:49 LSD kernel:  dma_fence_default_wait+0x1a0/0x280\nJun 25 03:21:49 LSD kernel:  ? __pfx_dma_fence_default_wait_cb+0x10/0x10\nJun 25 03:21:49 LSD kernel: Workqueue: amdgpu-reset-dev drm_sched_job_timedout [gpu_sched]\nJun 25 03:21:49 LSD kernel:  dma_fence_default_wait+0x1a0/0x280\nJun 25 03:21:49 LSD kernel:  ? __pfx_dma_fence_default_wait_cb+0x10/0x10\nJun 25 03:21:49 LSD kernel:  drm_sched_stop+0x157/0x210 [gpu_sched]\nJun 25 03:21:49 LSD kernel:  amdgpu_device_halt_activities.isra.0+0x1f3/0x24b [amdgpu]\nJun 25 03:21:49 LSD kernel:  amdgpu_device_gpu_recover.cold+0x185/0x2ff [amdgpu]\nJun 25 03:21:49 LSD kernel:  amdgpu_job_timedout.cold+0x20f/0x24d [amdgpu]\nJun 25 03:21:49 LSD kernel:  drm_sched_job_timedout+0x8c/0x1a0 [gpu_sched]\nJun 25 03:21:49 LSD kernel:  dma_fence_default_wait+0x1a0/0x280\nJun 25 03:21:49 LSD kernel:  ? __pfx_dma_fence_default_wait_cb+0x10/0x10\nJun 25 03:21:49 LSD kernel:  dma_fence_default_wait+0x1a0/0x280\nJun 25 03:21:49 LSD kernel:  ? __pfx_dma_fence_default_wait_cb+0x10/0x10\nJun 25 03:21:49 LSD kernel:  dma_fence_default_wait+0x1a0/0x280\nJun 25 03:21:49 LSD kernel:  ? __pfx_dma_fence_default_wait_cb+0x10/0x10\nJun 25 03:21:49 LSD kernel:  dma_fence_default_wait+0x1a0/0x280\nJun 25 03:21:49 LSD kernel:  ? __pfx_dma_fence_default_wait_cb+0x10/0x10\nJun 25 03:21:49 LSD kernel:  dma_fence_default_wait+0x1a0/0x280\nJun 25 03:21:49 LSD kernel:  ? __pfx_dma_fence_default_wait_cb+0x10/0x10\nJun 25 03:21:49 LSD kernel:  dma_fence_default_wait+0x1a0/0x280\nJun 25 03:21:49 LSD kernel:  ? __pfx_dma_fence_default_wait_cb+0x10/0x10\n",
+      "timeout_s": 30
+    },
+    "ldconfig_rocm": {
+      "command": [
+        "bash",
+        "-lc",
+        "ldconfig -p 2>/dev/null | rg 'libhsa|libamdhip|libhiprtc|libhsakmt' || true"
+      ],
+      "env_overrides": {},
+      "ok": true,
+      "returncode": 0,
+      "stderr": "",
+      "stdout": "\tlibhsakmt.so.1 (libc6,x86-64) => /usr/lib/x86_64-linux-gnu/libhsakmt.so.1\n\tlibhsa-runtime64.so.1 (libc6,x86-64) => /opt/rocm-7.2.1/lib/libhsa-runtime64.so.1\n\tlibhsa-runtime64.so.1 (libc6,x86-64) => /usr/lib/x86_64-linux-gnu/libhsa-runtime64.so.1\n\tlibhsa-runtime64.so (libc6,x86-64) => /opt/rocm-7.2.1/lib/libhsa-runtime64.so\n\tlibhsa-amd-aqlprofile64.so.1 (libc6,x86-64) => /opt/rocm-7.2.1/lib/libhsa-amd-aqlprofile64.so.1\n\tlibhsa-amd-aqlprofile64.so (libc6,x86-64) => /opt/rocm-7.2.1/lib/libhsa-amd-aqlprofile64.so\n\tlibhiprtc.so.7 (libc6,x86-64) => /opt/rocm-7.2.1/lib/libhiprtc.so.7\n\tlibhiprtc.so (libc6,x86-64) => /opt/rocm-7.2.1/lib/libhiprtc.so\n\tlibhiprtc-builtins.so.7 (libc6,x86-64) => /opt/rocm-7.2.1/lib/libhiprtc-builtins.so.7\n\tlibhiprtc-builtins.so (libc6,x86-64) => /opt/rocm-7.2.1/lib/libhiprtc-builtins.so\n\tlibamdhip64.so.7 (libc6,x86-64) => /opt/rocm-7.2.1/lib/libamdhip64.so.7\n\tlibamdhip64.so.7 (libc6,x86-64) => /usr/lib/x86_64-linux-gnu/libamdhip64.so.7\n\tlibamdhip64.so (libc6,x86-64) => /opt/rocm-7.2.1/lib/libamdhip64.so\n",
+      "timeout_s": 30
+    },
+    "rocm_packages": {
+      "command": [
+        "bash",
+        "-lc",
+        "dpkg-query -W -f='${Package} ${Version}\\n' 'rocm*' 'hip*' 'hsa*' 'libamdhip*' 'libhsa*' 'amdgpu*' 2>/dev/null | sort || true"
+      ],
+      "env_overrides": {},
+      "ok": true,
+      "returncode": 0,
+      "stderr": "",
+      "stdout": "amdgpu-core 1:7.2.70201-2303469.24.04\namdgpu-dkms 1:6.16.13.30300100-2303411.24.04\namdgpu-dkms-firmware 30.30.1.0.30300100-2303411.24.04\namdgpu-install 30.30.1.0.30300100-2303411.24.04\namdgpu-lib 1:7.2.70201-2303469.24.04\namdgpu-lib32 1:7.2.70201-2303469.24.04\namdgpu-multimedia 1:7.2.70201-2303469.24.04\nhip-base \nhip-dev 7.2.53211.70201-81~24.04\nhip-doc 7.2.53211.70201-81~24.04\nhip-rocclr \nhip-runtime-amd 7.2.53211.70201-81~24.04\nhip-samples 7.2.53211.70201-81~24.04\nhip-thrust \nhipblas 3.2.0.70201-81~24.04\nhipblas-common \nhipblas-common-dev 1.4.0.70201-81~24.04\nhipblas-dev 3.2.0.70201-81~24.04\nhipblaslt 1.2.2.70201-81~24.04\nhipblaslt-dev 1.2.2.70201-81~24.04\nhipcc 1.1.1.70201-81~24.04\nhipcub \nhipcub-dev 4.2.0.70201-81~24.04\nhipfft 1.0.22.70201-81~24.04\nhipfft-dev 1.0.22.70201-81~24.04\nhipfort \nhipfort-dev 0.7.1.70201-81~24.04\nhipify-clang 22.0.0.70201-81~24.04\nhiprand 3.1.0.70201-81~24.04\nhiprand-dev 3.1.0.70201-81~24.04\nhipsolver 3.2.0.70201-81~24.04\nhipsolver-dev 3.2.0.70201-81~24.04\nhipsparse 4.2.0.70201-81~24.04\nhipsparse-dev 4.2.0.70201-81~24.04\nhipsparselt 0.2.6.70201-81~24.04\nhipsparselt-dev 0.2.6.70201-81~24.04\nhipstdpar \nhiptensor 2.2.0.70201-81~24.04\nhiptensor-dev 2.2.0.70201-81~24.04\nhsa-amd-aqlprofile 1.0.0.70201-81~24.04\nhsa-ext-rocr-dev \nhsa-rocr 1.18.0.70201-81~24.04\nhsa-rocr-dev 1.18.0.70201-81~24.04\nhsakmt-roct \nhsakmt-roct-dev \nlibamdhip64-5 \nlibamdhip64-7 7.1.0-0ubuntu2\nlibhsa-runtime64-1 7.1.0+dfsg-0ubuntu9\nlibhsakmt1 7.1.0+dfsg-0ubuntu9\nrocm 7.2.1.70201-81~24.04\nrocm-cmake 0.14.0.70201-81~24.04\nrocm-core 7.2.1.70201-81~24.04\nrocm-dbgapi 0.77.4.70201-81~24.04\nrocm-debug-agent 2.1.0.70201-81~24.04\nrocm-developer-tools 7.2.1.70201-81~24.04\nrocm-device-libs 1.0.0.70201-81~24.04\nrocm-gdb 16.3.70201-81~24.04\nrocm-hip 7.2.1.70201-81~24.04\nrocm-llvm 22.0.0.26084.70201-81~24.04\nrocm-opencl 2.0.0.70201-81~24.04\nrocm-opencl-dev 2.0.0.70201-81~24.04\nrocm-opencl-icd \nrocm-opencl-icd-loader \nrocm-opencl-sdk 7.2.1.70201-81~24.04\nrocm-openmp 7.2.1.70201-81~24.04\nrocm-smi-lib 7.8.0.70201-81~24.04\nrocminfo 1.0.0.70201-81~24.04\n",
+      "timeout_s": 30
+    },
+    "rocm_paths": {
+      "command": [
+        "bash",
+        "-lc",
+        "which rocminfo hipcc rocm-smi || true; find /opt/rocm* -maxdepth 3 \\( -name rocminfo -o -name libhsa-runtime64.so.1 -o -name libamdhip64.so.7 \\) -printf '%p -> %l\\n' 2>/dev/null | sort"
+      ],
+      "env_overrides": {},
+      "ok": true,
+      "returncode": 0,
+      "stderr": "",
+      "stdout": "/usr/bin/rocminfo\n/usr/bin/hipcc\n/usr/bin/rocm-smi\n/opt/rocm-7.2.1/bin/rocminfo -> \n/opt/rocm-7.2.1/lib/libamdhip64.so.7 -> libamdhip64.so.7.2.70201\n/opt/rocm-7.2.1/lib/libhsa-runtime64.so.1 -> libhsa-runtime64.so.1.18.70201\n/opt/rocm-7.2.1/share/doc/rocminfo -> \n",
+      "timeout_s": 30
+    },
+    "rocm_smi": {
+      "command": [
+        "rocm-smi"
+      ],
+      "env_overrides": {},
+      "ok": true,
+      "returncode": 0,
+      "stderr": "",
+      "stdout": "\n\n======================================== ROCm System Management Interface ========================================\n================================================== Concise Info ==================================================\nDevice  Node  IDs              Temp    Power  Partitions          SCLK  MCLK  Fan  Perf     PwrCap  VRAM%  GPU%  \n\u001b[3m              (DID,     GUID)  (Edge)  (Avg)  (Mem, Compute, ID)                                                 \u001b[0m\n==================================================================================================================\n0       1     0x744c,   45220  N/A     N/A    N/A, N/A, 0         N/A   N/A   0%   unknown  N/A     0%     0%    \n1       2     0x13c0,   40290  N/A     N/A    N/A, N/A, 0         N/A   N/A   0%   unknown  N/A     19%    0%    \n==================================================================================================================\n============================================== End of ROCm SMI Log ===============================================\n",
+      "timeout_s": 60
+    },
+    "uname": {
+      "command": [
+        "uname",
+        "-a"
+      ],
+      "env_overrides": {},
+      "ok": true,
+      "returncode": 0,
+      "stderr": "",
+      "stdout": "Linux LSD 7.0.0-22-generic #22-Ubuntu SMP PREEMPT_DYNAMIC Mon May 25 15:54:34 UTC 2026 x86_64 GNU/Linux\n",
+      "timeout_s": 30
+    }
+  },
+  "deploy_performed": false,
+  "env_python": "/home/lsd/robots/envs/open-duck-playground/bin/python",
+  "jax_variants": {
+    "cpu": {
+      "command": [
+        "/home/lsd/robots/envs/open-duck-playground/bin/python",
+        "-c",
+        "\nimport os\nimport sys\n\nprint(\"python\", sys.executable)\nfor key in [\"JAX_PLATFORMS\", \"JAX_PLATFORM_NAME\", \"HSA_OVERRIDE_GFX_VERSION\", \"LD_LIBRARY_PATH\"]:\n    if os.environ.get(key):\n        print(key, os.environ.get(key))\ntry:\n    import jax\n    print(\"jax\", jax.__version__)\n    print(\"backend\", jax.default_backend())\n    print(\"devices\", jax.devices())\nexcept Exception as exc:\n    print(\"jax_error\", type(exc).__name__, exc)\ntry:\n    import mujoco\n    print(\"mujoco\", mujoco.__version__)\nexcept Exception as exc:\n    print(\"mujoco_error\", type(exc).__name__, exc)\n"
+      ],
+      "env_overrides": {
+        "JAX_PLATFORMS": "cpu",
+        "JAX_PLATFORM_NAME": "cpu"
+      },
+      "ok": true,
+      "returncode": 0,
+      "stderr": "",
+      "stdout": "python /home/lsd/robots/envs/open-duck-playground/bin/python\nJAX_PLATFORMS cpu\nJAX_PLATFORM_NAME cpu\njax 0.8.2\nbackend cpu\ndevices [CpuDevice(id=0)]\nmujoco 3.9.0\n",
+      "timeout_s": 60
+    },
+    "default": {
+      "command": [
+        "/home/lsd/robots/envs/open-duck-playground/bin/python",
+        "-c",
+        "\nimport os\nimport sys\n\nprint(\"python\", sys.executable)\nfor key in [\"JAX_PLATFORMS\", \"JAX_PLATFORM_NAME\", \"HSA_OVERRIDE_GFX_VERSION\", \"LD_LIBRARY_PATH\"]:\n    if os.environ.get(key):\n        print(key, os.environ.get(key))\ntry:\n    import jax\n    print(\"jax\", jax.__version__)\n    print(\"backend\", jax.default_backend())\n    print(\"devices\", jax.devices())\nexcept Exception as exc:\n    print(\"jax_error\", type(exc).__name__, exc)\ntry:\n    import mujoco\n    print(\"mujoco\", mujoco.__version__)\nexcept Exception as exc:\n    print(\"mujoco_error\", type(exc).__name__, exc)\n"
+      ],
+      "env_overrides": {},
+      "ok": true,
+      "returncode": 0,
+      "stderr": "E0625 04:49:02.672996  246831 rocm_platform.cc:50] failed call to hipInit: HIP_ERROR_NoDevice\n",
+      "stdout": "python /home/lsd/robots/envs/open-duck-playground/bin/python\njax 0.8.2\njax_error RuntimeError Unable to initialize backend 'rocm': FAILED_PRECONDITION: No visible GPU devices. (you may need to uninstall the failing plugin package, or set JAX_PLATFORMS=cpu to skip this backend.)\nmujoco 3.9.0\n",
+      "timeout_s": 60
+    },
+    "hsa_override": {
+      "command": [
+        "/home/lsd/robots/envs/open-duck-playground/bin/python",
+        "-c",
+        "\nimport os\nimport sys\n\nprint(\"python\", sys.executable)\nfor key in [\"JAX_PLATFORMS\", \"JAX_PLATFORM_NAME\", \"HSA_OVERRIDE_GFX_VERSION\", \"LD_LIBRARY_PATH\"]:\n    if os.environ.get(key):\n        print(key, os.environ.get(key))\ntry:\n    import jax\n    print(\"jax\", jax.__version__)\n    print(\"backend\", jax.default_backend())\n    print(\"devices\", jax.devices())\nexcept Exception as exc:\n    print(\"jax_error\", type(exc).__name__, exc)\ntry:\n    import mujoco\n    print(\"mujoco\", mujoco.__version__)\nexcept Exception as exc:\n    print(\"mujoco_error\", type(exc).__name__, exc)\n"
+      ],
+      "env_overrides": {
+        "HSA_OVERRIDE_GFX_VERSION": "11.0.0"
+      },
+      "ok": true,
+      "returncode": 0,
+      "stderr": "E0625 04:49:03.391909  247027 rocm_platform.cc:50] failed call to hipInit: HIP_ERROR_NoDevice\n",
+      "stdout": "python /home/lsd/robots/envs/open-duck-playground/bin/python\nHSA_OVERRIDE_GFX_VERSION 11.0.0\njax 0.8.2\njax_error RuntimeError Unable to initialize backend 'rocm': FAILED_PRECONDITION: No visible GPU devices. (you may need to uninstall the failing plugin package, or set JAX_PLATFORMS=cpu to skip this backend.)\nmujoco 3.9.0\n",
+      "timeout_s": 60
+    },
+    "opt_rocm_path": {
+      "command": [
+        "/home/lsd/robots/envs/open-duck-playground/bin/python",
+        "-c",
+        "\nimport os\nimport sys\n\nprint(\"python\", sys.executable)\nfor key in [\"JAX_PLATFORMS\", \"JAX_PLATFORM_NAME\", \"HSA_OVERRIDE_GFX_VERSION\", \"LD_LIBRARY_PATH\"]:\n    if os.environ.get(key):\n        print(key, os.environ.get(key))\ntry:\n    import jax\n    print(\"jax\", jax.__version__)\n    print(\"backend\", jax.default_backend())\n    print(\"devices\", jax.devices())\nexcept Exception as exc:\n    print(\"jax_error\", type(exc).__name__, exc)\ntry:\n    import mujoco\n    print(\"mujoco\", mujoco.__version__)\nexcept Exception as exc:\n    print(\"mujoco_error\", type(exc).__name__, exc)\n"
+      ],
+      "env_overrides": {
+        "LD_LIBRARY_PATH": "/opt/rocm-7.2.1/lib",
+        "PATH": "/opt/rocm-7.2.1/bin:/home/lsd/.local/bin:/home/lsd/.codex/packages/standalone/releases/0.142.0-x86_64-unknown-linux-musl/codex-path:/home/lsd/.codex/tmp/arg0/codex-arg0h03WHe:/home/lsd/.local/bin:/home/lsd/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin"
+      },
+      "ok": true,
+      "returncode": 0,
+      "stderr": "E0625 04:49:03.017712  246929 rocm_platform.cc:50] failed call to hipInit: HIP_ERROR_NoDevice\n",
+      "stdout": "python /home/lsd/robots/envs/open-duck-playground/bin/python\nLD_LIBRARY_PATH /opt/rocm-7.2.1/lib\njax 0.8.2\njax_error RuntimeError Unable to initialize backend 'rocm': FAILED_PRECONDITION: No visible GPU devices. (you may need to uninstall the failing plugin package, or set JAX_PLATFORMS=cpu to skip this backend.)\nmujoco 3.9.0\n",
+      "timeout_s": 60
+    },
+    "opt_rocm_path_hsa_override": {
+      "command": [
+        "/home/lsd/robots/envs/open-duck-playground/bin/python",
+        "-c",
+        "\nimport os\nimport sys\n\nprint(\"python\", sys.executable)\nfor key in [\"JAX_PLATFORMS\", \"JAX_PLATFORM_NAME\", \"HSA_OVERRIDE_GFX_VERSION\", \"LD_LIBRARY_PATH\"]:\n    if os.environ.get(key):\n        print(key, os.environ.get(key))\ntry:\n    import jax\n    print(\"jax\", jax.__version__)\n    print(\"backend\", jax.default_backend())\n    print(\"devices\", jax.devices())\nexcept Exception as exc:\n    print(\"jax_error\", type(exc).__name__, exc)\ntry:\n    import mujoco\n    print(\"mujoco\", mujoco.__version__)\nexcept Exception as exc:\n    print(\"mujoco_error\", type(exc).__name__, exc)\n"
+      ],
+      "env_overrides": {
+        "HSA_OVERRIDE_GFX_VERSION": "11.0.0",
+        "LD_LIBRARY_PATH": "/opt/rocm-7.2.1/lib",
+        "PATH": "/opt/rocm-7.2.1/bin:/home/lsd/.local/bin:/home/lsd/.codex/packages/standalone/releases/0.142.0-x86_64-unknown-linux-musl/codex-path:/home/lsd/.codex/tmp/arg0/codex-arg0h03WHe:/home/lsd/.local/bin:/home/lsd/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin"
+      },
+      "ok": true,
+      "returncode": 0,
+      "stderr": "E0625 04:49:03.744737  247125 rocm_platform.cc:50] failed call to hipInit: HIP_ERROR_NoDevice\n",
+      "stdout": "python /home/lsd/robots/envs/open-duck-playground/bin/python\nHSA_OVERRIDE_GFX_VERSION 11.0.0\nLD_LIBRARY_PATH /opt/rocm-7.2.1/lib\njax 0.8.2\njax_error RuntimeError Unable to initialize backend 'rocm': FAILED_PRECONDITION: No visible GPU devices. (you may need to uninstall the failing plugin package, or set JAX_PLATFORMS=cpu to skip this backend.)\nmujoco 3.9.0\n",
+      "timeout_s": 60
+    }
+  },
+  "robot_touched": false,
+  "rocminfo_variants": {
+    "default": {
+      "command": [
+        "rocminfo"
+      ],
+      "env_overrides": {},
+      "ok": false,
+      "returncode": 1,
+      "stderr": "",
+      "stdout": "\u001b[37mROCk module is loaded\u001b[0m\n\u001b[31mUnable to open /dev/kfd read-write: Invalid argument\u001b[0m\n\u001b[37mlsd is member of render group\u001b[0m\n",
+      "timeout_s": 60
+    },
+    "hsa_override": {
+      "command": [
+        "rocminfo"
+      ],
+      "env_overrides": {
+        "HSA_OVERRIDE_GFX_VERSION": "11.0.0"
+      },
+      "ok": false,
+      "returncode": 1,
+      "stderr": "",
+      "stdout": "\u001b[37mROCk module is loaded\u001b[0m\n\u001b[31mUnable to open /dev/kfd read-write: Invalid argument\u001b[0m\n\u001b[37mlsd is member of render group\u001b[0m\n",
+      "timeout_s": 60
+    },
+    "opt_rocm_path": {
+      "command": [
+        "rocminfo"
+      ],
+      "env_overrides": {
+        "LD_LIBRARY_PATH": "/opt/rocm-7.2.1/lib",
+        "PATH": "/opt/rocm-7.2.1/bin:/home/lsd/.local/bin:/home/lsd/.codex/packages/standalone/releases/0.142.0-x86_64-unknown-linux-musl/codex-path:/home/lsd/.codex/tmp/arg0/codex-arg0h03WHe:/home/lsd/.local/bin:/home/lsd/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin"
+      },
+      "ok": false,
+      "returncode": 1,
+      "stderr": "",
+      "stdout": "\u001b[37mROCk module is loaded\u001b[0m\n\u001b[31mUnable to open /dev/kfd read-write: Invalid argument\u001b[0m\n\u001b[37mlsd is member of render group\u001b[0m\n",
+      "timeout_s": 60
+    },
+    "opt_rocm_path_hsa_override": {
+      "command": [
+        "rocminfo"
+      ],
+      "env_overrides": {
+        "HSA_OVERRIDE_GFX_VERSION": "11.0.0",
+        "LD_LIBRARY_PATH": "/opt/rocm-7.2.1/lib",
+        "PATH": "/opt/rocm-7.2.1/bin:/home/lsd/.local/bin:/home/lsd/.codex/packages/standalone/releases/0.142.0-x86_64-unknown-linux-musl/codex-path:/home/lsd/.codex/tmp/arg0/codex-arg0h03WHe:/home/lsd/.local/bin:/home/lsd/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin"
+      },
+      "ok": false,
+      "returncode": 1,
+      "stderr": "",
+      "stdout": "\u001b[37mROCk module is loaded\u001b[0m\n\u001b[31mUnable to open /dev/kfd read-write: Invalid argument\u001b[0m\n\u001b[37mlsd is member of render group\u001b[0m\n",
+      "timeout_s": 60
+    }
+  },
+  "status": "HOLD_LOCAL_ROCM_KFD",
+  "timestamp": "20260625T084902Z",
+  "training_started": false
+}
