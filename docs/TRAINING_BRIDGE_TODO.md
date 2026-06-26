@@ -4857,6 +4857,19 @@ PPO fine-tuning from BC warm start
 or student training with explicit fitted-bridge tracking/rate feedback
 ```
 
+Warm-start plumbing note:
+
+```text
+artifact: outputs/analysis/PPO_WARMSTART_REQUIREMENTS.md
+status: PLAN_PPO_WARMSTART_PLUMBING
+```
+
+The Playground runner's `--restore_checkpoint_path` expects a Brax/Orbax PPO
+checkpoint, not an ONNX or BC `candidate_mlp.npz`. Before launching PPO,
+convert the BC MLP weights into PPO params or add a runner-side BC init path,
+then verify step-0 ONNX behavior matches the BC candidate. Do not start PPO
+until that step-0 fidelity gate passes.
+
 Stop rules:
 
 ```text
