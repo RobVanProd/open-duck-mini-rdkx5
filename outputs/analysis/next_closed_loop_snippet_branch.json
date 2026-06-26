@@ -1,0 +1,44 @@
+{
+  "status": "PLAN_SNIPPET_STITCHING_WITH_RATE_REJECTION",
+  "evidence": {
+    "command_comparison": "outputs/analysis/PUBLISHED_POLICY_COMMAND_PROPULSION_COMPARISON.md",
+    "closed_loop_template": "outputs/analysis/PUBLISHED_POLICY_COMMAND_CLOSED_LOOP_TEMPLATE.md",
+    "window_mine_25t": "outputs/analysis/CLOSED_LOOP_TEACHER_WINDOW_MINE.md",
+    "window_mine_10t": "outputs/analysis/CLOSED_LOOP_TEACHER_WINDOW_MINE_10T.md"
+  },
+  "findings": {
+    "straight_x004": {
+      "moving_seeds": 0,
+      "envelope_safe_seeds": 8,
+      "mean_vx_m_s": 0.0019,
+      "single_support_pct": 3.65
+    },
+    "upstream_nearest_turn": {
+      "moving_seeds": 7,
+      "envelope_safe_seeds": 1,
+      "mean_vx_m_s": 0.054,
+      "single_support_pct": 44.8,
+      "passing_10_tick_snippets": 76
+    },
+    "straight_x008": {
+      "moving_seeds": 7,
+      "envelope_safe_seeds": 0,
+      "mean_vx_m_s": 0.064,
+      "single_support_pct": 49.4,
+      "passing_10_tick_snippets": 63
+    },
+    "window_mine": {
+      "passing_25_tick_windows": 0,
+      "passing_10_tick_windows": 142
+    }
+  },
+  "recommended_next": "Build a snippet-stitching/relabeling source from 10-tick passing snippets, then score 25-50 tick continuity before BC/export.",
+  "stop_rules": [
+    "Do not train directly from full BEST_WALK traces.",
+    "Do not train directly from isolated 10-tick snippets.",
+    "Do not use straight x=0.04 as the first walking pass/fail gate.",
+    "Do not relax the right-knee envelope to make snippets longer.",
+    "Do not run robot validation.",
+    "Do not SSH, deploy, or change runtime behavior."
+  ]
+}
