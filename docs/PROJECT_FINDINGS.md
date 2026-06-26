@@ -2576,3 +2576,35 @@ actuator model follow the walking targets. The next high-value step is PPO
 fine-tuning or another closed-loop training pass from this warm start with the
 fitted bridge active and tracking/target-rate feedback in the objective, not
 another one-step BC smoothing pass.
+
+The BC fit was then promoted into a real Brax/PPO step-0 checkpoint:
+
+```text
+export: outputs/analysis/PPO_BC_SWISH_CMD_PITCH_RL_2P25_STEP0_EXPORT_FIDELITY.md
+status: PASS_PPO_BC_WARMSTART_STEP0_EXPORT_FIDELITY
+checkpoint: outputs/analysis/ppo_bc_swish_cmd_pitch_rl_2p25_step0_checkpoint
+onnx: outputs/analysis/ppo_bc_swish_cmd_pitch_rl_2p25_step0.onnx
+```
+
+The step-0 ONNX preserves the same behavior:
+
+```text
+x=0.0:
+  falls: 0 / 8
+  duration complete: 8 / 8
+  mean vx: 0.0005 m/s
+  mean max tracking p95: 0.0740 rad
+  worst max tracking p95: 0.0861 rad
+
+x=0.08:
+  falls: 0 / 8
+  duration complete: 8 / 8
+  mean vx: 0.0347 m/s
+  mean track ratio: 0.4343
+  mean max pitch target velocity p95: 2.1196 rad/s
+  mean max tracking p95: 0.1958 rad
+```
+
+This is now a valid PPO warm-start artifact, not a deployable robot candidate.
+The next training branch should fine-tune from this checkpoint with the fitted
+bridge active and target the remaining tracking gap.

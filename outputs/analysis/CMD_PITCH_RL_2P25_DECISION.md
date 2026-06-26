@@ -12,6 +12,8 @@ not train PPO, SSH, deploy, run robot tests, or change robot runtime behavior.
 - manifest: `outputs/analysis/ppo_swish_cmd_conditioned_pitch_ratelimit_2p25_manifest.json`
 - BC fit: `outputs/analysis/PPO_LOC_SWISH_CMD_PITCH_RL_2P25_BC_STUDENT.md`
 - candidate ONNX: `outputs/analysis/ppo_loc_swish_cmd_pitch_rl_2p25_candidate/candidate.onnx`
+- PPO step-0 checkpoint: `outputs/analysis/ppo_bc_swish_cmd_pitch_rl_2p25_step0_checkpoint`
+- PPO step-0 ONNX: `outputs/analysis/ppo_bc_swish_cmd_pitch_rl_2p25_step0.onnx`
 
 Raw JSONL traces remain ignored local training inputs.
 
@@ -117,3 +119,42 @@ the training objective.
 This candidate is a good warm-start artifact because it is stable at `x=0.0`,
 stable at `x=0.08`, command-conditioned, and in-envelope. It is not a finished
 policy because fitted tracking at `x=0.08` remains far above the gate.
+
+## PPO Step-0 Promotion
+
+The BC fit was promoted into an actual Brax/PPO step-0 checkpoint:
+
+```text
+artifact: outputs/analysis/PPO_BC_SWISH_CMD_PITCH_RL_2P25_STEP0_EXPORT_FIDELITY.md
+status: PASS_PPO_BC_WARMSTART_STEP0_EXPORT_FIDELITY
+```
+
+The step-0 ONNX was then gated directly.
+
+```text
+x=0.0 fitted bridge:
+  falls: 0 / 8
+  duration complete: 8 / 8
+  mean vx: 0.0005 m/s
+  mean body pitch p95: 0.0245 rad
+  mean max pitch target velocity p95: 0.4825 rad/s
+  mean max tracking p95: 0.0740 rad
+  worst max tracking p95: 0.0861 rad
+
+x=0.08 fitted bridge:
+  falls: 0 / 8
+  duration complete: 8 / 8
+  mean vx: 0.0347 m/s
+  mean track ratio: 0.4343
+  mean body pitch p95: 0.1174 rad
+  mean max pitch target velocity p95: 2.1196 rad/s
+  max pitch target velocity p95 range: 2.0803-2.1527 rad/s
+  mean max tracking p95: 0.1958 rad
+  worst max tracking p95: 0.2013 rad
+```
+
+This confirms the exact PPO warm-start artifact is stable, command-conditioned,
+and in-envelope, but not a deployment candidate. The next branch should start
+PPO fine-tuning from this checkpoint with the fitted bridge active and should
+grade success by reducing fitted tracking without losing x=0 stability or
+x=0.08 forward progress.

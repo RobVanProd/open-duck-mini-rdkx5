@@ -5359,3 +5359,22 @@ Updated next valid warm-start work:
 Do not spend another branch only on scalar command gain, one-tick target
 smoothing, or one-step BC target-rate clipping; those have been tested and do
 not clear fitted tracking.
+
+PPO warm-start artifact:
+
+```text
+export: outputs/analysis/PPO_BC_SWISH_CMD_PITCH_RL_2P25_STEP0_EXPORT_FIDELITY.md
+checkpoint: outputs/analysis/ppo_bc_swish_cmd_pitch_rl_2p25_step0_checkpoint
+onnx: outputs/analysis/ppo_bc_swish_cmd_pitch_rl_2p25_step0.onnx
+```
+
+The step-0 gate preserves the same useful-but-held profile:
+
+```text
+x=0.0:  8 / 8 duration-complete, mean max tracking p95 0.0740 rad
+x=0.08: 8 / 8 duration-complete, mean vx 0.0347 m/s, mean max tracking p95 0.1958 rad
+```
+
+Use this checkpoint as the starting point for the next fitted-bridge PPO
+fine-tune. Do not start the next run from scratch and do not return to the
+non-deployable selector as the optimization target.

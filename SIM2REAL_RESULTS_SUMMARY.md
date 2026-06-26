@@ -6284,3 +6284,32 @@ is still not solved. More one-step BC smoothing is unlikely to be enough. The
 next high-value offline step is PPO fine-tuning or another closed-loop training
 pass from this warm start with the fitted bridge active and tracking/target-rate
 feedback in the objective.
+
+The same BC fit was promoted into a Brax/PPO step-0 checkpoint:
+
+```text
+artifact: outputs/analysis/PPO_BC_SWISH_CMD_PITCH_RL_2P25_STEP0_EXPORT_FIDELITY.md
+status: PASS_PPO_BC_WARMSTART_STEP0_EXPORT_FIDELITY
+checkpoint: outputs/analysis/ppo_bc_swish_cmd_pitch_rl_2p25_step0_checkpoint
+```
+
+The step-0 ONNX preserves the warm-start behavior:
+
+```text
+x=0.0 fitted bridge:
+  falls: 0 / 8
+  duration complete: 8 / 8
+  mean max tracking p95: 0.0740 rad
+  worst max tracking p95: 0.0861 rad
+
+x=0.08 fitted bridge:
+  falls: 0 / 8
+  duration complete: 8 / 8
+  mean vx: 0.0347 m/s
+  mean track ratio: 0.4343
+  mean max pitch target velocity p95: 2.1196 rad/s
+  mean max tracking p95: 0.1958 rad
+```
+
+This checkpoint is the current best offline warm start for a fitted-bridge PPO
+fine-tune. It is not robot-ready.
