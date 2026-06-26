@@ -406,6 +406,21 @@ clipped at the runtime `5.24 rad/s` slew ceiling and mostly occurring during
 double support. The next portable-student branch should target that cyclic
 right-knee phase/target-continuity problem directly.
 
+The selector trace manifest already contains that issue:
+
+```text
+outputs/analysis/SOURCE_VX_SELECTOR_TRACE_MANIFEST_RIGHT_KNEE_RATE_DIAGNOSTIC.md
+status: HOLD_TEACHER_TRACE_RIGHT_KNEE_RATE_DISCONTINUITIES
+right-knee deltas over 3.75 rad/s: 506 / 3992 (12.68%)
+max implied target velocity: 8.3015 rad/s
+high-event contacts: 11=297, 10=208, 00=1
+```
+
+So the exact blend ONNX is preserving a hidden teacher-data discontinuity. The
+next branch should re-curate or relabel the selector trace manifest with
+max-joint/per-joint right-knee target-rate constraints before another portable
+student export.
+
 ## Required Next Design
 
 - Use the DAgger-2 ONNX candidate as proof that compact neural export is wired,
@@ -418,6 +433,8 @@ right-knee phase/target-continuity problem directly.
 - Add an offline right-knee phase-continuity or per-joint target-rate selection
   pressure; the measured failure is short cyclic right-knee bursts, not export
   approximation error.
+- Re-curate or relabel the selector trace dataset before another export; the
+  current trace manifest already contains right-knee deltas up to `8.3015 rad/s`.
 - Do not pursue scalar action-gain wrapping as the next branch; it failed the
   two-seed envelope/motion screen.
 - Do not keep increasing the existing pairwise target-rate regularizer as the

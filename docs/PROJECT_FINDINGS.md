@@ -1370,3 +1370,20 @@ The high-rate events are short cyclic bursts, often clipped at the runtime
 the next offline target more specific: preserve the blend's forward motion but
 remove the right-knee phase/target discontinuity. Another broad export or
 global damping pass is unlikely to answer that mechanism.
+
+The source trace manifest itself contains the same hidden discontinuity:
+
+```text
+outputs/analysis/SOURCE_VX_SELECTOR_TRACE_MANIFEST_RIGHT_KNEE_RATE_DIAGNOSTIC.md
+status: HOLD_TEACHER_TRACE_RIGHT_KNEE_RATE_DISCONTINUITIES
+dataset_id: de4935ec7672ceea
+right-knee deltas over 3.75 rad/s: 506 / 3992 (12.68%)
+max implied target velocity: 8.3015 rad/s
+high-event contacts: 11=297, 10=208, 00=1
+```
+
+This means the exact blend ONNX did not invent the right-knee spikes. It
+faithfully exported a teacher-data problem that the earlier flattened
+sent-target velocity metric hid. The next branch should re-curate or relabel
+the selector trace dataset with max-joint/per-joint right-knee target-rate
+constraints before exporting another portable student.

@@ -1,5 +1,5 @@
 {
-  "status": "HOLD_RIGHT_KNEE_CYCLIC_RATE_SPIKES",
+  "status": "HOLD_TEACHER_TRACE_RIGHT_KNEE_RATE_DISCONTINUITIES",
   "next_branch": "Exact blend ONNX export is faithful and preserves forward motion, but strict evaluation holds on right-knee pitch-chain rate/tracking. The next branch should target that max-joint rate/tracking mechanism rather than export fidelity, scalar gain, or the existing pairwise target-rate regularizer.",
   "inputs": {
     "gate_status": "HOLD_NO_SUSTAINED_WEIGHT_TRANSFER_TARGET",
@@ -226,7 +226,11 @@
       "11": 39,
       "10": 21,
       "01": 2
-    }
+    },
+    "selector_trace_manifest_right_knee_status": "HOLD_TEACHER_TRACE_RIGHT_KNEE_RATE_DISCONTINUITIES",
+    "selector_trace_manifest_right_knee_events_over_3p75": 506,
+    "selector_trace_manifest_right_knee_event_pct_over_3p75": 12.68,
+    "selector_trace_manifest_right_knee_max_target_velocity_rad_s": 8.3015
   },
   "rationale": [
     "No checked target source passes PASS_WEIGHT_TRANSFER_TARGET.",
@@ -282,7 +286,8 @@
     "do not promote a student path unless it beats the 8-seed kNN gate by preserving forward motion across seeds without fall/reverse or freeze modes",
     "use exact blend ONNX as an offline analysis artifact, not a robot candidate",
     "preserve blend closed-loop forward motion while reducing the right-knee pitch-chain target-rate and tracking peak",
-    "add offline right-knee phase-continuity or per-joint target-rate selection pressure; the measured issue is short cyclic right-knee bursts, not export approximation error"
+    "add offline right-knee phase-continuity or per-joint target-rate selection pressure; the measured issue is short cyclic right-knee bursts, not export approximation error",
+    "re-curate or relabel the selector trace dataset before another export; the current manifest already contains right-knee deltas up to 8.3015 rad/s"
   ],
   "stop_rules": [
     "Do not continue PLAN_STANCE_RELATIVE_LATERAL_DAMPING as the default branch.",
@@ -304,7 +309,8 @@
     "Do not call the DAgger-2 ONNX candidate robot-ready; it is only the first exportable fitted-bridge smoke pass and it fails multi-seed standard ONNX review.",
     "Do not treat action-gain damping as a fix; the offline gain screen trades target-rate safety for lost forward motion.",
     "Do not treat the current target-rate regularizer as solved; the scale screen did not find an envelope-safe moving notch.",
-    "Do not call the exact blend ONNX candidate robot-ready; it preserves forward motion but every strict task-matched seed exceeds the fitted pitch-chain envelope."
+    "Do not call the exact blend ONNX candidate robot-ready; it preserves forward motion but every strict task-matched seed exceeds the fitted pitch-chain envelope.",
+    "Do not train or export another portable student from the current selector trace manifest without right-knee max-joint target-rate curation or relabeling."
   ],
   "non_goals": [
     "robot tests",
@@ -359,5 +365,22 @@
       "01": 2
     },
     "interpretation": "Right-knee over-envelope target-rate events are repeated one- to two-tick cyclic bursts, commonly saturating at the 5.24 rad/s runtime slew ceiling and mostly occurring in double support. The same joint also dominates tracking error. This points to a periodic right-knee target discontinuity in the exact blend student, not ONNX export error or random simulator failure."
+  },
+  "selector_trace_manifest_right_knee_rate_diagnostic": {
+    "artifact": "outputs/analysis/SOURCE_VX_SELECTOR_TRACE_MANIFEST_RIGHT_KNEE_RATE_DIAGNOSTIC.md",
+    "json": "outputs/analysis/source_vx_selector_trace_manifest_right_knee_rate_diagnostic.json",
+    "status": "HOLD_TEACHER_TRACE_RIGHT_KNEE_RATE_DISCONTINUITIES",
+    "dataset_id": "de4935ec7672ceea",
+    "joint": "right_knee",
+    "events_over_3p75": 506,
+    "total_deltas": 3992,
+    "event_pct_over_3p75": 12.68,
+    "max_target_velocity_rad_s": 8.3015,
+    "high_event_contacts": {
+      "11": 297,
+      "10": 208,
+      "00": 1
+    },
+    "interpretation": "The source-vx selector trace manifest already contains right-knee target-rate discontinuities: about 12.7% of consecutive right-knee target deltas exceed 3.75 rad/s and the max implied target velocity reaches 8.30 rad/s. Exact blend ONNX is therefore preserving a hidden teacher-data problem rather than inventing the right-knee bursts."
   }
 }

@@ -320,6 +320,10 @@ and `7` still freeze near standstill.
   burst pattern: `62 / 499` target deltas exceed `3.75 rad/s`, grouped into
   `32` short clusters of `1-3` ticks, often clipped at `5.24 rad/s`, mostly
   during double support (`11=39`, `10=21`, `01=2`).
+- The selector trace manifest already contains the same right-knee
+  discontinuity: `506 / 3992` consecutive right-knee target deltas exceed
+  `3.75 rad/s`, with max implied target velocity `8.3015 rad/s`. The exact
+  ONNX export is preserving a hidden teacher-data problem, not inventing it.
 
 ## Required Next Design
 
@@ -333,6 +337,8 @@ and `7` still freeze near standstill.
 - add offline right-knee phase-continuity or per-joint target-rate selection
   pressure; the measured issue is short cyclic right-knee bursts, not export
   approximation error
+- re-curate or relabel the selector trace dataset before another export; the
+  current manifest already contains right-knee deltas up to `8.3015 rad/s`
 - do not pursue scalar action-gain wrapping as the next branch; it failed the
   two-seed envelope/motion screen
 - do not keep increasing the existing pairwise target-rate regularizer as the
