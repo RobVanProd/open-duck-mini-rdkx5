@@ -94,6 +94,14 @@ training, robot SSH, deployment, or hardware tests.
 | `teacher_dataset_bc_smoke_command` | `straight x=0.08` |
 | `teacher_dataset_bc_smoke_mean_vx_range_m_s` | `0.0673-0.0688` |
 | `teacher_dataset_bc_smoke_sent_velocity_p95_range_rad_s` | `2.4224-2.5628` |
+| `teacher_dataset_bc_gate_status` | `HOLD_BC_REPLAY_TERMINATED` |
+| `teacher_dataset_bc_gate_command` | `straight x=0.08` |
+| `teacher_dataset_bc_gate_duration_s` | `5` |
+| `teacher_dataset_bc_gate_seeds` | `8` |
+| `teacher_dataset_bc_gate_duration_complete_count` | `7` |
+| `teacher_dataset_bc_gate_forward_moving_seed_count_ratio_ge_0p5` | `5 / 8` |
+| `teacher_dataset_bc_gate_near_standstill_seed_count` | `2 / 8` |
+| `teacher_dataset_bc_gate_fall_or_reverse_seed_count` | `1 / 8` |
 
 ## Decision
 
@@ -107,7 +115,8 @@ per-joint pitch-chain velocity envelope, but the moving published-policy traces
 contain substantial low-rate moving windows that should be mined as the next
 teacher substrate. That substrate now has a curated manifest and a tiny kNN
 BC smoke that preserves forward motion inside the target-rate envelope for a
-short closed-loop replay.
+short closed-loop replay, but the longer 8-seed kNN replay gate still holds
+because one seed falls/reverses and two seeds collapse to near-standstill.
 
 ## Rationale
 
@@ -149,6 +158,11 @@ short closed-loop replay.
   manifest sanity check passed, and a tiny kNN BC smoke completed two
   straight-`x=0.08` closed-loop seeds with mean vx `0.0673-0.0688 m/s` and
   sent-target velocity p95 `2.4224-2.5628 rad/s`.
+- A longer 8-seed, 5-second kNN replay gate is a hold, not a pass. Five of
+  eight seeds moved forward with track ratio >= `0.5`, seeds 4 and 7 completed
+  but stayed near standstill, and seed 3 fell/reversed after 79 samples. This
+  preserves the dataset-substrate finding, but it rules out treating the toy
+  kNN replay as a robust student policy.
 
 ## Required Next Design
 
@@ -160,6 +174,8 @@ short closed-loop replay.
   target velocity, not only mean pitch-chain target velocity
 - evaluate any learned student with longer multi-seed closed-loop gates before
   treating the kNN smoke as meaningful beyond proof-of-dataset
+- do not promote a student path unless it beats the 8-seed kNN gate by
+  preserving forward motion across seeds without fall/reverse or freeze modes
 
 ## Stop Rules
 
@@ -175,6 +191,8 @@ short closed-loop replay.
   the first compact grid found the same activation cliff.
 - Do not treat the kNN BC smoke as a deployable policy; it is only a proof that
   the curated low-rate windows can drive a toy closed-loop imitation replay.
+- Do not ignore the 8-seed kNN gate hold; the next student must solve the
+  seed-dependent fall/freeze modes, not merely reproduce the 2-seed smoke.
 
 ## Non-Goals
 

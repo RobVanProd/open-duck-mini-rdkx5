@@ -727,11 +727,51 @@ seed 1:
   joint tracking p95: 0.1193 rad
 ```
 
-This is not a deployable policy and not PPO training, but it is the first
-student-style result that preserves forward movement while staying inside the
-measured target-rate envelope in closed-loop sim. The next step is to turn this
-from a kNN smoke into a reviewed imitation/pretraining experiment with the same
-dataset gates and a longer multi-seed evaluation.
+A longer 8-seed, 5-second kNN replay gate then held:
+
+```text
+outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_BC_GATE_X008.md
+status: HOLD_BC_REPLAY_TERMINATED
+command: straight x=0.08
+duration: 5s
+seeds: 0-7
+
+completed forward-moving seeds: 5 / 8
+duration-complete but near-standstill seeds: 2 / 8
+fall/reverse seed: 1 / 8
+```
+
+Representative outcomes:
+
+```text
+seed 0:
+  mean vx: 0.0700 m/s
+  track ratio: 0.8753
+  sent target velocity p95: 2.4505 rad/s
+
+seed 3:
+  samples: 79
+  termination: fall_or_progress_failure
+  mean vx: -0.2268 m/s
+  pitch p95: 1.1177 rad
+
+seed 4:
+  duration complete
+  mean vx: 0.0074 m/s
+  sent target velocity p95: 0.3667 rad/s
+
+seed 7:
+  duration complete
+  mean vx: 0.0027 m/s
+  sent target velocity p95: 0.3373 rad/s
+```
+
+This is not a deployable policy and not PPO training. The 2-seed smoke proved
+the dataset can drive a toy closed-loop imitation replay, but the 8-seed gate
+shows that the kNN student is not robust enough by itself. The useful next step
+is still reviewed imitation/pretraining from the curated low-rate windows, but
+it must be graded on multi-seed forward-motion consistency, not on the short
+smoke result.
 
 This is the current pivot. The upstream-main sim/morphology can produce stable
 closed-loop forward locomotion under the published `BEST_WALK_ONNX_2` policy.
@@ -743,15 +783,18 @@ the controller/reference-target pathways used by the local teacher campaign.
 The closed-loop policy gets more actual single support and keeps the pitch-chain
 target-rate closer to the measured actuator envelope; the reference-target path
 asks for single support but does not convert those windows into forward
-acceleration.
+acceleration. The low-rate teacher-window dataset is a better substrate than
+the full over-envelope trace, but the first kNN student still has seed-dependent
+fall/freeze modes.
 
 Current decision: do not continue with another stance-relative lateral-damping
 teacher variant by default. The command-grid search did not find an
 envelope-safe published-policy command cell in the nearby straight/turning
 region, but the moving command traces contain meaningful low-rate moving
 subsets. The next offline branch should mine those low-rate closed-loop windows
-as the teacher. The manifest and kNN BC smoke now show that this substrate can
-preserve forward movement inside the envelope for a short closed-loop replay.
-The next offline branch should be a reviewed imitation/pretraining experiment
-from this dataset, graded on longer multi-seed closed-loop gates and max-joint
+as the teacher. The manifest and kNN BC smoke show that this substrate can
+preserve forward movement inside the envelope for a short closed-loop replay,
+while the 8-seed gate shows that a simple kNN student is not sufficient. The
+next offline branch should be a reviewed imitation/pretraining experiment from
+this dataset, graded on longer multi-seed closed-loop gates and max-joint
 pitch-chain p95 target velocity. Robot validation remains blocked.
