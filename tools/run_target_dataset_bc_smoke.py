@@ -21,6 +21,12 @@ from typing import Any, Iterable, Sequence
 
 import numpy as np
 
+from actuator_bridge_model import (
+    ActuatorBridgeModel,
+    load_fit_json,
+    params_from_fit,
+    stress_params,
+)
 from closed_loop_sim_eval import quat_wxyz_to_pitch, temporary_cwd
 from eval_reference_motion_rollout import percentile
 
@@ -30,6 +36,7 @@ DEFAULT_MANIFEST = ROOT / "outputs" / "analysis" / "target_dataset_obs_manifest.
 DEFAULT_OUTPUT_MD = ROOT / "outputs" / "analysis" / "TARGET_DATASET_BC_SMOKE.md"
 DEFAULT_OUTPUT_JSON = ROOT / "outputs" / "analysis" / "target_dataset_bc_smoke.json"
 DEFAULT_PLAYGROUND = ROOT.parent / "Open_Duck_Playground"
+DEFAULT_FIT_JSON = ROOT / "outputs" / "analysis" / "actuator_response_fit.json"
 JOINT_NAMES = [
     "left_hip_yaw",
     "left_hip_roll",
@@ -553,7 +560,7 @@ def run_closed_loop_rollout(
         obs = env._get_obs(state.data, state.info, contact)
         return state.replace(obs=obs)
 
-    def step_bc(state, action):
+    def prepare_step(state, action):
         state.info["command"] = command
         action = jp.clip(action, -1.0, 1.0)
         pre_rate_limit = env._default_actuator + action * env._config.action_scale
@@ -563,7 +570,12 @@ def run_closed_loop_rollout(
             prev_motor_targets - env._config.max_motor_velocity * env.dt,
             prev_motor_targets + env._config.max_motor_velocity * env.dt,
         )
-        data = mjx_env.step(env.mjx_model, state.data, sent_target, env.n_substeps)
+        return state, pre_rate_limit, sent_target
+
+    def apply_motor_target(state, action, sent_target, applied_target):
+        state.info["command"] = command
+        action = jp.clip(action, -1.0, 1.0)
+        data = mjx_env.step(env.mjx_model, state.data, applied_target, env.n_substeps)
         state.info["motor_targets"] = sent_target
         contact = jp.array(
             [
@@ -619,7 +631,7 @@ def run_closed_loop_rollout(
                 "command_progress_ratio"
             ]
         done = done.astype(reward.dtype)
-        return state.replace(data=data, obs=obs, reward=reward, done=done), pre_rate_limit, sent_target
+        return state.replace(data=data, obs=obs, reward=reward, done=done)
 
     def predict_blend_model(
         blend_model: dict[str, Any],
@@ -664,13 +676,25 @@ def run_closed_loop_rollout(
         raise ValueError(f"unsupported model kind {model['kind']}")
 
     refresh_obs_jit = jax.jit(refresh_obs)
-    step_bc_jit = jax.jit(step_bc)
+    prepare_step_jit = jax.jit(prepare_step)
+    apply_motor_target_jit = jax.jit(apply_motor_target)
     sim_steps = max(1, int(round(float(args.duration_s) / float(env.dt))))
+    bridge_params = None
+    if args.actuator_bridge_mode == "fitted":
+        bridge_params = params_from_fit(load_fit_json(args.fit_json), JOINT_NAMES)
+    elif args.actuator_bridge_mode == "stress":
+        bridge_params = stress_params(JOINT_NAMES)
 
     for seed in seeds:
         state = env.reset(jax.random.PRNGKey(seed))
         state.info["command"] = command
         state = refresh_obs_jit(state)
+        initial_target = np.asarray(jax.device_get(state.info["motor_targets"]), dtype=float)
+        bridge = (
+            ActuatorBridgeModel(bridge_params, initial_target=initial_target)
+            if bridge_params is not None
+            else None
+        )
         records = []
         double_support_streak = 0
         for tick in range(sim_steps):
@@ -710,7 +734,15 @@ def run_closed_loop_rollout(
                 blend_alpha_override=blend_alpha_used,
                 use_alt_model=use_alt_model,
             ).astype(np.float32)
-            state, pre_rate, sent_target = step_bc_jit(state, jp.asarray(action))
+            state, pre_rate, sent_target = prepare_step_jit(state, jp.asarray(action))
+            sent_np = np.asarray(jax.device_get(sent_target), dtype=float)
+            applied_np = sent_np if bridge is None else bridge.step(sent_np, float(env.dt))
+            state = apply_motor_target_jit(
+                state,
+                jp.asarray(action),
+                sent_target,
+                jp.asarray(applied_np),
+            )
             qpos = np.asarray(jax.device_get(state.data.qpos), dtype=float)
             base_addr = int(env._floating_base_qpos_addr)
             quat = qpos[base_addr + 3 : base_addr + 7]
@@ -730,10 +762,12 @@ def run_closed_loop_rollout(
                 "action": action.astype(float).tolist(),
                 "blend_alpha_used": blend_alpha_used,
                 "source_model_used": "alt" if use_alt_model else "primary",
+                "actuator_bridge_mode": args.actuator_bridge_mode,
                 "double_support_streak": double_support_streak,
                 "pre_step_local_linvel_m_s": pre_step_local_linvel.astype(float).tolist(),
                 "target_pre_rate_limit_rad": np.asarray(jax.device_get(pre_rate), dtype=float).tolist(),
-                "sent_target_rad": np.asarray(jax.device_get(sent_target), dtype=float).tolist(),
+                "sent_target_rad": sent_np.tolist(),
+                "applied_target_rad": applied_np.tolist(),
                 "actual_position_rad": actual.tolist(),
                 "body_pitch_rad": quat_wxyz_to_pitch(quat),
                 "base_x_m": float(qpos[base_addr]),
@@ -845,6 +879,8 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         f"- exclude_source_regex: `{payload.get('exclude_source_regex')}`",
         f"- alt_include_source_regex: `{payload.get('alt_include_source_regex')}`",
         f"- alt_exclude_source_regex: `{payload.get('alt_exclude_source_regex')}`",
+        f"- actuator_bridge_mode: `{payload.get('actuator_bridge_mode')}`",
+        f"- fit_json: `{payload.get('fit_json')}`",
         f"- dataset_id: `{payload['dataset_id']}`",
         f"- samples: `{payload['dataset']['samples']}`",
         f"- entries: `{payload['dataset']['entries']}`",
@@ -1045,6 +1081,13 @@ def main() -> int:
     parser.add_argument("--vx-blend-alpha", type=float, default=1.0)
     parser.add_argument("--vx-blend-threshold-m-s", type=float, default=0.02)
     parser.add_argument("--source-vx-threshold-m-s", type=float, default=0.02)
+    parser.add_argument(
+        "--actuator-bridge-mode",
+        choices=["vanilla", "fitted", "stress"],
+        default="vanilla",
+        help="Eval-only actuator bridge mode inserted after the built-in target rate limit.",
+    )
+    parser.add_argument("--fit-json", default=str(DEFAULT_FIT_JSON))
     parser.add_argument("--mlp-hidden-sizes", default="128,128")
     parser.add_argument("--mlp-steps", type=int, default=2000)
     parser.add_argument("--mlp-batch-size", type=int, default=512)
@@ -1207,6 +1250,8 @@ def main() -> int:
         "exclude_source_regex": args.exclude_source_regex,
         "alt_include_source_regex": args.alt_include_source_regex,
         "alt_exclude_source_regex": args.alt_exclude_source_regex,
+        "actuator_bridge_mode": args.actuator_bridge_mode,
+        "fit_json": str(args.fit_json),
         "dataset_id": manifest.get("dataset_id"),
         "dataset": {
             "entries": len(entries),

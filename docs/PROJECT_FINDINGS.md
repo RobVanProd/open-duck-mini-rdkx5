@@ -1000,6 +1000,21 @@ duration: 10s
 moving seeds: 0, 1, 2, 3, 4, 5, 6, 7
 terminated seeds: none
 sent-target velocity p95 range: 2.4293-2.4851 rad/s
+
+outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_SOURCE_VX_BLEND080_100_SRCVX002_ALT_EXCLUDE_SEED4_FITTED_BRIDGE_BC_GATE_X008_10S.md
+actuator bridge: fitted
+status: PASS_BC_FIT_SMOKE_FORWARD_REPLAY
+duration: 10s
+moving seeds: 0, 1, 2, 3, 4, 5, 6, 7
+terminated seeds: none
+track ratio range: 0.5491-0.6172
+sent-target velocity p95 range: 2.2569-2.3622 rad/s
+joint tracking p95 range: 0.1809-0.1863 rad
+
+outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_SOURCE_VX_BLEND080_100_SRCVX002_ALT_EXCLUDE_SEED4_STRESS_BRIDGE_BC_GATE_X008.md
+actuator bridge: stress
+status: HOLD_BC_REPLAY_TERMINATED
+result: stress bridge collapses forward progress and terminates seed 5
 ```
 
 The paired failed filters explain why the selector matters:
@@ -1019,14 +1034,15 @@ dual-source selector:
 This is the first offline imitation-selector result that gets all eight seeds
 moving at straight `x=0.08` in vanilla CPU sim while staying low-rate. It is
 still not robot-ready: it is a diagnostic selector over teacher windows, not a
-trained exported policy, and it has not been tested with the fitted actuator
-bridge or on hardware.
+trained exported policy. It has now passed the fitted actuator bridge in
+offline sim, but it is not stress-bridge robust and has not been tested on
+hardware.
 
 The focused student decision artifact is:
 
 ```text
 outputs/analysis/STUDENT_IMITATION_BASELINE_DECISION.md
-status: PASS_SOURCE_VX_SELECTOR_SMOKE
+status: PASS_SOURCE_VX_SELECTOR_FITTED_BRIDGE_SMOKE
 ```
 
 A first plain state-conditioned MLP BC smoke was then added to the same tool and

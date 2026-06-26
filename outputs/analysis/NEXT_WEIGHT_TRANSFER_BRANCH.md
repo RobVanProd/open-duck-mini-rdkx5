@@ -1,6 +1,6 @@
 # Next Weight-Transfer Branch Decision
 
-status: `PASS_SOURCE_VX_SELECTOR_SMOKE`
+status: `PASS_SOURCE_VX_SELECTOR_FITTED_BRIDGE_SMOKE`
 
 This is an offline planning artifact. It does not run simulation,
 training, robot SSH, deployment, or hardware tests.
@@ -254,6 +254,10 @@ and `7` still freeze near standstill.
   and internal blend switch remains `local vx >= -0.02 m/s`. It passes both the
   5s and 10s straight-`x=0.08` CPU replay gates with all eight seeds moving,
   zero terminations, and sent-target velocity p95 around `2.43-2.53 rad/s`.
+- The same selector also passes the 10s fitted actuator bridge replay with all
+  eight seeds moving, zero terminations, track ratio `0.5491-0.6172`, and
+  sent-target velocity p95 `2.2569-2.3622 rad/s`. It does not pass the stress
+  bridge replay: most seeds lose forward progress and seed `5` terminates.
 
 ## Required Next Design
 
@@ -268,8 +272,10 @@ and `7` still freeze near standstill.
   multi-seed stability
 - convert or distill the source-filtered velocity selector into a reviewed
   portable student; do not deploy the selector as-is
-- preserve the 8/8 moving, 0/8 termination result across stricter offline gates,
-  especially fitted actuator bridge evaluation
+- preserve the 8/8 moving, 0/8 termination result while converting this selector
+  into a portable student, then retest vanilla and fitted-bridge gates
+- treat the stress bridge hold as a margin limit to improve, not as a regression
+  of the fitted-bridge pass
 - add closed-loop selection pressure against quiet double-support dwell; further
   smoothing alone is likely to preserve the freeze
 - avoid treating one global kNN/linear blend coefficient as the final selector;

@@ -1,6 +1,6 @@
 # Student Imitation Baseline Decision
 
-status: `PASS_SOURCE_VX_SELECTOR_SMOKE`
+status: `PASS_SOURCE_VX_SELECTOR_FITTED_BRIDGE_SMOKE`
 
 This is an offline planning artifact. It does not run robot tests, SSH,
 deployment, PPO training, or runtime behavior changes.
@@ -161,19 +161,34 @@ internal blend switch:
   moving seeds: 8 / 8
   terminated seeds: 0 / 8
   sent-target velocity p95 range: 2.4293-2.4851 rad/s
+
+10s fitted actuator bridge gate:
+  PASS_BC_FIT_SMOKE_FORWARD_REPLAY
+  moving seeds: 8 / 8
+  terminated seeds: 0 / 8
+  track ratio range: 0.5491-0.6172
+  sent-target velocity p95 range: 2.2569-2.3622 rad/s
+  joint tracking p95 range: 0.1809-0.1863 rad
+
+5s stress actuator bridge gate:
+  HOLD_BC_REPLAY_TERMINATED
+  failure: near-standstill on most seeds and seed 5 fall/progress failure
 ```
 
 This should be treated as an offline selector proof, not as a deployable policy.
 It shows that the low-rate teacher windows contain enough state-conditioned
 signal to move all eight seeds when the source/velocity selector is chosen
-closed-loop.
+closed-loop. It now also survives the fitted actuator bridge, but it is not
+stress-bridge robust.
 
 ## Required Next Design
 
 - Convert or distill the source-filtered velocity selector into a reviewed
   portable student; do not deploy the selector as-is.
-- Preserve the 8/8 moving, 0/8 termination result across longer and bridged
-  offline gates before any robot discussion.
+- Preserve the 8/8 moving, 0/8 termination result while converting this
+  selector into a portable student, then retest vanilla and fitted-bridge gates.
+- Treat the stress bridge hold as a margin limit to improve, not as a regression
+  of the fitted-bridge pass.
 - Do not rely on one global kNN/linear blend coefficient; the traced kNN/blend
   comparison shows the seed failures need state-conditioned selection.
 - Penalize or reject candidates whose closed-loop sent-target p95 reaches

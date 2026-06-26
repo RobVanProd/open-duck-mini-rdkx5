@@ -1,5 +1,5 @@
 {
-  "status": "PASS_SOURCE_VX_SELECTOR_SMOKE",
+  "status": "PASS_SOURCE_VX_SELECTOR_FITTED_BRIDGE_SMOKE",
   "dataset_id": "407af2cbe0ad69e1",
   "manifest": "outputs/analysis/closed_loop_teacher_dataset_manifest.json",
   "gate": {
@@ -106,7 +106,7 @@
       "terminated_seed_count": 1
     }
   ],
-  "decision": "Do not promote an exported or learned student yet. The source-filtered velocity selector is the first offline replay pass: it moves all eight seeds for 5s and 10s with zero terminations at straight x=0.08 in vanilla CPU sim. Treat it as a diagnostic selector over teacher windows, not a deployable policy. The next branch should convert or distill this selector into a reviewed portable student and test stricter offline gates, especially fitted actuator bridge evaluation.",
+  "decision": "Do not promote an exported or learned student yet. The source-filtered velocity selector is the first offline replay pass: it moves all eight seeds for 5s and 10s with zero terminations at straight x=0.08 in vanilla CPU sim, and it also passes the 10s fitted actuator bridge gate. Treat it as a diagnostic selector over teacher windows, not a deployable policy. The next branch should convert or distill this selector into a reviewed portable student, then retest vanilla and fitted-bridge gates. The stress bridge hold is a margin limit, not a regression of the fitted-bridge pass.",
   "blend080_seed_mode_analysis": {
     "artifact": "outputs/analysis/BLEND080_SEED_MODE_ANALYSIS.md",
     "status": "HOLD_FREEZE_LOW_ACTION_DOUBLE_SUPPORT",
@@ -365,11 +365,30 @@
       2.4293,
       2.4851
     ],
-    "interpretation": "First offline selector to move all eight seeds without terminations at straight x=0.08 in vanilla CPU sim. This is not a deployable policy."
+    "fitted_bridge_artifact_5s": "outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_SOURCE_VX_BLEND080_100_SRCVX002_ALT_EXCLUDE_SEED4_FITTED_BRIDGE_BC_GATE_X008.md",
+    "fitted_bridge_artifact_10s": "outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_SOURCE_VX_BLEND080_100_SRCVX002_ALT_EXCLUDE_SEED4_FITTED_BRIDGE_BC_GATE_X008_10S.md",
+    "fitted_bridge_status_5s": "PASS_BC_FIT_SMOKE_FORWARD_REPLAY",
+    "fitted_bridge_status_10s": "PASS_BC_FIT_SMOKE_FORWARD_REPLAY",
+    "fitted_bridge_track_ratio_range_10s": [
+      0.5491,
+      0.6172
+    ],
+    "fitted_bridge_sent_target_velocity_p95_range_10s_rad_s": [
+      2.2569,
+      2.3622
+    ],
+    "fitted_bridge_joint_tracking_p95_range_10s_rad": [
+      0.1809,
+      0.1863
+    ],
+    "stress_bridge_artifact_5s": "outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_SOURCE_VX_BLEND080_100_SRCVX002_ALT_EXCLUDE_SEED4_STRESS_BRIDGE_BC_GATE_X008.md",
+    "stress_bridge_status_5s": "HOLD_BC_REPLAY_TERMINATED",
+    "interpretation": "First offline selector to move all eight seeds without terminations at straight x=0.08 in vanilla CPU sim and under the fitted actuator bridge. This is not a deployable policy; stress bridge remains a hold."
   },
   "required_next_design": [
     "convert or distill the source-filtered velocity selector into a reviewed portable student",
-    "preserve the 8/8 moving, 0/8 termination result across longer and bridged offline gates before any robot discussion",
+    "preserve the 8/8 moving, 0/8 termination result while converting this selector into a portable student, then retest vanilla and fitted-bridge gates",
+    "treat the stress bridge hold as a margin limit to improve, not as a regression of the fitted-bridge pass",
     "use state-conditioned or closed-loop-selected imitation rather than one global kNN/linear blend coefficient",
     "penalize or reject candidates whose closed-loop sent-target p95 reaches 5.24 rad/s",
     "grade on all eight seeds for at least 5s before any longer run",

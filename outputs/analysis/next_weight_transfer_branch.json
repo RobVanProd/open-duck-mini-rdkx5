@@ -1,6 +1,6 @@
 {
-  "status": "PASS_SOURCE_VX_SELECTOR_SMOKE",
-  "next_branch": "Stop the local stance-relative teacher loop and stop searching nearby command cells for an envelope-safe whole published-policy template. The upstream/reference target path fails the same forward push-effectiveness question in this sim, and the published BEST_WALK_ONNX_2 policy proves closed-loop propulsion exists in vanilla sim. The compact command-grid screen found movement only when the whole command cell exceeded the measured per-joint pitch-chain velocity envelope, but the moving published-policy traces contain substantial low-rate moving windows. That substrate now has a curated manifest and a state-conditioned source-filtered velocity selector that moves all eight straight-x=0.08 seeds for 5s and 10s in vanilla CPU sim with zero terminations and sent-target velocity p95 around 2.43-2.53 rad/s. This selector is not a deployable policy; the next branch is to convert or distill it into a reviewed portable student and then test stricter offline gates, especially fitted actuator bridge evaluation.",
+  "status": "PASS_SOURCE_VX_SELECTOR_FITTED_BRIDGE_SMOKE",
+  "next_branch": "Stop the local stance-relative teacher loop and stop searching nearby command cells for an envelope-safe whole published-policy template. The upstream/reference target path fails the same forward push-effectiveness question in this sim, and the published BEST_WALK_ONNX_2 policy proves closed-loop propulsion exists in vanilla sim. The compact command-grid screen found movement only when the whole command cell exceeded the measured per-joint pitch-chain velocity envelope, but the moving published-policy traces contain substantial low-rate moving windows. That substrate now has a curated manifest and a state-conditioned source-filtered velocity selector that moves all eight straight-x=0.08 seeds for 5s and 10s in vanilla CPU sim with zero terminations. The same selector passes the 10s fitted actuator bridge gate with all eight seeds moving, zero terminations, track ratio 0.5491-0.6172, and sent-target velocity p95 2.2569-2.3622 rad/s. It is not stress-bridge robust and it is not a deployable policy; the next branch is to convert or distill it into a reviewed portable student and then retest vanilla and fitted-bridge gates.",
   "inputs": {
     "gate_status": "HOLD_NO_SUSTAINED_WEIGHT_TRANSFER_TARGET",
     "gate_artifacts": 66,
@@ -182,7 +182,8 @@
     "A narrow global-blend sweep (0.75, 0.80, 0.82, 0.85, 0.88, 0.90) confirms there is no scalar-alpha notch: 0.75-0.88 all move only seeds 0/2/3/5/6 and freeze 1/4/7; 0.90 reintroduces the seed-3 termination.",
     "A simple double-support dwell selector also fails: switching to raw kNN after 5 double-support ticks reintroduces the seed-3 termination, while switching after 10 or 20 ticks preserves the blend 0.80 freeze pattern.",
     "A velocity-gated blend is the first selector that beats blend 0.80: base blend 0.80, raw-kNN blend 1.00, and switch condition local vx >= -0.02 m/s move seeds 0/1/2/3/5/6 with zero terminations. Seeds 4 and 7 still freeze in double support.",
-    "A source-filtered velocity selector is the first offline replay pass: primary model uses the full curated teacher dataset, alternate model excludes source labels matching _seed4/, source switch is local vx >= +0.02 m/s, and internal blend switch remains local vx >= -0.02 m/s. It passes both the 5s and 10s straight-x=0.08 CPU replay gates with all eight seeds moving, zero terminations, and sent-target velocity p95 around 2.43-2.53 rad/s."
+    "A source-filtered velocity selector is the first offline replay pass: primary model uses the full curated teacher dataset, alternate model excludes source labels matching _seed4/, source switch is local vx >= +0.02 m/s, and internal blend switch remains local vx >= -0.02 m/s. It passes both the 5s and 10s straight-x=0.08 CPU replay gates with all eight seeds moving, zero terminations, and sent-target velocity p95 around 2.43-2.53 rad/s.",
+    "The same selector passes the 10s fitted actuator bridge replay with all eight seeds moving, zero terminations, track ratio 0.5491-0.6172, sent-target velocity p95 2.2569-2.3622 rad/s, and joint tracking p95 0.1809-0.1863 rad. The 5s stress bridge replay holds: most seeds lose forward progress and seed 5 terminates."
   ],
   "required_next_design": [
     "design a reviewed state-conditioned imitation/pretraining experiment from the curated low-rate closed-loop teacher-window manifest",
@@ -190,7 +191,8 @@
     "include closed-loop target-rate/action-smoothness selection or training feedback; do not optimize supervised action error alone",
     "use kNN/linear/MLP/sequence smoke results as baselines; the next student must combine kNN-like local motion with linear/sequence-like smoothness and multi-seed stability",
     "convert or distill the source-filtered velocity selector into a reviewed portable student; do not deploy the selector as-is",
-    "preserve the 8/8 moving, 0/8 termination result across stricter offline gates, especially fitted actuator bridge evaluation",
+    "preserve the 8/8 moving, 0/8 termination result while converting this selector into a portable student, then retest vanilla and fitted-bridge gates",
+    "treat the stress bridge hold as a margin limit to improve, not as a regression of the fitted-bridge pass",
     "add closed-loop selection pressure against quiet double-support dwell; further smoothing alone is likely to preserve the freeze",
     "avoid treating one global kNN/linear blend coefficient as the final selector; the next attempt should be state-conditioned or closed-loop-selected",
     "do not treat a dwell-to-raw-kNN switch as sufficient; it was tested and did not beat blend 0.80",
