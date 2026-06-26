@@ -2851,3 +2851,38 @@ were removed, but the filtered walking manifold is too narrow for the current
 128x128 BC student to generalize across all seeds. The next branch needs more
 curated complete traces and/or a stabilization phase after BC, not unfiltered
 trace accumulation.
+
+A second bounded selector expansion over seeds 16-31 produced more complete
+positive traces:
+
+```text
+artifact: outputs/analysis/SOURCE_VX_SELECTOR_EXPANSION_SEEDS16_31_FITTED_10S.md
+status: HOLD_BC_REPLAY_TERMINATED
+complete traces: 11 / 16
+filter-kept traces: 8
+```
+
+After merging those with the prior curated data:
+
+```text
+artifact: outputs/analysis/FILTERED_SOURCE_VX_SELECTOR_DAGGER5_MANIFEST.md
+status: PASS_FILTERED_BC_MANIFEST_READY
+kept entries: 27
+samples: 13500
+```
+
+The DAgger-5 128x128 rate-regularized MLP still held:
+
+```text
+artifact: outputs/analysis/SOURCE_VX_SELECTOR_TRACE_DAGGER5_FILTERED_MLP128_RATE_REG_ONNX_FITTED_BRIDGE_BC_GATE_X008_10S.md
+status: HOLD_BC_REPLAY_TERMINATED
+duration complete: 5 / 8
+terminated: seeds 1, 5, 7
+seed 5 vx: -0.1500 m/s
+best seed vx: 0.0308 m/s
+```
+
+More curated positive windows helped some seeds but did not solve hard-seed
+recovery. This is now a BC-only limitation: the policy needs either failure-
+state recovery labels or closed-loop fine-tuning from the filtered BC student.
+Adding more of the same positive windows is unlikely to be sufficient by itself.

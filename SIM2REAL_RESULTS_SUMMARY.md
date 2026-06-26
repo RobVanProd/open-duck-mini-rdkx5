@@ -6497,3 +6497,29 @@ BC student does not generalize the narrow selector walking manifold across
 seeds. Future work should gather more curated complete traces or add a closed-
 loop stabilization phase; do not treat failed selector rollouts as positive BC
 labels.
+
+Another selector expansion over seeds 16-31 found 11 complete traces and 8
+additional filter-kept positive windows. The merged filtered manifest reached:
+
+```text
+artifact: outputs/analysis/FILTERED_SOURCE_VX_SELECTOR_DAGGER5_MANIFEST.md
+kept entries: 27
+samples: 13500
+```
+
+The resulting DAgger-5 128x128 rate-regularized MLP still failed the 10-second
+smoke:
+
+```text
+artifact: outputs/analysis/SOURCE_VX_SELECTOR_TRACE_DAGGER5_FILTERED_MLP128_RATE_REG_ONNX_FITTED_BRIDGE_BC_GATE_X008_10S.md
+status: HOLD_BC_REPLAY_TERMINATED
+duration complete: 5 / 8
+terminated: seeds 1, 5, 7
+seed 5 vx: -0.1500 m/s
+best seed vx: 0.0308 m/s
+```
+
+This marks the current BC-only limit. Curating more positive selector windows
+improves coverage but does not teach recovery from hard seeds. The next branch
+should add recovery labels or closed-loop stabilization/fine-tuning, not another
+plain positive-window BC fit.

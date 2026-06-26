@@ -291,3 +291,45 @@ walking manifold is still too narrow for this 128x128 BC student. The next
 candidate should not add the rejected traces back as positive labels. It should
 either improve coverage with curated complete traces or add a stronger
 closed-loop stabilization/fine-tuning stage after BC.
+
+An additional selector expansion over seeds 16-31 found more usable complete
+traces:
+
+```text
+artifact: outputs/analysis/SOURCE_VX_SELECTOR_EXPANSION_SEEDS16_31_FITTED_10S.md
+status: HOLD_BC_REPLAY_TERMINATED
+complete traces: 11 / 16
+filter-kept traces at vx >= 0.03: 8
+```
+
+Those traces were merged into a DAgger-5 filtered manifest:
+
+```text
+artifact: outputs/analysis/FILTERED_SOURCE_VX_SELECTOR_DAGGER5_MANIFEST.md
+status: PASS_FILTERED_BC_MANIFEST_READY
+kept entries: 27
+samples: 13500
+```
+
+A DAgger-5 128x128 rate-regularized MLP was trained from that larger clean
+manifest:
+
+```text
+artifact: outputs/analysis/SOURCE_VX_SELECTOR_TRACE_DAGGER5_FILTERED_MLP128_RATE_REG_ONNX_FITTED_BRIDGE_BC_GATE_X008_10S.md
+status: HOLD_BC_REPLAY_TERMINATED
+```
+
+Result:
+
+```text
+duration complete: 5 / 8
+terminated: seeds 1, 5, 7
+seed 5: reverse/fall, vx -0.1500 m/s
+best moving seed: seed 2, vx 0.0308 m/s, track ratio 0.3850
+```
+
+The larger curated dataset improved some seeds relative to DAgger-4, but did
+not solve hard-seed stability. BC-only distillation from positive selector
+windows is now the active limit. The next meaningful branch should add
+closed-loop stabilization/fine-tuning around the best filtered BC student, or
+collect failure-state recovery labels rather than only positive walking windows.
