@@ -5108,6 +5108,32 @@ add closed-loop recovery samples around seed-5 states
 avoid starting PPO until seed 5 no longer has immediate reverse/fall behavior
 ```
 
+Seed comparison artifact:
+
+```text
+artifact: outputs/analysis/PPO_BC_SWISH_WARMSTART_SEED_COMPARISON.md
+status: HOLD_SEED5_WEAK_COVERAGE_AND_CLOSED_LOOP_COLLAPSE
+```
+
+Refined interpretation:
+
+```text
+seed 5 target velocity p95 is lower than successful seeds
+seed 5 tracking p95 is comparable to successful seeds
+seed 5 nearest manifest distance/action mismatch are weaker
+seed 5 spends more time in double support and then collapses backward
+```
+
+The next fix should not be another target-rate penalty. It should improve the
+seed-5 recovery/stability basin:
+
+```text
+add/relabel seed-5-adjacent recovery samples
+make reverse velocity and backward pitch collapse expensive in the warm-start data/loss
+reduce double-support dwell for seed-5-like states
+then retrain swish PPO-loc BC and rerun the 8-seed step-0 gate
+```
+
 Stop rules:
 
 ```text

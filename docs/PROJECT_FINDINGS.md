@@ -2145,3 +2145,34 @@ state. The failing seed has nearby source coverage and modest action mismatch,
 but the closed-loop rollout still backs up and pitches down into a fall. The
 next fix should target closed-loop stability/contact support for seed 5 rather
 than only increasing dataset size.
+
+Successful seed comparison sharpened that result:
+
+```text
+outputs/analysis/PPO_BC_SWISH_WARMSTART_SEED_COMPARISON.md
+status: HOLD_SEED5_WEAK_COVERAGE_AND_CLOSED_LOOP_COLLAPSE
+```
+
+Compared with successful seeds 0 and 2, seed 5 has:
+
+```text
+target velocity p95 lower, not higher:
+  seed 5: 1.7630 rad/s
+  seeds 0/2: 2.1786-2.1970 rad/s
+
+tracking p95 comparable, not worse:
+  seed 5: 0.1760 rad
+  seeds 0/2: 0.1813-0.1842 rad
+
+weaker manifest proximity:
+  seed 5 nearest distance p95: 1.0276
+  seeds 0/2 nearest distance p95: 0.4155-0.4358
+
+more double support and collapse:
+  seed 5 double support: 75.7%
+  seeds 0/2 double support: about 61%
+  seed 5 no-contact events: 6.8%
+```
+
+The seed-5 fix should therefore target the weak-coverage recovery basin and
+closed-loop contact/stability behavior, not target-rate reduction.
