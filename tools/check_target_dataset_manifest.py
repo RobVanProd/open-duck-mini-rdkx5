@@ -177,6 +177,7 @@ def check_entry(entry: dict[str, Any], args: argparse.Namespace) -> dict[str, An
             break
         obs = (
             record.get("observation")
+            or record.get("obs_state")
             or record.get("obs")
             or record.get("raw_vector")
             or record.get("observation_raw_vector")
@@ -186,7 +187,13 @@ def check_entry(entry: dict[str, Any], args: argparse.Namespace) -> dict[str, An
         elif len(obs) != 101:
             bc_errors.append("policy_observation_dim_not_101")
         command = record.get("command", [])
-        if len(command) < 1 or not close_enough(command[0], args.command_x, args.metric_tolerance):
+        if (
+            not args.allow_command_x_any
+            and (
+                len(command) < 1
+                or not close_enough(command[0], args.command_x, args.metric_tolerance)
+            )
+        ):
             errors.append("command_x_mismatch")
             break
 
@@ -307,6 +314,11 @@ def main() -> int:
     parser.add_argument("--output-md", default=str(DEFAULT_OUTPUT_MD))
     parser.add_argument("--output-json", default=str(DEFAULT_OUTPUT_JSON))
     parser.add_argument("--command-x", type=float, default=0.04)
+    parser.add_argument(
+        "--allow-command-x-any",
+        action="store_true",
+        help="skip fixed command_x matching for manifests spanning multiple commands",
+    )
     parser.add_argument("--dt-s", type=float, default=0.02)
     parser.add_argument("--metric-tolerance", type=float, default=1.0e-6)
     parser.add_argument("--min-mean-vx", type=float, default=0.04)
@@ -361,6 +373,7 @@ def main() -> int:
         },
         "criteria": {
             "command_x": args.command_x,
+            "allow_command_x_any": args.allow_command_x_any,
             "dt_s": args.dt_s,
             "metric_tolerance": args.metric_tolerance,
             "min_mean_vx": args.min_mean_vx,

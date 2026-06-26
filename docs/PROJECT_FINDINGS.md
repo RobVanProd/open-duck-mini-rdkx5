@@ -685,6 +685,54 @@ substantial low-rate moving windows with positive single-support future velocity
 delta. Those windows are the better teacher substrate than either the full
 published policy trajectory or the open-loop reference targets.
 
+The existing realized-window dataset flow was then run on those windows:
+
+```text
+outputs/analysis/CLOSED_LOOP_TEACHER_WINDOW_CURATION.md
+status: PASS_CURATED_DATASET_SEED_READY
+curated windows: 259 / 301
+
+outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_MANIFEST.md
+status: PASS_TARGET_DATASET_MANIFEST_READY
+entries: 259
+source rollout dirs: 16
+samples if loaded for BC: 6475
+
+outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_SANITY_CHECK.md
+status: PASS_TARGET_DATASET_SANITY_CHECK
+bc_readiness_status: PASS_TARGET_DATASET_BC_READY
+```
+
+A tiny offline kNN behavior-cloning smoke over that manifest then replayed in
+closed-loop sim:
+
+```text
+outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_BC_SMOKE.md
+status: PASS_BC_FIT_SMOKE_FORWARD_REPLAY
+model: kNN, k=5
+command: straight x=0.08
+duration: 3s
+seeds: 0, 1
+
+seed 0:
+  mean vx: 0.0688 m/s
+  track ratio: 0.8594
+  sent target velocity p95: 2.4224 rad/s
+  joint tracking p95: 0.1207 rad
+
+seed 1:
+  mean vx: 0.0673 m/s
+  track ratio: 0.8417
+  sent target velocity p95: 2.5628 rad/s
+  joint tracking p95: 0.1193 rad
+```
+
+This is not a deployable policy and not PPO training, but it is the first
+student-style result that preserves forward movement while staying inside the
+measured target-rate envelope in closed-loop sim. The next step is to turn this
+from a kNN smoke into a reviewed imitation/pretraining experiment with the same
+dataset gates and a longer multi-seed evaluation.
+
 This is the current pivot. The upstream-main sim/morphology can produce stable
 closed-loop forward locomotion under the published `BEST_WALK_ONNX_2` policy.
 The reference-target/open-loop path still fails the same contact/propulsion
@@ -702,6 +750,8 @@ teacher variant by default. The command-grid search did not find an
 envelope-safe published-policy command cell in the nearby straight/turning
 region, but the moving command traces contain meaningful low-rate moving
 subsets. The next offline branch should mine those low-rate closed-loop windows
-as the teacher, then train or constrain a lower target-rate student from that
-behavior while grading on max-joint pitch-chain p95 target velocity. Robot
-validation remains blocked.
+as the teacher. The manifest and kNN BC smoke now show that this substrate can
+preserve forward movement inside the envelope for a short closed-loop replay.
+The next offline branch should be a reviewed imitation/pretraining experiment
+from this dataset, graded on longer multi-seed closed-loop gates and max-joint
+pitch-chain p95 target velocity. Robot validation remains blocked.

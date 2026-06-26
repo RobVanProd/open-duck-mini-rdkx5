@@ -126,7 +126,13 @@ def load_manifest_samples(manifest_path: Path) -> tuple[dict[str, Any], SampleSe
         ]
         entry_samples = 0
         for record in records:
-            obs = record.get("observation")
+            obs = (
+                record.get("observation")
+                or record.get("obs_state")
+                or record.get("obs")
+                or record.get("raw_vector")
+                or record.get("observation_raw_vector")
+            )
             action = record.get("action")
             if obs is None or action is None:
                 continue
@@ -334,14 +340,16 @@ def run_closed_loop_rollout(
         p_f = data.site_xpos[env._feet_site_id]
         p_fz = p_f[..., -1]
         state.info["swing_peak"] = jp.maximum(state.info["swing_peak"], p_fz)
-        env._update_command_window_progress(state.info, data)
+        if hasattr(env, "_update_command_window_progress"):
+            env._update_command_window_progress(state.info, data)
         obs = env._get_obs(data, state.info, contact)
         done = env._get_termination(data)
-        command_progress_failure = env._get_command_progress_failure(state.info)
-        state.info["command_progress_failure"] = command_progress_failure.astype(
-            state.info["command_progress_ratio"].dtype
-        )
-        done = done | command_progress_failure
+        if hasattr(env, "_get_command_progress_failure"):
+            command_progress_failure = env._get_command_progress_failure(state.info)
+            state.info["command_progress_failure"] = command_progress_failure.astype(
+                state.info["command_progress_ratio"].dtype
+            )
+            done = done | command_progress_failure
         rewards = env._get_reward(
             data, action, state.info, state.metrics, done, first_contact, contact
         )
@@ -349,11 +357,16 @@ def run_closed_loop_rollout(
             key: value * env._config.reward_config.scales[key]
             for key, value in rewards.items()
         }
-        reward = jp.clip(
-            sum(rewards.values()) * env.dt,
-            env._config.reward_config.reward_clip_min,
-            env._config.reward_config.reward_clip_max,
-        )
+        reward = sum(rewards.values()) * env.dt
+        if (
+            "reward_clip_min" in env._config.reward_config
+            and "reward_clip_max" in env._config.reward_config
+        ):
+            reward = jp.clip(
+                reward,
+                env._config.reward_config.reward_clip_min,
+                env._config.reward_config.reward_clip_max,
+            )
         state.info["push"] = jp.array([0.0, 0.0])
         state.info["step"] += 1
         state.info["push_step"] += 1
@@ -364,9 +377,10 @@ def run_closed_loop_rollout(
         state.info["feet_air_time"] *= ~contact
         state.info["last_contact"] = contact
         state.info["swing_peak"] *= ~contact
-        state.metrics["diagnostic/command_progress_ratio"] = state.info[
-            "command_progress_ratio"
-        ]
+        if "command_progress_ratio" in state.info:
+            state.metrics["diagnostic/command_progress_ratio"] = state.info[
+                "command_progress_ratio"
+            ]
         done = done.astype(reward.dtype)
         return state.replace(data=data, obs=obs, reward=reward, done=done), pre_rate_limit, sent_target
 
@@ -617,7 +631,7 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
             "",
             "- This smoke only checks whether the compact target dataset is usable for a tiny supervised fit.",
             "- A pass is permission to design a reviewed imitation/pretraining experiment, not permission to deploy.",
-            "- Source skew remains a warning because most curated windows come from one seed.",
+            "- Review source distribution and held-out-source errors before any larger imitation/pretraining run.",
             "- No robot tests, SSH, deploy, PPO training, or runtime behavior changes were performed.",
         ]
     )

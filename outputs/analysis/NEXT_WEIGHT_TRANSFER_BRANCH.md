@@ -82,6 +82,18 @@ training, robot SSH, deployment, or hardware tests.
 | `turning_moving_in_envelope_pct` | `63.70` |
 | `turning_moving_single_in_envelope_pct` | `28.90` |
 | `turning_safe_moving_single_future_vx_delta_m_s` | `0.0034` |
+| `teacher_window_curation_status` | `PASS_CURATED_DATASET_SEED_READY` |
+| `teacher_window_curated_count` | `259 / 301` |
+| `teacher_dataset_manifest_status` | `PASS_TARGET_DATASET_MANIFEST_READY` |
+| `teacher_dataset_entries` | `259` |
+| `teacher_dataset_source_rollout_dirs` | `16` |
+| `teacher_dataset_samples` | `6475` |
+| `teacher_dataset_sanity_status` | `PASS_TARGET_DATASET_SANITY_CHECK` |
+| `teacher_dataset_bc_readiness_status` | `PASS_TARGET_DATASET_BC_READY` |
+| `teacher_dataset_bc_smoke_status` | `PASS_BC_FIT_SMOKE_FORWARD_REPLAY` |
+| `teacher_dataset_bc_smoke_command` | `straight x=0.08` |
+| `teacher_dataset_bc_smoke_mean_vx_range_m_s` | `0.0673-0.0688` |
+| `teacher_dataset_bc_smoke_sent_velocity_p95_range_rad_s` | `2.4224-2.5628` |
 
 ## Decision
 
@@ -93,7 +105,9 @@ closed-loop propulsion exists in vanilla sim. The compact command-grid screen
 found movement only when the whole command cell exceeded the measured
 per-joint pitch-chain velocity envelope, but the moving published-policy traces
 contain substantial low-rate moving windows that should be mined as the next
-teacher substrate.
+teacher substrate. That substrate now has a curated manifest and a tiny kNN
+BC smoke that preserves forward motion inside the target-rate envelope for a
+short closed-loop replay.
 
 ## Rationale
 
@@ -130,14 +144,22 @@ teacher substrate.
   in-envelope ticks; the upstream turning command has `63.70%` and `28.90%`
   respectively. Those safe moving single-support windows have positive 0.1s
   future-vx deltas (`+0.0039 m/s` and `+0.0034 m/s`).
+- The realized-window pipeline curated `259 / 301` low-rate teacher windows
+  into a `6475`-sample BC-ready manifest across `16` rollout directories. The
+  manifest sanity check passed, and a tiny kNN BC smoke completed two
+  straight-`x=0.08` closed-loop seeds with mean vx `0.0673-0.0688 m/s` and
+  sent-target velocity p95 `2.4224-2.5628 rad/s`.
 
 ## Required Next Design
 
-- mine the low-rate moving windows from `BEST_WALK_ONNX_2` closed-loop traces
-- train or constrain a lower-target-rate student from those windows, not from
-  the full over-envelope trajectory
+- design a reviewed imitation/pretraining experiment from the curated low-rate
+  closed-loop teacher-window manifest
+- train or constrain the student from those windows, not from the full
+  over-envelope published-policy trajectory
 - grade the student on coherent forward motion and max-joint pitch-chain p95
   target velocity, not only mean pitch-chain target velocity
+- evaluate any learned student with longer multi-seed closed-loop gates before
+  treating the kNN smoke as meaningful beyond proof-of-dataset
 
 ## Stop Rules
 
@@ -151,6 +173,8 @@ teacher substrate.
   max-joint pitch-chain p95 target velocities exceed the measured envelope.
 - Do not keep searching small neighboring command cells without a new reason;
   the first compact grid found the same activation cliff.
+- Do not treat the kNN BC smoke as a deployable policy; it is only a proof that
+  the curated low-rate windows can drive a toy closed-loop imitation replay.
 
 ## Non-Goals
 

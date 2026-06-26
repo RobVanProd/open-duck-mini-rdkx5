@@ -60,10 +60,15 @@ def entry_id(window: dict[str, Any]) -> str:
 
 def compact_entry(window: dict[str, Any]) -> dict[str, Any]:
     source_path = Path(str(window.get("source_path")))
+    source_name = (
+        f"{source_path.parent.name}/{source_path.name}"
+        if source_path.parent.name
+        else source_path.name
+    )
     return {
         "entry_id": entry_id(window),
         "source_path": str(source_path),
-        "source_name": source_path.name,
+        "source_name": source_name,
         "mode": window.get("mode"),
         "start_tick": window.get("start_tick"),
         "end_tick": window.get("end_tick"),

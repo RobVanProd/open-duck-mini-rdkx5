@@ -361,6 +361,34 @@ So the full moving command cells are not envelope-safe, but they contain
 low-rate closed-loop propulsion windows. Those windows are the current best
 teacher source.
 
+That source now has a dataset and smoke-test path:
+
+```text
+outputs/analysis/CLOSED_LOOP_TEACHER_WINDOW_CURATION.md:
+  status: PASS_CURATED_DATASET_SEED_READY
+  curated windows: 259 / 301
+
+outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_MANIFEST.md:
+  status: PASS_TARGET_DATASET_MANIFEST_READY
+  entries: 259
+  source rollout dirs: 16
+
+outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_SANITY_CHECK.md:
+  status: PASS_TARGET_DATASET_SANITY_CHECK
+  bc_readiness_status: PASS_TARGET_DATASET_BC_READY
+
+outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_BC_SMOKE.md:
+  status: PASS_BC_FIT_SMOKE_FORWARD_REPLAY
+  model: kNN, k=5
+  command: straight x=0.08
+  seeds: 0, 1
+  mean vx: 0.0673-0.0688 m/s
+  sent target velocity p95: 2.4224-2.5628 rad/s
+```
+
+This does not produce a deployable policy, but it proves the curated low-rate
+teacher windows are usable for a toy closed-loop imitation replay.
+
 Answers to the original discriminator:
 
 ```text
@@ -383,8 +411,9 @@ Answers to the original discriminator:
 Recommended next offline task:
 
 ```text
-extract/mine the low-rate moving windows from BEST_WALK_ONNX_2's closed-loop
-behavior, then train or constrain a lower-target-rate student from that subset
+design a reviewed imitation/pretraining experiment from the curated low-rate
+closed-loop teacher-window manifest; do not train from the full over-envelope
+published-policy trajectory
 ```
 
 Robot validation remains blocked.
