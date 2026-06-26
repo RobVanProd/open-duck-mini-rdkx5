@@ -316,6 +316,10 @@ and `7` still freeze near standstill.
   exceed the fitted pitch-chain target-rate envelope, with max-joint p95
   `4.7355-5.1118 rad/s`, and the dominant failure joint is consistently
   `right_knee`.
+- A focused seed-3 trace diagnostic shows the right-knee violation is a cyclic
+  burst pattern: `62 / 499` target deltas exceed `3.75 rad/s`, grouped into
+  `32` short clusters of `1-3` ticks, often clipped at `5.24 rad/s`, mostly
+  during double support (`11=39`, `10=21`, `01=2`).
 
 ## Required Next Design
 
@@ -326,6 +330,9 @@ and `7` still freeze near standstill.
 - the next portable student must preserve task-matched backlash forward
   progress while bringing max pitch-chain target velocity and tracking down,
   especially the right-knee peak exposed by the exact blend ONNX gate
+- add offline right-knee phase-continuity or per-joint target-rate selection
+  pressure; the measured issue is short cyclic right-knee bursts, not export
+  approximation error
 - do not pursue scalar action-gain wrapping as the next branch; it failed the
   two-seed envelope/motion screen
 - do not keep increasing the existing pairwise target-rate regularizer as the

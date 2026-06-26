@@ -390,6 +390,22 @@ So exact export fidelity is solved for the blend baseline, but the baseline is
 still not a promotion candidate. The stricter evaluator exposes the same
 max-joint pitch-chain rate/tracking issue, centered on the right knee.
 
+A focused seed-3 trace diagnostic makes that issue more specific:
+
+```text
+outputs/analysis/SOURCE_VX_SELECTOR_TRACE_BLEND080_EXACT_ONNX_RIGHT_KNEE_SPIKE_DIAGNOSTIC.md
+status: HOLD_RIGHT_KNEE_CYCLIC_RATE_SPIKES
+events over 3.75 rad/s: 62 / 499 target deltas
+cluster count: 32
+cluster length: 1-3 ticks
+high-event contacts: 11=39, 10=21, 01=2
+```
+
+The right-knee violation is a repeated short-burst target discontinuity, often
+clipped at the runtime `5.24 rad/s` slew ceiling and mostly occurring during
+double support. The next portable-student branch should target that cyclic
+right-knee phase/target-continuity problem directly.
+
 ## Required Next Design
 
 - Use the DAgger-2 ONNX candidate as proof that compact neural export is wired,
@@ -399,6 +415,9 @@ max-joint pitch-chain rate/tracking issue, centered on the right knee.
 - The next portable student must preserve task-matched backlash forward
   progress while bringing max pitch-chain target velocity and tracking down,
   especially the right-knee peak exposed by the exact blend ONNX gate.
+- Add an offline right-knee phase-continuity or per-joint target-rate selection
+  pressure; the measured failure is short cyclic right-knee bursts, not export
+  approximation error.
 - Do not pursue scalar action-gain wrapping as the next branch; it failed the
   two-seed envelope/motion screen.
 - Do not keep increasing the existing pairwise target-rate regularizer as the

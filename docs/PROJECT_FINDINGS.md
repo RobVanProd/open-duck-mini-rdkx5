@@ -1351,3 +1351,22 @@ problem is not ONNX approximation loss; it is that the source-switch-free blend
 itself carries a hidden max-joint pitch-chain rate/tracking violation in the
 standard evaluator, dominated by the right knee. The next branch should target
 that joint/rate mechanism directly instead of further proving exportability.
+
+A focused seed-3 trace diagnostic characterizes that right-knee failure:
+
+```text
+outputs/analysis/SOURCE_VX_SELECTOR_TRACE_BLEND080_EXACT_ONNX_RIGHT_KNEE_SPIKE_DIAGNOSTIC.md
+status: HOLD_RIGHT_KNEE_CYCLIC_RATE_SPIKES
+joint: right_knee
+events over 3.75 rad/s: 62 / 499 target deltas (12.42%)
+cluster count: 32
+cluster length: 1-3 ticks
+max sent velocity: 5.2400 rad/s
+high-event contacts: 11=39, 10=21, 01=2
+```
+
+The high-rate events are short cyclic bursts, often clipped at the runtime
+`5.24 rad/s` slew ceiling, and occur mostly during double support. That makes
+the next offline target more specific: preserve the blend's forward motion but
+remove the right-knee phase/target discontinuity. Another broad export or
+global damping pass is unlikely to answer that mechanism.

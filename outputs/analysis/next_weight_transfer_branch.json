@@ -1,5 +1,5 @@
 {
-  "status": "HOLD_EXACT_BLEND_ONNX_RIGHT_KNEE_RATE_TRACKING",
+  "status": "HOLD_RIGHT_KNEE_CYCLIC_RATE_SPIKES",
   "next_branch": "Exact blend ONNX export is faithful and preserves forward motion, but strict evaluation holds on right-knee pitch-chain rate/tracking. The next branch should target that max-joint rate/tracking mechanism rather than export fidelity, scalar gain, or the existing pairwise target-rate regularizer.",
   "inputs": {
     "gate_status": "HOLD_NO_SUSTAINED_WEIGHT_TRANSFER_TARGET",
@@ -218,7 +218,15 @@
       4.7355,
       5.1118
     ],
-    "exact_blend_onnx_dominant_failure_joint": "right_knee"
+    "exact_blend_onnx_dominant_failure_joint": "right_knee",
+    "right_knee_spike_status": "HOLD_RIGHT_KNEE_CYCLIC_RATE_SPIKES",
+    "right_knee_spike_event_count_over_3p75": 62,
+    "right_knee_spike_cluster_count": 32,
+    "right_knee_spike_high_event_contacts": {
+      "11": 39,
+      "10": 21,
+      "01": 2
+    }
   },
   "rationale": [
     "No checked target source passes PASS_WEIGHT_TRANSFER_TARGET.",
@@ -273,7 +281,8 @@
     "evaluate any learned student with longer multi-seed closed-loop gates before treating the kNN smoke as meaningful beyond proof-of-dataset",
     "do not promote a student path unless it beats the 8-seed kNN gate by preserving forward motion across seeds without fall/reverse or freeze modes",
     "use exact blend ONNX as an offline analysis artifact, not a robot candidate",
-    "preserve blend closed-loop forward motion while reducing the right-knee pitch-chain target-rate and tracking peak"
+    "preserve blend closed-loop forward motion while reducing the right-knee pitch-chain target-rate and tracking peak",
+    "add offline right-knee phase-continuity or per-joint target-rate selection pressure; the measured issue is short cyclic right-knee bursts, not export approximation error"
   ],
   "stop_rules": [
     "Do not continue PLAN_STANCE_RELATIVE_LATERAL_DAMPING as the default branch.",
@@ -330,5 +339,25 @@
     "envelope_safe_seed_count_3p75": "0 / 8",
     "dominant_failure_joint": "right_knee",
     "interpretation": "Exact kNN+ridge blend ONNX preserves forward motion better than the DAgger-2 MLP in task-matched standard eval, but it is not envelope-safe: every seed exceeds the fitted pitch-chain target-rate envelope and the right knee dominates the violation and tracking error."
+  },
+  "right_knee_spike_diagnostic": {
+    "artifact": "outputs/analysis/SOURCE_VX_SELECTOR_TRACE_BLEND080_EXACT_ONNX_RIGHT_KNEE_SPIKE_DIAGNOSTIC.md",
+    "json": "outputs/analysis/source_vx_selector_trace_blend080_exact_onnx_right_knee_spike_diagnostic.json",
+    "status": "HOLD_RIGHT_KNEE_CYCLIC_RATE_SPIKES",
+    "joint": "right_knee",
+    "event_count_over_3p75_rad_s": 62,
+    "event_pct_over_3p75_rad_s": 12.42,
+    "cluster_count": 32,
+    "cluster_sample_length_range": [
+      1,
+      3
+    ],
+    "max_sent_velocity_rad_s": 5.24,
+    "high_event_contacts": {
+      "11": 39,
+      "10": 21,
+      "01": 2
+    },
+    "interpretation": "Right-knee over-envelope target-rate events are repeated one- to two-tick cyclic bursts, commonly saturating at the 5.24 rad/s runtime slew ceiling and mostly occurring in double support. The same joint also dominates tracking error. This points to a periodic right-knee target discontinuity in the exact blend student, not ONNX export error or random simulator failure."
   }
 }
