@@ -6313,3 +6313,16 @@ x=0.08 fitted bridge:
 
 This checkpoint is the current best offline warm start for a fitted-bridge PPO
 fine-tune. It is not robot-ready.
+
+A tiny CPU restore smoke verified the checkpoint can enter the Playground PPO
+runner with the fitted actuator bridge active:
+
+```text
+artifact: outputs/analysis/CMD_PITCH_RL_2P25_RESTORE_SMOKE.md
+status: PASS_RESTORE_SMOKE_WITH_ABSOLUTE_CHECKPOINT_PATH
+```
+
+The first attempt failed because the restore path was relative to the RDK repo
+while `runner.py` resolved it from the Playground context. The absolute path
+variant passed and completed one tiny update. This is only a training-plumbing
+result; it does not create a robot candidate.

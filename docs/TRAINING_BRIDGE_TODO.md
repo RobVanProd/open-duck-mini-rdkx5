@@ -5378,3 +5378,21 @@ x=0.08: 8 / 8 duration-complete, mean vx 0.0347 m/s, mean max tracking p95 0.195
 Use this checkpoint as the starting point for the next fitted-bridge PPO
 fine-tune. Do not start the next run from scratch and do not return to the
 non-deployable selector as the optimization target.
+
+Restore smoke:
+
+```text
+artifact: outputs/analysis/CMD_PITCH_RL_2P25_RESTORE_SMOKE.md
+status: PASS_RESTORE_SMOKE_WITH_ABSOLUTE_CHECKPOINT_PATH
+```
+
+The local CPU smoke failed with a relative checkpoint path because `runner.py`
+resolves it from the Playground context. The same smoke passed when the
+checkpoint path was absolute:
+
+```text
+/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/ppo_bc_swish_cmd_pitch_rl_2p25_step0_checkpoint
+```
+
+Use absolute paths for local restore smoke/fine-tune commands. In Colab, use
+the checkpoint path visible inside the uploaded runtime.
