@@ -2788,3 +2788,30 @@ ratio, but still fails the strict gate. The larger 512/256/128 model is worse
 and includes a strong reverse/fall seed. This makes the next branch sharper:
 the project needs either a broader/higher-quality selector rollout dataset or a
 different stabilization objective before PPO warm-start, not just a larger MLP.
+
+A bounded source-VX selector expansion test then checked fresh seeds 8-15:
+
+```text
+artifact: outputs/analysis/SOURCE_VX_SELECTOR_EXPANSION_SEEDS8_15_FITTED_10S.md
+status: HOLD_BC_REPLAY_TERMINATED
+command: x=0.08
+bridge: fitted
+duration: 10 s
+```
+
+Only three of eight new seeds completed:
+
+```text
+complete moving traces: seeds 8, 10, 11
+terminated/reverse/collapse traces: seeds 9, 12, 13, 14, 15
+
+complete-trace vx range: 0.0315-0.0336 m/s
+complete-trace track ratio range: 0.3941-0.4204
+complete-trace sent_vel95 range: 2.2668-2.2931 rad/s
+complete-trace tracking p95 range: 0.1820-0.1830 rad
+```
+
+This is the current sharpest learnability result. The selector proves
+in-envelope walking exists, but it is not broadly seed-robust. Dataset expansion
+must be curated around complete forward-moving traces; blindly adding selector
+rollouts from new seeds would poison the BC labels with reverse/fall behavior.

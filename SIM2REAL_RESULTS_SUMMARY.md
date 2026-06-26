@@ -6454,3 +6454,18 @@ DAgger-3 did not change the decision. The 128-wide model moves somewhat better
 than DAgger-2 but still fails tracking and hard-seed stability. The larger model
 is worse. Current deployable MLP distillation remains partial, not a warm start
 ready for robot-side validation.
+
+A bounded source-VX selector expansion to seeds 8-15 also held:
+
+```text
+artifact: outputs/analysis/SOURCE_VX_SELECTOR_EXPANSION_SEEDS8_15_FITTED_10S.md
+status: HOLD_BC_REPLAY_TERMINATED
+complete moving traces: 3 / 8
+failed/reverse/collapse traces: 5 / 8
+```
+
+The complete traces were seeds 8, 10, and 11, with vx around
+`0.0315-0.0336 m/s`, track ratio around `0.3941-0.4204`, and target velocity
+p95 around `2.27-2.29 rad/s`. Seeds 9, 12, 13, 14, and 15 terminated or moved
+the wrong way. The selector is therefore a proof of existence and a source of
+curated traces, not a robust teacher over arbitrary seeds.

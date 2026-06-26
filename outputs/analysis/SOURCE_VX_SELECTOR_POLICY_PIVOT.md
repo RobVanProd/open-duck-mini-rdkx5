@@ -219,3 +219,35 @@ iteration do not solve the strict 15-second fitted-bridge gate. The 128-wide
 DAgger-3 model is the best of this group by mean forward progress, but it still
 fails on tracking and hard-seed falls. The 512/256/128 model overfits or
 destabilizes badly enough to produce negative mean velocity.
+
+## Selector Expansion Check
+
+A bounded attempt to expand the source-VX selector dataset to fresh seeds 8-15
+also held:
+
+```text
+artifact: outputs/analysis/SOURCE_VX_SELECTOR_EXPANSION_SEEDS8_15_FITTED_10S.md
+status: HOLD_BC_REPLAY_TERMINATED
+command: straight x=0.08
+bridge: fitted
+duration: 10 s
+selector: source_vx_blend080_100_srcvx002_alt_exclude_seed4
+```
+
+Result:
+
+```text
+duration complete: seeds 8, 10, 11
+terminated/reversed/collapsed: seeds 9, 12, 13, 14, 15
+
+usable complete traces:
+  seed 8:  vx 0.0315 m/s, ratio 0.3941, sent_vel95 2.2927, track95 0.1820
+  seed 10: vx 0.0336 m/s, ratio 0.4204, sent_vel95 2.2931, track95 0.1830
+  seed 11: vx 0.0322 m/s, ratio 0.4020, sent_vel95 2.2668, track95 0.1821
+```
+
+This means selector expansion cannot be an unfiltered "sample more seeds" step.
+The selector is itself seed-fragile outside the original 0-7 evaluation set.
+Any expanded BC/DAgger dataset must curate complete, forward-moving selector
+traces and treat terminated/reverse traces as failure cases for analysis, not as
+positive action labels.
