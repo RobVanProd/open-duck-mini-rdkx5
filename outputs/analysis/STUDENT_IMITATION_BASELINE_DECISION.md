@@ -216,6 +216,12 @@ outputs/analysis/SOURCE_VX_SELECTOR_TRACE_MLP128_FITTED_BRIDGE_BC_GATE_X008_10S.
 student: MLP 128x128, 3000 steps
 status: HOLD_BC_REPLAY_TERMINATED
 failure: all seeds fall/progress-fail with reverse velocity and high target rate
+
+outputs/analysis/SOURCE_VX_SELECTOR_TRACE_MLP128_RATE_REG_FITTED_BRIDGE_BC_GATE_X008_10S.md
+student: MLP 128x128 + target-rate regularizer
+status: HOLD_BC_REPLAY_TERMINATED
+failure: one seed completes near standstill, most seeds still reverse/fall
+sent-target velocity p95 range: 3.6588-4.4620 rad/s
 ```
 
 ## Required Next Design
@@ -223,8 +229,9 @@ failure: all seeds fall/progress-fail with reverse velocity and high target rate
 - Use the source-switch-free blend student as the offline baseline to beat.
 - Convert the blend behavior into an exportable policy only after preserving the
   8/8 moving, 0/8 termination fitted-bridge result.
-- Do not treat the failed 128x128 MLP clone as proof that neural distillation is
-  impossible; it is one baseline showing naive one-step MLP still overdrives.
+- Do not treat the failed 128x128 MLP clones as proof that neural distillation
+  is impossible; they show naive one-step MLP and simple target-rate
+  regularization still overdrive.
 - Treat the stress bridge hold as a margin limit to improve, not as a regression
   of the fitted-bridge pass.
 - Do not rely on one global kNN/linear blend coefficient; the traced kNN/blend

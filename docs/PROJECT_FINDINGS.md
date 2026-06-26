@@ -1040,6 +1040,13 @@ student: MLP 128x128 over selector-trace manifest
 actuator bridge: fitted
 status: HOLD_BC_REPLAY_TERMINATED
 result: all seeds fall/progress-fail with reverse velocity and high target rate
+
+outputs/analysis/SOURCE_VX_SELECTOR_TRACE_MLP128_RATE_REG_FITTED_BRIDGE_BC_GATE_X008_10S.md
+student: MLP 128x128 + target-rate regularizer over selector-trace manifest
+actuator bridge: fitted
+status: HOLD_BC_REPLAY_TERMINATED
+result: one seed completes near standstill, most seeds still reverse/fall
+sent-target velocity p95 range: 3.6588-4.4620 rad/s
 ```
 
 The paired failed filters explain why the selector matters:

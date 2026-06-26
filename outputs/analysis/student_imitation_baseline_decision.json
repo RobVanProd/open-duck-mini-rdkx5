@@ -418,12 +418,15 @@
     ],
     "mlp128_fitted_bridge_artifact_10s": "outputs/analysis/SOURCE_VX_SELECTOR_TRACE_MLP128_FITTED_BRIDGE_BC_GATE_X008_10S.md",
     "mlp128_fitted_bridge_status_10s": "HOLD_BC_REPLAY_TERMINATED",
-    "mlp128_failure": "all seeds fall/progress-fail with reverse velocity and high target rate"
+    "mlp128_failure": "all seeds fall/progress-fail with reverse velocity and high target rate",
+    "mlp128_rate_reg_fitted_bridge_artifact_10s": "outputs/analysis/SOURCE_VX_SELECTOR_TRACE_MLP128_RATE_REG_FITTED_BRIDGE_BC_GATE_X008_10S.md",
+    "mlp128_rate_reg_fitted_bridge_status_10s": "HOLD_BC_REPLAY_TERMINATED",
+    "mlp128_rate_reg_failure": "one seed completes near standstill, most seeds still reverse/fall, sent-target p95 remains 3.6588-4.4620 rad/s"
   },
   "required_next_design": [
     "use the source-switch-free blend student as the offline baseline to beat",
     "convert the blend behavior into an exportable policy only after preserving the 8/8 moving, 0/8 termination fitted-bridge result",
-    "do not treat the failed 128x128 MLP clone as proof that neural distillation is impossible; it is one baseline showing naive one-step MLP still overdrives",
+    "do not treat the failed 128x128 MLP clones as proof that neural distillation is impossible; they show naive one-step MLP and simple target-rate regularization still overdrive",
     "treat the stress bridge hold as a margin limit to improve, not as a regression of the fitted-bridge pass",
     "use state-conditioned or closed-loop-selected imitation rather than one global kNN/linear blend coefficient",
     "penalize or reject candidates whose closed-loop sent-target p95 reaches 5.24 rad/s",

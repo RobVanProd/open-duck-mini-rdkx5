@@ -185,7 +185,8 @@
     "A source-filtered velocity selector is the first offline replay pass: primary model uses the full curated teacher dataset, alternate model excludes source labels matching _seed4/, source switch is local vx >= +0.02 m/s, and internal blend switch remains local vx >= -0.02 m/s. It passes both the 5s and 10s straight-x=0.08 CPU replay gates with all eight seeds moving, zero terminations, and sent-target velocity p95 around 2.43-2.53 rad/s.",
     "The same selector passes the 10s fitted actuator bridge replay with all eight seeds moving, zero terminations, track ratio 0.5491-0.6172, sent-target velocity p95 2.2569-2.3622 rad/s, and joint tracking p95 0.1809-0.1863 rad. The 5s stress bridge replay holds: most seeds lose forward progress and seed 5 terminates.",
     "Replaying the selector with full observations produced a BC-ready 4000-sample trace manifest. A source-switch-free blend 0.80 student trained from that manifest passes the 10s fitted-bridge gate with all eight seeds moving, zero terminations, track ratio 0.5170-0.6279, sent-target velocity p95 2.0779-2.2134 rad/s, and joint tracking p95 0.1803-0.1843 rad.",
-    "A 128x128 MLP trained from the same trace manifest still fails all seeds with reverse/fall behavior and high target rate, so naive neural distillation is not solved yet."
+    "A 128x128 MLP trained from the same trace manifest still fails all seeds with reverse/fall behavior and high target rate, so naive neural distillation is not solved yet.",
+    "Adding a target-rate regularizer to that 128x128 MLP does not fix it: one seed completes near standstill, most seeds still reverse/fall, and sent-target p95 remains 3.6588-4.4620 rad/s."
   ],
   "required_next_design": [
     "design a reviewed state-conditioned imitation/pretraining experiment from the curated low-rate closed-loop teacher-window manifest",
@@ -194,7 +195,7 @@
     "use kNN/linear/MLP/sequence smoke results as baselines; the next student must combine kNN-like local motion with linear/sequence-like smoothness and multi-seed stability",
     "use the source-switch-free blend student as the offline baseline to beat",
     "convert the blend behavior into an exportable policy only after preserving the 8/8 moving, 0/8 termination fitted-bridge result",
-    "do not treat the failed 128x128 MLP clone as proof that neural distillation is impossible; it is one baseline showing naive one-step MLP still overdrives",
+    "do not treat the failed 128x128 MLP clones as proof that neural distillation is impossible; they show naive one-step MLP and simple target-rate regularization still overdrive",
     "treat the stress bridge hold as a margin limit to improve, not as a regression of the fitted-bridge pass",
     "add closed-loop selection pressure against quiet double-support dwell; further smoothing alone is likely to preserve the freeze",
     "avoid treating one global kNN/linear blend coefficient as the final selector; the next attempt should be state-conditioned or closed-loop-selected",

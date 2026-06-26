@@ -266,6 +266,9 @@ and `7` still freeze near standstill.
 - A 128x128 MLP trained from the same trace manifest still fails all seeds with
   reverse/fall behavior and high target rate, so naive neural distillation is
   not solved yet.
+- Adding a target-rate regularizer to that 128x128 MLP does not fix it: one seed
+  completes near standstill, most seeds still reverse/fall, and sent-target p95
+  remains `3.6588-4.4620 rad/s`.
 
 ## Required Next Design
 
@@ -281,8 +284,9 @@ and `7` still freeze near standstill.
 - use the source-switch-free blend student as the offline baseline to beat
 - convert the blend behavior into an exportable policy only after preserving the
   8/8 moving, 0/8 termination fitted-bridge result
-- do not treat the failed 128x128 MLP clone as proof that neural distillation is
-  impossible; it is one baseline showing naive one-step MLP still overdrives
+- do not treat the failed 128x128 MLP clones as proof that neural distillation
+  is impossible; they show naive one-step MLP and simple target-rate
+  regularization still overdrive
 - treat the stress bridge hold as a margin limit to improve, not as a regression
   of the fitted-bridge pass
 - add closed-loop selection pressure against quiet double-support dwell; further
