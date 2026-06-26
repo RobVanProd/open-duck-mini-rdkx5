@@ -206,6 +206,21 @@ def parse_hidden_sizes(value: str) -> list[int]:
     return [int(item.strip()) for item in value.split(",") if item.strip()]
 
 
+def consecutive_sample_pairs(samples: SampleSet) -> np.ndarray:
+    by_key: dict[tuple[str, str, int], int] = {}
+    for index, (source, mode, tick) in enumerate(zip(samples.sources, samples.modes, samples.ticks, strict=True)):
+        if tick < 0:
+            continue
+        by_key.setdefault((source, mode, int(tick)), index)
+    pairs = []
+    for source, mode, tick in sorted(by_key):
+        here = by_key[(source, mode, tick)]
+        nxt = by_key.get((source, mode, tick + 1))
+        if nxt is not None:
+            pairs.append((here, nxt))
+    return np.asarray(pairs, dtype=np.int64)
+
+
 def init_mlp_params(
     input_dim: int,
     hidden_sizes: Sequence[int],
@@ -246,6 +261,13 @@ def fit_mlp_jax(
     batch_size: int,
     learning_rate: float,
     seed: int,
+    pair_indices: np.ndarray | None = None,
+    target_rate_scale: float = 0.0,
+    target_rate_limit_rad_s: float = 3.75,
+    action_scale_rad: float = 0.25,
+    dt_s: float = 0.02,
+    obs_noise_std: float = 0.0,
+    obs_consistency_scale: float = 0.0,
 ) -> dict[str, Any]:
     import jax
     import jax.numpy as jnp
@@ -260,6 +282,15 @@ def fit_mlp_jax(
     params = [(jnp.asarray(weights, dtype=jnp.float32), jnp.asarray(bias, dtype=jnp.float32)) for weights, bias in params_np]
     optimizer = optax.adam(float(learning_rate))
     opt_state = optimizer.init(params)
+    pairs = np.asarray(pair_indices if pair_indices is not None else np.zeros((0, 2), dtype=np.int64))
+    pair_count = int(pairs.shape[0])
+    pair_batch_size = max(1, min(batch_size, pair_count if pair_count else 1))
+    target_rate_scale = float(target_rate_scale)
+    target_rate_limit_rad_s = float(target_rate_limit_rad_s)
+    action_scale_rad = float(action_scale_rad)
+    dt_s = float(dt_s)
+    obs_noise_std = float(obs_noise_std)
+    obs_consistency_scale = float(obs_consistency_scale)
 
     def forward(model_params, batch_x):
         z = batch_x
@@ -269,13 +300,28 @@ def fit_mlp_jax(
                 z = jnp.tanh(z)
         return z
 
-    def loss_fn(model_params, batch_x, batch_y):
+    def loss_fn(model_params, batch_x, batch_y, pair_x0, pair_x1, noisy_batch_x):
         pred = forward(model_params, batch_x)
-        return jnp.mean((pred - batch_y) ** 2)
+        supervised = jnp.mean((pred - batch_y) ** 2)
+        pair_pred0 = forward(model_params, pair_x0)
+        pair_pred1 = forward(model_params, pair_x1)
+        target_rate = jnp.abs(pair_pred1 - pair_pred0) * action_scale_rad / max(dt_s, 1.0e-9)
+        excess_rate = jnp.maximum(target_rate - target_rate_limit_rad_s, 0.0)
+        rate_penalty = jnp.mean(excess_rate**2)
+        noisy_pred = forward(model_params, noisy_batch_x)
+        consistency = jnp.mean((noisy_pred - jax.lax.stop_gradient(pred)) ** 2)
+        return supervised + target_rate_scale * rate_penalty + obs_consistency_scale * consistency
 
     @jax.jit
-    def train_step(model_params, state, batch_x, batch_y):
-        loss, grads = jax.value_and_grad(loss_fn)(model_params, batch_x, batch_y)
+    def train_step(model_params, state, batch_x, batch_y, pair_x0, pair_x1, noisy_batch_x):
+        loss, grads = jax.value_and_grad(loss_fn)(
+            model_params,
+            batch_x,
+            batch_y,
+            pair_x0,
+            pair_x1,
+            noisy_batch_x,
+        )
         updates, state = optimizer.update(grads, state, model_params)
         model_params = optax.apply_updates(model_params, updates)
         return model_params, state, loss
@@ -288,11 +334,29 @@ def fit_mlp_jax(
     log_every = max(1, steps // 10)
     for step in range(steps):
         indices = rng.integers(0, n_samples, size=batch_size)
+        if pair_count:
+            pair_rows = pairs[rng.integers(0, pair_count, size=pair_batch_size)]
+            pair_x0 = x_norm[pair_rows[:, 0]]
+            pair_x1 = x_norm[pair_rows[:, 1]]
+        else:
+            pair_x0 = np.zeros((pair_batch_size, x_norm.shape[1]), dtype=np.float32)
+            pair_x1 = np.zeros((pair_batch_size, x_norm.shape[1]), dtype=np.float32)
+        if obs_noise_std > 0.0 and obs_consistency_scale > 0.0:
+            noisy_x = x_norm[indices] + rng.normal(
+                0.0,
+                obs_noise_std,
+                size=(batch_size, x_norm.shape[1]),
+            ).astype(np.float32)
+        else:
+            noisy_x = x_norm[indices]
         params, opt_state, loss = train_step(
             params,
             opt_state,
             jnp.asarray(x_norm[indices], dtype=jnp.float32),
             jnp.asarray(y_f32[indices], dtype=jnp.float32),
+            jnp.asarray(pair_x0, dtype=jnp.float32),
+            jnp.asarray(pair_x1, dtype=jnp.float32),
+            jnp.asarray(noisy_x, dtype=jnp.float32),
         )
         if step == 0 or step == steps - 1 or (step + 1) % log_every == 0:
             history.append({"step": int(step + 1), "loss": float(jax.device_get(loss))})
@@ -313,6 +377,13 @@ def fit_mlp_jax(
         "steps": steps,
         "batch_size": batch_size,
         "learning_rate": float(learning_rate),
+        "pair_count": pair_count,
+        "target_rate_scale": target_rate_scale,
+        "target_rate_limit_rad_s": target_rate_limit_rad_s,
+        "action_scale_rad": action_scale_rad,
+        "dt_s": dt_s,
+        "obs_noise_std": obs_noise_std,
+        "obs_consistency_scale": obs_consistency_scale,
         "parameter_count": parameter_count,
         "sample_to_parameter_ratio": float(n_samples / max(parameter_count, 1)),
     }
@@ -668,12 +739,40 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         f"- train_max_abs_error: `{fmt(payload['fit']['train']['max_abs_error'])}`",
         f"- pred_action_saturation_pct: `{fmt(payload['fit']['train']['pred_action_saturation_pct'])}`",
         f"- sample_to_parameter_ratio: `{fmt(payload['fit']['sample_to_parameter_ratio'])}`",
+        f"- consecutive_pair_count: `{payload['fit'].get('consecutive_pair_count')}`",
         "",
-        f"### Source Holdout ({payload['fit'].get('source_holdout_model_kind', 'ridge')} baseline)",
+    ]
+    mlp = payload["fit"].get("mlp")
+    if mlp is not None:
+        lines.extend(
+            [
+                "### MLP Settings",
+                "",
+                f"- hidden_sizes: `{mlp['hidden_sizes']}`",
+                f"- steps: `{mlp['steps']}`",
+                f"- batch_size: `{mlp['batch_size']}`",
+                f"- learning_rate: `{mlp['learning_rate']}`",
+                f"- pair_count: `{mlp['pair_count']}`",
+                f"- target_rate_scale: `{mlp['target_rate_scale']}`",
+                f"- target_rate_limit_rad_s: `{mlp['target_rate_limit_rad_s']}`",
+                f"- obs_noise_std: `{mlp['obs_noise_std']}`",
+                f"- obs_consistency_scale: `{mlp['obs_consistency_scale']}`",
+                "",
+                "| step | loss |",
+                "|---:|---:|",
+            ]
+        )
+        for row in mlp.get("history") or []:
+            lines.append(f"| {row['step']} | {fmt(row['loss'], 6)} |")
+        lines.append("")
+    lines.extend(
+        [
+            f"### Source Holdout ({payload['fit'].get('source_holdout_model_kind', 'ridge')} baseline)",
         "",
         "| held_out_source | status | train_samples | test_samples | mae | p95_abs_error | max_abs_error |",
         "|---|---|---:|---:|---:|---:|---:|",
-    ]
+        ]
+    )
     for row in payload["fit"]["source_holdout"]:
         metrics = row.get("metrics") or {}
         lines.append(
@@ -777,6 +876,10 @@ def main() -> int:
     parser.add_argument("--mlp-batch-size", type=int, default=512)
     parser.add_argument("--mlp-learning-rate", type=float, default=1.0e-3)
     parser.add_argument("--mlp-seed", type=int, default=0)
+    parser.add_argument("--mlp-target-rate-scale", type=float, default=0.0)
+    parser.add_argument("--mlp-target-rate-limit-rad-s", type=float, default=3.75)
+    parser.add_argument("--mlp-obs-noise-std", type=float, default=0.0)
+    parser.add_argument("--mlp-obs-consistency-scale", type=float, default=0.0)
     parser.add_argument(
         "--jax-platform",
         choices=["auto", "cpu", "gpu"],
@@ -792,6 +895,7 @@ def main() -> int:
 
     manifest_path = Path(args.manifest)
     manifest, samples, entries = load_manifest_samples(manifest_path)
+    pair_indices = consecutive_sample_pairs(samples)
     source_counts = Counter(samples.sources)
     alphas = parse_csv_floats(args.ridge_alphas)
     fit = select_alpha(samples, alphas)
@@ -809,6 +913,11 @@ def main() -> int:
             batch_size=args.mlp_batch_size,
             learning_rate=args.mlp_learning_rate,
             seed=args.mlp_seed,
+            pair_indices=pair_indices,
+            target_rate_scale=args.mlp_target_rate_scale,
+            target_rate_limit_rad_s=args.mlp_target_rate_limit_rad_s,
+            obs_noise_std=args.mlp_obs_noise_std,
+            obs_consistency_scale=args.mlp_obs_consistency_scale,
         )
         train_metrics = mlp_fit["train"]
         parameter_count = int(mlp_fit["parameter_count"])
@@ -890,6 +999,7 @@ def main() -> int:
             "parameter_count": int(parameter_count),
             "sample_to_parameter_ratio": sample_to_parameter_ratio,
             "warnings": model_fit_warnings,
+            "consecutive_pair_count": int(pair_indices.shape[0]),
             "coefficient_norm": float(np.linalg.norm(fit["weights"][:-1])),
             "intercept_norm": float(np.linalg.norm(fit["weights"][-1])),
             "mlp": (
@@ -898,6 +1008,13 @@ def main() -> int:
                     "steps": mlp_fit["steps"],
                     "batch_size": mlp_fit["batch_size"],
                     "learning_rate": mlp_fit["learning_rate"],
+                    "pair_count": mlp_fit["pair_count"],
+                    "target_rate_scale": mlp_fit["target_rate_scale"],
+                    "target_rate_limit_rad_s": mlp_fit["target_rate_limit_rad_s"],
+                    "action_scale_rad": mlp_fit["action_scale_rad"],
+                    "dt_s": mlp_fit["dt_s"],
+                    "obs_noise_std": mlp_fit["obs_noise_std"],
+                    "obs_consistency_scale": mlp_fit["obs_consistency_scale"],
                     "history": mlp_fit["history"],
                 }
                 if mlp_fit is not None
