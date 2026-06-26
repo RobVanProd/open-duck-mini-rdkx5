@@ -140,6 +140,23 @@ The published policy mostly stands there. The closed-loop stance-transfer
 mechanism appears in the moving command cells and should be the source of the
 next imitation/selector target.
 
+The safe-vs-unsafe rule contrast then compared passing full-observation
+10-tick windows with moving windows rejected for high pitch-chain target rate:
+
+```text
+outputs/analysis/CLOSED_LOOP_WINDOW_RULE_CANDIDATES.md
+```
+
+| bucket | windows | mean vx | single support | pitch p95 | right knee p95 | action delta p95 |
+|---|---:|---:|---:|---:|---:|---:|
+| pass safe moving single | 330 | 0.0721 m/s | 46.79% | 3.2896 rad/s | 2.1407 rad/s | 0.1678 |
+| reject high-rate moving | 1233 | 0.0667 m/s | 53.10% | 4.7046 rad/s | 4.0445 rad/s | 0.2053 |
+
+The selector problem is therefore sharper than "find single support." Safe and
+unsafe moving windows have similar forward speed and single-support occupancy.
+The key separator is knee-rate management during stance transfer, especially
+right-knee target velocity.
+
 ## Next Branch Options
 
 Use this result to avoid another isolated-snippet training run. Viable next
@@ -152,6 +169,23 @@ offline directions are:
    rate management.
 3. Train/evaluate a recurrent or state-conditioned selector over safe local
    actions, gated on 25-50 tick closed-loop rollout before ONNX export.
+
+Recommended next branch:
+
+```text
+PLAN_KNEE_RATE_AWARE_CLOSED_LOOP_SELECTOR
+```
+
+The next offline artifact should prototype a selector that chooses only from
+moving-command windows with:
+
+```text
+single-support / stance-transfer present
+pitch-chain p95 <= 3.75 rad/s
+right-knee p95 kept near the passing-window distribution
+```
+
+Then replay or score 25-50 tick continuity before any student training.
 
 ## Stop Rules
 

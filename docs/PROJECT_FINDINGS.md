@@ -1601,3 +1601,37 @@ support and produce positive future forward velocity deltas, but they do so
 with much higher pitch-chain target velocity. The next learning target should
 start from the command cells where closed-loop stance transfer actually exists,
 not from straight `x=0.04` as a walking gate.
+
+The follow-up rule-candidate analysis compared short full-observation windows
+that pass the movement/contact/envelope gate against windows that move but
+exceed the pitch-chain target-rate envelope:
+
+```text
+tools/analyze_closed_loop_window_rule_candidates.py
+outputs/analysis/CLOSED_LOOP_WINDOW_RULE_CANDIDATES.md
+status: PASS_RULE_CONTRAST_READY
+```
+
+Bucket averages:
+
+| bucket | windows | mean vx | single support | moving in envelope | pitch p95 | right knee p95 | action delta p95 |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| pass safe moving single | 330 | 0.0721 m/s | 46.79% | 81.61% | 3.2896 rad/s | 2.1407 rad/s | 0.1678 |
+| reject high-rate moving | 1233 | 0.0667 m/s | 53.10% | 64.13% | 4.7046 rad/s | 4.0445 rad/s | 0.2053 |
+| reject low progress | 1214 | 0.0008 m/s | 5.88% | 2.65% | 0.8400 rad/s | 0.6684 rad/s | 0.0497 |
+
+The important contrast is that passing and high-rate moving windows have
+similar forward speed and single-support occupancy. The difference is not
+"more contact" or "more forward motion"; it is target-rate management during
+that stance transfer. Fastest-pitch-joint counts were dominated by knees:
+
+```text
+right_knee: 1360 windows
+left_knee: 1048 windows
+right_hip_pitch: 247 windows
+```
+
+So the next closed-loop source should explicitly manage knee target-rate while
+preserving the moving command cells' alternating single-support pattern. A
+selector that only keys on contact state will reproduce high-rate moving
+windows as well as safe ones.

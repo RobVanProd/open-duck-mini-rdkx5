@@ -6,7 +6,8 @@
     "window_mine_25t": "outputs/analysis/CLOSED_LOOP_TEACHER_WINDOW_MINE.md",
     "window_mine_10t": "outputs/analysis/CLOSED_LOOP_TEACHER_WINDOW_MINE_10T.md",
     "stitch_plan": "outputs/analysis/CLOSED_LOOP_SNIPPET_STITCH_PLAN.md",
-    "stance_timing": "outputs/analysis/PUBLISHED_POLICY_STANCE_TIMING_COMPARISON.md"
+    "stance_timing": "outputs/analysis/PUBLISHED_POLICY_STANCE_TIMING_COMPARISON.md",
+    "rule_candidates": "outputs/analysis/CLOSED_LOOP_WINDOW_RULE_CANDIDATES.md"
   },
   "findings": {
     "straight_x004": {
@@ -48,9 +49,21 @@
       "straight_x008_single_future_dvx_0p1s_m_s": 0.003,
       "turning_single_support_pct": 44.8,
       "turning_single_future_dvx_0p1s_m_s": 0.0042
+    },
+    "rule_candidates": {
+      "pass_safe_moving_single_windows": 330,
+      "pass_safe_moving_single_mean_vx_m_s": 0.0721,
+      "pass_safe_moving_single_single_support_pct": 46.79,
+      "pass_safe_moving_single_pitch_p95_rad_s": 3.2896,
+      "pass_safe_moving_single_right_knee_p95_rad_s": 2.1407,
+      "reject_high_rate_moving_windows": 1233,
+      "reject_high_rate_moving_mean_vx_m_s": 0.0667,
+      "reject_high_rate_moving_single_support_pct": 53.1,
+      "reject_high_rate_moving_pitch_p95_rad_s": 4.7046,
+      "reject_high_rate_moving_right_knee_p95_rad_s": 4.0445
     }
   },
-  "recommended_next": "Do not train from isolated BEST_WALK snippets or use straight x=0.04 as the first walking gate. Mine the moving command cells for a closed-loop stance-transfer selector or continuity generator, then re-score 25-50 tick windows before BC/export.",
+  "recommended_next": "PLAN_KNEE_RATE_AWARE_CLOSED_LOOP_SELECTOR: do not train from isolated BEST_WALK snippets or use straight x=0.04 as the first walking gate. Mine the moving command cells for a closed-loop stance-transfer selector that explicitly manages knee target-rate, then re-score 25-50 tick windows before BC/export.",
   "stop_rules": [
     "Do not train directly from full BEST_WALK traces.",
     "Do not train directly from isolated 10-tick snippets.",

@@ -310,6 +310,27 @@ forward-velocity delta during single support. Any imitation or selector branch
 should preserve that closed-loop stance-transfer pattern while reducing the
 high-rate pitch-chain bursts.
 
+The first safe-vs-unsafe window contrast then compared full-observation
+10-tick windows that pass the movement/contact/envelope gate against moving
+windows rejected for high pitch-chain target rate:
+
+```text
+tools/analyze_closed_loop_window_rule_candidates.py
+outputs/analysis/CLOSED_LOOP_WINDOW_RULE_CANDIDATES.md
+status: PASS_RULE_CONTRAST_READY
+```
+
+| bucket | windows | mean vx | single support | pitch p95 | right knee p95 | action delta p95 |
+|---|---:|---:|---:|---:|---:|---:|
+| pass safe moving single | 330 | 0.0721 m/s | 46.79% | 3.2896 rad/s | 2.1407 rad/s | 0.1678 |
+| reject high-rate moving | 1233 | 0.0667 m/s | 53.10% | 4.7046 rad/s | 4.0445 rad/s | 0.2053 |
+
+So safe and unsafe moving windows are not separated by forward speed or single
+support alone. They are separated by pitch-chain target-rate, with the
+right-knee and left-knee counts dominating the fastest-pitch-joint tally. The
+next selector needs to preserve stance transfer while explicitly rejecting or
+reshaping knee-rate bursts.
+
 ## Non-Goals
 
 - robot tests
