@@ -88,7 +88,14 @@ def command_label_from_path(path: Path) -> str:
     text = str(path)
     marker = "published_policy_command_"
     if marker not in text:
-        return path.parent.name
+        parent = path.parent.name
+        if "_x004_seed" in parent:
+            return "straight_x004"
+        if "_x008_seed" in parent:
+            return "straight_x008"
+        if parent.startswith("published_policy_upstream_main_backlash_seed"):
+            return "upstream_nearest_turn"
+        return parent
     tail = text.split(marker, 1)[1]
     return tail.split("_seed", 1)[0]
 

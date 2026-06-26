@@ -1468,3 +1468,33 @@ rate mechanism: walking uses target rates near the runtime slew ceiling. The
 next training/eval re-entry should extract the single-support/CoM mechanism
 from the moving command cells while reducing right-knee target rate, rather
 than assuming BEST_WALK is already an in-envelope walking proof.
+
+The closed-loop template extractor then split those traces into command cells:
+
+```text
+outputs/analysis/PUBLISHED_POLICY_COMMAND_CLOSED_LOOP_TEMPLATE.md
+status: PASS_HAS_LOW_RATE_MOVING_TEACHER_WINDOWS
+```
+
+It shows why the command comparison is not just a binary pass/hold:
+
+```text
+straight x=0.04:
+  moving in envelope: 4.65%
+  moving single-support in envelope: 1.25%
+
+upstream nearest turning key:
+  moving in envelope: 63.70%
+  moving single-support in envelope: 28.90%
+  pitch p95: 4.9472 rad/s
+
+straight x=0.08:
+  moving in envelope: 70.55%
+  moving single-support in envelope: 32.80%
+  pitch p95: 5.1961 rad/s
+```
+
+So the moving BEST_WALK traces contain useful low-rate moving windows, but the
+whole trace is not envelope-safe. The next data source should mine those
+moving single-support in-envelope windows and reject or relabel the high
+right-knee burst windows before BC/export.

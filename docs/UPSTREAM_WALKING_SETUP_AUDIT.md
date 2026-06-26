@@ -219,6 +219,27 @@ start mechanism extraction from command cells where BEST_WALK actually enters
 single support, while explicitly reducing the right-knee rate mechanism that
 keeps those cells outside the measured actuator envelope.
 
+The first closed-loop template extraction now compares those command cells:
+
+```text
+outputs/analysis/PUBLISHED_POLICY_COMMAND_CLOSED_LOOP_TEMPLATE.md
+status: PASS_HAS_LOW_RATE_MOVING_TEACHER_WINDOWS
+```
+
+Summary:
+
+| command cell | mean vx | single support | moving in envelope | moving single in envelope | pitch p95 |
+|---|---:|---:|---:|---:|---:|
+| straight `x=0.04` | 0.0019 m/s | 3.65% | 4.65% | 1.25% | 2.3441 rad/s |
+| upstream nearest turn | 0.0540 m/s | 44.80% | 63.70% | 28.90% | 4.9472 rad/s |
+| straight `x=0.08` | 0.0640 m/s | 49.40% | 70.55% | 32.80% | 5.1961 rad/s |
+
+This says the moving BEST_WALK traces contain useful low-rate subwindows, but
+the full closed-loop behavior is still dominated by high right-knee target-rate
+bursts. The next teacher/candidate source should mine those moving
+single-support in-envelope windows and reject or relabel the right-knee burst
+windows, rather than copying the whole policy trace.
+
 ## Non-Goals
 
 - robot tests
