@@ -773,6 +773,41 @@ is still reviewed imitation/pretraining from the curated low-rate windows, but
 it must be graded on multi-seed forward-motion consistency, not on the short
 smoke result.
 
+A sequence-preservation diagnostic then checked whether an averaged low-rate
+teacher-window action table could replace the memoryless kNN lookup:
+
+```text
+outputs/analysis/CLOSED_LOOP_TEACHER_SEQUENCE_REPLAY_X008.md
+status: HOLD_SEQUENCE_REPLAY_LOW_FORWARD_MOTION
+policy_set: aggregate
+phase_adapter: fixed_time
+periodic_seam_correction: true
+
+outputs/analysis/CLOSED_LOOP_TEACHER_SEQUENCE_REPLAY_X008_NO_SEAM.md
+status: HOLD_SEQUENCE_REPLAY_LOW_FORWARD_MOTION
+policy_set: aggregate
+phase_adapter: fixed_time
+periodic_seam_correction: false
+```
+
+Both variants completed all eight seeds without falling, but stayed near
+standstill:
+
+```text
+seam-corrected aggregate:
+  mean vx range: -0.0108 to +0.0111 m/s
+  sent target velocity p95: 0.2660 rad/s
+
+raw aggregate:
+  mean vx range: -0.0105 to +0.0113 m/s
+  sent target velocity p95: 0.2853 rad/s
+```
+
+So preserving a single averaged action loop is not enough. The next student
+needs state-conditioned imitation from the curated windows. The aggregate
+sequence table is too muted to produce propulsion, while the kNN lookup has
+motion but lacks robustness.
+
 This is the current pivot. The upstream-main sim/morphology can produce stable
 closed-loop forward locomotion under the published `BEST_WALK_ONNX_2` policy.
 The reference-target/open-loop path still fails the same contact/propulsion
@@ -794,7 +829,9 @@ region, but the moving command traces contain meaningful low-rate moving
 subsets. The next offline branch should mine those low-rate closed-loop windows
 as the teacher. The manifest and kNN BC smoke show that this substrate can
 preserve forward movement inside the envelope for a short closed-loop replay,
-while the 8-seed gate shows that a simple kNN student is not sufficient. The
-next offline branch should be a reviewed imitation/pretraining experiment from
-this dataset, graded on longer multi-seed closed-loop gates and max-joint
-pitch-chain p95 target velocity. Robot validation remains blocked.
+while the 8-seed gate shows that a simple kNN student is not sufficient and the
+aggregate sequence smoke shows that a single averaged action loop is too weak.
+The next offline branch should be a reviewed state-conditioned
+imitation/pretraining experiment from this dataset, graded on longer multi-seed
+closed-loop gates and max-joint pitch-chain p95 target velocity. Robot
+validation remains blocked.

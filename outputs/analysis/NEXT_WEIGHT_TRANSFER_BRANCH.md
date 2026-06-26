@@ -102,6 +102,11 @@ training, robot SSH, deployment, or hardware tests.
 | `teacher_dataset_bc_gate_forward_moving_seed_count_ratio_ge_0p5` | `5 / 8` |
 | `teacher_dataset_bc_gate_near_standstill_seed_count` | `2 / 8` |
 | `teacher_dataset_bc_gate_fall_or_reverse_seed_count` | `1 / 8` |
+| `teacher_sequence_replay_status` | `HOLD_SEQUENCE_REPLAY_LOW_FORWARD_MOTION` |
+| `teacher_sequence_replay_policy_set` | `aggregate` |
+| `teacher_sequence_replay_seam_corrected_sent_velocity_p95_rad_s` | `0.2660` |
+| `teacher_sequence_replay_no_seam_sent_velocity_p95_rad_s` | `0.2853` |
+| `teacher_sequence_replay_mean_vx_range_m_s` | `-0.0108 to +0.0113` |
 
 ## Decision
 
@@ -116,7 +121,9 @@ contain substantial low-rate moving windows that should be mined as the next
 teacher substrate. That substrate now has a curated manifest and a tiny kNN
 BC smoke that preserves forward motion inside the target-rate envelope for a
 short closed-loop replay, but the longer 8-seed kNN replay gate still holds
-because one seed falls/reverses and two seeds collapse to near-standstill.
+because one seed falls/reverses and two seeds collapse to near-standstill. A
+single averaged action-sequence replay is even more conservative: it completes
+without falling but stays near standstill.
 
 ## Rationale
 
@@ -163,11 +170,16 @@ because one seed falls/reverses and two seeds collapse to near-standstill.
   but stayed near standstill, and seed 3 fell/reversed after 79 samples. This
   preserves the dataset-substrate finding, but it rules out treating the toy
   kNN replay as a robust student policy.
+- Aggregate sequence replays, with and without periodic seam correction, also
+  hold. They complete all eight seeds but drive only `-0.0108` to
+  `+0.0113 m/s`, with sent-target velocity p95 around `0.266-0.285 rad/s`.
+  This rules out a single averaged action loop as the missing student. The
+  student needs state-conditioned imitation from the low-rate windows.
 
 ## Required Next Design
 
-- design a reviewed imitation/pretraining experiment from the curated low-rate
-  closed-loop teacher-window manifest
+- design a reviewed state-conditioned imitation/pretraining experiment from the
+  curated low-rate closed-loop teacher-window manifest
 - train or constrain the student from those windows, not from the full
   over-envelope published-policy trajectory
 - grade the student on coherent forward motion and max-joint pitch-chain p95
@@ -193,6 +205,8 @@ because one seed falls/reverses and two seeds collapse to near-standstill.
   the curated low-rate windows can drive a toy closed-loop imitation replay.
 - Do not ignore the 8-seed kNN gate hold; the next student must solve the
   seed-dependent fall/freeze modes, not merely reproduce the 2-seed smoke.
+- Do not use a single averaged action sequence as the student; aggregate
+  sequence replay removes the propulsion signal.
 
 ## Non-Goals
 
