@@ -6235,3 +6235,15 @@ High-scale boundary probes (`0.90` through `0.975`) did not clear the tracking
 gate. The current deployable-policy blocker is no longer command semantics; it
 is reducing the x=0.08 action shape/timing so the fitted actuator bridge can
 track it while preserving forward progress.
+
+The wrapper was then extended with optional previous-target smoothing using
+`obs[83:97]`. A two-seed x=0.08 screen also held on tracking:
+
+```text
+alpha 0.90: 2 / 2 duration-complete, mean vx 0.0388 m/s, tracking p95 0.2653 rad
+alpha 0.80: 2 / 2 duration-complete, mean vx 0.0318 m/s, tracking p95 0.2592 rad
+```
+
+So the remaining issue is not solved by scalar attenuation or a one-tick target
+blend. It needs a better x=0.08 action shape/timing policy, likely through
+re-rate-labeled teacher data or PPO fine-tuning with the fitted bridge active.

@@ -2,10 +2,17 @@
 """Wrap an ONNX policy with command-x-dependent action scaling.
 
 This is an offline analysis helper. It does not train, deploy, SSH, or touch the
-robot. The wrapper preserves the original policy graph and appends:
+robot. By default the wrapper preserves the original policy graph and appends:
 
   scale = low_scale + (high_scale - low_scale) * clip(abs(obs[command_x_index]) / ramp_command_x, 0, 1)
   action = base_action * scale
+
+Optionally, the scaled action can be converted to a motor target, blended toward
+obs[83:97] (the previous sent motor target), and converted back to action:
+
+  target = home + scaled_action * action_scale
+  target = prev_target + alpha * (target - prev_target)
+  action = clip((target - home) / action_scale, -1, 1)
 
 The intended use is to test whether a standstill-stabilizing scale near
 command_x=0 can coexist with full source policy action at command_x=0.08.
@@ -34,13 +41,43 @@ def parse_args() -> argparse.Namespace:
         default="continuous_actions_command_scaled",
         help="name for the wrapped policy output",
     )
+    parser.add_argument(
+        "--target-blend-alpha",
+        type=float,
+        default=1.0,
+        help=(
+            "blend factor for desired target relative to obs[83:97] previous "
+            "sent target; 1.0 disables target smoothing"
+        ),
+    )
+    parser.add_argument("--previous-target-start", type=int, default=83)
+    parser.add_argument("--action-scale-rad", type=float, default=0.25)
+    parser.add_argument(
+        "--home",
+        default=(
+            "0.002,0.053,-0.63,1.368,-0.784,0,0,0,0,"
+            "-0.003,-0.065,0.635,1.379,-0.796"
+        ),
+        help="comma-separated 14-joint home/default actuator target in radians",
+    )
     return parser.parse_args()
+
+
+def parse_float_vector(text: str, *, expected: int, name: str) -> np.ndarray:
+    values = [float(part.strip()) for part in text.split(",") if part.strip()]
+    if len(values) != expected:
+        raise SystemExit(f"{name} expected {expected} values, got {len(values)}")
+    return np.asarray(values, dtype=np.float32)
 
 
 def main() -> int:
     args = parse_args()
     if args.ramp_command_x <= 0.0:
         raise SystemExit("--ramp-command-x must be positive")
+    if not 0.0 < args.target_blend_alpha <= 1.0:
+        raise SystemExit("--target-blend-alpha must be in (0, 1]")
+    if args.action_scale_rad <= 0.0:
+        raise SystemExit("--action-scale-rad must be positive")
 
     import onnx
     from onnx import TensorProto, helper, numpy_helper
@@ -70,6 +107,26 @@ def main() -> int:
         "command_scale_clip_min": np.asarray([0.0], dtype=np.float32),
         "command_scale_clip_max": np.asarray([1.0], dtype=np.float32),
     }
+    if args.target_blend_alpha < 1.0:
+        home = parse_float_vector(args.home, expected=14, name="--home")
+        initializers.update(
+            {
+                "previous_target_indices": np.arange(
+                    args.previous_target_start,
+                    args.previous_target_start + 14,
+                    dtype=np.int64,
+                ),
+                "target_home": home.reshape(1, 14),
+                "target_action_scale": np.asarray(
+                    [args.action_scale_rad], dtype=np.float32
+                ),
+                "target_blend_alpha": np.asarray(
+                    [args.target_blend_alpha], dtype=np.float32
+                ),
+                "target_clip_min": np.asarray([-1.0], dtype=np.float32),
+                "target_clip_max": np.asarray([1.0], dtype=np.float32),
+            }
+        )
     for name, value in initializers.items():
         graph.initializer.append(numpy_helper.from_array(value, name=name))
 
@@ -119,11 +176,82 @@ def main() -> int:
             helper.make_node(
                 "Mul",
                 [base_output, "command_action_scale"],
-                [wrapped_output],
+                ["command_scaled_actions"],
                 name="command_scale_actions",
             ),
         ]
     )
+    if args.target_blend_alpha < 1.0:
+        graph.node.extend(
+            [
+                helper.make_node(
+                    "Mul",
+                    ["command_scaled_actions", "target_action_scale"],
+                    ["desired_target_delta"],
+                    name="target_smooth_scale_action",
+                ),
+                helper.make_node(
+                    "Add",
+                    ["target_home", "desired_target_delta"],
+                    ["desired_target"],
+                    name="target_smooth_desired_target",
+                ),
+                helper.make_node(
+                    "Gather",
+                    [obs_name, "previous_target_indices"],
+                    ["previous_target"],
+                    name="target_smooth_gather_previous",
+                    axis=1,
+                ),
+                helper.make_node(
+                    "Sub",
+                    ["desired_target", "previous_target"],
+                    ["target_delta_from_previous"],
+                    name="target_smooth_delta",
+                ),
+                helper.make_node(
+                    "Mul",
+                    ["target_delta_from_previous", "target_blend_alpha"],
+                    ["target_delta_blended"],
+                    name="target_smooth_apply_alpha",
+                ),
+                helper.make_node(
+                    "Add",
+                    ["previous_target", "target_delta_blended"],
+                    ["smoothed_target"],
+                    name="target_smooth_add_previous",
+                ),
+                helper.make_node(
+                    "Sub",
+                    ["smoothed_target", "target_home"],
+                    ["smoothed_action_delta"],
+                    name="target_smooth_remove_home",
+                ),
+                helper.make_node(
+                    "Div",
+                    ["smoothed_action_delta", "target_action_scale"],
+                    ["smoothed_actions_unclipped"],
+                    name="target_smooth_to_action",
+                ),
+                helper.make_node(
+                    "Clip",
+                    ["smoothed_actions_unclipped", "target_clip_min", "target_clip_max"],
+                    [wrapped_output],
+                    name="target_smooth_clip_action",
+                ),
+            ]
+        )
+    else:
+        graph.node.extend(
+            [
+                helper.make_node(
+                    "Identity",
+                    ["command_scaled_actions"],
+                    [wrapped_output],
+                    name="command_scale_output_identity",
+                )
+            ]
+        )
 
     original_output = graph.output[0]
     graph.output.remove(original_output)
@@ -140,6 +268,12 @@ def main() -> int:
         f"{args.low_scale:g} + ({args.high_scale:g} - {args.low_scale:g}) "
         f"* clip(abs(obs[{args.command_x_index}]) / {args.ramp_command_x:g}, 0, 1)"
     )
+    if args.target_blend_alpha < 1.0:
+        print(
+            "target smoothing: "
+            f"target = obs[{args.previous_target_start}:{args.previous_target_start + 14}] "
+            f"+ {args.target_blend_alpha:g} * (desired_target - previous_target)"
+        )
     return 0
 
 

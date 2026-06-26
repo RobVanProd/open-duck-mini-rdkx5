@@ -78,6 +78,29 @@ The boundary is narrow and not monotonic enough to treat as solved by scalar
 attenuation. Lowering the high-scale reduces tracking slightly, but it either
 destabilizes seed 5 or remains at the tracking gate boundary.
 
+## Previous-Target Smoothing Screen
+
+The wrapper was extended to optionally smooth the desired motor target toward
+`obs[83:97]`, the previous sent motor target:
+
+```text
+target = previous_target + alpha * (desired_target - previous_target)
+action = clip((target - home) / action_scale, -1, 1)
+```
+
+Artifact: `outputs/analysis/SOURCE_VX_CMDSCALE_TARGET_SMOOTH_X008_SCREEN.md`
+
+Seeds `0` and `5` were screened at `x=0.08`:
+
+| alpha | falls | duration complete | mean vx | mean track ratio | mean max target vel p95 | mean max tracking p95 | result |
+|---:|---:|---:|---:|---:|---:|---:|---|
+| 0.90 | 0 / 2 | 2 / 2 | 0.0388 m/s | 0.4851 | 3.6584 rad/s | 0.2653 rad | tracking hold |
+| 0.80 | 0 / 2 | 2 / 2 | 0.0318 m/s | 0.3970 | 3.4291 rad/s | 0.2592 rad | tracking hold |
+
+This simple one-tick target smoothing does not solve the tracking gate. It
+reduces target velocity and forward progress, but the fitted bridge still sees
+tracking p95 well above the candidate threshold.
+
 ## Interpretation
 
 Command-conditioned scaling is useful evidence, but not the final policy. It
@@ -91,6 +114,7 @@ proves that:
 
 Do not deploy these policies and do not start PPO from them as final candidates.
 The next deployable-policy step should change the shape/timing of the x=0.08
-actions, not only their scalar amplitude. A learned command-conditioned policy
-or teacher should preserve the x=0 standstill branch while reducing x=0.08
-tracking p95 below the gate without losing forward progress.
+actions, not only their scalar amplitude or a one-tick target blend. A learned
+command-conditioned policy or teacher should preserve the x=0 standstill branch
+while reducing x=0.08 tracking p95 below the gate without losing forward
+progress.

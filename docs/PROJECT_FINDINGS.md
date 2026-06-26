@@ -2483,8 +2483,18 @@ high_scale 0.93-0.94: stable on seeds 0 and 5, but tracking p95 stays near 0.25 
 high_scale 0.95-0.975: stable and more progress, but still tracking hold
 ```
 
+One-tick target smoothing against `obs[83:97]` was also screened:
+
+```text
+alpha 0.90: 2 / 2 duration-complete, mean vx 0.0388 m/s, tracking p95 0.2653 rad
+alpha 0.80: 2 / 2 duration-complete, mean vx 0.0318 m/s, tracking p95 0.2592 rad
+```
+
+This reduces target velocity and progress but does not clear the fitted tracking
+gate.
+
 The remaining blocker is action shape/timing at x=0.08, not zero-command
 conditioning, not low progress, and not falls. The next deployable-policy work
 should keep the command-conditioned x=0 branch but reduce x=0.08 tracking via a
-better teacher, action smoothing in the supervised target, or PPO fine-tuning
-from this warm start with the fitted bridge active.
+better teacher or PPO fine-tuning from this warm start with the fitted bridge
+active. A scalar scale or one-tick target blend is not enough.

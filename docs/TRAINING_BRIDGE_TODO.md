@@ -5299,12 +5299,22 @@ High-scale screens at `0.90`, `0.93`, `0.935`, `0.94`, `0.95`, and `0.975`
 did not find a robust pass. Lowering high-scale either destabilized seed 5 or
 left the policy at the tracking threshold.
 
+One-tick previous-target smoothing was also screened at x=0.08:
+
+```text
+alpha 0.90: 2 / 2 duration-complete, mean vx 0.0388 m/s, tracking p95 0.2653 rad
+alpha 0.80: 2 / 2 duration-complete, mean vx 0.0318 m/s, tracking p95 0.2592 rad
+```
+
+This also remains a tracking hold.
+
 Next valid warm-start work:
 
 ```text
 stop pure scalar scale search
 preserve the command-conditioned x=0 stabilization branch
 change x=0.08 action shape/timing to reduce fitted tracking p95
-consider smoothed/re-rate-labeled source-VX actions or PPO fine-tuning from the command-scale warm start
+do not rely on one-tick previous-target smoothing as the fix
+consider re-rate-labeled source-VX actions or PPO fine-tuning from the command-scale warm start
 rerun full x=0.0 and x=0.08 fitted gates before any robot validation
 ```

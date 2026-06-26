@@ -98,5 +98,31 @@
       }
     ]
   },
-  "interpretation": "Command-conditioned scaling combines x=0 standstill and x=0.08 motion, but scalar amplitude tuning does not clear the fitted tracking gate. The next step needs action shape/timing changes, not only scale."
+  "target_smoothing_screen": {
+    "artifact_md": "outputs/analysis/SOURCE_VX_CMDSCALE_TARGET_SMOOTH_X008_SCREEN.md",
+    "artifact_json": "outputs/analysis/source_vx_cmdscale_target_smooth_x008_screen.json",
+    "summary": [
+      {
+        "alpha": 0.9,
+        "falls": 0,
+        "duration_complete": 2,
+        "mean_vx_m_s": 0.0388,
+        "mean_track_ratio": 0.4851,
+        "mean_max_target_velocity_p95_rad_s": 3.6584,
+        "mean_max_tracking_p95_rad": 0.2653,
+        "result": "tracking_hold"
+      },
+      {
+        "alpha": 0.8,
+        "falls": 0,
+        "duration_complete": 2,
+        "mean_vx_m_s": 0.0318,
+        "mean_track_ratio": 0.3970,
+        "mean_max_target_velocity_p95_rad_s": 3.4291,
+        "mean_max_tracking_p95_rad": 0.2592,
+        "result": "tracking_hold"
+      }
+    ]
+  },
+  "interpretation": "Command-conditioned scaling combines x=0 standstill and x=0.08 motion, but scalar amplitude tuning and one-tick target smoothing do not clear the fitted tracking gate. The next step needs learned action shape/timing changes, not only scale."
 }
