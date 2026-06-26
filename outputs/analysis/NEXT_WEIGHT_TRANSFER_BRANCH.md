@@ -1,6 +1,6 @@
 # Next Weight-Transfer Branch Decision
 
-status: `PASS_SOURCE_VX_SELECTOR_FITTED_BRIDGE_SMOKE`
+status: `PASS_TRACE_BLEND_STUDENT_FITTED_BRIDGE_SMOKE`
 
 This is an offline planning artifact. It does not run simulation,
 training, robot SSH, deployment, or hardware tests.
@@ -258,6 +258,14 @@ and `7` still freeze near standstill.
   eight seeds moving, zero terminations, track ratio `0.5491-0.6172`, and
   sent-target velocity p95 `2.2569-2.3622 rad/s`. It does not pass the stress
   bridge replay: most seeds lose forward progress and seed `5` terminates.
+- Replaying the selector with full observations produced a BC-ready 4000-sample
+  trace manifest. A source-switch-free blend `0.80` student trained from that
+  manifest passes the 10s fitted-bridge gate with all eight seeds moving, zero
+  terminations, track ratio `0.5170-0.6279`, and sent-target velocity p95
+  `2.0779-2.2134 rad/s`.
+- A 128x128 MLP trained from the same trace manifest still fails all seeds with
+  reverse/fall behavior and high target rate, so naive neural distillation is
+  not solved yet.
 
 ## Required Next Design
 
@@ -270,10 +278,11 @@ and `7` still freeze near standstill.
 - use kNN/linear/MLP/sequence smoke results as baselines; the next student must
   combine kNN-like local motion with linear/sequence-like smoothness and
   multi-seed stability
-- convert or distill the source-filtered velocity selector into a reviewed
-  portable student; do not deploy the selector as-is
-- preserve the 8/8 moving, 0/8 termination result while converting this selector
-  into a portable student, then retest vanilla and fitted-bridge gates
+- use the source-switch-free blend student as the offline baseline to beat
+- convert the blend behavior into an exportable policy only after preserving the
+  8/8 moving, 0/8 termination fitted-bridge result
+- do not treat the failed 128x128 MLP clone as proof that neural distillation is
+  impossible; it is one baseline showing naive one-step MLP still overdrives
 - treat the stress bridge hold as a margin limit to improve, not as a regression
   of the fitted-bridge pass
 - add closed-loop selection pressure against quiet double-support dwell; further

@@ -1,5 +1,5 @@
 {
-  "status": "PASS_SOURCE_VX_SELECTOR_FITTED_BRIDGE_SMOKE",
+  "status": "PASS_TRACE_BLEND_STUDENT_FITTED_BRIDGE_SMOKE",
   "dataset_id": "407af2cbe0ad69e1",
   "manifest": "outputs/analysis/closed_loop_teacher_dataset_manifest.json",
   "gate": {
@@ -106,7 +106,7 @@
       "terminated_seed_count": 1
     }
   ],
-  "decision": "Do not promote an exported or learned student yet. The source-filtered velocity selector is the first offline replay pass: it moves all eight seeds for 5s and 10s with zero terminations at straight x=0.08 in vanilla CPU sim, and it also passes the 10s fitted actuator bridge gate. Treat it as a diagnostic selector over teacher windows, not a deployable policy. The next branch should convert or distill this selector into a reviewed portable student, then retest vanilla and fitted-bridge gates. The stress bridge hold is a margin limit, not a regression of the fitted-bridge pass.",
+  "decision": "Do not promote an exported neural policy yet. The source-filtered velocity selector was distilled into a BC-ready fitted-bridge trace manifest, and a source-switch-free blend 0.80 student trained from that manifest passes the 10s fitted actuator bridge gate with all eight seeds moving and zero terminations. This is now the offline baseline to beat. A 128x128 MLP trained from the same trace manifest still fails all seeds with reverse/fall behavior and high target rate, so naive one-step neural distillation is not solved.",
   "blend080_seed_mode_analysis": {
     "artifact": "outputs/analysis/BLEND080_SEED_MODE_ANALYSIS.md",
     "status": "HOLD_FREEZE_LOW_ACTION_DOUBLE_SUPPORT",
@@ -385,9 +385,45 @@
     "stress_bridge_status_5s": "HOLD_BC_REPLAY_TERMINATED",
     "interpretation": "First offline selector to move all eight seeds without terminations at straight x=0.08 in vanilla CPU sim and under the fitted actuator bridge. This is not a deployable policy; stress bridge remains a hold."
   },
+  "selector_trace_distillation": {
+    "manifest_artifact": "outputs/analysis/SOURCE_VX_SELECTOR_FITTED_BRIDGE_TRACE_MANIFEST.md",
+    "manifest_json": "outputs/analysis/source_vx_selector_fitted_bridge_trace_manifest.json",
+    "manifest_status": "PASS_BC_TRACE_MANIFEST_READY",
+    "manifest_entries": 8,
+    "manifest_samples": 4000,
+    "blend080_fitted_bridge_artifact_10s": "outputs/analysis/SOURCE_VX_SELECTOR_TRACE_BLEND080_FITTED_BRIDGE_BC_GATE_X008_10S.md",
+    "blend080_fitted_bridge_status_10s": "PASS_BC_FIT_SMOKE_FORWARD_REPLAY",
+    "blend080_moving_seeds_10s": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "blend080_terminated_seeds_10s": [],
+    "blend080_track_ratio_range_10s": [
+      0.517,
+      0.6279
+    ],
+    "blend080_sent_target_velocity_p95_range_10s_rad_s": [
+      2.0779,
+      2.2134
+    ],
+    "blend080_joint_tracking_p95_range_10s_rad": [
+      0.1803,
+      0.1843
+    ],
+    "mlp128_fitted_bridge_artifact_10s": "outputs/analysis/SOURCE_VX_SELECTOR_TRACE_MLP128_FITTED_BRIDGE_BC_GATE_X008_10S.md",
+    "mlp128_fitted_bridge_status_10s": "HOLD_BC_REPLAY_TERMINATED",
+    "mlp128_failure": "all seeds fall/progress-fail with reverse velocity and high target rate"
+  },
   "required_next_design": [
-    "convert or distill the source-filtered velocity selector into a reviewed portable student",
-    "preserve the 8/8 moving, 0/8 termination result while converting this selector into a portable student, then retest vanilla and fitted-bridge gates",
+    "use the source-switch-free blend student as the offline baseline to beat",
+    "convert the blend behavior into an exportable policy only after preserving the 8/8 moving, 0/8 termination fitted-bridge result",
+    "do not treat the failed 128x128 MLP clone as proof that neural distillation is impossible; it is one baseline showing naive one-step MLP still overdrives",
     "treat the stress bridge hold as a margin limit to improve, not as a regression of the fitted-bridge pass",
     "use state-conditioned or closed-loop-selected imitation rather than one global kNN/linear blend coefficient",
     "penalize or reject candidates whose closed-loop sent-target p95 reaches 5.24 rad/s",

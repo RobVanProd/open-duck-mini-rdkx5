@@ -1,6 +1,6 @@
 # Student Imitation Baseline Decision
 
-status: `PASS_SOURCE_VX_SELECTOR_FITTED_BRIDGE_SMOKE`
+status: `PASS_TRACE_BLEND_STUDENT_FITTED_BRIDGE_SMOKE`
 
 This is an offline planning artifact. It does not run robot tests, SSH,
 deployment, PPO training, or runtime behavior changes.
@@ -181,12 +181,50 @@ signal to move all eight seeds when the source/velocity selector is chosen
 closed-loop. It now also survives the fitted actuator bridge, but it is not
 stress-bridge robust.
 
+The selector was then replayed under the fitted actuator bridge with full
+observations and converted into a compact distillation manifest:
+
+```text
+outputs/analysis/SOURCE_VX_SELECTOR_FITTED_BRIDGE_TRACE_MANIFEST.md
+status: PASS_BC_TRACE_MANIFEST_READY
+entries: 8
+samples: 4000
+```
+
+A source-switch-free blend student trained from that manifest passes the same
+10-second fitted-bridge gate:
+
+```text
+outputs/analysis/SOURCE_VX_SELECTOR_TRACE_BLEND080_FITTED_BRIDGE_BC_GATE_X008_10S.md
+student: blend 0.80 over selector-trace manifest
+status: PASS_BC_FIT_SMOKE_FORWARD_REPLAY
+moving seeds: 8 / 8
+terminated seeds: 0 / 8
+track ratio range: 0.5170-0.6279
+sent-target velocity p95 range: 2.0779-2.2134 rad/s
+joint tracking p95 range: 0.1803-0.1843 rad
+```
+
+This is stronger than the source selector because it removes the local-vx/source
+switch from the closed-loop policy path. It is still a kNN/linear blend student,
+not an exported ONNX policy.
+
+A small neural clone from the same manifest does not pass:
+
+```text
+outputs/analysis/SOURCE_VX_SELECTOR_TRACE_MLP128_FITTED_BRIDGE_BC_GATE_X008_10S.md
+student: MLP 128x128, 3000 steps
+status: HOLD_BC_REPLAY_TERMINATED
+failure: all seeds fall/progress-fail with reverse velocity and high target rate
+```
+
 ## Required Next Design
 
-- Convert or distill the source-filtered velocity selector into a reviewed
-  portable student; do not deploy the selector as-is.
-- Preserve the 8/8 moving, 0/8 termination result while converting this
-  selector into a portable student, then retest vanilla and fitted-bridge gates.
+- Use the source-switch-free blend student as the offline baseline to beat.
+- Convert the blend behavior into an exportable policy only after preserving the
+  8/8 moving, 0/8 termination fitted-bridge result.
+- Do not treat the failed 128x128 MLP clone as proof that neural distillation is
+  impossible; it is one baseline showing naive one-step MLP still overdrives.
 - Treat the stress bridge hold as a margin limit to improve, not as a regression
   of the fitted-bridge pass.
 - Do not rely on one global kNN/linear blend coefficient; the traced kNN/blend

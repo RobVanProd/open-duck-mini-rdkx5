@@ -1015,6 +1015,31 @@ outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_SOURCE_VX_BLEND080_100_SRCVX002_ALT
 actuator bridge: stress
 status: HOLD_BC_REPLAY_TERMINATED
 result: stress bridge collapses forward progress and terminates seed 5
+
+outputs/analysis/SOURCE_VX_SELECTOR_FITTED_BRIDGE_TRACE_MANIFEST.md
+status: PASS_BC_TRACE_MANIFEST_READY
+entries: 8
+samples: 4000
+purpose: distill the fitted-bridge source selector into a normal obs->action student
+
+outputs/analysis/SOURCE_VX_SELECTOR_TRACE_BLEND080_FITTED_BRIDGE_BC_GATE_X008_10S.md
+student: blend 0.80 over selector-trace manifest
+source switch: none
+local-vx switch: none
+actuator bridge: fitted
+status: PASS_BC_FIT_SMOKE_FORWARD_REPLAY
+duration: 10s
+moving seeds: 0, 1, 2, 3, 4, 5, 6, 7
+terminated seeds: none
+track ratio range: 0.5170-0.6279
+sent-target velocity p95 range: 2.0779-2.2134 rad/s
+joint tracking p95 range: 0.1803-0.1843 rad
+
+outputs/analysis/SOURCE_VX_SELECTOR_TRACE_MLP128_FITTED_BRIDGE_BC_GATE_X008_10S.md
+student: MLP 128x128 over selector-trace manifest
+actuator bridge: fitted
+status: HOLD_BC_REPLAY_TERMINATED
+result: all seeds fall/progress-fail with reverse velocity and high target rate
 ```
 
 The paired failed filters explain why the selector matters:
@@ -1033,16 +1058,17 @@ dual-source selector:
 
 This is the first offline imitation-selector result that gets all eight seeds
 moving at straight `x=0.08` in vanilla CPU sim while staying low-rate. It is
-still not robot-ready: it is a diagnostic selector over teacher windows, not a
-trained exported policy. It has now passed the fitted actuator bridge in
-offline sim, but it is not stress-bridge robust and has not been tested on
-hardware.
+still not robot-ready: it started as a diagnostic selector over teacher windows,
+not a trained exported policy. A follow-up trace-distillation pass produced a
+source-switch-free blend student that also passes the 10s fitted actuator bridge
+gate, but the small neural MLP distillation still fails and no hardware test has
+been run.
 
 The focused student decision artifact is:
 
 ```text
 outputs/analysis/STUDENT_IMITATION_BASELINE_DECISION.md
-status: PASS_SOURCE_VX_SELECTOR_FITTED_BRIDGE_SMOKE
+status: PASS_TRACE_BLEND_STUDENT_FITTED_BRIDGE_SMOKE
 ```
 
 A first plain state-conditioned MLP BC smoke was then added to the same tool and

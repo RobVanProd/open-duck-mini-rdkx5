@@ -755,6 +755,7 @@ def run_closed_loop_rollout(
             contacts = np.asarray(jax.device_get(state.info["last_contact"]), dtype=bool)
             done = bool(np.asarray(jax.device_get(state.done)))
             record = {
+                "mode": model["kind"],
                 "tick": tick,
                 "time_s": tick * float(env.dt),
                 "seed": seed,
@@ -778,6 +779,8 @@ def run_closed_loop_rollout(
                 "reward": float(np.asarray(jax.device_get(state.reward))),
                 "done": done,
             }
+            if args.trace_full_obs:
+                record["obs_state"] = obs.reshape(-1).astype(float).tolist()
             records.append(record)
             if done:
                 break
@@ -1101,6 +1104,11 @@ def main() -> int:
         "--trace-dir",
         default=None,
         help="Optional directory for ignored per-seed JSONL rollout traces.",
+    )
+    parser.add_argument(
+        "--trace-full-obs",
+        action="store_true",
+        help="Include obs_state in trace records for offline distillation manifests.",
     )
     parser.add_argument(
         "--jax-platform",
