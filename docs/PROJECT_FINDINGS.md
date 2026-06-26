@@ -1695,3 +1695,31 @@ often hits the target-rate ceiling. When the policy is in right stance, the
 right knee is much quieter and windows can pass. The next recovery branch
 should target left-stance/right-knee burst suppression or verified symmetry,
 not another generic contact selector.
+
+An offline relabeling probe then tested whether capping only the right-knee
+target rate can recover those unsafe left-stance windows:
+
+```text
+tools/analyze_left_stance_rate_recovery.py
+outputs/analysis/LEFT_STANCE_RATE_RECOVERY.md
+status: PASS_RIGHT_KNEE_RELABEL_RECOVERS_LEFT_STANCE
+
+right_knee_cap: 3.61 rad/s
+left-related windows: 553
+original pass windows: 1
+relabeled pass windows: 343
+relabeled pass pct: 62.03%
+```
+
+By contact group:
+
+| group | windows | original pass | relabeled pass | relabeled pass % |
+|---|---:|---:|---:|---:|
+| center left / majority left | 388 | 0 | 242 | 62.37% |
+| center left / majority double | 94 | 1 | 70 | 74.47% |
+| center double / majority left | 64 | 0 | 31 | 48.44% |
+
+This says the left-stance gap is likely recoverable by target-rate relabeling,
+at least as an offline selector source. The next artifact should build a
+balanced relabeled selector manifest and then re-score 25-50 tick continuity.
+Do not train yet; this has not been stepped through sim.

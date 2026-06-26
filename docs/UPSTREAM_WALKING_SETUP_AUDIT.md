@@ -374,6 +374,30 @@ The missing left-stance selector source is therefore a right-knee burst problem
 during left support, not an absence of left contact. The next branch should
 recover or mirror left stance with explicit right-knee rate verification.
 
+The recovery probe then applied a right-knee-only target-rate cap offline and
+re-scored the same left-related windows:
+
+```text
+tools/analyze_left_stance_rate_recovery.py
+outputs/analysis/LEFT_STANCE_RATE_RECOVERY.md
+status: PASS_RIGHT_KNEE_RELABEL_RECOVERS_LEFT_STANCE
+```
+
+Result:
+
+```text
+right_knee_cap: 3.61 rad/s
+left-related windows: 553
+original pass windows: 1
+relabeled pass windows: 343
+relabeled pass pct: 62.03%
+```
+
+This makes right-knee relabeling the next concrete offline path. The next
+source should combine original safe right-stance windows with relabeled
+left-stance windows, then score stance/phase coverage and 25-50 tick continuity
+before any BC/export.
+
 ## Non-Goals
 
 - robot tests

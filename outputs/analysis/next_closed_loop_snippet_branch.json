@@ -9,7 +9,8 @@
     "stance_timing": "outputs/analysis/PUBLISHED_POLICY_STANCE_TIMING_COMPARISON.md",
     "rule_candidates": "outputs/analysis/CLOSED_LOOP_WINDOW_RULE_CANDIDATES.md",
     "knee_rate_selector_manifest": "outputs/analysis/KNEE_RATE_SELECTOR_MANIFEST.md",
-    "left_stance_gap": "outputs/analysis/LEFT_STANCE_GAP_ANALYSIS.md"
+    "left_stance_gap": "outputs/analysis/LEFT_STANCE_GAP_ANALYSIS.md",
+    "left_stance_rate_recovery": "outputs/analysis/LEFT_STANCE_RATE_RECOVERY.md"
   },
   "findings": {
     "straight_x004": {
@@ -84,9 +85,17 @@
       "center_right_majority_right_pass_windows": 102,
       "center_right_majority_right_pitch_p95_rad_s": 3.639,
       "center_right_majority_right_right_knee_p95_rad_s": 1.9382
+    },
+    "left_stance_rate_recovery": {
+      "status": "PASS_RIGHT_KNEE_RELABEL_RECOVERS_LEFT_STANCE",
+      "right_knee_cap_rad_s": 3.61,
+      "left_related_windows": 553,
+      "original_pass_windows": 1,
+      "relabeled_pass_windows": 343,
+      "relabeled_pass_pct": 62.03
     }
   },
-  "recommended_next": "PLAN_LEFT_STANCE_RIGHT_KNEE_RATE_RECOVERY: do not train from isolated BEST_WALK snippets, straight x=0.04, or the current one-sided knee-rate-aware manifest. Recover or mirror left stance only with explicit right-knee p95 verification before BC/export.",
+  "recommended_next": "PLAN_RELABEL_BALANCED_SELECTOR_SOURCE: do not train yet. Build a balanced source from original passing right-stance/double windows plus right-knee-rate-relabelled left-stance windows, then score phase/stance coverage and 25-50 tick continuity before BC/export.",
   "stop_rules": [
     "Do not train directly from full BEST_WALK traces.",
     "Do not train directly from isolated 10-tick snippets.",

@@ -257,6 +257,47 @@ is specifically left support with a right-knee target-rate burst. Any mirrored
 or recovered source must prove that the right-knee p95 is brought back into the
 passing-window range before training/export.
 
+The right-knee relabeling recovery probe did that offline:
+
+```text
+outputs/analysis/LEFT_STANCE_RATE_RECOVERY.md
+status: PASS_RIGHT_KNEE_RELABEL_RECOVERS_LEFT_STANCE
+right_knee_cap: 3.61 rad/s
+```
+
+Result:
+
+| set | windows |
+|---|---:|
+| left-related windows | 553 |
+| original pass windows | 1 |
+| relabeled pass windows | 343 |
+| relabeled pass pct | 62.03% |
+
+By group:
+
+| group | original pass | relabeled pass |
+|---|---:|---:|
+| center left / majority left | 0 / 388 | 242 / 388 |
+| center left / majority double | 1 / 94 | 70 / 94 |
+| center double / majority left | 0 / 64 | 31 / 64 |
+
+Updated next branch:
+
+```text
+PLAN_RELABEL_BALANCED_SELECTOR_SOURCE
+```
+
+Build a balanced selector manifest that combines:
+
+```text
+original passing right-stance / double windows
+right-knee-rate-relabelled left-stance windows
+```
+
+Then score phase/stance coverage and 25-50 tick continuity before any BC/export.
+This is still offline only; the relabeled windows have not been stepped in sim.
+
 ## Stop Rules
 
 - Do not train directly from full BEST_WALK traces.
