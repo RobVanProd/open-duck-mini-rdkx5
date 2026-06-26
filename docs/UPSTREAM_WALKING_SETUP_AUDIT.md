@@ -445,6 +445,20 @@ This makes the relabeled selector source ready for a bounded sim replay
 prototype. It still should not be used for BC/export until the relabeled spans
 are stepped in sim and pass contact, target-rate, tracking, and stability gates.
 
+The first bounded replay reached a useful hold:
+
+```text
+outputs/analysis/RELABELLED_SELECTOR_REPLAY_MANIFEST.md
+outputs/analysis/RELABELLED_SELECTOR_SEQUENCE_REPLAY_TOP3_5S.md
+status: HOLD_SEQUENCE_REPLAY_TERMINATED
+```
+
+The top-three relabeled spans complete on seed 0 with bounded forward motion
+inside the target-rate envelope, but all three terminate on seed 1 before the
+selected relabeled window. This keeps BC/export blocked. The next offline
+branch should test state-aligned replay or a closed-loop selector that can
+recover from reset-state variation.
+
 ## Non-Goals
 
 - robot tests

@@ -33,6 +33,7 @@ DEFAULT_OUTPUT_MD = ROOT / "outputs" / "analysis" / "TARGET_SEQUENCE_REPLAY_SMOK
 DEFAULT_OUTPUT_JSON = ROOT / "outputs" / "analysis" / "target_sequence_replay_smoke.json"
 DEFAULT_PLAYGROUND = ROOT.parent / "Open_Duck_Playground"
 DEFAULT_SOFT_PRIOR_CONFIG = ROOT / "outputs" / "analysis" / "soft_prior_fragment_config.json"
+RIGHT_KNEE_INDEX = 12
 
 
 @dataclass
@@ -99,6 +100,19 @@ def read_jsonl(path: Path) -> list[dict[str, Any]]:
     return records
 
 
+def infer_mode(entry: dict[str, Any], records: list[dict[str, Any]]) -> str:
+    if entry.get("mode"):
+        return str(entry["mode"])
+    modes = sorted({str(record.get("mode")) for record in records if record.get("mode") is not None})
+    if len(modes) == 1:
+        return modes[0]
+    if "vanilla" in modes:
+        return "vanilla"
+    if modes:
+        return modes[0]
+    return str(entry.get("selector_mode") or "unknown")
+
+
 def pattern(values: list[int] | tuple[int, ...]) -> str:
     return "".join(str(int(value)) for value in values)
 
@@ -109,6 +123,29 @@ def contact_tuple(values: Any) -> tuple[int, int]:
     if not isinstance(values, list | tuple) or len(values) < 2:
         return (0, 0)
     return (int(values[0]), int(values[1]))
+
+
+def relabel_action_from_capped_target(
+    *,
+    original: dict[str, Any],
+    capped: dict[str, Any],
+    action_scale: float,
+) -> np.ndarray | None:
+    action = np.asarray(original.get("action"), dtype=float).reshape(-1)
+    if action.shape != (14,):
+        return None
+    target = capped.get("sent_target_rad")
+    pre_rate = original.get("target_pre_rate_limit_rad")
+    if not isinstance(target, list) or len(target) <= RIGHT_KNEE_INDEX:
+        return action
+    if not isinstance(pre_rate, list) or len(pre_rate) <= RIGHT_KNEE_INDEX:
+        return action
+    if not finite(target[RIGHT_KNEE_INDEX]) or not finite(pre_rate[RIGHT_KNEE_INDEX]):
+        return action
+    home = float(pre_rate[RIGHT_KNEE_INDEX]) - float(action[RIGHT_KNEE_INDEX]) * float(action_scale)
+    adjusted = action.copy()
+    adjusted[RIGHT_KNEE_INDEX] = (float(target[RIGHT_KNEE_INDEX]) - home) / float(action_scale)
+    return np.clip(adjusted, -1.0, 1.0)
 
 
 def signed_stats(values: Iterable[float]) -> dict[str, float] | None:
@@ -135,12 +172,13 @@ def abs_velocity(values: np.ndarray, dt_s: float) -> np.ndarray:
 
 def load_entry_sequence(entry: dict[str, Any]) -> SequencePolicy:
     source_path = Path(str(entry["source_path"]))
-    mode = str(entry["mode"])
     start_tick = int(entry["start_tick"])
     end_tick = int(entry["end_tick"])
+    all_records = read_jsonl(source_path)
+    mode = infer_mode(entry, all_records)
     records = [
         record
-        for record in read_jsonl(source_path)
+        for record in all_records
         if str(record.get("mode")) == mode and isinstance(record.get("action"), list)
     ]
     by_tick = {int(record["tick"]): record for record in records if "tick" in record}
@@ -159,11 +197,33 @@ def load_entry_sequence(entry: dict[str, Any]) -> SequencePolicy:
     window_body_pitch_abs = []
     window_base_height = []
     window_vy_abs = []
+    raw_window_records = [by_tick.get(tick) for tick in range(start_tick, end_tick + 1)]
+    if entry.get("relabel") == "right_knee_rate_cap":
+        from analyze_left_stance_rate_recovery import cap_right_knee_targets
+
+        capped_window_records = cap_right_knee_targets(
+            [record for record in raw_window_records if record is not None],
+            float(entry.get("right_knee_cap_rad_s", 3.61)),
+            float(entry.get("dt_s", 0.02)),
+        )
+    else:
+        capped_window_records = [record for record in raw_window_records if record is not None]
+    capped_by_tick = {int(record["tick"]): record for record in capped_window_records if "tick" in record}
     for tick in range(start_tick, end_tick + 1):
         record = by_tick.get(tick)
         if record is None:
             continue
-        action = np.asarray(record.get("action"), dtype=float).reshape(-1)
+        capped_record = capped_by_tick.get(tick, record)
+        if entry.get("relabel") == "right_knee_rate_cap":
+            action = relabel_action_from_capped_target(
+                original=record,
+                capped=capped_record,
+                action_scale=float(entry.get("action_scale", 0.25)),
+            )
+            if action is None:
+                continue
+        else:
+            action = np.asarray(record.get("action"), dtype=float).reshape(-1)
         if action.shape == (14,):
             window.append(action)
             window_contacts.append(contact_tuple(record.get("foot_contacts")))

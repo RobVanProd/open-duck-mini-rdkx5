@@ -356,6 +356,33 @@ must still be no robot / no SSH / no deploy / no training. The replay gate
 should check whether the right-knee relabeled target sequence remains stable
 when stepped, not just when re-scored as a target sequence.
 
+The first bounded sim replay is complete:
+
+```text
+outputs/analysis/RELABELLED_SELECTOR_REPLAY_MANIFEST.md
+outputs/analysis/RELABELLED_SELECTOR_SEQUENCE_REPLAY_TOP3_5S.md
+status: HOLD_SEQUENCE_REPLAY_TERMINATED
+```
+
+Top-three 5s CPU replay:
+
+| seed | outcome |
+|---:|---|
+| 0 | all 3 spans complete 250 samples, vx 0.0440-0.0475 m/s, target velocity p95 2.54-3.04 rad/s |
+| 1 | all 3 spans terminate at 33-38 samples before the selected window, with reverse/lateral/pitch failure |
+
+Updated next branch:
+
+```text
+PLAN_STATE_ALIGNED_SELECTOR_REPLAY
+```
+
+Do not launch BC/export from this selector yet. The relabeled spans can step
+from at least one reset seed, but the prefix/initial-state sensitivity means a
+static sequence table is not seed robust. The next offline gate should either
+state-align replay to the source span or build a closed-loop selector that can
+recover from reset variation before entering the selected sequence.
+
 ## Stop Rules
 
 - Do not train directly from full BEST_WALK traces.

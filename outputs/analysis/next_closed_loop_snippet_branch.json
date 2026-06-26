@@ -12,7 +12,9 @@
     "left_stance_gap": "outputs/analysis/LEFT_STANCE_GAP_ANALYSIS.md",
     "left_stance_rate_recovery": "outputs/analysis/LEFT_STANCE_RATE_RECOVERY.md",
     "relabelled_balanced_selector_manifest": "outputs/analysis/RELABELLED_BALANCED_SELECTOR_MANIFEST.md",
-    "relabelled_selector_continuity_score": "outputs/analysis/RELABELLED_SELECTOR_CONTINUITY_SCORE.md"
+    "relabelled_selector_continuity_score": "outputs/analysis/RELABELLED_SELECTOR_CONTINUITY_SCORE.md",
+    "relabelled_selector_replay_manifest": "outputs/analysis/RELABELLED_SELECTOR_REPLAY_MANIFEST.md",
+    "relabelled_selector_sequence_replay_top3_5s": "outputs/analysis/RELABELLED_SELECTOR_SEQUENCE_REPLAY_TOP3_5S.md"
   },
   "findings": {
     "straight_x004": {
@@ -115,9 +117,37 @@
       "pass_run_25_count": 20,
       "pass_run_50_count": 11,
       "pass_run_with_relabel_count": 92
+    },
+    "relabelled_selector_replay_manifest": {
+      "status": "PASS_SELECTOR_REPLAY_MANIFEST_READY",
+      "entries": 8,
+      "min_span_ticks": 50
+    },
+    "relabelled_selector_sequence_replay_top3_5s": {
+      "status": "HOLD_SEQUENCE_REPLAY_TERMINATED",
+      "policies": 3,
+      "seeds": [
+        0,
+        1
+      ],
+      "seed0_completed_policies": 3,
+      "seed1_completed_policies": 0,
+      "seed0_mean_vx_range_m_s": [
+        0.044,
+        0.0475
+      ],
+      "seed0_sent_target_velocity_p95_range_rad_s": [
+        2.54,
+        3.04
+      ],
+      "seed1_termination_samples_range": [
+        33,
+        38
+      ],
+      "interpretation": "Relabelled spans can step from seed 0 inside the envelope, but are not seed robust; seed 1 terminates before the selected window."
     }
   },
-  "recommended_next": "PLAN_RELABELLED_SELECTOR_SIM_REPLAY: run a bounded offline sim replay of the top relabelled selector spans before BC/export. No robot, no SSH, no deploy, no training.",
+  "recommended_next": "PLAN_STATE_ALIGNED_SELECTOR_REPLAY: do not train or export yet. Test state-aligned replay or a closed-loop selector that can recover from reset variation before entering relabelled spans. No robot, no SSH, no deploy, no training.",
   "stop_rules": [
     "Do not train directly from full BEST_WALK traces.",
     "Do not train directly from isolated 10-tick snippets.",

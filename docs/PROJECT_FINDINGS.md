@@ -1779,3 +1779,35 @@ This is the first source in this branch that has balanced stance/phase coverage
 and sustained 50+ tick offline continuity. It is still not training-ready: the
 right-knee relabeling has not been stepped through sim. The next required gate
 is a bounded sim replay of the relabeled selector spans before BC/export.
+
+That bounded sim replay now exists and is a hold:
+
+```text
+tools/build_relabelled_selector_replay_manifest.py
+tools/run_target_sequence_replay_smoke.py
+outputs/analysis/RELABELLED_SELECTOR_REPLAY_MANIFEST.md
+outputs/analysis/RELABELLED_SELECTOR_SEQUENCE_REPLAY_TOP3_5S.md
+status: HOLD_SEQUENCE_REPLAY_TERMINATED
+```
+
+Top-three 5s CPU replay result:
+
+```text
+seed 0:
+  all 3 top spans complete 250 samples
+  mean vx: 0.0440-0.0475 m/s
+  sent target velocity p95: 2.54-3.04 rad/s
+  body pitch p95: 0.0466-0.1134 rad
+
+seed 1:
+  all 3 top spans terminate at 33-38 samples
+  mean vx: -0.0913 to -0.0690 m/s
+  vy p95: 1.0380-1.1032 m/s
+  body pitch p95: 0.3202-0.3678 rad
+```
+
+Interpretation: the relabeled spans can step in sim and produce bounded
+forward motion from at least one reset seed, but they are not seed-robust and
+are not ready for BC/export. The failures happen before the selected window on
+seed 1, so the next branch should focus on state alignment or a closed-loop
+selector policy instead of treating the sequence table as a deployable teacher.
