@@ -4769,3 +4769,47 @@ create reliable forward acceleration, and all analyzed traces have high lateral
 velocity during push. The next offline target-source task is a more stateful
 lateral/heading support controller coupled to a different propulsion mechanism,
 not another scalar push/advance/clearance/yaw/recovery overlay grid.
+
+## Source-VX Deployable Policy Pivot
+
+The source-VX selector later proved the important feasibility point:
+
+```text
+artifact: outputs/analysis/SOURCE_VX_SELECTOR_POLICY_PIVOT.md
+status: PLAN_DEPLOYABLE_POLICY_VALIDATION_AND_WARMSTART
+source selector smoke: PASS_BC_FIT_SMOKE_FORWARD_REPLAY
+moving seeds: 8 / 8
+duration: 10s
+fitted-bridge sent-target velocity p95: 2.2569-2.3622 rad/s
+```
+
+This means in-envelope forward motion exists in the fitted actuator bridge sim
+proxy. The selector is not deployable, so do not keep tuning selector knobs as
+the default path.
+
+Next offline tasks:
+
+1. Strictly validate the exported DAgger-2 ONNX candidates:
+
+   ```text
+   outputs/analysis/source_vx_selector_trace_dagger2_mlp128_candidate/candidate.onnx
+   outputs/analysis/source_vx_selector_trace_dagger2_mlp128_rate_reg_candidate/candidate.onnx
+   ```
+
+2. Use task-matched `flat_terrain_backlash`, straight `x=0.08`, fitted bridge,
+   stress bridge, 8+ seeds, 10s+ duration, target-rate, tracking,
+   track-ratio, and termination gates.
+3. If one candidate survives, use it as the PPO warm start with the fitted
+   actuator bridge active.
+4. If both fail, expand selector rollouts into a larger on-policy teacher
+   dataset and repeat DAgger/BC before PPO.
+
+Stop rules:
+
+```text
+no robot validation
+no deployment
+no source-VX selector deployment
+no relaxed actuator envelope
+no further selector refinement unless candidate validation identifies a concrete missing teacher state
+```

@@ -1,5 +1,5 @@
 {
-  "status": "HOLD_STITCH_RUNS_TOO_SHORT",
+  "status": "PLAN_DEPLOYABLE_POLICY_VALIDATION_AND_WARMSTART",
   "evidence": {
     "command_comparison": "outputs/analysis/PUBLISHED_POLICY_COMMAND_PROPULSION_COMPARISON.md",
     "closed_loop_template": "outputs/analysis/PUBLISHED_POLICY_COMMAND_CLOSED_LOOP_TEMPLATE.md",
@@ -16,7 +16,8 @@
     "relabelled_selector_replay_manifest": "outputs/analysis/RELABELLED_SELECTOR_REPLAY_MANIFEST.md",
     "relabelled_selector_sequence_replay_top3_5s": "outputs/analysis/RELABELLED_SELECTOR_SEQUENCE_REPLAY_TOP3_5S.md",
     "relabelled_selector_replay_divergence": "outputs/analysis/RELABELLED_SELECTOR_REPLAY_DIVERGENCE.md",
-    "selector_state_alignment_requirements": "outputs/analysis/SELECTOR_STATE_ALIGNMENT_REQUIREMENTS.md"
+    "selector_state_alignment_requirements": "outputs/analysis/SELECTOR_STATE_ALIGNMENT_REQUIREMENTS.md",
+    "source_vx_selector_policy_pivot": "outputs/analysis/SOURCE_VX_SELECTOR_POLICY_PIVOT.md"
   },
   "findings": {
     "straight_x004": {
@@ -188,12 +189,22 @@
       "decision": "Do not approximate exact state alignment from partial state fields."
     }
   },
-  "recommended_next": "PLAN_FULL_STATE_TRACE_OR_CLOSED_LOOP_SELECTOR: do not train or export yet. Regenerate source traces with full qpos/qvel/control state for exact state-aligned replay, or build a closed-loop selector over current observations/contact state. No robot, no SSH, no deploy, no training.",
+  "superseding_decision": {
+    "status": "PLAN_DEPLOYABLE_POLICY_VALIDATION_AND_WARMSTART",
+    "reason": "A later source-VX selector result proved 8/8-seed in-envelope forward motion through the fitted actuator bridge. The selector is non-deployable, so the active next step is strict validation of exported DAgger-2 ONNX candidates, not more selector tuning.",
+    "source_vx_selector_artifact": "outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_SOURCE_VX_BLEND080_100_SRCVX002_ALT_EXCLUDE_SEED4_FITTED_BRIDGE_BC_GATE_X008_10S.md",
+    "candidate_onnx_paths": [
+      "outputs/analysis/source_vx_selector_trace_dagger2_mlp128_candidate/candidate.onnx",
+      "outputs/analysis/source_vx_selector_trace_dagger2_mlp128_rate_reg_candidate/candidate.onnx"
+    ]
+  },
+  "recommended_next": "PLAN_DEPLOYABLE_POLICY_VALIDATION_AND_WARMSTART: validate the DAgger-2 and DAgger-2 rate-reg ONNX candidates under strict fitted/stress bridge, multi-seed, 10s+ gates. If one survives, use it as the PPO warm start with the fitted actuator bridge active. No robot, no SSH, no deploy.",
   "stop_rules": [
     "Do not train directly from full BEST_WALK traces.",
     "Do not train directly from isolated 10-tick snippets.",
     "Do not use straight x=0.04 as the first walking pass/fail gate.",
     "Do not relax the right-knee envelope to make snippets longer.",
+    "Do not refine the non-deployable source-VX selector unless candidate validation identifies a specific missing teacher state.",
     "Do not run robot validation.",
     "Do not SSH, deploy, or change runtime behavior."
   ]

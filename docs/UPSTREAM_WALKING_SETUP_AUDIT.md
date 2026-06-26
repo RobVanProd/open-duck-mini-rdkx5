@@ -482,6 +482,34 @@ state, or motor-target/action-history state. The next offline step should
 regenerate source traces with those fields or build a selector that uses the
 current closed-loop observation instead of static replay.
 
+## Source-VX Feasibility and Policy Pivot
+
+The later source-VX selector branch supersedes the morphology-wall reading. It
+passes an eight-seed, 10-second, straight `x=0.08`, fitted-bridge smoke while
+keeping sent-target velocity p95 at about `2.26-2.36 rad/s`:
+
+```text
+outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_SOURCE_VX_BLEND080_100_SRCVX002_ALT_EXCLUDE_SEED4_FITTED_BRIDGE_BC_GATE_X008_10S.md
+status: PASS_BC_FIT_SMOKE_FORWARD_REPLAY
+```
+
+That proves in-envelope forward motion exists in the offline fitted-bridge sim
+proxy. The selector is still non-deployable, so the next work should validate
+deployable ONNX students rather than tune the selector further.
+
+Relevant exported candidates:
+
+```text
+outputs/analysis/source_vx_selector_trace_dagger2_mlp128_candidate/candidate.onnx
+outputs/analysis/source_vx_selector_trace_dagger2_mlp128_rate_reg_candidate/candidate.onnx
+```
+
+Both passed 10-second fitted-bridge smoke gates after DAgger relabeling. They
+are not robot candidates yet; they need strict task-matched, multi-seed,
+fitted/stress bridge validation first. If one survives, the next training step
+is PPO fine-tuning from the BC/DAgger warm start with the fitted actuator bridge
+active.
+
 ## Non-Goals
 
 - robot tests

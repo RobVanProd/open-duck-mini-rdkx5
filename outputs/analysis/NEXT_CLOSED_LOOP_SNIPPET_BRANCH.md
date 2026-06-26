@@ -1,9 +1,44 @@
 # Closed-Loop Snippet Branch Decision
 
-status: `HOLD_STITCH_RUNS_TOO_SHORT`
+status: `PLAN_DEPLOYABLE_POLICY_VALIDATION_AND_WARMSTART`
 
 This is an offline branch decision. It does not train, deploy, SSH, run robot
 tests, or change runtime behavior.
+
+## Superseding Decision
+
+The closed-loop snippet and relabeled-selector sequence work should no longer be
+treated as the active default branch. A later source-VX selector result proved
+eight-seed, 10-second, in-envelope forward motion through the fitted actuator
+bridge:
+
+```text
+outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_SOURCE_VX_BLEND080_100_SRCVX002_ALT_EXCLUDE_SEED4_FITTED_BRIDGE_BC_GATE_X008_10S.md
+status: PASS_BC_FIT_SMOKE_FORWARD_REPLAY
+moving seeds: 8 / 8
+sent-target velocity p95: 2.2569-2.3622 rad/s
+```
+
+That selector is diagnostic and non-deployable, but it has done its feasibility
+job. The active next branch is now:
+
+```text
+PLAN_DEPLOYABLE_POLICY_VALIDATION_AND_WARMSTART
+```
+
+Validate the deployable DAgger-2 ONNX candidates under stricter fitted/stress
+bridge gates before any more selector tuning:
+
+```text
+outputs/analysis/source_vx_selector_trace_dagger2_mlp128_candidate/candidate.onnx
+outputs/analysis/source_vx_selector_trace_dagger2_mlp128_rate_reg_candidate/candidate.onnx
+```
+
+See:
+
+```text
+outputs/analysis/SOURCE_VX_SELECTOR_POLICY_PIVOT.md
+```
 
 ## Evidence
 

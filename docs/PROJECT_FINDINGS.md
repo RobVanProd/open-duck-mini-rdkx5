@@ -1841,3 +1841,76 @@ targets, contacts, foot sites, and observations. They do not include full
 state. Do not approximate exact state alignment from partial state. Either
 regenerate source traces with full state or build a closed-loop selector that
 acts from the current observation/contact state.
+
+## 2026-06-26: Source-VX Selector Proves Feasibility; Pivot to Deployable Policy Validation
+
+The source-VX selector result is the strongest positive feasibility result in
+the campaign:
+
+```text
+outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_SOURCE_VX_BLEND080_100_SRCVX002_ALT_EXCLUDE_SEED4_FITTED_BRIDGE_BC_GATE_X008_10S.md
+status: PASS_BC_FIT_SMOKE_FORWARD_REPLAY
+command: straight x=0.08
+duration: 10s
+moving seeds: 8 / 8
+terminated seeds: 0 / 8
+track ratio range: 0.5491-0.6172
+sent-target velocity p95 range: 2.2569-2.3622 rad/s
+```
+
+This proves that in-envelope forward motion exists in the fitted-bridge sim
+proxy across all eight seeds. The morphology-wall hypothesis is no longer the
+right default explanation.
+
+The source-VX selector itself is still not a deployable policy. It is a
+diagnostic kNN/blend selector over teacher windows. It has done its job by
+proving feasibility, and further selector knob tuning should not be the default
+path.
+
+The deployable-policy evidence is now more nuanced than the earlier "MLP
+distillation failed" result. The first plain 128x128 MLP did fail:
+
+```text
+outputs/analysis/SOURCE_VX_SELECTOR_TRACE_MLP128_FITTED_BRIDGE_BC_GATE_X008_10S.md
+status: HOLD_BC_REPLAY_TERMINATED
+```
+
+But DAgger relabeling later produced exportable neural smoke passes:
+
+```text
+outputs/analysis/SOURCE_VX_SELECTOR_TRACE_DAGGER2_MLP128_FITTED_BRIDGE_BC_GATE_X008_10S.md
+status: PASS_BC_FIT_SMOKE_FORWARD_REPLAY
+ONNX: outputs/analysis/source_vx_selector_trace_dagger2_mlp128_candidate/candidate.onnx
+moving seeds: 8 / 8
+terminated seeds: 0 / 8
+sent-target velocity p95 range: 2.1174-2.1601 rad/s
+
+outputs/analysis/SOURCE_VX_SELECTOR_TRACE_DAGGER2_MLP128_RATE_REG_ONNX_FITTED_BRIDGE_BC_GATE_X008_10S.md
+status: PASS_BC_FIT_SMOKE_FORWARD_REPLAY
+ONNX: outputs/analysis/source_vx_selector_trace_dagger2_mlp128_rate_reg_candidate/candidate.onnx
+moving seeds: 8 / 8
+terminated seeds: 0 / 8
+sent-target velocity p95 range: 2.1256-2.1971 rad/s
+```
+
+Those are not robot-ready gates. They are the first deployable-policy-shaped
+objects worth validating. The next branch should therefore be:
+
+```text
+PLAN_DEPLOYABLE_POLICY_VALIDATION_AND_WARMSTART
+```
+
+Required next artifact:
+
+```text
+outputs/analysis/SOURCE_VX_SELECTOR_POLICY_PIVOT.md
+status: PLAN_DEPLOYABLE_POLICY_VALIDATION_AND_WARMSTART
+```
+
+Compare the DAgger-2 and DAgger-2 rate-reg ONNX candidates under stricter
+offline fitted/stress bridge gates before any PPO or robot discussion. If a
+candidate survives that review, the next training move is PPO fine-tuning from
+the BC/DAgger policy with the fitted actuator bridge active. If not, expand the
+selector-rollout dataset and repeat DAgger/BC. Do not resume selector refinement
+as the primary path unless candidate validation identifies a concrete missing
+teacher state.
