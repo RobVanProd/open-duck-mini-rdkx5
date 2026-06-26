@@ -7,7 +7,8 @@
     "window_mine_10t": "outputs/analysis/CLOSED_LOOP_TEACHER_WINDOW_MINE_10T.md",
     "stitch_plan": "outputs/analysis/CLOSED_LOOP_SNIPPET_STITCH_PLAN.md",
     "stance_timing": "outputs/analysis/PUBLISHED_POLICY_STANCE_TIMING_COMPARISON.md",
-    "rule_candidates": "outputs/analysis/CLOSED_LOOP_WINDOW_RULE_CANDIDATES.md"
+    "rule_candidates": "outputs/analysis/CLOSED_LOOP_WINDOW_RULE_CANDIDATES.md",
+    "knee_rate_selector_manifest": "outputs/analysis/KNEE_RATE_SELECTOR_MANIFEST.md"
   },
   "findings": {
     "straight_x004": {
@@ -61,9 +62,18 @@
       "reject_high_rate_moving_single_support_pct": 53.1,
       "reject_high_rate_moving_pitch_p95_rad_s": 4.7046,
       "reject_high_rate_moving_right_knee_p95_rad_s": 4.0445
+    },
+    "knee_rate_selector_manifest": {
+      "status": "HOLD_SELECTOR_MISSING_STANCE_SIDE",
+      "entries": 313,
+      "covered_phase_bins": 5,
+      "phase_bins": 8,
+      "double_majority_windows": 178,
+      "right_stance_majority_windows": 135,
+      "left_stance_majority_windows": 0
     }
   },
-  "recommended_next": "PLAN_KNEE_RATE_AWARE_CLOSED_LOOP_SELECTOR: do not train from isolated BEST_WALK snippets or use straight x=0.04 as the first walking gate. Mine the moving command cells for a closed-loop stance-transfer selector that explicitly manages knee target-rate, then re-score 25-50 tick windows before BC/export.",
+  "recommended_next": "HOLD_ONE_SIDED_SELECTOR_SOURCE: do not train from isolated BEST_WALK snippets, straight x=0.04, or the current knee-rate-aware manifest. Recover, mirror with verification, or replace the missing left-stance safe mechanism before BC/export.",
   "stop_rules": [
     "Do not train directly from full BEST_WALK traces.",
     "Do not train directly from isolated 10-tick snippets.",

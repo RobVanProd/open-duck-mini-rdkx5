@@ -1635,3 +1635,34 @@ So the next closed-loop source should explicitly manage knee target-rate while
 preserving the moving command cells' alternating single-support pattern. A
 selector that only keys on contact state will reproduce high-rate moving
 windows as well as safe ones.
+
+The first knee-rate-aware selector manifest then filtered for passing moving
+windows with an explicit right-knee p95 cap:
+
+```text
+tools/build_knee_rate_selector_manifest.py
+outputs/analysis/KNEE_RATE_SELECTOR_MANIFEST.md
+status: HOLD_SELECTOR_MISSING_STANCE_SIDE
+
+entries: 313
+covered phase bins: 5 / 8
+stance side coverage:
+  double: 178
+  right_stance: 135
+  left_stance: 0
+```
+
+Relaxing the right-knee cap to the full `3.75 rad/s` envelope did not recover
+left-stance coverage:
+
+```text
+pass all center contacts: 11 = 200, 01 = 129, 10 = 1
+pass all majority contacts: 11 = 195, 01 = 135, 10 = 0
+```
+
+So the currently mined safe BEST_WALK source is one-sided: it contains
+right-stance plus double-support safe windows, but essentially no left-stance
+safe windows. It is not a balanced selector-training source. The next branch
+must either recover the missing left-stance mechanism, mirror/symmetrize with
+verification, or use a different closed-loop source. Do not train from this
+manifest as-is.

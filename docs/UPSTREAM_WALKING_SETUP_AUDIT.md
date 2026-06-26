@@ -331,6 +331,30 @@ right-knee and left-knee counts dominating the fastest-pitch-joint tally. The
 next selector needs to preserve stance transfer while explicitly rejecting or
 reshaping knee-rate bursts.
 
+The first knee-rate-aware selector manifest applied that filter and then checked
+stance/phase coverage:
+
+```text
+tools/build_knee_rate_selector_manifest.py
+outputs/analysis/KNEE_RATE_SELECTOR_MANIFEST.md
+status: HOLD_SELECTOR_MISSING_STANCE_SIDE
+```
+
+Coverage:
+
+```text
+entries: 313
+phase bins: 5 / 8
+double-majority windows: 178
+right-stance majority windows: 135
+left-stance majority windows: 0
+```
+
+This is a useful negative result. The current safe BEST_WALK windows are not a
+balanced selector source. The missing left-stance side must be recovered,
+symmetry-augmented and verified, or replaced with a different closed-loop
+mechanism source before BC/export.
+
 ## Non-Goals
 
 - robot tests

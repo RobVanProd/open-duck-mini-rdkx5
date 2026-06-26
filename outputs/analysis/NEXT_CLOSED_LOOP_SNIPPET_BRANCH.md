@@ -187,6 +187,49 @@ right-knee p95 kept near the passing-window distribution
 
 Then replay or score 25-50 tick continuity before any student training.
 
+That prototype source was built as:
+
+```text
+tools/build_knee_rate_selector_manifest.py
+outputs/analysis/KNEE_RATE_SELECTOR_MANIFEST.md
+```
+
+Result:
+
+```text
+status: HOLD_SELECTOR_MISSING_STANCE_SIDE
+entries: 313
+covered phase bins: 5 / 8
+double-majority windows: 178
+right-stance majority windows: 135
+left-stance majority windows: 0
+```
+
+Relaxing the right-knee cap to the full envelope did not recover left-stance
+coverage. Across all passing full-observation windows:
+
+```text
+center contacts:
+  11: 200
+  01: 129
+  10: 1
+
+majority contacts:
+  11: 195
+  01: 135
+  10: 0
+```
+
+Updated decision:
+
+```text
+HOLD_ONE_SIDED_SELECTOR_SOURCE
+```
+
+Do not train from the current knee-rate-aware manifest. The next branch must
+recover, mirror with verification, or replace the missing left-stance safe
+mechanism before BC/export.
+
 ## Stop Rules
 
 - Do not train directly from full BEST_WALK traces.
