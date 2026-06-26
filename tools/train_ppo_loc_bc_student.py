@@ -88,17 +88,26 @@ def init_params(
     return params
 
 
+def activate_np(values: np.ndarray, activation: str) -> np.ndarray:
+    if activation == "tanh":
+        return np.tanh(values)
+    if activation == "swish":
+        return values / (1.0 + np.exp(-values))
+    raise ValueError(f"unsupported activation {activation}")
+
+
 def predict_actions_np(
     obs: np.ndarray,
     params: list[tuple[np.ndarray, np.ndarray]],
     norm: np.ndarray,
+    activation: str,
 ) -> tuple[np.ndarray, np.ndarray]:
     mean, std = norm
     z = (obs - mean) / std
     for index, (weights, bias) in enumerate(params):
         z = z @ weights + bias
         if index < len(params) - 1:
-            z = np.tanh(z)
+            z = activate_np(z, activation)
     loc = z
     return loc, np.tanh(loc)
 
@@ -150,13 +159,19 @@ def train_model(
     rng = np.random.default_rng(int(args.seed))
     pair_count = int(pairs.shape[0])
     pair_batch_size = max(1, min(int(args.batch_size), pair_count if pair_count else 1))
+    activation_name = str(args.activation)
 
     def forward(model_params, batch_x):
         z = batch_x
         for index, (weights, bias) in enumerate(model_params):
             z = z @ weights + bias
             if index < len(model_params) - 1:
-                z = jnp.tanh(z)
+                if activation_name == "tanh":
+                    z = jnp.tanh(z)
+                elif activation_name == "swish":
+                    z = jax.nn.swish(z)
+                else:
+                    raise ValueError(f"unsupported activation {activation_name}")
         loc = z
         return loc, jnp.tanh(loc)
 
@@ -199,7 +214,7 @@ def train_model(
             loss_rows.append({"step": train_step, "loss": float(loss)})
 
     params_out = [(np.asarray(w), np.asarray(b)) for w, b in params]
-    _, pred = predict_actions_np(obs, params_out, norm)
+    _, pred = predict_actions_np(obs, params_out, norm, activation_name)
     metrics = action_metrics(actions, pred)
     consecutive_pred = pred[pairs[:, 1]] if pair_count else np.zeros((0, actions.shape[1]))
     consecutive_prev = pred[pairs[:, 0]] if pair_count else np.zeros((0, actions.shape[1]))
@@ -210,6 +225,7 @@ def train_model(
     )
     return {
         "hidden_sizes": hidden_sizes,
+        "activation": activation_name,
         "norm": norm,
         "params": params_out,
         "loss_rows": loss_rows,
@@ -230,6 +246,7 @@ def save_npz(path: Path, fit: dict[str, Any]) -> None:
         "norm": fit["norm"].astype(np.float32),
         "hidden_sizes": np.asarray(fit["hidden_sizes"], dtype=np.int64),
         "output_mode": np.asarray(["ppo_tanh_loc"]),
+        "activation": np.asarray([str(fit["activation"])]),
     }
     for index, (weights, bias) in enumerate(fit["params"]):
         payload[f"w{index}"] = weights.astype(np.float32)
@@ -258,9 +275,17 @@ def export_onnx(path: Path, fit: dict[str, Any], obs: np.ndarray) -> dict[str, A
         gemm = f"gemm{index}_out"
         nodes.append(helper.make_node("Gemm", [previous, f"w{index}", f"b{index}"], [gemm], name=f"gemm{index}"))
         if index < len(fit["params"]) - 1:
-            tanh = f"tanh{index}_out"
-            nodes.append(helper.make_node("Tanh", [gemm], [tanh], name=f"tanh{index}"))
-            previous = tanh
+            if fit["activation"] == "tanh":
+                activated = f"tanh{index}_out"
+                nodes.append(helper.make_node("Tanh", [gemm], [activated], name=f"tanh{index}"))
+            elif fit["activation"] == "swish":
+                sigmoid = f"sigmoid{index}_out"
+                activated = f"swish{index}_out"
+                nodes.append(helper.make_node("Sigmoid", [gemm], [sigmoid], name=f"sigmoid{index}"))
+                nodes.append(helper.make_node("Mul", [gemm, sigmoid], [activated], name=f"swish{index}"))
+            else:
+                raise ValueError(f"unsupported activation {fit['activation']}")
+            previous = activated
         else:
             nodes.append(helper.make_node("Tanh", [gemm], ["continuous_actions"], name="ppo_loc_tanh"))
     graph = helper.make_graph(
@@ -281,7 +306,7 @@ def export_onnx(path: Path, fit: dict[str, Any], obs: np.ndarray) -> dict[str, A
 
     session = ort.InferenceSession(str(path), providers=["CPUExecutionProvider"])
     sample = obs[: min(64, obs.shape[0])].astype(np.float32)
-    _, expected = predict_actions_np(sample, fit["params"], fit["norm"])
+    _, expected = predict_actions_np(sample, fit["params"], fit["norm"], fit["activation"])
     actual = np.vstack(
         [session.run(["continuous_actions"], {"obs": row[None, :]})[0][0] for row in sample]
     )
@@ -311,6 +336,7 @@ def write_markdown(path: Path, report: dict[str, Any]) -> None:
         f"- samples: `{report['samples']}`",
         f"- pairs: `{report['target_rate']['pair_count']}`",
         f"- hidden sizes: `{report['hidden_sizes']}`",
+        f"- activation: `{report['activation']}`",
         "",
         "## Outputs",
         "",
@@ -355,6 +381,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--manifest", required=True)
     parser.add_argument("--hidden-sizes", default="512,256,128")
+    parser.add_argument("--activation", choices=["tanh", "swish"], default="swish")
     parser.add_argument("--steps", type=int, default=5000)
     parser.add_argument("--batch-size", type=int, default=512)
     parser.add_argument("--learning-rate", type=float, default=1.0e-3)
@@ -395,6 +422,7 @@ def main() -> int:
         "manifest": args.manifest,
         "samples": int(obs.shape[0]),
         "hidden_sizes": fit["hidden_sizes"],
+        "activation": fit["activation"],
         "saved_npz": args.save_npz,
         "exported_onnx": args.export_onnx,
         "train_metrics": fit["metrics"],

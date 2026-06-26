@@ -2084,3 +2084,36 @@ of the source-VX selector still does not reduce fitted actuator tracking enough
 in closed loop. The next step should build actual PPO params from the PPO-loc
 NPZ, verify step-0 closed-loop fidelity, and only then run a short PPO
 fine-tune with the fitted actuator bridge active.
+
+The actual PPO-param construction was then tested with a swish PPO-loc student,
+matching the real Playground PPO activation:
+
+```text
+outputs/analysis/PPO_BC_SWISH_WARMSTART_VALIDATION.md
+status: HOLD_STEP0_CLOSED_LOOP_STABILITY
+
+export fidelity:
+  status: PASS_PPO_BC_WARMSTART_STEP0_EXPORT_FIDELITY
+  action p95 error: 0.00000012
+  action max error: 0.00000036
+```
+
+This closes the warm-start plumbing problem: BC weights can now be mapped into a
+real PPO checkpoint and exported through the Playground PPO exporter with
+essentially exact action fidelity.
+
+The closed-loop step-0 gate still holds:
+
+```text
+runs: 8
+falls: 1
+duration complete: 7
+mean track ratio: 0.1441
+seed 5: reverse/fall at 74 samples, mean vx -0.1976 m/s
+```
+
+So PPO should not start from this checkpoint yet. The remaining warm-start
+problem is behavioral: the swish PPO-compatible student has a seed-5
+reverse/fall mode and the other seeds still hold on fitted tracking. Next branch
+should collect a seed-5 trace, compare it with successful seeds, and improve the
+swish warm-start dataset or loss before PPO updates.

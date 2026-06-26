@@ -5025,6 +5025,52 @@ confirm step-0 behavior matches the ONNX candidate
 Only then run a short PPO fine-tune. Judge it by fitted tracking improvement
 without losing forward progress, not by reward alone.
 
+Swish PPO warm-start plumbing result:
+
+```text
+artifact: outputs/analysis/PPO_BC_SWISH_WARMSTART_VALIDATION.md
+status: HOLD_STEP0_CLOSED_LOOP_STABILITY
+checkpoint: outputs/analysis/ppo_bc_swish_warmstart_step0_checkpoint
+exported ONNX: outputs/analysis/ppo_bc_swish_warmstart_step0.onnx
+```
+
+Solved:
+
+```text
+PPO swish activation matched
+PPO tanh(loc) output matched
+Orbax checkpoint created
+Playground PPO exporter reproduced BC ONNX actions
+action p95 error: 0.00000012
+```
+
+Still held:
+
+```text
+step-0 closed-loop fitted gate:
+  falls: 1 / 8
+  duration complete: 7 / 8
+  seed 5 reverse/fall at 74 samples
+  mean track ratio: 0.1441
+```
+
+Do not launch PPO updates from this checkpoint yet. Next branch:
+
+```text
+PLAN_IMPROVE_SWISH_WARMSTART_SEED5
+```
+
+Required next probes:
+
+```text
+trace ppo_swish_step0 seed 5 with full obs/action/motor fields
+compare against successful seeds 0 and 2
+identify whether seed 5 is missing source coverage, wrong nearest behavior, or a model fit outlier
+relabel or augment seed-5-adjacent states
+retrain swish PPO-loc BC
+rerun step-0 fitted gate
+```
+
 Stop rules:
 
 ```text

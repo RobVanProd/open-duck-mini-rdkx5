@@ -1,0 +1,59 @@
+{
+  "status": "HOLD_STEP0_CLOSED_LOOP_STABILITY",
+  "artifact": "outputs/analysis/PPO_BC_SWISH_WARMSTART_VALIDATION.md",
+  "swish_fit": {
+    "artifact": "outputs/analysis/PPO_LOC_SWISH_BC_STUDENT.md",
+    "json": "outputs/analysis/ppo_loc_swish_bc_student.json",
+    "status": "PASS_PPO_LOC_BC_FIT_SMOKE",
+    "onnx": "outputs/analysis/ppo_loc_swish_bc_student_candidate/candidate.onnx",
+    "npz": "outputs/analysis/ppo_loc_swish_bc_student_candidate/candidate_mlp.npz",
+    "hidden_sizes": [512, 256, 128],
+    "activation": "swish",
+    "mae": 0.012029778593593124,
+    "p95_action_error": 0.03589923247493152,
+    "max_action_error": 0.31785194855906473,
+    "target_rate_p95_rad_s": 2.228609666542823,
+    "target_rate_max_rad_s": 4.49863970812725
+  },
+  "export_fidelity": {
+    "artifact": "outputs/analysis/PPO_BC_SWISH_WARMSTART_STEP0_EXPORT_FIDELITY.md",
+    "json": "outputs/analysis/ppo_bc_swish_warmstart_step0_export_fidelity.json",
+    "status": "PASS_PPO_BC_WARMSTART_STEP0_EXPORT_FIDELITY",
+    "checkpoint": "outputs/analysis/ppo_bc_swish_warmstart_step0_checkpoint",
+    "onnx": "outputs/analysis/ppo_bc_swish_warmstart_step0.onnx",
+    "samples_checked": 2048,
+    "mae": 0.0000000446626877703693,
+    "p95_abs_error": 0.00000011920928955078125,
+    "max_abs_error": 0.00000035762786865234375
+  },
+  "closed_loop_gate": {
+    "artifact": "outputs/analysis/PPO_BC_SWISH_WARMSTART_STEP0_VALIDATION_FITTED_BACKLASH.md",
+    "json": "outputs/analysis/ppo_bc_swish_warmstart_step0_validation_fitted_backlash.json",
+    "task": "flat_terrain_backlash",
+    "command_x": 0.08,
+    "bridge_mode": "fitted",
+    "duration_s": 10.0,
+    "seeds": [0, 1, 2, 3, 4, 5, 6, 7],
+    "runs": 8,
+    "falls": 1,
+    "duration_complete": 7,
+    "mean_vx_m_s": 0.011529785629007452,
+    "mean_track_ratio": 0.14412232036259313,
+    "sent_velocity_p95_range_rad_s": [3.439293873310089, 3.800178897380829],
+    "tracking_p95_range_rad": [0.25839880630373955, 0.2874300897121429],
+    "seed5": {
+      "samples": 74,
+      "termination": "fall_or_nan",
+      "mean_vx_m_s": -0.19757338099026878,
+      "track_ratio": -2.4696672623783595,
+      "base_height_min_m": 0.07165896147489548
+    }
+  },
+  "decision": "PLAN_IMPROVE_SWISH_WARMSTART_SEED5",
+  "stop_rules": [
+    "do not start PPO updates from this checkpoint yet",
+    "no robot validation",
+    "no deployment",
+    "no stress bridge gate"
+  ]
+}
