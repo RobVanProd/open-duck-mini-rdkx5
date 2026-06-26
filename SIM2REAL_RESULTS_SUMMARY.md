@@ -6366,3 +6366,34 @@ motion. The current blocker is therefore behavior preservation during
 fine-tuning, not target-rate envelope margin or basic x=0 stability. The next
 offline implementation should add a state-conditioned teacher-action or
 behavior-prior term before launching another A100 training run.
+
+That behavior-prior implementation was added and tested:
+
+```text
+artifact: outputs/analysis/CMD_PITCH_RL_2P25_FINETUNE_BEHAVIOR_PRIOR_V1_RESULT.md
+status: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
+training: PASS_SMOKE_RUN, 92160 exported PPO timesteps
+```
+
+The A100 run completed training, but the Colab workflow disappeared during the
+post-training gate before writing an exit sentinel. The final ONNX was recovered
+and evaluated locally on CPU:
+
+```text
+x=0.0:
+  status: PASS_CANDIDATE_SIM_GATE
+  max pitch tracking p95: 0.0618 rad
+
+x=0.08:
+  status: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
+  fitted mean vx: 0.0001 m/s
+  fitted command tracking ratio: 0.0015
+  max sent target velocity p95: 0.4586 rad/s
+  max pitch tracking p95: 0.0772 rad
+```
+
+The weak state-conditioned MLP behavior prior did not preserve forward walking.
+It produced another stable, low-rate standstill. The next step should pivot away
+from scalar PPO and weak-prior sweeps toward a larger selector-generated
+on-distribution dataset plus BC/PPO warm start, or a stronger behavior objective
+that anchors the actual closed-loop walking manifold.

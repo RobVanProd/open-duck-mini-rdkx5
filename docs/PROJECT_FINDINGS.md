@@ -2676,3 +2676,43 @@ low-rate standstill. The next training implementation should add a
 state-conditioned teacher-action or behavior-prior regularizer during early PPO
 fine-tuning. Another scalar PPO-parameter sweep is unlikely to be the right
 next move.
+
+A third A100 PPO fine-tune added a default-off behavior-prior hook in the
+Playground runner and trained with a state-conditioned teacher-action prior:
+
+```text
+artifact: outputs/analysis/CMD_PITCH_RL_2P25_FINETUNE_BEHAVIOR_PRIOR_V1_RESULT.md
+status: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
+training: PASS_SMOKE_RUN, 92160 exported PPO timesteps
+behavior prior: ppo_loc_swish_cmd_pitch_rl_2p25_candidate/candidate_mlp.npz
+behavior prior scale: -0.2
+```
+
+The Colab worker disappeared during the post-training gate before writing an
+exit sentinel, but the final ONNX and training summary were recovered from the
+partial artifact and both gates were rerun locally on CPU.
+
+Result:
+
+```text
+x=0.0:
+  status: PASS_CANDIDATE_SIM_GATE
+  max pitch tracking p95: 0.0618 rad
+  max sent target velocity p95: 0.2775 rad/s
+
+x=0.08:
+  status: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
+  fitted mean local vx: 0.0001 m/s
+  fitted command tracking ratio: 0.0015
+  stress command tracking ratio: 0.0029
+  max sent target velocity p95: 0.4586 rad/s
+  max pitch tracking p95: 0.0772 rad
+  action saturation: 0.0%
+```
+
+This is another clear standstill regression. The behavior prior made the policy
+stable and actuator-safe, but did not preserve the warm-start gait. It is now
+unlikely that another scalar PPO sweep or weak MLP teacher prior is the right
+next step. The selector/teacher result should be treated as a data source for a
+larger on-distribution BC plus PPO warm-start, or the behavior objective must
+anchor the actual walking manifold more directly.
