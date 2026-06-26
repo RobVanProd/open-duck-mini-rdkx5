@@ -577,7 +577,7 @@ def run_closed_loop_rollout(
         done = done.astype(reward.dtype)
         return state.replace(data=data, obs=obs, reward=reward, done=done), pre_rate_limit, sent_target
 
-    def predict_action(obs: np.ndarray) -> np.ndarray:
+    def predict_action(obs: np.ndarray, blend_alpha_override: float | None = None) -> np.ndarray:
         if model["kind"] == "linear":
             return predict_ridge(obs, model["weights"], model["norm"]).reshape(-1)
         if model["kind"] == "knn":
@@ -588,7 +588,7 @@ def run_closed_loop_rollout(
                 model["norm"],
                 int(model["k"]),
             ).reshape(-1)
-        if model["kind"] == "blend":
+        if model["kind"] in {"blend", "dwell_blend"}:
             linear_pred = predict_ridge(obs, model["weights"], model["linear_norm"])
             knn_pred = predict_knn(
                 obs,
@@ -597,7 +597,7 @@ def run_closed_loop_rollout(
                 model["knn_norm"],
                 int(model["k"]),
             )
-            alpha = float(model["blend_alpha"])
+            alpha = float(model["blend_alpha"] if blend_alpha_override is None else blend_alpha_override)
             return np.clip(alpha * knn_pred + (1.0 - alpha) * linear_pred, -1.0, 1.0).reshape(-1)
         if model["kind"] == "mlp":
             return predict_mlp_np(obs, model["params"], model["norm"]).reshape(-1)
@@ -612,9 +612,20 @@ def run_closed_loop_rollout(
         state.info["command"] = command
         state = refresh_obs_jit(state)
         records = []
+        double_support_streak = 0
         for tick in range(sim_steps):
             obs = np.asarray(jax.device_get(state.obs["state"]), dtype=np.float64).reshape(1, -1)
-            action = predict_action(obs).astype(np.float32)
+            current_contacts = np.asarray(jax.device_get(state.info["last_contact"]), dtype=bool).reshape(-1)
+            double_support = bool(current_contacts.size >= 2 and bool(np.all(current_contacts[:2])))
+            double_support_streak = double_support_streak + 1 if double_support else 0
+            blend_alpha_used = None
+            if model["kind"] == "dwell_blend":
+                blend_alpha_used = (
+                    float(model["dwell_blend_alpha"])
+                    if double_support_streak >= int(model["dwell_trigger_ticks"])
+                    else float(model["blend_alpha"])
+                )
+            action = predict_action(obs, blend_alpha_override=blend_alpha_used).astype(np.float32)
             state, pre_rate, sent_target = step_bc_jit(state, jp.asarray(action))
             qpos = np.asarray(jax.device_get(state.data.qpos), dtype=float)
             base_addr = int(env._floating_base_qpos_addr)
@@ -633,6 +644,8 @@ def run_closed_loop_rollout(
                 "seed": seed,
                 "command": [args.command_x, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
                 "action": action.astype(float).tolist(),
+                "blend_alpha_used": blend_alpha_used,
+                "double_support_streak": double_support_streak,
                 "target_pre_rate_limit_rad": np.asarray(jax.device_get(pre_rate), dtype=float).tolist(),
                 "sent_target_rad": np.asarray(jax.device_get(sent_target), dtype=float).tolist(),
                 "actual_position_rad": actual.tolist(),
@@ -754,6 +767,8 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         f"- model_kind: `{payload['fit']['model_kind']}`",
         f"- knn_k: `{payload.get('knn_k')}`",
         f"- blend_alpha: `{payload.get('blend_alpha')}`",
+        f"- dwell_blend_alpha: `{payload.get('dwell_blend_alpha')}`",
+        f"- dwell_trigger_ticks: `{payload.get('dwell_trigger_ticks')}`",
         f"- best_alpha: `{payload['fit']['best_alpha']}`",
         f"- train_rmse: `{fmt(payload['fit']['train']['rmse'])}`",
         f"- train_mae: `{fmt(payload['fit']['train']['mae'])}`",
@@ -891,9 +906,15 @@ def main() -> int:
     parser.add_argument("--duration-s", type=float, default=3.0)
     parser.add_argument("--seeds", default="0,2")
     parser.add_argument("--ridge-alphas", default="1e-6,1e-4,1e-2,1,100")
-    parser.add_argument("--model-kind", choices=["linear", "knn", "blend", "mlp"], default="linear")
+    parser.add_argument(
+        "--model-kind",
+        choices=["linear", "knn", "blend", "dwell_blend", "mlp"],
+        default="linear",
+    )
     parser.add_argument("--knn-k", type=int, default=5)
     parser.add_argument("--blend-alpha", type=float, default=0.75)
+    parser.add_argument("--dwell-blend-alpha", type=float, default=1.0)
+    parser.add_argument("--dwell-trigger-ticks", type=int, default=20)
     parser.add_argument("--mlp-hidden-sizes", default="128,128")
     parser.add_argument("--mlp-steps", type=int, default=2000)
     parser.add_argument("--mlp-batch-size", type=int, default=512)
@@ -985,12 +1006,12 @@ def main() -> int:
                 "norm": np.stack([mean, std], axis=0),
                 "k": int(args.knn_k),
             }
-        elif args.model_kind == "blend":
+        elif args.model_kind in {"blend", "dwell_blend"}:
             mean = samples.observations.mean(axis=0)
             std = samples.observations.std(axis=0)
             std = np.where(std < 1.0e-8, 1.0, std)
             model = {
-                "kind": "blend",
+                "kind": args.model_kind,
                 "weights": fit["weights"],
                 "linear_norm": fit["norm"],
                 "train_x": samples.observations,
@@ -998,6 +1019,8 @@ def main() -> int:
                 "knn_norm": np.stack([mean, std], axis=0),
                 "k": int(args.knn_k),
                 "blend_alpha": float(args.blend_alpha),
+                "dwell_blend_alpha": float(args.dwell_blend_alpha),
+                "dwell_trigger_ticks": int(args.dwell_trigger_ticks),
             }
         elif args.model_kind == "mlp":
             assert mlp_fit is not None
@@ -1066,6 +1089,8 @@ def main() -> int:
         "smoke_model_kind": args.model_kind,
         "knn_k": int(args.knn_k),
         "blend_alpha": float(args.blend_alpha),
+        "dwell_blend_alpha": float(args.dwell_blend_alpha),
+        "dwell_trigger_ticks": int(args.dwell_trigger_ticks),
         "rollout": rollout,
     }
     output_json = Path(args.output_json)

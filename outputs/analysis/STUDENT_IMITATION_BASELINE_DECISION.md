@@ -103,6 +103,23 @@ every one of those coefficients moved seeds `0/2/3/5/6` and froze `1/4/7`.
 At `0.90`, seed `3` terminates again. Further global alpha sweeps are not a
 promising branch.
 
+A simple double-support dwell selector was also tested:
+
+```text
+base blend: 0.80
+dwell blend: 1.00 / raw kNN
+
+trigger 5 ticks:
+  seed 3 terminates again
+
+trigger 10 or 20 ticks:
+  same split as blend 0.80
+```
+
+This rules out the simplest state-conditioned blend switch. The next student
+needs closed-loop training/selection that produces a better local action for
+double-support freeze states, not just a later switch to raw kNN.
+
 ## Required Next Design
 
 - Train or select using closed-loop rollouts, not only offline action loss.
@@ -131,6 +148,8 @@ promising branch.
 - Do not call blend `0.80` solved; it is only the current best cheap baseline.
 - Do not keep sweeping one global blend alpha; `0.75-0.88` have the same
   moving/freeze split and `0.90` reintroduces the seed-3 fall.
+- Do not use the simple dwell-to-raw-kNN selector as the solution; early dwell
+  switching terminates seed 3 and later switching preserves the freeze.
 
 ## Current Next Step
 

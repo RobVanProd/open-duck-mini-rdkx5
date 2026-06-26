@@ -245,6 +245,63 @@
       ]
     }
   ],
+  "dwell_blend_sweep": [
+    {
+      "base_blend_alpha": 0.8,
+      "dwell_blend_alpha": 1.0,
+      "dwell_trigger_ticks": 5,
+      "moving_seeds": [
+        0,
+        2,
+        5,
+        6
+      ],
+      "frozen_seeds": [
+        1,
+        4,
+        7
+      ],
+      "terminated_seeds": [
+        3
+      ]
+    },
+    {
+      "base_blend_alpha": 0.8,
+      "dwell_blend_alpha": 1.0,
+      "dwell_trigger_ticks": 10,
+      "moving_seeds": [
+        0,
+        2,
+        3,
+        5,
+        6
+      ],
+      "frozen_seeds": [
+        1,
+        4,
+        7
+      ],
+      "terminated_seeds": []
+    },
+    {
+      "base_blend_alpha": 0.8,
+      "dwell_blend_alpha": 1.0,
+      "dwell_trigger_ticks": 20,
+      "moving_seeds": [
+        0,
+        2,
+        3,
+        5,
+        6
+      ],
+      "frozen_seeds": [
+        1,
+        4,
+        7
+      ],
+      "terminated_seeds": []
+    }
+  ],
   "required_next_design": [
     "train or select using closed-loop rollouts, not only offline action loss",
     "preserve kNN-like local motion while enforcing linear/sequence-like smoothness",
@@ -264,6 +321,7 @@
     "Do not assume pairwise target-rate or observation-consistency regularization solves closed-loop rate saturation.",
     "Do not optimize supervised action error alone.",
     "Do not call blend 0.80 solved; it is only the current best cheap baseline.",
-    "Do not keep sweeping one global blend alpha; 0.75-0.88 have the same moving/freeze split and 0.90 reintroduces the seed-3 fall."
+    "Do not keep sweeping one global blend alpha; 0.75-0.88 have the same moving/freeze split and 0.90 reintroduces the seed-3 fall.",
+    "Do not use the simple dwell-to-raw-kNN selector as the solution; early dwell switching terminates seed 3 and later switching preserves the freeze."
   ]
 }

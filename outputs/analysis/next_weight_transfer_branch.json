@@ -179,7 +179,8 @@
     "Blending kNN with the linear ridge model is useful but not sufficient. Blend 0.75 and 0.80 both complete all eight seeds and preserve five moving seeds; blend 0.80 is the best cheap baseline because moving-seed sent-target velocity p95 stays around 2.42-2.47 rad/s while the seed-3 fall is gone. The remaining failure is seed-dependent freeze on seeds 1, 4, and 7. Blend 0.90 and kNN k=3 both reintroduce a seed-3 fall/reverse and are worse than blend 0.80.",
     "A traced blend 0.80 replay classifies that remaining freeze as HOLD_FREEZE_LOW_ACTION_DOUBLE_SUPPORT: moving seeds spend about 46.24% in single support with pitch-chain sent-target velocity p95 around 3.19 rad/s, while frozen seeds spend about 97.20% in double support with pitch-chain sent-target velocity p95 around 0.40 rad/s.",
     "The traced raw kNN k=5 replay exposes the global-blend tradeoff: raw kNN moves seed 1 but seed 3 falls/reverses after 79 samples, while blend 0.80 rescues seed 3 but freezes seed 1. Seeds 4 and 7 freeze in both.",
-    "A narrow global-blend sweep (0.75, 0.80, 0.82, 0.85, 0.88, 0.90) confirms there is no scalar-alpha notch: 0.75-0.88 all move only seeds 0/2/3/5/6 and freeze 1/4/7; 0.90 reintroduces the seed-3 termination."
+    "A narrow global-blend sweep (0.75, 0.80, 0.82, 0.85, 0.88, 0.90) confirms there is no scalar-alpha notch: 0.75-0.88 all move only seeds 0/2/3/5/6 and freeze 1/4/7; 0.90 reintroduces the seed-3 termination.",
+    "A simple double-support dwell selector also fails: switching to raw kNN after 5 double-support ticks reintroduces the seed-3 termination, while switching after 10 or 20 ticks preserves the blend 0.80 freeze pattern."
   ],
   "required_next_design": [
     "design a reviewed state-conditioned imitation/pretraining experiment from the curated low-rate closed-loop teacher-window manifest",
@@ -189,6 +190,7 @@
     "beat blend 0.80: keep zero terminations and recover forward motion on at least one of seeds 1, 4, and 7",
     "add closed-loop selection pressure against quiet double-support dwell; further smoothing alone is likely to preserve the freeze",
     "avoid treating one global kNN/linear blend coefficient as the final selector; the next attempt should be state-conditioned or closed-loop-selected",
+    "do not treat a dwell-to-raw-kNN switch as sufficient; it was tested and did not beat blend 0.80",
     "grade the student on coherent forward motion and max-joint pitch-chain p95 target velocity, not only mean pitch-chain target velocity",
     "evaluate any learned student with longer multi-seed closed-loop gates before treating the kNN smoke as meaningful beyond proof-of-dataset",
     "do not promote a student path unless it beats the 8-seed kNN gate by preserving forward motion across seeds without fall/reverse or freeze modes"

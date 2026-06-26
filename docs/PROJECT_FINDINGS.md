@@ -924,6 +924,32 @@ So the next attempt should not keep sweeping global blend alpha. It needs
 state-conditioned or closed-loop-selected imitation that can apply different
 motion/smoothing tradeoffs in different rollout states.
 
+A first state-conditioned selector was tested as `dwell_blend`: base blend
+`0.80`, switch to raw kNN (`1.00`) after double-support dwell. It did not solve
+the split:
+
+```text
+trigger 5 ticks:
+  moving seeds: 0, 2, 5, 6
+  frozen seeds: 1, 4, 7
+  terminated seeds: 3
+
+trigger 10 ticks:
+  moving seeds: 0, 2, 3, 5, 6
+  frozen seeds: 1, 4, 7
+  terminated seeds: none
+
+trigger 20 ticks:
+  moving seeds: 0, 2, 3, 5, 6
+  frozen seeds: 1, 4, 7
+  terminated seeds: none
+```
+
+So simply switching to raw kNN after double-support dwell is either too late to
+help the frozen seeds or early enough to bring back the seed-3 lunge. The next
+student must learn/select a genuinely better local action, not only choose
+between linear, blend, and raw kNN.
+
 The focused student decision artifact is:
 
 ```text

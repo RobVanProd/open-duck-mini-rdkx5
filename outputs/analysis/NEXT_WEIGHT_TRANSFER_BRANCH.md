@@ -241,6 +241,9 @@ and `7` still freeze near standstill.
 - A narrow global-blend sweep (`0.75`, `0.80`, `0.82`, `0.85`, `0.88`, `0.90`)
   confirms there is no scalar-alpha notch: `0.75-0.88` all move only seeds
   `0/2/3/5/6` and freeze `1/4/7`; `0.90` reintroduces the seed-3 termination.
+- A simple double-support dwell selector also fails: switching to raw kNN after
+  5 double-support ticks reintroduces the seed-3 termination, while switching
+  after 10 or 20 ticks preserves the blend `0.80` freeze pattern.
 
 ## Required Next Design
 
@@ -259,6 +262,8 @@ and `7` still freeze near standstill.
   smoothing alone is likely to preserve the freeze
 - avoid treating one global kNN/linear blend coefficient as the final selector;
   the next attempt should be state-conditioned or closed-loop-selected
+- do not treat a dwell-to-raw-kNN switch as sufficient; it was tested and did
+  not beat blend `0.80`
 - grade the student on coherent forward motion and max-joint pitch-chain p95
   target velocity, not only mean pitch-chain target velocity
 - evaluate any learned student with longer multi-seed closed-loop gates before
