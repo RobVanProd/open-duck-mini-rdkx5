@@ -127,11 +127,31 @@
     "moving_pitch_chain_target_velocity_p95_rad_s_mean": 3.1944,
     "frozen_pitch_chain_target_velocity_p95_rad_s_mean": 0.3986
   },
+  "knn5_seed_mode_analysis": {
+    "artifact": "outputs/analysis/KNN5_SEED_MODE_ANALYSIS.md",
+    "status": "HOLD_FREEZE_DOUBLE_SUPPORT",
+    "moving_seeds": [
+      0,
+      1,
+      2,
+      5,
+      6
+    ],
+    "fall_or_reverse_seeds": [
+      3
+    ],
+    "double_support_freeze_seeds": [
+      4,
+      7
+    ],
+    "tradeoff": "Raw kNN recovers seed 1 but seed 3 falls/reverses. Blend 0.80 rescues seed 3 but freezes seed 1. Seeds 4 and 7 freeze in both."
+  },
   "required_next_design": [
     "train or select using closed-loop rollouts, not only offline action loss",
     "preserve kNN-like local motion while enforcing linear/sequence-like smoothness",
     "beat blend 0.80: no terminations and more than 5/8 moving seeds",
     "recover seeds 1, 4, and 7 from low-action double-support dwell into alternating single support",
+    "use state-conditioned or closed-loop-selected imitation rather than one global kNN/linear blend coefficient",
     "penalize or reject candidates whose closed-loop sent-target p95 reaches 5.24 rad/s",
     "grade on all eight seeds for at least 5s before any longer run",
     "gate on forward motion, fall/reverse count, near-standstill count, and max-joint pitch-chain p95 target velocity",

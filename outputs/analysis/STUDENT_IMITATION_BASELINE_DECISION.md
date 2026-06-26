@@ -83,6 +83,21 @@ frozen seeds 1/4/7:
 This means the next student must add closed-loop pressure against quiet
 double-support dwell, not merely smooth the kNN policy further.
 
+The traced raw kNN `k=5` replay clarifies the tradeoff:
+
+```text
+raw kNN moving seeds: 0, 1, 2, 5, 6
+raw kNN seed 3: fall/reverse after 79 samples
+raw kNN seeds 4/7: double-support freeze
+
+blend 0.80 moving seeds: 0, 2, 3, 5, 6
+blend 0.80 seeds 1/4/7: low-action double-support freeze
+```
+
+A single global blend cannot solve all seeds. Seed `1` needs more kNN-local
+motion than blend `0.80`, seed `3` needs less kNN aggression than raw kNN, and
+seeds `4`/`7` need an additional anti-double-support mechanism.
+
 ## Required Next Design
 
 - Train or select using closed-loop rollouts, not only offline action loss.
@@ -90,6 +105,8 @@ double-support dwell, not merely smooth the kNN policy further.
 - Beat blend `0.80`: no terminations and more than 5/8 moving seeds.
 - Specifically recover seeds `1`, `4`, and `7` from low-action double-support
   dwell into alternating single support.
+- Do not rely on one global kNN/linear blend coefficient; the traced kNN/blend
+  comparison shows the seed failures need state-conditioned selection.
 - Penalize or reject candidates whose closed-loop sent-target p95 reaches
   `5.24 rad/s`.
 - Grade on all eight seeds for at least `5s` before any longer run.

@@ -30,10 +30,11 @@
     "source_skew_warning": false
   },
   "fit": {
+    "model_kind": "knn",
     "best_alpha": 1.0,
     "alpha_grid": [
       {
-        "alpha": 1e-06,
+        "alpha": 0.000001,
         "train_mae": 0.015231083246948721,
         "train_p95_abs_error": 0.04356596287618869,
         "train_max_abs_error": 0.5373771825191307
@@ -72,6 +73,7 @@
       "max_abs_error": 0.5298348783360367,
       "pred_action_saturation_pct": 0.0
     },
+    "source_holdout_model_kind": "ridge",
     "source_holdout": [
       {
         "held_out_source": "published_policy_command_straight_x008_seed0/trace_full_obs_footpos.jsonl",
@@ -319,11 +321,14 @@
     "warnings": [
       "none"
     ],
+    "consecutive_pair_count": 2342,
     "coefficient_norm": 0.8615775345112651,
-    "intercept_norm": 1.3969377899379143
+    "intercept_norm": 1.3969377899379143,
+    "mlp": null
   },
   "smoke_model_kind": "knn",
   "knn_k": 5,
+  "blend_alpha": 0.75,
   "rollout": {
     "status": "HOLD_BC_REPLAY_TERMINATED",
     "model_kind": "knn",
@@ -383,7 +388,8 @@
           "01": 26.0,
           "10": 25.2,
           "11": 48.8
-        }
+        },
+        "trace_jsonl": "outputs/analysis/closed_loop_teacher_dataset_knn5_bc_gate_x008_traces/seed_000.jsonl"
       },
       "seed_001": {
         "status": "PASS_ROLLOUT_COMPLETED",
@@ -403,7 +409,8 @@
           "01": 26.8,
           "10": 27.6,
           "11": 45.6
-        }
+        },
+        "trace_jsonl": "outputs/analysis/closed_loop_teacher_dataset_knn5_bc_gate_x008_traces/seed_001.jsonl"
       },
       "seed_002": {
         "status": "PASS_ROLLOUT_COMPLETED",
@@ -423,7 +430,8 @@
           "01": 26.0,
           "10": 26.0,
           "11": 48.0
-        }
+        },
+        "trace_jsonl": "outputs/analysis/closed_loop_teacher_dataset_knn5_bc_gate_x008_traces/seed_002.jsonl"
       },
       "seed_003": {
         "status": "HOLD_ROLLOUT_TERMINATED",
@@ -444,7 +452,8 @@
           "01": 6.329113924050633,
           "10": 24.050632911392405,
           "11": 68.35443037974683
-        }
+        },
+        "trace_jsonl": "outputs/analysis/closed_loop_teacher_dataset_knn5_bc_gate_x008_traces/seed_003.jsonl"
       },
       "seed_004": {
         "status": "PASS_ROLLOUT_COMPLETED",
@@ -464,7 +473,8 @@
           "01": 1.6,
           "10": 0.4,
           "11": 98.0
-        }
+        },
+        "trace_jsonl": "outputs/analysis/closed_loop_teacher_dataset_knn5_bc_gate_x008_traces/seed_004.jsonl"
       },
       "seed_005": {
         "status": "PASS_ROLLOUT_COMPLETED",
@@ -485,7 +495,8 @@
           "01": 23.599999999999998,
           "10": 23.599999999999998,
           "11": 52.0
-        }
+        },
+        "trace_jsonl": "outputs/analysis/closed_loop_teacher_dataset_knn5_bc_gate_x008_traces/seed_005.jsonl"
       },
       "seed_006": {
         "status": "PASS_ROLLOUT_COMPLETED",
@@ -505,7 +516,8 @@
           "01": 28.4,
           "10": 25.6,
           "11": 46.0
-        }
+        },
+        "trace_jsonl": "outputs/analysis/closed_loop_teacher_dataset_knn5_bc_gate_x008_traces/seed_006.jsonl"
       },
       "seed_007": {
         "status": "PASS_ROLLOUT_COMPLETED",
@@ -524,7 +536,8 @@
         "contact_pct": {
           "01": 3.2,
           "11": 96.8
-        }
+        },
+        "trace_jsonl": "outputs/analysis/closed_loop_teacher_dataset_knn5_bc_gate_x008_traces/seed_007.jsonl"
       }
     }
   }

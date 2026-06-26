@@ -17,6 +17,9 @@ It is not PPO training and does not produce a deployable policy.
 
 ## Supervised Fit
 
+- model_kind: `knn`
+- knn_k: `5`
+- blend_alpha: `0.75`
 - best_alpha: `1.0`
 - train_rmse: `0.0226`
 - train_mae: `0.0152`
@@ -24,8 +27,9 @@ It is not PPO training and does not produce a deployable policy.
 - train_max_abs_error: `0.5298`
 - pred_action_saturation_pct: `0.0000`
 - sample_to_parameter_ratio: `4.5343`
+- consecutive_pair_count: `2342`
 
-### Source Holdout
+### Source Holdout (ridge baseline)
 
 | held_out_source | status | train_samples | test_samples | mae | p95_abs_error | max_abs_error |
 |---|---|---:|---:|---:|---:|---:|

@@ -234,6 +234,10 @@ and `7` still freeze near standstill.
   in single support with pitch-chain sent-target velocity p95 around
   `3.19 rad/s`, while frozen seeds spend about `97.20%` in double support with
   pitch-chain sent-target velocity p95 around `0.40 rad/s`.
+- The traced raw kNN `k=5` replay exposes the global-blend tradeoff: raw kNN
+  moves seed `1` but seed `3` falls/reverses after 79 samples, while blend
+  `0.80` rescues seed `3` but freezes seed `1`. Seeds `4` and `7` freeze in
+  both.
 
 ## Required Next Design
 
@@ -250,6 +254,8 @@ and `7` still freeze near standstill.
   least one of seeds `1`, `4`, and `7`
 - add closed-loop selection pressure against quiet double-support dwell; further
   smoothing alone is likely to preserve the freeze
+- avoid treating one global kNN/linear blend coefficient as the final selector;
+  the next attempt should be state-conditioned or closed-loop-selected
 - grade the student on coherent forward motion and max-joint pitch-chain p95
   target velocity, not only mean pitch-chain target velocity
 - evaluate any learned student with longer multi-seed closed-loop gates before

@@ -892,6 +892,22 @@ is a quiet double-support dwell: on seeds 1/4/7 the model produces too little
 closed-loop target motion after startup, never creates alternating single
 support, and therefore never propels forward.
 
+The matching traced raw kNN `k=5` replay shows the tradeoff:
+
+```text
+outputs/analysis/KNN5_SEED_MODE_ANALYSIS.md
+status: HOLD_FREEZE_DOUBLE_SUPPORT
+moving seeds: 0, 1, 2, 5, 6
+fall/reverse seed: 3
+double-support freeze seeds: 4, 7
+```
+
+Compared with blend `0.80`, raw kNN recovers seed `1` but loses seed `3`.
+Seeds `4` and `7` freeze in both. The next student therefore needs an adaptive
+closed-loop selection rule, not a single global kNN/linear blend: it must retain
+enough kNN-local motion to escape double support on seed `1`, smooth the seed
+`3` lunge, and add a separate pressure to recover seeds `4` and `7`.
+
 The focused student decision artifact is:
 
 ```text
