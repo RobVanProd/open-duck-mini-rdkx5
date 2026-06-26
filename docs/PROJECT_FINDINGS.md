@@ -1426,3 +1426,45 @@ one-joint hard clipping is a useful diagnostic and a partial mitigation, but
 not the next deployable path. The next curation pass should reject or relabel
 bad right-knee phase/contact windows, or apply dynamics-aware multi-joint
 smoothing, instead of just pushing the right-knee cap lower.
+
+The published BEST_WALK policy was then compared across command cells using the
+same upstream-main `flat_terrain_backlash` closed-loop propulsion audit:
+
+```text
+outputs/analysis/PUBLISHED_POLICY_COMMAND_PROPULSION_COMPARISON.md
+status: PASS_POLICY_COMMAND_PROPULSION_COMPARISON
+```
+
+Result:
+
+```text
+straight x=0.04:
+  duration complete: 8 / 8
+  moving seeds: 0 / 8
+  envelope-safe seeds: 8 / 8
+  mean local vx: 0.0019 m/s
+  single support: 3.65%
+
+upstream nearest turning key x=0.074, y=-0.037, yaw=-0.074:
+  duration complete: 8 / 8
+  moving seeds: 7 / 8
+  envelope-safe seeds: 1 / 8
+  mean local vx: 0.0540 m/s
+  max pitch-chain sent-target p95: 5.2400 rad/s
+
+straight x=0.08:
+  duration complete: 8 / 8
+  moving seeds: 7 / 8
+  envelope-safe seeds: 0 / 8
+  mean local vx: 0.0640 m/s
+  max pitch-chain sent-target p95: 5.2400 rad/s
+```
+
+This means the earlier straight `x=0.04` walking gate was not a proven-easy
+cell; even the published policy mostly stands there while staying within the
+measured pitch-chain envelope. The moving command cells confirm that
+closed-loop walking exists in sim, but they also confirm the same right-knee
+rate mechanism: walking uses target rates near the runtime slew ceiling. The
+next training/eval re-entry should extract the single-support/CoM mechanism
+from the moving command cells while reducing right-knee target rate, rather
+than assuming BEST_WALK is already an in-envelope walking proof.

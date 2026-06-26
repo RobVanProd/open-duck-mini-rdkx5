@@ -186,6 +186,39 @@ The failed path is the open-loop/reference-target controller path. The next
 offline branch should mine the published policy's closed-loop contact and
 propulsion mechanism before returning to teacher generation.
 
+The command-specific follow-up shows that this result is not uniform across
+low-speed commands:
+
+```text
+outputs/analysis/PUBLISHED_POLICY_COMMAND_PROPULSION_COMPARISON.md
+status: PASS_POLICY_COMMAND_PROPULSION_COMPARISON
+```
+
+Summary:
+
+| command | moving seeds | envelope-safe seeds | mean local vx | single support | max pitch sent-target p95 |
+|---|---:|---:|---:|---:|---:|
+| straight `x=0.04` | 0 / 8 | 8 / 8 | 0.0019 m/s | 3.65% | 2.9633 rad/s |
+| upstream nearest `x=0.074, y=-0.037, yaw=-0.074` | 7 / 8 | 1 / 8 | 0.0540 m/s | 44.80% | 5.2400 rad/s |
+| straight `x=0.08` | 7 / 8 | 0 / 8 | 0.0640 m/s | 49.40% | 5.2400 rad/s |
+
+This tightens the conclusion:
+
+```text
+BEST_WALK proves closed-loop walking exists in this sim contract.
+It does not prove stable in-envelope walking at the moving command cells tested.
+At straight x=0.04, BEST_WALK stays inside the envelope but mostly stands.
+At x=0.08 and the upstream nearest turning key, BEST_WALK walks but uses
+right-knee target rates near the 5.24 rad/s slew ceiling.
+```
+
+So straight `x=0.04` should not be treated as the first proof-of-walking gate.
+It is better interpreted as a no/low-motion posture cell unless a policy has
+independently demonstrated walking there. Future training/eval work should
+start mechanism extraction from command cells where BEST_WALK actually enters
+single support, while explicitly reducing the right-knee rate mechanism that
+keeps those cells outside the measured actuator envelope.
+
 ## Non-Goals
 
 - robot tests

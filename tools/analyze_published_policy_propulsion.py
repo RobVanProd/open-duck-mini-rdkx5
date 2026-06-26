@@ -363,20 +363,24 @@ def reference_digest(path: Path | None) -> dict[str, Any] | None:
 
 def write_markdown(path: Path, payload: dict[str, Any]) -> None:
     aggregate_payload = payload["aggregate"]
+    duration_count = aggregate_payload["duration_complete_count"]
+    seed_count = aggregate_payload["seed_count"]
+    moving_count = aggregate_payload["moving_seed_count_ratio_ge_0p5"]
+    weak_count = aggregate_payload["weak_seed_count_ratio_lt_0p5"]
     lines = [
         "# Published Policy Propulsion Audit",
         "",
         f"overall_status: `{aggregate_payload['status']}`",
-        f"seed_count: `{aggregate_payload['seed_count']}`",
-        f"duration_complete_count: `{aggregate_payload['duration_complete_count']}`",
-        f"moving_seed_count_ratio_ge_0p5: `{aggregate_payload['moving_seed_count_ratio_ge_0p5']}`",
-        f"weak_seed_count_ratio_lt_0p5: `{aggregate_payload['weak_seed_count_ratio_lt_0p5']}`",
+        f"seed_count: `{seed_count}`",
+        f"duration_complete_count: `{duration_count}`",
+        f"moving_seed_count_ratio_ge_0p5: `{moving_count}`",
+        f"weak_seed_count_ratio_lt_0p5: `{weak_count}`",
         "",
         "## Executive Summary",
         "",
         "- The published `BEST_WALK_ONNX_2` policy was evaluated closed-loop in upstream-main `flat_terrain_backlash`.",
-        "- All eight seeds completed the requested horizon.",
-        "- Seven of eight seeds tracked forward command with ratio >= 0.5; seed 4 remained stable but weak.",
+        f"- {duration_count} of {seed_count} seeds completed the requested horizon.",
+        f"- {moving_count} of {seed_count} seeds tracked forward command with ratio >= 0.5; {weak_count} remained weak.",
         "- This rules out a blanket claim that upstream-main sim/morphology cannot generate forward locomotion.",
         "- The reference-target/open-loop path remains failed, so the mismatch is in controller/reference execution, not just contact friction.",
         "",

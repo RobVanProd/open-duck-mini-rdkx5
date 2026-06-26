@@ -18,27 +18,27 @@ weak_seed_count_ratio_lt_0p5: `1`
 
 | metric | mean | p50 | p95 | min | max |
 |---|---:|---:|---:|---:|---:|
-| mean_local_vx_m_s | 0.0540 | 0.0613 | 0.0655 | 0.0102 | 0.0662 |
-| command_tracking_ratio | 0.7294 | 0.8286 | 0.8856 | 0.1373 | 0.8940 |
-| body_pitch_p95_rad | 0.0650 | 0.0573 | 0.0896 | 0.0528 | 0.0967 |
-| base_height_min_m | 0.1523 | 0.1516 | 0.1566 | 0.1452 | 0.1570 |
-| single_support_pct | 44.8000 | 50.4000 | 53.3200 | 5.6000 | 53.6000 |
-| double_support_pct | 54.9500 | 49.0000 | 80.8200 | 45.6000 | 94.4000 |
-| future_vx_delta_all_0p1s | 0.0001 | -0.0002 | 0.0036 | -0.0029 | 0.0042 |
-| future_vx_delta_single_support_0p1s | 0.0042 | 0.0029 | 0.0129 | -0.0006 | 0.0167 |
+| mean_local_vx_m_s | 0.0640 | 0.0681 | 0.0730 | 0.0392 | 0.0731 |
+| command_tracking_ratio | 0.7998 | 0.8509 | 0.9129 | 0.4900 | 0.9136 |
+| body_pitch_p95_rad | 0.0646 | 0.0562 | 0.0941 | 0.0533 | 0.1013 |
+| base_height_min_m | 0.1523 | 0.1517 | 0.1565 | 0.1451 | 0.1568 |
+| single_support_pct | 49.4000 | 52.4000 | 54.3800 | 30.0000 | 54.8000 |
+| double_support_pct | 50.3500 | 47.6000 | 63.4200 | 45.2000 | 70.0000 |
+| future_vx_delta_all_0p1s | 0.0003 | -0.0003 | 0.0038 | -0.0022 | 0.0044 |
+| future_vx_delta_single_support_0p1s | 0.0030 | 0.0038 | 0.0087 | -0.0030 | 0.0099 |
 
 ## Seed Summary
 
 | seed | status | samples | termination | mean_vx | track_ratio | pitch_p95 | height_min | single_% | double_% | single_dvx_0p1s |
 |---:|---|---:|---|---:|---:|---:|---:|---:|---:|---:|
-| 0 | `PASS_CLOSED_LOOP_REPRODUCTION` | 250 | `duration_complete` | 0.0662 | 0.8940 | 0.0528 | 0.1520 | 51.6000 | 48.4000 | 0.0032 |
-| 1 | `PASS_CLOSED_LOOP_REPRODUCTION` | 250 | `duration_complete` | 0.0504 | 0.6809 | 0.0765 | 0.1511 | 44.4000 | 55.6000 | 0.0026 |
-| 2 | `PASS_CLOSED_LOOP_REPRODUCTION` | 250 | `duration_complete` | 0.0618 | 0.8347 | 0.0727 | 0.1510 | 48.4000 | 51.6000 | 0.0006 |
-| 3 | `PASS_CLOSED_LOOP_REPRODUCTION` | 250 | `duration_complete` | 0.0540 | 0.7300 | 0.0967 | 0.1570 | 49.2000 | 49.6000 | 0.0058 |
-| 4 | `PASS_CLOSED_LOOP_REPRODUCTION` | 250 | `duration_complete` | 0.0102 | 0.1373 | 0.0612 | 0.1506 | 5.6000 | 94.4000 | 0.0167 |
-| 5 | `PASS_CLOSED_LOOP_REPRODUCTION` | 250 | `duration_complete` | 0.0644 | 0.8700 | 0.0532 | 0.1452 | 53.6000 | 45.6000 | -0.0006 |
-| 6 | `PASS_CLOSED_LOOP_REPRODUCTION` | 250 | `duration_complete` | 0.0609 | 0.8226 | 0.0535 | 0.1556 | 52.8000 | 47.2000 | 0.0047 |
-| 7 | `PASS_CLOSED_LOOP_REPRODUCTION` | 250 | `duration_complete` | 0.0640 | 0.8653 | 0.0531 | 0.1558 | 52.8000 | 47.2000 | 0.0001 |
+| 0 | `PASS_CLOSED_LOOP_REPRODUCTION` | 250 | `duration_complete` | 0.0714 | 0.8925 | 0.0566 | 0.1521 | 52.4000 | 47.6000 | 0.0038 |
+| 1 | `PASS_CLOSED_LOOP_REPRODUCTION` | 250 | `duration_complete` | 0.0619 | 0.7740 | 0.0592 | 0.1513 | 48.8000 | 51.2000 | -0.0030 |
+| 2 | `PASS_CLOSED_LOOP_REPRODUCTION` | 250 | `duration_complete` | 0.0731 | 0.9136 | 0.0533 | 0.1510 | 52.4000 | 47.6000 | -0.0002 |
+| 3 | `PASS_CLOSED_LOOP_REPRODUCTION` | 250 | `duration_complete` | 0.0572 | 0.7148 | 0.1013 | 0.1568 | 50.4000 | 48.4000 | 0.0042 |
+| 4 | `PASS_CLOSED_LOOP_REPRODUCTION` | 250 | `duration_complete` | 0.0392 | 0.4900 | 0.0807 | 0.1506 | 30.0000 | 70.0000 | 0.0066 |
+| 5 | `PASS_CLOSED_LOOP_REPRODUCTION` | 250 | `duration_complete` | 0.0682 | 0.8531 | 0.0553 | 0.1451 | 53.6000 | 45.6000 | -0.0009 |
+| 6 | `PASS_CLOSED_LOOP_REPRODUCTION` | 250 | `duration_complete` | 0.0679 | 0.8487 | 0.0549 | 0.1556 | 54.8000 | 45.2000 | 0.0099 |
+| 7 | `PASS_CLOSED_LOOP_REPRODUCTION` | 250 | `duration_complete` | 0.0729 | 0.9114 | 0.0558 | 0.1558 | 52.8000 | 47.2000 | 0.0037 |
 
 ## Reference Comparison
 
