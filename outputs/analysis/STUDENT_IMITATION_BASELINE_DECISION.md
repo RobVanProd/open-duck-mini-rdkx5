@@ -1,6 +1,6 @@
 # Student Imitation Baseline Decision
 
-status: `PASS_DAGGER2_MLP_ONNX_FITTED_BRIDGE_SMOKE`
+status: `HOLD_DAGGER2_ONNX_MULTI_SEED_LOW_FORWARD_PROGRESS`
 
 This is an offline planning artifact. It does not run robot tests, SSH,
 deployment, PPO training, or runtime behavior changes.
@@ -304,13 +304,29 @@ candidate moves slowly in the standard evaluator and still needs multi-seed
 ONNX evaluation plus stress-bridge review before it can be promoted beyond an
 offline candidate.
 
+The multi-seed standard ONNX fitted-bridge review holds:
+
+```text
+outputs/analysis/source_vx_selector_trace_dagger2_mlp128_onnx_multiseed_fitted/MULTISEED_FITTED_SUMMARY.md
+status: HOLD_DAGGER2_ONNX_MULTI_SEED_LOW_FORWARD_PROGRESS
+duration complete: 6 / 8
+moving seeds with track ratio >= 0.5: 0 / 8
+moving seeds with mean local vx >= 0.02 m/s: 4 / 8
+early terminations: seeds 1 and 7
+```
+
+This means the ONNX export path works, but the exported DAgger-2 MLP is not a
+promotion candidate. The source-switch-free blend student remains the stronger
+behavior baseline.
+
 ## Required Next Design
 
-- Use the DAgger-2 ONNX candidate as the first exportable neural smoke pass.
-- Compare it against the source-switch-free blend student before promotion; the
-  blend remains stronger on closed-loop tracking ratio.
-- Run multi-seed standard ONNX evaluation before treating the candidate as more
-  than an offline artifact.
+- Use the DAgger-2 ONNX candidate as proof that compact neural export is wired,
+  not as the behavior target.
+- Keep the source-switch-free blend student as the stronger offline behavior
+  baseline.
+- The next portable student must improve multi-seed ONNX forward progress and
+  avoid early low-height terminations.
 - Do not treat the failed 128x128 MLP clones as proof that neural distillation
   is impossible; they show naive one-step MLP and simple target-rate
   regularization still overdrive.
@@ -329,7 +345,8 @@ offline candidate.
 
 - Do not deploy or run robot validation.
 - Do not call the DAgger-2 ONNX candidate robot-ready; it is only the first
-  exportable fitted-bridge smoke pass.
+  exportable fitted-bridge smoke pass and it fails multi-seed standard ONNX
+  review.
 - Do not treat the 2-seed kNN smoke as a pass.
 - Do not use aggregate sequence replay as the student.
 - Do not use plain one-step MLP BC as the student.

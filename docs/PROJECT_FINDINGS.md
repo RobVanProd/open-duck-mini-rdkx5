@@ -1231,3 +1231,21 @@ standard evaluator shows low commanded-speed tracking and the right knee still
 exceeds the fitted envelope. It remains offline-only. The next step is stricter
 offline review of the exported ONNX behavior, especially multi-seed standard
 ONNX evaluation and stress-bridge margin, before any robot-side discussion.
+
+The first multi-seed standard ONNX fitted-bridge review confirms that caveat:
+
+```text
+outputs/analysis/source_vx_selector_trace_dagger2_mlp128_onnx_multiseed_fitted/MULTISEED_FITTED_SUMMARY.md
+status: HOLD_DAGGER2_ONNX_MULTI_SEED_LOW_FORWARD_PROGRESS
+duration complete: 6 / 8
+moving seeds with track ratio >= 0.5: 0 / 8
+moving seeds with mean local vx >= 0.02 m/s: 4 / 8
+mean track ratio: 0.2526
+mean local vx: 0.0202 m/s
+early terminations: seeds 1 and 7
+```
+
+So the ONNX export path is working, but the exported DAgger-2 MLP is not a
+promotion candidate. The source-switch-free blend student remains the stronger
+offline behavior baseline; the ONNX student needs either better closed-loop
+distillation or a different portable policy class before any robot gate.

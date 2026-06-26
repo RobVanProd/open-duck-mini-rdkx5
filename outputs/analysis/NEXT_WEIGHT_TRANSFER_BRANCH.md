@@ -1,6 +1,6 @@
 # Next Weight-Transfer Branch Decision
 
-status: `PASS_DAGGER2_MLP_ONNX_FITTED_BRIDGE_SMOKE`
+status: `HOLD_DAGGER2_ONNX_MULTI_SEED_LOW_FORWARD_PROGRESS`
 
 This is an offline planning artifact. It does not run simulation,
 training, robot SSH, deployment, or hardware tests.
@@ -285,14 +285,21 @@ and `7` still freeze near standstill.
   mean local vx `0.0197 m/s`, track ratio `0.2457`, no termination. This keeps
   the candidate offline-only until multi-seed ONNX and stress-bridge margin are
   reviewed.
+- Multi-seed standard ONNX fitted-bridge review holds:
+  `HOLD_DAGGER2_ONNX_MULTI_SEED_LOW_FORWARD_PROGRESS`. Only `6 / 8` seeds
+  completed 10s, no seed reached track ratio `>= 0.5`, four seeds reached mean
+  local vx `>= 0.02 m/s`, and seeds `1` and `7` terminated early with low base
+  height. The export path works, but this candidate is not a promotion
+  candidate.
 
 ## Required Next Design
 
-- use the DAgger-2 ONNX candidate as the first exportable neural smoke pass
-- compare the DAgger-2 ONNX candidate against the source-switch-free blend
-  student before promotion; the blend still has stronger tracking ratio
-- run multi-seed standard ONNX evaluation before treating the candidate as more
-  than an offline artifact
+- use the DAgger-2 ONNX candidate as proof that compact neural export is wired,
+  not as the behavior target
+- keep the source-switch-free blend student as the stronger offline behavior
+  baseline
+- the next portable student must improve multi-seed ONNX forward progress and
+  avoid early low-height terminations
 - review stress-bridge margin before any robot-side discussion
 - do not treat the failed 128x128 MLP clones as proof that neural distillation
   is impossible; they show naive one-step MLP and simple target-rate
@@ -340,7 +347,8 @@ and `7` still freeze near standstill.
 - Do not call blend `0.80` solved; it is only the current best cheap baseline
   to beat.
 - Do not call the DAgger-2 ONNX candidate robot-ready; it is only the first
-  exportable fitted-bridge smoke pass.
+  exportable fitted-bridge smoke pass and it fails multi-seed standard ONNX
+  review.
 
 ## Non-Goals
 
