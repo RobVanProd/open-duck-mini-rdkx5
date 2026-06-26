@@ -327,6 +327,35 @@ The source is balanced enough to prototype, but not training-ready. The next
 offline gate must score 25-50 tick continuity/replay from the manifest before
 BC/export.
 
+The non-sim continuity score now passes:
+
+```text
+outputs/analysis/RELABELLED_SELECTOR_CONTINUITY_SCORE.md
+status: PASS_SELECTOR_CONTINUITY_50_TICKS
+```
+
+Summary:
+
+| metric | value |
+|---|---:|
+| runs | 101 |
+| pass runs | 98 |
+| max passing span | 96 ticks |
+| pass runs >=25 ticks | 20 |
+| pass runs >=50 ticks | 11 |
+| pass runs using relabel | 92 |
+
+Updated next branch:
+
+```text
+PLAN_RELABELLED_SELECTOR_SIM_REPLAY
+```
+
+Run a bounded offline sim replay of the top relabeled selector spans. This
+must still be no robot / no SSH / no deploy / no training. The replay gate
+should check whether the right-knee relabeled target sequence remains stable
+when stepped, not just when re-scored as a target sequence.
+
 ## Stop Rules
 
 - Do not train directly from full BEST_WALK traces.

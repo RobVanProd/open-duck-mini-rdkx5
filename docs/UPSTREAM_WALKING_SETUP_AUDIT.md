@@ -422,6 +422,29 @@ This is only a source gate. The relabeled windows have not been stepped in sim,
 and the manifest is not a training dataset until a 25-50 tick continuity/replay
 gate passes.
 
+The offline continuity score now passes that first non-sim sequence gate:
+
+```text
+tools/score_relabelled_selector_continuity.py
+outputs/analysis/RELABELLED_SELECTOR_CONTINUITY_SCORE.md
+status: PASS_SELECTOR_CONTINUITY_50_TICKS
+```
+
+Result:
+
+```text
+runs: 101
+pass runs: 98
+max passing span: 96 ticks
+pass runs >=25 ticks: 20
+pass runs >=50 ticks: 11
+pass runs using relabel: 92
+```
+
+This makes the relabeled selector source ready for a bounded sim replay
+prototype. It still should not be used for BC/export until the relabeled spans
+are stepped in sim and pass contact, target-rate, tracking, and stability gates.
+
 ## Non-Goals
 
 - robot tests

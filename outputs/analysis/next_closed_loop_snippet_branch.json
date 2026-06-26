@@ -11,7 +11,8 @@
     "knee_rate_selector_manifest": "outputs/analysis/KNEE_RATE_SELECTOR_MANIFEST.md",
     "left_stance_gap": "outputs/analysis/LEFT_STANCE_GAP_ANALYSIS.md",
     "left_stance_rate_recovery": "outputs/analysis/LEFT_STANCE_RATE_RECOVERY.md",
-    "relabelled_balanced_selector_manifest": "outputs/analysis/RELABELLED_BALANCED_SELECTOR_MANIFEST.md"
+    "relabelled_balanced_selector_manifest": "outputs/analysis/RELABELLED_BALANCED_SELECTOR_MANIFEST.md",
+    "relabelled_selector_continuity_score": "outputs/analysis/RELABELLED_SELECTOR_CONTINUITY_SCORE.md"
   },
   "findings": {
     "straight_x004": {
@@ -105,9 +106,18 @@
       "double_entries": 264,
       "right_knee_rate_cap_relabelled_entries": 343,
       "original_entries": 329
+    },
+    "relabelled_selector_continuity_score": {
+      "status": "PASS_SELECTOR_CONTINUITY_50_TICKS",
+      "runs": 101,
+      "pass_runs": 98,
+      "max_pass_run_span_ticks": 96,
+      "pass_run_25_count": 20,
+      "pass_run_50_count": 11,
+      "pass_run_with_relabel_count": 92
     }
   },
-  "recommended_next": "PLAN_SELECTOR_CONTINUITY_REPLAY_GATE: do not train yet. Score 25-50 tick continuity/replay from the relabelled balanced selector manifest before BC/export.",
+  "recommended_next": "PLAN_RELABELLED_SELECTOR_SIM_REPLAY: run a bounded offline sim replay of the top relabelled selector spans before BC/export. No robot, no SSH, no deploy, no training.",
   "stop_rules": [
     "Do not train directly from full BEST_WALK traces.",
     "Do not train directly from isolated 10-tick snippets.",

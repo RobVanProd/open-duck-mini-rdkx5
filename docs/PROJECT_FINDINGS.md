@@ -1745,3 +1745,37 @@ both stance sides and full phase-bin coverage while respecting the measured
 pitch-chain envelope in the scored windows. It is still not training-ready:
 the entries are local windows, not a verified closed-loop sequence. The next
 required artifact is a 25-50 tick continuity/replay score using this manifest.
+
+The first continuity score over that manifest now passes the offline 50-tick
+gate:
+
+```text
+tools/score_relabelled_selector_continuity.py
+outputs/analysis/RELABELLED_SELECTOR_CONTINUITY_SCORE.md
+status: PASS_SELECTOR_CONTINUITY_50_TICKS
+
+runs: 101
+pass runs: 98
+max pass span: 96 ticks
+pass runs >=25 ticks: 20
+pass runs >=50 ticks: 11
+pass runs using relabel: 92
+```
+
+Longest passing run:
+
+```text
+source: published_policy_command_straight_x008_seed1
+ticks: 154-249
+span: 96 ticks
+mean vx: 0.0719 m/s
+single support: 52.08%
+moving in envelope: 92.71%
+moving single-support in envelope: 48.96%
+pitch p95: 3.61 rad/s
+```
+
+This is the first source in this branch that has balanced stance/phase coverage
+and sustained 50+ tick offline continuity. It is still not training-ready: the
+right-knee relabeling has not been stepped through sim. The next required gate
+is a bounded sim replay of the relabeled selector spans before BC/export.
