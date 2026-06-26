@@ -102,7 +102,8 @@ def tar_filter(member: tarfile.TarInfo) -> tarfile.TarInfo | None:
         rel_parts = tuple(parts[1:]) if len(parts) > 1 else tuple(parts)
         is_allowed_path = rel_parts in allowed_analysis
         is_allowed_parent = any(path[: len(rel_parts)] == rel_parts for path in allowed_analysis)
-        if not is_allowed_path and not is_allowed_parent:
+        is_allowed_child = any(rel_parts[: len(path)] == path for path in allowed_analysis)
+        if not is_allowed_path and not is_allowed_parent and not is_allowed_child:
             return None
     if member.name.endswith((".pyc", ".pyo")):
         return None
