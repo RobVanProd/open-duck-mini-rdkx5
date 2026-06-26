@@ -2176,3 +2176,86 @@ more double support and collapse:
 
 The seed-5 fix should therefore target the weak-coverage recovery basin and
 closed-loop contact/stability behavior, not target-rate reduction.
+
+## PPO Swish Seed-5 Recovery Relabel
+
+A narrow recovery branch relabeled the failing swish PPO step-0 seed-5 trace
+with the blend teacher and retrained the same swish PPO-loc BC architecture:
+
+```text
+relabel artifact: outputs/analysis/PPO_SWISH_SEED5_RELABEL_BLEND.md
+manifest: outputs/analysis/PPO_SWISH_SEED5_RECOVERY_MANIFEST.md
+BC fit: outputs/analysis/PPO_LOC_SWISH_SEED5_RECOVERY_BC_STUDENT.md
+PPO export: outputs/analysis/PPO_BC_SWISH_SEED5_RECOVERY_STEP0_EXPORT_FIDELITY.md
+gate: outputs/analysis/PPO_BC_SWISH_SEED5_RECOVERY_STEP0_VALIDATION_FITTED_BACKLASH.md
+decision: outputs/analysis/PPO_BC_SWISH_SEED5_RECOVERY_DECISION.md
+status: HOLD_SEED5_RECOVERY_TRACE_RELABEL_INSUFFICIENT
+```
+
+The manifest added only the failing seed-5 rollout:
+
+```text
+entries: 26
+samples: 9342
+added relabeled seed-5 samples: 74
+```
+
+The supervised fit improved slightly:
+
+```text
+MAE: 0.011601
+p95 action error: 0.035147
+max action error: 0.266879
+target-rate p95: 2.2326 rad/s
+```
+
+The PPO-shaped export again passed action fidelity, so the plumbing remains
+sound. The closed-loop gate did not improve enough:
+
+```text
+prior swish step0:
+  falls: 1 / 8
+  duration complete: 7 / 8
+  mean vx: 0.0115 m/s
+  mean track ratio: 0.1441
+  max pitch velocity p95 mean: 3.7281 rad/s
+  max tracking p95 mean: 0.2659 rad
+
+seed-5 recovery step0:
+  falls: 1 / 8
+  duration complete: 7 / 8
+  mean vx: 0.0120 m/s
+  mean track ratio: 0.1496
+  max pitch velocity p95 mean: 3.9029 rad/s
+  max tracking p95 mean: 0.2733 rad
+```
+
+Seed 5 still fails in the same reverse/collapse basin:
+
+```text
+before:
+  samples: 74
+  mean vx: -0.1976 m/s
+  base height min: 0.0717 m
+  final pitch: -1.4801 rad
+  double support: 75.68%
+  nearest distance p95: 1.0276
+  nearest action L1 p95: 0.0783
+
+after:
+  samples: 75
+  mean vx: -0.1893 m/s
+  base height min: 0.0777 m
+  final pitch: -1.4773 rad
+  double support: 80.00%
+  nearest distance p95: 0.6022
+  nearest action L1 p95: 0.0409
+```
+
+This is a useful negative result. The relabel improved local dataset proximity,
+but it did not remove the closed-loop failure. The seed-5 problem is therefore
+not just one missing teacher label. It needs stronger recovery coverage or a
+loss branch that explicitly handles reverse velocity, backward pitch collapse,
+and double-support dwell around seed-5-like states.
+
+Do not start PPO from this checkpoint.

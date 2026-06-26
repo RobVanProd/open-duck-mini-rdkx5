@@ -1,0 +1,32 @@
+{
+  "status": "PASS_PPO_BC_WARMSTART_STEP0_EXPORT_FIDELITY",
+  "bc_npz": "outputs/analysis/ppo_loc_swish_seed5_recovery_candidate/candidate_mlp.npz",
+  "reference_onnx": "outputs/analysis/ppo_loc_swish_seed5_recovery_candidate/candidate.onnx",
+  "output_checkpoint": "outputs/analysis/ppo_bc_swish_seed5_recovery_step0_checkpoint",
+  "output_onnx": "outputs/analysis/ppo_bc_swish_seed5_recovery_step0.onnx",
+  "manifest": "outputs/analysis/ppo_swish_seed5_recovery_manifest.json",
+  "samples_checked": 2048,
+  "scale_logit": -2.0,
+  "scale_std": 0.1279280110429725,
+  "fidelity": {
+    "samples": 2048,
+    "mae": 4.4639016039127455e-08,
+    "rmse": 6.28193106422259e-08,
+    "p50_abs_error": 2.9802322387695312e-08,
+    "p95_abs_error": 1.1920928955078125e-07,
+    "p99_abs_error": 1.7881393432617188e-07,
+    "max_abs_error": 3.5762786865234375e-07
+  },
+  "pass_thresholds": {
+    "p95_abs_error": 1e-05,
+    "max_abs_error": 0.0001
+  },
+  "mapping": {
+    "bc_w0_b0": "policy.params.hidden_0",
+    "bc_w1_b1": "policy.params.hidden_1",
+    "bc_w2_b2": "policy.params.hidden_2",
+    "bc_w3_b3": "policy.params.hidden_3 columns 0:14",
+    "scale_logits": "policy.params.hidden_3 columns 14:28, constant",
+    "value_network": "fresh PPO initialization"
+  }
+}

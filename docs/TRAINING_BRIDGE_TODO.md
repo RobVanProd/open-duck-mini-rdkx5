@@ -5134,6 +5134,28 @@ reduce double-support dwell for seed-5-like states
 then retrain swish PPO-loc BC and rerun the 8-seed step-0 gate
 ```
 
+Seed-5 relabel branch result:
+
+```text
+artifact: outputs/analysis/PPO_BC_SWISH_SEED5_RECOVERY_DECISION.md
+status: HOLD_SEED5_RECOVERY_TRACE_RELABEL_INSUFFICIENT
+```
+
+The one-trace relabel improved nearest-neighbor proximity but did not remove
+the seed-5 reverse/fall. Do not launch PPO from
+`outputs/analysis/ppo_bc_swish_seed5_recovery_step0.onnx` or the matching
+checkpoint.
+
+Next valid warm-start work:
+
+```text
+expand recovery data beyond one failed trace
+include states before first negative vx, not only the falling rollout manifold
+add explicit reverse-velocity / backward-pitch / double-support-collapse targets or losses
+rerun the same 8-seed fitted step-0 gate
+only consider PPO after 8/8 duration-complete with no immediate reverse/fall basin
+```
+
 Stop rules:
 
 ```text

@@ -6137,3 +6137,23 @@ This confirms that an unconditioned smooth action-table random shoot is not
 enough. The next target source must encode a more structured weight-shift and
 stance-transition mechanism rather than just sampling finite-horizon joint
 targets.
+
+## Deployable Warm-Start Status
+
+The source-VX selector branch superseded the earlier morphology-wall concern:
+in-envelope forward motion exists offline under the fitted actuator bridge, but
+the passing selector is not deployable. The deployable path is a PPO-shaped
+swish BC warm-start followed by PPO only after step-0 closed-loop stability is
+cleared.
+
+Current step-0 status:
+
+```text
+artifact: outputs/analysis/PPO_BC_SWISH_SEED5_RECOVERY_DECISION.md
+status: HOLD_SEED5_RECOVERY_TRACE_RELABEL_INSUFFICIENT
+```
+
+The PPO checkpoint/ONNX export plumbing has exact action fidelity, but the
+candidate still has a seed-5 reverse/fall basin. A one-trace relabel improved
+local dataset coverage without removing that failure. Do not start PPO, deploy,
+or run robot validation from this checkpoint.
