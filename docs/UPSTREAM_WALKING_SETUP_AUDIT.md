@@ -240,6 +240,34 @@ bursts. The next teacher/candidate source should mine those moving
 single-support in-envelope windows and reject or relabel the right-knee burst
 windows, rather than copying the whole policy trace.
 
+A dedicated window miner then tested whether those low-rate ticks form
+contiguous teacher snippets:
+
+```text
+tools/mine_closed_loop_teacher_windows.py
+```
+
+Result:
+
+| window | artifact | status | passing windows |
+|---|---|---|---:|
+| 25 ticks / 0.50s | `outputs/analysis/CLOSED_LOOP_TEACHER_WINDOW_MINE.md` | `HOLD_INSUFFICIENT_CLOSED_LOOP_WINDOWS` | 0 / 1104 |
+| 10 ticks / 0.20s | `outputs/analysis/CLOSED_LOOP_TEACHER_WINDOW_MINE_10T.md` | `PASS_CURATED_CLOSED_LOOP_WINDOWS_FOUND` | 142 / 2904 |
+
+The 10-tick passes come mainly from the moving command cells:
+
+```text
+upstream nearest turning key: 76
+straight x=0.08: 63
+straight x=0.04: 3
+```
+
+This means BEST_WALK has brief envelope-safe moving single-support snippets,
+but not sustained 0.5s envelope-safe teacher windows under these criteria. The
+next source should mine the short snippets as phase/contact evidence and add a
+continuity mechanism, not clone full traces or assume the short snippets are a
+complete walking dataset.
+
 ## Non-Goals
 
 - robot tests

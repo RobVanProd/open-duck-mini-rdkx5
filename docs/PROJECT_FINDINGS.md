@@ -1498,3 +1498,40 @@ So the moving BEST_WALK traces contain useful low-rate moving windows, but the
 whole trace is not envelope-safe. The next data source should mine those
 moving single-support in-envelope windows and reject or relabel the high
 right-knee burst windows before BC/export.
+
+A dedicated closed-loop teacher window miner then checked whether those
+aggregate low-rate ticks form contiguous teacher snippets:
+
+```text
+tools/mine_closed_loop_teacher_windows.py
+
+25-tick / 0.50s windows:
+  outputs/analysis/CLOSED_LOOP_TEACHER_WINDOW_MINE.md
+  status: HOLD_INSUFFICIENT_CLOSED_LOOP_WINDOWS
+  pass windows: 0 / 1104
+
+10-tick / 0.20s windows:
+  outputs/analysis/CLOSED_LOOP_TEACHER_WINDOW_MINE_10T.md
+  status: PASS_CURATED_CLOSED_LOOP_WINDOWS_FOUND
+  pass windows: 142 / 2904
+```
+
+The 10-tick passing windows are mostly from the moving command cells:
+
+```text
+upstream nearest turning key: 76 passing windows
+straight x=0.08: 63 passing windows
+straight x=0.04: 3 passing windows
+```
+
+This tightens the next source-design rule:
+
+```text
+BEST_WALK contains brief envelope-safe moving single-support snippets.
+It does not yet provide sustained 25-tick envelope-safe moving windows.
+```
+
+So the next candidate source should not copy full BEST_WALK traces. It should
+mine short safe snippets as motion/phase evidence, then build a continuity
+mechanism that bridges between those snippets without reintroducing the
+right-knee high-rate bursts.
