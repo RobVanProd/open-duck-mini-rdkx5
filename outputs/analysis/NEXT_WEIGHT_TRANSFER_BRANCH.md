@@ -1,6 +1,6 @@
 # Next Weight-Transfer Branch Decision
 
-status: `PASS_TRACE_BLEND_STUDENT_FITTED_BRIDGE_SMOKE`
+status: `PASS_DAGGER2_MLP_ONNX_FITTED_BRIDGE_SMOKE`
 
 This is an offline planning artifact. It does not run simulation,
 training, robot SSH, deployment, or hardware tests.
@@ -269,21 +269,31 @@ and `7` still freeze near standstill.
 - Adding a target-rate regularizer to that 128x128 MLP does not fix it: one seed
   completes near standstill, most seeds still reverse/fall, and sent-target p95
   remains `3.6588-4.4620 rad/s`.
+- DAgger-style offline relabeling of MLP-visited states with the safer blend
+  teacher produced the first compact neural fitted-bridge smoke pass. DAgger-1
+  improved the 128x128 MLP from all-seed failure to one remaining seed-5
+  failure. DAgger-2 added a second relabel pass and passed the 10s fitted
+  actuator bridge smoke with 8/8 moving seeds, zero terminations, track ratio
+  `0.5208-0.6182`, sent-target velocity p95 `2.1174-2.1601 rad/s`, and joint
+  tracking p95 `0.1770-0.1813 rad`.
+- The DAgger-2 MLP exported cleanly to
+  `outputs/analysis/source_vx_selector_trace_dagger2_mlp128_candidate/candidate.onnx`
+  with contract `obs[1,101] -> continuous_actions[1,14]` and ONNX verify
+  max_abs_error `4.172325e-07`.
+- The standard ONNX closed-loop evaluator completed the candidate on CPU with
+  the fitted bridge for 10s / 500 samples, but the result was low-progress:
+  mean local vx `0.0197 m/s`, track ratio `0.2457`, no termination. This keeps
+  the candidate offline-only until multi-seed ONNX and stress-bridge margin are
+  reviewed.
 
 ## Required Next Design
 
-- design a reviewed state-conditioned imitation/pretraining experiment from the
-  curated low-rate closed-loop teacher-window manifest
-- train or constrain the student from those windows, not from the full
-  over-envelope published-policy trajectory
-- include closed-loop target-rate/action-smoothness selection or training
-  feedback; do not optimize supervised action error alone
-- use kNN/linear/MLP/sequence smoke results as baselines; the next student must
-  combine kNN-like local motion with linear/sequence-like smoothness and
-  multi-seed stability
-- use the source-switch-free blend student as the offline baseline to beat
-- convert the blend behavior into an exportable policy only after preserving the
-  8/8 moving, 0/8 termination fitted-bridge result
+- use the DAgger-2 ONNX candidate as the first exportable neural smoke pass
+- compare the DAgger-2 ONNX candidate against the source-switch-free blend
+  student before promotion; the blend still has stronger tracking ratio
+- run multi-seed standard ONNX evaluation before treating the candidate as more
+  than an offline artifact
+- review stress-bridge margin before any robot-side discussion
 - do not treat the failed 128x128 MLP clones as proof that neural distillation
   is impossible; they show naive one-step MLP and simple target-rate
   regularization still overdrive
@@ -329,6 +339,8 @@ and `7` still freeze near standstill.
   smoother but does not move.
 - Do not call blend `0.80` solved; it is only the current best cheap baseline
   to beat.
+- Do not call the DAgger-2 ONNX candidate robot-ready; it is only the first
+  exportable fitted-bridge smoke pass.
 
 ## Non-Goals
 

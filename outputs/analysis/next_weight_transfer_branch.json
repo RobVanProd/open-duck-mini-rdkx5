@@ -1,6 +1,6 @@
 {
-  "status": "PASS_TRACE_BLEND_STUDENT_FITTED_BRIDGE_SMOKE",
-  "next_branch": "Stop the local stance-relative teacher loop and stop searching nearby command cells for an envelope-safe whole published-policy template. The upstream/reference target path fails the same forward push-effectiveness question in this sim, and the published BEST_WALK_ONNX_2 policy proves closed-loop propulsion exists in vanilla sim. The compact command-grid screen found movement only when the whole command cell exceeded the measured per-joint pitch-chain velocity envelope, but the moving published-policy traces contain substantial low-rate moving windows. That substrate now has a curated manifest and a state-conditioned source-filtered velocity selector. The selector passes vanilla and fitted-bridge gates, then distills into a source-switch-free blend 0.80 student that passes the 10s fitted actuator bridge gate with all eight seeds moving, zero terminations, track ratio 0.5170-0.6279, and sent-target velocity p95 2.0779-2.2134 rad/s. The stress bridge and naive 128x128 MLP clone remain holds. The next branch is to convert this blend behavior into an exportable policy without losing the fitted-bridge pass.",
+  "status": "PASS_DAGGER2_MLP_ONNX_FITTED_BRIDGE_SMOKE",
+  "next_branch": "Stop the local stance-relative teacher loop and stop searching nearby command cells for an envelope-safe whole published-policy template. The upstream/reference target path fails the same forward push-effectiveness question in this sim, and the published BEST_WALK_ONNX_2 policy proves closed-loop propulsion exists in vanilla sim. The compact command-grid screen found movement only when the whole command cell exceeded the measured per-joint pitch-chain velocity envelope, but the moving published-policy traces contain substantial low-rate moving windows. That substrate now has a curated manifest and a state-conditioned source-filtered velocity selector. The selector passes vanilla and fitted-bridge gates, distills into a source-switch-free blend 0.80 student, and a DAgger-2 128x128 MLP now exports to ONNX while preserving the 10s fitted-bridge smoke. The standard ONNX evaluator completes but with low commanded-speed tracking, so the next branch is stricter offline ONNX review, multi-seed standard eval, and stress-bridge margin before any robot discussion.",
   "inputs": {
     "gate_status": "HOLD_NO_SUSTAINED_WEIGHT_TRANSFER_TARGET",
     "gate_artifacts": 66,
@@ -154,7 +154,28 @@
     "teacher_dataset_knn3_bc_gate_status": "HOLD_BC_REPLAY_TERMINATED",
     "teacher_dataset_knn3_bc_gate_moving_seed_count": 4,
     "teacher_dataset_knn3_bc_gate_seed_count": 8,
-    "teacher_dataset_knn3_bc_gate_terminated_seed_count": 1
+    "teacher_dataset_knn3_bc_gate_terminated_seed_count": 1,
+    "dagger1_mlp128_fitted_bridge_status": "HOLD_BC_REPLAY_TERMINATED",
+    "dagger1_mlp128_completed_seed_count": "7 / 8",
+    "dagger1_mlp128_failure": "seed 5 fell/reversed",
+    "dagger2_manifest_status": "PASS_BC_TRACE_MANIFEST_READY",
+    "dagger2_manifest_entries": 24,
+    "dagger2_manifest_samples": 8768,
+    "dagger2_manifest_dataset_id": "29210cfbb880ecb9",
+    "dagger2_mlp128_fitted_bridge_status": "PASS_BC_FIT_SMOKE_FORWARD_REPLAY",
+    "dagger2_mlp128_moving_seed_count": "8 / 8",
+    "dagger2_mlp128_terminated_seed_count": "0 / 8",
+    "dagger2_mlp128_track_ratio_range": "0.5208-0.6182",
+    "dagger2_mlp128_sent_target_velocity_p95_range_rad_s": "2.1174-2.1601",
+    "dagger2_mlp128_joint_tracking_p95_range_rad": "0.1770-0.1813",
+    "dagger2_onnx_candidate": "outputs/analysis/source_vx_selector_trace_dagger2_mlp128_candidate/candidate.onnx",
+    "dagger2_onnx_sha256": "a4e8575afc7a88fec336207fa6622e68387212c90596fbe6c0d038be4d5f4460",
+    "dagger2_onnx_contract": "obs[1,101] -> continuous_actions[1,14]",
+    "dagger2_onnx_verify_max_abs_error": 4.172325134277344e-07,
+    "dagger2_standard_onnx_eval_status": "PASS_CLOSED_LOOP_REPRODUCTION",
+    "dagger2_standard_onnx_eval_mean_local_vx_m_s": 0.0197,
+    "dagger2_standard_onnx_eval_track_ratio": 0.2457,
+    "dagger2_standard_onnx_eval_terminated": false
   },
   "rationale": [
     "No checked target source passes PASS_WEIGHT_TRANSFER_TARGET.",
@@ -186,15 +207,15 @@
     "The same selector passes the 10s fitted actuator bridge replay with all eight seeds moving, zero terminations, track ratio 0.5491-0.6172, sent-target velocity p95 2.2569-2.3622 rad/s, and joint tracking p95 0.1809-0.1863 rad. The 5s stress bridge replay holds: most seeds lose forward progress and seed 5 terminates.",
     "Replaying the selector with full observations produced a BC-ready 4000-sample trace manifest. A source-switch-free blend 0.80 student trained from that manifest passes the 10s fitted-bridge gate with all eight seeds moving, zero terminations, track ratio 0.5170-0.6279, sent-target velocity p95 2.0779-2.2134 rad/s, and joint tracking p95 0.1803-0.1843 rad.",
     "A 128x128 MLP trained from the same trace manifest still fails all seeds with reverse/fall behavior and high target rate, so naive neural distillation is not solved yet.",
-    "Adding a target-rate regularizer to that 128x128 MLP does not fix it: one seed completes near standstill, most seeds still reverse/fall, and sent-target p95 remains 3.6588-4.4620 rad/s."
+    "Adding a target-rate regularizer to that 128x128 MLP does not fix it: one seed completes near standstill, most seeds still reverse/fall, and sent-target p95 remains 3.6588-4.4620 rad/s.",
+    "DAgger-style relabeling of MLP-visited states with the safer blend teacher produced the first compact neural fitted-bridge smoke pass. DAgger-1 improved the 128x128 MLP to 7/8 completed seeds with only seed 5 failing. DAgger-2 added a second relabel pass and passed the 10s fitted bridge smoke with 8/8 moving seeds, zero terminations, track ratio 0.5208-0.6182, sent-target velocity p95 2.1174-2.1601 rad/s, and joint tracking p95 0.1770-0.1813 rad.",
+    "The DAgger-2 MLP exported cleanly to ONNX with contract obs[1,101] -> continuous_actions[1,14] and verifier max_abs_error 4.172325e-07. The standard ONNX closed-loop evaluator completes on CPU with the fitted bridge, but progress is weak: mean local vx 0.0197 m/s and track ratio 0.2457."
   ],
   "required_next_design": [
-    "design a reviewed state-conditioned imitation/pretraining experiment from the curated low-rate closed-loop teacher-window manifest",
-    "train or constrain the student from those windows, not from the full over-envelope published-policy trajectory",
-    "include closed-loop target-rate/action-smoothness selection or training feedback; do not optimize supervised action error alone",
-    "use kNN/linear/MLP/sequence smoke results as baselines; the next student must combine kNN-like local motion with linear/sequence-like smoothness and multi-seed stability",
-    "use the source-switch-free blend student as the offline baseline to beat",
-    "convert the blend behavior into an exportable policy only after preserving the 8/8 moving, 0/8 termination fitted-bridge result",
+    "use the DAgger-2 ONNX candidate as the first exportable neural smoke pass",
+    "compare the DAgger-2 ONNX candidate against the source-switch-free blend student before promotion; the blend still has stronger tracking ratio",
+    "run multi-seed standard ONNX evaluation before treating the candidate as more than an offline artifact",
+    "review stress-bridge margin before any robot-side discussion",
     "do not treat the failed 128x128 MLP clones as proof that neural distillation is impossible; they show naive one-step MLP and simple target-rate regularization still overdrive",
     "treat the stress bridge hold as a margin limit to improve, not as a regression of the fitted-bridge pass",
     "add closed-loop selection pressure against quiet double-support dwell; further smoothing alone is likely to preserve the freeze",
@@ -220,7 +241,8 @@
     "Do not assume offline pairwise/noise regularization solves one-step BC; the first two regularized MLP smokes still hit the target-rate limit and terminated seeds.",
     "Do not fall back to linear ridge as the solution; the linear baseline is smoother but does not move.",
     "Do not call blend 0.80 solved; it is only a historical cheap baseline.",
-    "Do not call the source-filtered selector deployable; it is only an offline selector smoke pass."
+    "Do not call the source-filtered selector deployable; it is only an offline selector smoke pass.",
+    "Do not call the DAgger-2 ONNX candidate robot-ready; it is only the first exportable fitted-bridge smoke pass."
   ],
   "non_goals": [
     "robot tests",

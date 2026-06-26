@@ -1,6 +1,6 @@
 # Student Imitation Baseline Decision
 
-status: `PASS_TRACE_BLEND_STUDENT_FITTED_BRIDGE_SMOKE`
+status: `PASS_DAGGER2_MLP_ONNX_FITTED_BRIDGE_SMOKE`
 
 This is an offline planning artifact. It does not run robot tests, SSH,
 deployment, PPO training, or runtime behavior changes.
@@ -224,11 +224,93 @@ failure: one seed completes near standstill, most seeds still reverse/fall
 sent-target velocity p95 range: 3.6588-4.4620 rad/s
 ```
 
+## DAgger Relabeling Result
+
+The failed MLP rollouts were then used as DAgger-style state coverage. Student
+visited states were relabeled with the safer blend teacher, preserving the
+original student action as `original_action` in ignored raw traces:
+
+```text
+tools/relabel_bc_trace_actions.py
+```
+
+The first relabel pass produced:
+
+```text
+outputs/analysis/SOURCE_VX_SELECTOR_TRACE_MLP128_RELABEL_BLEND.md
+status: PASS_BC_TRACE_RELABEL_READY
+samples_out: 1166
+```
+
+The DAgger-1 MLP improved materially but still held on seed `5`:
+
+```text
+outputs/analysis/SOURCE_VX_SELECTOR_TRACE_DAGGER1_MLP128_FITTED_BRIDGE_BC_GATE_X008_10S.md
+status: HOLD_BC_REPLAY_TERMINATED
+result: 7 / 8 seeds completed; seed 5 fell/reversed
+```
+
+A second relabel pass added DAgger-1 visited states:
+
+```text
+outputs/analysis/SOURCE_VX_SELECTOR_TRACE_DAGGER1_MLP128_RELABEL_BLEND.md
+status: PASS_BC_TRACE_RELABEL_READY
+samples_out: 3602
+
+outputs/analysis/SOURCE_VX_SELECTOR_TRACE_DAGGER2_MANIFEST.md
+status: PASS_BC_TRACE_MANIFEST_READY
+entries: 24
+samples: 8768
+dataset_id: 29210cfbb880ecb9
+```
+
+The DAgger-2 128x128 MLP is the first compact neural student to preserve the
+fitted-bridge smoke result:
+
+```text
+outputs/analysis/SOURCE_VX_SELECTOR_TRACE_DAGGER2_MLP128_FITTED_BRIDGE_BC_GATE_X008_10S.md
+status: PASS_BC_FIT_SMOKE_FORWARD_REPLAY
+moving seeds: 8 / 8
+terminated seeds: 0 / 8
+track ratio range: 0.5208-0.6182
+sent-target velocity p95 range: 2.1174-2.1601 rad/s
+joint tracking p95 range: 0.1770-0.1813 rad
+```
+
+The same model exports to a small ONNX policy with the runtime-compatible
+contract:
+
+```text
+outputs/analysis/source_vx_selector_trace_dagger2_mlp128_candidate/candidate.onnx
+outputs/analysis/source_vx_selector_trace_dagger2_mlp128_candidate/candidate_mlp.npz
+policy sha256: a4e8575afc7a88fec336207fa6622e68387212c90596fbe6c0d038be4d5f4460
+contract: obs[1,101] -> continuous_actions[1,14]
+onnx verify max_abs_error: 4.172325e-07
+```
+
+The standard closed-loop ONNX evaluator completes on CPU with the fitted bridge:
+
+```text
+outputs/analysis/source_vx_selector_trace_dagger2_mlp128_onnx_eval/CLOSED_LOOP_ACTUATOR_BRIDGE_EVAL.md
+status: PASS_CLOSED_LOOP_REPRODUCTION
+duration: 10s / 500 samples
+mean local vx: 0.0197 m/s
+track ratio: 0.2457
+terminated: no
+```
+
+This is an exportability milestone, not a deployment decision. The ONNX
+candidate moves slowly in the standard evaluator and still needs multi-seed
+ONNX evaluation plus stress-bridge review before it can be promoted beyond an
+offline candidate.
+
 ## Required Next Design
 
-- Use the source-switch-free blend student as the offline baseline to beat.
-- Convert the blend behavior into an exportable policy only after preserving the
-  8/8 moving, 0/8 termination fitted-bridge result.
+- Use the DAgger-2 ONNX candidate as the first exportable neural smoke pass.
+- Compare it against the source-switch-free blend student before promotion; the
+  blend remains stronger on closed-loop tracking ratio.
+- Run multi-seed standard ONNX evaluation before treating the candidate as more
+  than an offline artifact.
 - Do not treat the failed 128x128 MLP clones as proof that neural distillation
   is impossible; they show naive one-step MLP and simple target-rate
   regularization still overdrive.
@@ -246,6 +328,8 @@ sent-target velocity p95 range: 3.6588-4.4620 rad/s
 ## Stop Rules
 
 - Do not deploy or run robot validation.
+- Do not call the DAgger-2 ONNX candidate robot-ready; it is only the first
+  exportable fitted-bridge smoke pass.
 - Do not treat the 2-seed kNN smoke as a pass.
 - Do not use aggregate sequence replay as the student.
 - Do not use plain one-step MLP BC as the student.

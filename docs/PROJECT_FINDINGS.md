@@ -1151,3 +1151,83 @@ be a reviewed state-conditioned imitation/pretraining experiment from this
 dataset with closed-loop target-rate/action-smoothness selection or training
 feedback, graded on longer multi-seed closed-loop gates and max-joint
 pitch-chain p95 target velocity. Robot validation remains blocked.
+
+## 2026-06-25: DAgger Relabeling Produces First Exportable Neural Smoke Pass
+
+The first source-switch-free blend student remained the best fitted-bridge
+behavioral baseline, but it was not an exported policy. A DAgger-style offline
+relabeling pass was added to turn student-visited states back into safer blend
+teacher actions without running the robot:
+
+```text
+tools/relabel_bc_trace_actions.py
+```
+
+The first relabel pass took failed 128x128 MLP rollout states and relabeled
+them with the blend teacher:
+
+```text
+outputs/analysis/SOURCE_VX_SELECTOR_TRACE_MLP128_RELABEL_BLEND.md
+status: PASS_BC_TRACE_RELABEL_READY
+samples_out: 1166
+```
+
+Training a 128x128 MLP on the original selector trace plus those relabeled
+states improved the failure from all-seed collapse to one remaining failure:
+
+```text
+outputs/analysis/SOURCE_VX_SELECTOR_TRACE_DAGGER1_MLP128_FITTED_BRIDGE_BC_GATE_X008_10S.md
+status: HOLD_BC_REPLAY_TERMINATED
+result: 7 / 8 seeds completed; seed 5 fell/reversed
+```
+
+A second relabel pass added 3602 DAgger-1 student-visited states, producing a
+24-entry / 8768-sample manifest:
+
+```text
+outputs/analysis/SOURCE_VX_SELECTOR_TRACE_DAGGER2_MANIFEST.md
+status: PASS_BC_TRACE_MANIFEST_READY
+dataset_id: 29210cfbb880ecb9
+```
+
+The DAgger-2 128x128 MLP is the first compact neural student to pass the
+10-second fitted actuator bridge smoke:
+
+```text
+outputs/analysis/SOURCE_VX_SELECTOR_TRACE_DAGGER2_MLP128_FITTED_BRIDGE_BC_GATE_X008_10S.md
+status: PASS_BC_FIT_SMOKE_FORWARD_REPLAY
+moving seeds: 8 / 8
+terminated seeds: 0 / 8
+track ratio range: 0.5208-0.6182
+sent-target velocity p95 range: 2.1174-2.1601 rad/s
+joint tracking p95 range: 0.1770-0.1813 rad
+```
+
+The MLP was exported to ONNX and verified against the NumPy/JAX-side MLP:
+
+```text
+outputs/analysis/source_vx_selector_trace_dagger2_mlp128_candidate/candidate.onnx
+outputs/analysis/source_vx_selector_trace_dagger2_mlp128_candidate/candidate_mlp.npz
+onnx verify max_abs_error: 4.172325e-07
+contract: obs[1,101] -> continuous_actions[1,14]
+```
+
+The standard closed-loop ONNX evaluator also completed with the fitted bridge
+on CPU:
+
+```text
+outputs/analysis/source_vx_selector_trace_dagger2_mlp128_onnx_eval/CLOSED_LOOP_ACTUATOR_BRIDGE_EVAL.md
+status: PASS_CLOSED_LOOP_REPRODUCTION
+duration: 10s / 500 samples
+mean local vx: 0.0197 m/s
+track ratio: 0.2457
+sent-target p95 max pitch-chain joint: 3.8533 rad/s
+terminated: no
+```
+
+This is an exportability milestone, not a robot milestone. The DAgger-2 ONNX
+candidate is portable and survives the local fitted-bridge smoke, but the
+standard evaluator shows low commanded-speed tracking and the right knee still
+exceeds the fitted envelope. It remains offline-only. The next step is stricter
+offline review of the exported ONNX behavior, especially multi-seed standard
+ONNX evaluation and stress-bridge margin, before any robot-side discussion.

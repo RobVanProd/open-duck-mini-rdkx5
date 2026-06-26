@@ -445,6 +445,98 @@ def fit_mlp_jax(
     }
 
 
+def save_mlp_npz(path: Path, mlp_fit: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    arrays: dict[str, np.ndarray] = {
+        "norm": np.asarray(mlp_fit["norm"], dtype=np.float32),
+        "hidden_sizes": np.asarray(mlp_fit["hidden_sizes"], dtype=np.int64),
+    }
+    for index, (weights, bias) in enumerate(mlp_fit["params"]):
+        arrays[f"w{index}"] = np.asarray(weights, dtype=np.float32)
+        arrays[f"b{index}"] = np.asarray(bias, dtype=np.float32)
+    np.savez(path, **arrays)
+
+
+def export_mlp_onnx(path: Path, mlp_fit: dict[str, Any]) -> dict[str, Any]:
+    import onnx
+    from onnx import TensorProto, helper, numpy_helper
+
+    path.parent.mkdir(parents=True, exist_ok=True)
+    norm = np.asarray(mlp_fit["norm"], dtype=np.float32)
+    params = [
+        (np.asarray(weights, dtype=np.float32), np.asarray(bias, dtype=np.float32))
+        for weights, bias in mlp_fit["params"]
+    ]
+    nodes = []
+    initializers = [
+        numpy_helper.from_array(norm[0].astype(np.float32), name="obs_mean"),
+        numpy_helper.from_array(norm[1].astype(np.float32), name="obs_std"),
+        numpy_helper.from_array(np.asarray([-1.0], dtype=np.float32), name="clip_min"),
+        numpy_helper.from_array(np.asarray([1.0], dtype=np.float32), name="clip_max"),
+    ]
+    nodes.append(helper.make_node("Sub", ["obs", "obs_mean"], ["obs_centered"], name="normalize_sub"))
+    nodes.append(helper.make_node("Div", ["obs_centered", "obs_std"], ["layer0_in"], name="normalize_div"))
+    previous = "layer0_in"
+    for index, (weights, bias) in enumerate(params):
+        w_name = f"w{index}"
+        b_name = f"b{index}"
+        gemm_out = f"gemm{index}_out"
+        initializers.append(numpy_helper.from_array(weights, name=w_name))
+        initializers.append(numpy_helper.from_array(bias, name=b_name))
+        nodes.append(helper.make_node("Gemm", [previous, w_name, b_name], [gemm_out], name=f"gemm{index}"))
+        if index < len(params) - 1:
+            tanh_out = f"tanh{index}_out"
+            nodes.append(helper.make_node("Tanh", [gemm_out], [tanh_out], name=f"tanh{index}"))
+            previous = tanh_out
+        else:
+            previous = gemm_out
+    nodes.append(
+        helper.make_node(
+            "Clip",
+            [previous, "clip_min", "clip_max"],
+            ["continuous_actions"],
+            name="action_clip",
+        )
+    )
+    graph = helper.make_graph(
+        nodes,
+        "open_duck_mlp_bc_student",
+        [helper.make_tensor_value_info("obs", TensorProto.FLOAT, [1, 101])],
+        [helper.make_tensor_value_info("continuous_actions", TensorProto.FLOAT, [1, 14])],
+        initializer=initializers,
+    )
+    model = helper.make_model(
+        graph,
+        producer_name="open-duck-mini-rdkx5",
+        opset_imports=[helper.make_operatorsetid("", 13)],
+    )
+    model.ir_version = min(model.ir_version, 10)
+    onnx.checker.check_model(model)
+    onnx.save(model, path)
+    return {"path": str(path), "input_name": "obs", "output_name": "continuous_actions"}
+
+
+def verify_mlp_onnx(path: Path, mlp_fit: dict[str, Any], observations: np.ndarray) -> dict[str, Any]:
+    import onnxruntime as ort
+
+    session = ort.InferenceSession(str(path), providers=["CPUExecutionProvider"])
+    sample = observations[: min(32, observations.shape[0])].astype(np.float32)
+    expected = predict_mlp_np(sample, mlp_fit["params"], mlp_fit["norm"]).astype(np.float32)
+    actual = session.run(["continuous_actions"], {"obs": sample[:1]})[0]
+    batch_actual = []
+    for row in sample:
+        batch_actual.append(session.run(["continuous_actions"], {"obs": row[None, :]})[0][0])
+    batch_actual_np = np.asarray(batch_actual, dtype=np.float32)
+    error = np.abs(batch_actual_np - expected)
+    return {
+        "path": str(path),
+        "single_output_shape": list(actual.shape),
+        "samples_checked": int(sample.shape[0]),
+        "max_abs_error": float(np.max(error)) if error.size else None,
+        "p95_abs_error": percentile(error.reshape(-1).tolist(), 95) if error.size else None,
+    }
+
+
 def action_metrics(y_true: np.ndarray, y_pred: np.ndarray) -> dict[str, Any]:
     error = y_pred - y_true
     abs_error = np.abs(error)
@@ -940,6 +1032,9 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
                 f"- target_rate_limit_rad_s: `{mlp['target_rate_limit_rad_s']}`",
                 f"- obs_noise_std: `{mlp['obs_noise_std']}`",
                 f"- obs_consistency_scale: `{mlp['obs_consistency_scale']}`",
+                f"- saved_npz: `{mlp.get('saved_npz')}`",
+                f"- exported_onnx: `{mlp.get('exported_onnx')}`",
+                f"- onnx_verify_max_abs_error: `{fmt((mlp.get('onnx_verify') or {}).get('max_abs_error'))}`",
                 "",
                 "| step | loss |",
                 "|---:|---:|",
@@ -1100,6 +1195,8 @@ def main() -> int:
     parser.add_argument("--mlp-target-rate-limit-rad-s", type=float, default=3.75)
     parser.add_argument("--mlp-obs-noise-std", type=float, default=0.0)
     parser.add_argument("--mlp-obs-consistency-scale", type=float, default=0.0)
+    parser.add_argument("--save-mlp-npz", default=None)
+    parser.add_argument("--export-mlp-onnx", default=None)
     parser.add_argument(
         "--trace-dir",
         default=None,
@@ -1151,6 +1248,9 @@ def main() -> int:
     max_source_fraction = max(source_counts.values()) / max(sum(source_counts.values()), 1)
     ridge_parameter_count = (samples.observations.shape[1] + 1) * samples.actions.shape[1]
     mlp_fit = None
+    mlp_saved_npz = None
+    mlp_exported_onnx = None
+    mlp_onnx_verify = None
     if args.model_kind == "mlp":
         mlp_fit = fit_mlp_jax(
             samples.observations,
@@ -1166,6 +1266,14 @@ def main() -> int:
             obs_noise_std=args.mlp_obs_noise_std,
             obs_consistency_scale=args.mlp_obs_consistency_scale,
         )
+        if args.save_mlp_npz:
+            save_mlp_npz(Path(args.save_mlp_npz), mlp_fit)
+            mlp_saved_npz = str(Path(args.save_mlp_npz))
+        if args.export_mlp_onnx:
+            mlp_exported_onnx = export_mlp_onnx(Path(args.export_mlp_onnx), mlp_fit)["path"]
+            mlp_onnx_verify = verify_mlp_onnx(
+                Path(args.export_mlp_onnx), mlp_fit, samples.observations
+            )
         train_metrics = mlp_fit["train"]
         parameter_count = int(mlp_fit["parameter_count"])
         sample_to_parameter_ratio = float(mlp_fit["sample_to_parameter_ratio"])
@@ -1316,6 +1424,9 @@ def main() -> int:
                     "obs_noise_std": mlp_fit["obs_noise_std"],
                     "obs_consistency_scale": mlp_fit["obs_consistency_scale"],
                     "history": mlp_fit["history"],
+                    "saved_npz": mlp_saved_npz,
+                    "exported_onnx": mlp_exported_onnx,
+                    "onnx_verify": mlp_onnx_verify,
                 }
                 if mlp_fit is not None
                 else None
