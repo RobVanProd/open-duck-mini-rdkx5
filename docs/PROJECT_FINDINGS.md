@@ -2608,3 +2608,32 @@ x=0.08:
 This is now a valid PPO warm-start artifact, not a deployable robot candidate.
 The next training branch should fine-tune from this checkpoint with the fitted
 bridge active and target the remaining tracking gap.
+
+The first A100 PPO fine-tune from that checkpoint completed, but regressed the
+walking behavior:
+
+```text
+artifact: outputs/analysis/CMD_PITCH_RL_2P25_FINETUNE_V1_RESULT.md
+status: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
+training: PASS_SMOKE_RUN, 215040 PPO timesteps, A100/CUDA/JAX 0.7.2
+
+x=0.0:
+  status: PASS_CANDIDATE_SIM_GATE
+  max pitch tracking p95: 0.0701 rad
+  max sent target velocity p95: 0.1561 rad/s
+
+x=0.08:
+  status: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
+  mean fitted local vx: 0.0010 m/s
+  command tracking ratio: 0.0118
+  max sent target velocity p95: 0.2737 rad/s
+  max pitch tracking p95: 0.0859 rad
+  action saturation: 0.0%
+```
+
+This is a real negative result: the fine-tuned policy became actuator-safe but
+nearly stationary at x=0.08. It regressed from the step-0 warm start, which
+still moved at about `0.0347 m/s`. More steps with this exact PPO recipe are
+unlikely to help. The next fine-tune needs an explicit early forward-motion
+preservation term or teacher-action regularizer so PPO cannot improve reward by
+collapsing the walking behavior into standstill.

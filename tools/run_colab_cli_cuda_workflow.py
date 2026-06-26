@@ -901,6 +901,26 @@ def build_remote_driver(
                     "--restore-checkpoint-path",
                     {candidate_restore_checkpoint_path!r},
                 ])
+            if {args.candidate_ppo_learning_rate is not None!r}:
+                candidate_training_cmd.extend([
+                    "--ppo-learning-rate",
+                    "{cli_value(args.candidate_ppo_learning_rate)}",
+                ])
+            if {args.candidate_ppo_entropy_cost is not None!r}:
+                candidate_training_cmd.extend([
+                    "--ppo-entropy-cost",
+                    "{cli_value(args.candidate_ppo_entropy_cost)}",
+                ])
+            if {args.candidate_ppo_clipping_epsilon is not None!r}:
+                candidate_training_cmd.extend([
+                    "--ppo-clipping-epsilon",
+                    "{cli_value(args.candidate_ppo_clipping_epsilon)}",
+                ])
+            if {args.candidate_ppo_max_grad_norm is not None!r}:
+                candidate_training_cmd.extend([
+                    "--ppo-max-grad-norm",
+                    "{cli_value(args.candidate_ppo_max_grad_norm)}",
+                ])
             run(candidate_training_cmd, cwd=RDK, timeout={args.candidate_timeout_s + 300})
             run_dirs = sorted(Path("/content/open_duck_training_runs_cli").glob("smoke_*_gpu"))
             if not run_dirs:
@@ -1477,6 +1497,10 @@ def main() -> int:
     parser.add_argument("--candidate-ppo-batch-size", type=int, default=256)
     parser.add_argument("--candidate-ppo-num-minibatches", type=int, default=4)
     parser.add_argument("--candidate-ppo-num-updates-per-batch", type=int, default=4)
+    parser.add_argument("--candidate-ppo-learning-rate", type=float, default=None)
+    parser.add_argument("--candidate-ppo-entropy-cost", type=float, default=None)
+    parser.add_argument("--candidate-ppo-clipping-epsilon", type=float, default=None)
+    parser.add_argument("--candidate-ppo-max-grad-norm", type=float, default=None)
     parser.add_argument(
         "--candidate-restore-checkpoint-path",
         default=None,

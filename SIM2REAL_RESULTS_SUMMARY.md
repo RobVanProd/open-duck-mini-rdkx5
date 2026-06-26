@@ -6326,3 +6326,17 @@ The first attempt failed because the restore path was relative to the RDK repo
 while `runner.py` resolved it from the Playground context. The absolute path
 variant passed and completed one tiny update. This is only a training-plumbing
 result; it does not create a robot candidate.
+
+The first full A100 PPO fine-tune from that checkpoint completed but held:
+
+```text
+artifact: outputs/analysis/CMD_PITCH_RL_2P25_FINETUNE_V1_RESULT.md
+status: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
+x=0.0: PASS_CANDIDATE_SIM_GATE
+x=0.08: mean fitted vx 0.0010 m/s, track ratio 0.0118
+```
+
+The fine-tuned policy preserved x=0 stability and actuator-safe target rates,
+but it collapsed the x=0.08 walking behavior into near-standstill. This is not
+a robot candidate. The next fine-tune should preserve forward motion explicitly
+during early PPO updates instead of relying on the current reward mix alone.
