@@ -289,6 +289,27 @@ closed-loop snippets are usable as local contact/phase evidence, but they are
 not a ready imitation dataset. A BC/export step needs a new continuity source
 or closed-loop selector before it is meaningful.
 
+The full-observation foot-position traces then made the command-cell mechanism
+split more concrete:
+
+```text
+tools/analyze_published_policy_stance_timing.py
+outputs/analysis/PUBLISHED_POLICY_STANCE_TIMING_COMPARISON.md
+```
+
+| command cell | mean vx | single support | single alternations | single dvx @ 0.1s | pitch p95 |
+|---|---:|---:|---:|---:|---:|
+| straight `x=0.04` | 0.0019 m/s | 3.65% | 1.50 | -0.0155 m/s | 0.8647 rad/s |
+| straight `x=0.08` | 0.0640 m/s | 49.40% | 17.63 | 0.0030 m/s | 3.2849 rad/s |
+| upstream nearest turn | 0.0540 m/s | 44.80% | 16.25 | 0.0042 m/s | 3.2396 rad/s |
+
+Straight `x=0.04` should stay a posture/no-motion diagnostic, not the first
+walking target. The published policy's walking mechanism appears in the moving
+command cells: alternating single support plus a small positive future
+forward-velocity delta during single support. Any imitation or selector branch
+should preserve that closed-loop stance-transfer pattern while reducing the
+high-rate pitch-chain bursts.
+
 ## Non-Goals
 
 - robot tests

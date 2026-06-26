@@ -5,7 +5,8 @@
     "closed_loop_template": "outputs/analysis/PUBLISHED_POLICY_COMMAND_CLOSED_LOOP_TEMPLATE.md",
     "window_mine_25t": "outputs/analysis/CLOSED_LOOP_TEACHER_WINDOW_MINE.md",
     "window_mine_10t": "outputs/analysis/CLOSED_LOOP_TEACHER_WINDOW_MINE_10T.md",
-    "stitch_plan": "outputs/analysis/CLOSED_LOOP_SNIPPET_STITCH_PLAN.md"
+    "stitch_plan": "outputs/analysis/CLOSED_LOOP_SNIPPET_STITCH_PLAN.md",
+    "stance_timing": "outputs/analysis/PUBLISHED_POLICY_STANCE_TIMING_COMPARISON.md"
   },
   "findings": {
     "straight_x004": {
@@ -39,9 +40,17 @@
       "traces_with_25_tick_pass_runs": 0,
       "traces_with_50_tick_pass_runs": 0,
       "max_passing_stitch_span_ticks": 18
+    },
+    "stance_timing": {
+      "straight_x004_single_support_pct": 3.65,
+      "straight_x004_single_future_dvx_0p1s_m_s": -0.0155,
+      "straight_x008_single_support_pct": 49.4,
+      "straight_x008_single_future_dvx_0p1s_m_s": 0.003,
+      "turning_single_support_pct": 44.8,
+      "turning_single_future_dvx_0p1s_m_s": 0.0042
     }
   },
-  "recommended_next": "Do not train from isolated BEST_WALK snippets. Add a continuity generator or different closed-loop imitation route, then re-score 25-50 tick windows before BC/export.",
+  "recommended_next": "Do not train from isolated BEST_WALK snippets or use straight x=0.04 as the first walking gate. Mine the moving command cells for a closed-loop stance-transfer selector or continuity generator, then re-score 25-50 tick windows before BC/export.",
   "stop_rules": [
     "Do not train directly from full BEST_WALK traces.",
     "Do not train directly from isolated 10-tick snippets.",

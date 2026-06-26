@@ -1574,3 +1574,30 @@ step. The safe closed-loop behavior is fragmented into local sub-step hints,
 not sustained 25-50 tick teacher windows. The next source needs an explicit
 continuity/generation mechanism, or a different closed-loop imitation route,
 before export or training.
+
+The next comparative stance-timing read checked the full-observation foot
+position traces across straight `x=0.04`, straight `x=0.08`, and the upstream
+turning command:
+
+```text
+tools/analyze_published_policy_stance_timing.py
+outputs/analysis/PUBLISHED_POLICY_STANCE_TIMING_COMPARISON.md
+status: PASS_STANCE_TIMING_COMPARISON_READY
+```
+
+Key command-cell averages:
+
+| command cell | mean vx | single support | single alternations | single-support dvx @ 0.1s | pitch p95 |
+|---|---:|---:|---:|---:|---:|
+| straight `x=0.04` | 0.0019 m/s | 3.65% | 1.50 | -0.0155 m/s | 0.8647 rad/s |
+| straight `x=0.08` | 0.0640 m/s | 49.40% | 17.63 | 0.0030 m/s | 3.2849 rad/s |
+| upstream turning key | 0.0540 m/s | 44.80% | 16.25 | 0.0042 m/s | 3.2396 rad/s |
+
+This makes the command-cell split explicit. Straight `x=0.04` is not a
+walking existence proof for BEST_WALK: it stays in double support about 96% of
+the time and its rare single-support ticks are followed by negative local
+forward velocity change. The moving command cells enter alternating single
+support and produce positive future forward velocity deltas, but they do so
+with much higher pitch-chain target velocity. The next learning target should
+start from the command cells where closed-loop stance transfer actually exists,
+not from straight `x=0.04` as a walking gate.

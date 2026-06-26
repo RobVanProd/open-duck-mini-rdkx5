@@ -123,6 +123,23 @@ This means the snippets remain useful as local support/phase evidence, but
 they are not a direct BC/export source. The next offline branch needs a real
 continuity mechanism or a different closed-loop imitation route.
 
+The full-observation stance-timing comparison adds the command-cell context:
+
+```text
+outputs/analysis/PUBLISHED_POLICY_STANCE_TIMING_COMPARISON.md
+```
+
+| command cell | mean vx | single support | single alternations | single dvx @ 0.1s | pitch p95 |
+|---|---:|---:|---:|---:|---:|
+| straight `x=0.04` | 0.0019 m/s | 3.65% | 1.50 | -0.0155 m/s | 0.8647 rad/s |
+| straight `x=0.08` | 0.0640 m/s | 49.40% | 17.63 | 0.0030 m/s | 3.2849 rad/s |
+| upstream nearest turn | 0.0540 m/s | 44.80% | 16.25 | 0.0042 m/s | 3.2396 rad/s |
+
+That means straight `x=0.04` is not a good first walking gate for imitation.
+The published policy mostly stands there. The closed-loop stance-transfer
+mechanism appears in the moving command cells and should be the source of the
+next imitation/selector target.
+
 ## Next Branch Options
 
 Use this result to avoid another isolated-snippet training run. Viable next
@@ -130,8 +147,9 @@ offline directions are:
 
 1. Build a continuity generator that explicitly bridges between safe snippets
    and then re-score 25/50 tick windows before training.
-2. Mine BEST_WALK closed-loop state-action rules instead of target snippets,
-   especially contact/CoM timing and right-knee rate management.
+2. Mine BEST_WALK closed-loop state-action rules from the moving command cells
+   instead of target snippets, especially contact/CoM timing and right-knee
+   rate management.
 3. Train/evaluate a recurrent or state-conditioned selector over safe local
    actions, gated on 25-50 tick closed-loop rollout before ONNX export.
 
