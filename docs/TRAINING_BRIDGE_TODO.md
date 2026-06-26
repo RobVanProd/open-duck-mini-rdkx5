@@ -4909,6 +4909,80 @@ BC smoke sent-target p95: about 2.19-2.24 rad/s
 standard gate sent-target p95: 3.7842-3.8409 rad/s
 ```
 
+PPO actor schema inspection:
+
+```text
+artifact: outputs/analysis/PPO_POLICY_PARAM_SCHEMA.md
+status: PASS_PPO_BC_SCHEMA_COMPATIBLE
+```
+
+Confirmed mapping:
+
+```text
+PPO policy hidden_0: [101,512] / [512]
+PPO policy hidden_1: [512,256] / [256]
+PPO policy hidden_2: [256,128] / [128]
+PPO policy hidden_3: [128,28] / [28]
+
+BC w0/b0 -> hidden_0
+BC w1/b1 -> hidden_1
+BC w2/b2 -> hidden_2
+BC w3/b3 -> hidden_3 columns 0:14
+hidden_3 columns 14:28 -> scale logits, initialize separately
+value network -> fresh PPO init
+```
+
+Next executable tool should implement:
+
+```text
+tools/init_ppo_policy_from_bc_npz.py
+```
+
+or equivalent runner-side init, then produce:
+
+```text
+outputs/analysis/PPO_BC_WARMSTART_STEP0_FIDELITY.md
+status: PASS_PPO_BC_STEP0_FIDELITY
+```
+
+before any PPO updates are allowed.
+
+First step-0 action-level fidelity result:
+
+```text
+artifact: outputs/analysis/PPO_BC_WARMSTART_STEP0_FIDELITY.md
+status: HOLD_PPO_BC_STEP0_ACTION_FIDELITY
+```
+
+Reason:
+
+```text
+BC candidate output: clipped action directly
+PPO deterministic output: tanh(loc)
+```
+
+Measured mismatch:
+
+```text
+direct-copy PPO loc p95 action error: 0.1254
+final-head atanh refit p95 action error: 0.0122
+final-head atanh refit max action error: 0.1656
+```
+
+This is too large for a clean step-0 fidelity gate. The next tool should train
+or fit a PPO-compatible loc-head student directly:
+
+```text
+hidden trunk: 512,256,128
+loss: mean squared error between tanh(loc) and teacher action
+output: PPO actor policy params with loc branch initialized
+scale branch: explicit low-variance/fresh initialization
+value network: fresh PPO init
+```
+
+Then rerun action-level and closed-loop standard evaluator step-0 fidelity
+before allowing PPO updates.
+
 Stop rules:
 
 ```text

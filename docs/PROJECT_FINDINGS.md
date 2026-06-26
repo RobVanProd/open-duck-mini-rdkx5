@@ -2011,3 +2011,47 @@ the BC smoke replay reports sent-target p95 around `2.19-2.24 rad/s`, while the
 standard candidate gate reports `3.78-3.84 rad/s` for the same exported ONNX.
 The step-0 fidelity gate must use the standard evaluator path or explain the
 smoke-vs-standard difference.
+
+The PPO actor schema has now been inspected directly:
+
+```text
+outputs/analysis/PPO_POLICY_PARAM_SCHEMA.md
+status: PASS_PPO_BC_SCHEMA_COMPATIBLE
+```
+
+The PPO policy network uses the same hidden shapes as the PPO-shape BC student
+and outputs 28 tanh-normal distribution parameters. The first 14 outputs are
+the action-location branch exported as `tanh(loc)`; the second 14 are scale
+logits for PPO exploration. This makes a direct warm-start mapping feasible:
+
+```text
+BC hidden layers -> PPO policy hidden_0..hidden_2
+BC action output -> PPO policy hidden_3 columns 0:14
+PPO scale logits -> fresh or explicit low-variance initialization
+value network    -> fresh PPO initialization
+```
+
+The next gate is not training. It is step-0 fidelity: initialize a PPO actor
+from the BC NPZ and prove deterministic PPO actions match the BC ONNX/NPZ on
+held-out observations and in the standard task-matched fitted evaluator.
+
+The first action-level step-0 fidelity check exposed a head-contract mismatch:
+
+```text
+outputs/analysis/PPO_BC_WARMSTART_STEP0_FIDELITY.md
+status: HOLD_PPO_BC_STEP0_ACTION_FIDELITY
+
+direct BC final-head copy:
+  p95 abs action error: 0.1254
+  max abs action error: 0.2117
+
+final loc-head refit to atanh(BC action):
+  p95 abs action error: 0.0122
+  max abs action error: 0.1656
+```
+
+The issue is structural: the BC student was trained to output clipped actions
+directly, while PPO exports `tanh(loc)` from a tanh-normal actor. Forcing an
+action-space BC head into the PPO loc branch is only approximate. The next
+warm-start branch should train or fit a PPO-loc student directly, or otherwise
+prove actual step-0 closed-loop fidelity before launching PPO.

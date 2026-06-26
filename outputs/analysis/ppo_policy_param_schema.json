@@ -1,0 +1,234 @@
+{
+  "status": "PASS_PPO_BC_SCHEMA_COMPATIBLE",
+  "jax_backend": "cpu",
+  "jax_devices": [
+    "TFRT_CPU_0"
+  ],
+  "observation_size": 101,
+  "privileged_observation_size": 212,
+  "action_size": 14,
+  "policy_hidden_layer_sizes": [
+    512,
+    256,
+    128
+  ],
+  "value_hidden_layer_sizes": [
+    512,
+    256,
+    128
+  ],
+  "policy_obs_key": "state",
+  "value_obs_key": "privileged_state",
+  "distribution_type": "tanh_normal",
+  "policy_output_size": 28,
+  "policy_param_shapes": {
+    "params/hidden_0/kernel": {
+      "shape": [
+        101,
+        512
+      ],
+      "dtype": "float32"
+    },
+    "params/hidden_0/bias": {
+      "shape": [
+        512
+      ],
+      "dtype": "float32"
+    },
+    "params/hidden_1/kernel": {
+      "shape": [
+        512,
+        256
+      ],
+      "dtype": "float32"
+    },
+    "params/hidden_1/bias": {
+      "shape": [
+        256
+      ],
+      "dtype": "float32"
+    },
+    "params/hidden_2/kernel": {
+      "shape": [
+        256,
+        128
+      ],
+      "dtype": "float32"
+    },
+    "params/hidden_2/bias": {
+      "shape": [
+        128
+      ],
+      "dtype": "float32"
+    },
+    "params/hidden_3/kernel": {
+      "shape": [
+        128,
+        28
+      ],
+      "dtype": "float32"
+    },
+    "params/hidden_3/bias": {
+      "shape": [
+        28
+      ],
+      "dtype": "float32"
+    }
+  },
+  "value_param_shapes": {
+    "params/hidden_0/kernel": {
+      "shape": [
+        212,
+        512
+      ],
+      "dtype": "float32"
+    },
+    "params/hidden_0/bias": {
+      "shape": [
+        512
+      ],
+      "dtype": "float32"
+    },
+    "params/hidden_1/kernel": {
+      "shape": [
+        512,
+        256
+      ],
+      "dtype": "float32"
+    },
+    "params/hidden_1/bias": {
+      "shape": [
+        256
+      ],
+      "dtype": "float32"
+    },
+    "params/hidden_2/kernel": {
+      "shape": [
+        256,
+        128
+      ],
+      "dtype": "float32"
+    },
+    "params/hidden_2/bias": {
+      "shape": [
+        128
+      ],
+      "dtype": "float32"
+    },
+    "params/hidden_3/kernel": {
+      "shape": [
+        128,
+        1
+      ],
+      "dtype": "float32"
+    },
+    "params/hidden_3/bias": {
+      "shape": [
+        1
+      ],
+      "dtype": "float32"
+    }
+  },
+  "bc_npz": {
+    "path": "outputs/analysis/source_vx_selector_trace_dagger3_mlp512_256_128_rate_reg_candidate/candidate_mlp.npz",
+    "keys": [
+      "norm",
+      "hidden_sizes",
+      "w0",
+      "b0",
+      "w1",
+      "b1",
+      "w2",
+      "b2",
+      "w3",
+      "b3"
+    ],
+    "shapes": {
+      "norm": {
+        "shape": [
+          2,
+          101
+        ],
+        "dtype": "float32"
+      },
+      "hidden_sizes": {
+        "shape": [
+          3
+        ],
+        "dtype": "int64"
+      },
+      "w0": {
+        "shape": [
+          101,
+          512
+        ],
+        "dtype": "float32"
+      },
+      "b0": {
+        "shape": [
+          512
+        ],
+        "dtype": "float32"
+      },
+      "w1": {
+        "shape": [
+          512,
+          256
+        ],
+        "dtype": "float32"
+      },
+      "b1": {
+        "shape": [
+          256
+        ],
+        "dtype": "float32"
+      },
+      "w2": {
+        "shape": [
+          256,
+          128
+        ],
+        "dtype": "float32"
+      },
+      "b2": {
+        "shape": [
+          128
+        ],
+        "dtype": "float32"
+      },
+      "w3": {
+        "shape": [
+          128,
+          14
+        ],
+        "dtype": "float32"
+      },
+      "b3": {
+        "shape": [
+          14
+        ],
+        "dtype": "float32"
+      }
+    },
+    "hidden_sizes": [
+      512,
+      256,
+      128
+    ]
+  },
+  "compatibility": {
+    "hidden_layers_match": true,
+    "output_loc_matches_bc": true,
+    "normalizer_shape_compatible": true
+  },
+  "recommended_mapping": {
+    "normalizer_mean_state": "bc.norm[0]",
+    "normalizer_std_state": "bc.norm[1]",
+    "policy_hidden_0": "bc.w0/b0",
+    "policy_hidden_1": "bc.w1/b1",
+    "policy_hidden_2": "bc.w2/b2",
+    "policy_hidden_3_loc": "bc.w3/b3 -> columns 0:14",
+    "policy_hidden_3_scale_logits": "fresh PPO init or explicit low-variance init",
+    "value_network": "fresh PPO init"
+  }
+}
