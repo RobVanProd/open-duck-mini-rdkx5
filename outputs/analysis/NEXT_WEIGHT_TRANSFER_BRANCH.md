@@ -118,6 +118,10 @@ training, robot SSH, deployment, or hardware tests.
 | `teacher_dataset_mlp_consistency_status` | `HOLD_BC_REPLAY_TERMINATED` |
 | `teacher_dataset_mlp_consistency_sent_velocity_p95_rad_s` | `5.2400` |
 | `teacher_dataset_mlp_consistency_terminated_seed_count` | `3 / 8` |
+| `teacher_dataset_linear_bc_gate_status` | `HOLD_BC_REPLAY_TERMINATED` |
+| `teacher_dataset_linear_bc_gate_moving_seed_count` | `0 / 8` |
+| `teacher_dataset_linear_bc_gate_mean_vx_range_m_s` | `-0.3080 to +0.0077` |
+| `teacher_dataset_linear_bc_gate_sent_velocity_p95_range_rad_s` | `0.7319 to 3.0866` |
 
 ## Decision
 
@@ -137,7 +141,8 @@ single averaged action-sequence replay is even more conservative: it completes
 without falling but stays near standstill. A plain one-step MLP clone also
 holds: it fits the dataset offline but produces high-rate, low-progress
 closed-loop behavior. First offline target-rate and observation-consistency
-regularizers did not fix the closed-loop target-rate failure.
+regularizers did not fix the closed-loop target-rate failure. A linear ridge
+student is smoother, but too weak and still has a fall/reverse seed.
 
 ## Rationale
 
@@ -197,6 +202,9 @@ regularizers did not fix the closed-loop target-rate failure.
   regularization were both tested as default-off MLP options. Both still hit
   `5.24 rad/s` sent-target velocity p95 on every seed and introduced
   fall/reverse terminations. Local offline regularization alone is not enough.
+- The linear ridge baseline is smoother, with sent-target velocity p95 staying
+  below `3.09 rad/s`, but it has zero moving seeds and one fall/reverse seed.
+  A smooth one-step model is not sufficient either.
 
 ## Required Next Design
 
@@ -206,6 +214,9 @@ regularizers did not fix the closed-loop target-rate failure.
   over-envelope published-policy trajectory
 - include closed-loop target-rate/action-smoothness selection or training
   feedback; do not optimize supervised action error alone
+- use kNN/linear/MLP/sequence smoke results as baselines; the next student must
+  combine kNN-like local motion with linear/sequence-like smoothness and
+  multi-seed stability
 - grade the student on coherent forward motion and max-joint pitch-chain p95
   target velocity, not only mean pitch-chain target velocity
 - evaluate any learned student with longer multi-seed closed-loop gates before
@@ -236,6 +247,8 @@ regularizers did not fix the closed-loop target-rate failure.
 - Do not assume offline pairwise/noise regularization solves one-step BC; the
   first two regularized MLP smokes still hit the target-rate limit and
   terminated seeds.
+- Do not fall back to linear ridge as the solution; the linear baseline is
+  smoother but does not move.
 
 ## Non-Goals
 

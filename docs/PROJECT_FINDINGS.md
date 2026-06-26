@@ -808,6 +808,30 @@ needs state-conditioned imitation from the curated windows. The aggregate
 sequence table is too muted to produce propulsion, while the kNN lookup has
 motion but lacks robustness.
 
+An 8-seed linear ridge baseline was also run:
+
+```text
+outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_LINEAR_BC_GATE_X008.md
+status: HOLD_BC_REPLAY_TERMINATED
+model: linear ridge
+command: straight x=0.08
+duration: 5s
+seeds: 0-7
+```
+
+It is smoother than the MLP, but does not move:
+
+```text
+moving seeds with vx >= 0.02 m/s: 0 / 8
+mean vx range: -0.3080 to +0.0077 m/s
+sent target velocity p95 range: 0.7319 to 3.0866 rad/s
+terminated seeds: 1 / 8
+```
+
+This fills the student-baseline table: linear/aggregate sequence are too weak,
+kNN preserves some motion but is seed-fragile, and MLP variants become
+high-rate and low-progress.
+
 A first plain state-conditioned MLP BC smoke was then added to the same tool and
 run locally on CPU:
 
