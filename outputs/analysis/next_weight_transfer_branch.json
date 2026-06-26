@@ -1,6 +1,6 @@
 {
-  "status": "PLAN_SEARCH_ENVELOPE_SAFE_CLOSED_LOOP_COMMAND",
-  "next_branch": "Stop the local stance-relative teacher loop and search for an envelope-safe closed-loop command cell. The upstream/reference target path fails the same forward push-effectiveness question in this sim, and the published BEST_WALK_ONNX_2 policy proves closed-loop propulsion exists in vanilla sim, but the moving command cells still exceed the measured per-joint pitch-chain velocity envelope.",
+  "status": "PLAN_TRAIN_LOWER_RATE_STUDENT_FROM_CLOSED_LOOP_TEACHER",
+  "next_branch": "Stop the local stance-relative teacher loop and stop searching nearby command cells for an envelope-safe published-policy template. The upstream/reference target path fails the same forward push-effectiveness question in this sim, and the published BEST_WALK_ONNX_2 policy proves closed-loop propulsion exists in vanilla sim, but the compact command-grid screen found movement only when the measured per-joint pitch-chain velocity envelope was exceeded.",
   "inputs": {
     "gate_status": "HOLD_NO_SUSTAINED_WEIGHT_TRANSFER_TARGET",
     "gate_artifacts": 66,
@@ -60,7 +60,22 @@
     "straight_x008_moving_seed_count_ratio_ge_0p5": 7,
     "straight_x008_mean_tracking_ratio": 0.7998,
     "straight_x008_pitch_chain_target_velocity_p95_max_joint_rad_s": 5.1546,
-    "turning_command_pitch_chain_target_velocity_p95_max_joint_rad_s": 4.6157
+    "turning_command_pitch_chain_target_velocity_p95_max_joint_rad_s": 4.6157,
+    "command_grid_status": "HOLD_MOVEMENT_REQUIRES_OVER_ENVELOPE",
+    "straight_x005_moving_seed_count_ratio_ge_0p5": 0,
+    "straight_x005_seed_count": 2,
+    "straight_x005_pitch_chain_target_velocity_p95_max_seed_rad_s": 2.7422,
+    "straight_x006_moving_seed_count_ratio_ge_0p5": 0,
+    "straight_x006_seed_count": 2,
+    "straight_x006_pitch_chain_target_velocity_p95_max_seed_rad_s": 3.8816,
+    "straight_x007_moving_seed_count_ratio_ge_0p5": 0,
+    "straight_x007_seed_count": 2,
+    "straight_x007_pitch_chain_target_velocity_p95_max_seed_rad_s": 3.6654,
+    "turn_scale050_to_090_moving_seed_count_ratio_ge_0p5": 0,
+    "turn_scale050_to_090_seed_count_per_cell": 2,
+    "turn_scale100_moving_seed_count_ratio_ge_0p5": 2,
+    "turn_scale100_seed_count": 2,
+    "turn_scale100_pitch_chain_target_velocity_p95_max_seed_rad_s": 5.0147
   },
   "rationale": [
     "No checked target source passes PASS_WEIGHT_TRANSFER_TARGET.",
@@ -73,12 +88,13 @@
     "The published policy completed all eight 5-second upstream-main flat_terrain_backlash seeds. Seven of eight seeds tracked the command with local x ratio >= 0.5, mean local vx was 0.0540 m/s, and mean single-support 0.1s future vx delta was positive at +0.0042 m/s.",
     "The mechanism comparison shows the policy creates more actual single-support time (44.8% vs 19.25% for the best reference-target variant), while the reference-requested single-support windows still have negative 0.1s future vx delta (-0.0051 m/s). The policy also keeps pitch-chain p95 target velocity lower on average (3.0488 rad/s vs 4.9811 rad/s).",
     "The command sweep shows straight x=0.04 is not an easy existence-proven gate: all eight seeds complete, but moving seeds with track ratio >= 0.5 are 0/8, and mean track ratio is only 0.0468.",
-    "Straight x=0.08 and the upstream turning command do move in vanilla sim, but their max-joint pitch-chain p95 target velocities remain above the measured envelope (5.1546 rad/s and 4.6157 rad/s respectively)."
+    "Straight x=0.08 and the upstream turning command do move in vanilla sim, but their max-joint pitch-chain p95 target velocities remain above the measured envelope (5.1546 rad/s and 4.6157 rad/s respectively).",
+    "The compact command-grid screen checked straight x=0.05, x=0.06, x=0.07, and scaled upstream-turning commands from 0.50 to 1.00. Every lower straight/turning cell had 0/2 moving seeds. The only moving grid cell was full-scale upstream turning with 2/2 moving seeds and max-seed pitch-chain p95 target velocity 5.0147 rad/s."
   ],
   "required_next_design": [
-    "run a small published-policy command-space sweep to find any command cell with forward tracking and max-joint pitch-chain p95 target velocity inside the measured envelope",
-    "if such a cell exists, extract its state/action/contact template and train or constrain from that cell first",
-    "if no such cell exists, treat BEST_WALK as a movement teacher but explicitly train a lower-target-rate student; do not claim the teacher is envelope-safe"
+    "treat BEST_WALK_ONNX_2 as an over-envelope closed-loop movement teacher, not as an envelope-safe target template",
+    "train or constrain a lower-target-rate student from the published policy's closed-loop movement behavior",
+    "grade the student on coherent forward motion and max-joint pitch-chain p95 target velocity, not only mean pitch-chain target velocity"
   ],
   "stop_rules": [
     "Do not continue PLAN_STANCE_RELATIVE_LATERAL_DAMPING as the default branch.",
@@ -87,7 +103,8 @@
     "Do not relax teacher target velocity above the measured envelope to buy forward speed.",
     "Do not generate another nearby stance-relative teacher variant until the published-policy propulsion mechanism is compared against the failed reference-target path.",
     "Do not treat straight x=0.04 as the default first gate until a policy actually clears it.",
-    "Do not treat the published moving command cells as robot-ready while their max-joint pitch-chain p95 target velocities exceed the measured envelope."
+    "Do not treat the published moving command cells as robot-ready while their max-joint pitch-chain p95 target velocities exceed the measured envelope.",
+    "Do not keep searching small neighboring command cells without a new reason; the first compact grid found the same activation cliff."
   ],
   "non_goals": [
     "robot tests",

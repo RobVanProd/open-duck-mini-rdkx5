@@ -302,6 +302,39 @@ not yet an envelope-safe robot candidate. Straight `x=0.04` is not cleared by
 the published policy either, while the moving command cells exceed the measured
 per-joint target-rate envelope.
 
+The compact command-grid screen then checked nearby straight and scaled-turning
+cells:
+
+```text
+outputs/analysis/PUBLISHED_POLICY_COMMAND_GRID.md
+status: HOLD_MOVEMENT_REQUIRES_OVER_ENVELOPE
+
+straight x=0.05:
+  moving seeds: 0 / 2
+  max-seed pitch-chain p95 target velocity: 2.7422 rad/s
+
+straight x=0.06:
+  moving seeds: 0 / 2
+  max-seed pitch-chain p95 target velocity: 3.8816 rad/s
+
+straight x=0.07:
+  moving seeds: 0 / 2
+  max-seed pitch-chain p95 target velocity: 3.6654 rad/s
+
+scaled turning 0.50 -> 0.90:
+  moving seeds: 0 / 2 at every tested scale
+
+scaled turning 1.00:
+  moving seeds: 2 / 2
+  max-seed pitch-chain p95 target velocity: 5.0147 rad/s
+```
+
+That search did not find a nearby command cell where the published policy both
+moves forward and stays under the measured max-joint pitch-chain velocity
+envelope. The current best read is a sharp activation cliff: below the envelope,
+the policy mostly stands; when it walks, at least one pitch-chain joint exceeds
+the measured envelope.
+
 Answers to the original discriminator:
 
 ```text
@@ -324,8 +357,9 @@ Answers to the original discriminator:
 Recommended next offline task:
 
 ```text
-search for an envelope-safe closed-loop command cell, then extract a compact
-state/action/contact template from that cell if one exists
+train or constrain a lower-target-rate student from BEST_WALK_ONNX_2's
+closed-loop movement behavior; keep the published policy as a movement teacher,
+not as an envelope-safe template
 ```
 
 Robot validation remains blocked.

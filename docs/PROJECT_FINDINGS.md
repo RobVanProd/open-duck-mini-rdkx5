@@ -607,6 +607,49 @@ prove a real-envelope-safe gait. The moving cells exceed the measured
 inside the envelope but does not move, so it should not be treated as the easy
 first gate or as an existence-proven training target.
 
+The follow-up compact command-grid screen checked nearby straight and scaled
+turning commands:
+
+```text
+outputs/analysis/PUBLISHED_POLICY_COMMAND_GRID.md
+status: HOLD_MOVEMENT_REQUIRES_OVER_ENVELOPE
+```
+
+Results:
+
+```text
+straight x=0.05:
+  moving seeds: 0 / 2
+  mean tracking ratio: 0.0664
+  max-seed pitch-chain p95 target velocity: 2.7422 rad/s
+
+straight x=0.06:
+  moving seeds: 0 / 2
+  mean tracking ratio: 0.0935
+  max-seed pitch-chain p95 target velocity: 3.8816 rad/s
+
+straight x=0.07:
+  moving seeds: 0 / 2
+  mean tracking ratio: 0.2171
+  max-seed pitch-chain p95 target velocity: 3.6654 rad/s
+
+scaled turning 0.50 -> 0.90:
+  moving seeds: 0 / 2 at every tested scale
+  mean tracking ratio range: 0.0641 -> 0.0995
+  max-seed pitch-chain p95 target velocity range: 1.1501 -> 3.1335 rad/s
+
+scaled turning 1.00:
+  moving seeds: 2 / 2
+  mean tracking ratio: 0.7874
+  max-seed pitch-chain p95 target velocity: 5.0147 rad/s
+```
+
+This tightens the activation read: in the nearby command cells tested so far,
+the published policy either stays under the measured envelope and does not move,
+or moves only after the per-joint pitch-chain target-rate exceeds the measured
+envelope. The published policy is therefore useful as a closed-loop movement
+teacher, but not as an envelope-safe target template.
+
 This is the current pivot. The upstream-main sim/morphology can produce stable
 closed-loop forward locomotion under the published `BEST_WALK_ONNX_2` policy.
 The reference-target/open-loop path still fails the same contact/propulsion
@@ -620,7 +663,9 @@ asks for single support but does not convert those windows into forward
 acceleration.
 
 Current decision: do not continue with another stance-relative lateral-damping
-teacher variant by default. The next offline gate is to search or train from a
-command cell the published policy actually moves in, while explicitly reducing
-the pitch-chain target-rate envelope violation. Robot validation remains
-blocked.
+teacher variant by default. The command-grid search did not find an
+envelope-safe published-policy command cell in the nearby straight/turning
+region. The next offline branch should treat `BEST_WALK_ONNX_2` as an
+over-envelope closed-loop movement teacher and train or constrain a lower
+target-rate student from that behavior, while grading on max-joint pitch-chain
+p95 target velocity. Robot validation remains blocked.

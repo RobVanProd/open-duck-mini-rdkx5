@@ -68,15 +68,22 @@ training, robot SSH, deployment, or hardware tests.
 | `straight_x008_mean_tracking_ratio` | `0.7998` |
 | `straight_x008_pitch_chain_target_velocity_p95_max_joint_rad_s` | `5.1546` |
 | `turning_command_pitch_chain_target_velocity_p95_max_joint_rad_s` | `4.6157` |
+| `command_grid_status` | `HOLD_MOVEMENT_REQUIRES_OVER_ENVELOPE` |
+| `straight_x005_moving_seed_count_ratio_ge_0p5` | `0 / 2` |
+| `straight_x006_moving_seed_count_ratio_ge_0p5` | `0 / 2` |
+| `straight_x007_moving_seed_count_ratio_ge_0p5` | `0 / 2` |
+| `turn_scale050_to_090_moving_seed_count_ratio_ge_0p5` | `0 / 2 at every tested scale` |
+| `turn_scale100_moving_seed_count_ratio_ge_0p5` | `2 / 2` |
+| `turn_scale100_pitch_chain_target_velocity_p95_max_seed_rad_s` | `5.0147` |
 
 ## Decision
 
-Stop the local stance-relative teacher loop and search for an envelope-safe
-closed-loop command cell. The upstream/reference target path fails the same
-forward push-effectiveness question in this sim, and the published
-`BEST_WALK_ONNX_2` policy proves closed-loop propulsion exists in vanilla sim,
-but the moving command cells still exceed the measured per-joint pitch-chain
-velocity envelope.
+Stop the local stance-relative teacher loop and stop searching nearby command
+cells for an envelope-safe published-policy template. The upstream/reference
+target path fails the same forward push-effectiveness question in this sim, and
+the published `BEST_WALK_ONNX_2` policy proves closed-loop propulsion exists in
+vanilla sim, but the compact command-grid screen found movement only when the
+measured per-joint pitch-chain velocity envelope was exceeded.
 
 ## Rationale
 
@@ -102,16 +109,20 @@ velocity envelope.
 - Straight `x=0.08` and the upstream turning command do move in vanilla sim,
   but their max-joint pitch-chain p95 target velocities remain above the
   measured envelope (`5.1546 rad/s` and `4.6157 rad/s` respectively).
+- The compact command-grid screen checked straight `x=0.05`, `x=0.06`,
+  `x=0.07`, and scaled upstream-turning commands from `0.50` to `1.00`. Every
+  lower straight/turning cell had `0 / 2` moving seeds. The only moving grid
+  cell was full-scale upstream turning with `2 / 2` moving seeds and
+  max-seed pitch-chain p95 target velocity `5.0147 rad/s`.
 
 ## Required Next Design
 
-- run a small published-policy command-space sweep to find any command cell
-  with forward tracking and max-joint pitch-chain p95 target velocity inside
-  the measured envelope
-- if such a cell exists, extract its state/action/contact template and train or
-  constrain from that cell first
-- if no such cell exists, treat BEST_WALK as a movement teacher but explicitly
-  train a lower-target-rate student; do not claim the teacher is envelope-safe
+- treat `BEST_WALK_ONNX_2` as an over-envelope closed-loop movement teacher,
+  not as an envelope-safe target template
+- train or constrain a lower-target-rate student from the published policy's
+  closed-loop movement behavior
+- grade the student on coherent forward motion and max-joint pitch-chain p95
+  target velocity, not only mean pitch-chain target velocity
 
 ## Stop Rules
 
@@ -123,6 +134,8 @@ velocity envelope.
   actually clears it.
 - Do not treat the published moving command cells as robot-ready while their
   max-joint pitch-chain p95 target velocities exceed the measured envelope.
+- Do not keep searching small neighboring command cells without a new reason;
+  the first compact grid found the same activation cliff.
 
 ## Non-Goals
 
