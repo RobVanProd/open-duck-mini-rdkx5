@@ -146,6 +146,105 @@
     ],
     "tradeoff": "Raw kNN recovers seed 1 but seed 3 falls/reverses. Blend 0.80 rescues seed 3 but freezes seed 1. Seeds 4 and 7 freeze in both."
   },
+  "global_blend_sweep": [
+    {
+      "blend_alpha": 0.75,
+      "moving_seeds": [
+        0,
+        2,
+        3,
+        5,
+        6
+      ],
+      "frozen_seeds": [
+        1,
+        4,
+        7
+      ],
+      "terminated_seeds": []
+    },
+    {
+      "blend_alpha": 0.8,
+      "moving_seeds": [
+        0,
+        2,
+        3,
+        5,
+        6
+      ],
+      "frozen_seeds": [
+        1,
+        4,
+        7
+      ],
+      "terminated_seeds": []
+    },
+    {
+      "blend_alpha": 0.82,
+      "moving_seeds": [
+        0,
+        2,
+        3,
+        5,
+        6
+      ],
+      "frozen_seeds": [
+        1,
+        4,
+        7
+      ],
+      "terminated_seeds": []
+    },
+    {
+      "blend_alpha": 0.85,
+      "moving_seeds": [
+        0,
+        2,
+        3,
+        5,
+        6
+      ],
+      "frozen_seeds": [
+        1,
+        4,
+        7
+      ],
+      "terminated_seeds": []
+    },
+    {
+      "blend_alpha": 0.88,
+      "moving_seeds": [
+        0,
+        2,
+        3,
+        5,
+        6
+      ],
+      "frozen_seeds": [
+        1,
+        4,
+        7
+      ],
+      "terminated_seeds": []
+    },
+    {
+      "blend_alpha": 0.9,
+      "moving_seeds": [
+        0,
+        2,
+        5,
+        6
+      ],
+      "frozen_seeds": [
+        1,
+        4,
+        7
+      ],
+      "terminated_seeds": [
+        3
+      ]
+    }
+  ],
   "required_next_design": [
     "train or select using closed-loop rollouts, not only offline action loss",
     "preserve kNN-like local motion while enforcing linear/sequence-like smoothness",
@@ -164,6 +263,7 @@
     "Do not use plain one-step MLP BC as the student.",
     "Do not assume pairwise target-rate or observation-consistency regularization solves closed-loop rate saturation.",
     "Do not optimize supervised action error alone.",
-    "Do not call blend 0.80 solved; it is only the current best cheap baseline."
+    "Do not call blend 0.80 solved; it is only the current best cheap baseline.",
+    "Do not keep sweeping one global blend alpha; 0.75-0.88 have the same moving/freeze split and 0.90 reintroduces the seed-3 fall."
   ]
 }

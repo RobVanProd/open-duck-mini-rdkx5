@@ -238,6 +238,9 @@ and `7` still freeze near standstill.
   moves seed `1` but seed `3` falls/reverses after 79 samples, while blend
   `0.80` rescues seed `3` but freezes seed `1`. Seeds `4` and `7` freeze in
   both.
+- A narrow global-blend sweep (`0.75`, `0.80`, `0.82`, `0.85`, `0.88`, `0.90`)
+  confirms there is no scalar-alpha notch: `0.75-0.88` all move only seeds
+  `0/2/3/5/6` and freeze `1/4/7`; `0.90` reintroduces the seed-3 termination.
 
 ## Required Next Design
 

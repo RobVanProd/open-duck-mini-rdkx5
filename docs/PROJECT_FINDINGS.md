@@ -908,6 +908,22 @@ closed-loop selection rule, not a single global kNN/linear blend: it must retain
 enough kNN-local motion to escape double support on seed `1`, smooth the seed
 `3` lunge, and add a separate pressure to recover seeds `4` and `7`.
 
+A narrow global-blend sweep confirmed there is no obvious scalar coefficient
+between the useful-but-frozen blend and the raw-kNN fall:
+
+```text
+blend 0.75: moving 0/2/3/5/6, freeze 1/4/7, no terminations
+blend 0.80: moving 0/2/3/5/6, freeze 1/4/7, no terminations
+blend 0.82: moving 0/2/3/5/6, freeze 1/4/7, no terminations
+blend 0.85: moving 0/2/3/5/6, freeze 1/4/7, no terminations
+blend 0.88: moving 0/2/3/5/6, freeze 1/4/7, no terminations
+blend 0.90: moving 0/2/5/6, freeze 1/4/7, seed 3 terminates
+```
+
+So the next attempt should not keep sweeping global blend alpha. It needs
+state-conditioned or closed-loop-selected imitation that can apply different
+motion/smoothing tradeoffs in different rollout states.
+
 The focused student decision artifact is:
 
 ```text

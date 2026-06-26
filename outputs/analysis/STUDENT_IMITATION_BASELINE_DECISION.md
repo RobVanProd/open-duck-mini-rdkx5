@@ -98,6 +98,11 @@ A single global blend cannot solve all seeds. Seed `1` needs more kNN-local
 motion than blend `0.80`, seed `3` needs less kNN aggression than raw kNN, and
 seeds `4`/`7` need an additional anti-double-support mechanism.
 
+A narrow blend-alpha sweep from `0.75` to `0.88` did not change the seed split:
+every one of those coefficients moved seeds `0/2/3/5/6` and froze `1/4/7`.
+At `0.90`, seed `3` terminates again. Further global alpha sweeps are not a
+promising branch.
+
 ## Required Next Design
 
 - Train or select using closed-loop rollouts, not only offline action loss.
@@ -124,6 +129,8 @@ seeds `4`/`7` need an additional anti-double-support mechanism.
   solves closed-loop rate saturation.
 - Do not optimize supervised action error alone.
 - Do not call blend `0.80` solved; it is only the current best cheap baseline.
+- Do not keep sweeping one global blend alpha; `0.75-0.88` have the same
+  moving/freeze split and `0.90` reintroduces the seed-3 fall.
 
 ## Current Next Step
 
