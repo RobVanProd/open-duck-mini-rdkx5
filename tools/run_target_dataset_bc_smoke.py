@@ -82,6 +82,11 @@ def read_jsonl(path: Path) -> list[dict[str, Any]]:
     return records
 
 
+def write_jsonl(path: Path, records: Sequence[dict[str, Any]]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text("".join(json.dumps(record) + "\n" for record in records))
+
+
 def pattern(values: list[int] | tuple[int, ...]) -> str:
     return "".join(str(int(value)) for value in values)
 
@@ -644,6 +649,10 @@ def run_closed_loop_rollout(
             if done:
                 break
         modes[f"seed_{seed:03d}"] = summarize_rollout(records, args.command_x, float(env.dt))
+        if args.trace_dir:
+            trace_path = Path(args.trace_dir) / f"seed_{seed:03d}.jsonl"
+            write_jsonl(trace_path, records)
+            modes[f"seed_{seed:03d}"]["trace_jsonl"] = str(trace_path)
 
     return {
         "status": classify_rollout(modes),
@@ -894,6 +903,11 @@ def main() -> int:
     parser.add_argument("--mlp-target-rate-limit-rad-s", type=float, default=3.75)
     parser.add_argument("--mlp-obs-noise-std", type=float, default=0.0)
     parser.add_argument("--mlp-obs-consistency-scale", type=float, default=0.0)
+    parser.add_argument(
+        "--trace-dir",
+        default=None,
+        help="Optional directory for ignored per-seed JSONL rollout traces.",
+    )
     parser.add_argument(
         "--jax-platform",
         choices=["auto", "cpu", "gpu"],

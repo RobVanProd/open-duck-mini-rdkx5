@@ -66,11 +66,30 @@ Blend `0.80` is the best current cheap baseline to beat. A useful next student
 must keep its no-termination behavior and recover forward motion on seeds
 `1`, `4`, and `7`.
 
+The traced blend `0.80` replay classifies that freeze as
+`HOLD_FREEZE_LOW_ACTION_DOUBLE_SUPPORT`:
+
+```text
+moving seeds 0/2/3/5/6:
+  single support mean: 46.24%
+  pitch-chain target velocity p95 mean: 3.19 rad/s
+
+frozen seeds 1/4/7:
+  single support mean: 2.67%
+  double support mean: 97.20%
+  pitch-chain target velocity p95 mean: 0.40 rad/s
+```
+
+This means the next student must add closed-loop pressure against quiet
+double-support dwell, not merely smooth the kNN policy further.
+
 ## Required Next Design
 
 - Train or select using closed-loop rollouts, not only offline action loss.
 - Preserve kNN-like local motion while enforcing linear/sequence-like smoothness.
 - Beat blend `0.80`: no terminations and more than 5/8 moving seeds.
+- Specifically recover seeds `1`, `4`, and `7` from low-action double-support
+  dwell into alternating single support.
 - Penalize or reject candidates whose closed-loop sent-target p95 reaches
   `5.24 rad/s`.
 - Grade on all eight seeds for at least `5s` before any longer run.

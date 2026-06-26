@@ -107,10 +107,31 @@
     }
   ],
   "decision": "Do not promote any current smoke student. Blend 0.80 is the best current cheap baseline, but it still freezes seeds 1, 4, and 7. The next branch should train or select a closed-loop-regularized state-conditioned student that beats blend 0.80.",
+  "blend080_seed_mode_analysis": {
+    "artifact": "outputs/analysis/BLEND080_SEED_MODE_ANALYSIS.md",
+    "status": "HOLD_FREEZE_LOW_ACTION_DOUBLE_SUPPORT",
+    "moving_seeds": [
+      0,
+      2,
+      3,
+      5,
+      6
+    ],
+    "frozen_seeds": [
+      1,
+      4,
+      7
+    ],
+    "moving_single_support_pct_mean": 46.24,
+    "frozen_double_support_pct_mean": 97.2,
+    "moving_pitch_chain_target_velocity_p95_rad_s_mean": 3.1944,
+    "frozen_pitch_chain_target_velocity_p95_rad_s_mean": 0.3986
+  },
   "required_next_design": [
     "train or select using closed-loop rollouts, not only offline action loss",
     "preserve kNN-like local motion while enforcing linear/sequence-like smoothness",
     "beat blend 0.80: no terminations and more than 5/8 moving seeds",
+    "recover seeds 1, 4, and 7 from low-action double-support dwell into alternating single support",
     "penalize or reject candidates whose closed-loop sent-target p95 reaches 5.24 rad/s",
     "grade on all eight seeds for at least 5s before any longer run",
     "gate on forward motion, fall/reverse count, near-standstill count, and max-joint pitch-chain p95 target velocity",

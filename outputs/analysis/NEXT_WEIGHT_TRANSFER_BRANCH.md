@@ -229,6 +229,11 @@ and `7` still freeze near standstill.
   fall is gone. The remaining failure is seed-dependent freeze on seeds
   `1`, `4`, and `7`. Blend `0.90` and kNN `k=3` both reintroduce a seed-3
   fall/reverse and are worse than blend `0.80`.
+- A traced blend `0.80` replay classifies that remaining freeze as
+  `HOLD_FREEZE_LOW_ACTION_DOUBLE_SUPPORT`: moving seeds spend about `46.24%`
+  in single support with pitch-chain sent-target velocity p95 around
+  `3.19 rad/s`, while frozen seeds spend about `97.20%` in double support with
+  pitch-chain sent-target velocity p95 around `0.40 rad/s`.
 
 ## Required Next Design
 
@@ -243,6 +248,8 @@ and `7` still freeze near standstill.
   multi-seed stability
 - beat blend `0.80`: keep zero terminations and recover forward motion on at
   least one of seeds `1`, `4`, and `7`
+- add closed-loop selection pressure against quiet double-support dwell; further
+  smoothing alone is likely to preserve the freeze
 - grade the student on coherent forward motion and max-joint pitch-chain p95
   target velocity, not only mean pitch-chain target velocity
 - evaluate any learned student with longer multi-seed closed-loop gates before

@@ -866,6 +866,32 @@ five moving seeds, but it does not solve the seed-dependent freeze. kNN `k=3`
 was also tested and was worse than the original kNN `k=5`, reintroducing the
 seed-3 fall while leaving seeds 1/4/7 near standstill.
 
+A traced blend `0.80` replay then characterized the freeze mechanism:
+
+```text
+outputs/analysis/BLEND080_SEED_MODE_ANALYSIS.md
+status: HOLD_FREEZE_LOW_ACTION_DOUBLE_SUPPORT
+moving seeds: 0, 2, 3, 5, 6
+frozen seeds: 1, 4, 7
+
+moving group:
+  mean vx ≈ 0.0586 m/s
+  single support ≈ 46.24%
+  double support ≈ 53.52%
+  pitch-chain sent target velocity p95 ≈ 3.19 rad/s
+
+frozen group:
+  mean vx ≈ 0.0031 m/s
+  single support ≈ 2.67%
+  double support ≈ 97.20%
+  pitch-chain sent target velocity p95 ≈ 0.40 rad/s
+```
+
+So the remaining blend failure is not an instability hidden by fall-count. It
+is a quiet double-support dwell: on seeds 1/4/7 the model produces too little
+closed-loop target motion after startup, never creates alternating single
+support, and therefore never propels forward.
+
 The focused student decision artifact is:
 
 ```text
