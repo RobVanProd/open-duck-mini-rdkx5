@@ -10,7 +10,8 @@
     "rule_candidates": "outputs/analysis/CLOSED_LOOP_WINDOW_RULE_CANDIDATES.md",
     "knee_rate_selector_manifest": "outputs/analysis/KNEE_RATE_SELECTOR_MANIFEST.md",
     "left_stance_gap": "outputs/analysis/LEFT_STANCE_GAP_ANALYSIS.md",
-    "left_stance_rate_recovery": "outputs/analysis/LEFT_STANCE_RATE_RECOVERY.md"
+    "left_stance_rate_recovery": "outputs/analysis/LEFT_STANCE_RATE_RECOVERY.md",
+    "relabelled_balanced_selector_manifest": "outputs/analysis/RELABELLED_BALANCED_SELECTOR_MANIFEST.md"
   },
   "findings": {
     "straight_x004": {
@@ -93,9 +94,20 @@
       "original_pass_windows": 1,
       "relabeled_pass_windows": 343,
       "relabeled_pass_pct": 62.03
+    },
+    "relabelled_balanced_selector_manifest": {
+      "status": "PASS_BALANCED_SELECTOR_SOURCE_READY",
+      "entries": 672,
+      "covered_phase_bins": 8,
+      "phase_bins": 8,
+      "left_stance_entries": 273,
+      "right_stance_entries": 135,
+      "double_entries": 264,
+      "right_knee_rate_cap_relabelled_entries": 343,
+      "original_entries": 329
     }
   },
-  "recommended_next": "PLAN_RELABEL_BALANCED_SELECTOR_SOURCE: do not train yet. Build a balanced source from original passing right-stance/double windows plus right-knee-rate-relabelled left-stance windows, then score phase/stance coverage and 25-50 tick continuity before BC/export.",
+  "recommended_next": "PLAN_SELECTOR_CONTINUITY_REPLAY_GATE: do not train yet. Score 25-50 tick continuity/replay from the relabelled balanced selector manifest before BC/export.",
   "stop_rules": [
     "Do not train directly from full BEST_WALK traces.",
     "Do not train directly from isolated 10-tick snippets.",

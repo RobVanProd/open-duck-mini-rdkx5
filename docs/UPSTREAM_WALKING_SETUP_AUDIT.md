@@ -398,6 +398,30 @@ source should combine original safe right-stance windows with relabeled
 left-stance windows, then score stance/phase coverage and 25-50 tick continuity
 before any BC/export.
 
+The combined source now passes the manifest coverage gate:
+
+```text
+tools/build_relabelled_balanced_selector_manifest.py
+outputs/analysis/RELABELLED_BALANCED_SELECTOR_MANIFEST.md
+status: PASS_BALANCED_SELECTOR_SOURCE_READY
+```
+
+Coverage:
+
+```text
+entries: 672
+phase bins: 8 / 8
+left_stance: 273
+right_stance: 135
+double: 264
+right_knee_rate_cap relabelled entries: 343
+original entries: 329
+```
+
+This is only a source gate. The relabeled windows have not been stepped in sim,
+and the manifest is not a training dataset until a 25-50 tick continuity/replay
+gate passes.
+
 ## Non-Goals
 
 - robot tests

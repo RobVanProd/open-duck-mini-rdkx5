@@ -1723,3 +1723,25 @@ This says the left-stance gap is likely recoverable by target-rate relabeling,
 at least as an offline selector source. The next artifact should build a
 balanced relabeled selector manifest and then re-score 25-50 tick continuity.
 Do not train yet; this has not been stepped through sim.
+
+That balanced source now exists:
+
+```text
+tools/build_relabelled_balanced_selector_manifest.py
+outputs/analysis/RELABELLED_BALANCED_SELECTOR_MANIFEST.md
+status: PASS_BALANCED_SELECTOR_SOURCE_READY
+
+entries: 672
+phase bins: 8 / 8
+left_stance: 273
+right_stance: 135
+double: 264
+right_knee_rate_cap relabelled entries: 343
+original entries: 329
+```
+
+This is the first selector source in the closed-loop teacher branch that has
+both stance sides and full phase-bin coverage while respecting the measured
+pitch-chain envelope in the scored windows. It is still not training-ready:
+the entries are local windows, not a verified closed-loop sequence. The next
+required artifact is a 25-50 tick continuity/replay score using this manifest.

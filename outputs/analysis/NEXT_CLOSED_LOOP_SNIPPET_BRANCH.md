@@ -298,6 +298,35 @@ right-knee-rate-relabelled left-stance windows
 Then score phase/stance coverage and 25-50 tick continuity before any BC/export.
 This is still offline only; the relabeled windows have not been stepped in sim.
 
+The balanced source was built:
+
+```text
+outputs/analysis/RELABELLED_BALANCED_SELECTOR_MANIFEST.md
+status: PASS_BALANCED_SELECTOR_SOURCE_READY
+entries: 672
+```
+
+Coverage:
+
+| category | entries |
+|---|---:|
+| left stance | 273 |
+| right stance | 135 |
+| double | 264 |
+| right-knee relabelled | 343 |
+| original | 329 |
+| phase bins covered | 8 / 8 |
+
+Updated next branch:
+
+```text
+PLAN_SELECTOR_CONTINUITY_REPLAY_GATE
+```
+
+The source is balanced enough to prototype, but not training-ready. The next
+offline gate must score 25-50 tick continuity/replay from the manifest before
+BC/export.
+
 ## Stop Rules
 
 - Do not train directly from full BEST_WALK traces.
