@@ -6157,3 +6157,17 @@ The PPO checkpoint/ONNX export plumbing has exact action fidelity, but the
 candidate still has a seed-5 reverse/fall basin. A one-trace relabel improved
 local dataset coverage without removing that failure. Do not start PPO, deploy,
 or run robot validation from this checkpoint.
+
+Follow-up source-VX relabeling fixed that specific seed-5 basin:
+
+```text
+artifact: outputs/analysis/PPO_BC_SWISH_SEED5_SOURCE_VX_RECOVERY_DECISION.md
+status: HOLD_COMMAND_CONDITIONING_REQUIRED
+x=0.08: 8 / 8 duration-complete, mean vx 0.0416 m/s
+x=0.0:  8 / 8 duration-complete, mean vx 0.0415 m/s
+```
+
+This is the first deployable-shape warm-start that keeps all eight seeds alive
+and moving at x=0.08 through the fitted bridge, but it is not command-conditioned
+because it also walks at zero command. The next blocker is zero-command
+conditioning, not seed-5 stability.

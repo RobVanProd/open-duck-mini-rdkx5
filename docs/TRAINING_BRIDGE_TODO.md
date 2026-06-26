@@ -5156,6 +5156,43 @@ rerun the same 8-seed fitted step-0 gate
 only consider PPO after 8/8 duration-complete with no immediate reverse/fall basin
 ```
 
+Source-VX recovery relabel result:
+
+```text
+artifact: outputs/analysis/PPO_BC_SWISH_SEED5_SOURCE_VX_RECOVERY_DECISION.md
+status: HOLD_COMMAND_CONDITIONING_REQUIRED
+```
+
+The source-VX teacher relabel is stronger than the plain blend relabel:
+
+```text
+x=0.08 fitted bridge:
+  falls: 0 / 8
+  duration complete: 8 / 8
+  mean vx: 0.0416 m/s
+  mean track ratio: 0.5201
+```
+
+It fixes the seed-5 reverse/fall basin, but the candidate also moves forward at
+zero command:
+
+```text
+x=0.0 fitted bridge:
+  falls: 0 / 8
+  duration complete: 8 / 8
+  mean vx: 0.0415 m/s
+```
+
+Next valid warm-start work is no longer another seed-5 relabel. It is command
+conditioning:
+
+```text
+add x=0.0 standstill/no-motion examples to the BC manifest
+or add a bounded zero-command correction phase before PPO
+rerun x=0.0 and x=0.08 fitted step-0 gates
+do not launch PPO unless the zero-command gate no longer walks forward
+```
+
 Stop rules:
 
 ```text

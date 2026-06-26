@@ -2259,3 +2259,69 @@ loss branch that explicitly handles reverse velocity, backward pitch collapse,
 and double-support dwell around seed-5-like states.
 
 Do not start PPO from this checkpoint.
+
+## PPO Swish Seed-5 Source-VX Recovery Relabel
+
+The plain blend relabel was then replaced by the stronger source-VX selector
+teacher that originally cleared the fitted-bridge selector gate:
+
+```text
+tool update: tools/relabel_bc_trace_actions.py supports source_vx_blend
+relabel artifact: outputs/analysis/PPO_SWISH_SEED5_RELABEL_SOURCE_VX.md
+manifest: outputs/analysis/PPO_SWISH_SEED5_SOURCE_VX_RECOVERY_MANIFEST.md
+BC fit: outputs/analysis/PPO_LOC_SWISH_SEED5_SOURCE_VX_RECOVERY_BC_STUDENT.md
+PPO export: outputs/analysis/PPO_BC_SWISH_SEED5_SOURCE_VX_RECOVERY_STEP0_EXPORT_FIDELITY.md
+x=0.08 gate: outputs/analysis/PPO_BC_SWISH_SEED5_SOURCE_VX_RECOVERY_STEP0_VALIDATION_FITTED_BACKLASH.md
+x=0.0 gate: outputs/analysis/PPO_BC_SWISH_SEED5_SOURCE_VX_RECOVERY_STEP0_VALIDATION_FITTED_BACKLASH_X0.md
+decision: outputs/analysis/PPO_BC_SWISH_SEED5_SOURCE_VX_RECOVERY_DECISION.md
+status: HOLD_COMMAND_CONDITIONING_REQUIRED
+```
+
+This is a real improvement over the plain blend relabel:
+
+```text
+weak seed-5 relabel x=0.08:
+  falls: 1 / 8
+  duration complete: 7 / 8
+  mean vx: 0.0120 m/s
+  mean track ratio: 0.1496
+  min samples: 75
+
+source-VX seed-5 relabel x=0.08:
+  falls: 0 / 8
+  duration complete: 8 / 8
+  mean vx: 0.0416 m/s
+  mean track ratio: 0.5201
+  min samples: 500
+```
+
+The seed-5 reverse/fall basin is removed in the deployable-shape warm start.
+However, the same policy also walks forward at zero command:
+
+```text
+source-VX seed-5 relabel x=0.0:
+  falls: 0 / 8
+  duration complete: 8 / 8
+  mean vx: 0.0415 m/s
+  min samples: 500
+```
+
+So the current warm-start is stable and moves, but it is not yet
+command-conditioned. It learned the forward gait from an x=0.08-only source and
+replays that gait even when `command_x = 0.0`.
+
+This changes the next blocker:
+
+```text
+solved:
+  seed-5 immediate reverse/fall basin
+
+still blocked:
+  zero-command semantic gate
+  fitted tracking gate
+  deployability / robot validation
+```
+
+Do not deploy this candidate and do not run robot validation. Before PPO, add
+command-conditioned standstill/no-motion data or an explicit zero-command
+correction phase, then rerun both x=0.0 and x=0.08 fitted step-0 gates.
