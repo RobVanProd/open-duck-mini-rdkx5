@@ -1276,3 +1276,34 @@ So the ONNX export path is working, but the exported DAgger-2 MLP is not a
 promotion candidate. The source-switch-free blend student remains the stronger
 offline behavior baseline; the ONNX student needs better closed-loop
 distillation or a different portable policy class before any robot gate.
+
+The existing pairwise target-rate regularizer was then tested on the DAgger-2
+manifest at lighter and stronger scales:
+
+```text
+outputs/analysis/source_vx_selector_trace_dagger2_mlp128_rate_reg_scale_screen_backlash/RATE_REG_SCALE_SCREEN_SUMMARY.md
+status: HOLD_RATE_REG_SCALE_SWEEP_NO_BALANCED_PASS
+screen: target_rate_scale 0.03, 0.05, 0.10 on seeds 0 and 3
+```
+
+The regularizer forms the expected tradeoff but does not solve it:
+
+```text
+scale 0.03:
+  mean track ratio 0.4583
+  max pitch-chain sent-target p95 3.7688 rad/s
+
+scale 0.05:
+  mean track ratio 0.4571
+  max pitch-chain sent-target p95 3.6952 rad/s
+
+scale 0.10:
+  mean track ratio 0.4104
+  max pitch-chain sent-target p95 3.6419 rad/s
+```
+
+So increasing the current pairwise target-rate penalty is not the next best
+branch. It can buy envelope compliance, but it does so by weakening forward
+motion below the gate. The next portable student needs a different objective or
+policy class that preserves the blend/selector closed-loop behavior while
+reducing the right-knee target-rate peak.

@@ -1,6 +1,6 @@
 # Student Imitation Baseline Decision
 
-status: `HOLD_DAGGER2_ONNX_MULTI_SEED_LOW_FORWARD_PROGRESS`
+status: `HOLD_PORTABLE_STUDENT_TARGET_RATE_TRADEOFF`
 
 This is an offline planning artifact. It does not run robot tests, SSH,
 deployment, PPO training, or runtime behavior changes.
@@ -347,6 +347,20 @@ Gain `0.90` still exceeds the envelope and already loses forward tracking on
 the screened seeds; lower gains reduce target rate but collapse motion. Do not
 turn this into a runtime gain hack.
 
+The existing pairwise target-rate regularizer was tested at scales `0.03`,
+`0.05`, and `0.10`:
+
+```text
+outputs/analysis/source_vx_selector_trace_dagger2_mlp128_rate_reg_scale_screen_backlash/RATE_REG_SCALE_SCREEN_SUMMARY.md
+status: HOLD_RATE_REG_SCALE_SWEEP_NO_BALANCED_PASS
+```
+
+No screened scale preserves track ratio `>= 0.5` on both seeds while keeping
+max pitch-chain sent-target p95 `<= 3.75 rad/s`. Scale `0.03` is closest but
+still misses both seed-3 forward tracking and the envelope; `0.05` and `0.10`
+bring target velocity under the envelope but weaken forward motion below the
+gate.
+
 ## Required Next Design
 
 - Use the DAgger-2 ONNX candidate as proof that compact neural export is wired,
@@ -357,6 +371,9 @@ turn this into a runtime gain hack.
   progress while bringing max pitch-chain target velocity and tracking down.
 - Do not pursue scalar action-gain wrapping as the next branch; it failed the
   two-seed envelope/motion screen.
+- Do not keep increasing the existing pairwise target-rate regularizer as the
+  next branch; the scale screen shows the expected motion/envelope tradeoff but
+  no balanced pass.
 - Do not treat the failed 128x128 MLP clones as proof that neural distillation
   is impossible; they show naive one-step MLP and simple target-rate
   regularization still overdrive.
@@ -379,6 +396,8 @@ turn this into a runtime gain hack.
   review.
 - Do not treat action-gain damping as a fix; the offline gain screen trades
   target-rate safety for lost forward motion.
+- Do not treat the current target-rate regularizer as solved; the scale screen
+  did not find an envelope-safe moving notch.
 - Do not treat the 2-seed kNN smoke as a pass.
 - Do not use aggregate sequence replay as the student.
 - Do not use plain one-step MLP BC as the student.

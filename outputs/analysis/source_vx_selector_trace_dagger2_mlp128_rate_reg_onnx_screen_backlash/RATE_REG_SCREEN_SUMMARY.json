@@ -1,0 +1,45 @@
+{
+  "status": "HOLD_RATE_REG_ONNX_SCREEN_TARGET_RATE",
+  "policy": "outputs/analysis/source_vx_selector_trace_dagger2_mlp128_rate_reg_candidate/candidate.onnx",
+  "task": "flat_terrain_backlash",
+  "bridge_mode": "fitted",
+  "command_x": 0.08,
+  "duration_s": 10,
+  "screen_seeds": [
+    0,
+    3
+  ],
+  "duration_complete_count": 2,
+  "moving_seed_count_ratio_ge_0p5": 0,
+  "mean_track_ratio": 0.4104067271284293,
+  "mean_local_vx_m_s": 0.032832538170274345,
+  "max_pitch_chain_sent_target_velocity_p95_rad_s": 3.6419138312339783,
+  "max_pitch_chain_joint_tracking_p95_rad": 0.24609408378601075,
+  "rows": [
+    {
+      "seed": 0,
+      "status": "HOLD_CANDIDATE_TRACKING",
+      "samples": 500,
+      "term": "duration_complete",
+      "mean_vx": 0.036737424933351574,
+      "ratio": 0.4592178116668947,
+      "sent_vel_p95_max": 3.6419138312339783,
+      "tracking_p95_max": 0.24609408378601075,
+      "height_min": 0.15201039612293243,
+      "pitch_p95": 0.09531574918793269
+    },
+    {
+      "seed": 3,
+      "status": "HOLD_CANDIDATE_TRACKING",
+      "samples": 500,
+      "term": "duration_complete",
+      "mean_vx": 0.02892765140719712,
+      "ratio": 0.36159564258996396,
+      "sent_vel_p95_max": 3.6395889520645146,
+      "tracking_p95_max": 0.2457792639732361,
+      "height_min": 0.15517817437648773,
+      "pitch_p95": 0.09905917710759404
+    }
+  ],
+  "interpretation": "Target-rate regularization did not solve the standard ONNX target-rate problem on the screened seeds."
+}

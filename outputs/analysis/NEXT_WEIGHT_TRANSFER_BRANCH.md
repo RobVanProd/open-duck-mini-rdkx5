@@ -1,6 +1,6 @@
 # Next Weight-Transfer Branch Decision
 
-status: `HOLD_DAGGER2_ONNX_MULTI_SEED_LOW_FORWARD_PROGRESS`
+status: `HOLD_PORTABLE_STUDENT_TARGET_RATE_TRADEOFF`
 
 This is an offline planning artifact. It does not run simulation,
 training, robot SSH, deployment, or hardware tests.
@@ -301,6 +301,11 @@ and `7` still freeze near standstill.
   issue. Gain `0.90` still exceeds the fitted envelope and already loses
   forward tracking on the screen seeds; lower gains reduce target rate but
   collapse motion.
+- The existing pairwise target-rate regularizer was tested at scales `0.03`,
+  `0.05`, and `0.10`. It forms the expected tradeoff but does not find a
+  balanced notch: `0.03` is closest but still misses seed-3 forward tracking and
+  the envelope, while `0.05` and `0.10` bring target velocity under the envelope
+  by weakening forward motion below the gate.
 
 ## Required Next Design
 
@@ -312,6 +317,9 @@ and `7` still freeze near standstill.
   progress while bringing max pitch-chain target velocity and tracking down
 - do not pursue scalar action-gain wrapping as the next branch; it failed the
   two-seed envelope/motion screen
+- do not keep increasing the existing pairwise target-rate regularizer as the
+  next branch; the scale screen shows the expected motion/envelope tradeoff but
+  no balanced pass
 - review stress-bridge margin before any robot-side discussion
 - do not treat the failed 128x128 MLP clones as proof that neural distillation
   is impossible; they show naive one-step MLP and simple target-rate
@@ -363,6 +371,8 @@ and `7` still freeze near standstill.
   review.
 - Do not treat action-gain damping as a fix; the offline gain screen trades
   target-rate safety for lost forward motion.
+- Do not treat the current target-rate regularizer as solved; the scale screen
+  did not find an envelope-safe moving notch.
 
 ## Non-Goals
 
