@@ -832,6 +832,40 @@ This fills the student-baseline table: linear/aggregate sequence are too weak,
 kNN preserves some motion but is seed-fragile, and MLP variants become
 high-rate and low-progress.
 
+A blended kNN+linear student was then tested to combine local motion with
+smoothness:
+
+```text
+outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_BLEND075_BC_GATE_X008.md
+status: HOLD_BC_REPLAY_LOW_FORWARD_MOTION
+moving seeds: 5 / 8
+terminated seeds: 0 / 8
+
+outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_BLEND080_BC_GATE_X008.md
+status: HOLD_BC_REPLAY_LOW_FORWARD_MOTION
+moving seeds: 5 / 8
+terminated seeds: 0 / 8
+
+outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_BLEND090_BC_GATE_X008.md
+status: HOLD_BC_REPLAY_TERMINATED
+moving seeds: 4 / 8
+terminated seeds: 1 / 8
+```
+
+Blend `0.80` is the best cheap student baseline so far:
+
+```text
+moving seeds: 0, 2, 3, 5, 6
+near-standstill seeds: 1, 4, 7
+mean vx on moving seeds: about 0.0445-0.0648 m/s
+sent target velocity p95 on moving seeds: about 2.42-2.47 rad/s
+```
+
+It improves over raw kNN by removing the seed-3 fall/reverse while preserving
+five moving seeds, but it does not solve the seed-dependent freeze. kNN `k=3`
+was also tested and was worse than the original kNN `k=5`, reintroducing the
+seed-3 fall while leaving seeds 1/4/7 near standstill.
+
 The focused student decision artifact is:
 
 ```text

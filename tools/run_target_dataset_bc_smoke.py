@@ -583,6 +583,17 @@ def run_closed_loop_rollout(
                 model["norm"],
                 int(model["k"]),
             ).reshape(-1)
+        if model["kind"] == "blend":
+            linear_pred = predict_ridge(obs, model["weights"], model["linear_norm"])
+            knn_pred = predict_knn(
+                obs,
+                model["train_x"],
+                model["train_y"],
+                model["knn_norm"],
+                int(model["k"]),
+            )
+            alpha = float(model["blend_alpha"])
+            return np.clip(alpha * knn_pred + (1.0 - alpha) * linear_pred, -1.0, 1.0).reshape(-1)
         if model["kind"] == "mlp":
             return predict_mlp_np(obs, model["params"], model["norm"]).reshape(-1)
         raise ValueError(f"unsupported model kind {model['kind']}")
@@ -732,6 +743,8 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         "## Supervised Fit",
         "",
         f"- model_kind: `{payload['fit']['model_kind']}`",
+        f"- knn_k: `{payload.get('knn_k')}`",
+        f"- blend_alpha: `{payload.get('blend_alpha')}`",
         f"- best_alpha: `{payload['fit']['best_alpha']}`",
         f"- train_rmse: `{fmt(payload['fit']['train']['rmse'])}`",
         f"- train_mae: `{fmt(payload['fit']['train']['mae'])}`",
@@ -869,8 +882,9 @@ def main() -> int:
     parser.add_argument("--duration-s", type=float, default=3.0)
     parser.add_argument("--seeds", default="0,2")
     parser.add_argument("--ridge-alphas", default="1e-6,1e-4,1e-2,1,100")
-    parser.add_argument("--model-kind", choices=["linear", "knn", "mlp"], default="linear")
+    parser.add_argument("--model-kind", choices=["linear", "knn", "blend", "mlp"], default="linear")
     parser.add_argument("--knn-k", type=int, default=5)
+    parser.add_argument("--blend-alpha", type=float, default=0.75)
     parser.add_argument("--mlp-hidden-sizes", default="128,128")
     parser.add_argument("--mlp-steps", type=int, default=2000)
     parser.add_argument("--mlp-batch-size", type=int, default=512)
@@ -957,6 +971,20 @@ def main() -> int:
                 "norm": np.stack([mean, std], axis=0),
                 "k": int(args.knn_k),
             }
+        elif args.model_kind == "blend":
+            mean = samples.observations.mean(axis=0)
+            std = samples.observations.std(axis=0)
+            std = np.where(std < 1.0e-8, 1.0, std)
+            model = {
+                "kind": "blend",
+                "weights": fit["weights"],
+                "linear_norm": fit["norm"],
+                "train_x": samples.observations,
+                "train_y": samples.actions,
+                "knn_norm": np.stack([mean, std], axis=0),
+                "k": int(args.knn_k),
+                "blend_alpha": float(args.blend_alpha),
+            }
         elif args.model_kind == "mlp":
             assert mlp_fit is not None
             model = {
@@ -1023,6 +1051,7 @@ def main() -> int:
         },
         "smoke_model_kind": args.model_kind,
         "knn_k": int(args.knn_k),
+        "blend_alpha": float(args.blend_alpha),
         "rollout": rollout,
     }
     output_json = Path(args.output_json)

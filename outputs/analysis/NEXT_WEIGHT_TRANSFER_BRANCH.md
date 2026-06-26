@@ -122,6 +122,20 @@ training, robot SSH, deployment, or hardware tests.
 | `teacher_dataset_linear_bc_gate_moving_seed_count` | `0 / 8` |
 | `teacher_dataset_linear_bc_gate_mean_vx_range_m_s` | `-0.3080 to +0.0077` |
 | `teacher_dataset_linear_bc_gate_sent_velocity_p95_range_rad_s` | `0.7319 to 3.0866` |
+| `teacher_dataset_blend075_bc_gate_status` | `HOLD_BC_REPLAY_LOW_FORWARD_MOTION` |
+| `teacher_dataset_blend075_bc_gate_moving_seed_count` | `5 / 8` |
+| `teacher_dataset_blend075_bc_gate_terminated_seed_count` | `0 / 8` |
+| `teacher_dataset_blend080_bc_gate_status` | `HOLD_BC_REPLAY_LOW_FORWARD_MOTION` |
+| `teacher_dataset_blend080_bc_gate_moving_seed_count` | `5 / 8` |
+| `teacher_dataset_blend080_bc_gate_terminated_seed_count` | `0 / 8` |
+| `teacher_dataset_blend080_bc_gate_near_standstill_seeds` | `1, 4, 7` |
+| `teacher_dataset_blend080_bc_gate_moving_sent_velocity_p95_range_rad_s` | `2.4171 to 2.4710` |
+| `teacher_dataset_blend090_bc_gate_status` | `HOLD_BC_REPLAY_TERMINATED` |
+| `teacher_dataset_blend090_bc_gate_moving_seed_count` | `4 / 8` |
+| `teacher_dataset_blend090_bc_gate_terminated_seed_count` | `1 / 8` |
+| `teacher_dataset_knn3_bc_gate_status` | `HOLD_BC_REPLAY_TERMINATED` |
+| `teacher_dataset_knn3_bc_gate_moving_seed_count` | `4 / 8` |
+| `teacher_dataset_knn3_bc_gate_terminated_seed_count` | `1 / 8` |
 
 ## Decision
 
@@ -142,7 +156,10 @@ without falling but stays near standstill. A plain one-step MLP clone also
 holds: it fits the dataset offline but produces high-rate, low-progress
 closed-loop behavior. First offline target-rate and observation-consistency
 regularizers did not fix the closed-loop target-rate failure. A linear ridge
-student is smoother, but too weak and still has a fall/reverse seed.
+student is smoother, but too weak and still has a fall/reverse seed. A blended
+kNN+linear student with kNN weight `0.80` is the best cheap baseline so far:
+it keeps five moving seeds and removes the kNN seed-3 fall, but seeds `1`, `4`,
+and `7` still freeze near standstill.
 
 ## Rationale
 
@@ -205,6 +222,13 @@ student is smoother, but too weak and still has a fall/reverse seed.
 - The linear ridge baseline is smoother, with sent-target velocity p95 staying
   below `3.09 rad/s`, but it has zero moving seeds and one fall/reverse seed.
   A smooth one-step model is not sufficient either.
+- Blending kNN with the linear ridge model is useful but not sufficient. Blend
+  `0.75` and `0.80` both complete all eight seeds and preserve five moving
+  seeds; blend `0.80` is the best cheap baseline because moving-seed
+  sent-target velocity p95 stays around `2.42-2.47 rad/s` while the seed-3
+  fall is gone. The remaining failure is seed-dependent freeze on seeds
+  `1`, `4`, and `7`. Blend `0.90` and kNN `k=3` both reintroduce a seed-3
+  fall/reverse and are worse than blend `0.80`.
 
 ## Required Next Design
 
@@ -217,6 +241,8 @@ student is smoother, but too weak and still has a fall/reverse seed.
 - use kNN/linear/MLP/sequence smoke results as baselines; the next student must
   combine kNN-like local motion with linear/sequence-like smoothness and
   multi-seed stability
+- beat blend `0.80`: keep zero terminations and recover forward motion on at
+  least one of seeds `1`, `4`, and `7`
 - grade the student on coherent forward motion and max-joint pitch-chain p95
   target velocity, not only mean pitch-chain target velocity
 - evaluate any learned student with longer multi-seed closed-loop gates before
@@ -249,6 +275,8 @@ student is smoother, but too weak and still has a fall/reverse seed.
   terminated seeds.
 - Do not fall back to linear ridge as the solution; the linear baseline is
   smoother but does not move.
+- Do not call blend `0.80` solved; it is only the current best cheap baseline
+  to beat.
 
 ## Non-Goals
 

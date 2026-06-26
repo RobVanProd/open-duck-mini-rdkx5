@@ -73,12 +73,44 @@
         0.7319,
         3.0866
       ]
+    },
+    {
+      "student": "blend075_knn5_linear",
+      "artifact": "outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_BLEND075_BC_GATE_X008.md",
+      "status": "HOLD_BC_REPLAY_LOW_FORWARD_MOTION",
+      "moving_seed_count": 5,
+      "terminated_seed_count": 0,
+      "near_standstill_seed_count": 3
+    },
+    {
+      "student": "blend080_knn5_linear",
+      "artifact": "outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_BLEND080_BC_GATE_X008.md",
+      "status": "HOLD_BC_REPLAY_LOW_FORWARD_MOTION",
+      "moving_seed_count": 5,
+      "terminated_seed_count": 0,
+      "near_standstill_seed_count": 3,
+      "best_current_cheap_baseline": true
+    },
+    {
+      "student": "blend090_knn5_linear",
+      "artifact": "outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_BLEND090_BC_GATE_X008.md",
+      "status": "HOLD_BC_REPLAY_TERMINATED",
+      "moving_seed_count": 4,
+      "terminated_seed_count": 1
+    },
+    {
+      "student": "knn_k3",
+      "artifact": "outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_KNN3_BC_GATE_X008.md",
+      "status": "HOLD_BC_REPLAY_TERMINATED",
+      "moving_seed_count": 4,
+      "terminated_seed_count": 1
     }
   ],
-  "decision": "Do not promote any current smoke student. The next branch should train or select a closed-loop-regularized state-conditioned student.",
+  "decision": "Do not promote any current smoke student. Blend 0.80 is the best current cheap baseline, but it still freezes seeds 1, 4, and 7. The next branch should train or select a closed-loop-regularized state-conditioned student that beats blend 0.80.",
   "required_next_design": [
     "train or select using closed-loop rollouts, not only offline action loss",
     "preserve kNN-like local motion while enforcing linear/sequence-like smoothness",
+    "beat blend 0.80: no terminations and more than 5/8 moving seeds",
     "penalize or reject candidates whose closed-loop sent-target p95 reaches 5.24 rad/s",
     "grade on all eight seeds for at least 5s before any longer run",
     "gate on forward motion, fall/reverse count, near-standstill count, and max-joint pitch-chain p95 target velocity",
@@ -90,6 +122,7 @@
     "Do not use aggregate sequence replay as the student.",
     "Do not use plain one-step MLP BC as the student.",
     "Do not assume pairwise target-rate or observation-consistency regularization solves closed-loop rate saturation.",
-    "Do not optimize supervised action error alone."
+    "Do not optimize supervised action error alone.",
+    "Do not call blend 0.80 solved; it is only the current best cheap baseline."
   ]
 }

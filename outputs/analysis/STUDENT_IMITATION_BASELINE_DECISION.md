@@ -29,6 +29,10 @@ The gate was straight `x=0.08`, `5s`, seeds `0-7`, upstream-main
 | MLP + target-rate pair loss | `CLOSED_LOOP_TEACHER_DATASET_MLP_RATE_REG_BC_GATE_X008.md` | `HOLD_BC_REPLAY_TERMINATED` | 3/8 terminated, sent-vel p95 `5.2400` every seed |
 | MLP + obs consistency | `CLOSED_LOOP_TEACHER_DATASET_MLP_CONSISTENCY_BC_GATE_X008.md` | `HOLD_BC_REPLAY_TERMINATED` | 3/8 terminated, sent-vel p95 `5.2400` every seed |
 | linear ridge | `CLOSED_LOOP_TEACHER_DATASET_LINEAR_BC_GATE_X008.md` | `HOLD_BC_REPLAY_TERMINATED` | 0/8 moving, 1/8 fall/reverse, sent-vel p95 `0.7319-3.0866` |
+| blend, kNN weight 0.75 | `CLOSED_LOOP_TEACHER_DATASET_BLEND075_BC_GATE_X008.md` | `HOLD_BC_REPLAY_LOW_FORWARD_MOTION` | 5/8 moving, 0/8 terminated, seeds 1/4/7 near-standstill |
+| blend, kNN weight 0.80 | `CLOSED_LOOP_TEACHER_DATASET_BLEND080_BC_GATE_X008.md` | `HOLD_BC_REPLAY_LOW_FORWARD_MOTION` | best cheap baseline: 5/8 moving, 0/8 terminated, target-rate safe |
+| blend, kNN weight 0.90 | `CLOSED_LOOP_TEACHER_DATASET_BLEND090_BC_GATE_X008.md` | `HOLD_BC_REPLAY_TERMINATED` | 4/8 moving, seed 3 falls/reverses |
+| kNN, k=3 | `CLOSED_LOOP_TEACHER_DATASET_KNN3_BC_GATE_X008.md` | `HOLD_BC_REPLAY_TERMINATED` | worse than k=5: 4/8 moving, seed 3 falls/reverses |
 
 ## Decision
 
@@ -49,15 +53,24 @@ MLP:
 
 MLP local regularizers:
   do not keep the rollout on the low-rate teacher manifold
+
+blend 0.75-0.80:
+  combines kNN motion with enough linear smoothing to remove the seed-3 fall,
+  but still freezes seeds 1, 4, and 7
 ```
 
 The next branch should be a closed-loop-regularized student, not another
 one-step supervised fit scored only by action error.
 
+Blend `0.80` is the best current cheap baseline to beat. A useful next student
+must keep its no-termination behavior and recover forward motion on seeds
+`1`, `4`, and `7`.
+
 ## Required Next Design
 
 - Train or select using closed-loop rollouts, not only offline action loss.
 - Preserve kNN-like local motion while enforcing linear/sequence-like smoothness.
+- Beat blend `0.80`: no terminations and more than 5/8 moving seeds.
 - Penalize or reject candidates whose closed-loop sent-target p95 reaches
   `5.24 rad/s`.
 - Grade on all eight seeds for at least `5s` before any longer run.
@@ -74,6 +87,7 @@ one-step supervised fit scored only by action error.
 - Do not assume pairwise target-rate or observation-consistency regularization
   solves closed-loop rate saturation.
 - Do not optimize supervised action error alone.
+- Do not call blend `0.80` solved; it is only the current best cheap baseline.
 
 ## Current Next Step
 
