@@ -980,11 +980,53 @@ kNN nor any global blend did. It does not solve the full gate because seeds `4`
 and `7` still settle into quiet double-support dwell, but it is now the best
 cheap baseline to beat.
 
+A source-filtered velocity selector then cleared the offline replay gate:
+
+```text
+outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_SOURCE_VX_BLEND080_100_SRCVX002_ALT_EXCLUDE_SEED4_BC_GATE_X008.md
+primary model: full curated teacher dataset
+alternate model: same dataset excluding source labels matching _seed4/
+alternate switch: local vx >= +0.02 m/s
+internal blend switch: local vx >= -0.02 m/s
+status: PASS_BC_FIT_SMOKE_FORWARD_REPLAY
+duration: 5s
+moving seeds: 0, 1, 2, 3, 4, 5, 6, 7
+terminated seeds: none
+sent-target velocity p95 range: 2.4474-2.5315 rad/s
+
+outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_SOURCE_VX_BLEND080_100_SRCVX002_ALT_EXCLUDE_SEED4_BC_GATE_X008_10S.md
+status: PASS_BC_FIT_SMOKE_FORWARD_REPLAY
+duration: 10s
+moving seeds: 0, 1, 2, 3, 4, 5, 6, 7
+terminated seeds: none
+sent-target velocity p95 range: 2.4293-2.4851 rad/s
+```
+
+The paired failed filters explain why the selector matters:
+
+```text
+exclude seed4 sources directly:
+  recovers seeds 4/7 but makes seed 3 terminate
+
+exclude seed7 sources directly:
+  same freeze split as before
+
+dual-source selector:
+  uses the seed4-excluded model only when local vx is already positive
+  keeps seed 3 on the safer primary model during negative-vx states
+```
+
+This is the first offline imitation-selector result that gets all eight seeds
+moving at straight `x=0.08` in vanilla CPU sim while staying low-rate. It is
+still not robot-ready: it is a diagnostic selector over teacher windows, not a
+trained exported policy, and it has not been tested with the fitted actuator
+bridge or on hardware.
+
 The focused student decision artifact is:
 
 ```text
 outputs/analysis/STUDENT_IMITATION_BASELINE_DECISION.md
-status: PLAN_CLOSED_LOOP_REGULARIZED_STUDENT
+status: PASS_SOURCE_VX_SELECTOR_SMOKE
 ```
 
 A first plain state-conditioned MLP BC smoke was then added to the same tool and

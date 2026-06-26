@@ -1,5 +1,5 @@
 {
-  "status": "PLAN_CLOSED_LOOP_REGULARIZED_STUDENT",
+  "status": "PASS_SOURCE_VX_SELECTOR_SMOKE",
   "dataset_id": "407af2cbe0ad69e1",
   "manifest": "outputs/analysis/closed_loop_teacher_dataset_manifest.json",
   "gate": {
@@ -106,7 +106,7 @@
       "terminated_seed_count": 1
     }
   ],
-  "decision": "Do not promote any current smoke student. Blend 0.80 is the best current cheap baseline, but it still freezes seeds 1, 4, and 7. The next branch should train or select a closed-loop-regularized state-conditioned student that beats blend 0.80.",
+  "decision": "Do not promote an exported or learned student yet. The source-filtered velocity selector is the first offline replay pass: it moves all eight seeds for 5s and 10s with zero terminations at straight x=0.08 in vanilla CPU sim. Treat it as a diagnostic selector over teacher windows, not a deployable policy. The next branch should convert or distill this selector into a reviewed portable student and test stricter offline gates, especially fitted actuator bridge evaluation.",
   "blend080_seed_mode_analysis": {
     "artifact": "outputs/analysis/BLEND080_SEED_MODE_ANALYSIS.md",
     "status": "HOLD_FREEZE_LOW_ACTION_DOUBLE_SUPPORT",
@@ -325,11 +325,51 @@
     "moving_seed_count": 6,
     "best_current_cheap_baseline": true
   },
+  "source_vx_selector_best": {
+    "artifact_5s": "outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_SOURCE_VX_BLEND080_100_SRCVX002_ALT_EXCLUDE_SEED4_BC_GATE_X008.md",
+    "artifact_10s": "outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_SOURCE_VX_BLEND080_100_SRCVX002_ALT_EXCLUDE_SEED4_BC_GATE_X008_10S.md",
+    "seed_mode_artifact": "outputs/analysis/SOURCE_VX_BLEND080_100_SRCVX002_ALT_EXCLUDE_SEED4_SEED_MODE_ANALYSIS.md",
+    "status_5s": "PASS_BC_FIT_SMOKE_FORWARD_REPLAY",
+    "status_10s": "PASS_BC_FIT_SMOKE_FORWARD_REPLAY",
+    "primary_dataset": "full curated teacher dataset",
+    "alternate_exclude_source_regex": "_seed4/",
+    "source_vx_threshold_m_s": 0.02,
+    "vx_blend_threshold_m_s": -0.02,
+    "moving_seeds_5s": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "moving_seeds_10s": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "terminated_seeds_5s": [],
+    "terminated_seeds_10s": [],
+    "sent_target_velocity_p95_range_5s_rad_s": [
+      2.4474,
+      2.5315
+    ],
+    "sent_target_velocity_p95_range_10s_rad_s": [
+      2.4293,
+      2.4851
+    ],
+    "interpretation": "First offline selector to move all eight seeds without terminations at straight x=0.08 in vanilla CPU sim. This is not a deployable policy."
+  },
   "required_next_design": [
-    "train or select using closed-loop rollouts, not only offline action loss",
-    "preserve kNN-like local motion while enforcing linear/sequence-like smoothness",
-    "beat velocity-gated blend: no terminations and more than 6/8 moving seeds",
-    "recover seeds 4 and 7 from low-action double-support dwell into alternating single support",
+    "convert or distill the source-filtered velocity selector into a reviewed portable student",
+    "preserve the 8/8 moving, 0/8 termination result across longer and bridged offline gates before any robot discussion",
     "use state-conditioned or closed-loop-selected imitation rather than one global kNN/linear blend coefficient",
     "penalize or reject candidates whose closed-loop sent-target p95 reaches 5.24 rad/s",
     "grade on all eight seeds for at least 5s before any longer run",

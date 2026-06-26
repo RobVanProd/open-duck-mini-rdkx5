@@ -16,6 +16,7 @@ import json
 import math
 import os
 from pathlib import Path
+import re
 from typing import Any, Iterable, Sequence
 
 import numpy as np
@@ -113,8 +114,15 @@ def abs_velocity(values: np.ndarray, dt_s: float) -> np.ndarray:
     return np.vstack([np.zeros((1, values.shape[1])), velocity])
 
 
-def load_manifest_samples(manifest_path: Path) -> tuple[dict[str, Any], SampleSet, list[dict[str, Any]]]:
+def load_manifest_samples(
+    manifest_path: Path,
+    *,
+    include_source_regex: str | None = None,
+    exclude_source_regex: str | None = None,
+) -> tuple[dict[str, Any], SampleSet, list[dict[str, Any]]]:
     manifest = json.loads(manifest_path.read_text())
+    include_pattern = re.compile(include_source_regex) if include_source_regex else None
+    exclude_pattern = re.compile(exclude_source_regex) if exclude_source_regex else None
     observations: list[list[float]] = []
     actions: list[list[float]] = []
     sources: list[str] = []
@@ -123,6 +131,11 @@ def load_manifest_samples(manifest_path: Path) -> tuple[dict[str, Any], SampleSe
     loaded_entries = []
 
     for entry in manifest.get("entries", []):
+        source_label = str(entry.get("source_name") or entry.get("source_path") or "")
+        if include_pattern and not include_pattern.search(source_label):
+            continue
+        if exclude_pattern and exclude_pattern.search(source_label):
+            continue
         source_path = Path(str(entry["source_path"]))
         records = [
             record
@@ -224,6 +237,37 @@ def consecutive_sample_pairs(samples: SampleSet) -> np.ndarray:
         if nxt is not None:
             pairs.append((here, nxt))
     return np.asarray(pairs, dtype=np.int64)
+
+
+def make_blend_model(
+    samples: SampleSet,
+    fit: dict[str, Any],
+    *,
+    kind: str,
+    knn_k: int,
+    blend_alpha: float,
+    dwell_blend_alpha: float = 1.0,
+    dwell_trigger_ticks: int = 20,
+    vx_blend_alpha: float = 1.0,
+    vx_blend_threshold_m_s: float = 0.02,
+) -> dict[str, Any]:
+    mean = samples.observations.mean(axis=0)
+    std = samples.observations.std(axis=0)
+    std = np.where(std < 1.0e-8, 1.0, std)
+    return {
+        "kind": kind,
+        "weights": fit["weights"],
+        "linear_norm": fit["norm"],
+        "train_x": samples.observations,
+        "train_y": samples.actions,
+        "knn_norm": np.stack([mean, std], axis=0),
+        "k": int(knn_k),
+        "blend_alpha": float(blend_alpha),
+        "dwell_blend_alpha": float(dwell_blend_alpha),
+        "dwell_trigger_ticks": int(dwell_trigger_ticks),
+        "vx_blend_alpha": float(vx_blend_alpha),
+        "vx_blend_threshold_m_s": float(vx_blend_threshold_m_s),
+    }
 
 
 def init_mlp_params(
@@ -577,7 +621,29 @@ def run_closed_loop_rollout(
         done = done.astype(reward.dtype)
         return state.replace(data=data, obs=obs, reward=reward, done=done), pre_rate_limit, sent_target
 
-    def predict_action(obs: np.ndarray, blend_alpha_override: float | None = None) -> np.ndarray:
+    def predict_blend_model(
+        blend_model: dict[str, Any],
+        obs: np.ndarray,
+        blend_alpha_override: float | None = None,
+    ) -> np.ndarray:
+        linear_pred = predict_ridge(obs, blend_model["weights"], blend_model["linear_norm"])
+        knn_pred = predict_knn(
+            obs,
+            blend_model["train_x"],
+            blend_model["train_y"],
+            blend_model["knn_norm"],
+            int(blend_model["k"]),
+        )
+        alpha = float(
+            blend_model["blend_alpha"] if blend_alpha_override is None else blend_alpha_override
+        )
+        return np.clip(alpha * knn_pred + (1.0 - alpha) * linear_pred, -1.0, 1.0).reshape(-1)
+
+    def predict_action(
+        obs: np.ndarray,
+        blend_alpha_override: float | None = None,
+        use_alt_model: bool = False,
+    ) -> np.ndarray:
         if model["kind"] == "linear":
             return predict_ridge(obs, model["weights"], model["norm"]).reshape(-1)
         if model["kind"] == "knn":
@@ -589,16 +655,10 @@ def run_closed_loop_rollout(
                 int(model["k"]),
             ).reshape(-1)
         if model["kind"] in {"blend", "dwell_blend", "vx_blend"}:
-            linear_pred = predict_ridge(obs, model["weights"], model["linear_norm"])
-            knn_pred = predict_knn(
-                obs,
-                model["train_x"],
-                model["train_y"],
-                model["knn_norm"],
-                int(model["k"]),
-            )
-            alpha = float(model["blend_alpha"] if blend_alpha_override is None else blend_alpha_override)
-            return np.clip(alpha * knn_pred + (1.0 - alpha) * linear_pred, -1.0, 1.0).reshape(-1)
+            return predict_blend_model(model, obs, blend_alpha_override)
+        if model["kind"] == "source_vx_blend":
+            active_model = model["alt_model"] if use_alt_model else model["primary_model"]
+            return predict_blend_model(active_model, obs, blend_alpha_override)
         if model["kind"] == "mlp":
             return predict_mlp_np(obs, model["params"], model["norm"]).reshape(-1)
         raise ValueError(f"unsupported model kind {model['kind']}")
@@ -634,7 +694,22 @@ def run_closed_loop_rollout(
                     if float(pre_step_local_linvel[0]) >= float(model["vx_blend_threshold_m_s"])
                     else float(model["blend_alpha"])
                 )
-            action = predict_action(obs, blend_alpha_override=blend_alpha_used).astype(np.float32)
+            use_alt_model = False
+            if model["kind"] == "source_vx_blend":
+                use_alt_model = (
+                    float(pre_step_local_linvel[0]) >= float(model["source_vx_threshold_m_s"])
+                )
+                active_model = model["alt_model"] if use_alt_model else model["primary_model"]
+                blend_alpha_used = (
+                    float(active_model["vx_blend_alpha"])
+                    if float(pre_step_local_linvel[0]) >= float(active_model["vx_blend_threshold_m_s"])
+                    else float(active_model["blend_alpha"])
+                )
+            action = predict_action(
+                obs,
+                blend_alpha_override=blend_alpha_used,
+                use_alt_model=use_alt_model,
+            ).astype(np.float32)
             state, pre_rate, sent_target = step_bc_jit(state, jp.asarray(action))
             qpos = np.asarray(jax.device_get(state.data.qpos), dtype=float)
             base_addr = int(env._floating_base_qpos_addr)
@@ -654,6 +729,7 @@ def run_closed_loop_rollout(
                 "command": [args.command_x, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
                 "action": action.astype(float).tolist(),
                 "blend_alpha_used": blend_alpha_used,
+                "source_model_used": "alt" if use_alt_model else "primary",
                 "double_support_streak": double_support_streak,
                 "pre_step_local_linvel_m_s": pre_step_local_linvel.astype(float).tolist(),
                 "target_pre_rate_limit_rad": np.asarray(jax.device_get(pre_rate), dtype=float).tolist(),
@@ -765,15 +841,32 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         "## Dataset",
         "",
         f"- manifest: `{payload['manifest_path']}`",
+        f"- include_source_regex: `{payload.get('include_source_regex')}`",
+        f"- exclude_source_regex: `{payload.get('exclude_source_regex')}`",
+        f"- alt_include_source_regex: `{payload.get('alt_include_source_regex')}`",
+        f"- alt_exclude_source_regex: `{payload.get('alt_exclude_source_regex')}`",
         f"- dataset_id: `{payload['dataset_id']}`",
         f"- samples: `{payload['dataset']['samples']}`",
         f"- entries: `{payload['dataset']['entries']}`",
         f"- source_files: `{payload['dataset']['source_files']}`",
         f"- max_source_fraction: `{fmt(payload['dataset']['max_source_fraction'])}`",
         f"- warning: `{payload['dataset']['source_skew_warning']}`",
-        "",
-        "## Supervised Fit",
-        "",
+    ]
+    if payload.get("alt_dataset") is not None:
+        alt = payload["alt_dataset"]
+        lines.extend(
+            [
+                f"- alt_samples: `{alt['samples']}`",
+                f"- alt_entries: `{alt['entries']}`",
+                f"- alt_source_files: `{alt['source_files']}`",
+                f"- alt_best_alpha: `{alt['best_alpha']}`",
+            ]
+        )
+    lines.extend(
+        [
+            "",
+            "## Supervised Fit",
+            "",
         f"- model_kind: `{payload['fit']['model_kind']}`",
         f"- knn_k: `{payload.get('knn_k')}`",
         f"- blend_alpha: `{payload.get('blend_alpha')}`",
@@ -781,6 +874,7 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         f"- dwell_trigger_ticks: `{payload.get('dwell_trigger_ticks')}`",
         f"- vx_blend_alpha: `{payload.get('vx_blend_alpha')}`",
         f"- vx_blend_threshold_m_s: `{payload.get('vx_blend_threshold_m_s')}`",
+        f"- source_vx_threshold_m_s: `{payload.get('source_vx_threshold_m_s')}`",
         f"- best_alpha: `{payload['fit']['best_alpha']}`",
         f"- train_rmse: `{fmt(payload['fit']['train']['rmse'])}`",
         f"- train_mae: `{fmt(payload['fit']['train']['mae'])}`",
@@ -790,7 +884,8 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         f"- sample_to_parameter_ratio: `{fmt(payload['fit']['sample_to_parameter_ratio'])}`",
         f"- consecutive_pair_count: `{payload['fit'].get('consecutive_pair_count')}`",
         "",
-    ]
+        ]
+    )
     mlp = payload["fit"].get("mlp")
     if mlp is not None:
         lines.extend(
@@ -910,6 +1005,26 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--manifest", default=str(DEFAULT_MANIFEST))
+    parser.add_argument(
+        "--include-source-regex",
+        default=None,
+        help="Optional regex for source labels to include from the manifest.",
+    )
+    parser.add_argument(
+        "--exclude-source-regex",
+        default=None,
+        help="Optional regex for source labels to exclude from the manifest.",
+    )
+    parser.add_argument(
+        "--alt-include-source-regex",
+        default=None,
+        help="Optional source include regex for source_vx_blend alternate model.",
+    )
+    parser.add_argument(
+        "--alt-exclude-source-regex",
+        default=None,
+        help="Optional source exclude regex for source_vx_blend alternate model.",
+    )
     parser.add_argument("--output-md", default=str(DEFAULT_OUTPUT_MD))
     parser.add_argument("--output-json", default=str(DEFAULT_OUTPUT_JSON))
     parser.add_argument("--playground-path", default=str(DEFAULT_PLAYGROUND))
@@ -920,7 +1035,7 @@ def main() -> int:
     parser.add_argument("--ridge-alphas", default="1e-6,1e-4,1e-2,1,100")
     parser.add_argument(
         "--model-kind",
-        choices=["linear", "knn", "blend", "dwell_blend", "vx_blend", "mlp"],
+        choices=["linear", "knn", "blend", "dwell_blend", "vx_blend", "source_vx_blend", "mlp"],
         default="linear",
     )
     parser.add_argument("--knn-k", type=int, default=5)
@@ -929,6 +1044,7 @@ def main() -> int:
     parser.add_argument("--dwell-trigger-ticks", type=int, default=20)
     parser.add_argument("--vx-blend-alpha", type=float, default=1.0)
     parser.add_argument("--vx-blend-threshold-m-s", type=float, default=0.02)
+    parser.add_argument("--source-vx-threshold-m-s", type=float, default=0.02)
     parser.add_argument("--mlp-hidden-sizes", default="128,128")
     parser.add_argument("--mlp-steps", type=int, default=2000)
     parser.add_argument("--mlp-batch-size", type=int, default=512)
@@ -957,12 +1073,29 @@ def main() -> int:
         os.environ.setdefault("JAX_PLATFORMS", args.jax_platform)
 
     manifest_path = Path(args.manifest)
-    manifest, samples, entries = load_manifest_samples(manifest_path)
+    manifest, samples, entries = load_manifest_samples(
+        manifest_path,
+        include_source_regex=args.include_source_regex,
+        exclude_source_regex=args.exclude_source_regex,
+    )
+    alt_samples = None
+    alt_entries: list[dict[str, Any]] = []
+    alt_fit = None
+    if args.model_kind == "source_vx_blend":
+        alt_manifest, alt_samples, alt_entries = load_manifest_samples(
+            manifest_path,
+            include_source_regex=args.alt_include_source_regex,
+            exclude_source_regex=args.alt_exclude_source_regex,
+        )
+        if alt_manifest.get("dataset_id") != manifest.get("dataset_id"):
+            raise ValueError("alternate manifest dataset id mismatch")
     pair_indices = consecutive_sample_pairs(samples)
     source_counts = Counter(samples.sources)
     alphas = parse_csv_floats(args.ridge_alphas)
     fit = select_alpha(samples, alphas)
     holdout = source_holdout(samples, fit["best_alpha"])
+    if alt_samples is not None:
+        alt_fit = select_alpha(alt_samples, alphas)
 
     max_source_fraction = max(source_counts.values()) / max(sum(source_counts.values()), 1)
     ridge_parameter_count = (samples.observations.shape[1] + 1) * samples.actions.shape[1]
@@ -1021,22 +1154,41 @@ def main() -> int:
                 "k": int(args.knn_k),
             }
         elif args.model_kind in {"blend", "dwell_blend", "vx_blend"}:
-            mean = samples.observations.mean(axis=0)
-            std = samples.observations.std(axis=0)
-            std = np.where(std < 1.0e-8, 1.0, std)
+            model = make_blend_model(
+                samples,
+                fit,
+                kind=args.model_kind,
+                knn_k=args.knn_k,
+                blend_alpha=args.blend_alpha,
+                dwell_blend_alpha=args.dwell_blend_alpha,
+                dwell_trigger_ticks=args.dwell_trigger_ticks,
+                vx_blend_alpha=args.vx_blend_alpha,
+                vx_blend_threshold_m_s=args.vx_blend_threshold_m_s,
+            )
+        elif args.model_kind == "source_vx_blend":
+            assert alt_samples is not None
+            assert alt_fit is not None
             model = {
-                "kind": args.model_kind,
-                "weights": fit["weights"],
-                "linear_norm": fit["norm"],
-                "train_x": samples.observations,
-                "train_y": samples.actions,
-                "knn_norm": np.stack([mean, std], axis=0),
-                "k": int(args.knn_k),
-                "blend_alpha": float(args.blend_alpha),
-                "dwell_blend_alpha": float(args.dwell_blend_alpha),
-                "dwell_trigger_ticks": int(args.dwell_trigger_ticks),
-                "vx_blend_alpha": float(args.vx_blend_alpha),
-                "vx_blend_threshold_m_s": float(args.vx_blend_threshold_m_s),
+                "kind": "source_vx_blend",
+                "primary_model": make_blend_model(
+                    samples,
+                    fit,
+                    kind="vx_blend",
+                    knn_k=args.knn_k,
+                    blend_alpha=args.blend_alpha,
+                    vx_blend_alpha=args.vx_blend_alpha,
+                    vx_blend_threshold_m_s=args.vx_blend_threshold_m_s,
+                ),
+                "alt_model": make_blend_model(
+                    alt_samples,
+                    alt_fit,
+                    kind="vx_blend",
+                    knn_k=args.knn_k,
+                    blend_alpha=args.blend_alpha,
+                    vx_blend_alpha=args.vx_blend_alpha,
+                    vx_blend_threshold_m_s=args.vx_blend_threshold_m_s,
+                ),
+                "source_vx_threshold_m_s": float(args.source_vx_threshold_m_s),
             }
         elif args.model_kind == "mlp":
             assert mlp_fit is not None
@@ -1051,6 +1203,10 @@ def main() -> int:
     payload = {
         "status": status,
         "manifest_path": str(manifest_path),
+        "include_source_regex": args.include_source_regex,
+        "exclude_source_regex": args.exclude_source_regex,
+        "alt_include_source_regex": args.alt_include_source_regex,
+        "alt_exclude_source_regex": args.alt_exclude_source_regex,
         "dataset_id": manifest.get("dataset_id"),
         "dataset": {
             "entries": len(entries),
@@ -1062,6 +1218,16 @@ def main() -> int:
             "max_source_fraction": float(max_source_fraction),
             "source_skew_warning": bool(max_source_fraction > 0.75),
         },
+        "alt_dataset": (
+            {
+                "entries": len(alt_entries),
+                "samples": int(alt_samples.observations.shape[0]),
+                "source_files": len(Counter(alt_samples.sources)),
+                "best_alpha": alt_fit["best_alpha"] if alt_fit is not None else None,
+            }
+            if alt_samples is not None
+            else None
+        ),
         "fit": {
             "model_kind": args.model_kind,
             "best_alpha": fit["best_alpha"],
@@ -1109,6 +1275,7 @@ def main() -> int:
         "dwell_trigger_ticks": int(args.dwell_trigger_ticks),
         "vx_blend_alpha": float(args.vx_blend_alpha),
         "vx_blend_threshold_m_s": float(args.vx_blend_threshold_m_s),
+        "source_vx_threshold_m_s": float(args.source_vx_threshold_m_s),
         "rollout": rollout,
     }
     output_json = Path(args.output_json)

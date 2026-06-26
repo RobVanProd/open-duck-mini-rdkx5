@@ -1,6 +1,6 @@
 # Next Weight-Transfer Branch Decision
 
-status: `PLAN_SEARCH_ENVELOPE_SAFE_CLOSED_LOOP_COMMAND`
+status: `PASS_SOURCE_VX_SELECTOR_SMOKE`
 
 This is an offline planning artifact. It does not run simulation,
 training, robot SSH, deployment, or hardware tests.
@@ -248,6 +248,12 @@ and `7` still freeze near standstill.
   blend `0.80`, raw-kNN blend `1.00`, and switch condition
   `local vx >= -0.02 m/s` move seeds `0/1/2/3/5/6` with zero terminations.
   Seeds `4` and `7` still freeze in double support.
+- A source-filtered velocity selector is the first offline replay pass:
+  primary model uses the full curated teacher dataset, alternate model excludes
+  source labels matching `_seed4/`, source switch is `local vx >= +0.02 m/s`,
+  and internal blend switch remains `local vx >= -0.02 m/s`. It passes both the
+  5s and 10s straight-`x=0.08` CPU replay gates with all eight seeds moving,
+  zero terminations, and sent-target velocity p95 around `2.43-2.53 rad/s`.
 
 ## Required Next Design
 
@@ -260,8 +266,10 @@ and `7` still freeze near standstill.
 - use kNN/linear/MLP/sequence smoke results as baselines; the next student must
   combine kNN-like local motion with linear/sequence-like smoothness and
   multi-seed stability
-- beat velocity-gated blend: keep zero terminations and recover forward motion
-  on at least one of the remaining frozen seeds `4` or `7`
+- convert or distill the source-filtered velocity selector into a reviewed
+  portable student; do not deploy the selector as-is
+- preserve the 8/8 moving, 0/8 termination result across stricter offline gates,
+  especially fitted actuator bridge evaluation
 - add closed-loop selection pressure against quiet double-support dwell; further
   smoothing alone is likely to preserve the freeze
 - avoid treating one global kNN/linear blend coefficient as the final selector;

@@ -135,7 +135,19 @@ def summarize_trace(path: Path, command_x: float, moving_threshold_m_s: float) -
 
 def aggregate(rows: list[dict[str, Any]]) -> dict[str, Any]:
     if not rows:
-        return {"count": 0}
+        return {
+            "count": 0,
+            "seeds": [],
+            "mean_vx_m_s": None,
+            "track_ratio": None,
+            "single_support_pct": None,
+            "double_support_pct": None,
+            "pitch_chain_sent_target_velocity_p95_rad_s": None,
+            "early_action_abs_mean": None,
+            "early_pitch_chain_sent_target_velocity_p95_rad_s": None,
+            "body_pitch_abs_p95_rad": None,
+            "base_height_min_m": None,
+        }
     return {
         "count": len(rows),
         "seeds": [row.get("seed") for row in rows],

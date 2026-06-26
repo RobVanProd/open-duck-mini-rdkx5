@@ -1,6 +1,6 @@
 # Student Imitation Baseline Decision
 
-status: `PLAN_CLOSED_LOOP_REGULARIZED_STUDENT`
+status: `PASS_SOURCE_VX_SELECTOR_SMOKE`
 
 This is an offline planning artifact. It does not run robot tests, SSH,
 deployment, PPO training, or runtime behavior changes.
@@ -36,10 +36,10 @@ The gate was straight `x=0.08`, `5s`, seeds `0-7`, upstream-main
 
 ## Decision
 
-Do not promote any current smoke student.
+Do not promote any exported or learned student yet.
 
 The curated low-rate teacher windows contain useful motion signal, but every
-simple student has a distinct failure:
+simple one-model student has a distinct failure:
 
 ```text
 kNN:
@@ -59,12 +59,11 @@ blend 0.75-0.80:
   but still freezes seeds 1, 4, and 7
 ```
 
-The next branch should be a closed-loop-regularized student, not another
-one-step supervised fit scored only by action error.
-
-Blend `0.80` is the best current cheap baseline to beat. A useful next student
-must keep its no-termination behavior and recover forward motion on seeds
-`1`, `4`, and `7`.
+The source-filtered velocity selector is the first offline replay pass. It is
+not a deployable policy: it is a diagnostic selector over teacher windows and
+two local models. The next branch should convert or distill this selector into
+a reviewed portable student, then test that student against stricter offline
+gates before any robot discussion.
 
 The traced blend `0.80` replay classifies that freeze as
 `HOLD_FREEZE_LOW_ACTION_DOUBLE_SUPPORT`:
@@ -135,18 +134,51 @@ terminated seeds: none
 It recovers seed `1` while keeping seed `3` alive. The remaining failure is
 still low-action double-support dwell on seeds `4` and `7`.
 
+A source-filtered velocity selector is the first offline selector to clear the
+5-second and 10-second replay gates:
+
+```text
+primary model:
+  full curated teacher dataset
+
+alternate model:
+  curated teacher dataset excluding source labels matching _seed4/
+
+source switch:
+  use alternate when local vx >= +0.02 m/s
+
+internal blend switch:
+  use raw-kNN blend when local vx >= -0.02 m/s
+
+5s gate:
+  PASS_BC_FIT_SMOKE_FORWARD_REPLAY
+  moving seeds: 8 / 8
+  terminated seeds: 0 / 8
+  sent-target velocity p95 range: 2.4474-2.5315 rad/s
+
+10s gate:
+  PASS_BC_FIT_SMOKE_FORWARD_REPLAY
+  moving seeds: 8 / 8
+  terminated seeds: 0 / 8
+  sent-target velocity p95 range: 2.4293-2.4851 rad/s
+```
+
+This should be treated as an offline selector proof, not as a deployable policy.
+It shows that the low-rate teacher windows contain enough state-conditioned
+signal to move all eight seeds when the source/velocity selector is chosen
+closed-loop.
+
 ## Required Next Design
 
-- Train or select using closed-loop rollouts, not only offline action loss.
-- Preserve kNN-like local motion while enforcing linear/sequence-like smoothness.
-- Beat velocity-gated blend: no terminations and more than 6/8 moving seeds.
-- Specifically recover seeds `1`, `4`, and `7` from low-action double-support
-  dwell into alternating single support.
+- Convert or distill the source-filtered velocity selector into a reviewed
+  portable student; do not deploy the selector as-is.
+- Preserve the 8/8 moving, 0/8 termination result across longer and bridged
+  offline gates before any robot discussion.
 - Do not rely on one global kNN/linear blend coefficient; the traced kNN/blend
   comparison shows the seed failures need state-conditioned selection.
 - Penalize or reject candidates whose closed-loop sent-target p95 reaches
   `5.24 rad/s`.
-- Grade on all eight seeds for at least `5s` before any longer run.
+- Grade on all eight seeds, with both 5s and longer-duration gates.
 - Gate on forward motion, fall/reverse count, near-standstill count, and
   max-joint pitch-chain p95 target velocity.
 - Keep all behavior default-off and offline.
@@ -160,8 +192,8 @@ still low-action double-support dwell on seeds `4` and `7`.
 - Do not assume pairwise target-rate or observation-consistency regularization
   solves closed-loop rate saturation.
 - Do not optimize supervised action error alone.
-- Do not call velocity-gated blend solved; it is only the current best cheap
-  baseline.
+- Do not call the source-filtered selector robot-ready; it is only an offline
+  selector smoke pass.
 - Do not keep sweeping one global blend alpha; `0.75-0.88` have the same
   moving/freeze split and `0.90` reintroduces the seed-3 fall.
 - Do not use the simple dwell-to-raw-kNN selector as the solution; early dwell
@@ -169,7 +201,7 @@ still low-action double-support dwell on seeds `4` and `7`.
 
 ## Current Next Step
 
-Implement a reviewed offline student-selection/training loop that evaluates
-candidate students in closed loop during selection. A valid first version can be
-small and CPU-bound, but it must select on the actual gate metrics above rather
-than only on one-step imitation loss.
+Turn the source-filtered velocity selector into a reviewed student/distillation
+or training target and test it against stricter offline gates, especially the
+fitted actuator bridge. Do not move to robot validation from this selector
+artifact.

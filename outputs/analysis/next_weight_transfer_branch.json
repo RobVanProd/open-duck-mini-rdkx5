@@ -1,6 +1,6 @@
 {
-  "status": "PLAN_REVIEWED_IMITATION_FROM_LOW_RATE_TEACHER_WINDOWS",
-  "next_branch": "Stop the local stance-relative teacher loop and stop searching nearby command cells for an envelope-safe whole published-policy template. The upstream/reference target path fails the same forward push-effectiveness question in this sim, and the published BEST_WALK_ONNX_2 policy proves closed-loop propulsion exists in vanilla sim. The compact command-grid screen found movement only when the whole command cell exceeded the measured per-joint pitch-chain velocity envelope, but the moving published-policy traces contain substantial low-rate moving windows. That substrate now has a curated manifest and a tiny kNN BC smoke that preserves forward motion inside the target-rate envelope for a short closed-loop replay, but the longer 8-seed kNN replay gate still holds because one seed falls/reverses and two seeds collapse to near-standstill. A single averaged action-sequence replay is even more conservative: it completes without falling but stays near standstill. A plain one-step MLP clone also holds: it fits the dataset offline but produces high-rate, low-progress closed-loop behavior. First offline target-rate and observation-consistency regularizers did not fix the closed-loop target-rate failure. A linear ridge student is smoother, but too weak and still has a fall/reverse seed. A blended kNN+linear student with kNN weight 0.80 is the best cheap baseline so far: it keeps five moving seeds and removes the kNN seed-3 fall, but seeds 1, 4, and 7 still freeze near standstill.",
+  "status": "PASS_SOURCE_VX_SELECTOR_SMOKE",
+  "next_branch": "Stop the local stance-relative teacher loop and stop searching nearby command cells for an envelope-safe whole published-policy template. The upstream/reference target path fails the same forward push-effectiveness question in this sim, and the published BEST_WALK_ONNX_2 policy proves closed-loop propulsion exists in vanilla sim. The compact command-grid screen found movement only when the whole command cell exceeded the measured per-joint pitch-chain velocity envelope, but the moving published-policy traces contain substantial low-rate moving windows. That substrate now has a curated manifest and a state-conditioned source-filtered velocity selector that moves all eight straight-x=0.08 seeds for 5s and 10s in vanilla CPU sim with zero terminations and sent-target velocity p95 around 2.43-2.53 rad/s. This selector is not a deployable policy; the next branch is to convert or distill it into a reviewed portable student and then test stricter offline gates, especially fitted actuator bridge evaluation.",
   "inputs": {
     "gate_status": "HOLD_NO_SUSTAINED_WEIGHT_TRANSFER_TARGET",
     "gate_artifacts": 66,
@@ -181,14 +181,16 @@
     "The traced raw kNN k=5 replay exposes the global-blend tradeoff: raw kNN moves seed 1 but seed 3 falls/reverses after 79 samples, while blend 0.80 rescues seed 3 but freezes seed 1. Seeds 4 and 7 freeze in both.",
     "A narrow global-blend sweep (0.75, 0.80, 0.82, 0.85, 0.88, 0.90) confirms there is no scalar-alpha notch: 0.75-0.88 all move only seeds 0/2/3/5/6 and freeze 1/4/7; 0.90 reintroduces the seed-3 termination.",
     "A simple double-support dwell selector also fails: switching to raw kNN after 5 double-support ticks reintroduces the seed-3 termination, while switching after 10 or 20 ticks preserves the blend 0.80 freeze pattern.",
-    "A velocity-gated blend is the first selector that beats blend 0.80: base blend 0.80, raw-kNN blend 1.00, and switch condition local vx >= -0.02 m/s move seeds 0/1/2/3/5/6 with zero terminations. Seeds 4 and 7 still freeze in double support."
+    "A velocity-gated blend is the first selector that beats blend 0.80: base blend 0.80, raw-kNN blend 1.00, and switch condition local vx >= -0.02 m/s move seeds 0/1/2/3/5/6 with zero terminations. Seeds 4 and 7 still freeze in double support.",
+    "A source-filtered velocity selector is the first offline replay pass: primary model uses the full curated teacher dataset, alternate model excludes source labels matching _seed4/, source switch is local vx >= +0.02 m/s, and internal blend switch remains local vx >= -0.02 m/s. It passes both the 5s and 10s straight-x=0.08 CPU replay gates with all eight seeds moving, zero terminations, and sent-target velocity p95 around 2.43-2.53 rad/s."
   ],
   "required_next_design": [
     "design a reviewed state-conditioned imitation/pretraining experiment from the curated low-rate closed-loop teacher-window manifest",
     "train or constrain the student from those windows, not from the full over-envelope published-policy trajectory",
     "include closed-loop target-rate/action-smoothness selection or training feedback; do not optimize supervised action error alone",
     "use kNN/linear/MLP/sequence smoke results as baselines; the next student must combine kNN-like local motion with linear/sequence-like smoothness and multi-seed stability",
-    "beat velocity-gated blend: keep zero terminations and recover forward motion on at least one of the remaining frozen seeds 4 or 7",
+    "convert or distill the source-filtered velocity selector into a reviewed portable student; do not deploy the selector as-is",
+    "preserve the 8/8 moving, 0/8 termination result across stricter offline gates, especially fitted actuator bridge evaluation",
     "add closed-loop selection pressure against quiet double-support dwell; further smoothing alone is likely to preserve the freeze",
     "avoid treating one global kNN/linear blend coefficient as the final selector; the next attempt should be state-conditioned or closed-loop-selected",
     "do not treat a dwell-to-raw-kNN switch as sufficient; it was tested and did not beat blend 0.80",
@@ -211,7 +213,8 @@
     "Do not treat plain one-step MLP BC as solved; the first MLP smoke hits the target-rate limit while mostly failing forward motion.",
     "Do not assume offline pairwise/noise regularization solves one-step BC; the first two regularized MLP smokes still hit the target-rate limit and terminated seeds.",
     "Do not fall back to linear ridge as the solution; the linear baseline is smoother but does not move.",
-    "Do not call blend 0.80 solved; it is only the current best cheap baseline to beat."
+    "Do not call blend 0.80 solved; it is only a historical cheap baseline.",
+    "Do not call the source-filtered selector deployable; it is only an offline selector smoke pass."
   ],
   "non_goals": [
     "robot tests",
