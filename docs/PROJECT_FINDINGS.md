@@ -1666,3 +1666,32 @@ safe windows. It is not a balanced selector-training source. The next branch
 must either recover the missing left-stance mechanism, mirror/symmetrize with
 verification, or use a different closed-loop source. Do not train from this
 manifest as-is.
+
+The left-stance gap analysis then checked whether left stance is absent or
+present-but-unsafe:
+
+```text
+tools/analyze_left_stance_gap.py
+outputs/analysis/LEFT_STANCE_GAP_ANALYSIS.md
+status: WARN_LEFT_STANCE_EXISTS_BUT_NOT_IN_SELECTOR
+
+total windows: 2904
+left-related windows: 553
+```
+
+Left stance exists, but it is almost always excluded by high pitch-chain target
+rate:
+
+| contact group | windows | pass | mean vx | pitch p95 | right knee p95 | left knee p95 | top reason |
+|---|---:|---:|---:|---:|---:|---:|---|
+| center left / majority left | 388 | 0 | 0.0600 | 5.1021 | 5.0757 | 2.6358 | high pitch velocity |
+| center left / majority double | 94 | 1 | 0.0579 | 5.0024 | 4.9303 | 2.1449 | high pitch velocity |
+| center right / majority right | 362 | 102 | 0.0693 | 3.6390 | 1.9382 | 3.6082 | mixed |
+| center double / majority right | 64 | 33 | 0.0605 | 3.3411 | 2.6167 | 3.1245 | mixed |
+
+This says the missing selector side is not a contact-absence problem. It is a
+side-specific rate problem: when the policy is in left stance, the right knee
+often hits the target-rate ceiling. When the policy is in right stance, the
+right knee is much quieter and windows can pass. The next recovery branch
+should target left-stance/right-knee burst suppression or verified symmetry,
+not another generic contact selector.

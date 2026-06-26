@@ -355,6 +355,25 @@ balanced selector source. The missing left-stance side must be recovered,
 symmetry-augmented and verified, or replaced with a different closed-loop
 mechanism source before BC/export.
 
+A targeted left-stance gap analysis showed that the side is present but unsafe:
+
+```text
+tools/analyze_left_stance_gap.py
+outputs/analysis/LEFT_STANCE_GAP_ANALYSIS.md
+status: WARN_LEFT_STANCE_EXISTS_BUT_NOT_IN_SELECTOR
+```
+
+Key split:
+
+| contact group | windows | pass | pitch p95 | right knee p95 | left knee p95 |
+|---|---:|---:|---:|---:|---:|
+| center left / majority left | 388 | 0 | 5.1021 rad/s | 5.0757 rad/s | 2.6358 rad/s |
+| center right / majority right | 362 | 102 | 3.6390 rad/s | 1.9382 rad/s | 3.6082 rad/s |
+
+The missing left-stance selector source is therefore a right-knee burst problem
+during left support, not an absence of left contact. The next branch should
+recover or mirror left stance with explicit right-knee rate verification.
+
 ## Non-Goals
 
 - robot tests

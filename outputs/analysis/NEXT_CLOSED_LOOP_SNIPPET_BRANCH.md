@@ -230,6 +230,33 @@ Do not train from the current knee-rate-aware manifest. The next branch must
 recover, mirror with verification, or replace the missing left-stance safe
 mechanism before BC/export.
 
+The left-stance gap analysis resolves which of those applies:
+
+```text
+outputs/analysis/LEFT_STANCE_GAP_ANALYSIS.md
+status: WARN_LEFT_STANCE_EXISTS_BUT_NOT_IN_SELECTOR
+left-related windows: 553 / 2904
+```
+
+Left stance is present but unsafe:
+
+| group | windows | pass | pitch p95 | right knee p95 | left knee p95 |
+|---|---:|---:|---:|---:|---:|
+| center left / majority left | 388 | 0 | 5.1021 | 5.0757 | 2.6358 |
+| center left / majority double | 94 | 1 | 5.0024 | 4.9303 | 2.1449 |
+| center right / majority right | 362 | 102 | 3.6390 | 1.9382 | 3.6082 |
+
+Updated next branch:
+
+```text
+PLAN_LEFT_STANCE_RIGHT_KNEE_RATE_RECOVERY
+```
+
+Do not treat this as a generic contact-coverage problem. The missing safe side
+is specifically left support with a right-knee target-rate burst. Any mirrored
+or recovered source must prove that the right-knee p95 is brought back into the
+passing-window range before training/export.
+
 ## Stop Rules
 
 - Do not train directly from full BEST_WALK traces.

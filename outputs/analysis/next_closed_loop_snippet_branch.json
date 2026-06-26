@@ -8,7 +8,8 @@
     "stitch_plan": "outputs/analysis/CLOSED_LOOP_SNIPPET_STITCH_PLAN.md",
     "stance_timing": "outputs/analysis/PUBLISHED_POLICY_STANCE_TIMING_COMPARISON.md",
     "rule_candidates": "outputs/analysis/CLOSED_LOOP_WINDOW_RULE_CANDIDATES.md",
-    "knee_rate_selector_manifest": "outputs/analysis/KNEE_RATE_SELECTOR_MANIFEST.md"
+    "knee_rate_selector_manifest": "outputs/analysis/KNEE_RATE_SELECTOR_MANIFEST.md",
+    "left_stance_gap": "outputs/analysis/LEFT_STANCE_GAP_ANALYSIS.md"
   },
   "findings": {
     "straight_x004": {
@@ -71,9 +72,21 @@
       "double_majority_windows": 178,
       "right_stance_majority_windows": 135,
       "left_stance_majority_windows": 0
+    },
+    "left_stance_gap": {
+      "status": "WARN_LEFT_STANCE_EXISTS_BUT_NOT_IN_SELECTOR",
+      "left_related_windows": 553,
+      "center_left_majority_left_windows": 388,
+      "center_left_majority_left_pass_windows": 0,
+      "center_left_majority_left_pitch_p95_rad_s": 5.1021,
+      "center_left_majority_left_right_knee_p95_rad_s": 5.0757,
+      "center_right_majority_right_windows": 362,
+      "center_right_majority_right_pass_windows": 102,
+      "center_right_majority_right_pitch_p95_rad_s": 3.639,
+      "center_right_majority_right_right_knee_p95_rad_s": 1.9382
     }
   },
-  "recommended_next": "HOLD_ONE_SIDED_SELECTOR_SOURCE: do not train from isolated BEST_WALK snippets, straight x=0.04, or the current knee-rate-aware manifest. Recover, mirror with verification, or replace the missing left-stance safe mechanism before BC/export.",
+  "recommended_next": "PLAN_LEFT_STANCE_RIGHT_KNEE_RATE_RECOVERY: do not train from isolated BEST_WALK snippets, straight x=0.04, or the current one-sided knee-rate-aware manifest. Recover or mirror left stance only with explicit right-knee p95 verification before BC/export.",
   "stop_rules": [
     "Do not train directly from full BEST_WALK traces.",
     "Do not train directly from isolated 10-tick snippets.",
