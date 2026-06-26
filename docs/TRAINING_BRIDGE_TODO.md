@@ -4983,6 +4983,48 @@ value network: fresh PPO init
 Then rerun action-level and closed-loop standard evaluator step-0 fidelity
 before allowing PPO updates.
 
+PPO-loc BC result:
+
+```text
+artifact: outputs/analysis/PPO_LOC_BC_POLICY_VALIDATION.md
+status: HOLD_PPO_LOC_BC_TRACKING
+fit: outputs/analysis/PPO_LOC_BC_STUDENT.md
+ONNX: outputs/analysis/ppo_loc_bc_student_candidate/candidate.onnx
+NPZ:  outputs/analysis/ppo_loc_bc_student_candidate/candidate_mlp.npz
+```
+
+The PPO-compatible deterministic output contract is now solved, but closed-loop
+tracking is not:
+
+```text
+duration complete: 8 / 8
+falls: 0 / 8
+mean track ratio: 0.4761
+sent-target p95: 3.8384-3.9250 rad/s
+tracking p95: 0.2641-0.2703 rad
+```
+
+This is not a robot candidate. It is the current best PPO-native warm-start
+candidate. Next branch:
+
+```text
+PLAN_PPO_FINE_TUNE_FROM_PPO_LOC_BC
+```
+
+Required pre-training gate:
+
+```text
+build actual PPO params from ppo_loc_bc_student_candidate/candidate_mlp.npz
+initialize loc branch from PPO-loc weights
+initialize scale logits deliberately
+keep value network fresh
+run step-0 standard fitted closed-loop gate
+confirm step-0 behavior matches the ONNX candidate
+```
+
+Only then run a short PPO fine-tune. Judge it by fitted tracking improvement
+without losing forward progress, not by reward alone.
+
 Stop rules:
 
 ```text

@@ -2055,3 +2055,32 @@ directly, while PPO exports `tanh(loc)` from a tanh-normal actor. Forcing an
 action-space BC head into the PPO loc branch is only approximate. The next
 warm-start branch should train or fit a PPO-loc student directly, or otherwise
 prove actual step-0 closed-loop fidelity before launching PPO.
+
+That PPO-loc student was trained and validated:
+
+```text
+outputs/analysis/PPO_LOC_BC_POLICY_VALIDATION.md
+status: HOLD_PPO_LOC_BC_TRACKING
+
+fit artifact: outputs/analysis/PPO_LOC_BC_STUDENT.md
+fit status: PASS_PPO_LOC_BC_FIT_SMOKE
+ONNX: outputs/analysis/ppo_loc_bc_student_candidate/candidate.onnx
+NPZ:  outputs/analysis/ppo_loc_bc_student_candidate/candidate_mlp.npz
+```
+
+The exported ONNX matches the PPO deterministic `tanh(loc)` contract, but the
+standard task-matched fitted gate still holds:
+
+```text
+duration complete: 8 / 8
+falls: 0 / 8
+mean track ratio: 0.4761
+sent-target velocity p95 range: 3.8384-3.9250 rad/s
+tracking p95 range: 0.2641-0.2703 rad
+```
+
+So the remaining issue is not actor shape or ONNX export. Supervised imitation
+of the source-VX selector still does not reduce fitted actuator tracking enough
+in closed loop. The next step should build actual PPO params from the PPO-loc
+NPZ, verify step-0 closed-loop fidelity, and only then run a short PPO
+fine-tune with the fitted actuator bridge active.
