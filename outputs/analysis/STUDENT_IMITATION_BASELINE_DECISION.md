@@ -361,14 +361,44 @@ still misses both seed-3 forward tracking and the envelope; `0.05` and `0.10`
 bring target velocity under the envelope but weaken forward motion below the
 gate.
 
+An exact ONNX export of the source-switch-free blend `0.80` baseline removes
+the neural-approximation question:
+
+```text
+outputs/analysis/source_vx_selector_trace_blend080_exact_onnx_candidate/candidate.onnx
+size: 1.8 MB
+contract: obs[1,101] -> continuous_actions[1,14]
+onnx verify max_abs_error: 1.192093e-07
+```
+
+The Python-side fitted-bridge smoke remains a pass, and the strict
+task-matched standard ONNX evaluator preserves forward motion on all seeds:
+
+```text
+outputs/analysis/SOURCE_VX_SELECTOR_TRACE_BLEND080_EXACT_ONNX_MULTI_SEED_FITTED_BACKLASH_SUMMARY.md
+status: HOLD_EXACT_BLEND_ONNX_RIGHT_KNEE_RATE_TRACKING
+duration complete: 8 / 8
+moving seeds with track ratio >= 0.5: 8 / 8
+mean track ratio: 0.5768
+mean local vx: 0.0461 m/s
+max pitch-chain sent-target p95 range: 4.7355-5.1118 rad/s
+max pitch-chain tracking p95 range: 0.2679-0.2800 rad
+dominant failure joint: right_knee
+```
+
+So exact export fidelity is solved for the blend baseline, but the baseline is
+still not a promotion candidate. The stricter evaluator exposes the same
+max-joint pitch-chain rate/tracking issue, centered on the right knee.
+
 ## Required Next Design
 
 - Use the DAgger-2 ONNX candidate as proof that compact neural export is wired,
   not as the behavior target.
 - Keep the source-switch-free blend student as the stronger offline behavior
-  baseline.
+  baseline, now with exact ONNX export available for offline analysis.
 - The next portable student must preserve task-matched backlash forward
-  progress while bringing max pitch-chain target velocity and tracking down.
+  progress while bringing max pitch-chain target velocity and tracking down,
+  especially the right-knee peak exposed by the exact blend ONNX gate.
 - Do not pursue scalar action-gain wrapping as the next branch; it failed the
   two-seed envelope/motion screen.
 - Do not keep increasing the existing pairwise target-rate regularizer as the
@@ -383,6 +413,8 @@ gate.
   comparison shows the seed failures need state-conditioned selection.
 - Penalize or reject candidates whose closed-loop sent-target p95 reaches
   `5.24 rad/s`.
+- Do not treat exact blend ONNX export as a deployment path; it proves fidelity,
+  not actuator-safety.
 - Grade on all eight seeds, with both 5s and longer-duration gates.
 - Gate on forward motion, fall/reverse count, near-standstill count, and
   max-joint pitch-chain p95 target velocity.
@@ -398,6 +430,9 @@ gate.
   target-rate safety for lost forward motion.
 - Do not treat the current target-rate regularizer as solved; the scale screen
   did not find an envelope-safe moving notch.
+- Do not call the exact blend ONNX candidate robot-ready; all eight strict
+  task-matched seeds move, but all exceed the fitted pitch-chain envelope and
+  right-knee tracking remains too high.
 - Do not treat the 2-seed kNN smoke as a pass.
 - Do not use aggregate sequence replay as the student.
 - Do not use plain one-step MLP BC as the student.

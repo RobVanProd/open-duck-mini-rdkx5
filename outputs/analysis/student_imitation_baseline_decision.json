@@ -1,5 +1,5 @@
 {
-  "status": "HOLD_PORTABLE_STUDENT_TARGET_RATE_TRADEOFF",
+  "status": "HOLD_EXACT_BLEND_ONNX_RIGHT_KNEE_RATE_TRACKING",
   "dataset_id": "407af2cbe0ad69e1",
   "manifest": "outputs/analysis/closed_loop_teacher_dataset_manifest.json",
   "gate": {
@@ -106,7 +106,7 @@
       "terminated_seed_count": 1
     }
   ],
-  "decision": "The DAgger-2 ONNX export path is wired and task-matched backlash eval moves, but it remains above the fitted pitch-chain target-rate envelope. Scalar action-gain damping and the existing pairwise target-rate regularizer both show the same tradeoff: target-rate safety is bought by weakening forward motion below the gate. The next portable student needs a different objective or policy class that preserves the blend/selector behavior while reducing the right-knee target-rate peak.",
+  "decision": "The DAgger-2 ONNX export path is wired and task-matched backlash eval moves, but it remains above the fitted pitch-chain target-rate envelope. Scalar action-gain damping and the existing pairwise target-rate regularizer both show the same tradeoff: target-rate safety is bought by weakening forward motion below the gate. The next portable student needs a different objective or policy class that preserves the blend/selector behavior while reducing the right-knee target-rate peak. Exact blend ONNX export proves the blend baseline can be represented faithfully, but strict task-matched evaluation still holds on right-knee pitch-chain rate/tracking.",
   "blend080_seed_mode_analysis": {
     "artifact": "outputs/analysis/BLEND080_SEED_MODE_ANALYSIS.md",
     "status": "HOLD_FREEZE_LOW_ACTION_DOUBLE_SUPPORT",
@@ -502,7 +502,8 @@
       0.05,
       0.1
     ],
-    "rate_reg_scale_screen_best_interpretation": "Scale 0.03 is closest but still misses seed-3 forward tracking and the envelope; 0.05/0.10 are envelope-safe but too slow."
+    "rate_reg_scale_screen_best_interpretation": "Scale 0.03 is closest but still misses seed-3 forward tracking and the envelope; 0.05/0.10 are envelope-safe but too slow.",
+    "exact_blend_onnx_comparison": "Exact blend ONNX preserves forward motion across all strict task-matched seeds, unlike the MLP, but still exceeds the fitted pitch-chain envelope at the right knee."
   },
   "required_next_design": [
     "use the DAgger-2 ONNX candidate as proof that compact neural export is wired, not as the behavior target",
@@ -516,7 +517,9 @@
     "penalize or reject candidates whose closed-loop sent-target p95 reaches 5.24 rad/s",
     "grade on all eight seeds for at least 5s before any longer run",
     "gate on forward motion, fall/reverse count, near-standstill count, and max-joint pitch-chain p95 target velocity",
-    "keep all behavior default-off and offline"
+    "keep all behavior default-off and offline",
+    "use exact blend ONNX as an offline analysis artifact, not a robot candidate",
+    "preserve blend closed-loop forward motion while reducing the right-knee pitch-chain target-rate and tracking peak"
   ],
   "stop_rules": [
     "Do not deploy or run robot validation.",
@@ -530,6 +533,33 @@
     "Do not optimize supervised action error alone.",
     "Do not call velocity-gated blend solved; it is only the current best cheap baseline.",
     "Do not keep sweeping one global blend alpha; 0.75-0.88 have the same moving/freeze split and 0.90 reintroduces the seed-3 fall.",
-    "Do not use the simple dwell-to-raw-kNN selector as the solution; early dwell switching terminates seed 3 and later switching preserves the freeze."
-  ]
+    "Do not use the simple dwell-to-raw-kNN selector as the solution; early dwell switching terminates seed 3 and later switching preserves the freeze.",
+    "Do not call the exact blend ONNX candidate robot-ready; it preserves forward motion but every strict task-matched seed exceeds the fitted pitch-chain envelope."
+  ],
+  "exact_blend_onnx": {
+    "candidate_onnx": "outputs/analysis/source_vx_selector_trace_blend080_exact_onnx_candidate/candidate.onnx",
+    "candidate_sha256": "23954caf77823c59524675c55e2e5ed6796877b52b4fea9bc7fa40f61e66bba4",
+    "onnx_contract": "obs[1,101] -> continuous_actions[1,14]",
+    "onnx_verify_max_abs_error": 1.1920928955078125e-07,
+    "bc_smoke_artifact": "outputs/analysis/SOURCE_VX_SELECTOR_TRACE_BLEND080_EXACT_ONNX_FITTED_BRIDGE_BC_GATE_X008_10S.md",
+    "bc_smoke_status": "PASS_BC_FIT_SMOKE_FORWARD_REPLAY",
+    "standard_eval_artifact": "outputs/analysis/SOURCE_VX_SELECTOR_TRACE_BLEND080_EXACT_ONNX_MULTI_SEED_FITTED_BACKLASH_SUMMARY.md",
+    "standard_eval_status": "HOLD_EXACT_BLEND_ONNX_RIGHT_KNEE_RATE_TRACKING",
+    "duration_complete_count": "8 / 8",
+    "track_ratio_ge_0p5_count": "8 / 8",
+    "vx_ge_0p02_count": "8 / 8",
+    "mean_track_ratio": 0.5768,
+    "mean_local_vx_m_s": 0.0461,
+    "pitch_chain_sent_target_velocity_p95_range_rad_s": [
+      4.7355,
+      5.1118
+    ],
+    "pitch_chain_tracking_p95_range_rad": [
+      0.2679,
+      0.28
+    ],
+    "envelope_safe_seed_count_3p75": "0 / 8",
+    "dominant_failure_joint": "right_knee",
+    "interpretation": "Exact kNN+ridge blend ONNX preserves forward motion better than the DAgger-2 MLP in task-matched standard eval, but it is not envelope-safe: every seed exceeds the fitted pitch-chain target-rate envelope and the right knee dominates the violation and tracking error."
+  }
 }

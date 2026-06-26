@@ -306,15 +306,26 @@ and `7` still freeze near standstill.
   balanced notch: `0.03` is closest but still misses seed-3 forward tracking and
   the envelope, while `0.05` and `0.10` bring target velocity under the envelope
   by weakening forward motion below the gate.
+- Exact ONNX export of the source-switch-free blend `0.80` baseline verifies to
+  `1.192093e-07` max action error against the Python blend and preserves
+  forward motion in the strict task-matched standard evaluator: `8 / 8` seeds
+  complete, `8 / 8` reach track ratio `>= 0.5`, mean track ratio is `0.5768`,
+  and mean local vx is `0.0461 m/s`.
+- That exact blend ONNX still holds:
+  `HOLD_EXACT_BLEND_ONNX_RIGHT_KNEE_RATE_TRACKING`. All eight strict seeds
+  exceed the fitted pitch-chain target-rate envelope, with max-joint p95
+  `4.7355-5.1118 rad/s`, and the dominant failure joint is consistently
+  `right_knee`.
 
 ## Required Next Design
 
 - use the DAgger-2 ONNX candidate as proof that compact neural export is wired,
   not as the behavior target
 - keep the source-switch-free blend student as the stronger offline behavior
-  baseline
+  baseline, now with exact ONNX export available for offline analysis
 - the next portable student must preserve task-matched backlash forward
-  progress while bringing max pitch-chain target velocity and tracking down
+  progress while bringing max pitch-chain target velocity and tracking down,
+  especially the right-knee peak exposed by the exact blend ONNX gate
 - do not pursue scalar action-gain wrapping as the next branch; it failed the
   two-seed envelope/motion screen
 - do not keep increasing the existing pairwise target-rate regularizer as the
@@ -338,6 +349,8 @@ and `7` still freeze near standstill.
   treating the kNN smoke as meaningful beyond proof-of-dataset
 - do not promote a student path unless it beats the 8-seed kNN gate by
   preserving forward motion across seeds without fall/reverse or freeze modes
+- do not treat exact blend ONNX export as a robot path; it solves export
+  fidelity but not actuator-safety
 
 ## Stop Rules
 
@@ -373,6 +386,9 @@ and `7` still freeze near standstill.
   target-rate safety for lost forward motion.
 - Do not treat the current target-rate regularizer as solved; the scale screen
   did not find an envelope-safe moving notch.
+- Do not call the exact blend ONNX candidate robot-ready; it preserves forward
+  motion across all strict task-matched seeds, but every seed exceeds the fitted
+  pitch-chain envelope and right-knee tracking remains too high.
 
 ## Non-Goals
 

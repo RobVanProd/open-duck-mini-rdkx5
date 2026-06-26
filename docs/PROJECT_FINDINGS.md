@@ -1307,3 +1307,47 @@ branch. It can buy envelope compliance, but it does so by weakening forward
 motion below the gate. The next portable student needs a different objective or
 policy class that preserves the blend/selector closed-loop behavior while
 reducing the right-knee target-rate peak.
+
+An exact kNN+ridge blend ONNX export was then added for the source-switch-free
+blend baseline. The exporter keeps the kNN training set inside the ONNX graph
+and verifies against the Python blend to numerical precision:
+
+```text
+outputs/analysis/source_vx_selector_trace_blend080_exact_onnx_candidate/candidate.onnx
+size: 1.8 MB
+contract: obs[1,101] -> continuous_actions[1,14]
+onnx verify max_abs_error: 1.192093e-07
+```
+
+The Python-side fitted-bridge smoke remains a pass:
+
+```text
+outputs/analysis/SOURCE_VX_SELECTOR_TRACE_BLEND080_EXACT_ONNX_FITTED_BRIDGE_BC_GATE_X008_10S.md
+status: PASS_BC_FIT_SMOKE_FORWARD_REPLAY
+moving seeds: 8 / 8
+terminated seeds: 0 / 8
+track ratio range: 0.5170-0.6279
+sent-target velocity p95 range: 2.0779-2.2134 rad/s
+```
+
+The stricter task-matched standard ONNX evaluator shows the export preserves
+forward motion better than the DAgger-2 MLP, but it is still not
+promotion-ready:
+
+```text
+outputs/analysis/SOURCE_VX_SELECTOR_TRACE_BLEND080_EXACT_ONNX_MULTI_SEED_FITTED_BACKLASH_SUMMARY.md
+status: HOLD_EXACT_BLEND_ONNX_RIGHT_KNEE_RATE_TRACKING
+duration complete: 8 / 8
+moving seeds with track ratio >= 0.5: 8 / 8
+mean track ratio: 0.5768
+mean local vx: 0.0461 m/s
+max pitch-chain sent-target p95 range: 4.7355-5.1118 rad/s
+max pitch-chain tracking p95 range: 0.2679-0.2800 rad
+dominant failure joint: right_knee
+```
+
+This closes export fidelity as the issue for the blend baseline. The remaining
+problem is not ONNX approximation loss; it is that the source-switch-free blend
+itself carries a hidden max-joint pitch-chain rate/tracking violation in the
+standard evaluator, dominated by the right knee. The next branch should target
+that joint/rate mechanism directly instead of further proving exportability.

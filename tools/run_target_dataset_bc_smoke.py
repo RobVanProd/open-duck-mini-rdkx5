@@ -537,6 +537,140 @@ def verify_mlp_onnx(path: Path, mlp_fit: dict[str, Any], observations: np.ndarra
     }
 
 
+def export_blend_onnx(path: Path, blend_model: dict[str, Any]) -> dict[str, Any]:
+    import onnx
+    from onnx import TensorProto, helper, numpy_helper
+
+    if blend_model.get("kind") != "blend":
+        raise ValueError("exact blend ONNX export only supports model kind 'blend'")
+
+    path.parent.mkdir(parents=True, exist_ok=True)
+    train_x = np.asarray(blend_model["train_x"], dtype=np.float32)
+    train_y = np.asarray(blend_model["train_y"], dtype=np.float32)
+    knn_norm = np.asarray(blend_model["knn_norm"], dtype=np.float32)
+    linear_norm = np.asarray(blend_model["linear_norm"], dtype=np.float32)
+    weights = np.asarray(blend_model["weights"], dtype=np.float32)
+    alpha = float(blend_model["blend_alpha"])
+    k = int(blend_model["k"])
+    if train_x.ndim != 2 or train_x.shape[1] != 101:
+        raise ValueError(f"expected train_x shape [N,101], got {train_x.shape}")
+    if train_y.ndim != 2 or train_y.shape[1] != 14:
+        raise ValueError(f"expected train_y shape [N,14], got {train_y.shape}")
+    if not (1 <= k <= train_x.shape[0]):
+        raise ValueError(f"k must be within train sample count, got k={k}, n={train_x.shape[0]}")
+
+    train_norm = ((train_x - knn_norm[0]) / knn_norm[1]).astype(np.float32)
+    ridge_w = weights[:-1].astype(np.float32)
+    ridge_b = weights[-1].astype(np.float32)
+    initializers = [
+        numpy_helper.from_array(linear_norm[0].astype(np.float32), name="linear_mean"),
+        numpy_helper.from_array(linear_norm[1].astype(np.float32), name="linear_std"),
+        numpy_helper.from_array(knn_norm[0].astype(np.float32), name="knn_mean"),
+        numpy_helper.from_array(knn_norm[1].astype(np.float32), name="knn_std"),
+        numpy_helper.from_array(train_norm, name="train_norm"),
+        numpy_helper.from_array(train_y, name="train_y"),
+        numpy_helper.from_array(ridge_w, name="ridge_w"),
+        numpy_helper.from_array(ridge_b, name="ridge_b"),
+        numpy_helper.from_array(np.asarray([k], dtype=np.int64), name="topk_k"),
+        numpy_helper.from_array(np.asarray([alpha], dtype=np.float32), name="blend_alpha"),
+        numpy_helper.from_array(np.asarray([1.0 - alpha], dtype=np.float32), name="blend_linear_weight"),
+        numpy_helper.from_array(np.asarray([-1.0], dtype=np.float32), name="clip_min"),
+        numpy_helper.from_array(np.asarray([1.0], dtype=np.float32), name="clip_max"),
+    ]
+    nodes = [
+        helper.make_node("Sub", ["obs", "linear_mean"], ["linear_centered"], name="linear_sub"),
+        helper.make_node("Div", ["linear_centered", "linear_std"], ["linear_in"], name="linear_div"),
+        helper.make_node("Gemm", ["linear_in", "ridge_w", "ridge_b"], ["linear_out"], name="ridge_gemm"),
+        helper.make_node("Sub", ["obs", "knn_mean"], ["knn_centered"], name="knn_sub"),
+        helper.make_node("Div", ["knn_centered", "knn_std"], ["knn_in"], name="knn_div"),
+        helper.make_node("Unsqueeze", ["knn_in"], ["knn_query"], name="query_unsqueeze", axes=[1]),
+        helper.make_node("Sub", ["knn_query", "train_norm"], ["diff"], name="knn_diff"),
+        helper.make_node("Mul", ["diff", "diff"], ["diff_sq"], name="knn_diff_sq"),
+        helper.make_node("ReduceSum", ["diff_sq"], ["dist_sq"], name="knn_dist_sq", axes=[2], keepdims=0),
+        helper.make_node("Neg", ["dist_sq"], ["neg_dist_sq"], name="knn_neg_dist"),
+        helper.make_node("TopK", ["neg_dist_sq", "topk_k"], ["topk_values", "topk_indices"], name="knn_topk"),
+        helper.make_node("Gather", ["train_y", "topk_indices"], ["neighbor_actions"], name="knn_gather", axis=0),
+        helper.make_node(
+            "ReduceMean",
+            ["neighbor_actions"],
+            ["knn_out"],
+            name="knn_mean_action",
+            axes=[1],
+            keepdims=0,
+        ),
+        helper.make_node("Mul", ["knn_out", "blend_alpha"], ["knn_weighted"], name="blend_knn"),
+        helper.make_node(
+            "Mul",
+            ["linear_out", "blend_linear_weight"],
+            ["linear_weighted"],
+            name="blend_linear",
+        ),
+        helper.make_node("Add", ["knn_weighted", "linear_weighted"], ["blend_out"], name="blend_add"),
+        helper.make_node("Clip", ["blend_out", "clip_min", "clip_max"], ["continuous_actions"], name="action_clip"),
+    ]
+    graph = helper.make_graph(
+        nodes,
+        "open_duck_exact_blend_bc_student",
+        [helper.make_tensor_value_info("obs", TensorProto.FLOAT, [1, 101])],
+        [helper.make_tensor_value_info("continuous_actions", TensorProto.FLOAT, [1, 14])],
+        initializer=initializers,
+    )
+    model = helper.make_model(
+        graph,
+        producer_name="open-duck-mini-rdkx5",
+        opset_imports=[helper.make_operatorsetid("", 12)],
+    )
+    model.ir_version = min(model.ir_version, 10)
+    onnx.checker.check_model(model)
+    onnx.save(model, path)
+    return {
+        "path": str(path),
+        "input_name": "obs",
+        "output_name": "continuous_actions",
+        "knn_samples": int(train_x.shape[0]),
+        "knn_k": k,
+        "blend_alpha": alpha,
+    }
+
+
+def verify_blend_onnx(path: Path, blend_model: dict[str, Any], observations: np.ndarray) -> dict[str, Any]:
+    import onnxruntime as ort
+
+    session = ort.InferenceSession(str(path), providers=["CPUExecutionProvider"])
+    sample = observations[: min(32, observations.shape[0])].astype(np.float32)
+    expected_rows = []
+    for row in sample.astype(np.float64):
+        expected_rows.append(
+            np.clip(
+                float(blend_model["blend_alpha"])
+                * predict_knn(
+                    row[None, :],
+                    blend_model["train_x"],
+                    blend_model["train_y"],
+                    blend_model["knn_norm"],
+                    int(blend_model["k"]),
+                )
+                + (1.0 - float(blend_model["blend_alpha"]))
+                * predict_ridge(row[None, :], blend_model["weights"], blend_model["linear_norm"]),
+                -1.0,
+                1.0,
+            )[0]
+        )
+    expected = np.asarray(expected_rows, dtype=np.float32)
+    batch_actual = []
+    for row in sample:
+        batch_actual.append(session.run(["continuous_actions"], {"obs": row[None, :]})[0][0])
+    actual = np.asarray(batch_actual, dtype=np.float32)
+    error = np.abs(actual - expected)
+    return {
+        "path": str(path),
+        "single_output_shape": list(session.run(["continuous_actions"], {"obs": sample[:1]})[0].shape),
+        "samples_checked": int(sample.shape[0]),
+        "max_abs_error": float(np.max(error)) if error.size else None,
+        "p95_abs_error": percentile(error.reshape(-1).tolist(), 95) if error.size else None,
+    }
+
+
 def action_metrics(y_true: np.ndarray, y_pred: np.ndarray) -> dict[str, Any]:
     error = y_pred - y_true
     abs_error = np.abs(error)
@@ -1043,6 +1177,26 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         for row in mlp.get("history") or []:
             lines.append(f"| {row['step']} | {fmt(row['loss'], 6)} |")
         lines.append("")
+    blend_onnx = payload["fit"].get("blend_onnx")
+    if blend_onnx is not None:
+        exported = blend_onnx.get("exported_onnx") or {}
+        verify = blend_onnx.get("onnx_verify") or {}
+        lines.extend(
+            [
+                "### Exact Blend ONNX",
+                "",
+                f"- exported_onnx: `{exported.get('path')}`",
+                f"- input_name: `{exported.get('input_name')}`",
+                f"- output_name: `{exported.get('output_name')}`",
+                f"- knn_samples: `{exported.get('knn_samples')}`",
+                f"- knn_k: `{exported.get('knn_k')}`",
+                f"- blend_alpha: `{exported.get('blend_alpha')}`",
+                f"- onnx_verify_samples_checked: `{verify.get('samples_checked')}`",
+                f"- onnx_verify_max_abs_error: `{fmt(verify.get('max_abs_error'), 8)}`",
+                f"- onnx_verify_p95_abs_error: `{fmt(verify.get('p95_abs_error'), 8)}`",
+                "",
+            ]
+        )
     lines.extend(
         [
             f"### Source Holdout ({payload['fit'].get('source_holdout_model_kind', 'ridge')} baseline)",
@@ -1198,6 +1352,11 @@ def main() -> int:
     parser.add_argument("--save-mlp-npz", default=None)
     parser.add_argument("--export-mlp-onnx", default=None)
     parser.add_argument(
+        "--export-blend-onnx",
+        default=None,
+        help="Optional output path for an exact blend kNN+ridge ONNX export.",
+    )
+    parser.add_argument(
         "--trace-dir",
         default=None,
         help="Optional directory for ignored per-seed JSONL rollout traces.",
@@ -1251,6 +1410,8 @@ def main() -> int:
     mlp_saved_npz = None
     mlp_exported_onnx = None
     mlp_onnx_verify = None
+    blend_exported_onnx = None
+    blend_onnx_verify = None
     if args.model_kind == "mlp":
         mlp_fit = fit_mlp_jax(
             samples.observations,
@@ -1292,6 +1453,23 @@ def main() -> int:
             if samples.observations.shape[0] < parameter_count
             else "none"
         ]
+        if args.model_kind == "blend" and args.export_blend_onnx:
+            export_model = make_blend_model(
+                samples,
+                fit,
+                kind="blend",
+                knn_k=args.knn_k,
+                blend_alpha=args.blend_alpha,
+            )
+            blend_exported_onnx = export_blend_onnx(
+                Path(args.export_blend_onnx),
+                export_model,
+            )
+            blend_onnx_verify = verify_blend_onnx(
+                Path(args.export_blend_onnx),
+                export_model,
+                samples.observations,
+            )
     rollout = None
     status = "HOLD_BC_FIT_NO_CLOSED_LOOP"
     if not args.no_rollout:
@@ -1429,6 +1607,14 @@ def main() -> int:
                     "onnx_verify": mlp_onnx_verify,
                 }
                 if mlp_fit is not None
+                else None
+            ),
+            "blend_onnx": (
+                {
+                    "exported_onnx": blend_exported_onnx,
+                    "onnx_verify": blend_onnx_verify,
+                }
+                if blend_exported_onnx is not None
                 else None
             ),
         },
