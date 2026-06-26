@@ -6397,3 +6397,37 @@ It produced another stable, low-rate standstill. The next step should pivot away
 from scalar PPO and weak-prior sweeps toward a larger selector-generated
 on-distribution dataset plus BC/PPO warm start, or a stronger behavior objective
 that anchors the actual closed-loop walking manifold.
+
+The existing source-VX DAgger-2 deployable ONNX candidates were then validated
+under a stricter 15-second fitted-bridge x=0.08 seed sweep:
+
+```text
+artifact: outputs/analysis/DEPLOYABLE_SOURCE_VX_POLICY_VALIDATION_X008_FITTED_15S.md
+command: x=0.08
+duration: 15 s
+bridge: fitted
+seeds: 0-7
+```
+
+Neither candidate passed:
+
+```text
+dagger2:
+  pass: 0 / 8
+  falls: 2 / 8
+  mean vx: 0.0199 m/s
+  mean track ratio: 0.2487
+
+dagger2_rate:
+  pass: 0 / 8
+  falls: 2 / 8
+  mean vx: 0.0148 m/s
+  mean track ratio: 0.1847
+```
+
+This downgrades the earlier 10-second smoke-pass DAgger candidates from
+"possible warm start" to "partial distillation only." The selector still proves
+that in-envelope walking exists, but the current deployable MLPs do not preserve
+it over the full validation horizon. The next offline step should expand the
+selector rollout dataset and repeat DAgger/BC against the 15-second fitted gate,
+not run robot validation and not continue scalar PPO sweeps.

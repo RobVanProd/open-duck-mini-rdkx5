@@ -135,3 +135,50 @@ termination checks
 If a deployable ONNX candidate survives that review, the next training move is
 PPO fine-tuning from the BC/DAgger policy with the fitted actuator bridge active,
 not PPO from scratch and not another open-loop target-source campaign.
+
+## Strict Validation Update
+
+The first strict deployable-policy validation was run after the behavior-prior
+PPO branch held:
+
+```text
+artifact: outputs/analysis/DEPLOYABLE_SOURCE_VX_POLICY_VALIDATION_X008_FITTED_15S.md
+command: straight x=0.08
+bridge: fitted
+duration: 15 s
+seeds: 0-7
+policies:
+  - source_vx_selector_trace_dagger2_mlp128_candidate/candidate.onnx
+  - source_vx_selector_trace_dagger2_mlp128_rate_reg_candidate/candidate.onnx
+```
+
+Result:
+
+```text
+dagger2:
+  pass: 0 / 8
+  falls: 2 / 8
+  duration complete: 6 / 8
+  mean track ratio: 0.2487
+  mean vx: 0.0199 m/s
+  failure modes: low progress, tracking, fall/termination
+
+dagger2_rate:
+  pass: 0 / 8
+  falls: 2 / 8
+  duration complete: 6 / 8
+  mean track ratio: 0.1847
+  mean vx: 0.0148 m/s
+  failure modes: low progress, fall/termination
+```
+
+The 10-second fitted-bridge smoke result was therefore useful but not strong
+enough to promote either ONNX candidate to PPO warm-start or robot validation.
+The deployable MLPs can reproduce some forward motion, but over the longer
+15-second gate they either lose forward progress, exceed tracking limits, or
+fall on hard seeds.
+
+The current next step is not robot testing and not another selector knob tweak.
+It is to expand the selector-generated on-distribution rollout dataset and
+repeat DAgger/BC with stricter 15-second fitted-bridge validation as the primary
+gate.

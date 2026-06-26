@@ -2716,3 +2716,40 @@ unlikely that another scalar PPO sweep or weak MLP teacher prior is the right
 next step. The selector/teacher result should be treated as a data source for a
 larger on-distribution BC plus PPO warm-start, or the behavior objective must
 anchor the actual walking manifold more directly.
+
+The deployable source-VX DAgger candidates were then checked with a stricter
+15-second, eight-seed fitted-bridge validation:
+
+```text
+artifact: outputs/analysis/DEPLOYABLE_SOURCE_VX_POLICY_VALIDATION_X008_FITTED_15S.md
+status: HOLD_DEPLOYABLE_SOURCE_VX_POLICY_VALIDATION
+command: x=0.08
+bridge: fitted
+duration: 15 s
+```
+
+Results:
+
+```text
+dagger2:
+  pass: 0 / 8
+  falls: 2 / 8
+  duration complete: 6 / 8
+  mean vx: 0.0199 m/s
+  mean track ratio: 0.2487
+
+dagger2_rate:
+  pass: 0 / 8
+  falls: 2 / 8
+  duration complete: 6 / 8
+  mean vx: 0.0148 m/s
+  mean track ratio: 0.1847
+```
+
+This resolves the apparent contradiction in the selector/MLP work. The
+DAgger-2 MLPs are not useless; they can move in the right direction and passed a
+shorter 10-second smoke. But they are not yet deployable warm starts under the
+stricter 15-second candidate gate. The current blocker is therefore still
+learnability/coverage: the walking behavior exists in the selector, and the MLPs
+partially distill it, but the current dataset/model does not preserve it robustly
+enough over the full validation horizon.
