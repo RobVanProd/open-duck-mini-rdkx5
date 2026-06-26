@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Run a tiny behavior-cloning smoke on the curated target dataset.
 
-This is an offline diagnostic. It fits a linear ridge model from curated
-obs[101] -> action[14] samples and can optionally replay that model in the
-Open Duck Playground sim. It does not run PPO, deploy, SSH, or touch the robot.
+This is an offline diagnostic. It fits a tiny supervised obs[101] ->
+action[14] model from curated target windows and can optionally replay that
+model in the Open Duck Playground sim. It does not run PPO, deploy, SSH, or
+touch the robot.
 """
 
 from __future__ import annotations
@@ -201,6 +202,122 @@ def predict_knn(
     return np.clip(np.asarray(rows, dtype=np.float64), -1.0, 1.0)
 
 
+def parse_hidden_sizes(value: str) -> list[int]:
+    return [int(item.strip()) for item in value.split(",") if item.strip()]
+
+
+def init_mlp_params(
+    input_dim: int,
+    hidden_sizes: Sequence[int],
+    output_dim: int,
+    seed: int,
+) -> list[tuple[np.ndarray, np.ndarray]]:
+    rng = np.random.default_rng(int(seed))
+    dims = [int(input_dim), *[int(size) for size in hidden_sizes], int(output_dim)]
+    params = []
+    for in_dim, out_dim in zip(dims[:-1], dims[1:], strict=True):
+        scale = math.sqrt(2.0 / max(in_dim + out_dim, 1))
+        weights = rng.normal(0.0, scale, size=(in_dim, out_dim)).astype(np.float64)
+        bias = np.zeros((out_dim,), dtype=np.float64)
+        params.append((weights, bias))
+    return params
+
+
+def predict_mlp_np(
+    x: np.ndarray,
+    params: list[tuple[np.ndarray, np.ndarray]],
+    norm: np.ndarray,
+) -> np.ndarray:
+    mean, std = norm
+    z = (x - mean) / std
+    for index, (weights, bias) in enumerate(params):
+        z = z @ weights + bias
+        if index < len(params) - 1:
+            z = np.tanh(z)
+    return np.clip(z, -1.0, 1.0)
+
+
+def fit_mlp_jax(
+    x: np.ndarray,
+    y: np.ndarray,
+    *,
+    hidden_sizes: Sequence[int],
+    steps: int,
+    batch_size: int,
+    learning_rate: float,
+    seed: int,
+) -> dict[str, Any]:
+    import jax
+    import jax.numpy as jnp
+    import optax
+
+    mean = x.mean(axis=0)
+    std = x.std(axis=0)
+    std = np.where(std < 1.0e-8, 1.0, std)
+    x_norm = ((x - mean) / std).astype(np.float32)
+    y_f32 = y.astype(np.float32)
+    params_np = init_mlp_params(x.shape[1], hidden_sizes, y.shape[1], seed)
+    params = [(jnp.asarray(weights, dtype=jnp.float32), jnp.asarray(bias, dtype=jnp.float32)) for weights, bias in params_np]
+    optimizer = optax.adam(float(learning_rate))
+    opt_state = optimizer.init(params)
+
+    def forward(model_params, batch_x):
+        z = batch_x
+        for index, (weights, bias) in enumerate(model_params):
+            z = z @ weights + bias
+            if index < len(model_params) - 1:
+                z = jnp.tanh(z)
+        return z
+
+    def loss_fn(model_params, batch_x, batch_y):
+        pred = forward(model_params, batch_x)
+        return jnp.mean((pred - batch_y) ** 2)
+
+    @jax.jit
+    def train_step(model_params, state, batch_x, batch_y):
+        loss, grads = jax.value_and_grad(loss_fn)(model_params, batch_x, batch_y)
+        updates, state = optimizer.update(grads, state, model_params)
+        model_params = optax.apply_updates(model_params, updates)
+        return model_params, state, loss
+
+    rng = np.random.default_rng(int(seed) + 17)
+    n_samples = int(x_norm.shape[0])
+    batch_size = max(1, min(int(batch_size), n_samples))
+    steps = max(1, int(steps))
+    history = []
+    log_every = max(1, steps // 10)
+    for step in range(steps):
+        indices = rng.integers(0, n_samples, size=batch_size)
+        params, opt_state, loss = train_step(
+            params,
+            opt_state,
+            jnp.asarray(x_norm[indices], dtype=jnp.float32),
+            jnp.asarray(y_f32[indices], dtype=jnp.float32),
+        )
+        if step == 0 or step == steps - 1 or (step + 1) % log_every == 0:
+            history.append({"step": int(step + 1), "loss": float(jax.device_get(loss))})
+
+    params_out = [
+        (np.asarray(jax.device_get(weights), dtype=np.float64), np.asarray(jax.device_get(bias), dtype=np.float64))
+        for weights, bias in params
+    ]
+    pred = predict_mlp_np(x, params_out, np.stack([mean, std], axis=0))
+    parameter_count = int(sum(weights.size + bias.size for weights, bias in params_out))
+    return {
+        "kind": "mlp",
+        "params": params_out,
+        "norm": np.stack([mean, std], axis=0),
+        "train": action_metrics(y, pred),
+        "history": history,
+        "hidden_sizes": [int(size) for size in hidden_sizes],
+        "steps": steps,
+        "batch_size": batch_size,
+        "learning_rate": float(learning_rate),
+        "parameter_count": parameter_count,
+        "sample_to_parameter_ratio": float(n_samples / max(parameter_count, 1)),
+    }
+
+
 def action_metrics(y_true: np.ndarray, y_pred: np.ndarray) -> dict[str, Any]:
     error = y_pred - y_true
     abs_error = np.abs(error)
@@ -395,6 +512,8 @@ def run_closed_loop_rollout(
                 model["norm"],
                 int(model["k"]),
             ).reshape(-1)
+        if model["kind"] == "mlp":
+            return predict_mlp_np(obs, model["params"], model["norm"]).reshape(-1)
         raise ValueError(f"unsupported model kind {model['kind']}")
 
     refresh_obs_jit = jax.jit(refresh_obs)
@@ -541,6 +660,7 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         "",
         "## Supervised Fit",
         "",
+        f"- model_kind: `{payload['fit']['model_kind']}`",
         f"- best_alpha: `{payload['fit']['best_alpha']}`",
         f"- train_rmse: `{fmt(payload['fit']['train']['rmse'])}`",
         f"- train_mae: `{fmt(payload['fit']['train']['mae'])}`",
@@ -549,7 +669,7 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         f"- pred_action_saturation_pct: `{fmt(payload['fit']['train']['pred_action_saturation_pct'])}`",
         f"- sample_to_parameter_ratio: `{fmt(payload['fit']['sample_to_parameter_ratio'])}`",
         "",
-        "### Source Holdout",
+        f"### Source Holdout ({payload['fit'].get('source_holdout_model_kind', 'ridge')} baseline)",
         "",
         "| held_out_source | status | train_samples | test_samples | mae | p95_abs_error | max_abs_error |",
         "|---|---|---:|---:|---:|---:|---:|",
@@ -650,8 +770,13 @@ def main() -> int:
     parser.add_argument("--duration-s", type=float, default=3.0)
     parser.add_argument("--seeds", default="0,2")
     parser.add_argument("--ridge-alphas", default="1e-6,1e-4,1e-2,1,100")
-    parser.add_argument("--model-kind", choices=["linear", "knn"], default="linear")
+    parser.add_argument("--model-kind", choices=["linear", "knn", "mlp"], default="linear")
     parser.add_argument("--knn-k", type=int, default=5)
+    parser.add_argument("--mlp-hidden-sizes", default="128,128")
+    parser.add_argument("--mlp-steps", type=int, default=2000)
+    parser.add_argument("--mlp-batch-size", type=int, default=512)
+    parser.add_argument("--mlp-learning-rate", type=float, default=1.0e-3)
+    parser.add_argument("--mlp-seed", type=int, default=0)
     parser.add_argument(
         "--jax-platform",
         choices=["auto", "cpu", "gpu"],
@@ -661,17 +786,48 @@ def main() -> int:
     parser.add_argument("--no-rollout", action="store_true")
     args = parser.parse_args()
 
+    if args.jax_platform != "auto":
+        os.environ.setdefault("JAX_PLATFORM_NAME", args.jax_platform)
+        os.environ.setdefault("JAX_PLATFORMS", args.jax_platform)
+
     manifest_path = Path(args.manifest)
     manifest, samples, entries = load_manifest_samples(manifest_path)
     source_counts = Counter(samples.sources)
     alphas = parse_csv_floats(args.ridge_alphas)
     fit = select_alpha(samples, alphas)
-    train_pred = predict_ridge(samples.observations, fit["weights"], fit["norm"])
-    train_metrics = action_metrics(samples.actions, train_pred)
     holdout = source_holdout(samples, fit["best_alpha"])
 
     max_source_fraction = max(source_counts.values()) / max(sum(source_counts.values()), 1)
-    parameter_count = (samples.observations.shape[1] + 1) * samples.actions.shape[1]
+    ridge_parameter_count = (samples.observations.shape[1] + 1) * samples.actions.shape[1]
+    mlp_fit = None
+    if args.model_kind == "mlp":
+        mlp_fit = fit_mlp_jax(
+            samples.observations,
+            samples.actions,
+            hidden_sizes=parse_hidden_sizes(args.mlp_hidden_sizes),
+            steps=args.mlp_steps,
+            batch_size=args.mlp_batch_size,
+            learning_rate=args.mlp_learning_rate,
+            seed=args.mlp_seed,
+        )
+        train_metrics = mlp_fit["train"]
+        parameter_count = int(mlp_fit["parameter_count"])
+        sample_to_parameter_ratio = float(mlp_fit["sample_to_parameter_ratio"])
+        model_fit_warnings = [
+            "overparameterized_mlp_fit"
+            if samples.observations.shape[0] < parameter_count
+            else "none"
+        ]
+    else:
+        train_pred = predict_ridge(samples.observations, fit["weights"], fit["norm"])
+        train_metrics = action_metrics(samples.actions, train_pred)
+        parameter_count = ridge_parameter_count
+        sample_to_parameter_ratio = float(samples.observations.shape[0] / max(parameter_count, 1))
+        model_fit_warnings = [
+            "overparameterized_linear_fit"
+            if samples.observations.shape[0] < parameter_count
+            else "none"
+        ]
     rollout = None
     status = "HOLD_BC_FIT_NO_CLOSED_LOOP"
     if not args.no_rollout:
@@ -681,7 +837,7 @@ def main() -> int:
                 "weights": fit["weights"],
                 "norm": fit["norm"],
             }
-        else:
+        elif args.model_kind == "knn":
             mean = samples.observations.mean(axis=0)
             std = samples.observations.std(axis=0)
             std = np.where(std < 1.0e-8, 1.0, std)
@@ -691,6 +847,13 @@ def main() -> int:
                 "train_y": samples.actions,
                 "norm": np.stack([mean, std], axis=0),
                 "k": int(args.knn_k),
+            }
+        elif args.model_kind == "mlp":
+            assert mlp_fit is not None
+            model = {
+                "kind": "mlp",
+                "params": mlp_fit["params"],
+                "norm": mlp_fit["norm"],
             }
         rollout = run_closed_loop_rollout(model=model, args=args)
         status = rollout["status"]
@@ -710,6 +873,7 @@ def main() -> int:
             "source_skew_warning": bool(max_source_fraction > 0.75),
         },
         "fit": {
+            "model_kind": args.model_kind,
             "best_alpha": fit["best_alpha"],
             "alpha_grid": [
                 {
@@ -721,16 +885,24 @@ def main() -> int:
                 for row in fit["rows"]
             ],
             "train": train_metrics,
+            "source_holdout_model_kind": "ridge",
             "source_holdout": holdout,
             "parameter_count": int(parameter_count),
-            "sample_to_parameter_ratio": float(samples.observations.shape[0] / parameter_count),
-            "warnings": [
-                "overparameterized_linear_fit"
-                if samples.observations.shape[0] < parameter_count
-                else "none"
-            ],
+            "sample_to_parameter_ratio": sample_to_parameter_ratio,
+            "warnings": model_fit_warnings,
             "coefficient_norm": float(np.linalg.norm(fit["weights"][:-1])),
             "intercept_norm": float(np.linalg.norm(fit["weights"][-1])),
+            "mlp": (
+                {
+                    "hidden_sizes": mlp_fit["hidden_sizes"],
+                    "steps": mlp_fit["steps"],
+                    "batch_size": mlp_fit["batch_size"],
+                    "learning_rate": mlp_fit["learning_rate"],
+                    "history": mlp_fit["history"],
+                }
+                if mlp_fit is not None
+                else None
+            ),
         },
         "smoke_model_kind": args.model_kind,
         "knn_k": int(args.knn_k),

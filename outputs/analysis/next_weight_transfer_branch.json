@@ -1,6 +1,6 @@
 {
   "status": "PLAN_REVIEWED_IMITATION_FROM_LOW_RATE_TEACHER_WINDOWS",
-  "next_branch": "Stop the local stance-relative teacher loop and stop searching nearby command cells for an envelope-safe whole published-policy template. The upstream/reference target path fails the same forward push-effectiveness question in this sim, and the published BEST_WALK_ONNX_2 policy proves closed-loop propulsion exists in vanilla sim. The compact command-grid screen found movement only when the whole command cell exceeded the measured per-joint pitch-chain velocity envelope, but the moving published-policy traces contain substantial low-rate moving windows. That substrate now has a curated manifest and a tiny kNN BC smoke that preserves forward motion inside the target-rate envelope for a short closed-loop replay, but the longer 8-seed kNN replay gate still holds because one seed falls/reverses and two seeds collapse to near-standstill. A single averaged action-sequence replay is even more conservative: it completes without falling but stays near standstill.",
+  "next_branch": "Stop the local stance-relative teacher loop and stop searching nearby command cells for an envelope-safe whole published-policy template. The upstream/reference target path fails the same forward push-effectiveness question in this sim, and the published BEST_WALK_ONNX_2 policy proves closed-loop propulsion exists in vanilla sim. The compact command-grid screen found movement only when the whole command cell exceeded the measured per-joint pitch-chain velocity envelope, but the moving published-policy traces contain substantial low-rate moving windows. That substrate now has a curated manifest and a tiny kNN BC smoke that preserves forward motion inside the target-rate envelope for a short closed-loop replay, but the longer 8-seed kNN replay gate still holds because one seed falls/reverses and two seeds collapse to near-standstill. A single averaged action-sequence replay is even more conservative: it completes without falling but stays near standstill. A plain one-step MLP clone also holds: it fits the dataset offline but produces high-rate, low-progress closed-loop behavior.",
   "inputs": {
     "gate_status": "HOLD_NO_SUSTAINED_WEIGHT_TRANSFER_TARGET",
     "gate_artifacts": 66,
@@ -111,7 +111,14 @@
     "teacher_sequence_replay_seam_corrected_sent_velocity_p95_rad_s": 0.266,
     "teacher_sequence_replay_no_seam_sent_velocity_p95_rad_s": 0.2853,
     "teacher_sequence_replay_mean_vx_min_m_s": -0.0108,
-    "teacher_sequence_replay_mean_vx_max_m_s": 0.0113
+    "teacher_sequence_replay_mean_vx_max_m_s": 0.0113,
+    "teacher_dataset_mlp_bc_gate_status": "HOLD_BC_REPLAY_LOW_FORWARD_MOTION",
+    "teacher_dataset_mlp_bc_gate_model": "JAX/Optax MLP 64x64",
+    "teacher_dataset_mlp_bc_gate_moving_seed_count": 1,
+    "teacher_dataset_mlp_bc_gate_seed_count": 8,
+    "teacher_dataset_mlp_bc_gate_mean_vx_min_m_s": -0.0225,
+    "teacher_dataset_mlp_bc_gate_mean_vx_max_m_s": 0.0296,
+    "teacher_dataset_mlp_bc_gate_sent_velocity_p95_rad_s": 5.24
   },
   "rationale": [
     "No checked target source passes PASS_WEIGHT_TRANSFER_TARGET.",
@@ -129,11 +136,13 @@
     "The teacher-window extraction shows that the moving command cells still contain low-rate closed-loop propulsion windows: straight x=0.08 has 70.55% moving + in-envelope ticks and 32.80% moving + single-support + in-envelope ticks; the upstream turning command has 63.70% and 28.90% respectively. Those safe moving single-support windows have positive 0.1s future-vx deltas (+0.0039 m/s and +0.0034 m/s).",
     "The realized-window pipeline curated 259/301 low-rate teacher windows into a 6475-sample BC-ready manifest across 16 rollout directories. The manifest sanity check passed, and a tiny kNN BC smoke completed two straight-x=0.08 closed-loop seeds with mean vx 0.0673-0.0688 m/s and sent-target velocity p95 2.4224-2.5628 rad/s.",
     "A longer 8-seed, 5-second kNN replay gate is a hold, not a pass. Five of eight seeds moved forward with track ratio >= 0.5, seeds 4 and 7 completed but stayed near standstill, and seed 3 fell/reversed after 79 samples. This preserves the dataset-substrate finding, but it rules out treating the toy kNN replay as a robust student policy.",
-    "Aggregate sequence replays, with and without periodic seam correction, also hold. They complete all eight seeds but drive only -0.0108 to +0.0113 m/s, with sent-target velocity p95 around 0.266-0.285 rad/s. This rules out a single averaged action loop as the missing student. The student needs state-conditioned imitation from the low-rate windows."
+    "Aggregate sequence replays, with and without periodic seam correction, also hold. They complete all eight seeds but drive only -0.0108 to +0.0113 m/s, with sent-target velocity p95 around 0.266-0.285 rad/s. This rules out a single averaged action loop as the missing student. The student needs state-conditioned imitation from the low-rate windows.",
+    "A first JAX/Optax MLP BC smoke also holds. It completed all eight seeds, but only one seed exceeded 0.02 m/s, one seed moved backward, and every seed hit 5.24 rad/s sent-target velocity p95. This rules out naive one-step supervised action error as the only objective."
   ],
   "required_next_design": [
     "design a reviewed state-conditioned imitation/pretraining experiment from the curated low-rate closed-loop teacher-window manifest",
     "train or constrain the student from those windows, not from the full over-envelope published-policy trajectory",
+    "include explicit target-rate/action-smoothness regularization or closed-loop selection; do not optimize supervised action error alone",
     "grade the student on coherent forward motion and max-joint pitch-chain p95 target velocity, not only mean pitch-chain target velocity",
     "evaluate any learned student with longer multi-seed closed-loop gates before treating the kNN smoke as meaningful beyond proof-of-dataset",
     "do not promote a student path unless it beats the 8-seed kNN gate by preserving forward motion across seeds without fall/reverse or freeze modes"
@@ -149,7 +158,8 @@
     "Do not keep searching small neighboring command cells without a new reason; the first compact grid found the same activation cliff.",
     "Do not treat the kNN BC smoke as a deployable policy; it is only a proof that the curated low-rate windows can drive a toy closed-loop imitation replay.",
     "Do not ignore the 8-seed kNN gate hold; the next student must solve the seed-dependent fall/freeze modes, not merely reproduce the 2-seed smoke.",
-    "Do not use a single averaged action sequence as the student; aggregate sequence replay removes the propulsion signal."
+    "Do not use a single averaged action sequence as the student; aggregate sequence replay removes the propulsion signal.",
+    "Do not treat plain one-step MLP BC as solved; the first MLP smoke hits the target-rate limit while mostly failing forward motion."
   ],
   "non_goals": [
     "robot tests",

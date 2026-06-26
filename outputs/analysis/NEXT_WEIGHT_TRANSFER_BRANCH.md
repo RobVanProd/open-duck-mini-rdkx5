@@ -107,6 +107,11 @@ training, robot SSH, deployment, or hardware tests.
 | `teacher_sequence_replay_seam_corrected_sent_velocity_p95_rad_s` | `0.2660` |
 | `teacher_sequence_replay_no_seam_sent_velocity_p95_rad_s` | `0.2853` |
 | `teacher_sequence_replay_mean_vx_range_m_s` | `-0.0108 to +0.0113` |
+| `teacher_dataset_mlp_bc_gate_status` | `HOLD_BC_REPLAY_LOW_FORWARD_MOTION` |
+| `teacher_dataset_mlp_bc_gate_model` | `JAX/Optax MLP 64x64` |
+| `teacher_dataset_mlp_bc_gate_moving_seed_count` | `1 / 8` |
+| `teacher_dataset_mlp_bc_gate_mean_vx_range_m_s` | `-0.0225 to +0.0296` |
+| `teacher_dataset_mlp_bc_gate_sent_velocity_p95_rad_s` | `5.2400` |
 
 ## Decision
 
@@ -123,7 +128,9 @@ BC smoke that preserves forward motion inside the target-rate envelope for a
 short closed-loop replay, but the longer 8-seed kNN replay gate still holds
 because one seed falls/reverses and two seeds collapse to near-standstill. A
 single averaged action-sequence replay is even more conservative: it completes
-without falling but stays near standstill.
+without falling but stays near standstill. A plain one-step MLP clone also
+holds: it fits the dataset offline but produces high-rate, low-progress
+closed-loop behavior.
 
 ## Rationale
 
@@ -175,6 +182,10 @@ without falling but stays near standstill.
   `+0.0113 m/s`, with sent-target velocity p95 around `0.266-0.285 rad/s`.
   This rules out a single averaged action loop as the missing student. The
   student needs state-conditioned imitation from the low-rate windows.
+- A first JAX/Optax MLP BC smoke also holds. It completed all eight seeds, but
+  only one seed exceeded `0.02 m/s`, one seed moved backward, and every seed
+  hit `5.24 rad/s` sent-target velocity p95. This rules out naive one-step
+  supervised action error as the only objective.
 
 ## Required Next Design
 
@@ -182,6 +193,8 @@ without falling but stays near standstill.
   curated low-rate closed-loop teacher-window manifest
 - train or constrain the student from those windows, not from the full
   over-envelope published-policy trajectory
+- include explicit target-rate/action-smoothness regularization or closed-loop
+  selection; do not optimize supervised action error alone
 - grade the student on coherent forward motion and max-joint pitch-chain p95
   target velocity, not only mean pitch-chain target velocity
 - evaluate any learned student with longer multi-seed closed-loop gates before
@@ -207,6 +220,8 @@ without falling but stays near standstill.
   seed-dependent fall/freeze modes, not merely reproduce the 2-seed smoke.
 - Do not use a single averaged action sequence as the student; aggregate
   sequence replay removes the propulsion signal.
+- Do not treat plain one-step MLP BC as solved; the first MLP smoke hits the
+  target-rate limit while mostly failing forward motion.
 
 ## Non-Goals
 

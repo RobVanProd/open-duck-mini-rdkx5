@@ -808,6 +808,34 @@ needs state-conditioned imitation from the curated windows. The aggregate
 sequence table is too muted to produce propulsion, while the kNN lookup has
 motion but lacks robustness.
 
+A first plain state-conditioned MLP BC smoke was then added to the same tool and
+run locally on CPU:
+
+```text
+outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_MLP_BC_GATE_X008.md
+status: HOLD_BC_REPLAY_LOW_FORWARD_MOTION
+model: JAX/Optax MLP, 64x64, 1000 supervised steps
+command: straight x=0.08
+duration: 5s
+seeds: 0-7
+```
+
+It completed all eight seeds, but did not produce robust forward motion and
+hit the runtime target-rate limit:
+
+```text
+mean vx range: -0.0225 to +0.0296 m/s
+moving seeds with vx >= 0.02 m/s: 1 / 8
+sent target velocity p95: 5.2400 rad/s on every seed
+action delta p95: about 39-49 /s
+```
+
+That rules out a naive one-step MLP clone as the missing student. It can fit the
+dataset offline, but the closed-loop rollout becomes high-rate and low-progress.
+The next imitation design needs explicit target-rate/action-smoothness
+regularization and closed-loop/multi-seed grading during training or selection,
+not just lower supervised action error.
+
 This is the current pivot. The upstream-main sim/morphology can produce stable
 closed-loop forward locomotion under the published `BEST_WALK_ONNX_2` policy.
 The reference-target/open-loop path still fails the same contact/propulsion
@@ -831,7 +859,9 @@ as the teacher. The manifest and kNN BC smoke show that this substrate can
 preserve forward movement inside the envelope for a short closed-loop replay,
 while the 8-seed gate shows that a simple kNN student is not sufficient and the
 aggregate sequence smoke shows that a single averaged action loop is too weak.
-The next offline branch should be a reviewed state-conditioned
-imitation/pretraining experiment from this dataset, graded on longer multi-seed
-closed-loop gates and max-joint pitch-chain p95 target velocity. Robot
-validation remains blocked.
+The plain MLP BC smoke shows that one-step supervised accuracy alone can still
+produce high-rate, low-progress closed-loop behavior. The next offline branch
+should be a reviewed state-conditioned imitation/pretraining experiment from
+this dataset with explicit target-rate/action-smoothness regularization, graded
+on longer multi-seed closed-loop gates and max-joint pitch-chain p95 target
+velocity. Robot validation remains blocked.
