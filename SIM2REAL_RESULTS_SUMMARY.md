@@ -6171,3 +6171,16 @@ This is the first deployable-shape warm-start that keeps all eight seeds alive
 and moving at x=0.08 through the fitted bridge, but it is not command-conditioned
 because it also walks at zero command. The next blocker is zero-command
 conditioning, not seed-5 stability.
+
+The first command-conditioned BC attempt added six stable zero-action
+x=0.0 standstill traces:
+
+```text
+artifact: outputs/analysis/PPO_BC_SWISH_COMMAND_CONDITIONED_DECISION.md
+status: HOLD_X0_HARD_SEED_STANDSTILL_STABILITY
+x=0.08: 8 / 8 duration-complete, mean vx 0.0413 m/s
+x=0.0:  6 / 8 duration-complete, seeds 3 and 5 fall
+```
+
+This preserves the x=0.08 moving gait and fixes zero-command drift on easy
+seeds, but it exposes the next blocker: hard-seed x=0.0 standstill stability.

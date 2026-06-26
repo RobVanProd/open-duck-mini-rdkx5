@@ -1,0 +1,241 @@
+{
+  "status": "HOLD_X0_HARD_SEED_STANDSTILL_STABILITY",
+  "decision": "Command-conditioned BC preserves x=0.08 motion and removes zero-command drift on easy seeds, but x=0.0 still falls on seeds 3 and 5. Do not start PPO or robot validation from this checkpoint.",
+  "artifacts": {
+    "zero_action_policy": "outputs/analysis/zero_action_policy.onnx",
+    "zero_action_x0_trace_gate": "outputs/analysis/ZERO_ACTION_STANDSTILL_X0_TRACE_GATE.md",
+    "manifest": "outputs/analysis/PPO_SWISH_COMMAND_CONDITIONED_MANIFEST.md",
+    "bc_fit": "outputs/analysis/PPO_LOC_SWISH_COMMAND_CONDITIONED_BC_STUDENT.md",
+    "export_fidelity": "outputs/analysis/PPO_BC_SWISH_COMMAND_CONDITIONED_STEP0_EXPORT_FIDELITY.md",
+    "x000_gate": "outputs/analysis/PPO_BC_SWISH_COMMAND_CONDITIONED_STEP0_VALIDATION_FITTED_BACKLASH_X0.md",
+    "x008_gate": "outputs/analysis/PPO_BC_SWISH_COMMAND_CONDITIONED_STEP0_VALIDATION_FITTED_BACKLASH_X008.md"
+  },
+  "manifest_summary": {
+    "entries": 32,
+    "samples": 12342,
+    "bc_ready_entries": 32
+  },
+  "bc_fit": {
+    "samples": 12342,
+    "mae": 0.010749015059249486,
+    "p95_abs_error": 0.032330500312328966,
+    "max_abs_error": 0.3062856213607357,
+    "target_rate_p95_rad_s": 1.9567454531809636,
+    "target_rate_max_rad_s": 4.501909294838372
+  },
+  "export_fidelity": {
+    "samples": 2048,
+    "mae": 3.2419539053307744e-08,
+    "rmse": 4.187085167473015e-08,
+    "p50_abs_error": 2.60770320892334e-08,
+    "p95_abs_error": 8.288770914077759e-08,
+    "p99_abs_error": 1.1920928955078125e-07,
+    "max_abs_error": 2.8312206268310547e-07
+  },
+  "aggregate": {
+    "zero_action_x0": {
+      "runs": 8,
+      "fall_count": 2,
+      "duration_complete_count": 6,
+      "samples": {
+        "min": 48.0,
+        "mean": 388.875,
+        "p50": 500.0,
+        "p95": 500.0,
+        "max": 500.0
+      },
+      "track_ratio": null,
+      "mean_local_vx_m_s": {
+        "min": -0.3414848646710789,
+        "mean": -0.08462629289803966,
+        "p50": -0.0013692353591686132,
+        "p95": 0.001378190247502466,
+        "max": 0.002269303146862171
+      },
+      "body_pitch_p95_rad": {
+        "min": 0.0005381884136430705,
+        "mean": 0.04142332860591456,
+        "p50": 0.013085848321702178,
+        "p95": 0.16172548953981977,
+        "max": 0.21551415258056067
+      },
+      "base_height_min_m": {
+        "min": 0.03723089396953583,
+        "mean": 0.1251089652068913,
+        "p50": 0.1515847146511078,
+        "p95": 0.1561073862016201,
+        "max": 0.1562017798423767
+      },
+      "max_pitch_vel_p95_rad_s": {
+        "min": 0.0,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "max": 0.0
+      },
+      "max_tracking_p95_rad": {
+        "min": 0.0292271614074707,
+        "mean": 0.060743094980716686,
+        "p50": 0.03284313976764679,
+        "p95": 0.16395559996366496,
+        "max": 0.2006387054920195
+      }
+    },
+    "source_vx_recovery_x0": {
+      "runs": 8,
+      "fall_count": 0,
+      "duration_complete_count": 8,
+      "samples": {
+        "min": 500.0,
+        "mean": 500.0,
+        "p50": 500.0,
+        "p95": 500.0,
+        "max": 500.0
+      },
+      "track_ratio": null,
+      "mean_local_vx_m_s": {
+        "min": 0.03771887631469872,
+        "mean": 0.041540846168947425,
+        "p50": 0.04061162593458721,
+        "p95": 0.045718852083115186,
+        "max": 0.0461250512135033
+      },
+      "body_pitch_p95_rad": {
+        "min": 0.09737431748804541,
+        "mean": 0.10071521159199687,
+        "p50": 0.10054595983328132,
+        "p95": 0.10461150142953204,
+        "max": 0.10543714671925469
+      },
+      "base_height_min_m": {
+        "min": 0.14629283547401428,
+        "mean": 0.15289209596812725,
+        "p50": 0.1538182869553566,
+        "p95": 0.15602673441171644,
+        "max": 0.15610969066619873
+      },
+      "max_pitch_vel_p95_rad_s": {
+        "min": 3.767806887626648,
+        "mean": 3.8335250318050385,
+        "p50": 3.8331931829452515,
+        "p95": 3.870805203914643,
+        "max": 3.8708907365798955
+      },
+      "max_tracking_p95_rad": {
+        "min": 0.26377825140953065,
+        "mean": 0.2656778320670128,
+        "p50": 0.26542564630508425,
+        "p95": 0.26796554327011113,
+        "max": 0.2686748385429383
+      }
+    },
+    "command_conditioned_x0": {
+      "runs": 8,
+      "fall_count": 2,
+      "duration_complete_count": 6,
+      "samples": {
+        "min": 53.0,
+        "mean": 389.125,
+        "p50": 500.0,
+        "p95": 500.0,
+        "max": 500.0
+      },
+      "track_ratio": null,
+      "mean_local_vx_m_s": {
+        "min": -0.34561586926380794,
+        "mean": -0.07831824478702759,
+        "p50": -0.0012724505185373117,
+        "p95": 0.0013069726837325302,
+        "max": 0.0022548663415197156
+      },
+      "body_pitch_p95_rad": {
+        "min": 5.4092294357824705e-05,
+        "mean": 0.04170455620284057,
+        "p50": 0.016307038737875222,
+        "p95": 0.15782386141085877,
+        "max": 0.20721920500679678
+      },
+      "base_height_min_m": {
+        "min": 0.0504397377371788,
+        "mean": 0.12942969426512718,
+        "p50": 0.15156762301921844,
+        "p95": 0.15608137026429175,
+        "max": 0.15616311132907867
+      },
+      "max_pitch_vel_p95_rad_s": {
+        "min": 0.014448463916778564,
+        "mean": 0.2600486017763614,
+        "p50": 0.01539409160614014,
+        "p95": 1.0176106691360474,
+        "max": 1.0749375820159912
+      },
+      "max_tracking_p95_rad": {
+        "min": 0.029588860273361207,
+        "mean": 0.06033086106181143,
+        "p50": 0.033091649413108826,
+        "p95": 0.15604817271232602,
+        "max": 0.18312501907348624
+      }
+    },
+    "command_conditioned_x008": {
+      "runs": 8,
+      "fall_count": 0,
+      "duration_complete_count": 8,
+      "samples": {
+        "min": 500.0,
+        "mean": 500.0,
+        "p50": 500.0,
+        "p95": 500.0,
+        "max": 500.0
+      },
+      "track_ratio": {
+        "min": 0.4709152463099599,
+        "mean": 0.5159759007440129,
+        "p50": 0.5091982753899629,
+        "p95": 0.5702070695663133,
+        "max": 0.5792815540204174
+      },
+      "mean_local_vx_m_s": {
+        "min": 0.03767321970479679,
+        "mean": 0.04127807205952103,
+        "p50": 0.04073586203119703,
+        "p95": 0.045616565565305064,
+        "max": 0.04634252432163339
+      },
+      "body_pitch_p95_rad": {
+        "min": 0.09083798171765478,
+        "mean": 0.09472365061415211,
+        "p50": 0.09503808331466747,
+        "p95": 0.09742543549858823,
+        "max": 0.09780625988766309
+      },
+      "base_height_min_m": {
+        "min": 0.1462334841489792,
+        "mean": 0.1528521254658699,
+        "p50": 0.15381737798452377,
+        "p95": 0.15587516874074936,
+        "max": 0.15587835013866425
+      },
+      "max_pitch_vel_p95_rad_s": {
+        "min": 3.746025264263153,
+        "mean": 3.771704100072384,
+        "p50": 3.7684325873851776,
+        "p95": 3.791918024420738,
+        "max": 3.793533444404602
+      },
+      "max_tracking_p95_rad": {
+        "min": 0.25557051301002504,
+        "mean": 0.2637702763080597,
+        "p50": 0.2642488211393356,
+        "p95": 0.26943411916494375,
+        "max": 0.2707510530948639
+      }
+    }
+  },
+  "interpretation": [
+    "Adding six stable zero-action standstill traces corrected the easy-seed x=0.0 velocity behavior: passing seeds now have near-zero vx instead of walking forward.",
+    "The mixed candidate preserves x=0.08 movement: all eight seeds complete, mean vx 0.0413 m/s, mean track ratio 0.5160.",
+    "The zero-action source itself falls on seeds 3 and 5, and the mixed candidate inherits those hard-seed zero-command failures.",
+    "The next blocker is not x=0.08 seed-5 recovery. It is finding a stable x=0.0 standstill controller/data source for seeds 3 and 5."
+  ]
+}

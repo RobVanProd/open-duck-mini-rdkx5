@@ -5193,6 +5193,37 @@ rerun x=0.0 and x=0.08 fitted step-0 gates
 do not launch PPO unless the zero-command gate no longer walks forward
 ```
 
+Command-conditioned warm-start result:
+
+```text
+artifact: outputs/analysis/PPO_BC_SWISH_COMMAND_CONDITIONED_DECISION.md
+status: HOLD_X0_HARD_SEED_STANDSTILL_STABILITY
+```
+
+Adding six stable zero-action x=0.0 traces fixed the easy-seed zero-command
+drift while preserving x=0.08 movement:
+
+```text
+x=0.08:
+  falls: 0 / 8
+  duration complete: 8 / 8
+  mean vx: 0.0413 m/s
+
+x=0.0:
+  falls: 2 / 8
+  duration complete: 6 / 8
+  failing seeds: 3,5
+```
+
+Next valid warm-start work:
+
+```text
+find/generate a stable x=0.0 standstill controller or recovery labels for seeds 3 and 5
+do not rely on pure zero action for those hard seeds; it falls there
+preserve the source-VX x=0.08 moving behavior while adding hard-seed x=0.0 stability
+rerun both x=0.0 and x=0.08 fitted step-0 gates
+```
+
 Stop rules:
 
 ```text

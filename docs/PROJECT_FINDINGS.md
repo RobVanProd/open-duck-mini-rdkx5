@@ -2325,3 +2325,65 @@ still blocked:
 Do not deploy this candidate and do not run robot validation. Before PPO, add
 command-conditioned standstill/no-motion data or an explicit zero-command
 correction phase, then rerun both x=0.0 and x=0.08 fitted step-0 gates.
+
+## PPO Swish Command-Conditioned Warm Start
+
+To correct the zero-command forward drift, a constant-zero ONNX policy was used
+to collect x=0.0 standstill traces. The source was only partially stable:
+
+```text
+artifact: outputs/analysis/ZERO_ACTION_STANDSTILL_X0_TRACE_GATE.md
+zero action x=0.0:
+  falls: 2 / 8
+  duration complete: 6 / 8
+  passing seeds: 0,1,2,4,6,7
+  failing seeds: 3,5
+```
+
+The six passing standstill traces were added to the source-VX recovery manifest:
+
+```text
+manifest: outputs/analysis/PPO_SWISH_COMMAND_CONDITIONED_MANIFEST.md
+entries: 32
+samples: 12342
+BC fit: outputs/analysis/PPO_LOC_SWISH_COMMAND_CONDITIONED_BC_STUDENT.md
+PPO export: outputs/analysis/PPO_BC_SWISH_COMMAND_CONDITIONED_STEP0_EXPORT_FIDELITY.md
+decision: outputs/analysis/PPO_BC_SWISH_COMMAND_CONDITIONED_DECISION.md
+status: HOLD_X0_HARD_SEED_STANDSTILL_STABILITY
+```
+
+The mixed-command fit improved supervised metrics and reduced target-rate p95:
+
+```text
+MAE: 0.010749
+p95 action error: 0.032331
+target-rate p95: 1.9567 rad/s
+```
+
+The x=0.08 fitted gate preserved the moving behavior:
+
+```text
+x=0.08:
+  falls: 0 / 8
+  duration complete: 8 / 8
+  mean vx: 0.0413 m/s
+  mean track ratio: 0.5160
+```
+
+The x=0.0 fitted gate improved command semantics on easy seeds but still fails
+on the same hard standstill seeds:
+
+```text
+x=0.0:
+  falls: 2 / 8
+  duration complete: 6 / 8
+  mean vx: -0.0783 m/s
+  failing seeds: 3,5
+```
+
+This narrows the next blocker again. The source-VX recovery solved the
+x=0.08 seed-5 moving collapse; command-conditioned BC preserved that moving
+behavior. The remaining deployable warm-start blocker is stable x=0.0
+standstill/recovery behavior for seeds 3 and 5.
+
+Do not start PPO, deploy, or run robot validation from this checkpoint.
