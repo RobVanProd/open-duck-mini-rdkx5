@@ -5318,3 +5318,44 @@ do not rely on one-tick previous-target smoothing as the fix
 consider re-rate-labeled source-VX actions or PPO fine-tuning from the command-scale warm start
 rerun full x=0.0 and x=0.08 fitted gates before any robot validation
 ```
+
+Command-conditioned pitch-rate-limited BC result:
+
+```text
+artifact: outputs/analysis/CMD_PITCH_RL_2P25_DECISION.md
+status: HOLD_FITTED_TRACKING_AFTER_TARGET_RATE_FIX
+```
+
+This run replaced the weak zero-action x=0 source with full-observation
+scale-0.75 stabilizing traces and rate-limited the x=0.08 source-VX walking
+labels across the full pitch chain at `2.25 rad/s`.
+
+Gate result:
+
+```text
+x=0.0 fitted bridge:
+  falls: 0 / 8
+  duration complete: 8 / 8
+  mean max tracking p95: 0.0730 rad
+  worst max tracking p95: 0.0837 rad
+
+x=0.08 fitted bridge:
+  falls: 0 / 8
+  duration complete: 8 / 8
+  mean vx: 0.0341 m/s
+  mean max pitch target velocity p95: 2.1371 rad/s
+  mean max tracking p95: 0.1963 rad
+```
+
+Updated next valid warm-start work:
+
+```text
+1. Treat this candidate as a PPO warm start, not a robot candidate.
+2. Add closed-loop PPO fine-tuning with the fitted bridge active.
+3. Include fitted tracking and target-rate feedback in the objective.
+4. Re-gate x=0.0 and x=0.08 before any robot-side validation.
+```
+
+Do not spend another branch only on scalar command gain, one-tick target
+smoothing, or one-step BC target-rate clipping; those have been tested and do
+not clear fitted tracking.

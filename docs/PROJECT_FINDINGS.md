@@ -2498,3 +2498,81 @@ conditioning, not low progress, and not falls. The next deployable-policy work
 should keep the command-conditioned x=0 branch but reduce x=0.08 tracking via a
 better teacher or PPO fine-tuning from this warm start with the fitted bridge
 active. A scalar scale or one-tick target blend is not enough.
+
+## Command-Conditioned Pitch-Rate-Limited BC
+
+A follow-up deployable-shape BC run replaced the weak zero-command source and
+smoothed the walking labels:
+
+```text
+decision: outputs/analysis/CMD_PITCH_RL_2P25_DECISION.md
+status: HOLD_FITTED_TRACKING_AFTER_TARGET_RATE_FIX
+manifest: outputs/analysis/ppo_swish_cmd_conditioned_pitch_ratelimit_2p25_manifest.json
+candidate: outputs/analysis/ppo_loc_swish_cmd_pitch_rl_2p25_candidate/candidate.onnx
+```
+
+The new x=0.0 source used full-observation traces from the already-passing
+scale-0.75 stabilizing policy instead of zero-action traces:
+
+```text
+scale0p75 x=0.0 trace gate:
+  falls: 0 / 8
+  duration complete: 8 / 8
+  mean vx: 0.0003 m/s
+  mean max tracking p95: 0.0710 rad
+```
+
+The x=0.08 source-VX walking traces were rate-limited across the full pitch
+chain at `2.25 rad/s`, changing `3577` ticks across the eight walking traces.
+The resulting swish PPO-loc BC fit had:
+
+```text
+samples: 8000
+p95 action error: 0.024947
+predicted target-rate p95: 1.7847 rad/s
+predicted target-rate max: 2.4971 rad/s
+```
+
+Closed-loop fitted-bridge gates:
+
+```text
+x=0.0:
+  falls: 0 / 8
+  duration complete: 8 / 8
+  mean vx: 0.0004 m/s
+  mean max pitch target velocity p95: 0.4448 rad/s
+  mean max tracking p95: 0.0730 rad
+  worst max tracking p95: 0.0837 rad
+
+x=0.08:
+  falls: 0 / 8
+  duration complete: 8 / 8
+  mean vx: 0.0341 m/s
+  mean track ratio: 0.4267
+  mean max pitch target velocity p95: 2.1371 rad/s
+  max pitch target velocity p95 range: 2.1112-2.1734 rad/s
+  mean max tracking p95: 0.1963 rad
+  worst max tracking p95: 0.2008 rad
+```
+
+This result is useful because it separates three mechanisms:
+
+```text
+mostly solved:
+  x=0.0 hard-seed stability in a deployable ONNX shape
+
+solved:
+  x=0.08 target-rate envelope margin
+
+not solved:
+  x=0.08 fitted actuator tracking
+```
+
+The candidate is stable and in-envelope at x=0.08, but the fitted bridge still
+tracks with about `0.19-0.20 rad` p95 error. That means the current blocker is
+not scalar command gain, one-tick target smoothing, or target-rate clipping. It
+is the closed-loop action timing/state feedback needed to make the fitted
+actuator model follow the walking targets. The next high-value step is PPO
+fine-tuning or another closed-loop training pass from this warm start with the
+fitted bridge active and tracking/target-rate feedback in the objective, not
+another one-step BC smoothing pass.

@@ -6247,3 +6247,40 @@ alpha 0.80: 2 / 2 duration-complete, mean vx 0.0318 m/s, tracking p95 0.2592 rad
 So the remaining issue is not solved by scalar attenuation or a one-tick target
 blend. It needs a better x=0.08 action shape/timing policy, likely through
 re-rate-labeled teacher data or PPO fine-tuning with the fitted bridge active.
+
+The next deployable-shape BC run used better sources:
+
+```text
+artifact: outputs/analysis/CMD_PITCH_RL_2P25_DECISION.md
+status: HOLD_FITTED_TRACKING_AFTER_TARGET_RATE_FIX
+```
+
+It replaced the old zero-action x=0 traces with full-observation traces from
+the x=0-passing scale-0.75 stabilizing policy, then rate-limited the source-VX
+x=0.08 walking labels across the full pitch chain at `2.25 rad/s`.
+
+Result:
+
+```text
+x=0.0 fitted bridge:
+  falls: 0 / 8
+  duration complete: 8 / 8
+  mean vx: 0.0004 m/s
+  mean max tracking p95: 0.0730 rad
+  worst max tracking p95: 0.0837 rad
+
+x=0.08 fitted bridge:
+  falls: 0 / 8
+  duration complete: 8 / 8
+  mean vx: 0.0341 m/s
+  mean track ratio: 0.4267
+  mean max pitch target velocity p95: 2.1371 rad/s
+  mean max tracking p95: 0.1963 rad
+```
+
+This is the cleanest separation so far: x=0.0 hard-seed stability is mostly
+solved, and x=0.08 target-rate margin is solved, but fitted actuator tracking
+is still not solved. More one-step BC smoothing is unlikely to be enough. The
+next high-value offline step is PPO fine-tuning or another closed-loop training
+pass from this warm start with the fitted bridge active and tracking/target-rate
+feedback in the objective.
