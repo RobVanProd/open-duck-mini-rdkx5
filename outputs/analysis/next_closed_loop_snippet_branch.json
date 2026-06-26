@@ -14,7 +14,8 @@
     "relabelled_balanced_selector_manifest": "outputs/analysis/RELABELLED_BALANCED_SELECTOR_MANIFEST.md",
     "relabelled_selector_continuity_score": "outputs/analysis/RELABELLED_SELECTOR_CONTINUITY_SCORE.md",
     "relabelled_selector_replay_manifest": "outputs/analysis/RELABELLED_SELECTOR_REPLAY_MANIFEST.md",
-    "relabelled_selector_sequence_replay_top3_5s": "outputs/analysis/RELABELLED_SELECTOR_SEQUENCE_REPLAY_TOP3_5S.md"
+    "relabelled_selector_sequence_replay_top3_5s": "outputs/analysis/RELABELLED_SELECTOR_SEQUENCE_REPLAY_TOP3_5S.md",
+    "relabelled_selector_replay_divergence": "outputs/analysis/RELABELLED_SELECTOR_REPLAY_DIVERGENCE.md"
   },
   "findings": {
     "straight_x004": {
@@ -145,9 +146,23 @@
         38
       ],
       "interpretation": "Relabelled spans can step from seed 0 inside the envelope, but are not seed robust; seed 1 terminates before the selected window."
+    },
+    "relabelled_selector_replay_divergence": {
+      "status": "HOLD_REPLAY_DIVERGES_BEFORE_SELECTOR_WINDOW",
+      "rows": 6,
+      "first_divergence_tick_summary": "five traces at tick 0, one trace at tick 5",
+      "seed1_contact_mismatch_pct_range": [
+        60.5,
+        81.8
+      ],
+      "seed1_vy_abs_error_p95_m_s_range": [
+        1.11,
+        1.24
+      ],
+      "interpretation": "Open-loop prefix replay diverges from the source before the selected relabelled window; state alignment or closed-loop selection is required before BC/export."
     }
   },
-  "recommended_next": "PLAN_STATE_ALIGNED_SELECTOR_REPLAY: do not train or export yet. Test state-aligned replay or a closed-loop selector that can recover from reset variation before entering relabelled spans. No robot, no SSH, no deploy, no training.",
+  "recommended_next": "PLAN_STATE_ALIGNED_SELECTOR_REPLAY: do not train or export yet. Open-loop prefix replay diverges before selected windows, so test state-aligned replay or a closed-loop selector that can recover from reset variation. No robot, no SSH, no deploy, no training.",
   "stop_rules": [
     "Do not train directly from full BEST_WALK traces.",
     "Do not train directly from isolated 10-tick snippets.",

@@ -1811,3 +1811,19 @@ forward motion from at least one reset seed, but they are not seed-robust and
 are not ready for BC/export. The failures happen before the selected window on
 seed 1, so the next branch should focus on state alignment or a closed-loop
 selector policy instead of treating the sequence table as a deployable teacher.
+
+A source-vs-replay divergence audit confirms that the prefix replay is already
+off the source trajectory before the selected window:
+
+```text
+tools/analyze_selector_replay_divergence.py
+outputs/analysis/RELABELLED_SELECTOR_REPLAY_DIVERGENCE.md
+status: HOLD_REPLAY_DIVERGES_BEFORE_SELECTOR_WINDOW
+```
+
+All six checked replay traces diverge before `prefix_end`; first divergence is
+tick 0 for five of six traces and tick 5 for the remaining trace. Seed 1 has
+large lateral velocity error (`vy` p95 about 1.11-1.24 m/s) and contact
+mismatch 60.5-81.8% before it terminates. This means open-loop prefix replay
+cannot recreate the source state reliably. The next useful branch is
+state-aligned replay or a closed-loop selector, not a longer static sequence.

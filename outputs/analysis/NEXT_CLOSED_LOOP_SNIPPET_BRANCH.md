@@ -383,6 +383,19 @@ static sequence table is not seed robust. The next offline gate should either
 state-align replay to the source span or build a closed-loop selector that can
 recover from reset variation before entering the selected sequence.
 
+The replay divergence audit confirms the prefix mismatch:
+
+```text
+outputs/analysis/RELABELLED_SELECTOR_REPLAY_DIVERGENCE.md
+status: HOLD_REPLAY_DIVERGES_BEFORE_SELECTOR_WINDOW
+```
+
+All six checked replay traces diverge before their selected window. Five
+diverge at tick 0; one diverges at tick 5. Seed 1 failures show contact
+mismatch above 60% and lateral velocity error above 1.1 m/s p95 before
+termination. This means the sequence table is not the immediate object to tune:
+the source state is not being recreated from reset.
+
 ## Stop Rules
 
 - Do not train directly from full BEST_WALK traces.

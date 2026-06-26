@@ -459,6 +459,17 @@ selected relabeled window. This keeps BC/export blocked. The next offline
 branch should test state-aligned replay or a closed-loop selector that can
 recover from reset-state variation.
 
+The divergence audit confirms this is not a relabeled-window problem yet:
+
+```text
+outputs/analysis/RELABELLED_SELECTOR_REPLAY_DIVERGENCE.md
+status: HOLD_REPLAY_DIVERGES_BEFORE_SELECTOR_WINDOW
+```
+
+The replay traces diverge from their source traces before the selected window,
+usually at tick 0. The next branch should not tune the relabeled span itself
+until replay can either state-align to the source or select actions closed-loop.
+
 ## Non-Goals
 
 - robot tests
