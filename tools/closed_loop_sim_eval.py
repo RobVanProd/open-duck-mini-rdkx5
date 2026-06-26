@@ -1027,6 +1027,10 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             }
             if config.trace_full_obs:
                 record["obs_state"] = obs.astype(float).tolist()
+                record["qpos"] = qpos.astype(float).tolist()
+                record["qvel"] = np.asarray(jax.device_get(state.data.qvel), dtype=float).tolist()
+                record["ctrl"] = np.asarray(jax.device_get(state.data.ctrl), dtype=float).tolist()
+                record["base_quat_wxyz"] = quat.astype(float).tolist()
             records.append(record)
             if done:
                 termination_reason = "fall_or_nan"
