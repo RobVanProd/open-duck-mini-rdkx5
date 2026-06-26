@@ -2815,3 +2815,39 @@ This is the current sharpest learnability result. The selector proves
 in-envelope walking exists, but it is not broadly seed-robust. Dataset expansion
 must be curated around complete forward-moving traces; blindly adding selector
 rollouts from new seeds would poison the BC labels with reverse/fall behavior.
+
+To enforce that curation, `tools/filter_bc_manifest.py` was added and run over
+the DAgger-3 manifest plus the seeds 8-15 expansion manifest:
+
+```text
+artifact: outputs/analysis/FILTERED_SOURCE_VX_SELECTOR_DAGGER4_MANIFEST.md
+status: PASS_FILTERED_BC_MANIFEST_READY
+input entries: 33
+kept entries: 19
+rejected entries: 14
+samples: 9500
+```
+
+A filtered DAgger-4 128x128 rate-regularized MLP was then fit from the curated
+manifest:
+
+```text
+artifact: outputs/analysis/SOURCE_VX_SELECTOR_TRACE_DAGGER4_FILTERED_MLP128_RATE_REG_ONNX_FITTED_BRIDGE_BC_GATE_X008_10S.md
+status: HOLD_BC_REPLAY_TERMINATED
+```
+
+The result did not pass the 10-second smoke:
+
+```text
+duration complete: 6 / 8
+terminated: seeds 1 and 7
+seed 0: near standstill, vx 0.0009 m/s
+moving complete seeds: 2, 3, 4, 5, 6
+best seed: seed 2, vx 0.0318 m/s, track ratio 0.3974
+```
+
+This is a cleaner negative than the earlier DAgger holds. Bad positive labels
+were removed, but the filtered walking manifold is too narrow for the current
+128x128 BC student to generalize across all seeds. The next branch needs more
+curated complete traces and/or a stabilization phase after BC, not unfiltered
+trace accumulation.

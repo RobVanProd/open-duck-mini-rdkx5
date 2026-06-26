@@ -251,3 +251,43 @@ The selector is itself seed-fragile outside the original 0-7 evaluation set.
 Any expanded BC/DAgger dataset must curate complete, forward-moving selector
 traces and treat terminated/reverse traces as failure cases for analysis, not as
 positive action labels.
+
+That curation was implemented with:
+
+```text
+tool: tools/filter_bc_manifest.py
+artifact: outputs/analysis/FILTERED_SOURCE_VX_SELECTOR_DAGGER4_MANIFEST.md
+status: PASS_FILTERED_BC_MANIFEST_READY
+input entries: 33
+kept entries: 19
+samples: 9500
+```
+
+The filter kept only complete, forward-moving, in-envelope-ish source windows
+and rejected reverse/fall/low-height/high-pitch/high-rate traces.
+
+A filtered DAgger-4 MLP was then trained from that manifest:
+
+```text
+artifact: outputs/analysis/SOURCE_VX_SELECTOR_TRACE_DAGGER4_FILTERED_MLP128_RATE_REG_ONNX_FITTED_BRIDGE_BC_GATE_X008_10S.md
+status: HOLD_BC_REPLAY_TERMINATED
+model: 128x128 MLP, rate regularized
+command: x=0.08
+bridge: fitted
+duration: 10 s
+```
+
+Result:
+
+```text
+duration complete: 6 / 8
+terminated: seeds 1 and 7
+seed 0: near-standstill, vx 0.0009 m/s
+best moving seed: seed 2, vx 0.0318 m/s, track ratio 0.3974
+```
+
+Filtering removed bad labels but also exposed that the remaining positive
+walking manifold is still too narrow for this 128x128 BC student. The next
+candidate should not add the rejected traces back as positive labels. It should
+either improve coverage with curated complete traces or add a stronger
+closed-loop stabilization/fine-tuning stage after BC.

@@ -6469,3 +6469,31 @@ The complete traces were seeds 8, 10, and 11, with vx around
 p95 around `2.27-2.29 rad/s`. Seeds 9, 12, 13, 14, and 15 terminated or moved
 the wrong way. The selector is therefore a proof of existence and a source of
 curated traces, not a robust teacher over arbitrary seeds.
+
+`tools/filter_bc_manifest.py` now filters and merges BC manifests by rollout
+quality. It produced:
+
+```text
+artifact: outputs/analysis/FILTERED_SOURCE_VX_SELECTOR_DAGGER4_MANIFEST.md
+status: PASS_FILTERED_BC_MANIFEST_READY
+kept entries: 19 / 33
+samples: 9500
+```
+
+A filtered DAgger-4 128x128 rate-regularized MLP trained from that manifest
+still held:
+
+```text
+artifact: outputs/analysis/SOURCE_VX_SELECTOR_TRACE_DAGGER4_FILTERED_MLP128_RATE_REG_ONNX_FITTED_BRIDGE_BC_GATE_X008_10S.md
+status: HOLD_BC_REPLAY_TERMINATED
+duration complete: 6 / 8
+terminated: seeds 1 and 7
+seed 0 vx: 0.0009 m/s
+best seed vx: 0.0318 m/s
+```
+
+The cleaner manifest helps isolate the remaining issue: the current deployable
+BC student does not generalize the narrow selector walking manifold across
+seeds. Future work should gather more curated complete traces or add a closed-
+loop stabilization phase; do not treat failed selector rollouts as positive BC
+labels.
