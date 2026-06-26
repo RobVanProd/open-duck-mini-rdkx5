@@ -98,6 +98,12 @@ def tar_filter(member: tarfile.TarInfo) -> tarfile.TarInfo | None:
             ("outputs", "analysis", "REFERENCE_MOTION_OVERRIDE.md"),
             ("outputs", "analysis", "soft_prior_fragment_config.json"),
             ("outputs", "analysis", "SOFT_PRIOR_FRAGMENT_CONFIG.md"),
+            (
+                "outputs",
+                "analysis",
+                "ppo_loc_swish_cmd_pitch_rl_2p25_candidate",
+                "candidate_mlp.npz",
+            ),
         }
         rel_parts = tuple(parts[1:]) if len(parts) > 1 else tuple(parts)
         is_allowed_path = rel_parts in allowed_analysis
@@ -529,6 +535,17 @@ def build_remote_driver(
         candidate_restore_checkpoint_path = (
             f"/content/open-duck-mini-rdkx5/{candidate_restore_checkpoint_path}"
         )
+    candidate_behavior_prior_mlp_npz = args.candidate_behavior_prior_mlp_npz
+    if candidate_behavior_prior_mlp_npz and not Path(
+        candidate_behavior_prior_mlp_npz
+    ).is_absolute():
+        candidate_behavior_prior_mlp_npz = (
+            f"/content/open-duck-mini-rdkx5/{candidate_behavior_prior_mlp_npz}"
+        )
+    candidate_behavior_prior_scale = cli_value(args.candidate_behavior_prior_scale)
+    candidate_behavior_prior_huber_delta = cli_value(
+        args.candidate_behavior_prior_huber_delta
+    )
     staged_stop_after_phase_arg = (
         f'"--stop-after-phase", "{args.staged_stop_after_phase}",'
         if args.staged_stop_after_phase is not None
@@ -573,6 +590,14 @@ def build_remote_driver(
     checkpoint_sweep_bridge_mode = args.checkpoint_sweep_bridge_mode
     candidate_disable_bridge_arg = (
         '"--disable-actuator-bridge",' if args.candidate_disable_actuator_bridge else ""
+    )
+    candidate_behavior_prior_arg = (
+        '"--enable-behavior-prior",'
+        f' "--behavior-prior-mlp-npz", {candidate_behavior_prior_mlp_npz!r},'
+        f' "--behavior-prior-scale", "{candidate_behavior_prior_scale}",'
+        f' "--behavior-prior-huber-delta", "{candidate_behavior_prior_huber_delta}",'
+        if candidate_behavior_prior_mlp_npz
+        else ""
     )
     return textwrap.dedent(
         f"""
@@ -886,6 +911,7 @@ def build_remote_driver(
                 "--command-resample-steps", "{args.candidate_command_resample_steps}",
                 "--zero-command-probability", "{candidate_zero_command_probability}",
                 "--head-range-factor", "0.0",
+                {candidate_behavior_prior_arg}
                 {candidate_disable_bridge_arg}
                 "--actuator-bridge-delay-min-ticks", "{args.candidate_actuator_bridge_delay_min_ticks}",
                 "--actuator-bridge-delay-max-ticks", "{args.candidate_actuator_bridge_delay_max_ticks}",
@@ -1561,6 +1587,19 @@ def main() -> int:
     parser.add_argument("--candidate-lin-vel-x-max", type=float, default=0.12)
     parser.add_argument("--candidate-command-resample-steps", type=int, default=500)
     parser.add_argument("--candidate-zero-command-probability", type=float, default=0.1)
+    parser.add_argument(
+        "--candidate-behavior-prior-mlp-npz",
+        default=None,
+        help=(
+            "Optional frozen MLP NPZ to use as a state-conditioned behavior "
+            "prior during candidate PPO training. Relative paths are resolved "
+            "inside /content/open-duck-mini-rdkx5."
+        ),
+    )
+    parser.add_argument("--candidate-behavior-prior-scale", type=float, default=-0.05)
+    parser.add_argument(
+        "--candidate-behavior-prior-huber-delta", type=float, default=0.05
+    )
     parser.add_argument(
         "--candidate-disable-actuator-bridge",
         action="store_true",

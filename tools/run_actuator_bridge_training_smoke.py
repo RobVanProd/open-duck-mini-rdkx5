@@ -201,6 +201,19 @@ def build_command(args: argparse.Namespace, output_dir: Path) -> list[str]:
                 args.soft_prior_phase_source,
             ]
         )
+    if args.enable_behavior_prior:
+        behavior_prior_mlp_npz = resolve_rdk_path(str(args.behavior_prior_mlp_npz))
+        command.append("--enable_behavior_prior")
+        command.extend(
+            [
+                "--behavior_prior_mlp_npz",
+                str(behavior_prior_mlp_npz),
+                "--behavior_prior_scale",
+                cli_value(args.behavior_prior_scale),
+                "--behavior_prior_huber_delta",
+                cli_value(args.behavior_prior_huber_delta),
+            ]
+        )
     if not args.disable_actuator_bridge:
         command.append("--enable_actuator_bridge")
         command.extend(
@@ -244,6 +257,15 @@ def validate_paths(args: argparse.Namespace) -> None:
                 config_path = ROOT / config_path
             if not config_path.exists():
                 missing.append(str(config_path))
+    if args.enable_behavior_prior:
+        if args.behavior_prior_mlp_npz is None:
+            missing.append("--behavior-prior-mlp-npz")
+        else:
+            behavior_path = Path(args.behavior_prior_mlp_npz)
+            if not behavior_path.is_absolute() and not behavior_path.exists():
+                behavior_path = ROOT / behavior_path
+            if not behavior_path.exists():
+                missing.append(str(behavior_path))
     if missing:
         raise SystemExit("Missing required path(s):\n" + "\n".join(missing))
 
@@ -461,6 +483,17 @@ def main() -> int:
         choices=["imitation_i", "step"],
         default="imitation_i",
     )
+    parser.add_argument(
+        "--enable-behavior-prior",
+        action="store_true",
+        help=(
+            "Enable the default-off Playground behavior-prior hook. Requires "
+            "--behavior-prior-mlp-npz and a patched Playground checkout."
+        ),
+    )
+    parser.add_argument("--behavior-prior-mlp-npz", default=None)
+    parser.add_argument("--behavior-prior-scale", type=float, default=-0.05)
+    parser.add_argument("--behavior-prior-huber-delta", type=float, default=0.05)
     parser.add_argument("--action-rate-huber-delta", type=float, default=None)
     parser.add_argument("--action-magnitude-huber-delta", type=float, default=None)
     parser.add_argument("--target-rate-huber-delta", type=float, default=None)
@@ -559,6 +592,12 @@ def main() -> int:
             "scale": args.soft_prior_scale,
             "huber_delta": args.soft_prior_huber_delta,
             "phase_source": args.soft_prior_phase_source,
+        },
+        "behavior_prior": {
+            "enabled": args.enable_behavior_prior,
+            "mlp_npz": args.behavior_prior_mlp_npz,
+            "scale": args.behavior_prior_scale,
+            "huber_delta": args.behavior_prior_huber_delta,
         },
         "target_rate_scale": args.target_rate_scale,
         "actuator_tracking_scale": args.actuator_tracking_scale,
