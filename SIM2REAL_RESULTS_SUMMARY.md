@@ -6340,3 +6340,29 @@ The fine-tuned policy preserved x=0 stability and actuator-safe target rates,
 but it collapsed the x=0.08 walking behavior into near-standstill. This is not
 a robot candidate. The next fine-tune should preserve forward motion explicitly
 during early PPO updates instead of relying on the current reward mix alone.
+
+A second, more conservative A100 preservation fine-tune also held:
+
+```text
+artifact: outputs/analysis/CMD_PITCH_RL_2P25_FINETUNE_PRESERVE_V1_RESULT.md
+status: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
+training: PASS_SMOKE_RUN, 92160 exported PPO timesteps
+
+x=0.0:
+  status: PASS_CANDIDATE_SIM_GATE
+  max pitch tracking p95: 0.0613 rad
+
+x=0.08:
+  status: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
+  mean fitted vx: 0.0004 m/s
+  fitted command tracking ratio: 0.0045
+  max sent target velocity p95: 0.4493 rad/s
+  max pitch tracking p95: 0.0763 rad
+```
+
+This run used lower learning rate, smaller PPO clip, lower target-rate/tracking
+penalties, and one PPO update per batch. It still erased the warm-start forward
+motion. The current blocker is therefore behavior preservation during
+fine-tuning, not target-rate envelope margin or basic x=0 stability. The next
+offline implementation should add a state-conditioned teacher-action or
+behavior-prior term before launching another A100 training run.

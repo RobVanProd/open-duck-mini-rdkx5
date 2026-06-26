@@ -2637,3 +2637,42 @@ still moved at about `0.0347 m/s`. More steps with this exact PPO recipe are
 unlikely to help. The next fine-tune needs an explicit early forward-motion
 preservation term or teacher-action regularizer so PPO cannot improve reward by
 collapsing the walking behavior into standstill.
+
+A second A100 PPO fine-tune used a more conservative preservation recipe:
+
+```text
+artifact: outputs/analysis/CMD_PITCH_RL_2P25_FINETUNE_PRESERVE_V1_RESULT.md
+status: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
+training: PASS_SMOKE_RUN, 92160 exported PPO timesteps, A100/CUDA/JAX 0.7.2
+learning_rate: 3e-5
+clipping_epsilon: 0.05
+max_grad_norm: 0.2
+ppo_num_updates_per_batch: 1
+target_rate_scale: -0.0005
+actuator_tracking_scale: -0.005
+```
+
+It also held:
+
+```text
+x=0.0:
+  status: PASS_CANDIDATE_SIM_GATE
+  max pitch tracking p95: 0.0613 rad
+  max sent target velocity p95: 0.2732 rad/s
+
+x=0.08:
+  status: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
+  mean fitted local vx: 0.0004 m/s
+  fitted command tracking ratio: 0.0045
+  stress command tracking ratio: 0.0018
+  max sent target velocity p95: 0.4493 rad/s
+  max pitch tracking p95: 0.0763 rad
+  action saturation: 0.0%
+```
+
+This rules out the simplest "PPO updates were just too large" explanation. The
+conservative run also improved reward while collapsing the x=0.08 gait into
+low-rate standstill. The next training implementation should add a
+state-conditioned teacher-action or behavior-prior regularizer during early PPO
+fine-tuning. Another scalar PPO-parameter sweep is unlikely to be the right
+next move.
