@@ -1,0 +1,86 @@
+{
+  "status": "HOLD_DEPLOYABLE_POLICY_TRACKING_RATE_TRADEOFF",
+  "scope": {
+    "offline_only": true,
+    "robot_tests": false,
+    "ssh": false,
+    "deploy": false,
+    "runtime_behavior_changes": false,
+    "training_started": false
+  },
+  "candidate_onnx_paths": [
+    "outputs/analysis/source_vx_selector_trace_dagger2_mlp128_candidate/candidate.onnx",
+    "outputs/analysis/source_vx_selector_trace_dagger2_mlp128_rate_reg_candidate/candidate.onnx"
+  ],
+  "default_flat_terrain_fitted": {
+    "artifacts": [
+      "outputs/analysis/deployable_source_vx_policy_validation_fitted/",
+      "outputs/analysis/deployable_source_vx_policy_validation_fitted_rate_reg_tail/"
+    ],
+    "command_x": 0.08,
+    "duration_s": 10,
+    "bridge": "fitted",
+    "task": "flat_terrain",
+    "results": {
+      "dagger2": {
+        "runs": 8,
+        "falls": 2,
+        "duration_complete": 6,
+        "mean_vx_m_s": 0.0202,
+        "mean_track_ratio": 0.2526,
+        "max_sent_velocity_p95_rad_s": 3.9048,
+        "max_tracking_p95_rad": 0.3058,
+        "status": "HOLD"
+      },
+      "dagger2_rate_reg": {
+        "runs": 8,
+        "falls": 2,
+        "duration_complete": 6,
+        "mean_vx_m_s": 0.0157,
+        "mean_track_ratio": 0.1967,
+        "max_sent_velocity_p95_rad_s": 3.0938,
+        "max_tracking_p95_rad": 0.3134,
+        "status": "HOLD"
+      }
+    }
+  },
+  "task_matched_backlash_fitted": {
+    "artifact_md": "outputs/analysis/DEPLOYABLE_SOURCE_VX_POLICY_VALIDATION_FITTED_BACKLASH.md",
+    "artifact_json": "outputs/analysis/deployable_source_vx_policy_validation_fitted_backlash.json",
+    "command_x": 0.08,
+    "duration_s": 10,
+    "bridge": "fitted",
+    "task": "flat_terrain_backlash",
+    "results": {
+      "dagger2": {
+        "runs": 8,
+        "falls": 0,
+        "duration_complete": 8,
+        "mean_vx_m_s": 0.0433,
+        "mean_track_ratio": 0.5409,
+        "sent_velocity_p95_range_rad_s": [4.5943, 4.8522],
+        "tracking_p95_range_rad": [0.2626, 0.2650],
+        "status": "HOLD_CANDIDATE_TRACKING"
+      },
+      "dagger2_rate_reg": {
+        "runs": 8,
+        "falls": 0,
+        "duration_complete": 8,
+        "mean_vx_m_s": 0.0364,
+        "mean_track_ratio": 0.4550,
+        "sent_velocity_p95_range_rad_s": [3.6172, 3.6824],
+        "tracking_p95_range_rad": [0.2419, 0.2472],
+        "status": "HOLD_CANDIDATE_TRACKING"
+      }
+    }
+  },
+  "decision": "Do not promote either ONNX candidate to robot validation. The fitted-bridge task-matched gate completes all seeds, but both candidates hold on pitch-chain tracking; rate regularization lowers target rate while weakening forward progress.",
+  "recommended_next": "Improve deployable neural student tracking/rate tradeoff through expanded on-policy DAgger relabeling and/or PPO fine-tuning with the fitted bridge active, then rerun the task-matched fitted gate before stress or robot validation.",
+  "stop_rules": [
+    "No robot validation from these candidates.",
+    "No deployment.",
+    "No stress gate until fitted tracking improves.",
+    "No relaxed actuator envelope.",
+    "No more source-VX selector knob tuning unless needed to relabel a specific student-visited state distribution."
+  ]
+}

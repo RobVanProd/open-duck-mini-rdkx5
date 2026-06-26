@@ -1914,3 +1914,37 @@ the BC/DAgger policy with the fitted actuator bridge active. If not, expand the
 selector-rollout dataset and repeat DAgger/BC. Do not resume selector refinement
 as the primary path unless candidate validation identifies a concrete missing
 teacher state.
+
+That stricter fitted-bridge validation now exists:
+
+```text
+outputs/analysis/DEPLOYABLE_SOURCE_VX_POLICY_VALIDATION.md
+status: HOLD_DEPLOYABLE_POLICY_TRACKING_RATE_TRADEOFF
+```
+
+Default `flat_terrain` was a hold for both candidates, with falls and low
+progress. The task-matched `flat_terrain_backlash` gate is more informative:
+
+```text
+dagger2:
+  duration complete: 8 / 8
+  mean track ratio: 0.5409
+  max sent-target velocity p95: 4.8522 rad/s
+  tracking p95: 0.2626-0.2650 rad
+  result: HOLD_CANDIDATE_TRACKING
+
+dagger2_rate_reg:
+  duration complete: 8 / 8
+  mean track ratio: 0.4550
+  max sent-target velocity p95: 3.6824 rad/s
+  tracking p95: 0.2419-0.2472 rad
+  result: HOLD_CANDIDATE_TRACKING
+```
+
+Neither ONNX candidate is robot-ready. The plain DAgger-2 student preserves
+more forward progress but overdrives target rate. The rate-regularized student
+brings target rate near the fitted envelope but still tracks poorly and loses
+progress. The next branch should target this neural student tracking/rate
+tradeoff directly with expanded on-policy DAgger relabeling and/or PPO
+fine-tuning from the BC policy with the fitted bridge active. Do not run stress
+or robot gates until the fitted tracking gate improves.

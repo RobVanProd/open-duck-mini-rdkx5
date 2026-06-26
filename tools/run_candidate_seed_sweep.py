@@ -165,6 +165,8 @@ def run_one(
         str(Path(args.env_python)),
         "--command-x",
         str(args.command_x),
+        "--task",
+        str(args.task),
         "--duration",
         str(args.duration),
         "--seed",
@@ -305,6 +307,7 @@ def build_report(results: list[dict[str, Any]], args: argparse.Namespace) -> str
         "train, or touch the robot.",
         "",
         f"command_x: `{args.command_x}`",
+        f"task: `{args.task}`",
         f"bridge_mode: `{args.bridge_mode}`",
         f"reward_overrides_json: `{args.reward_overrides_json or 'None'}`",
         f"reward_overrides_phase: `{args.reward_overrides_phase or 'None'}`",
@@ -377,6 +380,7 @@ def main() -> int:
     parser.add_argument("--playground-path", default="../Open_Duck_Playground")
     parser.add_argument("--env-python", default="../envs/open-duck-playground/bin/python")
     parser.add_argument("--command-x", type=float, default=0.08)
+    parser.add_argument("--task", default="flat_terrain")
     parser.add_argument("--duration", type=float, default=15.0)
     parser.add_argument("--bridge-mode", default="fitted")
     parser.add_argument("--mode-name", default="fitted")
@@ -418,6 +422,7 @@ def main() -> int:
                     "policy_labels": [label for label, _ in policies],
                     "seeds": args.seeds,
                     "command_x": args.command_x,
+                    "task": args.task,
                     "duration_s": args.duration,
                     "bridge_mode": args.bridge_mode,
                     "reward_overrides_json": args.reward_overrides_json,
@@ -435,6 +440,7 @@ def main() -> int:
             "policy_labels": [label for label, _ in policies],
             "seeds": args.seeds,
             "command_x": args.command_x,
+            "task": args.task,
             "duration_s": args.duration,
             "bridge_mode": args.bridge_mode,
             "reward_overrides_json": args.reward_overrides_json,

@@ -4804,6 +4804,36 @@ Next offline tasks:
 4. If both fail, expand selector rollouts into a larger on-policy teacher
    dataset and repeat DAgger/BC before PPO.
 
+Current validation result:
+
+```text
+artifact: outputs/analysis/DEPLOYABLE_SOURCE_VX_POLICY_VALIDATION.md
+status: HOLD_DEPLOYABLE_POLICY_TRACKING_RATE_TRADEOFF
+```
+
+The task-matched fitted bridge gate completes all eight seeds for both DAgger-2
+ONNX candidates, but neither clears tracking:
+
+```text
+dagger2:
+  mean track ratio 0.5409
+  sent-target p95 up to 4.8522 rad/s
+  tracking p95 0.2626-0.2650 rad
+
+dagger2_rate_reg:
+  mean track ratio 0.4550
+  sent-target p95 3.6172-3.6824 rad/s
+  tracking p95 0.2419-0.2472 rad
+```
+
+Next offline implementation target:
+
+```text
+expand on-policy DAgger relabeling from student-visited states
+or PPO fine-tune from the BC/DAgger warm start with fitted bridge active
+then rerun the task-matched fitted gate
+```
+
 Stop rules:
 
 ```text
