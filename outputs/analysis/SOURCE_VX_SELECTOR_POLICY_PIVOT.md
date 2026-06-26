@@ -333,3 +333,42 @@ not solve hard-seed stability. BC-only distillation from positive selector
 windows is now the active limit. The next meaningful branch should add
 closed-loop stabilization/fine-tuning around the best filtered BC student, or
 collect failure-state recovery labels rather than only positive walking windows.
+
+The first failure-state recovery-label pass has now been tested. DAgger-5 was
+replayed with full observations and relabeled by the source-VX selector teacher,
+dropping terminal `done` rows before BC:
+
+```text
+artifact: outputs/analysis/DAGGER5_RECOVERY_TEACHER_RELABEL.md
+status: PASS_BC_TRACE_RELABEL_READY
+samples_out: 3064
+truncated_traces: 2
+```
+
+This was merged with the DAgger-5 positive manifest, with recovery data included
+twice:
+
+```text
+artifact: outputs/analysis/FILTERED_SOURCE_VX_SELECTOR_DAGGER6_RECOVERY_MANIFEST.md
+kept entries: 43
+samples: 19628
+```
+
+The resulting DAgger-6 MLP is an improvement but not a pass:
+
+```text
+artifact: outputs/analysis/SOURCE_VX_SELECTOR_TRACE_DAGGER6_RECOVERY_MLP128_RATE_REG_ONNX_FITTED_BRIDGE_BC_GATE_X008_10S.md
+status: HOLD_BC_REPLAY_TERMINATED
+duration complete: 6 / 8
+terminated: seeds 1 and 7
+seed 5 recovered: duration_complete, vx 0.0338 m/s
+```
+
+The recovery labels fixed one hard failure surface and increased forward
+progress on completed seeds. They did not fix the earliest collapse seeds. This
+is now a sharper deployability boundary: BC-only can absorb some teacher
+corrections, but a single relabel pass still cannot make the MLP robust across
+all seeds. The next branch should focus on targeted seed-1/seed-7 early-collapse
+recovery or closed-loop fine-tuning from the DAgger-6 student. Do not spend the
+next run refining the nondeployable selector; it already served its purpose as
+the existence proof and teacher.

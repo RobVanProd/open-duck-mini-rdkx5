@@ -170,8 +170,22 @@ def predict_teacher_model(
     raise ValueError(f"unsupported model kind {model['kind']}")
 
 
-def relabel_trace(path: Path, output_dir: Path, model: dict[str, Any]) -> dict[str, Any]:
+def relabel_trace(
+    path: Path,
+    output_dir: Path,
+    model: dict[str, Any],
+    *,
+    truncate_before_done: bool = False,
+) -> dict[str, Any]:
     rows = read_jsonl(path)
+    samples_in = len(rows)
+    done_index = None
+    if truncate_before_done:
+        for index, row in enumerate(rows):
+            if bool(row.get("done")):
+                done_index = index
+                rows = rows[:index]
+                break
     output_rows = []
     deltas = []
     active_models: Counter[str] = Counter()
@@ -199,14 +213,16 @@ def relabel_trace(path: Path, output_dir: Path, model: dict[str, Any]) -> dict[s
         new_row["relabel_teacher_blend_alpha"] = alpha
         new_row["mode"] = f"relabel_{model['kind']}_teacher"
         output_rows.append(new_row)
-    output_path = output_dir / path.name
+    output_path = output_dir / path.parent.name / path.name
     write_jsonl(output_path, output_rows)
     return {
         "source_trace": str(path),
         "output_trace": str(output_path),
-        "samples_in": len(rows),
+        "samples_in": samples_in,
         "samples_out": len(output_rows),
         "skipped": skipped,
+        "truncate_before_done": bool(truncate_before_done),
+        "first_done_index": done_index,
         "action_delta_p50": percentile(deltas, 50) if deltas else None,
         "action_delta_p95": percentile(deltas, 95) if deltas else None,
         "action_delta_max": max(deltas) if deltas else None,
@@ -237,15 +253,18 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
             "",
             f"- traces: `{payload['summary']['traces']}`",
             f"- samples_out: `{payload['summary']['samples_out']}`",
+            f"- truncated_traces: `{payload['summary']['truncated_traces']}`",
             "",
             "| source | samples_out | skipped | action_delta_p50 | action_delta_p95 | action_delta_max |",
             "|---|---:|---:|---:|---:|---:|",
         ]
     )
     for item in payload["traces"]:
+        source_path = Path(item["source_trace"])
+        source_name = f"{source_path.parent.name}/{source_path.name}"
         lines.append(
             "| {source} | {samples} | {skipped} | {p50} | {p95} | {maxv} |".format(
-                source=Path(item["source_trace"]).name,
+                source=source_name,
                 samples=item["samples_out"],
                 skipped=item["skipped"],
                 p50=fmt(item.get("action_delta_p50")),
@@ -284,6 +303,11 @@ def main() -> int:
     parser.add_argument("--vx-blend-threshold-m-s", type=float, default=0.02)
     parser.add_argument("--source-vx-threshold-m-s", type=float, default=0.02)
     parser.add_argument("--ridge-alphas", default="1e-6,1e-4,1e-2,1,100")
+    parser.add_argument(
+        "--truncate-before-done",
+        action="store_true",
+        help="Drop the first terminal done row and anything after it before relabeling.",
+    )
     args = parser.parse_args()
 
     model, teacher_meta = load_teacher(args)
@@ -292,7 +316,15 @@ def main() -> int:
         paths.extend(Path(path) for path in sorted(glob.glob(item)))
     paths = sorted(dict.fromkeys(paths))
     output_dir = Path(args.output_trace_dir)
-    trace_rows = [relabel_trace(path, output_dir, model) for path in paths]
+    trace_rows = [
+        relabel_trace(
+            path,
+            output_dir,
+            model,
+            truncate_before_done=args.truncate_before_done,
+        )
+        for path in paths
+    ]
     status = "PASS_BC_TRACE_RELABEL_READY" if trace_rows and all(row["samples_out"] for row in trace_rows) else "HOLD_BC_TRACE_RELABEL_EMPTY"
     payload = {
         "status": status,
@@ -302,6 +334,9 @@ def main() -> int:
         "summary": {
             "traces": len(trace_rows),
             "samples_out": int(sum(row["samples_out"] for row in trace_rows)),
+            "truncated_traces": int(
+                sum(1 for row in trace_rows if row.get("first_done_index") is not None)
+            ),
         },
         "traces": trace_rows,
     }

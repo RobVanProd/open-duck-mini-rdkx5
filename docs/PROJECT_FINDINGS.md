@@ -2886,3 +2886,69 @@ More curated positive windows helped some seeds but did not solve hard-seed
 recovery. This is now a BC-only limitation: the policy needs either failure-
 state recovery labels or closed-loop fine-tuning from the filtered BC student.
 Adding more of the same positive windows is unlikely to be sufficient by itself.
+
+The next branch tested the first recovery-label pass instead of another
+positive-window expansion. The DAgger-5 student was replayed with full
+observations so the source-VX selector teacher could relabel the states the
+student actually visits:
+
+```text
+artifact: outputs/analysis/DAGGER5_RECOVERY_TRACE_X008_FITTED_10S.md
+status: HOLD_CANDIDATE_TRACKING / HOLD_CANDIDATE_FALL_OR_TERMINATION
+trace_full_obs: true
+samples: 3066 before terminal-row truncation
+```
+
+`tools/relabel_bc_trace_actions.py` now supports `--truncate-before-done` and
+preserves seed directories when several inputs are named `trace.jsonl`. The
+relabel pass produced:
+
+```text
+artifact: outputs/analysis/DAGGER5_RECOVERY_TEACHER_RELABEL.md
+status: PASS_BC_TRACE_RELABEL_READY
+traces: 8
+samples_out: 3064
+truncated_traces: 2
+```
+
+The failed/early-fall seeds showed much larger teacher/student action
+disagreement than the stable-duration seeds:
+
+```text
+seed 1 action_delta_p95: 0.3352
+seed 7 action_delta_p95: 0.2652
+typical duration-complete action_delta_p95: about 0.09-0.11
+```
+
+Those relabeled recovery traces were merged with the DAgger-5 curated positive
+manifest, with the recovery manifest included twice to make hard-state
+correction visible in the supervised fit:
+
+```text
+artifact: outputs/analysis/FILTERED_SOURCE_VX_SELECTOR_DAGGER6_RECOVERY_MANIFEST.md
+status: PASS_FILTERED_BC_MANIFEST_READY
+kept entries: 43
+samples: 19628
+```
+
+The DAgger-6 128x128 rate-regularized MLP improved the previous hard-seed
+distribution but still did not pass:
+
+```text
+artifact: outputs/analysis/SOURCE_VX_SELECTOR_TRACE_DAGGER6_RECOVERY_MLP128_RATE_REG_ONNX_FITTED_BRIDGE_BC_GATE_X008_10S.md
+status: HOLD_BC_REPLAY_TERMINATED
+duration complete: 6 / 8
+terminated: seeds 1 and 7
+seed 5 recovered: duration_complete, vx 0.0338 m/s
+mean completed-seed vx: roughly 0.0308 m/s
+sent_vel95 on complete seeds: roughly 2.26-2.29 rad/s
+```
+
+Compared with DAgger-5, recovery relabeling fixed the seed-5 reverse/fall mode
+and raised forward progress on the complete seeds. It did not fix the two
+earliest collapse seeds. This narrows the deployable-policy blocker: a single
+BC pass with teacher relabels can correct some off-manifold behavior, but the
+current MLP still needs either more targeted early-collapse recovery data,
+stronger closed-loop fine-tuning from the BC student, or a different deployable
+architecture. Do not resume plain positive-window BC expansion as the next
+step.

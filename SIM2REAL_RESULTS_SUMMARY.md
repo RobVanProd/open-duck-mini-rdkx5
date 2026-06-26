@@ -6523,3 +6523,39 @@ This marks the current BC-only limit. Curating more positive selector windows
 improves coverage but does not teach recovery from hard seeds. The next branch
 should add recovery labels or closed-loop stabilization/fine-tuning, not another
 plain positive-window BC fit.
+
+That recovery-label branch has now been run once. DAgger-5 was replayed with
+full observations and relabeled by the source-VX selector teacher:
+
+```text
+artifact: outputs/analysis/DAGGER5_RECOVERY_TEACHER_RELABEL.md
+status: PASS_BC_TRACE_RELABEL_READY
+traces: 8
+samples_out: 3064
+truncated terminal traces: 2
+```
+
+The resulting DAgger-6 recovery manifest combined the DAgger-5 positive
+windows with the relabeled hard-state data upweighted 2x:
+
+```text
+artifact: outputs/analysis/FILTERED_SOURCE_VX_SELECTOR_DAGGER6_RECOVERY_MANIFEST.md
+kept entries: 43
+samples: 19628
+```
+
+The DAgger-6 128x128 rate-regularized MLP improved the previous hard-seed
+distribution but still held:
+
+```text
+artifact: outputs/analysis/SOURCE_VX_SELECTOR_TRACE_DAGGER6_RECOVERY_MLP128_RATE_REG_ONNX_FITTED_BRIDGE_BC_GATE_X008_10S.md
+status: HOLD_BC_REPLAY_TERMINATED
+duration complete: 6 / 8
+terminated: seeds 1 and 7
+seed 5 recovered from the DAgger-5 reverse/fall mode
+```
+
+Recovery labels helped, but BC-only distillation remains insufficient for the
+earliest collapse seeds. The next offline step should target seed-1/seed-7
+early-collapse recovery specifically or move to closed-loop fine-tuning from
+the best BC student. Robot motion remains paused.
