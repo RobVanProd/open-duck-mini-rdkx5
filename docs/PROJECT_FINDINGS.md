@@ -1387,3 +1387,42 @@ faithfully exported a teacher-data problem that the earlier flattened
 sent-target velocity metric hid. The next branch should re-curate or relabel
 the selector trace dataset with max-joint/per-joint right-knee target-rate
 constraints before exporting another portable student.
+
+An offline right-knee action-rate curation helper was then added and screened
+against the selector trace dataset:
+
+```text
+tools/rate_limit_bc_trace_actions.py
+outputs/analysis/SOURCE_VX_SELECTOR_TRACE_RIGHT_KNEE_RATE_LIMIT_SWEEP_SUMMARY.md
+status: HOLD_RIGHT_KNEE_RATE_LIMIT_CURATION_NOT_ROBOT_READY
+```
+
+The sweep confirms the source-data mechanism but does not produce a
+robot-ready candidate:
+
+```text
+right-knee cap 4.7 rad/s:
+  changed ticks: 408
+  smoke replay: PASS, 8 / 8 complete, 8 / 8 moving
+
+right-knee cap 4.3 rad/s:
+  changed ticks: 493
+  smoke replay: PASS, 8 / 8 complete, 8 / 8 moving
+  strict ONNX backlash gate: HOLD_STRICT_EVAL_TARGET_VELOCITY_GATE
+  strict max pitch-chain sent-target p95: 4.2994 rad/s
+  strict max pitch-chain tracking p95: 0.2773 rad
+  worst / fastest joint: right_knee on all 8 seeds
+
+right-knee caps 4.0 and 3.75 rad/s:
+  smoke replay: HOLD, seed 5 terminates
+```
+
+Compared with the uncurated exact blend strict ONNX summary, the `4.3 rad/s`
+curation reduces max pitch-chain sent-target p95 from about `5.1118` to
+`4.2994 rad/s` while preserving all-seed forward replay. It still does not
+reach the conservative `2.5 rad/s` gate or the fitted-envelope `3.75 rad/s`
+check, and right-knee tracking remains near `0.27 rad` p95. This means simple
+one-joint hard clipping is a useful diagnostic and a partial mitigation, but
+not the next deployable path. The next curation pass should reject or relabel
+bad right-knee phase/contact windows, or apply dynamics-aware multi-joint
+smoothing, instead of just pushing the right-knee cap lower.

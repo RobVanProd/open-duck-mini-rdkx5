@@ -324,6 +324,16 @@ and `7` still freeze near standstill.
   discontinuity: `506 / 3992` consecutive right-knee target deltas exceed
   `3.75 rad/s`, with max implied target velocity `8.3015 rad/s`. The exact
   ONNX export is preserving a hidden teacher-data problem, not inventing it.
+- A right-knee-only offline action-rate curation screen confirms the mechanism
+  but does not produce a robot-ready path:
+  `outputs/analysis/SOURCE_VX_SELECTOR_TRACE_RIGHT_KNEE_RATE_LIMIT_SWEEP_SUMMARY.md`
+  is `HOLD_RIGHT_KNEE_RATE_LIMIT_CURATION_NOT_ROBOT_READY`. Caps at `4.7` and
+  `4.3 rad/s` preserve 8/8 fitted-bridge smoke replay; caps at `4.0` and
+  `3.75 rad/s` terminate seed 5. The strongest passing cap, `4.3 rad/s`,
+  preserves 8/8 strict ONNX duration-complete forward replay but still holds
+  with max strict pitch-chain sent-target p95 `4.2994 rad/s`, max pitch-chain
+  tracking p95 `0.2773 rad`, and `right_knee` as the worst/fastest joint on all
+  seeds.
 
 ## Required Next Design
 
@@ -339,6 +349,9 @@ and `7` still freeze near standstill.
   approximation error
 - re-curate or relabel the selector trace dataset before another export; the
   current manifest already contains right-knee deltas up to `8.3015 rad/s`
+- do not treat one-joint hard right-knee action clipping as solved; `4.3 rad/s`
+  partially reduces the strict rate peak while preserving motion, but still
+  misses the strict target-velocity/tracking gate, and lower caps break seed 5
 - do not pursue scalar action-gain wrapping as the next branch; it failed the
   two-seed envelope/motion screen
 - do not keep increasing the existing pairwise target-rate regularizer as the
@@ -402,6 +415,9 @@ and `7` still freeze near standstill.
 - Do not call the exact blend ONNX candidate robot-ready; it preserves forward
   motion across all strict task-matched seeds, but every seed exceeds the fitted
   pitch-chain envelope and right-knee tracking remains too high.
+- Do not continue lowering a single right-knee hard cap; the screen already
+  found the transition from preserved motion to seed-5 termination before the
+  strict envelope is reached.
 
 ## Non-Goals
 

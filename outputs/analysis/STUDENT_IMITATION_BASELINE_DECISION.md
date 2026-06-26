@@ -421,6 +421,36 @@ next branch should re-curate or relabel the selector trace manifest with
 max-joint/per-joint right-knee target-rate constraints before another portable
 student export.
 
+That curation branch was screened with a right-knee-only offline action-rate
+limiter:
+
+```text
+tools/rate_limit_bc_trace_actions.py
+outputs/analysis/SOURCE_VX_SELECTOR_TRACE_RIGHT_KNEE_RATE_LIMIT_SWEEP_SUMMARY.md
+status: HOLD_RIGHT_KNEE_RATE_LIMIT_CURATION_NOT_ROBOT_READY
+```
+
+The strongest smoke-safe cap was `4.3 rad/s`:
+
+```text
+changed ticks: 493
+smoke replay: PASS_BC_FIT_SMOKE_FORWARD_REPLAY
+smoke complete / moving: 8 / 8, 8 / 8
+strict ONNX backlash gate: HOLD_STRICT_EVAL_TARGET_VELOCITY_GATE
+strict complete / moving: 8 / 8, 8 / 8
+strict max pitch-chain sent-target p95: 4.2994 rad/s
+strict max pitch-chain tracking p95: 0.2773 rad
+worst / fastest strict joint: right_knee on all 8 seeds
+```
+
+Harder caps at `4.0` and `3.75 rad/s` terminate seed 5 in smoke replay, so
+simple one-joint clipping has hit its useful limit. It confirms the right-knee
+teacher-data discontinuity and partially reduces the strict rate peak, but it
+does not produce an envelope-safe or tracking-safe candidate. The next branch
+should use dynamics-aware source-window rejection, relabeling, or multi-joint
+smoothing around the right-knee phase/contact discontinuity rather than
+lowering the right-knee cap again.
+
 ## Required Next Design
 
 - Use the DAgger-2 ONNX candidate as proof that compact neural export is wired,
@@ -435,6 +465,9 @@ student export.
   approximation error.
 - Re-curate or relabel the selector trace dataset before another export; the
   current trace manifest already contains right-knee deltas up to `8.3015 rad/s`.
+- Do not treat one-joint hard right-knee action clipping as solved; `4.3 rad/s`
+  preserves smoke replay but still fails strict ONNX target-velocity/tracking,
+  while `4.0` and `3.75 rad/s` break seed 5.
 - Do not pursue scalar action-gain wrapping as the next branch; it failed the
   two-seed envelope/motion screen.
 - Do not keep increasing the existing pairwise target-rate regularizer as the
@@ -469,6 +502,9 @@ student export.
 - Do not call the exact blend ONNX candidate robot-ready; all eight strict
   task-matched seeds move, but all exceed the fitted pitch-chain envelope and
   right-knee tracking remains too high.
+- Do not continue lowering a single right-knee hard cap; the sweep already
+  shows the transition from preserved motion to seed-5 termination before the
+  strict envelope is reached.
 - Do not treat the 2-seed kNN smoke as a pass.
 - Do not use aggregate sequence replay as the student.
 - Do not use plain one-step MLP BC as the student.
@@ -484,7 +520,7 @@ student export.
 
 ## Current Next Step
 
-Turn the source-filtered velocity selector into a reviewed student/distillation
-or training target and test it against stricter offline gates, especially the
-fitted actuator bridge. Do not move to robot validation from this selector
-artifact.
+Re-curate the selector trace source around the right-knee phase/contact
+discontinuity with source-window rejection, relabeling, or multi-joint
+dynamics-aware smoothing. Do not move to robot validation from the exact blend
+or the one-joint right-knee clipped artifacts.
