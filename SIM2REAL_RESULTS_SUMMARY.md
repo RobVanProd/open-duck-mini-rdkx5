@@ -6559,3 +6559,26 @@ Recovery labels helped, but BC-only distillation remains insufficient for the
 earliest collapse seeds. The next offline step should target seed-1/seed-7
 early-collapse recovery specifically or move to closed-loop fine-tuning from
 the best BC student. Robot motion remains paused.
+
+That targeted seed-1/seed-7 recovery pass has also been tested. The two
+remaining DAgger-6 collapse seeds were replayed with full observations,
+relabelled by the source-VX teacher, and upweighted 50x in a DAgger-7 manifest:
+
+```text
+artifact: outputs/analysis/FILTERED_SOURCE_VX_SELECTOR_DAGGER7_TARGETED_RECOVERY_MANIFEST.md
+kept entries: 143
+samples: 22778
+```
+
+The resulting DAgger-7 MLP still held:
+
+```text
+artifact: outputs/analysis/SOURCE_VX_SELECTOR_TRACE_DAGGER7_TARGETED_RECOVERY_MLP128_RATE_REG_ONNX_FITTED_BRIDGE_BC_GATE_X008_10S.md
+status: HOLD_BC_REPLAY_TERMINATED
+duration complete: 6 / 8
+terminated: seeds 1 and 7
+```
+
+Static early-collapse BC labels, even heavily upweighted, are not enough. The
+remaining offline blocker is now closed-loop recovery/stabilization, not more
+positive-window BC or more weight on the same first-collapse labels.

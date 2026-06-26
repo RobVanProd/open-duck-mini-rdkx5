@@ -2952,3 +2952,53 @@ current MLP still needs either more targeted early-collapse recovery data,
 stronger closed-loop fine-tuning from the BC student, or a different deployable
 architecture. Do not resume plain positive-window BC expansion as the next
 step.
+
+An additional targeted recovery pass tested whether the two remaining
+early-collapse seeds simply needed heavier supervised correction. DAgger-6 was
+replayed only on seeds 1 and 7 with full observations:
+
+```text
+artifact: outputs/analysis/DAGGER6_TARGETED_RECOVERY_TRACE_X008_FITTED_10S.md
+status: HOLD_CANDIDATE_FALL_OR_TERMINATION
+seed 1: 32 samples, base_height_min 0.0775 m
+seed 7: 33 samples, base_height_min 0.0730 m
+```
+
+Those states were relabeled by the same source-VX teacher:
+
+```text
+artifact: outputs/analysis/DAGGER6_TARGETED_RECOVERY_TEACHER_RELABEL.md
+status: PASS_BC_TRACE_RELABEL_READY
+samples_out: 63
+truncated_traces: 2
+seed 1 action_delta_p95: 0.1478
+seed 7 action_delta_p95: 0.1743
+```
+
+The targeted labels were then upweighted 50x in a DAgger-7 manifest:
+
+```text
+artifact: outputs/analysis/FILTERED_SOURCE_VX_SELECTOR_DAGGER7_TARGETED_RECOVERY_MANIFEST.md
+status: PASS_FILTERED_BC_MANIFEST_READY
+kept entries: 143
+samples: 22778
+```
+
+DAgger-7 still held:
+
+```text
+artifact: outputs/analysis/SOURCE_VX_SELECTOR_TRACE_DAGGER7_TARGETED_RECOVERY_MLP128_RATE_REG_ONNX_FITTED_BRIDGE_BC_GATE_X008_10S.md
+status: HOLD_BC_REPLAY_TERMINATED
+duration complete: 6 / 8
+terminated: seeds 1 and 7
+seed 1: 32 samples, vx 0.0109 m/s
+seed 7: 32 samples, vx 0.0261 m/s
+```
+
+Heavy upweighting of the first 30-ish collapse-state labels did not solve the
+remaining failure and slightly reduced forward progress on several completed
+seeds. This suggests the collapse cannot be corrected by static BC labels at
+the onset alone. The next meaningful deployable-policy branch should use
+closed-loop fine-tuning from the DAgger-6/DAgger-7 student or collect longer
+successful recovery trajectories, not increase the same early-collapse label
+weight again.

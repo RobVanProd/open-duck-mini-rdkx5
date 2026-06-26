@@ -372,3 +372,34 @@ all seeds. The next branch should focus on targeted seed-1/seed-7 early-collapse
 recovery or closed-loop fine-tuning from the DAgger-6 student. Do not spend the
 next run refining the nondeployable selector; it already served its purpose as
 the existence proof and teacher.
+
+The targeted early-collapse variant was tested next. DAgger-6 was replayed on
+only seeds 1 and 7, relabeled by the source-VX teacher, and the resulting 63
+pre-terminal samples were upweighted 50x:
+
+```text
+artifact: outputs/analysis/DAGGER6_TARGETED_RECOVERY_TEACHER_RELABEL.md
+status: PASS_BC_TRACE_RELABEL_READY
+samples_out: 63
+
+artifact: outputs/analysis/FILTERED_SOURCE_VX_SELECTOR_DAGGER7_TARGETED_RECOVERY_MANIFEST.md
+status: PASS_FILTERED_BC_MANIFEST_READY
+samples: 22778
+```
+
+The DAgger-7 MLP still failed the same two seeds:
+
+```text
+artifact: outputs/analysis/SOURCE_VX_SELECTOR_TRACE_DAGGER7_TARGETED_RECOVERY_MLP128_RATE_REG_ONNX_FITTED_BRIDGE_BC_GATE_X008_10S.md
+status: HOLD_BC_REPLAY_TERMINATED
+duration complete: 6 / 8
+terminated: seeds 1 and 7
+```
+
+This rules out a simple label-weighting fix for the remaining early-collapse
+mode. The static BC student can learn the general walking manifold and can
+absorb some recovery corrections, but it does not learn a closed-loop
+stabilization response from the first 30 ticks of fall-state labels. The next
+deployable-policy attempt should be closed-loop fine-tuning from the best BC
+student, or a dataset that contains actual successful recovery trajectories,
+not more copies of the same terminal-onset labels.
