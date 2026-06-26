@@ -1981,3 +1981,33 @@ regresses target-rate and tracking margin. That suggests another pure BC relabel
 pass is unlikely to solve the core gate by itself. The next branch should add
 tracking/target-rate feedback to the student objective or PPO fine-tune from
 the BC warm start with the fitted actuator bridge active.
+
+A PPO-shape BC student was then trained from the same DAgger-3 manifest using
+the local Playground PPO policy hidden sizes `(512, 256, 128)`:
+
+```text
+outputs/analysis/PPO_SHAPE_BC_WARMSTART_CANDIDATE.md
+status: HOLD_PPO_SHAPE_TRACKING_GATE
+
+ONNX: outputs/analysis/source_vx_selector_trace_dagger3_mlp512_256_128_rate_reg_candidate/candidate.onnx
+NPZ:  outputs/analysis/source_vx_selector_trace_dagger3_mlp512_256_128_rate_reg_candidate/candidate_mlp.npz
+
+task-matched fitted gate:
+  duration complete: 8 / 8
+  falls: 0 / 8
+  mean track ratio: 0.4953
+  sent-target velocity p95 range: 3.7842-3.8409 rad/s
+  tracking p95 range: 0.2570-0.2684 rad
+```
+
+This is not an improved policy candidate. It is slightly lower-progress than
+the 128x128 DAgger-3 student and still holds on fitted tracking. Its value is
+architectural: the saved BC weights now match the PPO policy hidden-layer shape,
+so the next branch can build a PPO warm-start converter or runner init path
+without also changing the network architecture.
+
+One discrepancy must be resolved before trusting any step-0 PPO fidelity result:
+the BC smoke replay reports sent-target p95 around `2.19-2.24 rad/s`, while the
+standard candidate gate reports `3.78-3.84 rad/s` for the same exported ONNX.
+The step-0 fidelity gate must use the standard evaluator path or explain the
+smoke-vs-standard difference.

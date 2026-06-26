@@ -4870,6 +4870,45 @@ convert the BC MLP weights into PPO params or add a runner-side BC init path,
 then verify step-0 ONNX behavior matches the BC candidate. Do not start PPO
 until that step-0 fidelity gate passes.
 
+PPO-shape BC warm-start substrate:
+
+```text
+artifact: outputs/analysis/PPO_SHAPE_BC_WARMSTART_CANDIDATE.md
+status: HOLD_PPO_SHAPE_TRACKING_GATE
+ONNX: outputs/analysis/source_vx_selector_trace_dagger3_mlp512_256_128_rate_reg_candidate/candidate.onnx
+NPZ:  outputs/analysis/source_vx_selector_trace_dagger3_mlp512_256_128_rate_reg_candidate/candidate_mlp.npz
+hidden sizes: 512,256,128
+```
+
+The candidate completes all 8 seeds in the task-matched fitted bridge gate but
+still holds on tracking:
+
+```text
+mean track ratio: 0.4953
+sent-target p95: 3.7842-3.8409 rad/s
+tracking p95: 0.2570-0.2684 rad
+```
+
+This candidate is useful because its hidden-layer shape matches the PPO policy
+network. The next implementation step is not another DAgger pass; it is a
+PPO-param inspection and warm-start fidelity path:
+
+```text
+1. inspect PPO policy param PyTree for the 512,256,128 policy network
+2. map PPO-shape BC weights into the policy mean/action-loc branch
+3. initialize exploration/stddev parameters deliberately
+4. keep value-network params freshly initialized
+5. evaluate/export step-0 PPO policy
+6. compare step-0 actions and closed-loop behavior against the PPO-shape BC ONNX
+```
+
+Resolve this evaluator mismatch before trusting the fidelity gate:
+
+```text
+BC smoke sent-target p95: about 2.19-2.24 rad/s
+standard gate sent-target p95: 3.7842-3.8409 rad/s
+```
+
 Stop rules:
 
 ```text
