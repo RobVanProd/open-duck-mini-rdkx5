@@ -5071,6 +5071,43 @@ retrain swish PPO-loc BC
 rerun step-0 fitted gate
 ```
 
+Seed-5 trace analysis:
+
+```text
+artifact: outputs/analysis/PPO_BC_SWISH_WARMSTART_SEED5_FAILURE_ANALYSIS.md
+status: HOLD_SEED_FAILURE_CLOSED_LOOP_INSTABILITY
+```
+
+The failing seed is not obviously out-of-distribution:
+
+```text
+nearest manifest distance p95: 1.0276
+nearest action L1 p95: 0.0783
+target velocity p95: 1.7630 rad/s
+double support: 75.68%
+first negative vx: tick 10
+base height below 10 cm: tick 72
+final pitch: -1.4801 rad
+```
+
+Interpretation:
+
+```text
+not primarily target-rate
+not primarily missing manifest coverage
+not primarily one large local action mismatch
+```
+
+The warm-start policy needs a stability/contact-support correction around the
+seed-5 basin. Candidate next moves:
+
+```text
+compare seed-5 trace against successful swish step-0 seeds 0/2
+penalize or relabel backward-pitch/reverse-velocity states
+add closed-loop recovery samples around seed-5 states
+avoid starting PPO until seed 5 no longer has immediate reverse/fall behavior
+```
+
 Stop rules:
 
 ```text

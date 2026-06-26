@@ -2117,3 +2117,31 @@ problem is behavioral: the swish PPO-compatible student has a seed-5
 reverse/fall mode and the other seeds still hold on fitted tracking. Next branch
 should collect a seed-5 trace, compare it with successful seeds, and improve the
 swish warm-start dataset or loss before PPO updates.
+
+The seed-5 trace analysis is now available:
+
+```text
+outputs/analysis/PPO_BC_SWISH_WARMSTART_SEED5_FAILURE_ANALYSIS.md
+status: HOLD_SEED_FAILURE_CLOSED_LOOP_INSTABILITY
+```
+
+Key numbers:
+
+```text
+samples: 74
+first negative vx tick: 10
+base height below 10 cm tick: 72
+mean vx: -0.1976 m/s
+final pitch: -1.4801 rad
+double support: 75.68%
+target velocity p95: 1.7630 rad/s
+joint tracking p95: 0.1760 rad
+nearest manifest distance p95: 1.0276
+nearest action L1 p95: 0.0783
+```
+
+This does not look like a simple target-rate violation or missing-manifest
+state. The failing seed has nearby source coverage and modest action mismatch,
+but the closed-loop rollout still backs up and pitches down into a fall. The
+next fix should target closed-loop stability/contact support for seed 5 rather
+than only increasing dataset size.
