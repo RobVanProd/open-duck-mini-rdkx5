@@ -6206,3 +6206,32 @@ to standstill. It is not a robot candidate and not a PPO launch point. The next
 deployable-policy step needs command-conditioned behavior: keep the
 scale-0.75-like stabilizer near zero command while preserving the full
 source-VX recovery action for x=0.08.
+
+That command-conditioned behavior was then tested directly with an ONNX wrapper:
+
+```text
+tool: tools/wrap_policy_command_scale.py
+artifact: outputs/analysis/PPO_BC_SWISH_COMMAND_SCALE_DECISION.md
+status: HOLD_COMMAND_SCALE_TRACKING_LIMIT
+```
+
+The wrapper scales the source-VX recovery action from `0.75` at `obs[6]=0` to
+`1.0` at `obs[6]=0.08`. It passed the full x=0.0 fitted gate and restored the
+x=0.08 moving behavior:
+
+```text
+x=0.0:  8 / 8 duration-complete, mean vx 0.0003 m/s
+x=0.08: 8 / 8 duration-complete, mean vx 0.0416 m/s, track ratio 0.5201
+```
+
+The x=0.08 result still holds on tracking:
+
+```text
+mean max pitch target velocity p95: 3.8218 rad/s
+mean max pitch tracking p95: 0.2662 rad
+```
+
+High-scale boundary probes (`0.90` through `0.975`) did not clear the tracking
+gate. The current deployable-policy blocker is no longer command semantics; it
+is reducing the x=0.08 action shape/timing so the fitted actuator bridge can
+track it while preserving forward progress.

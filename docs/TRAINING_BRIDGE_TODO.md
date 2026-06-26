@@ -5267,3 +5267,44 @@ build command-conditioned switching or teacher data that preserves full source-V
 keep the x=0.0 stabilizing behavior only near zero command
 rerun both full x=0.0 and x=0.08 fitted gates before PPO
 ```
+
+Command-scale wrapper result:
+
+```text
+tool: tools/wrap_policy_command_scale.py
+artifact: outputs/analysis/PPO_BC_SWISH_COMMAND_SCALE_DECISION.md
+status: HOLD_COMMAND_SCALE_TRACKING_LIMIT
+```
+
+The wrapper uses `obs[6]` (`command_x`) to scale the source-VX recovery policy:
+
+```text
+scale = 0.75 + (high_scale - 0.75) * clip(abs(obs[6]) / 0.08, 0, 1)
+```
+
+With `high_scale=1.0`, it passes x=0.0 and restores x=0.08 movement:
+
+```text
+x=0.0:  8 / 8 duration-complete, mean vx 0.0003 m/s
+x=0.08: 8 / 8 duration-complete, mean vx 0.0416 m/s, track ratio 0.5201
+```
+
+But x=0.08 remains a tracking hold:
+
+```text
+mean max tracking p95: 0.2662 rad
+```
+
+High-scale screens at `0.90`, `0.93`, `0.935`, `0.94`, `0.95`, and `0.975`
+did not find a robust pass. Lowering high-scale either destabilized seed 5 or
+left the policy at the tracking threshold.
+
+Next valid warm-start work:
+
+```text
+stop pure scalar scale search
+preserve the command-conditioned x=0 stabilization branch
+change x=0.08 action shape/timing to reduce fitted tracking p95
+consider smoothed/re-rate-labeled source-VX actions or PPO fine-tuning from the command-scale warm start
+rerun full x=0.0 and x=0.08 fitted gates before any robot validation
+```

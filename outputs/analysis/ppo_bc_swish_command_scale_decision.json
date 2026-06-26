@@ -1,0 +1,102 @@
+{
+  "status": "HOLD_COMMAND_SCALE_TRACKING_LIMIT",
+  "offline_only": true,
+  "robot_tests": false,
+  "deployment": false,
+  "runtime_behavior_changed": false,
+  "training_run": false,
+  "tool": "tools/wrap_policy_command_scale.py",
+  "scale_formula": "low_scale + (high_scale - low_scale) * clip(abs(obs[6]) / ramp_command_x, 0, 1)",
+  "base_policy": "outputs/analysis/ppo_bc_swish_seed5_source_vx_recovery_step0.onnx",
+  "primary_policy": "outputs/analysis/ppo_bc_swish_seed5_source_vx_recovery_step0_cmdscale_0p75_to_1p0_x008.onnx",
+  "primary_low_scale": 0.75,
+  "primary_high_scale": 1.0,
+  "ramp_command_x": 0.08,
+  "x0_gate": {
+    "artifact_md": "outputs/analysis/SOURCE_VX_CMDSCALE_0P75_TO_1P0_X008_X0_GATE.md",
+    "artifact_json": "outputs/analysis/source_vx_cmdscale_0p75_to_1p0_x008_x0_gate.json",
+    "falls": 0,
+    "duration_complete": 8,
+    "mean_vx_m_s": 0.0003,
+    "mean_body_pitch_p95_rad": 0.0232,
+    "mean_max_pitch_target_velocity_p95_rad_s": 0.4107,
+    "mean_max_pitch_tracking_p95_rad": 0.0710
+  },
+  "x008_gate": {
+    "artifact_md": "outputs/analysis/SOURCE_VX_CMDSCALE_0P75_TO_1P0_X008_X008_GATE.md",
+    "artifact_json": "outputs/analysis/source_vx_cmdscale_0p75_to_1p0_x008_x008_gate.json",
+    "falls": 0,
+    "duration_complete": 8,
+    "mean_vx_m_s": 0.0416,
+    "mean_track_ratio": 0.5201,
+    "mean_max_pitch_target_velocity_p95_rad_s": 3.8218,
+    "mean_max_pitch_tracking_p95_rad": 0.2662,
+    "status": "HOLD_CANDIDATE_TRACKING"
+  },
+  "high_scale_screen": {
+    "artifact_md": "outputs/analysis/SOURCE_VX_CMDSCALE_HIGH_X008_SCREEN.md",
+    "artifact_json": "outputs/analysis/source_vx_cmdscale_high_x008_screen.json",
+    "additional_artifacts": [
+      "outputs/analysis/SOURCE_VX_CMDSCALE_HI0P94_X008_SCREEN.md",
+      "outputs/analysis/SOURCE_VX_CMDSCALE_HI0P935_X008_SCREEN.md",
+      "outputs/analysis/SOURCE_VX_CMDSCALE_HI0P93_X008_SCREEN.md"
+    ],
+    "summary": [
+      {
+        "high_scale": 0.90,
+        "falls": 1,
+        "duration_complete": 1,
+        "mean_vx_m_s": -0.1011,
+        "mean_track_ratio": -1.2634,
+        "mean_max_tracking_p95_rad": 0.2405,
+        "result": "seed_5_falls"
+      },
+      {
+        "high_scale": 0.93,
+        "falls": 0,
+        "duration_complete": 2,
+        "mean_vx_m_s": 0.0313,
+        "mean_track_ratio": 0.3909,
+        "mean_max_tracking_p95_rad": 0.2508,
+        "result": "tracking_hold"
+      },
+      {
+        "high_scale": 0.935,
+        "falls": 0,
+        "duration_complete": 2,
+        "mean_vx_m_s": 0.0322,
+        "mean_track_ratio": 0.4022,
+        "mean_max_tracking_p95_rad": 0.2504,
+        "result": "tracking_hold"
+      },
+      {
+        "high_scale": 0.94,
+        "falls": 0,
+        "duration_complete": 2,
+        "mean_vx_m_s": 0.0336,
+        "mean_track_ratio": 0.4195,
+        "mean_max_tracking_p95_rad": 0.2498,
+        "result": "tracking_hold"
+      },
+      {
+        "high_scale": 0.95,
+        "falls": 0,
+        "duration_complete": 2,
+        "mean_vx_m_s": 0.0329,
+        "mean_track_ratio": 0.4116,
+        "mean_max_tracking_p95_rad": 0.2534,
+        "result": "tracking_hold"
+      },
+      {
+        "high_scale": 0.975,
+        "falls": 0,
+        "duration_complete": 2,
+        "mean_vx_m_s": 0.0407,
+        "mean_track_ratio": 0.5092,
+        "mean_max_tracking_p95_rad": 0.2587,
+        "result": "tracking_hold"
+      }
+    ]
+  },
+  "interpretation": "Command-conditioned scaling combines x=0 standstill and x=0.08 motion, but scalar amplitude tuning does not clear the fitted tracking gate. The next step needs action shape/timing changes, not only scale."
+}

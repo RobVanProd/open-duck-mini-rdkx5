@@ -2437,3 +2437,54 @@ it also collapses command sensitivity and removes the x=0.08 gait. The next
 deployable-policy step should not rely on a global scale. It needs a
 command-conditioned zero-command branch or teacher that preserves the full
 source-VX x=0.08 walking behavior.
+
+## PPO Swish Command-Scale Wrapper
+
+A command-conditioned ONNX wrapper was added to test the simplest deployable
+branch:
+
+```text
+tool: tools/wrap_policy_command_scale.py
+decision: outputs/analysis/PPO_BC_SWISH_COMMAND_SCALE_DECISION.md
+status: HOLD_COMMAND_SCALE_TRACKING_LIMIT
+formula: scale = 0.75 + (high_scale - 0.75) * clip(abs(obs[6]) / 0.08, 0, 1)
+```
+
+The primary wrapper used `high_scale=1.0`, so it exactly matches the
+standstill-stabilizing 0.75 policy at x=0 and the full source-VX recovery
+policy at x=0.08:
+
+```text
+x=0.0:
+  falls: 0 / 8
+  duration complete: 8 / 8
+  mean vx: 0.0003 m/s
+  mean max tracking p95: 0.0710 rad
+
+x=0.08:
+  falls: 0 / 8
+  duration complete: 8 / 8
+  mean vx: 0.0416 m/s
+  mean track ratio: 0.5201
+  mean max pitch target velocity p95: 3.8218 rad/s
+  mean max tracking p95: 0.2662 rad
+  status: HOLD_CANDIDATE_TRACKING
+```
+
+This proves the zero-command and moving-command behaviors can coexist in one
+deployable ONNX graph. It does not pass the candidate gate because the x=0.08
+tracking error remains too high.
+
+A high-scale boundary screen showed why scalar amplitude alone is not enough:
+
+```text
+high_scale 0.90: seed 5 falls
+high_scale 0.93-0.94: stable on seeds 0 and 5, but tracking p95 stays near 0.25 rad
+high_scale 0.95-0.975: stable and more progress, but still tracking hold
+```
+
+The remaining blocker is action shape/timing at x=0.08, not zero-command
+conditioning, not low progress, and not falls. The next deployable-policy work
+should keep the command-conditioned x=0 branch but reduce x=0.08 tracking via a
+better teacher, action smoothing in the supervised target, or PPO fine-tuning
+from this warm start with the fitted bridge active.
