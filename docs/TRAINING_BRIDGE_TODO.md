@@ -4834,6 +4834,29 @@ or PPO fine-tune from the BC/DAgger warm start with fitted bridge active
 then rerun the task-matched fitted gate
 ```
 
+Follow-up DAgger-3 result:
+
+```text
+artifact: outputs/analysis/DAGGER3_RATE_REG_POLICY_VALIDATION.md
+status: HOLD_DAGGER3_TRACKING_RATE_REGRESSION
+```
+
+The added rate-reg student-visited relabels improve forward progress but
+reintroduce target-rate/tracking margin:
+
+```text
+mean track ratio: 0.5255
+sent-target p95: 3.7121-3.8488 rad/s
+tracking p95: 0.2623-0.2767 rad
+```
+
+Next branch should move beyond pure BC relabeling:
+
+```text
+PPO fine-tuning from BC warm start
+or student training with explicit fitted-bridge tracking/rate feedback
+```
+
 Stop rules:
 
 ```text

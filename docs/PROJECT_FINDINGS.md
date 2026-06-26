@@ -1948,3 +1948,36 @@ progress. The next branch should target this neural student tracking/rate
 tradeoff directly with expanded on-policy DAgger relabeling and/or PPO
 fine-tuning from the BC policy with the fitted bridge active. Do not run stress
 or robot gates until the fitted tracking gate improves.
+
+One more on-policy DAgger relabel pass was tested from the DAgger-2 rate-reg
+student-visited states:
+
+```text
+outputs/analysis/SOURCE_VX_SELECTOR_TRACE_DAGGER2_RATE_REG_STANDARD_RELABEL_BLEND.md
+status: PASS_BC_TRACE_RELABEL_READY
+samples_out: 4000
+
+outputs/analysis/SOURCE_VX_SELECTOR_TRACE_DAGGER3_MANIFEST.md
+status: PASS_BC_TRACE_MANIFEST_READY
+dataset_id: 80ea809b021b6b9a
+entries: 25
+samples: 9268
+```
+
+The DAgger-3 rate-reg MLP passes the BC smoke but still holds under the
+standard task-matched fitted gate:
+
+```text
+outputs/analysis/DAGGER3_RATE_REG_POLICY_VALIDATION.md
+status: HOLD_DAGGER3_TRACKING_RATE_REGRESSION
+
+mean track ratio: 0.5255
+sent-target velocity p95 range: 3.7121-3.8488 rad/s
+tracking p95 range: 0.2623-0.2767 rad
+```
+
+Compared with DAgger-2 rate-reg, DAgger-3 improves forward progress but
+regresses target-rate and tracking margin. That suggests another pure BC relabel
+pass is unlikely to solve the core gate by itself. The next branch should add
+tracking/target-rate feedback to the student objective or PPO fine-tune from
+the BC warm start with the fitted actuator bridge active.

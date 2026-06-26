@@ -184,6 +184,8 @@ def run_one(
     ]
     if seed in set(args.trace_seeds):
         command.extend(["--trace-jsonl", str(output_dir / "trace.jsonl")])
+        if args.trace_full_obs:
+            command.append("--trace-full-obs")
     if args.reward_overrides_json:
         command.extend(["--reward-overrides-json", str(Path(args.reward_overrides_json))])
     if args.reward_overrides_phase:
@@ -313,6 +315,8 @@ def build_report(results: list[dict[str, Any]], args: argparse.Namespace) -> str
         f"reward_overrides_phase: `{args.reward_overrides_phase or 'None'}`",
         f"duration_s: `{args.duration}`",
         f"seeds: `{args.seeds}`",
+        f"trace_seeds: `{args.trace_seeds}`",
+        f"trace_full_obs: `{args.trace_full_obs}`",
         f"run: `{args.run}`",
         "",
         "## Per-Seed Results",
@@ -387,6 +391,11 @@ def main() -> int:
     parser.add_argument("--jax-platform", default="cpu")
     parser.add_argument("--trace-seeds", type=parse_int_list, default=[])
     parser.add_argument(
+        "--trace-full-obs",
+        action="store_true",
+        help="When tracing selected seeds, include full obs_state in JSONL for DAgger relabeling.",
+    )
+    parser.add_argument(
         "--reward-overrides-json",
         default=None,
         help=(
@@ -429,6 +438,8 @@ def main() -> int:
                     "reward_overrides_phase": args.reward_overrides_phase,
                     "jax_platform": args.jax_platform,
                     "run": args.run,
+                    "trace_seeds": args.trace_seeds,
+                    "trace_full_obs": args.trace_full_obs,
                 },
                 "partial": True,
                 "results": results,
@@ -447,6 +458,8 @@ def main() -> int:
             "reward_overrides_phase": args.reward_overrides_phase,
             "jax_platform": args.jax_platform,
             "run": args.run,
+            "trace_seeds": args.trace_seeds,
+            "trace_full_obs": args.trace_full_obs,
         },
         "results": results,
         "aggregate": {
