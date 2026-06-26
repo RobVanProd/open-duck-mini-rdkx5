@@ -92,6 +92,7 @@ def tar_filter(member: tarfile.TarInfo) -> tarfile.TarInfo | None:
         allowed_analysis = {
             ("outputs", "analysis", "actuator_response_fit.json"),
             ("outputs", "analysis", "ACTUATOR_RESPONSE_FIT.md"),
+            ("outputs", "analysis", "ppo_bc_swish_cmd_pitch_rl_2p25_step0_checkpoint"),
             ("outputs", "analysis", "reference_motion_x004_override.pkl"),
             ("outputs", "analysis", "reference_motion_override.json"),
             ("outputs", "analysis", "REFERENCE_MOTION_OVERRIDE.md"),
