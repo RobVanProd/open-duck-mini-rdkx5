@@ -2753,3 +2753,38 @@ stricter 15-second candidate gate. The current blocker is therefore still
 learnability/coverage: the walking behavior exists in the selector, and the MLPs
 partially distill it, but the current dataset/model does not preserve it robustly
 enough over the full validation horizon.
+
+The later DAgger-3 deployable candidates were also run through the same strict
+gate:
+
+```text
+artifact: outputs/analysis/DEPLOYABLE_SOURCE_VX_POLICY_VALIDATION_DAGGER3_X008_FITTED_15S.md
+status: HOLD_DEPLOYABLE_SOURCE_VX_POLICY_VALIDATION
+command: x=0.08
+bridge: fitted
+duration: 15 s
+```
+
+Results:
+
+```text
+dagger3_128:
+  pass: 0 / 8
+  falls: 2 / 8
+  duration complete: 6 / 8
+  mean vx: 0.0218 m/s
+  mean track ratio: 0.2729
+
+dagger3_512:
+  pass: 0 / 8
+  falls: 3 / 8
+  duration complete: 5 / 8
+  mean vx: -0.0070 m/s
+  mean track ratio: -0.0873
+```
+
+The DAgger-3 128-wide policy is slightly better than DAgger-2 on mean track
+ratio, but still fails the strict gate. The larger 512/256/128 model is worse
+and includes a strong reverse/fall seed. This makes the next branch sharper:
+the project needs either a broader/higher-quality selector rollout dataset or a
+different stabilization objective before PPO warm-start, not just a larger MLP.

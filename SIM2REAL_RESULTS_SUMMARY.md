@@ -6431,3 +6431,26 @@ that in-envelope walking exists, but the current deployable MLPs do not preserve
 it over the full validation horizon. The next offline step should expand the
 selector rollout dataset and repeat DAgger/BC against the 15-second fitted gate,
 not run robot validation and not continue scalar PPO sweeps.
+
+The later DAgger-3 candidates were also checked with the same 15-second fitted
+x=0.08 gate:
+
+```text
+artifact: outputs/analysis/DEPLOYABLE_SOURCE_VX_POLICY_VALIDATION_DAGGER3_X008_FITTED_15S.md
+dagger3_128:
+  pass: 0 / 8
+  falls: 2 / 8
+  mean vx: 0.0218 m/s
+  mean track ratio: 0.2729
+
+dagger3_512:
+  pass: 0 / 8
+  falls: 3 / 8
+  mean vx: -0.0070 m/s
+  mean track ratio: -0.0873
+```
+
+DAgger-3 did not change the decision. The 128-wide model moves somewhat better
+than DAgger-2 but still fails tracking and hard-seed stability. The larger model
+is worse. Current deployable MLP distillation remains partial, not a warm start
+ready for robot-side validation.

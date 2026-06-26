@@ -182,3 +182,40 @@ The current next step is not robot testing and not another selector knob tweak.
 It is to expand the selector-generated on-distribution rollout dataset and
 repeat DAgger/BC with stricter 15-second fitted-bridge validation as the primary
 gate.
+
+The later DAgger-3 candidates were also checked against the same strict gate:
+
+```text
+artifact: outputs/analysis/DEPLOYABLE_SOURCE_VX_POLICY_VALIDATION_DAGGER3_X008_FITTED_15S.md
+command: straight x=0.08
+bridge: fitted
+duration: 15 s
+seeds: 0-7
+policies:
+  - source_vx_selector_trace_dagger3_mlp128_rate_reg_candidate/candidate.onnx
+  - source_vx_selector_trace_dagger3_mlp512_256_128_rate_reg_candidate/candidate.onnx
+```
+
+Result:
+
+```text
+dagger3_128:
+  pass: 0 / 8
+  falls: 2 / 8
+  duration complete: 6 / 8
+  mean track ratio: 0.2729
+  mean vx: 0.0218 m/s
+
+dagger3_512:
+  pass: 0 / 8
+  falls: 3 / 8
+  duration complete: 5 / 8
+  mean track ratio: -0.0873
+  mean vx: -0.0070 m/s
+```
+
+This confirms the DAgger-2 conclusion. More capacity and one more DAgger
+iteration do not solve the strict 15-second fitted-bridge gate. The 128-wide
+DAgger-3 model is the best of this group by mean forward progress, but it still
+fails on tracking and hard-seed falls. The 512/256/128 model overfits or
+destabilizes badly enough to produce negative mean velocity.
