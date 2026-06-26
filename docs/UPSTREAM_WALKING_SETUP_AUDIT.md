@@ -268,6 +268,27 @@ next source should mine the short snippets as phase/contact evidence and add a
 continuity mechanism, not clone full traces or assume the short snippets are a
 complete walking dataset.
 
+The follow-up stitch planner tested that continuity assumption directly:
+
+```text
+tools/plan_closed_loop_snippet_stitching.py
+outputs/analysis/CLOSED_LOOP_SNIPPET_STITCH_PLAN.md
+status: HOLD_STITCH_RUNS_TOO_SHORT
+```
+
+Result:
+
+| command cell | short pass windows | pass stitch runs | max passing stitch span |
+|---|---:|---:|---:|
+| upstream nearest turn | 76 | 55 | 12 ticks |
+| straight `x=0.04` | 3 | 2 | 12 ticks |
+| straight `x=0.08` | 63 | 27 | 18 ticks |
+
+No trace produced a passing 25-tick or 50-tick stitch run. That means the
+closed-loop snippets are usable as local contact/phase evidence, but they are
+not a ready imitation dataset. A BC/export step needs a new continuity source
+or closed-loop selector before it is meaningful.
+
 ## Non-Goals
 
 - robot tests

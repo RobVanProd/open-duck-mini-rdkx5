@@ -1,6 +1,6 @@
-# Next Closed-Loop Snippet Branch
+# Closed-Loop Snippet Branch Decision
 
-status: `PLAN_SNIPPET_STITCHING_WITH_RATE_REJECTION`
+status: `HOLD_STITCH_RUNS_TOO_SHORT`
 
 This is an offline branch decision. It does not train, deploy, SSH, run robot
 tests, or change runtime behavior.
@@ -79,30 +79,61 @@ high-rate right-knee burst windows show what to reject or relabel
 continuity between snippets is the missing mechanism
 ```
 
-## Next Branch
+## Stitch Branch Result
 
-Build a snippet-stitching / relabeling source that:
-
-1. Starts from the 10-tick passing snippets.
-2. Rejects windows where pitch-chain p95 exceeds `3.75 rad/s`.
-3. Tracks which contact phase and command cell each snippet came from.
-4. Adds transition/continuity constraints before BC/export.
-5. Scores candidate stitched windows at 25 and 50 ticks before any student
-   training.
-
-Minimum next artifact:
+The planned stitch/relabeling source was implemented as:
 
 ```text
+tools/plan_closed_loop_snippet_stitching.py
 outputs/analysis/CLOSED_LOOP_SNIPPET_STITCH_PLAN.md
 outputs/analysis/closed_loop_snippet_stitch_plan.json
 ```
 
-The stitch plan should answer:
+It starts from the 10-tick passing snippets, merges overlapping or nearby
+passing windows, re-evaluates the merged spans with the same motion/contact
+criteria, and checks whether any trace reaches 25 or 50 passing ticks.
+
+Result:
+
+| command cell | short pass windows | pass stitch runs | max passing stitch span |
+|---|---:|---:|---:|
+| upstream nearest turn | 76 | 55 | 12 ticks |
+| straight `x=0.04` | 3 | 2 | 12 ticks |
+| straight `x=0.08` | 63 | 27 | 18 ticks |
+
+Aggregate:
 
 ```text
-Can short safe snippets be sequenced into 25-50 tick windows without
-reintroducing right-knee target-rate bursts or losing forward motion?
+short pass windows: 142
+stitch runs: 86
+passing stitch runs: 84
+traces with >=25-tick pass runs: 0
+traces with >=50-tick pass runs: 0
+max passing stitch span: 18 ticks
 ```
+
+Answer:
+
+```text
+No. Under the current criteria, short safe snippets cannot yet be sequenced
+into 25-50 tick windows without losing the pass condition.
+```
+
+This means the snippets remain useful as local support/phase evidence, but
+they are not a direct BC/export source. The next offline branch needs a real
+continuity mechanism or a different closed-loop imitation route.
+
+## Next Branch Options
+
+Use this result to avoid another isolated-snippet training run. Viable next
+offline directions are:
+
+1. Build a continuity generator that explicitly bridges between safe snippets
+   and then re-score 25/50 tick windows before training.
+2. Mine BEST_WALK closed-loop state-action rules instead of target snippets,
+   especially contact/CoM timing and right-knee rate management.
+3. Train/evaluate a recurrent or state-conditioned selector over safe local
+   actions, gated on 25-50 tick closed-loop rollout before ONNX export.
 
 ## Stop Rules
 

@@ -1535,3 +1535,42 @@ So the next candidate source should not copy full BEST_WALK traces. It should
 mine short safe snippets as motion/phase evidence, then build a continuity
 mechanism that bridges between those snippets without reintroducing the
 right-knee high-rate bursts.
+
+The first continuity check then tested whether the 10-tick passing snippets
+can be merged into longer contiguous windows:
+
+```text
+tools/plan_closed_loop_snippet_stitching.py
+
+outputs/analysis/CLOSED_LOOP_SNIPPET_STITCH_PLAN.md
+status: HOLD_STITCH_RUNS_TOO_SHORT
+
+short pass windows: 142
+stitch runs: 86
+passing stitch runs: 84
+traces with >=25-tick pass runs: 0
+traces with >=50-tick pass runs: 0
+max passing stitch span: 18 ticks
+```
+
+By command cell:
+
+```text
+upstream nearest turning key:
+  76 short pass windows
+  max passing stitch span: 12 ticks
+
+straight x=0.04:
+  3 short pass windows
+  max passing stitch span: 12 ticks
+
+straight x=0.08:
+  63 short pass windows
+  max passing stitch span: 18 ticks
+```
+
+This rules out direct BC from stitched BEST_WALK snippets as the next clean
+step. The safe closed-loop behavior is fragmented into local sub-step hints,
+not sustained 25-50 tick teacher windows. The next source needs an explicit
+continuity/generation mechanism, or a different closed-loop imitation route,
+before export or training.
