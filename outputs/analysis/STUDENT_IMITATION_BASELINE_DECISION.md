@@ -319,14 +319,44 @@ This means the ONNX export path works, but the exported DAgger-2 MLP is not a
 promotion candidate. The source-switch-free blend student remains the stronger
 behavior baseline.
 
+The first standard review used default `flat_terrain`, while the DAgger smoke
+gate used `flat_terrain_backlash`. A task-matched review on
+`flat_terrain_backlash` is materially better but still holds:
+
+```text
+outputs/analysis/source_vx_selector_trace_dagger2_mlp128_onnx_multiseed_fitted_backlash/MULTISEED_FITTED_BACKLASH_SUMMARY.md
+status: HOLD_DAGGER2_ONNX_BACKLASH_LOW_FORWARD_PROGRESS
+duration complete: 8 / 8
+moving seeds with track ratio >= 0.5: 7 / 8
+mean track ratio: 0.5409
+max pitch-chain sent-target p95 range: 4.5943-4.8522 rad/s
+```
+
+That closes the task-mismatch confound but exposes the real portable-student
+issue: the MLP can move on the backlash task, but it does so with max
+pitch-chain target velocity above the fitted actuator envelope.
+
+An eval-only scalar action-gain screen does not fix this:
+
+```text
+outputs/analysis/source_vx_selector_trace_dagger2_mlp128_onnx_gain_screen_backlash/GAIN_SCREEN_SUMMARY.md
+status: HOLD_GAIN_SCREEN_NO_ENVELOPE_SAFE_MOTION
+```
+
+Gain `0.90` still exceeds the envelope and already loses forward tracking on
+the screened seeds; lower gains reduce target rate but collapse motion. Do not
+turn this into a runtime gain hack.
+
 ## Required Next Design
 
 - Use the DAgger-2 ONNX candidate as proof that compact neural export is wired,
   not as the behavior target.
 - Keep the source-switch-free blend student as the stronger offline behavior
   baseline.
-- The next portable student must improve multi-seed ONNX forward progress and
-  avoid early low-height terminations.
+- The next portable student must preserve task-matched backlash forward
+  progress while bringing max pitch-chain target velocity and tracking down.
+- Do not pursue scalar action-gain wrapping as the next branch; it failed the
+  two-seed envelope/motion screen.
 - Do not treat the failed 128x128 MLP clones as proof that neural distillation
   is impossible; they show naive one-step MLP and simple target-rate
   regularization still overdrive.
@@ -347,6 +377,8 @@ behavior baseline.
 - Do not call the DAgger-2 ONNX candidate robot-ready; it is only the first
   exportable fitted-bridge smoke pass and it fails multi-seed standard ONNX
   review.
+- Do not treat action-gain damping as a fix; the offline gain screen trades
+  target-rate safety for lost forward motion.
 - Do not treat the 2-seed kNN smoke as a pass.
 - Do not use aggregate sequence replay as the student.
 - Do not use plain one-step MLP BC as the student.

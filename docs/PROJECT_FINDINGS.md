@@ -1245,7 +1245,34 @@ mean local vx: 0.0202 m/s
 early terminations: seeds 1 and 7
 ```
 
+That first standard review used the default `flat_terrain` task, while the
+DAgger smoke gate used `flat_terrain_backlash`. A task-matched standard ONNX
+review on `flat_terrain_backlash` shows the export is much closer to the smoke
+gate, but still not promotion-ready:
+
+```text
+outputs/analysis/source_vx_selector_trace_dagger2_mlp128_onnx_multiseed_fitted_backlash/MULTISEED_FITTED_BACKLASH_SUMMARY.md
+status: HOLD_DAGGER2_ONNX_BACKLASH_LOW_FORWARD_PROGRESS
+duration complete: 8 / 8
+moving seeds with track ratio >= 0.5: 7 / 8
+moving seeds with mean local vx >= 0.02 m/s: 8 / 8
+mean track ratio: 0.5409
+mean local vx: 0.0433 m/s
+max pitch-chain sent-target p95 range: 4.5943-4.8522 rad/s
+```
+
+The task-matched run closes the earlier task-confound, but the exported MLP
+still overdrives the right-knee pitch-chain target relative to the fitted
+envelope and remains a hold. A scalar action-gain screen does not solve that:
+
+```text
+outputs/analysis/source_vx_selector_trace_dagger2_mlp128_onnx_gain_screen_backlash/GAIN_SCREEN_SUMMARY.md
+status: HOLD_GAIN_SCREEN_NO_ENVELOPE_SAFE_MOTION
+screen: gains 0.9, 0.8, 0.7, 0.6 on seeds 0 and 3
+result: no gain preserves track ratio >= 0.5 while keeping max pitch-chain p95 <= 3.75 rad/s
+```
+
 So the ONNX export path is working, but the exported DAgger-2 MLP is not a
 promotion candidate. The source-switch-free blend student remains the stronger
-offline behavior baseline; the ONNX student needs either better closed-loop
+offline behavior baseline; the ONNX student needs better closed-loop
 distillation or a different portable policy class before any robot gate.

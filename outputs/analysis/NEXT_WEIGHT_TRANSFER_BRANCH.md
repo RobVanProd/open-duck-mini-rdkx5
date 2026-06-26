@@ -291,6 +291,16 @@ and `7` still freeze near standstill.
   local vx `>= 0.02 m/s`, and seeds `1` and `7` terminated early with low base
   height. The export path works, but this candidate is not a promotion
   candidate.
+- That first standard review used default `flat_terrain`, while the DAgger
+  smoke gate used `flat_terrain_backlash`. A task-matched standard ONNX review
+  on `flat_terrain_backlash` is much closer to the smoke result but still
+  holds: `8 / 8` duration complete, `7 / 8` seeds with track ratio `>= 0.5`,
+  mean track ratio `0.5409`, mean local vx `0.0433 m/s`, and max pitch-chain
+  sent-target p95 `4.5943-4.8522 rad/s`.
+- A scalar action-gain screen on seeds `0` and `3` does not fix the envelope
+  issue. Gain `0.90` still exceeds the fitted envelope and already loses
+  forward tracking on the screen seeds; lower gains reduce target rate but
+  collapse motion.
 
 ## Required Next Design
 
@@ -298,8 +308,10 @@ and `7` still freeze near standstill.
   not as the behavior target
 - keep the source-switch-free blend student as the stronger offline behavior
   baseline
-- the next portable student must improve multi-seed ONNX forward progress and
-  avoid early low-height terminations
+- the next portable student must preserve task-matched backlash forward
+  progress while bringing max pitch-chain target velocity and tracking down
+- do not pursue scalar action-gain wrapping as the next branch; it failed the
+  two-seed envelope/motion screen
 - review stress-bridge margin before any robot-side discussion
 - do not treat the failed 128x128 MLP clones as proof that neural distillation
   is impossible; they show naive one-step MLP and simple target-rate
@@ -349,6 +361,8 @@ and `7` still freeze near standstill.
 - Do not call the DAgger-2 ONNX candidate robot-ready; it is only the first
   exportable fitted-bridge smoke pass and it fails multi-seed standard ONNX
   review.
+- Do not treat action-gain damping as a fix; the offline gain screen trades
+  target-rate safety for lost forward motion.
 
 ## Non-Goals
 
