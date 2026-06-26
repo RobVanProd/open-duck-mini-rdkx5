@@ -650,6 +650,41 @@ or moves only after the per-joint pitch-chain target-rate exceeds the measured
 envelope. The published policy is therefore useful as a closed-loop movement
 teacher, but not as an envelope-safe target template.
 
+The teacher-window extractor then checked whether the moving published-policy
+rollouts contain usable low-rate subsets:
+
+```text
+outputs/analysis/CLOSED_LOOP_TEACHER_TEMPLATE.md
+status: PASS_HAS_LOW_RATE_MOVING_TEACHER_WINDOWS
+```
+
+Results:
+
+```text
+straight x=0.08:
+  moving ticks: 89.55%
+  moving + in-envelope ticks: 70.55%
+  moving + single-support + in-envelope ticks: 32.80%
+  safe moving single-support 0.1s future vx delta: +0.0039 m/s
+  full-trace pitch velocity p95: 5.1961 rad/s
+
+upstream turning command:
+  moving ticks: 82.15%
+  moving + in-envelope ticks: 63.70%
+  moving + single-support + in-envelope ticks: 28.90%
+  safe moving single-support 0.1s future vx delta: +0.0034 m/s
+  full-trace pitch velocity p95: 4.9472 rad/s
+
+straight x=0.04:
+  moving + single-support + in-envelope ticks: 1.25%
+  safe moving single-support 0.1s future vx delta: -0.0483 m/s
+```
+
+So the whole moving command cell is not envelope-safe, but it does contain
+substantial low-rate moving windows with positive single-support future velocity
+delta. Those windows are the better teacher substrate than either the full
+published policy trajectory or the open-loop reference targets.
+
 This is the current pivot. The upstream-main sim/morphology can produce stable
 closed-loop forward locomotion under the published `BEST_WALK_ONNX_2` policy.
 The reference-target/open-loop path still fails the same contact/propulsion
@@ -665,7 +700,8 @@ acceleration.
 Current decision: do not continue with another stance-relative lateral-damping
 teacher variant by default. The command-grid search did not find an
 envelope-safe published-policy command cell in the nearby straight/turning
-region. The next offline branch should treat `BEST_WALK_ONNX_2` as an
-over-envelope closed-loop movement teacher and train or constrain a lower
-target-rate student from that behavior, while grading on max-joint pitch-chain
-p95 target velocity. Robot validation remains blocked.
+region, but the moving command traces contain meaningful low-rate moving
+subsets. The next offline branch should mine those low-rate closed-loop windows
+as the teacher, then train or constrain a lower target-rate student from that
+behavior while grading on max-joint pitch-chain p95 target velocity. Robot
+validation remains blocked.

@@ -75,15 +75,25 @@ training, robot SSH, deployment, or hardware tests.
 | `turn_scale050_to_090_moving_seed_count_ratio_ge_0p5` | `0 / 2 at every tested scale` |
 | `turn_scale100_moving_seed_count_ratio_ge_0p5` | `2 / 2` |
 | `turn_scale100_pitch_chain_target_velocity_p95_max_seed_rad_s` | `5.0147` |
+| `teacher_template_status` | `PASS_HAS_LOW_RATE_MOVING_TEACHER_WINDOWS` |
+| `straight_x008_moving_in_envelope_pct` | `70.55` |
+| `straight_x008_moving_single_in_envelope_pct` | `32.80` |
+| `straight_x008_safe_moving_single_future_vx_delta_m_s` | `0.0039` |
+| `turning_moving_in_envelope_pct` | `63.70` |
+| `turning_moving_single_in_envelope_pct` | `28.90` |
+| `turning_safe_moving_single_future_vx_delta_m_s` | `0.0034` |
 
 ## Decision
 
 Stop the local stance-relative teacher loop and stop searching nearby command
-cells for an envelope-safe published-policy template. The upstream/reference
-target path fails the same forward push-effectiveness question in this sim, and
-the published `BEST_WALK_ONNX_2` policy proves closed-loop propulsion exists in
-vanilla sim, but the compact command-grid screen found movement only when the
-measured per-joint pitch-chain velocity envelope was exceeded.
+cells for an envelope-safe whole published-policy template. The
+upstream/reference target path fails the same forward push-effectiveness
+question in this sim, and the published `BEST_WALK_ONNX_2` policy proves
+closed-loop propulsion exists in vanilla sim. The compact command-grid screen
+found movement only when the whole command cell exceeded the measured
+per-joint pitch-chain velocity envelope, but the moving published-policy traces
+contain substantial low-rate moving windows that should be mined as the next
+teacher substrate.
 
 ## Rationale
 
@@ -114,13 +124,18 @@ measured per-joint pitch-chain velocity envelope was exceeded.
   lower straight/turning cell had `0 / 2` moving seeds. The only moving grid
   cell was full-scale upstream turning with `2 / 2` moving seeds and
   max-seed pitch-chain p95 target velocity `5.0147 rad/s`.
+- The teacher-window extraction shows that the moving command cells still
+  contain low-rate closed-loop propulsion windows: straight `x=0.08` has
+  `70.55%` moving + in-envelope ticks and `32.80%` moving + single-support +
+  in-envelope ticks; the upstream turning command has `63.70%` and `28.90%`
+  respectively. Those safe moving single-support windows have positive 0.1s
+  future-vx deltas (`+0.0039 m/s` and `+0.0034 m/s`).
 
 ## Required Next Design
 
-- treat `BEST_WALK_ONNX_2` as an over-envelope closed-loop movement teacher,
-  not as an envelope-safe target template
-- train or constrain a lower-target-rate student from the published policy's
-  closed-loop movement behavior
+- mine the low-rate moving windows from `BEST_WALK_ONNX_2` closed-loop traces
+- train or constrain a lower-target-rate student from those windows, not from
+  the full over-envelope trajectory
 - grade the student on coherent forward motion and max-joint pitch-chain p95
   target velocity, not only mean pitch-chain target velocity
 

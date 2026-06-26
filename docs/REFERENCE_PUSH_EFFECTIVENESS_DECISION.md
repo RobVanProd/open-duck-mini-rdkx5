@@ -335,6 +335,32 @@ envelope. The current best read is a sharp activation cliff: below the envelope,
 the policy mostly stands; when it walks, at least one pitch-chain joint exceeds
 the measured envelope.
 
+The teacher-window extraction gives a more useful next target than copying the
+whole moving trajectory:
+
+```text
+outputs/analysis/CLOSED_LOOP_TEACHER_TEMPLATE.md
+status: PASS_HAS_LOW_RATE_MOVING_TEACHER_WINDOWS
+
+straight x=0.08:
+  moving + in-envelope ticks: 70.55%
+  moving + single-support + in-envelope ticks: 32.80%
+  safe moving single-support future vx delta: +0.0039 m/s
+
+upstream turning command:
+  moving + in-envelope ticks: 63.70%
+  moving + single-support + in-envelope ticks: 28.90%
+  safe moving single-support future vx delta: +0.0034 m/s
+
+straight x=0.04:
+  moving + single-support + in-envelope ticks: 1.25%
+  safe moving single-support future vx delta: -0.0483 m/s
+```
+
+So the full moving command cells are not envelope-safe, but they contain
+low-rate closed-loop propulsion windows. Those windows are the current best
+teacher source.
+
 Answers to the original discriminator:
 
 ```text
@@ -357,9 +383,8 @@ Answers to the original discriminator:
 Recommended next offline task:
 
 ```text
-train or constrain a lower-target-rate student from BEST_WALK_ONNX_2's
-closed-loop movement behavior; keep the published policy as a movement teacher,
-not as an envelope-safe template
+extract/mine the low-rate moving windows from BEST_WALK_ONNX_2's closed-loop
+behavior, then train or constrain a lower-target-rate student from that subset
 ```
 
 Robot validation remains blocked.
