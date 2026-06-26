@@ -120,11 +120,26 @@ This rules out the simplest state-conditioned blend switch. The next student
 needs closed-loop training/selection that produces a better local action for
 double-support freeze states, not just a later switch to raw kNN.
 
+A velocity-gated blend is the first selector that beats blend `0.80`:
+
+```text
+base blend: 0.80
+raw-kNN blend: 1.00
+switch condition: local vx >= -0.02 m/s
+
+moving seeds: 0, 1, 2, 3, 5, 6
+frozen seeds: 4, 7
+terminated seeds: none
+```
+
+It recovers seed `1` while keeping seed `3` alive. The remaining failure is
+still low-action double-support dwell on seeds `4` and `7`.
+
 ## Required Next Design
 
 - Train or select using closed-loop rollouts, not only offline action loss.
 - Preserve kNN-like local motion while enforcing linear/sequence-like smoothness.
-- Beat blend `0.80`: no terminations and more than 5/8 moving seeds.
+- Beat velocity-gated blend: no terminations and more than 6/8 moving seeds.
 - Specifically recover seeds `1`, `4`, and `7` from low-action double-support
   dwell into alternating single support.
 - Do not rely on one global kNN/linear blend coefficient; the traced kNN/blend
@@ -145,7 +160,8 @@ double-support freeze states, not just a later switch to raw kNN.
 - Do not assume pairwise target-rate or observation-consistency regularization
   solves closed-loop rate saturation.
 - Do not optimize supervised action error alone.
-- Do not call blend `0.80` solved; it is only the current best cheap baseline.
+- Do not call velocity-gated blend solved; it is only the current best cheap
+  baseline.
 - Do not keep sweeping one global blend alpha; `0.75-0.88` have the same
   moving/freeze split and `0.90` reintroduces the seed-3 fall.
 - Do not use the simple dwell-to-raw-kNN selector as the solution; early dwell

@@ -588,7 +588,7 @@ def run_closed_loop_rollout(
                 model["norm"],
                 int(model["k"]),
             ).reshape(-1)
-        if model["kind"] in {"blend", "dwell_blend"}:
+        if model["kind"] in {"blend", "dwell_blend", "vx_blend"}:
             linear_pred = predict_ridge(obs, model["weights"], model["linear_norm"])
             knn_pred = predict_knn(
                 obs,
@@ -615,6 +615,9 @@ def run_closed_loop_rollout(
         double_support_streak = 0
         for tick in range(sim_steps):
             obs = np.asarray(jax.device_get(state.obs["state"]), dtype=np.float64).reshape(1, -1)
+            pre_step_local_linvel = np.asarray(
+                jax.device_get(env.get_local_linvel(state.data)), dtype=float
+            )
             current_contacts = np.asarray(jax.device_get(state.info["last_contact"]), dtype=bool).reshape(-1)
             double_support = bool(current_contacts.size >= 2 and bool(np.all(current_contacts[:2])))
             double_support_streak = double_support_streak + 1 if double_support else 0
@@ -623,6 +626,12 @@ def run_closed_loop_rollout(
                 blend_alpha_used = (
                     float(model["dwell_blend_alpha"])
                     if double_support_streak >= int(model["dwell_trigger_ticks"])
+                    else float(model["blend_alpha"])
+                )
+            elif model["kind"] == "vx_blend":
+                blend_alpha_used = (
+                    float(model["vx_blend_alpha"])
+                    if float(pre_step_local_linvel[0]) >= float(model["vx_blend_threshold_m_s"])
                     else float(model["blend_alpha"])
                 )
             action = predict_action(obs, blend_alpha_override=blend_alpha_used).astype(np.float32)
@@ -646,6 +655,7 @@ def run_closed_loop_rollout(
                 "action": action.astype(float).tolist(),
                 "blend_alpha_used": blend_alpha_used,
                 "double_support_streak": double_support_streak,
+                "pre_step_local_linvel_m_s": pre_step_local_linvel.astype(float).tolist(),
                 "target_pre_rate_limit_rad": np.asarray(jax.device_get(pre_rate), dtype=float).tolist(),
                 "sent_target_rad": np.asarray(jax.device_get(sent_target), dtype=float).tolist(),
                 "actual_position_rad": actual.tolist(),
@@ -769,6 +779,8 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         f"- blend_alpha: `{payload.get('blend_alpha')}`",
         f"- dwell_blend_alpha: `{payload.get('dwell_blend_alpha')}`",
         f"- dwell_trigger_ticks: `{payload.get('dwell_trigger_ticks')}`",
+        f"- vx_blend_alpha: `{payload.get('vx_blend_alpha')}`",
+        f"- vx_blend_threshold_m_s: `{payload.get('vx_blend_threshold_m_s')}`",
         f"- best_alpha: `{payload['fit']['best_alpha']}`",
         f"- train_rmse: `{fmt(payload['fit']['train']['rmse'])}`",
         f"- train_mae: `{fmt(payload['fit']['train']['mae'])}`",
@@ -908,13 +920,15 @@ def main() -> int:
     parser.add_argument("--ridge-alphas", default="1e-6,1e-4,1e-2,1,100")
     parser.add_argument(
         "--model-kind",
-        choices=["linear", "knn", "blend", "dwell_blend", "mlp"],
+        choices=["linear", "knn", "blend", "dwell_blend", "vx_blend", "mlp"],
         default="linear",
     )
     parser.add_argument("--knn-k", type=int, default=5)
     parser.add_argument("--blend-alpha", type=float, default=0.75)
     parser.add_argument("--dwell-blend-alpha", type=float, default=1.0)
     parser.add_argument("--dwell-trigger-ticks", type=int, default=20)
+    parser.add_argument("--vx-blend-alpha", type=float, default=1.0)
+    parser.add_argument("--vx-blend-threshold-m-s", type=float, default=0.02)
     parser.add_argument("--mlp-hidden-sizes", default="128,128")
     parser.add_argument("--mlp-steps", type=int, default=2000)
     parser.add_argument("--mlp-batch-size", type=int, default=512)
@@ -1006,7 +1020,7 @@ def main() -> int:
                 "norm": np.stack([mean, std], axis=0),
                 "k": int(args.knn_k),
             }
-        elif args.model_kind in {"blend", "dwell_blend"}:
+        elif args.model_kind in {"blend", "dwell_blend", "vx_blend"}:
             mean = samples.observations.mean(axis=0)
             std = samples.observations.std(axis=0)
             std = np.where(std < 1.0e-8, 1.0, std)
@@ -1021,6 +1035,8 @@ def main() -> int:
                 "blend_alpha": float(args.blend_alpha),
                 "dwell_blend_alpha": float(args.dwell_blend_alpha),
                 "dwell_trigger_ticks": int(args.dwell_trigger_ticks),
+                "vx_blend_alpha": float(args.vx_blend_alpha),
+                "vx_blend_threshold_m_s": float(args.vx_blend_threshold_m_s),
             }
         elif args.model_kind == "mlp":
             assert mlp_fit is not None
@@ -1091,6 +1107,8 @@ def main() -> int:
         "blend_alpha": float(args.blend_alpha),
         "dwell_blend_alpha": float(args.dwell_blend_alpha),
         "dwell_trigger_ticks": int(args.dwell_trigger_ticks),
+        "vx_blend_alpha": float(args.vx_blend_alpha),
+        "vx_blend_threshold_m_s": float(args.vx_blend_threshold_m_s),
         "rollout": rollout,
     }
     output_json = Path(args.output_json)

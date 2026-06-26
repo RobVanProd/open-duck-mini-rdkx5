@@ -950,6 +950,36 @@ help the frozen seeds or early enough to bring back the seed-3 lunge. The next
 student must learn/select a genuinely better local action, not only choose
 between linear, blend, and raw kNN.
 
+A velocity-gated blend then produced the first clear improvement over blend
+`0.80`:
+
+```text
+outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_VX_BLEND080_100_VXNEG002_BC_GATE_X008.md
+base blend: 0.80
+raw-kNN blend: 1.00
+switch condition: local vx >= -0.02 m/s
+status: HOLD_BC_REPLAY_LOW_FORWARD_MOTION
+moving seeds: 0, 1, 2, 3, 5, 6
+frozen seeds: 4, 7
+terminated seeds: none
+
+outputs/analysis/VX_BLEND080_100_VXNEG002_SEED_MODE_ANALYSIS.md
+moving group:
+  mean vx ≈ 0.0672 m/s
+  single support ≈ 51.00%
+  pitch-chain sent target velocity p95 ≈ 3.17 rad/s
+
+frozen group:
+  mean vx ≈ 0.0050 m/s
+  double support ≈ 97.60%
+  pitch-chain sent target velocity p95 ≈ 0.48 rad/s
+```
+
+This selector keeps seed `3` alive while recovering seed `1`, which neither raw
+kNN nor any global blend did. It does not solve the full gate because seeds `4`
+and `7` still settle into quiet double-support dwell, but it is now the best
+cheap baseline to beat.
+
 The focused student decision artifact is:
 
 ```text

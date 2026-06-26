@@ -244,6 +244,10 @@ and `7` still freeze near standstill.
 - A simple double-support dwell selector also fails: switching to raw kNN after
   5 double-support ticks reintroduces the seed-3 termination, while switching
   after 10 or 20 ticks preserves the blend `0.80` freeze pattern.
+- A velocity-gated blend is the first selector that beats blend `0.80`: base
+  blend `0.80`, raw-kNN blend `1.00`, and switch condition
+  `local vx >= -0.02 m/s` move seeds `0/1/2/3/5/6` with zero terminations.
+  Seeds `4` and `7` still freeze in double support.
 
 ## Required Next Design
 
@@ -256,8 +260,8 @@ and `7` still freeze near standstill.
 - use kNN/linear/MLP/sequence smoke results as baselines; the next student must
   combine kNN-like local motion with linear/sequence-like smoothness and
   multi-seed stability
-- beat blend `0.80`: keep zero terminations and recover forward motion on at
-  least one of seeds `1`, `4`, and `7`
+- beat velocity-gated blend: keep zero terminations and recover forward motion
+  on at least one of the remaining frozen seeds `4` or `7`
 - add closed-loop selection pressure against quiet double-support dwell; further
   smoothing alone is likely to preserve the freeze
 - avoid treating one global kNN/linear blend coefficient as the final selector;

@@ -302,11 +302,34 @@
       "terminated_seeds": []
     }
   ],
+  "vx_blend_best": {
+    "artifact": "outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_VX_BLEND080_100_VXNEG002_BC_GATE_X008.md",
+    "seed_mode_artifact": "outputs/analysis/VX_BLEND080_100_VXNEG002_SEED_MODE_ANALYSIS.md",
+    "status": "HOLD_BC_REPLAY_LOW_FORWARD_MOTION",
+    "base_blend_alpha": 0.8,
+    "vx_blend_alpha": 1.0,
+    "vx_blend_threshold_m_s": -0.02,
+    "moving_seeds": [
+      0,
+      1,
+      2,
+      3,
+      5,
+      6
+    ],
+    "frozen_seeds": [
+      4,
+      7
+    ],
+    "terminated_seeds": [],
+    "moving_seed_count": 6,
+    "best_current_cheap_baseline": true
+  },
   "required_next_design": [
     "train or select using closed-loop rollouts, not only offline action loss",
     "preserve kNN-like local motion while enforcing linear/sequence-like smoothness",
-    "beat blend 0.80: no terminations and more than 5/8 moving seeds",
-    "recover seeds 1, 4, and 7 from low-action double-support dwell into alternating single support",
+    "beat velocity-gated blend: no terminations and more than 6/8 moving seeds",
+    "recover seeds 4 and 7 from low-action double-support dwell into alternating single support",
     "use state-conditioned or closed-loop-selected imitation rather than one global kNN/linear blend coefficient",
     "penalize or reject candidates whose closed-loop sent-target p95 reaches 5.24 rad/s",
     "grade on all eight seeds for at least 5s before any longer run",
@@ -320,7 +343,7 @@
     "Do not use plain one-step MLP BC as the student.",
     "Do not assume pairwise target-rate or observation-consistency regularization solves closed-loop rate saturation.",
     "Do not optimize supervised action error alone.",
-    "Do not call blend 0.80 solved; it is only the current best cheap baseline.",
+    "Do not call velocity-gated blend solved; it is only the current best cheap baseline.",
     "Do not keep sweeping one global blend alpha; 0.75-0.88 have the same moving/freeze split and 0.90 reintroduces the seed-3 fall.",
     "Do not use the simple dwell-to-raw-kNN selector as the solution; early dwell switching terminates seed 3 and later switching preserves the freeze."
   ]
