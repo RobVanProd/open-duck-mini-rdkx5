@@ -6184,3 +6184,25 @@ x=0.0:  6 / 8 duration-complete, seeds 3 and 5 fall
 
 This preserves the x=0.08 moving gait and fixes zero-command drift on easy
 seeds, but it exposes the next blocker: hard-seed x=0.0 standstill stability.
+
+A follow-up global action-scale diagnostic tested whether a partial source-VX
+recovery action could stabilize the hard x=0.0 seeds:
+
+```text
+artifact: outputs/analysis/PPO_BC_SWISH_SOURCE_VX_SCALE_0P75_DECISION.md
+status: HOLD_X008_FORWARD_PROGRESS_REGRESSION
+scaled policy: outputs/analysis/ppo_bc_swish_seed5_source_vx_recovery_step0_scale_0p75.onnx
+```
+
+Result:
+
+```text
+x=0.0:  8 / 8 duration-complete, mean vx 0.0003 m/s
+x=0.08: 8 / 8 duration-complete, mean vx 0.0004 m/s, track ratio 0.0046
+```
+
+This fixes hard-seed zero-command stability but collapses the walking command
+to standstill. It is not a robot candidate and not a PPO launch point. The next
+deployable-policy step needs command-conditioned behavior: keep the
+scale-0.75-like stabilizer near zero command while preserving the full
+source-VX recovery action for x=0.08.

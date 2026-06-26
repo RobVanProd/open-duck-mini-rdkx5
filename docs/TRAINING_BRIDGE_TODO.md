@@ -5233,3 +5233,37 @@ no source-VX selector deployment
 no relaxed actuator envelope
 no further selector refinement unless candidate validation identifies a concrete missing teacher state
 ```
+
+Source-VX scale diagnostic result:
+
+```text
+artifact: outputs/analysis/PPO_BC_SWISH_SOURCE_VX_SCALE_0P75_DECISION.md
+status: HOLD_X008_FORWARD_PROGRESS_REGRESSION
+```
+
+A global 0.75 action scale on the source-VX recovery policy fixed the hard
+x=0.0 standstill seeds but destroyed x=0.08 forward progress:
+
+```text
+x=0.0 fitted bridge:
+  falls: 0 / 8
+  duration complete: 8 / 8
+  mean vx: 0.0003 m/s
+
+x=0.08 fitted bridge:
+  falls: 0 / 8
+  duration complete: 8 / 8
+  mean vx: 0.0004 m/s
+  mean track ratio: 0.0046
+  all seeds: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
+```
+
+Next valid warm-start work:
+
+```text
+use scale_0p75 only as evidence that partial source-VX feedback stabilizes x=0.0 hard seeds
+do not treat scale_0p75 as a walking candidate
+build command-conditioned switching or teacher data that preserves full source-VX x=0.08 action
+keep the x=0.0 stabilizing behavior only near zero command
+rerun both full x=0.0 and x=0.08 fitted gates before PPO
+```

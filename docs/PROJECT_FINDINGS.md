@@ -2387,3 +2387,53 @@ behavior. The remaining deployable warm-start blocker is stable x=0.0
 standstill/recovery behavior for seeds 3 and 5.
 
 Do not start PPO, deploy, or run robot validation from this checkpoint.
+
+## PPO Swish Source-VX Scale Diagnostic
+
+The source-VX recovery policy was globally scaled to test whether a partial
+moving-policy action could stabilize the hard zero-command seeds without
+building a new teacher:
+
+```text
+decision: outputs/analysis/PPO_BC_SWISH_SOURCE_VX_SCALE_0P75_DECISION.md
+status: HOLD_X008_FORWARD_PROGRESS_REGRESSION
+base: outputs/analysis/ppo_bc_swish_seed5_source_vx_recovery_step0.onnx
+scaled: outputs/analysis/ppo_bc_swish_seed5_source_vx_recovery_step0_scale_0p75.onnx
+```
+
+Hard-seed x=0.0 screen on seeds 3 and 5:
+
+```text
+scale 0.25: 1 / 2 duration complete, seed 5 falls backward
+scale 0.50: 1 / 2 duration complete, seed 5 falls backward
+scale 0.75: 2 / 2 duration complete, mean vx -0.0002 m/s
+```
+
+The full x=0.0 fitted-bridge gate then passed:
+
+```text
+x=0.0:
+  falls: 0 / 8
+  duration complete: 8 / 8
+  mean vx: 0.0003 m/s
+  mean body_pitch_p95: 0.0232 rad
+  mean max pitch target velocity p95: 0.4107 rad/s
+```
+
+But the paired x=0.08 fitted-bridge gate regressed to standstill:
+
+```text
+x=0.08:
+  falls: 0 / 8
+  duration complete: 8 / 8
+  mean vx: 0.0004 m/s
+  mean track ratio: 0.0046
+  all seeds: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
+```
+
+This is useful evidence, but not a candidate. The 0.75 global scale fixes the
+hard x=0.0 standstill seeds by retaining enough source-VX feedback action, but
+it also collapses command sensitivity and removes the x=0.08 gait. The next
+deployable-policy step should not rely on a global scale. It needs a
+command-conditioned zero-command branch or teacher that preserves the full
+source-VX x=0.08 walking behavior.
