@@ -470,6 +470,18 @@ The replay traces diverge from their source traces before the selected window,
 usually at tick 0. The next branch should not tune the relabeled span itself
 until replay can either state-align to the source or select actions closed-loop.
 
+Exact state alignment is blocked by the current trace contract:
+
+```text
+outputs/analysis/SELECTOR_STATE_ALIGNMENT_REQUIREMENTS.md
+status: HOLD_STATE_ALIGNMENT_TRACE_CONTRACT_INCOMPLETE
+```
+
+The source traces do not contain full `qpos`, `qvel`, base quaternion, control
+state, or motor-target/action-history state. The next offline step should
+regenerate source traces with those fields or build a selector that uses the
+current closed-loop observation instead of static replay.
+
 ## Non-Goals
 
 - robot tests

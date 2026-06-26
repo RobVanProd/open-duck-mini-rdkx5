@@ -15,7 +15,8 @@
     "relabelled_selector_continuity_score": "outputs/analysis/RELABELLED_SELECTOR_CONTINUITY_SCORE.md",
     "relabelled_selector_replay_manifest": "outputs/analysis/RELABELLED_SELECTOR_REPLAY_MANIFEST.md",
     "relabelled_selector_sequence_replay_top3_5s": "outputs/analysis/RELABELLED_SELECTOR_SEQUENCE_REPLAY_TOP3_5S.md",
-    "relabelled_selector_replay_divergence": "outputs/analysis/RELABELLED_SELECTOR_REPLAY_DIVERGENCE.md"
+    "relabelled_selector_replay_divergence": "outputs/analysis/RELABELLED_SELECTOR_REPLAY_DIVERGENCE.md",
+    "selector_state_alignment_requirements": "outputs/analysis/SELECTOR_STATE_ALIGNMENT_REQUIREMENTS.md"
   },
   "findings": {
     "straight_x004": {
@@ -160,9 +161,34 @@
         1.24
       ],
       "interpretation": "Open-loop prefix replay diverges from the source before the selected relabelled window; state alignment or closed-loop selection is required before BC/export."
+    },
+    "selector_state_alignment_requirements": {
+      "status": "HOLD_STATE_ALIGNMENT_TRACE_CONTRACT_INCOMPLETE",
+      "available_fields": [
+        "base_x_m",
+        "base_y_m",
+        "base_height_m",
+        "body_pitch_rad",
+        "local_linvel_m_s",
+        "actual_position_rad",
+        "sent_target_rad",
+        "target_pre_rate_limit_rad",
+        "foot_contacts",
+        "foot_site_pos_m",
+        "obs_state"
+      ],
+      "missing_required_fields": [
+        "qpos",
+        "qvel",
+        "base_quat_wxyz",
+        "ctrl",
+        "motor_targets",
+        "delayed_action_history"
+      ],
+      "decision": "Do not approximate exact state alignment from partial state fields."
     }
   },
-  "recommended_next": "PLAN_STATE_ALIGNED_SELECTOR_REPLAY: do not train or export yet. Open-loop prefix replay diverges before selected windows, so test state-aligned replay or a closed-loop selector that can recover from reset variation. No robot, no SSH, no deploy, no training.",
+  "recommended_next": "PLAN_FULL_STATE_TRACE_OR_CLOSED_LOOP_SELECTOR: do not train or export yet. Regenerate source traces with full qpos/qvel/control state for exact state-aligned replay, or build a closed-loop selector over current observations/contact state. No robot, no SSH, no deploy, no training.",
   "stop_rules": [
     "Do not train directly from full BEST_WALK traces.",
     "Do not train directly from isolated 10-tick snippets.",

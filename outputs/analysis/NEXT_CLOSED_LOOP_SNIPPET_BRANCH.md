@@ -396,6 +396,19 @@ mismatch above 60% and lateral velocity error above 1.1 m/s p95 before
 termination. This means the sequence table is not the immediate object to tune:
 the source state is not being recreated from reset.
 
+Exact state alignment is blocked by missing source-trace state:
+
+```text
+outputs/analysis/SELECTOR_STATE_ALIGNMENT_REQUIREMENTS.md
+status: HOLD_STATE_ALIGNMENT_TRACE_CONTRACT_INCOMPLETE
+```
+
+The current traces do not include full `qpos`, `qvel`, full base quaternion,
+control state, or motor-target/action-history state. Do not fake state-aligned
+replay from pitch-only orientation and joint position. The next branch should
+either regenerate source traces with full MJX state or build a closed-loop
+selector over current observation/contact state.
+
 ## Stop Rules
 
 - Do not train directly from full BEST_WALK traces.

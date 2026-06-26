@@ -1827,3 +1827,17 @@ large lateral velocity error (`vy` p95 about 1.11-1.24 m/s) and contact
 mismatch 60.5-81.8% before it terminates. This means open-loop prefix replay
 cannot recreate the source state reliably. The next useful branch is
 state-aligned replay or a closed-loop selector, not a longer static sequence.
+
+Exact state-aligned replay is blocked on trace contents:
+
+```text
+outputs/analysis/SELECTOR_STATE_ALIGNMENT_REQUIREMENTS.md
+status: HOLD_STATE_ALIGNMENT_TRACE_CONTRACT_INCOMPLETE
+```
+
+Current traces have base position, pitch, local velocity, joint position,
+targets, contacts, foot sites, and observations. They do not include full
+`qpos`, `qvel`, base quaternion, control state, or motor-target/action-history
+state. Do not approximate exact state alignment from partial state. Either
+regenerate source traces with full state or build a closed-loop selector that
+acts from the current observation/contact state.

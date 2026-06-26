@@ -1,0 +1,27 @@
+{
+  "status": "HOLD_STATE_ALIGNMENT_TRACE_CONTRACT_INCOMPLETE",
+  "available_fields": [
+    "base_x_m",
+    "base_y_m",
+    "base_height_m",
+    "body_pitch_rad",
+    "local_linvel_m_s",
+    "actual_position_rad",
+    "sent_target_rad",
+    "target_pre_rate_limit_rad",
+    "foot_contacts",
+    "foot_site_pos_m",
+    "obs_state"
+  ],
+  "missing_required_fields": [
+    "qpos",
+    "qvel",
+    "base_quat_wxyz",
+    "ctrl",
+    "motor_targets",
+    "delayed_action_history"
+  ],
+  "decision": "Do not approximate state-aligned replay from partial state fields.",
+  "recommended_next": "Regenerate source traces with full qpos/qvel/ctrl state or build a closed-loop selector from current observation/contact state.",
+  "no_robot_required": true
+}
