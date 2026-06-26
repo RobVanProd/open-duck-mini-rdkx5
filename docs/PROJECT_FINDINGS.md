@@ -832,6 +832,13 @@ This fills the student-baseline table: linear/aggregate sequence are too weak,
 kNN preserves some motion but is seed-fragile, and MLP variants become
 high-rate and low-progress.
 
+The focused student decision artifact is:
+
+```text
+outputs/analysis/STUDENT_IMITATION_BASELINE_DECISION.md
+status: PLAN_CLOSED_LOOP_REGULARIZED_STUDENT
+```
+
 A first plain state-conditioned MLP BC smoke was then added to the same tool and
 run locally on CPU:
 

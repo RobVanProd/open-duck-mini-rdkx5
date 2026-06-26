@@ -1,0 +1,95 @@
+{
+  "status": "PLAN_CLOSED_LOOP_REGULARIZED_STUDENT",
+  "dataset_id": "407af2cbe0ad69e1",
+  "manifest": "outputs/analysis/closed_loop_teacher_dataset_manifest.json",
+  "gate": {
+    "command_x": 0.08,
+    "duration_s": 5,
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "task": "flat_terrain_backlash",
+    "playground": "upstream-main",
+    "platform": "cpu"
+  },
+  "student_results": [
+    {
+      "student": "knn_k5",
+      "artifact": "outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_BC_GATE_X008.md",
+      "status": "HOLD_BC_REPLAY_TERMINATED",
+      "moving_seed_count": 5,
+      "near_standstill_seed_count": 2,
+      "terminated_or_reverse_seed_count": 1
+    },
+    {
+      "student": "aggregate_sequence",
+      "artifact": "outputs/analysis/CLOSED_LOOP_TEACHER_SEQUENCE_REPLAY_X008.md",
+      "status": "HOLD_SEQUENCE_REPLAY_LOW_FORWARD_MOTION",
+      "moving_seed_count": 0,
+      "sent_target_velocity_p95_rad_s": 0.266
+    },
+    {
+      "student": "aggregate_sequence_no_seam",
+      "artifact": "outputs/analysis/CLOSED_LOOP_TEACHER_SEQUENCE_REPLAY_X008_NO_SEAM.md",
+      "status": "HOLD_SEQUENCE_REPLAY_LOW_FORWARD_MOTION",
+      "moving_seed_count": 0,
+      "sent_target_velocity_p95_rad_s": 0.2853
+    },
+    {
+      "student": "mlp_64x64",
+      "artifact": "outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_MLP_BC_GATE_X008.md",
+      "status": "HOLD_BC_REPLAY_LOW_FORWARD_MOTION",
+      "moving_seed_count": 1,
+      "sent_target_velocity_p95_rad_s": 5.24
+    },
+    {
+      "student": "mlp_64x64_target_rate_pair_loss",
+      "artifact": "outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_MLP_RATE_REG_BC_GATE_X008.md",
+      "status": "HOLD_BC_REPLAY_TERMINATED",
+      "terminated_seed_count": 3,
+      "sent_target_velocity_p95_rad_s": 5.24
+    },
+    {
+      "student": "mlp_64x64_obs_consistency",
+      "artifact": "outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_MLP_CONSISTENCY_BC_GATE_X008.md",
+      "status": "HOLD_BC_REPLAY_TERMINATED",
+      "terminated_seed_count": 3,
+      "sent_target_velocity_p95_rad_s": 5.24
+    },
+    {
+      "student": "linear_ridge",
+      "artifact": "outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_LINEAR_BC_GATE_X008.md",
+      "status": "HOLD_BC_REPLAY_TERMINATED",
+      "moving_seed_count": 0,
+      "terminated_seed_count": 1,
+      "sent_target_velocity_p95_range_rad_s": [
+        0.7319,
+        3.0866
+      ]
+    }
+  ],
+  "decision": "Do not promote any current smoke student. The next branch should train or select a closed-loop-regularized state-conditioned student.",
+  "required_next_design": [
+    "train or select using closed-loop rollouts, not only offline action loss",
+    "preserve kNN-like local motion while enforcing linear/sequence-like smoothness",
+    "penalize or reject candidates whose closed-loop sent-target p95 reaches 5.24 rad/s",
+    "grade on all eight seeds for at least 5s before any longer run",
+    "gate on forward motion, fall/reverse count, near-standstill count, and max-joint pitch-chain p95 target velocity",
+    "keep all behavior default-off and offline"
+  ],
+  "stop_rules": [
+    "Do not deploy or run robot validation.",
+    "Do not treat the 2-seed kNN smoke as a pass.",
+    "Do not use aggregate sequence replay as the student.",
+    "Do not use plain one-step MLP BC as the student.",
+    "Do not assume pairwise target-rate or observation-consistency regularization solves closed-loop rate saturation.",
+    "Do not optimize supervised action error alone."
+  ]
+}
