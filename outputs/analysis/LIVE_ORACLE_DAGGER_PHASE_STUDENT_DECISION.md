@@ -1,6 +1,6 @@
 # Live-Oracle DAgger Phase Student Decision
 
-status: `IN_PROGRESS_HOLD_ITER0`
+status: `IN_PROGRESS_HOLD_ITER1`
 
 This decision file tracks the pre-registered branch outcome. No robot tests,
 SSH, deployment, policy overwrite, or runtime behavior changes have been
@@ -24,6 +24,14 @@ Iteration 0 is complete and documented in:
 - `outputs/analysis/LIVE_ORACLE_DAGGER_ITER_0_X008_GATE.md`
 - `outputs/analysis/LIVE_ORACLE_DAGGER_ITER_0_X0_GATE.md`
 - `outputs/analysis/LIVE_ORACLE_DAGGER_ITER_0_DECISION.md`
+
+Iteration 1 is complete and documented in:
+
+- `outputs/analysis/LIVE_ORACLE_DAGGER_ITER_1_DATA.md`
+- `outputs/analysis/LIVE_ORACLE_DAGGER_ITER_1_STUDENT_FIT.md`
+- `outputs/analysis/LIVE_ORACLE_DAGGER_ITER_1_X008_GATE.md`
+- `outputs/analysis/LIVE_ORACLE_DAGGER_ITER_1_X0_GATE.md`
+- `outputs/analysis/LIVE_ORACLE_DAGGER_ITER_1_DECISION.md`
 
 ## Iteration 0 Outcome
 
@@ -55,14 +63,28 @@ Rationale:
 
 This is only the first live-oracle iteration on rung 1. It did not collapse to
 standstill or falls, but it also did not improve tracking enough to promote.
-The x=0.0 drift indicates the next iteration should repair command-aware
-oracle labelling before spending the remaining budget.
+Iteration 1 repaired most x=0.0 command drift with zero-action labels, but
+introduced a shared seed-5 collapse at x=0.0 and x=0.08. That is a rung-1
+command-conditioning failure, not yet a branch falsifier.
 
 ## Current Recommendation
 
-Do not promote the iteration-0 candidate.
+Do not promote the iteration-0 or iteration-1 candidate.
 
-Proceed only after revising the live-oracle relabeling path so zero-command
-states receive zero-command-preserving labels. Then run iteration 1 using the
-same canonical strict evaluator and compare directly against the iteration-0
-tracking/drift numbers.
+Before iteration 2, isolate seed 5 against iteration 0 and iteration 1. Preserve
+the command-aware x=0.0 improvement, but reduce or smooth the zero-action label
+influence so it does not create the seed-5 reverse/fall pocket.
+
+## Hardware Track Note
+
+The operator reported a real hardware correction after these offline bridge
+experiments were already underway:
+
+- `left_knee` soft offset changed from `-1.488` to `0.0371`
+- post-update knee joint-space agreement on stand: L-R joint about `-0.63 deg`
+- torque was left off after the monitor run
+
+This does not change the offline iteration-0/1 gate results because those are
+fixed-sim comparisons. It does mean the old actuator bridge should be refreshed
+on the corrected hardware before any future candidate is treated as
+hardware-ready.
