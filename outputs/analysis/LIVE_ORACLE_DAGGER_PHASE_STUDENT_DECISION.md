@@ -43,6 +43,7 @@ complete and documented in:
 - `outputs/analysis/LIVE_ORACLE_COMMAND_GATED_X0SAFE_ITER0_X008_GATE.md`
 - `outputs/analysis/LIVE_ORACLE_ITER0_X008_PHASE_TRACKING_PLATEAU_AUDIT.md`
 - `outputs/analysis/LIVE_ORACLE_PHASE_QUADRANT_ITER0_X008_DECISION.md`
+- `outputs/analysis/LIVE_ORACLE_PHASE_SMOOTH_BLEND_ITER0_X008_DECISION.md`
 
 ## Iteration 0 Outcome
 
@@ -200,6 +201,33 @@ phase-boundary/off-manifold recovery behavior is itself unsafe.
 The next representation escalation should be smooth phase-conditioned mixing,
 a shared trunk with phase-conditioned modulation, or recurrence. Do not spend
 more time on hard quadrant heads.
+
+## Smooth Phase-Blend Student
+
+Result:
+
+`HOLD_SMOOTH_PHASE_BLEND_STABLE_BUT_REGRESSED`
+
+Summary:
+
+- artifact: `outputs/analysis/LIVE_ORACLE_PHASE_SMOOTH_BLEND_ITER0_X008_DECISION.md`
+- ONNX smooth-blend verification max action error: `5.960464477539063e-08`
+- x=0.08 duration complete: `8 / 8`
+- x=0.08 falls/terminations: `0 / 8`
+- x=0.08 mean track ratio: `0.4564`
+- x=0.08 max pitch-chain sent velocity p95: `4.4742 rad/s`
+- x=0.08 max pitch-chain tracking p95: `0.2708 rad`
+
+Interpretation:
+
+Smoothly blending the four phase heads fixes the hard quadrant split's
+seed-2 termination, but it still regresses from the shared iteration-0 student:
+lower forward progress, higher target velocity, and no tracking improvement.
+
+This rejects naive independent phase-head approaches, both hard and smooth. The
+next representation rung should not train more separately split phase heads.
+Use a shared representation with phase-conditioned modulation, or move to a
+recurrent student trained through live-oracle DAgger.
 
 ## Hardware Track Note
 
