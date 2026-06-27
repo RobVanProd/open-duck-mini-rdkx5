@@ -5396,3 +5396,19 @@ checkpoint path was absolute:
 
 Use absolute paths for local restore smoke/fine-tune commands. In Colab, use
 the checkpoint path visible inside the uploaded runtime.
+
+Support-transition recovery fine-tune plan:
+
+```text
+doc: docs/SUPPORT_TRANSITION_RECOVERY_FINETUNE_PLAN.md
+dry-run manifest: outputs/analysis/support_transition_recovery_finetune/dry_run_manifest.json
+status: DRY_RUN_REVIEW_READY
+anchor: outputs/analysis/ppo_bc_swish_cmd_pitch_rl_2p25_step0_checkpoint
+```
+
+The planned smoke restores the current best command-conditioned warm start,
+keeps the fitted actuator bridge active, adds explicit support-transition
+pressure, and gates against the step-0 x=0.0/x=0.08 fitted baselines. It is not
+robot approval and it has not been executed. Do not launch a longer CUDA/A100
+run unless the small smoke preserves x=0.08 forward progress while reducing
+fitted tracking error.

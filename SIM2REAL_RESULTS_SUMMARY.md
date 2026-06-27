@@ -6398,6 +6398,20 @@ from scalar PPO and weak-prior sweeps toward a larger selector-generated
 on-distribution dataset plus BC/PPO warm start, or a stronger behavior objective
 that anchors the actual closed-loop walking manifold.
 
+A reviewed support-transition recovery fine-tune plan now exists:
+
+```text
+doc: docs/SUPPORT_TRANSITION_RECOVERY_FINETUNE_PLAN.md
+dry-run manifest: outputs/analysis/support_transition_recovery_finetune/dry_run_manifest.json
+status: DRY_RUN_REVIEW_READY
+anchor: outputs/analysis/ppo_bc_swish_cmd_pitch_rl_2p25_step0_checkpoint
+```
+
+This is not another scalar PPO sweep. The planned smoke keeps the fitted
+actuator bridge active, restores the command-conditioned pitch-rate-limited
+warm start, and adds explicit support/contact transition pressure. It has not
+been executed. Grade it against the step-0 baselines, not reward alone.
+
 The existing source-VX DAgger-2 deployable ONNX candidates were then validated
 under a stricter 15-second fitted-bridge x=0.08 seed sweep:
 
