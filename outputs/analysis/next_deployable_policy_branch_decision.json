@@ -19,6 +19,11 @@
       "branch": "scalar behavior-prior PPO smoke",
       "reason": "prior PPO smoke and A100 probe improved reward or calmness while losing useful forward motion.",
       "result": "closed"
+    },
+    {
+      "branch": "feed-forward PPO-shape BC smoothing",
+      "reason": "pitch-chain 4.3 PPO-shape rate student lowered target velocity and tracking slightly but lost progress and still held the strict fitted-bridge tracking gate.",
+      "result": "closed"
     }
   ],
   "candidates": [
@@ -93,6 +98,24 @@
       "status": "HOLD_CANDIDATE_TRACKING",
       "track_ratio_mean": 0.5616568350904345,
       "vx_mean": 0.044932546807234755
+    },
+    {
+      "base_height_min_mean": 0.1528723854571581,
+      "body_pitch_p95_mean": 0.09905622121814886,
+      "duration_complete": 8,
+      "falls_or_terminations": 0,
+      "max_pitch_velocity_p95_max": 3.7059420347213745,
+      "max_pitch_velocity_p95_mean": 3.6548107117414474,
+      "max_pitch_velocity_p95_min": 3.6034584045410156,
+      "max_tracking_p95_max": 0.2561362445354462,
+      "max_tracking_p95_mean": 0.2538757808506489,
+      "max_tracking_p95_min": 0.2515952348709106,
+      "name": "pitch-chain 4.3 PPO-shape rate student",
+      "path": "outputs/analysis/pitch_chain_4p3_ppo_shape_rate_student_multiseed_fitted_backlash.json",
+      "runs": 8,
+      "status": "HOLD_CANDIDATE_TRACKING",
+      "track_ratio_mean": 0.4912520815135302,
+      "vx_mean": 0.03930016652108242
     }
   ],
   "recommendation": {
@@ -109,7 +132,7 @@
       "reduces max tracking p95 materially below the current ~0.27 rad plateau",
       "does not pass by freezing, reversing, or shortening the horizon"
     ],
-    "recommended_next": "Do not run another clip/filter/weight-blend branch. Build a gate-aware deployable-policy training path that preserves the working selector behavior while directly penalizing fitted-bridge tracking through the right-knee contact transition.",
+    "recommended_next": "Do not run another clip/filter/weight-blend/feed-forward-BC branch. Build a gate-aware deployable-policy training path that preserves the working selector behavior while directly penalizing fitted-bridge tracking through the right-knee contact transition.",
     "status": "PLAN_GATE_AWARE_ROLLOUT_CORRECTION_OR_RECURRENT_STUDENT"
   },
   "right_knee_spike_evidence": {

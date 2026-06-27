@@ -3628,3 +3628,34 @@ calibrated to this contract after later motor work. That remaining proof is
 robot-side: either run/audit `find_soft_offsets.py`, or run the read-only raw
 home offset audit while the robot is independently placed in the repo-defined
 home geometry.
+
+## Pitch-Chain 4.3 PPO-Shape Rate Student
+
+A PPO-shape feed-forward BC student was trained from the pitch-chain `4.3 rad/s`
+curated source-vx trace manifest to test whether a deployable neural policy
+could smooth the non-deployable selector.
+
+```text
+result doc: docs/PITCH_CHAIN_4P3_PPO_SHAPE_RATE_STUDENT_RESULT.md
+fit doc: outputs/analysis/PITCH_CHAIN_4P3_PPO_SHAPE_RATE_STUDENT.md
+gate doc: outputs/analysis/PITCH_CHAIN_4P3_PPO_SHAPE_RATE_STUDENT_MULTI_SEED_FITTED_BACKLASH.md
+status: HOLD_CANDIDATE_TRACKING
+```
+
+Strict fitted-backlash x=0.08 8-seed gate:
+
+```text
+duration_complete: 8/8
+falls: 0/8
+mean vx: 0.0393 m/s
+mean track ratio: 0.4913
+max pitch velocity p95: 3.6035-3.7059 rad/s
+max tracking p95: 0.2516-0.2561 rad
+```
+
+This is a real but insufficient improvement: target velocity moved inside the
+`3.75 rad/s` envelope and tracking improved slightly versus the earlier
+PPO-shape BC student, but forward progress dropped and the tracking gate is
+still far from deployable. This closes simple feed-forward BC smoothing as a
+standalone fix. The next branch still needs gate-aware rollout correction,
+phase/recurrent state, or PPO fine-tuning with strict gate feedback.

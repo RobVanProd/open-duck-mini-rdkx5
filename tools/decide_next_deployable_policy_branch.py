@@ -200,6 +200,11 @@ def build_payload(args: argparse.Namespace) -> dict[str, Any]:
             "outputs/analysis/source_vx_selector_trace_rk_transition_spike_filtered_blend080_exact_onnx_multiseed_fitted_backlash_summary.json",
             run_candidate_rows,
         ),
+        (
+            "pitch-chain 4.3 PPO-shape rate student",
+            "outputs/analysis/pitch_chain_4p3_ppo_shape_rate_student_multiseed_fitted_backlash.json",
+            run_candidate_rows,
+        ),
     ]
     candidates = []
     for name, rel_path, reader in candidate_specs:
@@ -249,10 +254,15 @@ def build_payload(args: argparse.Namespace) -> dict[str, Any]:
             "result": "closed",
             "reason": "prior PPO smoke and A100 probe improved reward or calmness while losing useful forward motion.",
         },
+        {
+            "branch": "feed-forward PPO-shape BC smoothing",
+            "result": "closed",
+            "reason": "pitch-chain 4.3 PPO-shape rate student lowered target velocity and tracking slightly but lost progress and still held the strict fitted-bridge tracking gate.",
+        },
     ]
     recommendation = {
         "status": "PLAN_GATE_AWARE_ROLLOUT_CORRECTION_OR_RECURRENT_STUDENT",
-        "recommended_next": "Do not run another clip/filter/weight-blend branch. Build a gate-aware deployable-policy training path that preserves the working selector behavior while directly penalizing fitted-bridge tracking through the right-knee contact transition.",
+        "recommended_next": "Do not run another clip/filter/weight-blend/feed-forward-BC branch. Build a gate-aware deployable-policy training path that preserves the working selector behavior while directly penalizing fitted-bridge tracking through the right-knee contact transition.",
         "minimum_requirements": [
             "uses the standard strict fitted-backlash x=0.08 multi-seed gate as the primary score",
             "compares against the exact selector blend and PPO-shape warm-start baselines",

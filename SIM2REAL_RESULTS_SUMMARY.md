@@ -7391,3 +7391,25 @@ Robot validation remains blocked. The next offline branch should be
 gate-aware rollout correction, a recurrent/phase-aware student, or PPO
 fine-tuning with stronger behavior preservation and strict gate checks after
 short runs.
+
+## Pitch-Chain 4.3 PPO-Shape Rate Student
+
+An offline PPO-shape feed-forward BC student was trained from the pitch-chain
+`4.3 rad/s` curated source-vx manifest and evaluated under the strict
+fitted-backlash x=0.08 8-seed gate.
+
+```text
+result doc: docs/PITCH_CHAIN_4P3_PPO_SHAPE_RATE_STUDENT_RESULT.md
+duration_complete: 8/8
+falls: 0/8
+mean vx: 0.0393 m/s
+mean track ratio: 0.4913
+max pitch velocity p95: 3.6035-3.7059 rad/s
+max tracking p95: 0.2516-0.2561 rad
+status: HOLD_CANDIDATE_TRACKING
+```
+
+The student brought target velocity into the fitted envelope and slightly
+reduced tracking error, but lost forward progress and still missed the tracking
+gate by a wide margin. This closes simple feed-forward BC smoothing as a
+standalone fix. Robot validation remains blocked.

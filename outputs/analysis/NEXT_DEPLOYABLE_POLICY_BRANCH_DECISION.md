@@ -6,7 +6,7 @@ This is an offline decision artifact. It does not train, run simulation, SSH, de
 
 ## Executive Summary
 
-Do not run another clip/filter/weight-blend branch. Build a gate-aware deployable-policy training path that preserves the working selector behavior while directly penalizing fitted-bridge tracking through the right-knee contact transition.
+Do not run another clip/filter/weight-blend/feed-forward-BC branch. Build a gate-aware deployable-policy training path that preserves the working selector behavior while directly penalizing fitted-bridge tracking through the right-knee contact transition.
 
 The cheap post-hoc branches are now closed negative. The remaining blocker is the deployable policy's representation/training of the right-knee contact transition, not one missing scalar cap.
 
@@ -18,6 +18,7 @@ The cheap post-hoc branches are now closed negative. The remaining blocker is th
 | right-knee 4.3 curation | `HOLD_CANDIDATE_TRACKING` | 8 | 8 | 0 | 0.0479 | 0.5992 | 4.1979-4.2994 | 0.2682-0.2773 |
 | pitch-chain 4.3 curation | `HOLD_CANDIDATE_TRACKING` | 8 | 8 | 0 | 0.0477 | 0.5965 | 4.1935-4.2879 | 0.2685-0.2794 |
 | right-knee transition filter | `HOLD_CANDIDATE_TRACKING` | 8 | 8 | 0 | 0.0449 | 0.5617 | 4.6244-4.7790 | 0.2675-0.2782 |
+| pitch-chain 4.3 PPO-shape rate student | `HOLD_CANDIDATE_TRACKING` | 8 | 8 | 0 | 0.0393 | 0.4913 | 3.6035-3.7059 | 0.2516-0.2561 |
 
 ## PPO / Blend Sweep Evidence
 
@@ -39,6 +40,7 @@ within 2 ticks of contact transition: 404 / 506
 - `transition-adjacent sample deletion`: filtering preserved stability but reduced forward progress and raised target-velocity p95.
 - `post-hoc ONNX weight interpolation`: small blends did not reduce tracking; larger blends regressed toward low progress.
 - `scalar behavior-prior PPO smoke`: prior PPO smoke and A100 probe improved reward or calmness while losing useful forward motion.
+- `feed-forward PPO-shape BC smoothing`: pitch-chain 4.3 PPO-shape rate student lowered target velocity and tracking slightly but lost progress and still held the strict fitted-bridge tracking gate.
 
 ## Recommended Next Branch
 
