@@ -11,9 +11,11 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
+import hashlib
 import json
 from pathlib import Path
 import shlex
+import shutil
 import subprocess
 import sys
 import tarfile
@@ -27,6 +29,7 @@ DEFAULT_OUTPUT_ROOT = ROOT / "outputs" / "analysis" / "colab_cli"
 DEFAULT_UPLOAD_ROOT = ROOT.parent / "outputs" / "colab_cli_uploads"
 DEFAULT_SESSION = "open-duck-l4"
 PINNED_JAX_VERSION = "0.7.2"
+MAX_DIRECT_UPLOAD_BYTES = 32 * 1024 * 1024
 
 
 def timestamp() -> str:
@@ -74,6 +77,14 @@ def run(command: list[str], *, check: bool = True, timeout: int | None = None) -
     if check and completed.returncode != 0:
         raise SystemExit(completed.returncode)
     return completed
+
+
+def file_sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
 
 
 def tar_filter(member: tarfile.TarInfo) -> tarfile.TarInfo | None:
@@ -308,7 +319,7 @@ def download_partial_output_dir(session: str, remote_bundle: str, run_dir: Path)
 
 
 def write_console_script(path: Path, remote_script: str) -> None:
-    path.write_text(remote_script.strip() + "\nexit\n")
+    path.write_text(textwrap.dedent(remote_script).strip() + "\nexit\n")
 
 
 def run_console_script(
@@ -351,6 +362,140 @@ def initialize_content_api(session: str, run_dir: Path) -> None:
         console_script,
         run_dir / "console_initialize_content_api.log",
         timeout_s=120,
+    )
+    if completed.returncode != 0:
+        raise SystemExit(completed.returncode)
+
+
+def upload_with_retries(
+    session: str,
+    local_path: Path,
+    remote_path: str,
+    *,
+    attempts: int = 3,
+) -> None:
+    last_returncode = 1
+    for attempt in range(1, attempts + 1):
+        completed = run(
+            ["colab", "upload", "-s", session, str(local_path), remote_path],
+            check=False,
+        )
+        if completed.returncode == 0:
+            return
+        last_returncode = completed.returncode
+        if attempt < attempts:
+            time.sleep(2 * attempt)
+    raise SystemExit(last_returncode)
+
+
+def upload_file(
+    session: str,
+    local_path: Path,
+    remote_path: str,
+    run_dir: Path,
+    *,
+    max_direct_bytes: int = MAX_DIRECT_UPLOAD_BYTES,
+) -> None:
+    """Upload a file, chunking large payloads to avoid Colab content API 500s."""
+
+    local_path = local_path.resolve()
+    size = local_path.stat().st_size
+    if size <= max_direct_bytes:
+        upload_with_retries(session, local_path, remote_path)
+        return
+
+    sha256 = file_sha256(local_path)
+    chunk_dir = local_path.parent / f"{local_path.name}.chunks"
+    if chunk_dir.exists():
+        shutil.rmtree(chunk_dir)
+    chunk_dir.mkdir(parents=True)
+    chunk_paths: list[Path] = []
+    with local_path.open("rb") as source:
+        index = 0
+        while True:
+            payload = source.read(max_direct_bytes)
+            if not payload:
+                break
+            chunk_path = chunk_dir / f"{local_path.name}.part{index:05d}"
+            chunk_path.write_bytes(payload)
+            chunk_paths.append(chunk_path)
+            index += 1
+
+    remote_parts_dir = f"{remote_path}.parts"
+    console_script = run_dir / f"mkdir_upload_parts_{Path(remote_path).name}.sh"
+    write_console_script(
+        console_script,
+        f"""
+        set -euo pipefail
+        rm -rf {shlex.quote(remote_parts_dir)}
+        mkdir -p {shlex.quote(remote_parts_dir)}
+        """,
+    )
+    completed = run_console_script(
+        session,
+        console_script,
+        run_dir / f"console_mkdir_upload_parts_{Path(remote_path).name}.log",
+        timeout_s=120,
+    )
+    if completed.returncode != 0:
+        raise SystemExit(completed.returncode)
+
+    for chunk_path in chunk_paths:
+        upload_with_retries(
+            session,
+            chunk_path,
+            f"{remote_parts_dir}/{chunk_path.name}",
+        )
+
+    manifest = {
+        "remote_path": remote_path,
+        "sha256": sha256,
+        "size_bytes": size,
+        "chunk_count": len(chunk_paths),
+        "chunk_names": [chunk.name for chunk in chunk_paths],
+    }
+    manifest_path = run_dir / f"{Path(remote_path).name}.upload_manifest.json"
+    manifest_path.write_text(json.dumps(manifest, indent=2) + "\n")
+
+    chunk_names_literal = repr(manifest["chunk_names"])
+    reassemble_script = run_dir / f"reassemble_upload_{Path(remote_path).name}.sh"
+    write_console_script(
+        reassemble_script,
+        f"""
+        set -euo pipefail
+        python3 - <<'PY'
+        from pathlib import Path
+        import hashlib
+        import sys
+
+        remote_path = Path({remote_path!r})
+        remote_parts_dir = Path({remote_parts_dir!r})
+        chunk_names = {chunk_names_literal}
+        expected_sha256 = {sha256!r}
+        expected_size = {size}
+
+        digest = hashlib.sha256()
+        with remote_path.open("wb") as out:
+            for name in chunk_names:
+                chunk = remote_parts_dir / name
+                data = chunk.read_bytes()
+                digest.update(data)
+                out.write(data)
+
+        actual_sha256 = digest.hexdigest()
+        actual_size = remote_path.stat().st_size
+        print("REASSEMBLED", remote_path, actual_size, actual_sha256)
+        if actual_size != expected_size or actual_sha256 != expected_sha256:
+            print("UPLOAD_REASSEMBLY_MISMATCH", file=sys.stderr)
+            raise SystemExit(1)
+        PY
+        """,
+    )
+    completed = run_console_script(
+        session,
+        reassemble_script,
+        run_dir / f"console_reassemble_upload_{Path(remote_path).name}.log",
+        timeout_s=300,
     )
     if completed.returncode != 0:
         raise SystemExit(completed.returncode)
@@ -1794,30 +1939,26 @@ def main() -> int:
     make_tarball(playground_root, playground_tar, "Open_Duck_Playground")
     rdk_remote = "/content/open-duck-mini-rdkx5_cli.tar.gz"
     playground_remote = "/content/Open_Duck_Playground_cli.tar.gz"
-    run(["colab", "upload", "-s", args.session, str(rdk_tar), rdk_remote])
-    run(["colab", "upload", "-s", args.session, str(playground_tar), playground_remote])
+    upload_file(args.session, rdk_tar, rdk_remote, run_dir)
+    upload_file(args.session, playground_tar, playground_remote, run_dir)
     candidate_remote_policy = None
     candidate_remote_manifest = None
     if candidate_existing_policy is not None:
         candidate_remote_policy = "/content/open_duck_candidate_existing_policy.onnx"
-        run([
-            "colab",
-            "upload",
-            "-s",
+        upload_file(
             args.session,
-            str(candidate_existing_policy),
+            candidate_existing_policy,
             candidate_remote_policy,
-        ])
+            run_dir,
+        )
     if candidate_training_manifest is not None:
         candidate_remote_manifest = "/content/open_duck_candidate_training_manifest.json"
-        run([
-            "colab",
-            "upload",
-            "-s",
+        upload_file(
             args.session,
-            str(candidate_training_manifest),
+            candidate_training_manifest,
             candidate_remote_manifest,
-        ])
+            run_dir,
+        )
     start_remote_job(
         args,
         run_dir,
