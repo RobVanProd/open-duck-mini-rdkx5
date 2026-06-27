@@ -321,3 +321,30 @@ on 2026-06-22.
 - Do not tune hardware gains, offsets, IMU remaps, action scale, or phase
   timing as part of candidate policy work.
 - Do not treat local ROCm/MJX failure as robot evidence.
+
+## Pre-Robot Physical Pose Gate
+
+Do not treat future robot walking behavior as policy evidence until the physical
+home/start pose is re-checked against the sim/runtime specification.
+
+The software evidence is only partial:
+
+```text
+runtime home pose == sim home keyframe
+live duck_config offsets were captured
+home_pose_log_test had small compensated tracking errors
+```
+
+That does not prove the physical joint geometry is still calibrated to spec.
+The large live `left_knee` offset (`-1.4880 rad`) makes this a hard gate.
+
+Before any next robot validation:
+
+```text
+1. Support the robot and command home pose.
+2. Compare real hip pitch, knee, ankle, and foot geometry to the documented
+   home/start pose.
+3. Re-run/audit soft offsets if any joint is off.
+4. Capture a new duck_config snapshot if offsets change.
+5. Re-run home_pose_log_test after any offset change.
+```

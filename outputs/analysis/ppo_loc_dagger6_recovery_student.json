@@ -1,0 +1,92 @@
+{
+  "status": "PASS_PPO_LOC_BC_FIT_SMOKE",
+  "manifest": "outputs/analysis/filtered_source_vx_selector_dagger6_recovery_manifest.json",
+  "samples": 19628,
+  "hidden_sizes": [
+    512,
+    256,
+    128
+  ],
+  "activation": "swish",
+  "saved_npz": "outputs/analysis/ppo_loc_dagger6_recovery_student_candidate/candidate_mlp.npz",
+  "exported_onnx": "outputs/analysis/ppo_loc_dagger6_recovery_student_candidate/candidate.onnx",
+  "train_metrics": {
+    "samples": 19628,
+    "mae": 0.01429969618659421,
+    "rmse": 0.02292299604592833,
+    "p50_abs_error": 0.009056945343919615,
+    "p95_abs_error": 0.04470192909150336,
+    "p99_abs_error": 0.08731644614905898,
+    "max_abs_error": 0.3754028680821026,
+    "pred_action_saturation_pct": 0.0
+  },
+  "target_rate": {
+    "pair_count": 19585,
+    "p50_rad_s": 0.5232871258989895,
+    "p95_rad_s": 2.3510681047516955,
+    "p99_rad_s": 3.7114740278642597,
+    "max_rad_s": 4.737401165390518
+  },
+  "loss_rows": [
+    {
+      "step": 1,
+      "loss": 0.18679584562778473
+    },
+    {
+      "step": 500,
+      "loss": 0.0009931407403200865
+    },
+    {
+      "step": 1000,
+      "loss": 0.0007741469889879227
+    },
+    {
+      "step": 1500,
+      "loss": 0.0007533167954534292
+    },
+    {
+      "step": 2000,
+      "loss": 0.0007762822206132114
+    },
+    {
+      "step": 2500,
+      "loss": 0.0006572013371624053
+    },
+    {
+      "step": 3000,
+      "loss": 0.0006855078390799463
+    },
+    {
+      "step": 3500,
+      "loss": 0.0006156119634397328
+    },
+    {
+      "step": 4000,
+      "loss": 0.0005576321855187416
+    },
+    {
+      "step": 4500,
+      "loss": 0.0005559707060456276
+    },
+    {
+      "step": 5000,
+      "loss": 0.000675698509439826
+    }
+  ],
+  "onnx_verify": {
+    "path": "outputs/analysis/ppo_loc_dagger6_recovery_student_candidate/candidate.onnx",
+    "samples_checked": 64,
+    "max_abs_error": 3.1557919955016445e-07,
+    "p95_abs_error": 1.6746293775987686e-07
+  },
+  "config": {
+    "steps": 5000,
+    "batch_size": 512,
+    "learning_rate": 0.001,
+    "target_rate_scale": 0.1,
+    "target_rate_limit_rad_s": 3.75,
+    "action_scale_rad": 0.25,
+    "dt_s": 0.02,
+    "seed": 0
+  }
+}

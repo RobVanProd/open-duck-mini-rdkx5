@@ -6582,3 +6582,47 @@ terminated: seeds 1 and 7
 Static early-collapse BC labels, even heavily upweighted, are not enough. The
 remaining offline blocker is now closed-loop recovery/stabilization, not more
 positive-window BC or more weight on the same first-collapse labels.
+
+## Physical Start-Pose Calibration Is Still Unproven
+
+The real robot home/start pose must now be treated as a hard unresolved
+robot-side gate, not just a minor watch item.
+
+What is already supported:
+
+```text
+- runtime HWI.init_pos matches the sim home keyframe
+- live RDK-X5 duck_config offsets were captured
+- home_pose_log_test showed stable gyro, +Z dominant accel, and small joint
+  tracking errors at the compensated home pose
+```
+
+What is not proven by the current evidence:
+
+```text
+- a fresh physical calibration-to-spec pass was run after the later robot work
+- each real hip/knee/ankle was manually aligned to the documented start pose
+- the large left-knee offset was mechanically revalidated
+- the real feet/legs match the sim home geometry closely enough for the closed
+  loop policy's initial contact and weight-transfer assumptions
+```
+
+This matters because the walking policy is closed-loop around the robot's body
+state and joint feedback. A small real mechanical start-pose mismatch can shift
+foot contact timing, stance loading, and the first weight transfer enough to
+make a policy that works in sim fail on hardware. The large live left-knee
+offset remains the strongest reason to re-check this before interpreting any
+future robot walking failure.
+
+Pre-robot-validation requirement:
+
+```text
+1. Robot supported.
+2. Command/hold runtime home pose.
+3. Compare physical hip pitch, knee, ankle, and foot geometry to the sim/runtime
+   home-pose specification.
+4. Re-run or audit the soft-offset procedure if any joint is visibly off.
+5. Capture a new duck_config snapshot if offsets change.
+6. Re-run home_pose_log_test after any offset change.
+7. Do not run or interpret walking validation until this is cleared.
+```

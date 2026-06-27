@@ -403,3 +403,64 @@ stabilization response from the first 30 ticks of fall-state labels. The next
 deployable-policy attempt should be closed-loop fine-tuning from the best BC
 student, or a dataset that contains actual successful recovery trajectories,
 not more copies of the same terminal-onset labels.
+
+## PPO-Compatible Warm-Start Check
+
+The first PPO-compatible branch tested the DAgger-6 recovery manifest with a
+PPO actor-shaped BC student and a true Brax/PPO checkpoint export.
+
+```text
+artifact: outputs/analysis/PPO_LOC_DAGGER6_RECOVERY_STUDENT.md
+status: PASS_PPO_LOC_BC_FIT_SMOKE
+train p95 abs error: 0.044702
+target-rate p95: 2.351068 rad/s
+```
+
+The raw PPO-location ONNX and the step-0 PPO checkpoint export both held at the
+same fitted-bridge gate:
+
+```text
+raw PPO-loc ONNX: falls 3/8, mean track ratio -0.0967
+step-0 PPO export: falls 3/8, mean track ratio -0.0931
+```
+
+A tiny CPU-only PPO fine-tune from the step-0 checkpoint ran successfully and
+exported a step-1040 ONNX, proving the warm-start training path is wired:
+
+```text
+source run: /tmp/open_duck_ppo_loc_dagger6_finetune_smoke/smoke_20260626T235852Z_cpu
+status: PASS_SMOKE_RUN
+```
+
+But the step-1040 policy still held:
+
+```text
+artifact: outputs/analysis/PPO_LOC_DAGGER6_RECOVERY_STEP1040_X008_FITTED_10S.md
+falls: 2/8
+duration complete: 6/8
+mean track ratio: 0.1379
+mean vx: 0.0110 m/s
+```
+
+A behavior-prior smoke completed, but the interrupted partial gate already
+matched the same failure shape on seeds 0-2: low forward progress on seeds 0
+and 2, and a fall on seed 1.
+
+```text
+artifact: outputs/analysis/PPO_LOC_DAGGER6_BEHAVIOR_PRIOR_STEP1040_PARTIAL_X008_FITTED_10S.md
+```
+
+Conclusion: the deployable PPO warm-start/export path exists, but this small
+fine-tune moves toward a low-progress/freeze basin rather than a robot
+candidate. The next trainable-policy branch needs a stronger way to preserve
+the source-VX walking mechanism while improving closed-loop recovery.
+
+## Robot-Side Caveat
+
+The source-VX selector and PPO artifacts are offline sim results. Before any
+future robot validation, the physical home/start pose must be re-checked against
+the sim/runtime specification. The runtime home pose matches the sim keyframe
+and telemetry home-pose tracking was small, but there is no fresh evidence that
+the real mechanical hip/knee/ankle geometry was manually calibrated to spec
+after the later robot work. The large live `left_knee` offset (`-1.4880 rad`)
+keeps this as a hard pre-robot gate.

@@ -3002,3 +3002,127 @@ the onset alone. The next meaningful deployable-policy branch should use
 closed-loop fine-tuning from the DAgger-6/DAgger-7 student or collect longer
 successful recovery trajectories, not increase the same early-collapse label
 weight again.
+
+## Physical start-pose calibration caveat
+
+The real robot has telemetry evidence that the compensated runtime home pose is
+not obviously broken, but it does not have fresh physical pose-to-spec evidence
+from this campaign.
+
+Evidence already collected:
+
+```text
+runtime HWI.init_pos == sim scene_flat_terrain.xml home keyframe
+home_pose_log_test: stable gyro, +Z dominant accel, small joint tracking errors
+live duck_config offsets captured from the RDK-X5
+```
+
+Important caveat:
+
+```text
+large live left_knee offset: -1.4880 rad
+right_knee offset: 0.0798 rad
+```
+
+The audit documents the `scripts/find_soft_offsets.py` zeroing procedure, but I
+do not see evidence that we re-ran that physical manual calibration procedure
+and measured/confirmed the real mechanical start pose against the documented
+joint geometry after the later robot work. A wrong mechanical start/home pose
+can absolutely make a biped policy fail to walk, even if the software home pose
+and telemetry feedback path look plausible.
+
+Pre-robot-validation gate:
+
+```text
+1. Command/hold home pose with the robot supported.
+2. Visually or instrumentally compare real hip pitch, knee, ankle, and foot
+   geometry against the sim/runtime home-pose specification.
+3. Pay special attention to the left knee and both ankles.
+4. If offsets change, capture a new duck_config snapshot and rerun
+   home_pose_log_test.
+5. Do not interpret future robot walking failures as policy evidence until
+   this physical start-pose check is cleared.
+```
+
+## PPO-compatible BC and tiny fine-tune check
+
+The first deployable-policy branch after DAgger-7 tested whether changing the
+student to the PPO actor shape, then exporting a true PPO-compatible checkpoint,
+would improve the seed distribution.
+
+The PPO-location BC student fit the DAgger-6 recovery manifest:
+
+```text
+artifact: outputs/analysis/PPO_LOC_DAGGER6_RECOVERY_STUDENT.md
+status: PASS_PPO_LOC_BC_FIT_SMOKE
+manifest: outputs/analysis/filtered_source_vx_selector_dagger6_recovery_manifest.json
+train p95 abs error: 0.044702
+target-rate p95: 2.351068 rad/s
+```
+
+But the ONNX candidate did not improve deployability:
+
+```text
+artifact: outputs/analysis/PPO_LOC_DAGGER6_RECOVERY_X008_FITTED_10S.md
+status: HOLD
+duration complete: 5 / 8
+falls: seeds 1, 5, 7
+mean track ratio: -0.0967
+mean vx: -0.0077 m/s
+```
+
+The same weights were then converted into an actual Brax/PPO Orbax checkpoint
+and exported as a step-0 ONNX:
+
+```text
+artifact: outputs/analysis/PPO_LOC_DAGGER6_RECOVERY_STEP0_EXPORT_FIDELITY.md
+status: PASS_PPO_BC_WARMSTART_STEP0_EXPORT_FIDELITY
+```
+
+The step-0 PPO export reproduced the same failure distribution:
+
+```text
+artifact: outputs/analysis/PPO_LOC_DAGGER6_RECOVERY_STEP0_X008_FITTED_10S.md
+falls: 3 / 8
+duration complete: 5 / 8
+mean track ratio: -0.0931
+mean vx: -0.0075 m/s
+```
+
+A tiny CPU-only PPO fine-tune from that checkpoint completed and exported a
+step-1040 ONNX:
+
+```text
+source run: /tmp/open_duck_ppo_loc_dagger6_finetune_smoke/smoke_20260626T235852Z_cpu
+status: PASS_SMOKE_RUN
+step: 1040
+reward: 25.527969
+```
+
+The step-1040 candidate reduced fall count but collapsed toward low-progress
+behavior:
+
+```text
+artifact: outputs/analysis/PPO_LOC_DAGGER6_RECOVERY_STEP1040_X008_FITTED_10S.md
+falls: 2 / 8
+duration complete: 6 / 8
+mean track ratio: 0.1379
+mean vx: 0.0110 m/s
+```
+
+A small behavior-prior PPO smoke also completed, but its interrupted partial
+gate covered only seeds 0-2 and showed the same pattern:
+
+```text
+artifact: outputs/analysis/PPO_LOC_DAGGER6_BEHAVIOR_PRIOR_STEP1040_PARTIAL_X008_FITTED_10S.md
+seed 0: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS, track_ratio 0.1520
+seed 1: HOLD_CANDIDATE_FALL_OR_TERMINATION, base_height_min 0.0877 m
+seed 2: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS, track_ratio 0.1388
+```
+
+Conclusion: the warm-start PPO path is wired and exportable, but a tiny PPO
+update from the PPO-compatible DAgger-6 student does not produce a deployable
+walker. It trades some falls for the old low-progress/freeze basin. The next
+PPO attempt, if pursued, needs a stronger continuity/progress design and a full
+8-seed fitted-bridge gate. Do not treat the step-1040 checkpoint as a robot
+candidate.
