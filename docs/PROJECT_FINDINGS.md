@@ -3003,11 +3003,10 @@ closed-loop fine-tuning from the DAgger-6/DAgger-7 student or collect longer
 successful recovery trajectories, not increase the same early-collapse label
 weight again.
 
-## Physical start-pose calibration caveat
+## Physical start-pose calibration check
 
-The real robot has telemetry evidence that the compensated runtime home pose is
-not obviously broken, but it does not have fresh physical pose-to-spec evidence
-from this campaign.
+The real robot now has both telemetry evidence and operator-confirmed physical
+home-pose evidence against a repo-rendered reference.
 
 Canonical gate: [PHYSICAL_START_POSE_CALIBRATION_GATE.md](PHYSICAL_START_POSE_CALIBRATION_GATE.md).
 
@@ -3017,6 +3016,8 @@ Evidence already collected:
 runtime HWI.init_pos == sim scene_flat_terrain.xml home keyframe
 home_pose_log_test: stable gyro, +Z dominant accel, small joint tracking errors
 live duck_config offsets captured from the RDK-X5
+repo-rendered zero/home references generated from the MJCF
+Rob confirmed commanded home visually matches the rendered home reference
 ```
 
 Important caveat:
@@ -3028,22 +3029,18 @@ right_knee offset: 0.0798 rad
 
 The audit documents the `scripts/find_soft_offsets.py` zeroing procedure, but I
 do not see evidence that we re-ran that physical manual calibration procedure
-and measured/confirmed the real mechanical start pose against the documented
-joint geometry after the later robot work. A wrong mechanical start/home pose
-can absolutely make a biped policy fail to walk, even if the software home pose
-and telemetry feedback path look plausible.
+after the later robot work. However, because commanded home visually matches
+the repo-rendered home pose and telemetry tracks the compensated home pose well,
+blindly re-running soft-offset calibration is not justified right now. A wrong
+mechanical start/home pose can absolutely make a biped policy fail to walk, but
+the current evidence downranks it as the leading cause.
 
-Pre-robot-validation gate:
+Current gate status:
 
 ```text
-1. Command/hold home pose with the robot supported.
-2. Visually or instrumentally compare real hip pitch, knee, ankle, and foot
-   geometry against the sim/runtime home-pose specification.
-3. Pay special attention to the left knee and both ankles.
-4. If offsets change, capture a new duck_config snapshot and rerun
-   home_pose_log_test.
-5. Do not interpret future robot walking failures as policy evidence until
-   this physical start-pose check is cleared.
+PASS_PHYSICAL_HOME_POSE_VISUAL_CHECK
+PASS_HOME_POSE_TELEMETRY_HOLD
+HOLD_ZERO_RECALIBRATION_NOT_NEEDED_WITHOUT_VISIBLE_MISMATCH
 ```
 
 ## PPO-compatible BC and tiny fine-tune check
