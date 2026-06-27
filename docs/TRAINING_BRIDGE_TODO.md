@@ -5617,3 +5617,23 @@ The failure is therefore not a broad actuator-envelope miss, missing-neighbor
 problem, or large one-step BC error. The next branch should keep seed 5 in
 quiet zero-command support during the first 1-2 seconds while preserving the
 surviving x=0.08 command-conditioned behavior.
+
+Weighted seed-5 source experiment:
+
+```text
+tool: tools/weight_bc_manifest_entries.py
+decision: outputs/analysis/COMMAND_CONDITIONED_HARD_SEED_RECOVERY_WEIGHTED_SEED5_X0_DECISION.md
+status: HOLD_WEIGHTED_SEED5_X0_STILL_FAILS
+```
+
+Only the stable x=0 seed-5 source trace was upweighted 8x. The supervised fit
+remained clean, but the x=0 fitted gate still failed seed 5 and failed earlier:
+
+```text
+unweighted seed 5 fall: 73 samples
+weighted seed 5 fall: 57 samples
+```
+
+Stop rule: do not keep increasing weights on the same x=0 seed-5 source trace.
+The next valid branch is corrective on-policy relabeling from seed-5 visited
+states or an explicit command-conditioned zero-command stabilizer.

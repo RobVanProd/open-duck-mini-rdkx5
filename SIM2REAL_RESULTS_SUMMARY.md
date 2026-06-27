@@ -6908,6 +6908,21 @@ spends less time in quiet double support before reverse/pitch collapse. The
 next corrective branch should stabilize this zero-command hard seed locally,
 not globally damp the policy or add more generic x=0.08 motion labels.
 
+A bounded weighting experiment tested whether simply emphasizing the stable
+x=0 seed-5 source trace fixes that hard seed:
+
+```text
+decision: outputs/analysis/COMMAND_CONDITIONED_HARD_SEED_RECOVERY_WEIGHTED_SEED5_X0_DECISION.md
+status: HOLD_WEIGHTED_SEED5_X0_STILL_FAILS
+weighted x=0 seed-5 source trace: 8x
+x=0 fitted gate: 7/8 complete, seed 5 falls at 57 samples
+```
+
+This is a negative result. The unweighted candidate fell at 73 samples, so
+simple supervised reweighting made the hard seed worse. The next branch should
+use corrective on-policy relabeling or an explicit zero-command stabilizer, not
+larger weights on the same labels.
+
 ## Physical Start-Pose Calibration Check
 
 The real robot home/start pose has been checked against both telemetry and a

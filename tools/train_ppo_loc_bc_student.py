@@ -30,10 +30,11 @@ def percentile(values: Sequence[float] | np.ndarray, q: float) -> float | None:
     return float(np.percentile(arr, q))
 
 
-def read_manifest_samples(manifest_path: Path) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+def read_manifest_samples(manifest_path: Path) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     manifest = json.loads(manifest_path.read_text())
     observations: list[list[float]] = []
     actions: list[list[float]] = []
+    weights: list[float] = []
     pairs: list[tuple[int, int]] = []
     for entry in manifest.get("entries", []):
         if not entry.get("bc_ready", False):
@@ -41,6 +42,7 @@ def read_manifest_samples(manifest_path: Path) -> tuple[np.ndarray, np.ndarray, 
         source_path = Path(entry["source_path"])
         if not source_path.exists():
             continue
+        sample_weight = float(entry.get("sample_weight", 1.0))
         previous_index: int | None = None
         with source_path.open() as handle:
             for line in handle:
@@ -56,6 +58,7 @@ def read_manifest_samples(manifest_path: Path) -> tuple[np.ndarray, np.ndarray, 
                 current_index = len(observations)
                 observations.append(obs_arr.astype(float).tolist())
                 actions.append(np.clip(action_arr, -1.0, 1.0).astype(float).tolist())
+                weights.append(max(sample_weight, 0.0))
                 if previous_index is not None:
                     pairs.append((previous_index, current_index))
                 previous_index = current_index
@@ -65,6 +68,7 @@ def read_manifest_samples(manifest_path: Path) -> tuple[np.ndarray, np.ndarray, 
         np.asarray(observations, dtype=np.float64),
         np.asarray(actions, dtype=np.float64),
         np.asarray(pairs, dtype=np.int64),
+        np.asarray(weights, dtype=np.float64),
     )
 
 
@@ -137,6 +141,7 @@ def train_model(
     obs: np.ndarray,
     actions: np.ndarray,
     pairs: np.ndarray,
+    weights: np.ndarray,
     args: argparse.Namespace,
 ) -> dict[str, Any]:
     os.environ.setdefault("JAX_PLATFORMS", "cpu")
@@ -152,6 +157,11 @@ def train_model(
     norm = np.stack([mean, std]).astype(np.float64)
     x_norm = ((obs - mean) / std).astype(np.float32)
     y = actions.astype(np.float32)
+    sample_weights = np.asarray(weights, dtype=np.float32).reshape(-1)
+    if sample_weights.shape != (obs.shape[0],):
+        raise ValueError("sample weights must match observations")
+    if not np.any(sample_weights > 0.0):
+        sample_weights = np.ones_like(sample_weights, dtype=np.float32)
     params_np = init_params(obs.shape[1], hidden_sizes, actions.shape[1], args.seed)
     params = [(jnp.asarray(w, dtype=jnp.float32), jnp.asarray(b, dtype=jnp.float32)) for w, b in params_np]
     optimizer = optax.adam(float(args.learning_rate))
@@ -175,9 +185,10 @@ def train_model(
         loc = z
         return loc, jnp.tanh(loc)
 
-    def loss_fn(model_params, batch_x, batch_y, pair_x0, pair_x1):
+    def loss_fn(model_params, batch_x, batch_y, batch_w, pair_x0, pair_x1):
         _, pred = forward(model_params, batch_x)
-        supervised = jnp.mean((pred - batch_y) ** 2)
+        per_sample = jnp.mean((pred - batch_y) ** 2, axis=1)
+        supervised = jnp.sum(per_sample * batch_w) / jnp.maximum(jnp.sum(batch_w), 1.0e-9)
         _, pair_pred0 = forward(model_params, pair_x0)
         _, pair_pred1 = forward(model_params, pair_x1)
         target_rate = jnp.abs(pair_pred1 - pair_pred0) * float(args.action_scale_rad) / float(args.dt_s)
@@ -186,8 +197,8 @@ def train_model(
         return supervised + float(args.target_rate_scale) * rate_penalty
 
     @jax.jit
-    def step(model_params, state, batch_x, batch_y, pair_x0, pair_x1):
-        loss, grads = jax.value_and_grad(loss_fn)(model_params, batch_x, batch_y, pair_x0, pair_x1)
+    def step(model_params, state, batch_x, batch_y, batch_w, pair_x0, pair_x1):
+        loss, grads = jax.value_and_grad(loss_fn)(model_params, batch_x, batch_y, batch_w, pair_x0, pair_x1)
         updates, state = optimizer.update(grads, state, model_params)
         return optax.apply_updates(model_params, updates), state, loss
 
@@ -207,6 +218,7 @@ def train_model(
             opt_state,
             jnp.asarray(x_norm[batch_idx], dtype=jnp.float32),
             jnp.asarray(y[batch_idx], dtype=jnp.float32),
+            jnp.asarray(sample_weights[batch_idx], dtype=jnp.float32),
             jnp.asarray(pair_x0, dtype=jnp.float32),
             jnp.asarray(pair_x1, dtype=jnp.float32),
         )
@@ -236,6 +248,12 @@ def train_model(
             "p95_rad_s": percentile(target_rate, 95),
             "p99_rad_s": percentile(target_rate, 99),
             "max_rad_s": float(np.max(target_rate)) if target_rate.size else None,
+        },
+        "sample_weight": {
+            "p50": percentile(sample_weights, 50),
+            "p95": percentile(sample_weights, 95),
+            "max": float(np.max(sample_weights)) if sample_weights.size else None,
+            "weighted_samples": float(np.sum(sample_weights)),
         },
     }
 
@@ -334,6 +352,7 @@ def write_markdown(path: Path, report: dict[str, Any]) -> None:
         "",
         f"- manifest: `{report['manifest']}`",
         f"- samples: `{report['samples']}`",
+        f"- weighted samples: `{report['sample_weight']['weighted_samples']:.4f}`",
         f"- pairs: `{report['target_rate']['pair_count']}`",
         f"- hidden sizes: `{report['hidden_sizes']}`",
         f"- activation: `{report['activation']}`",
@@ -350,6 +369,7 @@ def write_markdown(path: Path, report: dict[str, Any]) -> None:
         f"- max abs error: `{report['train_metrics']['max_abs_error']:.6f}`",
         f"- target-rate p95: `{report['target_rate']['p95_rad_s']:.6f}` rad/s",
         f"- target-rate max: `{report['target_rate']['max_rad_s']:.6f}` rad/s",
+        f"- sample weight p50/p95/max: `{report['sample_weight']['p50']:.4f}` / `{report['sample_weight']['p95']:.4f}` / `{report['sample_weight']['max']:.4f}`",
         "",
         "## Loss",
         "",
@@ -412,8 +432,8 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
-    obs, actions, pairs = read_manifest_samples(Path(args.manifest))
-    fit = train_model(obs, actions, pairs, args)
+    obs, actions, pairs, weights = read_manifest_samples(Path(args.manifest))
+    fit = train_model(obs, actions, pairs, weights, args)
     save_npz(Path(args.save_npz), fit)
     onnx_verify = export_onnx(Path(args.export_onnx), fit, obs)
     status = "PASS_PPO_LOC_BC_FIT_SMOKE"
@@ -427,6 +447,7 @@ def main() -> int:
         "exported_onnx": args.export_onnx,
         "train_metrics": fit["metrics"],
         "target_rate": fit["target_rate"],
+        "sample_weight": fit["sample_weight"],
         "loss_rows": fit["loss_rows"],
         "onnx_verify": onnx_verify,
         "config": {
