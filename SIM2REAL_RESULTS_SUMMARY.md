@@ -7341,3 +7341,27 @@ status: HOLD_CANDIDATE_TRACKING
 Compared with the earlier right-knee-only `4.3 rad/s` curation, the full
 pitch-chain cap did not materially improve the strict gate. Robot validation
 remains blocked; this candidate is useful evidence, not a deployable policy.
+
+## Right-Knee Transition Spike Filter
+
+A targeted transition filter tested whether the right-knee spike source could
+be removed from the source-vx selector dataset:
+
+```text
+result doc: docs/RIGHT_KNEE_TRANSITION_SPIKE_FILTER_RESULT.md
+right-knee >3.75 rad/s action ticks: 506 / 3992
+within 2 ticks of contact transition: 404 / 506
+filtered samples: 3124 / 4000 kept
+duration_complete: 8/8
+falls: 0/8
+mean vx: 0.0449 m/s
+mean track ratio: 0.5617
+max pitch velocity p95: 4.6244-4.7790 rad/s
+max tracking p95: 0.2675-0.2782 rad
+status: HOLD_CANDIDATE_TRACKING
+```
+
+The filter preserved stability but worsened the target-velocity gate and
+reduced forward progress. Robot validation remains blocked. This closes the
+simple deletion/filtering branch; the right-knee contact transition needs
+dynamics-aware relabeling or gate-aware training, not another post-hoc filter.

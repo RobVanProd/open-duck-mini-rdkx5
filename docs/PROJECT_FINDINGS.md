@@ -3487,6 +3487,53 @@ missing deployability step. The remaining issue is the right-knee
 phase/contact-transition behavior itself, which needs dynamics-aware relabeling
 or gate-aware fine-tuning rather than another uniform cap.
 
+## Right-Knee Transition Spike Filter
+
+The next offline curation tested whether transition-adjacent right-knee spikes
+could simply be removed from the source-vx selector trace dataset.
+
+```text
+result doc: docs/RIGHT_KNEE_TRANSITION_SPIKE_FILTER_RESULT.md
+tool: tools/filter_bc_trace_transition_spikes.py
+status: HOLD_TRANSITION_SPIKE_FILTER_DOES_NOT_FIX_TRACKING
+robot touched: false
+```
+
+The diagnostic confirmed the spike/contact coupling:
+
+```text
+right-knee action-derived velocity > 3.75 rad/s: 506 / 3992 ticks
+within 2 ticks of a contact transition: 404 / 506
+```
+
+The filter removed transition-adjacent right-knee spike rows:
+
+```text
+input samples: 4000
+output samples: 3124
+removed samples: 876
+dataset_id: 69c1466221e946cc
+```
+
+The exact-blend ONNX smoke replay still passed, but strict fitted-backlash
+x=0.08 gate metrics worsened on the target-velocity axis:
+
+```text
+duration_complete: 8/8
+falls: 0/8
+mean vx: 0.0449 m/s
+mean track ratio: 0.5617
+max pitch velocity p95: 4.6244-4.7790 rad/s
+max tracking p95: 0.2675-0.2782 rad
+status: HOLD_CANDIDATE_TRACKING
+```
+
+Conclusion: the transition-adjacent right-knee samples are not disposable
+outliers. Dropping them weakens forward motion and the exported exact-blend
+model still reconstructs a high-rate transition. The next attempt needs
+dynamics-aware relabeling or a student/training mechanism that represents the
+transition smoothly, not another deletion or uniform clip.
+
 ## Home Pose Contract Audit
 
 The physical calibration discussion exposed a useful distinction:
