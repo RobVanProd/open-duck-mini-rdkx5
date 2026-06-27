@@ -32,6 +32,7 @@ Iteration 1 is complete and documented in:
 - `outputs/analysis/LIVE_ORACLE_DAGGER_ITER_1_X008_GATE.md`
 - `outputs/analysis/LIVE_ORACLE_DAGGER_ITER_1_X0_GATE.md`
 - `outputs/analysis/LIVE_ORACLE_DAGGER_ITER_1_DECISION.md`
+- `outputs/analysis/LIVE_ORACLE_DAGGER_SEED5_TRACE_ISOLATION.md`
 
 ## Iteration 0 Outcome
 
@@ -74,6 +75,18 @@ Do not promote the iteration-0 or iteration-1 candidate.
 Before iteration 2, isolate seed 5 against iteration 0 and iteration 1. Preserve
 the command-aware x=0.0 improvement, but reduce or smooth the zero-action label
 influence so it does not create the seed-5 reverse/fall pocket.
+
+Seed-5 isolation is now complete:
+
+- iteration 0 seed 5 survives at both x=0.08 and x=0.0, with the old forward
+  drift/tracking-hold behavior
+- iteration 1 seed 5 reverses and collapses at both x=0.08 and x=0.0
+- x=0.0 iteration-1 collapse occurs at low target-rate, not high target-rate
+  overdrive
+
+Therefore iteration 2 should not increase zero-action weight. It should blend
+or schedule the x=0.0 zero-action labels so the zero-command fix is preserved
+without creating a reverse/fall pocket on seed 5.
 
 ## Hardware Track Note
 

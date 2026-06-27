@@ -1,0 +1,251 @@
+{
+  "config": {
+    "policies": [
+      "outputs/analysis/live_oracle_dagger_phase_student_iter0_candidate/candidate.onnx",
+      "outputs/analysis/live_oracle_dagger_phase_student_iter1_candidate/candidate.onnx"
+    ],
+    "policy_labels": [
+      "iter0",
+      "iter1"
+    ],
+    "seeds": [
+      5
+    ],
+    "command_x": 0.0,
+    "task": "flat_terrain_backlash",
+    "duration_s": 15.0,
+    "bridge_mode": "fitted",
+    "reward_overrides_json": null,
+    "reward_overrides_phase": null,
+    "jax_platform": "cpu",
+    "run": true,
+    "trace_seeds": [
+      5
+    ],
+    "trace_full_obs": true
+  },
+  "results": [
+    {
+      "policy": "outputs/analysis/live_oracle_dagger_phase_student_iter0_candidate/candidate.onnx",
+      "policy_label": "iter0",
+      "seed": 5,
+      "output_dir": "outputs/analysis/live_oracle_dagger_seed5_x0_trace_compare/iter0/seed_005",
+      "command": [
+        "/home/lsd/robots/open-duck-mini-rdkx5/../envs/open-duck-playground/bin/python",
+        "/home/lsd/robots/open-duck-mini-rdkx5/tools/eval_policy_with_actuator_bridge.py",
+        "--mode",
+        "closed-loop-sim",
+        "--eval-role",
+        "candidate",
+        "--policy",
+        "outputs/analysis/live_oracle_dagger_phase_student_iter0_candidate/candidate.onnx",
+        "--fit-json",
+        "outputs/analysis/actuator_response_fit.json",
+        "--playground-path",
+        "../Open_Duck_Playground",
+        "--env-python",
+        "../envs/open-duck-playground/bin/python",
+        "--command-x",
+        "0.0",
+        "--task",
+        "flat_terrain_backlash",
+        "--duration",
+        "15.0",
+        "--seed",
+        "5",
+        "--bridge-mode",
+        "fitted",
+        "--jax-platform",
+        "cpu",
+        "--sim-preflight-timeout-s",
+        "600",
+        "--closed-loop-timeout-s",
+        "1800",
+        "--output-dir",
+        "outputs/analysis/live_oracle_dagger_seed5_x0_trace_compare/iter0/seed_005",
+        "--trace-jsonl",
+        "outputs/analysis/live_oracle_dagger_seed5_x0_trace_compare/iter0/seed_005/trace.jsonl",
+        "--trace-full-obs"
+      ],
+      "command_shell": "/home/lsd/robots/open-duck-mini-rdkx5/../envs/open-duck-playground/bin/python /home/lsd/robots/open-duck-mini-rdkx5/tools/eval_policy_with_actuator_bridge.py --mode closed-loop-sim --eval-role candidate --policy outputs/analysis/live_oracle_dagger_phase_student_iter0_candidate/candidate.onnx --fit-json outputs/analysis/actuator_response_fit.json --playground-path ../Open_Duck_Playground --env-python ../envs/open-duck-playground/bin/python --command-x 0.0 --task flat_terrain_backlash --duration 15.0 --seed 5 --bridge-mode fitted --jax-platform cpu --sim-preflight-timeout-s 600 --closed-loop-timeout-s 1800 --output-dir outputs/analysis/live_oracle_dagger_seed5_x0_trace_compare/iter0/seed_005 --trace-jsonl outputs/analysis/live_oracle_dagger_seed5_x0_trace_compare/iter0/seed_005/trace.jsonl --trace-full-obs",
+      "returncode": 0,
+      "stdout_tail": "outputs/analysis/live_oracle_dagger_seed5_x0_trace_compare/iter0/seed_005/SIM_ACTUATOR_BRIDGE_EVAL.md\noutputs/analysis/live_oracle_dagger_seed5_x0_trace_compare/iter0/seed_005/sim_actuator_bridge_eval.json\noutputs/analysis/live_oracle_dagger_seed5_x0_trace_compare/iter0/seed_005/CLOSED_LOOP_ACTUATOR_BRIDGE_EVAL.md\noutputs/analysis/live_oracle_dagger_seed5_x0_trace_compare/iter0/seed_005/closed_loop_actuator_bridge_eval.json\n",
+      "result_json": "outputs/analysis/live_oracle_dagger_seed5_x0_trace_compare/iter0/seed_005/closed_loop_actuator_bridge_eval.json",
+      "status": "HOLD_CANDIDATE_TRACKING",
+      "summary": {
+        "overall_status": "HOLD_CANDIDATE_TRACKING",
+        "candidate_gate_status": "HOLD_CANDIDATE_TRACKING",
+        "samples": 750,
+        "termination_reason": "duration_complete",
+        "elapsed_s": 14.98,
+        "mean_local_vx_m_s": 0.0434391626183448,
+        "track_ratio": null,
+        "body_pitch_p95_rad": 0.0963300466781438,
+        "base_height_min_m": 0.1462176889181137,
+        "max_pitch_vel_p95_rad_s": 3.7090295553207397,
+        "max_tracking_p95_rad": 0.2678433060646057,
+        "action_saturation_pct": 0.0
+      }
+    },
+    {
+      "policy": "outputs/analysis/live_oracle_dagger_phase_student_iter1_candidate/candidate.onnx",
+      "policy_label": "iter1",
+      "seed": 5,
+      "output_dir": "outputs/analysis/live_oracle_dagger_seed5_x0_trace_compare/iter1/seed_005",
+      "command": [
+        "/home/lsd/robots/open-duck-mini-rdkx5/../envs/open-duck-playground/bin/python",
+        "/home/lsd/robots/open-duck-mini-rdkx5/tools/eval_policy_with_actuator_bridge.py",
+        "--mode",
+        "closed-loop-sim",
+        "--eval-role",
+        "candidate",
+        "--policy",
+        "outputs/analysis/live_oracle_dagger_phase_student_iter1_candidate/candidate.onnx",
+        "--fit-json",
+        "outputs/analysis/actuator_response_fit.json",
+        "--playground-path",
+        "../Open_Duck_Playground",
+        "--env-python",
+        "../envs/open-duck-playground/bin/python",
+        "--command-x",
+        "0.0",
+        "--task",
+        "flat_terrain_backlash",
+        "--duration",
+        "15.0",
+        "--seed",
+        "5",
+        "--bridge-mode",
+        "fitted",
+        "--jax-platform",
+        "cpu",
+        "--sim-preflight-timeout-s",
+        "600",
+        "--closed-loop-timeout-s",
+        "1800",
+        "--output-dir",
+        "outputs/analysis/live_oracle_dagger_seed5_x0_trace_compare/iter1/seed_005",
+        "--trace-jsonl",
+        "outputs/analysis/live_oracle_dagger_seed5_x0_trace_compare/iter1/seed_005/trace.jsonl",
+        "--trace-full-obs"
+      ],
+      "command_shell": "/home/lsd/robots/open-duck-mini-rdkx5/../envs/open-duck-playground/bin/python /home/lsd/robots/open-duck-mini-rdkx5/tools/eval_policy_with_actuator_bridge.py --mode closed-loop-sim --eval-role candidate --policy outputs/analysis/live_oracle_dagger_phase_student_iter1_candidate/candidate.onnx --fit-json outputs/analysis/actuator_response_fit.json --playground-path ../Open_Duck_Playground --env-python ../envs/open-duck-playground/bin/python --command-x 0.0 --task flat_terrain_backlash --duration 15.0 --seed 5 --bridge-mode fitted --jax-platform cpu --sim-preflight-timeout-s 600 --closed-loop-timeout-s 1800 --output-dir outputs/analysis/live_oracle_dagger_seed5_x0_trace_compare/iter1/seed_005 --trace-jsonl outputs/analysis/live_oracle_dagger_seed5_x0_trace_compare/iter1/seed_005/trace.jsonl --trace-full-obs",
+      "returncode": 0,
+      "stdout_tail": "outputs/analysis/live_oracle_dagger_seed5_x0_trace_compare/iter1/seed_005/SIM_ACTUATOR_BRIDGE_EVAL.md\noutputs/analysis/live_oracle_dagger_seed5_x0_trace_compare/iter1/seed_005/sim_actuator_bridge_eval.json\noutputs/analysis/live_oracle_dagger_seed5_x0_trace_compare/iter1/seed_005/CLOSED_LOOP_ACTUATOR_BRIDGE_EVAL.md\noutputs/analysis/live_oracle_dagger_seed5_x0_trace_compare/iter1/seed_005/closed_loop_actuator_bridge_eval.json\n",
+      "result_json": "outputs/analysis/live_oracle_dagger_seed5_x0_trace_compare/iter1/seed_005/closed_loop_actuator_bridge_eval.json",
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "summary": {
+        "overall_status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+        "candidate_gate_status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+        "samples": 48,
+        "termination_reason": "fall_or_nan",
+        "elapsed_s": 0.9400000000000001,
+        "mean_local_vx_m_s": -0.3358470837119967,
+        "track_ratio": null,
+        "body_pitch_p95_rad": 0.06278424386046488,
+        "base_height_min_m": 0.04210696741938591,
+        "max_pitch_vel_p95_rad_s": 1.503092646598816,
+        "max_tracking_p95_rad": 0.23300128579139695,
+        "action_saturation_pct": 0.0
+      }
+    }
+  ],
+  "aggregate": {
+    "iter0": {
+      "runs": 1,
+      "fall_count": 0,
+      "duration_complete_count": 1,
+      "samples": {
+        "min": 750.0,
+        "mean": 750.0,
+        "p50": 750.0,
+        "p95": 750.0,
+        "max": 750.0
+      },
+      "track_ratio": null,
+      "mean_local_vx_m_s": {
+        "min": 0.0434391626183448,
+        "mean": 0.0434391626183448,
+        "p50": 0.0434391626183448,
+        "p95": 0.0434391626183448,
+        "max": 0.0434391626183448
+      },
+      "body_pitch_p95_rad": {
+        "min": 0.0963300466781438,
+        "mean": 0.0963300466781438,
+        "p50": 0.0963300466781438,
+        "p95": 0.0963300466781438,
+        "max": 0.0963300466781438
+      },
+      "base_height_min_m": {
+        "min": 0.1462176889181137,
+        "mean": 0.1462176889181137,
+        "p50": 0.1462176889181137,
+        "p95": 0.1462176889181137,
+        "max": 0.1462176889181137
+      },
+      "max_pitch_vel_p95_rad_s": {
+        "min": 3.7090295553207397,
+        "mean": 3.7090295553207397,
+        "p50": 3.7090295553207397,
+        "p95": 3.7090295553207397,
+        "max": 3.7090295553207397
+      },
+      "max_tracking_p95_rad": {
+        "min": 0.2678433060646057,
+        "mean": 0.2678433060646057,
+        "p50": 0.2678433060646057,
+        "p95": 0.2678433060646057,
+        "max": 0.2678433060646057
+      }
+    },
+    "iter1": {
+      "runs": 1,
+      "fall_count": 1,
+      "duration_complete_count": 0,
+      "samples": {
+        "min": 48.0,
+        "mean": 48.0,
+        "p50": 48.0,
+        "p95": 48.0,
+        "max": 48.0
+      },
+      "track_ratio": null,
+      "mean_local_vx_m_s": {
+        "min": -0.3358470837119967,
+        "mean": -0.3358470837119967,
+        "p50": -0.3358470837119967,
+        "p95": -0.3358470837119967,
+        "max": -0.3358470837119967
+      },
+      "body_pitch_p95_rad": {
+        "min": 0.06278424386046488,
+        "mean": 0.06278424386046488,
+        "p50": 0.06278424386046488,
+        "p95": 0.06278424386046488,
+        "max": 0.06278424386046488
+      },
+      "base_height_min_m": {
+        "min": 0.04210696741938591,
+        "mean": 0.04210696741938591,
+        "p50": 0.04210696741938591,
+        "p95": 0.04210696741938591,
+        "max": 0.04210696741938591
+      },
+      "max_pitch_vel_p95_rad_s": {
+        "min": 1.503092646598816,
+        "mean": 1.503092646598816,
+        "p50": 1.503092646598816,
+        "p95": 1.503092646598816,
+        "max": 1.503092646598816
+      },
+      "max_tracking_p95_rad": {
+        "min": 0.23300128579139695,
+        "mean": 0.23300128579139695,
+        "p50": 0.23300128579139695,
+        "p95": 0.23300128579139695,
+        "max": 0.23300128579139695
+      }
+    }
+  }
+}
