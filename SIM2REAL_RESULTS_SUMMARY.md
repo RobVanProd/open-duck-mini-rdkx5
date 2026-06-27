@@ -6599,6 +6599,25 @@ split accordingly: closed-loop lateral/height stabilization for seed 1 and a
 more precise right-support recovery fit for seed 7. Do not run another uniform
 static-label DAgger pass as the next experiment.
 
+DAgger-8 tested whether local observation-noise consistency regularization could
+make the deployable 128x128 MLP robust enough without changing the dataset or
+teacher:
+
+```text
+artifact: outputs/analysis/DAGGER8_OBS_CONSISTENCY_DECISION.md
+gate: outputs/analysis/SOURCE_VX_SELECTOR_TRACE_DAGGER8_OBS_CONSISTENCY_MLP128_RATE_REG_FITTED_BRIDGE_BC_GATE_X008_10S.md
+status: HOLD_BC_REPLAY_TERMINATED
+duration complete: 6 / 8
+terminated: seeds 1 and 7
+```
+
+The pass seeds complete with low, in-envelope forward motion and 0% action
+saturation, but seeds 1 and 7 still collapse around the first support
+transition with large lateral velocity. This makes broad "more robust BC"
+insufficient as a next step. The remaining offline blocker is a split hard-seed
+recovery problem: seed 1 needs closed-loop lateral/height stabilization; seed 7
+needs a better right-support pitch-chain action fit or recovery mapping.
+
 ## Physical Start-Pose Calibration Check
 
 The real robot home/start pose has been checked against both telemetry and a

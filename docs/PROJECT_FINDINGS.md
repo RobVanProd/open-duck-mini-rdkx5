@@ -3022,6 +3022,38 @@ Decision: do not run another uniform-label-weight DAgger pass. Seed 1 needs
 closed-loop lateral/height stabilization; seed 7 still needs a better local
 right-support action fit or recovery mapping.
 
+## DAgger-8 observation-consistency BC check
+
+DAgger-8 tested a smaller hypothesis after the hard-seed split: maybe the
+deployable MLP was too brittle around the demonstrated hard-seed states. The
+test reused the DAgger-7 targeted recovery manifest and added local
+observation-noise consistency regularization:
+
+```text
+artifact: outputs/analysis/DAGGER8_OBS_CONSISTENCY_DECISION.md
+gate: outputs/analysis/SOURCE_VX_SELECTOR_TRACE_DAGGER8_OBS_CONSISTENCY_MLP128_RATE_REG_FITTED_BRIDGE_BC_GATE_X008_10S.md
+status: HOLD_BC_REPLAY_TERMINATED
+obs_noise_std: 0.02
+obs_consistency_scale: 0.1
+```
+
+The result preserved six-seed completion but did not clear the hard seeds:
+
+```text
+duration complete: seeds 0, 2, 3, 4, 5, 6
+terminated: seed 1 at 33 samples, seed 7 at 32 samples
+seed 1 vy95: 1.2433 m/s, base_height_min: 0.0791 m
+seed 7 vy95: 1.1534 m/s, base_height_min: 0.0848 m
+sent target velocity p95: 2.23-2.55 rad/s
+action saturation: 0%
+```
+
+Conclusion: observation-consistency regularization alone is not enough. The
+remaining blocker is still the two hard support-transition cases: seed 1 needs
+closed-loop lateral/height recovery under left support, while seed 7 needs
+better right-support pitch-chain action fit or recovery. Do not run another
+uniform static-label DAgger pass as the next experiment.
+
 ## Physical start-pose calibration check
 
 The real robot now has both telemetry evidence and operator-confirmed physical
