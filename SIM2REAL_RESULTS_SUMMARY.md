@@ -7173,3 +7173,47 @@ of blindly gating the latest reward checkpoint.
 This is infrastructure only. It does not make any existing PPO checkpoint a
 robot candidate, and it does not authorize robot motion. Robot validation
 remains blocked until an offline candidate passes the standard gates.
+
+## x=0.08 Relabel Weight-3 Diagnostic
+
+A bounded DAgger diagnostic tested whether adding relabeled x=0.08 visited
+states to the current best command-conditioned student would improve the
+remaining fitted-bridge tracking hold:
+
+```text
+decision: outputs/analysis/COMMAND_CONDITIONED_X008_RELABEL_WEIGHT3_DECISION.md
+status: HOLD_X008_RELABEL_WEIGHT3_REGRESSES_FORWARD_PROGRESS
+```
+
+Two x=0.08 fitted-bridge traces from the current best candidate were collected
+with full observations:
+
+```text
+seed 0: duration complete, tracking hold
+seed 5: duration complete, tracking hold
+samples: 1000 BC-ready
+```
+
+Relabeling those states with the existing blend teacher produced only modest
+action differences:
+
+```text
+seed 0 action_delta_p95: 0.0394
+seed 5 action_delta_p95: 0.0542
+```
+
+After merging the traces back into the manifest and upweighting them 3x, the
+new supervised student regressed in the compact fitted-bridge sweep:
+
+```text
+best x=0.08:
+  mean vx 0.0223, track ratio 0.2793
+
+relabel_weight3 x=0.08:
+  mean vx -0.0172, track ratio -0.2154
+```
+
+Interpretation: another small static DAgger relabel against the same teacher is
+not the next useful path. The x=0.08 tracking hold needs a stronger change in
+closed-loop dynamics, training feedback, or teacher signal; not more upweighting
+of nearly identical labels.

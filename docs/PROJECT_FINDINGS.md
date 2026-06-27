@@ -3276,3 +3276,44 @@ not treated as a robot candidate.
 
 This does not solve the deployable-policy problem by itself. It prevents the
 next GPU run from repeating a known selection mistake.
+
+## Command-Conditioned x=0.08 Relabel Diagnostic
+
+After the behavior-prior PPO rejection, a bounded static DAgger follow-up tested
+whether the current best command-conditioned student could be improved by
+adding relabeled x=0.08 visited states:
+
+```text
+decision: outputs/analysis/COMMAND_CONDITIONED_X008_RELABEL_WEIGHT3_DECISION.md
+status: HOLD_X008_RELABEL_WEIGHT3_REGRESSES_FORWARD_PROGRESS
+```
+
+Two x=0.08 fitted-bridge traces were collected from the current best candidate
+with full observations, then relabeled using the existing blend teacher:
+
+```text
+trace artifact: outputs/analysis/COMMAND_CONDITIONED_SEED5_X0_X008_TRACE_FOR_DAGGER.md
+relabel artifact: outputs/analysis/COMMAND_CONDITIONED_X008_RELABEL_SEED0_SEED5.md
+samples: 1000
+seed 0 action_delta_p95: 0.0394
+seed 5 action_delta_p95: 0.0542
+```
+
+The teacher action was only modestly different from the student on these
+tracking-limited states. A 3x relabel-upweighted student reduced neither the
+gate problem nor the deployability gap:
+
+```text
+best compact x=0.08:
+  mean vx 0.0223
+  track ratio 0.2793
+
+relabel_weight3 compact x=0.08:
+  mean vx -0.0172
+  track ratio -0.2154
+```
+
+Conclusion: this is not a promising static-label branch. The next deployability
+attempt needs a stronger mechanism than reweighting nearly identical labels:
+gate-selected PPO, actuator/tracking feedback in the objective, or a teacher
+that actually changes actions on tracking-limited states.
