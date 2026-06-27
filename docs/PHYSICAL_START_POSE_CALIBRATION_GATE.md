@@ -202,6 +202,51 @@ cd /home/sunrise/project/Open_Duck_Mini_Runtime-2_RDK_X5/scripts
   2>&1 | tee /home/sunrise/duck_logs/find_soft_offsets_$(date -u +%Y%m%dT%H%M%SZ).log
 ```
 
+## Raw Servo Home Offset Audit
+
+The numeric comparison that catches a home-pose offset mismatch is:
+
+```text
+sim home keyframe joint angle
+vs
+raw servo read_present_position while the robot is physically in that same home geometry
+```
+
+For each joint:
+
+```text
+implied_offset = raw_present_position - joint_dir * sim_home
+missing_offset = implied_offset - current_duck_config_offset
+```
+
+This is the right comparison only if the robot was physically placed in the
+repo-defined home geometry independently of the current offsets. If the runtime
+first commanded home using the current `duck_config.json`, the same calculation
+mostly re-derives the current configured offset plus tracking error.
+
+Read-only audit command from this repo:
+
+```bash
+python3 tools/audit_robot_raw_home_offsets.py \
+  --ssh sunrise@192.168.1.50 \
+  --identity-file /home/lsd/robots/.duck_access/rdk_key \
+  --known-hosts /home/lsd/robots/.duck_access/known_hosts \
+  --pose-source physically_aligned_home \
+  --output-md outputs/analysis/RAW_HOME_OFFSET_AUDIT.md \
+  --output-json outputs/analysis/raw_home_offset_audit.json
+```
+
+Safety and interpretation:
+
+```text
+- The audit is read-only: no motor command, no torque change, no config edit.
+- Run it only when no other bus controller is active.
+- Use pose-source=physically_aligned_home only if the robot was manually placed
+  in the rendered sim-home geometry, not merely commanded there.
+- If the robot was commanded to home first, use pose-source=commanded_home and
+  treat the output as a raw/readback sanity check, not a physical-zero proof.
+```
+
 ## Pass Criteria
 
 Pass only if all are true:
