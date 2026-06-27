@@ -1,0 +1,42 @@
+{
+  "status": "PASS_BLEND_ONNX_POLICIES",
+  "base": {
+    "path": "outputs/analysis/pitch_chain_4p3_ppo_shape_rate_student_warmstart_step0.onnx",
+    "sha256": "8803df7d9eb3067e1fd2b3fcfdba3d6461aaf02cb3abb9bae4946bb928c2dc14"
+  },
+  "target": {
+    "path": "outputs/analysis/pitch_chain_4p3_ppo_warmstart_behavior_preservation_control/smoke_20260627T134835Z_cpu/2026_06_27_094922_640.onnx",
+    "sha256": "11c93638901d27ab53a9458b16353891b1091da2e5a793634ba099fcf25410fc"
+  },
+  "outputs": [
+    {
+      "alpha": 0.01,
+      "path": "outputs/analysis/ppo_warmstart_behavior_control_weight_blends/blend_alpha_0p0100.onnx",
+      "sha256": "83651c5743f3bc43a8605b4644fa89e80ab158d7ca7346abb8c74c04413e0013",
+      "size_bytes": 883946
+    },
+    {
+      "alpha": 0.02,
+      "path": "outputs/analysis/ppo_warmstart_behavior_control_weight_blends/blend_alpha_0p0200.onnx",
+      "sha256": "889bb5a8af9f275d9faca7f465c25ffd866665fa61a0b90255ad5c49743e4543",
+      "size_bytes": 883946
+    },
+    {
+      "alpha": 0.05,
+      "path": "outputs/analysis/ppo_warmstart_behavior_control_weight_blends/blend_alpha_0p0500.onnx",
+      "sha256": "07d2bdedc2870e217100b118fd2cfd9c61dc8fed3cf4397b60eac16c3b8084b3",
+      "size_bytes": 883946
+    },
+    {
+      "alpha": 0.1,
+      "path": "outputs/analysis/ppo_warmstart_behavior_control_weight_blends/blend_alpha_0p1000.onnx",
+      "sha256": "7899f5bb208daf973adb008d54179f8f0a4319f433f832928b1be801b55e7917",
+      "size_bytes": 883946
+    }
+  ],
+  "notes": [
+    "alpha=0 is exactly the base policy; alpha=1 is exactly the target policy.",
+    "Initializers were blended by order after shape compatibility checks because TensorFlow export prefixes differed.",
+    "These ONNX files are offline evaluation artifacts, not robot candidates."
+  ]
+}

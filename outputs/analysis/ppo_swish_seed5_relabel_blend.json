@@ -1,0 +1,33 @@
+{
+  "status": "PASS_BC_TRACE_RELABEL_READY",
+  "teacher": {
+    "teacher_manifest": "outputs/analysis/source_vx_selector_trace_dagger3_manifest.json",
+    "teacher_dataset_id": "80ea809b021b6b9a",
+    "teacher_entries": 25,
+    "teacher_samples": 9268,
+    "teacher_model_kind": "blend",
+    "knn_k": 5,
+    "blend_alpha": 0.8,
+    "best_alpha": 1e-06
+  },
+  "trace_globs": [
+    "outputs/analysis/candidate_seed_sweep/ppo_swish_step0/seed_005/trace.jsonl"
+  ],
+  "output_trace_dir": "outputs/analysis/ppo_swish_seed5_relabel_blend_traces",
+  "summary": {
+    "traces": 1,
+    "samples_out": 74
+  },
+  "traces": [
+    {
+      "source_trace": "outputs/analysis/candidate_seed_sweep/ppo_swish_step0/seed_005/trace.jsonl",
+      "output_trace": "outputs/analysis/ppo_swish_seed5_relabel_blend_traces/trace.jsonl",
+      "samples_in": 74,
+      "samples_out": 74,
+      "skipped": 0,
+      "action_delta_p50": 0.0243834911965444,
+      "action_delta_p95": 0.10969029444691328,
+      "action_delta_max": 0.42969707274871516
+    }
+  ]
+}

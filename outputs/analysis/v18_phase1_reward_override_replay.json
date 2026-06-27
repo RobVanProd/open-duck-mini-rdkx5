@@ -1,0 +1,201 @@
+{
+  "config": {
+    "policies": [
+      "/tmp/v18_artifacts/open_duck_colab_cli_staged-curriculum_20260624T153328Z/open_duck_staged_curriculum_cli/01_phase1_x004_dense_progress_discovery/smoke_20260624T153357Z_gpu/2026_06_24_154301_276480.onnx"
+    ],
+    "policy_labels": [
+      "phase_01"
+    ],
+    "seeds": [
+      0,
+      1
+    ],
+    "command_x": 0.04,
+    "duration_s": 5.0,
+    "bridge_mode": "vanilla",
+    "reward_overrides_json": "outputs/analysis/v18_a100_staged_plan.json",
+    "reward_overrides_phase": "phase1_x004_dense_progress_discovery",
+    "jax_platform": "cpu",
+    "run": true
+  },
+  "results": [
+    {
+      "policy": "/tmp/v18_artifacts/open_duck_colab_cli_staged-curriculum_20260624T153328Z/open_duck_staged_curriculum_cli/01_phase1_x004_dense_progress_discovery/smoke_20260624T153357Z_gpu/2026_06_24_154301_276480.onnx",
+      "policy_label": "phase_01",
+      "seed": 0,
+      "output_dir": "outputs/analysis/v18_phase1_reward_override_replay_cpu/phase_01/seed_000",
+      "command": [
+        "/usr/bin/python3",
+        "/home/lsd/robots/open-duck-mini-rdkx5/tools/eval_policy_with_actuator_bridge.py",
+        "--mode",
+        "closed-loop-sim",
+        "--eval-role",
+        "candidate",
+        "--policy",
+        "/tmp/v18_artifacts/open_duck_colab_cli_staged-curriculum_20260624T153328Z/open_duck_staged_curriculum_cli/01_phase1_x004_dense_progress_discovery/smoke_20260624T153357Z_gpu/2026_06_24_154301_276480.onnx",
+        "--fit-json",
+        "outputs/analysis/actuator_response_fit.json",
+        "--playground-path",
+        "../Open_Duck_Playground",
+        "--env-python",
+        "../envs/open-duck-playground/bin/python",
+        "--command-x",
+        "0.04",
+        "--duration",
+        "5.0",
+        "--seed",
+        "0",
+        "--bridge-mode",
+        "vanilla",
+        "--jax-platform",
+        "cpu",
+        "--sim-preflight-timeout-s",
+        "600",
+        "--closed-loop-timeout-s",
+        "1800",
+        "--output-dir",
+        "outputs/analysis/v18_phase1_reward_override_replay_cpu/phase_01/seed_000",
+        "--reward-overrides-json",
+        "outputs/analysis/v18_a100_staged_plan.json",
+        "--reward-overrides-phase",
+        "phase1_x004_dense_progress_discovery"
+      ],
+      "command_shell": "/usr/bin/python3 /home/lsd/robots/open-duck-mini-rdkx5/tools/eval_policy_with_actuator_bridge.py --mode closed-loop-sim --eval-role candidate --policy /tmp/v18_artifacts/open_duck_colab_cli_staged-curriculum_20260624T153328Z/open_duck_staged_curriculum_cli/01_phase1_x004_dense_progress_discovery/smoke_20260624T153357Z_gpu/2026_06_24_154301_276480.onnx --fit-json outputs/analysis/actuator_response_fit.json --playground-path ../Open_Duck_Playground --env-python ../envs/open-duck-playground/bin/python --command-x 0.04 --duration 5.0 --seed 0 --bridge-mode vanilla --jax-platform cpu --sim-preflight-timeout-s 600 --closed-loop-timeout-s 1800 --output-dir outputs/analysis/v18_phase1_reward_override_replay_cpu/phase_01/seed_000 --reward-overrides-json outputs/analysis/v18_a100_staged_plan.json --reward-overrides-phase phase1_x004_dense_progress_discovery",
+      "returncode": 0,
+      "stdout_tail": "outputs/analysis/v18_phase1_reward_override_replay_cpu/phase_01/seed_000/SIM_ACTUATOR_BRIDGE_EVAL.md\noutputs/analysis/v18_phase1_reward_override_replay_cpu/phase_01/seed_000/sim_actuator_bridge_eval.json\noutputs/analysis/v18_phase1_reward_override_replay_cpu/phase_01/seed_000/CLOSED_LOOP_ACTUATOR_BRIDGE_EVAL.md\noutputs/analysis/v18_phase1_reward_override_replay_cpu/phase_01/seed_000/closed_loop_actuator_bridge_eval.json\n",
+      "result_json": "outputs/analysis/v18_phase1_reward_override_replay_cpu/phase_01/seed_000/closed_loop_actuator_bridge_eval.json",
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "summary": {
+        "overall_status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+        "candidate_gate_status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+        "samples": 50,
+        "termination_reason": "fall_or_nan",
+        "elapsed_s": 0.98,
+        "mean_local_vx_m_s": 0.003380334058747394,
+        "track_ratio": 0.08450835146868485,
+        "body_pitch_p95_rad": 0.07739213513846098,
+        "base_height_min_m": 0.15360069274902344,
+        "max_pitch_vel_p95_rad_s": 0.4275056719779958,
+        "max_tracking_p95_rad": 0.14332163929939243,
+        "action_saturation_pct": 0.0
+      }
+    },
+    {
+      "policy": "/tmp/v18_artifacts/open_duck_colab_cli_staged-curriculum_20260624T153328Z/open_duck_staged_curriculum_cli/01_phase1_x004_dense_progress_discovery/smoke_20260624T153357Z_gpu/2026_06_24_154301_276480.onnx",
+      "policy_label": "phase_01",
+      "seed": 1,
+      "output_dir": "outputs/analysis/v18_phase1_reward_override_replay_cpu/phase_01/seed_001",
+      "command": [
+        "/usr/bin/python3",
+        "/home/lsd/robots/open-duck-mini-rdkx5/tools/eval_policy_with_actuator_bridge.py",
+        "--mode",
+        "closed-loop-sim",
+        "--eval-role",
+        "candidate",
+        "--policy",
+        "/tmp/v18_artifacts/open_duck_colab_cli_staged-curriculum_20260624T153328Z/open_duck_staged_curriculum_cli/01_phase1_x004_dense_progress_discovery/smoke_20260624T153357Z_gpu/2026_06_24_154301_276480.onnx",
+        "--fit-json",
+        "outputs/analysis/actuator_response_fit.json",
+        "--playground-path",
+        "../Open_Duck_Playground",
+        "--env-python",
+        "../envs/open-duck-playground/bin/python",
+        "--command-x",
+        "0.04",
+        "--duration",
+        "5.0",
+        "--seed",
+        "1",
+        "--bridge-mode",
+        "vanilla",
+        "--jax-platform",
+        "cpu",
+        "--sim-preflight-timeout-s",
+        "600",
+        "--closed-loop-timeout-s",
+        "1800",
+        "--output-dir",
+        "outputs/analysis/v18_phase1_reward_override_replay_cpu/phase_01/seed_001",
+        "--reward-overrides-json",
+        "outputs/analysis/v18_a100_staged_plan.json",
+        "--reward-overrides-phase",
+        "phase1_x004_dense_progress_discovery"
+      ],
+      "command_shell": "/usr/bin/python3 /home/lsd/robots/open-duck-mini-rdkx5/tools/eval_policy_with_actuator_bridge.py --mode closed-loop-sim --eval-role candidate --policy /tmp/v18_artifacts/open_duck_colab_cli_staged-curriculum_20260624T153328Z/open_duck_staged_curriculum_cli/01_phase1_x004_dense_progress_discovery/smoke_20260624T153357Z_gpu/2026_06_24_154301_276480.onnx --fit-json outputs/analysis/actuator_response_fit.json --playground-path ../Open_Duck_Playground --env-python ../envs/open-duck-playground/bin/python --command-x 0.04 --duration 5.0 --seed 1 --bridge-mode vanilla --jax-platform cpu --sim-preflight-timeout-s 600 --closed-loop-timeout-s 1800 --output-dir outputs/analysis/v18_phase1_reward_override_replay_cpu/phase_01/seed_001 --reward-overrides-json outputs/analysis/v18_a100_staged_plan.json --reward-overrides-phase phase1_x004_dense_progress_discovery",
+      "returncode": 0,
+      "stdout_tail": "outputs/analysis/v18_phase1_reward_override_replay_cpu/phase_01/seed_001/SIM_ACTUATOR_BRIDGE_EVAL.md\noutputs/analysis/v18_phase1_reward_override_replay_cpu/phase_01/seed_001/sim_actuator_bridge_eval.json\noutputs/analysis/v18_phase1_reward_override_replay_cpu/phase_01/seed_001/CLOSED_LOOP_ACTUATOR_BRIDGE_EVAL.md\noutputs/analysis/v18_phase1_reward_override_replay_cpu/phase_01/seed_001/closed_loop_actuator_bridge_eval.json\n",
+      "result_json": "outputs/analysis/v18_phase1_reward_override_replay_cpu/phase_01/seed_001/closed_loop_actuator_bridge_eval.json",
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "summary": {
+        "overall_status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+        "candidate_gate_status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+        "samples": 33,
+        "termination_reason": "fall_or_nan",
+        "elapsed_s": 0.64,
+        "mean_local_vx_m_s": -0.09537970935079185,
+        "track_ratio": -2.3844927337697963,
+        "body_pitch_p95_rad": 0.00394958412806851,
+        "base_height_min_m": 0.10092224925756454,
+        "max_pitch_vel_p95_rad_s": 0.7651597261428832,
+        "max_tracking_p95_rad": 0.20626832842826837,
+        "action_saturation_pct": 0.0
+      }
+    }
+  ],
+  "aggregate": {
+    "phase_01": {
+      "runs": 2,
+      "fall_count": 2,
+      "duration_complete_count": 0,
+      "samples": {
+        "min": 33.0,
+        "mean": 41.5,
+        "p50": 41.5,
+        "p95": 49.15,
+        "max": 50.0
+      },
+      "track_ratio": {
+        "min": -2.3844927337697963,
+        "mean": -1.1499921911505557,
+        "p50": -1.1499921911505557,
+        "p95": -0.038941702793239316,
+        "max": 0.08450835146868485
+      },
+      "mean_local_vx_m_s": {
+        "min": -0.09537970935079185,
+        "mean": -0.045999687646022226,
+        "p50": -0.045999687646022226,
+        "p95": -0.0015576681117295721,
+        "max": 0.003380334058747394
+      },
+      "body_pitch_p95_rad": {
+        "min": 0.00394958412806851,
+        "mean": 0.04067085963326474,
+        "p50": 0.04067085963326474,
+        "p95": 0.07372000758794135,
+        "max": 0.07739213513846098
+      },
+      "base_height_min_m": {
+        "min": 0.10092224925756454,
+        "mean": 0.127261471003294,
+        "p50": 0.127261471003294,
+        "p95": 0.1509667705744505,
+        "max": 0.15360069274902344
+      },
+      "max_pitch_vel_p95_rad_s": {
+        "min": 0.4275056719779958,
+        "mean": 0.5963326990604395,
+        "p50": 0.5963326990604395,
+        "p95": 0.7482770234346389,
+        "max": 0.7651597261428832
+      },
+      "max_tracking_p95_rad": {
+        "min": 0.14332163929939243,
+        "mean": 0.1747949838638304,
+        "p50": 0.1747949838638304,
+        "p95": 0.20312099397182456,
+        "max": 0.20626832842826837
+      }
+    }
+  }
+}

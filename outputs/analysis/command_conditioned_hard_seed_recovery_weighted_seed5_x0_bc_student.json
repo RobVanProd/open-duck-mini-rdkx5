@@ -1,0 +1,98 @@
+{
+  "status": "PASS_PPO_LOC_BC_FIT_SMOKE",
+  "manifest": "outputs/analysis/command_conditioned_hard_seed_recovery_weighted_seed5_x0_manifest.json",
+  "samples": 10250,
+  "hidden_sizes": [
+    512,
+    256,
+    128
+  ],
+  "activation": "swish",
+  "saved_npz": "outputs/analysis/command_conditioned_hard_seed_recovery_weighted_seed5_x0_candidate/candidate_mlp.npz",
+  "exported_onnx": "outputs/analysis/command_conditioned_hard_seed_recovery_weighted_seed5_x0_candidate/candidate.onnx",
+  "train_metrics": {
+    "samples": 10250,
+    "mae": 0.0073713055165557755,
+    "rmse": 0.012649852656159878,
+    "p50_abs_error": 0.004094631583670627,
+    "p95_abs_error": 0.02525941773729105,
+    "p99_abs_error": 0.05177138372026386,
+    "max_abs_error": 0.18790456898105512,
+    "pred_action_saturation_pct": 0.0
+  },
+  "target_rate": {
+    "pair_count": 10231,
+    "p50_rad_s": 0.23134783502090117,
+    "p95_rad_s": 1.74064322122965,
+    "p99_rad_s": 2.202951068568524,
+    "max_rad_s": 2.5357316182815057
+  },
+  "sample_weight": {
+    "p50": 1.0,
+    "p95": 1.0,
+    "max": 8.0,
+    "weighted_samples": 13750.0
+  },
+  "loss_rows": [
+    {
+      "step": 1,
+      "loss": 0.14288616180419922
+    },
+    {
+      "step": 500,
+      "loss": 0.00034456123830750585
+    },
+    {
+      "step": 1000,
+      "loss": 0.00024625746300444007
+    },
+    {
+      "step": 1500,
+      "loss": 0.0002147740451619029
+    },
+    {
+      "step": 2000,
+      "loss": 0.0001824635692173615
+    },
+    {
+      "step": 2500,
+      "loss": 0.00017837104678619653
+    },
+    {
+      "step": 3000,
+      "loss": 0.00013490268611349165
+    },
+    {
+      "step": 3500,
+      "loss": 0.00012813690409529954
+    },
+    {
+      "step": 4000,
+      "loss": 0.0001318012218689546
+    },
+    {
+      "step": 4500,
+      "loss": 0.00012272808817215264
+    },
+    {
+      "step": 5000,
+      "loss": 0.00013073049194645137
+    }
+  ],
+  "onnx_verify": {
+    "path": "outputs/analysis/command_conditioned_hard_seed_recovery_weighted_seed5_x0_candidate/candidate.onnx",
+    "samples_checked": 64,
+    "max_abs_error": 2.5848026707908645e-07,
+    "p95_abs_error": 1.517447999407895e-07
+  },
+  "config": {
+    "steps": 5000,
+    "batch_size": 512,
+    "learning_rate": 0.001,
+    "target_rate_scale": 0.2,
+    "target_rate_limit_rad_s": 2.25,
+    "action_scale_rad": 0.25,
+    "dt_s": 0.02,
+    "seed": 3
+  }
+}

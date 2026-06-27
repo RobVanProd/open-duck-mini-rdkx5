@@ -1,0 +1,64 @@
+{
+  "status": "HOLD_SEED5_WEAK_COVERAGE_AND_CLOSED_LOOP_COLLAPSE",
+  "artifact": "outputs/analysis/PPO_BC_SWISH_WARMSTART_SEED_COMPARISON.md",
+  "inputs": {
+    "success_gate": "outputs/analysis/PPO_BC_SWISH_WARMSTART_SUCCESS_TRACE_GATE.md",
+    "seed0_analysis": "outputs/analysis/PPO_BC_SWISH_WARMSTART_SEED0_TRACE_ANALYSIS.md",
+    "seed2_analysis": "outputs/analysis/PPO_BC_SWISH_WARMSTART_SEED2_TRACE_ANALYSIS.md",
+    "seed5_analysis": "outputs/analysis/PPO_BC_SWISH_WARMSTART_SEED5_FAILURE_ANALYSIS.md"
+  },
+  "seeds": {
+    "0": {
+      "samples": 500,
+      "mean_vx_m_s": 0.04576412746909773,
+      "min_vx_m_s": -0.04946471378207207,
+      "first_negative_vx_tick": 0,
+      "first_height_below_10cm_tick": null,
+      "base_height_min_m": 0.1520133912563324,
+      "body_pitch_final_rad": 0.0707199458175737,
+      "target_velocity_p95_rad_s": 2.178633213043213,
+      "joint_tracking_p95_rad": 0.1812882006168365,
+      "nearest_manifest_distance_p95": 0.4358393931107229,
+      "nearest_action_l1_p95": 0.0411040616459599,
+      "double_support_pct": 60.8,
+      "no_contact_pct": 0.0
+    },
+    "2": {
+      "samples": 500,
+      "mean_vx_m_s": 0.04578724255430279,
+      "min_vx_m_s": -0.05013234168291092,
+      "first_negative_vx_tick": 32,
+      "first_height_below_10cm_tick": null,
+      "base_height_min_m": 0.1509164422750473,
+      "body_pitch_final_rad": 0.09083200564449266,
+      "target_velocity_p95_rad_s": 2.197013422846794,
+      "joint_tracking_p95_rad": 0.18419541716575621,
+      "nearest_manifest_distance_p95": 0.41546302461479856,
+      "nearest_action_l1_p95": 0.03997727189774303,
+      "double_support_pct": 61.2,
+      "no_contact_pct": 0.0
+    },
+    "5": {
+      "samples": 74,
+      "mean_vx_m_s": -0.1975790460293521,
+      "min_vx_m_s": -1.4578750133514404,
+      "first_negative_vx_tick": 10,
+      "first_height_below_10cm_tick": 72,
+      "base_height_min_m": 0.07165099680423737,
+      "body_pitch_final_rad": -1.4800867456184121,
+      "target_velocity_p95_rad_s": 1.7629656195640562,
+      "joint_tracking_p95_rad": 0.17603400349617004,
+      "nearest_manifest_distance_p95": 1.0275628464395412,
+      "nearest_action_l1_p95": 0.07827234278737871,
+      "double_support_pct": 75.67567567567568,
+      "no_contact_pct": 6.756756756756757
+    }
+  },
+  "decision": "PLAN_IMPROVE_SWISH_WARMSTART_SEED5_RECOVERY",
+  "stop_rules": [
+    "do not start PPO from the current swish checkpoint",
+    "no robot validation",
+    "no deployment",
+    "no stress bridge gate"
+  ]
+}

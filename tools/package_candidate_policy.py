@@ -27,7 +27,8 @@ DEFAULT_PLAYGROUND = ROOT.parent / "Open_Duck_Playground"
 EXPECTED_INPUT_DIM = 101
 EXPECTED_OUTPUT_DIM = 14
 REQUIRED_EVIDENCE = {
-    "actuator_bridge_eval",
+    "candidate_gate_x0",
+    "candidate_gate_x008",
     "contract_audit",
     "training_manifest",
 }
@@ -216,6 +217,11 @@ def decide_status(payload: dict[str, Any], allow_missing_evidence: bool) -> str:
         return "HOLD_BASELINE_OVERWRITE_RISK"
     if payload["contract"]["status"] != "PASS_POLICY_CONTRACT":
         return payload["contract"]["status"]
+    for gate_name in ["candidate_gate_x0", "candidate_gate_x008", "actuator_bridge_eval"]:
+        gate = payload.get("sim_gate", {}).get(gate_name, {})
+        for status in [gate.get("candidate_gate_status"), gate.get("overall_status")]:
+            if isinstance(status, str) and status.startswith("HOLD"):
+                return status
     missing = [
         key
         for key in payload["required_evidence"]
@@ -223,19 +229,6 @@ def decide_status(payload: dict[str, Any], allow_missing_evidence: bool) -> str:
     ]
     if missing and not allow_missing_evidence:
         return "HOLD_MISSING_SIM_GATE_EVIDENCE"
-    gate_status = (
-        payload.get("sim_gate", {})
-        .get("actuator_bridge_eval", {})
-        .get("candidate_gate_status")
-    )
-    overall_status = (
-        payload.get("sim_gate", {})
-        .get("actuator_bridge_eval", {})
-        .get("overall_status")
-    )
-    for status in [gate_status, overall_status]:
-        if isinstance(status, str) and status.startswith("HOLD"):
-            return status
     if payload.get("non_deployable_reason"):
         return "INFO_NON_DEPLOYABLE_ARTIFACT"
     return "READY_FOR_SIM_GATE_REVIEW"
@@ -315,18 +308,27 @@ def markdown(payload: dict[str, Any]) -> str:
             f"| `{item['label']}` | `{key in required}` | `{item['status']}` | `{item['path']}` |"
         )
 
-    sim_gate = payload.get("sim_gate", {}).get("actuator_bridge_eval") or {}
-    if sim_gate.get("status") == "PASS_PARSED_GATE_STATUS":
+    parsed_gates = [
+        (key, gate)
+        for key, gate in (payload.get("sim_gate") or {}).items()
+        if isinstance(gate, dict) and gate.get("status") == "PASS_PARSED_GATE_STATUS"
+    ]
+    if parsed_gates:
         lines.extend(
             [
                 "",
                 "## Sim Gate Status",
                 "",
-                f"- eval_role: `{sim_gate.get('eval_role')}`",
-                f"- overall_status: `{sim_gate.get('overall_status')}`",
-                f"- candidate_gate_status: `{sim_gate.get('candidate_gate_status')}`",
+                "| gate | eval_role | overall_status | candidate_gate_status |",
+                "|---|---|---|---|",
             ]
         )
+        for key, sim_gate in parsed_gates:
+            lines.append(
+                f"| `{key}` | `{sim_gate.get('eval_role')}` | "
+                f"`{sim_gate.get('overall_status')}` | "
+                f"`{sim_gate.get('candidate_gate_status')}` |"
+            )
 
     training_manifest = payload.get("training_manifest")
     if training_manifest:
@@ -374,7 +376,15 @@ def main() -> int:
     parser.add_argument("--training-manifest")
     parser.add_argument("--contract-audit")
     parser.add_argument("--target-velocity-summary")
-    parser.add_argument("--actuator-bridge-eval")
+    parser.add_argument(
+        "--actuator-bridge-eval",
+        help=(
+            "Legacy alias for the x=0.08 actuator bridge candidate gate. "
+            "Use --candidate-gate-x0 and --candidate-gate-x008 for new packages."
+        ),
+    )
+    parser.add_argument("--candidate-gate-x0")
+    parser.add_argument("--candidate-gate-x008")
     parser.add_argument("--output-md")
     parser.add_argument("--output-json")
     parser.add_argument(
@@ -396,7 +406,9 @@ def main() -> int:
     baseline_path = Path(args.baseline).expanduser().resolve()
     baseline_sha = sha256_file(baseline_path) if baseline_path.exists() else None
     manifest_path = as_path(args.training_manifest)
-    actuator_bridge_eval_path = as_path(args.actuator_bridge_eval)
+    legacy_actuator_bridge_eval_path = as_path(args.actuator_bridge_eval)
+    candidate_gate_x0_path = as_path(args.candidate_gate_x0)
+    candidate_gate_x008_path = as_path(args.candidate_gate_x008) or legacy_actuator_bridge_eval_path
 
     payload: dict[str, Any] = {
         "generated_at": timestamp(),
@@ -420,13 +432,21 @@ def main() -> int:
             "target_velocity_summary": file_evidence(
                 as_path(args.target_velocity_summary), "target_velocity_summary"
             ),
+            "candidate_gate_x0": file_evidence(
+                candidate_gate_x0_path, "candidate_gate_x0"
+            ),
+            "candidate_gate_x008": file_evidence(
+                candidate_gate_x008_path, "candidate_gate_x008"
+            ),
             "actuator_bridge_eval": file_evidence(
-                actuator_bridge_eval_path, "actuator_bridge_eval"
+                legacy_actuator_bridge_eval_path, "actuator_bridge_eval_legacy"
             ),
             "training_manifest": file_evidence(manifest_path, "training_manifest"),
         },
         "sim_gate": {
-            "actuator_bridge_eval": extract_gate_status(actuator_bridge_eval_path)
+            "candidate_gate_x0": extract_gate_status(candidate_gate_x0_path),
+            "candidate_gate_x008": extract_gate_status(candidate_gate_x008_path),
+            "actuator_bridge_eval": extract_gate_status(legacy_actuator_bridge_eval_path),
         },
         "required_evidence": sorted(REQUIRED_EVIDENCE),
         "training_manifest": load_json(manifest_path),

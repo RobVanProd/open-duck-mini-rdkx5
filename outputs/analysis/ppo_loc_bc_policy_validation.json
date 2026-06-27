@@ -1,0 +1,63 @@
+{
+  "status": "HOLD_PPO_LOC_BC_TRACKING",
+  "artifact": "outputs/analysis/PPO_LOC_BC_POLICY_VALIDATION.md",
+  "fit": {
+    "artifact": "outputs/analysis/PPO_LOC_BC_STUDENT.md",
+    "json": "outputs/analysis/ppo_loc_bc_student.json",
+    "status": "PASS_PPO_LOC_BC_FIT_SMOKE",
+    "manifest": "outputs/analysis/source_vx_selector_trace_dagger3_manifest.json",
+    "samples": 9268,
+    "hidden_sizes": [512, 256, 128],
+    "onnx": "outputs/analysis/ppo_loc_bc_student_candidate/candidate.onnx",
+    "npz": "outputs/analysis/ppo_loc_bc_student_candidate/candidate_mlp.npz",
+    "mae": 0.01419794494415191,
+    "p95_action_error": 0.04037785282215699,
+    "max_action_error": 0.2845953229057224,
+    "target_rate_p95_rad_s": 2.203946660039558,
+    "target_rate_max_rad_s": 5.1549070444771115
+  },
+  "standard_gate": {
+    "artifact": "outputs/analysis/DEPLOYABLE_SOURCE_VX_PPO_LOC_BC_VALIDATION_FITTED_BACKLASH.md",
+    "json": "outputs/analysis/deployable_source_vx_ppo_loc_bc_validation_fitted_backlash.json",
+    "task": "flat_terrain_backlash",
+    "command_x": 0.08,
+    "bridge_mode": "fitted",
+    "duration_s": 10.0,
+    "seeds": [0, 1, 2, 3, 4, 5, 6, 7],
+    "runs": 8,
+    "falls": 0,
+    "duration_complete": 8,
+    "mean_vx_m_s": 0.038084038651703456,
+    "mean_track_ratio": 0.4760504831462931,
+    "sent_velocity_p95_range_rad_s": [3.8383731245994572, 3.9249709248542786],
+    "tracking_p95_range_rad": [0.264055210351944, 0.27026522755622867],
+    "result": "HOLD_CANDIDATE_TRACKING"
+  },
+  "comparison": {
+    "dagger3_128_rate_reg": {
+      "mean_vx_m_s": 0.04204261113756956,
+      "mean_track_ratio": 0.5255326392196196,
+      "sent_velocity_p95_range_rad_s": [3.712133765220642, 3.8487520813941956],
+      "tracking_p95_range_rad": [0.2623116254806519, 0.2766607165336609]
+    },
+    "ppo_shape_action_bc": {
+      "mean_vx_m_s": 0.039627748099005204,
+      "mean_track_ratio": 0.49534685123756506,
+      "sent_velocity_p95_range_rad_s": [3.7841784954071045, 3.8409042358398438],
+      "tracking_p95_range_rad": [0.25704456567764283, 0.2684479534626007]
+    },
+    "ppo_loc_bc": {
+      "mean_vx_m_s": 0.038084038651703456,
+      "mean_track_ratio": 0.4760504831462931,
+      "sent_velocity_p95_range_rad_s": [3.8383731245994572, 3.9249709248542786],
+      "tracking_p95_range_rad": [0.264055210351944, 0.27026522755622867]
+    }
+  },
+  "decision": "PLAN_PPO_FINE_TUNE_FROM_PPO_LOC_BC",
+  "stop_rules": [
+    "no robot validation",
+    "no deployment",
+    "no stress bridge gate",
+    "no PPO updates until actual PPO-param step-0 closed-loop fidelity matches the ONNX candidate"
+  ]
+}

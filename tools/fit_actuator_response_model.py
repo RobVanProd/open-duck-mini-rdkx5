@@ -229,54 +229,102 @@ def error_metrics(samples, predicted):
         return None
     errors = [float(sample["actual"]) - float(value) for sample, value in zip(samples, predicted)]
     abs_errors = [abs(value) for value in errors]
+    sorted_abs = sorted(abs_errors)
+    trim_count = max(1, int(math.ceil(len(sorted_abs) * 0.95)))
+    trimmed_errors = sorted_abs[:trim_count]
     rmse = math.sqrt(sum(value * value for value in errors) / len(errors))
     return {
         "rmse": rmse,
+        "mae": sum(abs_errors) / len(abs_errors),
+        "trimmed_rmse_95": math.sqrt(
+            sum(value * value for value in trimmed_errors) / len(trimmed_errors)
+        ),
         "p95_abs_error": percentile(abs_errors, 95),
         "p99_abs_error": percentile(abs_errors, 99),
         "max_abs_error": max(abs_errors),
     }
 
 
-def fit_delay_only(samples, delay_values):
+def selection_score(metrics, selection_metric):
+    if selection_metric == "rmse":
+        return metrics["rmse"]
+    if selection_metric == "trimmed_rmse_95":
+        return metrics["trimmed_rmse_95"]
+    if selection_metric == "p95_abs_error":
+        return metrics["p95_abs_error"]
+    if selection_metric == "mae":
+        return metrics["mae"]
+    raise ValueError(f"unknown selection metric: {selection_metric}")
+
+
+def fit_delay_only(samples, delay_values, selection_metric):
     best = None
     for delay in delay_values:
         metrics = error_metrics(samples, simulate_delay_only(samples, delay))
-        if metrics and (best is None or metrics["rmse"] < best["rmse"]):
-            best = {"delay_ticks": delay, **metrics}
+        if metrics and (
+            best is None
+            or selection_score(metrics, selection_metric) < best["selection_score"]
+        ):
+            best = {
+                "delay_ticks": delay,
+                "selection_metric": selection_metric,
+                "selection_score": selection_score(metrics, selection_metric),
+                **metrics,
+            }
     return best
 
 
-def fit_first_order_only(samples, tau_values):
+def fit_first_order_only(samples, tau_values, selection_metric):
     best = None
     for tau_s in tau_values:
         metrics = error_metrics(samples, simulate_first_order_only(samples, tau_s))
-        if metrics and (best is None or metrics["rmse"] < best["rmse"]):
-            best = {"tau_s": tau_s, **metrics}
+        if metrics and (
+            best is None
+            or selection_score(metrics, selection_metric) < best["selection_score"]
+        ):
+            best = {
+                "tau_s": tau_s,
+                "selection_metric": selection_metric,
+                "selection_score": selection_score(metrics, selection_metric),
+                **metrics,
+            }
     return best
 
 
-def fit_velocity_only(samples, velocity_values):
+def fit_velocity_only(samples, velocity_values, selection_metric):
     best = None
     for velocity in velocity_values:
         metrics = error_metrics(samples, simulate_velocity_only(samples, velocity))
-        if metrics and (best is None or metrics["rmse"] < best["rmse"]):
-            best = {"velocity_limit_rad_s": velocity, **metrics}
+        if metrics and (
+            best is None
+            or selection_score(metrics, selection_metric) < best["selection_score"]
+        ):
+            best = {
+                "velocity_limit_rad_s": velocity,
+                "selection_metric": selection_metric,
+                "selection_score": selection_score(metrics, selection_metric),
+                **metrics,
+            }
     return best
 
 
-def fit_combined(samples, delay_values, tau_values, velocity_values):
+def fit_combined(samples, delay_values, tau_values, velocity_values, selection_metric):
     best = None
     for delay in delay_values:
         for tau_s in tau_values:
             for velocity in velocity_values:
                 predicted = simulate_combined(samples, delay, tau_s, velocity)
                 metrics = error_metrics(samples, predicted)
-                if metrics and (best is None or metrics["rmse"] < best["rmse"]):
+                if metrics and (
+                    best is None
+                    or selection_score(metrics, selection_metric) < best["selection_score"]
+                ):
                     best = {
                         "delay_ticks": delay,
                         "tau_s": tau_s,
                         "velocity_limit_rad_s": velocity,
+                        "selection_metric": selection_metric,
+                        "selection_score": selection_score(metrics, selection_metric),
                         **metrics,
                     }
     return best
@@ -366,10 +414,12 @@ def analyze_joint(samples, args):
     series = series_stats(samples)
     target_error = [abs(sample["actual"] - sample["target"]) for sample in samples]
     raw_tracking = stats(target_error)
-    delay_only = fit_delay_only(samples, delay_values)
-    first_order_only = fit_first_order_only(samples, tau_values)
-    velocity_only = fit_velocity_only(samples, velocity_values)
-    combined = fit_combined(samples, delay_values, tau_values, velocity_values)
+    delay_only = fit_delay_only(samples, delay_values, args.selection_metric)
+    first_order_only = fit_first_order_only(samples, tau_values, args.selection_metric)
+    velocity_only = fit_velocity_only(samples, velocity_values, args.selection_metric)
+    combined = fit_combined(
+        samples, delay_values, tau_values, velocity_values, args.selection_metric
+    )
     lag = cross_correlation_lag(samples, args.max_lag_ticks)
     return {
         "series": series,
@@ -439,6 +489,7 @@ def analyze_file(path, args):
     return {
         "telemetry_jsonl": str(path),
         "startup_ticks": args.startup_ticks,
+        "selection_metric": args.selection_metric,
         "bus": collect_bus(records),
         "joints": results,
         "recommendations": summarize_recommendations(results),
@@ -469,6 +520,7 @@ def build_markdown(primary, comparison):
     lines.append("")
     lines.append(f"primary_telemetry: `{primary['telemetry_jsonl']}`")
     lines.append(f"startup_ticks_ignored: `{primary['startup_ticks']}`")
+    lines.append(f"selection_metric: `{primary.get('selection_metric', 'rmse')}`")
     lines.append(
         "recommended_training_delay_ticks: "
         f"`{recommendations['recommended_training_delay_ticks']}`"
@@ -494,16 +546,16 @@ def build_markdown(primary, comparison):
     lines.append("## Per-Joint Combined Fit")
     lines.append("")
     lines.append(
-        "| joint | delay_ticks | delay_ms | tau_s | velocity_limit | rmse | "
-        "model_p95 | raw_p95 | target_range | actual_range | amp_ratio | "
+        "| joint | delay_ticks | delay_ms | tau_s | velocity_limit | selected | rmse | "
+        "trimmed_rmse_95 | model_p95 | raw_p95 | target_range | actual_range | amp_ratio | "
         "target_vel_p95 | actual_vel_p95 | xcorr_lag | fit_quality | warnings |"
     )
-    lines.append("|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|---|")
+    lines.append("|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|---|")
     for joint, item in primary["joints"].items():
         if item.get("error"):
             lines.append(
                 f"| {joint} | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | "
-                f"NA | NA | NA | {item['error']} | NA |"
+                f"NA | NA | NA | NA | NA | {item['error']} | NA |"
             )
             continue
         combined = item["combined"]
@@ -519,7 +571,9 @@ def build_markdown(primary, comparison):
         lines.append(
             f"| {joint} | {combined['delay_ticks']} | {fmt(delay_ms, 1)} | "
             f"{fmt(combined['tau_s'], 3)} | {fmt(combined['velocity_limit_rad_s'], 2)} | "
-            f"{fmt(combined['rmse'])} | {fmt(combined['p95_abs_error'])} | "
+            f"{fmt(combined.get('selection_score'))} | {fmt(combined['rmse'])} | "
+            f"{fmt(combined.get('trimmed_rmse_95'))} | "
+            f"{fmt(combined['p95_abs_error'])} | "
             f"{fmt(raw.get('p95'))} | {fmt(series['target_range'])} | "
             f"{fmt(series['actual_range'])} | {fmt(series['amplitude_ratio'], 3)} | "
             f"{fmt(target_vel.get('p95'))} | {fmt(actual_vel.get('p95'))} | "
@@ -557,6 +611,7 @@ def build_markdown(primary, comparison):
     lines.append("")
     lines.append("- Fit quality is limited by telemetry cadence and by using commanded target/feedback logs, not servo-internal current-loop data.")
     lines.append("- CRC/read errors remain a watch item, but this fit does not model packet-level dropouts.")
+    lines.append("- Use `--selection-metric trimmed_rmse_95` or `--selection-metric p95_abs_error` to test whether stale-but-finite read outliers are biasing the fitted velocity ceiling.")
     lines.append("- Do not use these numbers to tune runtime behavior directly; use them to configure sim/training experiments first.")
     lines.append("")
 
@@ -600,6 +655,16 @@ def main():
     parser.add_argument("--velocity-step", type=float, default=0.25)
     parser.add_argument("--max-lag-ticks", type=int, default=12)
     parser.add_argument("--joints", nargs="+", default=PITCH_CHAIN_JOINTS)
+    parser.add_argument(
+        "--selection-metric",
+        choices=["rmse", "trimmed_rmse_95", "p95_abs_error", "mae"],
+        default="rmse",
+        help=(
+            "Metric used to select the best grid-search parameters. rmse "
+            "preserves the original behavior. trimmed_rmse_95 and "
+            "p95_abs_error are robust to stale-but-finite read outliers."
+        ),
+    )
     args = parser.parse_args()
 
     primary = analyze_file(Path(args.telemetry_jsonl), args)

@@ -1,0 +1,98 @@
+{
+  "status": "PASS_PPO_LOC_BC_FIT_SMOKE",
+  "manifest": "outputs/analysis/pitch_chain_4p3_gate_aware_relabel_weighted_manifest.json",
+  "samples": 5000,
+  "hidden_sizes": [
+    512,
+    256,
+    128
+  ],
+  "activation": "swish",
+  "saved_npz": "outputs/analysis/pitch_chain_4p3_gate_aware_relabel_ppo_shape_student_candidate/candidate_mlp.npz",
+  "exported_onnx": "outputs/analysis/pitch_chain_4p3_gate_aware_relabel_ppo_shape_student_candidate/candidate.onnx",
+  "train_metrics": {
+    "samples": 5000,
+    "mae": 0.015000166942302629,
+    "rmse": 0.023054988171286338,
+    "p50_abs_error": 0.009736637953586647,
+    "p95_abs_error": 0.04758613571026648,
+    "p99_abs_error": 0.08723706544638206,
+    "max_abs_error": 0.2523855829287887,
+    "pred_action_saturation_pct": 0.0
+  },
+  "target_rate": {
+    "pair_count": 4990,
+    "p50_rad_s": 0.5166594249601978,
+    "p95_rad_s": 2.326586208896364,
+    "p99_rad_s": 3.5883784590910124,
+    "max_rad_s": 4.566727767680048
+  },
+  "sample_weight": {
+    "p50": 1.0,
+    "p95": 12.0,
+    "max": 12.0,
+    "weighted_samples": 16000.0
+  },
+  "loss_rows": [
+    {
+      "step": 1,
+      "loss": 0.22050000727176666
+    },
+    {
+      "step": 500,
+      "loss": 0.0010389899834990501
+    },
+    {
+      "step": 1000,
+      "loss": 0.0007518050842918456
+    },
+    {
+      "step": 1500,
+      "loss": 0.0007575127528980374
+    },
+    {
+      "step": 2000,
+      "loss": 0.0007485415553674102
+    },
+    {
+      "step": 2500,
+      "loss": 0.0006571216508746147
+    },
+    {
+      "step": 3000,
+      "loss": 0.0006033295067027211
+    },
+    {
+      "step": 3500,
+      "loss": 0.0005886687431484461
+    },
+    {
+      "step": 4000,
+      "loss": 0.0005160418222658336
+    },
+    {
+      "step": 4500,
+      "loss": 0.0004479561757761985
+    },
+    {
+      "step": 5000,
+      "loss": 0.00046567647950723767
+    }
+  ],
+  "onnx_verify": {
+    "path": "outputs/analysis/pitch_chain_4p3_gate_aware_relabel_ppo_shape_student_candidate/candidate.onnx",
+    "samples_checked": 64,
+    "max_abs_error": 2.911126480986681e-07,
+    "p95_abs_error": 1.6848321894580298e-07
+  },
+  "config": {
+    "steps": 5000,
+    "batch_size": 512,
+    "learning_rate": 0.0005,
+    "target_rate_scale": 0.1,
+    "target_rate_limit_rad_s": 3.75,
+    "action_scale_rad": 0.25,
+    "dt_s": 0.02,
+    "seed": 1
+  }
+}

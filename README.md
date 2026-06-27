@@ -8,23 +8,36 @@ The repository and its documentation are part of the robot's working state. Keep
 
 ## Current Next Step
 
-The first evidence and suspended replay phases have shifted the leading root
-cause from "unknown deployed contract mismatch" to "dynamic actuator mismatch."
-The current work is offline:
+The first evidence, suspended replay, actuator modeling, and offline training
+campaign have shifted the leading blocker from "unknown deployed contract
+mismatch" to "weight transfer / single-support discovery." The current work is
+offline:
 
 ```text
-manual CUDA/Colab candidate run
-  -> import the CUDA artifact bundle locally
-  -> review x=0.0 and x=0.08 candidate sim gates
-  -> only if gates pass, package a candidate ONNX under a new name
-  -> only then request suspended robot validation
+build a 100-150 tick seed-robust target source
+  -> verify left/right single-support alternation
+  -> verify forward progress, lateral stability, pitch/height, and actuator envelope
+  -> only then consider supervised/imitation or PPO
+  -> only after offline gates pass, request suspended robot validation
 ```
 
-Local CPU pilots validate the training/export/package plumbing but repeatedly
-learn near-standing policies. Local `7900 XTX` ROCm can run tiny host-loop
-closed-loop smoke probes, but it is too slow for full-horizon eval or training.
-Use `tools/print_cuda_colab_cell.py --run-candidate` in a manually
-authenticated CUDA notebook/session for the next candidate attempt.
+The latest contact-transfer audit says the current dynamic-roll/lateral-fix
+fragments mostly move forward while staying in double support, so they are not
+valid stepping demonstrations for BC/PPO yet.
+
+Current target gate:
+
+```text
+PASS_WEIGHT_TRANSFER_TARGET
+```
+
+Read these first:
+
+```text
+docs/PROJECT_FINDINGS.md
+docs/WEIGHT_TRANSFER_TARGET_PLAN.md
+outputs/analysis/CONTACT_TRANSFER_BLOCKER_AUDIT.md
+```
 
 Do not tune hardware gains, patch IMU remaps, edit offsets, change action
 scale, change phase timing, overwrite `BEST_WALK_ONNX_2.onnx`, or run grounded
@@ -33,7 +46,9 @@ walking yet.
 Primary docs:
 
 - [Project goal](PROJECT_GOAL.md)
+- [Project findings](docs/PROJECT_FINDINGS.md)
 - [Roadmap](ROADMAP.md)
+- [Weight-transfer target plan](docs/WEIGHT_TRANSFER_TARGET_PLAN.md)
 - [Safety rules](docs/SAFETY_RULES.md)
 - [Evidence flow](docs/EVIDENCE_FLOW.md)
 - [Issue backlog](docs/ISSUE_BACKLOG.md)

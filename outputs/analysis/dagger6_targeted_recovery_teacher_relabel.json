@@ -1,0 +1,67 @@
+{
+  "status": "PASS_BC_TRACE_RELABEL_READY",
+  "teacher": {
+    "teacher_manifest": "outputs/analysis/closed_loop_teacher_dataset_manifest.json",
+    "teacher_dataset_id": "407af2cbe0ad69e1",
+    "teacher_entries": 499,
+    "teacher_samples": 6475,
+    "teacher_model_kind": "source_vx_blend",
+    "knn_k": 5,
+    "blend_alpha": 0.8,
+    "vx_blend_alpha": 1.0,
+    "vx_blend_threshold_m_s": -0.02,
+    "source_vx_threshold_m_s": 0.02,
+    "include_source_regex": null,
+    "exclude_source_regex": null,
+    "alt_include_source_regex": null,
+    "alt_exclude_source_regex": "_seed4/",
+    "best_alpha": 1.0
+  },
+  "trace_globs": [
+    "outputs/analysis/dagger6_targeted_recovery_trace_x008_fitted_10s/dagger6/seed_*/trace.jsonl"
+  ],
+  "output_trace_dir": "outputs/analysis/dagger6_targeted_recovery_teacher_relabel_x008_traces",
+  "summary": {
+    "traces": 2,
+    "samples_out": 63,
+    "truncated_traces": 2
+  },
+  "traces": [
+    {
+      "source_trace": "outputs/analysis/dagger6_targeted_recovery_trace_x008_fitted_10s/dagger6/seed_001/trace.jsonl",
+      "output_trace": "outputs/analysis/dagger6_targeted_recovery_teacher_relabel_x008_traces/seed_001/trace.jsonl",
+      "samples_in": 32,
+      "samples_out": 31,
+      "skipped": 0,
+      "truncate_before_done": true,
+      "first_done_index": 31,
+      "action_delta_p50": 0.042482962600009166,
+      "action_delta_p95": 0.1477526909147495,
+      "action_delta_max": 0.3187801480293274,
+      "active_model_counts": {
+        "alt": 15,
+        "primary": 16
+      },
+      "blend_alpha_p50": 1.0,
+      "blend_alpha_p95": 1.0
+    },
+    {
+      "source_trace": "outputs/analysis/dagger6_targeted_recovery_trace_x008_fitted_10s/dagger6/seed_007/trace.jsonl",
+      "output_trace": "outputs/analysis/dagger6_targeted_recovery_teacher_relabel_x008_traces/seed_007/trace.jsonl",
+      "samples_in": 33,
+      "samples_out": 32,
+      "skipped": 0,
+      "truncate_before_done": true,
+      "first_done_index": 32,
+      "action_delta_p50": 0.04805390816181898,
+      "action_delta_p95": 0.17432926527196352,
+      "action_delta_max": 0.35738587935962146,
+      "active_model_counts": {
+        "alt": 21,
+        "primary": 11
+      },
+      "blend_alpha_p50": 1.0,
+      "blend_alpha_p95": 1.0
+    }
+  ]
+}

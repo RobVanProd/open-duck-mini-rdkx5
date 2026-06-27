@@ -1,0 +1,466 @@
+# Source-VX Selector Policy Pivot
+
+status: `PLAN_DEPLOYABLE_POLICY_VALIDATION_AND_WARMSTART`
+
+This is an offline decision artifact. It does not train, deploy, SSH, run robot
+tests, or change robot runtime behavior.
+
+## Executive Summary
+
+The source-VX selector proved that in-envelope forward walking is achievable in
+simulation through the fitted actuator bridge:
+
+```text
+artifact: outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_SOURCE_VX_BLEND080_100_SRCVX002_ALT_EXCLUDE_SEED4_FITTED_BRIDGE_BC_GATE_X008_10S.md
+status: PASS_BC_FIT_SMOKE_FORWARD_REPLAY
+command: straight x=0.08
+duration: 10 s
+moving seeds: 8 / 8
+terminated seeds: 0 / 8
+track ratio range: 0.5491-0.6172
+sent-target velocity p95 range: 2.2569-2.3622 rad/s
+joint tracking p95 range: 0.1809-0.1863 rad
+```
+
+That result kills the morphology-wall hypothesis for the current offline sim
+proxy: forward motion exists across all eight seeds while staying inside the
+measured actuator bridge target-rate budget.
+
+The caveat is equally important: the source-VX selector is a diagnostic lookup
+and blend over teacher windows, not a deployable learned policy. It has done
+its job. The next branch should not refine the selector further by default.
+
+## Deployable Policy Evidence
+
+Early plain MLP distillation failed:
+
+```text
+artifact: outputs/analysis/SOURCE_VX_SELECTOR_TRACE_MLP128_FITTED_BRIDGE_BC_GATE_X008_10S.md
+status: HOLD_BC_REPLAY_TERMINATED
+result: all seeds fall/progress-fail with reverse velocity and high target rate
+```
+
+Later DAgger relabeling changed that picture. The DAgger-2 128x128 MLP passed
+the 10-second fitted-bridge smoke and was exported to ONNX:
+
+```text
+artifact: outputs/analysis/SOURCE_VX_SELECTOR_TRACE_DAGGER2_MLP128_FITTED_BRIDGE_BC_GATE_X008_10S.md
+status: PASS_BC_FIT_SMOKE_FORWARD_REPLAY
+exported ONNX: outputs/analysis/source_vx_selector_trace_dagger2_mlp128_candidate/candidate.onnx
+moving seeds: 8 / 8
+terminated seeds: 0 / 8
+track ratio range: 0.5208-0.6182
+sent-target velocity p95 range: 2.1174-2.1601 rad/s
+```
+
+The rate-regularized DAgger-2 MLP also passed the same fitted-bridge smoke:
+
+```text
+artifact: outputs/analysis/SOURCE_VX_SELECTOR_TRACE_DAGGER2_MLP128_RATE_REG_ONNX_FITTED_BRIDGE_BC_GATE_X008_10S.md
+status: PASS_BC_FIT_SMOKE_FORWARD_REPLAY
+exported ONNX: outputs/analysis/source_vx_selector_trace_dagger2_mlp128_rate_reg_candidate/candidate.onnx
+moving seeds: 8 / 8
+terminated seeds: 0 / 8
+track ratio range: 0.4124-0.5334
+sent-target velocity p95 range: 2.1256-2.1971 rad/s
+```
+
+So the current truth is not "MLP distillation always fails." It is:
+
+```text
+early MLP: failed
+DAgger-2 MLP: fitted-bridge smoke pass, ONNX exported
+DAgger-2 rate-reg MLP: fitted-bridge smoke pass, ONNX exported
+strict deployment-grade validation: still pending
+```
+
+## Current Decision
+
+Stop optimizing the non-deployable source-VX selector as the primary path.
+
+Promote the workstream to deployable-policy validation:
+
+1. Validate the DAgger-2 and DAgger-2 rate-reg ONNX candidates under the same
+   task, command, fitted-bridge, stress-bridge, and multi-seed gates.
+2. Compare them against the source-VX selector pass, not against old failed
+   plain-MLP baselines.
+3. If one candidate keeps forward motion, target-rate, tracking, and stability
+   margin under stricter gates, use it as the warm-start policy for PPO with the
+   actuator bridge active.
+4. If both candidates fail strict validation, expand selector rollouts into a
+   larger on-policy teacher dataset and repeat DAgger/BC before PPO.
+
+## Stop Rules
+
+- Do not run robot validation from the selector result.
+- Do not deploy the source-VX selector.
+- Do not treat a 10-second smoke as a robot-ready gate.
+- Do not continue selector knob tuning unless candidate validation shows a
+  specific missing teacher state that only the selector can provide.
+- Do not relax the fitted actuator envelope to make a candidate pass.
+
+## Next Branch
+
+```text
+PLAN_DEPLOYABLE_POLICY_VALIDATION_AND_WARMSTART
+```
+
+Recommended first offline artifact:
+
+```text
+DEPLOYABLE_SOURCE_VX_POLICY_VALIDATION
+```
+
+It should compare:
+
+```text
+outputs/analysis/source_vx_selector_trace_dagger2_mlp128_candidate/candidate.onnx
+outputs/analysis/source_vx_selector_trace_dagger2_mlp128_rate_reg_candidate/candidate.onnx
+```
+
+using:
+
+```text
+straight x=0.08
+fitted bridge
+stress bridge
+8+ seeds
+10 s minimum
+target-rate p95 and max checks
+tracking p95 checks
+track-ratio / forward-progress checks
+termination checks
+```
+
+If a deployable ONNX candidate survives that review, the next training move is
+PPO fine-tuning from the BC/DAgger policy with the fitted actuator bridge active,
+not PPO from scratch and not another open-loop target-source campaign.
+
+## Strict Validation Update
+
+The first strict deployable-policy validation was run after the behavior-prior
+PPO branch held:
+
+```text
+artifact: outputs/analysis/DEPLOYABLE_SOURCE_VX_POLICY_VALIDATION_X008_FITTED_15S.md
+command: straight x=0.08
+bridge: fitted
+duration: 15 s
+seeds: 0-7
+policies:
+  - source_vx_selector_trace_dagger2_mlp128_candidate/candidate.onnx
+  - source_vx_selector_trace_dagger2_mlp128_rate_reg_candidate/candidate.onnx
+```
+
+Result:
+
+```text
+dagger2:
+  pass: 0 / 8
+  falls: 2 / 8
+  duration complete: 6 / 8
+  mean track ratio: 0.2487
+  mean vx: 0.0199 m/s
+  failure modes: low progress, tracking, fall/termination
+
+dagger2_rate:
+  pass: 0 / 8
+  falls: 2 / 8
+  duration complete: 6 / 8
+  mean track ratio: 0.1847
+  mean vx: 0.0148 m/s
+  failure modes: low progress, fall/termination
+```
+
+The 10-second fitted-bridge smoke result was therefore useful but not strong
+enough to promote either ONNX candidate to PPO warm-start or robot validation.
+The deployable MLPs can reproduce some forward motion, but over the longer
+15-second gate they either lose forward progress, exceed tracking limits, or
+fall on hard seeds.
+
+The current next step is not robot testing and not another selector knob tweak.
+It is to expand the selector-generated on-distribution rollout dataset and
+repeat DAgger/BC with stricter 15-second fitted-bridge validation as the primary
+gate.
+
+The later DAgger-3 candidates were also checked against the same strict gate:
+
+```text
+artifact: outputs/analysis/DEPLOYABLE_SOURCE_VX_POLICY_VALIDATION_DAGGER3_X008_FITTED_15S.md
+command: straight x=0.08
+bridge: fitted
+duration: 15 s
+seeds: 0-7
+policies:
+  - source_vx_selector_trace_dagger3_mlp128_rate_reg_candidate/candidate.onnx
+  - source_vx_selector_trace_dagger3_mlp512_256_128_rate_reg_candidate/candidate.onnx
+```
+
+Result:
+
+```text
+dagger3_128:
+  pass: 0 / 8
+  falls: 2 / 8
+  duration complete: 6 / 8
+  mean track ratio: 0.2729
+  mean vx: 0.0218 m/s
+
+dagger3_512:
+  pass: 0 / 8
+  falls: 3 / 8
+  duration complete: 5 / 8
+  mean track ratio: -0.0873
+  mean vx: -0.0070 m/s
+```
+
+This confirms the DAgger-2 conclusion. More capacity and one more DAgger
+iteration do not solve the strict 15-second fitted-bridge gate. The 128-wide
+DAgger-3 model is the best of this group by mean forward progress, but it still
+fails on tracking and hard-seed falls. The 512/256/128 model overfits or
+destabilizes badly enough to produce negative mean velocity.
+
+## Selector Expansion Check
+
+A bounded attempt to expand the source-VX selector dataset to fresh seeds 8-15
+also held:
+
+```text
+artifact: outputs/analysis/SOURCE_VX_SELECTOR_EXPANSION_SEEDS8_15_FITTED_10S.md
+status: HOLD_BC_REPLAY_TERMINATED
+command: straight x=0.08
+bridge: fitted
+duration: 10 s
+selector: source_vx_blend080_100_srcvx002_alt_exclude_seed4
+```
+
+Result:
+
+```text
+duration complete: seeds 8, 10, 11
+terminated/reversed/collapsed: seeds 9, 12, 13, 14, 15
+
+usable complete traces:
+  seed 8:  vx 0.0315 m/s, ratio 0.3941, sent_vel95 2.2927, track95 0.1820
+  seed 10: vx 0.0336 m/s, ratio 0.4204, sent_vel95 2.2931, track95 0.1830
+  seed 11: vx 0.0322 m/s, ratio 0.4020, sent_vel95 2.2668, track95 0.1821
+```
+
+This means selector expansion cannot be an unfiltered "sample more seeds" step.
+The selector is itself seed-fragile outside the original 0-7 evaluation set.
+Any expanded BC/DAgger dataset must curate complete, forward-moving selector
+traces and treat terminated/reverse traces as failure cases for analysis, not as
+positive action labels.
+
+That curation was implemented with:
+
+```text
+tool: tools/filter_bc_manifest.py
+artifact: outputs/analysis/FILTERED_SOURCE_VX_SELECTOR_DAGGER4_MANIFEST.md
+status: PASS_FILTERED_BC_MANIFEST_READY
+input entries: 33
+kept entries: 19
+samples: 9500
+```
+
+The filter kept only complete, forward-moving, in-envelope-ish source windows
+and rejected reverse/fall/low-height/high-pitch/high-rate traces.
+
+A filtered DAgger-4 MLP was then trained from that manifest:
+
+```text
+artifact: outputs/analysis/SOURCE_VX_SELECTOR_TRACE_DAGGER4_FILTERED_MLP128_RATE_REG_ONNX_FITTED_BRIDGE_BC_GATE_X008_10S.md
+status: HOLD_BC_REPLAY_TERMINATED
+model: 128x128 MLP, rate regularized
+command: x=0.08
+bridge: fitted
+duration: 10 s
+```
+
+Result:
+
+```text
+duration complete: 6 / 8
+terminated: seeds 1 and 7
+seed 0: near-standstill, vx 0.0009 m/s
+best moving seed: seed 2, vx 0.0318 m/s, track ratio 0.3974
+```
+
+Filtering removed bad labels but also exposed that the remaining positive
+walking manifold is still too narrow for this 128x128 BC student. The next
+candidate should not add the rejected traces back as positive labels. It should
+either improve coverage with curated complete traces or add a stronger
+closed-loop stabilization/fine-tuning stage after BC.
+
+An additional selector expansion over seeds 16-31 found more usable complete
+traces:
+
+```text
+artifact: outputs/analysis/SOURCE_VX_SELECTOR_EXPANSION_SEEDS16_31_FITTED_10S.md
+status: HOLD_BC_REPLAY_TERMINATED
+complete traces: 11 / 16
+filter-kept traces at vx >= 0.03: 8
+```
+
+Those traces were merged into a DAgger-5 filtered manifest:
+
+```text
+artifact: outputs/analysis/FILTERED_SOURCE_VX_SELECTOR_DAGGER5_MANIFEST.md
+status: PASS_FILTERED_BC_MANIFEST_READY
+kept entries: 27
+samples: 13500
+```
+
+A DAgger-5 128x128 rate-regularized MLP was trained from that larger clean
+manifest:
+
+```text
+artifact: outputs/analysis/SOURCE_VX_SELECTOR_TRACE_DAGGER5_FILTERED_MLP128_RATE_REG_ONNX_FITTED_BRIDGE_BC_GATE_X008_10S.md
+status: HOLD_BC_REPLAY_TERMINATED
+```
+
+Result:
+
+```text
+duration complete: 5 / 8
+terminated: seeds 1, 5, 7
+seed 5: reverse/fall, vx -0.1500 m/s
+best moving seed: seed 2, vx 0.0308 m/s, track ratio 0.3850
+```
+
+The larger curated dataset improved some seeds relative to DAgger-4, but did
+not solve hard-seed stability. BC-only distillation from positive selector
+windows is now the active limit. The next meaningful branch should add
+closed-loop stabilization/fine-tuning around the best filtered BC student, or
+collect failure-state recovery labels rather than only positive walking windows.
+
+The first failure-state recovery-label pass has now been tested. DAgger-5 was
+replayed with full observations and relabeled by the source-VX selector teacher,
+dropping terminal `done` rows before BC:
+
+```text
+artifact: outputs/analysis/DAGGER5_RECOVERY_TEACHER_RELABEL.md
+status: PASS_BC_TRACE_RELABEL_READY
+samples_out: 3064
+truncated_traces: 2
+```
+
+This was merged with the DAgger-5 positive manifest, with recovery data included
+twice:
+
+```text
+artifact: outputs/analysis/FILTERED_SOURCE_VX_SELECTOR_DAGGER6_RECOVERY_MANIFEST.md
+kept entries: 43
+samples: 19628
+```
+
+The resulting DAgger-6 MLP is an improvement but not a pass:
+
+```text
+artifact: outputs/analysis/SOURCE_VX_SELECTOR_TRACE_DAGGER6_RECOVERY_MLP128_RATE_REG_ONNX_FITTED_BRIDGE_BC_GATE_X008_10S.md
+status: HOLD_BC_REPLAY_TERMINATED
+duration complete: 6 / 8
+terminated: seeds 1 and 7
+seed 5 recovered: duration_complete, vx 0.0338 m/s
+```
+
+The recovery labels fixed one hard failure surface and increased forward
+progress on completed seeds. They did not fix the earliest collapse seeds. This
+is now a sharper deployability boundary: BC-only can absorb some teacher
+corrections, but a single relabel pass still cannot make the MLP robust across
+all seeds. The next branch should focus on targeted seed-1/seed-7 early-collapse
+recovery or closed-loop fine-tuning from the DAgger-6 student. Do not spend the
+next run refining the nondeployable selector; it already served its purpose as
+the existence proof and teacher.
+
+The targeted early-collapse variant was tested next. DAgger-6 was replayed on
+only seeds 1 and 7, relabeled by the source-VX teacher, and the resulting 63
+pre-terminal samples were upweighted 50x:
+
+```text
+artifact: outputs/analysis/DAGGER6_TARGETED_RECOVERY_TEACHER_RELABEL.md
+status: PASS_BC_TRACE_RELABEL_READY
+samples_out: 63
+
+artifact: outputs/analysis/FILTERED_SOURCE_VX_SELECTOR_DAGGER7_TARGETED_RECOVERY_MANIFEST.md
+status: PASS_FILTERED_BC_MANIFEST_READY
+samples: 22778
+```
+
+The DAgger-7 MLP still failed the same two seeds:
+
+```text
+artifact: outputs/analysis/SOURCE_VX_SELECTOR_TRACE_DAGGER7_TARGETED_RECOVERY_MLP128_RATE_REG_ONNX_FITTED_BRIDGE_BC_GATE_X008_10S.md
+status: HOLD_BC_REPLAY_TERMINATED
+duration complete: 6 / 8
+terminated: seeds 1 and 7
+```
+
+This rules out a simple label-weighting fix for the remaining early-collapse
+mode. The static BC student can learn the general walking manifold and can
+absorb some recovery corrections, but it does not learn a closed-loop
+stabilization response from the first 30 ticks of fall-state labels. The next
+deployable-policy attempt should be closed-loop fine-tuning from the best BC
+student, or a dataset that contains actual successful recovery trajectories,
+not more copies of the same terminal-onset labels.
+
+## PPO-Compatible Warm-Start Check
+
+The first PPO-compatible branch tested the DAgger-6 recovery manifest with a
+PPO actor-shaped BC student and a true Brax/PPO checkpoint export.
+
+```text
+artifact: outputs/analysis/PPO_LOC_DAGGER6_RECOVERY_STUDENT.md
+status: PASS_PPO_LOC_BC_FIT_SMOKE
+train p95 abs error: 0.044702
+target-rate p95: 2.351068 rad/s
+```
+
+The raw PPO-location ONNX and the step-0 PPO checkpoint export both held at the
+same fitted-bridge gate:
+
+```text
+raw PPO-loc ONNX: falls 3/8, mean track ratio -0.0967
+step-0 PPO export: falls 3/8, mean track ratio -0.0931
+```
+
+A tiny CPU-only PPO fine-tune from the step-0 checkpoint ran successfully and
+exported a step-1040 ONNX, proving the warm-start training path is wired:
+
+```text
+source run: /tmp/open_duck_ppo_loc_dagger6_finetune_smoke/smoke_20260626T235852Z_cpu
+status: PASS_SMOKE_RUN
+```
+
+But the step-1040 policy still held:
+
+```text
+artifact: outputs/analysis/PPO_LOC_DAGGER6_RECOVERY_STEP1040_X008_FITTED_10S.md
+falls: 2/8
+duration complete: 6/8
+mean track ratio: 0.1379
+mean vx: 0.0110 m/s
+```
+
+A behavior-prior smoke completed, but the interrupted partial gate already
+matched the same failure shape on seeds 0-2: low forward progress on seeds 0
+and 2, and a fall on seed 1.
+
+```text
+artifact: outputs/analysis/PPO_LOC_DAGGER6_BEHAVIOR_PRIOR_STEP1040_PARTIAL_X008_FITTED_10S.md
+```
+
+Conclusion: the deployable PPO warm-start/export path exists, but this small
+fine-tune moves toward a low-progress/freeze basin rather than a robot
+candidate. The next trainable-policy branch needs a stronger way to preserve
+the source-VX walking mechanism while improving closed-loop recovery.
+
+## Robot-Side Caveat
+
+The source-VX selector and PPO artifacts are offline sim results. Before any
+future robot validation, the physical home/start pose must be re-checked against
+the sim/runtime specification. The runtime home pose matches the sim keyframe
+and telemetry home-pose tracking was small, but there is no fresh evidence that
+the real mechanical hip/knee/ankle geometry was manually calibrated to spec
+after the later robot work. The large live `left_knee` offset (`-1.4880 rad`)
+keeps this as a hard pre-robot gate.

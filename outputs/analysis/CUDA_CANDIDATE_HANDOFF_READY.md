@@ -1,10 +1,11 @@
 # CUDA Candidate Handoff Ready
 
-generated_at: `2026-06-22T13:32:33Z`
+generated_at: `2026-06-22T18:45:00Z`
 
 ## Status
 
-The repo is ready for the next manual CUDA/Colab candidate run.
+The repo is ready for the next CUDA/Colab candidate run, but not another
+blind repeat of the current reward recipe.
 
 Recent handoff fixes merged:
 
@@ -34,6 +35,31 @@ Recent handoff fixes merged:
   `--notebook-output`.
 - Current generator: can write a complete local handoff directory with
   `--handoff-dir`, including notebook, raw cell text, and import checklist.
+- Current headless path: `tools/run_colab_cli_cuda_workflow.py` uploads local
+  repo tarballs through `google-colab-cli`, avoids GitHub token prompts, and
+  pins `jax/jaxlib==0.7.2`.
+- Patched Colab L4 closed-loop eval rerun: `PASS_CLOSED_LOOP_REPRODUCTION`
+  with `worker_returncode=0`, `gpu/cuda:0`, and non-empty worker JSON.
+- Colab CLI 50k candidate run: exported a 101/14 ONNX and passed `x=0.0`, but
+  held at `x=0.08` with `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS`.
+- Colab CLI 300k strengthened candidate run: exported step `307200`, passed
+  the actuator-safe parts of the `x=0.08` gate, but again held for low forward
+  progress. The fitted/stress mean forward velocity was approximately zero.
+- Archived `verify_scratch/odm_phase_b` checkpoint sweep on Colab L4: five
+  selected compatible ONNX checkpoints all held at `x=0.08` for
+  `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS`.
+
+Small committed summary:
+
+```text
+outputs/analysis/PHASE_B_CHECKPOINT_SWEEP_SUMMARY.md
+```
+
+Raw Colab artifacts remain ignored under:
+
+```text
+outputs/analysis/colab_cli/phase_b_eval_20260622T173551Z/
+```
 
 ## Why Manual CUDA Is Still Required
 
@@ -46,7 +72,55 @@ Recent handoff fixes merged:
 
 ## Next Command
 
-Generate the current one-cell CUDA workflow from `main`:
+Before launching another candidate, update the training objective/curriculum so
+near-zero forward velocity is not a good solution for `x=0.08`. The current
+recipe can make policies smooth enough for actuator gates while still failing
+locomotion.
+
+The next recipe should use the Playground runner's default-off forward-progress
+term and a stricter tracking shape:
+
+```text
+tracking_sigma=0.0025
+forward_progress_scale=2.0
+forward_progress_deadband=0.02
+tracking_lin_vel_scale=12.0
+tracking_ang_vel_scale=0.0
+target_rate_scale=-0.001
+action_rate_scale=-0.1
+action_magnitude_scale=-0.05
+alive_scale=0.5
+imitation_scale=0.25
+lin_vel_x=[0.04, 0.12]
+```
+
+June 22 CUDA candidate follow-up:
+
+- `open_duck_mini_actuator_bridge_cli_20260622T202101Z` trained to step
+  `307200` and held offline: `x=0.0` fell/terminated and `x=0.08` had near-zero
+  forward progress.
+- `open_duck_mini_actuator_bridge_cli_20260622T205753Z` trained to step
+  `614400` with yaw tracking disabled, but still held offline: all trained
+  checkpoints from `153600` onward failed the `x=0.0` gate; the final checkpoint
+  also held at `x=0.08` with near-zero/negative forward tracking.
+- The exported sample actions saturated after the first training checkpoint.
+  The next recipe should penalize action magnitude, not only action rate,
+  because a constant saturated action can have low action-rate cost.
+
+Local CPU smoke validation for this recipe passed on June 22, 2026:
+
+```text
+status: PASS_SMOKE_RUN
+step: 320
+reward: 1.6719996929168701
+output_dir: /tmp/open_duck_actuator_bridge_smoke/smoke_20260622T184905Z_cpu
+```
+
+The smoke ONNX exports remain temporary validation artifacts only; they are not
+candidate policies and are not approved for robot testing.
+
+After the reward/curriculum patch, generate the current one-cell CUDA workflow
+from `main`:
 
 ```bash
 python3 tools/print_cuda_colab_cell.py --run-candidate
@@ -70,15 +144,33 @@ python3 tools/print_cuda_colab_cell.py \
 
 Run the generated cell in the already-authenticated CUDA/Colab session.
 
+For an agent/headless Colab session, prefer the staged CLI path:
+
+```bash
+python3 tools/run_colab_cli_cuda_workflow.py --workflow eval --run
+python3 tools/run_colab_cli_cuda_workflow.py --workflow smoke --run
+python3 tools/run_colab_cli_cuda_workflow.py --workflow candidate-only --run
+```
+
+Move one line at a time only after the previous artifact gate passes. This route
+uploads local repo tarballs and does not clone from GitHub inside Colab.
+
 The generated cell now:
 
-- pins the known-good CUDA dependency path, including `playground==0.0.5`
+- pins the known-good CUDA dependency path, including `jax/jaxlib==0.7.2`
+  and `playground==0.0.5`
+- uses the stricter nonzero-command recipe above so another candidate cannot
+  pass offline actuator gates by standing nearly still at `x=0.08`
+- exposes command-curriculum knobs so a follow-up candidate can set
+  `--candidate-zero-command-probability 0.0` and
+  `--candidate-command-resample-steps 600` if the historical 10% zero-command
+  sampling is still biasing learning toward standing
 - runs the baseline closed-loop actuator bridge reproduction with
   `--jax-platform gpu` and `--sim-preflight-timeout-s 600`
 - runs CUDA smoke training
 - runs CUDA candidate training
 - gates the candidate at `x=0.0` and `x=0.08`
-- packages metadata against the `x=0.08` gate
+- packages metadata against both candidate gates
 - writes one downloadable artifact bundle and tries to trigger a Colab browser
   download:
 - records repo commits, dirty-file counts, package versions, `pip_freeze.txt`,
@@ -86,8 +178,8 @@ The generated cell now:
   from the EXIT trap
 - uses one selected `PYTHON_BIN` for installs, checks, training, gates, and
   subprocess env instantiation
-- prompts for a GitHub token for private repos and uses it through `GIT_ASKPASS`
-  without writing it into git remotes
+- uses `GIT_ASKPASS` only if `GITHUB_TOKEN` or `GH_TOKEN` is already set;
+  otherwise it attempts public repo access and fails clearly if a repo is private
 - records nonzero `exit_status` correctly if setup/training exits early
 
 ```text
@@ -112,13 +204,12 @@ If the browser download is skipped or fails, download the printed
 After downloading the bundle:
 
 ```bash
-python3 tools/import_cuda_artifact_bundle.py \
-  /path/to/open_duck_cuda_artifacts_<timestamp>.tar.gz
+python3 tools/ingest_latest_cuda_artifact.py
 ```
 
-If the `.sha256` sidecar is next to the bundle, the importer verifies it
-automatically. If the sidecar is elsewhere, pass `--expected-sha256-file`.
-If no sidecar is available, pass `--expected-sha256` with the printed hash.
+The ingest helper searches common download locations for the newest bundle,
+verifies the neighboring sidecar when present, and skips already-imported
+bundles by SHA256. If the bundle is elsewhere, pass `--bundle`.
 
 Start review from:
 

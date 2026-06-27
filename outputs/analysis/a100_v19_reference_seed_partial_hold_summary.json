@@ -1,0 +1,130 @@
+{
+  "status": "HOLD_REFERENCE_SEED_DEGRADED_PARTIAL",
+  "date": "2026-06-25",
+  "recipe": "movement_bootstrap_v19",
+  "phase": "phase1_reference_imitation_seed_x004",
+  "session": "open-duck-a100",
+  "training": {
+    "completed_phase": true,
+    "final_observed_checkpoint": "2026_06_25_015139_337920",
+    "final_observed_onnx": "/content/open_duck_staged_curriculum_cli/01_phase1_reference_imitation_seed_x004/smoke_20260625T014233Z_gpu/2026_06_25_015139_337920.onnx",
+    "artifact_recovered": false,
+    "reward_checkpoints": [
+      {
+        "step": 0,
+        "reward": -414.66070556640625,
+        "reward_std": 286.9658508300781
+      },
+      {
+        "step": 112640,
+        "reward": -461.5323791503906,
+        "reward_std": 296.71759033203125
+      },
+      {
+        "step": 225280,
+        "reward": -416.4703369140625,
+        "reward_std": 298.2594909667969
+      },
+      {
+        "step": 337920,
+        "reward": -369.5874938964844,
+        "reward_std": 285.4690856933594
+      }
+    ]
+  },
+  "gate": {
+    "command_x": 0.04,
+    "bridge_mode": "vanilla",
+    "reward_overrides_phase": "phase1_reference_imitation_seed_x004",
+    "requested_seeds": [0, 1, 2, 3, 4, 5, 6, 7],
+    "completed_seeds": [0, 1, 2, 3, 4, 5],
+    "missing_seeds": [6, 7],
+    "results": [
+      {
+        "seed": 0,
+        "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+        "samples": 70,
+        "termination_reason": "fall_or_nan",
+        "mean_local_vx_m_s": -0.0009565324992373852,
+        "track_ratio": -0.02391331248093463,
+        "body_pitch_p95_rad": 0.06435087725508142,
+        "base_height_min_m": 0.15354815125465393,
+        "max_pitch_vel_p95_rad_s": 0.42302787303924483,
+        "max_tracking_p95_rad": 0.07083725035190569,
+        "action_saturation_pct": 0.0
+      },
+      {
+        "seed": 1,
+        "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+        "samples": 34,
+        "termination_reason": "fall_or_nan",
+        "mean_local_vx_m_s": -0.08976798052625622,
+        "track_ratio": -2.2441995131564054,
+        "body_pitch_p95_rad": 0.0057283591117611565,
+        "base_height_min_m": 0.0924191102385521,
+        "max_pitch_vel_p95_rad_s": 0.5338111519813538,
+        "max_tracking_p95_rad": 0.2050858139991761,
+        "action_saturation_pct": 0.0
+      },
+      {
+        "seed": 2,
+        "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+        "samples": 70,
+        "termination_reason": "fall_or_nan",
+        "mean_local_vx_m_s": 0.007723696164716135,
+        "track_ratio": 0.19309240411790338,
+        "body_pitch_p95_rad": 0.026820586563804216,
+        "base_height_min_m": 0.15261098742485046,
+        "max_pitch_vel_p95_rad_s": 0.7330679893493639,
+        "max_tracking_p95_rad": 0.08012087941169731,
+        "action_saturation_pct": 0.0
+      },
+      {
+        "seed": 3,
+        "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+        "samples": 70,
+        "termination_reason": "fall_or_nan",
+        "mean_local_vx_m_s": -0.01612883568824535,
+        "track_ratio": -0.4032208922061338,
+        "body_pitch_p95_rad": 0.08602783818816521,
+        "base_height_min_m": 0.1578834503889084,
+        "max_pitch_vel_p95_rad_s": 0.6707713007926932,
+        "max_tracking_p95_rad": 0.11055489182472225,
+        "action_saturation_pct": 0.0
+      },
+      {
+        "seed": 4,
+        "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+        "samples": 149,
+        "termination_reason": "fall_or_nan",
+        "mean_local_vx_m_s": 0.007995286799904832,
+        "track_ratio": 0.19988216999762082,
+        "body_pitch_p95_rad": 0.03956900823937504,
+        "base_height_min_m": 0.15126988291740417,
+        "max_pitch_vel_p95_rad_s": 0.14521718025207495,
+        "max_tracking_p95_rad": 0.04850268363952637,
+        "action_saturation_pct": 0.0
+      },
+      {
+        "seed": 5,
+        "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+        "samples": 46,
+        "termination_reason": "fall_or_nan",
+        "mean_local_vx_m_s": -0.3256799333890819,
+        "track_ratio": -8.141998334727047,
+        "body_pitch_p95_rad": 0.05492413253991155,
+        "base_height_min_m": 0.05845246464014053,
+        "max_pitch_vel_p95_rad_s": 0.8993104100227356,
+        "max_tracking_p95_rad": 0.16982966661453247,
+        "action_saturation_pct": 0.0
+      }
+    ]
+  },
+  "limitations": [
+    "Colab session lost before final artifact bundle/download",
+    "Seeds 6-7 not recovered",
+    "Final ONNX/checkpoint not recovered",
+    "Final phase_seed_gate.json not recovered"
+  ],
+  "decision": "Do not deploy V19, do not run x=0.08, and debug the reference/reward landscape before more large training runs."
+}

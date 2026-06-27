@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import contextlib
 from dataclasses import dataclass
+import json
 import math
 import os
 from pathlib import Path
@@ -49,12 +50,21 @@ class ClosedLoopConfig:
     command_x: float
     duration_s: float
     bridge_mode: str
+    command_y: float = 0.0
+    command_yaw: float = 0.0
     expected_observation_dim: int = 101
     expected_action_dim: int = 14
     task: str = "flat_terrain"
     seed: int = 0
     eval_role: str = "reproduction"
     mjx_step_loop_mode: str = "default"
+    policy_action_gain: float = 1.0
+    max_motor_velocity_override_rad_s: float | None = None
+    forward_diagnostic_required_ratio: float = 0.5
+    forward_diagnostic_deadband: float = 0.02
+    reward_overrides: Mapping[str, Any] | None = None
+    trace_jsonl: Path | None = None
+    trace_full_obs: bool = False
 
 
 @contextlib.contextmanager
@@ -139,6 +149,16 @@ def quat_wxyz_to_pitch(quat: Sequence[float]) -> float:
     return math.asin(max(-1.0, min(1.0, sin_pitch)))
 
 
+def quat_wxyz_to_roll(quat: Sequence[float]) -> float:
+    w, x, y, z = [float(value) for value in quat]
+    return math.atan2(2.0 * (w * x + y * z), 1.0 - 2.0 * (x * x + y * y))
+
+
+def quat_wxyz_to_yaw(quat: Sequence[float]) -> float:
+    w, x, y, z = [float(value) for value in quat]
+    return math.atan2(2.0 * (w * z + x * y), 1.0 - 2.0 * (y * y + z * z))
+
+
 def policy_metadata(session, policy_path: Path) -> dict:
     inputs = session.get_inputs()
     outputs = session.get_outputs()
@@ -167,6 +187,92 @@ def available_modes(requested: str) -> list[str]:
     if requested == "all":
         return ["vanilla", "fitted", "stress"]
     return [requested]
+
+
+REWARD_SCALE_OVERRIDES = {
+    "tracking_lin_vel_scale": "tracking_lin_vel",
+    "tracking_ang_vel_scale": "tracking_ang_vel",
+    "target_rate_scale": "target_rate",
+    "actuator_tracking_scale": "actuator_tracking",
+    "forward_progress_scale": "forward_progress",
+    "forward_shortfall_scale": "forward_shortfall",
+    "forward_overshoot_scale": "forward_overshoot",
+    "forward_wrong_direction_scale": "forward_wrong_direction",
+    "command_progress_scale": "command_progress",
+    "command_progress_shortfall_scale": "command_progress_shortfall",
+    "command_progress_failure_scale": "command_progress_failure",
+    "action_rate_scale": "action_rate",
+    "action_magnitude_scale": "action_magnitude",
+    "stand_still_scale": "stand_still",
+    "orientation_scale": "orientation",
+    "base_height_scale": "base_height",
+    "forward_pitch_scale": "forward_pitch",
+    "forward_pitch_rate_scale": "forward_pitch_rate",
+    "forward_contact_support_scale": "forward_contact_support",
+    "forward_single_support_scale": "forward_single_support",
+    "forward_double_support_scale": "forward_double_support",
+    "forward_contact_transition_scale": "forward_contact_transition",
+    "forward_double_support_dwell_scale": "forward_double_support_dwell",
+    "alive_scale": "alive",
+    "imitation_scale": "imitation",
+}
+
+
+REWARD_CONFIG_OVERRIDES = {
+    "tracking_sigma",
+    "forward_progress_deadband",
+    "forward_shortfall_required_ratio",
+    "forward_overshoot_allowed_ratio",
+    "forward_wrong_direction_allowed_reverse_ratio",
+    "command_progress_required_ratio",
+    "command_progress_warmup_steps",
+    "command_progress_failure_enable",
+    "command_progress_failure_min_ratio",
+    "command_progress_failure_warmup_steps",
+    "reward_clip_min",
+    "reward_clip_max",
+    "forward_contact_support_no_contact_weight",
+    "forward_contact_support_asymmetry_weight",
+    "forward_contact_transition_min_progress_ratio",
+    "forward_double_support_dwell_grace_steps",
+    "action_rate_huber_delta",
+    "action_magnitude_huber_delta",
+    "target_rate_huber_delta",
+    "actuator_tracking_huber_delta",
+    "forward_shortfall_huber_delta",
+    "forward_overshoot_huber_delta",
+    "forward_wrong_direction_huber_delta",
+    "forward_pitch_huber_delta",
+    "forward_pitch_rate_huber_delta",
+    "command_progress_shortfall_huber_delta",
+}
+
+
+def apply_reward_overrides(env_config, overrides: Mapping[str, Any] | None) -> dict:
+    """Apply training reward overrides to an eval env config.
+
+    The closed-loop eval inserts the actuator bridge manually, so normal
+    Playground runner CLI overrides are not available here. This function accepts
+    the same snake_case keys emitted by staged-curriculum phase JSON payloads.
+    """
+
+    applied: dict[str, Any] = {}
+    if not overrides:
+        return applied
+    reward_config = env_config.reward_config
+    for override_key, scale_key in REWARD_SCALE_OVERRIDES.items():
+        value = overrides.get(override_key)
+        if value is None:
+            continue
+        reward_config.scales[scale_key] = value
+        applied[override_key] = value
+    for key in REWARD_CONFIG_OVERRIDES:
+        value = overrides.get(key)
+        if value is None:
+            continue
+        reward_config[key] = value
+        applied[key] = value
+    return applied
 
 
 def block_tree(jax_module, value):
@@ -245,6 +351,98 @@ def pitch_chain_summary(joints: Mapping[str, Mapping[str, Any]]) -> dict:
     return output
 
 
+def reward_term_summary(records: list[dict]) -> dict:
+    keys = sorted(
+        {
+            key
+            for record in records
+            for key in (record.get("reward_terms") or {}).keys()
+        }
+    )
+    return {
+        key: signed_stats(
+            [
+                (record.get("reward_terms") or {}).get(key)
+                for record in records
+                if finite((record.get("reward_terms") or {}).get(key))
+            ]
+        )
+        for key in keys
+    }
+
+
+def append_trace_records(path: Path, mode: str, records: list[dict]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a") as handle:
+        for record in records:
+            payload = {"mode": mode, **record}
+            handle.write(json.dumps(payload, sort_keys=True) + "\n")
+
+
+def forward_shortfall_diagnostic(
+    local_vx_values: Sequence[float],
+    command_x: float,
+    *,
+    required_ratio: float,
+    deadband: float,
+) -> dict:
+    """Compute a reward-config-independent forward progress diagnostic.
+
+    Candidate gates may instantiate the Playground with default reward scales,
+    so reward-term summaries do not necessarily include a training-time
+    `cost/forward_shortfall` metric. This diagnostic keeps the standstill
+    failure visible using only the commanded x velocity and measured local
+    forward velocity.
+    """
+    if not finite(command_x):
+        return {
+            "status": "MISSING_COMMAND",
+            "required_ratio": required_ratio,
+            "deadband": deadband,
+        }
+    command_x = float(command_x)
+    required_ratio = float(required_ratio)
+    deadband = float(deadband)
+    values = [float(value) for value in local_vx_values if finite(value)]
+    needs_progress = abs(command_x) > deadband
+    if not needs_progress:
+        return {
+            "status": "NO_FORWARD_COMMAND",
+            "required_ratio": required_ratio,
+            "deadband": deadband,
+            "command_x_m_s": command_x,
+        }
+    if not values:
+        return {
+            "status": "MISSING_VELOCITY",
+            "required_ratio": required_ratio,
+            "deadband": deadband,
+            "command_x_m_s": command_x,
+        }
+
+    target_speed = max(abs(command_x), 1.0e-9)
+    sign = 1.0 if command_x >= 0.0 else -1.0
+    signed = np.asarray(values, dtype=float) * sign
+    progress_ratio = signed / target_speed
+    clipped_progress_ratio = np.clip(progress_ratio, 0.0, 1.0)
+    required_speed = target_speed * required_ratio
+    shortfall_m_s = np.clip(required_speed - signed, 0.0, None)
+    normalized_shortfall = shortfall_m_s / target_speed
+    shortfall_cost = np.square(normalized_shortfall)
+    return {
+        "status": "PASS_DIAGNOSTIC",
+        "required_ratio": required_ratio,
+        "deadband": deadband,
+        "command_x_m_s": command_x,
+        "required_speed_m_s": required_speed,
+        "progress_ratio": signed_stats(progress_ratio),
+        "clipped_progress_ratio": signed_stats(clipped_progress_ratio),
+        "shortfall_m_s": signed_stats(shortfall_m_s),
+        "normalized_shortfall": signed_stats(normalized_shortfall),
+        "shortfall_cost": signed_stats(shortfall_cost),
+    }
+
+
 def classify_closed_loop(modes: Mapping[str, Mapping[str, Any]]) -> str:
     fitted = modes.get("fitted")
     if not fitted:
@@ -304,6 +502,7 @@ def classify_candidate_gate(modes: Mapping[str, Mapping[str, Any]]) -> dict:
     command_x_values = []
     forward_ratios = []
     forward_velocity_errors = []
+    forward_shortfall_cost_means = []
     for mode in modes.values():
         body = mode.get("body_pitch_rad") or {}
         height = mode.get("base_height_m") or {}
@@ -323,6 +522,10 @@ def classify_candidate_gate(modes: Mapping[str, Mapping[str, Any]]) -> dict:
             forward_ratios.append(float(forward["command_tracking_ratio"]))
         if finite(forward.get("velocity_error_m_s")):
             forward_velocity_errors.append(abs(float(forward["velocity_error_m_s"])))
+        shortfall = mode.get("forward_shortfall_diagnostic") or {}
+        shortfall_cost = shortfall.get("shortfall_cost") or {}
+        if finite(shortfall_cost.get("mean")):
+            forward_shortfall_cost_means.append(float(shortfall_cost["mean"]))
         for joint in PITCH_CHAIN_JOINTS:
             item = (mode.get("joints") or {}).get(joint, {})
             tracking = (item.get("joint_target_tracking_error_rad") or {}).get("p95")
@@ -346,6 +549,7 @@ def classify_candidate_gate(modes: Mapping[str, Mapping[str, Any]]) -> dict:
             min(forward_ratios) if forward_ratios else None
         ),
         "max_abs_forward_velocity_error_m_s": max_finite(forward_velocity_errors),
+        "max_forward_shortfall_cost_mean": max_finite(forward_shortfall_cost_means),
         "terminations": terminations,
     }
     command_x = command_x_values[0] if command_x_values else 0.0
@@ -433,12 +637,14 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             "error": f"{type(exc).__name__}: {exc}",
         }
 
-    command = jp.asarray([config.command_x, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+    command = jp.asarray(
+        [config.command_x, config.command_y, config.command_yaw, 0.0, 0.0, 0.0, 0.0]
+    )
     overrides = {
         "push_config.enable": False,
         "lin_vel_x": [config.command_x, config.command_x],
-        "lin_vel_y": [0.0, 0.0],
-        "ang_vel_yaw": [0.0, 0.0],
+        "lin_vel_y": [config.command_y, config.command_y],
+        "ang_vel_yaw": [config.command_yaw, config.command_yaw],
         "neck_pitch_range": [0.0, 0.0],
         "head_pitch_range": [0.0, 0.0],
         "head_yaw_range": [0.0, 0.0],
@@ -449,10 +655,20 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
         "noise_config.imu_min_delay": 0,
         "noise_config.imu_max_delay": 1,
     }
+    if config.max_motor_velocity_override_rad_s is not None:
+        overrides["max_motor_velocity"] = float(
+            config.max_motor_velocity_override_rad_s
+        )
 
     try:
         with temporary_cwd(config.playground_root):
-            env = joystick.Joystick(task=config.task, config_overrides=overrides)
+            env_config = joystick.default_config()
+            applied_reward_overrides = apply_reward_overrides(
+                env_config, config.reward_overrides
+            )
+            env = joystick.Joystick(
+                task=config.task, config=env_config, config_overrides=overrides
+            )
     except Exception as exc:  # pragma: no cover - environment-dependent
         return {
             "status": "HOLD_SIM_RUNTIME_ERROR",
@@ -583,8 +799,16 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
         p_f = data.site_xpos[env._feet_site_id]
         p_fz = p_f[..., -1]
         state.info["swing_peak"] = jp.maximum(state.info["swing_peak"], p_fz)
+        if hasattr(env, "_update_command_window_progress"):
+            env._update_command_window_progress(state.info, data)
         obs = env._get_obs(data, state.info, contact)
         done = env._get_termination(data)
+        if hasattr(env, "_get_command_progress_failure"):
+            command_progress_failure = env._get_command_progress_failure(state.info)
+            state.info["command_progress_failure"] = command_progress_failure.astype(
+                state.info["command_progress_ratio"].dtype
+            )
+            done = done | command_progress_failure
         rewards = env._get_reward(
             data, action, state.info, state.metrics, done, first_contact, contact
         )
@@ -592,7 +816,16 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             key: value * env._config.reward_config.scales[key]
             for key, value in rewards.items()
         }
-        reward = jp.clip(sum(rewards.values()) * env.dt, 0.0, 10000.0)
+        reward = sum(rewards.values()) * env.dt
+        if (
+            "reward_clip_min" in env._config.reward_config
+            and "reward_clip_max" in env._config.reward_config
+        ):
+            reward = jp.clip(
+                reward,
+                env._config.reward_config.reward_clip_min,
+                env._config.reward_config.reward_clip_max,
+            )
         state.info["push"] = jp.array([0.0, 0.0])
         state.info["step"] += 1
         state.info["push_step"] += 1
@@ -611,6 +844,38 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                 else:
                     state.metrics[f"cost/{key}"] = -value
         state.metrics["swing_peak"] = jp.mean(state.info["swing_peak"])
+        if "target_velocity_cost" in state.info:
+            state.metrics["diagnostic/target_velocity_cost"] = state.info[
+                "target_velocity_cost"
+            ]
+        if "actuator_bridge_tracking_cost" in state.info:
+            state.metrics["diagnostic/actuator_bridge_tracking_cost"] = state.info[
+                "actuator_bridge_tracking_cost"
+            ]
+        if "actuator_bridge_delay_ticks" in state.info:
+            state.metrics["diagnostic/actuator_bridge_delay_ticks"] = state.info[
+                "actuator_bridge_delay_ticks"
+            ].astype(reward.dtype)
+        if "actuator_bridge_tau_s" in state.info:
+            state.metrics["diagnostic/actuator_bridge_tau_mean_s"] = jp.mean(
+                state.info["actuator_bridge_tau_s"]
+            )
+        if "actuator_bridge_velocity_limit_rad_s" in state.info:
+            state.metrics[
+                "diagnostic/actuator_bridge_velocity_limit_mean_rad_s"
+            ] = jp.mean(state.info["actuator_bridge_velocity_limit_rad_s"])
+        if "command_progress_ratio" in state.info:
+            state.metrics["diagnostic/command_progress_ratio"] = state.info[
+                "command_progress_ratio"
+            ]
+        if "command_progress_shortfall_cost" in state.info:
+            state.metrics["diagnostic/command_progress_shortfall_cost"] = state.info[
+                "command_progress_shortfall_cost"
+            ]
+        if "command_progress_failure" in state.info:
+            state.metrics["diagnostic/command_progress_failure"] = state.info[
+                "command_progress_failure"
+            ].astype(reward.dtype)
         done = done.astype(reward.dtype)
         return state.replace(data=data, obs=obs, reward=reward, done=done)
 
@@ -624,6 +889,8 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
 
     modes = {}
     sim_steps = max(1, int(round(config.duration_s / float(env.dt))))
+    if config.trace_jsonl is not None and config.trace_jsonl.exists():
+        config.trace_jsonl.unlink()
     insertion_point = {
         "type": "target_stage_direct",
         "description": (
@@ -644,7 +911,16 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
         "push_disabled": True,
         "noise_disabled": True,
         "action_delay_disabled": True,
-        "command_pinned": [config.command_x, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+        "command_pinned": [
+            config.command_x,
+            config.command_y,
+            config.command_yaw,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+        ],
+        "reward_overrides_applied": applied_reward_overrides,
     }
 
     for mode in available_modes(config.bridge_mode):
@@ -672,6 +948,9 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                     "status": "HOLD_POLICY_SIM_CONTRACT_MISMATCH",
                     "error": f"action shape {action.shape} != {(config.expected_action_dim,)}",
                 }
+            action = np.clip(
+                action * float(config.policy_action_gain), -1.0, 1.0
+            ).astype(np.float32)
             state, action_w_delay, pre_rate, sent_target = prepare_step_jit(
                 state, jp.asarray(action)
             )
@@ -692,35 +971,67 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                 jax.device_get(env.get_actuator_joints_qpos(state.data.qpos)),
                 dtype=float,
             )
+            local_linvel = np.asarray(
+                jax.device_get(env.get_local_linvel(state.data)),
+                dtype=float,
+            )
+            foot_site_pos = np.asarray(
+                jax.device_get(state.data.site_xpos[env._feet_site_id]),
+                dtype=float,
+            )
             qpos = np.asarray(jax.device_get(state.data.qpos), dtype=float)
             base_addr = int(env._floating_base_qpos_addr)
             quat = qpos[base_addr + 3 : base_addr + 7]
             contacts = np.asarray(jax.device_get(state.info["last_contact"]), dtype=bool)
             done = bool(np.asarray(jax.device_get(state.done)))
             reward = float(np.asarray(jax.device_get(state.reward)))
-            records.append(
-                {
-                    "tick": tick,
-                    "time_s": tick * float(env.dt),
-                    "obs0_6": obs[:6].astype(float).tolist(),
-                    "command": [config.command_x, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-                    "action": action.astype(float).tolist(),
-                    "action_w_delay": np.asarray(
-                        jax.device_get(action_w_delay), dtype=float
-                    ).tolist(),
-                    "target_pre_rate_limit_rad": pre_np.tolist(),
-                    "sent_target_rad": sent_np.tolist(),
-                    "applied_target_rad": applied_np.tolist(),
-                    "actual_position_rad": actual.tolist(),
-                    "body_pitch_rad": quat_wxyz_to_pitch(quat),
-                    "base_x_m": float(qpos[base_addr]),
-                    "base_y_m": float(qpos[base_addr + 1]),
-                    "base_height_m": float(qpos[base_addr + 2]),
-                    "foot_contacts": contacts.astype(int).tolist(),
-                    "reward": reward,
-                    "done": done,
-                }
-            )
+            reward_terms = {}
+            for key, value in state.metrics.items():
+                if str(key).startswith(("reward/", "cost/", "diagnostic/")):
+                    try:
+                        reward_terms[str(key)] = float(np.asarray(jax.device_get(value)))
+                    except Exception:
+                        pass
+            record = {
+                "seed": int(config.seed),
+                "tick": tick,
+                "time_s": tick * float(env.dt),
+                "obs0_6": obs[:6].astype(float).tolist(),
+                "command": [
+                    config.command_x,
+                    config.command_y,
+                    config.command_yaw,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                ],
+                "action": action.astype(float).tolist(),
+                "action_w_delay": np.asarray(
+                    jax.device_get(action_w_delay), dtype=float
+                ).tolist(),
+                "target_pre_rate_limit_rad": pre_np.tolist(),
+                "sent_target_rad": sent_np.tolist(),
+                "applied_target_rad": applied_np.tolist(),
+                "actual_position_rad": actual.tolist(),
+                "body_pitch_rad": quat_wxyz_to_pitch(quat),
+                "base_x_m": float(qpos[base_addr]),
+                "base_y_m": float(qpos[base_addr + 1]),
+                "base_height_m": float(qpos[base_addr + 2]),
+                "local_linvel_m_s": local_linvel.astype(float).tolist(),
+                "foot_contacts": contacts.astype(int).tolist(),
+                "foot_site_pos_m": foot_site_pos.tolist(),
+                "reward": reward,
+                "reward_terms": reward_terms,
+                "done": done,
+            }
+            if config.trace_full_obs:
+                record["obs_state"] = obs.astype(float).tolist()
+                record["qpos"] = qpos.astype(float).tolist()
+                record["qvel"] = np.asarray(jax.device_get(state.data.qvel), dtype=float).tolist()
+                record["ctrl"] = np.asarray(jax.device_get(state.data.ctrl), dtype=float).tolist()
+                record["base_quat_wxyz"] = quat.astype(float).tolist()
+            records.append(record)
             if done:
                 termination_reason = "fall_or_nan"
                 break
@@ -731,7 +1042,16 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
         base_x = signed_stats([record["base_x_m"] for record in records])
         base_y = signed_stats([record["base_y_m"] for record in records])
         base_height = signed_stats([record["base_height_m"] for record in records])
+        local_vx_values = [
+            record["local_linvel_m_s"][0]
+            for record in records
+            if record.get("local_linvel_m_s")
+        ]
+        local_vx = signed_stats(local_vx_values)
         reward_stats = signed_stats([record["reward"] for record in records])
+        reward_terms = reward_term_summary(records)
+        if config.trace_jsonl is not None:
+            append_trace_records(config.trace_jsonl, mode, records)
         if len(records) >= 2:
             elapsed_s = max(
                 float(records[-1]["time_s"]) - float(records[0]["time_s"]),
@@ -739,7 +1059,12 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             )
             progress_x = float(records[-1]["base_x_m"]) - float(records[0]["base_x_m"])
             progress_y = float(records[-1]["base_y_m"]) - float(records[0]["base_y_m"])
-            mean_vx = progress_x / elapsed_s
+            world_mean_vx = progress_x / elapsed_s
+            mean_vx = (
+                float(np.mean(local_vx_values))
+                if local_vx_values
+                else world_mean_vx
+            )
             ratio = (
                 mean_vx / float(config.command_x)
                 if abs(float(config.command_x)) >= 1e-9
@@ -750,6 +1075,7 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             elapsed_s = 0.0
             progress_x = None
             progress_y = None
+            world_mean_vx = None
             mean_vx = None
             ratio = None
             velocity_error = None
@@ -764,21 +1090,39 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             "requested_steps": sim_steps,
             "termination_reason": termination_reason or "duration_complete",
             "wall_clock_s": wall_clock,
-            "command": [config.command_x, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+            "command": [
+                config.command_x,
+                config.command_y,
+                config.command_yaw,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+            ],
             "body_pitch_rad": body_pitch,
             "base_x_m": base_x,
             "base_y_m": base_y,
             "base_height_m": base_height,
+            "local_forward_velocity_m_s": local_vx,
             "forward_motion": {
                 "elapsed_s": elapsed_s,
                 "progress_x_m": progress_x,
                 "progress_y_m": progress_y,
+                "world_mean_velocity_x_m_s": world_mean_vx,
                 "mean_velocity_x_m_s": mean_vx,
                 "command_x_m_s": float(config.command_x),
                 "velocity_error_m_s": velocity_error,
                 "command_tracking_ratio": ratio,
+                "measurement_frame": "local_base_x",
             },
+            "forward_shortfall_diagnostic": forward_shortfall_diagnostic(
+                local_vx_values,
+                float(config.command_x),
+                required_ratio=config.forward_diagnostic_required_ratio,
+                deadband=config.forward_diagnostic_deadband,
+            ),
             "reward": reward_stats,
+            "reward_terms": reward_terms,
             "foot_contact_counts": {
                 "left": int(contact_counts[0]) if len(contact_counts) > 0 else 0,
                 "right": int(contact_counts[1]) if len(contact_counts) > 1 else 0,
@@ -798,6 +1142,20 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
         "eval_role": config.eval_role,
         "candidate_gate": candidate_gate,
         "policy": policy,
+        "policy_action_gain": float(config.policy_action_gain),
+        "command": [
+            float(config.command_x),
+            float(config.command_y),
+            float(config.command_yaw),
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+        ],
+        "forward_diagnostic": {
+            "required_ratio": float(config.forward_diagnostic_required_ratio),
+            "deadband": float(config.forward_diagnostic_deadband),
+        },
         "env": {
             "playground_root": str(config.playground_root),
             "env_class": "playground.open_duck_mini_v2.joystick.Joystick",
@@ -819,6 +1177,11 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             "mjx_step_loop_mode": config.mjx_step_loop_mode,
             "action_scale": float(env._config.action_scale),
             "max_motor_velocity": float(env._config.max_motor_velocity),
+            "max_motor_velocity_override_rad_s": (
+                None
+                if config.max_motor_velocity_override_rad_s is None
+                else float(config.max_motor_velocity_override_rad_s)
+            ),
             "jax_backend": jax.default_backend(),
             "jax_devices": [str(device) for device in jax.devices()],
         },

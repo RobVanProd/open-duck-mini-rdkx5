@@ -1,0 +1,93 @@
+{
+  "status": "HOLD_V23_ARTIFACT_RECOVERED_GATE_FAILED",
+  "generated_at": "2026-06-25T16:55:00Z",
+  "robot_tests_run": false,
+  "ssh_attempted": false,
+  "deployment_attempted": false,
+  "runtime_behavior_changed": false,
+  "artifact": {
+    "bundle": "outputs/analysis/colab_cli/open-duck-l4-v23-artifact-staged-curriculum-20260625T154558Z/open_duck_colab_cli_staged-curriculum_20260625T154613Z_artifacts.tar.gz",
+    "extracted": "outputs/analysis/colab_cli/open-duck-l4-v23-artifact-staged-curriculum-20260625T154558Z/extracted/open_duck_colab_cli_staged-curriculum_20260625T154613Z",
+    "exit_status": 1
+  },
+  "candidate": {
+    "name": "open_duck_mini_staged_curriculum_cli_20260625T154643Z",
+    "onnx_name": "2026_06_25_160007_184320.onnx",
+    "sha256": "d8a92162cfee07cb4c6f2643c5206a182882fd46c0098f93a1c65c03e99c86c7",
+    "size_bytes": 884094,
+    "input_dim": 101,
+    "output_dim": 14,
+    "promoted_to_tracked_policy": false
+  },
+  "gates": {
+    "x0": {
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "command_x": 0.0,
+      "mode_summary": {
+        "vanilla": {
+          "samples": 71,
+          "termination": "fall_or_nan",
+          "base_height_min_m": 0.0556,
+          "mean_local_vx_m_s": -0.2485,
+          "pitch_tracking_p95_max_rad": 0.1313,
+          "sent_target_velocity_p95_max_rad_s": 1.4454
+        },
+        "fitted": {
+          "samples": 55,
+          "termination": "fall_or_nan",
+          "base_height_min_m": 0.0405,
+          "mean_local_vx_m_s": -0.3327,
+          "pitch_tracking_p95_max_rad": 0.1632,
+          "sent_target_velocity_p95_max_rad_s": 1.6843
+        },
+        "stress": {
+          "samples": 66,
+          "termination": "fall_or_nan",
+          "base_height_min_m": 0.0629,
+          "mean_local_vx_m_s": -0.2529,
+          "pitch_tracking_p95_max_rad": 0.1246,
+          "sent_target_velocity_p95_max_rad_s": 1.7766
+        }
+      }
+    },
+    "x008": {
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "command_x": 0.08,
+      "mode_summary": {
+        "vanilla": {
+          "samples": 125,
+          "termination": "fall_or_nan",
+          "base_height_min_m": 0.0452,
+          "mean_local_vx_m_s": -0.1429,
+          "track_ratio": -1.7863,
+          "pitch_tracking_p95_max_rad": 0.0831,
+          "sent_target_velocity_p95_max_rad_s": 0.3429
+        },
+        "fitted": {
+          "samples": 98,
+          "termination": "fall_or_nan",
+          "base_height_min_m": 0.0599,
+          "mean_local_vx_m_s": -0.1717,
+          "track_ratio": -2.1467,
+          "pitch_tracking_p95_max_rad": 0.0832,
+          "sent_target_velocity_p95_max_rad_s": 0.6026
+        },
+        "stress": {
+          "samples": 140,
+          "termination": "fall_or_nan",
+          "base_height_min_m": 0.0567,
+          "mean_local_vx_m_s": -0.1232,
+          "track_ratio": -1.5405,
+          "pitch_tracking_p95_max_rad": 0.0786,
+          "sent_target_velocity_p95_max_rad_s": 0.4508
+        }
+      }
+    }
+  },
+  "interpretation": [
+    "The recovered V23 package confirms the support-contact recipe trained and exported an ONNX.",
+    "The candidate fails x=0.0 and x=0.08 gates and is not promoted.",
+    "The x=0.08 failure is not actuator-envelope limited or action-saturation limited.",
+    "Do not rerun V23 unchanged; use a targeted fall trace or a structurally richer contact/weight-transfer teacher."
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "generated_at": "2026-06-23",
+  "backend": "colab_a100_cuda",
+  "artifact_bundle": "outputs/analysis/colab_cli/open-duck-a100a-staged-curriculum-20260623T143239Z/open_duck_colab_cli_staged-curriculum_20260623T143249Z_artifacts.final.tar.gz",
+  "artifact_bundle_sha256": "cdab6dc48b5ab52127c051a4756337915675a68f992b9b3f806d6f56b906344e",
+  "final_policy_path": "/content/open_duck_staged_curriculum_cli/03_phase3_fitted_bridge_consolidation/smoke_20260623T145142Z_gpu/2026_06_23_145958_307200.onnx",
+  "final_policy_sha256": "5b7d67d2f3bc8f4fc27f7cda0f8cb5af651915deada70a68cf3031e6a8a148c6",
+  "phase_elapsed_s": {
+    "phase1": 579.2,
+    "phase2": 522.9,
+    "phase3": 506.6,
+    "total_training": 1608.7
+  },
+  "gates": {
+    "x0": {
+      "status": "HOLD_CANDIDATE_TRACKING",
+      "metrics": {
+        "max_action_saturation_pct": 0.0,
+        "max_pitch_tracking_p95_rad": 0.08508602976799011,
+        "max_sent_target_velocity_p95_rad_s": 0.4982353746891022,
+        "max_abs_body_pitch_p95_rad": 0.09472153168580313,
+        "min_base_height_m": 0.15354642271995544,
+        "min_reward_mean": 0.4851340972582499,
+        "max_abs_forward_velocity_error_m_s": 0.00048454956225274753
+      }
+    },
+    "x008": {
+      "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "metrics": {
+        "max_action_saturation_pct": 0.0,
+        "max_pitch_tracking_p95_rad": 0.09584476947784423,
+        "max_sent_target_velocity_p95_rad_s": 0.4079917073249817,
+        "max_abs_body_pitch_p95_rad": 0.21767476024907378,
+        "min_base_height_m": 0.14583735167980194,
+        "min_reward_mean": 0.4683685364921888,
+        "min_forward_command_tracking_ratio": 0.0144626216138325,
+        "max_abs_forward_velocity_error_m_s": 0.0788429902708934
+      },
+      "mode_forward_tracking": {
+        "vanilla": {
+          "mean_local_forward_velocity_m_s": 0.0012,
+          "tracking_ratio": 0.0145
+        },
+        "fitted": {
+          "mean_local_forward_velocity_m_s": 0.0017,
+          "tracking_ratio": 0.0211
+        },
+        "stress": {
+          "mean_local_forward_velocity_m_s": 0.0017,
+          "tracking_ratio": 0.0216
+        }
+      }
+    }
+  },
+  "decision": "not_robot_candidate",
+  "conclusion": "The staged shortfall curriculum completed on A100, but the final policy remains near standstill at x=0.08 while staying actuator-safe. Next work should target locomotion bootstrap or motion prior rather than robot testing.",
+  "reporting_caveat": "Training manifests included --forward_shortfall_scale, but the packaged candidate-gate reward-term table used default eval reward scales and did not list cost/forward_shortfall. The gate decision is still valid because it uses measured local forward velocity and command tracking ratio. Future gates include a reward-config-independent forward-shortfall diagnostic."
+}

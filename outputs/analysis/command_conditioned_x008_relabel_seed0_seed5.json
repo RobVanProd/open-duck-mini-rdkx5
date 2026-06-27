@@ -1,0 +1,65 @@
+{
+  "status": "PASS_BC_TRACE_RELABEL_READY",
+  "teacher": {
+    "teacher_manifest": "outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_manifest.json",
+    "teacher_dataset_id": "7877cd6345c6e333",
+    "teacher_entries": 20,
+    "teacher_samples": 10322,
+    "teacher_model_kind": "blend",
+    "knn_k": 5,
+    "blend_alpha": 0.8,
+    "vx_blend_alpha": 1.0,
+    "vx_blend_threshold_m_s": 0.02,
+    "source_vx_threshold_m_s": 0.02,
+    "include_source_regex": null,
+    "exclude_source_regex": null,
+    "alt_include_source_regex": null,
+    "alt_exclude_source_regex": null,
+    "best_alpha": 1e-06
+  },
+  "trace_globs": [
+    "outputs/analysis/command_conditioned_seed5_x0_x008_trace_for_dagger/best/seed_*/trace.jsonl"
+  ],
+  "output_trace_dir": "outputs/analysis/command_conditioned_x008_relabel_seed0_seed5_traces",
+  "summary": {
+    "traces": 2,
+    "samples_out": 1000,
+    "truncated_traces": 0
+  },
+  "traces": [
+    {
+      "source_trace": "outputs/analysis/command_conditioned_seed5_x0_x008_trace_for_dagger/best/seed_000/trace.jsonl",
+      "output_trace": "outputs/analysis/command_conditioned_x008_relabel_seed0_seed5_traces/seed_000/trace.jsonl",
+      "samples_in": 500,
+      "samples_out": 500,
+      "skipped": 0,
+      "truncate_before_done": false,
+      "first_done_index": null,
+      "action_delta_p50": 0.009379168538957927,
+      "action_delta_p95": 0.03943484715151743,
+      "action_delta_max": 0.13883639157148386,
+      "active_model_counts": {
+        "primary": 500
+      },
+      "blend_alpha_p50": 0.8,
+      "blend_alpha_p95": 0.8
+    },
+    {
+      "source_trace": "outputs/analysis/command_conditioned_seed5_x0_x008_trace_for_dagger/best/seed_005/trace.jsonl",
+      "output_trace": "outputs/analysis/command_conditioned_x008_relabel_seed0_seed5_traces/seed_005/trace.jsonl",
+      "samples_in": 500,
+      "samples_out": 500,
+      "skipped": 0,
+      "truncate_before_done": false,
+      "first_done_index": null,
+      "action_delta_p50": 0.010424265451257117,
+      "action_delta_p95": 0.05418899709774321,
+      "action_delta_max": 0.24241931725533283,
+      "active_model_counts": {
+        "primary": 500
+      },
+      "blend_alpha_p50": 0.8,
+      "blend_alpha_p95": 0.8
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "status": "HOLD_CONTACT_FRICTION_SOLVER_NOT_SUFFICIENT",
+  "robot_tests_run": false,
+  "ssh_attempted": false,
+  "deploy_attempted": false,
+  "training_run": false,
+  "repository_xml_modified": false,
+  "compiled_contact_parameters": {
+    "playground_flat_terrain_backlash": {
+      "floor_friction": [0.6, 0.005, 0.0001],
+      "foot_tpu_friction": [1.0, 0.005, 0.0001],
+      "iterations": 1,
+      "ls_iterations": 5,
+      "noslip_iterations": 0,
+      "condim": 3,
+      "solref": [0.02, 1.0],
+      "solimp": [0.9, 0.95, 0.001, 0.5, 2.0]
+    },
+    "open_duck_mini_scene": {
+      "floor_friction": [1.5, 0.01, 0.0006],
+      "iterations": 100,
+      "ls_iterations": 50,
+      "noslip_iterations": 0,
+      "condim": 3,
+      "solref": [0.02, 1.0],
+      "solimp": [0.9, 0.95, 0.001, 0.5, 2.0]
+    }
+  },
+  "contact_probe": {
+    "temporary_path": "/tmp/open_duck_playground_origin_main_contact_probe",
+    "changes": {
+      "floor_friction": "0.6 -> 1.5 0.01 0.0006",
+      "solver_iterations": "1/5 -> 100/50"
+    },
+    "artifact": "outputs/analysis/REFERENCE_PUSH_EFFECTIVENESS_CONTACT_PROBE_BACKLASH_NEAREST.md",
+    "status": "HOLD_REFERENCE_CONTACT_MISMATCH",
+    "best_reference_single_future_vx_delta_m_s": -0.0182
+  },
+  "comparison": {
+    "raw": {
+      "baseline_falls": "1/8",
+      "probe_falls": "3/8",
+      "baseline_mean_vx_m_s": -0.0500,
+      "probe_mean_vx_m_s": 0.0208,
+      "baseline_contact_mismatch_pct": 66.9833,
+      "probe_contact_mismatch_pct": 67.2202,
+      "baseline_reference_single_future_vx_delta_m_s": -0.0390,
+      "probe_reference_single_future_vx_delta_m_s": -0.0198
+    },
+    "cycle_projected": {
+      "baseline_falls": "0/8",
+      "probe_falls": "0/8",
+      "baseline_mean_vx_m_s": -0.0114,
+      "probe_mean_vx_m_s": -0.0120,
+      "baseline_contact_mismatch_pct": 72.9500,
+      "probe_contact_mismatch_pct": 66.9500,
+      "baseline_reference_single_future_vx_delta_m_s": -0.0356,
+      "probe_reference_single_future_vx_delta_m_s": -0.0397
+    },
+    "contact_synchronized_projected": {
+      "baseline_falls": "1/8",
+      "probe_falls": "1/8",
+      "baseline_mean_vx_m_s": 0.0301,
+      "probe_mean_vx_m_s": -0.0375,
+      "baseline_contact_mismatch_pct": 20.1366,
+      "probe_contact_mismatch_pct": 4.6415,
+      "baseline_reference_single_future_vx_delta_m_s": -0.0051,
+      "probe_reference_single_future_vx_delta_m_s": -0.0182
+    }
+  },
+  "interpretation": "Stronger floor friction and solver iterations improved contact matching in the synchronized mode but did not improve forward impulse. Contact/friction settings alone are not the root fix.",
+  "next_gate": "published_policy_sim_audit"
+}

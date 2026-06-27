@@ -1,0 +1,85 @@
+{
+  "generated_at": "2026-06-23",
+  "recipe": "movement_bootstrap_v2",
+  "backend": "Colab A100 / CUDA",
+  "jax_backend": "gpu",
+  "artifact_bundle": "outputs/analysis/colab_cli/open-duck-a100b-staged-curriculum-20260623T154051Z/open_duck_colab_cli_staged-curriculum_20260623T154144Z_artifacts.tar.gz",
+  "artifact_bundle_sha256": "4e708a406e996ff66ae14151af32561867e0f58451f1912153f6e5c1b1085b66",
+  "workflow_exit_status": 1,
+  "final_policy_source_path": "/content/open_duck_staged_curriculum_cli/03_phase3_fitted_bridge_preserve_motion/smoke_20260623T155952Z_gpu/2026_06_23_160805_368640.onnx",
+  "final_policy_sha256": "e9ff4fdb325908afb9adc5bc5bc83ed96ba1a0b355931cab9a55a5ecafbe427c",
+  "robot_touched": false,
+  "deployment_performed": false,
+  "runtime_behavior_changed": false,
+  "training_elapsed_s": {
+    "phase1": 558.8,
+    "phase2": 499.1,
+    "phase3": 503.4,
+    "total": 1561.3
+  },
+  "final_phase_recipe": {
+    "lin_vel_x_min": 0.06,
+    "lin_vel_x_max": 0.12,
+    "zero_command_probability": 0.0,
+    "tracking_sigma": 0.00125,
+    "forward_progress_scale": 6.0,
+    "forward_shortfall_scale": -6.0,
+    "forward_shortfall_required_ratio": 0.6,
+    "action_rate_scale": -0.04,
+    "action_magnitude_scale": -0.01,
+    "actuator_bridge_delay_min_ticks": 3,
+    "actuator_bridge_delay_max_ticks": 6,
+    "actuator_bridge_tau_min_s": 0.06,
+    "actuator_bridge_tau_max_s": 0.14,
+    "actuator_bridge_velocity_limit_min_rad_s": 3.0,
+    "actuator_bridge_velocity_limit_max_rad_s": 4.7,
+    "actuator_bridge_per_joint_variation": 0.15
+  },
+  "candidate_gates": {
+    "x0": {
+      "status": "HOLD_CANDIDATE_TRACKING",
+      "command_x": 0.0,
+      "max_action_saturation_pct": 0.0,
+      "max_pitch_tracking_p95_rad": 0.1388,
+      "max_sent_target_velocity_p95_rad_s": 0.6699,
+      "max_abs_body_pitch_p95_rad": 0.2623,
+      "min_base_height_m": 0.1408,
+      "min_reward_mean": 0.4471,
+      "max_abs_forward_velocity_error_m_s": 0.0021
+    },
+    "x008": {
+      "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "command_x": 0.08,
+      "max_action_saturation_pct": 0.0,
+      "max_pitch_tracking_p95_rad": 0.1473,
+      "max_sent_target_velocity_p95_rad_s": 0.6892,
+      "max_abs_body_pitch_p95_rad": 0.3103,
+      "min_base_height_m": 0.1392,
+      "min_reward_mean": 0.4414,
+      "min_forward_command_tracking_ratio": 0.0286,
+      "max_abs_forward_velocity_error_m_s": 0.0777,
+      "max_forward_shortfall_cost_mean": 0.7051,
+      "mode_tracking_ratios": {
+        "vanilla": {
+          "mean_local_vx_m_s": 0.0031,
+          "track_ratio": 0.0384
+        },
+        "fitted": {
+          "mean_local_vx_m_s": 0.0023,
+          "track_ratio": 0.0286
+        },
+        "stress": {
+          "mean_local_vx_m_s": 0.0027,
+          "track_ratio": 0.0340
+        }
+      }
+    }
+  },
+  "decision": "NOT_ROBOT_CANDIDATE",
+  "recommended_next": [
+    "add episode-level forward displacement or minimum-progress reward",
+    "audit alive/posture reward dominance against forward-shortfall pressure",
+    "consider distillation or warm-start from BEST_WALK_ONNX_2 movement structure",
+    "keep x=0.0 and x=0.08 offline sim gates before robot validation"
+  ]
+}

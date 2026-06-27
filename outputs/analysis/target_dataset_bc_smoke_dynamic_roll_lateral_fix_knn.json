@@ -1,0 +1,185 @@
+{
+  "status": "HOLD_BC_REPLAY_LOW_FORWARD_MOTION",
+  "manifest_path": "outputs/analysis/target_dataset_manifest_dynamic_roll_lateral_fix.json",
+  "dataset_id": "0ff1f1c3750dbfb1",
+  "dataset": {
+    "entries": 70,
+    "samples": 3500,
+    "observation_dim": 101,
+    "action_dim": 14,
+    "source_files": 2,
+    "source_counts": {
+      "seed_000.jsonl": 3000,
+      "seed_002.jsonl": 500
+    },
+    "max_source_fraction": 0.8571428571428571,
+    "source_skew_warning": true
+  },
+  "fit": {
+    "best_alpha": 1e-06,
+    "alpha_grid": [
+      {
+        "alpha": 1e-06,
+        "train_mae": 1.2901159148917656e-05,
+        "train_p95_abs_error": 6.299422291845006e-05,
+        "train_max_abs_error": 0.05709713687585238
+      },
+      {
+        "alpha": 0.0001,
+        "train_mae": 1.290904485972852e-05,
+        "train_p95_abs_error": 6.285447778070777e-05,
+        "train_max_abs_error": 0.05711612817986278
+      },
+      {
+        "alpha": 0.01,
+        "train_mae": 1.4186101727137576e-05,
+        "train_p95_abs_error": 6.159058229138203e-05,
+        "train_max_abs_error": 0.05813839936689452
+      },
+      {
+        "alpha": 1.0,
+        "train_mae": 7.44482348521233e-05,
+        "train_p95_abs_error": 0.00033107787268087314,
+        "train_max_abs_error": 0.06057390116172218
+      },
+      {
+        "alpha": 100.0,
+        "train_mae": 0.0018642116768764628,
+        "train_p95_abs_error": 0.008433269508158085,
+        "train_max_abs_error": 0.07222459527712402
+      }
+    ],
+    "train": {
+      "samples": 3500,
+      "mse": 9.072968226069202e-08,
+      "rmse": 0.00030121368206091176,
+      "mae": 1.2901159148917656e-05,
+      "p95_abs_error": 6.299422291845006e-05,
+      "max_abs_error": 0.05709713687585238,
+      "pred_action_saturation_pct": 0.0
+    },
+    "source_holdout": [
+      {
+        "held_out_source": "seed_000.jsonl",
+        "status": "PASS_SOURCE_HOLDOUT_EVALUATED",
+        "train_samples": 500,
+        "test_samples": 3000,
+        "metrics": {
+          "samples": 3000,
+          "mse": 1.6214931868643346e-07,
+          "rmse": 0.0004026776858561118,
+          "mae": 4.62489130588319e-06,
+          "p95_abs_error": 1.736455888547153e-06,
+          "max_abs_error": 0.07348473798616478,
+          "pred_action_saturation_pct": 0.0
+        }
+      },
+      {
+        "held_out_source": "seed_002.jsonl",
+        "status": "PASS_SOURCE_HOLDOUT_EVALUATED",
+        "train_samples": 3000,
+        "test_samples": 500,
+        "metrics": {
+          "samples": 500,
+          "mse": 8.465394943403323e-09,
+          "rmse": 9.200758090181115e-05,
+          "mae": 1.773491181106301e-05,
+          "p95_abs_error": 9.079222114661027e-05,
+          "max_abs_error": 0.0018386730613308977,
+          "pred_action_saturation_pct": 0.0
+        }
+      }
+    ],
+    "parameter_count": 1428,
+    "sample_to_parameter_ratio": 2.450980392156863,
+    "warnings": [
+      "none"
+    ],
+    "coefficient_norm": 0.2817042225263246,
+    "intercept_norm": 0.7279683633933648
+  },
+  "smoke_model_kind": "knn",
+  "knn_k": 5,
+  "rollout": {
+    "status": "HOLD_BC_REPLAY_LOW_FORWARD_MOTION",
+    "model_kind": "knn",
+    "jax_backend": "cpu",
+    "jax_devices": [
+      "TFRT_CPU_0"
+    ],
+    "env": {
+      "playground_root": "/home/lsd/robots/Open_Duck_Playground",
+      "task": "flat_terrain",
+      "action_size": 14,
+      "observation_size": {
+        "privileged_state": [
+          212
+        ],
+        "state": [
+          101
+        ]
+      },
+      "actuator_names": [
+        "left_hip_yaw",
+        "left_hip_roll",
+        "left_hip_pitch",
+        "left_knee",
+        "left_ankle",
+        "neck_pitch",
+        "head_pitch",
+        "head_yaw",
+        "head_roll",
+        "right_hip_yaw",
+        "right_hip_roll",
+        "right_hip_pitch",
+        "right_knee",
+        "right_ankle"
+      ],
+      "ctrl_dt": 0.02,
+      "sim_dt": 0.002,
+      "action_scale": 0.25,
+      "max_motor_velocity": 5.24
+    },
+    "modes": {
+      "seed_000": {
+        "status": "PASS_ROLLOUT_COMPLETED",
+        "samples": 200,
+        "termination_reason": "duration_complete",
+        "mean_vx_m_s": 0.006426062098471448,
+        "track_ratio": 0.1606515524617862,
+        "vy_abs_p95_m_s": 0.06499340757727627,
+        "body_pitch_abs_p95_rad": 0.2732116144746186,
+        "base_height_min_m": 0.14649474620819092,
+        "action_saturation_pct": 0.0,
+        "action_abs_mean": 0.13864498271706646,
+        "action_delta_p95_per_s": 1.562463507289067,
+        "sent_target_velocity_p95_rad_s": 0.39061587303876877,
+        "joint_tracking_p95_rad": 0.07441480159759521,
+        "contact_pct": {
+          "01": 2.0,
+          "11": 98.0
+        }
+      },
+      "seed_002": {
+        "status": "PASS_ROLLOUT_COMPLETED",
+        "samples": 200,
+        "termination_reason": "duration_complete",
+        "mean_vx_m_s": 0.008394009721232578,
+        "track_ratio": 0.20985024303081445,
+        "vy_abs_p95_m_s": 0.04719083383679391,
+        "body_pitch_abs_p95_rad": 0.2658086823328803,
+        "base_height_min_m": 0.14713263511657715,
+        "action_saturation_pct": 0.0,
+        "action_abs_mean": 0.1378530626285023,
+        "action_delta_p95_per_s": 1.550271660089494,
+        "sent_target_velocity_p95_rad_s": 0.387566685676575,
+        "joint_tracking_p95_rad": 0.07308122962713244,
+        "contact_pct": {
+          "01": 1.5,
+          "10": 1.0,
+          "11": 97.5
+        }
+      }
+    }
+  }
+}

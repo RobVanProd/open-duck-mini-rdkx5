@@ -1,0 +1,56 @@
+{
+  "status": "HOLD_X008_FORWARD_PROGRESS_REGRESSION",
+  "offline_only": true,
+  "robot_tests": false,
+  "deployment": false,
+  "runtime_behavior_changed": false,
+  "training_run": false,
+  "base_policy": "outputs/analysis/ppo_bc_swish_seed5_source_vx_recovery_step0.onnx",
+  "scaled_policy": "outputs/analysis/ppo_bc_swish_seed5_source_vx_recovery_step0_scale_0p75.onnx",
+  "task": "flat_terrain_backlash",
+  "bridge_mode": "fitted",
+  "duration_s": 10.0,
+  "hard_seed_screen": {
+    "artifact_md": "outputs/analysis/SOURCE_VX_SCALE_X0_HARD_SEED_SCREEN.md",
+    "artifact_json": "outputs/analysis/source_vx_scale_x0_hard_seed_screen.json",
+    "scale_0p25": {
+      "falls": 1,
+      "duration_complete": 1,
+      "mean_vx_m_s": -0.1598
+    },
+    "scale_0p5": {
+      "falls": 1,
+      "duration_complete": 1,
+      "mean_vx_m_s": -0.1535
+    },
+    "scale_0p75": {
+      "falls": 0,
+      "duration_complete": 2,
+      "mean_vx_m_s": -0.0002
+    }
+  },
+  "x0_full_gate": {
+    "artifact_md": "outputs/analysis/SOURCE_VX_SCALE_0P75_X0_FULL_GATE.md",
+    "artifact_json": "outputs/analysis/source_vx_scale_0p75_x0_full_gate.json",
+    "falls": 0,
+    "duration_complete": 8,
+    "mean_vx_m_s": 0.0003,
+    "mean_body_pitch_p95_rad": 0.0232,
+    "mean_base_height_min_m": 0.1527,
+    "mean_max_pitch_target_velocity_p95_rad_s": 0.4107,
+    "mean_max_pitch_tracking_p95_rad": 0.0710
+  },
+  "x008_full_gate": {
+    "artifact_md": "outputs/analysis/SOURCE_VX_SCALE_0P75_X008_FULL_GATE.md",
+    "artifact_json": "outputs/analysis/source_vx_scale_0p75_x008_full_gate.json",
+    "falls": 0,
+    "duration_complete": 8,
+    "mean_vx_m_s": 0.0004,
+    "mean_track_ratio": 0.0046,
+    "mean_body_pitch_p95_rad": 0.0230,
+    "mean_base_height_min_m": 0.1527,
+    "mean_max_pitch_target_velocity_p95_rad_s": 0.4296,
+    "mean_max_pitch_tracking_p95_rad": 0.0715
+  },
+  "interpretation": "Scale 0.75 fixes hard-seed x=0 standstill stability but collapses x=0.08 forward progress. It is a standstill diagnostic, not a deployable walking candidate."
+}

@@ -1,0 +1,50 @@
+{
+  "status": "HOLD_DAGGER3_TRACKING_RATE_REGRESSION",
+  "scope": {
+    "offline_only": true,
+    "robot_tests": false,
+    "ssh": false,
+    "deploy": false,
+    "runtime_behavior_changes": false
+  },
+  "relabel": {
+    "artifact": "outputs/analysis/SOURCE_VX_SELECTOR_TRACE_DAGGER2_RATE_REG_STANDARD_RELABEL_BLEND.md",
+    "status": "PASS_BC_TRACE_RELABEL_READY",
+    "traces": 8,
+    "samples_out": 4000
+  },
+  "manifest": {
+    "artifact": "outputs/analysis/SOURCE_VX_SELECTOR_TRACE_DAGGER3_MANIFEST.md",
+    "status": "PASS_BC_TRACE_MANIFEST_READY",
+    "dataset_id": "80ea809b021b6b9a",
+    "entries": 25,
+    "samples": 9268
+  },
+  "candidate": {
+    "onnx": "outputs/analysis/source_vx_selector_trace_dagger3_mlp128_rate_reg_candidate/candidate.onnx",
+    "bc_smoke_artifact": "outputs/analysis/SOURCE_VX_SELECTOR_TRACE_DAGGER3_MLP128_RATE_REG_ONNX_FITTED_BRIDGE_BC_GATE_X008_10S.md",
+    "bc_smoke_status": "PASS_BC_FIT_SMOKE_FORWARD_REPLAY"
+  },
+  "standard_gate": {
+    "artifact_md": "outputs/analysis/DEPLOYABLE_SOURCE_VX_DAGGER3_RATE_REG_VALIDATION_FITTED_BACKLASH.md",
+    "artifact_json": "outputs/analysis/deployable_source_vx_dagger3_rate_reg_validation_fitted_backlash.json",
+    "task": "flat_terrain_backlash",
+    "command_x": 0.08,
+    "bridge": "fitted",
+    "duration_s": 10,
+    "runs": 8,
+    "falls": 0,
+    "duration_complete": 8,
+    "mean_vx_m_s": 0.0420,
+    "mean_track_ratio": 0.5255,
+    "sent_velocity_p95_range_rad_s": [3.7121, 3.8488],
+    "tracking_p95_range_rad": [0.2623, 0.2767],
+    "status": "HOLD_CANDIDATE_TRACKING"
+  },
+  "comparison_to_dagger2_rate_reg": {
+    "mean_vx_delta_m_s": 0.0056,
+    "mean_track_ratio_delta": 0.0705,
+    "interpretation": "DAgger-3 improves forward progress but regresses target-rate and tracking margin relative to DAgger-2 rate-reg."
+  },
+  "decision": "Do not promote DAgger-3. Do not run stress or robot gates. The next step should optimize the progress/rate/tracking tradeoff with objective-level tracking/rate feedback or PPO fine-tuning from the BC warm start."
+}

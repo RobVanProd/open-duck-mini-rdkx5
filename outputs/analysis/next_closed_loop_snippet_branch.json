@@ -1,0 +1,211 @@
+{
+  "status": "PLAN_DEPLOYABLE_POLICY_VALIDATION_AND_WARMSTART",
+  "evidence": {
+    "command_comparison": "outputs/analysis/PUBLISHED_POLICY_COMMAND_PROPULSION_COMPARISON.md",
+    "closed_loop_template": "outputs/analysis/PUBLISHED_POLICY_COMMAND_CLOSED_LOOP_TEMPLATE.md",
+    "window_mine_25t": "outputs/analysis/CLOSED_LOOP_TEACHER_WINDOW_MINE.md",
+    "window_mine_10t": "outputs/analysis/CLOSED_LOOP_TEACHER_WINDOW_MINE_10T.md",
+    "stitch_plan": "outputs/analysis/CLOSED_LOOP_SNIPPET_STITCH_PLAN.md",
+    "stance_timing": "outputs/analysis/PUBLISHED_POLICY_STANCE_TIMING_COMPARISON.md",
+    "rule_candidates": "outputs/analysis/CLOSED_LOOP_WINDOW_RULE_CANDIDATES.md",
+    "knee_rate_selector_manifest": "outputs/analysis/KNEE_RATE_SELECTOR_MANIFEST.md",
+    "left_stance_gap": "outputs/analysis/LEFT_STANCE_GAP_ANALYSIS.md",
+    "left_stance_rate_recovery": "outputs/analysis/LEFT_STANCE_RATE_RECOVERY.md",
+    "relabelled_balanced_selector_manifest": "outputs/analysis/RELABELLED_BALANCED_SELECTOR_MANIFEST.md",
+    "relabelled_selector_continuity_score": "outputs/analysis/RELABELLED_SELECTOR_CONTINUITY_SCORE.md",
+    "relabelled_selector_replay_manifest": "outputs/analysis/RELABELLED_SELECTOR_REPLAY_MANIFEST.md",
+    "relabelled_selector_sequence_replay_top3_5s": "outputs/analysis/RELABELLED_SELECTOR_SEQUENCE_REPLAY_TOP3_5S.md",
+    "relabelled_selector_replay_divergence": "outputs/analysis/RELABELLED_SELECTOR_REPLAY_DIVERGENCE.md",
+    "selector_state_alignment_requirements": "outputs/analysis/SELECTOR_STATE_ALIGNMENT_REQUIREMENTS.md",
+    "source_vx_selector_policy_pivot": "outputs/analysis/SOURCE_VX_SELECTOR_POLICY_PIVOT.md"
+  },
+  "findings": {
+    "straight_x004": {
+      "moving_seeds": 0,
+      "envelope_safe_seeds": 8,
+      "mean_vx_m_s": 0.0019,
+      "single_support_pct": 3.65
+    },
+    "upstream_nearest_turn": {
+      "moving_seeds": 7,
+      "envelope_safe_seeds": 1,
+      "mean_vx_m_s": 0.054,
+      "single_support_pct": 44.8,
+      "passing_10_tick_snippets": 76
+    },
+    "straight_x008": {
+      "moving_seeds": 7,
+      "envelope_safe_seeds": 0,
+      "mean_vx_m_s": 0.064,
+      "single_support_pct": 49.4,
+      "passing_10_tick_snippets": 63
+    },
+    "window_mine": {
+      "passing_25_tick_windows": 0,
+      "passing_10_tick_windows": 142
+    },
+    "stitch_plan": {
+      "short_pass_windows": 142,
+      "stitch_runs": 86,
+      "passing_stitch_runs": 84,
+      "traces_with_25_tick_pass_runs": 0,
+      "traces_with_50_tick_pass_runs": 0,
+      "max_passing_stitch_span_ticks": 18
+    },
+    "stance_timing": {
+      "straight_x004_single_support_pct": 3.65,
+      "straight_x004_single_future_dvx_0p1s_m_s": -0.0155,
+      "straight_x008_single_support_pct": 49.4,
+      "straight_x008_single_future_dvx_0p1s_m_s": 0.003,
+      "turning_single_support_pct": 44.8,
+      "turning_single_future_dvx_0p1s_m_s": 0.0042
+    },
+    "rule_candidates": {
+      "pass_safe_moving_single_windows": 330,
+      "pass_safe_moving_single_mean_vx_m_s": 0.0721,
+      "pass_safe_moving_single_single_support_pct": 46.79,
+      "pass_safe_moving_single_pitch_p95_rad_s": 3.2896,
+      "pass_safe_moving_single_right_knee_p95_rad_s": 2.1407,
+      "reject_high_rate_moving_windows": 1233,
+      "reject_high_rate_moving_mean_vx_m_s": 0.0667,
+      "reject_high_rate_moving_single_support_pct": 53.1,
+      "reject_high_rate_moving_pitch_p95_rad_s": 4.7046,
+      "reject_high_rate_moving_right_knee_p95_rad_s": 4.0445
+    },
+    "knee_rate_selector_manifest": {
+      "status": "HOLD_SELECTOR_MISSING_STANCE_SIDE",
+      "entries": 313,
+      "covered_phase_bins": 5,
+      "phase_bins": 8,
+      "double_majority_windows": 178,
+      "right_stance_majority_windows": 135,
+      "left_stance_majority_windows": 0
+    },
+    "left_stance_gap": {
+      "status": "WARN_LEFT_STANCE_EXISTS_BUT_NOT_IN_SELECTOR",
+      "left_related_windows": 553,
+      "center_left_majority_left_windows": 388,
+      "center_left_majority_left_pass_windows": 0,
+      "center_left_majority_left_pitch_p95_rad_s": 5.1021,
+      "center_left_majority_left_right_knee_p95_rad_s": 5.0757,
+      "center_right_majority_right_windows": 362,
+      "center_right_majority_right_pass_windows": 102,
+      "center_right_majority_right_pitch_p95_rad_s": 3.639,
+      "center_right_majority_right_right_knee_p95_rad_s": 1.9382
+    },
+    "left_stance_rate_recovery": {
+      "status": "PASS_RIGHT_KNEE_RELABEL_RECOVERS_LEFT_STANCE",
+      "right_knee_cap_rad_s": 3.61,
+      "left_related_windows": 553,
+      "original_pass_windows": 1,
+      "relabeled_pass_windows": 343,
+      "relabeled_pass_pct": 62.03
+    },
+    "relabelled_balanced_selector_manifest": {
+      "status": "PASS_BALANCED_SELECTOR_SOURCE_READY",
+      "entries": 672,
+      "covered_phase_bins": 8,
+      "phase_bins": 8,
+      "left_stance_entries": 273,
+      "right_stance_entries": 135,
+      "double_entries": 264,
+      "right_knee_rate_cap_relabelled_entries": 343,
+      "original_entries": 329
+    },
+    "relabelled_selector_continuity_score": {
+      "status": "PASS_SELECTOR_CONTINUITY_50_TICKS",
+      "runs": 101,
+      "pass_runs": 98,
+      "max_pass_run_span_ticks": 96,
+      "pass_run_25_count": 20,
+      "pass_run_50_count": 11,
+      "pass_run_with_relabel_count": 92
+    },
+    "relabelled_selector_replay_manifest": {
+      "status": "PASS_SELECTOR_REPLAY_MANIFEST_READY",
+      "entries": 8,
+      "min_span_ticks": 50
+    },
+    "relabelled_selector_sequence_replay_top3_5s": {
+      "status": "HOLD_SEQUENCE_REPLAY_TERMINATED",
+      "policies": 3,
+      "seeds": [
+        0,
+        1
+      ],
+      "seed0_completed_policies": 3,
+      "seed1_completed_policies": 0,
+      "seed0_mean_vx_range_m_s": [
+        0.044,
+        0.0475
+      ],
+      "seed0_sent_target_velocity_p95_range_rad_s": [
+        2.54,
+        3.04
+      ],
+      "seed1_termination_samples_range": [
+        33,
+        38
+      ],
+      "interpretation": "Relabelled spans can step from seed 0 inside the envelope, but are not seed robust; seed 1 terminates before the selected window."
+    },
+    "relabelled_selector_replay_divergence": {
+      "status": "HOLD_REPLAY_DIVERGES_BEFORE_SELECTOR_WINDOW",
+      "rows": 6,
+      "first_divergence_tick_summary": "five traces at tick 0, one trace at tick 5",
+      "seed1_contact_mismatch_pct_range": [
+        60.5,
+        81.8
+      ],
+      "seed1_vy_abs_error_p95_m_s_range": [
+        1.11,
+        1.24
+      ],
+      "interpretation": "Open-loop prefix replay diverges from the source before the selected relabelled window; state alignment or closed-loop selection is required before BC/export."
+    },
+    "selector_state_alignment_requirements": {
+      "status": "HOLD_STATE_ALIGNMENT_TRACE_CONTRACT_INCOMPLETE",
+      "available_fields": [
+        "base_x_m",
+        "base_y_m",
+        "base_height_m",
+        "body_pitch_rad",
+        "local_linvel_m_s",
+        "actual_position_rad",
+        "sent_target_rad",
+        "target_pre_rate_limit_rad",
+        "foot_contacts",
+        "foot_site_pos_m",
+        "obs_state"
+      ],
+      "missing_required_fields": [
+        "qpos",
+        "qvel",
+        "base_quat_wxyz",
+        "ctrl",
+        "motor_targets",
+        "delayed_action_history"
+      ],
+      "decision": "Do not approximate exact state alignment from partial state fields."
+    }
+  },
+  "superseding_decision": {
+    "status": "PLAN_DEPLOYABLE_POLICY_VALIDATION_AND_WARMSTART",
+    "reason": "A later source-VX selector result proved 8/8-seed in-envelope forward motion through the fitted actuator bridge. The selector is non-deployable, so the active next step is strict validation of exported DAgger-2 ONNX candidates, not more selector tuning.",
+    "source_vx_selector_artifact": "outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_SOURCE_VX_BLEND080_100_SRCVX002_ALT_EXCLUDE_SEED4_FITTED_BRIDGE_BC_GATE_X008_10S.md",
+    "candidate_onnx_paths": [
+      "outputs/analysis/source_vx_selector_trace_dagger2_mlp128_candidate/candidate.onnx",
+      "outputs/analysis/source_vx_selector_trace_dagger2_mlp128_rate_reg_candidate/candidate.onnx"
+    ]
+  },
+  "recommended_next": "PLAN_DEPLOYABLE_POLICY_VALIDATION_AND_WARMSTART: validate the DAgger-2 and DAgger-2 rate-reg ONNX candidates under strict fitted/stress bridge, multi-seed, 10s+ gates. If one survives, use it as the PPO warm start with the fitted actuator bridge active. No robot, no SSH, no deploy.",
+  "stop_rules": [
+    "Do not train directly from full BEST_WALK traces.",
+    "Do not train directly from isolated 10-tick snippets.",
+    "Do not use straight x=0.04 as the first walking pass/fail gate.",
+    "Do not relax the right-knee envelope to make snippets longer.",
+    "Do not refine the non-deployable source-VX selector unless candidate validation identifies a specific missing teacher state.",
+    "Do not run robot validation.",
+    "Do not SSH, deploy, or change runtime behavior."
+  ]
+}

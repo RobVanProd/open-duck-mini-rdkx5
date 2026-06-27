@@ -1,0 +1,245 @@
+{
+  "status": "HOLD_COMMAND_CONDITIONING_REQUIRED",
+  "decision": "Source-VX relabeling removed the seed-5 reverse/fall basin, but the step-0 policy walks forward at command_x=0.0, so it is not ready for PPO or robot validation until command-conditioned standstill data/loss is added.",
+  "artifacts": {
+    "source_vx_relabel": "outputs/analysis/PPO_SWISH_SEED5_RELABEL_SOURCE_VX.md",
+    "manifest": "outputs/analysis/PPO_SWISH_SEED5_SOURCE_VX_RECOVERY_MANIFEST.md",
+    "bc_fit": "outputs/analysis/PPO_LOC_SWISH_SEED5_SOURCE_VX_RECOVERY_BC_STUDENT.md",
+    "export_fidelity": "outputs/analysis/PPO_BC_SWISH_SEED5_SOURCE_VX_RECOVERY_STEP0_EXPORT_FIDELITY.md",
+    "x008_gate": "outputs/analysis/PPO_BC_SWISH_SEED5_SOURCE_VX_RECOVERY_STEP0_VALIDATION_FITTED_BACKLASH.md",
+    "x000_gate": "outputs/analysis/PPO_BC_SWISH_SEED5_SOURCE_VX_RECOVERY_STEP0_VALIDATION_FITTED_BACKLASH_X0.md"
+  },
+  "relabel": {
+    "status": "PASS_BC_TRACE_RELABEL_READY",
+    "teacher": {
+      "teacher_manifest": "outputs/analysis/closed_loop_teacher_dataset_manifest.json",
+      "teacher_dataset_id": "407af2cbe0ad69e1",
+      "teacher_entries": 499,
+      "teacher_samples": 6475,
+      "teacher_model_kind": "source_vx_blend",
+      "knn_k": 5,
+      "blend_alpha": 0.8,
+      "vx_blend_alpha": 1.0,
+      "vx_blend_threshold_m_s": -0.02,
+      "source_vx_threshold_m_s": 0.02,
+      "include_source_regex": null,
+      "exclude_source_regex": null,
+      "alt_include_source_regex": null,
+      "alt_exclude_source_regex": "_seed4/",
+      "best_alpha": 1.0
+    },
+    "trace_globs": [
+      "outputs/analysis/candidate_seed_sweep/ppo_swish_step0/seed_005/trace.jsonl"
+    ],
+    "output_trace_dir": "outputs/analysis/ppo_swish_seed5_relabel_source_vx_traces",
+    "summary": {
+      "traces": 1,
+      "samples_out": 74
+    },
+    "traces": [
+      {
+        "source_trace": "outputs/analysis/candidate_seed_sweep/ppo_swish_step0/seed_005/trace.jsonl",
+        "output_trace": "outputs/analysis/ppo_swish_seed5_relabel_source_vx_traces/trace.jsonl",
+        "samples_in": 74,
+        "samples_out": 74,
+        "skipped": 0,
+        "action_delta_p50": 0.035071320831775665,
+        "action_delta_p95": 0.1505633406641581,
+        "action_delta_max": 0.3889171695709228,
+        "active_model_counts": {
+          "alt": 14,
+          "primary": 60
+        },
+        "blend_alpha_p50": 0.8,
+        "blend_alpha_p95": 1.0
+      }
+    ]
+  },
+  "manifest_summary": {
+    "entries": 26,
+    "samples": 9342,
+    "bc_ready_entries": 26
+  },
+  "bc_fit": {
+    "samples": 9342,
+    "mae": 0.011618310653854217,
+    "p95_abs_error": 0.03514943395524765,
+    "max_abs_error": 0.2578815319151584,
+    "target_rate_p95_rad_s": 2.2316858664260764,
+    "target_rate_max_rad_s": 4.352456266659855
+  },
+  "export_fidelity": {
+    "samples": 2048,
+    "mae": 4.5117555913520846e-08,
+    "rmse": 6.329542401317667e-08,
+    "p50_abs_error": 2.9802322387695312e-08,
+    "p95_abs_error": 1.1920928955078125e-07,
+    "p99_abs_error": 1.7881393432617188e-07,
+    "max_abs_error": 4.470348358154297e-07
+  },
+  "comparison": {
+    "weak_relabel_x008": {
+      "runs": 8,
+      "fall_count": 1,
+      "duration_complete_count": 7,
+      "samples": {
+        "min": 75.0,
+        "mean": 446.875,
+        "p50": 500.0,
+        "p95": 500.0,
+        "max": 500.0
+      },
+      "track_ratio": {
+        "min": -2.3661881803685296,
+        "mean": 0.1495809139201431,
+        "p50": 0.4924977998562099,
+        "p95": 0.5588772767966385,
+        "max": 0.5660924596915721
+      },
+      "mean_local_vx_m_s": {
+        "min": -0.18929505442948236,
+        "mean": 0.011966473113611452,
+        "p50": 0.03939982398849679,
+        "p95": 0.04471018214373108,
+        "max": 0.04528739677532576
+      },
+      "body_pitch_p95_rad": {
+        "min": 0.09409496570588069,
+        "mean": 0.10040423580399911,
+        "p50": 0.1011390493101807,
+        "p95": 0.10407887666402321,
+        "max": 0.10506963297478876
+      },
+      "base_height_min_m": {
+        "min": 0.07773101329803467,
+        "mean": 0.14420025050640106,
+        "p50": 0.15374673902988434,
+        "p95": 0.15568627119064332,
+        "max": 0.15571898221969604
+      },
+      "max_pitch_vel_p95_rad_s": {
+        "min": 3.8474363088607793,
+        "mean": 3.902929835021496,
+        "p50": 3.8775740563869476,
+        "p95": 4.032221123576164,
+        "max": 4.099854826927185
+      },
+      "max_tracking_p95_rad": {
+        "min": 0.2634252309799195,
+        "mean": 0.27329217791557314,
+        "p50": 0.2693640112876892,
+        "p95": 0.29513560891151436,
+        "max": 0.3073218107223511
+      }
+    },
+    "source_vx_x008": {
+      "runs": 8,
+      "fall_count": 0,
+      "duration_complete_count": 8,
+      "samples": {
+        "min": 500.0,
+        "mean": 500.0,
+        "p50": 500.0,
+        "p95": 500.0,
+        "max": 500.0
+      },
+      "track_ratio": {
+        "min": 0.4816053482074494,
+        "mean": 0.5200518125659016,
+        "p50": 0.5231351688335281,
+        "p95": 0.5670216675433403,
+        "max": 0.5675926124764373
+      },
+      "mean_local_vx_m_s": {
+        "min": 0.03852842785659595,
+        "mean": 0.04160414500527213,
+        "p50": 0.04185081350668224,
+        "p95": 0.045361733403467226,
+        "max": 0.04540740899811499
+      },
+      "body_pitch_p95_rad": {
+        "min": 0.0967104359531756,
+        "mean": 0.10049613984272306,
+        "p50": 0.10022881781597022,
+        "p95": 0.10352931764587375,
+        "max": 0.10372807514773716
+      },
+      "base_height_min_m": {
+        "min": 0.14629356563091278,
+        "mean": 0.1528448797762394,
+        "p50": 0.15371014177799225,
+        "p95": 0.15602624043822289,
+        "max": 0.1561945676803589
+      },
+      "max_pitch_vel_p95_rad_s": {
+        "min": 3.7976798415184025,
+        "mean": 3.821800947189331,
+        "p50": 3.8165247440338135,
+        "p95": 3.855729788541794,
+        "max": 3.8601380586624146
+      },
+      "max_tracking_p95_rad": {
+        "min": 0.2618863344192505,
+        "mean": 0.2662251815199852,
+        "p50": 0.26525428891181946,
+        "p95": 0.27105861127376557,
+        "max": 0.2718652844429016
+      }
+    },
+    "source_vx_x000": {
+      "runs": 8,
+      "fall_count": 0,
+      "duration_complete_count": 8,
+      "samples": {
+        "min": 500.0,
+        "mean": 500.0,
+        "p50": 500.0,
+        "p95": 500.0,
+        "max": 500.0
+      },
+      "track_ratio": null,
+      "mean_local_vx_m_s": {
+        "min": 0.03771887631469872,
+        "mean": 0.041540846168947425,
+        "p50": 0.04061162593458721,
+        "p95": 0.045718852083115186,
+        "max": 0.0461250512135033
+      },
+      "body_pitch_p95_rad": {
+        "min": 0.09737431748804541,
+        "mean": 0.10071521159199687,
+        "p50": 0.10054595983328132,
+        "p95": 0.10461150142953204,
+        "max": 0.10543714671925469
+      },
+      "base_height_min_m": {
+        "min": 0.14629283547401428,
+        "mean": 0.15289209596812725,
+        "p50": 0.1538182869553566,
+        "p95": 0.15602673441171644,
+        "max": 0.15610969066619873
+      },
+      "max_pitch_vel_p95_rad_s": {
+        "min": 3.767806887626648,
+        "mean": 3.8335250318050385,
+        "p50": 3.8331931829452515,
+        "p95": 3.870805203914643,
+        "max": 3.8708907365798955
+      },
+      "max_tracking_p95_rad": {
+        "min": 0.26377825140953065,
+        "mean": 0.2656778320670128,
+        "p50": 0.26542564630508425,
+        "p95": 0.26796554327011113,
+        "max": 0.2686748385429383
+      }
+    }
+  },
+  "interpretation": [
+    "Source-VX relabeling is qualitatively better than plain blend relabeling: seed 5 changes from fall/termination to full-duration completion.",
+    "At x=0.08, all 8 seeds complete under the fitted bridge with mean vx 0.0416 m/s and mean track ratio 0.5201.",
+    "The policy still holds on tracking, so it is not deployable.",
+    "At x=0.0, all 8 seeds also complete, but mean vx is 0.0415 m/s, showing the BC warm-start has learned a forward gait without command conditioning.",
+    "Do not start PPO from this checkpoint until either command-conditioned standstill data is added or the PPO objective/initialization plan explicitly handles zero-command correction as the first training phase."
+  ]
+}

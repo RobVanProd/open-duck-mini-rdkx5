@@ -1,0 +1,605 @@
+{
+  "status": "HOLD_TEACHER_TRACE_RIGHT_KNEE_RATE_DISCONTINUITIES",
+  "dataset_id": "407af2cbe0ad69e1",
+  "manifest": "outputs/analysis/closed_loop_teacher_dataset_manifest.json",
+  "gate": {
+    "command_x": 0.08,
+    "duration_s": 5,
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "task": "flat_terrain_backlash",
+    "playground": "upstream-main",
+    "platform": "cpu"
+  },
+  "student_results": [
+    {
+      "student": "knn_k5",
+      "artifact": "outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_BC_GATE_X008.md",
+      "status": "HOLD_BC_REPLAY_TERMINATED",
+      "moving_seed_count": 5,
+      "near_standstill_seed_count": 2,
+      "terminated_or_reverse_seed_count": 1
+    },
+    {
+      "student": "aggregate_sequence",
+      "artifact": "outputs/analysis/CLOSED_LOOP_TEACHER_SEQUENCE_REPLAY_X008.md",
+      "status": "HOLD_SEQUENCE_REPLAY_LOW_FORWARD_MOTION",
+      "moving_seed_count": 0,
+      "sent_target_velocity_p95_rad_s": 0.266
+    },
+    {
+      "student": "aggregate_sequence_no_seam",
+      "artifact": "outputs/analysis/CLOSED_LOOP_TEACHER_SEQUENCE_REPLAY_X008_NO_SEAM.md",
+      "status": "HOLD_SEQUENCE_REPLAY_LOW_FORWARD_MOTION",
+      "moving_seed_count": 0,
+      "sent_target_velocity_p95_rad_s": 0.2853
+    },
+    {
+      "student": "mlp_64x64",
+      "artifact": "outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_MLP_BC_GATE_X008.md",
+      "status": "HOLD_BC_REPLAY_LOW_FORWARD_MOTION",
+      "moving_seed_count": 1,
+      "sent_target_velocity_p95_rad_s": 5.24
+    },
+    {
+      "student": "mlp_64x64_target_rate_pair_loss",
+      "artifact": "outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_MLP_RATE_REG_BC_GATE_X008.md",
+      "status": "HOLD_BC_REPLAY_TERMINATED",
+      "terminated_seed_count": 3,
+      "sent_target_velocity_p95_rad_s": 5.24
+    },
+    {
+      "student": "mlp_64x64_obs_consistency",
+      "artifact": "outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_MLP_CONSISTENCY_BC_GATE_X008.md",
+      "status": "HOLD_BC_REPLAY_TERMINATED",
+      "terminated_seed_count": 3,
+      "sent_target_velocity_p95_rad_s": 5.24
+    },
+    {
+      "student": "linear_ridge",
+      "artifact": "outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_LINEAR_BC_GATE_X008.md",
+      "status": "HOLD_BC_REPLAY_TERMINATED",
+      "moving_seed_count": 0,
+      "terminated_seed_count": 1,
+      "sent_target_velocity_p95_range_rad_s": [
+        0.7319,
+        3.0866
+      ]
+    },
+    {
+      "student": "blend075_knn5_linear",
+      "artifact": "outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_BLEND075_BC_GATE_X008.md",
+      "status": "HOLD_BC_REPLAY_LOW_FORWARD_MOTION",
+      "moving_seed_count": 5,
+      "terminated_seed_count": 0,
+      "near_standstill_seed_count": 3
+    },
+    {
+      "student": "blend080_knn5_linear",
+      "artifact": "outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_BLEND080_BC_GATE_X008.md",
+      "status": "HOLD_BC_REPLAY_LOW_FORWARD_MOTION",
+      "moving_seed_count": 5,
+      "terminated_seed_count": 0,
+      "near_standstill_seed_count": 3,
+      "best_current_cheap_baseline": true
+    },
+    {
+      "student": "blend090_knn5_linear",
+      "artifact": "outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_BLEND090_BC_GATE_X008.md",
+      "status": "HOLD_BC_REPLAY_TERMINATED",
+      "moving_seed_count": 4,
+      "terminated_seed_count": 1
+    },
+    {
+      "student": "knn_k3",
+      "artifact": "outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_KNN3_BC_GATE_X008.md",
+      "status": "HOLD_BC_REPLAY_TERMINATED",
+      "moving_seed_count": 4,
+      "terminated_seed_count": 1
+    }
+  ],
+  "decision": "The DAgger-2 ONNX export path is wired and task-matched backlash eval moves, but it remains above the fitted pitch-chain target-rate envelope. Scalar action-gain damping and the existing pairwise target-rate regularizer both show the same tradeoff: target-rate safety is bought by weakening forward motion below the gate. The next portable student needs a different objective or policy class that preserves the blend/selector behavior while reducing the right-knee target-rate peak. Exact blend ONNX export proves the blend baseline can be represented faithfully, but strict task-matched evaluation still holds on right-knee pitch-chain rate/tracking.",
+  "blend080_seed_mode_analysis": {
+    "artifact": "outputs/analysis/BLEND080_SEED_MODE_ANALYSIS.md",
+    "status": "HOLD_FREEZE_LOW_ACTION_DOUBLE_SUPPORT",
+    "moving_seeds": [
+      0,
+      2,
+      3,
+      5,
+      6
+    ],
+    "frozen_seeds": [
+      1,
+      4,
+      7
+    ],
+    "moving_single_support_pct_mean": 46.24,
+    "frozen_double_support_pct_mean": 97.2,
+    "moving_pitch_chain_target_velocity_p95_rad_s_mean": 3.1944,
+    "frozen_pitch_chain_target_velocity_p95_rad_s_mean": 0.3986
+  },
+  "knn5_seed_mode_analysis": {
+    "artifact": "outputs/analysis/KNN5_SEED_MODE_ANALYSIS.md",
+    "status": "HOLD_FREEZE_DOUBLE_SUPPORT",
+    "moving_seeds": [
+      0,
+      1,
+      2,
+      5,
+      6
+    ],
+    "fall_or_reverse_seeds": [
+      3
+    ],
+    "double_support_freeze_seeds": [
+      4,
+      7
+    ],
+    "tradeoff": "Raw kNN recovers seed 1 but seed 3 falls/reverses. Blend 0.80 rescues seed 3 but freezes seed 1. Seeds 4 and 7 freeze in both."
+  },
+  "global_blend_sweep": [
+    {
+      "blend_alpha": 0.75,
+      "moving_seeds": [
+        0,
+        2,
+        3,
+        5,
+        6
+      ],
+      "frozen_seeds": [
+        1,
+        4,
+        7
+      ],
+      "terminated_seeds": []
+    },
+    {
+      "blend_alpha": 0.8,
+      "moving_seeds": [
+        0,
+        2,
+        3,
+        5,
+        6
+      ],
+      "frozen_seeds": [
+        1,
+        4,
+        7
+      ],
+      "terminated_seeds": []
+    },
+    {
+      "blend_alpha": 0.82,
+      "moving_seeds": [
+        0,
+        2,
+        3,
+        5,
+        6
+      ],
+      "frozen_seeds": [
+        1,
+        4,
+        7
+      ],
+      "terminated_seeds": []
+    },
+    {
+      "blend_alpha": 0.85,
+      "moving_seeds": [
+        0,
+        2,
+        3,
+        5,
+        6
+      ],
+      "frozen_seeds": [
+        1,
+        4,
+        7
+      ],
+      "terminated_seeds": []
+    },
+    {
+      "blend_alpha": 0.88,
+      "moving_seeds": [
+        0,
+        2,
+        3,
+        5,
+        6
+      ],
+      "frozen_seeds": [
+        1,
+        4,
+        7
+      ],
+      "terminated_seeds": []
+    },
+    {
+      "blend_alpha": 0.9,
+      "moving_seeds": [
+        0,
+        2,
+        5,
+        6
+      ],
+      "frozen_seeds": [
+        1,
+        4,
+        7
+      ],
+      "terminated_seeds": [
+        3
+      ]
+    }
+  ],
+  "dwell_blend_sweep": [
+    {
+      "base_blend_alpha": 0.8,
+      "dwell_blend_alpha": 1.0,
+      "dwell_trigger_ticks": 5,
+      "moving_seeds": [
+        0,
+        2,
+        5,
+        6
+      ],
+      "frozen_seeds": [
+        1,
+        4,
+        7
+      ],
+      "terminated_seeds": [
+        3
+      ]
+    },
+    {
+      "base_blend_alpha": 0.8,
+      "dwell_blend_alpha": 1.0,
+      "dwell_trigger_ticks": 10,
+      "moving_seeds": [
+        0,
+        2,
+        3,
+        5,
+        6
+      ],
+      "frozen_seeds": [
+        1,
+        4,
+        7
+      ],
+      "terminated_seeds": []
+    },
+    {
+      "base_blend_alpha": 0.8,
+      "dwell_blend_alpha": 1.0,
+      "dwell_trigger_ticks": 20,
+      "moving_seeds": [
+        0,
+        2,
+        3,
+        5,
+        6
+      ],
+      "frozen_seeds": [
+        1,
+        4,
+        7
+      ],
+      "terminated_seeds": []
+    }
+  ],
+  "vx_blend_best": {
+    "artifact": "outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_VX_BLEND080_100_VXNEG002_BC_GATE_X008.md",
+    "seed_mode_artifact": "outputs/analysis/VX_BLEND080_100_VXNEG002_SEED_MODE_ANALYSIS.md",
+    "status": "HOLD_BC_REPLAY_LOW_FORWARD_MOTION",
+    "base_blend_alpha": 0.8,
+    "vx_blend_alpha": 1.0,
+    "vx_blend_threshold_m_s": -0.02,
+    "moving_seeds": [
+      0,
+      1,
+      2,
+      3,
+      5,
+      6
+    ],
+    "frozen_seeds": [
+      4,
+      7
+    ],
+    "terminated_seeds": [],
+    "moving_seed_count": 6,
+    "best_current_cheap_baseline": true
+  },
+  "source_vx_selector_best": {
+    "artifact_5s": "outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_SOURCE_VX_BLEND080_100_SRCVX002_ALT_EXCLUDE_SEED4_BC_GATE_X008.md",
+    "artifact_10s": "outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_SOURCE_VX_BLEND080_100_SRCVX002_ALT_EXCLUDE_SEED4_BC_GATE_X008_10S.md",
+    "seed_mode_artifact": "outputs/analysis/SOURCE_VX_BLEND080_100_SRCVX002_ALT_EXCLUDE_SEED4_SEED_MODE_ANALYSIS.md",
+    "status_5s": "PASS_BC_FIT_SMOKE_FORWARD_REPLAY",
+    "status_10s": "PASS_BC_FIT_SMOKE_FORWARD_REPLAY",
+    "primary_dataset": "full curated teacher dataset",
+    "alternate_exclude_source_regex": "_seed4/",
+    "source_vx_threshold_m_s": 0.02,
+    "vx_blend_threshold_m_s": -0.02,
+    "moving_seeds_5s": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "moving_seeds_10s": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "terminated_seeds_5s": [],
+    "terminated_seeds_10s": [],
+    "sent_target_velocity_p95_range_5s_rad_s": [
+      2.4474,
+      2.5315
+    ],
+    "sent_target_velocity_p95_range_10s_rad_s": [
+      2.4293,
+      2.4851
+    ],
+    "fitted_bridge_artifact_5s": "outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_SOURCE_VX_BLEND080_100_SRCVX002_ALT_EXCLUDE_SEED4_FITTED_BRIDGE_BC_GATE_X008.md",
+    "fitted_bridge_artifact_10s": "outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_SOURCE_VX_BLEND080_100_SRCVX002_ALT_EXCLUDE_SEED4_FITTED_BRIDGE_BC_GATE_X008_10S.md",
+    "fitted_bridge_status_5s": "PASS_BC_FIT_SMOKE_FORWARD_REPLAY",
+    "fitted_bridge_status_10s": "PASS_BC_FIT_SMOKE_FORWARD_REPLAY",
+    "fitted_bridge_track_ratio_range_10s": [
+      0.5491,
+      0.6172
+    ],
+    "fitted_bridge_sent_target_velocity_p95_range_10s_rad_s": [
+      2.2569,
+      2.3622
+    ],
+    "fitted_bridge_joint_tracking_p95_range_10s_rad": [
+      0.1809,
+      0.1863
+    ],
+    "stress_bridge_artifact_5s": "outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_SOURCE_VX_BLEND080_100_SRCVX002_ALT_EXCLUDE_SEED4_STRESS_BRIDGE_BC_GATE_X008.md",
+    "stress_bridge_status_5s": "HOLD_BC_REPLAY_TERMINATED",
+    "interpretation": "First offline selector to move all eight seeds without terminations at straight x=0.08 in vanilla CPU sim and under the fitted actuator bridge. This is not a deployable policy; stress bridge remains a hold."
+  },
+  "selector_trace_distillation": {
+    "manifest_artifact": "outputs/analysis/SOURCE_VX_SELECTOR_FITTED_BRIDGE_TRACE_MANIFEST.md",
+    "manifest_json": "outputs/analysis/source_vx_selector_fitted_bridge_trace_manifest.json",
+    "manifest_status": "PASS_BC_TRACE_MANIFEST_READY",
+    "manifest_entries": 8,
+    "manifest_samples": 4000,
+    "blend080_fitted_bridge_artifact_10s": "outputs/analysis/SOURCE_VX_SELECTOR_TRACE_BLEND080_FITTED_BRIDGE_BC_GATE_X008_10S.md",
+    "blend080_fitted_bridge_status_10s": "PASS_BC_FIT_SMOKE_FORWARD_REPLAY",
+    "blend080_moving_seeds_10s": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "blend080_terminated_seeds_10s": [],
+    "blend080_track_ratio_range_10s": [
+      0.517,
+      0.6279
+    ],
+    "blend080_sent_target_velocity_p95_range_10s_rad_s": [
+      2.0779,
+      2.2134
+    ],
+    "blend080_joint_tracking_p95_range_10s_rad": [
+      0.1803,
+      0.1843
+    ],
+    "mlp128_fitted_bridge_artifact_10s": "outputs/analysis/SOURCE_VX_SELECTOR_TRACE_MLP128_FITTED_BRIDGE_BC_GATE_X008_10S.md",
+    "mlp128_fitted_bridge_status_10s": "HOLD_BC_REPLAY_TERMINATED",
+    "mlp128_failure": "all seeds fall/progress-fail with reverse velocity and high target rate",
+    "mlp128_rate_reg_fitted_bridge_artifact_10s": "outputs/analysis/SOURCE_VX_SELECTOR_TRACE_MLP128_RATE_REG_FITTED_BRIDGE_BC_GATE_X008_10S.md",
+    "mlp128_rate_reg_fitted_bridge_status_10s": "HOLD_BC_REPLAY_TERMINATED",
+    "mlp128_rate_reg_failure": "one seed completes near standstill, most seeds still reverse/fall, sent-target p95 remains 3.6588-4.4620 rad/s"
+  },
+  "dagger2_mlp_onnx": {
+    "relabel_tool": "tools/relabel_bc_trace_actions.py",
+    "dagger1_relabel_artifact": "outputs/analysis/SOURCE_VX_SELECTOR_TRACE_MLP128_RELABEL_BLEND.md",
+    "dagger1_relabel_status": "PASS_BC_TRACE_RELABEL_READY",
+    "dagger1_relabel_samples_out": 1166,
+    "dagger1_gate_artifact": "outputs/analysis/SOURCE_VX_SELECTOR_TRACE_DAGGER1_MLP128_FITTED_BRIDGE_BC_GATE_X008_10S.md",
+    "dagger1_gate_status": "HOLD_BC_REPLAY_TERMINATED",
+    "dagger1_result": "7/8 seeds completed; seed 5 fell/reversed",
+    "dagger2_relabel_artifact": "outputs/analysis/SOURCE_VX_SELECTOR_TRACE_DAGGER1_MLP128_RELABEL_BLEND.md",
+    "dagger2_relabel_status": "PASS_BC_TRACE_RELABEL_READY",
+    "dagger2_relabel_samples_out": 3602,
+    "dagger2_manifest_artifact": "outputs/analysis/SOURCE_VX_SELECTOR_TRACE_DAGGER2_MANIFEST.md",
+    "dagger2_manifest_json": "outputs/analysis/source_vx_selector_trace_dagger2_manifest.json",
+    "dagger2_manifest_status": "PASS_BC_TRACE_MANIFEST_READY",
+    "dagger2_manifest_entries": 24,
+    "dagger2_manifest_samples": 8768,
+    "dagger2_manifest_dataset_id": "29210cfbb880ecb9",
+    "dagger2_gate_artifact": "outputs/analysis/SOURCE_VX_SELECTOR_TRACE_DAGGER2_MLP128_FITTED_BRIDGE_BC_GATE_X008_10S.md",
+    "dagger2_gate_status": "PASS_BC_FIT_SMOKE_FORWARD_REPLAY",
+    "dagger2_moving_seeds_10s": 8,
+    "dagger2_terminated_seeds_10s": 0,
+    "dagger2_track_ratio_range_10s": [
+      0.5208,
+      0.6182
+    ],
+    "dagger2_sent_target_velocity_p95_range_10s_rad_s": [
+      2.1174,
+      2.1601
+    ],
+    "dagger2_joint_tracking_p95_range_10s_rad": [
+      0.177,
+      0.1813
+    ],
+    "candidate_onnx": "outputs/analysis/source_vx_selector_trace_dagger2_mlp128_candidate/candidate.onnx",
+    "candidate_npz": "outputs/analysis/source_vx_selector_trace_dagger2_mlp128_candidate/candidate_mlp.npz",
+    "candidate_sha256": "a4e8575afc7a88fec336207fa6622e68387212c90596fbe6c0d038be4d5f4460",
+    "onnx_contract": "obs[1,101] -> continuous_actions[1,14]",
+    "onnx_verify_max_abs_error": 4.172325134277344e-07,
+    "standard_onnx_eval_artifact": "outputs/analysis/source_vx_selector_trace_dagger2_mlp128_onnx_eval/CLOSED_LOOP_ACTUATOR_BRIDGE_EVAL.md",
+    "standard_onnx_eval_status": "PASS_CLOSED_LOOP_REPRODUCTION",
+    "standard_onnx_eval_duration_s": 10,
+    "standard_onnx_eval_samples": 500,
+    "standard_onnx_eval_mean_local_vx_m_s": 0.0197,
+    "standard_onnx_eval_track_ratio": 0.2457,
+    "standard_onnx_eval_terminated": false,
+    "interpretation": "Task-matched backlash eval confirms the candidate can move, but max pitch-chain target velocity remains above the fitted envelope. Scalar action gain and the current pairwise target-rate regularizer are not sufficient fixes.",
+    "multiseed_eval_artifact": "outputs/analysis/source_vx_selector_trace_dagger2_mlp128_onnx_multiseed_fitted/MULTISEED_FITTED_SUMMARY.md",
+    "multiseed_eval_status": "HOLD_DAGGER2_ONNX_MULTI_SEED_LOW_FORWARD_PROGRESS",
+    "multiseed_duration_complete_count": "6 / 8",
+    "multiseed_track_ratio_ge_0p5_count": "0 / 8",
+    "multiseed_vx_ge_0p02_count": "4 / 8",
+    "multiseed_mean_track_ratio": 0.2526,
+    "multiseed_mean_local_vx_m_s": 0.0202,
+    "multiseed_early_termination_seeds": [
+      1,
+      7
+    ],
+    "flat_terrain_multiseed_eval_artifact": "outputs/analysis/source_vx_selector_trace_dagger2_mlp128_onnx_multiseed_fitted/MULTISEED_FITTED_SUMMARY.md",
+    "flat_terrain_multiseed_eval_status": "HOLD_DAGGER2_ONNX_MULTI_SEED_LOW_FORWARD_PROGRESS",
+    "backlash_multiseed_eval_artifact": "outputs/analysis/source_vx_selector_trace_dagger2_mlp128_onnx_multiseed_fitted_backlash/MULTISEED_FITTED_BACKLASH_SUMMARY.md",
+    "backlash_multiseed_eval_status": "HOLD_DAGGER2_ONNX_BACKLASH_LOW_FORWARD_PROGRESS",
+    "backlash_duration_complete_count": "8 / 8",
+    "backlash_track_ratio_ge_0p5_count": "7 / 8",
+    "backlash_vx_ge_0p02_count": "8 / 8",
+    "backlash_mean_track_ratio": 0.5409,
+    "backlash_mean_local_vx_m_s": 0.0433,
+    "backlash_pitch_chain_sent_target_velocity_p95_range_rad_s": [
+      4.5943,
+      4.8522
+    ],
+    "gain_screen_artifact": "outputs/analysis/source_vx_selector_trace_dagger2_mlp128_onnx_gain_screen_backlash/GAIN_SCREEN_SUMMARY.md",
+    "gain_screen_status": "HOLD_GAIN_SCREEN_NO_ENVELOPE_SAFE_MOTION",
+    "rate_reg_scale_screen_artifact": "outputs/analysis/source_vx_selector_trace_dagger2_mlp128_rate_reg_scale_screen_backlash/RATE_REG_SCALE_SCREEN_SUMMARY.md",
+    "rate_reg_scale_screen_status": "HOLD_RATE_REG_SCALE_SWEEP_NO_BALANCED_PASS",
+    "rate_reg_scale_screen_scales": [
+      0.03,
+      0.05,
+      0.1
+    ],
+    "rate_reg_scale_screen_best_interpretation": "Scale 0.03 is closest but still misses seed-3 forward tracking and the envelope; 0.05/0.10 are envelope-safe but too slow.",
+    "exact_blend_onnx_comparison": "Exact blend ONNX preserves forward motion across all strict task-matched seeds, unlike the MLP, but still exceeds the fitted pitch-chain envelope at the right knee."
+  },
+  "required_next_design": [
+    "use the DAgger-2 ONNX candidate as proof that compact neural export is wired, not as the behavior target",
+    "keep the source-switch-free blend student as the stronger offline behavior baseline",
+    "the next portable student must preserve task-matched backlash forward progress while bringing max pitch-chain target velocity and tracking down",
+    "do not pursue scalar action-gain wrapping as the next branch; it failed the two-seed envelope/motion screen",
+    "do not keep increasing the existing pairwise target-rate regularizer as the next branch; the scale screen shows the expected motion/envelope tradeoff but no balanced pass",
+    "do not treat the failed 128x128 MLP clones as proof that neural distillation is impossible; they show naive one-step MLP and simple target-rate regularization still overdrive",
+    "treat the stress bridge hold as a margin limit to improve, not as a regression of the fitted-bridge pass",
+    "use state-conditioned or closed-loop-selected imitation rather than one global kNN/linear blend coefficient",
+    "penalize or reject candidates whose closed-loop sent-target p95 reaches 5.24 rad/s",
+    "grade on all eight seeds for at least 5s before any longer run",
+    "gate on forward motion, fall/reverse count, near-standstill count, and max-joint pitch-chain p95 target velocity",
+    "keep all behavior default-off and offline",
+    "use exact blend ONNX as an offline analysis artifact, not a robot candidate",
+    "preserve blend closed-loop forward motion while reducing the right-knee pitch-chain target-rate and tracking peak",
+    "add offline right-knee phase-continuity or per-joint target-rate selection pressure; the measured issue is short cyclic right-knee bursts, not export approximation error",
+    "re-curate or relabel the selector trace dataset before another export; the current manifest already contains right-knee deltas up to 8.3015 rad/s"
+  ],
+  "stop_rules": [
+    "Do not deploy or run robot validation.",
+    "Do not call the DAgger-2 ONNX candidate robot-ready; it is only the first exportable fitted-bridge smoke pass and it fails multi-seed standard ONNX review.",
+    "Do not treat action-gain damping as a fix; the offline gain screen trades target-rate safety for lost forward motion.",
+    "Do not treat the current target-rate regularizer as solved; the scale screen did not find an envelope-safe moving notch.",
+    "Do not treat the 2-seed kNN smoke as a pass.",
+    "Do not use aggregate sequence replay as the student.",
+    "Do not use plain one-step MLP BC as the student.",
+    "Do not assume pairwise target-rate or observation-consistency regularization solves closed-loop rate saturation.",
+    "Do not optimize supervised action error alone.",
+    "Do not call velocity-gated blend solved; it is only the current best cheap baseline.",
+    "Do not keep sweeping one global blend alpha; 0.75-0.88 have the same moving/freeze split and 0.90 reintroduces the seed-3 fall.",
+    "Do not use the simple dwell-to-raw-kNN selector as the solution; early dwell switching terminates seed 3 and later switching preserves the freeze.",
+    "Do not call the exact blend ONNX candidate robot-ready; it preserves forward motion but every strict task-matched seed exceeds the fitted pitch-chain envelope.",
+    "Do not train or export another portable student from the current selector trace manifest without right-knee max-joint target-rate curation or relabeling."
+  ],
+  "exact_blend_onnx": {
+    "candidate_onnx": "outputs/analysis/source_vx_selector_trace_blend080_exact_onnx_candidate/candidate.onnx",
+    "candidate_sha256": "23954caf77823c59524675c55e2e5ed6796877b52b4fea9bc7fa40f61e66bba4",
+    "onnx_contract": "obs[1,101] -> continuous_actions[1,14]",
+    "onnx_verify_max_abs_error": 1.1920928955078125e-07,
+    "bc_smoke_artifact": "outputs/analysis/SOURCE_VX_SELECTOR_TRACE_BLEND080_EXACT_ONNX_FITTED_BRIDGE_BC_GATE_X008_10S.md",
+    "bc_smoke_status": "PASS_BC_FIT_SMOKE_FORWARD_REPLAY",
+    "standard_eval_artifact": "outputs/analysis/SOURCE_VX_SELECTOR_TRACE_BLEND080_EXACT_ONNX_MULTI_SEED_FITTED_BACKLASH_SUMMARY.md",
+    "standard_eval_status": "HOLD_EXACT_BLEND_ONNX_RIGHT_KNEE_RATE_TRACKING",
+    "duration_complete_count": "8 / 8",
+    "track_ratio_ge_0p5_count": "8 / 8",
+    "vx_ge_0p02_count": "8 / 8",
+    "mean_track_ratio": 0.5768,
+    "mean_local_vx_m_s": 0.0461,
+    "pitch_chain_sent_target_velocity_p95_range_rad_s": [
+      4.7355,
+      5.1118
+    ],
+    "pitch_chain_tracking_p95_range_rad": [
+      0.2679,
+      0.28
+    ],
+    "envelope_safe_seed_count_3p75": "0 / 8",
+    "dominant_failure_joint": "right_knee",
+    "interpretation": "Exact kNN+ridge blend ONNX preserves forward motion better than the DAgger-2 MLP in task-matched standard eval, but it is not envelope-safe: every seed exceeds the fitted pitch-chain target-rate envelope and the right knee dominates the violation and tracking error."
+  },
+  "right_knee_spike_diagnostic": {
+    "artifact": "outputs/analysis/SOURCE_VX_SELECTOR_TRACE_BLEND080_EXACT_ONNX_RIGHT_KNEE_SPIKE_DIAGNOSTIC.md",
+    "json": "outputs/analysis/source_vx_selector_trace_blend080_exact_onnx_right_knee_spike_diagnostic.json",
+    "status": "HOLD_RIGHT_KNEE_CYCLIC_RATE_SPIKES",
+    "joint": "right_knee",
+    "event_count_over_3p75_rad_s": 62,
+    "event_pct_over_3p75_rad_s": 12.42,
+    "cluster_count": 32,
+    "cluster_sample_length_range": [
+      1,
+      3
+    ],
+    "max_sent_velocity_rad_s": 5.24,
+    "high_event_contacts": {
+      "11": 39,
+      "10": 21,
+      "01": 2
+    },
+    "interpretation": "Right-knee over-envelope target-rate events are repeated one- to two-tick cyclic bursts, commonly saturating at the 5.24 rad/s runtime slew ceiling and mostly occurring in double support. The same joint also dominates tracking error. This points to a periodic right-knee target discontinuity in the exact blend student, not ONNX export error or random simulator failure."
+  },
+  "selector_trace_manifest_right_knee_rate_diagnostic": {
+    "artifact": "outputs/analysis/SOURCE_VX_SELECTOR_TRACE_MANIFEST_RIGHT_KNEE_RATE_DIAGNOSTIC.md",
+    "json": "outputs/analysis/source_vx_selector_trace_manifest_right_knee_rate_diagnostic.json",
+    "status": "HOLD_TEACHER_TRACE_RIGHT_KNEE_RATE_DISCONTINUITIES",
+    "dataset_id": "de4935ec7672ceea",
+    "joint": "right_knee",
+    "events_over_3p75": 506,
+    "total_deltas": 3992,
+    "event_pct_over_3p75": 12.68,
+    "max_target_velocity_rad_s": 8.3015,
+    "high_event_contacts": {
+      "11": 297,
+      "10": 208,
+      "00": 1
+    },
+    "interpretation": "The source-vx selector trace manifest already contains right-knee target-rate discontinuities: about 12.7% of consecutive right-knee target deltas exceed 3.75 rad/s and the max implied target velocity reaches 8.30 rad/s. Exact blend ONNX is therefore preserving a hidden teacher-data problem rather than inventing the right-knee bursts."
+  }
+}
