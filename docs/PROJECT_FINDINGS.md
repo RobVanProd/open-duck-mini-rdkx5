@@ -3436,6 +3436,57 @@ closed-loop behavior directly while optimizing tracking, such as stronger
 teacher-action continuity, rollout correction from the working selector, or a
 gate-aware fine-tuning loop.
 
+## Pitch-Chain 4.3 Rate-Limit Curation
+
+A follow-up offline curation applied the `4.3 rad/s` source-trace target-rate
+limit to the full pitch chain rather than only the right knee:
+
+```text
+result doc: docs/PITCH_CHAIN_RATE_LIMIT_CURATION_RESULT.md
+status: HOLD_PITCH_CHAIN_4P3_DOES_NOT_FIX_TRACKING
+robot touched: false
+```
+
+The curation changed `543` ticks, but almost all changes were still right-knee
+changes:
+
+```text
+right_knee: 493
+right_ankle: 20
+left_ankle: 23
+left_knee: 7
+left_hip_pitch/right_hip_pitch: 0
+```
+
+The exact-blend ONNX smoke replay passed, but the strict fitted-backlash x=0.08
+8-seed gate still held on tracking:
+
+```text
+duration_complete: 8/8
+falls: 0/8
+mean vx: 0.0477 m/s
+mean track ratio: 0.5965
+max pitch velocity p95: 4.1935-4.2879 rad/s
+max tracking p95: 0.2685-0.2794 rad
+status: HOLD_CANDIDATE_TRACKING
+```
+
+Compared with the earlier right-knee-only `4.3 rad/s` curation, the metrics
+were effectively unchanged:
+
+```text
+right-knee-only 4.3 mean velocity p95: 4.2391 rad/s
+pitch-chain 4.3 mean velocity p95:     4.2399 rad/s
+
+right-knee-only 4.3 mean tracking p95: 0.2720 rad
+pitch-chain 4.3 mean tracking p95:     0.2735 rad
+```
+
+Conclusion: simple post-hoc pitch-chain rate limiting at `4.3 rad/s` is not the
+missing deployability step. The remaining issue is the right-knee
+phase/contact-transition behavior itself, which needs dynamics-aware relabeling
+or gate-aware fine-tuning rather than another uniform cap.
+
 ## Home Pose Contract Audit
 
 The physical calibration discussion exposed a useful distinction:

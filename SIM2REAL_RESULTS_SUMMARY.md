@@ -7321,3 +7321,23 @@ status: HOLD_CANDIDATE_TRACKING
 Small blends slightly improved forward progress but did not materially reduce
 the tracking hold. Larger blends drifted back toward low progress, matching the
 step-40960 failure mode. Robot validation remains blocked.
+
+## Pitch-Chain 4.3 Rate-Limit Curation
+
+The full pitch-chain `4.3 rad/s` curation was tested offline against the strict
+fitted-backlash x=0.08 8-seed gate.
+
+```text
+result doc: docs/PITCH_CHAIN_RATE_LIMIT_CURATION_RESULT.md
+duration_complete: 8/8
+falls: 0/8
+mean vx: 0.0477 m/s
+mean track ratio: 0.5965
+max pitch velocity p95: 4.1935-4.2879 rad/s
+max tracking p95: 0.2685-0.2794 rad
+status: HOLD_CANDIDATE_TRACKING
+```
+
+Compared with the earlier right-knee-only `4.3 rad/s` curation, the full
+pitch-chain cap did not materially improve the strict gate. Robot validation
+remains blocked; this candidate is useful evidence, not a deployable policy.
