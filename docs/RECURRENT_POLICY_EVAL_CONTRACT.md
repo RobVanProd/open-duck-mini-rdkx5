@@ -156,3 +156,22 @@ outputs/analysis/recurrent_bc_student_smoke.json
 The smoke only verifies training/export/fidelity and stateful evaluator
 execution. It is not a candidate policy and does not change the runtime
 deployability boundary above.
+
+## First Full-Gate Result
+
+A larger diagnostic fit was also run:
+
+```text
+outputs/analysis/RECURRENT_BC_STUDENT_ITER003_H96_S32_DECISION.md
+```
+
+It achieved a useful supervised fit but failed the canonical x=0.08
+closed-loop gate with 8/8 falls and pitch-chain target velocity at the
+`5.24 rad/s` slew ceiling on every seed. The result is:
+
+```text
+HOLD_RECURRENT_BC_CLOSED_LOOP_UNSTABLE
+```
+
+Plain recurrent BC is therefore not sufficient. The recurrent path needs
+closed-loop/live-oracle correction pressure before another candidate gate.

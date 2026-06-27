@@ -1,0 +1,33 @@
+{
+  "status": "HOLD_RECURRENT_BC_CLOSED_LOOP_UNSTABLE",
+  "fit_artifact": "outputs/analysis/RECURRENT_BC_STUDENT_ITER003_H96_S32.md",
+  "gate_artifact": "outputs/analysis/RECURRENT_BC_STUDENT_ITER003_H96_S32_GATE.md",
+  "fit_json": "outputs/analysis/recurrent_bc_student_iter003_h96_s32.json",
+  "gate_json": "outputs/analysis/recurrent_bc_student_iter003_h96_s32_gate.json",
+  "fit": {
+    "hidden_dim": 96,
+    "sequence_length": 32,
+    "steps": 1500,
+    "mae": 0.0265880868329173,
+    "p95_abs_error": 0.07368748640447817,
+    "target_rate_p95_rad_s": 2.29253076178501,
+    "onnx_max_action_error": 5.634585877323239e-7,
+    "onnx_max_hidden_error": 9.833113589208242e-7
+  },
+  "gate": {
+    "task": "flat_terrain_backlash",
+    "command_x": 0.08,
+    "duration_s": 15.0,
+    "seeds": 8,
+    "falls": 8,
+    "duration_complete": 0,
+    "track_ratio_mean": -0.9339,
+    "mean_vx_m_s": -0.0747,
+    "max_pitch_vel_p95_rad_s": 5.24,
+    "max_tracking_p95_rad_range": [0.2165, 0.2816]
+  },
+  "interpretation": "Plain recurrent BC fits labels but fails closed-loop with target-rate saturation, reverse motion, and all-seed falls.",
+  "no_robot_tests": true,
+  "no_deploy": true,
+  "runtime_behavior_changed": false
+}
