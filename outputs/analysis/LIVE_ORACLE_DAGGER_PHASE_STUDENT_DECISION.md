@@ -41,6 +41,7 @@ complete and documented in:
 - `outputs/analysis/LIVE_ORACLE_COMMAND_GATED_X0SAFE_ITER0_DECISION.md`
 - `outputs/analysis/LIVE_ORACLE_COMMAND_GATED_X0SAFE_ITER0_X0_GATE.md`
 - `outputs/analysis/LIVE_ORACLE_COMMAND_GATED_X0SAFE_ITER0_X008_GATE.md`
+- `outputs/analysis/LIVE_ORACLE_ITER0_X008_PHASE_TRACKING_PLATEAU_AUDIT.md`
 
 ## Iteration 0 Outcome
 
@@ -140,6 +141,33 @@ without losing the movement behavior."
 Do not promote the command-gated wrapper to robot validation. It is diagnostic
 evidence supporting a structural command-conditioned/phase-aware student rather
 than more scalar relabel or alpha sweeps.
+
+## Phase Tracking Plateau Audit
+
+Result:
+
+`PASS_PHASE_TRACKING_PLATEAU_AUDIT`
+
+Summary:
+
+- artifact: `outputs/analysis/LIVE_ORACLE_ITER0_X008_PHASE_TRACKING_PLATEAU_AUDIT.md`
+- trace source: iteration-0 x=0.08 full-observation rollouts
+- samples: `6000`
+- all-sample max pitch-chain tracking p95: `0.2454 rad`
+- all-sample max pitch-chain sent velocity p95: `3.6586 rad/s`
+- dominant tracking joint in every phase bin: `right_knee`
+- worst phase bin: `1`
+- worst phase-bin right-knee tracking p95: `0.2567 rad`
+- worst phase-bin right-knee sent velocity p95: `3.9081 rad/s`
+
+Interpretation:
+
+The x=0.08 plateau is not a generic all-joint failure. The dominant residual is
+right-knee tracking, with the worst error concentrated in one phase quadrant
+and with right-knee p95 sent velocity locally above the fitted envelope. This
+supports a high-command phase/right-knee-specific representation or correction
+before escalating to full recurrence. It also argues against more global scalar
+x0 relabeling or whole-policy alpha sweeps.
 
 ## Hardware Track Note
 
