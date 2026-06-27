@@ -29,7 +29,7 @@ The soft-offset procedure is the repo-defined way to make physical servo zero
 line up with runtime `zero_pos`. Runtime home pose is then `init_pos`, and the
 sim home keyframe uses the same 14 actuator values.
 
-The current evidence verifies the software path only partially:
+The original evidence verified the software path only partially:
 
 ```text
 runtime HWI.init_pos == sim scene_flat_terrain.xml home keyframe
@@ -37,14 +37,40 @@ home_pose_log_test had small compensated tracking errors
 live RDK-X5 duck_config offsets were captured
 ```
 
-It does not prove the real mechanical leg geometry was re-calibrated to the
+It did not prove the real mechanical leg geometry was re-calibrated to the
 documented home/start pose after later robot work. The large live left-knee
-offset is the biggest warning:
+offset was the biggest warning:
 
 ```text
 left_knee offset:  -1.4880 rad
 right_knee offset:  0.0798 rad
 ```
+
+## 2026-06-27 Left-Knee Correction
+
+The operator later corrected the left-knee soft offset on the robot:
+
+```text
+left_knee: -1.488 -> 0.0371
+right_knee: 0.0798 unchanged
+backup: /home/sunrise/duck_backups/20260627T165814Z_left_knee_offset/duck_config.json
+```
+
+Reported short monitor result after the update:
+
+```text
+left joint        +2.44 deg
+right joint       +3.07 deg
+L-R joint         -0.63 deg
+home_delta L-R    +0.00 deg
+torque left off
+```
+
+This resolves the old 90-degree left-knee software correction as an active
+calibration suspect. It does not by itself validate walking. Because the
+actuator bridge fit was created before this correction, the next hardware gate
+is now a supported actuator-tracking remeasure/refit, not more interpretation
+of the old fit.
 
 Compensated telemetry can look good even if the physical zero is wrong, because
 the same `joints_offsets` values are used when writing commands and when reading
@@ -93,7 +119,7 @@ These are the commanded compensated joint positions in radians. The sim
 | 0 | left_hip_yaw | 0.002 | 0.0844 |
 | 1 | left_hip_roll | 0.053 | 0.0721 |
 | 2 | left_hip_pitch | -0.630 | -0.0890 |
-| 3 | left_knee | 1.368 | -1.4880 |
+| 3 | left_knee | 1.368 | 0.0371 |
 | 4 | left_ankle | -0.784 | -0.0767 |
 | 5 | neck_pitch | 0.000 | 0.0245 |
 | 6 | head_pitch | 0.000 | 0.0000 |
@@ -276,11 +302,12 @@ raw-bypass target = joint_dir * sim_home
 raw-bypass minus normal = -current_offset
 ```
 
-For example, the live `left_knee` offset is `-1.4880 rad`, so a raw-bypass
-sim-home command would move that servo about `+1.4880 rad` away from the
-configured home raw target. That is a large motor command, not a harmless
-readback comparison. Use either the read-only raw audit above or the upstream
-interactive `find_soft_offsets.py` procedure.
+Historically, when the `left_knee` offset was `-1.4880 rad`, a raw-bypass
+sim-home command would have moved that servo about `+1.4880 rad` away from the
+configured home raw target. That was a large motor command, not a harmless
+readback comparison. Even after the corrected knee offset, do not use raw-bypass
+home as a shortcut calibration test; use either the read-only raw audit above
+or the upstream interactive `find_soft_offsets.py` procedure.
 
 ## Pass Criteria
 

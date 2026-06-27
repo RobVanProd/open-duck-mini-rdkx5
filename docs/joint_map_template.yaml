@@ -7,9 +7,11 @@ metadata:
   notes:
     - Explicit Python sign flips were not found in the runtime path.
     - Live board runtime defines joints_dir as all +1.0; no software sign flip is intended.
-    - Real robot zero offsets were filled from the live RDK-X5 duck_config.json snapshot.
+    - Real robot zero offsets were initially filled from the live RDK-X5 duck_config.json snapshot.
+    - left_knee was later corrected on the robot from -1.4880 rad to 0.0371 rad after mechanical knee work.
     - Physical positive direction must be verified by joint_identity_test.
   live_board_snapshot: outputs/evidence/20260621T180046Z_rdkx5_config_snapshot.json
+  post_snapshot_operator_update: outputs/analysis/LEFT_KNEE_OFFSET_CORRECTION_RECORDED.md
   live_board_ssh_target: sunrise@192.168.1.50
   live_board_runtime: /home/sunrise/project/Open_Duck_Mini_Runtime-2_RDK_X5
   live_board_python: /home/sunrise/duck_env/bin/python
@@ -70,7 +72,7 @@ joints:
     sim_min_rad: -1.570796
     sim_max_rad: 1.570796
     runtime_explicit_sign_flip: false
-    real_zero_offset_rad: -1.488
+    real_zero_offset_rad: 0.0371
     positive_physical_direction: UNKNOWN
     feedback_available: true
   - policy_index: 4

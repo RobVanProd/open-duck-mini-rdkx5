@@ -21,7 +21,7 @@ gate_doc: `/home/lsd/robots/open-duck-mini-rdkx5/docs/PHYSICAL_START_POSE_CALIBR
 | 0 | `left_hip_yaw` | left | hip_yaw | [ ] | 0.0020 | 0.1 | 0.0844 | [ ] | |
 | 1 | `left_hip_roll` | left | hip_roll | [ ] | 0.0530 | 3.0 | 0.0721 | [ ] | |
 | 2 | `left_hip_pitch` | left | hip_pitch | [ ] | -0.6300 | -36.1 | -0.0890 | [ ] | |
-| 3 | `left_knee` | left | knee_pitch | [ ] | 1.3680 | 78.4 | -1.4880 | [ ] | |
+| 3 | `left_knee` | left | knee_pitch | [ ] | 1.3680 | 78.4 | 0.0371 | [ ] | |
 | 4 | `left_ankle` | left | ankle_pitch | [ ] | -0.7840 | -44.9 | -0.0767 | [ ] | |
 | 5 | `neck_pitch` | center | neck_pitch | [ ] | 0.0000 | 0.0 | 0.0245 | [ ] | |
 | 6 | `head_pitch` | center | head_pitch | [ ] | 0.0000 | 0.0 | 0.0000 | [ ] | |

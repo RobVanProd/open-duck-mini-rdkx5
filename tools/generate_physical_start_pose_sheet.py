@@ -150,7 +150,7 @@ def build_sheet(joints: list[dict], source: Path, gate_path: Path) -> str:
     lines.append("- [ ] PASS: physical home pose matches spec and telemetry passes")
     lines.append("- [ ] HOLD: physical pose is off, offsets changed without new telemetry, or left knee remains unexplained")
     lines.append("")
-    return "\n".join(lines)
+    return "\n".join(lines).rstrip()
 
 
 def main() -> int:

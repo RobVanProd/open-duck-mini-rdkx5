@@ -39,6 +39,48 @@ left_ankle: -0.0767 rad
 right_ankle: 0.1887 rad
 ```
 
+## Post-Snapshot Knee Offset Correction
+
+On 2026-06-27, after mechanical left-knee work, the operator reported that the
+live board config was backed up and only this offset was changed:
+
+```text
+left_knee: -1.488 -> 0.0371
+right_knee: 0.0798 unchanged
+```
+
+Reported board backup:
+
+```text
+/home/sunrise/duck_backups/20260627T165814Z_left_knee_offset/duck_config.json
+```
+
+Reported hashes:
+
+```text
+backup:  087868f8178598f49a2ab4eab1c77b73ed8cd3af33174c543119cb016d69e9e9
+current: 131a7b8fce1107b14f4727562f44f9e17324caf7fc22512ad7115911f050991b
+```
+
+Reported stand monitor after the update:
+
+```text
+left joint        +2.44 deg
+right joint       +3.07 deg
+L-R joint         -0.63 deg
+home_delta L-R    +0.00 deg
+```
+
+Traceable reduced record:
+
+```text
+outputs/analysis/LEFT_KNEE_OFFSET_CORRECTION_RECORDED.md
+```
+
+The original 2026-06-21 snapshot remains historical evidence. Current
+hardware-side validation should treat the actuator response fit generated
+before this correction as stale until the corrected robot is remeasured.
+
 ## Policy
 
 `policy/BEST_WALK_ONNX_2.onnx`
