@@ -136,11 +136,48 @@ The blends preserved the baseline walking basin, but they did not materially
 reduce the fitted-bridge tracking plateau. The useful region between step-0 and
 the frozen PPO update is effectively a no-op for the gate.
 
+## Adaptive-KL PPO Control
+
+A third tiny PPO smoke tested Brax's adaptive-KL learning-rate schedule while
+keeping the explicit target-rate and actuator-tracking penalties disabled:
+
+```text
+num_timesteps: 512
+actual checkpoint step: 640
+behavior prior scale: -0.10
+target-rate penalty: disabled
+actuator-tracking penalty: disabled
+learning rate schedule: ADAPTIVE_KL
+desired KL: 0.0005
+learning rate range: 1e-6 to 3e-5
+```
+
+The smoke completed and exported an ONNX:
+
+```text
+output: outputs/analysis/pitch_chain_4p3_ppo_warmstart_adaptive_kl_control/smoke_20260627T141703Z_cpu/2026_06_27_101744_640.onnx
+status: PASS_SMOKE_RUN
+```
+
+Targeted seed screen:
+
+```text
+artifact: outputs/analysis/PITCH_CHAIN_4P3_PPO_WARMSTART_ADAPTIVE_KL_CONTROL_SEED1_SEED4_SCREEN.md
+status: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
+seed 1: vx -0.0006, track ratio -0.0080, velocity p95 1.0896, tracking p95 0.1052
+seed 4: vx  0.0034, track ratio  0.0426, velocity p95 1.1028, tracking p95 0.1064
+```
+
+This shows built-in adaptive-KL learning-rate control is not sufficient by
+itself. It still lets the warm-started policy leave the walking basin and reduce
+tracking error by nearly stopping.
+
 ## Conclusion
 
 The PPO warm-start path is viable, but the naive tracking-correction reward
-recipe and the behavior-preserving control are closed as standalone fixes. They
-reproduce the same old failure mode:
+recipe, the behavior-preserving control, low-alpha blending, and built-in
+adaptive-KL control are closed as standalone fixes. They reproduce the same old
+failure mode:
 
 ```text
 safe/calm policy
@@ -155,5 +192,6 @@ trust-region style PPO fine-tuning at the policy-distribution level, an
 imitation/advantage formulation that keeps the update inside the walking basin,
 or a stronger behavior-preservation mechanism that treats loss of forward
 progress as an immediate hold, not as an acceptable way to reduce tracking
-error. Low-alpha post-hoc blending is also not enough; it preserves the
-baseline but does not move the gate.
+error. Low-alpha post-hoc blending and the default Brax adaptive-KL schedule are
+also not enough; they either preserve the baseline without moving the gate or
+collapse into a near-standstill.

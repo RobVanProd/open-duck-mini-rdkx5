@@ -44,6 +44,11 @@
       "branch": "low-alpha blending of the PPO update direction",
       "reason": "0.01-0.10 blends preserve the walking basin but do not materially move the fitted-bridge tracking plateau.",
       "result": "closed"
+    },
+    {
+      "branch": "built-in adaptive-KL PPO learning-rate control",
+      "reason": "adaptive-KL scheduling still moved the warm-started policy into near-standstill; seed 1/4 progress collapsed while tracking p95 fell to ~0.105 rad.",
+      "result": "closed"
     }
   ],
   "candidates": [
@@ -208,6 +213,24 @@
       "status": "HOLD_CANDIDATE_TRACKING",
       "track_ratio_mean": 0.4940354829841567,
       "vx_mean": 0.03952283863873254
+    },
+    {
+      "base_height_min_mean": 0.15309374779462814,
+      "body_pitch_p95_mean": 0.050787574242825914,
+      "duration_complete": 2,
+      "falls_or_terminations": 0,
+      "max_pitch_velocity_p95_max": 1.1028239130973818,
+      "max_pitch_velocity_p95_mean": 1.0962247848510742,
+      "max_pitch_velocity_p95_min": 1.0896256566047668,
+      "max_tracking_p95_max": 0.10643262267112735,
+      "max_tracking_p95_mean": 0.10579175353050235,
+      "max_tracking_p95_min": 0.10515088438987734,
+      "name": "PPO warm-start adaptive-KL control",
+      "path": "outputs/analysis/pitch_chain_4p3_ppo_warmstart_adaptive_kl_control_seed1_seed4_screen.json",
+      "runs": 2,
+      "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "track_ratio_mean": 0.017318250124276346,
+      "vx_mean": 0.0013854600099421077
     }
   ],
   "recommendation": {
@@ -224,7 +247,7 @@
       "reduces max tracking p95 materially below the current ~0.27 rad plateau",
       "does not pass by freezing, reversing, or shortening the horizon"
     ],
-    "recommended_next": "Do not run another clip/filter/weight-blend/feed-forward-BC branch, scalar reward tweak, or naive PPO smoke. Build a gate-aware deployable-policy training path with an explicit policy-distribution trust region or behavior-preserving update before attempting fitted-bridge tracking correction.",
+    "recommended_next": "Do not run another clip/filter/weight-blend/feed-forward-BC branch, scalar reward tweak, naive PPO smoke, or default adaptive-KL PPO control. Build a gate-aware deployable-policy training path with an explicit policy-distribution trust region or behavior-preserving update before attempting fitted-bridge tracking correction.",
     "status": "PLAN_GATE_AWARE_ROLLOUT_CORRECTION_OR_RECURRENT_STUDENT"
   },
   "right_knee_spike_evidence": {

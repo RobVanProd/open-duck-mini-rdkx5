@@ -1,0 +1,200 @@
+{
+  "config": {
+    "policies": [
+      "outputs/analysis/pitch_chain_4p3_ppo_warmstart_adaptive_kl_control/smoke_20260627T141703Z_cpu/2026_06_27_101744_640.onnx"
+    ],
+    "policy_labels": [
+      "ppo_warmstart_adaptive_kl_640"
+    ],
+    "seeds": [
+      1,
+      4
+    ],
+    "command_x": 0.08,
+    "task": "flat_terrain_backlash",
+    "duration_s": 10.0,
+    "bridge_mode": "fitted",
+    "reward_overrides_json": null,
+    "reward_overrides_phase": null,
+    "jax_platform": "cpu",
+    "run": true,
+    "trace_seeds": [],
+    "trace_full_obs": false
+  },
+  "results": [
+    {
+      "policy": "outputs/analysis/pitch_chain_4p3_ppo_warmstart_adaptive_kl_control/smoke_20260627T141703Z_cpu/2026_06_27_101744_640.onnx",
+      "policy_label": "ppo_warmstart_adaptive_kl_640",
+      "seed": 1,
+      "output_dir": "outputs/analysis/pitch_chain_4p3_ppo_warmstart_adaptive_kl_control_seed1_seed4_screen/ppo_warmstart_adaptive_kl_640/seed_001",
+      "command": [
+        "/home/lsd/robots/open-duck-mini-rdkx5/../envs/open-duck-playground/bin/python",
+        "/home/lsd/robots/open-duck-mini-rdkx5/tools/eval_policy_with_actuator_bridge.py",
+        "--mode",
+        "closed-loop-sim",
+        "--eval-role",
+        "candidate",
+        "--policy",
+        "outputs/analysis/pitch_chain_4p3_ppo_warmstart_adaptive_kl_control/smoke_20260627T141703Z_cpu/2026_06_27_101744_640.onnx",
+        "--fit-json",
+        "outputs/analysis/actuator_response_fit.json",
+        "--playground-path",
+        "../Open_Duck_Playground",
+        "--env-python",
+        "../envs/open-duck-playground/bin/python",
+        "--command-x",
+        "0.08",
+        "--task",
+        "flat_terrain_backlash",
+        "--duration",
+        "10.0",
+        "--seed",
+        "1",
+        "--bridge-mode",
+        "fitted",
+        "--jax-platform",
+        "cpu",
+        "--sim-preflight-timeout-s",
+        "600",
+        "--closed-loop-timeout-s",
+        "1800",
+        "--output-dir",
+        "outputs/analysis/pitch_chain_4p3_ppo_warmstart_adaptive_kl_control_seed1_seed4_screen/ppo_warmstart_adaptive_kl_640/seed_001"
+      ],
+      "command_shell": "/home/lsd/robots/open-duck-mini-rdkx5/../envs/open-duck-playground/bin/python /home/lsd/robots/open-duck-mini-rdkx5/tools/eval_policy_with_actuator_bridge.py --mode closed-loop-sim --eval-role candidate --policy outputs/analysis/pitch_chain_4p3_ppo_warmstart_adaptive_kl_control/smoke_20260627T141703Z_cpu/2026_06_27_101744_640.onnx --fit-json outputs/analysis/actuator_response_fit.json --playground-path ../Open_Duck_Playground --env-python ../envs/open-duck-playground/bin/python --command-x 0.08 --task flat_terrain_backlash --duration 10.0 --seed 1 --bridge-mode fitted --jax-platform cpu --sim-preflight-timeout-s 600 --closed-loop-timeout-s 1800 --output-dir outputs/analysis/pitch_chain_4p3_ppo_warmstart_adaptive_kl_control_seed1_seed4_screen/ppo_warmstart_adaptive_kl_640/seed_001",
+      "returncode": 0,
+      "stdout_tail": "outputs/analysis/pitch_chain_4p3_ppo_warmstart_adaptive_kl_control_seed1_seed4_screen/ppo_warmstart_adaptive_kl_640/seed_001/SIM_ACTUATOR_BRIDGE_EVAL.md\noutputs/analysis/pitch_chain_4p3_ppo_warmstart_adaptive_kl_control_seed1_seed4_screen/ppo_warmstart_adaptive_kl_640/seed_001/sim_actuator_bridge_eval.json\noutputs/analysis/pitch_chain_4p3_ppo_warmstart_adaptive_kl_control_seed1_seed4_screen/ppo_warmstart_adaptive_kl_640/seed_001/CLOSED_LOOP_ACTUATOR_BRIDGE_EVAL.md\noutputs/analysis/pitch_chain_4p3_ppo_warmstart_adaptive_kl_control_seed1_seed4_screen/ppo_warmstart_adaptive_kl_640/seed_001/closed_loop_actuator_bridge_eval.json\n",
+      "result_json": "outputs/analysis/pitch_chain_4p3_ppo_warmstart_adaptive_kl_control_seed1_seed4_screen/ppo_warmstart_adaptive_kl_640/seed_001/closed_loop_actuator_bridge_eval.json",
+      "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "summary": {
+        "overall_status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+        "candidate_gate_status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+        "samples": 500,
+        "termination_reason": "duration_complete",
+        "elapsed_s": 9.98,
+        "mean_local_vx_m_s": -0.0006371753652492771,
+        "track_ratio": -0.007964692065615965,
+        "body_pitch_p95_rad": 0.05053927278459408,
+        "base_height_min_m": 0.1556244045495987,
+        "max_pitch_vel_p95_rad_s": 1.0896256566047668,
+        "max_tracking_p95_rad": 0.10515088438987734,
+        "action_saturation_pct": 0.0
+      }
+    },
+    {
+      "policy": "outputs/analysis/pitch_chain_4p3_ppo_warmstart_adaptive_kl_control/smoke_20260627T141703Z_cpu/2026_06_27_101744_640.onnx",
+      "policy_label": "ppo_warmstart_adaptive_kl_640",
+      "seed": 4,
+      "output_dir": "outputs/analysis/pitch_chain_4p3_ppo_warmstart_adaptive_kl_control_seed1_seed4_screen/ppo_warmstart_adaptive_kl_640/seed_004",
+      "command": [
+        "/home/lsd/robots/open-duck-mini-rdkx5/../envs/open-duck-playground/bin/python",
+        "/home/lsd/robots/open-duck-mini-rdkx5/tools/eval_policy_with_actuator_bridge.py",
+        "--mode",
+        "closed-loop-sim",
+        "--eval-role",
+        "candidate",
+        "--policy",
+        "outputs/analysis/pitch_chain_4p3_ppo_warmstart_adaptive_kl_control/smoke_20260627T141703Z_cpu/2026_06_27_101744_640.onnx",
+        "--fit-json",
+        "outputs/analysis/actuator_response_fit.json",
+        "--playground-path",
+        "../Open_Duck_Playground",
+        "--env-python",
+        "../envs/open-duck-playground/bin/python",
+        "--command-x",
+        "0.08",
+        "--task",
+        "flat_terrain_backlash",
+        "--duration",
+        "10.0",
+        "--seed",
+        "4",
+        "--bridge-mode",
+        "fitted",
+        "--jax-platform",
+        "cpu",
+        "--sim-preflight-timeout-s",
+        "600",
+        "--closed-loop-timeout-s",
+        "1800",
+        "--output-dir",
+        "outputs/analysis/pitch_chain_4p3_ppo_warmstart_adaptive_kl_control_seed1_seed4_screen/ppo_warmstart_adaptive_kl_640/seed_004"
+      ],
+      "command_shell": "/home/lsd/robots/open-duck-mini-rdkx5/../envs/open-duck-playground/bin/python /home/lsd/robots/open-duck-mini-rdkx5/tools/eval_policy_with_actuator_bridge.py --mode closed-loop-sim --eval-role candidate --policy outputs/analysis/pitch_chain_4p3_ppo_warmstart_adaptive_kl_control/smoke_20260627T141703Z_cpu/2026_06_27_101744_640.onnx --fit-json outputs/analysis/actuator_response_fit.json --playground-path ../Open_Duck_Playground --env-python ../envs/open-duck-playground/bin/python --command-x 0.08 --task flat_terrain_backlash --duration 10.0 --seed 4 --bridge-mode fitted --jax-platform cpu --sim-preflight-timeout-s 600 --closed-loop-timeout-s 1800 --output-dir outputs/analysis/pitch_chain_4p3_ppo_warmstart_adaptive_kl_control_seed1_seed4_screen/ppo_warmstart_adaptive_kl_640/seed_004",
+      "returncode": 0,
+      "stdout_tail": "outputs/analysis/pitch_chain_4p3_ppo_warmstart_adaptive_kl_control_seed1_seed4_screen/ppo_warmstart_adaptive_kl_640/seed_004/SIM_ACTUATOR_BRIDGE_EVAL.md\noutputs/analysis/pitch_chain_4p3_ppo_warmstart_adaptive_kl_control_seed1_seed4_screen/ppo_warmstart_adaptive_kl_640/seed_004/sim_actuator_bridge_eval.json\noutputs/analysis/pitch_chain_4p3_ppo_warmstart_adaptive_kl_control_seed1_seed4_screen/ppo_warmstart_adaptive_kl_640/seed_004/CLOSED_LOOP_ACTUATOR_BRIDGE_EVAL.md\noutputs/analysis/pitch_chain_4p3_ppo_warmstart_adaptive_kl_control_seed1_seed4_screen/ppo_warmstart_adaptive_kl_640/seed_004/closed_loop_actuator_bridge_eval.json\n",
+      "result_json": "outputs/analysis/pitch_chain_4p3_ppo_warmstart_adaptive_kl_control_seed1_seed4_screen/ppo_warmstart_adaptive_kl_640/seed_004/closed_loop_actuator_bridge_eval.json",
+      "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "summary": {
+        "overall_status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+        "candidate_gate_status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+        "samples": 500,
+        "termination_reason": "duration_complete",
+        "elapsed_s": 9.98,
+        "mean_local_vx_m_s": 0.0034080953851334927,
+        "track_ratio": 0.04260119231416866,
+        "body_pitch_p95_rad": 0.05103587570105775,
+        "base_height_min_m": 0.1505630910396576,
+        "max_pitch_vel_p95_rad_s": 1.1028239130973818,
+        "max_tracking_p95_rad": 0.10643262267112735,
+        "action_saturation_pct": 0.0
+      }
+    }
+  ],
+  "aggregate": {
+    "ppo_warmstart_adaptive_kl_640": {
+      "runs": 2,
+      "fall_count": 0,
+      "duration_complete_count": 2,
+      "samples": {
+        "min": 500.0,
+        "mean": 500.0,
+        "p50": 500.0,
+        "p95": 500.0,
+        "max": 500.0
+      },
+      "track_ratio": {
+        "min": -0.007964692065615965,
+        "mean": 0.017318250124276346,
+        "p50": 0.017318250124276346,
+        "p95": 0.04007289809517943,
+        "max": 0.04260119231416866
+      },
+      "mean_local_vx_m_s": {
+        "min": -0.0006371753652492771,
+        "mean": 0.0013854600099421077,
+        "p50": 0.0013854600099421077,
+        "p95": 0.0032058318476143543,
+        "max": 0.0034080953851334927
+      },
+      "body_pitch_p95_rad": {
+        "min": 0.05053927278459408,
+        "mean": 0.050787574242825914,
+        "p50": 0.050787574242825914,
+        "p95": 0.051011045555234565,
+        "max": 0.05103587570105775
+      },
+      "base_height_min_m": {
+        "min": 0.1505630910396576,
+        "mean": 0.15309374779462814,
+        "p50": 0.15309374779462814,
+        "p95": 0.15537133887410165,
+        "max": 0.1556244045495987
+      },
+      "max_pitch_vel_p95_rad_s": {
+        "min": 1.0896256566047668,
+        "mean": 1.0962247848510742,
+        "p50": 1.0962247848510742,
+        "p95": 1.102164000272751,
+        "max": 1.1028239130973818
+      },
+      "max_tracking_p95_rad": {
+        "min": 0.10515088438987734,
+        "mean": 0.10579175353050235,
+        "p50": 0.10579175353050235,
+        "p95": 0.10636853575706486,
+        "max": 0.10643262267112735
+      }
+    }
+  }
+}

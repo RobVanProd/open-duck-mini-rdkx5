@@ -100,6 +100,10 @@ def build_command(args: argparse.Namespace, output_dir: Path) -> list[str]:
         "--ppo_entropy_cost": args.ppo_entropy_cost,
         "--ppo_clipping_epsilon": args.ppo_clipping_epsilon,
         "--ppo_max_grad_norm": args.ppo_max_grad_norm,
+        "--ppo_desired_kl": args.ppo_desired_kl,
+        "--ppo_learning_rate_schedule": args.ppo_learning_rate_schedule,
+        "--ppo_learning_rate_schedule_min_lr": args.ppo_learning_rate_schedule_min_lr,
+        "--ppo_learning_rate_schedule_max_lr": args.ppo_learning_rate_schedule_max_lr,
     }
     for flag, value in optional_ppo_overrides.items():
         append_optional(command, flag, value)
@@ -389,6 +393,14 @@ def main() -> int:
     parser.add_argument("--ppo-entropy-cost", type=float, default=None)
     parser.add_argument("--ppo-clipping-epsilon", type=float, default=None)
     parser.add_argument("--ppo-max-grad-norm", type=float, default=None)
+    parser.add_argument("--ppo-desired-kl", type=float, default=None)
+    parser.add_argument(
+        "--ppo-learning-rate-schedule",
+        choices=["NONE", "ADAPTIVE_KL"],
+        default=None,
+    )
+    parser.add_argument("--ppo-learning-rate-schedule-min-lr", type=float, default=None)
+    parser.add_argument("--ppo-learning-rate-schedule-max-lr", type=float, default=None)
     parser.add_argument(
         "--restore-checkpoint-path",
         default=None,
@@ -617,6 +629,10 @@ def main() -> int:
             "entropy_cost": args.ppo_entropy_cost,
             "clipping_epsilon": args.ppo_clipping_epsilon,
             "max_grad_norm": args.ppo_max_grad_norm,
+            "desired_kl": args.ppo_desired_kl,
+            "learning_rate_schedule": args.ppo_learning_rate_schedule,
+            "learning_rate_schedule_min_lr": args.ppo_learning_rate_schedule_min_lr,
+            "learning_rate_schedule_max_lr": args.ppo_learning_rate_schedule_max_lr,
         },
         "training_recipe_overrides": {
             "tracking_lin_vel_scale": args.tracking_lin_vel_scale,

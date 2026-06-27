@@ -3777,3 +3777,21 @@ best targeted mean vx: 0.0401 m/s
 The blends preserved motion but did not materially reduce the tracking plateau.
 So the PPO update direction is not useful at low alpha either: full update
 freezes, small blends are no-ops for the gate.
+
+A built-in adaptive-KL PPO learning-rate control was also tested from the same
+warm-start checkpoint:
+
+```text
+screen artifact: outputs/analysis/PITCH_CHAIN_4P3_PPO_WARMSTART_ADAPTIVE_KL_CONTROL_SEED1_SEED4_SCREEN.md
+schedule: ADAPTIVE_KL
+desired KL: 0.0005
+status: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
+seed 1: vx -0.0006, track ratio -0.0080, tracking p95 0.1052
+seed 4: vx  0.0034, track ratio  0.0426, tracking p95 0.1064
+```
+
+Adaptive-KL scheduling did not solve the PPO warm-start collapse. Like the
+behavior-preservation control, it reduced target velocity and tracking error by
+leaving the walking basin and settling into near-standstill. The remaining
+closed-loop branch needs a stronger behavior-preserving mechanism than scalar
+reward terms, low-alpha post-hoc blends, or Brax's default adaptive-KL schedule.

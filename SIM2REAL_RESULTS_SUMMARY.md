@@ -7500,3 +7500,21 @@ targeted track ratio mean range: 0.4847-0.5010
 The blend direction preserves baseline motion at low alpha, but it does not
 materially improve the fitted-bridge tracking gate. Full PPO update freezes;
 small blends are effectively no-ops.
+
+A built-in adaptive-KL PPO schedule was tested as a final small control from
+the same warm-start checkpoint:
+
+```text
+screen artifact: outputs/analysis/PITCH_CHAIN_4P3_PPO_WARMSTART_ADAPTIVE_KL_CONTROL_SEED1_SEED4_SCREEN.md
+schedule: ADAPTIVE_KL
+desired KL: 0.0005
+screen status: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
+seed 1: vx -0.0006, track ratio -0.0080, tracking p95 0.1052
+seed 4: vx  0.0034, track ratio  0.0426, tracking p95 0.1064
+```
+
+Adaptive-KL learning-rate control also freezes rather than correcting the
+walking policy. The PPO path remains useful as plumbing, but the next offline
+branch needs an explicit policy-distribution trust region, gate-aware rollout
+correction, or a different behavior-preserving update. Robot validation remains
+blocked.

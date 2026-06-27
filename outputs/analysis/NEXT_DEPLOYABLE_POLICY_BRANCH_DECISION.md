@@ -6,7 +6,7 @@ This is an offline decision artifact. It does not train, run simulation, SSH, de
 
 ## Executive Summary
 
-Do not run another clip/filter/weight-blend/feed-forward-BC branch, scalar reward tweak, or naive PPO smoke. Build a gate-aware deployable-policy training path with an explicit policy-distribution trust region or behavior-preserving update before attempting fitted-bridge tracking correction.
+Do not run another clip/filter/weight-blend/feed-forward-BC branch, scalar reward tweak, naive PPO smoke, or default adaptive-KL PPO control. Build a gate-aware deployable-policy training path with an explicit policy-distribution trust region or behavior-preserving update before attempting fitted-bridge tracking correction.
 
 The cheap post-hoc branches are now closed negative. The remaining blocker is the deployable policy's representation/training of the right-knee contact transition, not one missing scalar cap.
 
@@ -23,6 +23,7 @@ The cheap post-hoc branches are now closed negative. The remaining blocker is th
 | PPO warm-start tracking correction smoke | `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` | 2 | 2 | 0 | 0.0012 | 0.0155 | 1.1218-1.2200 | 0.1078-0.1121 |
 | PPO warm-start behavior-preservation control | `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` | 2 | 2 | 0 | 0.0013 | 0.0165 | 1.1863-1.2540 | 0.1170-0.1213 |
 | PPO behavior-control low-alpha blends | `HOLD_CANDIDATE_TRACKING` | 8 | 8 | 0 | 0.0395 | 0.4940 | 3.6430-3.7533 | 0.2516-0.2600 |
+| PPO warm-start adaptive-KL control | `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` | 2 | 2 | 0 | 0.0014 | 0.0173 | 1.0896-1.1028 | 0.1052-0.1064 |
 
 ## PPO / Blend Sweep Evidence
 
@@ -49,6 +50,7 @@ within 2 ticks of contact transition: 404 / 506
 - `naive PPO tracking-cost correction from BC warm start`: PPO resume/export works, but a tiny tracking-cost correction reduced tracking by nearly freezing; seed 1/4 screen fell to ~0 progress.
 - `small PPO update with weak behavior preservation`: a control run with no target-rate/tracking penalty, lower learning rate, and stronger behavior prior still collapsed to near-zero progress.
 - `low-alpha blending of the PPO update direction`: 0.01-0.10 blends preserve the walking basin but do not materially move the fitted-bridge tracking plateau.
+- `built-in adaptive-KL PPO learning-rate control`: adaptive-KL scheduling still moved the warm-started policy into near-standstill; seed 1/4 progress collapsed while tracking p95 fell to ~0.105 rad.
 
 ## Recommended Next Branch
 
