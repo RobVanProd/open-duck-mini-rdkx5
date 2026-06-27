@@ -152,6 +152,25 @@ zero_contact_sheet.png  # all 14 joints at 0.0 rad; find_soft_offsets.py referen
 home_contact_sheet.png  # runtime init_pos / sim home keyframe
 ```
 
+Offline source/config contract audit:
+
+```bash
+python3 tools/verify_home_pose_contract.py \
+  --output-md outputs/analysis/HOME_POSE_CONTRACT_AUDIT.md \
+  --output-json outputs/analysis/home_pose_contract_audit.json
+```
+
+This proves only the repository contract:
+
+```text
+runtime HWI.init_pos == sim home keyframe ctrl
+runtime raw home target = joint_dir * sim_home + duck_config offset
+```
+
+It does not prove the physical robot was freshly calibrated to that contract.
+Use `audit_robot_raw_home_offsets.py` or `find_soft_offsets.py` for robot-side
+evidence.
+
 ## Commands
 
 Home pose telemetry after instrumentation deployment:

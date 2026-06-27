@@ -3435,3 +3435,49 @@ deployable-policy attempt needs a training mechanism that preserves the working
 closed-loop behavior directly while optimizing tracking, such as stronger
 teacher-action continuity, rollout correction from the working selector, or a
 gate-aware fine-tuning loop.
+
+## Home Pose Contract Audit
+
+The physical calibration discussion exposed a useful distinction:
+
+```text
+source-level home contract
+vs
+physical zero calibration
+```
+
+An offline verifier now checks the source-level contract directly:
+
+```text
+tool: tools/verify_home_pose_contract.py
+artifact: outputs/analysis/HOME_POSE_CONTRACT_AUDIT.md
+status: PASS_HOME_POSE_CONTRACT
+```
+
+Result:
+
+```text
+max_abs_runtime_minus_sim_home_rad: 0.0000
+max_abs_runtime_zero_rad: 0.0000
+max_abs_raw_bypass_minus_normal_home_rad: 1.4880
+```
+
+Interpretation:
+
+```text
+runtime HWI.init_pos == Playground sim home keyframe ctrl
+runtime zero_pos is all zeros
+normal raw home target = joint_dir * sim_home + configured offset
+```
+
+This answers what "home" is in the repo: it is the 14-value runtime `init_pos`
+vector, exactly matching the sim `home` keyframe `ctrl` vector. It also confirms
+that commanding "raw sim-home" directly is unsafe. With the current live
+offsets, raw-bypass home would differ from the normal compensated raw home
+target by up to `1.4880 rad` at `left_knee`.
+
+The audit does not prove that the real robot's mechanical zero was freshly
+calibrated to this contract after later motor work. That remaining proof is
+robot-side: either run/audit `find_soft_offsets.py`, or run the read-only raw
+home offset audit while the robot is independently placed in the repo-defined
+home geometry.

@@ -7028,6 +7028,29 @@ PASS_HOME_POSE_TELEMETRY_HOLD
 HOLD_ZERO_RECALIBRATION_NOT_NEEDED_WITHOUT_VISIBLE_MISMATCH
 ```
 
+Follow-up offline source/config audit:
+
+```text
+tool: tools/verify_home_pose_contract.py
+artifact: outputs/analysis/HOME_POSE_CONTRACT_AUDIT.md
+status: PASS_HOME_POSE_CONTRACT
+max_abs_runtime_minus_sim_home_rad: 0.0000
+max_abs_runtime_zero_rad: 0.0000
+max_abs_raw_bypass_minus_normal_home_rad: 1.4880
+```
+
+This proves the repo-level contract: runtime `HWI.init_pos` exactly matches the
+Playground `home` keyframe `ctrl` vector, and runtime zero is all zeros. It also
+proves why "raw sim-home" is not a safe shortcut: raw-bypass home ignores
+`duck_config.json` offsets, and for the current live offsets would differ from
+the normal compensated raw home target by up to `1.4880 rad` at `left_knee`.
+
+The remaining unproven item is physical, not source-level: whether the real
+robot's mechanical zero was freshly aligned to the repo-defined zero/home after
+later motor work. That requires either the interactive `find_soft_offsets.py`
+procedure or the read-only raw-position audit while the robot is independently
+placed in the repo-defined home geometry.
+
 ## PPO Warm-Start From DAgger Seed-5 Candidate
 
 The current best BC/DAgger candidate was converted into a PPO-compatible
