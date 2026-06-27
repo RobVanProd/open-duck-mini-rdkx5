@@ -80,6 +80,32 @@ Failing the stress checks should be reported, but it should not be mixed into
 the canonical pass/fail statement unless the team explicitly changes the
 canonical model.
 
+## Support-Transition Smoke Check
+
+The first tiny support-transition recovery smoke confirms why the model name
+must be part of every gate:
+
+```text
+candidate: /tmp/open_duck_support_transition_recovery_finetune/smoke_20260627T021502Z_cpu/2026_06_26_221541_1040.onnx
+
+flat_terrain, x=0.0, fitted bridge, 15 s, seeds 0-7:
+  falls: seeds 1 and 7
+
+flat_terrain_backlash, x=0.0, fitted bridge, 15 s, hard seeds 1 and 7:
+  duration complete: 2 / 2
+
+flat_terrain_backlash, x=0.08, fitted bridge, 15 s, seeds 0-7:
+  duration complete: 7 / 8
+  fall/termination: seed 3 at 78 samples
+  mean vx: -0.0284 m/s
+  mean track ratio: -0.3549
+```
+
+Interpretation: the smoke is not a deployable candidate. It passes the
+canonical hard-seed x=0 standing check, but it fails the canonical x=0.08
+forward-motion gate. The earlier `flat_terrain` x=0 failure should be retained
+as stress evidence, not used as the canonical promotion result.
+
 ## Robot Boundary
 
 This decision does not authorize robot validation, deployment, runtime changes,

@@ -122,10 +122,13 @@ decision: outputs/analysis/SUPPORT_TRANSITION_RECOVERY_FINETUNE_SMOKE_RESULT.md
 final manifest: outputs/analysis/support_transition_recovery_finetune/final_manifest.json
 x=0.0 gate: outputs/analysis/SUPPORT_TRANSITION_RECOVERY_FINETUNE_X0_FITTED_15S.md
 baseline control: outputs/analysis/CMD_PITCH_RL_2P25_STEP0_FLAT_X0_FITTED_15S.md
-status: HOLD_X0_HARD_SEED_FAILURE_NOT_FIXED
+canonical x=0 hard seeds: outputs/analysis/SUPPORT_TRANSITION_RECOVERY_FINETUNE_BACKLASH_X0_FITTED_15S_HARD_SEEDS.md
+canonical x=0.08 full seeds: outputs/analysis/SUPPORT_TRANSITION_RECOVERY_FINETUNE_BACKLASH_X008_FITTED_15S.md
+status: HOLD_X008_LOW_PROGRESS_AND_ONE_FALL
 ```
 
-The restore/export path worked, but the first required gate failed:
+The restore/export path worked. Under the non-canonical `flat_terrain` stress
+model, the first x=0 gate failed:
 
 ```text
 x=0.0 fitted bridge, 15 s, seeds 0-7
@@ -135,9 +138,27 @@ duration complete: 6 / 8
 
 The original step-0 warm start was rerun under the same `flat_terrain`,
 15-second x=0 gate and failed on the same seeds. This means the smoke did not
-create a new zero-command failure; it also did not fix the hard-seed failure
-exposed by the stricter gate. Do not scale this exact reward mix to A100, and
-do not run x=0.08 until the canonical x=0 gate is decided or fixed.
+create a new zero-command failure.
+
+After the canonical model decision, the same smoke was checked on
+`flat_terrain_backlash`:
+
+```text
+x=0.0 fitted bridge, 15 s, hard seeds 1 and 7:
+  duration complete: 2 / 2
+  max_tracking_p95: 0.0552-0.0555 rad
+
+x=0.08 fitted bridge, 15 s, seeds 0-7:
+  duration complete: 7 / 8
+  fall/termination: seed 3 at 78 samples
+  mean vx: -0.0284 m/s
+  mean track ratio: -0.3549
+```
+
+Interpretation: the tiny smoke preserves canonical x=0 hard-seed standing, but
+it does not produce usable forward motion. It mostly under-drives x=0.08 and
+still has one unstable/reverse seed. Do not scale this exact reward mix to
+A100.
 
 ## Required Gates After Any Run
 
@@ -153,7 +174,7 @@ standard fitted-bridge gates:
   --playground-path ../Open_Duck_Playground \
   --env-python ../envs/open-duck-playground/bin/python \
   --command-x 0.0 \
-  --task flat_terrain \
+  --task flat_terrain_backlash \
   --duration 15 \
   --bridge-mode fitted \
   --jax-platform cpu \

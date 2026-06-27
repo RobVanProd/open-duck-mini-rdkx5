@@ -1,6 +1,6 @@
 # Sim-To-Real Results Summary
 
-Last updated: 2026-06-25
+Last updated: 2026-06-27
 
 ## Executive Summary
 
@@ -6736,6 +6736,43 @@ mean vx: 0.0266 m/s
 This proves the PPO restore/export path is coherent for the DAgger-7 student.
 It does not make the checkpoint deployable. Treat it only as a possible
 starting checkpoint for a future closed-loop recovery fine-tune.
+
+## Canonical Sim Model Gate
+
+The offline promotion model is now explicitly `flat_terrain_backlash`, not the
+plain `flat_terrain` ablation:
+
+```text
+decision: docs/CANONICAL_SIM_MODEL_GATE_DECISION.md
+status: RECOMMEND_CANONICAL_FLAT_TERRAIN_BACKLASH
+```
+
+Reason: the command-conditioned pitch-rate-limited warm start passes the
+hard x=0 seeds on `flat_terrain_backlash` but fails the same hard seeds on
+plain `flat_terrain`. The backlash model matches the upstream training/audit
+path and is the more plausible sim-to-real substrate for a servo/linkage robot.
+Plain `flat_terrain` remains useful as a stress check, but its results must not
+be silently mixed with canonical promotion gates.
+
+The tiny support-transition recovery smoke was therefore rechecked on the
+canonical model:
+
+```text
+x=0.0, flat_terrain_backlash, fitted bridge, 15 s, hard seeds 1 and 7:
+  duration complete: 2 / 2
+  max tracking p95: ~0.055 rad
+
+x=0.08, flat_terrain_backlash, fitted bridge, 15 s, seeds 0-7:
+  duration complete: 7 / 8
+  fall/termination: seed 3 at 78 samples
+  mean vx: -0.0284 m/s
+  mean track ratio: -0.3549
+```
+
+Conclusion: the support-transition smoke is not rejected for creating a new
+canonical x=0 hard-seed failure, but it is still not a robot candidate. It
+mostly stands still or drifts backward at x=0.08 and still has one unstable
+seed. Do not scale this exact reward mix to A100.
 
 ## Physical Start-Pose Calibration Check
 
