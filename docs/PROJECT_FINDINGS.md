@@ -3744,3 +3744,20 @@ tracking-correction recipe is rejected. It reduces tracking error by nearly
 freezing the gait. The next PPO branch must preserve forward behavior much more
 strictly, likely with a trust-region/behavior-preservation mechanism and
 short-run gates that treat progress loss as an immediate failure.
+
+A follow-up behavior-preservation control removed target-rate and
+actuator-tracking penalties, lowered the learning rate, and strengthened the
+behavior prior:
+
+```text
+screen artifact: outputs/analysis/PITCH_CHAIN_4P3_PPO_WARMSTART_BEHAVIOR_PRESERVATION_CONTROL_SEED1_SEED4_SCREEN.md
+screen status: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
+seed 1: vx -0.0008, track ratio -0.0104, tracking p95 0.1213
+seed 4: vx  0.0035, track ratio  0.0433, tracking p95 0.1170
+```
+
+This means the freeze is not only caused by explicit tracking penalties. The
+current PPO resume/reward setup moves the warm-start out of the walking basin
+even under a behavior-preservation control. The next attempt needs a stronger
+policy-distribution trust region or a different update mechanism, not another
+small scalar reward tweak.

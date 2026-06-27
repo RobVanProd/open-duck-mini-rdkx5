@@ -215,6 +215,11 @@ def build_payload(args: argparse.Namespace) -> dict[str, Any]:
             "outputs/analysis/pitch_chain_4p3_ppo_warmstart_tracking_correction_smoke_seed1_seed4_screen.json",
             run_candidate_rows,
         ),
+        (
+            "PPO warm-start behavior-preservation control",
+            "outputs/analysis/pitch_chain_4p3_ppo_warmstart_behavior_preservation_control_seed1_seed4_screen.json",
+            run_candidate_rows,
+        ),
     ]
     candidates = []
     for name, rel_path, reader in candidate_specs:
@@ -279,10 +284,15 @@ def build_payload(args: argparse.Namespace) -> dict[str, Any]:
             "result": "closed",
             "reason": "PPO resume/export works, but a tiny tracking-cost correction reduced tracking by nearly freezing; seed 1/4 screen fell to ~0 progress.",
         },
+        {
+            "branch": "small PPO update with weak behavior preservation",
+            "result": "closed",
+            "reason": "a control run with no target-rate/tracking penalty, lower learning rate, and stronger behavior prior still collapsed to near-zero progress.",
+        },
     ]
     recommendation = {
         "status": "PLAN_GATE_AWARE_ROLLOUT_CORRECTION_OR_RECURRENT_STUDENT",
-        "recommended_next": "Do not run another clip/filter/weight-blend/feed-forward-BC branch or naive tracking-cost PPO smoke. Build a gate-aware deployable-policy training path that preserves forward behavior explicitly while directly correcting fitted-bridge tracking through the right-knee contact transition.",
+        "recommended_next": "Do not run another clip/filter/weight-blend/feed-forward-BC branch, scalar reward tweak, or naive PPO smoke. Build a gate-aware deployable-policy training path with an explicit policy-distribution trust region or behavior-preserving update before attempting fitted-bridge tracking correction.",
         "minimum_requirements": [
             "uses the standard strict fitted-backlash x=0.08 multi-seed gate as the primary score",
             "compares against the exact selector blend and PPO-shape warm-start baselines",
@@ -294,7 +304,7 @@ def build_payload(args: argparse.Namespace) -> dict[str, Any]:
         "candidate_mechanisms": [
             "DAgger/rollout correction with the strict gate failure states added back to the teacher dataset",
             "recurrent or phase-aware student for the stance-transition discontinuity",
-            "trust-region PPO fine-tune from the validated PPO-compatible BC warm start, with loss of forward progress treated as an immediate stop condition",
+            "trust-region PPO fine-tune from the validated PPO-compatible BC warm start, with policy-distribution KL/action drift and loss of forward progress treated as immediate stop conditions",
         ],
     }
     return {

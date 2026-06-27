@@ -6,7 +6,7 @@ This is an offline decision artifact. It does not train, run simulation, SSH, de
 
 ## Executive Summary
 
-Do not run another clip/filter/weight-blend/feed-forward-BC branch or naive tracking-cost PPO smoke. Build a gate-aware deployable-policy training path that preserves forward behavior explicitly while directly correcting fitted-bridge tracking through the right-knee contact transition.
+Do not run another clip/filter/weight-blend/feed-forward-BC branch, scalar reward tweak, or naive PPO smoke. Build a gate-aware deployable-policy training path with an explicit policy-distribution trust region or behavior-preserving update before attempting fitted-bridge tracking correction.
 
 The cheap post-hoc branches are now closed negative. The remaining blocker is the deployable policy's representation/training of the right-knee contact transition, not one missing scalar cap.
 
@@ -21,6 +21,7 @@ The cheap post-hoc branches are now closed negative. The remaining blocker is th
 | pitch-chain 4.3 PPO-shape rate student | `HOLD_CANDIDATE_TRACKING` | 8 | 8 | 0 | 0.0393 | 0.4913 | 3.6035-3.7059 | 0.2516-0.2561 |
 | pitch-chain 4.3 PPO warm-start step-0 | `HOLD_CANDIDATE_TRACKING` | 8 | 8 | 0 | 0.0396 | 0.4944 | 3.6200-3.7078 | 0.2522-0.2583 |
 | PPO warm-start tracking correction smoke | `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` | 2 | 2 | 0 | 0.0012 | 0.0155 | 1.1218-1.2200 | 0.1078-0.1121 |
+| PPO warm-start behavior-preservation control | `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` | 2 | 2 | 0 | 0.0013 | 0.0165 | 1.1863-1.2540 | 0.1170-0.1213 |
 
 ## PPO / Blend Sweep Evidence
 
@@ -45,6 +46,7 @@ within 2 ticks of contact transition: 404 / 506
 - `feed-forward PPO-shape BC smoothing`: pitch-chain 4.3 PPO-shape rate student lowered target velocity and tracking slightly but lost progress and still held the strict fitted-bridge tracking gate.
 - `static gate-aware source-VX relabeling`: targeted relabeling of strict-gate seed 1/4 states produced only tiny tracking changes and did not clear the same fitted-bridge tracking hold.
 - `naive PPO tracking-cost correction from BC warm start`: PPO resume/export works, but a tiny tracking-cost correction reduced tracking by nearly freezing; seed 1/4 screen fell to ~0 progress.
+- `small PPO update with weak behavior preservation`: a control run with no target-rate/tracking penalty, lower learning rate, and stronger behavior prior still collapsed to near-zero progress.
 
 ## Recommended Next Branch
 
@@ -63,7 +65,7 @@ Candidate mechanisms:
 
 - DAgger/rollout correction with the strict gate failure states added back to the teacher dataset
 - recurrent or phase-aware student for the stance-transition discontinuity
-- trust-region PPO fine-tune from the validated PPO-compatible BC warm start, with loss of forward progress treated as an immediate stop condition
+- trust-region PPO fine-tune from the validated PPO-compatible BC warm start, with policy-distribution KL/action drift and loss of forward progress treated as immediate stop conditions
 
 ## Stop Rules
 

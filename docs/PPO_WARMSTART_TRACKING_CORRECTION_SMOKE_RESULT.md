@@ -82,10 +82,40 @@ seed 4: vx  0.0031, track ratio  0.0392, velocity p95 1.2200, tracking p95 0.107
 The update reduced target velocity and tracking error by nearly freezing the
 gait. This is not a deployable improvement.
 
+## Behavior-Preservation Control
+
+A second tiny PPO smoke removed the explicit target-rate and actuator-tracking
+penalties, lowered the learning rate, and strengthened the frozen behavior
+prior:
+
+```text
+num_timesteps: 512
+actual checkpoint step: 640
+behavior prior scale: -0.10
+target-rate penalty: disabled
+actuator-tracking penalty: disabled
+learning rate: 1e-5
+clipping epsilon: 0.03
+```
+
+Targeted seed screen:
+
+```text
+artifact: outputs/analysis/PITCH_CHAIN_4P3_PPO_WARMSTART_BEHAVIOR_PRESERVATION_CONTROL_SEED1_SEED4_SCREEN.md
+status: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
+seed 1: vx -0.0008, track ratio -0.0104, velocity p95 1.2540, tracking p95 0.1213
+seed 4: vx  0.0035, track ratio  0.0433, velocity p95 1.1863, tracking p95 0.1170
+```
+
+This control shows the collapse is not only caused by the tracking penalty.
+Under the current PPO resume/reward setup, even a small behavior-anchored update
+moves the policy from stable forward motion into a calm near-standstill.
+
 ## Conclusion
 
 The PPO warm-start path is viable, but the naive tracking-correction reward
-recipe is closed as a standalone fix. It reproduces the same old failure mode:
+recipe and the behavior-preserving control are closed as standalone fixes. They
+reproduce the same old failure mode:
 
 ```text
 safe/calm policy
@@ -96,6 +126,8 @@ almost no forward motion
 
 The next closed-loop branch must preserve the step-0 forward behavior more
 explicitly while applying tracking correction. A useful next probe should be
-trust-region style PPO fine-tuning, very short update windows, or a stronger
-behavior-preservation mechanism that treats loss of forward progress as an
-immediate hold, not as an acceptable way to reduce tracking error.
+trust-region style PPO fine-tuning at the policy-distribution level, an
+imitation/advantage formulation that keeps the update inside the walking basin,
+or a stronger behavior-preservation mechanism that treats loss of forward
+progress as an immediate hold, not as an acceptable way to reduce tracking
+error.

@@ -7470,3 +7470,18 @@ seed 4: vx  0.0031, track ratio  0.0392, tracking p95 0.1078
 The naive tracking-cost fine-tune is therefore closed as a standalone fix. It
 improves calmness/tracking by stopping, not by producing a deployable gait.
 Robot validation remains blocked.
+
+A behavior-preservation control removed target-rate and actuator-tracking
+penalties, lowered the learning rate, and strengthened the behavior prior. It
+also collapsed into low progress:
+
+```text
+screen status: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
+seed 1: vx -0.0008, track ratio -0.0104, tracking p95 0.1213
+seed 4: vx  0.0035, track ratio  0.0433, tracking p95 0.1170
+```
+
+So the issue is broader than the explicit tracking penalty. The current PPO
+resume/reward setup is not preserving the walking basin; the next offline
+training branch needs a true trust-region or behavior-preserving update, not
+another scalar penalty sweep.
