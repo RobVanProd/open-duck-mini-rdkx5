@@ -108,7 +108,10 @@ def stat_value(stats: dict[str, Any] | None, key: str) -> float | None:
 
 def summarize_eval_payload(payload: dict[str, Any]) -> dict[str, Any]:
     closed_loop = payload.get("closed_loop_sim") or {}
-    mode = (closed_loop.get("modes") or {}).get("vanilla") or {}
+    modes = closed_loop.get("modes") or {}
+    mode = modes.get("fitted") or modes.get("vanilla") or next(iter(modes.values()), {})
+    gate = closed_loop.get("candidate_gate") or {}
+    metrics = gate.get("metrics") or {}
     joints = mode.get("joints") or {}
     pitch_velocities = []
     pitch_tracking = []
@@ -137,6 +140,9 @@ def summarize_eval_payload(payload: dict[str, Any]) -> dict[str, Any]:
         "progress_x_m": forward.get("progress_x_m"),
         "max_pitch_sent_target_velocity_p95_rad_s": max(
             (value for _, value in pitch_velocities), default=None
+        ),
+        "max_pitch_sent_target_velocity_limit_excess_rad_s": metrics.get(
+            "max_sent_target_velocity_limit_excess_rad_s"
         ),
         "max_pitch_sent_target_velocity_joint": max(
             pitch_velocities, key=lambda item: item[1], default=(None, None)
@@ -194,7 +200,7 @@ def run_eval(args: argparse.Namespace, command: dict[str, Any], seed: int) -> di
         "--seed",
         str(seed),
         "--bridge-mode",
-        "vanilla",
+        str(args.bridge_mode),
         "--jax-platform",
         str(args.jax_platform),
         "--sim-preflight-timeout-s",
@@ -254,7 +260,6 @@ def mean(values: list[float]) -> float | None:
 
 
 def aggregate_results(results: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, Any]:
-    low, high = args.velocity_envelope
     groups: dict[str, list[dict[str, Any]]] = {}
     for result in results:
         groups.setdefault(str(result["label"]), []).append(result)
@@ -276,6 +281,13 @@ def aggregate_results(results: list[dict[str, Any]], args: argparse.Namespace) -
         ]
         max_joint_mean = mean(max_joint_values)
         max_joint_max = max(max_joint_values) if max_joint_values else None
+        max_excess_values = [
+            float(summary["max_pitch_sent_target_velocity_limit_excess_rad_s"])
+            for summary in summaries
+            if finite(summary.get("max_pitch_sent_target_velocity_limit_excess_rad_s"))
+        ]
+        max_excess_mean = mean(max_excess_values)
+        max_excess_max = max(max_excess_values) if max_excess_values else None
         mean_vx = mean(
             [
                 float(summary["mean_local_vx_m_s"])
@@ -295,8 +307,8 @@ def aggregate_results(results: list[dict[str, Any]], args: argparse.Namespace) -
             for summary in summaries
             if summary.get("termination_reason") == "duration_complete"
         )
-        inside_by_max = finite(max_joint_max) and float(max_joint_max) <= high
-        inside_by_mean = finite(max_joint_mean) and float(max_joint_mean) <= high
+        inside_by_max = finite(max_excess_max) and float(max_excess_max) <= 0.0
+        inside_by_mean = finite(max_excess_mean) and float(max_excess_mean) <= 0.0
         moving_fraction = len(moving) / len(items) if items else 0.0
         complete_fraction = duration_complete / len(items) if items else 0.0
         if not summaries:
@@ -324,8 +336,9 @@ def aggregate_results(results: list[dict[str, Any]], args: argparse.Namespace) -
             "command_tracking_ratio": track_ratio,
             "max_pitch_target_velocity_p95_mean_rad_s": max_joint_mean,
             "max_pitch_target_velocity_p95_max_seed_rad_s": max_joint_max,
-            "envelope_low_rad_s": low,
-            "envelope_high_rad_s": high,
+            "max_pitch_target_velocity_excess_mean_rad_s": max_excess_mean,
+            "max_pitch_target_velocity_excess_max_seed_rad_s": max_excess_max,
+            "velocity_gate": "corrected_per_joint_limits",
             "gate": gate,
         }
     if any(
@@ -344,7 +357,7 @@ def aggregate_results(results: list[dict[str, Any]], args: argparse.Namespace) -
         status = "HOLD_NO_MOVING_COMMAND_FOUND"
     return {
         "status": status,
-        "velocity_envelope_rad_s": {"low": low, "high": high},
+        "velocity_gate": "corrected_per_joint_limits_from_fit_json",
         "moving_ratio_threshold": args.moving_ratio,
         "min_moving_fraction": args.min_moving_fraction,
         "aggregates": aggregates,
@@ -361,12 +374,12 @@ def build_markdown(payload: dict[str, Any], args: argparse.Namespace) -> str:
         "",
         "- Offline closed-loop sim eval only.",
         "- Same published `BEST_WALK_ONNX_2` policy.",
-        "- Vanilla sim path; no fitted actuator bridge, no training, no robot access.",
+        f"- Bridge mode: `{args.bridge_mode}`; no training, no robot access.",
         "- Gate searches for forward tracking while each seed stays under the measured per-joint pitch-chain velocity envelope.",
         "",
         "## Command Cells",
         "",
-        "| command_cell | x | y | yaw | seeds | complete | moving | mean_vx | track_ratio | max_pitch_vel_p95_mean | max_pitch_vel_p95_max_seed | gate |",
+        "| command_cell | x | y | yaw | seeds | complete | moving | mean_vx | track_ratio | max_pitch_vel_p95_mean | max_pitch_vel_excess_max | gate |",
         "|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|",
     ]
     for label, item in payload["aggregates"].items():
@@ -377,7 +390,7 @@ def build_markdown(payload: dict[str, Any], args: argparse.Namespace) -> str:
             f"{item['duration_complete_count']} | {item['moving_seed_count']} | "
             f"{fmt(item['mean_local_vx_m_s'])} | {fmt(item['command_tracking_ratio'])} | "
             f"{fmt(item['max_pitch_target_velocity_p95_mean_rad_s'])} | "
-            f"{fmt(item['max_pitch_target_velocity_p95_max_seed_rad_s'])} | "
+            f"{fmt(item['max_pitch_target_velocity_excess_max_seed_rad_s'])} | "
             f"`{item['gate']}` |"
         )
     lines.extend(
@@ -424,7 +437,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--seeds", type=parse_int_list, default=parse_int_list("0,1,2"))
     parser.add_argument("--duration", type=float, default=5.0)
     parser.add_argument("--jax-platform", default="cpu")
-    parser.add_argument("--velocity-envelope", type=parse_float_list, default=parse_float_list("2.25,3.75"))
+    parser.add_argument("--bridge-mode", default="fitted")
     parser.add_argument("--moving-ratio", type=float, default=0.5)
     parser.add_argument("--min-moving-fraction", type=float, default=2.0 / 3.0)
     parser.add_argument("--sim-preflight-timeout-s", type=int, default=600)
@@ -435,8 +448,6 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--output-json", default="outputs/analysis/published_policy_command_grid.json")
     parser.add_argument("--run", action="store_true")
     args = parser.parse_args()
-    if len(args.velocity_envelope) != 2:
-        parser.error("--velocity-envelope must contain two comma-separated values")
     return args
 
 

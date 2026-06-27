@@ -7740,3 +7740,18 @@ it did not recover a balanced corrected-bridge teacher source from
 `BEST_WALK_ONNX_2`. Future deployable-policy work must rebuild any teacher
 source under the corrected bridge or train directly against the corrected
 per-joint gate.
+
+A small corrected-bridge command screen also checked straight low commands and
+the upstream turning command:
+
+```text
+artifact: outputs/analysis/CORRECTED_BRIDGE_COMMAND_SCREEN.md
+status: HOLD_MOVEMENT_REQUIRES_OVER_ENVELOPE
+straight x=0.02: in envelope, no forward motion
+straight x=0.04: near envelope, no forward motion
+straight x=0.08: moves, but over corrected envelope
+upstream turn: moves, but over corrected envelope
+```
+
+This closes the remaining `BEST_WALK_ONNX_2` source loophole for the checked
+command cells: movement still requires corrected-envelope violation.

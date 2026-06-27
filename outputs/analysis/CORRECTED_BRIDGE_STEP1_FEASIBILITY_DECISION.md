@@ -132,3 +132,31 @@ Next offline work should generate or learn a new deployable policy directly
 against the corrected bridge, using the corrected per-joint gate. If using any
 old teacher/selector machinery, first rebuild the source data under the
 corrected bridge and treat old selectors as historical diagnostics only.
+
+## Command Screen Follow-Up
+
+A small corrected-bridge command screen checked whether `BEST_WALK_ONNX_2`
+still contains an easier in-envelope source at lower straight commands or the
+upstream turning command:
+
+```text
+artifact: outputs/analysis/CORRECTED_BRIDGE_COMMAND_SCREEN.md
+json: outputs/analysis/corrected_bridge_command_screen.json
+status: HOLD_MOVEMENT_REQUIRES_OVER_ENVELOPE
+```
+
+Result:
+
+| command | moving seeds | mean vx | track ratio | max per-joint velocity excess |
+|---|---:|---:|---:|---:|
+| straight_x002 | 0/2 | 0.0006 | 0.0283 | 0.0000 |
+| straight_x004 | 0/2 | 0.0020 | 0.0499 | 0.0651 |
+| straight_x006 | 0/2 | 0.0031 | 0.0515 | 1.2289 |
+| straight_x008 | 2/2 | 0.0340 | 0.4250 | 2.4362 |
+| turn_scale050 | 0/2 | 0.0012 | 0.0337 | 0.1204 |
+| turn_scale075 | 0/2 | 0.0046 | 0.0829 | 1.0259 |
+| turn_scale100 | 2/2 | 0.0366 | 0.4941 | 2.4900 |
+
+Interpretation: low commands are in or near the envelope but do not move;
+commands that move violate the corrected per-joint envelope. This reinforces
+that `BEST_WALK_ONNX_2` is not a usable corrected-bridge teacher source.
