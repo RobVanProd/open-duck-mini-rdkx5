@@ -5748,3 +5748,32 @@ Next PPO fine-tune gates:
 - keep forward progress above the current DAgger baseline
 - no robot validation until both fitted-bridge sim gates pass
 ```
+
+### A100 PPO Warm-Start Negative Result
+
+The first A100 PPO fine-tune from the step-0 DAgger seed-5 checkpoint completed
+training but regressed in candidate gates:
+
+```text
+decision: outputs/analysis/PPO_BC_COMMAND_CONDITIONED_DAGGER_SEED5_X0_A100_FINETUNE_DECISION.md
+status: HOLD_PPO_WARMSTART_FINETUNE_REGRESSED
+```
+
+Observed failures:
+
+```text
+- x=0.08 seed 0: low forward progress, track ratio 0.0138
+- x=0.0 seed 5: fall_or_nan after 37 samples, 100% action saturation
+- step 30720 already froze at x=0.08, so this was not only a late-checkpoint regression
+```
+
+Next PPO/learning work should add gate-aligned selection before spending more
+GPU time:
+
+```text
+- do not select checkpoints by training reward alone
+- gate intermediate ONNX exports before promoting a final checkpoint
+- keep x=0 seed-5 stability as an explicit hard gate
+- add behavior-prior or DAgger-style recovery before another PPO-only recipe
+- rerun Colab gates with --sim-preflight-timeout-s 600 if using per-seed Colab eval
+```

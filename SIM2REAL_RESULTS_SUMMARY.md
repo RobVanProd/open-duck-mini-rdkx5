@@ -7079,3 +7079,38 @@ Interpretation: PPO warm-start infrastructure is ready for a real offline
 fine-tuning run. The policy itself is still not robot-ready; the next branch
 must improve `x=0.08` fitted-bridge pitch tracking while preserving the fixed
 `x=0.0` hard-seed behavior.
+
+## A100 PPO Warm-Start Fine-Tune Result
+
+The first A100 PPO fine-tune from the DAgger seed-5 x0 step-0 checkpoint ran
+successfully on CUDA/JAX, but the exported policy regressed:
+
+```text
+decision: outputs/analysis/PPO_BC_COMMAND_CONDITIONED_DAGGER_SEED5_X0_A100_FINETUNE_DECISION.md
+status: HOLD_PPO_WARMSTART_FINETUNE_REGRESSED
+platform: A100 / CUDA / JAX 0.7.2
+robot touched: false
+deploy performed: false
+```
+
+Training reward increased through step `92160`, but local fitted-bridge gates
+rejected the exported ONNX:
+
+```text
+x=0.08 seed 0:
+  status: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
+  mean vx: 0.0011 m/s
+  track ratio: 0.0138
+  max pitch tracking p95: 0.0794 rad
+
+x=0.0 seed 5:
+  status: HOLD_CANDIDATE_FALL_OR_TERMINATION
+  samples: 37
+  base height min: 0.0501 m
+  action saturation: 100%
+```
+
+The Colab per-seed gates in the artifact bundle all timed out during the
+default 90 second sim preflight, so the decision is based on local CPU
+re-gates with a longer preflight. Do not continue this exact PPO recipe:
+reward-only checkpoint selection is not aligned with the candidate gates.

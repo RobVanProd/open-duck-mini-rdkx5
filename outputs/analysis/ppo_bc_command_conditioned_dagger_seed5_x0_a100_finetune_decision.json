@@ -1,0 +1,68 @@
+{
+  "status": "HOLD_PPO_WARMSTART_FINETUNE_REGRESSED",
+  "robot_touched": false,
+  "deploy_performed": false,
+  "training": {
+    "platform": "cuda",
+    "device": "NVIDIA A100-SXM4-40GB",
+    "jax_version": "0.7.2",
+    "status": "PASS_SMOKE_RUN",
+    "restored_checkpoint": "outputs/analysis/ppo_bc_command_conditioned_dagger_seed5_x0_step0_checkpoint",
+    "exported_steps": [30720, 61440, 92160],
+    "reward_by_step": {
+      "0": 10.553279876708984,
+      "30720": 13.781023025512695,
+      "61440": 14.019286155700684,
+      "92160": 16.26648712158203
+    }
+  },
+  "artifact_bundle": {
+    "path": "outputs/analysis/ppo_bc_command_conditioned_dagger_seed5_x0_a100_finetune/open_duck_warmstart_a100_artifacts.tar.gz",
+    "sha256": "48cece5bcb8be8d32b92fbeb8040f2c65ccebec1e5c166cb763497f4df39db0c"
+  },
+  "colab_gate_caveat": {
+    "status": "HOLD_ENV_INSTANTIATION_TIMEOUT",
+    "reason": "Colab gates timed out during the default 90 second sim preflight and did not produce rollout metrics."
+  },
+  "local_gate_checks": [
+    {
+      "checkpoint_step": 92160,
+      "command_x": 0.08,
+      "seed": 0,
+      "bridge_mode": "fitted",
+      "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "mean_vx_m_s": 0.0011,
+      "track_ratio": 0.0138,
+      "max_pitch_tracking_p95_rad": 0.0794,
+      "max_sent_target_velocity_p95_rad_s": 0.6377,
+      "base_height_min_m": 0.1536,
+      "action_saturation_pct": 0.0
+    },
+    {
+      "checkpoint_step": 92160,
+      "command_x": 0.0,
+      "seed": 5,
+      "bridge_mode": "fitted",
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "samples": 37,
+      "termination": "fall_or_nan",
+      "mean_vx_m_s": -0.2623,
+      "base_height_min_m": 0.0501,
+      "max_pitch_tracking_p95_rad": 0.4952,
+      "action_saturation_pct": 100.0
+    },
+    {
+      "checkpoint_step": 30720,
+      "command_x": 0.08,
+      "seed": 0,
+      "bridge_mode": "fitted",
+      "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "mean_vx_m_s": 0.0009,
+      "track_ratio": 0.0112,
+      "max_pitch_tracking_p95_rad": 0.0613,
+      "max_sent_target_velocity_p95_rad_s": 0.3091,
+      "action_saturation_pct": 0.0
+    }
+  ],
+  "decision": "Do not continue this exact PPO fine-tune recipe. Training reward increased while fitted-bridge candidate behavior regressed."
+}
