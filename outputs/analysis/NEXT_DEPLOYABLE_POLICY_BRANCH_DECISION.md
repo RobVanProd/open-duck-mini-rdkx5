@@ -41,6 +41,7 @@ within 2 ticks of contact transition: 404 / 506
 - `post-hoc ONNX weight interpolation`: small blends did not reduce tracking; larger blends regressed toward low progress.
 - `scalar behavior-prior PPO smoke`: prior PPO smoke and A100 probe improved reward or calmness while losing useful forward motion.
 - `feed-forward PPO-shape BC smoothing`: pitch-chain 4.3 PPO-shape rate student lowered target velocity and tracking slightly but lost progress and still held the strict fitted-bridge tracking gate.
+- `static gate-aware source-VX relabeling`: targeted relabeling of strict-gate seed 1/4 states produced only tiny tracking changes and did not clear the same fitted-bridge tracking hold.
 
 ## Recommended Next Branch
 

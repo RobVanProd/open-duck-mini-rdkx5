@@ -7413,3 +7413,29 @@ The student brought target velocity into the fitted envelope and slightly
 reduced tracking error, but lost forward progress and still missed the tracking
 gate by a wide margin. This closes simple feed-forward BC smoothing as a
 standalone fix. Robot validation remains blocked.
+
+## Gate-Aware Static Relabel BC
+
+Full-observation traces were collected from the pitch-chain `4.3` PPO-shape rate
+student on strict-gate seeds 1 and 4, then relabeled with the source-VX teacher
+and merged back into the BC dataset at `12x` weight.
+
+```text
+result doc: docs/GATE_AWARE_RELABEL_STATIC_BC_RESULT.md
+relabel samples: 1000
+seed 1 relabel action_delta_p95: 0.0848
+seed 4 relabel action_delta_p95: 0.0968
+```
+
+Targeted seed screen after retraining:
+
+```text
+seed 1: vx 0.0372, track ratio 0.4652, max pitch velocity p95 3.7264, tracking p95 0.2548
+seed 4: vx 0.0380, track ratio 0.4747, max pitch velocity p95 3.6821, tracking p95 0.2536
+status: HOLD_CANDIDATE_TRACKING
+```
+
+This is not enough improvement to justify robot validation or a full promotion.
+Static gate-aware source-VX relabeling is closed as a standalone fix. The
+remaining offline branch must change the closed-loop training mechanism, not
+only the static labels.

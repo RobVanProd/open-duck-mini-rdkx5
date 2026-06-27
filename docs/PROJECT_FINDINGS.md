@@ -3659,3 +3659,47 @@ PPO-shape BC student, but forward progress dropped and the tracking gate is
 still far from deployable. This closes simple feed-forward BC smoothing as a
 standalone fix. The next branch still needs gate-aware rollout correction,
 phase/recurrent state, or PPO fine-tuning with strict gate feedback.
+
+## Gate-Aware Static Relabel BC
+
+The next bounded probe collected full-observation strict-gate traces from the
+pitch-chain `4.3` PPO-shape rate student on the targeted hold seeds:
+
+```text
+seed 1: lowest progress
+seed 4: worst tracking
+artifact: outputs/analysis/PITCH_CHAIN_4P3_PPO_SHAPE_RATE_STUDENT_GATE_FAILURE_TRACES.md
+```
+
+Those states were relabeled with the same source-VX teacher that produced the
+in-envelope selector pass:
+
+```text
+artifact: outputs/analysis/PITCH_CHAIN_4P3_PPO_SHAPE_RATE_STUDENT_GATE_FAILURE_RELABEL_SOURCE_VX.md
+samples_out: 1000
+seed 1 action_delta_p95: 0.0848
+seed 4 action_delta_p95: 0.0968
+```
+
+The relabeled gate-failure states were merged with the base pitch-chain `4.3`
+manifest, upweighted `12x`, and distilled into another PPO-shape feed-forward
+student:
+
+```text
+result doc: docs/GATE_AWARE_RELABEL_STATIC_BC_RESULT.md
+screen: outputs/analysis/PITCH_CHAIN_4P3_GATE_AWARE_RELABEL_PPO_SHAPE_STUDENT_SEED1_SEED4_SCREEN.md
+status: HOLD_CANDIDATE_TRACKING
+```
+
+Targeted seed screen:
+
+```text
+seed 1: vx 0.0372, track ratio 0.4652, vel p95 3.7264, tracking p95 0.2548
+seed 4: vx 0.0380, track ratio 0.4747, vel p95 3.6821, tracking p95 0.2536
+```
+
+The static relabel preserved stability but barely moved the tracking plateau.
+This closes static gate-aware source-VX relabeling as a standalone fix. The
+next deployable-policy branch needs closed-loop fine-tuning with gate feedback,
+explicit support-transition correction, or recurrent/phase-aware state rather
+than another static BC relabel.

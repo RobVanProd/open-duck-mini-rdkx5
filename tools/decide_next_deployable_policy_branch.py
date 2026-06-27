@@ -259,6 +259,11 @@ def build_payload(args: argparse.Namespace) -> dict[str, Any]:
             "result": "closed",
             "reason": "pitch-chain 4.3 PPO-shape rate student lowered target velocity and tracking slightly but lost progress and still held the strict fitted-bridge tracking gate.",
         },
+        {
+            "branch": "static gate-aware source-VX relabeling",
+            "result": "closed",
+            "reason": "targeted relabeling of strict-gate seed 1/4 states produced only tiny tracking changes and did not clear the same fitted-bridge tracking hold.",
+        },
     ]
     recommendation = {
         "status": "PLAN_GATE_AWARE_ROLLOUT_CORRECTION_OR_RECURRENT_STUDENT",
