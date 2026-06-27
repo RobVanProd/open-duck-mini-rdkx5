@@ -6588,6 +6588,9 @@ positive-window BC or more weight on the same first-collapse labels.
 The real robot home/start pose must now be treated as a hard unresolved
 robot-side gate, not just a minor watch item.
 
+Canonical procedure:
+`docs/PHYSICAL_START_POSE_CALIBRATION_GATE.md`.
+
 What is already supported:
 
 ```text

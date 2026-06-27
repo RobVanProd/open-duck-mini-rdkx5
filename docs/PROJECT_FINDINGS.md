@@ -3009,6 +3009,8 @@ The real robot has telemetry evidence that the compensated runtime home pose is
 not obviously broken, but it does not have fresh physical pose-to-spec evidence
 from this campaign.
 
+Canonical gate: [PHYSICAL_START_POSE_CALIBRATION_GATE.md](PHYSICAL_START_POSE_CALIBRATION_GATE.md).
+
 Evidence already collected:
 
 ```text

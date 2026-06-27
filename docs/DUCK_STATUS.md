@@ -327,6 +327,8 @@ on 2026-06-22.
 Do not treat future robot walking behavior as policy evidence until the physical
 home/start pose is re-checked against the sim/runtime specification.
 
+Canonical procedure: [PHYSICAL_START_POSE_CALIBRATION_GATE.md](PHYSICAL_START_POSE_CALIBRATION_GATE.md).
+
 The software evidence is only partial:
 
 ```text
