@@ -1,0 +1,95 @@
+{
+  "status": "WARN_POLICY_TEACHER_DIVERGENCE",
+  "manifest": "outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_manifest.json",
+  "manifest_status": "PASS_BC_TRACE_MANIFEST_READY",
+  "dataset_id": "7877cd6345c6e333",
+  "behavior_prior_npz": "outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_candidate/candidate_mlp.npz",
+  "samples": 10322,
+  "thresholds": {
+    "teacher_delta_p95_warn": 0.08
+  },
+  "policies": [
+    {
+      "policy": "outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_candidate/candidate.onnx",
+      "policy_name": "candidate",
+      "samples": 10322,
+      "teacher_delta_abs": {
+        "mean": 5.184403558693714e-08,
+        "p50": 4.0255819594436915e-08,
+        "p95": 1.4028348729600004e-07,
+        "p99": 2.0285934478336805e-07,
+        "max": 4.5278639337897886e-07
+      },
+      "manifest_delta_abs": {
+        "mean": 0.00689055265538219,
+        "p50": 0.0035262643359601498,
+        "p95": 0.02418845671837079,
+        "p99": 0.049870231896638674,
+        "max": 0.2027292251586914
+      },
+      "action_abs": {
+        "mean": 0.270230259794509,
+        "p50": 0.2224719002842903,
+        "p95": 0.7509791433811187,
+        "p99": 0.8293280309438703,
+        "max": 0.9389556646347046
+      },
+      "action_saturation_pct": 0.0
+    },
+    {
+      "policy": "outputs/analysis/colab_cli/open-duck-behavior-prior-a100-candidate-only-20260627T102348Z/extracted/open_duck_colab_cli_candidate-only_20260627T102437Z/open_duck_training_runs_cli/smoke_20260627T102504Z_gpu/2026_06_27_102952_0.onnx",
+      "policy_name": "2026_06_27_102952_0",
+      "samples": 10322,
+      "teacher_delta_abs": {
+        "mean": 5.191665708025566e-08,
+        "p50": 4.046980021932267e-08,
+        "p95": 1.4020934968050897e-07,
+        "p99": 2.005002640670383e-07,
+        "max": 4.1670617256794884e-07
+      },
+      "manifest_delta_abs": {
+        "mean": 0.006890552729581803,
+        "p50": 0.0035262219607830048,
+        "p95": 0.024188488010809295,
+        "p99": 0.049870228767394824,
+        "max": 0.20272940397262573
+      },
+      "action_abs": {
+        "mean": 0.2702302587664943,
+        "p50": 0.2224719449877739,
+        "p95": 0.7509791433811187,
+        "p99": 0.8293280309438703,
+        "max": 0.9389556646347046
+      },
+      "action_saturation_pct": 0.0
+    },
+    {
+      "policy": "outputs/analysis/colab_cli/open-duck-behavior-prior-a100-candidate-only-20260627T102348Z/extracted/open_duck_colab_cli_candidate-only_20260627T102437Z/open_duck_training_runs_cli/smoke_20260627T102504Z_gpu/2026_06_27_103207_40960.onnx",
+      "policy_name": "2026_06_27_103207_40960",
+      "samples": 10322,
+      "teacher_delta_abs": {
+        "mean": 0.04141760046395707,
+        "p50": 0.02857473934212032,
+        "p95": 0.1409114255395953,
+        "p99": 0.18355939932716317,
+        "max": 0.4012836472427569
+      },
+      "manifest_delta_abs": {
+        "mean": 0.04245511970828843,
+        "p50": 0.02915317937731743,
+        "p95": 0.14377696838928383,
+        "p99": 0.191425621509552,
+        "max": 0.45393437147140503
+      },
+      "action_abs": {
+        "mean": 0.2624163805118806,
+        "p50": 0.2000357285141945,
+        "p95": 0.7320958584547042,
+        "p99": 0.8087623184919357,
+        "max": 0.8934354186058044
+      },
+      "action_saturation_pct": 0.0
+    }
+  ],
+  "interpretation": "At least one policy has a large p95 action difference from the behavior-prior teacher on the teacher dataset. If that policy also regresses gate behavior, the PPO update is not preserving the deployable behavior prior."
+}

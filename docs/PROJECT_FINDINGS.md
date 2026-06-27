@@ -3358,10 +3358,21 @@ step 40960 x=0.08:
   status HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
 ```
 
+The new `tools/compare_policy_to_behavior_prior.py` check compared the exported
+ONNX policies against the behavior-prior MLP on the same manifest states:
+
+```text
+samples: 10322
+original candidate teacher p95 error: ~0.0000
+step 0 teacher p95 error: ~0.0000
+step 40960 teacher p95 error: 0.1409
+```
+
 Conclusion: this PPO variant did not produce a robot candidate. The trained
 checkpoint reduced target velocity and increased reward, but it also moved the
-policy back toward low progress. This is another instance of the same pattern:
-reward improvement is not aligned with deployability unless the gate behavior is
+policy back toward low progress and away from the prior action map on the
+prior's own states. This is another instance of the same pattern: reward
+improvement is not aligned with deployability unless the gate behavior is
 preserved directly. The next attempt needs a stronger deployable-policy
 mechanism, such as teacher-action continuity during PPO or rollout correction
 from the working selector, rather than another small scalar reward tweak.

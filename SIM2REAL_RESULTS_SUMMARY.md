@@ -7257,6 +7257,18 @@ the known deployability failure: small PPO reward/penalty changes can make the
 policy look calmer while moving it back toward the low-progress basin. Robot
 validation remains blocked.
 
+A policy-vs-prior comparison on the behavior-prior manifest showed the drift
+directly:
+
+```text
+step 0 teacher-action p95 error: ~0.0000
+step 40960 teacher-action p95 error: 0.1409
+```
+
+That means the PPO update moved away from the behavior-prior action map on the
+prior's own states. Future PPO work needs a stronger continuity mechanism if the
+goal is to preserve the working closed-loop behavior while improving tracking.
+
 Workflow note: post-training compact checkpoint sweeps now default to CPU via
 `--candidate-checkpoint-sweep-jax-platform cpu` while training remains on GPU.
 This avoids the A100 MJX eval-worker wedge observed during this run.

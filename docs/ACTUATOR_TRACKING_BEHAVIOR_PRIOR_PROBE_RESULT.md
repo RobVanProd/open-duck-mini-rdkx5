@@ -62,6 +62,21 @@ reduced target velocity and increased reward, but it also reduced forward
 progress. This repeats the now-established failure pattern: PPO reward can
 improve while the deployability gates regress.
 
+An offline policy-vs-prior comparison confirmed the PPO drift:
+
+```text
+behavior-prior manifest samples: 10322
+step 0 teacher-action p95 error: ~0.0000
+step 40960 teacher-action p95 error: 0.1409
+step 40960 mean teacher-action error: 0.0414
+```
+
+So the restored step-0 export matches the behavior prior, but the PPO update
+moves away from that prior on the prior's own dataset. The gate regression is
+therefore not just a closed-loop evaluation artifact; the trained policy is no
+longer preserving the action map that generated the best available offline
+candidate behavior.
+
 Next training work should not be another small scalar reward tweak. It needs a
 stronger deployable-policy mechanism such as teacher-action continuity during
 PPO, rollout correction from the working selector, or a gate-aligned objective
