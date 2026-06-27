@@ -99,12 +99,20 @@ flat_terrain_backlash, x=0.08, fitted bridge, 15 s, seeds 0-7:
   fall/termination: seed 3 at 78 samples
   mean vx: -0.0284 m/s
   mean track ratio: -0.3549
+
+matched warm-start baseline, same gate:
+  duration complete: 8 / 8
+  falls: 0
+  mean vx: 0.0348 m/s
+  mean track ratio: 0.4344
+  hold reason: tracking
 ```
 
 Interpretation: the smoke is not a deployable candidate. It passes the
 canonical hard-seed x=0 standing check, but it fails the canonical x=0.08
-forward-motion gate. The earlier `flat_terrain` x=0 failure should be retained
-as stress evidence, not used as the canonical promotion result.
+forward-motion gate and regresses against the matched warm-start baseline. The
+earlier `flat_terrain` x=0 failure should be retained as stress evidence, not
+used as the canonical promotion result.
 
 ## Robot Boundary
 

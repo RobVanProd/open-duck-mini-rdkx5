@@ -124,6 +124,8 @@ x=0.0 gate: outputs/analysis/SUPPORT_TRANSITION_RECOVERY_FINETUNE_X0_FITTED_15S.
 baseline control: outputs/analysis/CMD_PITCH_RL_2P25_STEP0_FLAT_X0_FITTED_15S.md
 canonical x=0 hard seeds: outputs/analysis/SUPPORT_TRANSITION_RECOVERY_FINETUNE_BACKLASH_X0_FITTED_15S_HARD_SEEDS.md
 canonical x=0.08 full seeds: outputs/analysis/SUPPORT_TRANSITION_RECOVERY_FINETUNE_BACKLASH_X008_FITTED_15S.md
+matched baseline: outputs/analysis/CMD_PITCH_RL_2P25_STEP0_BACKLASH_X008_FITTED_15S.md
+decision: outputs/analysis/SUPPORT_TRANSITION_RECOVERY_MATCHED_BASELINE_DECISION.md
 status: HOLD_X008_LOW_PROGRESS_AND_ONE_FALL
 ```
 
@@ -157,8 +159,22 @@ x=0.08 fitted bridge, 15 s, seeds 0-7:
 
 Interpretation: the tiny smoke preserves canonical x=0 hard-seed standing, but
 it does not produce usable forward motion. It mostly under-drives x=0.08 and
-still has one unstable/reverse seed. Do not scale this exact reward mix to
-A100.
+still has one unstable/reverse seed.
+
+A matched 15-second canonical x=0.08 baseline was also run from the warm-start
+checkpoint:
+
+```text
+cmd_pitch_rl_2p25_step0:
+  duration complete: 8 / 8
+  falls: 0
+  mean vx: 0.0348 m/s
+  mean track ratio: 0.4344
+  hold reason: tracking
+```
+
+The smoke is therefore a regression relative to the warm start. Do not scale
+this exact reward mix to A100.
 
 ## Required Gates After Any Run
 

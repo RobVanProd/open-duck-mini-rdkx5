@@ -6767,12 +6767,20 @@ x=0.08, flat_terrain_backlash, fitted bridge, 15 s, seeds 0-7:
   fall/termination: seed 3 at 78 samples
   mean vx: -0.0284 m/s
   mean track ratio: -0.3549
+
+matched warm-start baseline, same x=0.08 gate:
+  duration complete: 8 / 8
+  falls: 0
+  mean vx: 0.0348 m/s
+  mean track ratio: 0.4344
+  hold reason: tracking
 ```
 
 Conclusion: the support-transition smoke is not rejected for creating a new
 canonical x=0 hard-seed failure, but it is still not a robot candidate. It
-mostly stands still or drifts backward at x=0.08 and still has one unstable
-seed. Do not scale this exact reward mix to A100.
+mostly stands still or drifts backward at x=0.08, still has one unstable seed,
+and regresses against the matched warm-start baseline. Do not scale this exact
+reward mix to A100.
 
 ## Physical Start-Pose Calibration Check
 
