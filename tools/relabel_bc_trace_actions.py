@@ -83,6 +83,7 @@ def load_teacher(args: argparse.Namespace) -> tuple[dict[str, Any], dict[str, An
         model = {
             "kind": "zero_action",
             "action_dim": action_dim,
+            "zero_action_alpha": float(args.zero_action_alpha),
         }
         meta = {
             "teacher_manifest": str(args.teacher_manifest),
@@ -91,6 +92,7 @@ def load_teacher(args: argparse.Namespace) -> tuple[dict[str, Any], dict[str, An
             "teacher_samples": int(samples.observations.shape[0]),
             "teacher_model_kind": args.teacher_model_kind,
             "action_dim": action_dim,
+            "zero_action_alpha": float(args.zero_action_alpha),
         }
         return model, meta
 
@@ -236,7 +238,15 @@ def predict_teacher_model(
     model: dict[str, Any], obs: np.ndarray, row: dict[str, Any]
 ) -> tuple[np.ndarray, str, float]:
     if model["kind"] == "zero_action":
-        return np.zeros((int(model["action_dim"]),), dtype=float), "zero", 0.0
+        alpha = float(model["zero_action_alpha"])
+        original_action = row.get("action")
+        if isinstance(original_action, list | tuple) and len(original_action) == int(model["action_dim"]):
+            original = np.asarray(original_action, dtype=float)
+        else:
+            original = np.zeros((int(model["action_dim"]),), dtype=float)
+        action = np.clip((1.0 - alpha) * original, -1.0, 1.0)
+        active_model = "zero" if alpha >= 0.999 else "zero_blend_original"
+        return action, active_model, alpha
     if model["kind"] == "blend":
         return predict_blend_model(model, obs), "primary", float(model["blend_alpha"])
     if model["kind"] == "source_vx_blend":
@@ -421,6 +431,12 @@ def main() -> int:
     parser.add_argument("--vx-blend-alpha", type=float, default=1.0)
     parser.add_argument("--vx-blend-threshold-m-s", type=float, default=0.02)
     parser.add_argument("--source-vx-threshold-m-s", type=float, default=0.02)
+    parser.add_argument(
+        "--zero-action-alpha",
+        type=float,
+        default=1.0,
+        help="For zero_action teacher, blend original action toward zero by this factor.",
+    )
     parser.add_argument("--ridge-alphas", default="1e-6,1e-4,1e-2,1,100")
     parser.add_argument(
         "--gate-aware-sample-weights",

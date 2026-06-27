@@ -90,6 +90,7 @@ def write_markdown(path: Path, payload: dict[str, Any]) -> None:
         f"- teacher_manifest: `{payload['teacher_manifest']}`",
         f"- x008_teacher_model_kind: `{payload['x008_teacher_model_kind']}`",
         f"- x0_teacher_model_kind: `{payload['x0_teacher_model_kind']}`",
+        f"- x0_zero_action_alpha: `{payload['x0_zero_action_alpha']}`",
         f"- command_x: `{payload['command_x']}`",
         f"- duration_s: `{payload['duration_s']}`",
         f"- x008_seeds: `{payload['x008_seeds']}`",
@@ -177,6 +178,12 @@ def main() -> int:
     parser.add_argument("--vx-blend-alpha", type=float, default=1.0)
     parser.add_argument("--vx-blend-threshold-m-s", type=float, default=0.02)
     parser.add_argument("--source-vx-threshold-m-s", type=float, default=0.02)
+    parser.add_argument(
+        "--x0-zero-action-alpha",
+        type=float,
+        default=1.0,
+        help="Blend factor for x=0 zero_action relabeling; <1 softens the zero-command correction.",
+    )
     parser.add_argument("--alt-exclude-source-regex", default="seed_004")
     parser.add_argument("--gate-aware-sample-weights", action="store_true", default=True)
     parser.add_argument(
@@ -311,6 +318,8 @@ def main() -> int:
         *common_relabel,
         "--teacher-model-kind",
         args.x0_teacher_model_kind,
+        "--zero-action-alpha",
+        str(args.x0_zero_action_alpha),
         "--trace-glob",
         str(x0_rollout_dir / "student" / "seed_*" / "trace.jsonl"),
         "--output-trace-dir",
@@ -428,6 +437,7 @@ def main() -> int:
         "teacher_manifest": args.teacher_manifest,
         "x008_teacher_model_kind": args.teacher_model_kind,
         "x0_teacher_model_kind": args.x0_teacher_model_kind,
+        "x0_zero_action_alpha": float(args.x0_zero_action_alpha),
         "base_manifests": args.base_manifest,
         "command_x": float(args.command_x),
         "duration_s": float(args.duration),
