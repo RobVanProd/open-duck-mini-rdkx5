@@ -5713,3 +5713,38 @@ tracking p95 range: 0.1472-0.1834 rad
 Stop rule: do not keep lowering moving-label pitch-chain rates. The next
 tracking branch needs closed-loop tracking feedback or PPO fine-tuning from the
 DAgger seed-5 checkpoint, not more offline smoothing.
+
+### PPO Warm-Start Readiness
+
+The DAgger seed-5 BC candidate has been converted into a PPO-compatible step-0
+checkpoint:
+
+```text
+decision: outputs/analysis/PPO_BC_COMMAND_CONDITIONED_DAGGER_SEED5_X0_WARMSTART_DECISION.md
+checkpoint: outputs/analysis/ppo_bc_command_conditioned_dagger_seed5_x0_step0_checkpoint
+onnx: outputs/analysis/ppo_bc_command_conditioned_dagger_seed5_x0_step0.onnx
+fidelity: PASS_PPO_BC_WARMSTART_STEP0_EXPORT_FIDELITY
+```
+
+The step-0 policy preserves the current best BC behavior:
+
+```text
+x=0.0 fitted gate: PASS_CANDIDATE_SIM_GATE
+x=0.08 fitted gate: HOLD_CANDIDATE_TRACKING
+```
+
+The training wrapper now resolves relative restore-checkpoint paths and
+relative output roots against the RDK repo. A tiny CPU restore smoke passed,
+so the next valid training branch is a real PPO fine-tune from the step-0
+checkpoint with the fitted actuator bridge active.
+
+Next PPO fine-tune gates:
+
+```text
+- preserve x=0.0 hard-seed stability
+- improve x=0.08 pitch-chain tracking p95 from ~0.187 rad toward <0.08 rad
+- keep target velocity inside the fitted envelope
+- keep action saturation low
+- keep forward progress above the current DAgger baseline
+- no robot validation until both fitted-bridge sim gates pass
+```

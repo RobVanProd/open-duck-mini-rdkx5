@@ -7027,3 +7027,55 @@ PASS_PHYSICAL_HOME_POSE_VISUAL_CHECK
 PASS_HOME_POSE_TELEMETRY_HOLD
 HOLD_ZERO_RECALIBRATION_NOT_NEEDED_WITHOUT_VISIBLE_MISMATCH
 ```
+
+## PPO Warm-Start From DAgger Seed-5 Candidate
+
+The current best BC/DAgger candidate was converted into a PPO-compatible
+step-0 checkpoint:
+
+```text
+decision: outputs/analysis/PPO_BC_COMMAND_CONDITIONED_DAGGER_SEED5_X0_WARMSTART_DECISION.md
+status: PASS_WARMSTART_INFRASTRUCTURE_READY_BUT_POLICY_STILL_HOLDS_X008_TRACKING
+checkpoint: outputs/analysis/ppo_bc_command_conditioned_dagger_seed5_x0_step0_checkpoint
+onnx: outputs/analysis/ppo_bc_command_conditioned_dagger_seed5_x0_step0.onnx
+```
+
+The step-0 export reproduces the BC ONNX:
+
+```text
+status: PASS_PPO_BC_WARMSTART_STEP0_EXPORT_FIDELITY
+samples checked: 2048
+p95 abs action error: 1.19e-7
+max abs action error: 3.58e-7
+```
+
+Step-0 fitted-bridge gates confirm this is behavior-preserving:
+
+```text
+x=0.0:
+  status: PASS_CANDIDATE_SIM_GATE
+  max pitch tracking p95: 0.0691 rad
+
+x=0.08:
+  status: HOLD_CANDIDATE_TRACKING
+  mean vx: 0.0213 m/s
+  track ratio: 0.2663
+  max pitch tracking p95: 0.1872 rad
+  max sent target velocity p95: 1.9571 rad/s
+```
+
+The first PPO restore smoke failed because the restore checkpoint path was
+relative to the Playground runner working directory. The wrapper now resolves
+relative restore checkpoints and relative output roots against the RDK repo.
+A path-fixed tiny CPU restore smoke passed:
+
+```text
+status: PASS_SMOKE_RUN
+num timesteps: 16
+saved checkpoint: step 20
+```
+
+Interpretation: PPO warm-start infrastructure is ready for a real offline
+fine-tuning run. The policy itself is still not robot-ready; the next branch
+must improve `x=0.08` fitted-bridge pitch tracking while preserving the fixed
+`x=0.0` hard-seed behavior.

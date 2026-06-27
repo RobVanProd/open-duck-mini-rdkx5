@@ -266,6 +266,10 @@ def validate_paths(args: argparse.Namespace) -> None:
                 behavior_path = ROOT / behavior_path
             if not behavior_path.exists():
                 missing.append(str(behavior_path))
+    if args.restore_checkpoint_path is not None:
+        restore_path = resolve_rdk_path(str(args.restore_checkpoint_path))
+        if not restore_path.exists():
+            missing.append(str(restore_path))
     if missing:
         raise SystemExit("Missing required path(s):\n" + "\n".join(missing))
 
@@ -551,7 +555,14 @@ def main() -> int:
 
     validate_paths(args)
 
-    output_root = Path(args.output_root)
+    if args.restore_checkpoint_path is not None:
+        args.restore_checkpoint_path = str(
+            resolve_rdk_path(str(args.restore_checkpoint_path))
+        )
+
+    output_root = Path(args.output_root).expanduser()
+    if not output_root.is_absolute():
+        output_root = (ROOT / output_root).resolve()
     output_dir = output_root / f"smoke_{timestamp()}_{args.platform}"
     command = build_command(args, output_dir)
     env = os.environ.copy()
