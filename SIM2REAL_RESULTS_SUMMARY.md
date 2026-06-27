@@ -7114,3 +7114,39 @@ The Colab per-seed gates in the artifact bundle all timed out during the
 default 90 second sim preflight, so the decision is based on local CPU
 re-gates with a longer preflight. Do not continue this exact PPO recipe:
 reward-only checkpoint selection is not aligned with the candidate gates.
+
+## Behavior-Prior PPO A100 Fine-Tune Result
+
+A conservative behavior-prior PPO fine-tune was run after the PPO-only
+regression:
+
+```text
+decision: outputs/analysis/PPO_BEHAVIOR_PRIOR_A100_FINETUNE_DECISION.md
+status: HOLD_BEHAVIOR_PRIOR_PPO_REJECTED_BY_CHECKPOINT_SWEEP
+behavior prior scale: -0.2
+PPO learning rate: 0.00005
+PPO clip epsilon: 0.1
+platform: A100 / CUDA / JAX 0.7.2
+```
+
+Training completed and exported one checkpoint at step `40960`, but the compact
+promotion sweep rejected it:
+
+```text
+x=0.0:
+  status: HOLD_CANDIDATE_ACTION_SATURATION
+  max pitch tracking p95: 0.3685 rad
+  action saturation: 100%
+
+x=0.08:
+  status: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
+  mean vx: 0.0109 m/s
+  track ratio: 0.1362
+  max pitch tracking p95: 0.2109 rad
+```
+
+Interpretation: a simple behavior-prior/trust-region term was not enough to
+make PPO fine-tuning preserve the DAgger candidate. The next learning change
+should not be another scalar PPO recipe. It should use gate-aligned selection,
+explicit saturation constraints, or DAgger/rollout correction before more GPU
+training.

@@ -5808,3 +5808,27 @@ prior: outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_c
 
 This enables the next GPU experiment to test a trust-region-style
 behavior-prior term instead of repeating the PPO-only recipe.
+
+That A100 behavior-prior experiment has now been run:
+
+```text
+decision: outputs/analysis/PPO_BEHAVIOR_PRIOR_A100_FINETUNE_DECISION.md
+status: HOLD_BEHAVIOR_PRIOR_PPO_REJECTED_BY_CHECKPOINT_SWEEP
+```
+
+It completed training but failed compact promotion gates:
+
+```text
+x=0.0: HOLD_CANDIDATE_ACTION_SATURATION
+x=0.08: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
+```
+
+Stop rule: do not keep increasing behavior-prior scale or making small scalar
+PPO reward tweaks. The next branch should change the learning mechanism:
+
+```text
+- checkpoint selection by gate metrics during training
+- explicit action-saturation avoidance in the objective/gate loop
+- DAgger-style rollout correction from failed PPO checkpoints
+- smaller adaptive PPO update budgets only if gate-selected each checkpoint
+```
