@@ -7365,3 +7365,29 @@ The filter preserved stability but worsened the target-velocity gate and
 reduced forward progress. Robot validation remains blocked. This closes the
 simple deletion/filtering branch; the right-knee contact transition needs
 dynamics-aware relabeling or gate-aware training, not another post-hoc filter.
+
+## Next Deployable Policy Branch Decision
+
+The current offline decision artifact is:
+
+```text
+tool: tools/decide_next_deployable_policy_branch.py
+artifact: outputs/analysis/NEXT_DEPLOYABLE_POLICY_BRANCH_DECISION.md
+status: PLAN_GATE_AWARE_ROLLOUT_CORRECTION_OR_RECURRENT_STUDENT
+```
+
+All current deployable-style candidates preserve some forward motion and stay
+upright for 8/8 seeds, but all remain held by the same fitted-bridge tracking
+plateau around `0.27 rad`. The closed branches are:
+
+```text
+uniform pitch-chain clipping
+transition-adjacent sample deletion
+post-hoc ONNX weight interpolation
+scalar behavior-prior PPO smoke
+```
+
+Robot validation remains blocked. The next offline branch should be
+gate-aware rollout correction, a recurrent/phase-aware student, or PPO
+fine-tuning with stronger behavior preservation and strict gate checks after
+short runs.

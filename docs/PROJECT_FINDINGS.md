@@ -3534,6 +3534,55 @@ model still reconstructs a high-rate transition. The next attempt needs
 dynamics-aware relabeling or a student/training mechanism that represents the
 transition smoothly, not another deletion or uniform clip.
 
+## Next Deployable Policy Branch Decision
+
+The curation and PPO/weight-blend results are now consolidated in a machine-read
+decision artifact:
+
+```text
+tool: tools/decide_next_deployable_policy_branch.py
+artifact: outputs/analysis/NEXT_DEPLOYABLE_POLICY_BRANCH_DECISION.md
+status: PLAN_GATE_AWARE_ROLLOUT_CORRECTION_OR_RECURRENT_STUDENT
+robot touched: false
+```
+
+Current deployable-candidate comparison:
+
+| candidate | vx mean | track ratio | pitch velocity p95 range | tracking p95 range | result |
+|---|---:|---:|---:|---:|---|
+| exact selector blend ONNX | 0.0461 | 0.5768 | 4.7355-5.1118 | 0.2679-0.2800 | hold |
+| right-knee 4.3 curation | 0.0479 | 0.5992 | 4.1979-4.2994 | 0.2682-0.2773 | hold |
+| pitch-chain 4.3 curation | 0.0477 | 0.5965 | 4.1935-4.2879 | 0.2685-0.2794 | hold |
+| right-knee transition filter | 0.0449 | 0.5617 | 4.6244-4.7790 | 0.2675-0.2782 | hold |
+
+Interpretation:
+
+```text
+The gait survives and moves in all four paths.
+The strict tracking plateau remains around 0.27 rad.
+The right-knee/contact-transition mechanism is still the deployable-policy blocker.
+```
+
+Closed branches:
+
+```text
+uniform pitch-chain clipping
+transition-adjacent sample deletion
+post-hoc ONNX weight interpolation
+scalar behavior-prior PPO smoke
+```
+
+Recommended next branch:
+
+```text
+PLAN_GATE_AWARE_ROLLOUT_CORRECTION_OR_RECURRENT_STUDENT
+```
+
+The next attempt must preserve 8/8 duration-complete forward motion while
+directly reducing fitted-bridge tracking through the right-knee contact
+transition. Do not spend another branch on simple clipping, deletion, or scalar
+weight blending unless a new diagnostic identifies a different mechanism.
+
 ## Home Pose Contract Audit
 
 The physical calibration discussion exposed a useful distinction:
