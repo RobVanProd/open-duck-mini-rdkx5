@@ -12,6 +12,15 @@ offline suspended-style sim gates:
 - `x=0.08`: meaningful forward progress while staying inside the measured
   actuator envelope
 
+June 27 corrected-knee update: the left knee soft offset was corrected from
+`-1.488 rad` to `0.0371 rad`, and a supported/on-stand sine-only actuator gate
+passed at `0.25`, `0.5`, and `1.0 Hz` with `0.03 rad` amplitude. The corrected
+left knee no longer appears as a low-speed outlier: left/right knee raw
+tracking p95 are both about `0.0078 rad`. This clears the low-speed
+corrected-knee sanity check, but it does **not** approve walking. The sine-only
+fit hit the velocity lower grid bound and is not a replacement for corrected
+dynamic policy-waveform evidence.
+
 The first evidence gates no longer point to a gross IMU axis flip, policy hash
 mismatch, joint order failure, or zero-command policy explosion. The Duck can
 hold home pose, pass the labeled IMU tilt sanity check, pass software feedback

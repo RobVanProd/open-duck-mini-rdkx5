@@ -1,6 +1,6 @@
 # Corrected-Knee Actuator Refit Gate
 
-Status: `PREPARED_NOT_RUN`
+Status: `PASS_SINE_ONLY_TRACKING_DYNAMIC_REFIT_PENDING`
 
 Purpose: refresh the actuator response model after the left-knee soft-offset
 correction before interpreting new sim-to-real policy results.
@@ -143,9 +143,31 @@ new fit is sine-only but someone wants to approve walking
 Current status:
 
 ```text
-PREPARED_NOT_RUN
+PASS_SINE_ONLY_TRACKING_DYNAMIC_REFIT_PENDING
 ```
 
-The next robot-side action is corrected-hardware actuator tracking evidence,
-not policy replay. Until that evidence exists, software candidates can continue
-offline but cannot be promoted to robot walking validation.
+Corrected-hardware low-speed actuator tracking evidence was collected on
+2026-06-27 with the robot supported/on stand:
+
+```text
+0.25 Hz, 0.03 rad: PASS
+0.5 Hz, 0.03 rad: PASS
+1.0 Hz, 0.03 rad: PASS
+```
+
+The corrected left knee no longer appears as a low-speed tracking outlier:
+left/right knee raw tracking p95 are both about `0.0078 rad` in the sine-only
+fit comparison.
+
+Artifacts:
+
+```text
+outputs/analysis/CORRECTED_KNEE_ACTUATOR_REFIT_RESULT.md
+outputs/analysis/ACTUATOR_RESPONSE_FIT_CORRECTED_KNEE_SINE_ONLY.md
+outputs/analysis/CORRECTED_KNEE_ACTUATOR_FIT_COMPARE_SINE_ONLY.md
+```
+
+This is still sine-only evidence. The corrected full walking bridge remains
+pending because no corrected suspended dynamic policy-waveform replay was run.
+Robot walking validation remains blocked until that evidence is explicitly
+approved, collected, and reviewed.
