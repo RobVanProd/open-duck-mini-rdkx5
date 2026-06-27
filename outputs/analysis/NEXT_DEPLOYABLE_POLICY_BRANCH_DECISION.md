@@ -6,7 +6,7 @@ This is an offline decision artifact. It does not train, run simulation, SSH, de
 
 ## Executive Summary
 
-Do not run another clip/filter/weight-blend/feed-forward-BC branch, scalar reward tweak, naive PPO smoke, default adaptive-KL PPO control, or existing progress-failure-only PPO control. Build a gate-aware deployable-policy training path with an explicit policy-distribution trust region or behavior-preserving update before attempting fitted-bridge tracking correction.
+Do not run another clip/filter/weight-blend/feed-forward-BC branch, scalar reward tweak, naive PPO smoke, default adaptive-KL PPO control, existing progress-failure-only PPO control, or restore-policy-KL-only PPO control. Build a gate-aware deployable-policy training path that corrects rollout states back toward a gate-passing distribution, or use a recurrent/phase-aware student, before attempting fitted-bridge tracking correction.
 
 The cheap post-hoc branches are now closed negative. The remaining blocker is the deployable policy's representation/training of the right-knee contact transition, not one missing scalar cap.
 
@@ -25,6 +25,8 @@ The cheap post-hoc branches are now closed negative. The remaining blocker is th
 | PPO behavior-control low-alpha blends | `HOLD_CANDIDATE_TRACKING` | 8 | 8 | 0 | 0.0395 | 0.4940 | 3.6430-3.7533 | 0.2516-0.2600 |
 | PPO warm-start adaptive-KL control | `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` | 2 | 2 | 0 | 0.0014 | 0.0173 | 1.0896-1.1028 | 0.1052-0.1064 |
 | PPO warm-start hard progress-failure control | `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` | 2 | 2 | 0 | 0.0013 | 0.0162 | 1.0734-1.2083 | 0.1016-0.1199 |
+| PPO warm-start restore-policy KL control | `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` | 2 | 2 | 0 | 0.0014 | 0.0173 | 1.2986-1.3022 | 0.1198-0.1236 |
+| PPO warm-start restore-policy KL100 control | `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` | 2 | 2 | 0 | 0.0013 | 0.0168 | 1.2197-1.2210 | 0.1150-0.1195 |
 
 ## PPO / Blend Sweep Evidence
 
@@ -53,6 +55,7 @@ within 2 ticks of contact transition: 404 / 506
 - `low-alpha blending of the PPO update direction`: 0.01-0.10 blends preserve the walking basin but do not materially move the fitted-bridge tracking plateau.
 - `built-in adaptive-KL PPO learning-rate control`: adaptive-KL scheduling still moved the warm-started policy into near-standstill; seed 1/4 progress collapsed while tracking p95 fell to ~0.105 rad.
 - `hard command-progress failure termination`: the existing progress-failure termination did not preserve the walking basin in a tiny PPO update; seed 1/4 progress still collapsed while tracking p95 stayed ~0.10-0.12 rad.
+- `restore-policy KL loss at tested scales`: loss-level KL to the restored checkpoint policy was wired and tested at scales 1.0 and 100.0, but both screens still collapsed to near-standstill.
 
 ## Recommended Next Branch
 
@@ -71,7 +74,7 @@ Candidate mechanisms:
 
 - DAgger/rollout correction with the strict gate failure states added back to the teacher dataset
 - recurrent or phase-aware student for the stance-transition discontinuity
-- trust-region PPO fine-tune from the validated PPO-compatible BC warm start, with policy-distribution KL/action drift and loss of forward progress treated as immediate stop conditions
+- trust-region PPO fine-tune only if it constrains rollouts to the gate-passing state distribution, not just the restored policy on already-drifting states
 
 ## Stop Rules
 

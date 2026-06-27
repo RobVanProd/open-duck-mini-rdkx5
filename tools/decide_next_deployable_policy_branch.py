@@ -235,6 +235,16 @@ def build_payload(args: argparse.Namespace) -> dict[str, Any]:
             "outputs/analysis/pitch_chain_4p3_ppo_warmstart_progress_failure_control_seed1_seed4_screen.json",
             run_candidate_rows,
         ),
+        (
+            "PPO warm-start restore-policy KL control",
+            "outputs/analysis/pitch_chain_4p3_ppo_warmstart_restore_policy_kl_control_seed1_seed4_screen.json",
+            run_candidate_rows,
+        ),
+        (
+            "PPO warm-start restore-policy KL100 control",
+            "outputs/analysis/pitch_chain_4p3_ppo_warmstart_restore_policy_kl100_control_seed1_seed4_screen.json",
+            run_candidate_rows,
+        ),
     ]
     candidates = []
     for name, rel_path, reader in candidate_specs:
@@ -319,10 +329,15 @@ def build_payload(args: argparse.Namespace) -> dict[str, Any]:
             "result": "closed",
             "reason": "the existing progress-failure termination did not preserve the walking basin in a tiny PPO update; seed 1/4 progress still collapsed while tracking p95 stayed ~0.10-0.12 rad.",
         },
+        {
+            "branch": "restore-policy KL loss at tested scales",
+            "result": "closed",
+            "reason": "loss-level KL to the restored checkpoint policy was wired and tested at scales 1.0 and 100.0, but both screens still collapsed to near-standstill.",
+        },
     ]
     recommendation = {
         "status": "PLAN_GATE_AWARE_ROLLOUT_CORRECTION_OR_RECURRENT_STUDENT",
-        "recommended_next": "Do not run another clip/filter/weight-blend/feed-forward-BC branch, scalar reward tweak, naive PPO smoke, default adaptive-KL PPO control, or existing progress-failure-only PPO control. Build a gate-aware deployable-policy training path with an explicit policy-distribution trust region or behavior-preserving update before attempting fitted-bridge tracking correction.",
+        "recommended_next": "Do not run another clip/filter/weight-blend/feed-forward-BC branch, scalar reward tweak, naive PPO smoke, default adaptive-KL PPO control, existing progress-failure-only PPO control, or restore-policy-KL-only PPO control. Build a gate-aware deployable-policy training path that corrects rollout states back toward a gate-passing distribution, or use a recurrent/phase-aware student, before attempting fitted-bridge tracking correction.",
         "minimum_requirements": [
             "uses the standard strict fitted-backlash x=0.08 multi-seed gate as the primary score",
             "compares against the exact selector blend and PPO-shape warm-start baselines",
@@ -334,7 +349,7 @@ def build_payload(args: argparse.Namespace) -> dict[str, Any]:
         "candidate_mechanisms": [
             "DAgger/rollout correction with the strict gate failure states added back to the teacher dataset",
             "recurrent or phase-aware student for the stance-transition discontinuity",
-            "trust-region PPO fine-tune from the validated PPO-compatible BC warm start, with policy-distribution KL/action drift and loss of forward progress treated as immediate stop conditions",
+            "trust-region PPO fine-tune only if it constrains rollouts to the gate-passing state distribution, not just the restored policy on already-drifting states",
         ],
     }
     return {

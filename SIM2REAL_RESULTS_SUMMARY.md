@@ -7535,3 +7535,19 @@ That also collapsed into near-standstill. The current PPO fine-tune tooling can
 resume/export policies, but the available scalar reward, default KL schedule,
 and existing progress-termination controls do not preserve the walking basin.
 Robot validation remains blocked.
+
+A default-off restore-policy KL hook was added to the Playground PPO loss and
+tested at two scales:
+
+```text
+loss term: scale * KL(current_policy || restored_policy)
+scale 1.0 screen: outputs/analysis/PITCH_CHAIN_4P3_PPO_WARMSTART_RESTORE_POLICY_KL_CONTROL_SEED1_SEED4_SCREEN.md
+scale 100.0 screen: outputs/analysis/PITCH_CHAIN_4P3_PPO_WARMSTART_RESTORE_POLICY_KL100_CONTROL_SEED1_SEED4_SCREEN.md
+both status: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
+scale 1.0 vx mean: 0.0014, track ratio mean: 0.0173
+scale 100.0 vx mean: 0.0013, track ratio mean: 0.0168
+```
+
+This confirms that a loss-level anchor can be wired into the PPO path, but these
+bounded settings still do not preserve forward motion. Robot validation remains
+blocked.

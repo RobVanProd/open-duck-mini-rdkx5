@@ -54,6 +54,11 @@
       "branch": "hard command-progress failure termination",
       "reason": "the existing progress-failure termination did not preserve the walking basin in a tiny PPO update; seed 1/4 progress still collapsed while tracking p95 stayed ~0.10-0.12 rad.",
       "result": "closed"
+    },
+    {
+      "branch": "restore-policy KL loss at tested scales",
+      "reason": "loss-level KL to the restored checkpoint policy was wired and tested at scales 1.0 and 100.0, but both screens still collapsed to near-standstill.",
+      "result": "closed"
     }
   ],
   "candidates": [
@@ -254,13 +259,49 @@
       "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
       "track_ratio_mean": 0.016222923193186037,
       "vx_mean": 0.0012978338554548827
+    },
+    {
+      "base_height_min_mean": 0.15309414267539978,
+      "body_pitch_p95_mean": 0.051629012462862486,
+      "duration_complete": 2,
+      "falls_or_terminations": 0,
+      "max_pitch_velocity_p95_max": 1.3022032380104065,
+      "max_pitch_velocity_p95_mean": 1.3004009425640106,
+      "max_pitch_velocity_p95_min": 1.298598647117615,
+      "max_tracking_p95_max": 0.12360504865646364,
+      "max_tracking_p95_mean": 0.12170555889606477,
+      "max_tracking_p95_min": 0.11980606913566591,
+      "name": "PPO warm-start restore-policy KL control",
+      "path": "outputs/analysis/pitch_chain_4p3_ppo_warmstart_restore_policy_kl_control_seed1_seed4_screen.json",
+      "runs": 2,
+      "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "track_ratio_mean": 0.017320331711425753,
+      "vx_mean": 0.0013856265369140601
+    },
+    {
+      "base_height_min_mean": 0.15309374779462814,
+      "body_pitch_p95_mean": 0.052210249725509916,
+      "duration_complete": 2,
+      "falls_or_terminations": 0,
+      "max_pitch_velocity_p95_max": 1.220966875553131,
+      "max_pitch_velocity_p95_mean": 1.2203256785869598,
+      "max_pitch_velocity_p95_min": 1.2196844816207888,
+      "max_tracking_p95_max": 0.11949440240859988,
+      "max_tracking_p95_mean": 0.11724943220615389,
+      "max_tracking_p95_min": 0.11500446200370791,
+      "name": "PPO warm-start restore-policy KL100 control",
+      "path": "outputs/analysis/pitch_chain_4p3_ppo_warmstart_restore_policy_kl100_control_seed1_seed4_screen.json",
+      "runs": 2,
+      "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "track_ratio_mean": 0.016758723911652847,
+      "vx_mean": 0.001340697912932228
     }
   ],
   "recommendation": {
     "candidate_mechanisms": [
       "DAgger/rollout correction with the strict gate failure states added back to the teacher dataset",
       "recurrent or phase-aware student for the stance-transition discontinuity",
-      "trust-region PPO fine-tune from the validated PPO-compatible BC warm start, with policy-distribution KL/action drift and loss of forward progress treated as immediate stop conditions"
+      "trust-region PPO fine-tune only if it constrains rollouts to the gate-passing state distribution, not just the restored policy on already-drifting states"
     ],
     "minimum_requirements": [
       "uses the standard strict fitted-backlash x=0.08 multi-seed gate as the primary score",
@@ -270,7 +311,7 @@
       "reduces max tracking p95 materially below the current ~0.27 rad plateau",
       "does not pass by freezing, reversing, or shortening the horizon"
     ],
-    "recommended_next": "Do not run another clip/filter/weight-blend/feed-forward-BC branch, scalar reward tweak, naive PPO smoke, default adaptive-KL PPO control, or existing progress-failure-only PPO control. Build a gate-aware deployable-policy training path with an explicit policy-distribution trust region or behavior-preserving update before attempting fitted-bridge tracking correction.",
+    "recommended_next": "Do not run another clip/filter/weight-blend/feed-forward-BC branch, scalar reward tweak, naive PPO smoke, default adaptive-KL PPO control, existing progress-failure-only PPO control, or restore-policy-KL-only PPO control. Build a gate-aware deployable-policy training path that corrects rollout states back toward a gate-passing distribution, or use a recurrent/phase-aware student, before attempting fitted-bridge tracking correction.",
     "status": "PLAN_GATE_AWARE_ROLLOUT_CORRECTION_OR_RECURRENT_STUDENT"
   },
   "right_knee_spike_evidence": {

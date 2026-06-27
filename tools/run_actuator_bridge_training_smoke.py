@@ -104,6 +104,7 @@ def build_command(args: argparse.Namespace, output_dir: Path) -> list[str]:
         "--ppo_learning_rate_schedule": args.ppo_learning_rate_schedule,
         "--ppo_learning_rate_schedule_min_lr": args.ppo_learning_rate_schedule_min_lr,
         "--ppo_learning_rate_schedule_max_lr": args.ppo_learning_rate_schedule_max_lr,
+        "--restore_policy_kl_scale": args.restore_policy_kl_scale,
     }
     for flag, value in optional_ppo_overrides.items():
         append_optional(command, flag, value)
@@ -402,6 +403,15 @@ def main() -> int:
     parser.add_argument("--ppo-learning-rate-schedule-min-lr", type=float, default=None)
     parser.add_argument("--ppo-learning-rate-schedule-max-lr", type=float, default=None)
     parser.add_argument(
+        "--restore-policy-kl-scale",
+        type=float,
+        default=None,
+        help=(
+            "Optional Playground PPO loss coefficient for KL(current policy || "
+            "restored checkpoint policy). Requires --restore-checkpoint-path."
+        ),
+    )
+    parser.add_argument(
         "--restore-checkpoint-path",
         default=None,
         help=(
@@ -633,6 +643,7 @@ def main() -> int:
             "learning_rate_schedule": args.ppo_learning_rate_schedule,
             "learning_rate_schedule_min_lr": args.ppo_learning_rate_schedule_min_lr,
             "learning_rate_schedule_max_lr": args.ppo_learning_rate_schedule_max_lr,
+            "restore_policy_kl_scale": args.restore_policy_kl_scale,
         },
         "training_recipe_overrides": {
             "tracking_lin_vel_scale": args.tracking_lin_vel_scale,

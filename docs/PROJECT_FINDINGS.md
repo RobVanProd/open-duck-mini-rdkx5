@@ -3814,3 +3814,32 @@ walking basin in a tiny PPO update. This closes the existing scalar
 reward/termination controls as standalone fixes. The remaining branch needs a
 true behavior-preserving update mechanism, recurrent/phase-aware representation,
 or gate-aware rollout correction rather than another small PPO control.
+
+A default-off restore-policy KL loss hook was then added to the Playground PPO
+loss and exposed through the smoke wrapper. Unlike the behavior prior reward,
+this term acts inside the PPO optimizer:
+
+```text
+loss term: restore_policy_kl_scale * KL(current_policy || restored_policy)
+requires: --restore_checkpoint_path
+```
+
+Two bounded controls tested the hook:
+
+```text
+scale 1.0 screen: outputs/analysis/PITCH_CHAIN_4P3_PPO_WARMSTART_RESTORE_POLICY_KL_CONTROL_SEED1_SEED4_SCREEN.md
+scale 1.0 status: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
+scale 1.0 seed 1/4 vx: -0.0005 / 0.0033
+
+scale 100.0 screen: outputs/analysis/PITCH_CHAIN_4P3_PPO_WARMSTART_RESTORE_POLICY_KL100_CONTROL_SEED1_SEED4_SCREEN.md
+scale 100.0 status: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
+scale 100.0 seed 1/4 vx: -0.0006 / 0.0033
+```
+
+The loss hook is wired, but these scales did not preserve the walking basin.
+The result suggests that matching the restored feed-forward policy on states
+visited by the already-drifting PPO rollout is not enough to recover the
+original walking distribution. The next branch should either correct rollout
+states back toward the gate-passing distribution, use recurrent/phase-aware
+state, or train from explicitly gate-selected rollouts rather than relying on a
+restored-policy KL term alone.
