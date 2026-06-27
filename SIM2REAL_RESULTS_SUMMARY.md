@@ -6850,6 +6850,41 @@ data point, but the direct student is not command-conditioned enough to be a
 candidate policy. The next dataset should combine stable x=0.0 standstill
 traces, hard-seed x=0.08 recovery traces, and broader x=0.08 moving traces.
 
+That combined dataset was tested next:
+
+```text
+decision: outputs/analysis/COMMAND_CONDITIONED_HARD_SEED_RECOVERY_DECISION.md
+status: HOLD_X0_SEED5_STILL_FAILS
+manifest: 19 entries, 10250 samples
+BC fit: p95 action error 0.024773, target-rate p95 1.736061 rad/s
+```
+
+Canonical fitted-bridge 10-second gates:
+
+```text
+x=0.0: 7/8 complete, seed 5 falls at 73 samples, mean vx -0.0275
+x=0.08: 8/8 complete, no falls, mean vx 0.0346, track ratio 0.4329
+```
+
+This improves over the earlier command-conditioned BC by preserving x=0.08
+movement and clearing x=0 seed 3, but it still fails x=0 seed 5. Do not promote
+this ONNX to robot validation. The next offline target is the x=0 seed-5
+failure specifically, while preserving the x=0.08 recovery behavior.
+
+The x=0 seed-5 failure was then compared against the same seed at x=0.08:
+
+```text
+artifact: outputs/analysis/COMMAND_CONDITIONED_HARD_SEED_RECOVERY_SEED5_X0_VS_X008_TRACE_COMPARE.md
+x=0 seed 5: falls at 73 samples, vx_mean -0.2176, abs_pitch_p95 1.2413, base_height_min 0.0464
+x=0.08 seed 5: completes 10 s, vx_mean 0.0371, abs_pitch_p95 0.1283, base_height_min 0.1462
+first local_vx divergence: tick 7 / 0.14 s
+first body_pitch divergence: tick 20 / 0.40 s
+```
+
+This makes the next offline target narrower: fix the early x=0 seed-5
+reverse/pitch-collapse behavior without weakening the x=0.08 branch that now
+survives all eight seeds.
+
 ## Physical Start-Pose Calibration Check
 
 The real robot home/start pose has been checked against both telemetry and a

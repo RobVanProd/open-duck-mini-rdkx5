@@ -5543,3 +5543,53 @@ canonical fitted bridge gates:
 The x=0.0 forward drift holds the direct policy. Next data branch should combine
 stable x=0.0 standstill labels, these hard-seed recovery labels, and broader
 x=0.08 moving labels before another command-conditioned student or PPO prior.
+
+Combined command-conditioned recovery result:
+
+```text
+decision: outputs/analysis/COMMAND_CONDITIONED_HARD_SEED_RECOVERY_DECISION.md
+status: HOLD_X0_SEED5_STILL_FAILS
+```
+
+The combined dataset used stable x=0.0 labels, rate-limited x=0.08 moving
+labels, and baseline hard-seed x=0.08 recovery labels:
+
+```text
+manifest entries: 19
+samples: 10250
+BC p95 action error: 0.024773
+BC target-rate p95: 1.736061 rad/s
+```
+
+Canonical fitted-bridge 10-second gates:
+
+```text
+x=0.0:
+  duration complete: 7 / 8
+  failing seed: 5 at 73 samples
+  mean vx: -0.0275 m/s
+
+x=0.08:
+  duration complete: 8 / 8
+  falls: 0
+  mean vx: 0.0346 m/s
+  track ratio: 0.4329
+```
+
+Do not promote this ONNX. The next work should isolate x=0 seed 5 specifically:
+compare the failing x=0 seed-5 trace against passing x=0 seeds and against
+x=0.08 seed 5, then add targeted x=0 seed-5 recovery or relabeling without
+diluting x=0.08 motion.
+
+Seed-5 trace comparison result:
+
+```text
+artifact: outputs/analysis/COMMAND_CONDITIONED_HARD_SEED_RECOVERY_SEED5_X0_VS_X008_TRACE_COMPARE.md
+x=0 seed 5: falls at 73 samples, vx_mean -0.2176, abs_pitch_p95 1.2413, base_height_min 0.0464
+x=0.08 seed 5: completes 10 s, vx_mean 0.0371, abs_pitch_p95 0.1283, base_height_min 0.1462
+first local_vx divergence: tick 7 / 0.14 s
+first body_pitch divergence: tick 20 / 0.40 s
+```
+
+Next corrective-data branch should target this early x=0 reverse/pitch-collapse
+mode rather than adding more generic x=0.08 walking labels.
