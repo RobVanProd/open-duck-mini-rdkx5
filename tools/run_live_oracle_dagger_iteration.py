@@ -171,6 +171,11 @@ def main() -> int:
     parser.add_argument("--source-vx-threshold-m-s", type=float, default=0.02)
     parser.add_argument("--alt-exclude-source-regex", default="seed_004")
     parser.add_argument("--gate-aware-sample-weights", action="store_true", default=True)
+    parser.add_argument(
+        "--skip-rollouts",
+        action="store_true",
+        help="Reuse existing rollout trace files and run only relabel/manifest/aggregate steps.",
+    )
     parser.add_argument("--run", action="store_true")
     parser.add_argument(
         "--output-md",
@@ -312,7 +317,7 @@ def main() -> int:
         "python3",
         "tools/build_bc_manifest_from_traces.py",
         "--trace-glob",
-        str(x008_relabel_dir / "student" / "seed_*" / "trace.jsonl"),
+        str(x008_relabel_dir / "*" / "student" / "seed_*" / "trace.jsonl"),
         "--output-md",
         str(x008_manifest_md),
         "--output-json",
@@ -330,7 +335,7 @@ def main() -> int:
         "python3",
         "tools/build_bc_manifest_from_traces.py",
         "--trace-glob",
-        str(x0_relabel_dir / "student" / "seed_*" / "trace.jsonl"),
+        str(x0_relabel_dir / "*" / "student" / "seed_*" / "trace.jsonl"),
         "--output-md",
         str(x0_manifest_md),
         "--output-json",
@@ -375,15 +380,23 @@ def main() -> int:
         ]
     )
 
-    commands = [
-        ("x008_student_rollout", x008_eval),
-        ("x0_student_rollout", x0_eval),
+    commands = []
+    if not args.skip_rollouts:
+        commands.extend(
+            [
+                ("x008_student_rollout", x008_eval),
+                ("x0_student_rollout", x0_eval),
+            ]
+        )
+    commands.extend(
+        [
         ("x008_live_oracle_relabel", x008_relabel),
         ("x0_live_oracle_relabel", x0_relabel),
         ("x008_manifest", x008_manifest),
         ("x0_manifest", x0_manifest),
         ("aggregate_manifest", aggregate),
-    ]
+        ]
+    )
     steps = []
     status = "PASS_LIVE_ORACLE_DAGGER_ITERATION_DRY_RUN"
     for name, command in commands:
@@ -409,6 +422,7 @@ def main() -> int:
         "x008_seeds": args.x008_seeds,
         "x0_seeds": args.x0_seeds,
         "run": bool(args.run),
+        "skip_rollouts": bool(args.skip_rollouts),
         "output_dir": str(output_dir),
         "x008_rollout_dir": str(x008_rollout_dir),
         "x0_rollout_dir": str(x0_rollout_dir),
