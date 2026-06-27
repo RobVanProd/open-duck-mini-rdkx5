@@ -88,6 +88,8 @@ def write_markdown(path: Path, payload: dict[str, Any]) -> None:
         f"- rung: `{payload['rung']}`",
         f"- student_policy: `{payload['student_policy']}`",
         f"- teacher_manifest: `{payload['teacher_manifest']}`",
+        f"- x008_teacher_model_kind: `{payload['x008_teacher_model_kind']}`",
+        f"- x0_teacher_model_kind: `{payload['x0_teacher_model_kind']}`",
         f"- command_x: `{payload['command_x']}`",
         f"- duration_s: `{payload['duration_s']}`",
         f"- x008_seeds: `{payload['x008_seeds']}`",
@@ -164,6 +166,12 @@ def main() -> int:
     parser.add_argument("--task", default="flat_terrain_backlash")
     parser.add_argument("--jax-platform", default="cpu")
     parser.add_argument("--teacher-model-kind", choices=["blend", "source_vx_blend"], default="source_vx_blend")
+    parser.add_argument(
+        "--x0-teacher-model-kind",
+        choices=["blend", "source_vx_blend", "zero_action"],
+        default="zero_action",
+        help="Teacher used for zero-command relabeling. Defaults to zero_action to preserve command semantics.",
+    )
     parser.add_argument("--knn-k", type=int, default=5)
     parser.add_argument("--blend-alpha", type=float, default=0.80)
     parser.add_argument("--vx-blend-alpha", type=float, default=1.0)
@@ -266,8 +274,6 @@ def main() -> int:
         "tools/relabel_bc_trace_actions.py",
         "--teacher-manifest",
         args.teacher_manifest,
-        "--teacher-model-kind",
-        args.teacher_model_kind,
         "--knn-k",
         str(args.knn_k),
         "--blend-alpha",
@@ -288,6 +294,8 @@ def main() -> int:
 
     x008_relabel = [
         *common_relabel,
+        "--teacher-model-kind",
+        args.teacher_model_kind,
         "--trace-glob",
         str(x008_rollout_dir / "student" / "seed_*" / "trace.jsonl"),
         "--output-trace-dir",
@@ -301,6 +309,8 @@ def main() -> int:
     ]
     x0_relabel = [
         *common_relabel,
+        "--teacher-model-kind",
+        args.x0_teacher_model_kind,
         "--trace-glob",
         str(x0_rollout_dir / "student" / "seed_*" / "trace.jsonl"),
         "--output-trace-dir",
@@ -416,6 +426,8 @@ def main() -> int:
         "rung": args.rung,
         "student_policy": args.student_policy,
         "teacher_manifest": args.teacher_manifest,
+        "x008_teacher_model_kind": args.teacher_model_kind,
+        "x0_teacher_model_kind": args.x0_teacher_model_kind,
         "base_manifests": args.base_manifest,
         "command_x": float(args.command_x),
         "duration_s": float(args.duration),

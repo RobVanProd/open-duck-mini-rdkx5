@@ -78,6 +78,22 @@ def load_teacher(args: argparse.Namespace) -> tuple[dict[str, Any], dict[str, An
         include_source_regex=args.include_source_regex,
         exclude_source_regex=args.exclude_source_regex,
     )
+    if args.teacher_model_kind == "zero_action":
+        action_dim = int(samples.actions.shape[1])
+        model = {
+            "kind": "zero_action",
+            "action_dim": action_dim,
+        }
+        meta = {
+            "teacher_manifest": str(args.teacher_manifest),
+            "teacher_dataset_id": manifest.get("dataset_id"),
+            "teacher_entries": len(entries),
+            "teacher_samples": int(samples.observations.shape[0]),
+            "teacher_model_kind": args.teacher_model_kind,
+            "action_dim": action_dim,
+        }
+        return model, meta
+
     fit = select_alpha(samples, parse_csv_floats(args.ridge_alphas))
     if args.teacher_model_kind == "blend":
         model = make_blend_model(
@@ -189,10 +205,14 @@ def gate_sample_weight(row: dict[str, Any], args: argparse.Namespace) -> tuple[f
     weight = float(args.gate_base_weight)
     reasons: list[str] = []
     vx = row_forward_velocity(row)
-    command_x = max(abs(float(args.gate_command_x)), 1.0e-9)
+    command_x_raw = abs(float(args.gate_command_x))
+    command_x = max(command_x_raw, 1.0e-9)
     track_ratio = vx / command_x
     contacts = row_contact_key(row)
 
+    if command_x_raw < 1.0e-9 and abs(vx) > float(args.gate_zero_command_vx_m_s):
+        weight = max(weight, float(args.gate_zero_command_weight))
+        reasons.append("zero_command_drift")
     if contacts == "11" and track_ratio < float(args.gate_min_track_ratio):
         weight = max(weight, float(args.gate_double_support_weight))
         reasons.append("double_support_low_progress")
@@ -215,6 +235,8 @@ def gate_sample_weight(row: dict[str, Any], args: argparse.Namespace) -> tuple[f
 def predict_teacher_model(
     model: dict[str, Any], obs: np.ndarray, row: dict[str, Any]
 ) -> tuple[np.ndarray, str, float]:
+    if model["kind"] == "zero_action":
+        return np.zeros((int(model["action_dim"]),), dtype=float), "zero", 0.0
     if model["kind"] == "blend":
         return predict_blend_model(model, obs), "primary", float(model["blend_alpha"])
     if model["kind"] == "source_vx_blend":
@@ -389,7 +411,7 @@ def main() -> int:
     )
     parser.add_argument("--output-md", default=str(DEFAULT_OUTPUT_MD))
     parser.add_argument("--output-json", default=str(DEFAULT_OUTPUT_JSON))
-    parser.add_argument("--teacher-model-kind", choices=["blend", "source_vx_blend"], default="blend")
+    parser.add_argument("--teacher-model-kind", choices=["blend", "source_vx_blend", "zero_action"], default="blend")
     parser.add_argument("--include-source-regex", default=None)
     parser.add_argument("--exclude-source-regex", default=None)
     parser.add_argument("--alt-include-source-regex", default=None)
@@ -415,6 +437,8 @@ def main() -> int:
     parser.add_argument("--gate-high-abs-vy-m-s", type=float, default=0.12)
     parser.add_argument("--gate-tracking-weight", type=float, default=2.0)
     parser.add_argument("--gate-high-tracking-rad", type=float, default=0.15)
+    parser.add_argument("--gate-zero-command-vx-m-s", type=float, default=0.005)
+    parser.add_argument("--gate-zero-command-weight", type=float, default=5.0)
     parser.add_argument("--gate-max-weight", type=float, default=8.0)
     parser.add_argument(
         "--truncate-before-done",
