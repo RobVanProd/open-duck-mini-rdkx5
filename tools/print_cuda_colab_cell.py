@@ -404,7 +404,7 @@ echo "=== Closed-loop baseline bridge reproduction ==="
 "$PYTHON_BIN" tools/eval_policy_with_actuator_bridge.py \\
   --mode closed-loop-sim \\
   --policy policy/BEST_WALK_ONNX_2.onnx \\
-  --fit-json outputs/analysis/actuator_response_fit.json \\
+  --fit-json outputs/analysis/actuator_response_fit_corrected_knee.json \\
   --playground-path /content/Open_Duck_Playground \\
   --env-python "$PYTHON_BIN" \\
   --command-x 0.08 \\
@@ -498,7 +498,7 @@ if [ "$RUN_CANDIDATE" = "1" ]; then
     --mode closed-loop-sim \\
     --eval-role candidate \\
     --policy "$LATEST_ONNX" \\
-    --fit-json outputs/analysis/actuator_response_fit.json \\
+    --fit-json outputs/analysis/actuator_response_fit_corrected_knee.json \\
     --playground-path /content/Open_Duck_Playground \\
     --env-python "$PYTHON_BIN" \\
     --command-x 0.0 \\
@@ -519,7 +519,7 @@ if [ "$RUN_CANDIDATE" = "1" ]; then
     --mode closed-loop-sim \\
     --eval-role candidate \\
     --policy "$LATEST_ONNX" \\
-    --fit-json outputs/analysis/actuator_response_fit.json \\
+    --fit-json outputs/analysis/actuator_response_fit_corrected_knee.json \\
     --playground-path /content/Open_Duck_Playground \\
     --env-python "$PYTHON_BIN" \\
     --command-x 0.08 \\

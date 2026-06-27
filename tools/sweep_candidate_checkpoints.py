@@ -425,7 +425,7 @@ def main() -> int:
         description="Run or plan an offline candidate checkpoint selection sweep."
     )
     parser.add_argument("--policies", nargs="+", required=True)
-    parser.add_argument("--fit-json", default="outputs/analysis/actuator_response_fit.json")
+    parser.add_argument("--fit-json", default="outputs/analysis/actuator_response_fit_corrected_knee.json")
     parser.add_argument("--playground-path", default="../Open_Duck_Playground")
     parser.add_argument("--env-python", default="../envs/open-duck-playground/bin/python")
     parser.add_argument("--commands", type=parse_float_list, default=parse_float_list("0.08"))
@@ -433,7 +433,7 @@ def main() -> int:
     parser.add_argument("--bridge-mode", default="fitted")
     parser.add_argument("--mode-name", default="fitted")
     parser.add_argument("--jax-platform", default="cpu")
-    parser.add_argument("--velocity-envelope", type=parse_float_list, default=parse_float_list("2.25,3.75"))
+    parser.add_argument("--velocity-envelope", type=parse_float_list, default=parse_float_list("2.0,3.25"))
     parser.add_argument("--min-interesting-vx", type=float, default=0.02)
     parser.add_argument("--min-interesting-ratio", type=float, default=0.25)
     parser.add_argument("--min-promote-vx", type=float, default=0.02)

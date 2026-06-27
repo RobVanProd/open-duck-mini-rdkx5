@@ -20,7 +20,7 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_POLICY = "policy/BEST_WALK_ONNX_2.onnx"
-DEFAULT_FIT_JSON = "outputs/analysis/actuator_response_fit.json"
+DEFAULT_FIT_JSON = "outputs/analysis/actuator_response_fit_corrected_knee.json"
 DEFAULT_COMMANDS = (
     "straight_x005:0.05:0.0:0.0,"
     "straight_x006:0.06:0.0:0.0,"

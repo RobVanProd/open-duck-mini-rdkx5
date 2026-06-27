@@ -270,7 +270,7 @@ def main() -> int:
         description="Run or plan an offline command_x feasibility curve sweep."
     )
     parser.add_argument("--policy", required=True)
-    parser.add_argument("--fit-json", default="outputs/analysis/actuator_response_fit.json")
+    parser.add_argument("--fit-json", default="outputs/analysis/actuator_response_fit_corrected_knee.json")
     parser.add_argument("--playground-path", default="../Open_Duck_Playground")
     parser.add_argument("--env-python", default="../envs/open-duck-playground/bin/python")
     parser.add_argument("--commands", type=parse_float_list, default=parse_float_list(DEFAULT_COMMANDS))
@@ -278,7 +278,7 @@ def main() -> int:
     parser.add_argument("--bridge-mode", default="fitted")
     parser.add_argument("--mode-name", default="fitted")
     parser.add_argument("--jax-platform", default="cpu")
-    parser.add_argument("--velocity-envelope", type=parse_float_list, default=parse_float_list("2.25,3.75"))
+    parser.add_argument("--velocity-envelope", type=parse_float_list, default=parse_float_list("2.0,3.25"))
     parser.add_argument("--sim-preflight-timeout-s", type=int, default=600)
     parser.add_argument("--closed-loop-timeout-s", type=int, default=1800)
     parser.add_argument("--output-dir", default="outputs/analysis/command_feasibility_curve")

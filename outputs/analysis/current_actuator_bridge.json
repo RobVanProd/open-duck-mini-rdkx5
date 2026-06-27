@@ -1,0 +1,69 @@
+{
+  "status": "CORRECTED_DYNAMIC_BRIDGE_CANONICAL",
+  "current_fit_json": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+  "current_fit_sha256": "3661543d0745073b561eb4fa2ae8f9616368ee8b72cb397f8b953dada532c8c0",
+  "deprecated_pre_correction_fit_json": "outputs/analysis/actuator_response_fit.json",
+  "deprecated_pre_correction_fit_sha256": "9e0a8e489469b76e3a41bc44fb7e1398b57e13c7da723484a913127b24bc6959",
+  "sine_only_fit_json": "outputs/analysis/actuator_response_fit_corrected_knee_sine_only.json",
+  "sine_only_status": "low_speed_sanity_only_not_walking_approval",
+  "source_evidence": "corrected suspended x=0.08 dynamic replay after left_knee offset correction",
+  "selection_metric": "trimmed_rmse_95",
+  "control_dt_s": 0.02,
+  "pitch_chain": {
+    "left_hip_pitch": {
+      "delay_ticks": 3,
+      "tau_s": 0.02,
+      "velocity_limit_rad_s": 2.5
+    },
+    "left_knee": {
+      "delay_ticks": 3,
+      "tau_s": 0.02,
+      "velocity_limit_rad_s": 3.25
+    },
+    "left_ankle": {
+      "delay_ticks": 3,
+      "tau_s": 0.02,
+      "velocity_limit_rad_s": 2.75
+    },
+    "right_hip_pitch": {
+      "delay_ticks": 3,
+      "tau_s": 0.02,
+      "velocity_limit_rad_s": 2.25
+    },
+    "right_knee": {
+      "delay_ticks": 3,
+      "tau_s": 0.02,
+      "velocity_limit_rad_s": 2.75
+    },
+    "right_ankle": {
+      "delay_ticks": 3,
+      "tau_s": 0.02,
+      "velocity_limit_rad_s": 2.0
+    }
+  },
+  "candidate_gate": {
+    "task": "flat_terrain_backlash",
+    "bridge_mode": "fitted",
+    "duration_s": 15,
+    "seeds": "0-7",
+    "x_0p08_required": {
+      "duration_complete": "8/8",
+      "falls": 0,
+      "mean_track_ratio_min": 0.5,
+      "pitch_chain_sent_velocity_p95": "per_joint_velocity_limit_rad_s",
+      "max_pitch_chain_tracking_p95_rad": 0.2
+    },
+    "x_0p0_required": {
+      "duration_complete": "8/8",
+      "falls": 0,
+      "mean_abs_vx_max_m_s": 0.005,
+      "pitch_chain_sent_velocity_p95": "per_joint_velocity_limit_rad_s"
+    }
+  },
+  "robot_status": {
+    "grounded_replay": "blocked",
+    "best_walk_onnx_2_direct_deploy": "dead",
+    "runtime_behavior_changed": false,
+    "no_robot_test_authorized_by_this_artifact": true
+  }
+}

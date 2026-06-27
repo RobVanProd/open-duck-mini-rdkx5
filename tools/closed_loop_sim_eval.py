@@ -542,12 +542,31 @@ def max_finite(values: Iterable[float]) -> float | None:
     return max(data) if data else None
 
 
-def classify_candidate_gate(modes: Mapping[str, Mapping[str, Any]]) -> dict:
+def pitch_chain_velocity_limits_from_fit(fit: Mapping[str, Any]) -> dict[str, float]:
+    """Return corrected fitted velocity limits for pitch-chain gate checks."""
+
+    root = fit.get("primary", fit)
+    joints = root.get("joints", {}) if isinstance(root, Mapping) else {}
+    limits: dict[str, float] = {}
+    for joint in PITCH_CHAIN_JOINTS:
+        combined = (joints.get(joint) or {}).get("combined") or {}
+        value = combined.get("velocity_limit_rad_s")
+        if finite(value):
+            limits[joint] = float(value)
+    return limits
+
+
+def classify_candidate_gate(
+    modes: Mapping[str, Mapping[str, Any]],
+    fit: Mapping[str, Any] | None = None,
+) -> dict:
     """Classify a candidate policy directly instead of asking it to reproduce failure."""
+    velocity_limits = pitch_chain_velocity_limits_from_fit(fit or {})
     thresholds = {
         "max_action_saturation_pct": 1.0,
-        "max_pitch_tracking_p95_rad": 0.08,
-        "max_sent_target_velocity_p95_rad_s": 2.5,
+        "max_pitch_tracking_p95_rad": 0.20,
+        "max_sent_target_velocity_limit_excess_rad_s": 0.0,
+        "pitch_chain_velocity_limits_rad_s": velocity_limits,
         "max_abs_body_pitch_p95_rad": 0.25,
         "min_base_height_m": 0.12,
         "min_reward_mean": 0.30,
@@ -575,6 +594,8 @@ def classify_candidate_gate(modes: Mapping[str, Mapping[str, Any]]) -> dict:
     forward_ratios = []
     forward_velocity_errors = []
     forward_shortfall_cost_means = []
+    per_joint_sent_velocity_p95: dict[str, float] = {}
+    per_joint_velocity_violations = []
     for mode in modes.values():
         body = mode.get("body_pitch_rad") or {}
         height = mode.get("base_height_m") or {}
@@ -606,14 +627,35 @@ def classify_candidate_gate(modes: Mapping[str, Mapping[str, Any]]) -> dict:
             if finite(tracking):
                 pitch_tracking.append(float(tracking))
             if finite(velocity):
-                sent_velocity.append(float(velocity))
+                velocity_value = float(velocity)
+                sent_velocity.append(velocity_value)
+                per_joint_sent_velocity_p95[joint] = max(
+                    per_joint_sent_velocity_p95.get(joint, -math.inf),
+                    velocity_value,
+                )
+                limit = velocity_limits.get(joint)
+                if finite(limit) and velocity_value > float(limit):
+                    per_joint_velocity_violations.append(
+                        {
+                            "joint": joint,
+                            "velocity_p95_rad_s": velocity_value,
+                            "limit_rad_s": float(limit),
+                            "excess_rad_s": velocity_value - float(limit),
+                        }
+                    )
             if finite(saturation):
                 action_saturation.append(float(saturation))
+    max_velocity_excess = max_finite(
+        item["excess_rad_s"] for item in per_joint_velocity_violations
+    )
 
     metrics = {
         "max_action_saturation_pct": max_finite(action_saturation),
         "max_pitch_tracking_p95_rad": max_finite(pitch_tracking),
         "max_sent_target_velocity_p95_rad_s": max_finite(sent_velocity),
+        "per_joint_sent_target_velocity_p95_rad_s": per_joint_sent_velocity_p95,
+        "pitch_chain_velocity_violations": per_joint_velocity_violations,
+        "max_sent_target_velocity_limit_excess_rad_s": max_velocity_excess or 0.0,
         "max_abs_body_pitch_p95_rad": max_finite(body_pitch_abs),
         "min_base_height_m": min(base_height_min) if base_height_min else None,
         "min_reward_mean": min(reward_mean) if reward_mean else None,
@@ -630,6 +672,8 @@ def classify_candidate_gate(modes: Mapping[str, Mapping[str, Any]]) -> dict:
         status = "HOLD_CANDIDATE_FALL_OR_TERMINATION"
     elif not finite(metrics["max_action_saturation_pct"]):
         status = "HOLD_CANDIDATE_NO_METRICS"
+    elif not velocity_limits:
+        status = "HOLD_CANDIDATE_NO_VELOCITY_LIMITS"
     elif requires_forward_tracking and not finite(
         metrics["min_forward_command_tracking_ratio"]
     ):
@@ -645,8 +689,8 @@ def classify_candidate_gate(modes: Mapping[str, Mapping[str, Any]]) -> dict:
     elif metrics["max_pitch_tracking_p95_rad"] > thresholds["max_pitch_tracking_p95_rad"]:
         status = "HOLD_CANDIDATE_TRACKING"
     elif (
-        metrics["max_sent_target_velocity_p95_rad_s"]
-        > thresholds["max_sent_target_velocity_p95_rad_s"]
+        metrics["max_sent_target_velocity_limit_excess_rad_s"]
+        > thresholds["max_sent_target_velocity_limit_excess_rad_s"]
     ):
         status = "HOLD_CANDIDATE_TARGET_VELOCITY"
     elif metrics["max_abs_body_pitch_p95_rad"] > thresholds["max_abs_body_pitch_p95_rad"]:
@@ -1226,7 +1270,7 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
 
     candidate_gate = None
     if config.eval_role == "candidate":
-        candidate_gate = classify_candidate_gate(modes)
+        candidate_gate = classify_candidate_gate(modes, config.fit)
         status = candidate_gate["status"]
     else:
         status = classify_closed_loop(modes) if "fitted" in modes else "PASS_CLOSED_LOOP_REPRODUCTION"

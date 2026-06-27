@@ -41,7 +41,7 @@ from closed_loop_sim_eval import ClosedLoopConfig, run_closed_loop_sim
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_POLICY = ROOT / "policy" / "BEST_WALK_ONNX_2.onnx"
-DEFAULT_FIT_JSON = ROOT / "outputs" / "analysis" / "actuator_response_fit.json"
+DEFAULT_FIT_JSON = ROOT / "outputs" / "analysis" / "actuator_response_fit_corrected_knee.json"
 DEFAULT_OUTPUT_DIR = ROOT / "outputs" / "analysis"
 DEFAULT_PLAYGROUND_ROOT = ROOT.parent / "Open_Duck_Playground"
 
@@ -833,6 +833,7 @@ def build_markdown(payload: dict) -> str:
                 "max_action_saturation_pct",
                 "max_pitch_tracking_p95_rad",
                 "max_sent_target_velocity_p95_rad_s",
+                "max_sent_target_velocity_limit_excess_rad_s",
                 "max_abs_body_pitch_p95_rad",
                 "min_base_height_m",
                 "min_reward_mean",
@@ -843,6 +844,27 @@ def build_markdown(payload: dict) -> str:
                 lines.append(
                     f"| `{key}` | {fmt(metrics.get(key))} | {fmt(thresholds.get(key))} |"
                 )
+            limits = thresholds.get("pitch_chain_velocity_limits_rad_s") or {}
+            if limits:
+                lines.append("")
+                lines.append("Corrected per-joint velocity limits:")
+                lines.append("")
+                lines.append("| joint | limit_rad_s |")
+                lines.append("|---|---:|")
+                for joint in PITCH_CHAIN_JOINTS:
+                    lines.append(f"| `{joint}` | {fmt(limits.get(joint))} |")
+            violations = metrics.get("pitch_chain_velocity_violations") or []
+            if violations:
+                lines.append("")
+                lines.append("Per-joint target-velocity violations:")
+                lines.append("")
+                lines.append("| joint | p95_rad_s | limit_rad_s | excess_rad_s |")
+                lines.append("|---|---:|---:|---:|")
+                for item in violations:
+                    lines.append(
+                        f"| `{item.get('joint')}` | {fmt(item.get('velocity_p95_rad_s'))} | "
+                        f"{fmt(item.get('limit_rad_s'))} | {fmt(item.get('excess_rad_s'))} |"
+                    )
             lines.append("")
         lines.append("### Mode Summary")
         lines.append("")

@@ -101,7 +101,7 @@ def tar_filter(member: tarfile.TarInfo) -> tarfile.TarInfo | None:
         return None
     if "outputs" in parts and "analysis" in parts:
         allowed_analysis = {
-            ("outputs", "analysis", "actuator_response_fit.json"),
+            ("outputs", "analysis", "actuator_response_fit_corrected_knee.json"),
             ("outputs", "analysis", "ACTUATOR_RESPONSE_FIT.md"),
             ("outputs", "analysis", "ppo_bc_swish_cmd_pitch_rl_2p25_step0_checkpoint"),
             ("outputs", "analysis", "reference_motion_x004_override.pkl"),
@@ -978,7 +978,7 @@ def build_remote_driver(
             sweep_cmd = [
                 PYTHON, "tools/sweep_candidate_checkpoints.py",
                 "--policies", *sweep_policies,
-                "--fit-json", "outputs/analysis/actuator_response_fit.json",
+                "--fit-json", "outputs/analysis/actuator_response_fit_corrected_knee.json",
                 "--playground-path", str(PLAYGROUND),
                 "--env-python", PYTHON,
                 "--commands", "{checkpoint_sweep_commands}",
@@ -999,7 +999,7 @@ def build_remote_driver(
                 PYTHON, "tools/eval_policy_with_actuator_bridge.py",
                 "--mode", "closed-loop-sim",
                 "--policy", "policy/BEST_WALK_ONNX_2.onnx",
-                "--fit-json", "outputs/analysis/actuator_response_fit.json",
+                "--fit-json", "outputs/analysis/actuator_response_fit_corrected_knee.json",
                 "--playground-path", str(PLAYGROUND),
                 "--env-python", PYTHON,
                 "--command-x", "0.08",
@@ -1148,7 +1148,7 @@ def build_remote_driver(
                 sweep_cmd = [
                     PYTHON, "tools/sweep_candidate_checkpoints.py",
                     "--policies", *[str(path) for path in onnx_files],
-                    "--fit-json", "outputs/analysis/actuator_response_fit.json",
+                    "--fit-json", "outputs/analysis/actuator_response_fit_corrected_knee.json",
                     "--playground-path", str(PLAYGROUND),
                     "--env-python", PYTHON,
                     "--commands", "{candidate_checkpoint_sweep_commands}",
@@ -1287,7 +1287,7 @@ def build_remote_driver(
                     "--mode", "closed-loop-sim",
                     "--eval-role", "candidate",
                     "--policy", str(latest_onnx),
-                    "--fit-json", "outputs/analysis/actuator_response_fit.json",
+                    "--fit-json", "outputs/analysis/actuator_response_fit_corrected_knee.json",
                     "--playground-path", str(PLAYGROUND),
                     "--env-python", PYTHON,
                     "--command-x", command_x,

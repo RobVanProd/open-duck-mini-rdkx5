@@ -7649,3 +7649,65 @@ seed 4: fall_or_nan after 56 samples
 
 The screen is only a sanity check for the exported smoke model; it does not
 invalidate the weighted correction-data path.
+
+## Corrected Knee Bridge Re-Anchor
+
+The left-knee soft-offset error was fixed on the robot and the correction was
+validated on stand:
+
+```text
+left_knee offset:  -1.488 -> 0.0371 rad
+right_knee offset:  0.0798 rad unchanged
+left/right knee joint-space agreement after monitor: within about 0.63 deg
+```
+
+Corrected low-speed sine sweeps passed for the pitch chain at 0.25, 0.5, and
+1.0 Hz with 0.03 rad amplitude. The left knee no longer appears as a low-speed
+tracking outlier.
+
+The corrected suspended `x=0.08` replay of `BEST_WALK_ONNX_2` still held:
+
+```text
+status: HOLD_DYNAMIC_TRACKING_STILL_BLOCKS_WALKING
+pitch-chain sent velocity p95: 3.14-5.22 rad/s
+pitch-chain tracking p95:      0.125-0.171 rad after startup filtering
+dynamic lag:                   mostly 3-4 ticks
+write errors:                  0
+read checksum errors:          20
+```
+
+This confirms the old knee asymmetry was a real confound and is now gone, but
+it was not the full walking blocker. The upstream policy remains dynamically
+too aggressive for the corrected real actuator chain. Direct deployment of
+`BEST_WALK_ONNX_2` remains dead and grounded replay remains blocked.
+
+The canonical corrected actuator bridge for all subsequent sim/eval/training is
+now:
+
+```text
+outputs/analysis/actuator_response_fit_corrected_knee.json
+sha256: 3661543d0745073b561eb4fa2ae8f9616368ee8b72cb397f8b953dada532c8c0
+```
+
+The old `outputs/analysis/actuator_response_fit.json` is historical only for
+new candidate gates. Future gates must use the corrected per-joint pitch-chain
+velocity limits rather than the old global `3.75 rad/s` ceiling:
+
+```text
+left_hip_pitch  2.50 rad/s
+left_knee       3.25 rad/s
+left_ankle      2.75 rad/s
+right_hip_pitch 2.25 rad/s
+right_knee      2.75 rad/s
+right_ankle     2.00 rad/s
+```
+
+Read-checksum sensitivity was checked by refitting after dropping read-error
+event windows. Delay remained 3 ticks, but one joint fit hit the velocity upper
+grid bound, so the exclusion fit is logged as a warning rather than used to
+loosen the envelope. The conservative full corrected dynamic fit remains
+canonical.
+
+Current objective: produce a deployable policy that walks forward 8/8 seeds
+in-envelope against this corrected bridge before any first grounded hardware
+test.

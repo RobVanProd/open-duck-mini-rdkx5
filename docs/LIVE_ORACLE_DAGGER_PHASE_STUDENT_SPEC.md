@@ -1,18 +1,18 @@
 # Live-Oracle DAgger Phase Student Spec
 
-Status: `PRE_REGISTERED_NOT_STARTED`
+Status: `PRE_REGISTERED_NOT_STARTED_REANCHOR_ON_CORRECTED_BRIDGE`
 
 Branch ID: `LIVE_ORACLE_DAGGER_PHASE_STUDENT`
 
 This branch supersedes `PLAN_GATE_AWARE_ROLLOUT_CORRECTION_OR_RECURRENT_STUDENT`.
-It is offline-only until a candidate clears the strict canonical fitted-bridge
-gate. No robot test, SSH, deploy, hardware calibration write, policy overwrite,
-or runtime behavior change is in scope for this branch.
+It is offline-only until a candidate clears the strict canonical corrected
+fitted-bridge gate. No robot test, SSH, deploy, hardware calibration write,
+policy overwrite, or runtime behavior change is in scope for this branch.
 
 ## Objective
 
 Distill the working source-VX selector into a deployable policy that clears the
-strict fitted-bridge tracking gate by:
+strict corrected fitted-bridge tracking gate by:
 
 - querying the selector as a live oracle on the student's own visited states at
   every iteration
@@ -22,7 +22,10 @@ strict fitted-bridge tracking gate by:
 ## Settled Evidence
 
 - The source-VX selector proved in-envelope all-seed forward walking exists in
-  sim under the fitted actuator bridge.
+  sim under the old fitted actuator bridge.
+- After the left-knee correction, the old bridge is deprecated. Future branch
+  results must re-anchor on
+  `outputs/analysis/actuator_response_fit_corrected_knee.json`.
 - Prior memoryless distillations, static DAgger passes, kNN/linear/blend
   students, and feed-forward PPO-shape students held at the same tracking
   plateau or froze.
@@ -34,6 +37,17 @@ strict fitted-bridge tracking gate by:
   aggregate, retrain, and gate.
 
 ## Blocking Step 0
+
+The corrected bridge must be treated as canonical before any new candidate gate:
+
+```text
+docs/CORRECTED_BRIDGE_CAMPAIGN_GOAL.md
+docs/CURRENT_ACTUATOR_BRIDGE.md
+outputs/analysis/current_actuator_bridge.json
+```
+
+The old `outputs/analysis/actuator_response_fit.json` is historical only for
+new candidate gates.
 
 Before trusting any gate number from this branch, reconcile the evaluator
 discrepancy where one path reported `sent_vel95 ~= 2.2 rad/s` and the standard
@@ -114,7 +128,8 @@ Canonical evaluator:
 
 ```text
 task: flat_terrain_backlash
-bridge: fitted
+bridge: fitted corrected actuator bridge
+fit_json: outputs/analysis/actuator_response_fit_corrected_knee.json
 duration: 15 seconds
 seeds: 0-7
 ```
@@ -125,9 +140,20 @@ For `x=0.08`, all must pass:
 duration_complete: 8/8
 falls: 0/8
 mean track ratio: >= 0.50
-max pitch-chain sent velocity p95: <= 3.75 rad/s
+pitch-chain sent velocity p95: <= corrected per-joint fitted limits
 max pitch-chain tracking p95: <= 0.20 rad
 ```
+
+Corrected per-joint fitted limits:
+
+| joint | velocity limit rad/s |
+|---|---:|
+| left_hip_pitch | 2.50 |
+| left_knee | 3.25 |
+| left_ankle | 2.75 |
+| right_hip_pitch | 2.25 |
+| right_knee | 2.75 |
+| right_ankle | 2.00 |
 
 For `x=0.0`, all must pass:
 
@@ -135,6 +161,7 @@ For `x=0.0`, all must pass:
 duration_complete: 8/8
 falls: 0/8
 mean |vx|: <= 0.005 m/s
+pitch-chain sent velocity p95: <= corrected per-joint fitted limits
 ```
 
 Promotion requires ONNX export and action fidelity error no greater than

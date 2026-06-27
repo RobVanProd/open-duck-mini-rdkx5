@@ -21,7 +21,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_PLAYGROUND = ROOT.parent / "Open_Duck_Playground"
 DEFAULT_ENV_PYTHON = ROOT.parent / "envs" / "open-duck-playground" / "bin" / "python"
 DEFAULT_POLICY = ROOT / "policy" / "BEST_WALK_ONNX_2.onnx"
-DEFAULT_FIT_JSON = ROOT / "outputs" / "analysis" / "actuator_response_fit.json"
+DEFAULT_FIT_JSON = ROOT / "outputs" / "analysis" / "actuator_response_fit_corrected_knee.json"
 DEFAULT_OUTPUT_DIR = ROOT / "outputs" / "analysis" / "rocm_mjx_isolation"
 
 

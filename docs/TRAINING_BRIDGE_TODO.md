@@ -15,6 +15,30 @@ docs/WEIGHT_TRANSFER_TARGET_PLAN.md
 outputs/analysis/WEIGHT_TRANSFER_TARGET_GATE_CHECK.md
 ```
 
+Current actuator bridge decision:
+
+```text
+docs/CORRECTED_BRIDGE_CAMPAIGN_GOAL.md
+docs/CURRENT_ACTUATOR_BRIDGE.md
+outputs/analysis/current_actuator_bridge.json
+canonical fit: outputs/analysis/actuator_response_fit_corrected_knee.json
+deprecated fit: outputs/analysis/actuator_response_fit.json
+```
+
+All future candidate gates must use the corrected bridge and the corrected
+per-joint pitch-chain velocity limits:
+
+```text
+left_hip_pitch  2.50 rad/s
+left_knee       3.25 rad/s
+left_ankle      2.75 rad/s
+right_hip_pitch 2.25 rad/s
+right_knee      2.75 rad/s
+right_ankle     2.00 rad/s
+```
+
+Do not promote a candidate from an old-bridge or smoke-only pass.
+
 ## Training Environment Constraint
 
 Future training runs should use the local `7900 XTX` / ROCm-capable setup.

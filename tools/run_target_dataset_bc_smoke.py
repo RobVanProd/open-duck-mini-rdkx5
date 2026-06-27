@@ -36,7 +36,7 @@ DEFAULT_MANIFEST = ROOT / "outputs" / "analysis" / "target_dataset_obs_manifest.
 DEFAULT_OUTPUT_MD = ROOT / "outputs" / "analysis" / "TARGET_DATASET_BC_SMOKE.md"
 DEFAULT_OUTPUT_JSON = ROOT / "outputs" / "analysis" / "target_dataset_bc_smoke.json"
 DEFAULT_PLAYGROUND = ROOT.parent / "Open_Duck_Playground"
-DEFAULT_FIT_JSON = ROOT / "outputs" / "analysis" / "actuator_response_fit.json"
+DEFAULT_FIT_JSON = ROOT / "outputs" / "analysis" / "actuator_response_fit_corrected_knee.json"
 JOINT_NAMES = [
     "left_hip_yaw",
     "left_hip_roll",

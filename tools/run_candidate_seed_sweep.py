@@ -137,6 +137,9 @@ def summarize_payload(payload: dict[str, Any], mode_name: str) -> dict[str, Any]
         "body_pitch_p95_rad": metrics.get("max_abs_body_pitch_p95_rad"),
         "base_height_min_m": height.get("min"),
         "max_pitch_vel_p95_rad_s": metrics.get("max_sent_target_velocity_p95_rad_s"),
+        "max_pitch_vel_limit_excess_rad_s": metrics.get(
+            "max_sent_target_velocity_limit_excess_rad_s"
+        ),
         "max_tracking_p95_rad": metrics.get("max_pitch_tracking_p95_rad"),
         "action_saturation_pct": metrics.get("max_action_saturation_pct"),
     }
@@ -305,6 +308,9 @@ def aggregate(rows: list[dict[str, Any]]) -> dict[str, Any]:
         "max_pitch_vel_p95_rad_s": stats(
             item.get("max_pitch_vel_p95_rad_s") for item in summaries
         ),
+        "max_pitch_vel_limit_excess_rad_s": stats(
+            item.get("max_pitch_vel_limit_excess_rad_s") for item in summaries
+        ),
         "max_tracking_p95_rad": stats(item.get("max_tracking_p95_rad") for item in summaries),
     }
 
@@ -329,8 +335,8 @@ def build_report(results: list[dict[str, Any]], args: argparse.Namespace) -> str
         "",
         "## Per-Seed Results",
         "",
-        "| policy | seed | status | samples | termination | mean_local_vx | track_ratio | body_pitch_p95 | base_height_min | max_pitch_vel_p95 | max_tracking_p95 |",
-        "|---|---:|---|---:|---|---:|---:|---:|---:|---:|---:|",
+        "| policy | seed | status | samples | termination | mean_local_vx | track_ratio | body_pitch_p95 | base_height_min | max_pitch_vel_p95 | max_vel_excess | max_tracking_p95 |",
+        "|---|---:|---|---:|---|---:|---:|---:|---:|---:|---:|---:|",
     ]
     for result in results:
         summary = result.get("summary") or {}
@@ -343,13 +349,14 @@ def build_report(results: list[dict[str, Any]], args: argparse.Namespace) -> str
             f"{fmt(summary.get('body_pitch_p95_rad'))} | "
             f"{fmt(summary.get('base_height_min_m'))} | "
             f"{fmt(summary.get('max_pitch_vel_p95_rad_s'))} | "
+            f"{fmt(summary.get('max_pitch_vel_limit_excess_rad_s'))} | "
             f"{fmt(summary.get('max_tracking_p95_rad'))} |"
         )
     lines.extend(["", "## Distribution Summary", ""])
     lines.append(
-        "| policy | runs | falls | duration_complete | samples_mean | samples_min | samples_max | track_ratio_mean | vx_mean | body_pitch_p95_mean | base_height_min_mean |"
+        "| policy | runs | falls | duration_complete | samples_mean | samples_min | samples_max | track_ratio_mean | vx_mean | body_pitch_p95_mean | base_height_min_mean | max_vel_excess_mean |"
     )
-    lines.append("|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|")
+    lines.append("|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|")
     for label, rows in grouped(results).items():
         agg = aggregate(rows)
         sample_stats = agg.get("samples") or {}
@@ -360,7 +367,8 @@ def build_report(results: list[dict[str, Any]], args: argparse.Namespace) -> str
             f"{fmt((agg.get('track_ratio') or {}).get('mean'))} | "
             f"{fmt((agg.get('mean_local_vx_m_s') or {}).get('mean'))} | "
             f"{fmt((agg.get('body_pitch_p95_rad') or {}).get('mean'))} | "
-            f"{fmt((agg.get('base_height_min_m') or {}).get('mean'))} |"
+            f"{fmt((agg.get('base_height_min_m') or {}).get('mean'))} | "
+            f"{fmt((agg.get('max_pitch_vel_limit_excess_rad_s') or {}).get('mean'))} |"
         )
     lines.extend(
         [
@@ -388,7 +396,7 @@ def main() -> int:
         help="ONNX policy paths, optionally as label=/path/to/policy.onnx",
     )
     parser.add_argument("--seeds", type=parse_int_list, default=parse_int_list("0-7"))
-    parser.add_argument("--fit-json", default="outputs/analysis/actuator_response_fit.json")
+    parser.add_argument("--fit-json", default="outputs/analysis/actuator_response_fit_corrected_knee.json")
     parser.add_argument("--playground-path", default="../Open_Duck_Playground")
     parser.add_argument("--env-python", default="../envs/open-duck-playground/bin/python")
     parser.add_argument("--command-x", type=float, default=0.08)
