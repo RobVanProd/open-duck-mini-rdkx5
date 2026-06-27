@@ -220,6 +220,11 @@ def build_payload(args: argparse.Namespace) -> dict[str, Any]:
             "outputs/analysis/pitch_chain_4p3_ppo_warmstart_behavior_preservation_control_seed1_seed4_screen.json",
             run_candidate_rows,
         ),
+        (
+            "PPO behavior-control low-alpha blends",
+            "outputs/analysis/ppo_warmstart_behavior_control_weight_blends_seed1_seed4_screen.json",
+            run_candidate_rows,
+        ),
     ]
     candidates = []
     for name, rel_path, reader in candidate_specs:
@@ -288,6 +293,11 @@ def build_payload(args: argparse.Namespace) -> dict[str, Any]:
             "branch": "small PPO update with weak behavior preservation",
             "result": "closed",
             "reason": "a control run with no target-rate/tracking penalty, lower learning rate, and stronger behavior prior still collapsed to near-zero progress.",
+        },
+        {
+            "branch": "low-alpha blending of the PPO update direction",
+            "result": "closed",
+            "reason": "0.01-0.10 blends preserve the walking basin but do not materially move the fitted-bridge tracking plateau.",
         },
     ]
     recommendation = {

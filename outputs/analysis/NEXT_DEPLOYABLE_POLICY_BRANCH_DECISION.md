@@ -22,6 +22,7 @@ The cheap post-hoc branches are now closed negative. The remaining blocker is th
 | pitch-chain 4.3 PPO warm-start step-0 | `HOLD_CANDIDATE_TRACKING` | 8 | 8 | 0 | 0.0396 | 0.4944 | 3.6200-3.7078 | 0.2522-0.2583 |
 | PPO warm-start tracking correction smoke | `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` | 2 | 2 | 0 | 0.0012 | 0.0155 | 1.1218-1.2200 | 0.1078-0.1121 |
 | PPO warm-start behavior-preservation control | `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` | 2 | 2 | 0 | 0.0013 | 0.0165 | 1.1863-1.2540 | 0.1170-0.1213 |
+| PPO behavior-control low-alpha blends | `HOLD_CANDIDATE_TRACKING` | 8 | 8 | 0 | 0.0395 | 0.4940 | 3.6430-3.7533 | 0.2516-0.2600 |
 
 ## PPO / Blend Sweep Evidence
 
@@ -47,6 +48,7 @@ within 2 ticks of contact transition: 404 / 506
 - `static gate-aware source-VX relabeling`: targeted relabeling of strict-gate seed 1/4 states produced only tiny tracking changes and did not clear the same fitted-bridge tracking hold.
 - `naive PPO tracking-cost correction from BC warm start`: PPO resume/export works, but a tiny tracking-cost correction reduced tracking by nearly freezing; seed 1/4 screen fell to ~0 progress.
 - `small PPO update with weak behavior preservation`: a control run with no target-rate/tracking penalty, lower learning rate, and stronger behavior prior still collapsed to near-zero progress.
+- `low-alpha blending of the PPO update direction`: 0.01-0.10 blends preserve the walking basin but do not materially move the fitted-bridge tracking plateau.
 
 ## Recommended Next Branch
 

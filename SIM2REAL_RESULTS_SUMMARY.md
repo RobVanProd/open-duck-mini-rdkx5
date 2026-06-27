@@ -7485,3 +7485,18 @@ So the issue is broader than the explicit tracking penalty. The current PPO
 resume/reward setup is not preserving the walking basin; the next offline
 training branch needs a true trust-region or behavior-preserving update, not
 another scalar penalty sweep.
+
+Low-alpha blends between the validated step-0 ONNX and the behavior-control
+step-640 ONNX were also screened:
+
+```text
+screen artifact: outputs/analysis/PPO_WARMSTART_BEHAVIOR_CONTROL_WEIGHT_BLENDS_SEED1_SEED4_SCREEN.md
+alphas: 0.01, 0.02, 0.05, 0.10
+status: HOLD_CANDIDATE_TRACKING
+targeted vx mean range: 0.0388-0.0401 m/s
+targeted track ratio mean range: 0.4847-0.5010
+```
+
+The blend direction preserves baseline motion at low alpha, but it does not
+materially improve the fitted-bridge tracking gate. Full PPO update freezes;
+small blends are effectively no-ops.

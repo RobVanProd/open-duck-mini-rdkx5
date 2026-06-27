@@ -111,6 +111,31 @@ This control shows the collapse is not only caused by the tracking penalty.
 Under the current PPO resume/reward setup, even a small behavior-anchored update
 moves the policy from stable forward motion into a calm near-standstill.
 
+## Low-Alpha PPO Update Direction Blend
+
+To test whether the behavior-control PPO update contained a useful small
+direction before the full update froze, the step-0 ONNX and behavior-control
+step-640 ONNX were blended by initializer value:
+
+```text
+alphas: 0.01, 0.02, 0.05, 0.10
+screen artifact: outputs/analysis/PPO_WARMSTART_BEHAVIOR_CONTROL_WEIGHT_BLENDS_SEED1_SEED4_SCREEN.md
+screen status: HOLD_CANDIDATE_TRACKING
+```
+
+Targeted seed screen:
+
+```text
+alpha 0.01: vx mean 0.0388, track ratio 0.4847, tracking hold
+alpha 0.02: vx mean 0.0397, track ratio 0.4966, tracking hold
+alpha 0.05: vx mean 0.0395, track ratio 0.4939, tracking hold
+alpha 0.10: vx mean 0.0401, track ratio 0.5010, tracking hold
+```
+
+The blends preserved the baseline walking basin, but they did not materially
+reduce the fitted-bridge tracking plateau. The useful region between step-0 and
+the frozen PPO update is effectively a no-op for the gate.
+
 ## Conclusion
 
 The PPO warm-start path is viable, but the naive tracking-correction reward
@@ -130,4 +155,5 @@ trust-region style PPO fine-tuning at the policy-distribution level, an
 imitation/advantage formulation that keeps the update inside the walking basin,
 or a stronger behavior-preservation mechanism that treats loss of forward
 progress as an immediate hold, not as an acceptable way to reduce tracking
-error.
+error. Low-alpha post-hoc blending is also not enough; it preserves the
+baseline but does not move the gate.

@@ -3761,3 +3761,19 @@ current PPO resume/reward setup moves the warm-start out of the walking basin
 even under a behavior-preservation control. The next attempt needs a stronger
 policy-distribution trust region or a different update mechanism, not another
 small scalar reward tweak.
+
+The behavior-control PPO update was also blended back toward the step-0 ONNX at
+low alphas to test whether the update direction had a useful small-signal
+region:
+
+```text
+screen artifact: outputs/analysis/PPO_WARMSTART_BEHAVIOR_CONTROL_WEIGHT_BLENDS_SEED1_SEED4_SCREEN.md
+alphas: 0.01, 0.02, 0.05, 0.10
+status: HOLD_CANDIDATE_TRACKING
+best targeted mean track ratio: 0.5010
+best targeted mean vx: 0.0401 m/s
+```
+
+The blends preserved motion but did not materially reduce the tracking plateau.
+So the PPO update direction is not useful at low alpha either: full update
+freezes, small blends are no-ops for the gate.
