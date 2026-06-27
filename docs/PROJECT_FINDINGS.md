@@ -3365,3 +3365,9 @@ reward improvement is not aligned with deployability unless the gate behavior is
 preserved directly. The next attempt needs a stronger deployable-policy
 mechanism, such as teacher-action continuity during PPO or rollout correction
 from the working selector, rather than another small scalar reward tweak.
+
+Infrastructure follow-up: the Colab workflow now defaults the compact
+post-training checkpoint sweep to CPU (`--candidate-checkpoint-sweep-jax-platform
+cpu`) while keeping training on GPU. This matches the observed behavior: A100
+training completed, GPU candidate eval wedged, and the same checkpoint sweep
+completed locally on CPU.

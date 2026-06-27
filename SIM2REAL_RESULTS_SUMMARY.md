@@ -7256,3 +7256,7 @@ reduced target velocity, but it also reduced useful forward motion. This repeats
 the known deployability failure: small PPO reward/penalty changes can make the
 policy look calmer while moving it back toward the low-progress basin. Robot
 validation remains blocked.
+
+Workflow note: post-training compact checkpoint sweeps now default to CPU via
+`--candidate-checkpoint-sweep-jax-platform cpu` while training remains on GPU.
+This avoids the A100 MJX eval-worker wedge observed during this run.

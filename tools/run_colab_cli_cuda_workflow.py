@@ -755,8 +755,10 @@ def build_remote_driver(
     checkpoint_sweep_commands = cli_value(args.checkpoint_sweep_commands)
     checkpoint_sweep_duration = cli_value(args.checkpoint_sweep_duration)
     checkpoint_sweep_bridge_mode = args.checkpoint_sweep_bridge_mode
+    checkpoint_sweep_jax_platform = args.checkpoint_sweep_jax_platform
     candidate_checkpoint_sweep_commands = cli_value(args.candidate_checkpoint_sweep_commands)
     candidate_checkpoint_sweep_duration = cli_value(args.candidate_checkpoint_sweep_duration)
+    candidate_checkpoint_sweep_jax_platform = args.candidate_checkpoint_sweep_jax_platform
     candidate_disable_bridge_arg = (
         '"--disable-actuator-bridge",' if args.candidate_disable_actuator_bridge else ""
     )
@@ -983,7 +985,7 @@ def build_remote_driver(
                 "--duration", "{checkpoint_sweep_duration}",
                 "--bridge-mode", "{checkpoint_sweep_bridge_mode}",
                 "--mode-name", "{checkpoint_sweep_bridge_mode}",
-                "--jax-platform", "gpu",
+                "--jax-platform", "{checkpoint_sweep_jax_platform}",
                 "--sim-preflight-timeout-s", "600",
                 "--closed-loop-timeout-s", "1800",
                 "--output-dir", str(OUT / "candidate_checkpoint_sweep"),
@@ -1153,7 +1155,7 @@ def build_remote_driver(
                     "--duration", "{candidate_checkpoint_sweep_duration}",
                     "--bridge-mode", "fitted",
                     "--mode-name", "fitted",
-                    "--jax-platform", "gpu",
+                    "--jax-platform", "{candidate_checkpoint_sweep_jax_platform}",
                     "--sim-preflight-timeout-s", "600",
                     "--closed-loop-timeout-s", "1800",
                     "--output-dir", str(sweep_dir),
@@ -1594,6 +1596,16 @@ def main() -> int:
     parser.add_argument("--checkpoint-sweep-commands", default="0.08")
     parser.add_argument("--checkpoint-sweep-duration", type=float, default=5.0)
     parser.add_argument("--checkpoint-sweep-bridge-mode", default="fitted")
+    parser.add_argument(
+        "--checkpoint-sweep-jax-platform",
+        choices=["cpu", "gpu"],
+        default="cpu",
+        help=(
+            "JAX platform for --workflow checkpoint-sweep. CPU is the default "
+            "because single-policy MJX eval can be more reliable than GPU "
+            "worker preflight on hosted runtimes."
+        ),
+    )
     parser.add_argument("--checkpoint-sweep-timeout-s", type=int, default=3600)
     parser.add_argument(
         "--staged-timesteps-scale",
@@ -1819,6 +1831,17 @@ def main() -> int:
         help=(
             "Duration in seconds for each compact checkpoint-sweep rollout. "
             "Final candidate gates still run the normal longer duration."
+        ),
+    )
+    parser.add_argument(
+        "--candidate-checkpoint-sweep-jax-platform",
+        choices=["cpu", "gpu"],
+        default="cpu",
+        help=(
+            "JAX platform for the post-training compact checkpoint sweep. "
+            "Training still uses GPU; CPU is the default here because the "
+            "A100 GPU sweep path can wedge in MJX eval preflight while CPU "
+            "completes the same gate."
         ),
     )
     parser.add_argument(

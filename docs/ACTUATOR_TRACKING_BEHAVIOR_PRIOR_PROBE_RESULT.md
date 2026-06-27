@@ -66,3 +66,9 @@ Next training work should not be another small scalar reward tweak. It needs a
 stronger deployable-policy mechanism such as teacher-action continuity during
 PPO, rollout correction from the working selector, or a gate-aligned objective
 that directly preserves forward progress while reducing tracking error.
+
+## Workflow Follow-Up
+
+The Colab workflow now defaults post-training checkpoint selection sweeps to CPU
+through `--candidate-checkpoint-sweep-jax-platform cpu`. This keeps PPO training
+on GPU while avoiding the A100 MJX eval-worker wedge observed in this run.
