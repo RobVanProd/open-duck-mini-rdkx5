@@ -56,6 +56,7 @@ within 2 ticks of contact transition: 404 / 506
 - `built-in adaptive-KL PPO learning-rate control`: adaptive-KL scheduling still moved the warm-started policy into near-standstill; seed 1/4 progress collapsed while tracking p95 fell to ~0.105 rad.
 - `hard command-progress failure termination`: the existing progress-failure termination did not preserve the walking basin in a tiny PPO update; seed 1/4 progress still collapsed while tracking p95 stayed ~0.10-0.12 rad.
 - `restore-policy KL loss at tested scales`: loss-level KL to the restored checkpoint policy was wired and tested at scales 1.0 and 100.0, but both screens still collapsed to near-standstill.
+- `restore-policy KL100 trace mechanism`: full-observation seed-1 trace shows the KL100 checkpoint is far from the source-VX walking manifold (`nearest distance mean/p95 1.3746/1.5831`, `nearest action L1 mean/p95 0.1574/0.2044`) and spends `97.8%` of samples in double support. The preserved step-0 warm start remains much closer (`0.2325/0.3598`, `0.0277/0.0500`) but is still tracking/instability-held. This closes another KL-only scale sweep.
 
 ## Recommended Next Branch
 
@@ -75,6 +76,7 @@ Candidate mechanisms:
 - DAgger/rollout correction with the strict gate failure states added back to the teacher dataset
 - recurrent or phase-aware student for the stance-transition discontinuity
 - trust-region PPO fine-tune only if it constrains rollouts to the gate-passing state distribution, not just the restored policy on already-drifting states
+- gate-aware rollout correction that explicitly rejects double-support standstill drift before optimizing target tracking
 
 ## Stop Rules
 

@@ -7551,3 +7551,44 @@ scale 100.0 vx mean: 0.0013, track ratio mean: 0.0168
 This confirms that a loss-level anchor can be wired into the PPO path, but these
 bounded settings still do not preserve forward motion. Robot validation remains
 blocked.
+
+Full-observation seed-1 traces compared the preserved step-0 warm start against
+the restore-policy KL100 checkpoint:
+
+```text
+comparison artifact: outputs/analysis/PPO_WARMSTART_STEP0_VS_RESTORE_POLICY_KL100_SEED1_TRACE.md
+step-0 analysis: outputs/analysis/PPO_WARMSTART_STEP0_SEED1_TRACE_COVERAGE_ANALYSIS.md
+KL100 analysis: outputs/analysis/PPO_WARMSTART_RESTORE_POLICY_KL100_SEED1_TRACE_COVERAGE_ANALYSIS.md
+```
+
+The step-0 warm start remains close to the source-VX walking manifold:
+
+```text
+status: HOLD_SEED_FAILURE_CLOSED_LOOP_INSTABILITY
+mean vx: 0.0361 m/s
+target velocity p95: 2.2016 rad/s
+joint tracking p95: 0.1742 rad
+nearest manifest distance mean/p95: 0.2325 / 0.3598
+nearest action L1 mean/p95: 0.0277 / 0.0500
+contacts: 63.0% double support, 36.8% single support
+```
+
+The KL100 checkpoint is no longer on that manifold and freezes in double
+support:
+
+```text
+status: HOLD_SEED_FAILURE_ACTION_MISMATCH
+mean vx: -0.0006 m/s
+target velocity p95: 0.7370 rad/s
+joint tracking p95: 0.0693 rad
+nearest manifest distance mean/p95: 1.3746 / 1.5831
+nearest action L1 mean/p95: 0.1574 / 0.2044
+contacts: 97.8% double support
+```
+
+Interpretation: the restore-policy KL term on PPO rollout observations
+preserves calmness, not the gate-passing walking distribution. This closes
+restore-policy-KL-only scale tuning as the next branch. The next deployable
+policy work must either correct rollout states back toward the gate-passing
+source-VX manifold or add recurrent/phase-aware state that preserves the
+stance-transition mechanism.

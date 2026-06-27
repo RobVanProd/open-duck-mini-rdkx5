@@ -3843,3 +3843,35 @@ original walking distribution. The next branch should either correct rollout
 states back toward the gate-passing distribution, use recurrent/phase-aware
 state, or train from explicitly gate-selected rollouts rather than relying on a
 restored-policy KL term alone.
+
+Follow-up full-observation seed-1 traces made the KL failure mechanism
+explicit:
+
+```text
+step-0 trace:
+  artifact: outputs/analysis/PPO_WARMSTART_STEP0_SEED1_TRACE_COVERAGE_ANALYSIS.md
+  status: HOLD_SEED_FAILURE_CLOSED_LOOP_INSTABILITY
+  mean vx: 0.0361 m/s
+  target velocity p95: 2.2016 rad/s
+  joint tracking p95: 0.1742 rad
+  nearest manifest distance mean/p95: 0.2325 / 0.3598
+  nearest action L1 mean/p95: 0.0277 / 0.0500
+  contacts: 63.0% double support, 36.8% single support
+
+restore-policy KL100 trace:
+  artifact: outputs/analysis/PPO_WARMSTART_RESTORE_POLICY_KL100_SEED1_TRACE_COVERAGE_ANALYSIS.md
+  status: HOLD_SEED_FAILURE_ACTION_MISMATCH
+  mean vx: -0.0006 m/s
+  target velocity p95: 0.7370 rad/s
+  joint tracking p95: 0.0693 rad
+  nearest manifest distance mean/p95: 1.3746 / 1.5831
+  nearest action L1 mean/p95: 0.1574 / 0.2044
+  contacts: 97.8% double support
+```
+
+Conclusion: the step-0 warm start is still close to the source-VX walking
+manifold but held by closed-loop stability/tracking. The KL100 checkpoint is no
+longer close to that manifold; it becomes a calm double-support standstill.
+This closes another restore-policy-KL-only scale sweep. The next deployable
+policy branch must make the rollout distribution itself gate-aware, or use a
+recurrent/phase-aware student that can preserve the stance-transition behavior.
