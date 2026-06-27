@@ -6782,24 +6782,34 @@ mostly stands still or drifts backward at x=0.08, still has one unstable seed,
 and regresses against the matched warm-start baseline. Do not scale this exact
 reward mix to A100.
 
-The next PPO branch should preserve the warm start's existing forward behavior
-instead of adding broad posture/contact terms that make standing cheaper:
+The next PPO branch tested behavior preservation instead of adding broad
+posture/contact terms that make standing cheaper:
 
 ```text
 doc: docs/BEHAVIOR_PRESERVING_RECOVERY_FINETUNE_PLAN.md
 dry-run manifest: outputs/analysis/behavior_preserving_recovery_finetune/dry_run_manifest.json
+result: outputs/analysis/BEHAVIOR_PRESERVING_RECOVERY_FINETUNE_SMOKE_RESULT.md
 anchor: outputs/analysis/ppo_bc_swish_cmd_pitch_rl_2p25_step0_checkpoint
 behavior prior: outputs/analysis/ppo_loc_swish_cmd_pitch_rl_2p25_candidate/candidate_mlp.npz
-status: DRY_RUN_REVIEW_READY
+status: HOLD_BEHAVIOR_PRIOR_SMOKE_REGRESSES_X008
 ```
 
-This proposed smoke restores the warm-start checkpoint, enables the fitted
-actuator bridge on `flat_terrain_backlash`, adds a frozen behavior-prior cost
-against the warm-start MLP, and uses only mild target-rate/tracking pressure.
-It should be judged against the matched 15-second baseline above. If it reduces
-mean vx or track ratio, introduces any fall, or passes by standing still, close
-the branch and pivot to a larger on-policy selector dataset or a stronger
-closed-loop recovery mechanism.
+The tiny CPU smoke exported successfully after a relative checkpoint-path hold
+was fixed by using the absolute checkpoint path. Its x=0.08 canonical gate still
+regressed:
+
+```text
+duration complete: 7 / 8
+fall/termination: seed 3
+mean vx: -0.0221 m/s
+mean track ratio: -0.2758
+```
+
+Conclusion: even a frozen warm-start behavior prior with mild tracking/rate
+pressure can lose motion through PPO. Do not scale this exact recipe to A100.
+The next branch should move beyond small scalar PPO adjustments and either
+expand the on-policy selector dataset or add targeted closed-loop recovery for
+the early failing seeds.
 
 ## Physical Start-Pose Calibration Check
 

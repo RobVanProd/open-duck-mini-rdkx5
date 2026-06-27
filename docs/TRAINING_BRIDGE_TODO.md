@@ -5470,11 +5470,23 @@ Next reviewed PPO branch:
 ```text
 doc: docs/BEHAVIOR_PRESERVING_RECOVERY_FINETUNE_PLAN.md
 dry-run manifest: outputs/analysis/behavior_preserving_recovery_finetune/dry_run_manifest.json
-status: DRY_RUN_REVIEW_READY
+result: outputs/analysis/BEHAVIOR_PRESERVING_RECOVERY_FINETUNE_SMOKE_RESULT.md
+status: HOLD_BEHAVIOR_PRIOR_SMOKE_REGRESSES_X008
 ```
 
-This branch restores the warm-start checkpoint, keeps the fitted actuator bridge
-and canonical `flat_terrain_backlash` task, and adds a frozen behavior-prior MLP
-to preserve the current forward gait while applying only mild tracking/rate
-pressure. Gate any smoke against the matched 15-second baseline. Reject it if
-it improves posture by suppressing x=0.08 motion.
+This branch restored the warm-start checkpoint, kept the fitted actuator bridge
+and canonical `flat_terrain_backlash` task, and added a frozen behavior-prior
+MLP to preserve the current forward gait while applying only mild tracking/rate
+pressure. The tiny CPU smoke exported, but its x=0.08 canonical gate regressed:
+
+```text
+duration complete: 7 / 8
+fall/termination: seed 3
+mean vx: -0.0221 m/s
+mean track ratio: -0.2758
+```
+
+Do not scale this exact behavior-prior recipe to A100. The next branch should
+move beyond small scalar PPO adjustments and either expand the on-policy
+selector dataset or add targeted closed-loop recovery for the early failing
+seeds.

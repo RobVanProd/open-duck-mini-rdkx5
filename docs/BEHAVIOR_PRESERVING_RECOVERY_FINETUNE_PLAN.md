@@ -78,6 +78,26 @@ Dry-run manifest:
 outputs/analysis/behavior_preserving_recovery_finetune/dry_run_manifest.json
 ```
 
+Smoke result:
+
+```text
+outputs/analysis/BEHAVIOR_PRESERVING_RECOVERY_FINETUNE_SMOKE_RESULT.md
+status: HOLD_BEHAVIOR_PRIOR_SMOKE_REGRESSES_X008
+```
+
+The tiny CPU smoke ran after an initial relative-checkpoint-path hold was fixed
+by using the absolute checkpoint path. It exported an ONNX, but the canonical
+x=0.08 fitted-bridge gate regressed against the warm-start baseline:
+
+```text
+duration complete: 7 / 8
+fall/termination: seed 3
+mean vx: -0.0221 m/s
+mean track ratio: -0.2758
+```
+
+Do not scale this exact behavior-prior recipe to A100.
+
 The key difference from the rejected support-transition smoke is the frozen
 behavior prior:
 
