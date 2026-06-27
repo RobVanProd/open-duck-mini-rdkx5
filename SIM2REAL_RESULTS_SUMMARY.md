@@ -6782,6 +6782,25 @@ mostly stands still or drifts backward at x=0.08, still has one unstable seed,
 and regresses against the matched warm-start baseline. Do not scale this exact
 reward mix to A100.
 
+The next PPO branch should preserve the warm start's existing forward behavior
+instead of adding broad posture/contact terms that make standing cheaper:
+
+```text
+doc: docs/BEHAVIOR_PRESERVING_RECOVERY_FINETUNE_PLAN.md
+dry-run manifest: outputs/analysis/behavior_preserving_recovery_finetune/dry_run_manifest.json
+anchor: outputs/analysis/ppo_bc_swish_cmd_pitch_rl_2p25_step0_checkpoint
+behavior prior: outputs/analysis/ppo_loc_swish_cmd_pitch_rl_2p25_candidate/candidate_mlp.npz
+status: DRY_RUN_REVIEW_READY
+```
+
+This proposed smoke restores the warm-start checkpoint, enables the fitted
+actuator bridge on `flat_terrain_backlash`, adds a frozen behavior-prior cost
+against the warm-start MLP, and uses only mild target-rate/tracking pressure.
+It should be judged against the matched 15-second baseline above. If it reduces
+mean vx or track ratio, introduces any fall, or passes by standing still, close
+the branch and pivot to a larger on-policy selector dataset or a stronger
+closed-loop recovery mechanism.
+
 ## Physical Start-Pose Calibration Check
 
 The real robot home/start pose has been checked against both telemetry and a

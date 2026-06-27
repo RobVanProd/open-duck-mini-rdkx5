@@ -5424,10 +5424,8 @@ baseline control: outputs/analysis/CMD_PITCH_RL_2P25_STEP0_FLAT_X0_FITTED_15S.md
 
 The restore/export path passed. The stricter `flat_terrain`, 15-second x=0 gate
 also fails on the original step-0 warm start with the same hard seeds, so this
-is not a new failure introduced by the smoke. The smoke also did not fix it. Do
-not scale this exact recipe to A100 and do not run its x=0.08 gate. The next PPO
-attempt must either fix the x=0 hard-seed flat-terrain failure first or
-explicitly choose a different canonical zero-command gate.
+is not a new failure introduced by the smoke. The smoke also did not fix the
+non-canonical stress gate.
 
 Model-variant isolation:
 
@@ -5452,3 +5450,31 @@ status: RECOMMEND_CANONICAL_FLAT_TERRAIN_BACKLASH
 Use `flat_terrain_backlash` for canonical offline promotion gates in this branch
 and treat `flat_terrain` as a named stress/ablation gate unless the team
 explicitly changes the canonical model.
+
+Matched support-transition smoke decision:
+
+```text
+decision: outputs/analysis/SUPPORT_TRANSITION_RECOVERY_MATCHED_BASELINE_DECISION.md
+status: HOLD_SUPPORT_TRANSITION_SMOKE_REGRESSES_X008
+matched baseline: outputs/analysis/CMD_PITCH_RL_2P25_STEP0_BACKLASH_X008_FITTED_15S.md
+support smoke: outputs/analysis/SUPPORT_TRANSITION_RECOVERY_FINETUNE_BACKLASH_X008_FITTED_15S.md
+```
+
+On the canonical 15-second x=0.08 gate, the warm-start baseline completes all
+eight seeds with mean vx `0.0348 m/s` and track ratio `0.4344`. The
+support-transition smoke has one fall, negative mean vx, and negative track
+ratio. Do not scale that reward mix to A100.
+
+Next reviewed PPO branch:
+
+```text
+doc: docs/BEHAVIOR_PRESERVING_RECOVERY_FINETUNE_PLAN.md
+dry-run manifest: outputs/analysis/behavior_preserving_recovery_finetune/dry_run_manifest.json
+status: DRY_RUN_REVIEW_READY
+```
+
+This branch restores the warm-start checkpoint, keeps the fitted actuator bridge
+and canonical `flat_terrain_backlash` task, and adds a frozen behavior-prior MLP
+to preserve the current forward gait while applying only mild tracking/rate
+pressure. Gate any smoke against the matched 15-second baseline. Reject it if
+it improves posture by suppressing x=0.08 motion.
