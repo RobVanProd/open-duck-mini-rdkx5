@@ -7272,3 +7272,29 @@ goal is to preserve the working closed-loop behavior while improving tracking.
 Workflow note: post-training compact checkpoint sweeps now default to CPU via
 `--candidate-checkpoint-sweep-jax-platform cpu` while training remains on GPU.
 This avoids the A100 MJX eval-worker wedge observed during this run.
+
+## Actuator-Tracking Behavior-Prior Weight Blend Diagnostic
+
+An offline ONNX weight-interpolation diagnostic blended the behavior-prior PPO
+step-0 export toward the step-40960 export at alphas 0.05, 0.10, 0.20, 0.35,
+and 0.50.
+
+```text
+result doc: docs/ACTUATOR_TRACKING_BEHAVIOR_PRIOR_WEIGHT_BLEND_RESULT.md
+status: HOLD_WEIGHT_BLEND_DOES_NOT_FIX_TRACKING
+robot touched: false
+```
+
+The best compact fitted-bridge result was alpha 0.05:
+
+```text
+x=0.08 mean vx: 0.0253 m/s
+x=0.08 track ratio: 0.3158
+x=0.08 max pitch tracking p95: 0.2217 rad
+x=0.08 max pitch sent velocity p95: 1.8523 rad/s
+status: HOLD_CANDIDATE_TRACKING
+```
+
+Small blends slightly improved forward progress but did not materially reduce
+the tracking hold. Larger blends drifted back toward low progress, matching the
+step-40960 failure mode. Robot validation remains blocked.

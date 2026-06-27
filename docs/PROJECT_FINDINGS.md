@@ -3382,3 +3382,56 @@ post-training checkpoint sweep to CPU (`--candidate-checkpoint-sweep-jax-platfor
 cpu`) while keeping training on GPU. This matches the observed behavior: A100
 training completed, GPU candidate eval wedged, and the same checkpoint sweep
 completed locally on CPU.
+
+## Actuator-Tracking Behavior-Prior Weight Blend Diagnostic
+
+A follow-up offline interpolation diagnostic tested whether the A100
+behavior-prior PPO run contained a useful intermediate policy between the
+prior-preserving step-0 export and the higher-reward step-40960 export.
+
+```text
+doc: docs/ACTUATOR_TRACKING_BEHAVIOR_PRIOR_WEIGHT_BLEND_RESULT.md
+status: HOLD_WEIGHT_BLEND_DOES_NOT_FIX_TRACKING
+tool: tools/blend_onnx_policy_weights.py
+robot touched: false
+```
+
+Generated ONNX weight blends:
+
+```text
+alpha: 0.05, 0.10, 0.20, 0.35, 0.50
+base: step 0 export
+target: step 40960 export
+```
+
+Compact fitted-bridge CPU sweep result:
+
+```text
+best blend: alpha 0.05
+x=0.08 mean vx: 0.0253 m/s
+x=0.08 track ratio: 0.3158
+x=0.08 max pitch tracking p95: 0.2217 rad
+x=0.08 max pitch sent velocity p95: 1.8523 rad/s
+status: HOLD_CANDIDATE_TRACKING
+```
+
+Small blends preserved or slightly improved motion but did not repair the
+tracking hold. Larger blends inherited the step-40960 low-progress drift:
+
+```text
+step 0 x=0.08 tracking p95:     0.2233 rad
+alpha 0.05 x=0.08 tracking p95: 0.2217 rad
+alpha 0.20 x=0.08 tracking p95: 0.2206 rad
+alpha 0.50 x=0.08 tracking p95: 0.2160 rad
+
+step 0 x=0.08 track ratio:      0.2692
+alpha 0.05 x=0.08 track ratio: 0.3158
+alpha 0.35 x=0.08 track ratio: 0.2101
+alpha 0.50 x=0.08 track ratio: 0.1016
+```
+
+Conclusion: post-hoc ONNX weight interpolation is not enough. The next
+deployable-policy attempt needs a training mechanism that preserves the working
+closed-loop behavior directly while optimizing tracking, such as stronger
+teacher-action continuity, rollout correction from the working selector, or a
+gate-aware fine-tuning loop.
