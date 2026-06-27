@@ -104,6 +104,28 @@ def tar_filter(member: tarfile.TarInfo) -> tarfile.TarInfo | None:
                 "ppo_loc_swish_cmd_pitch_rl_2p25_candidate",
                 "candidate_mlp.npz",
             ),
+            (
+                "outputs",
+                "analysis",
+                "command_conditioned_hard_seed_recovery_dagger_seed5_x0_candidate",
+                "candidate.onnx",
+            ),
+            (
+                "outputs",
+                "analysis",
+                "command_conditioned_hard_seed_recovery_dagger_seed5_x0_candidate",
+                "candidate_mlp.npz",
+            ),
+            (
+                "outputs",
+                "analysis",
+                "ppo_bc_command_conditioned_dagger_seed5_x0_step0_checkpoint",
+            ),
+            (
+                "outputs",
+                "analysis",
+                "ppo_bc_command_conditioned_dagger_seed5_x0_step0.onnx",
+            ),
         }
         rel_parts = tuple(parts[1:]) if len(parts) > 1 else tuple(parts)
         is_allowed_path = rel_parts in allowed_analysis
