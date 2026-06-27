@@ -42,6 +42,7 @@ complete and documented in:
 - `outputs/analysis/LIVE_ORACLE_COMMAND_GATED_X0SAFE_ITER0_X0_GATE.md`
 - `outputs/analysis/LIVE_ORACLE_COMMAND_GATED_X0SAFE_ITER0_X008_GATE.md`
 - `outputs/analysis/LIVE_ORACLE_ITER0_X008_PHASE_TRACKING_PLATEAU_AUDIT.md`
+- `outputs/analysis/LIVE_ORACLE_PHASE_QUADRANT_ITER0_X008_DECISION.md`
 
 ## Iteration 0 Outcome
 
@@ -168,6 +169,37 @@ and with right-knee p95 sent velocity locally above the fitted envelope. This
 supports a high-command phase/right-knee-specific representation or correction
 before escalating to full recurrence. It also argues against more global scalar
 x0 relabeling or whole-policy alpha sweeps.
+
+## Hard Phase-Quadrant Student
+
+Result:
+
+`HOLD_HARD_PHASE_QUADRANT_REGRESSION`
+
+Summary:
+
+- artifact: `outputs/analysis/LIVE_ORACLE_PHASE_QUADRANT_ITER0_X008_DECISION.md`
+- split samples: bin0 `1568`, bin1 `1568`, bin2 `1568`, bin3 `1296`
+- ONNX phase gate verification max action error: `0.0`
+- supervised per-head p95 abs error: `0.0189-0.0230`
+- x=0.08 duration complete: `7 / 8`
+- x=0.08 falls/terminations: `1 / 8`
+- x=0.08 mean track ratio: `0.4168`
+- x=0.08 max pitch-chain sent velocity p95: `5.2400 rad/s`
+- x=0.08 max pitch-chain tracking p95: `0.2711 rad`
+
+Interpretation:
+
+Hard phase-quadrant heads are rejected. Although each phase head fit its local
+labels better than the shared iter0 MLP, closed-loop behavior regressed:
+forward tracking dropped, one seed terminated, target velocity exceeded the
+measured envelope, and tracking did not improve. This suggests the failure is
+not merely that the feed-forward student lacks a phase input; the hard
+phase-boundary/off-manifold recovery behavior is itself unsafe.
+
+The next representation escalation should be smooth phase-conditioned mixing,
+a shared trunk with phase-conditioned modulation, or recurrence. Do not spend
+more time on hard quadrant heads.
 
 ## Hardware Track Note
 
