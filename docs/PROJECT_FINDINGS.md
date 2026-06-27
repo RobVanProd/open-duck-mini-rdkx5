@@ -3104,6 +3104,30 @@ tracking gate on completed seeds. The next PPO branch needs an explicit
 closed-loop recovery/stabilization objective; merely switching the DAgger-7
 student into the PPO actor shape is not enough.
 
+The DAgger-7 PPO-loc student was then mapped into an actual Brax/PPO step-0
+checkpoint/export:
+
+```text
+artifact: outputs/analysis/PPO_LOC_DAGGER7_TARGETED_RECOVERY_STEP0_EXPORT_FIDELITY.md
+status: PASS_PPO_BC_WARMSTART_STEP0_EXPORT_FIDELITY
+exported ONNX: outputs/analysis/ppo_loc_dagger7_targeted_recovery_step0.onnx
+p95 action error vs PPO-loc BC ONNX: 0.00000013
+```
+
+The exported step-0 policy reproduced the same closed-loop hold:
+
+```text
+artifact: outputs/analysis/PPO_LOC_DAGGER7_TARGETED_RECOVERY_STEP0_X008_FITTED_10S.md
+duration complete: 6 / 8
+falls: seeds 1 and 7
+mean track ratio: 0.3329
+mean vx: 0.0266 m/s
+```
+
+This proves the PPO restore/export path is coherent for the DAgger-7 student.
+It does not make the checkpoint deployable. Treat it only as a possible
+starting checkpoint for a future closed-loop recovery fine-tune.
+
 ## Physical start-pose calibration check
 
 The real robot now has both telemetry evidence and operator-confirmed physical

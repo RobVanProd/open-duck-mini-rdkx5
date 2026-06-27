@@ -6658,6 +6658,30 @@ Do not promote this supervised PPO-loc student directly into PPO checkpoint
 fine-tuning unless the next branch explicitly adds closed-loop recovery pressure
 for the hard support-transition states.
 
+The DAgger-7 PPO-loc student was then mapped into an actual Brax/PPO step-0
+checkpoint/export:
+
+```text
+artifact: outputs/analysis/PPO_LOC_DAGGER7_TARGETED_RECOVERY_STEP0_EXPORT_FIDELITY.md
+status: PASS_PPO_BC_WARMSTART_STEP0_EXPORT_FIDELITY
+exported ONNX: outputs/analysis/ppo_loc_dagger7_targeted_recovery_step0.onnx
+p95 action error vs PPO-loc BC ONNX: 0.00000013
+```
+
+The exported step-0 policy reproduced the same fitted-bridge x=0.08 hold:
+
+```text
+artifact: outputs/analysis/PPO_LOC_DAGGER7_TARGETED_RECOVERY_STEP0_X008_FITTED_10S.md
+duration complete: 6 / 8
+falls: seeds 1 and 7
+mean track ratio: 0.3329
+mean vx: 0.0266 m/s
+```
+
+This proves the PPO restore/export path is coherent for the DAgger-7 student.
+It does not make the checkpoint deployable. Treat it only as a possible
+starting checkpoint for a future closed-loop recovery fine-tune.
+
 ## Physical Start-Pose Calibration Check
 
 The real robot home/start pose has been checked against both telemetry and a
