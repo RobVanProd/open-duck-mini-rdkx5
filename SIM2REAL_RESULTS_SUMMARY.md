@@ -6923,6 +6923,37 @@ simple supervised reweighting made the hard seed worse. The next branch should
 use corrective on-policy relabeling or an explicit zero-command stabilizer, not
 larger weights on the same labels.
 
+Corrective on-policy relabeling was then tested directly:
+
+```text
+decision: outputs/analysis/COMMAND_CONDITIONED_HARD_SEED_RECOVERY_DAGGER_SEED5_X0_DECISION.md
+status: HOLD_X008_TRACKING_BUT_X0_SEED5_FIXED
+relabel: 72 failing x=0 seed-5 visited states, truncated before terminal row
+```
+
+Canonical fitted-bridge 10-second gates:
+
+```text
+x=0.0:
+  duration complete: 8 / 8
+  falls: 0
+  seed 5: PASS, vx_mean 0.0053, tracking_p95 0.0763
+
+x=0.08:
+  duration complete: 8 / 8
+  falls: 0
+  mean vx: 0.0344
+  mean track ratio: 0.4294
+  pitch-chain target velocity p95: 2.1043-2.1639 rad/s
+  tracking p95: 0.1875-0.1985 rad
+```
+
+This is the best result in the command-conditioned hard-seed line so far: the
+zero-command hard-seed collapse is fixed and the forward branch remains stable
+and in-envelope. It is still **not** a robot candidate because `x=0.08`
+tracking error remains too high. The next offline target is fitted-bridge
+tracking improvement without breaking the newly fixed zero-command stability.
+
 ## Physical Start-Pose Calibration Check
 
 The real robot home/start pose has been checked against both telemetry and a

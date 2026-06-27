@@ -5637,3 +5637,42 @@ weighted seed 5 fall: 57 samples
 Stop rule: do not keep increasing weights on the same x=0 seed-5 source trace.
 The next valid branch is corrective on-policy relabeling from seed-5 visited
 states or an explicit command-conditioned zero-command stabilizer.
+
+Corrective on-policy relabel result:
+
+```text
+decision: outputs/analysis/COMMAND_CONDITIONED_HARD_SEED_RECOVERY_DAGGER_SEED5_X0_DECISION.md
+status: HOLD_X008_TRACKING_BUT_X0_SEED5_FIXED
+```
+
+The failing x=0 seed-5 visited states were relabeled with the blend teacher and
+added to the dataset:
+
+```text
+relabel samples: 72
+action_delta_p95: 0.1005
+manifest entries: 20
+manifest samples: 10322
+```
+
+Canonical fitted-bridge gates:
+
+```text
+x=0.0:
+  duration complete: 8 / 8
+  falls: 0
+  seed 5: PASS, tracking_p95 0.0763
+
+x=0.08:
+  duration complete: 8 / 8
+  falls: 0
+  mean vx: 0.0344
+  mean track ratio: 0.4294
+  pitch-chain target velocity p95: 2.1043-2.1639 rad/s
+  tracking p95: 0.1875-0.1985 rad
+```
+
+Next branch: improve fitted-bridge tracking at x=0.08 without breaking the
+fixed x=0.0 hard-seed behavior. Candidate options are tracking-aware student
+loss, target-stage feedback, or PPO fine-tuning from this DAgger seed-5
+checkpoint with the fitted actuator bridge active. Do not promote to robot.
