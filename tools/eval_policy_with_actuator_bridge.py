@@ -46,6 +46,12 @@ DEFAULT_OUTPUT_DIR = ROOT / "outputs" / "analysis"
 DEFAULT_PLAYGROUND_ROOT = ROOT.parent / "Open_Duck_Playground"
 
 
+def parse_name_list(text: str | None) -> tuple[str, ...]:
+    if text is None:
+        return ()
+    return tuple(part.strip() for part in text.split(",") if part.strip())
+
+
 def finite(value) -> bool:
     return value is not None and not (
         isinstance(value, float) and (math.isnan(value) or math.isinf(value))
@@ -347,6 +353,14 @@ def inspect_policy(
                 "output_name": outputs[0].name if outputs else None,
                 "output_shape": outputs[0].shape if outputs else None,
                 "output_type": outputs[0].type if outputs else None,
+                "inputs": [
+                    {"name": item.name, "shape": item.shape, "type": item.type}
+                    for item in inputs
+                ],
+                "outputs": [
+                    {"name": item.name, "shape": item.shape, "type": item.type}
+                    for item in outputs
+                ],
             }
         )
     except Exception as exc:  # pragma: no cover - environment-dependent
@@ -587,6 +601,14 @@ def run_closed_loop_worker(args) -> dict:
         )
     if args.inspect_policy_io:
         cmd.append("--inspect-policy-io")
+    if args.policy_obs_input_name:
+        cmd.extend(["--policy-obs-input-name", str(args.policy_obs_input_name)])
+    if args.policy_action_output_name:
+        cmd.extend(["--policy-action-output-name", str(args.policy_action_output_name)])
+    if args.policy_state_input_names:
+        cmd.extend(["--policy-state-input-names", str(args.policy_state_input_names)])
+    if args.policy_state_output_names:
+        cmd.extend(["--policy-state-output-names", str(args.policy_state_output_names)])
     env = build_jax_env(args.jax_platform, args.jax_platforms)
     try:
         result = subprocess.run(
@@ -675,6 +697,10 @@ def build_markdown(payload: dict) -> str:
     lines.append(f"- policy_status: `{payload['policy'].get('status')}`")
     lines.append(f"- policy_input_shape: `{payload['policy'].get('input_shape')}`")
     lines.append(f"- policy_output_shape: `{payload['policy'].get('output_shape')}`")
+    if payload["policy"].get("inputs"):
+        lines.append(f"- policy_inputs: `{payload['policy'].get('inputs')}`")
+    if payload["policy"].get("outputs"):
+        lines.append(f"- policy_outputs: `{payload['policy'].get('outputs')}`")
     playground_static = payload["playground"].get("static", {})
     playground_instantiated = payload["playground"].get("instantiated", {})
     lines.append(f"- playground_static_path: `{playground_static.get('open_duck_dir')}`")
@@ -740,6 +766,8 @@ def build_markdown(payload: dict) -> str:
             lines.append(f"eval_role: `{closed_loop.get('eval_role')}`")
         if closed_loop.get("policy_action_gain") is not None:
             lines.append(f"policy_action_gain: `{closed_loop.get('policy_action_gain')}`")
+        if closed_loop.get("policy_io"):
+            lines.append(f"policy_io: `{closed_loop.get('policy_io')}`")
         env = closed_loop.get("env", {})
         insertion = closed_loop.get("insertion_point", {})
         lines.append(f"env: `{env.get('env_class')}` / task `{env.get('task')}`")
@@ -1044,6 +1072,39 @@ def main() -> int:
         help="query ONNX Runtime for model IO metadata; default uses audited contract",
     )
     parser.add_argument(
+        "--policy-obs-input-name",
+        default=None,
+        help=(
+            "Optional ONNX observation input name for stateful/recurrent eval. "
+            "Default uses the first input."
+        ),
+    )
+    parser.add_argument(
+        "--policy-action-output-name",
+        default=None,
+        help=(
+            "Optional ONNX action output name for stateful/recurrent eval. "
+            "Default uses the first output."
+        ),
+    )
+    parser.add_argument(
+        "--policy-state-input-names",
+        default=None,
+        help=(
+            "Comma-separated ONNX hidden-state input names. When set, "
+            "--policy-state-output-names must also be set. Hidden state is "
+            "initialized to zeros at rollout reset and carried tick to tick."
+        ),
+    )
+    parser.add_argument(
+        "--policy-state-output-names",
+        default=None,
+        help=(
+            "Comma-separated ONNX hidden-state output names matching "
+            "--policy-state-input-names by position."
+        ),
+    )
+    parser.add_argument(
         "--strict",
         action="store_true",
         help="return nonzero on HOLD status; default is report-only",
@@ -1254,6 +1315,14 @@ def main() -> int:
                             None if args.trace_jsonl is None else Path(args.trace_jsonl)
                         ),
                         trace_full_obs=args.trace_full_obs,
+                        policy_obs_input_name=args.policy_obs_input_name,
+                        policy_action_output_name=args.policy_action_output_name,
+                        policy_state_input_names=parse_name_list(
+                            args.policy_state_input_names
+                        ),
+                        policy_state_output_names=parse_name_list(
+                            args.policy_state_output_names
+                        ),
                     )
                 )
             if args._closed_loop_worker_json:
@@ -1300,6 +1369,8 @@ def main() -> int:
         "reward_overrides_json": args.reward_overrides_json,
         "reward_overrides_phase": args.reward_overrides_phase,
         "reward_overrides": reward_overrides,
+        "policy_state_input_names": list(parse_name_list(args.policy_state_input_names)),
+        "policy_state_output_names": list(parse_name_list(args.policy_state_output_names)),
         "telemetry_replay": telemetry_replay,
         "closed_loop_sim": closed_loop_sim,
     }

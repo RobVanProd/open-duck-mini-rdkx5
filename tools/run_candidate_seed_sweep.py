@@ -190,6 +190,14 @@ def run_one(
         command.extend(["--reward-overrides-json", str(Path(args.reward_overrides_json))])
     if args.reward_overrides_phase:
         command.extend(["--reward-overrides-phase", str(args.reward_overrides_phase)])
+    if args.policy_obs_input_name:
+        command.extend(["--policy-obs-input-name", str(args.policy_obs_input_name)])
+    if args.policy_action_output_name:
+        command.extend(["--policy-action-output-name", str(args.policy_action_output_name)])
+    if args.policy_state_input_names:
+        command.extend(["--policy-state-input-names", str(args.policy_state_input_names)])
+    if args.policy_state_output_names:
+        command.extend(["--policy-state-output-names", str(args.policy_state_output_names)])
     result: dict[str, Any] = {
         "policy": str(policy),
         "policy_label": label,
@@ -408,6 +416,26 @@ def main() -> int:
         default=None,
         help="Phase name to select from --reward-overrides-json.",
     )
+    parser.add_argument(
+        "--policy-obs-input-name",
+        default=None,
+        help="Optional ONNX observation input name for stateful/recurrent policies.",
+    )
+    parser.add_argument(
+        "--policy-action-output-name",
+        default=None,
+        help="Optional ONNX action output name for stateful/recurrent policies.",
+    )
+    parser.add_argument(
+        "--policy-state-input-names",
+        default=None,
+        help="Comma-separated ONNX hidden-state input names for recurrent policies.",
+    )
+    parser.add_argument(
+        "--policy-state-output-names",
+        default=None,
+        help="Comma-separated ONNX hidden-state output names for recurrent policies.",
+    )
     parser.add_argument("--sim-preflight-timeout-s", type=int, default=600)
     parser.add_argument("--closed-loop-timeout-s", type=int, default=1800)
     parser.add_argument("--output-dir", default="outputs/analysis/candidate_seed_sweep")
@@ -436,6 +464,10 @@ def main() -> int:
                     "bridge_mode": args.bridge_mode,
                     "reward_overrides_json": args.reward_overrides_json,
                     "reward_overrides_phase": args.reward_overrides_phase,
+                    "policy_obs_input_name": args.policy_obs_input_name,
+                    "policy_action_output_name": args.policy_action_output_name,
+                    "policy_state_input_names": args.policy_state_input_names,
+                    "policy_state_output_names": args.policy_state_output_names,
                     "jax_platform": args.jax_platform,
                     "run": args.run,
                     "trace_seeds": args.trace_seeds,
@@ -456,6 +488,10 @@ def main() -> int:
             "bridge_mode": args.bridge_mode,
             "reward_overrides_json": args.reward_overrides_json,
             "reward_overrides_phase": args.reward_overrides_phase,
+            "policy_obs_input_name": args.policy_obs_input_name,
+            "policy_action_output_name": args.policy_action_output_name,
+            "policy_state_input_names": args.policy_state_input_names,
+            "policy_state_output_names": args.policy_state_output_names,
             "jax_platform": args.jax_platform,
             "run": args.run,
             "trace_seeds": args.trace_seeds,

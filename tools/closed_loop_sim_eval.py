@@ -65,6 +65,10 @@ class ClosedLoopConfig:
     reward_overrides: Mapping[str, Any] | None = None
     trace_jsonl: Path | None = None
     trace_full_obs: bool = False
+    policy_obs_input_name: str | None = None
+    policy_action_output_name: str | None = None
+    policy_state_input_names: tuple[str, ...] = ()
+    policy_state_output_names: tuple[str, ...] = ()
 
 
 @contextlib.contextmanager
@@ -170,6 +174,74 @@ def policy_metadata(session, policy_path: Path) -> dict:
         "output_name": outputs[0].name if outputs else None,
         "output_shape": outputs[0].shape if outputs else None,
         "output_type": outputs[0].type if outputs else None,
+        "inputs": [
+            {"name": item.name, "shape": item.shape, "type": item.type}
+            for item in inputs
+        ],
+        "outputs": [
+            {"name": item.name, "shape": item.shape, "type": item.type}
+            for item in outputs
+        ],
+    }
+
+
+def _node_by_name(nodes: Sequence[Any], name: str):
+    for node in nodes:
+        if node.name == name:
+            return node
+    raise ValueError(f"ONNX IO name not found: {name}")
+
+
+def _shape_to_zeros(shape: Sequence[Any]) -> np.ndarray:
+    dims: list[int] = []
+    for index, dim in enumerate(shape):
+        if isinstance(dim, int) and dim > 0:
+            dims.append(dim)
+        elif index == 0:
+            dims.append(1)
+        else:
+            raise ValueError(f"dynamic or unknown non-batch hidden dimension: {shape}")
+    return np.zeros(tuple(dims), dtype=np.float32)
+
+
+def init_policy_io_state(session, config: ClosedLoopConfig) -> dict:
+    inputs = session.get_inputs()
+    outputs = session.get_outputs()
+    input_names = [item.name for item in inputs]
+    output_names = [item.name for item in outputs]
+    obs_input_name = config.policy_obs_input_name or (input_names[0] if input_names else None)
+    action_output_name = config.policy_action_output_name or (
+        output_names[0] if output_names else None
+    )
+    if not obs_input_name or not action_output_name:
+        raise ValueError("policy IO metadata missing")
+    if obs_input_name not in input_names:
+        raise ValueError(f"obs input {obs_input_name!r} not in ONNX inputs {input_names}")
+    if action_output_name not in output_names:
+        raise ValueError(
+            f"action output {action_output_name!r} not in ONNX outputs {output_names}"
+        )
+    if bool(config.policy_state_input_names) != bool(config.policy_state_output_names):
+        raise ValueError("state input and output names must both be set or both be empty")
+    if len(config.policy_state_input_names) != len(config.policy_state_output_names):
+        raise ValueError("state input/output name counts differ")
+
+    hidden_state: dict[str, np.ndarray] = {}
+    hidden_shapes: dict[str, list[Any]] = {}
+    for name in config.policy_state_input_names:
+        node = _node_by_name(inputs, name)
+        hidden_state[name] = _shape_to_zeros(node.shape)
+        hidden_shapes[name] = list(node.shape)
+    for name in config.policy_state_output_names:
+        _node_by_name(outputs, name)
+
+    return {
+        "obs_input_name": obs_input_name,
+        "action_output_name": action_output_name,
+        "state_input_names": list(config.policy_state_input_names),
+        "state_output_names": list(config.policy_state_output_names),
+        "state_input_shapes": hidden_shapes,
+        "hidden_state": hidden_state,
     }
 
 
@@ -683,10 +755,14 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             "error": f"ONNX Runtime session failed: {type(exc).__name__}: {exc}",
         }
     policy = policy_metadata(session, config.policy_path)
-    input_name = policy["input_name"]
-    output_name = policy["output_name"]
-    if not input_name or not output_name:
-        return {"status": "HOLD_SIM_RUNTIME_ERROR", "error": "policy IO metadata missing"}
+    try:
+        policy_io = init_policy_io_state(session, config)
+    except ValueError as exc:
+        return {"status": "HOLD_POLICY_IO_CONTRACT", "error": str(exc), "policy": policy}
+    input_name = policy_io["obs_input_name"]
+    output_name = policy_io["action_output_name"]
+    state_input_names = tuple(policy_io["state_input_names"])
+    state_output_names = tuple(policy_io["state_output_names"])
 
     if int(env.action_size) != config.expected_action_dim:
         return {
@@ -933,6 +1009,10 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
         initial_target = np.asarray(jax.device_get(state.info["motor_targets"]), dtype=float)
         bridge = ActuatorBridgeModel(params, initial_target=initial_target)
         termination_reason = None
+        hidden_state = {
+            name: value.copy()
+            for name, value in policy_io["hidden_state"].items()
+        }
 
         for tick in range(sim_steps):
             obs = np.asarray(jax.device_get(state.obs["state"]), dtype=np.float32)
@@ -941,7 +1021,13 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                     "status": "HOLD_POLICY_SIM_CONTRACT_MISMATCH",
                     "error": f"obs shape {obs.shape} != {(config.expected_observation_dim,)}",
                 }
-            action = session.run([output_name], {input_name: obs[None, :]})[0][0]
+            feed = {input_name: obs[None, :]}
+            for state_name in state_input_names:
+                feed[state_name] = hidden_state[state_name]
+            outputs = session.run([output_name, *state_output_names], feed)
+            action = outputs[0][0]
+            for state_name, value in zip(state_input_names, outputs[1:], strict=True):
+                hidden_state[state_name] = np.asarray(value, dtype=np.float32)
             action = np.asarray(action, dtype=np.float32)
             if action.shape != (config.expected_action_dim,):
                 return {
@@ -1129,6 +1215,13 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             },
             "joints": joints,
             "pitch_chain_summary": pitch_chain_summary(joints),
+            "policy_io": {
+                "obs_input_name": input_name,
+                "action_output_name": output_name,
+                "state_input_names": list(state_input_names),
+                "state_output_names": list(state_output_names),
+                "stateful": bool(state_input_names),
+            },
         }
 
     candidate_gate = None
@@ -1142,6 +1235,14 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
         "eval_role": config.eval_role,
         "candidate_gate": candidate_gate,
         "policy": policy,
+        "policy_io": {
+            "obs_input_name": input_name,
+            "action_output_name": output_name,
+            "state_input_names": list(state_input_names),
+            "state_output_names": list(state_output_names),
+            "state_input_shapes": policy_io["state_input_shapes"],
+            "stateful": bool(state_input_names),
+        },
         "policy_action_gain": float(config.policy_action_gain),
         "command": [
             float(config.command_x),

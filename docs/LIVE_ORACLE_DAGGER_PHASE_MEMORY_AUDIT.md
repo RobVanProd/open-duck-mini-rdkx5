@@ -95,3 +95,21 @@ next: run_live_oracle_dagger_iteration.py
 ```
 
 Do not produce or promote a 404-input frame-stack ONNX as a robot candidate.
+
+## Recurrent Eval Follow-Up
+
+After the deployable static phase/memory variants held at the x=0.08 tracking
+plateau, the evaluator was extended with explicit stateful ONNX support for
+offline diagnostics:
+
+```text
+docs/RECURRENT_POLICY_EVAL_CONTRACT.md
+outputs/analysis/LIVE_ORACLE_RECURRENT_EVAL_READINESS.md
+```
+
+This does not change the deployed runtime contract. A recurrent candidate with
+hidden-state inputs/outputs is an offline sim diagnostic until either:
+
+- it is distilled back into the fixed `obs[1,101] -> actions[1,14]` contract, or
+- a separate RDK-X5 runtime hidden-state adapter is designed, implemented, and
+  verified.
