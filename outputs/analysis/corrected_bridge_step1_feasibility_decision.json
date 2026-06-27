@@ -1,0 +1,41 @@
+{
+  "status": "HOLD_OLD_TEACHER_SOURCE_NOT_CORRECTED_BRIDGE_FEASIBLE",
+  "robot_tests_run": false,
+  "ssh_used": false,
+  "training_run": false,
+  "runtime_behavior_changed": false,
+  "fit_json": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+  "reroll": {
+    "policy": "policy/BEST_WALK_ONNX_2.onnx",
+    "command_x": 0.08,
+    "task": "flat_terrain_backlash",
+    "bridge_mode": "fitted",
+    "duration_s": 15,
+    "seeds": "0-7",
+    "artifact_md": "outputs/analysis/CORRECTED_BRIDGE_BEST_WALK_REROLL_X008.md",
+    "artifact_json": "outputs/analysis/corrected_bridge_best_walk_reroll_x008.json",
+    "pass_count": 0,
+    "duration_complete_count": 7,
+    "fall_count": 1,
+    "max_pitch_vel_p95_mean_rad_s": 5.1147,
+    "max_velocity_excess_mean_rad_s": 2.4227,
+    "max_tracking_p95_mean_rad": 0.2661
+  },
+  "window_mine": {
+    "artifact_md": "outputs/analysis/CORRECTED_BRIDGE_TEACHER_WINDOWS_X008.md",
+    "artifact_json": "outputs/analysis/corrected_bridge_teacher_windows_x008.json",
+    "windows_checked": 1030,
+    "pass_windows": 1,
+    "pass_left_stance_windows": 0,
+    "pass_right_stance_windows": 0,
+    "top_rejection_reason": "over_corrected_envelope",
+    "over_corrected_envelope_windows": 1029
+  },
+  "hypothesis_result": {
+    "knee_asymmetry_removed": true,
+    "balanced_teacher_windows_recovered": false,
+    "right_knee_cap_relabel_hack_dropped": false,
+    "interpretation": "Corrected bridge removes the old asymmetry confound, but the old BEST_WALK teacher source remains dominated by corrected per-joint envelope violations."
+  },
+  "next": "Do not use old-bridge teacher data/selectors as current evidence. Rebuild any teacher/student source under the corrected bridge or train directly against the corrected per-joint gate."
+}

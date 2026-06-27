@@ -148,6 +148,22 @@ Re-establish feasibility against the corrected bridge:
 Do not proceed to deployable-student work until this corrected-bridge
 feasibility gate is explicitly reported.
 
+Step 1 result:
+
+```text
+status: HOLD_OLD_TEACHER_SOURCE_NOT_CORRECTED_BRIDGE_FEASIBLE
+reroll artifact: outputs/analysis/CORRECTED_BRIDGE_BEST_WALK_REROLL_X008.md
+window artifact: outputs/analysis/CORRECTED_BRIDGE_TEACHER_WINDOWS_X008.md
+decision artifact: outputs/analysis/CORRECTED_BRIDGE_STEP1_FEASIBILITY_DECISION.md
+```
+
+The corrected bridge reroll found `0/8` candidate passes for
+`BEST_WALK_ONNX_2` at `x=0.08`. Window mining found only `1/1030` corrected
+in-envelope short windows, and that window was double-support-centered rather
+than a balanced left/right stance source. The old source-VX teacher data and
+old right-knee relabel hack must be treated as historical diagnostics, not as
+the current deployable-policy path.
+
 ## Falsifiers
 
 Stop the branch and write a decision artifact if:

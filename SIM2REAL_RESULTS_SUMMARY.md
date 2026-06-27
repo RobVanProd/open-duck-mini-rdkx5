@@ -7711,3 +7711,32 @@ canonical.
 Current objective: produce a deployable policy that walks forward 8/8 seeds
 in-envelope against this corrected bridge before any first grounded hardware
 test.
+
+Corrected-bridge Step 1 rerolled `BEST_WALK_ONNX_2` at `x=0.08` through the
+canonical corrected bridge in `flat_terrain_backlash`:
+
+```text
+artifact: outputs/analysis/CORRECTED_BRIDGE_BEST_WALK_REROLL_X008.md
+pass: 0/8
+duration_complete: 7/8
+falls: 1/8
+max corrected per-joint velocity excess mean: 2.4227 rad/s
+max tracking p95 mean: 0.2661 rad
+```
+
+Corrected-window mining then checked 1030 short windows:
+
+```text
+artifact: outputs/analysis/CORRECTED_BRIDGE_TEACHER_WINDOWS_X008.md
+pass_windows: 1
+pass_left_stance_windows: 0
+pass_right_stance_windows: 0
+top rejection reason: over_corrected_envelope, 1029/1030 windows
+```
+
+Decision: the old asymmetric-bridge teacher data and source-VX selectors are
+not current evidence. The knee correction removed the asymmetry confound, but
+it did not recover a balanced corrected-bridge teacher source from
+`BEST_WALK_ONNX_2`. Future deployable-policy work must rebuild any teacher
+source under the corrected bridge or train directly against the corrected
+per-joint gate.

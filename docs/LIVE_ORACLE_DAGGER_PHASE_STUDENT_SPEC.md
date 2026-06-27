@@ -1,6 +1,6 @@
 # Live-Oracle DAgger Phase Student Spec
 
-Status: `PRE_REGISTERED_NOT_STARTED_REANCHOR_ON_CORRECTED_BRIDGE`
+Status: `BLOCKED_PENDING_CORRECTED_BRIDGE_SOURCE_REBUILD`
 
 Branch ID: `LIVE_ORACLE_DAGGER_PHASE_STUDENT`
 
@@ -11,11 +11,11 @@ policy overwrite, or runtime behavior change is in scope for this branch.
 
 ## Objective
 
-Distill the working source-VX selector into a deployable policy that clears the
-strict corrected fitted-bridge tracking gate by:
+Distill a corrected-bridge source selector into a deployable policy that clears
+the strict corrected fitted-bridge tracking gate by:
 
-- querying the selector as a live oracle on the student's own visited states at
-  every iteration
+- querying the corrected selector as a live oracle on the student's own visited
+  states at every iteration
 - adding enough state/phase memory for the student to represent the
   stance-transition action that memoryless students have failed to reproduce
 
@@ -26,6 +26,10 @@ strict corrected fitted-bridge tracking gate by:
 - After the left-knee correction, the old bridge is deprecated. Future branch
   results must re-anchor on
   `outputs/analysis/actuator_response_fit_corrected_knee.json`.
+- Corrected-bridge Step 1 found that the old `BEST_WALK_ONNX_2` source mostly
+  violates the corrected per-joint envelope. Only `1/1030` mined short windows
+  passed, and it was double-support-centered. The old source-VX selector is
+  therefore historical evidence, not a valid live oracle for this branch.
 - Prior memoryless distillations, static DAgger passes, kNN/linear/blend
   students, and feed-forward PPO-shape students held at the same tracking
   plateau or froze.
@@ -67,7 +71,13 @@ PASS_EVALUATOR_CANONICAL
 ```
 
 No live-oracle DAgger iteration may be interpreted as a branch result until
-Step 0 passes.
+Step 0 passes and a corrected-bridge source/oracle has been rebuilt.
+
+Corrected Step 1 artifact:
+
+```text
+outputs/analysis/CORRECTED_BRIDGE_STEP1_FEASIBILITY_DECISION.md
+```
 
 ## Hypotheses
 
