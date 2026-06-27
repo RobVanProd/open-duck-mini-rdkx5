@@ -6811,6 +6811,45 @@ The next branch should move beyond small scalar PPO adjustments and either
 expand the on-policy selector dataset or add targeted closed-loop recovery for
 the early failing seeds.
 
+Trace-level comparison then isolated what the behavior-prior smoke changed:
+
+```text
+decision: outputs/analysis/BEHAVIOR_PRESERVING_RECOVERY_TRACE_DIVERGENCE_DECISION.md
+status: HOLD_SMALL_PPO_REWARD_PRIOR_LOOP
+seed 3: early reverse/pitch collapse, local_vx diverges by 0.30 s
+seeds 1/7: double-support standstill, ~98% double support vs ~65-67% baseline
+```
+
+This confirms the failure is not a late actuator-envelope event. The tiny PPO
+updates are changing the closed-loop gait selection within the first second:
+either reverse/pitch collapse or double-support freezing. The next branch should
+build targeted recovery data around seeds 1, 3, and 7, and reject any candidate
+that improves tracking by reducing x=0.08 velocity or single-support time.
+
+The first targeted recovery-prior pass then built a supervised PPO-compatible
+student from the warm-start baseline's successful hard-seed x=0.08 traces:
+
+```text
+decision: outputs/analysis/BASELINE_HARD_SEED_RECOVERY_PRIOR_DECISION.md
+status: PASS_DIAGNOSTIC_PRIOR_HOLD_DIRECT_POLICY
+dataset: seeds 1, 3, 7; command_x=0.08; 2250 samples
+fit: p95 action error 0.014711, target-rate p95 1.716564 rad/s
+```
+
+Closed-loop canonical backlash gates showed this data source is useful but not
+directly deployable:
+
+```text
+x=0.08 hard seeds 1/3/7: 3/3 complete, no falls, mean vx 0.0314
+x=0.08 full seeds 0-7: 8/8 complete, no falls, mean vx 0.0243
+x=0.0 full seeds 0-7: 8/8 complete, no falls, mean vx 0.0244
+```
+
+The x=0.0 forward drift is the key hold. The labels are a useful recovery-prior
+data point, but the direct student is not command-conditioned enough to be a
+candidate policy. The next dataset should combine stable x=0.0 standstill
+traces, hard-seed x=0.08 recovery traces, and broader x=0.08 moving traces.
+
 ## Physical Start-Pose Calibration Check
 
 The real robot home/start pose has been checked against both telemetry and a

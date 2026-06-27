@@ -5490,3 +5490,56 @@ Do not scale this exact behavior-prior recipe to A100. The next branch should
 move beyond small scalar PPO adjustments and either expand the on-policy
 selector dataset or add targeted closed-loop recovery for the early failing
 seeds.
+
+Trace divergence decision:
+
+```text
+decision: outputs/analysis/BEHAVIOR_PRESERVING_RECOVERY_TRACE_DIVERGENCE_DECISION.md
+status: HOLD_SMALL_PPO_REWARD_PRIOR_LOOP
+```
+
+The behavior-prior smoke changes the closed-loop gait early:
+
+```text
+seed 3:
+  baseline completes
+  behavior-prior smoke reverses and falls at 74 samples
+  local_vx diverges by tick 15 / 0.30 s
+  body pitch diverges by tick 23 / 0.46 s
+
+seeds 1 and 7:
+  baseline keeps ~33% single support and vx around 0.033-0.037 m/s
+  behavior-prior smoke stays in ~98% double support and produces near-zero vx
+```
+
+Next branch should be targeted closed-loop recovery data around seeds 1, 3, and
+7. Reject candidates that improve tracking/posture by reducing x=0.08 velocity
+or single-support fraction.
+
+First targeted recovery-prior result:
+
+```text
+decision: outputs/analysis/BASELINE_HARD_SEED_RECOVERY_PRIOR_DECISION.md
+status: PASS_DIAGNOSTIC_PRIOR_HOLD_DIRECT_POLICY
+```
+
+The hard-seed recovery labels are learnable and useful, but the direct student
+is not deployable:
+
+```text
+BC dataset:
+  seeds: 1, 3, 7
+  command_x: 0.08
+  samples: 2250
+  p95 action error: 0.014711
+  target-rate p95: 1.716564 rad/s
+
+canonical fitted bridge gates:
+  x=0.08 seeds 1/3/7: 3/3 complete, no falls, mean vx 0.0314
+  x=0.08 seeds 0-7: 8/8 complete, no falls, mean vx 0.0243
+  x=0.0 seeds 0-7: 8/8 complete, no falls, mean vx 0.0244
+```
+
+The x=0.0 forward drift holds the direct policy. Next data branch should combine
+stable x=0.0 standstill labels, these hard-seed recovery labels, and broader
+x=0.08 moving labels before another command-conditioned student or PPO prior.
