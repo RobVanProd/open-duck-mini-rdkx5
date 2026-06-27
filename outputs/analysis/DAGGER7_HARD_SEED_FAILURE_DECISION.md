@@ -69,6 +69,14 @@ seed 7:
   collect or fit a more precise right-support recovery mapping
 ```
 
+Joint-level follow-up:
+
+```text
+artifact: outputs/analysis/DAGGER7_HARD_SEED_JOINT_ACTION_GAPS.md
+seed 1 largest gap: right_knee p95 0.2234
+seed 7 largest gaps: right_hip_pitch p95 0.1987, right_knee p95 0.1899
+```
+
 The next deployable-policy attempt should either:
 
 1. add an explicit lateral-stability / base-height recovery term during
