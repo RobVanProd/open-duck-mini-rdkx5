@@ -5796,3 +5796,15 @@ status: HOLD_REJECT_CANDIDATE_CHECKPOINT
 x=0.0: HOLD_CANDIDATE_ACTION_SATURATION
 x=0.08: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
 ```
+
+Behavior-prior restore plumbing also passed a tiny CPU smoke:
+
+```text
+decision: outputs/analysis/PPO_BEHAVIOR_PRIOR_PLUMBING_TINY_CPU.md
+status: PASS_BEHAVIOR_PRIOR_RESTORE_PLUMBING
+restore: outputs/analysis/ppo_bc_command_conditioned_dagger_seed5_x0_step0_checkpoint
+prior: outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_candidate/candidate_mlp.npz
+```
+
+This enables the next GPU experiment to test a trust-region-style
+behavior-prior term instead of repeating the PPO-only recipe.
