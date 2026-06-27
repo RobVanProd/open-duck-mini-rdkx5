@@ -588,6 +588,8 @@ def build_remote_driver(
     checkpoint_sweep_commands = cli_value(args.checkpoint_sweep_commands)
     checkpoint_sweep_duration = cli_value(args.checkpoint_sweep_duration)
     checkpoint_sweep_bridge_mode = args.checkpoint_sweep_bridge_mode
+    candidate_checkpoint_sweep_commands = cli_value(args.candidate_checkpoint_sweep_commands)
+    candidate_checkpoint_sweep_duration = cli_value(args.candidate_checkpoint_sweep_duration)
     candidate_disable_bridge_arg = (
         '"--disable-actuator-bridge",' if args.candidate_disable_actuator_bridge else ""
     )
@@ -972,6 +974,69 @@ def build_remote_driver(
                 "/content/open_duck_training_runs_cli",
                 OUT / "open_duck_training_runs_cli",
             )
+            if {args.candidate_checkpoint_sweep!r}:
+                sweep_dir = OUT / f"{{candidate_name}}_checkpoint_sweep"
+                sweep_cmd = [
+                    PYTHON, "tools/sweep_candidate_checkpoints.py",
+                    "--policies", *[str(path) for path in onnx_files],
+                    "--fit-json", "outputs/analysis/actuator_response_fit.json",
+                    "--playground-path", str(PLAYGROUND),
+                    "--env-python", PYTHON,
+                    "--commands", "{candidate_checkpoint_sweep_commands}",
+                    "--duration", "{candidate_checkpoint_sweep_duration}",
+                    "--bridge-mode", "fitted",
+                    "--mode-name", "fitted",
+                    "--jax-platform", "gpu",
+                    "--sim-preflight-timeout-s", "600",
+                    "--closed-loop-timeout-s", "1800",
+                    "--output-dir", str(sweep_dir),
+                    "--run",
+                ]
+                run(sweep_cmd, cwd=RDK, timeout={args.candidate_checkpoint_sweep_timeout_s})
+                sweep_json = sweep_dir / "candidate_checkpoint_sweep.json"
+                if sweep_json.exists():
+                    sweep_payload = json.loads(sweep_json.read_text())
+                    decisions = sweep_payload.get("promotion_decisions") or []
+                    promoted = [item for item in decisions if item.get("promote")]
+                    selected = promoted[0] if promoted else (decisions[0] if decisions else None)
+                    if selected:
+                        selected_policy = Path(selected.get("policy") or "")
+                        selected_status = selected.get("status")
+                        selected_reason = (
+                            "promoted_by_checkpoint_sweep"
+                            if selected.get("promote")
+                            else "best_available_but_not_promoted"
+                        )
+                        if selected_policy.exists():
+                            latest_onnx = selected_policy
+                            (OUT / f"{{candidate_name}}_selected_checkpoint.json").write_text(
+                                json.dumps(
+                                    {{
+                                        "selected_policy": str(selected_policy),
+                                        "selection_reason": selected_reason,
+                                        "selection_status": selected_status,
+                                        "promotion_decision": selected,
+                                        "sweep_json": str(sweep_json),
+                                    }},
+                                    indent=2,
+                                )
+                                + "\\n"
+                            )
+                            print(
+                                "CANDIDATE_SELECTED_CHECKPOINT",
+                                selected_reason,
+                                selected_status,
+                                selected_policy,
+                                flush=True,
+                            )
+                        else:
+                            print(
+                                "candidate_checkpoint_sweep_selected_missing",
+                                selected_policy,
+                                flush=True,
+                            )
+                else:
+                    print("candidate_checkpoint_sweep_json_missing", sweep_json, flush=True)
             bundle_artifacts()
 
         elif {run_staged_curriculum!r}:
@@ -1563,6 +1628,37 @@ def main() -> int:
             "latest preserves one continuation point per training run without "
             "copying every intermediate checkpoint."
         ),
+    )
+    parser.add_argument(
+        "--candidate-checkpoint-sweep",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help=(
+            "After candidate training, sweep every exported ONNX through a "
+            "compact x=0/x=0.08 fitted-bridge gate and use a promoted "
+            "checkpoint for final gates when one exists. This prevents "
+            "reward-only latest-checkpoint selection."
+        ),
+    )
+    parser.add_argument(
+        "--candidate-checkpoint-sweep-commands",
+        default="0.0,0.08",
+        help="Commands for the post-training compact checkpoint sweep.",
+    )
+    parser.add_argument(
+        "--candidate-checkpoint-sweep-duration",
+        type=float,
+        default=1.0,
+        help=(
+            "Duration in seconds for each compact checkpoint-sweep rollout. "
+            "Final candidate gates still run the normal longer duration."
+        ),
+    )
+    parser.add_argument(
+        "--candidate-checkpoint-sweep-timeout-s",
+        type=int,
+        default=7200,
+        help="Remote timeout for the post-training checkpoint sweep.",
     )
     parser.add_argument("--candidate-timeout-s", type=int, default=10800)
     parser.add_argument("--candidate-target-rate-scale", type=float, default=-0.001)

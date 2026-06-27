@@ -3250,3 +3250,29 @@ walker. It trades some falls for the old low-progress/freeze basin. The next
 PPO attempt, if pursued, needs a stronger continuity/progress design and a full
 8-seed fitted-bridge gate. Do not treat the step-1040 checkpoint as a robot
 candidate.
+
+## Gate-Aligned Colab Checkpoint Selection
+
+The later A100 PPO warm-start and behavior-prior fine-tunes showed the same
+structural problem at larger scale: reward increased while the gate behavior
+regressed. The Colab workflow now has a post-training compact checkpoint sweep
+so the latest reward checkpoint is no longer treated as automatically best:
+
+```text
+artifact: outputs/analysis/COLAB_CANDIDATE_CHECKPOINT_SWEEP_SELECTION.md
+status: PASS_GATE_ALIGNED_SELECTION_PLUMBING_READY
+workflow: tools/run_colab_cli_cuda_workflow.py
+sweep tool: tools/sweep_candidate_checkpoints.py
+default commands: 0.0,0.08
+default duration: 1.0 s
+default bridge: fitted
+```
+
+After candidate training exports ONNX checkpoints, the workflow can sweep all
+exports through compact fitted-bridge x=0.0/x=0.08 gates. If one receives
+`PASS_PROMOTE_CANDIDATE_CHECKPOINT`, that checkpoint is selected for the normal
+final gates. If none promote, the best available checkpoint is documented but
+not treated as a robot candidate.
+
+This does not solve the deployable-policy problem by itself. It prevents the
+next GPU run from repeating a known selection mistake.

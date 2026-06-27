@@ -7150,3 +7150,26 @@ make PPO fine-tuning preserve the DAgger candidate. The next learning change
 should not be another scalar PPO recipe. It should use gate-aligned selection,
 explicit saturation constraints, or DAgger/rollout correction before more GPU
 training.
+
+## Colab Candidate Checkpoint Sweep Selection
+
+The Colab CUDA workflow now supports gate-aligned checkpoint selection after a
+candidate PPO run:
+
+```text
+artifact: outputs/analysis/COLAB_CANDIDATE_CHECKPOINT_SWEEP_SELECTION.md
+status: PASS_GATE_ALIGNED_SELECTION_PLUMBING_READY
+default compact sweep: x=0.0 and x=0.08, fitted bridge, 1.0 s
+```
+
+This addresses the failure pattern seen in the PPO-only and behavior-prior
+A100 runs: training reward increased, but the exported/latest ONNX regressed
+the actual candidate gates. After training, the workflow can now run
+`tools/sweep_candidate_checkpoints.py` over every exported ONNX checkpoint,
+select a checkpoint with `PASS_PROMOTE_CANDIDATE_CHECKPOINT` when one exists,
+and run the normal final x=0.0/x=0.08 gates on that selected checkpoint instead
+of blindly gating the latest reward checkpoint.
+
+This is infrastructure only. It does not make any existing PPO checkpoint a
+robot candidate, and it does not authorize robot motion. Robot validation
+remains blocked until an offline candidate passes the standard gates.
