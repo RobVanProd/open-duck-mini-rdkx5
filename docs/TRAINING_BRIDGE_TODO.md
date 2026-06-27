@@ -5593,3 +5593,27 @@ first body_pitch divergence: tick 20 / 0.40 s
 
 Next corrective-data branch should target this early x=0 reverse/pitch-collapse
 mode rather than adding more generic x=0.08 walking labels.
+
+Seed-5 failure mode diagnosis:
+
+```text
+artifact: outputs/analysis/COMMAND_CONDITIONED_HARD_SEED_RECOVERY_SEED5_X0_FAILURE_ANALYSIS.md
+status: HOLD_SEED_FAILURE_CLOSED_LOOP_INSTABILITY
+nearest manifest distance p95: 1.8015
+nearest action L1 p95: 0.0820
+target velocity p95: 0.7501 rad/s
+joint tracking p95: 0.0803 rad
+```
+
+Passing x=0 comparison traces:
+
+```text
+artifact: outputs/analysis/COMMAND_CONDITIONED_HARD_SEED_RECOVERY_X0_PASS_TRACE_GATE.md
+seed 0: PASS, body_pitch_p95 0.0239, tracking_p95 0.0754
+seed 3: PASS, body_pitch_p95 0.0331, tracking_p95 0.0724
+```
+
+The failure is therefore not a broad actuator-envelope miss, missing-neighbor
+problem, or large one-step BC error. The next branch should keep seed 5 in
+quiet zero-command support during the first 1-2 seconds while preserving the
+surviving x=0.08 command-conditioned behavior.

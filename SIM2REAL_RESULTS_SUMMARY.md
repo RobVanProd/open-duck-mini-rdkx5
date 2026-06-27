@@ -6885,6 +6885,29 @@ This makes the next offline target narrower: fix the early x=0 seed-5
 reverse/pitch-collapse behavior without weakening the x=0.08 branch that now
 survives all eight seeds.
 
+Follow-up seed-5 analysis against the current manifest and BC model classified
+the failure as closed-loop instability, not simple missing coverage:
+
+```text
+artifact: outputs/analysis/COMMAND_CONDITIONED_HARD_SEED_RECOVERY_SEED5_X0_FAILURE_ANALYSIS.md
+status: HOLD_SEED_FAILURE_CLOSED_LOOP_INSTABILITY
+nearest manifest distance p95: 1.8015
+nearest action L1 p95: 0.0820
+```
+
+Passing x=0 seed traces were then captured for seeds 0 and 3:
+
+```text
+artifact: outputs/analysis/COMMAND_CONDITIONED_HARD_SEED_RECOVERY_X0_PASS_TRACE_GATE.md
+seed 0: PASS, body_pitch_p95 0.0239, tracking_p95 0.0754
+seed 3: PASS, body_pitch_p95 0.0331, tracking_p95 0.0724
+```
+
+Compared with passing x=0 seeds, seed 5 diverges from the first samples and
+spends less time in quiet double support before reverse/pitch collapse. The
+next corrective branch should stabilize this zero-command hard seed locally,
+not globally damp the policy or add more generic x=0.08 motion labels.
+
 ## Physical Start-Pose Calibration Check
 
 The real robot home/start pose has been checked against both telemetry and a

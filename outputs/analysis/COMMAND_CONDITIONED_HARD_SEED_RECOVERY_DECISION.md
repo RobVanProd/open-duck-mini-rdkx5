@@ -149,6 +149,58 @@ same seed under `x=0.08` selects a survivable forward-moving behavior. The next
 offline fix should add targeted `x=0.0` seed-5 corrective labels or relabeling
 without weakening the `x=0.08` recovery behavior.
 
+## Seed-5 Failure Mode Analysis
+
+Artifacts:
+
+```text
+outputs/analysis/COMMAND_CONDITIONED_HARD_SEED_RECOVERY_SEED5_X0_FAILURE_ANALYSIS.md
+outputs/analysis/COMMAND_CONDITIONED_HARD_SEED_RECOVERY_X0_PASS_TRACE_GATE.md
+outputs/analysis/COMMAND_CONDITIONED_HARD_SEED_RECOVERY_SEED5_X0_VS_SEED0_X0_TRACE_COMPARE.md
+outputs/analysis/COMMAND_CONDITIONED_HARD_SEED_RECOVERY_SEED5_X0_VS_SEED3_X0_TRACE_COMPARE.md
+```
+
+The seed-5 failure was analyzed against the current manifest and BC model:
+
+```text
+status: HOLD_SEED_FAILURE_CLOSED_LOOP_INSTABILITY
+nearest manifest distance p95: 1.8015
+nearest action L1 p95: 0.0820
+target velocity p95: 0.7501 rad/s
+joint tracking p95: 0.0803 rad
+```
+
+This is not a simple out-of-distribution trace or large supervised action-fit
+miss. The trace has nearby manifest support and modest nearest-action gap, but
+the closed-loop rollout still enters reverse motion and pitch collapse.
+
+Passing x=0 comparison traces:
+
+```text
+seed 0: PASS, 10 s, vx_mean 0.0003, body_pitch_p95 0.0239, tracking_p95 0.0754
+seed 3: PASS, 10 s, vx_mean -0.0056, body_pitch_p95 0.0331, tracking_p95 0.0724
+```
+
+Compared with passing x=0 seeds, failing seed 5:
+
+```text
+uses less quiet double support:
+  seed 5 fail: 79.45%
+  seed 0 pass: 98.40%
+  seed 3 pass: 98.80%
+
+has much larger pitch and reverse velocity:
+  seed 5 vx_mean: -0.2176
+  seed 5 abs_pitch_p95: 1.2413
+  seed 5 base_height_min: 0.0464
+```
+
+The divergence from passing seeds appears at or near the initial samples in
+velocity, lateral motion, and pitch. That makes the next corrective branch a
+zero-command hard-seed stabilization problem: keep seed 5 in quiet support at
+`x=0.0` without globally scaling down the action path that preserves `x=0.08`
+motion.
+
 ## Decision
 
 Do not promote this ONNX to robot validation or longer gates.
