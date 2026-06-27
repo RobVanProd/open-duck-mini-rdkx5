@@ -5417,11 +5417,14 @@ Tiny CPU smoke result:
 
 ```text
 decision: outputs/analysis/SUPPORT_TRANSITION_RECOVERY_FINETUNE_SMOKE_RESULT.md
-status: HOLD_X0_HARD_SEED_REGRESSION
+status: HOLD_X0_HARD_SEED_FAILURE_NOT_FIXED
 x=0.0 fitted bridge: falls on seeds 1 and 7
+baseline control: outputs/analysis/CMD_PITCH_RL_2P25_STEP0_FLAT_X0_FITTED_15S.md
 ```
 
-The restore/export path passed, but this support-transition reward mix regressed
-hard-seed zero-command stability. Do not scale this exact recipe to A100 and do
-not run its x=0.08 gate. The next PPO attempt must preserve x=0.0 hard-seed
-stability before adding support-transition pressure.
+The restore/export path passed. The stricter `flat_terrain`, 15-second x=0 gate
+also fails on the original step-0 warm start with the same hard seeds, so this
+is not a new failure introduced by the smoke. The smoke also did not fix it. Do
+not scale this exact recipe to A100 and do not run its x=0.08 gate. The next PPO
+attempt must either fix the x=0 hard-seed flat-terrain failure first or
+explicitly choose a different canonical zero-command gate.

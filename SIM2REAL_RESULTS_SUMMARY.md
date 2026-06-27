@@ -6416,15 +6416,17 @@ The tiny CPU smoke was then run:
 
 ```text
 decision: outputs/analysis/SUPPORT_TRANSITION_RECOVERY_FINETUNE_SMOKE_RESULT.md
-status: HOLD_X0_HARD_SEED_REGRESSION
+status: HOLD_X0_HARD_SEED_FAILURE_NOT_FIXED
 training: PASS_SMOKE_RUN, step 1040, reward 38.2625
 x=0.0 fitted bridge: falls on seeds 1 and 7
+baseline control: outputs/analysis/CMD_PITCH_RL_2P25_STEP0_FLAT_X0_FITTED_15S.md
 ```
 
-This validates restore/export plumbing but rejects the reward mix. The support
-transition terms were strong enough to break zero-command hard-seed stability,
-so this exact recipe should not be scaled to A100 and should not receive an
-x=0.08 gate.
+This validates restore/export plumbing but rejects the reward mix. The original
+step-0 warm start also fails the same stricter `flat_terrain`, 15-second x=0
+gate on seeds 1 and 7, so the smoke did not create a new failure; it also did
+not fix the exposed hard-seed failure. Do not scale this exact recipe to A100
+and do not run its x=0.08 gate.
 
 The existing source-VX DAgger-2 deployable ONNX candidates were then validated
 under a stricter 15-second fitted-bridge x=0.08 seed sweep:

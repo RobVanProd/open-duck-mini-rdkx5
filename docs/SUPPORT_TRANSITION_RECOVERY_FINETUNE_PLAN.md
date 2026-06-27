@@ -121,7 +121,8 @@ The reviewed tiny CPU smoke was run after this plan was created:
 decision: outputs/analysis/SUPPORT_TRANSITION_RECOVERY_FINETUNE_SMOKE_RESULT.md
 final manifest: outputs/analysis/support_transition_recovery_finetune/final_manifest.json
 x=0.0 gate: outputs/analysis/SUPPORT_TRANSITION_RECOVERY_FINETUNE_X0_FITTED_15S.md
-status: HOLD_X0_HARD_SEED_REGRESSION
+baseline control: outputs/analysis/CMD_PITCH_RL_2P25_STEP0_FLAT_X0_FITTED_15S.md
+status: HOLD_X0_HARD_SEED_FAILURE_NOT_FIXED
 ```
 
 The restore/export path worked, but the first required gate failed:
@@ -132,8 +133,11 @@ falls: seeds 1 and 7
 duration complete: 6 / 8
 ```
 
-Do not scale this exact reward mix to A100. It violated the first stop rule
-before x=0.08 was tested.
+The original step-0 warm start was rerun under the same `flat_terrain`,
+15-second x=0 gate and failed on the same seeds. This means the smoke did not
+create a new zero-command failure; it also did not fix the hard-seed failure
+exposed by the stricter gate. Do not scale this exact reward mix to A100, and
+do not run x=0.08 until the canonical x=0 gate is decided or fixed.
 
 ## Required Gates After Any Run
 
