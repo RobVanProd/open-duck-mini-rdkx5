@@ -6428,6 +6428,20 @@ gate on seeds 1 and 7, so the smoke did not create a new failure; it also did
 not fix the exposed hard-seed failure. Do not scale this exact recipe to A100
 and do not run its x=0.08 gate.
 
+The x=0 hard-seed failure was then isolated to the model variant:
+
+```text
+decision: outputs/analysis/CMD_PITCH_RL_2P25_MODEL_VARIANT_X0_HARD_SEED_DECISION.md
+status: HOLD_MODEL_VARIANT_GATE_MISMATCH
+flat_terrain, 10 s, seeds 1 and 7: both fall
+flat_terrain_backlash, 15 s, seeds 1 and 7: both pass
+```
+
+This means the current warm start is stable at x=0 on the backlash model but
+not on the non-backlash flat model. Future candidate status must name the task
+variant explicitly, and the next PPO or robot discussion must choose the
+canonical offline promotion model intentionally.
+
 The existing source-VX DAgger-2 deployable ONNX candidates were then validated
 under a stricter 15-second fitted-bridge x=0.08 seed sweep:
 

@@ -58,6 +58,7 @@ reviewed sim-side gates:
 | gate | required result |
 |---|---|
 | contract | `state[101] -> action[14]` |
+| model variant | task/XML named explicitly; do not mix `flat_terrain` and `flat_terrain_backlash` claims |
 | actuator bridge | enabled with reviewed ranges |
 | action saturation | no sustained bursts |
 | target velocity | p95/p99 reduced versus `BEST_WALK_ONNX_2` x=0.08 baseline |
@@ -76,6 +77,26 @@ Forward command tracking is measured in the robot local base-x frame via
 `env.get_local_linvel(...)`, not by world `base_x` displacement. The Playground
 reset randomizes yaw, so world-frame displacement can have the wrong sign for a
 valid forward command.
+
+Model variant is now a required part of every gate report. The current
+command-conditioned pitch-rate-limited warm start exposed a hard model-variant
+split:
+
+```text
+flat_terrain, x=0.0, 10 s, seeds 1 and 7:
+  both seeds fall
+
+flat_terrain_backlash, x=0.0, 15 s, seeds 1 and 7:
+  both seeds pass
+```
+
+Reference:
+`outputs/analysis/CMD_PITCH_RL_2P25_MODEL_VARIANT_X0_HARD_SEED_DECISION.md`.
+
+A candidate that passes `flat_terrain_backlash` has not passed `flat_terrain`
+unless that exact gate was run. Before robot validation, the team must choose
+the canonical sim promotion model intentionally and report that choice with the
+candidate.
 
 ## Required Offline Artifacts
 

@@ -5428,3 +5428,16 @@ is not a new failure introduced by the smoke. The smoke also did not fix it. Do
 not scale this exact recipe to A100 and do not run its x=0.08 gate. The next PPO
 attempt must either fix the x=0 hard-seed flat-terrain failure first or
 explicitly choose a different canonical zero-command gate.
+
+Model-variant isolation:
+
+```text
+decision: outputs/analysis/CMD_PITCH_RL_2P25_MODEL_VARIANT_X0_HARD_SEED_DECISION.md
+status: HOLD_MODEL_VARIANT_GATE_MISMATCH
+```
+
+The current warm start passes x=0 hard seeds on `flat_terrain_backlash` for 15 s
+but fails the same hard seeds on `flat_terrain` even at 10 s. The next PPO or
+candidate-promotion step must explicitly choose which model variant is
+canonical. Do not mix `flat_terrain` and `flat_terrain_backlash` results in one
+status claim.
