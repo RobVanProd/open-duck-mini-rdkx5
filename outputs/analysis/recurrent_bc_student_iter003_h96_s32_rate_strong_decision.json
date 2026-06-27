@@ -1,0 +1,36 @@
+{
+  "status": "HOLD_RECURRENT_RATE_REG_WORSE",
+  "fit_artifact": "outputs/analysis/RECURRENT_BC_STUDENT_ITER003_H96_S32_RATE_STRONG.md",
+  "gate_artifact": "outputs/analysis/RECURRENT_BC_STUDENT_ITER003_H96_S32_RATE_STRONG_GATE.md",
+  "fit_json": "outputs/analysis/recurrent_bc_student_iter003_h96_s32_rate_strong.json",
+  "gate_json": "outputs/analysis/recurrent_bc_student_iter003_h96_s32_rate_strong_gate.json",
+  "fit": {
+    "hidden_dim": 96,
+    "sequence_length": 32,
+    "steps": 1500,
+    "target_rate_scale": 1.0,
+    "target_rate_limit_rad_s": 2.5,
+    "mae": 0.04547125419152862,
+    "p95_abs_error": 0.1284990232198689,
+    "target_rate_p95_rad_s": 2.040496323607125,
+    "target_rate_max_rad_s": 5.6062932095201266,
+    "onnx_max_action_error": 5.641517663301787e-7,
+    "onnx_max_hidden_error": 9.426510692578383e-7
+  },
+  "gate": {
+    "task": "flat_terrain_backlash",
+    "command_x": 0.08,
+    "duration_s": 15.0,
+    "seeds": 8,
+    "falls": 8,
+    "duration_complete": 0,
+    "samples_mean": 49.75,
+    "track_ratio_mean": -4.3735,
+    "mean_vx_m_s": -0.3499,
+    "max_pitch_vel_p95_rad_s": 5.24
+  },
+  "interpretation": "Stronger supervised target-rate regularization lowers supervised rate but worsens closed-loop reverse/fall behavior.",
+  "no_robot_tests": true,
+  "no_deploy": true,
+  "runtime_behavior_changed": false
+}

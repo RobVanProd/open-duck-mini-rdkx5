@@ -175,3 +175,25 @@ HOLD_RECURRENT_BC_CLOSED_LOOP_UNSTABLE
 
 Plain recurrent BC is therefore not sufficient. The recurrent path needs
 closed-loop/live-oracle correction pressure before another candidate gate.
+
+## Stronger Rate Regularization Follow-Up
+
+A stronger supervised target-rate regularization follow-up was run:
+
+```text
+outputs/analysis/RECURRENT_BC_STUDENT_ITER003_H96_S32_RATE_STRONG_DECISION.md
+```
+
+It lowered supervised target-rate p95 to `2.04 rad/s`, but the closed-loop gate
+got worse: 8/8 fast falls, mean track ratio `-4.37`, and `5.24 rad/s` pitch
+target p95 on every seed.
+
+Decision:
+
+```text
+HOLD_RECURRENT_RATE_REG_WORSE
+```
+
+Do not continue supervised-rate-only recurrent BC tweaks. The next recurrent
+branch needs actual closed-loop correction pressure or a refreshed actuator
+bridge after the corrected knee hardware is measured.
