@@ -1,0 +1,142 @@
+{
+  "status": "HOLD_SEED_FAILURE_CLOSED_LOOP_INSTABILITY",
+  "trace": "outputs/analysis/dagger6_targeted_recovery_trace_x008_fitted_10s/dagger6/seed_001/trace.jsonl",
+  "manifest": "outputs/analysis/filtered_source_vx_selector_dagger7_targeted_recovery_manifest.json",
+  "bc_npz": "outputs/analysis/source_vx_selector_trace_dagger7_targeted_recovery_mlp128_rate_reg_candidate/candidate_mlp.npz",
+  "trace_summary": {
+    "samples": 32,
+    "termination_tick": 31,
+    "first_negative_vx_tick": 0,
+    "first_height_below_10cm_tick": 30,
+    "mean_vx_m_s": 0.010755576364317676,
+    "min_vx_m_s": -0.06957084685564041,
+    "p95_abs_vy_m_s": 1.2484913766384125,
+    "base_height_min_m": 0.0774519294500351,
+    "base_height_final_m": 0.0774519294500351,
+    "body_pitch_abs_p95_rad": 0.18174059762332934,
+    "body_pitch_final_rad": -0.07643782785594495,
+    "action_delta_p95_per_s": 8.706457428634158,
+    "sent_target_velocity_p95_rad_s": 2.1766138076782204,
+    "sent_target_velocity_max_rad_s": 4.094105958938599,
+    "joint_tracking_p95_rad": 0.17511686086654663,
+    "joint_tracking_max_rad": 0.38305583596229553,
+    "contact_pct": {
+      "00": 9.375,
+      "10": 84.375,
+      "11": 6.25
+    },
+    "last_10": [
+      {
+        "tick": 22,
+        "vx": 0.056497178971767426,
+        "vy": 0.5656601786613464,
+        "height": 0.17677538096904755,
+        "pitch": -0.09574380466711294,
+        "contacts": "10"
+      },
+      {
+        "tick": 23,
+        "vx": 0.07489503175020218,
+        "vy": 0.6309196352958679,
+        "height": 0.1739119291305542,
+        "pitch": -0.09169561429316558,
+        "contacts": "10"
+      },
+      {
+        "tick": 24,
+        "vx": 0.08270680159330368,
+        "vy": 0.7003267407417297,
+        "height": 0.1696222424507141,
+        "pitch": -0.08932065074971628,
+        "contacts": "10"
+      },
+      {
+        "tick": 25,
+        "vx": 0.08454383909702301,
+        "vy": 0.783996045589447,
+        "height": 0.1633591651916504,
+        "pitch": -0.08569829786619168,
+        "contacts": "10"
+      },
+      {
+        "tick": 26,
+        "vx": 0.09020978212356567,
+        "vy": 0.8729926347732544,
+        "height": 0.15474916994571686,
+        "pitch": -0.07885946754595055,
+        "contacts": "10"
+      },
+      {
+        "tick": 27,
+        "vx": 0.09746614098548889,
+        "vy": 0.9696559906005859,
+        "height": 0.14355221390724182,
+        "pitch": -0.06783978244224936,
+        "contacts": "10"
+      },
+      {
+        "tick": 28,
+        "vx": 0.0678149089217186,
+        "vy": 1.077295184135437,
+        "height": 0.13057418167591095,
+        "pitch": -0.06199699032796581,
+        "contacts": "10"
+      },
+      {
+        "tick": 29,
+        "vx": 0.05148443207144737,
+        "vy": 1.2019424438476562,
+        "height": 0.11521550267934799,
+        "pitch": -0.06237348001448927,
+        "contacts": "00"
+      },
+      {
+        "tick": 30,
+        "vx": 0.03090410679578781,
+        "vy": 1.3053845167160034,
+        "height": 0.09736645221710205,
+        "pitch": -0.07043476024576717,
+        "contacts": "10"
+      },
+      {
+        "tick": 31,
+        "vx": 0.005401727743446827,
+        "vy": 1.3567830324172974,
+        "height": 0.0774519294500351,
+        "pitch": -0.07643782785594495,
+        "contacts": "00"
+      }
+    ]
+  },
+  "nearest_coverage": {
+    "available": true,
+    "reason": null,
+    "missing_obs_rows": 0,
+    "trace_rows": 32,
+    "top_k": 5,
+    "nearest_distance": {
+      "mean": 0.012907401913869961,
+      "p50": 0.0,
+      "p95": 0.0,
+      "max": 0.41303686124383876
+    },
+    "nearest_action_l1": {
+      "mean": 0.055702262853984275,
+      "p50": 0.0545604452524068,
+      "p95": 0.07357848550824982,
+      "max": 0.10943852798081936
+    },
+    "top_nearest_sources": [
+      {
+        "source": "seed_001/trace.jsonl",
+        "count": 32,
+        "pct": 100.0
+      }
+    ]
+  },
+  "thresholds": {
+    "ood_distance_p95": 2.0,
+    "action_l1_p95": 0.12
+  },
+  "decision": "Seed failure has nearby manifest support and modest action mismatch; investigate closed-loop stability/contact dynamics."
+}

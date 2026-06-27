@@ -132,8 +132,27 @@ def nearest_coverage(
     bc_norm: np.ndarray,
     top_k: int,
 ) -> dict[str, Any]:
-    trace_obs = np.asarray([rec.get("obs_state", [np.nan] * 101) for rec in trace_records], dtype=float)
+    trace_obs_rows = []
+    missing_obs = 0
+    for rec in trace_records:
+        obs = rec.get("obs_state")
+        if obs is None:
+            missing_obs += 1
+            obs = [np.nan] * 101
+        trace_obs_rows.append(obs)
+    trace_obs = np.asarray(trace_obs_rows, dtype=float)
     trace_action = np.asarray([rec.get("action", [np.nan] * 14) for rec in trace_records], dtype=float)
+    if missing_obs or trace_obs.shape[1:] != (101,) or not np.isfinite(trace_obs).all():
+        return {
+            "available": False,
+            "reason": "trace is missing finite obs_state rows",
+            "missing_obs_rows": int(missing_obs),
+            "trace_rows": int(len(trace_records)),
+            "top_k": int(top_k),
+            "nearest_distance": {"mean": None, "p50": None, "p95": None, "max": None},
+            "nearest_action_l1": {"mean": None, "p50": None, "p95": None, "max": None},
+            "top_nearest_sources": [],
+        }
     mean, std = bc_norm
     train_norm = (manifest_obs - mean) / std
     trace_norm = (trace_obs - mean) / std
@@ -153,6 +172,10 @@ def nearest_coverage(
         source_counts[source] = source_counts.get(source, 0) + 1
     top_sources = sorted(source_counts.items(), key=lambda item: item[1], reverse=True)[:8]
     return {
+        "available": True,
+        "reason": None,
+        "missing_obs_rows": 0,
+        "trace_rows": int(len(trace_records)),
         "top_k": int(top_k),
         "nearest_distance": {
             "mean": float(np.mean(nearest_dist)),
@@ -215,14 +238,23 @@ def write_markdown(path: Path, report: dict[str, Any]) -> None:
         "",
         "## Nearest Manifest Coverage",
         "",
-        f"- nearest distance mean/p95/max: `{coverage['nearest_distance']['mean']:.4f}` / `{coverage['nearest_distance']['p95']:.4f}` / `{coverage['nearest_distance']['max']:.4f}`",
-        f"- nearest action L1 mean/p95/max: `{coverage['nearest_action_l1']['mean']:.4f}` / `{coverage['nearest_action_l1']['p95']:.4f}` / `{coverage['nearest_action_l1']['max']:.4f}`",
-        "",
-        "| source | count | pct |",
-        "|---|---:|---:|",
     ]
-    for row in coverage["top_nearest_sources"]:
-        lines.append(f"| `{row['source']}` | {row['count']} | {row['pct']:.2f} |")
+    if not coverage.get("available", True):
+        lines += [
+            f"- status: unavailable",
+            f"- reason: `{coverage.get('reason')}`",
+            f"- missing obs rows: `{coverage.get('missing_obs_rows')}` / `{coverage.get('trace_rows')}`",
+        ]
+    else:
+        lines += [
+            f"- nearest distance mean/p95/max: `{coverage['nearest_distance']['mean']:.4f}` / `{coverage['nearest_distance']['p95']:.4f}` / `{coverage['nearest_distance']['max']:.4f}`",
+            f"- nearest action L1 mean/p95/max: `{coverage['nearest_action_l1']['mean']:.4f}` / `{coverage['nearest_action_l1']['p95']:.4f}` / `{coverage['nearest_action_l1']['max']:.4f}`",
+            "",
+            "| source | count | pct |",
+            "|---|---:|---:|",
+        ]
+        for row in coverage["top_nearest_sources"]:
+            lines.append(f"| `{row['source']}` | {row['count']} | {row['pct']:.2f} |")
     lines += [
         "",
         "## Last 10 Samples",
@@ -260,22 +292,26 @@ def main() -> int:
         bc_norm,
         args.top_k,
     )
-    ood = coverage["nearest_distance"]["p95"] > args.ood_distance_p95
-    high_action_gap = coverage["nearest_action_l1"]["p95"] > args.action_l1_p95
-    status = (
-        "HOLD_SEED_FAILURE_OOD"
-        if ood
-        else "HOLD_SEED_FAILURE_ACTION_MISMATCH"
-        if high_action_gap
-        else "HOLD_SEED_FAILURE_CLOSED_LOOP_INSTABILITY"
-    )
-    decision = (
-        "Seed failure appears out-of-distribution against the current manifest; collect or relabel nearby states."
-        if ood
-        else "Seed failure has nearby states but high action mismatch; improve local BC fit/relabeling."
-        if high_action_gap
-        else "Seed failure has nearby manifest support and modest action mismatch; investigate closed-loop stability/contact dynamics."
-    )
+    if not coverage.get("available", True):
+        status = "HOLD_TRACE_OBS_MISSING"
+        decision = "Trace does not contain finite obs_state rows; rerun the candidate trace with full-observation logging before judging manifest coverage."
+    else:
+        ood = coverage["nearest_distance"]["p95"] > args.ood_distance_p95
+        high_action_gap = coverage["nearest_action_l1"]["p95"] > args.action_l1_p95
+        status = (
+            "HOLD_SEED_FAILURE_OOD"
+            if ood
+            else "HOLD_SEED_FAILURE_ACTION_MISMATCH"
+            if high_action_gap
+            else "HOLD_SEED_FAILURE_CLOSED_LOOP_INSTABILITY"
+        )
+        decision = (
+            "Seed failure appears out-of-distribution against the current manifest; collect or relabel nearby states."
+            if ood
+            else "Seed failure has nearby states but high action mismatch; improve local BC fit/relabeling."
+            if high_action_gap
+            else "Seed failure has nearby manifest support and modest action mismatch; investigate closed-loop stability/contact dynamics."
+        )
     report = {
         "status": status,
         "trace": args.trace,

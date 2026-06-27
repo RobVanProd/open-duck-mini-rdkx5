@@ -6583,6 +6583,22 @@ Static early-collapse BC labels, even heavily upweighted, are not enough. The
 remaining offline blocker is now closed-loop recovery/stabilization, not more
 positive-window BC or more weight on the same first-collapse labels.
 
+The hard-seed failures were then analyzed against the DAgger-7 manifest:
+
+```text
+artifact: outputs/analysis/DAGGER7_HARD_SEED_FAILURE_DECISION.md
+seed 1: HOLD_SEED_FAILURE_CLOSED_LOOP_INSTABILITY
+seed 7: HOLD_SEED_FAILURE_ACTION_MISMATCH
+```
+
+Seed 1 is not primarily a coverage/label-weight problem: it has nearby manifest
+support and modest action mismatch, then collapses through growing positive
+lateral velocity in left single support. Seed 7 still has a local action-fit
+problem near right single support. The next deployable-policy branch should be
+split accordingly: closed-loop lateral/height stabilization for seed 1 and a
+more precise right-support recovery fit for seed 7. Do not run another uniform
+static-label DAgger pass as the next experiment.
+
 ## Physical Start-Pose Calibration Check
 
 The real robot home/start pose has been checked against both telemetry and a

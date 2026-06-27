@@ -3003,6 +3003,25 @@ closed-loop fine-tuning from the DAgger-6/DAgger-7 student or collect longer
 successful recovery trajectories, not increase the same early-collapse label
 weight again.
 
+A follow-up hard-seed analysis split the remaining two failures into different
+mechanisms:
+
+```text
+artifact: outputs/analysis/DAGGER7_HARD_SEED_FAILURE_DECISION.md
+seed 1: HOLD_SEED_FAILURE_CLOSED_LOOP_INSTABILITY
+seed 7: HOLD_SEED_FAILURE_ACTION_MISMATCH
+```
+
+Seed 1 had nearby DAgger-7 manifest support and modest nearest-action mismatch
+(`p95 L1 0.0736`) but collapsed under left single support while lateral
+velocity grew to `+1.3568 m/s`. Seed 7 had nearby states but still had high
+nearest-action mismatch (`p95 L1 0.1290`) and collapsed under right single
+support while lateral velocity grew to `-1.3233 m/s`.
+
+Decision: do not run another uniform-label-weight DAgger pass. Seed 1 needs
+closed-loop lateral/height stabilization; seed 7 still needs a better local
+right-support action fit or recovery mapping.
+
 ## Physical start-pose calibration check
 
 The real robot now has both telemetry evidence and operator-confirmed physical
