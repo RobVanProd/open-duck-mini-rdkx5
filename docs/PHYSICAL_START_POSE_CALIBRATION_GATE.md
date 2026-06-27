@@ -247,6 +247,22 @@ Safety and interpretation:
   treat the output as a raw/readback sanity check, not a physical-zero proof.
 ```
 
+Do not command "raw sim-home" by bypassing offsets as a shortcut calibration
+test. With the current live offsets, raw-bypass home is not equivalent to
+configured runtime home:
+
+```text
+normal raw target = joint_dir * sim_home + current_offset
+raw-bypass target = joint_dir * sim_home
+raw-bypass minus normal = -current_offset
+```
+
+For example, the live `left_knee` offset is `-1.4880 rad`, so a raw-bypass
+sim-home command would move that servo about `+1.4880 rad` away from the
+configured home raw target. That is a large motor command, not a harmless
+readback comparison. Use either the read-only raw audit above or the upstream
+interactive `find_soft_offsets.py` procedure.
+
 ## Pass Criteria
 
 Pass only if all are true:
