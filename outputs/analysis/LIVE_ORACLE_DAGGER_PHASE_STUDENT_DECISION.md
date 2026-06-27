@@ -88,6 +88,17 @@ Therefore iteration 2 should not increase zero-action weight. It should blend
 or schedule the x=0.0 zero-action labels so the zero-command fix is preserved
 without creating a reverse/fall pocket on seed 5.
 
+Soft zero-label ablations are also complete:
+
+- iteration 2 used x=0.0 zero-action alpha 0.5 and still fell on seed 5
+- iteration 3 used x=0.0 zero-action alpha 0.2 and still fell on seed 5
+- both failures occur at low target-rate, not actuator overdrive
+
+Do not spend more rung-1 budget on scalar zero-action alpha sweeps. The next
+step should change structure: separate command-conditioned heads, add a
+command-aware gate in the student, or move to the next representation rung
+instead of globally blending zero labels into the same feed-forward map.
+
 ## Hardware Track Note
 
 The operator reported a real hardware correction after these offline bridge
