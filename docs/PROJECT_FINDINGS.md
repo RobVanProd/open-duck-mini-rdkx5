@@ -3795,3 +3795,22 @@ behavior-preservation control, it reduced target velocity and tracking error by
 leaving the walking basin and settling into near-standstill. The remaining
 closed-loop branch needs a stronger behavior-preserving mechanism than scalar
 reward terms, low-alpha post-hoc blends, or Brax's default adaptive-KL schedule.
+
+A final small control enabled the environment's hard
+`command_progress_failure` termination so low-progress positive-command
+rollouts could not finish as successful long episodes:
+
+```text
+screen artifact: outputs/analysis/PITCH_CHAIN_4P3_PPO_WARMSTART_PROGRESS_FAILURE_CONTROL_SEED1_SEED4_SCREEN.md
+command_progress_failure_min_ratio: 0.30
+command_progress_failure_warmup_steps: 80
+status: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
+seed 1: vx -0.0007, track ratio -0.0092, tracking p95 0.1199
+seed 4: vx  0.0033, track ratio  0.0417, tracking p95 0.1016
+```
+
+The hard progress-failure termination also failed to preserve the warm-start
+walking basin in a tiny PPO update. This closes the existing scalar
+reward/termination controls as standalone fixes. The remaining branch needs a
+true behavior-preserving update mechanism, recurrent/phase-aware representation,
+or gate-aware rollout correction rather than another small PPO control.

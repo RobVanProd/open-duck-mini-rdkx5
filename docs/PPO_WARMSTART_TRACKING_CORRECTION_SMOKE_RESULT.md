@@ -172,12 +172,50 @@ This shows built-in adaptive-KL learning-rate control is not sufficient by
 itself. It still lets the warm-started policy leave the walking basin and reduce
 tracking error by nearly stopping.
 
+## Hard Progress-Failure Control
+
+A fourth tiny PPO smoke enabled the environment's default-off
+`command_progress_failure` termination so low-progress positive-command
+rollouts could not finish quietly:
+
+```text
+num_timesteps: 512
+actual checkpoint step: 640
+behavior prior scale: -0.10
+target-rate penalty: disabled
+actuator-tracking penalty: disabled
+command_progress_failure_enable: true
+command_progress_failure_min_ratio: 0.30
+command_progress_failure_warmup_steps: 80
+command_progress_failure_scale: -5.0
+```
+
+The smoke completed and exported an ONNX:
+
+```text
+output: outputs/analysis/pitch_chain_4p3_ppo_warmstart_progress_failure_control/smoke_20260627T142729Z_cpu/2026_06_27_102818_640.onnx
+status: PASS_SMOKE_RUN
+```
+
+Targeted seed screen:
+
+```text
+artifact: outputs/analysis/PITCH_CHAIN_4P3_PPO_WARMSTART_PROGRESS_FAILURE_CONTROL_SEED1_SEED4_SCREEN.md
+status: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
+seed 1: vx -0.0007, track ratio -0.0092, velocity p95 1.2083, tracking p95 0.1199
+seed 4: vx  0.0033, track ratio  0.0417, velocity p95 1.0734, tracking p95 0.1016
+```
+
+This shows the existing hard progress-failure termination is also insufficient
+as a tiny PPO correction. The exported policy still settles into the same
+near-standstill basin under the fitted bridge.
+
 ## Conclusion
 
 The PPO warm-start path is viable, but the naive tracking-correction reward
 recipe, the behavior-preserving control, low-alpha blending, and built-in
-adaptive-KL control are closed as standalone fixes. They reproduce the same old
-failure mode:
+adaptive-KL control, and the hard progress-failure control are closed as
+standalone fixes. They reproduce the same old failure mode:
 
 ```text
 safe/calm policy
@@ -194,4 +232,5 @@ or a stronger behavior-preservation mechanism that treats loss of forward
 progress as an immediate hold, not as an acceptable way to reduce tracking
 error. Low-alpha post-hoc blending and the default Brax adaptive-KL schedule are
 also not enough; they either preserve the baseline without moving the gate or
-collapse into a near-standstill.
+collapse into a near-standstill. The existing command-progress failure
+termination does not change that outcome in a tiny PPO update.

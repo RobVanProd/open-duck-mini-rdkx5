@@ -49,6 +49,11 @@
       "branch": "built-in adaptive-KL PPO learning-rate control",
       "reason": "adaptive-KL scheduling still moved the warm-started policy into near-standstill; seed 1/4 progress collapsed while tracking p95 fell to ~0.105 rad.",
       "result": "closed"
+    },
+    {
+      "branch": "hard command-progress failure termination",
+      "reason": "the existing progress-failure termination did not preserve the walking basin in a tiny PPO update; seed 1/4 progress still collapsed while tracking p95 stayed ~0.10-0.12 rad.",
+      "result": "closed"
     }
   ],
   "candidates": [
@@ -231,6 +236,24 @@
       "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
       "track_ratio_mean": 0.017318250124276346,
       "vx_mean": 0.0013854600099421077
+    },
+    {
+      "base_height_min_mean": 0.153093621134758,
+      "body_pitch_p95_mean": 0.05194668555274891,
+      "duration_complete": 2,
+      "falls_or_terminations": 0,
+      "max_pitch_velocity_p95_max": 1.2083160877227785,
+      "max_pitch_velocity_p95_mean": 1.1408618092536926,
+      "max_pitch_velocity_p95_min": 1.073407530784607,
+      "max_tracking_p95_max": 0.11993674635887147,
+      "max_tracking_p95_mean": 0.11075967848300936,
+      "max_tracking_p95_min": 0.10158261060714724,
+      "name": "PPO warm-start hard progress-failure control",
+      "path": "outputs/analysis/pitch_chain_4p3_ppo_warmstart_progress_failure_control_seed1_seed4_screen.json",
+      "runs": 2,
+      "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "track_ratio_mean": 0.016222923193186037,
+      "vx_mean": 0.0012978338554548827
     }
   ],
   "recommendation": {
@@ -247,7 +270,7 @@
       "reduces max tracking p95 materially below the current ~0.27 rad plateau",
       "does not pass by freezing, reversing, or shortening the horizon"
     ],
-    "recommended_next": "Do not run another clip/filter/weight-blend/feed-forward-BC branch, scalar reward tweak, naive PPO smoke, or default adaptive-KL PPO control. Build a gate-aware deployable-policy training path with an explicit policy-distribution trust region or behavior-preserving update before attempting fitted-bridge tracking correction.",
+    "recommended_next": "Do not run another clip/filter/weight-blend/feed-forward-BC branch, scalar reward tweak, naive PPO smoke, default adaptive-KL PPO control, or existing progress-failure-only PPO control. Build a gate-aware deployable-policy training path with an explicit policy-distribution trust region or behavior-preserving update before attempting fitted-bridge tracking correction.",
     "status": "PLAN_GATE_AWARE_ROLLOUT_CORRECTION_OR_RECURRENT_STUDENT"
   },
   "right_knee_spike_evidence": {

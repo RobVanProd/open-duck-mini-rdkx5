@@ -230,6 +230,11 @@ def build_payload(args: argparse.Namespace) -> dict[str, Any]:
             "outputs/analysis/pitch_chain_4p3_ppo_warmstart_adaptive_kl_control_seed1_seed4_screen.json",
             run_candidate_rows,
         ),
+        (
+            "PPO warm-start hard progress-failure control",
+            "outputs/analysis/pitch_chain_4p3_ppo_warmstart_progress_failure_control_seed1_seed4_screen.json",
+            run_candidate_rows,
+        ),
     ]
     candidates = []
     for name, rel_path, reader in candidate_specs:
@@ -309,10 +314,15 @@ def build_payload(args: argparse.Namespace) -> dict[str, Any]:
             "result": "closed",
             "reason": "adaptive-KL scheduling still moved the warm-started policy into near-standstill; seed 1/4 progress collapsed while tracking p95 fell to ~0.105 rad.",
         },
+        {
+            "branch": "hard command-progress failure termination",
+            "result": "closed",
+            "reason": "the existing progress-failure termination did not preserve the walking basin in a tiny PPO update; seed 1/4 progress still collapsed while tracking p95 stayed ~0.10-0.12 rad.",
+        },
     ]
     recommendation = {
         "status": "PLAN_GATE_AWARE_ROLLOUT_CORRECTION_OR_RECURRENT_STUDENT",
-        "recommended_next": "Do not run another clip/filter/weight-blend/feed-forward-BC branch, scalar reward tweak, naive PPO smoke, or default adaptive-KL PPO control. Build a gate-aware deployable-policy training path with an explicit policy-distribution trust region or behavior-preserving update before attempting fitted-bridge tracking correction.",
+        "recommended_next": "Do not run another clip/filter/weight-blend/feed-forward-BC branch, scalar reward tweak, naive PPO smoke, default adaptive-KL PPO control, or existing progress-failure-only PPO control. Build a gate-aware deployable-policy training path with an explicit policy-distribution trust region or behavior-preserving update before attempting fitted-bridge tracking correction.",
         "minimum_requirements": [
             "uses the standard strict fitted-backlash x=0.08 multi-seed gate as the primary score",
             "compares against the exact selector blend and PPO-shape warm-start baselines",

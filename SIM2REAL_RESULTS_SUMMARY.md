@@ -7518,3 +7518,20 @@ walking policy. The PPO path remains useful as plumbing, but the next offline
 branch needs an explicit policy-distribution trust region, gate-aware rollout
 correction, or a different behavior-preserving update. Robot validation remains
 blocked.
+
+The existing hard command-progress failure termination was also tested from the
+same warm-start checkpoint:
+
+```text
+screen artifact: outputs/analysis/PITCH_CHAIN_4P3_PPO_WARMSTART_PROGRESS_FAILURE_CONTROL_SEED1_SEED4_SCREEN.md
+command_progress_failure_min_ratio: 0.30
+command_progress_failure_warmup_steps: 80
+screen status: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
+seed 1: vx -0.0007, track ratio -0.0092, tracking p95 0.1199
+seed 4: vx  0.0033, track ratio  0.0417, tracking p95 0.1016
+```
+
+That also collapsed into near-standstill. The current PPO fine-tune tooling can
+resume/export policies, but the available scalar reward, default KL schedule,
+and existing progress-termination controls do not preserve the walking basin.
+Robot validation remains blocked.
