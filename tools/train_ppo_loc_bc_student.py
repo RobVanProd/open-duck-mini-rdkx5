@@ -42,7 +42,7 @@ def read_manifest_samples(manifest_path: Path) -> tuple[np.ndarray, np.ndarray, 
         source_path = Path(entry["source_path"])
         if not source_path.exists():
             continue
-        sample_weight = float(entry.get("sample_weight", 1.0))
+        entry_sample_weight = float(entry.get("sample_weight", 1.0))
         previous_index: int | None = None
         with source_path.open() as handle:
             for line in handle:
@@ -58,7 +58,8 @@ def read_manifest_samples(manifest_path: Path) -> tuple[np.ndarray, np.ndarray, 
                 current_index = len(observations)
                 observations.append(obs_arr.astype(float).tolist())
                 actions.append(np.clip(action_arr, -1.0, 1.0).astype(float).tolist())
-                weights.append(max(sample_weight, 0.0))
+                record_sample_weight = float(record.get("sample_weight", 1.0))
+                weights.append(max(entry_sample_weight * record_sample_weight, 0.0))
                 if previous_index is not None:
                     pairs.append((previous_index, current_index))
                 previous_index = current_index

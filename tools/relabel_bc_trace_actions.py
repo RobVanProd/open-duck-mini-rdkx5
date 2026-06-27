@@ -151,6 +151,67 @@ def row_forward_velocity(row: dict[str, Any]) -> float:
     return 0.0
 
 
+def row_lateral_velocity_abs(row: dict[str, Any]) -> float:
+    local_linvel = row.get("local_linvel_m_s")
+    if isinstance(local_linvel, list | tuple) and len(local_linvel) > 1:
+        try:
+            return abs(float(local_linvel[1]))
+        except (TypeError, ValueError):
+            return 0.0
+    return 0.0
+
+
+def row_contact_key(row: dict[str, Any]) -> str:
+    contacts = row.get("foot_contacts")
+    if isinstance(contacts, list | tuple) and len(contacts) == 2:
+        return f"{int(contacts[0])}{int(contacts[1])}"
+    return "NA"
+
+
+def row_tracking_error(row: dict[str, Any]) -> float:
+    sent = row.get("sent_target_rad")
+    actual = row.get("actual_position_rad")
+    if not (
+        isinstance(sent, list | tuple)
+        and isinstance(actual, list | tuple)
+        and len(sent) == len(actual) == 14
+    ):
+        return 0.0
+    err = np.abs(np.asarray(sent, dtype=float) - np.asarray(actual, dtype=float))
+    finite = err[np.isfinite(err)]
+    return float(np.max(finite)) if finite.size else 0.0
+
+
+def gate_sample_weight(row: dict[str, Any], args: argparse.Namespace) -> tuple[float, list[str]]:
+    if not args.gate_aware_sample_weights:
+        return 1.0, []
+
+    weight = float(args.gate_base_weight)
+    reasons: list[str] = []
+    vx = row_forward_velocity(row)
+    command_x = max(abs(float(args.gate_command_x)), 1.0e-9)
+    track_ratio = vx / command_x
+    contacts = row_contact_key(row)
+
+    if contacts == "11" and track_ratio < float(args.gate_min_track_ratio):
+        weight = max(weight, float(args.gate_double_support_weight))
+        reasons.append("double_support_low_progress")
+    if track_ratio < float(args.gate_min_track_ratio):
+        weight = max(weight, float(args.gate_low_progress_weight))
+        reasons.append("low_progress")
+    if vx < 0.0:
+        weight = max(weight, float(args.gate_reverse_weight))
+        reasons.append("reverse_velocity")
+    if row_lateral_velocity_abs(row) > float(args.gate_high_abs_vy_m_s):
+        weight = max(weight, float(args.gate_lateral_weight))
+        reasons.append("high_lateral_velocity")
+    if row_tracking_error(row) > float(args.gate_high_tracking_rad):
+        weight = max(weight, float(args.gate_tracking_weight))
+        reasons.append("high_tracking_error")
+
+    return min(weight, float(args.gate_max_weight)), reasons
+
+
 def predict_teacher_model(
     model: dict[str, Any], obs: np.ndarray, row: dict[str, Any]
 ) -> tuple[np.ndarray, str, float]:
@@ -174,6 +235,7 @@ def relabel_trace(
     path: Path,
     output_dir: Path,
     model: dict[str, Any],
+    args: argparse.Namespace,
     *,
     truncate_before_done: bool = False,
 ) -> dict[str, Any]:
@@ -190,6 +252,8 @@ def relabel_trace(
     deltas = []
     active_models: Counter[str] = Counter()
     alpha_values = []
+    sample_weights = []
+    sample_weight_reasons: Counter[str] = Counter()
     skipped = 0
     for row in rows:
         obs = row.get("obs_state")
@@ -211,9 +275,16 @@ def relabel_trace(
         new_row["relabel_teacher"] = model["kind"]
         new_row["relabel_teacher_active_model"] = active_model
         new_row["relabel_teacher_blend_alpha"] = alpha
+        sample_weight, reasons = gate_sample_weight(row, args)
+        new_row["sample_weight"] = sample_weight
+        new_row["sample_weight_reasons"] = reasons
+        sample_weights.append(float(sample_weight))
+        sample_weight_reasons.update(reasons or ["base"])
         new_row["mode"] = f"relabel_{model['kind']}_teacher"
         output_rows.append(new_row)
-    output_path = output_dir / path.parent.name / path.name
+    parent_depth = max(1, int(args.output_parent_depth))
+    parent_parts = list(path.parent.parts[-parent_depth:])
+    output_path = output_dir.joinpath(*parent_parts, path.name)
     write_jsonl(output_path, output_rows)
     return {
         "source_trace": str(path),
@@ -229,10 +300,22 @@ def relabel_trace(
         "active_model_counts": dict(sorted(active_models.items())),
         "blend_alpha_p50": percentile(alpha_values, 50) if alpha_values else None,
         "blend_alpha_p95": percentile(alpha_values, 95) if alpha_values else None,
+        "sample_weight_p50": percentile(sample_weights, 50) if sample_weights else None,
+        "sample_weight_p95": percentile(sample_weights, 95) if sample_weights else None,
+        "sample_weight_max": max(sample_weights) if sample_weights else None,
+        "sample_weight_reasons": dict(sorted(sample_weight_reasons.items())),
     }
 
 
 def write_markdown(payload: dict[str, Any], path: Path) -> None:
+    def trace_label(item: dict[str, Any]) -> str:
+        output_trace = Path(item["output_trace"])
+        try:
+            return str(output_trace.relative_to(Path(payload["output_trace_dir"])))
+        except ValueError:
+            source_path = Path(item["source_trace"])
+            return f"{source_path.parent.name}/{source_path.name}"
+
     lines = [
         "# BC Trace Relabel",
         "",
@@ -255,23 +338,28 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
             f"- samples_out: `{payload['summary']['samples_out']}`",
             f"- truncated_traces: `{payload['summary']['truncated_traces']}`",
             "",
-            "| source | samples_out | skipped | action_delta_p50 | action_delta_p95 | action_delta_max |",
-            "|---|---:|---:|---:|---:|---:|",
+            "| source | samples_out | skipped | action_delta_p50 | action_delta_p95 | action_delta_max | weight_p95 | weight_max |",
+            "|---|---:|---:|---:|---:|---:|---:|---:|",
         ]
     )
     for item in payload["traces"]:
-        source_path = Path(item["source_trace"])
-        source_name = f"{source_path.parent.name}/{source_path.name}"
+        source_name = trace_label(item)
         lines.append(
-            "| {source} | {samples} | {skipped} | {p50} | {p95} | {maxv} |".format(
+            "| {source} | {samples} | {skipped} | {p50} | {p95} | {maxv} | {wp95} | {wmax} |".format(
                 source=source_name,
                 samples=item["samples_out"],
                 skipped=item["skipped"],
                 p50=fmt(item.get("action_delta_p50")),
                 p95=fmt(item.get("action_delta_p95")),
                 maxv=fmt(item.get("action_delta_max")),
+                wp95=fmt(item.get("sample_weight_p95")),
+                wmax=fmt(item.get("sample_weight_max")),
             )
         )
+    if any(item.get("sample_weight_reasons") for item in payload["traces"]):
+        lines.extend(["", "### Sample Weight Reasons", ""])
+        for item in payload["traces"]:
+            lines.append(f"- `{trace_label(item)}`: `{item.get('sample_weight_reasons')}`")
     lines.extend(
         [
             "",
@@ -290,6 +378,15 @@ def main() -> int:
     parser.add_argument("--teacher-manifest", required=True)
     parser.add_argument("--trace-glob", action="append", required=True)
     parser.add_argument("--output-trace-dir", required=True)
+    parser.add_argument(
+        "--output-parent-depth",
+        type=int,
+        default=1,
+        help=(
+            "Number of source parent directories to preserve under output-trace-dir. "
+            "Increase for nested traces with repeated seed/trace.jsonl leaf names."
+        ),
+    )
     parser.add_argument("--output-md", default=str(DEFAULT_OUTPUT_MD))
     parser.add_argument("--output-json", default=str(DEFAULT_OUTPUT_JSON))
     parser.add_argument("--teacher-model-kind", choices=["blend", "source_vx_blend"], default="blend")
@@ -303,6 +400,22 @@ def main() -> int:
     parser.add_argument("--vx-blend-threshold-m-s", type=float, default=0.02)
     parser.add_argument("--source-vx-threshold-m-s", type=float, default=0.02)
     parser.add_argument("--ridge-alphas", default="1e-6,1e-4,1e-2,1,100")
+    parser.add_argument(
+        "--gate-aware-sample-weights",
+        action="store_true",
+        help="Write per-row sample_weight values that emphasize low-progress gate-failure states.",
+    )
+    parser.add_argument("--gate-command-x", type=float, default=0.08)
+    parser.add_argument("--gate-base-weight", type=float, default=1.0)
+    parser.add_argument("--gate-min-track-ratio", type=float, default=0.5)
+    parser.add_argument("--gate-low-progress-weight", type=float, default=3.0)
+    parser.add_argument("--gate-double-support-weight", type=float, default=4.0)
+    parser.add_argument("--gate-reverse-weight", type=float, default=5.0)
+    parser.add_argument("--gate-lateral-weight", type=float, default=2.0)
+    parser.add_argument("--gate-high-abs-vy-m-s", type=float, default=0.12)
+    parser.add_argument("--gate-tracking-weight", type=float, default=2.0)
+    parser.add_argument("--gate-high-tracking-rad", type=float, default=0.15)
+    parser.add_argument("--gate-max-weight", type=float, default=8.0)
     parser.add_argument(
         "--truncate-before-done",
         action="store_true",
@@ -321,6 +434,7 @@ def main() -> int:
             path,
             output_dir,
             model,
+            args,
             truncate_before_done=args.truncate_before_done,
         )
         for path in paths

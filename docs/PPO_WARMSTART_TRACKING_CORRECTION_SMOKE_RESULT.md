@@ -317,3 +317,61 @@ termination does not change that outcome in a tiny PPO update. Restore-policy
 KL is now available as a default-off tool, but these screens show that simply
 anchoring to the restored feed-forward policy distribution on PPO rollout states
 does not solve the warm-start collapse.
+
+## Gate-Aware Rollout Correction Substrate
+
+The next offline branch started by turning the failed rollout states themselves
+into correction data instead of running another KL-only or scalar reward sweep.
+
+Two seed-1 traces were relabeled with the source-VX teacher:
+
+```text
+artifact: outputs/analysis/GATE_AWARE_ROLLOUT_CORRECTION_RELABEL.md
+status: PASS_BC_TRACE_RELABEL_READY
+traces: 2
+samples_out: 1000
+```
+
+The relabeler now supports per-row `sample_weight` values. Weights are raised
+for low progress, double-support low-progress drift, reverse velocity, high
+lateral velocity, and high fitted-bridge tracking error. The BC student trainer
+now multiplies entry-level and row-level sample weights, so these correction
+rows can be mixed with the existing source-VX walking traces without flattening
+the failure-mode signal.
+
+The correction rows were merged with the eight source-VX walking traces:
+
+```text
+artifact: outputs/analysis/GATE_AWARE_ROLLOUT_CORRECTION_MERGED_MANIFEST.md
+status: PASS_FILTERED_BC_MANIFEST_READY
+samples: 5000
+entries: 10
+```
+
+A tiny 200-step supervised fit verified that the weighted manifest can train
+and export an ONNX:
+
+```text
+artifact: outputs/analysis/GATE_AWARE_ROLLOUT_CORRECTION_STUDENT_SMOKE.md
+status: PASS_PPO_LOC_BC_FIT_SMOKE
+target-rate p95: 2.2253 rad/s
+p95 action error: 0.0965
+```
+
+This is a plumbing result, not a deployable candidate. The exported smoke ONNX
+has not cleared the strict fitted-backlash multi-seed gate. The next useful
+offline step is a real gate-aware student fit or a recurrent/phase-aware
+student, then the standard strict fitted-bridge seed sweep.
+
+A bounded two-seed sanity screen confirmed that the 200-step smoke export is
+not a candidate:
+
+```text
+artifact: outputs/analysis/GATE_AWARE_ROLLOUT_CORRECTION_STUDENT_SMOKE_SCREEN.md
+status: HOLD_CANDIDATE_FALL_OR_TERMINATION
+seed 1: fall_or_nan at 98 samples, max pitch velocity p95 5.2400 rad/s
+seed 4: fall_or_nan at 56 samples, max pitch velocity p95 5.2400 rad/s
+```
+
+Do not tune around this smoke result. Its purpose was to test the new data path,
+and the screen shows a real fit is still required before candidate evaluation.

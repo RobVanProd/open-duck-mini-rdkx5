@@ -7592,3 +7592,43 @@ restore-policy-KL-only scale tuning as the next branch. The next deployable
 policy work must either correct rollout states back toward the gate-passing
 source-VX manifold or add recurrent/phase-aware state that preserves the
 stance-transition mechanism.
+
+Gate-aware rollout correction plumbing was added after the restore-policy KL
+controls. The relabeler can now write row-level sample weights for low progress,
+double-support drift, reverse velocity, lateral velocity, and high
+fitted-bridge tracking error; the PPO-loc BC student trainer now consumes those
+weights. Two failed seed-1 traces were relabeled with the source-VX teacher and
+merged with the eight source-VX walking traces:
+
+```text
+relabel artifact: outputs/analysis/GATE_AWARE_ROLLOUT_CORRECTION_RELABEL.md
+relabel status: PASS_BC_TRACE_RELABEL_READY
+merged manifest: outputs/analysis/GATE_AWARE_ROLLOUT_CORRECTION_MERGED_MANIFEST.md
+merged status: PASS_FILTERED_BC_MANIFEST_READY
+merged samples: 5000
+```
+
+A tiny 200-step supervised smoke fit verified the weighted manifest path and
+ONNX export:
+
+```text
+artifact: outputs/analysis/GATE_AWARE_ROLLOUT_CORRECTION_STUDENT_SMOKE.md
+status: PASS_PPO_LOC_BC_FIT_SMOKE
+```
+
+This is not a deployable policy. It is a substrate for the next offline branch:
+a real gate-aware rollout-correction student or a recurrent/phase-aware student
+followed by the strict fitted-backlash multi-seed candidate gate. Robot
+validation remains blocked.
+
+A bounded two-seed screen of the smoke ONNX confirmed it is not a candidate:
+
+```text
+artifact: outputs/analysis/GATE_AWARE_ROLLOUT_CORRECTION_STUDENT_SMOKE_SCREEN.md
+status: HOLD_CANDIDATE_FALL_OR_TERMINATION
+seed 1: fall_or_nan after 98 samples
+seed 4: fall_or_nan after 56 samples
+```
+
+The screen is only a sanity check for the exported smoke model; it does not
+invalidate the weighted correction-data path.

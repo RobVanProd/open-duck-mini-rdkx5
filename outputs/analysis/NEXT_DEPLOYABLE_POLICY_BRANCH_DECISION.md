@@ -1,14 +1,46 @@
 # Next Deployable Policy Branch Decision
 
-status: `PLAN_GATE_AWARE_ROLLOUT_CORRECTION_OR_RECURRENT_STUDENT`
+status: `GATE_AWARE_ROLLOUT_CORRECTION_SUBSTRATE_READY`
 
 This is an offline decision artifact. It does not train, run simulation, SSH, deploy, run robot tests, or change runtime behavior.
 
 ## Executive Summary
 
-Do not run another clip/filter/weight-blend/feed-forward-BC branch, scalar reward tweak, naive PPO smoke, default adaptive-KL PPO control, existing progress-failure-only PPO control, or restore-policy-KL-only PPO control. Build a gate-aware deployable-policy training path that corrects rollout states back toward a gate-passing distribution, or use a recurrent/phase-aware student, before attempting fitted-bridge tracking correction.
+Do not run another clip/filter/weight-blend/feed-forward-BC branch, scalar reward tweak, naive PPO smoke, default adaptive-KL PPO control, existing progress-failure-only PPO control, or restore-policy-KL-only PPO control. The first gate-aware rollout-correction data path is now wired: failed rollout states can be relabeled with the source-VX teacher, weighted by failure mode, merged with walking traces, and consumed by the PPO-loc BC student trainer. This is still a substrate, not a deployable candidate.
 
 The cheap post-hoc branches are now closed negative. The remaining blocker is the deployable policy's representation/training of the right-knee contact transition, not one missing scalar cap.
+
+## Gate-Aware Rollout Correction Substrate
+
+```text
+relabel artifact: outputs/analysis/GATE_AWARE_ROLLOUT_CORRECTION_RELABEL.md
+relabel status: PASS_BC_TRACE_RELABEL_READY
+relabel samples: 1000
+
+merged manifest: outputs/analysis/GATE_AWARE_ROLLOUT_CORRECTION_MERGED_MANIFEST.md
+merged status: PASS_FILTERED_BC_MANIFEST_READY
+merged samples: 5000
+
+smoke fit: outputs/analysis/GATE_AWARE_ROLLOUT_CORRECTION_STUDENT_SMOKE.md
+smoke status: PASS_PPO_LOC_BC_FIT_SMOKE
+```
+
+The row-level weights mark low progress, double-support low-progress drift,
+reverse velocity, lateral velocity, and high fitted-bridge tracking error. The
+200-step fit only verifies the weighted manifest and ONNX export path. It has
+not passed a candidate gate and must not be treated as a robot candidate.
+
+A bounded two-seed sanity screen of that smoke export failed by termination:
+
+```text
+screen artifact: outputs/analysis/GATE_AWARE_ROLLOUT_CORRECTION_STUDENT_SMOKE_SCREEN.md
+screen status: HOLD_CANDIDATE_FALL_OR_TERMINATION
+seed 1: 98 samples, fall_or_nan, max pitch velocity p95 5.2400 rad/s
+seed 4: 56 samples, fall_or_nan, max pitch velocity p95 5.2400 rad/s
+```
+
+This closes the smoke ONNX as a candidate. It does not close the gate-aware
+rollout-correction substrate.
 
 ## Candidate Gate Comparison
 
@@ -60,7 +92,7 @@ within 2 ticks of contact transition: 404 / 506
 
 ## Recommended Next Branch
 
-`PLAN_GATE_AWARE_ROLLOUT_CORRECTION_OR_RECURRENT_STUDENT`
+`GATE_AWARE_ROLLOUT_CORRECTION_SUBSTRATE_READY`
 
 Minimum requirements:
 

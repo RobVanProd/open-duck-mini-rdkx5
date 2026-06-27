@@ -113,7 +113,9 @@ def compact_entry(path: Path, records: list[dict[str, Any]], args: argparse.Name
     ticks = [int(row.get("tick", -1)) for row in records]
     start_tick = min(ticks)
     end_tick = max(ticks)
-    source_name = f"{path.parent.name}/{path.name}" if path.parent.name else path.name
+    parent_depth = max(1, int(args.source_parent_depth))
+    parent_parts = list(path.parent.parts[-parent_depth:])
+    source_name = str(Path(*parent_parts, path.name)) if parent_parts else path.name
     metrics = trace_metrics(records, args.dt_s)
     obs_ok = all(len(row.get("obs_state") or []) == 101 for row in records)
     action_ok = all(len(row.get("action") or []) == 14 for row in records)
@@ -204,6 +206,12 @@ def main() -> int:
     parser.add_argument("--command-x", type=float, default=0.08)
     parser.add_argument("--dt-s", type=float, default=0.02)
     parser.add_argument("--default-mode", default="selector_trace")
+    parser.add_argument(
+        "--source-parent-depth",
+        type=int,
+        default=1,
+        help="Number of source parent directories to include in manifest source_name.",
+    )
     parser.add_argument("--min-entries", type=int, default=1)
     args = parser.parse_args()
 

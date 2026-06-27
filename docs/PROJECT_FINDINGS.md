@@ -3875,3 +3875,53 @@ longer close to that manifold; it becomes a calm double-support standstill.
 This closes another restore-policy-KL-only scale sweep. The next deployable
 policy branch must make the rollout distribution itself gate-aware, or use a
 recurrent/phase-aware student that can preserve the stance-transition behavior.
+
+## Gate-Aware Rollout Correction Substrate
+
+The first gate-aware rollout-correction plumbing is now in place. Failed
+rollout observations from the preserved step-0 warm start and the KL100
+near-standstill control were relabeled with the source-VX teacher, with
+row-level weights marking the actual failure modes:
+
+```text
+artifact: outputs/analysis/GATE_AWARE_ROLLOUT_CORRECTION_RELABEL.md
+status: PASS_BC_TRACE_RELABEL_READY
+samples_out: 1000
+weight reasons: low progress, double-support low progress, reverse velocity,
+                high lateral velocity, high tracking error
+```
+
+Those rows were merged with the eight source-VX walking traces:
+
+```text
+artifact: outputs/analysis/GATE_AWARE_ROLLOUT_CORRECTION_MERGED_MANIFEST.md
+status: PASS_FILTERED_BC_MANIFEST_READY
+entries: 10
+samples: 5000
+```
+
+The BC student trainer now consumes row-level sample weights. A 200-step smoke
+fit from the merged manifest passed and exported ONNX:
+
+```text
+artifact: outputs/analysis/GATE_AWARE_ROLLOUT_CORRECTION_STUDENT_SMOKE.md
+status: PASS_PPO_LOC_BC_FIT_SMOKE
+```
+
+This does not create a robot candidate. It only proves the next deployable
+policy branch has a weighted correction-data path ready. The next real gate is
+a strict fitted-backlash multi-seed sweep after a non-smoke student fit, or a
+recurrent/phase-aware student that can preserve the stance-transition behavior.
+
+A two-seed sanity screen of the 200-step smoke ONNX failed quickly:
+
+```text
+artifact: outputs/analysis/GATE_AWARE_ROLLOUT_CORRECTION_STUDENT_SMOKE_SCREEN.md
+status: HOLD_CANDIDATE_FALL_OR_TERMINATION
+seeds: 1, 4
+falls: 2/2
+```
+
+That result is expected for a tiny plumbing fit and should not be treated as a
+candidate branch failure. It only confirms that the smoke export is not useful
+for robot validation.
