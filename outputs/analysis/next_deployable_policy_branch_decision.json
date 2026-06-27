@@ -29,6 +29,11 @@
       "branch": "static gate-aware source-VX relabeling",
       "reason": "targeted relabeling of strict-gate seed 1/4 states produced only tiny tracking changes and did not clear the same fitted-bridge tracking hold.",
       "result": "closed"
+    },
+    {
+      "branch": "naive PPO tracking-cost correction from BC warm start",
+      "reason": "PPO resume/export works, but a tiny tracking-cost correction reduced tracking by nearly freezing; seed 1/4 screen fell to ~0 progress.",
+      "result": "closed"
     }
   ],
   "candidates": [
@@ -121,13 +126,49 @@
       "status": "HOLD_CANDIDATE_TRACKING",
       "track_ratio_mean": 0.4912520815135302,
       "vx_mean": 0.03930016652108242
+    },
+    {
+      "base_height_min_mean": 0.15274417027831078,
+      "body_pitch_p95_mean": 0.10003936543997106,
+      "duration_complete": 8,
+      "falls_or_terminations": 0,
+      "max_pitch_velocity_p95_max": 3.7078282237052917,
+      "max_pitch_velocity_p95_mean": 3.667197823524475,
+      "max_pitch_velocity_p95_min": 3.620047867298126,
+      "max_tracking_p95_max": 0.25833923220634464,
+      "max_tracking_p95_mean": 0.2554495580494404,
+      "max_tracking_p95_min": 0.25222035646438595,
+      "name": "pitch-chain 4.3 PPO warm-start step-0",
+      "path": "outputs/analysis/pitch_chain_4p3_ppo_shape_rate_student_warmstart_step0_multiseed_fitted_backlash.json",
+      "runs": 8,
+      "status": "HOLD_CANDIDATE_TRACKING",
+      "track_ratio_mean": 0.4943784173700806,
+      "vx_mean": 0.03955027338960645
+    },
+    {
+      "base_height_min_mean": 0.15309370309114456,
+      "body_pitch_p95_mean": 0.051650264507400845,
+      "duration_complete": 2,
+      "falls_or_terminations": 0,
+      "max_pitch_velocity_p95_max": 1.2199884653091433,
+      "max_pitch_velocity_p95_mean": 1.1708931624889378,
+      "max_pitch_velocity_p95_min": 1.1217978596687321,
+      "max_tracking_p95_max": 0.11211062669754028,
+      "max_tracking_p95_mean": 0.10997294485569001,
+      "max_tracking_p95_min": 0.10783526301383972,
+      "name": "PPO warm-start tracking correction smoke",
+      "path": "outputs/analysis/pitch_chain_4p3_ppo_warmstart_tracking_correction_smoke_seed1_seed4_screen.json",
+      "runs": 2,
+      "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "track_ratio_mean": 0.015474815930474506,
+      "vx_mean": 0.0012379852744379605
     }
   ],
   "recommendation": {
     "candidate_mechanisms": [
       "DAgger/rollout correction with the strict gate failure states added back to the teacher dataset",
       "recurrent or phase-aware student for the stance-transition discontinuity",
-      "PPO fine-tune from a PPO-compatible BC warm start with stronger teacher-action continuity and gate metrics checked after every short run"
+      "trust-region PPO fine-tune from the validated PPO-compatible BC warm start, with loss of forward progress treated as an immediate stop condition"
     ],
     "minimum_requirements": [
       "uses the standard strict fitted-backlash x=0.08 multi-seed gate as the primary score",
@@ -137,7 +178,7 @@
       "reduces max tracking p95 materially below the current ~0.27 rad plateau",
       "does not pass by freezing, reversing, or shortening the horizon"
     ],
-    "recommended_next": "Do not run another clip/filter/weight-blend/feed-forward-BC branch. Build a gate-aware deployable-policy training path that preserves the working selector behavior while directly penalizing fitted-bridge tracking through the right-knee contact transition.",
+    "recommended_next": "Do not run another clip/filter/weight-blend/feed-forward-BC branch or naive tracking-cost PPO smoke. Build a gate-aware deployable-policy training path that preserves forward behavior explicitly while directly correcting fitted-bridge tracking through the right-knee contact transition.",
     "status": "PLAN_GATE_AWARE_ROLLOUT_CORRECTION_OR_RECURRENT_STUDENT"
   },
   "right_knee_spike_evidence": {

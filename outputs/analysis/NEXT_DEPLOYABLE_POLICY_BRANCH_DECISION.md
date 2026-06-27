@@ -6,7 +6,7 @@ This is an offline decision artifact. It does not train, run simulation, SSH, de
 
 ## Executive Summary
 
-Do not run another clip/filter/weight-blend/feed-forward-BC branch. Build a gate-aware deployable-policy training path that preserves the working selector behavior while directly penalizing fitted-bridge tracking through the right-knee contact transition.
+Do not run another clip/filter/weight-blend/feed-forward-BC branch or naive tracking-cost PPO smoke. Build a gate-aware deployable-policy training path that preserves forward behavior explicitly while directly correcting fitted-bridge tracking through the right-knee contact transition.
 
 The cheap post-hoc branches are now closed negative. The remaining blocker is the deployable policy's representation/training of the right-knee contact transition, not one missing scalar cap.
 
@@ -19,6 +19,8 @@ The cheap post-hoc branches are now closed negative. The remaining blocker is th
 | pitch-chain 4.3 curation | `HOLD_CANDIDATE_TRACKING` | 8 | 8 | 0 | 0.0477 | 0.5965 | 4.1935-4.2879 | 0.2685-0.2794 |
 | right-knee transition filter | `HOLD_CANDIDATE_TRACKING` | 8 | 8 | 0 | 0.0449 | 0.5617 | 4.6244-4.7790 | 0.2675-0.2782 |
 | pitch-chain 4.3 PPO-shape rate student | `HOLD_CANDIDATE_TRACKING` | 8 | 8 | 0 | 0.0393 | 0.4913 | 3.6035-3.7059 | 0.2516-0.2561 |
+| pitch-chain 4.3 PPO warm-start step-0 | `HOLD_CANDIDATE_TRACKING` | 8 | 8 | 0 | 0.0396 | 0.4944 | 3.6200-3.7078 | 0.2522-0.2583 |
+| PPO warm-start tracking correction smoke | `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` | 2 | 2 | 0 | 0.0012 | 0.0155 | 1.1218-1.2200 | 0.1078-0.1121 |
 
 ## PPO / Blend Sweep Evidence
 
@@ -42,6 +44,7 @@ within 2 ticks of contact transition: 404 / 506
 - `scalar behavior-prior PPO smoke`: prior PPO smoke and A100 probe improved reward or calmness while losing useful forward motion.
 - `feed-forward PPO-shape BC smoothing`: pitch-chain 4.3 PPO-shape rate student lowered target velocity and tracking slightly but lost progress and still held the strict fitted-bridge tracking gate.
 - `static gate-aware source-VX relabeling`: targeted relabeling of strict-gate seed 1/4 states produced only tiny tracking changes and did not clear the same fitted-bridge tracking hold.
+- `naive PPO tracking-cost correction from BC warm start`: PPO resume/export works, but a tiny tracking-cost correction reduced tracking by nearly freezing; seed 1/4 screen fell to ~0 progress.
 
 ## Recommended Next Branch
 
@@ -60,7 +63,7 @@ Candidate mechanisms:
 
 - DAgger/rollout correction with the strict gate failure states added back to the teacher dataset
 - recurrent or phase-aware student for the stance-transition discontinuity
-- PPO fine-tune from a PPO-compatible BC warm start with stronger teacher-action continuity and gate metrics checked after every short run
+- trust-region PPO fine-tune from the validated PPO-compatible BC warm start, with loss of forward progress treated as an immediate stop condition
 
 ## Stop Rules
 

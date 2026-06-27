@@ -205,6 +205,16 @@ def build_payload(args: argparse.Namespace) -> dict[str, Any]:
             "outputs/analysis/pitch_chain_4p3_ppo_shape_rate_student_multiseed_fitted_backlash.json",
             run_candidate_rows,
         ),
+        (
+            "pitch-chain 4.3 PPO warm-start step-0",
+            "outputs/analysis/pitch_chain_4p3_ppo_shape_rate_student_warmstart_step0_multiseed_fitted_backlash.json",
+            run_candidate_rows,
+        ),
+        (
+            "PPO warm-start tracking correction smoke",
+            "outputs/analysis/pitch_chain_4p3_ppo_warmstart_tracking_correction_smoke_seed1_seed4_screen.json",
+            run_candidate_rows,
+        ),
     ]
     candidates = []
     for name, rel_path, reader in candidate_specs:
@@ -264,10 +274,15 @@ def build_payload(args: argparse.Namespace) -> dict[str, Any]:
             "result": "closed",
             "reason": "targeted relabeling of strict-gate seed 1/4 states produced only tiny tracking changes and did not clear the same fitted-bridge tracking hold.",
         },
+        {
+            "branch": "naive PPO tracking-cost correction from BC warm start",
+            "result": "closed",
+            "reason": "PPO resume/export works, but a tiny tracking-cost correction reduced tracking by nearly freezing; seed 1/4 screen fell to ~0 progress.",
+        },
     ]
     recommendation = {
         "status": "PLAN_GATE_AWARE_ROLLOUT_CORRECTION_OR_RECURRENT_STUDENT",
-        "recommended_next": "Do not run another clip/filter/weight-blend/feed-forward-BC branch. Build a gate-aware deployable-policy training path that preserves the working selector behavior while directly penalizing fitted-bridge tracking through the right-knee contact transition.",
+        "recommended_next": "Do not run another clip/filter/weight-blend/feed-forward-BC branch or naive tracking-cost PPO smoke. Build a gate-aware deployable-policy training path that preserves forward behavior explicitly while directly correcting fitted-bridge tracking through the right-knee contact transition.",
         "minimum_requirements": [
             "uses the standard strict fitted-backlash x=0.08 multi-seed gate as the primary score",
             "compares against the exact selector blend and PPO-shape warm-start baselines",
@@ -279,7 +294,7 @@ def build_payload(args: argparse.Namespace) -> dict[str, Any]:
         "candidate_mechanisms": [
             "DAgger/rollout correction with the strict gate failure states added back to the teacher dataset",
             "recurrent or phase-aware student for the stance-transition discontinuity",
-            "PPO fine-tune from a PPO-compatible BC warm start with stronger teacher-action continuity and gate metrics checked after every short run",
+            "trust-region PPO fine-tune from the validated PPO-compatible BC warm start, with loss of forward progress treated as an immediate stop condition",
         ],
     }
     return {

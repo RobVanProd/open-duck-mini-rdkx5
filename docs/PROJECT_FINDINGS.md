@@ -3703,3 +3703,44 @@ This closes static gate-aware source-VX relabeling as a standalone fix. The
 next deployable-policy branch needs closed-loop fine-tuning with gate feedback,
 explicit support-transition correction, or recurrent/phase-aware state rather
 than another static BC relabel.
+
+## PPO Warm-Start Tracking-Correction Smoke
+
+The pitch-chain `4.3` PPO-shape BC student was converted into a real Brax PPO
+checkpoint and exported through the standard Playground ONNX path.
+
+```text
+result doc: docs/PPO_WARMSTART_TRACKING_CORRECTION_SMOKE_RESULT.md
+step-0 export: outputs/analysis/PITCH_CHAIN_4P3_PPO_SHAPE_RATE_STUDENT_WARMSTART_STEP0_EXPORT_FIDELITY.md
+step-0 gate: outputs/analysis/PITCH_CHAIN_4P3_PPO_SHAPE_RATE_STUDENT_WARMSTART_STEP0_MULTI_SEED_FITTED_BACKLASH.md
+status: PASS_PPO_BC_WARMSTART_STEP0_EXPORT_FIDELITY
+```
+
+The step-0 PPO export preserved the stable-but-held baseline:
+
+```text
+duration_complete: 8/8
+falls: 0/8
+mean vx: 0.0396 m/s
+mean track ratio: 0.4944
+max pitch velocity p95: 3.6200-3.7078 rad/s
+max tracking p95: 0.2522-0.2583 rad
+```
+
+A tiny PPO correction smoke then ran from that checkpoint with the fitted
+bridge active, fixed `x=0.08`, weak behavior prior, and tracking/target-rate
+penalties.
+
+```text
+smoke status: PASS_SMOKE_RUN
+screen artifact: outputs/analysis/PITCH_CHAIN_4P3_PPO_WARMSTART_TRACKING_CORRECTION_SMOKE_SEED1_SEED4_SCREEN.md
+screen status: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
+seed 1: vx -0.0007, track ratio -0.0082, tracking p95 0.1121
+seed 4: vx  0.0031, track ratio  0.0392, tracking p95 0.1078
+```
+
+This proves the PPO resume/update/export path is usable, but the naive
+tracking-correction recipe is rejected. It reduces tracking error by nearly
+freezing the gait. The next PPO branch must preserve forward behavior much more
+strictly, likely with a trust-region/behavior-preservation mechanism and
+short-run gates that treat progress loss as an immediate failure.

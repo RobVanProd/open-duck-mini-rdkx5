@@ -7439,3 +7439,34 @@ This is not enough improvement to justify robot validation or a full promotion.
 Static gate-aware source-VX relabeling is closed as a standalone fix. The
 remaining offline branch must change the closed-loop training mechanism, not
 only the static labels.
+
+## PPO Warm-Start / Naive Tracking-Correction Smoke
+
+The pitch-chain `4.3` PPO-shape BC student was successfully converted into a
+real Brax PPO checkpoint and exported through the normal Playground ONNX path.
+
+```text
+result doc: docs/PPO_WARMSTART_TRACKING_CORRECTION_SMOKE_RESULT.md
+step-0 status: PASS_PPO_BC_WARMSTART_STEP0_EXPORT_FIDELITY
+step-0 fitted-backlash gate: HOLD_CANDIDATE_TRACKING
+duration_complete: 8/8
+falls: 0/8
+mean vx: 0.0396 m/s
+mean track ratio: 0.4944
+max pitch velocity p95: 3.6200-3.7078 rad/s
+max tracking p95: 0.2522-0.2583 rad
+```
+
+That validates the PPO warm-start plumbing. A tiny PPO correction smoke from
+the checkpoint also ran successfully, but its targeted seed screen failed by
+collapsing forward progress:
+
+```text
+screen status: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
+seed 1: vx -0.0007, track ratio -0.0082, tracking p95 0.1121
+seed 4: vx  0.0031, track ratio  0.0392, tracking p95 0.1078
+```
+
+The naive tracking-cost fine-tune is therefore closed as a standalone fix. It
+improves calmness/tracking by stopping, not by producing a deployable gait.
+Robot validation remains blocked.
