@@ -44,6 +44,7 @@ complete and documented in:
 - `outputs/analysis/LIVE_ORACLE_ITER0_X008_PHASE_TRACKING_PLATEAU_AUDIT.md`
 - `outputs/analysis/LIVE_ORACLE_PHASE_QUADRANT_ITER0_X008_DECISION.md`
 - `outputs/analysis/LIVE_ORACLE_PHASE_SMOOTH_BLEND_ITER0_X008_DECISION.md`
+- `outputs/analysis/LIVE_ORACLE_PHASE_MODULATED_ITER0_X008_DECISION.md`
 
 ## Iteration 0 Outcome
 
@@ -228,6 +229,36 @@ This rejects naive independent phase-head approaches, both hard and smooth. The
 next representation rung should not train more separately split phase heads.
 Use a shared representation with phase-conditioned modulation, or move to a
 recurrent student trained through live-oracle DAgger.
+
+## Shared-Trunk Phase-Modulated Student
+
+Result:
+
+`HOLD_PHASE_MODULATED_SEED5_COLLAPSE`
+
+Summary:
+
+- artifact: `outputs/analysis/LIVE_ORACLE_PHASE_MODULATED_ITER0_X008_DECISION.md`
+- architecture: shared trunk plus command/phase context modulation from `obs[6,99,100]`
+- fit p95 abs error: `0.032824`
+- fit target-rate p95: `2.228043 rad/s`
+- ONNX max action error: `2.682209014892578e-07`
+- x=0.08 duration complete: `7 / 8`
+- x=0.08 falls/terminations: `1 / 8`
+- failed seed: `5`
+- x=0.08 mean track ratio: `0.1388`
+- x=0.08 max pitch-chain sent velocity p95: `3.8548 rad/s`
+- x=0.08 max pitch-chain tracking p95: `0.2969 rad`
+
+Interpretation:
+
+The shared-trunk phase/command modulation rung is rejected in this form. It is
+less rate-spiky than the independent phase-head variants, but it still
+introduces a seed-5 reverse/fall and does not break the strict tracking
+plateau. This narrows the remaining software path further: do not keep trying
+static feed-forward phase-head or phase-modulation variants trained by one-shot
+BC. The next aligned rung is recurrent/live-state memory or closed-loop
+fine-tuning from a walking prior.
 
 ## Hardware Track Note
 
