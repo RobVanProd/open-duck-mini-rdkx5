@@ -6954,6 +6954,21 @@ and in-envelope. It is still **not** a robot candidate because `x=0.08`
 tracking error remains too high. The next offline target is fitted-bridge
 tracking improvement without breaking the newly fixed zero-command stability.
 
+A first tracking-tightening variant lowered the BC target-rate limit from
+`2.25` to `1.75 rad/s` and increased target-rate penalty scale from `0.2` to
+`0.6`:
+
+```text
+decision: outputs/analysis/COMMAND_CONDITIONED_HARD_SEED_RECOVERY_DAGGER_SEED5_X0_RATE175_DECISION.md
+status: HOLD_RATE_TIGHTENING_BREAKS_X0_SEED5
+supervised target-rate p95: 1.5732 rad/s
+x=0 fitted gate: seed 5 falls at 59 samples
+```
+
+This is a negative result. Global target-rate tightening reduces the supervised
+rate metric but breaks the zero-command hard-seed fix. The next tracking branch
+must preserve the DAgger seed-5 correction explicitly.
+
 ## Physical Start-Pose Calibration Check
 
 The real robot home/start pose has been checked against both telemetry and a

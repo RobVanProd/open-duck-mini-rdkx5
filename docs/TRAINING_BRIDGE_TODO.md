@@ -5676,3 +5676,20 @@ Next branch: improve fitted-bridge tracking at x=0.08 without breaking the
 fixed x=0.0 hard-seed behavior. Candidate options are tracking-aware student
 loss, target-stage feedback, or PPO fine-tuning from this DAgger seed-5
 checkpoint with the fitted actuator bridge active. Do not promote to robot.
+
+Rate-tightening negative result:
+
+```text
+decision: outputs/analysis/COMMAND_CONDITIONED_HARD_SEED_RECOVERY_DAGGER_SEED5_X0_RATE175_DECISION.md
+status: HOLD_RATE_TIGHTENING_BREAKS_X0_SEED5
+```
+
+Lowering the supervised target-rate limit to `1.75 rad/s` reduced the fit's
+target-rate p95 to `1.5732 rad/s`, but reintroduced the x=0 seed-5 fall:
+
+```text
+x=0 seed 5: fall at 59 samples
+```
+
+Stop rule: do not pursue global target-rate tightening alone. Any tracking
+improvement must preserve the DAgger seed-5 zero-command correction.
