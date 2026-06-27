@@ -6969,6 +6969,22 @@ This is a negative result. Global target-rate tightening reduces the supervised
 rate metric but breaks the zero-command hard-seed fix. The next tracking branch
 must preserve the DAgger seed-5 correction explicitly.
 
+Smoothing only the `x=0.08` pitch-chain labels was then tested:
+
+```text
+decision: outputs/analysis/COMMAND_CONDITIONED_DAGGER_SEED5_X0_PITCH_RATE_1P75_DECISION.md
+status: HOLD_PITCH_RATE_LABEL_SMOOTHING_KILLS_PROGRESS
+x=0 fitted gate: 8/8 complete, seed 5 fixed
+x=0.08 fitted gate: 8/8 complete, mean track ratio 0.1171
+pitch-chain target velocity p95: 1.4886-1.6901 rad/s
+tracking p95: 0.1472-0.1834 rad
+```
+
+This preserves zero-command stability and improves the tracking/target-rate
+direction, but removes too much forward motion. The next branch should not
+lower moving-label rates further; it needs tracking feedback or PPO fine-tuning
+from the DAgger seed-5 checkpoint while preserving propulsion.
+
 ## Physical Start-Pose Calibration Check
 
 The real robot home/start pose has been checked against both telemetry and a

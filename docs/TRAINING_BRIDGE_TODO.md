@@ -5693,3 +5693,23 @@ x=0 seed 5: fall at 59 samples
 
 Stop rule: do not pursue global target-rate tightening alone. Any tracking
 improvement must preserve the DAgger seed-5 zero-command correction.
+
+Pitch-chain label smoothing result:
+
+```text
+decision: outputs/analysis/COMMAND_CONDITIONED_DAGGER_SEED5_X0_PITCH_RATE_1P75_DECISION.md
+status: HOLD_PITCH_RATE_LABEL_SMOOTHING_KILLS_PROGRESS
+```
+
+Only the x=0.08 moving labels were smoothed to `1.75 rad/s` on the pitch chain.
+That preserved the x=0 hard-seed fix but collapsed forward progress:
+
+```text
+x=0.0: 8 / 8 duration complete
+x=0.08: 8 / 8 duration complete, mean track ratio 0.1171
+tracking p95 range: 0.1472-0.1834 rad
+```
+
+Stop rule: do not keep lowering moving-label pitch-chain rates. The next
+tracking branch needs closed-loop tracking feedback or PPO fine-tuning from the
+DAgger seed-5 checkpoint, not more offline smoothing.
