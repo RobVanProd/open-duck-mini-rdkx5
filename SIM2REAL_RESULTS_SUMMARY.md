@@ -7217,3 +7217,42 @@ Interpretation: another small static DAgger relabel against the same teacher is
 not the next useful path. The x=0.08 tracking hold needs a stronger change in
 closed-loop dynamics, training feedback, or teacher signal; not more upweighting
 of nearly identical labels.
+
+## Actuator-Tracking Behavior-Prior Probe
+
+An A100 candidate-only run tested whether restoring from the PPO-compatible
+step-0 checkpoint, keeping the command-conditioned student as a behavior prior,
+and adding explicit actuator-tracking pressure would preserve forward progress
+while reducing the fitted-bridge tracking hold:
+
+```text
+result doc: docs/ACTUATOR_TRACKING_BEHAVIOR_PRIOR_PROBE_RESULT.md
+training status: PASS_SMOKE_RUN
+step 0 reward: 16.7091
+step 40960 reward: 20.6604
+robot touched: false
+```
+
+The remote Colab checkpoint sweep wedged in a GPU eval worker after training
+completed, so the exported ONNX checkpoints were swept locally on CPU with the
+same compact fitted-bridge x=0.0/x=0.08 gate:
+
+```text
+step 0 x=0.08:
+  mean vx: 0.0215 m/s
+  track ratio: 0.2692
+  max pitch tracking p95: 0.2233 rad
+  status: HOLD_CANDIDATE_TRACKING
+
+step 40960 x=0.08:
+  mean vx: 0.0083 m/s
+  track ratio: 0.1043
+  max pitch tracking p95: 0.2182 rad
+  status: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
+```
+
+No checkpoint was promoted. The step-40960 PPO update improved reward and
+reduced target velocity, but it also reduced useful forward motion. This repeats
+the known deployability failure: small PPO reward/penalty changes can make the
+policy look calmer while moving it back toward the low-progress basin. Robot
+validation remains blocked.

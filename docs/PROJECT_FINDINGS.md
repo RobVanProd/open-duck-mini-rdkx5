@@ -3317,3 +3317,51 @@ Conclusion: this is not a promising static-label branch. The next deployability
 attempt needs a stronger mechanism than reweighting nearly identical labels:
 gate-selected PPO, actuator/tracking feedback in the objective, or a teacher
 that actually changes actions on tracking-limited states.
+
+## Actuator-Tracking Behavior-Prior PPO Probe
+
+The next A100 probe restored from the PPO-compatible step-0 checkpoint, used the
+command-conditioned DAgger seed-5/x=0 MLP as a behavior prior, and added explicit
+actuator-tracking pressure:
+
+```text
+doc: docs/ACTUATOR_TRACKING_BEHAVIOR_PRIOR_PROBE_RESULT.md
+status: HOLD_REJECT_CANDIDATE_CHECKPOINT
+training: PASS_SMOKE_RUN
+robot touched: false
+```
+
+Training itself completed and exported two ONNX checkpoints:
+
+```text
+step 0 reward: 16.7091
+step 40960 reward: 20.6604
+```
+
+The Colab GPU sweep wedged during candidate eval after training completed, so
+the exported checkpoints were swept locally on CPU under the same compact
+fitted-bridge x=0.0/x=0.08 gate.
+
+Results:
+
+```text
+step 0 x=0.08:
+  mean vx 0.0215
+  track ratio 0.2692
+  max pitch tracking p95 0.2233
+  status HOLD_CANDIDATE_TRACKING
+
+step 40960 x=0.08:
+  mean vx 0.0083
+  track ratio 0.1043
+  max pitch tracking p95 0.2182
+  status HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
+```
+
+Conclusion: this PPO variant did not produce a robot candidate. The trained
+checkpoint reduced target velocity and increased reward, but it also moved the
+policy back toward low progress. This is another instance of the same pattern:
+reward improvement is not aligned with deployability unless the gate behavior is
+preserved directly. The next attempt needs a stronger deployable-policy
+mechanism, such as teacher-action continuity during PPO or rollout correction
+from the working selector, rather than another small scalar reward tweak.
