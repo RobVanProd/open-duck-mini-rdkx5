@@ -6412,6 +6412,20 @@ actuator bridge active, restores the command-conditioned pitch-rate-limited
 warm start, and adds explicit support/contact transition pressure. It has not
 been executed. Grade it against the step-0 baselines, not reward alone.
 
+The tiny CPU smoke was then run:
+
+```text
+decision: outputs/analysis/SUPPORT_TRANSITION_RECOVERY_FINETUNE_SMOKE_RESULT.md
+status: HOLD_X0_HARD_SEED_REGRESSION
+training: PASS_SMOKE_RUN, step 1040, reward 38.2625
+x=0.0 fitted bridge: falls on seeds 1 and 7
+```
+
+This validates restore/export plumbing but rejects the reward mix. The support
+transition terms were strong enough to break zero-command hard-seed stability,
+so this exact recipe should not be scaled to A100 and should not receive an
+x=0.08 gate.
+
 The existing source-VX DAgger-2 deployable ONNX candidates were then validated
 under a stricter 15-second fitted-bridge x=0.08 seed sweep:
 

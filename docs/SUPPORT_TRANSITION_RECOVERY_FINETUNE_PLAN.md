@@ -76,7 +76,7 @@ outputs/analysis/support_transition_recovery_finetune/dry_run_manifest.json
 Status:
 
 ```text
-DRY_RUN only
+DRY_RUN_REVIEWED_AND_TINY_SMOKE_RUN
 robot_touched: false
 deploy_performed: false
 ```
@@ -112,6 +112,28 @@ reward terms use positive scale
 This smoke is intentionally small (`1024` timesteps, CPU dry-run target). It is
 meant to verify that restore, reward wiring, and export are coherent before any
 long CUDA/A100 job.
+
+## Tiny Smoke Result
+
+The reviewed tiny CPU smoke was run after this plan was created:
+
+```text
+decision: outputs/analysis/SUPPORT_TRANSITION_RECOVERY_FINETUNE_SMOKE_RESULT.md
+final manifest: outputs/analysis/support_transition_recovery_finetune/final_manifest.json
+x=0.0 gate: outputs/analysis/SUPPORT_TRANSITION_RECOVERY_FINETUNE_X0_FITTED_15S.md
+status: HOLD_X0_HARD_SEED_REGRESSION
+```
+
+The restore/export path worked, but the first required gate failed:
+
+```text
+x=0.0 fitted bridge, 15 s, seeds 0-7
+falls: seeds 1 and 7
+duration complete: 6 / 8
+```
+
+Do not scale this exact reward mix to A100. It violated the first stop rule
+before x=0.08 was tested.
 
 ## Required Gates After Any Run
 

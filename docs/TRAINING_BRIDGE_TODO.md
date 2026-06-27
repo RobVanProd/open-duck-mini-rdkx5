@@ -5412,3 +5412,16 @@ pressure, and gates against the step-0 x=0.0/x=0.08 fitted baselines. It is not
 robot approval and it has not been executed. Do not launch a longer CUDA/A100
 run unless the small smoke preserves x=0.08 forward progress while reducing
 fitted tracking error.
+
+Tiny CPU smoke result:
+
+```text
+decision: outputs/analysis/SUPPORT_TRANSITION_RECOVERY_FINETUNE_SMOKE_RESULT.md
+status: HOLD_X0_HARD_SEED_REGRESSION
+x=0.0 fitted bridge: falls on seeds 1 and 7
+```
+
+The restore/export path passed, but this support-transition reward mix regressed
+hard-seed zero-command stability. Do not scale this exact recipe to A100 and do
+not run its x=0.08 gate. The next PPO attempt must preserve x=0.0 hard-seed
+stability before adding support-transition pressure.
