@@ -93,10 +93,14 @@ flat_terrain_backlash, x=0.0, 15 s, seeds 1 and 7:
 Reference:
 `outputs/analysis/CMD_PITCH_RL_2P25_MODEL_VARIANT_X0_HARD_SEED_DECISION.md`.
 
-A candidate that passes `flat_terrain_backlash` has not passed `flat_terrain`
-unless that exact gate was run. Before robot validation, the team must choose
-the canonical sim promotion model intentionally and report that choice with the
-candidate.
+Canonical-model decision:
+`docs/CANONICAL_SIM_MODEL_GATE_DECISION.md`.
+
+Current recommendation: use `flat_terrain_backlash` as the canonical offline
+promotion model and treat `flat_terrain` as a stress/ablation gate unless the
+team explicitly changes the canonical model. A candidate that passes
+`flat_terrain_backlash` has not passed `flat_terrain` unless that exact gate was
+run.
 
 ## Required Offline Artifacts
 

@@ -6442,6 +6442,17 @@ not on the non-backlash flat model. Future candidate status must name the task
 variant explicitly, and the next PPO or robot discussion must choose the
 canonical offline promotion model intentionally.
 
+Canonical-model recommendation:
+
+```text
+doc: docs/CANONICAL_SIM_MODEL_GATE_DECISION.md
+status: RECOMMEND_CANONICAL_FLAT_TERRAIN_BACKLASH
+```
+
+Use `flat_terrain_backlash` for canonical offline promotion gates in this branch
+and treat `flat_terrain` as a named stress/ablation gate unless the team
+explicitly changes the canonical model.
+
 The existing source-VX DAgger-2 deployable ONNX candidates were then validated
 under a stricter 15-second fitted-bridge x=0.08 seed sweep:
 

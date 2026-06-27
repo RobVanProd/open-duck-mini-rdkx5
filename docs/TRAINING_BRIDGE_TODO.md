@@ -5441,3 +5441,14 @@ but fails the same hard seeds on `flat_terrain` even at 10 s. The next PPO or
 candidate-promotion step must explicitly choose which model variant is
 canonical. Do not mix `flat_terrain` and `flat_terrain_backlash` results in one
 status claim.
+
+Canonical-model recommendation:
+
+```text
+doc: docs/CANONICAL_SIM_MODEL_GATE_DECISION.md
+status: RECOMMEND_CANONICAL_FLAT_TERRAIN_BACKLASH
+```
+
+Use `flat_terrain_backlash` for canonical offline promotion gates in this branch
+and treat `flat_terrain` as a named stress/ablation gate unless the team
+explicitly changes the canonical model.
