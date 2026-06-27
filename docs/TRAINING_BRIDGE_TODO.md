@@ -5777,3 +5777,22 @@ GPU time:
 - add behavior-prior or DAgger-style recovery before another PPO-only recipe
 - rerun Colab gates with --sim-preflight-timeout-s 600 if using per-seed Colab eval
 ```
+
+`tools/sweep_candidate_checkpoints.py` now emits explicit per-checkpoint
+promotion decisions:
+
+```text
+PASS_PROMOTE_CANDIDATE_CHECKPOINT
+HOLD_PARTIAL_CANDIDATE_CHECKPOINT
+HOLD_REJECT_CANDIDATE_CHECKPOINT
+DRY_RUN_PROMOTION_UNEVALUATED
+```
+
+Use this sweep on exported ONNX checkpoints before reading training reward as
+evidence. A compact real sweep of the failed A100 final checkpoint rejected it:
+
+```text
+status: HOLD_REJECT_CANDIDATE_CHECKPOINT
+x=0.0: HOLD_CANDIDATE_ACTION_SATURATION
+x=0.08: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
+```
