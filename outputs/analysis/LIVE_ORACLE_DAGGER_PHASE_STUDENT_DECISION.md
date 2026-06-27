@@ -1,6 +1,6 @@
 # Live-Oracle DAgger Phase Student Decision
 
-status: `IN_PROGRESS_HOLD_ITER1`
+status: `IN_PROGRESS_HOLD_COMMAND_GATE_X0_SOLVED_X008_TRACKING_PLATEAU`
 
 This decision file tracks the pre-registered branch outcome. No robot tests,
 SSH, deployment, policy overwrite, or runtime behavior changes have been
@@ -33,6 +33,14 @@ Iteration 1 is complete and documented in:
 - `outputs/analysis/LIVE_ORACLE_DAGGER_ITER_1_X0_GATE.md`
 - `outputs/analysis/LIVE_ORACLE_DAGGER_ITER_1_DECISION.md`
 - `outputs/analysis/LIVE_ORACLE_DAGGER_SEED5_TRACE_ISOLATION.md`
+
+Soft x=0.0 relabel ablations and the command-gated x0-safe diagnostic are also
+complete and documented in:
+
+- `outputs/analysis/LIVE_ORACLE_DAGGER_ITER_2_3_SOFT_X0_ABLATION.md`
+- `outputs/analysis/LIVE_ORACLE_COMMAND_GATED_X0SAFE_ITER0_DECISION.md`
+- `outputs/analysis/LIVE_ORACLE_COMMAND_GATED_X0SAFE_ITER0_X0_GATE.md`
+- `outputs/analysis/LIVE_ORACLE_COMMAND_GATED_X0SAFE_ITER0_X008_GATE.md`
 
 ## Iteration 0 Outcome
 
@@ -98,6 +106,40 @@ Do not spend more rung-1 budget on scalar zero-action alpha sweeps. The next
 step should change structure: separate command-conditioned heads, add a
 command-aware gate in the student, or move to the next representation rung
 instead of globally blending zero labels into the same feed-forward map.
+
+## Command-Gated X0-Safe Diagnostic
+
+Result:
+
+`HOLD_X008_TRACKING_PLATEAU_X0_SOLVED_BY_COMMAND_GATE`
+
+Summary:
+
+- wrapper: `outputs/analysis/live_oracle_command_gated_x0safe_iter0_candidate/candidate.onnx`
+- ONNX branch verification max action error: `0.0`
+- gate: use x0-safe recovery policy when `abs(obs[6]) <= 0.02`, otherwise use iteration-0 movement policy
+- x=0.0 duration complete: `8 / 8`
+- x=0.0 falls: `0 / 8`
+- x=0.0 mean local vx: `0.0003 m/s`
+- x=0.0 max pitch-chain tracking p95: `0.0718 rad`
+- x=0.08 duration complete: `8 / 8`
+- x=0.08 falls: `0 / 8`
+- x=0.08 mean track ratio: `0.5613`
+- x=0.08 max pitch-chain sent vel p95: `3.6791 rad/s`
+- x=0.08 max pitch-chain tracking p95: `0.2665 rad`
+
+Interpretation:
+
+Hard command-regime separation fixes zero-command semantics, including the
+seed-5 x=0.0 failure. It does not fix the x=0.08 tracking plateau because the
+high-command branch is still the iteration-0 movement student. Therefore the
+remaining live-oracle student blocker is no longer "can x0 and x008 coexist at
+all"; it is "can a high-command representation reduce tracking below 0.20 rad
+without losing the movement behavior."
+
+Do not promote the command-gated wrapper to robot validation. It is diagnostic
+evidence supporting a structural command-conditioned/phase-aware student rather
+than more scalar relabel or alpha sweeps.
 
 ## Hardware Track Note
 
