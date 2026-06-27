@@ -3054,6 +3054,23 @@ closed-loop lateral/height recovery under left support, while seed 7 needs
 better right-support pitch-chain action fit or recovery. Do not run another
 uniform static-label DAgger pass as the next experiment.
 
+A hard-seed-only initialization screen then tested whether this was a single
+unlucky MLP start:
+
+```text
+artifact: outputs/analysis/DAGGER8_OBS_CONSISTENCY_INIT_SCREEN.md
+mlp seeds: 9, 10, 11
+rollout seeds: 1, 7
+status: HOLD_STATIC_BC_INIT_SCREEN
+```
+
+All three MLP initializations terminated around 32-33 samples on both hard
+seeds. Seed 1 remained left-support dominated (`10` contact, `vy95` about
+`1.17-1.26 m/s`), and seed 7 remained right-support dominated (`01` contact,
+`vy95` about `1.15-1.22 m/s`). Static BC stochasticity is therefore not the
+next useful branch. Move to explicit closed-loop support-transition recovery or
+PPO/fine-tuning from the best BC student with the fitted bridge active.
+
 ## Physical start-pose calibration check
 
 The real robot now has both telemetry evidence and operator-confirmed physical

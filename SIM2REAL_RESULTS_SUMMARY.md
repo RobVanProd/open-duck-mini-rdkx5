@@ -6618,6 +6618,22 @@ insufficient as a next step. The remaining offline blocker is a split hard-seed
 recovery problem: seed 1 needs closed-loop lateral/height stabilization; seed 7
 needs a better right-support pitch-chain action fit or recovery mapping.
 
+A hard-seed-only screen across additional MLP initializations closed the cheap
+static-BC stochasticity branch:
+
+```text
+artifact: outputs/analysis/DAGGER8_OBS_CONSISTENCY_INIT_SCREEN.md
+mlp seeds: 9, 10, 11
+rollout seeds: 1, 7
+status: HOLD_STATIC_BC_INIT_SCREEN
+all hard-seed rollouts terminated around 32-33 samples
+```
+
+The next useful offline branch should be explicit closed-loop support-transition
+recovery or PPO/fine-tuning from the best BC student with the fitted actuator
+bridge active. More MLP random seeds, observation-consistency tweaks, or uniform
+static-label DAgger weighting are not the right next step.
+
 ## Physical Start-Pose Calibration Check
 
 The real robot home/start pose has been checked against both telemetry and a
