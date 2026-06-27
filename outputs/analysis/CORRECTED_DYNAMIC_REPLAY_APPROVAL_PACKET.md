@@ -1,12 +1,13 @@
 # Corrected Dynamic Replay Approval Packet
 
-status: `AWAITING_EXPLICIT_OPERATOR_APPROVAL`
+status: `COMPLETED_HOLD_DYNAMIC_TRACKING_STILL_BLOCKS_WALKING`
 
 Purpose: collect corrected-knee dynamic policy-waveform telemetry after the
 left-knee offset correction, without grounding the robot and without tuning.
 
-This packet is not an approval. It records the exact scoped robot action that
-would be run only after explicit operator approval.
+This packet recorded the exact scoped robot action that was run after explicit
+operator approval. The result is documented in
+`outputs/analysis/CORRECTED_DYNAMIC_REPLAY_RESULT.md`.
 
 ## Current Evidence
 

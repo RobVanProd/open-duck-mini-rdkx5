@@ -1,6 +1,6 @@
 # Corrected-Knee Actuator Refit Gate
 
-Status: `PASS_SINE_ONLY_TRACKING_DYNAMIC_REFIT_PENDING`
+Status: `HOLD_DYNAMIC_TRACKING_STILL_BLOCKS_WALKING`
 
 Purpose: refresh the actuator response model after the left-knee soft-offset
 correction before interpreting new sim-to-real policy results.
@@ -143,7 +143,7 @@ new fit is sine-only but someone wants to approve walking
 Current status:
 
 ```text
-PASS_SINE_ONLY_TRACKING_DYNAMIC_REFIT_PENDING
+HOLD_DYNAMIC_TRACKING_STILL_BLOCKS_WALKING
 ```
 
 Corrected-hardware low-speed actuator tracking evidence was collected on
@@ -167,7 +167,25 @@ outputs/analysis/ACTUATOR_RESPONSE_FIT_CORRECTED_KNEE_SINE_ONLY.md
 outputs/analysis/CORRECTED_KNEE_ACTUATOR_FIT_COMPARE_SINE_ONLY.md
 ```
 
-This is still sine-only evidence. The corrected full walking bridge remains
-pending because no corrected suspended dynamic policy-waveform replay was run.
-Robot walking validation remains blocked until that evidence is explicitly
-approved, collected, and reviewed.
+The corrected suspended `x=0.08` dynamic policy-waveform replay was collected
+after the sine-only pass. It still shows high target velocity, sustained
+pitch-chain tracking error, and about 3-4 ticks of effective lag:
+
+```text
+pitch-chain sent velocity p95: 3.14-5.22 rad/s
+pitch-chain tracking p95:      0.125-0.171 rad after startup filtering
+dynamic fit delay:             3 ticks
+dynamic fit velocity limits:   about 2.0-3.25 rad/s
+```
+
+Artifacts:
+
+```text
+outputs/analysis/CORRECTED_DYNAMIC_REPLAY_RESULT.md
+outputs/analysis/CORRECTED_DYNAMIC_REPLAY_TARGET_VELOCITY.md
+outputs/analysis/ACTUATOR_RESPONSE_FIT_CORRECTED_KNEE.md
+outputs/analysis/CORRECTED_KNEE_ACTUATOR_FIT_COMPARE.md
+```
+
+The knee correction is validated at low speed, but `BEST_WALK_ONNX_2` remains
+dynamically too aggressive at `x=0.08`. Grounded replay remains blocked.

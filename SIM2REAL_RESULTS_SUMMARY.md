@@ -21,6 +21,14 @@ corrected-knee sanity check, but it does **not** approve walking. The sine-only
 fit hit the velocity lower grid bound and is not a replacement for corrected
 dynamic policy-waveform evidence.
 
+The corrected suspended `x=0.08` policy replay was then collected on stand.
+It still holds for dynamic tracking: pitch-chain target velocity p95 is
+`3.14-5.22 rad/s`, pitch tracking p95 is `0.125-0.171 rad` after startup
+filtering, and the fitted delay remains `3 ticks`. The corrected dynamic fit
+keeps effective velocity limits around `2.0-3.25 rad/s`. The knee correction
+improved calibration but did not make `BEST_WALK_ONNX_2` trackable at `x=0.08`.
+Grounded replay remains blocked.
+
 The first evidence gates no longer point to a gross IMU axis flip, policy hash
 mismatch, joint order failure, or zero-command policy explosion. The Duck can
 hold home pose, pass the labeled IMU tilt sanity check, pass software feedback
