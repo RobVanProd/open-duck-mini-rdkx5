@@ -3071,6 +3071,39 @@ seeds. Seed 1 remained left-support dominated (`10` contact, `vy95` about
 next useful branch. Move to explicit closed-loop support-transition recovery or
 PPO/fine-tuning from the best BC student with the fitted bridge active.
 
+## PPO-loc DAgger-7 targeted recovery student
+
+The DAgger-7 targeted recovery manifest was also fit into the PPO actor's
+deterministic `tanh(loc)` contract with the standard `[512, 256, 128]` swish
+network:
+
+```text
+artifact: outputs/analysis/PPO_LOC_DAGGER7_TARGETED_RECOVERY_STUDENT.md
+status: PASS_PPO_LOC_BC_FIT_SMOKE
+manifest: outputs/analysis/filtered_source_vx_selector_dagger7_targeted_recovery_manifest.json
+train p95 abs error: 0.043166
+target-rate p95: 2.379108 rad/s
+```
+
+The supervised fit is slightly better than the earlier DAgger-6 PPO-loc fit,
+but the closed-loop fitted-bridge gate still holds:
+
+```text
+artifact: outputs/analysis/PPO_LOC_DAGGER7_TARGETED_RECOVERY_X008_FITTED_10S.md
+status: HOLD
+duration complete: 6 / 8
+falls: seeds 1 and 7
+mean track ratio: 0.3343
+mean vx: 0.0267 m/s
+```
+
+This candidate is not worth promoting into a PPO checkpoint as-is. It improves
+the broad distribution relative to the DAgger-6 PPO-loc student, but it still
+inherits the same hard support-transition failures and misses the x=0.08
+tracking gate on completed seeds. The next PPO branch needs an explicit
+closed-loop recovery/stabilization objective; merely switching the DAgger-7
+student into the PPO actor shape is not enough.
+
 ## Physical start-pose calibration check
 
 The real robot now has both telemetry evidence and operator-confirmed physical

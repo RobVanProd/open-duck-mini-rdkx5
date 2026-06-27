@@ -6634,6 +6634,30 @@ recovery or PPO/fine-tuning from the best BC student with the fitted actuator
 bridge active. More MLP random seeds, observation-consistency tweaks, or uniform
 static-label DAgger weighting are not the right next step.
 
+The same DAgger-7 manifest was then fit into the PPO actor's deterministic
+`tanh(loc)` contract:
+
+```text
+artifact: outputs/analysis/PPO_LOC_DAGGER7_TARGETED_RECOVERY_STUDENT.md
+status: PASS_PPO_LOC_BC_FIT_SMOKE
+train p95 abs error: 0.043166
+target-rate p95: 2.379108 rad/s
+```
+
+Its fitted-bridge x=0.08 gate still held:
+
+```text
+artifact: outputs/analysis/PPO_LOC_DAGGER7_TARGETED_RECOVERY_X008_FITTED_10S.md
+duration complete: 6 / 8
+falls: seeds 1 and 7
+mean track ratio: 0.3343
+mean vx: 0.0267 m/s
+```
+
+Do not promote this supervised PPO-loc student directly into PPO checkpoint
+fine-tuning unless the next branch explicitly adds closed-loop recovery pressure
+for the hard support-transition states.
+
 ## Physical Start-Pose Calibration Check
 
 The real robot home/start pose has been checked against both telemetry and a
