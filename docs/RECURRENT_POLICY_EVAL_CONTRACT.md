@@ -130,3 +130,29 @@ Next offline work may train or export a recurrent/live-state diagnostic and
 gate it with the explicit hidden-state flags. Do not promote a recurrent policy
 to robot testing until runtime hidden-state support exists or the policy is
 distilled back to the fixed stateless contract.
+
+## First Diagnostic Trainer
+
+The branch now includes a minimal recurrent BC diagnostic:
+
+```text
+tools/train_recurrent_bc_student.py
+```
+
+It trains a small Elman-style recurrent student from contiguous trace windows
+and exports:
+
+```text
+obs[1,101], h_in[1,H] -> continuous_actions[1,14], h_out[1,H]
+```
+
+Validation smoke:
+
+```text
+outputs/analysis/RECURRENT_BC_STUDENT_SMOKE.md
+outputs/analysis/recurrent_bc_student_smoke.json
+```
+
+The smoke only verifies training/export/fidelity and stateful evaluator
+execution. It is not a candidate policy and does not change the runtime
+deployability boundary above.

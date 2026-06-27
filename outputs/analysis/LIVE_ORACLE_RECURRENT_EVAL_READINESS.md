@@ -16,6 +16,9 @@ contract because the deployed policy path is stateless.
   reports full ONNX input/output metadata when inspected.
 - `tools/run_candidate_seed_sweep.py` passes the same stateful flags through
   the canonical multi-seed gate.
+- `tools/train_recurrent_bc_student.py` trains and exports a minimal
+  `obs,h_in -> action,h_out` recurrent BC diagnostic from contiguous trace
+  windows.
 - Stateless `obs[1,101] -> actions[1,14]` policies use the old default path.
 
 ## New Flags
@@ -36,6 +39,21 @@ This is an offline evaluator scaffold only. It does not make recurrent ONNX
 deployable on the robot. A recurrent candidate may be used to test the
 representation hypothesis in sim, but robot promotion still requires either a
 stateless export or a separate reviewed runtime hidden-state adapter.
+
+## Smoke Result
+
+The first recurrent BC smoke used:
+
+```text
+manifest: outputs/analysis/live_oracle_dagger_phase_student/iter_003/live_oracle_dagger_aggregate_manifest.json
+hidden_dim: 32
+sequence_length: 16
+steps: 80
+```
+
+It produced a valid ONNX with fidelity under `1e-6` and the stateful evaluator
+executed it with `h_in -> h_out`. The smoke is intentionally too short and
+undertrained to be a candidate.
 
 ## Hardware Note
 

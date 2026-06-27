@@ -10,6 +10,12 @@
     "--policy-state-input-names",
     "--policy-state-output-names"
   ],
+  "trainer": "tools/train_recurrent_bc_student.py",
+  "trainer_contract": "obs[1,101], h_in[1,H] -> continuous_actions[1,14], h_out[1,H]",
+  "smoke_artifacts": [
+    "outputs/analysis/RECURRENT_BC_STUDENT_SMOKE.md",
+    "outputs/analysis/recurrent_bc_student_smoke.json"
+  ],
   "promotion_boundary": "recurrent_policy_not_robot_deployable_without_runtime_hidden_state_adapter_or_stateless_distillation",
   "hardware_note": {
     "left_knee_offset_corrected": true,
