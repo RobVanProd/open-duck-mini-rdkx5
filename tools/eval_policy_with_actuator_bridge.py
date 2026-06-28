@@ -609,6 +609,29 @@ def run_closed_loop_worker(args) -> dict:
         cmd.extend(["--policy-state-input-names", str(args.policy_state_input_names)])
     if args.policy_state_output_names:
         cmd.extend(["--policy-state-output-names", str(args.policy_state_output_names)])
+    if args.eval_push_enable:
+        cmd.append("--eval-push-enable")
+    if args.eval_push_interval_min_s is not None:
+        cmd.extend(["--eval-push-interval-min-s", str(args.eval_push_interval_min_s)])
+    if args.eval_push_interval_max_s is not None:
+        cmd.extend(["--eval-push-interval-max-s", str(args.eval_push_interval_max_s)])
+    if args.eval_push_magnitude_min is not None:
+        cmd.extend(["--eval-push-magnitude-min", str(args.eval_push_magnitude_min)])
+    if args.eval_push_magnitude_max is not None:
+        cmd.extend(["--eval-push-magnitude-max", str(args.eval_push_magnitude_max)])
+    cmd.extend(["--push-recovery-window-s", str(args.push_recovery_window_s)])
+    cmd.extend(
+        [
+            "--push-recovery-max-abs-pitch-rad",
+            str(args.push_recovery_max_abs_pitch_rad),
+        ]
+    )
+    cmd.extend(
+        [
+            "--push-recovery-min-base-height-m",
+            str(args.push_recovery_min_base_height_m),
+        ]
+    )
     env = build_jax_env(args.jax_platform, args.jax_platforms)
     try:
         result = subprocess.run(
@@ -785,6 +808,8 @@ def build_markdown(payload: dict) -> str:
         lines.append(f"jax: `{env.get('jax_backend')}` `{env.get('jax_devices')}`")
         lines.append(f"insertion_point: `{insertion.get('type')}`")
         lines.append(f"double_rate_limit: `{insertion.get('double_rate_limit')}`")
+        if insertion.get("push_config"):
+            lines.append(f"push_config: `{insertion.get('push_config')}`")
         if closed_loop.get("error"):
             lines.append(f"worker_error: `{closed_loop.get('error')}`")
         if closed_loop.get("worker_returncode") is not None:
@@ -922,6 +947,24 @@ def build_markdown(payload: dict) -> str:
             )
             lines.append("|---|---|---:|---:|---:|---:|---:|")
             lines.extend(shortfall_rows)
+            lines.append("")
+        push_rows = []
+        for mode_name, mode in (closed_loop.get("modes") or {}).items():
+            push = mode.get("push_recovery") or {}
+            magnitude = push.get("push_magnitude") or {}
+            push_rows.append(
+                f"| {mode_name} | {push.get('event_count')} | "
+                f"{push.get('recovered_count')} | {fmt(push.get('success_rate'))} | "
+                f"{fmt(magnitude.get('mean'))} | {fmt(magnitude.get('max'))} |"
+            )
+        if push_rows:
+            lines.append("### Push Recovery")
+            lines.append("")
+            lines.append(
+                "| mode | events | recovered | success_rate | push_mag_mean | push_mag_max |"
+            )
+            lines.append("|---|---:|---:|---:|---:|---:|")
+            lines.extend(push_rows)
             lines.append("")
         lines.append("### Pitch-Chain Summary")
         lines.append("")
@@ -1251,6 +1294,56 @@ def main() -> int:
         ),
     )
     parser.add_argument(
+        "--eval-push-enable",
+        action="store_true",
+        help=(
+            "Enable Playground push perturbations during closed-loop eval. "
+            "Default is off to preserve canonical corrected-bridge candidate gates."
+        ),
+    )
+    parser.add_argument(
+        "--eval-push-interval-min-s",
+        type=float,
+        default=None,
+        help="Minimum push interval in seconds for --eval-push-enable.",
+    )
+    parser.add_argument(
+        "--eval-push-interval-max-s",
+        type=float,
+        default=None,
+        help="Maximum push interval in seconds for --eval-push-enable.",
+    )
+    parser.add_argument(
+        "--eval-push-magnitude-min",
+        type=float,
+        default=None,
+        help="Minimum push velocity impulse magnitude for --eval-push-enable.",
+    )
+    parser.add_argument(
+        "--eval-push-magnitude-max",
+        type=float,
+        default=None,
+        help="Maximum push velocity impulse magnitude for --eval-push-enable.",
+    )
+    parser.add_argument(
+        "--push-recovery-window-s",
+        type=float,
+        default=0.5,
+        help="Window after each push used for push recovery success metrics.",
+    )
+    parser.add_argument(
+        "--push-recovery-max-abs-pitch-rad",
+        type=float,
+        default=0.8,
+        help="Push recovery fails if abs body pitch exceeds this value in the window.",
+    )
+    parser.add_argument(
+        "--push-recovery-min-base-height-m",
+        type=float,
+        default=0.08,
+        help="Push recovery fails if base height falls below this value in the window.",
+    )
+    parser.add_argument(
         "--_closed-loop-worker",
         action="store_true",
         help=argparse.SUPPRESS,
@@ -1345,6 +1438,18 @@ def main() -> int:
                         policy_state_output_names=parse_name_list(
                             args.policy_state_output_names
                         ),
+                        eval_push_enable=args.eval_push_enable,
+                        eval_push_interval_min_s=args.eval_push_interval_min_s,
+                        eval_push_interval_max_s=args.eval_push_interval_max_s,
+                        eval_push_magnitude_min=args.eval_push_magnitude_min,
+                        eval_push_magnitude_max=args.eval_push_magnitude_max,
+                        push_recovery_window_s=args.push_recovery_window_s,
+                        push_recovery_max_abs_pitch_rad=(
+                            args.push_recovery_max_abs_pitch_rad
+                        ),
+                        push_recovery_min_base_height_m=(
+                            args.push_recovery_min_base_height_m
+                        ),
                     )
                 )
             if args._closed_loop_worker_json:
@@ -1391,6 +1496,16 @@ def main() -> int:
         "reward_overrides_json": args.reward_overrides_json,
         "reward_overrides_phase": args.reward_overrides_phase,
         "reward_overrides": reward_overrides,
+        "eval_push": {
+            "enable": bool(args.eval_push_enable),
+            "interval_min_s": args.eval_push_interval_min_s,
+            "interval_max_s": args.eval_push_interval_max_s,
+            "magnitude_min": args.eval_push_magnitude_min,
+            "magnitude_max": args.eval_push_magnitude_max,
+            "recovery_window_s": args.push_recovery_window_s,
+            "recovery_max_abs_pitch_rad": args.push_recovery_max_abs_pitch_rad,
+            "recovery_min_base_height_m": args.push_recovery_min_base_height_m,
+        },
         "policy_state_input_names": list(parse_name_list(args.policy_state_input_names)),
         "policy_state_output_names": list(parse_name_list(args.policy_state_output_names)),
         "telemetry_replay": telemetry_replay,

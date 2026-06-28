@@ -19,6 +19,13 @@ Result: Stage B does not pass. Both attempts completed offline training, but
 the exported checkpoints regressed toward low-progress standing. Do not advance
 to rough terrain yet.
 
+Important evaluator detail: the canonical closed-loop candidate gate overrides
+`push_config.enable` to `False`. Therefore the `x=0.08` screens below measure
+whether push-trained policies still preserve the normal no-push walking gate.
+They do not yet report push-recovery success rate. A push-enabled evaluation
+mode is still needed before Phase 2 can fully satisfy the requested
+push-robustness gate.
+
 No robot motion, SSH, deployment, grounded replay, or runtime behavior change
 was performed.
 
@@ -193,6 +200,8 @@ motion below the candidate gate.
 The next Stage B attempt should preserve the Stage A gait with a stronger
 continuity signal than scalar reward/KL alone. Reasonable next options:
 
+- add a push-enabled closed-loop eval mode so push-recovery success rate is
+  measured directly instead of inferred from no-push gate regression;
 - train from the A2 164k checkpoint with a teacher-action continuity loss
   against the Stage A gain099 behavior, not just restore-policy KL;
 - introduce push perturbations as an evaluation-only robustness metric first,

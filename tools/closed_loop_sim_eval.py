@@ -69,6 +69,14 @@ class ClosedLoopConfig:
     policy_action_output_name: str | None = None
     policy_state_input_names: tuple[str, ...] = ()
     policy_state_output_names: tuple[str, ...] = ()
+    eval_push_enable: bool = False
+    eval_push_interval_min_s: float | None = None
+    eval_push_interval_max_s: float | None = None
+    eval_push_magnitude_min: float | None = None
+    eval_push_magnitude_max: float | None = None
+    push_recovery_window_s: float = 0.5
+    push_recovery_max_abs_pitch_rad: float = 0.8
+    push_recovery_min_base_height_m: float = 0.08
 
 
 @contextlib.contextmanager
@@ -126,6 +134,69 @@ def vector_abs_velocity(values: np.ndarray, dt_s: float) -> np.ndarray:
         return np.zeros_like(values)
     vel = np.abs(np.diff(values, axis=0) / max(float(dt_s), 1e-9))
     return np.vstack([np.zeros((1, values.shape[1])), vel])
+
+
+def push_recovery_summary(
+    records: Sequence[Mapping[str, Any]],
+    dt_s: float,
+    recovery_window_s: float,
+    max_abs_pitch_rad: float,
+    min_base_height_m: float,
+) -> dict:
+    push_indices = [
+        index
+        for index, record in enumerate(records)
+        if float(record.get("push_magnitude", 0.0) or 0.0) > 1e-9
+    ]
+    window_steps = max(1, int(round(float(recovery_window_s) / max(float(dt_s), 1e-9))))
+    results = []
+    for index in push_indices:
+        window = records[index : min(len(records), index + window_steps + 1)]
+        if not window:
+            continue
+        terminated = any(bool(record.get("done")) for record in window)
+        max_abs_pitch = max(
+            abs(float(record.get("body_pitch_rad", 0.0) or 0.0)) for record in window
+        )
+        min_height = min(
+            float(record.get("base_height_m", 0.0) or 0.0) for record in window
+        )
+        fully_observed = len(window) >= window_steps + 1
+        recovered = (
+            not terminated
+            and max_abs_pitch <= float(max_abs_pitch_rad)
+            and min_height >= float(min_base_height_m)
+            and fully_observed
+        )
+        results.append(
+            {
+                "tick": int(records[index].get("tick", index)),
+                "time_s": float(records[index].get("time_s", index * dt_s)),
+                "push": list(records[index].get("push", [])),
+                "push_magnitude": float(records[index].get("push_magnitude", 0.0)),
+                "window_samples": len(window),
+                "full_recovery_window_observed": bool(fully_observed),
+                "terminated_in_window": bool(terminated),
+                "max_abs_pitch_rad": float(max_abs_pitch),
+                "min_base_height_m": float(min_height),
+                "recovered": bool(recovered),
+            }
+        )
+    recovered_count = sum(1 for item in results if item["recovered"])
+    push_magnitudes = [item["push_magnitude"] for item in results]
+    return {
+        "enabled": bool(push_indices),
+        "event_count": len(results),
+        "recovered_count": int(recovered_count),
+        "success_rate": (
+            float(recovered_count / len(results)) if results else None
+        ),
+        "window_s": float(recovery_window_s),
+        "max_abs_pitch_rad_threshold": float(max_abs_pitch_rad),
+        "min_base_height_m_threshold": float(min_base_height_m),
+        "push_magnitude": signed_stats(push_magnitudes),
+        "events": results,
+    }
 
 
 def best_lag(target: np.ndarray, actual: np.ndarray, dt_s: float, max_lag_ticks: int = 12) -> dict:
@@ -757,7 +828,7 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
         [config.command_x, config.command_y, config.command_yaw, 0.0, 0.0, 0.0, 0.0]
     )
     overrides = {
-        "push_config.enable": False,
+        "push_config.enable": bool(config.eval_push_enable),
         "lin_vel_x": [config.command_x, config.command_x],
         "lin_vel_y": [config.command_y, config.command_y],
         "ang_vel_yaw": [config.command_yaw, config.command_yaw],
@@ -775,6 +846,38 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
         overrides["max_motor_velocity"] = float(
             config.max_motor_velocity_override_rad_s
         )
+    if (
+        config.eval_push_interval_min_s is not None
+        or config.eval_push_interval_max_s is not None
+    ):
+        overrides["push_config.interval_range"] = [
+            (
+                5.0
+                if config.eval_push_interval_min_s is None
+                else float(config.eval_push_interval_min_s)
+            ),
+            (
+                10.0
+                if config.eval_push_interval_max_s is None
+                else float(config.eval_push_interval_max_s)
+            ),
+        ]
+    if (
+        config.eval_push_magnitude_min is not None
+        or config.eval_push_magnitude_max is not None
+    ):
+        overrides["push_config.magnitude_range"] = [
+            (
+                0.1
+                if config.eval_push_magnitude_min is None
+                else float(config.eval_push_magnitude_min)
+            ),
+            (
+                1.0
+                if config.eval_push_magnitude_max is None
+                else float(config.eval_push_magnitude_max)
+            ),
+        ]
 
     try:
         with temporary_cwd(config.playground_root):
@@ -863,7 +966,9 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             state.info["imitation_i"] = 0
             state.info["current_reference_motion"] = jp.zeros(0)
 
-        state.info["rng"], action_delay_rng = jax.random.split(state.info["rng"])
+        state.info["rng"], push1_rng, push2_rng, action_delay_rng = jax.random.split(
+            state.info["rng"], 4
+        )
         action_history = (
             jp.roll(state.info["action_history"], env._actuators)
             .at[: env._actuators]
@@ -877,6 +982,28 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             maxval=env._config.noise_config.action_max_delay,
         )
         action_w_delay = action_history.reshape((-1, env._actuators))[action_idx[0]]
+        push_theta = jax.random.uniform(push1_rng, maxval=2 * jp.pi)
+        push_magnitude = jax.random.uniform(
+            push2_rng,
+            minval=env._config.push_config.magnitude_range[0],
+            maxval=env._config.push_config.magnitude_range[1],
+        )
+        push_direction = jp.array([jp.cos(push_theta), jp.sin(push_theta)])
+        push = push_direction * (
+            jp.mod(state.info["push_step"] + 1, state.info["push_interval_steps"]) == 0
+        )
+        push *= env._config.push_config.enable
+        push_impulse = push * push_magnitude
+        qvel = state.data.qvel
+        qvel = qvel.at[
+            env._floating_base_qvel_addr : env._floating_base_qvel_addr + 2
+        ].set(
+            push_impulse
+            + qvel[
+                env._floating_base_qvel_addr : env._floating_base_qvel_addr + 2
+            ]
+        )
+        state = state.replace(data=state.data.replace(qvel=qvel))
         pre_rate_limit = env._default_actuator + action_w_delay * env._config.action_scale
         if joystick.USE_MOTOR_SPEED_LIMITS:
             prev_motor_targets = state.info["motor_targets"]
@@ -887,7 +1014,7 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             )
         else:
             sent_target = pre_rate_limit
-        return state, action_w_delay, pre_rate_limit, sent_target
+        return state, action_w_delay, pre_rate_limit, sent_target, push, push_impulse
 
     def step_mjx_host_loop(data, ctrl, block_each: bool):
         for _ in range(int(env.n_substeps)):
@@ -897,7 +1024,9 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                 data = block_tree(jax, data)
         return data
 
-    def apply_motor_target(state, action, sent_target, applied_target):
+    def apply_motor_target(
+        state, action, sent_target, applied_target, push, push_impulse
+    ):
         if config.mjx_step_loop_mode in {"default", "scan"}:
             data = mjx_env.step(env.mjx_model, state.data, applied_target, env.n_substeps)
         else:
@@ -946,7 +1075,8 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                 env._config.reward_config.reward_clip_min,
                 env._config.reward_config.reward_clip_max,
             )
-        state.info["push"] = jp.array([0.0, 0.0])
+        state.info["push"] = push
+        state.info["push_velocity_impulse"] = push_impulse
         state.info["step"] += 1
         state.info["push_step"] += 1
         state.info["last_last_last_act"] = state.info["last_last_act"]
@@ -1028,7 +1158,23 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             "eval-only ROCm workarounds that drive raw mujoco.mjx.step from "
             "the host for each substep."
         ),
-        "push_disabled": True,
+        "push_disabled": not bool(config.eval_push_enable),
+        "push_config": {
+            "enable": bool(config.eval_push_enable),
+            "interval_range_s": [
+                float(value) for value in env._config.push_config.interval_range
+            ],
+            "magnitude_range": [
+                float(value) for value in env._config.push_config.magnitude_range
+            ],
+            "recovery_window_s": float(config.push_recovery_window_s),
+            "recovery_max_abs_pitch_rad": float(
+                config.push_recovery_max_abs_pitch_rad
+            ),
+            "recovery_min_base_height_m": float(
+                config.push_recovery_min_base_height_m
+            ),
+        },
         "noise_disabled": True,
         "action_delay_disabled": True,
         "command_pinned": [
@@ -1081,9 +1227,14 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             action = np.clip(
                 action * float(config.policy_action_gain), -1.0, 1.0
             ).astype(np.float32)
-            state, action_w_delay, pre_rate, sent_target = prepare_step_jit(
-                state, jp.asarray(action)
-            )
+            (
+                state,
+                action_w_delay,
+                pre_rate,
+                sent_target,
+                push,
+                push_impulse,
+            ) = prepare_step_jit(state, jp.asarray(action))
             pre_np = np.asarray(jax.device_get(pre_rate), dtype=float)
             sent_np = np.asarray(jax.device_get(sent_target), dtype=float)
             applied_np = (
@@ -1096,6 +1247,8 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                 jp.asarray(action),
                 sent_target,
                 jp.asarray(applied_np),
+                push,
+                push_impulse,
             )
             actual = np.asarray(
                 jax.device_get(env.get_actuator_joints_qpos(state.data.qpos)),
@@ -1115,6 +1268,10 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             contacts = np.asarray(jax.device_get(state.info["last_contact"]), dtype=bool)
             done = bool(np.asarray(jax.device_get(state.done)))
             reward = float(np.asarray(jax.device_get(state.reward)))
+            push_np = np.asarray(jax.device_get(state.info["push"]), dtype=float)
+            push_impulse_np = np.asarray(
+                jax.device_get(state.info["push_velocity_impulse"]), dtype=float
+            )
             reward_terms = {}
             for key, value in state.metrics.items():
                 if str(key).startswith(("reward/", "cost/", "diagnostic/")):
@@ -1152,6 +1309,9 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                 "foot_contacts": contacts.astype(int).tolist(),
                 "foot_site_pos_m": foot_site_pos.tolist(),
                 "reward": reward,
+                "push": push_impulse_np.astype(float).tolist(),
+                "push_direction": push_np.astype(float).tolist(),
+                "push_magnitude": float(np.linalg.norm(push_impulse_np)),
                 "reward_terms": reward_terms,
                 "done": done,
             }
@@ -1253,6 +1413,13 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             ),
             "reward": reward_stats,
             "reward_terms": reward_terms,
+            "push_recovery": push_recovery_summary(
+                records,
+                float(env.dt),
+                float(config.push_recovery_window_s),
+                float(config.push_recovery_max_abs_pitch_rad),
+                float(config.push_recovery_min_base_height_m),
+            ),
             "foot_contact_counts": {
                 "left": int(contact_counts[0]) if len(contact_counts) > 0 else 0,
                 "right": int(contact_counts[1]) if len(contact_counts) > 1 else 0,
