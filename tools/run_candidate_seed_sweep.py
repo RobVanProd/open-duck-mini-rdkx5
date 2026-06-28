@@ -126,6 +126,7 @@ def summarize_payload(payload: dict[str, Any], mode_name: str) -> dict[str, Any]
     mode = extract_mode(payload, mode_name) or {}
     forward = mode.get("forward_motion") or {}
     height = mode.get("base_height_m") or {}
+    push_recovery = mode.get("push_recovery") or {}
     return {
         "overall_status": payload.get("overall_status"),
         "candidate_gate_status": gate.get("status"),
@@ -142,6 +143,9 @@ def summarize_payload(payload: dict[str, Any], mode_name: str) -> dict[str, Any]
         ),
         "max_tracking_p95_rad": metrics.get("max_pitch_tracking_p95_rad"),
         "action_saturation_pct": metrics.get("max_action_saturation_pct"),
+        "push_event_count": push_recovery.get("event_count"),
+        "push_recovered_count": push_recovery.get("recovered_count"),
+        "push_success_rate": push_recovery.get("success_rate"),
     }
 
 
@@ -201,6 +205,29 @@ def run_one(
         command.extend(["--policy-state-input-names", str(args.policy_state_input_names)])
     if args.policy_state_output_names:
         command.extend(["--policy-state-output-names", str(args.policy_state_output_names)])
+    if args.eval_push_enable:
+        command.append("--eval-push-enable")
+    if args.eval_push_interval_min_s is not None:
+        command.extend(["--eval-push-interval-min-s", str(args.eval_push_interval_min_s)])
+    if args.eval_push_interval_max_s is not None:
+        command.extend(["--eval-push-interval-max-s", str(args.eval_push_interval_max_s)])
+    if args.eval_push_magnitude_min is not None:
+        command.extend(["--eval-push-magnitude-min", str(args.eval_push_magnitude_min)])
+    if args.eval_push_magnitude_max is not None:
+        command.extend(["--eval-push-magnitude-max", str(args.eval_push_magnitude_max)])
+    command.extend(["--push-recovery-window-s", str(args.push_recovery_window_s)])
+    command.extend(
+        [
+            "--push-recovery-max-abs-pitch-rad",
+            str(args.push_recovery_max_abs_pitch_rad),
+        ]
+    )
+    command.extend(
+        [
+            "--push-recovery-min-base-height-m",
+            str(args.push_recovery_min_base_height_m),
+        ]
+    )
     result: dict[str, Any] = {
         "policy": str(policy),
         "policy_label": label,
@@ -312,6 +339,8 @@ def aggregate(rows: list[dict[str, Any]]) -> dict[str, Any]:
             item.get("max_pitch_vel_limit_excess_rad_s") for item in summaries
         ),
         "max_tracking_p95_rad": stats(item.get("max_tracking_p95_rad") for item in summaries),
+        "push_event_count": stats(item.get("push_event_count") for item in summaries),
+        "push_success_rate": stats(item.get("push_success_rate") for item in summaries),
     }
 
 
@@ -329,14 +358,18 @@ def build_report(results: list[dict[str, Any]], args: argparse.Namespace) -> str
         f"reward_overrides_phase: `{args.reward_overrides_phase or 'None'}`",
         f"duration_s: `{args.duration}`",
         f"seeds: `{args.seeds}`",
+        f"eval_push_enable: `{args.eval_push_enable}`",
+        f"eval_push_interval_s: `{args.eval_push_interval_min_s}`-`{args.eval_push_interval_max_s}`",
+        f"eval_push_magnitude: `{args.eval_push_magnitude_min}`-`{args.eval_push_magnitude_max}`",
+        f"push_recovery_window_s: `{args.push_recovery_window_s}`",
         f"trace_seeds: `{args.trace_seeds}`",
         f"trace_full_obs: `{args.trace_full_obs}`",
         f"run: `{args.run}`",
         "",
         "## Per-Seed Results",
         "",
-        "| policy | seed | status | samples | termination | mean_local_vx | track_ratio | body_pitch_p95 | base_height_min | max_pitch_vel_p95 | max_vel_excess | max_tracking_p95 |",
-        "|---|---:|---|---:|---|---:|---:|---:|---:|---:|---:|---:|",
+        "| policy | seed | status | samples | termination | mean_local_vx | track_ratio | body_pitch_p95 | base_height_min | max_pitch_vel_p95 | max_vel_excess | max_tracking_p95 | push_events | push_success |",
+        "|---|---:|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|",
     ]
     for result in results:
         summary = result.get("summary") or {}
@@ -350,13 +383,15 @@ def build_report(results: list[dict[str, Any]], args: argparse.Namespace) -> str
             f"{fmt(summary.get('base_height_min_m'))} | "
             f"{fmt(summary.get('max_pitch_vel_p95_rad_s'))} | "
             f"{fmt(summary.get('max_pitch_vel_limit_excess_rad_s'))} | "
-            f"{fmt(summary.get('max_tracking_p95_rad'))} |"
+            f"{fmt(summary.get('max_tracking_p95_rad'))} | "
+            f"{fmt(summary.get('push_event_count'), 0)} | "
+            f"{fmt(summary.get('push_success_rate'))} |"
         )
     lines.extend(["", "## Distribution Summary", ""])
     lines.append(
-        "| policy | runs | falls | duration_complete | samples_mean | samples_min | samples_max | track_ratio_mean | vx_mean | body_pitch_p95_mean | base_height_min_mean | max_vel_excess_mean |"
+        "| policy | runs | falls | duration_complete | samples_mean | samples_min | samples_max | track_ratio_mean | vx_mean | body_pitch_p95_mean | base_height_min_mean | max_vel_excess_mean | push_events_mean | push_success_mean |"
     )
-    lines.append("|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|")
+    lines.append("|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|")
     for label, rows in grouped(results).items():
         agg = aggregate(rows)
         sample_stats = agg.get("samples") or {}
@@ -368,7 +403,9 @@ def build_report(results: list[dict[str, Any]], args: argparse.Namespace) -> str
             f"{fmt((agg.get('mean_local_vx_m_s') or {}).get('mean'))} | "
             f"{fmt((agg.get('body_pitch_p95_rad') or {}).get('mean'))} | "
             f"{fmt((agg.get('base_height_min_m') or {}).get('mean'))} | "
-            f"{fmt((agg.get('max_pitch_vel_limit_excess_rad_s') or {}).get('mean'))} |"
+            f"{fmt((agg.get('max_pitch_vel_limit_excess_rad_s') or {}).get('mean'))} | "
+            f"{fmt((agg.get('push_event_count') or {}).get('mean'))} | "
+            f"{fmt((agg.get('push_success_rate') or {}).get('mean'))} |"
         )
     lines.extend(
         [
@@ -444,6 +481,18 @@ def main() -> int:
         default=None,
         help="Comma-separated ONNX hidden-state output names for recurrent policies.",
     )
+    parser.add_argument(
+        "--eval-push-enable",
+        action="store_true",
+        help="Enable push perturbations in each closed-loop seed eval.",
+    )
+    parser.add_argument("--eval-push-interval-min-s", type=float, default=None)
+    parser.add_argument("--eval-push-interval-max-s", type=float, default=None)
+    parser.add_argument("--eval-push-magnitude-min", type=float, default=None)
+    parser.add_argument("--eval-push-magnitude-max", type=float, default=None)
+    parser.add_argument("--push-recovery-window-s", type=float, default=0.5)
+    parser.add_argument("--push-recovery-max-abs-pitch-rad", type=float, default=0.8)
+    parser.add_argument("--push-recovery-min-base-height-m", type=float, default=0.08)
     parser.add_argument("--sim-preflight-timeout-s", type=int, default=600)
     parser.add_argument("--closed-loop-timeout-s", type=int, default=1800)
     parser.add_argument("--output-dir", default="outputs/analysis/candidate_seed_sweep")
@@ -476,6 +525,18 @@ def main() -> int:
                     "policy_action_output_name": args.policy_action_output_name,
                     "policy_state_input_names": args.policy_state_input_names,
                     "policy_state_output_names": args.policy_state_output_names,
+                    "eval_push_enable": args.eval_push_enable,
+                    "eval_push_interval_min_s": args.eval_push_interval_min_s,
+                    "eval_push_interval_max_s": args.eval_push_interval_max_s,
+                    "eval_push_magnitude_min": args.eval_push_magnitude_min,
+                    "eval_push_magnitude_max": args.eval_push_magnitude_max,
+                    "push_recovery_window_s": args.push_recovery_window_s,
+                    "push_recovery_max_abs_pitch_rad": (
+                        args.push_recovery_max_abs_pitch_rad
+                    ),
+                    "push_recovery_min_base_height_m": (
+                        args.push_recovery_min_base_height_m
+                    ),
                     "jax_platform": args.jax_platform,
                     "run": args.run,
                     "trace_seeds": args.trace_seeds,
@@ -500,6 +561,14 @@ def main() -> int:
             "policy_action_output_name": args.policy_action_output_name,
             "policy_state_input_names": args.policy_state_input_names,
             "policy_state_output_names": args.policy_state_output_names,
+            "eval_push_enable": args.eval_push_enable,
+            "eval_push_interval_min_s": args.eval_push_interval_min_s,
+            "eval_push_interval_max_s": args.eval_push_interval_max_s,
+            "eval_push_magnitude_min": args.eval_push_magnitude_min,
+            "eval_push_magnitude_max": args.eval_push_magnitude_max,
+            "push_recovery_window_s": args.push_recovery_window_s,
+            "push_recovery_max_abs_pitch_rad": args.push_recovery_max_abs_pitch_rad,
+            "push_recovery_min_base_height_m": args.push_recovery_min_base_height_m,
             "jax_platform": args.jax_platform,
             "run": args.run,
             "trace_seeds": args.trace_seeds,
