@@ -77,6 +77,107 @@ def abs_velocity(values: np.ndarray, dt_s: float) -> np.ndarray:
     return np.abs(np.diff(values, axis=0) / max(float(dt_s), 1.0e-9))
 
 
+def finite_float(value: Any, default: float = 0.0) -> float:
+    return float(value) if finite(value) else default
+
+
+def swing_stats(records: list[dict[str, Any]]) -> dict[str, Any]:
+    foot_pos = []
+    contacts = []
+    base_x = []
+    for record in records:
+        pos = record.get("foot_site_pos_m")
+        contact = record.get("foot_contacts")
+        if (
+            isinstance(pos, list)
+            and len(pos) >= 2
+            and isinstance(contact, list)
+            and len(contact) >= 2
+        ):
+            foot_pos.append(pos[:2])
+            contacts.append(contact[:2])
+            base_x.append(finite_float(record.get("base_x_m"), 0.0))
+    if not foot_pos:
+        return {"foot_swing_metrics_available": False}
+
+    pos_arr = np.asarray(foot_pos, dtype=float)
+    contact_arr = np.asarray(contacts, dtype=bool)
+    base_x_arr = np.asarray(base_x, dtype=float)
+    samples = int(contact_arr.shape[0])
+    foot_names = ("left", "right")
+    metrics: dict[str, Any] = {"foot_swing_metrics_available": True}
+    segment_counts = []
+    rel_x_range_p95_values = []
+    rel_x_delta_p95_values = []
+    peak_lift_values = []
+
+    for index, name in enumerate(foot_names):
+        z = pos_arr[:, index, 2]
+        rel_x = pos_arr[:, index, 0] - base_x_arr
+        contact = contact_arr[:, index]
+        stance_z = z[contact]
+        stance_ref = float(np.median(stance_z)) if stance_z.size else None
+        segments = []
+        start = None
+        for sample_index, is_swing in enumerate(~contact):
+            if bool(is_swing) and start is None:
+                start = sample_index
+            is_last = sample_index == samples - 1
+            if start is not None and ((not bool(is_swing)) or is_last):
+                end = sample_index if not bool(is_swing) else sample_index + 1
+                if end - start >= 2:
+                    segment_rel_x = rel_x[start:end]
+                    segment_lift = (
+                        z[start:end] - stance_ref
+                        if stance_ref is not None
+                        else np.asarray([])
+                    )
+                    segments.append(
+                        {
+                            "rel_x_range_m": float(
+                                np.max(segment_rel_x) - np.min(segment_rel_x)
+                            ),
+                            "rel_x_delta_m": float(segment_rel_x[-1] - segment_rel_x[0]),
+                            "peak_lift_over_stance_m": (
+                                float(np.max(segment_lift))
+                                if segment_lift.size
+                                else None
+                            ),
+                        }
+                    )
+                start = None
+
+        rel_x_ranges = [item["rel_x_range_m"] for item in segments]
+        rel_x_deltas = [item["rel_x_delta_m"] for item in segments]
+        peak_lifts = [
+            item["peak_lift_over_stance_m"]
+            for item in segments
+            if item["peak_lift_over_stance_m"] is not None
+        ]
+        rel_x_range_p95 = percentile(rel_x_ranges, 95) if rel_x_ranges else 0.0
+        rel_x_delta_p95 = percentile(rel_x_deltas, 95) if rel_x_deltas else 0.0
+        peak_lift = float(np.max(peak_lifts)) if peak_lifts else None
+        metrics[f"{name}_swing_segment_count"] = int(len(segments))
+        metrics[f"{name}_swing_rel_x_range_p95_m"] = rel_x_range_p95
+        metrics[f"{name}_swing_rel_x_delta_p95_m"] = rel_x_delta_p95
+        metrics[f"{name}_swing_peak_lift_m"] = peak_lift
+        segment_counts.append(int(len(segments)))
+        rel_x_range_p95_values.append(rel_x_range_p95)
+        rel_x_delta_p95_values.append(rel_x_delta_p95)
+        if peak_lift is not None:
+            peak_lift_values.append(peak_lift)
+
+    metrics["min_swing_segment_count"] = min(segment_counts) if segment_counts else None
+    metrics["min_swing_rel_x_range_p95_m"] = (
+        min(rel_x_range_p95_values) if rel_x_range_p95_values else None
+    )
+    metrics["min_swing_rel_x_delta_p95_m"] = (
+        min(rel_x_delta_p95_values) if rel_x_delta_p95_values else None
+    )
+    metrics["min_swing_peak_lift_m"] = min(peak_lift_values) if peak_lift_values else None
+    return metrics
+
+
 def done_margin(records: list[dict[str, Any]], end_index: int) -> int | None:
     for offset, record in enumerate(records[end_index + 1 :], start=1):
         if record.get("done"):
@@ -186,6 +287,7 @@ def window_metrics(
             1 for a, b in zip(contact_patterns, contact_patterns[1:]) if a != b
         ),
         "foot_site_z_p95_m": percentile(foot_z_values, 95) if foot_z_values else None,
+        **swing_stats(window),
     }
 
 
@@ -207,6 +309,10 @@ def objective_score(metrics: dict[str, Any], args: argparse.Namespace) -> dict[s
     min_single_side = float(metrics.get("min_single_support_side_pct") or 0.0)
     contact_transitions = int(metrics.get("contact_transitions") or 0)
     foot_site_z_p95 = metrics.get("foot_site_z_p95_m")
+    min_swing_segments = metrics.get("min_swing_segment_count")
+    min_swing_rel_x_range = metrics.get("min_swing_rel_x_range_p95_m")
+    min_swing_rel_x_delta = metrics.get("min_swing_rel_x_delta_p95_m")
+    min_swing_peak_lift = metrics.get("min_swing_peak_lift_m")
     margin = metrics.get("ticks_until_done_after_window")
 
     penalties["forward_shortfall"] = max(0.0, args.min_mean_vx - mean_vx) * args.forward_weight
@@ -242,6 +348,30 @@ def objective_score(metrics: dict[str, Any], args: argparse.Namespace) -> dict[s
         max(0.0, args.min_foot_site_z_p95 - float(foot_site_z_p95))
         * args.foot_clearance_weight
         if foot_site_z_p95 is not None and args.min_foot_site_z_p95 >= 0.0
+        else 0.0
+    )
+    penalties["swing_segments"] = (
+        max(0.0, float(args.min_swing_segments_per_foot) - float(min_swing_segments or 0.0))
+        * args.swing_segment_weight
+        if args.min_swing_segments_per_foot > 0
+        else 0.0
+    )
+    penalties["swing_rel_x_range"] = (
+        max(0.0, args.min_swing_rel_x_range_p95_m - float(min_swing_rel_x_range or 0.0))
+        * args.swing_rel_x_weight
+        if args.min_swing_rel_x_range_p95_m >= 0.0
+        else 0.0
+    )
+    penalties["swing_rel_x_delta"] = (
+        max(0.0, args.min_swing_rel_x_delta_p95_m - float(min_swing_rel_x_delta or 0.0))
+        * args.swing_rel_x_weight
+        if args.min_swing_rel_x_delta_p95_m >= 0.0
+        else 0.0
+    )
+    penalties["swing_peak_lift"] = (
+        max(0.0, args.min_swing_peak_lift_m - float(min_swing_peak_lift or 0.0))
+        * args.foot_clearance_weight
+        if args.min_swing_peak_lift_m >= 0.0
         else 0.0
     )
     penalties["pitch"] = max(0.0, pitch95 - args.max_pitch_abs_p95) * args.pitch_weight
@@ -285,6 +415,26 @@ def objective_score(metrics: dict[str, Any], args: argparse.Namespace) -> dict[s
         and float(foot_site_z_p95) < args.min_foot_site_z_p95
     ):
         hard_failures.append("low_foot_clearance")
+    if (
+        args.min_swing_segments_per_foot > 0
+        and int(min_swing_segments or 0) < args.min_swing_segments_per_foot
+    ):
+        hard_failures.append("too_few_swing_segments")
+    if (
+        args.min_swing_rel_x_range_p95_m >= 0.0
+        and float(min_swing_rel_x_range or 0.0) < args.min_swing_rel_x_range_p95_m
+    ):
+        hard_failures.append("low_swing_rel_x_range")
+    if (
+        args.min_swing_rel_x_delta_p95_m >= 0.0
+        and float(min_swing_rel_x_delta or 0.0) < args.min_swing_rel_x_delta_p95_m
+    ):
+        hard_failures.append("low_swing_rel_x_delta")
+    if (
+        args.min_swing_peak_lift_m >= 0.0
+        and float(min_swing_peak_lift or 0.0) < args.min_swing_peak_lift_m
+    ):
+        hard_failures.append("low_swing_peak_lift")
     if pitch95 > args.max_pitch_abs_p95:
         hard_failures.append("high_body_pitch")
     if height_min < args.min_base_height:
@@ -420,6 +570,10 @@ def score_traces(args: argparse.Namespace) -> dict[str, Any]:
             "min_done_margin": args.min_done_margin,
             "min_contact_transitions": args.min_contact_transitions,
             "min_foot_site_z_p95": args.min_foot_site_z_p95,
+            "min_swing_segments_per_foot": args.min_swing_segments_per_foot,
+            "min_swing_rel_x_range_p95_m": args.min_swing_rel_x_range_p95_m,
+            "min_swing_rel_x_delta_p95_m": args.min_swing_rel_x_delta_p95_m,
+            "min_swing_peak_lift_m": args.min_swing_peak_lift_m,
         },
         "reason_counts": dict(reason_counts),
         "seed_reason_counts": {
@@ -499,6 +653,29 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
     lines.extend(
         [
             "",
+            "## Step Transition Metrics",
+            "",
+            "| mode | worst_seed | seed2_min_swing_segments | seed2_min_rel_x_range_p95 | seed2_min_rel_x_delta_p95 | seed2_min_swing_peak_lift |",
+            "|---|---|---:|---:|---:|---:|",
+        ]
+    )
+    if not payload["results"]:
+        lines.append("| NA | NA | NA | NA | NA | NA |")
+    for row in payload["results"][:25]:
+        seed2 = row["seeds"].get("seed_002") or {}
+        lines.append(
+            "| {mode} | {worst} | {segments} | {rel_range} | {rel_delta} | {peak} |".format(
+                mode=row["mode"],
+                worst=row["worst_seed"],
+                segments=fmt(seed2.get("min_swing_segment_count"), digits=0),
+                rel_range=fmt(seed2.get("min_swing_rel_x_range_p95_m")),
+                rel_delta=fmt(seed2.get("min_swing_rel_x_delta_p95_m")),
+                peak=fmt(seed2.get("min_swing_peak_lift_m")),
+            )
+        )
+    lines.extend(
+        [
+            "",
             "## Gate",
             "",
             "- `PASS_SEED_ROBUST_TARGETS` requires at least one mode passing all required seeds.",
@@ -534,6 +711,30 @@ def main() -> int:
     parser.add_argument("--min-each-single-support-pct", type=float, default=0.0)
     parser.add_argument("--min-contact-transitions", type=int, default=0)
     parser.add_argument("--min-foot-site-z-p95", type=float, default=-1.0)
+    parser.add_argument(
+        "--min-swing-segments-per-foot",
+        type=int,
+        default=0,
+        help="Optional hard gate requiring each foot to have at least this many swing segments.",
+    )
+    parser.add_argument(
+        "--min-swing-rel-x-range-p95-m",
+        type=float,
+        default=-1.0,
+        help="Optional hard gate on each foot's p95 swing relative-x range. Negative disables.",
+    )
+    parser.add_argument(
+        "--min-swing-rel-x-delta-p95-m",
+        type=float,
+        default=-1.0,
+        help="Optional hard gate on each foot's p95 swing relative-x delta. Negative disables.",
+    )
+    parser.add_argument(
+        "--min-swing-peak-lift-m",
+        type=float,
+        default=-1.0,
+        help="Optional hard gate on each foot's max swing lift over stance. Negative disables.",
+    )
     parser.add_argument("--max-pitch-abs-p95", type=float, default=0.35)
     parser.add_argument("--min-base-height", type=float, default=0.145)
     parser.add_argument("--max-action-saturation-pct", type=float, default=1.0)
@@ -550,6 +751,8 @@ def main() -> int:
     parser.add_argument("--single-support-balance-weight", type=float, default=0.02)
     parser.add_argument("--contact-transition-weight", type=float, default=0.02)
     parser.add_argument("--foot-clearance-weight", type=float, default=2.0)
+    parser.add_argument("--swing-segment-weight", type=float, default=0.5)
+    parser.add_argument("--swing-rel-x-weight", type=float, default=8.0)
     parser.add_argument("--pitch-weight", type=float, default=4.0)
     parser.add_argument("--height-weight", type=float, default=8.0)
     parser.add_argument("--saturation-weight", type=float, default=0.1)

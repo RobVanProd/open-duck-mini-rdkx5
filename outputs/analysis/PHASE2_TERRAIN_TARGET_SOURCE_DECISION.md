@@ -57,20 +57,35 @@ probe status: PASS_FOOT_PLACEMENT_MPC_PROBE_RAN
 gate: HOLD_NO_SUSTAINED_WEIGHT_TRANSFER_TARGET
 ```
 
+The target-source scorer now has optional hard step-transition gates:
+
+```text
+min_swing_segments_per_foot: 1
+min_swing_rel_x_range_p95_m: 0.003
+min_swing_peak_lift_m: 0.005
+```
+
 Best candidate family:
 
 ```text
 seed 2 mean vx: 0.0046-0.0079 m/s
-seed 4 mean vx: 0.0030 m/s or fall/reverse depending initial stance
+seed 2 min swing segments: 1
+seed 2 min rel-x range p95: 0.0041-0.0051 m
+seed 2 min swing peak lift: 0.0084-0.0093 m
+seed 4 mean vx: 0.0030-0.0047 m/s or fall/reverse depending initial stance
+seed 4 min swing segments: 0
+seed 4 min rel-x range p95: 0.0000 m
+seed 4 min swing peak lift: none
 sent target velocity p95: <= 2.5 rad/s
 dominant failures: low_forward_velocity, double_support_dominates,
                    too_little_single_support, single_support_not_balanced
 ```
 
 The important signal is that this target source is actuator-safe and laterally
-calm, but it does not create sustained forward stepping. It repeats the same
-double-support / low-progress terrain failure instead of providing a stronger
-teacher.
+calm, but it does not create sustained forward stepping. Seed 2 can make a tiny
+step-like swing, but remains too slow and double-support dominated. Seed 4
+stays planted. This repeats the same double-support / low-progress terrain
+failure instead of providing a stronger teacher.
 
 ## Decision
 

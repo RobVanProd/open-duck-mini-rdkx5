@@ -8178,7 +8178,11 @@ planted seed. The action-gain diagnostic stayed in-envelope but worsened
 progress, so global amplitude is not the carpet fix. A bounded rough-terrain
 MPC teacher preflight also failed the target-source gate: it was actuator-safe
 and laterally calm, but produced only `0.003-0.008 m/s` forward speed and
-remained double-support / single-contact-pattern dominated.
+remained double-support / single-contact-pattern dominated. The updated
+target-source scorer now includes optional hard step-transition gates. Under
+those gates, seed 2 produced one tiny swing segment, but seed 4 stayed planted
+with `0` swing segments, `0.0000 m` rel-x range, and no measured swing peak
+lift.
 
 Current Phase 2 interpretation: the blocker is target manifold / stepping
 structure. The next offline branch should require per-foot swing segments,

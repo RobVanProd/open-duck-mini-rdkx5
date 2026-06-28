@@ -890,13 +890,25 @@ status: HOLD_TERRAIN_TARGET_SOURCE_NOT_READY
 The existing finite-horizon foot-placement MPC teacher was run as a bounded
 rough-terrain target-source preflight on `rough_terrain_backlash`, seeds `2,4`,
 for `3 s`, with a `2.5 rad/s` teacher-side velocity cap. It remained
-actuator-safe and laterally calm, but scored:
+actuator-safe and laterally calm. The target-source scorer now also supports
+optional hard step-transition gates:
+
+```text
+min_swing_segments_per_foot: 1
+min_swing_rel_x_range_p95_m: 0.003
+min_swing_peak_lift_m: 0.005
+```
+
+With those gates enabled, the rough-terrain preflight scored:
 
 ```text
 100-sample score: HOLD_NO_SEED_ROBUST_TARGETS
 150-sample score: HOLD_NO_SEED_ROBUST_TARGETS
 weight-transfer gate: HOLD_NO_SUSTAINED_WEIGHT_TRANSFER_TARGET
 best seed-2 vx: 0.0046-0.0079 m/s
+seed-2 hard swing metrics: 1 segment, 0.0041-0.0051 m rel-x range,
+                           0.0084-0.0093 m peak lift
+seed-4 hard swing metrics: 0 segments, 0.0000 m rel-x range, no peak lift
 dominant failures: low_forward_velocity, double_support_dominates,
                    too_little_single_support, single_support_not_balanced
 ```

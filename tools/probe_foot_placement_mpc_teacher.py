@@ -870,6 +870,7 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
                         "base_x_m": float(qpos[base_addr]),
                         "base_y_m": float(qpos[base_addr + 1]),
                         "base_height_m": float(qpos[base_addr + 2]),
+                        "foot_site_pos_m": foot_site_pos.astype(float).tolist(),
                         "foot_site_z_m": foot_site_pos[:, 2].astype(float).tolist(),
                         "local_linvel_m_s": local_linvel.astype(float).tolist(),
                         "foot_contacts": contacts.astype(int).tolist(),
