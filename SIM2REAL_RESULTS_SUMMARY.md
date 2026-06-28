@@ -8238,3 +8238,18 @@ outputs/analysis/PHASE2_TERRAIN_SAFE_HARD_STEP_SOURCE_MANIFEST.md
 outputs/analysis/phase2_terrain_safe_hard_step_source_manifest.json
 source_policy_sha256: f3492159a775b0e0f73a25cf528b84ae202c16d5b2ba2f1344f7b7256e4e7261
 ```
+
+A small PPO-loc BC smoke trained from four curated terrain slices fit the source
+actions tightly, but failed closed-loop on `z=0.002`:
+
+```text
+fit: PASS_PPO_LOC_BC_FIT_SMOKE, p95 action error 0.008626
+gate: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
+seed 2/4 vx: 0.0048 / 0.0059 m/s
+seed 2/4 max velocity excess: 2.7400 / 2.7400 rad/s
+```
+
+This is the same compression failure seen earlier: source windows exist, but a
+small memoryless BC student does not preserve them in closed loop. The next
+offline step should use live relabel/DAgger or memory/phase conditioning rather
+than promoting this BC candidate.

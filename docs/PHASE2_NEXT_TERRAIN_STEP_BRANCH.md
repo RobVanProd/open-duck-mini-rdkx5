@@ -94,6 +94,20 @@ source_policy_sha256: f3492159a775b0e0f73a25cf528b84ae202c16d5b2ba2f1344f7b7256e
 windows: z=0.001 and z=0.002, seeds 2 and 4, 100 samples each
 ```
 
+First plain BC compression test:
+
+```text
+manifest: outputs/analysis/PHASE2_TERRAIN_SAFE_HARD_STEP_BC_MANIFEST.md
+fit: outputs/analysis/PHASE2_TERRAIN_SAFE_HARD_STEP_BC_STUDENT.md
+gate: outputs/analysis/PHASE2_TERRAIN_SAFE_HARD_STEP_BC_STUDENT_TERRAIN_Z002_GATE_CPU.md
+result: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
+```
+
+The 400-sample memoryless BC student fits the slices but fails closed-loop with
+near-standstill and velocity spikes. This is not a promotable candidate. Use the
+manifest for live relabel/DAgger or memory/phase student work, not for another
+plain BC retry.
+
 ## Closed Paths
 
 Do not spend the next run on:

@@ -1039,6 +1039,27 @@ outputs/analysis/phase2_terrain_safe_hard_step_source_manifest.json
 status: PASS_TERRAIN_SAFE_HARD_STEP_SOURCE_MANIFEST
 ```
 
+A first 400-sample terrain-window BC smoke fit was intentionally small and
+diagnostic:
+
+```text
+artifact: outputs/analysis/PHASE2_TERRAIN_SAFE_HARD_STEP_BC_STUDENT.md
+fit status: PASS_PPO_LOC_BC_FIT_SMOKE
+fit p95 action error: 0.008626
+ONNX fidelity p95 error: 0.00000022
+
+closed-loop artifact:
+outputs/analysis/PHASE2_TERRAIN_SAFE_HARD_STEP_BC_STUDENT_TERRAIN_Z002_GATE_CPU.md
+closed-loop status: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
+seed 2: vx 0.0048, track ratio 0.0596, max velocity excess 2.7400
+seed 4: vx 0.0059, track ratio 0.0742, max velocity excess 2.7400
+```
+
+This confirms the known compression problem: a small memoryless BC model can fit
+the curated slice actions, but closed-loop rollout collapses to low progress and
+over-envelope target spikes. Do not promote this BC ONNX. The next student step
+needs live relabel/DAgger or memory/phase, not plain 400-sample BC.
+
 ## References
 
 Verified from arXiv:
