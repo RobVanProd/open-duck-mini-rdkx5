@@ -7904,3 +7904,54 @@ The `x=0.08` stand run is the first hardware transfer evidence that the
 corrected candidate commands a trackable waveform on the real Duck. Grounded
 replay remains a separate human decision because read checksum warnings still
 exist and the candidate is intentionally slow.
+
+Phase 2 robustness update:
+
+```text
+artifact: docs/PHASE2_DOMAIN_RANDOMIZATION_ROBUSTNESS.md
+decision: outputs/analysis/PHASE2_STAGE_C_TERRAIN_Z002_DECISION.md
+status: HOLD_STAGE_C_TERRAIN_Z002_TRACKING_MARGIN
+```
+
+The Stage A promoted candidate remains the current deployable sim candidate for
+flat-ground corrected-bridge gates:
+
+```text
+policy: policy/candidates/phase2_stage_a2_gain099_20260628/candidate.onnx
+sha256: a082be6cf5c486073523bbd0fba4ea3645dc448270ca0a8e28c4ce5a4e8d31c4
+```
+
+Phase 2 push evals showed that this candidate already tolerates mild and
+moderate synthetic torso pushes in the corrected-bridge evaluator while staying
+upright and in-envelope. The harder blocker is terrain:
+
+```text
+flat: pass
+rough hfield z=0.002: near-pass / strict tracking hold
+rough hfield z=0.005: hold
+stock rough hfield z=0.010: hard hold
+```
+
+Stage C0-C2 terrain fine-tunes completed successfully but did not promote a new
+candidate. The best z=0.002 short-screen result still missed strict tracking:
+
+```text
+c0_245760:
+  seed 0 tracking p95: 0.2040 rad
+  seed 1 tracking p95: 0.1965 rad
+  mean track ratio: 0.3965
+  velocity excess: 0.0000 rad/s
+
+c2_163840:
+  seed 0 tracking p95: 0.2044 rad
+  seed 1 tracking p95: 0.1941 rad
+  mean track ratio: 0.4070
+  velocity excess: 0.0000 rad/s
+```
+
+The remaining Stage C miss is small and localized: upright behavior and
+corrected velocity-envelope compliance are preserved, but terrain-induced
+joint-target tracking, most visibly on seed 0 / left knee in the short screen,
+stays just above the `0.20 rad` strict gate. Robot validation remains blocked
+for terrain robustness; no robot, SSH, deploy, or grounded replay was performed
+for these Phase 2 terrain runs.

@@ -1,6 +1,6 @@
 # Phase 2 Domain-Randomized Robustness Training
 
-status: `HOLD_STAGE_B_PUSH_DR_ERODES_FORWARD_MOTION`
+status: `HOLD_STAGE_C_TERRAIN_Z002_TRACKING_MARGIN`
 
 ## Objective
 
@@ -395,6 +395,57 @@ z=0.010 stock rough: hard hold, 5/8 terminations
 
 The next terrain-training rung should target z-scale `0.002` first, not `0.005`
 or the stock rough hfield.
+
+Stage C z-scale `0.002` terrain-training attempts:
+
+```text
+decision:
+  outputs/analysis/PHASE2_STAGE_C_TERRAIN_Z002_DECISION.md
+
+status:
+  HOLD_STAGE_C_TERRAIN_Z002_TRACKING_MARGIN
+```
+
+Three narrow terrain fine-tunes were run offline on local ROCm and screened on
+the same two-seed, five-second `z=0.002` terrain benchmark:
+
+- `stage_c0_terrain_z002_preserve_from_a2_gpu`: terrain fine-tune with narrow
+  DR and strong gait preservation.
+- `stage_c1_terrain_z002_tracking_from_c0_gpu`: C0 warm-start with an
+  actuator bridge tracking penalty.
+- `stage_c2_terrain_z002_targetrate_from_c1_gpu`: C1 warm-start with target
+  rate penalty.
+
+All three training runs completed successfully and restored the temporary
+terrain XML. None produced a promotable terrain candidate.
+
+Best short-screen result:
+
+```text
+policy: c0_245760
+seed 0: HOLD_CANDIDATE_TRACKING, tracking p95 0.2040 rad
+seed 1: PASS_CANDIDATE_SIM_GATE, tracking p95 0.1965 rad
+mean track ratio: 0.3965
+mean vx: 0.0317 m/s
+velocity excess: 0.0000 rad/s
+```
+
+C2's best tracking result was similar but still held:
+
+```text
+policy: c2_163840
+seed 0: HOLD_CANDIDATE_TRACKING, tracking p95 0.2044 rad
+seed 1: PASS_CANDIDATE_SIM_GATE, tracking p95 0.1941 rad
+mean track ratio: 0.4070
+mean vx: 0.0326 m/s
+velocity excess: 0.0000 rad/s
+```
+
+Inspection shows the remaining miss is not falling, saturation, or corrected
+velocity-envelope excess. It is a small terrain-induced joint-target tracking
+margin, dominated on the screen by seed 0 and the left knee. Bridge tracking is
+lower than the strict gate miss, so simply increasing the bridge tracking
+penalty is not the right lever.
 
 Stage D:
 
