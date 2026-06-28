@@ -1,6 +1,6 @@
 # Phase 2 Domain-Randomized Robustness Training
 
-status: `READY_FOR_STAGE_A_DRY_RUN`
+status: `HOLD_STAGE_A_LOW_FORWARD_PROGRESS`
 
 ## Objective
 
@@ -87,6 +87,34 @@ Stage A:
 - no push
 - corrected bridge near fitted range
 - behavior prior strong enough to preserve gait
+
+Stage A first run result:
+
+```text
+training artifact:
+  outputs/phase2_domain_randomization/stage_a_narrow_flat_no_push_gpu/smoke_20260628T015607Z_gpu
+
+decision:
+  outputs/analysis/PHASE2_STAGE_A_DECISION.md
+
+status:
+  HOLD_STAGE_A_LOW_FORWARD_PROGRESS
+```
+
+The first Stage A run completed successfully as an offline GPU training job but
+regressed command-conditioned walking. It passed `x=0.0` standing 8/8 and stayed
+inside the corrected velocity envelope, but the final export held on `x=0.08`
+forward progress across all 8 seeds. The PPO step-0 warm-start export still
+matches the packaged Phase 1 candidate in closed-loop rollout, so the regression
+comes from the Stage A PPO/DR update rather than a broken trainable checkpoint.
+
+Do not advance to Stage B from this run. The next Stage A retry should preserve
+the Phase 1 behavior more tightly before widening robustness:
+
+- stronger restore-policy KL,
+- lower learning rate,
+- shorter horizon or more frequent checkpointing,
+- stronger behavior prior or teacher-action continuity.
 
 Stage B:
 
