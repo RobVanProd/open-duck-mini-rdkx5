@@ -8030,3 +8030,19 @@ lift above the last stance height, so it is suitable for heightfield terrain.
 The Playground runner and RDK training wrapper expose matching flags, and a
 tiny CPU smoke plus direct one-step env check passed. This is only plumbing; no
 candidate was promoted and no robot-side work was performed.
+
+C4 then tested the clearance objective from the best C3 checkpoint:
+
+```text
+artifact: outputs/analysis/PHASE2_STAGE_C4_CLEARANCE_DECISION.md
+screen: outputs/analysis/PHASE2_STAGE_C4_TERRAIN_Z002_SCREEN_CPU.md
+status: HOLD_STAGE_C4_CLEARANCE_OVERDRIVES_GAIT
+```
+
+The final `c4_245760` checkpoint raised single-support time but destroyed the
+gait: it fell after 33 samples, moved backward, and exceeded the corrected
+velocity envelope. A weaker C4b retry did not reach training because local ROCm
+failed with `rocblas_status_internal_error` during JAX evaluator reset. The
+next terrain attempt should use a staged/gentler clearance objective plus
+stronger gait-preservation pressure, and should treat repeated local ROCm
+failures as backend holds rather than policy results.

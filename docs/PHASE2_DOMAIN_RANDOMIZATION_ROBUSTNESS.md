@@ -548,6 +548,45 @@ env activation check passed. No candidate was promoted.
 The next Stage C run should be a C4 fine-tune from the best C2/C3 terrain
 lineage with a mild clearance penalty, not a new contact-timing-only retry.
 
+Stage C4 clearance run:
+
+```text
+decision:
+  outputs/analysis/PHASE2_STAGE_C4_CLEARANCE_DECISION.md
+
+screen:
+  outputs/analysis/PHASE2_STAGE_C4_TERRAIN_Z002_SCREEN_CPU.md
+
+status:
+  HOLD_STAGE_C4_CLEARANCE_OVERDRIVES_GAIT
+```
+
+C4 warm-started from `c3_245760` and added a clearance cost with target lift
+`0.03 m` and scale `-0.05`. Training completed and restored the terrain XML,
+but the final checkpoint overcorrected:
+
+```text
+c4_245760:
+  samples: 33
+  termination: fall_or_nan
+  tracking p95: 0.4266 rad
+  track ratio: -6.0028
+  corrected velocity excess: 3.2400 rad/s
+  min swing peak lift: 0.0193 m
+  single support: 81.8%
+  double support: 9.1%
+```
+
+The clearance objective has leverage, but this setting destroyed the gait
+instead of producing a stable higher-clearance shuffle. A weaker C4b retry was
+attempted with scale `-0.005` and target `0.025 m`, but it failed before
+training on the local ROCm path with `rocblas_status_internal_error` during JAX
+evaluator reset. Treat C4b as a backend hold, not a policy result.
+
+The next terrain attempt should stage the clearance pressure more gently and
+preserve the C3 gait with stronger restore-policy/behavior prior pressure or
+more frequent checkpoint screening.
+
 Stage D:
 
 - rough hfield terrain
