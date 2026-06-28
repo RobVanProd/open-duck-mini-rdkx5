@@ -346,3 +346,51 @@ phase, while preserving zero-command behavior. Reasonable next mechanisms are a
 right-foot swing-phase relabel, a contact/phase-conditioned head, or a
 phase/contact-specific sample weighting rule. Do not repeat global seed
 weighting or plain mixed-command feed-forward BC for this blocker.
+
+## Targeted Right-Swing Weighting
+
+Artifact:
+
+```text
+decision: outputs/analysis/PHASE2_RIGHT_SWING_TARGETED_WEIGHTING_DECISION.md
+status: PASS_LOCAL_RIGHT_SWING_TARGETED_DIAGNOSTIC
+tool: tools/weight_bc_trace_samples.py
+```
+
+The next test weighted only the seed-4 right-foot swing rows:
+
+```text
+contact code: 10
+meaning: left stance, right swing
+matched rows: 18 / 250
+sample weight: 6.0
+```
+
+This recovered the missing local rough-terrain swing without breaking
+zero-command behavior:
+
+```text
+x=0.08 rough z=0.002 seed 2: PASS
+  vx: 0.0409 m/s
+  track ratio: 0.5114
+  velocity excess: 0.0000 rad/s
+  tracking p95: 0.1922 rad
+  min swing segments: 6
+  rel-x p95: 0.0131 m
+
+x=0.08 rough z=0.002 seed 4: PASS
+  vx: 0.0341 m/s
+  track ratio: 0.4269
+  velocity excess: 0.0000 rad/s
+  tracking p95: 0.1952 rad
+  min swing segments: 2
+  rel-x p95: 0.0064 m
+
+x=0.0 rough z=0.002 seed 2/4 vx: -0.0013 / 0.0032 m/s
+```
+
+This is not a promoted candidate yet. It is a local diagnostic pass showing
+that the carpet-like "steps but does not advance the foot enough" failure is
+addressed by contact-phase-specific right-foot swing weighting, not by global
+seed weighting. The next gate is the same rough `z=0.002` diagnostic across
+seeds 0-7 at both x=0.08 and x=0.0.

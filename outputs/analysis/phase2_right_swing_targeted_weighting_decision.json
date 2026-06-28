@@ -1,0 +1,58 @@
+{
+  "status": "PASS_LOCAL_RIGHT_SWING_TARGETED_DIAGNOSTIC",
+  "date": "2026-06-28",
+  "scope": "offline_sim_only",
+  "robot_tests_run": false,
+  "ssh_run": false,
+  "deploy_run": false,
+  "grounded_replay_run": false,
+  "runtime_behavior_changed": false,
+  "targeted_weighting": {
+    "source": "corrected seed-4 moving trace",
+    "contact_code": "10",
+    "contact_meaning": "left foot stance, right foot swing",
+    "matched_samples": 18,
+    "total_samples": 250,
+    "sample_weight": 6.0,
+    "reason": "seed4_right_swing_contact10"
+  },
+  "policy": "outputs/analysis/phase2_seed4_right_swing_weighted_phasecmd_bc_student/candidate.onnx",
+  "manifest": "outputs/analysis/phase2_seed4_right_swing_weighted_command_manifest.json",
+  "x008_gate": "outputs/analysis/phase2_seed4_right_swing_weighted_phasecmd_x008_rough_z002_gate_cpu.json",
+  "x0_gate": "outputs/analysis/phase2_seed4_right_swing_weighted_phasecmd_x0_rough_z002_gate_cpu.json",
+  "x008_results": {
+    "seed2": {
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "vx_m_s": 0.0409,
+      "track_ratio": 0.5114,
+      "velocity_excess_rad_s": 0.0,
+      "tracking_p95_rad": 0.1922,
+      "min_swing_segments": 6,
+      "min_rel_x_range_p95_m": 0.0131
+    },
+    "seed4": {
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "vx_m_s": 0.0341,
+      "track_ratio": 0.4269,
+      "velocity_excess_rad_s": 0.0,
+      "tracking_p95_rad": 0.1952,
+      "min_swing_segments": 2,
+      "min_rel_x_range_p95_m": 0.0064
+    }
+  },
+  "x0_results": {
+    "seed2": {
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "vx_m_s": -0.0013,
+      "velocity_excess_rad_s": 0.0,
+      "tracking_p95_rad": 0.0470
+    },
+    "seed4": {
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "vx_m_s": 0.0032,
+      "velocity_excess_rad_s": 0.0,
+      "tracking_p95_rad": 0.0422
+    }
+  },
+  "decision": "Targeted right-foot swing-phase sample weighting works on the local rough-terrain diagnostic; next run wider 8-seed rough gates before promotion."
+}

@@ -8485,3 +8485,31 @@ blocker is insufficient seed-4 right-foot swing/forward advance, not corrected
 envelope excess, actuator tracking, or zero-command drift. Global seed weighting
 is closed; the next branch needs targeted right-foot swing-phase relabeling or
 a contact/phase-conditioned architecture. Robot validation remains blocked.
+
+The targeted right-foot swing-phase version then passed the local rough
+diagnostic:
+
+```text
+artifact: outputs/analysis/PHASE2_RIGHT_SWING_TARGETED_WEIGHTING_DECISION.md
+status: PASS_LOCAL_RIGHT_SWING_TARGETED_DIAGNOSTIC
+weighted rows: seed-4 contact-code 10 only, 18/250 samples, weight 6.0
+```
+
+Results:
+
+```text
+x=0.08 rough z=0.002 seed 2: PASS
+  vx 0.0409, track ratio 0.5114, excess 0.0000, tracking 0.1922,
+  swing segments 6, rel-x 0.0131
+
+x=0.08 rough z=0.002 seed 4: PASS
+  vx 0.0341, track ratio 0.4269, excess 0.0000, tracking 0.1952,
+  swing segments 2, rel-x 0.0064
+
+x=0.0 rough z=0.002 seed 2/4 vx: -0.0013 / 0.0032 m/s
+```
+
+This is the first local rough-terrain command-conditioned pass that preserves
+the corrected envelope, tracking, x=0.0 semantics, and seed-4 swing/advance.
+It is not promoted yet; it must now pass the wider 8-seed rough diagnostic and
+then the canonical corrected-bridge gates. Robot validation remains blocked.

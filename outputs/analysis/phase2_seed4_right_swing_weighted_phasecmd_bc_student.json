@@ -1,0 +1,136 @@
+{
+  "activation": "swish",
+  "config": {
+    "batch_size": 512,
+    "learning_rate": 0.001,
+    "seed": 46,
+    "steps": 9000,
+    "target_rate_limit_rad_s": 3.75,
+    "target_rate_scale": 0.1
+  },
+  "context_hidden_sizes": [
+    64
+  ],
+  "context_indices": [
+    6,
+    99,
+    100
+  ],
+  "exported_onnx": "outputs/analysis/phase2_seed4_right_swing_weighted_phasecmd_bc_student/candidate.onnx",
+  "loss_rows": [
+    {
+      "loss": 0.11244284361600876,
+      "step": 1
+    },
+    {
+      "loss": 4.5223474444355816e-05,
+      "step": 500
+    },
+    {
+      "loss": 3.6404162528924644e-05,
+      "step": 1000
+    },
+    {
+      "loss": 1.6560754374950193e-05,
+      "step": 1500
+    },
+    {
+      "loss": 1.5024059393908828e-05,
+      "step": 2000
+    },
+    {
+      "loss": 1.0370430572947953e-05,
+      "step": 2500
+    },
+    {
+      "loss": 3.568304964574054e-05,
+      "step": 3000
+    },
+    {
+      "loss": 1.6991796655929647e-05,
+      "step": 3500
+    },
+    {
+      "loss": 2.103277438436635e-05,
+      "step": 4000
+    },
+    {
+      "loss": 1.4159175407257862e-05,
+      "step": 4500
+    },
+    {
+      "loss": 7.14641419108375e-06,
+      "step": 5000
+    },
+    {
+      "loss": 8.322838766616769e-06,
+      "step": 5500
+    },
+    {
+      "loss": 8.245388926297892e-06,
+      "step": 6000
+    },
+    {
+      "loss": 1.9313962184241973e-05,
+      "step": 6500
+    },
+    {
+      "loss": 3.590404730857699e-06,
+      "step": 7000
+    },
+    {
+      "loss": 5.104809588374337e-06,
+      "step": 7500
+    },
+    {
+      "loss": 6.167286301206332e-06,
+      "step": 8000
+    },
+    {
+      "loss": 5.311461791279726e-06,
+      "step": 8500
+    },
+    {
+      "loss": 4.2628712435544e-06,
+      "step": 9000
+    }
+  ],
+  "manifest": "outputs/analysis/phase2_seed4_right_swing_weighted_command_manifest.json",
+  "modulation_scale": 0.75,
+  "onnx_verify": {
+    "max_abs_error": 2.384185791015625e-07,
+    "p95_abs_error": 1.1920928955078125e-07,
+    "path": "outputs/analysis/phase2_seed4_right_swing_weighted_phasecmd_bc_student/candidate.onnx",
+    "samples_checked": 64
+  },
+  "sample_weight": {
+    "max": 6.0,
+    "p50": 1.0,
+    "p95": 5.0,
+    "weighted_samples": 1576.0
+  },
+  "samples": 750,
+  "saved_npz": "outputs/analysis/phase2_seed4_right_swing_weighted_phasecmd_bc_student/candidate_mlp.npz",
+  "status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE",
+  "target_rate": {
+    "max_rad_s": 2.940814256668091,
+    "p50_rad_s": 0.21110332757234573,
+    "p95_rad_s": 1.6902364492416382,
+    "p99_rad_s": 2.2700362515449526,
+    "pair_count": 747
+  },
+  "train_metrics": {
+    "mae": 0.0019762853611956783,
+    "max_abs_error": 0.013459891080856323,
+    "p50_abs_error": 0.001471787691116333,
+    "p95_abs_error": 0.005583931133151054,
+    "p99_abs_error": 0.008161456882953645,
+    "pred_action_saturation_pct": 0.0,
+    "rmse": 0.0026650351046619506,
+    "samples": 750
+  },
+  "trunk_hidden_sizes": [
+    512,
+    256
+  ]
+}
