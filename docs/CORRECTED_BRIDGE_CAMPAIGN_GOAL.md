@@ -180,7 +180,8 @@ run through the full corrected gate:
 
 ```text
 decision artifact: outputs/analysis/CORRECTED_BRIDGE_DEPLOYABLE_CANDIDATE_DECISION.md
-candidate: outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate/candidate.onnx
+stable candidate package: policy/candidates/corrected_bridge_cmd_conditioned_rate175_20260627/
+candidate: policy/candidates/corrected_bridge_cmd_conditioned_rate175_20260627/candidate.onnx
 candidate sha256: 63506567f7a973be0ff6b2b222bba41736409da713466db442067c0f2a91415e
 ```
 

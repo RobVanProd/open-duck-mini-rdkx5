@@ -1,0 +1,346 @@
+{
+  "baseline": {
+    "path": "/home/lsd/robots/open-duck-mini-rdkx5/policy/BEST_WALK_ONNX_2.onnx",
+    "sha256": "3c606f9381a1710cc8fecdb7442787dcbfce3ee9bc02a6f1224774ab2b3a1067"
+  },
+  "candidate": {
+    "name": "corrected_bridge_cmd_conditioned_rate175_20260627",
+    "path": "/home/lsd/robots/open-duck-mini-rdkx5/policy/candidates/corrected_bridge_cmd_conditioned_rate175_20260627/candidate.onnx",
+    "sha256": "63506567f7a973be0ff6b2b222bba41736409da713466db442067c0f2a91415e",
+    "size_bytes": 874724
+  },
+  "contract": {
+    "input_dim": 101,
+    "inputs": [
+      {
+        "dtype": "tensor(float)",
+        "name": "obs",
+        "shape": [
+          1,
+          101
+        ]
+      }
+    ],
+    "output_dim": 14,
+    "outputs": [
+      {
+        "dtype": "tensor(float)",
+        "name": "continuous_actions",
+        "shape": [
+          1,
+          14
+        ]
+      }
+    ],
+    "status": "PASS_POLICY_CONTRACT"
+  },
+  "evidence": {
+    "actuator_bridge_eval": {
+      "label": "actuator_bridge_eval_legacy",
+      "path": null,
+      "status": "MISSING"
+    },
+    "candidate_gate_x0": {
+      "label": "candidate_gate_x0",
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/corrected_bridge_cmd_conditioned_x0_gate.json",
+      "sha256": "42e9958fd7f21c19ec2dab4b15404039b755b9f30db81e9dd93daefa9e4fff62",
+      "size_bytes": 29517,
+      "status": "PRESENT"
+    },
+    "candidate_gate_x008": {
+      "label": "candidate_gate_x008",
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/corrected_bridge_cmd_conditioned_full_gate.json",
+      "sha256": "533e48e30851c73896d009347eeb882c66e645bb533c4db11b612a7af982f680",
+      "size_bytes": 29920,
+      "status": "PRESENT"
+    },
+    "contract_audit": {
+      "label": "contract_audit",
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/policy_sim_contract_audit.json",
+      "sha256": "d5fe8ce192cbe7a48e42e0b0fcf0a622d9451e86a08c57e6da72e139bcde228f",
+      "size_bytes": 14963,
+      "status": "PRESENT"
+    },
+    "target_velocity_summary": {
+      "label": "target_velocity_summary",
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/CORRECTED_BRIDGE_CMD_CONDITIONED_FULL_GATE.md",
+      "sha256": "acd0e7f4705a906580f485ac7eff3243aaf54646c3cc5ad0df45bd5a427388e6",
+      "size_bytes": 2484,
+      "status": "PRESENT"
+    },
+    "training_manifest": {
+      "label": "training_manifest",
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_bc_student.json",
+      "sha256": "d4af041fd81dc0281ab502943b0a06d717a2340d6d173c4c38221266cb02acdc",
+      "size_bytes": 2370,
+      "status": "PRESENT"
+    }
+  },
+  "generated_at": "2026-06-28T00:34:40Z",
+  "non_deployable_reason": null,
+  "required_evidence": [
+    "candidate_gate_x0",
+    "candidate_gate_x008",
+    "contract_audit",
+    "training_manifest"
+  ],
+  "sim_gate": {
+    "actuator_bridge_eval": {
+      "path": null,
+      "status": "MISSING"
+    },
+    "candidate_gate_x0": {
+      "aggregate": {
+        "cmd_conditioned": {
+          "base_height_min_m": {
+            "max": 0.1558658480644226,
+            "mean": 0.1527191698551178,
+            "min": 0.14622409641742706,
+            "p50": 0.15340188890695572,
+            "p95": 0.15582295656204223
+          },
+          "body_pitch_p95_rad": {
+            "max": 0.020692718995370098,
+            "mean": 0.01972973310133074,
+            "min": 0.019275834376456073,
+            "p50": 0.01961410649777451,
+            "p95": 0.020399808917219923
+          },
+          "duration_complete_count": 8,
+          "fall_count": 0,
+          "max_pitch_vel_limit_excess_rad_s": {
+            "max": 0.0,
+            "mean": 0.0,
+            "min": 0.0,
+            "p50": 0.0,
+            "p95": 0.0
+          },
+          "max_pitch_vel_p95_rad_s": {
+            "max": 0.4609054327011108,
+            "mean": 0.45388840138912195,
+            "min": 0.43190091848373413,
+            "p50": 0.4562358558177947,
+            "p95": 0.46071006357669825
+          },
+          "max_tracking_p95_rad": {
+            "max": 0.07478103041648865,
+            "mean": 0.0745703011751175,
+            "min": 0.07386567592620849,
+            "p50": 0.07467443048954009,
+            "p95": 0.07477273792028427
+          },
+          "mean_local_vx_m_s": {
+            "max": 0.003590054580689563,
+            "mean": 0.00032864277240893594,
+            "min": -0.003597391759472278,
+            "p50": 0.0005119688144162259,
+            "p95": 0.0030741241868842435
+          },
+          "runs": 8,
+          "samples": {
+            "max": 750.0,
+            "mean": 750.0,
+            "min": 750.0,
+            "p50": 750.0,
+            "p95": 750.0
+          },
+          "track_ratio": null
+        }
+      },
+      "candidate_gate_status": "PASS_CANDIDATE_SEED_SWEEP",
+      "eval_role": "candidate_seed_sweep",
+      "hold_count": 0,
+      "overall_status": "PASS_CANDIDATE_SEED_SWEEP",
+      "pass_count": 8,
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/corrected_bridge_cmd_conditioned_x0_gate.json",
+      "status": "PASS_PARSED_GATE_STATUS",
+      "total_count": 8
+    },
+    "candidate_gate_x008": {
+      "aggregate": {
+        "cmd_conditioned": {
+          "base_height_min_m": {
+            "max": 0.15586863458156586,
+            "mean": 0.1527182925492525,
+            "min": 0.14623375236988068,
+            "p50": 0.15356411784887314,
+            "p95": 0.1557810574769974
+          },
+          "body_pitch_p95_rad": {
+            "max": 0.12435802264815432,
+            "mean": 0.12026513435775302,
+            "min": 0.11562734833233546,
+            "p50": 0.12039386256248863,
+            "p95": 0.12404283847267805
+          },
+          "duration_complete_count": 8,
+          "fall_count": 0,
+          "max_pitch_vel_limit_excess_rad_s": {
+            "max": 0.0,
+            "mean": 0.0,
+            "min": 0.0,
+            "p50": 0.0,
+            "p95": 0.0
+          },
+          "max_pitch_vel_p95_rad_s": {
+            "max": 1.7471507191658016,
+            "mean": 1.7356201633810997,
+            "min": 1.727081537246704,
+            "p50": 1.7355912923812866,
+            "p95": 1.7454172223806377
+          },
+          "max_tracking_p95_rad": {
+            "max": 0.19729951024055475,
+            "mean": 0.19298893883824345,
+            "min": 0.187873101234436,
+            "p50": 0.19319857060909265,
+            "p95": 0.19717941820621487
+          },
+          "mean_local_vx_m_s": {
+            "max": 0.03694399320808588,
+            "mean": 0.03390316987568349,
+            "min": 0.029575237462219472,
+            "p50": 0.03519592338690806,
+            "p95": 0.036815210200928414
+          },
+          "runs": 8,
+          "samples": {
+            "max": 750.0,
+            "mean": 750.0,
+            "min": 750.0,
+            "p50": 750.0,
+            "p95": 750.0
+          },
+          "track_ratio": {
+            "max": 0.46179991510107354,
+            "mean": 0.4237896234460436,
+            "min": 0.3696904682777434,
+            "p50": 0.4399490423363507,
+            "p95": 0.46019012751160515
+          }
+        }
+      },
+      "candidate_gate_status": "PASS_CANDIDATE_SEED_SWEEP",
+      "eval_role": "candidate_seed_sweep",
+      "hold_count": 0,
+      "overall_status": "PASS_CANDIDATE_SEED_SWEEP",
+      "pass_count": 8,
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/corrected_bridge_cmd_conditioned_full_gate.json",
+      "status": "PASS_PARSED_GATE_STATUS",
+      "total_count": 8
+    }
+  },
+  "sources": {
+    "playground_repo": {
+      "branch": "codex/forward-progress-reward",
+      "commit": "ad924c4c6d492fe682748f7cc82cf3c96dbad75c",
+      "path": "/home/lsd/robots/Open_Duck_Playground",
+      "status_short": ""
+    },
+    "rdk_repo": {
+      "branch": "codex/live-oracle-dagger-phase-student",
+      "commit": "0587b04bcba6524669d8d4f4018b0f2605d49c28",
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5",
+      "status_short": "?? policy/candidates/corrected_bridge_cmd_conditioned_rate175_20260627/\n?? runtime/scripts/live_knee_monitor.py"
+    }
+  },
+  "status": "READY_FOR_SIM_GATE_REVIEW",
+  "training_manifest": {
+    "activation": "swish",
+    "config": {
+      "action_scale_rad": 0.25,
+      "batch_size": 512,
+      "dt_s": 0.02,
+      "learning_rate": 0.001,
+      "seed": 3,
+      "steps": 5000,
+      "target_rate_limit_rad_s": 1.75,
+      "target_rate_scale": 0.6
+    },
+    "exported_onnx": "outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate/candidate.onnx",
+    "hidden_sizes": [
+      512,
+      256,
+      128
+    ],
+    "loss_rows": [
+      {
+        "loss": 0.1745617687702179,
+        "step": 1
+      },
+      {
+        "loss": 0.0006902481545694172,
+        "step": 500
+      },
+      {
+        "loss": 0.0005556602263823152,
+        "step": 1000
+      },
+      {
+        "loss": 0.00048557145055383444,
+        "step": 1500
+      },
+      {
+        "loss": 0.00045466169831342995,
+        "step": 2000
+      },
+      {
+        "loss": 0.0004267554613761604,
+        "step": 2500
+      },
+      {
+        "loss": 0.00043616382754407823,
+        "step": 3000
+      },
+      {
+        "loss": 0.0005128996563144028,
+        "step": 3500
+      },
+      {
+        "loss": 0.0004327442147769034,
+        "step": 4000
+      },
+      {
+        "loss": 0.0004247005854267627,
+        "step": 4500
+      },
+      {
+        "loss": 0.00042336038313806057,
+        "step": 5000
+      }
+    ],
+    "manifest": "outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_manifest.json",
+    "onnx_verify": {
+      "max_abs_error": 2.9356472397434885e-07,
+      "p95_abs_error": 1.472203989827392e-07,
+      "path": "outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate/candidate.onnx",
+      "samples_checked": 64
+    },
+    "sample_weight": {
+      "max": 1.0,
+      "p50": 1.0,
+      "p95": 1.0,
+      "weighted_samples": 10322.0
+    },
+    "samples": 10322,
+    "saved_npz": "outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate/candidate_mlp.npz",
+    "status": "PASS_PPO_LOC_BC_FIT_SMOKE",
+    "target_rate": {
+      "max_rad_s": 1.9970185654559234,
+      "p50_rad_s": 0.23067421040415126,
+      "p95_rad_s": 1.573163375352279,
+      "p99_rad_s": 1.7466510142794587,
+      "pair_count": 10302
+    },
+    "train_metrics": {
+      "mae": 0.010691173277871823,
+      "max_abs_error": 0.2449903325772127,
+      "p50_abs_error": 0.005291900512380765,
+      "p95_abs_error": 0.04017083196618552,
+      "p99_abs_error": 0.0886582315751575,
+      "pred_action_saturation_pct": 0.0,
+      "rmse": 0.01991927642986571,
+      "samples": 10322
+    }
+  }
+}

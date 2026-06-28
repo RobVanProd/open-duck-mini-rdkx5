@@ -5,7 +5,8 @@ status: `PASS_CORRECTED_BRIDGE_SIM_CANDIDATE`
 ## Candidate
 
 ```text
-policy: outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate/candidate.onnx
+stable package: policy/candidates/corrected_bridge_cmd_conditioned_rate175_20260627/
+policy: policy/candidates/corrected_bridge_cmd_conditioned_rate175_20260627/candidate.onnx
 sha256: 63506567f7a973be0ff6b2b222bba41736409da713466db442067c0f2a91415e
 bridge: outputs/analysis/actuator_response_fit_corrected_knee.json
 bridge_sha256: 3661543d0745073b561eb4fa2ae8f9616368ee8b72cb397f8b953dada532c8c0
@@ -22,6 +23,8 @@ Package artifact:
 ```text
 outputs/analysis/CORRECTED_BRIDGE_CMD_CONDITIONED_CANDIDATE_PACKAGE.md
 outputs/analysis/corrected_bridge_cmd_conditioned_candidate_package.json
+policy/candidates/corrected_bridge_cmd_conditioned_rate175_20260627/POLICY_PACKAGE.md
+policy/candidates/corrected_bridge_cmd_conditioned_rate175_20260627/policy_metadata.json
 package status: READY_FOR_SIM_GATE_REVIEW
 contract: obs[1,101] -> continuous_actions[1,14]
 candidate gates: x=0.0 8/8, x=0.08 8/8
