@@ -919,6 +919,29 @@ whose gate requires per-foot swing segments and touchdown advance, or a
 higher-clearance alternating-step source re-mined from the corrected-bridge
 walker before any further PPO/BC.
 
+C7 terrain-height threshold check:
+
+```text
+artifact: outputs/analysis/PHASE2_STAGE_C7_35120_TERRAIN_Z001_SWING_GATE_CPU.md
+status: HOLD_CANDIDATE_TERRAIN_SWING
+```
+
+The current best C7 checkpoint was re-evaluated at `terrain_hfield_z_scale=0.001`
+with the same hard terrain swing gate. Seed 2 passed, but seed 4 still failed
+the swing gate:
+
+```text
+seed 2: PASS, track ratio 0.3457, min swing segments 1,
+        min rel-x range p95 0.0063 m
+seed 4: HOLD, track ratio 0.2539, min swing segments 0,
+        min rel-x range p95 0.0000 m
+```
+
+So the planted-seed failure is not only a `z=0.002` roughness-threshold issue.
+It appears even at half roughness. The next stage should not keep reducing
+terrain height as the main fix; it should make alternating swing/advance
+structurally unavoidable across seeds.
+
 Stage D:
 
 - rough hfield terrain

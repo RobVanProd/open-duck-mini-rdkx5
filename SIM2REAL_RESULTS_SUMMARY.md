@@ -8188,3 +8188,9 @@ Current Phase 2 interpretation: the blocker is target manifold / stepping
 structure. The next offline branch should require per-foot swing segments,
 forward relative-foot excursion, touchdown advance, and balanced support as
 hard target-source gates before more PPO/BC. Robot validation remains blocked.
+
+A follow-up C7 terrain-height threshold check at `terrain_hfield_z_scale=0.001`
+kept the same conclusion. Seed 2 passed the hard swing gate, but seed 4 still
+failed with `0` swing segments and `0.0000 m` rel-x range. The carpet-like
+failure is therefore not just that `z=0.002` is too high; the current gait has a
+seed-dependent planted-foot mode that survives gentler terrain.
