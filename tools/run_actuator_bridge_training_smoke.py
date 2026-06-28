@@ -186,9 +186,38 @@ def build_command(args: argparse.Namespace, output_dir: Path) -> list[str]:
         "--command_resample_steps": args.command_resample_steps,
         "--zero_command_probability": args.zero_command_probability,
         "--head_range_factor": args.head_range_factor,
+        "--dr_friction_min": args.dr_friction_min,
+        "--dr_friction_max": args.dr_friction_max,
+        "--dr_frictionloss_scale_min": args.dr_frictionloss_scale_min,
+        "--dr_frictionloss_scale_max": args.dr_frictionloss_scale_max,
+        "--dr_armature_scale_min": args.dr_armature_scale_min,
+        "--dr_armature_scale_max": args.dr_armature_scale_max,
+        "--dr_com_jitter_m": args.dr_com_jitter_m,
+        "--dr_mass_scale_min": args.dr_mass_scale_min,
+        "--dr_mass_scale_max": args.dr_mass_scale_max,
+        "--dr_torso_mass_delta_min": args.dr_torso_mass_delta_min,
+        "--dr_torso_mass_delta_max": args.dr_torso_mass_delta_max,
+        "--dr_qpos_jitter_rad": args.dr_qpos_jitter_rad,
+        "--dr_actuator_gain_scale_min": args.dr_actuator_gain_scale_min,
+        "--dr_actuator_gain_scale_max": args.dr_actuator_gain_scale_max,
+        "--dr_leg_geometry_jitter_scale": args.dr_leg_geometry_jitter_scale,
+        "--push_interval_min_s": args.push_interval_min_s,
+        "--push_interval_max_s": args.push_interval_max_s,
+        "--push_magnitude_min": args.push_magnitude_min,
+        "--push_magnitude_max": args.push_magnitude_max,
+        "--noise_level": args.noise_level,
+        "--noise_hip_pos": args.noise_hip_pos,
+        "--noise_knee_pos": args.noise_knee_pos,
+        "--noise_ankle_pos": args.noise_ankle_pos,
+        "--noise_joint_vel": args.noise_joint_vel,
+        "--noise_gravity": args.noise_gravity,
+        "--noise_gyro": args.noise_gyro,
+        "--noise_accelerometer": args.noise_accelerometer,
     }
     for flag, value in optional_runner_overrides.items():
         append_optional(command, flag, value)
+    if args.push_enable is not None:
+        command.append("--push_enable" if args.push_enable else "--no-push_enable")
     if args.command_progress_failure_enable:
         command.append("--command_progress_failure_enable")
     if args.enable_soft_prior:
@@ -573,6 +602,39 @@ def main() -> int:
     parser.add_argument("--command-resample-steps", type=int, default=None)
     parser.add_argument("--zero-command-probability", type=float, default=None)
     parser.add_argument("--head-range-factor", type=float, default=None)
+    parser.add_argument("--dr-friction-min", type=float, default=None)
+    parser.add_argument("--dr-friction-max", type=float, default=None)
+    parser.add_argument("--dr-frictionloss-scale-min", type=float, default=None)
+    parser.add_argument("--dr-frictionloss-scale-max", type=float, default=None)
+    parser.add_argument("--dr-armature-scale-min", type=float, default=None)
+    parser.add_argument("--dr-armature-scale-max", type=float, default=None)
+    parser.add_argument("--dr-com-jitter-m", type=float, default=None)
+    parser.add_argument("--dr-mass-scale-min", type=float, default=None)
+    parser.add_argument("--dr-mass-scale-max", type=float, default=None)
+    parser.add_argument("--dr-torso-mass-delta-min", type=float, default=None)
+    parser.add_argument("--dr-torso-mass-delta-max", type=float, default=None)
+    parser.add_argument("--dr-qpos-jitter-rad", type=float, default=None)
+    parser.add_argument("--dr-actuator-gain-scale-min", type=float, default=None)
+    parser.add_argument("--dr-actuator-gain-scale-max", type=float, default=None)
+    parser.add_argument("--dr-leg-geometry-jitter-scale", type=float, default=None)
+    parser.add_argument(
+        "--push-enable",
+        action=argparse.BooleanOptionalAction,
+        default=None,
+        help="Enable or disable training push perturbations.",
+    )
+    parser.add_argument("--push-interval-min-s", type=float, default=None)
+    parser.add_argument("--push-interval-max-s", type=float, default=None)
+    parser.add_argument("--push-magnitude-min", type=float, default=None)
+    parser.add_argument("--push-magnitude-max", type=float, default=None)
+    parser.add_argument("--noise-level", type=float, default=None)
+    parser.add_argument("--noise-hip-pos", type=float, default=None)
+    parser.add_argument("--noise-knee-pos", type=float, default=None)
+    parser.add_argument("--noise-ankle-pos", type=float, default=None)
+    parser.add_argument("--noise-joint-vel", type=float, default=None)
+    parser.add_argument("--noise-gravity", type=float, default=None)
+    parser.add_argument("--noise-gyro", type=float, default=None)
+    parser.add_argument("--noise-accelerometer", type=float, default=None)
     args = parser.parse_args()
 
     validate_paths(args)
@@ -726,6 +788,34 @@ def main() -> int:
             "command_resample_steps": args.command_resample_steps,
             "zero_command_probability": args.zero_command_probability,
             "head_range_factor": args.head_range_factor,
+            "dr_friction_min": args.dr_friction_min,
+            "dr_friction_max": args.dr_friction_max,
+            "dr_frictionloss_scale_min": args.dr_frictionloss_scale_min,
+            "dr_frictionloss_scale_max": args.dr_frictionloss_scale_max,
+            "dr_armature_scale_min": args.dr_armature_scale_min,
+            "dr_armature_scale_max": args.dr_armature_scale_max,
+            "dr_com_jitter_m": args.dr_com_jitter_m,
+            "dr_mass_scale_min": args.dr_mass_scale_min,
+            "dr_mass_scale_max": args.dr_mass_scale_max,
+            "dr_torso_mass_delta_min": args.dr_torso_mass_delta_min,
+            "dr_torso_mass_delta_max": args.dr_torso_mass_delta_max,
+            "dr_qpos_jitter_rad": args.dr_qpos_jitter_rad,
+            "dr_actuator_gain_scale_min": args.dr_actuator_gain_scale_min,
+            "dr_actuator_gain_scale_max": args.dr_actuator_gain_scale_max,
+            "dr_leg_geometry_jitter_scale": args.dr_leg_geometry_jitter_scale,
+            "push_enable": args.push_enable,
+            "push_interval_min_s": args.push_interval_min_s,
+            "push_interval_max_s": args.push_interval_max_s,
+            "push_magnitude_min": args.push_magnitude_min,
+            "push_magnitude_max": args.push_magnitude_max,
+            "noise_level": args.noise_level,
+            "noise_hip_pos": args.noise_hip_pos,
+            "noise_knee_pos": args.noise_knee_pos,
+            "noise_ankle_pos": args.noise_ankle_pos,
+            "noise_joint_vel": args.noise_joint_vel,
+            "noise_gravity": args.noise_gravity,
+            "noise_gyro": args.noise_gyro,
+            "noise_accelerometer": args.noise_accelerometer,
         },
         "command": command,
         "command_shell": (

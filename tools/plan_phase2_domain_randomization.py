@@ -26,6 +26,12 @@ DEFAULT_OUTPUT_MD = ROOT / "outputs/analysis/PHASE2_DOMAIN_RANDOMIZATION_PLAN.md
 DEFAULT_OUTPUT_JSON = ROOT / "outputs/analysis/phase2_domain_randomization_plan.json"
 DEFAULT_PLAYGROUND = ROOT.parent / "Open_Duck_Playground"
 DEFAULT_ENV_PYTHON = ROOT.parent / "envs/open-duck-playground/bin/python"
+DEFAULT_RESTORE_CHECKPOINT = (
+    ROOT / "outputs/analysis/ppo_bc_command_conditioned_rate175_step0_checkpoint"
+)
+DEFAULT_WARMSTART_FIDELITY = (
+    ROOT / "outputs/analysis/ppo_bc_command_conditioned_rate175_step0_export_fidelity.json"
+)
 
 
 def sha256(path: Path) -> str | None:
@@ -116,6 +122,60 @@ def stage_command(args: argparse.Namespace, stage: dict[str, Any], output_root: 
         "0.15",
         "--command-resample-steps",
         "600",
+        "--dr-friction-min",
+        cli(stage["friction"][0]),
+        "--dr-friction-max",
+        cli(stage["friction"][1]),
+        "--dr-frictionloss-scale-min",
+        cli(stage["frictionloss_scale"][0]),
+        "--dr-frictionloss-scale-max",
+        cli(stage["frictionloss_scale"][1]),
+        "--dr-armature-scale-min",
+        cli(stage["armature_scale"][0]),
+        "--dr-armature-scale-max",
+        cli(stage["armature_scale"][1]),
+        "--dr-com-jitter-m",
+        cli(stage["com_jitter_m"]),
+        "--dr-mass-scale-min",
+        cli(stage["mass_scale"][0]),
+        "--dr-mass-scale-max",
+        cli(stage["mass_scale"][1]),
+        "--dr-torso-mass-delta-min",
+        cli(stage["torso_mass_delta"][0]),
+        "--dr-torso-mass-delta-max",
+        cli(stage["torso_mass_delta"][1]),
+        "--dr-qpos-jitter-rad",
+        cli(stage["qpos_jitter_rad"]),
+        "--dr-actuator-gain-scale-min",
+        cli(stage["actuator_gain_scale"][0]),
+        "--dr-actuator-gain-scale-max",
+        cli(stage["actuator_gain_scale"][1]),
+        "--dr-leg-geometry-jitter-scale",
+        cli(stage["leg_geometry_jitter_scale"]),
+        "--push-interval-min-s",
+        cli(stage["push"]["interval_s"][0]),
+        "--push-interval-max-s",
+        cli(stage["push"]["interval_s"][1]),
+        "--push-magnitude-min",
+        cli(stage["push"]["magnitude"][0]),
+        "--push-magnitude-max",
+        cli(stage["push"]["magnitude"][1]),
+        "--noise-level",
+        cli(stage["noise"]["level"]),
+        "--noise-hip-pos",
+        cli(stage["noise"]["hip_pos"]),
+        "--noise-knee-pos",
+        cli(stage["noise"]["knee_pos"]),
+        "--noise-ankle-pos",
+        cli(stage["noise"]["ankle_pos"]),
+        "--noise-joint-vel",
+        cli(stage["noise"]["joint_vel"]),
+        "--noise-gravity",
+        cli(stage["noise"]["gravity"]),
+        "--noise-gyro",
+        cli(stage["noise"]["gyro"]),
+        "--noise-accelerometer",
+        cli(stage["noise"]["accelerometer"]),
         "--target-rate-scale",
         "-0.04",
         "--target-rate-huber-delta",
@@ -154,6 +214,7 @@ def stage_command(args: argparse.Namespace, stage: dict[str, Any], output_root: 
     if args.restore_checkpoint:
         command.extend(["--restore-checkpoint-path", args.restore_checkpoint])
         command.extend(["--restore-policy-kl-scale", cli(stage["restore_policy_kl_scale"])])
+    command.append("--push-enable" if stage["push"]["enabled"] else "--no-push-enable")
     if args.jax_platforms:
         command.extend(["--jax-platforms", args.jax_platforms])
     return command
@@ -164,10 +225,16 @@ def build_plan(args: argparse.Namespace) -> dict[str, Any]:
     fit_json = Path(args.fit_json)
     checkpoint = Path(args.restore_checkpoint) if args.restore_checkpoint else None
     behavior_prior = Path(args.behavior_prior_mlp_npz)
+    warmstart_fidelity = Path(args.warmstart_fidelity)
+    fidelity_payload = None
+    if warmstart_fidelity.exists():
+        fidelity_payload = json.loads(warmstart_fidelity.read_text())
 
     warmstart_status = (
         "PASS_TRAINABLE_WARMSTART"
         if checkpoint is not None and checkpoint.exists()
+        and fidelity_payload is not None
+        and fidelity_payload.get("status") == "PASS_PPO_BC_WARMSTART_STEP0_EXPORT_FIDELITY"
         else "HOLD_TRAINABLE_WARMSTART_CHECKPOINT_MISSING"
     )
 
@@ -178,9 +245,26 @@ def build_plan(args: argparse.Namespace) -> dict[str, Any]:
             "task": "flat_terrain_backlash",
             "num_timesteps": args.stage_timesteps,
             "friction": [0.7, 1.0],
+            "frictionloss_scale": [0.97, 1.03],
+            "armature_scale": [1.0, 1.03],
             "mass_scale": [0.97, 1.03],
             "com_offset_m": [-0.015, 0.015],
-            "push": {"enabled": False, "magnitude": [0.0, 0.0]},
+            "com_jitter_m": 0.015,
+            "torso_mass_delta": [-0.03, 0.03],
+            "qpos_jitter_rad": 0.01,
+            "actuator_gain_scale": [0.97, 1.03],
+            "leg_geometry_jitter_scale": 0.005,
+            "push": {"enabled": False, "interval_s": [8.0, 12.0], "magnitude": [0.0, 0.0]},
+            "noise": {
+                "level": 0.5,
+                "hip_pos": 0.01,
+                "knee_pos": 0.01,
+                "ankle_pos": 0.01,
+                "joint_vel": 1.0,
+                "gravity": 0.05,
+                "gyro": 0.05,
+                "accelerometer": 0.025,
+            },
             "terrain": "flat",
             "bridge": {
                 "delay_ticks": [3, 4],
@@ -197,9 +281,26 @@ def build_plan(args: argparse.Namespace) -> dict[str, Any]:
             "task": "flat_terrain_backlash",
             "num_timesteps": args.stage_timesteps,
             "friction": [0.5, 1.25],
+            "frictionloss_scale": [0.9, 1.1],
+            "armature_scale": [0.98, 1.08],
             "mass_scale": [0.9, 1.1],
             "com_offset_m": [-0.03, 0.03],
-            "push": {"enabled": True, "magnitude": [0.05, 0.25]},
+            "com_jitter_m": 0.03,
+            "torso_mass_delta": [-0.08, 0.08],
+            "qpos_jitter_rad": 0.02,
+            "actuator_gain_scale": [0.9, 1.1],
+            "leg_geometry_jitter_scale": 0.015,
+            "push": {"enabled": True, "interval_s": [6.0, 10.0], "magnitude": [0.05, 0.25]},
+            "noise": {
+                "level": 1.0,
+                "hip_pos": 0.01,
+                "knee_pos": 0.01,
+                "ankle_pos": 0.01,
+                "joint_vel": 1.5,
+                "gravity": 0.08,
+                "gyro": 0.08,
+                "accelerometer": 0.04,
+            },
             "terrain": "flat",
             "bridge": {
                 "delay_ticks": [3, 5],
@@ -216,9 +317,26 @@ def build_plan(args: argparse.Namespace) -> dict[str, Any]:
             "task": "rough_terrain_backlash",
             "num_timesteps": args.stage_timesteps,
             "friction": [0.5, 1.25],
+            "frictionloss_scale": [0.9, 1.1],
+            "armature_scale": [0.98, 1.08],
             "mass_scale": [0.9, 1.1],
             "com_offset_m": [-0.03, 0.03],
-            "push": {"enabled": True, "magnitude": [0.05, 0.35]},
+            "com_jitter_m": 0.03,
+            "torso_mass_delta": [-0.08, 0.08],
+            "qpos_jitter_rad": 0.02,
+            "actuator_gain_scale": [0.9, 1.1],
+            "leg_geometry_jitter_scale": 0.02,
+            "push": {"enabled": True, "interval_s": [5.0, 9.0], "magnitude": [0.05, 0.35]},
+            "noise": {
+                "level": 1.0,
+                "hip_pos": 0.01,
+                "knee_pos": 0.01,
+                "ankle_pos": 0.01,
+                "joint_vel": 1.5,
+                "gravity": 0.08,
+                "gyro": 0.08,
+                "accelerometer": 0.04,
+            },
             "terrain": "existing hfield rough terrain",
             "bridge": {
                 "delay_ticks": [3, 5],
@@ -235,9 +353,26 @@ def build_plan(args: argparse.Namespace) -> dict[str, Any]:
             "task": "rough_terrain_backlash",
             "num_timesteps": args.stage_timesteps,
             "friction": [0.5, 1.25],
+            "frictionloss_scale": [0.9, 1.1],
+            "armature_scale": [0.98, 1.10],
             "mass_scale": [0.9, 1.1],
             "com_offset_m": [-0.04, 0.04],
-            "push": {"enabled": True, "magnitude": [0.1, 0.6]},
+            "com_jitter_m": 0.04,
+            "torso_mass_delta": [-0.1, 0.1],
+            "qpos_jitter_rad": 0.025,
+            "actuator_gain_scale": [0.9, 1.1],
+            "leg_geometry_jitter_scale": 0.025,
+            "push": {"enabled": True, "interval_s": [4.0, 8.0], "magnitude": [0.1, 0.6]},
+            "noise": {
+                "level": 1.0,
+                "hip_pos": 0.01,
+                "knee_pos": 0.01,
+                "ankle_pos": 0.01,
+                "joint_vel": 1.5,
+                "gravity": 0.1,
+                "gyro": 0.1,
+                "accelerometer": 0.05,
+            },
             "terrain": "existing hfield rough terrain",
             "bridge": {
                 "delay_ticks": [3, 6],
@@ -264,7 +399,7 @@ def build_plan(args: argparse.Namespace) -> dict[str, Any]:
             "Phase 2 requires a true trainable warm-start from the Phase 1 policy. "
             "Current artifact is ONNX/BC NPZ, while PPO restore expects an Orbax checkpoint."
             if warmstart_status.startswith("HOLD")
-            else "Trainable checkpoint exists; generated commands remain dry-run until invoked explicitly."
+            else "Verified trainable step-0 checkpoint exists; generated commands remain dry-run until invoked explicitly."
         ),
         "policy": {"path": str(policy), "sha256": sha256(policy)},
         "fit_json": {"path": str(fit_json), "sha256": sha256(fit_json)},
@@ -276,6 +411,17 @@ def build_plan(args: argparse.Namespace) -> dict[str, Any]:
         "restore_checkpoint": {
             "path": str(checkpoint) if checkpoint else None,
             "exists": checkpoint.exists() if checkpoint else False,
+        },
+        "warmstart_fidelity": {
+            "path": str(warmstart_fidelity),
+            "exists": warmstart_fidelity.exists(),
+            "status": fidelity_payload.get("status") if fidelity_payload else None,
+            "p95_abs_error": fidelity_payload.get("fidelity", {}).get("p95_abs_error")
+            if fidelity_payload
+            else None,
+            "max_abs_error": fidelity_payload.get("fidelity", {}).get("max_abs_error")
+            if fidelity_payload
+            else None,
         },
         "warmstart_status": warmstart_status,
         "corrected_envelope_gate": {
@@ -309,9 +455,6 @@ def build_plan(args: argparse.Namespace) -> dict[str, Any]:
         },
         "stages": stages,
         "missing_implementation": [
-            "true trainable warm-start checkpoint or verified ONNX/NPZ-to-PPO conversion",
-            "CLI-configurable friction/mass/COM/push/noise randomization ranges in Playground",
-            "leg-length / geometry jitter hook",
             "stage-gated automation that advances only after corrected-bridge gates pass",
         ],
     }
@@ -337,14 +480,19 @@ def write_md(plan: dict[str, Any], path: Path) -> None:
         f"- corrected_bridge_sha256: `{plan['fit_json']['sha256']}`",
         f"- behavior_prior_mlp_npz: `{plan['behavior_prior_mlp_npz']['path']}`",
         f"- behavior_prior_mlp_npz_sha256: `{plan['behavior_prior_mlp_npz']['sha256']}`",
+        f"- restore_checkpoint: `{plan['restore_checkpoint']['path']}`",
+        f"- restore_checkpoint_exists: `{plan['restore_checkpoint']['exists']}`",
+        f"- warmstart_fidelity: `{plan['warmstart_fidelity']['path']}`",
+        f"- warmstart_fidelity_status: `{plan['warmstart_fidelity']['status']}`",
+        f"- warmstart_fidelity_p95_abs_error: `{plan['warmstart_fidelity']['p95_abs_error']}`",
+        f"- warmstart_fidelity_max_abs_error: `{plan['warmstart_fidelity']['max_abs_error']}`",
         "",
         "## Blocking Warm-Start Note",
         "",
-        "The existing Playground PPO path restores from an Orbax checkpoint. The",
-        "Phase 1 candidate is currently preserved as ONNX plus BC MLP NPZ. Using",
-        "the NPZ as a frozen behavior prior is useful, but it is not the same as",
-        "warm-starting trainable PPO parameters. Do not launch Phase 2 as a scratch",
-        "run.",
+        "The Phase 1 candidate now has a verified PPO step-0 Orbax checkpoint.",
+        "It was constructed from the rate175 BC NPZ and passed ONNX action",
+        "fidelity against the packaged Phase 1 candidate before PPO updates.",
+        "Use this checkpoint for Phase 2; do not launch a scratch PPO run.",
         "",
         "## Stages",
         "",
@@ -401,7 +549,8 @@ def main() -> int:
             / "outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate/candidate_mlp.npz"
         ),
     )
-    parser.add_argument("--restore-checkpoint", default=None)
+    parser.add_argument("--restore-checkpoint", default=str(DEFAULT_RESTORE_CHECKPOINT))
+    parser.add_argument("--warmstart-fidelity", default=str(DEFAULT_WARMSTART_FIDELITY))
     parser.add_argument("--playground-path", default=str(DEFAULT_PLAYGROUND))
     parser.add_argument("--env-python", default=str(DEFAULT_ENV_PYTHON))
     parser.add_argument("--output-root", default="outputs/phase2_domain_randomization")

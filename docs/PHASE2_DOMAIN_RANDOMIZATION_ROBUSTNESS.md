@@ -1,6 +1,6 @@
 # Phase 2 Domain-Randomized Robustness Training
 
-status: `PREPARED_BLOCKED_ON_TRAINABLE_WARMSTART`
+status: `READY_FOR_STAGE_A_DRY_RUN`
 
 ## Objective
 
@@ -21,6 +21,9 @@ policy: policy/candidates/corrected_bridge_cmd_conditioned_rate175_20260627/cand
 sha256: 63506567f7a973be0ff6b2b222bba41736409da713466db442067c0f2a91415e
 corrected bridge: outputs/analysis/actuator_response_fit_corrected_knee.json
 corrected bridge sha256: 3661543d0745073b561eb4fa2ae8f9616368ee8b72cb397f8b953dada532c8c0
+trainable warm-start checkpoint: outputs/analysis/ppo_bc_command_conditioned_rate175_step0_checkpoint
+step-0 exported ONNX: outputs/analysis/ppo_bc_command_conditioned_rate175_step0.onnx
+warm-start fidelity report: outputs/analysis/ppo_bc_command_conditioned_rate175_step0_export_fidelity.json
 ```
 
 The carpet test showed the current policy is actuator-trackable on the ground
@@ -28,28 +31,33 @@ but does not lift/clear its feet enough to walk forward on medium carpet. Phase
 2 should therefore treat robustness and terrain/contact margin as the target,
 not actuator tracking alone.
 
-## Blocking Warm-Start Issue
+## Trainable Warm-Start
 
 The user constraint is correct: Phase 2 must warm-start from the Phase 1 gait,
 not train from scratch.
 
-The current local Playground PPO runner warm-starts from a Brax/Orbax
-checkpoint via `--restore_checkpoint_path`. The Phase 1 candidate is preserved
-as ONNX plus a BC MLP NPZ. That is deployable and useful as a behavior prior,
-but it is not directly a trainable PPO checkpoint.
+The local Playground PPO runner warm-starts from a Brax/Orbax checkpoint via
+`--restore_checkpoint_path`. A verified step-0 PPO checkpoint now exists for
+the Phase 1 `rate175` candidate:
 
-Therefore Phase 2 training is blocked until one of these is true:
+```text
+checkpoint:
+  outputs/analysis/ppo_bc_command_conditioned_rate175_step0_checkpoint
 
-1. Recover the Orbax checkpoint that exported the Phase 1 candidate.
-2. Implement and verify ONNX/NPZ-to-PPO-params conversion.
-3. Add a BC-rehydration path that initializes the PPO policy network from the
-   Phase 1 BC MLP weights and proves ONNX fidelity before PPO updates.
+fidelity:
+  status: PASS_PPO_BC_WARMSTART_STEP0_EXPORT_FIDELITY
+  p95 abs error: 1.1920928955078125e-07
+  max abs error: 3.2782554626464844e-07
+```
 
-Do not launch a scratch PPO run and call it Phase 2.
+This checkpoint was constructed from the Phase 1 BC MLP NPZ, exported through
+the PPO ONNX path, and compared against the packaged Phase 1 ONNX before any
+PPO updates. Use it as the trainable Phase 2 warm-start. Do not launch a
+scratch PPO run and call it Phase 2.
 
 ## Existing Playground Hooks
 
-The local Playground already provides most of the requested DR scaffolding:
+The local Playground now provides the requested DR scaffolding:
 
 - friction randomization in `playground/common/randomize.py`
 - link mass and torso mass randomization
@@ -62,13 +70,13 @@ The local Playground already provides most of the requested DR scaffolding:
 - random planar push impulses to the floating base
 - rough-terrain hfield scene via `rough_terrain_backlash`
 - corrected actuator bridge hooks and runner CLI flags
+- staged CLI overrides for friction, mass, COM, qpos jitter, actuator gain,
+  push intervals/magnitudes, observation noise, and leg-geometry jitter
+- default-off leg-link body-position geometry jitter
 
 Missing or partial:
 
-- leg-length / geometry jitter is not implemented
-- friction/mass/COM/push/noise ranges are mostly hardcoded, not CLI-staged
 - stage advancement is not automated by corrected-bridge gates
-- trainable warm-start checkpoint is missing
 
 ## Curriculum
 

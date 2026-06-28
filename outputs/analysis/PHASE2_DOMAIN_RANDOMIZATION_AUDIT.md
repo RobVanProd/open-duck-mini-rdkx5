@@ -1,6 +1,6 @@
 # Phase 2 Domain Randomization Audit
 
-status: `HOLD_PHASE2_NOT_READY`
+status: `PASS_PHASE2_READY_TO_DRY_RUN`
 playground_path: `/home/lsd/robots/Open_Duck_Playground`
 
 This is an offline static audit. It did not train, SSH, deploy, or move the robot.
@@ -20,15 +20,15 @@ This is an offline static audit. It did not train, SSH, deploy, or move the robo
 | `push_perturbations` | `PRESENT` | joystick.py adds random planar velocity impulse to floating base qvel |
 | `rough_terrain` | `PRESENT` | constants.py maps rough_terrain_backlash and XML contains hfield |
 | `actuator_bridge` | `PRESENT` | joystick.py bridge model and runner.py bridge CLI flags |
-| `domain_randomize_training_hook` | `PRESENT` | BaseRunner passes randomization_fn into Brax PPO train |
-| `leg_geometry_randomization` | `MISSING` | No body geom/site length scale jitter hook found in static audit |
-| `dr_range_cli` | `PARTIAL` | runner.py exposes actuator bridge ranges but not friction/mass/COM/push/noise/terrain-ramp ranges as CLI arguments |
+| `domain_randomize_training_hook` | `PRESENT` | BaseRunner passes configured randomization_fn into Brax PPO train |
+| `leg_geometry_randomization` | `PRESENT` | playground/common/randomize.py supports default-off leg body_pos scale jitter and runner.py exposes --dr_leg_geometry_jitter_scale |
+| `dr_range_cli` | `PRESENT` | runner.py exposes staged DR range CLI for friction, mass, COM, push, noise, actuator gain, qpos jitter, and leg geometry |
 
 ## Warm-Start Gate
 
-status: `HOLD_TRAINABLE_WARMSTART_CHECKPOINT_MISSING`
+status: `PASS_TRAINABLE_CHECKPOINT_PRESENT`
 
-Current Playground PPO warm-start path uses --restore_checkpoint_path for an Orbax checkpoint. The Phase 1 deployable artifact is ONNX plus BC MLP NPZ, which is useful as a behavior prior or conversion source but is not directly a PPO trainable checkpoint.
+A verified PPO step-0 Orbax checkpoint exists for the Phase 1 rate175 candidate. The fidelity report proves the exported checkpoint policy matches the packaged ONNX at action level before PPO updates.
 
 Artifacts:
 
@@ -38,6 +38,11 @@ Artifacts:
 - BC MLP NPZ: `/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate/candidate_mlp.npz`
 - BC MLP NPZ exists: `True`
 - BC MLP NPZ sha256: `312f1ef0ba758af5fdeae900ce0a34dab659fe348a9f389988ddaaaa15659497`
+- restore checkpoint: `/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/ppo_bc_command_conditioned_rate175_step0_checkpoint`
+- restore checkpoint exists: `True`
+- warm-start fidelity status: `PASS_PPO_BC_WARMSTART_STEP0_EXPORT_FIDELITY`
+- warm-start fidelity p95 abs error: `1.1920928955078125e-07`
+- warm-start fidelity max abs error: `3.2782554626464844e-07`
 
 ## Terrain / Contact
 
@@ -46,13 +51,15 @@ Artifacts:
 
 ## Blockers
 
-- `HOLD_TRAINABLE_WARMSTART_CHECKPOINT_MISSING`
-- `HOLD_LEG_GEOMETRY_JITTER_NOT_IMPLEMENTED`
-- `WARN_DR_RANGES_NOT_CLI_CONFIGURABLE`
+- none
+
+## Warnings
+
+- none
 
 ## Recommendation
 
-Do not launch Phase 2 PPO as a scratch run. First create or recover a
-trainable checkpoint equivalent to the Phase 1 candidate, or implement
-a verified conversion/BC-rehydration path. Then add/configure DR range
-controls and run the staged curriculum.
+Use the verified step-0 PPO checkpoint as the Phase 2 trainable
+warm-start. Before the full curriculum, add or configure staged DR
+range controls and leg-geometry jitter, then run Stage A and gate it
+against the corrected bridge before advancing.

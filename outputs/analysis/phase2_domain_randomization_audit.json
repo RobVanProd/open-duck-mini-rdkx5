@@ -1,9 +1,5 @@
 {
-  "blockers": [
-    "HOLD_TRAINABLE_WARMSTART_CHECKPOINT_MISSING",
-    "HOLD_LEG_GEOMETRY_JITTER_NOT_IMPLEMENTED",
-    "WARN_DR_RANGES_NOT_CLI_CONFIGURABLE"
-  ],
+  "blockers": [],
   "files": {
     "common_randomize": "/home/lsd/robots/Open_Duck_Playground/playground/common/randomize.py",
     "common_runner": "/home/lsd/robots/Open_Duck_Playground/playground/common/runner.py",
@@ -32,18 +28,15 @@
       "status": "PRESENT"
     },
     "domain_randomize_training_hook": {
-      "evidence": "BaseRunner passes randomization_fn into Brax PPO train",
+      "evidence": "BaseRunner passes configured randomization_fn into Brax PPO train",
       "status": "PRESENT"
     },
     "dr_range_cli": {
-      "evidence": "runner.py exposes actuator bridge ranges but not friction/mass/COM/push/noise/terrain-ramp ranges as CLI arguments",
-      "status": "PARTIAL"
+      "evidence": "runner.py exposes staged DR range CLI for friction, mass, COM, push, noise, actuator gain, qpos jitter, and leg geometry",
+      "status": "PRESENT"
     },
     "friction_randomization": {
-      "current_range": [
-        "0.5",
-        "1.0"
-      ],
+      "current_range": null,
       "evidence": "playground/common/randomize.py mutates model.geom_friction",
       "status": "PRESENT"
     },
@@ -56,8 +49,8 @@
       "status": "PRESENT"
     },
     "leg_geometry_randomization": {
-      "evidence": "No body geom/site length scale jitter hook found in static audit",
-      "status": "MISSING"
+      "evidence": "playground/common/randomize.py supports default-off leg body_pos scale jitter and runner.py exposes --dr_leg_geometry_jitter_scale",
+      "status": "PRESENT"
     },
     "mass_randomization": {
       "evidence": "playground/common/randomize.py mutates model.body_mass",
@@ -78,7 +71,7 @@
   },
   "playground_path": "/home/lsd/robots/Open_Duck_Playground",
   "rough_floor_friction_xml": "1.0",
-  "status": "HOLD_PHASE2_NOT_READY",
+  "status": "PASS_PHASE2_READY_TO_DRY_RUN",
   "trainable_warmstart": {
     "candidate_mlp_npz": {
       "exists": true,
@@ -92,9 +85,27 @@
       "sha256": "63506567f7a973be0ff6b2b222bba41736409da713466db442067c0f2a91415e",
       "size_bytes": 874724
     },
-    "reason": "Current Playground PPO warm-start path uses --restore_checkpoint_path for an Orbax checkpoint. The Phase 1 deployable artifact is ONNX plus BC MLP NPZ, which is useful as a behavior prior or conversion source but is not directly a PPO trainable checkpoint.",
+    "reason": "A verified PPO step-0 Orbax checkpoint exists for the Phase 1 rate175 candidate. The fidelity report proves the exported checkpoint policy matches the packaged ONNX at action level before PPO updates.",
     "required_by_phase2": true,
-    "restore_checkpoint": null,
-    "status": "HOLD_TRAINABLE_WARMSTART_CHECKPOINT_MISSING"
-  }
+    "restore_checkpoint": {
+      "exists": true,
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/ppo_bc_command_conditioned_rate175_step0_checkpoint",
+      "sha256": null,
+      "size_bytes": null
+    },
+    "status": "PASS_TRAINABLE_CHECKPOINT_PRESENT",
+    "warmstart_fidelity": {
+      "exists": true,
+      "max_abs_error": 3.2782554626464844e-07,
+      "output_checkpoint": "outputs/analysis/ppo_bc_command_conditioned_rate175_step0_checkpoint",
+      "p95_abs_error": 1.1920928955078125e-07,
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/ppo_bc_command_conditioned_rate175_step0_export_fidelity.json",
+      "reference_onnx": "policy/candidates/corrected_bridge_cmd_conditioned_rate175_20260627/candidate.onnx",
+      "report_status": "PASS_PPO_BC_WARMSTART_STEP0_EXPORT_FIDELITY",
+      "sha256": "b362965d6f47afbc753c7aa673755b91b6d65021a45d05dd8c0c7fa241291161",
+      "size_bytes": 1349,
+      "status": "PASS"
+    }
+  },
+  "warnings": []
 }

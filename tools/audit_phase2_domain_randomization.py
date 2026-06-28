@@ -28,6 +28,12 @@ DEFAULT_POLICY_NPZ = (
     ROOT
     / "outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate/candidate_mlp.npz"
 )
+DEFAULT_RESTORE_CHECKPOINT = (
+    ROOT / "outputs/analysis/ppo_bc_command_conditioned_rate175_step0_checkpoint"
+)
+DEFAULT_WARMSTART_FIDELITY = (
+    ROOT / "outputs/analysis/ppo_bc_command_conditioned_rate175_step0_export_fidelity.json"
+)
 DEFAULT_OUTPUT_MD = ROOT / "outputs/analysis/PHASE2_DOMAIN_RANDOMIZATION_AUDIT.md"
 DEFAULT_OUTPUT_JSON = ROOT / "outputs/analysis/phase2_domain_randomization_audit.json"
 
@@ -69,6 +75,30 @@ def file_info(path: Path) -> dict[str, Any]:
     }
 
 
+def warmstart_fidelity_status(path: Path) -> dict[str, Any]:
+    info = file_info(path)
+    info["status"] = "MISSING"
+    if not path.exists():
+        return info
+    try:
+        payload = json.loads(path.read_text())
+    except json.JSONDecodeError as exc:
+        info["status"] = "INVALID_JSON"
+        info["error"] = str(exc)
+        return info
+    info["report_status"] = payload.get("status")
+    info["p95_abs_error"] = payload.get("fidelity", {}).get("p95_abs_error")
+    info["max_abs_error"] = payload.get("fidelity", {}).get("max_abs_error")
+    info["reference_onnx"] = payload.get("reference_onnx")
+    info["output_checkpoint"] = payload.get("output_checkpoint")
+    info["status"] = (
+        "PASS"
+        if payload.get("status") == "PASS_PPO_BC_WARMSTART_STEP0_EXPORT_FIDELITY"
+        else "HOLD"
+    )
+    return info
+
+
 def audit(args: argparse.Namespace) -> dict[str, Any]:
     playground = Path(args.playground_path)
     common_randomize = playground / "playground/common/randomize.py"
@@ -90,6 +120,10 @@ def audit(args: argparse.Namespace) -> dict[str, Any]:
     policy = Path(args.policy)
     candidate_npz = Path(args.candidate_npz)
     restore_checkpoint = Path(args.restore_checkpoint) if args.restore_checkpoint else None
+    warmstart_fidelity = Path(args.warmstart_fidelity)
+    fidelity = warmstart_fidelity_status(warmstart_fidelity)
+    checkpoint_present = restore_checkpoint is not None and restore_checkpoint.exists()
+    fidelity_pass = fidelity.get("status") == "PASS"
 
     hooks: dict[str, dict[str, Any]] = {
         "friction_randomization": {
@@ -177,20 +211,40 @@ def audit(args: argparse.Namespace) -> dict[str, Any]:
             "status": (
                 "PRESENT"
                 if "randomization_fn=self.randomizer" in common_runner_text
-                and "randomize.domain_randomize" in runner_text
+                and (
+                    "randomize.domain_randomize" in runner_text
+                    or "randomize.make_domain_randomizer" in runner_text
+                )
                 else "MISSING"
             ),
-            "evidence": "BaseRunner passes randomization_fn into Brax PPO train",
+            "evidence": "BaseRunner passes configured randomization_fn into Brax PPO train",
         },
         "leg_geometry_randomization": {
-            "status": "MISSING",
-            "evidence": "No body geom/site length scale jitter hook found in static audit",
+            "status": "PRESENT"
+            if has_all(randomize_text, ["leg_geometry_jitter_scale", "body_pos"])
+            and "--dr_leg_geometry_jitter_scale" in runner_text
+            else "MISSING",
+            "evidence": (
+                "playground/common/randomize.py supports default-off leg body_pos "
+                "scale jitter and runner.py exposes --dr_leg_geometry_jitter_scale"
+            ),
         },
         "dr_range_cli": {
-            "status": "PARTIAL",
+            "status": "PRESENT"
+            if has_all(
+                runner_text,
+                [
+                    "--dr_friction_min",
+                    "--dr_mass_scale_min",
+                    "--dr_com_jitter_m",
+                    "--push_magnitude_min",
+                    "--noise_hip_pos",
+                ],
+            )
+            else "PARTIAL",
             "evidence": (
-                "runner.py exposes actuator bridge ranges but not friction/mass/COM/"
-                "push/noise/terrain-ramp ranges as CLI arguments"
+                "runner.py exposes staged DR range CLI for friction, mass, COM, "
+                "push, noise, actuator gain, qpos jitter, and leg geometry"
             ),
         },
     }
@@ -200,27 +254,32 @@ def audit(args: argparse.Namespace) -> dict[str, Any]:
         "policy_onnx": file_info(policy),
         "candidate_mlp_npz": file_info(candidate_npz),
         "restore_checkpoint": file_info(restore_checkpoint) if restore_checkpoint else None,
+        "warmstart_fidelity": fidelity,
         "status": "PASS_TRAINABLE_CHECKPOINT_PRESENT"
-        if restore_checkpoint and restore_checkpoint.exists()
+        if checkpoint_present and fidelity_pass
         else "HOLD_TRAINABLE_WARMSTART_CHECKPOINT_MISSING",
         "reason": (
-            "Current Playground PPO warm-start path uses --restore_checkpoint_path "
-            "for an Orbax checkpoint. The Phase 1 deployable artifact is ONNX plus "
-            "BC MLP NPZ, which is useful as a behavior prior or conversion source "
-            "but is not directly a PPO trainable checkpoint."
+            "A verified PPO step-0 Orbax checkpoint exists for the Phase 1 rate175 "
+            "candidate. The fidelity report proves the exported checkpoint policy "
+            "matches the packaged ONNX at action level before PPO updates."
+            if checkpoint_present and fidelity_pass
+            else "Current Playground PPO warm-start path uses --restore_checkpoint_path "
+            "for an Orbax checkpoint. The Phase 1 deployable artifact must be "
+            "converted or recovered as a trainable checkpoint before Phase 2."
         ),
     }
 
     blockers = []
+    warnings = []
     if trainable_warmstart["status"].startswith("HOLD"):
         blockers.append(trainable_warmstart["status"])
     if hooks["leg_geometry_randomization"]["status"] == "MISSING":
-        blockers.append("HOLD_LEG_GEOMETRY_JITTER_NOT_IMPLEMENTED")
+        warnings.append("WARN_LEG_GEOMETRY_JITTER_NOT_IMPLEMENTED")
     if hooks["dr_range_cli"]["status"] == "PARTIAL":
-        blockers.append("WARN_DR_RANGES_NOT_CLI_CONFIGURABLE")
+        warnings.append("WARN_DR_RANGES_NOT_CLI_CONFIGURABLE")
 
     return {
-        "status": "HOLD_PHASE2_NOT_READY" if blockers else "PASS_PHASE2_READY",
+        "status": "HOLD_PHASE2_NOT_READY" if blockers else "PASS_PHASE2_READY_TO_DRY_RUN",
         "playground_path": str(playground),
         "files": {
             "common_randomize": str(common_randomize),
@@ -234,6 +293,7 @@ def audit(args: argparse.Namespace) -> dict[str, Any]:
         "hooks": hooks,
         "trainable_warmstart": trainable_warmstart,
         "blockers": blockers,
+        "warnings": warnings,
         "flat_floor_friction_xml": first_match(flat_xml_text, r'name="floor"[^>]*friction="([^"]+)"'),
         "rough_floor_friction_xml": first_match(rough_xml_text, r'name="floor"[^>]*friction="([^"]+)"'),
     }
@@ -272,6 +332,11 @@ def write_markdown(result: dict[str, Any], path: Path) -> None:
             f"- BC MLP NPZ: `{result['trainable_warmstart']['candidate_mlp_npz']['path']}`",
             f"- BC MLP NPZ exists: `{result['trainable_warmstart']['candidate_mlp_npz']['exists']}`",
             f"- BC MLP NPZ sha256: `{result['trainable_warmstart']['candidate_mlp_npz']['sha256']}`",
+            f"- restore checkpoint: `{result['trainable_warmstart']['restore_checkpoint']['path'] if result['trainable_warmstart']['restore_checkpoint'] else None}`",
+            f"- restore checkpoint exists: `{result['trainable_warmstart']['restore_checkpoint']['exists'] if result['trainable_warmstart']['restore_checkpoint'] else None}`",
+            f"- warm-start fidelity status: `{result['trainable_warmstart']['warmstart_fidelity'].get('report_status')}`",
+            f"- warm-start fidelity p95 abs error: `{result['trainable_warmstart']['warmstart_fidelity'].get('p95_abs_error')}`",
+            f"- warm-start fidelity max abs error: `{result['trainable_warmstart']['warmstart_fidelity'].get('max_abs_error')}`",
             "",
             "## Terrain / Contact",
             "",
@@ -286,15 +351,20 @@ def write_markdown(result: dict[str, Any], path: Path) -> None:
         lines.extend(f"- `{blocker}`" for blocker in result["blockers"])
     else:
         lines.append("- none")
+    lines.extend(["", "## Warnings", ""])
+    if result["warnings"]:
+        lines.extend(f"- `{warning}`" for warning in result["warnings"])
+    else:
+        lines.append("- none")
     lines.extend(
         [
             "",
             "## Recommendation",
             "",
-            "Do not launch Phase 2 PPO as a scratch run. First create or recover a",
-            "trainable checkpoint equivalent to the Phase 1 candidate, or implement",
-            "a verified conversion/BC-rehydration path. Then add/configure DR range",
-            "controls and run the staged curriculum.",
+            "Use the verified step-0 PPO checkpoint as the Phase 2 trainable",
+            "warm-start. Before the full curriculum, add or configure staged DR",
+            "range controls and leg-geometry jitter, then run Stage A and gate it",
+            "against the corrected bridge before advancing.",
         ]
     )
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -306,7 +376,8 @@ def main() -> int:
     parser.add_argument("--playground-path", default=str(DEFAULT_PLAYGROUND))
     parser.add_argument("--policy", default=str(DEFAULT_POLICY))
     parser.add_argument("--candidate-npz", default=str(DEFAULT_POLICY_NPZ))
-    parser.add_argument("--restore-checkpoint", default=None)
+    parser.add_argument("--restore-checkpoint", default=str(DEFAULT_RESTORE_CHECKPOINT))
+    parser.add_argument("--warmstart-fidelity", default=str(DEFAULT_WARMSTART_FIDELITY))
     parser.add_argument("--output-md", default=str(DEFAULT_OUTPUT_MD))
     parser.add_argument("--output-json", default=str(DEFAULT_OUTPUT_JSON))
     args = parser.parse_args()
@@ -321,6 +392,8 @@ def main() -> int:
     print(result["status"])
     for blocker in result["blockers"]:
         print(blocker)
+    for warning in result["warnings"]:
+        print(warning)
     return 0
 
 
