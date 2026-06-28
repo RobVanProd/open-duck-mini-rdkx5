@@ -111,6 +111,14 @@ C7 `35120` transient. Decision: do not increase swing-balance scalar pressure;
 the next terrain branch needs a higher-clearance/alternating-step target source
 or hard step-advance constraint.
 
+The evaluator now reports passive terrain swing-excursion metrics:
+`min_swing_segments` and `min_rel_x_range_p95`. Rechecking the C7 pass/fail
+trace showed seed 2 passing with `min_swing_segments=3` and
+`min_rel_x_range_p95=0.0059 m`, while seed 4 held with
+`min_swing_segments=0` and `min_rel_x_range_p95=0.0000 m`. Future terrain gates
+should reject policies that pass tracking by leaving one foot effectively
+planted.
+
 June 27 corrected-knee update: the left knee soft offset was corrected from
 `-1.488 rad` to `0.0371 rad`, and a supported/on-stand sine-only actuator gate
 passed at `0.25`, `0.5`, and `1.0 Hz` with `0.03 rad` amplitude. The corrected

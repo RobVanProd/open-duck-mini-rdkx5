@@ -782,6 +782,31 @@ increase this scalar pressure. Use it only with a target that first preserves
 motion, or with a much weaker value after a higher-clearance target source is
 available.
 
+After C8, the evaluator was extended with passive swing-excursion metrics:
+
+```text
+artifact: outputs/analysis/PHASE2_TERRAIN_SWING_EXCURSION_METRICS.md
+status: PASS_SWING_EXCURSION_METRICS_ADDED
+```
+
+The standard seed-sweep report now includes:
+
+```text
+min_swing_segments
+min_rel_x_range_p95
+```
+
+The corrected C7 pass/fail trace comparison now reads:
+
+```text
+seed 2 pass: min_swing_segments 3, min_rel_x_range_p95 0.0059 m, track ratio 0.3577
+seed 4 hold: min_swing_segments 0, min_rel_x_range_p95 0.0000 m, track ratio 0.1918
+```
+
+Future terrain gates should treat these as first-class diagnostics. A policy
+that passes tracking by keeping one foot effectively planted is still a terrain
+hold, even if actuator tracking p95 is below threshold.
+
 Stage D:
 
 - rough hfield terrain
@@ -812,6 +837,7 @@ Additional required reports:
 - push recovery success rate
 - terrain success rate
 - foot clearance / swing peak
+- per-foot swing segment count and relative-foot excursion
 - action saturation
 - per-joint target velocity vs corrected envelope
 

@@ -134,6 +134,28 @@ def summarize_payload(payload: dict[str, Any], mode_name: str) -> dict[str, Any]
     right_lift = ((feet.get("right") or {}).get("swing_lift_over_stance_m") or {})
     left_peak = (feet.get("left") or {}).get("swing_peak_lift_over_stance_m")
     right_peak = (feet.get("right") or {}).get("swing_peak_lift_over_stance_m")
+    left_segments = (feet.get("left") or {}).get("swing_segment_count")
+    right_segments = (feet.get("right") or {}).get("swing_segment_count")
+    segment_counts = [
+        value for value in (left_segments, right_segments) if isinstance(value, int)
+    ]
+    left_rel_x_range = (
+        (feet.get("left") or {}).get("swing_segment_rel_x_range_m") or {}
+    )
+    right_rel_x_range = (
+        (feet.get("right") or {}).get("swing_segment_rel_x_range_m") or {}
+    )
+    left_rel_x_range_p95 = (
+        0.0 if left_segments == 0 else left_rel_x_range.get("p95")
+    )
+    right_rel_x_range_p95 = (
+        0.0 if right_segments == 0 else right_rel_x_range.get("p95")
+    )
+    rel_x_ranges = [
+        value
+        for value in (left_rel_x_range_p95, right_rel_x_range_p95)
+        if finite(value)
+    ]
     peaks = [value for value in (left_peak, right_peak) if finite(value)]
     return {
         "overall_status": payload.get("overall_status"),
@@ -159,6 +181,12 @@ def summarize_payload(payload: dict[str, Any], mode_name: str) -> dict[str, Any]
         "left_swing_peak_lift_m": left_peak,
         "right_swing_peak_lift_m": right_peak,
         "min_swing_peak_lift_m": min(peaks) if peaks else None,
+        "left_swing_segment_count": left_segments,
+        "right_swing_segment_count": right_segments,
+        "min_swing_segment_count": min(segment_counts) if segment_counts else None,
+        "left_swing_rel_x_range_p95_m": left_rel_x_range_p95,
+        "right_swing_rel_x_range_p95_m": right_rel_x_range_p95,
+        "min_swing_rel_x_range_p95_m": min(rel_x_ranges) if rel_x_ranges else None,
         "single_support_pct": support.get("single_support_pct"),
         "double_support_pct": support.get("double_support_pct"),
         "no_contact_pct": support.get("no_contact_pct"),
@@ -368,6 +396,12 @@ def aggregate(rows: list[dict[str, Any]]) -> dict[str, Any]:
         "min_swing_peak_lift_m": stats(
             item.get("min_swing_peak_lift_m") for item in summaries
         ),
+        "min_swing_segment_count": stats(
+            item.get("min_swing_segment_count") for item in summaries
+        ),
+        "min_swing_rel_x_range_p95_m": stats(
+            item.get("min_swing_rel_x_range_p95_m") for item in summaries
+        ),
         "single_support_pct": stats(item.get("single_support_pct") for item in summaries),
         "double_support_pct": stats(item.get("double_support_pct") for item in summaries),
     }
@@ -398,8 +432,8 @@ def build_report(results: list[dict[str, Any]], args: argparse.Namespace) -> str
         "",
         "## Per-Seed Results",
         "",
-        "| policy | seed | status | samples | termination | mean_local_vx | track_ratio | body_pitch_p95 | base_height_min | max_pitch_vel_p95 | max_vel_excess | max_tracking_p95 | min_swing_peak | single_support | double_support | push_events | push_success |",
-        "|---|---:|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|",
+        "| policy | seed | status | samples | termination | mean_local_vx | track_ratio | body_pitch_p95 | base_height_min | max_pitch_vel_p95 | max_vel_excess | max_tracking_p95 | min_swing_peak | min_swing_segments | min_rel_x_range_p95 | single_support | double_support | push_events | push_success |",
+        "|---|---:|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|",
     ]
     for result in results:
         summary = result.get("summary") or {}
@@ -415,6 +449,8 @@ def build_report(results: list[dict[str, Any]], args: argparse.Namespace) -> str
             f"{fmt(summary.get('max_pitch_vel_limit_excess_rad_s'))} | "
             f"{fmt(summary.get('max_tracking_p95_rad'))} | "
             f"{fmt(summary.get('min_swing_peak_lift_m'))} | "
+            f"{fmt(summary.get('min_swing_segment_count'), 0)} | "
+            f"{fmt(summary.get('min_swing_rel_x_range_p95_m'))} | "
             f"{fmt(summary.get('single_support_pct'))} | "
             f"{fmt(summary.get('double_support_pct'))} | "
             f"{fmt(summary.get('push_event_count'), 0)} | "
@@ -422,9 +458,9 @@ def build_report(results: list[dict[str, Any]], args: argparse.Namespace) -> str
         )
     lines.extend(["", "## Distribution Summary", ""])
     lines.append(
-        "| policy | runs | falls | duration_complete | samples_mean | samples_min | samples_max | track_ratio_mean | vx_mean | body_pitch_p95_mean | base_height_min_mean | max_vel_excess_mean | min_swing_peak_mean | single_support_mean | double_support_mean | push_events_mean | push_success_mean |"
+        "| policy | runs | falls | duration_complete | samples_mean | samples_min | samples_max | track_ratio_mean | vx_mean | body_pitch_p95_mean | base_height_min_mean | max_vel_excess_mean | min_swing_peak_mean | min_swing_segments_mean | min_rel_x_range_p95_mean | single_support_mean | double_support_mean | push_events_mean | push_success_mean |"
     )
-    lines.append("|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|")
+    lines.append("|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|")
     for label, rows in grouped(results).items():
         agg = aggregate(rows)
         sample_stats = agg.get("samples") or {}
@@ -438,6 +474,8 @@ def build_report(results: list[dict[str, Any]], args: argparse.Namespace) -> str
             f"{fmt((agg.get('base_height_min_m') or {}).get('mean'))} | "
             f"{fmt((agg.get('max_pitch_vel_limit_excess_rad_s') or {}).get('mean'))} | "
             f"{fmt((agg.get('min_swing_peak_lift_m') or {}).get('mean'))} | "
+            f"{fmt((agg.get('min_swing_segment_count') or {}).get('mean'))} | "
+            f"{fmt((agg.get('min_swing_rel_x_range_p95_m') or {}).get('mean'))} | "
             f"{fmt((agg.get('single_support_pct') or {}).get('mean'))} | "
             f"{fmt((agg.get('double_support_pct') or {}).get('mean'))} | "
             f"{fmt((agg.get('push_event_count') or {}).get('mean'))} | "

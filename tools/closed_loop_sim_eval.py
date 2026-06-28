@@ -230,9 +230,11 @@ def foot_clearance_summary(records: Sequence[Mapping[str, Any]]) -> dict:
     foot_names = ("left", "right")
     foot_pos = []
     contacts = []
+    base_x = []
     for record in records:
         pos = record.get("foot_site_pos_m")
         contact = record.get("foot_contacts")
+        base_x_m = record.get("base_x_m")
         if (
             isinstance(pos, list)
             and len(pos) >= 2
@@ -241,6 +243,7 @@ def foot_clearance_summary(records: Sequence[Mapping[str, Any]]) -> dict:
         ):
             foot_pos.append(pos[:2])
             contacts.append(contact[:2])
+            base_x.append(float(base_x_m) if finite(base_x_m) else 0.0)
     if not foot_pos:
         return {
             "available": False,
@@ -250,21 +253,62 @@ def foot_clearance_summary(records: Sequence[Mapping[str, Any]]) -> dict:
 
     pos_arr = np.asarray(foot_pos, dtype=float)
     contact_arr = np.asarray(contacts, dtype=bool)
+    base_x_arr = np.asarray(base_x, dtype=float)
     support_counts = np.sum(contact_arr, axis=1)
     samples = int(contact_arr.shape[0])
     feet: dict[str, Any] = {}
     for index, name in enumerate(foot_names):
         z = pos_arr[:, index, 2]
+        rel_x = pos_arr[:, index, 0] - base_x_arr
         contact = contact_arr[:, index]
         stance_z = z[contact]
         swing_z = z[~contact]
         stance_ref = float(np.median(stance_z)) if stance_z.size else None
         lift = swing_z - stance_ref if stance_ref is not None else np.asarray([])
+        swing_segments = []
+        start = None
+        for sample_index, is_swing in enumerate(~contact):
+            if bool(is_swing) and start is None:
+                start = sample_index
+            is_last = sample_index == samples - 1
+            if start is not None and ((not bool(is_swing)) or is_last):
+                end = sample_index if not bool(is_swing) else sample_index + 1
+                if end - start >= 2:
+                    segment_rel_x = rel_x[start:end]
+                    segment_lift = (
+                        z[start:end] - stance_ref
+                        if stance_ref is not None
+                        else np.asarray([])
+                    )
+                    swing_segments.append(
+                        {
+                            "ticks": int(end - start),
+                            "rel_x_delta_m": float(segment_rel_x[-1] - segment_rel_x[0]),
+                            "rel_x_range_m": float(
+                                np.max(segment_rel_x) - np.min(segment_rel_x)
+                            ),
+                            "peak_lift_over_stance_m": (
+                                float(np.max(segment_lift))
+                                if segment_lift.size
+                                else None
+                            ),
+                        }
+                    )
+                start = None
+        rel_x_ranges = [item["rel_x_range_m"] for item in swing_segments]
+        rel_x_deltas = [item["rel_x_delta_m"] for item in swing_segments]
+        segment_peak_lifts = [
+            item["peak_lift_over_stance_m"]
+            for item in swing_segments
+            if item["peak_lift_over_stance_m"] is not None
+        ]
         feet[name] = {
             "contact_pct": float(np.mean(contact) * 100.0),
             "swing_samples": int(np.sum(~contact)),
             "stance_samples": int(np.sum(contact)),
+            "swing_segment_count": int(len(swing_segments)),
             "site_z_m": signed_stats(z),
+            "site_rel_x_m": signed_stats(rel_x),
             "stance_site_z_m": signed_stats(stance_z),
             "swing_site_z_m": signed_stats(swing_z),
             "stance_reference_z_m": stance_ref,
@@ -272,6 +316,9 @@ def foot_clearance_summary(records: Sequence[Mapping[str, Any]]) -> dict:
             "swing_peak_lift_over_stance_m": (
                 float(np.max(lift)) if lift.size else None
             ),
+            "swing_segment_rel_x_delta_m": signed_stats(rel_x_deltas),
+            "swing_segment_rel_x_range_m": signed_stats(rel_x_ranges),
+            "swing_segment_peak_lift_over_stance_m": signed_stats(segment_peak_lifts),
         }
     support = {
         "samples": samples,
