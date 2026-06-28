@@ -1,6 +1,6 @@
 # Phase 2 Domain-Randomized Robustness Training
 
-status: `HOLD_STAGE_A_LOW_FORWARD_PROGRESS`
+status: `HOLD_STAGE_A2_NEAR_MISS_NO_PROMOTION`
 
 ## Objective
 
@@ -115,6 +115,21 @@ the Phase 1 behavior more tightly before widening robustness:
 - lower learning rate,
 - shorter horizon or more frequent checkpointing,
 - stronger behavior prior or teacher-action continuity.
+
+Stage A2 retry result:
+
+```text
+decision:
+  outputs/analysis/PHASE2_STAGE_A2_DECISION.md
+
+status:
+  HOLD_STAGE_A2_NEAR_MISS_NO_PROMOTION
+```
+
+A2 improved the failure mode. The 164k checkpoint completed `x=0.08` 8/8 with
+no falls and no envelope excess, and passed `x=0.0` 8/8, but missed strict
+tracking by `0.0004 rad` on one seed. The 492k checkpoint had cleaner tracking
+but lost forward progress on two seeds. Do not advance to Stage B yet.
 
 Stage B:
 
