@@ -140,6 +140,14 @@ forward-command swing. A tiny CPU smoke passed on the `z=0.002` rough-terrain
 setup with the hook enabled. This is not a candidate; it is plumbing for the
 next offline C-stage terrain branch.
 
+C9 then tested that hook from the C7 `35120` checkpoint with
+`forward_swing_advance_scale=-0.01`, target `0.005 m`, and Huber delta
+`0.002`. Training completed and stayed in-envelope, but all trained checkpoints
+held low progress on the two-seed terrain screen. The pass-like seed regressed
+and the planted-foot seed stayed at `0` min swing segments. Do not promote C9;
+the next terrain step needs a higher-clearance alternating-step target source
+or hard step-advance constraint, not stronger scalar pressure.
+
 June 27 corrected-knee update: the left knee soft offset was corrected from
 `-1.488 rad` to `0.0371 rad`, and a supported/on-stand sine-only actuator gate
 passed at `0.25`, `0.5`, and `1.0 Hz` with `0.03 rad` amplitude. The corrected

@@ -859,6 +859,26 @@ Use this as a direct step-advance pressure in the next C-stage terrain branch,
 with gate-selected checkpoints and the hard terrain swing gate enabled. Do not
 increase global action gain as the terrain fix.
 
+C9 tested the hook:
+
+```text
+artifact: outputs/analysis/PHASE2_STAGE_C9_SWING_ADVANCE_DECISION.md
+screen: outputs/analysis/PHASE2_STAGE_C9_TERRAIN_Z002_SCREEN_CPU.md
+status: HOLD_STAGE_C9_SWING_ADVANCE_RETREATS_TO_LOW_PROGRESS
+```
+
+C9 warm-started from C7 `35120` and added
+`forward_swing_advance_scale=-0.01`, target `0.005 m`, and Huber delta
+`0.002`. Training completed on local GPU and preserved corrected-envelope
+compliance, but all trained checkpoints regressed the pass-like seed 2 to low
+forward progress and never recovered the planted-foot seed 4. Seed 4 stayed at
+`0` min swing segments for every checkpoint.
+
+Decision: keep the hook, but do not promote C9 and do not simply increase
+scalar swing-advance pressure. The next terrain branch needs a
+higher-clearance alternating-step target source or a hard step-advance
+constraint that cannot be satisfied by retreating into double support.
+
 Stage D:
 
 - rough hfield terrain
