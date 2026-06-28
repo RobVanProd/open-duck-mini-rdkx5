@@ -1,0 +1,58 @@
+{
+  "config": {
+    "batch_size": 64,
+    "learning_rate": 0.001,
+    "seed": 23,
+    "sequence_length": 32,
+    "steps": 2000,
+    "target_rate_limit_rad_s": 3.75,
+    "target_rate_scale": 0.05
+  },
+  "exported_onnx": "outputs/analysis/phase2_terrain_safe_hard_step_recurrent_bc_student/candidate_recurrent.onnx",
+  "hidden_dim": 64,
+  "loss_rows": [
+    {
+      "loss": 0.7008157968521118,
+      "step": 1
+    },
+    {
+      "loss": 0.0021207055542618036,
+      "step": 500
+    },
+    {
+      "loss": 0.0009268426802009344,
+      "step": 1000
+    },
+    {
+      "loss": 0.00048100462299771607,
+      "step": 1500
+    },
+    {
+      "loss": 0.00034186465200036764,
+      "step": 2000
+    }
+  ],
+  "manifest": "outputs/analysis/phase2_terrain_safe_hard_step_bc_manifest.json",
+  "no_deploy": true,
+  "no_robot_tests": true,
+  "onnx_verify": {
+    "max_action_error": 4.809147080564458e-07,
+    "max_hidden_error": 7.90809293937933e-07,
+    "path": "outputs/analysis/phase2_terrain_safe_hard_step_recurrent_bc_student/candidate_recurrent.onnx",
+    "steps_checked": 64
+  },
+  "runtime_behavior_changed": false,
+  "samples": 400,
+  "saved_npz": "outputs/analysis/phase2_terrain_safe_hard_step_recurrent_bc_student/candidate_recurrent.npz",
+  "sequences": 4,
+  "status": "PASS_RECURRENT_BC_FIT_SMOKE",
+  "train_metrics": {
+    "mae": 0.01513777593840985,
+    "max_abs_error": 0.1597308166048333,
+    "p95_abs_error": 0.040416142985481,
+    "p99_abs_error": 0.06576220511357432,
+    "samples": 400,
+    "target_rate_max_rad_s": 3.8569780528403657,
+    "target_rate_p95_rad_s": 2.1986956597656664
+  }
+}

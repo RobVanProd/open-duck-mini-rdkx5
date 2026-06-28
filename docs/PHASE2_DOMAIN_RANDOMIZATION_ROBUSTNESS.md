@@ -1060,6 +1060,25 @@ the curated slice actions, but closed-loop rollout collapses to low progress and
 over-envelope target spikes. Do not promote this BC ONNX. The next student step
 needs live relabel/DAgger or memory/phase, not plain 400-sample BC.
 
+A small recurrent BC diagnostic was also run on the same 400-sample manifest:
+
+```text
+artifact: outputs/analysis/PHASE2_TERRAIN_SAFE_HARD_STEP_RECURRENT_BC_STUDENT.md
+fit status: PASS_RECURRENT_BC_FIT_SMOKE
+fit p95 action error: 0.040416
+
+closed-loop artifact:
+outputs/analysis/PHASE2_TERRAIN_SAFE_HARD_STEP_RECURRENT_BC_STUDENT_TERRAIN_Z002_GATE_CPU.md
+closed-loop status: HOLD_CANDIDATE_FALL_OR_TERMINATION
+seed 2: fall at 84 samples, mean vx -0.1820, max velocity excess 3.2400
+seed 4: fall at 46 samples, mean vx -0.3372, max velocity excess 3.2400
+```
+
+This falsifies the cheapest recurrence-only rescue on the tiny terrain-window
+dataset. The source windows are valid, but the student needs more on-policy/live
+coverage or a teacher/relabel loop, not just a small recurrent fit to four
+snippets.
+
 ## References
 
 Verified from arXiv:

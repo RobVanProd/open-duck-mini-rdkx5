@@ -8253,3 +8253,17 @@ This is the same compression failure seen earlier: source windows exist, but a
 small memoryless BC student does not preserve them in closed loop. The next
 offline step should use live relabel/DAgger or memory/phase conditioning rather
 than promoting this BC candidate.
+
+A small recurrent BC diagnostic on the same four windows also failed:
+
+```text
+fit: PASS_RECURRENT_BC_FIT_SMOKE, p95 action error 0.040416
+gate: HOLD_CANDIDATE_FALL_OR_TERMINATION
+seed 2/4 fall samples: 84 / 46
+seed 2/4 mean vx: -0.1820 / -0.3372 m/s
+```
+
+Current interpretation: the curated terrain windows are useful source material,
+but a tiny static dataset is not enough. The next offline branch should collect
+live/on-policy relabel coverage from terrain states or build a larger
+terrain-window dataset before another student promotion attempt.

@@ -108,6 +108,19 @@ near-standstill and velocity spikes. This is not a promotable candidate. Use the
 manifest for live relabel/DAgger or memory/phase student work, not for another
 plain BC retry.
 
+First small recurrent BC test:
+
+```text
+fit: outputs/analysis/PHASE2_TERRAIN_SAFE_HARD_STEP_RECURRENT_BC_STUDENT.md
+gate: outputs/analysis/PHASE2_TERRAIN_SAFE_HARD_STEP_RECURRENT_BC_STUDENT_TERRAIN_Z002_GATE_CPU.md
+result: HOLD_CANDIDATE_FALL_OR_TERMINATION
+```
+
+This recurrent fit was also trained only on the four curated snippets. It falls
+backward on seeds `2,4`, so recurrence alone does not rescue a tiny static
+dataset. The next branch still needs live/on-policy relabel coverage or a
+larger terrain-window dataset.
+
 ## Closed Paths
 
 Do not spend the next run on:
