@@ -11,13 +11,17 @@ The repository and its documentation are part of the robot's working state. Keep
 The corrected left-knee offset removed the large knee asymmetry, the actuator
 bridge was re-fit, and the corrected candidate cleared stand/suspended transfer
 at both `x=0.0` and `x=0.08`. A first bounded grounded telemetry test at
-`x=0.08` completed its 5 second runtime, but grounded tracking rose enough to
-require review before any further grounded motion.
+`x=0.08` completed its 5 second runtime, but the office-chair plastic mat was
+likely too slippery and grounded tracking rose enough to require review. A
+repeated bounded run on medium carpet improved telemetry and cleared the
+low-command hardware summary, but the operator reported that the robot only
+stepped in place / did not lift its feet enough to walk forward. The current
+hold is visual/insufficient-foot-clearance, not actuator tracking.
 
 Current gate:
 
 ```text
-HOLD_GROUNDED_REVIEW_REQUIRED
+HOLD_INSUFFICIENT_FOOT_CLEARANCE_ON_CARPET
 ```
 
 Read these first:
@@ -26,11 +30,13 @@ Read these first:
 outputs/analysis/CORRECTED_CANDIDATE_STAND_TRANSFER_DECISION.md
 outputs/analysis/CORRECTED_CANDIDATE_FIRST_GROUNDED_TEST_PLAN.md
 outputs/analysis/CORRECTED_CANDIDATE_FIRST_GROUNDED_TEST_DECISION.md
+outputs/analysis/CORRECTED_CANDIDATE_SECOND_SURFACE_GROUNDED_TEST_DECISION.md
 policy/candidates/corrected_bridge_cmd_conditioned_rate175_20260627/README.md
 ```
 
-The next step is review of the first grounded telemetry plus operator visual
-notes/video. Do not run another grounded test until that review is complete.
+The next step is offline review of why a trackable low-command waveform
+produced stepping without enough foot clearance/advance on carpet. Do not
+extend duration or run another grounded test from this candidate as-is.
 
 Current candidate:
 

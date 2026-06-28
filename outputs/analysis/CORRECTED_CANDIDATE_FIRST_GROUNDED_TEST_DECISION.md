@@ -13,6 +13,7 @@ command_x: 0.08
 max_runtime_seconds: 5
 telemetry_every_n: 1
 grounded: true
+surface: office-chair plastic mat, later suspected too slippery by operator
 no tuning: true
 no BEST_WALK: true
 ```
@@ -86,6 +87,8 @@ Positive signs:
 
 Hold reasons:
 
+- operator later identified the test surface as an office-chair plastic mat and
+  suspected it was too slippery
 - grounded load increased pitch-chain tracking p95 from stand levels to about
   `0.10 rad`
 - read checksum warnings persisted

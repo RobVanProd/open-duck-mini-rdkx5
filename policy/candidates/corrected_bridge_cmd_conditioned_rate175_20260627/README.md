@@ -1,6 +1,6 @@
 # Corrected Bridge Cmd-Conditioned Rate-175 Candidate
 
-Status: `HOLD_GROUNDED_REVIEW_REQUIRED`
+Status: `HOLD_INSUFFICIENT_FOOT_CLEARANCE_ON_CARPET`
 
 This directory preserves the current corrected-bridge sim-side deployment
 candidate. It is the first ONNX in this campaign to pass both corrected
@@ -9,9 +9,13 @@ actuator-bridge seed gates:
 - `x=0.08`, 8/8 seeds, 15 seconds, fitted corrected bridge
 - `x=0.0`, 8/8 seeds, 15 seconds, fitted corrected bridge
 
-It completed the first bounded grounded telemetry test, but it is not approved
-for additional grounded replay until the telemetry and operator visual notes
-are reviewed.
+It completed two bounded grounded telemetry tests. The first surface was an
+office-chair plastic mat that looked suspect to the operator and produced
+elevated tracking; a second surface, medium carpet, improved telemetry and
+cleared the low-command hardware summary. The operator reported that the robot
+appeared to step on carpet but did not lift its feet enough to walk forward, so
+this candidate is held for insufficient foot clearance/advance despite
+acceptable actuator tracking.
 
 ## Files
 
@@ -133,12 +137,32 @@ read checksum increments: 12
 decision: HOLD_GROUNDED_REVIEW_REQUIRED
 ```
 
+Second-surface grounded telemetry:
+
+```text
+outputs/analysis/CORRECTED_CANDIDATE_SECOND_SURFACE_GROUNDED_TEST_DECISION.md
+outputs/analysis/CORRECTED_CANDIDATE_HW_X008_GROUNDED_SECOND_SURFACE_ANALYSIS.md
+outputs/analysis/CORRECTED_CANDIDATE_HW_X008_GROUNDED_SECOND_SURFACE_TARGET_VELOCITY.md
+
+x=0.08 grounded second surface: 249 samples, max runtime reached, TURNING OFF
+max pitch-chain sent velocity p95: 1.21 rad/s
+max pitch-chain tracking p95: 0.071 rad
+action saturation: 0%
+rate limit active: 0%
+write errors: 0
+read checksum increments: 6
+surface: medium carpet
+operator visual result: stepping attempt, but insufficient foot lift to walk
+forward
+decision: HOLD_INSUFFICIENT_FOOT_CLEARANCE_ON_CARPET
+```
+
 Validation order:
 
 1. stand/suspended `x=0.0` telemetry
 2. stand/suspended `x=0.08` telemetry
 3. first grounded review: telemetry plus operator visual notes
-4. no second grounded run until review clears
+4. no duration expansion or repeat grounded run from this candidate as-is
 
 Hard constraints for hardware validation:
 
@@ -151,4 +175,6 @@ Hard constraints for hardware validation:
   contacts/base state if available
 - torque off / stop after telemetry
 
-Further grounded replay remains blocked pending review.
+Further grounded testing from this candidate is blocked pending offline review
+of why trackable joint commands produced stepping without enough foot
+clearance/advance.
