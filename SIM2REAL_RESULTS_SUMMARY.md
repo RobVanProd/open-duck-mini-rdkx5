@@ -8162,3 +8162,25 @@ The terrain reward issue is now sharper: a touchdown clearance penalty can be
 avoided by reducing swing/transition behavior. The next offline attempt should
 pair very weak clearance pressure with stronger transition/single-support
 pressure and moderate gait preservation.
+
+Stage C8/C9 and follow-up diagnostics narrowed the terrain blocker further:
+
+```text
+C8 swing-balance scalar pressure: HOLD
+global action-gain diagnostic 1.05/1.10: HOLD
+C9 forward swing-advance scalar pressure: HOLD
+rough-terrain foot-placement MPC preflight: HOLD_TERRAIN_TARGET_SOURCE_NOT_READY
+```
+
+C9 confirmed the forward-swing-advance reward hook is plumbed and trainable,
+but trained checkpoints retreated into low progress and failed to recover the
+planted seed. The action-gain diagnostic stayed in-envelope but worsened
+progress, so global amplitude is not the carpet fix. A bounded rough-terrain
+MPC teacher preflight also failed the target-source gate: it was actuator-safe
+and laterally calm, but produced only `0.003-0.008 m/s` forward speed and
+remained double-support / single-contact-pattern dominated.
+
+Current Phase 2 interpretation: the blocker is target manifold / stepping
+structure. The next offline branch should require per-foot swing segments,
+forward relative-foot excursion, touchdown advance, and balanced support as
+hard target-source gates before more PPO/BC. Robot validation remains blocked.

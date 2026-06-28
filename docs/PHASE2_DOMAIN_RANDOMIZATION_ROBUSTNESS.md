@@ -879,6 +879,34 @@ scalar swing-advance pressure. The next terrain branch needs a
 higher-clearance alternating-step target source or a hard step-advance
 constraint that cannot be satisfied by retreating into double support.
 
+Terrain target-source preflight:
+
+```text
+artifact: outputs/analysis/PHASE2_TERRAIN_TARGET_SOURCE_DECISION.md
+gate: outputs/analysis/PHASE2_FOOT_PLACEMENT_MPC_ROUGH_PREFLIGHT_GATE.md
+status: HOLD_TERRAIN_TARGET_SOURCE_NOT_READY
+```
+
+The existing finite-horizon foot-placement MPC teacher was run as a bounded
+rough-terrain target-source preflight on `rough_terrain_backlash`, seeds `2,4`,
+for `3 s`, with a `2.5 rad/s` teacher-side velocity cap. It remained
+actuator-safe and laterally calm, but scored:
+
+```text
+100-sample score: HOLD_NO_SEED_ROBUST_TARGETS
+150-sample score: HOLD_NO_SEED_ROBUST_TARGETS
+weight-transfer gate: HOLD_NO_SUSTAINED_WEIGHT_TRANSFER_TARGET
+best seed-2 vx: 0.0046-0.0079 m/s
+dominant failures: low_forward_velocity, double_support_dominates,
+                   too_little_single_support, single_support_not_balanced
+```
+
+This rules out the current MPC teacher as a ready terrain target source. The
+next offline path should be structural: either a hard step-transition teacher
+whose gate requires per-foot swing segments and touchdown advance, or a
+higher-clearance alternating-step source re-mined from the corrected-bridge
+walker before any further PPO/BC.
+
 Stage D:
 
 - rough hfield terrain
