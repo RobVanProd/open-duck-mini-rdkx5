@@ -1,0 +1,77 @@
+{
+  "status": "HOLD_SCALAR_SEED4_WEIGHTING_EXHAUSTED",
+  "date": "2026-06-28",
+  "scope": "offline_sim_only",
+  "robot_tests_run": false,
+  "ssh_run": false,
+  "deploy_run": false,
+  "grounded_replay_run": false,
+  "runtime_behavior_changed": false,
+  "hardware_surface_observation": {
+    "surface_1": "office-chair plastic mat",
+    "surface_1_result": "too slippery",
+    "surface_2": "medium carpet",
+    "surface_2_result": "stepping but insufficient foot lift/forward advance"
+  },
+  "gate": {
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.002,
+    "bridge": "corrected_fitted",
+    "command_x": 0.08,
+    "duration_s": 5.0,
+    "seeds": [2, 4],
+    "min_swing_segments_per_foot": 1,
+    "min_swing_rel_x_range_p95_m": 0.003,
+    "min_swing_peak_lift_m": 0.005
+  },
+  "variants": [
+    {
+      "name": "seed4x25_phasecmd",
+      "manifest": "outputs/analysis/phase2_seed4_weighted_knee_ankle_leftknee_limit_command_seed4x25_manifest.json",
+      "policy": "outputs/analysis/phase2_seed4_weighted_knee_ankle_leftknee_limit_phasecmd_seed4x25_bc_student/candidate.onnx",
+      "x008_gate": "outputs/analysis/phase2_seed4_weighted_knee_ankle_leftknee_limit_phasecmd_seed4x25_x008_rough_z002_gate_cpu.json",
+      "x0_gate": "outputs/analysis/phase2_seed4_weighted_knee_ankle_leftknee_limit_phasecmd_seed4x25_x0_rough_z002_gate_cpu.json",
+      "summary": {
+        "seed2_status": "PASS_CANDIDATE_SIM_GATE",
+        "seed2_vx_m_s": 0.03523850883007981,
+        "seed2_track_ratio": 0.44048136037599767,
+        "seed2_max_velocity_excess_rad_s": 0.0,
+        "seed2_max_tracking_p95_rad": 0.1881339132785797,
+        "seed2_min_swing_segments": 4,
+        "seed2_min_rel_x_range_p95_m": 0.00481067577493377,
+        "seed4_status": "HOLD_CANDIDATE_TERRAIN_SWING",
+        "seed4_vx_m_s": 0.03286299378075637,
+        "seed4_track_ratio": 0.4107874222594546,
+        "seed4_max_velocity_excess_rad_s": 0.0,
+        "seed4_max_tracking_p95_rad": 0.18867269158363342,
+        "seed4_min_swing_segments": 3,
+        "seed4_min_rel_x_range_p95_m": 0.0029213283210992812,
+        "x0_seed2_vx_m_s": -0.0015393440901680152,
+        "x0_seed4_vx_m_s": 0.002641621996706817
+      }
+    },
+    {
+      "name": "seed4x40_phasecmd",
+      "manifest": "outputs/analysis/phase2_seed4_weighted_knee_ankle_leftknee_limit_command_seed4x40_manifest.json",
+      "policy": "outputs/analysis/phase2_seed4_weighted_knee_ankle_leftknee_limit_phasecmd_seed4x40_bc_student/candidate.onnx",
+      "x008_gate": "outputs/analysis/phase2_seed4_weighted_knee_ankle_leftknee_limit_phasecmd_seed4x40_x008_rough_z002_gate_cpu.json",
+      "summary": {
+        "seed2_status": "PASS_CANDIDATE_SIM_GATE",
+        "seed2_vx_m_s": 0.03938003530260176,
+        "seed2_track_ratio": 0.49225044128252193,
+        "seed2_max_velocity_excess_rad_s": 0.0,
+        "seed2_max_tracking_p95_rad": 0.1873417377471924,
+        "seed2_min_swing_segments": 4,
+        "seed2_min_rel_x_range_p95_m": 0.013552217185497283,
+        "seed4_status": "HOLD_CANDIDATE_TERRAIN_SWING",
+        "seed4_vx_m_s": 0.030629947595385603,
+        "seed4_track_ratio": 0.38287434494232003,
+        "seed4_max_velocity_excess_rad_s": 0.0,
+        "seed4_max_tracking_p95_rad": 0.19400616288185119,
+        "seed4_min_swing_segments": 0,
+        "seed4_min_rel_x_range_p95_m": 0.0
+      }
+    }
+  ],
+  "decision": "Scalar seed-4 weighting is exhausted; use targeted right-foot swing-phase relabeling or a contact/phase-conditioned architecture next."
+}

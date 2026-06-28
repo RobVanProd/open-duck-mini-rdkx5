@@ -8454,3 +8454,34 @@ phase/command-modulated student preserved x=0 command semantics but still held
 on seed-4 swing at x=0.08. The blocker has narrowed again: combine the
 three-joint corrected x=0.08 swing behavior with explicit command conditioning.
 Robot validation remains blocked.
+
+A focused phase/command seed-4 weighting follow-up was then run:
+
+```text
+artifact: outputs/analysis/PHASE2_PHASECMD_SEED4_WEIGHTING_DECISION.md
+status: HOLD_SCALAR_SEED4_WEIGHTING_EXHAUSTED
+```
+
+The x2.5 seed-4 moving-label weight preserved zero-command behavior and nearly
+cleared rough `z=0.002` at x=0.08:
+
+```text
+seed 2: PASS, vx 0.0352, tracking 0.1881, excess 0.0000, rel-x 0.0048
+seed 4: HOLD_CANDIDATE_TERRAIN_SWING, vx 0.0329, tracking 0.1887,
+        excess 0.0000, rel-x 0.0029 against a 0.0030 threshold
+x=0.0 seed 2/4 vx: -0.0015 / 0.0026 m/s
+```
+
+Increasing the same scalar seed-4 weight to x4.0 improved seed 2 but removed
+seed-4 swing entirely:
+
+```text
+seed 4 min swing segments: 0
+seed 4 rel-x p95: 0.0000 m
+```
+
+The carpet hardware observation and the rough sim gate now agree: the remaining
+blocker is insufficient seed-4 right-foot swing/forward advance, not corrected
+envelope excess, actuator tracking, or zero-command drift. Global seed weighting
+is closed; the next branch needs targeted right-foot swing-phase relabeling or
+a contact/phase-conditioned architecture. Robot validation remains blocked.

@@ -290,3 +290,59 @@ If a transition-preserving fine-tune keeps swing support structure but cannot
 reduce tracking below `0.20 rad` or corrected-envelope excess to zero, the
 terrain blocker is not label smoothing. Revisit the corrected bridge/terrain
 contact model or accept that this gait needs a different support strategy.
+
+## Phase/Command Seed-4 Weighting Follow-Up
+
+Artifact:
+
+```text
+decision: outputs/analysis/PHASE2_PHASECMD_SEED4_WEIGHTING_DECISION.md
+status: HOLD_SCALAR_SEED4_WEIGHTING_EXHAUSTED
+```
+
+The operator's hardware surface notes match the current rough-terrain sim
+blocker:
+
+```text
+office-chair plastic mat: too slippery
+medium carpet: stepping, but not enough foot lift/forward advance
+```
+
+The phase/command-modulated student preserves `x=0.0` command semantics, so a
+focused seed-4 moving-label weighting sweep was run:
+
+```text
+seed4x25 x=0.08 seed 2: PASS
+  vx: 0.0352 m/s
+  max velocity excess: 0.0000 rad/s
+  max tracking p95: 0.1881 rad
+  min swing segments: 4
+  min rel-x range p95: 0.0048 m
+
+seed4x25 x=0.08 seed 4: HOLD_CANDIDATE_TERRAIN_SWING
+  vx: 0.0329 m/s
+  max velocity excess: 0.0000 rad/s
+  max tracking p95: 0.1887 rad
+  min swing segments: 3
+  min rel-x range p95: 0.0029 m
+
+seed4x25 x=0.0 seed 2/4 vx: -0.0015 / 0.0026 m/s
+```
+
+The x2.5 variant is the best command-conditioned near miss so far, but still
+misses the rough swing/advance threshold by a small margin. Increasing the same
+scalar seed-4 weight to x4.0 did not fix it:
+
+```text
+seed4x40 x=0.08 seed 2: PASS
+seed4x40 x=0.08 seed 4: HOLD_CANDIDATE_TERRAIN_SWING
+  min swing segments: 0
+  min rel-x range p95: 0.0000 m
+```
+
+Scalar seed-4 weighting is therefore closed. The next branch should target the
+actual missing mechanism: seed-4 right-foot swing/advance during the moving
+phase, while preserving zero-command behavior. Reasonable next mechanisms are a
+right-foot swing-phase relabel, a contact/phase-conditioned head, or a
+phase/contact-specific sample weighting rule. Do not repeat global seed
+weighting or plain mixed-command feed-forward BC for this blocker.
