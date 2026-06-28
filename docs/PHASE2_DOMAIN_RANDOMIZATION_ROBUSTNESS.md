@@ -1,6 +1,6 @@
 # Phase 2 Domain-Randomized Robustness Training
 
-status: `HOLD_STAGE_C3_CONTACT_TIMING_NOT_ENOUGH`
+status: `HOLD_STAGE_C6_TRANSITION_PRESSURE_RETREATS_TO_DOUBLE_SUPPORT`
 
 ## Objective
 
@@ -639,6 +639,53 @@ clearance penalties can be avoided by reducing swing/transition behavior. The
 next C-stage attempt should keep transition/single-support pressure active
 while using very weak clearance pressure and moderate, not overwhelming,
 restore-policy KL.
+
+C6 tested that pairing:
+
+```text
+artifact: outputs/analysis/PHASE2_STAGE_C6_TRANSITION_CLEARANCE_DECISION.md
+screen: outputs/analysis/PHASE2_STAGE_C6_TERRAIN_Z002_SCREEN_CPU.md
+status: HOLD_STAGE_C6_TRANSITION_PRESSURE_RETREATS_TO_DOUBLE_SUPPORT
+```
+
+C6 completed a short GPU training run from the best C3 checkpoint using the
+local ROCm workaround:
+
+```text
+XLA_FLAGS=--xla_gpu_autotune_level=0
+XLA_PYTHON_CLIENT_PREALLOCATE=false
+```
+
+The recipe used moderate gait preservation, stronger single-support/contact
+transition pressure than C3, and very weak clearance pressure:
+
+```text
+restore_policy_kl_scale: 1.25
+forward_single_support_scale: 0.30
+forward_contact_transition_scale: 0.20
+forward_swing_clearance_scale: -0.0005
+forward_swing_clearance_target_m: 0.020
+num_timesteps: 81920
+```
+
+The final checkpoint stayed stable and in-envelope, but it regressed further
+into a low-clearance double-support shuffle:
+
+```text
+c6_81920:
+  tracking p95: 0.1654 rad
+  track ratio: 0.0985
+  corrected velocity excess: 0.0000 rad/s
+  min swing peak lift: 0.0072 m
+  single support: 4.0%
+  double support: 96.0%
+```
+
+Decision: do not promote C6. The C-stage evidence now shows that scalar
+clearance/contact-timing reward terms are being satisfied by reducing motion
+rather than by producing higher-clearance stepping. The next terrain branch
+needs gate-selected training or a target/teacher that explicitly contains
+higher-clearance steps, not another small scalar PPO tweak.
 
 Stage D:
 

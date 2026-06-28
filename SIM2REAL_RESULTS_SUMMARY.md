@@ -66,6 +66,30 @@ Do not extend duration or repeat grounded tests from this candidate as-is until
 offline review explains why trackable joint commands produced stepping without
 enough foot clearance/advance.
 
+Phase 2 offline robustness work now confirms that the carpet observation maps
+to a terrain/clearance weakness, not an actuator-envelope failure. The promoted
+Phase 1 candidate remains trackable, and Stage A tolerates mild/moderate push
+evals, but `z=0.002` rough-terrain screens show a low-clearance shuffle. C3
+raised single support only slightly, C4 over-drove and fell, C5a retreated into
+double support, and C6 with stronger transition pressure still regressed to
+very low forward progress:
+
+```text
+latest decision: outputs/analysis/PHASE2_STAGE_C6_TRANSITION_CLEARANCE_DECISION.md
+status: HOLD_STAGE_C6_TRANSITION_PRESSURE_RETREATS_TO_DOUBLE_SUPPORT
+c6_81920 terrain z=0.002 seed-0 screen:
+  track ratio: 0.0985
+  max pitch-chain tracking p95: 0.1654 rad
+  corrected velocity excess: 0.0000 rad/s
+  min swing peak: 0.0072 m
+  single support: 4.0%
+  double support: 96.0%
+```
+
+Do not promote the current C-stage terrain policies. The next offline branch
+should use gate-selected terrain training or a target/teacher with explicit
+higher-clearance stepping rather than another small scalar PPO reward tweak.
+
 June 27 corrected-knee update: the left knee soft offset was corrected from
 `-1.488 rad` to `0.0371 rad`, and a supported/on-stand sine-only actuator gate
 passed at `0.25`, `0.5`, and `1.0 Hz` with `0.03 rad` amplitude. The corrected
