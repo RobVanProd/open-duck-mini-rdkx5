@@ -269,6 +269,37 @@ Stage C:
 - full physics randomization
 - gentle pushes
 
+Stage A rough-terrain CPU gate:
+
+```text
+report:
+  outputs/analysis/PHASE2_STAGE_A_ROUGH_TERRAIN_GATE_CPU.md
+
+json:
+  outputs/analysis/phase2_stage_a_rough_terrain_gate_cpu.json
+
+configuration:
+  seeds: 0-7
+  duration: 15 s
+  command_x: 0.08
+  task: rough_terrain_backlash
+  push: disabled
+
+result:
+  HOLD
+  falls/terminations: 5/8
+  duration_complete: 3/8
+  mean track ratio: -0.5120
+  max velocity excess: 0.0000 rad/s
+```
+
+This separates the next blocker cleanly: the promoted Stage A candidate has
+flat-terrain push margin, but the existing rough hfield terrain breaks the gait
+without requiring any target-velocity envelope violation. Terrain should
+therefore enter through a gentler curriculum than the stock rough task, or via
+training that preserves the Stage A flat gait while increasing foot clearance
+and contact margin.
+
 Stage D:
 
 - rough hfield terrain
