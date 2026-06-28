@@ -347,6 +347,37 @@ This is the first useful terrain curriculum rung: it is stable across all
 seeds and only misses the strict gate by `0.0001 rad` on one seed. Treat it as
 the starting point for terrain hardening, not as a robot-ready terrain pass.
 
+Stage A z-scale `0.005` terrain gate:
+
+```text
+report:
+  outputs/analysis/PHASE2_STAGE_A_TERRAIN_Z005_GATE_CPU.md
+
+json:
+  outputs/analysis/phase2_stage_a_terrain_z005_gate_cpu.json
+
+result:
+  HOLD
+  duration_complete: 7/8
+  falls/terminations: 1/8
+  pass: 2/8
+  tracking holds: 5/8
+  mean track ratio: -0.0485
+  max velocity excess: 0.0000 rad/s
+```
+
+The terrain curve is now bracketed:
+
+```text
+flat: pass
+z=0.002: near-pass, 8/8 upright, one 0.0001 rad tracking miss
+z=0.005: hold, one fall and multiple tracking holds
+z=0.010 stock rough: hard hold, 5/8 terminations
+```
+
+The next terrain-training rung should target z-scale `0.002` first, not `0.005`
+or the stock rough hfield.
+
 Stage D:
 
 - rough hfield terrain
