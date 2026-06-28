@@ -1,0 +1,147 @@
+# Phase 2 Next Terrain Step Branch
+
+status: `PRE_REGISTERED_NOT_STARTED`
+
+## Objective
+
+Recover terrain/carpet robustness by making alternating per-foot swing and
+forward touchdown advance structurally unavoidable before another PPO/BC stage.
+
+This branch is offline-only. It does not authorize robot tests, SSH, deploy,
+grounded replay, runtime changes, or training from scratch.
+
+## Current Evidence
+
+Phase 2 already has a corrected-bridge flat / low-friction walker, but medium
+carpet and rough-terrain sim expose a planted-foot shuffle:
+
+```text
+Phase 1 / Stage A: corrected-bridge walker exists and transfers on easy surfaces
+rough z=0.002: low-clearance / double-support shuffle
+C8 swing balance: HOLD, reduced motion
+C9 swing advance: HOLD, reduced motion; seed 4 stayed planted
+action gain 1.05/1.10: HOLD, worsened progress; not an amplitude fix
+MPC rough preflight: HOLD, actuator-safe but too slow and double-support dominated
+C7 z=0.001 threshold: seed 2 passes, seed 4 still planted
+```
+
+Hard-step diagnostics now show:
+
+```text
+seed 2 can produce a small swing segment
+seed 4 can remain at 0 swing segments and 0.0000 m rel-x range
+```
+
+So the blocker is not actuator envelope or terrain height alone. The blocker is
+a seed-dependent planted-foot mode.
+
+## Closed Paths
+
+Do not spend the next run on:
+
+- global action gain
+- stronger scalar swing-balance pressure
+- stronger scalar swing-advance pressure
+- stronger scalar clearance pressure
+- another PPO stage that is only scored after training
+- a target source that can pass without both feet producing swing segments
+
+Those have already been tested or are directly implied by the new hard-step
+diagnostics.
+
+## Required Pre-Training Gate
+
+Before any PPO/BC run, a target source or candidate seed must pass a hard
+step-transition screen on `rough_terrain_backlash`:
+
+```text
+seeds: 2,4 at minimum; expand to 0-7 before promotion
+terrain_hfield_z_scale: 0.001 first, then 0.002
+command_x: 0.08
+duration: 5 s for policy candidates, 100/150 ticks for target windows
+bridge: corrected fitted bridge
+max velocity excess: 0
+max tracking p95: <= 0.20 rad
+min per-foot swing segments: >= 1
+min per-foot rel-x range p95: >= 0.003 m
+min per-foot swing peak lift: >= 0.005 m
+single support: meaningful and balanced
+double support: not dominant
+```
+
+If seed 4 remains at `0` swing segments, the branch holds. Do not train around
+that result.
+
+## Candidate Approaches
+
+### A. Higher-clearance Source Mining
+
+Re-mine from the corrected-bridge walker and C7 trace library using the hard
+step-transition scorer:
+
+- require both left and right swing segments in the selected window
+- require forward relative-foot excursion
+- require swing lift over stance
+- reject one-sided seed/source hacks
+- reject target windows that are in-envelope only because they barely step
+
+Proceed only if at least one source clears seed `2,4` at `z=0.001`.
+
+### B. Hard Anti-Planted Teacher
+
+Modify the offline teacher, not the reward function, so phase transitions cannot
+advance unless the swing foot actually leaves stance and advances:
+
+- state machine must hold / recover until the intended swing foot creates a
+  measurable swing segment
+- support side must alternate
+- touchdown must occur with forward relative-foot advance
+- teacher-side velocity cap stays at or below the corrected envelope
+
+Proceed only if the teacher clears the same hard-step target-source gate.
+
+### C. PPO Re-Entry
+
+Only after A or B clears the hard-step gate:
+
+- warm-start from the corrected-bridge candidate or selected C7 checkpoint
+- keep corrected actuator envelope authoritative
+- start at `z=0.001`
+- keep terrain rewards weak and audited
+- evaluate every checkpoint with the hard swing gate before promotion
+
+## Decision Rule
+
+`PASS_TERRAIN_STEP_SOURCE`:
+  A source/candidate clears the hard-step gate at `z=0.001` for seeds `2,4`
+  without velocity excess or tracking regression. Then expand to `z=0.002` and
+  eight seeds.
+
+`HOLD_PLANTED_SEED_MODE`:
+  Seed 4 remains at `0` swing segments or `0.0000 m` rel-x range. Do not start
+  another scalar reward run.
+
+`HOLD_ACTUATOR_ENVELOPE`:
+  Any apparent step source needs target velocities over the corrected envelope.
+
+## Current Recommended Next Command
+
+Run source mining or teacher search against the hard-step scorer, not PPO:
+
+```bash
+python3 tools/score_target_candidates_objective.py \
+  --trace-glob '<candidate-traces>/*/seed_*.jsonl' \
+  --seeds 2,4 \
+  --window-samples 100 \
+  --command-x 0.08 \
+  --min-mean-vx 0.04 \
+  --max-double-support-pct 75 \
+  --min-single-support-pct 20 \
+  --min-each-single-support-pct 5 \
+  --min-contact-transitions 2 \
+  --min-swing-segments-per-foot 1 \
+  --min-swing-rel-x-range-p95-m 0.003 \
+  --min-swing-peak-lift-m 0.005 \
+  --max-sent-velocity-p95 2.5 \
+  --max-tracking-p95 0.20
+```

@@ -8194,3 +8194,8 @@ kept the same conclusion. Seed 2 passed the hard swing gate, but seed 4 still
 failed with `0` swing segments and `0.0000 m` rel-x range. The carpet-like
 failure is therefore not just that `z=0.002` is too high; the current gait has a
 seed-dependent planted-foot mode that survives gentler terrain.
+
+The next Phase 2 branch is pre-registered in
+`docs/PHASE2_NEXT_TERRAIN_STEP_BRANCH.md`: no more scalar terrain reward sweeps
+until a source/candidate clears a hard per-foot step-transition gate. The
+immediate target is eliminating the seed-4 planted-foot mode offline.

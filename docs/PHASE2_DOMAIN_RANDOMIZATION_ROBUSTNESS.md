@@ -942,6 +942,16 @@ It appears even at half roughness. The next stage should not keep reducing
 terrain height as the main fix; it should make alternating swing/advance
 structurally unavoidable across seeds.
 
+Next branch spec:
+
+```text
+docs/PHASE2_NEXT_TERRAIN_STEP_BRANCH.md
+status: PRE_REGISTERED_NOT_STARTED
+```
+
+This branch closes scalar terrain reward sweeps for now. It requires a hard
+step-transition source/candidate gate before another PPO/BC run.
+
 Stage D:
 
 - rough hfield terrain
