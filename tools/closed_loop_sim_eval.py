@@ -225,6 +225,80 @@ def push_recovery_summary(
     }
 
 
+def foot_clearance_summary(records: Sequence[Mapping[str, Any]]) -> dict:
+    """Summarize foot site height and support timing from rollout records."""
+    foot_names = ("left", "right")
+    foot_pos = []
+    contacts = []
+    for record in records:
+        pos = record.get("foot_site_pos_m")
+        contact = record.get("foot_contacts")
+        if (
+            isinstance(pos, list)
+            and len(pos) >= 2
+            and isinstance(contact, list)
+            and len(contact) >= 2
+        ):
+            foot_pos.append(pos[:2])
+            contacts.append(contact[:2])
+    if not foot_pos:
+        return {
+            "available": False,
+            "feet": {},
+            "support": {},
+        }
+
+    pos_arr = np.asarray(foot_pos, dtype=float)
+    contact_arr = np.asarray(contacts, dtype=bool)
+    support_counts = np.sum(contact_arr, axis=1)
+    samples = int(contact_arr.shape[0])
+    feet: dict[str, Any] = {}
+    for index, name in enumerate(foot_names):
+        z = pos_arr[:, index, 2]
+        contact = contact_arr[:, index]
+        stance_z = z[contact]
+        swing_z = z[~contact]
+        stance_ref = float(np.median(stance_z)) if stance_z.size else None
+        lift = swing_z - stance_ref if stance_ref is not None else np.asarray([])
+        feet[name] = {
+            "contact_pct": float(np.mean(contact) * 100.0),
+            "swing_samples": int(np.sum(~contact)),
+            "stance_samples": int(np.sum(contact)),
+            "site_z_m": signed_stats(z),
+            "stance_site_z_m": signed_stats(stance_z),
+            "swing_site_z_m": signed_stats(swing_z),
+            "stance_reference_z_m": stance_ref,
+            "swing_lift_over_stance_m": signed_stats(lift),
+            "swing_peak_lift_over_stance_m": (
+                float(np.max(lift)) if lift.size else None
+            ),
+        }
+    support = {
+        "samples": samples,
+        "left_contact_pct": feet["left"]["contact_pct"],
+        "right_contact_pct": feet["right"]["contact_pct"],
+        "no_contact_pct": float(np.mean(support_counts == 0) * 100.0),
+        "single_support_pct": float(np.mean(support_counts == 1) * 100.0),
+        "double_support_pct": float(np.mean(support_counts == 2) * 100.0),
+        "left_only_pct": float(
+            np.mean(contact_arr[:, 0] & ~contact_arr[:, 1]) * 100.0
+        ),
+        "right_only_pct": float(
+            np.mean(contact_arr[:, 1] & ~contact_arr[:, 0]) * 100.0
+        ),
+        "support_transition_count": int(
+            np.sum(np.any(contact_arr[1:] != contact_arr[:-1], axis=1))
+        )
+        if samples > 1
+        else 0,
+    }
+    return {
+        "available": True,
+        "feet": feet,
+        "support": support,
+    }
+
+
 def best_lag(target: np.ndarray, actual: np.ndarray, dt_s: float, max_lag_ticks: int = 12) -> dict:
     best = None
     for lag in range(-max_lag_ticks, max_lag_ticks + 1):
@@ -1433,6 +1507,7 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             if records
             else [0, 0]
         )
+        foot_clearance = foot_clearance_summary(records)
         modes[mode] = {
             "status": "PASS_MODE_EVALUATED" if records else "HOLD_NO_SAMPLES",
             "samples": len(records),
@@ -1483,6 +1558,7 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                 "left": int(contact_counts[0]) if len(contact_counts) > 0 else 0,
                 "right": int(contact_counts[1]) if len(contact_counts) > 1 else 0,
             },
+            "foot_clearance": foot_clearance,
             "joints": joints,
             "pitch_chain_summary": pitch_chain_summary(joints),
             "policy_io": {

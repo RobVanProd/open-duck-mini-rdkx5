@@ -915,6 +915,32 @@ def build_markdown(payload: dict) -> str:
                 f"{fmt(reward.get('mean'))} |"
             )
         lines.append("")
+        clearance_rows = []
+        for mode_name, mode in (closed_loop.get("modes") or {}).items():
+            clearance = mode.get("foot_clearance") or {}
+            support = clearance.get("support") or {}
+            feet = clearance.get("feet") or {}
+            for foot_name in ["left", "right"]:
+                foot = feet.get(foot_name) or {}
+                lift = foot.get("swing_lift_over_stance_m") or {}
+                clearance_rows.append(
+                    f"| {mode_name} | `{foot_name}` | "
+                    f"{fmt(foot.get('contact_pct'))} | "
+                    f"{fmt(foot.get('swing_peak_lift_over_stance_m'))} | "
+                    f"{fmt(lift.get('p95'))} | "
+                    f"{fmt(support.get('single_support_pct'))} | "
+                    f"{fmt(support.get('double_support_pct'))} | "
+                    f"{fmt(support.get('support_transition_count'), 0)} |"
+                )
+        if clearance_rows:
+            lines.append("### Foot Clearance / Support")
+            lines.append("")
+            lines.append(
+                "| mode | foot | contact_pct | swing_peak_lift | swing_lift_p95 | single_support_pct | double_support_pct | support_transitions |"
+            )
+            lines.append("|---|---|---:|---:|---:|---:|---:|---:|")
+            lines.extend(clearance_rows)
+            lines.append("")
         reward_rows = []
         for mode_name, mode in (closed_loop.get("modes") or {}).items():
             for term_name, stats in (mode.get("reward_terms") or {}).items():

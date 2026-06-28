@@ -447,6 +447,51 @@ margin, dominated on the screen by seed 0 and the left knee. Bridge tracking is
 lower than the strict gate miss, so simply increasing the bridge tracking
 penalty is not the right lever.
 
+Stage C clearance instrumentation:
+
+```text
+decision:
+  outputs/analysis/PHASE2_STAGE_C_TERRAIN_CLEARANCE_INSTRUMENTATION.md
+
+screen:
+  outputs/analysis/PHASE2_STAGE_C_TERRAIN_Z002_CLEARANCE_SCREEN_CPU.md
+
+status:
+  PASS_CLEARANCE_METRICS_ADDED
+```
+
+The closed-loop evaluator now reports passive foot-clearance and support
+metrics from existing `foot_site_pos_m` and `foot_contacts` records. This does
+not change policy stepping, reward, training, or gates.
+
+Focused seed-0 z-scale `0.002` terrain comparison:
+
+```text
+a2_gain099:
+  tracking p95: 0.2079 rad
+  min swing peak lift: 0.0153 m
+  single support: 17.6%
+  double support: 82.4%
+
+c0_245760:
+  tracking p95: 0.2040 rad
+  min swing peak lift: 0.0159 m
+  single support: 16.8%
+  double support: 83.2%
+
+c2_163840:
+  tracking p95: 0.2044 rad
+  min swing peak lift: 0.0163 m
+  single support: 17.2%
+  double support: 82.8%
+```
+
+The terrain blocker is therefore consistent with a low-clearance shuffle:
+mostly double support, very low swing peak, and little true single-support
+time. The next Stage C training objective should target swing clearance and
+double-support dwell directly while preserving the corrected envelope and the
+strict tracking gate.
+
 Stage D:
 
 - rough hfield terrain

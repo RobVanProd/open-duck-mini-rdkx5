@@ -127,6 +127,14 @@ def summarize_payload(payload: dict[str, Any], mode_name: str) -> dict[str, Any]
     forward = mode.get("forward_motion") or {}
     height = mode.get("base_height_m") or {}
     push_recovery = mode.get("push_recovery") or {}
+    foot_clearance = mode.get("foot_clearance") or {}
+    feet = foot_clearance.get("feet") or {}
+    support = foot_clearance.get("support") or {}
+    left_lift = ((feet.get("left") or {}).get("swing_lift_over_stance_m") or {})
+    right_lift = ((feet.get("right") or {}).get("swing_lift_over_stance_m") or {})
+    left_peak = (feet.get("left") or {}).get("swing_peak_lift_over_stance_m")
+    right_peak = (feet.get("right") or {}).get("swing_peak_lift_over_stance_m")
+    peaks = [value for value in (left_peak, right_peak) if finite(value)]
     return {
         "overall_status": payload.get("overall_status"),
         "candidate_gate_status": gate.get("status"),
@@ -146,6 +154,14 @@ def summarize_payload(payload: dict[str, Any], mode_name: str) -> dict[str, Any]
         "push_event_count": push_recovery.get("event_count"),
         "push_recovered_count": push_recovery.get("recovered_count"),
         "push_success_rate": push_recovery.get("success_rate"),
+        "left_swing_lift_p95_m": left_lift.get("p95"),
+        "right_swing_lift_p95_m": right_lift.get("p95"),
+        "left_swing_peak_lift_m": left_peak,
+        "right_swing_peak_lift_m": right_peak,
+        "min_swing_peak_lift_m": min(peaks) if peaks else None,
+        "single_support_pct": support.get("single_support_pct"),
+        "double_support_pct": support.get("double_support_pct"),
+        "no_contact_pct": support.get("no_contact_pct"),
     }
 
 
@@ -343,6 +359,17 @@ def aggregate(rows: list[dict[str, Any]]) -> dict[str, Any]:
         "max_tracking_p95_rad": stats(item.get("max_tracking_p95_rad") for item in summaries),
         "push_event_count": stats(item.get("push_event_count") for item in summaries),
         "push_success_rate": stats(item.get("push_success_rate") for item in summaries),
+        "left_swing_lift_p95_m": stats(
+            item.get("left_swing_lift_p95_m") for item in summaries
+        ),
+        "right_swing_lift_p95_m": stats(
+            item.get("right_swing_lift_p95_m") for item in summaries
+        ),
+        "min_swing_peak_lift_m": stats(
+            item.get("min_swing_peak_lift_m") for item in summaries
+        ),
+        "single_support_pct": stats(item.get("single_support_pct") for item in summaries),
+        "double_support_pct": stats(item.get("double_support_pct") for item in summaries),
     }
 
 
@@ -371,8 +398,8 @@ def build_report(results: list[dict[str, Any]], args: argparse.Namespace) -> str
         "",
         "## Per-Seed Results",
         "",
-        "| policy | seed | status | samples | termination | mean_local_vx | track_ratio | body_pitch_p95 | base_height_min | max_pitch_vel_p95 | max_vel_excess | max_tracking_p95 | push_events | push_success |",
-        "|---|---:|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|",
+        "| policy | seed | status | samples | termination | mean_local_vx | track_ratio | body_pitch_p95 | base_height_min | max_pitch_vel_p95 | max_vel_excess | max_tracking_p95 | min_swing_peak | single_support | double_support | push_events | push_success |",
+        "|---|---:|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|",
     ]
     for result in results:
         summary = result.get("summary") or {}
@@ -387,14 +414,17 @@ def build_report(results: list[dict[str, Any]], args: argparse.Namespace) -> str
             f"{fmt(summary.get('max_pitch_vel_p95_rad_s'))} | "
             f"{fmt(summary.get('max_pitch_vel_limit_excess_rad_s'))} | "
             f"{fmt(summary.get('max_tracking_p95_rad'))} | "
+            f"{fmt(summary.get('min_swing_peak_lift_m'))} | "
+            f"{fmt(summary.get('single_support_pct'))} | "
+            f"{fmt(summary.get('double_support_pct'))} | "
             f"{fmt(summary.get('push_event_count'), 0)} | "
             f"{fmt(summary.get('push_success_rate'))} |"
         )
     lines.extend(["", "## Distribution Summary", ""])
     lines.append(
-        "| policy | runs | falls | duration_complete | samples_mean | samples_min | samples_max | track_ratio_mean | vx_mean | body_pitch_p95_mean | base_height_min_mean | max_vel_excess_mean | push_events_mean | push_success_mean |"
+        "| policy | runs | falls | duration_complete | samples_mean | samples_min | samples_max | track_ratio_mean | vx_mean | body_pitch_p95_mean | base_height_min_mean | max_vel_excess_mean | min_swing_peak_mean | single_support_mean | double_support_mean | push_events_mean | push_success_mean |"
     )
-    lines.append("|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|")
+    lines.append("|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|")
     for label, rows in grouped(results).items():
         agg = aggregate(rows)
         sample_stats = agg.get("samples") or {}
@@ -407,6 +437,9 @@ def build_report(results: list[dict[str, Any]], args: argparse.Namespace) -> str
             f"{fmt((agg.get('body_pitch_p95_rad') or {}).get('mean'))} | "
             f"{fmt((agg.get('base_height_min_m') or {}).get('mean'))} | "
             f"{fmt((agg.get('max_pitch_vel_limit_excess_rad_s') or {}).get('mean'))} | "
+            f"{fmt((agg.get('min_swing_peak_lift_m') or {}).get('mean'))} | "
+            f"{fmt((agg.get('single_support_pct') or {}).get('mean'))} | "
+            f"{fmt((agg.get('double_support_pct') or {}).get('mean'))} | "
             f"{fmt((agg.get('push_event_count') or {}).get('mean'))} | "
             f"{fmt((agg.get('push_success_rate') or {}).get('mean'))} |"
         )

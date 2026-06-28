@@ -7955,3 +7955,37 @@ joint-target tracking, most visibly on seed 0 / left knee in the short screen,
 stays just above the `0.20 rad` strict gate. Robot validation remains blocked
 for terrain robustness; no robot, SSH, deploy, or grounded replay was performed
 for these Phase 2 terrain runs.
+
+Follow-up instrumentation added passive terrain clearance/support metrics to
+the offline evaluator:
+
+```text
+artifact: outputs/analysis/PHASE2_STAGE_C_TERRAIN_CLEARANCE_INSTRUMENTATION.md
+screen: outputs/analysis/PHASE2_STAGE_C_TERRAIN_Z002_CLEARANCE_SCREEN_CPU.md
+status: PASS_CLEARANCE_METRICS_ADDED
+```
+
+Focused seed-0 `z=0.002` terrain comparison shows the terrain gait is a
+low-clearance shuffle:
+
+```text
+a2_gain099:
+  min swing peak lift: 0.0153 m
+  single support: 17.6%
+  double support: 82.4%
+
+c0_245760:
+  min swing peak lift: 0.0159 m
+  single support: 16.8%
+  double support: 83.2%
+
+c2_163840:
+  min swing peak lift: 0.0163 m
+  single support: 17.2%
+  double support: 82.8%
+```
+
+This matches the carpet observation: the policy is stepping but barely lifting.
+The next terrain robustness step should explicitly increase swing clearance and
+reduce double-support dwell while preserving the corrected actuator envelope and
+command-conditioned forward motion.
