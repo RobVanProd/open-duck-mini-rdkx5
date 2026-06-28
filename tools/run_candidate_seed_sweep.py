@@ -228,6 +228,8 @@ def run_one(
             str(args.push_recovery_min_base_height_m),
         ]
     )
+    if args.terrain_hfield_z_scale is not None:
+        command.extend(["--terrain-hfield-z-scale", str(args.terrain_hfield_z_scale)])
     result: dict[str, Any] = {
         "policy": str(policy),
         "policy_label": label,
@@ -362,6 +364,7 @@ def build_report(results: list[dict[str, Any]], args: argparse.Namespace) -> str
         f"eval_push_interval_s: `{args.eval_push_interval_min_s}`-`{args.eval_push_interval_max_s}`",
         f"eval_push_magnitude: `{args.eval_push_magnitude_min}`-`{args.eval_push_magnitude_max}`",
         f"push_recovery_window_s: `{args.push_recovery_window_s}`",
+        f"terrain_hfield_z_scale: `{args.terrain_hfield_z_scale}`",
         f"trace_seeds: `{args.trace_seeds}`",
         f"trace_full_obs: `{args.trace_full_obs}`",
         f"run: `{args.run}`",
@@ -493,6 +496,12 @@ def main() -> int:
     parser.add_argument("--push-recovery-window-s", type=float, default=0.5)
     parser.add_argument("--push-recovery-max-abs-pitch-rad", type=float, default=0.8)
     parser.add_argument("--push-recovery-min-base-height-m", type=float, default=0.08)
+    parser.add_argument(
+        "--terrain-hfield-z-scale",
+        type=float,
+        default=None,
+        help="Eval-only override for hfield vertical scale in terrain XMLs.",
+    )
     parser.add_argument("--sim-preflight-timeout-s", type=int, default=600)
     parser.add_argument("--closed-loop-timeout-s", type=int, default=1800)
     parser.add_argument("--output-dir", default="outputs/analysis/candidate_seed_sweep")
@@ -537,6 +546,7 @@ def main() -> int:
                     "push_recovery_min_base_height_m": (
                         args.push_recovery_min_base_height_m
                     ),
+                    "terrain_hfield_z_scale": args.terrain_hfield_z_scale,
                     "jax_platform": args.jax_platform,
                     "run": args.run,
                     "trace_seeds": args.trace_seeds,
@@ -569,6 +579,7 @@ def main() -> int:
             "push_recovery_window_s": args.push_recovery_window_s,
             "push_recovery_max_abs_pitch_rad": args.push_recovery_max_abs_pitch_rad,
             "push_recovery_min_base_height_m": args.push_recovery_min_base_height_m,
+            "terrain_hfield_z_scale": args.terrain_hfield_z_scale,
             "jax_platform": args.jax_platform,
             "run": args.run,
             "trace_seeds": args.trace_seeds,

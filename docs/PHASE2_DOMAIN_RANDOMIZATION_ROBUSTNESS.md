@@ -81,6 +81,10 @@ Missing or partial:
   `tools/eval_policy_with_actuator_bridge.py` and
   `tools/run_candidate_seed_sweep.py` now expose explicit default-off
   `--eval-push-enable` controls and recovery metrics
+- terrain curriculum now has an eval-only hfield vertical scale override via
+  `--terrain-hfield-z-scale`; this creates a temporary scene XML for the worker
+  and removes it after env construction, so the Playground checkout is not
+  permanently modified
 
 ## Curriculum
 
@@ -299,6 +303,26 @@ without requiring any target-velocity envelope violation. Terrain should
 therefore enter through a gentler curriculum than the stock rough task, or via
 training that preserves the Stage A flat gait while increasing foot clearance
 and contact margin.
+
+Scaled-terrain plumbing smoke:
+
+```text
+command:
+  --task rough_terrain_backlash
+  --terrain-hfield-z-scale 0.002
+
+result:
+  worker loaded the temporary scaled XML and removed it after env construction
+```
+
+Use this knob to measure a terrain-feasibility curve before training:
+
+```text
+flat terrain
+rough_terrain_backlash --terrain-hfield-z-scale 0.002
+rough_terrain_backlash --terrain-hfield-z-scale 0.005
+stock rough_terrain_backlash       # hfield z scale 0.01
+```
 
 Stage D:
 

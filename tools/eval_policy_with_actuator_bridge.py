@@ -632,6 +632,8 @@ def run_closed_loop_worker(args) -> dict:
             str(args.push_recovery_min_base_height_m),
         ]
     )
+    if args.terrain_hfield_z_scale is not None:
+        cmd.extend(["--terrain-hfield-z-scale", str(args.terrain_hfield_z_scale)])
     env = build_jax_env(args.jax_platform, args.jax_platforms)
     try:
         result = subprocess.run(
@@ -810,6 +812,8 @@ def build_markdown(payload: dict) -> str:
         lines.append(f"double_rate_limit: `{insertion.get('double_rate_limit')}`")
         if insertion.get("push_config"):
             lines.append(f"push_config: `{insertion.get('push_config')}`")
+        if insertion.get("terrain_override"):
+            lines.append(f"terrain_override: `{insertion.get('terrain_override')}`")
         if closed_loop.get("error"):
             lines.append(f"worker_error: `{closed_loop.get('error')}`")
         if closed_loop.get("worker_returncode") is not None:
@@ -1344,6 +1348,16 @@ def main() -> int:
         help="Push recovery fails if base height falls below this value in the window.",
     )
     parser.add_argument(
+        "--terrain-hfield-z-scale",
+        type=float,
+        default=None,
+        help=(
+            "Eval-only override for the hfield vertical scale in terrain XMLs. "
+            "Creates a temporary scene XML in the Playground xml directory and "
+            "does not modify checked-in Playground files."
+        ),
+    )
+    parser.add_argument(
         "--_closed-loop-worker",
         action="store_true",
         help=argparse.SUPPRESS,
@@ -1450,6 +1464,7 @@ def main() -> int:
                         push_recovery_min_base_height_m=(
                             args.push_recovery_min_base_height_m
                         ),
+                        terrain_hfield_z_scale=args.terrain_hfield_z_scale,
                     )
                 )
             if args._closed_loop_worker_json:
@@ -1506,6 +1521,7 @@ def main() -> int:
             "recovery_max_abs_pitch_rad": args.push_recovery_max_abs_pitch_rad,
             "recovery_min_base_height_m": args.push_recovery_min_base_height_m,
         },
+        "terrain_hfield_z_scale": args.terrain_hfield_z_scale,
         "policy_state_input_names": list(parse_name_list(args.policy_state_input_names)),
         "policy_state_output_names": list(parse_name_list(args.policy_state_output_names)),
         "telemetry_replay": telemetry_replay,

@@ -14,7 +14,9 @@ import json
 import math
 import os
 from pathlib import Path
+import re
 import sys
+import tempfile
 import time
 from typing import Any, Iterable, Mapping, Sequence
 
@@ -77,6 +79,7 @@ class ClosedLoopConfig:
     push_recovery_window_s: float = 0.5
     push_recovery_max_abs_pitch_rad: float = 0.8
     push_recovery_min_base_height_m: float = 0.08
+    terrain_hfield_z_scale: float | None = None
 
 
 @contextlib.contextmanager
@@ -134,6 +137,29 @@ def vector_abs_velocity(values: np.ndarray, dt_s: float) -> np.ndarray:
         return np.zeros_like(values)
     vel = np.abs(np.diff(values, axis=0) / max(float(dt_s), 1e-9))
     return np.vstack([np.zeros((1, values.shape[1])), vel])
+
+
+def write_scaled_hfield_scene(source_xml: Path, z_scale: float) -> Path:
+    text = source_xml.read_text()
+    pattern = re.compile(r'(<hfield\b[^>]*\bsize=")([^"]+)(")')
+    match = pattern.search(text)
+    if not match:
+        raise ValueError(f"no hfield size attribute found in {source_xml}")
+    values = match.group(2).split()
+    if len(values) != 4:
+        raise ValueError(f"expected four hfield size values in {source_xml}: {values}")
+    values[2] = f"{float(z_scale):.8g}"
+    scaled_text = text[: match.start(2)] + " ".join(values) + text[match.end(2) :]
+    tmp = tempfile.NamedTemporaryFile(
+        mode="w",
+        suffix=f"_hfield_z{float(z_scale):.8g}.xml",
+        prefix=".codex_eval_",
+        dir=source_xml.parent,
+        delete=False,
+    )
+    with tmp:
+        tmp.write(scaled_text)
+    return Path(tmp.name)
 
 
 def push_recovery_summary(
@@ -818,6 +844,7 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
     sys.path.insert(0, str(config.playground_root))
     try:
         from playground.open_duck_mini_v2 import joystick
+        from playground.open_duck_mini_v2 import constants as duck_constants
     except Exception as exc:  # pragma: no cover - environment-dependent
         return {
             "status": "HOLD_ENV_NOT_READY",
@@ -879,12 +906,38 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             ),
         ]
 
+    terrain_override = {
+        "enabled": False,
+        "hfield_z_scale": None,
+        "source_xml": None,
+        "temp_xml": None,
+    }
+    temp_scene_xml: Path | None = None
+    original_task_to_xml = duck_constants.task_to_xml
     try:
         with temporary_cwd(config.playground_root):
             env_config = joystick.default_config()
             applied_reward_overrides = apply_reward_overrides(
                 env_config, config.reward_overrides
             )
+            if config.terrain_hfield_z_scale is not None:
+                source_xml = Path(original_task_to_xml(config.task))
+                temp_scene_xml = write_scaled_hfield_scene(
+                    source_xml, float(config.terrain_hfield_z_scale)
+                )
+                terrain_override = {
+                    "enabled": True,
+                    "hfield_z_scale": float(config.terrain_hfield_z_scale),
+                    "source_xml": str(source_xml),
+                    "temp_xml": str(temp_scene_xml),
+                }
+
+                def task_to_xml_override(task_name: str):
+                    if task_name == config.task:
+                        return temp_scene_xml
+                    return original_task_to_xml(task_name)
+
+                duck_constants.task_to_xml = task_to_xml_override
             env = joystick.Joystick(
                 task=config.task, config=env_config, config_overrides=overrides
             )
@@ -893,6 +946,11 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             "status": "HOLD_SIM_RUNTIME_ERROR",
             "error": f"env init failed: {type(exc).__name__}: {exc}",
         }
+    finally:
+        duck_constants.task_to_xml = original_task_to_xml
+        if temp_scene_xml is not None:
+            with contextlib.suppress(OSError):
+                temp_scene_xml.unlink()
 
     try:
         session = ort.InferenceSession(str(config.policy_path), providers=["CPUExecutionProvider"])
@@ -1187,6 +1245,7 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             0.0,
         ],
         "reward_overrides_applied": applied_reward_overrides,
+        "terrain_override": terrain_override,
     }
 
     for mode in available_modes(config.bridge_mode):
@@ -1496,6 +1555,7 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             ),
             "jax_backend": jax.default_backend(),
             "jax_devices": [str(device) for device in jax.devices()],
+            "terrain_override": terrain_override,
         },
         "insertion_point": insertion_point,
         "real_x008_reference": REAL_X008_REFERENCE,
