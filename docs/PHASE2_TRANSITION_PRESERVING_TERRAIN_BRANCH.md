@@ -394,3 +394,52 @@ that the carpet-like "steps but does not advance the foot enough" failure is
 addressed by contact-phase-specific right-foot swing weighting, not by global
 seed weighting. The next gate is the same rough `z=0.002` diagnostic across
 seeds 0-7 at both x=0.08 and x=0.0.
+
+## Live-Oracle Iteration 1
+
+Artifact:
+
+```text
+decision: outputs/analysis/PHASE2_LIVE_ORACLE_RIGHT_SWING_ITER1_DECISION.md
+status: HOLD_LIVE_ORACLE_ITER1_MIXED_IMPROVEMENT
+```
+
+The targeted right-swing candidate was then evaluated across the rough
+`z=0.002` 8-seed x=0.08 diagnostic:
+
+```text
+passes: seeds 2,4,6
+low-progress holds: seeds 0,1,5,7
+target-velocity hold: seed 3
+falls: 0/8
+```
+
+A live-oracle DAgger data iteration relabeled the student's own rough-terrain
+states:
+
+```text
+x=0.08 relabel data: 8 entries / 2000 samples
+x=0.0 relabel data: 2 entries / 500 samples
+aggregate manifest: 13 entries / 3250 samples
+```
+
+The follow-up phase/command student improved the distribution but did not pass:
+
+```text
+passes: seeds 1,2,3,6,7
+terrain-swing holds: seeds 0,4
+fall/reverse hold: seed 5
+```
+
+This confirms the live-oracle mechanism is useful: it fixed seed 1, seed 3, and
+seed 7. It also regressed seed 4 and created a seed-5 reverse/fall. The next
+iteration must be selective rather than a flat aggregate:
+
+```text
+preserve the targeted seed-4 right-swing labels
+inspect/filter seed-5 reverse/fall labels
+retain live-oracle relabels for seeds 1,3,7
+```
+
+Do not promote the live-oracle iter1 candidate. Robot validation remains
+blocked.

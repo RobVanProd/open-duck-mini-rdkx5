@@ -1,0 +1,96 @@
+{
+  "status": "HOLD_LIVE_ORACLE_ITER1_MIXED_IMPROVEMENT",
+  "date": "2026-06-28",
+  "scope": "offline_sim_only",
+  "robot_tests_run": false,
+  "ssh_run": false,
+  "deploy_run": false,
+  "grounded_replay_run": false,
+  "runtime_behavior_changed": false,
+  "student_policy": "outputs/analysis/phase2_live_oracle_right_swing_iter1_phasecmd_bc_student/candidate.onnx",
+  "data_iteration": "outputs/analysis/phase2_live_oracle_right_swing_iter1/live_oracle_dagger_iteration.json",
+  "aggregate_manifest": "outputs/analysis/phase2_live_oracle_right_swing_iter1/live_oracle_dagger_aggregate_manifest.json",
+  "x008_gate": "outputs/analysis/phase2_live_oracle_right_swing_iter1_phasecmd_x008_rough_z002_8seed_gate_cpu.json",
+  "result_summary": {
+    "passes": [1, 2, 3, 6, 7],
+    "terrain_swing_holds": [0, 4],
+    "fall_or_termination_holds": [5],
+    "falls": 1,
+    "duration_complete": 7
+  },
+  "seed_results": {
+    "0": {
+      "previous_status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "status": "HOLD_CANDIDATE_TERRAIN_SWING",
+      "vx_m_s": 0.0337,
+      "track_ratio": 0.4216,
+      "velocity_excess_rad_s": 0.0,
+      "tracking_p95_rad": 0.1988,
+      "min_rel_x_range_p95_m": 0.0022
+    },
+    "1": {
+      "previous_status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "vx_m_s": 0.0331,
+      "track_ratio": 0.4138,
+      "velocity_excess_rad_s": 0.0,
+      "tracking_p95_rad": 0.1960,
+      "min_rel_x_range_p95_m": 0.0171
+    },
+    "2": {
+      "previous_status": "PASS_CANDIDATE_SIM_GATE",
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "vx_m_s": 0.0428,
+      "track_ratio": 0.5352,
+      "velocity_excess_rad_s": 0.0,
+      "tracking_p95_rad": 0.1907,
+      "min_rel_x_range_p95_m": 0.0064
+    },
+    "3": {
+      "previous_status": "HOLD_CANDIDATE_TARGET_VELOCITY",
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "vx_m_s": 0.0283,
+      "track_ratio": 0.3542,
+      "velocity_excess_rad_s": 0.0,
+      "tracking_p95_rad": 0.1905,
+      "min_rel_x_range_p95_m": 0.0034
+    },
+    "4": {
+      "previous_status": "PASS_CANDIDATE_SIM_GATE",
+      "status": "HOLD_CANDIDATE_TERRAIN_SWING",
+      "vx_m_s": 0.0334,
+      "track_ratio": 0.4178,
+      "velocity_excess_rad_s": 0.0,
+      "tracking_p95_rad": 0.1951,
+      "min_rel_x_range_p95_m": 0.0024
+    },
+    "5": {
+      "previous_status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "vx_m_s": -0.2401,
+      "track_ratio": -3.0018,
+      "velocity_excess_rad_s": 1.0416,
+      "tracking_p95_rad": 0.1878,
+      "min_rel_x_range_p95_m": 0.0508
+    },
+    "6": {
+      "previous_status": "PASS_CANDIDATE_SIM_GATE",
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "vx_m_s": 0.0283,
+      "track_ratio": 0.3542,
+      "velocity_excess_rad_s": 0.0,
+      "tracking_p95_rad": 0.1983,
+      "min_rel_x_range_p95_m": 0.0080
+    },
+    "7": {
+      "previous_status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "vx_m_s": 0.0358,
+      "track_ratio": 0.4469,
+      "velocity_excess_rad_s": 0.0,
+      "tracking_p95_rad": 0.1975,
+      "min_rel_x_range_p95_m": 0.0100
+    }
+  },
+  "decision": "Live-oracle relabeling improves the rough 8-seed distribution but the aggregate must protect seed-4 right-swing labels and inspect/filter seed-5 reverse/fall labels before the next fit."
+}

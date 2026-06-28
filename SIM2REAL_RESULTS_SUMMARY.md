@@ -8513,3 +8513,34 @@ This is the first local rough-terrain command-conditioned pass that preserves
 the corrected envelope, tracking, x=0.0 semantics, and seed-4 swing/advance.
 It is not promoted yet; it must now pass the wider 8-seed rough diagnostic and
 then the canonical corrected-bridge gates. Robot validation remains blocked.
+
+The wider rough diagnostic and first live-oracle follow-up were then run:
+
+```text
+artifact: outputs/analysis/PHASE2_LIVE_ORACLE_RIGHT_SWING_ITER1_DECISION.md
+status: HOLD_LIVE_ORACLE_ITER1_MIXED_IMPROVEMENT
+```
+
+Targeted right-swing candidate at x=0.08 rough `z=0.002`:
+
+```text
+passes: seeds 2,4,6
+low-progress holds: seeds 0,1,5,7
+target-velocity hold: seed 3
+falls: 0/8
+```
+
+Live-oracle iter1 relabeling produced 3250 aggregate samples and improved the
+distribution:
+
+```text
+passes: seeds 1,2,3,6,7
+terrain-swing holds: seeds 0,4
+fall/reverse hold: seed 5
+```
+
+This is useful but not promotable. Live-oracle labels can fix low-progress and
+velocity-excess seeds, but flat aggregation can also erase the seed-4 targeted
+right-swing fix and introduce a seed-5 reverse/fall. The next iteration should
+preserve seed-4 right-swing labels and inspect/filter seed-5 before another
+student fit. Robot validation remains blocked.
