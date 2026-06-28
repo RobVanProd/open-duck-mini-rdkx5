@@ -528,6 +528,26 @@ not another contact-timing-only retry; it should add an explicit swing
 clearance/feet-height objective or a target-source change that raises the foot
 while preserving corrected-envelope compliance and command conditioning.
 
+Stage C4 clearance-reward plumbing:
+
+```text
+artifact:
+  outputs/analysis/PHASE2_STAGE_C4_CLEARANCE_REWARD_PLUMBING.md
+
+status:
+  PASS_CLEARANCE_REWARD_PLUMBING
+```
+
+The Playground task now exposes a default-off `forward_swing_clearance` cost
+that measures swing peak lift above each foot's last stance height and applies
+only under nonzero forward command. This avoids world-height assumptions on
+heightfield terrain. The RDK training wrapper forwards the matching
+`--forward-swing-clearance-*` flags, and a tiny CPU smoke plus direct one-step
+env activation check passed. No candidate was promoted.
+
+The next Stage C run should be a C4 fine-tune from the best C2/C3 terrain
+lineage with a mild clearance penalty, not a new contact-timing-only retry.
+
 Stage D:
 
 - rough hfield terrain

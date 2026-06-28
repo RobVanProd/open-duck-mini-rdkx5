@@ -8017,3 +8017,16 @@ robustness step should add an explicit swing-clearance / feet-height objective
 or target-source change while preserving the corrected actuator envelope and
 the flat-ground command-conditioned gait. No robot, SSH, deploy, runtime change,
 or grounded replay was performed for C3.
+
+Stage C4 clearance-reward plumbing was added after that C3 hold:
+
+```text
+artifact: outputs/analysis/PHASE2_STAGE_C4_CLEARANCE_REWARD_PLUMBING.md
+status: PASS_CLEARANCE_REWARD_PLUMBING
+```
+
+The new default-off `forward_swing_clearance` term measures per-foot swing peak
+lift above the last stance height, so it is suitable for heightfield terrain.
+The Playground runner and RDK training wrapper expose matching flags, and a
+tiny CPU smoke plus direct one-step env check passed. This is only plumbing; no
+candidate was promoted and no robot-side work was performed.

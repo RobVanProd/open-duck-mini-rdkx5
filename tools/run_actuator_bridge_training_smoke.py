@@ -155,6 +155,9 @@ def build_command(args: argparse.Namespace, output_dir: Path) -> list[str]:
         ),
         "--forward_pitch_huber_delta": args.forward_pitch_huber_delta,
         "--forward_pitch_rate_huber_delta": args.forward_pitch_rate_huber_delta,
+        "--forward_swing_clearance_huber_delta": (
+            args.forward_swing_clearance_huber_delta
+        ),
         "--command_progress_shortfall_huber_delta": (
             args.command_progress_shortfall_huber_delta
         ),
@@ -186,6 +189,8 @@ def build_command(args: argparse.Namespace, output_dir: Path) -> list[str]:
         "--forward_double_support_dwell_grace_steps": (
             args.forward_double_support_dwell_grace_steps
         ),
+        "--forward_swing_clearance_scale": args.forward_swing_clearance_scale,
+        "--forward_swing_clearance_target_m": args.forward_swing_clearance_target_m,
         "--alive_scale": args.alive_scale,
         "--imitation_scale": args.imitation_scale,
         "--lin_vel_x_min": args.lin_vel_x_min,
@@ -639,6 +644,7 @@ def main() -> int:
     parser.add_argument("--forward-wrong-direction-huber-delta", type=float, default=None)
     parser.add_argument("--forward-pitch-huber-delta", type=float, default=None)
     parser.add_argument("--forward-pitch-rate-huber-delta", type=float, default=None)
+    parser.add_argument("--forward-swing-clearance-huber-delta", type=float, default=None)
     parser.add_argument(
         "--command-progress-shortfall-huber-delta", type=float, default=None
     )
@@ -672,6 +678,8 @@ def main() -> int:
         type=int,
         default=None,
     )
+    parser.add_argument("--forward-swing-clearance-scale", type=float, default=None)
+    parser.add_argument("--forward-swing-clearance-target-m", type=float, default=None)
     parser.add_argument("--alive-scale", type=float, default=None)
     parser.add_argument("--imitation-scale", type=float, default=None)
     parser.add_argument("--lin-vel-x-min", type=float, default=None)
@@ -830,6 +838,9 @@ def main() -> int:
             ),
             "forward_pitch_huber_delta": args.forward_pitch_huber_delta,
             "forward_pitch_rate_huber_delta": args.forward_pitch_rate_huber_delta,
+            "forward_swing_clearance_huber_delta": (
+                args.forward_swing_clearance_huber_delta
+            ),
             "command_progress_shortfall_huber_delta": (
                 args.command_progress_shortfall_huber_delta
             ),
@@ -863,6 +874,8 @@ def main() -> int:
             "forward_double_support_dwell_grace_steps": (
                 args.forward_double_support_dwell_grace_steps
             ),
+            "forward_swing_clearance_scale": args.forward_swing_clearance_scale,
+            "forward_swing_clearance_target_m": args.forward_swing_clearance_target_m,
             "alive_scale": args.alive_scale,
             "imitation_scale": args.imitation_scale,
             "lin_vel_x_min": args.lin_vel_x_min,
