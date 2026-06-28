@@ -187,6 +187,27 @@ needs contact-phase-balanced labels or an explicit action-space correction that
 keeps the swing gain while rejecting pitch-chain labels that exceed the
 corrected bridge gate.
 
+A scalar supervised rate-penalty sweep on the same seed-weighted manifest also
+held:
+
+```text
+decision: outputs/analysis/PHASE2_TRANSITION_PROTECTED_SEED4_WEIGHTED_RATE_SWEEP_DECISION.md
+status: HOLD_RATE_REGULARIZATION_SWING_TRACKING_TRADEOFF
+
+rate 0.08 seed 2/4:
+  max velocity excess: 0.0822 / 0.1252 rad/s
+  max tracking p95: 0.2024 / 0.2067 rad
+  min swing segments: 7 / 0
+
+rate 0.20 seed 2/4:
+  max velocity excess: 0.0314 / 0.0943 rad/s
+  max tracking p95: 0.2083 / 0.2113 rad
+  min swing segments: 4 / 0
+```
+
+Higher rate pressure reduces excess but again erodes seed-4 swing. The simple
+sample-weight plus scalar rate-penalty family is closed.
+
 ## Gate
 
 Minimum rough-terrain diagnostic gate before any wider 8-seed run:

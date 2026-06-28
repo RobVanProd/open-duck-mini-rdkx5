@@ -8404,3 +8404,22 @@ reintroducing the corrected-envelope/tracking failure. Naive weighting is
 closed. The next offline branch needs contact-phase-balanced or action-space
 correction that preserves the swing gain while keeping zero velocity excess and
 tracking p95 under `0.20 rad`. Robot validation remains blocked.
+
+A scalar supervised rate-penalty sweep on the seed-weighted manifest was also
+run:
+
+```text
+artifact: outputs/analysis/PHASE2_TRANSITION_PROTECTED_SEED4_WEIGHTED_RATE_SWEEP_DECISION.md
+status: HOLD_RATE_REGULARIZATION_SWING_TRACKING_TRADEOFF
+rate 0.08 seed 2/4 max velocity excess: 0.0822 / 0.1252 rad/s
+rate 0.08 seed 2/4 max tracking p95: 0.2024 / 0.2067 rad
+rate 0.08 seed 2/4 min swing segments: 7 / 0
+rate 0.20 seed 2/4 max velocity excess: 0.0314 / 0.0943 rad/s
+rate 0.20 seed 2/4 max tracking p95: 0.2083 / 0.2113 rad
+rate 0.20 seed 2/4 min swing segments: 4 / 0
+```
+
+Rate regularization reduces excess but again erodes seed-4 swing. This closes
+the simple sample-weight plus scalar rate-penalty family. The next offline
+branch should target contact-phase-balanced labels or selective per-contact /
+per-joint action-space correction.
