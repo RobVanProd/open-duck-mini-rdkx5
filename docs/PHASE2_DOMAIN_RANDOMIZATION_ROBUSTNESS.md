@@ -823,6 +823,22 @@ to `HOLD_CANDIDATE_TERRAIN_SWING`. A downgrade-path validation intentionally
 set `min_swing_peak_lift_m=0.02` and correctly downgraded C7 seed 2 from a
 nominal pass to `HOLD_CANDIDATE_TERRAIN_SWING`.
 
+Action-gain terrain diagnostic:
+
+```text
+artifact: outputs/analysis/PHASE2_TERRAIN_ACTION_GAIN_DIAGNOSTIC.md
+status: HOLD_ACTION_GAIN_NOT_TERRAIN_FIX
+tested gains: 1.05, 1.10
+```
+
+Small global action-gain increases on C7 `35120` do not fix the terrain/carpet
+failure. At gain `1.05`, seed 2 still passed but seed 4 stayed planted with
+`0` min swing segments, `0.0000 m` min relative-x swing range, `0.0016 m` min
+swing peak lift, `0.8%` single support, and `99.2%` double support. At gain
+`1.10`, even seed 2 regressed to low forward progress. Both tests stayed inside
+the corrected velocity envelope, so the issue is stance/swing structure rather
+than insufficient global action amplitude.
+
 Stage D:
 
 - rough hfield terrain

@@ -264,6 +264,8 @@ def run_one(
         str(seed),
         "--bridge-mode",
         args.bridge_mode,
+        "--policy-action-gain",
+        str(args.policy_action_gain),
         "--jax-platform",
         args.jax_platform,
         "--sim-preflight-timeout-s",
@@ -461,6 +463,7 @@ def build_report(results: list[dict[str, Any]], args: argparse.Namespace) -> str
         f"command_x: `{args.command_x}`",
         f"task: `{args.task}`",
         f"bridge_mode: `{args.bridge_mode}`",
+        f"policy_action_gain: `{args.policy_action_gain}`",
         f"reward_overrides_json: `{args.reward_overrides_json or 'None'}`",
         f"reward_overrides_phase: `{args.reward_overrides_phase or 'None'}`",
         f"duration_s: `{args.duration}`",
@@ -562,6 +565,16 @@ def main() -> int:
     parser.add_argument("--duration", type=float, default=15.0)
     parser.add_argument("--bridge-mode", default="fitted")
     parser.add_argument("--mode-name", default="fitted")
+    parser.add_argument(
+        "--policy-action-gain",
+        type=float,
+        default=1.0,
+        help=(
+            "Eval-only multiplier passed through to "
+            "eval_policy_with_actuator_bridge.py. Default 1.0 preserves the "
+            "policy exactly."
+        ),
+    )
     parser.add_argument("--jax-platform", default="cpu")
     parser.add_argument("--trace-seeds", type=parse_int_list, default=[])
     parser.add_argument(
@@ -673,6 +686,7 @@ def main() -> int:
                     "task": args.task,
                     "duration_s": args.duration,
                     "bridge_mode": args.bridge_mode,
+                    "policy_action_gain": args.policy_action_gain,
                     "reward_overrides_json": args.reward_overrides_json,
                     "reward_overrides_phase": args.reward_overrides_phase,
                     "policy_obs_input_name": args.policy_obs_input_name,
@@ -715,6 +729,7 @@ def main() -> int:
             "task": args.task,
             "duration_s": args.duration,
             "bridge_mode": args.bridge_mode,
+            "policy_action_gain": args.policy_action_gain,
             "reward_overrides_json": args.reward_overrides_json,
             "reward_overrides_phase": args.reward_overrides_phase,
             "policy_obs_input_name": args.policy_obs_input_name,

@@ -125,6 +125,14 @@ The seed-sweep tool now has default-off hard terrain swing thresholds:
 `HOLD_CANDIDATE_TERRAIN_SWING`; this was validated on C7 seed 2 with an
 intentionally strict lift threshold.
 
+A compact action-gain diagnostic then tested whether the C7 terrain weakness
+was just insufficient action amplitude. It was not. Gain `1.05` preserved seed
+2 but left seed 4 planted with `0` min swing segments, `0.0000 m` min
+relative-x swing range, `0.0016 m` min swing peak, and `99.2%` double support.
+Gain `1.10` degraded both seeds to low-progress holds. No corrected-envelope
+excess occurred, so the next terrain branch should change stance/swing
+structure rather than add global output gain.
+
 June 27 corrected-knee update: the left knee soft offset was corrected from
 `-1.488 rad` to `0.0371 rad`, and a supported/on-stand sine-only actuator gate
 passed at `0.25`, `0.5`, and `1.0 Hz` with `0.03 rad` amplitude. The corrected
