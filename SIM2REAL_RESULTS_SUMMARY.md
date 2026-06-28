@@ -8304,3 +8304,16 @@ This reduced velocity excess/tracking pressure but removed the swing/advance
 needed for terrain progress. The next offline branch must preserve transition
 structure while enforcing the corrected per-joint envelope; simple global label
 smoothing is closed. Robot validation remains blocked.
+
+Trace comparison made that failure mode explicit:
+
+```text
+artifact: outputs/analysis/PHASE2_TERRAIN_TRACKING_AWARE_TRACE_COMPARISON.md
+iter2 seed 2/4 single support: 35.2% / 30.4%
+filtered seed 2/4 single support: 10.0% / 4.0%
+```
+
+The next branch is pre-registered in
+`docs/PHASE2_TRANSITION_PRESERVING_TERRAIN_BRANCH.md`: preserve the support
+transition and apply corrected-envelope pressure in closed-loop, rather than
+globally smoothing labels before the policy ever steps.

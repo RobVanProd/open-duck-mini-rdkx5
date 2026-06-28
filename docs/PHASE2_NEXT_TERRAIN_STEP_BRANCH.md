@@ -167,6 +167,23 @@ So a simple global label smoothing pass is now closed. The next terrain branch
 must preserve the swing/advance transition while staying inside the corrected
 per-joint envelope; do not repeat this filter with only minor threshold tweaks.
 
+Trace comparison confirmed the mechanism:
+
+```text
+artifact: outputs/analysis/PHASE2_TERRAIN_TRACKING_AWARE_TRACE_COMPARISON.md
+iter2 single support: about 30-35%
+tracking-aware single support: about 4-10%
+```
+
+The next pre-registered branch is:
+
+```text
+docs/PHASE2_TRANSITION_PRESERVING_TERRAIN_BRANCH.md
+```
+
+It should preserve double-support preparation into single-support transition
+while enforcing the corrected per-joint envelope in closed-loop training/eval.
+
 ## Closed Paths
 
 Do not spend the next run on:
@@ -179,6 +196,7 @@ Do not spend the next run on:
 - a target source that can pass without both feet producing swing segments
 - a simple global pitch-chain label-rate filter that damps the transition into
   double support
+- another transition-blind BC fit from the same tiny terrain snippet set
 
 Those have already been tested or are directly implied by the new hard-step
 diagnostics.

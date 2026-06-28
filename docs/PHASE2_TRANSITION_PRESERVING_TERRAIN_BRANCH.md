@@ -1,0 +1,95 @@
+# Phase 2 Transition-Preserving Terrain Branch
+
+status: `PRE_REGISTERED_NOT_STARTED`
+
+## Objective
+
+Recover rough-terrain / carpet robustness without deleting the support
+transition that creates forward motion.
+
+This branch is offline-only. It does not authorize robot tests, SSH, deploy,
+grounded replay, runtime behavior changes, or training from scratch.
+
+## Evidence
+
+The live-oracle terrain DAgger student recovered forward progress on
+`rough_terrain_backlash` at `z=0.002`, but held on corrected tracking/envelope:
+
+```text
+iter2 seed 2: vx 0.0526 m/s, track ratio 0.6570, tracking p95 0.2533
+iter2 seed 4: vx 0.0459 m/s, track ratio 0.5736, tracking p95 0.2527
+```
+
+A simple tracking-aware label filter then clipped pitch-chain oracle labels to
+`2.25 rad/s`. It lowered the supervised target rate and reduced closed-loop
+tracking pressure, but collapsed the terrain gait:
+
+```text
+tracking-aware seed 2: vx 0.0107 m/s, track ratio 0.1335, double support 90%
+tracking-aware seed 4: vx 0.0105 m/s, track ratio 0.1314, double support 96%
+```
+
+Trace comparison shows the mechanism:
+
+```text
+iter2 single support: about 30-35%
+tracking-aware single support: about 4-10%
+```
+
+The global label cap mostly damped the double-support preparation into
+single-support transition. It made the gait calmer by removing the step.
+
+## Hypothesis
+
+The next student needs the iter2 support-transition structure, but with
+closed-loop correction of the excess pitch-chain tracking/rate. Offline label
+clipping is too blunt because the labels that look aggressive are also the
+transition labels that create single support.
+
+## Required Method
+
+Use one of these mechanisms, in order:
+
+1. Closed-loop PPO fine-tune from `iter2_live_oracle_bc` with a strong restore
+   prior and explicit corrected per-joint envelope/tracking penalties.
+2. Transition-aware relabeling that preserves double-support preparation and
+   single-support timing, only editing labels whose closed-loop rollout
+   actually exceeds the corrected per-joint envelope.
+3. Phase/contact-conditioned student that can represent different actions for
+   double-support preparation, left support, and right support, with the hard
+   swing gate active.
+
+Do not run another simple global label-rate filter or scalar terrain reward
+sweep as the next branch.
+
+## Gate
+
+Minimum rough-terrain diagnostic gate before any wider 8-seed run:
+
+```text
+task: rough_terrain_backlash
+terrain_hfield_z_scale: 0.002
+bridge: corrected fitted bridge
+command_x: 0.08
+duration: 5 s
+seeds: 2,4
+falls: 0
+track ratio: >= 0.50
+max corrected velocity excess: 0
+max tracking p95: <= 0.20 rad
+min per-foot swing segments: >= 1
+min per-foot rel-x range p95: >= 0.003 m
+min per-foot swing peak lift: >= 0.005 m
+double support: not above the live-oracle iter2 baseline by more than 10 percentage points
+```
+
+Promotion still requires the canonical corrected-bridge flat and rough gates,
+including `x=0.0` command preservation, ONNX fidelity, and review. Robot
+validation remains blocked.
+
+## Falsifier
+
+If a transition-preserving fine-tune keeps swing support structure but cannot
+reduce tracking below `0.20 rad` or corrected-envelope excess to zero, the
+terrain blocker is not label smoothing. Revisit the corrected bridge/terrain
+contact model or accept that this gait needs a different support strategy.
