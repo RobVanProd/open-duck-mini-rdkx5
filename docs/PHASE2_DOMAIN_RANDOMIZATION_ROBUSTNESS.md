@@ -1079,6 +1079,45 @@ dataset. The source windows are valid, but the student needs more on-policy/live
 coverage or a teacher/relabel loop, not just a small recurrent fit to four
 snippets.
 
+The terrain live-oracle DAgger loop was then enabled for rough-terrain hfield
+scale and hard x=0.08 swing gates:
+
+```text
+tool update: tools/run_live_oracle_dagger_iteration.py
+new args: --terrain-hfield-z-scale,
+          --min-swing-segments-per-foot,
+          --min-swing-rel-x-range-p95-m,
+          --min-swing-peak-lift-m
+```
+
+Three bounded offline iterations were run from the failed terrain BC student:
+
+```text
+artifact: outputs/analysis/PHASE2_TERRAIN_LIVE_ORACLE_DAGGER_DECISION.md
+status: HOLD_TERRAIN_LIVE_ORACLE_DAGGER_TRACKING_PLATEAU
+
+iter 0: seed 2 froze in-envelope; seed 4 still over tracking/envelope
+iter 1: progress recovered, but tracking/envelope held
+iter 2: stronger progress, same tracking/envelope plateau
+```
+
+Best current live-oracle result on `rough_terrain_backlash`, `z=0.002`,
+corrected bridge, seeds `2,4`:
+
+```text
+iter 2 seed 2: vx 0.0526, track ratio 0.6570,
+               velocity excess 0.8704, tracking p95 0.2533
+iter 2 seed 4: vx 0.0459, track ratio 0.5736,
+               velocity excess 0.8938, tracking p95 0.2527
+```
+
+Current interpretation: live/on-policy relabel coverage fixes the standstill
+side of the failure, but the current oracle labels remain too aggressive for
+the corrected terrain gate. Do not run more identical DAgger iterations as the
+next move. The next branch should make the relabel/training target
+tracking-aware: filter or rate-limit oracle labels, or switch to PPO fine-tuning
+with explicit corrected-envelope penalties.
+
 ## References
 
 Verified from arXiv:

@@ -8267,3 +8267,22 @@ Current interpretation: the curated terrain windows are useful source material,
 but a tiny static dataset is not enough. The next offline branch should collect
 live/on-policy relabel coverage from terrain states or build a larger
 terrain-window dataset before another student promotion attempt.
+
+That live/on-policy relabel branch was run for three bounded offline iterations
+after extending `tools/run_live_oracle_dagger_iteration.py` with terrain hfield
+and hard swing-gate arguments. The result is recorded in
+`outputs/analysis/PHASE2_TERRAIN_LIVE_ORACLE_DAGGER_DECISION.md`:
+
+```text
+status: HOLD_TERRAIN_LIVE_ORACLE_DAGGER_TRACKING_PLATEAU
+iter 0: low-progress/freeze remains
+iter 1: progress recovers, tracking/envelope holds
+iter 2: vx 0.0459-0.0526 m/s, track ratio 0.5736-0.6570,
+        velocity excess 0.8704-0.8938 rad/s,
+        tracking p95 0.2527-0.2533 rad
+```
+
+Current state: terrain-safe source windows exist and live DAgger can recover
+forward progress, but the relabeled student still exceeds the corrected terrain
+tracking/envelope gate. The next offline step should make oracle labels
+tracking-aware, not repeat the same relabel loop and not run robot validation.

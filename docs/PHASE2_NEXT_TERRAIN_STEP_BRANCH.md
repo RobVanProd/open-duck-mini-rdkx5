@@ -121,6 +121,30 @@ backward on seeds `2,4`, so recurrence alone does not rescue a tiny static
 dataset. The next branch still needs live/on-policy relabel coverage or a
 larger terrain-window dataset.
 
+Live/on-policy relabel coverage has now been tested:
+
+```text
+decision: outputs/analysis/PHASE2_TERRAIN_LIVE_ORACLE_DAGGER_DECISION.md
+status: HOLD_TERRAIN_LIVE_ORACLE_DAGGER_TRACKING_PLATEAU
+iterations: 0, 1, 2
+```
+
+Result:
+
+```text
+iter 0: low-progress / partial freeze
+iter 1: progress recovered, but tracking/envelope held
+iter 2: vx 0.0459-0.0526 m/s, track ratio 0.5736-0.6570,
+        velocity excess 0.8704-0.8938 rad/s,
+        tracking p95 0.2527-0.2533 rad
+```
+
+The live loop moved the student out of standstill but did not satisfy the
+corrected bridge terrain gate. Do not repeat the same DAgger recipe as the next
+step. The next terrain branch should make the oracle labels themselves
+tracking-aware, for example by rate-limiting/filtering relabel actions or using
+PPO fine-tuning with explicit corrected-envelope penalties.
+
 ## Closed Paths
 
 Do not spend the next run on:

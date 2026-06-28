@@ -1,0 +1,73 @@
+{
+  "status": "PASS_PPO_LOC_BC_FIT_SMOKE",
+  "manifest": "outputs/analysis/phase2_terrain_live_oracle_dagger/iter_002/live_oracle_dagger_aggregate_manifest.json",
+  "samples": 2511,
+  "hidden_sizes": [
+    256,
+    256
+  ],
+  "activation": "swish",
+  "saved_npz": "outputs/analysis/phase2_terrain_live_oracle_dagger_iter2_bc_student/candidate_mlp.npz",
+  "exported_onnx": "outputs/analysis/phase2_terrain_live_oracle_dagger_iter2_bc_student/candidate.onnx",
+  "train_metrics": {
+    "samples": 2511,
+    "mae": 0.013926922371617209,
+    "rmse": 0.022254590475139082,
+    "p50_abs_error": 0.008825882191783898,
+    "p95_abs_error": 0.04360349184730129,
+    "p99_abs_error": 0.0834960075307066,
+    "max_abs_error": 0.30410675143707006,
+    "pred_action_saturation_pct": 0.0
+  },
+  "target_rate": {
+    "pair_count": 2498,
+    "p50_rad_s": 0.22956682837112757,
+    "p95_rad_s": 1.5834896223209411,
+    "p99_rad_s": 2.9144326553965,
+    "max_rad_s": 4.142438578726003
+  },
+  "sample_weight": {
+    "p50": 4.0,
+    "p95": 5.0,
+    "max": 5.0,
+    "weighted_samples": 8335.0
+  },
+  "loss_rows": [
+    {
+      "step": 1,
+      "loss": 0.1967121660709381
+    },
+    {
+      "step": 750,
+      "loss": 0.001091129146516323
+    },
+    {
+      "step": 1500,
+      "loss": 0.000847901392262429
+    },
+    {
+      "step": 2250,
+      "loss": 0.0005378842470236123
+    },
+    {
+      "step": 3000,
+      "loss": 0.000489170546643436
+    }
+  ],
+  "onnx_verify": {
+    "path": "outputs/analysis/phase2_terrain_live_oracle_dagger_iter2_bc_student/candidate.onnx",
+    "samples_checked": 64,
+    "max_abs_error": 3.3406685906456346e-07,
+    "p95_abs_error": 2.0075881991196698e-07
+  },
+  "config": {
+    "steps": 3000,
+    "batch_size": 256,
+    "learning_rate": 0.001,
+    "target_rate_scale": 0.1,
+    "target_rate_limit_rad_s": 3.75,
+    "action_scale_rad": 0.25,
+    "dt_s": 0.02,
+    "seed": 41
+  }
+}

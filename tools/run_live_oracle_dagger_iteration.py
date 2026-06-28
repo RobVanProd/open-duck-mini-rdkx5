@@ -93,6 +93,13 @@ def write_markdown(path: Path, payload: dict[str, Any]) -> None:
         f"- x0_zero_action_alpha: `{payload['x0_zero_action_alpha']}`",
         f"- command_x: `{payload['command_x']}`",
         f"- duration_s: `{payload['duration_s']}`",
+        f"- task: `{payload['task']}`",
+        f"- bridge_mode: `{payload['bridge_mode']}`",
+        f"- jax_platform: `{payload['jax_platform']}`",
+        f"- terrain_hfield_z_scale: `{payload['terrain_hfield_z_scale']}`",
+        f"- min_swing_segments_per_foot: `{payload['min_swing_segments_per_foot']}`",
+        f"- min_swing_rel_x_range_p95_m: `{payload['min_swing_rel_x_range_p95_m']}`",
+        f"- min_swing_peak_lift_m: `{payload['min_swing_peak_lift_m']}`",
         f"- x008_seeds: `{payload['x008_seeds']}`",
         f"- x0_seeds: `{payload['x0_seeds']}`",
         f"- run: `{payload['run']}`",
@@ -151,7 +158,7 @@ def main() -> int:
     parser.add_argument(
         "--base-manifest",
         action="append",
-        default=["outputs/analysis/source_vx_selector_trace_pitch_chain_rate_limited_4p3_manifest.json"],
+        default=None,
     )
     parser.add_argument("--iteration", type=int, default=0)
     parser.add_argument("--rung", default="frame_stack_k4_precheck")
@@ -166,6 +173,30 @@ def main() -> int:
     parser.add_argument("--bridge-mode", default="fitted")
     parser.add_argument("--task", default="flat_terrain_backlash")
     parser.add_argument("--jax-platform", default="cpu")
+    parser.add_argument(
+        "--terrain-hfield-z-scale",
+        type=float,
+        default=None,
+        help="Optional eval-only terrain hfield z-scale override passed to candidate rollouts.",
+    )
+    parser.add_argument(
+        "--min-swing-segments-per-foot",
+        type=int,
+        default=None,
+        help="Optional x>0 hard swing gate passed to candidate rollouts.",
+    )
+    parser.add_argument(
+        "--min-swing-rel-x-range-p95-m",
+        type=float,
+        default=None,
+        help="Optional x>0 hard swing relative-x gate passed to candidate rollouts.",
+    )
+    parser.add_argument(
+        "--min-swing-peak-lift-m",
+        type=float,
+        default=None,
+        help="Optional x>0 hard swing lift gate passed to candidate rollouts.",
+    )
     parser.add_argument("--teacher-model-kind", choices=["blend", "source_vx_blend"], default="source_vx_blend")
     parser.add_argument(
         "--x0-teacher-model-kind",
@@ -203,6 +234,10 @@ def main() -> int:
         help="Defaults to <output-dir>/live_oracle_dagger_iteration.json",
     )
     args = parser.parse_args()
+    if args.base_manifest is None:
+        args.base_manifest = [
+            "outputs/analysis/source_vx_selector_trace_pitch_chain_rate_limited_4p3_manifest.json"
+        ]
 
     output_dir = Path(args.output_dir)
     x008_rollout_dir = output_dir / "rollouts_x008"
@@ -245,6 +280,8 @@ def main() -> int:
         "--trace-full-obs",
         "--run",
     ]
+    if args.terrain_hfield_z_scale is not None:
+        common_eval.extend(["--terrain-hfield-z-scale", str(args.terrain_hfield_z_scale)])
     x008_eval = [
         *common_eval,
         "--command-x",
@@ -260,6 +297,16 @@ def main() -> int:
         "--output-json",
         str(output_dir / "live_oracle_dagger_x008_rollout.json"),
     ]
+    if args.min_swing_segments_per_foot is not None:
+        x008_eval.extend(
+            ["--min-swing-segments-per-foot", str(args.min_swing_segments_per_foot)]
+        )
+    if args.min_swing_rel_x_range_p95_m is not None:
+        x008_eval.extend(
+            ["--min-swing-rel-x-range-p95-m", str(args.min_swing_rel_x_range_p95_m)]
+        )
+    if args.min_swing_peak_lift_m is not None:
+        x008_eval.extend(["--min-swing-peak-lift-m", str(args.min_swing_peak_lift_m)])
     x0_eval = [
         *common_eval,
         "--command-x",
@@ -441,6 +488,13 @@ def main() -> int:
         "base_manifests": args.base_manifest,
         "command_x": float(args.command_x),
         "duration_s": float(args.duration),
+        "task": args.task,
+        "bridge_mode": args.bridge_mode,
+        "jax_platform": args.jax_platform,
+        "terrain_hfield_z_scale": args.terrain_hfield_z_scale,
+        "min_swing_segments_per_foot": args.min_swing_segments_per_foot,
+        "min_swing_rel_x_range_p95_m": args.min_swing_rel_x_range_p95_m,
+        "min_swing_peak_lift_m": args.min_swing_peak_lift_m,
         "x008_seeds": args.x008_seeds,
         "x0_seeds": args.x0_seeds,
         "run": bool(args.run),
