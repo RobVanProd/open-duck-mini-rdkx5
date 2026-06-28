@@ -193,6 +193,46 @@ def summarize_payload(payload: dict[str, Any], mode_name: str) -> dict[str, Any]
     }
 
 
+def apply_optional_terrain_swing_gate(
+    status: str | None, summary: dict[str, Any], args: argparse.Namespace
+) -> tuple[str | None, dict[str, Any]]:
+    checks = []
+    thresholds = {
+        "min_swing_segments": args.min_swing_segments_per_foot,
+        "min_rel_x_range_p95_m": args.min_swing_rel_x_range_p95_m,
+        "min_swing_peak_lift_m": args.min_swing_peak_lift_m,
+    }
+    observed = {
+        "min_swing_segments": summary.get("min_swing_segment_count"),
+        "min_rel_x_range_p95_m": summary.get("min_swing_rel_x_range_p95_m"),
+        "min_swing_peak_lift_m": summary.get("min_swing_peak_lift_m"),
+    }
+    for name, threshold in thresholds.items():
+        if threshold is None:
+            continue
+        value = observed.get(name)
+        passed = finite(value) and float(value) >= float(threshold)
+        checks.append(
+            {
+                "metric": name,
+                "observed": value,
+                "threshold": threshold,
+                "passed": bool(passed),
+            }
+        )
+    if not checks:
+        return status, {"enabled": False, "checks": []}
+    gate = {
+        "enabled": True,
+        "status_before": status,
+        "checks": checks,
+        "passed": all(item["passed"] for item in checks),
+    }
+    if status == "PASS_CANDIDATE_SIM_GATE" and not gate["passed"]:
+        return "HOLD_CANDIDATE_TERRAIN_SWING", gate
+    return status, gate
+
+
 def run_one(
     args: argparse.Namespace, policy_item: tuple[str, Path], seed: int
 ) -> dict[str, Any]:
@@ -347,8 +387,12 @@ def run_one(
             flush=True,
         )
         return result
-    result["status"] = payload.get("overall_status")
     result["summary"] = summarize_payload(payload, args.mode_name)
+    status, terrain_swing_gate = apply_optional_terrain_swing_gate(
+        payload.get("overall_status"), result["summary"], args
+    )
+    result["status"] = status
+    result["terrain_swing_gate"] = terrain_swing_gate
     print(
         f"SEED_SWEEP_DONE policy={label} seed={seed} "
         f"status={result['status']} returncode={result.get('returncode')}",
@@ -426,6 +470,9 @@ def build_report(results: list[dict[str, Any]], args: argparse.Namespace) -> str
         f"eval_push_magnitude: `{args.eval_push_magnitude_min}`-`{args.eval_push_magnitude_max}`",
         f"push_recovery_window_s: `{args.push_recovery_window_s}`",
         f"terrain_hfield_z_scale: `{args.terrain_hfield_z_scale}`",
+        f"min_swing_segments_per_foot: `{args.min_swing_segments_per_foot}`",
+        f"min_swing_rel_x_range_p95_m: `{args.min_swing_rel_x_range_p95_m}`",
+        f"min_swing_peak_lift_m: `{args.min_swing_peak_lift_m}`",
         f"trace_seeds: `{args.trace_seeds}`",
         f"trace_full_obs: `{args.trace_full_obs}`",
         f"run: `{args.run}`",
@@ -573,6 +620,33 @@ def main() -> int:
         default=None,
         help="Eval-only override for hfield vertical scale in terrain XMLs.",
     )
+    parser.add_argument(
+        "--min-swing-segments-per-foot",
+        type=int,
+        default=None,
+        help=(
+            "Optional terrain hard gate: require at least this many swing "
+            "segments on each foot before preserving PASS_CANDIDATE_SIM_GATE."
+        ),
+    )
+    parser.add_argument(
+        "--min-swing-rel-x-range-p95-m",
+        type=float,
+        default=None,
+        help=(
+            "Optional terrain hard gate: require per-foot p95 swing relative-x "
+            "range to meet this threshold before preserving PASS_CANDIDATE_SIM_GATE."
+        ),
+    )
+    parser.add_argument(
+        "--min-swing-peak-lift-m",
+        type=float,
+        default=None,
+        help=(
+            "Optional terrain hard gate: require each foot's peak swing lift "
+            "over stance to meet this threshold before preserving PASS_CANDIDATE_SIM_GATE."
+        ),
+    )
     parser.add_argument("--sim-preflight-timeout-s", type=int, default=600)
     parser.add_argument("--closed-loop-timeout-s", type=int, default=1800)
     parser.add_argument("--output-dir", default="outputs/analysis/candidate_seed_sweep")
@@ -618,6 +692,11 @@ def main() -> int:
                         args.push_recovery_min_base_height_m
                     ),
                     "terrain_hfield_z_scale": args.terrain_hfield_z_scale,
+                    "min_swing_segments_per_foot": args.min_swing_segments_per_foot,
+                    "min_swing_rel_x_range_p95_m": (
+                        args.min_swing_rel_x_range_p95_m
+                    ),
+                    "min_swing_peak_lift_m": args.min_swing_peak_lift_m,
                     "jax_platform": args.jax_platform,
                     "run": args.run,
                     "trace_seeds": args.trace_seeds,
@@ -651,6 +730,9 @@ def main() -> int:
             "push_recovery_max_abs_pitch_rad": args.push_recovery_max_abs_pitch_rad,
             "push_recovery_min_base_height_m": args.push_recovery_min_base_height_m,
             "terrain_hfield_z_scale": args.terrain_hfield_z_scale,
+            "min_swing_segments_per_foot": args.min_swing_segments_per_foot,
+            "min_swing_rel_x_range_p95_m": args.min_swing_rel_x_range_p95_m,
+            "min_swing_peak_lift_m": args.min_swing_peak_lift_m,
             "jax_platform": args.jax_platform,
             "run": args.run,
             "trace_seeds": args.trace_seeds,

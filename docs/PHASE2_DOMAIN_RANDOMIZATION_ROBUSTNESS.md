@@ -807,6 +807,22 @@ Future terrain gates should treat these as first-class diagnostics. A policy
 that passes tracking by keeping one foot effectively planted is still a terrain
 hold, even if actuator tracking p95 is below threshold.
 
+The seed-sweep tool now also supports default-off hard terrain swing gates:
+
+```text
+artifact: outputs/analysis/PHASE2_TERRAIN_SWING_HARD_GATE_PLUMBING.md
+status: PASS_TERRAIN_SWING_HARD_GATE_PLUMBING
+flags:
+  --min-swing-segments-per-foot
+  --min-swing-rel-x-range-p95-m
+  --min-swing-peak-lift-m
+```
+
+When these flags are set, a nominal `PASS_CANDIDATE_SIM_GATE` can be downgraded
+to `HOLD_CANDIDATE_TERRAIN_SWING`. A downgrade-path validation intentionally
+set `min_swing_peak_lift_m=0.02` and correctly downgraded C7 seed 2 from a
+nominal pass to `HOLD_CANDIDATE_TERRAIN_SWING`.
+
 Stage D:
 
 - rough hfield terrain

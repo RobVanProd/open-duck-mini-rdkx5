@@ -119,6 +119,12 @@ trace showed seed 2 passing with `min_swing_segments=3` and
 should reject policies that pass tracking by leaving one foot effectively
 planted.
 
+The seed-sweep tool now has default-off hard terrain swing thresholds:
+`--min-swing-segments-per-foot`, `--min-swing-rel-x-range-p95-m`, and
+`--min-swing-peak-lift-m`. When enabled, a nominal pass can be downgraded to
+`HOLD_CANDIDATE_TERRAIN_SWING`; this was validated on C7 seed 2 with an
+intentionally strict lift threshold.
+
 June 27 corrected-knee update: the left knee soft offset was corrected from
 `-1.488 rad` to `0.0371 rad`, and a supported/on-stand sine-only actuator gate
 passed at `0.25`, `0.5`, and `1.0 Hz` with `0.03 rad` amplitude. The corrected
