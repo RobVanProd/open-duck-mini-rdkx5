@@ -8568,3 +8568,24 @@ This closes flat aggregate entry selection. The next useful sim-side move is
 per-record/per-phase filtering: cap/filter the seed-5 right-ankle reverse/fall
 burst while preserving the targeted seed-4 right-swing rows. Robot validation
 remains blocked.
+
+The first per-record seed-5 cap/downweight branch was tested:
+
+```text
+artifact: outputs/analysis/PHASE2_LIVE_ORACLE_RIGHT_SWING_ITER1_SEED5_CAPPED_DECISION.md
+status: HOLD_SEED5_CAPPED_NOT_SUFFICIENT
+x=0.08 rough z=0.002: 6/8 pass
+x=0.0 rough z=0.002: 7/8 pass
+remaining failing seed: 5
+```
+
+This branch capped four seed-5 right-ankle label deltas and downweighted the
+seed-5 reverse/fall tail. It improved the rough x=0.08 distribution relative
+to flat selective aggregation: seed 3 and seed 4 passed, and only seed 0
+terrain-swing plus seed 5 fall remained. However, seed 5 still fell at x=0.08
+and also fell at x=0.0, so the right-ankle burst is not the full mechanism.
+
+The next useful branch should collect and compare full-observation seed-5
+traces at x=0.0 and x=0.08 against passing neighboring seeds 4 and 6. Do not
+continue tail-only caps or flat aggregate variants. Robot validation remains
+blocked.

@@ -477,3 +477,44 @@ Conclusion: flat aggregate entry selection is not local enough. The next branch
 must directly inspect/cap/filter the seed-5 reverse/fall action sequence and
 preserve the targeted seed-4 right-swing rows with per-record/per-phase
 weighting. Do not continue plain aggregate variants.
+
+## Seed5-Capped Live-Oracle Relabel Test
+
+Artifact:
+
+```text
+decision: outputs/analysis/PHASE2_LIVE_ORACLE_RIGHT_SWING_ITER1_SEED5_CAPPED_DECISION.md
+status: HOLD_SEED5_CAPPED_NOT_SUFFICIENT
+```
+
+A more local curation was tested:
+
+```text
+base: targeted right-swing command manifest
+live x=0.08 seed 4: dropped, preserving the original targeted seed-4 rows
+live x=0.08 seed 5: retained, but right_ankle action deltas capped at 2.25 rad/s equivalent
+live x=0.08 seed 5: reverse/fall-tail rows weight-clamped to 0.25
+aggregate entries: 12
+```
+
+The x=0.08 rough z=0.002 fitted-bridge gate improved:
+
+```text
+passes: seeds 1,2,3,4,6,7
+terrain-swing hold: seed 0
+fall/reverse hold: seed 5
+```
+
+This is better than flat selective aggregation because seed 3 no longer trips
+the target-velocity gate and seed 4 preserves the targeted right-swing fix.
+However, the candidate is not promotable:
+
+```text
+x=0.08: seed 5 still falls/reverses
+x=0.0: seed 5 also falls
+```
+
+Conclusion: the seed-5 right-ankle burst is a symptom, not the whole mechanism.
+The next branch should collect full-observation traces for seed 5 at both
+x=0.0 and x=0.08, compare against passing seeds 4 and 6, and emphasize early
+seed-5 divergent states before the fall tail. Do not continue tail-only caps.
