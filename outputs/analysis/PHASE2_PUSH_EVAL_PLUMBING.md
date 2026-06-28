@@ -112,6 +112,50 @@ This is a small CPU screen, not the full Phase 2 robustness gate. It shows that
 the Stage A candidate can survive mild push perturbations for short windows, but
 the full `8`-seed, `15 s` push gate still needs to run on CPU or Colab/A100.
 
+## Stage A Mild-Push CPU Gate
+
+The full mild-push gate then ran on CPU:
+
+```text
+outputs/analysis/PHASE2_STAGE_A_PUSH_GATE_CPU.md
+outputs/analysis/phase2_stage_a_push_gate_cpu.json
+```
+
+Configuration:
+
+```text
+policy: policy/candidates/phase2_stage_a2_gain099_20260628/candidate.onnx
+task: flat_terrain_backlash
+bridge: fitted corrected bridge
+command_x: 0.08
+duration: 15 s
+seeds: 0-7
+push interval: 1.0-1.5 s
+push magnitude: 0.05-0.10
+```
+
+Result:
+
+```text
+status: PASS_CANDIDATE_SIM_GATE on 8/8 seeds
+falls: 0/8
+duration_complete: 8/8
+mean track ratio: 0.3533
+mean vx: 0.0283 m/s
+max pitch velocity p95: 1.7741 rad/s
+max tracking p95: 0.1975 rad
+max velocity excess: 0.0000 rad/s
+mean push events per seed: 12.3750
+mean push recovery success: 0.9704
+```
+
+Interpretation: the Stage A candidate already tolerates mild push perturbations
+in evaluation. The Stage B training holds are therefore not evidence that mild
+pushes are immediately impossible for the gait; they show that PPO training
+with push/randomization erodes forward motion. The next Stage B design should
+preserve the Stage A policy more directly while adding randomization, or should
+separate evaluation-only push screening from training perturbations.
+
 ## Scope
 
 No robot motion, SSH, deployment, grounded replay, runtime behavior change, or

@@ -26,6 +26,22 @@ They do not yet report push-recovery success rate. A push-enabled evaluation
 mode is still needed before Phase 2 can fully satisfy the requested
 push-robustness gate.
 
+Follow-up: push-enabled eval plumbing was added after this decision, and the
+Stage A candidate passed a full `8`-seed, `15 s` mild-push CPU gate:
+
+```text
+outputs/analysis/PHASE2_STAGE_A_PUSH_GATE_CPU.md
+status: PASS_CANDIDATE_SIM_GATE 8/8
+mean push recovery success: 0.9704
+max velocity excess: 0.0000 rad/s
+max tracking p95: 0.1975 rad
+```
+
+This sharpens the Stage B interpretation: the Stage A gait can survive mild
+pushes in evaluation, but PPO training with push/randomization eroded forward
+motion. Do not read the Stage B holds as evidence that mild pushes are already
+too hard for the promoted Stage A policy.
+
 No robot motion, SSH, deployment, grounded replay, or runtime behavior change
 was performed.
 

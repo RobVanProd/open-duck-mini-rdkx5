@@ -193,36 +193,38 @@ now an explicit eval mode with event counts, recovery success rate, applied
 velocity impulse magnitude, recovery-window pitch, and recovery-window base
 height.
 
-Small Stage A mild-push CPU screen:
+Stage A mild-push CPU gate:
 
 ```text
 report:
-  outputs/analysis/PHASE2_STAGE_A_PUSH_SCREEN_CPU.md
+  outputs/analysis/PHASE2_STAGE_A_PUSH_GATE_CPU.md
 
 json:
-  outputs/analysis/phase2_stage_a_push_screen_cpu.json
+  outputs/analysis/phase2_stage_a_push_gate_cpu.json
 
 configuration:
-  seeds: 0,1
-  duration: 5 s
+  seeds: 0-7
+  duration: 15 s
   command_x: 0.08
   push interval: 1.0-1.5 s
   push magnitude: 0.05-0.10
 
 result:
-  PASS_CANDIDATE_SIM_GATE 2/2
-  falls: 0/2
-  mean track ratio: 0.3364
-  max tracking p95: 0.1970 rad
+  PASS_CANDIDATE_SIM_GATE 8/8
+  falls: 0/8
+  duration_complete: 8/8
+  mean track ratio: 0.3533
+  max tracking p95: 0.1975 rad
   max velocity excess: 0.0000 rad/s
-  mean push recovery success: 0.8750
+  mean push recovery success: 0.9704
 ```
 
-This is a short screen, not the full robustness gate. The full Stage B decision
-still needs an `8`-seed, `15 s` push-enabled gate, preferably on Colab/A100 or
-another stable accelerator. Local ROCm/MJX timed out a one-second closed-loop
-push smoke after `600 s`, so local GPU should not be used for correctness gates
-until that backend path is fixed.
+This establishes that the Stage A candidate already tolerates mild push
+perturbations in evaluation. The Stage B training holds should be read as
+training erosion of forward motion under push/randomization, not as proof that
+mild pushes immediately break the Stage A gait. Local ROCm/MJX timed out a
+one-second closed-loop push smoke after `600 s`, so local GPU should not be
+used for correctness gates until that backend path is fixed.
 
 - flat terrain
 - full physics randomization
