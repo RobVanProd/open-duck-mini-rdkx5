@@ -8387,3 +8387,20 @@ segments, but the rough-terrain blocker has narrowed from tracking/envelope to
 seed-4 swing preservation. The next offline branch should keep
 transition-protected rate limiting and add seed-balanced swing/advance or
 contact-phase-balanced label weighting. Robot validation remains blocked.
+
+A simple seed-4 weighted follow-up was then run:
+
+```text
+artifact: outputs/analysis/PHASE2_TRANSITION_PROTECTED_SEED4_WEIGHTED_DECISION.md
+status: HOLD_SEED_WEIGHTING_REINTRODUCES_TRACKING_EXCESS
+seed 2/4 track ratio: 0.5112 / 0.4184
+seed 2/4 max velocity excess: 0.2465 / 0.2935 rad/s
+seed 2/4 max tracking p95: 0.2202 / 0.2222 rad
+seed 2/4 min swing segments: 7 / 6
+```
+
+This proves seed weighting can restore swing/advance, but it does so by
+reintroducing the corrected-envelope/tracking failure. Naive weighting is
+closed. The next offline branch needs contact-phase-balanced or action-space
+correction that preserves the swing gain while keeping zero velocity excess and
+tracking p95 under `0.20 rad`. Robot validation remains blocked.

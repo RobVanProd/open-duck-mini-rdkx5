@@ -170,6 +170,23 @@ deployable pass because seed 4 still fails swing/advance. The next branch should
 keep transition-protected rate limiting and add seed-4 swing/advance weighting
 or contact-phase-balanced labels.
 
+Simple seed-4 sample weighting was tested next and held:
+
+```text
+decision: outputs/analysis/PHASE2_TRANSITION_PROTECTED_SEED4_WEIGHTED_DECISION.md
+status: HOLD_SEED_WEIGHTING_REINTRODUCES_TRACKING_EXCESS
+seed 2/4 track ratio: 0.5112 / 0.4184
+seed 2/4 max velocity excess: 0.2465 / 0.2935 rad/s
+seed 2/4 max tracking p95: 0.2202 / 0.2222 rad
+seed 2/4 min swing segments: 7 / 6
+```
+
+The weighting recovered swing/advance but reintroduced corrected-envelope and
+tracking failures. Do not continue naive seed weighting. The remaining branch
+needs contact-phase-balanced labels or an explicit action-space correction that
+keeps the swing gain while rejecting pitch-chain labels that exceed the
+corrected bridge gate.
+
 ## Gate
 
 Minimum rough-terrain diagnostic gate before any wider 8-seed run:

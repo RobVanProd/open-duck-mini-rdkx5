@@ -1,0 +1,81 @@
+{
+  "status": "PASS_WEIGHTED_BC_MANIFEST_READY",
+  "dataset_id": "92a4f63a6fa0b869",
+  "command_x": 0.08,
+  "trace_globs": [
+    "outputs/analysis/phase2_transition_protected_rate_limit_traces/*/student/seed_*/trace.jsonl"
+  ],
+  "summary": {
+    "entries": 2,
+    "samples": 500,
+    "bc_ready_entries": 2,
+    "weighted_samples": 1000.0
+  },
+  "entries": [
+    {
+      "entry_id": "199d44399c2cbc55",
+      "source_path": "outputs/analysis/phase2_transition_protected_rate_limit_traces/rollouts_x008/student/seed_002/trace.jsonl",
+      "source_name": "phase2_transition_protected_rate_limit_traces/rollouts_x008/student/seed_002/trace.jsonl",
+      "mode": "transition_protected_action_rate_limited",
+      "start_tick": 0,
+      "end_tick": 249,
+      "raw_trace_exists": true,
+      "bc_ready": true,
+      "obs_state_dim_ok": true,
+      "action_dim_ok": true,
+      "done_inside_window": false,
+      "samples": 250,
+      "mean_vx_m_s": 0.03974263305682689,
+      "vy_abs_p95_m_s": 0.18181718811392789,
+      "body_pitch_abs_p95_rad": 0.09678738985884108,
+      "base_height_min_m": 0.15112750232219696,
+      "sent_target_velocity_p95_rad_s": 2.1963611245155334,
+      "joint_tracking_p95_rad": 0.1702593266963959,
+      "contact_pct": {
+        "01": 19.6,
+        "10": 15.6,
+        "11": 64.8
+      },
+      "sample_weight": 1.0,
+      "sample_weight_rule": "default",
+      "weighted_samples": 250.0
+    },
+    {
+      "entry_id": "4cf9dec656a4739a",
+      "source_path": "outputs/analysis/phase2_transition_protected_rate_limit_traces/rollouts_x008/student/seed_004/trace.jsonl",
+      "source_name": "phase2_transition_protected_rate_limit_traces/rollouts_x008/student/seed_004/trace.jsonl",
+      "mode": "transition_protected_action_rate_limited",
+      "start_tick": 0,
+      "end_tick": 249,
+      "raw_trace_exists": true,
+      "bc_ready": true,
+      "obs_state_dim_ok": true,
+      "action_dim_ok": true,
+      "done_inside_window": false,
+      "samples": 250,
+      "mean_vx_m_s": 0.04589693091344088,
+      "vy_abs_p95_m_s": 0.16407144218683245,
+      "body_pitch_abs_p95_rad": 0.11734923311341772,
+      "base_height_min_m": 0.1506510227918625,
+      "sent_target_velocity_p95_rad_s": 2.0582541823387146,
+      "joint_tracking_p95_rad": 0.1664578437805176,
+      "contact_pct": {
+        "01": 18.8,
+        "10": 11.600000000000001,
+        "11": 69.6
+      },
+      "sample_weight": 3.0,
+      "sample_weight_rule": "seed_004",
+      "weighted_samples": 750.0
+    }
+  ],
+  "input_manifest": "outputs/analysis/phase2_transition_protected_rate_limit_manifest.json",
+  "input_dataset_id": "449b65b14d3dd651",
+  "rules": [
+    {
+      "pattern": "seed_004",
+      "weight": 3.0
+    }
+  ],
+  "default_weight": 1.0
+}
