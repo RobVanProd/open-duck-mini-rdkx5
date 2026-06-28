@@ -1,6 +1,6 @@
 # Phase 2 Transition-Preserving Terrain Branch
 
-status: `PRE_REGISTERED_NOT_STARTED`
+status: `HOLD_REWARD_PPO_ERODES_SUPPORT_TRANSITION`
 
 ## Objective
 
@@ -62,6 +62,12 @@ Use one of these mechanisms, in order:
 Do not run another simple global label-rate filter or scalar terrain reward
 sweep as the next branch.
 
+Method 1 has now been smoke-tested and held for this scalar reward-side recipe
+family. The PPO restore/export plumbing works, but tiny updates erased the
+support transition even under a tight trust region. The next branch should move
+to method 2 unless method 1 is structurally changed to protect transition
+actions directly.
+
 ## Warm-Start Artifact
 
 The transition-preserving PPO warm-start now exists locally:
@@ -83,6 +89,46 @@ seed 2/4 max velocity excess: 0.7987 / 0.8291
 ```
 
 This is the restore point for branch method 1.
+
+## PPO Smoke Result
+
+Artifact:
+
+```text
+decision: outputs/analysis/PHASE2_TRANSITION_PRESERVING_PPO_SMOKE_DECISION.md
+status: HOLD_REWARD_PPO_ERODES_SUPPORT_TRANSITION
+```
+
+Two tiny CPU PPO runs were tested from the restore checkpoint.
+
+Normal trust-region smoke:
+
+```text
+timesteps: 80
+learning_rate: 1e-5
+restore_policy_kl_scale: 2.0
+behavior_prior_scale: -0.02
+seed 2/4 track ratio: 0.0516 / 0.1115
+seed 2/4 single support: 3.2% / 0.8%
+seed 2/4 double support: 96.8% / 99.2%
+```
+
+Lockdown trust-region smoke:
+
+```text
+timesteps: 80
+learning_rate: 1e-6
+restore_policy_kl_scale: 100.0
+behavior_prior_scale: -0.10
+seed 2/4 track ratio: 0.0548 / 0.1181
+seed 2/4 single support: 3.2% / 2.0%
+seed 2/4 double support: 96.8% / 98.0%
+```
+
+Both runs completed and exported ONNX models, but both collapsed to low-progress
+double support. The apparent tracking improvement came from stopping the step,
+not from learning a terrain-safe in-envelope gait. Do not launch longer runs of
+this same scalar reward-PPO recipe.
 
 ## Gate
 

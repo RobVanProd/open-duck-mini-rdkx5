@@ -8337,3 +8337,22 @@ seed 2/4 track ratio: 0.6652 / 0.5947
 seed 2/4 single support: 38.4% / 32.0%
 seed 2/4 max tracking p95: 0.2598 / 0.2533
 ```
+
+Tiny PPO fine-tune smokes from that restore point were then run on CPU. The
+restore/export path works, but both scalar reward-side recipes erased the
+support transition after only 80 timesteps:
+
+```text
+artifact: outputs/analysis/PHASE2_TRANSITION_PRESERVING_PPO_SMOKE_DECISION.md
+status: HOLD_REWARD_PPO_ERODES_SUPPORT_TRANSITION
+normal trust-region seed 2/4 track ratio: 0.0516 / 0.1115
+normal trust-region seed 2/4 double support: 96.8% / 99.2%
+lockdown trust-region seed 2/4 track ratio: 0.0548 / 0.1181
+lockdown trust-region seed 2/4 double support: 96.8% / 98.0%
+```
+
+The apparent tracking improvement came from stopping the step, not from learning
+a terrain-safe in-envelope gait. Longer runs of the same scalar reward-PPO
+recipe are closed. The next offline branch should preserve transition labels
+directly, either through transition-aware relabeling or explicit action-space
+correction. Robot validation remains blocked.

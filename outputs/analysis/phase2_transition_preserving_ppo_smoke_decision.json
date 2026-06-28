@@ -1,0 +1,91 @@
+{
+  "status": "HOLD_REWARD_PPO_ERODES_SUPPORT_TRANSITION",
+  "scope": "offline_only",
+  "robot_tests": false,
+  "ssh": false,
+  "deploy": false,
+  "grounded_replay": false,
+  "runtime_behavior_changed": false,
+  "training_from_scratch": false,
+  "restore_checkpoint": "outputs/analysis/phase2_terrain_live_oracle_dagger_iter2_ppo_shape_step0_checkpoint",
+  "restore_onnx": "outputs/analysis/phase2_terrain_live_oracle_dagger_iter2_ppo_shape_step0.onnx",
+  "baseline_step0_gate": {
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.002,
+    "bridge": "corrected_fitted",
+    "command_x": 0.08,
+    "seeds": [2, 4],
+    "track_ratio": [0.6652, 0.5947],
+    "single_support_pct": [38.4, 32.0],
+    "max_tracking_p95_rad": [0.2598, 0.2533],
+    "max_velocity_excess_rad_s": [0.7987, 0.8291]
+  },
+  "smoke_runs": [
+    {
+      "label": "normal_trust_region",
+      "status": "PASS_SMOKE_RUN",
+      "timesteps": 80,
+      "learning_rate": 0.00001,
+      "restore_policy_kl_scale": 2.0,
+      "behavior_prior_scale": -0.02,
+      "gate_artifact_md": "outputs/analysis/PHASE2_TRANSITION_PRESERVING_PPO_TINY_CPU_STEP80_GATE.md",
+      "gate_artifact_json": "outputs/analysis/phase2_transition_preserving_ppo_tiny_cpu_step80_gate.json",
+      "seed_results": [
+        {
+          "seed": 2,
+          "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+          "mean_local_vx": 0.0041,
+          "track_ratio": 0.0516,
+          "single_support_pct": 3.2,
+          "double_support_pct": 96.8,
+          "max_tracking_p95_rad": 0.2004,
+          "max_velocity_excess_rad_s": 0.6992
+        },
+        {
+          "seed": 4,
+          "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+          "mean_local_vx": 0.0089,
+          "track_ratio": 0.1115,
+          "single_support_pct": 0.8,
+          "double_support_pct": 99.2,
+          "max_tracking_p95_rad": 0.1953,
+          "max_velocity_excess_rad_s": 0.5796
+        }
+      ]
+    },
+    {
+      "label": "lockdown_trust_region",
+      "status": "PASS_SMOKE_RUN",
+      "timesteps": 80,
+      "learning_rate": 0.000001,
+      "restore_policy_kl_scale": 100.0,
+      "behavior_prior_scale": -0.10,
+      "gate_artifact_md": "outputs/analysis/PHASE2_TRANSITION_PRESERVING_PPO_LOCKDOWN_CPU_STEP80_GATE.md",
+      "gate_artifact_json": "outputs/analysis/phase2_transition_preserving_ppo_lockdown_cpu_step80_gate.json",
+      "seed_results": [
+        {
+          "seed": 2,
+          "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+          "mean_local_vx": 0.0044,
+          "track_ratio": 0.0548,
+          "single_support_pct": 3.2,
+          "double_support_pct": 96.8,
+          "max_tracking_p95_rad": 0.1976,
+          "max_velocity_excess_rad_s": 0.7639
+        },
+        {
+          "seed": 4,
+          "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+          "mean_local_vx": 0.0094,
+          "track_ratio": 0.1181,
+          "single_support_pct": 2.0,
+          "double_support_pct": 98.0,
+          "max_tracking_p95_rad": 0.1905,
+          "max_velocity_excess_rad_s": 0.5738
+        }
+      ]
+    }
+  ],
+  "interpretation": "PPO restore/export plumbing works, but reward-side fine-tuning erases support transition and only improves tracking by stopping the step.",
+  "next": "Proceed to transition-aware relabeling or explicit action/parameter-space correction; do not launch longer runs of the same scalar reward-PPO recipe."
+}
