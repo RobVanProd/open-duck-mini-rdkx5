@@ -130,6 +130,46 @@ double support. The apparent tracking improvement came from stopping the step,
 not from learning a terrain-safe in-envelope gait. Do not launch longer runs of
 this same scalar reward-PPO recipe.
 
+## Transition-Protected Relabeling Result
+
+Artifact:
+
+```text
+decision: outputs/analysis/PHASE2_TRANSITION_PROTECTED_RATE_LIMIT_DECISION.md
+status: PARTIAL_PASS_TRACKING_PLATEAU_BROKEN_HOLD_SEED4_SWING
+```
+
+The next method protected all non-double-support samples and a 6-tick window
+around foot-contact transitions, then rate-limited only sustained
+double-support pitch-chain labels:
+
+```text
+protected samples: 488 / 500
+changed ticks: 13
+changed contact counts: {'11': 13}
+```
+
+The resulting diagnostic student moved the rough-terrain blocker forward:
+
+```text
+seed 2: PASS_CANDIDATE_SIM_GATE
+  track ratio: 0.3641
+  max velocity excess: 0.0000 rad/s
+  max tracking p95: 0.1876 rad
+  single support: 22.8%
+
+seed 4: HOLD_CANDIDATE_TERRAIN_SWING
+  track ratio: 0.3184
+  max velocity excess: 0.0000 rad/s
+  max tracking p95: 0.1914 rad
+  single support: 10.8%
+```
+
+This breaks the prior tracking/envelope plateau on both seeds, but it is not a
+deployable pass because seed 4 still fails swing/advance. The next branch should
+keep transition-protected rate limiting and add seed-4 swing/advance weighting
+or contact-phase-balanced labels.
+
 ## Gate
 
 Minimum rough-terrain diagnostic gate before any wider 8-seed run:

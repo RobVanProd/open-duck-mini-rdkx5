@@ -8356,3 +8356,34 @@ a terrain-safe in-envelope gait. Longer runs of the same scalar reward-PPO
 recipe are closed. The next offline branch should preserve transition labels
 directly, either through transition-aware relabeling or explicit action-space
 correction. Robot validation remains blocked.
+
+That transition-aware relabel branch was then tested by protecting all
+non-double-support samples and a 6-tick window around contact transitions, while
+rate-limiting only sustained double-support pitch-chain labels:
+
+```text
+artifact: outputs/analysis/PHASE2_TRANSITION_PROTECTED_RATE_LIMIT_DECISION.md
+status: PARTIAL_PASS_TRACKING_PLATEAU_BROKEN_HOLD_SEED4_SWING
+label curation changed ticks: 13 / 500
+changed contact counts: {'11': 13}
+```
+
+The resulting diagnostic BC student broke the terrain tracking/envelope plateau:
+
+```text
+rough z=0.002 seed 2: PASS_CANDIDATE_SIM_GATE
+  track ratio: 0.3641
+  max velocity excess: 0.0000 rad/s
+  max tracking p95: 0.1876 rad
+
+rough z=0.002 seed 4: HOLD_CANDIDATE_TERRAIN_SWING
+  track ratio: 0.3184
+  max velocity excess: 0.0000 rad/s
+  max tracking p95: 0.1914 rad
+```
+
+This is not deployable yet. Seed 4 still lacks the required swing/advance
+segments, but the rough-terrain blocker has narrowed from tracking/envelope to
+seed-4 swing preservation. The next offline branch should keep
+transition-protected rate limiting and add seed-balanced swing/advance or
+contact-phase-balanced label weighting. Robot validation remains blocked.
