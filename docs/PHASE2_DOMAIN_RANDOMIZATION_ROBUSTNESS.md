@@ -226,6 +226,38 @@ mild pushes immediately break the Stage A gait. Local ROCm/MJX timed out a
 one-second closed-loop push smoke after `600 s`, so local GPU should not be
 used for correctness gates until that backend path is fixed.
 
+Stage A moderate-push CPU gate:
+
+```text
+report:
+  outputs/analysis/PHASE2_STAGE_A_PUSH_MODERATE_GATE_CPU.md
+
+json:
+  outputs/analysis/phase2_stage_a_push_moderate_gate_cpu.json
+
+configuration:
+  seeds: 0-7
+  duration: 15 s
+  command_x: 0.08
+  push interval: 1.0-1.5 s
+  push magnitude: 0.10-0.20
+
+result:
+  PASS_CANDIDATE_SIM_GATE 8/8
+  falls: 0/8
+  duration_complete: 8/8
+  mean track ratio: 0.3467
+  max tracking p95: 0.1964 rad
+  max velocity excess: 0.0000 rad/s
+  mean push recovery success: 0.9704
+```
+
+This confirms the promoted Stage A candidate has push margin in evaluation at
+least through `0.20` impulse magnitude. The next Stage B training attempt
+should focus on preserving this already-present behavior while adding physics
+randomization, not on adding push perturbations as a first-order discovery
+signal.
+
 - flat terrain
 - full physics randomization
 - gentle pushes
