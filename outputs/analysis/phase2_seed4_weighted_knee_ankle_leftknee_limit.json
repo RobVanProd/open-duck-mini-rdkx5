@@ -1,0 +1,76 @@
+{
+  "status": "PASS_BC_TRACE_ACTION_RATE_LIMIT_READY",
+  "trace_globs": [
+    "outputs/analysis/phase2_seed4_weighted_right_knee_ankle_limited_traces/*/*/transition_protected_seed4w/seed_*/trace.jsonl"
+  ],
+  "output_trace_dir": "outputs/analysis/phase2_seed4_weighted_knee_ankle_leftknee_limited_traces",
+  "settings": {
+    "joints": [
+      "left_knee"
+    ],
+    "max_target_velocity_rad_s": 2.25,
+    "action_scale": 0.25,
+    "dt_s": 0.02,
+    "max_action_delta": 0.18,
+    "output_mode": "seed4_weighted_knee_ankle_leftknee_limited",
+    "source_parent_depth": 5
+  },
+  "summary": {
+    "traces": 2,
+    "samples_out": 500,
+    "changed_ticks": 47,
+    "changed_contact_counts": {
+      "01": 12,
+      "10": 10,
+      "11": 25
+    }
+  },
+  "traces": [
+    {
+      "source_trace": "outputs/analysis/phase2_seed4_weighted_right_knee_ankle_limited_traces/phase2_seed4_weighted_right_knee_limited_traces/phase2_transition_action_space_compare_seed2/transition_protected_seed4w/seed_002/trace.jsonl",
+      "output_trace": "outputs/analysis/phase2_seed4_weighted_knee_ankle_leftknee_limited_traces/phase2_seed4_weighted_right_knee_ankle_limited_traces/phase2_seed4_weighted_right_knee_limited_traces/phase2_transition_action_space_compare_seed2/transition_protected_seed4w/seed_002/trace.jsonl",
+      "samples_in": 250,
+      "samples_out": 250,
+      "changed_ticks": 18,
+      "changed_contact_counts": {
+        "01": 7,
+        "10": 4,
+        "11": 7
+      },
+      "per_joint": {
+        "left_knee": {
+          "changed_ticks": 18,
+          "original_target_velocity_p95_rad_s": 2.2628185153007507,
+          "original_target_velocity_max_rad_s": 2.826885227113962,
+          "limited_target_velocity_p95_rad_s": 2.25,
+          "limited_target_velocity_max_rad_s": 2.25,
+          "action_delta_removed_p95": 0.0027428647056222054,
+          "action_delta_removed_max": 0.04615081816911698
+        }
+      }
+    },
+    {
+      "source_trace": "outputs/analysis/phase2_seed4_weighted_right_knee_ankle_limited_traces/phase2_seed4_weighted_right_knee_limited_traces/phase2_transition_action_space_compare_seed4/transition_protected_seed4w/seed_004/trace.jsonl",
+      "output_trace": "outputs/analysis/phase2_seed4_weighted_knee_ankle_leftknee_limited_traces/phase2_seed4_weighted_right_knee_ankle_limited_traces/phase2_seed4_weighted_right_knee_limited_traces/phase2_transition_action_space_compare_seed4/transition_protected_seed4w/seed_004/trace.jsonl",
+      "samples_in": 250,
+      "samples_out": 250,
+      "changed_ticks": 29,
+      "changed_contact_counts": {
+        "01": 5,
+        "10": 6,
+        "11": 18
+      },
+      "per_joint": {
+        "left_knee": {
+          "changed_ticks": 29,
+          "original_target_velocity_p95_rad_s": 2.329751756042242,
+          "original_target_velocity_max_rad_s": 2.9564153170213103,
+          "limited_target_velocity_p95_rad_s": 2.25,
+          "limited_target_velocity_max_rad_s": 2.25,
+          "action_delta_removed_p95": 0.01569522226974368,
+          "action_delta_removed_max": 0.05651322536170483
+        }
+      }
+    }
+  ]
+}

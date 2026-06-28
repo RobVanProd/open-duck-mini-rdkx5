@@ -1,0 +1,114 @@
+{
+  "status": "PASS_PPO_LOC_BC_FIT_SMOKE",
+  "manifest": "outputs/analysis/phase2_seed4_weighted_knee_ankle_leftknee_limit_command_weighted_manifest.json",
+  "samples": 750,
+  "hidden_sizes": [
+    512,
+    256,
+    128
+  ],
+  "activation": "swish",
+  "saved_npz": "outputs/analysis/phase2_seed4_weighted_knee_ankle_leftknee_limit_command_bc_student/candidate_mlp.npz",
+  "exported_onnx": "outputs/analysis/phase2_seed4_weighted_knee_ankle_leftknee_limit_command_bc_student/candidate.onnx",
+  "train_metrics": {
+    "samples": 750,
+    "mae": 0.0032638524374823718,
+    "rmse": 0.004890588023280323,
+    "p50_abs_error": 0.002048125108307032,
+    "p95_abs_error": 0.010397285441396134,
+    "p99_abs_error": 0.015628368725990976,
+    "max_abs_error": 0.06093502182484345,
+    "pred_action_saturation_pct": 0.0
+  },
+  "target_rate": {
+    "pair_count": 747,
+    "p50_rad_s": 0.2116732813337659,
+    "p95_rad_s": 1.7016053839201066,
+    "p99_rad_s": 2.2179793790268834,
+    "max_rad_s": 2.395610632057888
+  },
+  "sample_weight": {
+    "p50": 1.0,
+    "p95": 20.0,
+    "max": 20.0,
+    "weighted_samples": 4444.0
+  },
+  "loss_rows": [
+    {
+      "step": 1,
+      "loss": 0.03874931484460831
+    },
+    {
+      "step": 500,
+      "loss": 4.9911988753592595e-05
+    },
+    {
+      "step": 1000,
+      "loss": 1.4204741091816686e-05
+    },
+    {
+      "step": 1500,
+      "loss": 1.0109565664606635e-05
+    },
+    {
+      "step": 2000,
+      "loss": 1.1774731319746934e-05
+    },
+    {
+      "step": 2500,
+      "loss": 6.31348257229547e-06
+    },
+    {
+      "step": 3000,
+      "loss": 9.613437214284204e-06
+    },
+    {
+      "step": 3500,
+      "loss": 9.653635061113164e-06
+    },
+    {
+      "step": 4000,
+      "loss": 3.9908932194521185e-06
+    },
+    {
+      "step": 4500,
+      "loss": 9.884392966341693e-06
+    },
+    {
+      "step": 5000,
+      "loss": 3.6517390071821865e-06
+    },
+    {
+      "step": 5500,
+      "loss": 3.2028362966229906e-06
+    },
+    {
+      "step": 6000,
+      "loss": 5.0469152483856305e-06
+    },
+    {
+      "step": 6500,
+      "loss": 3.524649628161569e-06
+    },
+    {
+      "step": 7000,
+      "loss": 5.717617113987217e-06
+    }
+  ],
+  "onnx_verify": {
+    "path": "outputs/analysis/phase2_seed4_weighted_knee_ankle_leftknee_limit_command_bc_student/candidate.onnx",
+    "samples_checked": 64,
+    "max_abs_error": 3.2801670918347625e-07,
+    "p95_abs_error": 1.9006404314639291e-07
+  },
+  "config": {
+    "steps": 7000,
+    "batch_size": 256,
+    "learning_rate": 0.0008,
+    "target_rate_scale": 0.02,
+    "target_rate_limit_rad_s": 2.25,
+    "action_scale_rad": 0.25,
+    "dt_s": 0.02,
+    "seed": 30
+  }
+}

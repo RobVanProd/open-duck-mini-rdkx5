@@ -1,0 +1,81 @@
+{
+  "status": "PARTIAL_PASS_ACTION_SPACE_CORRECTION_HOLD_COMMAND_CONDITIONED_SWING",
+  "scope": "offline_only",
+  "robot_tests": false,
+  "ssh": false,
+  "deploy": false,
+  "grounded_replay": false,
+  "runtime_behavior_changed": false,
+  "training_from_scratch": false,
+  "action_space_corrections": [
+    {"joint": "right_knee", "velocity_limit_rad_s": 2.25},
+    {"joint": "right_ankle", "velocity_limit_rad_s": 2.0},
+    {"joint": "left_knee", "velocity_limit_rad_s": 2.25}
+  ],
+  "plain_feedforward_x008": {
+    "artifact_md": "outputs/analysis/PHASE2_SEED4_WEIGHTED_KNEE_ANKLE_LEFTKNEE_LIMIT_BC_STUDENT_TERRAIN_Z002_GATE_CPU.md",
+    "artifact_json": "outputs/analysis/phase2_seed4_weighted_knee_ankle_leftknee_limit_bc_student_terrain_z002_gate_cpu.json",
+    "status": "PASS_DIAGNOSTIC_SEEDS_2_4",
+    "seed_results": [
+      {
+        "seed": 2,
+        "status": "PASS_CANDIDATE_SIM_GATE",
+        "track_ratio": 0.4784,
+        "max_velocity_excess_rad_s": 0.0,
+        "max_tracking_p95_rad": 0.1989,
+        "min_swing_segments": 6,
+        "min_rel_x_range_p95_m": 0.0140
+      },
+      {
+        "seed": 4,
+        "status": "PASS_CANDIDATE_SIM_GATE",
+        "track_ratio": 0.4738,
+        "max_velocity_excess_rad_s": 0.0,
+        "max_tracking_p95_rad": 0.1913,
+        "min_swing_segments": 6,
+        "min_rel_x_range_p95_m": 0.0106
+      }
+    ]
+  },
+  "plain_feedforward_x0": {
+    "artifact_md": "outputs/analysis/PHASE2_SEED4_WEIGHTED_KNEE_ANKLE_LEFTKNEE_LIMIT_BC_STUDENT_X0_TERRAIN_Z002_GATE_CPU.md",
+    "artifact_json": "outputs/analysis/phase2_seed4_weighted_knee_ankle_leftknee_limit_bc_student_x0_terrain_z002_gate_cpu.json",
+    "status": "HOLD_COMMAND_SEMANTICS",
+    "seed_2_mean_vx_m_s": 0.0442,
+    "seed_4_mean_vx_m_s": 0.0369
+  },
+  "plain_command_mixed": {
+    "unweighted_x008_artifact_md": "outputs/analysis/PHASE2_SEED4_WEIGHTED_KNEE_ANKLE_LEFTKNEE_LIMIT_COMMAND_UNWEIGHTED_BC_STUDENT_X008_TERRAIN_Z002_GATE_CPU.md",
+    "weighted_x008_artifact_md": "outputs/analysis/PHASE2_SEED4_WEIGHTED_KNEE_ANKLE_LEFTKNEE_LIMIT_COMMAND_BC_STUDENT_X008_TERRAIN_Z002_GATE_CPU.md",
+    "status": "HOLD_LOW_FORWARD_PROGRESS"
+  },
+  "phase_command_modulated": {
+    "x0_artifact_md": "outputs/analysis/PHASE2_SEED4_WEIGHTED_KNEE_ANKLE_LEFTKNEE_LIMIT_PHASECMD_BC_STUDENT_X0_TERRAIN_Z002_GATE_CPU.md",
+    "x008_artifact_md": "outputs/analysis/PHASE2_SEED4_WEIGHTED_KNEE_ANKLE_LEFTKNEE_LIMIT_PHASECMD_BC_STUDENT_X008_TERRAIN_Z002_GATE_CPU.md",
+    "x0_status": "PASS_COMMAND_SEMANTICS_DIAGNOSTIC_SEEDS_2_4",
+    "x008_status": "HOLD_SEED4_TERRAIN_SWING",
+    "x0_mean_vx_m_s": [-0.0008, 0.0032],
+    "x008_seed_results": [
+      {
+        "seed": 2,
+        "status": "PASS_CANDIDATE_SIM_GATE",
+        "track_ratio": 0.4622,
+        "max_velocity_excess_rad_s": 0.0,
+        "max_tracking_p95_rad": 0.1830,
+        "min_swing_segments": 4,
+        "min_rel_x_range_p95_m": 0.0047
+      },
+      {
+        "seed": 4,
+        "status": "HOLD_CANDIDATE_TERRAIN_SWING",
+        "track_ratio": 0.3900,
+        "max_velocity_excess_rad_s": 0.0,
+        "max_tracking_p95_rad": 0.1902,
+        "min_swing_segments": 1,
+        "min_rel_x_range_p95_m": 0.0003
+      }
+    ]
+  },
+  "interpretation": "Per-joint action-space correction solves the rough x=0.08 tracking/envelope/swing gate locally, but command conditioning requires architecture rather than plain mixed BC.",
+  "next": "Use command/phase-conditioned or phase/contact-conditioned architecture to recover seed-4 swing while preserving x=0.0 command semantics."
+}

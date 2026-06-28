@@ -8423,3 +8423,34 @@ Rate regularization reduces excess but again erodes seed-4 swing. This closes
 the simple sample-weight plus scalar rate-penalty family. The next offline
 branch should target contact-phase-balanced labels or selective per-contact /
 per-joint action-space correction.
+
+Selective per-joint action-space correction was then tested on the seed-weighted
+traces:
+
+```text
+artifact: outputs/analysis/PHASE2_ACTION_SPACE_COMMAND_CONDITIONING_DECISION.md
+status: PARTIAL_PASS_ACTION_SPACE_CORRECTION_HOLD_COMMAND_CONDITIONED_SWING
+corrected joints: right_knee 2.25, right_ankle 2.00, left_knee 2.25 rad/s
+```
+
+The plain feed-forward student trained from corrected x=0.08 labels passed the
+rough `z=0.002` diagnostic gate on seeds 2 and 4:
+
+```text
+seed 2/4 track ratio: 0.4784 / 0.4738
+seed 2/4 max velocity excess: 0.0000 / 0.0000 rad/s
+seed 2/4 max tracking p95: 0.1989 / 0.1913 rad
+seed 2/4 min swing segments: 6 / 6
+```
+
+It is not promotable because it walks on x=0.0:
+
+```text
+seed 2/4 x=0.0 mean vx: 0.0442 / 0.0369 m/s
+```
+
+Plain mixed-command BC collapsed x=0.08 forward progress, while a
+phase/command-modulated student preserved x=0 command semantics but still held
+on seed-4 swing at x=0.08. The blocker has narrowed again: combine the
+three-joint corrected x=0.08 swing behavior with explicit command conditioning.
+Robot validation remains blocked.

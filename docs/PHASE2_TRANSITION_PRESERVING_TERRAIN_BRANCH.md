@@ -208,6 +208,57 @@ rate 0.20 seed 2/4:
 Higher rate pressure reduces excess but again erodes seed-4 swing. The simple
 sample-weight plus scalar rate-penalty family is closed.
 
+## Action-Space Correction / Command Conditioning
+
+Artifact:
+
+```text
+decision: outputs/analysis/PHASE2_ACTION_SPACE_COMMAND_CONDITIONING_DECISION.md
+status: PARTIAL_PASS_ACTION_SPACE_CORRECTION_HOLD_COMMAND_CONDITIONED_SWING
+```
+
+Per-joint action-space correction on the seed-weighted traces capped:
+
+```text
+right_knee: 2.25 rad/s
+right_ankle: 2.00 rad/s
+left_knee: 2.25 rad/s
+```
+
+The plain feed-forward student trained from those corrected x=0.08 labels
+passed the rough `z=0.002` diagnostic gate on seeds 2 and 4:
+
+```text
+seed 2/4 track ratio: 0.4784 / 0.4738
+seed 2/4 max velocity excess: 0.0000 / 0.0000 rad/s
+seed 2/4 max tracking p95: 0.1989 / 0.1913 rad
+seed 2/4 min swing segments: 6 / 6
+```
+
+That same feed-forward student failed command semantics at x=0.0:
+
+```text
+seed 2/4 mean vx at x=0.0: 0.0442 / 0.0369 m/s
+```
+
+Adding x=0 labels to a plain feed-forward BC student collapsed the x=0.08 gait,
+even without extra x0 weighting. A phase/command-modulated student preserved
+x=0 semantics:
+
+```text
+phasecmd x=0.0 seed 2/4 mean vx: -0.0008 / 0.0032 m/s
+```
+
+but still held on seed-4 swing at x=0.08:
+
+```text
+phasecmd x=0.08 seed 2: PASS_CANDIDATE_SIM_GATE
+phasecmd x=0.08 seed 4: HOLD_CANDIDATE_TERRAIN_SWING
+```
+
+The next branch should be command/phase-conditioned or phase/contact-conditioned
+and should recover seed-4 swing while preserving x=0.0 command semantics.
+
 ## Gate
 
 Minimum rough-terrain diagnostic gate before any wider 8-seed run:
