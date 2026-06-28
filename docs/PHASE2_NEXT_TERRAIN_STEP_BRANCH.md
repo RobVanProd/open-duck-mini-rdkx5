@@ -25,6 +25,7 @@ MPC rough preflight: HOLD, actuator-safe but too slow and double-support dominat
 C7 z=0.001 threshold: seed 2 passes, seed 4 still planted
 existing flat-trace hard-step rescore: PASS source windows exist
 live-oracle iter0 z=0.001 transfer: HOLD, velocity/tracking over gate
+live-oracle iter0 z=0.001/z=0.002 window rescore: PASS source windows exist
 ```
 
 Hard-step diagnostics now show:
@@ -63,6 +64,25 @@ seed 4: mean vx 0.0423 m/s, max pitch vel p95 3.5845 rad/s,
 So the next source branch should use those flat hard-step windows as evidence
 and mining material, but it still needs an explicit rough-terrain source or
 candidate that stays inside the corrected per-joint envelope.
+
+Window-level rescoring of the same rough-terrain rollouts found that explicit
+source:
+
+```text
+z=0.001 seed 2: mean vx 0.0560, sent vel p95 2.1892,
+                tracking p95 0.1764, min swing segments 3
+z=0.001 seed 4: mean vx 0.0493, sent vel p95 1.9976,
+                tracking p95 0.1714, min swing segments 3
+z=0.002 seed 2: mean vx 0.0558, sent vel p95 2.0902,
+                tracking p95 0.1788, min swing segments 3
+z=0.002 seed 4: mean vx 0.0532, sent vel p95 2.2194,
+                tracking p95 0.1704, min swing segments 3
+```
+
+This is a source-window pass, not a policy pass: the full candidate still
+exceeds corrected velocity/tracking limits on rough terrain. The next action is
+to turn the terrain-safe windows into a curated source manifest or live-oracle
+relabel pass, then train/fine-tune against that source.
 
 ## Closed Paths
 
@@ -145,6 +165,9 @@ Only after A or B clears the hard-step gate:
   A source/candidate clears the hard-step gate at `z=0.001` for seeds `2,4`
   without velocity excess or tracking regression. Then expand to `z=0.002` and
   eight seeds.
+
+Current status: `PASS_TERRAIN_STEP_SOURCE` at the source-window level for
+`z=0.001` and `z=0.002`; not yet a candidate-policy pass.
 
 `HOLD_PLANTED_SEED_MODE`:
   Seed 4 remains at `0` swing segments or `0.0000 m` rel-x range. Do not start

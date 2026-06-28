@@ -1010,10 +1010,26 @@ seed 2: max pitch vel p95 3.5739, velocity excess 0.8239, tracking p95 0.2545
 seed 4: max pitch vel p95 3.5845, velocity excess 0.8345, tracking p95 0.2590
 ```
 
-Current Phase 2 branch state: a flat hard-step source exists, but terrain
-transfer remains blocked by corrected-envelope and tracking violations. Next
-work should mine or construct a terrain-safe hard-step source before another
-PPO/BC run.
+Window-level terrain rescoring found the missing source signal:
+
+```text
+artifact: outputs/analysis/PHASE2_LIVE_ORACLE_ITER0_TERRAIN_Z001_WINDOW_SOURCE_SCORE.md
+status: PASS_TERRAIN_WINDOW_SOURCE
+seed 2: mean vx 0.0560, sent vel p95 2.1892, tracking p95 0.1764
+seed 4: mean vx 0.0493, sent vel p95 1.9976, tracking p95 0.1714
+
+artifact: outputs/analysis/PHASE2_LIVE_ORACLE_ITER0_TERRAIN_Z002_WINDOW_SOURCE_SCORE.md
+status: PASS_TERRAIN_WINDOW_SOURCE
+seed 2: mean vx 0.0558, sent vel p95 2.0902, tracking p95 0.1788
+seed 4: mean vx 0.0532, sent vel p95 2.2194, tracking p95 0.1704
+```
+
+Current Phase 2 branch state: terrain-safe hard-step windows exist at both
+`z=0.001` and `z=0.002`, but the full candidate still contains bad segments
+that exceed the corrected envelope/tracking gate. Next work should build a
+terrain-window source manifest or live-oracle relabel pass from those windows,
+then train/fine-tune against that curated source rather than promoting the raw
+policy.
 
 ## References
 

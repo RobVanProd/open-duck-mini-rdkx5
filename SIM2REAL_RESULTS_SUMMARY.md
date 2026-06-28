@@ -8211,5 +8211,22 @@ stepped, but exceeded the corrected per-joint envelope and tracking gate
 (`3.57-3.58 rad/s` max pitch velocity p95 and `0.254-0.259 rad` tracking p95).
 That transfer hold is recorded in
 `outputs/analysis/PHASE2_LIVE_ORACLE_ITER0_TERRAIN_Z001_SWING_GATE_CPU.md`.
-Current state: flat hard-step source found, terrain-safe hard-step source still
-needed before another PPO/BC run.
+Window-level rescoring then found terrain-safe hard-step source windows in the
+same live-oracle terrain traces:
+
+```text
+z=0.001: seed 2/4 windows at 0.049-0.056 m/s, sent vel p95 1.998-2.189,
+         tracking p95 0.171-0.176
+z=0.002: seed 2/4 windows at 0.053-0.056 m/s, sent vel p95 2.090-2.219,
+         tracking p95 0.170-0.179
+```
+
+Artifacts:
+
+- `outputs/analysis/PHASE2_LIVE_ORACLE_ITER0_TERRAIN_Z001_WINDOW_SOURCE_SCORE.md`
+- `outputs/analysis/PHASE2_LIVE_ORACLE_ITER0_TERRAIN_Z002_WINDOW_SOURCE_SCORE.md`
+
+Current state: terrain-safe source windows exist at `z=0.001` and `z=0.002`,
+but the full candidate policy still fails the rough-terrain envelope/tracking
+gate. Next step is a curated terrain-window source manifest or live-oracle
+relabel pass, not robot validation.
