@@ -179,6 +179,33 @@ def extract_gate_status(path: Path | None) -> dict[str, Any]:
     if path.suffix.lower() == ".json":
         data = load_json(path)
         if isinstance(data, dict):
+            results = data.get("results")
+            aggregate = data.get("aggregate")
+            if isinstance(results, list) and isinstance(aggregate, dict):
+                statuses = [row.get("status") for row in results if isinstance(row, dict)]
+                pass_count = sum(
+                    1 for status in statuses if isinstance(status, str) and status.startswith("PASS")
+                )
+                hold_count = sum(
+                    1 for status in statuses if isinstance(status, str) and status.startswith("HOLD")
+                )
+                total_count = len(statuses)
+                candidate_gate_status = (
+                    "PASS_CANDIDATE_SEED_SWEEP"
+                    if total_count > 0 and pass_count == total_count
+                    else "HOLD_CANDIDATE_SEED_SWEEP"
+                )
+                return {
+                    "status": "PASS_PARSED_GATE_STATUS",
+                    "path": str(path),
+                    "overall_status": candidate_gate_status,
+                    "candidate_gate_status": candidate_gate_status,
+                    "eval_role": "candidate_seed_sweep",
+                    "pass_count": pass_count,
+                    "hold_count": hold_count,
+                    "total_count": total_count,
+                    "aggregate": aggregate,
+                }
             closed_loop = data.get("closed_loop_sim") or data
             candidate_gate = closed_loop.get("candidate_gate") or {}
             return {
@@ -319,15 +346,19 @@ def markdown(payload: dict[str, Any]) -> str:
                 "",
                 "## Sim Gate Status",
                 "",
-                "| gate | eval_role | overall_status | candidate_gate_status |",
-                "|---|---|---|---|",
+                "| gate | eval_role | overall_status | candidate_gate_status | pass/total |",
+                "|---|---|---|---|---:|",
             ]
         )
         for key, sim_gate in parsed_gates:
+            pass_total = ""
+            if sim_gate.get("total_count") is not None:
+                pass_total = f"{sim_gate.get('pass_count')}/{sim_gate.get('total_count')}"
             lines.append(
                 f"| `{key}` | `{sim_gate.get('eval_role')}` | "
                 f"`{sim_gate.get('overall_status')}` | "
-                f"`{sim_gate.get('candidate_gate_status')}` |"
+                f"`{sim_gate.get('candidate_gate_status')}` | "
+                f"`{pass_total}` |"
             )
 
     training_manifest = payload.get("training_manifest")

@@ -17,6 +17,16 @@ platform: CPU JAX/MJX correctness path
 This is the first ONNX candidate that clears the corrected actuator bridge
 sim-side gate on both commanded motion and zero-command hold.
 
+Package artifact:
+
+```text
+outputs/analysis/CORRECTED_BRIDGE_CMD_CONDITIONED_CANDIDATE_PACKAGE.md
+outputs/analysis/corrected_bridge_cmd_conditioned_candidate_package.json
+package status: READY_FOR_SIM_GATE_REVIEW
+contract: obs[1,101] -> continuous_actions[1,14]
+candidate gates: x=0.0 8/8, x=0.08 8/8
+```
+
 ## Corrected x=0.08 Gate
 
 Artifact:
@@ -103,6 +113,18 @@ run should be low-risk telemetry capture, not autonomous grounded walking:
 - log sent target, actual position, read/write errors, contacts if available,
   base pitch/height if available,
 - torque off / stop after telemetry.
+
+Prepared operator handoff packets:
+
+```text
+outputs/analysis/CORRECTED_BRIDGE_CMD_CONDITIONED_HW_X0_HANDOFF.md
+outputs/analysis/CORRECTED_BRIDGE_CMD_CONDITIONED_HW_X008_HANDOFF.md
+```
+
+These packets were generated with `tools/instrumented_lowcmd_hw_eval.py plan`.
+That tool does not SSH, deploy, command motors, or run a policy. The packets
+only document the telemetry fields, corrected-knee hash requirement, and
+post-run analysis command for an operator-approved stand/suspended procedure.
 
 ## Caveats
 
