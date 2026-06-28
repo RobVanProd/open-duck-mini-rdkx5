@@ -120,6 +120,8 @@ class Phase:
     forward_swing_clearance_target_m: float = 0.03
     forward_swing_balance_scale: float = 0.0
     forward_swing_balance_grace_steps: int = 20
+    forward_swing_advance_scale: float = 0.0
+    forward_swing_advance_target_m: float = 0.005
     ppo_learning_rate: float | None = None
     ppo_entropy_cost: float | None = None
     ppo_clipping_epsilon: float | None = None
@@ -3148,6 +3150,10 @@ def phase_command(
         cli_value(phase.forward_swing_balance_scale),
         "--forward-swing-balance-grace-steps",
         str(phase.forward_swing_balance_grace_steps),
+        "--forward-swing-advance-scale",
+        cli_value(phase.forward_swing_advance_scale),
+        "--forward-swing-advance-target-m",
+        cli_value(phase.forward_swing_advance_target_m),
         "--alive-scale",
         cli_value(phase.alive_scale),
         "--imitation-scale",
@@ -3324,6 +3330,8 @@ def phase_payload(phase: Phase, command: list[str], output_root: Path) -> dict[s
         "forward_swing_clearance_target_m": phase.forward_swing_clearance_target_m,
         "forward_swing_balance_scale": phase.forward_swing_balance_scale,
         "forward_swing_balance_grace_steps": phase.forward_swing_balance_grace_steps,
+        "forward_swing_advance_scale": phase.forward_swing_advance_scale,
+        "forward_swing_advance_target_m": phase.forward_swing_advance_target_m,
         "ppo_learning_rate": phase.ppo_learning_rate,
         "ppo_entropy_cost": phase.ppo_entropy_cost,
         "ppo_clipping_epsilon": phase.ppo_clipping_epsilon,

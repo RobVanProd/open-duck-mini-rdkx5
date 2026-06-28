@@ -839,6 +839,26 @@ swing peak lift, `0.8%` single support, and `99.2%` double support. At gain
 the corrected velocity envelope, so the issue is stance/swing structure rather
 than insufficient global action amplitude.
 
+Forward swing-advance plumbing:
+
+```text
+artifact: outputs/analysis/PHASE2_FORWARD_SWING_ADVANCE_PLUMBING.md
+status: PASS_FORWARD_SWING_ADVANCE_PLUMBING
+```
+
+The Playground and RDK training wrapper now expose a default-off
+`forward_swing_advance` cost. It tracks each foot's forward position in the
+body/IMU frame at stance and penalizes touchdown if the swing foot did not
+advance at least the configured target distance in the commanded direction. A
+tiny CPU smoke on `rough_terrain_backlash --terrain-hfield-z-scale 0.002`
+passed with `forward_swing_advance_scale=-0.001`,
+`forward_swing_advance_target_m=0.005`, and
+`forward_swing_advance_huber_delta=0.002`.
+
+Use this as a direct step-advance pressure in the next C-stage terrain branch,
+with gate-selected checkpoints and the hard terrain swing gate enabled. Do not
+increase global action gain as the terrain fix.
+
 Stage D:
 
 - rough hfield terrain

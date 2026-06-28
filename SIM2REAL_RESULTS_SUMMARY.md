@@ -133,6 +133,13 @@ Gain `1.10` degraded both seeds to low-progress holds. No corrected-envelope
 excess occurred, so the next terrain branch should change stance/swing
 structure rather than add global output gain.
 
+To target that structure directly, the Playground and RDK training wrapper now
+expose a default-off `forward_swing_advance` cost. It penalizes touchdown when
+the swing foot did not advance forward relative to the body/IMU frame during a
+forward-command swing. A tiny CPU smoke passed on the `z=0.002` rough-terrain
+setup with the hook enabled. This is not a candidate; it is plumbing for the
+next offline C-stage terrain branch.
+
 June 27 corrected-knee update: the left knee soft offset was corrected from
 `-1.488 rad` to `0.0371 rad`, and a supported/on-stand sine-only actuator gate
 passed at `0.25`, `0.5`, and `1.0 Hz` with `0.03 rad` amplitude. The corrected
