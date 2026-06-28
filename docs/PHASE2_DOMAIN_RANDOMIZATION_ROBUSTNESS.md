@@ -324,6 +324,29 @@ rough_terrain_backlash --terrain-hfield-z-scale 0.005
 stock rough_terrain_backlash       # hfield z scale 0.01
 ```
 
+Stage A z-scale `0.002` terrain gate:
+
+```text
+report:
+  outputs/analysis/PHASE2_STAGE_A_TERRAIN_Z002_GATE_CPU.md
+
+json:
+  outputs/analysis/phase2_stage_a_terrain_z002_gate_cpu.json
+
+result:
+  NEAR_PASS
+  duration_complete: 8/8
+  falls: 0/8
+  pass: 7/8
+  one tracking miss: seed 7 max tracking p95 0.2001 rad
+  mean track ratio: 0.4033
+  max velocity excess: 0.0000 rad/s
+```
+
+This is the first useful terrain curriculum rung: it is stable across all
+seeds and only misses the strict gate by `0.0001 rad` on one seed. Treat it as
+the starting point for terrain hardening, not as a robot-ready terrain pass.
+
 Stage D:
 
 - rough hfield terrain
