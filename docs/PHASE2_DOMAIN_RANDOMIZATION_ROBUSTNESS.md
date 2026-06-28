@@ -731,6 +731,27 @@ mostly double-support shuffle. The next branch should change the target
 manifold: mine or generate higher-clearance stepping demonstrations, or add a
 hard step-clearance/step-advance constraint for nonzero command.
 
+Follow-up C7 trace diagnostic:
+
+```text
+artifact: outputs/analysis/PHASE2_STAGE_C7_TRACE_AND_SWING_BALANCE_PLUMBING.md
+status: PASS_SWING_BALANCE_PLUMBING
+```
+
+Comparing a passing C7 seed (`2`) to a low-progress seed (`4`) showed the
+failure mechanism directly:
+
+```text
+seed 2: 18.8% single support, 33 support transitions, 3 left swing segments, 7 right swing segments
+seed 4: 4.0% single support, 13 support transitions, 0 left swing segments, 2 right swing segments
+```
+
+The failing seed almost never exits double support and never swings the left
+foot. A default-off `forward_swing_balance` hook was added to penalize
+one-sided swing usage over a forward-command window, with RDK wrapper and eval
+plumbing. A tiny CPU smoke passed. The next C-stage run may test this hook, but
+it must still use gate-selected checkpoints and corrected terrain metrics.
+
 Stage D:
 
 - rough hfield terrain

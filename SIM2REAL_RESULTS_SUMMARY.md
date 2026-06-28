@@ -95,6 +95,14 @@ should keep gate-selected checkpointing but change the target manifold: use
 higher-clearance stepping demonstrations or a hard step-clearance/step-advance
 constraint rather than another small scalar PPO reward tweak.
 
+A C7 pass/fail trace comparison sharpened this: a passing seed had `18.8%`
+single support and both feet swinging, while a low-progress seed had only
+`4.0%` single support, `96.0%` double support, zero left-foot swing segments,
+and two tiny right-foot swing segments. A default-off
+`forward_swing_balance` hook is now plumbed for the next offline terrain run to
+test whether one-sided double-support collapse can be reduced. It is not a
+candidate result.
+
 June 27 corrected-knee update: the left knee soft offset was corrected from
 `-1.488 rad` to `0.0371 rad`, and a supported/on-stand sine-only actuator gate
 passed at `0.25`, `0.5`, and `1.0 Hz` with `0.03 rad` amplitude. The corrected

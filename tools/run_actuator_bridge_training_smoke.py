@@ -191,6 +191,10 @@ def build_command(args: argparse.Namespace, output_dir: Path) -> list[str]:
         ),
         "--forward_swing_clearance_scale": args.forward_swing_clearance_scale,
         "--forward_swing_clearance_target_m": args.forward_swing_clearance_target_m,
+        "--forward_swing_balance_scale": args.forward_swing_balance_scale,
+        "--forward_swing_balance_grace_steps": (
+            args.forward_swing_balance_grace_steps
+        ),
         "--alive_scale": args.alive_scale,
         "--imitation_scale": args.imitation_scale,
         "--lin_vel_x_min": args.lin_vel_x_min,
@@ -680,6 +684,8 @@ def main() -> int:
     )
     parser.add_argument("--forward-swing-clearance-scale", type=float, default=None)
     parser.add_argument("--forward-swing-clearance-target-m", type=float, default=None)
+    parser.add_argument("--forward-swing-balance-scale", type=float, default=None)
+    parser.add_argument("--forward-swing-balance-grace-steps", type=int, default=None)
     parser.add_argument("--alive-scale", type=float, default=None)
     parser.add_argument("--imitation-scale", type=float, default=None)
     parser.add_argument("--lin-vel-x-min", type=float, default=None)
@@ -876,6 +882,10 @@ def main() -> int:
             ),
             "forward_swing_clearance_scale": args.forward_swing_clearance_scale,
             "forward_swing_clearance_target_m": args.forward_swing_clearance_target_m,
+            "forward_swing_balance_scale": args.forward_swing_balance_scale,
+            "forward_swing_balance_grace_steps": (
+                args.forward_swing_balance_grace_steps
+            ),
             "alive_scale": args.alive_scale,
             "imitation_scale": args.imitation_scale,
             "lin_vel_x_min": args.lin_vel_x_min,

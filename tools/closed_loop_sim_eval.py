@@ -457,6 +457,7 @@ REWARD_SCALE_OVERRIDES = {
     "forward_contact_transition_scale": "forward_contact_transition",
     "forward_double_support_dwell_scale": "forward_double_support_dwell",
     "forward_swing_clearance_scale": "forward_swing_clearance",
+    "forward_swing_balance_scale": "forward_swing_balance",
     "alive_scale": "alive",
     "imitation_scale": "imitation",
 }
@@ -480,6 +481,7 @@ REWARD_CONFIG_OVERRIDES = {
     "forward_contact_transition_min_progress_ratio",
     "forward_double_support_dwell_grace_steps",
     "forward_swing_clearance_target_m",
+    "forward_swing_balance_grace_steps",
     "action_rate_huber_delta",
     "action_magnitude_huber_delta",
     "target_rate_huber_delta",
