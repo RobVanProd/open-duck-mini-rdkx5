@@ -8,35 +8,34 @@ The repository and its documentation are part of the robot's working state. Keep
 
 ## Current Next Step
 
-The first evidence, suspended replay, actuator modeling, and offline training
-campaign have shifted the leading blocker from "unknown deployed contract
-mismatch" to "weight transfer / single-support discovery." The current work is
-offline:
+The corrected left-knee offset removed the large knee asymmetry, the actuator
+bridge was re-fit, and the corrected candidate cleared stand/suspended transfer
+at both `x=0.0` and `x=0.08`.
+
+Current gate:
 
 ```text
-build a 100-150 tick seed-robust target source
-  -> verify left/right single-support alternation
-  -> verify forward progress, lateral stability, pitch/height, and actuator envelope
-  -> only then consider supervised/imitation or PPO
-  -> only after offline gates pass, request suspended robot validation
-```
-
-The latest contact-transfer audit says the current dynamic-roll/lateral-fix
-fragments mostly move forward while staying in double support, so they are not
-valid stepping demonstrations for BC/PPO yet.
-
-Current target gate:
-
-```text
-PASS_WEIGHT_TRANSFER_TARGET
+PASS_STAND_SUSPENDED_TRANSFER_WITH_READ_WARNINGS
 ```
 
 Read these first:
 
 ```text
-docs/PROJECT_FINDINGS.md
-docs/WEIGHT_TRANSFER_TARGET_PLAN.md
-outputs/analysis/CONTACT_TRANSFER_BLOCKER_AUDIT.md
+outputs/analysis/CORRECTED_CANDIDATE_STAND_TRANSFER_DECISION.md
+outputs/analysis/CORRECTED_CANDIDATE_FIRST_GROUNDED_TEST_PLAN.md
+policy/candidates/corrected_bridge_cmd_conditioned_rate175_20260627/README.md
+```
+
+The next possible robot action is a separately approved, tightly bounded first
+grounded telemetry test of the corrected candidate. It is not automatic. Do not
+run grounded walking unless the operator explicitly approves the exact grounded
+test scope and is ready to cut power.
+
+Current candidate:
+
+```text
+policy/candidates/corrected_bridge_cmd_conditioned_rate175_20260627/candidate.onnx
+sha256 63506567f7a973be0ff6b2b222bba41736409da713466db442067c0f2a91415e
 ```
 
 Do not tune hardware gains, patch IMU remaps, edit offsets, change action
