@@ -752,6 +752,36 @@ one-sided swing usage over a forward-command window, with RDK wrapper and eval
 plumbing. A tiny CPU smoke passed. The next C-stage run may test this hook, but
 it must still use gate-selected checkpoints and corrected terrain metrics.
 
+C8 tested that hook:
+
+```text
+artifact: outputs/analysis/PHASE2_STAGE_C8_SWING_BALANCE_DECISION.md
+screen: outputs/analysis/PHASE2_STAGE_C8_TERRAIN_Z002_SCREEN_CPU.md
+status: HOLD_STAGE_C8_SWING_BALANCE_TOO_STRONG
+```
+
+C8 used the same C7-style gate-selected terrain recipe with:
+
+```text
+forward_swing_balance_scale: -0.05
+forward_swing_balance_grace_steps: 20
+```
+
+It completed training, but all trained checkpoints held for low forward
+progress on the focused seed-0 screen. The best trained checkpoint was worse
+than C7's early transient:
+
+```text
+c7_35120 seed 0: track ratio 0.2606, single support 11.2%, min swing peak 0.0104 m
+c8_35120 seed 0: track ratio 0.1819, single support 6.8%, min swing peak 0.0084 m
+```
+
+Decision: do not promote C8. The hook has leverage, but this balance pressure
+pushes the policy toward lower motion rather than balanced stepping. Do not
+increase this scalar pressure. Use it only with a target that first preserves
+motion, or with a much weaker value after a higher-clearance target source is
+available.
+
 Stage D:
 
 - rough hfield terrain

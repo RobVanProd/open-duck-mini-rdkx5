@@ -103,6 +103,14 @@ and two tiny right-foot swing segments. A default-off
 test whether one-sided double-support collapse can be reduced. It is not a
 candidate result.
 
+C8 tested that hook at `forward_swing_balance_scale=-0.05`. It completed
+offline training, but all trained checkpoints held low progress on the focused
+terrain screen. The best trained checkpoint, `c8_35120`, had track ratio
+`0.1819`, `6.8%` single support, and `0.0084 m` min swing peak, worse than the
+C7 `35120` transient. Decision: do not increase swing-balance scalar pressure;
+the next terrain branch needs a higher-clearance/alternating-step target source
+or hard step-advance constraint.
+
 June 27 corrected-knee update: the left knee soft offset was corrected from
 `-1.488 rad` to `0.0371 rad`, and a supported/on-stand sine-only actuator gate
 passed at `0.25`, `0.5`, and `1.0 Hz` with `0.03 rad` amplitude. The corrected
