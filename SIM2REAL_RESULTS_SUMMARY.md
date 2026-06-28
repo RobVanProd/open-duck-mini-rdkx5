@@ -1,6 +1,6 @@
 # Sim-To-Real Results Summary
 
-Last updated: 2026-06-27
+Last updated: 2026-06-28
 
 ## Executive Summary
 
@@ -7989,3 +7989,31 @@ This matches the carpet observation: the policy is stepping but barely lifting.
 The next terrain robustness step should explicitly increase swing clearance and
 reduce double-support dwell while preserving the corrected actuator envelope and
 command-conditioned forward motion.
+
+Stage C3 then tested contact-timing pressure directly:
+
+```text
+artifact: outputs/analysis/PHASE2_STAGE_C3_CONTACT_TIMING_DECISION.md
+screen: outputs/analysis/PHASE2_STAGE_C3_TERRAIN_Z002_SCREEN_CPU.md
+status: HOLD_STAGE_C3_CONTACT_TIMING_NOT_ENOUGH
+```
+
+C3 warm-started from the best C2 terrain checkpoint and added forward
+single-support, double-support dwell, and contact-transition reward pressure.
+The best screened checkpoint, `c3_245760`, improved support timing but still
+did not promote:
+
+```text
+tracking p95: 0.2046 rad
+track ratio: 0.4061
+velocity excess: 0.0000 rad/s
+min swing peak lift: 0.0165 m
+single support: 20.8%
+double support: 79.2%
+```
+
+Contact timing alone is therefore insufficient. The next offline terrain
+robustness step should add an explicit swing-clearance / feet-height objective
+or target-source change while preserving the corrected actuator envelope and
+the flat-ground command-conditioned gait. No robot, SSH, deploy, runtime change,
+or grounded replay was performed for C3.

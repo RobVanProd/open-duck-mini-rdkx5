@@ -1,6 +1,6 @@
 # Phase 2 Domain-Randomized Robustness Training
 
-status: `HOLD_STAGE_C_TERRAIN_Z002_TRACKING_MARGIN`
+status: `HOLD_STAGE_C3_CONTACT_TIMING_NOT_ENOUGH`
 
 ## Objective
 
@@ -491,6 +491,42 @@ mostly double support, very low swing peak, and little true single-support
 time. The next Stage C training objective should target swing clearance and
 double-support dwell directly while preserving the corrected envelope and the
 strict tracking gate.
+
+Stage C3 contact-timing fine-tune:
+
+```text
+decision:
+  outputs/analysis/PHASE2_STAGE_C3_CONTACT_TIMING_DECISION.md
+
+screen:
+  outputs/analysis/PHASE2_STAGE_C3_TERRAIN_Z002_SCREEN_CPU.md
+
+status:
+  HOLD_STAGE_C3_CONTACT_TIMING_NOT_ENOUGH
+```
+
+C3 warm-started from the best C2 terrain checkpoint and added forward
+single-support, double-support dwell, and contact-transition pressure while
+keeping the corrected fitted bridge and `z=0.002` rough-terrain screen.
+Training completed successfully and restored the temporary terrain XML.
+
+The best screened checkpoint was `c3_245760`:
+
+```text
+tracking p95: 0.2046 rad
+track ratio: 0.4061
+velocity excess: 0.0000 rad/s
+min swing peak lift: 0.0165 m
+single support: 20.8%
+double support: 79.2%
+```
+
+This moved support timing in the intended direction, but it did not clear the
+strict `0.20 rad` tracking gate and did not materially raise swing height. C3
+therefore does not promote a terrain candidate. The next useful Stage C step is
+not another contact-timing-only retry; it should add an explicit swing
+clearance/feet-height objective or a target-source change that raises the foot
+while preserving corrected-envelope compliance and command conditioning.
 
 Stage D:
 
