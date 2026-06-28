@@ -94,6 +94,26 @@ outputs/analysis/CORRECTED_BRIDGE_CMD_CONDITIONED_HW_X0_HANDOFF.md
 outputs/analysis/CORRECTED_BRIDGE_CMD_CONDITIONED_HW_X008_HANDOFF.md
 ```
 
+Stand/suspended transfer evidence:
+
+```text
+outputs/analysis/CORRECTED_CANDIDATE_STAND_TRANSFER_DECISION.md
+outputs/analysis/CORRECTED_CANDIDATE_HW_X0_STAND_ANALYSIS.md
+outputs/analysis/CORRECTED_CANDIDATE_HW_X008_STAND_ANALYSIS.md
+outputs/analysis/CORRECTED_CANDIDATE_HW_X008_TARGET_VELOCITY.md
+```
+
+Current hardware result:
+
+```text
+x=0.0 stand: 747 samples, max pitch-chain tracking p95 0.0145 rad
+x=0.08 stand: 747 samples, WARN_PROCEED_WITH_CAUTION
+x=0.08 max pitch-chain sent velocity p95: 0.4065 rad/s
+x=0.08 max pitch-chain tracking p95: 0.0222 rad
+x=0.08 action saturation: 0%
+x=0.08 write errors: 0
+```
+
 Validation order:
 
 1. stand/suspended `x=0.0` telemetry

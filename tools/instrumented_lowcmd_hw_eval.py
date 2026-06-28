@@ -223,7 +223,7 @@ def analyze_records(
 
     for record in records:
         for key, value in bus_counters(record).items():
-            bus_totals[key] += value
+            bus_totals[key] = max(bus_totals[key], value)
         target = first_vector(record, TARGET_PATHS)
         actual = first_vector(record, ACTUAL_PATHS)
         action = first_vector(record, ACTION_PATHS)
