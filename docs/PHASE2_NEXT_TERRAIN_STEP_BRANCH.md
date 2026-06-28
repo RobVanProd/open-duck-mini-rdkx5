@@ -145,6 +145,28 @@ step. The next terrain branch should make the oracle labels themselves
 tracking-aware, for example by rate-limiting/filtering relabel actions or using
 PPO fine-tuning with explicit corrected-envelope penalties.
 
+A first tracking-aware label filter was tested:
+
+```text
+decision: outputs/analysis/PHASE2_TERRAIN_TRACKING_AWARE_LABEL_DECISION.md
+status: HOLD_TRACKING_AWARE_LABEL_FILTER_FREEZES
+```
+
+It clipped pitch-chain oracle labels to a conservative `2.25 rad/s` target-rate
+cap, fit a smooth PPO-compatible BC student, and then gated it on
+`rough_terrain_backlash` at `z=0.002`. The filter reduced velocity excess and
+tracking pressure, but collapsed the gait back into double-support low
+progress:
+
+```text
+seed 2: vx 0.0107 m/s, track ratio 0.1335, double support 90%
+seed 4: vx 0.0105 m/s, track ratio 0.1314, double support 96%
+```
+
+So a simple global label smoothing pass is now closed. The next terrain branch
+must preserve the swing/advance transition while staying inside the corrected
+per-joint envelope; do not repeat this filter with only minor threshold tweaks.
+
 ## Closed Paths
 
 Do not spend the next run on:
@@ -155,6 +177,8 @@ Do not spend the next run on:
 - stronger scalar clearance pressure
 - another PPO stage that is only scored after training
 - a target source that can pass without both feet producing swing segments
+- a simple global pitch-chain label-rate filter that damps the transition into
+  double support
 
 Those have already been tested or are directly implied by the new hard-step
 diagnostics.

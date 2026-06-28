@@ -8286,3 +8286,21 @@ Current state: terrain-safe source windows exist and live DAgger can recover
 forward progress, but the relabeled student still exceeds the corrected terrain
 tracking/envelope gate. The next offline step should make oracle labels
 tracking-aware, not repeat the same relabel loop and not run robot validation.
+
+A first tracking-aware label-rate filter was then tested offline. It clipped
+pitch-chain oracle labels to `2.25 rad/s`, trained a smooth PPO-compatible BC
+student, and ran the same `rough_terrain_backlash` `z=0.002` gate on seeds
+`2,4`. The result is recorded in
+`outputs/analysis/PHASE2_TERRAIN_TRACKING_AWARE_LABEL_DECISION.md`:
+
+```text
+status: HOLD_TRACKING_AWARE_LABEL_FILTER_FREEZES
+seed 2/4 vx: 0.0107 / 0.0105 m/s
+seed 2/4 track ratio: 0.1335 / 0.1314
+seed 2/4 double support: 90% / 96%
+```
+
+This reduced velocity excess/tracking pressure but removed the swing/advance
+needed for terrain progress. The next offline branch must preserve transition
+structure while enforcing the corrected per-joint envelope; simple global label
+smoothing is closed. Robot validation remains blocked.

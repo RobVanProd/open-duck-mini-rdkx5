@@ -1,0 +1,70 @@
+{
+  "status": "HOLD_TRACKING_AWARE_LABEL_FILTER_FREEZES",
+  "scope": "offline_sim_only",
+  "robot_tests": false,
+  "ssh": false,
+  "deploy": false,
+  "grounded_replay": false,
+  "label_filter": {
+    "artifact_md": "outputs/analysis/PHASE2_TERRAIN_TRACKING_AWARE_LABEL_RATE_LIMIT.md",
+    "artifact_json": "outputs/analysis/phase2_terrain_tracking_aware_label_rate_limit.json",
+    "joints": [
+      "left_hip_pitch",
+      "left_knee",
+      "left_ankle",
+      "right_hip_pitch",
+      "right_knee",
+      "right_ankle"
+    ],
+    "max_target_velocity_rad_s": 2.25,
+    "samples_out": 500,
+    "changed_ticks": 343,
+    "changed_contact_counts": {
+      "01": 28,
+      "10": 57,
+      "11": 258
+    }
+  },
+  "student_fit": {
+    "artifact_md": "outputs/analysis/PHASE2_TERRAIN_TRACKING_AWARE_BC_STUDENT.md",
+    "artifact_json": "outputs/analysis/phase2_terrain_tracking_aware_bc_student.json",
+    "status": "PASS_PPO_LOC_BC_FIT_SMOKE",
+    "samples": 1150,
+    "p95_action_error": 0.023855,
+    "target_rate_p95_rad_s": 1.940176,
+    "target_rate_max_rad_s": 2.531113
+  },
+  "closed_loop_gate": {
+    "artifact_md": "outputs/analysis/PHASE2_TERRAIN_TRACKING_AWARE_BC_STUDENT_TERRAIN_Z002_GATE_CPU.md",
+    "artifact_json": "outputs/analysis/phase2_terrain_tracking_aware_bc_student_terrain_z002_gate_cpu.json",
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.002,
+    "bridge_mode": "fitted",
+    "command_x": 0.08,
+    "duration_s": 5.0,
+    "seeds": [2, 4],
+    "seed_results": [
+      {
+        "seed": 2,
+        "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+        "mean_local_vx_m_s": 0.0107,
+        "track_ratio": 0.1335,
+        "max_velocity_excess_rad_s": 0.0507,
+        "max_tracking_p95_rad": 0.2094,
+        "single_support_pct": 10.0,
+        "double_support_pct": 90.0
+      },
+      {
+        "seed": 4,
+        "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+        "mean_local_vx_m_s": 0.0105,
+        "track_ratio": 0.1314,
+        "max_velocity_excess_rad_s": 0.0,
+        "max_tracking_p95_rad": 0.1963,
+        "single_support_pct": 4.0,
+        "double_support_pct": 96.0
+      }
+    ]
+  },
+  "decision": "The simple global pitch-chain tracking-aware label cap removes most velocity excess but freezes the terrain gait into double-support low progress. Do not promote; use a transition-preserving label/training mechanism next."
+}

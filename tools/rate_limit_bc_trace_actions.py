@@ -104,6 +104,7 @@ def process_trace(
     action_scale: float,
     dt_s: float,
     output_mode: str,
+    source_parent_depth: int,
 ) -> dict[str, Any]:
     rows = read_jsonl(path)
     output_rows: list[dict[str, Any]] = []
@@ -167,7 +168,9 @@ def process_trace(
         previous_original = action
         previous_limited = limited
 
-    output_path = output_dir / path.name
+    parent_depth = max(0, int(source_parent_depth))
+    parent_parts = list(path.parent.parts[-parent_depth:]) if parent_depth else []
+    output_path = output_dir / Path(*parent_parts, path.name)
     write_jsonl(output_path, output_rows)
 
     per_joint = {}
@@ -269,6 +272,15 @@ def main() -> int:
     parser.add_argument("--action-scale", type=float, default=0.25)
     parser.add_argument("--dt-s", type=float, default=0.02)
     parser.add_argument("--output-mode", default="action_rate_limited_trace")
+    parser.add_argument(
+        "--source-parent-depth",
+        type=int,
+        default=0,
+        help=(
+            "Number of source parent directories to preserve under output-trace-dir. "
+            "Use this when several source traces share the same basename."
+        ),
+    )
     args = parser.parse_args()
 
     joint_indices = parse_joints(args.joints)
@@ -289,6 +301,7 @@ def main() -> int:
             action_scale=float(args.action_scale),
             dt_s=float(args.dt_s),
             output_mode=str(args.output_mode),
+            source_parent_depth=int(args.source_parent_depth),
         )
         for path in paths
     ]
@@ -311,6 +324,7 @@ def main() -> int:
             "dt_s": float(args.dt_s),
             "max_action_delta": max_action_delta,
             "output_mode": str(args.output_mode),
+            "source_parent_depth": int(args.source_parent_depth),
         },
         "summary": {
             "traces": len(traces),

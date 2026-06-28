@@ -1,0 +1,171 @@
+{
+  "status": "PASS_BC_TRACE_ACTION_RATE_LIMIT_READY",
+  "trace_globs": [
+    "outputs/analysis/phase2_terrain_live_oracle_dagger/iter_002/relabel_x008/rollouts_x008/student/seed_*/trace.jsonl"
+  ],
+  "output_trace_dir": "outputs/analysis/phase2_terrain_tracking_aware_labels/rate_limited_x008",
+  "settings": {
+    "joints": [
+      "left_hip_pitch",
+      "left_knee",
+      "left_ankle",
+      "right_hip_pitch",
+      "right_knee",
+      "right_ankle"
+    ],
+    "max_target_velocity_rad_s": 2.25,
+    "action_scale": 0.25,
+    "dt_s": 0.02,
+    "max_action_delta": 0.18,
+    "output_mode": "terrain_tracking_aware_rate_limited_x008",
+    "source_parent_depth": 1
+  },
+  "summary": {
+    "traces": 2,
+    "samples_out": 500,
+    "changed_ticks": 343,
+    "changed_contact_counts": {
+      "01": 28,
+      "10": 57,
+      "11": 258
+    }
+  },
+  "traces": [
+    {
+      "source_trace": "outputs/analysis/phase2_terrain_live_oracle_dagger/iter_002/relabel_x008/rollouts_x008/student/seed_002/trace.jsonl",
+      "output_trace": "outputs/analysis/phase2_terrain_tracking_aware_labels/rate_limited_x008/seed_002/trace.jsonl",
+      "samples_in": 250,
+      "samples_out": 250,
+      "changed_ticks": 168,
+      "changed_contact_counts": {
+        "01": 14,
+        "10": 26,
+        "11": 128
+      },
+      "per_joint": {
+        "left_hip_pitch": {
+          "changed_ticks": 1,
+          "original_target_velocity_p95_rad_s": 1.8189026623504034,
+          "original_target_velocity_max_rad_s": 4.373885589776035,
+          "limited_target_velocity_p95_rad_s": 1.8189026623504034,
+          "limited_target_velocity_max_rad_s": 2.249999999999999,
+          "action_delta_removed_p95": 0.0,
+          "action_delta_removed_max": 0.16991084718208277
+        },
+        "left_knee": {
+          "changed_ticks": 41,
+          "original_target_velocity_p95_rad_s": 2.7877549264056247,
+          "original_target_velocity_max_rad_s": 3.955943700339689,
+          "limited_target_velocity_p95_rad_s": 2.25,
+          "limited_target_velocity_max_rad_s": 2.25,
+          "action_delta_removed_p95": 0.0615728255452331,
+          "action_delta_removed_max": 0.1406059579326035
+        },
+        "left_ankle": {
+          "changed_ticks": 19,
+          "original_target_velocity_p95_rad_s": 2.3709141590869596,
+          "original_target_velocity_max_rad_s": 4.469131172856254,
+          "limited_target_velocity_p95_rad_s": 2.25,
+          "limited_target_velocity_max_rad_s": 2.2500000000000004,
+          "action_delta_removed_p95": 0.03439746834943393,
+          "action_delta_removed_max": 0.17753049382850034
+        },
+        "right_hip_pitch": {
+          "changed_ticks": 6,
+          "original_target_velocity_p95_rad_s": 1.558682386546601,
+          "original_target_velocity_max_rad_s": 3.0811237834919347,
+          "limited_target_velocity_p95_rad_s": 1.619750697380367,
+          "limited_target_velocity_max_rad_s": 2.2500000000000004,
+          "action_delta_removed_p95": 0.0,
+          "action_delta_removed_max": 0.06648990267935478
+        },
+        "right_knee": {
+          "changed_ticks": 70,
+          "original_target_velocity_p95_rad_s": 4.300719871028857,
+          "original_target_velocity_max_rad_s": 7.837827270736174,
+          "limited_target_velocity_p95_rad_s": 2.25,
+          "limited_target_velocity_max_rad_s": 2.2500000000000004,
+          "action_delta_removed_p95": 0.32528244261870565,
+          "action_delta_removed_max": 0.571631719805727
+        },
+        "right_ankle": {
+          "changed_ticks": 31,
+          "original_target_velocity_p95_rad_s": 2.7859995835704296,
+          "original_target_velocity_max_rad_s": 4.628226603429637,
+          "limited_target_velocity_p95_rad_s": 2.25,
+          "limited_target_velocity_max_rad_s": 2.2500000000000004,
+          "action_delta_removed_p95": 0.05299674471337897,
+          "action_delta_removed_max": 0.19025812827437094
+        }
+      }
+    },
+    {
+      "source_trace": "outputs/analysis/phase2_terrain_live_oracle_dagger/iter_002/relabel_x008/rollouts_x008/student/seed_004/trace.jsonl",
+      "output_trace": "outputs/analysis/phase2_terrain_tracking_aware_labels/rate_limited_x008/seed_004/trace.jsonl",
+      "samples_in": 250,
+      "samples_out": 250,
+      "changed_ticks": 175,
+      "changed_contact_counts": {
+        "01": 14,
+        "10": 31,
+        "11": 130
+      },
+      "per_joint": {
+        "left_hip_pitch": {
+          "changed_ticks": 8,
+          "original_target_velocity_p95_rad_s": 2.0091714292477763,
+          "original_target_velocity_max_rad_s": 3.4732018487973715,
+          "limited_target_velocity_p95_rad_s": 2.034566064061633,
+          "limited_target_velocity_max_rad_s": 2.2500000000000004,
+          "action_delta_removed_p95": 0.0,
+          "action_delta_removed_max": 0.15326973217783652
+        },
+        "left_knee": {
+          "changed_ticks": 39,
+          "original_target_velocity_p95_rad_s": 2.853096443792758,
+          "original_target_velocity_max_rad_s": 3.9139609200445116,
+          "limited_target_velocity_p95_rad_s": 2.25,
+          "limited_target_velocity_max_rad_s": 2.25,
+          "action_delta_removed_p95": 0.07298142901398241,
+          "action_delta_removed_max": 0.17571029849279202
+        },
+        "left_ankle": {
+          "changed_ticks": 22,
+          "original_target_velocity_p95_rad_s": 2.389138412737726,
+          "original_target_velocity_max_rad_s": 3.692651763401132,
+          "limited_target_velocity_p95_rad_s": 2.25,
+          "limited_target_velocity_max_rad_s": 2.2500000000000004,
+          "action_delta_removed_p95": 0.038177855297900895,
+          "action_delta_removed_max": 0.11541214107209058
+        },
+        "right_hip_pitch": {
+          "changed_ticks": 6,
+          "original_target_velocity_p95_rad_s": 1.6626850335785501,
+          "original_target_velocity_max_rad_s": 3.028395417661412,
+          "limited_target_velocity_p95_rad_s": 1.7329524254567723,
+          "limited_target_velocity_max_rad_s": 2.25,
+          "action_delta_removed_p95": 0.0,
+          "action_delta_removed_max": 0.062271633412912974
+        },
+        "right_knee": {
+          "changed_ticks": 80,
+          "original_target_velocity_p95_rad_s": 3.8268682273184496,
+          "original_target_velocity_max_rad_s": 7.840864882513126,
+          "limited_target_velocity_p95_rad_s": 2.25,
+          "limited_target_velocity_max_rad_s": 2.25,
+          "action_delta_removed_p95": 0.30896882068645604,
+          "action_delta_removed_max": 0.4658709269090408
+        },
+        "right_ankle": {
+          "changed_ticks": 20,
+          "original_target_velocity_p95_rad_s": 2.1541369755550046,
+          "original_target_velocity_max_rad_s": 4.772931280879997,
+          "limited_target_velocity_p95_rad_s": 2.25,
+          "limited_target_velocity_max_rad_s": 2.2500000000000004,
+          "action_delta_removed_p95": 0.04934228269906872,
+          "action_delta_removed_max": 0.2018345024703998
+        }
+      }
+    }
+  ]
+}
