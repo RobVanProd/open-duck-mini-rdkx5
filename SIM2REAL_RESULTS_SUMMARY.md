@@ -8544,3 +8544,27 @@ velocity-excess seeds, but flat aggregation can also erase the seed-4 targeted
 right-swing fix and introduce a seed-5 reverse/fall. The next iteration should
 preserve seed-4 right-swing labels and inspect/filter seed-5 before another
 student fit. Robot validation remains blocked.
+
+A selective live-oracle aggregate was also tested:
+
+```text
+artifact: outputs/analysis/PHASE2_LIVE_ORACLE_RIGHT_SWING_ITER1_SELECTIVE_DECISION.md
+status: HOLD_SELECTIVE_AGGREGATE_NOT_SUFFICIENT
+excluded live x=0.08 seeds: 4,5
+kept entries: 11
+```
+
+It did not solve the regression:
+
+```text
+passes: seeds 1,2
+terrain-swing hold: seed 0
+target-velocity hold: seed 3
+tracking holds: seeds 4,6,7
+fall/reverse hold: seed 5
+```
+
+This closes flat aggregate entry selection. The next useful sim-side move is
+per-record/per-phase filtering: cap/filter the seed-5 right-ankle reverse/fall
+burst while preserving the targeted seed-4 right-swing rows. Robot validation
+remains blocked.

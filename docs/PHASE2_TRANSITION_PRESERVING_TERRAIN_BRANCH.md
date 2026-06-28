@@ -443,3 +443,37 @@ retain live-oracle relabels for seeds 1,3,7
 
 Do not promote the live-oracle iter1 candidate. Robot validation remains
 blocked.
+
+## Live-Oracle Iteration 1 Selective Aggregate
+
+Artifact:
+
+```text
+decision: outputs/analysis/PHASE2_LIVE_ORACLE_RIGHT_SWING_ITER1_SELECTIVE_DECISION.md
+status: HOLD_SELECTIVE_AGGREGATE_NOT_SUFFICIENT
+```
+
+A selective aggregate was tested to preserve the targeted seed-4 right-swing
+labels and remove the most suspicious live-oracle sources:
+
+```text
+base: targeted right-swing command manifest
+live x=0.08 relabels: exclude live seed 4 and live seed 5
+live x=0.0 relabels: keep seeds 0 and 4
+kept entries: 11
+```
+
+This did not pass:
+
+```text
+passes: seeds 1,2
+terrain-swing hold: seed 0
+target-velocity hold: seed 3
+tracking holds: seeds 4,6,7
+fall/reverse hold: seed 5
+```
+
+Conclusion: flat aggregate entry selection is not local enough. The next branch
+must directly inspect/cap/filter the seed-5 reverse/fall action sequence and
+preserve the targeted seed-4 right-swing rows with per-record/per-phase
+weighting. Do not continue plain aggregate variants.

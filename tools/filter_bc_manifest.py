@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 from collections import Counter
 from pathlib import Path
 from typing import Any
@@ -33,6 +34,11 @@ def metric(entry: dict[str, Any], key: str, default: float | None = None) -> flo
 
 def entry_rejections(entry: dict[str, Any], args: argparse.Namespace) -> list[str]:
     reasons: list[str] = []
+    source = source_name(entry)
+    if args.include_source_regex and not re.search(args.include_source_regex, source):
+        reasons.append("source_not_included")
+    if args.exclude_source_regex and re.search(args.exclude_source_regex, source):
+        reasons.append("source_excluded")
     if args.require_bc_ready and not bool(entry.get("bc_ready")):
         reasons.append("not_bc_ready")
     if args.require_raw_trace and not bool(entry.get("raw_trace_exists")):
@@ -157,6 +163,16 @@ def main() -> int:
     parser.add_argument("--min-base-height", type=float, default=0.12)
     parser.add_argument("--max-sent-velocity-p95", type=float, default=2.5)
     parser.add_argument("--max-tracking-p95", type=float, default=0.2)
+    parser.add_argument(
+        "--include-source-regex",
+        default=None,
+        help="Keep only entries whose source name/path matches this regex.",
+    )
+    parser.add_argument(
+        "--exclude-source-regex",
+        default=None,
+        help="Reject entries whose source name/path matches this regex.",
+    )
     parser.add_argument("--require-bc-ready", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--require-raw-trace", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--reject-done-inside", action=argparse.BooleanOptionalAction, default=True)
@@ -206,6 +222,8 @@ def main() -> int:
             "min_base_height": args.min_base_height,
             "max_sent_velocity_p95": args.max_sent_velocity_p95,
             "max_tracking_p95": args.max_tracking_p95,
+            "include_source_regex": args.include_source_regex,
+            "exclude_source_regex": args.exclude_source_regex,
             "require_bc_ready": args.require_bc_ready,
             "require_raw_trace": args.require_raw_trace,
             "reject_done_inside": args.reject_done_inside,
