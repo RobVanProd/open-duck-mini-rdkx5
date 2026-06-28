@@ -23,6 +23,8 @@ C9 swing advance: HOLD, reduced motion; seed 4 stayed planted
 action gain 1.05/1.10: HOLD, worsened progress; not an amplitude fix
 MPC rough preflight: HOLD, actuator-safe but too slow and double-support dominated
 C7 z=0.001 threshold: seed 2 passes, seed 4 still planted
+existing flat-trace hard-step rescore: PASS source windows exist
+live-oracle iter0 z=0.001 transfer: HOLD, velocity/tracking over gate
 ```
 
 Hard-step diagnostics now show:
@@ -34,6 +36,33 @@ seed 4 can remain at 0 swing segments and 0.0000 m rel-x range
 
 So the blocker is not actuator envelope or terrain height alone. The blocker is
 a seed-dependent planted-foot mode.
+
+The existing-trace hard-step rescore found valid 100-tick flat fitted-bridge
+windows for seeds `2,4`, especially from live-oracle DAgger iteration 1:
+
+```text
+seed 2: mean vx 0.0571 m/s, sent vel p95 2.2257 rad/s,
+        tracking p95 0.1818 rad, min swing segments 3
+seed 4: mean vx 0.0544 m/s, sent vel p95 2.2291 rad/s,
+        tracking p95 0.1809 rad, min swing segments 4
+```
+
+That source proves the corrected flat manifold contains hard per-foot stepping
+windows. It does not yet prove terrain robustness. A transfer check of the
+live-oracle iteration 0 candidate on `rough_terrain_backlash` at
+`terrain_hfield_z_scale=0.001` completed both seeds and stepped, but held on the
+corrected envelope/tracking gate:
+
+```text
+seed 2: mean vx 0.0488 m/s, max pitch vel p95 3.5739 rad/s,
+        velocity excess 0.8239 rad/s, tracking p95 0.2545 rad
+seed 4: mean vx 0.0423 m/s, max pitch vel p95 3.5845 rad/s,
+        velocity excess 0.8345 rad/s, tracking p95 0.2590 rad
+```
+
+So the next source branch should use those flat hard-step windows as evidence
+and mining material, but it still needs an explicit rough-terrain source or
+candidate that stays inside the corrected per-joint envelope.
 
 ## Closed Paths
 
@@ -123,6 +152,11 @@ Only after A or B clears the hard-step gate:
 
 `HOLD_ACTUATOR_ENVELOPE`:
   Any apparent step source needs target velocities over the corrected envelope.
+
+`HOLD_TERRAIN_TRANSFER`:
+  A flat hard-step source exists, but the corresponding policy/candidate exceeds
+  corrected velocity or tracking limits on `z=0.001` terrain. Do not promote it;
+  mine a terrain-safe source or build the hard anti-planted teacher.
 
 ## Current Recommended Next Command
 

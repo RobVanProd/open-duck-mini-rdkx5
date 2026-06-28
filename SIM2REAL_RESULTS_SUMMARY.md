@@ -8199,3 +8199,17 @@ The next Phase 2 branch is pre-registered in
 `docs/PHASE2_NEXT_TERRAIN_STEP_BRANCH.md`: no more scalar terrain reward sweeps
 until a source/candidate clears a hard per-foot step-transition gate. The
 immediate target is eliminating the seed-4 planted-foot mode offline.
+
+The first existing-trace hard-step rescore found a flat fitted-bridge source:
+live-oracle DAgger iteration 1 contains 100-tick seed `2,4` windows with
+`0.054-0.057 m/s` forward speed, `2.225-2.229 rad/s` sent target p95, tracking
+p95 near `0.181 rad`, and per-foot swing segments. This is recorded in
+`outputs/analysis/PHASE2_EXISTING_TRACE_HARD_STEP_SOURCE_RESCORE.md`.
+However, the live-oracle iteration 0 candidate did not transfer to
+`rough_terrain_backlash` at `z=0.001`: both seeds completed 5 seconds and
+stepped, but exceeded the corrected per-joint envelope and tracking gate
+(`3.57-3.58 rad/s` max pitch velocity p95 and `0.254-0.259 rad` tracking p95).
+That transfer hold is recorded in
+`outputs/analysis/PHASE2_LIVE_ORACLE_ITER0_TERRAIN_Z001_SWING_GATE_CPU.md`.
+Current state: flat hard-step source found, terrain-safe hard-step source still
+needed before another PPO/BC run.

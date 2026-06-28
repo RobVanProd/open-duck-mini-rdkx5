@@ -986,6 +986,35 @@ Additional required reports:
 - action saturation
 - per-joint target velocity vs corrected envelope
 
+## Current Terrain-Step Status
+
+Existing-trace hard-step rescoring found a useful split:
+
+```text
+artifact: outputs/analysis/PHASE2_EXISTING_TRACE_HARD_STEP_SOURCE_RESCORE.md
+status: PASS_HARD_STEP_SOURCE_FOUND
+best source: live-oracle DAgger iteration 1 flat fitted-bridge traces
+seed 2: mean vx 0.0571, sent vel p95 2.2257, tracking p95 0.1818
+seed 4: mean vx 0.0544, sent vel p95 2.2291, tracking p95 0.1809
+```
+
+That confirms the flat corrected-bridge trace library contains hard-step windows
+for both seeds. However, the corresponding live-oracle iteration 0 candidate
+does not transfer to `rough_terrain_backlash` at
+`terrain_hfield_z_scale=0.001`:
+
+```text
+artifact: outputs/analysis/PHASE2_LIVE_ORACLE_ITER0_TERRAIN_Z001_SWING_GATE_CPU.md
+status: HOLD_CANDIDATE_TRACKING
+seed 2: max pitch vel p95 3.5739, velocity excess 0.8239, tracking p95 0.2545
+seed 4: max pitch vel p95 3.5845, velocity excess 0.8345, tracking p95 0.2590
+```
+
+Current Phase 2 branch state: a flat hard-step source exists, but terrain
+transfer remains blocked by corrected-envelope and tracking violations. Next
+work should mine or construct a terrain-safe hard-step source before another
+PPO/BC run.
+
 ## References
 
 Verified from arXiv:
