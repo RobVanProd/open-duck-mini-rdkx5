@@ -62,6 +62,28 @@ Use one of these mechanisms, in order:
 Do not run another simple global label-rate filter or scalar terrain reward
 sweep as the next branch.
 
+## Warm-Start Artifact
+
+The transition-preserving PPO warm-start now exists locally:
+
+```text
+decision: outputs/analysis/PHASE2_TERRAIN_PPO_SHAPE_WARMSTART_DECISION.md
+checkpoint: outputs/analysis/phase2_terrain_live_oracle_dagger_iter2_ppo_shape_step0_checkpoint
+step0 ONNX: outputs/analysis/phase2_terrain_live_oracle_dagger_iter2_ppo_shape_step0.onnx
+fidelity: PASS_PPO_BC_WARMSTART_STEP0_EXPORT_FIDELITY
+```
+
+It is not a candidate policy. Its rough-terrain `z=0.002` gate preserves
+forward transition behavior but still holds on corrected tracking/envelope:
+
+```text
+seed 2/4 track ratio: 0.6652 / 0.5947
+seed 2/4 max tracking p95: 0.2598 / 0.2533
+seed 2/4 max velocity excess: 0.7987 / 0.8291
+```
+
+This is the restore point for branch method 1.
+
 ## Gate
 
 Minimum rough-terrain diagnostic gate before any wider 8-seed run:

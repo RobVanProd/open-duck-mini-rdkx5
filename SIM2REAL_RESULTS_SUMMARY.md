@@ -8317,3 +8317,23 @@ The next branch is pre-registered in
 `docs/PHASE2_TRANSITION_PRESERVING_TERRAIN_BRANCH.md`: preserve the support
 transition and apply corrected-envelope pressure in closed-loop, rather than
 globally smoothing labels before the policy ever steps.
+
+A PPO-shaped warm-start for that branch was then built from the live-oracle
+iter2 aggregate:
+
+```text
+artifact: outputs/analysis/PHASE2_TERRAIN_PPO_SHAPE_WARMSTART_DECISION.md
+status: PASS_TRANSITION_PRESERVING_PPO_WARMSTART_READY
+step0 ONNX: outputs/analysis/phase2_terrain_live_oracle_dagger_iter2_ppo_shape_step0.onnx
+local checkpoint: outputs/analysis/phase2_terrain_live_oracle_dagger_iter2_ppo_shape_step0_checkpoint
+```
+
+The exported step-0 policy preserves rough-terrain forward transition behavior
+but still holds on tracking/envelope, which is exactly the target for the next
+offline PPO fine-tune:
+
+```text
+seed 2/4 track ratio: 0.6652 / 0.5947
+seed 2/4 single support: 38.4% / 32.0%
+seed 2/4 max tracking p95: 0.2598 / 0.2533
+```
