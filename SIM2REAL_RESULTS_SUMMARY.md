@@ -4,13 +4,41 @@ Last updated: 2026-06-27
 
 ## Executive Summary
 
-Current recommendation: **do not run grounded replay yet**.
-No more robot motion is recommended until a candidate policy passes both
-offline suspended-style sim gates:
+Current recommendation: **hold further grounded replay pending review**.
 
-- `x=0.0`: stable, low target velocity, low tracking error
-- `x=0.08`: meaningful forward progress while staying inside the measured
-  actuator envelope
+The corrected candidate
+`policy/candidates/corrected_bridge_cmd_conditioned_rate175_20260627/candidate.onnx`
+cleared corrected-bridge sim gates and stand/suspended hardware transfer at
+`x=0.0` and `x=0.08`. A first bounded grounded telemetry test at `x=0.08`
+completed its 5 second runtime and turned off normally, but grounded load
+raised pitch-chain tracking p95 to about `0.106 rad`, so the result is
+`HOLD_GROUNDED_REVIEW_REQUIRED` before any second grounded run.
+
+Latest artifacts:
+
+```text
+outputs/analysis/CORRECTED_CANDIDATE_STAND_TRANSFER_DECISION.md
+outputs/analysis/CORRECTED_CANDIDATE_FIRST_GROUNDED_TEST_DECISION.md
+outputs/analysis/CORRECTED_CANDIDATE_HW_X008_GROUNDED_FIRST_ANALYSIS.md
+outputs/analysis/CORRECTED_CANDIDATE_HW_X008_GROUNDED_FIRST_TARGET_VELOCITY.md
+```
+
+First grounded telemetry summary:
+
+```text
+samples: 249
+remote exit: 0
+terminal: Max runtime reached -> TURNING OFF
+max pitch-chain sent velocity p95: 1.83 rad/s
+max pitch-chain tracking p95: 0.106 rad
+action saturation: 0%
+rate limit active: 0%
+write errors: 0
+read checksum increments: 12
+```
+
+Do not run another grounded test until operator visual notes/video and
+telemetry are reviewed together.
 
 June 27 corrected-knee update: the left knee soft offset was corrected from
 `-1.488 rad` to `0.0371 rad`, and a supported/on-stand sine-only actuator gate

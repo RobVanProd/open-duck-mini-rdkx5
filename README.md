@@ -10,12 +10,14 @@ The repository and its documentation are part of the robot's working state. Keep
 
 The corrected left-knee offset removed the large knee asymmetry, the actuator
 bridge was re-fit, and the corrected candidate cleared stand/suspended transfer
-at both `x=0.0` and `x=0.08`.
+at both `x=0.0` and `x=0.08`. A first bounded grounded telemetry test at
+`x=0.08` completed its 5 second runtime, but grounded tracking rose enough to
+require review before any further grounded motion.
 
 Current gate:
 
 ```text
-PASS_STAND_SUSPENDED_TRANSFER_WITH_READ_WARNINGS
+HOLD_GROUNDED_REVIEW_REQUIRED
 ```
 
 Read these first:
@@ -23,13 +25,12 @@ Read these first:
 ```text
 outputs/analysis/CORRECTED_CANDIDATE_STAND_TRANSFER_DECISION.md
 outputs/analysis/CORRECTED_CANDIDATE_FIRST_GROUNDED_TEST_PLAN.md
+outputs/analysis/CORRECTED_CANDIDATE_FIRST_GROUNDED_TEST_DECISION.md
 policy/candidates/corrected_bridge_cmd_conditioned_rate175_20260627/README.md
 ```
 
-The next possible robot action is a separately approved, tightly bounded first
-grounded telemetry test of the corrected candidate. It is not automatic. Do not
-run grounded walking unless the operator explicitly approves the exact grounded
-test scope and is ready to cut power.
+The next step is review of the first grounded telemetry plus operator visual
+notes/video. Do not run another grounded test until that review is complete.
 
 Current candidate:
 

@@ -1,6 +1,6 @@
 # Corrected Bridge Cmd-Conditioned Rate-175 Candidate
 
-Status: `READY_FOR_STAND_SUSPENDED_TELEMETRY_REVIEW`
+Status: `HOLD_GROUNDED_REVIEW_REQUIRED`
 
 This directory preserves the current corrected-bridge sim-side deployment
 candidate. It is the first ONNX in this campaign to pass both corrected
@@ -9,7 +9,9 @@ actuator-bridge seed gates:
 - `x=0.08`, 8/8 seeds, 15 seconds, fitted corrected bridge
 - `x=0.0`, 8/8 seeds, 15 seconds, fitted corrected bridge
 
-It is not approved for grounded replay.
+It completed the first bounded grounded telemetry test, but it is not approved
+for additional grounded replay until the telemetry and operator visual notes
+are reviewed.
 
 ## Files
 
@@ -114,11 +116,29 @@ x=0.08 action saturation: 0%
 x=0.08 write errors: 0
 ```
 
+First grounded telemetry:
+
+```text
+outputs/analysis/CORRECTED_CANDIDATE_FIRST_GROUNDED_TEST_DECISION.md
+outputs/analysis/CORRECTED_CANDIDATE_HW_X008_GROUNDED_FIRST_ANALYSIS.md
+outputs/analysis/CORRECTED_CANDIDATE_HW_X008_GROUNDED_FIRST_TARGET_VELOCITY.md
+
+x=0.08 grounded: 249 samples, max runtime reached, TURNING OFF
+max pitch-chain sent velocity p95: 1.83 rad/s
+max pitch-chain tracking p95: 0.106 rad
+action saturation: 0%
+rate limit active: 0%
+write errors: 0
+read checksum increments: 12
+decision: HOLD_GROUNDED_REVIEW_REQUIRED
+```
+
 Validation order:
 
 1. stand/suspended `x=0.0` telemetry
 2. stand/suspended `x=0.08` telemetry
-3. grounded replay only after reviewed suspended telemetry clears
+3. first grounded review: telemetry plus operator visual notes
+4. no second grounded run until review clears
 
 Hard constraints for hardware validation:
 
@@ -131,4 +151,4 @@ Hard constraints for hardware validation:
   contacts/base state if available
 - torque off / stop after telemetry
 
-Grounded replay remains blocked.
+Further grounded replay remains blocked pending review.
