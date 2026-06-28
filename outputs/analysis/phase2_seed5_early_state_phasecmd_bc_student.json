@@ -1,0 +1,144 @@
+{
+  "activation": "swish",
+  "config": {
+    "batch_size": 512,
+    "learning_rate": 0.001,
+    "seed": 48,
+    "steps": 10000,
+    "target_rate_limit_rad_s": 3.75,
+    "target_rate_scale": 0.1
+  },
+  "context_hidden_sizes": [
+    64
+  ],
+  "context_indices": [
+    6,
+    99,
+    100
+  ],
+  "exported_onnx": "outputs/analysis/phase2_seed5_early_state_phasecmd_bc_student/candidate.onnx",
+  "loss_rows": [
+    {
+      "loss": 0.1623692810535431,
+      "step": 1
+    },
+    {
+      "loss": 0.0005578217678703368,
+      "step": 500
+    },
+    {
+      "loss": 0.00041685966425575316,
+      "step": 1000
+    },
+    {
+      "loss": 0.0003047389618586749,
+      "step": 1500
+    },
+    {
+      "loss": 0.00024862991995178163,
+      "step": 2000
+    },
+    {
+      "loss": 0.0002739110204856843,
+      "step": 2500
+    },
+    {
+      "loss": 0.00019445872749201953,
+      "step": 3000
+    },
+    {
+      "loss": 0.00013638308155350387,
+      "step": 3500
+    },
+    {
+      "loss": 0.00016572067397646606,
+      "step": 4000
+    },
+    {
+      "loss": 0.00012443636660464108,
+      "step": 4500
+    },
+    {
+      "loss": 0.000171142237377353,
+      "step": 5000
+    },
+    {
+      "loss": 0.0001367056684102863,
+      "step": 5500
+    },
+    {
+      "loss": 0.00010265172750223428,
+      "step": 6000
+    },
+    {
+      "loss": 0.00010242297139484435,
+      "step": 6500
+    },
+    {
+      "loss": 0.00010598474182188511,
+      "step": 7000
+    },
+    {
+      "loss": 7.909499254310504e-05,
+      "step": 7500
+    },
+    {
+      "loss": 0.00010106579429702833,
+      "step": 8000
+    },
+    {
+      "loss": 8.592932863393798e-05,
+      "step": 8500
+    },
+    {
+      "loss": 0.00010872385610127822,
+      "step": 9000
+    },
+    {
+      "loss": 7.849430403439328e-05,
+      "step": 9500
+    },
+    {
+      "loss": 8.944308501668274e-05,
+      "step": 10000
+    }
+  ],
+  "manifest": "outputs/analysis/phase2_seed5_early_state_weighted_aggregate_manifest.json",
+  "modulation_scale": 0.75,
+  "onnx_verify": {
+    "max_abs_error": 2.980232238769531e-07,
+    "p95_abs_error": 1.4901161193847656e-07,
+    "path": "outputs/analysis/phase2_seed5_early_state_phasecmd_bc_student/candidate.onnx",
+    "samples_checked": 64
+  },
+  "sample_weight": {
+    "max": 50.0,
+    "p50": 4.0,
+    "p95": 5.0,
+    "weighted_samples": 10734.75
+  },
+  "samples": 3043,
+  "saved_npz": "outputs/analysis/phase2_seed5_early_state_phasecmd_bc_student/candidate_mlp.npz",
+  "status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE",
+  "target_rate": {
+    "max_rad_s": 4.1363301277160645,
+    "p50_rad_s": 0.13905738294124603,
+    "p95_rad_s": 1.4602433741092682,
+    "p99_rad_s": 2.276209437847136,
+    "pair_count": 3029
+  },
+  "train_metrics": {
+    "mae": 0.006532693674727727,
+    "max_abs_error": 0.29984161257743835,
+    "p50_abs_error": 0.004185374584631063,
+    "p95_abs_error": 0.019863492601893767,
+    "p99_abs_error": 0.036249535959213895,
+    "pred_action_saturation_pct": 0.0,
+    "rmse": 0.01069945793603634,
+    "samples": 3043
+  },
+  "trunk_hidden_sizes": [
+    512,
+    256
+  ]
+}

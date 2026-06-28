@@ -1,0 +1,53 @@
+{
+  "status": "HOLD_SEED5_EARLY_STATE_BC_NOT_SUFFICIENT",
+  "offline_only": true,
+  "robot_tests": false,
+  "ssh": false,
+  "deploy": false,
+  "grounded_replay": false,
+  "runtime_behavior_changed": false,
+  "inputs": {
+    "base_manifest": "outputs/analysis/phase2_live_oracle_right_swing_iter1_seed5_capped_aggregate_manifest.json",
+    "early_x008_manifest": "outputs/analysis/phase2_seed5_early_state_x008_manifest.json",
+    "early_x0_manifest": "outputs/analysis/phase2_seed5_early_state_x0_manifest.json",
+    "weighted_aggregate_manifest": "outputs/analysis/phase2_seed5_early_state_weighted_aggregate_manifest.json",
+    "candidate": "outputs/analysis/phase2_seed5_early_state_phasecmd_bc_student/candidate.onnx"
+  },
+  "early_state_curation": {
+    "x008_keep_ticks": [0, 24],
+    "x0_keep_ticks": [0, 17],
+    "pitch_chain_rate_cap_rad_s": 2.25,
+    "early_seed5_entry_weight": 10.0
+  },
+  "x008_rough_z002_gate": {
+    "status": "HOLD",
+    "passes": 4,
+    "runs": 8,
+    "falls": 1,
+    "duration_complete": 7,
+    "pass_seeds": [2, 3, 4, 7],
+    "hold_seeds": {
+      "0": "HOLD_CANDIDATE_TRACKING",
+      "1": "HOLD_CANDIDATE_TRACKING",
+      "5": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "6": "HOLD_CANDIDATE_TRACKING"
+    },
+    "seed5": {
+      "mean_local_vx_m_s": -0.33,
+      "track_ratio": -4.1252,
+      "max_velocity_excess_rad_s": 1.8076,
+      "max_tracking_p95_rad": 0.2281
+    }
+  },
+  "x0_rough_z002_gate": {
+    "status": "HOLD",
+    "passes": 7,
+    "runs": 8,
+    "falls": 1,
+    "duration_complete": 7,
+    "fall_seeds": [5],
+    "mean_local_vx_m_s_including_fall": -0.0474
+  },
+  "decision": "Do not continue by increasing early seed5 BC weights or widening the early tick window. Seed5 remains a command-independent support/stability mode and the early-state weighted BC regresses other seeds.",
+  "recommended_next": "Change correction mechanism: recurrent/frame-stack student or a recovery teacher that changes seed5's first contact transition; gate x=0.0 and x=0.08 together."
+}

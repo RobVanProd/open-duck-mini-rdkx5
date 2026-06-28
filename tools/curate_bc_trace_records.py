@@ -204,6 +204,17 @@ def process_trace(path: Path, output_dir: Path, args: argparse.Namespace) -> dic
         }
 
     rows = read_jsonl(path)
+    input_samples = len(rows)
+    if args.keep_tick_min is not None or args.keep_tick_max is not None:
+        kept_rows: list[dict[str, Any]] = []
+        for row in rows:
+            tick = int(row.get("tick") or 0)
+            if args.keep_tick_min is not None and tick < int(args.keep_tick_min):
+                continue
+            if args.keep_tick_max is not None and tick > int(args.keep_tick_max):
+                continue
+            kept_rows.append(row)
+        rows = kept_rows
     output_path = rel_output_path(path, output_dir, int(args.output_parent_depth))
     transformed = should_transform_source(path, args)
     joints = parse_joint_indices(args.joints) if transformed and args.joints else []
@@ -227,6 +238,7 @@ def process_trace(path: Path, output_dir: Path, args: argparse.Namespace) -> dic
         "output_trace": str(output_path),
         "dropped": False,
         "transformed": transformed,
+        "input_samples": input_samples,
         "samples": len(rows),
         "weight_clamped_rows": weight_clamped,
         "action_delta_capped": dict(sorted(capped_counts.items())),
@@ -263,16 +275,17 @@ def render_markdown(payload: dict[str, Any]) -> str:
             "",
             "## Traces",
             "",
-            "| source | dropped | transformed | samples | weight clamped | action capped |",
-            "|---|---:|---:|---:|---:|---|",
+            "| source | dropped | transformed | input samples | output samples | weight clamped | action capped |",
+            "|---|---:|---:|---:|---:|---:|---|",
         ]
     )
     for item in payload["traces"]:
         lines.append(
-            "| {source} | {dropped} | {transformed} | {samples} | {weight} | `{capped}` |".format(
+            "| {source} | {dropped} | {transformed} | {input_samples} | {samples} | {weight} | `{capped}` |".format(
                 source=Path(item["source_trace"]).name,
                 dropped=item.get("dropped"),
                 transformed=item.get("transformed"),
+                input_samples=item.get("input_samples", item.get("samples", 0)),
                 samples=item.get("samples", 0),
                 weight=item.get("weight_clamped_rows", 0),
                 capped=item.get("action_delta_capped", {}),
@@ -297,6 +310,8 @@ def main() -> int:
     parser.add_argument("--output-parent-depth", type=int, default=3)
     parser.add_argument("--drop-source-regex", default=None)
     parser.add_argument("--transform-source-regex", default=None)
+    parser.add_argument("--keep-tick-min", type=int, default=None)
+    parser.add_argument("--keep-tick-max", type=int, default=None)
     parser.add_argument("--joints", default="")
     parser.add_argument("--max-target-velocity-rad-s", type=float, default=None)
     parser.add_argument("--action-scale-rad", type=float, default=0.25)
@@ -332,6 +347,8 @@ def main() -> int:
         "settings": {
             "drop_source_regex": args.drop_source_regex,
             "transform_source_regex": args.transform_source_regex,
+            "keep_tick_min": args.keep_tick_min,
+            "keep_tick_max": args.keep_tick_max,
             "joints": args.joints,
             "max_target_velocity_rad_s": args.max_target_velocity_rad_s,
             "max_matched_weight": args.max_matched_weight,

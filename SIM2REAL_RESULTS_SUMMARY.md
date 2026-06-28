@@ -8609,3 +8609,29 @@ This means seed 5 is a command-independent early-state stability mode, not a
 tail-only right-ankle label-rate problem. The next correction should emphasize
 early seed-5 states before pitch divergence and gate x=0.0 plus x=0.08
 together. Robot validation remains blocked.
+
+The first early-state weighted BC correction was tested:
+
+```text
+artifact: outputs/analysis/PHASE2_SEED5_EARLY_STATE_DECISION.md
+status: HOLD_SEED5_EARLY_STATE_BC_NOT_SUFFICIENT
+x=0.08 rough z=0.002: 4/8 pass
+x=0.0 rough z=0.002: 7/8 pass
+```
+
+The branch relabelled only seed5 early states before pitch divergence, capped
+pitch-chain label rates at 2.25 rad/s equivalent, and weighted those early
+records 10x. Seed 5 still fell at both x=0.08 and x=0.0, and x=0.08 pass seeds
+0, 1, and 6 regressed into tracking holds.
+
+This closes two local seed5 fixes:
+
+```text
+tail-only cap/downweight: partial improvement, seed5 still falls
+early-state weighted BC: seed5 still falls, other seeds regress
+```
+
+The next useful branch should change the correction mechanism rather than
+increase scalar weights: frame-stack/recurrent state, or a recovery teacher
+that changes seed5's first contact transition. Robot validation remains
+blocked.

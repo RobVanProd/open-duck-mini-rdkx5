@@ -1,0 +1,51 @@
+{
+  "status": "PASS_BC_TRACE_RELABEL_READY",
+  "teacher": {
+    "teacher_manifest": "outputs/analysis/phase2_seed4_right_swing_weighted_command_manifest.json",
+    "teacher_dataset_id": "b86c263a03fa826f",
+    "teacher_entries": 3,
+    "teacher_samples": 750,
+    "teacher_model_kind": "zero_action",
+    "action_dim": 14,
+    "zero_action_alpha": 1.0
+  },
+  "trace_globs": [
+    "outputs/analysis/phase2_seed5_capped_neighbor_trace_compare_x0/seed5_capped/seed_005/trace.jsonl"
+  ],
+  "output_trace_dir": "outputs/analysis/phase2_seed5_early_state_relabel_x0_raw",
+  "summary": {
+    "traces": 1,
+    "samples_out": 42,
+    "truncated_traces": 0
+  },
+  "traces": [
+    {
+      "source_trace": "outputs/analysis/phase2_seed5_capped_neighbor_trace_compare_x0/seed5_capped/seed_005/trace.jsonl",
+      "output_trace": "outputs/analysis/phase2_seed5_early_state_relabel_x0_raw/phase2_seed5_capped_neighbor_trace_compare_x0/seed5_capped/seed_005/trace.jsonl",
+      "samples_in": 42,
+      "samples_out": 42,
+      "skipped": 0,
+      "truncate_before_done": false,
+      "first_done_index": null,
+      "action_delta_p50": 0.03125742822885513,
+      "action_delta_p95": 0.23475391566753354,
+      "action_delta_max": 0.5266585350036621,
+      "active_model_counts": {
+        "zero": 42
+      },
+      "blend_alpha_p50": 1.0,
+      "blend_alpha_p95": 1.0,
+      "sample_weight_p50": 5.0,
+      "sample_weight_p95": 5.0,
+      "sample_weight_max": 5.0,
+      "sample_weight_reasons": {
+        "double_support_low_progress": 29,
+        "high_lateral_velocity": 5,
+        "high_tracking_error": 3,
+        "low_progress": 36,
+        "reverse_velocity": 36,
+        "zero_command_drift": 41
+      }
+    }
+  ]
+}

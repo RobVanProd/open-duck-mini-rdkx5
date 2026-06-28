@@ -554,3 +554,41 @@ Conclusion: seed 5 is a command-independent early-state stability mode. The
 tail right-ankle burst is not the root cause. The next live-oracle correction
 should emphasize seed-5 early states before pitch divergence and downweight or
 exclude only the unrecoverable late fall tail.
+
+## Seed5 Early-State Weighted BC Test
+
+Artifact:
+
+```text
+decision: outputs/analysis/PHASE2_SEED5_EARLY_STATE_DECISION.md
+status: HOLD_SEED5_EARLY_STATE_BC_NOT_SUFFICIENT
+```
+
+The early-state correction branch relabelled seed5 before pitch divergence:
+
+```text
+x=0.08 seed5: keep ticks 0-24, source-vx live oracle
+x=0.0 seed5: keep ticks 0-17, zero-action oracle
+pitch-chain label-rate cap: 2.25 rad/s equivalent
+early seed5 entry weight: 10x
+```
+
+It did not solve seed5:
+
+```text
+x=0.08 rough z=0.002: 4/8 pass, seed5 still falls
+x=0.0 rough z=0.002: 7/8 pass, seed5 still falls
+```
+
+It also regressed prior x=0.08 pass seeds into tracking holds:
+
+```text
+tracking holds: seeds 0,1,6
+fall/reverse hold: seed 5
+```
+
+Conclusion: do not continue by increasing early seed5 BC weight or widening the
+early tick window. Tail-only capping and early-state weighted BC are both
+closed. The next useful branch needs a different correction mechanism:
+frame-stack/recurrent state, or a recovery teacher that changes seed5's first
+contact transition.
