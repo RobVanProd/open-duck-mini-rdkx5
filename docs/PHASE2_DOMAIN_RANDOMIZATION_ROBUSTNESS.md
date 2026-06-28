@@ -1,6 +1,6 @@
 # Phase 2 Domain-Randomized Robustness Training
 
-status: `HOLD_STAGE_C6_TRANSITION_PRESSURE_RETREATS_TO_DOUBLE_SUPPORT`
+status: `HOLD_STAGE_C7_GATE_SELECTION_PARTIAL`
 
 ## Objective
 
@@ -686,6 +686,50 @@ clearance/contact-timing reward terms are being satisfied by reducing motion
 rather than by producing higher-clearance stepping. The next terrain branch
 needs gate-selected training or a target/teacher that explicitly contains
 higher-clearance steps, not another small scalar PPO tweak.
+
+C7 tested gate-selected terrain training:
+
+```text
+artifact: outputs/analysis/PHASE2_STAGE_C7_GATE_SELECTION_DECISION.md
+checkpoint screen: outputs/analysis/PHASE2_STAGE_C7_TERRAIN_Z002_SCREEN_CPU.md
+8-seed screen: outputs/analysis/PHASE2_STAGE_C7_35120_TERRAIN_Z002_8SEED_CPU.md
+status: HOLD_STAGE_C7_GATE_SELECTION_PARTIAL
+```
+
+C7 reused the C6 recipe but exported frequent checkpoints (`ppo_num_evals: 8`)
+so terrain metrics could select the best transient checkpoint instead of using
+the final reward-selected checkpoint. This worked in a limited sense:
+`c7_35120` passed the focused seed-0 `z=0.002` terrain screen while later
+checkpoints regressed into low forward progress.
+
+The best transient checkpoint:
+
+```text
+checkpoint: c7_35120
+sha256: ee0b7013bf588b2aab4b8efe3c7ab10b1d8b901d786282717cda3b18b5c8b5d7
+```
+
+Eight-seed `z=0.002` screen:
+
+```text
+passes: 5/8
+falls: 0/8
+duration_complete: 8/8
+mean track ratio: 0.2671
+mean vx: 0.0214 m/s
+max corrected velocity excess: 0.0000 rad/s
+max pitch-chain tracking p95: 0.1918 rad
+mean min swing peak lift: 0.0105 m
+mean single support: 11.4%
+mean double support: 88.45%
+```
+
+Decision: gate-selected checkpointing is useful and should remain part of
+terrain work, but C7 is not a terrain robustness candidate. It improves
+tracking relative to C3 by reducing motion and still produces a low-clearance,
+mostly double-support shuffle. The next branch should change the target
+manifold: mine or generate higher-clearance stepping demonstrations, or add a
+hard step-clearance/step-advance constraint for nonzero command.
 
 Stage D:
 

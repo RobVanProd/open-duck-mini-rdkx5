@@ -72,23 +72,28 @@ Phase 1 candidate remains trackable, and Stage A tolerates mild/moderate push
 evals, but `z=0.002` rough-terrain screens show a low-clearance shuffle. C3
 raised single support only slightly, C4 over-drove and fell, C5a retreated into
 double support, and C6 with stronger transition pressure still regressed to
-very low forward progress:
+very low forward progress. C7 added frequent checkpoint export and
+gate-selected terrain screening; it found a useful early checkpoint, but not a
+terrain candidate:
 
 ```text
-latest decision: outputs/analysis/PHASE2_STAGE_C6_TRANSITION_CLEARANCE_DECISION.md
-status: HOLD_STAGE_C6_TRANSITION_PRESSURE_RETREATS_TO_DOUBLE_SUPPORT
-c6_81920 terrain z=0.002 seed-0 screen:
-  track ratio: 0.0985
-  max pitch-chain tracking p95: 0.1654 rad
+latest decision: outputs/analysis/PHASE2_STAGE_C7_GATE_SELECTION_DECISION.md
+status: HOLD_STAGE_C7_GATE_SELECTION_PARTIAL
+c7_35120 terrain z=0.002 8-seed screen:
+  passes: 5/8
+  falls: 0/8
+  mean track ratio: 0.2671
+  max pitch-chain tracking p95: 0.1918 rad
   corrected velocity excess: 0.0000 rad/s
-  min swing peak: 0.0072 m
-  single support: 4.0%
-  double support: 96.0%
+  mean min swing peak: 0.0105 m
+  mean single support: 11.4%
+  mean double support: 88.45%
 ```
 
 Do not promote the current C-stage terrain policies. The next offline branch
-should use gate-selected terrain training or a target/teacher with explicit
-higher-clearance stepping rather than another small scalar PPO reward tweak.
+should keep gate-selected checkpointing but change the target manifold: use
+higher-clearance stepping demonstrations or a hard step-clearance/step-advance
+constraint rather than another small scalar PPO reward tweak.
 
 June 27 corrected-knee update: the left knee soft offset was corrected from
 `-1.488 rad` to `0.0371 rad`, and a supported/on-stand sine-only actuator gate
