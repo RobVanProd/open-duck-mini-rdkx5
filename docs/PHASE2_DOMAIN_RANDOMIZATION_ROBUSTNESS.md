@@ -1031,6 +1031,14 @@ terrain-window source manifest or live-oracle relabel pass from those windows,
 then train/fine-tune against that curated source rather than promoting the raw
 policy.
 
+Canonical curated source manifest:
+
+```text
+outputs/analysis/PHASE2_TERRAIN_SAFE_HARD_STEP_SOURCE_MANIFEST.md
+outputs/analysis/phase2_terrain_safe_hard_step_source_manifest.json
+status: PASS_TERRAIN_SAFE_HARD_STEP_SOURCE_MANIFEST
+```
+
 ## References
 
 Verified from arXiv:

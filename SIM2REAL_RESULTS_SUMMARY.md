@@ -8230,3 +8230,11 @@ Current state: terrain-safe source windows exist at `z=0.001` and `z=0.002`,
 but the full candidate policy still fails the rough-terrain envelope/tracking
 gate. Next step is a curated terrain-window source manifest or live-oracle
 relabel pass, not robot validation.
+
+The curated manifest is now pinned as:
+
+```text
+outputs/analysis/PHASE2_TERRAIN_SAFE_HARD_STEP_SOURCE_MANIFEST.md
+outputs/analysis/phase2_terrain_safe_hard_step_source_manifest.json
+source_policy_sha256: f3492159a775b0e0f73a25cf528b84ae202c16d5b2ba2f1344f7b7256e4e7261
+```

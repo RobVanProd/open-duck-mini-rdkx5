@@ -84,6 +84,16 @@ exceeds corrected velocity/tracking limits on rough terrain. The next action is
 to turn the terrain-safe windows into a curated source manifest or live-oracle
 relabel pass, then train/fine-tune against that source.
 
+Canonical curated source manifest:
+
+```text
+outputs/analysis/PHASE2_TERRAIN_SAFE_HARD_STEP_SOURCE_MANIFEST.md
+outputs/analysis/phase2_terrain_safe_hard_step_source_manifest.json
+status: PASS_TERRAIN_SAFE_HARD_STEP_SOURCE_MANIFEST
+source_policy_sha256: f3492159a775b0e0f73a25cf528b84ae202c16d5b2ba2f1344f7b7256e4e7261
+windows: z=0.001 and z=0.002, seeds 2 and 4, 100 samples each
+```
+
 ## Closed Paths
 
 Do not spend the next run on:
