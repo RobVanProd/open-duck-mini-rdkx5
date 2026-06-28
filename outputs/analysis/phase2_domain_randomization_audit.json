@@ -1,0 +1,100 @@
+{
+  "blockers": [
+    "HOLD_TRAINABLE_WARMSTART_CHECKPOINT_MISSING",
+    "HOLD_LEG_GEOMETRY_JITTER_NOT_IMPLEMENTED",
+    "WARN_DR_RANGES_NOT_CLI_CONFIGURABLE"
+  ],
+  "files": {
+    "common_randomize": "/home/lsd/robots/Open_Duck_Playground/playground/common/randomize.py",
+    "common_runner": "/home/lsd/robots/Open_Duck_Playground/playground/common/runner.py",
+    "constants": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/constants.py",
+    "flat_xml": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/scene_flat_terrain_backlash.xml",
+    "joystick": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/joystick.py",
+    "rough_xml": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/scene_rough_terrain_backlash.xml",
+    "runner": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/runner.py"
+  },
+  "flat_floor_friction_xml": "0.6",
+  "hooks": {
+    "action_delay": {
+      "evidence": "joystick.py samples delayed action from action_history",
+      "status": "PRESENT"
+    },
+    "actuator_bridge": {
+      "evidence": "joystick.py bridge model and runner.py bridge CLI flags",
+      "status": "PRESENT"
+    },
+    "actuator_gain_randomization": {
+      "evidence": "playground/common/randomize.py scales actuator gains/bias",
+      "status": "PRESENT"
+    },
+    "com_randomization": {
+      "evidence": "playground/common/randomize.py jitters torso body_ipos",
+      "status": "PRESENT"
+    },
+    "domain_randomize_training_hook": {
+      "evidence": "BaseRunner passes randomization_fn into Brax PPO train",
+      "status": "PRESENT"
+    },
+    "dr_range_cli": {
+      "evidence": "runner.py exposes actuator bridge ranges but not friction/mass/COM/push/noise/terrain-ramp ranges as CLI arguments",
+      "status": "PARTIAL"
+    },
+    "friction_randomization": {
+      "current_range": [
+        "0.5",
+        "1.0"
+      ],
+      "evidence": "playground/common/randomize.py mutates model.geom_friction",
+      "status": "PRESENT"
+    },
+    "frictionloss_armature_randomization": {
+      "evidence": "playground/common/randomize.py scales dof frictionloss and armature",
+      "status": "PRESENT"
+    },
+    "imu_delay": {
+      "evidence": "joystick.py samples delayed IMU/gravity history",
+      "status": "PRESENT"
+    },
+    "leg_geometry_randomization": {
+      "evidence": "No body geom/site length scale jitter hook found in static audit",
+      "status": "MISSING"
+    },
+    "mass_randomization": {
+      "evidence": "playground/common/randomize.py mutates model.body_mass",
+      "status": "PRESENT"
+    },
+    "observation_noise": {
+      "evidence": "joystick.py default_config and _get_obs add joint/IMU noise",
+      "status": "PRESENT"
+    },
+    "push_perturbations": {
+      "evidence": "joystick.py adds random planar velocity impulse to floating base qvel",
+      "status": "PRESENT"
+    },
+    "rough_terrain": {
+      "evidence": "constants.py maps rough_terrain_backlash and XML contains hfield",
+      "status": "PRESENT"
+    }
+  },
+  "playground_path": "/home/lsd/robots/Open_Duck_Playground",
+  "rough_floor_friction_xml": "1.0",
+  "status": "HOLD_PHASE2_NOT_READY",
+  "trainable_warmstart": {
+    "candidate_mlp_npz": {
+      "exists": true,
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate/candidate_mlp.npz",
+      "sha256": "312f1ef0ba758af5fdeae900ce0a34dab659fe348a9f389988ddaaaa15659497",
+      "size_bytes": 876828
+    },
+    "policy_onnx": {
+      "exists": true,
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/policy/candidates/corrected_bridge_cmd_conditioned_rate175_20260627/candidate.onnx",
+      "sha256": "63506567f7a973be0ff6b2b222bba41736409da713466db442067c0f2a91415e",
+      "size_bytes": 874724
+    },
+    "reason": "Current Playground PPO warm-start path uses --restore_checkpoint_path for an Orbax checkpoint. The Phase 1 deployable artifact is ONNX plus BC MLP NPZ, which is useful as a behavior prior or conversion source but is not directly a PPO trainable checkpoint.",
+    "required_by_phase2": true,
+    "restore_checkpoint": null,
+    "status": "HOLD_TRAINABLE_WARMSTART_CHECKPOINT_MISSING"
+  }
+}
