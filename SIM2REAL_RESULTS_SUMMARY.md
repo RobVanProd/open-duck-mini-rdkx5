@@ -8046,3 +8046,37 @@ failed with `rocblas_status_internal_error` during JAX evaluator reset. The
 next terrain attempt should use a staged/gentler clearance objective plus
 stronger gait-preservation pressure, and should treat repeated local ROCm
 failures as backend holds rather than policy results.
+
+C5a tested that gentler clearance direction with restore-policy KL:
+
+```text
+artifact: outputs/analysis/PHASE2_STAGE_C5A_CLEARANCE_PRESERVE_DECISION.md
+screen: outputs/analysis/PHASE2_STAGE_C5A_TERRAIN_Z002_SCREEN_CPU.md
+status: HOLD_STAGE_C5A_RETREATS_TO_DOUBLE_SUPPORT
+```
+
+Local ROCm failed twice after C4 with `rocblas_status_internal_error` during
+JAX evaluator reset. A basic JAX matmul still passed, and C5a completed after
+setting:
+
+```text
+XLA_FLAGS=--xla_gpu_autotune_level=0
+XLA_PYTHON_CLIENT_PREALLOCATE=false
+```
+
+C5a stayed stable and in-envelope, but regressed into more double support and
+less forward progress:
+
+```text
+tracking p95: 0.1946 rad
+track ratio: 0.2220
+velocity excess: 0.0000 rad/s
+min swing peak lift: 0.0086 m
+single support: 9.6%
+double support: 90.4%
+```
+
+The terrain reward issue is now sharper: a touchdown clearance penalty can be
+avoided by reducing swing/transition behavior. The next offline attempt should
+pair very weak clearance pressure with stronger transition/single-support
+pressure and moderate gait preservation.

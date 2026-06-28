@@ -587,6 +587,59 @@ The next terrain attempt should stage the clearance pressure more gently and
 preserve the C3 gait with stronger restore-policy/behavior prior pressure or
 more frequent checkpoint screening.
 
+Stage C5a clearance-preservation run:
+
+```text
+decision:
+  outputs/analysis/PHASE2_STAGE_C5A_CLEARANCE_PRESERVE_DECISION.md
+
+screen:
+  outputs/analysis/PHASE2_STAGE_C5A_TERRAIN_Z002_SCREEN_CPU.md
+
+status:
+  HOLD_STAGE_C5A_RETREATS_TO_DOUBLE_SUPPORT
+```
+
+Two immediate follow-up runs after C4 failed before training with local ROCm
+`rocblas_status_internal_error` during JAX evaluator reset. A basic JAX ROCm
+matmul still passed. Retrying with:
+
+```text
+XLA_FLAGS=--xla_gpu_autotune_level=0
+XLA_PYTHON_CLIENT_PREALLOCATE=false
+```
+
+allowed C5a to train, so use this as the local ROCm workaround for short
+training attempts unless a cleaner backend fix is found.
+
+C5a used stronger gait preservation and much weaker clearance pressure:
+
+```text
+restore_policy_kl_scale: 2.5
+forward_swing_clearance_scale: -0.001
+forward_swing_clearance_target_m: 0.022
+```
+
+It stayed stable and in-envelope, and reduced strict tracking p95 below
+`0.20 rad`, but only by retreating into lower forward progress and even less
+clearance:
+
+```text
+c5a_81920:
+  tracking p95: 0.1946 rad
+  track ratio: 0.2220
+  corrected velocity excess: 0.0000 rad/s
+  min swing peak lift: 0.0086 m
+  single support: 9.6%
+  double support: 90.4%
+```
+
+This is not a terrain candidate. It exposes a reward loophole: touchdown
+clearance penalties can be avoided by reducing swing/transition behavior. The
+next C-stage attempt should keep transition/single-support pressure active
+while using very weak clearance pressure and moderate, not overwhelming,
+restore-policy KL.
+
 Stage D:
 
 - rough hfield terrain
