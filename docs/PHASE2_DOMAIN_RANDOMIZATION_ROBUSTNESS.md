@@ -1,6 +1,6 @@
 # Phase 2 Domain-Randomized Robustness Training
 
-status: `PASS_STAGE_A_GAIN099_READY_FOR_STAGE_B`
+status: `HOLD_STAGE_B_PUSH_DR_ERODES_FORWARD_MOTION`
 
 ## Objective
 
@@ -152,6 +152,27 @@ This is a Stage A sim promotion, not robot approval. Stage B may proceed
 offline from this lineage.
 
 Stage B:
+
+```text
+decision:
+  outputs/analysis/PHASE2_STAGE_B_DECISION.md
+
+status:
+  HOLD_STAGE_B_PUSH_DR_ERODES_FORWARD_MOTION
+```
+
+Two offline Stage B attempts were run from the trainable A2 164k checkpoint:
+
+- `stage_b1_full_flat_gentle_push_from_a2_gpu`: full flat physics
+  randomization plus gentle pushes. It completed training but regressed to
+  near-standstill at `x=0.08`; best track ratio was `0.0467`.
+- `stage_b0_mild_push_from_a2_gpu`: narrow randomization plus mild pushes. It
+  completed training and preserved more motion, but still held with best raw
+  track ratio `0.1898`. Constant gain wrappers up to `1.20` did not recover a
+  passing gait; best gain result was `0.2176`.
+
+Do not advance to rough terrain yet. The current blocker is preserving forward
+motion while adding push/randomization robustness on flat terrain.
 
 - flat terrain
 - full physics randomization
