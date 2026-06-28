@@ -85,6 +85,9 @@ Missing or partial:
   `--terrain-hfield-z-scale`; this creates a temporary scene XML for the worker
   and removes it after env construction, so the Playground checkout is not
   permanently modified
+- the training smoke wrapper also accepts `--terrain-hfield-z-scale`; it backs
+  up the selected task XML, patches the hfield z scale for the subprocess, and
+  restores the original XML in `finally`
 
 ## Curriculum
 
@@ -322,6 +325,21 @@ flat terrain
 rough_terrain_backlash --terrain-hfield-z-scale 0.002
 rough_terrain_backlash --terrain-hfield-z-scale 0.005
 stock rough_terrain_backlash       # hfield z scale 0.01
+```
+
+Training wrapper terrain override smoke:
+
+```text
+tool:
+  tools/run_actuator_bridge_training_smoke.py --terrain-hfield-z-scale 0.002
+
+artifact:
+  outputs/analysis/terrain_training_override_smoke/
+
+result:
+  PASS_SMOKE_RUN
+  destination_sha256_before == destination_sha256_restored
+  Playground XML restored to stock hfield size 10 10 .01 0.1
 ```
 
 Stage A z-scale `0.002` terrain gate:

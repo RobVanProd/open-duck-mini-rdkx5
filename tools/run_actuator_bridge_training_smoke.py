@@ -14,6 +14,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import re
 import shutil
 import shlex
 import subprocess
@@ -29,6 +30,16 @@ DEFAULT_OUTPUT_ROOT = Path("/tmp/open_duck_actuator_bridge_smoke")
 REFERENCE_RELATIVE_PATH = Path(
     "playground/open_duck_mini_v2/data/polynomial_coefficients.pkl"
 )
+TASK_XML_RELATIVE_PATHS = {
+    "flat_terrain": Path("playground/open_duck_mini_v2/xmls/scene_flat_terrain.xml"),
+    "rough_terrain": Path("playground/open_duck_mini_v2/xmls/scene_rough_terrain.xml"),
+    "flat_terrain_backlash": Path(
+        "playground/open_duck_mini_v2/xmls/scene_flat_terrain_backlash.xml"
+    ),
+    "rough_terrain_backlash": Path(
+        "playground/open_duck_mini_v2/xmls/scene_rough_terrain_backlash.xml"
+    ),
+}
 
 
 def timestamp() -> str:
@@ -364,6 +375,65 @@ def restore_reference_override(reference_override: dict[str, Any]) -> dict[str, 
     return reference_override
 
 
+def scale_hfield_xml(text: str, z_scale: float, source: Path) -> str:
+    pattern = re.compile(r'(<hfield\b[^>]*\bsize=")([^"]+)(")')
+    match = pattern.search(text)
+    if not match:
+        raise SystemExit(f"No hfield size attribute found in {source}")
+    values = match.group(2).split()
+    if len(values) != 4:
+        raise SystemExit(f"Expected four hfield size values in {source}: {values}")
+    values[2] = f"{float(z_scale):.8g}"
+    return text[: match.start(2)] + " ".join(values) + text[match.end(2) :]
+
+
+def apply_terrain_hfield_override(
+    args: argparse.Namespace, output_dir: Path
+) -> dict[str, Any]:
+    if args.terrain_hfield_z_scale is None:
+        return {"enabled": False}
+    if args.task not in TASK_XML_RELATIVE_PATHS:
+        raise SystemExit(f"Unknown task for terrain override: {args.task}")
+    destination = Path(args.playground_path) / TASK_XML_RELATIVE_PATHS[args.task]
+    if not destination.exists():
+        raise SystemExit(f"Missing terrain XML: {destination}")
+
+    backup = output_dir / f"{destination.name}.original"
+    output_dir.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(destination, backup)
+    before_sha = sha256(destination)
+    original_text = destination.read_text()
+    scaled_text = scale_hfield_xml(
+        original_text, float(args.terrain_hfield_z_scale), destination
+    )
+    destination.write_text(scaled_text)
+    after_sha = sha256(destination)
+    return {
+        "enabled": True,
+        "task": args.task,
+        "terrain_hfield_z_scale": float(args.terrain_hfield_z_scale),
+        "destination": str(destination),
+        "destination_sha256_before": before_sha,
+        "destination_sha256_after": after_sha,
+        "backup": str(backup),
+        "backup_sha256": sha256(backup),
+        "restored": False,
+    }
+
+
+def restore_terrain_hfield_override(
+    terrain_override: dict[str, Any]
+) -> dict[str, Any]:
+    if not terrain_override.get("enabled"):
+        return terrain_override
+    backup = Path(terrain_override["backup"])
+    destination = Path(terrain_override["destination"])
+    shutil.copy2(backup, destination)
+    terrain_override["restored"] = True
+    terrain_override["destination_sha256_restored"] = sha256(destination)
+    return terrain_override
+
+
 def extract_summary(stdout: str) -> dict[str, Any]:
     step_lines = [line for line in stdout.splitlines() if line.startswith("STEP:")]
     export_lines = [
@@ -457,6 +527,17 @@ def main() -> int:
             "wrapper backs up the Playground reference file, copies this file "
             "before training, records hashes, and restores the original after "
             "the run. Default is unchanged behavior."
+        ),
+    )
+    parser.add_argument(
+        "--terrain-hfield-z-scale",
+        type=float,
+        default=None,
+        help=(
+            "Optional training-only hfield vertical scale override for the "
+            "selected --task XML. The wrapper backs up the XML, patches the "
+            "hfield size z value before training, records hashes, and restores "
+            "the original after the run."
         ),
     )
     parser.add_argument("--disable-actuator-bridge", action="store_true")
@@ -681,6 +762,11 @@ def main() -> int:
             "enabled": bool(args.reference_motion_override),
             "source": args.reference_motion_override,
         },
+        "terrain_hfield_override": {
+            "enabled": args.terrain_hfield_z_scale is not None,
+            "task": args.task,
+            "terrain_hfield_z_scale": args.terrain_hfield_z_scale,
+        },
         "soft_prior": {
             "enabled": args.enable_soft_prior,
             "config_json": args.soft_prior_config_json,
@@ -833,8 +919,12 @@ def main() -> int:
         return 0
 
     output_dir.mkdir(parents=True, exist_ok=True)
+    reference_override = {"enabled": False}
+    terrain_hfield_override = {"enabled": False}
     reference_override = apply_reference_override(args, output_dir)
+    terrain_hfield_override = apply_terrain_hfield_override(args, output_dir)
     manifest["reference_motion_override"] = reference_override
+    manifest["terrain_hfield_override"] = terrain_hfield_override
     write_manifest(output_dir / "smoke_manifest.start.json", manifest)
 
     start_s = time.monotonic()
@@ -860,6 +950,9 @@ def main() -> int:
                 raise
     finally:
         reference_override = restore_reference_override(reference_override)
+        terrain_hfield_override = restore_terrain_hfield_override(
+            terrain_hfield_override
+        )
     elapsed_s = time.monotonic() - start_s
     stdout_text = stdout_path.read_text(errors="replace")
 
@@ -871,6 +964,7 @@ def main() -> int:
             "stdout_path": str(stdout_path),
             "stderr_path": str(stderr_path),
             "reference_motion_override": reference_override,
+            "terrain_hfield_override": terrain_hfield_override,
             "summary": extract_summary(stdout_text),
         }
     )
