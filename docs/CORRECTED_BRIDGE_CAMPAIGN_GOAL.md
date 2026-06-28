@@ -164,6 +164,60 @@ than a balanced left/right stance source. The old source-VX teacher data and
 old right-knee relabel hack must be treated as historical diagnostics, not as
 the current deployable-policy path.
 
+## Existing Candidate Screen And Promotion
+
+A short corrected-bridge screen checked selected existing ONNX candidates:
+
+```text
+artifact: outputs/analysis/CORRECTED_BRIDGE_EXISTING_CANDIDATE_SCREEN.md
+duration: 3 s
+seeds: 0, 1
+```
+
+Only `cmd_conditioned` passed the short screen inside the corrected per-joint
+velocity envelope and below `0.20 rad` pitch-chain tracking p95. It was then
+run through the full corrected gate:
+
+```text
+decision artifact: outputs/analysis/CORRECTED_BRIDGE_DEPLOYABLE_CANDIDATE_DECISION.md
+candidate: outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate/candidate.onnx
+candidate sha256: 63506567f7a973be0ff6b2b222bba41736409da713466db442067c0f2a91415e
+```
+
+Corrected `x=0.08` gate:
+
+```text
+artifact: outputs/analysis/CORRECTED_BRIDGE_CMD_CONDITIONED_FULL_GATE.md
+duration: 15 s
+seeds: 0-7
+passes: 8/8
+falls: 0/8
+duration_complete: 8/8
+mean vx: 0.0339 m/s
+mean track ratio: 0.4238
+max corrected velocity excess: 0.0000 rad/s
+max pitch-chain tracking p95: 0.1973 rad
+```
+
+Corrected `x=0.0` gate:
+
+```text
+artifact: outputs/analysis/CORRECTED_BRIDGE_CMD_CONDITIONED_X0_GATE.md
+duration: 15 s
+seeds: 0-7
+passes: 8/8
+falls: 0/8
+duration_complete: 8/8
+mean vx: 0.0003 m/s
+max corrected velocity excess: 0.0000 rad/s
+max pitch-chain tracking p95: 0.0748 rad
+```
+
+Decision: `cmd_conditioned` is the current corrected-bridge sim-side deployment
+candidate for stand/suspended hardware telemetry validation only. It is a slow
+in-envelope forward walker, not a full-speed `x=0.08` tracker. Grounded replay
+remains blocked until reviewed stand/suspended telemetry clears.
+
 ## Falsifiers
 
 Stop the branch and write a decision artifact if:

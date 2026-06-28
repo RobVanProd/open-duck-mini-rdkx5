@@ -7755,3 +7755,54 @@ upstream turn: moves, but over corrected envelope
 
 This closes the remaining `BEST_WALK_ONNX_2` source loophole for the checked
 command cells: movement still requires corrected-envelope violation.
+
+A short corrected-bridge screen of existing student/candidate ONNX files found
+one lead but no deployable result:
+
+```text
+artifact: outputs/analysis/CORRECTED_BRIDGE_EXISTING_CANDIDATE_SCREEN.md
+duration: 3 s
+seeds: 0, 1
+
+dagger_iter3: tracking hold
+phase_quadrant: tracking hold
+phase_smooth: low-progress/tracking hold
+gate_aware_smoke: fall/saturation hold
+ppo_warmstart: tracking hold
+cmd_conditioned: 2/2 short-screen pass
+```
+
+`cmd_conditioned` stayed under the corrected per-joint velocity envelope in
+both short seeds and had max pitch-chain tracking p95 below `0.20 rad`, but its
+mean track ratio was only about `0.41` over a 3 s screen. It is a warm-start
+lead for the full corrected gate, not a promotion candidate.
+
+Full corrected-bridge gates then promoted `cmd_conditioned` as the current
+sim-side deployment candidate:
+
+```text
+decision artifact: outputs/analysis/CORRECTED_BRIDGE_DEPLOYABLE_CANDIDATE_DECISION.md
+policy: outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate/candidate.onnx
+policy sha256: 63506567f7a973be0ff6b2b222bba41736409da713466db442067c0f2a91415e
+
+x=0.08 fitted corrected bridge:
+  passes: 8/8
+  falls: 0/8
+  duration complete: 8/8
+  mean vx: 0.0339 m/s
+  mean track ratio: 0.4238
+  max corrected velocity excess: 0.0000 rad/s
+  max pitch-chain tracking p95: 0.1973 rad
+
+x=0.0 fitted corrected bridge:
+  passes: 8/8
+  falls: 0/8
+  duration complete: 8/8
+  mean vx: 0.0003 m/s
+  max corrected velocity excess: 0.0000 rad/s
+  max pitch-chain tracking p95: 0.0748 rad
+```
+
+This is a slow in-envelope walker, not a full-speed `x=0.08` tracker. It is
+eligible for stand/suspended hardware telemetry validation only after review;
+grounded replay remains blocked.
