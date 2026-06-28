@@ -1,6 +1,6 @@
 # Phase 2 Stage A2 Decision
 
-status: `HOLD_STAGE_A2_NEAR_MISS_NO_PROMOTION`
+status: `PASS_STAGE_A_GAIN099_PROMOTED_FOR_STAGE_B`
 
 ## Summary
 
@@ -8,9 +8,11 @@ Stage A2 was a behavior-preserving retry after Stage A regressed the Phase 1
 gait into low forward progress. It completed offline on the local ROCm GPU and
 produced three exported checkpoints.
 
-Compared with Stage A, A2 preserved substantially more `x=0.08` motion, but no
-checkpoint fully clears the strict corrected-bridge gate. Robot validation
-remains blocked.
+Compared with Stage A, A2 preserved substantially more `x=0.08` motion. The raw
+164k checkpoint was a near miss, and a deployable 0.99 action-gain ONNX wrapper
+clears both strict corrected-bridge gates.
+
+This is a Stage A sim promotion only. Robot validation remains blocked.
 
 ## Training Run
 
@@ -172,3 +174,107 @@ A2 preservation posture and add a small targeted correction for tracking without
 allowing the optimizer to erase forward motion.
 
 Robot validation remains blocked.
+
+## Stage A Promotion
+
+The raw 164k checkpoint missed the strict `x=0.08` tracking threshold by
+`0.0004 rad` on seed 0. A minimal deployable action-gain wrapper with scale
+`0.99` was applied to the A2 164k ONNX. This does not change robot runtime
+`action_scale`; it is part of the exported policy graph.
+
+Wrapped policy:
+
+```text
+outputs/analysis/phase2_stage_a2_164k_action_gain/a2_164k_gain099.onnx
+sha256:
+  a082be6cf5c486073523bbd0fba4ea3645dc448270ca0a8e28c4ce5a4e8d31c4
+```
+
+Packaged candidate:
+
+```text
+policy/candidates/phase2_stage_a2_gain099_20260628/candidate.onnx
+policy/candidates/phase2_stage_a2_gain099_20260628/CANDIDATE_PACKAGE.md
+policy/candidates/phase2_stage_a2_gain099_20260628/candidate_metadata.json
+```
+
+Package status:
+
+```text
+READY_FOR_SIM_GATE_REVIEW
+```
+
+### Gain Screen
+
+Artifact:
+
+```text
+outputs/analysis/PHASE2_STAGE_A2_164K_GAIN_SCREEN_X008.md
+outputs/analysis/phase2_stage_a2_164k_gain_screen_x008.json
+```
+
+Seed-0, 15 s, `x=0.08`, corrected bridge:
+
+```text
+gain099:
+  status: PASS_CANDIDATE_SIM_GATE
+  track ratio: 0.3464
+  vx: 0.0277 m/s
+  max tracking p95: 0.1983 rad
+
+gain098:
+  status: PASS_CANDIDATE_SIM_GATE
+  track ratio: 0.3281
+  vx: 0.0262 m/s
+  max tracking p95: 0.1944 rad
+
+gain097:
+  status: PASS_CANDIDATE_SIM_GATE
+  track ratio: 0.3142
+  vx: 0.0251 m/s
+  max tracking p95: 0.1948 rad
+```
+
+`gain099` is the promoted variant because it is the least intrusive wrapper and
+keeps the most forward motion.
+
+### Gain099 x=0.08 Gate
+
+Artifact:
+
+```text
+outputs/analysis/PHASE2_STAGE_A2_164K_GAIN099_X008_GATE.md
+outputs/analysis/phase2_stage_a2_164k_gain099_x008_gate.json
+```
+
+Result:
+
+```text
+status: PASS_CANDIDATE_SIM_GATE on 8/8 seeds
+duration_complete: 8/8
+falls: 0/8
+mean track ratio: 0.3542
+mean vx: 0.0283 m/s
+max pitch velocity p95 excess: 0.0 rad/s
+max tracking p95: 0.1984 rad
+```
+
+### Gain099 x=0.0 Gate
+
+Artifact:
+
+```text
+outputs/analysis/PHASE2_STAGE_A2_164K_GAIN099_X000_GATE.md
+outputs/analysis/phase2_stage_a2_164k_gain099_x000_gate.json
+```
+
+Result:
+
+```text
+status: PASS_CANDIDATE_SIM_GATE on 8/8 seeds
+duration_complete: 8/8
+falls: 0/8
+mean vx: 0.0004 m/s
+max pitch velocity p95 excess: 0.0 rad/s
+max tracking p95: 0.0707 rad
+```

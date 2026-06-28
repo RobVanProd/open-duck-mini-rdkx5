@@ -1,6 +1,6 @@
 # Phase 2 Domain-Randomized Robustness Training
 
-status: `HOLD_STAGE_A2_NEAR_MISS_NO_PROMOTION`
+status: `PASS_STAGE_A_GAIN099_READY_FOR_STAGE_B`
 
 ## Objective
 
@@ -123,13 +123,33 @@ decision:
   outputs/analysis/PHASE2_STAGE_A2_DECISION.md
 
 status:
-  HOLD_STAGE_A2_NEAR_MISS_NO_PROMOTION
+  PASS_STAGE_A_GAIN099_PROMOTED_FOR_STAGE_B
 ```
 
 A2 improved the failure mode. The 164k checkpoint completed `x=0.08` 8/8 with
 no falls and no envelope excess, and passed `x=0.0` 8/8, but missed strict
-tracking by `0.0004 rad` on one seed. The 492k checkpoint had cleaner tracking
-but lost forward progress on two seeds. Do not advance to Stage B yet.
+tracking by `0.0004 rad` on one seed. A minimal 0.99 action-gain ONNX wrapper
+fixed that tracking miss while preserving command conditioning:
+
+```text
+candidate:
+  policy/candidates/phase2_stage_a2_gain099_20260628/candidate.onnx
+
+candidate_sha256:
+  a082be6cf5c486073523bbd0fba4ea3645dc448270ca0a8e28c4ce5a4e8d31c4
+
+x=0.08:
+  PASS_CANDIDATE_SIM_GATE 8/8
+  mean track ratio: 0.3542
+  max tracking p95: 0.1984 rad
+
+x=0.0:
+  PASS_CANDIDATE_SIM_GATE 8/8
+  mean vx: 0.0004 m/s
+```
+
+This is a Stage A sim promotion, not robot approval. Stage B may proceed
+offline from this lineage.
 
 Stage B:
 
