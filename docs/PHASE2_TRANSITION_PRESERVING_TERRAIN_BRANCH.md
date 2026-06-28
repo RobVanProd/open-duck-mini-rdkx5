@@ -518,3 +518,39 @@ Conclusion: the seed-5 right-ankle burst is a symptom, not the whole mechanism.
 The next branch should collect full-observation traces for seed 5 at both
 x=0.0 and x=0.08, compare against passing seeds 4 and 6, and emphasize early
 seed-5 divergent states before the fall tail. Do not continue tail-only caps.
+
+## Seed5 Neighbor Trace Divergence
+
+Artifact:
+
+```text
+decision: outputs/analysis/PHASE2_SEED5_CAPPED_NEIGHBOR_TRACE_DIVERGENCE.md
+status: PASS_TRACE_DIVERGENCE_CHARACTERIZED
+```
+
+Full-observation traces were collected for passing seeds 4 and 6 and failing
+seed 5 at both x=0.08 and x=0.0.
+
+At x=0.08, seed 5 diverges before the height collapse:
+
+```text
+tick 0: contact/support differs from both passing neighbors
+tick 1: pitch-chain sent-target/action velocity exceeds 2.5 rad/s
+tick 10: local vx becomes negative
+tick 25: body pitch differs from neighbor mean by >0.20 rad
+tick 51: base height finally drops below 0.13 m
+```
+
+At x=0.0, the same seed also fails:
+
+```text
+tick 0: vx is negative and contact/support differs from neighbors
+tick 1: pitch-chain sent-target/action velocity exceeds 2.5 rad/s
+tick 18: body pitch differs from neighbor mean by >0.20 rad
+tick 37: base height drops below 0.13 m
+```
+
+Conclusion: seed 5 is a command-independent early-state stability mode. The
+tail right-ankle burst is not the root cause. The next live-oracle correction
+should emphasize seed-5 early states before pitch divergence and downweight or
+exclude only the unrecoverable late fall tail.

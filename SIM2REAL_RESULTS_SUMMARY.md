@@ -8589,3 +8589,23 @@ The next useful branch should collect and compare full-observation seed-5
 traces at x=0.0 and x=0.08 against passing neighboring seeds 4 and 6. Do not
 continue tail-only caps or flat aggregate variants. Robot validation remains
 blocked.
+
+That comparison is now recorded:
+
+```text
+artifact: outputs/analysis/PHASE2_SEED5_CAPPED_NEIGHBOR_TRACE_DIVERGENCE.md
+status: PASS_TRACE_DIVERGENCE_CHARACTERIZED
+```
+
+Seed 5 diverges early from passing neighbor seeds 4 and 6. At x=0.08,
+contact/support differs at tick 0, pitch-chain sent/action velocity exceeds
+2.5 rad/s at tick 1, velocity turns negative by tick 10, pitch divergence
+appears by tick 25, and height collapse does not begin until about tick 51. At
+x=0.0, seed 5 also falls: support differs at tick 0, pitch-chain rate exceeds
+2.5 rad/s at tick 1, pitch divergence appears by tick 18, and height collapse
+follows around tick 37.
+
+This means seed 5 is a command-independent early-state stability mode, not a
+tail-only right-ankle label-rate problem. The next correction should emphasize
+early seed-5 states before pitch divergence and gate x=0.0 plus x=0.08
+together. Robot validation remains blocked.
