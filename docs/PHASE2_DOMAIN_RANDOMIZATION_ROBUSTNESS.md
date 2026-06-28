@@ -77,6 +77,10 @@ The local Playground now provides the requested DR scaffolding:
 Missing or partial:
 
 - stage advancement is not automated by corrected-bridge gates
+- push recovery was not part of the original canonical no-push candidate gate;
+  `tools/eval_policy_with_actuator_bridge.py` and
+  `tools/run_candidate_seed_sweep.py` now expose explicit default-off
+  `--eval-push-enable` controls and recovery metrics
 
 ## Curriculum
 
@@ -173,6 +177,52 @@ Two offline Stage B attempts were run from the trainable A2 164k checkpoint:
 
 Do not advance to rough terrain yet. The current blocker is preserving forward
 motion while adding push/randomization robustness on flat terrain.
+
+Push-eval plumbing result:
+
+```text
+analysis:
+  outputs/analysis/PHASE2_PUSH_EVAL_PLUMBING.md
+
+status:
+  PUSH_EVAL_MODE_ADDED
+```
+
+The canonical no-push candidate gate remains unchanged. Push perturbations are
+now an explicit eval mode with event counts, recovery success rate, applied
+velocity impulse magnitude, recovery-window pitch, and recovery-window base
+height.
+
+Small Stage A mild-push CPU screen:
+
+```text
+report:
+  outputs/analysis/PHASE2_STAGE_A_PUSH_SCREEN_CPU.md
+
+json:
+  outputs/analysis/phase2_stage_a_push_screen_cpu.json
+
+configuration:
+  seeds: 0,1
+  duration: 5 s
+  command_x: 0.08
+  push interval: 1.0-1.5 s
+  push magnitude: 0.05-0.10
+
+result:
+  PASS_CANDIDATE_SIM_GATE 2/2
+  falls: 0/2
+  mean track ratio: 0.3364
+  max tracking p95: 0.1970 rad
+  max velocity excess: 0.0000 rad/s
+  mean push recovery success: 0.8750
+```
+
+This is a short screen, not the full robustness gate. The full Stage B decision
+still needs an `8`-seed, `15 s` push-enabled gate, preferably on Colab/A100 or
+another stable accelerator. Local ROCm/MJX timed out a one-second closed-loop
+push smoke after `600 s`, so local GPU should not be used for correctness gates
+until that backend path is fixed.
 
 - flat terrain
 - full physics randomization
