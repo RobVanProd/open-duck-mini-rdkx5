@@ -677,7 +677,10 @@ def build_remote_driver(
     run_phase2_b0d = args.workflow == "phase2-b0d"
     run_phase2_b0e = args.workflow == "phase2-b0e"
     run_phase2_b0f = args.workflow == "phase2-b0f"
-    run_phase2_cuda_recipe = run_phase2_b0d or run_phase2_b0e or run_phase2_b0f
+    run_phase2_b0g = args.workflow == "phase2-b0g"
+    run_phase2_cuda_recipe = (
+        run_phase2_b0d or run_phase2_b0e or run_phase2_b0f or run_phase2_b0g
+    )
     run_staged_curriculum = args.workflow == "staged-curriculum"
     run_candidate_eval_only = args.workflow == "candidate-eval-only"
     run_checkpoint_sweep = args.workflow == "checkpoint-sweep"
@@ -696,6 +699,7 @@ def build_remote_driver(
             "phase2-b0d",
             "phase2-b0e",
             "phase2-b0f",
+            "phase2-b0g",
             "all",
         }
         and not args.skip_audit
@@ -823,7 +827,10 @@ def build_remote_driver(
         if candidate_behavior_prior_mlp_npz
         else ""
     )
-    if run_phase2_b0f:
+    if run_phase2_b0g:
+        phase2_recipe_id = "b0g"
+        phase2_default_candidate_name = "phase2_b0g_push_recovery_leftknee_cuda"
+    elif run_phase2_b0f:
         phase2_recipe_id = "b0f"
         phase2_default_candidate_name = "phase2_b0f_push_local_preserve_cuda"
     elif run_phase2_b0e:
@@ -833,50 +840,58 @@ def build_remote_driver(
         phase2_recipe_id = "b0d"
         phase2_default_candidate_name = "phase2_b0d_tracking_margin_cuda"
     phase2_output_root = f"/content/open_duck_training_phase2_{phase2_recipe_id}_cli"
-    phase2_num_timesteps = "80000" if run_phase2_b0f else "160000"
-    phase2_ppo_num_envs = "64" if run_phase2_b0f else "128"
-    phase2_ppo_batch_size = "512" if run_phase2_b0f else "1024"
-    phase2_lr = "0.000003" if run_phase2_b0f else ("0.000012" if run_phase2_b0e else "0.000015")
-    phase2_clip = "0.02" if run_phase2_b0f else ("0.04" if run_phase2_b0e else "0.05")
-    phase2_max_grad_norm = "0.1" if run_phase2_b0f else ("0.2" if run_phase2_b0e else "0.25")
-    phase2_restore_kl = "5.0" if run_phase2_b0f else ("1.5" if run_phase2_b0e else "1.0")
-    phase2_actuator_tracking = "-0.01" if run_phase2_b0f else ("-0.015" if run_phase2_b0e else "-0.04")
-    phase2_forward_progress = "2.5" if (run_phase2_b0e or run_phase2_b0f) else "2"
-    phase2_command_progress = "1.5" if (run_phase2_b0e or run_phase2_b0f) else "1"
-    phase2_command_shortfall = "-4" if (run_phase2_b0e or run_phase2_b0f) else "-2.5"
-    phase2_command_ratio = "0.45" if (run_phase2_b0e or run_phase2_b0f) else "0.4"
+    phase2_num_timesteps = "80000" if (run_phase2_b0f or run_phase2_b0g) else "160000"
+    phase2_ppo_num_envs = "64" if (run_phase2_b0f or run_phase2_b0g) else "128"
+    phase2_ppo_batch_size = "512" if (run_phase2_b0f or run_phase2_b0g) else "1024"
+    phase2_lr = "0.000003" if (run_phase2_b0f or run_phase2_b0g) else ("0.000012" if run_phase2_b0e else "0.000015")
+    phase2_clip = "0.02" if (run_phase2_b0f or run_phase2_b0g) else ("0.04" if run_phase2_b0e else "0.05")
+    phase2_max_grad_norm = "0.1" if (run_phase2_b0f or run_phase2_b0g) else ("0.2" if run_phase2_b0e else "0.25")
+    phase2_restore_kl = "5.0" if (run_phase2_b0f or run_phase2_b0g) else ("1.5" if run_phase2_b0e else "1.0")
+    phase2_actuator_tracking = "0" if run_phase2_b0g else ("-0.01" if run_phase2_b0f else ("-0.015" if run_phase2_b0e else "-0.04"))
+    phase2_forward_progress = "2.5" if (run_phase2_b0e or run_phase2_b0f or run_phase2_b0g) else "2"
+    phase2_command_progress = "1.5" if (run_phase2_b0e or run_phase2_b0f or run_phase2_b0g) else "1"
+    phase2_command_shortfall = "-4" if (run_phase2_b0e or run_phase2_b0f or run_phase2_b0g) else "-2.5"
+    phase2_command_ratio = "0.45" if (run_phase2_b0e or run_phase2_b0f or run_phase2_b0g) else "0.4"
     phase2_extra_args = (
         '"--tracking-lin-vel-scale", "3",'
         '"--tracking-sigma", "0.01",'
-        if (run_phase2_b0e or run_phase2_b0f)
+        if (run_phase2_b0e or run_phase2_b0f or run_phase2_b0g)
         else ""
     )
-    phase2_dr_friction_min = "0.95" if run_phase2_b0f else "0.8"
-    phase2_dr_friction_max = "1.05" if run_phase2_b0f else "1.1"
-    phase2_dr_frictionloss_scale_min = "0.995" if run_phase2_b0f else "0.98"
-    phase2_dr_frictionloss_scale_max = "1.005" if run_phase2_b0f else "1.02"
+    phase2_dr_friction_min = "0.95" if (run_phase2_b0f or run_phase2_b0g) else "0.8"
+    phase2_dr_friction_max = "1.05" if (run_phase2_b0f or run_phase2_b0g) else "1.1"
+    phase2_dr_frictionloss_scale_min = "0.995" if (run_phase2_b0f or run_phase2_b0g) else "0.98"
+    phase2_dr_frictionloss_scale_max = "1.005" if (run_phase2_b0f or run_phase2_b0g) else "1.02"
     phase2_dr_armature_scale_min = "1.0"
-    phase2_dr_armature_scale_max = "1.005" if run_phase2_b0f else "1.02"
-    phase2_dr_com_jitter_m = "0.003" if run_phase2_b0f else "0.01"
-    phase2_dr_mass_scale_min = "0.995" if run_phase2_b0f else "0.98"
-    phase2_dr_mass_scale_max = "1.005" if run_phase2_b0f else "1.02"
-    phase2_dr_torso_mass_delta_min = "-0.005" if run_phase2_b0f else "-0.02"
-    phase2_dr_torso_mass_delta_max = "0.005" if run_phase2_b0f else "0.02"
-    phase2_dr_qpos_jitter_rad = "0.003" if run_phase2_b0f else "0.006"
-    phase2_dr_actuator_gain_scale_min = "0.995" if run_phase2_b0f else "0.98"
-    phase2_dr_actuator_gain_scale_max = "1.005" if run_phase2_b0f else "1.02"
-    phase2_dr_leg_geometry_jitter_scale = "0.001" if run_phase2_b0f else "0.003"
-    phase2_push_interval_min_s = "1.0" if run_phase2_b0f else "7"
-    phase2_push_interval_max_s = "2.0" if run_phase2_b0f else "12"
-    phase2_push_magnitude_min = "0.03" if run_phase2_b0f else "0.02"
-    phase2_push_magnitude_max = "0.08" if run_phase2_b0f else "0.1"
-    phase2_noise_level = "0.25" if run_phase2_b0f else "0.5"
-    phase2_noise_joint_pos = "0.004" if run_phase2_b0f else "0.0075"
-    phase2_noise_joint_vel = "0.4" if run_phase2_b0f else "0.75"
-    phase2_noise_gravity = "0.02" if run_phase2_b0f else "0.04"
-    phase2_noise_gyro = "0.02" if run_phase2_b0f else "0.04"
-    phase2_noise_accelerometer = "0.01" if run_phase2_b0f else "0.02"
-    phase2_behavior_prior_scale = "-1.0" if run_phase2_b0f else "-0.35"
+    phase2_dr_armature_scale_max = "1.005" if (run_phase2_b0f or run_phase2_b0g) else "1.02"
+    phase2_dr_com_jitter_m = "0.003" if (run_phase2_b0f or run_phase2_b0g) else "0.01"
+    phase2_dr_mass_scale_min = "0.995" if (run_phase2_b0f or run_phase2_b0g) else "0.98"
+    phase2_dr_mass_scale_max = "1.005" if (run_phase2_b0f or run_phase2_b0g) else "1.02"
+    phase2_dr_torso_mass_delta_min = "-0.005" if (run_phase2_b0f or run_phase2_b0g) else "-0.02"
+    phase2_dr_torso_mass_delta_max = "0.005" if (run_phase2_b0f or run_phase2_b0g) else "0.02"
+    phase2_dr_qpos_jitter_rad = "0.003" if (run_phase2_b0f or run_phase2_b0g) else "0.006"
+    phase2_dr_actuator_gain_scale_min = "0.995" if (run_phase2_b0f or run_phase2_b0g) else "0.98"
+    phase2_dr_actuator_gain_scale_max = "1.005" if (run_phase2_b0f or run_phase2_b0g) else "1.02"
+    phase2_dr_leg_geometry_jitter_scale = "0.001" if (run_phase2_b0f or run_phase2_b0g) else "0.003"
+    phase2_push_interval_min_s = "1.0" if (run_phase2_b0f or run_phase2_b0g) else "7"
+    phase2_push_interval_max_s = "1.5" if run_phase2_b0g else ("2.0" if run_phase2_b0f else "12")
+    phase2_push_magnitude_min = "0.05" if run_phase2_b0g else ("0.03" if run_phase2_b0f else "0.02")
+    phase2_push_magnitude_max = "0.1" if run_phase2_b0g else ("0.08" if run_phase2_b0f else "0.1")
+    phase2_noise_level = "0.25" if (run_phase2_b0f or run_phase2_b0g) else "0.5"
+    phase2_noise_joint_pos = "0.004" if (run_phase2_b0f or run_phase2_b0g) else "0.0075"
+    phase2_noise_joint_vel = "0.4" if (run_phase2_b0f or run_phase2_b0g) else "0.75"
+    phase2_noise_gravity = "0.02" if (run_phase2_b0f or run_phase2_b0g) else "0.04"
+    phase2_noise_gyro = "0.02" if (run_phase2_b0f or run_phase2_b0g) else "0.04"
+    phase2_noise_accelerometer = "0.01" if (run_phase2_b0f or run_phase2_b0g) else "0.02"
+    phase2_behavior_prior_scale = "-1.0" if (run_phase2_b0f or run_phase2_b0g) else "-0.35"
+    phase2_push_recovery_arg = (
+        '"--push-recovery-actuator-tracking-scale", "-0.02",'
+        '"--push-recovery-actuator-tracking-huber-delta", "0.03",'
+        '"--push-recovery-tracking-window-steps", "25",'
+        '"--push-recovery-tracking-joint-indices", "3",'
+        if run_phase2_b0g
+        else ""
+    )
     return textwrap.dedent(
         f"""
         import atexit
@@ -1280,6 +1295,7 @@ def build_remote_driver(
                 "--restore-policy-kl-scale", "{phase2_restore_kl}",
                 "--target-rate-scale", "0",
                 "--actuator-tracking-scale", "{phase2_actuator_tracking}",
+                {phase2_push_recovery_arg}
                 {phase2_extra_args}
                 "--forward-progress-scale", "{phase2_forward_progress}",
                 "--command-progress-scale", "{phase2_command_progress}",
@@ -1774,6 +1790,7 @@ def main() -> int:
             "phase2-b0d",
             "phase2-b0e",
             "phase2-b0f",
+            "phase2-b0g",
             "staged-curriculum",
             "all",
         ],

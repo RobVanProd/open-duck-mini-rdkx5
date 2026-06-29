@@ -1781,3 +1781,19 @@ This does not promote a policy. It only creates the missing localized lever for
 the next Phase 2 run: preserve the `lk097` rough-terrain gait while improving
 left-knee post-push recovery margin, then re-gate on corrected bridge rough
 `z=0.002` gentle-push 8-seed screens.
+
+The named A100 workflow for that follow-up is:
+
+```bash
+python3 tools/run_colab_cli_cuda_workflow.py \
+  --workflow phase2-b0g \
+  --session <visible-a100-session> \
+  --candidate-checkpoint-sweep \
+  --candidate-checkpoint-sweep-commands 0.0,0.08 \
+  --candidate-checkpoint-sweep-duration 1.0 \
+  --candidate-checkpoint-sweep-jax-platform cpu \
+  --run
+```
+
+At the time this hook was added, no active Colab session was available, so B0G
+was not launched.

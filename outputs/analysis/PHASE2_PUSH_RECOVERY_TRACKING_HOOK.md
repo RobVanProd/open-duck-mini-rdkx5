@@ -83,8 +83,14 @@ The temporary terrain XML was restored after the smoke run.
 
 ## Next Branch
 
-The next valid policy-producing branch should start from the `lk097` near-pass
-line and use this hook as a localized correction:
+The next valid policy-producing branch is named in the Colab workflow as:
+
+```text
+tools/run_colab_cli_cuda_workflow.py --workflow phase2-b0g
+```
+
+It should start from the `lk097` near-pass line and use this hook as a
+localized correction:
 
 ```text
 candidate root: outputs/analysis/phase2_b0c_245_leftknee_scale097_candidate/candidate.onnx
@@ -92,6 +98,7 @@ restore checkpoint: outputs/phase2_domain_randomization/stage_b0c_rough_z002_pus
 hook: push_recovery_actuator_tracking
 joint indices: 3
 window: 25 ticks
+global actuator_tracking_scale: 0
 ```
 
 Gate before any broader DR stage:
