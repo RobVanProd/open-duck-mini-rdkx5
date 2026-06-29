@@ -110,6 +110,18 @@ outputs/analysis/PHASE2_COLAB_PACKAGE_ONLY_MANIFEST.md
 outputs/analysis/phase2_colab_package_only_manifest.json
 ```
 
+Current local fallback readiness:
+
+```text
+outputs/analysis/PHASE2_LOCAL_FALLBACK_READINESS.md
+outputs/analysis/phase2_local_fallback_readiness.json
+```
+
+Use this read-only report when Colab is unavailable. The A100/L4 Colab path
+remains the preferred Phase 2 training path. Local ROCm evidence is debug or
+fallback evidence unless it clears the same canonical corrected-bridge gates
+and the JAX/package version difference is reviewed explicitly.
+
 This recipe continues from the last z=0.002 passing A2 checkpoint, keeps the
 corrected bridge active, uses z=0.005 rough terrain with no push, and targets
 the seed-5 support collapse directly:
