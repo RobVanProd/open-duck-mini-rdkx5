@@ -50,6 +50,14 @@ def shell_join(command: list[str]) -> str:
     return " ".join(shlex.quote(part) for part in command)
 
 
+def env_shell_prefix(env_set: dict[str, str], env_unset: list[str]) -> str:
+    parts = ["env"]
+    for name in env_unset:
+        parts.extend(["-u", name])
+    parts.extend(f"{name}={value}" for name, value in env_set.items())
+    return shell_join(parts)
+
+
 def cli_value(value: Any) -> str:
     """Format values so argparse never mistakes negative floats for flags."""
     if isinstance(value, float):
@@ -495,6 +503,52 @@ def main() -> int:
             "runs force cpu and GPU runs leave JAX_PLATFORMS unset."
         ),
     )
+    parser.add_argument(
+        "--xla-flags",
+        default=None,
+        help=(
+            "Optional XLA_FLAGS override recorded in the run manifest. For "
+            "local ROCm, --xla-flags=--xla_gpu_enable_command_buffer= disables "
+            "GPU command buffers."
+        ),
+    )
+    parser.add_argument(
+        "--xla-python-client-preallocate",
+        choices=["true", "false"],
+        default=None,
+        help="Optional XLA_PYTHON_CLIENT_PREALLOCATE override.",
+    )
+    parser.add_argument(
+        "--xla-python-client-mem-fraction",
+        type=float,
+        default=None,
+        help="Optional XLA_PYTHON_CLIENT_MEM_FRACTION override.",
+    )
+    parser.add_argument(
+        "--extra-env",
+        action="append",
+        default=[],
+        metavar="KEY=VALUE",
+        help=(
+            "Additional environment override for the training subprocess. May "
+            "be repeated. Values are recorded in the manifest."
+        ),
+    )
+    parser.add_argument(
+        "--unset-env",
+        action="append",
+        default=[],
+        metavar="KEY",
+        help=(
+            "Environment variable to remove from the training subprocess. May "
+            "be repeated. Useful for inherited ROCm overrides."
+        ),
+    )
+    parser.add_argument(
+        "--unset-hsa-override-gfx-version",
+        action="store_true",
+        help="Remove HSA_OVERRIDE_GFX_VERSION from the training subprocess env.",
+    )
     parser.add_argument("--timeout-s", type=int, default=900)
     parser.add_argument("--task", default="flat_terrain")
     parser.add_argument("--env", default="joystick")
@@ -794,6 +848,37 @@ def main() -> int:
     else:
         env.pop("JAX_PLATFORMS", None)
     env["PYTHONUNBUFFERED"] = "1"
+    env_set: dict[str, str] = {
+        "JAX_PLATFORM_NAME": env["JAX_PLATFORM_NAME"],
+    }
+    if env.get("JAX_PLATFORMS") is not None:
+        env_set["JAX_PLATFORMS"] = str(env["JAX_PLATFORMS"])
+    env_unset = list(dict.fromkeys(args.unset_env))
+    if args.unset_hsa_override_gfx_version:
+        env_unset.append("HSA_OVERRIDE_GFX_VERSION")
+    env_unset = list(dict.fromkeys(env_unset))
+    for name in env_unset:
+        env.pop(name, None)
+    if args.xla_flags is not None:
+        env["XLA_FLAGS"] = args.xla_flags
+        env_set["XLA_FLAGS"] = args.xla_flags
+    if args.xla_python_client_preallocate is not None:
+        env["XLA_PYTHON_CLIENT_PREALLOCATE"] = args.xla_python_client_preallocate
+        env_set["XLA_PYTHON_CLIENT_PREALLOCATE"] = (
+            args.xla_python_client_preallocate
+        )
+    if args.xla_python_client_mem_fraction is not None:
+        mem_fraction = cli_value(args.xla_python_client_mem_fraction)
+        env["XLA_PYTHON_CLIENT_MEM_FRACTION"] = mem_fraction
+        env_set["XLA_PYTHON_CLIENT_MEM_FRACTION"] = mem_fraction
+    for item in args.extra_env:
+        if "=" not in item:
+            raise SystemExit(f"--extra-env must be KEY=VALUE, got: {item}")
+        name, value = item.split("=", 1)
+        if not name:
+            raise SystemExit(f"--extra-env must include a non-empty KEY: {item}")
+        env[name] = value
+        env_set[name] = value
 
     manifest: dict[str, Any] = {
         "status": "RUN_PLANNED" if args.run else "DRY_RUN",
@@ -807,6 +892,10 @@ def main() -> int:
         "jax_platform_env": {
             "JAX_PLATFORM_NAME": env["JAX_PLATFORM_NAME"],
             "JAX_PLATFORMS": env.get("JAX_PLATFORMS"),
+        },
+        "subprocess_env": {
+            "set": env_set,
+            "unset": env_unset,
         },
         "timeout_s": args.timeout_s,
         "export_min_step": args.export_min_step,
@@ -990,11 +1079,7 @@ def main() -> int:
             "noise_accelerometer": args.noise_accelerometer,
         },
         "command": command,
-        "command_shell": (
-            f"JAX_PLATFORM_NAME={env['JAX_PLATFORM_NAME']} "
-            f"JAX_PLATFORMS={env.get('JAX_PLATFORMS', '')} "
-            f"{shell_join(command)}"
-        ),
+        "command_shell": f"{env_shell_prefix(env_set, env_unset)} {shell_join(command)}",
         "robot_touched": False,
         "deploy_performed": False,
     }

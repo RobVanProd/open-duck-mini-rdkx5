@@ -1468,6 +1468,21 @@ status: HOLD_SMOKE_RUN
 error: rocblas_gemm_strided_batched_ex failed with rocblas_status_internal_error
 ```
 
+`tools/run_actuator_bridge_training_smoke.py` now has explicit environment
+flags so local ROCm attempts do not depend on unrecorded shell state:
+
+```text
+--jax-platforms rocm
+--xla-flags=--xla_gpu_enable_command_buffer=
+--xla-python-client-preallocate false
+--xla-python-client-mem-fraction 0.60
+--unset-hsa-override-gfx-version
+```
+
+These values are written to each run manifest under `subprocess_env`. Keep using
+the pinned A100/Colab path for policy-producing Phase 2 runs unless a local ROCm
+run with these recorded settings clears the full post-training gates.
+
 The latest ONNX from that run was then checked on the immediate `z=0.005`,
 `x=0.08`, corrected-bridge gate. Seed 0 already held on low forward progress:
 
