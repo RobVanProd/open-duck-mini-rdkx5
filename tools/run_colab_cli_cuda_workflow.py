@@ -546,6 +546,39 @@ def start_remote_job(
     )
     driver_local = run_dir / f"{workflow_name}_driver.py"
     driver_local.write_text(driver)
+
+    if args.exec_remote:
+        completed = subprocess.run(
+            [
+                "colab",
+                "exec",
+                "-s",
+                args.session,
+                "-f",
+                str(driver_local),
+                "--timeout",
+                str(args.exec_remote_timeout_s),
+            ],
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            check=False,
+        )
+        exec_log = run_dir / "exec_remote.log"
+        exec_log.write_text(completed.stdout or "")
+        print(completed.stdout or "", flush=True)
+        print(f"COLAB_EXEC_REMOTE_RETURNCODE {completed.returncode}", flush=True)
+        download_remote_results(
+            args.session,
+            run_dir,
+            remote_log,
+            remote_exit,
+            remote_bundle,
+        )
+        if completed.returncode != 0:
+            raise SystemExit(completed.returncode)
+        return
+
     run(["colab", "upload", "-s", args.session, str(driver_local), remote_driver])
 
     console_script = run_dir / f"{workflow_name}_start_console.sh"
@@ -1687,7 +1720,18 @@ def poll_remote(
         )
         raise SystemExit(f"Timed out waiting for {remote_exit}")
 
-    run(["colab", "download", "-s", session, remote_exit, str(run_dir / Path(remote_exit).name)])
+    download_remote_results(session, run_dir, remote_log, remote_exit, remote_bundle)
+
+
+def download_remote_results(
+    session: str,
+    run_dir: Path,
+    remote_log: str,
+    remote_exit: str,
+    remote_bundle: str,
+) -> None:
+    if colab_file_exists(session, remote_exit):
+        run(["colab", "download", "-s", session, remote_exit, str(run_dir / Path(remote_exit).name)])
     if colab_file_exists(session, remote_log):
         run(["colab", "download", "-s", session, remote_log, str(run_dir / Path(remote_log).name)])
     if colab_file_exists(session, remote_bundle):
@@ -1753,6 +1797,21 @@ def main() -> int:
         type=int,
         default=1800,
         help="Console timeout for --foreground-remote.",
+    )
+    parser.add_argument(
+        "--exec-remote",
+        action="store_true",
+        help=(
+            "Run the generated remote driver through `colab exec` instead of "
+            "raw console. This is intended for sessions where console/detached "
+            "jobs disappear before writing an exit sentinel."
+        ),
+    )
+    parser.add_argument(
+        "--exec-remote-timeout-s",
+        type=int,
+        default=14400,
+        help="Execution timeout for --exec-remote.",
     )
     parser.add_argument("--poll-interval-s", type=int, default=60)
     parser.add_argument(
