@@ -109,10 +109,10 @@ required min swing rel-x p95 range: 0.0030 m
 
 `HOLD_CMDSCALE_FIXES_PUSH_ENVELOPE_BREAKS_NOPUSH_SWING`
 
-A uniform high-command 0.99 attenuation is too blunt to promote. It fixes the
-gentle-push envelope excess, but it slightly erodes no-push rough-terrain foot
-advance on seed 3. The promoted package remains the unscaled command-gated
-candidate:
+A uniform high-command attenuation is too blunt to promote. Scale `0.99` fixes
+the gentle-push envelope excess, but it slightly erodes no-push rough-terrain
+foot advance on seed 3. The promoted package remains the unscaled
+command-gated candidate:
 
 ```text
 policy/candidates/phase2_stagea2_seed5_recovery_command_gated_20260628/candidate.onnx
@@ -122,3 +122,22 @@ The next useful offline step is not global attenuation. It should add
 perturbation-specific target-rate margin while preserving no-push swing
 geometry, for example by fine-tuning with push perturbations active or using a
 phase/contact-specific correction only during high-rate recovery moments.
+
+## Scalar-Gain Bracket
+
+Two eval-only follow-up screens bracketed the tradeoff:
+
+```text
+0.997 x=0.08 gentle push:
+  artifact: outputs/analysis/PHASE2_SEED5_NEIGHBOR_RECOVERY_STAGEA2_COMMAND_GATED_GAIN0997_X008_ROUGH_Z002_GENTLE_PUSH_8SEED_GATE_CPU.md
+  result: HOLD_CANDIDATE_TARGET_VELOCITY on seed 5,
+          HOLD_CANDIDATE_TRACKING on seed 7
+
+0.995 x=0.08 gentle push:
+  artifact: outputs/analysis/PHASE2_SEED5_NEIGHBOR_RECOVERY_STAGEA2_COMMAND_GATED_GAIN0995_X008_ROUGH_Z002_GENTLE_PUSH_8SEED_GATE_CPU.md
+  result: HOLD_CANDIDATE_TRACKING on seed 7
+          max tracking p95: 0.2005 rad
+```
+
+This closes the scalar-gain sweep. The remaining push-margin issue needs a
+more local correction than global command/action attenuation.

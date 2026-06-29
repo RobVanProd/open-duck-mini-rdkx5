@@ -1295,3 +1295,18 @@ x=0.08 no push: HOLD_CANDIDATE_TERRAIN_SWING
 Therefore global high-command attenuation is not the promotion fix. The next
 step should preserve no-push swing geometry while adding perturbation-specific
 target-rate margin.
+
+Additional eval-only gain screens bracketed the same tradeoff:
+
+```text
+gain 0.997 x=0.08 gentle push:
+  HOLD_CANDIDATE_TARGET_VELOCITY on seed 5
+  HOLD_CANDIDATE_TRACKING on seed 7
+
+gain 0.995 x=0.08 gentle push:
+  HOLD_CANDIDATE_TRACKING on seed 7
+  max tracking p95 0.2005 rad
+```
+
+Do not continue scalar gain sweeps. The next correction needs to be local to
+push recovery / high-rate moments rather than a global action attenuation.

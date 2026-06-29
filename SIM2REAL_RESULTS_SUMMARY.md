@@ -8757,3 +8757,13 @@ x=0.08 no push: HOLD_CANDIDATE_TERRAIN_SWING on seed 3
 Conclusion: global attenuation is too blunt. The next offline work should
 preserve no-push swing while adding target-rate margin specifically around
 push recovery. Robot validation remains blocked.
+
+Eval-only gains `0.997` and `0.995` were screened after the `0.99` diagnostic.
+They also held on the `x=0.08` gentle-push gate:
+
+```text
+gain 0.997: target-velocity hold on seed 5, tracking hold on seed 7
+gain 0.995: tracking hold on seed 7, max tracking p95 0.2005 rad
+```
+
+This closes scalar action attenuation as a Phase 2 promotion path.

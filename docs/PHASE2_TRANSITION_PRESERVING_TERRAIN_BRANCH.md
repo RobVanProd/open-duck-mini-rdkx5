@@ -755,3 +755,8 @@ status: HOLD_CMDSCALE_FIXES_PUSH_ENVELOPE_BREAKS_NOPUSH_SWING
 The scaled wrapper passed the `x=0.08` gentle-push gate but failed no-push
 terrain swing on seed 3. This closes global high-command attenuation as the
 next promotion fix.
+
+Eval-only gains `0.997` and `0.995` were also screened under `x=0.08` gentle
+push. They still held on target velocity and/or tracking, with gain `0.995`
+missing by only `0.0005 rad` on seed 7. This brackets the problem but does not
+produce a promotable scalar setting.
