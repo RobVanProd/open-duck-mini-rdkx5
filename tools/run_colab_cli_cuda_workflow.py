@@ -636,7 +636,8 @@ def build_remote_driver(
     run_candidate_training = args.workflow in {"candidate", "candidate-only", "all"}
     run_phase2_b0d = args.workflow == "phase2-b0d"
     run_phase2_b0e = args.workflow == "phase2-b0e"
-    run_phase2_cuda_recipe = run_phase2_b0d or run_phase2_b0e
+    run_phase2_b0f = args.workflow == "phase2-b0f"
+    run_phase2_cuda_recipe = run_phase2_b0d or run_phase2_b0e or run_phase2_b0f
     run_staged_curriculum = args.workflow == "staged-curriculum"
     run_candidate_eval_only = args.workflow == "candidate-eval-only"
     run_checkpoint_sweep = args.workflow == "checkpoint-sweep"
@@ -654,6 +655,7 @@ def build_remote_driver(
             "checkpoint-sweep",
             "phase2-b0d",
             "phase2-b0e",
+            "phase2-b0f",
             "all",
         }
         and not args.skip_audit
@@ -781,28 +783,58 @@ def build_remote_driver(
         if candidate_behavior_prior_mlp_npz
         else ""
     )
-    phase2_recipe_id = "b0e" if run_phase2_b0e else "b0d"
-    phase2_default_candidate_name = (
-        "phase2_b0e_motion_preserving_tracking_cuda"
-        if run_phase2_b0e
-        else "phase2_b0d_tracking_margin_cuda"
-    )
+    if run_phase2_b0f:
+        phase2_recipe_id = "b0f"
+        phase2_default_candidate_name = "phase2_b0f_push_local_preserve_cuda"
+    elif run_phase2_b0e:
+        phase2_recipe_id = "b0e"
+        phase2_default_candidate_name = "phase2_b0e_motion_preserving_tracking_cuda"
+    else:
+        phase2_recipe_id = "b0d"
+        phase2_default_candidate_name = "phase2_b0d_tracking_margin_cuda"
     phase2_output_root = f"/content/open_duck_training_phase2_{phase2_recipe_id}_cli"
-    phase2_lr = "0.000012" if run_phase2_b0e else "0.000015"
-    phase2_clip = "0.04" if run_phase2_b0e else "0.05"
-    phase2_max_grad_norm = "0.2" if run_phase2_b0e else "0.25"
-    phase2_restore_kl = "1.5" if run_phase2_b0e else "1.0"
-    phase2_actuator_tracking = "-0.015" if run_phase2_b0e else "-0.04"
-    phase2_forward_progress = "2.5" if run_phase2_b0e else "2"
-    phase2_command_progress = "1.5" if run_phase2_b0e else "1"
-    phase2_command_shortfall = "-4" if run_phase2_b0e else "-2.5"
-    phase2_command_ratio = "0.45" if run_phase2_b0e else "0.4"
+    phase2_num_timesteps = "80000" if run_phase2_b0f else "160000"
+    phase2_lr = "0.000003" if run_phase2_b0f else ("0.000012" if run_phase2_b0e else "0.000015")
+    phase2_clip = "0.02" if run_phase2_b0f else ("0.04" if run_phase2_b0e else "0.05")
+    phase2_max_grad_norm = "0.1" if run_phase2_b0f else ("0.2" if run_phase2_b0e else "0.25")
+    phase2_restore_kl = "5.0" if run_phase2_b0f else ("1.5" if run_phase2_b0e else "1.0")
+    phase2_actuator_tracking = "-0.01" if run_phase2_b0f else ("-0.015" if run_phase2_b0e else "-0.04")
+    phase2_forward_progress = "2.5" if (run_phase2_b0e or run_phase2_b0f) else "2"
+    phase2_command_progress = "1.5" if (run_phase2_b0e or run_phase2_b0f) else "1"
+    phase2_command_shortfall = "-4" if (run_phase2_b0e or run_phase2_b0f) else "-2.5"
+    phase2_command_ratio = "0.45" if (run_phase2_b0e or run_phase2_b0f) else "0.4"
     phase2_extra_args = (
         '"--tracking-lin-vel-scale", "3",'
         '"--tracking-sigma", "0.01",'
-        if run_phase2_b0e
+        if (run_phase2_b0e or run_phase2_b0f)
         else ""
     )
+    phase2_dr_friction_min = "0.95" if run_phase2_b0f else "0.8"
+    phase2_dr_friction_max = "1.05" if run_phase2_b0f else "1.1"
+    phase2_dr_frictionloss_scale_min = "0.995" if run_phase2_b0f else "0.98"
+    phase2_dr_frictionloss_scale_max = "1.005" if run_phase2_b0f else "1.02"
+    phase2_dr_armature_scale_min = "1.0"
+    phase2_dr_armature_scale_max = "1.005" if run_phase2_b0f else "1.02"
+    phase2_dr_com_jitter_m = "0.003" if run_phase2_b0f else "0.01"
+    phase2_dr_mass_scale_min = "0.995" if run_phase2_b0f else "0.98"
+    phase2_dr_mass_scale_max = "1.005" if run_phase2_b0f else "1.02"
+    phase2_dr_torso_mass_delta_min = "-0.005" if run_phase2_b0f else "-0.02"
+    phase2_dr_torso_mass_delta_max = "0.005" if run_phase2_b0f else "0.02"
+    phase2_dr_qpos_jitter_rad = "0.003" if run_phase2_b0f else "0.006"
+    phase2_dr_actuator_gain_scale_min = "0.995" if run_phase2_b0f else "0.98"
+    phase2_dr_actuator_gain_scale_max = "1.005" if run_phase2_b0f else "1.02"
+    phase2_dr_leg_geometry_jitter_scale = "0.001" if run_phase2_b0f else "0.003"
+    phase2_push_interval_min_s = "1.0" if run_phase2_b0f else "7"
+    phase2_push_interval_max_s = "2.0" if run_phase2_b0f else "12"
+    phase2_push_magnitude_min = "0.03" if run_phase2_b0f else "0.02"
+    phase2_push_magnitude_max = "0.08" if run_phase2_b0f else "0.1"
+    phase2_noise_level = "0.25" if run_phase2_b0f else "0.5"
+    phase2_noise_joint_pos = "0.004" if run_phase2_b0f else "0.0075"
+    phase2_noise_joint_vel = "0.4" if run_phase2_b0f else "0.75"
+    phase2_noise_gravity = "0.02" if run_phase2_b0f else "0.04"
+    phase2_noise_gyro = "0.02" if run_phase2_b0f else "0.04"
+    phase2_noise_accelerometer = "0.01" if run_phase2_b0f else "0.02"
+    phase2_behavior_prior_scale = "-1.0" if run_phase2_b0f else "-0.35"
     return textwrap.dedent(
         f"""
         import atexit
@@ -1188,7 +1220,7 @@ def build_remote_driver(
                 "--run",
                 "--output-root", "{phase2_output_root}",
                 "--task", "rough_terrain_backlash",
-                "--num-timesteps", "160000",
+                "--num-timesteps", "{phase2_num_timesteps}",
                 "--export-min-step", "1",
                 "--ppo-num-envs", "128",
                 "--ppo-num-evals", "4",
@@ -1229,38 +1261,38 @@ def build_remote_driver(
                 "--ang-vel-yaw-max", "0",
                 "--command-resample-steps", "600",
                 "--zero-command-probability", "0.15",
-                "--dr-friction-min", "0.8",
-                "--dr-friction-max", "1.1",
-                "--dr-frictionloss-scale-min", "0.98",
-                "--dr-frictionloss-scale-max", "1.02",
-                "--dr-armature-scale-min", "1",
-                "--dr-armature-scale-max", "1.02",
-                "--dr-com-jitter-m", "0.01",
-                "--dr-mass-scale-min", "0.98",
-                "--dr-mass-scale-max", "1.02",
-                "--dr-torso-mass-delta-min", "-0.02",
-                "--dr-torso-mass-delta-max", "0.02",
-                "--dr-qpos-jitter-rad", "0.006",
-                "--dr-actuator-gain-scale-min", "0.98",
-                "--dr-actuator-gain-scale-max", "1.02",
-                "--dr-leg-geometry-jitter-scale", "0.003",
-                "--push-interval-min-s", "7",
-                "--push-interval-max-s", "12",
-                "--push-magnitude-min", "0.02",
-                "--push-magnitude-max", "0.1",
-                "--noise-level", "0.5",
-                "--noise-hip-pos", "0.0075",
-                "--noise-knee-pos", "0.0075",
-                "--noise-ankle-pos", "0.0075",
-                "--noise-joint-vel", "0.75",
-                "--noise-gravity", "0.04",
-                "--noise-gyro", "0.04",
-                "--noise-accelerometer", "0.02",
+                "--dr-friction-min", "{phase2_dr_friction_min}",
+                "--dr-friction-max", "{phase2_dr_friction_max}",
+                "--dr-frictionloss-scale-min", "{phase2_dr_frictionloss_scale_min}",
+                "--dr-frictionloss-scale-max", "{phase2_dr_frictionloss_scale_max}",
+                "--dr-armature-scale-min", "{phase2_dr_armature_scale_min}",
+                "--dr-armature-scale-max", "{phase2_dr_armature_scale_max}",
+                "--dr-com-jitter-m", "{phase2_dr_com_jitter_m}",
+                "--dr-mass-scale-min", "{phase2_dr_mass_scale_min}",
+                "--dr-mass-scale-max", "{phase2_dr_mass_scale_max}",
+                "--dr-torso-mass-delta-min", "{phase2_dr_torso_mass_delta_min}",
+                "--dr-torso-mass-delta-max", "{phase2_dr_torso_mass_delta_max}",
+                "--dr-qpos-jitter-rad", "{phase2_dr_qpos_jitter_rad}",
+                "--dr-actuator-gain-scale-min", "{phase2_dr_actuator_gain_scale_min}",
+                "--dr-actuator-gain-scale-max", "{phase2_dr_actuator_gain_scale_max}",
+                "--dr-leg-geometry-jitter-scale", "{phase2_dr_leg_geometry_jitter_scale}",
+                "--push-interval-min-s", "{phase2_push_interval_min_s}",
+                "--push-interval-max-s", "{phase2_push_interval_max_s}",
+                "--push-magnitude-min", "{phase2_push_magnitude_min}",
+                "--push-magnitude-max", "{phase2_push_magnitude_max}",
+                "--noise-level", "{phase2_noise_level}",
+                "--noise-hip-pos", "{phase2_noise_joint_pos}",
+                "--noise-knee-pos", "{phase2_noise_joint_pos}",
+                "--noise-ankle-pos", "{phase2_noise_joint_pos}",
+                "--noise-joint-vel", "{phase2_noise_joint_vel}",
+                "--noise-gravity", "{phase2_noise_gravity}",
+                "--noise-gyro", "{phase2_noise_gyro}",
+                "--noise-accelerometer", "{phase2_noise_accelerometer}",
                 "--push-enable",
                 "--enable-behavior-prior",
                 "--behavior-prior-mlp-npz",
                 "/content/open-duck-mini-rdkx5/outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate/candidate_mlp.npz",
-                "--behavior-prior-scale", "-0.35",
+                "--behavior-prior-scale", "{phase2_behavior_prior_scale}",
                 "--behavior-prior-huber-delta", "0.05",
                 "--actuator-bridge-delay-min-ticks", "3",
                 "--actuator-bridge-delay-max-ticks", "4",
@@ -1544,6 +1576,17 @@ def poll_remote(
             if remote_is_idle and not colab_file_exists(session, remote_exit)
             else None
         )
+        if (
+            remote_is_idle
+            and remote_running is False
+            and colab_file_exists(session, remote_bundle)
+        ):
+            print(
+                "REMOTE_IDLE_WITH_BUNDLE_NO_SENTINEL",
+                remote_bundle,
+                flush=True,
+            )
+            break
         if remote_is_idle and remote_running:
             idle_no_exit_polls = 0
         elif remote_is_idle and not colab_file_exists(session, remote_exit):
@@ -1677,6 +1720,7 @@ def main() -> int:
             "checkpoint-sweep",
             "phase2-b0d",
             "phase2-b0e",
+            "phase2-b0f",
             "staged-curriculum",
             "all",
         ],

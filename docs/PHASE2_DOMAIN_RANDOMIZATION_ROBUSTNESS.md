@@ -1574,3 +1574,29 @@ recover it. The next robustness attempt should not continue longer from B0E;
 use the previous B0C terrain candidate as the gait-preserving baseline and
 either isolate perturbation failures with eval-only diagnostics or apply a
 smaller adaptation with stronger behavior preservation.
+
+## B0F Pre-Registration
+
+Artifact:
+
+```text
+outputs/analysis/PHASE2_B0F_A100_PUSH_LOCAL_PRESERVE_PLAN.md
+```
+
+Status:
+
+```text
+PRE_REGISTERED_NOT_STARTED
+```
+
+B0F is a deliberately smaller follow-up to B0E. It restores the B0C
+rough-terrain parent, narrows physics/noise randomization, strengthens behavior
+preservation, lowers the PPO learning rate, and trains against frequent gentle
+pushes. The goal is not broad DR yet; the goal is to learn a local
+perturbation-recovery correction without moving the nominal no-push gait off
+the existing pass boundary.
+
+If B0F holds at the same `~0.22 rad` short-gate tracking plateau or reduces
+forward command tracking below B0E, do not continue from it. Return to
+eval-only perturbation localization or a more explicit push-recovery policy
+correction.
