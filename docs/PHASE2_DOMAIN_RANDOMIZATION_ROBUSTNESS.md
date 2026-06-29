@@ -1118,6 +1118,37 @@ next move. The next branch should make the relabel/training target
 tracking-aware: filter or rate-limit oracle labels, or switch to PPO fine-tuning
 with explicit corrected-envelope penalties.
 
+Later transition-preserving diagnostics narrowed the rough-terrain blocker
+further. Transition-protected rate limiting broke the tracking/envelope plateau
+but left seed 4 planted. Targeted right-swing/contact-phase work then recovered
+the local seed-4 rough swing, but the branch exposed a command-independent
+seed-5 early-state failure.
+
+The latest feed-forward representation diagnostic is recorded here:
+
+```text
+decision:
+  outputs/analysis/PHASE2_SEED5_EARLY_STATE_CONTACTPHASE_DECISION.md
+
+status:
+  HOLD_CONTACTPHASE_SEED5_STILL_FALLS
+```
+
+Adding contact bits to the phase/command modulation context
+(`obs[6,97,98,99,100]`) preserved the deployable `obs[1,101] -> action[1,14]`
+contract and improved some rough-terrain distribution details, but it did not
+recover the seed-5 early-state failure:
+
+```text
+x=0.08 rough z=0.002: 5/8 pass
+seed 5 x=0.08: fall/reverse hold
+seed 5 x=0.0: fall at 43 samples
+```
+
+This closes the cheapest contact-conditioned feed-forward rung. The next
+useful branch needs explicit state/history or a recovery teacher for seed 5's
+first contact transition, not another minor BC weighting/context tweak.
+
 ## References
 
 Verified from arXiv:

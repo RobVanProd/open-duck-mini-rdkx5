@@ -592,3 +592,41 @@ early tick window. Tail-only capping and early-state weighted BC are both
 closed. The next useful branch needs a different correction mechanism:
 frame-stack/recurrent state, or a recovery teacher that changes seed5's first
 contact transition.
+
+## Contact-Phase Feed-Forward Diagnostic
+
+Artifact:
+
+```text
+decision: outputs/analysis/PHASE2_SEED5_EARLY_STATE_CONTACTPHASE_DECISION.md
+status: HOLD_CONTACTPHASE_SEED5_STILL_FALLS
+```
+
+The cheapest deployable representation change was tested next: keep the
+phase/command-modulated feed-forward ONNX contract, but include foot-contact
+bits in the modulation context:
+
+```text
+old context: obs[6], obs[99], obs[100]
+new context: obs[6], obs[97], obs[98], obs[99], obs[100]
+```
+
+This preserved several rough-terrain passes but did not recover the seed-5
+mode:
+
+```text
+x=0.08 rough z=0.002: 5/8 pass
+  pass seeds: 1,2,4,6,7
+  seed 0: target-velocity hold, excess 0.0180 rad/s
+  seed 3: low-progress hold
+  seed 5: fall/reverse hold
+
+x=0.0 rough z=0.002 seed 5:
+  fall at 43 samples, mean vx -0.3528 m/s
+```
+
+Decision: do not continue minor feed-forward context tweaks. Contact-phase
+conditioning is not the seed-5 recovery mechanism. The next branch must either
+test explicit state/history, or create a recovery teacher/relabel pass that
+changes seed 5's first contact transition before negative velocity and height
+collapse begin.

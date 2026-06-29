@@ -8635,3 +8635,20 @@ The next useful branch should change the correction mechanism rather than
 increase scalar weights: frame-stack/recurrent state, or a recovery teacher
 that changes seed5's first contact transition. Robot validation remains
 blocked.
+
+The cheapest deployable representation change was tested:
+
+```text
+artifact: outputs/analysis/PHASE2_SEED5_EARLY_STATE_CONTACTPHASE_DECISION.md
+status: HOLD_CONTACTPHASE_SEED5_STILL_FALLS
+context: obs[6,97,98,99,100]
+x=0.08 rough z=0.002: 5/8 pass
+x=0.0 rough z=0.002 seed 5: fall at 43 samples
+```
+
+Adding foot-contact bits to the phase/command-modulated feed-forward student
+preserved several rough-terrain passes but did not recover seed 5. Seed 5 still
+falls at both positive and zero command, so the remaining terrain blocker is
+not solved by minor feed-forward context changes. The next useful offline
+branch is explicit state/history or a recovery teacher that changes seed 5's
+first contact transition. Robot validation remains blocked.
