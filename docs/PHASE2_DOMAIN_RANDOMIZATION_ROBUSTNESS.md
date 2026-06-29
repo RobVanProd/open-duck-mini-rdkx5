@@ -278,6 +278,23 @@ that CPU check is not a policy result and is not promotable. The next valid B0E
 paths are CUDA/A100 with the pinned workflow, CPU only for more command-plumbing
 checks, or a local ROCm evaluator-reset fix.
 
+Additional local ROCm scale diagnostic:
+
+```text
+artifact:
+  outputs/analysis/PHASE2_B0E_LOCAL_GPU_PATH_CHECK_DECISION.md
+
+status:
+  PASS_B0E_GPU_1ENV_PLUMBING
+```
+
+A deliberately tiny B0E GPU path check (`1` env, `20` timesteps,
+rough-terrain `z=0.002`) reached PPO step `100` and exported on local ROCm.
+That narrows the B0E backend issue: 1-env ROCm works, while 16/32-env ROCm
+fails during evaluator reset. The blocker is scale-dependent local ROCm
+evaluator reset, not B0E recipe wiring. The 1-env checkpoint is not a policy
+result and is not promotable.
+
 Push-eval plumbing result:
 
 ```text
