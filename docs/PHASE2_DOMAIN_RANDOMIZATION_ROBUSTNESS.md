@@ -347,6 +347,26 @@ training run when launched with the memory cap, while the pinned CUDA/A100
 `phase2-b0e` workflow remains the preferred high-throughput path whenever a
 Colab session is visible.
 
+B0E local ROCm full-shape follow-up:
+
+```text
+artifact:
+  outputs/analysis/PHASE2_B0E_LOCAL_ROCM_FULLSHAPE_HOLD_DECISION.md
+
+status:
+  HOLD_B0E_ROCM_FULLSHAPE_EVALUATOR_RESET
+```
+
+The memory cap fixed tiny `episode_length=20` plumbing, but did not fix the
+real 750-step evaluator graph. Full-shape B0E attempts at 32, 16, and 8 envs
+all failed before PPO at `jax.jit(eval_env.reset)` with
+`rocblas_status_internal_error`. A `ppo_num_evals=0` variant also failed at the
+same evaluator construction path, so this stack does not bypass evaluator reset
+when eval count is zero.
+
+Decision: do not launch local ROCm policy-producing B0E runs on this path. The
+next policy-producing run remains the pinned CUDA/A100 `phase2-b0e` workflow.
+
 Push-eval plumbing result:
 
 ```text

@@ -1,0 +1,68 @@
+{
+  "status": "HOLD_B0E_ROCM_FULLSHAPE_EVALUATOR_RESET",
+  "robot_touched": false,
+  "ssh": false,
+  "deploy": false,
+  "grounded_replay": false,
+  "runtime_behavior_changed": false,
+  "policy_promoted": false,
+  "environment_overrides": {
+    "JAX_PLATFORM_NAME": "gpu",
+    "JAX_PLATFORMS": "rocm",
+    "XLA_PYTHON_CLIENT_PREALLOCATE": "false",
+    "XLA_PYTHON_CLIENT_MEM_FRACTION": "0.50"
+  },
+  "recipe": "B0E motion-preserving tracking-margin",
+  "failure": "rocblas_gemm_strided_batched_ex failed with rocblas_status_internal_error during jax.jit(eval_env.reset)",
+  "runs": [
+    {
+      "shape": "full evaluator",
+      "envs": 32,
+      "episode_length": 750,
+      "num_evals": 2,
+      "num_timesteps": 81920,
+      "status": "HOLD_SMOKE_RUN",
+      "returncode": 1,
+      "ppo_step": null,
+      "output_dir": "outputs/phase2_domain_randomization/stage_b0e_motion_preserving_tracking_local_rocm_memfix_32env/smoke_20260629T090951Z_gpu",
+      "manifest_sha256": "25fbe5f5e2a2ab6f7493c494e60735fad35e2ed17b4c7ce7d39c3d8070d66b21"
+    },
+    {
+      "shape": "full evaluator",
+      "envs": 16,
+      "episode_length": 750,
+      "num_evals": 2,
+      "num_timesteps": 40960,
+      "status": "HOLD_SMOKE_RUN",
+      "returncode": 1,
+      "ppo_step": null,
+      "output_dir": "outputs/phase2_domain_randomization/stage_b0e_motion_preserving_tracking_local_rocm_memfix_16env_fullshape/smoke_20260629T091116Z_gpu",
+      "manifest_sha256": "afed98b9158eb5d699ba481ec2146c4d3984b37da0715f48409055249441c9fc"
+    },
+    {
+      "shape": "full evaluator",
+      "envs": 8,
+      "episode_length": 750,
+      "num_evals": 2,
+      "num_timesteps": 20480,
+      "status": "HOLD_SMOKE_RUN",
+      "returncode": 1,
+      "ppo_step": null,
+      "output_dir": "outputs/phase2_domain_randomization/stage_b0e_motion_preserving_tracking_local_rocm_memfix_8env_fullshape/smoke_20260629T091217Z_gpu",
+      "manifest_sha256": "de53dcd6c269776e745c9faaccbcb1d487591990102ef757f080a0f1528bdde3"
+    },
+    {
+      "shape": "no eval requested",
+      "envs": 32,
+      "episode_length": 750,
+      "num_evals": 0,
+      "num_timesteps": 20480,
+      "status": "HOLD_SMOKE_RUN",
+      "returncode": 1,
+      "ppo_step": null,
+      "output_dir": "outputs/phase2_domain_randomization/stage_b0e_motion_preserving_tracking_local_rocm_memfix_32env_noeval/smoke_20260629T091326Z_gpu",
+      "manifest_sha256": "d80c5c8246bf075e8902464b9124e02a71f0d7c0d5a2659c84a3df5721cdd82b"
+    }
+  ],
+  "decision": "Tiny B0E ROCm plumbing passes with the memory cap, but local ROCm remains blocked for full-shape B0E training/evaluation. Use pinned CUDA/A100 for policy-producing B0E."
+}
