@@ -56,8 +56,8 @@ This is a read-only hash manifest. It did not train, SSH, deploy, or touch the r
 | `outputs/analysis/phase2_colab_package_only_manifest.json` | `PRESENT_FILE` | `67d7cf6ae98f349cea7c95e9bae1757b109771a24ec79e317ed381319a6e366f` | 1167 | `outputs/analysis/phase2_colab_package_only_manifest.json` |
 | `outputs/analysis/PHASE2_LOCAL_FALLBACK_READINESS.md` | `PRESENT_FILE` | `f31f51c1a7aa7d1cd59d31b3969678c4d2b7be85f0a3f15fce5554e80aad0628` | 2177 | `outputs/analysis/PHASE2_LOCAL_FALLBACK_READINESS.md` |
 | `outputs/analysis/phase2_local_fallback_readiness.json` | `PRESENT_FILE` | `2949d0da1a0a940a0e341a933897d59a1130198d986fb20edfd3566c41b27417` | 35323 | `outputs/analysis/phase2_local_fallback_readiness.json` |
-| `outputs/analysis/PHASE2_Z005_T4_RECOVERY_DECISION.md` | `PRESENT_FILE` | `5b5b24d14c029f6d7086629e6f97560f1c431d069454e09e49d1e75fb656d663` | 2812 | `outputs/analysis/PHASE2_Z005_T4_RECOVERY_DECISION.md` |
-| `outputs/analysis/phase2_z005_t4_recovery_decision.json` | `PRESENT_FILE` | `42626b3229e8b8a37687e08a2ce19dadb6a4cfb9b1b7e6e8db025af1fe31d49a` | 2771 | `outputs/analysis/phase2_z005_t4_recovery_decision.json` |
+| `outputs/analysis/PHASE2_Z005_T4_RECOVERY_DECISION.md` | `PRESENT_FILE` | `5147719b525994df3cfa0c19e97d2d2dd21dd790e13664e3c3af714eba734a54` | 3834 | `outputs/analysis/PHASE2_Z005_T4_RECOVERY_DECISION.md` |
+| `outputs/analysis/phase2_z005_t4_recovery_decision.json` | `PRESENT_FILE` | `8b84d1aad44a9dc37b84077140a539ec10c59bcc43c83c03def56d490bb9a9f7` | 3831 | `outputs/analysis/phase2_z005_t4_recovery_decision.json` |
 | `tools/plan_phase2_z005_support_recipe.py` | `PRESENT_FILE` | `30d4191a48f58d337a0fc84cde783f277583af3f052722df42c89d5ee9993dbb` | 17157 | `tools/plan_phase2_z005_support_recipe.py` |
 | `tools/report_phase2_colab_package_manifest.py` | `PRESENT_FILE` | `35cf503ce24824e83566797aa5b05570f97d4b9b04e71f75a99f7e76775544bd` | 10080 | `tools/report_phase2_colab_package_manifest.py` |
 | `tools/report_phase2_local_fallback_readiness.py` | `PRESENT_FILE` | `9bd2bd3573369f7b1f8849d73083f8644061064e3e010c586630703b9bc288c9` | 13551 | `tools/report_phase2_local_fallback_readiness.py` |

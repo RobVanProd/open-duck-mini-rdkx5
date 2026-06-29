@@ -67,7 +67,34 @@
     "path": "outputs/analysis/colab_cli/open-duck-l4-phase2-z005-support-20260629T184546Z/open_duck_colab_cli_phase2-z005-support_20260629T184556Z_artifacts.tar.gz.partial",
     "sha256": "3698a137f647889dcd207704535fed2f939716ee5c003fb8a1d4883ed2c8de86"
   },
+  "local_debug_sweep": {
+    "promotion_evidence": false,
+    "path_md": "outputs/analysis/phase2_z005_t4_recovered_latest_local_debug_sweep/CANDIDATE_CHECKPOINT_SWEEP.md",
+    "path_json": "outputs/analysis/phase2_z005_t4_recovered_latest_local_debug_sweep/candidate_checkpoint_sweep.json",
+    "results": [
+      {
+        "command_x": 0.0,
+        "status": "PASS_CANDIDATE_SIM_GATE",
+        "samples": 50,
+        "max_pitch_vel_p95": 1.0791,
+        "max_tracking_p95": 0.1918,
+        "track_ratio": null,
+        "mean_local_vx": 0.0066
+      },
+      {
+        "command_x": 0.08,
+        "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+        "samples": 50,
+        "max_pitch_vel_p95": 1.4396,
+        "max_tracking_p95": 0.2134,
+        "track_ratio": 0.1773,
+        "mean_local_vx": 0.0142
+      }
+    ],
+    "decision": "HOLD_PARTIAL_CANDIDATE_CHECKPOINT"
+  },
   "hold_reason": "Colab session was lost after training while checkpoint sweep was still running; workflow reported HOLD_REMOTE_NO_SENTINEL and the post-training gate was not recovered.",
+  "debug_interpretation": "Recovered latest ONNX stayed under the corrected velocity envelope but did not preserve enough forward motion at x=0.08 in the compact local debug sweep.",
   "promotion_allowed": false,
   "robot_testing_allowed": false
 }

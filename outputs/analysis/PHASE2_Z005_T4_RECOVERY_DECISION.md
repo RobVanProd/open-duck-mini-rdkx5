@@ -63,9 +63,32 @@ sha256: 3698a137f647889dcd207704535fed2f939716ee5c003fb8a1d4883ed2c8de86
 The post-training checkpoint sweep did not complete and was not recovered in
 the partial tarball. Therefore this run is not promotable.
 
+## Local Debug Sweep
+
+After recovery, the latest exported ONNX (`122880`) was evaluated locally in a
+compact 1-second debug sweep using the fitted corrected bridge. This is not
+promotion evidence because it was run on the local fallback stack, but it is
+useful triage:
+
+```text
+outputs/analysis/phase2_z005_t4_recovered_latest_local_debug_sweep/CANDIDATE_CHECKPOINT_SWEEP.md
+outputs/analysis/phase2_z005_t4_recovered_latest_local_debug_sweep/candidate_checkpoint_sweep.json
+```
+
+Result:
+
+| command_x | status | samples | max_pitch_vel_p95 | max_tracking_p95 | track_ratio | mean_local_vx |
+|---:|---|---:|---:|---:|---:|---:|
+| 0.000 | `PASS_CANDIDATE_SIM_GATE` | 50 | 1.0791 | 0.1918 | NA | 0.0066 |
+| 0.080 | `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` | 50 | 1.4396 | 0.2134 | 0.1773 | 0.0142 |
+
+The recovered latest policy stayed under the corrected velocity envelope, but
+it did not preserve enough forward motion at `x=0.08`.
+
 ## Decision
 
 `HOLD_PHASE2_Z005_T4_GATE_INCOMPLETE`
 
 The recovered ONNX files may be used for offline debug/evaluation. They are
-not deployable candidates and do not authorize robot testing.
+not deployable candidates and do not authorize robot testing. The local debug
+sweep further suggests this specific T4 run is not the z=0.005 support answer.
