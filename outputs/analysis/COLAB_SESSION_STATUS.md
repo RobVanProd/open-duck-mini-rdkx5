@@ -1,7 +1,7 @@
 # Colab Session Status
 
-status: `HOLD_NO_ACTIVE_COLAB_SESSION`
-timestamp: `20260629T085401Z`
+status: `PASS_COLAB_SESSION_VISIBLE`
+timestamp: `20260629T091639Z`
 
 - robot_touched: `false`
 - training_started: `false`
@@ -11,7 +11,7 @@ timestamp: `20260629T085401Z`
 ## Visible Sessions
 
 ```text
-[colab] No active sessions found on server.
+[open-duck-a100] gpu-a100-s-kkb-ass1c2-3rfkg8zz5reqn | Hardware: A100 | Variant: GPU
 ```
 
 ## Probed Session Names
@@ -19,17 +19,15 @@ timestamp: `20260629T085401Z`
 | session | exists | status |
 |---|---:|---|
 | `open-duck-l4` | `False` | `[colab] Session 'open-duck-l4' not found.` |
-| `open-duck-a100` | `False` | `[colab] Session 'open-duck-a100' not found.` |
+| `open-duck-a100` | `True` | `[open-duck-a100] gpu-a100-s-kkb-ass1c2-3rfkg8zz5reqn | Hardware: A100 | Variant: GPU | Status: IDLE` |
 | `open-duck-a100a` | `False` | `[colab] Session 'open-duck-a100a' not found.` |
 
 ## Next Command
 
-No matching active session is visible. Do not launch B0E yet.
-
-Create or reconnect a Colab session, then rerun:
+Run this only after confirming the session is the desired CUDA/A100 runtime:
 
 ```bash
-python3 tools/report_colab_session_status.py
+python3 tools/run_colab_cli_cuda_workflow.py --workflow phase2-b0e --session open-duck-a100 --candidate-name phase2_b0e_motion_preserving_tracking_cuda --candidate-timeout-s 10800 --candidate-checkpoint-sweep --candidate-checkpoint-sweep-commands 0.0,0.08 --candidate-checkpoint-sweep-duration 1.0 --candidate-checkpoint-sweep-jax-platform cpu --candidate-checkpoint-sweep-timeout-s 7200 --run
 ```
 
 ## Interpretation

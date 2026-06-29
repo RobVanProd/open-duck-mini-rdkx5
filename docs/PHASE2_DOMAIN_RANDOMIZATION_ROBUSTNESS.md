@@ -367,6 +367,24 @@ when eval count is zero.
 Decision: do not launch local ROCm policy-producing B0E runs on this path. The
 next policy-producing run remains the pinned CUDA/A100 `phase2-b0e` workflow.
 
+First A100 `phase2-b0e` launch:
+
+```text
+artifact:
+  outputs/analysis/PHASE2_B0E_A100_HFIELD_TASK_HOLD_DECISION.md
+
+status:
+  HOLD_B0E_CUDA_WORKFLOW_TASK_MISMATCH_FIXED
+```
+
+The `open-duck-a100` session came up with CUDA/JAX ready (`jax==0.7.2`,
+`jaxlib==0.7.2`, `brax==0.14.2`, `mujoco==3.9.0`, `mujoco-mjx==3.9.0`,
+backend `gpu`, device `cuda:0`) and the policy/sim contract audit passed.
+Training did not start because the Phase 2 CUDA recipe omitted
+`--task rough_terrain_backlash`, causing the hfield override to be applied to
+the default `flat_terrain` XML. The workflow now passes
+`--task rough_terrain_backlash` explicitly. This is not a policy result.
+
 Push-eval plumbing result:
 
 ```text

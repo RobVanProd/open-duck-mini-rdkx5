@@ -1,12 +1,33 @@
 {
   "colab_executable": "/home/lsd/.local/bin/colab",
   "deploy_performed": false,
-  "recommended_phase2_b0e_command": null,
-  "recommended_session": null,
+  "recommended_phase2_b0e_command": [
+    "python3",
+    "tools/run_colab_cli_cuda_workflow.py",
+    "--workflow",
+    "phase2-b0e",
+    "--session",
+    "open-duck-a100",
+    "--candidate-name",
+    "phase2_b0e_motion_preserving_tracking_cuda",
+    "--candidate-timeout-s",
+    "10800",
+    "--candidate-checkpoint-sweep",
+    "--candidate-checkpoint-sweep-commands",
+    "0.0,0.08",
+    "--candidate-checkpoint-sweep-duration",
+    "1.0",
+    "--candidate-checkpoint-sweep-jax-platform",
+    "cpu",
+    "--candidate-checkpoint-sweep-timeout-s",
+    "7200",
+    "--run"
+  ],
+  "recommended_session": "open-duck-a100",
   "robot_touched": false,
   "session_status": {
     "open-duck-a100": {
-      "exists": false,
+      "exists": true,
       "status_command": {
         "command": [
           "colab",
@@ -17,9 +38,9 @@
         "ok": true,
         "returncode": 0,
         "stderr": "",
-        "stdout": "[colab] Session 'open-duck-a100' not found.\n"
+        "stdout": "[open-duck-a100] gpu-a100-s-kkb-ass1c2-3rfkg8zz5reqn | Hardware: A100 | Variant: GPU | Status: IDLE\n"
       },
-      "text": "[colab] Session 'open-duck-a100' not found."
+      "text": "[open-duck-a100] gpu-a100-s-kkb-ass1c2-3rfkg8zz5reqn | Hardware: A100 | Variant: GPU | Status: IDLE"
     },
     "open-duck-a100a": {
       "exists": false,
@@ -62,9 +83,9 @@
     "ok": true,
     "returncode": 0,
     "stderr": "",
-    "stdout": "[colab] No active sessions found on server.\n"
+    "stdout": "[open-duck-a100] gpu-a100-s-kkb-ass1c2-3rfkg8zz5reqn | Hardware: A100 | Variant: GPU\n"
   },
-  "status": "HOLD_NO_ACTIVE_COLAB_SESSION",
-  "timestamp": "20260629T085401Z",
+  "status": "PASS_COLAB_SESSION_VISIBLE",
+  "timestamp": "20260629T091639Z",
   "training_started": false
 }

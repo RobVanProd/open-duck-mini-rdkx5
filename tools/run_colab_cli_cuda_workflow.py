@@ -1187,6 +1187,7 @@ def build_remote_driver(
                 "--jax-platforms", "cuda",
                 "--run",
                 "--output-root", "{phase2_output_root}",
+                "--task", "rough_terrain_backlash",
                 "--num-timesteps", "160000",
                 "--export-min-step", "1",
                 "--ppo-num-envs", "128",
