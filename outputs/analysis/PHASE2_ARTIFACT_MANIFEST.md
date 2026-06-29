@@ -50,10 +50,10 @@ This is a read-only hash manifest. It did not train, SSH, deploy, or touch the r
 | `outputs/analysis/phase2_next_run_plan.json` | `PRESENT_FILE` | `971722859fe48c05ef12929f04c48788e47de02cd245c942c6d1cbe861327ba6` | 14051 | `outputs/analysis/phase2_next_run_plan.json` |
 | `outputs/analysis/PHASE2_STAGE_GUARD.md` | `PRESENT_FILE` | `b270b010e3fc37a339d21276d57476fff3c6f42ff9e3ecd67c7e2b8107622628` | 3630 | `outputs/analysis/PHASE2_STAGE_GUARD.md` |
 | `outputs/analysis/phase2_stage_guard.json` | `PRESENT_FILE` | `7cf0a502856cd1a4c8cbbf15313a7ee55ea935bd15a0c29e48a0cbda236b2a7d` | 5185 | `outputs/analysis/phase2_stage_guard.json` |
-| `outputs/analysis/PHASE2_COLAB_PACKAGE_MANIFEST.md` | `PRESENT_FILE` | `3e65fefbf6652d889b754a6865fef07a7231e542732af18579451c4bf3a09cf5` | 1376 | `outputs/analysis/PHASE2_COLAB_PACKAGE_MANIFEST.md` |
-| `outputs/analysis/phase2_colab_package_manifest.json` | `PRESENT_FILE` | `06d5eb04938c04ddbe8e28754e2e622dc31fcf7f6f93be6624d1b6c32972cc56` | 5522 | `outputs/analysis/phase2_colab_package_manifest.json` |
+| `outputs/analysis/PHASE2_COLAB_PACKAGE_MANIFEST.md` | `PRESENT_FILE` | `bb2f711369c5b02f33d9f06f827917fe11c511eb40433631260cc1e563481882` | 1486 | `outputs/analysis/PHASE2_COLAB_PACKAGE_MANIFEST.md` |
+| `outputs/analysis/phase2_colab_package_manifest.json` | `PRESENT_FILE` | `d4049607a47a2334fded31b4a75abb4832e23c463788b1a58d68242036f59bd0` | 8590 | `outputs/analysis/phase2_colab_package_manifest.json` |
 | `tools/plan_phase2_z005_support_recipe.py` | `PRESENT_FILE` | `30d4191a48f58d337a0fc84cde783f277583af3f052722df42c89d5ee9993dbb` | 17157 | `tools/plan_phase2_z005_support_recipe.py` |
-| `tools/report_phase2_colab_package_manifest.py` | `PRESENT_FILE` | `d1f42efe2c91bff65ab2acaedf198230d9fe9253c06c89678b905968e038d8ee` | 7462 | `tools/report_phase2_colab_package_manifest.py` |
+| `tools/report_phase2_colab_package_manifest.py` | `PRESENT_FILE` | `35cf503ce24824e83566797aa5b05570f97d4b9b04e71f75a99f7e76775544bd` | 10080 | `tools/report_phase2_colab_package_manifest.py` |
 | `tools/report_phase2_z005_post_training_gates.py` | `PRESENT_FILE` | `759a838bd3463a2cd1e92d925129b43fdb61dc0ed3f7ed33675739d295f42f6d` | 10476 | `tools/report_phase2_z005_post_training_gates.py` |
 | `tools/report_phase2_stage_guard.py` | `PRESENT_FILE` | `731a29e80c07211fbfee6d034ed1c9a8b5c7974fd77d7df2701167104eec8bd5` | 11337 | `tools/report_phase2_stage_guard.py` |
 | `tools/run_colab_cli_cuda_workflow.py` | `PRESENT_FILE` | `ffe169f3eb496dc80e35443f4c87424848a09ae6fa8076ff0d271d9777cc657d` | 114515 | `tools/run_colab_cli_cuda_workflow.py` |

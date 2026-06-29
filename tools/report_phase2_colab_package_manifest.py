@@ -13,9 +13,15 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import sys
 import tarfile
+import tempfile
 from pathlib import Path
 from typing import Any
+
+TOOLS_DIR = Path(__file__).resolve().parent
+if str(TOOLS_DIR) not in sys.path:
+    sys.path.insert(0, str(TOOLS_DIR))
 
 from run_colab_cli_cuda_workflow import required_rdk_package_paths, tar_filter, would_package_path
 
@@ -122,8 +128,52 @@ def summarize_required_path(relative_path: str) -> dict[str, Any]:
     return item
 
 
+def expected_archive_entries(relative_path: str) -> list[str]:
+    path = ROOT / relative_path
+    prefix = "open-duck-mini-rdkx5"
+    if not path.exists():
+        return [f"{prefix}/{relative_path}"]
+    if path.is_file():
+        return [f"{prefix}/{relative_path}"]
+    entries = []
+    for child in sorted(item for item in path.rglob("*") if item.is_file()):
+        child_rel = rel(child)
+        if child_rel and included_by_filter(child_rel):
+            entries.append(f"{prefix}/{child_rel}")
+    return entries
+
+
+def verify_tarball(required_paths: list[str]) -> dict[str, Any]:
+    with tempfile.TemporaryDirectory(prefix="open_duck_phase2_pkg_") as tmp:
+        tar_path = Path(tmp) / "open-duck-mini-rdkx5_cli.tar.gz"
+        with tarfile.open(tar_path, "w:gz") as archive:
+            archive.add(ROOT, arcname="open-duck-mini-rdkx5", filter=tar_filter)
+        with tarfile.open(tar_path) as archive:
+            names = set(archive.getnames())
+        expected = {
+            path: expected_archive_entries(path)
+            for path in required_paths
+        }
+        missing_by_path = {
+            path: [entry for entry in entries if entry not in names]
+            for path, entries in expected.items()
+        }
+        missing_by_path = {
+            path: entries
+            for path, entries in missing_by_path.items()
+            if entries
+        }
+        return {
+            "status": "PASS_TARBALL_CONTENTS" if not missing_by_path else "HOLD_TARBALL_CONTENTS",
+            "member_count": len(names),
+            "required_archive_entries": expected,
+            "missing_archive_entries": missing_by_path,
+        }
+
+
 def collect(args: argparse.Namespace) -> dict[str, Any]:
-    items = [summarize_required_path(path) for path in required_rdk_package_paths(args.workflow)]
+    required_paths = required_rdk_package_paths(args.workflow)
+    items = [summarize_required_path(path) for path in required_paths]
     missing = [item["path"] for item in items if not item["exists"]]
     excluded = [
         item["path"]
@@ -135,9 +185,15 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
         for item in items
         if item.get("status") == "PRESENT_DIR_INCOMPLETE"
     ]
+    tarball = verify_tarball(required_paths) if args.verify_tarball else {
+        "status": "SKIPPED_TARBALL_CONTENTS",
+        "member_count": None,
+        "required_archive_entries": {},
+        "missing_archive_entries": {},
+    }
     status = (
         "PASS_PHASE2_COLAB_PACKAGE_MANIFEST_READY"
-        if not missing and not excluded and not incomplete_dirs
+        if not missing and not excluded and not incomplete_dirs and tarball["status"] in {"PASS_TARBALL_CONTENTS", "SKIPPED_TARBALL_CONTENTS"}
         else "HOLD_PHASE2_COLAB_PACKAGE_MANIFEST"
     )
     return {
@@ -147,6 +203,7 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
         "missing": missing,
         "excluded_by_tar_filter": excluded,
         "incomplete_dirs": incomplete_dirs,
+        "tarball_verification": tarball,
         "robot_touched": False,
         "ssh_used": False,
         "deploy_performed": False,
@@ -180,6 +237,12 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
     lines.extend(
         [
             "",
+            "## Tarball Contents",
+            "",
+            f"- status: `{payload['tarball_verification']['status']}`",
+            f"- member_count: `{payload['tarball_verification']['member_count']}`",
+            f"- missing_archive_entries: `{payload['tarball_verification']['missing_archive_entries']}`",
+            "",
             "## Decision",
             "",
         ]
@@ -196,6 +259,7 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--workflow", default="phase2-z005-support")
+    parser.add_argument("--verify-tarball", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--output-md", default=str(DEFAULT_OUTPUT_MD))
     parser.add_argument("--output-json", default=str(DEFAULT_OUTPUT_JSON))
     args = parser.parse_args()

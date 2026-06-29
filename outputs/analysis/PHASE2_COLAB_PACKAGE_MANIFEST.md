@@ -15,6 +15,12 @@ This is a read-only package manifest. It did not train, SSH, deploy, touch the r
 | `tools/report_phase2_z005_post_training_gates.py` | `PRESENT_FILE_INCLUDED` | 1 | 0 | 10476 | `759a838bd3463a2cd1e92d925129b43fdb61dc0ed3f7ed33675739d295f42f6d` |
 | `tools/run_actuator_bridge_training_smoke.py` | `PRESENT_FILE_INCLUDED` | 1 | 0 | 53490 | `4afb2eddcb0c52a71d8192407dd8460971f8e9f4297c7ea5013d9bd82eeecb55` |
 
+## Tarball Contents
+
+- status: `PASS_TARBALL_CONTENTS`
+- member_count: `543`
+- missing_archive_entries: `{}`
+
 ## Decision
 
 All required z=0.005 Colab package inputs are present and included by the upload tar filter.
