@@ -37,8 +37,10 @@ stage_a2_z002_regression:
 
 stage_z005_support:
   HOLD_STAGE
-  held gate: z005_x008_nopush
-  missing evidence: z005_x000_nopush
+  held gates:
+    z005_x008_nopush
+    z005_x000_nopush
+  missing evidence: none
 ```
 
 Do not advance to `z=0.005` push, stronger terrain, or robot validation until

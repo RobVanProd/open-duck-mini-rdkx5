@@ -171,16 +171,49 @@
       "status": "PASS_GATE"
     },
     "z005_x000_nopush": {
-      "exists": false,
+      "config": {
+        "bridge_mode": "fitted",
+        "command_x": 0.0,
+        "duration_s": 15.0,
+        "eval_push_enable": false,
+        "seeds": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "task": "rough_terrain_backlash",
+        "terrain_hfield_z_scale": 0.005
+      },
+      "exists": true,
       "expected_command_x": 0.0,
       "expected_push": false,
       "expected_terrain_z": 0.005,
+      "metrics": {
+        "base_height_min_min": 0.05116066709160805,
+        "duration_complete_count": 7,
+        "fall_count": 1,
+        "max_pitch_vel_p95_max": 1.2575387954711914,
+        "max_tracking_p95_max": 0.19527530670166016,
+        "max_vel_excess_max": 0.0,
+        "mean_local_vx_mean": -0.03217386128413998,
+        "push_success_mean": null,
+        "runs": 8,
+        "track_ratio_mean": null
+      },
       "name": "z005_x000_nopush",
       "path": "outputs/analysis/phase2_stagea2_seed5_recovery_command_gated_gain099_x0_rough_z005_nopush_15s_8seed_cpu.json",
+      "policy_label": "phase2_stagea2_seed5_recovery_command_gated_gain099_20260629",
       "reasons": [
-        "artifact missing"
+        "fall_count 1 != 0",
+        "duration_complete_count 7 != 8",
+        "abs mean vx 0.03217386128413998 > 0.005"
       ],
-      "status": "MISSING_GATE_ARTIFACT"
+      "status": "HOLD_GATE"
     },
     "z005_x008_nopush": {
       "config": {
@@ -228,7 +261,7 @@
       "status": "HOLD_GATE"
     }
   },
-  "generated_at": "2026-06-29T17:30:57Z",
+  "generated_at": "2026-06-29T17:51:00Z",
   "robot_touched": false,
   "ssh_used": false,
   "stages": [
@@ -258,16 +291,15 @@
         "z002_x000_nopush": "PASS_GATE",
         "z002_x008_gentle_push": "PASS_GATE",
         "z002_x008_nopush": "PASS_GATE",
-        "z005_x000_nopush": "MISSING_GATE_ARTIFACT",
+        "z005_x000_nopush": "HOLD_GATE",
         "z005_x008_nopush": "HOLD_GATE"
       },
       "held_gates": [
-        "z005_x008_nopush"
-      ],
-      "id": "stage_z005_support",
-      "missing_gates": [
+        "z005_x008_nopush",
         "z005_x000_nopush"
       ],
+      "id": "stage_z005_support",
+      "missing_gates": [],
       "required_gates": [
         "z005_x008_nopush",
         "z005_x000_nopush",

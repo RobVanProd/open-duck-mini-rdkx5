@@ -1,7 +1,7 @@
 # Phase 2 Current Status
 
 status: `HOLD_PHASE2_TERRAIN_Z005_NOT_CLEARED`
-generated_at: `2026-06-29T17:17:53Z`
+generated_at: `2026-06-29T17:50:54Z`
 
 ## Candidate
 
@@ -20,15 +20,24 @@ generated_at: `2026-06-29T17:17:53Z`
 | z002_x008_gentle_push | `PASS_GATE_8SEED` | 8/8 | 0.080 | 0.002 | yes | 0.410 | 0.0328 | 0.1944 | 2.3950 | 0.0000 |
 | z002_x000_gentle_push | `PASS_GATE_8SEED` | 8/8 | 0.000 | 0.002 | yes | NA | 0.0007 | 0.0687 | 0.3906 | 0.0000 |
 | z005_x008_nopush | `HOLD_GATE` | 7/8 | 0.080 | 0.005 | no | -0.069 | -0.0055 | 0.1968 | 2.4032 | 0.0000 |
+| z005_x000_nopush | `HOLD_GATE` | 7/8 | 0.000 | 0.005 | no | NA | -0.0322 | 0.1953 | 1.2575 | 0.0000 |
 
 ## Blocking Gate Detail
 
-- z005 first failing seed: `5`
-- status: `HOLD_CANDIDATE_FALL_OR_TERMINATION`
-- termination: `fall_or_nan`
-- track_ratio: `-3.3180`
-- mean_local_vx_m_s: `-0.2654`
-- base_height_min_m: `0.0677`
+- gate: `z005_x008_nopush`
+  - first failing seed: `5`
+  - status: `HOLD_CANDIDATE_FALL_OR_TERMINATION`
+  - termination: `fall_or_nan`
+  - track_ratio: `-3.3180`
+  - mean_local_vx_m_s: `-0.2654`
+  - base_height_min_m: `0.0677`
+- gate: `z005_x000_nopush`
+  - first failing seed: `5`
+  - status: `HOLD_CANDIDATE_FALL_OR_TERMINATION`
+  - termination: `fall_or_nan`
+  - track_ratio: `NA`
+  - mean_local_vx_m_s: `-0.2589`
+  - base_height_min_m: `0.0512`
 
 ## Backend
 

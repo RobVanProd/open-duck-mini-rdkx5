@@ -49,6 +49,10 @@ DEFAULT_GATES = {
     / "outputs"
     / "analysis"
     / "phase2_stagea2_seed5_recovery_command_gated_gain099_x008_rough_z005_nopush_15s_8seed_cpu.json",
+    "z005_x000_nopush": ROOT
+    / "outputs"
+    / "analysis"
+    / "phase2_stagea2_seed5_recovery_command_gated_gain099_x0_rough_z005_nopush_15s_8seed_cpu.json",
 }
 DEFAULT_BACKEND_ARTIFACTS = {
     "local_rocm_hold": ROOT
@@ -216,11 +220,12 @@ def decide(payload: dict[str, Any]) -> tuple[str, str]:
         "z002_x000_gentle_push",
     ]
     z002_pass = all(gates.get(name, {}).get("status") == "PASS_GATE_8SEED" for name in z002_required)
-    z005_pass = gates.get("z005_x008_nopush", {}).get("status") == "PASS_GATE_8SEED"
+    z005_required = ["z005_x008_nopush", "z005_x000_nopush"]
+    z005_pass = all(gates.get(name, {}).get("status") == "PASS_GATE_8SEED" for name in z005_required)
     if z005_pass:
         return (
             "PASS_PHASE2_TERRAIN_Z005_READY_FOR_NEXT_STAGE",
-            "z=0.005 x=0.08 no-push gate passes; run the remaining z=0.005 x=0.0 and gentle-push gates before widening randomization.",
+            "z=0.005 no-push command and stillness gates pass; run the z=0.005 gentle-push gates before widening randomization.",
         )
     if z002_pass:
         return (
@@ -276,21 +281,26 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
             )
         )
     lines.extend(["", "## Blocking Gate Detail", ""])
-    z005 = payload["gates"].get("z005_x008_nopush", {})
-    failure = z005.get("first_failure")
-    if failure:
-        summary = failure.get("summary", {})
-        lines.extend(
-            [
-                f"- z005 first failing seed: `{failure.get('seed')}`",
-                f"- status: `{failure.get('status')}`",
-                f"- termination: `{summary.get('termination_reason')}`",
-                f"- track_ratio: `{fmt(summary.get('track_ratio'), 4)}`",
-                f"- mean_local_vx_m_s: `{fmt(summary.get('mean_local_vx_m_s'), 4)}`",
-                f"- base_height_min_m: `{fmt(summary.get('base_height_min_m'), 4)}`",
-                "",
-            ]
-        )
+    z005_failures = [
+        (name, gate.get("first_failure"))
+        for name, gate in payload["gates"].items()
+        if name.startswith("z005_") and gate.get("first_failure")
+    ]
+    if z005_failures:
+        for gate_name, failure in z005_failures:
+            summary = failure.get("summary", {})
+            lines.extend(
+                [
+                    f"- gate: `{gate_name}`",
+                    f"  - first failing seed: `{failure.get('seed')}`",
+                    f"  - status: `{failure.get('status')}`",
+                    f"  - termination: `{summary.get('termination_reason')}`",
+                    f"  - track_ratio: `{fmt(summary.get('track_ratio'), 4)}`",
+                    f"  - mean_local_vx_m_s: `{fmt(summary.get('mean_local_vx_m_s'), 4)}`",
+                    f"  - base_height_min_m: `{fmt(summary.get('base_height_min_m'), 4)}`",
+                ]
+            )
+        lines.append("")
     else:
         lines.append("- No z005 failure detail available.")
         lines.append("")
