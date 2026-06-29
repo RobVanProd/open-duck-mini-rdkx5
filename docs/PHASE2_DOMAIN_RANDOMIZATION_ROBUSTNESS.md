@@ -194,6 +194,9 @@ local ROCm discovery:
 local ROCm tiny B0D-shaped smoke:
   PASS_GPU_RECOVERY_SMOKE
 
+local ROCm 64-env B0D scale-up:
+  HOLD_LOCAL_ROCM_SCALE
+
 CPU path check:
   PASS_CPU_PATH_CHECK
 
@@ -204,8 +207,9 @@ CUDA handoff:
 B0D is the next valid full training attempt from the B0C corrected-bridge
 checkpoint. The earlier local ROCm run failed before any PPO step, but after
 the workstation reset/firmware work the read-only ROCm report passed and a tiny
-B0D-shaped GPU smoke reached PPO step 160. That smoke is infrastructure
-evidence only, not a policy result. A tiny CPU run also confirmed the
+B0D-shaped GPU smoke reached PPO step 160. A 64-env local scale-up then failed
+with `ROCM_ERROR_ILLEGAL_ADDRESS` before any PPO step. These are infrastructure
+datapoints only, not policy results. A tiny CPU run also confirmed the
 command/checkpoint path is structurally executable.
 
 The next full attempt can run either locally if the workstation remains stable,
