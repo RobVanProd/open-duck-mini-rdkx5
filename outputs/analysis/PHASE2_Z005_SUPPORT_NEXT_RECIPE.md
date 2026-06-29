@@ -290,6 +290,20 @@ python3 tools/eval_policy_with_actuator_bridge.py --mode closed-loop-sim --eval-
 python3 tools/eval_policy_with_actuator_bridge.py --mode closed-loop-sim --eval-role candidate --policy '<candidate.onnx>' --fit-json outputs/analysis/actuator_response_fit_corrected_knee.json --playground-path ../Open_Duck_Playground --env-python ../envs/open-duck-playground/bin/python --task rough_terrain_backlash --duration 15 --bridge-mode fitted --command-x 0.0 --terrain-hfield-z-scale 0.002 --output-dir outputs/analysis/phase2_z005_support_next_gate/z002_x000_nopush
 ```
 
+## Post-Training Decision Command
+
+Run this on the generated post-training seed-gate JSON before promoting any candidate:
+
+```bash
+python3 \
+    tools/report_phase2_z005_post_training_gates.py \
+    '<candidate_name>_post_training_seed_gates.json' \
+    --output-md \
+    outputs/analysis/PHASE2_Z005_POST_TRAINING_GATE_DECISION.md \
+    --output-json \
+    outputs/analysis/phase2_z005_post_training_gate_decision.json
+```
+
 ## Acceptance
 
 - z=0.005 x=0.08 no-push passes 8/8, zero falls, no velocity excess, tracking p95 <= 0.20, track ratio >= 0.40.

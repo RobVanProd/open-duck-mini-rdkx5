@@ -1626,6 +1626,13 @@ def build_remote_driver(
                     print("candidate_checkpoint_sweep_json_missing", sweep_json, flush=True)
             if {run_phase2_z005_support!r}:
                 run_phase2_z005_post_training_gates(latest_onnx, candidate_name)
+                post_gate_json = OUT / f"{{candidate_name}}_post_training_seed_gates.json"
+                run([
+                    PYTHON, "tools/report_phase2_z005_post_training_gates.py",
+                    str(post_gate_json),
+                    "--output-md", str(OUT / f"{{candidate_name}}_POST_TRAINING_GATE_DECISION.md"),
+                    "--output-json", str(OUT / f"{{candidate_name}}_post_training_gate_decision.json"),
+                ], cwd=RDK, timeout=300, check=False)
             bundle_artifacts()
 
         elif {run_staged_curriculum!r}:

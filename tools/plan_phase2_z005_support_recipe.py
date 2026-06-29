@@ -321,6 +321,18 @@ def gate_commands(policy: str) -> list[list[str]]:
     return commands
 
 
+def decision_command(post_training_json: str) -> list[str]:
+    return [
+        "python3",
+        "tools/report_phase2_z005_post_training_gates.py",
+        post_training_json,
+        "--output-md",
+        "outputs/analysis/PHASE2_Z005_POST_TRAINING_GATE_DECISION.md",
+        "--output-json",
+        "outputs/analysis/phase2_z005_post_training_gate_decision.json",
+    ]
+
+
 def collect(args: argparse.Namespace) -> dict[str, Any]:
     ledger_path = Path(args.ledger_json)
     diagnostic_path = Path(args.diagnostic_json)
@@ -378,6 +390,10 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
             "post_training_gate_examples": [
                 {"argv": command, "shell": shell_join(command)} for command in gate_commands("<candidate.onnx>")
             ],
+            "post_training_decision": {
+                "argv": decision_command("<candidate_name>_post_training_seed_gates.json"),
+                "shell": multiline_shell(decision_command("<candidate_name>_post_training_seed_gates.json")),
+            },
         },
         "acceptance": [
             "z=0.005 x=0.08 no-push passes 8/8, zero falls, no velocity excess, tracking p95 <= 0.20, track ratio >= 0.40.",
@@ -447,6 +463,18 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
     )
     for item in payload["commands"]["post_training_gate_examples"]:
         lines.extend(["```bash", item["shell"], "```", ""])
+    lines.extend(
+        [
+            "## Post-Training Decision Command",
+            "",
+            "Run this on the generated post-training seed-gate JSON before promoting any candidate:",
+            "",
+            "```bash",
+            payload["commands"]["post_training_decision"]["shell"],
+            "```",
+            "",
+        ]
+    )
     lines.extend(["## Acceptance", ""])
     for item in payload["acceptance"]:
         lines.append(f"- {item}")

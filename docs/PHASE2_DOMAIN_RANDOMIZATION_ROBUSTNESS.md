@@ -80,6 +80,16 @@ the seed-5 support collapse directly:
 Promotion still requires the z=0.005 no-push gates to pass at both `x=0.08`
 and `x=0.0`, with the z=0.002 regression gates remaining clear.
 
+The `phase2-z005-support` Colab workflow now runs the post-training gates and
+then calls:
+
+```bash
+python3 tools/report_phase2_z005_post_training_gates.py <candidate_name>_post_training_seed_gates.json
+```
+
+Use that decision artifact as the promotion authority for this rung. A raw
+checkpoint sweep or smoke pass is not promotable by itself.
+
 ## Phase 1 Anchor
 
 ```text
