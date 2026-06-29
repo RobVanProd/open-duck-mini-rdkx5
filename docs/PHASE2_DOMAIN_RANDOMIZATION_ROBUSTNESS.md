@@ -1186,6 +1186,129 @@ Additional required reports:
 - action saturation
 - per-joint target velocity vs corrected envelope
 
+## Current Packaged Candidate
+
+The current best offline Phase 2 sim candidate is the packaged gain-0.99 ONNX:
+
+```text
+candidate:
+  policy/candidates/phase2_stagea2_seed5_recovery_command_gated_gain099_20260629/candidate.onnx
+
+candidate_sha256:
+  209b85a75cf9cbbcf10df573c1b530921943a72e81082111889c15f63a9a2c7b
+
+source_candidate:
+  policy/candidates/phase2_stagea2_seed5_recovery_command_gated_20260628/candidate.onnx
+
+transform:
+  final ONNX output action scale = 0.99
+```
+
+This is a real deployable ONNX packaging step, not an evaluator-side gain. The
+scale check passed exactly:
+
+```text
+artifact:
+  policy/candidates/phase2_stagea2_seed5_recovery_command_gated_gain099_20260629/onnx_scale_verify.json
+
+status:
+  PASS_ONNX_OUTPUT_SCALE_VERIFY
+```
+
+Corrected-bridge rough `z=0.002` gates:
+
+```text
+artifact:
+  outputs/analysis/PHASE2_STAGEA2_GAIN099_PACKAGED_CANDIDATE_DECISION.md
+
+status:
+  PASS_PACKAGED_GAIN099_ROUGH_Z002_PUSH_AND_NOPUSH_SIM_GATES
+
+x=0.08, no push:
+  PASS 8/8
+  mean track ratio: 0.4053
+  max tracking p95: 0.1975 rad
+  max velocity excess: 0.0000 rad/s
+
+x=0.0, no push:
+  PASS 8/8
+  mean vx: 0.0007 m/s
+  max tracking p95: 0.0663 rad
+
+x=0.08, gentle push:
+  PASS 8/8
+  mean track ratio: 0.4104
+  mean push success: 0.9704
+  max tracking p95: 0.1944 rad
+  max velocity excess: 0.0000 rad/s
+
+x=0.0, gentle push:
+  PASS 8/8
+  mean vx: 0.0007 m/s
+  mean push success: 0.9704
+  max tracking p95: 0.0687 rad
+```
+
+This candidate is therefore the current best reviewed rough `z=0.002`
+gentle-push offline sim candidate. It is not robot-approved and does not
+complete the full Phase 2 terrain curriculum.
+
+Rougher terrain boundary:
+
+```text
+artifact:
+  outputs/analysis/PHASE2_STAGEA2_GAIN099_TERRAIN_Z005_BOUNDARY.md
+
+status:
+  HOLD_TERRAIN_Z005_SEED5_FALL
+
+configuration:
+  task: rough_terrain_backlash
+  terrain_hfield_z_scale: 0.005
+  command_x: 0.08
+  pushes: disabled
+
+result:
+  PASS 7/8
+  seed 5 fall at 56 samples
+  seed 5 mean vx: -0.2654 m/s
+  seed 5 base height min: 0.0677 m
+  max velocity excess: 0.0000 rad/s
+```
+
+Focused seed-5 trace analysis:
+
+```text
+artifact:
+  outputs/analysis/PHASE2_STAGEA2_GAIN099_Z005_SEED5_TRACE_ANALYSIS.md
+json:
+  outputs/analysis/phase2_stagea2_gain099_z005_seed5_trace_analysis.json
+
+status:
+  HOLD_TERRAIN_Z005_SEED5_BACKWARD_PITCH_COLLAPSE
+```
+
+The failing seed stays inside the corrected actuator gate:
+
+```text
+max pitch-chain sent velocity p95:     1.9284 rad/s
+max pitch-chain tracking p95:          0.1533 rad
+corrected envelope excess:             0.0000 rad/s
+```
+
+The failure is instead a support/contact timing boundary:
+
+```text
+double support:       91.1%
+single support:        7.1%
+body pitch min:       -1.4489 rad
+last local vx:        -1.4738 m/s
+```
+
+Next Phase 2 work should target seed-5 rough-terrain support timing and
+backward-pitch reversal between `z=0.002` and `z=0.005`, not actuator-envelope
+relaxation or global action-gain increases.
+
 ## Current Terrain-Step Status
 
 Existing-trace hard-step rescoring found a useful split:
