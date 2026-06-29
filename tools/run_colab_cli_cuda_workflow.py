@@ -794,6 +794,8 @@ def build_remote_driver(
         phase2_default_candidate_name = "phase2_b0d_tracking_margin_cuda"
     phase2_output_root = f"/content/open_duck_training_phase2_{phase2_recipe_id}_cli"
     phase2_num_timesteps = "80000" if run_phase2_b0f else "160000"
+    phase2_ppo_num_envs = "64" if run_phase2_b0f else "128"
+    phase2_ppo_batch_size = "512" if run_phase2_b0f else "1024"
     phase2_lr = "0.000003" if run_phase2_b0f else ("0.000012" if run_phase2_b0e else "0.000015")
     phase2_clip = "0.02" if run_phase2_b0f else ("0.04" if run_phase2_b0e else "0.05")
     phase2_max_grad_norm = "0.1" if run_phase2_b0f else ("0.2" if run_phase2_b0e else "0.25")
@@ -1222,11 +1224,11 @@ def build_remote_driver(
                 "--task", "rough_terrain_backlash",
                 "--num-timesteps", "{phase2_num_timesteps}",
                 "--export-min-step", "1",
-                "--ppo-num-envs", "128",
+                "--ppo-num-envs", "{phase2_ppo_num_envs}",
                 "--ppo-num-evals", "4",
                 "--ppo-episode-length", "750",
                 "--ppo-unroll-length", "20",
-                "--ppo-batch-size", "1024",
+                "--ppo-batch-size", "{phase2_ppo_batch_size}",
                 "--ppo-num-minibatches", "4",
                 "--ppo-num-updates-per-batch", "2",
                 "--restore-checkpoint-path",

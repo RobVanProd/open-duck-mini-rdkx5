@@ -1596,6 +1596,16 @@ pushes. The goal is not broad DR yet; the goal is to learn a local
 perturbation-recovery correction without moving the nominal no-push gait off
 the existing pass boundary.
 
+After the `128`-env B0F shape died before writing normal runner artifacts, two
+direct A100 probes showed the recipe is valid at smaller scale:
+
+```text
+8 env tiny probe:  returncode 0
+64 env probe:      returncode 0
+```
+
+The named B0F workflow is therefore pinned to `64` envs / batch `512`.
+
 If B0F holds at the same `~0.22 rad` short-gate tracking plateau or reduces
 forward command tracking below B0E, do not continue from it. Return to
 eval-only perturbation localization or a more explicit push-recovery policy

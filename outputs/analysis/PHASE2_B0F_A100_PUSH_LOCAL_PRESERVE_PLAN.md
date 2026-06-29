@@ -31,6 +31,8 @@ Key differences from B0E:
 
 ```text
 num_timesteps: 80000
+ppo_num_envs: 64
+ppo_batch_size: 512
 learning_rate: 0.000003
 ppo_clip: 0.02
 max_grad_norm: 0.1
@@ -57,6 +59,20 @@ The remaining Phase 2 blocker is a local perturbation-recovery margin issue,
 not a nominal gait issue. A smaller adaptation with frequent gentle pushes and
 stronger behavior preservation may reduce push-induced target-rate/tracking
 spikes without shifting the nominal no-push swing timing that already passes.
+
+## Scale Probe
+
+The first full-shape B0F launch at `128` envs died before writing normal runner
+stdout/stderr or an exit sentinel. Two direct A100 probes were then run on the
+same pinned dependency stack:
+
+```text
+8 env tiny probe:  returncode 0
+64 env probe:      returncode 0
+```
+
+The named B0F workflow is therefore pinned to `64` envs / batch `512` for the
+real run. This is a hardware/runtime scale adjustment, not a recipe change.
 
 ## Gate
 

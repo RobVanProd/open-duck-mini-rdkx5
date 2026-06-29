@@ -5,6 +5,8 @@
   "purpose": "Local push-recovery adaptation from B0C with stronger behavior preservation after B0E regressed tracking.",
   "recipe": {
     "num_timesteps": 80000,
+    "ppo_num_envs": 64,
+    "ppo_batch_size": 512,
     "learning_rate": 0.000003,
     "ppo_clip": 0.02,
     "max_grad_norm": 0.1,
@@ -41,5 +43,10 @@
     "no-push swing geometry regresses",
     "fall-count improvement is caused by freezing"
   ],
-  "robot_scope": "blocked"
+  "robot_scope": "blocked",
+  "scale_probe": {
+    "a100_8_env_tiny_returncode": 0,
+    "a100_64_env_returncode": 0,
+    "decision": "Use 64 envs / batch 512 for B0F because 128-env launch died before writing normal runner artifacts."
+  }
 }
