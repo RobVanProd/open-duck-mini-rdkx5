@@ -1264,3 +1264,34 @@ push candidate because the moving gentle-push gate has a small corrected
 envelope excess on one seed. The next Phase 2 step should reduce perturbation
 target-rate margin or fine-tune from this command-gated artifact with push
 perturbations active.
+
+Command-scale diagnostic:
+
+```text
+artifact:
+  outputs/analysis/PHASE2_SEED5_NEIGHBOR_RECOVERY_STAGEA2_COMMAND_SCALE_0P99_DIAGNOSTIC.md
+
+status:
+  HOLD_CMDSCALE_FIXES_PUSH_ENVELOPE_BREAKS_NOPUSH_SWING
+```
+
+A high-command `0.99` scale cleared the `x=0.08` gentle-push envelope hold:
+
+```text
+x=0.08 gentle push: PASS_CANDIDATE_SIM_GATE 8/8
+  mean track ratio: 0.4029
+  max velocity excess: 0.0000 rad/s
+  max tracking p95: 0.1985 rad
+```
+
+But the same scaled wrapper failed the standard no-push terrain swing gate:
+
+```text
+x=0.08 no push: HOLD_CANDIDATE_TERRAIN_SWING
+  seed 3 min swing rel-x p95 range: 0.0025 m
+  required: 0.0030 m
+```
+
+Therefore global high-command attenuation is not the promotion fix. The next
+step should preserve no-push swing geometry while adding perturbation-specific
+target-rate margin.

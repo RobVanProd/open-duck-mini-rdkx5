@@ -75,6 +75,19 @@ x=0.08: HOLD_CANDIDATE_TARGET_VELOCITY
 x=0.0: PASS_CANDIDATE_SIM_GATE 8/8
 ```
 
+## Command-Scale Diagnostic
+
+A follow-up diagnostic tested a command-based `0.99` high-command scale:
+
+```text
+artifact: outputs/analysis/PHASE2_SEED5_NEIGHBOR_RECOVERY_STAGEA2_COMMAND_SCALE_0P99_DIAGNOSTIC.md
+status: HOLD_CMDSCALE_FIXES_PUSH_ENVELOPE_BREAKS_NOPUSH_SWING
+```
+
+It passed the `x=0.08` gentle-push gate, but failed the standard no-push
+rough-terrain swing gate on seed 3. That scaled wrapper is not the promoted
+candidate.
+
 ## Decision
 
 The candidate is useful as the next Phase 2 offline warm start because it is

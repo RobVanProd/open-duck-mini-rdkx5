@@ -8743,3 +8743,17 @@ push candidate because the moving gentle-push gate has a small corrected
 envelope excess on one seed. The next Phase 2 step should reduce perturbation
 target-rate margin or fine-tune from this command-gated artifact with push
 perturbations active.
+
+A high-command `0.99` command-scale diagnostic cleared the gentle-push moving
+gate but failed the no-push rough-terrain swing gate:
+
+```text
+artifact: outputs/analysis/PHASE2_SEED5_NEIGHBOR_RECOVERY_STAGEA2_COMMAND_SCALE_0P99_DIAGNOSTIC.md
+status: HOLD_CMDSCALE_FIXES_PUSH_ENVELOPE_BREAKS_NOPUSH_SWING
+x=0.08 gentle push: PASS_CANDIDATE_SIM_GATE 8/8, max velocity excess 0.0000
+x=0.08 no push: HOLD_CANDIDATE_TERRAIN_SWING on seed 3
+```
+
+Conclusion: global attenuation is too blunt. The next offline work should
+preserve no-push swing while adding target-rate margin specifically around
+push recovery. Robot validation remains blocked.

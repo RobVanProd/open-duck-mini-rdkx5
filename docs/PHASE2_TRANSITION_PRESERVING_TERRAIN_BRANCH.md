@@ -742,3 +742,16 @@ push candidate because the moving gentle-push gate has a small corrected
 envelope excess on one seed. The next Phase 2 step should reduce perturbation
 target-rate margin or fine-tune from this command-gated artifact with push
 perturbations active.
+
+A command-scale diagnostic tested whether the gentle-push excess could be
+removed by attenuating the high-command branch to `0.99` while leaving
+`x=0.0` at scale `1.0`:
+
+```text
+artifact: outputs/analysis/PHASE2_SEED5_NEIGHBOR_RECOVERY_STAGEA2_COMMAND_SCALE_0P99_DIAGNOSTIC.md
+status: HOLD_CMDSCALE_FIXES_PUSH_ENVELOPE_BREAKS_NOPUSH_SWING
+```
+
+The scaled wrapper passed the `x=0.08` gentle-push gate but failed no-push
+terrain swing on seed 3. This closes global high-command attenuation as the
+next promotion fix.
