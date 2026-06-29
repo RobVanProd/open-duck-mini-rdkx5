@@ -130,6 +130,12 @@ def tar_filter(member: tarfile.TarInfo) -> tarfile.TarInfo | None:
             (
                 "outputs",
                 "analysis",
+                "command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate",
+                "candidate_mlp.npz",
+            ),
+            (
+                "outputs",
+                "analysis",
                 "ppo_bc_command_conditioned_dagger_seed5_x0_step0_checkpoint",
             ),
             (
@@ -628,6 +634,7 @@ def build_remote_driver(
     run_smoke = args.workflow in {"smoke", "training-smoke", "all", "candidate"}
     run_training_smoke_diagnostic = args.workflow == "training-smoke-diagnostic"
     run_candidate_training = args.workflow in {"candidate", "candidate-only", "all"}
+    run_phase2_b0d = args.workflow == "phase2-b0d"
     run_staged_curriculum = args.workflow == "staged-curriculum"
     run_candidate_eval_only = args.workflow == "candidate-eval-only"
     run_checkpoint_sweep = args.workflow == "checkpoint-sweep"
@@ -643,6 +650,7 @@ def build_remote_driver(
             "candidate-only",
             "candidate-eval-only",
             "checkpoint-sweep",
+            "phase2-b0d",
             "all",
         }
         and not args.skip_audit
@@ -1143,6 +1151,122 @@ def build_remote_driver(
                 "/content/open_duck_training_runs_cli",
                 OUT / "open_duck_training_runs_cli",
             )
+
+        if {run_phase2_b0d!r}:
+            candidate_name = {args.candidate_name!r} or "phase2_b0d_tracking_margin_cuda"
+            phase2_b0d_cmd = [
+                PYTHON, "tools/run_actuator_bridge_training_smoke.py",
+                "--playground-path", str(PLAYGROUND),
+                "--env-python", PYTHON,
+                "--platform", "gpu",
+                "--jax-platforms", "cuda",
+                "--run",
+                "--output-root", "/content/open_duck_training_phase2_b0d_cli",
+                "--num-timesteps", "160000",
+                "--export-min-step", "1",
+                "--ppo-num-envs", "128",
+                "--ppo-num-evals", "4",
+                "--ppo-episode-length", "750",
+                "--ppo-unroll-length", "20",
+                "--ppo-batch-size", "1024",
+                "--ppo-num-minibatches", "4",
+                "--ppo-num-updates-per-batch", "2",
+                "--restore-checkpoint-path",
+                "/content/open-duck-mini-rdkx5/outputs/phase2_domain_randomization/stage_b0c_rough_z002_push_tracking_margin_from_b0_gpu/smoke_20260629T062042Z_gpu/2026_06_29_022725_245760",
+                "--ppo-learning-rate", "0.000015",
+                "--ppo-entropy-cost", "0.001",
+                "--ppo-clipping-epsilon", "0.05",
+                "--ppo-max-grad-norm", "0.25",
+                "--restore-policy-kl-scale", "1.0",
+                "--target-rate-scale", "0",
+                "--actuator-tracking-scale", "-0.04",
+                "--forward-progress-scale", "2",
+                "--command-progress-scale", "1",
+                "--command-progress-shortfall-scale", "-2.5",
+                "--command-progress-required-ratio", "0.4",
+                "--command-progress-warmup-steps", "30",
+                "--action-rate-huber-delta", "0.05",
+                "--actuator-tracking-huber-delta", "0.03",
+                "--action-rate-scale", "-0.08",
+                "--action-magnitude-scale", "-0.005",
+                "--base-height-scale", "-0.3",
+                "--forward-pitch-scale", "-0.4",
+                "--forward-pitch-rate-scale", "-0.08",
+                "--alive-scale", "2",
+                "--imitation-scale", "0",
+                "--lin-vel-x-min", "0.06",
+                "--lin-vel-x-max", "0.1",
+                "--lin-vel-y-min", "0",
+                "--lin-vel-y-max", "0",
+                "--ang-vel-yaw-min", "0",
+                "--ang-vel-yaw-max", "0",
+                "--command-resample-steps", "600",
+                "--zero-command-probability", "0.15",
+                "--dr-friction-min", "0.8",
+                "--dr-friction-max", "1.1",
+                "--dr-frictionloss-scale-min", "0.98",
+                "--dr-frictionloss-scale-max", "1.02",
+                "--dr-armature-scale-min", "1",
+                "--dr-armature-scale-max", "1.02",
+                "--dr-com-jitter-m", "0.01",
+                "--dr-mass-scale-min", "0.98",
+                "--dr-mass-scale-max", "1.02",
+                "--dr-torso-mass-delta-min", "-0.02",
+                "--dr-torso-mass-delta-max", "0.02",
+                "--dr-qpos-jitter-rad", "0.006",
+                "--dr-actuator-gain-scale-min", "0.98",
+                "--dr-actuator-gain-scale-max", "1.02",
+                "--dr-leg-geometry-jitter-scale", "0.003",
+                "--push-interval-min-s", "7",
+                "--push-interval-max-s", "12",
+                "--push-magnitude-min", "0.02",
+                "--push-magnitude-max", "0.1",
+                "--noise-level", "0.5",
+                "--noise-hip-pos", "0.0075",
+                "--noise-knee-pos", "0.0075",
+                "--noise-ankle-pos", "0.0075",
+                "--noise-joint-vel", "0.75",
+                "--noise-gravity", "0.04",
+                "--noise-gyro", "0.04",
+                "--noise-accelerometer", "0.02",
+                "--push-enable",
+                "--enable-behavior-prior",
+                "--behavior-prior-mlp-npz",
+                "/content/open-duck-mini-rdkx5/outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate/candidate_mlp.npz",
+                "--behavior-prior-scale", "-0.35",
+                "--behavior-prior-huber-delta", "0.05",
+                "--actuator-bridge-delay-min-ticks", "3",
+                "--actuator-bridge-delay-max-ticks", "4",
+                "--actuator-bridge-tau-min-s", "0.06",
+                "--actuator-bridge-tau-max-s", "0.1",
+                "--actuator-bridge-velocity-limit-min-rad-s", "2",
+                "--actuator-bridge-velocity-limit-max-rad-s", "3.25",
+                "--actuator-bridge-per-joint-variation", "0.05",
+                "--terrain-hfield-z-scale", "0.002",
+                "--timeout-s", "{args.candidate_timeout_s}",
+            ]
+            run(phase2_b0d_cmd, cwd=RDK, timeout={args.candidate_timeout_s + 300})
+            run_dirs = sorted(Path("/content/open_duck_training_phase2_b0d_cli").glob("smoke_*_gpu"))
+            if not run_dirs:
+                raise SystemExit("phase2-b0d training produced no smoke_*_gpu run directory")
+            run_dir = run_dirs[-1]
+            onnx_files = sorted(run_dir.glob("*.onnx"))
+            if not onnx_files:
+                raise SystemExit(f"phase2-b0d training produced no ONNX files in {{run_dir}}")
+            latest_onnx = onnx_files[-1]
+            training_manifest = run_dir / "smoke_manifest.final.json"
+            if not training_manifest.exists():
+                training_manifest = run_dir / "smoke_manifest.start.json"
+            run([
+                PYTHON, "tools/summarize_training_run.py", str(run_dir),
+                "--output-md", str(OUT / f"{{candidate_name}}_training_run_summary.md"),
+                "--output-json", str(OUT / f"{{candidate_name}}_training_run_summary.json"),
+            ], cwd=RDK, timeout=300, check=False)
+            copy_training_outputs(
+                "/content/open_duck_training_phase2_b0d_cli",
+                OUT / "open_duck_training_phase2_b0d_cli",
+            )
+            bundle_artifacts()
             if {args.candidate_checkpoint_sweep!r}:
                 sweep_dir = OUT / f"{{candidate_name}}_checkpoint_sweep"
                 sweep_cmd = [
@@ -1524,6 +1648,7 @@ def main() -> int:
             "candidate-only",
             "candidate-eval-only",
             "checkpoint-sweep",
+            "phase2-b0d",
             "staged-curriculum",
             "all",
         ],

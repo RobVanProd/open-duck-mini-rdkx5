@@ -91,6 +91,27 @@ python3 tools/run_colab_cli_cuda_workflow.py \
 This uploads only the local worktrees plus the selected ONNX/manifest, then
 runs the `x=0.0` and `x=0.08` candidate gates. It does not train.
 
+### Phase 2 B0D Tracking-Margin Continuation
+
+Use this when the local ROCm path is unstable and the next required training run
+is the conservative B0D continuation from the B0C corrected-bridge checkpoint.
+This workflow runs the fixed B0D recipe on CUDA with the pinned dependency
+stack and bundles the resulting ONNX/checkpoint artifacts. It does not approve
+robot validation and does not replace the strict local review gates.
+
+```bash
+python3 tools/run_colab_cli_cuda_workflow.py \
+  --workflow phase2-b0d \
+  --session open-duck-l4 \
+  --candidate-name phase2_b0d_tracking_margin_cuda \
+  --candidate-timeout-s 10800 \
+  --run
+```
+
+After the artifact bundle is imported, run the standard corrected-bridge
+rough-terrain gentle-push 8-seed gate locally against the selected ONNX before
+packaging or promoting anything.
+
 The CLI workflow uploads local RDK/Playground tarballs, pins
 `jax/jaxlib==0.7.2`, writes a remote log/artifact bundle, downloads the bundle,
 and does not require a GitHub token in Colab. This is the preferred route for
