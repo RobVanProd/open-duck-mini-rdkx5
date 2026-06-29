@@ -1670,3 +1670,71 @@ action saturation: 0.0%
 B0F is therefore not a robot candidate. It is in-envelope and non-saturating,
 but still below the forward-progress gate and above the strict pitch-tracking
 target.
+
+### B0C LK097 Push-Localized Near-Pass
+
+Artifact:
+
+```text
+outputs/analysis/PHASE2_B0C_LK097_PUSH_LOCALIZATION_DECISION.md
+```
+
+Status:
+
+```text
+HOLD_B0C_LK097_PUSH_LOCAL_LEFT_KNEE_MARGIN
+```
+
+After the B0F hold, the best current robustness line is still the earlier B0C
+left-knee-scale `0.97` candidate:
+
+```text
+policy:
+  outputs/analysis/phase2_b0c_245_leftknee_scale097_candidate/candidate.onnx
+
+policy_sha256:
+  4985f1bccaa68838d006104fb380c50a2f06d8627ff8990564f178c0b0ad7f87
+```
+
+A focused seed-4 trace was run under the same rough-terrain `z=0.002` plus
+gentle-push conditions that produced the 7/8 near-pass. The candidate remained
+upright, in-envelope, and non-saturating:
+
+```text
+gate_status: HOLD_CANDIDATE_TRACKING
+track_ratio: 0.4285
+mean_vx: 0.0343 m/s
+progress_x: 0.0423 m
+max_pitch_tracking_p95: 0.2013 rad
+threshold: 0.2000 rad
+max_sent_target_velocity_p95: 1.8002 rad/s
+max_velocity_limit_excess: 0.0000 rad/s
+action_saturation: 0.0%
+body_pitch_abs_p95: 0.1402 rad
+base_height_min: 0.1506 m
+termination: duration_complete
+```
+
+The miss is localized to the left knee:
+
+```text
+left_knee joint_tracking_p95: 0.2013 rad
+left_knee sent_vel_p95: 1.6354 rad/s
+left_knee bridge_tracking_p95: 0.1022 rad
+left_knee lag_ticks: 4
+```
+
+Push correlation:
+
+```text
+push ticks: 57, 115, 173, 231
+left_knee high-error ticks near push: 13/13 within +/-25 ticks
+left_knee high-error ticks not near push: 0/13
+```
+
+Decision: do not continue B0F, scalar gain sweeps, or global target-rate
+clipping. The next valid Phase 2 correction should start from the `lk097`
+near-pass line and target the localized push-recovery window: preserve the
+nominal rough-terrain gait, add push-state or post-push tracking-margin
+correction, focus on left-knee recovery, and re-gate on the corrected bridge
+rough `z=0.002` gentle-push 8-seed screen before broadening DR.
