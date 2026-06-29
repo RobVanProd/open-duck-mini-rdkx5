@@ -88,6 +88,41 @@ It passed the `x=0.08` gentle-push gate, but failed the standard no-push
 rough-terrain swing gate on seed 3. That scaled wrapper is not the promoted
 candidate.
 
+## Eval-Only Gain-0.99 15s Diagnostic
+
+Artifact:
+
+```text
+outputs/analysis/PHASE2_GAIN099_EVAL_ONLY_ROUGH_PUSH_15S_DECISION.md
+```
+
+Using the packaged candidate with evaluator-side `policy_action_gain=0.99`,
+rough `z=0.002`, fitted corrected bridge, gentle pushes every `1.0-1.5 s`,
+and 15-second rollouts:
+
+```text
+x=0.08:
+  PASS_CANDIDATE_SIM_GATE 8/8
+  falls: 0/8
+  mean track ratio: 0.4104
+  max velocity excess: 0.0000 rad/s
+  max tracking p95: 0.1944 rad
+  mean push success: 0.9704
+
+x=0.0:
+  PASS_CANDIDATE_SIM_GATE 8/8
+  falls: 0/8
+  mean vx: 0.0007 m/s
+  max velocity excess: 0.0000 rad/s
+  max tracking p95: 0.0687 rad
+  mean push success: 0.9704
+```
+
+This is not a deployable promotion because `policy_action_gain` is an eval-only
+multiplier. It is evidence that a 1% action attenuation gives useful
+rough-terrain push margin and should be packaged or trained into a real
+candidate before promotion.
+
 ## Decision
 
 The candidate is useful as the next Phase 2 offline warm start because it is

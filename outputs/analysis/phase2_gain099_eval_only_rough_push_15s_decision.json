@@ -1,0 +1,64 @@
+{
+  "status": "PASS_EVAL_ONLY_GAIN099_ROUGH_PUSH_15S_NOT_DEPLOYABLE",
+  "scope": {
+    "robot_tests": false,
+    "ssh": false,
+    "deploy": false,
+    "grounded_replay": false,
+    "runtime_behavior_changes": false,
+    "policy_overwrite": false
+  },
+  "candidate": {
+    "path": "policy/candidates/phase2_stagea2_seed5_recovery_command_gated_20260628/candidate.onnx",
+    "sha256": "d0cec0b9dcc666416f0ecc8383a51367529273013d912b26399339e2c4b1c3e6"
+  },
+  "eval_config": {
+    "corrected_bridge": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.002,
+    "bridge_mode": "fitted",
+    "policy_action_gain": 0.99,
+    "duration_s": 15.0,
+    "seeds": [0, 1, 2, 3, 4, 5, 6, 7],
+    "eval_push_enable": true,
+    "eval_push_interval_s": [1.0, 1.5],
+    "eval_push_magnitude": [0.05, 0.1]
+  },
+  "artifacts": {
+    "x008_md": "outputs/analysis/PHASE2_SEED5_NEIGHBOR_RECOVERY_STAGEA2_COMMAND_GATED_GAIN099_X008_ROUGH_Z002_GENTLE_PUSH_15S_8SEED_CPU.md",
+    "x008_json": "outputs/analysis/phase2_seed5_neighbor_recovery_stagea2_command_gated_gain099_x008_rough_z002_gentle_push_15s_8seed_cpu.json",
+    "x0_md": "outputs/analysis/PHASE2_SEED5_NEIGHBOR_RECOVERY_STAGEA2_COMMAND_GATED_GAIN099_X0_ROUGH_Z002_GENTLE_PUSH_15S_8SEED_CPU.md",
+    "x0_json": "outputs/analysis/phase2_seed5_neighbor_recovery_stagea2_command_gated_gain099_x0_rough_z002_gentle_push_15s_8seed_cpu.json"
+  },
+  "x008": {
+    "status": "PASS_CANDIDATE_SIM_GATE_8_OF_8",
+    "falls": 0,
+    "duration_complete": 8,
+    "mean_vx_m_s": 0.0328,
+    "mean_track_ratio": 0.4104,
+    "max_pitch_vel_p95_rad_s": 2.3950,
+    "max_velocity_excess_rad_s": 0.0,
+    "mean_tracking_p95_rad": 0.1924,
+    "max_tracking_p95_rad": 0.1944,
+    "mean_push_success": 0.9704,
+    "min_swing_peak_lift_m": 0.0116,
+    "min_swing_rel_x_p95_m": 0.0063
+  },
+  "x0": {
+    "status": "PASS_CANDIDATE_SIM_GATE_8_OF_8",
+    "falls": 0,
+    "duration_complete": 8,
+    "mean_vx_m_s": 0.0007,
+    "max_abs_seed_mean_vx_m_s": 0.0037,
+    "max_pitch_vel_p95_rad_s": 0.3906,
+    "max_velocity_excess_rad_s": 0.0,
+    "mean_tracking_p95_rad": 0.0652,
+    "max_tracking_p95_rad": 0.0687,
+    "mean_push_success": 0.9704
+  },
+  "decision": {
+    "deployable_promotion": false,
+    "reason": "policy_action_gain=0.99 is evaluator-side only; package or train the gain into a real ONNX candidate and rerun canonical gates before promotion",
+    "next_step": "package gain-0.99 candidate or train a deployable policy with equivalent margin, then re-run no-push and gentle-push gates"
+  }
+}

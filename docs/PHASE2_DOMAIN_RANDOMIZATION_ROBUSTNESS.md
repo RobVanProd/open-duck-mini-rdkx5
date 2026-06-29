@@ -1508,6 +1508,42 @@ gain 0.995 x=0.08 gentle push:
   max tracking p95 0.2005 rad
 ```
 
+Full-horizon eval-only gain diagnostic:
+
+```text
+artifact:
+  outputs/analysis/PHASE2_GAIN099_EVAL_ONLY_ROUGH_PUSH_15S_DECISION.md
+
+status:
+  PASS_EVAL_ONLY_GAIN099_ROUGH_PUSH_15S_NOT_DEPLOYABLE
+
+policy_action_gain:
+  0.99
+
+x=0.08 rough z=0.002 gentle push, 15 s:
+  PASS_CANDIDATE_SIM_GATE 8/8
+  falls: 0/8
+  mean track ratio: 0.4104
+  max pitch-chain p95 target velocity: 2.3950 rad/s
+  max velocity excess: 0.0000 rad/s
+  max tracking p95: 0.1944 rad
+  mean push success: 0.9704
+
+x=0.0 rough z=0.002 gentle push, 15 s:
+  PASS_CANDIDATE_SIM_GATE 8/8
+  falls: 0/8
+  mean vx: 0.0007 m/s
+  max velocity excess: 0.0000 rad/s
+  max tracking p95: 0.0687 rad
+  mean push success: 0.9704
+```
+
+This is the strongest rough-terrain gentle-push diagnostic so far, but it is
+not a deployable promotion because `policy_action_gain=0.99` is an evaluator
+multiplier. The next deployable check is to package a real gain-0.99 candidate
+or remove the evaluator-only multiplier, then re-run the canonical no-push and
+gentle-push gates.
+
 Do not continue scalar gain sweeps. The next correction needs to be local to
 push recovery / high-rate moments rather than a global action attenuation.
 
