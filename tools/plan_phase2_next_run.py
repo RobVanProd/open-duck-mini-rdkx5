@@ -168,12 +168,12 @@ def unchecked_readiness() -> dict[str, Any]:
     }
 
 
-def colab_command(session: str, candidate_name: str) -> list[str]:
+def colab_command(session: str, candidate_name: str, workflow: str) -> list[str]:
     return [
         "python3",
         "tools/run_colab_cli_cuda_workflow.py",
         "--workflow",
-        "phase2-z005-support",
+        workflow,
         "--session",
         session,
         "--candidate-name",
@@ -210,7 +210,7 @@ def local_rocm_command(restore_checkpoint: Path, output_root: str) -> list[str]:
         "--task",
         "rough_terrain_backlash",
         "--num-timesteps",
-        "81920",
+        "122880",
         "--export-min-step",
         "1",
         "--ppo-num-envs",
@@ -230,31 +230,31 @@ def local_rocm_command(restore_checkpoint: Path, output_root: str) -> list[str]:
         "--restore-checkpoint-path",
         rel(restore_checkpoint) or str(restore_checkpoint),
         "--ppo-learning-rate",
-        "0.000003",
+        "0.000004",
         "--ppo-entropy-cost",
         "0.001",
         "--ppo-clipping-epsilon",
-        "0.02",
+        "0.025",
         "--ppo-max-grad-norm",
-        "0.1",
+        "0.12",
         "--restore-policy-kl-scale",
-        "4",
+        "3",
         "--tracking-lin-vel-scale",
         "3",
         "--tracking-sigma",
         "0.01",
         "--forward-progress-scale",
-        "2.5",
+        "4",
         "--forward-wrong-direction-scale",
-        "-4",
+        "-6",
         "--forward-wrong-direction-allowed-reverse-ratio",
-        "0.02",
+        "0.01",
         "--command-progress-scale",
-        "1.5",
+        "3",
         "--command-progress-shortfall-scale",
-        "-4",
+        "-8",
         "--command-progress-required-ratio",
-        "0.45",
+        "0.5",
         "--command-progress-warmup-steps",
         "30",
         "--action-rate-huber-delta",
@@ -266,35 +266,35 @@ def local_rocm_command(restore_checkpoint: Path, output_root: str) -> list[str]:
         "--forward-swing-advance-huber-delta",
         "0.002",
         "--action-rate-scale",
-        "-0.08",
+        "-0.055",
         "--action-magnitude-scale",
-        "-0.005",
+        "-0.003",
         "--base-height-scale",
-        "-0.8",
-        "--forward-pitch-scale",
-        "-0.4",
-        "--forward-pitch-rate-scale",
-        "-0.08",
-        "--forward-contact-support-scale",
         "-0.35",
+        "--forward-pitch-scale",
+        "-0.3",
+        "--forward-pitch-rate-scale",
+        "-0.06",
+        "--forward-contact-support-scale",
+        "-0.12",
         "--forward-contact-support-no-contact-weight",
-        "2.0",
+        "1.0",
         "--forward-contact-support-asymmetry-weight",
-        "0.25",
-        "--forward-single-support-scale",
         "0.1",
+        "--forward-single-support-scale",
+        "0.05",
         "--forward-double-support-scale",
-        "-0.15",
+        "-0.05",
         "--forward-double-support-dwell-scale",
-        "-0.25",
+        "-0.05",
         "--forward-double-support-dwell-grace-steps",
-        "16",
+        "24",
         "--forward-swing-clearance-scale",
-        "-0.0005",
+        "-0.00025",
         "--forward-swing-clearance-target-m",
-        "0.018",
+        "0.016",
         "--forward-swing-advance-scale",
-        "-0.002",
+        "-0.001",
         "--forward-swing-advance-target-m",
         "0.004",
         "--alive-scale",
@@ -387,7 +387,7 @@ def local_rocm_command(restore_checkpoint: Path, output_root: str) -> list[str]:
         "--actuator-bridge-per-joint-variation",
         "0.1",
         "--actuator-tracking-scale",
-        "-0.01",
+        "-0.005",
         "--terrain-hfield-z-scale",
         "0.005",
     ]
@@ -463,10 +463,11 @@ def main() -> int:
     parser.add_argument("--status-json", default=str(DEFAULT_STATUS_JSON))
     parser.add_argument("--restore-checkpoint", default=str(DEFAULT_RESTORE_CHECKPOINT))
     parser.add_argument("--session", default="open-duck-l4")
-    parser.add_argument("--candidate-name", default="phase2_z005_support_baseheight_cuda")
+    parser.add_argument("--workflow", default="phase2-z005-motion-floor")
+    parser.add_argument("--candidate-name", default="phase2_z005_motion_floor_cuda")
     parser.add_argument(
         "--local-output-root",
-        default="outputs/phase2_domain_randomization/stage_z005_support_baseheight_local_rocm_safeenv_8env_81920",
+        default="outputs/phase2_domain_randomization/stage_z005_motion_floor_local_rocm_safeenv_8env_122880",
     )
     parser.add_argument(
         "--output-md",
@@ -483,7 +484,7 @@ def main() -> int:
 
     status = read_json(Path(args.status_json))
     restore_checkpoint = Path(args.restore_checkpoint)
-    colab = colab_command(args.session, args.candidate_name)
+    colab = colab_command(args.session, args.candidate_name, args.workflow)
     local = local_rocm_command(restore_checkpoint, args.local_output_root)
     candidate = status.get("candidate", {})
     readiness = unchecked_readiness()
@@ -512,6 +513,7 @@ def main() -> int:
         "commands": {
             "colab": {
                 "preferred": True,
+                "workflow": args.workflow,
                 "argv": colab,
                 "shell": multiline_shell(colab),
             },

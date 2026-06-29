@@ -21,7 +21,7 @@ from run_colab_cli_cuda_workflow import required_rdk_package_paths, would_packag
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_LEDGER = ROOT / "outputs/analysis/phase2_curriculum_gate_ledger.json"
 DEFAULT_NEXT_PLAN = ROOT / "outputs/analysis/phase2_next_run_plan.json"
-DEFAULT_RECIPE = ROOT / "outputs/analysis/phase2_z005_support_next_recipe.json"
+DEFAULT_RECIPE = ROOT / "outputs/analysis/phase2_z005_motion_floor_next_recipe.json"
 DEFAULT_MANIFEST = ROOT / "outputs/analysis/phase2_artifact_manifest.json"
 DEFAULT_PACKAGE_MANIFEST = ROOT / "outputs/analysis/phase2_colab_package_manifest.json"
 DEFAULT_OUTPUT_MD = ROOT / "outputs/analysis/PHASE2_STAGE_GUARD.md"
@@ -102,7 +102,8 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
     git_status = nested(next_plan, "readiness", "git", "status")
     colab_active = bool(nested(next_plan, "readiness", "colab", "active", default=False))
     preferred_command = nested(next_plan, "commands", "colab", "shell") or nested(recipe, "commands", "colab", "shell")
-    package = package_preflight("phase2-z005-support")
+    preferred_workflow = nested(next_plan, "commands", "colab", "workflow") or "phase2-z005-motion-floor"
+    package = package_preflight(preferred_workflow)
 
     gates = ledger.get("gates") if isinstance(ledger.get("gates"), dict) else {}
     held_gates = [
@@ -119,14 +120,14 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
     allowed_actions = [
         "Review committed Phase 2 analysis artifacts and guard reports.",
         "Run read-only report tools: report_phase2_curriculum_gate.py, report_phase2_artifact_manifest.py, and report_phase2_stage_guard.py.",
-        "Run the phase2-z005-support Colab workflow in plan-only mode to verify the package preflight and generated remote driver.",
-        "Run the phase2-z005-support Colab workflow with --package-only to build and hash local upload archives without contacting Colab.",
+        f"Run the {preferred_workflow} Colab workflow in plan-only mode to verify the package preflight and generated remote driver.",
+        f"Run the {preferred_workflow} Colab workflow with --package-only to build and hash local upload archives without contacting Colab.",
         "Prepare or reconnect a Colab GPU session named open-duck-l4; A100/L4 is preferred, T4 is acceptable but slower.",
-        "Run the phase2-z005-support recipe only after the Colab session is active and still using the corrected bridge.",
+        f"Run the {preferred_workflow} recipe only after the Colab session is active and still using the corrected bridge.",
         "Run report_phase2_z005_post_training_gates.py on post-training seed-gate output.",
     ]
     if colab_active:
-        allowed_actions.append("Launch the preferred phase2-z005-support Colab workflow.")
+        allowed_actions.append(f"Launch the preferred {preferred_workflow} Colab workflow.")
     else:
         allowed_actions.append("Do not launch training yet from this host; Colab session open-duck-l4 is not active.")
 

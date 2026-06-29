@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Write a manifest for required Phase 2 Colab package inputs.
 
-This read-only report verifies the exact local artifacts needed by the
-`phase2-z005-support` workflow before a Colab session is available. It walks
-required files and checkpoint directories, checks the same tar filter used by
+This read-only report verifies the exact local artifacts needed by a selected
+Phase 2 Colab workflow before a Colab session is available. It walks required
+files and checkpoint directories, checks the same tar filter used by
 `run_colab_cli_cuda_workflow.py`, and records hashes so the launch package is
 reviewable without touching Colab, SSH, robot hardware, or training.
 """

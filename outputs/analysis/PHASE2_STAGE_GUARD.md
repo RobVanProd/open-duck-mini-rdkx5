@@ -1,18 +1,18 @@
 # Phase 2 Stage Guard
 
-status: `PASS_PHASE2_COLAB_GPU_SESSION_READY`
+status: `HOLD_PHASE2_COLAB_GPU_SESSION_NOT_READY`
 current_stage: `stage_z005_support`
 current_gate_status: `HOLD_PHASE2_STAGE_Z005_SUPPORT`
-next_recipe_status: `PASS_Z005_SUPPORT_RECIPE_READY`
-launch_status: `PASS_PHASE2_COLAB_GPU_SESSION_READY`
+next_recipe_status: `PASS_Z005_MOTION_FLOOR_RECIPE_READY`
+launch_status: `HOLD_PHASE2_COLAB_GPU_SESSION_NOT_READY`
 
 This is a read-only guard. It did not train, SSH, deploy, or touch the robot.
 
 ## Readiness
 
-- colab_status: `PASS_COLAB_SESSION_VISIBLE`
-- colab_hardware: `T4`
-- git_status: `HOLD_GIT_REMOTE_AUTH_UNAVAILABLE`
+- colab_status: `HOLD_NO_ACTIVE_COLAB_SESSION`
+- colab_hardware: `None`
+- git_status: `NOT_CHECKED`
 - package_preflight: `PASS_PACKAGE_PREFLIGHT`
 - package_manifest_status: `PASS_PHASE2_COLAB_PACKAGE_MANIFEST_READY`
 - held_gates: `z005_x000_nopush, z005_x008_nopush`
@@ -22,12 +22,12 @@ This is a read-only guard. It did not train, SSH, deploy, or touch the robot.
 
 - Review committed Phase 2 analysis artifacts and guard reports.
 - Run read-only report tools: report_phase2_curriculum_gate.py, report_phase2_artifact_manifest.py, and report_phase2_stage_guard.py.
-- Run the phase2-z005-support Colab workflow in plan-only mode to verify the package preflight and generated remote driver.
-- Run the phase2-z005-support Colab workflow with --package-only to build and hash local upload archives without contacting Colab.
+- Run the phase2-z005-motion-floor Colab workflow in plan-only mode to verify the package preflight and generated remote driver.
+- Run the phase2-z005-motion-floor Colab workflow with --package-only to build and hash local upload archives without contacting Colab.
 - Prepare or reconnect a Colab GPU session named open-duck-l4; A100/L4 is preferred, T4 is acceptable but slower.
-- Run the phase2-z005-support recipe only after the Colab session is active and still using the corrected bridge.
+- Run the phase2-z005-motion-floor recipe only after the Colab session is active and still using the corrected bridge.
 - Run report_phase2_z005_post_training_gates.py on post-training seed-gate output.
-- Launch the preferred phase2-z005-support Colab workflow.
+- Do not launch training yet from this host; Colab session open-duck-l4 is not active.
 
 ## Forbidden
 
@@ -55,7 +55,7 @@ This is a read-only guard. It did not train, SSH, deploy, or touch the robot.
 | path | exists | included by tar filter |
 |---|---|---|
 | `outputs/analysis/actuator_response_fit_corrected_knee.json` | `True` | `True` |
-| `outputs/analysis/phase2_z005_support_next_recipe.json` | `True` | `True` |
+| `outputs/analysis/phase2_z005_motion_floor_next_recipe.json` | `True` | `True` |
 | `outputs/phase2_domain_randomization/stage_a2_preserve_narrow_flat_no_push_gpu/smoke_20260628T031553Z_gpu/2026_06_27_232221_491520` | `True` | `True` |
 | `tools/report_phase2_z005_post_training_gates.py` | `True` | `True` |
 | `tools/run_actuator_bridge_training_smoke.py` | `True` | `True` |
@@ -66,11 +66,11 @@ This is a read-only guard. It did not train, SSH, deploy, or touch the robot.
 python3 \
     tools/run_colab_cli_cuda_workflow.py \
     --workflow \
-    phase2-z005-support \
+    phase2-z005-motion-floor \
     --session \
     open-duck-l4 \
     --candidate-name \
-    phase2_z005_support_baseheight_cuda \
+    phase2_z005_motion_floor_cuda \
     --candidate-checkpoint-sweep \
     --candidate-checkpoint-sweep-commands \
     0.0,0.08 \
@@ -87,6 +87,6 @@ python3 \
 
 - `ledger`: `outputs/analysis/phase2_curriculum_gate_ledger.json`
 - `next_plan`: `outputs/analysis/phase2_next_run_plan.json`
-- `recipe`: `outputs/analysis/phase2_z005_support_next_recipe.json`
+- `recipe`: `outputs/analysis/phase2_z005_motion_floor_next_recipe.json`
 - `manifest`: `outputs/analysis/phase2_artifact_manifest.json`
 - `package_manifest`: `outputs/analysis/phase2_colab_package_manifest.json`

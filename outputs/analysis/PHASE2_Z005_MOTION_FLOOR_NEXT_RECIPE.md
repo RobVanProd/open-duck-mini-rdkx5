@@ -1,32 +1,41 @@
-# Phase 2 Next Run Plan
+# Phase 2 z=0.005 Motion-Floor Next Recipe
 
-status: `PASS_PHASE2_NEXT_RUN_PLAN_READY`
-launch_status: `HOLD_PHASE2_COLAB_GPU_SESSION_NOT_READY`
+status: `PASS_Z005_MOTION_FLOOR_RECIPE_READY`
+stage: `stage_z005_motion_floor`
+supersedes_recipe: `phase2-z005-support`
+diagnosis_status: `HOLD_Z005_SUPPORT_OVER_REGULARIZED_LOW_PROGRESS`
 
-## Current Decision
+## Root Cause Summary
 
-- current_status: `HOLD_PHASE2_TERRAIN_Z005_NOT_CLEARED`
-- blocking_gate: `z005_x008_nopush`
-- candidate: `policy/candidates/phase2_stagea2_seed5_recovery_command_gated_gain099_20260629/candidate.onnx`
-- candidate_sha256: `209b85a75cf9cbbcf10df573c1b530921943a72e81082111889c15f63a9a2c7b`
-- restore_checkpoint: `outputs/phase2_domain_randomization/stage_a2_preserve_narrow_flat_no_push_gpu/smoke_20260628T031553Z_gpu/2026_06_27_232221_491520`
-- restore_checkpoint_present: `True`
+- The T4 z=0.005 support run completed training and stayed under the corrected velocity envelope.
+- The recovered latest checkpoint under-moved at x=0.08 in the local debug sweep: track_ratio_mean 0.1773, vx_mean 0.0142.
+- The failure was low forward progress, not actuator velocity excess.
+- The next recipe returns to the A2 restore checkpoint; it does not continue from the under-moving T4 latest checkpoint.
 
-## Readiness
+## Recipe Intent
 
-- colab_status: `HOLD_NO_ACTIVE_COLAB_SESSION`
-- colab_session: `open-duck-l4`
-- colab_hardware: `None`
-- colab_active: `False`
-- git_status: `NOT_CHECKED`
-- git_branch: `None`
-- git_remote_read_auth_ok: `None`
+- Preserve the corrected-bridge A2 walking behavior while adapting to z=0.005 terrain.
+- Keep no-push z=0.005 as the active rung; do not advance to push or stronger terrain.
+- Raise command-progress pressure so support rewards cannot win by freezing.
+- Reduce support/base-height damping relative to phase2-z005-support to avoid suppressing forward motion.
+- Keep corrected actuator bridge limits authoritative and reject velocity excess at the gate.
 
-The Colab check is read-only (`colab sessions` / `colab status`). The Git check is read-only (`git ls-remote`) and does not push.
+## Key Changes
+
+- `num_timesteps`: 81920 -> 122880
+- `restore_policy_kl_scale`: 4.0 -> 3.0
+- `ppo_learning_rate`: 0.000003 -> 0.000004
+- `command_progress_scale`: 1.5 -> 3.0
+- `command_progress_shortfall_scale`: -4 -> -8
+- `command_progress_required_ratio`: 0.45 -> 0.50
+- `forward_progress_scale`: 2.5 -> 4.0
+- `forward_contact_support_scale`: -0.35 -> -0.12
+- `forward_double_support_dwell_scale`: -0.25 -> -0.05
+- `base_height_scale`: -0.8 -> -0.35
+- `action_rate_scale`: -0.08 -> -0.055
+- `actuator_tracking_scale`: -0.01 -> -0.005
 
 ## Preferred Colab GPU Command
-
-Use this when a visible Colab GPU session is available:
 
 ```bash
 python3 \
@@ -49,9 +58,7 @@ python3 \
     --run
 ```
 
-## Local ROCm Fallback Command
-
-This is fallback/backend evidence only unless it clears the same post-training gates:
+## Local ROCm Fallback
 
 ```bash
 ../envs/open-duck-playground/bin/python \
@@ -106,10 +113,6 @@ This is fallback/backend evidence only unless it clears the same post-training g
     0.01 \
     --forward-progress-scale \
     4 \
-    --forward-wrong-direction-scale \
-    -6 \
-    --forward-wrong-direction-allowed-reverse-ratio \
-    0.01 \
     --command-progress-scale \
     3 \
     --command-progress-shortfall-scale \
@@ -118,14 +121,10 @@ This is fallback/backend evidence only unless it clears the same post-training g
     0.5 \
     --command-progress-warmup-steps \
     30 \
-    --action-rate-huber-delta \
-    0.05 \
-    --actuator-tracking-huber-delta \
-    0.03 \
-    --forward-swing-clearance-huber-delta \
-    0.003 \
-    --forward-swing-advance-huber-delta \
-    0.002 \
+    --forward-wrong-direction-scale \
+    -6 \
+    --forward-wrong-direction-allowed-reverse-ratio \
+    0.01 \
     --action-rate-scale \
     -0.055 \
     --action-magnitude-scale \
@@ -154,10 +153,14 @@ This is fallback/backend evidence only unless it clears the same post-training g
     -0.00025 \
     --forward-swing-clearance-target-m \
     0.016 \
+    --forward-swing-clearance-huber-delta \
+    0.003 \
     --forward-swing-advance-scale \
     -0.001 \
     --forward-swing-advance-target-m \
     0.004 \
+    --forward-swing-advance-huber-delta \
+    0.002 \
     --alive-scale \
     2 \
     --imitation-scale \
@@ -208,14 +211,6 @@ This is fallback/backend evidence only unless it clears the same post-training g
     1.005 \
     --dr-leg-geometry-jitter-scale \
     0.001 \
-    --push-interval-min-s \
-    7 \
-    --push-interval-max-s \
-    12 \
-    --push-magnitude-min \
-    0.02 \
-    --push-magnitude-max \
-    0.1 \
     --noise-level \
     0.5 \
     --noise-hip-pos \
@@ -249,19 +244,20 @@ This is fallback/backend evidence only unless it clears the same post-training g
     0.1 \
     --actuator-tracking-scale \
     -0.005 \
+    --actuator-tracking-huber-delta \
+    0.03 \
     --terrain-hfield-z-scale \
     0.005
 ```
 
-## Promotion Rule
+## Acceptance
 
-Promotion still requires full corrected-bridge post-training gates, not a smoke pass:
+- z=0.005 x=0.08 no-push passes 8/8, zero falls, no velocity excess, tracking p95 <= 0.20, track ratio >= 0.40.
+- z=0.005 x=0.0 no-push passes 8/8, zero falls, no velocity excess, |mean vx| <= 0.005.
+- z=0.002 no-push and gentle-push regression gates remain passing.
 
-- z=0.005 x=0.08 no-push, 8 seeds, 15s
-- z=0.005 x=0.0 no-push, 8 seeds, 15s
-- z=0.002 x=0.08 no-push, 8 seeds, 15s
-- z=0.002 x=0.0 no-push, 8 seeds, 15s
-- z=0.002 x=0.08 gentle-push, 8 seeds, 15s
-- z=0.002 x=0.0 gentle-push, 8 seeds, 15s
+## Falsifier
 
-No robot, SSH, deploy, grounded replay, or runtime behavior change is authorized by this plan.
+If this recipe also stays under envelope but under-moves at x=0.08, stop adding z=0.005 support penalties and introduce an intermediate z=0.0035 terrain rung or a terrain-specific command-progress curriculum.
+
+No robot, SSH, deploy, grounded replay, or runtime behavior change is authorized by this recipe.

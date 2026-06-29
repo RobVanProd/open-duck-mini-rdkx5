@@ -43,6 +43,8 @@ REVIEW_ARTIFACTS = [
     "outputs/analysis/phase2_z005_seed5_failure_diagnostic.json",
     "outputs/analysis/PHASE2_Z005_SUPPORT_NEXT_RECIPE.md",
     "outputs/analysis/phase2_z005_support_next_recipe.json",
+    "outputs/analysis/PHASE2_Z005_MOTION_FLOOR_NEXT_RECIPE.md",
+    "outputs/analysis/phase2_z005_motion_floor_next_recipe.json",
     "outputs/analysis/PHASE2_NEXT_RUN_PLAN.md",
     "outputs/analysis/phase2_next_run_plan.json",
     "outputs/analysis/PHASE2_STAGE_GUARD.md",
@@ -55,7 +57,10 @@ REVIEW_ARTIFACTS = [
     "outputs/analysis/phase2_local_fallback_readiness.json",
     "outputs/analysis/PHASE2_Z005_T4_RECOVERY_DECISION.md",
     "outputs/analysis/phase2_z005_t4_recovery_decision.json",
+    "outputs/analysis/phase2_z005_t4_recovered_latest_local_debug_sweep/CANDIDATE_CHECKPOINT_SWEEP.md",
+    "outputs/analysis/phase2_z005_t4_recovered_latest_local_debug_sweep/candidate_checkpoint_sweep.json",
     "tools/plan_phase2_z005_support_recipe.py",
+    "tools/plan_phase2_z005_motion_floor_recipe.py",
     "tools/report_phase2_colab_package_manifest.py",
     "tools/report_phase2_local_fallback_readiness.py",
     "tools/report_phase2_z005_post_training_gates.py",
@@ -165,10 +170,10 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
     bridge = Path(args.bridge_json)
     restore_checkpoint = Path(args.restore_checkpoint)
     ledger = load_json_optional(ROOT / "outputs/analysis/phase2_curriculum_gate_ledger.json")
-    recipe = load_json_optional(ROOT / "outputs/analysis/phase2_z005_support_next_recipe.json")
+    recipe = load_json_optional(ROOT / "outputs/analysis/phase2_z005_motion_floor_next_recipe.json")
     return {
         "status": "PASS_PHASE2_ARTIFACT_MANIFEST_READY",
-        "stage": "stage_z005_support",
+        "stage": "stage_z005_motion_floor",
         "current_gate_status": ledger.get("status"),
         "next_recipe_status": recipe.get("status"),
         "git": git_state(),

@@ -9,12 +9,12 @@
   "allowed_actions": [
     "Review committed Phase 2 analysis artifacts and guard reports.",
     "Run read-only report tools: report_phase2_curriculum_gate.py, report_phase2_artifact_manifest.py, and report_phase2_stage_guard.py.",
-    "Run the phase2-z005-support Colab workflow in plan-only mode to verify the package preflight and generated remote driver.",
-    "Run the phase2-z005-support Colab workflow with --package-only to build and hash local upload archives without contacting Colab.",
+    "Run the phase2-z005-motion-floor Colab workflow in plan-only mode to verify the package preflight and generated remote driver.",
+    "Run the phase2-z005-motion-floor Colab workflow with --package-only to build and hash local upload archives without contacting Colab.",
     "Prepare or reconnect a Colab GPU session named open-duck-l4; A100/L4 is preferred, T4 is acceptable but slower.",
-    "Run the phase2-z005-support recipe only after the Colab session is active and still using the corrected bridge.",
+    "Run the phase2-z005-motion-floor recipe only after the Colab session is active and still using the corrected bridge.",
     "Run report_phase2_z005_post_training_gates.py on post-training seed-gate output.",
-    "Launch the preferred phase2-z005-support Colab workflow."
+    "Do not launch training yet from this host; Colab session open-duck-l4 is not active."
   ],
   "candidate": {
     "exists": true,
@@ -23,8 +23,8 @@
     "size_bytes": 1772930,
     "status": "PRESENT_FILE"
   },
-  "colab_hardware": "T4",
-  "colab_status": "PASS_COLAB_SESSION_VISIBLE",
+  "colab_hardware": null,
+  "colab_status": "HOLD_NO_ACTIVE_COLAB_SESSION",
   "corrected_bridge": {
     "exists": true,
     "path": "outputs/analysis/actuator_response_fit_corrected_knee.json",
@@ -47,7 +47,7 @@
     "No stronger terrain until z=0.005 support passes and z=0.002 regression stays clear.",
     "No promotion without PASS_PHASE2_Z005_POST_TRAINING_GATES."
   ],
-  "git_status": "HOLD_GIT_REMOTE_AUTH_UNAVAILABLE",
+  "git_status": "NOT_CHECKED",
   "held_gates": [
     "z005_x000_nopush",
     "z005_x008_nopush"
@@ -57,11 +57,11 @@
     "manifest": "outputs/analysis/phase2_artifact_manifest.json",
     "next_plan": "outputs/analysis/phase2_next_run_plan.json",
     "package_manifest": "outputs/analysis/phase2_colab_package_manifest.json",
-    "recipe": "outputs/analysis/phase2_z005_support_next_recipe.json"
+    "recipe": "outputs/analysis/phase2_z005_motion_floor_next_recipe.json"
   },
-  "launch_status": "PASS_PHASE2_COLAB_GPU_SESSION_READY",
+  "launch_status": "HOLD_PHASE2_COLAB_GPU_SESSION_NOT_READY",
   "missing_gates": [],
-  "next_recipe_status": "PASS_Z005_SUPPORT_RECIPE_READY",
+  "next_recipe_status": "PASS_Z005_MOTION_FLOOR_RECIPE_READY",
   "package_manifest_status": "PASS_PHASE2_COLAB_PACKAGE_MANIFEST_READY",
   "package_preflight": {
     "excluded_by_tar_filter": [],
@@ -74,7 +74,7 @@
       {
         "exists": true,
         "included_by_tar_filter": true,
-        "path": "outputs/analysis/phase2_z005_support_next_recipe.json"
+        "path": "outputs/analysis/phase2_z005_motion_floor_next_recipe.json"
       },
       {
         "exists": true,
@@ -94,9 +94,9 @@
     ],
     "missing": [],
     "status": "PASS_PACKAGE_PREFLIGHT",
-    "workflow": "phase2-z005-support"
+    "workflow": "phase2-z005-motion-floor"
   },
-  "preferred_command": "python3 \\\n    tools/run_colab_cli_cuda_workflow.py \\\n    --workflow \\\n    phase2-z005-support \\\n    --session \\\n    open-duck-l4 \\\n    --candidate-name \\\n    phase2_z005_support_baseheight_cuda \\\n    --candidate-checkpoint-sweep \\\n    --candidate-checkpoint-sweep-commands \\\n    0.0,0.08 \\\n    --candidate-checkpoint-sweep-duration \\\n    1.0 \\\n    --candidate-checkpoint-sweep-jax-platform \\\n    cpu \\\n    --candidate-timeout-s \\\n    10800 \\\n    --run",
+  "preferred_command": "python3 \\\n    tools/run_colab_cli_cuda_workflow.py \\\n    --workflow \\\n    phase2-z005-motion-floor \\\n    --session \\\n    open-duck-l4 \\\n    --candidate-name \\\n    phase2_z005_motion_floor_cuda \\\n    --candidate-checkpoint-sweep \\\n    --candidate-checkpoint-sweep-commands \\\n    0.0,0.08 \\\n    --candidate-checkpoint-sweep-duration \\\n    1.0 \\\n    --candidate-checkpoint-sweep-jax-platform \\\n    cpu \\\n    --candidate-timeout-s \\\n    10800 \\\n    --run",
   "restore_checkpoint": {
     "exists": true,
     "file_count": 11,
@@ -107,6 +107,6 @@
   },
   "robot_touched": false,
   "ssh_used": false,
-  "status": "PASS_PHASE2_COLAB_GPU_SESSION_READY",
+  "status": "HOLD_PHASE2_COLAB_GPU_SESSION_NOT_READY",
   "training_started": false
 }
