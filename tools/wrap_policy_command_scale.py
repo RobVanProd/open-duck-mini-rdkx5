@@ -8,10 +8,12 @@ robot. By default the wrapper preserves the original policy graph and appends:
   action = base_action * scale
 
 Optionally, the scaled action can be converted to a motor target, blended toward
-obs[83:97] (the previous sent motor target), and converted back to action:
+obs[83:97] (the previous sent motor target), velocity-clamped relative to that
+same previous target, and converted back to action:
 
   target = home + scaled_action * action_scale
   target = prev_target + alpha * (target - prev_target)
+  target = prev_target + clip(target - prev_target, -limit * dt, limit * dt)
   action = clip((target - home) / action_scale, -1, 1)
 
 The intended use is to test whether a standstill-stabilizing scale near
@@ -53,6 +55,15 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--previous-target-start", type=int, default=83)
     parser.add_argument("--action-scale-rad", type=float, default=0.25)
     parser.add_argument(
+        "--target-delta-limit-rad-s",
+        default=None,
+        help=(
+            "optional comma-separated 14-joint per-joint target velocity limits "
+            "in rad/s; clamps target delta relative to obs[83:97] using --control-dt-s"
+        ),
+    )
+    parser.add_argument("--control-dt-s", type=float, default=0.02)
+    parser.add_argument(
         "--home",
         default=(
             "0.002,0.053,-0.63,1.368,-0.784,0,0,0,0,"
@@ -78,6 +89,8 @@ def main() -> int:
         raise SystemExit("--target-blend-alpha must be in (0, 1]")
     if args.action_scale_rad <= 0.0:
         raise SystemExit("--action-scale-rad must be positive")
+    if args.control_dt_s <= 0.0:
+        raise SystemExit("--control-dt-s must be positive")
 
     import onnx
     from onnx import TensorProto, helper, numpy_helper
@@ -107,7 +120,8 @@ def main() -> int:
         "command_scale_clip_min": np.asarray([0.0], dtype=np.float32),
         "command_scale_clip_max": np.asarray([1.0], dtype=np.float32),
     }
-    if args.target_blend_alpha < 1.0:
+    use_target_stage = args.target_blend_alpha < 1.0 or args.target_delta_limit_rad_s
+    if use_target_stage:
         home = parse_float_vector(args.home, expected=14, name="--home")
         initializers.update(
             {
@@ -127,6 +141,21 @@ def main() -> int:
                 "target_clip_max": np.asarray([1.0], dtype=np.float32),
             }
         )
+        if args.target_delta_limit_rad_s:
+            limits = parse_float_vector(
+                args.target_delta_limit_rad_s,
+                expected=14,
+                name="--target-delta-limit-rad-s",
+            )
+            if np.any(limits <= 0.0):
+                raise SystemExit("--target-delta-limit-rad-s values must be positive")
+            delta = limits * float(args.control_dt_s)
+            initializers.update(
+                {
+                    "target_delta_limit_min": (-delta).reshape(1, 14),
+                    "target_delta_limit_max": delta.reshape(1, 14),
+                }
+            )
     for name, value in initializers.items():
         graph.initializer.append(numpy_helper.from_array(value, name=name))
 
@@ -181,7 +210,8 @@ def main() -> int:
             ),
         ]
     )
-    if args.target_blend_alpha < 1.0:
+    if use_target_stage:
+        target_after_blend = "target_delta_blended"
         graph.node.extend(
             [
                 helper.make_node(
@@ -215,9 +245,31 @@ def main() -> int:
                     ["target_delta_blended"],
                     name="target_smooth_apply_alpha",
                 ),
+            ]
+        )
+        if args.target_delta_limit_rad_s:
+            target_after_blend = "target_delta_limited"
+            graph.node.extend(
+                [
+                    helper.make_node(
+                        "Max",
+                        ["target_delta_blended", "target_delta_limit_min"],
+                        ["target_delta_limited_lower"],
+                        name="target_delta_limit_lower",
+                    ),
+                    helper.make_node(
+                        "Min",
+                        ["target_delta_limited_lower", "target_delta_limit_max"],
+                        ["target_delta_limited"],
+                        name="target_delta_limit_upper",
+                    )
+                ]
+            )
+        graph.node.extend(
+            [
                 helper.make_node(
                     "Add",
-                    ["previous_target", "target_delta_blended"],
+                    ["previous_target", target_after_blend],
                     ["smoothed_target"],
                     name="target_smooth_add_previous",
                 ),
@@ -273,6 +325,11 @@ def main() -> int:
             "target smoothing: "
             f"target = obs[{args.previous_target_start}:{args.previous_target_start + 14}] "
             f"+ {args.target_blend_alpha:g} * (desired_target - previous_target)"
+        )
+    if args.target_delta_limit_rad_s:
+        print(
+            "target delta limit: "
+            f"clip(target - previous_target, +/- limit_rad_s * {args.control_dt_s:g})"
         )
     return 0
 
