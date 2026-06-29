@@ -1634,3 +1634,39 @@ candidate-policy result.
 
 Next attempt should avoid the detached Colab console path, reduce upload/state
 size, or use another stable CUDA runtime before evaluating B0F.
+
+### B0F A100 Direct-Exec Hold
+
+Artifact:
+
+```text
+outputs/analysis/PHASE2_B0F_A100_DIRECT_EXEC_HOLD_DECISION.md
+```
+
+Status:
+
+```text
+HOLD_B0F_LOW_FORWARD_PROGRESS
+```
+
+The B0F push-local preserve recipe was rerun on A100 using a direct
+`colab exec` path and a reduced upload bundle. Training completed successfully
+and produced three checkpoints (`40960`, `81920`, `122880`). All checkpoints
+completed both x=0.0 and x=0.08 corrected-bridge sweep commands, but none were
+promoted.
+
+The best available checkpoint was step `122880`
+(`bbb6f6b73d34951928c89700c99eab94f8bca2ba68e56f645c5d351c721d484b`), but it
+held at x=0.08:
+
+```text
+track ratio: 0.2411 < 0.2500
+mean vx: 0.0193 < 0.0200
+max pitch tracking p95: 0.2189 rad
+max sent velocity p95: 1.5706 rad/s
+action saturation: 0.0%
+```
+
+B0F is therefore not a robot candidate. It is in-envelope and non-saturating,
+but still below the forward-progress gate and above the strict pitch-tracking
+target.
