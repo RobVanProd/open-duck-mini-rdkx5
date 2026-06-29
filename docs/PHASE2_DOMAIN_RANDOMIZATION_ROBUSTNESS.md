@@ -1427,6 +1427,63 @@ Treat this as backend evidence, not a policy result. For local ROCm, do not set
 `HSA_OVERRIDE_GFX_VERSION`. For the actual policy-producing run, use the pinned
 A100/Colab workflow when a visible session is available.
 
+### z=0.005 Local ROCm Command-Buffer Result
+
+Artifact:
+
+```text
+outputs/analysis/PHASE2_Z005_LOCAL_ROCM_COMMAND_BUFFER_RESULT.md
+outputs/analysis/phase2_z005_local_rocm_command_buffer_result.json
+```
+
+Status:
+
+```text
+HOLD_LOCAL_8ENV_LOW_FORWARD_PROGRESS
+```
+
+A reduced local ROCm run with `8` envs and `20480` timesteps failed without
+extra XLA flags due to GPU graph capture:
+
+```text
+rocblas_gemm_strided_batched_ex failed with rocblas_status_internal_error
+```
+
+The same reduced run completed when command buffers were disabled:
+
+```text
+XLA_FLAGS=--xla_gpu_enable_command_buffer=
+HSA_OVERRIDE_GFX_VERSION unset
+checkpoints: 7680, 15360, 23040
+status: PASS_SMOKE_RUN
+```
+
+The workaround did not make the local ROCm path reliable for longer training.
+An `8`-env `81920`-timestep attempt with the same command-buffer flag failed
+before the first PPO step during evaluator reset:
+
+```text
+output_dir: outputs/phase2_domain_randomization/stage_z005_support_local_rocm_no_override_8env_81920_nocmdbuf/smoke_20260629T170558Z_gpu
+status: HOLD_SMOKE_RUN
+error: rocblas_gemm_strided_batched_ex failed with rocblas_status_internal_error
+```
+
+The latest ONNX from that run was then checked on the immediate `z=0.005`,
+`x=0.08`, corrected-bridge gate. Seed 0 already held on low forward progress:
+
+```text
+status: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
+track_ratio: 0.2234
+mean vx: 0.0179 m/s
+max tracking p95: 0.1948 rad
+```
+
+The reduced local run is therefore useful backend evidence but not a policy
+promotion. Do not robot-test it. The next policy-producing attempt should still
+use the pinned A100/Colab `phase2-z005-support` workflow when a visible session
+is available, or a local ROCm recipe explicitly built around the command-buffer
+workaround and then gated from scratch.
+
 ## Current Terrain-Step Status
 
 Existing-trace hard-step rescoring found a useful split:
