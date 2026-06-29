@@ -99,8 +99,8 @@ def tar_filter(member: tarfile.TarInfo) -> tarfile.TarInfo | None:
     }
     if any(part in blocked for part in parts):
         return None
-    if "outputs" in parts and "analysis" in parts:
-        allowed_analysis = {
+    if "outputs" in parts:
+        allowed_outputs = {
             ("outputs", "analysis", "actuator_response_fit_corrected_knee.json"),
             ("outputs", "analysis", "ACTUATOR_RESPONSE_FIT.md"),
             ("outputs", "analysis", "ppo_bc_swish_cmd_pitch_rl_2p25_step0_checkpoint"),
@@ -143,11 +143,18 @@ def tar_filter(member: tarfile.TarInfo) -> tarfile.TarInfo | None:
                 "analysis",
                 "ppo_bc_command_conditioned_dagger_seed5_x0_step0.onnx",
             ),
+            (
+                "outputs",
+                "phase2_domain_randomization",
+                "stage_b0c_rough_z002_push_tracking_margin_from_b0_gpu",
+                "smoke_20260629T062042Z_gpu",
+                "2026_06_29_022725_245760",
+            ),
         }
         rel_parts = tuple(parts[1:]) if len(parts) > 1 else tuple(parts)
-        is_allowed_path = rel_parts in allowed_analysis
-        is_allowed_parent = any(path[: len(rel_parts)] == rel_parts for path in allowed_analysis)
-        is_allowed_child = any(rel_parts[: len(path)] == path for path in allowed_analysis)
+        is_allowed_path = rel_parts in allowed_outputs
+        is_allowed_parent = any(path[: len(rel_parts)] == rel_parts for path in allowed_outputs)
+        is_allowed_child = any(rel_parts[: len(path)] == path for path in allowed_outputs)
         if not is_allowed_path and not is_allowed_parent and not is_allowed_child:
             return None
     if member.name.endswith((".pyc", ".pyo")):
