@@ -1,7 +1,7 @@
 # Phase 2 Next Run Plan
 
 status: `PASS_PHASE2_NEXT_RUN_PLAN_READY`
-launch_status: `HOLD_PHASE2_A100_SESSION_NOT_READY`
+launch_status: `PASS_PHASE2_COLAB_GPU_SESSION_READY`
 
 ## Current Decision
 
@@ -14,16 +14,17 @@ launch_status: `HOLD_PHASE2_A100_SESSION_NOT_READY`
 
 ## Readiness
 
-- colab_status: `HOLD_NO_ACTIVE_COLAB_SESSION`
+- colab_status: `PASS_COLAB_SESSION_VISIBLE`
 - colab_session: `open-duck-l4`
-- colab_active: `False`
+- colab_hardware: `T4`
+- colab_active: `True`
 - git_status: `HOLD_GIT_REMOTE_AUTH_UNAVAILABLE`
 - git_branch: `codex/live-oracle-dagger-phase-student`
 - git_remote_read_auth_ok: `False`
 
 The Colab check is read-only (`colab sessions` / `colab status`). The Git check is read-only (`git ls-remote`) and does not push.
 
-## Preferred A100 / Colab Command
+## Preferred Colab GPU Command
 
 Use this when a visible Colab GPU session is available:
 

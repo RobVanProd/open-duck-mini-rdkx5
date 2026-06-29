@@ -1,16 +1,17 @@
 # Phase 2 Stage Guard
 
-status: `HOLD_PHASE2_A100_SESSION_NOT_READY`
+status: `PASS_PHASE2_COLAB_GPU_SESSION_READY`
 current_stage: `stage_z005_support`
 current_gate_status: `HOLD_PHASE2_STAGE_Z005_SUPPORT`
 next_recipe_status: `PASS_Z005_SUPPORT_RECIPE_READY`
-launch_status: `HOLD_PHASE2_A100_SESSION_NOT_READY`
+launch_status: `PASS_PHASE2_COLAB_GPU_SESSION_READY`
 
 This is a read-only guard. It did not train, SSH, deploy, or touch the robot.
 
 ## Readiness
 
-- colab_status: `HOLD_NO_ACTIVE_COLAB_SESSION`
+- colab_status: `PASS_COLAB_SESSION_VISIBLE`
+- colab_hardware: `T4`
 - git_status: `HOLD_GIT_REMOTE_AUTH_UNAVAILABLE`
 - package_preflight: `PASS_PACKAGE_PREFLIGHT`
 - package_manifest_status: `PASS_PHASE2_COLAB_PACKAGE_MANIFEST_READY`
@@ -23,10 +24,10 @@ This is a read-only guard. It did not train, SSH, deploy, or touch the robot.
 - Run read-only report tools: report_phase2_curriculum_gate.py, report_phase2_artifact_manifest.py, and report_phase2_stage_guard.py.
 - Run the phase2-z005-support Colab workflow in plan-only mode to verify the package preflight and generated remote driver.
 - Run the phase2-z005-support Colab workflow with --package-only to build and hash local upload archives without contacting Colab.
-- Prepare or reconnect the A100/L4 Colab session named open-duck-l4.
+- Prepare or reconnect a Colab GPU session named open-duck-l4; A100/L4 is preferred, T4 is acceptable but slower.
 - Run the phase2-z005-support recipe only after the Colab session is active and still using the corrected bridge.
 - Run report_phase2_z005_post_training_gates.py on post-training seed-gate output.
-- Do not launch training yet from this host; Colab session open-duck-l4 is not active.
+- Launch the preferred phase2-z005-support Colab workflow.
 
 ## Forbidden
 

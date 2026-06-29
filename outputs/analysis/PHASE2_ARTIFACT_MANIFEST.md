@@ -46,10 +46,10 @@ This is a read-only hash manifest. It did not train, SSH, deploy, or touch the r
 | `outputs/analysis/phase2_z005_seed5_failure_diagnostic.json` | `PRESENT_FILE` | `25223d5907190c5ea5f884053e3b02f080c7c0a7a35c8ac808c08ce26245a3da` | 3703 | `outputs/analysis/phase2_z005_seed5_failure_diagnostic.json` |
 | `outputs/analysis/PHASE2_Z005_SUPPORT_NEXT_RECIPE.md` | `PRESENT_FILE` | `296624608b0d3a28e5c222114bf795cdb7f1eefd44a7452ac4c3823f12884f72` | 10143 | `outputs/analysis/PHASE2_Z005_SUPPORT_NEXT_RECIPE.md` |
 | `outputs/analysis/phase2_z005_support_next_recipe.json` | `PRESENT_FILE` | `dd5e77a2bd447a287377b802f9ae2a01b97f11cd0020eb54ca9cb9ab02a79465` | 20500 | `outputs/analysis/phase2_z005_support_next_recipe.json` |
-| `outputs/analysis/PHASE2_NEXT_RUN_PLAN.md` | `PRESENT_FILE` | `1971b999165584f0b21aa7373561c14ab9e5bdd8aca2386e629e25621c64a60d` | 6531 | `outputs/analysis/PHASE2_NEXT_RUN_PLAN.md` |
-| `outputs/analysis/phase2_next_run_plan.json` | `PRESENT_FILE` | `971722859fe48c05ef12929f04c48788e47de02cd245c942c6d1cbe861327ba6` | 14051 | `outputs/analysis/phase2_next_run_plan.json` |
-| `outputs/analysis/PHASE2_STAGE_GUARD.md` | `PRESENT_FILE` | `f96e6e1ff9482c6ac64bbd9dafe722235ca8af35a4538c6290f1ffba76dd8536` | 3761 | `outputs/analysis/PHASE2_STAGE_GUARD.md` |
-| `outputs/analysis/phase2_stage_guard.json` | `PRESENT_FILE` | `447c0cd5ce29d3a321d83be05f64e6818fa7752a865c188cf4487980228affbd` | 5321 | `outputs/analysis/phase2_stage_guard.json` |
+| `outputs/analysis/PHASE2_NEXT_RUN_PLAN.md` | `PRESENT_FILE` | `a920c3bfc99fd42dd5a3e765c9a867d6b29797dccde83331249f3da1e386ad68` | 6524 | `outputs/analysis/PHASE2_NEXT_RUN_PLAN.md` |
+| `outputs/analysis/phase2_next_run_plan.json` | `PRESENT_FILE` | `fff21b329f425294d45979b81763db0b3ee2005e3a46d83134610dc940bee70e` | 14131 | `outputs/analysis/phase2_next_run_plan.json` |
+| `outputs/analysis/PHASE2_STAGE_GUARD.md` | `PRESENT_FILE` | `88f888d2ad35d39071a4d33a1cf1b6ac0c4585048abd49c8bc00147b523cb99c` | 3723 | `outputs/analysis/PHASE2_STAGE_GUARD.md` |
+| `outputs/analysis/phase2_stage_guard.json` | `PRESENT_FILE` | `505e35a78bb52983fdacc22beb64d1ca8bcbd5788dc594ff3048af72289cfa2a` | 5283 | `outputs/analysis/phase2_stage_guard.json` |
 | `outputs/analysis/PHASE2_COLAB_PACKAGE_MANIFEST.md` | `PRESENT_FILE` | `bb2f711369c5b02f33d9f06f827917fe11c511eb40433631260cc1e563481882` | 1486 | `outputs/analysis/PHASE2_COLAB_PACKAGE_MANIFEST.md` |
 | `outputs/analysis/phase2_colab_package_manifest.json` | `PRESENT_FILE` | `d4049607a47a2334fded31b4a75abb4832e23c463788b1a58d68242036f59bd0` | 8590 | `outputs/analysis/phase2_colab_package_manifest.json` |
 | `outputs/analysis/PHASE2_COLAB_PACKAGE_ONLY_MANIFEST.md` | `PRESENT_FILE` | `8c49a986a23bb5f754a9e8ab80601a9c99315b2ed3da1944125aa22b5e629628` | 1075 | `outputs/analysis/PHASE2_COLAB_PACKAGE_ONLY_MANIFEST.md` |
@@ -60,7 +60,7 @@ This is a read-only hash manifest. It did not train, SSH, deploy, or touch the r
 | `tools/report_phase2_colab_package_manifest.py` | `PRESENT_FILE` | `35cf503ce24824e83566797aa5b05570f97d4b9b04e71f75a99f7e76775544bd` | 10080 | `tools/report_phase2_colab_package_manifest.py` |
 | `tools/report_phase2_local_fallback_readiness.py` | `PRESENT_FILE` | `9bd2bd3573369f7b1f8849d73083f8644061064e3e010c586630703b9bc288c9` | 13551 | `tools/report_phase2_local_fallback_readiness.py` |
 | `tools/report_phase2_z005_post_training_gates.py` | `PRESENT_FILE` | `759a838bd3463a2cd1e92d925129b43fdb61dc0ed3f7ed33675739d295f42f6d` | 10476 | `tools/report_phase2_z005_post_training_gates.py` |
-| `tools/report_phase2_stage_guard.py` | `PRESENT_FILE` | `0aecc51a7d455a186be7ed6618aab950c46bbddec007366ebe87b664eb7b82c7` | 11477 | `tools/report_phase2_stage_guard.py` |
+| `tools/report_phase2_stage_guard.py` | `PRESENT_FILE` | `8ab96ce5093969fc8f3e4ce3aceeb9690593d7a72ff300c8797155cffc719f20` | 11701 | `tools/report_phase2_stage_guard.py` |
 | `tools/run_colab_cli_cuda_workflow.py` | `PRESENT_FILE` | `428a63e94b3e171042f00f0116bf398573ac90cc1689a6dfbd7d4fa59952c798` | 117280 | `tools/run_colab_cli_cuda_workflow.py` |
 
 ## Promotion Gate

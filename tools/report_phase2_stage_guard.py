@@ -98,6 +98,7 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
     next_recipe_status = recipe.get("status")
     launch_status = nested(next_plan, "readiness", "launch_status")
     colab_status = nested(next_plan, "readiness", "colab", "status")
+    colab_hardware = nested(next_plan, "readiness", "colab", "hardware")
     git_status = nested(next_plan, "readiness", "git", "status")
     colab_active = bool(nested(next_plan, "readiness", "colab", "active", default=False))
     preferred_command = nested(next_plan, "commands", "colab", "shell") or nested(recipe, "commands", "colab", "shell")
@@ -120,7 +121,7 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
         "Run read-only report tools: report_phase2_curriculum_gate.py, report_phase2_artifact_manifest.py, and report_phase2_stage_guard.py.",
         "Run the phase2-z005-support Colab workflow in plan-only mode to verify the package preflight and generated remote driver.",
         "Run the phase2-z005-support Colab workflow with --package-only to build and hash local upload archives without contacting Colab.",
-        "Prepare or reconnect the A100/L4 Colab session named open-duck-l4.",
+        "Prepare or reconnect a Colab GPU session named open-duck-l4; A100/L4 is preferred, T4 is acceptable but slower.",
         "Run the phase2-z005-support recipe only after the Colab session is active and still using the corrected bridge.",
         "Run report_phase2_z005_post_training_gates.py on post-training seed-gate output.",
     ]
@@ -166,6 +167,7 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
         "next_recipe_status": next_recipe_status,
         "launch_status": launch_status,
         "colab_status": colab_status,
+        "colab_hardware": colab_hardware,
         "git_status": git_status,
         "held_gates": held_gates,
         "missing_gates": missing_gates,
@@ -207,6 +209,7 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         "## Readiness",
         "",
         f"- colab_status: `{payload.get('colab_status')}`",
+        f"- colab_hardware: `{payload.get('colab_hardware')}`",
         f"- git_status: `{payload.get('git_status')}`",
         f"- package_preflight: `{payload.get('package_preflight', {}).get('status')}`",
         f"- package_manifest_status: `{payload.get('package_manifest_status')}`",

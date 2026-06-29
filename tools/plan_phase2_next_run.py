@@ -2,7 +2,7 @@
 """Write the next runnable Phase 2 command bundle.
 
 This is read-only planning. It does not train, SSH, deploy, or touch the robot.
-It consumes the current Phase 2 status report and emits the preferred A100/Colab
+It consumes the current Phase 2 status report and emits the preferred Colab GPU
 command plus a local ROCm fallback command that uses recorded environment
 settings.
 """
@@ -111,9 +111,15 @@ def colab_readiness(session: str, timeout_s: int) -> dict[str, Any]:
 
     sessions = run_probe(["colab", "sessions"], timeout_s)
     status = run_probe(["colab", "status", "-s", session], timeout_s)
+    status_text_raw = combined_text(status)
     status_text = combined_text(status).lower()
     payload["sessions_command"] = sessions
     payload["status_command"] = status
+    payload["hardware"] = None
+    for part in status_text_raw.split("|"):
+        part = part.strip()
+        if part.startswith("Hardware:"):
+            payload["hardware"] = part.split(":", 1)[1].strip()
     payload["active"] = status["ok"] and "not found" not in status_text and "no active" not in status_text
     payload["status"] = "PASS_COLAB_SESSION_VISIBLE" if payload["active"] else "HOLD_NO_ACTIVE_COLAB_SESSION"
     return payload
@@ -410,6 +416,7 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         "",
         f"- colab_status: `{colab.get('status')}`",
         f"- colab_session: `{colab.get('session')}`",
+        f"- colab_hardware: `{colab.get('hardware')}`",
         f"- colab_active: `{colab.get('active')}`",
         f"- git_status: `{git.get('status')}`",
         f"- git_branch: `{git.get('branch')}`",
@@ -417,7 +424,7 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         "",
         "The Colab check is read-only (`colab sessions` / `colab status`). The Git check is read-only (`git ls-remote`) and does not push.",
         "",
-        "## Preferred A100 / Colab Command",
+        "## Preferred Colab GPU Command",
         "",
         "Use this when a visible Colab GPU session is available:",
         "",
@@ -485,9 +492,9 @@ def main() -> int:
     if args.check_git_auth:
         readiness["git"] = git_readiness(args.readiness_timeout_s)
     if args.check_colab and readiness["colab"].get("status") != "PASS_COLAB_SESSION_VISIBLE":
-        readiness["launch_status"] = "HOLD_PHASE2_A100_SESSION_NOT_READY"
+        readiness["launch_status"] = "HOLD_PHASE2_COLAB_GPU_SESSION_NOT_READY"
     elif args.check_colab:
-        readiness["launch_status"] = "PASS_PHASE2_A100_SESSION_READY"
+        readiness["launch_status"] = "PASS_PHASE2_COLAB_GPU_SESSION_READY"
 
     payload: dict[str, Any] = {
         "status": "PASS_PHASE2_NEXT_RUN_PLAN_READY",
