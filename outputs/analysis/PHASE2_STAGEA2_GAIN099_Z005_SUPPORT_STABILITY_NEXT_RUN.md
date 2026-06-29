@@ -91,6 +91,21 @@ Run this only on a stable GPU path, preferably the pinned CUDA/A100 workflow or
 another verified GPU session. Local ROCm full-shape evaluator reset remains
 unreliable and should not be used for policy-producing runs until fixed.
 
+The explicit workflow entrypoint is:
+
+```bash
+python3 tools/run_colab_cli_cuda_workflow.py \
+  --workflow phase2-z005-support \
+  --session <visible-colab-session> \
+  --candidate-name phase2_z005_support_stability_cuda \
+  --candidate-checkpoint-sweep \
+  --candidate-checkpoint-sweep-commands 0.0,0.08 \
+  --candidate-checkpoint-sweep-duration 1.0 \
+  --candidate-checkpoint-sweep-jax-platform cpu \
+  --candidate-timeout-s 10800 \
+  --run
+```
+
 Core settings:
 
 ```text

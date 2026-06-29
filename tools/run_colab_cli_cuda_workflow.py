@@ -678,8 +678,13 @@ def build_remote_driver(
     run_phase2_b0e = args.workflow == "phase2-b0e"
     run_phase2_b0f = args.workflow == "phase2-b0f"
     run_phase2_b0g = args.workflow == "phase2-b0g"
+    run_phase2_z005_support = args.workflow == "phase2-z005-support"
     run_phase2_cuda_recipe = (
-        run_phase2_b0d or run_phase2_b0e or run_phase2_b0f or run_phase2_b0g
+        run_phase2_b0d
+        or run_phase2_b0e
+        or run_phase2_b0f
+        or run_phase2_b0g
+        or run_phase2_z005_support
     )
     run_staged_curriculum = args.workflow == "staged-curriculum"
     run_candidate_eval_only = args.workflow == "candidate-eval-only"
@@ -700,6 +705,7 @@ def build_remote_driver(
             "phase2-b0e",
             "phase2-b0f",
             "phase2-b0g",
+            "phase2-z005-support",
             "all",
         }
         and not args.skip_audit
@@ -827,7 +833,10 @@ def build_remote_driver(
         if candidate_behavior_prior_mlp_npz
         else ""
     )
-    if run_phase2_b0g:
+    if run_phase2_z005_support:
+        phase2_recipe_id = "z005_support"
+        phase2_default_candidate_name = "phase2_z005_support_stability_cuda"
+    elif run_phase2_b0g:
         phase2_recipe_id = "b0g"
         phase2_default_candidate_name = "phase2_b0g_push_recovery_leftknee_cuda"
     elif run_phase2_b0f:
@@ -840,39 +849,42 @@ def build_remote_driver(
         phase2_recipe_id = "b0d"
         phase2_default_candidate_name = "phase2_b0d_tracking_margin_cuda"
     phase2_output_root = f"/content/open_duck_training_phase2_{phase2_recipe_id}_cli"
-    phase2_num_timesteps = "80000" if (run_phase2_b0f or run_phase2_b0g) else "160000"
-    phase2_ppo_num_envs = "64" if (run_phase2_b0f or run_phase2_b0g) else "128"
-    phase2_ppo_batch_size = "512" if (run_phase2_b0f or run_phase2_b0g) else "1024"
-    phase2_lr = "0.000003" if (run_phase2_b0f or run_phase2_b0g) else ("0.000012" if run_phase2_b0e else "0.000015")
-    phase2_clip = "0.02" if (run_phase2_b0f or run_phase2_b0g) else ("0.04" if run_phase2_b0e else "0.05")
-    phase2_max_grad_norm = "0.1" if (run_phase2_b0f or run_phase2_b0g) else ("0.2" if run_phase2_b0e else "0.25")
-    phase2_restore_kl = "5.0" if (run_phase2_b0f or run_phase2_b0g) else ("1.5" if run_phase2_b0e else "1.0")
-    phase2_actuator_tracking = "0" if run_phase2_b0g else ("-0.01" if run_phase2_b0f else ("-0.015" if run_phase2_b0e else "-0.04"))
-    phase2_forward_progress = "2.5" if (run_phase2_b0e or run_phase2_b0f or run_phase2_b0g) else "2"
-    phase2_command_progress = "1.5" if (run_phase2_b0e or run_phase2_b0f or run_phase2_b0g) else "1"
-    phase2_command_shortfall = "-4" if (run_phase2_b0e or run_phase2_b0f or run_phase2_b0g) else "-2.5"
-    phase2_command_ratio = "0.45" if (run_phase2_b0e or run_phase2_b0f or run_phase2_b0g) else "0.4"
+    phase2_motion_preserve = (
+        run_phase2_b0e or run_phase2_b0f or run_phase2_b0g or run_phase2_z005_support
+    )
+    phase2_num_timesteps = "81920" if run_phase2_z005_support else ("80000" if (run_phase2_b0f or run_phase2_b0g) else "160000")
+    phase2_ppo_num_envs = "64" if (run_phase2_b0f or run_phase2_b0g or run_phase2_z005_support) else "128"
+    phase2_ppo_batch_size = "512" if (run_phase2_b0f or run_phase2_b0g or run_phase2_z005_support) else "1024"
+    phase2_lr = "0.000003" if (run_phase2_b0f or run_phase2_b0g or run_phase2_z005_support) else ("0.000012" if run_phase2_b0e else "0.000015")
+    phase2_clip = "0.02" if (run_phase2_b0f or run_phase2_b0g or run_phase2_z005_support) else ("0.04" if run_phase2_b0e else "0.05")
+    phase2_max_grad_norm = "0.1" if (run_phase2_b0f or run_phase2_b0g or run_phase2_z005_support) else ("0.2" if run_phase2_b0e else "0.25")
+    phase2_restore_kl = "3.0" if run_phase2_z005_support else ("5.0" if (run_phase2_b0f or run_phase2_b0g) else ("1.5" if run_phase2_b0e else "1.0"))
+    phase2_actuator_tracking = "-0.01" if run_phase2_z005_support else ("0" if run_phase2_b0g else ("-0.01" if run_phase2_b0f else ("-0.015" if run_phase2_b0e else "-0.04")))
+    phase2_forward_progress = "2.5" if phase2_motion_preserve else "2"
+    phase2_command_progress = "1.5" if phase2_motion_preserve else "1"
+    phase2_command_shortfall = "-4" if phase2_motion_preserve else "-2.5"
+    phase2_command_ratio = "0.45" if phase2_motion_preserve else "0.4"
     phase2_extra_args = (
         '"--tracking-lin-vel-scale", "3",'
         '"--tracking-sigma", "0.01",'
-        if (run_phase2_b0e or run_phase2_b0f or run_phase2_b0g)
+        if phase2_motion_preserve
         else ""
     )
-    phase2_dr_friction_min = "0.95" if (run_phase2_b0f or run_phase2_b0g) else "0.8"
-    phase2_dr_friction_max = "1.05" if (run_phase2_b0f or run_phase2_b0g) else "1.1"
-    phase2_dr_frictionloss_scale_min = "0.995" if (run_phase2_b0f or run_phase2_b0g) else "0.98"
-    phase2_dr_frictionloss_scale_max = "1.005" if (run_phase2_b0f or run_phase2_b0g) else "1.02"
+    phase2_dr_friction_min = "0.98" if run_phase2_z005_support else ("0.95" if (run_phase2_b0f or run_phase2_b0g) else "0.8")
+    phase2_dr_friction_max = "1.02" if run_phase2_z005_support else ("1.05" if (run_phase2_b0f or run_phase2_b0g) else "1.1")
+    phase2_dr_frictionloss_scale_min = "0.995" if (run_phase2_b0f or run_phase2_b0g or run_phase2_z005_support) else "0.98"
+    phase2_dr_frictionloss_scale_max = "1.005" if (run_phase2_b0f or run_phase2_b0g or run_phase2_z005_support) else "1.02"
     phase2_dr_armature_scale_min = "1.0"
-    phase2_dr_armature_scale_max = "1.005" if (run_phase2_b0f or run_phase2_b0g) else "1.02"
-    phase2_dr_com_jitter_m = "0.003" if (run_phase2_b0f or run_phase2_b0g) else "0.01"
-    phase2_dr_mass_scale_min = "0.995" if (run_phase2_b0f or run_phase2_b0g) else "0.98"
-    phase2_dr_mass_scale_max = "1.005" if (run_phase2_b0f or run_phase2_b0g) else "1.02"
-    phase2_dr_torso_mass_delta_min = "-0.005" if (run_phase2_b0f or run_phase2_b0g) else "-0.02"
-    phase2_dr_torso_mass_delta_max = "0.005" if (run_phase2_b0f or run_phase2_b0g) else "0.02"
-    phase2_dr_qpos_jitter_rad = "0.003" if (run_phase2_b0f or run_phase2_b0g) else "0.006"
-    phase2_dr_actuator_gain_scale_min = "0.995" if (run_phase2_b0f or run_phase2_b0g) else "0.98"
-    phase2_dr_actuator_gain_scale_max = "1.005" if (run_phase2_b0f or run_phase2_b0g) else "1.02"
-    phase2_dr_leg_geometry_jitter_scale = "0.001" if (run_phase2_b0f or run_phase2_b0g) else "0.003"
+    phase2_dr_armature_scale_max = "1.005" if (run_phase2_b0f or run_phase2_b0g or run_phase2_z005_support) else "1.02"
+    phase2_dr_com_jitter_m = "0.002" if run_phase2_z005_support else ("0.003" if (run_phase2_b0f or run_phase2_b0g) else "0.01")
+    phase2_dr_mass_scale_min = "0.995" if (run_phase2_b0f or run_phase2_b0g or run_phase2_z005_support) else "0.98"
+    phase2_dr_mass_scale_max = "1.005" if (run_phase2_b0f or run_phase2_b0g or run_phase2_z005_support) else "1.02"
+    phase2_dr_torso_mass_delta_min = "-0.005" if (run_phase2_b0f or run_phase2_b0g or run_phase2_z005_support) else "-0.02"
+    phase2_dr_torso_mass_delta_max = "0.005" if (run_phase2_b0f or run_phase2_b0g or run_phase2_z005_support) else "0.02"
+    phase2_dr_qpos_jitter_rad = "0.002" if run_phase2_z005_support else ("0.003" if (run_phase2_b0f or run_phase2_b0g) else "0.006")
+    phase2_dr_actuator_gain_scale_min = "0.995" if (run_phase2_b0f or run_phase2_b0g or run_phase2_z005_support) else "0.98"
+    phase2_dr_actuator_gain_scale_max = "1.005" if (run_phase2_b0f or run_phase2_b0g or run_phase2_z005_support) else "1.02"
+    phase2_dr_leg_geometry_jitter_scale = "0.001" if (run_phase2_b0f or run_phase2_b0g or run_phase2_z005_support) else "0.003"
     phase2_push_interval_min_s = "1.0" if (run_phase2_b0f or run_phase2_b0g) else "7"
     phase2_push_interval_max_s = "1.5" if run_phase2_b0g else ("2.0" if run_phase2_b0f else "12")
     phase2_push_magnitude_min = "0.05" if run_phase2_b0g else ("0.03" if run_phase2_b0f else "0.02")
@@ -892,6 +904,51 @@ def build_remote_driver(
         if run_phase2_b0g
         else ""
     )
+    phase2_restore_checkpoint = (
+        "/content/open-duck-mini-rdkx5/outputs/phase2_domain_randomization/"
+        "stage_a2_preserve_narrow_flat_no_push_gpu/smoke_20260628T031553Z_gpu/"
+        "2026_06_27_232221_491520"
+        if run_phase2_z005_support
+        else "/content/open-duck-mini-rdkx5/outputs/phase2_domain_randomization/"
+        "stage_b0c_rough_z002_push_tracking_margin_from_b0_gpu/"
+        "smoke_20260629T062042Z_gpu/2026_06_29_022725_245760"
+    )
+    phase2_behavior_prior_arg = (
+        ""
+        if run_phase2_z005_support
+        else (
+            '"--enable-behavior-prior",'
+            '"--behavior-prior-mlp-npz",'
+            '"/content/open-duck-mini-rdkx5/outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate/candidate_mlp.npz",'
+            f'"--behavior-prior-scale", "{phase2_behavior_prior_scale}",'
+            '"--behavior-prior-huber-delta", "0.05",'
+        )
+    )
+    phase2_push_enable_arg = (
+        '"--no-push-enable",'
+        if run_phase2_z005_support
+        else '"--push-enable",'
+    )
+    phase2_support_stability_arg = (
+        '"--forward-wrong-direction-scale", "-3",'
+        '"--forward-wrong-direction-allowed-reverse-ratio", "0.05",'
+        '"--forward-single-support-scale", "0.2",'
+        '"--forward-double-support-scale", "-0.35",'
+        '"--forward-double-support-dwell-scale", "-1",'
+        '"--forward-double-support-dwell-grace-steps", "8",'
+        '"--forward-swing-advance-scale", "-0.002",'
+        '"--forward-swing-advance-target-m", "0.004",'
+        '"--forward-swing-advance-huber-delta", "0.002",'
+        '"--forward-swing-clearance-scale", "-0.0005",'
+        '"--forward-swing-clearance-target-m", "0.018",'
+        '"--forward-swing-clearance-huber-delta", "0.003",'
+        if run_phase2_z005_support
+        else ""
+    )
+    phase2_bridge_delay_max = "3" if run_phase2_z005_support else "4"
+    phase2_bridge_tau_max = "0.14" if run_phase2_z005_support else "0.1"
+    phase2_bridge_per_joint_variation = "0.1" if run_phase2_z005_support else "0.05"
+    phase2_terrain_hfield_z_scale = "0.005" if run_phase2_z005_support else "0.002"
     return textwrap.dedent(
         f"""
         import atexit
@@ -1287,7 +1344,7 @@ def build_remote_driver(
                 "--ppo-num-minibatches", "4",
                 "--ppo-num-updates-per-batch", "2",
                 "--restore-checkpoint-path",
-                "/content/open-duck-mini-rdkx5/outputs/phase2_domain_randomization/stage_b0c_rough_z002_push_tracking_margin_from_b0_gpu/smoke_20260629T062042Z_gpu/2026_06_29_022725_245760",
+                "{phase2_restore_checkpoint}",
                 "--ppo-learning-rate", "{phase2_lr}",
                 "--ppo-entropy-cost", "0.001",
                 "--ppo-clipping-epsilon", "{phase2_clip}",
@@ -1297,6 +1354,7 @@ def build_remote_driver(
                 "--actuator-tracking-scale", "{phase2_actuator_tracking}",
                 {phase2_push_recovery_arg}
                 {phase2_extra_args}
+                {phase2_support_stability_arg}
                 "--forward-progress-scale", "{phase2_forward_progress}",
                 "--command-progress-scale", "{phase2_command_progress}",
                 "--command-progress-shortfall-scale", "{phase2_command_shortfall}",
@@ -1346,20 +1404,16 @@ def build_remote_driver(
                 "--noise-gravity", "{phase2_noise_gravity}",
                 "--noise-gyro", "{phase2_noise_gyro}",
                 "--noise-accelerometer", "{phase2_noise_accelerometer}",
-                "--push-enable",
-                "--enable-behavior-prior",
-                "--behavior-prior-mlp-npz",
-                "/content/open-duck-mini-rdkx5/outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate/candidate_mlp.npz",
-                "--behavior-prior-scale", "{phase2_behavior_prior_scale}",
-                "--behavior-prior-huber-delta", "0.05",
+                {phase2_push_enable_arg}
+                {phase2_behavior_prior_arg}
                 "--actuator-bridge-delay-min-ticks", "3",
-                "--actuator-bridge-delay-max-ticks", "4",
+                "--actuator-bridge-delay-max-ticks", "{phase2_bridge_delay_max}",
                 "--actuator-bridge-tau-min-s", "0.06",
-                "--actuator-bridge-tau-max-s", "0.1",
+                "--actuator-bridge-tau-max-s", "{phase2_bridge_tau_max}",
                 "--actuator-bridge-velocity-limit-min-rad-s", "2",
                 "--actuator-bridge-velocity-limit-max-rad-s", "3.25",
-                "--actuator-bridge-per-joint-variation", "0.05",
-                "--terrain-hfield-z-scale", "0.002",
+                "--actuator-bridge-per-joint-variation", "{phase2_bridge_per_joint_variation}",
+                "--terrain-hfield-z-scale", "{phase2_terrain_hfield_z_scale}",
                 "--timeout-s", "{args.candidate_timeout_s}",
             ]
             run(phase2_b0d_cmd, cwd=RDK, timeout={args.candidate_timeout_s + 300})
@@ -1791,6 +1845,7 @@ def main() -> int:
             "phase2-b0e",
             "phase2-b0f",
             "phase2-b0g",
+            "phase2-z005-support",
             "staged-curriculum",
             "all",
         ],
@@ -2235,7 +2290,42 @@ def main() -> int:
     print(f"RUN_DIR {run_dir}")
     print(f"JAX_PIN {PINNED_JAX_VERSION}")
     if not args.run:
+        run_dir.mkdir(parents=True, exist_ok=True)
+        workflow_name = f"open_duck_colab_cli_{args.workflow}_{ts}"
+        remote_bundle = f"/content/{workflow_name}_artifacts.tar.gz"
+        candidate_remote_policy = (
+            "/content/open_duck_candidate_existing_policy.onnx"
+            if candidate_existing_policy is not None
+            else None
+        )
+        candidate_remote_manifest = (
+            "/content/open_duck_candidate_training_manifest.json"
+            if candidate_training_manifest is not None
+            else None
+        )
+        driver = build_remote_driver(
+            args,
+            workflow_name,
+            "/content/open-duck-mini-rdkx5_cli.tar.gz",
+            "/content/Open_Duck_Playground_cli.tar.gz",
+            remote_bundle,
+            candidate_remote_policy=candidate_remote_policy,
+            candidate_remote_manifest=candidate_remote_manifest,
+        )
+        driver_path = run_dir / f"{workflow_name}_driver.py"
+        driver_path.write_text(driver)
+        run_dir.joinpath("PLAN_ONLY_REMOTE_PATHS.txt").write_text(
+            "\n".join(
+                [
+                    f"workflow_name={workflow_name}",
+                    f"remote_bundle={remote_bundle}",
+                    f"driver={driver_path}",
+                ]
+            )
+            + "\n"
+        )
         print("PLAN_ONLY pass --run to upload/start remote work")
+        print(f"PLAN_DRIVER {driver_path}")
         return 0
 
     run_dir.mkdir(parents=True, exist_ok=True)

@@ -1328,6 +1328,38 @@ This tiny CPU check restored the Stage A2 trainable checkpoint, patched
 result. Use the recipe only as the next bounded GPU training run when a stable
 CUDA/A100 or equivalent session is available.
 
+The Colab helper exposes this as an explicit workflow:
+
+```bash
+python3 tools/run_colab_cli_cuda_workflow.py \
+  --workflow phase2-z005-support \
+  --session <visible-colab-session> \
+  --candidate-name phase2_z005_support_stability_cuda \
+  --candidate-checkpoint-sweep \
+  --candidate-checkpoint-sweep-commands 0.0,0.08 \
+  --candidate-checkpoint-sweep-duration 1.0 \
+  --candidate-checkpoint-sweep-jax-platform cpu \
+  --candidate-timeout-s 10800 \
+  --run
+```
+
+Plan-only generation now writes the remote driver locally for review. A dry-run
+inspection confirmed the generated workflow uses:
+
+```text
+restore checkpoint:
+  stage_a2_preserve_narrow_flat_no_push_gpu/.../2026_06_27_232221_491520
+push mode:
+  --no-push-enable
+terrain:
+  --terrain-hfield-z-scale 0.005
+corrected bridge:
+  delay 3-3 ticks
+  tau 0.06-0.14 s
+  velocity limit 2.0-3.25 rad/s
+  per-joint variation 0.10
+```
+
 ## Current Terrain-Step Status
 
 Existing-trace hard-step rescoring found a useful split:
