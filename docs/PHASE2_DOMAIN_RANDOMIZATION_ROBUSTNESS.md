@@ -77,6 +77,18 @@ Use the artifact manifest when reviewing the exact corrected bridge,
 warm-start checkpoint, candidate ONNX, stage-gate evidence, and promotion tools
 that define the current Phase 2 state.
 
+Current stage guard:
+
+```text
+outputs/analysis/PHASE2_STAGE_GUARD.md
+outputs/analysis/phase2_stage_guard.json
+```
+
+Use the stage guard before launching any run or advancing any rung. It is the
+current allowed/forbidden action matrix: z=0.005 support training is the next
+authorized offline step once an A100/L4 Colab session is available; robot
+validation, stronger terrain, and z=0.005 push remain blocked.
+
 This recipe continues from the last z=0.002 passing A2 checkpoint, keeps the
 corrected bridge active, uses z=0.005 rough terrain with no push, and targets
 the seed-5 support collapse directly:

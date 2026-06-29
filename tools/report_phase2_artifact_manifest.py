@@ -45,8 +45,11 @@ REVIEW_ARTIFACTS = [
     "outputs/analysis/phase2_z005_support_next_recipe.json",
     "outputs/analysis/PHASE2_NEXT_RUN_PLAN.md",
     "outputs/analysis/phase2_next_run_plan.json",
+    "outputs/analysis/PHASE2_STAGE_GUARD.md",
+    "outputs/analysis/phase2_stage_guard.json",
     "tools/plan_phase2_z005_support_recipe.py",
     "tools/report_phase2_z005_post_training_gates.py",
+    "tools/report_phase2_stage_guard.py",
     "tools/run_colab_cli_cuda_workflow.py",
 ]
 

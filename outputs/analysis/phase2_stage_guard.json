@@ -1,0 +1,74 @@
+{
+  "advance_requirements": [
+    "z=0.005 x=0.08 no-push: 8/8 duration complete, zero falls, no velocity excess, tracking p95 <= 0.20, track ratio >= 0.40.",
+    "z=0.005 x=0.0 no-push: 8/8 duration complete, zero falls, no velocity excess, |mean vx| <= 0.005.",
+    "z=0.002 x=0.08/x=0.0 no-push regression gates remain passing.",
+    "z=0.002 x=0.08/x=0.0 gentle-push regression gates remain passing.",
+    "Post-training decision artifact reports PASS_PHASE2_Z005_POST_TRAINING_GATES."
+  ],
+  "allowed_actions": [
+    "Review committed Phase 2 analysis artifacts and guard reports.",
+    "Run read-only report tools: report_phase2_curriculum_gate.py, report_phase2_artifact_manifest.py, and report_phase2_stage_guard.py.",
+    "Prepare or reconnect the A100/L4 Colab session named open-duck-l4.",
+    "Run the phase2-z005-support recipe only after the Colab session is active and still using the corrected bridge.",
+    "Run report_phase2_z005_post_training_gates.py on post-training seed-gate output.",
+    "Do not launch training yet from this host; Colab session open-duck-l4 is not active."
+  ],
+  "candidate": {
+    "exists": true,
+    "path": "policy/candidates/phase2_stagea2_seed5_recovery_command_gated_gain099_20260629/candidate.onnx",
+    "sha256": "209b85a75cf9cbbcf10df573c1b530921943a72e81082111889c15f63a9a2c7b",
+    "size_bytes": 1772930,
+    "status": "PRESENT_FILE"
+  },
+  "colab_status": "HOLD_NO_ACTIVE_COLAB_SESSION",
+  "corrected_bridge": {
+    "exists": true,
+    "path": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+    "sha256": "3661543d0745073b561eb4fa2ae8f9616368ee8b72cb397f8b953dada532c8c0",
+    "size_bytes": 18363,
+    "status": "PRESENT_FILE"
+  },
+  "current_gate_status": "HOLD_PHASE2_STAGE_Z005_SUPPORT",
+  "current_stage": "stage_z005_support",
+  "deploy_performed": false,
+  "forbidden_actions": [
+    "No robot validation.",
+    "No SSH.",
+    "No deploy.",
+    "No grounded replay.",
+    "No direct BEST_WALK deployment.",
+    "No training from scratch; continue only from the Phase 2 warm-start checkpoint.",
+    "No old/asymmetric actuator bridge.",
+    "No z=0.005 push stage until both z=0.005 no-push gates pass.",
+    "No stronger terrain until z=0.005 support passes and z=0.002 regression stays clear.",
+    "No promotion without PASS_PHASE2_Z005_POST_TRAINING_GATES."
+  ],
+  "git_status": "HOLD_GIT_REMOTE_AUTH_UNAVAILABLE",
+  "held_gates": [
+    "z005_x000_nopush",
+    "z005_x008_nopush"
+  ],
+  "input_artifacts": {
+    "ledger": "outputs/analysis/phase2_curriculum_gate_ledger.json",
+    "manifest": "outputs/analysis/phase2_artifact_manifest.json",
+    "next_plan": "outputs/analysis/phase2_next_run_plan.json",
+    "recipe": "outputs/analysis/phase2_z005_support_next_recipe.json"
+  },
+  "launch_status": "HOLD_PHASE2_A100_SESSION_NOT_READY",
+  "missing_gates": [],
+  "next_recipe_status": "PASS_Z005_SUPPORT_RECIPE_READY",
+  "preferred_command": "python3 \\\n    tools/run_colab_cli_cuda_workflow.py \\\n    --workflow \\\n    phase2-z005-support \\\n    --session \\\n    open-duck-l4 \\\n    --candidate-name \\\n    phase2_z005_support_baseheight_cuda \\\n    --candidate-checkpoint-sweep \\\n    --candidate-checkpoint-sweep-commands \\\n    0.0,0.08 \\\n    --candidate-checkpoint-sweep-duration \\\n    1.0 \\\n    --candidate-checkpoint-sweep-jax-platform \\\n    cpu \\\n    --candidate-timeout-s \\\n    10800 \\\n    --run",
+  "restore_checkpoint": {
+    "exists": true,
+    "file_count": 11,
+    "path": "outputs/phase2_domain_randomization/stage_a2_preserve_narrow_flat_no_push_gpu/smoke_20260628T031553Z_gpu/2026_06_27_232221_491520",
+    "sha256": "df4a570a232fd82c2f5eeccb109bf4f5d8b64f95b9a3424aa7f175bc971cbbbc",
+    "size_bytes": 1840048,
+    "status": "PRESENT_DIR"
+  },
+  "robot_touched": false,
+  "ssh_used": false,
+  "status": "HOLD_PHASE2_A100_SESSION_NOT_READY",
+  "training_started": false
+}
