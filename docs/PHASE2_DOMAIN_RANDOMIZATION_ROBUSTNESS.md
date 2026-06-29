@@ -1402,23 +1402,30 @@ outputs/analysis/phase2_z005_support_local_rocm_hold.json
 Status:
 
 ```text
-HOLD_LOCAL_ROCM_CONTEXT_719
+HOLD_FULL_LOCAL_ROCM_COMPILE_NO_PROGRESS
 ```
 
-With no active Colab/A100 session visible, a bounded local ROCm attempt of the
-same `phase2-z005-support` recipe was launched. It failed before any PPO step or
-ONNX export:
+With no active Colab/A100 session visible, bounded local ROCm attempts of the
+same `phase2-z005-support` recipe were launched. The first full-shape attempt
+forced `HSA_OVERRIDE_GFX_VERSION=11.0.0` and failed before any PPO step or ONNX
+export:
 
 ```text
 returncode: -6
 stderr: Check failed: Failed setting context: hipError_t(719)
 ```
 
-A basic JAX ROCm arithmetic test immediately after the abort still passed
-(`jax 0.8.2`, backend `gpu`, device `rocm:0`), so this is narrower than basic
-GPU visibility. Treat it as a local ROCm/JAX/MJX training-startup hold, not as a
-policy result. Use the pinned A100/Colab workflow when a visible session is
-available, or debug local ROCm separately.
+A basic JAX ROCm arithmetic test immediately after the abort still passed, and
+a no-override tiny same-recipe smoke reached PPO step `320`, exported ONNX, and
+returned `PASS_SMOKE_RUN`. The full-shape no-override run then stayed GPU-busy
+for more than 12 minutes without reaching first checkpoint or moving its output
+files, so it was interrupted and recorded as a local full-shape practicality
+hold. No child process was left running and the terrain XML restored to hash
+`879768817f5ae5d2c01b5494f855686bb10d1ec444a404efeced8f5766574ffc`.
+
+Treat this as backend evidence, not a policy result. For local ROCm, do not set
+`HSA_OVERRIDE_GFX_VERSION`. For the actual policy-producing run, use the pinned
+A100/Colab workflow when a visible session is available.
 
 ## Current Terrain-Step Status
 

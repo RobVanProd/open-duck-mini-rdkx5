@@ -1,15 +1,46 @@
 {
-  "status": "HOLD_LOCAL_ROCM_CONTEXT_719",
+  "status": "HOLD_FULL_LOCAL_ROCM_COMPILE_NO_PROGRESS",
   "date": "2026-06-29",
   "workflow": "phase2-z005-support",
   "robot_touched": false,
   "ssh_used": false,
   "deploy_performed": false,
   "training_result": false,
-  "output_dir": "outputs/phase2_domain_randomization/stage_z005_support_local_rocm/smoke_20260629T162610Z_gpu",
-  "run_status": "HOLD_SMOKE_RUN",
-  "returncode": -6,
-  "stderr_signature": "Check failed: Failed setting context: hipError_t(719)",
+  "attempts": [
+    {
+      "name": "gfx_override_full_shape",
+      "output_dir": "outputs/phase2_domain_randomization/stage_z005_support_local_rocm/smoke_20260629T162610Z_gpu",
+      "run_status": "HOLD_SMOKE_RUN",
+      "returncode": -6,
+      "hsa_override_gfx_version": "11.0.0",
+      "stderr_signature": "Check failed: Failed setting context: hipError_t(719)",
+      "interpretation": "The gfx override is harmful on this local 7900 XTX stack."
+    },
+    {
+      "name": "no_override_tiny_smoke",
+      "output_dir": "outputs/phase2_domain_randomization/stage_z005_support_local_rocm_no_override_smoke/smoke_20260629T162805Z_gpu",
+      "run_status": "PASS_SMOKE_RUN",
+      "returncode": 0,
+      "hsa_override_gfx_version": null,
+      "step": 320,
+      "reward": 3.4303669929504395,
+      "elapsed_s": 192.9803982880003,
+      "produced_checkpoint": true,
+      "produced_onnx": true
+    },
+    {
+      "name": "no_override_full_shape",
+      "output_dir": "outputs/phase2_domain_randomization/stage_z005_support_local_rocm_no_override/smoke_20260629T163201Z_gpu",
+      "run_status": "INTERRUPTED_NO_PROGRESS",
+      "hsa_override_gfx_version": null,
+      "elapsed_before_interrupt_s": 741,
+      "produced_checkpoint": false,
+      "produced_onnx": false,
+      "stdout_moved_after_startup": false,
+      "stderr_moved_after_startup": false,
+      "terrain_xml_restored_sha256": "879768817f5ae5d2c01b5494f855686bb10d1ec444a404efeced8f5766574ffc"
+    }
+  ],
   "basic_jax_rocm_after_abort": {
     "status": "PASS",
     "jax_version": "0.8.2",
@@ -19,5 +50,5 @@
     ],
     "sum_x_squared": 357389824.0
   },
-  "interpretation": "Local ROCm can run basic JAX GPU arithmetic, but the full JAX/MJX Playground training startup path failed while activating the ROCm context. This is not a policy or recipe result."
+  "interpretation": "Local ROCm can run basic JAX GPU arithmetic and a tiny no-override training smoke. The gfx override causes immediate context failure, while the no-override full-shape run did not reach first checkpoint in bounded time. This is not a policy or recipe result."
 }
