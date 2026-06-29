@@ -1,7 +1,7 @@
 # Phase 2 Current Status
 
 status: `HOLD_PHASE2_TERRAIN_Z005_NOT_CLEARED`
-generated_at: `2026-06-29T17:50:54Z`
+generated_at: `2026-06-29T17:56:19Z`
 
 ## Candidate
 
@@ -45,6 +45,22 @@ generated_at: `2026-06-29T17:50:54Z`
 |---|---|---|---|---|---|
 | local_rocm_hold | `HOLD_FULL_LOCAL_ROCM_COMPILE_NO_PROGRESS` | False | False | False | Local ROCm can run basic JAX GPU arithmetic and a tiny no-override training smoke. The gfx override causes immediate context failure, while the no-override full-shape run did not reach first checkpoint in bounded time. This is not a policy or recipe result. |
 | local_rocm_command_buffer | `HOLD_LOCAL_8ENV_LOW_FORWARD_PROGRESS` | False | False | False | The reduced local ROCm candidate is not a deployable or robot-test candidate. The backend workaround is useful; the policy result is a low-forward-progress hold. |
+
+## z=0.005 Seed-5 Diagnostic
+
+- status: `HOLD_Z005_SEED5_SUPPORT_COLLAPSE_DIAGNOSED`
+- artifact: `outputs/analysis/phase2_z005_seed5_failure_diagnostic.json`
+- robot_touched: `False`
+- ssh_used: `False`
+- deploy_performed: `False`
+- training_started: `False`
+
+- seed 5 collapses vertically on z=0.005 in both command modes
+- failure is backward-biased even at zero command
+- failure is not caused by corrected-envelope velocity excess
+- support pattern is double-support dominated before collapse
+
+recommendation: The next z=0.005 support recipe should target seed-5 terrain support and base-height margin while preserving the z=0.002 gait. Do not treat this as an actuator-envelope or action-saturation problem.
 
 ## Decision
 

@@ -47,6 +47,18 @@ Do not advance to `z=0.005` push, stronger terrain, or robot validation until
 the `z=0.005` no-push gates pass under the corrected bridge and the regression
 gates remain clear.
 
+Current failure diagnostic:
+
+```text
+outputs/analysis/PHASE2_Z005_SEED5_FAILURE_DIAGNOSTIC.md
+outputs/analysis/phase2_z005_seed5_failure_diagnostic.json
+```
+
+The current z=0.005 hold is seed-5 support collapse in both `x=0.08` and
+`x=0.0`. It is backward-biased, double-support dominated, and occurs without
+corrected-envelope velocity excess. Treat the next recipe as a terrain-support
+and base-height-margin problem, not an actuator-rate problem.
+
 ## Phase 1 Anchor
 
 ```text

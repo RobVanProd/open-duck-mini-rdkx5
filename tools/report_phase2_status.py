@@ -64,6 +64,9 @@ DEFAULT_BACKEND_ARTIFACTS = {
     / "analysis"
     / "phase2_z005_local_rocm_command_buffer_result.json",
 }
+DEFAULT_Z005_SEED5_DIAGNOSTIC = (
+    ROOT / "outputs" / "analysis" / "phase2_z005_seed5_failure_diagnostic.json"
+)
 
 
 def now_utc() -> str:
@@ -211,6 +214,23 @@ def summarize_backends(paths: dict[str, Path]) -> dict[str, Any]:
     return out
 
 
+def summarize_z005_seed5_diagnostic(path: Path = DEFAULT_Z005_SEED5_DIAGNOSTIC) -> dict[str, Any]:
+    record = artifact_record(path)
+    data = read_json(path)
+    if data is None:
+        return {"status": "MISSING", **record}
+    return {
+        **record,
+        "status": data.get("status"),
+        "shared_findings": (data.get("findings") or {}).get("shared", []),
+        "recommendation": data.get("recommendation"),
+        "robot_touched": bool(data.get("robot_touched", False)),
+        "ssh_used": bool(data.get("ssh_used", False)),
+        "deploy_performed": bool(data.get("deploy_performed", False)),
+        "training_started": bool(data.get("training_started", False)),
+    }
+
+
 def decide(payload: dict[str, Any]) -> tuple[str, str]:
     gates = payload["gates"]
     z002_required = [
@@ -316,6 +336,27 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         lines.append(
             f"| {name} | `{backend.get('status')}` | {backend.get('robot_touched')} | {backend.get('ssh_used')} | {backend.get('deploy_performed')} | {backend.get('summary') or ''} |"
         )
+    diagnostic = payload.get("z005_seed5_diagnostic") or {}
+    lines.extend(
+        [
+            "",
+            "## z=0.005 Seed-5 Diagnostic",
+            "",
+            f"- status: `{diagnostic.get('status')}`",
+            f"- artifact: `{diagnostic.get('path')}`",
+            f"- robot_touched: `{diagnostic.get('robot_touched')}`",
+            f"- ssh_used: `{diagnostic.get('ssh_used')}`",
+            f"- deploy_performed: `{diagnostic.get('deploy_performed')}`",
+            f"- training_started: `{diagnostic.get('training_started')}`",
+            "",
+        ]
+    )
+    findings = diagnostic.get("shared_findings") or []
+    if findings:
+        lines.extend(f"- {finding}" for finding in findings)
+    else:
+        lines.append("- no diagnostic findings available")
+    lines.extend(["", f"recommendation: {diagnostic.get('recommendation') or 'NA'}"])
     lines.extend(
         [
             "",
@@ -346,6 +387,7 @@ def main() -> int:
         "candidate": candidate,
         "gates": gates,
         "backends": summarize_backends(DEFAULT_BACKEND_ARTIFACTS),
+        "z005_seed5_diagnostic": summarize_z005_seed5_diagnostic(),
         "robot_touched": False,
         "ssh_used": False,
         "deploy_performed": False,

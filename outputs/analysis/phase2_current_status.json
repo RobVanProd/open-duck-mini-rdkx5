@@ -367,9 +367,26 @@
       "total_count": 8
     }
   },
-  "generated_at": "2026-06-29T17:50:54Z",
+  "generated_at": "2026-06-29T17:56:19Z",
   "next_action": "Current packaged candidate is robust at z=0.002 including gentle push, but z=0.005 terrain is not cleared. Continue Phase 2 z=0.005 support training from the corrected-bridge candidate.",
   "robot_touched": false,
   "ssh_used": false,
-  "status": "HOLD_PHASE2_TERRAIN_Z005_NOT_CLEARED"
+  "status": "HOLD_PHASE2_TERRAIN_Z005_NOT_CLEARED",
+  "z005_seed5_diagnostic": {
+    "deploy_performed": false,
+    "path": "outputs/analysis/phase2_z005_seed5_failure_diagnostic.json",
+    "recommendation": "The next z=0.005 support recipe should target seed-5 terrain support and base-height margin while preserving the z=0.002 gait. Do not treat this as an actuator-envelope or action-saturation problem.",
+    "robot_touched": false,
+    "sha256": "25223d5907190c5ea5f884053e3b02f080c7c0a7a35c8ac808c08ce26245a3da",
+    "shared_findings": [
+      "seed 5 collapses vertically on z=0.005 in both command modes",
+      "failure is backward-biased even at zero command",
+      "failure is not caused by corrected-envelope velocity excess",
+      "support pattern is double-support dominated before collapse"
+    ],
+    "size_bytes": 3703,
+    "ssh_used": false,
+    "status": "HOLD_Z005_SEED5_SUPPORT_COLLAPSE_DIAGNOSED",
+    "training_started": false
+  }
 }
