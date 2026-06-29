@@ -1510,3 +1510,67 @@ gain 0.995 x=0.08 gentle push:
 
 Do not continue scalar gain sweeps. The next correction needs to be local to
 push recovery / high-rate moments rather than a global action attenuation.
+
+## B0E A100 Corrected-Task Run
+
+Artifact:
+
+```text
+outputs/analysis/PHASE2_B0E_A100_CORRECTED_TASK_HOLD_DECISION.md
+```
+
+Status:
+
+```text
+HOLD_B0E_A100_TRACKING_REGRESSION
+```
+
+After fixing the CUDA workflow task mismatch, `phase2-b0e` ran on the
+`open-duck-a100` A100 session with `rough_terrain_backlash`, corrected bridge,
+mild domain randomization, mild pushes, observation noise, and terrain hfield
+`z=0.002`. Training completed and exported checkpoints at `81920`, `163840`,
+and `245760` steps.
+
+The remote driver became idle during checkpoint sweep without writing its exit
+sentinel, so a manual salvage bundle was downloaded:
+
+```text
+outputs/analysis/colab_cli/open-duck-a100-phase2-b0e-20260629T092705Z/open_duck_colab_cli_phase2-b0e_20260629T092941Z_manual_salvage.tar.gz
+sha256 e683711390fa0997ee3a77970e342981b27c4981d7b7316244eaed2b9f3272c4
+```
+
+Short corrected-bridge gate triage:
+
+```text
+81920:
+  x=0.0  PASS_CANDIDATE_SIM_GATE
+  x=0.08 HOLD_CANDIDATE_TRACKING
+        track ratio 0.3493
+        max pitch tracking p95 0.2208 rad
+        max sent velocity p95 1.5536 rad/s
+        velocity excess 0.0000 rad/s
+
+163840:
+  x=0.0  PASS_CANDIDATE_SIM_GATE
+  x=0.08 HOLD_CANDIDATE_TRACKING
+        track ratio 0.3402
+        max pitch tracking p95 0.2209 rad
+        max sent velocity p95 1.5695 rad/s
+        velocity excess 0.0000 rad/s
+
+245760:
+  x=0.0  PASS_CANDIDATE_SIM_GATE
+  x=0.08 HOLD_CANDIDATE_TRACKING
+        track ratio 0.3117
+        max pitch tracking p95 0.2208 rad
+        max sent velocity p95 1.5582 rad/s
+        velocity excess 0.0000 rad/s
+```
+
+Decision: do not promote B0E. It is stable and in-envelope in the short gate,
+but it regresses the moving `x=0.08` tracking margin above the `0.20 rad`
+threshold and later checkpoints reduce forward command tracking rather than
+recover it. The next robustness attempt should not continue longer from B0E;
+use the previous B0C terrain candidate as the gait-preserving baseline and
+either isolate perturbation failures with eval-only diagnostics or apply a
+smaller adaptation with stronger behavior preservation.
