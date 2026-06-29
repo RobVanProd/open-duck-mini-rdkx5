@@ -185,6 +185,44 @@ Two offline Stage B attempts were run from the trainable A2 164k checkpoint:
 Do not advance to rough terrain yet. The current blocker is preserving forward
 motion while adding push/randomization robustness on flat terrain.
 
+B0D tracking-margin continuation state:
+
+```text
+local ROCm:
+  HOLD_ROCM_RUNTIME
+
+CPU path check:
+  PASS_CPU_PATH_CHECK
+
+CUDA handoff:
+  tools/run_colab_cli_cuda_workflow.py --workflow phase2-b0d
+```
+
+B0D is the next valid full training attempt from the B0C corrected-bridge
+checkpoint, but the local ROCm backend failed before any PPO step. A tiny CPU
+run confirmed the command/checkpoint path is structurally executable; it was
+not a policy result. The next full attempt should run on a visible CUDA/A100
+Colab session with the pinned workflow and post-training checkpoint sweep:
+
+```bash
+python3 tools/report_colab_session_status.py
+
+python3 tools/run_colab_cli_cuda_workflow.py \
+  --workflow phase2-b0d \
+  --session <visible-colab-session> \
+  --candidate-name phase2_b0d_tracking_margin_cuda \
+  --candidate-timeout-s 10800 \
+  --candidate-checkpoint-sweep \
+  --candidate-checkpoint-sweep-commands 0.0,0.08 \
+  --candidate-checkpoint-sweep-duration 1.0 \
+  --candidate-checkpoint-sweep-jax-platform cpu \
+  --candidate-checkpoint-sweep-timeout-s 7200 \
+  --run
+```
+
+Do not treat any B0D artifact as promotable until the corrected-bridge
+rough-terrain gentle-push 8-seed gates are run and reviewed locally.
+
 Push-eval plumbing result:
 
 ```text

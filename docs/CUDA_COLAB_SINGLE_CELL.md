@@ -99,12 +99,28 @@ This workflow runs the fixed B0D recipe on CUDA with the pinned dependency
 stack and bundles the resulting ONNX/checkpoint artifacts. It does not approve
 robot validation and does not replace the strict local review gates.
 
+First verify which Colab session is actually visible to `google-colab-cli`:
+
+```bash
+python3 tools/report_colab_session_status.py
+```
+
+If the report returns `HOLD_NO_ACTIVE_COLAB_SESSION`, do not launch B0D yet.
+Reconnect or create the Colab runtime, rerun the status report, then use the
+visible session name in the command below. The historical default
+`open-duck-l4` is only a placeholder.
+
 ```bash
 python3 tools/run_colab_cli_cuda_workflow.py \
   --workflow phase2-b0d \
-  --session open-duck-l4 \
+  --session <visible-colab-session> \
   --candidate-name phase2_b0d_tracking_margin_cuda \
   --candidate-timeout-s 10800 \
+  --candidate-checkpoint-sweep \
+  --candidate-checkpoint-sweep-commands 0.0,0.08 \
+  --candidate-checkpoint-sweep-duration 1.0 \
+  --candidate-checkpoint-sweep-jax-platform cpu \
+  --candidate-checkpoint-sweep-timeout-s 7200 \
   --run
 ```
 
