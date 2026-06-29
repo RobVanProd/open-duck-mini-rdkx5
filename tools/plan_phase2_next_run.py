@@ -12,6 +12,8 @@ from __future__ import annotations
 import argparse
 import json
 import shlex
+import shutil
+import subprocess
 from pathlib import Path
 from typing import Any
 
@@ -50,6 +52,114 @@ def multiline_shell(parts: list[str]) -> str:
 
 def read_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text())
+
+
+def run_probe(command: list[str], timeout_s: int) -> dict[str, Any]:
+    try:
+        completed = subprocess.run(
+            command,
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+            timeout=timeout_s,
+        )
+        return {
+            "command": command,
+            "returncode": completed.returncode,
+            "stdout": completed.stdout,
+            "stderr": completed.stderr,
+            "ok": completed.returncode == 0,
+        }
+    except FileNotFoundError as exc:
+        return {
+            "command": command,
+            "returncode": None,
+            "stdout": "",
+            "stderr": str(exc),
+            "ok": False,
+            "missing_executable": command[0],
+        }
+    except subprocess.TimeoutExpired as exc:
+        return {
+            "command": command,
+            "returncode": None,
+            "stdout": exc.stdout or "",
+            "stderr": exc.stderr or "",
+            "ok": False,
+            "timeout": True,
+        }
+
+
+def combined_text(result: dict[str, Any]) -> str:
+    return ((result.get("stdout") or "") + (result.get("stderr") or "")).strip()
+
+
+def colab_readiness(session: str, timeout_s: int) -> dict[str, Any]:
+    colab_path = shutil.which("colab")
+    payload: dict[str, Any] = {
+        "checked": True,
+        "session": session,
+        "colab_executable": colab_path,
+        "sessions_command": None,
+        "status_command": None,
+        "active": False,
+    }
+    if colab_path is None:
+        payload["status"] = "HOLD_COLAB_CLI_MISSING"
+        return payload
+
+    sessions = run_probe(["colab", "sessions"], timeout_s)
+    status = run_probe(["colab", "status", "-s", session], timeout_s)
+    status_text = combined_text(status).lower()
+    payload["sessions_command"] = sessions
+    payload["status_command"] = status
+    payload["active"] = status["ok"] and "not found" not in status_text and "no active" not in status_text
+    payload["status"] = "PASS_COLAB_SESSION_VISIBLE" if payload["active"] else "HOLD_NO_ACTIVE_COLAB_SESSION"
+    return payload
+
+
+def git_readiness(timeout_s: int) -> dict[str, Any]:
+    payload: dict[str, Any] = {
+        "checked": True,
+        "remote": None,
+        "branch": None,
+        "read_auth_ok": False,
+    }
+    remote = run_probe(["git", "remote", "get-url", "origin"], timeout_s)
+    branch = run_probe(["git", "rev-parse", "--abbrev-ref", "HEAD"], timeout_s)
+    payload["remote_command"] = remote
+    payload["branch_command"] = branch
+    if remote["ok"]:
+        payload["remote"] = (remote.get("stdout") or "").strip()
+    if branch["ok"]:
+        payload["branch"] = (branch.get("stdout") or "").strip()
+
+    if payload["branch"]:
+        ls_remote = run_probe(
+            ["git", "ls-remote", "--exit-code", "origin", f"refs/heads/{payload['branch']}"],
+            timeout_s,
+        )
+    else:
+        ls_remote = run_probe(["git", "ls-remote", "--exit-code", "origin", "HEAD"], timeout_s)
+    payload["ls_remote_command"] = ls_remote
+    payload["read_auth_ok"] = ls_remote["ok"]
+    payload["status"] = "PASS_GIT_REMOTE_READ_AUTH" if ls_remote["ok"] else "HOLD_GIT_REMOTE_AUTH_UNAVAILABLE"
+    return payload
+
+
+def unchecked_readiness() -> dict[str, Any]:
+    return {
+        "colab": {
+            "checked": False,
+            "status": "NOT_CHECKED",
+        },
+        "git": {
+            "checked": False,
+            "status": "NOT_CHECKED",
+        },
+        "launch_status": "NOT_CHECKED",
+    }
 
 
 def colab_command(session: str, candidate_name: str) -> list[str]:
@@ -272,10 +382,14 @@ def local_rocm_command(restore_checkpoint: Path, output_root: str) -> list[str]:
 
 
 def write_markdown(payload: dict[str, Any], path: Path) -> None:
+    readiness = payload.get("readiness", {})
+    colab = readiness.get("colab", {})
+    git = readiness.get("git", {})
     lines = [
         "# Phase 2 Next Run Plan",
         "",
         f"status: `{payload['status']}`",
+        f"launch_status: `{readiness.get('launch_status')}`",
         "",
         "## Current Decision",
         "",
@@ -285,6 +399,17 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         f"- candidate_sha256: `{payload['candidate']['sha256']}`",
         f"- restore_checkpoint: `{payload['restore_checkpoint']['path']}`",
         f"- restore_checkpoint_present: `{payload['restore_checkpoint']['present']}`",
+        "",
+        "## Readiness",
+        "",
+        f"- colab_status: `{colab.get('status')}`",
+        f"- colab_session: `{colab.get('session')}`",
+        f"- colab_active: `{colab.get('active')}`",
+        f"- git_status: `{git.get('status')}`",
+        f"- git_branch: `{git.get('branch')}`",
+        f"- git_remote_read_auth_ok: `{git.get('read_auth_ok')}`",
+        "",
+        "The Colab check is read-only (`colab sessions` / `colab status`). The Git check is read-only (`git ls-remote`) and does not push.",
         "",
         "## Preferred A100 / Colab Command",
         "",
@@ -338,6 +463,9 @@ def main() -> int:
         "--output-json",
         default=str(ROOT / "outputs" / "analysis" / "phase2_next_run_plan.json"),
     )
+    parser.add_argument("--check-colab", action="store_true")
+    parser.add_argument("--check-git-auth", action="store_true")
+    parser.add_argument("--readiness-timeout-s", type=int, default=30)
     args = parser.parse_args()
 
     status = read_json(Path(args.status_json))
@@ -345,6 +473,16 @@ def main() -> int:
     colab = colab_command(args.session, args.candidate_name)
     local = local_rocm_command(restore_checkpoint, args.local_output_root)
     candidate = status.get("candidate", {})
+    readiness = unchecked_readiness()
+    if args.check_colab:
+        readiness["colab"] = colab_readiness(args.session, args.readiness_timeout_s)
+    if args.check_git_auth:
+        readiness["git"] = git_readiness(args.readiness_timeout_s)
+    if args.check_colab and readiness["colab"].get("status") != "PASS_COLAB_SESSION_VISIBLE":
+        readiness["launch_status"] = "HOLD_PHASE2_A100_SESSION_NOT_READY"
+    elif args.check_colab:
+        readiness["launch_status"] = "PASS_PHASE2_A100_SESSION_READY"
+
     payload: dict[str, Any] = {
         "status": "PASS_PHASE2_NEXT_RUN_PLAN_READY",
         "current_status": status.get("status"),
@@ -357,6 +495,7 @@ def main() -> int:
             "path": rel(restore_checkpoint),
             "present": restore_checkpoint.exists(),
         },
+        "readiness": readiness,
         "commands": {
             "colab": {
                 "preferred": True,

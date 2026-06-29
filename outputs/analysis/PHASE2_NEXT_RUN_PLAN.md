@@ -1,6 +1,7 @@
 # Phase 2 Next Run Plan
 
 status: `PASS_PHASE2_NEXT_RUN_PLAN_READY`
+launch_status: `HOLD_PHASE2_A100_SESSION_NOT_READY`
 
 ## Current Decision
 
@@ -10,6 +11,17 @@ status: `PASS_PHASE2_NEXT_RUN_PLAN_READY`
 - candidate_sha256: `209b85a75cf9cbbcf10df573c1b530921943a72e81082111889c15f63a9a2c7b`
 - restore_checkpoint: `outputs/phase2_domain_randomization/stage_a2_preserve_narrow_flat_no_push_gpu/smoke_20260628T031553Z_gpu/2026_06_27_232221_491520`
 - restore_checkpoint_present: `True`
+
+## Readiness
+
+- colab_status: `HOLD_NO_ACTIVE_COLAB_SESSION`
+- colab_session: `open-duck-l4`
+- colab_active: `False`
+- git_status: `HOLD_GIT_REMOTE_AUTH_UNAVAILABLE`
+- git_branch: `codex/live-oracle-dagger-phase-student`
+- git_remote_read_auth_ok: `False`
+
+The Colab check is read-only (`colab sessions` / `colab status`). The Git check is read-only (`git ls-remote`) and does not push.
 
 ## Preferred A100 / Colab Command
 
