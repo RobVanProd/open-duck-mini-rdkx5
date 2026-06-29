@@ -188,21 +188,29 @@ motion while adding push/randomization robustness on flat terrain.
 B0D tracking-margin continuation state:
 
 ```text
-local ROCm:
-  HOLD_ROCM_RUNTIME
+local ROCm discovery:
+  PASS_LOCAL_ROCM_READY
+
+local ROCm tiny B0D-shaped smoke:
+  PASS_GPU_RECOVERY_SMOKE
 
 CPU path check:
   PASS_CPU_PATH_CHECK
 
 CUDA handoff:
-  tools/run_colab_cli_cuda_workflow.py --workflow phase2-b0d
+  HOLD_NO_ACTIVE_COLAB_SESSION
 ```
 
 B0D is the next valid full training attempt from the B0C corrected-bridge
-checkpoint, but the local ROCm backend failed before any PPO step. A tiny CPU
-run confirmed the command/checkpoint path is structurally executable; it was
-not a policy result. The next full attempt should run on a visible CUDA/A100
-Colab session with the pinned workflow and post-training checkpoint sweep:
+checkpoint. The earlier local ROCm run failed before any PPO step, but after
+the workstation reset/firmware work the read-only ROCm report passed and a tiny
+B0D-shaped GPU smoke reached PPO step 160. That smoke is infrastructure
+evidence only, not a policy result. A tiny CPU run also confirmed the
+command/checkpoint path is structurally executable.
+
+The next full attempt can run either locally if the workstation remains stable,
+or on a visible CUDA/A100 Colab session with the pinned workflow and
+post-training checkpoint sweep:
 
 ```bash
 python3 tools/report_colab_session_status.py
