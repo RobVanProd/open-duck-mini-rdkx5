@@ -13,6 +13,7 @@ This is a read-only guard. It did not train, SSH, deploy, or touch the robot.
 - colab_status: `HOLD_NO_ACTIVE_COLAB_SESSION`
 - git_status: `HOLD_GIT_REMOTE_AUTH_UNAVAILABLE`
 - package_preflight: `PASS_PACKAGE_PREFLIGHT`
+- package_manifest_status: `PASS_PHASE2_COLAB_PACKAGE_MANIFEST_READY`
 - held_gates: `z005_x000_nopush, z005_x008_nopush`
 - missing_gates: `none`
 
@@ -53,8 +54,6 @@ This is a read-only guard. It did not train, SSH, deploy, or touch the robot.
 |---|---|---|
 | `outputs/analysis/actuator_response_fit_corrected_knee.json` | `True` | `True` |
 | `outputs/analysis/phase2_z005_support_next_recipe.json` | `True` | `True` |
-| `outputs/analysis/phase2_stage_guard.json` | `True` | `True` |
-| `outputs/analysis/phase2_artifact_manifest.json` | `True` | `True` |
 | `outputs/phase2_domain_randomization/stage_a2_preserve_narrow_flat_no_push_gpu/smoke_20260628T031553Z_gpu/2026_06_27_232221_491520` | `True` | `True` |
 | `tools/report_phase2_z005_post_training_gates.py` | `True` | `True` |
 | `tools/run_actuator_bridge_training_smoke.py` | `True` | `True` |
@@ -88,3 +87,4 @@ python3 \
 - `next_plan`: `outputs/analysis/phase2_next_run_plan.json`
 - `recipe`: `outputs/analysis/phase2_z005_support_next_recipe.json`
 - `manifest`: `outputs/analysis/phase2_artifact_manifest.json`
+- `package_manifest`: `outputs/analysis/phase2_colab_package_manifest.json`

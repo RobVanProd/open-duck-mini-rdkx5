@@ -91,6 +91,16 @@ validation, stronger terrain, and z=0.005 push remain blocked. It also checks
 that the exact z=0.005 Colab package inputs, including the A2 restore
 checkpoint, are present and included by the upload tar filter.
 
+Current Colab package manifest:
+
+```text
+outputs/analysis/PHASE2_COLAB_PACKAGE_MANIFEST.md
+outputs/analysis/phase2_colab_package_manifest.json
+```
+
+Use the package manifest to review the concrete hashes, sizes, and file counts
+for the z=0.005 Colab package inputs before launching the remote workflow.
+
 This recipe continues from the last z=0.002 passing A2 checkpoint, keeps the
 corrected bridge active, uses z=0.005 rough terrain with no push, and targets
 the seed-5 support collapse directly:

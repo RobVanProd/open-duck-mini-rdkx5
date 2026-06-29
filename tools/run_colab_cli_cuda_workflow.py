@@ -198,8 +198,6 @@ def required_rdk_package_paths(workflow: str) -> list[str]:
     return [
         "outputs/analysis/actuator_response_fit_corrected_knee.json",
         "outputs/analysis/phase2_z005_support_next_recipe.json",
-        "outputs/analysis/phase2_stage_guard.json",
-        "outputs/analysis/phase2_artifact_manifest.json",
         (
             "outputs/phase2_domain_randomization/"
             "stage_a2_preserve_narrow_flat_no_push_gpu/"

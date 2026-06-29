@@ -23,6 +23,7 @@ DEFAULT_LEDGER = ROOT / "outputs/analysis/phase2_curriculum_gate_ledger.json"
 DEFAULT_NEXT_PLAN = ROOT / "outputs/analysis/phase2_next_run_plan.json"
 DEFAULT_RECIPE = ROOT / "outputs/analysis/phase2_z005_support_next_recipe.json"
 DEFAULT_MANIFEST = ROOT / "outputs/analysis/phase2_artifact_manifest.json"
+DEFAULT_PACKAGE_MANIFEST = ROOT / "outputs/analysis/phase2_colab_package_manifest.json"
 DEFAULT_OUTPUT_MD = ROOT / "outputs/analysis/PHASE2_STAGE_GUARD.md"
 DEFAULT_OUTPUT_JSON = ROOT / "outputs/analysis/phase2_stage_guard.json"
 
@@ -84,11 +85,13 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
     next_plan_path = Path(args.next_plan)
     recipe_path = Path(args.recipe)
     manifest_path = Path(args.manifest)
+    package_manifest_path = Path(args.package_manifest)
 
     ledger = read_json(ledger_path)
     next_plan = read_json(next_plan_path)
     recipe = read_json(recipe_path)
     manifest = read_json(manifest_path)
+    package_manifest = read_json(package_manifest_path)
 
     current_stage = ledger.get("current_stage")
     current_gate_status = ledger.get("status")
@@ -169,11 +172,13 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
         "corrected_bridge": manifest.get("core_artifacts", {}).get("corrected_bridge", {}),
         "restore_checkpoint": manifest.get("core_artifacts", {}).get("restore_checkpoint", {}),
         "package_preflight": package,
+        "package_manifest_status": package_manifest.get("status"),
         "input_artifacts": {
             "ledger": rel(ledger_path),
             "next_plan": rel(next_plan_path),
             "recipe": rel(recipe_path),
             "manifest": rel(manifest_path),
+            "package_manifest": rel(package_manifest_path),
         },
         "allowed_actions": allowed_actions,
         "forbidden_actions": forbidden_actions,
@@ -203,6 +208,7 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         f"- colab_status: `{payload.get('colab_status')}`",
         f"- git_status: `{payload.get('git_status')}`",
         f"- package_preflight: `{payload.get('package_preflight', {}).get('status')}`",
+        f"- package_manifest_status: `{payload.get('package_manifest_status')}`",
         f"- held_gates: `{', '.join(payload.get('held_gates') or []) or 'none'}`",
         f"- missing_gates: `{', '.join(payload.get('missing_gates') or []) or 'none'}`",
         "",
@@ -256,6 +262,7 @@ def main() -> int:
     parser.add_argument("--next-plan", default=str(DEFAULT_NEXT_PLAN))
     parser.add_argument("--recipe", default=str(DEFAULT_RECIPE))
     parser.add_argument("--manifest", default=str(DEFAULT_MANIFEST))
+    parser.add_argument("--package-manifest", default=str(DEFAULT_PACKAGE_MANIFEST))
     parser.add_argument("--output-md", default=str(DEFAULT_OUTPUT_MD))
     parser.add_argument("--output-json", default=str(DEFAULT_OUTPUT_JSON))
     args = parser.parse_args()
