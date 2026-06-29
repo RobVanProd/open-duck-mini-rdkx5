@@ -163,6 +163,8 @@ def tar_filter(member: tarfile.TarInfo) -> tarfile.TarInfo | None:
             ("outputs", "analysis", "phase2_z005_support_next_recipe.json"),
             ("outputs", "analysis", "PHASE2_Z005_MOTION_FLOOR_NEXT_RECIPE.md"),
             ("outputs", "analysis", "phase2_z005_motion_floor_next_recipe.json"),
+            ("outputs", "analysis", "PHASE2_Z005_MOTION_PRIOR_NEXT_RECIPE.md"),
+            ("outputs", "analysis", "phase2_z005_motion_prior_next_recipe.json"),
             ("outputs", "analysis", "PHASE2_NEXT_RUN_PLAN.md"),
             ("outputs", "analysis", "phase2_next_run_plan.json"),
             ("outputs", "analysis", "PHASE2_STAGE_GUARD.md"),
