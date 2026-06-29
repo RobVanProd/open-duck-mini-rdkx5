@@ -1360,6 +1360,36 @@ corrected bridge:
   per-joint variation 0.10
 ```
 
+The `phase2-z005-support` remote driver now automatically runs full
+post-training seed gates on the selected ONNX after the optional short
+checkpoint sweep. These gates are offline sim only and are bundled even if one
+gate holds:
+
+```text
+z=0.005 immediate target:
+  x=0.08 no-push, 8 seeds, 15s
+  x=0.0  no-push, 8 seeds, 15s
+
+z=0.002 regression checks:
+  x=0.08 no-push, 8 seeds, 15s
+  x=0.0  no-push, 8 seeds, 15s
+  x=0.08 gentle-push, 8 seeds, 15s
+  x=0.0  gentle-push, 8 seeds, 15s
+```
+
+Expected remote artifacts:
+
+```text
+outputs/analysis/phase2-z005-support/
+  phase2_z005_support_stability_cuda_post_training_seed_gates.json
+  phase2_z005_support_stability_cuda_POST_TRAINING_SEED_GATES.md
+  phase2_z005_support_stability_cuda_<gate_name>_seed_gate/
+```
+
+Promotion still requires reviewing the full-duration seed gates. The
+one-second checkpoint sweep is only a checkpoint selector, not a robustness
+gate and not a robot-validation approval.
+
 ## Current Terrain-Step Status
 
 Existing-trace hard-step rescoring found a useful split:

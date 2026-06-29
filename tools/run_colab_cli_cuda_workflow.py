@@ -1091,6 +1091,126 @@ def build_remote_driver(
                     raise SystemExit(completed.returncode)
             return completed
 
+        def run_seed_gate(policy, candidate_name, spec):
+            gate_dir = OUT / f"{{candidate_name}}_{{spec['name']}}_seed_gate"
+            gate_cmd = [
+                PYTHON, "tools/run_candidate_seed_sweep.py",
+                "--policies", f"{{candidate_name}}={{policy}}",
+                "--fit-json", "outputs/analysis/actuator_response_fit_corrected_knee.json",
+                "--playground-path", str(PLAYGROUND),
+                "--env-python", PYTHON,
+                "--seeds", "0-7",
+                "--command-x", str(spec["command_x"]),
+                "--task", "rough_terrain_backlash",
+                "--duration", "15",
+                "--bridge-mode", "fitted",
+                "--mode-name", "fitted",
+                "--jax-platform", "cpu",
+                "--terrain-hfield-z-scale", str(spec["terrain_z"]),
+                "--sim-preflight-timeout-s", "600",
+                "--closed-loop-timeout-s", "2400",
+                "--output-dir", str(gate_dir),
+                "--output-md", str(gate_dir / "CANDIDATE_SEED_SWEEP.md"),
+                "--output-json", str(gate_dir / "candidate_seed_sweep.json"),
+                "--run",
+            ]
+            if spec.get("push"):
+                gate_cmd.extend([
+                    "--eval-push-enable",
+                    "--eval-push-interval-min-s", "1.0",
+                    "--eval-push-interval-max-s", "1.5",
+                    "--eval-push-magnitude-min", "0.03",
+                    "--eval-push-magnitude-max", "0.08",
+                    "--push-recovery-window-s", "0.5",
+                    "--push-recovery-max-abs-pitch-rad", "0.8",
+                    "--push-recovery-min-base-height-m", "0.08",
+                ])
+            completed = run(gate_cmd, cwd=RDK, timeout=21600, check=False)
+            gate_json = gate_dir / "candidate_seed_sweep.json"
+            partial_json = gate_dir / "candidate_seed_sweep.partial.json"
+            payload = None
+            for candidate_json in (gate_json, partial_json):
+                if candidate_json.exists():
+                    try:
+                        payload = json.loads(candidate_json.read_text())
+                        break
+                    except Exception as exc:
+                        print("seed_gate_json_warning", candidate_json, type(exc).__name__, exc, flush=True)
+            aggregate = (payload or {{}}).get("aggregate") or {{}}
+            candidate_agg = aggregate.get(candidate_name) or {{}}
+            return {{
+                "name": spec["name"],
+                "command_x": spec["command_x"],
+                "terrain_z": spec["terrain_z"],
+                "push": bool(spec.get("push")),
+                "returncode": completed.returncode,
+                "gate_dir": str(gate_dir),
+                "result_json": str(gate_json),
+                "partial_json": str(partial_json),
+                "aggregate": candidate_agg,
+            }}
+
+        def run_phase2_z005_post_training_gates(policy, candidate_name):
+            gate_specs = [
+                {{"name": "z005_x008_no_push", "command_x": 0.08, "terrain_z": 0.005, "push": False}},
+                {{"name": "z005_x000_no_push", "command_x": 0.0, "terrain_z": 0.005, "push": False}},
+                {{"name": "z002_x008_no_push_regression", "command_x": 0.08, "terrain_z": 0.002, "push": False}},
+                {{"name": "z002_x000_no_push_regression", "command_x": 0.0, "terrain_z": 0.002, "push": False}},
+                {{"name": "z002_x008_gentle_push_regression", "command_x": 0.08, "terrain_z": 0.002, "push": True}},
+                {{"name": "z002_x000_gentle_push_regression", "command_x": 0.0, "terrain_z": 0.002, "push": True}},
+            ]
+            results = [run_seed_gate(policy, candidate_name, spec) for spec in gate_specs]
+            manifest = {{
+                "workflow": "phase2-z005-support",
+                "policy": str(policy),
+                "candidate_name": candidate_name,
+                "gate_specs": gate_specs,
+                "results": results,
+                "note": (
+                    "Post-training gates are offline sim only. A gate hold is "
+                    "reported as evidence and does not touch robot hardware."
+                ),
+            }}
+            out_json = OUT / f"{{candidate_name}}_post_training_seed_gates.json"
+            out_md = OUT / f"{{candidate_name}}_POST_TRAINING_SEED_GATES.md"
+            out_json.write_text(json.dumps(manifest, indent=2) + "\\n")
+            lines = [
+                "# Phase 2 z=0.005 Post-Training Seed Gates",
+                "",
+                f"candidate: `{{candidate_name}}`",
+                f"policy: `{{policy}}`",
+                "",
+                "| gate | command_x | terrain_z | push | returncode | falls | duration_complete | track_ratio_mean | vx_mean | max_vel_excess_mean | tracking_p95_mean |",
+                "|---|---:|---:|---|---:|---:|---:|---:|---:|---:|---:|",
+            ]
+            for item in results:
+                agg = item.get("aggregate") or {{}}
+                def stat_mean(name):
+                    stats = agg.get(name) or {{}}
+                    value = stats.get("mean")
+                    return "NA" if value is None else f"{{float(value):.4f}}"
+                lines.append(
+                    f"| `{{item['name']}}` | {{item['command_x']}} | {{item['terrain_z']}} | "
+                    f"`{{item['push']}}` | {{item['returncode']}} | "
+                    f"{{agg.get('fall_count', 'NA')}} | "
+                    f"{{agg.get('duration_complete_count', 'NA')}} | "
+                    f"{{stat_mean('track_ratio')}} | "
+                    f"{{stat_mean('mean_local_vx_m_s')}} | "
+                    f"{{stat_mean('max_pitch_vel_limit_excess_rad_s')}} | "
+                    f"{{stat_mean('max_tracking_p95_rad')}} |"
+                )
+            lines.extend([
+                "",
+                "## Interpretation",
+                "",
+                "- The z=0.005 x=0.08 gate is the immediate support-stability target.",
+                "- The z=0.002 no-push and gentle-push gates are regression checks for the packaged gain099 candidate behavior.",
+                "- Robot validation remains blocked regardless of these results.",
+            ])
+            out_md.write_text("\\n".join(lines).rstrip() + "\\n")
+            print("PHASE2_Z005_POST_TRAINING_GATES", out_json, flush=True)
+            return manifest
+
         run(["rm", "-rf", str(RDK), str(PLAYGROUND)])
         run(["tar", "-xzf", "{rdk_tar}", "-C", "/content"])
         run(["tar", "-xzf", "{playground_tar}", "-C", "/content"])
@@ -1501,6 +1621,8 @@ def build_remote_driver(
                             )
                 else:
                     print("candidate_checkpoint_sweep_json_missing", sweep_json, flush=True)
+            if {run_phase2_z005_support!r}:
+                run_phase2_z005_post_training_gates(latest_onnx, candidate_name)
             bundle_artifacts()
 
         elif {run_staged_curriculum!r}:
