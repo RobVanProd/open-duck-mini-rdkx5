@@ -100,6 +100,15 @@ outputs/analysis/phase2_colab_package_manifest.json
 
 Use the package manifest to review the concrete hashes, sizes, and file counts
 for the z=0.005 Colab package inputs before launching the remote workflow.
+The Colab helper also supports `--package-only` to build and hash the local
+RDK/Playground upload tarballs without contacting Colab.
+
+Latest package-only evidence:
+
+```text
+outputs/analysis/PHASE2_COLAB_PACKAGE_ONLY_MANIFEST.md
+outputs/analysis/phase2_colab_package_only_manifest.json
+```
 
 This recipe continues from the last z=0.002 passing A2 checkpoint, keeps the
 corrected bridge active, uses z=0.005 rough terrain with no push, and targets

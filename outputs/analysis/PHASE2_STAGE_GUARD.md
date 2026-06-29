@@ -22,6 +22,7 @@ This is a read-only guard. It did not train, SSH, deploy, or touch the robot.
 - Review committed Phase 2 analysis artifacts and guard reports.
 - Run read-only report tools: report_phase2_curriculum_gate.py, report_phase2_artifact_manifest.py, and report_phase2_stage_guard.py.
 - Run the phase2-z005-support Colab workflow in plan-only mode to verify the package preflight and generated remote driver.
+- Run the phase2-z005-support Colab workflow with --package-only to build and hash local upload archives without contacting Colab.
 - Prepare or reconnect the A100/L4 Colab session named open-duck-l4.
 - Run the phase2-z005-support recipe only after the Colab session is active and still using the corrected bridge.
 - Run report_phase2_z005_post_training_gates.py on post-training seed-gate output.

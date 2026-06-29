@@ -2014,6 +2014,65 @@ def download_remote_results(
         print(f"REMOTE_BUNDLE_MISSING {remote_bundle}", flush=True)
 
 
+def write_package_only_manifest(
+    run_dir: Path,
+    workflow: str,
+    session: str,
+    rdk_tar: Path,
+    playground_tar: Path,
+) -> None:
+    payload = {
+        "status": "PASS_COLAB_PACKAGE_ONLY_READY",
+        "workflow": workflow,
+        "session": session,
+        "archives": {
+            "rdk": {
+                "path": str(rdk_tar),
+                "size_bytes": rdk_tar.stat().st_size,
+                "sha256": file_sha256(rdk_tar),
+            },
+            "playground": {
+                "path": str(playground_tar),
+                "size_bytes": playground_tar.stat().st_size,
+                "sha256": file_sha256(playground_tar),
+            },
+        },
+        "required_rdk_package_paths": required_rdk_package_paths(workflow),
+        "robot_touched": False,
+        "ssh_used": False,
+        "deploy_performed": False,
+        "training_started": False,
+        "uploaded_to_colab": False,
+    }
+    output_json = run_dir / "PACKAGE_ONLY_MANIFEST.json"
+    output_md = run_dir / "PACKAGE_ONLY_MANIFEST.md"
+    output_json.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
+    lines = [
+        "# Colab Package-Only Manifest",
+        "",
+        f"status: `{payload['status']}`",
+        f"workflow: `{workflow}`",
+        f"session: `{session}`",
+        "",
+        "This local check built the upload archives only. It did not upload, train, SSH, deploy, or touch the robot.",
+        "",
+        "## Archives",
+        "",
+        "| archive | size bytes | sha256 | path |",
+        "|---|---:|---|---|",
+    ]
+    for name, item in payload["archives"].items():
+        lines.append(
+            f"| `{name}` | {item['size_bytes']} | `{item['sha256']}` | `{item['path']}` |"
+        )
+    lines.extend(["", "## Required RDK Package Paths", ""])
+    for item in payload["required_rdk_package_paths"]:
+        lines.append(f"- `{item}`")
+    lines.append("")
+    output_md.write_text("\n".join(lines))
+    print(f"PACKAGE_ONLY_MANIFEST {output_json}", flush=True)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Run Open Duck CUDA workflow through google-colab-cli.")
     parser.add_argument("--session", default=DEFAULT_SESSION)
@@ -2043,6 +2102,14 @@ def main() -> int:
         default="eval",
     )
     parser.add_argument("--run", action="store_true", help="execute; default is plan-only")
+    parser.add_argument(
+        "--package-only",
+        action="store_true",
+        help=(
+            "Build local upload tarballs and write a package manifest, then exit "
+            "without initializing Colab, uploading, or starting remote work."
+        ),
+    )
     parser.add_argument("--skip-deps", action="store_true", help="reuse remote dependencies")
     parser.add_argument(
         "--skip-audit",
@@ -2481,6 +2548,19 @@ def main() -> int:
     print(f"WORKFLOW {args.workflow}")
     print(f"RUN_DIR {run_dir}")
     print(f"JAX_PIN {PINNED_JAX_VERSION}")
+    if args.package_only:
+        run_dir.mkdir(parents=True, exist_ok=True)
+        make_tarball(rdk_root, rdk_tar, "open-duck-mini-rdkx5")
+        make_tarball(playground_root, playground_tar, "Open_Duck_Playground")
+        write_package_only_manifest(
+            run_dir,
+            args.workflow,
+            args.session,
+            rdk_tar,
+            playground_tar,
+        )
+        print("PACKAGE_ONLY no Colab upload or remote work started")
+        return 0
     if not args.run:
         run_dir.mkdir(parents=True, exist_ok=True)
         workflow_name = f"open_duck_colab_cli_{args.workflow}_{ts}"

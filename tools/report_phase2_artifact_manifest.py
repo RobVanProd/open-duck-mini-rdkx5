@@ -49,6 +49,8 @@ REVIEW_ARTIFACTS = [
     "outputs/analysis/phase2_stage_guard.json",
     "outputs/analysis/PHASE2_COLAB_PACKAGE_MANIFEST.md",
     "outputs/analysis/phase2_colab_package_manifest.json",
+    "outputs/analysis/PHASE2_COLAB_PACKAGE_ONLY_MANIFEST.md",
+    "outputs/analysis/phase2_colab_package_only_manifest.json",
     "tools/plan_phase2_z005_support_recipe.py",
     "tools/report_phase2_colab_package_manifest.py",
     "tools/report_phase2_z005_post_training_gates.py",
