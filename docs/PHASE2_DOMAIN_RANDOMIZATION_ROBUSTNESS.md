@@ -1845,3 +1845,35 @@ relative to the B0C `lk097` 7/8 near-pass, and seed 4 remained at the same
 `lk097` line with it. A full B0G attempt still belongs on the pinned A100
 workflow when a visible Colab session is available, or on local ROCm only with
 the caveat that the local stack is JAX `0.8.2`, not the pinned A100 `0.7.2`.
+
+### Local ROCm Post-B0G Backend Hold
+
+Artifact:
+
+```text
+outputs/analysis/PHASE2_LOCAL_ROCM_POST_B0G_BACKEND_HOLD.md
+```
+
+Status:
+
+```text
+HOLD_LOCAL_ROCM_POST_B0G_NODEVICE
+```
+
+After the B0G smoke and CPU gate, the local ROCm backend stopped initializing:
+
+```text
+JAX_PLATFORMS=cpu:  PASS, jax 0.8.2 cpu [CpuDevice(id=0)]
+JAX_PLATFORMS=rocm: failed call to hipInit: HIP_ERROR_NoDevice
+rocm-smi: _amdgpu_device_initialize: amdgpu_query_gpu_info_init failed
+```
+
+`/dev/kfd` and `/dev/dri/renderD*` were still present and the user remained in
+the `render` group, so this is a local backend/device state hold rather than a
+permission miss. The stuck `rocm-smi` diagnostic was killed and no training or
+eval process was left running.
+
+Do not launch further local ROCm policy-producing jobs in this state. Use CPU
+only for correctness gates and trace analysis, and use the pinned A100/Colab
+`phase2-b0g` path for the next policy-producing attempt when a visible session
+is available.

@@ -1,0 +1,34 @@
+{
+  "status": "HOLD_LOCAL_ROCM_POST_B0G_NODEVICE",
+  "scope": {
+    "robot_tests": false,
+    "ssh": false,
+    "deploy": false,
+    "grounded_replay": false,
+    "runtime_behavior_changes": false,
+    "policy_overwrite": false
+  },
+  "passed_before_failure": {
+    "run_dir": "outputs/phase2_domain_randomization/stage_b0g_push_recovery_local_rocm_smoke/smoke_20260629T130541Z_gpu",
+    "status": "PASS_SMOKE_RUN",
+    "returncode": 0,
+    "step": 20480,
+    "onnx_sha256": "70fde5e93cfe7252ef14d8c953e9015051cde1747806f24adf2274f022491473"
+  },
+  "post_b0g_failure": {
+    "cpu_jax_status": "PASS_CPU_BACKEND",
+    "cpu_jax_version": "0.8.2",
+    "rocm_jax_status": "HOLD_ROCM_NODEVICE",
+    "rocm_error": "failed call to hipInit: HIP_ERROR_NoDevice; Unable to initialize backend 'rocm': FAILED_PRECONDITION: No visible GPU devices",
+    "device_nodes_present": true,
+    "user_in_render_group": true,
+    "rocm_smi_status": "HUNG_THEN_KILLED",
+    "rocm_smi_error_prefix": "_amdgpu_device_initialize: amdgpu_query_gpu_info_init failed"
+  },
+  "decision": {
+    "launch_more_local_rocm_training": false,
+    "use_cpu_for_correctness_gates": true,
+    "preferred_next_policy_training_path": "pinned A100/Colab phase2-b0g workflow when a visible session is available",
+    "next_command": "python3 tools/run_colab_cli_cuda_workflow.py --workflow phase2-b0g --session <visible-a100-session> --candidate-checkpoint-sweep --candidate-checkpoint-sweep-commands 0.0,0.08 --candidate-checkpoint-sweep-duration 1.0 --candidate-checkpoint-sweep-jax-platform cpu --run"
+  }
+}
