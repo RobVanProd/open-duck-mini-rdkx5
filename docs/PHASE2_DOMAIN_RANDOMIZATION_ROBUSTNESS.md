@@ -295,6 +295,32 @@ fails during evaluator reset. The blocker is scale-dependent local ROCm
 evaluator reset, not B0E recipe wiring. The 1-env checkpoint is not a policy
 result and is not promotable.
 
+B0E local ROCm scale matrix:
+
+```text
+artifact:
+  outputs/analysis/PHASE2_B0E_LOCAL_GPU_SCALE_MATRIX_DECISION.md
+
+status:
+  HOLD_LOCAL_ROCM_SCALE_BOUNDARY_4_PASS_8_FAIL
+```
+
+The bounded local ROCm matrix found that B0E passes through 4 envs but fails at
+8 envs before PPO with the same evaluator-reset `rocblas_status_internal_error`
+seen at 16/32 envs:
+
+```text
+1 env: PASS_SMOKE_RUN, PPO step 100
+2 env: PASS_SMOKE_RUN, PPO step 200
+4 env: PASS_SMOKE_RUN, PPO step 400
+8 env: HOLD_SMOKE_RUN before PPO
+```
+
+Four envs is not enough throughput for the requested Phase 2 robustness
+training, so the next policy-producing run remains the pinned CUDA/A100
+`phase2-b0e` workflow or a local ROCm backend fix. Do not promote smoke
+checkpoints from this matrix.
+
 Push-eval plumbing result:
 
 ```text
