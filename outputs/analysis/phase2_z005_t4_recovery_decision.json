@@ -1,0 +1,73 @@
+{
+  "status": "HOLD_PHASE2_Z005_T4_GATE_INCOMPLETE",
+  "generated_at": "2026-06-29T19:49:00Z",
+  "robot_touched": false,
+  "ssh_used": false,
+  "deploy_performed": false,
+  "grounded_replay_performed": false,
+  "workflow": "phase2-z005-support",
+  "session": "open-duck-l4",
+  "hardware": "T4",
+  "remote_stack": {
+    "jaxlib": "0.7.2",
+    "brax": "0.14.2",
+    "mujoco": "3.9.0",
+    "mujoco_mjx": "3.9.0",
+    "playground": "0.0.5"
+  },
+  "training": {
+    "returncode": 0,
+    "elapsed_s": 990.27934026,
+    "restore_checkpoint": "outputs/phase2_domain_randomization/stage_a2_preserve_narrow_flat_no_push_gpu/smoke_20260628T031553Z_gpu/2026_06_27_232221_491520",
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.005,
+    "actuator_bridge_enabled": true,
+    "push_enable": false,
+    "reward_trace": [
+      {
+        "step": 0,
+        "reward": 24.411722,
+        "reward_std": 25.393875
+      },
+      {
+        "step": 40960,
+        "reward": 32.146736,
+        "reward_std": 27.93931
+      },
+      {
+        "step": 81920,
+        "reward": 32.249718,
+        "reward_std": 28.580282
+      },
+      {
+        "step": 122880,
+        "reward": 36.60305,
+        "reward_std": 28.471169
+      }
+    ]
+  },
+  "recovered_onnx": [
+    {
+      "step": 40960,
+      "sha256": "05931e5d5cf2b6230ff404f580b0d68a804d0c2c9c9aa726bd546b776e979c92",
+      "path": "outputs/analysis/recovered_colab/open_duck_colab_cli_phase2-z005-support_20260629T184556Z/open_duck_training_phase2_z005_support_cli/smoke_20260629T184953Z_gpu/2026_06_29_190108_40960.onnx"
+    },
+    {
+      "step": 81920,
+      "sha256": "49ba524b35d470d9a03d9ed25ee039495f6a8d44489e0488a3e05a044004abcc",
+      "path": "outputs/analysis/recovered_colab/open_duck_colab_cli_phase2-z005-support_20260629T184556Z/open_duck_training_phase2_z005_support_cli/smoke_20260629T184953Z_gpu/2026_06_29_190508_81920.onnx"
+    },
+    {
+      "step": 122880,
+      "sha256": "59f1ba30516e3019eef9c324304883ae37d69316e0a9469d136d87493ac6ce12",
+      "path": "outputs/analysis/recovered_colab/open_duck_colab_cli_phase2-z005-support_20260629T184556Z/open_duck_training_phase2_z005_support_cli/smoke_20260629T184953Z_gpu/2026_06_29_190550_122880.onnx"
+    }
+  ],
+  "partial_artifact": {
+    "path": "outputs/analysis/colab_cli/open-duck-l4-phase2-z005-support-20260629T184546Z/open_duck_colab_cli_phase2-z005-support_20260629T184556Z_artifacts.tar.gz.partial",
+    "sha256": "3698a137f647889dcd207704535fed2f939716ee5c003fb8a1d4883ed2c8de86"
+  },
+  "hold_reason": "Colab session was lost after training while checkpoint sweep was still running; workflow reported HOLD_REMOTE_NO_SENTINEL and the post-training gate was not recovered.",
+  "promotion_allowed": false,
+  "robot_testing_allowed": false
+}

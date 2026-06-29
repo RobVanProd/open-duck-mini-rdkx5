@@ -122,6 +122,18 @@ remains the preferred Phase 2 training path. Local ROCm evidence is debug or
 fallback evidence unless it clears the same canonical corrected-bridge gates
 and the JAX/package version difference is reviewed explicitly.
 
+Latest T4 Colab recovery decision:
+
+```text
+outputs/analysis/PHASE2_Z005_T4_RECOVERY_DECISION.md
+outputs/analysis/phase2_z005_t4_recovery_decision.json
+```
+
+The T4 run completed training and exported ONNX checkpoints, but Colab was
+lost before the post-training corrected-bridge gate completed. Treat the
+recovered ONNX files as offline debug artifacts only. They are not deployable
+and do not authorize robot testing.
+
 This recipe continues from the last z=0.002 passing A2 checkpoint, keeps the
 corrected bridge active, uses z=0.005 rough terrain with no push, and targets
 the seed-5 support collapse directly:

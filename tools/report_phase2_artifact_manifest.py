@@ -53,6 +53,8 @@ REVIEW_ARTIFACTS = [
     "outputs/analysis/phase2_colab_package_only_manifest.json",
     "outputs/analysis/PHASE2_LOCAL_FALLBACK_READINESS.md",
     "outputs/analysis/phase2_local_fallback_readiness.json",
+    "outputs/analysis/PHASE2_Z005_T4_RECOVERY_DECISION.md",
+    "outputs/analysis/phase2_z005_t4_recovery_decision.json",
     "tools/plan_phase2_z005_support_recipe.py",
     "tools/report_phase2_colab_package_manifest.py",
     "tools/report_phase2_local_fallback_readiness.py",
