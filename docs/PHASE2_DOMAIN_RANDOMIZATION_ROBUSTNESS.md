@@ -1607,6 +1607,30 @@ gain sweeps. Further work should either advance terrain/push curriculum from
 this packaged candidate or prepare a reviewed suspended hardware validation
 plan; grounded replay remains blocked.
 
+Terrain boundary probe:
+
+```text
+artifact:
+  outputs/analysis/PHASE2_STAGEA2_GAIN099_TERRAIN_Z005_BOUNDARY.md
+
+status:
+  HOLD_TERRAIN_Z005_SEED5_FALL
+
+x=0.08 rough z=0.005 no-push, 15 s:
+  PASS_CANDIDATE_SIM_GATE: 7/8
+  HOLD_CANDIDATE_FALL_OR_TERMINATION: 1/8
+  fall seed: 5
+  fall samples: 56
+  seed5 mean vx: -0.2654 m/s
+  seed5 base height min: 0.0677 m
+  max velocity excess: 0.0000 rad/s
+```
+
+This confirms the next curriculum boundary: the packaged gain-0.99 candidate is
+robust at rough `z=0.002`, but not at `z=0.005`. The next training/eval branch
+should target seed-5 rougher-terrain stability rather than increasing actuator
+margin or continuing scalar gain sweeps.
+
 ## B0E A100 Corrected-Task Run
 
 Artifact:
