@@ -6,6 +6,7 @@ robot. By default the wrapper preserves the original policy graph and appends:
 
   scale = low_scale + (high_scale - low_scale) * clip(abs(obs[command_x_index]) / ramp_command_x, 0, 1)
   action = base_action * scale
+  action = action * joint_action_scale
 
 Optionally, the scaled action can be converted to a motor target, blended toward
 obs[83:97] (the previous sent motor target), velocity-clamped relative to that
@@ -42,6 +43,14 @@ def parse_args() -> argparse.Namespace:
         "--output-name",
         default="continuous_actions_command_scaled",
         help="name for the wrapped policy output",
+    )
+    parser.add_argument(
+        "--joint-action-scale",
+        default=None,
+        help=(
+            "optional comma-separated 14-joint per-joint action scale factors "
+            "applied after command scaling; omitted means all ones"
+        ),
     )
     parser.add_argument(
         "--target-blend-alpha",
@@ -110,6 +119,12 @@ def main() -> int:
     if wrapped_output == base_output:
         raise SystemExit("--output-name must differ from the base policy output")
 
+    joint_action_scale = (
+        parse_float_vector(args.joint_action_scale, expected=14, name="--joint-action-scale")
+        if args.joint_action_scale
+        else np.ones((14,), dtype=np.float32)
+    )
+
     initializers = {
         "command_x_index": np.asarray([args.command_x_index], dtype=np.int64),
         "command_scale_low": np.asarray([args.low_scale], dtype=np.float32),
@@ -119,6 +134,7 @@ def main() -> int:
         "command_scale_ramp": np.asarray([args.ramp_command_x], dtype=np.float32),
         "command_scale_clip_min": np.asarray([0.0], dtype=np.float32),
         "command_scale_clip_max": np.asarray([1.0], dtype=np.float32),
+        "joint_action_scale": joint_action_scale.reshape(1, 14),
     }
     use_target_stage = args.target_blend_alpha < 1.0 or args.target_delta_limit_rad_s
     if use_target_stage:
@@ -208,6 +224,12 @@ def main() -> int:
                 ["command_scaled_actions"],
                 name="command_scale_actions",
             ),
+            helper.make_node(
+                "Mul",
+                ["command_scaled_actions", "joint_action_scale"],
+                ["joint_scaled_actions"],
+                name="joint_scale_actions",
+            ),
         ]
     )
     if use_target_stage:
@@ -216,7 +238,7 @@ def main() -> int:
             [
                 helper.make_node(
                     "Mul",
-                    ["command_scaled_actions", "target_action_scale"],
+                    ["joint_scaled_actions", "target_action_scale"],
                     ["desired_target_delta"],
                     name="target_smooth_scale_action",
                 ),
@@ -298,7 +320,7 @@ def main() -> int:
             [
                 helper.make_node(
                     "Identity",
-                    ["command_scaled_actions"],
+                    ["joint_scaled_actions"],
                     [wrapped_output],
                     name="command_scale_output_identity",
                 )
@@ -320,6 +342,8 @@ def main() -> int:
         f"{args.low_scale:g} + ({args.high_scale:g} - {args.low_scale:g}) "
         f"* clip(abs(obs[{args.command_x_index}]) / {args.ramp_command_x:g}, 0, 1)"
     )
+    if args.joint_action_scale:
+        print(f"joint action scale: {','.join(f'{value:g}' for value in joint_action_scale)}")
     if args.target_blend_alpha < 1.0:
         print(
             "target smoothing: "
