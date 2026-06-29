@@ -1309,6 +1309,25 @@ Next Phase 2 work should target seed-5 rough-terrain support timing and
 backward-pitch reversal between `z=0.002` and `z=0.005`, not actuator-envelope
 relaxation or global action-gain increases.
 
+The next z=0.005 support-stability recipe has been pinned and CPU-plumbed:
+
+```text
+artifact:
+  outputs/analysis/PHASE2_STAGEA2_GAIN099_Z005_SUPPORT_STABILITY_NEXT_RUN.md
+json:
+  outputs/analysis/phase2_stagea2_gain099_z005_support_stability_next_run.json
+
+status:
+  PASS_Z005_SUPPORT_STABILITY_RECIPE_CPU_PLUMBING
+```
+
+This tiny CPU check restored the Stage A2 trainable checkpoint, patched
+`rough_terrain_backlash` to `z=0.005`, used the corrected bridge range
+`2.0-3.25 rad/s`, reached PPO step 20, saved a temporary checkpoint under
+`/tmp`, and restored the Playground XML hash afterward. It is not a policy
+result. Use the recipe only as the next bounded GPU training run when a stable
+CUDA/A100 or equivalent session is available.
+
 ## Current Terrain-Step Status
 
 Existing-trace hard-step rescoring found a useful split:

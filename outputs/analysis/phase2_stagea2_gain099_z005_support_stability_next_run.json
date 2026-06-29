@@ -1,0 +1,96 @@
+{
+  "status": "PASS_Z005_SUPPORT_STABILITY_RECIPE_CPU_PLUMBING",
+  "scope": "offline CPU training plumbing check only; no robot tests, SSH, deploy, grounded replay, runtime behavior changes, or policy overwrite",
+  "motivation": "The packaged gain-0.99 candidate passes rough z=0.002 push/no-push gates but fails rough z=0.005 seed 5 by backward pitch collapse while staying inside the corrected actuator envelope.",
+  "gate_baseline_candidate": {
+    "path": "policy/candidates/phase2_stagea2_seed5_recovery_command_gated_gain099_20260629/candidate.onnx",
+    "sha256": "209b85a75cf9cbbcf10df573c1b530921943a72e81082111889c15f63a9a2c7b",
+    "note": "Deployable ONNX gate baseline. It is a command-gated ONNX composition with a baked 0.99 output scale, not an Orbax checkpoint that can be restored directly by PPO."
+  },
+  "trainable_restore_checkpoint": {
+    "path": "outputs/phase2_domain_randomization/stage_a2_preserve_narrow_flat_no_push_gpu/smoke_20260628T031553Z_gpu/2026_06_27_232221_491520",
+    "note": "Closest trainable Stage A2 lineage for PPO fine-tuning. The packaged gain099 ONNX remains the evaluation baseline."
+  },
+  "cpu_plumbing_run": {
+    "status": "PASS_SMOKE_RUN",
+    "output_dir": "/tmp/open_duck_phase2_z005_support_smoke/smoke_20260629T161022Z_cpu",
+    "elapsed_s": 85.08003765099966,
+    "returncode": 0,
+    "step": 20,
+    "reward": 1.8583950996398926,
+    "reward_std": 1.0203911066055298,
+    "saved_checkpoint": "/tmp/open_duck_phase2_z005_support_smoke/smoke_20260629T161022Z_cpu/2026_06_29_121116_20",
+    "export_min_step": 1,
+    "exported_onnx": false
+  },
+  "terrain_override": {
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.005,
+    "destination_sha256_before": "879768817f5ae5d2c01b5494f855686bb10d1ec444a404efeced8f5766574ffc",
+    "destination_sha256_after_patch": "cc97b6de11d8362ecb54b18126f3b7ea2cbf0c850e42b967f7b977a74d8ab28e",
+    "destination_sha256_restored": "879768817f5ae5d2c01b5494f855686bb10d1ec444a404efeced8f5766574ffc",
+    "restored": true
+  },
+  "recipe": {
+    "platform_for_plumbing": "cpu",
+    "recommended_policy_run_platform": "cuda/a100 or other stable GPU; local ROCm full-shape evaluator path remains unreliable",
+    "num_timesteps_for_real_run": 81920,
+    "ppo_num_envs_for_real_run": 64,
+    "ppo_num_evals_for_real_run": 4,
+    "ppo_episode_length": 750,
+    "restore_policy_kl_scale": 3.0,
+    "ppo_learning_rate": 0.000003,
+    "ppo_entropy_cost": 0.001,
+    "ppo_clipping_epsilon": 0.02,
+    "ppo_max_grad_norm": 0.1,
+    "actuator_bridge": {
+      "delay_min_ticks": 3,
+      "delay_max_ticks": 3,
+      "tau_min_s": 0.06,
+      "tau_max_s": 0.14,
+      "velocity_limit_min_rad_s": 2.0,
+      "velocity_limit_max_rad_s": 3.25,
+      "per_joint_variation": 0.1
+    },
+    "stability_terms": {
+      "base_height_scale": -0.45,
+      "forward_pitch_scale": -0.1,
+      "forward_pitch_rate_scale": -0.01,
+      "forward_wrong_direction_scale": -3.0,
+      "forward_wrong_direction_allowed_reverse_ratio": 0.05
+    },
+    "support_terms": {
+      "forward_single_support_scale": 0.2,
+      "forward_double_support_scale": -0.35,
+      "forward_double_support_dwell_scale": -1.0,
+      "forward_double_support_dwell_grace_steps": 8
+    },
+    "step_margin_terms": {
+      "forward_swing_advance_scale": -0.002,
+      "forward_swing_advance_target_m": 0.004,
+      "forward_swing_clearance_scale": -0.0005,
+      "forward_swing_clearance_target_m": 0.018
+    },
+    "narrow_domain_randomization": {
+      "friction": [0.98, 1.02],
+      "mass_scale": [0.995, 1.005],
+      "com_jitter_m": 0.002,
+      "qpos_jitter_rad": 0.002,
+      "actuator_gain_scale": [0.995, 1.005],
+      "leg_geometry_jitter_scale": 0.001,
+      "pushes": false
+    }
+  },
+  "promotion_gate_after_real_run": {
+    "x0.08_z0.005_no_push": "8 seeds, 15 s, fitted corrected bridge, no velocity excess, max pitch-chain tracking p95 <= 0.20 rad, no falls",
+    "x0_z0.005_no_push": "8 seeds, 15 s, fitted corrected bridge, mean |vx| <= 0.005 m/s, no falls",
+    "regression_checks": [
+      "x0.08 z=0.002 no-push 8/8",
+      "x0.08 z=0.002 gentle-push 8/8",
+      "x0.0 z=0.002 no-push 8/8",
+      "x0.0 z=0.002 gentle-push 8/8"
+    ],
+    "not_sufficient": "The tiny CPU plumbing run itself is not a policy result and is not promotable."
+  },
+  "decision": "Use this as the next bounded Phase 2 training recipe only when a stable GPU path is available. The target is seed-5 z=0.005 support timing and backward-pitch collapse, not actuator envelope relaxation."
+}
