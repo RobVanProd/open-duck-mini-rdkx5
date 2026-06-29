@@ -1,31 +1,51 @@
-# Phase 2 Next Run Plan
+# Phase 2 z=0.005 Support Next Recipe
 
-status: `PASS_PHASE2_NEXT_RUN_PLAN_READY`
-launch_status: `HOLD_PHASE2_A100_SESSION_NOT_READY`
+status: `PASS_Z005_SUPPORT_RECIPE_READY`
+stage: `stage_z005_support`
+diagnosis_status: `HOLD_Z005_SEED5_SUPPORT_COLLAPSE_DIAGNOSED`
+current_gate_status: `HOLD_PHASE2_STAGE_Z005_SUPPORT`
 
-## Current Decision
+This is an offline planning artifact. It did not train, SSH, deploy, or touch the robot.
 
-- current_status: `HOLD_PHASE2_TERRAIN_Z005_NOT_CLEARED`
-- blocking_gate: `z005_x008_nopush`
+## Current Candidate
+
 - candidate: `policy/candidates/phase2_stagea2_seed5_recovery_command_gated_gain099_20260629/candidate.onnx`
 - candidate_sha256: `209b85a75cf9cbbcf10df573c1b530921943a72e81082111889c15f63a9a2c7b`
 - restore_checkpoint: `outputs/phase2_domain_randomization/stage_a2_preserve_narrow_flat_no_push_gpu/smoke_20260628T031553Z_gpu/2026_06_27_232221_491520`
 - restore_checkpoint_present: `True`
 
-## Readiness
+## Diagnosis Driving This Recipe
 
-- colab_status: `HOLD_NO_ACTIVE_COLAB_SESSION`
-- colab_session: `open-duck-l4`
-- colab_active: `False`
-- git_status: `HOLD_GIT_REMOTE_AUTH_UNAVAILABLE`
-- git_branch: `codex/live-oracle-dagger-phase-student`
-- git_remote_read_auth_ok: `False`
+- seed 5 collapses vertically on z=0.005 in both command modes
+- failure is backward-biased even at zero command
+- failure is not caused by corrected-envelope velocity excess
+- support pattern is double-support dominated before collapse
 
-The Colab check is read-only (`colab sessions` / `colab status`). The Git check is read-only (`git ls-remote`) and does not push.
+## Recipe Intent
+
+- Continue from the last z=0.002 passing A2 checkpoint; do not train from scratch.
+- Use z=0.005 rough terrain with no push; this is a support/base-height rung, not a push rung.
+- Increase base-height and contact-support pressure while keeping restore-policy KL strong enough to preserve the z=0.002 gait.
+- Strengthen wrong-direction penalty because seed 5 collapses backward even at x=0.0.
+- Relax double-support dwell pressure compared with the prior z=0.005 recipe so the zero-command support behavior is not over-penalized.
+- Keep corrected actuator bridge limits authoritative and reject velocity excess at the gate.
+
+## Key Recipe Changes
+
+- `restore_policy_kl_scale`: `4.0`
+- `base_height_scale`: `-0.8`
+- `forward_wrong_direction_scale`: `-4.0`
+- `forward_wrong_direction_allowed_reverse_ratio`: `0.02`
+- `forward_contact_support_scale`: `-0.35`
+- `forward_contact_support_no_contact_weight`: `2.0`
+- `forward_contact_support_asymmetry_weight`: `0.25`
+- `forward_double_support_scale`: `-0.15`
+- `forward_double_support_dwell_scale`: `-0.25`
+- `forward_double_support_dwell_grace_steps`: `16`
+- `terrain_hfield_z_scale`: `0.005`
+- `push_enable`: `False`
 
 ## Preferred A100 / Colab Command
-
-Use this when a visible Colab GPU session is available:
 
 ```bash
 python3 \
@@ -50,7 +70,7 @@ python3 \
 
 ## Local ROCm Fallback Command
 
-This is fallback/backend evidence only unless it clears the same post-training gates:
+Backend evidence only unless it clears the same canonical gates; local ROCm is not the preferred policy-producing path.
 
 ```bash
 ../envs/open-duck-playground/bin/python \
@@ -252,15 +272,30 @@ This is fallback/backend evidence only unless it clears the same post-training g
     0.005
 ```
 
-## Promotion Rule
+## Post-Training Gate Examples
 
-Promotion still requires full corrected-bridge post-training gates, not a smoke pass:
+```bash
+python3 tools/eval_policy_with_actuator_bridge.py --mode closed-loop-sim --eval-role candidate --policy '<candidate.onnx>' --fit-json outputs/analysis/actuator_response_fit_corrected_knee.json --playground-path ../Open_Duck_Playground --env-python ../envs/open-duck-playground/bin/python --task rough_terrain_backlash --duration 15 --bridge-mode fitted --command-x 0.08 --terrain-hfield-z-scale 0.005 --output-dir outputs/analysis/phase2_z005_support_next_gate/z005_x008_nopush
+```
 
-- z=0.005 x=0.08 no-push, 8 seeds, 15s
-- z=0.005 x=0.0 no-push, 8 seeds, 15s
-- z=0.002 x=0.08 no-push, 8 seeds, 15s
-- z=0.002 x=0.0 no-push, 8 seeds, 15s
-- z=0.002 x=0.08 gentle-push, 8 seeds, 15s
-- z=0.002 x=0.0 gentle-push, 8 seeds, 15s
+```bash
+python3 tools/eval_policy_with_actuator_bridge.py --mode closed-loop-sim --eval-role candidate --policy '<candidate.onnx>' --fit-json outputs/analysis/actuator_response_fit_corrected_knee.json --playground-path ../Open_Duck_Playground --env-python ../envs/open-duck-playground/bin/python --task rough_terrain_backlash --duration 15 --bridge-mode fitted --command-x 0.0 --terrain-hfield-z-scale 0.005 --output-dir outputs/analysis/phase2_z005_support_next_gate/z005_x000_nopush
+```
 
-No robot, SSH, deploy, grounded replay, or runtime behavior change is authorized by this plan.
+```bash
+python3 tools/eval_policy_with_actuator_bridge.py --mode closed-loop-sim --eval-role candidate --policy '<candidate.onnx>' --fit-json outputs/analysis/actuator_response_fit_corrected_knee.json --playground-path ../Open_Duck_Playground --env-python ../envs/open-duck-playground/bin/python --task rough_terrain_backlash --duration 15 --bridge-mode fitted --command-x 0.08 --terrain-hfield-z-scale 0.002 --output-dir outputs/analysis/phase2_z005_support_next_gate/z002_x008_nopush
+```
+
+```bash
+python3 tools/eval_policy_with_actuator_bridge.py --mode closed-loop-sim --eval-role candidate --policy '<candidate.onnx>' --fit-json outputs/analysis/actuator_response_fit_corrected_knee.json --playground-path ../Open_Duck_Playground --env-python ../envs/open-duck-playground/bin/python --task rough_terrain_backlash --duration 15 --bridge-mode fitted --command-x 0.0 --terrain-hfield-z-scale 0.002 --output-dir outputs/analysis/phase2_z005_support_next_gate/z002_x000_nopush
+```
+
+## Acceptance
+
+- z=0.005 x=0.08 no-push passes 8/8, zero falls, no velocity excess, tracking p95 <= 0.20, track ratio >= 0.40.
+- z=0.005 x=0.0 no-push passes 8/8, zero falls, no velocity excess, |mean vx| <= 0.005.
+- z=0.002 no-push and gentle-push regression gates remain passing.
+
+## Falsifier
+
+If seed 5 still collapses vertically at z=0.005 x=0.0 with no velocity excess, stop increasing terrain difficulty and inspect reset/support distribution or add an intermediate terrain rung.

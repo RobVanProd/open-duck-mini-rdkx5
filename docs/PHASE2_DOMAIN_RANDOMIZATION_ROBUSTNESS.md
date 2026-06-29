@@ -59,6 +59,27 @@ The current z=0.005 hold is seed-5 support collapse in both `x=0.08` and
 corrected-envelope velocity excess. Treat the next recipe as a terrain-support
 and base-height-margin problem, not an actuator-rate problem.
 
+Current next-run recipe:
+
+```text
+outputs/analysis/PHASE2_Z005_SUPPORT_NEXT_RECIPE.md
+outputs/analysis/phase2_z005_support_next_recipe.json
+```
+
+This recipe continues from the last z=0.002 passing A2 checkpoint, keeps the
+corrected bridge active, uses z=0.005 rough terrain with no push, and targets
+the seed-5 support collapse directly:
+
+- stronger base-height margin,
+- explicit contact-support cost,
+- stronger wrong-direction penalty,
+- gentler double-support dwell pressure so zero-command support is not
+  over-penalized,
+- stronger restore-policy KL to preserve the z=0.002 gait.
+
+Promotion still requires the z=0.005 no-push gates to pass at both `x=0.08`
+and `x=0.0`, with the z=0.002 regression gates remaining clear.
+
 ## Phase 1 Anchor
 
 ```text

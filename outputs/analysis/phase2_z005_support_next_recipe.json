@@ -1,35 +1,15 @@
 {
-  "blocking_gate": "z005_x008_nopush",
+  "acceptance": [
+    "z=0.005 x=0.08 no-push passes 8/8, zero falls, no velocity excess, tracking p95 <= 0.20, track ratio >= 0.40.",
+    "z=0.005 x=0.0 no-push passes 8/8, zero falls, no velocity excess, |mean vx| <= 0.005.",
+    "z=0.002 no-push and gentle-push regression gates remain passing."
+  ],
   "candidate": {
     "path": "policy/candidates/phase2_stagea2_seed5_recovery_command_gated_gain099_20260629/candidate.onnx",
     "sha256": "209b85a75cf9cbbcf10df573c1b530921943a72e81082111889c15f63a9a2c7b"
   },
   "commands": {
-    "colab": {
-      "argv": [
-        "python3",
-        "tools/run_colab_cli_cuda_workflow.py",
-        "--workflow",
-        "phase2-z005-support",
-        "--session",
-        "open-duck-l4",
-        "--candidate-name",
-        "phase2_z005_support_baseheight_cuda",
-        "--candidate-checkpoint-sweep",
-        "--candidate-checkpoint-sweep-commands",
-        "0.0,0.08",
-        "--candidate-checkpoint-sweep-duration",
-        "1.0",
-        "--candidate-checkpoint-sweep-jax-platform",
-        "cpu",
-        "--candidate-timeout-s",
-        "10800",
-        "--run"
-      ],
-      "preferred": true,
-      "shell": "python3 \\\n    tools/run_colab_cli_cuda_workflow.py \\\n    --workflow \\\n    phase2-z005-support \\\n    --session \\\n    open-duck-l4 \\\n    --candidate-name \\\n    phase2_z005_support_baseheight_cuda \\\n    --candidate-checkpoint-sweep \\\n    --candidate-checkpoint-sweep-commands \\\n    0.0,0.08 \\\n    --candidate-checkpoint-sweep-duration \\\n    1.0 \\\n    --candidate-checkpoint-sweep-jax-platform \\\n    cpu \\\n    --candidate-timeout-s \\\n    10800 \\\n    --run"
-    },
-    "local_rocm": {
+    "local_rocm_fallback": {
       "argv": [
         "../envs/open-duck-playground/bin/python",
         "tools/run_actuator_bridge_training_smoke.py",
@@ -229,93 +209,199 @@
         "--terrain-hfield-z-scale",
         "0.005"
       ],
-      "preferred": false,
+      "note": "Backend evidence only unless it clears the same canonical gates; local ROCm is not the preferred policy-producing path.",
       "shell": "../envs/open-duck-playground/bin/python \\\n    tools/run_actuator_bridge_training_smoke.py \\\n    --playground-path \\\n    ../Open_Duck_Playground \\\n    --env-python \\\n    ../envs/open-duck-playground/bin/python \\\n    --output-root \\\n    outputs/phase2_domain_randomization/stage_z005_support_baseheight_local_rocm_safeenv_8env_81920 \\\n    --run \\\n    --platform \\\n    gpu \\\n    --local-rocm-safe-env \\\n    --timeout-s \\\n    2700 \\\n    --task \\\n    rough_terrain_backlash \\\n    --num-timesteps \\\n    81920 \\\n    --export-min-step \\\n    1 \\\n    --ppo-num-envs \\\n    8 \\\n    --ppo-num-evals \\\n    4 \\\n    --ppo-episode-length \\\n    750 \\\n    --ppo-unroll-length \\\n    20 \\\n    --ppo-batch-size \\\n    64 \\\n    --ppo-num-minibatches \\\n    1 \\\n    --ppo-num-updates-per-batch \\\n    2 \\\n    --restore-checkpoint-path \\\n    outputs/phase2_domain_randomization/stage_a2_preserve_narrow_flat_no_push_gpu/smoke_20260628T031553Z_gpu/2026_06_27_232221_491520 \\\n    --ppo-learning-rate \\\n    0.000003 \\\n    --ppo-entropy-cost \\\n    0.001 \\\n    --ppo-clipping-epsilon \\\n    0.02 \\\n    --ppo-max-grad-norm \\\n    0.1 \\\n    --restore-policy-kl-scale \\\n    4 \\\n    --tracking-lin-vel-scale \\\n    3 \\\n    --tracking-sigma \\\n    0.01 \\\n    --forward-progress-scale \\\n    2.5 \\\n    --forward-wrong-direction-scale \\\n    -4 \\\n    --forward-wrong-direction-allowed-reverse-ratio \\\n    0.02 \\\n    --command-progress-scale \\\n    1.5 \\\n    --command-progress-shortfall-scale \\\n    -4 \\\n    --command-progress-required-ratio \\\n    0.45 \\\n    --command-progress-warmup-steps \\\n    30 \\\n    --action-rate-huber-delta \\\n    0.05 \\\n    --actuator-tracking-huber-delta \\\n    0.03 \\\n    --forward-swing-clearance-huber-delta \\\n    0.003 \\\n    --forward-swing-advance-huber-delta \\\n    0.002 \\\n    --action-rate-scale \\\n    -0.08 \\\n    --action-magnitude-scale \\\n    -0.005 \\\n    --base-height-scale \\\n    -0.8 \\\n    --forward-pitch-scale \\\n    -0.4 \\\n    --forward-pitch-rate-scale \\\n    -0.08 \\\n    --forward-contact-support-scale \\\n    -0.35 \\\n    --forward-contact-support-no-contact-weight \\\n    2.0 \\\n    --forward-contact-support-asymmetry-weight \\\n    0.25 \\\n    --forward-single-support-scale \\\n    0.1 \\\n    --forward-double-support-scale \\\n    -0.15 \\\n    --forward-double-support-dwell-scale \\\n    -0.25 \\\n    --forward-double-support-dwell-grace-steps \\\n    16 \\\n    --forward-swing-clearance-scale \\\n    -0.0005 \\\n    --forward-swing-clearance-target-m \\\n    0.018 \\\n    --forward-swing-advance-scale \\\n    -0.002 \\\n    --forward-swing-advance-target-m \\\n    0.004 \\\n    --alive-scale \\\n    2 \\\n    --imitation-scale \\\n    0 \\\n    --lin-vel-x-min \\\n    0.06 \\\n    --lin-vel-x-max \\\n    0.1 \\\n    --lin-vel-y-min \\\n    0 \\\n    --lin-vel-y-max \\\n    0 \\\n    --ang-vel-yaw-min \\\n    0 \\\n    --ang-vel-yaw-max \\\n    0 \\\n    --command-resample-steps \\\n    600 \\\n    --zero-command-probability \\\n    0.15 \\\n    --dr-friction-min \\\n    0.98 \\\n    --dr-friction-max \\\n    1.02 \\\n    --dr-frictionloss-scale-min \\\n    0.995 \\\n    --dr-frictionloss-scale-max \\\n    1.005 \\\n    --dr-armature-scale-min \\\n    1 \\\n    --dr-armature-scale-max \\\n    1.005 \\\n    --dr-com-jitter-m \\\n    0.002 \\\n    --dr-mass-scale-min \\\n    0.995 \\\n    --dr-mass-scale-max \\\n    1.005 \\\n    --dr-torso-mass-delta-min \\\n    -0.005 \\\n    --dr-torso-mass-delta-max \\\n    0.005 \\\n    --dr-qpos-jitter-rad \\\n    0.002 \\\n    --dr-actuator-gain-scale-min \\\n    0.995 \\\n    --dr-actuator-gain-scale-max \\\n    1.005 \\\n    --dr-leg-geometry-jitter-scale \\\n    0.001 \\\n    --push-interval-min-s \\\n    7 \\\n    --push-interval-max-s \\\n    12 \\\n    --push-magnitude-min \\\n    0.02 \\\n    --push-magnitude-max \\\n    0.1 \\\n    --noise-level \\\n    0.5 \\\n    --noise-hip-pos \\\n    0.0075 \\\n    --noise-knee-pos \\\n    0.0075 \\\n    --noise-ankle-pos \\\n    0.0075 \\\n    --noise-joint-vel \\\n    0.75 \\\n    --noise-gravity \\\n    0.04 \\\n    --noise-gyro \\\n    0.04 \\\n    --noise-accelerometer \\\n    0.02 \\\n    --no-push-enable \\\n    --actuator-bridge-delay-min-ticks \\\n    3 \\\n    --actuator-bridge-delay-max-ticks \\\n    3 \\\n    --actuator-bridge-tau-min-s \\\n    0.06 \\\n    --actuator-bridge-tau-max-s \\\n    0.14 \\\n    --actuator-bridge-velocity-limit-min-rad-s \\\n    2 \\\n    --actuator-bridge-velocity-limit-max-rad-s \\\n    3.25 \\\n    --actuator-bridge-per-joint-variation \\\n    0.1 \\\n    --actuator-tracking-scale \\\n    -0.01 \\\n    --terrain-hfield-z-scale \\\n    0.005"
+    },
+    "post_training_gate_examples": [
+      {
+        "argv": [
+          "python3",
+          "tools/eval_policy_with_actuator_bridge.py",
+          "--mode",
+          "closed-loop-sim",
+          "--eval-role",
+          "candidate",
+          "--policy",
+          "<candidate.onnx>",
+          "--fit-json",
+          "outputs/analysis/actuator_response_fit_corrected_knee.json",
+          "--playground-path",
+          "../Open_Duck_Playground",
+          "--env-python",
+          "../envs/open-duck-playground/bin/python",
+          "--task",
+          "rough_terrain_backlash",
+          "--duration",
+          "15",
+          "--bridge-mode",
+          "fitted",
+          "--command-x",
+          "0.08",
+          "--terrain-hfield-z-scale",
+          "0.005",
+          "--output-dir",
+          "outputs/analysis/phase2_z005_support_next_gate/z005_x008_nopush"
+        ],
+        "shell": "python3 tools/eval_policy_with_actuator_bridge.py --mode closed-loop-sim --eval-role candidate --policy '<candidate.onnx>' --fit-json outputs/analysis/actuator_response_fit_corrected_knee.json --playground-path ../Open_Duck_Playground --env-python ../envs/open-duck-playground/bin/python --task rough_terrain_backlash --duration 15 --bridge-mode fitted --command-x 0.08 --terrain-hfield-z-scale 0.005 --output-dir outputs/analysis/phase2_z005_support_next_gate/z005_x008_nopush"
+      },
+      {
+        "argv": [
+          "python3",
+          "tools/eval_policy_with_actuator_bridge.py",
+          "--mode",
+          "closed-loop-sim",
+          "--eval-role",
+          "candidate",
+          "--policy",
+          "<candidate.onnx>",
+          "--fit-json",
+          "outputs/analysis/actuator_response_fit_corrected_knee.json",
+          "--playground-path",
+          "../Open_Duck_Playground",
+          "--env-python",
+          "../envs/open-duck-playground/bin/python",
+          "--task",
+          "rough_terrain_backlash",
+          "--duration",
+          "15",
+          "--bridge-mode",
+          "fitted",
+          "--command-x",
+          "0.0",
+          "--terrain-hfield-z-scale",
+          "0.005",
+          "--output-dir",
+          "outputs/analysis/phase2_z005_support_next_gate/z005_x000_nopush"
+        ],
+        "shell": "python3 tools/eval_policy_with_actuator_bridge.py --mode closed-loop-sim --eval-role candidate --policy '<candidate.onnx>' --fit-json outputs/analysis/actuator_response_fit_corrected_knee.json --playground-path ../Open_Duck_Playground --env-python ../envs/open-duck-playground/bin/python --task rough_terrain_backlash --duration 15 --bridge-mode fitted --command-x 0.0 --terrain-hfield-z-scale 0.005 --output-dir outputs/analysis/phase2_z005_support_next_gate/z005_x000_nopush"
+      },
+      {
+        "argv": [
+          "python3",
+          "tools/eval_policy_with_actuator_bridge.py",
+          "--mode",
+          "closed-loop-sim",
+          "--eval-role",
+          "candidate",
+          "--policy",
+          "<candidate.onnx>",
+          "--fit-json",
+          "outputs/analysis/actuator_response_fit_corrected_knee.json",
+          "--playground-path",
+          "../Open_Duck_Playground",
+          "--env-python",
+          "../envs/open-duck-playground/bin/python",
+          "--task",
+          "rough_terrain_backlash",
+          "--duration",
+          "15",
+          "--bridge-mode",
+          "fitted",
+          "--command-x",
+          "0.08",
+          "--terrain-hfield-z-scale",
+          "0.002",
+          "--output-dir",
+          "outputs/analysis/phase2_z005_support_next_gate/z002_x008_nopush"
+        ],
+        "shell": "python3 tools/eval_policy_with_actuator_bridge.py --mode closed-loop-sim --eval-role candidate --policy '<candidate.onnx>' --fit-json outputs/analysis/actuator_response_fit_corrected_knee.json --playground-path ../Open_Duck_Playground --env-python ../envs/open-duck-playground/bin/python --task rough_terrain_backlash --duration 15 --bridge-mode fitted --command-x 0.08 --terrain-hfield-z-scale 0.002 --output-dir outputs/analysis/phase2_z005_support_next_gate/z002_x008_nopush"
+      },
+      {
+        "argv": [
+          "python3",
+          "tools/eval_policy_with_actuator_bridge.py",
+          "--mode",
+          "closed-loop-sim",
+          "--eval-role",
+          "candidate",
+          "--policy",
+          "<candidate.onnx>",
+          "--fit-json",
+          "outputs/analysis/actuator_response_fit_corrected_knee.json",
+          "--playground-path",
+          "../Open_Duck_Playground",
+          "--env-python",
+          "../envs/open-duck-playground/bin/python",
+          "--task",
+          "rough_terrain_backlash",
+          "--duration",
+          "15",
+          "--bridge-mode",
+          "fitted",
+          "--command-x",
+          "0.0",
+          "--terrain-hfield-z-scale",
+          "0.002",
+          "--output-dir",
+          "outputs/analysis/phase2_z005_support_next_gate/z002_x000_nopush"
+        ],
+        "shell": "python3 tools/eval_policy_with_actuator_bridge.py --mode closed-loop-sim --eval-role candidate --policy '<candidate.onnx>' --fit-json outputs/analysis/actuator_response_fit_corrected_knee.json --playground-path ../Open_Duck_Playground --env-python ../envs/open-duck-playground/bin/python --task rough_terrain_backlash --duration 15 --bridge-mode fitted --command-x 0.0 --terrain-hfield-z-scale 0.002 --output-dir outputs/analysis/phase2_z005_support_next_gate/z002_x000_nopush"
+      }
+    ],
+    "preferred_colab_a100": {
+      "argv": [
+        "python3",
+        "tools/run_colab_cli_cuda_workflow.py",
+        "--workflow",
+        "phase2-z005-support",
+        "--session",
+        "open-duck-l4",
+        "--candidate-name",
+        "phase2_z005_support_baseheight_cuda",
+        "--candidate-checkpoint-sweep",
+        "--candidate-checkpoint-sweep-commands",
+        "0.0,0.08",
+        "--candidate-checkpoint-sweep-duration",
+        "1.0",
+        "--candidate-checkpoint-sweep-jax-platform",
+        "cpu",
+        "--candidate-timeout-s",
+        "10800",
+        "--run"
+      ],
+      "shell": "python3 \\\n    tools/run_colab_cli_cuda_workflow.py \\\n    --workflow \\\n    phase2-z005-support \\\n    --session \\\n    open-duck-l4 \\\n    --candidate-name \\\n    phase2_z005_support_baseheight_cuda \\\n    --candidate-checkpoint-sweep \\\n    --candidate-checkpoint-sweep-commands \\\n    0.0,0.08 \\\n    --candidate-checkpoint-sweep-duration \\\n    1.0 \\\n    --candidate-checkpoint-sweep-jax-platform \\\n    cpu \\\n    --candidate-timeout-s \\\n    10800 \\\n    --run"
     }
   },
+  "current_gate_status": "HOLD_PHASE2_STAGE_Z005_SUPPORT",
   "current_status": "HOLD_PHASE2_TERRAIN_Z005_NOT_CLEARED",
   "deploy_performed": false,
-  "readiness": {
-    "colab": {
-      "active": false,
-      "checked": true,
-      "colab_executable": "/home/lsd/.local/bin/colab",
-      "session": "open-duck-l4",
-      "sessions_command": {
-        "command": [
-          "colab",
-          "sessions"
-        ],
-        "ok": true,
-        "returncode": 0,
-        "stderr": "",
-        "stdout": "[colab] No active sessions found on server.\n"
-      },
-      "status": "HOLD_NO_ACTIVE_COLAB_SESSION",
-      "status_command": {
-        "command": [
-          "colab",
-          "status",
-          "-s",
-          "open-duck-l4"
-        ],
-        "ok": true,
-        "returncode": 0,
-        "stderr": "",
-        "stdout": "[colab] Session 'open-duck-l4' not found.\n"
-      }
-    },
-    "git": {
-      "branch": "codex/live-oracle-dagger-phase-student",
-      "branch_command": {
-        "command": [
-          "git",
-          "rev-parse",
-          "--abbrev-ref",
-          "HEAD"
-        ],
-        "ok": true,
-        "returncode": 0,
-        "stderr": "",
-        "stdout": "codex/live-oracle-dagger-phase-student\n"
-      },
-      "checked": true,
-      "ls_remote_command": {
-        "command": [
-          "git",
-          "ls-remote",
-          "--exit-code",
-          "origin",
-          "refs/heads/codex/live-oracle-dagger-phase-student"
-        ],
-        "ok": false,
-        "returncode": 128,
-        "stderr": "fatal: could not read Username for 'https://github.com': No such device or address\n",
-        "stdout": ""
-      },
-      "read_auth_ok": false,
-      "remote": "https://github.com/RobVanProd/open-duck-mini-rdkx5.git",
-      "remote_command": {
-        "command": [
-          "git",
-          "remote",
-          "get-url",
-          "origin"
-        ],
-        "ok": true,
-        "returncode": 0,
-        "stderr": "",
-        "stdout": "https://github.com/RobVanProd/open-duck-mini-rdkx5.git\n"
-      },
-      "status": "HOLD_GIT_REMOTE_AUTH_UNAVAILABLE"
-    },
-    "launch_status": "HOLD_PHASE2_A100_SESSION_NOT_READY"
+  "diagnosis_status": "HOLD_Z005_SEED5_SUPPORT_COLLAPSE_DIAGNOSED",
+  "falsifier": "If seed 5 still collapses vertically at z=0.005 x=0.0 with no velocity excess, stop increasing terrain difficulty and inspect reset/support distribution or add an intermediate terrain rung.",
+  "key_recipe_changes": {
+    "base_height_scale": -0.8,
+    "forward_contact_support_asymmetry_weight": 0.25,
+    "forward_contact_support_no_contact_weight": 2.0,
+    "forward_contact_support_scale": -0.35,
+    "forward_double_support_dwell_grace_steps": 16,
+    "forward_double_support_dwell_scale": -0.25,
+    "forward_double_support_scale": -0.15,
+    "forward_wrong_direction_allowed_reverse_ratio": 0.02,
+    "forward_wrong_direction_scale": -4.0,
+    "push_enable": false,
+    "restore_policy_kl_scale": 4.0,
+    "terrain_hfield_z_scale": 0.005
   },
+  "recipe_intent": [
+    "Continue from the last z=0.002 passing A2 checkpoint; do not train from scratch.",
+    "Use z=0.005 rough terrain with no push; this is a support/base-height rung, not a push rung.",
+    "Increase base-height and contact-support pressure while keeping restore-policy KL strong enough to preserve the z=0.002 gait.",
+    "Strengthen wrong-direction penalty because seed 5 collapses backward even at x=0.0.",
+    "Relax double-support dwell pressure compared with the prior z=0.005 recipe so the zero-command support behavior is not over-penalized.",
+    "Keep corrected actuator bridge limits authoritative and reject velocity excess at the gate."
+  ],
   "restore_checkpoint": {
     "path": "outputs/phase2_domain_randomization/stage_a2_preserve_narrow_flat_no_push_gpu/smoke_20260628T031553Z_gpu/2026_06_27_232221_491520",
     "present": true
   },
   "robot_touched": false,
+  "root_cause_summary": [
+    "seed 5 collapses vertically on z=0.005 in both command modes",
+    "failure is backward-biased even at zero command",
+    "failure is not caused by corrected-envelope velocity excess",
+    "support pattern is double-support dominated before collapse"
+  ],
   "ssh_used": false,
-  "status": "PASS_PHASE2_NEXT_RUN_PLAN_READY"
+  "stage": "stage_z005_support",
+  "status": "PASS_Z005_SUPPORT_RECIPE_READY",
+  "training_started": false
 }

@@ -858,7 +858,7 @@ def build_remote_driver(
     phase2_lr = "0.000003" if (run_phase2_b0f or run_phase2_b0g or run_phase2_z005_support) else ("0.000012" if run_phase2_b0e else "0.000015")
     phase2_clip = "0.02" if (run_phase2_b0f or run_phase2_b0g or run_phase2_z005_support) else ("0.04" if run_phase2_b0e else "0.05")
     phase2_max_grad_norm = "0.1" if (run_phase2_b0f or run_phase2_b0g or run_phase2_z005_support) else ("0.2" if run_phase2_b0e else "0.25")
-    phase2_restore_kl = "3.0" if run_phase2_z005_support else ("5.0" if (run_phase2_b0f or run_phase2_b0g) else ("1.5" if run_phase2_b0e else "1.0"))
+    phase2_restore_kl = "4.0" if run_phase2_z005_support else ("5.0" if (run_phase2_b0f or run_phase2_b0g) else ("1.5" if run_phase2_b0e else "1.0"))
     phase2_actuator_tracking = "-0.01" if run_phase2_z005_support else ("0" if run_phase2_b0g else ("-0.01" if run_phase2_b0f else ("-0.015" if run_phase2_b0e else "-0.04")))
     phase2_forward_progress = "2.5" if phase2_motion_preserve else "2"
     phase2_command_progress = "1.5" if phase2_motion_preserve else "1"
@@ -930,12 +930,15 @@ def build_remote_driver(
         else '"--push-enable",'
     )
     phase2_support_stability_arg = (
-        '"--forward-wrong-direction-scale", "-3",'
-        '"--forward-wrong-direction-allowed-reverse-ratio", "0.05",'
-        '"--forward-single-support-scale", "0.2",'
-        '"--forward-double-support-scale", "-0.35",'
-        '"--forward-double-support-dwell-scale", "-1",'
-        '"--forward-double-support-dwell-grace-steps", "8",'
+        '"--forward-wrong-direction-scale", "-4",'
+        '"--forward-wrong-direction-allowed-reverse-ratio", "0.02",'
+        '"--forward-contact-support-scale", "-0.35",'
+        '"--forward-contact-support-no-contact-weight", "2.0",'
+        '"--forward-contact-support-asymmetry-weight", "0.25",'
+        '"--forward-single-support-scale", "0.1",'
+        '"--forward-double-support-scale", "-0.15",'
+        '"--forward-double-support-dwell-scale", "-0.25",'
+        '"--forward-double-support-dwell-grace-steps", "16",'
         '"--forward-swing-advance-scale", "-0.002",'
         '"--forward-swing-advance-target-m", "0.004",'
         '"--forward-swing-advance-huber-delta", "0.002",'
@@ -1484,7 +1487,7 @@ def build_remote_driver(
                 "--actuator-tracking-huber-delta", "0.03",
                 "--action-rate-scale", "-0.08",
                 "--action-magnitude-scale", "-0.005",
-                "--base-height-scale", "-0.3",
+                "--base-height-scale", "-0.8",
                 "--forward-pitch-scale", "-0.4",
                 "--forward-pitch-rate-scale", "-0.08",
                 "--alive-scale", "2",
