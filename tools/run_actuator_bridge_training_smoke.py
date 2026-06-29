@@ -504,6 +504,16 @@ def main() -> int:
         ),
     )
     parser.add_argument(
+        "--local-rocm-safe-env",
+        action="store_true",
+        help=(
+            "Apply the recorded local ROCm workaround preset: JAX_PLATFORMS=rocm, "
+            "disable XLA GPU command buffers, disable XLA preallocation, set "
+            "XLA_PYTHON_CLIENT_MEM_FRACTION=0.60, and unset "
+            "HSA_OVERRIDE_GFX_VERSION unless explicitly overridden."
+        ),
+    )
+    parser.add_argument(
         "--xla-flags",
         default=None,
         help=(
@@ -832,6 +842,18 @@ def main() -> int:
         args.restore_checkpoint_path = str(
             resolve_rdk_path(str(args.restore_checkpoint_path))
         )
+    if args.local_rocm_safe_env and args.platform != "gpu":
+        raise SystemExit("--local-rocm-safe-env requires --platform gpu")
+    if args.local_rocm_safe_env:
+        if args.jax_platforms is None:
+            args.jax_platforms = "rocm"
+        if args.xla_flags is None:
+            args.xla_flags = "--xla_gpu_enable_command_buffer="
+        if args.xla_python_client_preallocate is None:
+            args.xla_python_client_preallocate = "false"
+        if args.xla_python_client_mem_fraction is None:
+            args.xla_python_client_mem_fraction = 0.60
+        args.unset_hsa_override_gfx_version = True
 
     output_root = Path(args.output_root).expanduser()
     if not output_root.is_absolute():
@@ -889,6 +911,7 @@ def main() -> int:
         "env_python_resolved": str(Path(args.env_python).resolve()),
         "output_dir": str(output_dir),
         "platform": args.platform,
+        "local_rocm_safe_env": args.local_rocm_safe_env,
         "jax_platform_env": {
             "JAX_PLATFORM_NAME": env["JAX_PLATFORM_NAME"],
             "JAX_PLATFORMS": env.get("JAX_PLATFORMS"),

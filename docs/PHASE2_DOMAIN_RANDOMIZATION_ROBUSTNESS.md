@@ -1468,8 +1468,15 @@ status: HOLD_SMOKE_RUN
 error: rocblas_gemm_strided_batched_ex failed with rocblas_status_internal_error
 ```
 
-`tools/run_actuator_bridge_training_smoke.py` now has explicit environment
-flags so local ROCm attempts do not depend on unrecorded shell state:
+`tools/run_actuator_bridge_training_smoke.py` now has a recorded local ROCm
+environment preset so local attempts do not depend on unrecorded shell state:
+
+```text
+--platform gpu
+--local-rocm-safe-env
+```
+
+That preset expands to:
 
 ```text
 --jax-platforms rocm
