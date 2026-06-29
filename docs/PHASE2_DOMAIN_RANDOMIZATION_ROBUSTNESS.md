@@ -198,7 +198,7 @@ local ROCm 64-env B0D scale-up:
   HOLD_LOCAL_ROCM_SCALE
 
 local ROCm 32-env B0D continuation:
-  HOLD_B0D_32ENV_NO_PROMOTABLE_CHECKPOINT
+  HOLD_B0D_REGRESSED_MOTION_NO_TRACKING_GAIN
 
 CPU path check:
   PASS_CPU_PATH_CHECK
@@ -214,8 +214,11 @@ B0D-shaped GPU smoke reached PPO step 160. A 64-env local scale-up then failed
 with `ROCM_ERROR_ILLEGAL_ADDRESS` before any PPO step. A 32-env local
 continuation completed and exported checkpoints through step 61,440, but the
 compact corrected-bridge checkpoint sweep held at `x=0.08` with tracking around
-`0.219 rad` and track ratio around `0.26`. A tiny CPU run also confirmed the
-command/checkpoint path is structurally executable.
+`0.219 rad` and track ratio around `0.26`. A matched compact sweep of the B0C
+parent showed the same tracking p95 but better track ratio (`0.3035`), so B0D
+as configured regressed motion without improving the compact tracking blocker.
+A tiny CPU run also confirmed the command/checkpoint path is structurally
+executable.
 
 The next full attempt can run either locally if the workstation remains stable,
 or on a visible CUDA/A100 Colab session with the pinned workflow and
