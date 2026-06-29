@@ -197,6 +197,9 @@ local ROCm tiny B0D-shaped smoke:
 local ROCm 64-env B0D scale-up:
   HOLD_LOCAL_ROCM_SCALE
 
+local ROCm 32-env B0D continuation:
+  HOLD_B0D_32ENV_NO_PROMOTABLE_CHECKPOINT
+
 CPU path check:
   PASS_CPU_PATH_CHECK
 
@@ -208,8 +211,10 @@ B0D is the next valid full training attempt from the B0C corrected-bridge
 checkpoint. The earlier local ROCm run failed before any PPO step, but after
 the workstation reset/firmware work the read-only ROCm report passed and a tiny
 B0D-shaped GPU smoke reached PPO step 160. A 64-env local scale-up then failed
-with `ROCM_ERROR_ILLEGAL_ADDRESS` before any PPO step. These are infrastructure
-datapoints only, not policy results. A tiny CPU run also confirmed the
+with `ROCM_ERROR_ILLEGAL_ADDRESS` before any PPO step. A 32-env local
+continuation completed and exported checkpoints through step 61,440, but the
+compact corrected-bridge checkpoint sweep held at `x=0.08` with tracking around
+`0.219 rad` and track ratio around `0.26`. A tiny CPU run also confirmed the
 command/checkpoint path is structurally executable.
 
 The next full attempt can run either locally if the workstation remains stable,
