@@ -1797,3 +1797,51 @@ python3 tools/run_colab_cli_cuda_workflow.py \
 
 At the time this hook was added, no active Colab session was available, so B0G
 was not launched.
+
+### B0G Local ROCm Smoke
+
+Artifact:
+
+```text
+outputs/analysis/PHASE2_B0G_20480_LOCAL_ROCM_HOLD_DECISION.md
+```
+
+Status:
+
+```text
+HOLD_B0G_20480_TRACKING_REGRESSION
+```
+
+A bounded local ROCm B0G smoke was run on the RX 7900 XTX with the new
+push-recovery left-knee tracking hook enabled:
+
+```text
+jax: 0.8.2
+ppo_num_envs: 32
+ppo_episode_length: 100
+step: 20480
+onnx_sha256: 70fde5e93cfe7252ef14d8c953e9015051cde1747806f24adf2274f022491473
+status: PASS_SMOKE_RUN
+```
+
+The exported ONNX was gated on CPU for rough `z=0.002` gentle-push `x=0.08`
+8-seed correctness:
+
+```text
+passes: 4/8
+tracking holds: 4/8
+falls: 0/8
+mean track ratio: 0.4423
+mean vx: 0.0354 m/s
+max tracking p95: 0.2046 rad
+max velocity excess: 0.0000 rad/s
+mean push recovery success: 0.9062
+```
+
+This is backend progress but not policy progress. The local 7900 XTX can run a
+small B0G shape with the hook, but the resulting checkpoint regressed the gate
+relative to the B0C `lk097` 7/8 near-pass, and seed 4 remained at the same
+`~0.2013 rad` tracking miss. Do not promote B0G `20480` and do not replace the
+`lk097` line with it. A full B0G attempt still belongs on the pinned A100
+workflow when a visible Colab session is available, or on local ROCm only with
+the caveat that the local stack is JAX `0.8.2`, not the pinned A100 `0.7.2`.

@@ -1,0 +1,80 @@
+{
+  "status": "HOLD_B0G_20480_TRACKING_REGRESSION",
+  "scope": {
+    "robot_tests": false,
+    "ssh": false,
+    "deploy": false,
+    "grounded_replay": false,
+    "runtime_behavior_changes": false,
+    "policy_overwrite": false
+  },
+  "backend": {
+    "platform": "local_rocm",
+    "device": "RX 7900 XTX gfx1100",
+    "jax_version": "0.8.2",
+    "env": {
+      "XLA_PYTHON_CLIENT_PREALLOCATE": "false",
+      "XLA_PYTHON_CLIENT_MEM_FRACTION": "0.50",
+      "XLA_FLAGS": "--xla_gpu_autotune_level=0"
+    }
+  },
+  "training": {
+    "run_dir": "outputs/phase2_domain_randomization/stage_b0g_push_recovery_local_rocm_smoke/smoke_20260629T130541Z_gpu",
+    "status": "PASS_SMOKE_RUN",
+    "returncode": 0,
+    "elapsed_s": 204.93788960800157,
+    "ppo_num_envs": 32,
+    "ppo_episode_length": 100,
+    "step": 20480,
+    "onnx": "outputs/phase2_domain_randomization/stage_b0g_push_recovery_local_rocm_smoke/smoke_20260629T130541Z_gpu/2026_06_29_090758_20480.onnx",
+    "onnx_sha256": "70fde5e93cfe7252ef14d8c953e9015051cde1747806f24adf2274f022491473",
+    "manifest_sha256": "3fba4dc9ba10da02c346c6bc22be48f30924c3716fe47726dc913d208b72eae1"
+  },
+  "recipe": {
+    "restore_checkpoint": "outputs/phase2_domain_randomization/stage_b0c_rough_z002_push_tracking_margin_from_b0_gpu/smoke_20260629T062042Z_gpu/2026_06_29_022725_245760",
+    "global_actuator_tracking_scale": 0.0,
+    "push_recovery_actuator_tracking_scale": -0.02,
+    "push_recovery_actuator_tracking_huber_delta": 0.03,
+    "push_recovery_tracking_window_steps": 25,
+    "push_recovery_tracking_joint_indices": "3",
+    "terrain_hfield_z_scale": 0.002,
+    "push_magnitude_min": 0.05,
+    "push_magnitude_max": 0.1,
+    "push_interval_min_s": 1.0,
+    "push_interval_max_s": 1.5
+  },
+  "gate": {
+    "report_md": "outputs/analysis/PHASE2_B0G_20480_X008_ROUGH_Z002_GENTLE_PUSH_8SEED_CPU.md",
+    "report_json": "outputs/analysis/phase2_b0g_20480_x008_rough_z002_gentle_push_8seed_cpu.json",
+    "report_json_sha256": "42e29133166d243c71813643d67df3625fc46cd13bd8721895b0b31eb6f6dbe6",
+    "command_x": 0.08,
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.002,
+    "duration_s": 5.0,
+    "seeds": [0, 1, 2, 3, 4, 5, 6, 7],
+    "bridge_mode": "fitted",
+    "eval_push_enable": true,
+    "pass_count": 4,
+    "tracking_hold_count": 4,
+    "fall_count": 0,
+    "duration_complete_count": 8,
+    "track_ratio_mean": 0.442304124444081,
+    "mean_vx_m_s": 0.03538432995552648,
+    "max_tracking_p95_rad_max": 0.2045575857162476,
+    "max_tracking_p95_rad_mean": 0.2010799400508404,
+    "max_velocity_limit_excess_rad_s": 0.0,
+    "push_success_rate_mean": 0.90625,
+    "tracking_holds": {
+      "0": 0.20305166244506842,
+      "2": 0.20361462831497196,
+      "4": 0.2013275802135468,
+      "5": 0.2045575857162476
+    }
+  },
+  "decision": {
+    "promote": false,
+    "replace_lk097": false,
+    "reason": "The local ROCm B0G smoke proves hook/training plumbing but regresses the 8-seed rough z=0.002 gentle-push gate from the B0C lk097 7/8 near-pass to 4/8, with seed 4 unchanged near 0.2013 rad.",
+    "robot_validation_blocked": true
+  }
+}
