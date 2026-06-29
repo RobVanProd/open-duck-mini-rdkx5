@@ -8652,3 +8652,18 @@ falls at both positive and zero command, so the remaining terrain blocker is
 not solved by minor feed-forward context changes. The next useful offline
 branch is explicit state/history or a recovery teacher that changes seed 5's
 first contact transition. Robot validation remains blocked.
+
+The explicit state/history diagnostic was then tested:
+
+```text
+artifact: outputs/analysis/PHASE2_SEED5_EARLY_STATE_RECURRENT_DECISION.md
+status: HOLD_RECURRENT_SEED5_STILL_FALLS
+contract: obs,h_in -> action,h_out
+x=0.08 rough z=0.002 seed 5: fall at 48 samples
+```
+
+This recurrent ONNX is diagnostic-only and not robot-deployable. It still falls
+on seed 5 with negative velocity and corrected-envelope excess, so the next
+useful offline branch is not more representation capacity on the same labels.
+It is a recovery teacher/relabel pass that changes seed 5's first contact
+transition before the fall mode begins.

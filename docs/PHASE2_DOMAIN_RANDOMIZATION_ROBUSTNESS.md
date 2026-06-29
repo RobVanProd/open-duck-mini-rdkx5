@@ -1149,6 +1149,22 @@ This closes the cheapest contact-conditioned feed-forward rung. The next
 useful branch needs explicit state/history or a recovery teacher for seed 5's
 first contact transition, not another minor BC weighting/context tweak.
 
+A stateful recurrent diagnostic was also run on the same seed-5 aggregate:
+
+```text
+decision:
+  outputs/analysis/PHASE2_SEED5_EARLY_STATE_RECURRENT_DECISION.md
+
+status:
+  HOLD_RECURRENT_SEED5_STILL_FALLS
+```
+
+The recurrent ONNX is diagnostic-only (`obs,h_in -> action,h_out`) and is not
+robot-deployable. It still fell on seed 5 at x=0.08 rough z=0.002 after 48
+samples with negative velocity and corrected-envelope excess. This closes the
+cheap memory-only test on the current dataset; the next useful branch is a
+recovery teacher/relabel pass for seed 5's first contact transition.
+
 ## References
 
 Verified from arXiv:

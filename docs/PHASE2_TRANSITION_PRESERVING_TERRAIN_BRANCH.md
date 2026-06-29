@@ -630,3 +630,39 @@ conditioning is not the seed-5 recovery mechanism. The next branch must either
 test explicit state/history, or create a recovery teacher/relabel pass that
 changes seed 5's first contact transition before negative velocity and height
 collapse begin.
+
+## Recurrent State Diagnostic
+
+Artifact:
+
+```text
+decision: outputs/analysis/PHASE2_SEED5_EARLY_STATE_RECURRENT_DECISION.md
+status: HOLD_RECURRENT_SEED5_STILL_FALLS
+```
+
+A small stateful recurrent BC student was trained on the same latest seed-5
+aggregate:
+
+```text
+inputs:  obs[1,101], h_in[1,96]
+outputs: continuous_actions[1,14], h_out[1,96]
+```
+
+This is a diagnostic only, not a robot-deployable policy. The stateful
+evaluator carried `h_in -> h_out` through the rollout.
+
+Seed-5 x=0.08 rough z=0.002 still failed:
+
+```text
+status: HOLD_CANDIDATE_FALL_OR_TERMINATION
+samples: 48
+mean vx: -0.3137 m/s
+track ratio: -3.9218
+max velocity excess: 1.5672 rad/s
+max tracking p95: 0.2205 rad
+```
+
+Decision: do not continue recurrence-only training on this aggregate. With both
+contact-phase feed-forward and small recurrent BC holding, the next branch
+should create a recovery teacher/relabel pass that changes seed 5's first
+contact transition before the negative-velocity/fall mode begins.
