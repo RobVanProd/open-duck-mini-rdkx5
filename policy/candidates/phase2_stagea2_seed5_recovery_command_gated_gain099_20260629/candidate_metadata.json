@@ -1,0 +1,380 @@
+{
+  "baseline": {
+    "path": "/home/lsd/robots/open-duck-mini-rdkx5/policy/BEST_WALK_ONNX_2.onnx",
+    "sha256": "3c606f9381a1710cc8fecdb7442787dcbfce3ee9bc02a6f1224774ab2b3a1067"
+  },
+  "candidate": {
+    "name": "phase2_stagea2_seed5_recovery_command_gated_gain099_20260629",
+    "path": "/home/lsd/robots/open-duck-mini-rdkx5/policy/candidates/phase2_stagea2_seed5_recovery_command_gated_gain099_20260629/candidate.onnx",
+    "sha256": "209b85a75cf9cbbcf10df573c1b530921943a72e81082111889c15f63a9a2c7b",
+    "size_bytes": 1772930
+  },
+  "candidate_transform": {
+    "kind": "onnx_output_action_scale",
+    "scale": 0.99,
+    "source_policy": "policy/candidates/phase2_stagea2_seed5_recovery_command_gated_20260628/candidate.onnx",
+    "source_policy_sha256": "d0cec0b9dcc666416f0ecc8383a51367529273013d912b26399339e2c4b1c3e6",
+    "verify_json": "policy/candidates/phase2_stagea2_seed5_recovery_command_gated_gain099_20260629/onnx_scale_verify.json",
+    "verify_status": "PASS_ONNX_OUTPUT_SCALE_VERIFY",
+    "verify_max_abs_error": 0.0
+  },
+  "contract": {
+    "input_dim": 101,
+    "inputs": [
+      {
+        "dtype": "tensor(float)",
+        "name": "obs",
+        "shape": [
+          1,
+          101
+        ]
+      }
+    ],
+    "output_dim": 14,
+    "outputs": [
+      {
+        "dtype": "tensor(float)",
+        "name": "continuous_actions",
+        "shape": [
+          1,
+          14
+        ]
+      }
+    ],
+    "status": "PASS_POLICY_CONTRACT"
+  },
+  "evidence": {
+    "actuator_bridge_eval": {
+      "label": "actuator_bridge_eval_legacy",
+      "path": null,
+      "status": "MISSING"
+    },
+    "candidate_gate_x0": {
+      "label": "candidate_gate_x0",
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/phase2_stagea2_seed5_recovery_command_gated_gain099_x0_rough_z002_gentle_push_15s_8seed_cpu.json",
+      "sha256": "6a3955da2666f9250769e5f2ec81c7b9130ad8d4041f29a2a199164197433bfc",
+      "size_bytes": 53206,
+      "status": "PRESENT"
+    },
+    "candidate_gate_x008": {
+      "label": "candidate_gate_x008",
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/phase2_stagea2_seed5_recovery_command_gated_gain099_x008_rough_z002_gentle_push_15s_8seed_cpu.json",
+      "sha256": "4fe43084cf0ae2bc576b7296c751c99e17980f8a0713f856c24612e5f336349f",
+      "size_bytes": 54016,
+      "status": "PRESENT"
+    },
+    "contract_audit": {
+      "label": "contract_audit",
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/policy_sim_contract_audit.json",
+      "sha256": "d5fe8ce192cbe7a48e42e0b0fcf0a622d9451e86a08c57e6da72e139bcde228f",
+      "size_bytes": 14963,
+      "status": "PRESENT"
+    },
+    "target_velocity_summary": {
+      "label": "target_velocity_summary",
+      "path": null,
+      "status": "MISSING"
+    },
+    "training_manifest": {
+      "label": "training_manifest",
+      "path": null,
+      "status": "MISSING"
+    }
+  },
+  "generated_at": "2026-06-29T15:37:11Z",
+  "non_deployable_reason": null,
+  "required_evidence": [
+    "candidate_gate_x0",
+    "candidate_gate_x008",
+    "contract_audit",
+    "training_manifest"
+  ],
+  "sim_gate": {
+    "actuator_bridge_eval": {
+      "path": null,
+      "status": "MISSING"
+    },
+    "candidate_gate_x0": {
+      "aggregate": {
+        "gain099": {
+          "base_height_min_m": {
+            "max": 0.15643824636936188,
+            "mean": 0.1525943148881197,
+            "min": 0.14620736241340637,
+            "p50": 0.15245697647333145,
+            "p95": 0.15636423975229263
+          },
+          "body_pitch_p95_rad": {
+            "max": 0.03499403634762632,
+            "mean": 0.026482721189873673,
+            "min": 0.015946483684551996,
+            "p50": 0.02598710540990138,
+            "p95": 0.03432035554850232
+          },
+          "double_support_pct": {
+            "max": 99.86666666666667,
+            "mean": 99.28333333333333,
+            "min": 98.4,
+            "p50": 99.33333333333333,
+            "p95": 99.82
+          },
+          "duration_complete_count": 8,
+          "fall_count": 0,
+          "left_swing_lift_p95_m": {
+            "max": 0.020609781425446273,
+            "mean": 0.013320933428726025,
+            "min": 0.002373814582824707,
+            "p50": 0.01720925197005272,
+            "p95": 0.01996466391719878
+          },
+          "max_pitch_vel_limit_excess_rad_s": {
+            "max": 0.0,
+            "mean": 0.0,
+            "min": 0.0,
+            "p50": 0.0,
+            "p95": 0.0
+          },
+          "max_pitch_vel_p95_rad_s": {
+            "max": 0.39062291383743286,
+            "mean": 0.36651849746704096,
+            "min": 0.3298014402389526,
+            "p50": 0.3703892230987549,
+            "p95": 0.3879991471767424
+          },
+          "max_tracking_p95_rad": {
+            "max": 0.06867255568504332,
+            "mean": 0.0651966780424118,
+            "min": 0.06344720125198364,
+            "p50": 0.06509720385074616,
+            "p95": 0.06787825971841811
+          },
+          "mean_local_vx_m_s": {
+            "max": 0.0036753572049280287,
+            "mean": 0.0006580184500614716,
+            "min": -0.001995364632171307,
+            "p50": 0.00036347645946413346,
+            "p95": 0.002990662251633967
+          },
+          "min_swing_peak_lift_m": {
+            "max": 0.01983962580561638,
+            "mean": 0.008930450771003962,
+            "min": 0.0017339438199996948,
+            "p50": 0.0063178036361932755,
+            "p95": 0.019022687152028084
+          },
+          "min_swing_rel_x_range_p95_m": {
+            "max": 0.016285622492432594,
+            "mean": 0.003283931757323444,
+            "min": 0.0,
+            "p50": 0.0007767332717776299,
+            "p95": 0.012255008425563579
+          },
+          "min_swing_segment_count": {
+            "max": 1.0,
+            "mean": 0.5,
+            "min": 0.0,
+            "p50": 0.5,
+            "p95": 1.0
+          },
+          "push_event_count": {
+            "max": 13.0,
+            "mean": 12.375,
+            "min": 10.0,
+            "p50": 13.0,
+            "p95": 13.0
+          },
+          "push_success_rate": {
+            "max": 1.0,
+            "mean": 0.9703525641025641,
+            "min": 0.9166666666666666,
+            "p50": 1.0,
+            "p95": 1.0
+          },
+          "right_swing_lift_p95_m": {
+            "max": 0.04764088317751884,
+            "mean": 0.015603160379188399,
+            "min": 0.0017339438199996948,
+            "p50": 0.007702796906232833,
+            "p95": 0.04040177650749683
+          },
+          "runs": 8,
+          "samples": {
+            "max": 750.0,
+            "mean": 750.0,
+            "min": 750.0,
+            "p50": 750.0,
+            "p95": 750.0
+          },
+          "single_support_pct": {
+            "max": 1.6,
+            "mean": 0.6666666666666667,
+            "min": 0.13333333333333333,
+            "p50": 0.5333333333333334,
+            "p95": 1.4600000000000002
+          },
+          "track_ratio": null
+        }
+      },
+      "candidate_gate_status": "PASS_CANDIDATE_SEED_SWEEP",
+      "eval_role": "candidate_seed_sweep",
+      "hold_count": 0,
+      "overall_status": "PASS_CANDIDATE_SEED_SWEEP",
+      "pass_count": 8,
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/phase2_stagea2_seed5_recovery_command_gated_gain099_x0_rough_z002_gentle_push_15s_8seed_cpu.json",
+      "status": "PASS_PARSED_GATE_STATUS",
+      "total_count": 8
+    },
+    "candidate_gate_x008": {
+      "aggregate": {
+        "gain099": {
+          "base_height_min_m": {
+            "max": 0.15645791590213776,
+            "mean": 0.15258995443582535,
+            "min": 0.14637506008148193,
+            "p50": 0.1525259017944336,
+            "p95": 0.15639195144176482
+          },
+          "body_pitch_p95_rad": {
+            "max": 0.12122891036591198,
+            "mean": 0.11278344637828959,
+            "min": 0.10480225152666915,
+            "p50": 0.11226842776096703,
+            "p95": 0.12041218322611999
+          },
+          "double_support_pct": {
+            "max": 77.60000000000001,
+            "mean": 74.36666666666667,
+            "min": 72.26666666666667,
+            "p50": 74.2,
+            "p95": 76.94666666666667
+          },
+          "duration_complete_count": 8,
+          "fall_count": 0,
+          "left_swing_lift_p95_m": {
+            "max": 0.012683130800724031,
+            "mean": 0.01170931535307318,
+            "min": 0.011127649806439877,
+            "p50": 0.011648662760853766,
+            "p95": 0.012407012386247519
+          },
+          "max_pitch_vel_limit_excess_rad_s": {
+            "max": 0.0,
+            "mean": 0.0,
+            "min": 0.0,
+            "p50": 0.0,
+            "p95": 0.0
+          },
+          "max_pitch_vel_p95_rad_s": {
+            "max": 2.395007908344269,
+            "mean": 2.3655875772237773,
+            "min": 2.3371922969818115,
+            "p50": 2.3615895211696616,
+            "p95": 2.393626868724823
+          },
+          "max_tracking_p95_rad": {
+            "max": 0.19441056251525876,
+            "mean": 0.19238954335451125,
+            "min": 0.19040722846984862,
+            "p50": 0.19267148971557618,
+            "p95": 0.19419844567775724
+          },
+          "mean_local_vx_m_s": {
+            "max": 0.03595531846693484,
+            "mean": 0.032833327030807366,
+            "min": 0.029885879005441287,
+            "p50": 0.03268613017363532,
+            "p95": 0.03558467762484497
+          },
+          "min_swing_peak_lift_m": {
+            "max": 0.018636684864759445,
+            "mean": 0.013575144577771425,
+            "min": 0.01160743460059166,
+            "p50": 0.012454458512365818,
+            "p95": 0.01803888976573944
+          },
+          "min_swing_rel_x_range_p95_m": {
+            "max": 0.01949697954114527,
+            "mean": 0.01313546613091603,
+            "min": 0.006346690468490124,
+            "p50": 0.013754105393309145,
+            "p95": 0.01935688261757605
+          },
+          "min_swing_segment_count": {
+            "max": 21.0,
+            "mean": 17.25,
+            "min": 14.0,
+            "p50": 16.5,
+            "p95": 20.65
+          },
+          "push_event_count": {
+            "max": 13.0,
+            "mean": 12.375,
+            "min": 10.0,
+            "p50": 13.0,
+            "p95": 13.0
+          },
+          "push_success_rate": {
+            "max": 1.0,
+            "mean": 0.9703525641025641,
+            "min": 0.9166666666666666,
+            "p50": 1.0,
+            "p95": 1.0
+          },
+          "right_swing_lift_p95_m": {
+            "max": 0.011867992207407951,
+            "mean": 0.011447732336819172,
+            "min": 0.011043324321508409,
+            "p50": 0.011435869149863718,
+            "p95": 0.011852662954479455
+          },
+          "runs": 8,
+          "samples": {
+            "max": 750.0,
+            "mean": 750.0,
+            "min": 750.0,
+            "p50": 750.0,
+            "p95": 750.0
+          },
+          "single_support_pct": {
+            "max": 27.6,
+            "mean": 25.583333333333332,
+            "min": 22.133333333333333,
+            "p50": 25.799999999999997,
+            "p95": 27.413333333333334
+          },
+          "track_ratio": {
+            "max": 0.44944148083668545,
+            "mean": 0.41041658788509205,
+            "min": 0.37357348756801606,
+            "p50": 0.4085766271704415,
+            "p95": 0.4448084703105621
+          }
+        }
+      },
+      "candidate_gate_status": "PASS_CANDIDATE_SEED_SWEEP",
+      "eval_role": "candidate_seed_sweep",
+      "hold_count": 0,
+      "overall_status": "PASS_CANDIDATE_SEED_SWEEP",
+      "pass_count": 8,
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/phase2_stagea2_seed5_recovery_command_gated_gain099_x008_rough_z002_gentle_push_15s_8seed_cpu.json",
+      "status": "PASS_PARSED_GATE_STATUS",
+      "total_count": 8
+    }
+  },
+  "sources": {
+    "playground_repo": {
+      "branch": "codex/forward-progress-reward",
+      "commit": "d969ca8c3760451a39657161cb376c44c5155a6d",
+      "path": "/home/lsd/robots/Open_Duck_Playground",
+      "status_short": ""
+    },
+    "rdk_repo": {
+      "branch": "codex/live-oracle-dagger-phase-student",
+      "commit": "08c0381dbcdfb6cbe1536910090dfe6ea01b1f92",
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5",
+      "status_short": "?? outputs/analysis/PHASE2_B0D_LOCAL_GPU_SCALE_HOLD_SUMMARY.md\n?? outputs/analysis/PHASE2_SEED5_NEIGHBOR_RECOVERY_STAGEA2_COMMAND_GATED_GAIN099_X008_ROUGH_Z002_GENTLE_PUSH_8SEED_GATE_CPU.md\n?? outputs/analysis/PHASE2_STAGEA2_SEED5_RECOVERY_COMMAND_GATED_GAIN099_X008_ROUGH_Z002_GENTLE_PUSH_15S_8SEED_CPU.md\n?? outputs/analysis/PHASE2_STAGEA2_SEED5_RECOVERY_COMMAND_GATED_GAIN099_X008_ROUGH_Z002_NOPUSH_15S_8SEED_CPU.md\n?? outputs/analysis/PHASE2_STAGEA2_SEED5_RECOVERY_COMMAND_GATED_GAIN099_X0_ROUGH_Z002_GENTLE_PUSH_15S_8SEED_CPU.md\n?? outputs/analysis/PHASE2_STAGEA2_SEED5_RECOVERY_COMMAND_GATED_GAIN099_X0_ROUGH_Z002_NOPUSH_15S_8SEED_CPU.md\n?? outputs/analysis/phase2_b0d_local_gpu_scale_hold_summary.json\n?? outputs/analysis/phase2_seed5_neighbor_recovery_stagea2_command_gated_gain099_x008_rough_z002_gentle_push_8seed_gate_cpu.json\n?? outputs/analysis/phase2_stagea2_seed5_recovery_command_gated_gain099_x008_rough_z002_gentle_push_15s_8seed_cpu.json\n?? outputs/analysis/phase2_stagea2_seed5_recovery_command_gated_gain099_x008_rough_z002_nopush_15s_8seed_cpu.json\n?? outputs/analysis/phase2_stagea2_seed5_recovery_command_gated_gain099_x0_rough_z002_gentle_push_15s_8seed_cpu.json\n?? outputs/analysis/phase2_stagea2_seed5_recovery_command_gated_gain099_x0_rough_z002_nopush_15s_8seed_cpu.json\n?? outputs/phase2_domain_randomization/stage_b0_mild_push_from_a2_gpu/\n?? outputs/phase2_domain_randomization/stage_b0c_rough_z002_push_tracking_margin_from_b0_gpu/smoke_20260629T062042Z_gpu/2026_06_29_022447_81920.onnx\n?? outputs/phase2_domain_randomization/stage_b0c_rough_z002_push_tracking_margin_from_b0_gpu/smoke_20260629T062042Z_gpu/2026_06_29_022447_81920/\n?? outputs/phase2_domain_randomization/stage_b0c_rough_z002_push_tracking_margin_from_b0_gpu/smoke_20260629T062042Z_gpu/2026_06_29_022651_163840.onnx\n?? outputs/phase2_domain_randomization/stage_b0c_rough_z002_push_tracking_margin_from_b0_gpu/smoke_20260629T062042Z_gpu/2026_06_29_022651_163840/\n?? outputs/phase2_domain_randomization/stage_b0c_rough_z002_push_tracking_margin_from_b0_gpu/smoke_20260629T062042Z_gpu/2026_06_29_022725_245760.onnx\n?? outputs/phase2_domain_randomization/stage_b0c_rough_z002_push_tracking_margin_from_b0_gpu/smoke_20260629T062042Z_gpu/2026_06_29_022725_245760/\n?? outputs/phase2_domain_randomization/stage_b0c_rough_z002_push_tracking_margin_from_b0_gpu/smoke_20260629T062042Z_gpu/events.out.tfevents.1782714044.LSD\n?? outputs/phase2_domain_randomization/stage_b0c_rough_z002_push_tracking_margin_from_b0_gpu/smoke_20260629T062042Z_gpu/scene_rough_terrain_backlash.xml.original\n?? outputs/phase2_domain_randomization/stage_b0c_rough_z002_push_tracking_margin_from_b0_gpu/smoke_20260629T062042Z_gpu/stderr.txt\n?? outputs/phase2_domain_randomization/stage_b0c_rough_z002_push_tracking_margin_from_b0_gpu/smoke_20260629T062042Z_gpu/stdout.txt\n?? outputs/phase2_domain_randomization/stage_b0d_gpu_recovery_smoke/\n?? outputs/phase2_domain_randomization/stage_b0d_tracking_margin_cpu_path_check/\n?? outputs/phase2_domain_randomization/stage_b0d_tracking_margin_from_b0c_gpu/\n?? outputs/phase2_domain_randomization/stage_b0d_tracking_margin_from_b0c_rocm_memfix_gpu/\n?? outputs/phase2_domain_randomization/stage_b0d_tracking_margin_local_gpu_32env/\n?? outputs/phase2_domain_randomization/stage_b0d_tracking_margin_local_gpu_scale/\n?? outputs/phase2_domain_randomization/stage_b0e_motion_preserving_tracking_cpu_path_check/\n?? outputs/phase2_domain_randomization/stage_b0e_motion_preserving_tracking_gpu_path_check/\n?? outputs/phase2_domain_randomization/stage_b0e_motion_preserving_tracking_gpu_scale_matrix/\n?? outputs/phase2_domain_randomization/stage_b0e_motion_preserving_tracking_gpu_scale_matrix_memfix/\n?? outputs/phase2_domain_randomization/stage_b0e_motion_preserving_tracking_local_gpu_16env/\n?? outputs/phase2_domain_randomization/stage_b0e_motion_preserving_tracking_local_gpu_32env/\n?? outputs/phase2_domain_randomization/stage_b0e_motion_preserving_tracking_local_rocm_memfix_16env_fullshape/\n?? outputs/phase2_domain_randomization/stage_b0e_motion_preserving_tracking_local_rocm_memfix_32env/\n?? outputs/phase2_domain_randomization/stage_b0e_motion_preserving_tracking_local_rocm_memfix_32env_noeval/\n?? outputs/phase2_domain_randomization/stage_b0e_motion_preserving_tracking_local_rocm_memfix_8env_fullshape/\n?? outputs/phase2_domain_randomization/stage_b0g_push_recovery_local_rocm_smoke/\n?? outputs/phase2_domain_randomization/stage_b1_full_flat_gentle_push_from_a2_gpu/\n?? outputs/phase2_domain_randomization/stage_c0_terrain_z002_preserve_from_a2_gpu/\n?? outputs/phase2_domain_randomization/stage_c1_terrain_z002_tracking_from_c0_gpu/\n?? outputs/phase2_domain_randomization/stage_c2_terrain_z002_targetrate_from_c1_gpu/\n?? outputs/phase2_domain_randomization/stage_c3_terrain_z002_contact_from_c2_gpu/\n?? outputs/phase2_domain_randomization/stage_c4_terrain_z002_clearance_from_c3_gpu/\n?? outputs/phase2_domain_randomization/stage_c4b_terrain_z002_clearance_weak_from_c3_gpu/\n?? outputs/phase2_domain_randomization/stage_c5_terrain_z002_clearance_preserve_from_c3_gpu/\n?? outputs/phase2_domain_randomization/stage_c5a_terrain_z002_clearance_preserve_xla_autotune0_from_c3_gpu/\n?? outputs/phase2_domain_randomization/stage_c6_terrain_z002_transition_clearance_from_c3_gpu/\n?? outputs/phase2_domain_randomization/stage_c7_terrain_z002_gate_selected_from_c3_gpu/\n?? outputs/phase2_domain_randomization/stage_c8_terrain_z002_swing_balance_from_c3_gpu/\n?? outputs/phase2_domain_randomization/stage_c9_terrain_z002_swing_advance_from_c7_gpu/\n?? policy/candidates/phase2_stagea2_seed5_recovery_command_gated_gain099_20260629/\n?? runtime/scripts/live_knee_monitor.py\n?? tools/scale_onnx_policy_output.py"
+    }
+  },
+  "status": "READY_FOR_SIM_GATE_REVIEW",
+  "training_manifest": null
+}

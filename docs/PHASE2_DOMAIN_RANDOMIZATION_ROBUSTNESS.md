@@ -1544,8 +1544,68 @@ multiplier. The next deployable check is to package a real gain-0.99 candidate
 or remove the evaluator-only multiplier, then re-run the canonical no-push and
 gentle-push gates.
 
-Do not continue scalar gain sweeps. The next correction needs to be local to
-push recovery / high-rate moments rather than a global action attenuation.
+Packaged gain-0.99 candidate:
+
+```text
+candidate:
+  policy/candidates/phase2_stagea2_seed5_recovery_command_gated_gain099_20260629/candidate.onnx
+
+candidate_sha256:
+  209b85a75cf9cbbcf10df573c1b530921943a72e81082111889c15f63a9a2c7b
+
+decision:
+  outputs/analysis/PHASE2_STAGEA2_GAIN099_PACKAGED_CANDIDATE_DECISION.md
+
+status:
+  PASS_PACKAGED_GAIN099_ROUGH_Z002_PUSH_AND_NOPUSH_SIM_GATES
+```
+
+The `0.99` action scale was baked into the ONNX graph and verified:
+
+```text
+policy/candidates/phase2_stagea2_seed5_recovery_command_gated_gain099_20260629/onnx_scale_verify.json
+status: PASS_ONNX_OUTPUT_SCALE_VERIFY
+max_abs_error: 0.0
+```
+
+The packaged candidate was then re-gated with `policy_action_gain=1.0`:
+
+```text
+x=0.08 no-push rough z=0.002, 15 s:
+  PASS_CANDIDATE_SIM_GATE 8/8
+  falls: 0/8
+  mean track ratio: 0.4053
+  max velocity excess: 0.0000 rad/s
+  max tracking p95: 0.1975 rad
+
+x=0.0 no-push rough z=0.002, 15 s:
+  PASS_CANDIDATE_SIM_GATE 8/8
+  falls: 0/8
+  mean vx: 0.0007 m/s
+  max velocity excess: 0.0000 rad/s
+  max tracking p95: 0.0663 rad
+
+x=0.08 gentle-push rough z=0.002, 15 s:
+  PASS_CANDIDATE_SIM_GATE 8/8
+  falls: 0/8
+  mean track ratio: 0.4104
+  max velocity excess: 0.0000 rad/s
+  max tracking p95: 0.1944 rad
+  mean push success: 0.9704
+
+x=0.0 gentle-push rough z=0.002, 15 s:
+  PASS_CANDIDATE_SIM_GATE 8/8
+  falls: 0/8
+  mean vx: 0.0007 m/s
+  max velocity excess: 0.0000 rad/s
+  max tracking p95: 0.0687 rad
+  mean push success: 0.9704
+```
+
+This is the current best offline Phase 2 sim candidate. Do not continue scalar
+gain sweeps. Further work should either advance terrain/push curriculum from
+this packaged candidate or prepare a reviewed suspended hardware validation
+plan; grounded replay remains blocked.
 
 ## B0E A100 Corrected-Task Run
 
