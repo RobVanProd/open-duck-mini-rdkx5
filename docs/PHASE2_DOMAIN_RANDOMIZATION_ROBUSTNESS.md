@@ -243,6 +243,38 @@ python3 tools/run_colab_cli_cuda_workflow.py \
 Do not treat any B0D artifact as promotable until the corrected-bridge
 rough-terrain gentle-push 8-seed gates are run and reviewed locally.
 
+B0E motion-preserving tracking-margin attempt:
+
+```text
+artifact:
+  outputs/analysis/PHASE2_B0E_LOCAL_ROCM_HOLD_DECISION.md
+
+status:
+  HOLD_LOCAL_ROCM_EVALUATOR_RESET
+```
+
+B0E was defined as a follow-up to B0D that keeps the B0C restore checkpoint but
+uses a milder actuator-tracking penalty (`-0.015`) with stronger forward
+progress terms. The intent was to preserve B0C's better compact `x=0.08` motion
+while testing whether a smaller tracking-margin nudge could close the narrow
+tracking miss.
+
+Local ROCm attempts at both 32 envs and 16 envs failed before any PPO update or
+checkpoint export, during Brax evaluator reset:
+
+```text
+jax.jit(eval_env.reset):
+  rocblas_gemm_strided_batched_ex failed with rocblas_status_internal_error
+```
+
+This is a backend hold, not a policy result. Do not compare B0E against B0C/B0D
+gate metrics yet, and do not keep retrying the same local ROCm path without a
+backend change. A tiny CPU-only path check passed (`1` env, `20` timesteps,
+PPO step `100`), confirming the B0E command wiring is structurally valid, but
+that CPU check is not a policy result and is not promotable. The next valid B0E
+paths are CUDA/A100 with the pinned workflow, CPU only for more command-plumbing
+checks, or a local ROCm evaluator-reset fix.
+
 Push-eval plumbing result:
 
 ```text

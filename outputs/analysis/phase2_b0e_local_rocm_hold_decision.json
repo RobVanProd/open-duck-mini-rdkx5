@@ -1,0 +1,76 @@
+{
+  "status": "HOLD_LOCAL_ROCM_EVALUATOR_RESET",
+  "robot_touched": false,
+  "deploy_performed": false,
+  "grounded_replay_performed": false,
+  "runtime_behavior_changed": false,
+  "policy_overwritten": false,
+  "interpretation": "B0E failed before PPO update/export in local ROCm evaluator reset. This is a backend hold, not a policy result.",
+  "restore_checkpoint_path": "outputs/phase2_domain_randomization/stage_b0c_rough_z002_push_tracking_margin_from_b0_gpu/smoke_20260629T062042Z_gpu/2026_06_29_022725_245760",
+  "recipe": {
+    "actuator_bridge_enabled": true,
+    "actuator_tracking_scale": -0.015,
+    "restore_policy_kl_scale": 1.5,
+    "ppo_learning_rate": 0.000012,
+    "ppo_clipping_epsilon": 0.04,
+    "ppo_max_grad_norm": 0.2,
+    "forward_progress_scale": 2.5,
+    "tracking_lin_vel_scale": 3.0,
+    "tracking_sigma": 0.01,
+    "command_progress_scale": 1.5,
+    "command_progress_shortfall_scale": -4.0,
+    "command_progress_required_ratio": 0.45,
+    "rough_terrain_backlash": true,
+    "mild_domain_randomization": true,
+    "mild_pushes": true
+  },
+  "attempts": [
+    {
+      "name": "stage_b0e_motion_preserving_tracking_local_gpu_32env",
+      "num_envs": 32,
+      "status": "HOLD_SMOKE_RUN",
+      "returncode": 1,
+      "elapsed_s": 33.11112273200706,
+      "failure": "rocblas_gemm_strided_batched_ex failed with rocblas_status_internal_error during jax.jit(eval_env.reset)",
+      "manifest_sha256": "2bd1dd5d2d6b6092f94fd0a7619bd45145890055178ad2096bcc0c6156af27ab",
+      "stderr_sha256": "6b2e344febf21e701c8fcd10ca1b31fc0c454421113371ce967044b3ea9f42fb"
+    },
+    {
+      "name": "stage_b0e_motion_preserving_tracking_local_gpu_16env",
+      "num_envs": 16,
+      "status": "HOLD_SMOKE_RUN",
+      "returncode": 1,
+      "elapsed_s": 49.771142542987945,
+      "failure": "rocblas_gemm_strided_batched_ex failed with rocblas_status_internal_error during jax.jit(eval_env.reset)",
+      "manifest_sha256": "831fefd37655a3e26a89eb5f35200e4ac55ffe2ce23a53cadb0a066f87e2ba03",
+      "stderr_sha256": "8d3d9d46888820007f80f56fbaf60484bb1211822c3e7e5cbaf407a40fa4ed28"
+    }
+  ],
+  "cpu_path_check": {
+    "name": "stage_b0e_motion_preserving_tracking_cpu_path_check",
+    "path": "outputs/phase2_domain_randomization/stage_b0e_motion_preserving_tracking_cpu_path_check/smoke_20260629T082956Z_cpu",
+    "platform": "cpu",
+    "num_envs": 1,
+    "num_timesteps": 20,
+    "episode_length": 20,
+    "export_min_step": 1,
+    "status": "PASS_SMOKE_RUN",
+    "returncode": 0,
+    "elapsed_s": 84.47424462999334,
+    "step_lines": [
+      "STEP: 100 reward: 1.936186671257019 reward_std: 0.9708608388900757"
+    ],
+    "checkpoint_lines": [
+      "Saving checkpoint (step: 100): /home/lsd/robots/open-duck-mini-rdkx5/outputs/phase2_domain_randomization/stage_b0e_motion_preserving_tracking_cpu_path_check/smoke_20260629T082956Z_cpu/2026_06_29_043048_100"
+    ],
+    "not_a_policy_result": true,
+    "manifest_sha256": "888658162e4e2a3352703b59d4e468e455150411634a4ef196a786ed3b17f08b",
+    "stderr_sha256": "a9ae14f07bdb3dd0e4b0a99b0d669a35ba35518ad4852f46a2998b4ae0045a74",
+    "stdout_sha256": "2e4162efaf9e542caea583c93265efa78d9dcf201a2aa248108661a4bc61f4cc"
+  },
+  "next_valid_actions": [
+    "Run B0E on a visible CUDA/A100 Colab session with the pinned workflow.",
+    "Use CPU only for further command-plumbing checks, not as a policy result.",
+    "Fix the local ROCm evaluator-reset failure before retrying bounded local B0E smoke."
+  ]
+}
