@@ -666,3 +666,79 @@ Decision: do not continue recurrence-only training on this aggregate. With both
 contact-phase feed-forward and small recurrent BC holding, the next branch
 should create a recovery teacher/relabel pass that changes seed 5's first
 contact transition before the negative-velocity/fall mode begins.
+
+## Stage-A2 / Seed5-Recovery Command Gate
+
+Artifact:
+
+```text
+decision:
+  outputs/analysis/PHASE2_SEED5_NEIGHBOR_RECOVERY_STAGEA2_COMMAND_GATED_DECISION.md
+
+candidate:
+  policy/candidates/phase2_stagea2_seed5_recovery_command_gated_20260628/candidate.onnx
+
+candidate_sha256:
+  d0cec0b9dcc666416f0ecc8383a51367529273013d912b26399339e2c4b1c3e6
+
+status:
+  PASS_ROUGH_TERRAIN_NO_PUSH_HOLD_GENTLE_PUSH_ENVELOPE
+```
+
+The seed5 neighbor-recovery contact/phase student fixed the rough `x=0.08`
+hard seed but failed rough `x=0.0`. A deployable ONNX command gate was then
+tested:
+
+```text
+abs(obs[6]) <= 0.02:
+  policy/candidates/phase2_stage_a2_gain099_20260628/candidate.onnx
+
+abs(obs[6]) > 0.02:
+  outputs/analysis/phase2_seed5_neighbor_recovery_contactphase_bc_student/candidate.onnx
+```
+
+The wrapper preserves the deployed `obs[1,101] -> continuous_actions[1,14]`
+contract and verified with zero action error against the selected branch.
+
+No-push rough-terrain result (`rough_terrain_backlash`, `z=0.002`, corrected
+bridge, 5 s, seeds 0-7):
+
+```text
+x=0.08: PASS_CANDIDATE_SIM_GATE 8/8
+  falls: 0/8
+  mean vx: 0.0332 m/s
+  mean track ratio: 0.4150
+  max pitch-chain p95 target velocity: 2.4109 rad/s
+  max velocity excess: 0.0000 rad/s
+  max tracking p95: 0.1984 rad
+  min swing peak lift: 0.0108 m
+
+x=0.0: PASS_CANDIDATE_SIM_GATE 8/8
+  falls: 0/8
+  mean vx: 0.0024 m/s
+  max velocity excess: 0.0000 rad/s
+  max tracking p95: 0.1056 rad
+```
+
+Gentle-push rough-terrain diagnostic (`push interval 1.0-1.5 s`, magnitude
+`0.05-0.10`) showed stability but not a clean moving promotion:
+
+```text
+x=0.08: HOLD_CANDIDATE_TARGET_VELOCITY
+  falls: 0/8
+  mean push recovery success: 0.9062
+  max velocity excess: 0.0212 rad/s
+  max tracking p95: 0.1964 rad
+
+x=0.0: PASS_CANDIDATE_SIM_GATE 8/8
+  falls: 0/8
+  mean push recovery success: 0.9062
+  max velocity excess: 0.0000 rad/s
+```
+
+Interpretation: this is the first command-conditioned deployable-shape
+rough-terrain `z=0.002` no-push pass in this branch. It is not yet a robust
+push candidate because the moving gentle-push gate has a small corrected
+envelope excess on one seed. The next Phase 2 step should reduce perturbation
+target-rate margin or fine-tune from this command-gated artifact with push
+perturbations active.
