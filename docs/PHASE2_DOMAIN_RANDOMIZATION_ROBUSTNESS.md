@@ -66,6 +66,17 @@ outputs/analysis/PHASE2_Z005_SUPPORT_NEXT_RECIPE.md
 outputs/analysis/phase2_z005_support_next_recipe.json
 ```
 
+Current hash manifest:
+
+```text
+outputs/analysis/PHASE2_ARTIFACT_MANIFEST.md
+outputs/analysis/phase2_artifact_manifest.json
+```
+
+Use the artifact manifest when reviewing the exact corrected bridge,
+warm-start checkpoint, candidate ONNX, stage-gate evidence, and promotion tools
+that define the current Phase 2 state.
+
 This recipe continues from the last z=0.002 passing A2 checkpoint, keeps the
 corrected bridge active, uses z=0.005 rough terrain with no push, and targets
 the seed-5 support collapse directly:

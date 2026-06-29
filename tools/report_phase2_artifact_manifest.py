@@ -1,0 +1,254 @@
+#!/usr/bin/env python3
+"""Write a compact hash manifest for the current Phase 2 stage.
+
+The manifest is a review artifact for the offline domain-randomization
+campaign. It records the exact candidate, corrected bridge, warm-start
+checkpoint, stage-gate evidence, and recipe/decision tools currently defining
+Phase 2. It is read-only: it does not train, SSH, deploy, touch the robot, or
+modify Playground.
+"""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import subprocess
+from pathlib import Path
+from typing import Any
+
+
+ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_OUTPUT_MD = ROOT / "outputs/analysis/PHASE2_ARTIFACT_MANIFEST.md"
+DEFAULT_OUTPUT_JSON = ROOT / "outputs/analysis/phase2_artifact_manifest.json"
+DEFAULT_CANDIDATE = ROOT / "policy/candidates/phase2_stagea2_seed5_recovery_command_gated_gain099_20260629/candidate.onnx"
+DEFAULT_CANDIDATE_METADATA = (
+    ROOT / "policy/candidates/phase2_stagea2_seed5_recovery_command_gated_gain099_20260629/candidate_metadata.json"
+)
+DEFAULT_BRIDGE = ROOT / "outputs/analysis/actuator_response_fit_corrected_knee.json"
+DEFAULT_RESTORE_CHECKPOINT = (
+    ROOT
+    / "outputs/phase2_domain_randomization/stage_a2_preserve_narrow_flat_no_push_gpu"
+    / "smoke_20260628T031553Z_gpu/2026_06_27_232221_491520"
+)
+
+
+REVIEW_ARTIFACTS = [
+    "docs/PHASE2_DOMAIN_RANDOMIZATION_ROBUSTNESS.md",
+    "outputs/analysis/PHASE2_CURRENT_STATUS.md",
+    "outputs/analysis/phase2_current_status.json",
+    "outputs/analysis/PHASE2_CURRICULUM_GATE_LEDGER.md",
+    "outputs/analysis/phase2_curriculum_gate_ledger.json",
+    "outputs/analysis/PHASE2_Z005_SEED5_FAILURE_DIAGNOSTIC.md",
+    "outputs/analysis/phase2_z005_seed5_failure_diagnostic.json",
+    "outputs/analysis/PHASE2_Z005_SUPPORT_NEXT_RECIPE.md",
+    "outputs/analysis/phase2_z005_support_next_recipe.json",
+    "outputs/analysis/PHASE2_NEXT_RUN_PLAN.md",
+    "outputs/analysis/phase2_next_run_plan.json",
+    "tools/plan_phase2_z005_support_recipe.py",
+    "tools/report_phase2_z005_post_training_gates.py",
+    "tools/run_colab_cli_cuda_workflow.py",
+]
+
+
+GATE_ARTIFACTS = [
+    "outputs/analysis/phase2_stagea2_seed5_recovery_command_gated_gain099_x008_rough_z002_nopush_15s_8seed_cpu.json",
+    "outputs/analysis/phase2_stagea2_seed5_recovery_command_gated_gain099_x0_rough_z002_nopush_15s_8seed_cpu.json",
+    "outputs/analysis/phase2_stagea2_seed5_recovery_command_gated_gain099_x008_rough_z002_gentle_push_15s_8seed_cpu.json",
+    "outputs/analysis/phase2_stagea2_seed5_recovery_command_gated_gain099_x0_rough_z002_gentle_push_15s_8seed_cpu.json",
+    "outputs/analysis/phase2_stagea2_seed5_recovery_command_gated_gain099_x008_rough_z005_nopush_15s_8seed_cpu.json",
+    "outputs/analysis/phase2_stagea2_seed5_recovery_command_gated_gain099_x0_rough_z005_nopush_15s_8seed_cpu.json",
+]
+
+
+def rel(path: Path | str | None) -> str | None:
+    if path is None:
+        return None
+    path = Path(path)
+    try:
+        return str(path.resolve().relative_to(ROOT))
+    except ValueError:
+        return str(path)
+
+
+def file_sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def directory_sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    for child in sorted(item for item in path.rglob("*") if item.is_file()):
+        relative = child.relative_to(path).as_posix()
+        digest.update(relative.encode())
+        digest.update(b"\0")
+        digest.update(file_sha256(child).encode())
+        digest.update(b"\0")
+    return digest.hexdigest()
+
+
+def artifact(path: Path) -> dict[str, Any]:
+    item: dict[str, Any] = {
+        "path": rel(path),
+        "exists": path.exists(),
+    }
+    if not path.exists():
+        item["status"] = "MISSING"
+        return item
+    if path.is_dir():
+        files = [child for child in path.rglob("*") if child.is_file()]
+        item.update(
+            {
+                "status": "PRESENT_DIR",
+                "sha256": directory_sha256(path),
+                "file_count": len(files),
+                "size_bytes": sum(child.stat().st_size for child in files),
+            }
+        )
+    else:
+        item.update(
+            {
+                "status": "PRESENT_FILE",
+                "sha256": file_sha256(path),
+                "size_bytes": path.stat().st_size,
+            }
+        )
+    return item
+
+
+def run_git(command: list[str]) -> str | None:
+    completed = subprocess.run(command, cwd=ROOT, capture_output=True, text=True, check=False)
+    if completed.returncode != 0:
+        return None
+    return completed.stdout.strip()
+
+
+def git_state() -> dict[str, Any]:
+    branch = run_git(["git", "rev-parse", "--abbrev-ref", "HEAD"])
+    upstream = run_git(["git", "rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{u}"])
+    return {
+        "branch": branch,
+        "upstream": upstream,
+        "note": (
+            "This manifest records stable artifact hashes. It intentionally does not record HEAD, "
+            "because a committed manifest cannot self-reference its containing commit hash."
+        ),
+    }
+
+
+def load_json_optional(path: Path) -> dict[str, Any]:
+    try:
+        return json.loads(path.read_text())
+    except Exception:
+        return {}
+
+
+def collect(args: argparse.Namespace) -> dict[str, Any]:
+    candidate = Path(args.candidate)
+    metadata = Path(args.candidate_metadata)
+    bridge = Path(args.bridge_json)
+    restore_checkpoint = Path(args.restore_checkpoint)
+    ledger = load_json_optional(ROOT / "outputs/analysis/phase2_curriculum_gate_ledger.json")
+    recipe = load_json_optional(ROOT / "outputs/analysis/phase2_z005_support_next_recipe.json")
+    return {
+        "status": "PASS_PHASE2_ARTIFACT_MANIFEST_READY",
+        "stage": "stage_z005_support",
+        "current_gate_status": ledger.get("status"),
+        "next_recipe_status": recipe.get("status"),
+        "git": git_state(),
+        "core_artifacts": {
+            "candidate": artifact(candidate),
+            "candidate_metadata": artifact(metadata),
+            "corrected_bridge": artifact(bridge),
+            "restore_checkpoint": artifact(restore_checkpoint),
+        },
+        "gate_artifacts": {name: artifact(ROOT / name) for name in GATE_ARTIFACTS},
+        "review_artifacts": {name: artifact(ROOT / name) for name in REVIEW_ARTIFACTS},
+        "promotion_gate": {
+            "decision_tool": "tools/report_phase2_z005_post_training_gates.py",
+            "required_post_training_status": "PASS_PHASE2_Z005_POST_TRAINING_GATES",
+            "robot_validation_allowed": False,
+        },
+        "robot_touched": False,
+        "ssh_used": False,
+        "deploy_performed": False,
+        "training_started": False,
+    }
+
+
+def write_markdown(payload: dict[str, Any], path: Path) -> None:
+    lines = [
+        "# Phase 2 Artifact Manifest",
+        "",
+        f"status: `{payload['status']}`",
+        f"stage: `{payload['stage']}`",
+        f"current_gate_status: `{payload.get('current_gate_status')}`",
+        f"next_recipe_status: `{payload.get('next_recipe_status')}`",
+        "",
+        "This is a read-only hash manifest. It did not train, SSH, deploy, or touch the robot.",
+        "",
+        "## Git",
+        "",
+    ]
+    for key, value in payload["git"].items():
+        lines.append(f"- `{key}`: `{value}`")
+
+    def table(title: str, items: dict[str, dict[str, Any]]) -> None:
+        lines.extend(
+            [
+                "",
+                f"## {title}",
+                "",
+                "| name | status | sha256 | size/files | path |",
+                "|---|---|---|---:|---|",
+            ]
+        )
+        for name, item in items.items():
+            size = item.get("file_count", item.get("size_bytes", "NA"))
+            lines.append(
+                f"| `{name}` | `{item.get('status')}` | `{item.get('sha256', 'NA')}` | "
+                f"{size} | `{item.get('path')}` |"
+            )
+
+    table("Core Artifacts", payload["core_artifacts"])
+    table("Gate Artifacts", payload["gate_artifacts"])
+    table("Review Artifacts", payload["review_artifacts"])
+    lines.extend(
+        [
+            "",
+            "## Promotion Gate",
+            "",
+            f"- decision_tool: `{payload['promotion_gate']['decision_tool']}`",
+            f"- required_post_training_status: `{payload['promotion_gate']['required_post_training_status']}`",
+            f"- robot_validation_allowed: `{payload['promotion_gate']['robot_validation_allowed']}`",
+            "",
+        ]
+    )
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text("\n".join(lines))
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--candidate", default=str(DEFAULT_CANDIDATE))
+    parser.add_argument("--candidate-metadata", default=str(DEFAULT_CANDIDATE_METADATA))
+    parser.add_argument("--bridge-json", default=str(DEFAULT_BRIDGE))
+    parser.add_argument("--restore-checkpoint", default=str(DEFAULT_RESTORE_CHECKPOINT))
+    parser.add_argument("--output-md", default=str(DEFAULT_OUTPUT_MD))
+    parser.add_argument("--output-json", default=str(DEFAULT_OUTPUT_JSON))
+    args = parser.parse_args()
+    payload = collect(args)
+    output_json = Path(args.output_json)
+    output_md = Path(args.output_md)
+    output_json.parent.mkdir(parents=True, exist_ok=True)
+    output_json.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
+    write_markdown(payload, output_md)
+    print(payload["status"])
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
