@@ -148,6 +148,9 @@ def build_command(args: argparse.Namespace, output_dir: Path) -> list[str]:
         "--action_magnitude_huber_delta": args.action_magnitude_huber_delta,
         "--target_rate_huber_delta": args.target_rate_huber_delta,
         "--actuator_tracking_huber_delta": args.actuator_tracking_huber_delta,
+        "--push_recovery_actuator_tracking_huber_delta": (
+            args.push_recovery_actuator_tracking_huber_delta
+        ),
         "--forward_shortfall_huber_delta": args.forward_shortfall_huber_delta,
         "--forward_overshoot_huber_delta": args.forward_overshoot_huber_delta,
         "--forward_wrong_direction_huber_delta": (
@@ -200,6 +203,15 @@ def build_command(args: argparse.Namespace, output_dir: Path) -> list[str]:
         ),
         "--forward_swing_advance_scale": args.forward_swing_advance_scale,
         "--forward_swing_advance_target_m": args.forward_swing_advance_target_m,
+        "--push_recovery_actuator_tracking_scale": (
+            args.push_recovery_actuator_tracking_scale
+        ),
+        "--push_recovery_tracking_window_steps": (
+            args.push_recovery_tracking_window_steps
+        ),
+        "--push_recovery_tracking_joint_indices": (
+            args.push_recovery_tracking_joint_indices
+        ),
         "--alive_scale": args.alive_scale,
         "--imitation_scale": args.imitation_scale,
         "--lin_vel_x_min": args.lin_vel_x_min,
@@ -585,6 +597,15 @@ def main() -> int:
             "reward the cost."
         ),
     )
+    parser.add_argument(
+        "--push-recovery-actuator-tracking-scale",
+        type=float,
+        default=None,
+        help=(
+            "Scale applied to actuator tracking cost only during the recovery "
+            "window after push impulses. Use a negative value to penalize."
+        ),
+    )
     parser.add_argument("--tracking-lin-vel-scale", type=float, default=None)
     parser.add_argument("--tracking-ang-vel-scale", type=float, default=None)
     parser.add_argument("--tracking-sigma", type=float, default=None)
@@ -648,6 +669,11 @@ def main() -> int:
     parser.add_argument("--action-magnitude-huber-delta", type=float, default=None)
     parser.add_argument("--target-rate-huber-delta", type=float, default=None)
     parser.add_argument("--actuator-tracking-huber-delta", type=float, default=None)
+    parser.add_argument(
+        "--push-recovery-actuator-tracking-huber-delta",
+        type=float,
+        default=None,
+    )
     parser.add_argument("--forward-shortfall-huber-delta", type=float, default=None)
     parser.add_argument("--forward-overshoot-huber-delta", type=float, default=None)
     parser.add_argument("--forward-wrong-direction-huber-delta", type=float, default=None)
@@ -694,6 +720,12 @@ def main() -> int:
     parser.add_argument("--forward-swing-balance-grace-steps", type=int, default=None)
     parser.add_argument("--forward-swing-advance-scale", type=float, default=None)
     parser.add_argument("--forward-swing-advance-target-m", type=float, default=None)
+    parser.add_argument("--push-recovery-tracking-window-steps", type=int, default=None)
+    parser.add_argument(
+        "--push-recovery-tracking-joint-indices",
+        default=None,
+        help="Comma-separated actuator indices for push-recovery tracking cost.",
+    )
     parser.add_argument("--alive-scale", type=float, default=None)
     parser.add_argument("--imitation-scale", type=float, default=None)
     parser.add_argument("--lin-vel-x-min", type=float, default=None)
@@ -804,6 +836,12 @@ def main() -> int:
         },
         "target_rate_scale": args.target_rate_scale,
         "actuator_tracking_scale": args.actuator_tracking_scale,
+        "push_recovery_actuator_tracking": {
+            "scale": args.push_recovery_actuator_tracking_scale,
+            "huber_delta": args.push_recovery_actuator_tracking_huber_delta,
+            "window_steps": args.push_recovery_tracking_window_steps,
+            "joint_indices": args.push_recovery_tracking_joint_indices,
+        },
         "ppo_overrides": {
             "learning_rate": args.ppo_learning_rate,
             "entropy_cost": args.ppo_entropy_cost,
@@ -845,6 +883,9 @@ def main() -> int:
             "action_magnitude_huber_delta": args.action_magnitude_huber_delta,
             "target_rate_huber_delta": args.target_rate_huber_delta,
             "actuator_tracking_huber_delta": args.actuator_tracking_huber_delta,
+            "push_recovery_actuator_tracking_huber_delta": (
+                args.push_recovery_actuator_tracking_huber_delta
+            ),
             "forward_shortfall_huber_delta": args.forward_shortfall_huber_delta,
             "forward_overshoot_huber_delta": args.forward_overshoot_huber_delta,
             "forward_wrong_direction_huber_delta": (
@@ -899,6 +940,15 @@ def main() -> int:
             ),
             "forward_swing_advance_scale": args.forward_swing_advance_scale,
             "forward_swing_advance_target_m": args.forward_swing_advance_target_m,
+            "push_recovery_actuator_tracking_scale": (
+                args.push_recovery_actuator_tracking_scale
+            ),
+            "push_recovery_tracking_window_steps": (
+                args.push_recovery_tracking_window_steps
+            ),
+            "push_recovery_tracking_joint_indices": (
+                args.push_recovery_tracking_joint_indices
+            ),
             "alive_scale": args.alive_scale,
             "imitation_scale": args.imitation_scale,
             "lin_vel_x_min": args.lin_vel_x_min,

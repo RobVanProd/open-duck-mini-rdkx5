@@ -1738,3 +1738,46 @@ near-pass line and target the localized push-recovery window: preserve the
 nominal rough-terrain gait, add push-state or post-push tracking-margin
 correction, focus on left-knee recovery, and re-gate on the corrected bridge
 rough `z=0.002` gentle-push 8-seed screen before broadening DR.
+
+### Push-Recovery Tracking Hook
+
+Artifact:
+
+```text
+outputs/analysis/PHASE2_PUSH_RECOVERY_TRACKING_HOOK.md
+```
+
+Status:
+
+```text
+PASS_PUSH_RECOVERY_TRACKING_HOOK_PLUMBING
+```
+
+The Playground joystick env and RDK training wrapper now expose a default-off
+push-recovery actuator-tracking cost. It uses the existing sent-vs-applied
+actuator target mismatch, but applies it only for a configurable window after
+push impulses and can restrict the cost to selected actuator indices.
+
+RDK wrapper flags:
+
+```text
+--push-recovery-actuator-tracking-scale
+--push-recovery-actuator-tracking-huber-delta
+--push-recovery-tracking-window-steps
+--push-recovery-tracking-joint-indices
+```
+
+A tiny CPU smoke from the B0C restore checkpoint passed with:
+
+```text
+push_recovery_actuator_tracking_scale: -0.02
+push_recovery_actuator_tracking_huber_delta: 0.03
+push_recovery_tracking_window_steps: 25
+push_recovery_tracking_joint_indices: 3
+status: PASS_SMOKE_RUN
+```
+
+This does not promote a policy. It only creates the missing localized lever for
+the next Phase 2 run: preserve the `lk097` rough-terrain gait while improving
+left-knee post-push recovery margin, then re-gate on corrected bridge rough
+`z=0.002` gentle-push 8-seed screens.
