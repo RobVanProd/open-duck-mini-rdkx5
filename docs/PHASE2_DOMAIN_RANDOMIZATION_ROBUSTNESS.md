@@ -87,7 +87,9 @@ outputs/analysis/phase2_stage_guard.json
 Use the stage guard before launching any run or advancing any rung. It is the
 current allowed/forbidden action matrix: z=0.005 support training is the next
 authorized offline step once an A100/L4 Colab session is available; robot
-validation, stronger terrain, and z=0.005 push remain blocked.
+validation, stronger terrain, and z=0.005 push remain blocked. It also checks
+that the exact z=0.005 Colab package inputs, including the A2 restore
+checkpoint, are present and included by the upload tar filter.
 
 This recipe continues from the last z=0.002 passing A2 checkpoint, keeps the
 corrected bridge active, uses z=0.005 rough terrain with no push, and targets

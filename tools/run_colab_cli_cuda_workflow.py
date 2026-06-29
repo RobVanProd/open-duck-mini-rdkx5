@@ -146,10 +146,27 @@ def tar_filter(member: tarfile.TarInfo) -> tarfile.TarInfo | None:
             (
                 "outputs",
                 "phase2_domain_randomization",
+                "stage_a2_preserve_narrow_flat_no_push_gpu",
+                "smoke_20260628T031553Z_gpu",
+                "2026_06_27_232221_491520",
+            ),
+            (
+                "outputs",
+                "phase2_domain_randomization",
                 "stage_b0c_rough_z002_push_tracking_margin_from_b0_gpu",
                 "smoke_20260629T062042Z_gpu",
                 "2026_06_29_022725_245760",
             ),
+            ("outputs", "analysis", "PHASE2_CURRICULUM_GATE_LEDGER.md"),
+            ("outputs", "analysis", "phase2_curriculum_gate_ledger.json"),
+            ("outputs", "analysis", "PHASE2_Z005_SUPPORT_NEXT_RECIPE.md"),
+            ("outputs", "analysis", "phase2_z005_support_next_recipe.json"),
+            ("outputs", "analysis", "PHASE2_NEXT_RUN_PLAN.md"),
+            ("outputs", "analysis", "phase2_next_run_plan.json"),
+            ("outputs", "analysis", "PHASE2_STAGE_GUARD.md"),
+            ("outputs", "analysis", "phase2_stage_guard.json"),
+            ("outputs", "analysis", "PHASE2_ARTIFACT_MANIFEST.md"),
+            ("outputs", "analysis", "phase2_artifact_manifest.json"),
         }
         rel_parts = tuple(parts[1:]) if len(parts) > 1 else tuple(parts)
         is_allowed_path = rel_parts in allowed_outputs
@@ -168,6 +185,50 @@ def make_tarball(src: Path, dest: Path, arcname: str) -> None:
     with tarfile.open(dest, "w:gz") as tf:
         tf.add(src, arcname=arcname, filter=tar_filter)
     print(f"TARBALL {dest} size={dest.stat().st_size}", flush=True)
+
+
+def would_package_path(relative_path: str) -> bool:
+    info = tarfile.TarInfo(f"open-duck-mini-rdkx5/{relative_path}")
+    return tar_filter(info) is not None
+
+
+def required_rdk_package_paths(workflow: str) -> list[str]:
+    if workflow != "phase2-z005-support":
+        return []
+    return [
+        "outputs/analysis/actuator_response_fit_corrected_knee.json",
+        "outputs/analysis/phase2_z005_support_next_recipe.json",
+        "outputs/analysis/phase2_stage_guard.json",
+        "outputs/analysis/phase2_artifact_manifest.json",
+        (
+            "outputs/phase2_domain_randomization/"
+            "stage_a2_preserve_narrow_flat_no_push_gpu/"
+            "smoke_20260628T031553Z_gpu/2026_06_27_232221_491520"
+        ),
+        "tools/report_phase2_z005_post_training_gates.py",
+        "tools/run_actuator_bridge_training_smoke.py",
+    ]
+
+
+def validate_rdk_package_inputs(workflow: str, rdk_root: Path) -> None:
+    missing: list[str] = []
+    excluded: list[str] = []
+    for relative_path in required_rdk_package_paths(workflow):
+        local_path = rdk_root / relative_path
+        if not local_path.exists():
+            missing.append(relative_path)
+            continue
+        if not would_package_path(relative_path):
+            excluded.append(relative_path)
+    if missing or excluded:
+        lines = [f"Required local package inputs are not ready for workflow {workflow!r}."]
+        if missing:
+            lines.append("Missing:")
+            lines.extend(f"  - {item}" for item in missing)
+        if excluded:
+            lines.append("Excluded by tar filter:")
+            lines.extend(f"  - {item}" for item in excluded)
+        raise SystemExit("\n".join(lines))
 
 
 def colab_file_exists(session: str, remote_path: str) -> bool:
@@ -2391,6 +2452,7 @@ def main() -> int:
         raise SystemExit(f"RDK repo missing: {rdk_root}")
     if not playground_root.exists():
         raise SystemExit(f"Playground repo missing: {playground_root}")
+    validate_rdk_package_inputs(args.workflow, rdk_root)
     candidate_existing_policy = (
         Path(args.candidate_existing_policy).expanduser().resolve()
         if args.candidate_existing_policy

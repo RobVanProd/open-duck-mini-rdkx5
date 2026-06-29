@@ -9,6 +9,7 @@
   "allowed_actions": [
     "Review committed Phase 2 analysis artifacts and guard reports.",
     "Run read-only report tools: report_phase2_curriculum_gate.py, report_phase2_artifact_manifest.py, and report_phase2_stage_guard.py.",
+    "Run the phase2-z005-support Colab workflow in plan-only mode to verify the package preflight and generated remote driver.",
     "Prepare or reconnect the A100/L4 Colab session named open-duck-l4.",
     "Run the phase2-z005-support recipe only after the Colab session is active and still using the corrected bridge.",
     "Run report_phase2_z005_post_training_gates.py on post-training seed-gate output.",
@@ -58,6 +59,49 @@
   "launch_status": "HOLD_PHASE2_A100_SESSION_NOT_READY",
   "missing_gates": [],
   "next_recipe_status": "PASS_Z005_SUPPORT_RECIPE_READY",
+  "package_preflight": {
+    "excluded_by_tar_filter": [],
+    "items": [
+      {
+        "exists": true,
+        "included_by_tar_filter": true,
+        "path": "outputs/analysis/actuator_response_fit_corrected_knee.json"
+      },
+      {
+        "exists": true,
+        "included_by_tar_filter": true,
+        "path": "outputs/analysis/phase2_z005_support_next_recipe.json"
+      },
+      {
+        "exists": true,
+        "included_by_tar_filter": true,
+        "path": "outputs/analysis/phase2_stage_guard.json"
+      },
+      {
+        "exists": true,
+        "included_by_tar_filter": true,
+        "path": "outputs/analysis/phase2_artifact_manifest.json"
+      },
+      {
+        "exists": true,
+        "included_by_tar_filter": true,
+        "path": "outputs/phase2_domain_randomization/stage_a2_preserve_narrow_flat_no_push_gpu/smoke_20260628T031553Z_gpu/2026_06_27_232221_491520"
+      },
+      {
+        "exists": true,
+        "included_by_tar_filter": true,
+        "path": "tools/report_phase2_z005_post_training_gates.py"
+      },
+      {
+        "exists": true,
+        "included_by_tar_filter": true,
+        "path": "tools/run_actuator_bridge_training_smoke.py"
+      }
+    ],
+    "missing": [],
+    "status": "PASS_PACKAGE_PREFLIGHT",
+    "workflow": "phase2-z005-support"
+  },
   "preferred_command": "python3 \\\n    tools/run_colab_cli_cuda_workflow.py \\\n    --workflow \\\n    phase2-z005-support \\\n    --session \\\n    open-duck-l4 \\\n    --candidate-name \\\n    phase2_z005_support_baseheight_cuda \\\n    --candidate-checkpoint-sweep \\\n    --candidate-checkpoint-sweep-commands \\\n    0.0,0.08 \\\n    --candidate-checkpoint-sweep-duration \\\n    1.0 \\\n    --candidate-checkpoint-sweep-jax-platform \\\n    cpu \\\n    --candidate-timeout-s \\\n    10800 \\\n    --run",
   "restore_checkpoint": {
     "exists": true,

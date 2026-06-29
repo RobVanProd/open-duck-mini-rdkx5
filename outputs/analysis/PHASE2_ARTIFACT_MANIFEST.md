@@ -37,7 +37,7 @@ This is a read-only hash manifest. It did not train, SSH, deploy, or touch the r
 
 | name | status | sha256 | size/files | path |
 |---|---|---|---:|---|
-| `docs/PHASE2_DOMAIN_RANDOMIZATION_ROBUSTNESS.md` | `PRESENT_FILE` | `eb1b9ed3a17d1be56eba430f36f897a2645489e874cf99fc2592eef5b3cfc5e3` | 76413 | `docs/PHASE2_DOMAIN_RANDOMIZATION_ROBUSTNESS.md` |
+| `docs/PHASE2_DOMAIN_RANDOMIZATION_ROBUSTNESS.md` | `PRESENT_FILE` | `0e302b655899a4fe8b1ff1836136cdceee87a067ab09438138f593c256827139` | 76561 | `docs/PHASE2_DOMAIN_RANDOMIZATION_ROBUSTNESS.md` |
 | `outputs/analysis/PHASE2_CURRENT_STATUS.md` | `PRESENT_FILE` | `a44971e3d1d1b5728feb4a8a84fcfc3b44047f82bbbaead6714c8df6dc1cbfe0` | 3641 | `outputs/analysis/PHASE2_CURRENT_STATUS.md` |
 | `outputs/analysis/phase2_current_status.json` | `PRESENT_FILE` | `70bef0c3ea0d2556177d032e123fbe56af0aa462b3842f087b31cd5f87460bd8` | 14498 | `outputs/analysis/phase2_current_status.json` |
 | `outputs/analysis/PHASE2_CURRICULUM_GATE_LEDGER.md` | `PRESENT_FILE` | `92b91febeec25962414f5e3c2db28b1223ff4f8597793c60bddb098175c6d29d` | 2106 | `outputs/analysis/PHASE2_CURRICULUM_GATE_LEDGER.md` |
@@ -48,12 +48,12 @@ This is a read-only hash manifest. It did not train, SSH, deploy, or touch the r
 | `outputs/analysis/phase2_z005_support_next_recipe.json` | `PRESENT_FILE` | `dd5e77a2bd447a287377b802f9ae2a01b97f11cd0020eb54ca9cb9ab02a79465` | 20500 | `outputs/analysis/phase2_z005_support_next_recipe.json` |
 | `outputs/analysis/PHASE2_NEXT_RUN_PLAN.md` | `PRESENT_FILE` | `1971b999165584f0b21aa7373561c14ab9e5bdd8aca2386e629e25621c64a60d` | 6531 | `outputs/analysis/PHASE2_NEXT_RUN_PLAN.md` |
 | `outputs/analysis/phase2_next_run_plan.json` | `PRESENT_FILE` | `971722859fe48c05ef12929f04c48788e47de02cd245c942c6d1cbe861327ba6` | 14051 | `outputs/analysis/phase2_next_run_plan.json` |
-| `outputs/analysis/PHASE2_STAGE_GUARD.md` | `PRESENT_FILE` | `9979692b12d876c30486bc2a1ce31fd484e50023f2f236b3fb39d9ff73493f09` | 2779 | `outputs/analysis/PHASE2_STAGE_GUARD.md` |
-| `outputs/analysis/phase2_stage_guard.json` | `PRESENT_FILE` | `b6eccc821e00f117b6f31d4fe54e8adc35c935d0a9f6c68942678f8faafb5125` | 3892 | `outputs/analysis/phase2_stage_guard.json` |
+| `outputs/analysis/PHASE2_STAGE_GUARD.md` | `PRESENT_FILE` | `445a366bed8c116e71dcf353bd50b1e6e561e440204f7f9de5bf7c78ae0041d4` | 3620 | `outputs/analysis/PHASE2_STAGE_GUARD.md` |
+| `outputs/analysis/phase2_stage_guard.json` | `PRESENT_FILE` | `cb2b12d1306b4a8a548f34380ebee032f8cdc4da25642820b73f4d854b5f5ee5` | 5319 | `outputs/analysis/phase2_stage_guard.json` |
 | `tools/plan_phase2_z005_support_recipe.py` | `PRESENT_FILE` | `30d4191a48f58d337a0fc84cde783f277583af3f052722df42c89d5ee9993dbb` | 17157 | `tools/plan_phase2_z005_support_recipe.py` |
 | `tools/report_phase2_z005_post_training_gates.py` | `PRESENT_FILE` | `759a838bd3463a2cd1e92d925129b43fdb61dc0ed3f7ed33675739d295f42f6d` | 10476 | `tools/report_phase2_z005_post_training_gates.py` |
-| `tools/report_phase2_stage_guard.py` | `PRESENT_FILE` | `a53f20ec06c281e97b611fd0e2dd661c870ea7880c4eabbbc77a2bc4d2c5dc97` | 9108 | `tools/report_phase2_stage_guard.py` |
-| `tools/run_colab_cli_cuda_workflow.py` | `PRESENT_FILE` | `a3664c30e7e09460717ee410b8ade9801fb1f125ae12be964ddabc32c3c71e24` | 111917 | `tools/run_colab_cli_cuda_workflow.py` |
+| `tools/report_phase2_stage_guard.py` | `PRESENT_FILE` | `88d3113fa0158a67b7459974f687e4fd32091345bc9c822616c1decf6a679890` | 10843 | `tools/report_phase2_stage_guard.py` |
+| `tools/run_colab_cli_cuda_workflow.py` | `PRESENT_FILE` | `c99341aa1383210e65bc2ac5c159d70caa009d854138dc51afa1950cc6ef9c2a` | 114625 | `tools/run_colab_cli_cuda_workflow.py` |
 
 ## Promotion Gate
 

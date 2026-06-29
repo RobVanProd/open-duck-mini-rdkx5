@@ -15,6 +15,8 @@ import json
 from pathlib import Path
 from typing import Any
 
+from run_colab_cli_cuda_workflow import required_rdk_package_paths, would_package_path
+
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_LEDGER = ROOT / "outputs/analysis/phase2_curriculum_gate_ledger.json"
@@ -54,6 +56,29 @@ def nested(payload: dict[str, Any], *keys: str, default: Any = None) -> Any:
     return default if current is None else current
 
 
+def package_preflight(workflow: str) -> dict[str, Any]:
+    items = []
+    for relative_path in required_rdk_package_paths(workflow):
+        local_path = ROOT / relative_path
+        items.append(
+            {
+                "path": relative_path,
+                "exists": local_path.exists(),
+                "included_by_tar_filter": would_package_path(relative_path),
+            }
+        )
+    missing = [item["path"] for item in items if not item["exists"]]
+    excluded = [item["path"] for item in items if item["exists"] and not item["included_by_tar_filter"]]
+    status = "PASS_PACKAGE_PREFLIGHT" if not missing and not excluded else "HOLD_PACKAGE_PREFLIGHT"
+    return {
+        "status": status,
+        "workflow": workflow,
+        "missing": missing,
+        "excluded_by_tar_filter": excluded,
+        "items": items,
+    }
+
+
 def collect(args: argparse.Namespace) -> dict[str, Any]:
     ledger_path = Path(args.ledger)
     next_plan_path = Path(args.next_plan)
@@ -73,6 +98,7 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
     git_status = nested(next_plan, "readiness", "git", "status")
     colab_active = bool(nested(next_plan, "readiness", "colab", "active", default=False))
     preferred_command = nested(next_plan, "commands", "colab", "shell") or nested(recipe, "commands", "colab", "shell")
+    package = package_preflight("phase2-z005-support")
 
     gates = ledger.get("gates") if isinstance(ledger.get("gates"), dict) else {}
     held_gates = [
@@ -89,6 +115,7 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
     allowed_actions = [
         "Review committed Phase 2 analysis artifacts and guard reports.",
         "Run read-only report tools: report_phase2_curriculum_gate.py, report_phase2_artifact_manifest.py, and report_phase2_stage_guard.py.",
+        "Run the phase2-z005-support Colab workflow in plan-only mode to verify the package preflight and generated remote driver.",
         "Prepare or reconnect the A100/L4 Colab session named open-duck-l4.",
         "Run the phase2-z005-support recipe only after the Colab session is active and still using the corrected bridge.",
         "Run report_phase2_z005_post_training_gates.py on post-training seed-gate output.",
@@ -121,6 +148,8 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
 
     if launch_status and launch_status != "PASS_PHASE2_NEXT_RUN_READY":
         status = launch_status
+    elif package["status"] != "PASS_PACKAGE_PREFLIGHT":
+        status = package["status"]
     elif current_gate_status and str(current_gate_status).startswith("HOLD"):
         status = "PASS_PHASE2_STAGE_GUARD_READY_TO_RUN_Z005_SUPPORT"
     else:
@@ -139,6 +168,7 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
         "candidate": manifest.get("core_artifacts", {}).get("candidate", {}),
         "corrected_bridge": manifest.get("core_artifacts", {}).get("corrected_bridge", {}),
         "restore_checkpoint": manifest.get("core_artifacts", {}).get("restore_checkpoint", {}),
+        "package_preflight": package,
         "input_artifacts": {
             "ledger": rel(ledger_path),
             "next_plan": rel(next_plan_path),
@@ -172,6 +202,7 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         "",
         f"- colab_status: `{payload.get('colab_status')}`",
         f"- git_status: `{payload.get('git_status')}`",
+        f"- package_preflight: `{payload.get('package_preflight', {}).get('status')}`",
         f"- held_gates: `{', '.join(payload.get('held_gates') or []) or 'none'}`",
         f"- missing_gates: `{', '.join(payload.get('missing_gates') or []) or 'none'}`",
         "",
@@ -186,6 +217,19 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
     lines.extend(["", "## Required Evidence To Advance", ""])
     for item in payload["advance_requirements"]:
         lines.append(f"- {item}")
+    lines.extend(
+        [
+            "",
+            "## Package Preflight",
+            "",
+            "| path | exists | included by tar filter |",
+            "|---|---|---|",
+        ]
+    )
+    for item in payload.get("package_preflight", {}).get("items", []):
+        lines.append(
+            f"| `{item['path']}` | `{item['exists']}` | `{item['included_by_tar_filter']}` |"
+        )
     lines.extend(
         [
             "",
