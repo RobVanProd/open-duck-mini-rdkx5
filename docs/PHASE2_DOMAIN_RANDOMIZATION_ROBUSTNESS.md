@@ -321,6 +321,32 @@ training, so the next policy-producing run remains the pinned CUDA/A100
 `phase2-b0e` workflow or a local ROCm backend fix. Do not promote smoke
 checkpoints from this matrix.
 
+B0E local ROCm memory-mitigation update:
+
+```text
+artifact:
+  outputs/analysis/PHASE2_B0E_LOCAL_GPU_MEMFIX_DECISION.md
+
+status:
+  PASS_B0E_ROCM_MEMFIX_32ENV_PLUMBING
+
+env:
+  JAX_PLATFORM_NAME=gpu
+  JAX_PLATFORMS=rocm
+  XLA_PYTHON_CLIENT_PREALLOCATE=false
+  XLA_PYTHON_CLIENT_MEM_FRACTION=0.50
+```
+
+With default allocation, B0E failed at 8 envs during evaluator reset. With the
+memory cap above, the bounded B0E plumbing checks passed at 8, 16, and 32 envs,
+reaching PPO/export at steps 800, 1600, and 3200 respectively.
+
+This is not a policy result and none of those smoke checkpoints are promotable.
+It does change the backend plan: local ROCm is now plausible for a bounded B0E
+training run when launched with the memory cap, while the pinned CUDA/A100
+`phase2-b0e` workflow remains the preferred high-throughput path whenever a
+Colab session is visible.
+
 Push-eval plumbing result:
 
 ```text
