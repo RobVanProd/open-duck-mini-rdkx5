@@ -202,7 +202,7 @@ def required_rdk_package_paths(workflow: str) -> list[str]:
         if workflow == "phase2-z005-motion-floor"
         else "outputs/analysis/phase2_z005_support_next_recipe.json"
     )
-    return [
+    paths = [
         "outputs/analysis/actuator_response_fit_corrected_knee.json",
         recipe_json,
         (
@@ -213,6 +213,18 @@ def required_rdk_package_paths(workflow: str) -> list[str]:
         "tools/report_phase2_z005_post_training_gates.py",
         "tools/run_actuator_bridge_training_smoke.py",
     ]
+    if workflow == "phase2-z005-motion-floor":
+        paths.extend(
+            [
+                "outputs/analysis/phase2_z005_motion_prior_next_recipe.json",
+                (
+                    "outputs/analysis/"
+                    "command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate/"
+                    "candidate_mlp.npz"
+                ),
+            ]
+        )
+    return paths
 
 
 def validate_rdk_package_inputs(workflow: str, rdk_root: Path) -> None:
@@ -987,14 +999,18 @@ def build_remote_driver(
         "smoke_20260629T062042Z_gpu/2026_06_29_022725_245760"
     )
     phase2_behavior_prior_arg = (
-        ""
-        if run_phase2_z005_like
+        candidate_behavior_prior_arg
+        if (run_phase2_z005_like and candidate_behavior_prior_mlp_npz)
         else (
-            '"--enable-behavior-prior",'
-            '"--behavior-prior-mlp-npz",'
-            '"/content/open-duck-mini-rdkx5/outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate/candidate_mlp.npz",'
-            f'"--behavior-prior-scale", "{phase2_behavior_prior_scale}",'
-            '"--behavior-prior-huber-delta", "0.05",'
+            ""
+            if run_phase2_z005_like
+            else (
+                '"--enable-behavior-prior",'
+                '"--behavior-prior-mlp-npz",'
+                '"/content/open-duck-mini-rdkx5/outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate/candidate_mlp.npz",'
+                f'"--behavior-prior-scale", "{phase2_behavior_prior_scale}",'
+                '"--behavior-prior-huber-delta", "0.05",'
+            )
         )
     )
     phase2_push_enable_arg = (
