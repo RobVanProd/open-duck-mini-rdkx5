@@ -1,0 +1,23 @@
+{
+  "status": "HOLD_LOCAL_ROCM_CONTEXT_719",
+  "date": "2026-06-29",
+  "workflow": "phase2-z005-support",
+  "robot_touched": false,
+  "ssh_used": false,
+  "deploy_performed": false,
+  "training_result": false,
+  "output_dir": "outputs/phase2_domain_randomization/stage_z005_support_local_rocm/smoke_20260629T162610Z_gpu",
+  "run_status": "HOLD_SMOKE_RUN",
+  "returncode": -6,
+  "stderr_signature": "Check failed: Failed setting context: hipError_t(719)",
+  "basic_jax_rocm_after_abort": {
+    "status": "PASS",
+    "jax_version": "0.8.2",
+    "backend": "gpu",
+    "devices": [
+      "RocmDevice(id=0)"
+    ],
+    "sum_x_squared": 357389824.0
+  },
+  "interpretation": "Local ROCm can run basic JAX GPU arithmetic, but the full JAX/MJX Playground training startup path failed while activating the ROCm context. This is not a policy or recipe result."
+}

@@ -1390,6 +1390,36 @@ Promotion still requires reviewing the full-duration seed gates. The
 one-second checkpoint sweep is only a checkpoint selector, not a robustness
 gate and not a robot-validation approval.
 
+### z=0.005 Local ROCm Attempt
+
+Artifact:
+
+```text
+outputs/analysis/PHASE2_Z005_SUPPORT_LOCAL_ROCM_HOLD.md
+outputs/analysis/phase2_z005_support_local_rocm_hold.json
+```
+
+Status:
+
+```text
+HOLD_LOCAL_ROCM_CONTEXT_719
+```
+
+With no active Colab/A100 session visible, a bounded local ROCm attempt of the
+same `phase2-z005-support` recipe was launched. It failed before any PPO step or
+ONNX export:
+
+```text
+returncode: -6
+stderr: Check failed: Failed setting context: hipError_t(719)
+```
+
+A basic JAX ROCm arithmetic test immediately after the abort still passed
+(`jax 0.8.2`, backend `gpu`, device `rocm:0`), so this is narrower than basic
+GPU visibility. Treat it as a local ROCm/JAX/MJX training-startup hold, not as a
+policy result. Use the pinned A100/Colab workflow when a visible session is
+available, or debug local ROCm separately.
+
 ## Current Terrain-Step Status
 
 Existing-trace hard-step rescoring found a useful split:
