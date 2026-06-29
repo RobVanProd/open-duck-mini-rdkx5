@@ -220,17 +220,20 @@ as configured regressed motion without improving the compact tracking blocker.
 A tiny CPU run also confirmed the command/checkpoint path is structurally
 executable.
 
-The next full attempt can run either locally if the workstation remains stable,
-or on a visible CUDA/A100 Colab session with the pinned workflow and
-post-training checkpoint sweep:
+B0D should not be the next full attempt because the 32-env local continuation
+regressed compact forward motion without improving the tracking miss. The next
+full attempt is B0E: keep the B0C restore checkpoint, use a milder
+actuator-tracking penalty, preserve stronger forward-progress terms, and run on
+a visible CUDA/A100 Colab session with the pinned workflow and post-training
+checkpoint sweep:
 
 ```bash
 python3 tools/report_colab_session_status.py
 
 python3 tools/run_colab_cli_cuda_workflow.py \
-  --workflow phase2-b0d \
+  --workflow phase2-b0e \
   --session <visible-colab-session> \
-  --candidate-name phase2_b0d_tracking_margin_cuda \
+  --candidate-name phase2_b0e_motion_preserving_tracking_cuda \
   --candidate-timeout-s 10800 \
   --candidate-checkpoint-sweep \
   --candidate-checkpoint-sweep-commands 0.0,0.08 \

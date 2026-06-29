@@ -91,13 +91,16 @@ python3 tools/run_colab_cli_cuda_workflow.py \
 This uploads only the local worktrees plus the selected ONNX/manifest, then
 runs the `x=0.0` and `x=0.08` candidate gates. It does not train.
 
-### Phase 2 B0D Tracking-Margin Continuation
+### Phase 2 B0E Motion-Preserving Tracking-Margin Continuation
 
 Use this when the local ROCm path is unstable and the next required training run
-is the conservative B0D continuation from the B0C corrected-bridge checkpoint.
-This workflow runs the fixed B0D recipe on CUDA with the pinned dependency
-stack and bundles the resulting ONNX/checkpoint artifacts. It does not approve
-robot validation and does not replace the strict local review gates.
+is the B0E continuation from the B0C corrected-bridge checkpoint. B0E keeps the
+B0C parent, uses a milder actuator-tracking penalty than B0D, and preserves
+forward-progress pressure so it can test the narrow tracking miss without
+repeating B0D's compact-motion regression. This workflow runs the fixed B0E
+recipe on CUDA with the pinned dependency stack and bundles the resulting
+ONNX/checkpoint artifacts. It does not approve robot validation and does not
+replace the strict local review gates.
 
 First verify which Colab session is actually visible to `google-colab-cli`:
 
@@ -105,16 +108,16 @@ First verify which Colab session is actually visible to `google-colab-cli`:
 python3 tools/report_colab_session_status.py
 ```
 
-If the report returns `HOLD_NO_ACTIVE_COLAB_SESSION`, do not launch B0D yet.
+If the report returns `HOLD_NO_ACTIVE_COLAB_SESSION`, do not launch B0E yet.
 Reconnect or create the Colab runtime, rerun the status report, then use the
 visible session name in the command below. The historical default
 `open-duck-l4` is only a placeholder.
 
 ```bash
 python3 tools/run_colab_cli_cuda_workflow.py \
-  --workflow phase2-b0d \
+  --workflow phase2-b0e \
   --session <visible-colab-session> \
-  --candidate-name phase2_b0d_tracking_margin_cuda \
+  --candidate-name phase2_b0e_motion_preserving_tracking_cuda \
   --candidate-timeout-s 10800 \
   --candidate-checkpoint-sweep \
   --candidate-checkpoint-sweep-commands 0.0,0.08 \

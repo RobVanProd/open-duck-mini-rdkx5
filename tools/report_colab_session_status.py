@@ -4,7 +4,7 @@
 This tool is read-only. It does not start training, create sessions, SSH, deploy,
 or touch the robot. Its purpose is to make the next CUDA/A100 handoff explicit:
 which Colab sessions are visible, which common session names are missing, and
-the exact Phase 2 B0D command to run once a session is available.
+the exact Phase 2 B0E command to run once a session is available.
 """
 
 from __future__ import annotations
@@ -69,16 +69,16 @@ def combined_text(result: dict[str, Any]) -> str:
     return ((result.get("stdout") or "") + (result.get("stderr") or "")).strip()
 
 
-def phase2_b0d_command(session: str) -> list[str]:
+def phase2_b0e_command(session: str) -> list[str]:
     return [
         "python3",
         "tools/run_colab_cli_cuda_workflow.py",
         "--workflow",
-        "phase2-b0d",
+        "phase2-b0e",
         "--session",
         session,
         "--candidate-name",
-        "phase2_b0d_tracking_margin_cuda",
+        "phase2_b0e_motion_preserving_tracking_cuda",
         "--candidate-timeout-s",
         "10800",
         "--candidate-checkpoint-sweep",
@@ -111,7 +111,7 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
         "sessions_command": None,
         "session_status": {},
         "recommended_session": None,
-        "recommended_phase2_b0d_command": None,
+        "recommended_phase2_b0e_command": None,
     }
 
     if colab_path is None:
@@ -135,8 +135,8 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
             payload["recommended_session"] = session
 
     if payload["recommended_session"]:
-        command = phase2_b0d_command(payload["recommended_session"])
-        payload["recommended_phase2_b0d_command"] = command
+        command = phase2_b0e_command(payload["recommended_session"])
+        payload["recommended_phase2_b0e_command"] = command
         payload["status"] = "PASS_COLAB_SESSION_VISIBLE"
     elif sessions["ok"] and "no active sessions" in visible_text.lower():
         payload["status"] = "HOLD_NO_ACTIVE_COLAB_SESSION"
@@ -174,7 +174,7 @@ def write_md(payload: dict[str, Any], output_md: Path) -> None:
         lines.append(f"| `{session}` | `{info.get('exists')}` | `{text}` |")
 
     lines.extend(["", "## Next Command", ""])
-    command = payload.get("recommended_phase2_b0d_command")
+    command = payload.get("recommended_phase2_b0e_command")
     if command:
         lines.extend(
             [
@@ -188,7 +188,7 @@ def write_md(payload: dict[str, Any], output_md: Path) -> None:
     else:
         lines.extend(
             [
-                "No matching active session is visible. Do not launch B0D yet.",
+                "No matching active session is visible. Do not launch B0E yet.",
                 "",
                 "Create or reconnect a Colab session, then rerun:",
                 "",
@@ -203,7 +203,7 @@ def write_md(payload: dict[str, Any], output_md: Path) -> None:
             "## Interpretation",
             "",
             "This report is infrastructure-only evidence. It does not approve robot",
-            "validation and does not change the Phase 2 gate. A B0D artifact is useful",
+            "validation and does not change the Phase 2 gate. A B0E artifact is useful",
             "only after the corrected-bridge rough-terrain gentle-push gates are run",
             "and reviewed locally.",
         ]

@@ -635,6 +635,8 @@ def build_remote_driver(
     run_training_smoke_diagnostic = args.workflow == "training-smoke-diagnostic"
     run_candidate_training = args.workflow in {"candidate", "candidate-only", "all"}
     run_phase2_b0d = args.workflow == "phase2-b0d"
+    run_phase2_b0e = args.workflow == "phase2-b0e"
+    run_phase2_cuda_recipe = run_phase2_b0d or run_phase2_b0e
     run_staged_curriculum = args.workflow == "staged-curriculum"
     run_candidate_eval_only = args.workflow == "candidate-eval-only"
     run_checkpoint_sweep = args.workflow == "checkpoint-sweep"
@@ -651,6 +653,7 @@ def build_remote_driver(
             "candidate-eval-only",
             "checkpoint-sweep",
             "phase2-b0d",
+            "phase2-b0e",
             "all",
         }
         and not args.skip_audit
@@ -776,6 +779,28 @@ def build_remote_driver(
         f' "--behavior-prior-scale", "{candidate_behavior_prior_scale}",'
         f' "--behavior-prior-huber-delta", "{candidate_behavior_prior_huber_delta}",'
         if candidate_behavior_prior_mlp_npz
+        else ""
+    )
+    phase2_recipe_id = "b0e" if run_phase2_b0e else "b0d"
+    phase2_default_candidate_name = (
+        "phase2_b0e_motion_preserving_tracking_cuda"
+        if run_phase2_b0e
+        else "phase2_b0d_tracking_margin_cuda"
+    )
+    phase2_output_root = f"/content/open_duck_training_phase2_{phase2_recipe_id}_cli"
+    phase2_lr = "0.000012" if run_phase2_b0e else "0.000015"
+    phase2_clip = "0.04" if run_phase2_b0e else "0.05"
+    phase2_max_grad_norm = "0.2" if run_phase2_b0e else "0.25"
+    phase2_restore_kl = "1.5" if run_phase2_b0e else "1.0"
+    phase2_actuator_tracking = "-0.015" if run_phase2_b0e else "-0.04"
+    phase2_forward_progress = "2.5" if run_phase2_b0e else "2"
+    phase2_command_progress = "1.5" if run_phase2_b0e else "1"
+    phase2_command_shortfall = "-4" if run_phase2_b0e else "-2.5"
+    phase2_command_ratio = "0.45" if run_phase2_b0e else "0.4"
+    phase2_extra_args = (
+        '"--tracking-lin-vel-scale", "3",'
+        '"--tracking-sigma", "0.01",'
+        if run_phase2_b0e
         else ""
     )
     return textwrap.dedent(
@@ -1152,8 +1177,8 @@ def build_remote_driver(
                 OUT / "open_duck_training_runs_cli",
             )
 
-        if {run_phase2_b0d!r}:
-            candidate_name = {args.candidate_name!r} or "phase2_b0d_tracking_margin_cuda"
+        if {run_phase2_cuda_recipe!r}:
+            candidate_name = {args.candidate_name!r} or "{phase2_default_candidate_name}"
             phase2_b0d_cmd = [
                 PYTHON, "tools/run_actuator_bridge_training_smoke.py",
                 "--playground-path", str(PLAYGROUND),
@@ -1161,7 +1186,7 @@ def build_remote_driver(
                 "--platform", "gpu",
                 "--jax-platforms", "cuda",
                 "--run",
-                "--output-root", "/content/open_duck_training_phase2_b0d_cli",
+                "--output-root", "{phase2_output_root}",
                 "--num-timesteps", "160000",
                 "--export-min-step", "1",
                 "--ppo-num-envs", "128",
@@ -1173,17 +1198,18 @@ def build_remote_driver(
                 "--ppo-num-updates-per-batch", "2",
                 "--restore-checkpoint-path",
                 "/content/open-duck-mini-rdkx5/outputs/phase2_domain_randomization/stage_b0c_rough_z002_push_tracking_margin_from_b0_gpu/smoke_20260629T062042Z_gpu/2026_06_29_022725_245760",
-                "--ppo-learning-rate", "0.000015",
+                "--ppo-learning-rate", "{phase2_lr}",
                 "--ppo-entropy-cost", "0.001",
-                "--ppo-clipping-epsilon", "0.05",
-                "--ppo-max-grad-norm", "0.25",
-                "--restore-policy-kl-scale", "1.0",
+                "--ppo-clipping-epsilon", "{phase2_clip}",
+                "--ppo-max-grad-norm", "{phase2_max_grad_norm}",
+                "--restore-policy-kl-scale", "{phase2_restore_kl}",
                 "--target-rate-scale", "0",
-                "--actuator-tracking-scale", "-0.04",
-                "--forward-progress-scale", "2",
-                "--command-progress-scale", "1",
-                "--command-progress-shortfall-scale", "-2.5",
-                "--command-progress-required-ratio", "0.4",
+                "--actuator-tracking-scale", "{phase2_actuator_tracking}",
+                {phase2_extra_args}
+                "--forward-progress-scale", "{phase2_forward_progress}",
+                "--command-progress-scale", "{phase2_command_progress}",
+                "--command-progress-shortfall-scale", "{phase2_command_shortfall}",
+                "--command-progress-required-ratio", "{phase2_command_ratio}",
                 "--command-progress-warmup-steps", "30",
                 "--action-rate-huber-delta", "0.05",
                 "--actuator-tracking-huber-delta", "0.03",
@@ -1246,13 +1272,13 @@ def build_remote_driver(
                 "--timeout-s", "{args.candidate_timeout_s}",
             ]
             run(phase2_b0d_cmd, cwd=RDK, timeout={args.candidate_timeout_s + 300})
-            run_dirs = sorted(Path("/content/open_duck_training_phase2_b0d_cli").glob("smoke_*_gpu"))
+            run_dirs = sorted(Path("{phase2_output_root}").glob("smoke_*_gpu"))
             if not run_dirs:
-                raise SystemExit("phase2-b0d training produced no smoke_*_gpu run directory")
+                raise SystemExit("{args.workflow} training produced no smoke_*_gpu run directory")
             run_dir = run_dirs[-1]
             onnx_files = sorted(run_dir.glob("*.onnx"))
             if not onnx_files:
-                raise SystemExit(f"phase2-b0d training produced no ONNX files in {{run_dir}}")
+                raise SystemExit(f"{args.workflow} training produced no ONNX files in {{run_dir}}")
             latest_onnx = onnx_files[-1]
             training_manifest = run_dir / "smoke_manifest.final.json"
             if not training_manifest.exists():
@@ -1263,8 +1289,8 @@ def build_remote_driver(
                 "--output-json", str(OUT / f"{{candidate_name}}_training_run_summary.json"),
             ], cwd=RDK, timeout=300, check=False)
             copy_training_outputs(
-                "/content/open_duck_training_phase2_b0d_cli",
-                OUT / "open_duck_training_phase2_b0d_cli",
+                "{phase2_output_root}",
+                OUT / "open_duck_training_phase2_{phase2_recipe_id}_cli",
             )
             bundle_artifacts()
             if {args.candidate_checkpoint_sweep!r}:
@@ -1649,6 +1675,7 @@ def main() -> int:
             "candidate-eval-only",
             "checkpoint-sweep",
             "phase2-b0d",
+            "phase2-b0e",
             "staged-curriculum",
             "all",
         ],
