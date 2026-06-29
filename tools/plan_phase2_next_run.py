@@ -191,7 +191,7 @@ def colab_command(session: str, candidate_name: str, workflow: str) -> list[str]
     ]
 
 
-def local_rocm_command(restore_checkpoint: Path, output_root: str) -> list[str]:
+def local_rocm_command(restore_checkpoint: Path, output_root: str, terrain_z: float) -> list[str]:
     return [
         "../envs/open-duck-playground/bin/python",
         "tools/run_actuator_bridge_training_smoke.py",
@@ -389,7 +389,7 @@ def local_rocm_command(restore_checkpoint: Path, output_root: str) -> list[str]:
         "--actuator-tracking-scale",
         "-0.005",
         "--terrain-hfield-z-scale",
-        "0.005",
+        str(terrain_z),
     ]
 
 
@@ -463,11 +463,11 @@ def main() -> int:
     parser.add_argument("--status-json", default=str(DEFAULT_STATUS_JSON))
     parser.add_argument("--restore-checkpoint", default=str(DEFAULT_RESTORE_CHECKPOINT))
     parser.add_argument("--session", default="open-duck-l4")
-    parser.add_argument("--workflow", default="phase2-z005-motion-floor")
-    parser.add_argument("--candidate-name", default="phase2_z005_motion_floor_cuda")
+    parser.add_argument("--workflow", default="phase2-z0035-motion-floor")
+    parser.add_argument("--candidate-name", default="phase2_z0035_motion_floor_cuda")
     parser.add_argument(
         "--local-output-root",
-        default="outputs/phase2_domain_randomization/stage_z005_motion_floor_local_rocm_safeenv_8env_122880",
+        default="outputs/phase2_domain_randomization/stage_z0035_motion_floor_local_rocm_safeenv_8env_122880",
     )
     parser.add_argument(
         "--output-md",
@@ -484,8 +484,9 @@ def main() -> int:
 
     status = read_json(Path(args.status_json))
     restore_checkpoint = Path(args.restore_checkpoint)
+    terrain_z = 0.0035 if args.workflow == "phase2-z0035-motion-floor" else 0.005
     colab = colab_command(args.session, args.candidate_name, args.workflow)
-    local = local_rocm_command(restore_checkpoint, args.local_output_root)
+    local = local_rocm_command(restore_checkpoint, args.local_output_root, terrain_z)
     candidate = status.get("candidate", {})
     readiness = unchecked_readiness()
     if args.check_colab:
@@ -514,11 +515,13 @@ def main() -> int:
             "colab": {
                 "preferred": True,
                 "workflow": args.workflow,
+                "terrain_hfield_z_scale": terrain_z,
                 "argv": colab,
                 "shell": multiline_shell(colab),
             },
             "local_rocm": {
                 "preferred": False,
+                "terrain_hfield_z_scale": terrain_z,
                 "argv": local,
                 "shell": multiline_shell(local),
             },

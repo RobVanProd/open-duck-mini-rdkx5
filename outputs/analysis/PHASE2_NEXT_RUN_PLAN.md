@@ -18,9 +18,9 @@ launch_status: `HOLD_PHASE2_COLAB_GPU_SESSION_NOT_READY`
 - colab_session: `open-duck-l4`
 - colab_hardware: `None`
 - colab_active: `False`
-- git_status: `NOT_CHECKED`
-- git_branch: `None`
-- git_remote_read_auth_ok: `None`
+- git_status: `HOLD_GIT_REMOTE_AUTH_UNAVAILABLE`
+- git_branch: `codex/live-oracle-dagger-phase-student`
+- git_remote_read_auth_ok: `False`
 
 The Colab check is read-only (`colab sessions` / `colab status`). The Git check is read-only (`git ls-remote`) and does not push.
 
@@ -32,11 +32,11 @@ Use this when a visible Colab GPU session is available:
 python3 \
     tools/run_colab_cli_cuda_workflow.py \
     --workflow \
-    phase2-z005-motion-floor \
+    phase2-z0035-motion-floor \
     --session \
     open-duck-l4 \
     --candidate-name \
-    phase2_z005_motion_floor_cuda \
+    phase2_z0035_motion_floor_cuda \
     --candidate-checkpoint-sweep \
     --candidate-checkpoint-sweep-commands \
     0.0,0.08 \
@@ -61,7 +61,7 @@ This is fallback/backend evidence only unless it clears the same post-training g
     --env-python \
     ../envs/open-duck-playground/bin/python \
     --output-root \
-    outputs/phase2_domain_randomization/stage_z005_motion_floor_local_rocm_safeenv_8env_122880 \
+    outputs/phase2_domain_randomization/stage_z0035_motion_floor_local_rocm_safeenv_8env_122880 \
     --run \
     --platform \
     gpu \
@@ -250,7 +250,7 @@ This is fallback/backend evidence only unless it clears the same post-training g
     --actuator-tracking-scale \
     -0.005 \
     --terrain-hfield-z-scale \
-    0.005
+    0.0035
 ```
 
 ## Promotion Rule

@@ -10,11 +10,11 @@
         "python3",
         "tools/run_colab_cli_cuda_workflow.py",
         "--workflow",
-        "phase2-z005-motion-floor",
+        "phase2-z0035-motion-floor",
         "--session",
         "open-duck-l4",
         "--candidate-name",
-        "phase2_z005_motion_floor_cuda",
+        "phase2_z0035_motion_floor_cuda",
         "--candidate-checkpoint-sweep",
         "--candidate-checkpoint-sweep-commands",
         "0.0,0.08",
@@ -27,8 +27,9 @@
         "--run"
       ],
       "preferred": true,
-      "shell": "python3 \\\n    tools/run_colab_cli_cuda_workflow.py \\\n    --workflow \\\n    phase2-z005-motion-floor \\\n    --session \\\n    open-duck-l4 \\\n    --candidate-name \\\n    phase2_z005_motion_floor_cuda \\\n    --candidate-checkpoint-sweep \\\n    --candidate-checkpoint-sweep-commands \\\n    0.0,0.08 \\\n    --candidate-checkpoint-sweep-duration \\\n    1.0 \\\n    --candidate-checkpoint-sweep-jax-platform \\\n    cpu \\\n    --candidate-timeout-s \\\n    10800 \\\n    --run",
-      "workflow": "phase2-z005-motion-floor"
+      "shell": "python3 \\\n    tools/run_colab_cli_cuda_workflow.py \\\n    --workflow \\\n    phase2-z0035-motion-floor \\\n    --session \\\n    open-duck-l4 \\\n    --candidate-name \\\n    phase2_z0035_motion_floor_cuda \\\n    --candidate-checkpoint-sweep \\\n    --candidate-checkpoint-sweep-commands \\\n    0.0,0.08 \\\n    --candidate-checkpoint-sweep-duration \\\n    1.0 \\\n    --candidate-checkpoint-sweep-jax-platform \\\n    cpu \\\n    --candidate-timeout-s \\\n    10800 \\\n    --run",
+      "terrain_hfield_z_scale": 0.0035,
+      "workflow": "phase2-z0035-motion-floor"
     },
     "local_rocm": {
       "argv": [
@@ -39,7 +40,7 @@
         "--env-python",
         "../envs/open-duck-playground/bin/python",
         "--output-root",
-        "outputs/phase2_domain_randomization/stage_z005_motion_floor_local_rocm_safeenv_8env_122880",
+        "outputs/phase2_domain_randomization/stage_z0035_motion_floor_local_rocm_safeenv_8env_122880",
         "--run",
         "--platform",
         "gpu",
@@ -228,10 +229,11 @@
         "--actuator-tracking-scale",
         "-0.005",
         "--terrain-hfield-z-scale",
-        "0.005"
+        "0.0035"
       ],
       "preferred": false,
-      "shell": "../envs/open-duck-playground/bin/python \\\n    tools/run_actuator_bridge_training_smoke.py \\\n    --playground-path \\\n    ../Open_Duck_Playground \\\n    --env-python \\\n    ../envs/open-duck-playground/bin/python \\\n    --output-root \\\n    outputs/phase2_domain_randomization/stage_z005_motion_floor_local_rocm_safeenv_8env_122880 \\\n    --run \\\n    --platform \\\n    gpu \\\n    --local-rocm-safe-env \\\n    --timeout-s \\\n    2700 \\\n    --task \\\n    rough_terrain_backlash \\\n    --num-timesteps \\\n    122880 \\\n    --export-min-step \\\n    1 \\\n    --ppo-num-envs \\\n    8 \\\n    --ppo-num-evals \\\n    4 \\\n    --ppo-episode-length \\\n    750 \\\n    --ppo-unroll-length \\\n    20 \\\n    --ppo-batch-size \\\n    64 \\\n    --ppo-num-minibatches \\\n    1 \\\n    --ppo-num-updates-per-batch \\\n    2 \\\n    --restore-checkpoint-path \\\n    outputs/phase2_domain_randomization/stage_a2_preserve_narrow_flat_no_push_gpu/smoke_20260628T031553Z_gpu/2026_06_27_232221_491520 \\\n    --ppo-learning-rate \\\n    0.000004 \\\n    --ppo-entropy-cost \\\n    0.001 \\\n    --ppo-clipping-epsilon \\\n    0.025 \\\n    --ppo-max-grad-norm \\\n    0.12 \\\n    --restore-policy-kl-scale \\\n    3 \\\n    --tracking-lin-vel-scale \\\n    3 \\\n    --tracking-sigma \\\n    0.01 \\\n    --forward-progress-scale \\\n    4 \\\n    --forward-wrong-direction-scale \\\n    -6 \\\n    --forward-wrong-direction-allowed-reverse-ratio \\\n    0.01 \\\n    --command-progress-scale \\\n    3 \\\n    --command-progress-shortfall-scale \\\n    -8 \\\n    --command-progress-required-ratio \\\n    0.5 \\\n    --command-progress-warmup-steps \\\n    30 \\\n    --action-rate-huber-delta \\\n    0.05 \\\n    --actuator-tracking-huber-delta \\\n    0.03 \\\n    --forward-swing-clearance-huber-delta \\\n    0.003 \\\n    --forward-swing-advance-huber-delta \\\n    0.002 \\\n    --action-rate-scale \\\n    -0.055 \\\n    --action-magnitude-scale \\\n    -0.003 \\\n    --base-height-scale \\\n    -0.35 \\\n    --forward-pitch-scale \\\n    -0.3 \\\n    --forward-pitch-rate-scale \\\n    -0.06 \\\n    --forward-contact-support-scale \\\n    -0.12 \\\n    --forward-contact-support-no-contact-weight \\\n    1.0 \\\n    --forward-contact-support-asymmetry-weight \\\n    0.1 \\\n    --forward-single-support-scale \\\n    0.05 \\\n    --forward-double-support-scale \\\n    -0.05 \\\n    --forward-double-support-dwell-scale \\\n    -0.05 \\\n    --forward-double-support-dwell-grace-steps \\\n    24 \\\n    --forward-swing-clearance-scale \\\n    -0.00025 \\\n    --forward-swing-clearance-target-m \\\n    0.016 \\\n    --forward-swing-advance-scale \\\n    -0.001 \\\n    --forward-swing-advance-target-m \\\n    0.004 \\\n    --alive-scale \\\n    2 \\\n    --imitation-scale \\\n    0 \\\n    --lin-vel-x-min \\\n    0.06 \\\n    --lin-vel-x-max \\\n    0.1 \\\n    --lin-vel-y-min \\\n    0 \\\n    --lin-vel-y-max \\\n    0 \\\n    --ang-vel-yaw-min \\\n    0 \\\n    --ang-vel-yaw-max \\\n    0 \\\n    --command-resample-steps \\\n    600 \\\n    --zero-command-probability \\\n    0.15 \\\n    --dr-friction-min \\\n    0.98 \\\n    --dr-friction-max \\\n    1.02 \\\n    --dr-frictionloss-scale-min \\\n    0.995 \\\n    --dr-frictionloss-scale-max \\\n    1.005 \\\n    --dr-armature-scale-min \\\n    1 \\\n    --dr-armature-scale-max \\\n    1.005 \\\n    --dr-com-jitter-m \\\n    0.002 \\\n    --dr-mass-scale-min \\\n    0.995 \\\n    --dr-mass-scale-max \\\n    1.005 \\\n    --dr-torso-mass-delta-min \\\n    -0.005 \\\n    --dr-torso-mass-delta-max \\\n    0.005 \\\n    --dr-qpos-jitter-rad \\\n    0.002 \\\n    --dr-actuator-gain-scale-min \\\n    0.995 \\\n    --dr-actuator-gain-scale-max \\\n    1.005 \\\n    --dr-leg-geometry-jitter-scale \\\n    0.001 \\\n    --push-interval-min-s \\\n    7 \\\n    --push-interval-max-s \\\n    12 \\\n    --push-magnitude-min \\\n    0.02 \\\n    --push-magnitude-max \\\n    0.1 \\\n    --noise-level \\\n    0.5 \\\n    --noise-hip-pos \\\n    0.0075 \\\n    --noise-knee-pos \\\n    0.0075 \\\n    --noise-ankle-pos \\\n    0.0075 \\\n    --noise-joint-vel \\\n    0.75 \\\n    --noise-gravity \\\n    0.04 \\\n    --noise-gyro \\\n    0.04 \\\n    --noise-accelerometer \\\n    0.02 \\\n    --no-push-enable \\\n    --actuator-bridge-delay-min-ticks \\\n    3 \\\n    --actuator-bridge-delay-max-ticks \\\n    3 \\\n    --actuator-bridge-tau-min-s \\\n    0.06 \\\n    --actuator-bridge-tau-max-s \\\n    0.14 \\\n    --actuator-bridge-velocity-limit-min-rad-s \\\n    2 \\\n    --actuator-bridge-velocity-limit-max-rad-s \\\n    3.25 \\\n    --actuator-bridge-per-joint-variation \\\n    0.1 \\\n    --actuator-tracking-scale \\\n    -0.005 \\\n    --terrain-hfield-z-scale \\\n    0.005"
+      "shell": "../envs/open-duck-playground/bin/python \\\n    tools/run_actuator_bridge_training_smoke.py \\\n    --playground-path \\\n    ../Open_Duck_Playground \\\n    --env-python \\\n    ../envs/open-duck-playground/bin/python \\\n    --output-root \\\n    outputs/phase2_domain_randomization/stage_z0035_motion_floor_local_rocm_safeenv_8env_122880 \\\n    --run \\\n    --platform \\\n    gpu \\\n    --local-rocm-safe-env \\\n    --timeout-s \\\n    2700 \\\n    --task \\\n    rough_terrain_backlash \\\n    --num-timesteps \\\n    122880 \\\n    --export-min-step \\\n    1 \\\n    --ppo-num-envs \\\n    8 \\\n    --ppo-num-evals \\\n    4 \\\n    --ppo-episode-length \\\n    750 \\\n    --ppo-unroll-length \\\n    20 \\\n    --ppo-batch-size \\\n    64 \\\n    --ppo-num-minibatches \\\n    1 \\\n    --ppo-num-updates-per-batch \\\n    2 \\\n    --restore-checkpoint-path \\\n    outputs/phase2_domain_randomization/stage_a2_preserve_narrow_flat_no_push_gpu/smoke_20260628T031553Z_gpu/2026_06_27_232221_491520 \\\n    --ppo-learning-rate \\\n    0.000004 \\\n    --ppo-entropy-cost \\\n    0.001 \\\n    --ppo-clipping-epsilon \\\n    0.025 \\\n    --ppo-max-grad-norm \\\n    0.12 \\\n    --restore-policy-kl-scale \\\n    3 \\\n    --tracking-lin-vel-scale \\\n    3 \\\n    --tracking-sigma \\\n    0.01 \\\n    --forward-progress-scale \\\n    4 \\\n    --forward-wrong-direction-scale \\\n    -6 \\\n    --forward-wrong-direction-allowed-reverse-ratio \\\n    0.01 \\\n    --command-progress-scale \\\n    3 \\\n    --command-progress-shortfall-scale \\\n    -8 \\\n    --command-progress-required-ratio \\\n    0.5 \\\n    --command-progress-warmup-steps \\\n    30 \\\n    --action-rate-huber-delta \\\n    0.05 \\\n    --actuator-tracking-huber-delta \\\n    0.03 \\\n    --forward-swing-clearance-huber-delta \\\n    0.003 \\\n    --forward-swing-advance-huber-delta \\\n    0.002 \\\n    --action-rate-scale \\\n    -0.055 \\\n    --action-magnitude-scale \\\n    -0.003 \\\n    --base-height-scale \\\n    -0.35 \\\n    --forward-pitch-scale \\\n    -0.3 \\\n    --forward-pitch-rate-scale \\\n    -0.06 \\\n    --forward-contact-support-scale \\\n    -0.12 \\\n    --forward-contact-support-no-contact-weight \\\n    1.0 \\\n    --forward-contact-support-asymmetry-weight \\\n    0.1 \\\n    --forward-single-support-scale \\\n    0.05 \\\n    --forward-double-support-scale \\\n    -0.05 \\\n    --forward-double-support-dwell-scale \\\n    -0.05 \\\n    --forward-double-support-dwell-grace-steps \\\n    24 \\\n    --forward-swing-clearance-scale \\\n    -0.00025 \\\n    --forward-swing-clearance-target-m \\\n    0.016 \\\n    --forward-swing-advance-scale \\\n    -0.001 \\\n    --forward-swing-advance-target-m \\\n    0.004 \\\n    --alive-scale \\\n    2 \\\n    --imitation-scale \\\n    0 \\\n    --lin-vel-x-min \\\n    0.06 \\\n    --lin-vel-x-max \\\n    0.1 \\\n    --lin-vel-y-min \\\n    0 \\\n    --lin-vel-y-max \\\n    0 \\\n    --ang-vel-yaw-min \\\n    0 \\\n    --ang-vel-yaw-max \\\n    0 \\\n    --command-resample-steps \\\n    600 \\\n    --zero-command-probability \\\n    0.15 \\\n    --dr-friction-min \\\n    0.98 \\\n    --dr-friction-max \\\n    1.02 \\\n    --dr-frictionloss-scale-min \\\n    0.995 \\\n    --dr-frictionloss-scale-max \\\n    1.005 \\\n    --dr-armature-scale-min \\\n    1 \\\n    --dr-armature-scale-max \\\n    1.005 \\\n    --dr-com-jitter-m \\\n    0.002 \\\n    --dr-mass-scale-min \\\n    0.995 \\\n    --dr-mass-scale-max \\\n    1.005 \\\n    --dr-torso-mass-delta-min \\\n    -0.005 \\\n    --dr-torso-mass-delta-max \\\n    0.005 \\\n    --dr-qpos-jitter-rad \\\n    0.002 \\\n    --dr-actuator-gain-scale-min \\\n    0.995 \\\n    --dr-actuator-gain-scale-max \\\n    1.005 \\\n    --dr-leg-geometry-jitter-scale \\\n    0.001 \\\n    --push-interval-min-s \\\n    7 \\\n    --push-interval-max-s \\\n    12 \\\n    --push-magnitude-min \\\n    0.02 \\\n    --push-magnitude-max \\\n    0.1 \\\n    --noise-level \\\n    0.5 \\\n    --noise-hip-pos \\\n    0.0075 \\\n    --noise-knee-pos \\\n    0.0075 \\\n    --noise-ankle-pos \\\n    0.0075 \\\n    --noise-joint-vel \\\n    0.75 \\\n    --noise-gravity \\\n    0.04 \\\n    --noise-gyro \\\n    0.04 \\\n    --noise-accelerometer \\\n    0.02 \\\n    --no-push-enable \\\n    --actuator-bridge-delay-min-ticks \\\n    3 \\\n    --actuator-bridge-delay-max-ticks \\\n    3 \\\n    --actuator-bridge-tau-min-s \\\n    0.06 \\\n    --actuator-bridge-tau-max-s \\\n    0.14 \\\n    --actuator-bridge-velocity-limit-min-rad-s \\\n    2 \\\n    --actuator-bridge-velocity-limit-max-rad-s \\\n    3.25 \\\n    --actuator-bridge-per-joint-variation \\\n    0.1 \\\n    --actuator-tracking-scale \\\n    -0.005 \\\n    --terrain-hfield-z-scale \\\n    0.0035",
+      "terrain_hfield_z_scale": 0.0035
     }
   },
   "current_status": "HOLD_PHASE2_TERRAIN_Z005_NOT_CLEARED",
@@ -251,7 +253,7 @@
         "ok": true,
         "returncode": 0,
         "stderr": "",
-        "stdout": "[?] gpu-t4-s-kkb-usw4b0-2vncv1c41lvkx | Hardware: T4 | Variant: GPU\n"
+        "stdout": "[?] gpu-t4-s-kkb-usw4a1-1o3w1889xtjfc | Hardware: T4 | Variant: GPU\n"
       },
       "status": "HOLD_NO_ACTIVE_COLAB_SESSION",
       "status_command": {
@@ -268,8 +270,48 @@
       }
     },
     "git": {
-      "checked": false,
-      "status": "NOT_CHECKED"
+      "branch": "codex/live-oracle-dagger-phase-student",
+      "branch_command": {
+        "command": [
+          "git",
+          "rev-parse",
+          "--abbrev-ref",
+          "HEAD"
+        ],
+        "ok": true,
+        "returncode": 0,
+        "stderr": "",
+        "stdout": "codex/live-oracle-dagger-phase-student\n"
+      },
+      "checked": true,
+      "ls_remote_command": {
+        "command": [
+          "git",
+          "ls-remote",
+          "--exit-code",
+          "origin",
+          "refs/heads/codex/live-oracle-dagger-phase-student"
+        ],
+        "ok": false,
+        "returncode": 128,
+        "stderr": "fatal: could not read Username for 'https://github.com': No such device or address\n",
+        "stdout": ""
+      },
+      "read_auth_ok": false,
+      "remote": "https://github.com/RobVanProd/open-duck-mini-rdkx5.git",
+      "remote_command": {
+        "command": [
+          "git",
+          "remote",
+          "get-url",
+          "origin"
+        ],
+        "ok": true,
+        "returncode": 0,
+        "stderr": "",
+        "stdout": "https://github.com/RobVanProd/open-duck-mini-rdkx5.git\n"
+      },
+      "status": "HOLD_GIT_REMOTE_AUTH_UNAVAILABLE"
     },
     "launch_status": "HOLD_PHASE2_COLAB_GPU_SESSION_NOT_READY"
   },

@@ -1,0 +1,84 @@
+{
+  "acceptance": [
+    "z=0.0035 x=0.08 no-push passes 8/8, zero falls, no velocity excess, tracking p95 <= 0.20, track ratio >= 0.40.",
+    "z=0.0035 x=0.0 no-push passes 8/8, zero falls, no velocity excess, |mean vx| <= 0.005.",
+    "z=0.002 no-push and gentle-push regression gates remain passing.",
+    "Passing z=0.0035 is not a robot-validation clearance; it only authorizes returning to z=0.005 with a smaller gap."
+  ],
+  "commands": {
+    "preferred_colab_gpu": {
+      "argv": [
+        "python3",
+        "tools/run_colab_cli_cuda_workflow.py",
+        "--workflow",
+        "phase2-z0035-motion-floor",
+        "--session",
+        "open-duck-l4",
+        "--candidate-name",
+        "phase2_z0035_motion_floor_cuda",
+        "--candidate-checkpoint-sweep",
+        "--candidate-checkpoint-sweep-commands",
+        "0.0,0.08",
+        "--candidate-checkpoint-sweep-duration",
+        "1.0",
+        "--candidate-checkpoint-sweep-jax-platform",
+        "cpu",
+        "--candidate-timeout-s",
+        "10800",
+        "--run"
+      ],
+      "shell": "python3 \\\n    tools/run_colab_cli_cuda_workflow.py \\\n    --workflow \\\n    phase2-z0035-motion-floor \\\n    --session \\\n    open-duck-l4 \\\n    --candidate-name \\\n    phase2_z0035_motion_floor_cuda \\\n    --candidate-checkpoint-sweep \\\n    --candidate-checkpoint-sweep-commands \\\n    0.0,0.08 \\\n    --candidate-checkpoint-sweep-duration \\\n    1.0 \\\n    --candidate-checkpoint-sweep-jax-platform \\\n    cpu \\\n    --candidate-timeout-s \\\n    10800 \\\n    --run"
+    }
+  },
+  "deploy_performed": false,
+  "diagnosis_status": "HOLD_Z005_MOTION_FLOOR_UNDER_MOVING",
+  "evidence": {
+    "z005_motion_floor_decision": "outputs/analysis/phase2_z005_motion_floor_t4_partial_decision.json",
+    "z005_motion_floor_status": "HOLD_NO_PROMOTABLE_CHECKPOINT",
+    "z005_motion_prior_best_completed_x008_track_ratio": 0.17026001321937656,
+    "z005_motion_prior_decision": "outputs/analysis/phase2_z005_motion_prior_t4_partial_decision.json",
+    "z005_motion_prior_status": "HOLD_PARTIAL_NO_PROMOTABLE_CHECKPOINT"
+  },
+  "falsifier": "If z=0.0035 also under-moves while staying under envelope, stop terrain height escalation and re-check the z=0.002 moving policy under the same post-training gate path before another training run.",
+  "key_recipe_settings": {
+    "actuator_bridge_velocity_limit_range_rad_s": [
+      2.0,
+      3.25
+    ],
+    "actuator_tracking_scale": -0.005,
+    "base_height_scale": -0.35,
+    "command_progress_required_ratio": 0.5,
+    "command_progress_scale": 3.0,
+    "command_progress_shortfall_scale": -8.0,
+    "forward_progress_scale": 4.0,
+    "num_timesteps": 122880,
+    "ppo_learning_rate": 4e-06,
+    "push_enable": false,
+    "restore_policy_kl_scale": 3.0,
+    "terrain_hfield_z_scale": 0.0035,
+    "workflow": "phase2-z0035-motion-floor"
+  },
+  "recipe_intent": [
+    "Warm-start from the same corrected-bridge A2 checkpoint; do not train from scratch.",
+    "Use z=0.0035 rough terrain as an intermediate rung between passing z=0.002 and failing z=0.005.",
+    "Keep the motion-floor command-progress pressure that preserves forward intent.",
+    "Keep the corrected actuator envelope authoritative and reject velocity excess at the gate.",
+    "Do not use the behavior prior in this rung because the z=0.005 behavior-prior run did not improve forward progress."
+  ],
+  "restore_checkpoint": {
+    "path": "outputs/phase2_domain_randomization/stage_a2_preserve_narrow_flat_no_push_gpu/smoke_20260628T031553Z_gpu/2026_06_27_232221_491520",
+    "present": true
+  },
+  "robot_touched": false,
+  "root_cause_summary": [
+    "The packaged candidate passes z=0.002 corrected-bridge terrain and gentle-push gates.",
+    "The z=0.005 support, motion-floor, and behavior-prior motion-floor attempts stayed under the corrected velocity envelope but under-moved at x=0.08.",
+    "The motion-prior T4 compact sweep best completed x=0.08 track ratio was 0.1703, below the compact promotion floor 0.25.",
+    "The next curriculum step should test an intermediate terrain height rather than adding more regularization at z=0.005."
+  ],
+  "ssh_used": false,
+  "stage": "stage_z0035_motion_floor",
+  "status": "PASS_Z0035_MOTION_FLOOR_RECIPE_READY",
+  "supersedes_recipe": "phase2-z005-motion-floor",
+  "training_started": false
+}

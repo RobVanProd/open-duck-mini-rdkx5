@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-"""Grade Phase 2 z=0.005 post-training seed gates.
+"""Grade Phase 2 terrain post-training seed gates.
 
 This tool consumes the `*_post_training_seed_gates.json` artifact produced by
-`run_colab_cli_cuda_workflow.py --workflow phase2-z005-support` and turns it
-into an explicit promotion decision. It is read-only: it does not train, SSH,
-deploy, touch the robot, or modify Playground.
+`run_colab_cli_cuda_workflow.py --workflow phase2-z005-support` or an
+intermediate terrain-rung workflow and turns it into an explicit promotion
+decision. It is read-only: it does not train, SSH, deploy, touch the robot, or
+modify Playground.
 """
 
 from __future__ import annotations
@@ -28,6 +29,28 @@ REQUIRED_GATES = [
     "z002_x008_gentle_push_regression",
     "z002_x000_gentle_push_regression",
 ]
+
+REGRESSION_GATES = [
+    "z002_x008_no_push_regression",
+    "z002_x000_no_push_regression",
+    "z002_x008_gentle_push_regression",
+    "z002_x000_gentle_push_regression",
+]
+
+
+def required_gates_from_manifest(manifest: dict[str, Any]) -> list[str]:
+    results = manifest.get("results") if isinstance(manifest.get("results"), list) else []
+    names = [str(item.get("name")) for item in results if item.get("name")]
+    primary = [
+        name
+        for name in names
+        if name.endswith("_no_push")
+        and name not in REGRESSION_GATES
+        and not name.startswith("z002_")
+    ]
+    if primary:
+        return primary + [name for name in REGRESSION_GATES if name in names]
+    return REQUIRED_GATES
 
 
 def rel(path: Path | str | None) -> str | None:
@@ -122,19 +145,20 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
     input_path = Path(args.input_json)
     manifest = read_json(input_path)
     results = manifest.get("results") if isinstance(manifest.get("results"), list) else []
+    required_gates = required_gates_from_manifest(manifest)
     gates_by_name = {str(item.get("name")): summarize_gate(item, args) for item in results}
-    missing = [name for name in REQUIRED_GATES if name not in gates_by_name]
+    missing = [name for name in required_gates if name not in gates_by_name]
     held = [
         name
-        for name in REQUIRED_GATES
+        for name in required_gates
         if gates_by_name.get(name, {}).get("status") not in {"PASS_GATE", None}
     ]
     if missing:
-        status = "MISSING_PHASE2_Z005_POST_TRAINING_GATES"
+        status = "MISSING_PHASE2_POST_TRAINING_GATES"
     elif held:
-        status = "HOLD_PHASE2_Z005_POST_TRAINING_GATES"
+        status = "HOLD_PHASE2_POST_TRAINING_GATES"
     else:
-        status = "PASS_PHASE2_Z005_POST_TRAINING_GATES"
+        status = "PASS_PHASE2_POST_TRAINING_GATES"
     return {
         "status": status,
         "input_json": rel(input_path),
@@ -149,10 +173,11 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
             "max_abs_vx_x0": args.max_abs_vx_x0,
             "min_push_success": args.min_push_success,
         },
+        "required_gates": required_gates,
         "missing_gates": missing,
         "held_gates": held,
         "gates": gates_by_name,
-        "promotion_allowed": status == "PASS_PHASE2_Z005_POST_TRAINING_GATES",
+        "promotion_allowed": status == "PASS_PHASE2_POST_TRAINING_GATES",
         "robot_touched": False,
         "ssh_used": False,
         "deploy_performed": False,
@@ -170,7 +195,7 @@ def fmt(value: Any, digits: int = 4) -> str:
 
 def write_markdown(payload: dict[str, Any], path: Path) -> None:
     lines = [
-        "# Phase 2 z=0.005 Post-Training Gate Decision",
+        "# Phase 2 Post-Training Gate Decision",
         "",
         f"status: `{payload['status']}`",
         f"promotion_allowed: `{payload['promotion_allowed']}`",
@@ -197,7 +222,7 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
             "|---|---|---:|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---|",
         ]
     )
-    for name in REQUIRED_GATES:
+    for name in payload["required_gates"]:
         gate = payload["gates"].get(name)
         if not gate:
             lines.append(f"| `{name}` | `MISSING_GATE` | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | missing |")
