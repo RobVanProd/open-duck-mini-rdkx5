@@ -1,0 +1,44 @@
+{
+  "status": "HOLD_B0F_A100_SESSION_LOST",
+  "scope": "offline sim/training only",
+  "robot_touched": false,
+  "deploy_performed": false,
+  "grounded_replay": false,
+  "recipe_viability_probes": {
+    "a100_8_env_tiny_returncode": 0,
+    "a100_64_env_returncode": 0
+  },
+  "pinned_stack_observed": {
+    "jax": "0.7.2",
+    "jaxlib": "0.7.2",
+    "brax": "0.14.2",
+    "mujoco": "3.9.0",
+    "mujoco_mjx": "3.9.0",
+    "playground": "0.0.5",
+    "backend": "gpu",
+    "device": "cuda:0"
+  },
+  "attempts": [
+    {
+      "run_dir": "outputs/analysis/colab_cli/open-duck-a100-phase2-b0f-20260629T101300Z",
+      "result": "session disappeared during setup/extraction"
+    },
+    {
+      "run_dir": "outputs/analysis/colab_cli/open-duck-a100-phase2-b0f-20260629T102438Z",
+      "result": "fresh session used with --skip-deps; dependencies missing; no policy result"
+    },
+    {
+      "run_dir": "outputs/analysis/colab_cli/open-duck-a100-phase2-b0f-20260629T103018Z",
+      "result": "dependencies installed; detached full run died after manifest with no runner stdout/stderr"
+    },
+    {
+      "run_dir": "outputs/analysis/colab_cli/open-duck-a100-phase2-b0f-20260629T110536Z",
+      "result": "64-env detached full run died after manifest with no active runner process"
+    },
+    {
+      "run_dir": "outputs/analysis/colab_cli/open-duck-a100-phase2-b0f-20260629T111905Z",
+      "result": "foreground remote mode lost named Colab session before normal artifact download"
+    }
+  ],
+  "decision": "No B0F policy result exists. Use a more stable direct execution path or another CUDA runtime before evaluating B0F."
+}

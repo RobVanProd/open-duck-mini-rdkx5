@@ -1610,3 +1610,27 @@ If B0F holds at the same `~0.22 rad` short-gate tracking plateau or reduces
 forward command tracking below B0E, do not continue from it. Return to
 eval-only perturbation localization or a more explicit push-recovery policy
 correction.
+
+### B0F A100 Session Hold
+
+Artifact:
+
+```text
+outputs/analysis/PHASE2_B0F_A100_SESSION_LOSS_HOLD_DECISION.md
+```
+
+Status:
+
+```text
+HOLD_B0F_A100_SESSION_LOST
+```
+
+B0F was not trained to a candidate checkpoint. The recipe passed direct
+8-env and 64-env A100 probes, but full B0F attempts through the current Colab
+session/wrapper path repeatedly died or lost the named session after printing
+the training manifest and before writing normal runner stdout/stderr or ONNX
+exports. This is a cloud execution-path hold, not a robot result and not a
+candidate-policy result.
+
+Next attempt should avoid the detached Colab console path, reduce upload/state
+size, or use another stable CUDA runtime before evaluating B0F.
