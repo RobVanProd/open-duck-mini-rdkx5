@@ -1,0 +1,87 @@
+{
+  "status": "HOLD_PARTIAL_NO_PROMOTABLE_CHECKPOINT",
+  "generated_at": "2026-06-29T22:43:00Z",
+  "workflow": "phase2-z005-motion-floor",
+  "session": "open-duck-l4",
+  "hardware": "Colab T4",
+  "candidate": "phase2_z005_motion_prior_cuda",
+  "fit_json": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+  "behavior_prior": {
+    "mlp_npz": "outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate/candidate_mlp.npz",
+    "scale": -0.25,
+    "huber_delta": 0.05
+  },
+  "partial_artifact": {
+    "path": "outputs/analysis/colab_cli/open-duck-l4-phase2-z005-motion-floor-20260629T213257Z/open_duck_colab_cli_phase2-z005-motion-floor_20260629T213307Z_artifacts.tar.gz.partial",
+    "sha256": "ad1fd59f1fc1b04806b1ca182e5370f370f942b113663ee5cdaffff0b63018b2"
+  },
+  "checkpoints": [
+    {
+      "step": 40960,
+      "sha256": "98a68874cac0831932923ebec8c1ed6c302d2ab55e855e3bca61bf891859aeaf"
+    },
+    {
+      "step": 81920,
+      "sha256": "0c878e732f4926933d33f0ae589cb581b2d197f7401aedd01f7641ba33569dc4"
+    },
+    {
+      "step": 122880,
+      "sha256": "e003688a910e6baf1637ccfe5edbbfe194a7d6c2a14d3ff8e5ee1ebaf791fb91"
+    }
+  ],
+  "completed_compact_sweep_rows": [
+    {
+      "step": 40960,
+      "command_x": 0.0,
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "max_pitch_tracking_p95_rad": 0.19148783683776838,
+      "max_sent_target_velocity_p95_rad_s": 1.1069503426551819
+    },
+    {
+      "step": 40960,
+      "command_x": 0.08,
+      "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "track_ratio": 0.16213025467004627,
+      "max_pitch_tracking_p95_rad": 0.2135577499866484,
+      "max_sent_target_velocity_p95_rad_s": 1.4085310697555542
+    },
+    {
+      "step": 81920,
+      "command_x": 0.0,
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "max_pitch_tracking_p95_rad": 0.19144743680953963,
+      "max_sent_target_velocity_p95_rad_s": 1.1752222478389738
+    },
+    {
+      "step": 81920,
+      "command_x": 0.08,
+      "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "track_ratio": 0.17026001321937656,
+      "max_pitch_tracking_p95_rad": 0.21340528130531294,
+      "max_sent_target_velocity_p95_rad_s": 1.4249113202095032
+    },
+    {
+      "step": 122880,
+      "command_x": 0.0,
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "max_pitch_tracking_p95_rad": 0.191870006918907,
+      "max_sent_target_velocity_p95_rad_s": 1.1652559041976926
+    },
+    {
+      "step": 122880,
+      "command_x": 0.08,
+      "status": "INCOMPLETE_SESSION_LOST"
+    }
+  ],
+  "promotion": {
+    "promotable": false,
+    "reason": "Colab session dropped before final row; completed x=0.08 rows were low-progress holds.",
+    "best_completed_x008_track_ratio": 0.17026001321937656,
+    "compact_promotion_track_ratio_floor": 0.25
+  },
+  "robot_tests": false,
+  "ssh": false,
+  "deploy": false,
+  "grounded_replay": false,
+  "runtime_behavior_changed": false
+}
