@@ -455,7 +455,10 @@ def build_plan(args: argparse.Namespace) -> dict[str, Any]:
         },
         "stages": stages,
         "missing_implementation": [
-            "stage-gated automation that advances only after corrected-bridge gates pass",
+            (
+                "automatic training launch/advance remains manual; run "
+                "tools/report_phase2_curriculum_gate.py before advancing stages"
+            ),
         ],
     }
 

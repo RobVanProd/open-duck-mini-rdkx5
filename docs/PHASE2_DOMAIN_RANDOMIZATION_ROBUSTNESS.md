@@ -1,6 +1,6 @@
 # Phase 2 Domain-Randomized Robustness Training
 
-status: `HOLD_STAGE_C7_GATE_SELECTION_PARTIAL`
+status: `HOLD_PHASE2_STAGE_Z005_SUPPORT`
 
 ## Objective
 
@@ -13,6 +13,37 @@ randomization while preserving:
 - and the slow in-envelope `x=0.08` gait.
 
 Robot validation is out of scope. No SSH, no deploy, no grounded replay.
+
+## Current Canonical Gate Ledger
+
+Use the read-only curriculum ledger before advancing any Phase 2 stage:
+
+```bash
+python3 tools/report_phase2_curriculum_gate.py
+```
+
+Current ledger artifact:
+
+```text
+outputs/analysis/PHASE2_CURRICULUM_GATE_LEDGER.md
+outputs/analysis/phase2_curriculum_gate_ledger.json
+```
+
+Current decision:
+
+```text
+stage_a2_z002_regression:
+  PASS_STAGE
+
+stage_z005_support:
+  HOLD_STAGE
+  held gate: z005_x008_nopush
+  missing evidence: z005_x000_nopush
+```
+
+Do not advance to `z=0.005` push, stronger terrain, or robot validation until
+the `z=0.005` no-push gates pass under the corrected bridge and the regression
+gates remain clear.
 
 ## Phase 1 Anchor
 
