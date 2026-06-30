@@ -1,7 +1,7 @@
 # Phase 2 Next Run Plan
 
 status: `PASS_PHASE2_NEXT_RUN_PLAN_READY`
-launch_status: `HOLD_PHASE2_COLAB_GPU_SESSION_NOT_READY`
+launch_status: `PASS_PHASE2_COLAB_GPU_SESSION_READY`
 
 ## Current Decision
 
@@ -14,10 +14,10 @@ launch_status: `HOLD_PHASE2_COLAB_GPU_SESSION_NOT_READY`
 
 ## Readiness
 
-- colab_status: `HOLD_NO_ACTIVE_COLAB_SESSION`
+- colab_status: `PASS_COLAB_SESSION_VISIBLE`
 - colab_session: `open-duck-l4`
-- colab_hardware: `None`
-- colab_active: `False`
+- colab_hardware: `A100`
+- colab_active: `True`
 - git_status: `PASS_GIT_REMOTE_READ_AUTH`
 - git_branch: `codex/live-oracle-dagger-phase-student`
 - git_remote_read_auth_ok: `True`

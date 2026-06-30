@@ -15,7 +15,7 @@
     "Run the phase2-z002-teacher-continuity recipe only after the Colab session is active and still using the corrected bridge.",
     "Run report_phase2_z002_tracking_margin_post_training_gates.py on post-training seed-gate output.",
     "Use local CPU only for reduced-horizon correctness checks; local ROCm GPU is not cleared for Phase 2 training.",
-    "Do not launch training yet from this host; Colab session open-duck-l4 is not active."
+    "Launch the preferred phase2-z002-teacher-continuity Colab workflow."
   ],
   "candidate": {
     "exists": true,
@@ -24,8 +24,8 @@
     "size_bytes": 1772930,
     "status": "PRESENT_FILE"
   },
-  "colab_hardware": null,
-  "colab_status": "HOLD_NO_ACTIVE_COLAB_SESSION",
+  "colab_hardware": "A100",
+  "colab_status": "PASS_COLAB_SESSION_VISIBLE",
   "corrected_bridge": {
     "exists": true,
     "path": "outputs/analysis/actuator_response_fit_corrected_knee.json",
@@ -62,7 +62,7 @@
     "package_manifest": "outputs/analysis/phase2_colab_package_manifest.json",
     "recipe": "outputs/analysis/phase2_z002_teacher_continuity_next_recipe.json"
   },
-  "launch_status": "HOLD_PHASE2_COLAB_GPU_SESSION_NOT_READY",
+  "launch_status": "PASS_PHASE2_COLAB_GPU_SESSION_READY",
   "local_backend": {
     "basic_jax_gpu": "PASS",
     "closed_loop_cpu": "PASS",
@@ -133,6 +133,6 @@
   "robot_touched": false,
   "ssh_used": false,
   "stage_strategy": "The curriculum ledger is held at stage_z005_support, but the selected launch workflow intentionally backs up to z=0.002 teacher-action continuity. The scalar z=0.002 tracking-margin A100 run preserved motion but held at about 0.216-0.218 rad tracking p95, so the next GPU run must recover tracking margin using a behavior-prior/trust-region mechanism before escalating terrain.",
-  "status": "HOLD_PHASE2_COLAB_GPU_SESSION_NOT_READY",
+  "status": "PASS_PHASE2_COLAB_GPU_SESSION_READY",
   "training_started": false
 }

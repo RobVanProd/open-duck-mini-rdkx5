@@ -57,18 +57,22 @@ This is a read-only hash manifest. It did not train, SSH, deploy, or touch the r
 | `outputs/analysis/phase2_z002_colab_launch_handoff.json` | `PRESENT_FILE` | `b332c5d06be2ae56600aea89d7469dbfcc1819d777893d568d58ecf02980d784` | 6180 | `outputs/analysis/phase2_z002_colab_launch_handoff.json` |
 | `outputs/analysis/PHASE2_Z002_TEACHER_CONTINUITY_NEXT_RECIPE.md` | `PRESENT_FILE` | `e1c3e541eec9bd5fcb25b305d886c667ee0e61826bba8515535dfa4ffcdb3021` | 3940 | `outputs/analysis/PHASE2_Z002_TEACHER_CONTINUITY_NEXT_RECIPE.md` |
 | `outputs/analysis/phase2_z002_teacher_continuity_next_recipe.json` | `PRESENT_FILE` | `ddb49445252b429ef9787a1f22f1f998018104fc3b0e7683c88e600f5a00fd0b` | 8900 | `outputs/analysis/phase2_z002_teacher_continuity_next_recipe.json` |
-| `outputs/analysis/PHASE2_Z002_TEACHER_CONTINUITY_LAUNCH_AUDIT.md` | `PRESENT_FILE` | `92347582a5d41ddbe7c7ec5830f12b9e9ff89f2774fc011d34ef91b735e9d969` | 3321 | `outputs/analysis/PHASE2_Z002_TEACHER_CONTINUITY_LAUNCH_AUDIT.md` |
-| `outputs/analysis/phase2_z002_teacher_continuity_launch_audit.json` | `PRESENT_FILE` | `5404c631221d427e9334d11869140a9a7bb1611efca9364103c0ca0443f24b45` | 5229 | `outputs/analysis/phase2_z002_teacher_continuity_launch_audit.json` |
-| `outputs/analysis/PHASE2_Z002_TEACHER_CONTINUITY_COLAB_LAUNCH_HANDOFF.md` | `PRESENT_FILE` | `8afa129a135d5af9a8c7a9ce841de5f3c259c293813e13e5a21a82110559b396` | 3838 | `outputs/analysis/PHASE2_Z002_TEACHER_CONTINUITY_COLAB_LAUNCH_HANDOFF.md` |
-| `outputs/analysis/phase2_z002_teacher_continuity_colab_launch_handoff.json` | `PRESENT_FILE` | `f8650d857edaf1a86b68a7d7022d33fffd7847eb3eec530e62b9e251cd81b6ef` | 6919 | `outputs/analysis/phase2_z002_teacher_continuity_colab_launch_handoff.json` |
-| `outputs/analysis/PHASE2_PACKAGE_ONLY_ARCHIVE_VERIFICATION.md` | `PRESENT_FILE` | `ffecc2e4f1c8edc0dc3708e94d529eba1a97d93e3d5f73c70520c4a934bf1e12` | 1746 | `outputs/analysis/PHASE2_PACKAGE_ONLY_ARCHIVE_VERIFICATION.md` |
-| `outputs/analysis/phase2_package_only_archive_verification.json` | `PRESENT_FILE` | `9994e4e6a5506e8c32d7c625d9f1e0e1fc1c910b1c471fa697c35f99308fa31d` | 10159 | `outputs/analysis/phase2_package_only_archive_verification.json` |
+| `outputs/analysis/PHASE2_Z002_TEACHER_CONTINUITY_LAUNCH_AUDIT.md` | `PRESENT_FILE` | `543e1f90a1cbc64ddb68f28eb340f89ac757bc73d9088c2f2b3e88bbd9d9b20f` | 3327 | `outputs/analysis/PHASE2_Z002_TEACHER_CONTINUITY_LAUNCH_AUDIT.md` |
+| `outputs/analysis/phase2_z002_teacher_continuity_launch_audit.json` | `PRESENT_FILE` | `fa3294991277dcb76728b5055794373d3ca269b9db4bd5e003821bbc89fd8d16` | 5235 | `outputs/analysis/phase2_z002_teacher_continuity_launch_audit.json` |
+| `outputs/analysis/PHASE2_Z002_TEACHER_CONTINUITY_COLAB_LAUNCH_HANDOFF.md` | `PRESENT_FILE` | `c45cf90709a60f45c1b76fa88fc895afb81bf27578938968eb5868aebf1f4cf1` | 3811 | `outputs/analysis/PHASE2_Z002_TEACHER_CONTINUITY_COLAB_LAUNCH_HANDOFF.md` |
+| `outputs/analysis/phase2_z002_teacher_continuity_colab_launch_handoff.json` | `PRESENT_FILE` | `0ac188ed13ae495487d241def1eac08629fe9ed0af8852541f3a0ba770b5dbfb` | 6585 | `outputs/analysis/phase2_z002_teacher_continuity_colab_launch_handoff.json` |
+| `outputs/analysis/PHASE2_Z002_TEACHER_CONTINUITY_A100_RESULT.md` | `PRESENT_FILE` | `c1d3d3cd6ad57beb08103f9d71a1016573f939784b3168c42e1af0d0ad0d07ab` | 2575 | `outputs/analysis/PHASE2_Z002_TEACHER_CONTINUITY_A100_RESULT.md` |
+| `outputs/analysis/phase2_z002_teacher_continuity_a100_result.json` | `PRESENT_FILE` | `549d692ee7cc4d8d67b601e6bdc3b3a8c5d0fdbabd9d65b5db48a247d504d4fe` | 2871 | `outputs/analysis/phase2_z002_teacher_continuity_a100_result.json` |
+| `outputs/analysis/phase2_z002_teacher_continuity_local_compact_sweep/CANDIDATE_CHECKPOINT_SWEEP.md` | `PRESENT_FILE` | `31341a0ad403cc3d6e7bc027b9282e1996a7b2ecfa6380069ad7f41a6744092b` | 3670 | `outputs/analysis/phase2_z002_teacher_continuity_local_compact_sweep/CANDIDATE_CHECKPOINT_SWEEP.md` |
+| `outputs/analysis/phase2_z002_teacher_continuity_local_compact_sweep/candidate_checkpoint_sweep.json` | `PRESENT_FILE` | `72cd83e5385c005005f1911477cd30bfd712479d7835f54d26873b41d5923d0e` | 29335 | `outputs/analysis/phase2_z002_teacher_continuity_local_compact_sweep/candidate_checkpoint_sweep.json` |
+| `outputs/analysis/PHASE2_PACKAGE_ONLY_ARCHIVE_VERIFICATION.md` | `PRESENT_FILE` | `721c4f1f7c356aeb329678db97bd656a8c538d579e8b8ae2ac3b6ddcf5e1a583` | 1746 | `outputs/analysis/PHASE2_PACKAGE_ONLY_ARCHIVE_VERIFICATION.md` |
+| `outputs/analysis/phase2_package_only_archive_verification.json` | `PRESENT_FILE` | `79c74748ef7e9e5b3f311b81ceb94b4ef33a49236ab23cede1ac59e4b5de3ac0` | 10159 | `outputs/analysis/phase2_package_only_archive_verification.json` |
 | `outputs/analysis/PHASE2_LOCAL_FALLBACK_READINESS.md` | `PRESENT_FILE` | `0c63c0894e75810edb5ad59a19b347970c5cf901f5b472678aefea337aee7669` | 2375 | `outputs/analysis/PHASE2_LOCAL_FALLBACK_READINESS.md` |
 | `outputs/analysis/phase2_local_fallback_readiness.json` | `PRESENT_FILE` | `61da905854bda8e7dde26727ee44f71c7598e3c1ce05456477813bf160448192` | 35579 | `outputs/analysis/phase2_local_fallback_readiness.json` |
-| `outputs/analysis/PHASE2_NEXT_RUN_PLAN.md` | `PRESENT_FILE` | `ae3cc141c44e17be3794be305f35a082cff9269014d90a7aa679cd0938200563` | 6868 | `outputs/analysis/PHASE2_NEXT_RUN_PLAN.md` |
-| `outputs/analysis/phase2_next_run_plan.json` | `PRESENT_FILE` | `9f07b412c1695d05e559c6ece004980a77159cb3ae45f353d743a801b3ba9004` | 15080 | `outputs/analysis/phase2_next_run_plan.json` |
-| `outputs/analysis/PHASE2_STAGE_GUARD.md` | `PRESENT_FILE` | `34c086b085ad29c058999eced1ede4ad5ca7353e6d4979c9246196f7941d1c16` | 5854 | `outputs/analysis/PHASE2_STAGE_GUARD.md` |
-| `outputs/analysis/phase2_stage_guard.json` | `PRESENT_FILE` | `4e6934e855920338d5ee940453ea3626bdd75e1703e866727411e475b12693f5` | 7353 | `outputs/analysis/phase2_stage_guard.json` |
+| `outputs/analysis/PHASE2_NEXT_RUN_PLAN.md` | `PRESENT_FILE` | `164e66688e156cf9c2fec8e1ac87d3dd994a00e7f6447f0aa8fdb9089b6fc2b6` | 6861 | `outputs/analysis/PHASE2_NEXT_RUN_PLAN.md` |
+| `outputs/analysis/phase2_next_run_plan.json` | `PRESENT_FILE` | `4e151daeb17b9652e7f395f125f403e3bb37cd555fb6df8d4cfa10b95fb2a500` | 15358 | `outputs/analysis/phase2_next_run_plan.json` |
+| `outputs/analysis/PHASE2_STAGE_GUARD.md` | `PRESENT_FILE` | `412665d870e02d90bae80c8566297aa03fcb3b1d9f65c580a063fc8c2ce5d0a5` | 5827 | `outputs/analysis/PHASE2_STAGE_GUARD.md` |
+| `outputs/analysis/phase2_stage_guard.json` | `PRESENT_FILE` | `0b1e5ef92af249eee2d0ac8061460a3e83eb6a03012932393588b979cdbb839b` | 7328 | `outputs/analysis/phase2_stage_guard.json` |
 | `outputs/analysis/rocm_mjx_isolation_post_bios/ROCM_MJX_RUNTIME_ISOLATION.md` | `PRESENT_FILE` | `d21695c41a633202999e9bd41e5b8fe2ca7a72741ecb2e16fbe8382c405d7fa8` | 25165 | `outputs/analysis/rocm_mjx_isolation_post_bios/ROCM_MJX_RUNTIME_ISOLATION.md` |
 | `outputs/analysis/rocm_mjx_isolation_post_bios/rocm_mjx_runtime_isolation.json` | `PRESENT_FILE` | `613ce4f1579e24d578f3846407b0c465fab641c1912e82f0d188f68f5a594bc7` | 321403 | `outputs/analysis/rocm_mjx_isolation_post_bios/rocm_mjx_runtime_isolation.json` |
 | `outputs/analysis/PHASE2_COLAB_PACKAGE_MANIFEST.md` | `PRESENT_FILE` | `ddbddf110df4d9bd6a45b6fb632f34411451cb4db15a2796263f1f0099095cfd` | 1774 | `outputs/analysis/PHASE2_COLAB_PACKAGE_MANIFEST.md` |
@@ -91,7 +95,7 @@ This is a read-only hash manifest. It did not train, SSH, deploy, or touch the r
 | `tools/report_phase2_colab_launch_handoff.py` | `PRESENT_FILE` | `d8f53081d676fe254e6828c3cf98b792399e5dc8382b1519062e84dc8a9bf589` | 11188 | `tools/report_phase2_colab_launch_handoff.py` |
 | `tools/report_phase2_package_only_archive_verification.py` | `PRESENT_FILE` | `0a2205b238e16dd3851dc4d44e57929caa8a055098d0300c765ad2443051df90` | 9560 | `tools/report_phase2_package_only_archive_verification.py` |
 | `tools/report_phase2_stage_guard.py` | `PRESENT_FILE` | `6d0477273862d6105fc79756fc41d7ec86e4e4e022920a699dc42fa9de764940` | 19266 | `tools/report_phase2_stage_guard.py` |
-| `tools/run_colab_cli_cuda_workflow.py` | `PRESENT_FILE` | `86b53db6c705c714344055dc046460c769d904e26cf6d5bc69aeeb45e6a39856` | 129628 | `tools/run_colab_cli_cuda_workflow.py` |
+| `tools/run_colab_cli_cuda_workflow.py` | `PRESENT_FILE` | `a30218c77ae471329a7dd4a3c2d872e0cc06ee38862a466978b9fd8f2475049e` | 129843 | `tools/run_colab_cli_cuda_workflow.py` |
 
 ## Promotion Gate
 

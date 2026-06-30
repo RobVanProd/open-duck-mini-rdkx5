@@ -1,6 +1,6 @@
 # Phase 2 z=0.002 Teacher-Continuity Colab Launch Handoff
 
-status: `HOLD_PHASE2_Z002_COLAB_SESSION_NOT_READY`
+status: `PASS_PHASE2_Z002_COLAB_HANDOFF_READY_TO_RUN`
 workflow: `phase2-z002-teacher-continuity`
 session: `open-duck-l4`
 
@@ -8,10 +8,10 @@ This is a read-only handoff. It did not upload, train, SSH, deploy, or touch the
 
 ## Current Gate
 
-- launch_status: `HOLD_PHASE2_COLAB_GPU_SESSION_NOT_READY`
-- colab_status: `HOLD_NO_ACTIVE_COLAB_SESSION`
+- launch_status: `PASS_PHASE2_COLAB_GPU_SESSION_READY`
+- colab_status: `PASS_COLAB_SESSION_VISIBLE`
 - git_status: `PASS_GIT_REMOTE_READ_AUTH`
-- external_blockers: `HOLD_NO_ACTIVE_COLAB_SESSION`
+- external_blockers: `none`
 
 ## Stage Strategy
 
@@ -30,20 +30,20 @@ The curriculum ledger is held at stage_z005_support, but the selected launch wor
 ## Source Snapshot
 
 - current_rdk_branch: `codex/live-oracle-dagger-phase-student`
-- current_rdk_head: `0378c9fcf4f00ee90529e4a97a806fa632231832`
-- package_rdk_head: `0378c9fcf4f00ee90529e4a97a806fa632231832`
+- current_rdk_head: `665703f018d4b3322812cf288fa3a55e7f1415b3`
+- package_rdk_head: `665703f018d4b3322812cf288fa3a55e7f1415b3`
 - package_source_matches_current_head: `True`
 
 ## Package Archives
 
 | archive | size bytes | sha256 | path |
 |---|---:|---|---|
-| `playground` | 1940410 | `97f682a4961da67404fb87faa33f9390be45cc086a6f13841a6441ba985d8a53` | `/home/lsd/robots/outputs/colab_cli_uploads/Open_Duck_Playground_cli_20260630T031335Z.tar.gz` |
-| `rdk` | 36397485 | `d2bca613c23e089cb12b8e5d797f81b86f3b0171326bedf34e75d3c8e3d8a0a7` | `/home/lsd/robots/outputs/colab_cli_uploads/open-duck-mini-rdkx5_cli_20260630T031335Z.tar.gz` |
+| `playground` | 1940410 | `eae257d576a79dfc0913eaa06748272c5b94fe13bdde247d16d677a341588bc1` | `/home/lsd/robots/outputs/colab_cli_uploads/Open_Duck_Playground_cli_20260630T034918Z.tar.gz` |
+| `rdk` | 36398606 | `0bdefd17f6a4da8edd05a50ed050b941a45d8e4da138cf30c06bf4f8903c8908` | `/home/lsd/robots/outputs/colab_cli_uploads/open-duck-mini-rdkx5_cli_20260630T034918Z.tar.gz` |
 
 ## Source
 
-- `rdk`: branch `codex/live-oracle-dagger-phase-student`, head `0378c9fcf4f00ee90529e4a97a806fa632231832`, tracked_dirty `True`, untracked_count `55`
+- `rdk`: branch `codex/live-oracle-dagger-phase-student`, head `665703f018d4b3322812cf288fa3a55e7f1415b3`, tracked_dirty `True`, untracked_count `54`
 - `playground`: branch `codex/forward-progress-reward`, head `d969ca8c3760451a39657161cb376c44c5155a6d`, tracked_dirty `False`, untracked_count `0`
 - `jax_pin`: `0.7.2`
 
@@ -54,8 +54,8 @@ Preflight:
 ```bash
 colab sessions
 colab status -s open-duck-l4
-python3 tools/report_phase2_package_only_archive_verification.py --package-manifest outputs/analysis/colab_cli/open-duck-l4-phase2-z002-teacher-continuity-20260630T031335Z/PACKAGE_ONLY_MANIFEST.json
-python3 tools/report_phase2_z002_launch_audit.py --package-manifest outputs/analysis/colab_cli/open-duck-l4-phase2-z002-teacher-continuity-20260630T031335Z/PACKAGE_ONLY_MANIFEST.json
+python3 tools/report_phase2_package_only_archive_verification.py --package-manifest outputs/analysis/colab_cli/open-duck-l4-phase2-z002-teacher-continuity-20260630T034918Z/PACKAGE_ONLY_MANIFEST.json
+python3 tools/report_phase2_z002_launch_audit.py --package-manifest outputs/analysis/colab_cli/open-duck-l4-phase2-z002-teacher-continuity-20260630T034918Z/PACKAGE_ONLY_MANIFEST.json
 ```
 
 Launch:

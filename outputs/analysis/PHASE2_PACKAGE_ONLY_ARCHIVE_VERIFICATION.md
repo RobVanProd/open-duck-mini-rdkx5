@@ -3,7 +3,7 @@
 status: `PASS_PHASE2_PACKAGE_ONLY_ARCHIVE_VERIFICATION`
 workflow: `phase2-z002-teacher-continuity`
 session: `open-duck-l4`
-package_manifest: `outputs/analysis/colab_cli/open-duck-l4-phase2-z002-teacher-continuity-20260630T031335Z/PACKAGE_ONLY_MANIFEST.json`
+package_manifest: `outputs/analysis/colab_cli/open-duck-l4-phase2-z002-teacher-continuity-20260630T034918Z/PACKAGE_ONLY_MANIFEST.json`
 
 This is a read-only archive verification. It did not upload, train, SSH, deploy, or touch the robot.
 
@@ -11,8 +11,8 @@ This is a read-only archive verification. It did not upload, train, SSH, deploy,
 
 | archive | exists | size matches | sha256 matches | size bytes | sha256 | path |
 |---|---:|---:|---:|---:|---|---|
-| `rdk` | `True` | `True` | `True` | 36397485 | `d2bca613c23e089cb12b8e5d797f81b86f3b0171326bedf34e75d3c8e3d8a0a7` | `/home/lsd/robots/outputs/colab_cli_uploads/open-duck-mini-rdkx5_cli_20260630T031335Z.tar.gz` |
-| `playground` | `True` | `True` | `True` | 1940410 | `97f682a4961da67404fb87faa33f9390be45cc086a6f13841a6441ba985d8a53` | `/home/lsd/robots/outputs/colab_cli_uploads/Open_Duck_Playground_cli_20260630T031335Z.tar.gz` |
+| `rdk` | `True` | `True` | `True` | 36398606 | `0bdefd17f6a4da8edd05a50ed050b941a45d8e4da138cf30c06bf4f8903c8908` | `/home/lsd/robots/outputs/colab_cli_uploads/open-duck-mini-rdkx5_cli_20260630T034918Z.tar.gz` |
+| `playground` | `True` | `True` | `True` | 1940410 | `eae257d576a79dfc0913eaa06748272c5b94fe13bdde247d16d677a341588bc1` | `/home/lsd/robots/outputs/colab_cli_uploads/Open_Duck_Playground_cli_20260630T034918Z.tar.gz` |
 
 ## RDK Archive Contents
 

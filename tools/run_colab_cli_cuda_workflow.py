@@ -1050,7 +1050,19 @@ def build_remote_driver(
         phase2_restore_kl = "1.5"
     else:
         phase2_restore_kl = "1.0"
-    phase2_actuator_tracking = "-0.005" if run_phase2_motion_floor_like else ("-0.01" if run_phase2_z005_support else ("0" if run_phase2_b0g else ("-0.01" if run_phase2_b0f else ("-0.015" if run_phase2_b0e else "-0.04"))))
+    phase2_actuator_tracking = (
+        "-0.005"
+        if (run_phase2_z002_tracking_margin or run_phase2_z002_teacher_continuity or run_phase2_motion_floor_like)
+        else (
+            "-0.01"
+            if run_phase2_z005_support
+            else (
+                "0"
+                if run_phase2_b0g
+                else ("-0.01" if run_phase2_b0f else ("-0.015" if run_phase2_b0e else "-0.04"))
+            )
+        )
+    )
     phase2_forward_progress = "4.5" if (run_phase2_z002_tracking_margin or run_phase2_z002_teacher_continuity) else ("4.0" if run_phase2_motion_floor_like else ("2.5" if phase2_motion_preserve else "2"))
     phase2_command_progress = "3.5" if (run_phase2_z002_tracking_margin or run_phase2_z002_teacher_continuity) else ("3.0" if run_phase2_motion_floor_like else ("1.5" if phase2_motion_preserve else "1"))
     phase2_command_shortfall = "-10" if (run_phase2_z002_tracking_margin or run_phase2_z002_teacher_continuity) else ("-8" if run_phase2_motion_floor_like else ("-4" if phase2_motion_preserve else "-2.5"))
