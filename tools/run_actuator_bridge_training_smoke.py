@@ -172,6 +172,9 @@ def build_command(args: argparse.Namespace, output_dir: Path) -> list[str]:
         "--forward_swing_advance_huber_delta": (
             args.forward_swing_advance_huber_delta
         ),
+        "--forward_swing_target_rate_limit_huber_delta": (
+            args.forward_swing_target_rate_limit_huber_delta
+        ),
         "--command_progress_shortfall_huber_delta": (
             args.command_progress_shortfall_huber_delta
         ),
@@ -211,6 +214,15 @@ def build_command(args: argparse.Namespace, output_dir: Path) -> list[str]:
         ),
         "--forward_swing_advance_scale": args.forward_swing_advance_scale,
         "--forward_swing_advance_target_m": args.forward_swing_advance_target_m,
+        "--forward_swing_target_rate_limit_scale": (
+            args.forward_swing_target_rate_limit_scale
+        ),
+        "--forward_swing_target_rate_limit_joint_indices": (
+            args.forward_swing_target_rate_limit_joint_indices
+        ),
+        "--forward_swing_target_rate_limit_values": (
+            args.forward_swing_target_rate_limit_values
+        ),
         "--push_recovery_actuator_tracking_scale": (
             args.push_recovery_actuator_tracking_scale
         ),
@@ -746,6 +758,11 @@ def main() -> int:
     parser.add_argument("--forward-swing-clearance-huber-delta", type=float, default=None)
     parser.add_argument("--forward-swing-advance-huber-delta", type=float, default=None)
     parser.add_argument(
+        "--forward-swing-target-rate-limit-huber-delta",
+        type=float,
+        default=None,
+    )
+    parser.add_argument(
         "--command-progress-shortfall-huber-delta", type=float, default=None
     )
     parser.add_argument("--reward-clip-min", type=float, default=None)
@@ -784,6 +801,27 @@ def main() -> int:
     parser.add_argument("--forward-swing-balance-grace-steps", type=int, default=None)
     parser.add_argument("--forward-swing-advance-scale", type=float, default=None)
     parser.add_argument("--forward-swing-advance-target-m", type=float, default=None)
+    parser.add_argument(
+        "--forward-swing-target-rate-limit-scale",
+        type=float,
+        default=None,
+    )
+    parser.add_argument(
+        "--forward-swing-target-rate-limit-joint-indices",
+        default=None,
+        help=(
+            "Comma-separated actuator indices for phase-commanded swing target-rate "
+            "limit cost."
+        ),
+    )
+    parser.add_argument(
+        "--forward-swing-target-rate-limit-values",
+        default=None,
+        help=(
+            "Comma-separated rad/s limits matching "
+            "--forward-swing-target-rate-limit-joint-indices."
+        ),
+    )
     parser.add_argument("--push-recovery-tracking-window-steps", type=int, default=None)
     parser.add_argument(
         "--push-recovery-tracking-joint-indices",
@@ -1011,6 +1049,9 @@ def main() -> int:
             "forward_swing_advance_huber_delta": (
                 args.forward_swing_advance_huber_delta
             ),
+            "forward_swing_target_rate_limit_huber_delta": (
+                args.forward_swing_target_rate_limit_huber_delta
+            ),
             "command_progress_shortfall_huber_delta": (
                 args.command_progress_shortfall_huber_delta
             ),
@@ -1052,6 +1093,15 @@ def main() -> int:
             ),
             "forward_swing_advance_scale": args.forward_swing_advance_scale,
             "forward_swing_advance_target_m": args.forward_swing_advance_target_m,
+            "forward_swing_target_rate_limit_scale": (
+                args.forward_swing_target_rate_limit_scale
+            ),
+            "forward_swing_target_rate_limit_joint_indices": (
+                args.forward_swing_target_rate_limit_joint_indices
+            ),
+            "forward_swing_target_rate_limit_values": (
+                args.forward_swing_target_rate_limit_values
+            ),
             "push_recovery_actuator_tracking_scale": (
                 args.push_recovery_actuator_tracking_scale
             ),

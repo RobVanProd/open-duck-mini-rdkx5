@@ -505,6 +505,8 @@ REWARD_SCALE_OVERRIDES = {
     "forward_double_support_dwell_scale": "forward_double_support_dwell",
     "forward_swing_clearance_scale": "forward_swing_clearance",
     "forward_swing_balance_scale": "forward_swing_balance",
+    "forward_swing_advance_scale": "forward_swing_advance",
+    "forward_swing_target_rate_limit_scale": "forward_swing_target_rate_limit",
     "alive_scale": "alive",
     "imitation_scale": "imitation",
 }
@@ -529,6 +531,9 @@ REWARD_CONFIG_OVERRIDES = {
     "forward_double_support_dwell_grace_steps",
     "forward_swing_clearance_target_m",
     "forward_swing_balance_grace_steps",
+    "forward_swing_advance_target_m",
+    "forward_swing_target_rate_limit_joint_indices",
+    "forward_swing_target_rate_limit_values",
     "action_rate_huber_delta",
     "action_magnitude_huber_delta",
     "target_rate_huber_delta",
@@ -539,6 +544,8 @@ REWARD_CONFIG_OVERRIDES = {
     "forward_pitch_huber_delta",
     "forward_pitch_rate_huber_delta",
     "forward_swing_clearance_huber_delta",
+    "forward_swing_advance_huber_delta",
+    "forward_swing_target_rate_limit_huber_delta",
     "command_progress_shortfall_huber_delta",
 }
 
@@ -789,6 +796,7 @@ def classify_candidate_gate(
         "max_action_saturation_pct": 1.0,
         "max_pitch_tracking_p95_rad": 0.20,
         "max_sent_target_velocity_limit_excess_rad_s": 0.0,
+        "max_sent_target_velocity_max_limit_excess_rad_s": 0.0,
         "pitch_chain_velocity_limits_rad_s": velocity_limits,
         "max_abs_body_pitch_p95_rad": 0.25,
         "min_base_height_m": 0.12,
@@ -818,7 +826,9 @@ def classify_candidate_gate(
     forward_velocity_errors = []
     forward_shortfall_cost_means = []
     per_joint_sent_velocity_p95: dict[str, float] = {}
+    per_joint_sent_velocity_max: dict[str, float] = {}
     per_joint_velocity_violations = []
+    per_joint_velocity_max_violations = []
     for mode in modes.values():
         body = mode.get("body_pitch_rad") or {}
         height = mode.get("base_height_m") or {}
@@ -845,7 +855,9 @@ def classify_candidate_gate(
         for joint in PITCH_CHAIN_JOINTS:
             item = (mode.get("joints") or {}).get(joint, {})
             tracking = (item.get("joint_target_tracking_error_rad") or {}).get("p95")
-            velocity = (item.get("sent_target_velocity_rad_s") or {}).get("p95")
+            velocity_stats = item.get("sent_target_velocity_rad_s") or {}
+            velocity = velocity_stats.get("p95")
+            velocity_max = velocity_stats.get("max")
             saturation = item.get("action_saturation_pct")
             if finite(tracking):
                 pitch_tracking.append(float(tracking))
@@ -866,10 +878,29 @@ def classify_candidate_gate(
                             "excess_rad_s": velocity_value - float(limit),
                         }
                     )
+            if finite(velocity_max):
+                velocity_max_value = float(velocity_max)
+                per_joint_sent_velocity_max[joint] = max(
+                    per_joint_sent_velocity_max.get(joint, -math.inf),
+                    velocity_max_value,
+                )
+                limit = velocity_limits.get(joint)
+                if finite(limit) and velocity_max_value > float(limit):
+                    per_joint_velocity_max_violations.append(
+                        {
+                            "joint": joint,
+                            "velocity_max_rad_s": velocity_max_value,
+                            "limit_rad_s": float(limit),
+                            "excess_rad_s": velocity_max_value - float(limit),
+                        }
+                    )
             if finite(saturation):
                 action_saturation.append(float(saturation))
     max_velocity_excess = max_finite(
         item["excess_rad_s"] for item in per_joint_velocity_violations
+    )
+    max_velocity_max_excess = max_finite(
+        item["excess_rad_s"] for item in per_joint_velocity_max_violations
     )
 
     metrics = {
@@ -877,8 +908,13 @@ def classify_candidate_gate(
         "max_pitch_tracking_p95_rad": max_finite(pitch_tracking),
         "max_sent_target_velocity_p95_rad_s": max_finite(sent_velocity),
         "per_joint_sent_target_velocity_p95_rad_s": per_joint_sent_velocity_p95,
+        "per_joint_sent_target_velocity_max_rad_s": per_joint_sent_velocity_max,
         "pitch_chain_velocity_violations": per_joint_velocity_violations,
+        "pitch_chain_velocity_max_violations": per_joint_velocity_max_violations,
         "max_sent_target_velocity_limit_excess_rad_s": max_velocity_excess or 0.0,
+        "max_sent_target_velocity_max_limit_excess_rad_s": (
+            max_velocity_max_excess or 0.0
+        ),
         "max_abs_body_pitch_p95_rad": max_finite(body_pitch_abs),
         "min_base_height_m": min(base_height_min) if base_height_min else None,
         "min_reward_mean": min(reward_mean) if reward_mean else None,
@@ -914,6 +950,11 @@ def classify_candidate_gate(
     elif (
         metrics["max_sent_target_velocity_limit_excess_rad_s"]
         > thresholds["max_sent_target_velocity_limit_excess_rad_s"]
+    ):
+        status = "HOLD_CANDIDATE_TARGET_VELOCITY"
+    elif (
+        metrics["max_sent_target_velocity_max_limit_excess_rad_s"]
+        > thresholds["max_sent_target_velocity_max_limit_excess_rad_s"]
     ):
         status = "HOLD_CANDIDATE_TARGET_VELOCITY"
     elif metrics["max_abs_body_pitch_p95_rad"] > thresholds["max_abs_body_pitch_p95_rad"]:

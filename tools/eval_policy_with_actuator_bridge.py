@@ -863,6 +863,7 @@ def build_markdown(payload: dict) -> str:
                 "max_pitch_tracking_p95_rad",
                 "max_sent_target_velocity_p95_rad_s",
                 "max_sent_target_velocity_limit_excess_rad_s",
+                "max_sent_target_velocity_max_limit_excess_rad_s",
                 "max_abs_body_pitch_p95_rad",
                 "min_base_height_m",
                 "min_reward_mean",
@@ -885,13 +886,25 @@ def build_markdown(payload: dict) -> str:
             violations = metrics.get("pitch_chain_velocity_violations") or []
             if violations:
                 lines.append("")
-                lines.append("Per-joint target-velocity violations:")
+                lines.append("Per-joint p95 target-velocity violations:")
                 lines.append("")
                 lines.append("| joint | p95_rad_s | limit_rad_s | excess_rad_s |")
                 lines.append("|---|---:|---:|---:|")
                 for item in violations:
                     lines.append(
                         f"| `{item.get('joint')}` | {fmt(item.get('velocity_p95_rad_s'))} | "
+                        f"{fmt(item.get('limit_rad_s'))} | {fmt(item.get('excess_rad_s'))} |"
+                    )
+            max_violations = metrics.get("pitch_chain_velocity_max_violations") or []
+            if max_violations:
+                lines.append("")
+                lines.append("Per-joint max target-velocity violations:")
+                lines.append("")
+                lines.append("| joint | max_rad_s | limit_rad_s | excess_rad_s |")
+                lines.append("|---|---:|---:|---:|")
+                for item in max_violations:
+                    lines.append(
+                        f"| `{item.get('joint')}` | {fmt(item.get('velocity_max_rad_s'))} | "
                         f"{fmt(item.get('limit_rad_s'))} | {fmt(item.get('excess_rad_s'))} |"
                     )
             lines.append("")

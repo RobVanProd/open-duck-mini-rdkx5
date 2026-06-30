@@ -171,6 +171,9 @@ def summarize_payload(payload: dict[str, Any], mode_name: str) -> dict[str, Any]
         "max_pitch_vel_limit_excess_rad_s": metrics.get(
             "max_sent_target_velocity_limit_excess_rad_s"
         ),
+        "max_pitch_vel_max_limit_excess_rad_s": metrics.get(
+            "max_sent_target_velocity_max_limit_excess_rad_s"
+        ),
         "max_tracking_p95_rad": metrics.get("max_pitch_tracking_p95_rad"),
         "action_saturation_pct": metrics.get("max_action_saturation_pct"),
         "push_event_count": push_recovery.get("event_count"),
@@ -430,6 +433,9 @@ def aggregate(rows: list[dict[str, Any]]) -> dict[str, Any]:
         "max_pitch_vel_limit_excess_rad_s": stats(
             item.get("max_pitch_vel_limit_excess_rad_s") for item in summaries
         ),
+        "max_pitch_vel_max_limit_excess_rad_s": stats(
+            item.get("max_pitch_vel_max_limit_excess_rad_s") for item in summaries
+        ),
         "max_tracking_p95_rad": stats(item.get("max_tracking_p95_rad") for item in summaries),
         "push_event_count": stats(item.get("push_event_count") for item in summaries),
         "push_success_rate": stats(item.get("push_success_rate") for item in summaries),
@@ -482,8 +488,8 @@ def build_report(results: list[dict[str, Any]], args: argparse.Namespace) -> str
         "",
         "## Per-Seed Results",
         "",
-        "| policy | seed | status | samples | termination | mean_local_vx | track_ratio | body_pitch_p95 | base_height_min | max_pitch_vel_p95 | max_vel_excess | max_tracking_p95 | min_swing_peak | min_swing_segments | min_rel_x_range_p95 | single_support | double_support | push_events | push_success |",
-        "|---|---:|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|",
+        "| policy | seed | status | samples | termination | mean_local_vx | track_ratio | body_pitch_p95 | base_height_min | max_pitch_vel_p95 | p95_vel_excess | max_vel_excess | max_tracking_p95 | min_swing_peak | min_swing_segments | min_rel_x_range_p95 | single_support | double_support | push_events | push_success |",
+        "|---|---:|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|",
     ]
     for result in results:
         summary = result.get("summary") or {}
@@ -497,6 +503,7 @@ def build_report(results: list[dict[str, Any]], args: argparse.Namespace) -> str
             f"{fmt(summary.get('base_height_min_m'))} | "
             f"{fmt(summary.get('max_pitch_vel_p95_rad_s'))} | "
             f"{fmt(summary.get('max_pitch_vel_limit_excess_rad_s'))} | "
+            f"{fmt(summary.get('max_pitch_vel_max_limit_excess_rad_s'))} | "
             f"{fmt(summary.get('max_tracking_p95_rad'))} | "
             f"{fmt(summary.get('min_swing_peak_lift_m'))} | "
             f"{fmt(summary.get('min_swing_segment_count'), 0)} | "
@@ -508,9 +515,9 @@ def build_report(results: list[dict[str, Any]], args: argparse.Namespace) -> str
         )
     lines.extend(["", "## Distribution Summary", ""])
     lines.append(
-        "| policy | runs | falls | duration_complete | samples_mean | samples_min | samples_max | track_ratio_mean | vx_mean | body_pitch_p95_mean | base_height_min_mean | max_vel_excess_mean | min_swing_peak_mean | min_swing_segments_mean | min_rel_x_range_p95_mean | single_support_mean | double_support_mean | push_events_mean | push_success_mean |"
+        "| policy | runs | falls | duration_complete | samples_mean | samples_min | samples_max | track_ratio_mean | vx_mean | body_pitch_p95_mean | base_height_min_mean | p95_vel_excess_mean | max_vel_excess_mean | min_swing_peak_mean | min_swing_segments_mean | min_rel_x_range_p95_mean | single_support_mean | double_support_mean | push_events_mean | push_success_mean |"
     )
-    lines.append("|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|")
+    lines.append("|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|")
     for label, rows in grouped(results).items():
         agg = aggregate(rows)
         sample_stats = agg.get("samples") or {}
@@ -523,6 +530,7 @@ def build_report(results: list[dict[str, Any]], args: argparse.Namespace) -> str
             f"{fmt((agg.get('body_pitch_p95_rad') or {}).get('mean'))} | "
             f"{fmt((agg.get('base_height_min_m') or {}).get('mean'))} | "
             f"{fmt((agg.get('max_pitch_vel_limit_excess_rad_s') or {}).get('mean'))} | "
+            f"{fmt((agg.get('max_pitch_vel_max_limit_excess_rad_s') or {}).get('mean'))} | "
             f"{fmt((agg.get('min_swing_peak_lift_m') or {}).get('mean'))} | "
             f"{fmt((agg.get('min_swing_segment_count') or {}).get('mean'))} | "
             f"{fmt((agg.get('min_swing_rel_x_range_p95_m') or {}).get('mean'))} | "
