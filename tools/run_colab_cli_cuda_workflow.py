@@ -194,6 +194,13 @@ def tar_filter(member: tarfile.TarInfo) -> tarfile.TarInfo | None:
             (
                 "outputs",
                 "phase2_domain_randomization",
+                "stage_z002_tracking_margin_c2_a100",
+                "smoke_20260630T102226Z_gpu",
+                "2026_06_30_103539_122880",
+            ),
+            (
+                "outputs",
+                "phase2_domain_randomization",
                 "stage_b0c_rough_z002_push_tracking_margin_from_b0_gpu",
                 "smoke_20260629T062042Z_gpu",
                 "2026_06_29_022725_245760",
@@ -1113,6 +1120,8 @@ def build_remote_driver(
             )
         )
     )
+    if args.phase2_actuator_tracking_scale is not None:
+        phase2_actuator_tracking = cli_value(args.phase2_actuator_tracking_scale)
     phase2_forward_progress = "4.5" if (run_phase2_z002_tracking_margin or run_phase2_z002_teacher_continuity) else ("4.0" if run_phase2_motion_floor_like else ("2.5" if phase2_motion_preserve else "2"))
     phase2_command_progress = "3.5" if (run_phase2_z002_tracking_margin or run_phase2_z002_teacher_continuity) else ("3.0" if run_phase2_motion_floor_like else ("1.5" if phase2_motion_preserve else "1"))
     phase2_command_shortfall = "-10" if (run_phase2_z002_tracking_margin or run_phase2_z002_teacher_continuity) else ("-8" if run_phase2_motion_floor_like else ("-4" if phase2_motion_preserve else "-2.5"))
@@ -1245,6 +1254,8 @@ def build_remote_driver(
     phase2_action_rate_scale = "-0.035" if run_phase2_z002_teacher_continuity else ("-0.04" if run_phase2_z002_tracking_margin else ("-0.055" if run_phase2_motion_floor_like else "-0.08"))
     phase2_action_magnitude_scale = "-0.003" if (run_phase2_z002_tracking_margin or run_phase2_z002_teacher_continuity or run_phase2_motion_floor_like) else "-0.005"
     phase2_target_rate_scale = "-0.01" if run_phase2_z002_teacher_continuity else ("-0.02" if run_phase2_z002_tracking_margin else "0")
+    if args.phase2_target_rate_scale is not None:
+        phase2_target_rate_scale = cli_value(args.phase2_target_rate_scale)
     phase2_bridge_delay_max = "3" if run_phase2_terrain_like else "4"
     phase2_bridge_tau_max = "0.14" if run_phase2_terrain_like else "0.1"
     phase2_bridge_per_joint_variation = "0.1" if run_phase2_terrain_like else "0.05"
@@ -2515,6 +2526,18 @@ def main() -> int:
             "Override the restore checkpoint used by Phase 2 workflows. "
             "Relative paths resolve under /content/open-duck-mini-rdkx5."
         ),
+    )
+    parser.add_argument(
+        "--phase2-target-rate-scale",
+        type=float,
+        default=None,
+        help="Override Phase 2 target-rate penalty scale.",
+    )
+    parser.add_argument(
+        "--phase2-actuator-tracking-scale",
+        type=float,
+        default=None,
+        help="Override Phase 2 actuator-tracking penalty scale.",
     )
     parser.add_argument(
         "--checkpoint-sweep-policies",
