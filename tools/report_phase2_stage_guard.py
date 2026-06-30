@@ -21,7 +21,7 @@ from run_colab_cli_cuda_workflow import required_rdk_package_paths, would_packag
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_LEDGER = ROOT / "outputs/analysis/phase2_curriculum_gate_ledger.json"
 DEFAULT_NEXT_PLAN = ROOT / "outputs/analysis/phase2_next_run_plan.json"
-DEFAULT_RECIPE = ROOT / "outputs/analysis/phase2_z002_teacher_continuity_next_recipe.json"
+DEFAULT_RECIPE = ROOT / "outputs/analysis/phase2_z005_support_next_recipe.json"
 DEFAULT_MANIFEST = ROOT / "outputs/analysis/phase2_artifact_manifest.json"
 DEFAULT_PACKAGE_MANIFEST = ROOT / "outputs/analysis/phase2_colab_package_manifest.json"
 DEFAULT_LOCAL_ROCM_ISOLATION = (
@@ -227,10 +227,22 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
         "No direct BEST_WALK deployment.",
         "No training from scratch; continue only from the Phase 2 warm-start checkpoint.",
         "No old/asymmetric actuator bridge.",
-        "No z=0.005 push stage until the current z=0.002 tracking-margin parent-selection gate passes.",
-        "No stronger terrain until z=0.002 tracking margin is recovered and z=0.002 regression stays clear.",
         f"No promotion without {post_training_status}.",
     ]
+    if z002_parent_recovery:
+        forbidden_actions.extend(
+            [
+                "No z=0.005 push stage until the current z=0.002 parent-selection gate passes.",
+                "No stronger terrain until z=0.002 tracking margin is recovered and z=0.002 regression stays clear.",
+            ]
+        )
+    else:
+        forbidden_actions.extend(
+            [
+                "No z=0.005 push stage until the current z=0.005 no-push support gates pass.",
+                "No stronger terrain until z=0.005 no-push gates pass and z=0.002 regressions remain clear.",
+            ]
+        )
     if local_backend["launch_class"] != "PASS_LOCAL_GPU_TRAINING_BACKEND_READY":
         forbidden_actions.append("No local ROCm Phase 2 training launch while local backend status is HOLD_PLAYGROUND_GPU_STEP.")
 

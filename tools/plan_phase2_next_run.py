@@ -37,6 +37,7 @@ DEFAULT_BEHAVIOR_PRIOR_MLP = (
     / "command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate"
     / "candidate_mlp.npz"
 )
+DEFAULT_Z005_SUPPORT_RECIPE = ROOT / "outputs" / "analysis" / "phase2_z005_support_next_recipe.json"
 
 
 def rel(path: Path | str | None) -> str | None:
@@ -422,6 +423,27 @@ def local_rocm_command(
     return command
 
 
+def recipe_command(path: Path, *keys: str) -> list[str] | None:
+    if not path.exists():
+        return None
+    try:
+        payload = read_json(path)
+    except Exception:
+        return None
+    current: Any = payload
+    for key in keys:
+        if not isinstance(current, dict):
+            return None
+        current = current.get(key)
+    if isinstance(current, dict):
+        argv = current.get("argv")
+    else:
+        argv = current
+    if isinstance(argv, list) and all(isinstance(item, str) for item in argv):
+        return argv
+    return None
+
+
 def write_markdown(payload: dict[str, Any], path: Path) -> None:
     readiness = payload.get("readiness", {})
     colab = readiness.get("colab", {})
@@ -520,6 +542,8 @@ def main() -> int:
     )
     colab = colab_command(args.session, args.candidate_name, args.workflow)
     local = local_rocm_command(restore_checkpoint, args.local_output_root, terrain_z, args.workflow)
+    if args.workflow == "phase2-z005-support":
+        local = recipe_command(DEFAULT_Z005_SUPPORT_RECIPE, "commands", "local_rocm_fallback") or local
     candidate = status.get("candidate", {})
     readiness = unchecked_readiness()
     if args.check_colab:

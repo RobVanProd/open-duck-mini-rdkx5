@@ -1,7 +1,7 @@
 # Phase 2 Next Run Plan
 
 status: `PASS_PHASE2_NEXT_RUN_PLAN_READY`
-launch_status: `PASS_PHASE2_COLAB_GPU_SESSION_READY`
+launch_status: `HOLD_PHASE2_COLAB_GPU_SESSION_NOT_READY`
 
 ## Current Decision
 
@@ -9,15 +9,15 @@ launch_status: `PASS_PHASE2_COLAB_GPU_SESSION_READY`
 - blocking_gate: `z005_x008_nopush`
 - candidate: `policy/candidates/phase2_stagea2_seed5_recovery_command_gated_gain099_20260629/candidate.onnx`
 - candidate_sha256: `209b85a75cf9cbbcf10df573c1b530921943a72e81082111889c15f63a9a2c7b`
-- restore_checkpoint: `outputs/phase2_domain_randomization/stage_c0_terrain_z002_preserve_from_a2_gpu/smoke_20260628T103743Z_gpu/2026_06_28_064431_245760`
+- restore_checkpoint: `outputs/phase2_domain_randomization/stage_a2_preserve_narrow_flat_no_push_gpu/smoke_20260628T031553Z_gpu/2026_06_27_232221_491520`
 - restore_checkpoint_present: `True`
 
 ## Readiness
 
-- colab_status: `PASS_COLAB_SESSION_VISIBLE`
+- colab_status: `HOLD_NO_ACTIVE_COLAB_SESSION`
 - colab_session: `open-duck-l4`
-- colab_hardware: `A100`
-- colab_active: `True`
+- colab_hardware: `None`
+- colab_active: `False`
 - git_status: `PASS_GIT_REMOTE_READ_AUTH`
 - git_branch: `codex/live-oracle-dagger-phase-student`
 - git_remote_read_auth_ok: `True`
@@ -32,11 +32,11 @@ Use this when a visible Colab GPU session is available:
 python3 \
     tools/run_colab_cli_cuda_workflow.py \
     --workflow \
-    phase2-z002-teacher-continuity \
+    phase2-z005-support \
     --session \
     open-duck-l4 \
     --candidate-name \
-    phase2_z002_teacher_continuity_cuda \
+    phase2_z005_support_baseheight_cuda \
     --candidate-checkpoint-sweep \
     --candidate-checkpoint-sweep-commands \
     0.0,0.08 \
@@ -61,7 +61,7 @@ This is fallback/backend evidence only unless it clears the same post-training g
     --env-python \
     ../envs/open-duck-playground/bin/python \
     --output-root \
-    outputs/phase2_domain_randomization/stage_z002_teacher_continuity_local_rocm_safeenv_8env_122880 \
+    outputs/phase2_domain_randomization/stage_z005_support_baseheight_local_rocm_safeenv_8env_81920 \
     --run \
     --platform \
     gpu \
@@ -71,7 +71,7 @@ This is fallback/backend evidence only unless it clears the same post-training g
     --task \
     rough_terrain_backlash \
     --num-timesteps \
-    122880 \
+    81920 \
     --export-min-step \
     1 \
     --ppo-num-envs \
@@ -89,33 +89,33 @@ This is fallback/backend evidence only unless it clears the same post-training g
     --ppo-num-updates-per-batch \
     2 \
     --restore-checkpoint-path \
-    outputs/phase2_domain_randomization/stage_c0_terrain_z002_preserve_from_a2_gpu/smoke_20260628T103743Z_gpu/2026_06_28_064431_245760 \
+    outputs/phase2_domain_randomization/stage_a2_preserve_narrow_flat_no_push_gpu/smoke_20260628T031553Z_gpu/2026_06_27_232221_491520 \
     --ppo-learning-rate \
-    0.000004 \
+    0.000003 \
     --ppo-entropy-cost \
     0.001 \
     --ppo-clipping-epsilon \
-    0.025 \
+    0.02 \
     --ppo-max-grad-norm \
-    0.08 \
+    0.1 \
     --restore-policy-kl-scale \
-    7.5 \
+    4 \
     --tracking-lin-vel-scale \
     3 \
     --tracking-sigma \
     0.01 \
     --forward-progress-scale \
-    4 \
+    2.5 \
     --forward-wrong-direction-scale \
-    -6 \
+    -4 \
     --forward-wrong-direction-allowed-reverse-ratio \
-    0.01 \
+    0.02 \
     --command-progress-scale \
-    3 \
+    1.5 \
     --command-progress-shortfall-scale \
-    -8 \
+    -4 \
     --command-progress-required-ratio \
-    0.5 \
+    0.45 \
     --command-progress-warmup-steps \
     30 \
     --action-rate-huber-delta \
@@ -127,35 +127,35 @@ This is fallback/backend evidence only unless it clears the same post-training g
     --forward-swing-advance-huber-delta \
     0.002 \
     --action-rate-scale \
-    -0.035 \
+    -0.08 \
     --action-magnitude-scale \
-    -0.003 \
+    -0.005 \
     --base-height-scale \
-    -0.35 \
+    -0.8 \
     --forward-pitch-scale \
-    -0.3 \
+    -0.4 \
     --forward-pitch-rate-scale \
-    -0.06 \
+    -0.08 \
     --forward-contact-support-scale \
-    -0.12 \
+    -0.35 \
     --forward-contact-support-no-contact-weight \
-    1.0 \
+    2.0 \
     --forward-contact-support-asymmetry-weight \
-    0.1 \
+    0.25 \
     --forward-single-support-scale \
-    0.05 \
+    0.1 \
     --forward-double-support-scale \
-    -0.05 \
+    -0.15 \
     --forward-double-support-dwell-scale \
-    -0.05 \
+    -0.25 \
     --forward-double-support-dwell-grace-steps \
-    24 \
+    16 \
     --forward-swing-clearance-scale \
-    -0.00025 \
+    -0.0005 \
     --forward-swing-clearance-target-m \
-    0.016 \
+    0.018 \
     --forward-swing-advance-scale \
-    -0.001 \
+    -0.002 \
     --forward-swing-advance-target-m \
     0.004 \
     --alive-scale \
@@ -248,18 +248,9 @@ This is fallback/backend evidence only unless it clears the same post-training g
     --actuator-bridge-per-joint-variation \
     0.1 \
     --actuator-tracking-scale \
-    -0.005 \
-    --target-rate-scale \
     -0.01 \
     --terrain-hfield-z-scale \
-    0.002 \
-    --enable-behavior-prior \
-    --behavior-prior-mlp-npz \
-    outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate/candidate_mlp.npz \
-    --behavior-prior-scale \
-    -0.18 \
-    --behavior-prior-huber-delta \
-    0.08
+    0.005
 ```
 
 ## Promotion Rule
