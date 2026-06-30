@@ -3925,3 +3925,26 @@ falls: 2/2
 That result is expected for a tiny plumbing fit and should not be treated as a
 candidate branch failure. It only confirms that the smoke export is not useful
 for robot validation.
+
+## Phase 2 Right-Swing Structural Recovery
+
+The A100 right-swing structural recipe trained and exported cleanly after the
+Playground exporter was fixed to make the legacy compatibility ONNX copy
+opt-in. The run produced three ONNX checkpoints, but none promoted:
+
+```text
+artifact: docs/PHASE2_RIGHT_SWING_STRUCTURAL_RESULT.md
+gate: outputs/analysis/phase2_right_swing_structural_a100_20260630/PHASE2_RIGHT_SWING_STRUCTURAL_A100_X008_GATE.md
+status: HOLD_RIGHT_SWING_STRUCTURAL_RECIPE
+
+40960:  0/8 pass, 0/8 falls, mean track ratio 0.2526
+81920:  0/8 pass, 0/8 falls, mean track ratio 0.2490
+122880: 1/8 pass, 0/8 falls, mean track ratio 0.2498
+```
+
+The candidates stayed upright and usually satisfied the local terrain swing
+subchecks, but held on the full corrected-bridge gate through the same tradeoff:
+low forward progress on some seeds and corrected-envelope max target-velocity
+excess on others. This closes the small scalar right-swing target-rate penalty
+branch. The next branch should change swing strategy or timing, not continue a
+plain scalar penalty sweep.
