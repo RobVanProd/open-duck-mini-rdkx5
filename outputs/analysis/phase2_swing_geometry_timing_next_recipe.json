@@ -1,0 +1,42 @@
+{
+  "status": "PRE_REGISTERED_NOT_STARTED",
+  "supersedes": "phase2-right-swing-phase-advance",
+  "reason": "right-swing structural, phase-lift, and phase-advance branches all preserve a low-progress, high-double-support pattern",
+  "canonical_bridge": {
+    "path": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+    "sha256": "3661543d0745073b561eb4fa2ae8f9616368ee8b72cb397f8b953dada532c8c0"
+  },
+  "base_candidate_lineage": "corrected-bridge Phase 1/Phase 2 warm-start lineage",
+  "do_not_change": [
+    "robot runtime behavior",
+    "policy action order",
+    "policy observation contract",
+    "runtime phase timing",
+    "corrected per-joint bridge gate"
+  ],
+  "proposed_branch": {
+    "name": "phase2-swing-geometry-contact-timing",
+    "primary_change": "default-off right-swing knee-bend-first geometry/contact-pattern shaping",
+    "secondary_change": "contact-transition/single-support shaping only if it reduces double-support dwell without envelope excess",
+    "reject_if": [
+      "mean track ratio remains near 0.25",
+      "double support remains near 85%",
+      "corrected-envelope max target-velocity excess increases",
+      "candidate only improves local terrain swing subchecks without improving forward progress"
+    ]
+  },
+  "acceptance_gate": {
+    "task": "rough_terrain_backlash",
+    "command_x": 0.08,
+    "terrain_hfield_z_scale": 0.0024,
+    "bridge_mode": "fitted",
+    "seeds": "0-7",
+    "duration_s": 15,
+    "requires_pass_count": 8,
+    "requires_falls": 0,
+    "requires_duration_complete": 8,
+    "requires_zero_corrected_envelope_excess": true,
+    "requires_material_double_support_reduction": true
+  },
+  "fallback": "If this branch also preserves high double support, pivot to live-oracle/phase-aware student rather than another scalar reward hook."
+}

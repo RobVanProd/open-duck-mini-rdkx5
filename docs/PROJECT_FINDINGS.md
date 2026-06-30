@@ -3971,3 +3971,28 @@ subchecks, but hold on low forward progress or corrected-envelope max target
 velocity excess. This closes another scalar swing-shaping hook around the
 current gait pattern. The next branch should change swing duration, swing phase
 timing, or right-leg swing geometry instead of adding another scalar penalty.
+
+## Phase 2 Right-Swing Phase-Advance Recovery
+
+The follow-up A100 recipe kept the phase-primary swing-lift branch and advanced
+the phase-swing reward/rate window by the corrected 3-tick actuator delay. It
+trained and exported cleanly, but the corrected-bridge terrain gate still held:
+
+```text
+artifact: docs/PHASE2_RIGHT_SWING_PHASE_ADVANCE_RESULT.md
+gate: outputs/analysis/phase2_right_swing_phase_advance_a100_20260630/PHASE2_RIGHT_SWING_PHASE_ADVANCE_A100_X008_GATE.md
+status: HOLD_RIGHT_SWING_PHASE_ADVANCE_RECIPE
+
+40960:  0/8 pass, 0/8 falls, mean track ratio 0.2494
+81920:  3/8 pass, 0/8 falls, mean track ratio 0.2519
+122880: 3/8 pass, 0/8 falls, mean track ratio 0.2510
+```
+
+The late checkpoint reduced mean max target-velocity excess, but did not improve
+forward progress. All checkpoints completed 15 s, stayed near `0.020 m/s`, and
+remained double-support dominant at about `85%`. This closes phase advance as a
+standalone fix. The next branch should change the swing/contact strategy itself
+within the unchanged runtime contract: right-leg knee-bend-first geometry,
+contact-transition/single-support shaping, or a pivot to the pre-registered
+live-oracle/phase-aware student if reward-shaped feed-forward policies keep
+preserving double support.
