@@ -187,6 +187,13 @@ def tar_filter(member: tarfile.TarInfo) -> tarfile.TarInfo | None:
             (
                 "outputs",
                 "phase2_domain_randomization",
+                "stage_c2_terrain_z002_targetrate_from_c1_gpu",
+                "smoke_20260628T113221Z_gpu",
+                "2026_06_28_073829_163840",
+            ),
+            (
+                "outputs",
+                "phase2_domain_randomization",
                 "stage_b0c_rough_z002_push_tracking_margin_from_b0_gpu",
                 "smoke_20260629T062042Z_gpu",
                 "2026_06_29_022725_245760",
