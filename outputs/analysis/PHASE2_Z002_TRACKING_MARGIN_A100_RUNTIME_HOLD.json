@@ -26,6 +26,16 @@
     }
   ],
   "policy_gate_result": null,
-  "interpretation": "Runtime/execution hold, not a policy hold. No ONNX checkpoint was exported.",
-  "next_direction": "Debug the z=0.002 C0 restore/export/training path before rerunning this exact A100 recipe; consider export_min_step=0, alternate C2 parent, or improved remote signal capture."
+  "local_restore_export_probe": {
+    "output_root": "outputs/phase2_domain_randomization/stage_z002_tracking_margin_restore_export_probe_cpu",
+    "platform": "cpu",
+    "restore_checkpoint": "outputs/phase2_domain_randomization/stage_c0_terrain_z002_preserve_from_a2_gpu/smoke_20260628T103743Z_gpu/2026_06_28_064431_245760",
+    "num_timesteps": 1,
+    "export_min_step": 0,
+    "status": "PASS_SMOKE_RUN",
+    "returncode": 0,
+    "exported_onnx_steps": [0, 1]
+  },
+  "interpretation": "Runtime/execution hold, not a policy hold. No A100 ONNX checkpoint was exported. Local CPU restore/export from the same C0 checkpoint succeeds, so the C0 checkpoint is not missing or corrupt.",
+  "next_direction": "Debug the z=0.002 C0 restore training process exiting after step 0 on Colab/A100; consider alternate C2 parent or improved remote signal capture before rerunning this exact A100 recipe."
 }
