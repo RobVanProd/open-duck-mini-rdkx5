@@ -2059,7 +2059,7 @@ def build_remote_driver(
                             )
                 else:
                     print("candidate_checkpoint_sweep_json_missing", sweep_json, flush=True)
-            if {run_phase2_terrain_like!r}:
+            if {run_phase2_terrain_like and not args.phase2_skip_post_training_gates!r}:
                 run_phase2_z005_post_training_gates(latest_onnx, candidate_name)
                 post_gate_json = OUT / f"{{candidate_name}}_post_training_seed_gates.json"
                 run([
@@ -2068,6 +2068,24 @@ def build_remote_driver(
                     "--output-md", str(OUT / f"{{candidate_name}}_POST_TRAINING_GATE_DECISION.md"),
                     "--output-json", str(OUT / f"{{candidate_name}}_post_training_gate_decision.json"),
                 ], cwd=RDK, timeout=300, check=False)
+            elif {run_phase2_terrain_like and args.phase2_skip_post_training_gates!r}:
+                (OUT / f"{{candidate_name}}_post_training_gates_skipped.json").write_text(
+                    json.dumps(
+                        {{
+                            "status": "SKIPPED_POST_TRAINING_GATES",
+                            "reason": "phase2_skip_post_training_gates",
+                            "selected_policy": str(latest_onnx),
+                            "training_manifest": str(training_manifest),
+                        }},
+                        indent=2,
+                    )
+                    + "\\n"
+                )
+                print(
+                    "PHASE2_POST_TRAINING_GATES_SKIPPED",
+                    latest_onnx,
+                    flush=True,
+                )
             bundle_artifacts()
 
         elif {run_staged_curriculum!r}:
@@ -2638,6 +2656,15 @@ def main() -> int:
         type=float,
         default=None,
         help="Override Phase 2 actuator-tracking penalty scale.",
+    )
+    parser.add_argument(
+        "--phase2-skip-post-training-gates",
+        action="store_true",
+        help=(
+            "For Phase 2 workflows, stop after training artifacts are packaged. "
+            "Use this when Colab transport is unstable during the slower CPU gate; "
+            "run gates later from the downloaded ONNX."
+        ),
     )
     parser.add_argument(
         "--checkpoint-sweep-policies",
