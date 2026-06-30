@@ -1,0 +1,107 @@
+{
+  "checks": {
+    "next_run_workflow_matches": true,
+    "package_only_ready": true,
+    "package_workflow_matches": true,
+    "readiness_workflow_matches": true,
+    "recipe_workflow_matches": true,
+    "required_inputs_exist": true,
+    "robot_scope_clean": true
+  },
+  "colab_status": "HOLD_NO_ACTIVE_COLAB_SESSION",
+  "deploy_performed": false,
+  "git_status": "HOLD_GIT_REMOTE_AUTH_UNAVAILABLE",
+  "launch_command": [
+    "python3",
+    "tools/run_colab_cli_cuda_workflow.py",
+    "--workflow",
+    "phase2-z002-tracking-margin",
+    "--session",
+    "open-duck-l4",
+    "--candidate-name",
+    "phase2_z002_tracking_margin_cuda",
+    "--candidate-checkpoint-sweep",
+    "--candidate-checkpoint-sweep-commands",
+    "0.0,0.08",
+    "--candidate-checkpoint-sweep-duration",
+    "1.0",
+    "--candidate-checkpoint-sweep-jax-platform",
+    "cpu",
+    "--candidate-timeout-s",
+    "10800",
+    "--run"
+  ],
+  "launch_command_shell": "python3 tools/run_colab_cli_cuda_workflow.py --workflow phase2-z002-tracking-margin --session open-duck-l4 --candidate-name phase2_z002_tracking_margin_cuda --candidate-checkpoint-sweep --candidate-checkpoint-sweep-commands 0.0,0.08 --candidate-checkpoint-sweep-duration 1.0 --candidate-checkpoint-sweep-jax-platform cpu --candidate-timeout-s 10800 --run",
+  "launch_status": "HOLD_PHASE2_COLAB_GPU_SESSION_NOT_READY",
+  "next_run_json": "outputs/analysis/phase2_next_run_plan.json",
+  "package_archives": {
+    "playground": {
+      "path": "/home/lsd/robots/outputs/colab_cli_uploads/Open_Duck_Playground_cli_20260630T002205Z.tar.gz",
+      "sha256": "c12462d99ce8bdf3c98307b7ce757b5ab78d249bb76044f89bd3ec7e56d88cbd",
+      "size_bytes": 1940410
+    },
+    "rdk": {
+      "path": "/home/lsd/robots/outputs/colab_cli_uploads/open-duck-mini-rdkx5_cli_20260630T002205Z.tar.gz",
+      "sha256": "d6debd4abb66566f10ea0c70bce81df1cb654e41f1f7053dcf09cb754d9439d8",
+      "size_bytes": 36378220
+    }
+  },
+  "package_manifest": "outputs/analysis/colab_cli/open-duck-l4-phase2-z002-tracking-margin-20260630T002205Z/PACKAGE_ONLY_MANIFEST.json",
+  "package_required_paths": [
+    "outputs/analysis/actuator_response_fit_corrected_knee.json",
+    "outputs/analysis/phase2_z002_tracking_margin_next_recipe.json",
+    "tools/report_phase2_z005_post_training_gates.py",
+    "tools/run_actuator_bridge_training_smoke.py",
+    "outputs/phase2_domain_randomization/stage_c0_terrain_z002_preserve_from_a2_gpu/smoke_20260628T103743Z_gpu/2026_06_28_064431_245760"
+  ],
+  "readiness_json": "outputs/analysis/phase2_local_fallback_readiness.json",
+  "recipe_json": "outputs/analysis/phase2_z002_tracking_margin_next_recipe.json",
+  "recipe_settings": {
+    "action_rate_scale": -0.04,
+    "actuator_bridge_velocity_limit_range_rad_s": [
+      2.0,
+      3.25
+    ],
+    "actuator_tracking_scale": -0.005,
+    "command_progress_required_ratio": 0.55,
+    "command_progress_scale": 3.5,
+    "command_progress_shortfall_scale": -10.0,
+    "forward_progress_scale": 4.5,
+    "num_timesteps": 122880,
+    "ppo_clipping_epsilon": 0.015,
+    "ppo_learning_rate": 2e-06,
+    "ppo_max_grad_norm": 0.08,
+    "push_enable": false,
+    "restore_policy_kl_scale": 6.0,
+    "target_rate_scale": -0.02,
+    "terrain_hfield_z_scale": 0.002,
+    "workflow": "phase2-z002-tracking-margin"
+  },
+  "required_inputs": {
+    "corrected_bridge": {
+      "exists": true,
+      "kind": "file",
+      "path": "outputs/analysis/actuator_response_fit_corrected_knee.json"
+    },
+    "phase2_candidate": {
+      "exists": true,
+      "kind": "file",
+      "path": "policy/candidates/phase2_stagea2_seed5_recovery_command_gated_gain099_20260629/candidate.onnx"
+    },
+    "recipe": {
+      "exists": true,
+      "kind": "file",
+      "path": "outputs/analysis/phase2_z002_tracking_margin_next_recipe.json"
+    },
+    "restore_checkpoint": {
+      "exists": true,
+      "kind": "directory",
+      "path": "outputs/phase2_domain_randomization/stage_c0_terrain_z002_preserve_from_a2_gpu/smoke_20260628T103743Z_gpu/2026_06_28_064431_245760"
+    }
+  },
+  "robot_touched": false,
+  "ssh_used": false,
+  "status": "HOLD_EXTERNAL_LAUNCH_BLOCKERS",
+  "training_started": false,
+  "workflow": "phase2-z002-tracking-margin"
+}
