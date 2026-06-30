@@ -87,6 +87,33 @@ def file_sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def git_summary(path: Path) -> dict[str, object]:
+    def git(args: list[str]) -> str | None:
+        completed = subprocess.run(
+            ["git", *args],
+            cwd=path,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        if completed.returncode != 0:
+            return None
+        return completed.stdout.strip()
+
+    tracked_status = git(["status", "--porcelain", "--untracked-files=no"]) or ""
+    full_status = git(["status", "--porcelain"]) or ""
+    untracked = [line for line in full_status.splitlines() if line.startswith("?? ")]
+    return {
+        "path": str(path.resolve()),
+        "branch": git(["branch", "--show-current"]),
+        "head": git(["rev-parse", "HEAD"]),
+        "upstream": git(["rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{u}"]),
+        "tracked_dirty": bool(tracked_status.strip()),
+        "tracked_status": tracked_status.splitlines(),
+        "untracked_count": len(untracked),
+    }
+
+
 def tar_filter(member: tarfile.TarInfo) -> tarfile.TarInfo | None:
     parts = Path(member.name).parts
     blocked = {
@@ -2151,11 +2178,20 @@ def write_package_only_manifest(
     session: str,
     rdk_tar: Path,
     playground_tar: Path,
+    rdk_root: Path,
+    playground_root: Path,
+    argv: list[str],
 ) -> None:
     payload = {
         "status": "PASS_COLAB_PACKAGE_ONLY_READY",
         "workflow": workflow,
         "session": session,
+        "source": {
+            "rdk": git_summary(rdk_root),
+            "playground": git_summary(playground_root),
+            "argv": argv,
+            "jax_pin": PINNED_JAX_VERSION,
+        },
         "archives": {
             "rdk": {
                 "path": str(rdk_tar),
@@ -2196,6 +2232,14 @@ def write_package_only_manifest(
         lines.append(
             f"| `{name}` | {item['size_bytes']} | `{item['sha256']}` | `{item['path']}` |"
         )
+    lines.extend(["", "## Source", ""])
+    for name, item in payload["source"].items():
+        if isinstance(item, dict):
+            lines.append(
+                f"- `{name}`: branch `{item.get('branch')}`, head `{item.get('head')}`, "
+                f"tracked_dirty `{item.get('tracked_dirty')}`, untracked_count `{item.get('untracked_count')}`"
+            )
+    lines.append(f"- `jax_pin`: `{payload['source']['jax_pin']}`")
     lines.extend(["", "## Required RDK Package Paths", ""])
     for item in payload["required_rdk_package_paths"]:
         lines.append(f"- `{item}`")
@@ -2692,6 +2736,9 @@ def main() -> int:
             args.session,
             rdk_tar,
             playground_tar,
+            rdk_root,
+            playground_root,
+            sys.argv,
         )
         print("PACKAGE_ONLY no Colab upload or remote work started")
         return 0
