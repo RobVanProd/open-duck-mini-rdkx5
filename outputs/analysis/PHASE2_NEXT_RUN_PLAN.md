@@ -1,7 +1,7 @@
 # Phase 2 Next Run Plan
 
 status: `PASS_PHASE2_NEXT_RUN_PLAN_READY`
-launch_status: `HOLD_PHASE2_COLAB_GPU_SESSION_NOT_READY`
+launch_status: `NOT_CHECKED`
 
 ## Current Decision
 
@@ -9,18 +9,18 @@ launch_status: `HOLD_PHASE2_COLAB_GPU_SESSION_NOT_READY`
 - blocking_gate: `z005_x008_nopush`
 - candidate: `policy/candidates/phase2_stagea2_seed5_recovery_command_gated_gain099_20260629/candidate.onnx`
 - candidate_sha256: `209b85a75cf9cbbcf10df573c1b530921943a72e81082111889c15f63a9a2c7b`
-- restore_checkpoint: `outputs/phase2_domain_randomization/stage_a2_preserve_narrow_flat_no_push_gpu/smoke_20260628T031553Z_gpu/2026_06_27_232221_491520`
+- restore_checkpoint: `outputs/phase2_domain_randomization/stage_c0_terrain_z002_preserve_from_a2_gpu/smoke_20260628T103743Z_gpu/2026_06_28_064431_245760`
 - restore_checkpoint_present: `True`
 
 ## Readiness
 
-- colab_status: `HOLD_NO_ACTIVE_COLAB_SESSION`
-- colab_session: `open-duck-l4`
+- colab_status: `NOT_CHECKED`
+- colab_session: `None`
 - colab_hardware: `None`
-- colab_active: `False`
-- git_status: `HOLD_GIT_REMOTE_AUTH_UNAVAILABLE`
-- git_branch: `codex/live-oracle-dagger-phase-student`
-- git_remote_read_auth_ok: `False`
+- colab_active: `None`
+- git_status: `NOT_CHECKED`
+- git_branch: `None`
+- git_remote_read_auth_ok: `None`
 
 The Colab check is read-only (`colab sessions` / `colab status`). The Git check is read-only (`git ls-remote`) and does not push.
 
@@ -32,11 +32,11 @@ Use this when a visible Colab GPU session is available:
 python3 \
     tools/run_colab_cli_cuda_workflow.py \
     --workflow \
-    phase2-z0035-motion-floor \
+    phase2-z002-tracking-margin \
     --session \
     open-duck-l4 \
     --candidate-name \
-    phase2_z0035_motion_floor_cuda \
+    phase2_z002_tracking_margin_cuda \
     --candidate-checkpoint-sweep \
     --candidate-checkpoint-sweep-commands \
     0.0,0.08 \
@@ -61,7 +61,7 @@ This is fallback/backend evidence only unless it clears the same post-training g
     --env-python \
     ../envs/open-duck-playground/bin/python \
     --output-root \
-    outputs/phase2_domain_randomization/stage_z0035_motion_floor_local_rocm_safeenv_8env_122880 \
+    outputs/phase2_domain_randomization/stage_z002_tracking_margin_local_rocm_safeenv_8env_122880 \
     --run \
     --platform \
     gpu \
@@ -89,33 +89,33 @@ This is fallback/backend evidence only unless it clears the same post-training g
     --ppo-num-updates-per-batch \
     2 \
     --restore-checkpoint-path \
-    outputs/phase2_domain_randomization/stage_a2_preserve_narrow_flat_no_push_gpu/smoke_20260628T031553Z_gpu/2026_06_27_232221_491520 \
+    outputs/phase2_domain_randomization/stage_c0_terrain_z002_preserve_from_a2_gpu/smoke_20260628T103743Z_gpu/2026_06_28_064431_245760 \
     --ppo-learning-rate \
-    0.000004 \
+    0.000002 \
     --ppo-entropy-cost \
     0.001 \
     --ppo-clipping-epsilon \
-    0.025 \
+    0.015 \
     --ppo-max-grad-norm \
-    0.12 \
+    0.08 \
     --restore-policy-kl-scale \
-    3 \
+    6 \
     --tracking-lin-vel-scale \
     3 \
     --tracking-sigma \
     0.01 \
     --forward-progress-scale \
-    4 \
+    4.5 \
     --forward-wrong-direction-scale \
     -6 \
     --forward-wrong-direction-allowed-reverse-ratio \
     0.01 \
     --command-progress-scale \
-    3 \
+    3.5 \
     --command-progress-shortfall-scale \
-    -8 \
+    -10 \
     --command-progress-required-ratio \
-    0.5 \
+    0.55 \
     --command-progress-warmup-steps \
     30 \
     --action-rate-huber-delta \
@@ -127,7 +127,7 @@ This is fallback/backend evidence only unless it clears the same post-training g
     --forward-swing-advance-huber-delta \
     0.002 \
     --action-rate-scale \
-    -0.055 \
+    -0.04 \
     --action-magnitude-scale \
     -0.003 \
     --base-height-scale \
@@ -249,8 +249,10 @@ This is fallback/backend evidence only unless it clears the same post-training g
     0.1 \
     --actuator-tracking-scale \
     -0.005 \
+    --target-rate-scale \
+    -0.02 \
     --terrain-hfield-z-scale \
-    0.0035
+    0.002
 ```
 
 ## Promotion Rule

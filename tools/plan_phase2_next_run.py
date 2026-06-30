@@ -26,9 +26,9 @@ DEFAULT_RESTORE_CHECKPOINT = (
     ROOT
     / "outputs"
     / "phase2_domain_randomization"
-    / "stage_a2_preserve_narrow_flat_no_push_gpu"
-    / "smoke_20260628T031553Z_gpu"
-    / "2026_06_27_232221_491520"
+    / "stage_c0_terrain_z002_preserve_from_a2_gpu"
+    / "smoke_20260628T103743Z_gpu"
+    / "2026_06_28_064431_245760"
 )
 
 
@@ -192,6 +192,7 @@ def colab_command(session: str, candidate_name: str, workflow: str) -> list[str]
 
 
 def local_rocm_command(restore_checkpoint: Path, output_root: str, terrain_z: float) -> list[str]:
+    z002_tracking_margin = abs(terrain_z - 0.002) < 1e-9
     return [
         "../envs/open-duck-playground/bin/python",
         "tools/run_actuator_bridge_training_smoke.py",
@@ -230,31 +231,31 @@ def local_rocm_command(restore_checkpoint: Path, output_root: str, terrain_z: fl
         "--restore-checkpoint-path",
         rel(restore_checkpoint) or str(restore_checkpoint),
         "--ppo-learning-rate",
-        "0.000004",
+        "0.000002" if z002_tracking_margin else "0.000004",
         "--ppo-entropy-cost",
         "0.001",
         "--ppo-clipping-epsilon",
-        "0.025",
+        "0.015" if z002_tracking_margin else "0.025",
         "--ppo-max-grad-norm",
-        "0.12",
+        "0.08" if z002_tracking_margin else "0.12",
         "--restore-policy-kl-scale",
-        "3",
+        "6" if z002_tracking_margin else "3",
         "--tracking-lin-vel-scale",
         "3",
         "--tracking-sigma",
         "0.01",
         "--forward-progress-scale",
-        "4",
+        "4.5" if z002_tracking_margin else "4",
         "--forward-wrong-direction-scale",
         "-6",
         "--forward-wrong-direction-allowed-reverse-ratio",
         "0.01",
         "--command-progress-scale",
-        "3",
+        "3.5" if z002_tracking_margin else "3",
         "--command-progress-shortfall-scale",
-        "-8",
+        "-10" if z002_tracking_margin else "-8",
         "--command-progress-required-ratio",
-        "0.5",
+        "0.55" if z002_tracking_margin else "0.5",
         "--command-progress-warmup-steps",
         "30",
         "--action-rate-huber-delta",
@@ -266,7 +267,7 @@ def local_rocm_command(restore_checkpoint: Path, output_root: str, terrain_z: fl
         "--forward-swing-advance-huber-delta",
         "0.002",
         "--action-rate-scale",
-        "-0.055",
+        "-0.04" if z002_tracking_margin else "-0.055",
         "--action-magnitude-scale",
         "-0.003",
         "--base-height-scale",
@@ -388,6 +389,8 @@ def local_rocm_command(restore_checkpoint: Path, output_root: str, terrain_z: fl
         "0.1",
         "--actuator-tracking-scale",
         "-0.005",
+        "--target-rate-scale",
+        "-0.02" if z002_tracking_margin else "0",
         "--terrain-hfield-z-scale",
         str(terrain_z),
     ]
@@ -463,11 +466,11 @@ def main() -> int:
     parser.add_argument("--status-json", default=str(DEFAULT_STATUS_JSON))
     parser.add_argument("--restore-checkpoint", default=str(DEFAULT_RESTORE_CHECKPOINT))
     parser.add_argument("--session", default="open-duck-l4")
-    parser.add_argument("--workflow", default="phase2-z0035-motion-floor")
-    parser.add_argument("--candidate-name", default="phase2_z0035_motion_floor_cuda")
+    parser.add_argument("--workflow", default="phase2-z002-tracking-margin")
+    parser.add_argument("--candidate-name", default="phase2_z002_tracking_margin_cuda")
     parser.add_argument(
         "--local-output-root",
-        default="outputs/phase2_domain_randomization/stage_z0035_motion_floor_local_rocm_safeenv_8env_122880",
+        default="outputs/phase2_domain_randomization/stage_z002_tracking_margin_local_rocm_safeenv_8env_122880",
     )
     parser.add_argument(
         "--output-md",
@@ -484,7 +487,11 @@ def main() -> int:
 
     status = read_json(Path(args.status_json))
     restore_checkpoint = Path(args.restore_checkpoint)
-    terrain_z = 0.0035 if args.workflow == "phase2-z0035-motion-floor" else 0.005
+    terrain_z = (
+        0.002
+        if args.workflow == "phase2-z002-tracking-margin"
+        else (0.0035 if args.workflow == "phase2-z0035-motion-floor" else 0.005)
+    )
     colab = colab_command(args.session, args.candidate_name, args.workflow)
     local = local_rocm_command(restore_checkpoint, args.local_output_root, terrain_z)
     candidate = status.get("candidate", {})
