@@ -1,0 +1,120 @@
+{
+  "archive_verification_json": "outputs/analysis/phase2_package_only_archive_verification.json",
+  "checks": {
+    "archive_verification_matches_package": true,
+    "archive_verification_pass": true,
+    "launch_audit_internal_checks_pass": true,
+    "launch_command_present": true,
+    "package_manifest_ready": true,
+    "robot_scope_clean": true,
+    "stage_guard_workflow_matches": true
+  },
+  "colab_status": "HOLD_NO_ACTIVE_COLAB_SESSION",
+  "deploy_performed": false,
+  "external_blockers": [
+    "HOLD_NO_ACTIVE_COLAB_SESSION"
+  ],
+  "git_status": "PASS_GIT_REMOTE_READ_AUTH",
+  "launch_audit_json": "outputs/analysis/phase2_z002_tracking_margin_launch_audit.json",
+  "launch_command": [
+    "python3",
+    "tools/run_colab_cli_cuda_workflow.py",
+    "--workflow",
+    "phase2-z002-tracking-margin",
+    "--session",
+    "open-duck-l4",
+    "--candidate-name",
+    "phase2_z002_tracking_margin_cuda",
+    "--candidate-checkpoint-sweep",
+    "--candidate-checkpoint-sweep-commands",
+    "0.0,0.08",
+    "--candidate-checkpoint-sweep-duration",
+    "1.0",
+    "--candidate-checkpoint-sweep-jax-platform",
+    "cpu",
+    "--candidate-timeout-s",
+    "10800",
+    "--run"
+  ],
+  "launch_command_multiline": "python3 \\\n  tools/run_colab_cli_cuda_workflow.py \\\n  --workflow \\\n  phase2-z002-tracking-margin \\\n  --session \\\n  open-duck-l4 \\\n  --candidate-name \\\n  phase2_z002_tracking_margin_cuda \\\n  --candidate-checkpoint-sweep \\\n  --candidate-checkpoint-sweep-commands \\\n  0.0,0.08 \\\n  --candidate-checkpoint-sweep-duration \\\n  1.0 \\\n  --candidate-checkpoint-sweep-jax-platform \\\n  cpu \\\n  --candidate-timeout-s \\\n  10800 \\\n  --run",
+  "launch_command_shell": "python3 tools/run_colab_cli_cuda_workflow.py --workflow phase2-z002-tracking-margin --session open-duck-l4 --candidate-name phase2_z002_tracking_margin_cuda --candidate-checkpoint-sweep --candidate-checkpoint-sweep-commands 0.0,0.08 --candidate-checkpoint-sweep-duration 1.0 --candidate-checkpoint-sweep-jax-platform cpu --candidate-timeout-s 10800 --run",
+  "launch_status": "HOLD_PHASE2_COLAB_GPU_SESSION_NOT_READY",
+  "package_archives": {
+    "playground": {
+      "path": "/home/lsd/robots/outputs/colab_cli_uploads/Open_Duck_Playground_cli_20260630T012421Z.tar.gz",
+      "sha256": "55a80acb03da9aadfd26b8e8214b1269a668ab5bb54adce808fa9f16b4644f43",
+      "size_bytes": 1940410
+    },
+    "rdk": {
+      "path": "/home/lsd/robots/outputs/colab_cli_uploads/open-duck-mini-rdkx5_cli_20260630T012421Z.tar.gz",
+      "sha256": "a808d2af55cf60ef4224791e2dab46caffb443c32b073c8c7d8e129727e04079",
+      "size_bytes": 36389512
+    }
+  },
+  "package_manifest": "outputs/analysis/colab_cli/open-duck-l4-phase2-z002-tracking-margin-20260630T012421Z/PACKAGE_ONLY_MANIFEST.json",
+  "post_training_gate_command": [
+    "python3",
+    "tools/report_phase2_z002_tracking_margin_post_training_gates.py",
+    "--help"
+  ],
+  "preflight_commands": [
+    "colab sessions",
+    "colab status -s open-duck-l4",
+    "python3 tools/report_phase2_package_only_archive_verification.py --package-manifest outputs/analysis/colab_cli/open-duck-l4-phase2-z002-tracking-margin-20260630T012421Z/PACKAGE_ONLY_MANIFEST.json",
+    "python3 tools/report_phase2_z002_launch_audit.py --package-manifest outputs/analysis/colab_cli/open-duck-l4-phase2-z002-tracking-margin-20260630T012421Z/PACKAGE_ONLY_MANIFEST.json"
+  ],
+  "required_rdk_package_paths": [
+    "outputs/analysis/actuator_response_fit_corrected_knee.json",
+    "outputs/analysis/phase2_z002_tracking_margin_next_recipe.json",
+    "tools/run_actuator_bridge_training_smoke.py",
+    "tools/report_phase2_z002_tracking_margin_post_training_gates.py",
+    "outputs/phase2_domain_randomization/stage_c0_terrain_z002_preserve_from_a2_gpu/smoke_20260628T103743Z_gpu/2026_06_28_064431_245760"
+  ],
+  "robot_touched": false,
+  "session": "open-duck-l4",
+  "source": {
+    "argv": [
+      "tools/run_colab_cli_cuda_workflow.py",
+      "--workflow",
+      "phase2-z002-tracking-margin",
+      "--session",
+      "open-duck-l4",
+      "--candidate-name",
+      "phase2_z002_tracking_margin_cuda",
+      "--candidate-checkpoint-sweep",
+      "--candidate-checkpoint-sweep-commands",
+      "0.0,0.08",
+      "--candidate-checkpoint-sweep-duration",
+      "1.0",
+      "--candidate-checkpoint-sweep-jax-platform",
+      "cpu",
+      "--candidate-timeout-s",
+      "10800",
+      "--package-only"
+    ],
+    "jax_pin": "0.7.2",
+    "playground": {
+      "branch": "codex/forward-progress-reward",
+      "head": "d969ca8c3760451a39657161cb376c44c5155a6d",
+      "path": "/home/lsd/robots/Open_Duck_Playground",
+      "tracked_dirty": false,
+      "tracked_status": [],
+      "untracked_count": 0,
+      "upstream": "rob/codex/forward-progress-reward"
+    },
+    "rdk": {
+      "branch": "codex/live-oracle-dagger-phase-student",
+      "head": "11c9e23114e5e88c2fd9f7dbe05dc6a895790377",
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5",
+      "tracked_dirty": false,
+      "tracked_status": [],
+      "untracked_count": 52,
+      "upstream": "origin/codex/live-oracle-dagger-phase-student"
+    }
+  },
+  "ssh_used": false,
+  "stage_guard_json": "outputs/analysis/phase2_stage_guard.json",
+  "status": "HOLD_PHASE2_Z002_COLAB_SESSION_NOT_READY",
+  "training_started": false,
+  "workflow": "phase2-z002-tracking-margin"
+}
