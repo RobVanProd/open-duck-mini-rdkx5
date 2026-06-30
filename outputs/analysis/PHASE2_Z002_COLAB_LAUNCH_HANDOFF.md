@@ -13,6 +13,10 @@ This is a read-only handoff. It did not upload, train, SSH, deploy, or touch the
 - git_status: `PASS_GIT_REMOTE_READ_AUTH`
 - external_blockers: `HOLD_NO_ACTIVE_COLAB_SESSION`
 
+## Stage Strategy
+
+The curriculum ledger is held at stage_z005_support, but the selected launch workflow intentionally backs up to z=0.002 tracking-margin recovery. The z=0.005 gates failed after the z=0.002 parent lost tracking margin, so the next GPU run must recover and re-gate the z=0.002 parent before escalating terrain again.
+
 ## Preflight
 
 - `package_manifest_ready`: `True`
@@ -26,7 +30,7 @@ This is a read-only handoff. It did not upload, train, SSH, deploy, or touch the
 ## Source Snapshot
 
 - current_rdk_branch: `codex/live-oracle-dagger-phase-student`
-- current_rdk_head: `24ccbb1c5c4ece3cb9f7a8259838269c25b8d292`
+- current_rdk_head: `7b3144f123606960a8fe36f9747a348b6381fe06`
 - package_rdk_head: `11c9e23114e5e88c2fd9f7dbe05dc6a895790377`
 - package_source_matches_current_head: `False`
 

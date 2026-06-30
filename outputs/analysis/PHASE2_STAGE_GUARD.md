@@ -9,6 +9,10 @@ preferred_workflow: `phase2-z002-tracking-margin`
 
 This is a read-only guard. It did not train, SSH, deploy, or touch the robot.
 
+## Stage Strategy
+
+The curriculum ledger is held at stage_z005_support, but the selected launch workflow intentionally backs up to z=0.002 tracking-margin recovery. The z=0.005 gates failed after the z=0.002 parent lost tracking margin, so the next GPU run must recover and re-gate the z=0.002 parent before escalating terrain again.
+
 ## Readiness
 
 - colab_status: `HOLD_NO_ACTIVE_COLAB_SESSION`

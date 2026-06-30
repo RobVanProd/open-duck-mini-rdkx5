@@ -142,6 +142,23 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
     package_manifest_status = package_manifest.get("status")
     package_manifest_matches_workflow = package_manifest_workflow == preferred_workflow
     z002_tracking_margin = preferred_workflow == "phase2-z002-tracking-margin"
+    if z002_tracking_margin and current_stage == "stage_z005_support":
+        stage_strategy = (
+            "The curriculum ledger is held at stage_z005_support, but the selected launch "
+            "workflow intentionally backs up to z=0.002 tracking-margin recovery. The "
+            "z=0.005 gates failed after the z=0.002 parent lost tracking margin, so the "
+            "next GPU run must recover and re-gate the z=0.002 parent before escalating "
+            "terrain again."
+        )
+    elif z002_tracking_margin:
+        stage_strategy = (
+            "The selected launch workflow is a z=0.002 tracking-margin recovery run. "
+            "It is a parent-selection step, not a terrain escalation."
+        )
+    else:
+        stage_strategy = (
+            "The selected launch workflow targets the current held curriculum stage."
+        )
     post_training_tool = (
         "report_phase2_z002_tracking_margin_post_training_gates.py"
         if z002_tracking_margin
@@ -254,6 +271,7 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
         "package_manifest_matches_workflow": package_manifest_matches_workflow,
         "local_backend": local_backend,
         "preferred_workflow": preferred_workflow,
+        "stage_strategy": stage_strategy,
         "post_training_tool": post_training_tool,
         "post_training_status": post_training_status,
         "input_artifacts": {
@@ -287,6 +305,10 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         f"preferred_workflow: `{payload.get('preferred_workflow')}`",
         "",
         "This is a read-only guard. It did not train, SSH, deploy, or touch the robot.",
+        "",
+        "## Stage Strategy",
+        "",
+        payload.get("stage_strategy") or "NA",
         "",
         "## Readiness",
         "",
