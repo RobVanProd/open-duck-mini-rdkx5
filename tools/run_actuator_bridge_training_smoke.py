@@ -1113,6 +1113,13 @@ def main() -> int:
         return 0
 
     output_dir.mkdir(parents=True, exist_ok=True)
+    playground_cwd = Path(args.playground_path).resolve()
+    (
+        playground_cwd
+        / ".tmp"
+        / "jax_cache"
+        / "xla_gpu_per_fusion_autotune_cache_dir"
+    ).mkdir(parents=True, exist_ok=True)
     reference_override = {"enabled": False}
     terrain_hfield_override = {"enabled": False}
     reference_override = apply_reference_override(args, output_dir)
@@ -1130,7 +1137,7 @@ def main() -> int:
         ) as stderr_handle:
             process = subprocess.Popen(
                 command,
-                cwd=Path(args.playground_path),
+                cwd=playground_cwd,
                 env=env,
                 text=True,
                 stdout=stdout_handle,

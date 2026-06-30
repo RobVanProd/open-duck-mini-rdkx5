@@ -15,7 +15,7 @@
     "Run the phase2-z005-support recipe only after the Colab session is active and still using the corrected bridge.",
     "Run report_phase2_z005_post_training_gates.py on post-training seed-gate output.",
     "Use local CPU only for reduced-horizon correctness checks; local ROCm GPU is not cleared for Phase 2 training.",
-    "Do not launch training yet from this host; Colab session open-duck-l4 is not active."
+    "Launch the preferred phase2-z005-support Colab workflow."
   ],
   "candidate": {
     "exists": true,
@@ -24,8 +24,8 @@
     "size_bytes": 1772930,
     "status": "PRESENT_FILE"
   },
-  "colab_hardware": null,
-  "colab_status": "HOLD_NO_ACTIVE_COLAB_SESSION",
+  "colab_hardware": "A100",
+  "colab_status": "PASS_COLAB_SESSION_VISIBLE",
   "corrected_bridge": {
     "exists": true,
     "path": "outputs/analysis/actuator_response_fit_corrected_knee.json",
@@ -62,7 +62,7 @@
     "package_manifest": "outputs/analysis/phase2_colab_package_manifest.json",
     "recipe": "outputs/analysis/phase2_z005_support_next_recipe.json"
   },
-  "launch_status": "HOLD_PHASE2_COLAB_GPU_SESSION_NOT_READY",
+  "launch_status": "PASS_PHASE2_COLAB_GPU_SESSION_READY",
   "local_backend": {
     "basic_jax_gpu": "PASS",
     "closed_loop_cpu": "PASS",
@@ -128,6 +128,6 @@
   "robot_touched": false,
   "ssh_used": false,
   "stage_strategy": "The selected launch workflow targets the current held curriculum stage.",
-  "status": "HOLD_PHASE2_COLAB_GPU_SESSION_NOT_READY",
+  "status": "PASS_PHASE2_COLAB_GPU_SESSION_READY",
   "training_started": false
 }

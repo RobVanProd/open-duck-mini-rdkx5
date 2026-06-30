@@ -1,10 +1,10 @@
 # Phase 2 Stage Guard
 
-status: `HOLD_PHASE2_COLAB_GPU_SESSION_NOT_READY`
+status: `PASS_PHASE2_COLAB_GPU_SESSION_READY`
 current_stage: `stage_z005_support`
 current_gate_status: `HOLD_PHASE2_STAGE_Z005_SUPPORT`
 next_recipe_status: `PASS_Z005_SUPPORT_RECIPE_READY`
-launch_status: `HOLD_PHASE2_COLAB_GPU_SESSION_NOT_READY`
+launch_status: `PASS_PHASE2_COLAB_GPU_SESSION_READY`
 preferred_workflow: `phase2-z005-support`
 
 This is a read-only guard. It did not train, SSH, deploy, or touch the robot.
@@ -15,8 +15,8 @@ The selected launch workflow targets the current held curriculum stage.
 
 ## Readiness
 
-- colab_status: `HOLD_NO_ACTIVE_COLAB_SESSION`
-- colab_hardware: `None`
+- colab_status: `PASS_COLAB_SESSION_VISIBLE`
+- colab_hardware: `A100`
 - git_status: `PASS_GIT_REMOTE_READ_AUTH`
 - package_preflight: `PASS_PACKAGE_PREFLIGHT`
 - package_manifest_status: `PASS_PHASE2_COLAB_PACKAGE_MANIFEST_READY`
@@ -40,7 +40,7 @@ The selected launch workflow targets the current held curriculum stage.
 - Run the phase2-z005-support recipe only after the Colab session is active and still using the corrected bridge.
 - Run report_phase2_z005_post_training_gates.py on post-training seed-gate output.
 - Use local CPU only for reduced-horizon correctness checks; local ROCm GPU is not cleared for Phase 2 training.
-- Do not launch training yet from this host; Colab session open-duck-l4 is not active.
+- Launch the preferred phase2-z005-support Colab workflow.
 
 ## Forbidden
 

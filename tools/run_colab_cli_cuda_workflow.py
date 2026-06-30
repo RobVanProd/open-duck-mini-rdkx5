@@ -1039,8 +1039,36 @@ def build_remote_driver(
             else ("81920" if run_phase2_z005_support else ("80000" if (run_phase2_b0f or run_phase2_b0g) else "160000"))
         )
     )
-    phase2_ppo_num_envs = "64" if (run_phase2_b0f or run_phase2_b0g or run_phase2_terrain_like) else "128"
-    phase2_ppo_batch_size = "512" if (run_phase2_b0f or run_phase2_b0g or run_phase2_terrain_like) else "1024"
+    phase2_ppo_num_envs = (
+        str(args.phase2_ppo_num_envs)
+        if args.phase2_ppo_num_envs is not None
+        else ("64" if (run_phase2_b0f or run_phase2_b0g or run_phase2_terrain_like) else "128")
+    )
+    phase2_ppo_num_evals = (
+        str(args.phase2_ppo_num_evals)
+        if args.phase2_ppo_num_evals is not None
+        else "4"
+    )
+    phase2_ppo_episode_length = (
+        str(args.phase2_episode_length)
+        if args.phase2_episode_length is not None
+        else "750"
+    )
+    phase2_ppo_batch_size = (
+        str(args.phase2_ppo_batch_size)
+        if args.phase2_ppo_batch_size is not None
+        else ("512" if (run_phase2_b0f or run_phase2_b0g or run_phase2_terrain_like) else "1024")
+    )
+    phase2_ppo_num_minibatches = (
+        str(args.phase2_ppo_num_minibatches)
+        if args.phase2_ppo_num_minibatches is not None
+        else "4"
+    )
+    phase2_ppo_num_updates_per_batch = (
+        str(args.phase2_ppo_num_updates_per_batch)
+        if args.phase2_ppo_num_updates_per_batch is not None
+        else "2"
+    )
     phase2_lr = "0.000002" if (run_phase2_z002_tracking_margin or run_phase2_z002_teacher_continuity) else ("0.000004" if run_phase2_motion_floor_like else ("0.000003" if (run_phase2_b0f or run_phase2_b0g or run_phase2_z005_support) else ("0.000012" if run_phase2_b0e else "0.000015")))
     phase2_clip = "0.015" if (run_phase2_z002_tracking_margin or run_phase2_z002_teacher_continuity) else ("0.025" if run_phase2_motion_floor_like else ("0.02" if (run_phase2_b0f or run_phase2_b0g or run_phase2_z005_support) else ("0.04" if run_phase2_b0e else "0.05")))
     phase2_max_grad_norm = "0.08" if (run_phase2_z002_tracking_margin or run_phase2_z002_teacher_continuity) else ("0.12" if run_phase2_motion_floor_like else ("0.1" if (run_phase2_b0f or run_phase2_b0g or run_phase2_z005_support) else ("0.2" if run_phase2_b0e else "0.25")))
@@ -1244,6 +1272,11 @@ def build_remote_driver(
         OUT = RDK / "outputs/analysis/{workflow_name}"
         STAGED_ROOT = Path("/content/open_duck_staged_curriculum_cli_{workflow_name}")
         OUT.mkdir(parents=True, exist_ok=True)
+        for root in (RDK, PLAYGROUND):
+            (root / ".tmp" / "jax_cache" / "xla_gpu_per_fusion_autotune_cache_dir").mkdir(
+                parents=True,
+                exist_ok=True,
+            )
         REMOTE_BUNDLE = Path("{remote_bundle}")
         RUN_STATUS = {{"exit_status": 0}}
         ARTIFACT_CHECKPOINT_MODE = {artifact_checkpoint_mode!r}
@@ -1737,12 +1770,12 @@ def build_remote_driver(
                 "--num-timesteps", "{phase2_num_timesteps}",
                 "--export-min-step", "1",
                 "--ppo-num-envs", "{phase2_ppo_num_envs}",
-                "--ppo-num-evals", "4",
-                "--ppo-episode-length", "750",
+                "--ppo-num-evals", "{phase2_ppo_num_evals}",
+                "--ppo-episode-length", "{phase2_ppo_episode_length}",
                 "--ppo-unroll-length", "20",
                 "--ppo-batch-size", "{phase2_ppo_batch_size}",
-                "--ppo-num-minibatches", "4",
-                "--ppo-num-updates-per-batch", "2",
+                "--ppo-num-minibatches", "{phase2_ppo_num_minibatches}",
+                "--ppo-num-updates-per-batch", "{phase2_ppo_num_updates_per_batch}",
                 "--restore-checkpoint-path",
                 "{phase2_restore_checkpoint}",
                 "--ppo-learning-rate", "{phase2_lr}",
@@ -2422,6 +2455,42 @@ def main() -> int:
             "Override the hard-coded Phase 2 workflow training length. "
             "Use for tiny foreground diagnostics only; omit for registered full runs."
         ),
+    )
+    parser.add_argument(
+        "--phase2-ppo-num-envs",
+        type=int,
+        default=None,
+        help="Override Phase 2 PPO env count for bounded diagnostics.",
+    )
+    parser.add_argument(
+        "--phase2-ppo-num-evals",
+        type=int,
+        default=None,
+        help="Override Phase 2 PPO eval count for bounded diagnostics.",
+    )
+    parser.add_argument(
+        "--phase2-episode-length",
+        type=int,
+        default=None,
+        help="Override Phase 2 PPO episode length for bounded diagnostics.",
+    )
+    parser.add_argument(
+        "--phase2-ppo-batch-size",
+        type=int,
+        default=None,
+        help="Override Phase 2 PPO batch size for bounded diagnostics.",
+    )
+    parser.add_argument(
+        "--phase2-ppo-num-minibatches",
+        type=int,
+        default=None,
+        help="Override Phase 2 PPO minibatch count for bounded diagnostics.",
+    )
+    parser.add_argument(
+        "--phase2-ppo-num-updates-per-batch",
+        type=int,
+        default=None,
+        help="Override Phase 2 PPO updates per batch for bounded diagnostics.",
     )
     parser.add_argument(
         "--checkpoint-sweep-policies",

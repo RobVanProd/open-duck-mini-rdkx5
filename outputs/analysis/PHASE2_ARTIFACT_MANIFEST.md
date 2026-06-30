@@ -69,10 +69,10 @@ This is a read-only hash manifest. It did not train, SSH, deploy, or touch the r
 | `outputs/analysis/phase2_package_only_archive_verification.json` | `PRESENT_FILE` | `79c74748ef7e9e5b3f311b81ceb94b4ef33a49236ab23cede1ac59e4b5de3ac0` | 10159 | `outputs/analysis/phase2_package_only_archive_verification.json` |
 | `outputs/analysis/PHASE2_LOCAL_FALLBACK_READINESS.md` | `PRESENT_FILE` | `0c63c0894e75810edb5ad59a19b347970c5cf901f5b472678aefea337aee7669` | 2375 | `outputs/analysis/PHASE2_LOCAL_FALLBACK_READINESS.md` |
 | `outputs/analysis/phase2_local_fallback_readiness.json` | `PRESENT_FILE` | `61da905854bda8e7dde26727ee44f71c7598e3c1ce05456477813bf160448192` | 35579 | `outputs/analysis/phase2_local_fallback_readiness.json` |
-| `outputs/analysis/PHASE2_NEXT_RUN_PLAN.md` | `PRESENT_FILE` | `7046b4c6df6503da8ce20281a989efc4b51da562a2a5c6b3f32dd36e06f88470` | 6550 | `outputs/analysis/PHASE2_NEXT_RUN_PLAN.md` |
-| `outputs/analysis/phase2_next_run_plan.json` | `PRESENT_FILE` | `d4dfc08c1de8bef627f9161c619f3d5a827e48ddc6af6896c3a6c65eed1bc4e3` | 14371 | `outputs/analysis/phase2_next_run_plan.json` |
-| `outputs/analysis/PHASE2_STAGE_GUARD.md` | `PRESENT_FILE` | `6fa8710cac9aa309e063be102c824cb7a69afe0bae9431853eb601fc4324f02d` | 5210 | `outputs/analysis/PHASE2_STAGE_GUARD.md` |
-| `outputs/analysis/phase2_stage_guard.json` | `PRESENT_FILE` | `47e206c4cfef8dd36733acbd217418acd2ccf783928b2a9210b473b0defa9a48` | 6623 | `outputs/analysis/phase2_stage_guard.json` |
+| `outputs/analysis/PHASE2_NEXT_RUN_PLAN.md` | `PRESENT_FILE` | `29dadfa56ab1cfc5a701b71261fc1f384a320eb4f8cb28112d5de6e71ebb4d16` | 6543 | `outputs/analysis/PHASE2_NEXT_RUN_PLAN.md` |
+| `outputs/analysis/phase2_next_run_plan.json` | `PRESENT_FILE` | `15f7b9ae17696ea9c1efbc461345e4513578b2c50d9f52a2d105afcc45bd2f01` | 14459 | `outputs/analysis/phase2_next_run_plan.json` |
+| `outputs/analysis/PHASE2_STAGE_GUARD.md` | `PRESENT_FILE` | `af0c2f5cf4c680aef3de5a06099740307290e606714adfda83a80123461687fc` | 5172 | `outputs/analysis/PHASE2_STAGE_GUARD.md` |
+| `outputs/analysis/phase2_stage_guard.json` | `PRESENT_FILE` | `22e7e22b3cc73fd31915ecbe44ee5ef6fb450101b97cca7dfb12d4afd3d14441` | 6587 | `outputs/analysis/phase2_stage_guard.json` |
 | `outputs/analysis/rocm_mjx_isolation_post_bios/ROCM_MJX_RUNTIME_ISOLATION.md` | `PRESENT_FILE` | `d21695c41a633202999e9bd41e5b8fe2ca7a72741ecb2e16fbe8382c405d7fa8` | 25165 | `outputs/analysis/rocm_mjx_isolation_post_bios/ROCM_MJX_RUNTIME_ISOLATION.md` |
 | `outputs/analysis/rocm_mjx_isolation_post_bios/rocm_mjx_runtime_isolation.json` | `PRESENT_FILE` | `613ce4f1579e24d578f3846407b0c465fab641c1912e82f0d188f68f5a594bc7` | 321403 | `outputs/analysis/rocm_mjx_isolation_post_bios/rocm_mjx_runtime_isolation.json` |
 | `outputs/analysis/PHASE2_COLAB_PACKAGE_MANIFEST.md` | `PRESENT_FILE` | `d580700d06142c00fa94459c6b65a919b5b0690b4bfbad739776df7e3354ed62` | 1500 | `outputs/analysis/PHASE2_COLAB_PACKAGE_MANIFEST.md` |
