@@ -89,22 +89,50 @@ def parse_probe(stdout: str) -> dict[str, Any]:
     return {}
 
 
-def core_artifacts() -> dict[str, dict[str, Any]]:
-    paths = {
+def core_artifacts(workflow: str) -> dict[str, dict[str, Any]]:
+    base_paths = {
         "phase2_candidate": ROOT
         / "policy"
         / "candidates"
         / "phase2_stagea2_seed5_recovery_command_gated_gain099_20260629"
         / "candidate.onnx",
         "corrected_bridge": ROOT / "outputs" / "analysis" / "actuator_response_fit_corrected_knee.json",
-        "restore_checkpoint": ROOT
-        / "outputs"
-        / "phase2_domain_randomization"
-        / "stage_a2_preserve_narrow_flat_no_push_gpu"
-        / "smoke_20260628T031553Z_gpu"
-        / "2026_06_27_232221_491520",
-        "z005_recipe": ROOT / "outputs" / "analysis" / "phase2_z005_support_next_recipe.json",
     }
+    workflow_paths = {
+        "phase2-z002-tracking-margin": {
+            "restore_checkpoint": ROOT
+            / "outputs"
+            / "phase2_domain_randomization"
+            / "stage_c0_terrain_z002_preserve_from_a2_gpu"
+            / "smoke_20260628T103743Z_gpu"
+            / "2026_06_28_064431_245760",
+            "recipe": ROOT / "outputs" / "analysis" / "phase2_z002_tracking_margin_next_recipe.json",
+        },
+        "phase2-z005-support": {
+            "restore_checkpoint": ROOT
+            / "outputs"
+            / "phase2_domain_randomization"
+            / "stage_a2_preserve_narrow_flat_no_push_gpu"
+            / "smoke_20260628T031553Z_gpu"
+            / "2026_06_27_232221_491520",
+            "recipe": ROOT / "outputs" / "analysis" / "phase2_z005_support_next_recipe.json",
+        },
+        "phase2-z0035-motion-floor": {
+            "restore_checkpoint": ROOT
+            / "outputs"
+            / "phase2_domain_randomization"
+            / "stage_a2_preserve_narrow_flat_no_push_gpu"
+            / "smoke_20260628T031553Z_gpu"
+            / "2026_06_27_232221_491520",
+            "recipe": ROOT / "outputs" / "analysis" / "phase2_z0035_motion_floor_next_recipe.json",
+        },
+    }
+    paths = {
+        **base_paths,
+        **workflow_paths.get(workflow, workflow_paths["phase2-z005-support"]),
+    }
+    if workflow not in workflow_paths:
+        paths["workflow_warning"] = ROOT / f"UNKNOWN_WORKFLOW_{workflow}"
     return {
         name: {
             "path": rel(path),
@@ -121,7 +149,7 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
     # interpreter bypasses the venv site-packages.
     env_python = Path(args.env_python).expanduser()
     playground_root = Path(args.playground_root).expanduser().resolve()
-    artifacts = core_artifacts()
+    artifacts = core_artifacts(args.workflow)
 
     probe_code = r"""
 import json
@@ -234,6 +262,7 @@ print(json.dumps(payload, sort_keys=True))
 
     return {
         "status": status,
+        "workflow": args.workflow,
         "preferred_path": "A100/L4 Colab via run_colab_cli_cuda_workflow.py",
         "local_role": "fallback/debug evidence only unless it clears the same canonical gates",
         "session": args.session,
@@ -282,6 +311,7 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         "",
         "## Summary",
         "",
+        f"- workflow: `{payload['workflow']}`",
         f"- preferred_path: `{payload['preferred_path']}`",
         f"- local_role: `{payload['local_role']}`",
         f"- env_python: `{payload['env_python']}`",
@@ -342,6 +372,15 @@ def main() -> int:
     parser.add_argument("--env-python", default=str(DEFAULT_ENV_PYTHON))
     parser.add_argument("--playground-root", default=str(DEFAULT_PLAYGROUND_ROOT))
     parser.add_argument("--session", default="open-duck-l4")
+    parser.add_argument(
+        "--workflow",
+        default="phase2-z002-tracking-margin",
+        choices=[
+            "phase2-z002-tracking-margin",
+            "phase2-z0035-motion-floor",
+            "phase2-z005-support",
+        ],
+    )
     parser.add_argument("--timeout-s", type=int, default=30)
     parser.add_argument("--check-training-timeout-s", type=int, default=120)
     parser.add_argument("--output-md", default=str(DEFAULT_OUTPUT_MD))

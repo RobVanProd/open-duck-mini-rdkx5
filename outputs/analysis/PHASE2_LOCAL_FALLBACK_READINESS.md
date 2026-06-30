@@ -6,6 +6,7 @@ This is a read-only diagnostic. It did not train, SSH, deploy, or touch the robo
 
 ## Summary
 
+- workflow: `phase2-z002-tracking-margin`
 - preferred_path: `A100/L4 Colab via run_colab_cli_cuda_workflow.py`
 - local_role: `fallback/debug evidence only unless it clears the same canonical gates`
 - env_python: `/home/lsd/robots/envs/open-duck-playground/bin/python`
@@ -29,8 +30,8 @@ This is a read-only diagnostic. It did not train, SSH, deploy, or touch the robo
 |---|---:|---|
 | `phase2_candidate` | `True` | `policy/candidates/phase2_stagea2_seed5_recovery_command_gated_gain099_20260629/candidate.onnx` |
 | `corrected_bridge` | `True` | `outputs/analysis/actuator_response_fit_corrected_knee.json` |
-| `restore_checkpoint` | `True` | `outputs/phase2_domain_randomization/stage_a2_preserve_narrow_flat_no_push_gpu/smoke_20260628T031553Z_gpu/2026_06_27_232221_491520` |
-| `z005_recipe` | `True` | `outputs/analysis/phase2_z005_support_next_recipe.json` |
+| `restore_checkpoint` | `True` | `outputs/phase2_domain_randomization/stage_c0_terrain_z002_preserve_from_a2_gpu/smoke_20260628T103743Z_gpu/2026_06_28_064431_245760` |
+| `recipe` | `True` | `outputs/analysis/phase2_z002_tracking_margin_next_recipe.json` |
 
 ## Command Checks
 
