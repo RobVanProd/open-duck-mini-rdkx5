@@ -18,6 +18,8 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_RECIPE_JSON = ROOT / "outputs/analysis/phase2_z002_tracking_margin_next_recipe.json"
 DEFAULT_NEXT_RUN_JSON = ROOT / "outputs/analysis/phase2_next_run_plan.json"
 DEFAULT_READINESS_JSON = ROOT / "outputs/analysis/phase2_local_fallback_readiness.json"
+DEFAULT_STAGE_GUARD_JSON = ROOT / "outputs/analysis/phase2_stage_guard.json"
+DEFAULT_ARTIFACT_MANIFEST_JSON = ROOT / "outputs/analysis/phase2_artifact_manifest.json"
 DEFAULT_OUTPUT_MD = ROOT / "outputs/analysis/PHASE2_Z002_TRACKING_MARGIN_LAUNCH_AUDIT.md"
 DEFAULT_OUTPUT_JSON = ROOT / "outputs/analysis/phase2_z002_tracking_margin_launch_audit.json"
 DEFAULT_PACKAGE_ROOT = ROOT / "outputs/analysis/colab_cli"
@@ -57,6 +59,8 @@ def build_payload(args: argparse.Namespace) -> dict[str, Any]:
     recipe = read_json(Path(args.recipe_json))
     next_run = read_json(Path(args.next_run_json))
     readiness = read_json(Path(args.readiness_json))
+    stage_guard = read_json(Path(args.stage_guard_json))
+    artifact_manifest = read_json(Path(args.artifact_manifest_json))
     package_manifest_path = (
         Path(args.package_manifest)
         if args.package_manifest
@@ -87,6 +91,16 @@ def build_payload(args: argparse.Namespace) -> dict[str, Any]:
             (next_run.get("commands") or {}).get("colab", {}).get("workflow") == args.workflow
         ),
         "readiness_workflow_matches": readiness.get("workflow") == args.workflow,
+        "stage_guard_workflow_matches": stage_guard.get("preferred_workflow") == args.workflow,
+        "stage_guard_post_training_status_matches": (
+            stage_guard.get("post_training_status")
+            == "PASS_PHASE2_Z002_TRACKING_MARGIN_POST_TRAINING_GATES"
+        ),
+        "artifact_manifest_stage_matches": artifact_manifest.get("stage") == "stage_z002_tracking_margin",
+        "artifact_manifest_promotion_gate_matches": (
+            (artifact_manifest.get("promotion_gate") or {}).get("required_post_training_status")
+            == "PASS_PHASE2_Z002_TRACKING_MARGIN_POST_TRAINING_GATES"
+        ),
         "package_workflow_matches": package_workflow == args.workflow,
         "required_inputs_exist": all(item["exists"] for item in required_inputs.values()),
         "package_only_ready": archive_status == "PASS_COLAB_PACKAGE_ONLY_READY",
@@ -110,6 +124,8 @@ def build_payload(args: argparse.Namespace) -> dict[str, Any]:
         "recipe_json": rel(Path(args.recipe_json)),
         "next_run_json": rel(Path(args.next_run_json)),
         "readiness_json": rel(Path(args.readiness_json)),
+        "stage_guard_json": rel(Path(args.stage_guard_json)),
+        "artifact_manifest_json": rel(Path(args.artifact_manifest_json)),
         "package_manifest": rel(package_manifest_path) if package_manifest_path else None,
         "launch_status": launch_status,
         "colab_status": colab_status,
@@ -143,6 +159,8 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         f"- colab_status: `{payload['colab_status']}`",
         f"- git_status: `{payload['git_status']}`",
         f"- package_manifest: `{payload['package_manifest']}`",
+        f"- stage_guard_json: `{payload['stage_guard_json']}`",
+        f"- artifact_manifest_json: `{payload['artifact_manifest_json']}`",
         "",
         "## Checks",
         "",
@@ -179,6 +197,8 @@ def main() -> int:
     parser.add_argument("--recipe-json", default=str(DEFAULT_RECIPE_JSON))
     parser.add_argument("--next-run-json", default=str(DEFAULT_NEXT_RUN_JSON))
     parser.add_argument("--readiness-json", default=str(DEFAULT_READINESS_JSON))
+    parser.add_argument("--stage-guard-json", default=str(DEFAULT_STAGE_GUARD_JSON))
+    parser.add_argument("--artifact-manifest-json", default=str(DEFAULT_ARTIFACT_MANIFEST_JSON))
     parser.add_argument("--package-root", default=str(DEFAULT_PACKAGE_ROOT))
     parser.add_argument("--package-manifest")
     parser.add_argument("--output-md", default=str(DEFAULT_OUTPUT_MD))
