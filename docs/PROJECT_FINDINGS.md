@@ -3948,3 +3948,26 @@ low forward progress on some seeds and corrected-envelope max target-velocity
 excess on others. This closes the small scalar right-swing target-rate penalty
 branch. The next branch should change swing strategy or timing, not continue a
 plain scalar penalty sweep.
+
+## Phase 2 Right-Swing Phase-Lift Recovery
+
+The next A100 recipe added a phase-primary swing-lift cost so the policy sees a
+lift signal during the commanded swing phase even if the foot never breaks
+contact. The hook trained and exported cleanly, but the gate still held:
+
+```text
+artifact: docs/PHASE2_RIGHT_SWING_PHASE_LIFT_RESULT.md
+gate: outputs/analysis/phase2_right_swing_phase_lift_a100_20260630/PHASE2_RIGHT_SWING_PHASE_LIFT_A100_X008_GATE.md
+status: HOLD_RIGHT_SWING_PHASE_LIFT_RECIPE
+
+40960:  1/8 pass, 0/8 falls, mean track ratio 0.2514
+81920:  3/8 pass, 0/8 falls, mean track ratio 0.2496
+122880: 2/8 pass, 0/8 falls, mean track ratio 0.2590
+```
+
+This improved a few individual seeds but did not move the distribution enough.
+The same tradeoff remains: candidates stay upright and satisfy local swing
+subchecks, but hold on low forward progress or corrected-envelope max target
+velocity excess. This closes another scalar swing-shaping hook around the
+current gait pattern. The next branch should change swing duration, swing phase
+timing, or right-leg swing geometry instead of adding another scalar penalty.
