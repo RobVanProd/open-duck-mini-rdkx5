@@ -10,7 +10,7 @@ This is a read-only launch audit. It did not train, SSH, deploy, or touch the ro
 - launch_status: `HOLD_PHASE2_COLAB_GPU_SESSION_NOT_READY`
 - colab_status: `HOLD_NO_ACTIVE_COLAB_SESSION`
 - git_status: `HOLD_GIT_REMOTE_AUTH_UNAVAILABLE`
-- package_manifest: `outputs/analysis/colab_cli/open-duck-l4-phase2-z002-tracking-margin-20260630T011011Z/PACKAGE_ONLY_MANIFEST.json`
+- package_manifest: `outputs/analysis/colab_cli/open-duck-l4-phase2-z002-tracking-margin-20260630T012421Z/PACKAGE_ONLY_MANIFEST.json`
 - stage_guard_json: `outputs/analysis/phase2_stage_guard.json`
 - artifact_manifest_json: `outputs/analysis/phase2_artifact_manifest.json`
 - archive_verification_json: `outputs/analysis/phase2_package_only_archive_verification.json`
@@ -57,8 +57,8 @@ This is a read-only launch audit. It did not train, SSH, deploy, or touch the ro
 
 | archive | size bytes | sha256 | path |
 |---|---:|---|---|
-| `playground` | 1940410 | `32c9a711f1b9322b9da61690ce45180787440ac37172a81404c20ee6159a5812` | `/home/lsd/robots/outputs/colab_cli_uploads/Open_Duck_Playground_cli_20260630T011011Z.tar.gz` |
-| `rdk` | 36386199 | `827d28e58d16caa26cb4bc71fd4c78b80f40971f242d8773fc4d9fa2b7904a25` | `/home/lsd/robots/outputs/colab_cli_uploads/open-duck-mini-rdkx5_cli_20260630T011011Z.tar.gz` |
+| `playground` | 1940410 | `55a80acb03da9aadfd26b8e8214b1269a668ab5bb54adce808fa9f16b4644f43` | `/home/lsd/robots/outputs/colab_cli_uploads/Open_Duck_Playground_cli_20260630T012421Z.tar.gz` |
+| `rdk` | 36389512 | `a808d2af55cf60ef4224791e2dab46caffb443c32b073c8c7d8e129727e04079` | `/home/lsd/robots/outputs/colab_cli_uploads/open-duck-mini-rdkx5_cli_20260630T012421Z.tar.gz` |
 
 ## Launch Command
 

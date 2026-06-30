@@ -3,7 +3,7 @@
 status: `PASS_PHASE2_PACKAGE_ONLY_ARCHIVE_VERIFICATION`
 workflow: `phase2-z002-tracking-margin`
 session: `open-duck-l4`
-package_manifest: `outputs/analysis/colab_cli/open-duck-l4-phase2-z002-tracking-margin-20260630T011011Z/PACKAGE_ONLY_MANIFEST.json`
+package_manifest: `outputs/analysis/colab_cli/open-duck-l4-phase2-z002-tracking-margin-20260630T012421Z/PACKAGE_ONLY_MANIFEST.json`
 
 This is a read-only archive verification. It did not upload, train, SSH, deploy, or touch the robot.
 
@@ -11,13 +11,13 @@ This is a read-only archive verification. It did not upload, train, SSH, deploy,
 
 | archive | exists | size matches | sha256 matches | size bytes | sha256 | path |
 |---|---:|---:|---:|---:|---|---|
-| `rdk` | `True` | `True` | `True` | 36386199 | `827d28e58d16caa26cb4bc71fd4c78b80f40971f242d8773fc4d9fa2b7904a25` | `/home/lsd/robots/outputs/colab_cli_uploads/open-duck-mini-rdkx5_cli_20260630T011011Z.tar.gz` |
-| `playground` | `True` | `True` | `True` | 1940410 | `32c9a711f1b9322b9da61690ce45180787440ac37172a81404c20ee6159a5812` | `/home/lsd/robots/outputs/colab_cli_uploads/Open_Duck_Playground_cli_20260630T011011Z.tar.gz` |
+| `rdk` | `True` | `True` | `True` | 36389512 | `a808d2af55cf60ef4224791e2dab46caffb443c32b073c8c7d8e129727e04079` | `/home/lsd/robots/outputs/colab_cli_uploads/open-duck-mini-rdkx5_cli_20260630T012421Z.tar.gz` |
+| `playground` | `True` | `True` | `True` | 1940410 | `55a80acb03da9aadfd26b8e8214b1269a668ab5bb54adce808fa9f16b4644f43` | `/home/lsd/robots/outputs/colab_cli_uploads/Open_Duck_Playground_cli_20260630T012421Z.tar.gz` |
 
 ## RDK Archive Contents
 
 - status: `PASS_PACKAGE_ONLY_ARCHIVE_VERIFIED`
-- member_count: `577`
+- member_count: `578`
 - missing_entries: `0`
 - mismatched_entries: `0`
 
