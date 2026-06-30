@@ -397,10 +397,10 @@ def remote_process_is_running(session: str, remote_pid: str, run_dir: Path) -> b
     if checked.returncode != 0:
         return None
     output = checked.stdout or ""
-    if "RUNNING" in output:
-        return True
     if "NOT_RUNNING" in output:
         return False
+    if "RUNNING" in output:
+        return True
     return None
 
 
