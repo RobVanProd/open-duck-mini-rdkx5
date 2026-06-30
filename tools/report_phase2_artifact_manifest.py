@@ -35,6 +35,7 @@ DEFAULT_RESTORE_CHECKPOINT = (
 
 REVIEW_ARTIFACTS = [
     "docs/PHASE2_DOMAIN_RANDOMIZATION_ROBUSTNESS.md",
+    "docs/TRAINING_ENV_7900XTX.md",
     "outputs/analysis/PHASE2_CURRENT_STATUS.md",
     "outputs/analysis/phase2_current_status.json",
     "outputs/analysis/PHASE2_CURRICULUM_GATE_LEDGER.md",
@@ -55,6 +56,8 @@ REVIEW_ARTIFACTS = [
     "outputs/analysis/phase2_next_run_plan.json",
     "outputs/analysis/PHASE2_STAGE_GUARD.md",
     "outputs/analysis/phase2_stage_guard.json",
+    "outputs/analysis/rocm_mjx_isolation_post_bios/ROCM_MJX_RUNTIME_ISOLATION.md",
+    "outputs/analysis/rocm_mjx_isolation_post_bios/rocm_mjx_runtime_isolation.json",
     "outputs/analysis/PHASE2_COLAB_PACKAGE_MANIFEST.md",
     "outputs/analysis/phase2_colab_package_manifest.json",
     "outputs/analysis/PHASE2_COLAB_PACKAGE_ONLY_MANIFEST.md",

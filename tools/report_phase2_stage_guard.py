@@ -24,6 +24,9 @@ DEFAULT_NEXT_PLAN = ROOT / "outputs/analysis/phase2_next_run_plan.json"
 DEFAULT_RECIPE = ROOT / "outputs/analysis/phase2_z002_tracking_margin_next_recipe.json"
 DEFAULT_MANIFEST = ROOT / "outputs/analysis/phase2_artifact_manifest.json"
 DEFAULT_PACKAGE_MANIFEST = ROOT / "outputs/analysis/phase2_colab_package_manifest.json"
+DEFAULT_LOCAL_ROCM_ISOLATION = (
+    ROOT / "outputs/analysis/rocm_mjx_isolation_post_bios/rocm_mjx_runtime_isolation.json"
+)
 DEFAULT_OUTPUT_MD = ROOT / "outputs/analysis/PHASE2_STAGE_GUARD.md"
 DEFAULT_OUTPUT_JSON = ROOT / "outputs/analysis/phase2_stage_guard.json"
 
@@ -80,18 +83,49 @@ def package_preflight(workflow: str) -> dict[str, Any]:
     }
 
 
+def local_backend_summary(path: Path) -> dict[str, Any]:
+    payload = read_json(path)
+    assessment = payload.get("assessment") if isinstance(payload.get("assessment"), dict) else {}
+    capabilities = payload.get("capabilities") if isinstance(payload.get("capabilities"), dict) else {}
+    gate_result = assessment.get("gate_result") or "UNKNOWN"
+    closed_loop_cpu = capabilities.get("closed_loop_cpu") or "UNKNOWN"
+    closed_loop_gpu = capabilities.get("closed_loop_gpu") or "UNKNOWN"
+
+    if gate_result == "PASS_ROCM_MJX_READY":
+        launch_class = "PASS_LOCAL_GPU_TRAINING_BACKEND_READY"
+    elif closed_loop_cpu == "PASS":
+        launch_class = "HOLD_LOCAL_ROCM_GPU_CPU_CORRECTNESS_ONLY"
+    else:
+        launch_class = "HOLD_LOCAL_BACKEND_NOT_READY"
+
+    return {
+        "path": rel(path),
+        "gate_result": gate_result,
+        "smallest_failing_subtest": assessment.get("smallest_failing_subtest"),
+        "smallest_failing_status": assessment.get("smallest_failing_status"),
+        "basic_jax_gpu": capabilities.get("basic_jax_gpu"),
+        "minimal_mjx_gpu": capabilities.get("minimal_mjx_gpu"),
+        "playground_step_gpu": capabilities.get("playground_step_gpu"),
+        "closed_loop_gpu": closed_loop_gpu,
+        "closed_loop_cpu": closed_loop_cpu,
+        "launch_class": launch_class,
+    }
+
+
 def collect(args: argparse.Namespace) -> dict[str, Any]:
     ledger_path = Path(args.ledger)
     next_plan_path = Path(args.next_plan)
     recipe_path = Path(args.recipe)
     manifest_path = Path(args.manifest)
     package_manifest_path = Path(args.package_manifest)
+    local_rocm_isolation_path = Path(args.local_rocm_isolation)
 
     ledger = read_json(ledger_path)
     next_plan = read_json(next_plan_path)
     recipe = read_json(recipe_path)
     manifest = read_json(manifest_path)
     package_manifest = read_json(package_manifest_path)
+    local_backend = local_backend_summary(local_rocm_isolation_path)
 
     current_stage = ledger.get("current_stage")
     current_gate_status = ledger.get("status")
@@ -137,6 +171,14 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
         f"Run the {preferred_workflow} recipe only after the Colab session is active and still using the corrected bridge.",
         f"Run {post_training_tool} on post-training seed-gate output.",
     ]
+    if local_backend["launch_class"] == "PASS_LOCAL_GPU_TRAINING_BACKEND_READY":
+        allowed_actions.append(
+            "Use local ROCm only after a fresh small training smoke also passes; keep Colab as the preferred backend for this stage."
+        )
+    else:
+        allowed_actions.append(
+            "Use local CPU only for reduced-horizon correctness checks; local ROCm GPU is not cleared for Phase 2 training."
+        )
     if colab_active:
         allowed_actions.append(f"Launch the preferred {preferred_workflow} Colab workflow.")
     else:
@@ -154,6 +196,8 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
         "No stronger terrain until z=0.002 tracking margin is recovered and z=0.002 regression stays clear.",
         f"No promotion without {post_training_status}.",
     ]
+    if local_backend["launch_class"] != "PASS_LOCAL_GPU_TRAINING_BACKEND_READY":
+        forbidden_actions.append("No local ROCm Phase 2 training launch while local backend status is HOLD_PLAYGROUND_GPU_STEP.")
 
     if z002_tracking_margin:
         advance_requirements = [
@@ -197,6 +241,7 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
         "restore_checkpoint": manifest.get("core_artifacts", {}).get("restore_checkpoint", {}),
         "package_preflight": package,
         "package_manifest_status": package_manifest.get("status"),
+        "local_backend": local_backend,
         "preferred_workflow": preferred_workflow,
         "post_training_tool": post_training_tool,
         "post_training_status": post_training_status,
@@ -206,6 +251,7 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
             "recipe": rel(recipe_path),
             "manifest": rel(manifest_path),
             "package_manifest": rel(package_manifest_path),
+            "local_rocm_isolation": rel(local_rocm_isolation_path),
         },
         "allowed_actions": allowed_actions,
         "forbidden_actions": forbidden_actions,
@@ -238,6 +284,9 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         f"- git_status: `{payload.get('git_status')}`",
         f"- package_preflight: `{payload.get('package_preflight', {}).get('status')}`",
         f"- package_manifest_status: `{payload.get('package_manifest_status')}`",
+        f"- local_backend_status: `{payload.get('local_backend', {}).get('launch_class')}`",
+        f"- local_rocm_gate: `{payload.get('local_backend', {}).get('gate_result')}`",
+        f"- local_rocm_evidence: `{payload.get('local_backend', {}).get('path')}`",
         f"- post_training_tool: `{payload.get('post_training_tool')}`",
         f"- post_training_status: `{payload.get('post_training_status')}`",
         f"- held_gates: `{', '.join(payload.get('held_gates') or []) or 'none'}`",
@@ -254,6 +303,21 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
     lines.extend(["", "## Required Evidence To Advance", ""])
     for item in payload["advance_requirements"]:
         lines.append(f"- {item}")
+    lines.extend(["", "## Local Backend", ""])
+    local_backend = payload.get("local_backend", {})
+    for key in [
+        "launch_class",
+        "gate_result",
+        "smallest_failing_subtest",
+        "smallest_failing_status",
+        "basic_jax_gpu",
+        "minimal_mjx_gpu",
+        "playground_step_gpu",
+        "closed_loop_gpu",
+        "closed_loop_cpu",
+        "path",
+    ]:
+        lines.append(f"- `{key}`: `{local_backend.get(key)}`")
     lines.extend(
         [
             "",
@@ -294,6 +358,7 @@ def main() -> int:
     parser.add_argument("--recipe", default=str(DEFAULT_RECIPE))
     parser.add_argument("--manifest", default=str(DEFAULT_MANIFEST))
     parser.add_argument("--package-manifest", default=str(DEFAULT_PACKAGE_MANIFEST))
+    parser.add_argument("--local-rocm-isolation", default=str(DEFAULT_LOCAL_ROCM_ISOLATION))
     parser.add_argument("--output-md", default=str(DEFAULT_OUTPUT_MD))
     parser.add_argument("--output-json", default=str(DEFAULT_OUTPUT_JSON))
     args = parser.parse_args()
