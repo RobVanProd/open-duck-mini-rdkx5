@@ -1,0 +1,92 @@
+{
+  "status": "HOLD_Z002_TRACKING_MARGIN_A100_NOT_PROMOTED",
+  "generated_at": "2026-06-30T02:50:00Z",
+  "workflow": "phase2-z002-tracking-margin",
+  "session": "open-duck-l4",
+  "hardware": "A100",
+  "jax_pin": "0.7.2",
+  "robot_touched": false,
+  "ssh_used": false,
+  "deploy_performed": false,
+  "grounded_replay": false,
+  "runtime_behavior_changed": false,
+  "training": {
+    "status": "PASS_TRAINING_COMPLETED",
+    "timesteps": 122880,
+    "num_envs": 64,
+    "terrain_hfield_z_scale": 0.002,
+    "corrected_bridge": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+    "checkpoints": [
+      {
+        "step": 40960,
+        "reward": 37.8014,
+        "onnx_sha256": "83b31d874ca6078953d4decb23909121e5914150229c3bdc2b406ced9208d510"
+      },
+      {
+        "step": 81920,
+        "reward": 40.2106,
+        "onnx_sha256": "ea01c7a9ae36d807d8ef5e5620213792bbb0a0b0adb4114f9753d238cc07e6bc"
+      },
+      {
+        "step": 122880,
+        "reward": 40.982,
+        "onnx_sha256": "34ec5a7d533321e4430a180e8378bbbec45cb0c8aa28f19add7420b521333180"
+      }
+    ]
+  },
+  "compact_sweep": {
+    "status": "HOLD_NO_PROMOTABLE_CHECKPOINT",
+    "duration_s": 1.0,
+    "commands": [0.0, 0.08],
+    "results": [
+      {
+        "step": 40960,
+        "x0_status": "PASS_CANDIDATE_SIM_GATE",
+        "x008_status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+        "x008_track_ratio": 0.2129,
+        "x008_mean_vx_m_s": 0.017,
+        "x008_max_tracking_p95_rad": 0.2177,
+        "x008_max_pitch_vel_p95_rad_s": 1.5267
+      },
+      {
+        "step": 81920,
+        "x0_status": "PASS_CANDIDATE_SIM_GATE",
+        "x008_status": "HOLD_CANDIDATE_TRACKING",
+        "x008_track_ratio": 0.2939,
+        "x008_mean_vx_m_s": 0.0235,
+        "x008_max_tracking_p95_rad": 0.2184,
+        "x008_max_pitch_vel_p95_rad_s": 1.4996
+      },
+      {
+        "step": 122880,
+        "x0_status": "PASS_CANDIDATE_SIM_GATE",
+        "x008_status": "HOLD_CANDIDATE_TRACKING",
+        "x008_track_ratio": 0.2832,
+        "x008_mean_vx_m_s": 0.0227,
+        "x008_max_tracking_p95_rad": 0.2158,
+        "x008_max_pitch_vel_p95_rad_s": 1.5373
+      }
+    ]
+  },
+  "full_seed_gate": {
+    "status": "HOLD_COLAB_SESSION_LOST_BEFORE_GATE_COMPLETION",
+    "selected_checkpoint_step": 81920,
+    "captured_seed_results": [
+      {
+        "seed": 0,
+        "status": "HOLD_CANDIDATE_TRACKING"
+      }
+    ],
+    "last_observed_event": "seed 1 started before the Colab session disappeared"
+  },
+  "decision": {
+    "promote": false,
+    "reason": "No checkpoint passed compact x=0.08 tracking gate, and full seed gate did not complete.",
+    "next_recommendation": "Use a teacher-action or trust-region continuity mechanism around the moving z=0.002 policy rather than another small scalar reward tweak."
+  },
+  "evidence": {
+    "remote_live_log": "outputs/analysis/colab_cli/open-duck-l4-phase2-z002-tracking-margin-20260630T014242Z/remote_live.log",
+    "partial_artifact": "outputs/analysis/colab_cli/open-duck-l4-phase2-z002-tracking-margin-20260630T014242Z/open_duck_colab_cli_phase2-z002-tracking-margin_20260630T014331Z_artifacts.tar.gz.partial",
+    "extracted_partial": "outputs/analysis/colab_cli/open-duck-l4-phase2-z002-tracking-margin-20260630T014242Z/extracted_partial"
+  }
+}
