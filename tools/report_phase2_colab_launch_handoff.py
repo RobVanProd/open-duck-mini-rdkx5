@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import subprocess
 from pathlib import Path
 from typing import Any
 
@@ -46,6 +47,19 @@ def read_json(path: Path) -> dict[str, Any]:
         return {"_missing": True, "_path": str(path)}
 
 
+def git_value(args: list[str], cwd: Path = ROOT) -> str | None:
+    completed = subprocess.run(
+        ["git", *args],
+        cwd=cwd,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if completed.returncode != 0:
+        return None
+    return completed.stdout.strip()
+
+
 def shell_join(argv: list[str]) -> str:
     return " ".join(argv)
 
@@ -69,6 +83,13 @@ def build_payload(args: argparse.Namespace) -> dict[str, Any]:
     stage_guard = read_json(stage_guard_path)
 
     launch_command = launch.get("launch_command") or []
+    package_rdk_source = ((package.get("source") or {}).get("rdk") or {})
+    current_rdk_head = git_value(["rev-parse", "HEAD"])
+    current_rdk_branch = git_value(["branch", "--show-current"])
+    package_rdk_head = package_rdk_source.get("head")
+    package_source_matches_current_head = (
+        package_rdk_head is not None and package_rdk_head == current_rdk_head
+    )
     checks = {
         "package_manifest_ready": package.get("status") == "PASS_COLAB_PACKAGE_ONLY_READY",
         "archive_verification_pass": archive.get("status")
@@ -84,6 +105,13 @@ def build_payload(args: argparse.Namespace) -> dict[str, Any]:
             for key in ["robot_touched", "ssh_used", "deploy_performed", "training_started"]
         ),
     }
+    notes = []
+    if not package_source_matches_current_head:
+        notes.append(
+            "The package-only tarballs are a verified immutable snapshot, but their RDK source head "
+            "differs from the current branch head. The normal --run command rebuilds and uploads a "
+            "fresh tarball from the current worktree."
+        )
     external_blockers = []
     if launch.get("colab_status") != "PASS_COLAB_SESSION_VISIBLE":
         external_blockers.append(launch.get("colab_status") or "COLAB_STATUS_UNKNOWN")
@@ -106,7 +134,14 @@ def build_payload(args: argparse.Namespace) -> dict[str, Any]:
         "launch_audit_json": rel(launch_audit_path),
         "stage_guard_json": rel(stage_guard_path),
         "checks": checks,
+        "notes": notes,
         "external_blockers": external_blockers,
+        "current_source": {
+            "rdk_branch": current_rdk_branch,
+            "rdk_head": current_rdk_head,
+            "package_rdk_head": package_rdk_head,
+            "package_source_matches_current_head": package_source_matches_current_head,
+        },
         "launch_status": launch.get("launch_status"),
         "colab_status": launch.get("colab_status"),
         "git_status": launch.get("git_status"),
@@ -157,6 +192,19 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         "",
     ]
     lines.extend(f"- `{key}`: `{value}`" for key, value in payload["checks"].items())
+    lines.extend(["", "## Source Snapshot", ""])
+    current = payload["current_source"]
+    lines.extend(
+        [
+            f"- current_rdk_branch: `{current['rdk_branch']}`",
+            f"- current_rdk_head: `{current['rdk_head']}`",
+            f"- package_rdk_head: `{current['package_rdk_head']}`",
+            f"- package_source_matches_current_head: `{current['package_source_matches_current_head']}`",
+        ]
+    )
+    if payload["notes"]:
+        lines.extend(["", "## Notes", ""])
+        lines.extend(f"- {item}" for item in payload["notes"])
     lines.extend(["", "## Package Archives", "", "| archive | size bytes | sha256 | path |", "|---|---:|---|---|"])
     for name, item in payload["package_archives"].items():
         lines.append(

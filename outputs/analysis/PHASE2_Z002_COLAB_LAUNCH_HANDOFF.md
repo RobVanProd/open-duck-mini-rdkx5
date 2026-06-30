@@ -23,6 +23,17 @@ This is a read-only handoff. It did not upload, train, SSH, deploy, or touch the
 - `stage_guard_workflow_matches`: `True`
 - `robot_scope_clean`: `True`
 
+## Source Snapshot
+
+- current_rdk_branch: `codex/live-oracle-dagger-phase-student`
+- current_rdk_head: `24ccbb1c5c4ece3cb9f7a8259838269c25b8d292`
+- package_rdk_head: `11c9e23114e5e88c2fd9f7dbe05dc6a895790377`
+- package_source_matches_current_head: `False`
+
+## Notes
+
+- The package-only tarballs are a verified immutable snapshot, but their RDK source head differs from the current branch head. The normal --run command rebuilds and uploads a fresh tarball from the current worktree.
+
 ## Package Archives
 
 | archive | size bytes | sha256 | path |

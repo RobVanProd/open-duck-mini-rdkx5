@@ -53,8 +53,8 @@ This is a read-only hash manifest. It did not train, SSH, deploy, or touch the r
 | `outputs/analysis/phase2_z002_tracking_margin_next_recipe.json` | `PRESENT_FILE` | `036ba3019af67bea0c8baaa6a09a182682f7ded01bdf7473b2f58e1fc953c4f8` | 11873 | `outputs/analysis/phase2_z002_tracking_margin_next_recipe.json` |
 | `outputs/analysis/PHASE2_Z002_TRACKING_MARGIN_LAUNCH_AUDIT.md` | `PRESENT_FILE` | `4f405caf45ba088062a06361d49fa33ee36b6a0b983450de9ea5624455018ea0` | 3148 | `outputs/analysis/PHASE2_Z002_TRACKING_MARGIN_LAUNCH_AUDIT.md` |
 | `outputs/analysis/phase2_z002_tracking_margin_launch_audit.json` | `PRESENT_FILE` | `fbc7dd1389019307751fcf0cef4ab40a2040861cbded4857c0e67257aa017707` | 4805 | `outputs/analysis/phase2_z002_tracking_margin_launch_audit.json` |
-| `outputs/analysis/PHASE2_Z002_COLAB_LAUNCH_HANDOFF.md` | `PRESENT_FILE` | `990a5bbd15dcbbdba1aaa958a760387b878229917bd897cf0204b0d20061b706` | 3036 | `outputs/analysis/PHASE2_Z002_COLAB_LAUNCH_HANDOFF.md` |
-| `outputs/analysis/phase2_z002_colab_launch_handoff.json` | `PRESENT_FILE` | `e65970f630412de71441a6cc9999df650312b8c736a814c9e763e3bc024eb47d` | 5340 | `outputs/analysis/phase2_z002_colab_launch_handoff.json` |
+| `outputs/analysis/PHASE2_Z002_COLAB_LAUNCH_HANDOFF.md` | `PRESENT_FILE` | `5c21567509f6fa0c0d07f5ee358d3745f0371c1cad0254926c71c42089ea1f28` | 3520 | `outputs/analysis/PHASE2_Z002_COLAB_LAUNCH_HANDOFF.md` |
+| `outputs/analysis/phase2_z002_colab_launch_handoff.json` | `PRESENT_FILE` | `13b145679d8d27e1bbd4e16dbcf7f57322e565daca424b0ac9f6514cc0107af4` | 5842 | `outputs/analysis/phase2_z002_colab_launch_handoff.json` |
 | `outputs/analysis/PHASE2_PACKAGE_ONLY_ARCHIVE_VERIFICATION.md` | `PRESENT_FILE` | `a2bf3fcf0be6da1cc9555fdc28f6b8731cc03689baee4efb2849d80541d25184` | 1615 | `outputs/analysis/PHASE2_PACKAGE_ONLY_ARCHIVE_VERIFICATION.md` |
 | `outputs/analysis/phase2_package_only_archive_verification.json` | `PRESENT_FILE` | `138d8a419bd9bfcf656a052c600c1772f477eab1040b3b3d8e7315409bfcc7c6` | 9479 | `outputs/analysis/phase2_package_only_archive_verification.json` |
 | `outputs/analysis/PHASE2_LOCAL_FALLBACK_READINESS.md` | `PRESENT_FILE` | `f9598dfc1233232ab6b27842b1565c65eda171bd799ca3df1a04135134831944` | 2223 | `outputs/analysis/PHASE2_LOCAL_FALLBACK_READINESS.md` |
@@ -81,7 +81,7 @@ This is a read-only hash manifest. It did not train, SSH, deploy, or touch the r
 | `tools/report_phase2_z005_post_training_gates.py` | `PRESENT_FILE` | `d92207771621144619c7a47e890358b51e757a4709a911b253a4b38e85739b9b` | 11279 | `tools/report_phase2_z005_post_training_gates.py` |
 | `tools/report_phase2_z002_tracking_margin_post_training_gates.py` | `PRESENT_FILE` | `370059acc1e136edea358e1ed8bb60ff2d09cdcd8da34fce9e3fa47de7fa0726` | 3444 | `tools/report_phase2_z002_tracking_margin_post_training_gates.py` |
 | `tools/report_phase2_z002_launch_audit.py` | `PRESENT_FILE` | `267b442945ee5f79879eed6465f71f92f9f0fb621c0ca5924e5550b5c289321f` | 10519 | `tools/report_phase2_z002_launch_audit.py` |
-| `tools/report_phase2_colab_launch_handoff.py` | `PRESENT_FILE` | `a17c3b43841f09ac8e2116c4a186c89c962a57153c58438995aeafffeed8f203` | 9067 | `tools/report_phase2_colab_launch_handoff.py` |
+| `tools/report_phase2_colab_launch_handoff.py` | `PRESENT_FILE` | `3d75a2a4a89c1b4a6cfcbea02d59023a6bb20990e58b128c7ac450e3972e3215` | 10970 | `tools/report_phase2_colab_launch_handoff.py` |
 | `tools/report_phase2_package_only_archive_verification.py` | `PRESENT_FILE` | `0a2205b238e16dd3851dc4d44e57929caa8a055098d0300c765ad2443051df90` | 9560 | `tools/report_phase2_package_only_archive_verification.py` |
 | `tools/report_phase2_stage_guard.py` | `PRESENT_FILE` | `0e76b59917c90fa885ad0ffdd5db169f20801abb37382fbe25278a746e3690ad` | 17280 | `tools/report_phase2_stage_guard.py` |
 | `tools/run_colab_cli_cuda_workflow.py` | `PRESENT_FILE` | `c5741c91dea43fb514e88074f9b19a7a9e646f0643ff82a2bc495fc2352a2d21` | 127040 | `tools/run_colab_cli_cuda_workflow.py` |

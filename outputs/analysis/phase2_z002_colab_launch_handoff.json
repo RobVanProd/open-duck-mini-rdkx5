@@ -10,6 +10,12 @@
     "stage_guard_workflow_matches": true
   },
   "colab_status": "HOLD_NO_ACTIVE_COLAB_SESSION",
+  "current_source": {
+    "package_rdk_head": "11c9e23114e5e88c2fd9f7dbe05dc6a895790377",
+    "package_source_matches_current_head": false,
+    "rdk_branch": "codex/live-oracle-dagger-phase-student",
+    "rdk_head": "24ccbb1c5c4ece3cb9f7a8259838269c25b8d292"
+  },
   "deploy_performed": false,
   "external_blockers": [
     "HOLD_NO_ACTIVE_COLAB_SESSION"
@@ -39,6 +45,9 @@
   "launch_command_multiline": "python3 \\\n  tools/run_colab_cli_cuda_workflow.py \\\n  --workflow \\\n  phase2-z002-tracking-margin \\\n  --session \\\n  open-duck-l4 \\\n  --candidate-name \\\n  phase2_z002_tracking_margin_cuda \\\n  --candidate-checkpoint-sweep \\\n  --candidate-checkpoint-sweep-commands \\\n  0.0,0.08 \\\n  --candidate-checkpoint-sweep-duration \\\n  1.0 \\\n  --candidate-checkpoint-sweep-jax-platform \\\n  cpu \\\n  --candidate-timeout-s \\\n  10800 \\\n  --run",
   "launch_command_shell": "python3 tools/run_colab_cli_cuda_workflow.py --workflow phase2-z002-tracking-margin --session open-duck-l4 --candidate-name phase2_z002_tracking_margin_cuda --candidate-checkpoint-sweep --candidate-checkpoint-sweep-commands 0.0,0.08 --candidate-checkpoint-sweep-duration 1.0 --candidate-checkpoint-sweep-jax-platform cpu --candidate-timeout-s 10800 --run",
   "launch_status": "HOLD_PHASE2_COLAB_GPU_SESSION_NOT_READY",
+  "notes": [
+    "The package-only tarballs are a verified immutable snapshot, but their RDK source head differs from the current branch head. The normal --run command rebuilds and uploads a fresh tarball from the current worktree."
+  ],
   "package_archives": {
     "playground": {
       "path": "/home/lsd/robots/outputs/colab_cli_uploads/Open_Duck_Playground_cli_20260630T012421Z.tar.gz",
