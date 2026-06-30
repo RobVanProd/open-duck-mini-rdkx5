@@ -213,8 +213,20 @@ def tar_filter(member: tarfile.TarInfo) -> tarfile.TarInfo | None:
             ("outputs", "analysis", "phase2_z002_tracking_margin_next_recipe.json"),
             ("outputs", "analysis", "PHASE2_Z002_TEACHER_CONTINUITY_NEXT_RECIPE.md"),
             ("outputs", "analysis", "phase2_z002_teacher_continuity_next_recipe.json"),
+            ("outputs", "analysis", "PHASE2_Z0025_BOUNDARY_NEXT_RECIPE.md"),
+            ("outputs", "analysis", "phase2_z0025_boundary_next_recipe.json"),
             ("outputs", "analysis", "PHASE2_Z0035_MOTION_FLOOR_NEXT_RECIPE.md"),
             ("outputs", "analysis", "phase2_z0035_motion_floor_next_recipe.json"),
+            (
+                "outputs",
+                "analysis",
+                "PHASE2_STAGEA2_GAIN099_TERRAIN_Z0024_BOUNDARY_DECISION.md",
+            ),
+            (
+                "outputs",
+                "analysis",
+                "phase2_stagea2_gain099_terrain_z0024_boundary_decision.json",
+            ),
             ("outputs", "analysis", "PHASE2_Z005_MOTION_FLOOR_NEXT_RECIPE.md"),
             ("outputs", "analysis", "phase2_z005_motion_floor_next_recipe.json"),
             ("outputs", "analysis", "PHASE2_Z005_MOTION_PRIOR_NEXT_RECIPE.md"),
@@ -254,6 +266,7 @@ def required_rdk_package_paths(workflow: str) -> list[str]:
     phase2_terrain_workflows = {
         "phase2-z002-tracking-margin",
         "phase2-z002-teacher-continuity",
+        "phase2-z0025-boundary",
         "phase2-z0035-motion-floor",
         "phase2-z005-support",
         "phase2-z005-motion-floor",
@@ -264,6 +277,8 @@ def required_rdk_package_paths(workflow: str) -> list[str]:
         recipe_json = "outputs/analysis/phase2_z002_tracking_margin_next_recipe.json"
     elif workflow == "phase2-z002-teacher-continuity":
         recipe_json = "outputs/analysis/phase2_z002_teacher_continuity_next_recipe.json"
+    elif workflow == "phase2-z0025-boundary":
+        recipe_json = "outputs/analysis/phase2_z0025_boundary_next_recipe.json"
     elif workflow == "phase2-z0035-motion-floor":
         recipe_json = "outputs/analysis/phase2_z0035_motion_floor_next_recipe.json"
     elif workflow == "phase2-z005-motion-floor":
@@ -835,6 +850,7 @@ def build_remote_driver(
     run_phase2_b0g = args.workflow == "phase2-b0g"
     run_phase2_z002_tracking_margin = args.workflow == "phase2-z002-tracking-margin"
     run_phase2_z002_teacher_continuity = args.workflow == "phase2-z002-teacher-continuity"
+    run_phase2_z0025_boundary = args.workflow == "phase2-z0025-boundary"
     run_phase2_z0035_motion_floor = args.workflow == "phase2-z0035-motion-floor"
     run_phase2_z005_support = args.workflow == "phase2-z005-support"
     run_phase2_z005_motion_floor = args.workflow == "phase2-z005-motion-floor"
@@ -842,10 +858,15 @@ def build_remote_driver(
     run_phase2_intermediate_terrain_like = (
         run_phase2_z002_tracking_margin
         or run_phase2_z002_teacher_continuity
+        or run_phase2_z0025_boundary
         or run_phase2_z0035_motion_floor
     )
     run_phase2_terrain_like = run_phase2_z005_like or run_phase2_intermediate_terrain_like
-    run_phase2_motion_floor_like = run_phase2_z005_motion_floor or run_phase2_z0035_motion_floor
+    run_phase2_motion_floor_like = (
+        run_phase2_z005_motion_floor
+        or run_phase2_z0035_motion_floor
+        or run_phase2_z0025_boundary
+    )
     run_phase2_cuda_recipe = (
         run_phase2_b0d
         or run_phase2_b0e
@@ -853,6 +874,7 @@ def build_remote_driver(
         or run_phase2_b0g
         or run_phase2_z002_tracking_margin
         or run_phase2_z002_teacher_continuity
+        or run_phase2_z0025_boundary
         or run_phase2_z0035_motion_floor
         or run_phase2_z005_support
         or run_phase2_z005_motion_floor
@@ -878,6 +900,7 @@ def build_remote_driver(
             "phase2-b0g",
             "phase2-z002-tracking-margin",
             "phase2-z002-teacher-continuity",
+            "phase2-z0025-boundary",
             "phase2-z0035-motion-floor",
             "phase2-z005-support",
             "phase2-z005-motion-floor",
@@ -1026,6 +1049,9 @@ def build_remote_driver(
     elif run_phase2_z002_tracking_margin:
         phase2_recipe_id = "z002_tracking_margin"
         phase2_default_candidate_name = "phase2_z002_tracking_margin_cuda"
+    elif run_phase2_z0025_boundary:
+        phase2_recipe_id = "z0025_boundary"
+        phase2_default_candidate_name = "phase2_z0025_boundary_cuda"
     elif run_phase2_z0035_motion_floor:
         phase2_recipe_id = "z0035_motion_floor"
         phase2_default_candidate_name = "phase2_z0035_motion_floor_cuda"
@@ -1265,17 +1291,27 @@ def build_remote_driver(
         else
         "0.0035"
         if run_phase2_z0035_motion_floor
+        else "0.0025"
+        if run_phase2_z0025_boundary
         else ("0.005" if run_phase2_z005_like else "0.002")
     )
     phase2_primary_terrain_z = (
         "0.002"
         if run_phase2_z002_tracking_margin or run_phase2_z002_teacher_continuity
-        else ("0.0035" if run_phase2_z0035_motion_floor else "0.005")
+        else (
+            "0.0025"
+            if run_phase2_z0025_boundary
+            else ("0.0035" if run_phase2_z0035_motion_floor else "0.005")
+        )
     )
     phase2_primary_terrain_label = (
         "z002"
         if run_phase2_z002_tracking_margin or run_phase2_z002_teacher_continuity
-        else ("z0035" if run_phase2_z0035_motion_floor else "z005")
+        else (
+            "z0025"
+            if run_phase2_z0025_boundary
+            else ("z0035" if run_phase2_z0035_motion_floor else "z005")
+        )
     )
     phase2_post_training_reporter = (
         "tools/report_phase2_z002_tracking_margin_post_training_gates.py"
@@ -2392,6 +2428,7 @@ def main() -> int:
             "phase2-b0g",
             "phase2-z002-tracking-margin",
             "phase2-z002-teacher-continuity",
+            "phase2-z0025-boundary",
             "phase2-z0035-motion-floor",
             "phase2-z005-support",
             "phase2-z005-motion-floor",
