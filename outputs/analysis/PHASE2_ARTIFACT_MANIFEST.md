@@ -1,9 +1,9 @@
 # Phase 2 Artifact Manifest
 
 status: `PASS_PHASE2_ARTIFACT_MANIFEST_READY`
-stage: `stage_z005_motion_floor`
+stage: `stage_z002_tracking_margin`
 current_gate_status: `HOLD_PHASE2_STAGE_Z005_SUPPORT`
-next_recipe_status: `PASS_Z005_MOTION_FLOOR_RECIPE_READY`
+next_recipe_status: `PASS_Z002_TRACKING_MARGIN_RECIPE_READY`
 
 This is a read-only hash manifest. It did not train, SSH, deploy, or touch the robot.
 
@@ -20,7 +20,7 @@ This is a read-only hash manifest. It did not train, SSH, deploy, or touch the r
 | `candidate` | `PRESENT_FILE` | `209b85a75cf9cbbcf10df573c1b530921943a72e81082111889c15f63a9a2c7b` | 1772930 | `policy/candidates/phase2_stagea2_seed5_recovery_command_gated_gain099_20260629/candidate.onnx` |
 | `candidate_metadata` | `PRESENT_FILE` | `c1845de2bc1f72e0da8294fecfa84f6f5609fbc5097ef0b5d569f8aaf72dab79` | 18217 | `policy/candidates/phase2_stagea2_seed5_recovery_command_gated_gain099_20260629/candidate_metadata.json` |
 | `corrected_bridge` | `PRESENT_FILE` | `3661543d0745073b561eb4fa2ae8f9616368ee8b72cb397f8b953dada532c8c0` | 18363 | `outputs/analysis/actuator_response_fit_corrected_knee.json` |
-| `restore_checkpoint` | `PRESENT_DIR` | `df4a570a232fd82c2f5eeccb109bf4f5d8b64f95b9a3424aa7f175bc971cbbbc` | 11 | `outputs/phase2_domain_randomization/stage_a2_preserve_narrow_flat_no_push_gpu/smoke_20260628T031553Z_gpu/2026_06_27_232221_491520` |
+| `restore_checkpoint` | `PRESENT_DIR` | `e3ace5aee3b128d3caecd91bead371a5215ea6dc472ab056f942a35486fbe439` | 11 | `outputs/phase2_domain_randomization/stage_c0_terrain_z002_preserve_from_a2_gpu/smoke_20260628T103743Z_gpu/2026_06_28_064431_245760` |
 
 ## Gate Artifacts
 
@@ -48,30 +48,37 @@ This is a read-only hash manifest. It did not train, SSH, deploy, or touch the r
 | `outputs/analysis/phase2_z005_support_next_recipe.json` | `PRESENT_FILE` | `dd5e77a2bd447a287377b802f9ae2a01b97f11cd0020eb54ca9cb9ab02a79465` | 20500 | `outputs/analysis/phase2_z005_support_next_recipe.json` |
 | `outputs/analysis/PHASE2_Z005_MOTION_FLOOR_NEXT_RECIPE.md` | `PRESENT_FILE` | `cdc6d56f490362bc2949180655fe7139bc3b7e33fd5769890cd9ec33e3449586` | 7010 | `outputs/analysis/PHASE2_Z005_MOTION_FLOOR_NEXT_RECIPE.md` |
 | `outputs/analysis/phase2_z005_motion_floor_next_recipe.json` | `PRESENT_FILE` | `4342d4fc817db8b07fe8c8b09bb6da5a2f409bfb594545b63238eb9473c78ac8` | 14001 | `outputs/analysis/phase2_z005_motion_floor_next_recipe.json` |
-| `outputs/analysis/PHASE2_NEXT_RUN_PLAN.md` | `PRESENT_FILE` | `590e7d62bac93c1a0c74e950dfee5a9b0019fadd0bd7381639bace9673ceedca` | 6498 | `outputs/analysis/PHASE2_NEXT_RUN_PLAN.md` |
-| `outputs/analysis/phase2_next_run_plan.json` | `PRESENT_FILE` | `56e781bfa22b3e1a820dc4d5c50f70760195a90d16444d5946df0874c0e5619a` | 13003 | `outputs/analysis/phase2_next_run_plan.json` |
+| `outputs/analysis/PHASE2_Z002_TRACKING_MARGIN_NEXT_RECIPE.md` | `PRESENT_FILE` | `6995050d5c156882df5f65925dfae633948b859460fcca802701b16d81560520` | 3379 | `outputs/analysis/PHASE2_Z002_TRACKING_MARGIN_NEXT_RECIPE.md` |
+| `outputs/analysis/phase2_z002_tracking_margin_next_recipe.json` | `PRESENT_FILE` | `036ba3019af67bea0c8baaa6a09a182682f7ded01bdf7473b2f58e1fc953c4f8` | 11873 | `outputs/analysis/phase2_z002_tracking_margin_next_recipe.json` |
+| `outputs/analysis/PHASE2_Z002_TRACKING_MARGIN_LAUNCH_AUDIT.md` | `PRESENT_FILE` | `79b38f15549114a6ed3a73cbd7e5cba731c730f52dafa7db418a24bd44bf1ad1` | 2578 | `outputs/analysis/PHASE2_Z002_TRACKING_MARGIN_LAUNCH_AUDIT.md` |
+| `outputs/analysis/phase2_z002_tracking_margin_launch_audit.json` | `PRESENT_FILE` | `1fc0f0802e1afbfe61b559fde4d3a61d3f5dcbbc25e0a77e03d4c669d9b950af` | 4219 | `outputs/analysis/phase2_z002_tracking_margin_launch_audit.json` |
+| `outputs/analysis/PHASE2_LOCAL_FALLBACK_READINESS.md` | `PRESENT_FILE` | `f9598dfc1233232ab6b27842b1565c65eda171bd799ca3df1a04135134831944` | 2223 | `outputs/analysis/PHASE2_LOCAL_FALLBACK_READINESS.md` |
+| `outputs/analysis/phase2_local_fallback_readiness.json` | `PRESENT_FILE` | `18833ed42ffc98be69b99cc00e61fc0b42334956e982207c947ac93957422c8f` | 35372 | `outputs/analysis/phase2_local_fallback_readiness.json` |
+| `outputs/analysis/PHASE2_NEXT_RUN_PLAN.md` | `PRESENT_FILE` | `22a81180deb09f15d3e60b3e824492cf58cfb1959a72f31b3d09f86dac2a44d4` | 6608 | `outputs/analysis/PHASE2_NEXT_RUN_PLAN.md` |
+| `outputs/analysis/phase2_next_run_plan.json` | `PRESENT_FILE` | `2e4df436e0285418a49ca67efe817442a04fcd02be27f1f1e745cad4bacac08e` | 14320 | `outputs/analysis/phase2_next_run_plan.json` |
 | `outputs/analysis/PHASE2_STAGE_GUARD.md` | `PRESENT_FILE` | `a1893b8089d0766b19e4e1749bb5c289386f2c70ad1c311622f66668e7f26bc7` | 3849 | `outputs/analysis/PHASE2_STAGE_GUARD.md` |
 | `outputs/analysis/phase2_stage_guard.json` | `PRESENT_FILE` | `7ab31249851ede5777f447f8a2c780678c23d6b720d3a0ba7451ecbda6b27707` | 5415 | `outputs/analysis/phase2_stage_guard.json` |
-| `outputs/analysis/PHASE2_COLAB_PACKAGE_MANIFEST.md` | `PRESENT_FILE` | `bb2f711369c5b02f33d9f06f827917fe11c511eb40433631260cc1e563481882` | 1486 | `outputs/analysis/PHASE2_COLAB_PACKAGE_MANIFEST.md` |
-| `outputs/analysis/phase2_colab_package_manifest.json` | `PRESENT_FILE` | `d4049607a47a2334fded31b4a75abb4832e23c463788b1a58d68242036f59bd0` | 8590 | `outputs/analysis/phase2_colab_package_manifest.json` |
+| `outputs/analysis/PHASE2_COLAB_PACKAGE_MANIFEST.md` | `PRESENT_FILE` | `bcd334bbd9a60e0b66a7570a7a70299a8f1ab6310a53dabb2abd1917425d322a` | 1496 | `outputs/analysis/PHASE2_COLAB_PACKAGE_MANIFEST.md` |
+| `outputs/analysis/phase2_colab_package_manifest.json` | `PRESENT_FILE` | `1dec7ac15b6d03b1eeaba8316af427613012ec068ec1c2a3b3da9866701929b0` | 8610 | `outputs/analysis/phase2_colab_package_manifest.json` |
 | `outputs/analysis/PHASE2_COLAB_PACKAGE_ONLY_MANIFEST.md` | `PRESENT_FILE` | `8c49a986a23bb5f754a9e8ab80601a9c99315b2ed3da1944125aa22b5e629628` | 1075 | `outputs/analysis/PHASE2_COLAB_PACKAGE_ONLY_MANIFEST.md` |
 | `outputs/analysis/phase2_colab_package_only_manifest.json` | `PRESENT_FILE` | `67d7cf6ae98f349cea7c95e9bae1757b109771a24ec79e317ed381319a6e366f` | 1167 | `outputs/analysis/phase2_colab_package_only_manifest.json` |
-| `outputs/analysis/PHASE2_LOCAL_FALLBACK_READINESS.md` | `PRESENT_FILE` | `f31f51c1a7aa7d1cd59d31b3969678c4d2b7be85f0a3f15fce5554e80aad0628` | 2177 | `outputs/analysis/PHASE2_LOCAL_FALLBACK_READINESS.md` |
-| `outputs/analysis/phase2_local_fallback_readiness.json` | `PRESENT_FILE` | `2949d0da1a0a940a0e341a933897d59a1130198d986fb20edfd3566c41b27417` | 35323 | `outputs/analysis/phase2_local_fallback_readiness.json` |
 | `outputs/analysis/PHASE2_Z005_T4_RECOVERY_DECISION.md` | `PRESENT_FILE` | `5147719b525994df3cfa0c19e97d2d2dd21dd790e13664e3c3af714eba734a54` | 3834 | `outputs/analysis/PHASE2_Z005_T4_RECOVERY_DECISION.md` |
 | `outputs/analysis/phase2_z005_t4_recovery_decision.json` | `PRESENT_FILE` | `8b84d1aad44a9dc37b84077140a539ec10c59bcc43c83c03def56d490bb9a9f7` | 3831 | `outputs/analysis/phase2_z005_t4_recovery_decision.json` |
 | `outputs/analysis/phase2_z005_t4_recovered_latest_local_debug_sweep/CANDIDATE_CHECKPOINT_SWEEP.md` | `PRESENT_FILE` | `f4be4ccb739932393877f05133891f566b039c76dc788b28d141fc75b3aac2db` | 2050 | `outputs/analysis/phase2_z005_t4_recovered_latest_local_debug_sweep/CANDIDATE_CHECKPOINT_SWEEP.md` |
 | `outputs/analysis/phase2_z005_t4_recovered_latest_local_debug_sweep/candidate_checkpoint_sweep.json` | `PRESENT_FILE` | `b1d871ac1e43cf70b1ec1e4d8a96057930f2571edd6edb16a8f9447ef82b0359` | 9257 | `outputs/analysis/phase2_z005_t4_recovered_latest_local_debug_sweep/candidate_checkpoint_sweep.json` |
 | `tools/plan_phase2_z005_support_recipe.py` | `PRESENT_FILE` | `30d4191a48f58d337a0fc84cde783f277583af3f052722df42c89d5ee9993dbb` | 17157 | `tools/plan_phase2_z005_support_recipe.py` |
 | `tools/plan_phase2_z005_motion_floor_recipe.py` | `PRESENT_FILE` | `6e1926cd711ce1d265173a36cdfd19794204004e8c42115798a53c2dc531b344` | 14182 | `tools/plan_phase2_z005_motion_floor_recipe.py` |
-| `tools/report_phase2_colab_package_manifest.py` | `PRESENT_FILE` | `35cf503ce24824e83566797aa5b05570f97d4b9b04e71f75a99f7e76775544bd` | 10080 | `tools/report_phase2_colab_package_manifest.py` |
-| `tools/report_phase2_local_fallback_readiness.py` | `PRESENT_FILE` | `9bd2bd3573369f7b1f8849d73083f8644061064e3e010c586630703b9bc288c9` | 13551 | `tools/report_phase2_local_fallback_readiness.py` |
-| `tools/report_phase2_z005_post_training_gates.py` | `PRESENT_FILE` | `759a838bd3463a2cd1e92d925129b43fdb61dc0ed3f7ed33675739d295f42f6d` | 10476 | `tools/report_phase2_z005_post_training_gates.py` |
-| `tools/report_phase2_stage_guard.py` | `PRESENT_FILE` | `57f376903684a439d47a8cc5c2a3f05bdcfe505879bb762edf11044b1b74d91a` | 11817 | `tools/report_phase2_stage_guard.py` |
-| `tools/run_colab_cli_cuda_workflow.py` | `PRESENT_FILE` | `c64588d1c751d38936079bf280ba981fde67a4969de77f060e5a8a9d0a180053` | 120082 | `tools/run_colab_cli_cuda_workflow.py` |
+| `tools/plan_phase2_z002_tracking_margin_recipe.py` | `PRESENT_FILE` | `771fb9b5a2cd13931da1deb6c472c631f6fa0b3675955df4ac80b5a4b010759a` | 9338 | `tools/plan_phase2_z002_tracking_margin_recipe.py` |
+| `tools/report_phase2_colab_package_manifest.py` | `PRESENT_FILE` | `a4e5e03b487c73aa6db3e71152f28db6c88ebf34eebd0b65ace08164005dd759` | 10079 | `tools/report_phase2_colab_package_manifest.py` |
+| `tools/report_phase2_local_fallback_readiness.py` | `PRESENT_FILE` | `f22563e7f8b976dc24133a5b440246d45c1d515c8188db4a0a94cb6352ef6cc2` | 15048 | `tools/report_phase2_local_fallback_readiness.py` |
+| `tools/report_phase2_z005_post_training_gates.py` | `PRESENT_FILE` | `d92207771621144619c7a47e890358b51e757a4709a911b253a4b38e85739b9b` | 11279 | `tools/report_phase2_z005_post_training_gates.py` |
+| `tools/report_phase2_z002_tracking_margin_post_training_gates.py` | `PRESENT_FILE` | `370059acc1e136edea358e1ed8bb60ff2d09cdcd8da34fce9e3fa47de7fa0726` | 3444 | `tools/report_phase2_z002_tracking_margin_post_training_gates.py` |
+| `tools/report_phase2_z002_launch_audit.py` | `PRESENT_FILE` | `27c6eeaeab6483a928ea049f747ac937d0d3b823ac0a8470b20c312e2caae24a` | 8210 | `tools/report_phase2_z002_launch_audit.py` |
+| `tools/report_phase2_stage_guard.py` | `PRESENT_FILE` | `f4711e65d6519206d07ef8be2b9aae7905abef5d37b2de8ea0c0633745c09bed` | 13343 | `tools/report_phase2_stage_guard.py` |
+| `tools/run_colab_cli_cuda_workflow.py` | `PRESENT_FILE` | `f38b35295e7fc7b2b2aeb93840d8f23263cb2b42427ce3d1dfafb6c6a8157ef5` | 125275 | `tools/run_colab_cli_cuda_workflow.py` |
 
 ## Promotion Gate
 
-- decision_tool: `tools/report_phase2_z005_post_training_gates.py`
-- required_post_training_status: `PASS_PHASE2_Z005_POST_TRAINING_GATES`
+- decision_tool: `tools/report_phase2_z002_tracking_margin_post_training_gates.py`
+- required_post_training_status: `PASS_PHASE2_Z002_TRACKING_MARGIN_POST_TRAINING_GATES`
 - robot_validation_allowed: `False`

@@ -28,8 +28,8 @@ DEFAULT_CANDIDATE_METADATA = (
 DEFAULT_BRIDGE = ROOT / "outputs/analysis/actuator_response_fit_corrected_knee.json"
 DEFAULT_RESTORE_CHECKPOINT = (
     ROOT
-    / "outputs/phase2_domain_randomization/stage_a2_preserve_narrow_flat_no_push_gpu"
-    / "smoke_20260628T031553Z_gpu/2026_06_27_232221_491520"
+    / "outputs/phase2_domain_randomization/stage_c0_terrain_z002_preserve_from_a2_gpu"
+    / "smoke_20260628T103743Z_gpu/2026_06_28_064431_245760"
 )
 
 
@@ -45,6 +45,12 @@ REVIEW_ARTIFACTS = [
     "outputs/analysis/phase2_z005_support_next_recipe.json",
     "outputs/analysis/PHASE2_Z005_MOTION_FLOOR_NEXT_RECIPE.md",
     "outputs/analysis/phase2_z005_motion_floor_next_recipe.json",
+    "outputs/analysis/PHASE2_Z002_TRACKING_MARGIN_NEXT_RECIPE.md",
+    "outputs/analysis/phase2_z002_tracking_margin_next_recipe.json",
+    "outputs/analysis/PHASE2_Z002_TRACKING_MARGIN_LAUNCH_AUDIT.md",
+    "outputs/analysis/phase2_z002_tracking_margin_launch_audit.json",
+    "outputs/analysis/PHASE2_LOCAL_FALLBACK_READINESS.md",
+    "outputs/analysis/phase2_local_fallback_readiness.json",
     "outputs/analysis/PHASE2_NEXT_RUN_PLAN.md",
     "outputs/analysis/phase2_next_run_plan.json",
     "outputs/analysis/PHASE2_STAGE_GUARD.md",
@@ -53,17 +59,18 @@ REVIEW_ARTIFACTS = [
     "outputs/analysis/phase2_colab_package_manifest.json",
     "outputs/analysis/PHASE2_COLAB_PACKAGE_ONLY_MANIFEST.md",
     "outputs/analysis/phase2_colab_package_only_manifest.json",
-    "outputs/analysis/PHASE2_LOCAL_FALLBACK_READINESS.md",
-    "outputs/analysis/phase2_local_fallback_readiness.json",
     "outputs/analysis/PHASE2_Z005_T4_RECOVERY_DECISION.md",
     "outputs/analysis/phase2_z005_t4_recovery_decision.json",
     "outputs/analysis/phase2_z005_t4_recovered_latest_local_debug_sweep/CANDIDATE_CHECKPOINT_SWEEP.md",
     "outputs/analysis/phase2_z005_t4_recovered_latest_local_debug_sweep/candidate_checkpoint_sweep.json",
     "tools/plan_phase2_z005_support_recipe.py",
     "tools/plan_phase2_z005_motion_floor_recipe.py",
+    "tools/plan_phase2_z002_tracking_margin_recipe.py",
     "tools/report_phase2_colab_package_manifest.py",
     "tools/report_phase2_local_fallback_readiness.py",
     "tools/report_phase2_z005_post_training_gates.py",
+    "tools/report_phase2_z002_tracking_margin_post_training_gates.py",
+    "tools/report_phase2_z002_launch_audit.py",
     "tools/report_phase2_stage_guard.py",
     "tools/run_colab_cli_cuda_workflow.py",
 ]
@@ -170,10 +177,10 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
     bridge = Path(args.bridge_json)
     restore_checkpoint = Path(args.restore_checkpoint)
     ledger = load_json_optional(ROOT / "outputs/analysis/phase2_curriculum_gate_ledger.json")
-    recipe = load_json_optional(ROOT / "outputs/analysis/phase2_z005_motion_floor_next_recipe.json")
+    recipe = load_json_optional(ROOT / "outputs/analysis/phase2_z002_tracking_margin_next_recipe.json")
     return {
         "status": "PASS_PHASE2_ARTIFACT_MANIFEST_READY",
-        "stage": "stage_z005_motion_floor",
+        "stage": "stage_z002_tracking_margin",
         "current_gate_status": ledger.get("status"),
         "next_recipe_status": recipe.get("status"),
         "git": git_state(),
@@ -186,8 +193,8 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
         "gate_artifacts": {name: artifact(ROOT / name) for name in GATE_ARTIFACTS},
         "review_artifacts": {name: artifact(ROOT / name) for name in REVIEW_ARTIFACTS},
         "promotion_gate": {
-            "decision_tool": "tools/report_phase2_z005_post_training_gates.py",
-            "required_post_training_status": "PASS_PHASE2_Z005_POST_TRAINING_GATES",
+            "decision_tool": "tools/report_phase2_z002_tracking_margin_post_training_gates.py",
+            "required_post_training_status": "PASS_PHASE2_Z002_TRACKING_MARGIN_POST_TRAINING_GATES",
             "robot_validation_allowed": False,
         },
         "robot_touched": False,

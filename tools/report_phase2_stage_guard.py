@@ -3,7 +3,7 @@
 
 This is a read-only guardrail artifact. It does not train, SSH, deploy, touch
 the robot, or modify Playground. It combines the current curriculum ledger,
-next-run plan, z=0.005 support recipe, and artifact manifest into one explicit
+next-run plan, active Phase 2 recipe, and artifact manifest into one explicit
 "allowed vs forbidden" decision so the campaign cannot silently advance past a
 held gate.
 """
@@ -21,7 +21,7 @@ from run_colab_cli_cuda_workflow import required_rdk_package_paths, would_packag
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_LEDGER = ROOT / "outputs/analysis/phase2_curriculum_gate_ledger.json"
 DEFAULT_NEXT_PLAN = ROOT / "outputs/analysis/phase2_next_run_plan.json"
-DEFAULT_RECIPE = ROOT / "outputs/analysis/phase2_z005_motion_floor_next_recipe.json"
+DEFAULT_RECIPE = ROOT / "outputs/analysis/phase2_z002_tracking_margin_next_recipe.json"
 DEFAULT_MANIFEST = ROOT / "outputs/analysis/phase2_artifact_manifest.json"
 DEFAULT_PACKAGE_MANIFEST = ROOT / "outputs/analysis/phase2_colab_package_manifest.json"
 DEFAULT_OUTPUT_MD = ROOT / "outputs/analysis/PHASE2_STAGE_GUARD.md"
@@ -102,8 +102,19 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
     git_status = nested(next_plan, "readiness", "git", "status")
     colab_active = bool(nested(next_plan, "readiness", "colab", "active", default=False))
     preferred_command = nested(next_plan, "commands", "colab", "shell") or nested(recipe, "commands", "colab", "shell")
-    preferred_workflow = nested(next_plan, "commands", "colab", "workflow") or "phase2-z005-motion-floor"
+    preferred_workflow = nested(next_plan, "commands", "colab", "workflow") or recipe.get("key_recipe_settings", {}).get("workflow") or "phase2-z002-tracking-margin"
     package = package_preflight(preferred_workflow)
+    z002_tracking_margin = preferred_workflow == "phase2-z002-tracking-margin"
+    post_training_tool = (
+        "report_phase2_z002_tracking_margin_post_training_gates.py"
+        if z002_tracking_margin
+        else "report_phase2_z005_post_training_gates.py"
+    )
+    post_training_status = (
+        "PASS_PHASE2_Z002_TRACKING_MARGIN_POST_TRAINING_GATES"
+        if z002_tracking_margin
+        else "PASS_PHASE2_Z005_POST_TRAINING_GATES"
+    )
 
     gates = ledger.get("gates") if isinstance(ledger.get("gates"), dict) else {}
     held_gates = [
@@ -124,7 +135,7 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
         f"Run the {preferred_workflow} Colab workflow with --package-only to build and hash local upload archives without contacting Colab.",
         "Prepare or reconnect a Colab GPU session named open-duck-l4; A100/L4 is preferred, T4 is acceptable but slower.",
         f"Run the {preferred_workflow} recipe only after the Colab session is active and still using the corrected bridge.",
-        "Run report_phase2_z005_post_training_gates.py on post-training seed-gate output.",
+        f"Run {post_training_tool} on post-training seed-gate output.",
     ]
     if colab_active:
         allowed_actions.append(f"Launch the preferred {preferred_workflow} Colab workflow.")
@@ -139,18 +150,27 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
         "No direct BEST_WALK deployment.",
         "No training from scratch; continue only from the Phase 2 warm-start checkpoint.",
         "No old/asymmetric actuator bridge.",
-        "No z=0.005 push stage until both z=0.005 no-push gates pass.",
-        "No stronger terrain until z=0.005 support passes and z=0.002 regression stays clear.",
-        "No promotion without PASS_PHASE2_Z005_POST_TRAINING_GATES.",
+        "No z=0.005 push stage until the current z=0.002 tracking-margin parent-selection gate passes.",
+        "No stronger terrain until z=0.002 tracking margin is recovered and z=0.002 regression stays clear.",
+        f"No promotion without {post_training_status}.",
     ]
 
-    advance_requirements = [
-        "z=0.005 x=0.08 no-push: 8/8 duration complete, zero falls, no velocity excess, tracking p95 <= 0.20, track ratio >= 0.40.",
-        "z=0.005 x=0.0 no-push: 8/8 duration complete, zero falls, no velocity excess, |mean vx| <= 0.005.",
-        "z=0.002 x=0.08/x=0.0 no-push regression gates remain passing.",
-        "z=0.002 x=0.08/x=0.0 gentle-push regression gates remain passing.",
-        "Post-training decision artifact reports PASS_PHASE2_Z005_POST_TRAINING_GATES.",
-    ]
+    if z002_tracking_margin:
+        advance_requirements = [
+            "z=0.002 x=0.08 no-push: 8/8 duration complete, zero falls, no velocity excess, tracking p95 <= 0.20, track ratio >= 0.25.",
+            "z=0.002 x=0.0 no-push: 8/8 duration complete, zero falls, no velocity excess, |mean vx| <= 0.005.",
+            "z=0.002 x=0.08/x=0.0 no-push regression gates remain passing.",
+            "z=0.002 x=0.08/x=0.0 gentle-push regression gates remain passing.",
+            "Post-training decision artifact reports PASS_PHASE2_Z002_TRACKING_MARGIN_POST_TRAINING_GATES.",
+        ]
+    else:
+        advance_requirements = [
+            "z=0.005 x=0.08 no-push: 8/8 duration complete, zero falls, no velocity excess, tracking p95 <= 0.20, track ratio >= 0.40.",
+            "z=0.005 x=0.0 no-push: 8/8 duration complete, zero falls, no velocity excess, |mean vx| <= 0.005.",
+            "z=0.002 x=0.08/x=0.0 no-push regression gates remain passing.",
+            "z=0.002 x=0.08/x=0.0 gentle-push regression gates remain passing.",
+            "Post-training decision artifact reports PASS_PHASE2_Z005_POST_TRAINING_GATES.",
+        ]
 
     if launch_status and launch_status != "PASS_PHASE2_NEXT_RUN_READY":
         status = launch_status
@@ -177,6 +197,9 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
         "restore_checkpoint": manifest.get("core_artifacts", {}).get("restore_checkpoint", {}),
         "package_preflight": package,
         "package_manifest_status": package_manifest.get("status"),
+        "preferred_workflow": preferred_workflow,
+        "post_training_tool": post_training_tool,
+        "post_training_status": post_training_status,
         "input_artifacts": {
             "ledger": rel(ledger_path),
             "next_plan": rel(next_plan_path),
@@ -204,6 +227,7 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         f"current_gate_status: `{payload.get('current_gate_status')}`",
         f"next_recipe_status: `{payload.get('next_recipe_status')}`",
         f"launch_status: `{payload.get('launch_status')}`",
+        f"preferred_workflow: `{payload.get('preferred_workflow')}`",
         "",
         "This is a read-only guard. It did not train, SSH, deploy, or touch the robot.",
         "",
@@ -214,6 +238,8 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         f"- git_status: `{payload.get('git_status')}`",
         f"- package_preflight: `{payload.get('package_preflight', {}).get('status')}`",
         f"- package_manifest_status: `{payload.get('package_manifest_status')}`",
+        f"- post_training_tool: `{payload.get('post_training_tool')}`",
+        f"- post_training_status: `{payload.get('post_training_status')}`",
         f"- held_gates: `{', '.join(payload.get('held_gates') or []) or 'none'}`",
         f"- missing_gates: `{', '.join(payload.get('missing_gates') or []) or 'none'}`",
         "",
