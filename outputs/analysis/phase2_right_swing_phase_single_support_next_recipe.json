@@ -1,0 +1,51 @@
+{
+  "status": "PRE_REGISTERED_NOT_STARTED",
+  "workflow": "phase2-right-swing-phase-single-support",
+  "purpose": "Test whether the Phase 2 plateau is caused by a high double-support contact pattern rather than missing local swing lift.",
+  "scope": {
+    "offline_only": true,
+    "robot": false,
+    "ssh": false,
+    "deploy": false,
+    "grounded_replay": false,
+    "runtime_behavior_change": false
+  },
+  "canonical_bridge": {
+    "path": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+    "sha256": "3661543d0745073b561eb4fa2ae8f9616368ee8b72cb397f8b953dada532c8c0"
+  },
+  "training_additions": {
+    "forward_phase_single_support_scale": -0.004,
+    "forward_phase_single_support_swing_contact_weight": 1.0,
+    "forward_phase_single_support_stance_no_contact_weight": 2.0
+  },
+  "retained_terms": {
+    "forward_swing_target_rate_limit_scale": -0.0025,
+    "forward_swing_target_rate_limit_joint_indices": "11,12,13",
+    "forward_swing_target_rate_limit_values": "2.25,2.75,2.00",
+    "forward_phase_swing_lift_scale": -0.0006,
+    "forward_phase_swing_lift_target_m": 0.012,
+    "forward_swing_advance_scale": -0.001,
+    "forward_swing_advance_target_m": 0.004,
+    "forward_swing_clearance_scale": -0.00025,
+    "forward_swing_clearance_target_m": 0.016
+  },
+  "gate": {
+    "task": "rough_terrain_backlash",
+    "command_x": 0.08,
+    "terrain_hfield_z_scale": 0.0024,
+    "bridge_mode": "fitted",
+    "seeds": "0-7",
+    "duration_s": 15,
+    "terrain_swing_subchecks": true
+  },
+  "promotion_requires": {
+    "pass_count": 8,
+    "falls": 0,
+    "duration_complete": 8,
+    "max_target_velocity_excess_all_seeds": 0,
+    "track_ratio_materially_above_plateau": 0.25,
+    "double_support_materially_below_plateau_pct": 85
+  },
+  "falsifier": "If the candidate remains near the same 0.25 track-ratio / 85% double-support plateau, stop scalar reward shaping and pivot to live-oracle or phase-aware student."
+}

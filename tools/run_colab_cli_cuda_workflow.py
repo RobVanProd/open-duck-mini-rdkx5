@@ -277,6 +277,16 @@ def tar_filter(member: tarfile.TarInfo) -> tarfile.TarInfo | None:
                 "analysis",
                 "phase2_right_swing_phase_advance_next_recipe.json",
             ),
+            (
+                "outputs",
+                "analysis",
+                "PHASE2_RIGHT_SWING_PHASE_SINGLE_SUPPORT_NEXT_RECIPE.md",
+            ),
+            (
+                "outputs",
+                "analysis",
+                "phase2_right_swing_phase_single_support_next_recipe.json",
+            ),
             ("outputs", "analysis", "PHASE2_Z005_MOTION_FLOOR_NEXT_RECIPE.md"),
             ("outputs", "analysis", "phase2_z005_motion_floor_next_recipe.json"),
             ("outputs", "analysis", "PHASE2_Z005_MOTION_PRIOR_NEXT_RECIPE.md"),
@@ -321,6 +331,7 @@ def required_rdk_package_paths(workflow: str) -> list[str]:
         "phase2-right-swing-structural",
         "phase2-right-swing-phase-lift",
         "phase2-right-swing-phase-advance",
+        "phase2-right-swing-phase-single-support",
         "phase2-z005-support",
         "phase2-z005-motion-floor",
     }
@@ -340,6 +351,8 @@ def required_rdk_package_paths(workflow: str) -> list[str]:
         recipe_json = "outputs/analysis/phase2_right_swing_phase_lift_next_recipe.json"
     elif workflow == "phase2-right-swing-phase-advance":
         recipe_json = "outputs/analysis/phase2_right_swing_phase_advance_next_recipe.json"
+    elif workflow == "phase2-right-swing-phase-single-support":
+        recipe_json = "outputs/analysis/phase2_right_swing_phase_single_support_next_recipe.json"
     elif workflow == "phase2-z005-motion-floor":
         recipe_json = "outputs/analysis/phase2_z005_motion_floor_next_recipe.json"
     else:
@@ -914,6 +927,9 @@ def build_remote_driver(
     run_phase2_right_swing_structural = args.workflow == "phase2-right-swing-structural"
     run_phase2_right_swing_phase_lift = args.workflow == "phase2-right-swing-phase-lift"
     run_phase2_right_swing_phase_advance = args.workflow == "phase2-right-swing-phase-advance"
+    run_phase2_right_swing_phase_single_support = (
+        args.workflow == "phase2-right-swing-phase-single-support"
+    )
     run_phase2_z005_support = args.workflow == "phase2-z005-support"
     run_phase2_z005_motion_floor = args.workflow == "phase2-z005-motion-floor"
     run_phase2_z005_like = run_phase2_z005_support or run_phase2_z005_motion_floor
@@ -925,6 +941,7 @@ def build_remote_driver(
         or run_phase2_right_swing_structural
         or run_phase2_right_swing_phase_lift
         or run_phase2_right_swing_phase_advance
+        or run_phase2_right_swing_phase_single_support
     )
     run_phase2_terrain_like = run_phase2_z005_like or run_phase2_intermediate_terrain_like
     run_phase2_motion_floor_like = (
@@ -934,6 +951,7 @@ def build_remote_driver(
         or run_phase2_right_swing_structural
         or run_phase2_right_swing_phase_lift
         or run_phase2_right_swing_phase_advance
+        or run_phase2_right_swing_phase_single_support
     )
     run_phase2_cuda_recipe = (
         run_phase2_b0d
@@ -947,6 +965,7 @@ def build_remote_driver(
         or run_phase2_right_swing_structural
         or run_phase2_right_swing_phase_lift
         or run_phase2_right_swing_phase_advance
+        or run_phase2_right_swing_phase_single_support
         or run_phase2_z005_support
         or run_phase2_z005_motion_floor
     )
@@ -976,6 +995,7 @@ def build_remote_driver(
             "phase2-right-swing-structural",
             "phase2-right-swing-phase-lift",
             "phase2-right-swing-phase-advance",
+            "phase2-right-swing-phase-single-support",
             "phase2-z005-support",
             "phase2-z005-motion-floor",
             "all",
@@ -1138,6 +1158,9 @@ def build_remote_driver(
     elif run_phase2_right_swing_phase_advance:
         phase2_recipe_id = "right_swing_phase_advance"
         phase2_default_candidate_name = "phase2_right_swing_phase_advance_cuda"
+    elif run_phase2_right_swing_phase_single_support:
+        phase2_recipe_id = "right_swing_phase_single_support"
+        phase2_default_candidate_name = "phase2_right_swing_phase_single_support_cuda"
     elif run_phase2_z005_motion_floor:
         phase2_recipe_id = "z005_motion_floor"
         phase2_default_candidate_name = "phase2_z005_motion_floor_cuda"
@@ -1371,6 +1394,27 @@ def build_remote_driver(
             '"--forward-swing-clearance-target-m", "0.016",'
             '"--forward-swing-clearance-huber-delta", "0.003",'
         )
+    elif run_phase2_right_swing_phase_single_support:
+        phase2_support_stability_arg = (
+            '"--forward-wrong-direction-scale", "-6",'
+            '"--forward-wrong-direction-allowed-reverse-ratio", "0.01",'
+            '"--forward-swing-target-rate-limit-scale", "-0.0025",'
+            '"--forward-swing-target-rate-limit-joint-indices", "11,12,13",'
+            '"--forward-swing-target-rate-limit-values", "2.25,2.75,2.00",'
+            '"--forward-swing-target-rate-limit-huber-delta", "0.05",'
+            '"--forward-phase-swing-lift-scale", "-0.0006",'
+            '"--forward-phase-swing-lift-target-m", "0.012",'
+            '"--forward-phase-swing-lift-huber-delta", "0.003",'
+            '"--forward-phase-single-support-scale", "-0.004",'
+            '"--forward-phase-single-support-swing-contact-weight", "1.0",'
+            '"--forward-phase-single-support-stance-no-contact-weight", "2.0",'
+            '"--forward-swing-advance-scale", "-0.001",'
+            '"--forward-swing-advance-target-m", "0.004",'
+            '"--forward-swing-advance-huber-delta", "0.002",'
+            '"--forward-swing-clearance-scale", "-0.00025",'
+            '"--forward-swing-clearance-target-m", "0.016",'
+            '"--forward-swing-clearance-huber-delta", "0.003",'
+        )
     elif run_phase2_z002_tracking_margin or run_phase2_z002_teacher_continuity or run_phase2_motion_floor_like:
         phase2_support_stability_arg = (
             '"--forward-wrong-direction-scale", "-6",'
@@ -1430,6 +1474,7 @@ def build_remote_driver(
         if run_phase2_right_swing_structural
         or run_phase2_right_swing_phase_lift
         or run_phase2_right_swing_phase_advance
+        or run_phase2_right_swing_phase_single_support
         else "0.0025"
         if run_phase2_z0025_boundary
         else ("0.005" if run_phase2_z005_like else "0.002")
@@ -1449,6 +1494,7 @@ def build_remote_driver(
                         run_phase2_right_swing_structural
                         or run_phase2_right_swing_phase_lift
                         or run_phase2_right_swing_phase_advance
+                        or run_phase2_right_swing_phase_single_support
                     )
                     else "0.005"
                 )
@@ -1470,6 +1516,7 @@ def build_remote_driver(
                         run_phase2_right_swing_structural
                         or run_phase2_right_swing_phase_lift
                         or run_phase2_right_swing_phase_advance
+                        or run_phase2_right_swing_phase_single_support
                     )
                     else "z005"
                 )
@@ -2614,6 +2661,7 @@ def main() -> int:
             "phase2-right-swing-structural",
             "phase2-right-swing-phase-lift",
             "phase2-right-swing-phase-advance",
+            "phase2-right-swing-phase-single-support",
             "phase2-z005-support",
             "phase2-z005-motion-floor",
             "staged-curriculum",

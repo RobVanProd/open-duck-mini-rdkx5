@@ -218,6 +218,15 @@ def build_command(args: argparse.Namespace, output_dir: Path) -> list[str]:
         "--forward_phase_swing_lift_target_m": (
             args.forward_phase_swing_lift_target_m
         ),
+        "--forward_phase_single_support_scale": (
+            args.forward_phase_single_support_scale
+        ),
+        "--forward_phase_single_support_swing_contact_weight": (
+            args.forward_phase_single_support_swing_contact_weight
+        ),
+        "--forward_phase_single_support_stance_no_contact_weight": (
+            args.forward_phase_single_support_stance_no_contact_weight
+        ),
         "--forward_swing_balance_scale": args.forward_swing_balance_scale,
         "--forward_swing_balance_grace_steps": (
             args.forward_swing_balance_grace_steps
@@ -811,6 +820,17 @@ def main() -> int:
     parser.add_argument("--forward-swing-clearance-target-m", type=float, default=None)
     parser.add_argument("--forward-phase-swing-lift-scale", type=float, default=None)
     parser.add_argument("--forward-phase-swing-lift-target-m", type=float, default=None)
+    parser.add_argument("--forward-phase-single-support-scale", type=float, default=None)
+    parser.add_argument(
+        "--forward-phase-single-support-swing-contact-weight",
+        type=float,
+        default=None,
+    )
+    parser.add_argument(
+        "--forward-phase-single-support-stance-no-contact-weight",
+        type=float,
+        default=None,
+    )
     parser.add_argument("--forward-swing-balance-scale", type=float, default=None)
     parser.add_argument("--forward-swing-balance-grace-steps", type=int, default=None)
     parser.add_argument("--forward-swing-advance-scale", type=float, default=None)
@@ -1110,6 +1130,15 @@ def main() -> int:
             "forward_phase_swing_lift_scale": args.forward_phase_swing_lift_scale,
             "forward_phase_swing_lift_target_m": (
                 args.forward_phase_swing_lift_target_m
+            ),
+            "forward_phase_single_support_scale": (
+                args.forward_phase_single_support_scale
+            ),
+            "forward_phase_single_support_swing_contact_weight": (
+                args.forward_phase_single_support_swing_contact_weight
+            ),
+            "forward_phase_single_support_stance_no_contact_weight": (
+                args.forward_phase_single_support_stance_no_contact_weight
             ),
             "forward_swing_balance_scale": args.forward_swing_balance_scale,
             "forward_swing_balance_grace_steps": (
