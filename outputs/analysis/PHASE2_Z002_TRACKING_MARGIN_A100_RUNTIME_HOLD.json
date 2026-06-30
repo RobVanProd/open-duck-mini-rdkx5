@@ -1,0 +1,31 @@
+{
+  "status": "HOLD_A100_INTERRUPTED_BEFORE_EXPORT",
+  "generated_at": "2026-06-30T10:10:00Z",
+  "scope": {
+    "robot_tests": false,
+    "ssh": false,
+    "deploy": false,
+    "grounded_replay": false,
+    "runtime_behavior_changed": false
+  },
+  "workflow": "phase2-z002-tracking-margin",
+  "attempts": [
+    {
+      "label": "full_shape",
+      "session": "open-duck-a100-phase2b",
+      "ppo_num_envs": 64,
+      "ppo_batch_size": 512,
+      "result": "stopped_after_step0_no_checkpoint_no_exit_file"
+    },
+    {
+      "label": "reduced_shape",
+      "session": "open-duck-a100-phase2b",
+      "ppo_num_envs": 32,
+      "ppo_batch_size": 256,
+      "result": "stopped_after_step0_no_checkpoint_no_exit_file"
+    }
+  ],
+  "policy_gate_result": null,
+  "interpretation": "Runtime/execution hold, not a policy hold. No ONNX checkpoint was exported.",
+  "next_direction": "Debug the z=0.002 C0 restore/export/training path before rerunning this exact A100 recipe; consider export_min_step=0, alternate C2 parent, or improved remote signal capture."
+}
