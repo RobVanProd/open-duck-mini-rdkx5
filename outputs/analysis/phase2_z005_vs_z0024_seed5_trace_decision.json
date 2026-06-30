@@ -1,0 +1,74 @@
+{
+  "status": "HOLD_Z005_TERRAIN_SUPPORT_COLLAPSE",
+  "scope": "offline_analysis_only",
+  "robot_tests": false,
+  "ssh": false,
+  "deploy": false,
+  "grounded_replay": false,
+  "inputs": {
+    "pass_trace": "outputs/analysis/phase2_swing_clearance_trace_x008_z0024/phase2_stagea2_seed5_recovery_command_gated_gain099_20260629/seed_005/trace.jsonl",
+    "fail_trace": "outputs/analysis/phase2_stagea2_gain099_z005_seed5_trace_cpu/gain099/seed_005/trace.jsonl",
+    "candidate": "policy/candidates/phase2_stagea2_seed5_recovery_command_gated_gain099_20260629/candidate.onnx",
+    "command_x": 0.08
+  },
+  "summary": {
+    "z0024_seed5_pass": {
+      "samples": 750,
+      "duration_s": 15.0,
+      "local_vx_mean_m_s": 0.0303,
+      "body_pitch_abs_p95_rad": 0.1332,
+      "base_height_min_m": 0.1464,
+      "double_support_pct": 77.07,
+      "termination": "duration"
+    },
+    "z005_seed5_fail": {
+      "samples": 56,
+      "duration_s": 1.12,
+      "local_vx_mean_m_s": -0.2654,
+      "body_pitch_abs_p95_rad": 1.2936,
+      "base_height_min_m": 0.0677,
+      "double_support_pct": 91.07,
+      "termination": "done"
+    }
+  },
+  "first_divergence": {
+    "local_vx": {
+      "tick": 24,
+      "time_s": 0.48,
+      "delta": -0.0573
+    },
+    "body_pitch": {
+      "tick": 24,
+      "time_s": 0.48,
+      "delta": -0.055
+    },
+    "base_height": {
+      "tick": 51,
+      "time_s": 1.02,
+      "delta": -0.0231
+    }
+  },
+  "corrected_bridge_velocity_limits_rad_s": {
+    "left_hip_pitch": 2.5,
+    "left_knee": 3.25,
+    "left_ankle": 2.75,
+    "right_hip_pitch": 2.25,
+    "right_knee": 2.75,
+    "right_ankle": 2.0
+  },
+  "z005_sent_vel_p95_rad_s": {
+    "left_hip_pitch": 1.4333,
+    "left_knee": 1.925,
+    "left_ankle": 1.047,
+    "right_hip_pitch": 1.1776,
+    "right_knee": 1.8148,
+    "right_ankle": 1.5978
+  },
+  "interpretation": [
+    "The z=0.005 failure diverges first in local forward velocity and body pitch, then collapses in base height.",
+    "The z=0.005 failing trace stays within the corrected per-joint pitch-chain velocity limits.",
+    "The z=0.0024 passing trace uses larger target velocities and survives, so target-rate clipping is not the primary limiter.",
+    "The failure is best classified as terrain/support robustness loss, not actuator-envelope excess."
+  ],
+  "decision": "Move to corrected-source or phase-aware/live-oracle terrain-support work under the canonical corrected evaluator. Do not launch another scalar support reward run and do not promote this candidate for grounded terrain testing."
+}
