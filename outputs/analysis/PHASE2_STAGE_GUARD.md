@@ -16,6 +16,8 @@ This is a read-only guard. It did not train, SSH, deploy, or touch the robot.
 - git_status: `HOLD_GIT_REMOTE_AUTH_UNAVAILABLE`
 - package_preflight: `PASS_PACKAGE_PREFLIGHT`
 - package_manifest_status: `PASS_PHASE2_COLAB_PACKAGE_MANIFEST_READY`
+- package_manifest_workflow: `phase2-z002-tracking-margin`
+- package_manifest_matches_workflow: `True`
 - local_backend_status: `HOLD_LOCAL_ROCM_GPU_CPU_CORRECTNESS_ONLY`
 - local_rocm_gate: `HOLD_PLAYGROUND_GPU_STEP`
 - local_rocm_evidence: `outputs/analysis/rocm_mjx_isolation_post_bios/rocm_mjx_runtime_isolation.json`

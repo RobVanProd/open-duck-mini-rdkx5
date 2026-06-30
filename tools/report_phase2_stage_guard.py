@@ -138,6 +138,9 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
     preferred_command = nested(next_plan, "commands", "colab", "shell") or nested(recipe, "commands", "colab", "shell")
     preferred_workflow = nested(next_plan, "commands", "colab", "workflow") or recipe.get("key_recipe_settings", {}).get("workflow") or "phase2-z002-tracking-margin"
     package = package_preflight(preferred_workflow)
+    package_manifest_workflow = package_manifest.get("workflow")
+    package_manifest_status = package_manifest.get("status")
+    package_manifest_matches_workflow = package_manifest_workflow == preferred_workflow
     z002_tracking_margin = preferred_workflow == "phase2-z002-tracking-margin"
     post_training_tool = (
         "report_phase2_z002_tracking_margin_post_training_gates.py"
@@ -220,6 +223,8 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
         status = launch_status
     elif package["status"] != "PASS_PACKAGE_PREFLIGHT":
         status = package["status"]
+    elif not package_manifest_matches_workflow:
+        status = "HOLD_PACKAGE_MANIFEST_WORKFLOW_MISMATCH"
     elif current_gate_status and str(current_gate_status).startswith("HOLD"):
         status = "PASS_PHASE2_STAGE_GUARD_READY_TO_RUN_Z005_SUPPORT"
     else:
@@ -240,7 +245,13 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
         "corrected_bridge": manifest.get("core_artifacts", {}).get("corrected_bridge", {}),
         "restore_checkpoint": manifest.get("core_artifacts", {}).get("restore_checkpoint", {}),
         "package_preflight": package,
-        "package_manifest_status": package_manifest.get("status"),
+        "package_manifest_status": (
+            package_manifest_status
+            if package_manifest_matches_workflow
+            else "HOLD_PACKAGE_MANIFEST_WORKFLOW_MISMATCH"
+        ),
+        "package_manifest_workflow": package_manifest_workflow,
+        "package_manifest_matches_workflow": package_manifest_matches_workflow,
         "local_backend": local_backend,
         "preferred_workflow": preferred_workflow,
         "post_training_tool": post_training_tool,
@@ -284,6 +295,8 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         f"- git_status: `{payload.get('git_status')}`",
         f"- package_preflight: `{payload.get('package_preflight', {}).get('status')}`",
         f"- package_manifest_status: `{payload.get('package_manifest_status')}`",
+        f"- package_manifest_workflow: `{payload.get('package_manifest_workflow')}`",
+        f"- package_manifest_matches_workflow: `{payload.get('package_manifest_matches_workflow')}`",
         f"- local_backend_status: `{payload.get('local_backend', {}).get('launch_class')}`",
         f"- local_rocm_gate: `{payload.get('local_backend', {}).get('gate_result')}`",
         f"- local_rocm_evidence: `{payload.get('local_backend', {}).get('path')}`",

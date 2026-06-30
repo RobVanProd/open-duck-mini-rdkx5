@@ -248,9 +248,13 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         ]
     )
     if payload["status"].startswith("PASS"):
-        lines.append("All required z=0.005 Colab package inputs are present and included by the upload tar filter.")
+        lines.append(
+            f"All required `{payload['workflow']}` Colab package inputs are present and included by the upload tar filter."
+        )
     else:
-        lines.append("Do not launch the z=0.005 Colab workflow until missing or excluded package inputs are fixed.")
+        lines.append(
+            f"Do not launch the `{payload['workflow']}` Colab workflow until missing or excluded package inputs are fixed."
+        )
     lines.append("")
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(lines))
@@ -258,7 +262,7 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--workflow", default="phase2-z005-support")
+    parser.add_argument("--workflow", default="phase2-z002-tracking-margin")
     parser.add_argument("--verify-tarball", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--output-md", default=str(DEFAULT_OUTPUT_MD))
     parser.add_argument("--output-json", default=str(DEFAULT_OUTPUT_JSON))
