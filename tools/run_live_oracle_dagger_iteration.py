@@ -23,6 +23,11 @@ from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[1]
+CORRECTED_FIT_JSON = "outputs/analysis/actuator_response_fit_corrected_knee.json"
+HISTORICAL_TEACHER_MANIFESTS = {
+    "outputs/analysis/source_vx_selector_trace_pitch_chain_rate_limited_4p3_manifest.json",
+    "outputs/analysis/source_vx_selector_fitted_bridge_trace_manifest.json",
+}
 
 
 def shell_join(command: list[str]) -> str:
@@ -153,7 +158,12 @@ def main() -> int:
     parser.add_argument("--student-policy", required=True)
     parser.add_argument(
         "--teacher-manifest",
-        default="outputs/analysis/source_vx_selector_trace_pitch_chain_rate_limited_4p3_manifest.json",
+        default=None,
+        help=(
+            "Corrected-bridge oracle manifest. Required. Historical old-bridge "
+            "source-VX manifests are rejected unless --allow-historical-teacher "
+            "is passed for explicit diagnostics."
+        ),
     )
     parser.add_argument(
         "--base-manifest",
@@ -163,7 +173,7 @@ def main() -> int:
     parser.add_argument("--iteration", type=int, default=0)
     parser.add_argument("--rung", default="frame_stack_k4_precheck")
     parser.add_argument("--output-dir", default="outputs/analysis/live_oracle_dagger_phase_student/iter_000")
-    parser.add_argument("--fit-json", default="outputs/analysis/actuator_response_fit.json")
+    parser.add_argument("--fit-json", default=CORRECTED_FIT_JSON)
     parser.add_argument("--playground-path", default="../Open_Duck_Playground")
     parser.add_argument("--env-python", default="../envs/open-duck-playground/bin/python")
     parser.add_argument("--command-x", type=float, default=0.08)
@@ -216,6 +226,11 @@ def main() -> int:
         help="Blend factor for x=0 zero_action relabeling; <1 softens the zero-command correction.",
     )
     parser.add_argument("--alt-exclude-source-regex", default="seed_004")
+    parser.add_argument(
+        "--allow-historical-teacher",
+        action="store_true",
+        help="Allow deprecated old-bridge teacher manifests for explicit diagnostics only.",
+    )
     parser.add_argument("--gate-aware-sample-weights", action="store_true", default=True)
     parser.add_argument(
         "--skip-rollouts",
@@ -234,10 +249,35 @@ def main() -> int:
         help="Defaults to <output-dir>/live_oracle_dagger_iteration.json",
     )
     args = parser.parse_args()
+    if not args.teacher_manifest:
+        parser.error(
+            "--teacher-manifest is required. The old source-VX selector defaults "
+            "were deprecated after the corrected-knee bridge re-anchor."
+        )
+    teacher_manifest_norm = str(Path(args.teacher_manifest))
+    if (
+        teacher_manifest_norm in HISTORICAL_TEACHER_MANIFESTS
+        and not args.allow_historical_teacher
+    ):
+        parser.error(
+            f"{teacher_manifest_norm} is historical old-bridge data. Rebuild a "
+            "corrected-bridge oracle/source manifest or pass "
+            "--allow-historical-teacher for an explicit diagnostic run."
+        )
     if args.base_manifest is None:
-        args.base_manifest = [
-            "outputs/analysis/source_vx_selector_trace_pitch_chain_rate_limited_4p3_manifest.json"
-        ]
+        args.base_manifest = []
+    historical_base = [
+        str(Path(path))
+        for path in args.base_manifest
+        if str(Path(path)) in HISTORICAL_TEACHER_MANIFESTS
+    ]
+    if historical_base and not args.allow_historical_teacher:
+        parser.error(
+            "base manifest includes historical old-bridge data: "
+            + ", ".join(historical_base)
+            + ". Rebuild corrected-bridge base data or pass "
+            "--allow-historical-teacher for an explicit diagnostic run."
+        )
 
     output_dir = Path(args.output_dir)
     x008_rollout_dir = output_dir / "rollouts_x008"
