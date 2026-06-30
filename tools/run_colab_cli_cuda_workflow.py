@@ -926,6 +926,13 @@ def build_remote_driver(
         candidate_restore_checkpoint_path = (
             f"/content/open-duck-mini-rdkx5/{candidate_restore_checkpoint_path}"
         )
+    phase2_restore_checkpoint_path = args.phase2_restore_checkpoint_path
+    if phase2_restore_checkpoint_path and not Path(
+        phase2_restore_checkpoint_path
+    ).is_absolute():
+        phase2_restore_checkpoint_path = (
+            f"/content/open-duck-mini-rdkx5/{phase2_restore_checkpoint_path}"
+        )
     candidate_behavior_prior_mlp_npz = args.candidate_behavior_prior_mlp_npz
     if candidate_behavior_prior_mlp_npz and not Path(
         candidate_behavior_prior_mlp_npz
@@ -1157,6 +1164,8 @@ def build_remote_driver(
         "stage_b0c_rough_z002_push_tracking_margin_from_b0_gpu/"
         "smoke_20260629T062042Z_gpu/2026_06_29_022725_245760"
     )
+    if phase2_restore_checkpoint_path:
+        phase2_restore_checkpoint = phase2_restore_checkpoint_path
     phase2_behavior_prior_arg = (
         (
             '"--enable-behavior-prior",'
@@ -2491,6 +2500,14 @@ def main() -> int:
         type=int,
         default=None,
         help="Override Phase 2 PPO updates per batch for bounded diagnostics.",
+    )
+    parser.add_argument(
+        "--phase2-restore-checkpoint-path",
+        default=None,
+        help=(
+            "Override the restore checkpoint used by Phase 2 workflows. "
+            "Relative paths resolve under /content/open-duck-mini-rdkx5."
+        ),
     )
     parser.add_argument(
         "--checkpoint-sweep-policies",
