@@ -172,6 +172,9 @@ def build_command(args: argparse.Namespace, output_dir: Path) -> list[str]:
         "--forward_phase_swing_lift_huber_delta": (
             args.forward_phase_swing_lift_huber_delta
         ),
+        "--forward_swing_phase_advance_ticks": (
+            args.forward_swing_phase_advance_ticks
+        ),
         "--forward_swing_advance_huber_delta": (
             args.forward_swing_advance_huber_delta
         ),
@@ -764,6 +767,7 @@ def main() -> int:
     parser.add_argument("--forward-pitch-rate-huber-delta", type=float, default=None)
     parser.add_argument("--forward-swing-clearance-huber-delta", type=float, default=None)
     parser.add_argument("--forward-phase-swing-lift-huber-delta", type=float, default=None)
+    parser.add_argument("--forward-swing-phase-advance-ticks", type=int, default=None)
     parser.add_argument("--forward-swing-advance-huber-delta", type=float, default=None)
     parser.add_argument(
         "--forward-swing-target-rate-limit-huber-delta",
@@ -1058,6 +1062,9 @@ def main() -> int:
             ),
             "forward_phase_swing_lift_huber_delta": (
                 args.forward_phase_swing_lift_huber_delta
+            ),
+            "forward_swing_phase_advance_ticks": (
+                args.forward_swing_phase_advance_ticks
             ),
             "forward_swing_advance_huber_delta": (
                 args.forward_swing_advance_huber_delta
