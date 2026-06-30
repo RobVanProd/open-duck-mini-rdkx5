@@ -227,6 +227,26 @@ def tar_filter(member: tarfile.TarInfo) -> tarfile.TarInfo | None:
                 "analysis",
                 "phase2_stagea2_gain099_terrain_z0024_boundary_decision.json",
             ),
+            (
+                "outputs",
+                "analysis",
+                "PHASE2_SWING_CLEARANCE_DIAGNOSTIC_Z0024.md",
+            ),
+            (
+                "outputs",
+                "analysis",
+                "phase2_swing_clearance_diagnostic_z0024.json",
+            ),
+            (
+                "outputs",
+                "analysis",
+                "PHASE2_SWING_PHASE_ADVANCE_NEXT_RECIPE.md",
+            ),
+            (
+                "outputs",
+                "analysis",
+                "phase2_swing_phase_advance_next_recipe.json",
+            ),
             ("outputs", "analysis", "PHASE2_Z005_MOTION_FLOOR_NEXT_RECIPE.md"),
             ("outputs", "analysis", "phase2_z005_motion_floor_next_recipe.json"),
             ("outputs", "analysis", "PHASE2_Z005_MOTION_PRIOR_NEXT_RECIPE.md"),

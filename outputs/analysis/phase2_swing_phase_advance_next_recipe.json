@@ -1,0 +1,258 @@
+{
+  "acceptance_after_hook": [
+    "Training manifests show forward_swing_phase_advance_ticks explicitly.",
+    "No corrected per-joint velocity-limit excess at x=0.08.",
+    "z=0.0024 x=0.08 and x=0.0 corrected-bridge gates remain 8/8.",
+    "Gentle-push z=0.0024 regressions remain 8/8.",
+    "Swing diagnostic rerun shows lower planted percentage during phase-commanded swing without higher rate utilization."
+  ],
+  "deploy_performed": false,
+  "diagnostic": {
+    "candidate": "policy/candidates/phase2_stagea2_seed5_recovery_command_gated_gain099_20260629/candidate.onnx",
+    "candidate_sha256": "209b85a75cf9cbbcf10df573c1b530921943a72e81082111889c15f63a9a2c7b",
+    "classification_counts": {
+      "LATENCY_LIMITED": 8
+    },
+    "command_x": 0.08,
+    "corrected_bridge": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+    "corrected_bridge_sha256": "3661543d0745073b561eb4fa2ae8f9616368ee8b72cb397f8b953dada532c8c0",
+    "max_rate_utilization_peak": 1.7949730157852173,
+    "mean_planted_pct_during_phase_swing": 88.0728216565956,
+    "path": "outputs/analysis/phase2_swing_clearance_diagnostic_z0024.json",
+    "phase_convention": "phase01=atan2(obs[100], obs[99])/(2*pi); phase<0.5 is left stance/right swing, phase>=0.5 is right stance/left swing",
+    "selected_fix_branch": "phase-advance swing commands relative to the corrected 3-tick actuator delay",
+    "sha256": "daeb7caabf2ab47692dbf2ad6a9c3eb2e14db1e373811be1b8e0d9ceb1ee0018",
+    "side_rows": [
+      {
+        "achieved_to_ceiling_ratio_peak": 0.38081989620699874,
+        "classification": "LATENCY_LIMITED",
+        "latency_limited_segment_count": 15,
+        "phase_swing_segments": 28,
+        "planted_pct_during_phase_swing": 83.5195530726257,
+        "rate_utilization_peak": 0.9594118595123291,
+        "seed": 0,
+        "side": "left"
+      },
+      {
+        "achieved_to_ceiling_ratio_peak": 0.8318519111959695,
+        "classification": "STRUCTURAL",
+        "latency_limited_segment_count": 13,
+        "phase_swing_segments": 28,
+        "planted_pct_during_phase_swing": 91.3265306122449,
+        "rate_utilization_peak": 1.3246089220046997,
+        "seed": 0,
+        "side": "right"
+      },
+      {
+        "achieved_to_ceiling_ratio_peak": 0.3728977442929123,
+        "classification": "LATENCY_LIMITED",
+        "latency_limited_segment_count": 16,
+        "phase_swing_segments": 28,
+        "planted_pct_during_phase_swing": 83.24022346368714,
+        "rate_utilization_peak": 0.9749618443575773,
+        "seed": 1,
+        "side": "left"
+      },
+      {
+        "achieved_to_ceiling_ratio_peak": 2.706574702340201,
+        "classification": "LATENCY_LIMITED",
+        "latency_limited_segment_count": 17,
+        "phase_swing_segments": 28,
+        "planted_pct_during_phase_swing": 92.3469387755102,
+        "rate_utilization_peak": 1.346305012702942,
+        "seed": 1,
+        "side": "right"
+      },
+      {
+        "achieved_to_ceiling_ratio_peak": 0.42295206348526426,
+        "classification": "LATENCY_LIMITED",
+        "latency_limited_segment_count": 14,
+        "phase_swing_segments": 28,
+        "planted_pct_during_phase_swing": 83.24022346368714,
+        "rate_utilization_peak": 0.9917822751131925,
+        "seed": 2,
+        "side": "left"
+      },
+      {
+        "achieved_to_ceiling_ratio_peak": 0.5120939109892428,
+        "classification": "LATENCY_LIMITED",
+        "latency_limited_segment_count": 15,
+        "phase_swing_segments": 28,
+        "planted_pct_during_phase_swing": 93.11224489795919,
+        "rate_utilization_peak": 1.1546090245246887,
+        "seed": 2,
+        "side": "right"
+      },
+      {
+        "achieved_to_ceiling_ratio_peak": 0.3923825030111814,
+        "classification": "LATENCY_LIMITED",
+        "latency_limited_segment_count": 14,
+        "phase_swing_segments": 28,
+        "planted_pct_during_phase_swing": 83.5195530726257,
+        "rate_utilization_peak": 0.9602102366360751,
+        "seed": 3,
+        "side": "left"
+      },
+      {
+        "achieved_to_ceiling_ratio_peak": 2.536840130155914,
+        "classification": "LATENCY_LIMITED",
+        "latency_limited_segment_count": 16,
+        "phase_swing_segments": 28,
+        "planted_pct_during_phase_swing": 92.09183673469387,
+        "rate_utilization_peak": 1.7949730157852173,
+        "seed": 3,
+        "side": "right"
+      },
+      {
+        "achieved_to_ceiling_ratio_peak": 0.4077172332406319,
+        "classification": "LATENCY_LIMITED",
+        "latency_limited_segment_count": 17,
+        "phase_swing_segments": 28,
+        "planted_pct_during_phase_swing": 84.63687150837988,
+        "rate_utilization_peak": 0.9303840723904696,
+        "seed": 4,
+        "side": "left"
+      },
+      {
+        "achieved_to_ceiling_ratio_peak": 0.5116728255333153,
+        "classification": "LATENCY_LIMITED",
+        "latency_limited_segment_count": 17,
+        "phase_swing_segments": 28,
+        "planted_pct_during_phase_swing": 90.81632653061224,
+        "rate_utilization_peak": 1.2253910303115845,
+        "seed": 4,
+        "side": "right"
+      },
+      {
+        "achieved_to_ceiling_ratio_peak": 0.37347894155960276,
+        "classification": "LATENCY_LIMITED",
+        "latency_limited_segment_count": 16,
+        "phase_swing_segments": 28,
+        "planted_pct_during_phase_swing": 87.98882681564247,
+        "rate_utilization_peak": 0.9578780694441362,
+        "seed": 5,
+        "side": "left"
+      },
+      {
+        "achieved_to_ceiling_ratio_peak": 0.5279623953215826,
+        "classification": "LATENCY_LIMITED",
+        "latency_limited_segment_count": 17,
+        "phase_swing_segments": 28,
+        "planted_pct_during_phase_swing": 91.07142857142857,
+        "rate_utilization_peak": 1.1712700128555298,
+        "seed": 5,
+        "side": "right"
+      },
+      {
+        "achieved_to_ceiling_ratio_peak": 0.3576587196532449,
+        "classification": "LATENCY_LIMITED",
+        "latency_limited_segment_count": 16,
+        "phase_swing_segments": 28,
+        "planted_pct_during_phase_swing": 83.5195530726257,
+        "rate_utilization_peak": 1.158292293548584,
+        "seed": 6,
+        "side": "left"
+      },
+      {
+        "achieved_to_ceiling_ratio_peak": 0.5047408446495507,
+        "classification": "LATENCY_LIMITED",
+        "latency_limited_segment_count": 17,
+        "phase_swing_segments": 28,
+        "planted_pct_during_phase_swing": 90.81632653061224,
+        "rate_utilization_peak": 1.778876781463623,
+        "seed": 6,
+        "side": "right"
+      },
+      {
+        "achieved_to_ceiling_ratio_peak": 0.4192797712267294,
+        "classification": "LATENCY_LIMITED",
+        "latency_limited_segment_count": 15,
+        "phase_swing_segments": 28,
+        "planted_pct_during_phase_swing": 86.59217877094973,
+        "rate_utilization_peak": 1.281274282015287,
+        "seed": 7,
+        "side": "left"
+      },
+      {
+        "achieved_to_ceiling_ratio_peak": 1.261417631811098,
+        "classification": "LATENCY_LIMITED",
+        "latency_limited_segment_count": 15,
+        "phase_swing_segments": 28,
+        "planted_pct_during_phase_swing": 91.3265306122449,
+        "rate_utilization_peak": 1.226065375588157,
+        "seed": 7,
+        "side": "right"
+      }
+    ],
+    "status": "PASS_SWING_CLEARANCE_DIAGNOSTIC_REPORTED",
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.0024,
+    "verdict": "LATENCY_LIMITED"
+  },
+  "falsifiers": [
+    "If phase advance reduces planted swing but breaks x=0.0 command semantics, reject the candidate.",
+    "If phase advance only improves clearance by exceeding corrected pitch-chain limits, reject the recipe.",
+    "If ticks 1-3 all preserve latency-limited planted swing, return to structural gait-duration/knee-bend branch."
+  ],
+  "hook_audit": {
+    "evidence": {
+      "joystick": {
+        "forward_swing_phase_advance": false,
+        "phase_advance_steps": false,
+        "phase_advance_ticks": false,
+        "swing_phase_advance": false
+      },
+      "rewards": {
+        "advance_phase": false,
+        "forward_swing_phase": false,
+        "phase_advance_ticks": false
+      },
+      "runner": {
+        "--forward_swing_phase_advance_ticks": false,
+        "--swing-phase-advance": false,
+        "phase_advance_ticks": false
+      }
+    },
+    "existing_hooks": [
+      "forward_swing_clearance fires on first_contact using swing_peak_lift.",
+      "forward_swing_advance fires on first_contact using swing_peak_forward_advance.",
+      "forward_swing_balance penalizes one-sided swing usage."
+    ],
+    "files": {
+      "joystick": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/joystick.py",
+      "rewards": "/home/lsd/robots/Open_Duck_Playground/playground/common/rewards.py",
+      "runner": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/runner.py"
+    },
+    "hook_present": false,
+    "missing_hook": "A default-off phase-advanced swing objective that evaluates lift/advance against phase + advance_ticks before the measured 3-tick actuator delay.",
+    "status": "HOLD_PHASE_ADVANCE_HOOK_MISSING"
+  },
+  "recipe_intent": [
+    "Act on the LATENCY_LIMITED swing-clearance verdict, not on generic terrain or support failure.",
+    "Advance the swing lift/advance objective by roughly the corrected 3-tick actuator delay.",
+    "Keep bridge limits canonical; do not increase global target-rate allowance.",
+    "Warm-start from the Phase 2 gain099 candidate/trainable checkpoint; do not train from scratch.",
+    "Gate x=0.08 and x=0.0 on the corrected bridge after any implementation."
+  ],
+  "required_default_off_hook": {
+    "canonical_first_try": 3,
+    "config": "reward_config.forward_swing_phase_advance_ticks, default 0",
+    "initial_values_to_test": [
+      1,
+      2,
+      3
+    ],
+    "runner_cli": "--forward_swing_phase_advance_ticks",
+    "semantics": [
+      "Use phase-primary swing segmentation.",
+      "Compute the rewarded swing side from phase advanced by N control ticks.",
+      "Reward/penalize lift and forward advance before touchdown so lift starts before the measured actuator lag.",
+      "Report the configured advance ticks in training manifests and gate artifacts."
+    ]
+  },
+  "robot_touched": false,
+  "ssh_used": false,
+  "stage": "phase2_swing_phase_advance",
+  "status": "HOLD_PHASE_ADVANCE_HOOK_MISSING",
+  "training_started": false
+}
