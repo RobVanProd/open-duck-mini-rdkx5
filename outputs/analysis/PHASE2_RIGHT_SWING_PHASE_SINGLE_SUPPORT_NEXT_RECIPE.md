@@ -84,4 +84,3 @@ If the candidate remains near the same `0.25` track-ratio / `85%` double-support
 plateau, stop the scalar reward-shaping line and pivot to the live-oracle /
 phase-aware student path. That would show that feed-forward reward shaping is
 preserving the wrong contact mode.
-
