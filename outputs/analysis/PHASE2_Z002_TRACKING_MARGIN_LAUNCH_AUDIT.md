@@ -9,7 +9,7 @@ This is a read-only launch audit. It did not train, SSH, deploy, or touch the ro
 
 - launch_status: `HOLD_PHASE2_COLAB_GPU_SESSION_NOT_READY`
 - colab_status: `HOLD_NO_ACTIVE_COLAB_SESSION`
-- git_status: `HOLD_GIT_REMOTE_AUTH_UNAVAILABLE`
+- git_status: `PASS_GIT_REMOTE_READ_AUTH`
 - package_manifest: `outputs/analysis/colab_cli/open-duck-l4-phase2-z002-tracking-margin-20260630T012421Z/PACKAGE_ONLY_MANIFEST.json`
 - stage_guard_json: `outputs/analysis/phase2_stage_guard.json`
 - artifact_manifest_json: `outputs/analysis/phase2_artifact_manifest.json`

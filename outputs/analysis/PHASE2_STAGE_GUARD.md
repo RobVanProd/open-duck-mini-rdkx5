@@ -13,7 +13,7 @@ This is a read-only guard. It did not train, SSH, deploy, or touch the robot.
 
 - colab_status: `HOLD_NO_ACTIVE_COLAB_SESSION`
 - colab_hardware: `None`
-- git_status: `HOLD_GIT_REMOTE_AUTH_UNAVAILABLE`
+- git_status: `PASS_GIT_REMOTE_READ_AUTH`
 - package_preflight: `PASS_PACKAGE_PREFLIGHT`
 - package_manifest_status: `PASS_PHASE2_COLAB_PACKAGE_MANIFEST_READY`
 - package_manifest_workflow: `phase2-z002-tracking-margin`
