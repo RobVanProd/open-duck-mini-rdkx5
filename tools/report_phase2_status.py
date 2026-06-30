@@ -67,6 +67,24 @@ DEFAULT_BACKEND_ARTIFACTS = {
 DEFAULT_Z005_SEED5_DIAGNOSTIC = (
     ROOT / "outputs" / "analysis" / "phase2_z005_seed5_failure_diagnostic.json"
 )
+DEFAULT_SCALAR_BRANCH_RESULTS = {
+    "z005_support": ROOT
+    / "outputs"
+    / "analysis"
+    / "PHASE2_Z005_SUPPORT_A100_CACHEFIX_RESULT.md",
+    "right_swing_structural": ROOT
+    / "docs"
+    / "PHASE2_RIGHT_SWING_STRUCTURAL_RESULT.md",
+    "right_swing_phase_lift": ROOT
+    / "docs"
+    / "PHASE2_RIGHT_SWING_PHASE_LIFT_RESULT.md",
+    "right_swing_phase_advance": ROOT
+    / "docs"
+    / "PHASE2_RIGHT_SWING_PHASE_ADVANCE_RESULT.md",
+    "right_swing_phase_single_support": ROOT
+    / "docs"
+    / "PHASE2_RIGHT_SWING_PHASE_SINGLE_SUPPORT_RESULT.md",
+}
 
 
 def now_utc() -> str:
@@ -231,6 +249,24 @@ def summarize_z005_seed5_diagnostic(path: Path = DEFAULT_Z005_SEED5_DIAGNOSTIC) 
     }
 
 
+def summarize_scalar_branch_results(paths: dict[str, Path]) -> dict[str, Any]:
+    out: dict[str, Any] = {}
+    for name, path in paths.items():
+        record = artifact_record(path)
+        status = "MISSING"
+        if path.exists():
+            for line in path.read_text().splitlines():
+                if line.startswith("status:"):
+                    status = line.split("`", 2)[1] if "`" in line else line.split(":", 1)[1].strip()
+                    break
+        out[name] = {
+            **record,
+            "status": status,
+            "hold": status.startswith("HOLD"),
+        }
+    return out
+
+
 def decide(payload: dict[str, Any]) -> tuple[str, str]:
     gates = payload["gates"]
     z002_required = [
@@ -242,12 +278,21 @@ def decide(payload: dict[str, Any]) -> tuple[str, str]:
     z002_pass = all(gates.get(name, {}).get("status") == "PASS_GATE_8SEED" for name in z002_required)
     z005_required = ["z005_x008_nopush", "z005_x000_nopush"]
     z005_pass = all(gates.get(name, {}).get("status") == "PASS_GATE_8SEED" for name in z005_required)
+    scalar_results = payload.get("scalar_branch_results") or {}
+    scalar_branches_exhausted = bool(scalar_results) and all(
+        item.get("hold") for item in scalar_results.values()
+    )
     if z005_pass:
         return (
             "PASS_PHASE2_TERRAIN_Z005_READY_FOR_NEXT_STAGE",
             "z=0.005 no-push command and stillness gates pass; run the z=0.005 gentle-push gates before widening randomization.",
         )
     if z002_pass:
+        if scalar_branches_exhausted:
+            return (
+                "HOLD_PHASE2_SCALAR_SUPPORT_BRANCH_EXHAUSTED",
+                "Current packaged candidate is robust at z=0.002 including gentle push, but z=0.005 terrain is not cleared. The scalar z=0.005/support/swing reward family has held repeatedly; do not launch another scalar support reward run. Next offline work should rebuild a corrected-bridge oracle/source or move to a structural phase-aware/live-oracle student path under the canonical corrected evaluator.",
+            )
         return (
             "HOLD_PHASE2_TERRAIN_Z005_NOT_CLEARED",
             "Current packaged candidate is robust at z=0.002 including gentle push, but z=0.005 terrain is not cleared. Continue Phase 2 z=0.005 support training from the corrected-bridge candidate.",
@@ -357,6 +402,21 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
     else:
         lines.append("- no diagnostic findings available")
     lines.extend(["", f"recommendation: {diagnostic.get('recommendation') or 'NA'}"])
+    branch_results = payload.get("scalar_branch_results") or {}
+    if branch_results:
+        lines.extend(
+            [
+                "",
+                "## Scalar Support Branch Results",
+                "",
+                "| branch | status | artifact |",
+                "|---|---|---|",
+            ]
+        )
+        for name, item in branch_results.items():
+            lines.append(
+                f"| `{name}` | `{item.get('status')}` | `{item.get('path')}` |"
+            )
     lines.extend(
         [
             "",
@@ -388,6 +448,9 @@ def main() -> int:
         "gates": gates,
         "backends": summarize_backends(DEFAULT_BACKEND_ARTIFACTS),
         "z005_seed5_diagnostic": summarize_z005_seed5_diagnostic(),
+        "scalar_branch_results": summarize_scalar_branch_results(
+            DEFAULT_SCALAR_BRANCH_RESULTS
+        ),
         "robot_touched": False,
         "ssh_used": False,
         "deploy_performed": False,

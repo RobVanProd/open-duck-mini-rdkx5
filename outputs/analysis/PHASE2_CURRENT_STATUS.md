@@ -1,7 +1,7 @@
 # Phase 2 Current Status
 
-status: `HOLD_PHASE2_TERRAIN_Z005_NOT_CLEARED`
-generated_at: `2026-06-30T03:12:58Z`
+status: `HOLD_PHASE2_SCALAR_SUPPORT_BRANCH_EXHAUSTED`
+generated_at: `2026-06-30T23:30:20Z`
 
 ## Candidate
 
@@ -62,9 +62,19 @@ generated_at: `2026-06-30T03:12:58Z`
 
 recommendation: The next z=0.005 support recipe should target seed-5 terrain support and base-height margin while preserving the z=0.002 gait. Do not treat this as an actuator-envelope or action-saturation problem.
 
+## Scalar Support Branch Results
+
+| branch | status | artifact |
+|---|---|---|
+| `z005_support` | `HOLD_LOW_FORWARD_PROGRESS` | `outputs/analysis/PHASE2_Z005_SUPPORT_A100_CACHEFIX_RESULT.md` |
+| `right_swing_structural` | `HOLD_RIGHT_SWING_STRUCTURAL_RECIPE` | `docs/PHASE2_RIGHT_SWING_STRUCTURAL_RESULT.md` |
+| `right_swing_phase_lift` | `HOLD_RIGHT_SWING_PHASE_LIFT_RECIPE` | `docs/PHASE2_RIGHT_SWING_PHASE_LIFT_RESULT.md` |
+| `right_swing_phase_advance` | `HOLD_RIGHT_SWING_PHASE_ADVANCE_RECIPE` | `docs/PHASE2_RIGHT_SWING_PHASE_ADVANCE_RESULT.md` |
+| `right_swing_phase_single_support` | `HOLD_RIGHT_SWING_PHASE_SINGLE_SUPPORT_RECIPE` | `docs/PHASE2_RIGHT_SWING_PHASE_SINGLE_SUPPORT_RESULT.md` |
+
 ## Decision
 
-- next_status: `HOLD_PHASE2_TERRAIN_Z005_NOT_CLEARED`
-- next_action: Current packaged candidate is robust at z=0.002 including gentle push, but z=0.005 terrain is not cleared. Continue Phase 2 z=0.005 support training from the corrected-bridge candidate.
+- next_status: `HOLD_PHASE2_SCALAR_SUPPORT_BRANCH_EXHAUSTED`
+- next_action: Current packaged candidate is robust at z=0.002 including gentle push, but z=0.005 terrain is not cleared. The scalar z=0.005/support/swing reward family has held repeatedly; do not launch another scalar support reward run. Next offline work should rebuild a corrected-bridge oracle/source or move to a structural phase-aware/live-oracle student path under the canonical corrected evaluator.
 
 No robot, SSH, deploy, grounded replay, or runtime behavior change is authorized by this report.
