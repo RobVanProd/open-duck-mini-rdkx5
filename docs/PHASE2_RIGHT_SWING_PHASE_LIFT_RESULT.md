@@ -81,3 +81,25 @@ penalty. Candidate directions:
   corrected right knee/ankle limits;
 - a phase-aware/recurrent student if the stance-transition behavior cannot be
   represented by the current feed-forward policy.
+
+## Follow-Up Swing Diagnostic
+
+The best phase-lift checkpoint by pass count, `81920`, was rerun through the
+phase-primary swing-clearance diagnostic:
+
+```text
+artifact: outputs/analysis/phase2_right_swing_phase_lift_a100_20260630/PHASE2_RIGHT_SWING_PHASE_LIFT_81920_SWING_DIAGNOSTIC.md
+aggregate_verdict: LATENCY_LIMITED
+side_verdicts: left LATENCY_LIMITED, right LATENCY_LIMITED
+left classifications: 8/8 LATENCY_LIMITED
+right classifications: 5/8 LATENCY_LIMITED, 3/8 STRUCTURAL
+rate drivers: left_hip_pitch 8, right_ankle 7, right_knee 1
+```
+
+Compared with the pre-phase-lift diagnostic, the old blanket right-leg
+`R > 1` command-rate problem was mostly removed. The remaining issue is that
+the swing windows stay planted for most of the commanded phase even when the
+commanded rates are usually affordable. This makes phase timing the next
+branch to test: advance the swing-side lift/rate signal by the corrected
+3-tick actuator delay and verify that planted swing percentage drops without
+reintroducing corrected-envelope excess.
