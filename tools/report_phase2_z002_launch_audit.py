@@ -20,6 +20,7 @@ DEFAULT_NEXT_RUN_JSON = ROOT / "outputs/analysis/phase2_next_run_plan.json"
 DEFAULT_READINESS_JSON = ROOT / "outputs/analysis/phase2_local_fallback_readiness.json"
 DEFAULT_STAGE_GUARD_JSON = ROOT / "outputs/analysis/phase2_stage_guard.json"
 DEFAULT_ARTIFACT_MANIFEST_JSON = ROOT / "outputs/analysis/phase2_artifact_manifest.json"
+DEFAULT_ARCHIVE_VERIFICATION_JSON = ROOT / "outputs/analysis/phase2_package_only_archive_verification.json"
 DEFAULT_OUTPUT_MD = ROOT / "outputs/analysis/PHASE2_Z002_TRACKING_MARGIN_LAUNCH_AUDIT.md"
 DEFAULT_OUTPUT_JSON = ROOT / "outputs/analysis/phase2_z002_tracking_margin_launch_audit.json"
 DEFAULT_PACKAGE_ROOT = ROOT / "outputs/analysis/colab_cli"
@@ -61,6 +62,7 @@ def build_payload(args: argparse.Namespace) -> dict[str, Any]:
     readiness = read_json(Path(args.readiness_json))
     stage_guard = read_json(Path(args.stage_guard_json))
     artifact_manifest = read_json(Path(args.artifact_manifest_json))
+    archive_verification = read_json(Path(args.archive_verification_json))
     package_manifest_path = (
         Path(args.package_manifest)
         if args.package_manifest
@@ -104,6 +106,16 @@ def build_payload(args: argparse.Namespace) -> dict[str, Any]:
         "package_workflow_matches": package_workflow == args.workflow,
         "required_inputs_exist": all(item["exists"] for item in required_inputs.values()),
         "package_only_ready": archive_status == "PASS_COLAB_PACKAGE_ONLY_READY",
+        "package_archives_verified": (
+            archive_verification.get("status")
+            == "PASS_PHASE2_PACKAGE_ONLY_ARCHIVE_VERIFICATION"
+        ),
+        "package_archive_verification_workflow_matches": archive_verification.get("workflow") == args.workflow,
+        "package_archive_verification_manifest_matches": (
+            archive_verification.get("package_manifest") == rel(package_manifest_path)
+            if package_manifest_path
+            else False
+        ),
         "robot_scope_clean": all(
             not bool(source.get(key))
             for source in [recipe, package_manifest, readiness]
@@ -126,6 +138,7 @@ def build_payload(args: argparse.Namespace) -> dict[str, Any]:
         "readiness_json": rel(Path(args.readiness_json)),
         "stage_guard_json": rel(Path(args.stage_guard_json)),
         "artifact_manifest_json": rel(Path(args.artifact_manifest_json)),
+        "archive_verification_json": rel(Path(args.archive_verification_json)),
         "package_manifest": rel(package_manifest_path) if package_manifest_path else None,
         "launch_status": launch_status,
         "colab_status": colab_status,
@@ -161,6 +174,7 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         f"- package_manifest: `{payload['package_manifest']}`",
         f"- stage_guard_json: `{payload['stage_guard_json']}`",
         f"- artifact_manifest_json: `{payload['artifact_manifest_json']}`",
+        f"- archive_verification_json: `{payload['archive_verification_json']}`",
         "",
         "## Checks",
         "",
@@ -199,6 +213,7 @@ def main() -> int:
     parser.add_argument("--readiness-json", default=str(DEFAULT_READINESS_JSON))
     parser.add_argument("--stage-guard-json", default=str(DEFAULT_STAGE_GUARD_JSON))
     parser.add_argument("--artifact-manifest-json", default=str(DEFAULT_ARTIFACT_MANIFEST_JSON))
+    parser.add_argument("--archive-verification-json", default=str(DEFAULT_ARCHIVE_VERIFICATION_JSON))
     parser.add_argument("--package-root", default=str(DEFAULT_PACKAGE_ROOT))
     parser.add_argument("--package-manifest")
     parser.add_argument("--output-md", default=str(DEFAULT_OUTPUT_MD))

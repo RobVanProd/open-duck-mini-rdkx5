@@ -13,6 +13,7 @@ This is a read-only launch audit. It did not train, SSH, deploy, or touch the ro
 - package_manifest: `outputs/analysis/colab_cli/open-duck-l4-phase2-z002-tracking-margin-20260630T011011Z/PACKAGE_ONLY_MANIFEST.json`
 - stage_guard_json: `outputs/analysis/phase2_stage_guard.json`
 - artifact_manifest_json: `outputs/analysis/phase2_artifact_manifest.json`
+- archive_verification_json: `outputs/analysis/phase2_package_only_archive_verification.json`
 
 ## Checks
 
@@ -26,6 +27,9 @@ This is a read-only launch audit. It did not train, SSH, deploy, or touch the ro
 - `package_workflow_matches`: `True`
 - `required_inputs_exist`: `True`
 - `package_only_ready`: `True`
+- `package_archives_verified`: `True`
+- `package_archive_verification_workflow_matches`: `True`
+- `package_archive_verification_manifest_matches`: `True`
 - `robot_scope_clean`: `True`
 
 ## Required Inputs

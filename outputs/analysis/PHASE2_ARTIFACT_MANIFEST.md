@@ -51,8 +51,10 @@ This is a read-only hash manifest. It did not train, SSH, deploy, or touch the r
 | `outputs/analysis/phase2_z005_motion_floor_next_recipe.json` | `PRESENT_FILE` | `4342d4fc817db8b07fe8c8b09bb6da5a2f409bfb594545b63238eb9473c78ac8` | 14001 | `outputs/analysis/phase2_z005_motion_floor_next_recipe.json` |
 | `outputs/analysis/PHASE2_Z002_TRACKING_MARGIN_NEXT_RECIPE.md` | `PRESENT_FILE` | `6995050d5c156882df5f65925dfae633948b859460fcca802701b16d81560520` | 3379 | `outputs/analysis/PHASE2_Z002_TRACKING_MARGIN_NEXT_RECIPE.md` |
 | `outputs/analysis/phase2_z002_tracking_margin_next_recipe.json` | `PRESENT_FILE` | `036ba3019af67bea0c8baaa6a09a182682f7ded01bdf7473b2f58e1fc953c4f8` | 11873 | `outputs/analysis/phase2_z002_tracking_margin_next_recipe.json` |
-| `outputs/analysis/PHASE2_Z002_TRACKING_MARGIN_LAUNCH_AUDIT.md` | `PRESENT_FILE` | `2e5f8fcd6a4ec18434ed288e1c219e8ed8bcc123454aaadd1ad8b673662c543a` | 2907 | `outputs/analysis/PHASE2_Z002_TRACKING_MARGIN_LAUNCH_AUDIT.md` |
-| `outputs/analysis/phase2_z002_tracking_margin_launch_audit.json` | `PRESENT_FILE` | `300591bd108a96fbf492ffa3b722442b72e355a1a2a5a80f17b3a7ed7edd8b89` | 4558 | `outputs/analysis/phase2_z002_tracking_margin_launch_audit.json` |
+| `outputs/analysis/PHASE2_Z002_TRACKING_MARGIN_LAUNCH_AUDIT.md` | `PRESENT_FILE` | `e2724b14f53e5f381a491abd50bbae0ba02065feaac233134b899161d7f771cc` | 3155 | `outputs/analysis/PHASE2_Z002_TRACKING_MARGIN_LAUNCH_AUDIT.md` |
+| `outputs/analysis/phase2_z002_tracking_margin_launch_audit.json` | `PRESENT_FILE` | `24d10eb37db13dff49d32a1947adf0580c4d34fced8dad827030ca9699e1d923` | 4812 | `outputs/analysis/phase2_z002_tracking_margin_launch_audit.json` |
+| `outputs/analysis/PHASE2_PACKAGE_ONLY_ARCHIVE_VERIFICATION.md` | `PRESENT_FILE` | `a91608b546e2620cd10418cafd4c6d835c0dafc062d016bcf75dea7e09492353` | 1615 | `outputs/analysis/PHASE2_PACKAGE_ONLY_ARCHIVE_VERIFICATION.md` |
+| `outputs/analysis/phase2_package_only_archive_verification.json` | `PRESENT_FILE` | `f43df38a6d90bf0f0ca6d54240c75ba1a55cf6b2d067cd3ce63ae385dc1b8390` | 9479 | `outputs/analysis/phase2_package_only_archive_verification.json` |
 | `outputs/analysis/PHASE2_LOCAL_FALLBACK_READINESS.md` | `PRESENT_FILE` | `f9598dfc1233232ab6b27842b1565c65eda171bd799ca3df1a04135134831944` | 2223 | `outputs/analysis/PHASE2_LOCAL_FALLBACK_READINESS.md` |
 | `outputs/analysis/phase2_local_fallback_readiness.json` | `PRESENT_FILE` | `18833ed42ffc98be69b99cc00e61fc0b42334956e982207c947ac93957422c8f` | 35372 | `outputs/analysis/phase2_local_fallback_readiness.json` |
 | `outputs/analysis/PHASE2_NEXT_RUN_PLAN.md` | `PRESENT_FILE` | `22a81180deb09f15d3e60b3e824492cf58cfb1959a72f31b3d09f86dac2a44d4` | 6608 | `outputs/analysis/PHASE2_NEXT_RUN_PLAN.md` |
@@ -76,7 +78,8 @@ This is a read-only hash manifest. It did not train, SSH, deploy, or touch the r
 | `tools/report_phase2_local_fallback_readiness.py` | `PRESENT_FILE` | `f22563e7f8b976dc24133a5b440246d45c1d515c8188db4a0a94cb6352ef6cc2` | 15048 | `tools/report_phase2_local_fallback_readiness.py` |
 | `tools/report_phase2_z005_post_training_gates.py` | `PRESENT_FILE` | `d92207771621144619c7a47e890358b51e757a4709a911b253a4b38e85739b9b` | 11279 | `tools/report_phase2_z005_post_training_gates.py` |
 | `tools/report_phase2_z002_tracking_margin_post_training_gates.py` | `PRESENT_FILE` | `370059acc1e136edea358e1ed8bb60ff2d09cdcd8da34fce9e3fa47de7fa0726` | 3444 | `tools/report_phase2_z002_tracking_margin_post_training_gates.py` |
-| `tools/report_phase2_z002_launch_audit.py` | `PRESENT_FILE` | `2874daf7e98861494b4029149f7f0630b7aa47924a54673b67693c5ed1db711c` | 9582 | `tools/report_phase2_z002_launch_audit.py` |
+| `tools/report_phase2_z002_launch_audit.py` | `PRESENT_FILE` | `267b442945ee5f79879eed6465f71f92f9f0fb621c0ca5924e5550b5c289321f` | 10519 | `tools/report_phase2_z002_launch_audit.py` |
+| `tools/report_phase2_package_only_archive_verification.py` | `PRESENT_FILE` | `0a2205b238e16dd3851dc4d44e57929caa8a055098d0300c765ad2443051df90` | 9560 | `tools/report_phase2_package_only_archive_verification.py` |
 | `tools/report_phase2_stage_guard.py` | `PRESENT_FILE` | `0e76b59917c90fa885ad0ffdd5db169f20801abb37382fbe25278a746e3690ad` | 17280 | `tools/report_phase2_stage_guard.py` |
 | `tools/run_colab_cli_cuda_workflow.py` | `PRESENT_FILE` | `f38b35295e7fc7b2b2aeb93840d8f23263cb2b42427ce3d1dfafb6c6a8157ef5` | 125275 | `tools/run_colab_cli_cuda_workflow.py` |
 
