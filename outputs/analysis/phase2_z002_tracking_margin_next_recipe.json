@@ -6,6 +6,18 @@
     "No robot validation is authorized by this recipe."
   ],
   "commands": {
+    "post_training_decision": {
+      "argv": [
+        "python3",
+        "tools/report_phase2_z002_tracking_margin_post_training_gates.py",
+        "<candidate_name>_post_training_seed_gates.json",
+        "--output-md",
+        "outputs/analysis/PHASE2_Z002_TRACKING_MARGIN_POST_TRAINING_GATE_DECISION.md",
+        "--output-json",
+        "outputs/analysis/phase2_z002_tracking_margin_post_training_gate_decision.json"
+      ],
+      "shell": "python3 \\\n    tools/report_phase2_z002_tracking_margin_post_training_gates.py \\\n    '<candidate_name>_post_training_seed_gates.json' \\\n    --output-md \\\n    outputs/analysis/PHASE2_Z002_TRACKING_MARGIN_POST_TRAINING_GATE_DECISION.md \\\n    --output-json \\\n    outputs/analysis/phase2_z002_tracking_margin_post_training_gate_decision.json"
+    },
     "preferred_colab_gpu": {
       "argv": [
         "python3",

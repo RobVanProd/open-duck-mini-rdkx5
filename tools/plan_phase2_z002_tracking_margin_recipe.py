@@ -80,7 +80,20 @@ def colab_command(session: str, candidate_name: str) -> list[str]:
     ]
 
 
+def post_training_decision_command(post_training_json: str) -> list[str]:
+    return [
+        "python3",
+        "tools/report_phase2_z002_tracking_margin_post_training_gates.py",
+        post_training_json,
+        "--output-md",
+        "outputs/analysis/PHASE2_Z002_TRACKING_MARGIN_POST_TRAINING_GATE_DECISION.md",
+        "--output-json",
+        "outputs/analysis/phase2_z002_tracking_margin_post_training_gate_decision.json",
+    ]
+
+
 def build_payload(args: argparse.Namespace) -> dict[str, Any]:
+    post_training_json = "<candidate_name>_post_training_seed_gates.json"
     return {
         "status": "PASS_Z002_TRACKING_MARGIN_RECIPE_READY",
         "stage": "stage_z002_tracking_margin",
@@ -140,7 +153,11 @@ def build_payload(args: argparse.Namespace) -> dict[str, Any]:
             "preferred_colab_gpu": {
                 "argv": colab_command(args.session, args.candidate_name),
                 "shell": multiline_shell(colab_command(args.session, args.candidate_name)),
-            }
+            },
+            "post_training_decision": {
+                "argv": post_training_decision_command(post_training_json),
+                "shell": multiline_shell(post_training_decision_command(post_training_json)),
+            },
         },
         "robot_touched": False,
         "ssh_used": False,
@@ -173,6 +190,9 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
     lines.append(payload["commands"]["preferred_colab_gpu"]["shell"])
     lines.extend(["```", "", "## Acceptance", ""])
     lines.extend(f"- {item}" for item in payload["acceptance"])
+    lines.extend(["", "## Post-Training Decision Command", "", "```bash"])
+    lines.append(payload["commands"]["post_training_decision"]["shell"])
+    lines.extend(["```"])
     lines.extend(["", "## Falsifier", "", payload["falsifier"], ""])
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(lines))

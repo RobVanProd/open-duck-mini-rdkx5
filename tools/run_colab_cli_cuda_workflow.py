@@ -227,16 +227,17 @@ def required_rdk_package_paths(workflow: str) -> list[str]:
     paths = [
         "outputs/analysis/actuator_response_fit_corrected_knee.json",
         recipe_json,
-        "tools/report_phase2_z005_post_training_gates.py",
         "tools/run_actuator_bridge_training_smoke.py",
     ]
     if workflow == "phase2-z002-tracking-margin":
+        paths.append("tools/report_phase2_z002_tracking_margin_post_training_gates.py")
         paths.append(
             "outputs/phase2_domain_randomization/"
             "stage_c0_terrain_z002_preserve_from_a2_gpu/"
             "smoke_20260628T103743Z_gpu/2026_06_28_064431_245760"
         )
     else:
+        paths.append("tools/report_phase2_z005_post_training_gates.py")
         paths.append(
             "outputs/phase2_domain_randomization/"
             "stage_a2_preserve_narrow_flat_no_push_gpu/"
@@ -1134,6 +1135,11 @@ def build_remote_driver(
         if run_phase2_z002_tracking_margin
         else ("z0035" if run_phase2_z0035_motion_floor else "z005")
     )
+    phase2_post_training_reporter = (
+        "tools/report_phase2_z002_tracking_margin_post_training_gates.py"
+        if run_phase2_z002_tracking_margin
+        else "tools/report_phase2_z005_post_training_gates.py"
+    )
     return textwrap.dedent(
         f"""
         import atexit
@@ -1812,7 +1818,7 @@ def build_remote_driver(
                 run_phase2_z005_post_training_gates(latest_onnx, candidate_name)
                 post_gate_json = OUT / f"{{candidate_name}}_post_training_seed_gates.json"
                 run([
-                    PYTHON, "tools/report_phase2_z005_post_training_gates.py",
+                    PYTHON, "{phase2_post_training_reporter}",
                     str(post_gate_json),
                     "--output-md", str(OUT / f"{{candidate_name}}_POST_TRAINING_GATE_DECISION.md"),
                     "--output-json", str(OUT / f"{{candidate_name}}_post_training_gate_decision.json"),

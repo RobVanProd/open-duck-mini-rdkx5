@@ -46,7 +46,6 @@ def required_gates_from_manifest(manifest: dict[str, Any]) -> list[str]:
         for name in names
         if name.endswith("_no_push")
         and name not in REGRESSION_GATES
-        and not name.startswith("z002_")
     ]
     if primary:
         return primary + [name for name in REGRESSION_GATES if name in names]

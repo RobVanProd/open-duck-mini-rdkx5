@@ -71,6 +71,18 @@ python3 \
 - Full post-training z=0.002 seed gates pass before this policy can be used as a parent for terrain escalation.
 - No robot validation is authorized by this recipe.
 
+## Post-Training Decision Command
+
+```bash
+python3 \
+    tools/report_phase2_z002_tracking_margin_post_training_gates.py \
+    '<candidate_name>_post_training_seed_gates.json' \
+    --output-md \
+    outputs/analysis/PHASE2_Z002_TRACKING_MARGIN_POST_TRAINING_GATE_DECISION.md \
+    --output-json \
+    outputs/analysis/phase2_z002_tracking_margin_post_training_gate_decision.json
+```
+
 ## Falsifier
 
 If tracking improves only by reducing x=0.08 track ratio below 0.25, stop scalar tracking-margin training and switch to a teacher-action or trust-region continuity mechanism around the moving z=0.002 policy.
