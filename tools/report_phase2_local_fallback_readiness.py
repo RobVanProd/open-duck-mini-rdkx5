@@ -108,6 +108,20 @@ def core_artifacts(workflow: str) -> dict[str, dict[str, Any]]:
             / "2026_06_28_064431_245760",
             "recipe": ROOT / "outputs" / "analysis" / "phase2_z002_tracking_margin_next_recipe.json",
         },
+        "phase2-z002-teacher-continuity": {
+            "restore_checkpoint": ROOT
+            / "outputs"
+            / "phase2_domain_randomization"
+            / "stage_c0_terrain_z002_preserve_from_a2_gpu"
+            / "smoke_20260628T103743Z_gpu"
+            / "2026_06_28_064431_245760",
+            "recipe": ROOT / "outputs" / "analysis" / "phase2_z002_teacher_continuity_next_recipe.json",
+            "behavior_prior_mlp": ROOT
+            / "outputs"
+            / "analysis"
+            / "command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate"
+            / "candidate_mlp.npz",
+        },
         "phase2-z005-support": {
             "restore_checkpoint": ROOT
             / "outputs"
@@ -374,9 +388,10 @@ def main() -> int:
     parser.add_argument("--session", default="open-duck-l4")
     parser.add_argument(
         "--workflow",
-        default="phase2-z002-tracking-margin",
+        default="phase2-z002-teacher-continuity",
         choices=[
             "phase2-z002-tracking-margin",
+            "phase2-z002-teacher-continuity",
             "phase2-z0035-motion-floor",
             "phase2-z005-support",
         ],

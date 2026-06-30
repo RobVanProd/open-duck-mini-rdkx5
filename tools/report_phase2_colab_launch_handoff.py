@@ -26,8 +26,8 @@ DEFAULT_PACKAGE_MANIFEST = (
 DEFAULT_ARCHIVE_VERIFICATION = ROOT / "outputs/analysis/phase2_package_only_archive_verification.json"
 DEFAULT_LAUNCH_AUDIT = ROOT / "outputs/analysis/phase2_z002_tracking_margin_launch_audit.json"
 DEFAULT_STAGE_GUARD = ROOT / "outputs/analysis/phase2_stage_guard.json"
-DEFAULT_OUTPUT_MD = ROOT / "outputs/analysis/PHASE2_Z002_COLAB_LAUNCH_HANDOFF.md"
-DEFAULT_OUTPUT_JSON = ROOT / "outputs/analysis/phase2_z002_colab_launch_handoff.json"
+DEFAULT_OUTPUT_MD = ROOT / "outputs/analysis/PHASE2_Z002_TEACHER_CONTINUITY_COLAB_LAUNCH_HANDOFF.md"
+DEFAULT_OUTPUT_JSON = ROOT / "outputs/analysis/phase2_z002_teacher_continuity_colab_launch_handoff.json"
 
 
 def rel(path: Path | str | None) -> str | None:
@@ -174,7 +174,7 @@ def build_payload(args: argparse.Namespace) -> dict[str, Any]:
 
 def write_markdown(payload: dict[str, Any], path: Path) -> None:
     lines = [
-        "# Phase 2 z=0.002 Colab Launch Handoff",
+        "# Phase 2 z=0.002 Teacher-Continuity Colab Launch Handoff",
         "",
         f"status: `{payload['status']}`",
         f"workflow: `{payload['workflow']}`",

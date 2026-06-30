@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Write a launch audit for the Phase 2 z=0.002 tracking-margin run.
+"""Write a launch audit for the Phase 2 z=0.002 parent-recovery run.
 
 This is a read-only bookkeeping tool. It records the selected workflow, the
 required local inputs, the package-only archive hashes, readiness state, and
@@ -15,14 +15,14 @@ from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_RECIPE_JSON = ROOT / "outputs/analysis/phase2_z002_tracking_margin_next_recipe.json"
+DEFAULT_RECIPE_JSON = ROOT / "outputs/analysis/phase2_z002_teacher_continuity_next_recipe.json"
 DEFAULT_NEXT_RUN_JSON = ROOT / "outputs/analysis/phase2_next_run_plan.json"
 DEFAULT_READINESS_JSON = ROOT / "outputs/analysis/phase2_local_fallback_readiness.json"
 DEFAULT_STAGE_GUARD_JSON = ROOT / "outputs/analysis/phase2_stage_guard.json"
 DEFAULT_ARTIFACT_MANIFEST_JSON = ROOT / "outputs/analysis/phase2_artifact_manifest.json"
 DEFAULT_ARCHIVE_VERIFICATION_JSON = ROOT / "outputs/analysis/phase2_package_only_archive_verification.json"
-DEFAULT_OUTPUT_MD = ROOT / "outputs/analysis/PHASE2_Z002_TRACKING_MARGIN_LAUNCH_AUDIT.md"
-DEFAULT_OUTPUT_JSON = ROOT / "outputs/analysis/phase2_z002_tracking_margin_launch_audit.json"
+DEFAULT_OUTPUT_MD = ROOT / "outputs/analysis/PHASE2_Z002_TEACHER_CONTINUITY_LAUNCH_AUDIT.md"
+DEFAULT_OUTPUT_JSON = ROOT / "outputs/analysis/phase2_z002_teacher_continuity_launch_audit.json"
 DEFAULT_PACKAGE_ROOT = ROOT / "outputs/analysis/colab_cli"
 
 
@@ -98,7 +98,8 @@ def build_payload(args: argparse.Namespace) -> dict[str, Any]:
             stage_guard.get("post_training_status")
             == "PASS_PHASE2_Z002_TRACKING_MARGIN_POST_TRAINING_GATES"
         ),
-        "artifact_manifest_stage_matches": artifact_manifest.get("stage") == "stage_z002_tracking_margin",
+        "artifact_manifest_stage_matches": artifact_manifest.get("stage")
+        in {"stage_z002_tracking_margin", "stage_z002_teacher_continuity"},
         "artifact_manifest_promotion_gate_matches": (
             (artifact_manifest.get("promotion_gate") or {}).get("required_post_training_status")
             == "PASS_PHASE2_Z002_TRACKING_MARGIN_POST_TRAINING_GATES"
@@ -124,11 +125,11 @@ def build_payload(args: argparse.Namespace) -> dict[str, Any]:
     }
 
     if all(checks.values()) and launch_status == "PASS_PHASE2_COLAB_GPU_SESSION_READY":
-        status = "PASS_Z002_TRACKING_MARGIN_READY_TO_LAUNCH"
+        status = "PASS_Z002_PARENT_RECOVERY_READY_TO_LAUNCH"
     elif all(checks.values()):
         status = "HOLD_EXTERNAL_LAUNCH_BLOCKERS"
     else:
-        status = "HOLD_Z002_TRACKING_MARGIN_AUDIT_FAILED"
+        status = "HOLD_Z002_PARENT_RECOVERY_AUDIT_FAILED"
 
     return {
         "status": status,
@@ -159,7 +160,7 @@ def build_payload(args: argparse.Namespace) -> dict[str, Any]:
 
 def write_markdown(payload: dict[str, Any], path: Path) -> None:
     lines = [
-        "# Phase 2 z=0.002 Tracking-Margin Launch Audit",
+        "# Phase 2 z=0.002 Parent-Recovery Launch Audit",
         "",
         f"status: `{payload['status']}`",
         f"workflow: `{payload['workflow']}`",
@@ -207,7 +208,7 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--workflow", default="phase2-z002-tracking-margin")
+    parser.add_argument("--workflow", default="phase2-z002-teacher-continuity")
     parser.add_argument("--recipe-json", default=str(DEFAULT_RECIPE_JSON))
     parser.add_argument("--next-run-json", default=str(DEFAULT_NEXT_RUN_JSON))
     parser.add_argument("--readiness-json", default=str(DEFAULT_READINESS_JSON))

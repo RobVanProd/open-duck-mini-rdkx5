@@ -21,7 +21,7 @@ from run_colab_cli_cuda_workflow import required_rdk_package_paths, would_packag
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_LEDGER = ROOT / "outputs/analysis/phase2_curriculum_gate_ledger.json"
 DEFAULT_NEXT_PLAN = ROOT / "outputs/analysis/phase2_next_run_plan.json"
-DEFAULT_RECIPE = ROOT / "outputs/analysis/phase2_z002_tracking_margin_next_recipe.json"
+DEFAULT_RECIPE = ROOT / "outputs/analysis/phase2_z002_teacher_continuity_next_recipe.json"
 DEFAULT_MANIFEST = ROOT / "outputs/analysis/phase2_artifact_manifest.json"
 DEFAULT_PACKAGE_MANIFEST = ROOT / "outputs/analysis/phase2_colab_package_manifest.json"
 DEFAULT_LOCAL_ROCM_ISOLATION = (
@@ -136,13 +136,23 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
     git_status = nested(next_plan, "readiness", "git", "status")
     colab_active = bool(nested(next_plan, "readiness", "colab", "active", default=False))
     preferred_command = nested(next_plan, "commands", "colab", "shell") or nested(recipe, "commands", "colab", "shell")
-    preferred_workflow = nested(next_plan, "commands", "colab", "workflow") or recipe.get("key_recipe_settings", {}).get("workflow") or "phase2-z002-tracking-margin"
+    preferred_workflow = nested(next_plan, "commands", "colab", "workflow") or recipe.get("key_recipe_settings", {}).get("workflow") or "phase2-z002-teacher-continuity"
     package = package_preflight(preferred_workflow)
     package_manifest_workflow = package_manifest.get("workflow")
     package_manifest_status = package_manifest.get("status")
     package_manifest_matches_workflow = package_manifest_workflow == preferred_workflow
     z002_tracking_margin = preferred_workflow == "phase2-z002-tracking-margin"
-    if z002_tracking_margin and current_stage == "stage_z005_support":
+    z002_teacher_continuity = preferred_workflow == "phase2-z002-teacher-continuity"
+    z002_parent_recovery = z002_tracking_margin or z002_teacher_continuity
+    if z002_teacher_continuity and current_stage == "stage_z005_support":
+        stage_strategy = (
+            "The curriculum ledger is held at stage_z005_support, but the selected launch "
+            "workflow intentionally backs up to z=0.002 teacher-action continuity. The "
+            "scalar z=0.002 tracking-margin A100 run preserved motion but held at about "
+            "0.216-0.218 rad tracking p95, so the next GPU run must recover tracking "
+            "margin using a behavior-prior/trust-region mechanism before escalating terrain."
+        )
+    elif z002_tracking_margin and current_stage == "stage_z005_support":
         stage_strategy = (
             "The curriculum ledger is held at stage_z005_support, but the selected launch "
             "workflow intentionally backs up to z=0.002 tracking-margin recovery. The "
@@ -155,18 +165,23 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
             "The selected launch workflow is a z=0.002 tracking-margin recovery run. "
             "It is a parent-selection step, not a terrain escalation."
         )
+    elif z002_teacher_continuity:
+        stage_strategy = (
+            "The selected launch workflow is a z=0.002 teacher-action continuity run. "
+            "It is a parent-selection step that replaces the held scalar tracking-margin recipe."
+        )
     else:
         stage_strategy = (
             "The selected launch workflow targets the current held curriculum stage."
         )
     post_training_tool = (
         "report_phase2_z002_tracking_margin_post_training_gates.py"
-        if z002_tracking_margin
+        if z002_parent_recovery
         else "report_phase2_z005_post_training_gates.py"
     )
     post_training_status = (
         "PASS_PHASE2_Z002_TRACKING_MARGIN_POST_TRAINING_GATES"
-        if z002_tracking_margin
+        if z002_parent_recovery
         else "PASS_PHASE2_Z005_POST_TRAINING_GATES"
     )
 

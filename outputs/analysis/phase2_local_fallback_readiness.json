@@ -6,7 +6,7 @@
       "--playground-root",
       "/home/lsd/robots/Open_Duck_Playground"
     ],
-    "elapsed_s": 1.721,
+    "elapsed_s": 1.503,
     "returncode": 0,
     "stderr": "",
     "stdout": "Failed to import warp: No module named 'warp'\nFailed to import mujoco_warp: No module named 'warp'\n# Training Environment Check\n\noverall_status: `WARN_ENV_CHECKS`\npython: `3.12.13 (main, May 10 2026, 19:30:01) [Clang 22.1.3 ]`\nplatform: `Linux-7.0.0-27-generic-x86_64-with-glibc2.43`\ntarget_gpu: `AMD Radeon RX 7900 XTX / ROCm`\nplayground_root: `/home/lsd/robots/Open_Duck_Playground`\nrocm_env_hint: `/home/lsd/robots/envs/rocm-baseline`\nplayground_env_hint: `/home/lsd/robots/envs/open-duck-playground`\nrecommended_python: `/home/lsd/robots/envs/open-duck-playground/bin/python`\nrecommended_check_command: `/home/lsd/robots/envs/open-duck-playground/bin/python tools/check_training_env.py`\nmujoco_render_smoke_hint: `/home/lsd/robots/verify_scratch/render_mujoco_egl.py`\n\n| status | check | detail |\n|---|---|---|\n| PASS | python.version | 3.12.13 |\n| PASS | python.executable | /home/lsd/robots/envs/open-duck-playground/bin/python |\n| PASS | env.MUJOCO_GL | unset |\n| PASS | env.PYTHONPATH | unset |\n| PASS | local.rocm_env_hint | /home/lsd/robots/envs/rocm-baseline |\n| PASS | local.playground_env_python | /home/lsd/robots/envs/open-duck-playground/bin/python |\n| PASS | python.recommended_env | running inside the project Open Duck Playground env |\n| WARN | local.rocm_baseline_note | rocm-baseline is useful for GPU smoke tests, but it may not include Open Duck Playground dependencies |\n| PASS | local.mujoco_render_smoke_hint | /home/lsd/robots/verify_scratch/render_mujoco_egl.py |\n| PASS | command:rocminfo | \u001b[37mROCk module is loaded\u001b[0m |\n| PASS | command:rocm-smi | ============================ ROCm System Management Interface ============================ |\n| PASS | import:numpy | imported numpy 2.4.6 |\n| PASS | import:onnxruntime | imported onnxruntime 1.26.0 |\n| PASS | import:ml_collections | imported ml_collections 1.1.0 |\n| PASS | import:mujoco_playground | imported mujoco_playground |\n| PASS | jax.import | imported jax 0.8.2 |\n| PASS | jax.backend | default_backend=gpu |\n| PASS | jax.devices | rocm:0 |\n| PASS | jax.gpu | GPU/ROCm-like devices visible: [RocmDevice(id=0)] |\n| PASS | mujoco.import | imported mujoco 3.9.0 |\n| PASS | mujoco.model_load | loaded and stepped minimal model |\n| PASS | playground.path | /home/lsd/robots/Open_Duck_Playground |\n| PASS | import:playground.open_duck_mini_v2.joystick | imported playground.open_duck_mini_v2.joystick |\n| PASS | import:playground.open_duck_mini_v2.constants | imported playground.open_duck_mini_v2.constants |",
@@ -17,7 +17,7 @@
       "colab",
       "sessions"
     ],
-    "elapsed_s": 0.32,
+    "elapsed_s": 0.46,
     "returncode": 0,
     "stderr": "",
     "stdout": "[colab] No active sessions found on server.",
@@ -30,13 +30,18 @@
       "-s",
       "open-duck-l4"
     ],
-    "elapsed_s": 0.317,
+    "elapsed_s": 0.45,
     "returncode": 0,
     "stderr": "",
     "stdout": "[colab] Session 'open-duck-l4' not found.",
     "timed_out": false
   },
   "core_artifacts": {
+    "behavior_prior_mlp": {
+      "exists": true,
+      "kind": "file",
+      "path": "outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate/candidate_mlp.npz"
+    },
     "corrected_bridge": {
       "exists": true,
       "kind": "file",
@@ -50,7 +55,7 @@
     "recipe": {
       "exists": true,
       "kind": "file",
-      "path": "outputs/analysis/phase2_z002_tracking_margin_next_recipe.json"
+      "path": "outputs/analysis/phase2_z002_teacher_continuity_next_recipe.json"
     },
     "restore_checkpoint": {
       "exists": true,
@@ -94,7 +99,7 @@
       "-c",
       "\nimport json\nimport os\nimport sys\n\npayload = {\"python\": sys.executable, \"python_version\": sys.version.split()[0]}\n\ntry:\n    import jax\n    payload[\"jax_version\"] = jax.__version__\n    payload[\"jax_backend\"] = jax.default_backend()\n    payload[\"jax_devices\"] = [str(device) for device in jax.devices()]\nexcept Exception as exc:\n    payload[\"jax_error\"] = f\"{type(exc).__name__}: {exc}\"\n\ntry:\n    import mujoco\n    payload[\"mujoco_version\"] = mujoco.__version__\nexcept Exception as exc:\n    payload[\"mujoco_error\"] = f\"{type(exc).__name__}: {exc}\"\n\ntry:\n    import mujoco_playground\n    payload[\"mujoco_playground_file\"] = getattr(mujoco_playground, \"__file__\", None)\nexcept Exception as exc:\n    payload[\"mujoco_playground_error\"] = f\"{type(exc).__name__}: {exc}\"\n\nfor module in [\n    \"playground.open_duck_mini_v2.joystick\",\n    \"playground.open_duck_mini_v2.constants\",\n]:\n    try:\n        __import__(module)\n        payload[f\"import:{module}\"] = \"PASS\"\n    except Exception as exc:\n        payload[f\"import:{module}\"] = f\"{type(exc).__name__}: {exc}\"\n\npayload[\"env\"] = {\n    key: os.environ.get(key)\n    for key in [\n        \"JAX_PLATFORM_NAME\",\n        \"XLA_PYTHON_CLIENT_PREALLOCATE\",\n        \"XLA_PYTHON_CLIENT_MEM_FRACTION\",\n        \"HSA_OVERRIDE_GFX_VERSION\",\n        \"MUJOCO_GL\",\n    ]\n}\nprint(json.dumps(payload, sort_keys=True))\n"
     ],
-    "elapsed_s": 1.543,
+    "elapsed_s": 1.577,
     "returncode": 0,
     "stderr": "",
     "stdout": "Failed to import warp: No module named 'warp'\nFailed to import mujoco_warp: No module named 'warp'\n{\"env\": {\"HSA_OVERRIDE_GFX_VERSION\": null, \"JAX_PLATFORM_NAME\": null, \"MUJOCO_GL\": null, \"XLA_PYTHON_CLIENT_MEM_FRACTION\": null, \"XLA_PYTHON_CLIENT_PREALLOCATE\": null}, \"import:playground.open_duck_mini_v2.constants\": \"PASS\", \"import:playground.open_duck_mini_v2.joystick\": \"PASS\", \"jax_backend\": \"gpu\", \"jax_devices\": [\"rocm:0\"], \"jax_version\": \"0.8.2\", \"mujoco_playground_file\": \"/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/mujoco_playground/__init__.py\", \"mujoco_version\": \"3.9.0\", \"python\": \"/home/lsd/robots/envs/open-duck-playground/bin/python\", \"python_version\": \"3.12.13\"}",
@@ -121,5 +126,5 @@
   "warnings": [
     "local JAX is 0.8.2, not pinned Colab/CUDA 0.7.2; treat local runs as fallback/debug unless they clear canonical gates"
   ],
-  "workflow": "phase2-z002-tracking-margin"
+  "workflow": "phase2-z002-teacher-continuity"
 }

@@ -3,15 +3,15 @@
 status: `HOLD_PHASE2_COLAB_GPU_SESSION_NOT_READY`
 current_stage: `stage_z005_support`
 current_gate_status: `HOLD_PHASE2_STAGE_Z005_SUPPORT`
-next_recipe_status: `PASS_Z002_TRACKING_MARGIN_RECIPE_READY`
+next_recipe_status: `PASS_Z002_TEACHER_CONTINUITY_RECIPE_READY`
 launch_status: `HOLD_PHASE2_COLAB_GPU_SESSION_NOT_READY`
-preferred_workflow: `phase2-z002-tracking-margin`
+preferred_workflow: `phase2-z002-teacher-continuity`
 
 This is a read-only guard. It did not train, SSH, deploy, or touch the robot.
 
 ## Stage Strategy
 
-The curriculum ledger is held at stage_z005_support, but the selected launch workflow intentionally backs up to z=0.002 tracking-margin recovery. The z=0.005 gates failed after the z=0.002 parent lost tracking margin, so the next GPU run must recover and re-gate the z=0.002 parent before escalating terrain again.
+The curriculum ledger is held at stage_z005_support, but the selected launch workflow intentionally backs up to z=0.002 teacher-action continuity. The scalar z=0.002 tracking-margin A100 run preserved motion but held at about 0.216-0.218 rad tracking p95, so the next GPU run must recover tracking margin using a behavior-prior/trust-region mechanism before escalating terrain.
 
 ## Readiness
 
@@ -20,7 +20,7 @@ The curriculum ledger is held at stage_z005_support, but the selected launch wor
 - git_status: `PASS_GIT_REMOTE_READ_AUTH`
 - package_preflight: `PASS_PACKAGE_PREFLIGHT`
 - package_manifest_status: `PASS_PHASE2_COLAB_PACKAGE_MANIFEST_READY`
-- package_manifest_workflow: `phase2-z002-tracking-margin`
+- package_manifest_workflow: `phase2-z002-teacher-continuity`
 - package_manifest_matches_workflow: `True`
 - local_backend_status: `HOLD_LOCAL_ROCM_GPU_CPU_CORRECTNESS_ONLY`
 - local_rocm_gate: `HOLD_PLAYGROUND_GPU_STEP`
@@ -34,10 +34,10 @@ The curriculum ledger is held at stage_z005_support, but the selected launch wor
 
 - Review committed Phase 2 analysis artifacts and guard reports.
 - Run read-only report tools: report_phase2_curriculum_gate.py, report_phase2_artifact_manifest.py, and report_phase2_stage_guard.py.
-- Run the phase2-z002-tracking-margin Colab workflow in plan-only mode to verify the package preflight and generated remote driver.
-- Run the phase2-z002-tracking-margin Colab workflow with --package-only to build and hash local upload archives without contacting Colab.
+- Run the phase2-z002-teacher-continuity Colab workflow in plan-only mode to verify the package preflight and generated remote driver.
+- Run the phase2-z002-teacher-continuity Colab workflow with --package-only to build and hash local upload archives without contacting Colab.
 - Prepare or reconnect a Colab GPU session named open-duck-l4; A100/L4 is preferred, T4 is acceptable but slower.
-- Run the phase2-z002-tracking-margin recipe only after the Colab session is active and still using the corrected bridge.
+- Run the phase2-z002-teacher-continuity recipe only after the Colab session is active and still using the corrected bridge.
 - Run report_phase2_z002_tracking_margin_post_training_gates.py on post-training seed-gate output.
 - Use local CPU only for reduced-horizon correctness checks; local ROCm GPU is not cleared for Phase 2 training.
 - Do not launch training yet from this host; Colab session open-duck-l4 is not active.
@@ -58,11 +58,11 @@ The curriculum ledger is held at stage_z005_support, but the selected launch wor
 
 ## Required Evidence To Advance
 
-- z=0.002 x=0.08 no-push: 8/8 duration complete, zero falls, no velocity excess, tracking p95 <= 0.20, track ratio >= 0.25.
-- z=0.002 x=0.0 no-push: 8/8 duration complete, zero falls, no velocity excess, |mean vx| <= 0.005.
+- z=0.005 x=0.08 no-push: 8/8 duration complete, zero falls, no velocity excess, tracking p95 <= 0.20, track ratio >= 0.40.
+- z=0.005 x=0.0 no-push: 8/8 duration complete, zero falls, no velocity excess, |mean vx| <= 0.005.
 - z=0.002 x=0.08/x=0.0 no-push regression gates remain passing.
 - z=0.002 x=0.08/x=0.0 gentle-push regression gates remain passing.
-- Post-training decision artifact reports PASS_PHASE2_Z002_TRACKING_MARGIN_POST_TRAINING_GATES.
+- Post-training decision artifact reports PASS_PHASE2_Z005_POST_TRAINING_GATES.
 
 ## Local Backend
 
@@ -82,10 +82,11 @@ The curriculum ledger is held at stage_z005_support, but the selected launch wor
 | path | exists | included by tar filter |
 |---|---|---|
 | `outputs/analysis/actuator_response_fit_corrected_knee.json` | `True` | `True` |
-| `outputs/analysis/phase2_z002_tracking_margin_next_recipe.json` | `True` | `True` |
+| `outputs/analysis/phase2_z002_teacher_continuity_next_recipe.json` | `True` | `True` |
 | `tools/run_actuator_bridge_training_smoke.py` | `True` | `True` |
 | `tools/report_phase2_z002_tracking_margin_post_training_gates.py` | `True` | `True` |
 | `outputs/phase2_domain_randomization/stage_c0_terrain_z002_preserve_from_a2_gpu/smoke_20260628T103743Z_gpu/2026_06_28_064431_245760` | `True` | `True` |
+| `outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate/candidate_mlp.npz` | `True` | `True` |
 
 ## Preferred Command
 
@@ -93,11 +94,11 @@ The curriculum ledger is held at stage_z005_support, but the selected launch wor
 python3 \
     tools/run_colab_cli_cuda_workflow.py \
     --workflow \
-    phase2-z002-tracking-margin \
+    phase2-z002-teacher-continuity \
     --session \
     open-duck-l4 \
     --candidate-name \
-    phase2_z002_tracking_margin_cuda \
+    phase2_z002_teacher_continuity_cuda \
     --candidate-checkpoint-sweep \
     --candidate-checkpoint-sweep-commands \
     0.0,0.08 \
@@ -114,7 +115,7 @@ python3 \
 
 - `ledger`: `outputs/analysis/phase2_curriculum_gate_ledger.json`
 - `next_plan`: `outputs/analysis/phase2_next_run_plan.json`
-- `recipe`: `outputs/analysis/phase2_z002_tracking_margin_next_recipe.json`
+- `recipe`: `outputs/analysis/phase2_z002_teacher_continuity_next_recipe.json`
 - `manifest`: `outputs/analysis/phase2_artifact_manifest.json`
 - `package_manifest`: `outputs/analysis/phase2_colab_package_manifest.json`
 - `local_rocm_isolation`: `outputs/analysis/rocm_mjx_isolation_post_bios/rocm_mjx_runtime_isolation.json`

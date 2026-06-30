@@ -262,7 +262,7 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--workflow", default="phase2-z002-tracking-margin")
+    parser.add_argument("--workflow", default="phase2-z002-teacher-continuity")
     parser.add_argument("--verify-tarball", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--output-md", default=str(DEFAULT_OUTPUT_MD))
     parser.add_argument("--output-json", default=str(DEFAULT_OUTPUT_JSON))

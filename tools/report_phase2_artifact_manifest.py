@@ -52,6 +52,12 @@ REVIEW_ARTIFACTS = [
     "outputs/analysis/phase2_z002_tracking_margin_launch_audit.json",
     "outputs/analysis/PHASE2_Z002_COLAB_LAUNCH_HANDOFF.md",
     "outputs/analysis/phase2_z002_colab_launch_handoff.json",
+    "outputs/analysis/PHASE2_Z002_TEACHER_CONTINUITY_NEXT_RECIPE.md",
+    "outputs/analysis/phase2_z002_teacher_continuity_next_recipe.json",
+    "outputs/analysis/PHASE2_Z002_TEACHER_CONTINUITY_LAUNCH_AUDIT.md",
+    "outputs/analysis/phase2_z002_teacher_continuity_launch_audit.json",
+    "outputs/analysis/PHASE2_Z002_TEACHER_CONTINUITY_COLAB_LAUNCH_HANDOFF.md",
+    "outputs/analysis/phase2_z002_teacher_continuity_colab_launch_handoff.json",
     "outputs/analysis/PHASE2_PACKAGE_ONLY_ARCHIVE_VERIFICATION.md",
     "outputs/analysis/phase2_package_only_archive_verification.json",
     "outputs/analysis/PHASE2_LOCAL_FALLBACK_READINESS.md",
@@ -73,6 +79,7 @@ REVIEW_ARTIFACTS = [
     "tools/plan_phase2_z005_support_recipe.py",
     "tools/plan_phase2_z005_motion_floor_recipe.py",
     "tools/plan_phase2_z002_tracking_margin_recipe.py",
+    "tools/plan_phase2_z002_teacher_continuity_recipe.py",
     "tools/report_phase2_colab_package_manifest.py",
     "tools/report_phase2_local_fallback_readiness.py",
     "tools/report_phase2_z005_post_training_gates.py",
@@ -186,10 +193,10 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
     bridge = Path(args.bridge_json)
     restore_checkpoint = Path(args.restore_checkpoint)
     ledger = load_json_optional(ROOT / "outputs/analysis/phase2_curriculum_gate_ledger.json")
-    recipe = load_json_optional(ROOT / "outputs/analysis/phase2_z002_tracking_margin_next_recipe.json")
+    recipe = load_json_optional(ROOT / "outputs/analysis/phase2_z002_teacher_continuity_next_recipe.json")
     return {
         "status": "PASS_PHASE2_ARTIFACT_MANIFEST_READY",
-        "stage": "stage_z002_tracking_margin",
+        "stage": "stage_z002_teacher_continuity",
         "current_gate_status": ledger.get("status"),
         "next_recipe_status": recipe.get("status"),
         "git": git_state(),

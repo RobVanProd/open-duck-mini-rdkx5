@@ -32,11 +32,11 @@ Use this when a visible Colab GPU session is available:
 python3 \
     tools/run_colab_cli_cuda_workflow.py \
     --workflow \
-    phase2-z002-tracking-margin \
+    phase2-z002-teacher-continuity \
     --session \
     open-duck-l4 \
     --candidate-name \
-    phase2_z002_tracking_margin_cuda \
+    phase2_z002_teacher_continuity_cuda \
     --candidate-checkpoint-sweep \
     --candidate-checkpoint-sweep-commands \
     0.0,0.08 \
@@ -61,7 +61,7 @@ This is fallback/backend evidence only unless it clears the same post-training g
     --env-python \
     ../envs/open-duck-playground/bin/python \
     --output-root \
-    outputs/phase2_domain_randomization/stage_z002_tracking_margin_local_rocm_safeenv_8env_122880 \
+    outputs/phase2_domain_randomization/stage_z002_teacher_continuity_local_rocm_safeenv_8env_122880 \
     --run \
     --platform \
     gpu \
@@ -91,31 +91,31 @@ This is fallback/backend evidence only unless it clears the same post-training g
     --restore-checkpoint-path \
     outputs/phase2_domain_randomization/stage_c0_terrain_z002_preserve_from_a2_gpu/smoke_20260628T103743Z_gpu/2026_06_28_064431_245760 \
     --ppo-learning-rate \
-    0.000002 \
+    0.000004 \
     --ppo-entropy-cost \
     0.001 \
     --ppo-clipping-epsilon \
-    0.015 \
+    0.025 \
     --ppo-max-grad-norm \
     0.08 \
     --restore-policy-kl-scale \
-    6 \
+    7.5 \
     --tracking-lin-vel-scale \
     3 \
     --tracking-sigma \
     0.01 \
     --forward-progress-scale \
-    4.5 \
+    4 \
     --forward-wrong-direction-scale \
     -6 \
     --forward-wrong-direction-allowed-reverse-ratio \
     0.01 \
     --command-progress-scale \
-    3.5 \
+    3 \
     --command-progress-shortfall-scale \
-    -10 \
+    -8 \
     --command-progress-required-ratio \
-    0.55 \
+    0.5 \
     --command-progress-warmup-steps \
     30 \
     --action-rate-huber-delta \
@@ -127,7 +127,7 @@ This is fallback/backend evidence only unless it clears the same post-training g
     --forward-swing-advance-huber-delta \
     0.002 \
     --action-rate-scale \
-    -0.04 \
+    -0.035 \
     --action-magnitude-scale \
     -0.003 \
     --base-height-scale \
@@ -250,9 +250,16 @@ This is fallback/backend evidence only unless it clears the same post-training g
     --actuator-tracking-scale \
     -0.005 \
     --target-rate-scale \
-    -0.02 \
+    -0.01 \
     --terrain-hfield-z-scale \
-    0.002
+    0.002 \
+    --enable-behavior-prior \
+    --behavior-prior-mlp-npz \
+    outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate/candidate_mlp.npz \
+    --behavior-prior-scale \
+    -0.18 \
+    --behavior-prior-huber-delta \
+    0.08
 ```
 
 ## Promotion Rule

@@ -30,6 +30,13 @@ DEFAULT_RESTORE_CHECKPOINT = (
     / "smoke_20260628T103743Z_gpu"
     / "2026_06_28_064431_245760"
 )
+DEFAULT_BEHAVIOR_PRIOR_MLP = (
+    ROOT
+    / "outputs"
+    / "analysis"
+    / "command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate"
+    / "candidate_mlp.npz"
+)
 
 
 def rel(path: Path | str | None) -> str | None:
@@ -191,9 +198,15 @@ def colab_command(session: str, candidate_name: str, workflow: str) -> list[str]
     ]
 
 
-def local_rocm_command(restore_checkpoint: Path, output_root: str, terrain_z: float) -> list[str]:
-    z002_tracking_margin = abs(terrain_z - 0.002) < 1e-9
-    return [
+def local_rocm_command(
+    restore_checkpoint: Path,
+    output_root: str,
+    terrain_z: float,
+    workflow: str,
+) -> list[str]:
+    z002_tracking_margin = workflow == "phase2-z002-tracking-margin"
+    z002_teacher_continuity = workflow == "phase2-z002-teacher-continuity"
+    command = [
         "../envs/open-duck-playground/bin/python",
         "tools/run_actuator_bridge_training_smoke.py",
         "--playground-path",
@@ -237,9 +250,9 @@ def local_rocm_command(restore_checkpoint: Path, output_root: str, terrain_z: fl
         "--ppo-clipping-epsilon",
         "0.015" if z002_tracking_margin else "0.025",
         "--ppo-max-grad-norm",
-        "0.08" if z002_tracking_margin else "0.12",
+        "0.08" if (z002_tracking_margin or z002_teacher_continuity) else "0.12",
         "--restore-policy-kl-scale",
-        "6" if z002_tracking_margin else "3",
+        "7.5" if z002_teacher_continuity else ("6" if z002_tracking_margin else "3"),
         "--tracking-lin-vel-scale",
         "3",
         "--tracking-sigma",
@@ -267,7 +280,7 @@ def local_rocm_command(restore_checkpoint: Path, output_root: str, terrain_z: fl
         "--forward-swing-advance-huber-delta",
         "0.002",
         "--action-rate-scale",
-        "-0.04" if z002_tracking_margin else "-0.055",
+        "-0.035" if z002_teacher_continuity else ("-0.04" if z002_tracking_margin else "-0.055"),
         "--action-magnitude-scale",
         "-0.003",
         "--base-height-scale",
@@ -390,10 +403,23 @@ def local_rocm_command(restore_checkpoint: Path, output_root: str, terrain_z: fl
         "--actuator-tracking-scale",
         "-0.005",
         "--target-rate-scale",
-        "-0.02" if z002_tracking_margin else "0",
+        "-0.01" if z002_teacher_continuity else ("-0.02" if z002_tracking_margin else "0"),
         "--terrain-hfield-z-scale",
         str(terrain_z),
     ]
+    if z002_teacher_continuity:
+        command.extend(
+            [
+                "--enable-behavior-prior",
+                "--behavior-prior-mlp-npz",
+                rel(DEFAULT_BEHAVIOR_PRIOR_MLP) or str(DEFAULT_BEHAVIOR_PRIOR_MLP),
+                "--behavior-prior-scale",
+                "-0.18",
+                "--behavior-prior-huber-delta",
+                "0.08",
+            ]
+        )
+    return command
 
 
 def write_markdown(payload: dict[str, Any], path: Path) -> None:
@@ -466,11 +492,11 @@ def main() -> int:
     parser.add_argument("--status-json", default=str(DEFAULT_STATUS_JSON))
     parser.add_argument("--restore-checkpoint", default=str(DEFAULT_RESTORE_CHECKPOINT))
     parser.add_argument("--session", default="open-duck-l4")
-    parser.add_argument("--workflow", default="phase2-z002-tracking-margin")
-    parser.add_argument("--candidate-name", default="phase2_z002_tracking_margin_cuda")
+    parser.add_argument("--workflow", default="phase2-z002-teacher-continuity")
+    parser.add_argument("--candidate-name", default="phase2_z002_teacher_continuity_cuda")
     parser.add_argument(
         "--local-output-root",
-        default="outputs/phase2_domain_randomization/stage_z002_tracking_margin_local_rocm_safeenv_8env_122880",
+        default="outputs/phase2_domain_randomization/stage_z002_teacher_continuity_local_rocm_safeenv_8env_122880",
     )
     parser.add_argument(
         "--output-md",
@@ -489,11 +515,11 @@ def main() -> int:
     restore_checkpoint = Path(args.restore_checkpoint)
     terrain_z = (
         0.002
-        if args.workflow == "phase2-z002-tracking-margin"
+        if args.workflow in {"phase2-z002-tracking-margin", "phase2-z002-teacher-continuity"}
         else (0.0035 if args.workflow == "phase2-z0035-motion-floor" else 0.005)
     )
     colab = colab_command(args.session, args.candidate_name, args.workflow)
-    local = local_rocm_command(restore_checkpoint, args.local_output_root, terrain_z)
+    local = local_rocm_command(restore_checkpoint, args.local_output_root, terrain_z, args.workflow)
     candidate = status.get("candidate", {})
     readiness = unchecked_readiness()
     if args.check_colab:
@@ -516,6 +542,10 @@ def main() -> int:
         "restore_checkpoint": {
             "path": rel(restore_checkpoint),
             "present": restore_checkpoint.exists(),
+        },
+        "behavior_prior_mlp": {
+            "path": rel(DEFAULT_BEHAVIOR_PRIOR_MLP),
+            "present": DEFAULT_BEHAVIOR_PRIOR_MLP.exists(),
         },
         "readiness": readiness,
         "commands": {

@@ -1,18 +1,18 @@
 {
   "advance_requirements": [
-    "z=0.002 x=0.08 no-push: 8/8 duration complete, zero falls, no velocity excess, tracking p95 <= 0.20, track ratio >= 0.25.",
-    "z=0.002 x=0.0 no-push: 8/8 duration complete, zero falls, no velocity excess, |mean vx| <= 0.005.",
+    "z=0.005 x=0.08 no-push: 8/8 duration complete, zero falls, no velocity excess, tracking p95 <= 0.20, track ratio >= 0.40.",
+    "z=0.005 x=0.0 no-push: 8/8 duration complete, zero falls, no velocity excess, |mean vx| <= 0.005.",
     "z=0.002 x=0.08/x=0.0 no-push regression gates remain passing.",
     "z=0.002 x=0.08/x=0.0 gentle-push regression gates remain passing.",
-    "Post-training decision artifact reports PASS_PHASE2_Z002_TRACKING_MARGIN_POST_TRAINING_GATES."
+    "Post-training decision artifact reports PASS_PHASE2_Z005_POST_TRAINING_GATES."
   ],
   "allowed_actions": [
     "Review committed Phase 2 analysis artifacts and guard reports.",
     "Run read-only report tools: report_phase2_curriculum_gate.py, report_phase2_artifact_manifest.py, and report_phase2_stage_guard.py.",
-    "Run the phase2-z002-tracking-margin Colab workflow in plan-only mode to verify the package preflight and generated remote driver.",
-    "Run the phase2-z002-tracking-margin Colab workflow with --package-only to build and hash local upload archives without contacting Colab.",
+    "Run the phase2-z002-teacher-continuity Colab workflow in plan-only mode to verify the package preflight and generated remote driver.",
+    "Run the phase2-z002-teacher-continuity Colab workflow with --package-only to build and hash local upload archives without contacting Colab.",
     "Prepare or reconnect a Colab GPU session named open-duck-l4; A100/L4 is preferred, T4 is acceptable but slower.",
-    "Run the phase2-z002-tracking-margin recipe only after the Colab session is active and still using the corrected bridge.",
+    "Run the phase2-z002-teacher-continuity recipe only after the Colab session is active and still using the corrected bridge.",
     "Run report_phase2_z002_tracking_margin_post_training_gates.py on post-training seed-gate output.",
     "Use local CPU only for reduced-horizon correctness checks; local ROCm GPU is not cleared for Phase 2 training.",
     "Do not launch training yet from this host; Colab session open-duck-l4 is not active."
@@ -60,7 +60,7 @@
     "manifest": "outputs/analysis/phase2_artifact_manifest.json",
     "next_plan": "outputs/analysis/phase2_next_run_plan.json",
     "package_manifest": "outputs/analysis/phase2_colab_package_manifest.json",
-    "recipe": "outputs/analysis/phase2_z002_tracking_margin_next_recipe.json"
+    "recipe": "outputs/analysis/phase2_z002_teacher_continuity_next_recipe.json"
   },
   "launch_status": "HOLD_PHASE2_COLAB_GPU_SESSION_NOT_READY",
   "local_backend": {
@@ -76,10 +76,10 @@
     "smallest_failing_subtest": "default_gpu_playground_direct_mjx_step"
   },
   "missing_gates": [],
-  "next_recipe_status": "PASS_Z002_TRACKING_MARGIN_RECIPE_READY",
+  "next_recipe_status": "PASS_Z002_TEACHER_CONTINUITY_RECIPE_READY",
   "package_manifest_matches_workflow": true,
   "package_manifest_status": "PASS_PHASE2_COLAB_PACKAGE_MANIFEST_READY",
-  "package_manifest_workflow": "phase2-z002-tracking-margin",
+  "package_manifest_workflow": "phase2-z002-teacher-continuity",
   "package_preflight": {
     "excluded_by_tar_filter": [],
     "items": [
@@ -91,7 +91,7 @@
       {
         "exists": true,
         "included_by_tar_filter": true,
-        "path": "outputs/analysis/phase2_z002_tracking_margin_next_recipe.json"
+        "path": "outputs/analysis/phase2_z002_teacher_continuity_next_recipe.json"
       },
       {
         "exists": true,
@@ -107,16 +107,21 @@
         "exists": true,
         "included_by_tar_filter": true,
         "path": "outputs/phase2_domain_randomization/stage_c0_terrain_z002_preserve_from_a2_gpu/smoke_20260628T103743Z_gpu/2026_06_28_064431_245760"
+      },
+      {
+        "exists": true,
+        "included_by_tar_filter": true,
+        "path": "outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate/candidate_mlp.npz"
       }
     ],
     "missing": [],
     "status": "PASS_PACKAGE_PREFLIGHT",
-    "workflow": "phase2-z002-tracking-margin"
+    "workflow": "phase2-z002-teacher-continuity"
   },
   "post_training_status": "PASS_PHASE2_Z002_TRACKING_MARGIN_POST_TRAINING_GATES",
   "post_training_tool": "report_phase2_z002_tracking_margin_post_training_gates.py",
-  "preferred_command": "python3 \\\n    tools/run_colab_cli_cuda_workflow.py \\\n    --workflow \\\n    phase2-z002-tracking-margin \\\n    --session \\\n    open-duck-l4 \\\n    --candidate-name \\\n    phase2_z002_tracking_margin_cuda \\\n    --candidate-checkpoint-sweep \\\n    --candidate-checkpoint-sweep-commands \\\n    0.0,0.08 \\\n    --candidate-checkpoint-sweep-duration \\\n    1.0 \\\n    --candidate-checkpoint-sweep-jax-platform \\\n    cpu \\\n    --candidate-timeout-s \\\n    10800 \\\n    --run",
-  "preferred_workflow": "phase2-z002-tracking-margin",
+  "preferred_command": "python3 \\\n    tools/run_colab_cli_cuda_workflow.py \\\n    --workflow \\\n    phase2-z002-teacher-continuity \\\n    --session \\\n    open-duck-l4 \\\n    --candidate-name \\\n    phase2_z002_teacher_continuity_cuda \\\n    --candidate-checkpoint-sweep \\\n    --candidate-checkpoint-sweep-commands \\\n    0.0,0.08 \\\n    --candidate-checkpoint-sweep-duration \\\n    1.0 \\\n    --candidate-checkpoint-sweep-jax-platform \\\n    cpu \\\n    --candidate-timeout-s \\\n    10800 \\\n    --run",
+  "preferred_workflow": "phase2-z002-teacher-continuity",
   "restore_checkpoint": {
     "exists": true,
     "file_count": 11,
@@ -127,7 +132,7 @@
   },
   "robot_touched": false,
   "ssh_used": false,
-  "stage_strategy": "The curriculum ledger is held at stage_z005_support, but the selected launch workflow intentionally backs up to z=0.002 tracking-margin recovery. The z=0.005 gates failed after the z=0.002 parent lost tracking margin, so the next GPU run must recover and re-gate the z=0.002 parent before escalating terrain again.",
+  "stage_strategy": "The curriculum ledger is held at stage_z005_support, but the selected launch workflow intentionally backs up to z=0.002 teacher-action continuity. The scalar z=0.002 tracking-margin A100 run preserved motion but held at about 0.216-0.218 rad tracking p95, so the next GPU run must recover tracking margin using a behavior-prior/trust-region mechanism before escalating terrain.",
   "status": "HOLD_PHASE2_COLAB_GPU_SESSION_NOT_READY",
   "training_started": false
 }
