@@ -169,6 +169,9 @@ def build_command(args: argparse.Namespace, output_dir: Path) -> list[str]:
         "--forward_swing_clearance_huber_delta": (
             args.forward_swing_clearance_huber_delta
         ),
+        "--forward_phase_swing_lift_huber_delta": (
+            args.forward_phase_swing_lift_huber_delta
+        ),
         "--forward_swing_advance_huber_delta": (
             args.forward_swing_advance_huber_delta
         ),
@@ -208,6 +211,10 @@ def build_command(args: argparse.Namespace, output_dir: Path) -> list[str]:
         ),
         "--forward_swing_clearance_scale": args.forward_swing_clearance_scale,
         "--forward_swing_clearance_target_m": args.forward_swing_clearance_target_m,
+        "--forward_phase_swing_lift_scale": args.forward_phase_swing_lift_scale,
+        "--forward_phase_swing_lift_target_m": (
+            args.forward_phase_swing_lift_target_m
+        ),
         "--forward_swing_balance_scale": args.forward_swing_balance_scale,
         "--forward_swing_balance_grace_steps": (
             args.forward_swing_balance_grace_steps
@@ -756,6 +763,7 @@ def main() -> int:
     parser.add_argument("--forward-pitch-huber-delta", type=float, default=None)
     parser.add_argument("--forward-pitch-rate-huber-delta", type=float, default=None)
     parser.add_argument("--forward-swing-clearance-huber-delta", type=float, default=None)
+    parser.add_argument("--forward-phase-swing-lift-huber-delta", type=float, default=None)
     parser.add_argument("--forward-swing-advance-huber-delta", type=float, default=None)
     parser.add_argument(
         "--forward-swing-target-rate-limit-huber-delta",
@@ -797,6 +805,8 @@ def main() -> int:
     )
     parser.add_argument("--forward-swing-clearance-scale", type=float, default=None)
     parser.add_argument("--forward-swing-clearance-target-m", type=float, default=None)
+    parser.add_argument("--forward-phase-swing-lift-scale", type=float, default=None)
+    parser.add_argument("--forward-phase-swing-lift-target-m", type=float, default=None)
     parser.add_argument("--forward-swing-balance-scale", type=float, default=None)
     parser.add_argument("--forward-swing-balance-grace-steps", type=int, default=None)
     parser.add_argument("--forward-swing-advance-scale", type=float, default=None)
@@ -1046,6 +1056,9 @@ def main() -> int:
             "forward_swing_clearance_huber_delta": (
                 args.forward_swing_clearance_huber_delta
             ),
+            "forward_phase_swing_lift_huber_delta": (
+                args.forward_phase_swing_lift_huber_delta
+            ),
             "forward_swing_advance_huber_delta": (
                 args.forward_swing_advance_huber_delta
             ),
@@ -1087,6 +1100,10 @@ def main() -> int:
             ),
             "forward_swing_clearance_scale": args.forward_swing_clearance_scale,
             "forward_swing_clearance_target_m": args.forward_swing_clearance_target_m,
+            "forward_phase_swing_lift_scale": args.forward_phase_swing_lift_scale,
+            "forward_phase_swing_lift_target_m": (
+                args.forward_phase_swing_lift_target_m
+            ),
             "forward_swing_balance_scale": args.forward_swing_balance_scale,
             "forward_swing_balance_grace_steps": (
                 args.forward_swing_balance_grace_steps

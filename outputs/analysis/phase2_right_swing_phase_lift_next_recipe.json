@@ -1,0 +1,75 @@
+{
+  "acceptance": [
+    "x=0.08 z=0.0024 corrected-bridge gate passes 8/8 seeds.",
+    "x=0.0 corrected-bridge gate passes 8/8 seeds if x=0.08 passes.",
+    "No corrected per-joint envelope excess in p95 or max target velocity.",
+    "Forward progress improves over the right-swing structural run without falling.",
+    "Right-leg swing diagnostic no longer reports blanket STRUCTURAL from R > 1.",
+    "Any promoted candidate is exported, hashed, and re-gated with the canonical corrected bridge."
+  ],
+  "candidate_gate": {
+    "bridge": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+    "bridge_sha256": "3661543d0745073b561eb4fa2ae8f9616368ee8b72cb397f8b953dada532c8c0",
+    "command_x": 0.08,
+    "duration_s": 15.0,
+    "seeds": "0-7",
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.0024
+  },
+  "closed_prior": {
+    "artifact": "outputs/analysis/phase2_right_swing_structural_a100_20260630/PHASE2_RIGHT_SWING_STRUCTURAL_A100_X008_GATE.md",
+    "doc": "docs/PHASE2_RIGHT_SWING_STRUCTURAL_RESULT.md",
+    "workflow": "phase2-right-swing-structural"
+  },
+  "colab_workflow_command": [
+    "python3",
+    "tools/run_colab_cli_cuda_workflow.py",
+    "--workflow",
+    "phase2-right-swing-phase-lift",
+    "--run",
+    "--no-candidate-checkpoint-sweep",
+    "--phase2-skip-post-training-gates",
+    "--artifact-checkpoint-mode",
+    "all",
+    "--timeout-s",
+    "7200",
+    "--no-poll"
+  ],
+  "deploy_performed": false,
+  "falsifiers": [
+    "If mean track ratio remains around 0.25 with 8/8 duration completion, the phase-primary lift signal did not restore forward progress.",
+    "If max target-velocity excess persists, the policy is still buying lift by leaving the corrected envelope.",
+    "If lift improves but progress does not, the next branch should change swing timing or knee-bend-first geometry, not add another scalar penalty.",
+    "If the hook destabilizes the candidate, reject it and do not promote a smoke-only result."
+  ],
+  "objective": "Test whether phase-primary swing lift during the commanded swing window restores right-foot lift/progress without another scalar rate-smoothing sweep.",
+  "offline_only": true,
+  "recipe_id": "right_swing_phase_lift",
+  "reward_overrides": {
+    "forward_phase_swing_lift_huber_delta": 0.003,
+    "forward_phase_swing_lift_scale": -0.0006,
+    "forward_phase_swing_lift_target_m": 0.012,
+    "forward_swing_advance_huber_delta": 0.002,
+    "forward_swing_advance_scale": -0.001,
+    "forward_swing_advance_target_m": 0.004,
+    "forward_swing_clearance_huber_delta": 0.003,
+    "forward_swing_clearance_scale": -0.00025,
+    "forward_swing_clearance_target_m": 0.016,
+    "forward_swing_target_rate_limit_huber_delta": 0.05,
+    "forward_swing_target_rate_limit_joint_indices": "11,12,13",
+    "forward_swing_target_rate_limit_scale": -0.0025,
+    "forward_swing_target_rate_limit_values": "2.25,2.75,2.00",
+    "forward_wrong_direction_allowed_reverse_ratio": 0.01,
+    "forward_wrong_direction_scale": -6
+  },
+  "status": "PRE_REGISTERED_NOT_STARTED",
+  "supersedes": "right_swing_structural",
+  "training": {
+    "artifact_checkpoint_mode": "all",
+    "push_enable": false,
+    "restore_checkpoint_path": "outputs/phase2_domain_randomization/stage_a2_preserve_narrow_flat_no_push_gpu/smoke_20260628T031553Z_gpu/2026_06_27_232221_491520",
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.0024,
+    "warm_start_required": true
+  }
+}
