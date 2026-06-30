@@ -195,6 +195,15 @@ def build_payload(args: argparse.Namespace) -> dict[str, Any]:
         "--forward-swing-advance-target-m",
         "0.004",
     ]
+    colab_command = [
+        "python3",
+        "tools/run_colab_cli_cuda_workflow.py",
+        "--workflow",
+        "phase2-right-swing-structural",
+        "--run",
+        "--timeout-s",
+        "14400",
+    ]
     return {
         "status": status,
         "stage": "phase2_right_swing_structural",
@@ -215,6 +224,7 @@ def build_payload(args: argparse.Namespace) -> dict[str, Any]:
             "Rerun the swing-clearance diagnostic before promoting any candidate.",
         ],
         "train_command": train_command,
+        "colab_workflow_command": colab_command,
         "acceptance": [
             "x=0.08 z=0.0024 corrected-bridge gate remains 8/8.",
             "x=0.0 corrected-bridge gate remains 8/8 with command semantics preserved.",
@@ -274,6 +284,8 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
     lines.extend(f"- {item}" for item in payload["recipe_intent"])
     lines.extend(["", "## Proposed Training Command", "", "```bash"])
     lines.append(" \\\n  ".join(payload["train_command"]))
+    lines.extend(["```", "", "## Proposed Colab Workflow Command", "", "```bash"])
+    lines.append(" \\\n  ".join(payload["colab_workflow_command"]))
     lines.extend(["```", "", "## Acceptance", ""])
     lines.extend(f"- {item}" for item in payload["acceptance"])
     lines.extend(["", "## Falsifiers", ""])

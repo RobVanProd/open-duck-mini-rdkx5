@@ -69,6 +69,18 @@ python3 \
   0.004
 ```
 
+## Proposed Colab Workflow Command
+
+```bash
+python3 \
+  tools/run_colab_cli_cuda_workflow.py \
+  --workflow \
+  phase2-right-swing-structural \
+  --run \
+  --timeout-s \
+  14400
+```
+
 ## Acceptance
 
 - x=0.08 z=0.0024 corrected-bridge gate remains 8/8.
