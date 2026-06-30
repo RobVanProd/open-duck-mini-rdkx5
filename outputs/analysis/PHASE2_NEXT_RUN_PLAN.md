@@ -1,7 +1,7 @@
 # Phase 2 Next Run Plan
 
 status: `PASS_PHASE2_NEXT_RUN_PLAN_READY`
-launch_status: `NOT_CHECKED`
+launch_status: `HOLD_PHASE2_COLAB_GPU_SESSION_NOT_READY`
 
 ## Current Decision
 
@@ -14,13 +14,13 @@ launch_status: `NOT_CHECKED`
 
 ## Readiness
 
-- colab_status: `NOT_CHECKED`
-- colab_session: `None`
+- colab_status: `HOLD_NO_ACTIVE_COLAB_SESSION`
+- colab_session: `open-duck-l4`
 - colab_hardware: `None`
-- colab_active: `None`
-- git_status: `NOT_CHECKED`
-- git_branch: `None`
-- git_remote_read_auth_ok: `None`
+- colab_active: `False`
+- git_status: `HOLD_GIT_REMOTE_AUTH_UNAVAILABLE`
+- git_branch: `codex/live-oracle-dagger-phase-student`
+- git_remote_read_auth_ok: `False`
 
 The Colab check is read-only (`colab sessions` / `colab status`). The Git check is read-only (`git ls-remote`) and does not push.
 
