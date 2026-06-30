@@ -1,8 +1,10 @@
 # Phase 2 Swing-Clearance Diagnostic
 
 status: `PASS_SWING_CLEARANCE_DIAGNOSTIC_REPORTED`
-aggregate_verdict: `LATENCY_LIMITED`
-selected_fix_branch: phase-advance swing commands relative to the corrected 3-tick actuator delay
+aggregate_verdict: `MIXED_LEG_MODES`
+selected_fix_branch: split fix: structural leg needs gait/geometry or longer swing duration; latency-limited leg may need phase advance
+side_verdicts: `{'left': 'LATENCY_LIMITED', 'right': 'STRUCTURAL'}`
+rate_driver_joint_counts: `{'left_hip_pitch': 2, 'right_ankle': 7, 'left_ankle': 5, 'left_knee': 1, 'right_knee': 1}`
 
 ## Scope
 
@@ -43,20 +45,33 @@ selected_fix_branch: phase-advance swing commands relative to the corrected 3-ti
 
 ## Per-Seed Classification
 
-| seed | status | aggregate | left class | left R | left planted | left ceiling | left achieved/ceiling | right class | right R | right planted | right ceiling | right achieved/ceiling |
-|---:|---|---|---|---:|---:|---:|---:|---|---:|---:|---:|---:|
-| 0 | `PASS_SWING_CLEARANCE_ANALYZED` | `LATENCY_LIMITED` | `LATENCY_LIMITED` | 0.9594 | 83.5196 | 0.2284 | 0.3808 | `STRUCTURAL` | 1.3246 | 91.3265 | 0.1980 | 0.8319 |
-| 1 | `PASS_SWING_CLEARANCE_ANALYZED` | `LATENCY_LIMITED` | `LATENCY_LIMITED` | 0.9750 | 83.2402 | 0.2007 | 0.3729 | `LATENCY_LIMITED` | 1.3463 | 92.3469 | 0.1751 | 2.7066 |
-| 2 | `PASS_SWING_CLEARANCE_ANALYZED` | `LATENCY_LIMITED` | `LATENCY_LIMITED` | 0.9918 | 83.2402 | 0.2001 | 0.4230 | `LATENCY_LIMITED` | 1.1546 | 93.1122 | 0.2993 | 0.5121 |
-| 3 | `PASS_SWING_CLEARANCE_ANALYZED` | `LATENCY_LIMITED` | `LATENCY_LIMITED` | 0.9602 | 83.5196 | 0.2489 | 0.3924 | `LATENCY_LIMITED` | 1.7950 | 92.0918 | 0.1932 | 2.5368 |
-| 4 | `PASS_SWING_CLEARANCE_ANALYZED` | `LATENCY_LIMITED` | `LATENCY_LIMITED` | 0.9304 | 84.6369 | 0.2344 | 0.4077 | `LATENCY_LIMITED` | 1.2254 | 90.8163 | 0.2407 | 0.5117 |
-| 5 | `PASS_SWING_CLEARANCE_ANALYZED` | `LATENCY_LIMITED` | `LATENCY_LIMITED` | 0.9579 | 87.9888 | 0.3429 | 0.3735 | `LATENCY_LIMITED` | 1.1713 | 91.0714 | 0.5460 | 0.5280 |
-| 6 | `PASS_SWING_CLEARANCE_ANALYZED` | `LATENCY_LIMITED` | `LATENCY_LIMITED` | 1.1583 | 83.5196 | 0.1992 | 0.3577 | `LATENCY_LIMITED` | 1.7789 | 90.8163 | 0.4248 | 0.5047 |
-| 7 | `PASS_SWING_CLEARANCE_ANALYZED` | `LATENCY_LIMITED` | `LATENCY_LIMITED` | 1.2813 | 86.5922 | 0.2007 | 0.4193 | `LATENCY_LIMITED` | 1.2261 | 91.3265 | 0.1716 | 1.2614 |
+| seed | status | aggregate | left class | left R | left driver | left planted | left achieved/ceiling | right class | right R | right driver | right planted | right achieved/ceiling |
+|---:|---|---|---|---:|---|---:|---:|---|---:|---|---:|---:|
+| 0 | `PASS_SWING_CLEARANCE_ANALYZED` | `STRUCTURAL` | `LATENCY_LIMITED` | 0.9594 | `left_hip_pitch` | 83.5196 | 0.3808 | `STRUCTURAL` | 1.3246 | `right_ankle` | 91.3265 | 0.8319 |
+| 1 | `PASS_SWING_CLEARANCE_ANALYZED` | `STRUCTURAL` | `LATENCY_LIMITED` | 0.9750 | `left_ankle` | 83.2402 | 0.3729 | `STRUCTURAL` | 1.3463 | `right_ankle` | 92.3469 | 2.7066 |
+| 2 | `PASS_SWING_CLEARANCE_ANALYZED` | `STRUCTURAL` | `LATENCY_LIMITED` | 0.9918 | `left_ankle` | 83.2402 | 0.4230 | `STRUCTURAL` | 1.1546 | `right_ankle` | 93.1122 | 0.5121 |
+| 3 | `PASS_SWING_CLEARANCE_ANALYZED` | `STRUCTURAL` | `LATENCY_LIMITED` | 0.9602 | `left_ankle` | 83.5196 | 0.3924 | `STRUCTURAL` | 1.7950 | `right_ankle` | 92.0918 | 2.5368 |
+| 4 | `PASS_SWING_CLEARANCE_ANALYZED` | `STRUCTURAL` | `LATENCY_LIMITED` | 0.9304 | `left_ankle` | 84.6369 | 0.4077 | `STRUCTURAL` | 1.2254 | `right_ankle` | 90.8163 | 0.5117 |
+| 5 | `PASS_SWING_CLEARANCE_ANALYZED` | `STRUCTURAL` | `LATENCY_LIMITED` | 0.9579 | `left_ankle` | 87.9888 | 0.3735 | `STRUCTURAL` | 1.1713 | `right_ankle` | 91.0714 | 0.5280 |
+| 6 | `PASS_SWING_CLEARANCE_ANALYZED` | `STRUCTURAL` | `STRUCTURAL` | 1.1583 | `left_hip_pitch` | 83.5196 | 0.3577 | `STRUCTURAL` | 1.7789 | `right_ankle` | 90.8163 | 0.5047 |
+| 7 | `PASS_SWING_CLEARANCE_ANALYZED` | `STRUCTURAL` | `STRUCTURAL` | 1.2813 | `left_knee` | 86.5922 | 0.4193 | `STRUCTURAL` | 1.2261 | `right_knee` | 91.3265 | 1.2614 |
+
+## Per-Seed Structural Reasons
+
+| seed | left reasons | right reasons | right per-joint R peak |
+|---:|---|---|---|
+| 0 | `['planted_phase_swing_near_rate_limit']` | `['rate_utilization_exceeds_corrected_limit', 'planted_phase_swing_near_rate_limit']` | `{'right_hip_pitch': 1.0534697108798556, 'right_knee': 0.9893092242154208, 'right_ankle': 1.3246089220046997}` |
+| 1 | `['planted_phase_swing_near_rate_limit']` | `['rate_utilization_exceeds_corrected_limit', 'achieved_vertical_velocity_exceeds_in_envelope_ceiling', 'planted_phase_swing_near_rate_limit']` | `{'right_hip_pitch': 1.150642500983344, 'right_knee': 1.0328639637340198, 'right_ankle': 1.346305012702942}` |
+| 2 | `['planted_phase_swing_near_rate_limit']` | `['rate_utilization_exceeds_corrected_limit', 'planted_phase_swing_near_rate_limit']` | `{'right_hip_pitch': 0.9767399893866645, 'right_knee': 1.0024417530406604, 'right_ankle': 1.1546090245246887}` |
+| 3 | `['planted_phase_swing_near_rate_limit']` | `['rate_utilization_exceeds_corrected_limit', 'achieved_vertical_velocity_exceeds_in_envelope_ceiling', 'planted_phase_swing_near_rate_limit']` | `{'right_hip_pitch': 1.0256568590799968, 'right_knee': 1.0027842088179155, 'right_ankle': 1.7949730157852173}` |
+| 4 | `['planted_phase_swing_near_rate_limit']` | `['rate_utilization_exceeds_corrected_limit', 'planted_phase_swing_near_rate_limit']` | `{'right_hip_pitch': 1.0573612319098578, 'right_knee': 1.0502858595414595, 'right_ankle': 1.2253910303115845}` |
+| 5 | `['planted_phase_swing_near_rate_limit']` | `['rate_utilization_exceeds_corrected_limit', 'planted_phase_swing_near_rate_limit']` | `{'right_hip_pitch': 0.9793877601623535, 'right_knee': 1.0119199752807617, 'right_ankle': 1.1712700128555298}` |
+| 6 | `['rate_utilization_exceeds_corrected_limit', 'planted_phase_swing_near_rate_limit']` | `['rate_utilization_exceeds_corrected_limit', 'planted_phase_swing_near_rate_limit']` | `{'right_hip_pitch': 1.5106929673088922, 'right_knee': 1.0368932377208362, 'right_ankle': 1.778876781463623}` |
+| 7 | `['rate_utilization_exceeds_corrected_limit', 'planted_phase_swing_near_rate_limit']` | `['rate_utilization_exceeds_corrected_limit', 'achieved_vertical_velocity_exceeds_in_envelope_ceiling', 'planted_phase_swing_near_rate_limit']` | `{'right_hip_pitch': 1.1897338761223688, 'right_knee': 1.226065375588157, 'right_ankle': 1.168590784072876}` |
 
 ## Interpretation
 
-- Lift is commanded but achieved lift lags by the corrected actuator delay into or beyond the useful swing window. The next branch should phase-advance swing commands.
+- The legs have different limiting modes. The structural leg is over the corrected envelope and must not be treated as a pure latency problem; the latency-limited leg may still benefit from phase advance.
 
 ## Trace Collection
 

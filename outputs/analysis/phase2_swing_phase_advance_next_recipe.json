@@ -11,7 +11,7 @@
     "candidate": "policy/candidates/phase2_stagea2_seed5_recovery_command_gated_gain099_20260629/candidate.onnx",
     "candidate_sha256": "209b85a75cf9cbbcf10df573c1b530921943a72e81082111889c15f63a9a2c7b",
     "classification_counts": {
-      "LATENCY_LIMITED": 8
+      "STRUCTURAL": 8
     },
     "command_x": 0.08,
     "corrected_bridge": "outputs/analysis/actuator_response_fit_corrected_knee.json",
@@ -20,8 +20,24 @@
     "mean_planted_pct_during_phase_swing": 88.0728216565956,
     "path": "outputs/analysis/phase2_swing_clearance_diagnostic_z0024.json",
     "phase_convention": "phase01=atan2(obs[100], obs[99])/(2*pi); phase<0.5 is left stance/right swing, phase>=0.5 is right stance/left swing",
-    "selected_fix_branch": "phase-advance swing commands relative to the corrected 3-tick actuator delay",
-    "sha256": "daeb7caabf2ab47692dbf2ad6a9c3eb2e14db1e373811be1b8e0d9ceb1ee0018",
+    "rate_driver_joint_counts": {
+      "left_ankle": 5,
+      "left_hip_pitch": 2,
+      "left_knee": 1,
+      "right_ankle": 7,
+      "right_knee": 1
+    },
+    "selected_fix_branch": "split fix: structural leg needs gait/geometry or longer swing duration; latency-limited leg may need phase advance",
+    "sha256": "3abae69a1e2f27bcfe7b975de4e1f352519ec40ebc775a376c8c83096588d48e",
+    "side_classification_counts": {
+      "left": {
+        "LATENCY_LIMITED": 6,
+        "STRUCTURAL": 2
+      },
+      "right": {
+        "STRUCTURAL": 8
+      }
+    },
     "side_rows": [
       {
         "achieved_to_ceiling_ratio_peak": 0.38081989620699874,
@@ -29,9 +45,18 @@
         "latency_limited_segment_count": 15,
         "phase_swing_segments": 28,
         "planted_pct_during_phase_swing": 83.5195530726257,
+        "rate_driver_joint": "left_hip_pitch",
+        "rate_utilization_by_joint_peak": {
+          "left_ankle": 0.902568210255016,
+          "left_hip_pitch": 0.9594118595123291,
+          "left_knee": 0.7869170262263372
+        },
         "rate_utilization_peak": 0.9594118595123291,
         "seed": 0,
-        "side": "left"
+        "side": "left",
+        "structural_reasons": [
+          "planted_phase_swing_near_rate_limit"
+        ]
       },
       {
         "achieved_to_ceiling_ratio_peak": 0.8318519111959695,
@@ -39,9 +64,19 @@
         "latency_limited_segment_count": 13,
         "phase_swing_segments": 28,
         "planted_pct_during_phase_swing": 91.3265306122449,
+        "rate_driver_joint": "right_ankle",
+        "rate_utilization_by_joint_peak": {
+          "right_ankle": 1.3246089220046997,
+          "right_hip_pitch": 1.0534697108798556,
+          "right_knee": 0.9893092242154208
+        },
         "rate_utilization_peak": 1.3246089220046997,
         "seed": 0,
-        "side": "right"
+        "side": "right",
+        "structural_reasons": [
+          "rate_utilization_exceeds_corrected_limit",
+          "planted_phase_swing_near_rate_limit"
+        ]
       },
       {
         "achieved_to_ceiling_ratio_peak": 0.3728977442929123,
@@ -49,19 +84,39 @@
         "latency_limited_segment_count": 16,
         "phase_swing_segments": 28,
         "planted_pct_during_phase_swing": 83.24022346368714,
+        "rate_driver_joint": "left_ankle",
+        "rate_utilization_by_joint_peak": {
+          "left_ankle": 0.9749618443575773,
+          "left_hip_pitch": 0.9090685844421387,
+          "left_knee": 0.830995119535006
+        },
         "rate_utilization_peak": 0.9749618443575773,
         "seed": 1,
-        "side": "left"
+        "side": "left",
+        "structural_reasons": [
+          "planted_phase_swing_near_rate_limit"
+        ]
       },
       {
         "achieved_to_ceiling_ratio_peak": 2.706574702340201,
-        "classification": "LATENCY_LIMITED",
+        "classification": "STRUCTURAL",
         "latency_limited_segment_count": 17,
         "phase_swing_segments": 28,
         "planted_pct_during_phase_swing": 92.3469387755102,
+        "rate_driver_joint": "right_ankle",
+        "rate_utilization_by_joint_peak": {
+          "right_ankle": 1.346305012702942,
+          "right_hip_pitch": 1.150642500983344,
+          "right_knee": 1.0328639637340198
+        },
         "rate_utilization_peak": 1.346305012702942,
         "seed": 1,
-        "side": "right"
+        "side": "right",
+        "structural_reasons": [
+          "rate_utilization_exceeds_corrected_limit",
+          "achieved_vertical_velocity_exceeds_in_envelope_ceiling",
+          "planted_phase_swing_near_rate_limit"
+        ]
       },
       {
         "achieved_to_ceiling_ratio_peak": 0.42295206348526426,
@@ -69,19 +124,38 @@
         "latency_limited_segment_count": 14,
         "phase_swing_segments": 28,
         "planted_pct_during_phase_swing": 83.24022346368714,
+        "rate_driver_joint": "left_ankle",
+        "rate_utilization_by_joint_peak": {
+          "left_ankle": 0.9917822751131925,
+          "left_hip_pitch": 0.8115363121032715,
+          "left_knee": 0.774075434758113
+        },
         "rate_utilization_peak": 0.9917822751131925,
         "seed": 2,
-        "side": "left"
+        "side": "left",
+        "structural_reasons": [
+          "planted_phase_swing_near_rate_limit"
+        ]
       },
       {
         "achieved_to_ceiling_ratio_peak": 0.5120939109892428,
-        "classification": "LATENCY_LIMITED",
+        "classification": "STRUCTURAL",
         "latency_limited_segment_count": 15,
         "phase_swing_segments": 28,
         "planted_pct_during_phase_swing": 93.11224489795919,
+        "rate_driver_joint": "right_ankle",
+        "rate_utilization_by_joint_peak": {
+          "right_ankle": 1.1546090245246887,
+          "right_hip_pitch": 0.9767399893866645,
+          "right_knee": 1.0024417530406604
+        },
         "rate_utilization_peak": 1.1546090245246887,
         "seed": 2,
-        "side": "right"
+        "side": "right",
+        "structural_reasons": [
+          "rate_utilization_exceeds_corrected_limit",
+          "planted_phase_swing_near_rate_limit"
+        ]
       },
       {
         "achieved_to_ceiling_ratio_peak": 0.3923825030111814,
@@ -89,19 +163,39 @@
         "latency_limited_segment_count": 14,
         "phase_swing_segments": 28,
         "planted_pct_during_phase_swing": 83.5195530726257,
+        "rate_driver_joint": "left_ankle",
+        "rate_utilization_by_joint_peak": {
+          "left_ankle": 0.9602102366360751,
+          "left_hip_pitch": 0.7340538501739502,
+          "left_knee": 0.7819285759559045
+        },
         "rate_utilization_peak": 0.9602102366360751,
         "seed": 3,
-        "side": "left"
+        "side": "left",
+        "structural_reasons": [
+          "planted_phase_swing_near_rate_limit"
+        ]
       },
       {
         "achieved_to_ceiling_ratio_peak": 2.536840130155914,
-        "classification": "LATENCY_LIMITED",
+        "classification": "STRUCTURAL",
         "latency_limited_segment_count": 16,
         "phase_swing_segments": 28,
         "planted_pct_during_phase_swing": 92.09183673469387,
+        "rate_driver_joint": "right_ankle",
+        "rate_utilization_by_joint_peak": {
+          "right_ankle": 1.7949730157852173,
+          "right_hip_pitch": 1.0256568590799968,
+          "right_knee": 1.0027842088179155
+        },
         "rate_utilization_peak": 1.7949730157852173,
         "seed": 3,
-        "side": "right"
+        "side": "right",
+        "structural_reasons": [
+          "rate_utilization_exceeds_corrected_limit",
+          "achieved_vertical_velocity_exceeds_in_envelope_ceiling",
+          "planted_phase_swing_near_rate_limit"
+        ]
       },
       {
         "achieved_to_ceiling_ratio_peak": 0.4077172332406319,
@@ -109,19 +203,38 @@
         "latency_limited_segment_count": 17,
         "phase_swing_segments": 28,
         "planted_pct_during_phase_swing": 84.63687150837988,
+        "rate_driver_joint": "left_ankle",
+        "rate_utilization_by_joint_peak": {
+          "left_ankle": 0.9303840723904696,
+          "left_hip_pitch": 0.8949196338653564,
+          "left_knee": 0.8446161563579853
+        },
         "rate_utilization_peak": 0.9303840723904696,
         "seed": 4,
-        "side": "left"
+        "side": "left",
+        "structural_reasons": [
+          "planted_phase_swing_near_rate_limit"
+        ]
       },
       {
         "achieved_to_ceiling_ratio_peak": 0.5116728255333153,
-        "classification": "LATENCY_LIMITED",
+        "classification": "STRUCTURAL",
         "latency_limited_segment_count": 17,
         "phase_swing_segments": 28,
         "planted_pct_during_phase_swing": 90.81632653061224,
+        "rate_driver_joint": "right_ankle",
+        "rate_utilization_by_joint_peak": {
+          "right_ankle": 1.2253910303115845,
+          "right_hip_pitch": 1.0573612319098578,
+          "right_knee": 1.0502858595414595
+        },
         "rate_utilization_peak": 1.2253910303115845,
         "seed": 4,
-        "side": "right"
+        "side": "right",
+        "structural_reasons": [
+          "rate_utilization_exceeds_corrected_limit",
+          "planted_phase_swing_near_rate_limit"
+        ]
       },
       {
         "achieved_to_ceiling_ratio_peak": 0.37347894155960276,
@@ -129,70 +242,135 @@
         "latency_limited_segment_count": 16,
         "phase_swing_segments": 28,
         "planted_pct_during_phase_swing": 87.98882681564247,
+        "rate_driver_joint": "left_ankle",
+        "rate_utilization_by_joint_peak": {
+          "left_ankle": 0.9578780694441362,
+          "left_hip_pitch": 0.79978346824646,
+          "left_knee": 0.7879275542039138
+        },
         "rate_utilization_peak": 0.9578780694441362,
         "seed": 5,
-        "side": "left"
+        "side": "left",
+        "structural_reasons": [
+          "planted_phase_swing_near_rate_limit"
+        ]
       },
       {
         "achieved_to_ceiling_ratio_peak": 0.5279623953215826,
-        "classification": "LATENCY_LIMITED",
+        "classification": "STRUCTURAL",
         "latency_limited_segment_count": 17,
         "phase_swing_segments": 28,
         "planted_pct_during_phase_swing": 91.07142857142857,
+        "rate_driver_joint": "right_ankle",
+        "rate_utilization_by_joint_peak": {
+          "right_ankle": 1.1712700128555298,
+          "right_hip_pitch": 0.9793877601623535,
+          "right_knee": 1.0119199752807617
+        },
         "rate_utilization_peak": 1.1712700128555298,
         "seed": 5,
-        "side": "right"
+        "side": "right",
+        "structural_reasons": [
+          "rate_utilization_exceeds_corrected_limit",
+          "planted_phase_swing_near_rate_limit"
+        ]
       },
       {
         "achieved_to_ceiling_ratio_peak": 0.3576587196532449,
-        "classification": "LATENCY_LIMITED",
+        "classification": "STRUCTURAL",
         "latency_limited_segment_count": 16,
         "phase_swing_segments": 28,
         "planted_pct_during_phase_swing": 83.5195530726257,
+        "rate_driver_joint": "left_hip_pitch",
+        "rate_utilization_by_joint_peak": {
+          "left_ankle": 0.9370706298134543,
+          "left_hip_pitch": 1.158292293548584,
+          "left_knee": 0.7569313049316406
+        },
         "rate_utilization_peak": 1.158292293548584,
         "seed": 6,
-        "side": "left"
+        "side": "left",
+        "structural_reasons": [
+          "rate_utilization_exceeds_corrected_limit",
+          "planted_phase_swing_near_rate_limit"
+        ]
       },
       {
         "achieved_to_ceiling_ratio_peak": 0.5047408446495507,
-        "classification": "LATENCY_LIMITED",
+        "classification": "STRUCTURAL",
         "latency_limited_segment_count": 17,
         "phase_swing_segments": 28,
         "planted_pct_during_phase_swing": 90.81632653061224,
+        "rate_driver_joint": "right_ankle",
+        "rate_utilization_by_joint_peak": {
+          "right_ankle": 1.778876781463623,
+          "right_hip_pitch": 1.5106929673088922,
+          "right_knee": 1.0368932377208362
+        },
         "rate_utilization_peak": 1.778876781463623,
         "seed": 6,
-        "side": "right"
+        "side": "right",
+        "structural_reasons": [
+          "rate_utilization_exceeds_corrected_limit",
+          "planted_phase_swing_near_rate_limit"
+        ]
       },
       {
         "achieved_to_ceiling_ratio_peak": 0.4192797712267294,
-        "classification": "LATENCY_LIMITED",
+        "classification": "STRUCTURAL",
         "latency_limited_segment_count": 15,
         "phase_swing_segments": 28,
         "planted_pct_during_phase_swing": 86.59217877094973,
+        "rate_driver_joint": "left_knee",
+        "rate_utilization_by_joint_peak": {
+          "left_ankle": 1.0065252130681819,
+          "left_hip_pitch": 0.8177769184112549,
+          "left_knee": 1.281274282015287
+        },
         "rate_utilization_peak": 1.281274282015287,
         "seed": 7,
-        "side": "left"
+        "side": "left",
+        "structural_reasons": [
+          "rate_utilization_exceeds_corrected_limit",
+          "planted_phase_swing_near_rate_limit"
+        ]
       },
       {
         "achieved_to_ceiling_ratio_peak": 1.261417631811098,
-        "classification": "LATENCY_LIMITED",
+        "classification": "STRUCTURAL",
         "latency_limited_segment_count": 15,
         "phase_swing_segments": 28,
         "planted_pct_during_phase_swing": 91.3265306122449,
+        "rate_driver_joint": "right_knee",
+        "rate_utilization_by_joint_peak": {
+          "right_ankle": 1.168590784072876,
+          "right_hip_pitch": 1.1897338761223688,
+          "right_knee": 1.226065375588157
+        },
         "rate_utilization_peak": 1.226065375588157,
         "seed": 7,
-        "side": "right"
+        "side": "right",
+        "structural_reasons": [
+          "rate_utilization_exceeds_corrected_limit",
+          "achieved_vertical_velocity_exceeds_in_envelope_ceiling",
+          "planted_phase_swing_near_rate_limit"
+        ]
       }
     ],
+    "side_verdicts": {
+      "left": "LATENCY_LIMITED",
+      "right": "STRUCTURAL"
+    },
     "status": "PASS_SWING_CLEARANCE_DIAGNOSTIC_REPORTED",
     "task": "rough_terrain_backlash",
     "terrain_hfield_z_scale": 0.0024,
-    "verdict": "LATENCY_LIMITED"
+    "verdict": "MIXED_LEG_MODES"
   },
   "falsifiers": [
     "If phase advance reduces planted swing but breaks x=0.0 command semantics, reject the candidate.",
     "If phase advance only improves clearance by exceeding corrected pitch-chain limits, reject the recipe.",
-    "If ticks 1-3 all preserve latency-limited planted swing, return to structural gait-duration/knee-bend branch."
+    "If ticks 1-3 all preserve latency-limited planted swing, return to structural gait-duration/knee-bend branch.",
+    "If right-leg R remains >1 after right-swing retiming, stop label weighting and change gait duration/geometry."
   ],
   "hook_audit": {
     "evidence": {
@@ -228,11 +406,11 @@
     "status": "HOLD_PHASE_ADVANCE_HOOK_MISSING"
   },
   "recipe_intent": [
-    "Act on the LATENCY_LIMITED swing-clearance verdict, not on generic terrain or support failure.",
-    "Advance the swing lift/advance objective by roughly the corrected 3-tick actuator delay.",
-    "Keep bridge limits canonical; do not increase global target-rate allowance.",
-    "Warm-start from the Phase 2 gain099 candidate/trainable checkpoint; do not train from scratch.",
-    "Gate x=0.08 and x=0.0 on the corrected bridge after any implementation."
+    "Do not run a global phase-advance recipe against this diagnostic.",
+    "Right swing is structural/envelope-pressed; phase-advancing an over-envelope command only moves the illegal command earlier.",
+    "Left swing remains a possible phase-advance target, but only after the right-leg envelope wall is addressed.",
+    "Prioritize a right-leg gait/geometry change: longer swing duration and/or knee-bend-first swing that reduces right-ankle peak rate.",
+    "Keep bridge limits canonical; do not increase global target-rate allowance."
   ],
   "required_default_off_hook": {
     "canonical_first_try": 3,
@@ -251,8 +429,14 @@
     ]
   },
   "robot_touched": false,
+  "split_mode_recommendation": {
+    "enabled": true,
+    "left_leg": "LATENCY_LIMITED on the majority of seeds; phase advance remains a later left-leg-specific candidate.",
+    "next_branch": "right-leg structural swing retiming/geometry first, then rerun this diagnostic before any phase-advance training.",
+    "right_leg": "STRUCTURAL: right pitch-chain swing exceeds corrected limits; right_ankle is the dominant rate driver in most seeds."
+  },
   "ssh_used": false,
   "stage": "phase2_swing_phase_advance",
-  "status": "HOLD_PHASE_ADVANCE_HOOK_MISSING",
+  "status": "HOLD_SPLIT_SWING_MODES",
   "training_started": false
 }

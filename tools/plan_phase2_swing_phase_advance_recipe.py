@@ -2,9 +2,8 @@
 """Plan the Phase 2 swing phase-advance branch.
 
 This is a read-only planning/preflight tool. It consumes the swing-clearance
-diagnostic and records whether the training stack has the default-off hook
-needed to act on a LATENCY_LIMITED verdict. It does not train, SSH, deploy, or
-touch the robot.
+diagnostic and records whether phase advance is the correct next branch. It
+does not train, SSH, deploy, or touch the robot.
 """
 
 from __future__ import annotations
@@ -129,6 +128,11 @@ def summarize_diagnostic(diagnostic: dict[str, Any]) -> dict[str, Any]:
                     "achieved_to_ceiling_ratio_peak": side_data.get(
                         "achieved_to_ceiling_ratio_peak"
                     ),
+                    "rate_driver_joint": side_data.get("rate_driver_joint"),
+                    "rate_utilization_by_joint_peak": side_data.get(
+                        "rate_utilization_by_joint_peak"
+                    ),
+                    "structural_reasons": side_data.get("structural_reasons"),
                     "latency_limited_segment_count": side_data.get(
                         "latency_limited_segment_count"
                     ),
@@ -149,6 +153,9 @@ def summarize_diagnostic(diagnostic: dict[str, Any]) -> dict[str, Any]:
         "status": diagnostic.get("status"),
         "verdict": aggregate.get("verdict"),
         "classification_counts": aggregate.get("classification_counts"),
+        "side_verdicts": aggregate.get("side_verdicts"),
+        "side_classification_counts": aggregate.get("side_classification_counts"),
+        "rate_driver_joint_counts": aggregate.get("rate_driver_joint_counts"),
         "selected_fix_branch": aggregate.get("selected_fix_branch"),
         "candidate": diagnostic.get("inputs", {}).get("candidate"),
         "candidate_sha256": diagnostic.get("inputs", {}).get("candidate_sha256"),
@@ -177,13 +184,30 @@ def build_payload(args: argparse.Namespace) -> dict[str, Any]:
     diagnostic = read_json(diagnostic_path)
     summary = summarize_diagnostic(diagnostic)
     hook_audit = audit_phase_advance_hook()
-    status = (
-        "PASS_SWING_PHASE_ADVANCE_RECIPE_READY"
-        if summary["verdict"] == "LATENCY_LIMITED" and hook_audit["hook_present"]
-        else "HOLD_PHASE_ADVANCE_HOOK_MISSING"
-        if summary["verdict"] == "LATENCY_LIMITED"
-        else "HOLD_DIAGNOSTIC_NOT_LATENCY_LIMITED"
-    )
+    if summary["verdict"] == "LATENCY_LIMITED" and hook_audit["hook_present"]:
+        status = "PASS_SWING_PHASE_ADVANCE_RECIPE_READY"
+    elif summary["verdict"] == "LATENCY_LIMITED":
+        status = "HOLD_PHASE_ADVANCE_HOOK_MISSING"
+    elif summary["verdict"] == "MIXED_LEG_MODES":
+        status = "HOLD_SPLIT_SWING_MODES"
+    elif summary["verdict"] == "STRUCTURAL":
+        status = "HOLD_STRUCTURAL_SWING_LIMIT"
+    else:
+        status = "HOLD_DIAGNOSTIC_NOT_LATENCY_LIMITED"
+    split_mode_intent = [
+        "Do not run a global phase-advance recipe against this diagnostic.",
+        "Right swing is structural/envelope-pressed; phase-advancing an over-envelope command only moves the illegal command earlier.",
+        "Left swing remains a possible phase-advance target, but only after the right-leg envelope wall is addressed.",
+        "Prioritize a right-leg gait/geometry change: longer swing duration and/or knee-bend-first swing that reduces right-ankle peak rate.",
+        "Keep bridge limits canonical; do not increase global target-rate allowance.",
+    ]
+    latency_intent = [
+        "Act on the LATENCY_LIMITED swing-clearance verdict, not on generic terrain or support failure.",
+        "Advance the swing lift/advance objective by roughly the corrected 3-tick actuator delay.",
+        "Keep bridge limits canonical; do not increase global target-rate allowance.",
+        "Warm-start from the Phase 2 gain099 candidate/trainable checkpoint; do not train from scratch.",
+        "Gate x=0.08 and x=0.0 on the corrected bridge after any implementation.",
+    ]
     return {
         "status": status,
         "stage": "phase2_swing_phase_advance",
@@ -193,13 +217,24 @@ def build_payload(args: argparse.Namespace) -> dict[str, Any]:
             **summary,
         },
         "hook_audit": hook_audit,
-        "recipe_intent": [
-            "Act on the LATENCY_LIMITED swing-clearance verdict, not on generic terrain or support failure.",
-            "Advance the swing lift/advance objective by roughly the corrected 3-tick actuator delay.",
-            "Keep bridge limits canonical; do not increase global target-rate allowance.",
-            "Warm-start from the Phase 2 gain099 candidate/trainable checkpoint; do not train from scratch.",
-            "Gate x=0.08 and x=0.0 on the corrected bridge after any implementation.",
-        ],
+        "recipe_intent": split_mode_intent
+        if status in {"HOLD_SPLIT_SWING_MODES", "HOLD_STRUCTURAL_SWING_LIMIT"}
+        else latency_intent,
+        "split_mode_recommendation": {
+            "enabled": status == "HOLD_SPLIT_SWING_MODES",
+            "right_leg": (
+                "STRUCTURAL: right pitch-chain swing exceeds corrected limits; "
+                "right_ankle is the dominant rate driver in most seeds."
+            ),
+            "left_leg": (
+                "LATENCY_LIMITED on the majority of seeds; phase advance remains a later "
+                "left-leg-specific candidate."
+            ),
+            "next_branch": (
+                "right-leg structural swing retiming/geometry first, then rerun this "
+                "diagnostic before any phase-advance training."
+            ),
+        },
         "required_default_off_hook": {
             "config": "reward_config.forward_swing_phase_advance_ticks, default 0",
             "runner_cli": "--forward_swing_phase_advance_ticks",
@@ -223,6 +258,7 @@ def build_payload(args: argparse.Namespace) -> dict[str, Any]:
             "If phase advance reduces planted swing but breaks x=0.0 command semantics, reject the candidate.",
             "If phase advance only improves clearance by exceeding corrected pitch-chain limits, reject the recipe.",
             "If ticks 1-3 all preserve latency-limited planted swing, return to structural gait-duration/knee-bend branch.",
+            "If right-leg R remains >1 after right-swing retiming, stop label weighting and change gait duration/geometry.",
         ],
         "robot_touched": False,
         "ssh_used": False,
@@ -248,6 +284,9 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         f"- diagnostic_sha256: `{diagnostic['sha256']}`",
         f"- verdict: `{diagnostic['verdict']}`",
         f"- classification_counts: `{diagnostic['classification_counts']}`",
+        f"- side_verdicts: `{diagnostic['side_verdicts']}`",
+        f"- side_classification_counts: `{diagnostic['side_classification_counts']}`",
+        f"- rate_driver_joint_counts: `{diagnostic['rate_driver_joint_counts']}`",
         f"- selected_fix_branch: `{diagnostic['selected_fix_branch']}`",
         f"- candidate: `{diagnostic['candidate']}`",
         f"- candidate_sha256: `{diagnostic['candidate_sha256']}`",
@@ -271,6 +310,10 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         "",
     ]
     lines.extend(f"- {item}" for item in hook["existing_hooks"])
+    if payload["split_mode_recommendation"]["enabled"]:
+        lines.extend(["", "## Split-Mode Recommendation", ""])
+        for key, value in payload["split_mode_recommendation"].items():
+            lines.append(f"- `{key}`: `{value}`")
     lines.extend(
         [
             "",

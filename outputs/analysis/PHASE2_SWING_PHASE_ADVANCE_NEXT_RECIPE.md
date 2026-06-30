@@ -1,6 +1,6 @@
 # Phase 2 Swing Phase-Advance Next Recipe
 
-status: `HOLD_PHASE_ADVANCE_HOOK_MISSING`
+status: `HOLD_SPLIT_SWING_MODES`
 stage: `phase2_swing_phase_advance`
 
 This is an offline planning artifact. It did not train, SSH, deploy, or touch the robot.
@@ -8,10 +8,13 @@ This is an offline planning artifact. It did not train, SSH, deploy, or touch th
 ## Diagnostic Input
 
 - diagnostic: `outputs/analysis/phase2_swing_clearance_diagnostic_z0024.json`
-- diagnostic_sha256: `daeb7caabf2ab47692dbf2ad6a9c3eb2e14db1e373811be1b8e0d9ceb1ee0018`
-- verdict: `LATENCY_LIMITED`
-- classification_counts: `{'LATENCY_LIMITED': 8}`
-- selected_fix_branch: `phase-advance swing commands relative to the corrected 3-tick actuator delay`
+- diagnostic_sha256: `3abae69a1e2f27bcfe7b975de4e1f352519ec40ebc775a376c8c83096588d48e`
+- verdict: `MIXED_LEG_MODES`
+- classification_counts: `{'STRUCTURAL': 8}`
+- side_verdicts: `{'left': 'LATENCY_LIMITED', 'right': 'STRUCTURAL'}`
+- side_classification_counts: `{'left': {'LATENCY_LIMITED': 6, 'STRUCTURAL': 2}, 'right': {'STRUCTURAL': 8}}`
+- rate_driver_joint_counts: `{'left_ankle': 5, 'left_hip_pitch': 2, 'left_knee': 1, 'right_ankle': 7, 'right_knee': 1}`
+- selected_fix_branch: `split fix: structural leg needs gait/geometry or longer swing duration; latency-limited leg may need phase advance`
 - candidate: `policy/candidates/phase2_stagea2_seed5_recovery_command_gated_gain099_20260629/candidate.onnx`
 - candidate_sha256: `209b85a75cf9cbbcf10df573c1b530921943a72e81082111889c15f63a9a2c7b`
 - corrected_bridge: `outputs/analysis/actuator_response_fit_corrected_knee.json`
@@ -36,17 +39,24 @@ Existing hooks:
 - forward_swing_advance fires on first_contact using swing_peak_forward_advance.
 - forward_swing_balance penalizes one-sided swing usage.
 
+## Split-Mode Recommendation
+
+- `enabled`: `True`
+- `right_leg`: `STRUCTURAL: right pitch-chain swing exceeds corrected limits; right_ankle is the dominant rate driver in most seeds.`
+- `left_leg`: `LATENCY_LIMITED on the majority of seeds; phase advance remains a later left-leg-specific candidate.`
+- `next_branch`: `right-leg structural swing retiming/geometry first, then rerun this diagnostic before any phase-advance training.`
+
 Missing hook:
 
 - A default-off phase-advanced swing objective that evaluates lift/advance against phase + advance_ticks before the measured 3-tick actuator delay.
 
 ## Recipe Intent
 
-- Act on the LATENCY_LIMITED swing-clearance verdict, not on generic terrain or support failure.
-- Advance the swing lift/advance objective by roughly the corrected 3-tick actuator delay.
+- Do not run a global phase-advance recipe against this diagnostic.
+- Right swing is structural/envelope-pressed; phase-advancing an over-envelope command only moves the illegal command earlier.
+- Left swing remains a possible phase-advance target, but only after the right-leg envelope wall is addressed.
+- Prioritize a right-leg gait/geometry change: longer swing duration and/or knee-bend-first swing that reduces right-ankle peak rate.
 - Keep bridge limits canonical; do not increase global target-rate allowance.
-- Warm-start from the Phase 2 gain099 candidate/trainable checkpoint; do not train from scratch.
-- Gate x=0.08 and x=0.0 on the corrected bridge after any implementation.
 
 ## Required Default-Off Hook
 
@@ -69,3 +79,4 @@ Missing hook:
 - If phase advance reduces planted swing but breaks x=0.0 command semantics, reject the candidate.
 - If phase advance only improves clearance by exceeding corrected pitch-chain limits, reject the recipe.
 - If ticks 1-3 all preserve latency-limited planted swing, return to structural gait-duration/knee-bend branch.
+- If right-leg R remains >1 after right-swing retiming, stop label weighting and change gait duration/geometry.

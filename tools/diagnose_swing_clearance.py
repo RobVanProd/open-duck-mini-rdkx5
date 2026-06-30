@@ -361,10 +361,10 @@ def classify_seed(
     latency_ticks_threshold: int,
 ) -> str:
     classes = [row["classification"] for row in side_rows.values()]
-    if any(item == "LATENCY_LIMITED" for item in classes):
-        return "LATENCY_LIMITED"
     if any(item == "STRUCTURAL" for item in classes):
         return "STRUCTURAL"
+    if any(item == "LATENCY_LIMITED" for item in classes):
+        return "LATENCY_LIMITED"
     if any(item == "DISTILLATION" for item in classes):
         return "DISTILLATION"
     if all(item == "FINE_OR_NO_SWING" for item in classes):
@@ -419,11 +419,13 @@ def analyze_seed(
         side_index = 0 if side == "left" else 1
         segment_rows = []
         all_r_values = []
+        all_r_by_joint: dict[str, list[float]] = {name: [] for name in joint_names}
         all_ceilings = []
         all_ratios = []
         planted_samples = 0
         swing_samples = 0
         latency_hits = 0
+        over_envelope_ratio_hits = 0
         for start, end in segments:
             idx = np.arange(start, end)
             swing_samples += int(idx.size)
@@ -433,6 +435,15 @@ def analyze_seed(
             ach_rates = actual_vel[idx][:, joint_indices]
             r_by_sample_joint = np.abs(cmd_rates) / side_limits[None, :]
             r_peak = float(np.max(r_by_sample_joint)) if r_by_sample_joint.size else None
+            r_driver_joint = None
+            if r_by_sample_joint.size:
+                flat_index = int(np.argmax(r_by_sample_joint))
+                _, joint_offset = np.unravel_index(flat_index, r_by_sample_joint.shape)
+                r_driver_joint = joint_names[joint_offset]
+                for joint_offset, joint_name in enumerate(joint_names):
+                    all_r_by_joint[joint_name].append(
+                        float(np.max(r_by_sample_joint[:, joint_offset]))
+                    )
             all_r_values.append(r_peak)
 
             cmd_vz = []
@@ -461,6 +472,8 @@ def analyze_seed(
                 all_ceilings.append(peak_ceiling)
             if finite(achieved_ceiling_ratio):
                 all_ratios.append(achieved_ceiling_ratio)
+                if achieved_ceiling_ratio > 1.0:
+                    over_envelope_ratio_hits += 1
 
             cmd_peak_local = int(np.argmax(cmd_vz_arr)) if cmd_vz_arr.size else None
             ach_peak_local = int(np.argmax(ach_vz_arr)) if ach_vz_arr.size else None
@@ -494,6 +507,7 @@ def analyze_seed(
                     "contact_broke": contact_broke,
                     "planted_pct": float(np.mean(planted) * 100.0),
                     "rate_utilization_peak": r_peak,
+                    "rate_driver_joint": r_driver_joint,
                     "vertical_clearance_ceiling_peak_m_s": peak_ceiling,
                     "achieved_vertical_velocity_peak_m_s": peak_achieved,
                     "commanded_vertical_velocity_peak_m_s": peak_cmd,
@@ -507,11 +521,27 @@ def analyze_seed(
             float(planted_samples / swing_samples * 100.0) if swing_samples else None
         )
         r_peak_side = max([v for v in all_r_values if finite(v)], default=None)
+        r_by_joint_peak = {
+            joint: max([v for v in values if finite(v)], default=None)
+            for joint, values in all_r_by_joint.items()
+        }
+        r_driver_joint_side = None
+        finite_joint_peaks = {
+            joint: value for joint, value in r_by_joint_peak.items() if finite(value)
+        }
+        if finite_joint_peaks:
+            r_driver_joint_side = max(
+                finite_joint_peaks.items(), key=lambda item: item[1]
+            )[0]
         ceiling_p50 = percentile(all_ceilings, 50) if all_ceilings else None
         ratio_peak = max([v for v in all_ratios if finite(v)], default=None)
         contact_break_segments = sum(1 for item in segment_rows if item["contact_broke"])
         if not segment_rows:
             classification = "FINE_OR_NO_SWING"
+        elif finite(r_peak_side) and r_peak_side > 1.0:
+            classification = "STRUCTURAL"
+        elif finite(ratio_peak) and ratio_peak > 1.0:
+            classification = "STRUCTURAL"
         elif latency_hits and latency_hits >= max(1, math.ceil(len(segment_rows) / 2)):
             classification = "LATENCY_LIMITED"
         elif finite(planted_pct) and planted_pct >= planted_pct_threshold and finite(r_peak_side) and r_peak_side >= high_r:
@@ -522,6 +552,18 @@ def analyze_seed(
             classification = "FINE_OR_NO_SWING"
         else:
             classification = "MIXED_OR_AMBIGUOUS"
+        structural_reasons = []
+        if finite(r_peak_side) and r_peak_side > 1.0:
+            structural_reasons.append("rate_utilization_exceeds_corrected_limit")
+        if finite(ratio_peak) and ratio_peak > 1.0:
+            structural_reasons.append("achieved_vertical_velocity_exceeds_in_envelope_ceiling")
+        if (
+            finite(planted_pct)
+            and planted_pct >= planted_pct_threshold
+            and finite(r_peak_side)
+            and r_peak_side >= high_r
+        ):
+            structural_reasons.append("planted_phase_swing_near_rate_limit")
         side_results[side] = {
             "classification": classification,
             "phase_swing_segments": int(len(segment_rows)),
@@ -529,12 +571,20 @@ def analyze_seed(
             "contact_broke_segments": int(contact_break_segments),
             "planted_pct_during_phase_swing": planted_pct,
             "rate_utilization_peak": r_peak_side,
+            "rate_driver_joint": r_driver_joint_side,
+            "rate_utilization_by_joint_peak": r_by_joint_peak,
+            "over_envelope_by_rate": bool(finite(r_peak_side) and r_peak_side > 1.0),
             "rate_utilization": stats(all_r_values),
             "vertical_clearance_ceiling_peak_m_s": max(all_ceilings) if all_ceilings else None,
             "vertical_clearance_ceiling_m_s": stats(all_ceilings),
             "achieved_to_ceiling_ratio_peak": ratio_peak,
+            "over_envelope_by_ceiling_ratio": bool(
+                finite(ratio_peak) and ratio_peak > 1.0
+            ),
+            "over_envelope_ratio_segment_count": int(over_envelope_ratio_hits),
             "achieved_to_ceiling_ratio": stats(all_ratios),
             "latency_limited_segment_count": int(latency_hits),
+            "structural_reasons": structural_reasons,
             "segments": segment_rows,
         }
         all_segments.extend({"side": side, **item} for item in segment_rows)
@@ -558,15 +608,46 @@ def analyze_seed(
 
 def aggregate_verdict(seed_results: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
     counts: dict[str, int] = {}
+    side_counts: dict[str, dict[str, int]] = {"left": {}, "right": {}}
+    driver_counts: dict[str, int] = {}
     for result in seed_results:
         cls = str(result.get("aggregate_classification", result.get("status")))
         counts[cls] = counts.get(cls, 0) + 1
+        for side in ("left", "right"):
+            side_result = (result.get("side_results") or {}).get(side) or {}
+            side_cls = str(side_result.get("classification", "UNKNOWN"))
+            side_counts[side][side_cls] = side_counts[side].get(side_cls, 0) + 1
+            driver = side_result.get("rate_driver_joint")
+            if driver:
+                driver_counts[str(driver)] = driver_counts.get(str(driver), 0) + 1
     if not counts:
         verdict = "HOLD_INSUFFICIENT_DATA"
     else:
         verdict = max(counts.items(), key=lambda item: item[1])[0]
+    side_verdicts = {
+        side: (
+            max(side_count.items(), key=lambda item: item[1])[0]
+            if side_count
+            else "HOLD_INSUFFICIENT_DATA"
+        )
+        for side, side_count in side_counts.items()
+    }
+    if (
+        side_verdicts.get("left") != side_verdicts.get("right")
+        and all(
+            side_verdicts.get(side)
+            in {"STRUCTURAL", "LATENCY_LIMITED", "DISTILLATION"}
+            for side in ("left", "right")
+        )
+    ):
+        verdict = "MIXED_LEG_MODES"
     if verdict == "STRUCTURAL":
         branch = "knee-bend-first swing / longer swing duration; targeted per-seed weighting is likely a band-aid"
+    elif verdict == "MIXED_LEG_MODES":
+        branch = (
+            "split fix: structural leg needs gait/geometry or longer swing duration; "
+            "latency-limited leg may need phase advance"
+        )
     elif verdict == "DISTILLATION":
         branch = "oracle/relabel generation; targeted swing weighting is a symptom-level but aligned fix"
     elif verdict == "LATENCY_LIMITED":
@@ -578,6 +659,9 @@ def aggregate_verdict(seed_results: Sequence[Mapping[str, Any]]) -> dict[str, An
     return {
         "verdict": verdict,
         "classification_counts": counts,
+        "side_classification_counts": side_counts,
+        "side_verdicts": side_verdicts,
+        "rate_driver_joint_counts": driver_counts,
         "selected_fix_branch": branch,
     }
 
@@ -589,6 +673,8 @@ def build_markdown(payload: Mapping[str, Any]) -> str:
         f"status: `{payload['status']}`",
         f"aggregate_verdict: `{payload['aggregate_verdict']['verdict']}`",
         f"selected_fix_branch: {payload['aggregate_verdict']['selected_fix_branch']}",
+        f"side_verdicts: `{payload['aggregate_verdict'].get('side_verdicts')}`",
+        f"rate_driver_joint_counts: `{payload['aggregate_verdict'].get('rate_driver_joint_counts')}`",
         "",
         "## Scope",
         "",
@@ -628,8 +714,8 @@ def build_markdown(payload: Mapping[str, Any]) -> str:
             "",
             "## Per-Seed Classification",
             "",
-            "| seed | status | aggregate | left class | left R | left planted | left ceiling | left achieved/ceiling | right class | right R | right planted | right ceiling | right achieved/ceiling |",
-            "|---:|---|---|---|---:|---:|---:|---:|---|---:|---:|---:|---:|",
+            "| seed | status | aggregate | left class | left R | left driver | left planted | left achieved/ceiling | right class | right R | right driver | right planted | right achieved/ceiling |",
+            "|---:|---|---|---|---:|---|---:|---:|---|---:|---|---:|---:|",
         ]
     )
     for result in payload["seed_results"]:
@@ -639,13 +725,31 @@ def build_markdown(payload: Mapping[str, Any]) -> str:
         lines.append(
             f"| {result.get('seed')} | `{result.get('status')}` | `{result.get('aggregate_classification')}` | "
             f"`{left.get('classification')}` | {fmt(left.get('rate_utilization_peak'))} | "
+            f"`{left.get('rate_driver_joint')}` | "
             f"{fmt(left.get('planted_pct_during_phase_swing'))} | "
-            f"{fmt(left.get('vertical_clearance_ceiling_peak_m_s'))} | "
             f"{fmt(left.get('achieved_to_ceiling_ratio_peak'))} | "
             f"`{right.get('classification')}` | {fmt(right.get('rate_utilization_peak'))} | "
+            f"`{right.get('rate_driver_joint')}` | "
             f"{fmt(right.get('planted_pct_during_phase_swing'))} | "
-            f"{fmt(right.get('vertical_clearance_ceiling_peak_m_s'))} | "
             f"{fmt(right.get('achieved_to_ceiling_ratio_peak'))} |"
+        )
+    lines.extend(
+        [
+            "",
+            "## Per-Seed Structural Reasons",
+            "",
+            "| seed | left reasons | right reasons | right per-joint R peak |",
+            "|---:|---|---|---|",
+        ]
+    )
+    for result in payload["seed_results"]:
+        sides = result.get("side_results") or {}
+        left = sides.get("left") or {}
+        right = sides.get("right") or {}
+        lines.append(
+            f"| {result.get('seed')} | `{left.get('structural_reasons')}` | "
+            f"`{right.get('structural_reasons')}` | "
+            f"`{right.get('rate_utilization_by_joint_peak')}` |"
         )
     lines.extend(
         [
@@ -659,6 +763,11 @@ def build_markdown(payload: Mapping[str, Any]) -> str:
         lines.append(
             "- Phase-commanded swing windows are planted while pitch-chain rate utilization is near the corrected limits. "
             "Clearance is envelope/geometry constrained; per-seed swing weighting is likely a band-aid."
+        )
+    elif verdict == "MIXED_LEG_MODES":
+        lines.append(
+            "- The legs have different limiting modes. The structural leg is over the corrected envelope and must not be "
+            "treated as a pure latency problem; the latency-limited leg may still benefit from phase advance."
         )
     elif verdict == "DISTILLATION":
         lines.append(
