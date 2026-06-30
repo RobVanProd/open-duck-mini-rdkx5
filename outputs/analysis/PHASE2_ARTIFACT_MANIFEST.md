@@ -95,7 +95,7 @@ This is a read-only hash manifest. It did not train, SSH, deploy, or touch the r
 | `tools/report_phase2_colab_launch_handoff.py` | `PRESENT_FILE` | `d8f53081d676fe254e6828c3cf98b792399e5dc8382b1519062e84dc8a9bf589` | 11188 | `tools/report_phase2_colab_launch_handoff.py` |
 | `tools/report_phase2_package_only_archive_verification.py` | `PRESENT_FILE` | `0a2205b238e16dd3851dc4d44e57929caa8a055098d0300c765ad2443051df90` | 9560 | `tools/report_phase2_package_only_archive_verification.py` |
 | `tools/report_phase2_stage_guard.py` | `PRESENT_FILE` | `245a4c23bc264de0b4f603aa1ed0f2194cd367749525976d91961795f20033ac` | 19643 | `tools/report_phase2_stage_guard.py` |
-| `tools/run_colab_cli_cuda_workflow.py` | `PRESENT_FILE` | `b0d332d00a0357ea279e8a733ee7cfbf24d02bb67f3d6d449664224e6865a466` | 130291 | `tools/run_colab_cli_cuda_workflow.py` |
+| `tools/run_colab_cli_cuda_workflow.py` | `PRESENT_FILE` | `dd56ba54f472019340610c6f00fcc24e8df6660cff9a9eb613414810b9f17aab` | 132548 | `tools/run_colab_cli_cuda_workflow.py` |
 
 ## Promotion Gate
 
