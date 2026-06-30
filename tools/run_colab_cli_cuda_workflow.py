@@ -1030,7 +1030,15 @@ def build_remote_driver(
     phase2_motion_preserve = (
         run_phase2_b0e or run_phase2_b0f or run_phase2_b0g or run_phase2_terrain_like
     )
-    phase2_num_timesteps = "122880" if (run_phase2_z002_tracking_margin or run_phase2_z002_teacher_continuity or run_phase2_motion_floor_like) else ("81920" if run_phase2_z005_support else ("80000" if (run_phase2_b0f or run_phase2_b0g) else "160000"))
+    phase2_num_timesteps = (
+        str(args.phase2_num_timesteps)
+        if args.phase2_num_timesteps is not None
+        else (
+            "122880"
+            if (run_phase2_z002_tracking_margin or run_phase2_z002_teacher_continuity or run_phase2_motion_floor_like)
+            else ("81920" if run_phase2_z005_support else ("80000" if (run_phase2_b0f or run_phase2_b0g) else "160000"))
+        )
+    )
     phase2_ppo_num_envs = "64" if (run_phase2_b0f or run_phase2_b0g or run_phase2_terrain_like) else "128"
     phase2_ppo_batch_size = "512" if (run_phase2_b0f or run_phase2_b0g or run_phase2_terrain_like) else "1024"
     phase2_lr = "0.000002" if (run_phase2_z002_tracking_margin or run_phase2_z002_teacher_continuity) else ("0.000004" if run_phase2_motion_floor_like else ("0.000003" if (run_phase2_b0f or run_phase2_b0g or run_phase2_z005_support) else ("0.000012" if run_phase2_b0e else "0.000015")))
@@ -2406,6 +2414,15 @@ def main() -> int:
         ),
     )
     parser.add_argument("--candidate-num-timesteps", type=int, default=200000)
+    parser.add_argument(
+        "--phase2-num-timesteps",
+        type=int,
+        default=None,
+        help=(
+            "Override the hard-coded Phase 2 workflow training length. "
+            "Use for tiny foreground diagnostics only; omit for registered full runs."
+        ),
+    )
     parser.add_argument(
         "--checkpoint-sweep-policies",
         nargs="+",
