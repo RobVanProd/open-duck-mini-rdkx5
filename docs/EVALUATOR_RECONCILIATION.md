@@ -210,7 +210,7 @@ All `LIVE_ORACLE_DAGGER_PHASE_STUDENT` gates must use this command family:
 ```bash
 ../envs/open-duck-playground/bin/python tools/run_candidate_seed_sweep.py \
   --policies label=path/to/candidate.onnx \
-  --fit-json outputs/analysis/actuator_response_fit.json \
+  --fit-json outputs/analysis/actuator_response_fit_corrected_knee.json \
   --playground-path ../Open_Duck_Playground \
   --env-python ../envs/open-duck-playground/bin/python \
   --command-x 0.08 \
@@ -227,7 +227,7 @@ For zero-command semantics:
 ```bash
 ../envs/open-duck-playground/bin/python tools/run_candidate_seed_sweep.py \
   --policies label=path/to/candidate.onnx \
-  --fit-json outputs/analysis/actuator_response_fit.json \
+  --fit-json outputs/analysis/actuator_response_fit_corrected_knee.json \
   --playground-path ../Open_Duck_Playground \
   --env-python ../envs/open-duck-playground/bin/python \
   --command-x 0.0 \
@@ -258,9 +258,20 @@ For promotion, the strict x=0.08 branch gate is:
 duration_complete: 8/8
 falls: 0/8
 mean track ratio: >= 0.50
-max pitch-chain sent velocity p95: <= 3.75 rad/s
+max pitch-chain sent velocity p95: <= corrected per-joint limits
 max pitch-chain tracking p95: <= 0.20 rad
 ```
+
+Corrected per-joint fitted limits:
+
+| joint | velocity limit rad/s |
+|---|---:|
+| left_hip_pitch | 2.50 |
+| left_knee | 3.25 |
+| left_ankle | 2.75 |
+| right_hip_pitch | 2.25 |
+| right_knee | 2.75 |
+| right_ankle | 2.00 |
 
 The x=0.0 semantic gate is:
 
@@ -268,6 +279,7 @@ The x=0.0 semantic gate is:
 duration_complete: 8/8
 falls: 0/8
 mean |vx|: <= 0.005 m/s
+pitch-chain sent velocity p95: <= corrected per-joint limits
 ```
 
 ## Decision
