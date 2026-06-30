@@ -1,0 +1,88 @@
+{
+  "status": "HOLD_NO_CLEAR_IMPROVEMENT",
+  "generated_at": "2026-06-30T12:00:00Z",
+  "workflow": "phase2-z002-teacher-continuity",
+  "session": "open-duck-a100-phase2d",
+  "hardware": "Colab A100",
+  "jax_version": "0.7.2",
+  "jaxlib_version": "0.7.2",
+  "restore_checkpoint": "outputs/phase2_domain_randomization/stage_z002_tracking_margin_c2_a100/smoke_20260630T102226Z_gpu/2026_06_30_103539_122880",
+  "target_rate_scale": -0.01,
+  "actuator_tracking_scale": -0.005,
+  "behavior_prior_scale": -0.18,
+  "training_elapsed_s": 876.335838829,
+  "robot_touched": false,
+  "onnx_hashes": {
+    "40960": "80c82afb554a7d88f813a87ad39e0d79b52d425b76d14d5d86ff14498ce46f70",
+    "81920": "d22a6982cd71a1a9d92b2805ced37daa7f413fc204137bfd7fbc831b20ddae20",
+    "122880": "d137bdc7a00d47448972e2b47052c671639683a3cbe158750dbb2617ec2c2b2d"
+  },
+  "compact_sweep": [
+    {
+      "step": 40960,
+      "command_x": 0.0,
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "max_pitch_vel_p95": 1.0536,
+      "max_tracking_p95": 0.1943,
+      "track_ratio": null,
+      "mean_local_vx": 0.0064
+    },
+    {
+      "step": 40960,
+      "command_x": 0.08,
+      "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "max_pitch_vel_p95": 1.5504,
+      "max_tracking_p95": 0.2163,
+      "track_ratio": 0.2232,
+      "mean_local_vx": 0.0179
+    },
+    {
+      "step": 81920,
+      "command_x": 0.0,
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "max_pitch_vel_p95": 1.055,
+      "max_tracking_p95": 0.1944,
+      "track_ratio": null,
+      "mean_local_vx": 0.0065
+    },
+    {
+      "step": 81920,
+      "command_x": 0.08,
+      "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "max_pitch_vel_p95": 1.5591,
+      "max_tracking_p95": 0.2168,
+      "track_ratio": 0.2091,
+      "mean_local_vx": 0.0167
+    },
+    {
+      "step": 122880,
+      "command_x": 0.0,
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "max_pitch_vel_p95": 1.1407,
+      "max_tracking_p95": 0.1945,
+      "track_ratio": null,
+      "mean_local_vx": 0.0051
+    },
+    {
+      "step": 122880,
+      "command_x": 0.08,
+      "status": "HOLD_CANDIDATE_TRACKING",
+      "max_pitch_vel_p95": 1.4952,
+      "max_tracking_p95": 0.2156,
+      "track_ratio": 0.2965,
+      "mean_local_vx": 0.0237
+    }
+  ],
+  "prior_anchor": {
+    "checkpoint": "outputs/phase2_domain_randomization/stage_z002_tracking_margin_c2_a100/smoke_20260630T102226Z_gpu/2026_06_30_103539_122880",
+    "track_ratio": 0.3018,
+    "max_tracking_p95": 0.2163
+  },
+  "best_teacher_continuity_checkpoint": {
+    "step": 122880,
+    "track_ratio": 0.2965,
+    "max_tracking_p95": 0.2156
+  },
+  "best_restore_anchor": "outputs/phase2_domain_randomization/stage_z002_tracking_margin_c2_a100/smoke_20260630T102226Z_gpu/2026_06_30_103539_122880",
+  "next": "Do not keep tuning small scalar rewards. If continuing this line, move to a structural mechanism such as live-oracle DAgger or phase/memory-aware student training."
+}
