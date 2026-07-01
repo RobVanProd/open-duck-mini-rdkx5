@@ -1,0 +1,36 @@
+{
+  "status": "HOLD_COLAB_ARTIFACT_LOST_AFTER_REMOTE_PROGRESS",
+  "workflow": "phase2-z0025-boundary",
+  "session": "open-duck-l4-execdiag",
+  "run_dir": "outputs/analysis/colab_cli/open-duck-l4-execdiag-phase2-z0025-boundary-20260701T032851Z",
+  "remote_stack": {
+    "jax": "0.7.2",
+    "jaxlib": "0.7.2",
+    "brax": "0.14.2",
+    "mujoco": "3.9.0",
+    "mujoco_mjx": "3.9.0",
+    "playground": "0.0.5"
+  },
+  "remote_progress": {
+    "contract_audit_returncode": 0,
+    "training_returncode": 0,
+    "training_summary_returncode": 0,
+    "checkpoint_sweep_returncode": 0,
+    "selected_checkpoint_status": "HOLD_PARTIAL_CANDIDATE_CHECKPOINT",
+    "selected_checkpoint": "/content/open_duck_training_phase2_z0025_boundary_cli/smoke_20260701T033216Z_gpu/2026_07_01_034313_40960.onnx",
+    "completed_seed_gates_before_loss": [
+      "z0025_x008_no_push",
+      "z0025_x000_no_push",
+      "z002_x008_no_push_regression",
+      "z002_x000_no_push_regression"
+    ]
+  },
+  "failure": {
+    "stage": "z002_x008_gentle_push_regression_seed_gate",
+    "error": "RuntimeError: Connection was lost.",
+    "artifact_downloaded": false,
+    "session_recoverable": false
+  },
+  "decision": "Do not score as policy evidence without recovered ONNX/JSON artifacts. Relaunch with --phase2-skip-post-training-gates, then run gates separately from the local ONNX.",
+  "robot_validation": "blocked"
+}
