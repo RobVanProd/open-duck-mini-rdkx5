@@ -1,6 +1,6 @@
 # Live-Oracle DAgger Phase Student Spec
 
-Status: `BLOCKED_PENDING_CORRECTED_BRIDGE_SOURCE_REBUILD`
+Status: `READY_FOR_ITER0_STUDENT_FIT`
 
 Branch ID: `LIVE_ORACLE_DAGGER_PHASE_STUDENT`
 
@@ -30,6 +30,13 @@ the strict corrected fitted-bridge tracking gate by:
   violates the corrected per-joint envelope. Only `1/1030` mined short windows
   passed, and it was double-support-centered. The old source-VX selector is
   therefore historical evidence, not a valid live oracle for this branch.
+- A corrected z=0.0024 rough-terrain source manifest now exists:
+  `outputs/analysis/phase2_z0024_corrected_terrain_source_manifest.json`
+  (`d8498b665c201936`, 8 entries, 6000 samples, all BC-ready).
+- z=0.005 live-oracle terrain-support iteration 0 completed data collection
+  with corrected bridge and no robot/SSH/deploy/training:
+  `outputs/analysis/phase2_z005_live_oracle_terrain_support_iter0_aggregate_manifest.json`
+  (`3f68992af82062f7`, 18 entries, 12806 samples).
 - Prior memoryless distillations, static DAgger passes, kNN/linear/blend
   students, and feed-forward PPO-shape students held at the same tracking
   plateau or froze.
@@ -70,13 +77,22 @@ Gate:
 PASS_EVALUATOR_CANONICAL
 ```
 
-No live-oracle DAgger iteration may be interpreted as a branch result until
-Step 0 passes and a corrected-bridge source/oracle has been rebuilt.
+No live-oracle DAgger candidate may be interpreted as a branch result until
+Step 0 passes, a corrected-bridge source/oracle has been rebuilt, and the
+exported student clears the canonical corrected evaluator.
 
 Corrected Step 1 artifact:
 
 ```text
 outputs/analysis/CORRECTED_BRIDGE_STEP1_FEASIBILITY_DECISION.md
+```
+
+Corrected terrain source and iter0 data artifacts:
+
+```text
+outputs/analysis/PHASE2_CORRECTED_TERRAIN_SOURCE_DECISION.md
+outputs/analysis/PHASE2_Z005_LIVE_ORACLE_TERRAIN_SUPPORT_ITER0_RUN.md
+outputs/analysis/PHASE2_Z005_LIVE_ORACLE_TERRAIN_SUPPORT_ITER0_AGGREGATE_MANIFEST.md
 ```
 
 ## Hypotheses
