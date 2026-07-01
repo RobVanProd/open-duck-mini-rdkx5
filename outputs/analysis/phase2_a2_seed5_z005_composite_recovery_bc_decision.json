@@ -1,0 +1,23 @@
+{
+  "status": "PASS_COMPOSITE_BC_READY_HOLD_TARGET_SOURCE_GATE",
+  "scope": "offline_manifest_curation",
+  "robot_touched": false,
+  "training_performed": false,
+  "manifest": "outputs/analysis/phase2_a2_seed5_z005_composite_recovery_bc_manifest.json",
+  "manifest_status": "PASS_BC_TRACE_MANIFEST_READY",
+  "dataset_id": "474aed4e249e54b2",
+  "entries": 2,
+  "samples": 141,
+  "bc_ready_entries": 2,
+  "max_source_fraction": 0.5,
+  "sanity_check": "outputs/analysis/phase2_a2_seed5_z005_composite_recovery_bc_manifest_check.json",
+  "sanity_status": "HOLD_TARGET_DATASET_SANITY_ERRORS",
+  "bc_readiness_status": "PASS_TARGET_DATASET_BC_READY",
+  "interpretation": "The manifest is support/recovery supervision, not a forward target-source gate pass.",
+  "decision": "Use only as a bounded future BC/DAgger smoke input; do not promote or treat as a z=0.005 source-gate pass.",
+  "next": [
+    "run a small supervised smoke against this manifest",
+    "evaluate first on the short seed-5 z=0.005 support gate",
+    "if it collapses or overfits, redesign the recovery source rather than scaling this dataset"
+  ]
+}
