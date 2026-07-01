@@ -37,7 +37,7 @@ This is a read-only hash manifest. It did not train, SSH, deploy, or touch the r
 
 | name | status | sha256 | size/files | path |
 |---|---|---|---:|---|
-| `docs/PHASE2_DOMAIN_RANDOMIZATION_ROBUSTNESS.md` | `PRESENT_FILE` | `ba50ccca313860fc48a41ac3a4cb9722f9623315153e4632dc5413b4238d9e89` | 80381 | `docs/PHASE2_DOMAIN_RANDOMIZATION_ROBUSTNESS.md` |
+| `docs/PHASE2_DOMAIN_RANDOMIZATION_ROBUSTNESS.md` | `PRESENT_FILE` | `bd193ce9f815488ea4ae62ae89686bbcb50b936baf851b2350e51dd8de06ad6e` | 80853 | `docs/PHASE2_DOMAIN_RANDOMIZATION_ROBUSTNESS.md` |
 | `docs/TRAINING_ENV_7900XTX.md` | `PRESENT_FILE` | `1f98919b1d48a16fa9cba74ddf431dc60f56df6ff6d26f99c44709db06f7a326` | 15299 | `docs/TRAINING_ENV_7900XTX.md` |
 | `outputs/analysis/PHASE2_CURRENT_STATUS.md` | `PRESENT_FILE` | `b91f778ed9f6d1df04785138294b128613caf56118fa5149a16fc54ac0e7fa77` | 4562 | `outputs/analysis/PHASE2_CURRENT_STATUS.md` |
 | `outputs/analysis/phase2_current_status.json` | `PRESENT_FILE` | `a5fad7693f50aaa8c6546bfc37561751158b72c963b23a1aea936b9938874b32` | 16200 | `outputs/analysis/phase2_current_status.json` |
@@ -91,6 +91,8 @@ This is a read-only hash manifest. It did not train, SSH, deploy, or touch the r
 | `outputs/analysis/phase2_stagea2_gain099_seed5_terrain_boundary_z0027_short_decision.json` | `PRESENT_FILE` | `a3449cdcf50781f6412292ddf9c890a897bfcd550a53350980e45a39440bfa45` | 1766 | `outputs/analysis/phase2_stagea2_gain099_seed5_terrain_boundary_z0027_short_decision.json` |
 | `outputs/analysis/PHASE2_STAGEA2_GAIN099_SEED5_TERRAIN_BOUNDARY_Z00255_SHORT_DECISION.md` | `PRESENT_FILE` | `34fd1ced7a4a9b5af2d1c998c16e936f2f2f02ccdc2f1be036b8eda532558ff2` | 2026 | `outputs/analysis/PHASE2_STAGEA2_GAIN099_SEED5_TERRAIN_BOUNDARY_Z00255_SHORT_DECISION.md` |
 | `outputs/analysis/phase2_stagea2_gain099_seed5_terrain_boundary_z00255_short_decision.json` | `PRESENT_FILE` | `f62a2a90e1d8be84d24a3c73ae203fcf51edf6e6c146d9a00779f2036a503996` | 1795 | `outputs/analysis/phase2_stagea2_gain099_seed5_terrain_boundary_z00255_short_decision.json` |
+| `outputs/analysis/PHASE2_TERRAIN_SUPPORT_SOURCE_NEXT_PLAN.md` | `PRESENT_FILE` | `82a2036879438fae1886d6729a8203decefdcd44fa9d32ddd0b6688c04f6df2a` | 3477 | `outputs/analysis/PHASE2_TERRAIN_SUPPORT_SOURCE_NEXT_PLAN.md` |
+| `outputs/analysis/phase2_terrain_support_source_next_plan.json` | `PRESENT_FILE` | `a4dac44ed804a0ad284d6ae45ba7e14e8646921cd4f0bffd556f1aaf0abc8329` | 1637 | `outputs/analysis/phase2_terrain_support_source_next_plan.json` |
 | `outputs/analysis/phase2_z005_t4_recovered_latest_local_debug_sweep/CANDIDATE_CHECKPOINT_SWEEP.md` | `PRESENT_FILE` | `f4be4ccb739932393877f05133891f566b039c76dc788b28d141fc75b3aac2db` | 2050 | `outputs/analysis/phase2_z005_t4_recovered_latest_local_debug_sweep/CANDIDATE_CHECKPOINT_SWEEP.md` |
 | `outputs/analysis/phase2_z005_t4_recovered_latest_local_debug_sweep/candidate_checkpoint_sweep.json` | `PRESENT_FILE` | `b1d871ac1e43cf70b1ec1e4d8a96057930f2571edd6edb16a8f9447ef82b0359` | 9257 | `outputs/analysis/phase2_z005_t4_recovered_latest_local_debug_sweep/candidate_checkpoint_sweep.json` |
 | `tools/plan_phase2_z005_support_recipe.py` | `PRESENT_FILE` | `30d4191a48f58d337a0fc84cde783f277583af3f052722df42c89d5ee9993dbb` | 17157 | `tools/plan_phase2_z005_support_recipe.py` |

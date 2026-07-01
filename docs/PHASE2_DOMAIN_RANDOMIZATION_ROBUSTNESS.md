@@ -181,6 +181,18 @@ The current Phase A2 gain099 candidate fails the short seed-5 support gate at
 brackets the usable source terrain between `z=0.0024` and `z=0.00255`; do not
 use `z=0.00255+` traces as positive support labels.
 
+Current source-generation plan:
+
+```text
+outputs/analysis/PHASE2_TERRAIN_SUPPORT_SOURCE_NEXT_PLAN.md
+outputs/analysis/phase2_terrain_support_source_next_plan.json
+```
+
+The next aligned branch is no longer another DAgger fit against the z=0.0024
+source. It is a small terrain-support source-generation rung at `z=0.00245` or
+`z=0.00250`, warm-started from Phase A2, with seed-5 `x=0.0` support survival
+as the first gate. Only passing source traces may feed later DAgger.
+
 This recipe continues from the last z=0.002 passing A2 checkpoint, keeps the
 corrected bridge active, uses z=0.005 rough terrain with no push, and targets
 the seed-5 support collapse directly:
