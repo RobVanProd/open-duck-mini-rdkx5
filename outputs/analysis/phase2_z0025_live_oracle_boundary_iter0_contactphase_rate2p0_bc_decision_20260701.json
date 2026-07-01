@@ -1,0 +1,115 @@
+{
+  "status": "HOLD_RATE2P0_BC_TINY_TARGET_VELOCITY_EXCESS",
+  "date": "2026-07-01",
+  "scope": "offline_supervised_bc_fit_and_cpu_sim_screen",
+  "no_robot": true,
+  "no_ssh": true,
+  "no_deploy": true,
+  "no_ppo_training": true,
+  "candidate": {
+    "manifest": "outputs/analysis/phase2_z0025_live_oracle_boundary_iter0/live_oracle_dagger_aggregate_manifest.json",
+    "manifest_dataset_id": "e1d14b2c3f81d443",
+    "manifest_samples": 10500,
+    "model": "contact_phase_modulated_feed_forward_bc",
+    "context_indices": [6, 97, 98, 99, 100],
+    "target_rate_scale": 1.0,
+    "target_rate_limit_rad_s": 2.0,
+    "onnx": "outputs/analysis/phase2_z0025_live_oracle_boundary_iter0_contactphase_rate2p0_bc_candidate/candidate.onnx",
+    "onnx_sha256": "e359a3f095d0b88299340a2caca48b686dda758640020f3a017bdb221d44d279",
+    "npz": "outputs/analysis/phase2_z0025_live_oracle_boundary_iter0_contactphase_rate2p0_bc_candidate/candidate_mlp.npz",
+    "npz_sha256": "0550e90cae60d1fc57552f38f366e3bc58f891f1641c0612d5572d72715190fe"
+  },
+  "fit": {
+    "status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE",
+    "mae": 0.010195,
+    "p95_abs_error": 0.028445,
+    "max_abs_error": 0.947577,
+    "target_rate_p95_rad_s": 1.623235,
+    "target_rate_p99_rad_s": 1.918720,
+    "target_rate_max_rad_s": 2.467730,
+    "onnx_fidelity_p95_abs_error": 0.00000015,
+    "onnx_fidelity_max_abs_error": 0.00000027
+  },
+  "x008_screen": {
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.0025,
+    "bridge_mode": "fitted",
+    "seeds": [0, 3, 4, 6],
+    "falls": 0,
+    "duration_complete": 4,
+    "passed": 1,
+    "track_ratio_mean": 0.3040,
+    "vx_mean_m_s": 0.0243,
+    "p95_velocity_excess_mean_rad_s": 0.0,
+    "max_instant_velocity_excess_mean_rad_s": 0.0254,
+    "per_seed": [
+      {
+        "seed": 0,
+        "status": "PASS_CANDIDATE_SIM_GATE",
+        "samples": 750,
+        "mean_local_vx_m_s": 0.0242,
+        "track_ratio": 0.3020,
+        "max_vel_excess_rad_s": 0.0,
+        "max_tracking_p95_rad": 0.1919
+      },
+      {
+        "seed": 3,
+        "status": "HOLD_CANDIDATE_TARGET_VELOCITY",
+        "samples": 750,
+        "mean_local_vx_m_s": 0.0214,
+        "track_ratio": 0.2680,
+        "max_vel_excess_rad_s": 0.0143,
+        "max_tracking_p95_rad": 0.1895
+      },
+      {
+        "seed": 4,
+        "status": "HOLD_CANDIDATE_TARGET_VELOCITY",
+        "samples": 750,
+        "mean_local_vx_m_s": 0.0256,
+        "track_ratio": 0.3206,
+        "max_vel_excess_rad_s": 0.0374,
+        "max_tracking_p95_rad": 0.1919
+      },
+      {
+        "seed": 6,
+        "status": "HOLD_CANDIDATE_TARGET_VELOCITY",
+        "samples": 750,
+        "mean_local_vx_m_s": 0.0260,
+        "track_ratio": 0.3252,
+        "max_vel_excess_rad_s": 0.0501,
+        "max_tracking_p95_rad": 0.1931
+      }
+    ]
+  },
+  "x0_screen": {
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.0025,
+    "bridge_mode": "fitted",
+    "seeds": [0, 1],
+    "falls": 0,
+    "duration_complete": 2,
+    "passed": 2,
+    "vx_mean_m_s": -0.0008,
+    "per_seed": [
+      {
+        "seed": 0,
+        "status": "PASS_CANDIDATE_SIM_GATE",
+        "samples": 750,
+        "mean_local_vx_m_s": -0.0004,
+        "max_vel_excess_rad_s": 0.0,
+        "max_tracking_p95_rad": 0.0327
+      },
+      {
+        "seed": 1,
+        "status": "PASS_CANDIDATE_SIM_GATE",
+        "samples": 750,
+        "mean_local_vx_m_s": -0.0013,
+        "max_vel_excess_rad_s": 0.0,
+        "max_tracking_p95_rad": 0.0320
+      }
+    ]
+  },
+  "decision": "Near-pass: x=0.0 preserved and x=0.08 instantaneous excess reduced sharply, but 3/4 boundary seeds still exceed the corrected instantaneous envelope.",
+  "recommended_next": "Tighten label/model projection slightly more or add per-joint target-rate projection for right ankle and right hip pitch, then re-screen the same boundary seeds.",
+  "robot_validation": "blocked"
+}
