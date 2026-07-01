@@ -45,6 +45,13 @@ the strict corrected fitted-bridge tracking gate by:
   simulator target-slew ceiling. Do not keep fitting the same aggregate with
   larger supervised models; the z=0.005 source/oracle must be strengthened
   before another live-oracle iteration is meaningful.
+- A tiny seed-5 composite recovery BC smoke was also tested:
+  `outputs/analysis/PHASE2_A2_SEED5_Z005_COMPOSITE_RECOVERY_BC_SMOKE_DECISION.md`.
+  It fit 141 labels cleanly offline but failed the short closed-loop seed-5
+  z=0.005 support gate with corrected-envelope velocity excess and high action
+  saturation. This closes one-shot fixed BC on the composite recovery manifest;
+  the next iteration must use live/on-policy recovery states with immediate
+  short gates before scaling.
 - Prior memoryless distillations, static DAgger passes, kNN/linear/blend
   students, and feed-forward PPO-shape students held at the same tracking
   plateau or froze.
@@ -101,6 +108,13 @@ Corrected terrain source and iter0 data artifacts:
 outputs/analysis/PHASE2_CORRECTED_TERRAIN_SOURCE_DECISION.md
 outputs/analysis/PHASE2_Z005_LIVE_ORACLE_TERRAIN_SUPPORT_ITER0_RUN.md
 outputs/analysis/PHASE2_Z005_LIVE_ORACLE_TERRAIN_SUPPORT_ITER0_AGGREGATE_MANIFEST.md
+```
+
+Latest recovery DAgger next-step artifact:
+
+```text
+outputs/analysis/PHASE2_Z005_RECOVERY_DAGGER_NEXT_DECISION.md
+outputs/analysis/phase2_z005_recovery_dagger_next_decision.json
 ```
 
 ## Hypotheses

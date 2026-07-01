@@ -134,6 +134,21 @@ lost before the post-training corrected-bridge gate completed. Treat the
 recovered ONNX files as offline debug artifacts only. They are not deployable
 and do not authorize robot testing.
 
+Latest z=0.005 recovery-source decision:
+
+```text
+outputs/analysis/PHASE2_Z005_RECOVERY_DAGGER_NEXT_DECISION.md
+outputs/analysis/phase2_z005_recovery_dagger_next_decision.json
+```
+
+The 141-sample seed-5 composite recovery BC smoke fit its labels cleanly
+offline, but failed the short closed-loop `z=0.005`, seed-5, `x=0.0` support
+gate with severe corrected-envelope velocity excess and high action
+saturation. Treat fixed tiny-manifest BC as closed. The next authorized offline
+step is a bounded live/on-policy z=0.005 recovery DAgger iteration from the
+Phase A2 command-gated candidate, using the corrected z=0.0024 source
+manifest, with immediate short seed-5 gates before any 8-seed or Colab scaling.
+
 This recipe continues from the last z=0.002 passing A2 checkpoint, keeps the
 corrected bridge active, uses z=0.005 rough terrain with no push, and targets
 the seed-5 support collapse directly:

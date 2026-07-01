@@ -78,6 +78,8 @@ REVIEW_ARTIFACTS = [
     "outputs/analysis/phase2_colab_package_only_manifest.json",
     "outputs/analysis/PHASE2_Z005_T4_RECOVERY_DECISION.md",
     "outputs/analysis/phase2_z005_t4_recovery_decision.json",
+    "outputs/analysis/PHASE2_Z005_RECOVERY_DAGGER_NEXT_DECISION.md",
+    "outputs/analysis/phase2_z005_recovery_dagger_next_decision.json",
     "outputs/analysis/phase2_z005_t4_recovered_latest_local_debug_sweep/CANDIDATE_CHECKPOINT_SWEEP.md",
     "outputs/analysis/phase2_z005_t4_recovered_latest_local_debug_sweep/candidate_checkpoint_sweep.json",
     "tools/plan_phase2_z005_support_recipe.py",
