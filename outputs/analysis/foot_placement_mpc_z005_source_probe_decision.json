@@ -1,0 +1,46 @@
+{
+  "status": "HOLD_FOOT_PLACEMENT_MPC_Z005_SOURCE_NOT_ROBUST",
+  "offline_only": true,
+  "training": false,
+  "ssh": false,
+  "deploy": false,
+  "robot_tests": false,
+  "grounded_replay": false,
+  "runtime_behavior_changes": false,
+  "tooling_change": {
+    "tool": "tools/probe_foot_placement_mpc_teacher.py",
+    "added_flag": "--terrain-hfield-z-scale",
+    "default_off": true,
+    "mechanism": "scaled hfield XML override matching closed_loop_sim_eval.py"
+  },
+  "smoke": {
+    "report": "outputs/analysis/FOOT_PLACEMENT_MPC_Z005_TERRAIN_HOOK_SMOKE.md",
+    "status": "PASS_FOOT_PLACEMENT_MPC_PROBE_RAN",
+    "terrain_hfield_z_scale": 0.005
+  },
+  "probe": {
+    "report": "outputs/analysis/FOOT_PLACEMENT_MPC_Z005_SOURCE_PROBE.md",
+    "json": "outputs/analysis/foot_placement_mpc_z005_source_probe.json",
+    "score_report": "outputs/analysis/FOOT_PLACEMENT_MPC_Z005_SOURCE_PROBE_SCORE.md",
+    "score_json": "outputs/analysis/foot_placement_mpc_z005_source_probe_score.json",
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.005,
+    "command_x": 0.08,
+    "seeds": [0, 5],
+    "duration_s": 2.0,
+    "candidate_count": 16,
+    "robust_modes": 0,
+    "score_status": "HOLD_NO_SEED_ROBUST_TARGETS"
+  },
+  "failure_summary": {
+    "seed0": "all candidates low velocity / low displacement / double-support dominated",
+    "seed5": "all candidates fall before the 50-sample source scoring window",
+    "best_duration_complete": 1,
+    "best_runs": 2,
+    "best_aggregate_mean_vx_m_s": -0.177,
+    "best_seed5_samples_before_fall": 43,
+    "best_seed5_base_height_min_m": 0.055
+  },
+  "decision": "Do not build a BC manifest from these traces and do not run live-oracle DAgger iteration 1 from this source.",
+  "next": "Target seed-5 z=0.005 support survival first before swing/propulsion or full 8-seed source gating."
+}

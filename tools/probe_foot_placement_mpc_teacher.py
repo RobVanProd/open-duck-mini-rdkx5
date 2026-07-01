@@ -26,6 +26,7 @@ from closed_loop_sim_eval import (
     quat_wxyz_to_roll,
     quat_wxyz_to_yaw,
     temporary_cwd,
+    write_scaled_hfield_scene,
 )
 from eval_reference_motion_rollout import fmt, parse_int_list
 from probe_closed_loop_weight_transfer_teacher import label_float, parse_float_list
@@ -234,27 +235,60 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
     seeds = parse_int_list(args.seeds)
     results: list[dict[str, Any]] = []
 
+    terrain_override = {
+        "enabled": False,
+        "hfield_z_scale": None,
+        "source_xml": None,
+        "temp_xml": None,
+    }
+    temp_scene_xml: Path | None = None
+    original_task_to_xml = None
     with temporary_cwd(playground_path):
+        from playground.open_duck_mini_v2 import constants as duck_constants
+
+        original_task_to_xml = duck_constants.task_to_xml
+        if args.terrain_hfield_z_scale is not None:
+            source_xml = Path(original_task_to_xml(args.task))
+            temp_scene_xml = write_scaled_hfield_scene(
+                source_xml, float(args.terrain_hfield_z_scale)
+            )
+            terrain_override = {
+                "enabled": True,
+                "hfield_z_scale": float(args.terrain_hfield_z_scale),
+                "source_xml": str(source_xml),
+                "temp_xml": str(temp_scene_xml),
+            }
+
+            def task_to_xml_override(task_name: str):
+                if task_name == args.task:
+                    return temp_scene_xml
+                return original_task_to_xml(task_name)
+
+            duck_constants.task_to_xml = task_to_xml_override
         env_config = joystick.default_config()
-        env = joystick.Joystick(
-            task=args.task,
-            config=env_config,
-            config_overrides={
-                "push_config.enable": False,
-                "lin_vel_x": [args.command_x, args.command_x],
-                "lin_vel_y": [0.0, 0.0],
-                "ang_vel_yaw": [0.0, 0.0],
-                "neck_pitch_range": [0.0, 0.0],
-                "head_pitch_range": [0.0, 0.0],
-                "head_yaw_range": [0.0, 0.0],
-                "head_roll_range": [0.0, 0.0],
-                "noise_config.level": 0.0,
-                "noise_config.action_min_delay": 0,
-                "noise_config.action_max_delay": 1,
-                "noise_config.imu_min_delay": 0,
-                "noise_config.imu_max_delay": 1,
-            },
-        )
+        try:
+            env = joystick.Joystick(
+                task=args.task,
+                config=env_config,
+                config_overrides={
+                    "push_config.enable": False,
+                    "lin_vel_x": [args.command_x, args.command_x],
+                    "lin_vel_y": [0.0, 0.0],
+                    "ang_vel_yaw": [0.0, 0.0],
+                    "neck_pitch_range": [0.0, 0.0],
+                    "head_pitch_range": [0.0, 0.0],
+                    "head_yaw_range": [0.0, 0.0],
+                    "head_roll_range": [0.0, 0.0],
+                    "noise_config.level": 0.0,
+                    "noise_config.action_min_delay": 0,
+                    "noise_config.action_max_delay": 1,
+                    "noise_config.imu_min_delay": 0,
+                    "noise_config.imu_max_delay": 1,
+                },
+            )
+        finally:
+            if original_task_to_xml is not None:
+                duck_constants.task_to_xml = original_task_to_xml
 
         def refresh_obs(state):
             state.info["command"] = command
@@ -980,6 +1014,7 @@ def run_probe(args: argparse.Namespace) -> dict[str, Any]:
         "command_x": args.command_x,
         "duration_s": args.duration_s,
         "seeds": seeds,
+        "terrain_override": terrain_override,
         "trace_dir": str(trace_root),
         "candidate_count": len(candidates),
         "results": ranked,
@@ -999,6 +1034,7 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         f"command_x: `{payload['command_x']}`",
         f"duration_s: `{payload['duration_s']}`",
         f"seeds: `{payload['seeds']}`",
+        f"terrain_override: `{payload.get('terrain_override')}`",
         f"candidate_count: `{payload['candidate_count']}`",
         "",
         "## Limitations",
@@ -1047,6 +1083,12 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--playground-path", default=str(DEFAULT_PLAYGROUND))
     parser.add_argument("--task", default="flat_terrain")
+    parser.add_argument(
+        "--terrain-hfield-z-scale",
+        type=float,
+        default=None,
+        help="Eval-only override for hfield vertical scale in terrain XMLs.",
+    )
     parser.add_argument("--command-x", type=float, default=0.04)
     parser.add_argument("--duration-s", type=float, default=3.0)
     parser.add_argument("--seeds", default="0,2")
