@@ -1,0 +1,113 @@
+{
+  "status": "PASS_LIVE_ORACLE_DAGGER_ITERATION_DATA_READY",
+  "date": "2026-07-01",
+  "scope": "offline_cpu_data_collection_and_relabeling",
+  "no_robot": true,
+  "no_ssh": true,
+  "no_deploy": true,
+  "no_training": true,
+  "student_policy": "outputs/analysis/colab_cli/open-duck-l4-z0025-artifact-phase2-z0025-boundary-20260701T090250Z/extracted/open_duck_colab_cli_phase2-z0025-boundary_20260701T090317Z/open_duck_training_phase2_z0025_boundary_cli/smoke_20260701T090648Z_gpu/2026_07_01_092118_122880.onnx",
+  "teacher_manifest": "outputs/analysis/phase2_z0024_corrected_terrain_source_manifest.json",
+  "corrected_bridge": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+  "task": "rough_terrain_backlash",
+  "terrain_hfield_z_scale": 0.0025,
+  "bridge_mode": "fitted",
+  "jax_platform": "cpu",
+  "x008_rollout": {
+    "seeds": [0, 3, 4, 6],
+    "falls": 0,
+    "duration_complete": 4,
+    "track_ratio_mean": 0.2477,
+    "vx_mean": 0.0198,
+    "per_seed": [
+      {
+        "seed": 0,
+        "status": "HOLD_CANDIDATE_TARGET_VELOCITY",
+        "samples": 750,
+        "mean_local_vx_m_s": 0.0211,
+        "track_ratio": 0.2641,
+        "max_vel_excess_rad_s": 0.5350,
+        "max_tracking_p95_rad": 0.1919
+      },
+      {
+        "seed": 3,
+        "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+        "samples": 750,
+        "mean_local_vx_m_s": 0.0169,
+        "track_ratio": 0.2110,
+        "max_vel_excess_rad_s": 0.0,
+        "max_tracking_p95_rad": 0.1867
+      },
+      {
+        "seed": 4,
+        "status": "HOLD_CANDIDATE_TARGET_VELOCITY",
+        "samples": 750,
+        "mean_local_vx_m_s": 0.0215,
+        "track_ratio": 0.2691,
+        "max_vel_excess_rad_s": 0.2280,
+        "max_tracking_p95_rad": 0.1875
+      },
+      {
+        "seed": 6,
+        "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+        "samples": 750,
+        "mean_local_vx_m_s": 0.0197,
+        "track_ratio": 0.2465,
+        "max_vel_excess_rad_s": 0.0,
+        "max_tracking_p95_rad": 0.1863
+      }
+    ]
+  },
+  "x0_rollout": {
+    "seeds": [0, 1],
+    "falls": 0,
+    "duration_complete": 2,
+    "vx_mean": 0.0002,
+    "per_seed": [
+      {
+        "seed": 0,
+        "status": "PASS_CANDIDATE_SIM_GATE",
+        "samples": 750,
+        "mean_local_vx_m_s": 0.0005,
+        "max_vel_excess_rad_s": 0.0,
+        "max_tracking_p95_rad": 0.0629
+      },
+      {
+        "seed": 1,
+        "status": "PASS_CANDIDATE_SIM_GATE",
+        "samples": 750,
+        "mean_local_vx_m_s": -0.0002,
+        "max_vel_excess_rad_s": 0.0,
+        "max_tracking_p95_rad": 0.0642
+      }
+    ]
+  },
+  "relabel": {
+    "x008_status": "PASS_BC_TRACE_RELABEL_READY",
+    "x008_traces": 4,
+    "x008_samples_out": 3000,
+    "x008_teacher_model_kind": "source_vx_blend",
+    "x0_status": "PASS_BC_TRACE_RELABEL_READY",
+    "x0_traces": 2,
+    "x0_samples_out": 1500,
+    "x0_teacher_model_kind": "zero_action"
+  },
+  "manifests": {
+    "x008_status": "PASS_BC_TRACE_MANIFEST_READY",
+    "x008_dataset_id": "6170fe13a3123346",
+    "x008_entries": 4,
+    "x008_samples": 3000,
+    "x0_status": "PASS_BC_TRACE_MANIFEST_READY",
+    "x0_dataset_id": "8530328f24a25f51",
+    "x0_entries": 2,
+    "x0_samples": 1500,
+    "aggregate_status": "PASS_FILTERED_BC_MANIFEST_READY",
+    "aggregate_dataset_id": "e1d14b2c3f81d443",
+    "aggregate_entries": 14,
+    "aggregate_samples": 10500,
+    "aggregate_max_source_fraction": 0.0714,
+    "aggregate_manifest": "outputs/analysis/phase2_z0025_live_oracle_boundary_iter0/live_oracle_dagger_aggregate_manifest.json"
+  },
+  "decision": "Fit a supervised student from the aggregate manifest, then screen on the same z=0.0025 boundary seeds before a full 8-seed gate.",
+  "robot_validation": "blocked"
+}
