@@ -1,0 +1,57 @@
+{
+  "status": "HOLD_SEED_CONSISTENCY_PROGRESS_REGRESSION",
+  "robot_validation": "blocked",
+  "workflow": "phase2-z0025-boundary",
+  "session": "open-duck-l4-z0025-seed-consistency",
+  "artifact": {
+    "path": "outputs/analysis/colab_cli/open-duck-l4-z0025-seed-consistency-phase2-z0025-boundary-20260701T105518Z/open_duck_colab_cli_phase2-z0025-boundary_20260701T105545Z_artifacts.tar.gz",
+    "sha256": "6f060c411f922fd6210bb5cd90f592fc4000b1b055a954120ab0d68210dc773e"
+  },
+  "selected_checkpoint": {
+    "status": "HOLD_PARTIAL_CANDIDATE_CHECKPOINT",
+    "selection_reason": "best_available_but_not_promoted",
+    "path": "outputs/analysis/colab_cli/open-duck-l4-z0025-seed-consistency-phase2-z0025-boundary-20260701T105518Z/extracted/open_duck_colab_cli_phase2-z0025-boundary_20260701T105545Z/open_duck_training_phase2_z0025_boundary_cli/smoke_20260701T105915Z_gpu/2026_07_01_111402_122880.onnx",
+    "sha256": "621b54b520898402828cb62c23d976bf822c3f783f794f4d5330546551c8430b"
+  },
+  "compact_sweep": {
+    "checkpoints": [
+      {
+        "step": 40960,
+        "x000_status": "PASS_CANDIDATE_SIM_GATE",
+        "x008_status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+        "x008_track_ratio": 0.15711251259199344,
+        "x008_mean_vx_m_s": 0.0126,
+        "max_sent_vel_p95_rad_s": 1.4134398102760313,
+        "max_tracking_p95_rad": 0.21098195910453776
+      },
+      {
+        "step": 81920,
+        "x000_status": "PASS_CANDIDATE_SIM_GATE",
+        "x008_status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+        "x008_track_ratio": 0.16020385823503602,
+        "x008_mean_vx_m_s": 0.0128,
+        "max_sent_vel_p95_rad_s": 1.4137756824493408,
+        "max_tracking_p95_rad": 0.2117356836795805
+      },
+      {
+        "step": 122880,
+        "x000_status": "PASS_CANDIDATE_SIM_GATE",
+        "x008_status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+        "x008_track_ratio": 0.17319301405223086,
+        "x008_mean_vx_m_s": 0.0139,
+        "max_sent_vel_p95_rad_s": 1.4270761609077454,
+        "max_tracking_p95_rad": 0.2147496044635771
+      }
+    ]
+  },
+  "prior_boundary_reference": {
+    "decision": "outputs/analysis/phase2_z0025_boundary_l4_artifact_first_decision_20260701.json",
+    "compact_x008_track_ratio": 0.23501305567333475,
+    "compact_x008_mean_vx_m_s": 0.0188,
+    "full_x008_pass_statuses": 4,
+    "full_x008_runs": 8,
+    "full_x008_falls": 0
+  },
+  "decision": "Do not run full gates or continue scalar reward tuning. Move to targeted seed trace/data correction.",
+  "next_recommendation": "Inspect seed 0/4 max-excess joints and seed 3/6 low-progress traces from the prior boundary candidate; use targeted teacher/data correction before another PPO run."
+}
