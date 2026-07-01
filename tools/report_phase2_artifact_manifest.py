@@ -86,6 +86,8 @@ REVIEW_ARTIFACTS = [
     "outputs/analysis/phase2_stagea2_gain099_seed5_terrain_boundary_z0030_short_decision.json",
     "outputs/analysis/PHASE2_STAGEA2_GAIN099_SEED5_TERRAIN_BOUNDARY_Z0027_SHORT_DECISION.md",
     "outputs/analysis/phase2_stagea2_gain099_seed5_terrain_boundary_z0027_short_decision.json",
+    "outputs/analysis/PHASE2_STAGEA2_GAIN099_SEED5_TERRAIN_BOUNDARY_Z00255_SHORT_DECISION.md",
+    "outputs/analysis/phase2_stagea2_gain099_seed5_terrain_boundary_z00255_short_decision.json",
     "outputs/analysis/phase2_z005_t4_recovered_latest_local_debug_sweep/CANDIDATE_CHECKPOINT_SWEEP.md",
     "outputs/analysis/phase2_z005_t4_recovered_latest_local_debug_sweep/candidate_checkpoint_sweep.json",
     "tools/plan_phase2_z005_support_recipe.py",
