@@ -1258,6 +1258,14 @@ def build_remote_driver(
     phase2_command_progress = "3.5" if (run_phase2_z002_tracking_margin or run_phase2_z002_teacher_continuity) else ("3.0" if run_phase2_motion_floor_like else ("1.5" if phase2_motion_preserve else "1"))
     phase2_command_shortfall = "-10" if (run_phase2_z002_tracking_margin or run_phase2_z002_teacher_continuity) else ("-8" if run_phase2_motion_floor_like else ("-4" if phase2_motion_preserve else "-2.5"))
     phase2_command_ratio = "0.55" if (run_phase2_z002_tracking_margin or run_phase2_z002_teacher_continuity) else ("0.5" if run_phase2_motion_floor_like else ("0.45" if phase2_motion_preserve else "0.4"))
+    if args.phase2_forward_progress_scale is not None:
+        phase2_forward_progress = cli_value(args.phase2_forward_progress_scale)
+    if args.phase2_command_progress_scale is not None:
+        phase2_command_progress = cli_value(args.phase2_command_progress_scale)
+    if args.phase2_command_progress_shortfall_scale is not None:
+        phase2_command_shortfall = cli_value(args.phase2_command_progress_shortfall_scale)
+    if args.phase2_command_progress_required_ratio is not None:
+        phase2_command_ratio = cli_value(args.phase2_command_progress_required_ratio)
     phase2_extra_args = (
         '"--tracking-lin-vel-scale", "3",'
         '"--tracking-sigma", "0.01",'
@@ -1453,6 +1461,46 @@ def build_remote_driver(
         )
     else:
         phase2_support_stability_arg = ""
+    phase2_forward_swing_target_rate_limit_arg = ""
+    if args.phase2_forward_swing_target_rate_limit_scale is not None:
+        missing_rate_limit_args = [
+            name
+            for name, value in [
+                (
+                    "--phase2-forward-swing-target-rate-limit-joint-indices",
+                    args.phase2_forward_swing_target_rate_limit_joint_indices,
+                ),
+                (
+                    "--phase2-forward-swing-target-rate-limit-values",
+                    args.phase2_forward_swing_target_rate_limit_values,
+                ),
+            ]
+            if value is None
+        ]
+        if missing_rate_limit_args:
+            raise SystemExit(
+                "Missing required argument(s) for "
+                "--phase2-forward-swing-target-rate-limit-scale: "
+                + ", ".join(missing_rate_limit_args)
+            )
+        phase2_forward_swing_target_rate_limit_huber_delta = (
+            cli_value(args.phase2_forward_swing_target_rate_limit_huber_delta)
+            if args.phase2_forward_swing_target_rate_limit_huber_delta is not None
+            else "0.05"
+        )
+        phase2_forward_swing_target_rate_limit_arg = (
+            f'"--forward-swing-target-rate-limit-scale", '
+            f'"{cli_value(args.phase2_forward_swing_target_rate_limit_scale)}",'
+            f'"--forward-swing-target-rate-limit-joint-indices", '
+            f'"{args.phase2_forward_swing_target_rate_limit_joint_indices}",'
+            f'"--forward-swing-target-rate-limit-values", '
+            f'"{args.phase2_forward_swing_target_rate_limit_values}",'
+            f'"--forward-swing-target-rate-limit-huber-delta", '
+            f'"{phase2_forward_swing_target_rate_limit_huber_delta}",'
+        )
+    phase2_support_stability_arg = (
+        phase2_support_stability_arg + phase2_forward_swing_target_rate_limit_arg
+    )
     phase2_base_height_scale = "-0.35" if (run_phase2_z002_tracking_margin or run_phase2_z002_teacher_continuity or run_phase2_motion_floor_like) else "-0.8"
     phase2_forward_pitch_scale = "-0.3" if (run_phase2_z002_tracking_margin or run_phase2_z002_teacher_continuity or run_phase2_motion_floor_like) else "-0.4"
     phase2_forward_pitch_rate_scale = "-0.06" if (run_phase2_z002_tracking_margin or run_phase2_z002_teacher_continuity or run_phase2_motion_floor_like) else "-0.08"
@@ -2807,6 +2855,65 @@ def main() -> int:
         type=float,
         default=None,
         help="Override Phase 2 actuator-tracking penalty scale.",
+    )
+    parser.add_argument(
+        "--phase2-forward-progress-scale",
+        type=float,
+        default=None,
+        help="Override Phase 2 forward-progress reward scale.",
+    )
+    parser.add_argument(
+        "--phase2-command-progress-scale",
+        type=float,
+        default=None,
+        help="Override Phase 2 command-progress reward scale.",
+    )
+    parser.add_argument(
+        "--phase2-command-progress-shortfall-scale",
+        type=float,
+        default=None,
+        help="Override Phase 2 command-progress shortfall penalty scale.",
+    )
+    parser.add_argument(
+        "--phase2-command-progress-required-ratio",
+        type=float,
+        default=None,
+        help="Override Phase 2 command-progress required ratio.",
+    )
+    parser.add_argument(
+        "--phase2-forward-swing-target-rate-limit-scale",
+        type=float,
+        default=None,
+        help=(
+            "Enable the existing Playground phase-swing target-rate-limit "
+            "cost for Phase 2 workflows. Use a negative value to penalize "
+            "swing target-rate excess."
+        ),
+    )
+    parser.add_argument(
+        "--phase2-forward-swing-target-rate-limit-joint-indices",
+        default=None,
+        help=(
+            "Comma-separated actuator indices for "
+            "--phase2-forward-swing-target-rate-limit-scale."
+        ),
+    )
+    parser.add_argument(
+        "--phase2-forward-swing-target-rate-limit-values",
+        default=None,
+        help=(
+            "Comma-separated rad/s limits matching "
+            "--phase2-forward-swing-target-rate-limit-joint-indices."
+        ),
+    )
+    parser.add_argument(
+        "--phase2-forward-swing-target-rate-limit-huber-delta",
+        type=float,
+        default=None,
+        help=(
+            "Pseudo-Huber delta for the Phase 2 swing target-rate-limit cost. "
+            "Defaults to 0.05 when the cost is enabled."
+        ),
     )
     parser.add_argument(
         "--phase2-skip-post-training-gates",
