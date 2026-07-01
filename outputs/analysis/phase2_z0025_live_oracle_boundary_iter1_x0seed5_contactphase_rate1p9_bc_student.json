@@ -1,0 +1,138 @@
+{
+  "activation": "swish",
+  "config": {
+    "batch_size": 512,
+    "learning_rate": 0.0005,
+    "seed": 3,
+    "steps": 9000,
+    "target_rate_limit_rad_s": 1.9,
+    "target_rate_scale": 1.5
+  },
+  "context_hidden_sizes": [
+    64
+  ],
+  "context_indices": [
+    6,
+    97,
+    98,
+    99,
+    100
+  ],
+  "exported_onnx": "outputs/analysis/phase2_z0025_live_oracle_boundary_iter1_x0seed5_contactphase_rate1p9_bc_candidate/candidate.onnx",
+  "loss_rows": [
+    {
+      "loss": 0.6839609742164612,
+      "step": 1
+    },
+    {
+      "loss": 0.0022241338156163692,
+      "step": 500
+    },
+    {
+      "loss": 0.00047068740241229534,
+      "step": 1000
+    },
+    {
+      "loss": 0.00033809797605499625,
+      "step": 1500
+    },
+    {
+      "loss": 0.00034165792749263346,
+      "step": 2000
+    },
+    {
+      "loss": 0.0038203487638384104,
+      "step": 2500
+    },
+    {
+      "loss": 0.0004816515138372779,
+      "step": 3000
+    },
+    {
+      "loss": 0.00022053334396332502,
+      "step": 3500
+    },
+    {
+      "loss": 0.00022891777916811407,
+      "step": 4000
+    },
+    {
+      "loss": 0.00019560666987672448,
+      "step": 4500
+    },
+    {
+      "loss": 0.0002267321979161352,
+      "step": 5000
+    },
+    {
+      "loss": 0.00017087862943299115,
+      "step": 5500
+    },
+    {
+      "loss": 0.00014511597692035139,
+      "step": 6000
+    },
+    {
+      "loss": 0.000153158136527054,
+      "step": 6500
+    },
+    {
+      "loss": 0.00014697673032060266,
+      "step": 7000
+    },
+    {
+      "loss": 0.00013860996114090085,
+      "step": 7500
+    },
+    {
+      "loss": 0.0001235684467246756,
+      "step": 8000
+    },
+    {
+      "loss": 0.0001503071398474276,
+      "step": 8500
+    },
+    {
+      "loss": 0.0003486887726467103,
+      "step": 9000
+    }
+  ],
+  "manifest": "outputs/analysis/phase2_z0025_live_oracle_boundary_iter1_x0seed5/live_oracle_dagger_aggregate_manifest.json",
+  "modulation_scale": 0.75,
+  "onnx_verify": {
+    "max_abs_error": 2.980232238769531e-07,
+    "p95_abs_error": 1.1920928955078125e-07,
+    "path": "outputs/analysis/phase2_z0025_live_oracle_boundary_iter1_x0seed5_contactphase_rate1p9_bc_candidate/candidate.onnx",
+    "samples_checked": 64
+  },
+  "sample_weight": {
+    "max": 5.0,
+    "p50": 1.0,
+    "p95": 5.0,
+    "weighted_samples": 27825.0
+  },
+  "samples": 12043,
+  "saved_npz": "outputs/analysis/phase2_z0025_live_oracle_boundary_iter1_x0seed5_contactphase_rate1p9_bc_candidate/candidate_mlp.npz",
+  "status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE",
+  "target_rate": {
+    "max_rad_s": 2.956878900527954,
+    "p50_rad_s": 0.3538370132446289,
+    "p95_rad_s": 1.6230823159217835,
+    "p99_rad_s": 1.8455543649196624,
+    "pair_count": 12026
+  },
+  "train_metrics": {
+    "mae": 0.010208552770131798,
+    "max_abs_error": 0.8413899689912796,
+    "p50_abs_error": 0.006811779737472545,
+    "p95_abs_error": 0.03128700722008942,
+    "p99_abs_error": 0.06069447100162505,
+    "pred_action_saturation_pct": 0.0,
+    "rmse": 0.016381908222689655,
+    "samples": 12043
+  },
+  "trunk_hidden_sizes": [
+    512,
+    256
+  ]
+}
