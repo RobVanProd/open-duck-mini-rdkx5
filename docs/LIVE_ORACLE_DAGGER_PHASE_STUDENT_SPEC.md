@@ -1,6 +1,6 @@
 # Live-Oracle DAgger Phase Student Spec
 
-Status: `READY_FOR_ITER0_STUDENT_FIT`
+Status: `HOLD_ITER0_SOURCE_NEEDS_STRENGTHENING`
 
 Branch ID: `LIVE_ORACLE_DAGGER_PHASE_STUDENT`
 
@@ -37,6 +37,14 @@ the strict corrected fitted-bridge tracking gate by:
   with corrected bridge and no robot/SSH/deploy/training:
   `outputs/analysis/phase2_z005_live_oracle_terrain_support_iter0_aggregate_manifest.json`
   (`3f68992af82062f7`, 18 entries, 12806 samples).
+- Iteration 0 student fits have now been evaluated:
+  `outputs/analysis/PHASE2_Z005_LIVE_ORACLE_ITER0_STUDENT_FIT_DECISION.md`.
+  The phase/command-modulated feed-forward student fits cleanly and stays
+  mostly in-envelope but under-progresses and still falls on seed 5. The
+  recurrent H96 diagnostic is worse, falling on all seeds and hitting the
+  simulator target-slew ceiling. Do not keep fitting the same aggregate with
+  larger supervised models; the z=0.005 source/oracle must be strengthened
+  before another live-oracle iteration is meaningful.
 - Prior memoryless distillations, static DAgger passes, kNN/linear/blend
   students, and feed-forward PPO-shape students held at the same tracking
   plateau or froze.
