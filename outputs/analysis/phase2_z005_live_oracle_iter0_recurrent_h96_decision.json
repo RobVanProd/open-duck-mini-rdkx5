@@ -1,0 +1,45 @@
+{
+  "status": "HOLD_ITER0_RECURRENT_CLOSED_LOOP_UNSTABLE",
+  "scope": "offline_recurrent_diagnostic",
+  "robot_tests": false,
+  "ssh": false,
+  "deploy": false,
+  "grounded_replay": false,
+  "ppo_training": false,
+  "fit": {
+    "manifest": "outputs/analysis/phase2_z005_live_oracle_terrain_support_iter0_aggregate_manifest.json",
+    "samples": 12806,
+    "sequences": 18,
+    "model": "recurrent_bc_h96_s32",
+    "onnx": "outputs/analysis/phase2_z005_live_oracle_iter0_recurrent_h96_candidate/candidate.onnx",
+    "onnx_sha256": "cadf7e0a2c47691d230a062755aaff7d8f7dbfc5d2b9fac341838a00c5dd2363",
+    "p95_action_error": 0.044005,
+    "target_rate_p95_rad_s": 1.717053,
+    "target_rate_max_rad_s": 3.890466,
+    "onnx_action_fidelity_max_error": 5.331899850941069e-7,
+    "onnx_hidden_fidelity_max_error": 7.248952417215904e-7
+  },
+  "x008_gate": {
+    "report": "outputs/analysis/PHASE2_Z005_LIVE_ORACLE_ITER0_RECURRENT_H96_GATE_X008.md",
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.005,
+    "bridge": "corrected_fitted",
+    "stateful_policy": true,
+    "seeds": "0-7",
+    "duration_s": 15.0,
+    "pass_seeds": 0,
+    "total_seeds": 8,
+    "falls": 8,
+    "duration_complete": 0,
+    "samples_mean": 124.0,
+    "mean_track_ratio": -1.2363,
+    "mean_vx_m_s": -0.0989,
+    "p95_velocity_excess_mean_rad_s": 3.24,
+    "max_pitch_vel_p95_rad_s": 5.24,
+    "max_tracking_p95_range_rad": [
+      0.1895,
+      0.2503
+    ]
+  },
+  "decision": "Do not promote this ONNX and do not continue supervised-rate-only recurrent BC tweaks. Memory alone is not the missing fix for iter0 data; the next branch needs a stronger corrected z=0.005 source or closed-loop correction pressure that changes the seed-5 support state."
+}
