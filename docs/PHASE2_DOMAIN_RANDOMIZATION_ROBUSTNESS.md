@@ -165,6 +165,18 @@ relabel the z=0.005 seed-5 collapse into a passing support behavior; the next
 source work should mine or train a passing intermediate-terrain support source
 closer to z=0.005 before another DAgger fit.
 
+Latest terrain-boundary source probe:
+
+```text
+outputs/analysis/PHASE2_STAGEA2_GAIN099_SEED5_TERRAIN_BOUNDARY_Z0030_SHORT_DECISION.md
+outputs/analysis/phase2_stagea2_gain099_seed5_terrain_boundary_z0030_short_decision.json
+```
+
+The current Phase A2 gain099 candidate fails the short seed-5 support gate at
+`z=0.0030` for both `x=0.0` and `x=0.08`. This brackets the usable source
+terrain between `z=0.0024` and `z=0.0030`; do not use `z=0.0030` traces as
+positive support labels.
+
 This recipe continues from the last z=0.002 passing A2 checkpoint, keeps the
 corrected bridge active, uses z=0.005 rough terrain with no push, and targets
 the seed-5 support collapse directly:

@@ -1,0 +1,45 @@
+{
+  "status": "HOLD_Z0030_NOT_A_SUPPORT_SOURCE",
+  "robot_touched": false,
+  "ssh_used": false,
+  "deploy_performed": false,
+  "grounded_replay": false,
+  "training_started": false,
+  "candidate": "policy/candidates/phase2_stagea2_seed5_recovery_command_gated_gain099_20260629/candidate.onnx",
+  "fit_json": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+  "task": "rough_terrain_backlash",
+  "seed": 5,
+  "terrain_hfield_z_scale": 0.003,
+  "duration_s": 2.0,
+  "results": {
+    "x0": {
+      "artifact": "outputs/analysis/phase2_stagea2_gain099_seed5_terrain_boundary_z0030_x000_short_cpu/CLOSED_LOOP_ACTUATOR_BRIDGE_EVAL.md",
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "samples": 60,
+      "mean_local_vx_m_s": -0.2624,
+      "base_height_min_m": 0.0502,
+      "max_pitch_tracking_p95_rad": 0.1951,
+      "p95_velocity_excess_rad_s": 0.0,
+      "max_velocity_excess_rad_s": 0.0
+    },
+    "x008": {
+      "artifact": "outputs/analysis/phase2_stagea2_gain099_seed5_terrain_boundary_z0030_x008_short_cpu/CLOSED_LOOP_ACTUATOR_BRIDGE_EVAL.md",
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "samples": 57,
+      "mean_local_vx_m_s": -0.2731,
+      "track_ratio": -3.4133,
+      "base_height_min_m": 0.0547,
+      "max_pitch_tracking_p95_rad": 0.1928,
+      "p95_velocity_excess_rad_s": 0.0,
+      "max_velocity_excess_rad_s": 0.1823,
+      "max_velocity_excess_joint": "right_ankle"
+    }
+  },
+  "source_boundary": {
+    "pass_lower_z": 0.0024,
+    "fail_current_z": 0.003,
+    "fail_upper_z": [0.0035, 0.005]
+  },
+  "promotion_allowed": false,
+  "next_recommendation": "Mine a smaller terrain ramp between z=0.0024 and z=0.0030; require seed-5 x=0.0 support survival before accepting traces as positive source labels."
+}
