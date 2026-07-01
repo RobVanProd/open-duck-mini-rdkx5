@@ -52,6 +52,12 @@ the strict corrected fitted-bridge tracking gate by:
   saturation. This closes one-shot fixed BC on the composite recovery manifest;
   the next iteration must use live/on-policy recovery states with immediate
   short gates before scaling.
+- The bounded seed-5 live/on-policy recovery DAgger precheck then produced
+  `outputs/analysis/PHASE2_Z005_RECOVERY_DAGGER_ITER1_SEED5_SHORT_DECISION.md`.
+  It generated a 6117-sample aggregate and fit a phase/command-modulated
+  student, but the student still failed both short z=0.005 seed-5 gates before
+  2 seconds. This means the current z=0.0024 source/oracle is still too weak
+  for z=0.005 support recovery; do not scale iter1 or use it as a parent.
 - Prior memoryless distillations, static DAgger passes, kNN/linear/blend
   students, and feed-forward PPO-shape students held at the same tracking
   plateau or froze.
@@ -115,6 +121,13 @@ Latest recovery DAgger next-step artifact:
 ```text
 outputs/analysis/PHASE2_Z005_RECOVERY_DAGGER_NEXT_DECISION.md
 outputs/analysis/phase2_z005_recovery_dagger_next_decision.json
+```
+
+Latest recovery DAgger short-gate decision:
+
+```text
+outputs/analysis/PHASE2_Z005_RECOVERY_DAGGER_ITER1_SEED5_SHORT_DECISION.md
+outputs/analysis/phase2_z005_recovery_dagger_iter1_seed5_short_decision.json
 ```
 
 ## Hypotheses

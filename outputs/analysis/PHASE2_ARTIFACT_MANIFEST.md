@@ -37,7 +37,7 @@ This is a read-only hash manifest. It did not train, SSH, deploy, or touch the r
 
 | name | status | sha256 | size/files | path |
 |---|---|---|---:|---|
-| `docs/PHASE2_DOMAIN_RANDOMIZATION_ROBUSTNESS.md` | `PRESENT_FILE` | `a2a81fd269fd932bf1d24da2fd4818ea9033fd9d774767099b89401a2c1e816d` | 78727 | `docs/PHASE2_DOMAIN_RANDOMIZATION_ROBUSTNESS.md` |
+| `docs/PHASE2_DOMAIN_RANDOMIZATION_ROBUSTNESS.md` | `PRESENT_FILE` | `cc853e091326a21aec4289fca782d8af9e136648b952ea7e634441904cb3c309` | 79514 | `docs/PHASE2_DOMAIN_RANDOMIZATION_ROBUSTNESS.md` |
 | `docs/TRAINING_ENV_7900XTX.md` | `PRESENT_FILE` | `1f98919b1d48a16fa9cba74ddf431dc60f56df6ff6d26f99c44709db06f7a326` | 15299 | `docs/TRAINING_ENV_7900XTX.md` |
 | `outputs/analysis/PHASE2_CURRENT_STATUS.md` | `PRESENT_FILE` | `b91f778ed9f6d1df04785138294b128613caf56118fa5149a16fc54ac0e7fa77` | 4562 | `outputs/analysis/PHASE2_CURRENT_STATUS.md` |
 | `outputs/analysis/phase2_current_status.json` | `PRESENT_FILE` | `a5fad7693f50aaa8c6546bfc37561751158b72c963b23a1aea936b9938874b32` | 16200 | `outputs/analysis/phase2_current_status.json` |
@@ -83,6 +83,8 @@ This is a read-only hash manifest. It did not train, SSH, deploy, or touch the r
 | `outputs/analysis/phase2_z005_t4_recovery_decision.json` | `PRESENT_FILE` | `8b84d1aad44a9dc37b84077140a539ec10c59bcc43c83c03def56d490bb9a9f7` | 3831 | `outputs/analysis/phase2_z005_t4_recovery_decision.json` |
 | `outputs/analysis/PHASE2_Z005_RECOVERY_DAGGER_NEXT_DECISION.md` | `PRESENT_FILE` | `f6798bf4837b9909387068e75e211c7959892118cd7b1a2c59efd4b964292555` | 3736 | `outputs/analysis/PHASE2_Z005_RECOVERY_DAGGER_NEXT_DECISION.md` |
 | `outputs/analysis/phase2_z005_recovery_dagger_next_decision.json` | `PRESENT_FILE` | `96e1581266185c2fd3458997e3aeb84278f5210c2e42e65f607fdb4b2ec34dc7` | 2060 | `outputs/analysis/phase2_z005_recovery_dagger_next_decision.json` |
+| `outputs/analysis/PHASE2_Z005_RECOVERY_DAGGER_ITER1_SEED5_SHORT_DECISION.md` | `PRESENT_FILE` | `ceb10824e85c4433995238c59f4bce02b3b0208573d454cdf3323b8d812d88da` | 3413 | `outputs/analysis/PHASE2_Z005_RECOVERY_DAGGER_ITER1_SEED5_SHORT_DECISION.md` |
+| `outputs/analysis/phase2_z005_recovery_dagger_iter1_seed5_short_decision.json` | `PRESENT_FILE` | `ca63a37e2326d8a8fa69d020f128d1462dd8f4c41869853fe4f722857ddafcc8` | 2476 | `outputs/analysis/phase2_z005_recovery_dagger_iter1_seed5_short_decision.json` |
 | `outputs/analysis/phase2_z005_t4_recovered_latest_local_debug_sweep/CANDIDATE_CHECKPOINT_SWEEP.md` | `PRESENT_FILE` | `f4be4ccb739932393877f05133891f566b039c76dc788b28d141fc75b3aac2db` | 2050 | `outputs/analysis/phase2_z005_t4_recovered_latest_local_debug_sweep/CANDIDATE_CHECKPOINT_SWEEP.md` |
 | `outputs/analysis/phase2_z005_t4_recovered_latest_local_debug_sweep/candidate_checkpoint_sweep.json` | `PRESENT_FILE` | `b1d871ac1e43cf70b1ec1e4d8a96057930f2571edd6edb16a8f9447ef82b0359` | 9257 | `outputs/analysis/phase2_z005_t4_recovered_latest_local_debug_sweep/candidate_checkpoint_sweep.json` |
 | `tools/plan_phase2_z005_support_recipe.py` | `PRESENT_FILE` | `30d4191a48f58d337a0fc84cde783f277583af3f052722df42c89d5ee9993dbb` | 17157 | `tools/plan_phase2_z005_support_recipe.py` |

@@ -149,6 +149,22 @@ step is a bounded live/on-policy z=0.005 recovery DAgger iteration from the
 Phase A2 command-gated candidate, using the corrected z=0.0024 source
 manifest, with immediate short seed-5 gates before any 8-seed or Colab scaling.
 
+Latest bounded recovery-DAGger result:
+
+```text
+outputs/analysis/PHASE2_Z005_RECOVERY_DAGGER_ITER1_SEED5_SHORT_DECISION.md
+outputs/analysis/phase2_z005_recovery_dagger_iter1_seed5_short_decision.json
+```
+
+The bounded iteration produced a 6117-sample aggregate and a clean supervised
+fit, but the short seed-5 z=0.005 gates still failed at both `x=0.0` and
+`x=0.08`. The failure no longer saturates every pitch-chain joint like the
+141-sample smoke, but it still falls before 2 seconds and moves backward. Do
+not scale this student. The current z=0.0024 source is not strong enough to
+relabel the z=0.005 seed-5 collapse into a passing support behavior; the next
+source work should mine or train a passing intermediate-terrain support source
+closer to z=0.005 before another DAgger fit.
+
 This recipe continues from the last z=0.002 passing A2 checkpoint, keeps the
 corrected bridge active, uses z=0.005 rough terrain with no push, and targets
 the seed-5 support collapse directly:
