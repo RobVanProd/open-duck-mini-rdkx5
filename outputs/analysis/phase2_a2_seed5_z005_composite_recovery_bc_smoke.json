@@ -1,0 +1,88 @@
+{
+  "activation": "swish",
+  "config": {
+    "batch_size": 128,
+    "learning_rate": 0.001,
+    "seed": 5,
+    "steps": 3000,
+    "target_rate_limit_rad_s": 2.0,
+    "target_rate_scale": 0.05
+  },
+  "context_hidden_sizes": [
+    32
+  ],
+  "context_indices": [
+    6,
+    99,
+    100
+  ],
+  "exported_onnx": "outputs/analysis/phase2_a2_seed5_z005_composite_recovery_bc_smoke_candidate/candidate.onnx",
+  "loss_rows": [
+    {
+      "loss": 0.2654678523540497,
+      "step": 1
+    },
+    {
+      "loss": 9.704590047476813e-05,
+      "step": 500
+    },
+    {
+      "loss": 4.24382378696464e-05,
+      "step": 1000
+    },
+    {
+      "loss": 1.8524677216191776e-05,
+      "step": 1500
+    },
+    {
+      "loss": 1.2715643606497906e-05,
+      "step": 2000
+    },
+    {
+      "loss": 1.5184417861746624e-05,
+      "step": 2500
+    },
+    {
+      "loss": 5.3098406169738155e-06,
+      "step": 3000
+    }
+  ],
+  "manifest": "outputs/analysis/phase2_a2_seed5_z005_composite_recovery_bc_manifest.json",
+  "modulation_scale": 0.5,
+  "onnx_verify": {
+    "max_abs_error": 2.8312206268310547e-07,
+    "p95_abs_error": 1.1920928955078125e-07,
+    "path": "outputs/analysis/phase2_a2_seed5_z005_composite_recovery_bc_smoke_candidate/candidate.onnx",
+    "samples_checked": 64
+  },
+  "sample_weight": {
+    "max": 4.0,
+    "p50": 1.0,
+    "p95": 4.0,
+    "weighted_samples": 264.0
+  },
+  "samples": 141,
+  "saved_npz": "outputs/analysis/phase2_a2_seed5_z005_composite_recovery_bc_smoke_candidate/candidate_mlp.npz",
+  "status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE",
+  "target_rate": {
+    "max_rad_s": 1.8693112134933472,
+    "p50_rad_s": 0.12707803398370743,
+    "p95_rad_s": 0.7387007921934128,
+    "p99_rad_s": 1.2079421937465666,
+    "pair_count": 139
+  },
+  "train_metrics": {
+    "mae": 0.0020176243037899498,
+    "max_abs_error": 0.015053242444992065,
+    "p50_abs_error": 0.0015343204140663147,
+    "p95_abs_error": 0.00543525293469429,
+    "p99_abs_error": 0.00793271243572235,
+    "pred_action_saturation_pct": 0.0,
+    "rmse": 0.0027089369485153022,
+    "samples": 141
+  },
+  "trunk_hidden_sizes": [
+    128,
+    64
+  ]
+}
