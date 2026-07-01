@@ -1,0 +1,112 @@
+{
+  "status": "HOLD_CONTACTPHASE_BC_TARGET_VELOCITY",
+  "date": "2026-07-01",
+  "scope": "offline_supervised_bc_fit_and_cpu_sim_screen",
+  "no_robot": true,
+  "no_ssh": true,
+  "no_deploy": true,
+  "no_ppo_training": true,
+  "candidate": {
+    "manifest": "outputs/analysis/phase2_z0025_live_oracle_boundary_iter0/live_oracle_dagger_aggregate_manifest.json",
+    "manifest_dataset_id": "e1d14b2c3f81d443",
+    "manifest_samples": 10500,
+    "model": "contact_phase_modulated_feed_forward_bc",
+    "context_indices": [6, 97, 98, 99, 100],
+    "onnx": "outputs/analysis/phase2_z0025_live_oracle_boundary_iter0_contactphase_bc_candidate/candidate.onnx",
+    "onnx_sha256": "344d851a50c5d20b820ab41cade134d743b8373543b27caf0385f1653259d3e9",
+    "npz": "outputs/analysis/phase2_z0025_live_oracle_boundary_iter0_contactphase_bc_candidate/candidate_mlp.npz",
+    "npz_sha256": "92a012a57fd82ef905146f3374e6bc64bff43d12f08c6e4e34337cbf4e621649"
+  },
+  "fit": {
+    "status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE",
+    "mae": 0.005621,
+    "p95_abs_error": 0.015610,
+    "max_abs_error": 0.477506,
+    "target_rate_p95_rad_s": 1.688535,
+    "target_rate_max_rad_s": 2.991217,
+    "onnx_fidelity_p95_abs_error": 0.00000012,
+    "onnx_fidelity_max_abs_error": 0.00000024
+  },
+  "x008_screen": {
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.0025,
+    "bridge_mode": "fitted",
+    "seeds": [0, 3, 4, 6],
+    "falls": 0,
+    "duration_complete": 4,
+    "track_ratio_mean": 0.4211,
+    "vx_mean_m_s": 0.0337,
+    "single_support_mean_pct": 26.2,
+    "double_support_mean_pct": 73.8,
+    "p95_velocity_excess_mean_rad_s": 0.0,
+    "max_instant_velocity_excess_mean_rad_s": 0.5040,
+    "per_seed": [
+      {
+        "seed": 0,
+        "status": "HOLD_CANDIDATE_TARGET_VELOCITY",
+        "samples": 750,
+        "mean_local_vx_m_s": 0.0322,
+        "track_ratio": 0.4022,
+        "max_vel_excess_rad_s": 0.6004,
+        "max_tracking_p95_rad": 0.1953
+      },
+      {
+        "seed": 3,
+        "status": "HOLD_CANDIDATE_TARGET_VELOCITY",
+        "samples": 750,
+        "mean_local_vx_m_s": 0.0305,
+        "track_ratio": 0.3810,
+        "max_vel_excess_rad_s": 0.4152,
+        "max_tracking_p95_rad": 0.1905
+      },
+      {
+        "seed": 4,
+        "status": "HOLD_CANDIDATE_TARGET_VELOCITY",
+        "samples": 750,
+        "mean_local_vx_m_s": 0.0349,
+        "track_ratio": 0.4364,
+        "max_vel_excess_rad_s": 0.5087,
+        "max_tracking_p95_rad": 0.1921
+      },
+      {
+        "seed": 6,
+        "status": "HOLD_CANDIDATE_TARGET_VELOCITY",
+        "samples": 750,
+        "mean_local_vx_m_s": 0.0372,
+        "track_ratio": 0.4645,
+        "max_vel_excess_rad_s": 0.4916,
+        "max_tracking_p95_rad": 0.1911
+      }
+    ]
+  },
+  "x0_screen": {
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.0025,
+    "bridge_mode": "fitted",
+    "seeds": [0, 1],
+    "falls": 0,
+    "duration_complete": 2,
+    "vx_mean_m_s": -0.0001,
+    "per_seed": [
+      {
+        "seed": 0,
+        "status": "PASS_CANDIDATE_SIM_GATE",
+        "samples": 750,
+        "mean_local_vx_m_s": 0.0003,
+        "max_vel_excess_rad_s": 0.0,
+        "max_tracking_p95_rad": 0.0359
+      },
+      {
+        "seed": 1,
+        "status": "PASS_CANDIDATE_SIM_GATE",
+        "samples": 750,
+        "mean_local_vx_m_s": -0.0005,
+        "max_vel_excess_rad_s": 0.0,
+        "max_tracking_p95_rad": 0.0350
+      }
+    ]
+  },
+  "decision": "Meaningful movement improvement and zero-command preservation, but not promotable because all x=0.08 boundary seeds violate instantaneous target-velocity envelope.",
+  "recommended_next": "Apply label-side target-rate projection or per-joint instantaneous envelope correction to live-oracle relabeled traces, refit the same contact+phase model, and re-screen the same boundary seeds.",
+  "robot_validation": "blocked"
+}
