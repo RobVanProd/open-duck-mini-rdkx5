@@ -51,6 +51,19 @@ def cli_value(value: object) -> str:
     return str(value)
 
 
+def terrain_label(value: str) -> str:
+    """Return a compact artifact label for a terrain z-scale string."""
+
+    text = str(value).strip()
+    if "." in text:
+        text = text.rstrip("0").rstrip(".")
+    if text.startswith("0."):
+        text = "z" + text[2:]
+    else:
+        text = "z" + text.replace(".", "p")
+    return text or "z0"
+
+
 def seed_count(seed_text: str | None) -> int:
     if not seed_text:
         return 1
@@ -1527,6 +1540,8 @@ def build_remote_driver(
         if run_phase2_z0025_boundary
         else ("0.005" if run_phase2_z005_like else "0.002")
     )
+    if args.phase2_terrain_hfield_z_scale is not None:
+        phase2_terrain_hfield_z_scale = cli_value(args.phase2_terrain_hfield_z_scale)
     phase2_primary_terrain_z = (
         "0.002"
         if run_phase2_z002_tracking_margin or run_phase2_z002_teacher_continuity
@@ -1549,6 +1564,8 @@ def build_remote_driver(
             )
         )
     )
+    if args.phase2_terrain_hfield_z_scale is not None:
+        phase2_primary_terrain_z = phase2_terrain_hfield_z_scale
     phase2_primary_terrain_label = (
         "z002"
         if run_phase2_z002_tracking_margin or run_phase2_z002_teacher_continuity
@@ -1571,6 +1588,8 @@ def build_remote_driver(
             )
         )
     )
+    if args.phase2_terrain_hfield_z_scale is not None:
+        phase2_primary_terrain_label = terrain_label(phase2_terrain_hfield_z_scale)
     phase2_post_training_reporter = (
         "tools/report_phase2_z002_tracking_margin_post_training_gates.py"
         if run_phase2_z002_tracking_margin or run_phase2_z002_teacher_continuity
@@ -2842,6 +2861,15 @@ def main() -> int:
         help=(
             "Override the restore checkpoint used by Phase 2 workflows. "
             "Relative paths resolve under /content/open-duck-mini-rdkx5."
+        ),
+    )
+    parser.add_argument(
+        "--phase2-terrain-hfield-z-scale",
+        type=float,
+        default=None,
+        help=(
+            "Override the terrain hfield z-scale used by Phase 2 terrain "
+            "workflows and their post-training primary gate."
         ),
     )
     parser.add_argument(
