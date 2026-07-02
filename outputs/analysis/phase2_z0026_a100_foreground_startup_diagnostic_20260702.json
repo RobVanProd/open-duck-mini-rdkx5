@@ -1,0 +1,63 @@
+{
+  "artifact": "PHASE2_Z0026_A100_FOREGROUND_STARTUP_DIAGNOSTIC_20260702",
+  "status": "HOLD_PHASE2_STARTUP_DISAPPEARS_AFTER_RUN_PLANNED",
+  "colab_session": "open-duck-a100-phase2-diag",
+  "workflow": "phase2-z002-teacher-continuity",
+  "run_dir": "outputs/analysis/colab_cli/open-duck-a100-phase2-diag-phase2-z002-teacher-continuity-20260702T014942Z",
+  "remote_log": "outputs/analysis/colab_cli/open-duck-a100-phase2-diag-phase2-z002-teacher-continuity-20260702T014942Z/open_duck_colab_cli_phase2-z002-teacher-continuity_20260702T014951Z.log",
+  "launch": {
+    "foreground_remote": true,
+    "restore_checkpoint": "outputs/analysis/phase2_restore_checkpoints/phase2_z0026_teacher_continuity_81920",
+    "terrain_z_scale": 0.0026,
+    "num_timesteps": 512,
+    "ppo_num_envs": 4,
+    "ppo_num_evals": 1,
+    "ppo_episode_length": 256,
+    "ppo_batch_size": 64,
+    "post_training_gates": false,
+    "final_overrides": [
+      "--forward-wrong-direction-scale",
+      "-8",
+      "--base-height-scale",
+      "-0.55",
+      "--forward-pitch-scale",
+      "-0.36",
+      "--forward-pitch-rate-scale",
+      "-0.08",
+      "--zero-command-probability",
+      "0.0"
+    ]
+  },
+  "remote_stack": {
+    "jaxlib": "0.7.2",
+    "brax": "0.14.2",
+    "mujoco": "3.9.0",
+    "mujoco_mjx": "3.9.0",
+    "playground": "0.0.5",
+    "jax_backend": "gpu",
+    "jax_device": "CudaDevice(id=0)",
+    "has_device_put_replicated": true
+  },
+  "observed": {
+    "remote_log_reached_run_planned": true,
+    "remote_log_contains_traceback": false,
+    "remote_log_contains_exception": false,
+    "remote_log_contains_killed": false,
+    "exit_sentinel_present": false,
+    "artifact_bundle_present": false,
+    "colab_cli_artifact_line_present": false,
+    "remote_training_process_remaining_when_probed": false,
+    "downloaded_smoke_manifest": false,
+    "downloaded_onnx": false
+  },
+  "planned_child_output_dir": "/content/open_duck_training_phase2_z002_teacher_continuity_cli/smoke_20260702T015304Z_gpu",
+  "interpretation": "Remote startup/process-lifetime failure before useful smoke-run artifacts are returned; not a Phase 2 policy/reward result.",
+  "next_step": "Run the exact tools/run_actuator_bridge_training_smoke.py --run command directly in Colab outside the generated high-level driver, then manually download the smoke output directory and manifests.",
+  "safety": {
+    "robot_tests": false,
+    "ssh": false,
+    "deploy": false,
+    "grounded_replay": false,
+    "colab_sessions_left_running": false
+  }
+}
