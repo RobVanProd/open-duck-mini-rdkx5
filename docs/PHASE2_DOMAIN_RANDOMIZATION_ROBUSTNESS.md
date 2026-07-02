@@ -2566,3 +2566,37 @@ Do not launch further local ROCm policy-producing jobs in this state. Use CPU
 only for correctness gates and trace analysis, and use the pinned A100/Colab
 `phase2-b0g` path for the next policy-producing attempt when a visible session
 is available.
+
+### z=0.00245 A100 On-Policy Support Hold
+
+Artifact:
+
+```text
+outputs/analysis/PHASE2_Z00245_A100_ON_POLICY_SUPPORT_HOLD_20260702.md
+```
+
+Status:
+
+```text
+HOLD_Z00245_ON_POLICY_SUPPORT_LOW_PROGRESS
+```
+
+The pinned A100 path successfully trained and exported the z=0.00245
+on-policy-support recipe. The earlier `HOLD_REMOTE_NO_SENTINEL` was a Colab CLI
+polling artifact: the remote job continued after the local helper misread the
+session as idle. The recovered artifact bundle has `exit_status=0` and contains
+the full-run checkpoints at `40960`, `81920`, and `122880`.
+
+A compact local CPU sweep on the corrected bridge found no promotable checkpoint.
+All three checkpoints passed the x=0.0 screen and stayed below the corrected
+velocity envelope at x=0.08 with zero saturation, but all three under-moved:
+
+```text
+40960:  track_ratio 0.2200, mean vx 0.0176 m/s, max tracking p95 0.2133 rad
+81920:  track_ratio 0.1823, mean vx 0.0146 m/s, max tracking p95 0.2142 rad
+122880: track_ratio 0.2174, mean vx 0.0174 m/s, max tracking p95 0.2127 rad
+```
+
+Do not promote these checkpoints and do not use them for robot validation. This
+run is useful backend evidence and a safe-policy hold, but it did not recover
+enough x=0.08 motion for the Phase 2 robustness objective.

@@ -1,0 +1,77 @@
+{
+  "status": "HOLD_Z00245_ON_POLICY_SUPPORT_LOW_PROGRESS",
+  "timestamp_utc": "2026-07-02T08:52:25Z",
+  "scope": "offline_sim_only",
+  "robot_actions": "none",
+  "session": "open-duck-a100-phase2-z00245",
+  "workflow": "phase2-z0025-boundary",
+  "a100_artifact_bundle": {
+    "path": "outputs/analysis/colab_cli/open-duck-a100-phase2-z00245-phase2-z0025-boundary-20260702T082113Z/open_duck_colab_cli_phase2-z0025-boundary_20260702T082142Z_artifacts.tar.gz",
+    "sha256": "952e81c3893ae157eb853105a22f1b8a43c1e6f887862e2b95429e70ddd70488",
+    "remote_exit_status": "exit_status=0"
+  },
+  "full_run": {
+    "manifest_status": "PASS_SMOKE_RUN",
+    "elapsed_s": 780.055761631,
+    "checkpoints": [
+      {
+        "step": 40960,
+        "onnx": "2026_07_02_082559_40960.onnx",
+        "sha256": "b466b5fdcf6c02e75ea72b56886310ae7b1a3ee036c98dab0a534dc4d5f8ed2c"
+      },
+      {
+        "step": 81920,
+        "onnx": "2026_07_02_082857_81920.onnx",
+        "sha256": "3652e8868acb0f98a8e150eb881759be6ddb24a7bbb1055e47d85de8a6c12e68"
+      },
+      {
+        "step": 122880,
+        "onnx": "2026_07_02_082918_122880.onnx",
+        "sha256": "c7f1e3b227d5fb56067ef2a6512127a480ea38b0d9a744dab559389e8aa2e0e7"
+      }
+    ]
+  },
+  "compact_sweep": {
+    "markdown": "outputs/analysis/phase2_z00245_on_policy_support_fullrun_compact_sweep/CANDIDATE_CHECKPOINT_SWEEP.md",
+    "json": "outputs/analysis/phase2_z00245_on_policy_support_fullrun_compact_sweep/candidate_checkpoint_sweep.json",
+    "json_sha256": "4fb162ca6e8fbb5c8bc2535efa6ff0fb41edcdf3539378ef3d46a7001d6850cf",
+    "commands": [
+      0.0,
+      0.08
+    ],
+    "duration_s": 1.0,
+    "bridge": "corrected_fitted",
+    "platform": "local_cpu",
+    "results": [
+      {
+        "step": 40960,
+        "x0_status": "PASS_CANDIDATE_SIM_GATE",
+        "x008_status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+        "max_pitch_vel_p95": 1.4225,
+        "max_tracking_p95": 0.2133,
+        "x008_track_ratio": 0.2200,
+        "x008_mean_vx_m_s": 0.0176
+      },
+      {
+        "step": 81920,
+        "x0_status": "PASS_CANDIDATE_SIM_GATE",
+        "x008_status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+        "max_pitch_vel_p95": 1.4523,
+        "max_tracking_p95": 0.2142,
+        "x008_track_ratio": 0.1823,
+        "x008_mean_vx_m_s": 0.0146
+      },
+      {
+        "step": 122880,
+        "x0_status": "PASS_CANDIDATE_SIM_GATE",
+        "x008_status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+        "max_pitch_vel_p95": 1.4154,
+        "max_tracking_p95": 0.2127,
+        "x008_track_ratio": 0.2174,
+        "x008_mean_vx_m_s": 0.0174
+      }
+    ]
+  },
+  "decision": "do_not_promote",
+  "next_recommendation": "increase motion while preserving corrected-envelope behavior; do not add generic safety penalties"
+}
