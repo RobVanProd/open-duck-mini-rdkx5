@@ -1,6 +1,6 @@
 # Phase 2 Domain-Randomized Robustness Training
 
-status: `HOLD_PHASE2_STAGE_Z005_SUPPORT`
+status: `HOLD_PHASE2_Z00245_SUPPORT_RECOVERY`
 
 ## Objective
 
@@ -181,7 +181,29 @@ The current Phase A2 gain099 candidate fails the short seed-5 support gate at
 brackets the usable source terrain between `z=0.0024` and `z=0.00255`; do not
 use `z=0.00255+` traces as positive support labels.
 
-Current source-generation plan:
+Latest z=0.00245 support-recovery closure:
+
+```text
+outputs/analysis/PHASE2_Z00245_SUPPORT_RECOVERY_NEXT_DECISION_20260702.md
+outputs/analysis/phase2_z00245_support_recovery_next_decision_20260702.json
+```
+
+The z=0.00245 boundary is now sharper than the older z=0.005 support hold. The
+Phase A2 gain099 candidate cannot provide positive seed-5 source traces at
+z=0.00245, and two bounded recovery fits from the z=0.0024 source manifest
+failed closed-loop by saturation, over-envelope target rate, fall/termination,
+or wrong-direction motion. Reset-settle also worsened the same seed-5 support
+case.
+
+Do not promote the z=0.00245 recovery students, do not use them as parents, and
+do not repeat another one-shot BC fit on the same tiny two-trace recovery set.
+The next valid offline branch must either optimize on-policy with the corrected
+envelope active during the update or generate a structurally different
+intermediate support target before fitting a student. The first gate remains a
+short z=0.00245 seed-5 `x=0.0` support check; it must pass before any `x=0.08`,
+8-seed, Colab-scale, or promotion gate.
+
+Superseded source-generation plan:
 
 ```text
 outputs/analysis/PHASE2_TERRAIN_SUPPORT_SOURCE_NEXT_PLAN.md

@@ -1,0 +1,42 @@
+{
+  "acceptance_order": [
+    "z=0.00245 seed 5 x=0.0 short gate must pass before any x=0.08 gate",
+    "z=0.00245 seed 5 x=0.08 short gate must pass before any 8-seed gate",
+    "z=0.00245 8-seed x=0.0 and x=0.08 gates must pass before promotion",
+    "z=0.0024 regression gates must remain clear"
+  ],
+  "closed_branch": "one_shot_bc_or_direct_relabel_from_z0024_source_to_z00245_failed_states",
+  "decision": "HOLD_Z00245_ONE_SHOT_BC_CLOSED",
+  "evidence": [
+    {
+      "artifact": "outputs/analysis/PHASE2_Z0025_RESET_SETTLE_DIAGNOSTIC_20260702.md",
+      "status": "HOLD_RESET_SETTLE_WORSE"
+    },
+    {
+      "artifact": "outputs/analysis/PHASE2_Z00245_SOURCE_SEED5_PROBE_DECISION_20260702.md",
+      "status": "HOLD_Z00245_NOT_POSITIVE_SOURCE"
+    },
+    {
+      "artifact": "outputs/analysis/PHASE2_Z00245_SUPPORT_RECOVERY_ITER0_DECISION_20260702.md",
+      "status": "HOLD_RECOVERY_ITER0_OVERDRIVES"
+    },
+    {
+      "artifact": "outputs/analysis/PHASE2_Z00245_SUPPORT_RECOVERY_ITER1_SOFT_ALPHA035_DECISION_20260702.md",
+      "status": "HOLD_SOFT_ALPHA_RECOVERY_STILL_OVERDRIVES"
+    }
+  ],
+  "next_authorized_shape": [
+    "on-policy optimization with the corrected envelope active during the update",
+    "or structurally different intermediate support-target generation before student fitting",
+    "z=0.0024 source manifest may be used as an anchor but not copied directly as final labels for failed z=0.00245 states"
+  ],
+  "not_authorized": [
+    "promote iter0 or iter1 recovery student",
+    "use iter0 or iter1 ONNX as parent",
+    "run full 8-seed gates on iter0 or iter1",
+    "repeat another one-shot BC fit on the same tiny z=0.00245 recovery set"
+  ],
+  "robot_touched": false,
+  "ssh_used": false,
+  "training_started": false
+}
