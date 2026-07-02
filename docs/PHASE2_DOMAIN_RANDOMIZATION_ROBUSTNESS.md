@@ -203,6 +203,19 @@ intermediate support target before fitting a student. The first gate remains a
 short z=0.00245 seed-5 `x=0.0` support check; it must pass before any `x=0.08`,
 8-seed, Colab-scale, or promotion gate.
 
+Current on-policy recovery recipe:
+
+```text
+outputs/analysis/PHASE2_Z00245_ON_POLICY_SUPPORT_RECIPE.md
+outputs/analysis/phase2_z00245_on_policy_support_recipe.json
+```
+
+This recipe reuses the existing `phase2-z0025-boundary` on-policy workflow with
+`--phase2-terrain-hfield-z-scale 0.00245`, keeps the corrected envelope costs
+active during optimization, and pins the seed-5-first short-gate order. It is
+the next aligned offline policy-producing branch once a visible Colab GPU
+session is available.
+
 Superseded source-generation plan:
 
 ```text
