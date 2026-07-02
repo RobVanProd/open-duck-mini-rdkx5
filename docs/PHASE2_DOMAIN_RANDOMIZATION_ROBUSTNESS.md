@@ -2638,3 +2638,12 @@ Falsifier: if this run remains in-envelope but still under-moves at x=0.08,
 stop the scalar progress-pressure path and switch to a behavior-prior,
 teacher-continuity, or live-oracle data mechanism rather than another generic
 support/safety penalty.
+
+Package-only readiness was recorded at:
+
+```text
+outputs/analysis/colab_cli/open-duck-a100-phase2-z00245-phase2-z0025-boundary-20260702T090043Z/PACKAGE_ONLY_MANIFEST.md
+```
+
+The package check built the upload archives and verified the pinned JAX `0.7.2`
+workflow inputs without uploading, training, SSH, deploy, or robot access.
