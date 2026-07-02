@@ -2600,3 +2600,41 @@ velocity envelope at x=0.08 with zero saturation, but all three under-moved:
 Do not promote these checkpoints and do not use them for robot validation. This
 run is useful backend evidence and a safe-policy hold, but it did not recover
 enough x=0.08 motion for the Phase 2 robustness objective.
+
+### z=0.00245 Motion-Recovery Next Recipe
+
+Artifact:
+
+```text
+outputs/analysis/PHASE2_Z00245_MOTION_RECOVERY_NEXT_RECIPE.md
+```
+
+Status:
+
+```text
+PASS_Z00245_MOTION_RECOVERY_RECIPE_READY
+```
+
+The next bounded recipe keeps the same z=0.00245 terrain rung, A2 warm-start,
+corrected bridge, no-push setup, and corrected-envelope gates. It changes only
+the motion pressure needed to address the current hold:
+
+```text
+forward_progress_scale:              4.0 -> 5.0
+command_progress_scale:              3.0 -> 4.0
+command_progress_shortfall_scale:    -8.0 -> -12.0
+command_progress_required_ratio:     0.45 -> 0.55
+target_rate_scale:                   -0.01 -> -0.005
+actuator_tracking_scale:             -0.005 unchanged
+```
+
+Acceptance is intentionally narrow: the compact x=0.08 checkpoint sweep must
+find at least one checkpoint with track ratio >= 0.25 and mean vx >= 0.02 m/s
+while staying below the corrected envelope, and any promoted checkpoint still
+requires the full corrected-bridge x=0.0/x=0.08 8-seed gates before robot
+consideration.
+
+Falsifier: if this run remains in-envelope but still under-moves at x=0.08,
+stop the scalar progress-pressure path and switch to a behavior-prior,
+teacher-continuity, or live-oracle data mechanism rather than another generic
+support/safety penalty.
