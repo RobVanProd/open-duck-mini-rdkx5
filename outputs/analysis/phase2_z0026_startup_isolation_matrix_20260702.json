@@ -1,0 +1,103 @@
+{
+  "date": "2026-07-02",
+  "status": "HOLD_GPU_STARTUP_PATH",
+  "scope": "offline sim/training diagnostics only",
+  "robot_touched": false,
+  "ssh_used": false,
+  "deploy_performed": false,
+  "grounded_replay_performed": false,
+  "summary": "CPU startup paths all pass and export ONNX; direct A100/Colab path disappears during PPO/JAX compile/update without a final manifest or traceback.",
+  "cpu_matrix": [
+    {
+      "name": "baseline",
+      "platform": "cpu",
+      "restore_checkpoint": false,
+      "restore_policy_kl": false,
+      "behavior_prior": false,
+      "bridge_enabled": false,
+      "terrain_hfield_z_scale": 0.0026,
+      "status": "PASS_SMOKE_RUN",
+      "returncode": 0,
+      "elapsed_s": 180.01,
+      "final_manifest": "/tmp/open_duck_phase2_startup_cpu_baseline/smoke_20260702T022034Z_cpu/smoke_manifest.final.json",
+      "onnx": "2026_07_01_222221_64.onnx",
+      "reward_line": "STEP: 64 reward: 6.317789077758789 reward_std: 2.8741326332092285"
+    },
+    {
+      "name": "restore_kl",
+      "platform": "cpu",
+      "restore_checkpoint": true,
+      "restore_policy_kl": true,
+      "behavior_prior": false,
+      "bridge_enabled": false,
+      "terrain_hfield_z_scale": 0.0026,
+      "status": "PASS_SMOKE_RUN",
+      "returncode": 0,
+      "elapsed_s": 120.03,
+      "final_manifest": "/tmp/open_duck_phase2_startup_cpu_restore_kl/smoke_20260702T022349Z_cpu/smoke_manifest.final.json",
+      "onnx": "2026_07_01_222441_64.onnx",
+      "reward_line": "STEP: 64 reward: 22.94146728515625 reward_std: 6.999323844909668"
+    },
+    {
+      "name": "behavior_prior",
+      "platform": "cpu",
+      "restore_checkpoint": false,
+      "restore_policy_kl": false,
+      "behavior_prior": true,
+      "bridge_enabled": false,
+      "terrain_hfield_z_scale": 0.0026,
+      "status": "PASS_SMOKE_RUN",
+      "returncode": 0,
+      "elapsed_s": 150.05,
+      "final_manifest": "/tmp/open_duck_phase2_startup_cpu_behavior_prior/smoke_20260702T022604Z_cpu/smoke_manifest.final.json",
+      "onnx": "2026_07_01_222709_64.onnx",
+      "reward_line": "STEP: 64 reward: 6.308642387390137 reward_std: 2.8714842796325684"
+    },
+    {
+      "name": "restore_kl_behavior_prior",
+      "platform": "cpu",
+      "restore_checkpoint": true,
+      "restore_policy_kl": true,
+      "behavior_prior": true,
+      "bridge_enabled": false,
+      "terrain_hfield_z_scale": 0.0026,
+      "status": "PASS_SMOKE_RUN",
+      "returncode": 0,
+      "elapsed_s": 120.04,
+      "final_manifest": "/tmp/open_duck_phase2_startup_cpu_restore_behavior_combined/smoke_20260702T023213Z_cpu/smoke_manifest.final.json",
+      "onnx": "2026_07_01_223255_64.onnx",
+      "reward_line": "STEP: 64 reward: 22.978134155273438 reward_std: 7.006093502044678"
+    }
+  ],
+  "a100_colab_evidence": {
+    "status": "HOLD_PROCESS_DISAPPEARED",
+    "artifact_dir": "outputs/analysis/colab_cli/direct_probe2_20260702T0211Z/extracted/open_duck_direct_phase2_training2/smoke_20260702T021124Z_gpu/",
+    "start_manifest_exists": true,
+    "live_manifest_exists": true,
+    "final_manifest_exists": false,
+    "checkpoint_exists": false,
+    "onnx_exists": false,
+    "traceback_seen": false,
+    "last_known_stage": "Playground contract/setup and restore-policy KL reached; disappeared during first PPO/JAX compile/update window"
+  },
+  "interpretation": [
+    "The z=0.0026 terrain override is not the startup blocker.",
+    "Restore checkpoint loading is not the startup blocker.",
+    "Restore-policy KL wiring is not the startup blocker.",
+    "Behavior-prior MLP wiring is not the startup blocker.",
+    "Restore-policy KL combined with behavior prior is not the startup blocker on CPU.",
+    "The remaining blocker is the GPU/A100 runtime path or Colab process-survival path."
+  ],
+  "recommended_next_gpu_matrix": [
+    "GPU baseline, no restore, no behavior prior, bridge disabled",
+    "GPU restore/KL only",
+    "GPU behavior prior only",
+    "GPU restore/KL + behavior prior",
+    "Re-enable bridge and larger phase-2 shape only after the minimal GPU paths survive"
+  ],
+  "safe_point": {
+    "colab_sessions_active": false,
+    "phase2_smoke_process_active": false,
+    "unrelated_so101_dreamer_process_present": true
+  }
+}
