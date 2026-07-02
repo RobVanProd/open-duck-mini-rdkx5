@@ -216,6 +216,17 @@ active during optimization, and pins the seed-5-first short-gate order. It is
 the next aligned offline policy-producing branch once a visible Colab GPU
 session is available.
 
+Package-only evidence for that exact launch command:
+
+```text
+outputs/analysis/colab_cli/open-duck-a100-phase2-z00245-phase2-z0025-boundary-20260702T081144Z/PACKAGE_ONLY_MANIFEST.md
+outputs/analysis/colab_cli/open-duck-a100-phase2-z00245-phase2-z0025-boundary-20260702T081144Z/PACKAGE_ONLY_MANIFEST.json
+```
+
+This check built and hashed the RDK and Playground upload archives with tracked
+RDK/Playground trees clean and JAX pinned to `0.7.2`. It did not upload, train,
+SSH, deploy, or touch the robot.
+
 Superseded source-generation plan:
 
 ```text
