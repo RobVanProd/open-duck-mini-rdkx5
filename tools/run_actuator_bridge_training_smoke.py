@@ -516,6 +516,77 @@ def extract_summary(stdout: str) -> dict[str, Any]:
     }
 
 
+def tail_text(path: Path, *, max_chars: int = 12000) -> str:
+    if not path.exists():
+        return ""
+    text = path.read_text(errors="replace")
+    if len(text) <= max_chars:
+        return text
+    return text[-max_chars:]
+
+
+def list_output_files(output_dir: Path) -> list[dict[str, Any]]:
+    if not output_dir.exists():
+        return []
+    files = []
+    for path in sorted(output_dir.rglob("*")):
+        if path.is_dir():
+            continue
+        try:
+            stat = path.stat()
+            files.append(
+                {
+                    "path": str(path.relative_to(output_dir)),
+                    "size_bytes": stat.st_size,
+                    "mtime": stat.st_mtime,
+                }
+            )
+        except OSError:
+            continue
+    return files
+
+
+def write_run_diagnostic(
+    path: Path,
+    *,
+    status: str,
+    command: list[str],
+    output_dir: Path,
+    stdout_path: Path,
+    stderr_path: Path,
+    start_s: float,
+    process: subprocess.Popen[str] | None = None,
+    returncode: int | None = None,
+    error: BaseException | None = None,
+) -> None:
+    stdout_tail = tail_text(stdout_path)
+    stderr_tail = tail_text(stderr_path)
+    payload: dict[str, Any] = {
+        "status": status,
+        "elapsed_s": time.monotonic() - start_s,
+        "pid": process.pid if process is not None else None,
+        "poll_returncode": process.poll() if process is not None else None,
+        "returncode": returncode,
+        "command": command,
+        "command_shell": shell_join(command),
+        "stdout_path": str(stdout_path),
+        "stderr_path": str(stderr_path),
+        "stdout_tail": stdout_tail,
+        "stderr_tail": stderr_tail,
+        "summary": extract_summary(stdout_tail),
+        "output_files": list_output_files(output_dir),
+        "robot_touched": False,
+        "ssh_used": False,
+        "deploy_performed": False,
+    }
+    if error is not None:
+        payload["error"] = {
+            "type": type(error).__name__,
+            "message": str(error),
+        }
+    write_manifest(path, payload)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         description="Print or run a tiny actuator-bridge PPO smoke command."
@@ -1234,6 +1305,10 @@ def main() -> int:
     start_s = time.monotonic()
     stdout_path = output_dir / "stdout.txt"
     stderr_path = output_dir / "stderr.txt"
+    live_manifest_path = output_dir / "smoke_manifest.live.json"
+    final_manifest_path = output_dir / "smoke_manifest.final.json"
+    process: subprocess.Popen[str] | None = None
+    returncode: int | None = None
     try:
         with stdout_path.open("w") as stdout_handle, stderr_path.open(
             "w"
@@ -1246,12 +1321,63 @@ def main() -> int:
                 stdout=stdout_handle,
                 stderr=stderr_handle,
             )
-            try:
-                returncode = process.wait(timeout=args.timeout_s)
-            except subprocess.TimeoutExpired:
-                process.kill()
-                process.wait()
-                raise
+            write_run_diagnostic(
+                live_manifest_path,
+                status="RUNNING",
+                command=command,
+                output_dir=output_dir,
+                stdout_path=stdout_path,
+                stderr_path=stderr_path,
+                start_s=start_s,
+                process=process,
+            )
+            deadline = time.monotonic() + args.timeout_s
+            while True:
+                returncode = process.poll()
+                if returncode is not None:
+                    break
+                if time.monotonic() >= deadline:
+                    timeout_exc = subprocess.TimeoutExpired(command, args.timeout_s)
+                    write_run_diagnostic(
+                        final_manifest_path,
+                        status="HOLD_SMOKE_TIMEOUT",
+                        command=command,
+                        output_dir=output_dir,
+                        stdout_path=stdout_path,
+                        stderr_path=stderr_path,
+                        start_s=start_s,
+                        process=process,
+                        error=timeout_exc,
+                    )
+                    process.kill()
+                    process.wait()
+                    raise timeout_exc
+                write_run_diagnostic(
+                    live_manifest_path,
+                    status="RUNNING",
+                    command=command,
+                    output_dir=output_dir,
+                    stdout_path=stdout_path,
+                    stderr_path=stderr_path,
+                    start_s=start_s,
+                    process=process,
+                )
+                time.sleep(min(30.0, max(1.0, deadline - time.monotonic())))
+    except BaseException as exc:
+        if not final_manifest_path.exists():
+            write_run_diagnostic(
+                final_manifest_path,
+                status="HOLD_SMOKE_EXCEPTION",
+                command=command,
+                output_dir=output_dir,
+                stdout_path=stdout_path,
+                stderr_path=stderr_path,
+                start_s=start_s,
+                process=process,
+                returncode=returncode,
+                error=exc,
+            )
+        raise
     finally:
         reference_override = restore_reference_override(reference_override)
         terrain_hfield_override = restore_terrain_hfield_override(
@@ -1259,6 +1385,7 @@ def main() -> int:
         )
     elapsed_s = time.monotonic() - start_s
     stdout_text = stdout_path.read_text(errors="replace")
+    stderr_text = stderr_path.read_text(errors="replace")
 
     manifest.update(
         {
@@ -1267,12 +1394,15 @@ def main() -> int:
             "elapsed_s": elapsed_s,
             "stdout_path": str(stdout_path),
             "stderr_path": str(stderr_path),
+            "stdout_tail": stdout_text[-12000:],
+            "stderr_tail": stderr_text[-12000:],
+            "output_files": list_output_files(output_dir),
             "reference_motion_override": reference_override,
             "terrain_hfield_override": terrain_hfield_override,
             "summary": extract_summary(stdout_text),
         }
     )
-    write_manifest(output_dir / "smoke_manifest.final.json", manifest)
+    write_manifest(final_manifest_path, manifest)
     print(json.dumps(manifest, indent=2, sort_keys=True))
     return returncode
 
