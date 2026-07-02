@@ -634,6 +634,8 @@ def run_closed_loop_worker(args) -> dict:
     )
     if args.terrain_hfield_z_scale is not None:
         cmd.extend(["--terrain-hfield-z-scale", str(args.terrain_hfield_z_scale)])
+    if args.reset_settle_ticks:
+        cmd.extend(["--reset-settle-ticks", str(args.reset_settle_ticks)])
     env = build_jax_env(args.jax_platform, args.jax_platforms)
     try:
         result = subprocess.run(
@@ -1397,6 +1399,16 @@ def main() -> int:
         ),
     )
     parser.add_argument(
+        "--reset-settle-ticks",
+        type=int,
+        default=0,
+        help=(
+            "Eval-only diagnostic: step reset physics under the reset motor "
+            "target for this many control ticks before starting the policy loop. "
+            "Default 0 preserves canonical gates."
+        ),
+    )
+    parser.add_argument(
         "--_closed-loop-worker",
         action="store_true",
         help=argparse.SUPPRESS,
@@ -1504,6 +1516,7 @@ def main() -> int:
                             args.push_recovery_min_base_height_m
                         ),
                         terrain_hfield_z_scale=args.terrain_hfield_z_scale,
+                        reset_settle_ticks=args.reset_settle_ticks,
                     )
                 )
             if args._closed_loop_worker_json:

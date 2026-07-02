@@ -1,0 +1,71 @@
+{
+  "status": "HOLD_RESET_SETTLE_REGRESSES",
+  "policy": "outputs/analysis/phase2_z0025_live_oracle_boundary_iter0_contactphase_rate1p9_bc_candidate/candidate.onnx",
+  "fit_json": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+  "task": "rough_terrain_backlash",
+  "terrain_hfield_z_scale": 0.0025,
+  "bridge_mode": "fitted",
+  "seed": 5,
+  "duration_s": 2.0,
+  "jax_platform": "cpu",
+  "results": [
+    {
+      "command_x": 0.0,
+      "reset_settle_ticks": 10,
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "samples": 33,
+      "termination_reason": "fall_or_nan",
+      "mean_local_vx_m_s": -0.463983646847985,
+      "track_ratio": null,
+      "base_height_min_m": 0.060228895395994186,
+      "max_pitch_vel_p95_rad_s": 0.15743315219879148,
+      "max_pitch_vel_limit_excess_rad_s": 0.0,
+      "max_pitch_vel_max_limit_excess_rad_s": 0.0,
+      "max_tracking_p95_rad": 0.043735361099243156,
+      "report": "outputs/analysis/phase2_z0025_reset_settle_diag/settle10_x000/CANDIDATE_SEED_SWEEP.md",
+      "report_sha256": "7dbfd039570973db16105d23d12cffcee8350f70208df4d03176ee0d546ff85f"
+    },
+    {
+      "command_x": 0.0,
+      "reset_settle_ticks": 25,
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "samples": 19,
+      "termination_reason": "fall_or_nan",
+      "mean_local_vx_m_s": -0.7824337262856332,
+      "track_ratio": null,
+      "base_height_min_m": 0.03770667687058449,
+      "max_pitch_vel_p95_rad_s": 0.683691799640656,
+      "max_pitch_vel_limit_excess_rad_s": 0.0,
+      "max_pitch_vel_max_limit_excess_rad_s": 0.0,
+      "max_tracking_p95_rad": 0.021674382686615007,
+      "report": "outputs/analysis/phase2_z0025_reset_settle_diag/settle25_x000/CANDIDATE_SEED_SWEEP.md",
+      "report_sha256": "2088d4ce1c5440972dc537edd78dedb9660982e9e3a65229d1c8520b6fadf853"
+    },
+    {
+      "command_x": 0.08,
+      "reset_settle_ticks": 10,
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "samples": 35,
+      "termination_reason": "fall_or_nan",
+      "mean_local_vx_m_s": -0.44246046489902907,
+      "track_ratio": -5.530755811237864,
+      "base_height_min_m": 0.06399130076169968,
+      "max_pitch_vel_p95_rad_s": 1.0728242993354795,
+      "max_pitch_vel_limit_excess_rad_s": 0.0,
+      "max_pitch_vel_max_limit_excess_rad_s": 0.0,
+      "max_tracking_p95_rad": 0.11611816883087159,
+      "report": "outputs/analysis/phase2_z0025_reset_settle_diag/settle10_x008/CANDIDATE_SEED_SWEEP.md",
+      "report_sha256": "01a41c0f91a3cee932071fd58c58a16c7a020cb93a3df72c691b2889a1a3695b"
+    }
+  ],
+  "decision": [
+    "Do not canonicalize reset-settle for promotion gates.",
+    "Keep reset-settle as a default-off diagnostic only.",
+    "Target unsupported/partial-contact reset recovery directly instead of settling before evaluation."
+  ],
+  "robot_tests": false,
+  "ssh": false,
+  "deploy": false,
+  "grounded_replay": false,
+  "training": false
+}

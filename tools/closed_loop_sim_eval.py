@@ -80,6 +80,7 @@ class ClosedLoopConfig:
     push_recovery_max_abs_pitch_rad: float = 0.8
     push_recovery_min_base_height_m: float = 0.08
     terrain_hfield_z_scale: float | None = None
+    reset_settle_ticks: int = 0
 
 
 @contextlib.contextmanager
@@ -1354,12 +1355,40 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
         done = done.astype(reward.dtype)
         return state.replace(data=data, obs=obs, reward=reward, done=done)
 
+    def settle_reset_step(state, applied_target):
+        if config.mjx_step_loop_mode in {"default", "scan"}:
+            data = mjx_env.step(env.mjx_model, state.data, applied_target, env.n_substeps)
+        else:
+            data = step_mjx_host_loop(
+                state.data,
+                applied_target,
+                block_each=config.mjx_step_loop_mode == "python_block_each",
+            )
+        contact = jp.array(
+            [
+                geoms_colliding(data, geom_id, env._floor_geom_id)
+                for geom_id in env._feet_geom_id
+            ]
+        )
+        state.info["command"] = command
+        state.info["motor_targets"] = applied_target
+        state.info["last_contact"] = contact
+        state.info["feet_air_time"] = jp.zeros_like(state.info["feet_air_time"])
+        state.info["swing_peak"] = jp.zeros_like(state.info["swing_peak"])
+        obs = env._get_obs(data, state.info, contact)
+        return state.replace(data=data, obs=obs)
+
     refresh_obs_jit = jax.jit(refresh_obs)
     prepare_step_jit = jax.jit(prepare_step)
     apply_motor_target_runner = (
         jax.jit(apply_motor_target)
         if config.mjx_step_loop_mode in {"default", "scan"}
         else apply_motor_target
+    )
+    settle_reset_step_runner = (
+        jax.jit(settle_reset_step)
+        if config.mjx_step_loop_mode in {"default", "scan"}
+        else settle_reset_step
     )
 
     modes = {}
@@ -1413,6 +1442,14 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
         ],
         "reward_overrides_applied": applied_reward_overrides,
         "terrain_override": terrain_override,
+        "reset_settle_ticks": int(config.reset_settle_ticks),
+        "reset_settle_duration_s": float(config.reset_settle_ticks) * float(env.dt),
+        "reset_settle_description": (
+            "Eval-only default-off diagnostic. When nonzero, reset physics is "
+            "stepped under the reset motor target before the policy loop starts; "
+            "policy hidden state, action history, reward counters, and sample "
+            "counts are not advanced."
+        ),
     }
 
     for mode in available_modes(config.bridge_mode):
@@ -1422,6 +1459,11 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
         state = env.reset(jax.random.PRNGKey(config.seed))
         state.info["command"] = command
         state = refresh_obs_jit(state)
+        if config.reset_settle_ticks > 0:
+            settle_target = state.info["motor_targets"]
+            for _ in range(int(config.reset_settle_ticks)):
+                state = settle_reset_step_runner(state, settle_target)
+            state = refresh_obs_jit(state)
         initial_target = np.asarray(jax.device_get(state.info["motor_targets"]), dtype=float)
         bridge = ActuatorBridgeModel(params, initial_target=initial_target)
         termination_reason = None

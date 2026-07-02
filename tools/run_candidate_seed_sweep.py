@@ -319,6 +319,8 @@ def run_one(
     )
     if args.terrain_hfield_z_scale is not None:
         command.extend(["--terrain-hfield-z-scale", str(args.terrain_hfield_z_scale)])
+    if args.reset_settle_ticks:
+        command.extend(["--reset-settle-ticks", str(args.reset_settle_ticks)])
     result: dict[str, Any] = {
         "policy": str(policy),
         "policy_label": label,
@@ -479,6 +481,7 @@ def build_report(results: list[dict[str, Any]], args: argparse.Namespace) -> str
         f"eval_push_magnitude: `{args.eval_push_magnitude_min}`-`{args.eval_push_magnitude_max}`",
         f"push_recovery_window_s: `{args.push_recovery_window_s}`",
         f"terrain_hfield_z_scale: `{args.terrain_hfield_z_scale}`",
+        f"reset_settle_ticks: `{args.reset_settle_ticks}`",
         f"min_swing_segments_per_foot: `{args.min_swing_segments_per_foot}`",
         f"min_swing_rel_x_range_p95_m: `{args.min_swing_rel_x_range_p95_m}`",
         f"min_swing_peak_lift_m: `{args.min_swing_peak_lift_m}`",
@@ -642,6 +645,15 @@ def main() -> int:
         help="Eval-only override for hfield vertical scale in terrain XMLs.",
     )
     parser.add_argument(
+        "--reset-settle-ticks",
+        type=int,
+        default=0,
+        help=(
+            "Eval-only diagnostic passed through to closed-loop eval. Default "
+            "0 preserves canonical gates."
+        ),
+    )
+    parser.add_argument(
         "--min-swing-segments-per-foot",
         type=int,
         default=None,
@@ -714,6 +726,7 @@ def main() -> int:
                         args.push_recovery_min_base_height_m
                     ),
                     "terrain_hfield_z_scale": args.terrain_hfield_z_scale,
+                    "reset_settle_ticks": args.reset_settle_ticks,
                     "min_swing_segments_per_foot": args.min_swing_segments_per_foot,
                     "min_swing_rel_x_range_p95_m": (
                         args.min_swing_rel_x_range_p95_m
@@ -753,6 +766,7 @@ def main() -> int:
             "push_recovery_max_abs_pitch_rad": args.push_recovery_max_abs_pitch_rad,
             "push_recovery_min_base_height_m": args.push_recovery_min_base_height_m,
             "terrain_hfield_z_scale": args.terrain_hfield_z_scale,
+            "reset_settle_ticks": args.reset_settle_ticks,
             "min_swing_segments_per_foot": args.min_swing_segments_per_foot,
             "min_swing_rel_x_range_p95_m": args.min_swing_rel_x_range_p95_m,
             "min_swing_peak_lift_m": args.min_swing_peak_lift_m,
