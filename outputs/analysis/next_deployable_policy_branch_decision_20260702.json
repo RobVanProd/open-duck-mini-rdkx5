@@ -1,0 +1,357 @@
+{
+  "branch_closures": [
+    {
+      "branch": "uniform pitch-chain clipping",
+      "reason": "4.3 rad/s cap across the pitch chain was numerically indistinguishable from right-knee-only 4.3 and still held tracking.",
+      "result": "closed"
+    },
+    {
+      "branch": "transition-adjacent sample deletion",
+      "reason": "filtering preserved stability but reduced forward progress and raised target-velocity p95.",
+      "result": "closed"
+    },
+    {
+      "branch": "post-hoc ONNX weight interpolation",
+      "reason": "small blends did not reduce tracking; larger blends regressed toward low progress.",
+      "result": "closed"
+    },
+    {
+      "branch": "scalar behavior-prior PPO smoke",
+      "reason": "prior PPO smoke and A100 probe improved reward or calmness while losing useful forward motion.",
+      "result": "closed"
+    },
+    {
+      "branch": "feed-forward PPO-shape BC smoothing",
+      "reason": "pitch-chain 4.3 PPO-shape rate student lowered target velocity and tracking slightly but lost progress and still held the strict fitted-bridge tracking gate.",
+      "result": "closed"
+    },
+    {
+      "branch": "static gate-aware source-VX relabeling",
+      "reason": "targeted relabeling of strict-gate seed 1/4 states produced only tiny tracking changes and did not clear the same fitted-bridge tracking hold.",
+      "result": "closed"
+    },
+    {
+      "branch": "naive PPO tracking-cost correction from BC warm start",
+      "reason": "PPO resume/export works, but a tiny tracking-cost correction reduced tracking by nearly freezing; seed 1/4 screen fell to ~0 progress.",
+      "result": "closed"
+    },
+    {
+      "branch": "small PPO update with weak behavior preservation",
+      "reason": "a control run with no target-rate/tracking penalty, lower learning rate, and stronger behavior prior still collapsed to near-zero progress.",
+      "result": "closed"
+    },
+    {
+      "branch": "low-alpha blending of the PPO update direction",
+      "reason": "0.01-0.10 blends preserve the walking basin but do not materially move the fitted-bridge tracking plateau.",
+      "result": "closed"
+    },
+    {
+      "branch": "built-in adaptive-KL PPO learning-rate control",
+      "reason": "adaptive-KL scheduling still moved the warm-started policy into near-standstill; seed 1/4 progress collapsed while tracking p95 fell to ~0.105 rad.",
+      "result": "closed"
+    },
+    {
+      "branch": "hard command-progress failure termination",
+      "reason": "the existing progress-failure termination did not preserve the walking basin in a tiny PPO update; seed 1/4 progress still collapsed while tracking p95 stayed ~0.10-0.12 rad.",
+      "result": "closed"
+    },
+    {
+      "branch": "restore-policy KL loss at tested scales",
+      "reason": "loss-level KL to the restored checkpoint policy was wired and tested at scales 1.0 and 100.0, but both screens still collapsed to near-standstill.",
+      "result": "closed"
+    }
+  ],
+  "candidates": [
+    {
+      "base_height_min_mean": 0.15272152237594128,
+      "body_pitch_p95_mean": 0.09776395201323325,
+      "duration_complete": 8,
+      "falls_or_terminations": 0,
+      "max_pitch_velocity_p95_max": 5.111835896968842,
+      "max_pitch_velocity_p95_mean": 4.941355139017106,
+      "max_pitch_velocity_p95_min": 4.735544919967651,
+      "max_tracking_p95_max": 0.2800044596195221,
+      "max_tracking_p95_mean": 0.2749477304518223,
+      "max_tracking_p95_min": 0.26786307096481327,
+      "name": "exact selector blend ONNX",
+      "path": "outputs/analysis/source_vx_selector_trace_blend080_exact_onnx_multi_seed_fitted_backlash_summary.json",
+      "runs": 8,
+      "status": "HOLD_CANDIDATE_TRACKING",
+      "track_ratio_mean": 0.5767764224460051,
+      "vx_mean": 0.046142113795680416
+    },
+    {
+      "base_height_min_mean": 0.1527217961847782,
+      "body_pitch_p95_mean": 0.09851828145873927,
+      "duration_complete": 8,
+      "falls_or_terminations": 0,
+      "max_pitch_velocity_p95_max": 4.299414753913879,
+      "max_pitch_velocity_p95_mean": 4.239074215292931,
+      "max_pitch_velocity_p95_min": 4.197858273983002,
+      "max_tracking_p95_max": 0.27725042104721065,
+      "max_tracking_p95_mean": 0.2719716712832451,
+      "max_tracking_p95_min": 0.26816357970237736,
+      "name": "right-knee 4.3 curation",
+      "path": "outputs/analysis/source_vx_selector_trace_rk_limited_4p3_blend080_exact_onnx_multi_seed_fitted_backlash_summary.json",
+      "runs": 8,
+      "status": "HOLD_CANDIDATE_TRACKING",
+      "track_ratio_mean": 0.5992103356411349,
+      "vx_mean": 0.04793682685129079
+    },
+    {
+      "base_height_min_mean": 0.1527258288115263,
+      "body_pitch_p95_mean": 0.0981592039340502,
+      "duration_complete": 8,
+      "falls_or_terminations": 0,
+      "max_pitch_velocity_p95_max": 4.287857413291931,
+      "max_pitch_velocity_p95_mean": 4.239885583519936,
+      "max_pitch_velocity_p95_min": 4.19350653886795,
+      "max_tracking_p95_max": 0.2794300138950348,
+      "max_tracking_p95_mean": 0.2735026150941849,
+      "max_tracking_p95_min": 0.26850890517234804,
+      "name": "pitch-chain 4.3 curation",
+      "path": "outputs/analysis/source_vx_selector_trace_pitch_chain_limited_4p3_blend080_exact_onnx_multiseed_fitted_backlash_summary.json",
+      "runs": 8,
+      "status": "HOLD_CANDIDATE_TRACKING",
+      "track_ratio_mean": 0.5965066729230329,
+      "vx_mean": 0.047720533833842636
+    },
+    {
+      "base_height_min_mean": 0.1526790503412485,
+      "body_pitch_p95_mean": 0.0964116131725185,
+      "duration_complete": 8,
+      "falls_or_terminations": 0,
+      "max_pitch_velocity_p95_max": 4.779009222984314,
+      "max_pitch_velocity_p95_mean": 4.6782563254237175,
+      "max_pitch_velocity_p95_min": 4.624363481998444,
+      "max_tracking_p95_max": 0.2782130062580108,
+      "max_tracking_p95_mean": 0.27213579937815663,
+      "max_tracking_p95_min": 0.2674693167209625,
+      "name": "right-knee transition filter",
+      "path": "outputs/analysis/source_vx_selector_trace_rk_transition_spike_filtered_blend080_exact_onnx_multiseed_fitted_backlash_summary.json",
+      "runs": 8,
+      "status": "HOLD_CANDIDATE_TRACKING",
+      "track_ratio_mean": 0.5616568350904345,
+      "vx_mean": 0.044932546807234755
+    },
+    {
+      "base_height_min_mean": 0.1528723854571581,
+      "body_pitch_p95_mean": 0.09905622121814886,
+      "duration_complete": 8,
+      "falls_or_terminations": 0,
+      "max_pitch_velocity_p95_max": 3.7059420347213745,
+      "max_pitch_velocity_p95_mean": 3.6548107117414474,
+      "max_pitch_velocity_p95_min": 3.6034584045410156,
+      "max_tracking_p95_max": 0.2561362445354462,
+      "max_tracking_p95_mean": 0.2538757808506489,
+      "max_tracking_p95_min": 0.2515952348709106,
+      "name": "pitch-chain 4.3 PPO-shape rate student",
+      "path": "outputs/analysis/pitch_chain_4p3_ppo_shape_rate_student_multiseed_fitted_backlash.json",
+      "runs": 8,
+      "status": "HOLD_CANDIDATE_TRACKING",
+      "track_ratio_mean": 0.4912520815135302,
+      "vx_mean": 0.03930016652108242
+    },
+    {
+      "base_height_min_mean": 0.15274417027831078,
+      "body_pitch_p95_mean": 0.10003936543997106,
+      "duration_complete": 8,
+      "falls_or_terminations": 0,
+      "max_pitch_velocity_p95_max": 3.7078282237052917,
+      "max_pitch_velocity_p95_mean": 3.667197823524475,
+      "max_pitch_velocity_p95_min": 3.620047867298126,
+      "max_tracking_p95_max": 0.25833923220634464,
+      "max_tracking_p95_mean": 0.2554495580494404,
+      "max_tracking_p95_min": 0.25222035646438595,
+      "name": "pitch-chain 4.3 PPO warm-start step-0",
+      "path": "outputs/analysis/pitch_chain_4p3_ppo_shape_rate_student_warmstart_step0_multiseed_fitted_backlash.json",
+      "runs": 8,
+      "status": "HOLD_CANDIDATE_TRACKING",
+      "track_ratio_mean": 0.4943784173700806,
+      "vx_mean": 0.03955027338960645
+    },
+    {
+      "base_height_min_mean": 0.15309370309114456,
+      "body_pitch_p95_mean": 0.051650264507400845,
+      "duration_complete": 2,
+      "falls_or_terminations": 0,
+      "max_pitch_velocity_p95_max": 1.2199884653091433,
+      "max_pitch_velocity_p95_mean": 1.1708931624889378,
+      "max_pitch_velocity_p95_min": 1.1217978596687321,
+      "max_tracking_p95_max": 0.11211062669754028,
+      "max_tracking_p95_mean": 0.10997294485569001,
+      "max_tracking_p95_min": 0.10783526301383972,
+      "name": "PPO warm-start tracking correction smoke",
+      "path": "outputs/analysis/pitch_chain_4p3_ppo_warmstart_tracking_correction_smoke_seed1_seed4_screen.json",
+      "runs": 2,
+      "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "track_ratio_mean": 0.015474815930474506,
+      "vx_mean": 0.0012379852744379605
+    },
+    {
+      "base_height_min_mean": 0.1530936360359192,
+      "body_pitch_p95_mean": 0.050714228310023174,
+      "duration_complete": 2,
+      "falls_or_terminations": 0,
+      "max_pitch_velocity_p95_max": 1.2539687752723694,
+      "max_pitch_velocity_p95_mean": 1.220148950815201,
+      "max_pitch_velocity_p95_min": 1.1863291263580327,
+      "max_tracking_p95_max": 0.1213497281074524,
+      "max_tracking_p95_mean": 0.11917047798633576,
+      "max_tracking_p95_min": 0.11699122786521914,
+      "name": "PPO warm-start behavior-preservation control",
+      "path": "outputs/analysis/pitch_chain_4p3_ppo_warmstart_behavior_preservation_control_seed1_seed4_screen.json",
+      "runs": 2,
+      "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "track_ratio_mean": 0.01649000484849239,
+      "vx_mean": 0.0013192003878793911
+    },
+    {
+      "base_height_min_mean": 0.15309802256524563,
+      "body_pitch_p95_mean": 0.10130160957675574,
+      "duration_complete": 8,
+      "falls_or_terminations": 0,
+      "max_pitch_velocity_p95_max": 3.7533026933670044,
+      "max_pitch_velocity_p95_mean": 3.701624684035778,
+      "max_pitch_velocity_p95_min": 3.6430013179779053,
+      "max_tracking_p95_max": 0.2600024938583374,
+      "max_tracking_p95_mean": 0.25517752170562746,
+      "max_tracking_p95_min": 0.25161944031715394,
+      "name": "PPO behavior-control low-alpha blends",
+      "path": "outputs/analysis/ppo_warmstart_behavior_control_weight_blends_seed1_seed4_screen.json",
+      "runs": 8,
+      "status": "HOLD_CANDIDATE_TRACKING",
+      "track_ratio_mean": 0.4940354829841567,
+      "vx_mean": 0.03952283863873254
+    },
+    {
+      "base_height_min_mean": 0.15309374779462814,
+      "body_pitch_p95_mean": 0.050787574242825914,
+      "duration_complete": 2,
+      "falls_or_terminations": 0,
+      "max_pitch_velocity_p95_max": 1.1028239130973818,
+      "max_pitch_velocity_p95_mean": 1.0962247848510742,
+      "max_pitch_velocity_p95_min": 1.0896256566047668,
+      "max_tracking_p95_max": 0.10643262267112735,
+      "max_tracking_p95_mean": 0.10579175353050235,
+      "max_tracking_p95_min": 0.10515088438987734,
+      "name": "PPO warm-start adaptive-KL control",
+      "path": "outputs/analysis/pitch_chain_4p3_ppo_warmstart_adaptive_kl_control_seed1_seed4_screen.json",
+      "runs": 2,
+      "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "track_ratio_mean": 0.017318250124276346,
+      "vx_mean": 0.0013854600099421077
+    },
+    {
+      "base_height_min_mean": 0.153093621134758,
+      "body_pitch_p95_mean": 0.05194668555274891,
+      "duration_complete": 2,
+      "falls_or_terminations": 0,
+      "max_pitch_velocity_p95_max": 1.2083160877227785,
+      "max_pitch_velocity_p95_mean": 1.1408618092536926,
+      "max_pitch_velocity_p95_min": 1.073407530784607,
+      "max_tracking_p95_max": 0.11993674635887147,
+      "max_tracking_p95_mean": 0.11075967848300936,
+      "max_tracking_p95_min": 0.10158261060714724,
+      "name": "PPO warm-start hard progress-failure control",
+      "path": "outputs/analysis/pitch_chain_4p3_ppo_warmstart_progress_failure_control_seed1_seed4_screen.json",
+      "runs": 2,
+      "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "track_ratio_mean": 0.016222923193186037,
+      "vx_mean": 0.0012978338554548827
+    },
+    {
+      "base_height_min_mean": 0.15309414267539978,
+      "body_pitch_p95_mean": 0.051629012462862486,
+      "duration_complete": 2,
+      "falls_or_terminations": 0,
+      "max_pitch_velocity_p95_max": 1.3022032380104065,
+      "max_pitch_velocity_p95_mean": 1.3004009425640106,
+      "max_pitch_velocity_p95_min": 1.298598647117615,
+      "max_tracking_p95_max": 0.12360504865646364,
+      "max_tracking_p95_mean": 0.12170555889606477,
+      "max_tracking_p95_min": 0.11980606913566591,
+      "name": "PPO warm-start restore-policy KL control",
+      "path": "outputs/analysis/pitch_chain_4p3_ppo_warmstart_restore_policy_kl_control_seed1_seed4_screen.json",
+      "runs": 2,
+      "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "track_ratio_mean": 0.017320331711425753,
+      "vx_mean": 0.0013856265369140601
+    },
+    {
+      "base_height_min_mean": 0.15309374779462814,
+      "body_pitch_p95_mean": 0.052210249725509916,
+      "duration_complete": 2,
+      "falls_or_terminations": 0,
+      "max_pitch_velocity_p95_max": 1.220966875553131,
+      "max_pitch_velocity_p95_mean": 1.2203256785869598,
+      "max_pitch_velocity_p95_min": 1.2196844816207888,
+      "max_tracking_p95_max": 0.11949440240859988,
+      "max_tracking_p95_mean": 0.11724943220615389,
+      "max_tracking_p95_min": 0.11500446200370791,
+      "name": "PPO warm-start restore-policy KL100 control",
+      "path": "outputs/analysis/pitch_chain_4p3_ppo_warmstart_restore_policy_kl100_control_seed1_seed4_screen.json",
+      "runs": 2,
+      "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "track_ratio_mean": 0.016758723911652847,
+      "vx_mean": 0.001340697912932228
+    }
+  ],
+  "recommendation": {
+    "candidate_mechanisms": [
+      "DAgger/rollout correction with the strict gate failure states added back to the teacher dataset",
+      "recurrent or phase-aware student for the stance-transition discontinuity",
+      "trust-region PPO fine-tune only if it constrains rollouts to the gate-passing state distribution, not just the restored policy on already-drifting states"
+    ],
+    "minimum_requirements": [
+      "uses the standard strict fitted-backlash x=0.08 multi-seed gate as the primary score",
+      "compares against the exact selector blend and PPO-shape warm-start baselines",
+      "preserves duration_complete 8/8 and mean vx near 0.045-0.050 m/s before claiming progress",
+      "reduces max pitch velocity p95 below the 3.75 rad/s envelope or explicitly documents why the gate remains held",
+      "reduces max tracking p95 materially below the current ~0.27 rad plateau",
+      "does not pass by freezing, reversing, or shortening the horizon"
+    ],
+    "recommended_next": "Do not run another clip/filter/weight-blend/feed-forward-BC branch, scalar reward tweak, naive PPO smoke, default adaptive-KL PPO control, existing progress-failure-only PPO control, or restore-policy-KL-only PPO control. Build a gate-aware deployable-policy training path that corrects rollout states back toward a gate-passing distribution, or use a recurrent/phase-aware student, before attempting fitted-bridge tracking correction.",
+    "status": "PLAN_GATE_AWARE_ROLLOUT_CORRECTION_OR_RECURRENT_STUDENT"
+  },
+  "right_knee_spike_evidence": {
+    "right_knee_action_samples": 3992,
+    "right_knee_action_spikes_gt_3p75": 506,
+    "source": "computed from source_vx_selector_fitted_bridge_x008_10s_traces in this branch",
+    "within_2_ticks_of_contact_transition": 404
+  },
+  "robot_touched": false,
+  "status": "PLAN_GATE_AWARE_ROLLOUT_CORRECTION_OR_RECURRENT_STUDENT",
+  "sweep_summaries": [
+    {
+      "failure_reasons": [
+        "command 0: HOLD_CANDIDATE_TRACKING",
+        "command 0.08: HOLD_CANDIDATE_TRACKING"
+      ],
+      "max_pitch_sent_target_velocity_p95_rad_s": 1.8523013591766355,
+      "max_pitch_tracking_p95_rad": 0.22171309590339644,
+      "name": "behavior-prior PPO weight blend sweep",
+      "pass_count": 0,
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/actuator_tracking_behavior_prior_weight_blend_sweep.json",
+      "policy": "blends_actuator_tracking_behavior_prior_weight_blends_blend_alpha_0p0500",
+      "positive_command_tracking_ratio_mean": 0.3158054304367397,
+      "required_command_count": 2,
+      "status": "HOLD_REJECT_CANDIDATE_CHECKPOINT"
+    },
+    {
+      "failure_reasons": [
+        "command 0: HOLD_CANDIDATE_TRACKING",
+        "command 0.08: HOLD_CANDIDATE_TRACKING"
+      ],
+      "max_pitch_sent_target_velocity_p95_rad_s": 1.932319104671478,
+      "max_pitch_tracking_p95_rad": 0.22330130934715256,
+      "name": "behavior-prior PPO checkpoint sweep",
+      "pass_count": 0,
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/actuator_tracking_behavior_prior_probe_local_cpu_checkpoint_sweep/candidate_checkpoint_sweep.json",
+      "policy": "smoke_20260627T102504Z_gpu_2026_06_27_102952_0",
+      "positive_command_tracking_ratio_mean": 0.269231753598433,
+      "required_command_count": 2,
+      "status": "HOLD_REJECT_CANDIDATE_CHECKPOINT"
+    }
+  ]
+}

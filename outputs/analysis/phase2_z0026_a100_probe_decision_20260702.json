@@ -1,0 +1,68 @@
+{
+  "status": "HOLD_SCALAR_TEACHER_CONTINUITY_PLATEAU",
+  "generated_at": "2026-07-02T06:25:00Z",
+  "no_robot_actions": true,
+  "remote": {
+    "session": "open-duck-a100-heartbeat",
+    "hardware": "A100",
+    "last_checked_status": "IDLE",
+    "heartbeat_result": "PASS_A100_HEARTBEAT_ARTIFACT_RECOVERY",
+    "remote_artifact_interval_s": 120,
+    "stale_session": "open-duck-a100-poll"
+  },
+  "probes": [
+    {
+      "name": "phase2_z0026_teacher_continuity_a100_small_foreground_probe",
+      "num_envs": 4,
+      "num_timesteps": 8192,
+      "artifact_sha256": "5367ea83205b9859f4f78497d1f426c02cf8e8d199b98386ea7acfe9cb38d0b5",
+      "onnx_sha256": "ea691aa25895de3b70953e5ead605075d67b1af16845bb155debbbc4dd8cc120",
+      "x008_status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "track_ratio": 0.2315,
+      "mean_local_vx_m_s": 0.0185,
+      "max_pitch_tracking_p95_rad": 0.2174,
+      "max_pitch_sent_target_velocity_p95_rad_s": 1.5133,
+      "promote": false
+    },
+    {
+      "name": "phase2_z0026_teacher_continuity_a100_4env20480_heartbeat_probe",
+      "num_envs": 4,
+      "num_timesteps": 20480,
+      "artifact_sha256": "bad2b950a4f48d0235b0f55d566f4aebbc23b555646dba2ba6f22d46c9768033",
+      "onnx_sha256": "2ca86dd002614716a7d8c7061fa6d371dab0f9a4879433156e4e3736652fb5a5",
+      "x008_status": "HOLD_CANDIDATE_TRACKING",
+      "track_ratio": 0.3039,
+      "mean_local_vx_m_s": 0.0243,
+      "max_pitch_tracking_p95_rad": 0.2194,
+      "max_pitch_sent_target_velocity_p95_rad_s": 1.547,
+      "promote": false
+    },
+    {
+      "name": "phase2_z0026_teacher_continuity_a100_8env8192_heartbeat_probe",
+      "num_envs": 8,
+      "num_timesteps": 8192,
+      "artifact_sha256": "72ec2135b101ad94c9e76c747b78177bd4f4b177c5e1530ae3f8934fde27964e",
+      "onnx_sha256": "343342e5135ae12534ee8fde33e6d22e6b90bbe49dce2e3ef202f8ca71412b4a",
+      "x008_status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "track_ratio": 0.2088,
+      "mean_local_vx_m_s": 0.0167,
+      "max_pitch_tracking_p95_rad": 0.2197,
+      "max_pitch_sent_target_velocity_p95_rad_s": 1.5208,
+      "promote": false
+    }
+  ],
+  "best_probe": "phase2_z0026_teacher_continuity_a100_4env20480_heartbeat_probe",
+  "tracking_p95_band_rad": [
+    0.2174,
+    0.2197
+  ],
+  "decision": "Do not promote any A100 scalar teacher-continuity checkpoint. Pivot to corrected-source/live-oracle DAgger or phase-memory work under the canonical corrected evaluator.",
+  "ci_note": {
+    "latest_validate_run_id": 28568498378,
+    "job": "Static Checks",
+    "runner_name": "",
+    "steps": [],
+    "log_available": false,
+    "interpretation": "Hosted GitHub Actions did not start static-check steps; rely on local validation until runner/account issue is resolved."
+  }
+}
