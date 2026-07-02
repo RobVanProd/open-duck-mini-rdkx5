@@ -1,0 +1,74 @@
+{
+  "artifact": "PHASE2_Z0026_DIRECT_SMOKE_STARTUP_DIAGNOSTIC_20260702",
+  "status": "HOLD_PPO_STARTUP_DISAPPEARS_AFTER_RESTORE_KL",
+  "purpose": "Isolate whether the Phase 2 no-export startup hold is caused by the high-level Colab driver or the direct smoke-runner/PPO startup path.",
+  "safety": {
+    "robot_tests": false,
+    "ssh": false,
+    "deploy": false,
+    "grounded_replay": false,
+    "promotable_candidate": false,
+    "colab_sessions_left_running": false
+  },
+  "probe_1_bad_manual_flag": {
+    "status": "HOLD_PROBE_CONSTRUCTION_ERROR",
+    "returncode": 2,
+    "bad_argument": "--enable-actuator-bridge",
+    "interpretation": "The smoke runner has the actuator bridge default-on; this flag belongs to the lower-level Playground runner and is not accepted by tools/run_actuator_bridge_training_smoke.py."
+  },
+  "probe_2_corrected_direct_smoke": {
+    "status": "HOLD_PPO_STARTUP_DISAPPEARS_AFTER_RESTORE_KL",
+    "session": "open-duck-a100-phase2-direct",
+    "manual_collect_archive": "outputs/analysis/colab_cli/direct_probe2_20260702T0211Z/open_duck_direct_phase2_probe2_manual_collect.tar.gz",
+    "extracted_smoke_dir": "outputs/analysis/colab_cli/direct_probe2_20260702T0211Z/extracted/open_duck_direct_phase2_training2/smoke_20260702T021124Z_gpu",
+    "restore_checkpoint": "outputs/analysis/phase2_restore_checkpoints/phase2_z0026_teacher_continuity_81920",
+    "terrain_z_scale": 0.0026,
+    "num_timesteps": 512,
+    "ppo_num_envs": 4,
+    "ppo_episode_length": 256,
+    "ppo_batch_size": 64,
+    "post_training_gates": false,
+    "files_created": [
+      "smoke_manifest.start.json",
+      "smoke_manifest.live.json",
+      "stdout.txt",
+      "stderr.txt"
+    ],
+    "final_manifest_created": false,
+    "onnx_created": false,
+    "checkpoint_created": false,
+    "latest_live_manifest": {
+      "status": "RUNNING",
+      "pid": 2223,
+      "poll_returncode": null,
+      "elapsed_s": 330.016992582
+    },
+    "stdout_reached": [
+      "Observation size: 101",
+      "PPO params printed",
+      "Enabled restore-policy KL loss: scale=7.5 restore_checkpoint_path=/content/open-duck-mini-rdkx5/outputs/analysis/phase2_restore_checkpoints/phase2_z0026_teacher_continuity_81920",
+      "Skipping checkpoint/export at step 0; export_min_step=1"
+    ],
+    "stderr_observed": [
+      "mujoco_menagerie clone progress",
+      "RuntimeWarning: overflow encountered in cast from jax/_src/abstract_arrays.py"
+    ],
+    "traceback": false,
+    "python_exception": false,
+    "killed_line": false
+  },
+  "interpretation": {
+    "high_level_colab_driver_is_not_the_only_blocker": true,
+    "dependency_install_is_not_the_blocker": true,
+    "smoke_runner_argparse_is_not_the_blocker_after_flag_fix": true,
+    "playground_contract_instantiates": true,
+    "failure_window": "first PPO/JAX compile or update after restore-policy KL setup",
+    "not_a_policy_result": true
+  },
+  "next_isolation": [
+    "Direct smoke with restore checkpoint only and no behavior prior.",
+    "Direct smoke with behavior prior only and no restore-policy KL.",
+    "Direct smoke with no restore checkpoint and no behavior prior.",
+    "CPU fallback for the same tiny command if GPU still disappears."
+  ]
+}
