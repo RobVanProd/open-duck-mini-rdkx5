@@ -310,6 +310,7 @@ def tar_filter(member: tarfile.TarInfo) -> tarfile.TarInfo | None:
             ("outputs", "analysis", "phase2_stage_guard.json"),
             ("outputs", "analysis", "PHASE2_ARTIFACT_MANIFEST.md"),
             ("outputs", "analysis", "phase2_artifact_manifest.json"),
+            ("outputs", "analysis", "phase2_restore_checkpoints"),
         }
         rel_parts = tuple(parts[1:]) if len(parts) > 1 else tuple(parts)
         is_allowed_path = rel_parts in allowed_outputs
@@ -335,7 +336,9 @@ def would_package_path(relative_path: str) -> bool:
     return tar_filter(info) is not None
 
 
-def required_rdk_package_paths(workflow: str) -> list[str]:
+def required_rdk_package_paths(
+    workflow: str, extra_paths: list[str] | None = None
+) -> list[str]:
     phase2_terrain_workflows = {
         "phase2-z002-tracking-margin",
         "phase2-z002-teacher-continuity",
@@ -401,13 +404,17 @@ def required_rdk_package_paths(workflow: str) -> list[str]:
         )
     if workflow == "phase2-z005-motion-floor":
         paths.append("outputs/analysis/phase2_z005_motion_prior_next_recipe.json")
+    if extra_paths:
+        paths.extend(extra_paths)
     return paths
 
 
-def validate_rdk_package_inputs(workflow: str, rdk_root: Path) -> None:
+def validate_rdk_package_inputs(
+    workflow: str, rdk_root: Path, extra_paths: list[str] | None = None
+) -> None:
     missing: list[str] = []
     excluded: list[str] = []
-    for relative_path in required_rdk_package_paths(workflow):
+    for relative_path in required_rdk_package_paths(workflow, extra_paths):
         local_path = rdk_root / relative_path
         if not local_path.exists():
             missing.append(relative_path)
@@ -2632,6 +2639,7 @@ def write_package_only_manifest(
     rdk_root: Path,
     playground_root: Path,
     argv: list[str],
+    extra_required_paths: list[str] | None = None,
 ) -> None:
     payload = {
         "status": "PASS_COLAB_PACKAGE_ONLY_READY",
@@ -2655,7 +2663,9 @@ def write_package_only_manifest(
                 "sha256": file_sha256(playground_tar),
             },
         },
-        "required_rdk_package_paths": required_rdk_package_paths(workflow),
+        "required_rdk_package_paths": required_rdk_package_paths(
+            workflow, extra_required_paths
+        ),
         "robot_touched": False,
         "ssh_used": False,
         "deploy_performed": False,
@@ -2697,6 +2707,18 @@ def write_package_only_manifest(
     lines.append("")
     output_md.write_text("\n".join(lines))
     print(f"PACKAGE_ONLY_MANIFEST {output_json}", flush=True)
+
+
+def repo_relative_existing_path(path_value: str | None, root: Path) -> str | None:
+    if not path_value:
+        return None
+    path = Path(path_value).expanduser()
+    if not path.is_absolute():
+        return path.as_posix()
+    try:
+        return path.resolve().relative_to(root.resolve()).as_posix()
+    except ValueError:
+        return None
 
 
 def main() -> int:
@@ -3294,7 +3316,16 @@ def main() -> int:
         raise SystemExit(f"RDK repo missing: {rdk_root}")
     if not playground_root.exists():
         raise SystemExit(f"Playground repo missing: {playground_root}")
-    validate_rdk_package_inputs(args.workflow, rdk_root)
+    extra_required_paths = [
+        item
+        for item in [
+            repo_relative_existing_path(args.phase2_restore_checkpoint_path, rdk_root),
+            repo_relative_existing_path(args.candidate_restore_checkpoint_path, rdk_root),
+            repo_relative_existing_path(args.candidate_behavior_prior_mlp_npz, rdk_root),
+        ]
+        if item
+    ]
+    validate_rdk_package_inputs(args.workflow, rdk_root, extra_required_paths)
     candidate_existing_policy = (
         Path(args.candidate_existing_policy).expanduser().resolve()
         if args.candidate_existing_policy
@@ -3338,6 +3369,7 @@ def main() -> int:
             rdk_root,
             playground_root,
             sys.argv,
+            extra_required_paths,
         )
         print("PACKAGE_ONLY no Colab upload or remote work started")
         return 0
