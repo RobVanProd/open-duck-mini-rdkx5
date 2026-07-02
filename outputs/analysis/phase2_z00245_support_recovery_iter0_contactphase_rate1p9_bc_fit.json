@@ -1,0 +1,78 @@
+{
+  "activation": "swish",
+  "config": {
+    "batch_size": 512,
+    "learning_rate": 0.001,
+    "seed": 0,
+    "steps": 1500,
+    "target_rate_limit_rad_s": 1.9,
+    "target_rate_scale": 1.5
+  },
+  "context_hidden_sizes": [
+    32
+  ],
+  "context_indices": [
+    6,
+    97,
+    98,
+    99,
+    100
+  ],
+  "exported_onnx": "outputs/analysis/phase2_z00245_support_recovery_dagger_iter0_contactphase_rate1p9_bc_candidate/candidate.onnx",
+  "loss_rows": [
+    {
+      "loss": 2.7548375129699707,
+      "step": 1
+    },
+    {
+      "loss": 0.0030470408964902163,
+      "step": 500
+    },
+    {
+      "loss": 0.0017934601055458188,
+      "step": 1000
+    },
+    {
+      "loss": 0.0011741325724869967,
+      "step": 1500
+    }
+  ],
+  "manifest": "outputs/analysis/phase2_z00245_support_recovery_dagger_iter0/live_oracle_dagger_aggregate_manifest.json",
+  "modulation_scale": 0.5,
+  "onnx_verify": {
+    "max_abs_error": 3.5762786865234375e-07,
+    "p95_abs_error": 1.1920928955078125e-07,
+    "path": "outputs/analysis/phase2_z00245_support_recovery_dagger_iter0_contactphase_rate1p9_bc_candidate/candidate.onnx",
+    "samples_checked": 64
+  },
+  "sample_weight": {
+    "max": 5.0,
+    "p50": 1.0,
+    "p95": 1.0,
+    "weighted_samples": 6566.0
+  },
+  "samples": 6118,
+  "saved_npz": "outputs/analysis/phase2_z00245_support_recovery_dagger_iter0_contactphase_rate1p9_bc_candidate/candidate_mlp.npz",
+  "status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE",
+  "target_rate": {
+    "max_rad_s": 2.1110146045684814,
+    "p50_rad_s": 0.4818114787340164,
+    "p95_rad_s": 1.6341586649417874,
+    "p99_rad_s": 1.8583071315288544,
+    "pair_count": 6108
+  },
+  "train_metrics": {
+    "mae": 0.020502023160960014,
+    "max_abs_error": 0.7575826942920685,
+    "p50_abs_error": 0.014653533697128296,
+    "p95_abs_error": 0.058294536173343646,
+    "p99_abs_error": 0.10211494242050101,
+    "pred_action_saturation_pct": 0.0,
+    "rmse": 0.03063723364018589,
+    "samples": 6118
+  },
+  "trunk_hidden_sizes": [
+    128,
+    64
+  ]
+}

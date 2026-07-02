@@ -1,0 +1,62 @@
+{
+  "status": "HOLD_RECOVERY_ITER0_OVERDRIVES",
+  "student_policy": "policy/candidates/phase2_stagea2_seed5_recovery_command_gated_gain099_20260629/candidate.onnx",
+  "teacher_manifest": "outputs/analysis/phase2_z0024_corrected_terrain_source_manifest.json",
+  "teacher_dataset_id": "d8498b665c201936",
+  "aggregate_manifest": "outputs/analysis/phase2_z00245_support_recovery_dagger_iter0/live_oracle_dagger_aggregate_manifest.json",
+  "aggregate_dataset_id": "e7d73116381edf7d",
+  "aggregate_samples": 6118,
+  "candidate": "outputs/analysis/phase2_z00245_support_recovery_dagger_iter0_contactphase_rate1p9_bc_candidate/candidate.onnx",
+  "task": "rough_terrain_backlash",
+  "terrain_hfield_z_scale": 0.00245,
+  "bridge": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+  "fit": {
+    "status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE",
+    "mae": 0.020502,
+    "p95_abs_error": 0.058295,
+    "target_rate_p95_rad_s": 1.634159,
+    "target_rate_max_rad_s": 2.111015
+  },
+  "short_gates": [
+    {
+      "command_x": 0.0,
+      "status": "HOLD_CANDIDATE_ACTION_SATURATION",
+      "samples": 100,
+      "termination_reason": "duration_complete",
+      "mean_local_vx_m_s": 0.04670971205094247,
+      "track_ratio": null,
+      "base_height_min_m": 0.1389455944299698,
+      "max_pitch_vel_p95_rad_s": 5.239999294281006,
+      "max_pitch_vel_limit_excess_rad_s": 3.239999294281006,
+      "max_pitch_vel_max_limit_excess_rad_s": 3.239999294281006,
+      "max_tracking_p95_rad": 0.2796994864940643,
+      "action_saturation_pct": 36.0
+    },
+    {
+      "command_x": 0.08,
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "samples": 83,
+      "termination_reason": "fall_or_nan",
+      "mean_local_vx_m_s": 0.23692178725635252,
+      "track_ratio": 2.9615223407044065,
+      "base_height_min_m": 0.004293758422136307,
+      "max_pitch_vel_p95_rad_s": 5.239999294281006,
+      "max_pitch_vel_limit_excess_rad_s": 3.2146804332733154,
+      "max_pitch_vel_max_limit_excess_rad_s": 3.239999294281006,
+      "max_tracking_p95_rad": 0.328257811069489,
+      "action_saturation_pct": 73.49397590361446
+    }
+  ],
+  "decision": [
+    "Do not promote this student.",
+    "Do not run full 8-seed gates.",
+    "Do not use this ONNX as a parent.",
+    "Next recovery attempt must reduce copied recovery aggression before closed-loop use."
+  ],
+  "robot_tests": false,
+  "ssh": false,
+  "deploy": false,
+  "grounded_replay": false,
+  "ppo_training": false,
+  "runtime_behavior_changes": false
+}
