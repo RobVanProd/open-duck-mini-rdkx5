@@ -1,0 +1,75 @@
+{
+  "artifact_bundle": {
+    "local_path": "outputs/analysis/colab_cli/open-duck-a100-heartbeat-phase2-z002-teacher-continuity-20260702T052409Z/open_duck_colab_cli_phase2-z002-teacher-continuity_20260702T052440Z_artifacts.tar.gz",
+    "sha256": "72ec2135b101ad94c9e76c747b78177bd4f4b177c5e1530ae3f8934fde27964e"
+  },
+  "candidate_name": "phase2_z0026_teacher_continuity_a100_8env8192_heartbeat_probe",
+  "generated_at": "2026-07-02T05:40:00Z",
+  "heartbeat_result": "PASS_A100_HEARTBEAT_ARTIFACT_RECOVERY",
+  "no_robot_actions": true,
+  "onnx": {
+    "remote_path": "/content/open_duck_training_phase2_z002_teacher_continuity_cli/smoke_20260702T052444Z_gpu/2026_07_02_053037_8960.onnx",
+    "sha256": "343342e5135ae12534ee8fde33e6d22e6b90bbe49dce2e3ef202f8ca71412b4a",
+    "size_bytes": 883946,
+    "step": 8960
+  },
+  "promotion_decision": {
+    "duration_complete_count": 2,
+    "failure_reasons": [
+      "command 0.08: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "command 0.08: track ratio 0.2088 < 0.2500",
+      "command 0.08: mean vx 0.0167 < 0.0200"
+    ],
+    "max_action_saturation_pct": 0.0,
+    "max_pitch_sent_target_velocity_p95_rad_s": 1.5207856893539429,
+    "max_pitch_tracking_p95_rad": 0.2197138786315917,
+    "pass_count": 1,
+    "positive_command_tracking_ratio_mean": 0.20878668077784823,
+    "promote": false,
+    "required_command_count": 2,
+    "status": "HOLD_PARTIAL_CANDIDATE_CHECKPOINT"
+  },
+  "remote": {
+    "execution_mode": "foreground-remote",
+    "remote_artifact_interval_s": 120,
+    "session": "open-duck-a100-heartbeat",
+    "workflow": "phase2-z002-teacher-continuity"
+  },
+  "result": "HOLD_PARTIAL_CANDIDATE_CHECKPOINT",
+  "sweep": {
+    "bridge_mode": "fitted",
+    "commands": [
+      {
+        "command_x": 0.0,
+        "max_pitch_sent_target_velocity_p95_rad_s": 1.0658,
+        "max_pitch_tracking_p95_rad": 0.1941,
+        "mean_local_vx_m_s": 0.0058,
+        "samples": 50,
+        "status": "PASS_CANDIDATE_SIM_GATE",
+        "termination": "duration_complete",
+        "track_ratio": null
+      },
+      {
+        "command_x": 0.08,
+        "max_pitch_sent_target_velocity_p95_rad_s": 1.5208,
+        "max_pitch_tracking_p95_rad": 0.2197,
+        "mean_local_vx_m_s": 0.0167,
+        "samples": 50,
+        "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+        "termination": "duration_complete",
+        "track_ratio": 0.2088
+      }
+    ],
+    "duration_s": 1.0,
+    "velocity_envelope_rad_s": [
+      2.0,
+      3.25
+    ]
+  },
+  "training": {
+    "episode_length": 128,
+    "num_envs": 8,
+    "num_timesteps": 8192,
+    "status": "PASS_SMOKE_RUN"
+  }
+}
