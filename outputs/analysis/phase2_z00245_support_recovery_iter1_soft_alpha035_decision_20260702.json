@@ -1,0 +1,55 @@
+{
+  "status": "HOLD_SOFT_ALPHA_RECOVERY_STILL_OVERDRIVES",
+  "student_policy": "policy/candidates/phase2_stagea2_seed5_recovery_command_gated_gain099_20260629/candidate.onnx",
+  "teacher_manifest": "outputs/analysis/phase2_z0024_corrected_terrain_source_manifest.json",
+  "aggregate_manifest": "outputs/analysis/phase2_z00245_support_recovery_dagger_iter1_soft_alpha035/live_oracle_dagger_aggregate_manifest.json",
+  "aggregate_dataset_id": "37899aa2d6d1a86a",
+  "aggregate_samples": 6118,
+  "candidate": "outputs/analysis/phase2_z00245_support_recovery_dagger_iter1_soft_alpha035_contactphase_rate1p5_bc_candidate/candidate.onnx",
+  "task": "rough_terrain_backlash",
+  "terrain_hfield_z_scale": 0.00245,
+  "bridge": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+  "relabel": {
+    "teacher_model_kind": "source_vx_blend",
+    "blend_alpha": 0.35,
+    "vx_blend_alpha": 0.35
+  },
+  "fit": {
+    "status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE",
+    "target_rate_scale": 5.0,
+    "target_rate_limit_rad_s": 1.5,
+    "mae": 0.032898,
+    "p95_abs_error": 0.10165,
+    "target_rate_p95_rad_s": 1.31822,
+    "target_rate_max_rad_s": 1.735654
+  },
+  "short_gates": [
+    {
+      "command_x": 0.0,
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "samples": 57,
+      "termination_reason": "fall_or_nan",
+      "mean_local_vx_m_s": -0.2423364838887529,
+      "track_ratio": null,
+      "base_height_min_m": 0.0626118928194046,
+      "max_pitch_vel_p95_rad_s": 5.239999294281006,
+      "max_pitch_vel_limit_excess_rad_s": 3.239999294281006,
+      "max_pitch_vel_max_limit_excess_rad_s": 3.239999294281006,
+      "max_tracking_p95_rad": 0.2502269983291627,
+      "action_saturation_pct": 38.59649122807017
+    }
+  ],
+  "x008_gate_run": false,
+  "decision": [
+    "Do not promote this student.",
+    "Do not run x=0.08 or full 8-seed gates.",
+    "Do not use this ONNX as a parent.",
+    "Close one-shot BC on the tiny z=0.00245 recovery set unless the target source changes structurally."
+  ],
+  "robot_tests": false,
+  "ssh": false,
+  "deploy": false,
+  "grounded_replay": false,
+  "ppo_training": false,
+  "runtime_behavior_changes": false
+}

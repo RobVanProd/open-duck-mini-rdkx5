@@ -1,0 +1,78 @@
+{
+  "activation": "swish",
+  "config": {
+    "batch_size": 512,
+    "learning_rate": 0.001,
+    "seed": 0,
+    "steps": 1500,
+    "target_rate_limit_rad_s": 1.5,
+    "target_rate_scale": 5.0
+  },
+  "context_hidden_sizes": [
+    32
+  ],
+  "context_indices": [
+    6,
+    97,
+    98,
+    99,
+    100
+  ],
+  "exported_onnx": "outputs/analysis/phase2_z00245_support_recovery_dagger_iter1_soft_alpha035_contactphase_rate1p5_bc_candidate/candidate.onnx",
+  "loss_rows": [
+    {
+      "loss": 10.955341339111328,
+      "step": 1
+    },
+    {
+      "loss": 0.011493989266455173,
+      "step": 500
+    },
+    {
+      "loss": 0.00410228967666626,
+      "step": 1000
+    },
+    {
+      "loss": 0.0029678402934223413,
+      "step": 1500
+    }
+  ],
+  "manifest": "outputs/analysis/phase2_z00245_support_recovery_dagger_iter1_soft_alpha035/live_oracle_dagger_aggregate_manifest.json",
+  "modulation_scale": 0.5,
+  "onnx_verify": {
+    "max_abs_error": 2.6635825634002686e-07,
+    "p95_abs_error": 1.1920928955078125e-07,
+    "path": "outputs/analysis/phase2_z00245_support_recovery_dagger_iter1_soft_alpha035_contactphase_rate1p5_bc_candidate/candidate.onnx",
+    "samples_checked": 64
+  },
+  "sample_weight": {
+    "max": 5.0,
+    "p50": 1.0,
+    "p95": 1.0,
+    "weighted_samples": 6566.0
+  },
+  "samples": 6118,
+  "saved_npz": "outputs/analysis/phase2_z00245_support_recovery_dagger_iter1_soft_alpha035_contactphase_rate1p5_bc_candidate/candidate_mlp.npz",
+  "status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE",
+  "target_rate": {
+    "max_rad_s": 1.7356544733047485,
+    "p50_rad_s": 0.48997458815574646,
+    "p95_rad_s": 1.318219757080078,
+    "p99_rad_s": 1.4876475608348845,
+    "pair_count": 6108
+  },
+  "train_metrics": {
+    "mae": 0.0328978599539847,
+    "max_abs_error": 0.8308877944946289,
+    "p50_abs_error": 0.022526800632476807,
+    "p95_abs_error": 0.10165046527981754,
+    "p99_abs_error": 0.16820274636149415,
+    "pred_action_saturation_pct": 0.0,
+    "rmse": 0.049302074040026754,
+    "samples": 6118
+  },
+  "trunk_hidden_sizes": [
+    128,
+    64
+  ]
+}
