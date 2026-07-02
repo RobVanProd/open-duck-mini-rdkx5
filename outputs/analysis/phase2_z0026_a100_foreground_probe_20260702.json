@@ -1,0 +1,75 @@
+{
+  "artifact_bundle": {
+    "local_path": "outputs/analysis/colab_cli/open-duck-a100-poll-phase2-z002-teacher-continuity-20260702T041840Z/open_duck_colab_cli_phase2-z002-teacher-continuity_20260702T041916Z_artifacts.tar.gz",
+    "sha256": "5367ea83205b9859f4f78497d1f426c02cf8e8d199b98386ea7acfe9cb38d0b5"
+  },
+  "candidate_name": "phase2_z0026_teacher_continuity_a100_small_foreground_probe",
+  "generated_at": "2026-07-02T04:40:00Z",
+  "gate_result": "HOLD_PARTIAL_CANDIDATE_CHECKPOINT",
+  "interpretation": "Foreground remote execution completed and produced a checkpoint, while detached/background execution had repeatedly failed to produce a recoverable sentinel. The checkpoint is not promoted because positive-command progress remained below the compact threshold.",
+  "no_robot_actions": true,
+  "onnx": {
+    "remote_path": "/content/open_duck_training_phase2_z002_teacher_continuity_cli/smoke_20260702T041920Z_gpu/2026_07_02_042523_8320.onnx",
+    "sha256": "ea691aa25895de3b70953e5ead605075d67b1af16845bb155debbbc4dd8cc120",
+    "size_bytes": 883946,
+    "step": 8320
+  },
+  "promotion_decision": {
+    "duration_complete_count": 2,
+    "failure_reasons": [
+      "command 0.08: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "command 0.08: track ratio 0.2315 < 0.2500",
+      "command 0.08: mean vx 0.0185 < 0.0200"
+    ],
+    "max_action_saturation_pct": 0.0,
+    "max_pitch_sent_target_velocity_p95_rad_s": 1.513267457485199,
+    "max_pitch_tracking_p95_rad": 0.2174195289611815,
+    "pass_count": 1,
+    "positive_command_tracking_ratio_mean": 0.2315444388659671,
+    "promote": false,
+    "required_command_count": 2,
+    "status": "HOLD_PARTIAL_CANDIDATE_CHECKPOINT"
+  },
+  "remote": {
+    "execution_mode": "foreground-remote",
+    "session": "open-duck-a100-poll",
+    "workflow": "phase2-z002-teacher-continuity"
+  },
+  "sweep": {
+    "bridge_mode": "fitted",
+    "commands": [
+      {
+        "command_x": 0.0,
+        "max_pitch_sent_target_velocity_p95_rad_s": 1.0862,
+        "max_pitch_tracking_p95_rad": 0.1936,
+        "mean_local_vx_m_s": 0.0067,
+        "samples": 50,
+        "status": "PASS_CANDIDATE_SIM_GATE",
+        "termination": "duration_complete",
+        "track_ratio": null
+      },
+      {
+        "command_x": 0.08,
+        "max_pitch_sent_target_velocity_p95_rad_s": 1.5133,
+        "max_pitch_tracking_p95_rad": 0.2174,
+        "mean_local_vx_m_s": 0.0185,
+        "samples": 50,
+        "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+        "termination": "duration_complete",
+        "track_ratio": 0.2315
+      }
+    ],
+    "duration_s": 1.0,
+    "velocity_envelope_rad_s": [
+      2.0,
+      3.25
+    ]
+  },
+  "training": {
+    "episode_length": 128,
+    "num_envs": 4,
+    "num_timesteps": 8192,
+    "status": "PASS_SMOKE_RUN"
+  },
+  "transport_result": "PASS_A100_FOREGROUND_TRANSPORT"
+}
