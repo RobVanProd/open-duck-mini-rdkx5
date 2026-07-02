@@ -1,0 +1,60 @@
+{
+  "status": "PASS_BC_TRACE_RELABEL_READY",
+  "teacher": {
+    "teacher_manifest": "outputs/analysis/phase2_z0025_live_oracle_boundary_iter0/live_oracle_dagger_aggregate_manifest.json",
+    "teacher_dataset_id": "e1d14b2c3f81d443",
+    "teacher_entries": 26,
+    "teacher_samples": 10500,
+    "teacher_model_kind": "source_vx_blend",
+    "knn_k": 5,
+    "blend_alpha": 0.8,
+    "vx_blend_alpha": 1.0,
+    "vx_blend_threshold_m_s": 0.02,
+    "source_vx_threshold_m_s": 0.02,
+    "include_source_regex": null,
+    "exclude_source_regex": null,
+    "alt_include_source_regex": null,
+    "alt_exclude_source_regex": "seed_004",
+    "best_alpha": 0.01
+  },
+  "trace_globs": [
+    "outputs/analysis/phase2_z0025_x0_seed5_active_recovery_relabel_iter1/rollouts_x0/student/seed_*/trace.jsonl"
+  ],
+  "output_trace_dir": "outputs/analysis/phase2_z0025_x0_seed5_active_recovery_relabel_iter1/relabel_x0",
+  "summary": {
+    "traces": 1,
+    "samples_out": 43,
+    "truncated_traces": 0
+  },
+  "traces": [
+    {
+      "source_trace": "outputs/analysis/phase2_z0025_x0_seed5_active_recovery_relabel_iter1/rollouts_x0/student/seed_005/trace.jsonl",
+      "output_trace": "outputs/analysis/phase2_z0025_x0_seed5_active_recovery_relabel_iter1/relabel_x0/rollouts_x0/student/seed_005/trace.jsonl",
+      "samples_in": 43,
+      "samples_out": 43,
+      "skipped": 0,
+      "truncate_before_done": false,
+      "first_done_index": null,
+      "action_delta_p50": 0.10654247598957127,
+      "action_delta_p95": 0.41108901485492283,
+      "action_delta_max": 0.5299870282411575,
+      "active_model_counts": {
+        "alt": 6,
+        "primary": 37
+      },
+      "blend_alpha_p50": 0.8,
+      "blend_alpha_p95": 1.0,
+      "sample_weight_p50": 5.0,
+      "sample_weight_p95": 5.0,
+      "sample_weight_max": 5.0,
+      "sample_weight_reasons": {
+        "double_support_low_progress": 33,
+        "high_lateral_velocity": 5,
+        "high_tracking_error": 3,
+        "low_progress": 36,
+        "reverse_velocity": 36,
+        "zero_command_drift": 43
+      }
+    }
+  ]
+}
