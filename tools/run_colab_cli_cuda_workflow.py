@@ -1625,6 +1625,8 @@ def build_remote_driver(
         import shutil
         import subprocess
         import sys
+        import threading
+        import time
         from pathlib import Path
         from importlib import metadata
 
@@ -1642,6 +1644,8 @@ def build_remote_driver(
         REMOTE_BUNDLE = Path("{remote_bundle}")
         RUN_STATUS = {{"exit_status": 0}}
         ARTIFACT_CHECKPOINT_MODE = {artifact_checkpoint_mode!r}
+        ARTIFACT_BUNDLE_INTERVAL_S = {max(0, int(args.remote_artifact_interval_s))}
+        BUNDLE_LOCK = threading.Lock()
 
         def checkpoint_dirs_for_run(run_dir):
             onnx_stems = {{path.stem for path in run_dir.glob("*.onnx")}}
@@ -1722,10 +1726,24 @@ def build_remote_driver(
                         print("copy_staged_gate_warning", item, type(exc).__name__, exc, flush=True)
 
         def bundle_artifacts():
+            if not BUNDLE_LOCK.acquire(blocking=False):
+                print("bundle_artifacts_skipped lock_held", flush=True)
+                return
             try:
                 OUT.mkdir(parents=True, exist_ok=True)
                 (OUT / "COLAB_CLI_EXIT_STATUS.txt").write_text(
                     "exit_status=" + str(RUN_STATUS.get("exit_status", 0)) + "\\n"
+                )
+                (OUT / "COLAB_CLI_HEARTBEAT.json").write_text(
+                    json.dumps(
+                        {{
+                            "generated_at": dt.datetime.now(dt.UTC).isoformat(),
+                            "exit_status": RUN_STATUS.get("exit_status", 0),
+                            "bundle_interval_s": ARTIFACT_BUNDLE_INTERVAL_S,
+                        }},
+                        indent=2,
+                    )
+                    + "\\n"
                 )
                 copy_training_outputs(
                     "/content/open_duck_training_smokes_cli",
@@ -1751,8 +1769,25 @@ def build_remote_driver(
                 print("COLAB_CLI_ARTIFACT", REMOTE_BUNDLE, flush=True)
             except Exception as exc:
                 print("bundle_artifacts_warning", type(exc).__name__, exc, flush=True)
+            finally:
+                BUNDLE_LOCK.release()
 
         atexit.register(bundle_artifacts)
+
+        def periodic_bundle_artifacts():
+            if ARTIFACT_BUNDLE_INTERVAL_S <= 0:
+                return
+            while True:
+                time.sleep(ARTIFACT_BUNDLE_INTERVAL_S)
+                print("COLAB_CLI_PERIODIC_ARTIFACT_REFRESH", flush=True)
+                bundle_artifacts()
+
+        if ARTIFACT_BUNDLE_INTERVAL_S > 0:
+            threading.Thread(
+                target=periodic_bundle_artifacts,
+                name="colab-artifact-heartbeat",
+                daemon=True,
+            ).start()
 
         def run(cmd, cwd=None, timeout=None, env=None, check=True):
             print("\\n>>>", " ".join(str(x) for x in cmd), flush=True)
@@ -2831,6 +2866,17 @@ def main() -> int:
         help=(
             "Number of consecutive IDLE polls without an exit sentinel before "
             "declaring HOLD_REMOTE_NO_SENTINEL when no artifact bundle exists."
+        ),
+    )
+    parser.add_argument(
+        "--remote-artifact-interval-s",
+        type=int,
+        default=0,
+        help=(
+            "When >0, the generated remote driver periodically refreshes the "
+            "artifact bundle and heartbeat while long training subprocesses "
+            "are running. This is intended for Colab sessions that disappear "
+            "before the final exit sentinel."
         ),
     )
     parser.add_argument("--timeout-s", type=int, default=7200)
