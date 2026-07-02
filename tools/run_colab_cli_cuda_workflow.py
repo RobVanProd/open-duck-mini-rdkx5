@@ -1521,6 +1521,21 @@ def build_remote_driver(
     phase2_support_stability_arg = (
         phase2_support_stability_arg + phase2_forward_swing_target_rate_limit_arg
     )
+    phase2_final_training_args = ""
+    if args.phase2_final_training_args_json:
+        try:
+            final_training_args = json.loads(args.phase2_final_training_args_json)
+        except json.JSONDecodeError as exc:
+            raise SystemExit(
+                f"Invalid --phase2-final-training-args-json: {exc}"
+            ) from exc
+        if not isinstance(final_training_args, list) or not all(
+            isinstance(item, str) for item in final_training_args
+        ):
+            raise SystemExit(
+                "--phase2-final-training-args-json must be a JSON list of strings"
+            )
+        phase2_final_training_args = "".join(f"{item!r}," for item in final_training_args)
     phase2_base_height_scale = "-0.35" if (run_phase2_z002_tracking_margin or run_phase2_z002_teacher_continuity or run_phase2_motion_floor_like) else "-0.8"
     phase2_forward_pitch_scale = "-0.3" if (run_phase2_z002_tracking_margin or run_phase2_z002_teacher_continuity or run_phase2_motion_floor_like) else "-0.4"
     phase2_forward_pitch_rate_scale = "-0.06" if (run_phase2_z002_tracking_margin or run_phase2_z002_teacher_continuity or run_phase2_motion_floor_like) else "-0.08"
@@ -2195,6 +2210,7 @@ def build_remote_driver(
                 "--actuator-bridge-per-joint-variation", "{phase2_bridge_per_joint_variation}",
                 "--terrain-hfield-z-scale", "{phase2_terrain_hfield_z_scale}",
                 "--timeout-s", "{args.candidate_timeout_s}",
+                {phase2_final_training_args}
             ]
             run(phase2_b0d_cmd, cwd=RDK, timeout={args.candidate_timeout_s + 300})
             run_dirs = sorted(Path("{phase2_output_root}").glob("smoke_*_gpu"))
@@ -2972,6 +2988,15 @@ def main() -> int:
             "For Phase 2 workflows, stop after training artifacts are packaged. "
             "Use this when Colab transport is unstable during the slower CPU gate; "
             "run gates later from the downloaded ONNX."
+        ),
+    )
+    parser.add_argument(
+        "--phase2-final-training-args-json",
+        default=None,
+        help=(
+            "JSON list of strings appended to the final Phase 2 training command. "
+            "This is for bounded recipe probes where explicit duplicate argparse "
+            "options should override workflow defaults."
         ),
     )
     parser.add_argument(
