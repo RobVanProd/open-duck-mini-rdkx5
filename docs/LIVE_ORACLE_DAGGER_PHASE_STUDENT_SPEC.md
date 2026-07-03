@@ -89,6 +89,13 @@ the strict corrected fitted-bridge tracking gate by:
   iteration but created a seed-specific collapse pocket. Use softened
   zero-command relabeling (`--x0-zero-action-alpha < 1.0`) and immediate
   seed-5 `x=0.0` short gates before running another full A100 training job.
+- A bounded `z=0.0025` soft-zero live-oracle data iteration has been collected
+  from that parent:
+  `outputs/analysis/PHASE2_Z0025_LIVE_ORACLE_X0_SEED5_SOFTZERO_ITER2_DATA_DECISION_20260702.md`.
+  The positive-command portion again passed `x=0.08` 8/8 in-envelope, while
+  the targeted `x=0.0` seed-5 rollout reproduced the collapse at 43 samples
+  and produced 43 soft-zero corrective labels. Treat the aggregate as data for
+  the next supervised fit, not as a candidate result.
 
 ## Blocking Step 0
 
@@ -150,6 +157,13 @@ Latest recovery DAgger short-gate decision:
 ```text
 outputs/analysis/PHASE2_Z005_RECOVERY_DAGGER_ITER1_SEED5_SHORT_DECISION.md
 outputs/analysis/phase2_z005_recovery_dagger_iter1_seed5_short_decision.json
+```
+
+Latest z=0.0025 seed-5 soft-zero data decision:
+
+```text
+outputs/analysis/PHASE2_Z0025_LIVE_ORACLE_X0_SEED5_SOFTZERO_ITER2_DATA_DECISION_20260702.md
+outputs/analysis/phase2_z0025_live_oracle_x0_seed5_softzero_iter2_data_decision_20260702.json
 ```
 
 ## Hypotheses

@@ -1,0 +1,67 @@
+{
+  "status": "PASS_DATA_READY__FIT_NEXT_STUDENT",
+  "generated_at": "2026-07-02",
+  "offline_only": true,
+  "robot_authorized": false,
+  "ssh_authorized": false,
+  "deploy_authorized": false,
+  "runtime_behavior_change": false,
+  "parent_candidate": {
+    "path": "outputs/analysis/phase2_z0025_live_oracle_boundary_iter0_contactphase_rate1p9_bc_candidate/candidate.onnx",
+    "sha256": "f00ba8a89f4e24e7c393309acd434cbc95132473aa3df562dacf4fe527049822"
+  },
+  "teacher_manifest": "outputs/analysis/phase2_z0024_corrected_terrain_source_manifest.json",
+  "fit_json": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+  "task": "rough_terrain_backlash",
+  "terrain_hfield_z_scale": 0.0025,
+  "x0_zero_action_alpha": 0.5,
+  "x008_rollout": {
+    "status": "PASS_X008_DATA_ROLLOUT",
+    "seeds_passed": 8,
+    "seeds_total": 8,
+    "falls": 0,
+    "mean_track_ratio": 0.3742,
+    "mean_local_vx_m_s": 0.0299,
+    "max_pitch_velocity_p95_rad_s": 1.9234,
+    "velocity_excess": 0.0,
+    "max_tracking_p95_rad": 0.1953
+  },
+  "x0_seed5_rollout": {
+    "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+    "seed": 5,
+    "samples": 43,
+    "termination": "fall_or_nan",
+    "mean_local_vx_m_s": -0.3468,
+    "base_height_min_m": 0.0575,
+    "max_pitch_velocity_p95_rad_s": 0.5823,
+    "velocity_excess": 0.0,
+    "max_tracking_p95_rad": 0.2106
+  },
+  "manifests": {
+    "x008": {
+      "path": "outputs/analysis/live_oracle_dagger_phase_student/z0025_x0_seed5_softzero_iter2_run/live_oracle_dagger_x008_manifest.json",
+      "dataset_id": "04447d35724a6b50",
+      "entries": 8,
+      "samples": 6000
+    },
+    "x0": {
+      "path": "outputs/analysis/live_oracle_dagger_phase_student/z0025_x0_seed5_softzero_iter2_run/live_oracle_dagger_x0_manifest.json",
+      "dataset_id": "bc49e139cbe6b1ea",
+      "entries": 1,
+      "samples": 43,
+      "role": "corrective_failure_pocket_labels"
+    },
+    "aggregate": {
+      "path": "outputs/analysis/live_oracle_dagger_phase_student/z0025_x0_seed5_softzero_iter2_run/live_oracle_dagger_aggregate_manifest.json",
+      "dataset_id": "8229af2c3e92a70d",
+      "entries": 17,
+      "samples": 12043
+    }
+  },
+  "next_required_gates": [
+    "short_z0025_x0_seed5_repair_gate",
+    "full_z0025_x0_seeds_0_7_gate",
+    "full_z0025_x008_seeds_0_7_gate"
+  ],
+  "promotion_allowed": false
+}
