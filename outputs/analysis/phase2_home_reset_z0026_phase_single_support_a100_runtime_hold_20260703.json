@@ -1,0 +1,52 @@
+{
+  "status": "HOLD_A100_RUNTIME_NO_FINAL_CANDIDATE",
+  "date": "2026-07-03",
+  "branch": "codex/live-oracle-dagger-phase-student",
+  "recipe_commit": "eeebb85",
+  "recipe_artifact": "outputs/analysis/PHASE2_HOME_RESET_Z0026_PHASE_SINGLE_SUPPORT_NEXT_RECIPE_20260703.md",
+  "warm_start_checkpoint": "outputs/analysis/phase2_restore_checkpoints/ppo_bc_command_conditioned_rate175_step0_checkpoint",
+  "corrected_bridge": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+  "corrected_bridge_sha256": "3661543d0745073b561eb4fa2ae8f9616368ee8b72cb397f8b953dada532c8c0",
+  "colab_sessions_active_after_cleanup": false,
+  "downloaded_artifact": {
+    "path": "outputs/analysis/colab_cli/phase2_singlesupport2/open_duck_phase2_singlesupport2_20260703T065703Z_artifacts.tar.gz",
+    "sha256": "faa87d3a7cd18040cd9f7f5c34057450b3c436fca70951086ec89248af15f47f",
+    "contains_final_manifest": false,
+    "contains_onnx": false
+  },
+  "findings": [
+    {
+      "name": "tiny_a100_diagnostic",
+      "status": "PASS_COMPILES_AND_EXPORTS",
+      "num_envs": 16,
+      "batch_size": 128,
+      "requested_timesteps": 5120,
+      "observed_export_step": 10240
+    },
+    {
+      "name": "larger_a100_chunk",
+      "status": "HOLD_NO_FINAL_CANDIDATE",
+      "num_envs": 16,
+      "batch_size": 128,
+      "requested_timesteps": 40960,
+      "final_manifest": false,
+      "onnx": false
+    },
+    {
+      "name": "cuda_command_buffer",
+      "status": "RESOURCE_EXHAUSTED_OOM_WITHOUT_FLAG",
+      "mitigation": "use --xla-flags=--xla_gpu_enable_command_buffer="
+    },
+    {
+      "name": "cusolver",
+      "status": "WARN_INTERNAL_ERROR_SEEN_AFTER_OOM_SESSION",
+      "recommendation": "re-test only on a fresh session with smaller parallelism"
+    }
+  ],
+  "correct_xla_flag_json_item": "--xla-flags=--xla_gpu_enable_command_buffer=",
+  "robot_touched": false,
+  "ssh_used": false,
+  "deploy_performed": false,
+  "grounded_replay_performed": false,
+  "next_recommendation": "restart from a fresh A100 session with smaller exportable chunks, disabled command buffers, and immediate artifact download after each chunk"
+}
