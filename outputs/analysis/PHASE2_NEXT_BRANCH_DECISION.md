@@ -1,6 +1,6 @@
 # Phase 2 Next Branch Decision
 
-status: `PASS_OFFLINE_CORRECTED_BRIDGE_CANDIDATE_READY`
+status: `HOLD_PHASE2_DR_NEEDS_TRANSITION_STRUCTURAL_BRANCH`
 
 ## Summary
 
@@ -50,31 +50,32 @@ Do not repeat or scale these without a new pre-registered reason:
 
 - Stage A scalar PPO/DR from the rate165 PPO-loc checkpoint.
 - The CPU2240 motion-preservation PPO recipe.
+- The limit198 z=0.005 support/base-height A100 continuation.
 - Any longer A100 run that uses the same scalar objective and only changes
   duration, environment count, or minor reward weights.
 
 These recipes have already shown the same failure surface: stable,
 in-envelope, double-support standstill.
 
-## Required Next Branch
+## Prior Single-Support Preservation Branch
 
-Next offline work must make single support an explicit invariant before domain
-randomization resumes.
-
-Preferred branch:
+This was the branch selected before the latest limit198 z=0.005 A100 follow-up:
 
 ```text
 PHASE_AWARE_LIVE_ORACLE_SINGLE_SUPPORT_PRESERVATION
 ```
 
-Dry-run command plan:
+Its dry-run command plan was:
 
 ```text
 outputs/analysis/phase2_rate165_single_support_live_oracle_iter2_plan/LIVE_ORACLE_DAGGER_ITERATION.md
 outputs/analysis/phase2_rate165_single_support_live_oracle_iter2_plan/live_oracle_dagger_iteration.json
 ```
 
-Required properties:
+The branch produced the iter2 and limit198 results below. The updated next
+branch is now listed after the z=0.005 support A100 follow-up.
+
+The requirements that remain active are:
 
 - warm-start from the corrected rate165 candidate or its rate165 PPO-loc
   checkpoint.
@@ -181,9 +182,9 @@ Result:
 - x=0.0 mean vx: `0.0001 m/s`
 - x=0.0 corrected max velocity excess: `0.0000`
 
-This becomes the current offline corrected-bridge Phase 2 baseline. The next
-branch can resume domain-randomization robustness from this candidate, but must
-preserve zero corrected velocity excess and x=0.0 stillness.
+This became the current offline corrected-bridge Phase 2 baseline. A
+PPO-compatible warm-start was built from it before attempting the next DR
+continuation.
 
 ## Limit198 PPO-Loc Warm-Start
 
@@ -218,11 +219,69 @@ Result:
 - x=0.0 mean vx: `0.0001 m/s`
 - x=0.0 corrected max velocity excess: `0.0000`
 
-Use this step-0 checkpoint, not the older rejected rate165 warm-start, for the
+This step-0 checkpoint replaced the older rejected rate165 warm-start for the
 next offline DR run.
 
-Only after this branch preserves single-support walking should Phase 2 resume
-domain randomization:
+## z=0.005 Support A100 Follow-Up
+
+Artifact:
+
+```text
+outputs/analysis/PHASE2_Z005_SUPPORT_LIMIT198_A100_RESULT.md
+```
+
+The limit198 PPO-loc warm-start was then used for a z=0.005 support/base-height
+A100 continuation:
+
+```text
+workflow: phase2-z005-support
+restore checkpoint: outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0_checkpoint
+training elapsed: 750.047s
+```
+
+The training and export completed, but the compact corrected-bridge checkpoint
+sweep rejected every checkpoint:
+
+```text
+40960 x=0.08: track ratio 0.1780, vx 0.0142 m/s
+81920 x=0.08: track ratio 0.1449, vx 0.0116 m/s
+122880 x=0.08: track ratio 0.0757, vx 0.0061 m/s
+```
+
+All positive-command checkpoints stayed below the measured velocity envelope,
+but forward progress collapsed. This closes another scalar support/base-height
+PPO continuation from the limit198 warm-start. Do not launch a longer A100 run
+of this same recipe family.
+
+## Updated Next Branch
+
+Phase 2 should not resume broader domain randomization until the training path
+can preserve the single-support transition under the corrected bridge. The next
+offline branch should be structural, not another scalar reward continuation:
+
+```text
+PHASE2_TRANSITION_PRESERVING_LIVE_ORACLE_OR_TEACHER
+```
+
+Use the evidence in:
+
+```text
+docs/PHASE2_TRANSITION_PRESERVING_TERRAIN_BRANCH.md
+docs/LIVE_ORACLE_DAGGER_PHASE_STUDENT_SPEC.md
+```
+
+Required next properties:
+
+- preserve the limit198 / corrected-envelope zero-excess constraint;
+- preserve `x=0.0` stillness;
+- preserve or explicitly generate single-support swing/advance transitions;
+- use live/on-policy oracle correction, transition-aware labels, or a recovery
+  teacher that changes the contact transition;
+- do not optimize only fall count, base height, support, or tracking after the
+  gait has already been erased.
+
+Only after a structural branch preserves single-support walking should Phase 2
+resume staged domain randomization:
 
 1. flat/no-push weak randomization,
 2. full flat physics randomization,

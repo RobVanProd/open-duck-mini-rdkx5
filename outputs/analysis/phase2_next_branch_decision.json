@@ -1,5 +1,5 @@
 {
-  "status": "PASS_OFFLINE_CORRECTED_BRIDGE_CANDIDATE_READY",
+  "status": "HOLD_PHASE2_DR_NEEDS_TRANSITION_STRUCTURAL_BRANCH",
   "current_baseline": {
     "candidate_onnx": "policy/candidates/phase2_corrected_live_oracle_iter1_rate165_20260703/candidate.onnx",
     "candidate_onnx_sha256": "e06643e5790217075d9c7a0d1e1ac262652058592b374ac0446bdd0426d0ea33",
@@ -28,11 +28,16 @@
       "name": "rate165_motion_preserve_cpu2240",
       "artifact": "outputs/analysis/PHASE2_RATE165_MOTION_PRESERVE_CPU2240_RESULT.md",
       "reason": "Tiny CPU motion-preservation PPO smoke also collapsed to planted double-support standstill."
+    },
+    {
+      "name": "limit198_z005_support_baseheight_a100",
+      "artifact": "outputs/analysis/PHASE2_Z005_SUPPORT_LIMIT198_A100_RESULT.md",
+      "reason": "A100 z=0.005 support/base-height continuation from the limit198 PPO-loc warm-start preserved velocity safety but collapsed forward progress."
     }
   ],
   "next_branch": {
-    "id": "PHASE_AWARE_LIVE_ORACLE_SINGLE_SUPPORT_PRESERVATION",
-    "objective": "Preserve corrected-bridge single-support walking before reintroducing domain randomization.",
+    "id": "PHASE2_TRANSITION_PRESERVING_LIVE_ORACLE_OR_TEACHER",
+    "objective": "Preserve or explicitly generate corrected-bridge single-support swing/advance transitions before reintroducing broader domain randomization.",
     "dry_run_plan": {
       "md": "outputs/analysis/phase2_rate165_single_support_live_oracle_iter2_plan/LIVE_ORACLE_DAGGER_ITERATION.md",
       "json": "outputs/analysis/phase2_rate165_single_support_live_oracle_iter2_plan/live_oracle_dagger_iteration.json",
@@ -46,9 +51,10 @@
       "must_have_nonzero_forward_progress": true,
       "must_have_nonzero_single_support": true,
       "must_have_zero_corrected_velocity_excess": true,
-      "must_preserve_x0_stillness": true
-    }
-  },
+        "must_preserve_x0_stillness": true,
+        "must_not_delete_single_support": true
+      }
+    },
   "iter2_result": {
     "decision_md": "outputs/analysis/PHASE2_RATE165_SINGLE_SUPPORT_LIVE_ORACLE_ITER2_DECISION.md",
     "decision_json": "outputs/analysis/phase2_rate165_single_support_live_oracle_iter2_decision.json",
@@ -112,7 +118,26 @@
       "mean_local_vx_m_s": 0.00005393375148503376,
       "max_velocity_excess_rad_s": 0.0
     },
-    "next_action": "Resume staged domain-randomization robustness from this candidate while preserving the corrected bridge, right-ankle max-spike guard, zero velocity excess, and x=0.0 stillness."
+    "next_action": "Use this candidate and its PPO-loc warm-start as evidence/checkpoints only. The z=0.005 support A100 continuation showed that scalar DR/reward pressure deletes forward progress, so do not resume broader DR until a transition-preserving live-oracle or recovery-teacher branch preserves single-support structure."
+  },
+  "z005_support_limit198_a100_result": {
+    "decision_md": "outputs/analysis/PHASE2_Z005_SUPPORT_LIMIT198_A100_RESULT.md",
+    "decision_json": "outputs/analysis/phase2_z005_support_limit198_a100_result.json",
+    "status": "HOLD_Z005_SUPPORT_LOW_FORWARD_PROGRESS",
+    "workflow": "phase2-z005-support",
+    "restore_checkpoint": "outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0_checkpoint",
+    "training_elapsed_s": 750.047,
+    "artifact_bundle": "outputs/analysis/colab_cli/open-duck-phase2-a100-phase2-z005-support-20260703T163436Z/open_duck_colab_cli_phase2-z005-support_20260703T163548Z_artifacts.tar.gz",
+    "artifact_sha256": "45652179cb0d62d9a2f462fd7c25956c438712283a4bb722b8ddf3e9f751465d",
+    "compact_sweep": {
+      "best_checkpoint": "40960",
+      "best_status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "best_x008_track_ratio": 0.178,
+      "best_x008_mean_local_vx_m_s": 0.0142,
+      "all_x008_checkpoints_below_velocity_envelope": true,
+      "all_x008_checkpoints_low_forward_progress": true
+    },
+    "next_action": "Stop scalar support/base-height PPO continuation from this warm-start. Move to transition-preserving live-oracle labels, contact-transition teacher changes, or another structural mechanism that keeps single support before widening DR."
   },
   "scope": {
     "offline_only": true,
