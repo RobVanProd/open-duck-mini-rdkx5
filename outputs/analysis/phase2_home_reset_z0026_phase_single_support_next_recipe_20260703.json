@@ -1,0 +1,93 @@
+{
+  "status": "PRE_REGISTERED_NOT_STARTED",
+  "recipe_id": "phase2_home_reset_z0026_phase_single_support_from_rate175_a100",
+  "date_utc": "2026-07-03",
+  "closed_prior_result": {
+    "status": "HOLD_RATECAP_A100_NOT_PROMOTABLE",
+    "reason": "Scalar rate-cap continuation split between double-support freeze and over-envelope/fall; not promotable."
+  },
+  "scope": {
+    "robot_tests": false,
+    "ssh": false,
+    "deploy": false,
+    "grounded_replay": false,
+    "runtime_behavior_change": false
+  },
+  "inputs": {
+    "warm_start_checkpoint": "outputs/analysis/phase2_restore_checkpoints/ppo_bc_command_conditioned_rate175_step0_checkpoint",
+    "corrected_bridge": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+    "corrected_bridge_sha256": "3661543d0745073b561eb4fa2ae8f9616368ee8b72cb397f8b953dada532c8c0",
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.0026,
+    "reset_mode": "home-support",
+    "command_x": 0.08
+  },
+  "corrected_pitch_chain_limits_rad_s": {
+    "left_hip_pitch": 2.5,
+    "left_knee": 3.25,
+    "left_ankle": 2.75,
+    "right_hip_pitch": 2.25,
+    "right_knee": 2.75,
+    "right_ankle": 2.0
+  },
+  "hypothesis": [
+    "Advance phase-primary swing lift by the corrected 3-tick actuator delay.",
+    "Add explicit phase single-support/contact-pattern pressure to prevent double-support freeze.",
+    "Constrain both pitch chains with corrected per-joint swing target-rate limits."
+  ],
+  "colab_workflow": {
+    "session": "open-duck-a100-phase2-singlesupport",
+    "workflow": "phase2-right-swing-phase-single-support",
+    "num_timesteps": 122880,
+    "candidate_name": "phase2_home_reset_z0026_phase_single_support_from_rate175_a100",
+    "skip_post_training_gates": true,
+    "use_exec_remote": false
+  },
+  "training_overrides": {
+    "phase2_target_rate_scale": -0.02,
+    "phase2_actuator_tracking_scale": -0.01,
+    "phase2_forward_swing_target_rate_limit_scale": -0.04,
+    "phase2_forward_swing_target_rate_limit_joint_indices": "2,3,4,11,12,13",
+    "phase2_forward_swing_target_rate_limit_values": "2.5,3.25,2.75,2.25,2.75,2.0",
+    "phase2_forward_swing_target_rate_limit_huber_delta": 0.05,
+    "restore_policy_kl_scale": 8,
+    "forward_swing_phase_advance_ticks": 3,
+    "forward_phase_single_support_scale": -0.004,
+    "forward_phase_single_support_swing_contact_weight": 1.0,
+    "forward_phase_single_support_stance_no_contact_weight": 2.0,
+    "forward_phase_swing_lift_scale": -0.0006,
+    "forward_phase_swing_lift_target_m": 0.012,
+    "forward_phase_swing_lift_huber_delta": 0.003,
+    "reset_base_xy_jitter_m": 0,
+    "reset_yaw_jitter_rad": 0,
+    "reset_actuator_qpos_multiplier_min": 1,
+    "reset_actuator_qpos_multiplier_max": 1,
+    "reset_base_qvel_jitter": 0
+  },
+  "acceptance_gate": {
+    "canonical_eval": "corrected bridge, rough_terrain_backlash, z=0.0026, home-support reset, 8 seeds, 15s",
+    "x_0_08": [
+      "8/8 duration complete",
+      "zero corrected per-joint pitch-chain p95 velocity excess",
+      "not a low-progress double-support policy",
+      "single-support and swing metrics improve over the rate-cap hold"
+    ],
+    "x_0_0": [
+      "8/8 duration complete",
+      "command semantics preserved"
+    ]
+  },
+  "falsifiers": [
+    "HOLD_DOUBLE_SUPPORT_FREEZE",
+    "HOLD_RIGHT_STRUCTURAL_OVER_ENVELOPE",
+    "HOLD_FALL_OR_TERMINATION",
+    "HOLD_SCALAR_BRANCH_EXHAUSTED"
+  ],
+  "ci_note": {
+    "latest_failed_run_id": 28642192138,
+    "latest_failed_job_id": 84940771764,
+    "github_job_symptom": "runner_id=0, empty runner_name, steps=[], no logs",
+    "local_static_checks": "PASS",
+    "interpretation": "GitHub Actions runner/allocation issue unless later logs show an actionable command failure."
+  }
+}
