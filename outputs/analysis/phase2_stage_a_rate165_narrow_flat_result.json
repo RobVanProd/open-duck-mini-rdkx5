@@ -1,0 +1,47 @@
+{
+  "status": "HOLD_STAGE_A_RATE165_STANDSTILL_REGRESSION",
+  "robot_touched": false,
+  "training": {
+    "hardware": "Colab A100",
+    "stage": "stage_a_narrow_flat_no_push",
+    "task": "flat_terrain_backlash",
+    "source_checkpoint": "outputs/analysis/phase2_rate165_ppo_loc_warmstart_step0_checkpoint",
+    "behavior_prior_mlp_npz": "outputs/analysis/phase2_rate165_ppo_loc_warmstart_candidate/candidate_mlp.npz",
+    "remote_status": "PASS_SMOKE_RUN",
+    "elapsed_s": 810.073149308,
+    "final_step": 4587520,
+    "final_onnx": "outputs/analysis/phase2_stage_a_rate165_narrow_flat_no_push_candidate/candidate.onnx",
+    "final_onnx_sha256": "7d83b2a24ca2874286d80eb27743fb5a5f498fa9ecb8bd1ad2effde7c0966982",
+    "downloaded_artifact_bundle_sha256": "2729b49a124b001f6389529daa818cb65c27dc02929caab1fed8858d70a4fcb1"
+  },
+  "x008_gate": {
+    "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.0026,
+    "reset_mode": "home-support",
+    "bridge_mode": "fitted",
+    "seeds": 8,
+    "duration_complete": 8,
+    "falls": 0,
+    "mean_local_vx_m_s": 0.00073082206170947,
+    "track_ratio": 0.009135275771368375,
+    "body_pitch_p95_rad": 0.030459442644968804,
+    "base_height_min_m": 0.15230579674243927,
+    "max_pitch_vel_p95_rad_s": 0.08384913206100464,
+    "p95_velocity_excess_rad_s": 0.0,
+    "max_velocity_excess_rad_s": 0.0,
+    "max_tracking_p95_rad": 0.03848867416381836,
+    "single_support_pct": 0.0,
+    "double_support_pct": 100.0
+  },
+  "checkpoint_triage_seed0": [
+    {"step": 655360, "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS", "track_ratio": 0.00649755805507842, "mean_local_vx_m_s": 0.0005198046444062736, "single_support_pct": 0.0, "double_support_pct": 100.0},
+    {"step": 1310720, "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS", "track_ratio": 0.006636524658662779, "mean_local_vx_m_s": 0.0005309219726930223, "single_support_pct": 0.0, "double_support_pct": 100.0},
+    {"step": 1966080, "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS", "track_ratio": 0.007609248626045882, "mean_local_vx_m_s": 0.0006087399087846279, "single_support_pct": 0.0, "double_support_pct": 100.0},
+    {"step": 2621440, "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS", "track_ratio": 0.008100844118744135, "mean_local_vx_m_s": 0.0006480675294995308, "single_support_pct": 0.0, "double_support_pct": 100.0},
+    {"step": 3276800, "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS", "track_ratio": 0.008461652090894318, "mean_local_vx_m_s": 0.0006769321672715454, "single_support_pct": 0.0, "double_support_pct": 100.0},
+    {"step": 3932160, "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS", "track_ratio": 0.00888030556961894, "mean_local_vx_m_s": 0.0007104244455695152, "single_support_pct": 0.0, "double_support_pct": 100.0},
+    {"step": 4587520, "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS", "track_ratio": 0.009135275771368375, "mean_local_vx_m_s": 0.00073082206170947, "single_support_pct": 0.0, "double_support_pct": 100.0}
+  ],
+  "decision": "Reject Stage A run; do not advance to Stage B/C/D. Next recipe must preserve nonzero forward motion and gate early."
+}

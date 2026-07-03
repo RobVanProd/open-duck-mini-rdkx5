@@ -1,6 +1,6 @@
 # Phase 2 Domain-Randomized Robustness Training
 
-status: `READY_RATE165_DR_STAGE_A_DRY_RUN`
+status: `HOLD_STAGE_A_RATE165_STANDSTILL_REGRESSION`
 
 ## Objective
 
@@ -13,6 +13,45 @@ randomization while preserving:
 - and the slow in-envelope `x=0.08` gait.
 
 Robot validation is out of scope. No SSH, no deploy, no grounded replay.
+
+## 2026-07-03 Stage A Rate165 A100 Result
+
+Stage A narrow flat/no-push DR was launched on Colab A100 from the verified
+rate165 PPO-loc step-0 checkpoint. The run itself completed and exported
+checkpoints/ONNX files through step `4,587,520`, but the exported policies do
+not pass the corrected-bridge walking gate.
+
+Evidence:
+
+```text
+outputs/analysis/PHASE2_STAGE_A_RATE165_NARROW_FLAT_RESULT.md
+outputs/analysis/phase2_stage_a_rate165_narrow_flat_result.json
+outputs/analysis/PHASE2_STAGE_A_RATE165_NARROW_FLAT_X008_GATE.md
+outputs/analysis/phase2_stage_a_rate165_narrow_flat_x008_gate.json
+outputs/analysis/PHASE2_STAGE_A_RATE165_CHECKPOINT_TRIAGE_SEED0.md
+outputs/analysis/phase2_stage_a_rate165_checkpoint_triage_seed0.json
+```
+
+Result:
+
+- final Stage A `x=0.08` gate: 8/8 duration complete, no falls, but
+  `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS`.
+- mean local vx: `0.0007 m/s`
+- track ratio: `0.0091`
+- single support: `0%`
+- double support: `100%`
+- corrected velocity excess: `0`
+- max tracking p95: `0.0385 rad`
+
+Checkpoint triage on seed 0 showed the same low-progress standstill at every
+exported checkpoint from `655,360` through `4,587,520`. The Stage A recipe is
+therefore rejected; do not advance to Stage B/C/D from this run.
+
+Interpretation: the current Stage A PPO/DR objective preserves safety by
+collapsing the walking warm-start into the standstill basin. The next Phase 2
+attempt must first preserve nonzero forward motion under the corrected bridge,
+for example with a bounded behavior-preserving Stage A variant and an immediate
+seed-0 checkpoint gate before spending another full A100 run.
 
 ## 2026-07-03 Corrected Rate165 Re-Anchor
 
