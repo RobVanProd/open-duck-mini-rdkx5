@@ -24,8 +24,7 @@ DEFAULT_OUTPUT_MD = ROOT / "outputs/analysis/PHASE2_Z005_SUPPORT_NEXT_RECIPE.md"
 DEFAULT_OUTPUT_JSON = ROOT / "outputs/analysis/phase2_z005_support_next_recipe.json"
 DEFAULT_RESTORE_CHECKPOINT = (
     ROOT
-    / "outputs/phase2_domain_randomization/stage_a2_preserve_narrow_flat_no_push_gpu"
-    / "smoke_20260628T031553Z_gpu/2026_06_27_232221_491520"
+    / "outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0_checkpoint"
 )
 
 
@@ -51,7 +50,7 @@ def multiline_shell(parts: list[str]) -> str:
     return (" " + "\\\n" + "    ").join(shlex.quote(part) for part in parts)
 
 
-def colab_command(session: str, candidate_name: str) -> list[str]:
+def colab_command(session: str, candidate_name: str, restore_checkpoint: Path) -> list[str]:
     return [
         "python3",
         "tools/run_colab_cli_cuda_workflow.py",
@@ -70,6 +69,8 @@ def colab_command(session: str, candidate_name: str) -> list[str]:
         "cpu",
         "--candidate-timeout-s",
         "10800",
+        "--phase2-restore-checkpoint-path",
+        rel(restore_checkpoint) or str(restore_checkpoint),
         "--run",
     ]
 
@@ -341,7 +342,7 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
     diagnostic = read_json(diagnostic_path)
     status = read_json(status_path)
     restore_checkpoint = Path(args.restore_checkpoint)
-    colab = colab_command(args.session, args.candidate_name)
+    colab = colab_command(args.session, args.candidate_name, restore_checkpoint)
     local = local_command(restore_checkpoint, args.local_output_root)
     return {
         "status": "PASS_Z005_SUPPORT_RECIPE_READY",
@@ -356,7 +357,7 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
         },
         "root_cause_summary": diagnostic.get("findings", {}).get("shared", []),
         "recipe_intent": [
-            "Continue from the last z=0.002 passing A2 checkpoint; do not train from scratch.",
+            "Continue from the limit198 PPO-compatible warm-start checkpoint; do not train from scratch or fall back to the older A2 parent.",
             "Use z=0.005 rough terrain with no push; this is a support/base-height rung, not a push rung.",
             "Increase base-height and contact-support pressure while keeping restore-policy KL strong enough to preserve the z=0.002 gait.",
             "Strengthen wrong-direction penalty because seed 5 collapses backward even at x=0.0.",

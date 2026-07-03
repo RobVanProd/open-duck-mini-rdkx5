@@ -30,6 +30,9 @@ DEFAULT_RESTORE_CHECKPOINT = (
     / "smoke_20260628T103743Z_gpu"
     / "2026_06_28_064431_245760"
 )
+DEFAULT_Z005_SUPPORT_RESTORE_CHECKPOINT = (
+    ROOT / "outputs" / "analysis" / "phase2_limit198_ppo_loc_warmstart_step0_checkpoint"
+)
 DEFAULT_BEHAVIOR_PRIOR_MLP = (
     ROOT
     / "outputs"
@@ -176,8 +179,13 @@ def unchecked_readiness() -> dict[str, Any]:
     }
 
 
-def colab_command(session: str, candidate_name: str, workflow: str) -> list[str]:
-    return [
+def colab_command(
+    session: str,
+    candidate_name: str,
+    workflow: str,
+    restore_checkpoint: Path | None = None,
+) -> list[str]:
+    command = [
         "python3",
         "tools/run_colab_cli_cuda_workflow.py",
         "--workflow",
@@ -195,8 +203,16 @@ def colab_command(session: str, candidate_name: str, workflow: str) -> list[str]
         "cpu",
         "--candidate-timeout-s",
         "10800",
-        "--run",
     ]
+    if restore_checkpoint is not None:
+        command.extend(
+            [
+                "--phase2-restore-checkpoint-path",
+                rel(restore_checkpoint) or str(restore_checkpoint),
+            ]
+        )
+    command.append("--run")
+    return command
 
 
 def local_rocm_command(
@@ -512,7 +528,7 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--status-json", default=str(DEFAULT_STATUS_JSON))
-    parser.add_argument("--restore-checkpoint", default=str(DEFAULT_RESTORE_CHECKPOINT))
+    parser.add_argument("--restore-checkpoint", default=None)
     parser.add_argument("--session", default="open-duck-l4")
     parser.add_argument("--workflow", default="phase2-z002-teacher-continuity")
     parser.add_argument("--candidate-name", default="phase2_z002_teacher_continuity_cuda")
@@ -534,13 +550,18 @@ def main() -> int:
     args = parser.parse_args()
 
     status = read_json(Path(args.status_json))
-    restore_checkpoint = Path(args.restore_checkpoint)
+    if args.restore_checkpoint is not None:
+        restore_checkpoint = Path(args.restore_checkpoint)
+    elif args.workflow == "phase2-z005-support":
+        restore_checkpoint = DEFAULT_Z005_SUPPORT_RESTORE_CHECKPOINT
+    else:
+        restore_checkpoint = DEFAULT_RESTORE_CHECKPOINT
     terrain_z = (
         0.002
         if args.workflow in {"phase2-z002-tracking-margin", "phase2-z002-teacher-continuity"}
         else (0.0035 if args.workflow == "phase2-z0035-motion-floor" else 0.005)
     )
-    colab = colab_command(args.session, args.candidate_name, args.workflow)
+    colab = colab_command(args.session, args.candidate_name, args.workflow, restore_checkpoint)
     local = local_rocm_command(restore_checkpoint, args.local_output_root, terrain_z, args.workflow)
     if args.workflow == "phase2-z005-support":
         local = recipe_command(DEFAULT_Z005_SUPPORT_RECIPE, "commands", "local_rocm_fallback") or local

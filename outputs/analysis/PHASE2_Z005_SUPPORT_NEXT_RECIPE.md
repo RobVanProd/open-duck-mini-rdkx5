@@ -11,7 +11,7 @@ This is an offline planning artifact. It did not train, SSH, deploy, or touch th
 
 - candidate: `policy/candidates/phase2_stagea2_seed5_recovery_command_gated_gain099_20260629/candidate.onnx`
 - candidate_sha256: `209b85a75cf9cbbcf10df573c1b530921943a72e81082111889c15f63a9a2c7b`
-- restore_checkpoint: `outputs/phase2_domain_randomization/stage_a2_preserve_narrow_flat_no_push_gpu/smoke_20260628T031553Z_gpu/2026_06_27_232221_491520`
+- restore_checkpoint: `outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0_checkpoint`
 - restore_checkpoint_present: `True`
 
 ## Diagnosis Driving This Recipe
@@ -23,7 +23,7 @@ This is an offline planning artifact. It did not train, SSH, deploy, or touch th
 
 ## Recipe Intent
 
-- Continue from the last z=0.002 passing A2 checkpoint; do not train from scratch.
+- Continue from the limit198 PPO-compatible warm-start checkpoint; do not train from scratch or fall back to the older A2 parent.
 - Use z=0.005 rough terrain with no push; this is a support/base-height rung, not a push rung.
 - Increase base-height and contact-support pressure while keeping restore-policy KL strong enough to preserve the z=0.002 gait.
 - Strengthen wrong-direction penalty because seed 5 collapses backward even at x=0.0.
@@ -65,6 +65,8 @@ python3 \
     cpu \
     --candidate-timeout-s \
     10800 \
+    --phase2-restore-checkpoint-path \
+    outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0_checkpoint \
     --run
 ```
 
@@ -108,7 +110,7 @@ Backend evidence only unless it clears the same canonical gates; local ROCm is n
     --ppo-num-updates-per-batch \
     2 \
     --restore-checkpoint-path \
-    outputs/phase2_domain_randomization/stage_a2_preserve_narrow_flat_no_push_gpu/smoke_20260628T031553Z_gpu/2026_06_27_232221_491520 \
+    outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0_checkpoint \
     --ppo-learning-rate \
     0.000003 \
     --ppo-entropy-cost \

@@ -430,11 +430,12 @@ def required_rdk_package_paths(
         )
     else:
         paths.append("tools/report_phase2_z005_post_training_gates.py")
-        paths.append(
-            "outputs/phase2_domain_randomization/"
-            "stage_a2_preserve_narrow_flat_no_push_gpu/"
-            "smoke_20260628T031553Z_gpu/2026_06_27_232221_491520"
-        )
+        if workflow != "phase2-z005-support":
+            paths.append(
+                "outputs/phase2_domain_randomization/"
+                "stage_a2_preserve_narrow_flat_no_push_gpu/"
+                "smoke_20260628T031553Z_gpu/2026_06_27_232221_491520"
+            )
     if workflow in {"phase2-z002-teacher-continuity", "phase2-z005-motion-floor"}:
         paths.extend(
             [
@@ -1374,6 +1375,10 @@ def build_remote_driver(
         "stage_c0_terrain_z002_preserve_from_a2_gpu/smoke_20260628T103743Z_gpu/"
         "2026_06_28_064431_245760"
         if (run_phase2_z002_tracking_margin or run_phase2_z002_teacher_continuity)
+        else
+        "/content/open-duck-mini-rdkx5/outputs/analysis/"
+        "phase2_limit198_ppo_loc_warmstart_step0_checkpoint"
+        if run_phase2_z005_support
         else
         "/content/open-duck-mini-rdkx5/outputs/phase2_domain_randomization/"
         "stage_a2_preserve_narrow_flat_no_push_gpu/smoke_20260628T031553Z_gpu/"

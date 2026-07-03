@@ -1,23 +1,23 @@
 # Phase 2 Next Run Plan
 
 status: `PASS_PHASE2_NEXT_RUN_PLAN_READY`
-launch_status: `PASS_PHASE2_COLAB_GPU_SESSION_READY`
+launch_status: `HOLD_PHASE2_COLAB_GPU_SESSION_NOT_READY`
 
 ## Current Decision
 
-- current_status: `HOLD_PHASE2_TERRAIN_Z005_NOT_CLEARED`
+- current_status: `PASS_TRAINABLE_PHASE2_WARMSTART_READY`
 - blocking_gate: `z005_x008_nopush`
-- candidate: `policy/candidates/phase2_stagea2_seed5_recovery_command_gated_gain099_20260629/candidate.onnx`
-- candidate_sha256: `209b85a75cf9cbbcf10df573c1b530921943a72e81082111889c15f63a9a2c7b`
-- restore_checkpoint: `outputs/phase2_domain_randomization/stage_a2_preserve_narrow_flat_no_push_gpu/smoke_20260628T031553Z_gpu/2026_06_27_232221_491520`
+- candidate: `None`
+- candidate_sha256: `None`
+- restore_checkpoint: `outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0_checkpoint`
 - restore_checkpoint_present: `True`
 
 ## Readiness
 
-- colab_status: `PASS_COLAB_SESSION_VISIBLE`
+- colab_status: `HOLD_NO_ACTIVE_COLAB_SESSION`
 - colab_session: `open-duck-l4`
-- colab_hardware: `A100`
-- colab_active: `True`
+- colab_hardware: `None`
+- colab_active: `False`
 - git_status: `PASS_GIT_REMOTE_READ_AUTH`
 - git_branch: `codex/live-oracle-dagger-phase-student`
 - git_remote_read_auth_ok: `True`
@@ -46,6 +46,8 @@ python3 \
     cpu \
     --candidate-timeout-s \
     10800 \
+    --phase2-restore-checkpoint-path \
+    outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0_checkpoint \
     --run
 ```
 
@@ -89,7 +91,7 @@ This is fallback/backend evidence only unless it clears the same post-training g
     --ppo-num-updates-per-batch \
     2 \
     --restore-checkpoint-path \
-    outputs/phase2_domain_randomization/stage_a2_preserve_narrow_flat_no_push_gpu/smoke_20260628T031553Z_gpu/2026_06_27_232221_491520 \
+    outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0_checkpoint \
     --ppo-learning-rate \
     0.000003 \
     --ppo-entropy-cost \
