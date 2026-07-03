@@ -1,0 +1,74 @@
+{
+  "generated_at": "2026-07-03T22:42:00Z",
+  "status": "PASS_Z005_NO_PUSH_PAIR_PENDING_REGRESSION",
+  "scope": "Offline corrected-bridge terrain-margin probe only. No robot, SSH, deploy, grounded replay, runtime behavior change, or PPO training.",
+  "robot_touched": false,
+  "ssh_used": false,
+  "deploy_performed": false,
+  "grounded_replay_performed": false,
+  "training_started": false,
+  "candidate": {
+    "path": "policy/candidates/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_20260703/candidate.onnx",
+    "sha256": "e2281adeedd2fa4b0d416fecee17bb960275457a81538cb3f98fe57d0e54eb18",
+    "contract": "obs[1,101] -> continuous_actions[1,14]"
+  },
+  "student_npz": {
+    "path": "policy/candidates/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_20260703/student.npz",
+    "sha256": "eed75a10ddea007697eabd9494e613f190cf8cb2687ff20ae1e03a77e3649b74"
+  },
+  "source_manifest": "outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_run/live_oracle_dagger_aggregate_manifest.json",
+  "fit": {
+    "status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE",
+    "path": "outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_student_rate150/phase_modulated_bc_student.json",
+    "sha256": "d3c2dea921db4ad126454db056375ef37e48c0f2878bc0c3beb9114638a9d390",
+    "samples": 40500,
+    "action_mae": 0.008739,
+    "action_p95_abs_error": 0.028857,
+    "action_max_abs_error": 0.316246,
+    "target_rate_p95_rad_s": 1.364055,
+    "target_rate_max_rad_s": 1.569699,
+    "onnx_verify_max_abs_error": 2.1e-7
+  },
+  "gates": {
+    "z005_x008_no_push": {
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "path": "outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_z005_x008_no_push_gate.json",
+      "sha256": "ed8de80c0aac2daf7c87275f542b5e8e1c0a2b7c8e81339124806dfc5d516836",
+      "runs": 8,
+      "duration_complete": 8,
+      "falls": 0,
+      "mean_local_vx_m_s": 0.0297,
+      "track_ratio": 0.3715,
+      "body_pitch_p95_rad": 0.1522,
+      "base_height_min_m": 0.1529,
+      "max_pitch_vel_p95_rad_s": 1.5402,
+      "p95_vel_excess_rad_s": 0.0,
+      "max_vel_excess_rad_s": 0.0,
+      "max_tracking_p95_rad": 0.1838,
+      "min_swing_peak_lift_m": 0.0136,
+      "min_swing_segments": 13,
+      "min_swing_rel_x_range_p95_m": 0.0192,
+      "single_support_pct": 23.4667,
+      "double_support_pct": 76.5333
+    },
+    "z005_x0_no_push": {
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "path": "outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_z005_x0_no_push_gate.json",
+      "sha256": "50eeaf0463507ef3a49872db2745df893fdea7a91a51200b11a583685186dae3",
+      "runs": 8,
+      "duration_complete": 8,
+      "falls": 0,
+      "mean_local_vx_m_s": 0.0005,
+      "body_pitch_p95_rad": 0.0375,
+      "base_height_min_m": 0.1530,
+      "max_pitch_vel_p95_rad_s": 0.0290,
+      "p95_vel_excess_rad_s": 0.0,
+      "max_vel_excess_rad_s": 0.0,
+      "max_tracking_p95_rad": 0.0345,
+      "single_support_pct": 0.0,
+      "double_support_pct": 100.0
+    }
+  },
+  "decision": "Rate150 clears the z=0.005 no-push support pair that rate160 held on, but remains pending z=0.0026 regression gates before promotion.",
+  "next_action": "Run z=0.0026 regression gates, including x=0.08/x=0.0 no-push and gentle-push screens, before any z=0.005 push, stronger terrain, or robot validation."
+}
