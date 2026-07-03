@@ -137,6 +137,23 @@ the strict corrected fitted-bridge tracking gate by:
   `outputs/analysis/PHASE2_TARGETLIMITED0999_Z0026_SUPPORT_TRANSFER_DECISION_20260702.md`.
   The next repair should target moving-command support transfer at `z=0.0026`,
   not another zero-command-only reset repair.
+- The scalar `z=0.0026` phase/single-support continuation is now closed. The
+  reduced A100 `ss8` run exported an ONNX successfully, but the corrected CPU
+  gate held with `8/8` early falls at 187 samples, max pitch-chain p95 velocity
+  returning to `5.24 rad/s`, and corrected p95 velocity excess `2.99 rad/s`:
+  `outputs/analysis/PHASE2_SS8_20480_A100_GATE_RESULT_20260703.md`.
+  Do not keep adding timesteps to this scalar reward family.
+- A clean corrected `z=0.0026` / `home-support` source manifest has been
+  re-established from the Phase 1 rate-limited candidate:
+  `outputs/analysis/PHASE2_PHASE1_RATE175_Z0026_X008_SOURCE_MANIFEST.md`
+  (`0d4c2e82ef0ff64e`, 8 entries, 6000 samples). The source completed
+  `x=0.08` for all 8 seeds with track ratio `0.4130`, corrected p95 velocity
+  excess `0.0000`, max excess `0.0190`, and max tracking p95 `0.1859 rad`.
+  It is a corrected teacher/source parent, not a deployable promotion result.
+- `tools/run_live_oracle_dagger_iteration.py` now forwards
+  `--reset-mode home-support` to candidate rollouts. Future corrected
+  live-oracle iterations for Phase 2 must use the current gate convention:
+  `rough_terrain_backlash`, `z=0.0026`, `home-support`, corrected bridge.
 
 ## Blocking Step 0
 
@@ -240,6 +257,19 @@ Current z=0.0026 support-transfer blocker:
 ```text
 outputs/analysis/PHASE2_TARGETLIMITED0999_Z0026_SUPPORT_TRANSFER_DECISION_20260702.md
 outputs/analysis/phase2_targetlimited0999_z0026_support_transfer_decision_20260702.json
+```
+
+Scalar branch closure and corrected source re-anchor:
+
+```text
+outputs/analysis/PHASE2_SCALAR_BRANCH_EXHAUSTED_CORRECTED_SOURCE_REANCHOR_20260703.md
+outputs/analysis/phase2_scalar_branch_exhausted_corrected_source_reanchor_20260703.json
+outputs/analysis/PHASE2_PHASE1_RATE175_Z0026_X008_SOURCE_TRACE.md
+outputs/analysis/phase2_phase1_rate175_z0026_x008_source_trace.json
+outputs/analysis/PHASE2_PHASE1_RATE175_Z0026_X008_SOURCE_MANIFEST.md
+outputs/analysis/phase2_phase1_rate175_z0026_x008_source_manifest.json
+outputs/analysis/phase2_z0026_corrected_source_live_oracle_iter0_plan/LIVE_ORACLE_DAGGER_ITERATION.md
+outputs/analysis/phase2_z0026_corrected_source_live_oracle_iter0_plan/live_oracle_dagger_iteration.json
 ```
 
 ## Hypotheses

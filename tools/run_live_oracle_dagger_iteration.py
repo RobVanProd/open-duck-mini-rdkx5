@@ -102,6 +102,7 @@ def write_markdown(path: Path, payload: dict[str, Any]) -> None:
         f"- bridge_mode: `{payload['bridge_mode']}`",
         f"- jax_platform: `{payload['jax_platform']}`",
         f"- terrain_hfield_z_scale: `{payload['terrain_hfield_z_scale']}`",
+        f"- reset_mode: `{payload['reset_mode']}`",
         f"- min_swing_segments_per_foot: `{payload['min_swing_segments_per_foot']}`",
         f"- min_swing_rel_x_range_p95_m: `{payload['min_swing_rel_x_range_p95_m']}`",
         f"- min_swing_peak_lift_m: `{payload['min_swing_peak_lift_m']}`",
@@ -188,6 +189,15 @@ def main() -> int:
         type=float,
         default=None,
         help="Optional eval-only terrain hfield z-scale override passed to candidate rollouts.",
+    )
+    parser.add_argument(
+        "--reset-mode",
+        choices=["playground", "home-support"],
+        default="playground",
+        help=(
+            "Eval reset convention passed to candidate rollouts. Use home-support "
+            "for current corrected Phase 2 gates."
+        ),
     )
     parser.add_argument(
         "--min-swing-segments-per-foot",
@@ -322,6 +332,8 @@ def main() -> int:
     ]
     if args.terrain_hfield_z_scale is not None:
         common_eval.extend(["--terrain-hfield-z-scale", str(args.terrain_hfield_z_scale)])
+    if args.reset_mode != "playground":
+        common_eval.extend(["--reset-mode", args.reset_mode])
     x008_eval = [
         *common_eval,
         "--command-x",
@@ -532,6 +544,7 @@ def main() -> int:
         "bridge_mode": args.bridge_mode,
         "jax_platform": args.jax_platform,
         "terrain_hfield_z_scale": args.terrain_hfield_z_scale,
+        "reset_mode": args.reset_mode,
         "min_swing_segments_per_foot": args.min_swing_segments_per_foot,
         "min_swing_rel_x_range_p95_m": args.min_swing_rel_x_range_p95_m,
         "min_swing_peak_lift_m": args.min_swing_peak_lift_m,
