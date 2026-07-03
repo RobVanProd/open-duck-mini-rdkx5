@@ -227,6 +227,41 @@ This check built and hashed the RDK and Playground upload archives with tracked
 RDK/Playground trees clean and JAX pinned to `0.7.2`. It did not upload, train,
 SSH, deploy, or touch the robot.
 
+Latest z=0.00245 A100 motion-recovery result:
+
+```text
+outputs/analysis/PHASE2_Z00245_MOTION_RECOVERY_A100_RESULT_20260702.md
+outputs/analysis/phase2_z00245_motion_recovery_a100_result_20260702.json
+outputs/analysis/phase2_z00245_motion_recovery_a100_20260702/checkpoint_sweep/CANDIDATE_CHECKPOINT_SWEEP.md
+outputs/analysis/phase2_z00245_motion_recovery_a100_20260702/checkpoint_sweep/candidate_checkpoint_sweep.json
+```
+
+The A100 run completed training and exported checkpoints at `40960`, `81920`,
+and `122880` steps from the Phase A2 warm-start with `z=0.0025`, corrected
+bridge, no push, weaker target-rate/actuator-tracking penalties, and stronger
+scalar forward-progress pressure. The compact corrected-bridge checkpoint sweep
+did not promote any checkpoint. All three checkpoints passed the short `x=0.0`
+eval and stayed well below the measured velocity envelope, but all held at
+`x=0.08` for low forward progress:
+
+```text
+40960:  track_ratio=0.2339, mean_vx=0.0187, max_vel_p95=1.4191
+81920:  track_ratio=0.1660, mean_vx=0.0133, max_vel_p95=1.4132
+122880: track_ratio=0.1684, mean_vx=0.0135, max_vel_p95=1.4296
+```
+
+The best available checkpoint was `40960`, but it was explicitly
+`HOLD_PARTIAL_CANDIDATE_CHECKPOINT` and not promotable. The remote driver then
+started a full 8-seed, 15s `z=0.0025`, `x=0.08` no-push gate on that partial
+checkpoint, but the Colab session was lost before a final seed-gate artifact or
+exit sentinel was recoverable. This does not authorize promotion because the
+compact checkpoint sweep had already failed the motion threshold.
+
+Do not repeat another small scalar-progress-pressure nudge from this lineage.
+The next valid offline branch should preserve the walking behavior directly
+with teacher-action, trust-region, or live-oracle continuity, then re-run the
+same corrected-bridge gates.
+
 Superseded source-generation plan:
 
 ```text
