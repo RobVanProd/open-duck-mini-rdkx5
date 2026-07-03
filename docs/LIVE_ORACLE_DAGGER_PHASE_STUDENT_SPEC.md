@@ -131,6 +131,12 @@ the strict corrected fitted-bridge tracking gate by:
   `outputs/analysis/PHASE2_Z0025_COMMAND_GATED_BESTREC70_RATE1P9_TARGETLIMITED0999_STRONGER_PUSH_DECISION_20260701.md`.
   Its current blocker is the documented seed-5 support cliff at `z=0.0026+`,
   not the already-solved z=0.0025 support pocket.
+- The `z=0.0026` seed-5 blocker has now been narrowed: `x=0.0` survives the
+  2-second short gate in-envelope, while `x=0.08` fails at 57 samples with
+  reverse-height collapse and no corrected-envelope velocity excess:
+  `outputs/analysis/PHASE2_TARGETLIMITED0999_Z0026_SUPPORT_TRANSFER_DECISION_20260702.md`.
+  The next repair should target moving-command support transfer at `z=0.0026`,
+  not another zero-command-only reset repair.
 
 ## Blocking Step 0
 
@@ -227,6 +233,13 @@ Current z=0.0025 target-limited stronger-push baseline:
 ```text
 outputs/analysis/PHASE2_Z0025_COMMAND_GATED_BESTREC70_RATE1P9_TARGETLIMITED0999_STRONGER_PUSH_DECISION_20260701.md
 outputs/analysis/phase2_z0025_command_gated_bestrec70_rate1p9_targetlimited0999_candidate/candidate.onnx
+```
+
+Current z=0.0026 support-transfer blocker:
+
+```text
+outputs/analysis/PHASE2_TARGETLIMITED0999_Z0026_SUPPORT_TRANSFER_DECISION_20260702.md
+outputs/analysis/phase2_targetlimited0999_z0026_support_transfer_decision_20260702.json
 ```
 
 ## Hypotheses
