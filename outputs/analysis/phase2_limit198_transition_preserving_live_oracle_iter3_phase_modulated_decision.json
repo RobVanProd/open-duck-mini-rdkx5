@@ -1,0 +1,74 @@
+{
+  "generated_at": "2026-07-03T18:57:27Z",
+  "status": "HOLD_PHASE_MODULATED_STUDENT_TARGET_VELOCITY",
+  "scope": "Offline behavior-cloning fit and partial corrected-bridge screen only. No robot, SSH, deploy, grounded replay, runtime behavior change, or PPO training.",
+  "robot_touched": false,
+  "ssh_used": false,
+  "deploy_performed": false,
+  "grounded_replay_performed": false,
+  "training_started": false,
+  "manifest": "outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_run/live_oracle_dagger_aggregate_manifest.json",
+  "fit_report": "outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_student/phase_modulated_bc_student.json",
+  "candidate": {
+    "path": "policy/candidates/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_20260703/candidate.onnx",
+    "sha256": "0387e8f072cb6e2558b8eeee687331c0d8cae6e548a8a3291c2ab7509f9d0801",
+    "promoted": false
+  },
+  "student_npz": {
+    "path": "policy/candidates/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_20260703/student.npz",
+    "sha256": "f42e7714a0abaabc1148b7bcb42d5cd6df5aed4b30538c15fb70a7f542eadf73"
+  },
+  "fit": {
+    "status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE",
+    "samples": 40500,
+    "action_mae": 0.007389,
+    "action_p95_abs_error": 0.023591,
+    "action_max_abs_error": 0.306087,
+    "target_rate_p95_rad_s": 1.375111,
+    "target_rate_max_rad_s": 2.195462,
+    "onnx_verify_max_abs_error": 0.00000021
+  },
+  "partial_x008_gate": {
+    "output_dir": "outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_x008_gate",
+    "stopped_after_seeds": 3,
+    "status": "HOLD_CANDIDATE_TARGET_VELOCITY",
+    "reason": "three consecutive seeds exceeded strict corrected max target-velocity gate on the right ankle",
+    "seeds": [
+      {
+        "seed": 0,
+        "status": "HOLD_CANDIDATE_TARGET_VELOCITY",
+        "samples": 750,
+        "track_ratio": 0.4317619544989914,
+        "max_sent_target_velocity_p95_rad_s": 1.765204668045044,
+        "max_tracking_p95_rad": 0.18887439370155334,
+        "right_ankle_velocity_max_rad_s": 2.10934579372406,
+        "right_ankle_limit_rad_s": 2.0,
+        "right_ankle_excess_rad_s": 0.10934579372406006
+      },
+      {
+        "seed": 1,
+        "status": "HOLD_CANDIDATE_TARGET_VELOCITY",
+        "samples": 750,
+        "track_ratio": 0.4317619544989914,
+        "max_sent_target_velocity_p95_rad_s": 1.765204668045044,
+        "max_tracking_p95_rad": 0.18887439370155334,
+        "right_ankle_velocity_max_rad_s": 2.10934579372406,
+        "right_ankle_limit_rad_s": 2.0,
+        "right_ankle_excess_rad_s": 0.10934579372406006
+      },
+      {
+        "seed": 2,
+        "status": "HOLD_CANDIDATE_TARGET_VELOCITY",
+        "samples": 750,
+        "track_ratio": 0.4317619544989914,
+        "max_sent_target_velocity_p95_rad_s": 1.765204668045044,
+        "max_tracking_p95_rad": 0.18887439370155334,
+        "right_ankle_velocity_max_rad_s": 2.10934579372406,
+        "right_ankle_limit_rad_s": 2.0,
+        "right_ankle_excess_rad_s": 0.10934579372406006
+      }
+    ]
+  },
+  "decision": "Do not promote this phase-modulated student. The feed-forward rung fits the aggregate cleanly but leaks a repeated right-ankle max target-rate spike outside the corrected envelope.",
+  "next_action": "Tighten the student loss around per-joint max velocity violations or apply transition-aware right-ankle spike weighting before rerunning the x=0.08 gate."
+}
