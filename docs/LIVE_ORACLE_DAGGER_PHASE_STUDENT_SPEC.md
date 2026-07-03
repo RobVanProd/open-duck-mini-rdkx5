@@ -162,6 +162,15 @@ the strict corrected fitted-bridge tracking gate by:
   single support. This closes the first corrected memoryless phase/contact
   fit as stable-but-attenuated:
   `outputs/analysis/PHASE2_Z0026_CORRECTED_SOURCE_LIVE_ORACLE_ITER0_PHASE_CONTACT_DECISION_20260703.md`.
+- Corrected live-oracle iteration 1 plus a bounded rate165 supervised refit
+  produced an offline candidate that clears both corrected `z=0.0026`
+  `home-support` gates. It passes `x=0.08` 8/8 with track ratio `0.3400`,
+  max pitch-chain p95 velocity `1.6410 rad/s`, max tracking p95 `0.1827 rad`,
+  and zero corrected p95/max velocity excess. It also passes `x=0.0` 8/8 with
+  near-zero vx and zero corrected velocity excess:
+  `policy/candidates/phase2_corrected_live_oracle_iter1_rate165_20260703`.
+  This is an offline sim candidate only; robot validation remains a separate
+  reviewed step.
 
 ## Blocking Step 0
 
@@ -293,6 +302,20 @@ outputs/analysis/PHASE2_Z0026_CORRECTED_SOURCE_LIVE_ORACLE_ITER0_PHASE_CONTACT_S
 outputs/analysis/phase2_z0026_corrected_source_live_oracle_iter0_phase_contact_student.json
 outputs/analysis/PHASE2_Z0026_CORRECTED_SOURCE_LIVE_ORACLE_ITER0_PHASE_CONTACT_X008_GATE.md
 outputs/analysis/phase2_z0026_corrected_source_live_oracle_iter0_phase_contact_x008_gate.json
+```
+
+Corrected live-oracle iter1 rate165 offline candidate:
+
+```text
+policy/candidates/phase2_corrected_live_oracle_iter1_rate165_20260703/README.md
+policy/candidates/phase2_corrected_live_oracle_iter1_rate165_20260703/candidate.onnx
+policy/candidates/phase2_corrected_live_oracle_iter1_rate165_20260703/SHA256SUMS
+outputs/analysis/PHASE2_CORRECTED_LIVE_ORACLE_ITER1_RATE165_CANDIDATE_DECISION_20260703.md
+outputs/analysis/phase2_corrected_live_oracle_iter1_rate165_candidate_decision_20260703.json
+outputs/analysis/PHASE2_Z0026_CORRECTED_SOURCE_LIVE_ORACLE_ITER1_PHASE_CONTACT_RATE165_X008_GATE.md
+outputs/analysis/phase2_z0026_corrected_source_live_oracle_iter1_phase_contact_rate165_x008_gate.json
+outputs/analysis/PHASE2_Z0026_CORRECTED_SOURCE_LIVE_ORACLE_ITER1_PHASE_CONTACT_RATE165_X0_GATE.md
+outputs/analysis/phase2_z0026_corrected_source_live_oracle_iter1_phase_contact_rate165_x0_gate.json
 ```
 
 ## Hypotheses
