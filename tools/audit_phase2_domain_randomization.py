@@ -22,17 +22,17 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_PLAYGROUND = ROOT.parent / "Open_Duck_Playground"
 DEFAULT_POLICY = (
     ROOT
-    / "policy/candidates/corrected_bridge_cmd_conditioned_rate175_20260627/candidate.onnx"
+    / "policy/candidates/phase2_corrected_live_oracle_iter1_rate165_20260703/candidate.onnx"
 )
 DEFAULT_POLICY_NPZ = (
     ROOT
-    / "outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate/candidate_mlp.npz"
+    / "outputs/analysis/phase2_rate165_ppo_loc_warmstart_candidate/candidate_mlp.npz"
 )
 DEFAULT_RESTORE_CHECKPOINT = (
-    ROOT / "outputs/analysis/ppo_bc_command_conditioned_rate175_step0_checkpoint"
+    ROOT / "outputs/analysis/phase2_rate165_ppo_loc_warmstart_step0_checkpoint"
 )
 DEFAULT_WARMSTART_FIDELITY = (
-    ROOT / "outputs/analysis/ppo_bc_command_conditioned_rate175_step0_export_fidelity.json"
+    ROOT / "outputs/analysis/phase2_rate165_ppo_loc_warmstart_step0_export_fidelity.json"
 )
 DEFAULT_OUTPUT_MD = ROOT / "outputs/analysis/PHASE2_DOMAIN_RANDOMIZATION_AUDIT.md"
 DEFAULT_OUTPUT_JSON = ROOT / "outputs/analysis/phase2_domain_randomization_audit.json"
@@ -259,12 +259,13 @@ def audit(args: argparse.Namespace) -> dict[str, Any]:
         if checkpoint_present and fidelity_pass
         else "HOLD_TRAINABLE_WARMSTART_CHECKPOINT_MISSING",
         "reason": (
-            "A verified PPO step-0 Orbax checkpoint exists for the Phase 1 rate175 "
-            "candidate. The fidelity report proves the exported checkpoint policy "
-            "matches the packaged ONNX at action level before PPO updates."
+            "A verified PPO step-0 Orbax checkpoint exists for the promoted "
+            "rate165 candidate. The fidelity report proves the exported "
+            "checkpoint policy matches the PPO-loc warm-start ONNX at action "
+            "level before PPO updates."
             if checkpoint_present and fidelity_pass
             else "Current Playground PPO warm-start path uses --restore_checkpoint_path "
-            "for an Orbax checkpoint. The Phase 1 deployable artifact must be "
+            "for an Orbax checkpoint. The deployable candidate must be "
             "converted or recovered as a trainable checkpoint before Phase 2."
         ),
     }

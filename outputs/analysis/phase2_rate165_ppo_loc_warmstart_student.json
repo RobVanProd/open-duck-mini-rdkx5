@@ -1,0 +1,122 @@
+{
+  "status": "PASS_PPO_LOC_BC_FIT_SMOKE",
+  "manifest": "outputs/analysis/phase2_rate165_ppo_loc_warmstart_manifest.json",
+  "samples": 12000,
+  "hidden_sizes": [
+    512,
+    256,
+    128
+  ],
+  "activation": "swish",
+  "saved_npz": "outputs/analysis/phase2_rate165_ppo_loc_warmstart_candidate/candidate_mlp.npz",
+  "exported_onnx": "outputs/analysis/phase2_rate165_ppo_loc_warmstart_candidate/candidate.onnx",
+  "train_metrics": {
+    "samples": 12000,
+    "mae": 0.001118748961246501,
+    "rmse": 0.0016314738164901975,
+    "p50_abs_error": 0.0007595145256853032,
+    "p95_abs_error": 0.0033856601644203727,
+    "p99_abs_error": 0.005174034891716777,
+    "max_abs_error": 0.028045006059654903,
+    "pred_action_saturation_pct": 0.0
+  },
+  "target_rate": {
+    "pair_count": 11984,
+    "p50_rad_s": 0.0384802233099829,
+    "p95_rad_s": 1.2342585269369168,
+    "p99_rad_s": 1.5904768571343821,
+    "max_rad_s": 1.6804576895343002
+  },
+  "sample_weight": {
+    "p50": 1.0,
+    "p95": 1.0,
+    "max": 1.0,
+    "weighted_samples": 12000.0
+  },
+  "loss_rows": [
+    {
+      "step": 1,
+      "loss": 0.12808066606521606
+    },
+    {
+      "step": 500,
+      "loss": 4.635184814105742e-05
+    },
+    {
+      "step": 1000,
+      "loss": 1.9553765014279634e-05
+    },
+    {
+      "step": 1500,
+      "loss": 1.5279876606655307e-05
+    },
+    {
+      "step": 2000,
+      "loss": 1.0576858585409354e-05
+    },
+    {
+      "step": 2500,
+      "loss": 8.313219950650819e-06
+    },
+    {
+      "step": 3000,
+      "loss": 7.120941972971195e-06
+    },
+    {
+      "step": 3500,
+      "loss": 7.422392172884429e-06
+    },
+    {
+      "step": 4000,
+      "loss": 5.2522641453833785e-06
+    },
+    {
+      "step": 4500,
+      "loss": 6.437961019400973e-06
+    },
+    {
+      "step": 5000,
+      "loss": 1.6929670891840942e-05
+    },
+    {
+      "step": 5500,
+      "loss": 4.874348633165937e-06
+    },
+    {
+      "step": 6000,
+      "loss": 3.799066917054006e-06
+    },
+    {
+      "step": 6500,
+      "loss": 5.753888672188623e-06
+    },
+    {
+      "step": 7000,
+      "loss": 2.890213181672152e-06
+    },
+    {
+      "step": 7500,
+      "loss": 3.259204277128447e-06
+    },
+    {
+      "step": 8000,
+      "loss": 2.6564518975646934e-06
+    }
+  ],
+  "onnx_verify": {
+    "path": "outputs/analysis/phase2_rate165_ppo_loc_warmstart_candidate/candidate.onnx",
+    "samples_checked": 64,
+    "max_abs_error": 2.852632688954415e-07,
+    "p95_abs_error": 1.6599273815198767e-07
+  },
+  "config": {
+    "steps": 8000,
+    "batch_size": 1024,
+    "learning_rate": 0.0008,
+    "target_rate_scale": 0.2,
+    "target_rate_limit_rad_s": 1.65,
+    "action_scale_rad": 0.25,
+    "dt_s": 0.02,
+    "seed": 3
+  }
+}

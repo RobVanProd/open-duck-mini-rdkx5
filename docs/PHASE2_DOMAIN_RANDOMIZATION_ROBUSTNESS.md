@@ -1,6 +1,6 @@
 # Phase 2 Domain-Randomized Robustness Training
 
-status: `HOLD_PHASE2_Z00245_SUPPORT_RECOVERY`
+status: `READY_RATE165_DR_STAGE_A_DRY_RUN`
 
 ## Objective
 
@@ -13,6 +13,49 @@ randomization while preserving:
 - and the slow in-envelope `x=0.08` gait.
 
 Robot validation is out of scope. No SSH, no deploy, no grounded replay.
+
+## 2026-07-03 Corrected Rate165 Re-Anchor
+
+The current Phase 2 DR warm-start is no longer the older Phase A2/rate175
+lineage. It is the corrected live-oracle iteration-1 rate165 candidate and a
+PPO-compatible distillation/checkpoint built from it:
+
+```text
+policy/candidates/phase2_corrected_live_oracle_iter1_rate165_20260703/candidate.onnx
+outputs/analysis/phase2_rate165_ppo_loc_warmstart_candidate/candidate.onnx
+outputs/analysis/phase2_rate165_ppo_loc_warmstart_step0_checkpoint
+```
+
+Evidence:
+
+```text
+outputs/analysis/PHASE2_RATE165_PPO_LOC_WARMSTART_MANIFEST.md
+outputs/analysis/PHASE2_RATE165_PPO_LOC_WARMSTART_STUDENT.md
+outputs/analysis/PHASE2_RATE165_PPO_LOC_WARMSTART_X008_GATE.md
+outputs/analysis/PHASE2_RATE165_PPO_LOC_WARMSTART_X0_GATE.md
+outputs/analysis/PHASE2_RATE165_PPO_LOC_WARMSTART_STEP0_EXPORT_FIDELITY.md
+outputs/analysis/PHASE2_DOMAIN_RANDOMIZATION_AUDIT.md
+outputs/analysis/PHASE2_DOMAIN_RANDOMIZATION_PLAN.md
+```
+
+The PPO-loc warm-start preserves the corrected-bridge candidate behavior under
+the `rough_terrain_backlash`, `z=0.0026`, `home-support` gate:
+
+- `x=0.08`: 8/8 duration complete, no falls, track ratio `0.3456`,
+  max pitch-chain p95 velocity `1.6458 rad/s`, max tracking p95 `0.1822 rad`,
+  zero corrected p95/max velocity excess.
+- `x=0.0`: 8/8 duration complete, no falls, mean vx about `-0.0001 m/s`,
+  max pitch-chain p95 velocity `0.0677 rad/s`, max tracking p95 `0.0312 rad`,
+  zero corrected p95/max velocity excess.
+
+The step-0 Orbax checkpoint export passed action fidelity against the PPO-loc
+ONNX with p95 abs error `1.19e-7` and max abs error `2.68e-7`. Use this
+checkpoint for Stage A. Do not launch a scratch PPO run.
+
+Next aligned action: run Stage A narrow flat/no-push DR from
+`outputs/analysis/PHASE2_DOMAIN_RANDOMIZATION_PLAN.md`, then gate the exported
+checkpoint(s) with the corrected bridge before advancing to full flat pushes or
+rough terrain.
 
 ## Current Canonical Gate Ledger
 

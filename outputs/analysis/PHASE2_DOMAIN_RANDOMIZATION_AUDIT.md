@@ -28,21 +28,21 @@ This is an offline static audit. It did not train, SSH, deploy, or move the robo
 
 status: `PASS_TRAINABLE_CHECKPOINT_PRESENT`
 
-A verified PPO step-0 Orbax checkpoint exists for the Phase 1 rate175 candidate. The fidelity report proves the exported checkpoint policy matches the packaged ONNX at action level before PPO updates.
+A verified PPO step-0 Orbax checkpoint exists for the promoted rate165 candidate. The fidelity report proves the exported checkpoint policy matches the PPO-loc warm-start ONNX at action level before PPO updates.
 
 Artifacts:
 
-- ONNX: `/home/lsd/robots/open-duck-mini-rdkx5/policy/candidates/corrected_bridge_cmd_conditioned_rate175_20260627/candidate.onnx`
+- ONNX: `/home/lsd/robots/open-duck-mini-rdkx5/policy/candidates/phase2_corrected_live_oracle_iter1_rate165_20260703/candidate.onnx`
 - ONNX exists: `True`
-- ONNX sha256: `63506567f7a973be0ff6b2b222bba41736409da713466db442067c0f2a91415e`
-- BC MLP NPZ: `/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate/candidate_mlp.npz`
+- ONNX sha256: `e06643e5790217075d9c7a0d1e1ac262652058592b374ac0446bdd0426d0ea33`
+- BC MLP NPZ: `/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/phase2_rate165_ppo_loc_warmstart_candidate/candidate_mlp.npz`
 - BC MLP NPZ exists: `True`
-- BC MLP NPZ sha256: `312f1ef0ba758af5fdeae900ce0a34dab659fe348a9f389988ddaaaa15659497`
-- restore checkpoint: `/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/ppo_bc_command_conditioned_rate175_step0_checkpoint`
+- BC MLP NPZ sha256: `08aa820651b20ab43d65dde63382e7e8b7998ae213d4f1bd67eeaa7385d52205`
+- restore checkpoint: `/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/phase2_rate165_ppo_loc_warmstart_step0_checkpoint`
 - restore checkpoint exists: `True`
 - warm-start fidelity status: `PASS_PPO_BC_WARMSTART_STEP0_EXPORT_FIDELITY`
 - warm-start fidelity p95 abs error: `1.1920928955078125e-07`
-- warm-start fidelity max abs error: `3.2782554626464844e-07`
+- warm-start fidelity max abs error: `2.682209014892578e-07`
 
 ## Terrain / Contact
 

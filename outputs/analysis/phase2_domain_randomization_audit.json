@@ -75,35 +75,35 @@
   "trainable_warmstart": {
     "candidate_mlp_npz": {
       "exists": true,
-      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate/candidate_mlp.npz",
-      "sha256": "312f1ef0ba758af5fdeae900ce0a34dab659fe348a9f389988ddaaaa15659497",
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/phase2_rate165_ppo_loc_warmstart_candidate/candidate_mlp.npz",
+      "sha256": "08aa820651b20ab43d65dde63382e7e8b7998ae213d4f1bd67eeaa7385d52205",
       "size_bytes": 876828
     },
     "policy_onnx": {
       "exists": true,
-      "path": "/home/lsd/robots/open-duck-mini-rdkx5/policy/candidates/corrected_bridge_cmd_conditioned_rate175_20260627/candidate.onnx",
-      "sha256": "63506567f7a973be0ff6b2b222bba41736409da713466db442067c0f2a91415e",
-      "size_bytes": 874724
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/policy/candidates/phase2_corrected_live_oracle_iter1_rate165_20260703/candidate.onnx",
+      "sha256": "e06643e5790217075d9c7a0d1e1ac262652058592b374ac0446bdd0426d0ea33",
+      "size_bytes": 886302
     },
-    "reason": "A verified PPO step-0 Orbax checkpoint exists for the Phase 1 rate175 candidate. The fidelity report proves the exported checkpoint policy matches the packaged ONNX at action level before PPO updates.",
+    "reason": "A verified PPO step-0 Orbax checkpoint exists for the promoted rate165 candidate. The fidelity report proves the exported checkpoint policy matches the PPO-loc warm-start ONNX at action level before PPO updates.",
     "required_by_phase2": true,
     "restore_checkpoint": {
       "exists": true,
-      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/ppo_bc_command_conditioned_rate175_step0_checkpoint",
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/phase2_rate165_ppo_loc_warmstart_step0_checkpoint",
       "sha256": null,
       "size_bytes": null
     },
     "status": "PASS_TRAINABLE_CHECKPOINT_PRESENT",
     "warmstart_fidelity": {
       "exists": true,
-      "max_abs_error": 3.2782554626464844e-07,
-      "output_checkpoint": "outputs/analysis/ppo_bc_command_conditioned_rate175_step0_checkpoint",
+      "max_abs_error": 2.682209014892578e-07,
+      "output_checkpoint": "outputs/analysis/phase2_rate165_ppo_loc_warmstart_step0_checkpoint",
       "p95_abs_error": 1.1920928955078125e-07,
-      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/ppo_bc_command_conditioned_rate175_step0_export_fidelity.json",
-      "reference_onnx": "policy/candidates/corrected_bridge_cmd_conditioned_rate175_20260627/candidate.onnx",
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/phase2_rate165_ppo_loc_warmstart_step0_export_fidelity.json",
+      "reference_onnx": "outputs/analysis/phase2_rate165_ppo_loc_warmstart_candidate/candidate.onnx",
       "report_status": "PASS_PPO_BC_WARMSTART_STEP0_EXPORT_FIDELITY",
-      "sha256": "b362965d6f47afbc753c7aa673755b91b6d65021a45d05dd8c0c7fa241291161",
-      "size_bytes": 1349,
+      "sha256": "f541998aec1ec3d4d29ac588b39fb866cbad74a5bd21a97d0f40e89d143cf8f0",
+      "size_bytes": 1285,
       "status": "PASS"
     }
   },

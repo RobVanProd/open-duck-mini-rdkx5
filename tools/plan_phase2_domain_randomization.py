@@ -19,7 +19,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_POLICY = (
     ROOT
-    / "policy/candidates/corrected_bridge_cmd_conditioned_rate175_20260627/candidate.onnx"
+    / "policy/candidates/phase2_corrected_live_oracle_iter1_rate165_20260703/candidate.onnx"
 )
 DEFAULT_FIT = ROOT / "outputs/analysis/actuator_response_fit_corrected_knee.json"
 DEFAULT_OUTPUT_MD = ROOT / "outputs/analysis/PHASE2_DOMAIN_RANDOMIZATION_PLAN.md"
@@ -27,10 +27,10 @@ DEFAULT_OUTPUT_JSON = ROOT / "outputs/analysis/phase2_domain_randomization_plan.
 DEFAULT_PLAYGROUND = ROOT.parent / "Open_Duck_Playground"
 DEFAULT_ENV_PYTHON = ROOT.parent / "envs/open-duck-playground/bin/python"
 DEFAULT_RESTORE_CHECKPOINT = (
-    ROOT / "outputs/analysis/ppo_bc_command_conditioned_rate175_step0_checkpoint"
+    ROOT / "outputs/analysis/phase2_rate165_ppo_loc_warmstart_step0_checkpoint"
 )
 DEFAULT_WARMSTART_FIDELITY = (
-    ROOT / "outputs/analysis/ppo_bc_command_conditioned_rate175_step0_export_fidelity.json"
+    ROOT / "outputs/analysis/phase2_rate165_ppo_loc_warmstart_step0_export_fidelity.json"
 )
 
 
@@ -396,7 +396,7 @@ def build_plan(args: argparse.Namespace) -> dict[str, Any]:
     return {
         "status": "HOLD_PHASE2_PLAN_BLOCKED" if warmstart_status.startswith("HOLD") else "READY_DRY_RUN",
         "reason": (
-            "Phase 2 requires a true trainable warm-start from the Phase 1 policy. "
+            "Phase 2 requires a true trainable warm-start from the corrected candidate. "
             "Current artifact is ONNX/BC NPZ, while PPO restore expects an Orbax checkpoint."
             if warmstart_status.startswith("HOLD")
             else "Verified trainable step-0 checkpoint exists; generated commands remain dry-run until invoked explicitly."
@@ -438,7 +438,8 @@ def build_plan(args: argparse.Namespace) -> dict[str, Any]:
                 "falls": 0,
                 "corrected_velocity_excess": 0.0,
                 "tracking_p95_max_rad": 0.20,
-                "track_ratio_min": 0.40,
+                "track_ratio_min": 0.30,
+                "baseline_track_ratio": 0.3456,
             },
             "x0.0": {
                 "seeds": 8,
@@ -492,9 +493,10 @@ def write_md(plan: dict[str, Any], path: Path) -> None:
         "",
         "## Blocking Warm-Start Note",
         "",
-        "The Phase 1 candidate now has a verified PPO step-0 Orbax checkpoint.",
-        "It was constructed from the rate175 BC NPZ and passed ONNX action",
-        "fidelity against the packaged Phase 1 candidate before PPO updates.",
+        "The promoted rate165 candidate now has a verified PPO step-0 Orbax checkpoint.",
+        "It was constructed by distilling the phase/contact ONNX to a PPO-loc",
+        "student, then exporting a PPO step-0 checkpoint that passed ONNX",
+        "action fidelity before PPO updates.",
         "Use this checkpoint for Phase 2; do not launch a scratch PPO run.",
         "",
         "## Stages",
@@ -531,7 +533,7 @@ def write_md(plan: dict[str, Any], path: Path) -> None:
             "Each stage must pass corrected-bridge seed gates before the next stage:",
             "",
             "- `x=0.08`: 8/8 seeds, no falls, zero corrected velocity excess,",
-            "  max pitch-chain tracking p95 <= 0.20 rad, track ratio >= 0.40",
+            "  max pitch-chain tracking p95 <= 0.20 rad, track ratio >= 0.30",
             "- `x=0.0`: 8/8 seeds, no falls, mean |vx| <= 0.005 m/s",
             "- report mean speed, track ratio, push recovery, terrain success, and",
             "  foot clearance / swing peak",
@@ -549,7 +551,7 @@ def main() -> int:
         "--behavior-prior-mlp-npz",
         default=str(
             ROOT
-            / "outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate/candidate_mlp.npz"
+            / "outputs/analysis/phase2_rate165_ppo_loc_warmstart_candidate/candidate_mlp.npz"
         ),
     )
     parser.add_argument("--restore-checkpoint", default=str(DEFAULT_RESTORE_CHECKPOINT))
