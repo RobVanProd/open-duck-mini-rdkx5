@@ -2857,3 +2857,37 @@ from tick 0, reset/contact-state augmentation, or a recovery behavior
 conditioned on early contact and posture. Do not change the gate silently to
 hide this reset manifold issue, and do not run robot validation from this
 branch.
+
+### z=0.0026 Seed-5 Live-Oracle Reset-Repair Smoke Hold
+
+Artifact:
+
+```text
+outputs/analysis/PHASE2_Z0026_SEED5_INITIAL_SUPPORT_LIVE_ORACLE_ITER0_DECISION_20260703.md
+```
+
+Status:
+
+```text
+HOLD_LIVE_ORACLE_RESET_REPAIR_SMOKE_FAILED
+```
+
+One local CPU live-oracle iteration relabeled the known bad seed-5 reset states:
+`65` samples at `x=0.08` with the `source_vx_blend` oracle and `58` samples at
+`x=0.0` with a zero-action oracle. The aggregate manifest contained `6123`
+samples, dominated by the existing z=0.0024 positive source data. A small
+phase-modulated BC student fit the labels cleanly (`MAE=0.007024`, ONNX p95
+error about `1.2e-7`), but rollout behavior failed the smoke screens:
+
+```text
+x=0.08 seed 5: fall at 57 samples, vx=-0.2527 m/s, track_ratio=-3.1587, vel_excess=0
+x=0.0  seed 5: fall at 43 samples, vx=-0.3436 m/s, p95_vel_excess=0.1776
+```
+
+Do not scale this student and do not spend A100 time on this exact relabel
+recipe. The new labels were actions on bad reset/failure states, not successful
+recovery traces, and the smoke student made the moving-command failure worse
+while breaking x=0.0 command preservation. The next useful branch needs either
+a support-recovery oracle that actually survives seed-5-like no-contact resets,
+or an explicit reset-distribution audit against the real robot start protocol.
+Do not silently change the gate to hide the reset manifold issue.

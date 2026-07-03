@@ -1,0 +1,75 @@
+{
+  "status": "HOLD_LIVE_ORACLE_RESET_REPAIR_SMOKE_FAILED",
+  "date": "2026-07-03",
+  "scope": "offline_sim_analysis_only",
+  "robot_tests": false,
+  "ssh": false,
+  "deploy": false,
+  "grounded_replay": false,
+  "parent_policy": "outputs/analysis/colab_cli_downloads/extracted/open_duck_colab_cli_phase2-z002-teacher-continuity_20260701T223519Z/open_duck_colab_cli_phase2-z002-teacher-continuity_20260701T223519Z/open_duck_training_phase2_z002_teacher_continuity_cli/smoke_20260701T223737Z_gpu/2026_07_01_224518_81920.onnx",
+  "corrected_bridge": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+  "task": "rough_terrain_backlash",
+  "terrain_hfield_z_scale": 0.0026,
+  "target_seed": 5,
+  "live_oracle_iteration": {
+    "artifact_md": "outputs/analysis/PHASE2_Z0026_SEED5_INITIAL_SUPPORT_LIVE_ORACLE_ITER0.md",
+    "artifact_json": "outputs/analysis/phase2_z0026_seed5_initial_support_live_oracle_iter0.json",
+    "status": "PASS_LIVE_ORACLE_DAGGER_ITERATION_DATA_READY",
+    "aggregate_manifest": "outputs/analysis/phase2_z0026_seed5_initial_support_live_oracle_iter0/live_oracle_dagger_aggregate_manifest.json",
+    "aggregate_samples": 6123,
+    "positive_source_samples": 6000,
+    "x008_relabel_samples": 65,
+    "x0_relabel_samples": 58,
+    "note": "new relabel entries are bad-reset/failure-state labels, not successful trace behavior"
+  },
+  "student_fit": {
+    "artifact_md": "outputs/analysis/PHASE2_Z0026_SEED5_INITIAL_SUPPORT_LIVE_ORACLE_ITER0_STUDENT.md",
+    "artifact_json": "outputs/analysis/phase2_z0026_seed5_initial_support_live_oracle_iter0_student.json",
+    "status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE",
+    "samples": 6123,
+    "mae": 0.007024,
+    "p95_abs_error": 0.022539,
+    "max_abs_error": 0.389182,
+    "target_rate_p95_rad_s": 1.751672,
+    "target_rate_max_rad_s": 2.279135,
+    "onnx_p95_error": 0.00000012,
+    "onnx_max_error": 0.00000041
+  },
+  "short_screens": {
+    "x008_seed5": {
+      "artifact_md": "outputs/analysis/PHASE2_Z0026_SEED5_INITIAL_SUPPORT_LIVE_ORACLE_ITER0_STUDENT_X008_SEED5_SHORT.md",
+      "artifact_json": "outputs/analysis/phase2_z0026_seed5_initial_support_live_oracle_iter0_student_x008_seed5_short.json",
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "samples": 57,
+      "termination": "fall_or_nan",
+      "mean_vx_m_s": -0.2527,
+      "track_ratio": -3.1587,
+      "base_height_min_m": 0.0751,
+      "p95_vel_excess": 0.0,
+      "max_vel_excess": 0.0,
+      "max_tracking_p95_rad": 0.1880,
+      "single_support_pct": 10.5263,
+      "double_support_pct": 84.2105
+    },
+    "x000_seed5": {
+      "artifact_md": "outputs/analysis/PHASE2_Z0026_SEED5_INITIAL_SUPPORT_LIVE_ORACLE_ITER0_STUDENT_X000_SEED5_SHORT.md",
+      "artifact_json": "outputs/analysis/phase2_z0026_seed5_initial_support_live_oracle_iter0_student_x000_seed5_short.json",
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "samples": 43,
+      "termination": "fall_or_nan",
+      "mean_vx_m_s": -0.3436,
+      "base_height_min_m": 0.0576,
+      "p95_vel_excess": 0.1776,
+      "max_vel_excess": 0.8481,
+      "max_tracking_p95_rad": 0.2326,
+      "single_support_pct": 6.9767,
+      "double_support_pct": 81.3953
+    }
+  },
+  "decision": "Do not scale this student. The supervised fit is clean, but rollout behavior worsens seed 5 and breaks x=0.0 command preservation.",
+  "next_branch": [
+    "audit reset distribution against real robot start protocol before silently changing gates",
+    "build a support-recovery oracle that survives seed-5-like no-contact resets before relabeling",
+    "use reset/contact augmentation only with successful recovery labels"
+  ]
+}

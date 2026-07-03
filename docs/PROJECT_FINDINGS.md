@@ -4096,3 +4096,32 @@ until tick 60. Passive reset settling is not a workaround: `--reset-settle-ticks
 The next Phase 2 branch should target reset/contact-state recovery or live
 oracle relabeling on seed-5-like initial no-contact states. More scalar
 anti-reverse/base-height escalation is closed for this blocker.
+
+## Phase 2 z=0.0026 Seed-5 Live-Oracle Reset-Repair Smoke
+
+A first local CPU live-oracle DAgger smoke targeted the known seed-5
+initial-support failure:
+
+```text
+artifact: outputs/analysis/PHASE2_Z0026_SEED5_INITIAL_SUPPORT_LIVE_ORACLE_ITER0_DECISION_20260703.md
+status: HOLD_LIVE_ORACLE_RESET_REPAIR_SMOKE_FAILED
+```
+
+The data pass succeeded and produced an aggregate manifest with `6123` samples:
+the existing z=0.0024 source data plus `65` x=0.08 seed-5 relabel samples and
+`58` x=0.0 seed-5 relabel samples. The phase-modulated BC smoke fit the labels
+well (`MAE=0.007024`, ONNX p95 error about `1.2e-7`), but the rollout screens
+held:
+
+```text
+x=0.08 seed 5: fall at 57 samples, vx=-0.2527 m/s, track_ratio=-3.1587
+x=0.0  seed 5: fall at 43 samples, vx=-0.3436 m/s, p95_vel_excess=0.1776
+```
+
+This closes the naive small bad-reset relabel plus phase-modulated BC repair.
+The labels were generated on bad reset/failure states, not from a recovery
+source that clears those states. Scaling this student on A100 is not justified.
+The next branch should first audit whether the z=0.0026 reset distribution is
+physically representative of the real start protocol, or build a recovery oracle
+that survives seed-5-like no-contact resets before using those states for
+student training.
