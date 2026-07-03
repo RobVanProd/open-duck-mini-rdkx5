@@ -2815,3 +2815,45 @@ next step should inspect seed 5's state/contact manifold directly against the
 seven passing z=0.0026 seeds and identify the first divergent support variable
 before tick 10, rather than spending another A100 run on the same scalar
 penalty family.
+
+### z=0.0026 Seed-5 Initial Support Manifold Hold
+
+Artifact:
+
+```text
+outputs/analysis/PHASE2_Z0026_SEED5_INITIAL_SUPPORT_DIVERGENCE_DECISION_20260703.md
+```
+
+Status:
+
+```text
+HOLD_Z0026_INITIAL_SUPPORT_MANIFOLD
+```
+
+The seed-5 divergence happens at reset, before meaningful policy action. In a
+paired trace of the preserved teacher-continuity `81920` checkpoint, seed 0
+starts with right-foot contact `[0, 1]` and completes the 2 s screen with
+positive mean vx, while seed 5 starts with no foot contact `[0, 0]`, the right
+foot about `5.7 cm` higher, and a large right-leg posture mismatch:
+
+```text
+tick 0 seed5 - seed0:
+  right_ankle    +0.5354 rad
+  right_knee     +0.4809 rad
+  left_ankle     -0.4302 rad
+  actual L2      0.8789
+  sent-target L2 0.0436
+```
+
+The sent targets are nearly the same even though the state/contact manifold is
+different. Seed 5 then reverses at tick `10` and collapses by tick `65`, still
+with zero corrected-envelope velocity excess. Adding `--reset-settle-ticks 25`
+is worse: seed 5 falls at `18` samples with mean vx `-0.7045 m/s`.
+
+This closes passive reset-settle and more scalar anti-reverse/base-height
+pressure as useful fixes for this specific blocker. The next valid branch
+should target seed-5-like initial support states directly: live-oracle relabels
+from tick 0, reset/contact-state augmentation, or a recovery behavior
+conditioned on early contact and posture. Do not change the gate silently to
+hide this reset manifold issue, and do not run robot validation from this
+branch.

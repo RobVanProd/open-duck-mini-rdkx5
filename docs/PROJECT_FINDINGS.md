@@ -4069,3 +4069,30 @@ This closes the narrow scalar anti-reverse/base-height repair direction. The
 next useful branch is not another scalar penalty escalation; it should compare
 seed 5 against the seven passing z=0.0026 seeds and identify the first
 state/contact divergence before tick 10, then target that manifold directly.
+
+## Phase 2 z=0.0026 Seed-5 Initial Support Manifold
+
+The paired seed0/seed5 trace of the preserved teacher-continuity `81920`
+checkpoint found the first divergence at tick 0:
+
+```text
+artifact: outputs/analysis/PHASE2_Z0026_SEED5_INITIAL_SUPPORT_DIVERGENCE_DECISION_20260703.md
+status: HOLD_Z0026_INITIAL_SUPPORT_MANIFOLD
+```
+
+Seed 5 starts outside the passing support manifold before meaningful policy
+action. Seed 0 starts with right-foot contact `[0, 1]`; seed 5 starts with no
+foot contact `[0, 0]`, a right foot about `5.7 cm` higher, and large right-leg
+posture differences (`right_ankle +0.5354 rad`, `right_knee +0.4809 rad`).
+Despite that, the initial sent-target L2 delta is only `0.0436`, so the policy
+does not issue an early recovery action for the bad reset state.
+
+The timing confirms the ordering: contact and joint posture differ at tick 0,
+local-vx diverges at tick 1, seed 5 reverses at tick 10, action L2 does not
+exceed `0.5` until tick 35, and base-height divergence does not exceed `0.02 m`
+until tick 60. Passive reset settling is not a workaround: `--reset-settle-ticks
+25` makes seed 5 fall at 18 samples with mean vx `-0.7045 m/s`.
+
+The next Phase 2 branch should target reset/contact-state recovery or live
+oracle relabeling on seed-5-like initial no-contact states. More scalar
+anti-reverse/base-height escalation is closed for this blocker.
