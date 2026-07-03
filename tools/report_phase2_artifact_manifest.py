@@ -77,6 +77,8 @@ REVIEW_ARTIFACTS = [
     "outputs/analysis/phase2_local_fallback_readiness.json",
     "outputs/analysis/PHASE2_NEXT_RUN_PLAN.md",
     "outputs/analysis/phase2_next_run_plan.json",
+    "outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_plan/LIVE_ORACLE_DAGGER_ITERATION.md",
+    "outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_plan/live_oracle_dagger_iteration.json",
     "outputs/analysis/PHASE2_STAGE_GUARD.md",
     "outputs/analysis/phase2_stage_guard.json",
     "outputs/analysis/rocm_mjx_isolation_post_bios/ROCM_MJX_RUNTIME_ISOLATION.md",

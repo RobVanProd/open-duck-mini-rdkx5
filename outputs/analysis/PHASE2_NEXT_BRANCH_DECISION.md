@@ -270,6 +270,25 @@ docs/PHASE2_TRANSITION_PRESERVING_TERRAIN_BRANCH.md
 docs/LIVE_ORACLE_DAGGER_PHASE_STUDENT_SPEC.md
 ```
 
+Dry-run command plan:
+
+```text
+outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_plan/LIVE_ORACLE_DAGGER_ITERATION.md
+outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_plan/live_oracle_dagger_iteration.json
+```
+
+The plan is intentionally offline-only and not run by default. It rolls out the
+current limit198 candidate under the corrected bridge on `rough_terrain_backlash`
+at `z=0.0026`, `home-support`, x=0.08 and x=0.0 across seeds `0-7`, then
+queries the corrected limit198 oracle manifest on those visited states. The
+x=0.08 rollout keeps hard swing gates active:
+
+```text
+min_swing_segments_per_foot: 1
+min_swing_rel_x_range_p95_m: 0.003
+min_swing_peak_lift_m: 0.005
+```
+
 Required next properties:
 
 - preserve the limit198 / corrected-envelope zero-excess constraint;
