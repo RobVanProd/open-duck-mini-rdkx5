@@ -4039,7 +4039,8 @@ status: PASS_Z0026_SEED5_MOTION_SUPPORT_RECIPE_READY
 It warm-starts from
 `outputs/analysis/phase2_restore_checkpoints/phase2_z0026_teacher_continuity_81920`,
 keeps z=0.0026 and pushes disabled, preserves the teacher-continuity trust
-region, and adds only narrow anti-reverse plus base-height/pitch stability
-pressure. It is not a robot-validation branch. A promoted checkpoint must pass
-full z=0.0026 x=0.0 and x=0.08 corrected-bridge 8-seed gates without backing up,
-freezing, x=0.0 drift, or corrected-envelope excess.
+region, retains the inherited mild teacher-continuity contact terms, and adds
+narrow anti-reverse plus base-height/pitch stability pressure. It is not a
+robot-validation branch. A promoted checkpoint must pass full z=0.0026 x=0.0
+and x=0.08 corrected-bridge 8-seed gates without backing up, freezing, x=0.0
+drift, or corrected-envelope excess.

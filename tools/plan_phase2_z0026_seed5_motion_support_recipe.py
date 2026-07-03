@@ -319,7 +319,8 @@ def build_payload(args: argparse.Namespace) -> dict[str, Any]:
             "Warm-start from the preserved z=0.0026 teacher-continuity 81920 checkpoint; do not train from scratch.",
             "Keep terrain at z=0.0026 and keep pushes disabled; this isolates support transfer before adding new perturbations.",
             "Preserve the 7 passing seeds with teacher-continuity restore KL and small PPO updates.",
-            "Add narrow anti-reverse and base-height pressure only; do not add broad double-support dwell/contact-shaping terms.",
+            "Add narrow anti-reverse and base-height pressure on top of the existing mild teacher-continuity contact terms.",
+            "Do not switch back to the broad phase2-z005-support recipe or escalate double-support dwell/contact shaping.",
             "Select by compact checkpoint sweep, then require full x=0.0 and x=0.08 8-seed gates before promoting.",
         ],
         "key_recipe_settings": {
@@ -343,6 +344,11 @@ def build_payload(args: argparse.Namespace) -> dict[str, Any]:
             "forward_pitch_rate_scale": -0.07,
             "forward_wrong_direction_scale": -6.0,
             "forward_wrong_direction_allowed_reverse_ratio": 0.005,
+            "inherited_forward_contact_support_scale": -0.12,
+            "inherited_forward_double_support_dwell_scale": -0.05,
+            "inherited_forward_double_support_dwell_grace_steps": 24,
+            "inherited_forward_swing_clearance_scale": -0.00025,
+            "inherited_forward_swing_advance_scale": -0.001,
             "push_enable": False,
         },
         "acceptance": [

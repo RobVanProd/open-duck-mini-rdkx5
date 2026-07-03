@@ -2762,8 +2762,9 @@ tree_sha256: 4646f7d84260f7f4669e1cbfdc9b677da8999fea9df2d7a6651e184da0d8ae0c
 ```
 
 It keeps terrain at z=0.0026, pushes disabled, corrected bridge active, and the
-teacher-continuity trust region. It adds only narrow anti-reverse and base-height
-pressure:
+teacher-continuity trust region. It keeps the inherited mild teacher-continuity
+contact terms, but does not return to the broad `phase2-z005-support` recipe.
+The explicit new pressure is narrow anti-reverse and base-height/pitch:
 
 ```text
 forward_wrong_direction_scale:              -6.0
