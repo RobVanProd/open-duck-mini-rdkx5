@@ -4200,3 +4200,19 @@ grounded, including seed 5. It is still not a deployable walking policy because
 the x=0.08 behavior is slow and double-support dominant. The next training
 target is now narrower: preserve the grounded-start stability and corrected
 envelope while increasing single-support/forward progress.
+
+## Playground Reset Contract Patch
+
+The Playground reset randomization is now configurable without changing its
+defaults:
+
+```text
+RobVanProd/Open_Duck_Playground
+branch: codex/forward-progress-reward
+commit: 4af95c9 sim: expose reset randomization config
+```
+
+The RDK training wrapper forwards reset flags, so future Colab training can
+explicitly use the grounded-home contract (`xy=0`, `yaw=0`, qpos multiplier
+`1.0`, base qvel `0`) instead of the broad randomized reset that produced the
+seed-5 no-contact state.

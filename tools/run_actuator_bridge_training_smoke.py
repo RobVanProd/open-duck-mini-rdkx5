@@ -262,6 +262,15 @@ def build_command(args: argparse.Namespace, output_dir: Path) -> list[str]:
         "--command_resample_steps": args.command_resample_steps,
         "--zero_command_probability": args.zero_command_probability,
         "--head_range_factor": args.head_range_factor,
+        "--reset_base_xy_jitter_m": args.reset_base_xy_jitter_m,
+        "--reset_yaw_jitter_rad": args.reset_yaw_jitter_rad,
+        "--reset_actuator_qpos_multiplier_min": (
+            args.reset_actuator_qpos_multiplier_min
+        ),
+        "--reset_actuator_qpos_multiplier_max": (
+            args.reset_actuator_qpos_multiplier_max
+        ),
+        "--reset_base_qvel_jitter": args.reset_base_qvel_jitter,
         "--dr_friction_min": args.dr_friction_min,
         "--dr_friction_max": args.dr_friction_max,
         "--dr_frictionloss_scale_min": args.dr_frictionloss_scale_min,
@@ -944,6 +953,11 @@ def main() -> int:
     parser.add_argument("--command-resample-steps", type=int, default=None)
     parser.add_argument("--zero-command-probability", type=float, default=None)
     parser.add_argument("--head-range-factor", type=float, default=None)
+    parser.add_argument("--reset-base-xy-jitter-m", type=float, default=None)
+    parser.add_argument("--reset-yaw-jitter-rad", type=float, default=None)
+    parser.add_argument("--reset-actuator-qpos-multiplier-min", type=float, default=None)
+    parser.add_argument("--reset-actuator-qpos-multiplier-max", type=float, default=None)
+    parser.add_argument("--reset-base-qvel-jitter", type=float, default=None)
     parser.add_argument("--dr-friction-min", type=float, default=None)
     parser.add_argument("--dr-friction-max", type=float, default=None)
     parser.add_argument("--dr-frictionloss-scale-min", type=float, default=None)
@@ -1246,6 +1260,15 @@ def main() -> int:
             "command_resample_steps": args.command_resample_steps,
             "zero_command_probability": args.zero_command_probability,
             "head_range_factor": args.head_range_factor,
+            "reset_base_xy_jitter_m": args.reset_base_xy_jitter_m,
+            "reset_yaw_jitter_rad": args.reset_yaw_jitter_rad,
+            "reset_actuator_qpos_multiplier_min": (
+                args.reset_actuator_qpos_multiplier_min
+            ),
+            "reset_actuator_qpos_multiplier_max": (
+                args.reset_actuator_qpos_multiplier_max
+            ),
+            "reset_base_qvel_jitter": args.reset_base_qvel_jitter,
             "dr_friction_min": args.dr_friction_min,
             "dr_friction_max": args.dr_friction_max,
             "dr_frictionloss_scale_min": args.dr_frictionloss_scale_min,

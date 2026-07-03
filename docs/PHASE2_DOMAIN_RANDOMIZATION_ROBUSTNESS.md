@@ -3004,3 +3004,43 @@ artifact. It does not make the candidate deployable: the moving-command gait is
 still very slow and nearly all double support. The next Phase 2 recipe should
 start from this explicit reset contract and improve single-support/forward
 progress while keeping corrected-envelope excess at zero.
+
+### Playground Reset Contract Patch
+
+The local Playground branch now exposes the reset randomization as default-off
+runner overrides while preserving the original defaults:
+
+```text
+repo:   RobVanProd/Open_Duck_Playground
+branch: codex/forward-progress-reward
+commit: 4af95c9 sim: expose reset randomization config
+
+--reset_base_xy_jitter_m
+--reset_yaw_jitter_rad
+--reset_actuator_qpos_multiplier_min
+--reset_actuator_qpos_multiplier_max
+--reset_base_qvel_jitter
+```
+
+The RDK training wrapper forwards matching hyphenated flags to Playground:
+
+```text
+--reset-base-xy-jitter-m
+--reset-yaw-jitter-rad
+--reset-actuator-qpos-multiplier-min
+--reset-actuator-qpos-multiplier-max
+--reset-base-qvel-jitter
+```
+
+For the grounded-home walking contract, use:
+
+```text
+--reset-base-xy-jitter-m 0
+--reset-yaw-jitter-rad 0
+--reset-actuator-qpos-multiplier-min 1
+--reset-actuator-qpos-multiplier-max 1
+--reset-base-qvel-jitter 0
+```
+
+Unsupported-start recovery is now a separate robustness target, not the default
+walking gate.
