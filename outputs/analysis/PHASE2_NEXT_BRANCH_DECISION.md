@@ -67,6 +67,13 @@ Preferred branch:
 PHASE_AWARE_LIVE_ORACLE_SINGLE_SUPPORT_PRESERVATION
 ```
 
+Dry-run command plan:
+
+```text
+outputs/analysis/phase2_rate165_single_support_live_oracle_iter2_plan/LIVE_ORACLE_DAGGER_ITERATION.md
+outputs/analysis/phase2_rate165_single_support_live_oracle_iter2_plan/live_oracle_dagger_iteration.json
+```
+
 Required properties:
 
 - warm-start from the corrected rate165 candidate or its rate165 PPO-loc
