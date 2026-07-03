@@ -4125,3 +4125,32 @@ The next branch should first audit whether the z=0.0026 reset distribution is
 physically representative of the real start protocol, or build a recovery oracle
 that survives seed-5-like no-contact resets before using those states for
 student training.
+
+## Phase 2 z=0.0026 Reset Distribution Audit
+
+The reset distribution audit directly sampled the current Playground
+`rough_terrain_backlash` z=`0.0026` reset state over seeds `0-31`:
+
+```text
+artifact: outputs/analysis/PHASE2_Z0026_RESET_DISTRIBUTION_AUDIT_20260703.md
+status: HOLD_RESET_DISTRIBUTION_CONTAINS_NO_CONTACT_STARTS
+
+support counts:
+  double 16/32
+  left    8/32
+  right   6/32
+  none    2/32
+```
+
+The reset implementation randomizes actuator qpos by a `[0.5, 1.5]` multiplier
+around home. Seed 5 is one of the unsupported starts: both feet are above the
+contact manifold (`left_z=0.0312 m`, `right_z=0.0682 m`) and actuator posture is
+`1.0251 rad` L2 from home, with the largest deltas at `right_knee=0.6692 rad`
+and `left_knee=0.6258 rad`.
+
+This moves the seed-5 z=0.0026 blocker up one level: the sim reset distribution
+itself can create unsupported initial states that do not match a normal
+grounded home start. The next decision is not another student scale-up; it is
+whether the reset contract should be constrained to physically representative
+grounded starts, or whether Phase 2 must explicitly learn recovery from
+unsupported starts before those states are used for DAgger labels.

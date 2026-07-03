@@ -2891,3 +2891,46 @@ while breaking x=0.0 command preservation. The next useful branch needs either
 a support-recovery oracle that actually survives seed-5-like no-contact resets,
 or an explicit reset-distribution audit against the real robot start protocol.
 Do not silently change the gate to hide the reset manifold issue.
+
+### z=0.0026 Reset Distribution Audit
+
+Artifact:
+
+```text
+outputs/analysis/PHASE2_Z0026_RESET_DISTRIBUTION_AUDIT_20260703.md
+```
+
+Status:
+
+```text
+HOLD_RESET_DISTRIBUTION_CONTAINS_NO_CONTACT_STARTS
+```
+
+The active Playground reset distribution for `rough_terrain_backlash` at
+z=`0.0026` was sampled over seeds `0-31`. The reset implementation randomizes
+base xy by `[-0.05, 0.05] m`, yaw by `[-3.14, 3.14] rad`, actuator qpos by a
+per-joint multiplier `[0.5, 1.5]`, and base qvel by `[-0.05, 0.05]`, then
+initializes ctrl to the randomized actuator qpos.
+
+Support at reset:
+
+```text
+double: 16/32
+left:    8/32
+right:   6/32
+none:    2/32
+```
+
+Seed 5 is one of the no-contact starts. At reset both feet are above the ground
+contact manifold (`left_z=0.0312 m`, `right_z=0.0682 m`) with actuator posture
+`L2=1.0251 rad` from home. The largest home deltas are `right_knee=0.6692 rad`,
+`left_knee=0.6258 rad`, `right_hip_pitch=-0.2838 rad`, and
+`right_ankle=0.2553 rad`.
+
+This confirms the current z=0.0026 seed-5 blocker is not just a policy
+rollout failure; it is produced by a broad randomized reset distribution that
+can start the robot outside the standing support manifold. The next branch must
+decide whether that reset distribution is physically representative of the real
+robot start protocol. If not, constrain the sim reset for evaluation/training
+explicitly and document the contract change. If yes, build a recovery source
+that survives unsupported starts before relabeling those states.
