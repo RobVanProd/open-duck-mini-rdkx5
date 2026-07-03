@@ -51,6 +51,8 @@ REVIEW_ARTIFACTS = [
     "outputs/analysis/phase2_z005_seed5_failure_diagnostic.json",
     "outputs/analysis/PHASE2_Z005_SUPPORT_NEXT_RECIPE.md",
     "outputs/analysis/phase2_z005_support_next_recipe.json",
+    "outputs/analysis/PHASE2_Z005_SUPPORT_LIMIT198_A100_RESULT.md",
+    "outputs/analysis/phase2_z005_support_limit198_a100_result.json",
     "outputs/analysis/PHASE2_Z005_MOTION_FLOOR_NEXT_RECIPE.md",
     "outputs/analysis/phase2_z005_motion_floor_next_recipe.json",
     "outputs/analysis/PHASE2_Z002_TRACKING_MARGIN_NEXT_RECIPE.md",

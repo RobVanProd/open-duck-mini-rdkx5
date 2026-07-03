@@ -1,0 +1,101 @@
+{
+  "artifact": {
+    "path": "outputs/analysis/colab_cli/open-duck-phase2-a100-phase2-z005-support-20260703T163436Z/open_duck_colab_cli_phase2-z005-support_20260703T163548Z_artifacts.tar.gz",
+    "sha256": "45652179cb0d62d9a2f462fd7c25956c438712283a4bb722b8ddf3e9f751465d",
+    "size_bytes": 4312504
+  },
+  "colab_session": "open-duck-phase2-a100",
+  "compact_sweep": {
+    "best_available_checkpoint": "40960",
+    "best_available_decision": "HOLD_PARTIAL_CANDIDATE_CHECKPOINT",
+    "rows": [
+      {
+        "checkpoint": "40960",
+        "command_x": 0.0,
+        "max_pitch_vel_p95_rad_s": 1.1325,
+        "max_tracking_p95_rad": 0.1889,
+        "mean_local_vx_m_s": -0.0089,
+        "status": "PASS_CANDIDATE_SIM_GATE",
+        "track_ratio": null
+      },
+      {
+        "checkpoint": "40960",
+        "command_x": 0.08,
+        "max_pitch_vel_p95_rad_s": 1.573,
+        "max_tracking_p95_rad": 0.3011,
+        "mean_local_vx_m_s": 0.0142,
+        "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+        "track_ratio": 0.178
+      },
+      {
+        "checkpoint": "81920",
+        "command_x": 0.0,
+        "max_pitch_vel_p95_rad_s": 1.0737,
+        "max_tracking_p95_rad": 0.1877,
+        "mean_local_vx_m_s": -0.0068,
+        "status": "PASS_CANDIDATE_SIM_GATE",
+        "track_ratio": null
+      },
+      {
+        "checkpoint": "81920",
+        "command_x": 0.08,
+        "max_pitch_vel_p95_rad_s": 1.5993,
+        "max_tracking_p95_rad": 0.3123,
+        "mean_local_vx_m_s": 0.0116,
+        "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+        "track_ratio": 0.1449
+      },
+      {
+        "checkpoint": "122880",
+        "command_x": 0.0,
+        "max_pitch_vel_p95_rad_s": 1.1976,
+        "max_tracking_p95_rad": 0.1907,
+        "mean_local_vx_m_s": -0.0077,
+        "status": "HOLD_CANDIDATE_TARGET_VELOCITY",
+        "track_ratio": null
+      },
+      {
+        "checkpoint": "122880",
+        "command_x": 0.08,
+        "max_pitch_vel_p95_rad_s": 1.4584,
+        "max_tracking_p95_rad": 0.3077,
+        "mean_local_vx_m_s": 0.0061,
+        "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+        "track_ratio": 0.0757
+      }
+    ]
+  },
+  "decision": "Do not promote this z=0.005 support PPO continuation. It preserved the corrected velocity envelope but regressed forward motion below compact sweep thresholds.",
+  "generated_at": "2026-07-03T17:47:11Z",
+  "hardware": "A100",
+  "jax_pin": "0.7.2",
+  "next_action": "Use a teacher/live-oracle action continuity or single-support-preservation training mechanism rather than another scalar support/base-height reward tweak.",
+  "remote_restore_checkpoint_path": "/content/open-duck-mini-rdkx5/outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0_checkpoint",
+  "restore_checkpoint": "outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0_checkpoint",
+  "robot_touched": false,
+  "scope": "Offline A100 training only. No robot, SSH, deploy, grounded replay, or runtime behavior change.",
+  "ssh_used": false,
+  "status": "HOLD_Z005_SUPPORT_LOW_FORWARD_PROGRESS",
+  "training": {
+    "elapsed_s": 750.0470412679999,
+    "exports": [
+      {
+        "onnx_sha256": "31260d5efb629203556bbf8e22b6155c82b22567dcf33ece31be98f33afbe727",
+        "reward": 28.378294,
+        "step": 40960
+      },
+      {
+        "onnx_sha256": "7d26c6f6cdc3df07931eedd0f8caa213f27616658ce381628f92913849d28aeb",
+        "reward": 28.327553,
+        "step": 81920
+      },
+      {
+        "onnx_sha256": "ebde0f0802eaa154704fe22bedc6db2bfd617aea227e79afe22b93032b07acad",
+        "reward": 31.00351,
+        "step": 122880
+      }
+    ],
+    "status": "PASS_SMOKE_RUN"
+  },
+  "workflow": "phase2-z005-support"
+}
