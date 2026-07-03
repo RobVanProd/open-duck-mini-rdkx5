@@ -128,6 +128,8 @@ REVIEW_ARTIFACTS = [
     "outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate160_x008_z0026_gentle_push_gate.json",
     "outputs/analysis/PHASE2_LIMIT198_TRANSITION_PRESERVING_LIVE_ORACLE_ITER3_PHASE_MODULATED_RATE160_X0_GATE.md",
     "outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate160_x0_gate.json",
+    "outputs/analysis/PHASE2_LIMIT198_TRANSITION_PRESERVING_LIVE_ORACLE_ITER3_PHASE_MODULATED_RATE160_X0_Z0026_GENTLE_PUSH_GATE.md",
+    "outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate160_x0_z0026_gentle_push_gate.json",
     "outputs/analysis/PHASE2_LIMIT198_TRANSITION_PRESERVING_LIVE_ORACLE_ITER3_PHASE_MODULATED_RATE160_DECISION.md",
     "outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate160_decision.json",
     "policy/candidates/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate160_20260703/README.md",

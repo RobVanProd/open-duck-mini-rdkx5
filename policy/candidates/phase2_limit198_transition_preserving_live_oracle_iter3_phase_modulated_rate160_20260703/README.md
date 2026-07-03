@@ -14,6 +14,7 @@ screen that held `rate180`:
 - x=0.08 no-push: `8/8` seeds, `0` falls, `0` velocity excess
 - x=0.08 gentle-push: `8/8` seeds, `0` falls, `0` velocity excess
 - x=0.0 no-push: `8/8` seeds, `0` falls, `0` velocity excess
+- x=0.0 gentle-push: `8/8` seeds, `0` falls, `0` velocity excess
 
 This candidate is not a grounded-test authorization by itself. Robot validation
 remains a separate operator-approved step.
@@ -54,6 +55,15 @@ remains a separate operator-approved step.
 - max velocity excess: `0.0 rad/s`
 - max tracking p95: `0.033672 rad`
 - double support: `100.0%`
+
+### x=0.0 gentle-push
+
+- mean vx: `0.0003 m/s`
+- max pitch vel p95: `0.1490 rad/s`
+- max velocity excess: `0.0 rad/s`
+- max tracking p95: `0.0365 rad`
+- double support: `100.0%`
+- push success: `0.9704`
 
 ## Source
 
