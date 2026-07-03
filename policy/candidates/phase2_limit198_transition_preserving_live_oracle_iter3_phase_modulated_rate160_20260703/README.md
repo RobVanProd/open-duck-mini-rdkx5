@@ -19,6 +19,11 @@ screen that held `rate180`:
 This candidate is not a grounded-test authorization by itself. Robot validation
 remains a separate operator-approved step.
 
+The candidate was also screened on `rough_terrain_backlash` at z=0.005,
+`x=0.08`, no push. It stayed upright and moving for 8/8 seeds, but held on
+corrected max target-velocity excess (`0.4799 rad/s`), so it is not promoted to
+the z=0.005 terrain rung.
+
 ## Files
 
 - `candidate.onnx`
@@ -70,3 +75,4 @@ remains a separate operator-approved step.
 - manifest: `outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_run/live_oracle_dagger_aggregate_manifest.json`
 - fit report: `outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_student_rate160/PHASE_MODULATED_BC_STUDENT.md`
 - decision: `outputs/analysis/PHASE2_LIMIT198_TRANSITION_PRESERVING_LIVE_ORACLE_ITER3_PHASE_MODULATED_RATE160_DECISION.md`
+- z=0.005 decision: `outputs/analysis/PHASE2_LIMIT198_TRANSITION_PRESERVING_LIVE_ORACLE_ITER3_PHASE_MODULATED_RATE160_Z005_DECISION.md`
