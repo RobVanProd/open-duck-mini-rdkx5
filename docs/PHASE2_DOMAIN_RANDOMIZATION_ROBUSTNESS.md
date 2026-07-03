@@ -2934,3 +2934,41 @@ decide whether that reset distribution is physically representative of the real
 robot start protocol. If not, constrain the sim reset for evaluation/training
 explicitly and document the contract change. If yes, build a recovery source
 that survives unsupported starts before relabeling those states.
+
+### z=0.0026 Home-Support Reset Diagnostic
+
+Artifact:
+
+```text
+outputs/analysis/PHASE2_Z0026_HOME_SUPPORT_RESET_DIAGNOSTIC_DECISION_20260703.md
+```
+
+Status:
+
+```text
+HOLD_Z0026_HOME_SUPPORT_LOW_PROGRESS
+```
+
+An eval-only `--reset-mode home-support` was added to the closed-loop evaluator
+and seed-sweep harness. The default remains `playground`. `home-support` starts
+from sim home qpos, zero qvel, and home ctrl before the policy loop, which
+tests the normal grounded-start contract separately from unsupported-start
+recovery.
+
+The preserved z=0.0026 teacher-continuity `81920` parent was screened for 2 s
+over seeds `0-7` under home-support reset:
+
+```text
+x=0.08: 0/8 falls, 8/8 duration complete, but HOLD_CANDIDATE_TRACKING
+        mean_vx=0.0248 m/s, track_ratio=0.3099, max_tracking_p95=0.2054,
+        p95_vel_excess=0, double_support=92%
+
+x=0.0:  0/8 falls, 8/8 duration complete, PASS_CANDIDATE_SIM_GATE
+        mean_vx=0.0051 m/s, p95_vel_excess=0, double_support=100%
+```
+
+This confirms the old seed-5 fall was reset-distribution driven: under
+grounded-home reset it disappears. The parent still is not promotable, because
+the moving-command behavior is too slow and double-support dominant. Future
+gates must explicitly separate the grounded walking reset contract from an
+unsupported-start recovery contract.

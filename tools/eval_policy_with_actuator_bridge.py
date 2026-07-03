@@ -636,6 +636,8 @@ def run_closed_loop_worker(args) -> dict:
         cmd.extend(["--terrain-hfield-z-scale", str(args.terrain_hfield_z_scale)])
     if args.reset_settle_ticks:
         cmd.extend(["--reset-settle-ticks", str(args.reset_settle_ticks)])
+    if args.reset_mode != "playground":
+        cmd.extend(["--reset-mode", args.reset_mode])
     env = build_jax_env(args.jax_platform, args.jax_platforms)
     try:
         result = subprocess.run(
@@ -1409,6 +1411,16 @@ def main() -> int:
         ),
     )
     parser.add_argument(
+        "--reset-mode",
+        choices=["playground", "home-support"],
+        default="playground",
+        help=(
+            "Eval-only diagnostic reset override. 'playground' preserves the "
+            "environment's randomized reset. 'home-support' starts from sim "
+            "home qpos, zero qvel, and home ctrl before the policy loop."
+        ),
+    )
+    parser.add_argument(
         "--_closed-loop-worker",
         action="store_true",
         help=argparse.SUPPRESS,
@@ -1517,6 +1529,7 @@ def main() -> int:
                         ),
                         terrain_hfield_z_scale=args.terrain_hfield_z_scale,
                         reset_settle_ticks=args.reset_settle_ticks,
+                        reset_mode=args.reset_mode,
                     )
                 )
             if args._closed_loop_worker_json:

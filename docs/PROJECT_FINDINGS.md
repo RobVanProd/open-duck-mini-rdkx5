@@ -4154,3 +4154,30 @@ grounded home start. The next decision is not another student scale-up; it is
 whether the reset contract should be constrained to physically representative
 grounded starts, or whether Phase 2 must explicitly learn recovery from
 unsupported starts before those states are used for DAgger labels.
+
+## Phase 2 z=0.0026 Home-Support Reset Diagnostic
+
+The evaluator now has an explicit eval-only reset override:
+
+```text
+--reset-mode playground     # default, existing randomized reset
+--reset-mode home-support   # sim home qpos, zero qvel, home ctrl
+```
+
+The `81920` teacher-continuity parent was screened over seeds `0-7` at z=`0.0026`
+with `home-support` reset:
+
+```text
+artifact: outputs/analysis/PHASE2_Z0026_HOME_SUPPORT_RESET_DIAGNOSTIC_DECISION_20260703.md
+status: HOLD_Z0026_HOME_SUPPORT_LOW_PROGRESS
+
+x=0.08: 0/8 falls, 8/8 duration complete, track_ratio=0.3099, max_tracking_p95=0.2054
+x=0.0:  0/8 falls, 8/8 duration complete, PASS_CANDIDATE_SIM_GATE
+```
+
+This separates two blockers cleanly. The earlier seed-5 fall was caused by the
+broad randomized reset producing an unsupported no-contact start. Under
+grounded-home reset, seed 5 no longer falls. The parent still is not a walking
+candidate because x=0.08 remains low-progress and double-support dominant.
+Future Phase 2 gates must state which reset contract they use: grounded normal
+walking starts, or a separate unsupported-start recovery robustness gate.

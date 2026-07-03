@@ -81,6 +81,7 @@ class ClosedLoopConfig:
     push_recovery_min_base_height_m: float = 0.08
     terrain_hfield_z_scale: float | None = None
     reset_settle_ticks: int = 0
+    reset_mode: str = "playground"
 
 
 @contextlib.contextmanager
@@ -1378,6 +1379,51 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
         obs = env._get_obs(data, state.info, contact)
         return state.replace(data=data, obs=obs)
 
+    def apply_eval_reset_mode(state):
+        if config.reset_mode == "playground":
+            return state
+        if config.reset_mode != "home-support":
+            raise ValueError(f"unsupported reset_mode: {config.reset_mode}")
+        data = mjx_env.init(
+            env.mjx_model,
+            qpos=env._init_q,
+            qvel=jp.zeros(env.mjx_model.nv),
+            ctrl=env._default_actuator,
+        )
+        contact = jp.array(
+            [
+                geoms_colliding(data, geom_id, env._floor_geom_id)
+                for geom_id in env._feet_geom_id
+            ]
+        )
+        state.info["command"] = command
+        state.info["last_act"] = jp.zeros(env.mjx_model.nu)
+        state.info["last_last_act"] = jp.zeros(env.mjx_model.nu)
+        state.info["last_last_last_act"] = jp.zeros(env.mjx_model.nu)
+        state.info["motor_targets"] = env._default_actuator
+        state.info["actuator_bridge_target_history"] = jp.tile(
+            env._default_actuator,
+            env._config.actuator_bridge.delay_max_ticks + 1,
+        )
+        state.info["actuator_bridge_applied_targets"] = env._default_actuator
+        state.info["target_velocity"] = jp.zeros(env.mjx_model.nu)
+        state.info["last_contact"] = contact
+        state.info["feet_air_time"] = jp.zeros_like(state.info["feet_air_time"])
+        state.info["swing_peak"] = jp.zeros_like(state.info["swing_peak"])
+        state.info["foot_stance_height"] = data.site_xpos[env._feet_site_id][..., -1]
+        state.info["foot_stance_forward_x"] = env._foot_forward_x(data)
+        state.info["swing_peak_lift"] = jp.zeros_like(state.info["swing_peak_lift"])
+        state.info["swing_peak_forward_advance"] = jp.zeros_like(
+            state.info["swing_peak_forward_advance"]
+        )
+        state.info["forward_swing_steps"] = jp.zeros_like(
+            state.info["forward_swing_steps"]
+        )
+        state.info["action_history"] = jp.zeros_like(state.info["action_history"])
+        state.info["imu_history"] = jp.zeros_like(state.info["imu_history"])
+        obs = env._get_obs(data, state.info, contact)
+        return state.replace(data=data, obs=obs, done=jp.zeros_like(state.done))
+
     refresh_obs_jit = jax.jit(refresh_obs)
     prepare_step_jit = jax.jit(prepare_step)
     apply_motor_target_runner = (
@@ -1443,6 +1489,7 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
         "reward_overrides_applied": applied_reward_overrides,
         "terrain_override": terrain_override,
         "reset_settle_ticks": int(config.reset_settle_ticks),
+        "reset_mode": config.reset_mode,
         "reset_settle_duration_s": float(config.reset_settle_ticks) * float(env.dt),
         "reset_settle_description": (
             "Eval-only default-off diagnostic. When nonzero, reset physics is "
@@ -1458,6 +1505,7 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
         params = mode_params(mode, config.fit)
         state = env.reset(jax.random.PRNGKey(config.seed))
         state.info["command"] = command
+        state = apply_eval_reset_mode(state)
         state = refresh_obs_jit(state)
         if config.reset_settle_ticks > 0:
             settle_target = state.info["motor_targets"]
