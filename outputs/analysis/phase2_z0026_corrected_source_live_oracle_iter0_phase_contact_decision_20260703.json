@@ -1,0 +1,52 @@
+{
+  "status": "HOLD_ITER0_PHASE_CONTACT_LOW_PROGRESS",
+  "data_iteration": {
+    "status": "PASS_LIVE_ORACLE_DAGGER_ITERATION_DATA_READY",
+    "md": "outputs/analysis/phase2_z0026_corrected_source_live_oracle_iter0_run/LIVE_ORACLE_DAGGER_ITERATION.md",
+    "json": "outputs/analysis/phase2_z0026_corrected_source_live_oracle_iter0_run/live_oracle_dagger_iteration.json",
+    "aggregate_md": "outputs/analysis/phase2_z0026_corrected_source_live_oracle_iter0_run/LIVE_ORACLE_DAGGER_AGGREGATE_MANIFEST.md",
+    "aggregate_json": "outputs/analysis/phase2_z0026_corrected_source_live_oracle_iter0_run/live_oracle_dagger_aggregate_manifest.json",
+    "dataset_id": "3cd753b3ccf6ef63",
+    "kept_entries": 18,
+    "samples": 13500,
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.0026,
+    "reset_mode": "home-support"
+  },
+  "student": {
+    "onnx": "outputs/analysis/phase2_z0026_corrected_source_live_oracle_iter0_phase_contact_student/candidate.onnx",
+    "onnx_sha256": "d6eaf8ed1d81e4adb9edb5858639da03e1b9001eaf99f13accdd2918029985f4",
+    "npz": "outputs/analysis/phase2_z0026_corrected_source_live_oracle_iter0_phase_contact_student/candidate_mlp.npz",
+    "npz_sha256": "8b257a56a48b31d04afe5cb9e41f2e5958029177dfcd2ae5b9fb0391a13f75bc",
+    "fit_status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE",
+    "samples": 13500,
+    "context_indices": [6, 97, 98, 99, 100],
+    "mae": 0.002194,
+    "p95_abs_error": 0.005862,
+    "max_abs_error": 0.015811,
+    "target_rate_p95_rad_s": 1.504374,
+    "target_rate_max_rad_s": 1.771649,
+    "onnx_verify_p95_abs_error": 0.00000012,
+    "onnx_verify_max_abs_error": 0.00000024
+  },
+  "x008_gate": {
+    "md": "outputs/analysis/PHASE2_Z0026_CORRECTED_SOURCE_LIVE_ORACLE_ITER0_PHASE_CONTACT_X008_GATE.md",
+    "json": "outputs/analysis/phase2_z0026_corrected_source_live_oracle_iter0_phase_contact_x008_gate.json",
+    "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+    "runs": 8,
+    "duration_complete": 8,
+    "falls": 0,
+    "mean_local_vx_m_s": 0.0106,
+    "track_ratio": 0.1326,
+    "body_pitch_p95_rad": 0.1156,
+    "base_height_min_m": 0.1523,
+    "max_pitch_vel_p95_rad_s": 1.6166,
+    "p95_vel_excess_rad_s": 0.0,
+    "max_vel_excess_rad_s": 0.0,
+    "max_tracking_p95_rad": 0.1642,
+    "single_support_pct": 8.8,
+    "double_support_pct": 91.2
+  },
+  "interpretation": "The student is stable and in-envelope but attenuates the corrected source gait into low-progress double support.",
+  "next": "Run another live-oracle iteration on the student's low-progress states or move to explicit state memory; do not promote and do not run robot validation."
+}

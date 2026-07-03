@@ -154,6 +154,14 @@ the strict corrected fitted-bridge tracking gate by:
   `--reset-mode home-support` to candidate rollouts. Future corrected
   live-oracle iterations for Phase 2 must use the current gate convention:
   `rough_terrain_backlash`, `z=0.0026`, `home-support`, corrected bridge.
+- Corrected `z=0.0026` live-oracle iteration 0 completed and produced a
+  phase/contact-modulated deployable student, but the student held the
+  `x=0.08` gate for low forward progress: `8/8` duration complete, no
+  corrected velocity excess, no falls, but track ratio `0.1326` and only
+  `8.8%` single support versus the source's `0.4130` track ratio and `27.7%`
+  single support. This closes the first corrected memoryless phase/contact
+  fit as stable-but-attenuated:
+  `outputs/analysis/PHASE2_Z0026_CORRECTED_SOURCE_LIVE_ORACLE_ITER0_PHASE_CONTACT_DECISION_20260703.md`.
 
 ## Blocking Step 0
 
@@ -270,6 +278,21 @@ outputs/analysis/PHASE2_PHASE1_RATE175_Z0026_X008_SOURCE_MANIFEST.md
 outputs/analysis/phase2_phase1_rate175_z0026_x008_source_manifest.json
 outputs/analysis/phase2_z0026_corrected_source_live_oracle_iter0_plan/LIVE_ORACLE_DAGGER_ITERATION.md
 outputs/analysis/phase2_z0026_corrected_source_live_oracle_iter0_plan/live_oracle_dagger_iteration.json
+```
+
+Corrected live-oracle iter0 phase/contact student hold:
+
+```text
+outputs/analysis/PHASE2_Z0026_CORRECTED_SOURCE_LIVE_ORACLE_ITER0_PHASE_CONTACT_DECISION_20260703.md
+outputs/analysis/phase2_z0026_corrected_source_live_oracle_iter0_phase_contact_decision_20260703.json
+outputs/analysis/phase2_z0026_corrected_source_live_oracle_iter0_run/LIVE_ORACLE_DAGGER_ITERATION.md
+outputs/analysis/phase2_z0026_corrected_source_live_oracle_iter0_run/live_oracle_dagger_iteration.json
+outputs/analysis/phase2_z0026_corrected_source_live_oracle_iter0_run/LIVE_ORACLE_DAGGER_AGGREGATE_MANIFEST.md
+outputs/analysis/phase2_z0026_corrected_source_live_oracle_iter0_run/live_oracle_dagger_aggregate_manifest.json
+outputs/analysis/PHASE2_Z0026_CORRECTED_SOURCE_LIVE_ORACLE_ITER0_PHASE_CONTACT_STUDENT.md
+outputs/analysis/phase2_z0026_corrected_source_live_oracle_iter0_phase_contact_student.json
+outputs/analysis/PHASE2_Z0026_CORRECTED_SOURCE_LIVE_ORACLE_ITER0_PHASE_CONTACT_X008_GATE.md
+outputs/analysis/phase2_z0026_corrected_source_live_oracle_iter0_phase_contact_x008_gate.json
 ```
 
 ## Hypotheses

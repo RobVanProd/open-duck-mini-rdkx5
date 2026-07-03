@@ -1,0 +1,94 @@
+{
+  "activation": "swish",
+  "config": {
+    "batch_size": 512,
+    "learning_rate": 0.001,
+    "seed": 0,
+    "steps": 7000,
+    "target_rate_limit_rad_s": 1.75,
+    "target_rate_scale": 0.1
+  },
+  "context_hidden_sizes": [
+    64
+  ],
+  "context_indices": [
+    6,
+    97,
+    98,
+    99,
+    100
+  ],
+  "exported_onnx": "outputs/analysis/phase2_z0026_corrected_source_live_oracle_iter0_phase_contact_student/candidate.onnx",
+  "loss_rows": [
+    {
+      "loss": 0.2310749590396881,
+      "step": 1
+    },
+    {
+      "loss": 4.010404154541902e-05,
+      "step": 1000
+    },
+    {
+      "loss": 2.041835614363663e-05,
+      "step": 2000
+    },
+    {
+      "loss": 4.556639032671228e-05,
+      "step": 3000
+    },
+    {
+      "loss": 1.9638951926026493e-05,
+      "step": 4000
+    },
+    {
+      "loss": 1.8006439859163947e-05,
+      "step": 5000
+    },
+    {
+      "loss": 8.465786777378526e-06,
+      "step": 6000
+    },
+    {
+      "loss": 7.178623491199687e-06,
+      "step": 7000
+    }
+  ],
+  "manifest": "outputs/analysis/phase2_z0026_corrected_source_live_oracle_iter0_run/live_oracle_dagger_aggregate_manifest.json",
+  "modulation_scale": 0.5,
+  "onnx_verify": {
+    "max_abs_error": 2.384185791015625e-07,
+    "p95_abs_error": 1.1920928955078125e-07,
+    "path": "outputs/analysis/phase2_z0026_corrected_source_live_oracle_iter0_phase_contact_student/candidate.onnx",
+    "samples_checked": 64
+  },
+  "sample_weight": {
+    "max": 5.0,
+    "p50": 1.0,
+    "p95": 5.0,
+    "weighted_samples": 30804.0
+  },
+  "samples": 13500,
+  "saved_npz": "outputs/analysis/phase2_z0026_corrected_source_live_oracle_iter0_phase_contact_student/candidate_mlp.npz",
+  "status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE",
+  "target_rate": {
+    "max_rad_s": 1.771648645401001,
+    "p50_rad_s": 0.3376469016075134,
+    "p95_rad_s": 1.5043737888336182,
+    "p99_rad_s": 1.711028218269348,
+    "pair_count": 13482
+  },
+  "train_metrics": {
+    "mae": 0.0021937084813984107,
+    "max_abs_error": 0.01581120491027832,
+    "p50_abs_error": 0.0017133355140686035,
+    "p95_abs_error": 0.005862340331077576,
+    "p99_abs_error": 0.008243739604949951,
+    "pred_action_saturation_pct": 0.0,
+    "rmse": 0.0028775519506417085,
+    "samples": 13500
+  },
+  "trunk_hidden_sizes": [
+    512,
+    256
+  ]
+}
