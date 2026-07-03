@@ -1,0 +1,67 @@
+{
+  "generated_at": "2026-07-03T20:09:01Z",
+  "status": "HOLD_PHASE2_RATE180_GENTLE_PUSH_TARGET_VELOCITY",
+  "scope": "Offline robustness screen only. No robot, SSH, deploy, grounded replay, runtime behavior change, or training.",
+  "robot_touched": false,
+  "ssh_used": false,
+  "deploy_performed": false,
+  "grounded_replay_performed": false,
+  "training_started": false,
+  "candidate": {
+    "path": "policy/candidates/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate180_20260703/candidate.onnx",
+    "sha256": "b658c3380d1ad3dbd8912c988a3ff0e4b019735f220cf56351e9c783f328d5b1",
+    "baseline_no_push_status": "PASS_PHASE2_RATE180_CORRECTED_BRIDGE_GATES"
+  },
+  "gate": {
+    "path": "outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate180_x008_z0026_gentle_push_gate.json",
+    "sha256": "edf11e512b4749a338260a5cee9778939f22f5f1e51eabf4ee7b5002ab15b7b0",
+    "command_x": 0.08,
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.0026,
+    "reset_mode": "home-support",
+    "bridge_mode": "fitted",
+    "duration_s": 15.0,
+    "seeds": "0-7",
+    "eval_push_enable": true,
+    "eval_push_interval_min_s": 1.0,
+    "eval_push_interval_max_s": 1.5,
+    "eval_push_magnitude_min": 0.05,
+    "eval_push_magnitude_max": 0.1,
+    "push_recovery_window_s": 0.5
+  },
+  "summary": {
+    "runs": 8,
+    "falls": 0,
+    "duration_complete": 8,
+    "pass_seeds": 6,
+    "target_velocity_hold_seeds": 2,
+    "track_ratio_mean": 0.4448,
+    "mean_local_vx_m_s": 0.0356,
+    "body_pitch_p95_mean_rad": 0.1391,
+    "base_height_min_m": 0.1522,
+    "max_pitch_vel_p95_mean_rad_s": 1.7761,
+    "p95_vel_excess_mean_rad_s": 0.0,
+    "max_vel_excess_mean_rad_s": 0.0366,
+    "max_vel_excess_observed_rad_s": 0.1611,
+    "max_tracking_p95_mean_rad": 0.1866,
+    "push_success_mean": 0.9704
+  },
+  "hold_seeds": [
+    {
+      "seed": 1,
+      "status": "HOLD_CANDIDATE_TARGET_VELOCITY",
+      "track_ratio": 0.4538,
+      "max_vel_excess_rad_s": 0.1319,
+      "push_success": 1.0
+    },
+    {
+      "seed": 2,
+      "status": "HOLD_CANDIDATE_TARGET_VELOCITY",
+      "track_ratio": 0.4349,
+      "max_vel_excess_rad_s": 0.1611,
+      "push_success": 0.9231
+    }
+  ],
+  "decision": "The rate180 candidate remains the current no-push offline candidate, but it is not yet gentle-push robust at z=0.0026.",
+  "next_action": "Target push-time per-joint max-rate margin without reducing the no-push gait into standstill."
+}
