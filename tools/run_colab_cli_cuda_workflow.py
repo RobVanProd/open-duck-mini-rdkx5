@@ -176,6 +176,23 @@ def tar_filter(member: tarfile.TarInfo) -> tarfile.TarInfo | None:
             (
                 "outputs",
                 "analysis",
+                "phase2_rate165_ppo_loc_warmstart_candidate",
+                "candidate_mlp.npz",
+            ),
+            (
+                "outputs",
+                "analysis",
+                "phase2_rate165_ppo_loc_warmstart_candidate",
+                "candidate.onnx",
+            ),
+            (
+                "outputs",
+                "analysis",
+                "phase2_rate165_ppo_loc_warmstart_step0_checkpoint",
+            ),
+            (
+                "outputs",
+                "analysis",
                 "ppo_bc_command_conditioned_dagger_seed5_x0_step0_checkpoint",
             ),
             (
@@ -352,7 +369,7 @@ def required_rdk_package_paths(
         "phase2-z005-motion-floor",
     }
     if workflow not in phase2_terrain_workflows:
-        return []
+        return list(extra_paths or [])
     if workflow == "phase2-z002-tracking-margin":
         recipe_json = "outputs/analysis/phase2_z002_tracking_margin_next_recipe.json"
     elif workflow == "phase2-z002-teacher-continuity":
