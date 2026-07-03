@@ -104,6 +104,14 @@ the strict corrected fitted-bridge tracking gate by:
   soft-zero retries from this candidate. The collapse pocket needs a
   stabilizing zero-command support source/teacher, not only labels from the
   first 43 samples of the same failing rollout.
+- The older flat-terrain hard-seed zero-command recovery candidate was tested
+  as a possible support source for the current `rough_terrain_backlash`,
+  `z=0.0025`, seed-5 reset pocket and did not transfer. It fell at 59 samples
+  with reverse drift at `x=0.0`, although it stayed inside the corrected
+  velocity envelope:
+  `outputs/analysis/PHASE2_Z0025_FLAT_HARDSEED_SUPPORT_TRANSFER_DECISION_20260702.md`.
+  Do not use that flat-terrain candidate as the support source for the current
+  rough-terrain seed-5 repair.
 
 ## Blocking Step 0
 
@@ -179,6 +187,13 @@ Latest z=0.0025 seed-5 soft-zero student decision:
 ```text
 outputs/analysis/PHASE2_Z0025_LIVE_ORACLE_SEED5_SOFTZERO_ITER2_BC_DECISION_20260702.md
 outputs/analysis/phase2_z0025_live_oracle_seed5_softzero_iter2_bc_decision_20260702.json
+```
+
+Latest z=0.0025 flat hard-seed support transfer decision:
+
+```text
+outputs/analysis/PHASE2_Z0025_FLAT_HARDSEED_SUPPORT_TRANSFER_DECISION_20260702.md
+outputs/analysis/phase2_z0025_flat_hardseed_support_transfer_decision_20260702.json
 ```
 
 ## Hypotheses
