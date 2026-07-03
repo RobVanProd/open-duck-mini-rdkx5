@@ -2972,3 +2972,35 @@ grounded-home reset it disappears. The parent still is not promotable, because
 the moving-command behavior is too slow and double-support dominant. Future
 gates must explicitly separate the grounded walking reset contract from an
 unsupported-start recovery contract.
+
+### z=0.0026 z=0.0025-Candidate Home-Support Short Screen
+
+Artifact:
+
+```text
+outputs/analysis/PHASE2_Z0026_Z0025CANDIDATE_HOME_SUPPORT_SHORT_DECISION_20260703.md
+```
+
+Status:
+
+```text
+PASS_Z0026_HOME_SUPPORT_SHORT_STABILITY_SLOW
+```
+
+The existing z=0.0025 candidate was screened for 2 s at z=`0.0026` with the
+same grounded-home reset contract:
+
+```text
+x=0.08: 8/8 duration complete, 0/8 falls, PASS_CANDIDATE_SIM_GATE
+        mean_vx=0.0223 m/s, track_ratio=0.2784, max_tracking_p95=0.1868,
+        p95_vel_excess=0, double_support=96%
+
+x=0.0:  8/8 duration complete, 0/8 falls, PASS_CANDIDATE_SIM_GATE
+        mean_vx=0.0033 m/s, p95_vel_excess=0, double_support=100%
+```
+
+This reinforces that the prior seed-5 z=0.0026 collapse was a reset-contract
+artifact. It does not make the candidate deployable: the moving-command gait is
+still very slow and nearly all double support. The next Phase 2 recipe should
+start from this explicit reset contract and improve single-support/forward
+progress while keeping corrected-envelope excess at zero.

@@ -1,0 +1,49 @@
+{
+  "status": "PASS_Z0026_HOME_SUPPORT_SHORT_STABILITY_SLOW",
+  "date": "2026-07-03",
+  "scope": "offline_short_screen_diagnostic_only",
+  "robot_tests": false,
+  "ssh": false,
+  "deploy": false,
+  "grounded_replay": false,
+  "candidate": "outputs/analysis/phase2_z0025_command_gated_bestrec70_rate1p9_targetlimited0999_candidate/candidate.onnx",
+  "task": "rough_terrain_backlash",
+  "terrain_hfield_z_scale": 0.0026,
+  "reset_mode": "home-support",
+  "x008_short": {
+    "artifact_md": "outputs/analysis/PHASE2_Z0026_Z0025CANDIDATE_HOME_SUPPORT_X008_SHORT.md",
+    "artifact_json": "outputs/analysis/phase2_z0026_z0025candidate_home_support_x008_short.json",
+    "duration_s": 2.0,
+    "seeds": "0-7",
+    "falls": 0,
+    "duration_complete": 8,
+    "status": "PASS_CANDIDATE_SIM_GATE",
+    "mean_vx_m_s": 0.0223,
+    "track_ratio": 0.2784,
+    "max_pitch_vel_p95_rad_s": 1.8717,
+    "p95_vel_excess": 0.0,
+    "max_tracking_p95_rad": 0.1868,
+    "single_support_pct": 4.0,
+    "double_support_pct": 96.0
+  },
+  "x000_short": {
+    "artifact_md": "outputs/analysis/PHASE2_Z0026_Z0025CANDIDATE_HOME_SUPPORT_X000_SHORT.md",
+    "artifact_json": "outputs/analysis/phase2_z0026_z0025candidate_home_support_x000_short.json",
+    "duration_s": 2.0,
+    "seeds": "0-7",
+    "falls": 0,
+    "duration_complete": 8,
+    "status": "PASS_CANDIDATE_SIM_GATE",
+    "mean_vx_m_s": 0.0033,
+    "max_pitch_vel_p95_rad_s": 2.7472,
+    "p95_vel_excess": 0.0,
+    "max_tracking_p95_rad": 0.1901,
+    "double_support_pct": 100.0
+  },
+  "decision": "The z=0.0025 candidate survives z=0.0026 short screens under home-support reset, but remains very slow and double-support dominant at x=0.08.",
+  "next": [
+    "keep reset contract explicit",
+    "improve single-support and forward progress under corrected bridge envelope",
+    "run full-duration gate under selected reset contract before robot validation"
+  ]
+}

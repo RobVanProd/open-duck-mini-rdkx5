@@ -4181,3 +4181,22 @@ grounded-home reset, seed 5 no longer falls. The parent still is not a walking
 candidate because x=0.08 remains low-progress and double-support dominant.
 Future Phase 2 gates must state which reset contract they use: grounded normal
 walking starts, or a separate unsupported-start recovery robustness gate.
+
+## Phase 2 z=0.0026 z=0.0025-Candidate Home-Support Short Screen
+
+The current z=0.0025 corrected-bridge candidate was re-screened at z=`0.0026`
+using the explicit home-support reset:
+
+```text
+artifact: outputs/analysis/PHASE2_Z0026_Z0025CANDIDATE_HOME_SUPPORT_SHORT_DECISION_20260703.md
+status: PASS_Z0026_HOME_SUPPORT_SHORT_STABILITY_SLOW
+
+x=0.08: 8/8 duration complete, 0/8 falls, track_ratio=0.2784, max_tracking_p95=0.1868
+x=0.0:  8/8 duration complete, 0/8 falls, mean_vx=0.0033, p95_vel_excess=0
+```
+
+The candidate survives z=0.0026 short screens once the reset contract is
+grounded, including seed 5. It is still not a deployable walking policy because
+the x=0.08 behavior is slow and double-support dominant. The next training
+target is now narrower: preserve the grounded-start stability and corrected
+envelope while increasing single-support/forward progress.
