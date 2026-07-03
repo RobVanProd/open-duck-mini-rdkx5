@@ -1,0 +1,41 @@
+{
+  "status": "HOLD_MOTION_PRESERVE_STANDSTILL_REGRESSION",
+  "summary": "Tiny local CPU motion-preservation PPO smoke exported an ONNX, but direct compact gates show x=0.08 regressed to planted double-support standstill.",
+  "artifact": {
+    "onnx": "outputs/phase2_domain_randomization/stage_a_rate165_motion_preserve_cpu_smoke/smoke_20260703T130458Z_cpu/2026_07_03_090613_2240.onnx",
+    "onnx_sha256": "6ec74a1e418e5725c351ffbb8dadc11b4f4619846d3c82be5c12048295cb157c",
+    "manifest": "outputs/phase2_domain_randomization/stage_a_rate165_motion_preserve_cpu_smoke/smoke_20260703T130458Z_cpu/smoke_manifest.final.json",
+    "manifest_status": "HOLD_SMOKE_EXCEPTION",
+    "elapsed_s": 236.6348011489972
+  },
+  "x008_compact_gate": {
+    "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+    "evidence_md": "outputs/analysis/PHASE2_RATE165_MOTION_PRESERVE_CPU2240_X008_COMPACT_GATE.md",
+    "evidence_json": "outputs/analysis/phase2_rate165_motion_preserve_cpu2240_x008_compact_gate.json",
+    "duration_complete": 1,
+    "falls": 0,
+    "mean_local_vx_m_s": 0.003150187880382873,
+    "track_ratio": 0.039377348504785914,
+    "single_support_pct": 0.0,
+    "double_support_pct": 100.0,
+    "max_pitch_vel_p95_rad_s": 0.709642767906189,
+    "p95_velocity_excess_rad_s": 0.0,
+    "max_velocity_excess_rad_s": 0.0,
+    "max_tracking_p95_rad": 0.09669770300388336
+  },
+  "x000_compact_gate": {
+    "status": "PASS_CANDIDATE_SIM_GATE",
+    "evidence_md": "outputs/analysis/PHASE2_RATE165_MOTION_PRESERVE_CPU2240_X0_COMPACT_GATE.md",
+    "evidence_json": "outputs/analysis/phase2_rate165_motion_preserve_cpu2240_x0_compact_gate.json",
+    "duration_complete": 1,
+    "falls": 0,
+    "mean_local_vx_m_s": -0.002681973898015713,
+    "single_support_pct": 0.0,
+    "double_support_pct": 100.0,
+    "max_pitch_vel_p95_rad_s": 0.5342194437980651,
+    "p95_velocity_excess_rad_s": 0.0,
+    "max_velocity_excess_rad_s": 0.0,
+    "max_tracking_p95_rad": 0.061269813776016216
+  },
+  "decision": "Do not scale this exact motion-preservation PPO recipe to a longer A100 run. It is stable because it collapses to planted double support."
+}

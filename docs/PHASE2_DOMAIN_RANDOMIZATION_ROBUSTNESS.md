@@ -14,6 +14,39 @@ randomization while preserving:
 
 Robot validation is out of scope. No SSH, no deploy, no grounded replay.
 
+## 2026-07-03 Motion-Preservation CPU Smoke
+
+After the A100 Stage A standstill regression, a tiny local CPU smoke tested a
+stricter motion-preservation PPO recipe from the same corrected rate165
+warm-start before spending another remote run.
+
+Evidence:
+
+```text
+outputs/analysis/PHASE2_RATE165_MOTION_PRESERVE_CPU2240_RESULT.md
+outputs/analysis/phase2_rate165_motion_preserve_cpu2240_result.json
+outputs/analysis/PHASE2_RATE165_MOTION_PRESERVE_CPU2240_X008_COMPACT_GATE.md
+outputs/analysis/PHASE2_RATE165_MOTION_PRESERVE_CPU2240_X0_COMPACT_GATE.md
+```
+
+Result:
+
+- exported ONNX sha256:
+  `6ec74a1e418e5725c351ffbb8dadc11b4f4619846d3c82be5c12048295cb157c`
+- `x=0.08` compact gate: `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS`
+- mean local vx: `0.0032 m/s`
+- track ratio: `0.0394`
+- single support: `0%`
+- double support: `100%`
+- corrected velocity excess: `0`
+- `x=0.0` compact gate: `PASS_CANDIDATE_SIM_GATE`
+
+Decision: reject this exact motion-preservation PPO recipe. It preserves quiet
+in-envelope behavior but immediately loses the walking warm-start by returning
+to planted double support. Do not scale this recipe into another long A100 run.
+The next offline training attempt must preserve single-support walking before
+domain randomization escalation.
+
 ## 2026-07-03 Stage A Rate165 A100 Result
 
 Stage A narrow flat/no-push DR was launched on Colab A100 from the verified
