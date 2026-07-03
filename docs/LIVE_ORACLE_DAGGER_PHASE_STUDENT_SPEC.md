@@ -121,6 +121,16 @@ the strict corrected fitted-bridge tracking gate by:
   `outputs/analysis/PHASE2_Z0025_BEST_X0_RATE1P9_COMMAND_GATED_SUPPORT_SCREEN_DECISION_20260702.md`.
   Treat BEST as a support-recovery mechanism to constrain/distill, not as a
   deployable zero-command component.
+- The stronger existing baseline for the current z=0.0025 rung is the
+  target-limited command-gated candidate
+  `outputs/analysis/phase2_z0025_command_gated_bestrec70_rate1p9_targetlimited0999_candidate/candidate.onnx`
+  (`6ba399528c6bc7543e0a5a3a43c30b0804357a4b98e21d723cbb5188e446b2a2`).
+  It already passes the `rough_terrain_backlash`, `z=0.0025`,
+  corrected-bridge stronger-push gate at both `x=0.0` and `x=0.08` for `8/8`
+  seeds with no corrected velocity excess:
+  `outputs/analysis/PHASE2_Z0025_COMMAND_GATED_BESTREC70_RATE1P9_TARGETLIMITED0999_STRONGER_PUSH_DECISION_20260701.md`.
+  Its current blocker is the documented seed-5 support cliff at `z=0.0026+`,
+  not the already-solved z=0.0025 support pocket.
 
 ## Blocking Step 0
 
@@ -210,6 +220,13 @@ Latest z=0.0025 BEST x0 / rate1p9 x0.08 command-gated support screen:
 ```text
 outputs/analysis/PHASE2_Z0025_BEST_X0_RATE1P9_COMMAND_GATED_SUPPORT_SCREEN_DECISION_20260702.md
 outputs/analysis/phase2_z0025_best_x0_rate1p9_command_gated_support_screen_decision_20260702.json
+```
+
+Current z=0.0025 target-limited stronger-push baseline:
+
+```text
+outputs/analysis/PHASE2_Z0025_COMMAND_GATED_BESTREC70_RATE1P9_TARGETLIMITED0999_STRONGER_PUSH_DECISION_20260701.md
+outputs/analysis/phase2_z0025_command_gated_bestrec70_rate1p9_targetlimited0999_candidate/candidate.onnx
 ```
 
 ## Hypotheses

@@ -2,6 +2,9 @@
 
 status: `HOLD_BEST_X0_SUPPORT_REQUIRES_OVER_ENVELOPE_TRANSIENT`
 
+superseded_for_current_z0025_baseline_by:
+`outputs/analysis/PHASE2_Z0025_COMMAND_GATED_BESTREC70_RATE1P9_TARGETLIMITED0999_STRONGER_PUSH_DECISION_20260701.md`
+
 ## Summary
 
 A command-gated diagnostic policy confirmed that the current z=0.0025
@@ -88,12 +91,33 @@ support. A deployable repair should learn or synthesize an envelope-clean
 active support recovery in the current rough-terrain reset distribution, not
 reuse BEST's spike as the final component.
 
+## Reconciliation With Existing Target-Limited Candidate
+
+After this bounded screen, the existing target-limited command-gated candidate
+was re-checked:
+
+- candidate: `outputs/analysis/phase2_z0025_command_gated_bestrec70_rate1p9_targetlimited0999_candidate/candidate.onnx`
+- candidate_sha256: `6ba399528c6bc7543e0a5a3a43c30b0804357a4b98e21d723cbb5188e446b2a2`
+- decision: `outputs/analysis/PHASE2_Z0025_COMMAND_GATED_BESTREC70_RATE1P9_TARGETLIMITED0999_STRONGER_PUSH_DECISION_20260701.md`
+
+That candidate already passes the current `z=0.0025` rough-terrain stronger-push
+gate at both `x=0.0` and `x=0.08` for all eight seeds, with no corrected
+velocity-envelope excess:
+
+- `x=0.0`: 8/8 duration complete, mean `vx=-0.0004 m/s`, max pitch vel p95 mean `2.7605 rad/s`
+- `x=0.08`: 8/8 duration complete, mean track ratio `0.3821`, max pitch vel p95 mean `1.9132 rad/s`
+
+So the weaker BEST-only support screen should not become the next parent.
+For the current rung, the target-limited command-gated candidate is the stronger
+z=0.0025 baseline. Its documented blocker is the seed-5 support cliff at
+`z=0.0026+`, not the already-solved z=0.0025 support pocket.
+
 Recommended next branch:
 
 ```text
-Generate on-policy zero-command support recovery labels from the BEST catch,
-but constrain/rate-shape them before distillation and gate immediately on
-rough_terrain_backlash z=0.0025 seed5 x=0.0.
+Use the target-limited command-gated candidate as the current z=0.0025 baseline
+and target the smallest failing terrain step, z=0.0026, with seed-5 support
+survival as the first gate.
 ```
 
 Do not run full A100 training, robot validation, or another global scalar
