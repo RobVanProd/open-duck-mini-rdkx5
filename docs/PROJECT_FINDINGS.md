@@ -3996,3 +3996,50 @@ within the unchanged runtime contract: right-leg knee-bend-first geometry,
 contact-transition/single-support shaping, or a pivot to the pre-registered
 live-oracle/phase-aware student if reward-shaped feed-forward policies keep
 preserving double support.
+
+## Phase 2 z=0.0026 Support-Transfer Isolation
+
+The z=0.0025 support rung is no longer the active blocker. The target-limited
+command-gated candidate
+`outputs/analysis/phase2_z0025_command_gated_bestrec70_rate1p9_targetlimited0999_candidate/candidate.onnx`
+passes the corrected-bridge `rough_terrain_backlash`, z=0.0025,
+stronger-push x=0.08 and x=0.0 gates with 8/8 duration-complete seeds and zero
+corrected-envelope velocity excess.
+
+The current blocker is z=0.0026 moving-command support transfer:
+
+```text
+artifact: outputs/analysis/PHASE2_TARGETLIMITED0999_Z0026_SUPPORT_TRANSFER_DECISION_20260702.md
+status: HOLD_Z0026_MOVING_COMMAND_SUPPORT_TRANSFER
+```
+
+The z=0.0025 baseline survives a short z=0.0026 x=0.0 seed-5 screen
+in-envelope, but fails z=0.0026 x=0.08 seed 5 by reverse velocity and
+base-height collapse. The preserved teacher-continuity 81920 checkpoint is the
+closest z=0.0026 parent:
+
+```text
+artifact: outputs/analysis/PHASE2_Z0026_TEACHER_CONTINUITY_81920_FULL_GATE_X008.md
+x=0.08 z=0.0026: 7/8 duration complete
+seed 5: fall at 65 samples, mean vx -0.2279 m/s, no corrected-envelope excess
+```
+
+The seed-5 failure is a support/contact stability failure, not an actuator
+over-rate failure. A broad `phase2-z005-support` recovery diagnostic stabilized
+the short screen by producing backward low-progress double-support behavior, so
+that broad support path is closed for this failure.
+
+The next bounded run is pre-registered at:
+
+```text
+artifact: outputs/analysis/PHASE2_Z0026_SEED5_MOTION_SUPPORT_NEXT_RECIPE.md
+status: PASS_Z0026_SEED5_MOTION_SUPPORT_RECIPE_READY
+```
+
+It warm-starts from
+`outputs/analysis/phase2_restore_checkpoints/phase2_z0026_teacher_continuity_81920`,
+keeps z=0.0026 and pushes disabled, preserves the teacher-continuity trust
+region, and adds only narrow anti-reverse plus base-height/pitch stability
+pressure. It is not a robot-validation branch. A promoted checkpoint must pass
+full z=0.0026 x=0.0 and x=0.08 corrected-bridge 8-seed gates without backing up,
+freezing, x=0.0 drift, or corrected-envelope excess.

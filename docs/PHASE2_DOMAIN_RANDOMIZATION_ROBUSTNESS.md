@@ -2682,3 +2682,99 @@ outputs/analysis/colab_cli/open-duck-a100-phase2-z00245-phase2-z0025-boundary-20
 
 The package check built the upload archives and verified the pinned JAX `0.7.2`
 workflow inputs without uploading, training, SSH, deploy, or robot access.
+
+### z=0.0025 Support Baseline Reconciled
+
+Artifact:
+
+```text
+outputs/analysis/PHASE2_Z0025_COMMAND_GATED_BESTREC70_RATE1P9_TARGETLIMITED0999_STRONGER_PUSH_DECISION_20260701.md
+```
+
+Status:
+
+```text
+PASS_Z0025_SUPPORT_POCKET
+```
+
+The current z=0.0025 baseline is the target-limited command-gated candidate:
+
+```text
+outputs/analysis/phase2_z0025_command_gated_bestrec70_rate1p9_targetlimited0999_candidate/candidate.onnx
+sha256: 6ba399528c6bc7543e0a5a3a43c30b0804357a4b98e21d723cbb5188e446b2a2
+```
+
+It passes the corrected-bridge `rough_terrain_backlash`, z=0.0025, stronger-push
+gates at both x=0.08 and x=0.0 with 8/8 duration-complete seeds, zero falls,
+zero corrected-envelope excess, and mean x=0.08 track ratio `0.3821`. Do not
+continue z=0.0025-only support repair unless a later promoted candidate
+regresses this rung.
+
+### z=0.0026 Support-Transfer Hold
+
+Artifacts:
+
+```text
+outputs/analysis/PHASE2_TARGETLIMITED0999_Z0026_SUPPORT_TRANSFER_DECISION_20260702.md
+outputs/analysis/PHASE2_Z0026_TEACHER_CONTINUITY_81920_FULL_GATE_X008.md
+outputs/analysis/PHASE2_Z0026_TEACHER_CONTINUITY_81920_SEED5_FAILURE_ANALYSIS_20260702.md
+outputs/analysis/PHASE2_Z0026_SEED5_SUPPORT_RECOVERY_DIAGNOSTIC_20260702.md
+```
+
+Status:
+
+```text
+HOLD_Z0026_MOVING_COMMAND_SUPPORT_TRANSFER
+```
+
+The z=0.0026 blocker is now isolated to moving-command support transfer, not
+zero-command reset stability and not actuator over-commanding. The target-limited
+z=0.0025 baseline survives a short z=0.0026 x=0.0 seed-5 screen in-envelope, but
+fails z=0.0026 x=0.08 seed 5 by reverse velocity and base-height collapse.
+
+The preserved teacher-continuity `81920` checkpoint is the closest z=0.0026
+parent: it passes 7/8 full x=0.08 seeds at z=0.0026, with seed 5 as the lone
+fall. The seed-5 trace stays inside the corrected pitch-chain velocity envelope
+and fails by planted double support, backward drift, then base-height collapse.
+The broad `phase2-z005-support` recovery direction is closed for this failure:
+it stabilized the short screen by producing backward low-progress double-support
+behavior.
+
+### z=0.0026 Seed-5 Motion-Support Next Recipe
+
+Artifact:
+
+```text
+outputs/analysis/PHASE2_Z0026_SEED5_MOTION_SUPPORT_NEXT_RECIPE.md
+```
+
+Status:
+
+```text
+PASS_Z0026_SEED5_MOTION_SUPPORT_RECIPE_READY
+```
+
+The next bounded run warm-starts from:
+
+```text
+outputs/analysis/phase2_restore_checkpoints/phase2_z0026_teacher_continuity_81920
+tree_sha256: 4646f7d84260f7f4669e1cbfdc9b677da8999fea9df2d7a6651e184da0d8ae0c
+```
+
+It keeps terrain at z=0.0026, pushes disabled, corrected bridge active, and the
+teacher-continuity trust region. It adds only narrow anti-reverse and base-height
+pressure:
+
+```text
+forward_wrong_direction_scale:              -6.0
+forward_wrong_direction_allowed_reverse:    0.005
+base_height_scale:                          -0.45
+forward_pitch_scale:                        -0.35
+forward_pitch_rate_scale:                   -0.07
+```
+
+Acceptance is deliberately strict: seed 5 must stop reversing without losing the
+7 passing seeds, and the promoted checkpoint must pass full z=0.0026 x=0.0 and
+x=0.08 corrected-bridge gates before any higher terrain rung or robot-side work.
+If the run removes the seed-5 fall by backing up, freezing, or drifting at x=0.0,
+this repair direction is falsified rather than promoted.
