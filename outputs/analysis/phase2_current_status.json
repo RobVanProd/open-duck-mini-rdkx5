@@ -65,7 +65,7 @@
     }
   },
   "deploy_performed": false,
-  "generated_at": "2026-07-03T18:55:00Z",
+  "generated_at": "2026-07-03T20:12:00Z",
   "motion_preserve_result": {
     "artifact": {
       "elapsed_s": 236.6348011489972,
@@ -113,7 +113,7 @@
       "track_ratio": 0.039377348504785914
     }
   },
-  "next_action": "Keep the corrected rate165 candidate as the offline baseline. Iter2 live-oracle data is useful because it improves forward progress and single support, but the first iter2 phase/contact student must be rejected for corrected max velocity excess. Next offline work should refit from the iter2 aggregate manifest with tighter max-rate control or an explicit max-velocity guard before any PPO/domain-randomization resume.",
+  "next_action": "Use the promoted right-ankle-limit198 rate165 candidate as the current offline corrected-bridge Phase 2 baseline. Resume staged domain-randomization robustness from this candidate, preserving the corrected bridge, right-ankle max-spike guard, zero velocity excess, and x=0.0 stillness.",
   "ppo_warmstart_fidelity": {
     "artifact": {
       "exists": true,
@@ -222,6 +222,51 @@
       "max_tracking_p95_rad": 0.18503864109516144
     },
     "decision": "Do not run the full gate. Scalar lower-rate refit alone worsened instantaneous max velocity excess; use an explicit max-velocity/spike guard next."
+  },
+  "current_offline_baseline": {
+    "status": "PASS_OFFLINE_CORRECTED_BRIDGE_CANDIDATE_READY",
+    "decision_artifact": {
+      "path": "outputs/analysis/phase2_iter2_right_ankle_limit198_rate165_candidate_decision.json"
+    },
+    "candidate": {
+      "candidate_dir": "policy/candidates/phase2_iter2_right_ankle_limit198_rate165_20260703",
+      "candidate_onnx": "policy/candidates/phase2_iter2_right_ankle_limit198_rate165_20260703/candidate.onnx",
+      "candidate_npz": "policy/candidates/phase2_iter2_right_ankle_limit198_rate165_20260703/candidate_mlp.npz",
+      "candidate_onnx_sha256": "eacc7c69e517b7cef32daeedeb6b110cd766e129183b071a7254f6fa0af5c1e2",
+      "candidate_npz_sha256": "053accd4d916c6ec0286ff1a4eadea3b285af4c8381b27689f39b10fcfbaa5ec"
+    },
+    "x008_gate": {
+      "artifact_json": "outputs/analysis/phase2_iter2_right_ankle_limit198_rate165_student_x008_gate.json",
+      "artifact_md": "outputs/analysis/PHASE2_ITER2_RIGHT_ANKLE_LIMIT198_RATE165_STUDENT_X008_GATE.md",
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "runs": 8,
+      "falls": 0,
+      "duration_complete": 8,
+      "mean_local_vx_m_s": 0.026153822287917137,
+      "track_ratio": 0.3269227785989642,
+      "single_support_pct": 25.2,
+      "double_support_pct": 74.8,
+      "max_pitch_vel_p95_rad_s": 1.7501713275909424,
+      "p95_velocity_excess_rad_s": 0.0,
+      "max_velocity_excess_rad_s": 0.0,
+      "max_tracking_p95_rad": 0.18915102481842038
+    },
+    "x0_gate": {
+      "artifact_json": "outputs/analysis/phase2_iter2_right_ankle_limit198_rate165_student_x0_gate.json",
+      "artifact_md": "outputs/analysis/PHASE2_ITER2_RIGHT_ANKLE_LIMIT198_RATE165_STUDENT_X0_GATE.md",
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "runs": 8,
+      "falls": 0,
+      "duration_complete": 8,
+      "mean_local_vx_m_s": 0.00005393375148503376,
+      "single_support_pct": 0.0,
+      "double_support_pct": 100.0,
+      "max_pitch_vel_p95_rad_s": 0.05613151252269745,
+      "p95_velocity_excess_rad_s": 0.0,
+      "max_velocity_excess_rad_s": 0.0,
+      "max_tracking_p95_rad": 0.03204449750483037
+    },
+    "decision": "Current offline corrected-bridge baseline; use for staged domain-randomization robustness, not direct robot deployment."
   },
   "rate165_x008_gate": {
     "artifact": {
@@ -399,6 +444,6 @@
       "track_ratio": 0.009135275771368375
     }
   },
-  "status": "HOLD_ITER2_MAX_VELOCITY_EXCESS",
+  "status": "PASS_OFFLINE_CORRECTED_BRIDGE_CANDIDATE_READY",
   "training_started": false
 }

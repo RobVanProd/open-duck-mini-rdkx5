@@ -1,5 +1,5 @@
 {
-  "status": "HOLD_ITER2_MAX_VELOCITY_EXCESS",
+  "status": "PASS_OFFLINE_CORRECTED_BRIDGE_CANDIDATE_READY",
   "current_baseline": {
     "candidate_onnx": "policy/candidates/phase2_corrected_live_oracle_iter1_rate165_20260703/candidate.onnx",
     "candidate_onnx_sha256": "e06643e5790217075d9c7a0d1e1ac262652058592b374ac0446bdd0426d0ea33",
@@ -88,6 +88,31 @@
       "max_tracking_p95_rad": 0.18503864109516144
     },
     "next_action": "Stop scalar lower-rate-only refits; add an explicit instantaneous max-velocity/spike guard."
+  },
+  "limit198_promotion": {
+    "decision_md": "outputs/analysis/PHASE2_ITER2_RIGHT_ANKLE_LIMIT198_RATE165_CANDIDATE_DECISION.md",
+    "decision_json": "outputs/analysis/phase2_iter2_right_ankle_limit198_rate165_candidate_decision.json",
+    "candidate_onnx": "policy/candidates/phase2_iter2_right_ankle_limit198_rate165_20260703/candidate.onnx",
+    "candidate_onnx_sha256": "eacc7c69e517b7cef32daeedeb6b110cd766e129183b071a7254f6fa0af5c1e2",
+    "x008_gate": {
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "runs": 8,
+      "falls": 0,
+      "duration_complete": 8,
+      "mean_local_vx_m_s": 0.026153822287917137,
+      "track_ratio": 0.3269227785989642,
+      "single_support_pct": 25.2,
+      "p95_velocity_excess_rad_s": 0.0,
+      "max_velocity_excess_rad_s": 0.0,
+      "max_tracking_p95_rad": 0.18915102481842038
+    },
+    "x0_gate": {
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "runs": 8,
+      "mean_local_vx_m_s": 0.00005393375148503376,
+      "max_velocity_excess_rad_s": 0.0
+    },
+    "next_action": "Resume staged domain-randomization robustness from this candidate while preserving the corrected bridge, right-ankle max-spike guard, zero velocity excess, and x=0.0 stillness."
   },
   "scope": {
     "offline_only": true,

@@ -1,7 +1,7 @@
 # Phase 2 Current Status
 
-status: `HOLD_ITER2_MAX_VELOCITY_EXCESS`
-generated_at: `2026-07-03T18:55:00Z`
+status: `PASS_OFFLINE_CORRECTED_BRIDGE_CANDIDATE_READY`
+generated_at: `2026-07-03T20:12:00Z`
 
 ## Scope
 
@@ -89,10 +89,31 @@ Interpretation: simply lowering the scalar supervised target-rate limit from
 `1.65` to `1.60 rad/s` is not sufficient and worsened instantaneous max
 velocity spikes. The next attempt needs an explicit max-velocity/spike guard.
 
+## Current Offline Baseline
+
+- status: `PASS_OFFLINE_CORRECTED_BRIDGE_CANDIDATE_READY`
+- decision artifact: `outputs/analysis/phase2_iter2_right_ankle_limit198_rate165_candidate_decision.json`
+- candidate ONNX: `policy/candidates/phase2_iter2_right_ankle_limit198_rate165_20260703/candidate.onnx`
+- candidate ONNX sha256: `eacc7c69e517b7cef32daeedeb6b110cd766e129183b071a7254f6fa0af5c1e2`
+- candidate NPZ sha256: `053accd4d916c6ec0286ff1a4eadea3b285af4c8381b27689f39b10fcfbaa5ec`
+- x=0.08 gate: `PASS_CANDIDATE_SIM_GATE` over `8/8` seeds
+- x=0.08 mean vx: `0.0262 m/s`
+- x=0.08 track ratio: `0.3269`
+- x=0.08 single/double support: `25.2000% / 74.8000%`
+- x=0.08 corrected p95 velocity excess: `0.0000`
+- x=0.08 corrected max velocity excess: `0.0000`
+- x=0.0 gate: `PASS_CANDIDATE_SIM_GATE` over `8/8` seeds
+- x=0.0 mean vx: `0.0001 m/s`
+- x=0.0 corrected max velocity excess: `0.0000`
+
+Interpretation: the right-ankle-specific `1.98 rad/s` label clamp removed the
+strict max-velocity spike while preserving a slow, in-envelope, nonzero
+single-support gait.
+
 ## Decision
 
-- next_status: `HOLD_ITER2_MAX_VELOCITY_EXCESS`
-- next_action: Keep the corrected rate165 candidate as the offline baseline. Iter2 live-oracle data is useful because it improves forward progress and single support, but the first iter2 phase/contact student must be rejected for corrected max velocity excess. The rate160 follow-up shows scalar lower-rate refits alone can worsen instantaneous spikes, so the next offline work should add an explicit max-velocity/spike guard before any PPO/domain-randomization resume.
+- next_status: `PASS_OFFLINE_CORRECTED_BRIDGE_CANDIDATE_READY`
+- next_action: Use the promoted right-ankle-limit198 rate165 candidate as the current offline corrected-bridge Phase 2 baseline. Resume staged domain-randomization robustness from this candidate, preserving the corrected bridge, right-ankle max-spike guard, zero velocity excess, and x=0.0 stillness.
 
 ## Guardrails
 

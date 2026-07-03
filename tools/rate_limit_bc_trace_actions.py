@@ -203,6 +203,17 @@ def process_trace(
     }
 
 
+def manifest_trace_paths(path: Path) -> list[Path]:
+    manifest = json.loads(path.read_text())
+    paths: list[Path] = []
+    for entry in manifest.get("entries", []):
+        source_path = entry.get("source_path")
+        if not source_path:
+            continue
+        paths.append(Path(source_path))
+    return paths
+
+
 def write_markdown(payload: dict[str, Any], path: Path) -> None:
     lines = [
         "# BC Trace Action Rate Limit",
@@ -214,6 +225,7 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         "## Settings",
         "",
         f"- trace_globs: `{payload['trace_globs']}`",
+        f"- manifests: `{payload['manifests']}`",
         f"- output_trace_dir: `{payload['output_trace_dir']}`",
         f"- joints: `{payload['settings']['joints']}`",
         f"- max_target_velocity_rad_s: `{payload['settings']['max_target_velocity_rad_s']}`",
@@ -263,7 +275,8 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--trace-glob", action="append", required=True)
+    parser.add_argument("--trace-glob", action="append", default=[])
+    parser.add_argument("--manifest", action="append", default=[])
     parser.add_argument("--output-trace-dir", required=True)
     parser.add_argument("--output-md", default=str(DEFAULT_OUTPUT_MD))
     parser.add_argument("--output-json", default=str(DEFAULT_OUTPUT_JSON))
@@ -290,6 +303,8 @@ def main() -> int:
     paths: list[Path] = []
     for item in args.trace_glob:
         paths.extend(Path(path) for path in sorted(glob.glob(item)))
+    for item in args.manifest:
+        paths.extend(manifest_trace_paths(Path(item)))
     paths = sorted(dict.fromkeys(paths))
     output_dir = Path(args.output_trace_dir)
     traces = [
@@ -316,6 +331,7 @@ def main() -> int:
     payload = {
         "status": status,
         "trace_globs": args.trace_glob,
+        "manifests": args.manifest,
         "output_trace_dir": str(output_dir),
         "settings": {
             "joints": [JOINT_NAMES[idx] for idx in joint_indices],

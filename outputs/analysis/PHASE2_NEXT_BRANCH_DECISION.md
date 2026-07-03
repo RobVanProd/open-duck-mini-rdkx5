@@ -1,6 +1,6 @@
 # Phase 2 Next Branch Decision
 
-status: `HOLD_ITER2_MAX_VELOCITY_EXCESS`
+status: `PASS_OFFLINE_CORRECTED_BRIDGE_CANDIDATE_READY`
 
 ## Summary
 
@@ -150,6 +150,40 @@ Interpretation:
 - The next attempt should implement or use an explicit instantaneous
   max-velocity/spike guard; do not keep lowering the scalar rate knob as the
   primary strategy.
+
+## Limit198 Promotion
+
+The explicit right-ankle max-spike guard was implemented as a surgical
+right-ankle label clamp at `1.98 rad/s`.
+
+Decision artifact:
+
+```text
+outputs/analysis/PHASE2_ITER2_RIGHT_ANKLE_LIMIT198_RATE165_CANDIDATE_DECISION.md
+```
+
+Promoted candidate:
+
+```text
+policy/candidates/phase2_iter2_right_ankle_limit198_rate165_20260703/candidate.onnx
+```
+
+Result:
+
+- x=0.08 gate: `PASS_CANDIDATE_SIM_GATE`
+- x=0.08 pass seeds: `8/8`
+- x=0.08 mean vx: `0.0262 m/s`
+- x=0.08 track ratio: `0.3269`
+- x=0.08 single support: `25.2000%`
+- x=0.08 corrected max velocity excess: `0.0000`
+- x=0.0 gate: `PASS_CANDIDATE_SIM_GATE`
+- x=0.0 pass seeds: `8/8`
+- x=0.0 mean vx: `0.0001 m/s`
+- x=0.0 corrected max velocity excess: `0.0000`
+
+This becomes the current offline corrected-bridge Phase 2 baseline. The next
+branch can resume domain-randomization robustness from this candidate, but must
+preserve zero corrected velocity excess and x=0.0 stillness.
 
 Only after this branch preserves single-support walking should Phase 2 resume
 domain randomization:

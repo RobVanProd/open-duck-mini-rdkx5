@@ -217,7 +217,7 @@ def main() -> int:
 
     paths: list[Path] = []
     for item in args.trace_glob:
-        paths.extend(Path(path) for path in sorted(glob.glob(item)))
+        paths.extend(Path(path) for path in sorted(glob.glob(item, recursive=True)))
     paths = sorted(dict.fromkeys(paths))
     entries = []
     for path in paths:
