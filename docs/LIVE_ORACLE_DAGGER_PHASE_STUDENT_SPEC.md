@@ -67,6 +67,28 @@ the strict corrected fitted-bridge tracking gate by:
 - Static relabel-then-freeze DAgger is closed. This branch must run a live
   loop: roll out the current student, query the oracle on those visited states,
   aggregate, retrain, and gate.
+- The latest z=0.00245 A100 motion-recovery run completed on the pinned
+  JAX/Brax stack and exported checkpoints at 40960, 81920, and 122880 steps,
+  but the compact corrected-bridge checkpoint sweep held every checkpoint for
+  low forward progress at `x=0.08`. The best checkpoint had track ratio
+  `0.2339` and mean local `vx=0.0187 m/s`, below the compact promotion
+  thresholds, while staying comfortably inside the corrected velocity envelope.
+  This closes the small scalar-progress-pressure retry:
+  `outputs/analysis/PHASE2_Z00245_MOTION_RECOVERY_A100_RESULT_20260702.md`.
+- The strongest current z=0.0025 positive-motion source is
+  `outputs/analysis/phase2_z0025_live_oracle_boundary_iter0_contactphase_rate1p9_bc_candidate/candidate.onnx`.
+  It passed the full corrected-bridge `x=0.08`, `z=0.0025` gate 8/8 with mean
+  track ratio `0.3742`, mean local `vx=0.0299 m/s`, and no corrected-envelope
+  velocity excess, but it held at `x=0.0` because seed 5 collapsed. This
+  candidate is a source/parent for zero-command repair, not a deployable or
+  robot-test candidate:
+  `outputs/analysis/PHASE2_Z0025_BOUNDARY_RATE1P9_FULL_GATE_DECISION_20260702.md`.
+- The next live-oracle branch must repair seed-5 zero-command semantics for
+  that z=0.0025 parent before any higher-terrain or push-robustness scaling.
+  Hard zero-action relabeling fixed most zero-command drift in an earlier
+  iteration but created a seed-specific collapse pocket. Use softened
+  zero-command relabeling (`--x0-zero-action-alpha < 1.0`) and immediate
+  seed-5 `x=0.0` short gates before running another full A100 training job.
 
 ## Blocking Step 0
 
@@ -256,6 +278,7 @@ Do not revisit these inside this branch:
 - post-hoc ONNX weight interpolation
 - scalar PPO reward, termination, or KL controls
 - static relabel-then-freeze DAgger
+- small scalar progress-pressure retries from the Phase A2 warm-start
 
 ## Required Artifacts
 
