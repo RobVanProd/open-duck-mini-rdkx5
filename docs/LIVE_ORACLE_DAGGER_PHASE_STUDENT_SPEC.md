@@ -112,6 +112,15 @@ the strict corrected fitted-bridge tracking gate by:
   `outputs/analysis/PHASE2_Z0025_FLAT_HARDSEED_SUPPORT_TRANSFER_DECISION_20260702.md`.
   Do not use that flat-terrain candidate as the support source for the current
   rough-terrain seed-5 repair.
+- A command-gated diagnostic combining BEST at `x=0.0` with the rate1p9 parent
+  at `x=0.08` confirmed that active zero-command support can catch the hard
+  seed-5 rough reset, while preserving the parent positive-command branch on a
+  short seed-5 check. It is not promotable: the BEST zero-command catch uses
+  an over-envelope transient, and scaled BEST catches either fall or still
+  exceed the corrected envelope:
+  `outputs/analysis/PHASE2_Z0025_BEST_X0_RATE1P9_COMMAND_GATED_SUPPORT_SCREEN_DECISION_20260702.md`.
+  Treat BEST as a support-recovery mechanism to constrain/distill, not as a
+  deployable zero-command component.
 
 ## Blocking Step 0
 
@@ -194,6 +203,13 @@ Latest z=0.0025 flat hard-seed support transfer decision:
 ```text
 outputs/analysis/PHASE2_Z0025_FLAT_HARDSEED_SUPPORT_TRANSFER_DECISION_20260702.md
 outputs/analysis/phase2_z0025_flat_hardseed_support_transfer_decision_20260702.json
+```
+
+Latest z=0.0025 BEST x0 / rate1p9 x0.08 command-gated support screen:
+
+```text
+outputs/analysis/PHASE2_Z0025_BEST_X0_RATE1P9_COMMAND_GATED_SUPPORT_SCREEN_DECISION_20260702.md
+outputs/analysis/phase2_z0025_best_x0_rate1p9_command_gated_support_screen_decision_20260702.json
 ```
 
 ## Hypotheses
