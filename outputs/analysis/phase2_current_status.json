@@ -194,6 +194,35 @@
     },
     "decision": "Do not promote. Refit with tighter max-rate control while preserving iter2 motion and single support."
   },
+  "rate160_live_oracle_iter2_screen": {
+    "decision_artifact": {
+      "path": "outputs/analysis/phase2_rate160_single_support_live_oracle_iter2_decision.json"
+    },
+    "status": "HOLD_RATE160_MAX_VELOCITY_SPIKE",
+    "student": {
+      "candidate_onnx": "outputs/analysis/phase2_rate160_single_support_live_oracle_iter2_student/candidate.onnx",
+      "candidate_onnx_sha256": "53d1694f964870f1bd2c51d5759234f088bc154c90eddb2db845ccbf55ee74af",
+      "fit_status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE",
+      "onnx_max_abs_error": 3.5762786865234375e-7
+    },
+    "x008_seed0_screen": {
+      "artifact_json": "outputs/analysis/phase2_rate160_single_support_live_oracle_iter2_student_x008_seed0_screen.json",
+      "artifact_md": "outputs/analysis/PHASE2_RATE160_SINGLE_SUPPORT_LIVE_ORACLE_ITER2_STUDENT_X008_SEED0_SCREEN.md",
+      "status": "HOLD_CANDIDATE_TARGET_VELOCITY",
+      "runs": 1,
+      "falls": 0,
+      "duration_complete": 1,
+      "mean_local_vx_m_s": 0.03225126916325822,
+      "track_ratio": 0.40314086454072774,
+      "single_support_pct": 26.266666666666666,
+      "double_support_pct": 73.73333333333333,
+      "max_pitch_vel_p95_rad_s": 1.6399571895599364,
+      "p95_velocity_excess_rad_s": 0.0,
+      "max_velocity_excess_rad_s": 0.2730363607406616,
+      "max_tracking_p95_rad": 0.18503864109516144
+    },
+    "decision": "Do not run the full gate. Scalar lower-rate refit alone worsened instantaneous max velocity excess; use an explicit max-velocity/spike guard next."
+  },
   "rate165_x008_gate": {
     "artifact": {
       "exists": true,

@@ -125,6 +125,32 @@ Interpretation:
   max-rate control or an explicit max-velocity guard. Do not resume scalar
   PPO/domain randomization yet.
 
+## Rate160 Follow-Up
+
+The first follow-up tested a lower scalar supervised target-rate limit:
+
+```text
+outputs/analysis/PHASE2_RATE160_SINGLE_SUPPORT_LIVE_ORACLE_ITER2_DECISION.md
+```
+
+Result:
+
+- fit status: `PASS_PHASE_MODULATED_BC_FIT_SMOKE`
+- x=0.08 seed-0 screen: `HOLD_CANDIDATE_TARGET_VELOCITY`
+- mean vx: `0.0323 m/s`
+- track ratio: `0.4031`
+- single support: `26.2667%`
+- p95 velocity excess: `0.0000`
+- max velocity excess: `0.2730`
+
+Interpretation:
+
+- Lowering the scalar target-rate setting from `1.65` to `1.60 rad/s` is not
+  the fix.
+- The next attempt should implement or use an explicit instantaneous
+  max-velocity/spike guard; do not keep lowering the scalar rate knob as the
+  primary strategy.
+
 Only after this branch preserves single-support walking should Phase 2 resume
 domain randomization:
 

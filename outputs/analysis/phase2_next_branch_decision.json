@@ -73,6 +73,22 @@
     },
     "next_action": "Refit from the iter2 aggregate manifest with tighter max-rate control or an explicit max-velocity guard before any PPO/domain-randomization resume."
   },
+  "rate160_followup": {
+    "decision_md": "outputs/analysis/PHASE2_RATE160_SINGLE_SUPPORT_LIVE_ORACLE_ITER2_DECISION.md",
+    "decision_json": "outputs/analysis/phase2_rate160_single_support_live_oracle_iter2_decision.json",
+    "candidate_onnx": "outputs/analysis/phase2_rate160_single_support_live_oracle_iter2_student/candidate.onnx",
+    "candidate_onnx_sha256": "53d1694f964870f1bd2c51d5759234f088bc154c90eddb2db845ccbf55ee74af",
+    "x008_seed0_screen": {
+      "status": "HOLD_CANDIDATE_TARGET_VELOCITY",
+      "mean_local_vx_m_s": 0.03225126916325822,
+      "track_ratio": 0.40314086454072774,
+      "single_support_pct": 26.266666666666666,
+      "p95_velocity_excess_rad_s": 0.0,
+      "max_velocity_excess_rad_s": 0.2730363607406616,
+      "max_tracking_p95_rad": 0.18503864109516144
+    },
+    "next_action": "Stop scalar lower-rate-only refits; add an explicit instantaneous max-velocity/spike guard."
+  },
   "scope": {
     "offline_only": true,
     "robot_tests": false,

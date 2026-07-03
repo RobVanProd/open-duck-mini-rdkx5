@@ -74,10 +74,25 @@ Interpretation: iter2 improved motion and single support relative to the
 current rate165 baseline, but it is not promotable because the strict corrected
 gate rejects any max velocity excess.
 
+## Rate160 Follow-Up Screen
+
+- status: `HOLD_RATE160_MAX_VELOCITY_SPIKE`
+- decision artifact: `outputs/analysis/phase2_rate160_single_support_live_oracle_iter2_decision.json`
+- x=0.08 seed-0 screen: `HOLD_CANDIDATE_TARGET_VELOCITY`
+- x=0.08 seed-0 mean vx: `0.0323 m/s`
+- x=0.08 seed-0 track ratio: `0.4031`
+- x=0.08 seed-0 single support: `26.2667%`
+- x=0.08 seed-0 corrected p95 velocity excess: `0.0000`
+- x=0.08 seed-0 corrected max velocity excess: `0.2730`
+
+Interpretation: simply lowering the scalar supervised target-rate limit from
+`1.65` to `1.60 rad/s` is not sufficient and worsened instantaneous max
+velocity spikes. The next attempt needs an explicit max-velocity/spike guard.
+
 ## Decision
 
 - next_status: `HOLD_ITER2_MAX_VELOCITY_EXCESS`
-- next_action: Keep the corrected rate165 candidate as the offline baseline. Iter2 live-oracle data is useful because it improves forward progress and single support, but the first iter2 phase/contact student must be rejected for corrected max velocity excess. Next offline work should refit from the iter2 aggregate manifest with tighter max-rate control or an explicit max-velocity guard before any PPO/domain-randomization resume.
+- next_action: Keep the corrected rate165 candidate as the offline baseline. Iter2 live-oracle data is useful because it improves forward progress and single support, but the first iter2 phase/contact student must be rejected for corrected max velocity excess. The rate160 follow-up shows scalar lower-rate refits alone can worsen instantaneous spikes, so the next offline work should add an explicit max-velocity/spike guard before any PPO/domain-randomization resume.
 
 ## Guardrails
 
