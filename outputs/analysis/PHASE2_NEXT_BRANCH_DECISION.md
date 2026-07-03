@@ -185,6 +185,42 @@ This becomes the current offline corrected-bridge Phase 2 baseline. The next
 branch can resume domain-randomization robustness from this candidate, but must
 preserve zero corrected velocity excess and x=0.0 stillness.
 
+## Limit198 PPO-Loc Warm-Start
+
+The promoted limit198 candidate is phase-modulated and deployable as ONNX, but
+not directly restorable into the existing Brax PPO actor. A PPO-compatible
+`tanh(loc)` surrogate was trained from the same limit198 manifest and converted
+to a step-0 PPO checkpoint/export.
+
+Decision artifact:
+
+```text
+outputs/analysis/PHASE2_LIMIT198_PPO_LOC_WARMSTART_DECISION.md
+```
+
+Trainable warm-start:
+
+```text
+outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0_checkpoint
+outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0.onnx
+```
+
+Result:
+
+- step-0 export fidelity: `PASS_PPO_BC_WARMSTART_STEP0_EXPORT_FIDELITY`
+- p95/max abs action error: `1.49e-7` / `3.87e-7`
+- x=0.08 corrected gate: `PASS_CANDIDATE_SIM_GATE`, `8/8`
+- x=0.08 mean vx: `0.0332 m/s`
+- x=0.08 track ratio: `0.4151`
+- x=0.08 single support: `28.1333%`
+- x=0.08 corrected max velocity excess: `0.0000`
+- x=0.0 corrected gate: `PASS_CANDIDATE_SIM_GATE`, `8/8`
+- x=0.0 mean vx: `0.0001 m/s`
+- x=0.0 corrected max velocity excess: `0.0000`
+
+Use this step-0 checkpoint, not the older rejected rate165 warm-start, for the
+next offline DR run.
+
 Only after this branch preserves single-support walking should Phase 2 resume
 domain randomization:
 

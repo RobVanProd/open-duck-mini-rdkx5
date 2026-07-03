@@ -113,7 +113,7 @@
       "track_ratio": 0.039377348504785914
     }
   },
-  "next_action": "Use the promoted right-ankle-limit198 rate165 candidate as the current offline corrected-bridge Phase 2 baseline. Resume staged domain-randomization robustness from this candidate, preserving the corrected bridge, right-ankle max-spike guard, zero velocity excess, and x=0.0 stillness.",
+  "next_action": "Use the promoted right-ankle-limit198 candidate as the deployable corrected-bridge baseline and use the PPO-loc limit198 step-0 checkpoint as the trainable warm-start for the next offline DR stage. Preserve nonzero x=0.08 single support, zero corrected velocity excess, and x=0.0 stillness.",
   "ppo_warmstart_fidelity": {
     "artifact": {
       "exists": true,
@@ -163,7 +163,7 @@
       "candidate_onnx": "outputs/analysis/phase2_rate165_single_support_live_oracle_iter2_student/candidate.onnx",
       "candidate_onnx_sha256": "c476120f75ea38b16cfe2a1c0eee49adca648811e65691e374321b58372a8cd7",
       "fit_status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE",
-      "onnx_max_abs_error": 2.682209014892578e-7
+      "onnx_max_abs_error": 2.682209014892578e-07
     },
     "x008_gate": {
       "artifact_json": "outputs/analysis/phase2_rate165_single_support_live_oracle_iter2_student_x008_gate.json",
@@ -188,7 +188,7 @@
       "runs": 2,
       "falls": 0,
       "duration_complete": 2,
-      "mean_local_vx_m_s": 0.000008396759295313434,
+      "mean_local_vx_m_s": 8.396759295313434e-06,
       "p95_velocity_excess_rad_s": 0.0,
       "max_velocity_excess_rad_s": 0.0
     },
@@ -203,7 +203,7 @@
       "candidate_onnx": "outputs/analysis/phase2_rate160_single_support_live_oracle_iter2_student/candidate.onnx",
       "candidate_onnx_sha256": "53d1694f964870f1bd2c51d5759234f088bc154c90eddb2db845ccbf55ee74af",
       "fit_status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE",
-      "onnx_max_abs_error": 3.5762786865234375e-7
+      "onnx_max_abs_error": 3.5762786865234375e-07
     },
     "x008_seed0_screen": {
       "artifact_json": "outputs/analysis/phase2_rate160_single_support_live_oracle_iter2_student_x008_seed0_screen.json",
@@ -213,10 +213,10 @@
       "falls": 0,
       "duration_complete": 1,
       "mean_local_vx_m_s": 0.03225126916325822,
-      "track_ratio": 0.40314086454072774,
+      "track_ratio": 0.40314086454072773,
       "single_support_pct": 26.266666666666666,
       "double_support_pct": 73.73333333333333,
-      "max_pitch_vel_p95_rad_s": 1.6399571895599364,
+      "max_pitch_vel_p95_rad_s": 1.6399571895599363,
       "p95_velocity_excess_rad_s": 0.0,
       "max_velocity_excess_rad_s": 0.2730363607406616,
       "max_tracking_p95_rad": 0.18503864109516144
@@ -242,14 +242,14 @@
       "runs": 8,
       "falls": 0,
       "duration_complete": 8,
-      "mean_local_vx_m_s": 0.026153822287917137,
+      "mean_local_vx_m_s": 0.026153822287917138,
       "track_ratio": 0.3269227785989642,
       "single_support_pct": 25.2,
       "double_support_pct": 74.8,
-      "max_pitch_vel_p95_rad_s": 1.7501713275909424,
+      "max_pitch_vel_p95_rad_s": 1.7501713275909423,
       "p95_velocity_excess_rad_s": 0.0,
       "max_velocity_excess_rad_s": 0.0,
-      "max_tracking_p95_rad": 0.18915102481842038
+      "max_tracking_p95_rad": 0.1891510248184204
     },
     "x0_gate": {
       "artifact_json": "outputs/analysis/phase2_iter2_right_ankle_limit198_rate165_student_x0_gate.json",
@@ -258,7 +258,7 @@
       "runs": 8,
       "falls": 0,
       "duration_complete": 8,
-      "mean_local_vx_m_s": 0.00005393375148503376,
+      "mean_local_vx_m_s": 5.393375148503376e-05,
       "single_support_pct": 0.0,
       "double_support_pct": 100.0,
       "max_pitch_vel_p95_rad_s": 0.05613151252269745,
@@ -444,6 +444,38 @@
       "track_ratio": 0.009135275771368375
     }
   },
-  "status": "PASS_OFFLINE_CORRECTED_BRIDGE_CANDIDATE_READY",
-  "training_started": false
+  "status": "PASS_TRAINABLE_PHASE2_WARMSTART_READY",
+  "training_started": false,
+  "current_trainable_warmstart": {
+    "status": "PASS_TRAINABLE_PHASE2_WARMSTART_READY",
+    "decision_artifact": "outputs/analysis/phase2_limit198_ppo_loc_warmstart_decision.json",
+    "checkpoint": "outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0_checkpoint",
+    "step0_onnx": "outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0.onnx",
+    "step0_onnx_sha256": "1dc894eebc144d790f1a6b4be6ada5a05e748f215f2053c72610347955deb3bb",
+    "ppo_loc_bc_onnx_sha256": "a48c82c0f5719016b3e8bfae7817351b5413fac0e1babcf70de05e1f3652c237",
+    "ppo_loc_bc_npz_sha256": "cfb62315014dfc83ef0c654a8386bc39eb0ec9f7305e10adfa10216827ab0d15",
+    "fidelity_status": "PASS_PPO_BC_WARMSTART_STEP0_EXPORT_FIDELITY",
+    "p95_abs_action_error": 1.4901161193847656e-07,
+    "max_abs_action_error": 3.8743019104003906e-07,
+    "x008_gate": {
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "pass_count": 8,
+      "total_count": 8,
+      "mean_local_vx_m_s": 0.03321039105321203,
+      "track_ratio": 0.4151298881651504,
+      "single_support_pct": 28.133333333333333,
+      "double_support_pct": 71.86666666666667,
+      "corrected_max_velocity_excess_rad_s": 0.0,
+      "max_tracking_p95_rad": 0.18227561116218566
+    },
+    "x0_gate": {
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "pass_count": 8,
+      "total_count": 8,
+      "mean_local_vx_m_s": 0.00011640891783780679,
+      "double_support_pct": 100.0,
+      "corrected_max_velocity_excess_rad_s": 0.0,
+      "max_tracking_p95_rad": 0.0321868896484375
+    }
+  }
 }

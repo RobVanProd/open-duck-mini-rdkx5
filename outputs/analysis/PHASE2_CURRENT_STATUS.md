@@ -110,10 +110,38 @@ Interpretation: the right-ankle-specific `1.98 rad/s` label clamp removed the
 strict max-velocity spike while preserving a slow, in-envelope, nonzero
 single-support gait.
 
+## Current Trainable Warm-Start
+
+- status: `PASS_TRAINABLE_PHASE2_WARMSTART_READY`
+- decision artifact: `outputs/analysis/PHASE2_LIMIT198_PPO_LOC_WARMSTART_DECISION.md`
+- PPO step-0 checkpoint: `outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0_checkpoint`
+- PPO step-0 ONNX: `outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0.onnx`
+- PPO step-0 ONNX sha256:
+  `1dc894eebc144d790f1a6b4be6ada5a05e748f215f2053c72610347955deb3bb`
+- PPO-loc BC ONNX sha256:
+  `a48c82c0f5719016b3e8bfae7817351b5413fac0e1babcf70de05e1f3652c237`
+- PPO-loc BC NPZ sha256:
+  `cfb62315014dfc83ef0c654a8386bc39eb0ec9f7305e10adfa10216827ab0d15`
+- step-0 export fidelity: `PASS_PPO_BC_WARMSTART_STEP0_EXPORT_FIDELITY`
+- step-0 p95/max abs action error: `1.49e-7` / `3.87e-7`
+- x=0.08 step-0 gate: `PASS_CANDIDATE_SIM_GATE` over `8/8` seeds
+- x=0.08 mean vx / track ratio: `0.0332 m/s` / `0.4151`
+- x=0.08 single/double support: `28.1333%` / `71.8667%`
+- x=0.08 corrected max velocity excess: `0.0000`
+- x=0.0 step-0 gate: `PASS_CANDIDATE_SIM_GATE` over `8/8` seeds
+- x=0.0 mean vx: `0.0001 m/s`
+- x=0.0 corrected max velocity excess: `0.0000`
+
+Interpretation: the promoted phase-modulated candidate is deployable, but not
+directly restorable into the current Brax PPO actor. The new PPO-loc step-0
+surrogate is the current trainable Phase 2 warm-start because it reproduces
+the corrected-bridge gait in the PPO actor format and clears both canonical
+gates before any PPO updates.
+
 ## Decision
 
 - next_status: `PASS_OFFLINE_CORRECTED_BRIDGE_CANDIDATE_READY`
-- next_action: Use the promoted right-ankle-limit198 rate165 candidate as the current offline corrected-bridge Phase 2 baseline. Resume staged domain-randomization robustness from this candidate, preserving the corrected bridge, right-ankle max-spike guard, zero velocity excess, and x=0.0 stillness.
+- next_action: Use the promoted right-ankle-limit198 rate165 candidate as the deployable offline corrected-bridge Phase 2 baseline and use the PPO-loc limit198 step-0 checkpoint as the trainable warm-start for the next offline DR stage. Preserve the corrected bridge, right-ankle max-spike guard, zero velocity excess, nonzero single support, and x=0.0 stillness.
 
 ## Guardrails
 

@@ -1,0 +1,65 @@
+{
+  "status": "PASS_TRAINABLE_PHASE2_WARMSTART_READY",
+  "scope": "offline-only PPO-compatible warm-start construction; no PPO updates, robot tests, SSH, deploy, grounded replay, or runtime behavior changes",
+  "source_candidate": {
+    "path": "policy/candidates/phase2_iter2_right_ankle_limit198_rate165_20260703/candidate.onnx",
+    "sha256": "eacc7c69e517b7cef32daeedeb6b110cd766e129183b071a7254f6fa0af5c1e2",
+    "note": "deployable phase-modulated baseline; not directly restorable into the existing Brax PPO actor"
+  },
+  "ppo_loc_bc_student": {
+    "npz": "outputs/analysis/phase2_limit198_ppo_loc_warmstart_candidate/candidate_mlp.npz",
+    "npz_sha256": "cfb62315014dfc83ef0c654a8386bc39eb0ec9f7305e10adfa10216827ab0d15",
+    "onnx": "outputs/analysis/phase2_limit198_ppo_loc_warmstart_candidate/candidate.onnx",
+    "onnx_sha256": "a48c82c0f5719016b3e8bfae7817351b5413fac0e1babcf70de05e1f3652c237",
+    "fit_status": "PASS_PPO_LOC_BC_FIT_SMOKE",
+    "samples": 28500,
+    "weighted_samples": 84460.0,
+    "target_rate_p95_rad_s": 1.4220105375660954,
+    "target_rate_max_rad_s": 2.3069703438219955
+  },
+  "ppo_step0": {
+    "checkpoint": "outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0_checkpoint",
+    "onnx": "outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0.onnx",
+    "onnx_sha256": "1dc894eebc144d790f1a6b4be6ada5a05e748f215f2053c72610347955deb3bb",
+    "fidelity_status": "PASS_PPO_BC_WARMSTART_STEP0_EXPORT_FIDELITY",
+    "fidelity_samples": 2048,
+    "p95_abs_action_error": 1.4901161193847656e-7,
+    "max_abs_action_error": 3.8743019104003906e-7
+  },
+  "x008_gate": {
+    "artifact": "outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0_x008_gate.json",
+    "status": "PASS_CANDIDATE_SIM_GATE",
+    "pass_count": 8,
+    "total_count": 8,
+    "mean_local_vx_m_s": 0.03321039105321203,
+    "track_ratio": 0.4151298881651504,
+    "single_support_pct": 28.133333333333333,
+    "double_support_pct": 71.86666666666667,
+    "max_pitch_vel_p95_rad_s": 1.741664111614227,
+    "corrected_p95_velocity_excess_rad_s": 0.0,
+    "corrected_max_velocity_excess_rad_s": 0.0,
+    "max_tracking_p95_rad": 0.18227561116218566
+  },
+  "x0_gate": {
+    "artifact": "outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0_x0_gate.json",
+    "status": "PASS_CANDIDATE_SIM_GATE",
+    "pass_count": 8,
+    "total_count": 8,
+    "mean_local_vx_m_s": 0.00011640891783780679,
+    "double_support_pct": 100.0,
+    "max_pitch_vel_p95_rad_s": 0.02453207969665526,
+    "corrected_max_velocity_excess_rad_s": 0.0,
+    "max_tracking_p95_rad": 0.0321868896484375
+  },
+  "decision": {
+    "trainable_warmstart": "outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0_checkpoint",
+    "next_action": "launch a bounded offline Stage A DR variant from this checkpoint, preserving nonzero x=0.08 single support, zero corrected velocity excess, and x=0.0 stillness",
+    "blocked_actions": [
+      "robot validation",
+      "SSH",
+      "deploy",
+      "grounded replay",
+      "repeating the rejected rate165 scalar Stage A recipe"
+    ]
+  }
+}

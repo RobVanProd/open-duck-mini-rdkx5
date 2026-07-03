@@ -14,6 +14,42 @@ randomization while preserving:
 
 Robot validation is out of scope. No SSH, no deploy, no grounded replay.
 
+## 2026-07-03 Limit198 PPO-Loc Trainable Warm-Start
+
+The current deployable Phase 2 baseline is:
+
+```text
+policy/candidates/phase2_iter2_right_ankle_limit198_rate165_20260703/candidate.onnx
+```
+
+That candidate is phase-modulated, so it cannot be directly restored into the
+existing Brax PPO actor. A PPO-compatible `tanh(loc)` surrogate was trained
+from the same limit198 manifest and converted into a step-0 PPO checkpoint.
+
+Evidence:
+
+```text
+outputs/analysis/PHASE2_LIMIT198_PPO_LOC_WARMSTART_DECISION.md
+outputs/analysis/PHASE2_LIMIT198_PPO_LOC_WARMSTART_STUDENT.md
+outputs/analysis/PHASE2_LIMIT198_PPO_LOC_WARMSTART_STEP0_EXPORT_FIDELITY.md
+outputs/analysis/PHASE2_LIMIT198_PPO_LOC_WARMSTART_STEP0_X008_GATE.md
+outputs/analysis/PHASE2_LIMIT198_PPO_LOC_WARMSTART_STEP0_X0_GATE.md
+```
+
+Result:
+
+- step-0 PPO ONNX sha256:
+  `1dc894eebc144d790f1a6b4be6ada5a05e748f215f2053c72610347955deb3bb`
+- x=0.08 corrected gate: `8/8`, track ratio `0.4151`,
+  single support `28.1333%`, zero corrected velocity excess.
+- x=0.0 corrected gate: `8/8`, mean vx `0.0001 m/s`, zero corrected
+  velocity excess.
+
+Decision: use
+`outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0_checkpoint` as the
+trainable warm-start for the next offline DR stage. Do not use the older
+rate165 Stage A recipe; it already collapsed the gait into double support.
+
 ## 2026-07-03 Motion-Preservation CPU Smoke
 
 After the A100 Stage A standstill regression, a tiny local CPU smoke tested a
