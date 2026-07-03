@@ -193,6 +193,28 @@ def tar_filter(member: tarfile.TarInfo) -> tarfile.TarInfo | None:
             (
                 "outputs",
                 "analysis",
+                "phase2_limit198_ppo_loc_warmstart_candidate",
+                "candidate_mlp.npz",
+            ),
+            (
+                "outputs",
+                "analysis",
+                "phase2_limit198_ppo_loc_warmstart_candidate",
+                "candidate.onnx",
+            ),
+            (
+                "outputs",
+                "analysis",
+                "phase2_limit198_ppo_loc_warmstart_step0.onnx",
+            ),
+            (
+                "outputs",
+                "analysis",
+                "phase2_limit198_ppo_loc_warmstart_step0_checkpoint",
+            ),
+            (
+                "outputs",
+                "analysis",
                 "ppo_bc_command_conditioned_dagger_seed5_x0_step0_checkpoint",
             ),
             (

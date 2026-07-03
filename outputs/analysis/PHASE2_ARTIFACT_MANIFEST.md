@@ -17,10 +17,10 @@ This is a read-only hash manifest. It did not train, SSH, deploy, or touch the r
 
 | name | status | sha256 | size/files | path |
 |---|---|---|---:|---|
-| `candidate` | `PRESENT_FILE` | `209b85a75cf9cbbcf10df573c1b530921943a72e81082111889c15f63a9a2c7b` | 1772930 | `policy/candidates/phase2_stagea2_seed5_recovery_command_gated_gain099_20260629/candidate.onnx` |
-| `candidate_metadata` | `PRESENT_FILE` | `c1845de2bc1f72e0da8294fecfa84f6f5609fbc5097ef0b5d569f8aaf72dab79` | 18217 | `policy/candidates/phase2_stagea2_seed5_recovery_command_gated_gain099_20260629/candidate_metadata.json` |
+| `candidate` | `PRESENT_FILE` | `eacc7c69e517b7cef32daeedeb6b110cd766e129183b071a7254f6fa0af5c1e2` | 886302 | `policy/candidates/phase2_iter2_right_ankle_limit198_rate165_20260703/candidate.onnx` |
+| `candidate_metadata` | `PRESENT_FILE` | `c444483fb51afba7096df6150769a663fbc2f1d64587bd46339159ffe7088703` | 1118 | `policy/candidates/phase2_iter2_right_ankle_limit198_rate165_20260703/README.md` |
 | `corrected_bridge` | `PRESENT_FILE` | `3661543d0745073b561eb4fa2ae8f9616368ee8b72cb397f8b953dada532c8c0` | 18363 | `outputs/analysis/actuator_response_fit_corrected_knee.json` |
-| `restore_checkpoint` | `PRESENT_DIR` | `e3ace5aee3b128d3caecd91bead371a5215ea6dc472ab056f942a35486fbe439` | 11 | `outputs/phase2_domain_randomization/stage_c0_terrain_z002_preserve_from_a2_gpu/smoke_20260628T103743Z_gpu/2026_06_28_064431_245760` |
+| `restore_checkpoint` | `PRESENT_DIR` | `65ceb849516fcf64d8b872a913068f68ed6a35e12980cd143823fc72696f7f4e` | 11 | `outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0_checkpoint` |
 
 ## Gate Artifacts
 
@@ -37,10 +37,18 @@ This is a read-only hash manifest. It did not train, SSH, deploy, or touch the r
 
 | name | status | sha256 | size/files | path |
 |---|---|---|---:|---|
-| `docs/PHASE2_DOMAIN_RANDOMIZATION_ROBUSTNESS.md` | `PRESENT_FILE` | `bd193ce9f815488ea4ae62ae89686bbcb50b936baf851b2350e51dd8de06ad6e` | 80853 | `docs/PHASE2_DOMAIN_RANDOMIZATION_ROBUSTNESS.md` |
+| `docs/PHASE2_DOMAIN_RANDOMIZATION_ROBUSTNESS.md` | `PRESENT_FILE` | `5fada7f1e6550a8ef11a93cceb07d6eb9830b201eb1fb136c858d42352df64de` | 106779 | `docs/PHASE2_DOMAIN_RANDOMIZATION_ROBUSTNESS.md` |
 | `docs/TRAINING_ENV_7900XTX.md` | `PRESENT_FILE` | `1f98919b1d48a16fa9cba74ddf431dc60f56df6ff6d26f99c44709db06f7a326` | 15299 | `docs/TRAINING_ENV_7900XTX.md` |
-| `outputs/analysis/PHASE2_CURRENT_STATUS.md` | `PRESENT_FILE` | `b91f778ed9f6d1df04785138294b128613caf56118fa5149a16fc54ac0e7fa77` | 4562 | `outputs/analysis/PHASE2_CURRENT_STATUS.md` |
-| `outputs/analysis/phase2_current_status.json` | `PRESENT_FILE` | `a5fad7693f50aaa8c6546bfc37561751158b72c963b23a1aea936b9938874b32` | 16200 | `outputs/analysis/phase2_current_status.json` |
+| `outputs/analysis/PHASE2_CURRENT_STATUS.md` | `PRESENT_FILE` | `fda47f8ff783c89e5496826bac9f3ce54bc77a50869f88bc158c4127151bf32e` | 7650 | `outputs/analysis/PHASE2_CURRENT_STATUS.md` |
+| `outputs/analysis/phase2_current_status.json` | `PRESENT_FILE` | `164ea831d092b96fd3347cfb4cdd5b7af30dfc2a0f7e4697c715663a0a4a12eb` | 20715 | `outputs/analysis/phase2_current_status.json` |
+| `outputs/analysis/PHASE2_LIMIT198_PPO_LOC_WARMSTART_DECISION.md` | `PRESENT_FILE` | `29538491290fc2d1eef1f1dcaa7a12d2b82bfc63cf8b970d8d1dc8c4de8da081` | 3692 | `outputs/analysis/PHASE2_LIMIT198_PPO_LOC_WARMSTART_DECISION.md` |
+| `outputs/analysis/phase2_limit198_ppo_loc_warmstart_decision.json` | `PRESENT_FILE` | `9681bdd7b073e39ca14e47d652fd110dceb19eaa4569d17b4548c25cb4e2be49` | 3053 | `outputs/analysis/phase2_limit198_ppo_loc_warmstart_decision.json` |
+| `outputs/analysis/PHASE2_LIMIT198_PPO_LOC_WARMSTART_STEP0_EXPORT_FIDELITY.md` | `PRESENT_FILE` | `2105ecb49c3cdacaf2a77fc4fbc13cd1b421cdddd4e1eacc3a636ff49b67e81f` | 1399 | `outputs/analysis/PHASE2_LIMIT198_PPO_LOC_WARMSTART_STEP0_EXPORT_FIDELITY.md` |
+| `outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0_export_fidelity.json` | `PRESENT_FILE` | `4bf1a1a54b8f36f9f3dcb37d68eb4408e25b0cfb7d9e72b11a75d1d5c7bf28b2` | 1288 | `outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0_export_fidelity.json` |
+| `outputs/analysis/PHASE2_LIMIT198_PPO_LOC_WARMSTART_STEP0_X008_GATE.md` | `PRESENT_FILE` | `bc6172516e1bb91695dae689dbb1ecc2c1c77877d17caac142cedaf7d93b8a7f` | 3810 | `outputs/analysis/PHASE2_LIMIT198_PPO_LOC_WARMSTART_STEP0_X008_GATE.md` |
+| `outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0_x008_gate.json` | `PRESENT_FILE` | `a3e52d3c7cc48d9c3d55498456256ba4ddc4d5ed9f7b27e578d0d02510848748` | 44538 | `outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0_x008_gate.json` |
+| `outputs/analysis/PHASE2_LIMIT198_PPO_LOC_WARMSTART_STEP0_X0_GATE.md` | `PRESENT_FILE` | `a71b9571d8c680651d0f0126b8e75b5cef576f1c52957fc0e26453c60ef1005b` | 3728 | `outputs/analysis/PHASE2_LIMIT198_PPO_LOC_WARMSTART_STEP0_X0_GATE.md` |
+| `outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0_x0_gate.json` | `PRESENT_FILE` | `3b3b9510cf0491439422b7ba87fe102bae350aa5df8e5ae28b327400d0195661` | 42104 | `outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0_x0_gate.json` |
 | `outputs/analysis/PHASE2_CURRICULUM_GATE_LEDGER.md` | `PRESENT_FILE` | `92b91febeec25962414f5e3c2db28b1223ff4f8597793c60bddb098175c6d29d` | 2106 | `outputs/analysis/PHASE2_CURRICULUM_GATE_LEDGER.md` |
 | `outputs/analysis/phase2_curriculum_gate_ledger.json` | `PRESENT_FILE` | `0989eacf3c76201147b86d5500924b4e0443f0dd7badad193db8586def365ccb` | 9469 | `outputs/analysis/phase2_curriculum_gate_ledger.json` |
 | `outputs/analysis/PHASE2_Z005_SEED5_FAILURE_DIAGNOSTIC.md` | `PRESENT_FILE` | `13154bd2d7a1e241dd58eb34d9ccb95d44239487841a75d6666bd63b46e5fa24` | 1839 | `outputs/analysis/PHASE2_Z005_SEED5_FAILURE_DIAGNOSTIC.md` |
@@ -107,7 +115,7 @@ This is a read-only hash manifest. It did not train, SSH, deploy, or touch the r
 | `tools/report_phase2_colab_launch_handoff.py` | `PRESENT_FILE` | `d8f53081d676fe254e6828c3cf98b792399e5dc8382b1519062e84dc8a9bf589` | 11188 | `tools/report_phase2_colab_launch_handoff.py` |
 | `tools/report_phase2_package_only_archive_verification.py` | `PRESENT_FILE` | `0a2205b238e16dd3851dc4d44e57929caa8a055098d0300c765ad2443051df90` | 9560 | `tools/report_phase2_package_only_archive_verification.py` |
 | `tools/report_phase2_stage_guard.py` | `PRESENT_FILE` | `245a4c23bc264de0b4f603aa1ed0f2194cd367749525976d91961795f20033ac` | 19643 | `tools/report_phase2_stage_guard.py` |
-| `tools/run_colab_cli_cuda_workflow.py` | `PRESENT_FILE` | `4d0f72b0cb9509d3da03fa16a76324a43efbaf217cbe7e4538ced49f54889a45` | 147011 | `tools/run_colab_cli_cuda_workflow.py` |
+| `tools/run_colab_cli_cuda_workflow.py` | `PRESENT_FILE` | `3613d401e967095412cab66d2ec63ab9f194c78f35c11fe0dddd6f5f69903c93` | 157614 | `tools/run_colab_cli_cuda_workflow.py` |
 
 ## Promotion Gate
 

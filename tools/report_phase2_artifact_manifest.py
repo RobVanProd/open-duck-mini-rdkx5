@@ -21,15 +21,14 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT_MD = ROOT / "outputs/analysis/PHASE2_ARTIFACT_MANIFEST.md"
 DEFAULT_OUTPUT_JSON = ROOT / "outputs/analysis/phase2_artifact_manifest.json"
-DEFAULT_CANDIDATE = ROOT / "policy/candidates/phase2_stagea2_seed5_recovery_command_gated_gain099_20260629/candidate.onnx"
+DEFAULT_CANDIDATE = ROOT / "policy/candidates/phase2_iter2_right_ankle_limit198_rate165_20260703/candidate.onnx"
 DEFAULT_CANDIDATE_METADATA = (
-    ROOT / "policy/candidates/phase2_stagea2_seed5_recovery_command_gated_gain099_20260629/candidate_metadata.json"
+    ROOT / "policy/candidates/phase2_iter2_right_ankle_limit198_rate165_20260703/README.md"
 )
 DEFAULT_BRIDGE = ROOT / "outputs/analysis/actuator_response_fit_corrected_knee.json"
 DEFAULT_RESTORE_CHECKPOINT = (
     ROOT
-    / "outputs/phase2_domain_randomization/stage_c0_terrain_z002_preserve_from_a2_gpu"
-    / "smoke_20260628T103743Z_gpu/2026_06_28_064431_245760"
+    / "outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0_checkpoint"
 )
 
 
@@ -38,6 +37,14 @@ REVIEW_ARTIFACTS = [
     "docs/TRAINING_ENV_7900XTX.md",
     "outputs/analysis/PHASE2_CURRENT_STATUS.md",
     "outputs/analysis/phase2_current_status.json",
+    "outputs/analysis/PHASE2_LIMIT198_PPO_LOC_WARMSTART_DECISION.md",
+    "outputs/analysis/phase2_limit198_ppo_loc_warmstart_decision.json",
+    "outputs/analysis/PHASE2_LIMIT198_PPO_LOC_WARMSTART_STEP0_EXPORT_FIDELITY.md",
+    "outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0_export_fidelity.json",
+    "outputs/analysis/PHASE2_LIMIT198_PPO_LOC_WARMSTART_STEP0_X008_GATE.md",
+    "outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0_x008_gate.json",
+    "outputs/analysis/PHASE2_LIMIT198_PPO_LOC_WARMSTART_STEP0_X0_GATE.md",
+    "outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0_x0_gate.json",
     "outputs/analysis/PHASE2_CURRICULUM_GATE_LEDGER.md",
     "outputs/analysis/phase2_curriculum_gate_ledger.json",
     "outputs/analysis/PHASE2_Z005_SEED5_FAILURE_DIAGNOSTIC.md",
