@@ -1,0 +1,39 @@
+{
+  "status": "HOLD_COLAB_TRANSPORT_ARTIFACT_EMPTY",
+  "source_candidate": "policy/candidates/corrected_bridge_cmd_conditioned_rate175_20260627/candidate.onnx",
+  "source_candidate_sha256": "63506567f7a973be0ff6b2b222bba41736409da713466db442067c0f2a91415e",
+  "warm_start_checkpoint": "outputs/analysis/phase2_restore_checkpoints/ppo_bc_command_conditioned_rate175_step0_checkpoint",
+  "colab_session": "open-duck-a100-phase2-ratecap",
+  "colab_hardware": "A100",
+  "workflow": "phase2-z0025-boundary",
+  "terrain_hfield_z_scale": 0.0026,
+  "reset_randomization": "zero jitter / unit qpos multiplier",
+  "robot_tests": false,
+  "ssh": false,
+  "deploy": false,
+  "grounded_replay": false,
+  "intended_recipe_delta": {
+    "phase2_target_rate_scale": -0.02,
+    "phase2_actuator_tracking_scale": -0.01,
+    "phase2_forward_swing_target_rate_limit_scale": -0.04,
+    "phase2_forward_swing_target_rate_limit_joint_indices": [2, 3, 4, 11, 12, 13],
+    "phase2_forward_swing_target_rate_limit_values": [2.5, 3.25, 2.75, 2.25, 2.75, 2.0],
+    "restore_policy_kl_scale": 8
+  },
+  "downloaded_artifact": {
+    "path": "outputs/analysis/colab_cli/open-duck-a100-phase2-ratecap-phase2-z0025-boundary-20260703T052320Z/final_download/open_duck_colab_cli_phase2-z0025-boundary_20260703T052331Z_artifacts.tar.gz",
+    "sha256": "a8524c9744a76b7c26195a8559402400224136b5d88920510232579a67c3615c",
+    "contents": [
+      "COLAB_CLI_EXIT_STATUS.txt",
+      "COLAB_CLI_HEARTBEAT.json",
+      "POLICY_SIM_CONTRACT_AUDIT_CUDA.md",
+      "policy_sim_contract_audit_cuda.json"
+    ]
+  },
+  "driver": {
+    "path": "outputs/analysis/colab_cli/open-duck-a100-phase2-ratecap-phase2-z0025-boundary-20260703T052320Z/open_duck_colab_cli_phase2-z0025-boundary_20260703T052331Z_driver.py",
+    "sha256": "fa0b58ed306a8abf95526c3c62437fe349534718207c9813025203f767414e86"
+  },
+  "decision": "Do not interpret this as a recipe result. Re-launch with detached remote execution and artifact polling.",
+  "next_recommendation": "Run the remote driver under nohup inside the Colab VM, then poll/download the artifact bundle rather than holding one long colab exec stream open."
+}
