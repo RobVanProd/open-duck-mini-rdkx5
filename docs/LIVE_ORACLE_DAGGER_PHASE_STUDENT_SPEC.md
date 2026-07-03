@@ -96,6 +96,14 @@ the strict corrected fitted-bridge tracking gate by:
   the targeted `x=0.0` seed-5 rollout reproduced the collapse at 43 samples
   and produced 43 soft-zero corrective labels. Treat the aggregate as data for
   the next supervised fit, not as a candidate result.
+- The first contact/phase-modulated student fit from that aggregate also held
+  the immediate short `x=0.0` seed-5 repair gate, falling again at 43 samples
+  with reverse drift and no velocity-envelope excess:
+  `outputs/analysis/PHASE2_Z0025_LIVE_ORACLE_SEED5_SOFTZERO_ITER2_BC_DECISION_20260702.md`.
+  Do not run full gates, A100 scaling, robot validation, or more alpha-only
+  soft-zero retries from this candidate. The collapse pocket needs a
+  stabilizing zero-command support source/teacher, not only labels from the
+  first 43 samples of the same failing rollout.
 
 ## Blocking Step 0
 
@@ -164,6 +172,13 @@ Latest z=0.0025 seed-5 soft-zero data decision:
 ```text
 outputs/analysis/PHASE2_Z0025_LIVE_ORACLE_X0_SEED5_SOFTZERO_ITER2_DATA_DECISION_20260702.md
 outputs/analysis/phase2_z0025_live_oracle_x0_seed5_softzero_iter2_data_decision_20260702.json
+```
+
+Latest z=0.0025 seed-5 soft-zero student decision:
+
+```text
+outputs/analysis/PHASE2_Z0025_LIVE_ORACLE_SEED5_SOFTZERO_ITER2_BC_DECISION_20260702.md
+outputs/analysis/phase2_z0025_live_oracle_seed5_softzero_iter2_bc_decision_20260702.json
 ```
 
 ## Hypotheses
