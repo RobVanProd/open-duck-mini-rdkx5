@@ -1,0 +1,104 @@
+{
+  "status": "HOLD_Z0026_REPAIR_DID_NOT_RECOVER_SEED5",
+  "date": "2026-07-03",
+  "offline_only": true,
+  "robot_tests": false,
+  "ssh": false,
+  "deploy": false,
+  "grounded_replay": false,
+  "runtime_behavior_change": false,
+  "remote_training": {
+    "session": "open-duck-a100-phase2-z0026",
+    "workflow": "phase2-z002-teacher-continuity",
+    "hardware": "Colab A100",
+    "jax_version": "0.7.2",
+    "terrain_hfield_z_scale": 0.0026,
+    "restore_checkpoint": "outputs/analysis/phase2_restore_checkpoints/phase2_z0026_teacher_continuity_81920",
+    "artifact_tarball": "outputs/analysis/colab_cli/open-duck-a100-phase2-z0026-phase2-z002-teacher-continuity-20260703T013212Z/manual_download/open_duck_colab_cli_phase2-z002-teacher-continuity_20260703T013239Z_artifacts.tar.gz",
+    "artifact_tarball_sha256": "d105b43aac906649117281aef3522d2591755fb8934280587c607eec1b42ad20",
+    "session_stopped_after_local_hold": true
+  },
+  "onnx_exports": [
+    {
+      "step": 40960,
+      "path": "outputs/analysis/colab_cli_downloads/extracted/open_duck_colab_cli_phase2-z0026-motion-support_20260703T013239Z/open_duck_colab_cli_phase2-z002-teacher-continuity_20260703T013239Z/open_duck_training_phase2_z002_teacher_continuity_cli/smoke_20260703T013602Z_gpu/2026_07_03_014508_40960.onnx",
+      "sha256": "fded6556135ce795c4b31e51dd4faac5aba0304d248626f2526733f43ffae88e"
+    },
+    {
+      "step": 81920,
+      "path": "outputs/analysis/colab_cli_downloads/extracted/open_duck_colab_cli_phase2-z0026-motion-support_20260703T013239Z/open_duck_colab_cli_phase2-z002-teacher-continuity_20260703T013239Z/open_duck_training_phase2_z002_teacher_continuity_cli/smoke_20260703T013602Z_gpu/2026_07_03_014801_81920.onnx",
+      "sha256": "75b4b88226b9d0662c62e6e16ea46a638d205553caf4fe977c60dfaceaed6372"
+    },
+    {
+      "step": 122880,
+      "path": "outputs/analysis/colab_cli_downloads/extracted/open_duck_colab_cli_phase2-z0026-motion-support_20260703T013239Z/open_duck_colab_cli_phase2-z002-teacher-continuity_20260703T013239Z/open_duck_training_phase2_z002_teacher_continuity_cli/smoke_20260703T013602Z_gpu/2026_07_03_014822_122880.onnx",
+      "sha256": "ce582e7d037acdf11ae1ea84676bc764428216102c58cb433ac3ca30829cd659"
+    }
+  ],
+  "local_seed5_gate": {
+    "artifact_md": "outputs/analysis/PHASE2_Z0026_SEED5_MOTION_SUPPORT_REPAIR_SEED5_SHORT.md",
+    "artifact_json": "outputs/analysis/phase2_z0026_seed5_motion_support_repair_seed5_short.json",
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.0026,
+    "command_x": 0.08,
+    "seed": 5,
+    "duration_s": 2.0,
+    "bridge": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+    "results": [
+      {
+        "label": "ckpt40960",
+        "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+        "samples": 65,
+        "mean_local_vx_m_s": -0.2219,
+        "track_ratio": -2.7736,
+        "base_height_min_m": 0.0733,
+        "max_pitch_vel_p95_rad_s": 1.7289,
+        "velocity_excess_rad_s": 0.0,
+        "max_tracking_p95_rad": 0.2032,
+        "single_support_pct": 12.3077,
+        "double_support_pct": 84.6154
+      },
+      {
+        "label": "ckpt81920",
+        "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+        "samples": 65,
+        "mean_local_vx_m_s": -0.2262,
+        "track_ratio": -2.8270,
+        "base_height_min_m": 0.0687,
+        "max_pitch_vel_p95_rad_s": 1.7510,
+        "velocity_excess_rad_s": 0.0,
+        "max_tracking_p95_rad": 0.2034,
+        "single_support_pct": 13.8462,
+        "double_support_pct": 81.5385
+      },
+      {
+        "label": "ckpt122880",
+        "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+        "samples": 64,
+        "mean_local_vx_m_s": -0.2184,
+        "track_ratio": -2.7300,
+        "base_height_min_m": 0.0806,
+        "max_pitch_vel_p95_rad_s": 1.7437,
+        "velocity_excess_rad_s": 0.0,
+        "max_tracking_p95_rad": 0.2019,
+        "single_support_pct": 12.5,
+        "double_support_pct": 81.25
+      }
+    ]
+  },
+  "latest_trace": {
+    "artifact_md": "outputs/analysis/PHASE2_Z0026_SEED5_MOTION_SUPPORT_REPAIR_122880_TRACE_ANALYSIS.md",
+    "artifact_json": "outputs/analysis/phase2_z0026_seed5_motion_support_repair_122880_trace_analysis.json",
+    "failure_surface": "REVERSE_HEIGHT_COLLAPSE",
+    "first_reverse_tick": 10,
+    "first_reverse_time_s": 0.2,
+    "first_low_height_tick": 62,
+    "first_low_height_time_s": 1.24,
+    "first_done_tick": 63,
+    "first_done_time_s": 1.26,
+    "double_support_ticks": 52,
+    "samples": 64
+  },
+  "decision": "Do not promote any checkpoint from this run. The narrow anti-reverse/base-height repair did not recover seed 5 and did not change the failure surface.",
+  "next_recommendation": "Stop this scalar repair direction and inspect the seed-5 state/contact manifold directly against passing seeds before spending another A100 run."
+}

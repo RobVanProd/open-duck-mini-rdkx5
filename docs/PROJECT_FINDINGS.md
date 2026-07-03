@@ -4044,3 +4044,28 @@ narrow anti-reverse plus base-height/pitch stability pressure. It is not a
 robot-validation branch. A promoted checkpoint must pass full z=0.0026 x=0.0
 and x=0.08 corrected-bridge 8-seed gates without backing up, freezing, x=0.0
 drift, or corrected-envelope excess.
+
+## Phase 2 z=0.0026 Seed-5 Motion-Support Repair Hold
+
+The bounded A100 repair run completed and exported checkpoints at `40960`,
+`81920`, and `122880`, but none recovered the actual seed-5 z=0.0026 x=0.08
+failure:
+
+```text
+artifact: outputs/analysis/PHASE2_Z0026_SEED5_MOTION_SUPPORT_REPAIR_DECISION_20260703.md
+status: HOLD_Z0026_REPAIR_DID_NOT_RECOVER_SEED5
+
+40960:  fall at 65 samples, vx=-0.2219 m/s, track_ratio=-2.7736, vel_excess=0
+81920:  fall at 65 samples, vx=-0.2262 m/s, track_ratio=-2.8270, vel_excess=0
+122880: fall at 64 samples, vx=-0.2184 m/s, track_ratio=-2.7300, vel_excess=0
+```
+
+The latest checkpoint trace remains `REVERSE_HEIGHT_COLLAPSE`: reverse begins
+at tick 10, low height at tick 62, termination at tick 63, and the trace spends
+52/64 ticks in double support. The failure still occurs inside the corrected
+velocity envelope.
+
+This closes the narrow scalar anti-reverse/base-height repair direction. The
+next useful branch is not another scalar penalty escalation; it should compare
+seed 5 against the seven passing z=0.0026 seeds and identify the first
+state/contact divergence before tick 10, then target that manifold directly.

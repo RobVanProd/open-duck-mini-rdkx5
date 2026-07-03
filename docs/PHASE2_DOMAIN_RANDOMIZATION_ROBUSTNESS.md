@@ -2779,3 +2779,39 @@ Acceptance is deliberately strict: seed 5 must stop reversing without losing the
 x=0.08 corrected-bridge gates before any higher terrain rung or robot-side work.
 If the run removes the seed-5 fall by backing up, freezing, or drifting at x=0.0,
 this repair direction is falsified rather than promoted.
+
+### z=0.0026 Seed-5 Motion-Support Repair Hold
+
+Artifact:
+
+```text
+outputs/analysis/PHASE2_Z0026_SEED5_MOTION_SUPPORT_REPAIR_DECISION_20260703.md
+```
+
+Status:
+
+```text
+HOLD_Z0026_REPAIR_DID_NOT_RECOVER_SEED5
+```
+
+The A100 run completed with the pinned JAX `0.7.2` stack and exported checkpoints
+at `40960`, `81920`, and `122880`, but the decisive local seed-5 z=0.0026 x=0.08
+short screen failed for all three:
+
+```text
+40960:  fall at 65 samples, vx=-0.2219 m/s, track_ratio=-2.7736, vel_excess=0
+81920:  fall at 65 samples, vx=-0.2262 m/s, track_ratio=-2.8270, vel_excess=0
+122880: fall at 64 samples, vx=-0.2184 m/s, track_ratio=-2.7300, vel_excess=0
+```
+
+The latest checkpoint trace is still `REVERSE_HEIGHT_COLLAPSE`: reverse begins at
+tick `10`, low height at tick `62`, done at tick `63`, with `52/64` ticks in
+double support and no corrected-envelope velocity excess. Do not promote these
+checkpoints. The Colab session was stopped after artifact recovery to avoid
+continuing a remote sweep that could not approve the run.
+
+This closes the narrow scalar anti-reverse/base-height repair direction. The
+next step should inspect seed 5's state/contact manifold directly against the
+seven passing z=0.0026 seeds and identify the first divergent support variable
+before tick 10, rather than spending another A100 run on the same scalar
+penalty family.
