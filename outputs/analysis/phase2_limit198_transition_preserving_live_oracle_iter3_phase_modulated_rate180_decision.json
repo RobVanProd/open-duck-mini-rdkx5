@@ -1,0 +1,73 @@
+{
+  "generated_at": "2026-07-03T19:45:18Z",
+  "status": "PASS_PHASE2_RATE180_CORRECTED_BRIDGE_GATES",
+  "scope": "Offline behavior-cloning fit and corrected-bridge seed gates only. No robot, SSH, deploy, grounded replay, runtime behavior change, or PPO training.",
+  "robot_touched": false,
+  "ssh_used": false,
+  "deploy_performed": false,
+  "grounded_replay_performed": false,
+  "training_started": false,
+  "candidate": {
+    "path": "policy/candidates/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate180_20260703/candidate.onnx",
+    "sha256": "b658c3380d1ad3dbd8912c988a3ff0e4b019735f220cf56351e9c783f328d5b1",
+    "contract": "obs[1,101] -> continuous_actions[1,14]",
+    "promoted_offline": true
+  },
+  "student_npz": {
+    "path": "policy/candidates/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate180_20260703/student.npz",
+    "sha256": "6ecbeffc9037658386b3ec2c3722f30e5dc5ae31547c7182550140e11666a505"
+  },
+  "source_manifest": "outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_run/live_oracle_dagger_aggregate_manifest.json",
+  "fit": {
+    "status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE",
+    "samples": 40500,
+    "action_mae": 0.007582,
+    "action_p95_abs_error": 0.024502,
+    "action_max_abs_error": 0.318274,
+    "target_rate_p95_rad_s": 1.394986,
+    "target_rate_max_rad_s": 2.009591,
+    "onnx_verify_max_abs_error": 0.00000024
+  },
+  "gates": {
+    "x008": {
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "path": "outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate180_x008_gate.json",
+      "sha256": "e7533724c55beb4501d109e44cebfaa327957cbb79649e9855e1e246a7bb2661",
+      "runs": 8,
+      "duration_complete": 8,
+      "falls": 0,
+      "mean_local_vx_m_s": 0.03523734752711607,
+      "track_ratio": 0.44046684408895087,
+      "body_pitch_p95_rad": 0.1349582522376814,
+      "base_height_min_m": 0.15223704278469086,
+      "max_pitch_vel_p95_rad_s": 1.7716196179389954,
+      "p95_vel_excess_rad_s": 0.0,
+      "max_vel_excess_rad_s": 0.0,
+      "max_tracking_p95_rad": 0.18910760283470152,
+      "min_swing_peak_lift_m": 0.014507070183753967,
+      "min_swing_segments": 18,
+      "min_swing_rel_x_range_p95_m": 0.011434257199289274,
+      "single_support_pct": 28.000000000000004,
+      "double_support_pct": 72.0
+    },
+    "x0": {
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "path": "outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate180_x0_gate.json",
+      "sha256": "fedfa39763e531374d6b7da7b31a4d2bb61937f1b255e495c5a017f80ecad5ba",
+      "runs": 8,
+      "duration_complete": 8,
+      "falls": 0,
+      "mean_local_vx_m_s": 0.00016906177229672418,
+      "body_pitch_p95_rad": 0.0337378206244629,
+      "base_height_min_m": 0.1522957682609558,
+      "max_pitch_vel_p95_rad_s": 0.047042965888977,
+      "p95_vel_excess_rad_s": 0.0,
+      "max_vel_excess_rad_s": 0.0,
+      "max_tracking_p95_rad": 0.03389163613319397,
+      "single_support_pct": 0.0,
+      "double_support_pct": 100.0
+    }
+  },
+  "decision": "Promote this as the current offline Phase 2 corrected-bridge candidate for the next robustness step. Robot validation remains blocked pending separate operator-approved hardware workflow.",
+  "next_action": "Evaluate this candidate under the next staged Phase 2 robustness screen, starting with weak dynamics randomization and gentle pushes before widening terrain or disturbance ranges."
+}
