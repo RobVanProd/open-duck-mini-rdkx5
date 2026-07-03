@@ -1,80 +1,67 @@
 # Phase 2 Current Status
 
-status: `HOLD_PHASE2_SCALAR_SUPPORT_BRANCH_EXHAUSTED`
-generated_at: `2026-06-30T23:30:20Z`
+status: `HOLD_PHASE2_PPO_DR_STANDSTILL_REGRESSION`
+generated_at: `2026-07-03T13:23:15Z`
 
-## Candidate
+## Scope
 
-- name: `phase2_stagea2_seed5_recovery_command_gated_gain099_20260629`
-- path: `policy/candidates/phase2_stagea2_seed5_recovery_command_gated_gain099_20260629/candidate.onnx`
-- sha256: `209b85a75cf9cbbcf10df573c1b530921943a72e81082111889c15f63a9a2c7b`
-- contract: `PASS_POLICY_CONTRACT` obs=101 action=14
-- transform: `onnx_output_action_scale` scale=0.99 verify=PASS_ONNX_OUTPUT_SCALE_VERIFY
+Offline-only Phase 2 robustness training status. This report does not
+SSH, deploy, run robot tests, start training, or change runtime behavior.
 
-## Gate Matrix
+## Corrected Rate165 Baseline
 
-| gate | status | pass/total | x | z | push | track ratio mean | vx mean | max tracking p95 | max pitch vel p95 | max vel excess |
-|---|---|---:|---:|---:|---|---:|---:|---:|---:|---:|
-| z002_x008_nopush | `PASS_GATE_8SEED` | 8/8 | 0.080 | 0.002 | no | 0.405 | 0.0324 | 0.1975 | 2.3978 | 0.0000 |
-| z002_x000_nopush | `PASS_GATE_8SEED` | 8/8 | 0.000 | 0.002 | no | NA | 0.0007 | 0.0663 | 0.3997 | 0.0000 |
-| z002_x008_gentle_push | `PASS_GATE_8SEED` | 8/8 | 0.080 | 0.002 | yes | 0.410 | 0.0328 | 0.1944 | 2.3950 | 0.0000 |
-| z002_x000_gentle_push | `PASS_GATE_8SEED` | 8/8 | 0.000 | 0.002 | yes | NA | 0.0007 | 0.0687 | 0.3906 | 0.0000 |
-| z005_x008_nopush | `HOLD_GATE` | 7/8 | 0.080 | 0.005 | no | -0.069 | -0.0055 | 0.1968 | 2.4032 | 0.0000 |
-| z005_x000_nopush | `HOLD_GATE` | 7/8 | 0.000 | 0.005 | no | NA | -0.0322 | 0.1953 | 1.2575 | 0.0000 |
+- candidate status: `PASS_OFFLINE_CORRECTED_BRIDGE_CANDIDATE_READY`
+- candidate ONNX: `policy/candidates/phase2_corrected_live_oracle_iter1_rate165_20260703/candidate.onnx`
+- candidate ONNX sha256: `e06643e5790217075d9c7a0d1e1ac262652058592b374ac0446bdd0426d0ea33`
+- candidate NPZ sha256: `2a896d32b9e40565008073970cacc9d31c8543e5ee8f3ee44162c5ddcd73ed36`
+- corrected decision artifact: `outputs/analysis/phase2_corrected_live_oracle_iter1_rate165_candidate_decision_20260703.json`
 
-## Blocking Gate Detail
+| gate | status | pass/total | x | z | vx mean | track ratio | single support | double support | max vel p95 | max tracking p95 | vel excess |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| rate165_x008 | `PASS_GATE` | 8/8 | 0.080 | 0.0026 | 0.0272 | 0.3400 | 22.5333 | 77.4667 | 1.6410 | 0.1827 | 0.0000 |
+| rate165_x0 | `PASS_GATE` | 8/8 | 0.000 | 0.0026 | -0.0000 | NA | 0.0000 | 100.0000 | 0.0642 | 0.0317 | 0.0000 |
 
-- gate: `z005_x008_nopush`
-  - first failing seed: `5`
-  - status: `HOLD_CANDIDATE_FALL_OR_TERMINATION`
-  - termination: `fall_or_nan`
-  - track_ratio: `-3.3180`
-  - mean_local_vx_m_s: `-0.2654`
-  - base_height_min_m: `0.0677`
-- gate: `z005_x000_nopush`
-  - first failing seed: `5`
-  - status: `HOLD_CANDIDATE_FALL_OR_TERMINATION`
-  - termination: `fall_or_nan`
-  - track_ratio: `NA`
-  - mean_local_vx_m_s: `-0.2589`
-  - base_height_min_m: `0.0512`
+## PPO-Compatible Warm-Start
 
-## Backend
+- fidelity artifact: `outputs/analysis/phase2_rate165_ppo_loc_warmstart_step0_export_fidelity.json`
+- status: `PASS_PPO_BC_WARMSTART_STEP0_EXPORT_FIDELITY`
+- p95 abs error: `0.0000001192`
+- max abs error: `0.0000002682`
 
-| artifact | status | robot | ssh | deploy | note |
-|---|---|---|---|---|---|
-| local_rocm_hold | `HOLD_FULL_LOCAL_ROCM_COMPILE_NO_PROGRESS` | False | False | False | Local ROCm can run basic JAX GPU arithmetic and a tiny no-override training smoke. The gfx override causes immediate context failure, while the no-override full-shape run did not reach first checkpoint in bounded time. This is not a policy or recipe result. |
-| local_rocm_command_buffer | `HOLD_LOCAL_8ENV_LOW_FORWARD_PROGRESS` | False | False | False | The reduced local ROCm candidate is not a deployable or robot-test candidate. The backend workaround is useful; the policy result is a low-forward-progress hold. |
+## Failed PPO / Domain-Randomization Attempts
 
-## z=0.005 Seed-5 Diagnostic
+### Stage A A100 Narrow Flat
 
-- status: `HOLD_Z005_SEED5_SUPPORT_COLLAPSE_DIAGNOSED`
-- artifact: `outputs/analysis/phase2_z005_seed5_failure_diagnostic.json`
-- robot_touched: `False`
-- ssh_used: `False`
-- deploy_performed: `False`
-- training_started: `False`
+- status: `HOLD_STAGE_A_RATE165_STANDSTILL_REGRESSION`
+- artifact: `outputs/analysis/phase2_stage_a_rate165_narrow_flat_result.json`
+- final step: `4587520`
+- final ONNX sha256: `7d83b2a24ca2874286d80eb27743fb5a5f498fa9ecb8bd1ad2effde7c0966982`
+- x=0.08 gate: `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS`
+- mean vx: `0.0007 m/s`
+- track ratio: `0.0091`
+- single support: `0.0000%`
+- double support: `100.0000%`
+- corrected velocity excess: `0.0000`
 
-- seed 5 collapses vertically on z=0.005 in both command modes
-- failure is backward-biased even at zero command
-- failure is not caused by corrected-envelope velocity excess
-- support pattern is double-support dominated before collapse
+### Motion-Preservation CPU2240 Smoke
 
-recommendation: The next z=0.005 support recipe should target seed-5 terrain support and base-height margin while preserving the z=0.002 gait. Do not treat this as an actuator-envelope or action-saturation problem.
-
-## Scalar Support Branch Results
-
-| branch | status | artifact |
-|---|---|---|
-| `z005_support` | `HOLD_LOW_FORWARD_PROGRESS` | `outputs/analysis/PHASE2_Z005_SUPPORT_A100_CACHEFIX_RESULT.md` |
-| `right_swing_structural` | `HOLD_RIGHT_SWING_STRUCTURAL_RECIPE` | `docs/PHASE2_RIGHT_SWING_STRUCTURAL_RESULT.md` |
-| `right_swing_phase_lift` | `HOLD_RIGHT_SWING_PHASE_LIFT_RECIPE` | `docs/PHASE2_RIGHT_SWING_PHASE_LIFT_RESULT.md` |
-| `right_swing_phase_advance` | `HOLD_RIGHT_SWING_PHASE_ADVANCE_RECIPE` | `docs/PHASE2_RIGHT_SWING_PHASE_ADVANCE_RESULT.md` |
-| `right_swing_phase_single_support` | `HOLD_RIGHT_SWING_PHASE_SINGLE_SUPPORT_RECIPE` | `docs/PHASE2_RIGHT_SWING_PHASE_SINGLE_SUPPORT_RESULT.md` |
+- status: `HOLD_MOTION_PRESERVE_STANDSTILL_REGRESSION`
+- artifact: `outputs/analysis/phase2_rate165_motion_preserve_cpu2240_result.json`
+- exported ONNX sha256: `6ec74a1e418e5725c351ffbb8dadc11b4f4619846d3c82be5c12048295cb157c`
+- x=0.08 compact gate: `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS`
+- x=0.08 mean vx: `0.0032 m/s`
+- x=0.08 track ratio: `0.0394`
+- x=0.08 single/double support: `0.0000% / 100.0000%`
+- x=0.0 compact gate: `PASS_CANDIDATE_SIM_GATE`
 
 ## Decision
 
-- next_status: `HOLD_PHASE2_SCALAR_SUPPORT_BRANCH_EXHAUSTED`
-- next_action: Current packaged candidate is robust at z=0.002 including gentle push, but z=0.005 terrain is not cleared. The scalar z=0.005/support/swing reward family has held repeatedly; do not launch another scalar support reward run. Next offline work should rebuild a corrected-bridge oracle/source or move to a structural phase-aware/live-oracle student path under the canonical corrected evaluator.
+- next_status: `HOLD_PHASE2_PPO_DR_STANDSTILL_REGRESSION`
+- next_action: The corrected rate165 candidate is still the offline baseline, but both the full Stage A PPO/DR run and the tiny motion-preservation PPO smoke collapse the walking warm-start into double-support standstill. Do not launch another scalar PPO/DR run from this recipe. Next offline work should use a phase-aware/live-oracle student or another training structure that preserves single support before reintroducing domain randomization.
 
-No robot, SSH, deploy, grounded replay, or runtime behavior change is authorized by this report.
+## Guardrails
+
+- Do not advance to push/terrain DR stages from the rejected Stage A run.
+- Do not scale the CPU2240 motion-preservation recipe into another long A100 run.
+- Keep the corrected bridge and per-joint corrected velocity envelope authoritative.
+- No robot, SSH, deploy, grounded replay, or runtime behavior change is authorized by this report.

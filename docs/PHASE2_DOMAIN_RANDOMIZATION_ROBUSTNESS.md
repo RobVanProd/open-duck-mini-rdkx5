@@ -121,13 +121,23 @@ the `rough_terrain_backlash`, `z=0.0026`, `home-support` gate:
   zero corrected p95/max velocity excess.
 
 The step-0 Orbax checkpoint export passed action fidelity against the PPO-loc
-ONNX with p95 abs error `1.19e-7` and max abs error `2.68e-7`. Use this
-checkpoint for Stage A. Do not launch a scratch PPO run.
+ONNX with p95 abs error `1.19e-7` and max abs error `2.68e-7`.
 
-Next aligned action: run Stage A narrow flat/no-push DR from
-`outputs/analysis/PHASE2_DOMAIN_RANDOMIZATION_PLAN.md`, then gate the exported
-checkpoint(s) with the corrected bridge before advancing to full flat pushes or
-rough terrain.
+The later Stage A A100 result and CPU2240 motion-preservation smoke showed that
+the current PPO/DR objective collapses this warm-start into planted double
+support. Do not launch another scalar PPO/DR run from this recipe. The next
+aligned offline action is a phase-aware/live-oracle student or another
+training structure that preserves single-support walking before reintroducing
+domain randomization.
+
+Current status and next branch decision:
+
+```text
+outputs/analysis/PHASE2_CURRENT_STATUS.md
+outputs/analysis/phase2_current_status.json
+outputs/analysis/PHASE2_NEXT_BRANCH_DECISION.md
+outputs/analysis/phase2_next_branch_decision.json
+```
 
 ## Current Canonical Gate Ledger
 

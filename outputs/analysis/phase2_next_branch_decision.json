@@ -1,0 +1,55 @@
+{
+  "status": "PLAN_PHASE_AWARE_LIVE_ORACLE_SINGLE_SUPPORT_PRESERVATION",
+  "current_baseline": {
+    "candidate_onnx": "policy/candidates/phase2_corrected_live_oracle_iter1_rate165_20260703/candidate.onnx",
+    "candidate_onnx_sha256": "e06643e5790217075d9c7a0d1e1ac262652058592b374ac0446bdd0426d0ea33",
+    "x008_gate": {
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "terrain_hfield_z_scale": 0.0026,
+      "track_ratio": 0.34,
+      "single_support_pct": 22.5333,
+      "max_tracking_p95_rad": 0.1827,
+      "corrected_velocity_excess_rad_s": 0.0
+    },
+    "x000_gate": {
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "terrain_hfield_z_scale": 0.0026,
+      "mean_local_vx_m_s": 0.0,
+      "corrected_velocity_excess_rad_s": 0.0
+    }
+  },
+  "rejected_paths": [
+    {
+      "name": "stage_a_rate165_narrow_flat_no_push",
+      "artifact": "outputs/analysis/PHASE2_STAGE_A_RATE165_NARROW_FLAT_RESULT.md",
+      "reason": "Full A100 Stage A scalar PPO/DR collapsed to planted double-support standstill."
+    },
+    {
+      "name": "rate165_motion_preserve_cpu2240",
+      "artifact": "outputs/analysis/PHASE2_RATE165_MOTION_PRESERVE_CPU2240_RESULT.md",
+      "reason": "Tiny CPU motion-preservation PPO smoke also collapsed to planted double-support standstill."
+    }
+  ],
+  "next_branch": {
+    "id": "PHASE_AWARE_LIVE_ORACLE_SINGLE_SUPPORT_PRESERVATION",
+    "objective": "Preserve corrected-bridge single-support walking before reintroducing domain randomization.",
+    "required_gate": {
+      "command_x": 0.08,
+      "terrain_hfield_z_scale": 0.0026,
+      "reset_mode": "home-support",
+      "bridge": "corrected fitted",
+      "must_have_nonzero_forward_progress": true,
+      "must_have_nonzero_single_support": true,
+      "must_have_zero_corrected_velocity_excess": true,
+      "must_preserve_x0_stillness": true
+    }
+  },
+  "scope": {
+    "offline_only": true,
+    "robot_tests": false,
+    "ssh": false,
+    "deploy": false,
+    "grounded_replay": false,
+    "runtime_behavior_changes": false
+  }
+}

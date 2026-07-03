@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Summarize the current Phase 2 domain-randomization campaign state.
+"""Summarize the current Phase 2 robustness-training state.
 
-This is an offline read-only reporter. It does not train, SSH, deploy, or touch
-the robot. Its job is to turn the current candidate, gate, and backend artifacts
-into a compact status document so the next training action is unambiguous.
+This reporter is offline-only and read-only. It does not train, SSH, deploy,
+touch the robot, or modify runtime behavior. It records the current corrected
+rate165 Phase 2 state so follow-on planning does not fall back to stale
+pre-correction or scalar-support branches.
 """
 
 from __future__ import annotations
@@ -20,78 +21,42 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT_MD = ROOT / "outputs" / "analysis" / "PHASE2_CURRENT_STATUS.md"
 DEFAULT_OUTPUT_JSON = ROOT / "outputs" / "analysis" / "phase2_current_status.json"
 
-
-DEFAULT_CANDIDATE_METADATA = (
-    ROOT
-    / "policy"
-    / "candidates"
-    / "phase2_stagea2_seed5_recovery_command_gated_gain099_20260629"
-    / "candidate_metadata.json"
+DEFAULT_CANDIDATE_DECISION = (
+    ROOT / "outputs/analysis/phase2_corrected_live_oracle_iter1_rate165_candidate_decision_20260703.json"
 )
-DEFAULT_GATES = {
-    "z002_x008_nopush": ROOT
-    / "outputs"
-    / "analysis"
-    / "phase2_stagea2_seed5_recovery_command_gated_gain099_x008_rough_z002_nopush_15s_8seed_cpu.json",
-    "z002_x000_nopush": ROOT
-    / "outputs"
-    / "analysis"
-    / "phase2_stagea2_seed5_recovery_command_gated_gain099_x0_rough_z002_nopush_15s_8seed_cpu.json",
-    "z002_x008_gentle_push": ROOT
-    / "outputs"
-    / "analysis"
-    / "phase2_stagea2_seed5_recovery_command_gated_gain099_x008_rough_z002_gentle_push_15s_8seed_cpu.json",
-    "z002_x000_gentle_push": ROOT
-    / "outputs"
-    / "analysis"
-    / "phase2_stagea2_seed5_recovery_command_gated_gain099_x0_rough_z002_gentle_push_15s_8seed_cpu.json",
-    "z005_x008_nopush": ROOT
-    / "outputs"
-    / "analysis"
-    / "phase2_stagea2_seed5_recovery_command_gated_gain099_x008_rough_z005_nopush_15s_8seed_cpu.json",
-    "z005_x000_nopush": ROOT
-    / "outputs"
-    / "analysis"
-    / "phase2_stagea2_seed5_recovery_command_gated_gain099_x0_rough_z005_nopush_15s_8seed_cpu.json",
-}
-DEFAULT_BACKEND_ARTIFACTS = {
-    "local_rocm_hold": ROOT
-    / "outputs"
-    / "analysis"
-    / "phase2_z005_support_local_rocm_hold.json",
-    "local_rocm_command_buffer": ROOT
-    / "outputs"
-    / "analysis"
-    / "phase2_z005_local_rocm_command_buffer_result.json",
-}
-DEFAULT_Z005_SEED5_DIAGNOSTIC = (
-    ROOT / "outputs" / "analysis" / "phase2_z005_seed5_failure_diagnostic.json"
+DEFAULT_RATE165_X008_GATE = (
+    ROOT / "outputs/analysis/phase2_z0026_corrected_source_live_oracle_iter1_phase_contact_rate165_x008_gate.json"
 )
-DEFAULT_SCALAR_BRANCH_RESULTS = {
-    "z005_support": ROOT
-    / "outputs"
-    / "analysis"
-    / "PHASE2_Z005_SUPPORT_A100_CACHEFIX_RESULT.md",
-    "right_swing_structural": ROOT
-    / "docs"
-    / "PHASE2_RIGHT_SWING_STRUCTURAL_RESULT.md",
-    "right_swing_phase_lift": ROOT
-    / "docs"
-    / "PHASE2_RIGHT_SWING_PHASE_LIFT_RESULT.md",
-    "right_swing_phase_advance": ROOT
-    / "docs"
-    / "PHASE2_RIGHT_SWING_PHASE_ADVANCE_RESULT.md",
-    "right_swing_phase_single_support": ROOT
-    / "docs"
-    / "PHASE2_RIGHT_SWING_PHASE_SINGLE_SUPPORT_RESULT.md",
-}
+DEFAULT_RATE165_X0_GATE = (
+    ROOT / "outputs/analysis/phase2_z0026_corrected_source_live_oracle_iter1_phase_contact_rate165_x0_gate.json"
+)
+DEFAULT_PPO_WARMSTART_FIDELITY = (
+    ROOT / "outputs/analysis/phase2_rate165_ppo_loc_warmstart_step0_export_fidelity.json"
+)
+DEFAULT_STAGE_A_RESULT = ROOT / "outputs/analysis/phase2_stage_a_rate165_narrow_flat_result.json"
+DEFAULT_MOTION_PRESERVE_RESULT = (
+    ROOT / "outputs/analysis/phase2_rate165_motion_preserve_cpu2240_result.json"
+)
+DEFAULT_COLAB_SESSION_STATUS = ROOT / "outputs/analysis/phase2_colab_session_status.json"
 
 
 def now_utc() -> str:
     return dt.datetime.now(dt.UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
 
-def sha256(path: Path) -> str:
+def rel(path: Path | str | None) -> str | None:
+    if path is None:
+        return None
+    path = Path(path)
+    try:
+        return str(path.resolve().relative_to(ROOT))
+    except ValueError:
+        return str(path)
+
+
+def sha256(path: Path) -> str | None:
+    if not path.exists() or not path.is_file():
+        return None
     digest = hashlib.sha256()
     with path.open("rb") as handle:
         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
@@ -105,6 +70,15 @@ def read_json(path: Path) -> dict[str, Any] | None:
     return json.loads(path.read_text())
 
 
+def artifact(path: Path) -> dict[str, Any]:
+    return {
+        "path": rel(path),
+        "exists": path.exists(),
+        "sha256": sha256(path),
+        "size_bytes": path.stat().st_size if path.exists() and path.is_file() else None,
+    }
+
+
 def fmt(value: Any, digits: int = 4) -> str:
     if value is None:
         return "NA"
@@ -113,38 +87,22 @@ def fmt(value: Any, digits: int = 4) -> str:
     return str(value)
 
 
-def rel(path: Path | str | None) -> str | None:
-    if path is None:
+def aggregate_metric(gate: dict[str, Any] | None, name: str, stat: str = "mean") -> Any:
+    if gate is None:
         return None
-    path = Path(path)
-    try:
-        return str(path.resolve().relative_to(ROOT))
-    except ValueError:
-        return str(path)
-
-
-def artifact_record(path: Path) -> dict[str, Any]:
-    if not path.exists():
-        return {"path": rel(path), "status": "MISSING"}
-    return {
-        "path": rel(path),
-        "status": "PRESENT",
-        "sha256": sha256(path),
-        "size_bytes": path.stat().st_size,
-    }
-
-
-def metric(aggregate: dict[str, Any], name: str, stat: str = "max") -> Any:
-    value = aggregate.get(name)
+    aggregate = gate.get("aggregate") or {}
+    if not aggregate:
+        return None
+    first_policy = next(iter(aggregate.values()), {})
+    value = first_policy.get(name)
     if isinstance(value, dict):
         return value.get(stat)
     return value
 
 
-def summarize_gate(label: str, path: Path) -> dict[str, Any]:
-    record = artifact_record(path)
-    out: dict[str, Any] = {"label": label, **record}
+def gate_summary(path: Path) -> dict[str, Any]:
     data = read_json(path)
+    out: dict[str, Any] = {"artifact": artifact(path)}
     if data is None:
         out["status"] = "MISSING_GATE"
         return out
@@ -152,280 +110,230 @@ def summarize_gate(label: str, path: Path) -> dict[str, Any]:
     results = data.get("results") or []
     statuses = [row.get("status") for row in results]
     pass_count = statuses.count("PASS_CANDIDATE_SIM_GATE")
-    total = len(statuses)
-    hold_count = total - pass_count
-    aggregate_by_policy = data.get("aggregate") or {}
-    first_policy = next(iter(aggregate_by_policy.values()), {})
+    fall_count = aggregate_metric(data, "fall_count")
+    duration_count = aggregate_metric(data, "duration_complete_count")
     config = data.get("config") or {}
     out.update(
         {
-            "status": "PASS_GATE_8SEED" if total == 8 and pass_count == 8 else "HOLD_GATE",
-            "task": config.get("task"),
+            "status": "PASS_GATE" if pass_count == len(results) and results else "HOLD_GATE",
             "command_x": config.get("command_x"),
+            "task": config.get("task"),
             "terrain_hfield_z_scale": config.get("terrain_hfield_z_scale"),
-            "push_enabled": bool(config.get("eval_push_enable")),
+            "reset_mode": config.get("reset_mode"),
+            "bridge_mode": config.get("bridge_mode"),
+            "duration_s": config.get("duration_s"),
             "seeds": config.get("seeds"),
             "pass_count": pass_count,
-            "hold_count": hold_count,
-            "total_count": total,
-            "statuses": statuses,
-            "mean_track_ratio": metric(first_policy, "track_ratio", "mean"),
-            "mean_local_vx_m_s": metric(first_policy, "mean_local_vx_m_s", "mean"),
-            "max_tracking_p95_rad": metric(first_policy, "max_tracking_p95_rad", "max"),
-            "max_pitch_vel_p95_rad_s": metric(first_policy, "max_pitch_vel_p95_rad_s", "max"),
-            "max_pitch_vel_limit_excess_rad_s": metric(
-                first_policy, "max_pitch_vel_limit_excess_rad_s", "max"
+            "total_count": len(results),
+            "fall_count": fall_count,
+            "duration_complete_count": duration_count,
+            "track_ratio_mean": aggregate_metric(data, "track_ratio"),
+            "mean_local_vx_m_s": aggregate_metric(data, "mean_local_vx_m_s"),
+            "max_pitch_vel_p95_rad_s": aggregate_metric(data, "max_pitch_vel_p95_rad_s", "max"),
+            "max_tracking_p95_rad": aggregate_metric(data, "max_tracking_p95_rad", "max"),
+            "p95_velocity_excess_rad_s": aggregate_metric(
+                data, "max_pitch_vel_limit_excess_rad_s", "max"
             ),
-            "fall_count": first_policy.get("fall_count"),
-            "duration_complete_count": first_policy.get("duration_complete_count"),
-            "push_success_rate_mean": metric(first_policy, "push_success_rate", "mean"),
+            "max_velocity_excess_rad_s": aggregate_metric(
+                data, "max_pitch_vel_max_limit_excess_rad_s", "max"
+            ),
+            "single_support_pct": aggregate_metric(data, "single_support_pct"),
+            "double_support_pct": aggregate_metric(data, "double_support_pct"),
         }
     )
-    failed = [row for row in results if row.get("status") != "PASS_CANDIDATE_SIM_GATE"]
-    if failed:
-        out["first_failure"] = {
-            "seed": failed[0].get("seed"),
-            "status": failed[0].get("status"),
-            "summary": failed[0].get("summary", {}),
-        }
     return out
 
 
 def summarize_candidate(path: Path) -> dict[str, Any]:
-    record = artifact_record(path)
     data = read_json(path)
+    out: dict[str, Any] = {"artifact": artifact(path)}
     if data is None:
-        return {"status": "MISSING_CANDIDATE_METADATA", **record}
-    candidate = data.get("candidate") or {}
-    transform = data.get("candidate_transform") or {}
-    contract = data.get("contract") or {}
-    return {
-        "status": "PRESENT",
-        "metadata": record,
-        "name": candidate.get("name"),
-        "path": rel(candidate.get("path")),
-        "sha256": candidate.get("sha256"),
-        "contract_status": contract.get("status"),
-        "input_dim": contract.get("input_dim"),
-        "output_dim": contract.get("output_dim"),
-        "transform_kind": transform.get("kind"),
-        "transform_scale": transform.get("scale"),
-        "transform_verify_status": transform.get("verify_status"),
-        "transform_verify_max_abs_error": transform.get("verify_max_abs_error"),
-    }
-
-
-def summarize_backends(paths: dict[str, Path]) -> dict[str, Any]:
-    out: dict[str, Any] = {}
-    for label, path in paths.items():
-        record = artifact_record(path)
-        data = read_json(path)
-        status = data.get("status") if data else record["status"]
-        out[label] = {
-            **record,
-            "status": status,
-            "robot_touched": bool((data or {}).get("robot_touched", False)),
-            "ssh_used": bool((data or {}).get("ssh_used", False)),
-            "deploy_performed": bool((data or {}).get("deploy_performed", False)),
-            "summary": (data or {}).get("interpretation"),
+        out["status"] = "MISSING_CANDIDATE_DECISION"
+        return out
+    out.update(
+        {
+            "status": data.get("status"),
+            "candidate_dir": data.get("candidate_dir"),
+            "candidate_onnx": data.get("candidate_onnx"),
+            "candidate_onnx_sha256": data.get("candidate_onnx_sha256"),
+            "candidate_npz": data.get("candidate_npz"),
+            "candidate_npz_sha256": data.get("candidate_npz_sha256"),
+            "scope": data.get("scope"),
+            "fit": data.get("fit"),
+            "x008_gate": data.get("x008_gate"),
+            "x0_gate": data.get("x0_gate"),
         }
+    )
     return out
 
 
-def summarize_z005_seed5_diagnostic(path: Path = DEFAULT_Z005_SEED5_DIAGNOSTIC) -> dict[str, Any]:
-    record = artifact_record(path)
+def summarize_stage_a(path: Path) -> dict[str, Any]:
     data = read_json(path)
+    out: dict[str, Any] = {"artifact": artifact(path)}
     if data is None:
-        return {"status": "MISSING", **record}
-    return {
-        **record,
-        "status": data.get("status"),
-        "shared_findings": (data.get("findings") or {}).get("shared", []),
-        "recommendation": data.get("recommendation"),
-        "robot_touched": bool(data.get("robot_touched", False)),
-        "ssh_used": bool(data.get("ssh_used", False)),
-        "deploy_performed": bool(data.get("deploy_performed", False)),
-        "training_started": bool(data.get("training_started", False)),
-    }
-
-
-def summarize_scalar_branch_results(paths: dict[str, Path]) -> dict[str, Any]:
-    out: dict[str, Any] = {}
-    for name, path in paths.items():
-        record = artifact_record(path)
-        status = "MISSING"
-        if path.exists():
-            for line in path.read_text().splitlines():
-                if line.startswith("status:"):
-                    status = line.split("`", 2)[1] if "`" in line else line.split(":", 1)[1].strip()
-                    break
-        out[name] = {
-            **record,
-            "status": status,
-            "hold": status.startswith("HOLD"),
+        out["status"] = "MISSING_STAGE_A_RESULT"
+        return out
+    out.update(
+        {
+            "status": data.get("status"),
+            "training": data.get("training"),
+            "x008_gate": data.get("x008_gate"),
+            "checkpoint_triage_seed0": data.get("checkpoint_triage_seed0"),
         }
+    )
+    return out
+
+
+def summarize_motion_preserve(path: Path) -> dict[str, Any]:
+    data = read_json(path)
+    out: dict[str, Any] = {"report_artifact": artifact(path)}
+    if data is None:
+        out["status"] = "MISSING_MOTION_PRESERVE_RESULT"
+        return out
+    out.update(data)
+    return out
+
+
+def summarize_fidelity(path: Path) -> dict[str, Any]:
+    data = read_json(path)
+    out: dict[str, Any] = {"artifact": artifact(path)}
+    if data is None:
+        out["status"] = "MISSING_WARMSTART_FIDELITY"
+        return out
+    out.update(data)
     return out
 
 
 def decide(payload: dict[str, Any]) -> tuple[str, str]:
-    gates = payload["gates"]
-    z002_required = [
-        "z002_x008_nopush",
-        "z002_x000_nopush",
-        "z002_x008_gentle_push",
-        "z002_x000_gentle_push",
-    ]
-    z002_pass = all(gates.get(name, {}).get("status") == "PASS_GATE_8SEED" for name in z002_required)
-    z005_required = ["z005_x008_nopush", "z005_x000_nopush"]
-    z005_pass = all(gates.get(name, {}).get("status") == "PASS_GATE_8SEED" for name in z005_required)
-    scalar_results = payload.get("scalar_branch_results") or {}
-    scalar_branches_exhausted = bool(scalar_results) and all(
-        item.get("hold") for item in scalar_results.values()
-    )
-    if z005_pass:
+    candidate_ok = payload["candidate"].get("status") == "PASS_OFFLINE_CORRECTED_BRIDGE_CANDIDATE_READY"
+    x008_ok = payload["rate165_x008_gate"].get("status") == "PASS_GATE"
+    x0_ok = payload["rate165_x0_gate"].get("status") == "PASS_GATE"
+    stage_a_hold = str(payload["stage_a_result"].get("status", "")).startswith("HOLD")
+    motion_hold = str(payload["motion_preserve_result"].get("status", "")).startswith("HOLD")
+
+    if candidate_ok and x008_ok and x0_ok and stage_a_hold and motion_hold:
         return (
-            "PASS_PHASE2_TERRAIN_Z005_READY_FOR_NEXT_STAGE",
-            "z=0.005 no-push command and stillness gates pass; run the z=0.005 gentle-push gates before widening randomization.",
+            "HOLD_PHASE2_PPO_DR_STANDSTILL_REGRESSION",
+            "The corrected rate165 candidate is still the offline baseline, but both the full Stage A PPO/DR run and the tiny motion-preservation PPO smoke collapse the walking warm-start into double-support standstill. Do not launch another scalar PPO/DR run from this recipe. Next offline work should use a phase-aware/live-oracle student or another training structure that preserves single support before reintroducing domain randomization.",
         )
-    if z002_pass:
-        if scalar_branches_exhausted:
-            return (
-                "HOLD_PHASE2_SCALAR_SUPPORT_BRANCH_EXHAUSTED",
-                "Current packaged candidate is robust at z=0.002 including gentle push, but z=0.005 terrain is not cleared. The scalar z=0.005/support/swing reward family has held repeatedly; do not launch another scalar support reward run. Next offline work should rebuild a corrected-bridge oracle/source or move to a structural phase-aware/live-oracle student path under the canonical corrected evaluator.",
-            )
+    if candidate_ok and x008_ok and x0_ok:
         return (
-            "HOLD_PHASE2_TERRAIN_Z005_NOT_CLEARED",
-            "Current packaged candidate is robust at z=0.002 including gentle push, but z=0.005 terrain is not cleared. Continue Phase 2 z=0.005 support training from the corrected-bridge candidate.",
+            "PASS_PHASE2_RATE165_BASELINE_READY",
+            "The corrected rate165 baseline gates pass. Run only a bounded training experiment that explicitly preserves single-support walking before widening randomization.",
         )
     return (
-        "HOLD_PHASE2_BASE_GATES_INCOMPLETE",
-        "One or more z=0.002 corrected-bridge gates are missing or failing; restore the Phase 1/Stage A2 base gate evidence before widening terrain.",
+        "HOLD_PHASE2_BASELINE_EVIDENCE_INCOMPLETE",
+        "The corrected rate165 baseline evidence is missing or no longer passes; restore the canonical corrected-bridge x=0.08 and x=0.0 gates before Phase 2 training.",
     )
 
 
 def write_markdown(payload: dict[str, Any], path: Path) -> None:
-    lines: list[str] = [
+    candidate = payload["candidate"]
+    x008 = payload["rate165_x008_gate"]
+    x0 = payload["rate165_x0_gate"]
+    stage_a = payload["stage_a_result"]
+    motion = payload["motion_preserve_result"]
+    fidelity = payload["ppo_warmstart_fidelity"]
+
+    lines = [
         "# Phase 2 Current Status",
         "",
         f"status: `{payload['status']}`",
         f"generated_at: `{payload['generated_at']}`",
         "",
-        "## Candidate",
+        "## Scope",
         "",
+        "Offline-only Phase 2 robustness training status. This report does not",
+        "SSH, deploy, run robot tests, start training, or change runtime behavior.",
+        "",
+        "## Corrected Rate165 Baseline",
+        "",
+        f"- candidate status: `{candidate.get('status')}`",
+        f"- candidate ONNX: `{candidate.get('candidate_onnx')}`",
+        f"- candidate ONNX sha256: `{candidate.get('candidate_onnx_sha256')}`",
+        f"- candidate NPZ sha256: `{candidate.get('candidate_npz_sha256')}`",
+        f"- corrected decision artifact: `{candidate['artifact']['path']}`",
+        "",
+        "| gate | status | pass/total | x | z | vx mean | track ratio | single support | double support | max vel p95 | max tracking p95 | vel excess |",
+        "|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|",
     ]
-    candidate = payload["candidate"]
-    lines.extend(
-        [
-            f"- name: `{candidate.get('name')}`",
-            f"- path: `{candidate.get('path')}`",
-            f"- sha256: `{candidate.get('sha256')}`",
-            f"- contract: `{candidate.get('contract_status')}` obs={candidate.get('input_dim')} action={candidate.get('output_dim')}",
-            f"- transform: `{candidate.get('transform_kind')}` scale={candidate.get('transform_scale')} verify={candidate.get('transform_verify_status')}",
-            "",
-            "## Gate Matrix",
-            "",
-            "| gate | status | pass/total | x | z | push | track ratio mean | vx mean | max tracking p95 | max pitch vel p95 | max vel excess |",
-            "|---|---|---:|---:|---:|---|---:|---:|---:|---:|---:|",
-        ]
-    )
-    for name, gate in payload["gates"].items():
+    for name, gate in [("rate165_x008", x008), ("rate165_x0", x0)]:
         lines.append(
-            "| {name} | `{status}` | {pass_count}/{total_count} | {x} | {z} | {push} | {track} | {vx} | {tracking} | {vel} | {excess} |".format(
+            "| {name} | `{status}` | {pass_count}/{total_count} | {x} | {z} | {vx} | {track} | {single} | {double} | {vel} | {tracking} | {excess} |".format(
                 name=name,
                 status=gate.get("status"),
                 pass_count=gate.get("pass_count", 0),
                 total_count=gate.get("total_count", 0),
                 x=fmt(gate.get("command_x"), 3),
-                z=fmt(gate.get("terrain_hfield_z_scale"), 3),
-                push="yes" if gate.get("push_enabled") else "no",
-                track=fmt(gate.get("mean_track_ratio"), 3),
+                z=fmt(gate.get("terrain_hfield_z_scale"), 4),
                 vx=fmt(gate.get("mean_local_vx_m_s"), 4),
-                tracking=fmt(gate.get("max_tracking_p95_rad"), 4),
+                track=fmt(gate.get("track_ratio_mean"), 4),
+                single=fmt(gate.get("single_support_pct"), 4),
+                double=fmt(gate.get("double_support_pct"), 4),
                 vel=fmt(gate.get("max_pitch_vel_p95_rad_s"), 4),
-                excess=fmt(gate.get("max_pitch_vel_limit_excess_rad_s"), 4),
+                tracking=fmt(gate.get("max_tracking_p95_rad"), 4),
+                excess=fmt(gate.get("max_velocity_excess_rad_s"), 4),
             )
         )
-    lines.extend(["", "## Blocking Gate Detail", ""])
-    z005_failures = [
-        (name, gate.get("first_failure"))
-        for name, gate in payload["gates"].items()
-        if name.startswith("z005_") and gate.get("first_failure")
-    ]
-    if z005_failures:
-        for gate_name, failure in z005_failures:
-            summary = failure.get("summary", {})
-            lines.extend(
-                [
-                    f"- gate: `{gate_name}`",
-                    f"  - first failing seed: `{failure.get('seed')}`",
-                    f"  - status: `{failure.get('status')}`",
-                    f"  - termination: `{summary.get('termination_reason')}`",
-                    f"  - track_ratio: `{fmt(summary.get('track_ratio'), 4)}`",
-                    f"  - mean_local_vx_m_s: `{fmt(summary.get('mean_local_vx_m_s'), 4)}`",
-                    f"  - base_height_min_m: `{fmt(summary.get('base_height_min_m'), 4)}`",
-                ]
-            )
-        lines.append("")
-    else:
-        lines.append("- No z005 failure detail available.")
-        lines.append("")
+
     lines.extend(
         [
-            "## Backend",
             "",
-            "| artifact | status | robot | ssh | deploy | note |",
-            "|---|---|---|---|---|---|",
+            "## PPO-Compatible Warm-Start",
+            "",
+            f"- fidelity artifact: `{fidelity['artifact']['path']}`",
+            f"- status: `{fidelity.get('status')}`",
+            f"- p95 abs error: `{fmt((fidelity.get('fidelity') or {}).get('p95_abs_error'), 10)}`",
+            f"- max abs error: `{fmt((fidelity.get('fidelity') or {}).get('max_abs_error'), 10)}`",
+            "",
+            "## Failed PPO / Domain-Randomization Attempts",
+            "",
+            "### Stage A A100 Narrow Flat",
+            "",
+            f"- status: `{stage_a.get('status')}`",
+            f"- artifact: `{stage_a['artifact']['path']}`",
+            f"- final step: `{(stage_a.get('training') or {}).get('final_step')}`",
+            f"- final ONNX sha256: `{(stage_a.get('training') or {}).get('final_onnx_sha256')}`",
         ]
     )
-    for name, backend in payload["backends"].items():
-        lines.append(
-            f"| {name} | `{backend.get('status')}` | {backend.get('robot_touched')} | {backend.get('ssh_used')} | {backend.get('deploy_performed')} | {backend.get('summary') or ''} |"
-        )
-    diagnostic = payload.get("z005_seed5_diagnostic") or {}
+    stage_gate = stage_a.get("x008_gate") or {}
     lines.extend(
         [
+            f"- x=0.08 gate: `{stage_gate.get('status')}`",
+            f"- mean vx: `{fmt(stage_gate.get('mean_local_vx_m_s'), 4)} m/s`",
+            f"- track ratio: `{fmt(stage_gate.get('track_ratio'), 4)}`",
+            f"- single support: `{fmt(stage_gate.get('single_support_pct'), 4)}%`",
+            f"- double support: `{fmt(stage_gate.get('double_support_pct'), 4)}%`",
+            f"- corrected velocity excess: `{fmt(stage_gate.get('max_velocity_excess_rad_s'), 4)}`",
             "",
-            "## z=0.005 Seed-5 Diagnostic",
+            "### Motion-Preservation CPU2240 Smoke",
             "",
-            f"- status: `{diagnostic.get('status')}`",
-            f"- artifact: `{diagnostic.get('path')}`",
-            f"- robot_touched: `{diagnostic.get('robot_touched')}`",
-            f"- ssh_used: `{diagnostic.get('ssh_used')}`",
-            f"- deploy_performed: `{diagnostic.get('deploy_performed')}`",
-            f"- training_started: `{diagnostic.get('training_started')}`",
-            "",
+            f"- status: `{motion.get('status')}`",
+            f"- artifact: `{motion['report_artifact']['path']}`",
+            f"- exported ONNX sha256: `{(motion.get('artifact') or {}).get('onnx_sha256')}`",
         ]
     )
-    findings = diagnostic.get("shared_findings") or []
-    if findings:
-        lines.extend(f"- {finding}" for finding in findings)
-    else:
-        lines.append("- no diagnostic findings available")
-    lines.extend(["", f"recommendation: {diagnostic.get('recommendation') or 'NA'}"])
-    branch_results = payload.get("scalar_branch_results") or {}
-    if branch_results:
-        lines.extend(
-            [
-                "",
-                "## Scalar Support Branch Results",
-                "",
-                "| branch | status | artifact |",
-                "|---|---|---|",
-            ]
-        )
-        for name, item in branch_results.items():
-            lines.append(
-                f"| `{name}` | `{item.get('status')}` | `{item.get('path')}` |"
-            )
+    motion_x008 = motion.get("x008_compact_gate") or {}
+    motion_x0 = motion.get("x000_compact_gate") or {}
     lines.extend(
         [
+            f"- x=0.08 compact gate: `{motion_x008.get('status')}`",
+            f"- x=0.08 mean vx: `{fmt(motion_x008.get('mean_local_vx_m_s'), 4)} m/s`",
+            f"- x=0.08 track ratio: `{fmt(motion_x008.get('track_ratio'), 4)}`",
+            f"- x=0.08 single/double support: `{fmt(motion_x008.get('single_support_pct'), 4)}% / {fmt(motion_x008.get('double_support_pct'), 4)}%`",
+            f"- x=0.0 compact gate: `{motion_x0.get('status')}`",
             "",
             "## Decision",
             "",
             f"- next_status: `{payload['status']}`",
             f"- next_action: {payload['next_action']}",
             "",
-            "No robot, SSH, deploy, grounded replay, or runtime behavior change is authorized by this report.",
+            "## Guardrails",
+            "",
+            "- Do not advance to push/terrain DR stages from the rejected Stage A run.",
+            "- Do not scale the CPU2240 motion-preservation recipe into another long A100 run.",
+            "- Keep the corrected bridge and per-joint corrected velocity envelope authoritative.",
+            "- No robot, SSH, deploy, grounded replay, or runtime behavior change is authorized by this report.",
             "",
         ]
     )
@@ -435,25 +343,28 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--candidate-metadata", default=str(DEFAULT_CANDIDATE_METADATA))
+    parser.add_argument("--candidate-decision", default=str(DEFAULT_CANDIDATE_DECISION))
+    parser.add_argument("--rate165-x008-gate", default=str(DEFAULT_RATE165_X008_GATE))
+    parser.add_argument("--rate165-x0-gate", default=str(DEFAULT_RATE165_X0_GATE))
+    parser.add_argument("--ppo-warmstart-fidelity", default=str(DEFAULT_PPO_WARMSTART_FIDELITY))
+    parser.add_argument("--stage-a-result", default=str(DEFAULT_STAGE_A_RESULT))
+    parser.add_argument("--motion-preserve-result", default=str(DEFAULT_MOTION_PRESERVE_RESULT))
     parser.add_argument("--output-md", default=str(DEFAULT_OUTPUT_MD))
     parser.add_argument("--output-json", default=str(DEFAULT_OUTPUT_JSON))
     args = parser.parse_args()
 
-    candidate = summarize_candidate(Path(args.candidate_metadata))
-    gates = {name: summarize_gate(name, path) for name, path in DEFAULT_GATES.items()}
     payload: dict[str, Any] = {
         "generated_at": now_utc(),
-        "candidate": candidate,
-        "gates": gates,
-        "backends": summarize_backends(DEFAULT_BACKEND_ARTIFACTS),
-        "z005_seed5_diagnostic": summarize_z005_seed5_diagnostic(),
-        "scalar_branch_results": summarize_scalar_branch_results(
-            DEFAULT_SCALAR_BRANCH_RESULTS
-        ),
+        "candidate": summarize_candidate(Path(args.candidate_decision)),
+        "rate165_x008_gate": gate_summary(Path(args.rate165_x008_gate)),
+        "rate165_x0_gate": gate_summary(Path(args.rate165_x0_gate)),
+        "ppo_warmstart_fidelity": summarize_fidelity(Path(args.ppo_warmstart_fidelity)),
+        "stage_a_result": summarize_stage_a(Path(args.stage_a_result)),
+        "motion_preserve_result": summarize_motion_preserve(Path(args.motion_preserve_result)),
         "robot_touched": False,
         "ssh_used": False,
         "deploy_performed": False,
+        "training_started": False,
     }
     status, next_action = decide(payload)
     payload["status"] = status
