@@ -84,6 +84,10 @@ The selected launch workflow targets the current held curriculum stage.
 | `outputs/analysis/actuator_response_fit_corrected_knee.json` | `True` | `True` |
 | `outputs/analysis/phase2_z005_support_next_recipe.json` | `True` | `True` |
 | `tools/run_actuator_bridge_training_smoke.py` | `True` | `True` |
+| `outputs/analysis/phase2_limit198_ppo_loc_warmstart_candidate/candidate_mlp.npz` | `True` | `True` |
+| `outputs/analysis/phase2_limit198_ppo_loc_warmstart_candidate/candidate.onnx` | `True` | `True` |
+| `outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0.onnx` | `True` | `True` |
+| `outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0_checkpoint` | `True` | `True` |
 | `tools/report_phase2_z005_post_training_gates.py` | `True` | `True` |
 | `outputs/phase2_domain_randomization/stage_a2_preserve_narrow_flat_no_push_gpu/smoke_20260628T031553Z_gpu/2026_06_27_232221_491520` | `True` | `True` |
 

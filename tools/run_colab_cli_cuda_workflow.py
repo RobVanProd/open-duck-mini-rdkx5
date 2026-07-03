@@ -416,6 +416,10 @@ def required_rdk_package_paths(
         "outputs/analysis/actuator_response_fit_corrected_knee.json",
         recipe_json,
         "tools/run_actuator_bridge_training_smoke.py",
+        "outputs/analysis/phase2_limit198_ppo_loc_warmstart_candidate/candidate_mlp.npz",
+        "outputs/analysis/phase2_limit198_ppo_loc_warmstart_candidate/candidate.onnx",
+        "outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0.onnx",
+        "outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0_checkpoint",
     ]
     if workflow in {"phase2-z002-tracking-margin", "phase2-z002-teacher-continuity"}:
         paths.append("tools/report_phase2_z002_tracking_margin_post_training_gates.py")

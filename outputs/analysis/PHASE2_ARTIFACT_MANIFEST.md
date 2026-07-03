@@ -80,11 +80,11 @@ This is a read-only hash manifest. It did not train, SSH, deploy, or touch the r
 | `outputs/analysis/PHASE2_NEXT_RUN_PLAN.md` | `PRESENT_FILE` | `29dadfa56ab1cfc5a701b71261fc1f384a320eb4f8cb28112d5de6e71ebb4d16` | 6543 | `outputs/analysis/PHASE2_NEXT_RUN_PLAN.md` |
 | `outputs/analysis/phase2_next_run_plan.json` | `PRESENT_FILE` | `15f7b9ae17696ea9c1efbc461345e4513578b2c50d9f52a2d105afcc45bd2f01` | 14459 | `outputs/analysis/phase2_next_run_plan.json` |
 | `outputs/analysis/PHASE2_STAGE_GUARD.md` | `PRESENT_FILE` | `af0c2f5cf4c680aef3de5a06099740307290e606714adfda83a80123461687fc` | 5172 | `outputs/analysis/PHASE2_STAGE_GUARD.md` |
-| `outputs/analysis/phase2_stage_guard.json` | `PRESENT_FILE` | `22e7e22b3cc73fd31915ecbe44ee5ef6fb450101b97cca7dfb12d4afd3d14441` | 6587 | `outputs/analysis/phase2_stage_guard.json` |
+| `outputs/analysis/phase2_stage_guard.json` | `PRESENT_FILE` | `fc9c7758f0bd83f88d61187f57ebfcb7a1cdde469d39720bb084d384e699935e` | 6513 | `outputs/analysis/phase2_stage_guard.json` |
 | `outputs/analysis/rocm_mjx_isolation_post_bios/ROCM_MJX_RUNTIME_ISOLATION.md` | `PRESENT_FILE` | `d21695c41a633202999e9bd41e5b8fe2ca7a72741ecb2e16fbe8382c405d7fa8` | 25165 | `outputs/analysis/rocm_mjx_isolation_post_bios/ROCM_MJX_RUNTIME_ISOLATION.md` |
 | `outputs/analysis/rocm_mjx_isolation_post_bios/rocm_mjx_runtime_isolation.json` | `PRESENT_FILE` | `613ce4f1579e24d578f3846407b0c465fab641c1912e82f0d188f68f5a594bc7` | 321403 | `outputs/analysis/rocm_mjx_isolation_post_bios/rocm_mjx_runtime_isolation.json` |
-| `outputs/analysis/PHASE2_COLAB_PACKAGE_MANIFEST.md` | `PRESENT_FILE` | `d580700d06142c00fa94459c6b65a919b5b0690b4bfbad739776df7e3354ed62` | 1500 | `outputs/analysis/PHASE2_COLAB_PACKAGE_MANIFEST.md` |
-| `outputs/analysis/phase2_colab_package_manifest.json` | `PRESENT_FILE` | `3703839ac7571fd71b018876a6c80323095e3c896aa6f35f57cd6b21b31ab5d7` | 8590 | `outputs/analysis/phase2_colab_package_manifest.json` |
+| `outputs/analysis/PHASE2_COLAB_PACKAGE_MANIFEST.md` | `PRESENT_FILE` | `4fa6850d51953c2d9d36004ba332dddf801630f71f9f29956de3e4c3b5257cd3` | 2258 | `outputs/analysis/PHASE2_COLAB_PACKAGE_MANIFEST.md` |
+| `outputs/analysis/phase2_colab_package_manifest.json` | `PRESENT_FILE` | `af2f9699c12361e43fd3c4435aeeeadfb5fcb6f0223a692ca56e630715445a98` | 14966 | `outputs/analysis/phase2_colab_package_manifest.json` |
 | `outputs/analysis/PHASE2_COLAB_PACKAGE_ONLY_MANIFEST.md` | `PRESENT_FILE` | `8841e14f1a41b4d26c3f19de37b262267bf2530541107aa6e94fe98d4566d7a1` | 1440 | `outputs/analysis/PHASE2_COLAB_PACKAGE_ONLY_MANIFEST.md` |
 | `outputs/analysis/phase2_colab_package_only_manifest.json` | `PRESENT_FILE` | `f4abc631fb2919e4a1c1eb3293e4cd39f93a68d9616d2561a124b6de6a4b4123` | 2444 | `outputs/analysis/phase2_colab_package_only_manifest.json` |
 | `outputs/analysis/PHASE2_Z005_T4_RECOVERY_DECISION.md` | `PRESENT_FILE` | `5147719b525994df3cfa0c19e97d2d2dd21dd790e13664e3c3af714eba734a54` | 3834 | `outputs/analysis/PHASE2_Z005_T4_RECOVERY_DECISION.md` |
@@ -115,7 +115,7 @@ This is a read-only hash manifest. It did not train, SSH, deploy, or touch the r
 | `tools/report_phase2_colab_launch_handoff.py` | `PRESENT_FILE` | `d8f53081d676fe254e6828c3cf98b792399e5dc8382b1519062e84dc8a9bf589` | 11188 | `tools/report_phase2_colab_launch_handoff.py` |
 | `tools/report_phase2_package_only_archive_verification.py` | `PRESENT_FILE` | `0a2205b238e16dd3851dc4d44e57929caa8a055098d0300c765ad2443051df90` | 9560 | `tools/report_phase2_package_only_archive_verification.py` |
 | `tools/report_phase2_stage_guard.py` | `PRESENT_FILE` | `245a4c23bc264de0b4f603aa1ed0f2194cd367749525976d91961795f20033ac` | 19643 | `tools/report_phase2_stage_guard.py` |
-| `tools/run_colab_cli_cuda_workflow.py` | `PRESENT_FILE` | `3613d401e967095412cab66d2ec63ab9f194c78f35c11fe0dddd6f5f69903c93` | 157614 | `tools/run_colab_cli_cuda_workflow.py` |
+| `tools/run_colab_cli_cuda_workflow.py` | `PRESENT_FILE` | `3afae9d673e6277336f9fdb2593db40a7c6c28f71d0f61d1319f4fff87de3f0c` | 157943 | `tools/run_colab_cli_cuda_workflow.py` |
 
 ## Promotion Gate
 
