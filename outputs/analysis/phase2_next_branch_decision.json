@@ -1,5 +1,5 @@
 {
-  "status": "PLAN_PHASE_AWARE_LIVE_ORACLE_SINGLE_SUPPORT_PRESERVATION",
+  "status": "HOLD_ITER2_MAX_VELOCITY_EXCESS",
   "current_baseline": {
     "candidate_onnx": "policy/candidates/phase2_corrected_live_oracle_iter1_rate165_20260703/candidate.onnx",
     "candidate_onnx_sha256": "e06643e5790217075d9c7a0d1e1ac262652058592b374ac0446bdd0426d0ea33",
@@ -36,7 +36,7 @@
     "dry_run_plan": {
       "md": "outputs/analysis/phase2_rate165_single_support_live_oracle_iter2_plan/LIVE_ORACLE_DAGGER_ITERATION.md",
       "json": "outputs/analysis/phase2_rate165_single_support_live_oracle_iter2_plan/live_oracle_dagger_iteration.json",
-      "status": "PASS_LIVE_ORACLE_DAGGER_ITERATION_DRY_RUN"
+      "status": "PASS_LIVE_ORACLE_DAGGER_ITERATION_DATA_READY"
     },
     "required_gate": {
       "command_x": 0.08,
@@ -48,6 +48,30 @@
       "must_have_zero_corrected_velocity_excess": true,
       "must_preserve_x0_stillness": true
     }
+  },
+  "iter2_result": {
+    "decision_md": "outputs/analysis/PHASE2_RATE165_SINGLE_SUPPORT_LIVE_ORACLE_ITER2_DECISION.md",
+    "decision_json": "outputs/analysis/phase2_rate165_single_support_live_oracle_iter2_decision.json",
+    "aggregate_manifest": "outputs/analysis/phase2_rate165_single_support_live_oracle_iter2_plan/live_oracle_dagger_aggregate_manifest.json",
+    "aggregate_samples": 28500,
+    "candidate_onnx": "outputs/analysis/phase2_rate165_single_support_live_oracle_iter2_student/candidate.onnx",
+    "candidate_onnx_sha256": "c476120f75ea38b16cfe2a1c0eee49adca648811e65691e374321b58372a8cd7",
+    "x008_gate": {
+      "status": "HOLD_CANDIDATE_TARGET_VELOCITY",
+      "mean_local_vx_m_s": 0.032378894074179695,
+      "track_ratio": 0.4047361759272462,
+      "single_support_pct": 27.200000000000003,
+      "p95_velocity_excess_rad_s": 0.0,
+      "max_velocity_excess_rad_s": 0.014899253845214844,
+      "max_tracking_p95_rad": 0.1858822464942932
+    },
+    "x0_spot_gate": {
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "runs": 2,
+      "mean_local_vx_m_s": 0.000008396759295313434,
+      "max_velocity_excess_rad_s": 0.0
+    },
+    "next_action": "Refit from the iter2 aggregate manifest with tighter max-rate control or an explicit max-velocity guard before any PPO/domain-randomization resume."
   },
   "scope": {
     "offline_only": true,

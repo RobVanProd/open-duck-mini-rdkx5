@@ -1,7 +1,7 @@
 # Phase 2 Current Status
 
-status: `HOLD_PHASE2_PPO_DR_STANDSTILL_REGRESSION`
-generated_at: `2026-07-03T13:23:15Z`
+status: `HOLD_ITER2_MAX_VELOCITY_EXCESS`
+generated_at: `2026-07-03T18:55:00Z`
 
 ## Scope
 
@@ -54,14 +54,35 @@ SSH, deploy, run robot tests, start training, or change runtime behavior.
 - x=0.08 single/double support: `0.0000% / 100.0000%`
 - x=0.0 compact gate: `PASS_CANDIDATE_SIM_GATE`
 
+## Live-Oracle Iter2 Student
+
+- status: `HOLD_ITER2_MAX_VELOCITY_EXCESS`
+- decision artifact: `outputs/analysis/phase2_rate165_single_support_live_oracle_iter2_decision.json`
+- aggregate manifest: `outputs/analysis/phase2_rate165_single_support_live_oracle_iter2_plan/live_oracle_dagger_aggregate_manifest.json`
+- aggregate samples: `28500`
+- candidate ONNX: `outputs/analysis/phase2_rate165_single_support_live_oracle_iter2_student/candidate.onnx`
+- candidate ONNX sha256: `c476120f75ea38b16cfe2a1c0eee49adca648811e65691e374321b58372a8cd7`
+- x=0.08 gate: `HOLD_CANDIDATE_TARGET_VELOCITY`
+- x=0.08 mean vx: `0.0324 m/s`
+- x=0.08 track ratio: `0.4047`
+- x=0.08 single/double support: `27.2000% / 72.8000%`
+- x=0.08 corrected p95 velocity excess: `0.0000`
+- x=0.08 corrected max velocity excess: `0.0149`
+- x=0.0 spot gate: `PASS_CANDIDATE_SIM_GATE` over `2/2` seeds
+
+Interpretation: iter2 improved motion and single support relative to the
+current rate165 baseline, but it is not promotable because the strict corrected
+gate rejects any max velocity excess.
+
 ## Decision
 
-- next_status: `HOLD_PHASE2_PPO_DR_STANDSTILL_REGRESSION`
-- next_action: The corrected rate165 candidate is still the offline baseline, but both the full Stage A PPO/DR run and the tiny motion-preservation PPO smoke collapse the walking warm-start into double-support standstill. Do not launch another scalar PPO/DR run from this recipe. Next offline work should use a phase-aware/live-oracle student or another training structure that preserves single support before reintroducing domain randomization.
+- next_status: `HOLD_ITER2_MAX_VELOCITY_EXCESS`
+- next_action: Keep the corrected rate165 candidate as the offline baseline. Iter2 live-oracle data is useful because it improves forward progress and single support, but the first iter2 phase/contact student must be rejected for corrected max velocity excess. Next offline work should refit from the iter2 aggregate manifest with tighter max-rate control or an explicit max-velocity guard before any PPO/domain-randomization resume.
 
 ## Guardrails
 
 - Do not advance to push/terrain DR stages from the rejected Stage A run.
 - Do not scale the CPU2240 motion-preservation recipe into another long A100 run.
 - Keep the corrected bridge and per-joint corrected velocity envelope authoritative.
+- Reject candidates with any corrected max velocity excess, even if p95 excess is zero.
 - No robot, SSH, deploy, grounded replay, or runtime behavior change is authorized by this report.

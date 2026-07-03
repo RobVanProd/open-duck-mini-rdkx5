@@ -1,6 +1,6 @@
 # Phase 2 Next Branch Decision
 
-status: `PLAN_PHASE_AWARE_LIVE_ORACLE_SINGLE_SUPPORT_PRESERVATION`
+status: `HOLD_ITER2_MAX_VELOCITY_EXCESS`
 
 ## Summary
 
@@ -89,6 +89,41 @@ Required properties:
   - zero corrected velocity excess,
   - max tracking p95 at or below the current baseline range.
 - preserve `x=0.0` stillness.
+
+## Iter2 Result
+
+The live-oracle iteration-2 plan has now been run.
+
+Artifacts:
+
+```text
+outputs/analysis/phase2_rate165_single_support_live_oracle_iter2_plan/LIVE_ORACLE_DAGGER_ITERATION.md
+outputs/analysis/phase2_rate165_single_support_live_oracle_iter2_plan/live_oracle_dagger_aggregate_manifest.json
+outputs/analysis/PHASE2_RATE165_SINGLE_SUPPORT_LIVE_ORACLE_ITER2_DECISION.md
+```
+
+Result:
+
+- data status: `PASS_LIVE_ORACLE_DAGGER_ITERATION_DATA_READY`
+- aggregate samples: `28500`
+- student fit status: `PASS_PHASE_MODULATED_BC_FIT_SMOKE`
+- x=0.08 gate: `HOLD_CANDIDATE_TARGET_VELOCITY`
+- x=0.08 mean vx: `0.0324 m/s`
+- x=0.08 track ratio: `0.4047`
+- x=0.08 single support: `27.2000%`
+- x=0.08 corrected p95 velocity excess: `0.0000`
+- x=0.08 corrected max velocity excess: `0.0149`
+- x=0.0 spot gate: `PASS_CANDIDATE_SIM_GATE`
+
+Interpretation:
+
+- Iter2 moved in the right behavioral direction: more forward progress and
+  more single support than the current rate165 baseline.
+- It is still rejected because the strict corrected gate allows no corrected
+  max velocity excess.
+- The next attempt should refit from the iter2 aggregate manifest with tighter
+  max-rate control or an explicit max-velocity guard. Do not resume scalar
+  PPO/domain randomization yet.
 
 Only after this branch preserves single-support walking should Phase 2 resume
 domain randomization:

@@ -65,7 +65,7 @@
     }
   },
   "deploy_performed": false,
-  "generated_at": "2026-07-03T13:23:15Z",
+  "generated_at": "2026-07-03T18:55:00Z",
   "motion_preserve_result": {
     "artifact": {
       "elapsed_s": 236.6348011489972,
@@ -113,7 +113,7 @@
       "track_ratio": 0.039377348504785914
     }
   },
-  "next_action": "The corrected rate165 candidate is still the offline baseline, but both the full Stage A PPO/DR run and the tiny motion-preservation PPO smoke collapse the walking warm-start into double-support standstill. Do not launch another scalar PPO/DR run from this recipe. Next offline work should use a phase-aware/live-oracle student or another training structure that preserves single support before reintroducing domain randomization.",
+  "next_action": "Keep the corrected rate165 candidate as the offline baseline. Iter2 live-oracle data is useful because it improves forward progress and single support, but the first iter2 phase/contact student must be rejected for corrected max velocity excess. Next offline work should refit from the iter2 aggregate manifest with tighter max-rate control or an explicit max-velocity guard before any PPO/domain-randomization resume.",
   "ppo_warmstart_fidelity": {
     "artifact": {
       "exists": true,
@@ -151,6 +151,48 @@
     "scale_logit": -2.0,
     "scale_std": 0.1279280110429725,
     "status": "PASS_PPO_BC_WARMSTART_STEP0_EXPORT_FIDELITY"
+  },
+  "rate165_live_oracle_iter2_result": {
+    "decision_artifact": {
+      "path": "outputs/analysis/phase2_rate165_single_support_live_oracle_iter2_decision.json"
+    },
+    "status": "HOLD_ITER2_MAX_VELOCITY_EXCESS",
+    "aggregate_manifest": "outputs/analysis/phase2_rate165_single_support_live_oracle_iter2_plan/live_oracle_dagger_aggregate_manifest.json",
+    "aggregate_samples": 28500,
+    "student": {
+      "candidate_onnx": "outputs/analysis/phase2_rate165_single_support_live_oracle_iter2_student/candidate.onnx",
+      "candidate_onnx_sha256": "c476120f75ea38b16cfe2a1c0eee49adca648811e65691e374321b58372a8cd7",
+      "fit_status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE",
+      "onnx_max_abs_error": 2.682209014892578e-7
+    },
+    "x008_gate": {
+      "artifact_json": "outputs/analysis/phase2_rate165_single_support_live_oracle_iter2_student_x008_gate.json",
+      "artifact_md": "outputs/analysis/PHASE2_RATE165_SINGLE_SUPPORT_LIVE_ORACLE_ITER2_STUDENT_X008_GATE.md",
+      "status": "HOLD_CANDIDATE_TARGET_VELOCITY",
+      "runs": 8,
+      "falls": 0,
+      "duration_complete": 8,
+      "mean_local_vx_m_s": 0.032378894074179695,
+      "track_ratio": 0.4047361759272462,
+      "single_support_pct": 27.200000000000003,
+      "double_support_pct": 72.8,
+      "max_pitch_vel_p95_rad_s": 1.7164087295532224,
+      "p95_velocity_excess_rad_s": 0.0,
+      "max_velocity_excess_rad_s": 0.014899253845214844,
+      "max_tracking_p95_rad": 0.1858822464942932
+    },
+    "x0_spot_gate": {
+      "artifact_json": "outputs/analysis/phase2_rate165_single_support_live_oracle_iter2_student_x0_spot_gate.json",
+      "artifact_md": "outputs/analysis/PHASE2_RATE165_SINGLE_SUPPORT_LIVE_ORACLE_ITER2_STUDENT_X0_SPOT_GATE.md",
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "runs": 2,
+      "falls": 0,
+      "duration_complete": 2,
+      "mean_local_vx_m_s": 0.000008396759295313434,
+      "p95_velocity_excess_rad_s": 0.0,
+      "max_velocity_excess_rad_s": 0.0
+    },
+    "decision": "Do not promote. Refit with tighter max-rate control while preserving iter2 motion and single support."
   },
   "rate165_x008_gate": {
     "artifact": {
@@ -328,6 +370,6 @@
       "track_ratio": 0.009135275771368375
     }
   },
-  "status": "HOLD_PHASE2_PPO_DR_STANDSTILL_REGRESSION",
+  "status": "HOLD_ITER2_MAX_VELOCITY_EXCESS",
   "training_started": false
 }
