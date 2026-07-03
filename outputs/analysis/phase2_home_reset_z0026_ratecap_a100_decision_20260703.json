@@ -1,0 +1,95 @@
+{
+  "status": "HOLD_RATECAP_A100_NOT_PROMOTABLE",
+  "source_candidate": "policy/candidates/corrected_bridge_cmd_conditioned_rate175_20260627/candidate.onnx",
+  "source_candidate_sha256": "63506567f7a973be0ff6b2b222bba41736409da713466db442067c0f2a91415e",
+  "warm_start_checkpoint": "outputs/analysis/phase2_restore_checkpoints/ppo_bc_command_conditioned_rate175_step0_checkpoint",
+  "colab_session": "open-duck-a100-phase2-ratecap2",
+  "colab_hardware": "A100",
+  "jax_pin": "0.7.2",
+  "task": "rough_terrain_backlash",
+  "terrain_hfield_z_scale": 0.0026,
+  "reset_contract": "zero reset randomization during training; home-support local screen",
+  "robot_tests": false,
+  "ssh": false,
+  "deploy": false,
+  "grounded_replay": false,
+  "recipe_delta": {
+    "target_rate_scale": -0.02,
+    "actuator_tracking_scale": -0.01,
+    "restore_policy_kl_scale": 8,
+    "forward_swing_target_rate_limit_scale": -0.04,
+    "forward_swing_target_rate_limit_joint_indices": [2, 3, 4, 11, 12, 13],
+    "forward_swing_target_rate_limit_values": [2.5, 3.25, 2.75, 2.25, 2.75, 2.0]
+  },
+  "startup_smoke": {
+    "status": "PASS_SMOKE_RUN",
+    "onnx": "outputs/analysis/colab_cli/open-duck-a100-phase2-ratecap2-phase2-z0025-boundary-20260703T054312Z/manual_download/ratecap_startup_smoke_files_final/2026_07_03_055652_5120.onnx",
+    "sha256": "06aa19c4dcf80f7891dfe7f808175e5fa8eb236d6bd8cd0cf725268ecc504add",
+    "reward_step_5120": 86.8770751953125
+  },
+  "produced_checkpoints": [
+    {
+      "checkpoint": 40960,
+      "onnx": "outputs/analysis/colab_cli/open-duck-a100-phase2-ratecap2-phase2-z0025-boundary-20260703T054312Z/manual_download/main_ratecap_files/2026_07_03_055618_40960.onnx",
+      "sha256": "01d8ca25ecb5f3eaef02f5025eca0e03d1b482929a2a3efce4fb7215d62bc611",
+      "training_reward": 76.38495635986328
+    },
+    {
+      "checkpoint": 81920,
+      "onnx": "outputs/analysis/colab_cli/open-duck-a100-phase2-ratecap2-phase2-z0025-boundary-20260703T054312Z/manual_download/main_ratecap_files/2026_07_03_055916_81920.onnx",
+      "sha256": "a1fadcbacf281ac923d02b6c68b0d3a03d78434401415170bd951823ac259f9c",
+      "training_reward": 62.6651725769043
+    },
+    {
+      "checkpoint": 122880,
+      "onnx": "outputs/analysis/colab_cli/open-duck-a100-phase2-ratecap2-phase2-z0025-boundary-20260703T054312Z/manual_download/main_ratecap_files/2026_07_03_055937_122880.onnx",
+      "sha256": "4f6b5b1103bd52bdb44d7b352ba4fb33a4c51bea042720dbf7f1841c750a36fe",
+      "training_reward": 70.60919952392578
+    }
+  ],
+  "checkpoint_screen": {
+    "artifact_md": "outputs/analysis/PHASE2_HOME_RESET_Z0026_RATECAP_A100_CHECKPOINT_SCREEN_X008_5S.md",
+    "artifact_json": "outputs/analysis/phase2_home_reset_z0026_ratecap_a100_checkpoint_screen_x008_5s.json",
+    "command_x": 0.08,
+    "duration_s": 5,
+    "seed": 0,
+    "reset_mode": "home-support",
+    "rows": [
+      {
+        "candidate": "ratecap_40960",
+        "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+        "mean_vx_m_s": 0.0078,
+        "track_ratio": 0.0974,
+        "max_pitch_vel_p95_rad_s": 1.9902,
+        "p95_velocity_excess_rad_s": 0.0,
+        "max_tracking_p95_rad": 0.1807,
+        "single_support_pct": 0.0,
+        "double_support_pct": 100.0
+      },
+      {
+        "candidate": "ratecap_81920",
+        "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+        "mean_vx_m_s": 0.2271,
+        "track_ratio": 2.8384,
+        "max_pitch_vel_p95_rad_s": 5.24,
+        "p95_velocity_excess_rad_s": 2.7283,
+        "max_tracking_p95_rad": 0.2768,
+        "single_support_pct": 9.1954,
+        "double_support_pct": 90.8046
+      },
+      {
+        "candidate": "ratecap_122880",
+        "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+        "mean_vx_m_s": 0.0107,
+        "track_ratio": 0.1343,
+        "max_pitch_vel_p95_rad_s": 5.0381,
+        "p95_velocity_excess_rad_s": 2.7881,
+        "max_tracking_p95_rad": 0.2131,
+        "single_support_pct": 6.8,
+        "double_support_pct": 93.2
+      }
+    ]
+  },
+  "decision": "Do not promote any rate-cap checkpoint from this A100 run.",
+  "next_recommendation": "Do not repeat scalar rate-cap continuation. Focus next recipe on swing/advance and single-support behavior under corrected per-joint limits."
+}
