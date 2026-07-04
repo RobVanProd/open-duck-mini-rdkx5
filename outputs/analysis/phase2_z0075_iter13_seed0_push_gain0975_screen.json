@@ -1,0 +1,280 @@
+{
+  "config": {
+    "policies": [
+      "policy/candidates/phase2_z0075_iter13_push_window_recovery_rate150_20260704/candidate.onnx"
+    ],
+    "policy_labels": [
+      "iter13_gain0975"
+    ],
+    "seeds": [
+      0
+    ],
+    "command_x": 0.08,
+    "task": "rough_terrain_backlash",
+    "duration_s": 5.0,
+    "bridge_mode": "fitted",
+    "policy_action_gain": 0.975,
+    "reward_overrides_json": null,
+    "reward_overrides_phase": null,
+    "policy_obs_input_name": null,
+    "policy_action_output_name": null,
+    "policy_state_input_names": null,
+    "policy_state_output_names": null,
+    "eval_push_enable": true,
+    "eval_push_interval_min_s": 1.0,
+    "eval_push_interval_max_s": 1.5,
+    "eval_push_magnitude_min": 0.075,
+    "eval_push_magnitude_max": 0.125,
+    "push_recovery_window_s": 1.2,
+    "push_recovery_max_abs_pitch_rad": 0.8,
+    "push_recovery_min_base_height_m": 0.08,
+    "terrain_hfield_z_scale": 0.0075,
+    "reset_settle_ticks": 0,
+    "reset_mode": "home-support",
+    "min_swing_segments_per_foot": null,
+    "min_swing_rel_x_range_p95_m": null,
+    "min_swing_peak_lift_m": null,
+    "jax_platform": "cpu",
+    "run": true,
+    "trace_seeds": [],
+    "trace_full_obs": false
+  },
+  "results": [
+    {
+      "policy": "policy/candidates/phase2_z0075_iter13_push_window_recovery_rate150_20260704/candidate.onnx",
+      "policy_label": "iter13_gain0975",
+      "seed": 0,
+      "output_dir": "outputs/analysis/phase2_z0075_iter13_seed0_push_gain0975_screen/iter13_gain0975/seed_000",
+      "command": [
+        "/usr/bin/python3",
+        "/home/lsd/robots/open-duck-mini-rdkx5/tools/eval_policy_with_actuator_bridge.py",
+        "--mode",
+        "closed-loop-sim",
+        "--eval-role",
+        "candidate",
+        "--policy",
+        "policy/candidates/phase2_z0075_iter13_push_window_recovery_rate150_20260704/candidate.onnx",
+        "--fit-json",
+        "outputs/analysis/actuator_response_fit_corrected_knee.json",
+        "--playground-path",
+        "../Open_Duck_Playground",
+        "--env-python",
+        "../envs/open-duck-playground/bin/python",
+        "--command-x",
+        "0.08",
+        "--task",
+        "rough_terrain_backlash",
+        "--duration",
+        "5.0",
+        "--seed",
+        "0",
+        "--bridge-mode",
+        "fitted",
+        "--policy-action-gain",
+        "0.975",
+        "--jax-platform",
+        "cpu",
+        "--sim-preflight-timeout-s",
+        "600",
+        "--closed-loop-timeout-s",
+        "1800",
+        "--output-dir",
+        "outputs/analysis/phase2_z0075_iter13_seed0_push_gain0975_screen/iter13_gain0975/seed_000",
+        "--eval-push-enable",
+        "--eval-push-interval-min-s",
+        "1.0",
+        "--eval-push-interval-max-s",
+        "1.5",
+        "--eval-push-magnitude-min",
+        "0.075",
+        "--eval-push-magnitude-max",
+        "0.125",
+        "--push-recovery-window-s",
+        "1.2",
+        "--push-recovery-max-abs-pitch-rad",
+        "0.8",
+        "--push-recovery-min-base-height-m",
+        "0.08",
+        "--terrain-hfield-z-scale",
+        "0.0075",
+        "--reset-mode",
+        "home-support"
+      ],
+      "command_shell": "/usr/bin/python3 /home/lsd/robots/open-duck-mini-rdkx5/tools/eval_policy_with_actuator_bridge.py --mode closed-loop-sim --eval-role candidate --policy policy/candidates/phase2_z0075_iter13_push_window_recovery_rate150_20260704/candidate.onnx --fit-json outputs/analysis/actuator_response_fit_corrected_knee.json --playground-path ../Open_Duck_Playground --env-python ../envs/open-duck-playground/bin/python --command-x 0.08 --task rough_terrain_backlash --duration 5.0 --seed 0 --bridge-mode fitted --policy-action-gain 0.975 --jax-platform cpu --sim-preflight-timeout-s 600 --closed-loop-timeout-s 1800 --output-dir outputs/analysis/phase2_z0075_iter13_seed0_push_gain0975_screen/iter13_gain0975/seed_000 --eval-push-enable --eval-push-interval-min-s 1.0 --eval-push-interval-max-s 1.5 --eval-push-magnitude-min 0.075 --eval-push-magnitude-max 0.125 --push-recovery-window-s 1.2 --push-recovery-max-abs-pitch-rad 0.8 --push-recovery-min-base-height-m 0.08 --terrain-hfield-z-scale 0.0075 --reset-mode home-support",
+      "returncode": 0,
+      "stdout_tail": "outputs/analysis/phase2_z0075_iter13_seed0_push_gain0975_screen/iter13_gain0975/seed_000/SIM_ACTUATOR_BRIDGE_EVAL.md\noutputs/analysis/phase2_z0075_iter13_seed0_push_gain0975_screen/iter13_gain0975/seed_000/sim_actuator_bridge_eval.json\noutputs/analysis/phase2_z0075_iter13_seed0_push_gain0975_screen/iter13_gain0975/seed_000/CLOSED_LOOP_ACTUATOR_BRIDGE_EVAL.md\noutputs/analysis/phase2_z0075_iter13_seed0_push_gain0975_screen/iter13_gain0975/seed_000/closed_loop_actuator_bridge_eval.json\n",
+      "result_json": "outputs/analysis/phase2_z0075_iter13_seed0_push_gain0975_screen/iter13_gain0975/seed_000/closed_loop_actuator_bridge_eval.json",
+      "summary": {
+        "overall_status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+        "candidate_gate_status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+        "samples": 118,
+        "termination_reason": "fall_or_nan",
+        "elapsed_s": 2.34,
+        "mean_local_vx_m_s": 0.16983269487203778,
+        "track_ratio": 2.122908685900472,
+        "body_pitch_p95_rad": 0.9366719280776835,
+        "base_height_min_m": 0.0077313706278800964,
+        "max_pitch_vel_p95_rad_s": 1.5202054381370544,
+        "max_pitch_vel_limit_excess_rad_s": 0.0,
+        "max_pitch_vel_max_limit_excess_rad_s": 0.0,
+        "max_tracking_p95_rad": 0.18930599689483646,
+        "action_saturation_pct": 0.0,
+        "push_event_count": 1,
+        "push_recovered_count": 0,
+        "push_success_rate": 0.0,
+        "left_swing_lift_p95_m": 0.051505001634359365,
+        "right_swing_lift_p95_m": 0.057456867024302485,
+        "left_swing_peak_lift_m": 0.05832716450095177,
+        "right_swing_peak_lift_m": 0.05915849469602108,
+        "min_swing_peak_lift_m": 0.05832716450095177,
+        "left_swing_segment_count": 0,
+        "right_swing_segment_count": 2,
+        "min_swing_segment_count": 0,
+        "left_swing_rel_x_range_p95_m": 0.0,
+        "right_swing_rel_x_range_p95_m": 0.0160639098379761,
+        "min_swing_rel_x_range_p95_m": 0.0,
+        "single_support_pct": 11.864406779661017,
+        "double_support_pct": 87.28813559322035,
+        "no_contact_pct": 0.847457627118644
+      },
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "terrain_swing_gate": {
+        "enabled": false,
+        "checks": []
+      }
+    }
+  ],
+  "aggregate": {
+    "iter13_gain0975": {
+      "runs": 1,
+      "fall_count": 1,
+      "duration_complete_count": 0,
+      "samples": {
+        "min": 118.0,
+        "mean": 118.0,
+        "p50": 118.0,
+        "p95": 118.0,
+        "max": 118.0
+      },
+      "track_ratio": {
+        "min": 2.122908685900472,
+        "mean": 2.122908685900472,
+        "p50": 2.122908685900472,
+        "p95": 2.122908685900472,
+        "max": 2.122908685900472
+      },
+      "mean_local_vx_m_s": {
+        "min": 0.16983269487203778,
+        "mean": 0.16983269487203778,
+        "p50": 0.16983269487203778,
+        "p95": 0.16983269487203778,
+        "max": 0.16983269487203778
+      },
+      "body_pitch_p95_rad": {
+        "min": 0.9366719280776835,
+        "mean": 0.9366719280776835,
+        "p50": 0.9366719280776835,
+        "p95": 0.9366719280776835,
+        "max": 0.9366719280776835
+      },
+      "base_height_min_m": {
+        "min": 0.0077313706278800964,
+        "mean": 0.0077313706278800964,
+        "p50": 0.0077313706278800964,
+        "p95": 0.0077313706278800964,
+        "max": 0.0077313706278800964
+      },
+      "max_pitch_vel_p95_rad_s": {
+        "min": 1.5202054381370544,
+        "mean": 1.5202054381370544,
+        "p50": 1.5202054381370544,
+        "p95": 1.5202054381370544,
+        "max": 1.5202054381370544
+      },
+      "max_pitch_vel_limit_excess_rad_s": {
+        "min": 0.0,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "max": 0.0
+      },
+      "max_pitch_vel_max_limit_excess_rad_s": {
+        "min": 0.0,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "max": 0.0
+      },
+      "max_tracking_p95_rad": {
+        "min": 0.18930599689483646,
+        "mean": 0.18930599689483646,
+        "p50": 0.18930599689483646,
+        "p95": 0.18930599689483646,
+        "max": 0.18930599689483646
+      },
+      "push_event_count": {
+        "min": 1.0,
+        "mean": 1.0,
+        "p50": 1.0,
+        "p95": 1.0,
+        "max": 1.0
+      },
+      "push_success_rate": {
+        "min": 0.0,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "max": 0.0
+      },
+      "left_swing_lift_p95_m": {
+        "min": 0.051505001634359365,
+        "mean": 0.051505001634359365,
+        "p50": 0.051505001634359365,
+        "p95": 0.051505001634359365,
+        "max": 0.051505001634359365
+      },
+      "right_swing_lift_p95_m": {
+        "min": 0.057456867024302485,
+        "mean": 0.057456867024302485,
+        "p50": 0.057456867024302485,
+        "p95": 0.057456867024302485,
+        "max": 0.057456867024302485
+      },
+      "min_swing_peak_lift_m": {
+        "min": 0.05832716450095177,
+        "mean": 0.05832716450095177,
+        "p50": 0.05832716450095177,
+        "p95": 0.05832716450095177,
+        "max": 0.05832716450095177
+      },
+      "min_swing_segment_count": {
+        "min": 0.0,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "max": 0.0
+      },
+      "min_swing_rel_x_range_p95_m": {
+        "min": 0.0,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "max": 0.0
+      },
+      "single_support_pct": {
+        "min": 11.864406779661017,
+        "mean": 11.864406779661017,
+        "p50": 11.864406779661017,
+        "p95": 11.864406779661017,
+        "max": 11.864406779661017
+      },
+      "double_support_pct": {
+        "min": 87.28813559322035,
+        "mean": 87.28813559322035,
+        "p50": 87.28813559322035,
+        "p95": 87.28813559322035,
+        "max": 87.28813559322035
+      }
+    }
+  }
+}
