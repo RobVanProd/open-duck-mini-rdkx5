@@ -171,6 +171,21 @@ the strict corrected fitted-bridge tracking gate by:
   `policy/candidates/phase2_corrected_live_oracle_iter1_rate165_20260703`.
   This is an offline sim candidate only; robot validation remains a separate
   reviewed step.
+- The latest `z=0.0075` Iter10 spike-local candidate is reset-sensitive and
+  push-recovery-limited, not baseline rough-terrain limited. Seed 5 fails
+  immediately from `playground` reset on flat/rough and push/no-push, but
+  passes from `home-support` reset. A broader `home-support`, rough
+  `z=0.0075`, intermediate-push diagnostic passes 5/8 seeds; the failed seeds
+  0, 2, and 6 all pass the same rough terrain with pushes disabled. The traced
+  failures classify as `PUSH_WINDOW_PITCHOVER` with zero corrected-envelope
+  excess:
+  `outputs/analysis/PHASE2_Z0075_SEED5_RESET_SENSITIVITY_DECISION.md`,
+  `outputs/analysis/PHASE2_Z0075_HOME_SUPPORT_PUSH_TRIAGE_DECISION.md`, and
+  `outputs/analysis/PHASE2_Z0075_HOME_SUPPORT_PUSH_FAILURE_TRACE_DIAGNOSTIC.md`.
+  Do not add more feed-forward label weights or scalar terrain rewards for
+  this failure. The next useful branch is push-window recovery under
+  corrected-bridge, `home-support`, rough `z=0.0075`, with the `playground`
+  reset-contract audit kept separate.
 
 ## Blocking Step 0
 
