@@ -230,11 +230,14 @@ def eval_command(
     z_scale: float,
     push_min: float | None = None,
     push_max: float | None = None,
+    *,
+    reset_settle_ticks: int,
+    reset_mode: str,
 ) -> list[str]:
     command = [
         "../envs/open-duck-playground/bin/python",
         "tools/run_candidate_seed_sweep.py",
-        "--policy",
+        "--policies",
         policy,
         "--fit-json",
         "outputs/analysis/actuator_response_fit_corrected_knee.json",
@@ -248,10 +251,18 @@ def eval_command(
         str(command_x),
         "--duration",
         "15",
+        "--bridge-mode",
+        "fitted",
+        "--jax-platform",
+        "cpu",
         "--seeds",
         "0,1,2,3,4,5,6,7",
         "--terrain-hfield-z-scale",
         str(z_scale),
+        "--reset-settle-ticks",
+        str(reset_settle_ticks),
+        "--reset-mode",
+        reset_mode,
         "--output-md",
         f"outputs/analysis/{name}.md",
         "--output-json",
@@ -261,18 +272,27 @@ def eval_command(
         command.extend(
             [
                 "--eval-push-enable",
+                "--eval-push-interval-min-s",
+                "1.0",
+                "--eval-push-interval-max-s",
+                "1.5",
                 "--eval-push-magnitude-min",
                 str(push_min),
                 "--eval-push-magnitude-max",
                 str(push_max),
                 "--push-recovery-window-s",
-                "0.5",
+                "1.2",
+                "--push-recovery-max-abs-pitch-rad",
+                "0.8",
+                "--push-recovery-min-base-height-m",
+                "0.08",
             ]
         )
+    command.append("--run")
     return command
 
 
-def gate_commands(policy: str) -> list[dict[str, Any]]:
+def gate_commands(policy: str, *, reset_settle_ticks: int, reset_mode: str) -> list[dict[str, Any]]:
     specs = [
         ("z0075_x008_no_push", 0.08, 0.0075, None, None),
         ("z0075_x000_no_push", 0.0, 0.0075, None, None),
@@ -290,6 +310,8 @@ def gate_commands(policy: str) -> list[dict[str, Any]]:
             z_scale,
             push_min,
             push_max,
+            reset_settle_ticks=reset_settle_ticks,
+            reset_mode=reset_mode,
         )
         commands.append({"name": name, "argv": argv, "shell": multiline_shell(argv)})
     return commands
@@ -308,11 +330,13 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
     final_args = final_training_args()
     colab = colab_command(args.session, args.candidate_name, restore_checkpoint)
     local = local_command(args.local_output_root, restore_checkpoint)
+    reset_settle_ticks = int(args.reset_settle_ticks)
+    reset_mode = str(args.reset_mode)
     return {
         "status": "PASS_PHASE2_Z0075_POST_PUSH_STABILITY_RECIPE_READY",
         "stage": "stage_z0075_post_push_stability",
         "source_status": decision.get("status"),
-        "diagnosis_status": diagnostic.get("seeds") and "HOLD_PHASE2_INTERMEDIATE_PUSH_POST_RECOVERY_PITCHOVER",
+        "diagnosis_status": diagnostic.get("status"),
         "policy": {
             "path": rel(policy),
             "present": policy.exists(),
@@ -334,6 +358,10 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
             "falls": decision.get("falls"),
             "failed_seeds": decision.get("failed_seeds"),
             "metrics": decision.get("metrics"),
+            "summary": decision.get("summary"),
+            "per_seed": decision.get("per_seed"),
+            "reset_settle_ticks": reset_settle_ticks,
+            "reset_mode": reset_mode,
         },
         "failure_summary": [
             {
@@ -356,10 +384,10 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
         "recipe_intent": [
             "Continue from the corrected-bridge PPO-compatible warm-start; do not train from scratch.",
             "Keep z=0.0075 rough terrain and intermediate push magnitude 0.075-0.125 as the target boundary.",
-            "Preserve the already-confirmed z=0.0075 gentle-push pass as a regression gate.",
-            "Extend push-recovery tracking beyond the old 25-tick/0.5s window because failures occur after that window closes.",
-            "Target the pitch chain, including the right hip/knee/ankle excursions seen in seeds 0 and 7, without loosening the corrected actuator envelope.",
-            "Add base-height, pitch, and pitch-rate pressure so post-push recovery is graded beyond immediate push success.",
+            "Preserve the reset-settle10 rough-terrain/no-push behavior as a regression gate.",
+            "Remove the single-tick right-ankle envelope excesses without loosening the corrected actuator envelope.",
+            "Extend push-recovery tracking beyond the old 25-tick/0.5s window because seed 5 pitches over inside the longer 1.2s recovery window.",
+            "Add base-height, pitch, and pitch-rate pressure so push recovery is graded beyond immediate push success.",
         ],
         "key_recipe_changes": {
             "terrain_hfield_z_scale": 0.0075,
@@ -375,6 +403,8 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
             "forward_pitch_rate_scale": -0.12,
             "actuator_tracking_scale": -0.012,
             "restore_policy_kl_scale": 4.5,
+            "reset_settle_ticks_for_gates": reset_settle_ticks,
+            "reset_mode_for_gates": reset_mode,
         },
         "commands": {
             "final_training_args": final_args,
@@ -387,7 +417,11 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
                 "shell": multiline_shell(local),
                 "note": "Use as backend evidence only unless it clears the same canonical CPU gates.",
             },
-            "post_training_gates": gate_commands("<candidate.onnx>"),
+            "post_training_gates": gate_commands(
+                "<candidate.onnx>",
+                reset_settle_ticks=reset_settle_ticks,
+                reset_mode=reset_mode,
+            ),
         },
         "acceptance": [
             "z=0.0075 x=0.08 intermediate push 0.075-0.125 passes 8/8 with zero falls.",
@@ -397,8 +431,9 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
             "Tracking p95 remains at or below the corrected-bridge gate threshold used by the rate150 candidate.",
         ],
         "falsifier": (
-            "If seeds 0/7 still pitch over after push windows while p95 envelope remains clean, "
-            "stop increasing push magnitude and collect on-policy post-push recovery labels instead of loosening limits."
+            "If seed 5 still pitches over under intermediate push while the right-ankle "
+            "single-tick excesses are removed, stop increasing push magnitude and collect "
+            "on-policy post-push recovery labels instead of loosening limits."
         ),
         "robot_touched": False,
         "ssh_used": False,
@@ -503,6 +538,8 @@ def main() -> int:
         "--local-output-root",
         default="outputs/phase2_domain_randomization/stage_z0075_post_push_stability_local_rocm",
     )
+    parser.add_argument("--reset-settle-ticks", type=int, default=10)
+    parser.add_argument("--reset-mode", default="home-support")
     parser.add_argument("--output-md", default=str(DEFAULT_OUTPUT_MD))
     parser.add_argument("--output-json", default=str(DEFAULT_OUTPUT_JSON))
     args = parser.parse_args()
