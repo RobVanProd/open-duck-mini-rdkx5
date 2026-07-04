@@ -1,0 +1,136 @@
+{
+  "recommendation": "The next recovery dataset should cover each populated failure mode, not only the compact seed0/seed7 pair. If reverse pitch-back and forward lunge both appear, use seed-diverse live-oracle relabels plus pass-control traces; do not add a single scalar damping or progress term and call it distributional.",
+  "seeds": [
+    {
+      "final_base_height_m": 0.08511463552713394,
+      "final_pitch_rad": -1.410147012309141,
+      "final_vx_m_s": -1.389746904373169,
+      "max_velocity_excess_rad_s": 0.0,
+      "mode": "REVERSE_PITCHBACK",
+      "p95_velocity_excess_rad_s": 0.0,
+      "policy_name": "iter6_weight2_control_rate150",
+      "reasons": [
+        "reverse_velocity",
+        "pitch_back"
+      ],
+      "samples": 494,
+      "seed": 1,
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "trace_path": "outputs/analysis/phase2_z0075_weight2_control_rate150_failed_seed_traces/iter6_weight2_control_rate150/seed_001/trace.jsonl",
+      "track_ratio": -0.1075904962862377
+    },
+    {
+      "final_base_height_m": 0.00046249578008428216,
+      "final_pitch_rad": 1.2755658201677738,
+      "final_vx_m_s": 1.502570629119873,
+      "max_velocity_excess_rad_s": 0.0,
+      "mode": "FORWARD_LUNGE_PITCHOVER",
+      "p95_velocity_excess_rad_s": 0.0,
+      "policy_name": "iter6_weight2_control_rate150",
+      "reasons": [
+        "forward_lunge_velocity",
+        "pitch_forward",
+        "low_base_height"
+      ],
+      "samples": 157,
+      "seed": 2,
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "trace_path": "outputs/analysis/phase2_z0075_weight2_control_rate150_failed_seed_traces/iter6_weight2_control_rate150/seed_002/trace.jsonl",
+      "track_ratio": 1.6956550448928174
+    },
+    {
+      "final_base_height_m": 0.07760779559612274,
+      "final_pitch_rad": -1.472379248169073,
+      "final_vx_m_s": -1.4748305082321167,
+      "max_velocity_excess_rad_s": 0.3926258087158203,
+      "mode": "ACTUATOR_ENVELOPE_EXCESS",
+      "p95_velocity_excess_rad_s": 0.0,
+      "policy_name": "iter6_weight2_control_rate150",
+      "reasons": [
+        "actuator_envelope_excess",
+        "reverse_velocity",
+        "pitch_back",
+        "low_base_height"
+      ],
+      "samples": 450,
+      "seed": 3,
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "trace_path": "outputs/analysis/phase2_z0075_weight2_control_rate150_failed_seed_traces/iter6_weight2_control_rate150/seed_003/trace.jsonl",
+      "track_ratio": -0.27332333231258116
+    },
+    {
+      "final_base_height_m": 0.0017537559615448117,
+      "final_pitch_rad": 1.4868606944633265,
+      "final_vx_m_s": 1.5182561874389648,
+      "max_velocity_excess_rad_s": 0.0,
+      "mode": "FORWARD_LUNGE_PITCHOVER",
+      "p95_velocity_excess_rad_s": 0.0,
+      "policy_name": "iter6_weight2_control_rate150",
+      "reasons": [
+        "forward_lunge_velocity",
+        "pitch_forward",
+        "low_base_height"
+      ],
+      "samples": 724,
+      "seed": 4,
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "trace_path": "outputs/analysis/phase2_z0075_weight2_control_rate150_failed_seed_traces/iter6_weight2_control_rate150/seed_004/trace.jsonl",
+      "track_ratio": 0.6728451864646039
+    },
+    {
+      "final_base_height_m": 0.07055892050266266,
+      "final_pitch_rad": -1.4326866639205103,
+      "final_vx_m_s": -1.4345324039459229,
+      "max_velocity_excess_rad_s": 0.0,
+      "mode": "PRE_PUSH_REVERSE_PITCHBACK",
+      "p95_velocity_excess_rad_s": 0.0,
+      "policy_name": "iter6_weight2_control_rate150",
+      "reasons": [
+        "reverse_velocity",
+        "pitch_back",
+        "low_base_height",
+        "pre_push_failure"
+      ],
+      "samples": 47,
+      "seed": 5,
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "trace_path": "outputs/analysis/phase2_z0075_weight2_control_rate150_failed_seed_traces/iter6_weight2_control_rate150/seed_005/trace.jsonl",
+      "track_ratio": -3.896445081014424
+    },
+    {
+      "final_base_height_m": 0.06870874017477036,
+      "final_pitch_rad": -1.4541644195261496,
+      "final_vx_m_s": -1.5358973741531372,
+      "max_velocity_excess_rad_s": 0.0,
+      "mode": "REVERSE_PITCHBACK",
+      "p95_velocity_excess_rad_s": 0.0,
+      "policy_name": "iter6_weight2_control_rate150",
+      "reasons": [
+        "reverse_velocity",
+        "pitch_back",
+        "low_base_height"
+      ],
+      "samples": 246,
+      "seed": 6,
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "trace_path": "outputs/analysis/phase2_z0075_weight2_control_rate150_failed_seed_traces/iter6_weight2_control_rate150/seed_006/trace.jsonl",
+      "track_ratio": -0.6485847329824492
+    }
+  ],
+  "status": "PASS_SEED_FAILURE_MODE_REPORT_READY",
+  "summary": {
+    "mode_counts": {
+      "ACTUATOR_ENVELOPE_EXCESS": 1,
+      "FORWARD_LUNGE_PITCHOVER": 2,
+      "PRE_PUSH_REVERSE_PITCHBACK": 1,
+      "REVERSE_PITCHBACK": 2
+    },
+    "seeds": 6,
+    "status_counts": {
+      "HOLD_CANDIDATE_FALL_OR_TERMINATION": 6
+    }
+  },
+  "sweep_json": "outputs/analysis/phase2_z0075_weight2_control_rate150_failed_seed_traces.json",
+  "trace_root": "outputs/analysis/phase2_z0075_weight2_control_rate150_failed_seed_traces",
+  "velocity_excess_tolerance": 0.1
+}
