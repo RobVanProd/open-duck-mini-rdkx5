@@ -1,0 +1,59 @@
+{
+  "status": "HOLD_PASS_CONTROL_WEIGHTING_REGRESSION",
+  "scope": "offline sim/data curation only; no robot, SSH, deploy, grounded replay, runtime behavior changes, or PPO training",
+  "candidate": {
+    "onnx": "policy/candidates/phase2_z0075_iter12_pass_control_reverse_soft_rate150_20260704/candidate.onnx",
+    "onnx_sha256": "fe106a1cd24ffdf6f982e7064cd2cdcdc6c3433ee43a253caadfe0850a4d400b",
+    "npz": "outputs/analysis/phase2_z0075_iter12_pass_control_reverse_soft_rate150_candidate/candidate_mlp.npz",
+    "npz_sha256": "b4da637b5efbb9dccaa8bff7d08a072868a47f942ab12274d59a3b0dbf996de5",
+    "pass_control_manifest": "outputs/analysis/phase2_z0075_iter12_iter10_pass_control_manifest.json",
+    "pass_control_dataset_id": "6f720e613ad37ece",
+    "pass_control_samples": 2250,
+    "weighted_pass_control_manifest": "outputs/analysis/phase2_z0075_iter12_pass_control_weighted_manifest.json",
+    "weighted_pass_control_dataset_id": "5f61f95b64a3c3f9",
+    "soft_reverse_manifest": "outputs/analysis/phase2_z0075_iter12_reverse_oracle_soft_weight_manifest.json",
+    "soft_reverse_dataset_id": "f42cc71c5126b2bf",
+    "merged_manifest": "outputs/analysis/phase2_z0075_iter12_pass_control_reverse_soft_merged_manifest.json",
+    "merged_dataset_id": "47912c84835029ba",
+    "merged_samples": 55636
+  },
+  "fit_metrics": {
+    "mae": 0.00943732485274166,
+    "p95_abs_error": 0.03080350160598755,
+    "max_abs_error": 0.4258764386177063,
+    "target_rate_p95_rad_s": 1.3819915056228638,
+    "target_rate_max_rad_s": 2.518000841140747,
+    "onnx_max_abs_error": 2.384185791015625e-7
+  },
+  "gate": {
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.0075,
+    "command_x": 0.08,
+    "bridge_mode": "fitted",
+    "push_interval_s": [1.0, 1.5],
+    "push_magnitude": [0.075, 0.125],
+    "pass_count": 0,
+    "fall_count": 8,
+    "duration_complete_count": 0,
+    "mean_track_ratio": 0.18514728626095888,
+    "mean_local_vx_m_s": 0.014811782900876711,
+    "max_p95_velocity_excess_rad_s": 0.0,
+    "max_instantaneous_velocity_excess_rad_s": 0.26959049701690674,
+    "max_tracking_p95_rad": 0.22233928471803663,
+    "mean_push_success": 0.799719416386083,
+    "passing_seeds": [],
+    "failed_seeds": [0, 1, 2, 3, 4, 5, 6, 7]
+  },
+  "comparison": {
+    "iter10_pass_count": 3,
+    "iter10_passing_seeds": [0, 4, 7],
+    "iter11_pass_count": 2,
+    "iter11_passing_seeds": [3, 6],
+    "iter12_pass_count": 0,
+    "iter12_passing_seeds": [],
+    "regressed_prior_pass_seeds": [0, 4, 7],
+    "regressed_iter11_pass_seeds": [3, 6]
+  },
+  "decision": "Do not promote. Explicit pass-control weighting did not preserve Iter10's passing seeds and the candidate failed all eight seeds.",
+  "next_recommendation": "Stop treating additional supervised weighting as a reliable composition mechanism for this feed-forward BC student. Move to a stateful/live-oracle DAgger representation or run focused seed5 reset-sensitivity diagnostics before adding more labels."
+}
