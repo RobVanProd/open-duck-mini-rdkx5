@@ -1,0 +1,153 @@
+{
+  "status": "HOLD_NO_PROMOTABLE_CHECKPOINT",
+  "generated_at": "2026-07-04T05:05:31.095293+00:00",
+  "scope": "offline_phase2_a100_training_result",
+  "robot_touched": false,
+  "ssh_performed": false,
+  "deploy_performed": false,
+  "grounded_replay_performed": false,
+  "run_dir": "outputs/analysis/phase2_z0075_post_push_stability_a100_20260704",
+  "training_summary": {
+    "path": "outputs/analysis/phase2_z0075_post_push_stability_a100_20260704/phase2_z0075_post_push_stability_cuda_training_run_summary.json",
+    "sha256": "40101bac89af88f817cf47f3d22999d4283e228ec01f936c97a8d8e096609b7c",
+    "status": "INFO_NON_DEPLOYABLE_TRAINING_RUN",
+    "returncode": 0,
+    "elapsed_s": 750.0473559039999,
+    "latest_onnx": {
+      "name": "2026_07_04_044055_122880.onnx",
+      "path": "/content/open_duck_training_phase2_b0g_cli/smoke_20260704T042912Z_gpu/2026_07_04_044055_122880.onnx",
+      "sha256": "c45569a28f1af792ca193dab5405711362fc08e5bc2899b6634bf924270b63f3",
+      "size_bytes": 884094,
+      "step": 122880
+    },
+    "reward_steps": []
+  },
+  "colab_exit_status": {
+    "path": "outputs/analysis/phase2_z0075_post_push_stability_a100_20260704/COLAB_CLI_EXIT_STATUS.txt",
+    "sha256": "ed163d69a09ddc0ffcbdf126a42d5745a93449fa7a39354788e948b7ac795c04",
+    "text": "exit_status=0"
+  },
+  "downloaded_bundle": {
+    "path": "outputs/analysis/colab_cli/open-duck-phase2-a100-phase2-b0g-20260704T042437Z/final_download/open_duck_colab_cli_phase2-b0g_20260704T042553Z_artifacts.tar.gz",
+    "sha256": "95a51e6ded5b6ad3d5596f3512e1120f469c13b5e99474f7a1504dab891efd8b",
+    "size_bytes": 4309525
+  },
+  "checkpoint_files": [
+    {
+      "path": "outputs/analysis/phase2_z0075_post_push_stability_a100_20260704/checkpoints/2026_07_04_043749_40960.onnx",
+      "sha256": "7186ca3f08984275847ed3cd86fa55d630da821475c47f057fd7c3f50072051f",
+      "size_bytes": 883946
+    },
+    {
+      "path": "outputs/analysis/phase2_z0075_post_push_stability_a100_20260704/checkpoints/2026_07_04_044034_81920.onnx",
+      "sha256": "5a852ae5638235d387722af5c39b7a422ad416b624bfcf0aa907610a207410bf",
+      "size_bytes": 884094
+    },
+    {
+      "path": "outputs/analysis/phase2_z0075_post_push_stability_a100_20260704/checkpoints/2026_07_04_044055_122880.onnx",
+      "sha256": "c45569a28f1af792ca193dab5405711362fc08e5bc2899b6634bf924270b63f3",
+      "size_bytes": 884094
+    }
+  ],
+  "checkpoint_sweep": {
+    "path": "outputs/analysis/phase2_z0075_post_push_stability_a100_20260704/checkpoint_sweep/candidate_checkpoint_sweep.json",
+    "sha256": "a63861e4d27f32c8f2518fd493b45e3d5bf0f1b50a71f9c99cee8a47ef037056",
+    "commands": [
+      0.0,
+      0.08
+    ],
+    "duration_s": 1.0,
+    "bridge_mode": "fitted",
+    "fit_json": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+    "result_count": 6,
+    "promotion_decisions": [
+      {
+        "policy": "outputs/analysis/phase2_z0075_post_push_stability_a100_20260704/checkpoints/2026_07_04_043749_40960.onnx",
+        "policy_label": "phase2_b0g_40960",
+        "status": "HOLD_REJECT_CANDIDATE_CHECKPOINT",
+        "promote": false,
+        "pass_count": 0,
+        "required_command_count": 2,
+        "duration_complete_count": 2,
+        "failure_reasons": [
+          "command 0: HOLD_CANDIDATE_TRACKING",
+          "command 0.08: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+          "command 0.08: track ratio 0.1001 < 0.2500",
+          "command 0.08: mean vx 0.0080 < 0.0200"
+        ],
+        "warnings": [],
+        "max_pitch_tracking_p95_rad": 0.31198844909667933,
+        "max_pitch_sent_target_velocity_p95_rad_s": 1.3240902125835403,
+        "max_action_saturation_pct": 0.0,
+        "positive_command_tracking_ratio_mean": 0.10008687788649695
+      },
+      {
+        "policy": "outputs/analysis/phase2_z0075_post_push_stability_a100_20260704/checkpoints/2026_07_04_044034_81920.onnx",
+        "policy_label": "phase2_b0g_81920",
+        "status": "HOLD_REJECT_CANDIDATE_CHECKPOINT",
+        "promote": false,
+        "pass_count": 0,
+        "required_command_count": 2,
+        "duration_complete_count": 2,
+        "failure_reasons": [
+          "command 0: HOLD_CANDIDATE_TARGET_VELOCITY",
+          "command 0.08: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+          "command 0.08: track ratio 0.0898 < 0.2500",
+          "command 0.08: mean vx 0.0072 < 0.0200"
+        ],
+        "warnings": [],
+        "max_pitch_tracking_p95_rad": 0.3119964003562924,
+        "max_pitch_sent_target_velocity_p95_rad_s": 1.5179374814033508,
+        "max_action_saturation_pct": 0.0,
+        "positive_command_tracking_ratio_mean": 0.08984945319025428
+      },
+      {
+        "policy": "outputs/analysis/phase2_z0075_post_push_stability_a100_20260704/checkpoints/2026_07_04_044055_122880.onnx",
+        "policy_label": "phase2_b0g_122880",
+        "status": "HOLD_REJECT_CANDIDATE_CHECKPOINT",
+        "promote": false,
+        "pass_count": 0,
+        "required_command_count": 2,
+        "duration_complete_count": 2,
+        "failure_reasons": [
+          "command 0: HOLD_CANDIDATE_TARGET_VELOCITY",
+          "command 0.08: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+          "command 0.08: track ratio 0.0636 < 0.2500",
+          "command 0.08: mean vx 0.0051 < 0.0200"
+        ],
+        "warnings": [],
+        "max_pitch_tracking_p95_rad": 0.3065196990966793,
+        "max_pitch_sent_target_velocity_p95_rad_s": 1.4519722759723657,
+        "max_action_saturation_pct": 0.0,
+        "positive_command_tracking_ratio_mean": 0.06356769561534747
+      }
+    ],
+    "promoted": [],
+    "best_by_positive_command_ratio": {
+      "policy": "outputs/analysis/phase2_z0075_post_push_stability_a100_20260704/checkpoints/2026_07_04_043749_40960.onnx",
+      "policy_label": "phase2_b0g_40960",
+      "status": "HOLD_REJECT_CANDIDATE_CHECKPOINT",
+      "promote": false,
+      "pass_count": 0,
+      "required_command_count": 2,
+      "duration_complete_count": 2,
+      "failure_reasons": [
+        "command 0: HOLD_CANDIDATE_TRACKING",
+        "command 0.08: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+        "command 0.08: track ratio 0.1001 < 0.2500",
+        "command 0.08: mean vx 0.0080 < 0.0200"
+      ],
+      "warnings": [],
+      "max_pitch_tracking_p95_rad": 0.31198844909667933,
+      "max_pitch_sent_target_velocity_p95_rad_s": 1.3240902125835403,
+      "max_action_saturation_pct": 0.0,
+      "positive_command_tracking_ratio_mean": 0.10008687788649695
+    }
+  },
+  "decision": {
+    "promote_to_full_gates": false,
+    "full_gates_run": false,
+    "full_gates_skipped_reason": "compact sweep found no checkpoint with meaningful in-envelope forward progress",
+    "next_recommendation": "do not promote this b0g PPO result; return to teacher-action or trust-region continuity rather than another scalar reward tweak"
+  }
+}
