@@ -192,6 +192,8 @@ REVIEW_ARTIFACTS = [
     "outputs/analysis/phase2_rate150_z0075_intermediate_push_trace_seeds_0_1_7",
     "outputs/analysis/PHASE2_RATE150_Z0075_INTERMEDIATE_PUSH_FAILURE_DIAGNOSTIC.md",
     "outputs/analysis/phase2_rate150_z0075_intermediate_push_failure_diagnostic.json",
+    "outputs/analysis/PHASE2_Z0075_POST_PUSH_STABILITY_NEXT_RECIPE.md",
+    "outputs/analysis/phase2_z0075_post_push_stability_next_recipe.json",
     "policy/candidates/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_20260703/README.md",
     "policy/candidates/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_20260703/candidate.onnx",
     "policy/candidates/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_20260703/student.npz",
@@ -232,6 +234,7 @@ REVIEW_ARTIFACTS = [
     "tools/report_phase2_package_only_archive_verification.py",
     "tools/report_phase2_stage_guard.py",
     "tools/report_phase2_intermediate_push_failure.py",
+    "tools/plan_phase2_z0075_post_push_stability_recipe.py",
     "tools/run_candidate_seed_sweep.py",
     "tools/run_colab_cli_cuda_workflow.py",
 ]
