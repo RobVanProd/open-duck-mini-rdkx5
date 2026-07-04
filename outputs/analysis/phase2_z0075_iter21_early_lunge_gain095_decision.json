@@ -1,0 +1,117 @@
+{
+  "base_manifest": "outputs/analysis/phase2_z0075_iter21_early_lunge_gain095_merged_manifest.json",
+  "base_student": {
+    "onnx": "policy/candidates/phase2_z0075_iter21_early_lunge_gain095_rate150_20260704/candidate.onnx",
+    "sha256": "72aa93c2ab249d2e9b22bb5415ef6c96c7407833fbfd21233892b6daa6afda14",
+    "target_rate_limit_rad_s": 1.5,
+    "target_rate_scale": 0.1
+  },
+  "canonical_bridge": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+  "focused_gate": {
+    "bridge_mode": "fitted",
+    "command_x": 0.08,
+    "duration_s": 15.0,
+    "push": {
+      "enabled": true,
+      "interval_s": [
+        1.0,
+        1.5
+      ],
+      "magnitude": [
+        0.075,
+        0.125
+      ]
+    },
+    "reset_mode": "home-support",
+    "seeds": [
+      0,
+      2,
+      6
+    ],
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.0075
+  },
+  "focused_gate_results": [
+    {
+      "base_height_min_m": 0.1532,
+      "body_pitch_p95_rad": 0.1733,
+      "max_pitch_tracking_p95_rad": 0.1816,
+      "max_target_velocity_excess_rad_s": 0.2014,
+      "max_target_velocity_p95_rad_s": 1.6319,
+      "samples": 750,
+      "seed": 0,
+      "status": "HOLD_CANDIDATE_TARGET_VELOCITY",
+      "track_ratio": 0.3097
+    },
+    {
+      "base_height_min_m": 0.1532,
+      "body_pitch_p95_rad": 0.1637,
+      "max_pitch_tracking_p95_rad": 0.1844,
+      "max_target_velocity_excess_rad_s": 0.2014,
+      "max_target_velocity_p95_rad_s": 1.6392,
+      "samples": 750,
+      "seed": 2,
+      "status": "HOLD_CANDIDATE_TARGET_VELOCITY",
+      "track_ratio": 0.3236
+    },
+    {
+      "base_height_min_m": 0.1532,
+      "body_pitch_p95_rad": 0.1477,
+      "max_pitch_tracking_p95_rad": 0.1784,
+      "max_target_velocity_excess_rad_s": 0.2014,
+      "max_target_velocity_p95_rad_s": 1.6347,
+      "samples": 750,
+      "seed": 6,
+      "status": "HOLD_CANDIDATE_TARGET_VELOCITY",
+      "track_ratio": 0.363
+    }
+  ],
+  "gate_result": "HOLD_ITER21_RECOVERY_LABELS_NEAR_MISS",
+  "left_hip_pitch_spike": {
+    "corrected_limit_rad_s": 2.5,
+    "excess_rad_s": 0.2014,
+    "max_rad_s": 2.7014
+  },
+  "next_branch": [
+    "locate left-hip-pitch spike timestep in rate150 rollouts",
+    "apply local spike-specific relabel or continuity constraint",
+    "avoid global output scaling",
+    "re-gate seeds 0, 2, and 6 before full Phase 2 promotion"
+  ],
+  "rejected_fixes": [
+    {
+      "duration_s": 5.0,
+      "max_target_velocity_excess_rad_s": 0.0,
+      "reason": "clears spike but falls below forward-progress gate",
+      "seed": 0,
+      "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "test": "global_gain_0.925",
+      "track_ratio": 0.1815
+    },
+    {
+      "duration_s": 5.0,
+      "max_target_velocity_excess_rad_s": 0.0,
+      "reason": "freezes / no meaningful forward motion",
+      "seed": 0,
+      "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "test": "global_gain_0.90",
+      "track_ratio": 0.0195
+    },
+    {
+      "duration_s": 5.0,
+      "max_target_velocity_excess_rad_s": 0.0,
+      "reason": "removes spike but lunges and falls by sample 117",
+      "seed": 0,
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "test": "reg02_target_rate_retrain",
+      "track_ratio": 2.1286
+    }
+  ],
+  "reg02_student": {
+    "onnx": "policy/candidates/phase2_z0075_iter21_early_lunge_gain095_rate150_reg02_20260704/candidate.onnx",
+    "sha256": "1472277913622a7277977b212bf6ab552e8d834f28222c363a3de1c4661cf0b5",
+    "target_rate_limit_rad_s": 1.5,
+    "target_rate_scale": 0.2
+  },
+  "status": "HOLD_ITER21_RECOVERY_LABELS_NEAR_MISS"
+}
