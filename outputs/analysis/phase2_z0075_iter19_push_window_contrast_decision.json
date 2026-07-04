@@ -1,0 +1,55 @@
+{
+  "status": "PASS_ITER19_CONTRAST_AUDIT_NEXT_MULTIVARIATE_GATE",
+  "audit_md": "outputs/analysis/PHASE2_Z0075_ITER19_PUSH_WINDOW_CONTRAST_AUDIT.md",
+  "audit_json": "outputs/analysis/phase2_z0075_iter19_push_window_contrast_audit.json",
+  "tool": "tools/analyze_push_window_contrasts.py",
+  "inputs": [
+    {
+      "label": "seed0_lunge_fail",
+      "role": "lunge_fail",
+      "trace": "outputs/analysis/phase2_z0075_iter13_seed0_push_failure_trace/iter13_push_window_recovery_rate150/seed_000/trace.jsonl"
+    },
+    {
+      "label": "seed0_gain095_pass",
+      "role": "pass",
+      "trace": "outputs/analysis/phase2_z0075_iter13_gain095_seed0_trace/iter13_gain095/seed_000/trace.jsonl"
+    },
+    {
+      "label": "seed6_gain095_collapse",
+      "role": "collapse_fail",
+      "trace": "outputs/analysis/phase2_z0075_iter13_gain095_seed6_trace/iter13_gain095/seed_006/trace.jsonl"
+    }
+  ],
+  "key_findings": {
+    "seed0_lunge_first_push": {
+      "mean_vx": 0.2536,
+      "max_abs_pitch": 1.4228,
+      "min_base_height": 0.0216,
+      "obs1_mean": 1.0007,
+      "obs1_p95": 4.9609
+    },
+    "seed0_gain095_pass_first_push": {
+      "mean_vx": 0.0088,
+      "max_abs_pitch": 0.2069,
+      "min_base_height": 0.1584,
+      "obs1_mean": -0.017,
+      "obs1_p95": 0.799
+    },
+    "seed6_gain095_collapse_late": {
+      "mean_vx": -0.2283,
+      "max_abs_pitch": 1.4153,
+      "min_base_height": 0.0556,
+      "obs1_mean": -1.0923,
+      "obs3_mean": 1.5567
+    },
+    "seed0_gain095_pass_late": {
+      "mean_vx": 0.0122,
+      "max_abs_pitch": 0.1776,
+      "min_base_height": 0.1574,
+      "obs1_mean": 0.016,
+      "obs3_mean": -0.9117
+    }
+  },
+  "decision": "Do not continue single-channel threshold attenuation or global gain sweeps.",
+  "next_branch": "Build a multivariate push-window lunge/collapse gate or recovery-label selector, then gate seeds 0,2,6 before promotion."
+}
