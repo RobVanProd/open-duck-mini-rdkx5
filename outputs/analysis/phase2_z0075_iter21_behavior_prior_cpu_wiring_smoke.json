@@ -1,0 +1,36 @@
+{
+  "status": "PASS_BEHAVIOR_PRIOR_WIRING_SMOKE",
+  "source_smoke_manifest": "outputs/phase2_domain_randomization/stage_z0075_behavior_prior_wiring_cpu_smoke/smoke_20260704T183610Z_cpu/smoke_manifest.final.json",
+  "source_smoke_manifest_sha256": "f1fbe6ca9733a2bdd30ac02f821e12dede7a9ddabe240bdd57bb86ede10595f0",
+  "smoke_manifest_status": "PASS_SMOKE_RUN",
+  "returncode": 0,
+  "elapsed_s": 180.0513211020152,
+  "platform": "cpu",
+  "task": "rough_terrain_backlash",
+  "num_timesteps": 512,
+  "ppo_num_envs": 2,
+  "restore_checkpoint_path": "outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0_checkpoint",
+  "behavior_prior": {
+    "enabled": true,
+    "mlp_npz": "outputs/analysis/phase2_z0075_iter21_early_lunge_gain095_rate150_candidate/candidate_mlp.npz",
+    "mlp_npz_sha256": "71f520712a10613d3e2304a33cbcd641f6bb59fb0d5c1dc3e34a5c8fe93569b2",
+    "scale": -0.22,
+    "huber_delta": 0.06
+  },
+  "terrain_hfield_z_scale": 0.0075,
+  "push_magnitude_min": 0.075,
+  "push_magnitude_max": 0.125,
+  "exported_smoke_onnx": "outputs/phase2_domain_randomization/stage_z0075_behavior_prior_wiring_cpu_smoke/smoke_20260704T183610Z_cpu/2026_07_04_143720_640.onnx",
+  "exported_smoke_onnx_sha256": "b3eb42f53b05a723f5df3988bf8f837b97bd74490c92a6f8fd79203f2868f1cd",
+  "candidate_promoted": false,
+  "quality_gate": false,
+  "robot_touched": false,
+  "deploy_performed": false,
+  "notes": [
+    "Tiny local CPU smoke only; verifies behavior-prior recipe wiring.",
+    "Not a candidate quality result.",
+    "Colab GPU allocation remained unavailable before this CPU smoke.",
+    "stderr contains XLA CPU AOT host-feature warnings and JAX overflow warnings."
+  ],
+  "next_step": "Retry the behavior-prior post-push recipe on GPU Colab or clean local ROCm, then run corrected-bridge multi-seed gates before promotion."
+}
