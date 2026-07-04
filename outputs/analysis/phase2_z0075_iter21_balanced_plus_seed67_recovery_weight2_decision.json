@@ -1,0 +1,38 @@
+{
+  "status": "HOLD_WEIGHT2_RECOVERS_0_6_7_BUT_FAILS_SEED1",
+  "candidate": "policy/candidates/phase2_z0075_iter21_balanced_plus_seed67_recovery_weight2_rate150_20260704/candidate.onnx",
+  "candidate_sha256": "4977b1ae2928e44d1059047b7b26d6e1815dcd8dff2a8cb84695fe75be61caed",
+  "student_npz_sha256": "493403a1ca1af8b0140d352d6914015bb5d71a3d35aa0a4d89debd2f8038f7e5",
+  "merged_manifest_sha256": "6dc64894ac8b5c4a44f1d2b8f05c7d92af771835c48d24e3c3eb80d53495841d",
+  "training_status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE",
+  "compact_screen": {
+    "seeds": [0, 6, 7],
+    "falls": 0,
+    "duration_complete": 3,
+    "max_velocity_excess_rad_s": 0.0,
+    "track_ratio_mean": 0.3524
+  },
+  "full_gate_partial": {
+    "stopped_after_failure": true,
+    "seed_0": {
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "samples": 750,
+      "track_ratio": 0.3618,
+      "max_velocity_excess_rad_s": 0.0
+    },
+    "seed_1": {
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "samples": 454,
+      "termination": "fall_or_nan",
+      "track_ratio": 0.7801,
+      "body_pitch_p95_rad": 0.3562,
+      "base_height_min_m": 0.0153,
+      "max_pitch_velocity_p95_rad_s": 1.6065,
+      "max_tracking_p95_rad": 0.1918,
+      "max_velocity_excess_rad_s": 0.0
+    }
+  },
+  "promote": false,
+  "robot_validation_allowed": false,
+  "next_step": "Collect a full-observation seed1 trace for this weight2 candidate and add low-weight seed1 recovery while preserving the 0/6/7 compact pass as an anti-regression screen."
+}
