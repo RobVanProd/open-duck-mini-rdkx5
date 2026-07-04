@@ -1,0 +1,90 @@
+{
+  "status": "HOLD_REJECT_PPO_STEP0_RESTORE_POINT",
+  "scope": "offline sim/analysis only; no robot, SSH, deploy, grounded replay, runtime behavior change, or PPO update training",
+  "inputs": {
+    "source_manifest": "outputs/analysis/phase2_z0075_iter21_early_lunge_gain095_merged_manifest.json",
+    "corrected_bridge": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+    "bc_npz": "outputs/analysis/phase2_z0075_iter21_ppo_loc_swish_rate150_candidate/candidate_mlp.npz",
+    "bc_npz_sha256": "152b02a756f4e2de9aebef17c02c89a6b6b4afb53cc2872c1ffc02a5973bc104",
+    "bc_onnx": "policy/candidates/phase2_z0075_iter21_ppo_loc_swish_rate150_20260704/candidate.onnx",
+    "bc_onnx_sha256": "0986bc78f6b7b262e1b04177d7d728fb4c7ace25046bfcc5d9b2e3b8f9928f1e",
+    "ppo_step0_checkpoint": "outputs/analysis/phase2_z0075_iter21_ppo_loc_swish_rate150_step0_checkpoint",
+    "ppo_step0_onnx": "policy/candidates/phase2_z0075_iter21_ppo_loc_swish_rate150_step0_20260704/candidate.onnx",
+    "ppo_step0_onnx_sha256": "7241c37b438e9267220a4f1296600a07ff21bd85e815176fa67d85cf5c68a41c"
+  },
+  "fit": {
+    "status": "PASS_PPO_LOC_BC_FIT_SMOKE",
+    "samples": 53130,
+    "weighted_samples": 157111.6562,
+    "hidden_sizes": [512, 256, 128],
+    "activation": "swish",
+    "p95_abs_error": 0.031326,
+    "target_rate_p95_rad_s": 1.361154
+  },
+  "step0_fidelity": {
+    "status": "PASS_PPO_BC_WARMSTART_STEP0_EXPORT_FIDELITY",
+    "samples_checked": 512,
+    "p95_abs_error": 0.00000012,
+    "max_abs_error": 0.00000030
+  },
+  "closed_loop_smoke": {
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.0075,
+    "command_x": 0.08,
+    "bridge_mode": "fitted",
+    "push_enabled": true,
+    "push_interval_s": [1.0, 1.5],
+    "push_magnitude": [0.075, 0.125],
+    "reset_mode": "home-support",
+    "reset_settle_ticks": 10,
+    "seeds": [0, 1, 5],
+    "jax_platform": "cpu",
+    "result_json": "outputs/analysis/phase2_z0075_iter21_ppo_loc_swish_step0_x008_smoke.json",
+    "result_json_sha256": "754e1fe402c1681bd60df3e6af3ae267164fb24e1d8310ff87e002db1d2a658b",
+    "per_seed": [
+      {
+        "seed": 0,
+        "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+        "samples": 667,
+        "termination": "fall_or_nan",
+        "track_ratio": -0.004159534818927772,
+        "mean_local_vx_m_s": -0.0003327627855142218,
+        "base_height_min_m": 0.06534039974212646,
+        "max_velocity_excess_rad_s": 0.0
+      },
+      {
+        "seed": 1,
+        "status": "PASS_CANDIDATE_SIM_GATE",
+        "samples": 750,
+        "termination": "duration_complete",
+        "track_ratio": 0.32429580015377724,
+        "mean_local_vx_m_s": 0.02594366401230218,
+        "base_height_min_m": 0.15799188613891602,
+        "max_velocity_excess_rad_s": 0.0
+      },
+      {
+        "seed": 5,
+        "status": "PASS_CANDIDATE_SIM_GATE",
+        "samples": 750,
+        "termination": "duration_complete",
+        "track_ratio": 0.34501719086571636,
+        "mean_local_vx_m_s": 0.02760137526925731,
+        "base_height_min_m": 0.15797725319862366,
+        "max_velocity_excess_rad_s": 0.0
+      }
+    ],
+    "aggregate": {
+      "pass_count": 2,
+      "runs": 3,
+      "fall_count": 1,
+      "mean_track_ratio": 0.22171781873352195,
+      "mean_local_vx_m_s": 0.017737425498681753,
+      "max_velocity_excess_rad_s": 0.0
+    }
+  },
+  "decision": {
+    "promote_as_restore_point": false,
+    "reason": "The step-0 export is numerically valid, but the closed-loop smoke loses the gait and falls on seed 0.",
+    "next_recommendation": "preserve Iter21 as the current behavior anchor; investigate PPO-compatible compression or use a stronger continuity/teacher-action objective before further DR training from this checkpoint"
+  }
+}

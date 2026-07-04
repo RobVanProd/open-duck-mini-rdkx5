@@ -1,0 +1,114 @@
+{
+  "status": "PASS_PPO_LOC_BC_FIT_SMOKE",
+  "manifest": "outputs/analysis/phase2_z0075_iter21_early_lunge_gain095_merged_manifest.json",
+  "samples": 53130,
+  "hidden_sizes": [
+    512,
+    256,
+    128
+  ],
+  "activation": "swish",
+  "saved_npz": "outputs/analysis/phase2_z0075_iter21_ppo_loc_swish_rate150_candidate/candidate_mlp.npz",
+  "exported_onnx": "policy/candidates/phase2_z0075_iter21_ppo_loc_swish_rate150_20260704/candidate.onnx",
+  "train_metrics": {
+    "samples": 53130,
+    "mae": 0.00942682742016741,
+    "rmse": 0.01625479949528342,
+    "p50_abs_error": 0.005383603586848968,
+    "p95_abs_error": 0.031325769465480796,
+    "p99_abs_error": 0.05989146137114069,
+    "max_abs_error": 0.5327886879036552,
+    "pred_action_saturation_pct": 0.0
+  },
+  "target_rate": {
+    "pair_count": 53042,
+    "p50_rad_s": 0.17793041751431177,
+    "p95_rad_s": 1.3611535705355229,
+    "p99_rad_s": 1.525755736542418,
+    "max_rad_s": 8.851504589607886
+  },
+  "sample_weight": {
+    "p50": 3.0,
+    "p95": 5.0,
+    "max": 8.0,
+    "weighted_samples": 157111.65625
+  },
+  "loss_rows": [
+    {
+      "step": 1,
+      "loss": 0.11314991861581802
+    },
+    {
+      "step": 500,
+      "loss": 0.00045933754881843925
+    },
+    {
+      "step": 1000,
+      "loss": 0.0011584488674998283
+    },
+    {
+      "step": 1500,
+      "loss": 0.0005460426327772439
+    },
+    {
+      "step": 2000,
+      "loss": 0.0008353908197022974
+    },
+    {
+      "step": 2500,
+      "loss": 0.00027268967824056745
+    },
+    {
+      "step": 3000,
+      "loss": 0.00039752890006639063
+    },
+    {
+      "step": 3500,
+      "loss": 0.0002665037172846496
+    },
+    {
+      "step": 4000,
+      "loss": 0.000314912322210148
+    },
+    {
+      "step": 4500,
+      "loss": 0.0003049049701076001
+    },
+    {
+      "step": 5000,
+      "loss": 0.00033281921059824526
+    },
+    {
+      "step": 5500,
+      "loss": 0.0003082549083046615
+    },
+    {
+      "step": 6000,
+      "loss": 0.00021919466962572187
+    },
+    {
+      "step": 6500,
+      "loss": 0.0002827360003720969
+    },
+    {
+      "step": 7000,
+      "loss": 0.0003560973273124546
+    }
+  ],
+  "onnx_verify": {
+    "path": "policy/candidates/phase2_z0075_iter21_ppo_loc_swish_rate150_20260704/candidate.onnx",
+    "samples_checked": 64,
+    "max_abs_error": 3.051326709080371e-07,
+    "p95_abs_error": 1.4781649072120873e-07
+  },
+  "config": {
+    "steps": 7000,
+    "batch_size": 512,
+    "learning_rate": 0.001,
+    "target_rate_scale": 0.1,
+    "target_rate_limit_rad_s": 1.5,
+    "action_scale_rad": 0.25,
+    "dt_s": 0.02,
+    "seed": 21
+  }
+}
