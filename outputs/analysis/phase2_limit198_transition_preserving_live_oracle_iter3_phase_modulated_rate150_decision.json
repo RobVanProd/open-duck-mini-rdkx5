@@ -1,0 +1,78 @@
+{
+  "generated_at": "2026-07-03T23:48:00Z",
+  "status": "PASS_PHASE2_RATE150_Z005_SUPPORT_WITH_REGRESSIONS",
+  "scope": "Offline corrected-bridge support and regression gates only. No robot, SSH, deploy, grounded replay, runtime behavior change, or PPO training.",
+  "robot_touched": false,
+  "ssh_used": false,
+  "deploy_performed": false,
+  "grounded_replay_performed": false,
+  "training_started": false,
+  "candidate": {
+    "path": "policy/candidates/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_20260703/candidate.onnx",
+    "sha256": "e2281adeedd2fa4b0d416fecee17bb960275457a81538cb3f98fe57d0e54eb18",
+    "contract": "obs[1,101] -> continuous_actions[1,14]",
+    "promoted_offline": true
+  },
+  "student_npz": {
+    "path": "policy/candidates/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_20260703/student.npz",
+    "sha256": "eed75a10ddea007697eabd9494e613f190cf8cb2687ff20ae1e03a77e3649b74"
+  },
+  "source_manifest": "outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_run/live_oracle_dagger_aggregate_manifest.json",
+  "gates": {
+    "z005_x008_no_push": {
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "path": "outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_z005_x008_no_push_gate.json",
+      "sha256": "ed8de80c0aac2daf7c87275f542b5e8e1c0a2b7c8e81339124806dfc5d516836",
+      "track_ratio": 0.3715,
+      "mean_local_vx_m_s": 0.0297,
+      "max_vel_excess_rad_s": 0.0,
+      "max_tracking_p95_rad": 0.1838
+    },
+    "z005_x0_no_push": {
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "path": "outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_z005_x0_no_push_gate.json",
+      "sha256": "50eeaf0463507ef3a49872db2745df893fdea7a91a51200b11a583685186dae3",
+      "mean_local_vx_m_s": 0.0005,
+      "max_vel_excess_rad_s": 0.0,
+      "max_tracking_p95_rad": 0.0345
+    },
+    "z0026_x008_no_push_regression": {
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "path": "outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_z0026_x008_no_push_regression.json",
+      "sha256": "6010b76a5a6a1bbec6922667be19ee629a4a7540051030f42efb967ee0aa43dc",
+      "track_ratio": 0.3787,
+      "mean_local_vx_m_s": 0.0303,
+      "max_vel_excess_rad_s": 0.0,
+      "max_tracking_p95_rad": 0.1888
+    },
+    "z0026_x0_no_push_regression": {
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "path": "outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_z0026_x0_no_push_regression.json",
+      "sha256": "ebccec36dc3390b50ca5b3c5546364bfc9ae203c1dd5d2f526e67f3481b1eaaf",
+      "mean_local_vx_m_s": 0.0001,
+      "max_vel_excess_rad_s": 0.0,
+      "max_tracking_p95_rad": 0.0328
+    },
+    "z0026_x008_gentle_push_regression": {
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "path": "outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_z0026_x008_gentle_push_regression.json",
+      "sha256": "7b1813b979351f2d8330ca01d9da873fe3eb2627bfb0b7a961740f9e417a5fa7",
+      "track_ratio": 0.3806,
+      "mean_local_vx_m_s": 0.0304,
+      "max_vel_excess_rad_s": 0.0,
+      "max_tracking_p95_rad": 0.1892,
+      "push_success_mean": 0.9704
+    },
+    "z0026_x0_gentle_push_regression": {
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "path": "outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_z0026_x0_gentle_push_regression.json",
+      "sha256": "356bebe601f336efd1cdc5c82ac4619693fc62fea7c181e7b6aedebcbd44f224",
+      "mean_local_vx_m_s": 0.0002,
+      "max_vel_excess_rad_s": 0.0,
+      "max_tracking_p95_rad": 0.0374,
+      "push_success_mean": 0.9704
+    }
+  },
+  "decision": "Promote rate150 as the current offline Phase 2 terrain-support candidate. It clears z=0.005 no-push support and preserves z=0.0026 no-push/gentle-push regressions.",
+  "next_action": "Decide whether to run z=0.005 gentle-push gates directly or train a dedicated z=0.005 push stage from this rate150 parent. Robot validation remains blocked."
+}
