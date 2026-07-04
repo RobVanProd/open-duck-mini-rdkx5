@@ -121,6 +121,31 @@ def should_transform_source(path: Path, args: argparse.Namespace) -> bool:
     return bool(re.search(args.transform_source_regex, str(path)))
 
 
+def parse_joint_velocity_caps(raw: str | None) -> dict[int, float]:
+    caps: dict[int, float] = {}
+    if not raw:
+        return caps
+    for item in str(raw).split(","):
+        token = item.strip()
+        if not token:
+            continue
+        if ":" not in token:
+            raise ValueError(f"expected joint:limit entry, got {token!r}")
+        joint_raw, limit_raw = token.split(":", 1)
+        joint_raw = joint_raw.strip()
+        if joint_raw in JOINT_INDEX:
+            joint = JOINT_INDEX[joint_raw]
+        else:
+            joint = int(joint_raw)
+        if not 0 <= joint < 14:
+            raise ValueError(f"joint index out of range: {joint}")
+        limit = float(limit_raw)
+        if limit <= 0.0:
+            raise ValueError(f"velocity cap must be positive for joint {joint}")
+        caps[joint] = limit
+    return dict(sorted(caps.items()))
+
+
 def target_velocity_stats(rows: list[dict[str, Any]], joints: list[int], action_scale: float, dt_s: float) -> dict[str, float]:
     max_by_joint: dict[str, float] = {}
     previous: list[float] | None = None
@@ -142,12 +167,16 @@ def cap_action_deltas(
     rows: list[dict[str, Any]],
     joints: list[int],
     max_target_velocity_rad_s: float | None,
+    per_joint_caps_rad_s: dict[int, float] | None,
     action_scale: float,
     dt_s: float,
 ) -> tuple[list[dict[str, Any]], Counter[str]]:
-    if not joints or max_target_velocity_rad_s is None:
+    caps = dict(per_joint_caps_rad_s or {})
+    if max_target_velocity_rad_s is not None:
+        for joint in joints:
+            caps.setdefault(joint, float(max_target_velocity_rad_s))
+    if not caps:
         return rows, Counter()
-    max_delta = float(max_target_velocity_rad_s) * dt_s / action_scale
     capped_counts: Counter[str] = Counter()
     previous_action: list[float] | None = None
     out: list[dict[str, Any]] = []
@@ -158,7 +187,8 @@ def cap_action_deltas(
             current = [float(value) for value in action]
             if previous_action is not None:
                 row_capped = False
-                for joint in joints:
+                for joint, limit in caps.items():
+                    max_delta = float(limit) * dt_s / action_scale
                     delta = current[joint] - previous_action[joint]
                     if abs(delta) > max_delta:
                         current[joint] = previous_action[joint] + max_delta * (1.0 if delta > 0 else -1.0)
@@ -218,6 +248,9 @@ def process_trace(path: Path, output_dir: Path, args: argparse.Namespace) -> dic
     output_path = rel_output_path(path, output_dir, int(args.output_parent_depth))
     transformed = should_transform_source(path, args)
     joints = parse_joint_indices(args.joints) if transformed and args.joints else []
+    per_joint_caps = parse_joint_velocity_caps(args.per_joint_max_target_velocity_rad_s) if transformed else {}
+    if per_joint_caps:
+        joints = sorted(set([*joints, *per_joint_caps.keys()]))
     before_vel = target_velocity_stats(rows, joints, float(args.action_scale_rad), float(args.dt_s))
     capped_counts: Counter[str] = Counter()
     weight_clamped = 0
@@ -227,6 +260,7 @@ def process_trace(path: Path, output_dir: Path, args: argparse.Namespace) -> dic
             out_rows,
             joints,
             args.max_target_velocity_rad_s,
+            per_joint_caps,
             float(args.action_scale_rad),
             float(args.dt_s),
         )
@@ -314,6 +348,11 @@ def main() -> int:
     parser.add_argument("--keep-tick-max", type=int, default=None)
     parser.add_argument("--joints", default="")
     parser.add_argument("--max-target-velocity-rad-s", type=float, default=None)
+    parser.add_argument(
+        "--per-joint-max-target-velocity-rad-s",
+        default=None,
+        help="Comma-separated joint:limit caps, using joint names or indices. Example: right_ankle:2.0,left_knee:3.25.",
+    )
     parser.add_argument("--action-scale-rad", type=float, default=0.25)
     parser.add_argument("--dt-s", type=float, default=0.02)
     parser.add_argument("--max-matched-weight", type=float, default=None)
@@ -351,6 +390,7 @@ def main() -> int:
             "keep_tick_max": args.keep_tick_max,
             "joints": args.joints,
             "max_target_velocity_rad_s": args.max_target_velocity_rad_s,
+            "per_joint_max_target_velocity_rad_s": args.per_joint_max_target_velocity_rad_s,
             "max_matched_weight": args.max_matched_weight,
             "match_sample_weight_reason_regex": args.match_sample_weight_reason_regex,
             "match_contact_code": args.match_contact_code,

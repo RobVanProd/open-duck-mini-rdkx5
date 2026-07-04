@@ -1,0 +1,77 @@
+{
+  "status": "HOLD_SPIKE_FIX_REGRESSES_OR_INSUFFICIENT",
+  "scope": {
+    "offline_only": true,
+    "robot_tests": false,
+    "ssh": false,
+    "deploy": false,
+    "grounded_replay": false,
+    "ppo_training": false,
+    "runtime_behavior_changes": false
+  },
+  "starting_candidate": {
+    "policy": "policy/candidates/phase2_z0075_intermediate_push_live_oracle_iter0_phase_modulated_rate150_20260704/candidate.onnx",
+    "status": "HOLD_TARGET_VELOCITY_SPIKES_SLOW_PROGRESS",
+    "x008_track_ratio_mean": 0.3096,
+    "max_instantaneous_velocity_excess_rad_s": 3.0346
+  },
+  "spike_source": {
+    "label_side_spikes_present": true,
+    "dominant_joints": [
+      "right_ankle",
+      "right_knee",
+      "left_ankle",
+      "left_knee",
+      "left_hip_pitch",
+      "right_hip_pitch"
+    ]
+  },
+  "attempts": {
+    "hard_per_joint_label_caps": {
+      "status": "HOLD_REGRESSED_STABILITY",
+      "dataset_id": "d3b90392d1b4b4f6",
+      "candidate": "policy/candidates/phase2_z0075_intermediate_push_live_oracle_iter0_spike_capped_phase_modulated_rate150_20260704/candidate.onnx",
+      "candidate_sha256": "89b5422d41ab162cdc94b4316b360e1af841491c3b8519595992d79edf25cb40",
+      "rows_capped_by_joint_index": {
+        "2": 17,
+        "3": 6,
+        "4": 17,
+        "11": 19,
+        "12": 14,
+        "13": 40
+      },
+      "fit_target_rate_p95_rad_s": 1.306787,
+      "fit_target_rate_max_rad_s": 2.179695,
+      "x008_screen": {
+        "path": "outputs/analysis/phase2_z0075_intermediate_push_live_oracle_iter0_spike_capped_rate150_x008_push_screen.json",
+        "falls": 1,
+        "duration_complete": 1,
+        "seed0_status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+        "seed0_samples": 194,
+        "seed0_track_ratio": 1.466,
+        "seed0_body_pitch_p95_rad": 0.8034,
+        "seed0_base_height_min_m": -0.0078,
+        "seed7_status": "HOLD_CANDIDATE_TARGET_VELOCITY"
+      }
+    },
+    "strong_supervised_rate_penalty": {
+      "status": "HOLD_FIT_SPIKES_REMAIN",
+      "candidate": "policy/candidates/phase2_z0075_intermediate_push_live_oracle_iter0_ratepen10_limit2_phase_modulated_20260704/candidate.onnx",
+      "candidate_sha256": "e251565ccd1f5adf54be631eb2ca6c50d37dbecc5f71e7289a57fed16040af6e",
+      "target_rate_scale": 10.0,
+      "target_rate_limit_rad_s": 2.0,
+      "action_mae": 0.02088,
+      "action_p95_abs_error": 0.059004,
+      "fit_target_rate_p95_rad_s": 1.344511,
+      "fit_target_rate_max_rad_s": 3.386143,
+      "closed_loop_screen_run": false,
+      "screen_skipped_reason": "fit-level max spike remained high and BC error worsened"
+    }
+  },
+  "decision": {
+    "promote_hard_cap_candidate": false,
+    "promote_rate_penalty_candidate": false,
+    "robot_validation_allowed": false,
+    "next_step": "collect/relabel local spike-neighborhood states under a trust-region/rate constraint; do not use stronger global smoothing"
+  }
+}

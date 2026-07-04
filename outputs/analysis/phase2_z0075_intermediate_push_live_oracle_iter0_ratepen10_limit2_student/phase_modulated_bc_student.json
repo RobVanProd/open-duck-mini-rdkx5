@@ -1,0 +1,96 @@
+{
+  "activation": "swish",
+  "config": {
+    "batch_size": 512,
+    "learning_rate": 0.001,
+    "seed": 17,
+    "steps": 4000,
+    "target_rate_limit_rad_s": 2.0,
+    "target_rate_scale": 10.0
+  },
+  "context_hidden_sizes": [
+    32
+  ],
+  "context_indices": [
+    6,
+    99,
+    100
+  ],
+  "exported_onnx": "policy/candidates/phase2_z0075_intermediate_push_live_oracle_iter0_ratepen10_limit2_phase_modulated_20260704/candidate.onnx",
+  "loss_rows": [
+    {
+      "loss": 4.189703941345215,
+      "step": 1
+    },
+    {
+      "loss": 0.01015887875109911,
+      "step": 500
+    },
+    {
+      "loss": 0.0030707414261996746,
+      "step": 1000
+    },
+    {
+      "loss": 0.0016660921974107623,
+      "step": 1500
+    },
+    {
+      "loss": 0.005135527811944485,
+      "step": 2000
+    },
+    {
+      "loss": 0.002723426790907979,
+      "step": 2500
+    },
+    {
+      "loss": 0.0027624417562037706,
+      "step": 3000
+    },
+    {
+      "loss": 0.0012657943880185485,
+      "step": 3500
+    },
+    {
+      "loss": 0.002375096781179309,
+      "step": 4000
+    }
+  ],
+  "manifest": "outputs/analysis/phase2_z0075_intermediate_push_live_oracle_iter0_curated/live_oracle_dagger_curated_aggregate_manifest.json",
+  "modulation_scale": 0.5,
+  "onnx_verify": {
+    "max_abs_error": 2.5331974029541016e-07,
+    "p95_abs_error": 1.1920928955078125e-07,
+    "path": "policy/candidates/phase2_z0075_intermediate_push_live_oracle_iter0_ratepen10_limit2_phase_modulated_20260704/candidate.onnx",
+    "samples_checked": 64
+  },
+  "sample_weight": {
+    "max": 5.0,
+    "p50": 3.0,
+    "p95": 5.0,
+    "weighted_samples": 121683.0
+  },
+  "samples": 42501,
+  "saved_npz": "policy/candidates/phase2_z0075_intermediate_push_live_oracle_iter0_ratepen10_limit2_phase_modulated_20260704/student.npz",
+  "status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE",
+  "target_rate": {
+    "max_rad_s": 3.386143207550049,
+    "p50_rad_s": 0.19079415500164032,
+    "p95_rad_s": 1.3445109128952026,
+    "p99_rad_s": 1.702781081199646,
+    "pair_count": 42444
+  },
+  "train_metrics": {
+    "mae": 0.020879508144972816,
+    "max_abs_error": 1.6915534138679504,
+    "p50_abs_error": 0.01416683942079544,
+    "p95_abs_error": 0.05900423228740692,
+    "p99_abs_error": 0.09840971231460571,
+    "pred_action_saturation_pct": 0.0026890123593730567,
+    "rmse": 0.038662160033616964,
+    "samples": 42501
+  },
+  "trunk_hidden_sizes": [
+    128,
+    128
+  ]
+}
