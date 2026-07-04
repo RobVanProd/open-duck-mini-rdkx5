@@ -1,0 +1,3105 @@
+{
+  "overall_status": "PASS_CANDIDATE_SIM_GATE",
+  "policy": {
+    "path": "/home/lsd/robots/open-duck-mini-rdkx5/policy/candidates/phase2_z0075_iter21_seed5_post_push_recovery_rate150_20260704/candidate.onnx",
+    "exists": true,
+    "status": "PASS_POLICY_CONTRACT_ASSUMED",
+    "input_shape": [
+      1,
+      101
+    ],
+    "output_shape": [
+      1,
+      14
+    ],
+    "note": "Policy IO inspection skipped; using audited BEST_WALK_ONNX_2 contract. Pass --inspect-policy-io to query ONNX Runtime."
+  },
+  "fit_json": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/actuator_response_fit_corrected_knee.json",
+  "playground": {
+    "static": {
+      "path": "/home/lsd/robots/Open_Duck_Playground",
+      "exists": true,
+      "open_duck_dir": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2",
+      "joystick_path": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/joystick.py",
+      "constants_path": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/constants.py",
+      "joints_order_no_head": [
+        "left_hip_yaw",
+        "left_hip_roll",
+        "left_hip_pitch",
+        "left_knee",
+        "left_ankle",
+        "right_hip_yaw",
+        "right_hip_roll",
+        "right_hip_pitch",
+        "right_knee",
+        "right_ankle"
+      ],
+      "feet_sites": [
+        "left_foot",
+        "right_foot"
+      ],
+      "feet_geoms": null,
+      "default_config": {
+        "ctrl_dt": 0.02,
+        "sim_dt": 0.002,
+        "action_repeat": 1,
+        "action_scale": 0.25,
+        "dof_vel_scale": 0.05,
+        "max_motor_velocity": 5.24,
+        "action_min_delay": 0,
+        "action_max_delay": 3,
+        "imu_min_delay": 0,
+        "imu_max_delay": 3
+      },
+      "xmls": [
+        {
+          "path": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/.codex_eval_72f2qwf1_hfield_z0.002.xml",
+          "exists": true,
+          "nu_static": 14,
+          "actuator_names": [
+            "left_hip_yaw",
+            "left_hip_roll",
+            "left_hip_pitch",
+            "left_knee",
+            "left_ankle",
+            "neck_pitch",
+            "head_pitch",
+            "head_yaw",
+            "head_roll",
+            "right_hip_yaw",
+            "right_hip_roll",
+            "right_hip_pitch",
+            "right_knee",
+            "right_ankle"
+          ],
+          "joint_names": [
+            "left_hip_yaw",
+            "left_hip_yaw_backlash",
+            "left_hip_roll",
+            "left_hip_roll_backlash",
+            "left_hip_pitch",
+            "left_hip_pitch_backlash",
+            "left_knee",
+            "left_knee_backlash",
+            "left_ankle",
+            "left_ankle_backlash",
+            "neck_pitch",
+            "head_pitch",
+            "head_yaw",
+            "head_roll",
+            "right_hip_yaw",
+            "right_hip_yaw_backlash",
+            "right_hip_roll",
+            "right_hip_roll_backlash",
+            "right_hip_pitch",
+            "right_hip_pitch_backlash",
+            "right_knee",
+            "right_knee_backlash",
+            "right_ankle",
+            "right_ankle_backlash"
+          ],
+          "keyframes": [
+            {
+              "name": "home",
+              "ctrl_len": 14,
+              "qpos_len": 31,
+              "ctrl": [
+                0.002,
+                0.053,
+                -0.63,
+                1.368,
+                -0.784,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -0.003,
+                -0.065,
+                0.635,
+                1.379,
+                -0.796
+              ]
+            }
+          ],
+          "error": null
+        },
+        {
+          "path": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/.codex_eval_ao8pdqc4_hfield_z0.005.xml",
+          "exists": true,
+          "nu_static": 14,
+          "actuator_names": [
+            "left_hip_yaw",
+            "left_hip_roll",
+            "left_hip_pitch",
+            "left_knee",
+            "left_ankle",
+            "neck_pitch",
+            "head_pitch",
+            "head_yaw",
+            "head_roll",
+            "right_hip_yaw",
+            "right_hip_roll",
+            "right_hip_pitch",
+            "right_knee",
+            "right_ankle"
+          ],
+          "joint_names": [
+            "left_hip_yaw",
+            "left_hip_yaw_backlash",
+            "left_hip_roll",
+            "left_hip_roll_backlash",
+            "left_hip_pitch",
+            "left_hip_pitch_backlash",
+            "left_knee",
+            "left_knee_backlash",
+            "left_ankle",
+            "left_ankle_backlash",
+            "neck_pitch",
+            "head_pitch",
+            "head_yaw",
+            "head_roll",
+            "right_hip_yaw",
+            "right_hip_yaw_backlash",
+            "right_hip_roll",
+            "right_hip_roll_backlash",
+            "right_hip_pitch",
+            "right_hip_pitch_backlash",
+            "right_knee",
+            "right_knee_backlash",
+            "right_ankle",
+            "right_ankle_backlash"
+          ],
+          "keyframes": [
+            {
+              "name": "home",
+              "ctrl_len": 14,
+              "qpos_len": 31,
+              "ctrl": [
+                0.002,
+                0.053,
+                -0.63,
+                1.368,
+                -0.784,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -0.003,
+                -0.065,
+                0.635,
+                1.379,
+                -0.796
+              ]
+            }
+          ],
+          "error": null
+        },
+        {
+          "path": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/.codex_eval_bzi_k2f4_hfield_z0.005.xml",
+          "exists": true,
+          "nu_static": 14,
+          "actuator_names": [
+            "left_hip_yaw",
+            "left_hip_roll",
+            "left_hip_pitch",
+            "left_knee",
+            "left_ankle",
+            "neck_pitch",
+            "head_pitch",
+            "head_yaw",
+            "head_roll",
+            "right_hip_yaw",
+            "right_hip_roll",
+            "right_hip_pitch",
+            "right_knee",
+            "right_ankle"
+          ],
+          "joint_names": [
+            "left_hip_yaw",
+            "left_hip_yaw_backlash",
+            "left_hip_roll",
+            "left_hip_roll_backlash",
+            "left_hip_pitch",
+            "left_hip_pitch_backlash",
+            "left_knee",
+            "left_knee_backlash",
+            "left_ankle",
+            "left_ankle_backlash",
+            "neck_pitch",
+            "head_pitch",
+            "head_yaw",
+            "head_roll",
+            "right_hip_yaw",
+            "right_hip_yaw_backlash",
+            "right_hip_roll",
+            "right_hip_roll_backlash",
+            "right_hip_pitch",
+            "right_hip_pitch_backlash",
+            "right_knee",
+            "right_knee_backlash",
+            "right_ankle",
+            "right_ankle_backlash"
+          ],
+          "keyframes": [
+            {
+              "name": "home",
+              "ctrl_len": 14,
+              "qpos_len": 31,
+              "ctrl": [
+                0.002,
+                0.053,
+                -0.63,
+                1.368,
+                -0.784,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -0.003,
+                -0.065,
+                0.635,
+                1.379,
+                -0.796
+              ]
+            }
+          ],
+          "error": null
+        },
+        {
+          "path": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/.codex_eval_m9qvl818_hfield_z0.005.xml",
+          "exists": true,
+          "nu_static": 14,
+          "actuator_names": [
+            "left_hip_yaw",
+            "left_hip_roll",
+            "left_hip_pitch",
+            "left_knee",
+            "left_ankle",
+            "neck_pitch",
+            "head_pitch",
+            "head_yaw",
+            "head_roll",
+            "right_hip_yaw",
+            "right_hip_roll",
+            "right_hip_pitch",
+            "right_knee",
+            "right_ankle"
+          ],
+          "joint_names": [
+            "left_hip_yaw",
+            "left_hip_yaw_backlash",
+            "left_hip_roll",
+            "left_hip_roll_backlash",
+            "left_hip_pitch",
+            "left_hip_pitch_backlash",
+            "left_knee",
+            "left_knee_backlash",
+            "left_ankle",
+            "left_ankle_backlash",
+            "neck_pitch",
+            "head_pitch",
+            "head_yaw",
+            "head_roll",
+            "right_hip_yaw",
+            "right_hip_yaw_backlash",
+            "right_hip_roll",
+            "right_hip_roll_backlash",
+            "right_hip_pitch",
+            "right_hip_pitch_backlash",
+            "right_knee",
+            "right_knee_backlash",
+            "right_ankle",
+            "right_ankle_backlash"
+          ],
+          "keyframes": [
+            {
+              "name": "home",
+              "ctrl_len": 14,
+              "qpos_len": 31,
+              "ctrl": [
+                0.002,
+                0.053,
+                -0.63,
+                1.368,
+                -0.784,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -0.003,
+                -0.065,
+                0.635,
+                1.379,
+                -0.796
+              ]
+            }
+          ],
+          "error": null
+        },
+        {
+          "path": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/.codex_eval_qs7p_7u7_hfield_z0.005.xml",
+          "exists": true,
+          "nu_static": 14,
+          "actuator_names": [
+            "left_hip_yaw",
+            "left_hip_roll",
+            "left_hip_pitch",
+            "left_knee",
+            "left_ankle",
+            "neck_pitch",
+            "head_pitch",
+            "head_yaw",
+            "head_roll",
+            "right_hip_yaw",
+            "right_hip_roll",
+            "right_hip_pitch",
+            "right_knee",
+            "right_ankle"
+          ],
+          "joint_names": [
+            "left_hip_yaw",
+            "left_hip_yaw_backlash",
+            "left_hip_roll",
+            "left_hip_roll_backlash",
+            "left_hip_pitch",
+            "left_hip_pitch_backlash",
+            "left_knee",
+            "left_knee_backlash",
+            "left_ankle",
+            "left_ankle_backlash",
+            "neck_pitch",
+            "head_pitch",
+            "head_yaw",
+            "head_roll",
+            "right_hip_yaw",
+            "right_hip_yaw_backlash",
+            "right_hip_roll",
+            "right_hip_roll_backlash",
+            "right_hip_pitch",
+            "right_hip_pitch_backlash",
+            "right_knee",
+            "right_knee_backlash",
+            "right_ankle",
+            "right_ankle_backlash"
+          ],
+          "keyframes": [
+            {
+              "name": "home",
+              "ctrl_len": 14,
+              "qpos_len": 31,
+              "ctrl": [
+                0.002,
+                0.053,
+                -0.63,
+                1.368,
+                -0.784,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -0.003,
+                -0.065,
+                0.635,
+                1.379,
+                -0.796
+              ]
+            }
+          ],
+          "error": null
+        },
+        {
+          "path": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/joints_properties.xml",
+          "exists": true,
+          "nu_static": 0,
+          "actuator_names": [],
+          "joint_names": [],
+          "keyframes": [],
+          "error": null
+        },
+        {
+          "path": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/open_duck_mini_v2.xml",
+          "exists": true,
+          "nu_static": 14,
+          "actuator_names": [
+            "left_hip_yaw",
+            "left_hip_roll",
+            "left_hip_pitch",
+            "left_knee",
+            "left_ankle",
+            "neck_pitch",
+            "head_pitch",
+            "head_yaw",
+            "head_roll",
+            "right_hip_yaw",
+            "right_hip_roll",
+            "right_hip_pitch",
+            "right_knee",
+            "right_ankle"
+          ],
+          "joint_names": [
+            "left_hip_yaw",
+            "left_hip_roll",
+            "left_hip_pitch",
+            "left_knee",
+            "left_ankle",
+            "neck_pitch",
+            "head_pitch",
+            "head_yaw",
+            "head_roll",
+            "right_hip_yaw",
+            "right_hip_roll",
+            "right_hip_pitch",
+            "right_knee",
+            "right_ankle"
+          ],
+          "keyframes": [],
+          "error": null
+        },
+        {
+          "path": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/open_duck_mini_v2_backlash.xml",
+          "exists": true,
+          "nu_static": 14,
+          "actuator_names": [
+            "left_hip_yaw",
+            "left_hip_roll",
+            "left_hip_pitch",
+            "left_knee",
+            "left_ankle",
+            "neck_pitch",
+            "head_pitch",
+            "head_yaw",
+            "head_roll",
+            "right_hip_yaw",
+            "right_hip_roll",
+            "right_hip_pitch",
+            "right_knee",
+            "right_ankle"
+          ],
+          "joint_names": [
+            "left_hip_yaw",
+            "left_hip_yaw_backlash",
+            "left_hip_roll",
+            "left_hip_roll_backlash",
+            "left_hip_pitch",
+            "left_hip_pitch_backlash",
+            "left_knee",
+            "left_knee_backlash",
+            "left_ankle",
+            "left_ankle_backlash",
+            "neck_pitch",
+            "head_pitch",
+            "head_yaw",
+            "head_roll",
+            "right_hip_yaw",
+            "right_hip_yaw_backlash",
+            "right_hip_roll",
+            "right_hip_roll_backlash",
+            "right_hip_pitch",
+            "right_hip_pitch_backlash",
+            "right_knee",
+            "right_knee_backlash",
+            "right_ankle",
+            "right_ankle_backlash"
+          ],
+          "keyframes": [],
+          "error": null
+        },
+        {
+          "path": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/scene_flat_terrain.xml",
+          "exists": true,
+          "nu_static": 14,
+          "actuator_names": [
+            "left_hip_yaw",
+            "left_hip_roll",
+            "left_hip_pitch",
+            "left_knee",
+            "left_ankle",
+            "neck_pitch",
+            "head_pitch",
+            "head_yaw",
+            "head_roll",
+            "right_hip_yaw",
+            "right_hip_roll",
+            "right_hip_pitch",
+            "right_knee",
+            "right_ankle"
+          ],
+          "joint_names": [
+            "left_hip_yaw",
+            "left_hip_roll",
+            "left_hip_pitch",
+            "left_knee",
+            "left_ankle",
+            "neck_pitch",
+            "head_pitch",
+            "head_yaw",
+            "head_roll",
+            "right_hip_yaw",
+            "right_hip_roll",
+            "right_hip_pitch",
+            "right_knee",
+            "right_ankle"
+          ],
+          "keyframes": [
+            {
+              "name": "home",
+              "ctrl_len": 14,
+              "qpos_len": 21,
+              "ctrl": [
+                0.002,
+                0.053,
+                -0.63,
+                1.368,
+                -0.784,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -0.003,
+                -0.065,
+                0.635,
+                1.379,
+                -0.796
+              ]
+            }
+          ],
+          "error": null
+        },
+        {
+          "path": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/scene_flat_terrain_backlash.xml",
+          "exists": true,
+          "nu_static": 14,
+          "actuator_names": [
+            "left_hip_yaw",
+            "left_hip_roll",
+            "left_hip_pitch",
+            "left_knee",
+            "left_ankle",
+            "neck_pitch",
+            "head_pitch",
+            "head_yaw",
+            "head_roll",
+            "right_hip_yaw",
+            "right_hip_roll",
+            "right_hip_pitch",
+            "right_knee",
+            "right_ankle"
+          ],
+          "joint_names": [
+            "left_hip_yaw",
+            "left_hip_yaw_backlash",
+            "left_hip_roll",
+            "left_hip_roll_backlash",
+            "left_hip_pitch",
+            "left_hip_pitch_backlash",
+            "left_knee",
+            "left_knee_backlash",
+            "left_ankle",
+            "left_ankle_backlash",
+            "neck_pitch",
+            "head_pitch",
+            "head_yaw",
+            "head_roll",
+            "right_hip_yaw",
+            "right_hip_yaw_backlash",
+            "right_hip_roll",
+            "right_hip_roll_backlash",
+            "right_hip_pitch",
+            "right_hip_pitch_backlash",
+            "right_knee",
+            "right_knee_backlash",
+            "right_ankle",
+            "right_ankle_backlash"
+          ],
+          "keyframes": [
+            {
+              "name": "home",
+              "ctrl_len": 14,
+              "qpos_len": 31,
+              "ctrl": [
+                0.002,
+                0.053,
+                -0.63,
+                1.368,
+                -0.784,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -0.003,
+                -0.065,
+                0.635,
+                1.379,
+                -0.796
+              ]
+            }
+          ],
+          "error": null
+        },
+        {
+          "path": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/scene_rough_terrain_backlash.xml",
+          "exists": true,
+          "nu_static": 14,
+          "actuator_names": [
+            "left_hip_yaw",
+            "left_hip_roll",
+            "left_hip_pitch",
+            "left_knee",
+            "left_ankle",
+            "neck_pitch",
+            "head_pitch",
+            "head_yaw",
+            "head_roll",
+            "right_hip_yaw",
+            "right_hip_roll",
+            "right_hip_pitch",
+            "right_knee",
+            "right_ankle"
+          ],
+          "joint_names": [
+            "left_hip_yaw",
+            "left_hip_yaw_backlash",
+            "left_hip_roll",
+            "left_hip_roll_backlash",
+            "left_hip_pitch",
+            "left_hip_pitch_backlash",
+            "left_knee",
+            "left_knee_backlash",
+            "left_ankle",
+            "left_ankle_backlash",
+            "neck_pitch",
+            "head_pitch",
+            "head_yaw",
+            "head_roll",
+            "right_hip_yaw",
+            "right_hip_yaw_backlash",
+            "right_hip_roll",
+            "right_hip_roll_backlash",
+            "right_hip_pitch",
+            "right_hip_pitch_backlash",
+            "right_knee",
+            "right_knee_backlash",
+            "right_ankle",
+            "right_ankle_backlash"
+          ],
+          "keyframes": [
+            {
+              "name": "home",
+              "ctrl_len": 14,
+              "qpos_len": 31,
+              "ctrl": [
+                0.002,
+                0.053,
+                -0.63,
+                1.368,
+                -0.784,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -0.003,
+                -0.065,
+                0.635,
+                1.379,
+                -0.796
+              ]
+            }
+          ],
+          "error": null
+        },
+        {
+          "path": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/sensors.xml",
+          "exists": true,
+          "nu_static": 0,
+          "actuator_names": [],
+          "joint_names": [],
+          "keyframes": [],
+          "error": null
+        }
+      ],
+      "candidate_14_actuator_xmls": [
+        "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/.codex_eval_72f2qwf1_hfield_z0.002.xml",
+        "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/.codex_eval_ao8pdqc4_hfield_z0.005.xml",
+        "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/.codex_eval_bzi_k2f4_hfield_z0.005.xml",
+        "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/.codex_eval_m9qvl818_hfield_z0.005.xml",
+        "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/.codex_eval_qs7p_7u7_hfield_z0.005.xml",
+        "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/open_duck_mini_v2.xml",
+        "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/open_duck_mini_v2_backlash.xml",
+        "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/scene_flat_terrain.xml",
+        "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/scene_flat_terrain_backlash.xml",
+        "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/scene_rough_terrain_backlash.xml"
+      ]
+    },
+    "instantiated": {
+      "action_size": 14,
+      "actuator_names": [
+        "left_hip_yaw",
+        "left_hip_roll",
+        "left_hip_pitch",
+        "left_knee",
+        "left_ankle",
+        "neck_pitch",
+        "head_pitch",
+        "head_yaw",
+        "head_roll",
+        "right_hip_yaw",
+        "right_hip_roll",
+        "right_hip_pitch",
+        "right_knee",
+        "right_ankle"
+      ],
+      "backlash_joint_names": [],
+      "config": {
+        "action_max_delay": 3,
+        "action_min_delay": 0,
+        "action_repeat": 1,
+        "action_scale": 0.25,
+        "ctrl_dt": 0.02,
+        "dof_vel_scale": 0.05,
+        "imu_max_delay": 3,
+        "imu_min_delay": 0,
+        "max_motor_velocity": 5.24,
+        "sim_dt": 0.002
+      },
+      "jax_default_backend": "cpu",
+      "jax_devices": [
+        "TFRT_CPU_0"
+      ],
+      "joint_names": [
+        "floating_base",
+        "left_hip_yaw",
+        "left_hip_roll",
+        "left_hip_pitch",
+        "left_knee",
+        "left_ankle",
+        "neck_pitch",
+        "head_pitch",
+        "head_yaw",
+        "head_roll",
+        "right_hip_yaw",
+        "right_hip_roll",
+        "right_hip_pitch",
+        "right_knee",
+        "right_ankle"
+      ],
+      "mjcf": {
+        "home_ctrl_len": 14,
+        "nq": 21,
+        "nu": 14,
+        "nv": 20
+      },
+      "observation_size": {
+        "privileged_state": [
+          212
+        ],
+        "state": [
+          101
+        ]
+      },
+      "python": "/home/lsd/robots/envs/open-duck-playground/bin/python",
+      "reset_obs_shapes": {
+        "privileged_state": [
+          212
+        ],
+        "state": [
+          101
+        ]
+      },
+      "status": "PASS_ENV_INSTANTIATED",
+      "returncode": 0,
+      "output_tail": "/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\nFailed to import warp: No module named 'warp'\nFailed to import mujoco_warp: No module named 'warp'\nxml: /home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/scene_flat_terrain.xml\nactuators: ['left_hip_yaw', 'left_hip_roll', 'left_hip_pitch', 'left_knee', 'left_ankle', 'neck_pitch', 'head_pitch', 'head_yaw', 'head_roll', 'right_hip_yaw', 'right_hip_roll', 'right_hip_pitch', 'right_knee', 'right_ankle']\njoints: ['floating_base', 'left_hip_yaw', 'left_hip_roll', 'left_hip_pitch', 'left_knee', 'left_ankle', 'neck_pitch', 'head_pitch', 'head_yaw', 'head_roll', 'right_hip_yaw', 'right_hip_roll', 'right_hip_pitch', 'right_knee', 'right_ankle']\nbacklash joints: []\nactuator joints ids: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]\nactuator joints dict: {'left_hip_yaw': 1, 'left_hip_roll': 2, 'left_hip_pitch': 3, 'left_knee': 4, 'left_ankle': 5, 'neck_pitch': 6, 'head_pitch': 7, 'head_yaw': 8, 'head_roll': 9, 'right_hip_yaw': 10, 'right_hip_roll': 11, 'right_hip_pitch': 12, 'right_knee': 13, 'right_ankle': 14}\nfloating qpos addr: 0 qvel addr: 0\n[Poly ref data] Processing ...\n[Poly ref data] Done processing\nCONTRACT_JSON_START\n{\"action_size\": 14, \"actuator_names\": [\"left_hip_yaw\", \"left_hip_roll\", \"left_hip_pitch\", \"left_knee\", \"left_ankle\", \"neck_pitch\", \"head_pitch\", \"head_yaw\", \"head_roll\", \"right_hip_yaw\", \"right_hip_roll\", \"right_hip_pitch\", \"right_knee\", \"right_ankle\"], \"backlash_joint_names\": [], \"config\": {\"action_max_delay\": 3, \"action_min_delay\": 0, \"action_repeat\": 1, \"action_scale\": 0.25, \"ctrl_dt\": 0.02, \"dof_vel_scale\": 0.05, \"imu_max_delay\": 3, \"imu_min_delay\": 0, \"max_motor_velocity\": 5.24, \"sim_dt\": 0.002}, \"jax_default_backend\": \"cpu\", \"jax_devices\": [\"TFRT_CPU_0\"], \"joint_names\": [\"floating_base\", \"left_hip_yaw\", \"left_hip_roll\", \"left_hip_pitch\", \"left_knee\", \"left_ankle\", \"neck_pitch\", \"head_pitch\", \"head_yaw\", \"head_roll\", \"right_hip_yaw\", \"right_hip_roll\", \"right_hip_pitch\", \"right_knee\", \"right_ankle\"], \"mjcf\": {\"home_ctrl_len\": 14, \"nq\": 21, \"nu\": 14, \"nv\": 20}, \"observation_size\": {\"privileged_state\": [212], \"state\": [101]}, \"python\": \"/home/lsd/robots/envs/open-duck-playground/bin/python\", \"reset_obs_shapes\": {\"privileged_state\": [212], \"state\": [101]}, \"status\": \"PASS_ENV_INSTANTIATED\"}\nCONTRACT_JSON_END\n"
+    },
+    "env_python": "/home/lsd/robots/open-duck-mini-rdkx5/../envs/open-duck-playground/bin/python"
+  },
+  "sim_preflight": {
+    "status": "HOLD_SIM_INTEGRATION_PENDING",
+    "reason": "Policy and local Playground dimensions appear compatible, but the closed-loop JAX/MJX policy eval path with actuator bridge is not wired yet.",
+    "policy_obs_dim": 101,
+    "policy_action_dim": 14,
+    "sim_obs_dim": 101,
+    "sim_action_dim": 14,
+    "sim_env_path": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2",
+    "sim_actuator_names": [
+      "left_hip_yaw",
+      "left_hip_roll",
+      "left_hip_pitch",
+      "left_knee",
+      "left_ankle",
+      "neck_pitch",
+      "head_pitch",
+      "head_yaw",
+      "head_roll",
+      "right_hip_yaw",
+      "right_hip_roll",
+      "right_hip_pitch",
+      "right_knee",
+      "right_ankle"
+    ],
+    "static_14_actuator_xml_found": true,
+    "recommended_next_command": "python3 tools/audit_policy_sim_contract.py --policy policy/BEST_WALK_ONNX_2.onnx --playground-path ../Open_Duck_Playground"
+  },
+  "command_x": 0.08,
+  "command_y": 0.0,
+  "command_yaw": 0.0,
+  "task": "rough_terrain_backlash",
+  "duration_s": 15.0,
+  "seed": 4,
+  "eval_role": "candidate",
+  "jax_platform": "cpu",
+  "mjx_step_loop_mode": "default",
+  "trace_full_obs": false,
+  "reward_overrides_json": null,
+  "reward_overrides_phase": null,
+  "reward_overrides": {},
+  "eval_push": {
+    "enable": true,
+    "interval_min_s": 1.0,
+    "interval_max_s": 1.5,
+    "magnitude_min": 0.075,
+    "magnitude_max": 0.125,
+    "recovery_window_s": 1.2,
+    "recovery_max_abs_pitch_rad": 0.8,
+    "recovery_min_base_height_m": 0.08
+  },
+  "terrain_hfield_z_scale": 0.0075,
+  "policy_state_input_names": [],
+  "policy_state_output_names": [],
+  "telemetry_replay": null,
+  "closed_loop_sim": {
+    "status": "PASS_CANDIDATE_SIM_GATE",
+    "eval_role": "candidate",
+    "candidate_gate": {
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "thresholds": {
+        "max_action_saturation_pct": 1.0,
+        "max_pitch_tracking_p95_rad": 0.2,
+        "max_sent_target_velocity_limit_excess_rad_s": 0.0,
+        "max_sent_target_velocity_max_limit_excess_rad_s": 0.0,
+        "pitch_chain_velocity_limits_rad_s": {
+          "left_hip_pitch": 2.5,
+          "left_knee": 3.25,
+          "left_ankle": 2.75,
+          "right_hip_pitch": 2.25,
+          "right_knee": 2.75,
+          "right_ankle": 2.0
+        },
+        "max_abs_body_pitch_p95_rad": 0.25,
+        "min_base_height_m": 0.12,
+        "min_reward_mean": 0.3,
+        "min_forward_command_tracking_ratio": 0.25
+      },
+      "metrics": {
+        "max_action_saturation_pct": 0.0,
+        "max_pitch_tracking_p95_rad": 0.18760508894920347,
+        "max_sent_target_velocity_p95_rad_s": 1.6464126110076902,
+        "per_joint_sent_target_velocity_p95_rad_s": {
+          "left_hip_pitch": 1.3705570995807648,
+          "left_knee": 1.5616434812545776,
+          "left_ankle": 1.3559244573116302,
+          "right_hip_pitch": 1.4254477620124812,
+          "right_knee": 1.6464126110076902,
+          "right_ankle": 1.3648690283298492
+        },
+        "per_joint_sent_target_velocity_max_rad_s": {
+          "left_hip_pitch": 1.6373783349990845,
+          "left_knee": 1.7821252346038818,
+          "left_ankle": 1.5660494565963745,
+          "right_hip_pitch": 1.7344117164611816,
+          "right_knee": 1.9716382026672363,
+          "right_ankle": 1.6112476587295532
+        },
+        "pitch_chain_velocity_violations": [],
+        "pitch_chain_velocity_max_violations": [],
+        "max_sent_target_velocity_limit_excess_rad_s": 0.0,
+        "max_sent_target_velocity_max_limit_excess_rad_s": 0.0,
+        "max_abs_body_pitch_p95_rad": 0.17310990313023034,
+        "min_base_height_m": 0.1596764177083969,
+        "min_reward_mean": 0.45413299640019733,
+        "min_forward_command_tracking_ratio": 0.3417881694040261,
+        "max_abs_forward_velocity_error_m_s": 0.05265694644767791,
+        "max_forward_shortfall_cost_mean": 0.20157175729081298,
+        "terminations": {
+          "fitted": "duration_complete"
+        }
+      }
+    },
+    "policy": {
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/policy/candidates/phase2_z0075_iter21_seed5_post_push_recovery_rate150_20260704/candidate.onnx",
+      "input_name": "obs",
+      "input_shape": [
+        1,
+        101
+      ],
+      "input_type": "tensor(float)",
+      "output_name": "continuous_actions",
+      "output_shape": [
+        1,
+        14
+      ],
+      "output_type": "tensor(float)",
+      "inputs": [
+        {
+          "name": "obs",
+          "shape": [
+            1,
+            101
+          ],
+          "type": "tensor(float)"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "continuous_actions",
+          "shape": [
+            1,
+            14
+          ],
+          "type": "tensor(float)"
+        }
+      ]
+    },
+    "policy_io": {
+      "obs_input_name": "obs",
+      "action_output_name": "continuous_actions",
+      "state_input_names": [],
+      "state_output_names": [],
+      "state_input_shapes": {},
+      "stateful": false
+    },
+    "policy_action_gain": 1.0,
+    "command": [
+      0.08,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "forward_diagnostic": {
+      "required_ratio": 0.5,
+      "deadband": 0.02
+    },
+    "env": {
+      "playground_root": "/home/lsd/robots/Open_Duck_Playground",
+      "env_class": "playground.open_duck_mini_v2.joystick.Joystick",
+      "task": "rough_terrain_backlash",
+      "action_size": 14,
+      "observation_size": {
+        "privileged_state": [
+          212
+        ],
+        "state": [
+          101
+        ]
+      },
+      "actuator_names": [
+        "left_hip_yaw",
+        "left_hip_roll",
+        "left_hip_pitch",
+        "left_knee",
+        "left_ankle",
+        "neck_pitch",
+        "head_pitch",
+        "head_yaw",
+        "head_roll",
+        "right_hip_yaw",
+        "right_hip_roll",
+        "right_hip_pitch",
+        "right_knee",
+        "right_ankle"
+      ],
+      "mjcf": {
+        "nu": 14,
+        "nq": 31,
+        "nv": 30,
+        "home_ctrl_len": 14
+      },
+      "ctrl_dt": 0.02,
+      "sim_dt": 0.002,
+      "n_substeps": 10,
+      "mjx_step_loop_mode": "default",
+      "action_scale": 0.25,
+      "max_motor_velocity": 5.24,
+      "max_motor_velocity_override_rad_s": null,
+      "jax_backend": "cpu",
+      "jax_devices": [
+        "TFRT_CPU_0"
+      ],
+      "terrain_override": {
+        "enabled": true,
+        "hfield_z_scale": 0.0075,
+        "source_xml": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/scene_rough_terrain_backlash.xml",
+        "temp_xml": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/.codex_eval_msr1ci4z_hfield_z0.0075.xml"
+      }
+    },
+    "insertion_point": {
+      "type": "target_stage_direct",
+      "description": "The runner mirrors Joystick.step through action delay, target = home + delayed_action * action_scale, and the built-in max_motor_velocity rate limit. The actuator bridge is inserted after that rate limit and before mjx_env.step. state.info['motor_targets'] keeps the sent target so obs[83:97] remains commanded target history.",
+      "double_rate_limit": false,
+      "mjx_step_loop_mode": "default",
+      "mjx_step_loop_description": "default/scan uses mujoco_playground._src.mjx_env.step, which wraps substeps in jax.lax.scan. python/python_block_each are eval-only ROCm workarounds that drive raw mujoco.mjx.step from the host for each substep.",
+      "push_disabled": false,
+      "push_config": {
+        "enable": true,
+        "interval_range_s": [
+          1.0,
+          1.5
+        ],
+        "magnitude_range": [
+          0.075,
+          0.125
+        ],
+        "recovery_window_s": 1.2,
+        "recovery_max_abs_pitch_rad": 0.8,
+        "recovery_min_base_height_m": 0.08
+      },
+      "noise_disabled": true,
+      "action_delay_disabled": true,
+      "command_pinned": [
+        0.08,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "reward_overrides_applied": {},
+      "terrain_override": {
+        "enabled": true,
+        "hfield_z_scale": 0.0075,
+        "source_xml": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/scene_rough_terrain_backlash.xml",
+        "temp_xml": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/.codex_eval_msr1ci4z_hfield_z0.0075.xml"
+      },
+      "reset_settle_ticks": 10,
+      "reset_mode": "home-support",
+      "reset_settle_duration_s": 0.2,
+      "reset_settle_description": "Eval-only default-off diagnostic. When nonzero, reset physics is stepped under the reset motor target before the policy loop starts; policy hidden state, action history, reward counters, and sample counts are not advanced."
+    },
+    "real_x008_reference": {
+      "pitch_chain_p95_tracking_error_rad": [
+        0.12,
+        0.17
+      ],
+      "effective_lag_ticks": [
+        3,
+        4
+      ],
+      "target_velocity_p95_rad_s": [
+        3.09,
+        5.22
+      ],
+      "action_saturation_pct": {
+        "right_hip_pitch": 2.01,
+        "right_ankle": 0.13
+      }
+    },
+    "modes": {
+      "fitted": {
+        "status": "PASS_MODE_EVALUATED",
+        "samples": 750,
+        "requested_steps": 750,
+        "termination_reason": "duration_complete",
+        "wall_clock_s": 29.322486094984924,
+        "command": [
+          0.08,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "body_pitch_rad": {
+          "mean": 0.07299341737615199,
+          "std": 0.06419812926618573,
+          "min": -0.0994305651085491,
+          "p50": 0.07743793310534734,
+          "p95": 0.17310990313023034,
+          "p99": 0.19040743858275821,
+          "max": 0.20134628092114176
+        },
+        "base_x_m": {
+          "mean": 0.12034491825813894,
+          "std": 0.04997950601549316,
+          "min": 0.00017898305668495595,
+          "p50": 0.1335744857788086,
+          "p95": 0.1825647160410881,
+          "p99": 0.19365312471985818,
+          "max": 0.19821469485759735
+        },
+        "base_y_m": {
+          "mean": 0.14011940139943424,
+          "std": 0.09977929935717446,
+          "min": -0.011231114156544209,
+          "p50": 0.15312635898590088,
+          "p95": 0.2902673870325088,
+          "p99": 0.3042782720923424,
+          "max": 0.30689355731010437
+        },
+        "base_height_m": {
+          "mean": 0.1669398844242096,
+          "std": 0.0037416127012186466,
+          "min": 0.1596764177083969,
+          "p50": 0.1669372394680977,
+          "p95": 0.17336906641721725,
+          "p99": 0.17564137071371078,
+          "max": 0.17689748108386993
+        },
+        "local_forward_velocity_m_s": {
+          "mean": 0.02734305355232209,
+          "std": 0.04028021729296443,
+          "min": -0.07345801591873169,
+          "p50": 0.029710423201322556,
+          "p95": 0.09298542290925979,
+          "p99": 0.12873241871595378,
+          "max": 0.15358366072177887
+        },
+        "forward_motion": {
+          "elapsed_s": 14.98,
+          "progress_x_m": 0.062321277713635936,
+          "progress_y_m": 0.2902143921237439,
+          "world_mean_velocity_x_m_s": 0.0041602989127927864,
+          "mean_velocity_x_m_s": 0.02734305355232209,
+          "command_x_m_s": 0.08,
+          "velocity_error_m_s": -0.05265694644767791,
+          "command_tracking_ratio": 0.3417881694040261,
+          "measurement_frame": "local_base_x"
+        },
+        "forward_shortfall_diagnostic": {
+          "status": "PASS_DIAGNOSTIC",
+          "required_ratio": 0.5,
+          "deadband": 0.02,
+          "command_x_m_s": 0.08,
+          "required_speed_m_s": 0.04,
+          "progress_ratio": {
+            "mean": 0.3417881694040261,
+            "std": 0.5035027161620554,
+            "min": -0.9182251989841461,
+            "p50": 0.37138029001653194,
+            "p95": 1.1623177863657472,
+            "p99": 1.6091552339494224,
+            "max": 1.9197957590222359
+          },
+          "clipped_progress_ratio": {
+            "mean": 0.3934317160572391,
+            "std": 0.3462643962831664,
+            "min": 0.0,
+            "p50": 0.37138029001653194,
+            "p95": 1.0,
+            "p99": 1.0,
+            "max": 1.0
+          },
+          "shortfall_m_s": {
+            "mean": 0.023059461738057438,
+            "std": 0.027537619196514942,
+            "min": 0.0,
+            "p50": 0.010289576798677445,
+            "p95": 0.07847603853791953,
+            "p99": 0.09956184018403293,
+            "max": 0.1134580159187317
+          },
+          "normalized_shortfall": {
+            "mean": 0.28824327172571795,
+            "std": 0.3442202399564368,
+            "min": 0.0,
+            "p50": 0.12861970998346806,
+            "p95": 0.980950481723994,
+            "p99": 1.2445230023004115,
+            "max": 1.4182251989841461
+          },
+          "shortfall_cost": {
+            "mean": 0.20157175729081298,
+            "std": 0.34430344693933806,
+            "min": 0.0,
+            "p50": 0.01654368302390358,
+            "p95": 0.9622652287039157,
+            "p99": 1.5488468484444027,
+            "max": 2.011362715033621
+          }
+        },
+        "reward": {
+          "mean": 0.45413299640019733,
+          "std": 0.05543947470276435,
+          "min": 0.28400465846061707,
+          "p50": 0.45761871337890625,
+          "p95": 0.5442849278450013,
+          "p99": 0.5929507160186768,
+          "max": 0.6400102972984314
+        },
+        "reward_terms": {
+          "cost/action_rate": {
+            "mean": 0.021121440244528153,
+            "std": 0.018083360892294703,
+            "min": 0.0028371019288897514,
+            "p50": 0.020157940685749054,
+            "p95": 0.037051491439342485,
+            "p99": 0.04503862731158732,
+            "max": 0.44967395067214966
+          },
+          "cost/stand_still": {
+            "mean": 0.0,
+            "std": 0.0,
+            "min": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "max": 0.0
+          },
+          "cost/torques": {
+            "mean": 0.005412959473052373,
+            "std": 0.0019199295530273532,
+            "min": 0.001133653218857944,
+            "p50": 0.00498454668559134,
+            "p95": 0.008953260770067573,
+            "p99": 0.010210833810269833,
+            "max": 0.01152902189642191
+          },
+          "diagnostic/actuator_bridge_delay_ticks": {
+            "mean": 0.0,
+            "std": 0.0,
+            "min": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "max": 0.0
+          },
+          "diagnostic/actuator_bridge_tau_mean_s": {
+            "mean": 0.019999999552965164,
+            "std": 0.0,
+            "min": 0.019999999552965164,
+            "p50": 0.019999999552965164,
+            "p95": 0.019999999552965164,
+            "p99": 0.019999999552965164,
+            "max": 0.019999999552965164
+          },
+          "diagnostic/actuator_bridge_tracking_cost": {
+            "mean": 0.0,
+            "std": 0.0,
+            "min": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "max": 0.0
+          },
+          "diagnostic/actuator_bridge_velocity_limit_mean_rad_s": {
+            "mean": 5.239999294281006,
+            "std": 0.0,
+            "min": 5.239999294281006,
+            "p50": 5.239999294281006,
+            "p95": 5.239999294281006,
+            "p99": 5.239999294281006,
+            "max": 5.239999294281006
+          },
+          "diagnostic/behavior_prior_cost": {
+            "mean": 0.0,
+            "std": 0.0,
+            "min": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "max": 0.0
+          },
+          "diagnostic/command_progress_failure": {
+            "mean": 0.0,
+            "std": 0.0,
+            "min": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "max": 0.0
+          },
+          "diagnostic/command_progress_ratio": {
+            "mean": 0.3752912366390228,
+            "std": 0.11674243038055485,
+            "min": 0.2775307893753052,
+            "p50": 0.3415973335504532,
+            "p95": 0.7138959228992459,
+            "p99": 0.8696259295940396,
+            "max": 1.0057547092437744
+          },
+          "diagnostic/command_progress_shortfall_cost": {
+            "mean": 0.06111204077924291,
+            "std": 0.02178615684576202,
+            "min": 0.0,
+            "p50": 0.06677199527621269,
+            "p95": 0.08612140901386736,
+            "p99": 0.0978050036728382,
+            "max": 0.10398640483617783
+          },
+          "diagnostic/forward_double_support_steps": {
+            "mean": 0.0,
+            "std": 0.0,
+            "min": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "max": 0.0
+          },
+          "diagnostic/forward_phase_single_support_cost": {
+            "mean": 0.0,
+            "std": 0.0,
+            "min": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "max": 0.0
+          },
+          "diagnostic/forward_phase_swing_lift_cost": {
+            "mean": 0.0,
+            "std": 0.0,
+            "min": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "max": 0.0
+          },
+          "diagnostic/forward_swing_imbalance": {
+            "mean": 0.0,
+            "std": 0.0,
+            "min": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "max": 0.0
+          },
+          "diagnostic/forward_swing_phase_advance_ticks": {
+            "mean": 0.0,
+            "std": 0.0,
+            "min": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "max": 0.0
+          },
+          "diagnostic/push_recovery_actuator_tracking_cost": {
+            "mean": 0.0,
+            "std": 0.0,
+            "min": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "max": 0.0
+          },
+          "diagnostic/push_recovery_steps": {
+            "mean": 0.0,
+            "std": 0.0,
+            "min": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "max": 0.0
+          },
+          "diagnostic/soft_prior_cost": {
+            "mean": 0.0,
+            "std": 0.0,
+            "min": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "max": 0.0
+          },
+          "diagnostic/soft_prior_phase": {
+            "mean": 0.0,
+            "std": 0.0,
+            "min": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "max": 0.0
+          },
+          "diagnostic/swing_peak_forward_advance": {
+            "mean": 0.0,
+            "std": 0.0,
+            "min": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "max": 0.0
+          },
+          "diagnostic/swing_peak_lift": {
+            "mean": 0.0,
+            "std": 0.0,
+            "min": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "max": 0.0
+          },
+          "diagnostic/target_velocity_cost": {
+            "mean": 0.0,
+            "std": 0.0,
+            "min": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "max": 0.0
+          },
+          "reward/alive": {
+            "mean": 20.0,
+            "std": 0.0,
+            "min": 20.0,
+            "p50": 20.0,
+            "p95": 20.0,
+            "p99": 20.0,
+            "max": 20.0
+          },
+          "reward/imitation": {
+            "mean": 0.556590734710296,
+            "std": 2.2543213711790107,
+            "min": -7.457651138305664,
+            "p50": 1.0976061820983887,
+            "p95": 3.356973576545715,
+            "p99": 3.8894277763366687,
+            "max": 4.326552391052246
+          },
+          "reward/tracking_ang_vel": {
+            "mean": 0.49232675520398744,
+            "std": 1.3009810396038703,
+            "min": 0.0,
+            "p50": 3.2327559683006934e-12,
+            "p95": 3.919836020469665,
+            "p99": 5.82543933391571,
+            "max": 5.986211776733398
+          },
+          "reward/tracking_lin_vel": {
+            "mean": 1.6842672702272734,
+            "std": 0.6471298006931706,
+            "min": 0.05367397516965866,
+            "p50": 1.8325937986373901,
+            "p95": 2.4817580103874204,
+            "p99": 2.4989941716194153,
+            "max": 2.4999942779541016
+          }
+        },
+        "push_recovery": {
+          "enabled": true,
+          "event_count": 12,
+          "recovered_count": 11,
+          "success_rate": 0.9166666666666666,
+          "window_s": 1.2,
+          "max_abs_pitch_rad_threshold": 0.8,
+          "min_base_height_m_threshold": 0.08,
+          "push_magnitude": {
+            "mean": 0.09636453338482866,
+            "std": 0.013455205355090765,
+            "min": 0.07862431455259458,
+            "p50": 0.0952203524087599,
+            "p95": 0.11706558024249811,
+            "p99": 0.12015248999795014,
+            "max": 0.12092421743681314
+          },
+          "events": [
+            {
+              "tick": 57,
+              "time_s": 1.1400000000000001,
+              "push": [
+                0.002896700520068407,
+                -0.10737311840057373
+              ],
+              "push_magnitude": 0.10741218473230395,
+              "window_samples": 61,
+              "full_recovery_window_observed": true,
+              "terminated_in_window": false,
+              "max_abs_pitch_rad": 0.20134628092114176,
+              "min_base_height_m": 0.16006657481193542,
+              "recovered": true
+            },
+            {
+              "tick": 115,
+              "time_s": 2.3000000000000003,
+              "push": [
+                0.0069664414040744305,
+                0.0946204885840416
+              ],
+              "push_magnitude": 0.09487659440409499,
+              "window_samples": 61,
+              "full_recovery_window_observed": true,
+              "terminated_in_window": false,
+              "max_abs_pitch_rad": 0.1906856014432699,
+              "min_base_height_m": 0.16091950237751007,
+              "recovered": true
+            },
+            {
+              "tick": 173,
+              "time_s": 3.46,
+              "push": [
+                -0.09615031629800797,
+                -0.04032297059893608
+              ],
+              "push_magnitude": 0.10426324991160422,
+              "window_samples": 61,
+              "full_recovery_window_observed": true,
+              "terminated_in_window": false,
+              "max_abs_pitch_rad": 0.11197811460333755,
+              "min_base_height_m": 0.16446343064308167,
+              "recovered": true
+            },
+            {
+              "tick": 231,
+              "time_s": 4.62,
+              "push": [
+                0.10651174932718277,
+                0.05725306645035744
+              ],
+              "push_magnitude": 0.12092421743681314,
+              "window_samples": 61,
+              "full_recovery_window_observed": true,
+              "terminated_in_window": false,
+              "max_abs_pitch_rad": 0.0994305651085491,
+              "min_base_height_m": 0.16663065552711487,
+              "recovered": true
+            },
+            {
+              "tick": 289,
+              "time_s": 5.78,
+              "push": [
+                0.020610734820365906,
+                -0.07587476819753647
+              ],
+              "push_magnitude": 0.07862431455259458,
+              "window_samples": 61,
+              "full_recovery_window_observed": true,
+              "terminated_in_window": false,
+              "max_abs_pitch_rad": 0.1364977818955446,
+              "min_base_height_m": 0.16235516965389252,
+              "recovered": true
+            },
+            {
+              "tick": 347,
+              "time_s": 6.94,
+              "push": [
+                0.08086506277322769,
+                0.011153711937367916
+              ],
+              "push_magnitude": 0.08163065396834597,
+              "window_samples": 61,
+              "full_recovery_window_observed": true,
+              "terminated_in_window": false,
+              "max_abs_pitch_rad": 0.1822871536321607,
+              "min_base_height_m": 0.16130413115024567,
+              "recovered": true
+            },
+            {
+              "tick": 405,
+              "time_s": 8.1,
+              "push": [
+                -0.09074052423238754,
+                0.004623022861778736
+              ],
+              "push_magnitude": 0.09085821414901923,
+              "window_samples": 61,
+              "full_recovery_window_observed": true,
+              "terminated_in_window": false,
+              "max_abs_pitch_rad": 0.18261100285670642,
+              "min_base_height_m": 0.1601186990737915,
+              "recovered": true
+            },
+            {
+              "tick": 463,
+              "time_s": 9.26,
+              "push": [
+                -0.029678961262106895,
+                -0.10059534758329391
+              ],
+              "push_magnitude": 0.1048821467028653,
+              "window_samples": 61,
+              "full_recovery_window_observed": true,
+              "terminated_in_window": false,
+              "max_abs_pitch_rad": 0.12438252699941597,
+              "min_base_height_m": 0.16118448972702026,
+              "recovered": true
+            },
+            {
+              "tick": 521,
+              "time_s": 10.42,
+              "push": [
+                0.09298649430274963,
+                -0.02204565890133381
+              ],
+              "push_magnitude": 0.09556411041342482,
+              "window_samples": 61,
+              "full_recovery_window_observed": true,
+              "terminated_in_window": false,
+              "max_abs_pitch_rad": 0.169141331446186,
+              "min_base_height_m": 0.160243421792984,
+              "recovered": true
+            },
+            {
+              "tick": 579,
+              "time_s": 11.58,
+              "push": [
+                -0.055035822093486786,
+                -0.06344766914844513
+              ],
+              "push_magnitude": 0.08399135928103846,
+              "window_samples": 61,
+              "full_recovery_window_observed": true,
+              "terminated_in_window": false,
+              "max_abs_pitch_rad": 0.169141331446186,
+              "min_base_height_m": 0.1603318452835083,
+              "recovered": true
+            },
+            {
+              "tick": 637,
+              "time_s": 12.74,
+              "push": [
+                -0.0725812092423439,
+                -0.032287731766700745
+              ],
+              "push_magnitude": 0.07943884161869007,
+              "window_samples": 61,
+              "full_recovery_window_observed": true,
+              "terminated_in_window": false,
+              "max_abs_pitch_rad": 0.05816973358288598,
+              "min_base_height_m": 0.16387984156608582,
+              "recovered": true
+            },
+            {
+              "tick": 695,
+              "time_s": 13.9,
+              "push": [
+                -0.09990677237510681,
+                0.05471550300717354
+              ],
+              "push_magnitude": 0.11390851344714943,
+              "window_samples": 55,
+              "full_recovery_window_observed": false,
+              "terminated_in_window": false,
+              "max_abs_pitch_rad": 0.17512697557517826,
+              "min_base_height_m": 0.1633017212152481,
+              "recovered": false
+            }
+          ]
+        },
+        "foot_contact_counts": {
+          "left": 705,
+          "right": 617
+        },
+        "foot_clearance": {
+          "available": true,
+          "feet": {
+            "left": {
+              "contact_pct": 94.0,
+              "swing_samples": 45,
+              "stance_samples": 705,
+              "swing_segment_count": 10,
+              "site_z_m": {
+                "mean": 0.008890324264764786,
+                "std": 0.004153543368775381,
+                "min": 0.0038707442581653595,
+                "p50": 0.007116403430700302,
+                "p95": 0.017130805552005766,
+                "p99": 0.019457597509026522,
+                "max": 0.02276815101504326
+              },
+              "site_rel_x_m": {
+                "mean": -0.06160494714505815,
+                "std": 0.021463321102366185,
+                "min": -0.11010782420635223,
+                "p50": -0.06139362044632435,
+                "p95": -0.020949366688728502,
+                "p99": -0.005960424169898037,
+                "max": 0.008844152092933655
+              },
+              "stance_site_z_m": {
+                "mean": 0.008579027097910008,
+                "std": 0.0039771396576100924,
+                "min": 0.0038707442581653595,
+                "p50": 0.006983228027820587,
+                "p95": 0.016661106795072548,
+                "p99": 0.019295260459184664,
+                "max": 0.02276815101504326
+              },
+              "swing_site_z_m": {
+                "mean": 0.013767313212156296,
+                "std": 0.003797253852953188,
+                "min": 0.005208995193243027,
+                "p50": 0.014711152762174606,
+                "p95": 0.018442460149526593,
+                "p99": 0.020573661625385292,
+                "max": 0.022023886442184448
+              },
+              "stance_reference_z_m": 0.006983228027820587,
+              "swing_lift_over_stance_m": {
+                "mean": 0.006784085184335709,
+                "std": 0.003797253852953188,
+                "min": -0.0017742328345775604,
+                "p50": 0.007727924734354019,
+                "p95": 0.011459232121706008,
+                "p99": 0.013590433597564705,
+                "max": 0.015040658414363861
+              },
+              "swing_peak_lift_over_stance_m": 0.015040658414363861,
+              "swing_segment_rel_x_delta_m": {
+                "mean": 0.006361636705696583,
+                "std": 0.010630728156816578,
+                "min": -0.003485344350337982,
+                "p50": 0.0028293179348111153,
+                "p95": 0.025731451250612745,
+                "p99": 0.030992184467613697,
+                "max": 0.03230736777186394
+              },
+              "swing_segment_rel_x_range_m": {
+                "mean": 0.008087985031306744,
+                "std": 0.009385650615775223,
+                "min": 0.0007125288248062134,
+                "p50": 0.0034308433532714844,
+                "p95": 0.025731451250612745,
+                "p99": 0.030992184467613697,
+                "max": 0.03230736777186394
+              },
+              "swing_segment_peak_lift_over_stance_m": {
+                "mean": 0.008107323572039605,
+                "std": 0.0026011942191794175,
+                "min": 0.0032073594629764557,
+                "p50": 0.008488360792398453,
+                "p95": 0.01128855310380459,
+                "p99": 0.01165346495807171,
+                "max": 0.011744692921638489
+              }
+            },
+            "right": {
+              "contact_pct": 82.26666666666667,
+              "swing_samples": 133,
+              "stance_samples": 617,
+              "swing_segment_count": 22,
+              "site_z_m": {
+                "mean": 0.011675869171818098,
+                "std": 0.0051822994972382875,
+                "min": 0.0061599984765052795,
+                "p50": 0.00948643870651722,
+                "p95": 0.022414829768240448,
+                "p99": 0.026638035103678702,
+                "max": 0.030192594975233078
+              },
+              "site_rel_x_m": {
+                "mean": 0.018847976308044356,
+                "std": 0.05787462024341723,
+                "min": -0.06617174670100212,
+                "p50": 0.02533058077096939,
+                "p95": 0.10202937014400959,
+                "p99": 0.11597603887319566,
+                "max": 0.12860287725925446
+              },
+              "stance_site_z_m": {
+                "mean": 0.010108002731682223,
+                "std": 0.003626995990260445,
+                "min": 0.0061599984765052795,
+                "p50": 0.008968405425548553,
+                "p95": 0.017980325222015384,
+                "p99": 0.021163496822118762,
+                "max": 0.023608792573213577
+              },
+              "swing_site_z_m": {
+                "mean": 0.018949354837711593,
+                "std": 0.005109760565574794,
+                "min": 0.007676161825656891,
+                "p50": 0.01946263015270233,
+                "p95": 0.026806771010160445,
+                "p99": 0.029679510593414317,
+                "max": 0.030192594975233078
+              },
+              "stance_reference_z_m": 0.008968405425548553,
+              "swing_lift_over_stance_m": {
+                "mean": 0.00998094941216304,
+                "std": 0.005109760565574794,
+                "min": -0.0012922435998916626,
+                "p50": 0.010494224727153778,
+                "p95": 0.017838365584611895,
+                "p99": 0.02071110516786576,
+                "max": 0.021224189549684525
+              },
+              "swing_peak_lift_over_stance_m": 0.021224189549684525,
+              "swing_segment_rel_x_delta_m": {
+                "mean": 0.0006597016684033654,
+                "std": 0.01652891838382176,
+                "min": -0.03308117389678955,
+                "p50": 0.0038489624857902527,
+                "p95": 0.028769412077963345,
+                "p99": 0.03234494220465421,
+                "max": 0.03316675126552582
+              },
+              "swing_segment_rel_x_range_m": {
+                "mean": 0.01456626961854371,
+                "std": 0.011657933702929129,
+                "min": 0.00014831870794296265,
+                "p50": 0.011067023500800133,
+                "p95": 0.033162472397089,
+                "p99": 0.0409469997882843,
+                "max": 0.043015167117118835
+              },
+              "swing_segment_peak_lift_over_stance_m": {
+                "mean": 0.01219409704208374,
+                "std": 0.004391801831204074,
+                "min": 0.004713773727416992,
+                "p50": 0.0128229521214962,
+                "p95": 0.018959649838507175,
+                "p99": 0.020765422843396664,
+                "max": 0.021224189549684525
+              }
+            }
+          },
+          "support": {
+            "samples": 750,
+            "left_contact_pct": 94.0,
+            "right_contact_pct": 82.26666666666667,
+            "no_contact_pct": 0.0,
+            "single_support_pct": 23.733333333333334,
+            "double_support_pct": 76.26666666666667,
+            "left_only_pct": 17.733333333333334,
+            "right_only_pct": 6.0,
+            "support_transition_count": 107
+          }
+        },
+        "joints": {
+          "left_hip_yaw": {
+            "action": {
+              "mean": 0.08530789053502182,
+              "std": 0.10116050543148368,
+              "min": -0.09789101034402847,
+              "p50": 0.09538256004452705,
+              "p95": 0.2567266657948494,
+              "p99": 0.3081700366735458,
+              "max": 0.351397305727005
+            },
+            "action_abs": {
+              "mean": 0.10984561330266297,
+              "std": 0.07378905938450726,
+              "min": 0.0015372657217085361,
+              "p50": 0.09572579711675644,
+              "p95": 0.2567266657948494,
+              "p99": 0.3081700366735458,
+              "max": 0.351397305727005
+            },
+            "action_saturation_pct": 0.0,
+            "action_delta_abs": {
+              "mean": 0.02771407095529139,
+              "std": 0.020625525457287807,
+              "min": 0.0,
+              "p50": 0.023569034412503242,
+              "p95": 0.06647502928972243,
+              "p99": 0.09480857167392967,
+              "max": 0.12627894058823586
+            },
+            "sent_target_velocity_rad_s": {
+              "mean": 0.34642587893952925,
+              "std": 0.2578190601267414,
+              "min": 0.0,
+              "p50": 0.29461293015629053,
+              "p95": 0.8309376798570155,
+              "p99": 1.1851070546545084,
+              "max": 1.5784867573529482
+            },
+            "applied_target_velocity_rad_s": {
+              "mean": 0.34642587893952925,
+              "std": 0.2578190601267414,
+              "min": 0.0,
+              "p50": 0.29461293015629053,
+              "p95": 0.8309376798570155,
+              "p99": 1.1851070546545084,
+              "max": 1.5784867573529482
+            },
+            "rate_limiter_activation_pct": 0.0,
+            "bridge_tracking_error_rad": {
+              "mean": 0.0,
+              "std": 0.0,
+              "min": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "p99": 0.0,
+              "max": 0.0
+            },
+            "joint_target_tracking_error_rad": {
+              "mean": 0.01563779832488702,
+              "std": 0.01216617957795966,
+              "min": 4.591047763824463e-05,
+              "p50": 0.01236584223806858,
+              "p95": 0.03864700682461261,
+              "p99": 0.04915398067794739,
+              "max": 0.05929214507341385
+            },
+            "estimated_lag_sent_to_applied": {
+              "ticks": 0,
+              "rmse": 0.0,
+              "samples": 750,
+              "ms": 0.0
+            },
+            "estimated_lag_sent_to_actual": {
+              "ticks": 3,
+              "rmse": 0.009207030219642158,
+              "samples": 747,
+              "ms": 60.0
+            }
+          },
+          "left_hip_roll": {
+            "action": {
+              "mean": 0.10677915632105821,
+              "std": 0.12996980824523474,
+              "min": -0.17880652844905853,
+              "p50": 0.0680386908352375,
+              "p95": 0.3003679230809212,
+              "p99": 0.3097463393211365,
+              "max": 0.33830976486206055
+            },
+            "action_abs": {
+              "mean": 0.13218094261923882,
+              "std": 0.10402950393147883,
+              "min": 0.0001383591297781095,
+              "p50": 0.09347843378782272,
+              "p95": 0.3003679230809212,
+              "p99": 0.3097463393211365,
+              "max": 0.33830976486206055
+            },
+            "action_saturation_pct": 0.0,
+            "action_delta_abs": {
+              "mean": 0.029029146600204208,
+              "std": 0.022138427825102624,
+              "min": 0.0,
+              "p50": 0.025381246581673622,
+              "p95": 0.06809569271281361,
+              "p99": 0.08604050569236278,
+              "max": 0.10645205667242408
+            },
+            "sent_target_velocity_rad_s": {
+              "mean": 0.3628643368681272,
+              "std": 0.27673034417221837,
+              "min": 0.0,
+              "p50": 0.3172655589878559,
+              "p95": 0.8511961344629526,
+              "p99": 1.0755062755197287,
+              "max": 1.3306507840752602
+            },
+            "applied_target_velocity_rad_s": {
+              "mean": 0.3628643368681272,
+              "std": 0.27673034417221837,
+              "min": 0.0,
+              "p50": 0.3172655589878559,
+              "p95": 0.8511961344629526,
+              "p99": 1.0755062755197287,
+              "max": 1.3306507840752602
+            },
+            "rate_limiter_activation_pct": 0.0,
+            "bridge_tracking_error_rad": {
+              "mean": 0.0,
+              "std": 0.0,
+              "min": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "p99": 0.0,
+              "max": 0.0
+            },
+            "joint_target_tracking_error_rad": {
+              "mean": 0.015645393701891105,
+              "std": 0.013528482552228445,
+              "min": 1.537799835205078e-05,
+              "p50": 0.012070290744304657,
+              "p95": 0.04233128875494003,
+              "p99": 0.06285114202648401,
+              "max": 0.07542633637785912
+            },
+            "estimated_lag_sent_to_applied": {
+              "ticks": 0,
+              "rmse": 0.0,
+              "samples": 750,
+              "ms": 0.0
+            },
+            "estimated_lag_sent_to_actual": {
+              "ticks": 2,
+              "rmse": 0.01454241988124426,
+              "samples": 748,
+              "ms": 40.0
+            }
+          },
+          "left_hip_pitch": {
+            "action": {
+              "mean": -0.5113890794888138,
+              "std": 0.20508767359826136,
+              "min": -0.7951786518096924,
+              "p50": -0.5837295353412628,
+              "p95": -0.11969296187162409,
+              "p99": -0.041855431087315105,
+              "max": -0.005138414446264505
+            },
+            "action_abs": {
+              "mean": 0.5113890794888138,
+              "std": 0.20508767359826136,
+              "min": 0.005138414446264505,
+              "p50": 0.5837295353412628,
+              "p95": 0.7454259157180785,
+              "p99": 0.7782662361860275,
+              "max": 0.7951786518096924
+            },
+            "action_saturation_pct": 0.0,
+            "action_delta_abs": {
+              "mean": 0.05206576732297739,
+              "std": 0.03339127381975531,
+              "min": 0.0,
+              "p50": 0.04796876013278961,
+              "p95": 0.10964443907141685,
+              "p99": 0.12333319194614886,
+              "max": 0.13099011033773422
+            },
+            "sent_target_velocity_rad_s": {
+              "mean": 0.6508220911026001,
+              "std": 0.41739092760600516,
+              "min": 0.0,
+              "p50": 0.5996093153953552,
+              "p95": 1.3705570995807648,
+              "p99": 1.54166579246521,
+              "max": 1.6373783349990845
+            },
+            "applied_target_velocity_rad_s": {
+              "mean": 0.5914820721963665,
+              "std": 0.393314549253673,
+              "min": 0.0,
+              "p50": 0.5315280846900972,
+              "p95": 1.2992898651709996,
+              "p99": 1.4835833471307973,
+              "max": 2.500000000000002
+            },
+            "rate_limiter_activation_pct": 0.0,
+            "bridge_tracking_error_rad": {
+              "mean": 0.03970229261046575,
+              "std": 0.026140258491787086,
+              "min": 0.00016938784473086166,
+              "p50": 0.0358815548887621,
+              "p95": 0.08946563088884915,
+              "p99": 0.10070212868518924,
+              "max": 0.11203104257583618
+            },
+            "joint_target_tracking_error_rad": {
+              "mean": 0.06349943820635477,
+              "std": 0.044191844123741754,
+              "min": 7.712841033935547e-05,
+              "p50": 0.055384546518325806,
+              "p95": 0.139129039645195,
+              "p99": 0.16356401860713957,
+              "max": 0.181144118309021
+            },
+            "estimated_lag_sent_to_applied": {
+              "ticks": 4,
+              "rmse": 0.007799269509935879,
+              "samples": 746,
+              "ms": 80.0
+            },
+            "estimated_lag_sent_to_actual": {
+              "ticks": 6,
+              "rmse": 0.014869247774489907,
+              "samples": 744,
+              "ms": 120.0
+            }
+          },
+          "left_knee": {
+            "action": {
+              "mean": -0.005298059167039658,
+              "std": 0.2301039871028271,
+              "min": -0.4794814884662628,
+              "p50": 0.02242432627826929,
+              "p95": 0.3942955628037452,
+              "p99": 0.4348499852418899,
+              "max": 0.45607852935791016
+            },
+            "action_abs": {
+              "mean": 0.18868592624023828,
+              "std": 0.13180870817369703,
+              "min": 8.344463276444003e-05,
+              "p50": 0.14825597405433655,
+              "p95": 0.4226453959941864,
+              "p99": 0.4412741884589195,
+              "max": 0.4794814884662628
+            },
+            "action_saturation_pct": 0.0,
+            "action_delta_abs": {
+              "mean": 0.0692109546760718,
+              "std": 0.04242531150018731,
+              "min": 0.0,
+              "p50": 0.0663587739727518,
+              "p95": 0.12493160255253313,
+              "p99": 0.13016300226561722,
+              "max": 0.1425703912973404
+            },
+            "sent_target_velocity_rad_s": {
+              "mean": 0.8651369174321493,
+              "std": 0.5303164645186375,
+              "min": 0.0,
+              "p50": 0.8294880390167236,
+              "p95": 1.5616434812545776,
+              "p99": 1.6270379424095154,
+              "max": 1.7821252346038818
+            },
+            "applied_target_velocity_rad_s": {
+              "mean": 0.7896541772176607,
+              "std": 0.4927588060885449,
+              "min": 0.0,
+              "p50": 0.7043636780388884,
+              "p95": 1.4870807310994496,
+              "p99": 1.5415754597999944,
+              "max": 1.596068433300546
+            },
+            "rate_limiter_activation_pct": 0.0,
+            "bridge_tracking_error_rad": {
+              "mean": 0.05275936947942398,
+              "std": 0.03294769114839948,
+              "min": 0.00030203641627646327,
+              "p50": 0.044547815646208355,
+              "p95": 0.102810084290503,
+              "p99": 0.1073177750247931,
+              "max": 0.10962296251228643
+            },
+            "joint_target_tracking_error_rad": {
+              "mean": 0.0874726398785909,
+              "std": 0.05978212433307192,
+              "min": 7.474422454833984e-05,
+              "p50": 0.08996886014938354,
+              "p95": 0.18760508894920347,
+              "p99": 0.20793138384819032,
+              "max": 0.22339820861816406
+            },
+            "estimated_lag_sent_to_applied": {
+              "ticks": 4,
+              "rmse": 0.010142314276458961,
+              "samples": 746,
+              "ms": 80.0
+            },
+            "estimated_lag_sent_to_actual": {
+              "ticks": 6,
+              "rmse": 0.040545648020553916,
+              "samples": 744,
+              "ms": 120.0
+            }
+          },
+          "left_ankle": {
+            "action": {
+              "mean": 0.49763427833716073,
+              "std": 0.17512888258787834,
+              "min": 0.13671112060546875,
+              "p50": 0.48084184527397156,
+              "p95": 0.7977746456861495,
+              "p99": 0.8299653136730194,
+              "max": 0.8429243564605713
+            },
+            "action_abs": {
+              "mean": 0.49763427833716073,
+              "std": 0.17512888258787834,
+              "min": 0.13671112060546875,
+              "p50": 0.48084184527397156,
+              "p95": 0.7977746456861495,
+              "p99": 0.8299653136730194,
+              "max": 0.8429243564605713
+            },
+            "action_saturation_pct": 0.0,
+            "action_delta_abs": {
+              "mean": 0.04581965438524882,
+              "std": 0.030631233791979108,
+              "min": 0.0,
+              "p50": 0.03951802849769592,
+              "p95": 0.10847386419773102,
+              "p99": 0.11911343276500702,
+              "max": 0.1252838671207428
+            },
+            "sent_target_velocity_rad_s": {
+              "mean": 0.5727456728617351,
+              "std": 0.3828904323183626,
+              "min": 0.0,
+              "p50": 0.4939749836921692,
+              "p95": 1.3559244573116302,
+              "p99": 1.48891681432724,
+              "max": 1.5660494565963745
+            },
+            "applied_target_velocity_rad_s": {
+              "mean": 0.5271462161864652,
+              "std": 0.36061845803927794,
+              "min": 0.0,
+              "p50": 0.4491544217576332,
+              "p95": 1.2794346602196163,
+              "p99": 1.4216921423092248,
+              "max": 2.464663860905053
+            },
+            "rate_limiter_activation_pct": 0.0,
+            "bridge_tracking_error_rad": {
+              "mean": 0.03524538775587566,
+              "std": 0.023997719972302742,
+              "min": 0.00018817962480977002,
+              "p50": 0.029397187361328347,
+              "p95": 0.08721942011959344,
+              "p99": 0.09610594445091492,
+              "max": 0.10804575681686401
+            },
+            "joint_target_tracking_error_rad": {
+              "mean": 0.05328423754374186,
+              "std": 0.04032033353393736,
+              "min": 1.9609928131103516e-05,
+              "p50": 0.04579046368598938,
+              "p95": 0.14336553215980527,
+              "p99": 0.1588514792919159,
+              "max": 0.16694581508636475
+            },
+            "estimated_lag_sent_to_applied": {
+              "ticks": 4,
+              "rmse": 0.00685342501814187,
+              "samples": 746,
+              "ms": 80.0
+            },
+            "estimated_lag_sent_to_actual": {
+              "ticks": 6,
+              "rmse": 0.019921232796316538,
+              "samples": 744,
+              "ms": 120.0
+            }
+          },
+          "neck_pitch": {
+            "action": {
+              "mean": 0.7430914092063904,
+              "std": 0.04154750104215928,
+              "min": 0.4517243504524231,
+              "p50": 0.7430421411991119,
+              "p95": 0.7984036058187485,
+              "p99": 0.8110018873214722,
+              "max": 0.8196306824684143
+            },
+            "action_abs": {
+              "mean": 0.7430914092063904,
+              "std": 0.04154750104215928,
+              "min": 0.4517243504524231,
+              "p50": 0.7430421411991119,
+              "p95": 0.7984036058187485,
+              "p99": 0.8110018873214722,
+              "max": 0.8196306824684143
+            },
+            "action_saturation_pct": 0.0,
+            "action_delta_abs": {
+              "mean": 0.012655327558517455,
+              "std": 0.008936675427100698,
+              "min": 0.0,
+              "p50": 0.011406570672988892,
+              "p95": 0.028938978910446167,
+              "p99": 0.03847202122211456,
+              "max": 0.04796290397644043
+            },
+            "sent_target_velocity_rad_s": {
+              "mean": 0.1587336669365565,
+              "std": 0.11426053210694023,
+              "min": 0.0,
+              "p50": 0.14258213341236115,
+              "p95": 0.3617372363805771,
+              "p99": 0.4809002652764319,
+              "max": 0.893673300743103
+            },
+            "applied_target_velocity_rad_s": {
+              "mean": 0.1587336669365565,
+              "std": 0.11426053210694023,
+              "min": 0.0,
+              "p50": 0.14258213341236115,
+              "p95": 0.3617372363805771,
+              "p99": 0.4809002652764319,
+              "max": 0.893673300743103
+            },
+            "rate_limiter_activation_pct": 0.13333333333333333,
+            "bridge_tracking_error_rad": {
+              "mean": 0.0,
+              "std": 0.0,
+              "min": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "p99": 0.0,
+              "max": 0.0
+            },
+            "joint_target_tracking_error_rad": {
+              "mean": 0.006622185938060284,
+              "std": 0.006480803093627879,
+              "min": 7.584691047668457e-06,
+              "p50": 0.00553344190120697,
+              "p95": 0.014783784002065658,
+              "p99": 0.01828751504421234,
+              "max": 0.09617106430232525
+            },
+            "estimated_lag_sent_to_applied": {
+              "ticks": 0,
+              "rmse": 0.0,
+              "samples": 750,
+              "ms": 0.0
+            },
+            "estimated_lag_sent_to_actual": {
+              "ticks": 2,
+              "rmse": 0.006632449089385745,
+              "samples": 748,
+              "ms": 40.0
+            }
+          },
+          "head_pitch": {
+            "action": {
+              "mean": -0.19011792345810682,
+              "std": 0.1235137144513348,
+              "min": -0.43850773572921753,
+              "p50": -0.16101063787937164,
+              "p95": -0.03568861708045006,
+              "p99": -0.01786036608740689,
+              "max": 0.041273389011621475
+            },
+            "action_abs": {
+              "mean": 0.19036962541968871,
+              "std": 0.12312541652784707,
+              "min": 0.0006911902455613017,
+              "p50": 0.16101063787937164,
+              "p95": 0.3913162544369697,
+              "p99": 0.4127060568332672,
+              "max": 0.43850773572921753
+            },
+            "action_saturation_pct": 0.0,
+            "action_delta_abs": {
+              "mean": 0.042613318701585134,
+              "std": 0.029049448638841967,
+              "min": 0.0,
+              "p50": 0.036907391622662544,
+              "p95": 0.09580262452363968,
+              "p99": 0.11496240645647049,
+              "max": 0.13404116034507751
+            },
+            "sent_target_velocity_rad_s": {
+              "mean": 0.5326664837698142,
+              "std": 0.3631181079855246,
+              "min": 0.0,
+              "p50": 0.4613423952832818,
+              "p95": 1.197532806545496,
+              "p99": 1.4370300807058811,
+              "max": 1.675514504313469
+            },
+            "applied_target_velocity_rad_s": {
+              "mean": 0.5326664837698142,
+              "std": 0.3631181079855246,
+              "min": 0.0,
+              "p50": 0.4613423952832818,
+              "p95": 1.197532806545496,
+              "p99": 1.4370300807058811,
+              "max": 1.675514504313469
+            },
+            "rate_limiter_activation_pct": 0.0,
+            "bridge_tracking_error_rad": {
+              "mean": 0.0,
+              "std": 0.0,
+              "min": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "p99": 0.0,
+              "max": 0.0
+            },
+            "joint_target_tracking_error_rad": {
+              "mean": 0.02540337611901729,
+              "std": 0.015581424842070517,
+              "min": 4.0500424802303314e-05,
+              "p50": 0.026330068707466125,
+              "p95": 0.05052337194792926,
+              "p99": 0.06283513937145471,
+              "max": 0.06623585149645805
+            },
+            "estimated_lag_sent_to_applied": {
+              "ticks": 0,
+              "rmse": 0.0,
+              "samples": 750,
+              "ms": 0.0
+            },
+            "estimated_lag_sent_to_actual": {
+              "ticks": 2,
+              "rmse": 0.010365305408147797,
+              "samples": 748,
+              "ms": 40.0
+            }
+          },
+          "head_yaw": {
+            "action": {
+              "mean": -0.3344904508238348,
+              "std": 0.22502628895666912,
+              "min": -0.6650134325027466,
+              "p50": -0.4125208705663681,
+              "p95": 0.09066983684897398,
+              "p99": 0.14524799272418015,
+              "max": 0.18547587096691132
+            },
+            "action_abs": {
+              "mean": 0.3528783224776077,
+              "std": 0.1949296846027616,
+              "min": 0.0017449016449972987,
+              "p50": 0.4125208705663681,
+              "p95": 0.6195659786462784,
+              "p99": 0.6453192842006683,
+              "max": 0.6650134325027466
+            },
+            "action_saturation_pct": 0.0,
+            "action_delta_abs": {
+              "mean": 0.04811604758103689,
+              "std": 0.03427236130251068,
+              "min": 0.0,
+              "p50": 0.03987892251461744,
+              "p95": 0.1071692645549774,
+              "p99": 0.11916522458195686,
+              "max": 0.1329578086733818
+            },
+            "sent_target_velocity_rad_s": {
+              "mean": 0.601450594762961,
+              "std": 0.4284045162813835,
+              "min": 0.0,
+              "p50": 0.49848653143271804,
+              "p95": 1.3396158069372173,
+              "p99": 1.4895653072744606,
+              "max": 1.6619726084172726
+            },
+            "applied_target_velocity_rad_s": {
+              "mean": 0.601450594762961,
+              "std": 0.4284045162813835,
+              "min": 0.0,
+              "p50": 0.49848653143271804,
+              "p95": 1.3396158069372173,
+              "p99": 1.4895653072744606,
+              "max": 1.6619726084172726
+            },
+            "rate_limiter_activation_pct": 0.0,
+            "bridge_tracking_error_rad": {
+              "mean": 0.0,
+              "std": 0.0,
+              "min": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "p99": 0.0,
+              "max": 0.0
+            },
+            "joint_target_tracking_error_rad": {
+              "mean": 0.023267783602330987,
+              "std": 0.01669961834905469,
+              "min": 9.939074516296387e-06,
+              "p50": 0.021848841570317745,
+              "p95": 0.05468543777242297,
+              "p99": 0.06516531525179743,
+              "max": 0.07053588144481182
+            },
+            "estimated_lag_sent_to_applied": {
+              "ticks": 0,
+              "rmse": 0.0,
+              "samples": 750,
+              "ms": 0.0
+            },
+            "estimated_lag_sent_to_actual": {
+              "ticks": 2,
+              "rmse": 0.011234785013033962,
+              "samples": 748,
+              "ms": 40.0
+            }
+          },
+          "head_roll": {
+            "action": {
+              "mean": -0.12075811576618192,
+              "std": 0.1398231945696084,
+              "min": -0.3930909335613251,
+              "p50": -0.1075100265443325,
+              "p95": 0.07961835674941539,
+              "p99": 0.12590435087680815,
+              "max": 0.15295527875423431
+            },
+            "action_abs": {
+              "mean": 0.1444459958667091,
+              "std": 0.11518855212704006,
+              "min": 0.0006763179553672671,
+              "p50": 0.1168946661055088,
+              "p95": 0.3518174171447754,
+              "p99": 0.3776216644048691,
+              "max": 0.3930909335613251
+            },
+            "action_saturation_pct": 0.0,
+            "action_delta_abs": {
+              "mean": 0.04488963827739159,
+              "std": 0.025559300143982406,
+              "min": 0.0,
+              "p50": 0.04440876911394298,
+              "p95": 0.08750006519258019,
+              "p99": 0.10393736233934758,
+              "max": 0.12685386836528778
+            },
+            "sent_target_velocity_rad_s": {
+              "mean": 0.5611204784673949,
+              "std": 0.31949125179978005,
+              "min": 0.0,
+              "p50": 0.5551096139242873,
+              "p95": 1.0937508149072523,
+              "p99": 1.299217029241845,
+              "max": 1.5856733545660973
+            },
+            "applied_target_velocity_rad_s": {
+              "mean": 0.5611204784673949,
+              "std": 0.31949125179978005,
+              "min": 0.0,
+              "p50": 0.5551096139242873,
+              "p95": 1.0937508149072523,
+              "p99": 1.299217029241845,
+              "max": 1.5856733545660973
+            },
+            "rate_limiter_activation_pct": 0.0,
+            "bridge_tracking_error_rad": {
+              "mean": 0.0,
+              "std": 0.0,
+              "min": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "p99": 0.0,
+              "max": 0.0
+            },
+            "joint_target_tracking_error_rad": {
+              "mean": 0.02618119480717481,
+              "std": 0.013439990862509158,
+              "min": 3.466010093688965e-05,
+              "p50": 0.02755846083164215,
+              "p95": 0.04633842898911096,
+              "p99": 0.05390633988194168,
+              "max": 0.057129980297759175
+            },
+            "estimated_lag_sent_to_applied": {
+              "ticks": 0,
+              "rmse": 0.0,
+              "samples": 750,
+              "ms": 0.0
+            },
+            "estimated_lag_sent_to_actual": {
+              "ticks": 2,
+              "rmse": 0.008965981039438263,
+              "samples": 748,
+              "ms": 40.0
+            }
+          },
+          "right_hip_yaw": {
+            "action": {
+              "mean": 0.04579715011396911,
+              "std": 0.06082421136681488,
+              "min": -0.11899176239967346,
+              "p50": 0.06578812003135681,
+              "p95": 0.11997285448014736,
+              "p99": 0.13707506477832793,
+              "max": 0.1546613872051239
+            },
+            "action_abs": {
+              "mean": 0.0671083121196134,
+              "std": 0.03596440033439932,
+              "min": 0.00023339406470768154,
+              "p50": 0.06987310573458672,
+              "p95": 0.11997285448014736,
+              "p99": 0.13707506477832793,
+              "max": 0.1546613872051239
+            },
+            "action_saturation_pct": 0.0,
+            "action_delta_abs": {
+              "mean": 0.02118379867946108,
+              "std": 0.015714920227882387,
+              "min": 0.0,
+              "p50": 0.018303750082850456,
+              "p95": 0.04973514187149701,
+              "p99": 0.07619597172364592,
+              "max": 0.10481833200901747
+            },
+            "sent_target_velocity_rad_s": {
+              "mean": 0.2647974821118017,
+              "std": 0.1964365006239801,
+              "min": 0.0,
+              "p50": 0.22879685275256634,
+              "p95": 0.621689275722019,
+              "p99": 0.9524496232625096,
+              "max": 1.3102291151881218
+            },
+            "applied_target_velocity_rad_s": {
+              "mean": 0.2647974821118017,
+              "std": 0.1964365006239801,
+              "min": 0.0,
+              "p50": 0.22879685275256634,
+              "p95": 0.621689275722019,
+              "p99": 0.9524496232625096,
+              "max": 1.3102291151881218
+            },
+            "rate_limiter_activation_pct": 0.0,
+            "bridge_tracking_error_rad": {
+              "mean": 0.0,
+              "std": 0.0,
+              "min": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "p99": 0.0,
+              "max": 0.0
+            },
+            "joint_target_tracking_error_rad": {
+              "mean": 0.013538797463091517,
+              "std": 0.008686374875073854,
+              "min": 8.164718747138977e-05,
+              "p50": 0.012026381795294583,
+              "p95": 0.02931840349920093,
+              "p99": 0.03707313126418739,
+              "max": 0.04832024127244949
+            },
+            "estimated_lag_sent_to_applied": {
+              "ticks": 0,
+              "rmse": 0.0,
+              "samples": 750,
+              "ms": 0.0
+            },
+            "estimated_lag_sent_to_actual": {
+              "ticks": 2,
+              "rmse": 0.00835333220090725,
+              "samples": 748,
+              "ms": 40.0
+            }
+          },
+          "right_hip_roll": {
+            "action": {
+              "mean": -0.23796750210757212,
+              "std": 0.14178867350956445,
+              "min": -0.47570064663887024,
+              "p50": -0.2722097337245941,
+              "p95": 0.06662860363721848,
+              "p99": 0.1269605745375156,
+              "max": 0.14398249983787537
+            },
+            "action_abs": {
+              "mean": 0.25267331580386965,
+              "std": 0.11352865486562047,
+              "min": 0.00037297597737051547,
+              "p50": 0.2722097337245941,
+              "p95": 0.41624331325292574,
+              "p99": 0.44985058426856994,
+              "max": 0.47570064663887024
+            },
+            "action_saturation_pct": 0.0,
+            "action_delta_abs": {
+              "mean": 0.036195341798476874,
+              "std": 0.03215966469522207,
+              "min": 0.0,
+              "p50": 0.025555521249771118,
+              "p95": 0.10296161659061909,
+              "p99": 0.11429812528891489,
+              "max": 0.12106060236692429
+            },
+            "sent_target_velocity_rad_s": {
+              "mean": 0.4524417673548063,
+              "std": 0.40199581441553256,
+              "min": 0.0,
+              "p50": 0.3194443881511688,
+              "p95": 1.2870201654732227,
+              "p99": 1.4287265371531248,
+              "max": 1.513257622718811
+            },
+            "applied_target_velocity_rad_s": {
+              "mean": 0.4524417673548063,
+              "std": 0.40199581441553256,
+              "min": 0.0,
+              "p50": 0.3194443881511688,
+              "p95": 1.2870201654732227,
+              "p99": 1.4287265371531248,
+              "max": 1.513257622718811
+            },
+            "rate_limiter_activation_pct": 0.0,
+            "bridge_tracking_error_rad": {
+              "mean": 0.0,
+              "std": 0.0,
+              "min": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "p99": 0.0,
+              "max": 0.0
+            },
+            "joint_target_tracking_error_rad": {
+              "mean": 0.023206600432594617,
+              "std": 0.018495880671797034,
+              "min": 1.2665987014770508e-07,
+              "p50": 0.01886879652738571,
+              "p95": 0.05969935003668066,
+              "p99": 0.07528074838221072,
+              "max": 0.08525312691926956
+            },
+            "estimated_lag_sent_to_applied": {
+              "ticks": 0,
+              "rmse": 0.0,
+              "samples": 750,
+              "ms": 0.0
+            },
+            "estimated_lag_sent_to_actual": {
+              "ticks": 3,
+              "rmse": 0.016094457310243355,
+              "samples": 747,
+              "ms": 60.0
+            }
+          },
+          "right_hip_pitch": {
+            "action": {
+              "mean": 0.5613902082045873,
+              "std": 0.19399743580819429,
+              "min": 0.18508410453796387,
+              "p50": 0.6617636680603027,
+              "p95": 0.7624859184026718,
+              "p99": 0.7809647172689438,
+              "max": 0.8091036677360535
+            },
+            "action_abs": {
+              "mean": 0.5613902082045873,
+              "std": 0.19399743580819429,
+              "min": 0.18508410453796387,
+              "p50": 0.6617636680603027,
+              "p95": 0.7624859184026718,
+              "p99": 0.7809647172689438,
+              "max": 0.8091036677360535
+            },
+            "action_saturation_pct": 0.0,
+            "action_delta_abs": {
+              "mean": 0.038949345509211225,
+              "std": 0.034847304394542346,
+              "min": 0.0,
+              "p50": 0.025095432996749878,
+              "p95": 0.11403579562902447,
+              "p99": 0.12800198525190354,
+              "max": 0.13875296711921692
+            },
+            "sent_target_velocity_rad_s": {
+              "mean": 0.48702223698298136,
+              "std": 0.4354789283894196,
+              "min": 0.0,
+              "p50": 0.3136932849884033,
+              "p95": 1.4254477620124812,
+              "p99": 1.6000249981880188,
+              "max": 1.7344117164611816
+            },
+            "applied_target_velocity_rad_s": {
+              "mean": 0.4423655953049959,
+              "std": 0.4189682896995287,
+              "min": 0.0,
+              "p50": 0.2580785405082081,
+              "p95": 1.3172265243277201,
+              "p99": 1.486011321657223,
+              "max": 2.2500000000000018
+            },
+            "rate_limiter_activation_pct": 0.13333333333333333,
+            "bridge_tracking_error_rad": {
+              "mean": 0.030035732536546737,
+              "std": 0.02771236012051348,
+              "min": 1.3494419520698742e-05,
+              "p50": 0.018591585934651933,
+              "p95": 0.08855693088552734,
+              "p99": 0.09808087564478984,
+              "max": 0.1094062328338623
+            },
+            "joint_target_tracking_error_rad": {
+              "mean": 0.053136222680409746,
+              "std": 0.038734950194193166,
+              "min": 1.4781951904296875e-05,
+              "p50": 0.04182657599449158,
+              "p95": 0.1241388827562332,
+              "p99": 0.13608772695064544,
+              "max": 0.14779627323150635
+            },
+            "estimated_lag_sent_to_applied": {
+              "ticks": 4,
+              "rmse": 0.006550048322538778,
+              "samples": 746,
+              "ms": 80.0
+            },
+            "estimated_lag_sent_to_actual": {
+              "ticks": 6,
+              "rmse": 0.01532578663812535,
+              "samples": 744,
+              "ms": 120.0
+            }
+          },
+          "right_knee": {
+            "action": {
+              "mean": -0.012809869453679614,
+              "std": 0.24082921094740123,
+              "min": -0.5690643787384033,
+              "p50": 0.008349208161234856,
+              "p95": 0.4218638196587561,
+              "p99": 0.49769954204559325,
+              "max": 0.5274885296821594
+            },
+            "action_abs": {
+              "mean": 0.18755165836279047,
+              "std": 0.15161522696066948,
+              "min": 0.00016256420349236578,
+              "p50": 0.1240960992872715,
+              "p95": 0.4728933811187743,
+              "p99": 0.5259766083955765,
+              "max": 0.5690643787384033
+            },
+            "action_saturation_pct": 0.0,
+            "action_delta_abs": {
+              "mean": 0.07309930875400703,
+              "std": 0.042274031053128706,
+              "min": 0.0,
+              "p50": 0.07864842191338539,
+              "p95": 0.13171274103224276,
+              "p99": 0.14276900522410868,
+              "max": 0.1577310711145401
+            },
+            "sent_target_velocity_rad_s": {
+              "mean": 0.9137413501739502,
+              "std": 0.5284254313322253,
+              "min": 0.0,
+              "p50": 0.9831070899963379,
+              "p95": 1.6464126110076902,
+              "p99": 1.78461492061615,
+              "max": 1.9716382026672363
+            },
+            "applied_target_velocity_rad_s": {
+              "mean": 0.8170242492841382,
+              "std": 0.5109754309385998,
+              "min": 0.0,
+              "p50": 0.831490687687686,
+              "p95": 1.5987427308901303,
+              "p99": 1.7069409052651359,
+              "max": 1.8613840425215633
+            },
+            "rate_limiter_activation_pct": 0.0,
+            "bridge_tracking_error_rad": {
+              "mean": 0.054609133940080504,
+              "std": 0.034882973475536504,
+              "min": 0.00036601549978976244,
+              "p50": 0.051198243968539225,
+              "p95": 0.11095760568750872,
+              "p99": 0.11922991236637626,
+              "max": 0.12473672010001113
+            },
+            "joint_target_tracking_error_rad": {
+              "mean": 0.09133162053426107,
+              "std": 0.05949671182930146,
+              "min": 0.00021719932556152344,
+              "p50": 0.08960318565368652,
+              "p95": 0.18359853625297545,
+              "p99": 0.2009343111515045,
+              "max": 0.21010351181030273
+            },
+            "estimated_lag_sent_to_applied": {
+              "ticks": 4,
+              "rmse": 0.0104825336067335,
+              "samples": 746,
+              "ms": 80.0
+            },
+            "estimated_lag_sent_to_actual": {
+              "ticks": 6,
+              "rmse": 0.040155656410476935,
+              "samples": 744,
+              "ms": 120.0
+            }
+          },
+          "right_ankle": {
+            "action": {
+              "mean": 0.5499861772060395,
+              "std": 0.1852574702122037,
+              "min": 0.11368346959352493,
+              "p50": 0.5797403156757355,
+              "p95": 0.8050750195980072,
+              "p99": 0.8420246422290802,
+              "max": 0.8783091902732849
+            },
+            "action_abs": {
+              "mean": 0.5499861772060395,
+              "std": 0.1852574702122037,
+              "min": 0.11368346959352493,
+              "p50": 0.5797403156757355,
+              "p95": 0.8050750195980072,
+              "p99": 0.8420246422290802,
+              "max": 0.8783091902732849
+            },
+            "action_saturation_pct": 0.0,
+            "action_delta_abs": {
+              "mean": 0.04319229018688202,
+              "std": 0.03519025629125394,
+              "min": 0.0,
+              "p50": 0.03267484903335571,
+              "p95": 0.10918950289487839,
+              "p99": 0.12134806394577026,
+              "max": 0.12889981269836426
+            },
+            "sent_target_velocity_rad_s": {
+              "mean": 0.5399036526679992,
+              "std": 0.43987821360235496,
+              "min": 0.0,
+              "p50": 0.4084363579750061,
+              "p95": 1.3648690283298492,
+              "p99": 1.516849309206009,
+              "max": 1.6112476587295532
+            },
+            "applied_target_velocity_rad_s": {
+              "mean": 0.4994823083782802,
+              "std": 0.40834351387679524,
+              "min": 0.0,
+              "p50": 0.3874275711925945,
+              "p95": 1.2774517737965367,
+              "p99": 1.4127922658581058,
+              "max": 2.0000000000000018
+            },
+            "rate_limiter_activation_pct": 0.0,
+            "bridge_tracking_error_rad": {
+              "mean": 0.0340467220382402,
+              "std": 0.026694001561251048,
+              "min": 5.2714769139927675e-05,
+              "p50": 0.026172982703576098,
+              "p95": 0.08657007813521889,
+              "p99": 0.09624305850896013,
+              "max": 0.10190420882307283
+            },
+            "joint_target_tracking_error_rad": {
+              "mean": 0.055948294719060265,
+              "std": 0.04542402607387775,
+              "min": 2.384185791015625e-07,
+              "p50": 0.04119977355003357,
+              "p95": 0.1458306849002838,
+              "p99": 0.16368482291698455,
+              "max": 0.17224842309951782
+            },
+            "estimated_lag_sent_to_applied": {
+              "ticks": 4,
+              "rmse": 0.006959776143837819,
+              "samples": 746,
+              "ms": 80.0
+            },
+            "estimated_lag_sent_to_actual": {
+              "ticks": 6,
+              "rmse": 0.021198857782577768,
+              "samples": 744,
+              "ms": 120.0
+            }
+          }
+        },
+        "pitch_chain_summary": {
+          "bridge_tracking_p95_rad": {
+            "mean": 0.09426329166786677,
+            "std": 0.00927478254818767,
+            "min": 0.08657007813521889,
+            "p50": 0.08901128088718824,
+            "p95": 0.10892072533825728,
+            "p99": 0.11055022961765844,
+            "max": 0.11095760568750872
+          },
+          "joint_target_tracking_p95_rad": {
+            "mean": 0.15394462744394938,
+            "std": 0.023445036273681878,
+            "min": 0.1241388827562332,
+            "p50": 0.14459810853004454,
+            "p95": 0.18660345077514645,
+            "p99": 0.18740476131439207,
+            "max": 0.18760508894920347
+          },
+          "estimated_lag_ticks": {
+            "mean": 4.0,
+            "std": 0.0,
+            "min": 4.0,
+            "p50": 4.0,
+            "p95": 4.0,
+            "p99": 4.0,
+            "max": 4.0
+          },
+          "sent_target_velocity_p95_rad_s": {
+            "mean": 1.4541424065828323,
+            "std": 0.11101854226700608,
+            "min": 1.3559244573116302,
+            "p50": 1.398002430796623,
+            "p95": 1.625220328569412,
+            "p99": 1.6421741545200346,
+            "max": 1.6464126110076902
+          },
+          "action_saturation_pct": {
+            "mean": 0.0,
+            "std": 0.0,
+            "min": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "max": 0.0
+          }
+        },
+        "policy_io": {
+          "obs_input_name": "obs",
+          "action_output_name": "continuous_actions",
+          "state_input_names": [],
+          "state_output_names": [],
+          "stateful": false
+        }
+      }
+    },
+    "worker_returncode": 0,
+    "worker_output_tail": "/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\nFailed to import warp: No module named 'warp'\nFailed to import mujoco_warp: No module named 'warp'\nxml: /home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/.codex_eval_msr1ci4z_hfield_z0.0075.xml\nactuators: ['left_hip_yaw', 'left_hip_roll', 'left_hip_pitch', 'left_knee', 'left_ankle', 'neck_pitch', 'head_pitch', 'head_yaw', 'head_roll', 'right_hip_yaw', 'right_hip_roll', 'right_hip_pitch', 'right_knee', 'right_ankle']\njoints: ['floating_base', 'left_hip_yaw', 'left_hip_yaw_backlash', 'left_hip_roll', 'left_hip_roll_backlash', 'left_hip_pitch', 'left_hip_pitch_backlash', 'left_knee', 'left_knee_backlash', 'left_ankle', 'left_ankle_backlash', 'neck_pitch', 'head_pitch', 'head_yaw', 'head_roll', 'right_hip_yaw', 'right_hip_yaw_backlash', 'right_hip_roll', 'right_hip_roll_backlash', 'right_hip_pitch', 'right_hip_pitch_backlash', 'right_knee', 'right_knee_backlash', 'right_ankle', 'right_ankle_backlash']\nbacklash joints: ['left_hip_yaw_backlash', 'left_hip_roll_backlash', 'left_hip_pitch_backlash', 'left_knee_backlash', 'left_ankle_backlash', 'right_hip_yaw_backlash', 'right_hip_roll_backlash', 'right_hip_pitch_backlash', 'right_knee_backlash', 'right_ankle_backlash']\nactuator joints ids: [1, 3, 5, 7, 9, 11, 12, 13, 14, 15, 17, 19, 21, 23]\nactuator joints dict: {'left_hip_yaw': 1, 'left_hip_roll': 3, 'left_hip_pitch': 5, 'left_knee': 7, 'left_ankle': 9, 'neck_pitch': 11, 'head_pitch': 12, 'head_yaw': 13, 'head_roll': 14, 'right_hip_yaw': 15, 'right_hip_roll': 17, 'right_hip_pitch': 19, 'right_knee': 21, 'right_ankle': 23}\nfloating qpos addr: 0 qvel addr: 0\n[Poly ref data] Processing ...\n[Poly ref data] Done processing\n",
+    "worker_command": [
+      "/home/lsd/robots/open-duck-mini-rdkx5/../envs/open-duck-playground/bin/python",
+      "/home/lsd/robots/open-duck-mini-rdkx5/tools/eval_policy_with_actuator_bridge.py",
+      "--mode",
+      "closed-loop-sim",
+      "--policy",
+      "policy/candidates/phase2_z0075_iter21_seed5_post_push_recovery_rate150_20260704/candidate.onnx",
+      "--fit-json",
+      "outputs/analysis/actuator_response_fit_corrected_knee.json",
+      "--playground-root",
+      "../Open_Duck_Playground",
+      "--env-python",
+      "../envs/open-duck-playground/bin/python",
+      "--command-x",
+      "0.08",
+      "--command-y",
+      "0.0",
+      "--command-yaw",
+      "0.0",
+      "--duration",
+      "15.0",
+      "--task",
+      "rough_terrain_backlash",
+      "--seed",
+      "4",
+      "--bridge-mode",
+      "fitted",
+      "--output-dir",
+      "outputs/analysis/phase2_z0075_iter21_seed5_post_push_recovery_rate150_student/x008_8seed_gate/iter21_seed5_postpush/seed_004",
+      "--startup-ticks",
+      "50",
+      "--max-lag-ticks",
+      "12",
+      "--stress-delay-ticks",
+      "6",
+      "--stress-tau-s",
+      "0.1",
+      "--stress-velocity-limit-rad-s",
+      "3.2",
+      "--expected-observation-dim",
+      "101",
+      "--expected-action-dim",
+      "14",
+      "--eval-role",
+      "candidate",
+      "--mjx-step-loop-mode",
+      "default",
+      "--policy-action-gain",
+      "1.0",
+      "--forward-diagnostic-required-ratio",
+      "0.5",
+      "--forward-diagnostic-deadband",
+      "0.02",
+      "--sim-preflight-timeout-s",
+      "600",
+      "--_closed-loop-worker",
+      "--_closed-loop-worker-json",
+      "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/phase2_z0075_iter21_seed5_post_push_recovery_rate150_student/x008_8seed_gate/iter21_seed5_postpush/seed_004/closed_loop_worker_angijnkq.json",
+      "--jax-platform",
+      "cpu",
+      "--eval-push-enable",
+      "--eval-push-interval-min-s",
+      "1.0",
+      "--eval-push-interval-max-s",
+      "1.5",
+      "--eval-push-magnitude-min",
+      "0.075",
+      "--eval-push-magnitude-max",
+      "0.125",
+      "--push-recovery-window-s",
+      "1.2",
+      "--push-recovery-max-abs-pitch-rad",
+      "0.8",
+      "--push-recovery-min-base-height-m",
+      "0.08",
+      "--terrain-hfield-z-scale",
+      "0.0075",
+      "--reset-settle-ticks",
+      "10",
+      "--reset-mode",
+      "home-support"
+    ]
+  }
+}
