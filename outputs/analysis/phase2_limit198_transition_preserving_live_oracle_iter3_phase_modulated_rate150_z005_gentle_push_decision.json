@@ -1,0 +1,55 @@
+{
+  "generated_at": "2026-07-04T00:58:00Z",
+  "status": "PASS_Z005_GENTLE_PUSH_PAIR",
+  "scope": "Offline corrected-bridge z=0.005 gentle-push screen only. No robot, SSH, deploy, grounded replay, runtime behavior change, or training.",
+  "robot_touched": false,
+  "ssh_used": false,
+  "deploy_performed": false,
+  "grounded_replay_performed": false,
+  "training_started": false,
+  "candidate": {
+    "path": "policy/candidates/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_20260703/candidate.onnx",
+    "sha256": "e2281adeedd2fa4b0d416fecee17bb960275457a81538cb3f98fe57d0e54eb18",
+    "contract": "obs[1,101] -> continuous_actions[1,14]"
+  },
+  "gates": {
+    "z005_x008_gentle_push": {
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "path": "outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_z005_x008_gentle_push_screen.json",
+      "sha256": "31eb958f7f642b0227449c7dfa081e08c7caec1852001b15e308e5452f89a464",
+      "runs": 8,
+      "duration_complete": 8,
+      "falls": 0,
+      "track_ratio": 0.3829,
+      "mean_local_vx_m_s": 0.0306,
+      "body_pitch_p95_rad": 0.1507,
+      "base_height_min_m": 0.1529,
+      "max_pitch_vel_p95_rad_s": 1.5647,
+      "p95_vel_excess_rad_s": 0.0,
+      "max_vel_excess_rad_s": 0.0,
+      "max_tracking_p95_rad": 0.1890,
+      "min_swing_peak_lift_m": 0.0138,
+      "single_support_pct": 25.2,
+      "push_success_mean": 0.9704
+    },
+    "z005_x0_gentle_push": {
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "path": "outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_z005_x0_gentle_push_screen.json",
+      "sha256": "feb7b4e436dc1c3319c564aa77ffebaabb0f56c95903b9693c119f98d066c4b0",
+      "runs": 8,
+      "duration_complete": 8,
+      "falls": 0,
+      "mean_local_vx_m_s": 0.0005,
+      "body_pitch_p95_rad": 0.0512,
+      "base_height_min_m": 0.1530,
+      "max_pitch_vel_p95_rad_s": 0.0657,
+      "p95_vel_excess_rad_s": 0.0,
+      "max_vel_excess_rad_s": 0.0,
+      "max_tracking_p95_rad": 0.0402,
+      "single_support_pct": 0.0,
+      "double_support_pct": 100.0,
+      "push_success_mean": 0.9704
+    }
+  },
+  "decision": "Rate150 clears the z=0.005 gentle-push pair directly. Continue to the next offline robustness stage; robot validation remains blocked."
+}

@@ -36,6 +36,25 @@
       "max_vel_excess_rad_s": 0.0,
       "max_tracking_p95_rad": 0.0345
     },
+    "z005_x008_gentle_push": {
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "path": "outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_z005_x008_gentle_push_screen.json",
+      "sha256": "31eb958f7f642b0227449c7dfa081e08c7caec1852001b15e308e5452f89a464",
+      "track_ratio": 0.3829,
+      "mean_local_vx_m_s": 0.0306,
+      "max_vel_excess_rad_s": 0.0,
+      "max_tracking_p95_rad": 0.1890,
+      "push_success_mean": 0.9704
+    },
+    "z005_x0_gentle_push": {
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "path": "outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_z005_x0_gentle_push_screen.json",
+      "sha256": "feb7b4e436dc1c3319c564aa77ffebaabb0f56c95903b9693c119f98d066c4b0",
+      "mean_local_vx_m_s": 0.0005,
+      "max_vel_excess_rad_s": 0.0,
+      "max_tracking_p95_rad": 0.0402,
+      "push_success_mean": 0.9704
+    },
     "z0026_x008_no_push_regression": {
       "status": "PASS_CANDIDATE_SIM_GATE",
       "path": "outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_z0026_x008_no_push_regression.json",
@@ -73,6 +92,6 @@
       "push_success_mean": 0.9704
     }
   },
-  "decision": "Promote rate150 as the current offline Phase 2 terrain-support candidate. It clears z=0.005 no-push support and preserves z=0.0026 no-push/gentle-push regressions.",
-  "next_action": "Decide whether to run z=0.005 gentle-push gates directly or train a dedicated z=0.005 push stage from this rate150 parent. Robot validation remains blocked."
+  "decision": "Promote rate150 as the current offline Phase 2 terrain-support candidate. It clears z=0.005 no-push and gentle-push support and preserves z=0.0026 no-push/gentle-push regressions.",
+  "next_action": "Continue to the next offline robustness stage, such as increased terrain/push difficulty or broader domain randomization from this rate150 parent. Robot validation remains blocked."
 }

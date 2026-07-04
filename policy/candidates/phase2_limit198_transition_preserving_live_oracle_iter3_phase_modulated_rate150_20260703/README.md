@@ -12,8 +12,8 @@ Contract:
 `obs[1,101] -> continuous_actions[1,14]`
 
 This candidate is not a grounded-test authorization. It is the current offline
-Phase 2 terrain-support parent after clearing z=0.005 no-push support and the
-z=0.0026 no-push/gentle-push regression set.
+Phase 2 terrain-support parent after clearing z=0.005 no-push/gentle-push
+support and the z=0.0026 no-push/gentle-push regression set.
 
 ## Files
 
@@ -42,6 +42,8 @@ corrected-knee fitted actuator bridge, CPU evaluator, 15s duration, and seeds
 |---|---|---:|---:|---:|---:|---:|---:|
 | x=0.08 no-push | `PASS_CANDIDATE_SIM_GATE` | 8/8 | 0 | 0.0297 | 0.3715 | 0.0000 | 0.1838 |
 | x=0.0 no-push | `PASS_CANDIDATE_SIM_GATE` | 8/8 | 0 | 0.0005 | NA | 0.0000 | 0.0345 |
+| x=0.08 gentle-push | `PASS_CANDIDATE_SIM_GATE` | 8/8 | 0 | 0.0306 | 0.3829 | 0.0000 | 0.1890 |
+| x=0.0 gentle-push | `PASS_CANDIDATE_SIM_GATE` | 8/8 | 0 | 0.0005 | NA | 0.0000 | 0.0402 |
 
 ## z=0.0026 Regression Gates
 
@@ -58,3 +60,4 @@ corrected-knee fitted actuator bridge, CPU evaluator, 15s duration, and seeds
 - fit report: `outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_student_rate150/PHASE_MODULATED_BC_STUDENT.md`
 - z=0.005 decision: `outputs/analysis/PHASE2_LIMIT198_TRANSITION_PRESERVING_LIVE_ORACLE_ITER3_PHASE_MODULATED_RATE150_Z005_DECISION.md`
 - final decision: `outputs/analysis/PHASE2_LIMIT198_TRANSITION_PRESERVING_LIVE_ORACLE_ITER3_PHASE_MODULATED_RATE150_DECISION.md`
+- z=0.005 gentle-push decision: `outputs/analysis/PHASE2_LIMIT198_TRANSITION_PRESERVING_LIVE_ORACLE_ITER3_PHASE_MODULATED_RATE150_Z005_GENTLE_PUSH_DECISION.md`

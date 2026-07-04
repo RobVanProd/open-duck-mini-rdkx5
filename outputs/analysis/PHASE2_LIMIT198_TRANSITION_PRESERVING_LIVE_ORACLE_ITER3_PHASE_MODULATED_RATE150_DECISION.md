@@ -24,6 +24,8 @@ corrected-knee actuator bridge, CPU evaluator, 15s duration, and seeds 0-7.
 |---|---|---:|---|---:|---:|---:|---:|---:|---:|---:|
 | x=0.08 no-push | `PASS_CANDIDATE_SIM_GATE` | 0.0050 | false | 0 | 0.3715 | 0.0297 | 1.5402 | 0.0000 | 0.1838 | NA |
 | x=0.0 no-push | `PASS_CANDIDATE_SIM_GATE` | 0.0050 | false | 0 | NA | 0.0005 | 0.0290 | 0.0000 | 0.0345 | NA |
+| x=0.08 gentle-push | `PASS_CANDIDATE_SIM_GATE` | 0.0050 | true | 0 | 0.3829 | 0.0306 | 1.5647 | 0.0000 | 0.1890 | 0.9704 |
+| x=0.0 gentle-push | `PASS_CANDIDATE_SIM_GATE` | 0.0050 | true | 0 | NA | 0.0005 | 0.0657 | 0.0000 | 0.0402 | 0.9704 |
 | x=0.08 no-push regression | `PASS_CANDIDATE_SIM_GATE` | 0.0026 | false | 0 | 0.3787 | 0.0303 | 1.5517 | 0.0000 | 0.1888 | NA |
 | x=0.0 no-push regression | `PASS_CANDIDATE_SIM_GATE` | 0.0026 | false | 0 | NA | 0.0001 | 0.0357 | 0.0000 | 0.0328 | NA |
 | x=0.08 gentle-push regression | `PASS_CANDIDATE_SIM_GATE` | 0.0026 | true | 0 | 0.3806 | 0.0304 | 1.5513 | 0.0000 | 0.1892 | 0.9704 |
@@ -33,10 +35,11 @@ corrected-knee actuator bridge, CPU evaluator, 15s duration, and seeds 0-7.
 
 Promote `rate150` as the current offline Phase 2 terrain-support candidate.
 It resolves the `rate160` z=0.005 max target-velocity hold while preserving
-the z=0.0026 no-push and gentle-push regression gates. The tradeoff is slower
-forward speed than the original Phase 1 candidate, but it stays in the
-corrected actuator envelope across the current support/regression set.
+the z=0.0026 no-push and gentle-push regression gates. It also clears the
+z=0.005 gentle-push pair directly. The tradeoff is slower forward speed than
+the original Phase 1 candidate, but it stays in the corrected actuator envelope
+across the current support/regression set.
 
 Robot validation remains blocked. The next offline stage should decide whether
-to run z=0.005 gentle-push gates directly or train a dedicated z=0.005 push
-stage from this `rate150` parent.
+to increase terrain/push difficulty or broaden domain randomization from this
+`rate150` parent.
