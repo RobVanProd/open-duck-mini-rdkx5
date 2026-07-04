@@ -1,0 +1,74 @@
+{
+  "status": "HOLD_ITER3_DAGGER_DATA_DID_NOT_TRANSFER",
+  "candidate": "policy/candidates/phase2_z0075_intermediate_push_live_oracle_iter3_seed0_recovery_rate150_20260704/candidate.onnx",
+  "candidate_sha256": "c809fe2e784371f2a8c4c3f39507a6ed3efd02b1bea33e1aaf56401537f93151",
+  "student_npz": "policy/candidates/phase2_z0075_intermediate_push_live_oracle_iter3_seed0_recovery_rate150_20260704/student.npz",
+  "student_npz_sha256": "d07c036211b0e213c638660c95aa531d8b4270dafac4885e590c462910a52e17",
+  "training_manifest": "outputs/analysis/phase2_z0075_intermediate_push_live_oracle_iter3_seed0_recovery_run/live_oracle_dagger_aggregate_manifest.json",
+  "dataset_id": "ddbeda5b717074b6",
+  "fit": {
+    "status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE",
+    "samples": 51175,
+    "mae": 0.009558120060522226,
+    "p95_abs_error": 0.02878089797678207,
+    "max_abs_error": 0.40340612463207115,
+    "target_rate_p95_rad_s": 1.3694157600402832,
+    "target_rate_p99_rad_s": 1.72978675365448,
+    "target_rate_max_rad_s": 4.487093448638916,
+    "onnx_p95_abs_error": 1.1920928955078125e-07,
+    "onnx_max_abs_error": 2.384185791015625e-07
+  },
+  "screen": {
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.0075,
+    "bridge": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+    "bridge_mode": "fitted",
+    "reset_mode": "home-support",
+    "push_interval_s": [1.0, 1.5],
+    "push_magnitude": [0.075, 0.125],
+    "duration_s": 15.0,
+    "x008": {
+      "status": "HOLD",
+      "result_md": "outputs/analysis/PHASE2_Z0075_ITER3_SEED0_RECOVERY_RATE150_X008_PUSH_SCREEN.md",
+      "result_json": "outputs/analysis/phase2_z0075_iter3_seed0_recovery_rate150_x008_push_screen.json",
+      "seeds": {
+        "0": {
+          "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+          "samples": 126,
+          "mean_local_vx_m_s": 0.1657,
+          "track_ratio": 2.0714,
+          "body_pitch_p95_rad": 1.0009,
+          "base_height_min_m": 0.0037,
+          "max_pitch_vel_p95_rad_s": 1.8411,
+          "p95_velocity_excess_rad_s": 0.0,
+          "max_velocity_excess_rad_s": 0.0,
+          "max_tracking_p95_rad": 0.2017,
+          "push_success_rate": 0.0
+        },
+        "7": {
+          "status": "HOLD_CANDIDATE_TARGET_VELOCITY",
+          "samples": 750,
+          "mean_local_vx_m_s": 0.0341,
+          "track_ratio": 0.4257,
+          "body_pitch_p95_rad": 0.2034,
+          "base_height_min_m": 0.1532,
+          "max_pitch_vel_p95_rad_s": 1.7502,
+          "p95_velocity_excess_rad_s": 0.0,
+          "max_velocity_excess_rad_s": 0.0962,
+          "max_tracking_p95_rad": 0.1852,
+          "push_success_rate": 0.9
+        }
+      }
+    },
+    "x0": {
+      "status": "PASS",
+      "result_md": "outputs/analysis/PHASE2_Z0075_ITER3_SEED0_RECOVERY_RATE150_X0_PUSH_SCREEN.md",
+      "result_json": "outputs/analysis/phase2_z0075_iter3_seed0_recovery_rate150_x0_push_screen.json",
+      "vx_mean_m_s": 0.0008383700995261733,
+      "push_success_mean": 0.9198717948717949,
+      "max_velocity_excess_rad_s": 0.0
+    }
+  },
+  "promote": false,
+  "recommendation": "Do not promote. Iter3 live-oracle recovery data preserved x=0 semantics but did not transfer into a deployable x=0.08 push-recovery improvement."
+}
