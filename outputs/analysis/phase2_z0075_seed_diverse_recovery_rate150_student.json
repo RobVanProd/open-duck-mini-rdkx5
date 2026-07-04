@@ -1,0 +1,112 @@
+{
+  "activation": "swish",
+  "config": {
+    "batch_size": 1024,
+    "learning_rate": 0.0007,
+    "seed": 15031,
+    "steps": 6000,
+    "target_rate_limit_rad_s": 1.5,
+    "target_rate_scale": 0.1
+  },
+  "context_hidden_sizes": [
+    64
+  ],
+  "context_indices": [
+    6,
+    99,
+    100
+  ],
+  "exported_onnx": "policy/candidates/phase2_z0075_seed_diverse_recovery_rate150_20260704/candidate.onnx",
+  "loss_rows": [
+    {
+      "loss": 0.17992624640464783,
+      "step": 1
+    },
+    {
+      "loss": 0.0005749426782131195,
+      "step": 500
+    },
+    {
+      "loss": 0.00041206652531400323,
+      "step": 1000
+    },
+    {
+      "loss": 0.0005062880227342248,
+      "step": 1500
+    },
+    {
+      "loss": 0.00034257580409757793,
+      "step": 2000
+    },
+    {
+      "loss": 0.0003230986767448485,
+      "step": 2500
+    },
+    {
+      "loss": 0.00040339300176128745,
+      "step": 3000
+    },
+    {
+      "loss": 0.000299038685625419,
+      "step": 3500
+    },
+    {
+      "loss": 0.00031049366225488484,
+      "step": 4000
+    },
+    {
+      "loss": 0.000255645252764225,
+      "step": 4500
+    },
+    {
+      "loss": 0.00032637271215207875,
+      "step": 5000
+    },
+    {
+      "loss": 0.00025998830096796155,
+      "step": 5500
+    },
+    {
+      "loss": 0.0002935967640951276,
+      "step": 6000
+    }
+  ],
+  "manifest": "outputs/analysis/phase2_z0075_iter7_seed_diverse_recovery_merged_manifest.json",
+  "modulation_scale": 0.5,
+  "onnx_verify": {
+    "max_abs_error": 2.5331974029541016e-07,
+    "p95_abs_error": 1.1920928955078125e-07,
+    "path": "policy/candidates/phase2_z0075_seed_diverse_recovery_rate150_20260704/candidate.onnx",
+    "samples_checked": 64
+  },
+  "sample_weight": {
+    "max": 5.0,
+    "p50": 3.0,
+    "p95": 5.0,
+    "weighted_samples": 155423.0
+  },
+  "samples": 52365,
+  "saved_npz": "policy/candidates/phase2_z0075_seed_diverse_recovery_rate150_20260704/student.npz",
+  "status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE",
+  "target_rate": {
+    "max_rad_s": 2.742286205291748,
+    "p50_rad_s": 0.17512664198875427,
+    "p95_rad_s": 1.3630538284778595,
+    "p99_rad_s": 1.5107896327972412,
+    "pair_count": 52289
+  },
+  "train_metrics": {
+    "mae": 0.009287067816592103,
+    "max_abs_error": 0.41122886538505554,
+    "p50_abs_error": 0.005071854534034637,
+    "p95_abs_error": 0.03099614381790161,
+    "p99_abs_error": 0.05935295729488843,
+    "pred_action_saturation_pct": 0.0,
+    "rmse": 0.01607525721429852,
+    "samples": 52365
+  },
+  "trunk_hidden_sizes": [
+    512,
+    256
+  ]
+}
