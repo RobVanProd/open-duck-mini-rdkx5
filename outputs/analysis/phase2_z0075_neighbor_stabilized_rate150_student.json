@@ -1,0 +1,112 @@
+{
+  "activation": "swish",
+  "config": {
+    "batch_size": 1024,
+    "learning_rate": 0.0007,
+    "seed": 15031,
+    "steps": 6000,
+    "target_rate_limit_rad_s": 1.5,
+    "target_rate_scale": 0.1
+  },
+  "context_hidden_sizes": [
+    64
+  ],
+  "context_indices": [
+    6,
+    99,
+    100
+  ],
+  "exported_onnx": "policy/candidates/phase2_z0075_neighbor_stabilized_rate150_20260704/candidate.onnx",
+  "loss_rows": [
+    {
+      "loss": 0.19131211936473846,
+      "step": 1
+    },
+    {
+      "loss": 0.0015757286455482244,
+      "step": 500
+    },
+    {
+      "loss": 0.0014604807365685701,
+      "step": 1000
+    },
+    {
+      "loss": 0.0010630146134644747,
+      "step": 1500
+    },
+    {
+      "loss": 0.001153087243437767,
+      "step": 2000
+    },
+    {
+      "loss": 0.0012155873700976372,
+      "step": 2500
+    },
+    {
+      "loss": 0.001171996584162116,
+      "step": 3000
+    },
+    {
+      "loss": 0.0009328082087449729,
+      "step": 3500
+    },
+    {
+      "loss": 0.000881741929333657,
+      "step": 4000
+    },
+    {
+      "loss": 0.0008834601030685008,
+      "step": 4500
+    },
+    {
+      "loss": 0.0009046716731972992,
+      "step": 5000
+    },
+    {
+      "loss": 0.0009595818701200187,
+      "step": 5500
+    },
+    {
+      "loss": 0.000834120437502861,
+      "step": 6000
+    }
+  ],
+  "manifest": "outputs/analysis/phase2_z0075_iter8_neighbor_stabilized_merged_manifest.json",
+  "modulation_scale": 0.5,
+  "onnx_verify": {
+    "max_abs_error": 2.980232238769531e-07,
+    "p95_abs_error": 1.2665987014770508e-07,
+    "path": "policy/candidates/phase2_z0075_neighbor_stabilized_rate150_20260704/candidate.onnx",
+    "samples_checked": 64
+  },
+  "sample_weight": {
+    "max": 5.0,
+    "p50": 3.0,
+    "p95": 5.0,
+    "weighted_samples": 161819.0
+  },
+  "samples": 54497,
+  "saved_npz": "policy/candidates/phase2_z0075_neighbor_stabilized_rate150_20260704/student.npz",
+  "status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE",
+  "target_rate": {
+    "max_rad_s": 2.441718816757202,
+    "p50_rad_s": 0.18021315336227417,
+    "p95_rad_s": 1.2983351051807404,
+    "p99_rad_s": 1.5092607736587524,
+    "pair_count": 54416
+  },
+  "train_metrics": {
+    "mae": 0.014709961584554765,
+    "max_abs_error": 0.8139952421188354,
+    "p50_abs_error": 0.006999228149652481,
+    "p95_abs_error": 0.04854334028497276,
+    "p99_abs_error": 0.133336267411709,
+    "pred_action_saturation_pct": 0.0,
+    "rmse": 0.03195283103159801,
+    "samples": 54497
+  },
+  "trunk_hidden_sizes": [
+    512,
+    256
+  ]
+}
