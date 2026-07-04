@@ -26,6 +26,11 @@ PITCH_CHAIN = [
 ]
 
 
+def repo_path(path: Path) -> str:
+    resolved = path if path.is_absolute() else ROOT / path
+    return str(resolved.resolve().relative_to(ROOT))
+
+
 def load_json(path: Path) -> Any:
     return json.loads(path.read_text())
 
@@ -136,6 +141,7 @@ def summarize_seed(
     trace_root: Path,
     limits: dict[str, float],
     dt_s: float,
+    velocity_excess_tolerance: float,
 ) -> dict[str, Any]:
     seed = int(result["seed"])
     output_dir = Path(result["output_dir"])
@@ -167,8 +173,11 @@ def summarize_seed(
         and last_push_end is not None
         and int(pitch08["tick"]) > last_push_end
     )
+    max_excess = float(vel["max_excess"]["excess_rad_s"])
     if status == "PASS_CANDIDATE_SIM_GATE":
         classification = "PASS_CONTROL_STABLE"
+    elif max_excess > velocity_excess_tolerance:
+        classification = "ACTUATOR_ENVELOPE_EXCESS"
     elif delayed_pitch:
         classification = "POST_PUSH_DELAYED_PITCHOVER"
     else:
@@ -235,6 +244,11 @@ def fmt(value: Any) -> str:
 
 
 def write_markdown(payload: dict[str, Any], path: Path) -> None:
+    counts: dict[str, int] = {}
+    for item in payload["seeds"]:
+        counts[item["classification"]] = counts.get(item["classification"], 0) + 1
+    failures = [item for item in payload["seeds"] if item["classification"] != "PASS_CONTROL_STABLE"]
+    pass_count = counts.get("PASS_CONTROL_STABLE", 0)
     lines = [
         "# Phase 2 Intermediate-Push Failure Diagnostic",
         "",
@@ -245,12 +259,13 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         "",
         "## Executive Summary",
         "",
-        "- The intermediate-push hold is reproduced in traced seeds 0 and 7.",
-        "- Both failing seeds are marked recovered inside every 0.5 s push window.",
-        "- Collapse happens after the last push recovery window, as a delayed pitch-over.",
-        "- Seed 1 is a passing control under the same push/terrain settings.",
-        "- The next offline refinement should target post-push pitch/base-height stability,",
-        "  especially for seeds 0 and 7, without loosening the corrected actuator envelope.",
+        f"- traced seeds: `{len(payload['seeds'])}`",
+        f"- pass/control-stable seeds: `{pass_count}`",
+        f"- failing/held seeds: `{len(failures)}`",
+        f"- classification counts: `{counts}`",
+        "- This report separates corrected actuator-envelope excess from post-push",
+        "  delayed pitch/base-height instability. Envelope excess is treated as the",
+        "  harder blocker because it violates the canonical corrected bridge gate.",
         "",
         "## Inputs",
         "",
@@ -311,12 +326,12 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         [
             "## Recommendation",
             "",
-            "Do not treat the intermediate-push bracket as promotable. It is a",
-            "near-boundary stability hold: push windows themselves pass the short",
-            "recovery check, but failing seeds pitch over shortly after the final",
-            "recovery window. The next offline recipe should preserve the passing",
-            "gentle-push behavior while adding post-push pitch/base-height damping",
-            "or recovery data for seeds 0 and 7. The corrected actuator envelope",
+            "Do not treat this intermediate-push candidate as promotable. If a seed",
+            "is classified as `ACTUATOR_ENVELOPE_EXCESS`, the next recipe must remove",
+            "the corrected-envelope violation rather than only adding stability or",
+            "phase timing. If a seed is classified as `POST_PUSH_DELAYED_PITCHOVER`,",
+            "the next recipe should add post-push pitch/base-height recovery while",
+            "preserving the passing compact behavior. The corrected actuator envelope",
             "must remain fixed.",
             "",
         ]
@@ -328,14 +343,26 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
     sweep = load_json(args.sweep_json)
     limits = corrected_limits(args.fit_json)
     items = [
-        summarize_seed(result, args.trace_root, limits, args.dt_s)
+        summarize_seed(
+            result,
+            args.trace_root,
+            limits,
+            args.dt_s,
+            args.velocity_excess_tolerance,
+        )
         for result in sweep["results"]
     ]
     failures = [item for item in items if item["status"] != "PASS_CANDIDATE_SIM_GATE"]
     delayed = [
         item for item in failures if item["classification"] == "POST_PUSH_DELAYED_PITCHOVER"
     ]
+    excess = [
+        item for item in failures if item["classification"] == "ACTUATOR_ENVELOPE_EXCESS"
+    ]
     status = (
+        "HOLD_PHASE2_INTERMEDIATE_PUSH_ACTUATOR_ENVELOPE_EXCESS"
+        if excess
+        else
         "HOLD_PHASE2_INTERMEDIATE_PUSH_POST_RECOVERY_PITCHOVER"
         if failures and len(delayed) == len(failures)
         else "PASS_PHASE2_INTERMEDIATE_PUSH_TRACE_DIAGNOSTIC"
@@ -344,10 +371,11 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
     )
     return {
         "status": status,
-        "sweep_json": str(args.sweep_json.relative_to(ROOT)),
-        "fit_json": str(args.fit_json.relative_to(ROOT)),
-        "trace_root": str(args.trace_root.relative_to(ROOT)),
+        "sweep_json": repo_path(args.sweep_json),
+        "fit_json": repo_path(args.fit_json),
+        "trace_root": repo_path(args.trace_root),
         "dt_s": args.dt_s,
+        "velocity_excess_tolerance": args.velocity_excess_tolerance,
         "corrected_limits_rad_s": limits,
         "seeds": items,
         "robot_touched": False,
@@ -386,6 +414,7 @@ def parse_args() -> argparse.Namespace:
         default=ROOT / "outputs/analysis/phase2_rate150_z0075_intermediate_push_failure_diagnostic.json",
     )
     parser.add_argument("--dt-s", type=float, default=0.02)
+    parser.add_argument("--velocity-excess-tolerance", type=float, default=1e-6)
     return parser.parse_args()
 
 

@@ -338,7 +338,7 @@ This is a read-only hash manifest. It did not train, SSH, deploy, or touch the r
 | `tools/report_phase2_colab_launch_handoff.py` | `PRESENT_FILE` | `d8f53081d676fe254e6828c3cf98b792399e5dc8382b1519062e84dc8a9bf589` | 11188 | `tools/report_phase2_colab_launch_handoff.py` |
 | `tools/report_phase2_package_only_archive_verification.py` | `PRESENT_FILE` | `0a2205b238e16dd3851dc4d44e57929caa8a055098d0300c765ad2443051df90` | 9560 | `tools/report_phase2_package_only_archive_verification.py` |
 | `tools/report_phase2_stage_guard.py` | `PRESENT_FILE` | `81f90cf5b692b70466a49856bb9205e673e4673b4a5d046773f67553985ec979` | 21849 | `tools/report_phase2_stage_guard.py` |
-| `tools/report_phase2_intermediate_push_failure.py` | `PRESENT_FILE` | `6318cf8b5becfd1dde3f690d8a3b93dfc5bb91e183a79c735ab1f0849ff1425c` | 15092 | `tools/report_phase2_intermediate_push_failure.py` |
+| `tools/report_phase2_intermediate_push_failure.py` | `PRESENT_FILE` | `b7a0b1eef7f3315a25a97354adc403b5e38ce962ad18f00916a3bc07f8a70317` | 16127 | `tools/report_phase2_intermediate_push_failure.py` |
 | `tools/plan_phase2_z0075_post_push_stability_recipe.py` | `PRESENT_FILE` | `1199888958bd977d744b60f44e99689f3cecf04f35f05481e27c188e612b00d2` | 19067 | `tools/plan_phase2_z0075_post_push_stability_recipe.py` |
 | `tools/report_phase2_z0075_post_push_stability_a100_result.py` | `PRESENT_FILE` | `e98d686b9223e9d47aef7db46e353b738e4eea154b0c72f562808753b96e3793` | 9490 | `tools/report_phase2_z0075_post_push_stability_a100_result.py` |
 | `tools/run_live_oracle_dagger_iteration.py` | `PRESENT_FILE` | `c7dce5eacb08a542759da1ce30fc31fd4e2d49f850413672c45ef5ae948a0462` | 23290 | `tools/run_live_oracle_dagger_iteration.py` |
