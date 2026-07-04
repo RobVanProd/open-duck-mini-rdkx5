@@ -33,6 +33,10 @@ DEFAULT_BRIDGE = ROOT / "outputs/analysis/actuator_response_fit_corrected_knee.j
 DEFAULT_RESTORE_CHECKPOINT = (
     ROOT / "outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0_checkpoint"
 )
+DEFAULT_BEHAVIOR_PRIOR_MLP = (
+    ROOT
+    / "outputs/analysis/phase2_z0075_iter21_early_lunge_gain095_rate150_candidate/candidate_mlp.npz"
+)
 DEFAULT_OUTPUT_MD = (
     ROOT / "outputs/analysis/PHASE2_Z0075_POST_PUSH_STABILITY_NEXT_RECIPE.md"
 )
@@ -77,14 +81,18 @@ def multiline_shell(parts: list[str]) -> str:
     return (" " + "\\\n" + "    ").join(shlex.quote(str(part)) for part in parts)
 
 
-def final_training_args() -> list[str]:
+def final_training_args(
+    behavior_prior_mlp: Path | None,
+    behavior_prior_scale: float,
+    behavior_prior_huber_delta: float,
+) -> list[str]:
     """Arguments appended after phase2-b0g defaults.
 
     Duplicate argparse options are intentional: the appended values are the
     registered recipe overrides for this bounded continuation.
     """
 
-    return [
+    args = [
         "--terrain-hfield-z-scale",
         "0.0075",
         "--push-enable",
@@ -145,9 +153,29 @@ def final_training_args() -> list[str]:
         "--zero-command-probability",
         "0.15",
     ]
+    if behavior_prior_mlp is not None:
+        args.extend(
+            [
+                "--enable-behavior-prior",
+                "--behavior-prior-mlp-npz",
+                rel(behavior_prior_mlp) or str(behavior_prior_mlp),
+                "--behavior-prior-scale",
+                f"{behavior_prior_scale:.12g}",
+                "--behavior-prior-huber-delta",
+                f"{behavior_prior_huber_delta:.12g}",
+            ]
+        )
+    return args
 
 
-def colab_command(session: str, candidate_name: str, restore_checkpoint: Path) -> list[str]:
+def colab_command(
+    session: str,
+    candidate_name: str,
+    restore_checkpoint: Path,
+    behavior_prior_mlp: Path | None,
+    behavior_prior_scale: float,
+    behavior_prior_huber_delta: float,
+) -> list[str]:
     return [
         "python3",
         "tools/run_colab_cli_cuda_workflow.py",
@@ -177,12 +205,24 @@ def colab_command(session: str, candidate_name: str, restore_checkpoint: Path) -
         "--candidate-timeout-s",
         "10800",
         "--phase2-final-training-args-json",
-        json.dumps(final_training_args()),
+        json.dumps(
+            final_training_args(
+                behavior_prior_mlp,
+                behavior_prior_scale,
+                behavior_prior_huber_delta,
+            )
+        ),
         "--run",
     ]
 
 
-def local_command(output_root: str, restore_checkpoint: Path) -> list[str]:
+def local_command(
+    output_root: str,
+    restore_checkpoint: Path,
+    behavior_prior_mlp: Path | None,
+    behavior_prior_scale: float,
+    behavior_prior_huber_delta: float,
+) -> list[str]:
     return [
         "../envs/open-duck-playground/bin/python",
         "tools/run_actuator_bridge_training_smoke.py",
@@ -220,7 +260,11 @@ def local_command(output_root: str, restore_checkpoint: Path) -> list[str]:
         "2",
         "--restore-checkpoint-path",
         rel(restore_checkpoint) or str(restore_checkpoint),
-    ] + final_training_args()
+    ] + final_training_args(
+        behavior_prior_mlp,
+        behavior_prior_scale,
+        behavior_prior_huber_delta,
+    )
 
 
 def eval_command(
@@ -323,13 +367,33 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
     policy = Path(args.policy)
     bridge = Path(args.bridge_json)
     restore_checkpoint = Path(args.restore_checkpoint)
+    behavior_prior_mlp = (
+        None if args.behavior_prior_mlp_npz == "" else Path(args.behavior_prior_mlp_npz)
+    )
     decision = read_json(decision_path)
     diagnostic = read_json(diagnostic_path)
     failed = diagnostic.get("seeds", [])
     failed_seeds = [item for item in failed if item.get("classification") != "PASS_CONTROL_STABLE"]
-    final_args = final_training_args()
-    colab = colab_command(args.session, args.candidate_name, restore_checkpoint)
-    local = local_command(args.local_output_root, restore_checkpoint)
+    final_args = final_training_args(
+        behavior_prior_mlp,
+        args.behavior_prior_scale,
+        args.behavior_prior_huber_delta,
+    )
+    colab = colab_command(
+        args.session,
+        args.candidate_name,
+        restore_checkpoint,
+        behavior_prior_mlp,
+        args.behavior_prior_scale,
+        args.behavior_prior_huber_delta,
+    )
+    local = local_command(
+        args.local_output_root,
+        restore_checkpoint,
+        behavior_prior_mlp,
+        args.behavior_prior_scale,
+        args.behavior_prior_huber_delta,
+    )
     reset_settle_ticks = int(args.reset_settle_ticks)
     reset_mode = str(args.reset_mode)
     return {
@@ -350,6 +414,20 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
         "restore_checkpoint": {
             "path": rel(restore_checkpoint),
             "present": restore_checkpoint.exists(),
+        },
+        "behavior_prior": {
+            "enabled": behavior_prior_mlp is not None,
+            "mlp_npz": rel(behavior_prior_mlp) if behavior_prior_mlp else None,
+            "present": behavior_prior_mlp.exists() if behavior_prior_mlp else False,
+            "sha256": file_sha256(behavior_prior_mlp) if behavior_prior_mlp else None,
+            "scale": args.behavior_prior_scale if behavior_prior_mlp else 0.0,
+            "huber_delta": args.behavior_prior_huber_delta if behavior_prior_mlp else None,
+            "role": (
+                "Frozen state-conditioned Iter21 teacher-action prior; this is used to "
+                "preserve the behavior anchor because PPO step-0 compression was rejected."
+                if behavior_prior_mlp
+                else "disabled"
+            ),
         },
         "measured_boundary": {
             "strongest_confirmed_pass": decision.get("strongest_confirmed_pass"),
@@ -383,6 +461,7 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
         ],
         "recipe_intent": [
             "Continue from the corrected-bridge PPO-compatible warm-start; do not train from scratch.",
+            "Use the frozen Iter21 teacher-action behavior prior to preserve the gait; restore-policy KL alone failed to preserve forward progress in the A100 post-push run.",
             "Keep z=0.0075 rough terrain and intermediate push magnitude 0.075-0.125 as the target boundary.",
             "Preserve the reset-settle10 rough-terrain/no-push behavior as a regression gate.",
             "Remove the single-tick right-ankle envelope excesses without loosening the corrected actuator envelope.",
@@ -403,6 +482,10 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
             "forward_pitch_rate_scale": -0.12,
             "actuator_tracking_scale": -0.012,
             "restore_policy_kl_scale": 4.5,
+            "behavior_prior_scale": args.behavior_prior_scale if behavior_prior_mlp else 0.0,
+            "behavior_prior_huber_delta": (
+                args.behavior_prior_huber_delta if behavior_prior_mlp else None
+            ),
             "reset_settle_ticks_for_gates": reset_settle_ticks,
             "reset_mode_for_gates": reset_mode,
         },
@@ -462,6 +545,12 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         f"- corrected_bridge_sha256: `{payload['corrected_bridge']['sha256']}`",
         f"- restore_checkpoint: `{payload['restore_checkpoint']['path']}`",
         f"- restore_checkpoint_present: `{payload['restore_checkpoint']['present']}`",
+        f"- behavior_prior_enabled: `{payload['behavior_prior']['enabled']}`",
+        f"- behavior_prior_mlp_npz: `{payload['behavior_prior']['mlp_npz']}`",
+        f"- behavior_prior_sha256: `{payload['behavior_prior']['sha256']}`",
+        f"- behavior_prior_scale: `{payload['behavior_prior']['scale']}`",
+        f"- behavior_prior_huber_delta: `{payload['behavior_prior']['huber_delta']}`",
+        f"- behavior_prior_role: {payload['behavior_prior']['role']}",
         "",
         "## Measured Boundary",
         "",
@@ -540,6 +629,9 @@ def main() -> int:
     )
     parser.add_argument("--reset-settle-ticks", type=int, default=10)
     parser.add_argument("--reset-mode", default="home-support")
+    parser.add_argument("--behavior-prior-mlp-npz", default=str(DEFAULT_BEHAVIOR_PRIOR_MLP))
+    parser.add_argument("--behavior-prior-scale", type=float, default=-0.22)
+    parser.add_argument("--behavior-prior-huber-delta", type=float, default=0.06)
     parser.add_argument("--output-md", default=str(DEFAULT_OUTPUT_MD))
     parser.add_argument("--output-json", default=str(DEFAULT_OUTPUT_JSON))
     args = parser.parse_args()
