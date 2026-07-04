@@ -1,0 +1,23 @@
+{
+  "status": "PASS_PHASE2_Z0075_LIVE_ORACLE_RECOVERY_PIVOT_READY",
+  "artifact": "outputs/analysis/PHASE2_Z0075_NEXT_AFTER_MOTION_GUARD_HOLD.md",
+  "offline_only": true,
+  "robot_touched": false,
+  "ssh_used": false,
+  "deployed": false,
+  "grounded_replay": false,
+  "source_result": "outputs/analysis/PHASE2_Z0075_MOTION_GUARDED_LOCAL_ROCM_RESULT.md",
+  "source_status": "HOLD_MOTION_GUARD_STILL_COLLAPSES",
+  "closed_path": "Do not repeat scalar PPO reward tuning from phase2_limit198_ppo_loc_warmstart_step0_checkpoint with Iter21 only as a soft behavior-prior reward.",
+  "recommended_next_branch": "live_oracle_recovery",
+  "recommended_student_policy": "policy/candidates/phase2_z0075_intermediate_push_live_oracle_iter2_failure_recovery_rate150_20260704/candidate.onnx",
+  "recommended_focus": "seed-0 late push-window pitchover at z=0.0075 intermediate push, while preserving seed-7 motion and x=0.0 command semantics",
+  "screen_order": [
+    "x=0.08 seed 0 intermediate push",
+    "x=0.08 seed 7 intermediate push",
+    "x=0.0 seeds 0 and 1",
+    "full x=0.08 8-seed intermediate-push gate only after compact screen passes"
+  ],
+  "falsifier": "If live-oracle recovery preserves motion but only moves the failure between seeds, stop and write a distribution-level decision instead of returning to scalar PPO reward tuning.",
+  "goal_complete": false
+}
