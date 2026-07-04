@@ -1,0 +1,55 @@
+{
+  "status": "HOLD_ITER13_PUSH_WINDOW_RECOVERY_PARTIAL",
+  "candidate": "policy/candidates/phase2_z0075_iter13_push_window_recovery_rate150_20260704/candidate.onnx",
+  "candidate_sha256": "2bf083b32e36641e6c472096529120b00378265b220703e9654b4a5927caa136",
+  "base_policy": "policy/candidates/phase2_z0075_spike_local_rate150_20260704/candidate.onnx",
+  "snippets": {
+    "path": "outputs/analysis/phase2_z0075_home_support_push_window_snippets.json",
+    "entries": 4,
+    "samples": 175
+  },
+  "relabel_manifest": "outputs/analysis/phase2_z0075_home_support_push_window_relabel_manifest.json",
+  "merged_manifest": "outputs/analysis/phase2_z0075_iter13_push_window_recovery_merged_manifest.json",
+  "student_report": "outputs/analysis/phase2_z0075_iter13_push_window_recovery_rate150_student.json",
+  "failseed_gate": {
+    "path": "outputs/analysis/phase2_z0075_iter13_push_window_recovery_failseed_gate.json",
+    "condition": {
+      "task": "rough_terrain_backlash",
+      "terrain_hfield_z_scale": 0.0075,
+      "reset_mode": "home-support",
+      "command_x": 0.08,
+      "bridge_mode": "fitted",
+      "push_enabled": true,
+      "push_interval_s": [1.0, 1.5],
+      "push_magnitude": [0.075, 0.125]
+    },
+    "pass_count": 2,
+    "fail_count": 1,
+    "passed_seeds": [2, 6],
+    "failed_seeds": [0],
+    "velocity_excess": 0.0
+  },
+  "preservation": {
+    "seed0_no_push": {
+      "path": "outputs/analysis/phase2_z0075_iter13_push_window_recovery_seed0_nopush.json",
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "samples": 750,
+      "track_ratio": 0.4207,
+      "mean_local_vx_m_s": 0.0337,
+      "velocity_excess": 0.0
+    }
+  },
+  "decision": {
+    "promote": false,
+    "full_8_seed_gate_run": false,
+    "reason": "Seed 0 still fails first-push lunge/pitchover, although seeds 2 and 6 are repaired and no-push seed0 is preserved.",
+    "next_step": "Trace Iter13 seed0 push failure and run a seed0 first-push-specific recovery pass."
+  },
+  "scope": {
+    "robot_tests": false,
+    "ssh": false,
+    "deploy": false,
+    "ppo_training": false,
+    "runtime_behavior_changes": false
+  }
+}
