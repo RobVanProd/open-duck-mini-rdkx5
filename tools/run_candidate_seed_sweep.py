@@ -214,6 +214,8 @@ def apply_optional_terrain_swing_gate(
         if threshold is None:
             continue
         value = observed.get(name)
+        if value is None and float(threshold) <= 0.0:
+            value = 0.0
         passed = finite(value) and float(value) >= float(threshold)
         checks.append(
             {

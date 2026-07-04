@@ -1,0 +1,46 @@
+{
+  "status": "PASS_PHASE2_Z0075_TERRAIN_NO_PUSH",
+  "generated_at": "2026-07-04T02:46:05Z",
+  "scope": "Offline corrected-bridge z=0.0075 terrain-only screen. No robot, SSH, deploy, grounded replay, runtime behavior change, or training.",
+  "candidate": {
+    "onnx": "policy/candidates/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_20260703/candidate.onnx",
+    "onnx_sha256": "e2281adeedd2fa4b0d416fecee17bb960275457a81538cb3f98fe57d0e54eb18"
+  },
+  "screens": {
+    "z0075_x008_no_push": {
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "path": "outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_z0075_x008_no_push_screen.json",
+      "command_x": 0.08,
+      "terrain_hfield_z_scale": 0.0075,
+      "runs": 8,
+      "duration_complete_count": 8,
+      "fall_count": 0,
+      "track_ratio_mean": 0.3823785077273593,
+      "mean_local_vx_m_s_mean": 0.030590280618188748,
+      "body_pitch_p95_rad_mean": 0.17201651449392313,
+      "base_height_min_m_min": 0.15325957536697388,
+      "max_pitch_vel_p95_rad_s_max": 1.5548467636108398,
+      "instant_velocity_excess_rad_s_max": 0.0,
+      "max_tracking_p95_rad_max": 0.18723829984664914,
+      "single_support_pct_mean": 25.6
+    },
+    "z0075_x0_no_push": {
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "path": "outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_z0075_x0_no_push_screen.json",
+      "command_x": 0.0,
+      "terrain_hfield_z_scale": 0.0075,
+      "runs": 8,
+      "duration_complete_count": 8,
+      "fall_count": 0,
+      "mean_local_vx_m_s_mean": 0.000800949602247177,
+      "body_pitch_p95_rad_mean": 0.050801573830621616,
+      "base_height_min_m_min": 0.1533370018005371,
+      "max_pitch_vel_p95_rad_s_max": 0.026616454124450684,
+      "instant_velocity_excess_rad_s_max": 0.0,
+      "max_tracking_p95_rad_max": 0.03660342693328858,
+      "single_support_pct_mean": 0.0
+    }
+  },
+  "checker_note": "The zero-command companion was rerun after fixing the optional terrain-swing checker to treat missing swing metrics as zero when the configured threshold is non-positive. This prevents a standing x=0.0 policy from being incorrectly held for no swing.",
+  "decision": "Rate150 clears z=0.0075 terrain-only at x=0.08 and x=0.0. The current Phase 2 boundary is stronger push, not modest terrain height."
+}

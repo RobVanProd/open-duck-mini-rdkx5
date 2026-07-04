@@ -1,9 +1,9 @@
 # Phase 2 Artifact Manifest
 
 status: `PASS_PHASE2_ARTIFACT_MANIFEST_READY`
-stage: `stage_z002_teacher_continuity`
+stage: `stage_z005_stronger_push_or_terrain`
 current_gate_status: `PASS_PHASE2_CURRICULUM_GATES_READY_TO_ADVANCE`
-next_recipe_status: `PASS_Z002_TEACHER_CONTINUITY_RECIPE_READY`
+next_recipe_status: `PASS_Z005_SUPPORT_RECIPE_READY`
 
 This is a read-only hash manifest. It did not train, SSH, deploy, or touch the robot.
 
@@ -17,8 +17,8 @@ This is a read-only hash manifest. It did not train, SSH, deploy, or touch the r
 
 | name | status | sha256 | size/files | path |
 |---|---|---|---:|---|
-| `candidate` | `PRESENT_FILE` | `eacc7c69e517b7cef32daeedeb6b110cd766e129183b071a7254f6fa0af5c1e2` | 886302 | `policy/candidates/phase2_iter2_right_ankle_limit198_rate165_20260703/candidate.onnx` |
-| `candidate_metadata` | `PRESENT_FILE` | `c444483fb51afba7096df6150769a663fbc2f1d64587bd46339159ffe7088703` | 1118 | `policy/candidates/phase2_iter2_right_ankle_limit198_rate165_20260703/README.md` |
+| `candidate` | `PRESENT_FILE` | `e2281adeedd2fa4b0d416fecee17bb960275457a81538cb3f98fe57d0e54eb18` | 162814 | `policy/candidates/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_20260703/candidate.onnx` |
+| `candidate_metadata` | `PRESENT_FILE` | `f4f3a593175bcb160b02f507e78d14d017aafbc63f3420d0f215aba08a9ae6f9` | 3095 | `policy/candidates/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_20260703/README.md` |
 | `corrected_bridge` | `PRESENT_FILE` | `3661543d0745073b561eb4fa2ae8f9616368ee8b72cb397f8b953dada532c8c0` | 18363 | `outputs/analysis/actuator_response_fit_corrected_knee.json` |
 | `restore_checkpoint` | `PRESENT_DIR` | `65ceb849516fcf64d8b872a913068f68ed6a35e12980cd143823fc72696f7f4e` | 11 | `outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0_checkpoint` |
 
@@ -167,6 +167,16 @@ This is a read-only hash manifest. It did not train, SSH, deploy, or touch the r
 | `outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_decision.json` | `PRESENT_FILE` | `e849e08e7c9295aa7de9c8de55c6c1a40f1f60e6ae827711c0fef4ffe3f24b26` | 5167 | `outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_decision.json` |
 | `outputs/analysis/PHASE2_LIMIT198_TRANSITION_PRESERVING_LIVE_ORACLE_ITER3_PHASE_MODULATED_RATE150_Z005_DECISION.md` | `PRESENT_FILE` | `1f444d913fd100435ef898187e98e790643a000e7f510877516460bb6f322513` | 1862 | `outputs/analysis/PHASE2_LIMIT198_TRANSITION_PRESERVING_LIVE_ORACLE_ITER3_PHASE_MODULATED_RATE150_Z005_DECISION.md` |
 | `outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_z005_decision.json` | `PRESENT_FILE` | `79e8aabe8186e8b7da5fa2835d95b20de6ec8ca042895495b45cd69506cecc4e` | 3469 | `outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_z005_decision.json` |
+| `outputs/analysis/PHASE2_LIMIT198_TRANSITION_PRESERVING_LIVE_ORACLE_ITER3_PHASE_MODULATED_RATE150_Z005_X008_STRONGER_PUSH_SCREEN.md` | `PRESENT_FILE` | `7b66ce2daeb107eb6b2a2638b4a4970f1cf0c22034f9fbe83c03b6679d61e0de` | 3861 | `outputs/analysis/PHASE2_LIMIT198_TRANSITION_PRESERVING_LIVE_ORACLE_ITER3_PHASE_MODULATED_RATE150_Z005_X008_STRONGER_PUSH_SCREEN.md` |
+| `outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_z005_x008_stronger_push_screen.json` | `PRESENT_FILE` | `4bbed1a9e4915810289c786cf93fa85661b1f77ab41b76253ac5e712a3cad35f` | 57990 | `outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_z005_x008_stronger_push_screen.json` |
+| `outputs/analysis/PHASE2_LIMIT198_TRANSITION_PRESERVING_LIVE_ORACLE_ITER3_PHASE_MODULATED_RATE150_Z005_X008_STRONGER_PUSH_DECISION.md` | `PRESENT_FILE` | `c21677d5bb1f1478b34c1187757beb7b20ff5827f970d96d351aad6f05a687fe` | 2098 | `outputs/analysis/PHASE2_LIMIT198_TRANSITION_PRESERVING_LIVE_ORACLE_ITER3_PHASE_MODULATED_RATE150_Z005_X008_STRONGER_PUSH_DECISION.md` |
+| `outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_z005_x008_stronger_push_decision.json` | `PRESENT_FILE` | `e8bd5900708eec5cbc515429814ab0349601f10f27a63e0813fb78c542d6d470` | 2401 | `outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_z005_x008_stronger_push_decision.json` |
+| `outputs/analysis/PHASE2_LIMIT198_TRANSITION_PRESERVING_LIVE_ORACLE_ITER3_PHASE_MODULATED_RATE150_Z0075_X008_NO_PUSH_SCREEN.md` | `PRESENT_FILE` | `91cc07849d0f9dd3e9ef16de6b8eb64b648e799b3c2ef6a863941f02634a303a` | 3800 | `outputs/analysis/PHASE2_LIMIT198_TRANSITION_PRESERVING_LIVE_ORACLE_ITER3_PHASE_MODULATED_RATE150_Z0075_X008_NO_PUSH_SCREEN.md` |
+| `outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_z0075_x008_no_push_screen.json` | `PRESENT_FILE` | `9671636ca8cadb764819a14159b8fbed0733950fa5779c18961c420daccfa80e` | 53927 | `outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_z0075_x008_no_push_screen.json` |
+| `outputs/analysis/PHASE2_LIMIT198_TRANSITION_PRESERVING_LIVE_ORACLE_ITER3_PHASE_MODULATED_RATE150_Z0075_X0_NO_PUSH_SCREEN.md` | `PRESENT_FILE` | `78a4ba2210c894c37d74a8124b5eb6d77f41f7fa5bb0d3881c665bd279d1c1ea` | 3714 | `outputs/analysis/PHASE2_LIMIT198_TRANSITION_PRESERVING_LIVE_ORACLE_ITER3_PHASE_MODULATED_RATE150_Z0075_X0_NO_PUSH_SCREEN.md` |
+| `outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_z0075_x0_no_push_screen.json` | `PRESENT_FILE` | `d124443a72cdafeb7f0ee59ee9f1cc2ace4ee1ca83439f00f62cb8f3dc7c0703` | 51525 | `outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_z0075_x0_no_push_screen.json` |
+| `outputs/analysis/PHASE2_LIMIT198_TRANSITION_PRESERVING_LIVE_ORACLE_ITER3_PHASE_MODULATED_RATE150_Z0075_TERRAIN_DECISION.md` | `PRESENT_FILE` | `bee3ac1fa19bf59b9768eba101c43634dc33005514e24271b539eb112a8c0860` | 2350 | `outputs/analysis/PHASE2_LIMIT198_TRANSITION_PRESERVING_LIVE_ORACLE_ITER3_PHASE_MODULATED_RATE150_Z0075_TERRAIN_DECISION.md` |
+| `outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_z0075_terrain_decision.json` | `PRESENT_FILE` | `186fda3138bf2f312c88d35a608d7f9c6e9077608ac53dedd5b92519fd59d8dd` | 2412 | `outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_z0075_terrain_decision.json` |
 | `policy/candidates/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_20260703/README.md` | `PRESENT_FILE` | `f4f3a593175bcb160b02f507e78d14d017aafbc63f3420d0f215aba08a9ae6f9` | 3095 | `policy/candidates/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_20260703/README.md` |
 | `policy/candidates/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_20260703/candidate.onnx` | `PRESENT_FILE` | `e2281adeedd2fa4b0d416fecee17bb960275457a81538cb3f98fe57d0e54eb18` | 162814 | `policy/candidates/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_20260703/candidate.onnx` |
 | `policy/candidates/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_20260703/student.npz` | `PRESENT_FILE` | `eed75a10ddea007697eabd9494e613f190cf8cb2687ff20ae1e03a77e3649b74` | 165394 | `policy/candidates/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_20260703/student.npz` |
@@ -206,10 +216,11 @@ This is a read-only hash manifest. It did not train, SSH, deploy, or touch the r
 | `tools/report_phase2_colab_launch_handoff.py` | `PRESENT_FILE` | `d8f53081d676fe254e6828c3cf98b792399e5dc8382b1519062e84dc8a9bf589` | 11188 | `tools/report_phase2_colab_launch_handoff.py` |
 | `tools/report_phase2_package_only_archive_verification.py` | `PRESENT_FILE` | `0a2205b238e16dd3851dc4d44e57929caa8a055098d0300c765ad2443051df90` | 9560 | `tools/report_phase2_package_only_archive_verification.py` |
 | `tools/report_phase2_stage_guard.py` | `PRESENT_FILE` | `81f90cf5b692b70466a49856bb9205e673e4673b4a5d046773f67553985ec979` | 21849 | `tools/report_phase2_stage_guard.py` |
+| `tools/run_candidate_seed_sweep.py` | `PRESENT_FILE` | `763653f04bf0c844a11342eea0f6ca6e0df0962c4ddbe0ee13be5cfae011541a` | 34648 | `tools/run_candidate_seed_sweep.py` |
 | `tools/run_colab_cli_cuda_workflow.py` | `PRESENT_FILE` | `1e1b05465e55dff561091311859a90fa8935e76a65316be831f029e066f72935` | 158176 | `tools/run_colab_cli_cuda_workflow.py` |
 
 ## Promotion Gate
 
-- decision_tool: `tools/report_phase2_z002_tracking_margin_post_training_gates.py`
-- required_post_training_status: `PASS_PHASE2_Z002_TRACKING_MARGIN_POST_TRAINING_GATES`
+- decision_tool: `outputs/analysis/PHASE2_LIMIT198_TRANSITION_PRESERVING_LIVE_ORACLE_ITER3_PHASE_MODULATED_RATE150_Z0075_TERRAIN_DECISION.md`
+- required_post_training_status: `PASS_PHASE2_Z0075_TERRAIN_NO_PUSH`
 - robot_validation_allowed: `False`

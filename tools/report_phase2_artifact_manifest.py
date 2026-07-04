@@ -21,9 +21,13 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT_MD = ROOT / "outputs/analysis/PHASE2_ARTIFACT_MANIFEST.md"
 DEFAULT_OUTPUT_JSON = ROOT / "outputs/analysis/phase2_artifact_manifest.json"
-DEFAULT_CANDIDATE = ROOT / "policy/candidates/phase2_iter2_right_ankle_limit198_rate165_20260703/candidate.onnx"
+DEFAULT_CANDIDATE = (
+    ROOT
+    / "policy/candidates/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_20260703/candidate.onnx"
+)
 DEFAULT_CANDIDATE_METADATA = (
-    ROOT / "policy/candidates/phase2_iter2_right_ankle_limit198_rate165_20260703/README.md"
+    ROOT
+    / "policy/candidates/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_20260703/README.md"
 )
 DEFAULT_BRIDGE = ROOT / "outputs/analysis/actuator_response_fit_corrected_knee.json"
 DEFAULT_RESTORE_CHECKPOINT = (
@@ -163,6 +167,16 @@ REVIEW_ARTIFACTS = [
     "outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_decision.json",
     "outputs/analysis/PHASE2_LIMIT198_TRANSITION_PRESERVING_LIVE_ORACLE_ITER3_PHASE_MODULATED_RATE150_Z005_DECISION.md",
     "outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_z005_decision.json",
+    "outputs/analysis/PHASE2_LIMIT198_TRANSITION_PRESERVING_LIVE_ORACLE_ITER3_PHASE_MODULATED_RATE150_Z005_X008_STRONGER_PUSH_SCREEN.md",
+    "outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_z005_x008_stronger_push_screen.json",
+    "outputs/analysis/PHASE2_LIMIT198_TRANSITION_PRESERVING_LIVE_ORACLE_ITER3_PHASE_MODULATED_RATE150_Z005_X008_STRONGER_PUSH_DECISION.md",
+    "outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_z005_x008_stronger_push_decision.json",
+    "outputs/analysis/PHASE2_LIMIT198_TRANSITION_PRESERVING_LIVE_ORACLE_ITER3_PHASE_MODULATED_RATE150_Z0075_X008_NO_PUSH_SCREEN.md",
+    "outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_z0075_x008_no_push_screen.json",
+    "outputs/analysis/PHASE2_LIMIT198_TRANSITION_PRESERVING_LIVE_ORACLE_ITER3_PHASE_MODULATED_RATE150_Z0075_X0_NO_PUSH_SCREEN.md",
+    "outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_z0075_x0_no_push_screen.json",
+    "outputs/analysis/PHASE2_LIMIT198_TRANSITION_PRESERVING_LIVE_ORACLE_ITER3_PHASE_MODULATED_RATE150_Z0075_TERRAIN_DECISION.md",
+    "outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_z0075_terrain_decision.json",
     "policy/candidates/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_20260703/README.md",
     "policy/candidates/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_20260703/candidate.onnx",
     "policy/candidates/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_20260703/student.npz",
@@ -202,6 +216,7 @@ REVIEW_ARTIFACTS = [
     "tools/report_phase2_colab_launch_handoff.py",
     "tools/report_phase2_package_only_archive_verification.py",
     "tools/report_phase2_stage_guard.py",
+    "tools/run_candidate_seed_sweep.py",
     "tools/run_colab_cli_cuda_workflow.py",
 ]
 
@@ -307,10 +322,11 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
     bridge = Path(args.bridge_json)
     restore_checkpoint = Path(args.restore_checkpoint)
     ledger = load_json_optional(ROOT / "outputs/analysis/phase2_curriculum_gate_ledger.json")
-    recipe = load_json_optional(ROOT / "outputs/analysis/phase2_z002_teacher_continuity_next_recipe.json")
+    stage_guard = load_json_optional(ROOT / "outputs/analysis/phase2_stage_guard.json")
+    recipe = load_json_optional(ROOT / "outputs/analysis/phase2_z005_support_next_recipe.json")
     return {
         "status": "PASS_PHASE2_ARTIFACT_MANIFEST_READY",
-        "stage": "stage_z002_teacher_continuity",
+        "stage": stage_guard.get("current_stage") or "stage_z005_stronger_push_or_terrain",
         "current_gate_status": ledger.get("status"),
         "next_recipe_status": recipe.get("status"),
         "git": git_state(),
@@ -323,8 +339,8 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
         "gate_artifacts": {name: artifact(ROOT / name) for name in GATE_ARTIFACTS},
         "review_artifacts": {name: artifact(ROOT / name) for name in REVIEW_ARTIFACTS},
         "promotion_gate": {
-            "decision_tool": "tools/report_phase2_z002_tracking_margin_post_training_gates.py",
-            "required_post_training_status": "PASS_PHASE2_Z002_TRACKING_MARGIN_POST_TRAINING_GATES",
+            "decision_tool": "outputs/analysis/PHASE2_LIMIT198_TRANSITION_PRESERVING_LIVE_ORACLE_ITER3_PHASE_MODULATED_RATE150_Z0075_TERRAIN_DECISION.md",
+            "required_post_training_status": "PASS_PHASE2_Z0075_TERRAIN_NO_PUSH",
             "robot_validation_allowed": False,
         },
         "robot_touched": False,
