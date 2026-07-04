@@ -1,0 +1,48 @@
+{
+  "status": "HOLD_RATE_CLEAN_REINTRODUCED_SEED0_FALL",
+  "candidate": "policy/candidates/phase2_z0075_iter3_seed0_recovery_snippet_augmented_rateclean15_20260704/candidate.onnx",
+  "candidate_sha256": "924699fc7b4c580181b715f37dd2d22fd506352399ec0d25de34377a993ed265",
+  "student_npz": "policy/candidates/phase2_z0075_iter3_seed0_recovery_snippet_augmented_rateclean15_20260704/student.npz",
+  "student_npz_sha256": "acd2fcc6e34ff823a65b2073a554efa45462b771dd8f47178236ec69868885a5",
+  "training_manifest": "outputs/analysis/phase2_z0075_iter3_seed0_recovery_snippet_augmented_weighted_manifest.json",
+  "dataset_id": "9f4ba6b1c342d17b",
+  "target_rate_regularization": {
+    "limit_rad_s": 1.5,
+    "scale": 1.0
+  },
+  "fit": {
+    "status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE",
+    "samples": 51294,
+    "mae": 0.010090958771263833,
+    "p95_abs_error": 0.03407930117100477,
+    "max_abs_error": 0.6718041115209566,
+    "target_rate_p95_rad_s": 1.3322250843048096,
+    "target_rate_p99_rad_s": 1.4912680387496948,
+    "target_rate_max_rad_s": 1.6698607206344604,
+    "onnx_p95_abs_error": 1.1920928955078125e-07,
+    "onnx_max_abs_error": 2.384185791015625e-07
+  },
+  "screen": {
+    "x008": {
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "falls": 1,
+      "duration_complete": 1,
+      "p95_velocity_excess_rad_s": 0.0,
+      "max_velocity_excess_rad_s": 0.0,
+      "result_md": "outputs/analysis/PHASE2_Z0075_ITER3_SNIPPET_AUGMENTED_RATECLEAN15_X008_PUSH_SCREEN.md",
+      "result_json": "outputs/analysis/phase2_z0075_iter3_snippet_augmented_rateclean15_x008_push_screen.json"
+    },
+    "x0": {
+      "status": "PASS",
+      "falls": 0,
+      "duration_complete": 2,
+      "vx_mean_m_s": 0.0008444157498268699,
+      "push_success_mean": 0.9198717948717949,
+      "max_velocity_excess_rad_s": 0.0,
+      "result_md": "outputs/analysis/PHASE2_Z0075_ITER3_SNIPPET_AUGMENTED_RATECLEAN15_X0_PUSH_SCREEN.md",
+      "result_json": "outputs/analysis/phase2_z0075_iter3_snippet_augmented_rateclean15_x0_push_screen.json"
+    }
+  },
+  "promote": false,
+  "interpretation": "Global rate-cleaning removes the velocity spike but reintroduces seed-0 push/pitchover. The next branch should localize rate cleanup or add push/recovery context instead of increasing global target-rate regularization."
+}
