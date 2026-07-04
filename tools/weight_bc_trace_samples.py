@@ -39,6 +39,24 @@ def contact_code(row: dict[str, Any]) -> str:
 
 
 def row_matches(row: dict[str, Any], args: argparse.Namespace) -> bool:
+    if args.tick_start is not None or args.tick_end is not None:
+        try:
+            tick = int(row.get("tick"))
+        except (TypeError, ValueError):
+            return False
+        if args.tick_start is not None and tick < int(args.tick_start):
+            return False
+        if args.tick_end is not None and tick > int(args.tick_end):
+            return False
+    if args.time_start_s is not None or args.time_end_s is not None:
+        try:
+            time_s = float(row.get("time_s"))
+        except (TypeError, ValueError):
+            return False
+        if args.time_start_s is not None and time_s < float(args.time_start_s):
+            return False
+        if args.time_end_s is not None and time_s > float(args.time_end_s):
+            return False
     if args.contact_code and contact_code(row) != args.contact_code:
         return False
     if args.min_command_x is not None:
@@ -105,6 +123,10 @@ def render_markdown(payload: dict[str, Any]) -> str:
         "",
         "## Rule",
         "",
+        f"- tick_start: `{payload['rule']['tick_start']}`",
+        f"- tick_end: `{payload['rule']['tick_end']}`",
+        f"- time_start_s: `{payload['rule']['time_start_s']}`",
+        f"- time_end_s: `{payload['rule']['time_end_s']}`",
         f"- contact_code: `{payload['rule']['contact_code']}`",
         f"- min_command_x: `{payload['rule']['min_command_x']}`",
         f"- match_weight: `{payload['rule']['match_weight']}`",
@@ -143,6 +165,10 @@ def main() -> int:
     parser.add_argument("--trace-glob", action="append", required=True)
     parser.add_argument("--output-trace-dir", required=True)
     parser.add_argument("--output-parent-depth", type=int, default=1)
+    parser.add_argument("--tick-start", type=int, default=None)
+    parser.add_argument("--tick-end", type=int, default=None)
+    parser.add_argument("--time-start-s", type=float, default=None)
+    parser.add_argument("--time-end-s", type=float, default=None)
     parser.add_argument("--contact-code", default=None)
     parser.add_argument("--min-command-x", type=float, default=None)
     parser.add_argument("--match-weight", type=float, required=True)
@@ -162,6 +188,10 @@ def main() -> int:
         "trace_globs": args.trace_glob,
         "output_trace_dir": str(output_dir),
         "rule": {
+            "tick_start": args.tick_start,
+            "tick_end": args.tick_end,
+            "time_start_s": args.time_start_s,
+            "time_end_s": args.time_end_s,
             "contact_code": args.contact_code,
             "min_command_x": args.min_command_x,
             "match_weight": float(args.match_weight),
