@@ -173,11 +173,19 @@ def summarize_seed(
         and last_push_end is not None
         and int(pitch08["tick"]) > last_push_end
     )
+    in_window_pitch = (
+        status != "PASS_CANDIDATE_SIM_GATE"
+        and pitch08 is not None
+        and last_push_end is not None
+        and int(pitch08["tick"]) <= last_push_end
+    )
     max_excess = float(vel["max_excess"]["excess_rad_s"])
     if status == "PASS_CANDIDATE_SIM_GATE":
         classification = "PASS_CONTROL_STABLE"
     elif max_excess > velocity_excess_tolerance:
         classification = "ACTUATOR_ENVELOPE_EXCESS"
+    elif in_window_pitch:
+        classification = "PUSH_WINDOW_PITCHOVER"
     elif delayed_pitch:
         classification = "POST_PUSH_DELAYED_PITCHOVER"
     else:
@@ -264,8 +272,9 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         f"- failing/held seeds: `{len(failures)}`",
         f"- classification counts: `{counts}`",
         "- This report separates corrected actuator-envelope excess from post-push",
-        "  delayed pitch/base-height instability. Envelope excess is treated as the",
-        "  harder blocker because it violates the canonical corrected bridge gate.",
+        "  delayed pitch/base-height instability and push-window pitch-over.",
+        "  Envelope excess is treated as the harder blocker because it violates",
+        "  the canonical corrected bridge gate.",
         "",
         "## Inputs",
         "",
@@ -331,8 +340,9 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
             "the corrected-envelope violation rather than only adding stability or",
             "phase timing. If a seed is classified as `POST_PUSH_DELAYED_PITCHOVER`,",
             "the next recipe should add post-push pitch/base-height recovery while",
-            "preserving the passing compact behavior. The corrected actuator envelope",
-            "must remain fixed.",
+            "preserving the passing compact behavior. If a seed is classified as",
+            "`PUSH_WINDOW_PITCHOVER`, the next recipe should target recovery inside",
+            "the active push window. The corrected actuator envelope must remain fixed.",
             "",
         ]
     )
@@ -356,6 +366,9 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
     delayed = [
         item for item in failures if item["classification"] == "POST_PUSH_DELAYED_PITCHOVER"
     ]
+    in_window = [
+        item for item in failures if item["classification"] == "PUSH_WINDOW_PITCHOVER"
+    ]
     excess = [
         item for item in failures if item["classification"] == "ACTUATOR_ENVELOPE_EXCESS"
     ]
@@ -365,6 +378,8 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
         else
         "HOLD_PHASE2_INTERMEDIATE_PUSH_POST_RECOVERY_PITCHOVER"
         if failures and len(delayed) == len(failures)
+        else "HOLD_PHASE2_INTERMEDIATE_PUSH_WINDOW_PITCHOVER"
+        if failures and len(in_window) == len(failures)
         else "PASS_PHASE2_INTERMEDIATE_PUSH_TRACE_DIAGNOSTIC"
         if not failures
         else "HOLD_PHASE2_INTERMEDIATE_PUSH_TRACE_MIXED"

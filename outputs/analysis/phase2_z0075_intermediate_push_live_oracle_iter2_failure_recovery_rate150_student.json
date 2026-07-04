@@ -1,0 +1,114 @@
+{
+  "activation": "swish",
+  "config": {
+    "batch_size": 1024,
+    "learning_rate": 0.0007,
+    "seed": 15027,
+    "steps": 6000,
+    "target_rate_limit_rad_s": 1.5,
+    "target_rate_scale": 0.1
+  },
+  "context_hidden_sizes": [
+    64
+  ],
+  "context_indices": [
+    6,
+    97,
+    98,
+    99,
+    100
+  ],
+  "exported_onnx": "policy/candidates/phase2_z0075_intermediate_push_live_oracle_iter2_failure_recovery_rate150_20260704/candidate.onnx",
+  "loss_rows": [
+    {
+      "loss": 0.20985722541809082,
+      "step": 1
+    },
+    {
+      "loss": 0.000555569538846612,
+      "step": 500
+    },
+    {
+      "loss": 0.00047000544145703316,
+      "step": 1000
+    },
+    {
+      "loss": 0.0004222906718496233,
+      "step": 1500
+    },
+    {
+      "loss": 0.0004262692527845502,
+      "step": 2000
+    },
+    {
+      "loss": 0.0003544322680681944,
+      "step": 2500
+    },
+    {
+      "loss": 0.0002827054704539478,
+      "step": 3000
+    },
+    {
+      "loss": 0.0002795700274873525,
+      "step": 3500
+    },
+    {
+      "loss": 0.00028846951317973435,
+      "step": 4000
+    },
+    {
+      "loss": 0.00025897877640090883,
+      "step": 4500
+    },
+    {
+      "loss": 0.00027042441070079803,
+      "step": 5000
+    },
+    {
+      "loss": 0.0002709394902922213,
+      "step": 5500
+    },
+    {
+      "loss": 0.0003560200275387615,
+      "step": 6000
+    }
+  ],
+  "manifest": "outputs/analysis/phase2_z0075_intermediate_push_live_oracle_iter2_failure_recovery_run/live_oracle_dagger_aggregate_manifest.json",
+  "modulation_scale": 0.5,
+  "onnx_verify": {
+    "max_abs_error": 2.980232238769531e-07,
+    "p95_abs_error": 1.2665987014770508e-07,
+    "path": "policy/candidates/phase2_z0075_intermediate_push_live_oracle_iter2_failure_recovery_rate150_20260704/candidate.onnx",
+    "samples_checked": 64
+  },
+  "sample_weight": {
+    "max": 5.0,
+    "p50": 3.0,
+    "p95": 5.0,
+    "weighted_samples": 142737.0
+  },
+  "samples": 48815,
+  "saved_npz": "policy/candidates/phase2_z0075_intermediate_push_live_oracle_iter2_failure_recovery_rate150_20260704/student.npz",
+  "status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE",
+  "target_rate": {
+    "max_rad_s": 2.46278977394104,
+    "p50_rad_s": 0.15715305507183075,
+    "p95_rad_s": 1.3715633153915405,
+    "p99_rad_s": 1.5318031311035156,
+    "pair_count": 48747
+  },
+  "train_metrics": {
+    "mae": 0.009421974143174581,
+    "max_abs_error": 0.48772478103637695,
+    "p50_abs_error": 0.005708955228328705,
+    "p95_abs_error": 0.029820443426000192,
+    "p99_abs_error": 0.05518391728401184,
+    "pred_action_saturation_pct": 0.0,
+    "rmse": 0.015623373463935936,
+    "samples": 48815
+  },
+  "trunk_hidden_sizes": [
+    512,
+    256
+  ]
+}
