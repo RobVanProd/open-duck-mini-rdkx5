@@ -1,0 +1,57 @@
+{
+  "status": "HOLD_COLAB_GPU_ALLOCATION_UNAVAILABLE",
+  "scope": "offline launch attempt only; no robot, SSH, deploy, grounded replay, runtime behavior change, or local training",
+  "intended_run": {
+    "recipe": "outputs/analysis/PHASE2_Z0075_ITER21_BEHAVIOR_PRIOR_POST_PUSH_RECIPE.md",
+    "workflow": "phase2-b0g",
+    "session": "open-duck-phase2-a100",
+    "candidate_name": "phase2_z0075_iter21_behavior_prior_post_push_recovery",
+    "restore_checkpoint": "outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0_checkpoint",
+    "behavior_prior_mlp_npz": "outputs/analysis/phase2_z0075_iter21_early_lunge_gain095_rate150_candidate/candidate_mlp.npz",
+    "behavior_prior_sha256": "71f520712a10613d3e2304a33cbcd641f6bb59fb0d5c1dc3e34a5c8fe93569b2"
+  },
+  "attempts": [
+    {
+      "command": "python3 tools/run_colab_cli_cuda_workflow.py ... --run",
+      "status": "HOLD_SESSION_MISSING",
+      "evidence": "colab console -s open-duck-phase2-a100 returned Session 'open-duck-phase2-a100' not found."
+    },
+    {
+      "command": "colab new -s open-duck-phase2-a100 --gpu A100",
+      "status": "HOLD_ACCELERATOR_REJECTED",
+      "evidence": "Backend rejected accelerator A100."
+    },
+    {
+      "command": "colab new -s open-duck-phase2-a100 --gpu L4",
+      "status": "HOLD_ACCELERATOR_REJECTED",
+      "evidence": "Backend rejected accelerator L4."
+    },
+    {
+      "command": "colab new -s open-duck-phase2-a100 --gpu T4",
+      "status": "HOLD_COLAB_SERVICE_UNAVAILABLE",
+      "evidence": "Colab assignment POST returned Service Unavailable."
+    }
+  ],
+  "colab_sessions_after_attempts": "No active sessions found on server.",
+  "local_backend_observation": {
+    "gpu0": {
+      "name": "AMD Radeon RX 7900 XTX",
+      "gfx": "gfx1100",
+      "busy_pct": 18,
+      "vram_allocated_pct": 12
+    },
+    "gpu1": {
+      "name": "AMD Radeon Graphics",
+      "gfx": "gfx1036",
+      "busy_pct": 73,
+      "vram_allocated_pct": 95
+    },
+    "active_unrelated_process": "/home/lsd/robots/envs/lerobot-so101/bin/python train_dreamer.py --logdir /home/lsd/robots/so101_dreamer_ue/training/runs/run7_20260704_parallel",
+    "local_phase2_training_started": false,
+    "reason": "Local GPU resources were already active; this branch needs a clean training/eval backend."
+  },
+  "decision": {
+    "training_started": false,
+    "next_action": "retry the committed behavior-prior Colab recipe when a GPU session is available, or explicitly stop/finish the unrelated local GPU workload before using the local ROCm fallback"
+  }
+}
