@@ -1,0 +1,34 @@
+{
+  "candidate_name": "phase2_z0075_post_push_stability_cuda",
+  "deploy_performed": false,
+  "grounded_replay": false,
+  "intended_recipe": "outputs/analysis/PHASE2_Z0075_POST_PUSH_STABILITY_NEXT_RECIPE.md",
+  "launch_attempt": {
+    "run_dir": "outputs/analysis/colab_cli/open-duck-phase2-a100-phase2-b0g-20260704T042055Z",
+    "stderr_excerpt": "Connection closed. [colab] Session 'open-duck-phase2-a100' appears to be lost (404/401). Cleaning up.",
+    "workflow": "phase2-b0g"
+  },
+  "next_action": "Re-auth/recreate the Colab session, then rerun the preferred command from outputs/analysis/PHASE2_Z0075_POST_PUSH_STABILITY_NEXT_RECIPE.md.",
+  "recipe_target": {
+    "corrected_bridge": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+    "push_magnitude_max": 0.125,
+    "push_magnitude_min": 0.075,
+    "terrain_hfield_z_scale": 0.0075
+  },
+  "robot_touched": false,
+  "session": "open-duck-phase2-a100",
+  "ssh_used": false,
+  "status": "HOLD_COLAB_TRANSPORT_LOST",
+  "timestamp_utc": "2026-07-04T04:22:10Z",
+  "training_started": false,
+  "transport_checks": [
+    {
+      "command": "colab exec -s open-duck-phase2-a100 --file /tmp/open_duck_colab_transport_check.py --timeout 30",
+      "result": "HOLD_COLAB_TRANSPORT_LOST"
+    },
+    {
+      "command": "colab console -s open-duck-phase2-a100 < /tmp/open_duck_colab_console_check.sh",
+      "result": "HOLD_COLAB_TRANSPORT_LOST"
+    }
+  ]
+}

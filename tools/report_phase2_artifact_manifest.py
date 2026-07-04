@@ -194,6 +194,8 @@ REVIEW_ARTIFACTS = [
     "outputs/analysis/phase2_rate150_z0075_intermediate_push_failure_diagnostic.json",
     "outputs/analysis/PHASE2_Z0075_POST_PUSH_STABILITY_NEXT_RECIPE.md",
     "outputs/analysis/phase2_z0075_post_push_stability_next_recipe.json",
+    "outputs/analysis/PHASE2_Z0075_POST_PUSH_STABILITY_COLAB_LAUNCH_HOLD.md",
+    "outputs/analysis/phase2_z0075_post_push_stability_colab_launch_hold.json",
     "policy/candidates/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_20260703/README.md",
     "policy/candidates/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_20260703/candidate.onnx",
     "policy/candidates/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_20260703/student.npz",
