@@ -1,8 +1,8 @@
 # Phase 2 Stage Guard
 
-status: `HOLD_PHASE2_COLAB_GPU_SESSION_NOT_READY`
-current_stage: `stage_z005_support`
-current_gate_status: `HOLD_PHASE2_STAGE_Z005_SUPPORT`
+status: `PASS_PHASE2_STAGE_GUARD_READY_FOR_NEXT_ROBUSTNESS_SCREEN`
+current_stage: `stage_z005_stronger_push_or_terrain`
+current_gate_status: `PASS_PHASE2_CURRICULUM_GATES_READY_TO_ADVANCE`
 next_recipe_status: `PASS_Z005_SUPPORT_RECIPE_READY`
 launch_status: `HOLD_PHASE2_COLAB_GPU_SESSION_NOT_READY`
 preferred_workflow: `phase2-z005-support`
@@ -11,7 +11,7 @@ This is a read-only guard. It did not train, SSH, deploy, or touch the robot.
 
 ## Stage Strategy
 
-The selected launch workflow targets the current held curriculum stage.
+The current promoted parent has cleared z=0.005 no-push and gentle-push support gates plus z=0.0026 regressions. The next work is a one-rung offline robustness screen: stronger z=0.005 push or modestly higher terrain, followed by paired x=0.08/x=0.0 command gates before any training or robot validation.
 
 ## Readiness
 
@@ -27,7 +27,7 @@ The selected launch workflow targets the current held curriculum stage.
 - local_rocm_evidence: `outputs/analysis/rocm_mjx_isolation_post_bios/rocm_mjx_runtime_isolation.json`
 - post_training_tool: `report_phase2_z005_post_training_gates.py`
 - post_training_status: `PASS_PHASE2_Z005_POST_TRAINING_GATES`
-- held_gates: `z005_x000_nopush, z005_x008_nopush`
+- held_gates: `none`
 - missing_gates: `none`
 
 ## Allowed Now
@@ -41,6 +41,9 @@ The selected launch workflow targets the current held curriculum stage.
 - Run report_phase2_z005_post_training_gates.py on post-training seed-gate output.
 - Use local CPU only for reduced-horizon correctness checks; local ROCm GPU is not cleared for Phase 2 training.
 - Do not launch training yet from this host; Colab session open-duck-l4 is not active.
+- Run a local CPU stronger-push screen from the promoted rate150 parent.
+- Run a local CPU modest terrain-escalation screen from the promoted rate150 parent.
+- Record a hold if either screen exceeds the corrected actuator envelope, even without falls.
 
 ## Forbidden
 
@@ -52,17 +55,18 @@ The selected launch workflow targets the current held curriculum stage.
 - No training from scratch; continue only from the Phase 2 warm-start checkpoint.
 - No old/asymmetric actuator bridge.
 - No promotion without PASS_PHASE2_Z005_POST_TRAINING_GATES.
-- No z=0.005 push stage until the current z=0.005 no-push support gates pass.
-- No stronger terrain until z=0.005 no-push gates pass and z=0.002 regressions remain clear.
+- No robot validation from the rate150 parent just because z=0.005 gentle-push passed.
+- No escalation by more than one robustness rung without a paired x=0.08/x=0.0 decision artifact.
+- No promotion of stronger-push or stronger-terrain results with any corrected-envelope target-velocity excess.
 - No local ROCm Phase 2 training launch while local backend status is HOLD_PLAYGROUND_GPU_STEP.
 
 ## Required Evidence To Advance
 
-- z=0.005 x=0.08 no-push: 8/8 duration complete, zero falls, no velocity excess, tracking p95 <= 0.20, track ratio >= 0.40.
-- z=0.005 x=0.0 no-push: 8/8 duration complete, zero falls, no velocity excess, |mean vx| <= 0.005.
-- z=0.002 x=0.08/x=0.0 no-push regression gates remain passing.
-- z=0.002 x=0.08/x=0.0 gentle-push regression gates remain passing.
-- Post-training decision artifact reports PASS_PHASE2_Z005_POST_TRAINING_GATES.
+- Next robustness screen x=0.08: 8/8 duration complete, zero falls, no corrected-envelope velocity excess, tracking p95 <= 0.20, forward motion preserved.
+- Companion x=0.0 screen: 8/8 duration complete, zero falls, no corrected-envelope velocity excess, |mean vx| <= 0.005.
+- z=0.005 no-push and gentle-push support gates remain passing.
+- z=0.0026 no-push and gentle-push regression gates remain passing.
+- Decision artifact explicitly records PASS or HOLD before any further escalation.
 
 ## Local Backend
 

@@ -170,6 +170,14 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
             "The selected launch workflow is a z=0.002 teacher-action continuity run. "
             "It is a parent-selection step that replaces the held scalar tracking-margin recipe."
         )
+    elif current_stage == "stage_z005_stronger_push_or_terrain":
+        stage_strategy = (
+            "The current promoted parent has cleared z=0.005 no-push and gentle-push "
+            "support gates plus z=0.0026 regressions. The next work is a one-rung "
+            "offline robustness screen: stronger z=0.005 push or modestly higher "
+            "terrain, followed by paired x=0.08/x=0.0 command gates before any "
+            "training or robot validation."
+        )
     else:
         stage_strategy = (
             "The selected launch workflow targets the current held curriculum stage."
@@ -218,6 +226,14 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
         allowed_actions.append(f"Launch the preferred {preferred_workflow} Colab workflow.")
     else:
         allowed_actions.append("Do not launch training yet from this host; Colab session open-duck-l4 is not active.")
+    if current_stage == "stage_z005_stronger_push_or_terrain":
+        allowed_actions.extend(
+            [
+                "Run a local CPU stronger-push screen from the promoted rate150 parent.",
+                "Run a local CPU modest terrain-escalation screen from the promoted rate150 parent.",
+                "Record a hold if either screen exceeds the corrected actuator envelope, even without falls.",
+            ]
+        )
 
     forbidden_actions = [
         "No robot validation.",
@@ -234,6 +250,14 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
             [
                 "No z=0.005 push stage until the current z=0.002 parent-selection gate passes.",
                 "No stronger terrain until z=0.002 tracking margin is recovered and z=0.002 regression stays clear.",
+            ]
+        )
+    elif current_stage == "stage_z005_stronger_push_or_terrain":
+        forbidden_actions.extend(
+            [
+                "No robot validation from the rate150 parent just because z=0.005 gentle-push passed.",
+                "No escalation by more than one robustness rung without a paired x=0.08/x=0.0 decision artifact.",
+                "No promotion of stronger-push or stronger-terrain results with any corrected-envelope target-velocity excess.",
             ]
         )
     else:
@@ -254,6 +278,14 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
             "z=0.002 x=0.08/x=0.0 gentle-push regression gates remain passing.",
             "Post-training decision artifact reports PASS_PHASE2_Z002_TRACKING_MARGIN_POST_TRAINING_GATES.",
         ]
+    elif current_stage == "stage_z005_stronger_push_or_terrain":
+        advance_requirements = [
+            "Next robustness screen x=0.08: 8/8 duration complete, zero falls, no corrected-envelope velocity excess, tracking p95 <= 0.20, forward motion preserved.",
+            "Companion x=0.0 screen: 8/8 duration complete, zero falls, no corrected-envelope velocity excess, |mean vx| <= 0.005.",
+            "z=0.005 no-push and gentle-push support gates remain passing.",
+            "z=0.0026 no-push and gentle-push regression gates remain passing.",
+            "Decision artifact explicitly records PASS or HOLD before any further escalation.",
+        ]
     else:
         advance_requirements = [
             "z=0.005 x=0.08 no-push: 8/8 duration complete, zero falls, no velocity excess, tracking p95 <= 0.20, track ratio >= 0.40.",
@@ -263,7 +295,9 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
             "Post-training decision artifact reports PASS_PHASE2_Z005_POST_TRAINING_GATES.",
         ]
 
-    if launch_status and launch_status != "PASS_PHASE2_NEXT_RUN_READY":
+    if current_stage == "stage_z005_stronger_push_or_terrain":
+        status = "PASS_PHASE2_STAGE_GUARD_READY_FOR_NEXT_ROBUSTNESS_SCREEN"
+    elif launch_status and launch_status != "PASS_PHASE2_NEXT_RUN_READY":
         status = launch_status
     elif package["status"] != "PASS_PACKAGE_PREFLIGHT":
         status = package["status"]

@@ -10,6 +10,7 @@ past a held or missing gate.
 from __future__ import annotations
 
 import argparse
+import copy
 import datetime as dt
 import json
 from pathlib import Path
@@ -64,6 +65,20 @@ DEFAULT_GATES = {
         "terrain_z": 0.005,
         "push": False,
     },
+    "z005_x008_gentle_push": {
+        "path": ROOT
+        / "outputs/analysis/phase2_stagea2_seed5_recovery_command_gated_gain099_x008_rough_z005_gentle_push_15s_8seed_cpu.json",
+        "command_x": 0.08,
+        "terrain_z": 0.005,
+        "push": True,
+    },
+    "z005_x000_gentle_push": {
+        "path": ROOT
+        / "outputs/analysis/phase2_stagea2_seed5_recovery_command_gated_gain099_x0_rough_z005_gentle_push_15s_8seed_cpu.json",
+        "command_x": 0.0,
+        "terrain_z": 0.005,
+        "push": True,
+    },
 }
 
 
@@ -89,6 +104,20 @@ STAGES = [
             "z002_x000_gentle_push",
         ],
         "advance_if_pass": "stage_z005_gentle_push",
+    },
+    {
+        "id": "stage_z005_gentle_push",
+        "required_gates": [
+            "z005_x008_nopush",
+            "z005_x000_nopush",
+            "z005_x008_gentle_push",
+            "z005_x000_gentle_push",
+            "z002_x008_nopush",
+            "z002_x000_nopush",
+            "z002_x008_gentle_push",
+            "z002_x000_gentle_push",
+        ],
+        "advance_if_pass": "stage_z005_stronger_push_or_terrain",
     },
 ]
 
@@ -225,8 +254,22 @@ def stage_status(stage: dict[str, Any], gates: dict[str, dict[str, Any]]) -> dic
     }
 
 
+def gate_specs_from_args(args: argparse.Namespace) -> dict[str, dict[str, Any]]:
+    specs = copy.deepcopy(DEFAULT_GATES)
+    for item in args.gate_json or []:
+        if "=" not in item:
+            raise SystemExit(f"--gate-json must be NAME=PATH, got {item!r}")
+        name, raw_path = item.split("=", 1)
+        if name not in specs:
+            known = ", ".join(sorted(specs))
+            raise SystemExit(f"unknown gate {name!r}; known gates: {known}")
+        specs[name]["path"] = Path(raw_path)
+    return specs
+
+
 def collect(args: argparse.Namespace) -> dict[str, Any]:
-    gates = {name: evaluate_gate(name, spec, args) for name, spec in DEFAULT_GATES.items()}
+    gate_specs = gate_specs_from_args(args)
+    gates = {name: evaluate_gate(name, spec, args) for name, spec in gate_specs.items()}
     stages = [stage_status(stage, gates) for stage in STAGES]
 
     first_hold = next((stage for stage in stages if stage["status"] != "PASS_STAGE"), None)
@@ -367,6 +410,13 @@ def main() -> int:
     parser.add_argument("--min-track-ratio", type=float, default=0.40)
     parser.add_argument("--max-abs-vx-x0", type=float, default=0.005)
     parser.add_argument("--min-push-success", type=float, default=0.90)
+    parser.add_argument(
+        "--gate-json",
+        action="append",
+        default=[],
+        metavar="NAME=PATH",
+        help="Override a gate artifact path without changing the historical defaults.",
+    )
     parser.add_argument("--output-md", default=str(DEFAULT_OUTPUT_MD))
     parser.add_argument("--output-json", default=str(DEFAULT_OUTPUT_JSON))
     args = parser.parse_args()

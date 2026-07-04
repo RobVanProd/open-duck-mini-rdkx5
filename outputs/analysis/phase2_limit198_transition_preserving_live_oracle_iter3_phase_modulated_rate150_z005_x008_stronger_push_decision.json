@@ -1,0 +1,50 @@
+{
+  "status": "HOLD_PHASE2_STRONGER_PUSH_TARGET_VELOCITY",
+  "generated_at": "2026-07-04T01:39:31Z",
+  "scope": "Offline corrected-bridge z=0.005 x=0.08 stronger-push screen only. No robot, SSH, deploy, grounded replay, runtime behavior change, or training.",
+  "candidate": {
+    "onnx": "policy/candidates/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_20260703/candidate.onnx",
+    "onnx_sha256": "e2281adeedd2fa4b0d416fecee17bb960275457a81538cb3f98fe57d0e54eb18"
+  },
+  "screen": {
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.005,
+    "command_x": 0.08,
+    "duration_s": 15.0,
+    "seeds": "0-7",
+    "bridge": "corrected-knee fitted actuator bridge",
+    "push_interval_s": [1.0, 1.5],
+    "push_magnitude": [0.1, 0.15],
+    "source_json": "outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_z005_x008_stronger_push_screen.json",
+    "source_md": "outputs/analysis/PHASE2_LIMIT198_TRANSITION_PRESERVING_LIVE_ORACLE_ITER3_PHASE_MODULATED_RATE150_Z005_X008_STRONGER_PUSH_SCREEN.md"
+  },
+  "seed_status": {
+    "0": "PASS_CANDIDATE_SIM_GATE",
+    "1": "PASS_CANDIDATE_SIM_GATE",
+    "2": "PASS_CANDIDATE_SIM_GATE",
+    "3": "HOLD_CANDIDATE_TARGET_VELOCITY",
+    "4": "HOLD_CANDIDATE_TARGET_VELOCITY",
+    "5": "PASS_CANDIDATE_SIM_GATE",
+    "6": "PASS_CANDIDATE_SIM_GATE",
+    "7": "HOLD_CANDIDATE_TARGET_VELOCITY"
+  },
+  "aggregate": {
+    "runs": 8,
+    "duration_complete_count": 8,
+    "fall_count": 0,
+    "passing_seed_count": 5,
+    "target_velocity_hold_count": 3,
+    "track_ratio_mean": 0.3532480689680748,
+    "mean_local_vx_m_s_mean": 0.028259845517445988,
+    "body_pitch_p95_rad_mean": 0.15359938063878756,
+    "base_height_min_m_min": 0.15291839838027954,
+    "max_pitch_vel_p95_rad_s_max": 1.582745611667633,
+    "p95_velocity_excess_rad_s_max": 0.0,
+    "instant_velocity_excess_rad_s_max": 0.15368270874023438,
+    "max_tracking_p95_rad_max": 0.19070230126380922,
+    "push_success_rate_mean": 0.9703525641025641,
+    "min_swing_peak_lift_m_mean": 0.014272270491346717,
+    "single_support_pct_mean": 23.65
+  },
+  "decision": "Rate150 remains the promoted terrain-support parent, but the stronger-push rung is held by instant corrected-envelope target-velocity excess on seeds 3, 4, and 7. Do not promote this stronger-push result; use it as the next robustness boundary."
+}
