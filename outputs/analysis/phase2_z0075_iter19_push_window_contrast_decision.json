@@ -2,6 +2,8 @@
   "status": "PASS_ITER19_CONTRAST_AUDIT_NEXT_MULTIVARIATE_GATE",
   "audit_md": "outputs/analysis/PHASE2_Z0075_ITER19_PUSH_WINDOW_CONTRAST_AUDIT.md",
   "audit_json": "outputs/analysis/phase2_z0075_iter19_push_window_contrast_audit.json",
+  "early_audit_md": "outputs/analysis/PHASE2_Z0075_ITER19_PUSH_WINDOW_EARLY_CONTRAST_AUDIT.md",
+  "early_audit_json": "outputs/analysis/phase2_z0075_iter19_push_window_early_contrast_audit.json",
   "tool": "tools/analyze_push_window_contrasts.py",
   "inputs": [
     {
@@ -48,8 +50,23 @@
       "min_base_height": 0.1574,
       "obs1_mean": 0.016,
       "obs3_mean": -0.9117
+    },
+    "seed0_lunge_early_window": {
+      "window": "push-20_to_push+10",
+      "obs1_mean": 0.0735,
+      "top_separators": [
+        88,
+        46,
+        60,
+        74,
+        18
+      ]
+    },
+    "seed0_gain095_pass_early_window": {
+      "window": "push-20_to_push+10",
+      "obs1_mean": 0.0037
     }
   },
   "decision": "Do not continue single-channel threshold attenuation or global gain sweeps.",
-  "next_branch": "Build a multivariate push-window lunge/collapse gate or recovery-label selector, then gate seeds 0,2,6 before promotion."
+  "next_branch": "Build a multivariate early push-window lunge/collapse gate or recovery-label selector, then gate seeds 0,2,6 before promotion."
 }

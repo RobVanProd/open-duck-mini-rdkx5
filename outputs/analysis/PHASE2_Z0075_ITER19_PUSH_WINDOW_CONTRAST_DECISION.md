@@ -25,6 +25,8 @@ Audit:
 
 - markdown: `outputs/analysis/PHASE2_Z0075_ITER19_PUSH_WINDOW_CONTRAST_AUDIT.md`
 - json: `outputs/analysis/phase2_z0075_iter19_push_window_contrast_audit.json`
+- early-window markdown: `outputs/analysis/PHASE2_Z0075_ITER19_PUSH_WINDOW_EARLY_CONTRAST_AUDIT.md`
+- early-window json: `outputs/analysis/phase2_z0075_iter19_push_window_early_contrast_audit.json`
 - tool: `tools/analyze_push_window_contrasts.py`
 
 ## Main Findings
@@ -39,6 +41,12 @@ pass during the first push window:
 | first-push min base height | 0.0216 | 0.1584 |
 | first-push `obs[1]` mean | 1.0007 | -0.0170 |
 | first-push `obs[1]` p95 | 4.9609 | 0.7990 |
+
+The early-window audit, restricted to ticks `push-20` through `push+10`, shows
+why Iter18's `obs[1]` threshold fired too late. In the early window,
+`obs[1]` is only a weak separator (`0.0735` vs `0.0037` mean), while the best
+early separators are `obs[88]`, `obs[46]`, `obs[60]`, `obs[74]`, and `obs[18]`.
+Those channels separate before the full lunge/pitchover state has developed.
 
 The seed6 gain-0.95 late collapse is a different mode, not the same lunge:
 
@@ -80,3 +88,7 @@ Build a small offline lunge/collapse contrast model over observation windows,
 then use it only to gate a recovery action or recovery-label selection. Do not
 promote a wrapper unless it passes the existing fail-seed gate for seeds `0,2,6`
 under rough z=0.0075, `home-support`, and intermediate push.
+
+The first candidate gate should be based on early lunge separators, not late
+outcome indicators. Treat `obs[1]` as an outcome/lunge-amplitude channel unless
+validated with the early-window audit.
