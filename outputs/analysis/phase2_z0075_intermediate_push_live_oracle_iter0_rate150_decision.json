@@ -1,0 +1,75 @@
+{
+  "status": "HOLD_TARGET_VELOCITY_SPIKES_SLOW_PROGRESS",
+  "scope": {
+    "offline_only": true,
+    "robot_tests": false,
+    "ssh": false,
+    "deploy": false,
+    "grounded_replay": false,
+    "ppo_training": false,
+    "runtime_behavior_changes": false
+  },
+  "candidate": {
+    "policy": "policy/candidates/phase2_z0075_intermediate_push_live_oracle_iter0_phase_modulated_rate150_20260704/candidate.onnx",
+    "policy_sha256": "2c56a55ca9757511f2987eaf1dcb145e5f0b1c7e8f85f884a6fd6e36d1636067",
+    "student_npz": "policy/candidates/phase2_z0075_intermediate_push_live_oracle_iter0_phase_modulated_rate150_20260704/student.npz",
+    "student_npz_sha256": "b2e2bb9d796d367167b8c0167b12f859bfd485a451f763fc26e91731b7fb2d30",
+    "fit_report": "outputs/analysis/phase2_z0075_intermediate_push_live_oracle_iter0_student_rate150/PHASE_MODULATED_BC_STUDENT.md",
+    "curated_manifest": "outputs/analysis/phase2_z0075_intermediate_push_live_oracle_iter0_curated/live_oracle_dagger_curated_aggregate_manifest.json",
+    "curated_dataset_id": "88de24bcd82435ee"
+  },
+  "fit_metrics": {
+    "samples": 42501,
+    "action_mae": 0.011686,
+    "action_p95_abs_error": 0.037589,
+    "action_max_abs_error": 1.27581,
+    "target_rate_p95_rad_s": 1.307327,
+    "target_rate_max_rad_s": 3.626033,
+    "onnx_verify_max_abs_error": 0.00000021
+  },
+  "screens": {
+    "x008_push": {
+      "path": "outputs/analysis/phase2_z0075_intermediate_push_live_oracle_iter0_rate150_x008_push_screen.json",
+      "seeds": [
+        0,
+        7
+      ],
+      "falls": 0,
+      "duration_complete": 2,
+      "track_ratio_mean": 0.3096,
+      "mean_vx_m_s": 0.0248,
+      "max_p95_velocity_excess_rad_s": 0.0,
+      "max_instantaneous_velocity_excess_rad_s": 2.6095,
+      "max_tracking_p95_rad": 0.1856,
+      "push_success_mean": 0.9083
+    },
+    "x0_push": {
+      "path": "outputs/analysis/phase2_z0075_intermediate_push_live_oracle_iter0_rate150_x0_push_screen.json",
+      "seeds": [
+        0,
+        1
+      ],
+      "falls": 0,
+      "duration_complete": 2,
+      "mean_vx_m_s": -0.0005,
+      "max_p95_velocity_excess_rad_s": 0.0,
+      "max_instantaneous_velocity_excess_rad_s": 3.0346,
+      "max_tracking_p95_rad": 0.0472,
+      "push_success_mean": 0.9199
+    }
+  },
+  "decision": {
+    "promote": false,
+    "robot_validation_allowed": false,
+    "improvement": [
+      "x=0.08 seed 7 no longer falls",
+      "x=0.0 seed 0 no longer collapses or runs backward",
+      "x=0.0 command semantics are preserved"
+    ],
+    "remaining_blockers": [
+      "strict target-velocity max spikes remain",
+      "x=0.08 forward progress remains slow"
+    ],
+    "next_step": "Use spike-aware curation/refit or another live-oracle iteration before wider gates; do not return to scalar PPO reward tuning."
+  }
+}
