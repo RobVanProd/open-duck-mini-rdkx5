@@ -103,6 +103,10 @@ def write_markdown(path: Path, payload: dict[str, Any]) -> None:
         f"- jax_platform: `{payload['jax_platform']}`",
         f"- terrain_hfield_z_scale: `{payload['terrain_hfield_z_scale']}`",
         f"- reset_mode: `{payload['reset_mode']}`",
+        f"- eval_push_enable: `{payload['eval_push_enable']}`",
+        f"- eval_push_interval_s: `{payload['eval_push_interval_min_s']}`-`{payload['eval_push_interval_max_s']}`",
+        f"- eval_push_magnitude: `{payload['eval_push_magnitude_min']}`-`{payload['eval_push_magnitude_max']}`",
+        f"- push_recovery_window_s: `{payload['push_recovery_window_s']}`",
         f"- min_swing_segments_per_foot: `{payload['min_swing_segments_per_foot']}`",
         f"- min_swing_rel_x_range_p95_m: `{payload['min_swing_rel_x_range_p95_m']}`",
         f"- min_swing_peak_lift_m: `{payload['min_swing_peak_lift_m']}`",
@@ -199,6 +203,18 @@ def main() -> int:
             "for current corrected Phase 2 gates."
         ),
     )
+    parser.add_argument(
+        "--eval-push-enable",
+        action="store_true",
+        help="Enable eval-only push perturbations during student rollout collection.",
+    )
+    parser.add_argument("--eval-push-interval-min-s", type=float, default=None)
+    parser.add_argument("--eval-push-interval-max-s", type=float, default=None)
+    parser.add_argument("--eval-push-magnitude-min", type=float, default=None)
+    parser.add_argument("--eval-push-magnitude-max", type=float, default=None)
+    parser.add_argument("--push-recovery-window-s", type=float, default=0.5)
+    parser.add_argument("--push-recovery-max-abs-pitch-rad", type=float, default=0.8)
+    parser.add_argument("--push-recovery-min-base-height-m", type=float, default=0.08)
     parser.add_argument(
         "--min-swing-segments-per-foot",
         type=int,
@@ -334,6 +350,23 @@ def main() -> int:
         common_eval.extend(["--terrain-hfield-z-scale", str(args.terrain_hfield_z_scale)])
     if args.reset_mode != "playground":
         common_eval.extend(["--reset-mode", args.reset_mode])
+    if args.eval_push_enable:
+        common_eval.append("--eval-push-enable")
+    if args.eval_push_interval_min_s is not None:
+        common_eval.extend(["--eval-push-interval-min-s", str(args.eval_push_interval_min_s)])
+    if args.eval_push_interval_max_s is not None:
+        common_eval.extend(["--eval-push-interval-max-s", str(args.eval_push_interval_max_s)])
+    if args.eval_push_magnitude_min is not None:
+        common_eval.extend(["--eval-push-magnitude-min", str(args.eval_push_magnitude_min)])
+    if args.eval_push_magnitude_max is not None:
+        common_eval.extend(["--eval-push-magnitude-max", str(args.eval_push_magnitude_max)])
+    common_eval.extend(["--push-recovery-window-s", str(args.push_recovery_window_s)])
+    common_eval.extend(
+        ["--push-recovery-max-abs-pitch-rad", str(args.push_recovery_max_abs_pitch_rad)]
+    )
+    common_eval.extend(
+        ["--push-recovery-min-base-height-m", str(args.push_recovery_min_base_height_m)]
+    )
     x008_eval = [
         *common_eval,
         "--command-x",
@@ -545,6 +578,14 @@ def main() -> int:
         "jax_platform": args.jax_platform,
         "terrain_hfield_z_scale": args.terrain_hfield_z_scale,
         "reset_mode": args.reset_mode,
+        "eval_push_enable": bool(args.eval_push_enable),
+        "eval_push_interval_min_s": args.eval_push_interval_min_s,
+        "eval_push_interval_max_s": args.eval_push_interval_max_s,
+        "eval_push_magnitude_min": args.eval_push_magnitude_min,
+        "eval_push_magnitude_max": args.eval_push_magnitude_max,
+        "push_recovery_window_s": args.push_recovery_window_s,
+        "push_recovery_max_abs_pitch_rad": args.push_recovery_max_abs_pitch_rad,
+        "push_recovery_min_base_height_m": args.push_recovery_min_base_height_m,
         "min_swing_segments_per_foot": args.min_swing_segments_per_foot,
         "min_swing_rel_x_range_p95_m": args.min_swing_rel_x_range_p95_m,
         "min_swing_peak_lift_m": args.min_swing_peak_lift_m,

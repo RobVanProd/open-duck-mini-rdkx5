@@ -1,0 +1,112 @@
+{
+  "status": "PASS_CURATED_LIVE_ORACLE_LABELS_READY",
+  "scope": {
+    "offline_only": true,
+    "robot_tests": false,
+    "ssh": false,
+    "deploy": false,
+    "grounded_replay": false,
+    "training": false,
+    "runtime_behavior_changes": false
+  },
+  "input_run": {
+    "iteration_report": "outputs/analysis/phase2_z0075_intermediate_push_live_oracle_iter0_run/LIVE_ORACLE_DAGGER_ITERATION.md",
+    "raw_aggregate": "outputs/analysis/phase2_z0075_intermediate_push_live_oracle_iter0_run/live_oracle_dagger_aggregate_manifest.json",
+    "student": "policy/candidates/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_20260703/candidate.onnx",
+    "bridge": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.0075,
+    "push_interval_s": [
+      1.0,
+      1.5
+    ],
+    "push_magnitude": [
+      0.075,
+      0.125
+    ]
+  },
+  "raw_rollout_decisions": [
+    {
+      "command_x": 0.08,
+      "seed": 0,
+      "raw_status": "HOLD_CANDIDATE_TARGET_VELOCITY",
+      "samples": 750,
+      "mean_vx_m_s": 0.0265,
+      "track_ratio": 0.3313,
+      "body_pitch_p95_rad": 0.1602,
+      "base_height_min_m": 0.1527,
+      "p95_vel_excess_rad_s": 0.0,
+      "push_success_rate": 0.9167,
+      "decision": "keep_full"
+    },
+    {
+      "command_x": 0.08,
+      "seed": 7,
+      "raw_status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "samples": 582,
+      "mean_vx_m_s": 0.0598,
+      "track_ratio": 0.7473,
+      "body_pitch_p95_rad": 0.2914,
+      "base_height_min_m": -0.0052,
+      "p95_vel_excess_rad_s": 0.0,
+      "push_success_rate": 0.875,
+      "decision": "truncate_before_collapse",
+      "keep_tick_max": 500
+    },
+    {
+      "command_x": 0.0,
+      "seed": 0,
+      "raw_status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "samples": 62,
+      "mean_vx_m_s": -0.2639,
+      "track_ratio": null,
+      "body_pitch_p95_rad": 0.0091,
+      "base_height_min_m": 0.0721,
+      "p95_vel_excess_rad_s": 2.5959,
+      "push_success_rate": 0.0,
+      "decision": "drop"
+    },
+    {
+      "command_x": 0.0,
+      "seed": 1,
+      "raw_status": "HOLD_CANDIDATE_TARGET_VELOCITY",
+      "samples": 750,
+      "mean_vx_m_s": -0.0002,
+      "track_ratio": null,
+      "body_pitch_p95_rad": 0.0672,
+      "base_height_min_m": 0.1568,
+      "p95_vel_excess_rad_s": 0.0,
+      "push_success_rate": 0.9231,
+      "decision": "keep_full"
+    }
+  ],
+  "curated_outputs": {
+    "x008_manifest": {
+      "path": "outputs/analysis/phase2_z0075_intermediate_push_live_oracle_iter0_curated/live_oracle_dagger_x008_curated_manifest.json",
+      "status": "PASS_BC_TRACE_MANIFEST_READY",
+      "dataset_id": "7109acd7b0c71b8a",
+      "entries": 2,
+      "samples": 1251
+    },
+    "x0_manifest": {
+      "path": "outputs/analysis/phase2_z0075_intermediate_push_live_oracle_iter0_curated/live_oracle_dagger_x0_curated_manifest.json",
+      "status": "PASS_BC_TRACE_MANIFEST_READY",
+      "dataset_id": "ec68b86f107c4844",
+      "entries": 1,
+      "samples": 750
+    },
+    "aggregate_manifest": {
+      "path": "outputs/analysis/phase2_z0075_intermediate_push_live_oracle_iter0_curated/live_oracle_dagger_curated_aggregate_manifest.json",
+      "status": "PASS_FILTERED_BC_MANIFEST_READY",
+      "dataset_id": "88de24bcd82435ee",
+      "entries": 57,
+      "samples": 42501
+    }
+  },
+  "decision": {
+    "raw_aggregate_fit_approved": false,
+    "curated_aggregate_fit_approved": true,
+    "next_fit_manifest": "outputs/analysis/phase2_z0075_intermediate_push_live_oracle_iter0_curated/live_oracle_dagger_curated_aggregate_manifest.json"
+  },
+  "next_step": "Fit a phase/command-conditioned BC student from the curated aggregate, then gate on the canonical corrected-bridge evaluator."
+}
