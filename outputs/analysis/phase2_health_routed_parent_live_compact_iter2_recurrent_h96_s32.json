@@ -1,0 +1,122 @@
+{
+  "config": {
+    "batch_size": 256,
+    "learning_rate": 0.001,
+    "seed": 0,
+    "sequence_length": 32,
+    "steps": 5000,
+    "target_rate_limit_rad_s": 2.0,
+    "target_rate_scale": 0.1
+  },
+  "exported_onnx": "outputs/analysis/phase2_health_routed_parent_live_compact_iter2_recurrent_h96_s32/candidate.onnx",
+  "hidden_dim": 96,
+  "loss_rows": [
+    {
+      "loss": 0.9488384127616882,
+      "step": 1
+    },
+    {
+      "loss": 0.00644013611599803,
+      "step": 250
+    },
+    {
+      "loss": 0.00289921835064888,
+      "step": 500
+    },
+    {
+      "loss": 0.0018484762404114008,
+      "step": 750
+    },
+    {
+      "loss": 0.0013924541417509317,
+      "step": 1000
+    },
+    {
+      "loss": 0.0010137613862752914,
+      "step": 1250
+    },
+    {
+      "loss": 0.0008076723897829652,
+      "step": 1500
+    },
+    {
+      "loss": 0.0007098469068296254,
+      "step": 1750
+    },
+    {
+      "loss": 0.0005912042688578367,
+      "step": 2000
+    },
+    {
+      "loss": 0.0004941981751471758,
+      "step": 2250
+    },
+    {
+      "loss": 0.00041866395622491837,
+      "step": 2500
+    },
+    {
+      "loss": 0.00036497318069450557,
+      "step": 2750
+    },
+    {
+      "loss": 0.0003197759797330946,
+      "step": 3000
+    },
+    {
+      "loss": 0.00028063025092706084,
+      "step": 3250
+    },
+    {
+      "loss": 0.0002478715614415705,
+      "step": 3500
+    },
+    {
+      "loss": 0.00022244120191317052,
+      "step": 3750
+    },
+    {
+      "loss": 0.00020624598255380988,
+      "step": 4000
+    },
+    {
+      "loss": 0.00019756187975872308,
+      "step": 4250
+    },
+    {
+      "loss": 0.00018916168482974172,
+      "step": 4500
+    },
+    {
+      "loss": 0.00017249306256417185,
+      "step": 4750
+    },
+    {
+      "loss": 0.00015981261094566435,
+      "step": 5000
+    }
+  ],
+  "manifest": "outputs/analysis/phase2_health_routed_parent_live_compact_iter2/live_oracle_dagger_aggregate_manifest.json",
+  "no_deploy": true,
+  "no_robot_tests": true,
+  "onnx_verify": {
+    "max_action_error": 3.798365594276376e-07,
+    "max_hidden_error": 1.2392270562211483e-06,
+    "path": "outputs/analysis/phase2_health_routed_parent_live_compact_iter2_recurrent_h96_s32/candidate.onnx",
+    "steps_checked": 64
+  },
+  "runtime_behavior_changed": false,
+  "samples": 8550,
+  "saved_npz": "outputs/analysis/phase2_health_routed_parent_live_compact_iter2_recurrent_h96_s32/candidate_rnn.npz",
+  "sequences": 12,
+  "status": "PASS_RECURRENT_BC_FIT_SMOKE",
+  "train_metrics": {
+    "mae": 0.009664234371981063,
+    "max_abs_error": 0.20619086012978188,
+    "p95_abs_error": 0.025092814840772845,
+    "p99_abs_error": 0.03824984020074417,
+    "samples": 8550,
+    "target_rate_max_rad_s": 2.1730652867156945,
+    "target_rate_p95_rad_s": 1.3919381477119588
+  }
+}

@@ -275,6 +275,32 @@ produces useful data, but compressing it back into the same static parent class
 trades failures across seeds. The next branch should test observation history
 or recurrent state before Phase 2 domain randomization resumes.
 
+## 2026-07-05 Recurrent Parent Diagnostic
+
+A stateful recurrent BC student was trained on the full compact live-oracle
+aggregate:
+
+```text
+outputs/analysis/PHASE2_HEALTH_ROUTED_PARENT_RECURRENT_DECISION.md
+outputs/analysis/phase2_health_routed_parent_recurrent_decision.json
+```
+
+Decision:
+
+```text
+HOLD_RECURRENT_BC_UNSTABLE
+```
+
+The recurrent export/fidelity smoke passed, but the compact gate failed `0/5`
+with fast backward falls and p95 corrected velocity excess of `3.24 rad/s` on
+every seed. Plain supervised recurrent BC is therefore worse than the static
+phase-modulated parent and should not be pursued as another rate-only or
+capacity-only tweak.
+
+The next viable direction is a bounded history/online wrapper that preserves
+the already-passing branch policies, or a later distillation path from such a
+wrapper. Phase 2 DR remains blocked.
+
 ## 2026-07-05 Iter24 PPO-Loc Step-0 Diagnostic
 
 After the live-oracle Iter24 candidate became the latest useful z=0.0075
