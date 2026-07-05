@@ -94,11 +94,17 @@ def split_trace_indices(n: int, test_fraction: float) -> tuple[np.ndarray, np.nd
 
 
 def load_dataset(
-    manifest_path: Path, positive_marker: str, test_fraction: float
+    manifest_path: Path,
+    positive_marker: str,
+    test_fraction: float,
+    extra_negative_traces: list[Path],
+    extra_negative_first_ticks: int | None,
+    extra_negative_weight: float,
 ) -> tuple[dict[str, np.ndarray], list[dict[str, Any]]]:
     manifest = json.loads(manifest_path.read_text())
     train_x = []
     train_y = []
+    train_w = []
     test_x = []
     test_y = []
     entries = []
@@ -111,6 +117,7 @@ def load_dataset(
         train_idx, test_idx = split_trace_indices(int(obs.shape[0]), test_fraction)
         train_x.append(obs[train_idx])
         train_y.append(np.full((len(train_idx),), label, dtype=np.float64))
+        train_w.append(np.ones((len(train_idx),), dtype=np.float64))
         test_x.append(obs[test_idx])
         test_y.append(np.full((len(test_idx),), label, dtype=np.float64))
         entries.append(
@@ -120,6 +127,24 @@ def load_dataset(
                 "train_samples": int(len(train_idx)),
                 "test_samples": int(len(test_idx)),
                 "branch": "positive" if label > 0.5 else "negative",
+                "weight": 1.0,
+            }
+        )
+    for trace_path in extra_negative_traces:
+        obs = load_obs(trace_path)
+        if extra_negative_first_ticks is not None:
+            obs = obs[: max(1, min(int(extra_negative_first_ticks), int(obs.shape[0])))]
+        train_x.append(obs)
+        train_y.append(np.zeros((int(obs.shape[0]),), dtype=np.float64))
+        train_w.append(np.full((int(obs.shape[0]),), float(extra_negative_weight), dtype=np.float64))
+        entries.append(
+            {
+                "source_path": rel(trace_path),
+                "samples": int(obs.shape[0]),
+                "train_samples": int(obs.shape[0]),
+                "test_samples": 0,
+                "branch": "negative_correction",
+                "weight": float(extra_negative_weight),
             }
         )
     if not train_x:
@@ -127,6 +152,7 @@ def load_dataset(
     data = {
         "train_x": np.concatenate(train_x, axis=0),
         "train_y": np.concatenate(train_y, axis=0),
+        "train_w": np.concatenate(train_w, axis=0),
         "test_x": np.concatenate(test_x, axis=0),
         "test_y": np.concatenate(test_y, axis=0),
     }
@@ -159,6 +185,7 @@ def train_classifier(data: dict[str, np.ndarray], args: argparse.Namespace) -> d
 
     train_x = data["train_x"]
     train_y = data["train_y"]
+    train_extra_w = data.get("train_w", np.ones_like(train_y))
     mean = train_x.mean(axis=0)
     std = np.where(train_x.std(axis=0) < 1.0e-8, 1.0, train_x.std(axis=0))
     x = ((train_x - mean) / std).astype(np.float32)
@@ -166,6 +193,7 @@ def train_classifier(data: dict[str, np.ndarray], args: argparse.Namespace) -> d
     pos = float(np.sum(train_y > 0.5))
     neg = float(np.sum(train_y < 0.5))
     class_weights = np.where(train_y > 0.5, 0.5 / max(pos, 1.0), 0.5 / max(neg, 1.0)).astype(np.float32)
+    class_weights = class_weights * np.asarray(train_extra_w, dtype=np.float32)
     class_weights = (class_weights / np.mean(class_weights)).reshape(-1, 1)
     hidden_sizes = parse_hidden_sizes(args.hidden_sizes)
     params_np = init_params(101, hidden_sizes, int(args.seed))
@@ -277,6 +305,8 @@ def write_markdown(path: Path, report: dict[str, Any]) -> None:
         f"- positive_marker: `{report['positive_marker']}`",
         f"- hidden_sizes: `{report['config']['hidden_sizes']}`",
         f"- train/test split per trace: `{100.0 * (1.0 - report['config']['test_fraction']):.1f}%` / `{100.0 * report['config']['test_fraction']:.1f}%`",
+        f"- correction traces: `{report['config']['extra_negative_trace_count']}`",
+        f"- correction weight: `{report['config']['extra_negative_weight']}`",
         "",
         "## Results",
         "",
@@ -323,6 +353,19 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--log-every", type=int, default=250)
     parser.add_argument("--min-test-balanced-accuracy-pct", type=float, default=85.0)
     parser.add_argument("--max-test-negative-false-selected-pct", type=float, default=10.0)
+    parser.add_argument(
+        "--extra-negative-trace",
+        action="append",
+        default=[],
+        help="Trace JSONL whose observations should be branch-A/negative corrective samples.",
+    )
+    parser.add_argument(
+        "--extra-negative-first-ticks",
+        type=int,
+        default=None,
+        help="Use only the first N ticks from each extra negative trace.",
+    )
+    parser.add_argument("--extra-negative-weight", type=float, default=1.0)
     parser.add_argument("--output-md", default=str(DEFAULT_OUTPUT_MD))
     parser.add_argument("--output-json", default=str(DEFAULT_OUTPUT_JSON))
     parser.add_argument("--save-npz", default=str(DEFAULT_SAVE_NPZ))
@@ -331,7 +374,15 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
-    data, entries = load_dataset(Path(args.manifest), args.positive_marker, float(args.test_fraction))
+    extra_negative_traces = [Path(item) for item in args.extra_negative_trace]
+    data, entries = load_dataset(
+        Path(args.manifest),
+        args.positive_marker,
+        float(args.test_fraction),
+        extra_negative_traces,
+        args.extra_negative_first_ticks,
+        float(args.extra_negative_weight),
+    )
     fit = train_classifier(data, args)
     save_gate_npz(Path(args.save_npz), fit)
     train_logits = predict_logits(data["train_x"], fit)
@@ -371,6 +422,9 @@ def main() -> int:
             "weight_decay": float(args.weight_decay),
             "seed": int(args.seed),
             "test_fraction": float(args.test_fraction),
+            "extra_negative_trace_count": len(extra_negative_traces),
+            "extra_negative_first_ticks": args.extra_negative_first_ticks,
+            "extra_negative_weight": float(args.extra_negative_weight),
         },
         "saved_npz": rel(Path(args.save_npz)),
         "saved_npz_sha256": sha256(Path(args.save_npz)),

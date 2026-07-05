@@ -958,7 +958,64 @@ body pitch abs p95: 0.4680 rad
 Next router training should penalize seed-0 startup branch-B selection directly
 or use prefix validation pressure. Source-label classification alone is too
 weak because it learns a gate that looks good on held-out trace labels but
-chooses the wrong branch during closed-loop startup.
+fails the closed-loop seed-0 startup.
+
+### Full-8 MLP Router Seed0 Startup-Cost Hold
+
+The MLP-router classifier was extended to accept corrective traces:
+
+```text
+tools/report_phase2_full8_mlp_router_separability.py
+  --extra-negative-trace
+  --extra-negative-first-ticks
+  --extra-negative-weight
+```
+
+The failed seed-0 trace from the prior MLP-router candidate was added as a
+branch-A correction over the first `80` ticks with weight `50.0`:
+
+```text
+outputs/analysis/PHASE2_FULL8_MLP_ROUTER_SEED0_STARTUP_COST_SEPARABILITY.md
+outputs/analysis/phase2_full8_mlp_router_seed0_startup_cost_separability.json
+outputs/analysis/PHASE2_FULL8_MLP_ROUTER_SEED0_STARTUP_COST_X008_SEED0_5_7_GATE.md
+outputs/analysis/phase2_full8_mlp_router_seed0_startup_cost_x008_seed0_5_7_gate.json
+outputs/analysis/PHASE2_FULL8_MLP_ROUTER_SEED0_STARTUP_COST_DECISION.md
+outputs/analysis/phase2_full8_mlp_router_seed0_startup_cost_decision.json
+```
+
+Decision:
+
+```text
+HOLD_FULL8_MLP_ROUTER_SEED0_FIX_REGRESSES_SEED5
+```
+
+The corrected classifier still passed the held-out separability thresholds:
+
+```text
+test balanced accuracy: 87.14%
+test positive selected: 76.67%
+test negative false selected: 2.38%
+gate_npz_sha256: e663f806af55dde33295b169a445551515d8435da82b623738523fb2904f4861
+candidate_sha256: b4a7e338eae789803ad132459df9e1b1b98c36172bed5845f8bbeff10fcaab36
+```
+
+The composed ONNX verified exactly, but the hard closed-loop screen over seeds
+`0,5,7` was again only `2/3`:
+
+```text
+seed 0: PASS, 750 samples, vx 0.0298 m/s, track_ratio 0.3721, base min 0.1581
+seed 5: HOLD, 158 samples, vx 0.1298 m/s, track_ratio 1.6227, base min 0.0149
+seed 7: PASS, 750 samples, vx 0.0275 m/s, track_ratio 0.3438, base min 0.1581
+velocity excess: 0.0000 p95 and 0.0000 instantaneous
+```
+
+This correction fixed the previous seed-0 regression, but it shifted the
+closed-loop failure to seed 5. The router boundary is therefore movable, but a
+one-sided scalar corrective trace is not a promotable solution. The next
+router attempt needs a multi-constraint closed-loop-aware objective that keeps
+seed 0 startup on branch A while preserving seed 5 startup/trajectory on
+branch B. Do not start Phase 2 domain-randomization training until the
+composed deployable candidate clears the canonical corrected-bridge gate.
 
 ### Trainable Compression Hold
 
