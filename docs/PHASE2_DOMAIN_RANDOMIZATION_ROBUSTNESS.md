@@ -97,6 +97,37 @@ If no observation-based router clears the compact gate, skip further mixture
 routing and move to a recurrent/hidden-state policy class or a different
 optimization objective.
 
+## 2026-07-05 Router Trace Readiness
+
+Full-observation final-candidate traces were collected for the router branch:
+
+```text
+outputs/analysis/PHASE2_POLICY_ROUTE_TRACE_ITER24_27.md
+outputs/analysis/phase2_policy_route_trace_iter24_27.json
+outputs/analysis/PHASE2_POLICY_ROUTE_TRACE_ITER25_26.md
+outputs/analysis/phase2_policy_route_trace_iter25_26.json
+outputs/analysis/PHASE2_ROUTER_TRACE_READINESS.md
+outputs/analysis/phase2_router_trace_readiness.json
+```
+
+Decision:
+
+```text
+PASS_ROUTER_TRACE_DATA_READY
+```
+
+The trace data covers final-candidate Iter24, Iter25, Iter26, and Iter27 over
+the compact z=0.0075 rough+push seeds `0,1,2,6,7`, with full `obs_state` rows
+and trace-file hashes recorded. The raw JSONL trace directories are local
+analysis inputs and are large enough that this checkpoint commits the hashed
+readiness report and compact sweep summaries rather than blindly adding the
+entire trace corpus.
+
+Next router work must remain offline and must not use seed id as a deployable
+routing feature. The router has to choose from observation/history, pass the
+same compact z=0.0075 rough+push gate, and only then generate a trainable
+behavior-preservation target for Phase 2 DR.
+
 ## 2026-07-05 Iter24 PPO-Loc Step-0 Diagnostic
 
 After the live-oracle Iter24 candidate became the latest useful z=0.0075
