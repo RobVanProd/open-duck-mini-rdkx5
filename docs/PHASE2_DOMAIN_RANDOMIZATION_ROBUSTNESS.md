@@ -831,6 +831,53 @@ reverse motion and the simulator slew ceiling. The next valid branch remains an
 explicit branch-preserving wrapper/router or trainable mixture with closed-loop
 validation pressure.
 
+### Full-8 Obs-Linear Router Separability Hold
+
+An ONNX packaging helper was added for future branch-preserving experiments:
+
+```text
+tools/compose_obs_linear_gated_onnx_policy.py
+```
+
+It composes two stateless policies behind a live observation-linear branch gate
+while preserving the deployed contract:
+
+```text
+obs[1,101] -> continuous_actions[1,14]
+```
+
+Before composing the current selected branches, a separability diagnostic tested
+whether the seed-5 `iter25` branch is linearly distinguishable from the
+command-gated branch in stateless observation space:
+
+```text
+tools/report_phase2_full8_obs_linear_router_separability.py
+outputs/analysis/PHASE2_FULL8_OBS_LINEAR_ROUTER_SEPARABILITY.md
+outputs/analysis/phase2_full8_obs_linear_router_separability.json
+```
+
+Decision:
+
+```text
+HOLD_OBS_LINEAR_ROUTER_OVERLAP
+```
+
+Result:
+
+```text
+positive branch samples: 750
+negative branch samples: 5250
+positive selected: 62.00%
+negative false selected: 56.59%
+balanced accuracy: 52.70%
+```
+
+Do not build the current two-policy router with a stateless linear observation
+gate. It would select the seed-5 branch on too many non-seed-5 states and is
+therefore not a credible Phase 2 warm-start. The next router attempt needs a
+nonlinear mixture/gate with closed-loop validation pressure, or a stateful
+prefix router with an explicit runtime/eval contract.
+
 ### Trainable Compression Hold
 
 The command-gated ONNX was distilled into PPO-compatible single-MLP students
