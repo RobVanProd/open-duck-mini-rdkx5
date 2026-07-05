@@ -1,0 +1,29 @@
+{
+  "status": "HOLD_RECURRENT_DIAG_STANDSTILL",
+  "candidate": "policy/candidates/phase2_z0075_iter21_recurrent_diag_h64_seq32_rate150_20260704/candidate.onnx",
+  "deployable": false,
+  "non_deployable_reason": "Stateful ONNX requires h_in/h_out hidden-state runtime support.",
+  "candidate_sha256": "3a53e4d77007d52ded2723a123ed29cae037744396089f03d18fe79f04b5d293",
+  "student_npz_sha256": "7fbba4104c4f7f4b271ce6c418eb898a03f278941b0faf7f409d37efeaca6acc",
+  "source_manifest": "outputs/analysis/phase2_z0075_iter21_seed67_w2_seed1_plus_seed2_merged_manifest.json",
+  "source_manifest_sha256": "3398b064c7454faae25d046c630450b4060e3dca58251d0e9c709adfb99029fa",
+  "screen_json": "outputs/analysis/phase2_z0075_iter21_recurrent_diag_h64_seq32_rate150_x008_seed0_1_2_6_7_screen.json",
+  "screen_json_sha256": "53602e4179eaf87c6a79fa20849c777fb92d4a62c73047babd2f75d89984394f",
+  "training_status": "PASS_RECURRENT_BC_FIT_SMOKE",
+  "onnx_max_action_error": 0.00000029,
+  "onnx_max_hidden_error": 0.00000074,
+  "compact_screen": {
+    "seeds": [0, 1, 2, 6, 7],
+    "falls": 0,
+    "duration_complete": 5,
+    "low_forward_progress": 5,
+    "track_ratio_mean": 0.0109,
+    "mean_local_vx_m_s": 0.0009,
+    "single_support_pct_mean": 0.0,
+    "double_support_pct_mean": 100.0,
+    "max_velocity_excess_rad_s": 0.0
+  },
+  "promote": false,
+  "robot_validation_allowed": false,
+  "next_step": "Run live-oracle DAgger on student-visited states. Static BC over the current manifest is not enough, even with explicit recurrent state."
+}
