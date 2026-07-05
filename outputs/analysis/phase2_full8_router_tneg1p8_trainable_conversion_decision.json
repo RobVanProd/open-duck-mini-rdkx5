@@ -1,0 +1,160 @@
+{
+  "created_utc": "2026-07-05T23:47:43Z",
+  "decision": {
+    "promote_to_dr_warmstart": false,
+    "reason": "Both PPO-loc BC compressions hold at 6/8 on the canonical x=0.08 corrected-bridge rough/push gate. Launching domain-randomized PPO from either would violate the warm-start requirement.",
+    "recommended_next": "Use the captured full-observation router traces for a branch-aware/stateful trainable conversion or online DAgger; do not launch DR from the failing PPO-loc students."
+  },
+  "router_candidate": {
+    "gate_x000": {
+      "base_height_min_mean_m": 0.16120009310543537,
+      "body_pitch_p95_mean_rad": 0.06686725481386016,
+      "duration_complete": 8,
+      "falls": 0,
+      "max_velocity_excess_max_rad_s": 0.0,
+      "mean_vx_m_s": 0.0007487057433450843,
+      "p95_velocity_excess_max_rad_s": 0.0,
+      "path": "outputs/analysis/phase2_full8_router_tneg1p8_trace_x000.json",
+      "runs": 8,
+      "sha256": "0dc3d8b7957a5bfea900fd9713d13d90c40b6622bc38437e268787af69937a5e",
+      "track_ratio_mean": null
+    },
+    "gate_x008": {
+      "base_height_min_mean_m": 0.15797601453959942,
+      "body_pitch_p95_mean_rad": 0.18585163264521515,
+      "duration_complete": 8,
+      "falls": 0,
+      "max_velocity_excess_max_rad_s": 0.0,
+      "mean_vx_m_s": 0.027644448238774808,
+      "p95_velocity_excess_max_rad_s": 0.0,
+      "path": "outputs/analysis/phase2_full8_router_tneg1p8_trace_x008.json",
+      "runs": 8,
+      "sha256": "539cee0fe4098f2d6b80f021e339d46c77418ca658db4a951177a5583e3c0439",
+      "track_ratio_mean": 0.34555560298468513
+    },
+    "path": "policy/candidates/phase2_full8_router_tneg1p8_20260705/candidate.onnx",
+    "sha256": "f3e88820b87025788c97636599cd2caf6ef249f7cb7e50ddde31ff5c1c5457d0"
+  },
+  "status": "HOLD_TRAINABLE_ROUTER_COMPRESSION_NOT_PROMOTABLE",
+  "students": {
+    "seed56_weighted": {
+      "fit": {
+        "activation": "swish",
+        "hidden_sizes": [
+          512,
+          256,
+          128
+        ],
+        "onnx_verify": {
+          "max_abs_error": 1.1466969914233904e-07,
+          "p95_abs_error": 5.6821091891826156e-08,
+          "path": "outputs/analysis/phase2_full8_router_tneg1p8_ppo_loc_bc_seed56_weighted_student/candidate.onnx",
+          "samples_checked": 64
+        },
+        "path": "outputs/analysis/phase2_full8_router_tneg1p8_ppo_loc_bc_seed56_weighted_student.json",
+        "samples": 12000,
+        "sha256": "d38ab5f6bf746b1632e536cf371db76a7afa4c54ab9a9b3f511a7586bacada13",
+        "status": "PASS_PPO_LOC_BC_FIT_SMOKE",
+        "target_rate": {
+          "max_rad_s": 1.8649726595949219,
+          "p50_rad_s": 0.012744602608192946,
+          "p95_rad_s": 1.2580508893330737,
+          "p99_rad_s": 1.5181272981231193,
+          "pair_count": 11984
+        },
+        "train_metrics": {
+          "mae": 0.0015048526381529592,
+          "max_abs_error": 0.029113790805735052,
+          "p50_abs_error": 0.000944050142301048,
+          "p95_abs_error": 0.00491177229766423,
+          "p99_abs_error": 0.007632846090778058,
+          "pred_action_saturation_pct": 0.0,
+          "rmse": 0.0022326317034465884,
+          "samples": 12000
+        }
+      },
+      "gate_x008": {
+        "base_height_min_mean_m": 0.11842424595670309,
+        "body_pitch_p95_mean_rad": 0.27200175147242106,
+        "duration_complete": 6,
+        "falls": 2,
+        "max_velocity_excess_max_rad_s": 0.0,
+        "mean_vx_m_s": 0.0408484282943365,
+        "p95_velocity_excess_max_rad_s": 0.0,
+        "path": "outputs/analysis/phase2_full8_router_tneg1p8_ppo_loc_bc_seed56_weighted_student_x008_gate.json",
+        "runs": 8,
+        "sha256": "88d8a58adc410aa99fd71af7f995f9bf0bc25f76b04013f41caed89f84efe5d0",
+        "track_ratio_mean": 0.5106053536792062
+      },
+      "manifest": {
+        "path": "outputs/analysis/phase2_full8_router_tneg1p8_bc_trace_manifest_seed56_weighted.json",
+        "sha256": "90e4e2cc5139ebca9a8f65577768b5f8f37663ace37bd1b709ae18d868194ce1"
+      },
+      "onnx": {
+        "path": "outputs/analysis/phase2_full8_router_tneg1p8_ppo_loc_bc_seed56_weighted_student/candidate.onnx",
+        "sha256": "c9156fa73a79733edb35d4367da47c0fd257b0b8e7cde77b152b1ba30e5880de"
+      }
+    },
+    "unweighted": {
+      "fit": {
+        "activation": "swish",
+        "hidden_sizes": [
+          512,
+          256,
+          128
+        ],
+        "onnx_verify": {
+          "max_abs_error": 7.45137200132244e-08,
+          "p95_abs_error": 5.1312699886211025e-08,
+          "path": "outputs/analysis/phase2_full8_router_tneg1p8_ppo_loc_bc_student/candidate.onnx",
+          "samples_checked": 64
+        },
+        "path": "outputs/analysis/phase2_full8_router_tneg1p8_ppo_loc_bc_student.json",
+        "samples": 12000,
+        "sha256": "3b3c907b7e712174cb901fd8d7b9343455cd75b0d7044b390c37b0289aa7193d",
+        "status": "PASS_PPO_LOC_BC_FIT_SMOKE",
+        "target_rate": {
+          "max_rad_s": 1.8880903729816865,
+          "p50_rad_s": 0.012829665589532673,
+          "p95_rad_s": 1.2652943329400466,
+          "p99_rad_s": 1.5226071846267426,
+          "pair_count": 11984
+        },
+        "train_metrics": {
+          "mae": 0.0012334876514846335,
+          "max_abs_error": 0.02437019738740498,
+          "p50_abs_error": 0.000735411857662696,
+          "p95_abs_error": 0.004126875046859736,
+          "p99_abs_error": 0.006401690686180505,
+          "pred_action_saturation_pct": 0.0,
+          "rmse": 0.0018751315601732695,
+          "samples": 12000
+        }
+      },
+      "gate_x008": {
+        "base_height_min_mean_m": 0.12733327865134925,
+        "body_pitch_p95_mean_rad": 0.25015467418242504,
+        "duration_complete": 6,
+        "falls": 2,
+        "max_velocity_excess_max_rad_s": 0.0,
+        "mean_vx_m_s": 0.03650440980696944,
+        "p95_velocity_excess_max_rad_s": 0.0,
+        "path": "outputs/analysis/phase2_full8_router_tneg1p8_ppo_loc_bc_student_x008_gate.json",
+        "runs": 8,
+        "sha256": "634a4213043cdc60e04b695cbdba47b5d963592861973d830adca88268dc9626",
+        "track_ratio_mean": 0.456305122587118
+      },
+      "onnx": {
+        "path": "outputs/analysis/phase2_full8_router_tneg1p8_ppo_loc_bc_student/candidate.onnx",
+        "sha256": "04eb3fb8dc4ffe4dd46092e38b2937ad9f7f8cdf3ec9c10beb3a16d13b11a672"
+      }
+    }
+  },
+  "trace_manifest": {
+    "entries": 16,
+    "path": "outputs/analysis/phase2_full8_router_tneg1p8_bc_trace_manifest.json",
+    "samples": 12000,
+    "sha256": "71563ac2bdff4561b2aacc098d0078b5142389a585c84758e3a5d48b6ad98a9e",
+    "status": "PASS_BC_TRACE_MANIFEST_READY"
+  }
+}

@@ -1,0 +1,138 @@
+{
+  "status": "PASS_PPO_LOC_BC_FIT_SMOKE",
+  "manifest": "outputs/analysis/phase2_full8_router_tneg1p8_bc_trace_manifest.json",
+  "samples": 12000,
+  "hidden_sizes": [
+    512,
+    256,
+    128
+  ],
+  "activation": "swish",
+  "saved_npz": "outputs/analysis/phase2_full8_router_tneg1p8_ppo_loc_bc_student/candidate_mlp.npz",
+  "exported_onnx": "outputs/analysis/phase2_full8_router_tneg1p8_ppo_loc_bc_student/candidate.onnx",
+  "train_metrics": {
+    "samples": 12000,
+    "mae": 0.0012334876514846335,
+    "rmse": 0.0018751315601732695,
+    "p50_abs_error": 0.000735411857662696,
+    "p95_abs_error": 0.004126875046859736,
+    "p99_abs_error": 0.006401690686180505,
+    "max_abs_error": 0.02437019738740498,
+    "pred_action_saturation_pct": 0.0
+  },
+  "target_rate": {
+    "pair_count": 11984,
+    "p50_rad_s": 0.012829665589532673,
+    "p95_rad_s": 1.2652943329400466,
+    "p99_rad_s": 1.5226071846267426,
+    "max_rad_s": 1.8880903729816865
+  },
+  "sample_weight": {
+    "p50": 1.0,
+    "p95": 1.0,
+    "max": 1.0,
+    "weighted_samples": 12000.0
+  },
+  "loss_rows": [
+    {
+      "step": 1,
+      "loss": 0.11120772361755371
+    },
+    {
+      "step": 1000,
+      "loss": 3.0827359296381474e-05
+    },
+    {
+      "step": 2000,
+      "loss": 1.72741729329573e-05
+    },
+    {
+      "step": 3000,
+      "loss": 1.2609967598109506e-05
+    },
+    {
+      "step": 4000,
+      "loss": 1.3921669051342178e-05
+    },
+    {
+      "step": 5000,
+      "loss": 1.0067340554087423e-05
+    },
+    {
+      "step": 6000,
+      "loss": 8.096099008980673e-06
+    },
+    {
+      "step": 7000,
+      "loss": 7.196599199232878e-06
+    },
+    {
+      "step": 8000,
+      "loss": 6.711784863000503e-06
+    },
+    {
+      "step": 9000,
+      "loss": 5.8142045418208e-06
+    },
+    {
+      "step": 10000,
+      "loss": 5.876559953321703e-06
+    },
+    {
+      "step": 11000,
+      "loss": 4.791817900695605e-06
+    },
+    {
+      "step": 12000,
+      "loss": 5.8660111790231895e-06
+    },
+    {
+      "step": 13000,
+      "loss": 5.2826244427706115e-06
+    },
+    {
+      "step": 14000,
+      "loss": 4.4531911953527015e-06
+    },
+    {
+      "step": 15000,
+      "loss": 5.882497589482227e-06
+    },
+    {
+      "step": 16000,
+      "loss": 4.4359321691445075e-06
+    },
+    {
+      "step": 17000,
+      "loss": 4.196771897113649e-06
+    },
+    {
+      "step": 18000,
+      "loss": 3.74989122065017e-06
+    },
+    {
+      "step": 19000,
+      "loss": 3.920389644918032e-06
+    },
+    {
+      "step": 20000,
+      "loss": 2.9729385460086633e-06
+    }
+  ],
+  "onnx_verify": {
+    "path": "outputs/analysis/phase2_full8_router_tneg1p8_ppo_loc_bc_student/candidate.onnx",
+    "samples_checked": 64,
+    "max_abs_error": 7.45137200132244e-08,
+    "p95_abs_error": 5.1312699886211025e-08
+  },
+  "config": {
+    "steps": 20000,
+    "batch_size": 1024,
+    "learning_rate": 0.0005,
+    "target_rate_scale": 0.05,
+    "target_rate_limit_rad_s": 2.0,
+    "action_scale_rad": 0.25,
+    "dt_s": 0.02,
+    "seed": 0
+  }
+}

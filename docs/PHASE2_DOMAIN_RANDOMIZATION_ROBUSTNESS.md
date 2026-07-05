@@ -1273,6 +1273,67 @@ rough/push gates required before domain-randomized robustness work can resume.
 Next offline step: start narrow DR from this candidate and preserve these two
 gates at every stage.
 
+### Full-8 Router Trainable Conversion Hold
+
+Before launching domain-randomized PPO, the router candidate was tested as a
+source for a PPO-compatible trainable warm-start. The router itself is an ONNX
+composition, not an Orbax checkpoint, so it cannot be passed directly to the
+Playground PPO restore path.
+
+Full-observation traces were regenerated from the router:
+
+```text
+outputs/analysis/PHASE2_FULL8_ROUTER_TNEG1P8_TRACE_X008.md
+outputs/analysis/phase2_full8_router_tneg1p8_trace_x008.json
+outputs/analysis/PHASE2_FULL8_ROUTER_TNEG1P8_TRACE_X000.md
+outputs/analysis/phase2_full8_router_tneg1p8_trace_x000.json
+```
+
+Both trace sweeps preserved the router gates:
+
+```text
+x=0.08: 8/8 PASS, 0 falls, mean vx 0.0276 m/s, velocity excess 0
+x=0.0:  8/8 PASS, 0 falls, mean vx 0.0007 m/s, velocity excess 0
+```
+
+A compact BC manifest was built from the 16 traces:
+
+```text
+outputs/analysis/PHASE2_FULL8_ROUTER_TNEG1P8_BC_TRACE_MANIFEST.md
+outputs/analysis/phase2_full8_router_tneg1p8_bc_trace_manifest.json
+```
+
+Two PPO-loc BC students were trained from that data:
+
+```text
+unweighted:
+  fit p95 action error: 0.004127
+  x=0.08 gate: 6/8 PASS, seeds 5 and 6 fell
+
+seed56_weighted:
+  fit p95 action error: 0.004912
+  x=0.08 gate: 6/8 PASS, seeds 5 and 6 fell
+```
+
+Decision:
+
+```text
+HOLD_TRAINABLE_ROUTER_COMPRESSION_NOT_PROMOTABLE
+```
+
+Evidence:
+
+```text
+outputs/analysis/PHASE2_FULL8_ROUTER_TNEG1P8_TRAINABLE_CONVERSION_DECISION.md
+outputs/analysis/phase2_full8_router_tneg1p8_trainable_conversion_decision.json
+```
+
+Do not launch domain-randomized PPO from either PPO-loc student. The current
+router source remains useful and in-envelope, but a single memoryless PPO-loc
+compression has not preserved the full-8 x=0.08 rough/push gate. The next
+aligned trainable-warm-start branch needs a branch-aware/stateful conversion
+or online DAgger using the captured full-observation router traces.
+
 ### Trainable Compression Hold
 
 The command-gated ONNX was distilled into PPO-compatible single-MLP students
