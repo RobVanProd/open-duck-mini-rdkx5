@@ -729,6 +729,56 @@ coverage. Use it as the next behavior-preservation target. Phase 2 DR remains
 blocked until a trainable parent or a deployable/eval-safe wrapper preserves
 this behavior and also clears the `x=0.0` command-semantics gate.
 
+### Full-8 Rich-Context Parent Hold
+
+The selected full-8 source was compressed into a larger phase-modulated
+rich-context parent:
+
+```text
+outputs/analysis/PHASE2_FULL8_ROUTER_SOURCE_RICH_CONTEXT_PARENT.md
+outputs/analysis/phase2_full8_router_source_rich_context_parent.json
+outputs/analysis/PHASE2_FULL8_ROUTER_SOURCE_RICH_CONTEXT_PARENT_X008_SEED0_5_7_GATE.md
+outputs/analysis/phase2_full8_router_source_rich_context_parent_x008_seed0_5_7_gate.json
+outputs/analysis/PHASE2_FULL8_ROUTER_SOURCE_RICH_CONTEXT_PARENT_DECISION.md
+outputs/analysis/phase2_full8_router_source_rich_context_parent_decision.json
+```
+
+Decision:
+
+```text
+HOLD_FULL8_RICH_CONTEXT_PARENT_SEED5_LUNGE
+```
+
+The static parent fit the selected source cleanly:
+
+```text
+candidate sha256: 9891f1927ab3f6e8c6a6c9a2dfcfb0fe06873a26c068840f1c1b818360a75fe1
+samples: 6000
+MAE: 0.001977
+p95 abs error: 0.005375
+target-rate p95: 1.4451 rad/s
+target-rate max: 1.8839 rad/s
+ONNX max abs error: 0.00000030
+```
+
+The hard `x=0.08`, `z=0.0075`, rough-terrain, intermediate-push,
+corrected-bridge screen over seeds `0,5,7` did not preserve the seed-5
+stabilizing branch:
+
+```text
+seed 0: PASS, 750 samples, track_ratio 0.3306, body pitch p95 0.2130
+seed 5: HOLD, 149 samples, track_ratio 1.7761, body pitch p95 0.8855, base min 0.0014
+seed 7: PASS, 750 samples, track_ratio 0.3468, body pitch p95 0.1729
+velocity excess: 0.0000 p95 and 0.0000 instantaneous
+```
+
+Do not promote this parent and do not launch Phase 2 domain randomization from
+it. The selected-source route works as separate branch behavior, but static
+rich-context compression still collapses the seed-5 branch into a lunge. The
+next valid step is an explicit branch-preserving wrapper/router objective or a
+trainable mixture that keeps the seed-5 behavior separate through the gate, not
+another static BC compression.
+
 ### Trainable Compression Hold
 
 The command-gated ONNX was distilled into PPO-compatible single-MLP students
