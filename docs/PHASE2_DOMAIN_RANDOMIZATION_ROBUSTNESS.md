@@ -59,6 +59,44 @@ recurrent/hidden-state export, validation-aware mixture/ensemble diagnostics,
 or PPO fine-tuning only after the task-matched behavior-preservation gate
 passes.
 
+## 2026-07-05 Policy Route Diagnostic
+
+The first follow-up to the trainable-policy hold checked whether the existing
+deployable candidates are complementary enough to justify a validation-aware
+mixture/router branch:
+
+```text
+outputs/analysis/PHASE2_POLICY_ROUTE_DIAGNOSTIC.md
+outputs/analysis/phase2_policy_route_diagnostic.json
+```
+
+Decision:
+
+```text
+PASS_ORACLE_ROUTE_EXISTS
+```
+
+The compact z=0.0075 rough+push seed set is oracle-coverable by existing
+candidates:
+
+- Iter24 passes seeds `0,1,2,7` and fails seed `6`.
+- Iter25 passes seeds `1,2,6` and fails seeds `0,7`.
+- Iter26 passes seed `6` only.
+- Iter27 passes seeds `0,1` and regresses seeds `2,6,7`.
+
+An oracle seed-level route covers seeds `0,1,2,6,7` with zero corrected
+velocity-envelope excess. This is not deployable or trainable evidence because
+seed id is not an allowed runtime input, but it establishes that the current
+candidate family contains complementary behaviors. The next evidence-aligned
+branch is therefore an offline observation/history-based router or mixture
+diagnostic. It must select among existing candidates from available policy
+observations/history, gate on the same z=0.0075 rough+push compact screen, and
+only then produce rollouts for a trainable behavior-preservation target.
+
+If no observation-based router clears the compact gate, skip further mixture
+routing and move to a recurrent/hidden-state policy class or a different
+optimization objective.
+
 ## 2026-07-05 Iter24 PPO-Loc Step-0 Diagnostic
 
 After the live-oracle Iter24 candidate became the latest useful z=0.0075
