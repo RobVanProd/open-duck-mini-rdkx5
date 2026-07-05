@@ -402,6 +402,47 @@ preserves the movement behavior at `x=0.08`, but it does not preserve command
 semantics. Do not launch domain-randomized training from it until a
 zero-command path or command-gated parent clears both compact gates.
 
+## 2026-07-05 Command-Gated Compact Warm-Start
+
+The zero-command blocker above was resolved with a deployable ONNX command gate:
+
+```text
+policy/candidates/phase2_parent_pair_lateral_seed7_weighted_command_gated_zero0020_20260705/candidate.onnx
+sha256: f3d5d735e96cf88bfe037bd4c6c1289eebc5d25bcc7722416f62dcee292866d0
+```
+
+Routing:
+
+```text
+abs(obs[6]) <= 0.02 -> zero-action/home policy
+abs(obs[6]) >  0.02 -> seed-7-weighted parent-pair lateral student
+```
+
+ONNX route verification passed with max action error `0.0`:
+
+```text
+outputs/analysis/phase2_parent_pair_lateral_seed7_weighted_command_gated_zero0020/onnx_gate_verify.json
+```
+
+The command-gated candidate passed the same compact corrected-bridge
+rough+push screens:
+
+```text
+x=0.08: 5/5 pass, 0 falls, 0 velocity-envelope excess
+x=0.0:  5/5 pass, 0 falls, mean vx 0.0008 m/s, 0 velocity-envelope excess
+```
+
+Decision artifact:
+
+```text
+outputs/analysis/PHASE2_PARENT_PAIR_LATERAL_SEED7_WEIGHTED_COMMAND_GATED_ZERO0020_DECISION.md
+outputs/analysis/phase2_parent_pair_lateral_seed7_weighted_command_gated_zero0020_decision.json
+```
+
+This resolves `HOLD_COMMAND_SEMANTICS_X0` for the compact gate and makes the
+command-gated candidate the next offline Phase 2 DR warm-start. It is still not
+robot approval and does not complete the staged domain-randomization objective.
+
 ## 2026-07-05 Iter24 PPO-Loc Step-0 Diagnostic
 
 After the live-oracle Iter24 candidate became the latest useful z=0.0075
