@@ -1146,6 +1146,68 @@ a seed/state-specific routing conflict that a scalar threshold cannot solve.
 The next attempt should be closed-loop-aware or stateful/prefix-conditioned,
 not another scalar threshold sweep.
 
+### Full-8 MLP Router Live-Corrected Iter2 Hold
+
+The `threshold=-2` seed-0 regression was rerun with full-observation tracing:
+
+```text
+outputs/analysis/PHASE2_FULL8_MLP_ROUTER_SEED0_SEED5_STARTUP_COST_WIDE_TNEG2_SEED0_TRACE_GATE.md
+outputs/analysis/phase2_full8_mlp_router_seed0_seed5_startup_cost_wide_tneg2_seed0_trace_gate.json
+outputs/analysis/PHASE2_FULL8_MLP_ROUTER_SEED0_SEED5_STARTUP_COST_WIDE_TNEG2_SEED0_BRANCH_TRACE.md
+outputs/analysis/phase2_full8_mlp_router_seed0_seed5_startup_cost_wide_tneg2_seed0_branch_trace.json
+```
+
+A live-corrected iter2 stateless MLP gate was trained with:
+
+```text
+branch-A correction: prior seed-0 MLP-router failure, first 80 ticks, weight 50
+branch-A correction: threshold=-2 seed-0 failure, first 80 ticks, weight 50
+branch-B correction: seed-5 failure trace from seed0-startup-cost router, first 80 ticks, weight 50
+```
+
+Artifacts:
+
+```text
+outputs/analysis/PHASE2_FULL8_MLP_ROUTER_LIVE_CORRECTED_ITER2_SEPARABILITY.md
+outputs/analysis/phase2_full8_mlp_router_live_corrected_iter2_separability.json
+outputs/analysis/PHASE2_FULL8_MLP_ROUTER_LIVE_CORRECTED_ITER2_X008_SEED0_5_7_GATE.md
+outputs/analysis/phase2_full8_mlp_router_live_corrected_iter2_x008_seed0_5_7_gate.json
+outputs/analysis/PHASE2_FULL8_MLP_ROUTER_LIVE_CORRECTED_ITER2_DECISION.md
+outputs/analysis/phase2_full8_mlp_router_live_corrected_iter2_decision.json
+```
+
+Decision:
+
+```text
+HOLD_FULL8_MLP_ROUTER_LIVE_CORRECTION_REGRESSES_SEED7
+```
+
+The live-corrected gate still passed held-out source-label separability:
+
+```text
+test balanced accuracy: 88.43%
+test positive selected: 80.00%
+test negative false selected: 3.14%
+gate_npz_sha256: 3e7d6797065d690acfa0217ffd8cce7dc2847aa8a5ba6aba2dc6fa9b6ea88615
+candidate_sha256: 7192c7b193100ac60ad6a44d9167aa1337d24cde17a0e50a8a0662f78eaba6d9
+onnx_verify_sha256: 95ad864bf5e2c747a8dc4cc392616e42c9518d896be4986d5195380d689343ec
+```
+
+The closed-loop screen regressed:
+
+```text
+seed 0: PASS, 750 samples, vx 0.0252 m/s, track_ratio 0.3149, base min 0.1588
+seed 5: HOLD, 169 samples, vx 0.1257 m/s, track_ratio 1.5711, base min 0.0100
+seed 7: HOLD, 605 samples, vx 0.0549 m/s, track_ratio 0.6863, base min 0.0106
+velocity excess: 0.0000 p95 and 0.0000 instantaneous
+```
+
+This closes the stateless MLP-router label-correction sub-branch. Adding
+closed-loop failure labels can move which seed fails, but it does not create a
+stable deployable router. The next valid branch is a stateful/prefix router or
+trainable closed-loop mixture with rollout-level cost, not more source-label or
+single-threshold correction.
+
 ### Trainable Compression Hold
 
 The command-gated ONNX was distilled into PPO-compatible single-MLP students
