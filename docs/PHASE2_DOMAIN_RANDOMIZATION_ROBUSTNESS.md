@@ -779,6 +779,58 @@ next valid step is an explicit branch-preserving wrapper/router objective or a
 trainable mixture that keeps the seed-5 behavior separate through the gate, not
 another static BC compression.
 
+### Full-8 Recurrent BC Hold
+
+The same selected full-8 source was then fit with a stateful recurrent BC
+student to test whether explicit hidden state preserves the routed branch
+behavior that the static parent lost:
+
+```text
+outputs/analysis/PHASE2_FULL8_ROUTER_SOURCE_RECURRENT_H128_S64_RATE2P0.md
+outputs/analysis/phase2_full8_router_source_recurrent_h128_s64_rate2p0.json
+outputs/analysis/PHASE2_FULL8_ROUTER_SOURCE_RECURRENT_H128_S64_RATE2P0_X008_SEED0_5_7_GATE.md
+outputs/analysis/phase2_full8_router_source_recurrent_h128_s64_rate2p0_x008_seed0_5_7_gate.json
+outputs/analysis/PHASE2_FULL8_ROUTER_SOURCE_RECURRENT_H128_S64_RATE2P0_DECISION.md
+outputs/analysis/phase2_full8_router_source_recurrent_h128_s64_rate2p0_decision.json
+```
+
+Decision:
+
+```text
+HOLD_FULL8_RECURRENT_BC_REVERSES_AND_SATURATES
+```
+
+The recurrent fit was acceptable as a supervised/export smoke:
+
+```text
+candidate sha256: 6fe1713ab1de5c4480a964b4a2e9b3d119f9b905f235c97806a8298e6b8a6b56
+hidden_dim / sequence_length: 128 / 64
+samples: 6000
+MAE: 0.009001
+p95 abs error: 0.022976
+target-rate p95: 1.4556 rad/s
+target-rate max: 2.3151 rad/s
+ONNX max action error: 0.00000056
+```
+
+Closed-loop behavior was worse than the static rich-context parent. Under the
+same hard `x=0.08`, `z=0.0075`, rough-terrain, intermediate-push,
+corrected-bridge screen over seeds `0,5,7`, every seed fell at 63 samples:
+
+```text
+seed 0: HOLD, 63 samples, vx -0.2476 m/s, track_ratio -3.0944
+seed 5: HOLD, 63 samples, vx -0.2461 m/s, track_ratio -3.0761
+seed 7: HOLD, 63 samples, vx -0.2467 m/s, track_ratio -3.0841
+pitch-chain p95 velocity excess: 3.2400 rad/s
+instantaneous velocity excess: 3.2400 rad/s
+```
+
+Do not continue supervised-only recurrent compression on this source. Hidden
+state alone did not preserve the branch behavior; it drove the policy into
+reverse motion and the simulator slew ceiling. The next valid branch remains an
+explicit branch-preserving wrapper/router or trainable mixture with closed-loop
+validation pressure.
+
 ### Trainable Compression Hold
 
 The command-gated ONNX was distilled into PPO-compatible single-MLP students
