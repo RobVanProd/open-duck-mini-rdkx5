@@ -443,6 +443,44 @@ This resolves `HOLD_COMMAND_SEMANTICS_X0` for the compact gate and makes the
 command-gated candidate the next offline Phase 2 DR warm-start. It is still not
 robot approval and does not complete the staged domain-randomization objective.
 
+### Trainable Compression Hold
+
+The command-gated ONNX was distilled into PPO-compatible single-MLP students
+using the compact `x=0.08` and `x=0.0` traces as labels:
+
+```text
+outputs/analysis/phase2_command_gated_zero0020_bc_manifest.json
+dataset_id: 24beb17ef0e1de02
+samples: 7500
+```
+
+The unweighted PPO-loc MLP fit the labels well and preserved zero command, but
+did not preserve the moving branch:
+
+```text
+outputs/analysis/PHASE2_COMMAND_GATED_ZERO0020_PPO_LOC_BC_STUDENT.md
+x=0.08 compact gate: 3/5 pass, failed seeds 0 and 7
+x=0.0 compact gate: 5/5 pass
+```
+
+A bounded seed-0/7 weighted refit recovered seed 7 but moved the failure to
+seed 2:
+
+```text
+outputs/analysis/PHASE2_COMMAND_GATED_ZERO0020_SEED07_WEIGHTED_PPO_LOC_BC_STUDENT.md
+x=0.08 compact gate: 3/5 pass, failed seeds 0 and 2
+```
+
+Decision:
+
+```text
+HOLD_TRAINABLE_COMPRESSION_MOVING_GATE
+```
+
+The graph-level command gate is the current compact eval candidate, but Phase 2
+still lacks a PPO-compatible trainable warm-start checkpoint. Do not launch DR
+training from the single-MLP compressions.
+
 ## 2026-07-05 Iter24 PPO-Loc Step-0 Diagnostic
 
 After the live-oracle Iter24 candidate became the latest useful z=0.0075

@@ -1,0 +1,46 @@
+{
+  "status": "HOLD_TRAINABLE_COMPRESSION_MOVING_GATE",
+  "source_graph_gated_candidate": {
+    "path": "policy/candidates/phase2_parent_pair_lateral_seed7_weighted_command_gated_zero0020_20260705/candidate.onnx",
+    "sha256": "f3d5d735e96cf88bfe037bd4c6c1289eebc5d25bcc7722416f62dcee292866d0",
+    "x008_pass_count": 5,
+    "x008_total": 5,
+    "x000_pass_count": 5,
+    "x000_total": 5
+  },
+  "combined_manifest": {
+    "path": "outputs/analysis/phase2_command_gated_zero0020_bc_manifest.json",
+    "dataset_id": "24beb17ef0e1de02",
+    "entries": 10,
+    "samples": 7500
+  },
+  "unweighted_ppo_loc": {
+    "fit_json": "outputs/analysis/phase2_command_gated_zero0020_ppo_loc_bc_student.json",
+    "onnx": "outputs/analysis/phase2_command_gated_zero0020_ppo_loc_bc_student/candidate.onnx",
+    "npz": "outputs/analysis/phase2_command_gated_zero0020_ppo_loc_bc_student/candidate_mlp.npz",
+    "fit_p95_abs_error": 0.004215,
+    "target_rate_p95_rad_s": 1.264834,
+    "onnx_verify_max_abs_error": 0.00000011,
+    "x008_pass_count": 3,
+    "x008_total": 5,
+    "x008_failed_seeds": [0, 7],
+    "x000_pass_count": 5,
+    "x000_total": 5
+  },
+  "seed07_weighted_ppo_loc": {
+    "manifest": "outputs/analysis/phase2_command_gated_zero0020_seed07_weighted_bc_manifest.json",
+    "dataset_id": "716fd971d4b33945",
+    "weighted_samples": 10500,
+    "fit_json": "outputs/analysis/phase2_command_gated_zero0020_seed07_weighted_ppo_loc_bc_student.json",
+    "onnx": "outputs/analysis/phase2_command_gated_zero0020_seed07_weighted_ppo_loc_bc_student/candidate.onnx",
+    "npz": "outputs/analysis/phase2_command_gated_zero0020_seed07_weighted_ppo_loc_bc_student/candidate_mlp.npz",
+    "fit_p95_abs_error": 0.004171,
+    "target_rate_p95_rad_s": 1.261821,
+    "onnx_verify_max_abs_error": 0.00000013,
+    "x008_pass_count": 3,
+    "x008_total": 5,
+    "x008_failed_seeds": [0, 2],
+    "x000_gate_run": false
+  },
+  "decision": "Do not start Phase 2 domain-randomized PPO from either trainable MLP. The graph-gated ONNX is compact-gate valid, but a trainable warm-start checkpoint remains unresolved."
+}

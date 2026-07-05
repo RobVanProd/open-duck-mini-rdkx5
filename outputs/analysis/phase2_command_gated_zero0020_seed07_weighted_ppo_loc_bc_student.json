@@ -1,0 +1,130 @@
+{
+  "status": "PASS_PPO_LOC_BC_FIT_SMOKE",
+  "manifest": "outputs/analysis/phase2_command_gated_zero0020_seed07_weighted_bc_manifest.json",
+  "samples": 7500,
+  "hidden_sizes": [
+    512,
+    256,
+    128
+  ],
+  "activation": "swish",
+  "saved_npz": "outputs/analysis/phase2_command_gated_zero0020_seed07_weighted_ppo_loc_bc_student/candidate_mlp.npz",
+  "exported_onnx": "outputs/analysis/phase2_command_gated_zero0020_seed07_weighted_ppo_loc_bc_student/candidate.onnx",
+  "train_metrics": {
+    "samples": 7500,
+    "mae": 0.0014383691582155079,
+    "rmse": 0.001950244376896914,
+    "p50_abs_error": 0.0010412162384445442,
+    "p95_abs_error": 0.004171215703697145,
+    "p99_abs_error": 0.006062826159706745,
+    "max_abs_error": 0.011379533140533582,
+    "pred_action_saturation_pct": 0.0
+  },
+  "target_rate": {
+    "pair_count": 7490,
+    "p50_rad_s": 0.0110341032471639,
+    "p95_rad_s": 1.2618207084568573,
+    "p99_rad_s": 1.5342863175381183,
+    "max_rad_s": 1.8733444538550144
+  },
+  "sample_weight": {
+    "p50": 1.0,
+    "p95": 3.0,
+    "max": 3.0,
+    "weighted_samples": 10500.0
+  },
+  "loss_rows": [
+    {
+      "step": 1,
+      "loss": 0.14310656487941742
+    },
+    {
+      "step": 500,
+      "loss": 5.14947714691516e-05
+    },
+    {
+      "step": 1000,
+      "loss": 2.3549837351310998e-05
+    },
+    {
+      "step": 1500,
+      "loss": 1.7093914721044712e-05
+    },
+    {
+      "step": 2000,
+      "loss": 1.3751852748100646e-05
+    },
+    {
+      "step": 2500,
+      "loss": 1.0054229278466664e-05
+    },
+    {
+      "step": 3000,
+      "loss": 1.4562172509613447e-05
+    },
+    {
+      "step": 3500,
+      "loss": 8.604341019236017e-06
+    },
+    {
+      "step": 4000,
+      "loss": 1.0356876373407431e-05
+    },
+    {
+      "step": 4500,
+      "loss": 1.1299713150947355e-05
+    },
+    {
+      "step": 5000,
+      "loss": 7.849338544474449e-06
+    },
+    {
+      "step": 5500,
+      "loss": 1.216875716636423e-05
+    },
+    {
+      "step": 6000,
+      "loss": 6.820954240538413e-06
+    },
+    {
+      "step": 6500,
+      "loss": 1.2691661140706856e-05
+    },
+    {
+      "step": 7000,
+      "loss": 1.0246113561152015e-05
+    },
+    {
+      "step": 7500,
+      "loss": 5.213014446781017e-06
+    },
+    {
+      "step": 8000,
+      "loss": 1.0262185242027044e-05
+    },
+    {
+      "step": 8500,
+      "loss": 3.0836599762551486e-06
+    },
+    {
+      "step": 9000,
+      "loss": 4.545803221844835e-06
+    }
+  ],
+  "onnx_verify": {
+    "path": "outputs/analysis/phase2_command_gated_zero0020_seed07_weighted_ppo_loc_bc_student/candidate.onnx",
+    "samples_checked": 64,
+    "max_abs_error": 1.290610281584094e-07,
+    "p95_abs_error": 7.972059943194205e-08
+  },
+  "config": {
+    "steps": 9000,
+    "batch_size": 512,
+    "learning_rate": 0.00075,
+    "target_rate_scale": 0.2,
+    "target_rate_limit_rad_s": 2.0,
+    "action_scale_rad": 0.25,
+    "dt_s": 0.02,
+    "seed": 29
+  }
+}

@@ -1,0 +1,130 @@
+{
+  "status": "PASS_PPO_LOC_BC_FIT_SMOKE",
+  "manifest": "outputs/analysis/phase2_command_gated_zero0020_bc_manifest.json",
+  "samples": 7500,
+  "hidden_sizes": [
+    512,
+    256,
+    128
+  ],
+  "activation": "swish",
+  "saved_npz": "outputs/analysis/phase2_command_gated_zero0020_ppo_loc_bc_student/candidate_mlp.npz",
+  "exported_onnx": "outputs/analysis/phase2_command_gated_zero0020_ppo_loc_bc_student/candidate.onnx",
+  "train_metrics": {
+    "samples": 7500,
+    "mae": 0.0012995782311715348,
+    "rmse": 0.001899887980120403,
+    "p50_abs_error": 0.0008426586755661452,
+    "p95_abs_error": 0.004214573754926287,
+    "p99_abs_error": 0.00628865343518333,
+    "max_abs_error": 0.013030712595520189,
+    "pred_action_saturation_pct": 0.0
+  },
+  "target_rate": {
+    "pair_count": 7490,
+    "p50_rad_s": 0.009401106574344405,
+    "p95_rad_s": 1.2648339834081261,
+    "p99_rad_s": 1.5400583797465572,
+    "max_rad_s": 1.8993663599971506
+  },
+  "sample_weight": {
+    "p50": 1.0,
+    "p95": 1.0,
+    "max": 1.0,
+    "weighted_samples": 7500.0
+  },
+  "loss_rows": [
+    {
+      "step": 1,
+      "loss": 0.1066843792796135
+    },
+    {
+      "step": 500,
+      "loss": 4.3064181227236986e-05
+    },
+    {
+      "step": 1000,
+      "loss": 1.9353423340362497e-05
+    },
+    {
+      "step": 1500,
+      "loss": 1.434434307157062e-05
+    },
+    {
+      "step": 2000,
+      "loss": 1.485788197896909e-05
+    },
+    {
+      "step": 2500,
+      "loss": 9.780421351024415e-06
+    },
+    {
+      "step": 3000,
+      "loss": 7.162701422203099e-06
+    },
+    {
+      "step": 3500,
+      "loss": 6.419932560675079e-06
+    },
+    {
+      "step": 4000,
+      "loss": 7.168066986196209e-06
+    },
+    {
+      "step": 4500,
+      "loss": 5.687695193046238e-06
+    },
+    {
+      "step": 5000,
+      "loss": 5.1419337978586555e-06
+    },
+    {
+      "step": 5500,
+      "loss": 6.452966772485524e-06
+    },
+    {
+      "step": 6000,
+      "loss": 6.909835519763874e-06
+    },
+    {
+      "step": 6500,
+      "loss": 5.986496489640558e-06
+    },
+    {
+      "step": 7000,
+      "loss": 9.837986908678431e-06
+    },
+    {
+      "step": 7500,
+      "loss": 5.415429313870845e-06
+    },
+    {
+      "step": 8000,
+      "loss": 4.635708592104493e-06
+    },
+    {
+      "step": 8500,
+      "loss": 5.518975740415044e-06
+    },
+    {
+      "step": 9000,
+      "loss": 4.917185833619442e-06
+    }
+  ],
+  "onnx_verify": {
+    "path": "outputs/analysis/phase2_command_gated_zero0020_ppo_loc_bc_student/candidate.onnx",
+    "samples_checked": 64,
+    "max_abs_error": 1.0744128860153048e-07,
+    "p95_abs_error": 7.234966651082661e-08
+  },
+  "config": {
+    "steps": 9000,
+    "batch_size": 512,
+    "learning_rate": 0.00075,
+    "target_rate_scale": 0.2,
+    "target_rate_limit_rad_s": 2.0,
+    "action_scale_rad": 0.25,
+    "dt_s": 0.02,
+    "seed": 23
+  }
+}
