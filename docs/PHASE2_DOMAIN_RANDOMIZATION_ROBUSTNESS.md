@@ -622,6 +622,61 @@ branch should be a gate-aware/on-policy behavior-preservation objective or an
 explicit branch/router mechanism trained against closed-loop gate outcomes, not
 another one-shot BC compression variant.
 
+### Gate-Aware PPO Parent Restore Point
+
+The live-oracle iter2 PPO-loc student was converted into an actual PPO step-0
+checkpoint so the next branch can start from a trainable policy state rather
+than only an ONNX/NPZ artifact:
+
+```text
+outputs/analysis/PHASE2_COMMAND_GATED_ZERO0020_LIVE_ORACLE_ITER2_PPO_LOC_STEP0_FIDELITY.md
+outputs/analysis/PHASE2_COMMAND_GATED_ZERO0020_LIVE_ORACLE_ITER2_PPO_LOC_STEP0_X008_GATE.md
+outputs/analysis/PHASE2_COMMAND_GATED_ZERO0020_LIVE_ORACLE_ITER2_PPO_LOC_STEP0_X000_GATE.md
+outputs/analysis/PHASE2_GATE_AWARE_PARENT_NEXT_BRANCH.md
+```
+
+Restore point:
+
+```text
+checkpoint: outputs/analysis/phase2_command_gated_zero0020_live_oracle_iter2_ppo_loc_step0_checkpoint
+ONNX:       outputs/analysis/phase2_command_gated_zero0020_live_oracle_iter2_ppo_loc_step0.onnx
+ONNX sha:   d7af39a6255f7303a742b07ac87333c503534c73bd5b16766fa2ad3f4ae1e28f
+```
+
+Step-0 action fidelity against the PPO-loc ONNX passed:
+
+```text
+p95 abs error: 0.00000003
+max abs error: 0.00000007
+```
+
+Task-matched compact gate:
+
+```text
+x=0.08 z=0.0075 rough+push: 3/5 PASS, seed 1 fall, seed 7 target-velocity hold
+x=0.0  z=0.0075 rough+push: 5/5 PASS, mean vx 0.0008 m/s
+```
+
+Decision:
+
+```text
+PLAN_GATE_AWARE_ON_POLICY_PARENT
+```
+
+This is the best current trainable restore point, but it is not a valid Phase 2
+DR parent yet. It preserves command semantics and passes the hard seed `6`, but
+the moving gate still has one lunge/fall and one instantaneous target-velocity
+hold. The next authorized branch is a bounded gate-aware/on-policy
+behavior-preservation iteration from this checkpoint, not another one-shot BC
+compression and not a long DR run.
+
+Required promotion gate before Phase 2 DR resumes:
+
+```text
+x=0.08 compact gate: 5/5 PASS_CANDIDATE_SIM_GATE, zero p95 and max corrected velocity excess
+x=0.0  compact gate: 5/5 PASS_CANDIDATE_SIM_GATE, mean |vx| <= 0.005 m/s
+```
+
 ## 2026-07-05 Iter24 PPO-Loc Step-0 Diagnostic
 
 After the live-oracle Iter24 candidate became the latest useful z=0.0075
