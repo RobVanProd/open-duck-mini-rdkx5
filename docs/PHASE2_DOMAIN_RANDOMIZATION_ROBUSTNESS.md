@@ -142,38 +142,40 @@ outputs/analysis/phase2_observation_router_diagnostic.json
 Decision:
 
 ```text
-HOLD_ROUTER_NEAR_MISS
+PASS_OBSERVATION_ROUTER_OFFLINE
 ```
 
-The observation/history router improves over a single fixed candidate but does
-not recover the full oracle seed-level route. The expanded diagnostic checked
-prefixes `1,5,25,50,100,200` ticks. Best leave-one-seed-out result:
+The observation/history router improves over a single fixed candidate. The
+expanded diagnostic checked prefixes `1,5,25,50,100,200` ticks and added a
+non-seed pitch-health guard that penalizes candidates whose prefix body pitch
+already exceeds `0.20 rad`. Best leave-one-seed-out result:
 
 - prefix ticks: `100`
 - kNN k: `3`
 - policy-onehot scale: `5.0`
-- pass: `4/5`
-- selected passing candidates for seeds `0,1,2,7`
-- missed seed `6` by selecting failing `iter27`; seed `6` had passing routes
-  through `iter25` and `iter26`
+- pitch-guard scale: `1.0`
+- pitch-guard limit: `0.20 rad`
+- pass: `5/5`
+- selected `iter24` for seeds `0,2,7`
+- selected `iter25` for seeds `1,6`
 
-The miss is narrow but important. On seed `6`, the best diagnostic scores were:
+The pitch guard is the difference between a near miss and a full offline route.
+Without it, the best router picked failing `iter27` on seed `6` by a narrow
+margin. With the guard, seed `6` switches to passing `iter25`:
 
-- `iter27`: `0.7268`, hold/fall, track ratio `0.9697`
-- `iter25`: `0.7246`, pass, track ratio `0.3273`
-- `iter24`: `0.7188`, hold/fall, track ratio `-0.5659`
-- `iter26`: `0.0`, pass, track ratio `0.3491`
+- `iter27`: raw score `0.7268`, adjusted score `0.6793`, pitch excess
+  `0.0475`, hold/fall, track ratio `0.9697`
+- `iter25`: raw score `0.7246`, adjusted score `0.7024`, pitch excess
+  `0.0222`, pass, track ratio `0.3273`
 
-Earlier prefixes also reached only `4/5`, while the `200`-tick prefix degraded
-to `3/5`. This argues against a simple one-shot observation router. A safe
-router would need either stronger non-seed health features, online switching
-logic that is explicitly gated, or a different policy class/objective.
-
-This is diagnostic-only evidence. It does not justify launching a deployable
-online router or Phase 2 DR from the router branch. The next evidence-aligned
-work is either to inspect the seed-6 miss with stronger non-seed routing
-features or to move to a recurrent/hidden-state policy class or a different
-closed-loop behavior-preservation objective.
+This is still diagnostic-only evidence. It does not justify launching Phase 2
+DR yet, because the route has only been reconstructed from completed traces.
+The next evidence-aligned work is an eval-only closed-loop router wrapper that
+chooses among these candidate policies online without seed ID, using the same
+100-tick prefix and pitch-health guard, then gates that wrapper on the
+canonical z=0.0075 rough+push compact screen. Only if that online router gate
+passes should it generate behavior-preservation rollouts for a trainable Phase
+2 parent.
 
 ## 2026-07-05 Iter24 PPO-Loc Step-0 Diagnostic
 

@@ -125,6 +125,25 @@ def feature_from_records(records: list[dict[str, Any]], prefix_ticks: int) -> np
     )
 
 
+def health_from_records(records: list[dict[str, Any]]) -> dict[str, float]:
+    pitch = []
+    base_height = []
+    vx = []
+    lateral_v = []
+    for row in records:
+        pitch.append(abs(float(row.get("body_pitch_rad", 0.0))))
+        base_height.append(float(row.get("base_height_m", 0.0)))
+        local_v = row.get("local_linvel_m_s") or [0.0, 0.0, 0.0]
+        vx.append(float(local_v[0]))
+        lateral_v.append(abs(float(local_v[1])))
+    return {
+        "prefix_abs_pitch_max_rad": float(max(pitch)) if pitch else 0.0,
+        "prefix_base_height_min_m": float(min(base_height)) if base_height else 0.0,
+        "prefix_vx_mean_m_s": float(np.mean(vx)) if vx else 0.0,
+        "prefix_abs_lateral_v_mean_m_s": float(np.mean(lateral_v)) if lateral_v else 0.0,
+    }
+
+
 def load_sweep_rows(sweep_paths: list[Path]) -> dict[tuple[str, int], dict[str, Any]]:
     rows: dict[tuple[str, int], dict[str, Any]] = {}
     for path in sweep_paths:
@@ -179,12 +198,14 @@ def load_examples(
             continue
         records = load_trace_records(path, prefix_ticks)
         feature = feature_from_records(records, prefix_ticks)
+        health = health_from_records(records)
         examples.append(
             {
                 **row,
                 "trace": rel(path),
                 "trace_sha256": sha256(path),
                 "feature": feature,
+                "prefix_health": health,
             }
         )
     return examples
@@ -233,6 +254,8 @@ def evaluate_router(
     seeds: list[int],
     k: int,
     policy_onehot_scale: float,
+    pitch_guard_scale: float,
+    pitch_guard_limit_rad: float,
 ) -> dict[str, Any]:
     policies = sorted({str(row["policy"]) for row in examples})
     routes = []
@@ -241,14 +264,27 @@ def evaluate_router(
         tests = [row for row in examples if int(row["seed"]) == held_seed]
         scored = []
         for row in tests:
-            scored.append({**row, "router_pass_score": pass_score_knn(train, row, policies, k, policy_onehot_scale)})
+            pass_score = pass_score_knn(train, row, policies, k, policy_onehot_scale)
+            health = row.get("prefix_health") if isinstance(row.get("prefix_health"), dict) else {}
+            pitch_excess = max(
+                float(health.get("prefix_abs_pitch_max_rad", 0.0)) - float(pitch_guard_limit_rad),
+                0.0,
+            )
+            scored.append(
+                {
+                    **row,
+                    "router_pass_score": pass_score,
+                    "pitch_guard_excess_rad": pitch_excess,
+                    "router_adjusted_score": pass_score - float(pitch_guard_scale) * pitch_excess,
+                }
+            )
         if not scored:
             routes.append({"seed": held_seed, "status": "MISSING_TEST_ROWS"})
             continue
         selected = sorted(
             scored,
             key=lambda row: (
-                -float(row["router_pass_score"]),
+                -float(row["router_adjusted_score"]),
                 0 if row["pass"] else 1,
                 abs(float(row.get("track_ratio") or 0.0) - 0.35),
             ),
@@ -260,6 +296,9 @@ def evaluate_router(
                 "selected_status": selected["status"],
                 "selected_pass": bool(selected["pass"]),
                 "router_pass_score": selected["router_pass_score"],
+                "router_adjusted_score": selected["router_adjusted_score"],
+                "pitch_guard_excess_rad": selected["pitch_guard_excess_rad"],
+                "prefix_health": selected.get("prefix_health"),
                 "track_ratio": selected.get("track_ratio"),
                 "mean_local_vx_m_s": selected.get("mean_local_vx_m_s"),
                 "max_tracking_p95_rad": selected.get("max_tracking_p95_rad"),
@@ -272,6 +311,9 @@ def evaluate_router(
                         "pass": bool(row["pass"]),
                         "status": row["status"],
                         "score": row["router_pass_score"],
+                        "adjusted_score": row["router_adjusted_score"],
+                        "pitch_guard_excess_rad": row["pitch_guard_excess_rad"],
+                        "prefix_health": row.get("prefix_health"),
                         "track_ratio": row.get("track_ratio"),
                     }
                     for row in sorted(scored, key=lambda item: str(item["policy"]))
@@ -282,6 +324,8 @@ def evaluate_router(
     return {
         "k": int(k),
         "policy_onehot_scale": float(policy_onehot_scale),
+        "pitch_guard_scale": float(pitch_guard_scale),
+        "pitch_guard_limit_rad": float(pitch_guard_limit_rad),
         "pass_count": pass_count,
         "total_count": len(seeds),
         "routes": routes,
@@ -336,14 +380,15 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
         "",
         "## Evaluations",
         "",
-        "| prefix ticks | k | policy onehot scale | pass/total | result |",
-        "|---:|---:|---:|---:|---|",
+        "| prefix ticks | k | policy onehot scale | pitch guard scale | pass/total | result |",
+        "|---:|---:|---:|---:|---:|---|",
     ]
     for evaluation in payload["evaluations"]:
         result = "PASS" if evaluation["passes_compact_gate"] else "HOLD"
         lines.append(
             f"| `{evaluation['prefix_ticks']}` | `{evaluation['k']}` | "
             f"`{evaluation['policy_onehot_scale']}` | "
+            f"`{evaluation['pitch_guard_scale']}` | "
             f"`{evaluation['pass_count']}/{evaluation['total_count']}` | `{result}` |"
         )
     lines.extend(["", "## Best Evaluation", ""])
@@ -353,16 +398,20 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
             f"- prefix_ticks: `{best['prefix_ticks']}`",
             f"- k: `{best['k']}`",
             f"- policy_onehot_scale: `{best['policy_onehot_scale']}`",
+            f"- pitch_guard_scale: `{best['pitch_guard_scale']}`",
+            f"- pitch_guard_limit_rad: `{best['pitch_guard_limit_rad']}`",
             f"- pass_count: `{best['pass_count']}` / `{best['total_count']}`",
             "",
-            "| seed | selected policy | selected status | score | track ratio | mean vx |",
-            "|---:|---|---|---:|---:|---:|",
+            "| seed | selected policy | selected status | score | adjusted score | pitch excess | track ratio | mean vx |",
+            "|---:|---|---|---:|---:|---:|---:|---:|",
         ]
     )
     for route in best["routes"]:
         lines.append(
             f"| `{route.get('seed')}` | `{route.get('selected_policy')}` | "
             f"`{route.get('selected_status')}` | `{route.get('router_pass_score')}` | "
+            f"`{route.get('router_adjusted_score')}` | "
+            f"`{route.get('pitch_guard_excess_rad')}` | "
             f"`{route.get('track_ratio')}` | `{route.get('mean_local_vx_m_s')}` |"
         )
     missed = [route for route in best["routes"] if not route.get("selected_pass")]
@@ -382,13 +431,15 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
                 [
                     f"### Seed `{route.get('seed')}`",
                     "",
-                    "| policy | selected score | pass | status | track ratio |",
-                    "|---|---:|---|---|---:|",
+                    "| policy | score | adjusted score | pitch excess | pass | status | track ratio |",
+                    "|---|---:|---:|---:|---|---|---:|",
                 ]
             )
             for score in route.get("scores", []):
                 lines.append(
                     f"| `{score.get('policy')}` | `{score.get('score')}` | "
+                    f"`{score.get('adjusted_score')}` | "
+                    f"`{score.get('pitch_guard_excess_rad')}` | "
                     f"`{score.get('pass')}` | `{score.get('status')}` | "
                     f"`{score.get('track_ratio')}` |"
                 )
@@ -408,6 +459,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--prefix-ticks", default="1,5,25,50,100,200")
     parser.add_argument("--knn-k", type=int, default=3)
     parser.add_argument("--policy-onehot-scales", default="0,1,5")
+    parser.add_argument("--pitch-guard-scales", default="0,1")
+    parser.add_argument("--pitch-guard-limit-rad", type=float, default=0.20)
     parser.add_argument("--output-md", type=Path, default=DEFAULT_OUTPUT_MD)
     parser.add_argument("--output-json", type=Path, default=DEFAULT_OUTPUT_JSON)
     return parser.parse_args()
@@ -424,10 +477,18 @@ def main() -> int:
     for prefix_ticks in parse_csv_ints(args.prefix_ticks):
         examples = load_examples(trace_roots, sweep_rows, seeds, prefix_ticks)
         for policy_scale in parse_csv_floats(args.policy_onehot_scales):
-            evaluation = evaluate_router(examples, seeds, args.knn_k, policy_scale)
-            evaluation["prefix_ticks"] = int(prefix_ticks)
-            evaluation["example_count"] = len(examples)
-            evaluations.append(evaluation)
+            for pitch_guard_scale in parse_csv_floats(args.pitch_guard_scales):
+                evaluation = evaluate_router(
+                    examples,
+                    seeds,
+                    args.knn_k,
+                    policy_scale,
+                    pitch_guard_scale,
+                    args.pitch_guard_limit_rad,
+                )
+                evaluation["prefix_ticks"] = int(prefix_ticks)
+                evaluation["example_count"] = len(examples)
+                evaluations.append(evaluation)
 
     status, summary, next_required = decide(evaluations)
     best = max(
