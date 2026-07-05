@@ -878,6 +878,53 @@ therefore not a credible Phase 2 warm-start. The next router attempt needs a
 nonlinear mixture/gate with closed-loop validation pressure, or a stateful
 prefix router with an explicit runtime/eval contract.
 
+### Full-8 MLP Router Candidate Hold
+
+A nonlinear stateless observation gate was then tested:
+
+```text
+tools/report_phase2_full8_mlp_router_separability.py
+tools/compose_obs_mlp_gated_onnx_policy.py
+outputs/analysis/PHASE2_FULL8_MLP_ROUTER_SEPARABILITY.md
+outputs/analysis/phase2_full8_mlp_router_separability.json
+outputs/analysis/PHASE2_FULL8_MLP_ROUTER_CANDIDATE_X008_SEED0_5_7_GATE.md
+outputs/analysis/phase2_full8_mlp_router_candidate_x008_seed0_5_7_gate.json
+outputs/analysis/PHASE2_FULL8_MLP_ROUTER_CANDIDATE_DECISION.md
+outputs/analysis/phase2_full8_mlp_router_candidate_decision.json
+```
+
+Decision:
+
+```text
+HOLD_FULL8_MLP_ROUTER_SEED0_REGRESSION
+```
+
+The MLP gate separated source labels on a held-out per-trace split:
+
+```text
+test balanced accuracy: 95.81%
+test positive selected: 94.67%
+test negative false selected: 3.05%
+gate_npz_sha256: 8192fc152205635f4ccdbd1d9972944659bca4782bf8dfe43241ae6228fc45c0
+composed_candidate_sha256: 6251a528b878fbfa3637727bd6d8463cd08b291556b285fbfe3cfab40ede5697
+```
+
+The composed ONNX preserved the fixed deployed contract and verified exactly,
+but the hard closed-loop screen over seeds `0,5,7` was only `2/3`:
+
+```text
+seed 0: HOLD, 321 samples, vx -0.0352 m/s, track_ratio -0.4394, base min 0.0705
+seed 5: PASS, 750 samples, vx 0.0312 m/s, track_ratio 0.3897
+seed 7: PASS, 750 samples, vx 0.0285 m/s, track_ratio 0.3556
+velocity excess: 0.0000 p95 and 0.0000 instantaneous
+```
+
+This is the first stateless branch-preserving candidate that preserves the
+seed-5 branch under the hard screen, but it is still not a Phase 2 DR warm-start
+because it regresses seed 0. The next router attempt should keep the nonlinear
+MLP-gate direction, but train the gate with closed-loop validation pressure or a
+branch-cost objective rather than source-label classification alone.
+
 ### Trainable Compression Hold
 
 The command-gated ONNX was distilled into PPO-compatible single-MLP students

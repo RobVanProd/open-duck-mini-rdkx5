@@ -1,0 +1,168 @@
+{
+  "config": {
+    "batch_size": 256,
+    "hidden_sizes": [
+      128,
+      64
+    ],
+    "learning_rate": 0.001,
+    "seed": 20260705,
+    "steps": 3000,
+    "test_fraction": 0.2,
+    "weight_decay": 1e-05
+  },
+  "created_utc": "2026-07-05T19:47:17Z",
+  "decision": "The branch labels are separable by a nonlinear stateless observation gate on the held-out split.",
+  "entries": [
+    {
+      "branch": "negative",
+      "samples": 750,
+      "source_path": "outputs/analysis/phase2_full8_router_source_command_gated_traces/command_gated_zero0020/seed_000/trace.jsonl",
+      "test_samples": 150,
+      "train_samples": 600
+    },
+    {
+      "branch": "negative",
+      "samples": 750,
+      "source_path": "outputs/analysis/phase2_full8_router_source_command_gated_traces/command_gated_zero0020/seed_001/trace.jsonl",
+      "test_samples": 150,
+      "train_samples": 600
+    },
+    {
+      "branch": "negative",
+      "samples": 750,
+      "source_path": "outputs/analysis/phase2_full8_router_source_command_gated_traces/command_gated_zero0020/seed_002/trace.jsonl",
+      "test_samples": 150,
+      "train_samples": 600
+    },
+    {
+      "branch": "negative",
+      "samples": 750,
+      "source_path": "outputs/analysis/phase2_full8_router_source_command_gated_traces/command_gated_zero0020/seed_003/trace.jsonl",
+      "test_samples": 150,
+      "train_samples": 600
+    },
+    {
+      "branch": "negative",
+      "samples": 750,
+      "source_path": "outputs/analysis/phase2_full8_router_source_command_gated_traces/command_gated_zero0020/seed_004/trace.jsonl",
+      "test_samples": 150,
+      "train_samples": 600
+    },
+    {
+      "branch": "negative",
+      "samples": 750,
+      "source_path": "outputs/analysis/phase2_full8_router_source_command_gated_traces/command_gated_zero0020/seed_006/trace.jsonl",
+      "test_samples": 150,
+      "train_samples": 600
+    },
+    {
+      "branch": "negative",
+      "samples": 750,
+      "source_path": "outputs/analysis/phase2_full8_router_source_command_gated_traces/command_gated_zero0020/seed_007/trace.jsonl",
+      "test_samples": 150,
+      "train_samples": 600
+    },
+    {
+      "branch": "positive",
+      "samples": 750,
+      "source_path": "outputs/analysis/phase2_full8_router_source_iter25_seed5_trace/iter25/seed_005/trace.jsonl",
+      "test_samples": 150,
+      "train_samples": 600
+    }
+  ],
+  "loss_rows": [
+    {
+      "loss": 0.7641527056694031,
+      "step": 1
+    },
+    {
+      "loss": 0.4083861708641052,
+      "step": 250
+    },
+    {
+      "loss": 0.1988113969564438,
+      "step": 500
+    },
+    {
+      "loss": 0.15402717888355255,
+      "step": 750
+    },
+    {
+      "loss": 0.09251317381858826,
+      "step": 1000
+    },
+    {
+      "loss": 0.1318427175283432,
+      "step": 1250
+    },
+    {
+      "loss": 0.05859842151403427,
+      "step": 1500
+    },
+    {
+      "loss": 0.15913395583629608,
+      "step": 1750
+    },
+    {
+      "loss": 0.0737585574388504,
+      "step": 2000
+    },
+    {
+      "loss": 0.03964151814579964,
+      "step": 2250
+    },
+    {
+      "loss": 0.04267611354589462,
+      "step": 2500
+    },
+    {
+      "loss": 0.014324095100164413,
+      "step": 2750
+    },
+    {
+      "loss": 0.04928397014737129,
+      "step": 3000
+    }
+  ],
+  "manifest": "outputs/analysis/phase2_full8_router_source_selected_manifest.json",
+  "metrics": {
+    "test": {
+      "balanced_accuracy_pct": 95.80952380952381,
+      "negative_false_selected_pct": 3.0476190476190474,
+      "negative_logit_p50": -9.153670299756918,
+      "negative_logit_p95": -1.154118912221391,
+      "negative_samples": 1050,
+      "positive_logit_p05": -0.14985898151791183,
+      "positive_logit_p50": 7.169093951346438,
+      "positive_samples": 150,
+      "positive_selected_pct": 94.66666666666667,
+      "samples": 1200
+    },
+    "train": {
+      "balanced_accuracy_pct": 99.01190476190476,
+      "negative_false_selected_pct": 1.9761904761904763,
+      "negative_logit_p50": -8.532226771759143,
+      "negative_logit_p95": -1.769792444168618,
+      "negative_samples": 4200,
+      "positive_logit_p05": 4.073214656637207,
+      "positive_logit_p50": 7.839919837122139,
+      "positive_samples": 600,
+      "positive_selected_pct": 100.0,
+      "samples": 4800
+    }
+  },
+  "no_deploy": true,
+  "no_grounded_replay": true,
+  "no_robot_tests": true,
+  "no_ssh": true,
+  "positive_marker": "iter25/seed_005",
+  "runtime_behavior_changed": false,
+  "saved_npz": "outputs/analysis/phase2_full8_mlp_router_gate/gate_mlp.npz",
+  "saved_npz_sha256": "8192fc152205635f4ccdbd1d9972944659bca4782bf8dfe43241ae6228fc45c0",
+  "status": "PASS_MLP_ROUTER_SEPARABLE",
+  "thresholds": {
+    "max_test_negative_false_selected_pct": 10.0,
+    "min_test_balanced_accuracy_pct": 85.0
+  }
+}
