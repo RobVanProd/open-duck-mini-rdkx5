@@ -546,6 +546,38 @@ promotable Phase 2 source. Do not run `x=0.0` promotion gates for this
 candidate unless a later wrapper removes the instantaneous envelope excess and
 low-progress regression at `x=0.08`.
 
+Seed 5 was then rerun with full-observation trace logging and compared against
+the command-gated seed-5 lunge trace:
+
+```text
+outputs/analysis/PHASE2_RATE160_Z0075_INTERMEDIATE_PUSH_SEED5_TRACE.md
+outputs/analysis/PHASE2_RATE160_Z0075_INTERMEDIATE_PUSH_SEED5_TRACE_ANALYSIS.md
+outputs/analysis/PHASE2_COMMAND_GATED_VS_RATE160_SEED5_TRACE_COMPARE.md
+outputs/analysis/PHASE2_COMMAND_GATED_VS_RATE160_SEED5_STABILITY_DECISION.md
+```
+
+Decision:
+
+```text
+PASS_SEED5_STABILITY_PATTERN_IDENTIFIED_NOT_PROMOTABLE
+```
+
+Comparison:
+
+```text
+command-gated seed5: 158 samples, vx 0.1367 m/s, abs pitch p95 0.8743, base height min -0.0058
+rate160 seed5:       750 samples, vx 0.0282 m/s, abs pitch p95 0.1777, base height min 0.1577
+common-window vx delta mean: -0.1076 m/s
+common-window body-pitch delta mean: -0.1267 rad
+first body-pitch divergence: tick 109
+first base-height divergence: tick 145
+```
+
+This identifies a seed-5 stabilizing pattern but does not promote rate160.
+The next source branch should transfer the anti-lunge/stability behavior into
+the faster command-gated source without inheriting rate160's instantaneous
+envelope excess or low-progress hold.
+
 ### Trainable Compression Hold
 
 The command-gated ONNX was distilled into PPO-compatible single-MLP students
