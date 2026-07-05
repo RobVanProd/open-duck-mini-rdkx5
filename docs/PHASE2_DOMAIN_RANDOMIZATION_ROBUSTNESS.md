@@ -925,6 +925,41 @@ because it regresses seed 0. The next router attempt should keep the nonlinear
 MLP-gate direction, but train the gate with closed-loop validation pressure or a
 branch-cost objective rather than source-label classification alone.
 
+The failed seed-0 rollout was then rerun with full observation tracing and the
+saved MLP gate replayed over the trace:
+
+```text
+outputs/analysis/PHASE2_FULL8_MLP_ROUTER_CANDIDATE_SEED0_TRACE_GATE.md
+outputs/analysis/phase2_full8_mlp_router_candidate_seed0_trace_gate.json
+tools/report_phase2_mlp_router_branch_trace.py
+outputs/analysis/PHASE2_FULL8_MLP_ROUTER_SEED0_BRANCH_TRACE.md
+outputs/analysis/phase2_full8_mlp_router_seed0_branch_trace.json
+```
+
+Decision:
+
+```text
+HOLD_ROUTER_STARTUP_BRANCH_B_ON_FAILED_TRACE
+```
+
+The seed-0 failure is not random branch churn. The MLP gate selects branch B
+for `100%` of the first `80` ticks on seed 0, then flips mostly back to branch A
+near the fall:
+
+```text
+all ticks branch B: 47.35%
+first 80 ticks branch B: 100.00%
+tail 80 ticks branch B: 3.75%
+mean vx: -0.0352 m/s
+base min: 0.0705 m
+body pitch abs p95: 0.4680 rad
+```
+
+Next router training should penalize seed-0 startup branch-B selection directly
+or use prefix validation pressure. Source-label classification alone is too
+weak because it learns a gate that looks good on held-out trace labels but
+chooses the wrong branch during closed-loop startup.
+
 ### Trainable Compression Hold
 
 The command-gated ONNX was distilled into PPO-compatible single-MLP students
