@@ -69,6 +69,50 @@ the task-matched corrected-bridge closed-loop gate before any large PPO/DR run,
 or it must add an explicit closed-loop behavior-preservation/training structure
 that survives seed perturbations.
 
+## 2026-07-05 Task-Matched Trainable Warm-Start Screen
+
+The older PPO-compatible `limit198` and `rate165` step-0 checkpoints were then
+screened against the current z0.0075 rough+push gate to test whether either
+could be reused as the trainable parent despite the Iter24 PPO-loc regression.
+
+Artifact:
+
+```text
+outputs/analysis/PPO_TRAINABLE_WARMSTART_Z0075_PUSH_DECISION.md
+outputs/analysis/ppo_trainable_warmstart_z0075_push_decision.json
+outputs/analysis/PPO_TRAINABLE_WARMSTART_Z0075_PUSH_SCREEN.md
+outputs/analysis/ppo_trainable_warmstart_z0075_push_screen.json
+```
+
+Gate:
+
+```text
+task: rough_terrain_backlash
+terrain_hfield_z_scale: 0.0075
+reset_mode: home-support
+reset_settle_ticks: 10
+bridge: fitted corrected bridge
+command_x: 0.08
+pushes: 0.075-0.125, interval 1.0-1.5s
+seeds: 0,1,2,6,7
+```
+
+Result:
+
+- `limit198_step0`: `0/5` pass, `2/5` falls, mean track ratio `0.1630`,
+  mean vx `0.0130 m/s`, zero p95 velocity excess but nonzero max corrected
+  velocity spikes.
+- `rate165_step0`: `0/5` pass, `3/5` falls, mean track ratio `1.1016`,
+  mean vx `0.0881 m/s`, high early pitch/fall behavior on seeds `0,1,2`.
+- `ppo_loc_iter24_step0`: still the prior `2/5` task-matched result and is
+  also not promotable.
+
+Decision: no existing PPO-compatible step-0 checkpoint clears the current
+z0.0075 rough+push corrected-bridge screen. The earlier z0.0026/no-push `8/8`
+step-0 gates are not transferable evidence for the current stage. Future PPO/DR
+launches must first create a task-matched behavior-preserving warm-start whose
+step-0 export clears this gate.
+
 ## 2026-07-03 Limit198 PPO-Loc Trainable Warm-Start
 
 The current deployable Phase 2 baseline is:
