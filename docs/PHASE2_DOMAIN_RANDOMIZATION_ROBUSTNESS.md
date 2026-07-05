@@ -731,6 +731,71 @@ reward-side PPO objective. The next trainable-parent attempt must change the
 behavior-preservation structure so PPO cannot improve reward by erasing the
 moving gait.
 
+### Gate-Aware PPO Parent Iter1 Behavior-Prior Hold
+
+The next bounded local ROCm smoke kept the same PPO step-0 checkpoint but added
+the state-conditioned behavior-prior teacher-action loss on top of restore-policy
+KL:
+
+```text
+outputs/phase2_domain_randomization/gate_aware_parent_iter1_behavior_prior_local_smoke/smoke_20260705T161023Z_gpu
+outputs/analysis/PHASE2_GATE_AWARE_PARENT_ITER1_BEHAVIOR_PRIOR_LOCAL_SMOKE_DECISION.md
+outputs/analysis/phase2_gate_aware_parent_iter1_behavior_prior_local_smoke_decision.json
+```
+
+Smoke settings:
+
+```text
+restore_policy_kl_scale: 8.0
+behavior_prior_enabled: true
+behavior_prior_scale: -0.35
+behavior_prior_huber_delta: 0.04
+behavior_prior_mlp_npz: outputs/analysis/phase2_command_gated_zero0020_live_oracle_iter2_ppo_loc_bc_student/candidate_mlp.npz
+```
+
+The smoke completed and exported three ONNX checkpoints:
+
+| step | sha256 |
+|---:|---|
+| `15360` | `8a5eb0baeecb01ae698109c2fdad9c5679a4d9980cf91bd9a95c6cce55d0b28d` |
+| `30720` | `292b1a61b0b659b3d3e85243d10112430e87c05a71df7dc4c6fa008e22185cd1` |
+| `46080` | `1ee6625b02ea8fe2b7c69923cabd5f734af5d3f397816873964a0ede537cbcd8` |
+
+The compact x=0.08 corrected-bridge rough+push gate rejected all exports:
+
+```text
+outputs/analysis/PHASE2_GATE_AWARE_PARENT_ITER1_BEHAVIOR_PRIOR_LOCAL_SMOKE_X008_GATE.md
+outputs/analysis/phase2_gate_aware_parent_iter1_behavior_prior_local_smoke_x008_gate.json
+```
+
+Result:
+
+```text
+iter1bp_15360: 0/5 pass, mean vx 0.0014 m/s, track ratio 0.0178
+iter1bp_30720: 0/5 pass, mean vx 0.0015 m/s, track ratio 0.0193
+iter1bp_46080: 0/5 pass, mean vx 0.0015 m/s, track ratio 0.0192
+```
+
+All 15 policy/seed rollouts completed duration without falling, but every run
+held for low forward progress. The candidates spent `100%` of the rollouts in
+double support with `0%` single support. Corrected p95 velocity excess was zero
+for all exports, so this was not an actuator-envelope failure. It was again a
+rewarded standstill/freeze regression.
+
+Decision:
+
+```text
+HOLD_BEHAVIOR_PRIOR_PARENT_REWARDED_FREEZE
+```
+
+Adding the state-conditioned behavior prior did not preserve the moving gait
+from the step-0 parent and did not improve on Iter0 restore-KL-only PPO. Do not
+scale this objective into Phase 2 DR, and do not repeat restore-policy-KL plus a
+teacher-action behavior prior as another scalar reward-side variant. The next
+trainable-parent attempt needs a different behavior-preservation structure:
+explicit online router/wrapper training target, stronger branch-aware objective,
+or a non-PPO distillation route that is gated before any long DR run.
+
 ## 2026-07-05 Iter24 PPO-Loc Step-0 Diagnostic
 
 After the live-oracle Iter24 candidate became the latest useful z=0.0075
