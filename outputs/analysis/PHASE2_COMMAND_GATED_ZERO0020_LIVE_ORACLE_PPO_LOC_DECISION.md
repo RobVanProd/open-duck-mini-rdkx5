@@ -72,6 +72,33 @@ seed-7 trainable-compression failures without breaking zero command, but the
 remaining seed-6 moving failure persists after a focused second correction.
 Repeating the same single-MLP PPO-loc correction is now a weak next move.
 
+## Seed-6 Failure Analysis
+
+Follow-up analysis of the iter2 `x=0.08` traces shows that seed 6 is not a
+simple low-action freeze and not an envelope violation:
+
+```text
+outputs/analysis/PHASE2_COMMAND_GATED_ZERO0020_LIVE_ORACLE_ITER2_SEED6_TRACE_ANALYSIS.md
+outputs/analysis/PHASE2_COMMAND_GATED_ZERO0020_LIVE_ORACLE_ITER2_SEED_MODE_ANALYSIS.md
+```
+
+Seed 6 is classified as `REVERSE_HEIGHT_COLLAPSE`:
+
+- first reverse tick: `44`
+- first low-height tick: `338`
+- first done tick: `340`
+- mean local vx: `-0.0322` m/s
+- track ratio: `-0.4030`
+- base height min: `0.0731` m
+- action saturation: `0`
+- pitch-chain target velocity p95: about `1.51-1.63` rad/s
+
+The seed-mode comparison is also informative: moving seeds and seed 6 have the
+same early action magnitude and early pitch-chain velocity, so the failure is
+not explained by a globally quieter policy on seed 6. The likely next branch is
+a state/phase/branch representation or seed-6-specific failure-state analysis,
+not another scalar relabel weighting pass.
+
 The active Phase 2 blocker remains a trainable warm-start representation that
 preserves the graph-gated moving branch across the compact seed set. Next work
 should inspect the seed-6 failure trace and/or move to a representation that

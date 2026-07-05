@@ -518,6 +518,21 @@ and preserved command semantics, but repeating the same single-MLP PPO-loc
 correction did not close the moving gate. Phase 2 still lacks a trainable
 warm-start checkpoint; do not launch domain-randomized PPO from these students.
 
+Seed-6 analysis:
+
+```text
+outputs/analysis/PHASE2_COMMAND_GATED_ZERO0020_LIVE_ORACLE_ITER2_SEED6_TRACE_ANALYSIS.md
+outputs/analysis/PHASE2_COMMAND_GATED_ZERO0020_LIVE_ORACLE_ITER2_SEED_MODE_ANALYSIS.md
+```
+
+The remaining seed-6 failure is `REVERSE_HEIGHT_COLLAPSE`: reverse motion starts
+at tick `44`, low height occurs at tick `338`, and termination occurs at tick
+`340`. Passing seeds and seed 6 have similar early action magnitude and
+pitch-chain target velocity, so this is not just a globally quiet seed or an
+envelope-excess issue. The next trainable-warm-start branch should inspect the
+seed-6 state/phase branch behavior or move to a representation with stronger
+branch/phase structure, rather than launch DR or repeat scalar weighting.
+
 ## 2026-07-05 Iter24 PPO-Loc Step-0 Diagnostic
 
 After the live-oracle Iter24 candidate became the latest useful z=0.0075
