@@ -1,0 +1,49 @@
+{
+  "status": "HOLD_FULL8_MLP_ROUTER_THRESHOLD_TRADEOFF",
+  "no_robot_tests": true,
+  "no_ssh": true,
+  "no_deploy": true,
+  "no_grounded_replay": true,
+  "runtime_behavior_changed": false,
+  "base_gate_npz": "outputs/analysis/phase2_full8_mlp_router_gate_seed0_seed5_startup_cost_wide/gate_mlp.npz",
+  "threshold": -2.0,
+  "candidate": "outputs/analysis/phase2_full8_mlp_router_seed0_seed5_startup_cost_wide_tneg2_candidate/candidate.onnx",
+  "onnx_verify": "outputs/analysis/phase2_full8_mlp_router_seed0_seed5_startup_cost_wide_tneg2_candidate/onnx_verify.json",
+  "results": [
+    {
+      "seed": 5,
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "samples": 750,
+      "mean_local_vx_m_s": 0.0316,
+      "track_ratio": 0.3947,
+      "body_pitch_p95_rad": 0.1724,
+      "base_height_min_m": 0.1580,
+      "max_pitch_vel_limit_excess_rad_s": 0.0,
+      "max_pitch_vel_max_limit_excess_rad_s": 0.0
+    },
+    {
+      "seed": 0,
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "samples": 166,
+      "mean_local_vx_m_s": 0.1265,
+      "track_ratio": 1.5808,
+      "body_pitch_p95_rad": 0.8282,
+      "base_height_min_m": 0.0083,
+      "max_pitch_vel_limit_excess_rad_s": 0.0,
+      "max_pitch_vel_max_limit_excess_rad_s": 0.0
+    },
+    {
+      "seed": 7,
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "samples": 750,
+      "mean_local_vx_m_s": 0.0352,
+      "track_ratio": 0.4396,
+      "body_pitch_p95_rad": 0.1833,
+      "base_height_min_m": 0.1562,
+      "max_pitch_vel_limit_excess_rad_s": 0.0,
+      "max_pitch_vel_max_limit_excess_rad_s": 0.0
+    }
+  ],
+  "decision": "Lowering the wide router threshold to -2 fixes seed 5 but regresses seed 0. Do not promote.",
+  "recommended_next": "Use a closed-loop-aware or stateful/prefix router that can select branch B for seed-5 startup without selecting it for seed-0 startup. Stop scalar threshold sweeps unless used only as diagnostics."
+}

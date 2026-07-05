@@ -1102,6 +1102,50 @@ rollout-level costs, a stateful/prefix router, or another closed-loop-aware
 router objective. Do not promote another stateless source-label router solely
 because its held-out branch labels separate.
 
+### Full-8 MLP Router Threshold Tradeoff Hold
+
+The wide symmetric gate's seed-5 failure was traced and replayed:
+
+```text
+outputs/analysis/PHASE2_FULL8_MLP_ROUTER_SEED0_SEED5_STARTUP_COST_WIDE_SEED5_TRACE_GATE.md
+outputs/analysis/phase2_full8_mlp_router_seed0_seed5_startup_cost_wide_seed5_trace_gate.json
+outputs/analysis/PHASE2_FULL8_MLP_ROUTER_SEED0_SEED5_STARTUP_COST_WIDE_SEED5_BRANCH_TRACE.md
+outputs/analysis/phase2_full8_mlp_router_seed0_seed5_startup_cost_wide_seed5_branch_trace.json
+```
+
+The wide gate selected branch B for only `21.25%` of the first `80` seed-5
+ticks. A single threshold diagnostic was therefore run at `threshold=-2.0`:
+
+```text
+outputs/analysis/PHASE2_FULL8_MLP_ROUTER_SEED0_SEED5_STARTUP_COST_WIDE_TNEG2_X008_SEED5_GATE.md
+outputs/analysis/phase2_full8_mlp_router_seed0_seed5_startup_cost_wide_tneg2_x008_seed5_gate.json
+outputs/analysis/PHASE2_FULL8_MLP_ROUTER_SEED0_SEED5_STARTUP_COST_WIDE_TNEG2_X008_SEED0_7_GATE.md
+outputs/analysis/phase2_full8_mlp_router_seed0_seed5_startup_cost_wide_tneg2_x008_seed0_7_gate.json
+outputs/analysis/PHASE2_FULL8_MLP_ROUTER_SEED0_SEED5_STARTUP_COST_WIDE_TNEG2_DECISION.md
+outputs/analysis/phase2_full8_mlp_router_seed0_seed5_startup_cost_wide_tneg2_decision.json
+```
+
+Decision:
+
+```text
+HOLD_FULL8_MLP_ROUTER_THRESHOLD_TRADEOFF
+```
+
+Result:
+
+```text
+seed 5: PASS, 750 samples, vx 0.0316 m/s, track_ratio 0.3947, base min 0.1580
+seed 0: HOLD, 166 samples, vx 0.1265 m/s, track_ratio 1.5808, base min 0.0083
+seed 7: PASS, 750 samples, vx 0.0352 m/s, track_ratio 0.4396, base min 0.1562
+velocity excess: 0.0000 p95 and 0.0000 instantaneous
+```
+
+Lowering the threshold fixes seed 5 but regresses seed 0 into the same lunge
+and fall signature. This means the issue is not a global branch-B amount. It is
+a seed/state-specific routing conflict that a scalar threshold cannot solve.
+The next attempt should be closed-loop-aware or stateful/prefix-conditioned,
+not another scalar threshold sweep.
+
 ### Trainable Compression Hold
 
 The command-gated ONNX was distilled into PPO-compatible single-MLP students
