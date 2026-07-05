@@ -1,0 +1,446 @@
+{
+  "config": {
+    "knn_k": 3,
+    "pitch_guard_limit_rad": 0.2,
+    "pitch_guard_scale": 1.0,
+    "policies": [
+      "iter24",
+      "iter25"
+    ],
+    "policy_onehot_scale": 5.0,
+    "prefix_ticks": 100,
+    "seeds": [
+      0,
+      1,
+      2,
+      6,
+      7
+    ],
+    "sweep_json": [
+      "outputs/analysis/phase2_online_router_fresh_iter24_25_sweep.json"
+    ],
+    "target_track_ratio": 0.35,
+    "trace_roots": [
+      "outputs/analysis/phase2_online_router_fresh_iter24_25"
+    ]
+  },
+  "generated_at": "2026-07-05T08:49:03Z",
+  "guardrails": [
+    "No seed-id routing feature.",
+    "No training.",
+    "No robot tests.",
+    "No SSH.",
+    "No deploy.",
+    "No grounded replay.",
+    "No runtime behavior change."
+  ],
+  "next_required": [
+    "Do not launch Phase 2 DR.",
+    "Inspect failed routed seeds before adding router complexity."
+  ],
+  "routes": [
+    {
+      "candidates": [
+        {
+          "base_height_min_m": 0.15907274186611176,
+          "body_pitch_p95_rad": 0.1922094015681199,
+          "max_tracking_p95_rad": 0.18356168866157527,
+          "max_velocity_envelope_excess_rad_s": 0.0,
+          "max_velocity_envelope_max_excess_rad_s": null,
+          "mean_local_vx_m_s": 0.0260506902433699,
+          "pass": true,
+          "policy": "iter24",
+          "policy_path": "policy/candidates/phase2_z0075_iter24_live_oracle_seed2_active_history_context_rate150_20260704/candidate.onnx",
+          "prefix_health": {
+            "prefix_abs_lateral_v_mean_m_s": 0.04991941750748083,
+            "prefix_abs_pitch_max_rad": 0.18545603452916268,
+            "prefix_base_height_min_m": 0.15911532938480377,
+            "prefix_vx_mean_m_s": 0.03192261933523696
+          },
+          "router_pass_score": 1.0,
+          "router_score": 1.0,
+          "samples": 750,
+          "seed": 0,
+          "status": "PASS_CANDIDATE_SIM_GATE",
+          "termination": "duration_complete",
+          "trace": "outputs/analysis/phase2_online_router_fresh_iter24_25/iter24/seed_000/trace.jsonl",
+          "trace_sha256": "7c02728128959f39f573ae6a878b9956fbb699b50a7d9f38b4c40274113c9871",
+          "track_ratio": 0.3256336280421237
+        },
+        {
+          "base_height_min_m": 0.004828985780477524,
+          "body_pitch_p95_rad": 0.32306272486830456,
+          "max_tracking_p95_rad": 0.1831067800521851,
+          "max_velocity_envelope_excess_rad_s": 0.0,
+          "max_velocity_envelope_max_excess_rad_s": null,
+          "mean_local_vx_m_s": 0.057835710238494875,
+          "pass": false,
+          "policy": "iter25",
+          "policy_path": "policy/candidates/phase2_z0075_iter25_dual_anchor_weight4_history_context_rate150_20260704/candidate.onnx",
+          "prefix_health": {
+            "prefix_abs_lateral_v_mean_m_s": 0.05277429815439973,
+            "prefix_abs_pitch_max_rad": 0.18817862702090807,
+            "prefix_base_height_min_m": 0.15919820964336395,
+            "prefix_vx_mean_m_s": 0.0321657099314325
+          },
+          "router_pass_score": 0.7033081684918515,
+          "router_score": 0.7033081684918515,
+          "samples": 525,
+          "seed": 0,
+          "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+          "termination": "fall_or_nan",
+          "trace": "outputs/analysis/phase2_online_router_fresh_iter24_25/iter25/seed_000/trace.jsonl",
+          "trace_sha256": "e1ea07fe99f2c1d692dc591b05a9f3202e1df2b777afab41d120e9dc52417165",
+          "track_ratio": 0.7229463779811859
+        }
+      ],
+      "seed": 0,
+      "selected_pass": true,
+      "selected_policy": "iter24",
+      "selected_prefix_health": {
+        "prefix_abs_lateral_v_mean_m_s": 0.04991941750748083,
+        "prefix_abs_pitch_max_rad": 0.18545603452916268,
+        "prefix_base_height_min_m": 0.15911532938480377,
+        "prefix_vx_mean_m_s": 0.03192261933523696
+      },
+      "selected_raw_score": 1.0,
+      "selected_score": 1.0,
+      "selected_status": "PASS_CANDIDATE_SIM_GATE",
+      "selected_summary": {
+        "base_height_min_m": 0.15907274186611176,
+        "body_pitch_p95_rad": 0.1922094015681199,
+        "max_tracking_p95_rad": 0.18356168866157527,
+        "max_velocity_envelope_excess_rad_s": 0.0,
+        "max_velocity_envelope_max_excess_rad_s": null,
+        "mean_local_vx_m_s": 0.0260506902433699,
+        "samples": 750,
+        "termination": "duration_complete",
+        "track_ratio": 0.3256336280421237
+      },
+      "status": "PASS_ROUTER_SEED"
+    },
+    {
+      "candidates": [
+        {
+          "base_height_min_m": 0.15851202607154846,
+          "body_pitch_p95_rad": 0.17858404864989066,
+          "max_tracking_p95_rad": 0.18537283539772031,
+          "max_velocity_envelope_excess_rad_s": 0.0,
+          "max_velocity_envelope_max_excess_rad_s": null,
+          "mean_local_vx_m_s": 0.028675192629212688,
+          "pass": true,
+          "policy": "iter24",
+          "policy_path": "policy/candidates/phase2_z0075_iter24_live_oracle_seed2_active_history_context_rate150_20260704/candidate.onnx",
+          "prefix_health": {
+            "prefix_abs_lateral_v_mean_m_s": 0.05495515901711769,
+            "prefix_abs_pitch_max_rad": 0.22000204314325247,
+            "prefix_base_height_min_m": 0.15851202607154846,
+            "prefix_vx_mean_m_s": 0.031183378990972413
+          },
+          "router_pass_score": 0.6319068078364075,
+          "router_score": 0.611904764693155,
+          "samples": 750,
+          "seed": 1,
+          "status": "PASS_CANDIDATE_SIM_GATE",
+          "termination": "duration_complete",
+          "trace": "outputs/analysis/phase2_online_router_fresh_iter24_25/iter24/seed_001/trace.jsonl",
+          "trace_sha256": "8d72d5e67f682e1adf882e427efd7e52a3552b68e72b5919d295273ca224aa5d",
+          "track_ratio": 0.3584399078651586
+        },
+        {
+          "base_height_min_m": 0.15785591304302216,
+          "body_pitch_p95_rad": 0.17388582504197614,
+          "max_tracking_p95_rad": 0.18916240334510803,
+          "max_velocity_envelope_excess_rad_s": 0.0,
+          "max_velocity_envelope_max_excess_rad_s": null,
+          "mean_local_vx_m_s": 0.028534584797142694,
+          "pass": true,
+          "policy": "iter25",
+          "policy_path": "policy/candidates/phase2_z0075_iter25_dual_anchor_weight4_history_context_rate150_20260704/candidate.onnx",
+          "prefix_health": {
+            "prefix_abs_lateral_v_mean_m_s": 0.05646700760757085,
+            "prefix_abs_pitch_max_rad": 0.21436322332359692,
+            "prefix_base_height_min_m": 0.15919820964336395,
+            "prefix_vx_mean_m_s": 0.031177247286541386
+          },
+          "router_pass_score": 0.731299427218782,
+          "router_score": 0.7169362038951852,
+          "samples": 750,
+          "seed": 1,
+          "status": "PASS_CANDIDATE_SIM_GATE",
+          "termination": "duration_complete",
+          "trace": "outputs/analysis/phase2_online_router_fresh_iter24_25/iter25/seed_001/trace.jsonl",
+          "trace_sha256": "e3dba615bbfe7a62bee5d76e929f0d2e3477e85294c18c8c978b26484cecdf30",
+          "track_ratio": 0.3566823099642837
+        }
+      ],
+      "seed": 1,
+      "selected_pass": true,
+      "selected_policy": "iter25",
+      "selected_prefix_health": {
+        "prefix_abs_lateral_v_mean_m_s": 0.05646700760757085,
+        "prefix_abs_pitch_max_rad": 0.21436322332359692,
+        "prefix_base_height_min_m": 0.15919820964336395,
+        "prefix_vx_mean_m_s": 0.031177247286541386
+      },
+      "selected_raw_score": 0.731299427218782,
+      "selected_score": 0.7169362038951852,
+      "selected_status": "PASS_CANDIDATE_SIM_GATE",
+      "selected_summary": {
+        "base_height_min_m": 0.15785591304302216,
+        "body_pitch_p95_rad": 0.17388582504197614,
+        "max_tracking_p95_rad": 0.18916240334510803,
+        "max_velocity_envelope_excess_rad_s": 0.0,
+        "max_velocity_envelope_max_excess_rad_s": null,
+        "mean_local_vx_m_s": 0.028534584797142694,
+        "samples": 750,
+        "termination": "duration_complete",
+        "track_ratio": 0.3566823099642837
+      },
+      "status": "PASS_ROUTER_SEED"
+    },
+    {
+      "candidates": [
+        {
+          "base_height_min_m": 0.1590012162923813,
+          "body_pitch_p95_rad": 0.1822142898701311,
+          "max_tracking_p95_rad": 0.18860357403755185,
+          "max_velocity_envelope_excess_rad_s": 0.0,
+          "max_velocity_envelope_max_excess_rad_s": null,
+          "mean_local_vx_m_s": 0.02622257473571032,
+          "pass": true,
+          "policy": "iter24",
+          "policy_path": "policy/candidates/phase2_z0075_iter24_live_oracle_seed2_active_history_context_rate150_20260704/candidate.onnx",
+          "prefix_health": {
+            "prefix_abs_lateral_v_mean_m_s": 0.04931454994482919,
+            "prefix_abs_pitch_max_rad": 0.18545603452916268,
+            "prefix_base_height_min_m": 0.15911532938480377,
+            "prefix_vx_mean_m_s": 0.03017191853490658
+          },
+          "router_pass_score": 1.0,
+          "router_score": 1.0,
+          "samples": 750,
+          "seed": 2,
+          "status": "PASS_CANDIDATE_SIM_GATE",
+          "termination": "duration_complete",
+          "trace": "outputs/analysis/phase2_online_router_fresh_iter24_25/iter24/seed_002/trace.jsonl",
+          "trace_sha256": "1eb9831201fbd409ff5398a576a8a6ed9c27ba0c880323cea7cb603f8d3097b7",
+          "track_ratio": 0.327782184196379
+        },
+        {
+          "base_height_min_m": 0.15671637654304504,
+          "body_pitch_p95_rad": 0.18777938033392788,
+          "max_tracking_p95_rad": 0.18356621861457822,
+          "max_velocity_envelope_excess_rad_s": 0.0,
+          "max_velocity_envelope_max_excess_rad_s": null,
+          "mean_local_vx_m_s": 0.030526488050180583,
+          "pass": true,
+          "policy": "iter25",
+          "policy_path": "policy/candidates/phase2_z0075_iter25_dual_anchor_weight4_history_context_rate150_20260704/candidate.onnx",
+          "prefix_health": {
+            "prefix_abs_lateral_v_mean_m_s": 0.05134096221125219,
+            "prefix_abs_pitch_max_rad": 0.18817862702090807,
+            "prefix_base_height_min_m": 0.15919820964336395,
+            "prefix_vx_mean_m_s": 0.030469349978957325
+          },
+          "router_pass_score": 0.355176262565284,
+          "router_score": 0.355176262565284,
+          "samples": 750,
+          "seed": 2,
+          "status": "PASS_CANDIDATE_SIM_GATE",
+          "termination": "duration_complete",
+          "trace": "outputs/analysis/phase2_online_router_fresh_iter24_25/iter25/seed_002/trace.jsonl",
+          "trace_sha256": "e4d1001304621f361db244315c98b03f4b27cf6210f6f26199462e234d29fe93",
+          "track_ratio": 0.38158110062725725
+        }
+      ],
+      "seed": 2,
+      "selected_pass": true,
+      "selected_policy": "iter24",
+      "selected_prefix_health": {
+        "prefix_abs_lateral_v_mean_m_s": 0.04931454994482919,
+        "prefix_abs_pitch_max_rad": 0.18545603452916268,
+        "prefix_base_height_min_m": 0.15911532938480377,
+        "prefix_vx_mean_m_s": 0.03017191853490658
+      },
+      "selected_raw_score": 1.0,
+      "selected_score": 1.0,
+      "selected_status": "PASS_CANDIDATE_SIM_GATE",
+      "selected_summary": {
+        "base_height_min_m": 0.1590012162923813,
+        "body_pitch_p95_rad": 0.1822142898701311,
+        "max_tracking_p95_rad": 0.18860357403755185,
+        "max_velocity_envelope_excess_rad_s": 0.0,
+        "max_velocity_envelope_max_excess_rad_s": null,
+        "mean_local_vx_m_s": 0.02622257473571032,
+        "samples": 750,
+        "termination": "duration_complete",
+        "track_ratio": 0.327782184196379
+      },
+      "status": "PASS_ROUTER_SEED"
+    },
+    {
+      "candidates": [
+        {
+          "base_height_min_m": 0.06904956698417664,
+          "body_pitch_p95_rad": 0.2186703042891423,
+          "max_tracking_p95_rad": 0.17941215634346008,
+          "max_velocity_envelope_excess_rad_s": 0.0,
+          "max_velocity_envelope_max_excess_rad_s": null,
+          "mean_local_vx_m_s": -0.04527359393436927,
+          "pass": false,
+          "policy": "iter24",
+          "policy_path": "policy/candidates/phase2_z0075_iter24_live_oracle_seed2_active_history_context_rate150_20260704/candidate.onnx",
+          "prefix_health": {
+            "prefix_abs_lateral_v_mean_m_s": 0.0538721789047122,
+            "prefix_abs_pitch_max_rad": 0.23523292114136707,
+            "prefix_base_height_min_m": 0.15787889063358307,
+            "prefix_vx_mean_m_s": 0.03296821168594761
+          },
+          "router_pass_score": 1.0,
+          "router_score": 0.9647670788586329,
+          "samples": 250,
+          "seed": 6,
+          "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+          "termination": "fall_or_nan",
+          "trace": "outputs/analysis/phase2_online_router_fresh_iter24_25/iter24/seed_006/trace.jsonl",
+          "trace_sha256": "315749855486d7f4c14a7e0a2425812f64b13b928434128d711758b529488001",
+          "track_ratio": -0.5659199241796159
+        },
+        {
+          "base_height_min_m": 0.15800926089286804,
+          "body_pitch_p95_rad": 0.19036020118540972,
+          "max_tracking_p95_rad": 0.18812164068222043,
+          "max_velocity_envelope_excess_rad_s": 0.0,
+          "max_velocity_envelope_max_excess_rad_s": null,
+          "mean_local_vx_m_s": 0.026185183514879706,
+          "pass": true,
+          "policy": "iter25",
+          "policy_path": "policy/candidates/phase2_z0075_iter25_dual_anchor_weight4_history_context_rate150_20260704/candidate.onnx",
+          "prefix_health": {
+            "prefix_abs_lateral_v_mean_m_s": 0.05443275240017101,
+            "prefix_abs_pitch_max_rad": 0.22216377189983993,
+            "prefix_base_height_min_m": 0.15800926089286804,
+            "prefix_vx_mean_m_s": 0.0305894073881791
+          },
+          "router_pass_score": 0.7483041725777821,
+          "router_score": 0.7261404006779422,
+          "samples": 750,
+          "seed": 6,
+          "status": "PASS_CANDIDATE_SIM_GATE",
+          "termination": "duration_complete",
+          "trace": "outputs/analysis/phase2_online_router_fresh_iter24_25/iter25/seed_006/trace.jsonl",
+          "trace_sha256": "677dcdd20a8b47ed3b96f227123df80f91620cbf8c8ec5471ae3aaf7a2c36aa9",
+          "track_ratio": 0.32731479393599633
+        }
+      ],
+      "seed": 6,
+      "selected_pass": false,
+      "selected_policy": "iter24",
+      "selected_prefix_health": {
+        "prefix_abs_lateral_v_mean_m_s": 0.0538721789047122,
+        "prefix_abs_pitch_max_rad": 0.23523292114136707,
+        "prefix_base_height_min_m": 0.15787889063358307,
+        "prefix_vx_mean_m_s": 0.03296821168594761
+      },
+      "selected_raw_score": 1.0,
+      "selected_score": 0.9647670788586329,
+      "selected_status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "selected_summary": {
+        "base_height_min_m": 0.06904956698417664,
+        "body_pitch_p95_rad": 0.2186703042891423,
+        "max_tracking_p95_rad": 0.17941215634346008,
+        "max_velocity_envelope_excess_rad_s": 0.0,
+        "max_velocity_envelope_max_excess_rad_s": null,
+        "mean_local_vx_m_s": -0.04527359393436927,
+        "samples": 250,
+        "termination": "fall_or_nan",
+        "track_ratio": -0.5659199241796159
+      },
+      "status": "HOLD_ROUTER_SEED"
+    },
+    {
+      "candidates": [
+        {
+          "base_height_min_m": 0.15648280084133148,
+          "body_pitch_p95_rad": 0.186292488087811,
+          "max_tracking_p95_rad": 0.18755857348442068,
+          "max_velocity_envelope_excess_rad_s": 0.0,
+          "max_velocity_envelope_max_excess_rad_s": null,
+          "mean_local_vx_m_s": 0.02749877644124111,
+          "pass": true,
+          "policy": "iter24",
+          "policy_path": "policy/candidates/phase2_z0075_iter24_live_oracle_seed2_active_history_context_rate150_20260704/candidate.onnx",
+          "prefix_health": {
+            "prefix_abs_lateral_v_mean_m_s": 0.05438711249269545,
+            "prefix_abs_pitch_max_rad": 0.19690431260364002,
+            "prefix_base_height_min_m": 0.15911532938480377,
+            "prefix_vx_mean_m_s": 0.029363669879967347
+          },
+          "router_pass_score": 1.0,
+          "router_score": 1.0,
+          "samples": 750,
+          "seed": 7,
+          "status": "PASS_CANDIDATE_SIM_GATE",
+          "termination": "duration_complete",
+          "trace": "outputs/analysis/phase2_online_router_fresh_iter24_25/iter24/seed_007/trace.jsonl",
+          "trace_sha256": "a239b41886ddd6f99af2d7dcf89cc4d9fac78ed7d8d7efb21c5466400a5f75fd",
+          "track_ratio": 0.3437347055155138
+        },
+        {
+          "base_height_min_m": 0.010820461437106133,
+          "body_pitch_p95_rad": 0.35855216786934885,
+          "max_tracking_p95_rad": 0.1875038802623749,
+          "max_velocity_envelope_excess_rad_s": 0.0,
+          "max_velocity_envelope_max_excess_rad_s": null,
+          "mean_local_vx_m_s": 0.06661350885495151,
+          "pass": false,
+          "policy": "iter25",
+          "policy_path": "policy/candidates/phase2_z0075_iter25_dual_anchor_weight4_history_context_rate150_20260704/candidate.onnx",
+          "prefix_health": {
+            "prefix_abs_lateral_v_mean_m_s": 0.054929911066428756,
+            "prefix_abs_pitch_max_rad": 0.19456532614450173,
+            "prefix_base_height_min_m": 0.15919820964336395,
+            "prefix_vx_mean_m_s": 0.029437710200436413
+          },
+          "router_pass_score": 1.0,
+          "router_score": 1.0,
+          "samples": 470,
+          "seed": 7,
+          "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+          "termination": "fall_or_nan",
+          "trace": "outputs/analysis/phase2_online_router_fresh_iter24_25/iter25/seed_007/trace.jsonl",
+          "trace_sha256": "8f9890579425905f4e6cde50f73fd39dce82b8a242bac07dd7a2f4936b27c71c",
+          "track_ratio": 0.8326688606868939
+        }
+      ],
+      "seed": 7,
+      "selected_pass": true,
+      "selected_policy": "iter24",
+      "selected_prefix_health": {
+        "prefix_abs_lateral_v_mean_m_s": 0.05438711249269545,
+        "prefix_abs_pitch_max_rad": 0.19690431260364002,
+        "prefix_base_height_min_m": 0.15911532938480377,
+        "prefix_vx_mean_m_s": 0.029363669879967347
+      },
+      "selected_raw_score": 1.0,
+      "selected_score": 1.0,
+      "selected_status": "PASS_CANDIDATE_SIM_GATE",
+      "selected_summary": {
+        "base_height_min_m": 0.15648280084133148,
+        "body_pitch_p95_rad": 0.186292488087811,
+        "max_tracking_p95_rad": 0.18755857348442068,
+        "max_velocity_envelope_excess_rad_s": 0.0,
+        "max_velocity_envelope_max_excess_rad_s": null,
+        "mean_local_vx_m_s": 0.02749877644124111,
+        "samples": 750,
+        "termination": "duration_complete",
+        "track_ratio": 0.3437347055155138
+      },
+      "status": "PASS_ROUTER_SEED"
+    }
+  ],
+  "scope": "phase2_health_gated_router_gate",
+  "status": "HOLD_HEALTH_GATED_ROUTER_PARTIAL",
+  "summary": "The health-gated router improves coverage but does not clear all compact seeds."
+}

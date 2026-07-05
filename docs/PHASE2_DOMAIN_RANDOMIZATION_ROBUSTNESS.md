@@ -301,6 +301,49 @@ The next viable direction is a bounded history/online wrapper that preserves
 the already-passing branch policies, or a later distillation path from such a
 wrapper. Phase 2 DR remains blocked.
 
+## 2026-07-05 Fresh Online Router Replay
+
+The router branch was replayed from fresh branch rollouts rather than only the
+earlier precomputed traces:
+
+```text
+outputs/analysis/PHASE2_ONLINE_ROUTER_FRESH_DECISION.md
+outputs/analysis/phase2_online_router_fresh_decision.json
+```
+
+Decision:
+
+```text
+PASS_ONLINE_ROUTER_FRESH_COMPACT_SOURCE
+```
+
+Fresh Iter24/Iter25/Iter26/Iter27 rollouts confirmed the branch family still
+contains compact-gate coverage. A two-branch `iter24,iter25` router held on
+seed `6`, but the full four-branch prefix-health router selected passing
+branches for all compact seeds:
+
+```text
+0 -> iter24
+1 -> iter25
+2 -> iter24
+6 -> iter25
+7 -> iter24
+```
+
+The selected fresh manifest is:
+
+```text
+outputs/analysis/phase2_online_router_fresh_selected_manifest.json
+dataset_id: f2ecbdfab21ccafa
+entries: 5
+samples: 3750
+```
+
+This validates the router as an eval-only behavior-preservation source, but it
+is still not a single deployable/trainable parent. Phase 2 DR remains blocked
+until a parent or explicit wrapper objective preserves this routed behavior
+under the compact corrected-bridge gate.
+
 ## 2026-07-05 Iter24 PPO-Loc Step-0 Diagnostic
 
 After the live-oracle Iter24 candidate became the latest useful z=0.0075
