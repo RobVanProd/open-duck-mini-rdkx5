@@ -644,6 +644,41 @@ another tiny seed-specific relabel: keep branch/router behaviors separate until
 there is a better behavior-preserving parent, or use a stronger online
 behavior-preservation objective before Phase 2 DR.
 
+### Router-Family Seed-5 Coverage
+
+After the low-weight anti-lunge compression failed, the existing router-family
+candidates were screened directly on the newly exposed full-gate seed-5 failure:
+
+```text
+outputs/analysis/PHASE2_ROUTER_FAMILY_SEED5_Z0075_INTERMEDIATE_PUSH_SCREEN.md
+outputs/analysis/phase2_router_family_seed5_z0075_intermediate_push_screen.json
+outputs/analysis/PHASE2_ROUTER_FAMILY_SEED5_COVERAGE_DECISION.md
+outputs/analysis/phase2_router_family_seed5_coverage_decision.json
+```
+
+Decision:
+
+```text
+PASS_ROUTER_FAMILY_SEED5_COVERAGE
+```
+
+Result under the same `x=0.08`, `z=0.0075`, rough-terrain,
+intermediate-push, corrected-bridge screen:
+
+```text
+iter24: HOLD, 162 samples, track ratio 1.7128, body pitch p95 0.9002
+iter25: PASS, 750 samples, track ratio 0.3924, body pitch p95 0.1779
+iter26: PASS, 750 samples, track ratio 0.3765, body pitch p95 0.1668
+iter27: PASS, 750 samples, track ratio 0.3461, body pitch p95 0.1729
+velocity excess: 0.0000 p95 and 0.0000 instantaneous for all four rows
+```
+
+Seed 5 is covered by the branch family: `iter25`, `iter26`, and `iter27` all
+complete it in envelope while `iter24` reproduces the lunge. The next useful
+work is therefore an eval-only full-8 router/wrapper/source that keeps passing
+branches separate long enough to cover all seeds, not another tiny seed-specific
+single-MLP relabel.
+
 ### Trainable Compression Hold
 
 The command-gated ONNX was distilled into PPO-compatible single-MLP students
