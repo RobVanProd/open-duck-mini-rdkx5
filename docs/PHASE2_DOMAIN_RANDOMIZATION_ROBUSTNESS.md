@@ -604,6 +604,46 @@ This is not a trained candidate. The next bounded step is to merge this
 manifest into the command-gated/source data at low weight, train one student,
 then gate seed 5 plus regression-control seeds before any full-8 rerun.
 
+### Seed-5 Anti-Lunge Student Hold
+
+The low-weight seed-5 anti-lunge transfer set was merged into the
+command-gated source manifest and distilled into one PPO-loc MLP student:
+
+```text
+outputs/analysis/PHASE2_COMMAND_GATED_ZERO0020_WITH_SEED5_RATE160_ANTILUNGE_MANIFEST.md
+outputs/analysis/PHASE2_COMMAND_GATED_ZERO0020_SEED5_RATE160_ANTILUNGE_PPO_LOC_BC_STUDENT.md
+outputs/analysis/PHASE2_COMMAND_GATED_ZERO0020_SEED5_RATE160_ANTILUNGE_STUDENT_X008_SEED0_5_7_GATE.md
+outputs/analysis/PHASE2_COMMAND_GATED_ZERO0020_SEED5_RATE160_ANTILUNGE_STUDENT_DECISION.md
+```
+
+Decision:
+
+```text
+HOLD_SEED5_ANTILUNGE_TRANSFER_REGRESSED
+```
+
+Result:
+
+```text
+merged dataset_id: b9d5821e5727ac77
+fit status: PASS_PPO_LOC_BC_FIT_SMOKE
+candidate ONNX sha256: 02ae0552547786aa975abaaed6a32e089751d72a958580eb26d031f107e65746
+x=0.08 z=0.0075 rough+push seeds 0,5,7: 0/3 pass
+falls: 3/3
+seed 5: 153 samples, track ratio 1.6588, body pitch p95 0.8227, base height min 0.0091
+seed 0: 686 samples, track ratio -0.0097, base height min 0.0814
+seed 7: 488 samples, track ratio 0.7707, base height min -0.0014
+max p95 corrected velocity excess: 0.0000 rad/s
+max instantaneous corrected velocity excess: 1.4007 rad/s
+```
+
+The narrow transfer did not repair the target seed and also regressed both
+regression-control seeds. Close this low-weight single-MLP transfer path. The
+next source branch should change the preservation structure rather than add
+another tiny seed-specific relabel: keep branch/router behaviors separate until
+there is a better behavior-preserving parent, or use a stronger online
+behavior-preservation objective before Phase 2 DR.
+
 ### Trainable Compression Hold
 
 The command-gated ONNX was distilled into PPO-compatible single-MLP students
