@@ -1,0 +1,106 @@
+{
+  "status": "PASS_PPO_LOC_BC_FIT_SMOKE",
+  "manifest": "outputs/analysis/phase2_command_gated_zero0020_live_oracle_iter2/live_oracle_dagger_aggregate_manifest.json",
+  "samples": 11555,
+  "hidden_sizes": [
+    512,
+    256,
+    128
+  ],
+  "activation": "swish",
+  "saved_npz": "outputs/analysis/phase2_command_gated_zero0020_live_oracle_iter2_ppo_loc_bc_student/candidate_mlp.npz",
+  "exported_onnx": "outputs/analysis/phase2_command_gated_zero0020_live_oracle_iter2_ppo_loc_bc_student/candidate.onnx",
+  "train_metrics": {
+    "samples": 11555,
+    "mae": 0.0027482660331049325,
+    "rmse": 0.004694257942820371,
+    "p50_abs_error": 0.0012455529507937287,
+    "p95_abs_error": 0.010067296734157788,
+    "p99_abs_error": 0.016744404621586058,
+    "max_abs_error": 0.19814156198979632,
+    "pred_action_saturation_pct": 0.0
+  },
+  "target_rate": {
+    "pair_count": 11539,
+    "p50_rad_s": 0.007638398408211731,
+    "p95_rad_s": 1.2205528793742664,
+    "p99_rad_s": 1.5616614690018955,
+    "max_rad_s": 2.245605949734079
+  },
+  "sample_weight": {
+    "p50": 1.0,
+    "p95": 5.0,
+    "max": 5.0,
+    "weighted_samples": 19827.0
+  },
+  "loss_rows": [
+    {
+      "step": 1,
+      "loss": 0.11296606063842773
+    },
+    {
+      "step": 1000,
+      "loss": 6.0888367443112656e-05
+    },
+    {
+      "step": 2000,
+      "loss": 3.827807813649997e-05
+    },
+    {
+      "step": 3000,
+      "loss": 3.672415914479643e-05
+    },
+    {
+      "step": 4000,
+      "loss": 4.3152445869054645e-05
+    },
+    {
+      "step": 5000,
+      "loss": 4.752446329803206e-05
+    },
+    {
+      "step": 6000,
+      "loss": 2.492122439434752e-05
+    },
+    {
+      "step": 7000,
+      "loss": 3.2278188882628456e-05
+    },
+    {
+      "step": 8000,
+      "loss": 2.8788464987883344e-05
+    },
+    {
+      "step": 9000,
+      "loss": 2.530016536184121e-05
+    },
+    {
+      "step": 10000,
+      "loss": 3.813550210907124e-05
+    },
+    {
+      "step": 11000,
+      "loss": 3.121793633908965e-05
+    },
+    {
+      "step": 12000,
+      "loss": 1.974256883841008e-05
+    }
+  ],
+  "onnx_verify": {
+    "path": "outputs/analysis/phase2_command_gated_zero0020_live_oracle_iter2_ppo_loc_bc_student/candidate.onnx",
+    "samples_checked": 64,
+    "max_abs_error": 7.438470529309328e-08,
+    "p95_abs_error": 3.524209715363973e-08
+  },
+  "config": {
+    "steps": 12000,
+    "batch_size": 512,
+    "learning_rate": 0.00075,
+    "target_rate_scale": 0.2,
+    "target_rate_limit_rad_s": 2.0,
+    "action_scale_rad": 0.25,
+    "dt_s": 0.02,
+    "seed": 43
+  }
+}

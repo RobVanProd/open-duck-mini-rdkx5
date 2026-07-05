@@ -481,6 +481,43 @@ The graph-level command gate is the current compact eval candidate, but Phase 2
 still lacks a PPO-compatible trainable warm-start checkpoint. Do not launch DR
 training from the single-MLP compressions.
 
+### Live-Oracle PPO-Loc Compression Hold
+
+The failed PPO-loc compression was then used as the student in focused
+live-oracle DAgger passes. These were offline only: the student was rolled out
+through the corrected-bridge rough+push compact screen, student-visited states
+were relabeled by the corrected command-gated teacher/oracle, and PPO-loc MLPs
+were retrained from the aggregate manifests.
+
+Iteration 1 targeted the original moving failures (`seed 0` and `seed 7`) and
+preserved two zero-command traces:
+
+```text
+outputs/analysis/phase2_command_gated_zero0020_live_oracle_iter1/LIVE_ORACLE_DAGGER_ITERATION.md
+outputs/analysis/PHASE2_COMMAND_GATED_ZERO0020_LIVE_ORACLE_ITER1_PPO_LOC_BC_STUDENT.md
+x=0.08 compact gate: 4/5 pass, failed seed 6
+x=0.0 compact gate: 5/5 pass
+```
+
+Iteration 2 targeted the remaining `seed 6` moving failure:
+
+```text
+outputs/analysis/phase2_command_gated_zero0020_live_oracle_iter2/LIVE_ORACLE_DAGGER_ITERATION.md
+outputs/analysis/PHASE2_COMMAND_GATED_ZERO0020_LIVE_ORACLE_ITER2_PPO_LOC_BC_STUDENT.md
+x=0.08 compact gate: 4/5 pass, failed seed 6
+```
+
+Decision:
+
+```text
+HOLD_LIVE_ORACLE_PPO_LOC_SEED6_MOVING_GATE
+```
+
+Live-oracle correction improved the trainable compression from `3/5` to `4/5`
+and preserved command semantics, but repeating the same single-MLP PPO-loc
+correction did not close the moving gate. Phase 2 still lacks a trainable
+warm-start checkpoint; do not launch domain-randomized PPO from these students.
+
 ## 2026-07-05 Iter24 PPO-Loc Step-0 Diagnostic
 
 After the live-oracle Iter24 candidate became the latest useful z=0.0075
