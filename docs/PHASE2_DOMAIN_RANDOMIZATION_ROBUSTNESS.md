@@ -443,6 +443,66 @@ This resolves `HOLD_COMMAND_SEMANTICS_X0` for the compact gate and makes the
 command-gated candidate the next offline Phase 2 DR warm-start. It is still not
 robot approval and does not complete the staged domain-randomization objective.
 
+### Full-8 Source Gate Hold
+
+The command-gated candidate was then checked against the full 8-seed
+`x=0.08`, `z=0.0075`, rough-terrain intermediate-push screen:
+
+```text
+outputs/analysis/PHASE2_COMMAND_GATED_ZERO0020_FULL8_SOURCE_DECISION.md
+outputs/analysis/phase2_command_gated_zero0020_full8_source_decision.json
+outputs/analysis/PHASE2_COMMAND_GATED_ZERO0020_FULL8_X008_Z0075_PUSH_GATE.md
+outputs/analysis/phase2_command_gated_zero0020_full8_x008_z0075_push_gate.json
+```
+
+Decision:
+
+```text
+HOLD_COMMAND_GATED_SOURCE_SEED5_FORWARD_LUNGE
+```
+
+Result:
+
+```text
+x=0.08 full 8-seed gate: 7/8 pass
+failed seed: 5
+mean track ratio: 0.4907
+mean vx: 0.0393 m/s
+max p95 corrected velocity excess: 0.0000 rad/s
+max instantaneous corrected velocity excess: 0.0000 rad/s
+```
+
+Seed 5 was traced with full observations:
+
+```text
+outputs/analysis/PHASE2_COMMAND_GATED_ZERO0020_SEED5_FAILURE_TRACE.md
+outputs/analysis/PHASE2_COMMAND_GATED_ZERO0020_SEED5_FAILURE_MODE.md
+outputs/analysis/PHASE2_COMMAND_GATED_ZERO0020_SEED5_TRACE_ANALYSIS.md
+```
+
+Seed-5 failure signature:
+
+```text
+mode: FORWARD_LUNGE_PITCHOVER / HEIGHT_COLLAPSE
+samples: 158
+track ratio: 1.7083
+body pitch p95: 0.8743 rad
+base height min: -0.0058 m
+max pitch-chain sent-velocity p95: 1.5927 rad/s
+p95 corrected velocity excess: 0.0000 rad/s
+max corrected velocity excess: 0.0000 rad/s
+first reverse tick: 45
+first low-height tick: 150
+first done tick: 157
+```
+
+The compact five-seed gate missed this seed-5 lunge/pitchover. The
+command-gated ONNX remains a useful in-envelope behavior source, but it is not
+full-stage robust and should not be treated as a completed Phase 2 source
+without a seed-5 recovery branch or a router/wrapper source that covers seed 5.
+Since the full `x=0.08` gate already fails, the full `x=0.0` gate was not rerun
+for this decision.
+
 ### Trainable Compression Hold
 
 The command-gated ONNX was distilled into PPO-compatible single-MLP students
