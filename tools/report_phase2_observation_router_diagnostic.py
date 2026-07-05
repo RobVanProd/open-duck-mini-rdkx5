@@ -365,6 +365,33 @@ def write_markdown(payload: dict[str, Any], path: Path) -> None:
             f"`{route.get('selected_status')}` | `{route.get('router_pass_score')}` | "
             f"`{route.get('track_ratio')}` | `{route.get('mean_local_vx_m_s')}` |"
         )
+    missed = [route for route in best["routes"] if not route.get("selected_pass")]
+    if missed:
+        lines.extend(
+            [
+                "",
+                "## Missed Seed Details",
+                "",
+                "These rows show why the offline router is not promotable as a deployable "
+                "online wrapper yet. Scores are computed without seed ID.",
+                "",
+            ]
+        )
+        for route in missed:
+            lines.extend(
+                [
+                    f"### Seed `{route.get('seed')}`",
+                    "",
+                    "| policy | selected score | pass | status | track ratio |",
+                    "|---|---:|---|---|---:|",
+                ]
+            )
+            for score in route.get("scores", []):
+                lines.append(
+                    f"| `{score.get('policy')}` | `{score.get('score')}` | "
+                    f"`{score.get('pass')}` | `{score.get('status')}` | "
+                    f"`{score.get('track_ratio')}` |"
+                )
     lines.extend(["", "## Next", ""])
     for item in payload["next_required"]:
         lines.append(f"- {item}")
@@ -378,7 +405,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--sweep-json", action="append", type=Path, default=None)
     parser.add_argument("--trace-root", action="append", type=Path, default=None)
     parser.add_argument("--seeds", default="0,1,2,6,7")
-    parser.add_argument("--prefix-ticks", default="1,5,25")
+    parser.add_argument("--prefix-ticks", default="1,5,25,50,100,200")
     parser.add_argument("--knn-k", type=int, default=3)
     parser.add_argument("--policy-onehot-scales", default="0,1,5")
     parser.add_argument("--output-md", type=Path, default=DEFAULT_OUTPUT_MD)

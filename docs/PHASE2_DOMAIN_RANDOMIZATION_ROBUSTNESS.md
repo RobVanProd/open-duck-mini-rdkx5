@@ -146,15 +146,28 @@ HOLD_ROUTER_NEAR_MISS
 ```
 
 The observation/history router improves over a single fixed candidate but does
-not recover the full oracle seed-level route. Best leave-one-seed-out result:
+not recover the full oracle seed-level route. The expanded diagnostic checked
+prefixes `1,5,25,50,100,200` ticks. Best leave-one-seed-out result:
 
-- prefix ticks: `25`
+- prefix ticks: `100`
 - kNN k: `3`
 - policy-onehot scale: `5.0`
 - pass: `4/5`
 - selected passing candidates for seeds `0,1,2,7`
-- missed seed `6` by selecting failing `iter24`; seed `6` had passing routes
+- missed seed `6` by selecting failing `iter27`; seed `6` had passing routes
   through `iter25` and `iter26`
+
+The miss is narrow but important. On seed `6`, the best diagnostic scores were:
+
+- `iter27`: `0.7268`, hold/fall, track ratio `0.9697`
+- `iter25`: `0.7246`, pass, track ratio `0.3273`
+- `iter24`: `0.7188`, hold/fall, track ratio `-0.5659`
+- `iter26`: `0.0`, pass, track ratio `0.3491`
+
+Earlier prefixes also reached only `4/5`, while the `200`-tick prefix degraded
+to `3/5`. This argues against a simple one-shot observation router. A safe
+router would need either stronger non-seed health features, online switching
+logic that is explicitly gated, or a different policy class/objective.
 
 This is diagnostic-only evidence. It does not justify launching a deployable
 online router or Phase 2 DR from the router branch. The next evidence-aligned
