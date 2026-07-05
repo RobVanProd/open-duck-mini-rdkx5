@@ -575,6 +575,53 @@ fit. The next branch should use a stronger branch-aware structure,
 recurrent/hidden-state export, or an on-policy objective that directly
 preserves the compact rough+push closed-loop gate.
 
+### Recurrent BC Representation Hold
+
+A bounded stateful recurrent BC diagnostic was then trained from the same
+live-oracle iter2 aggregate:
+
+```text
+outputs/analysis/PHASE2_COMMAND_GATED_ZERO0020_LIVE_ORACLE_ITER2_RECURRENT_H64_S32_BC_STUDENT.md
+outputs/analysis/PHASE2_COMMAND_GATED_ZERO0020_LIVE_ORACLE_ITER2_RECURRENT_H64_S32_BC_STUDENT_X008_GATE.md
+outputs/analysis/PHASE2_COMMAND_GATED_ZERO0020_LIVE_ORACLE_ITER2_RECURRENT_H64_S32_DECISION.md
+```
+
+Decision:
+
+```text
+HOLD_RECURRENT_BC_OVER_ENVELOPE_COLLAPSE
+```
+
+The recurrent contract was:
+
+```text
+obs[1,101], h_in[1,64] -> continuous_actions[1,14], h_out[1,64]
+```
+
+The fit smoke and ONNX fidelity passed, but the compact moving gate failed
+decisively:
+
+```text
+x=0.08 compact z=0.0075 rough+push gate: 0/5 pass
+all seeds fall at 57 samples
+mean local vx: -0.3345 m/s
+mean track ratio: -4.1817
+max pitch-chain p95 velocity: 5.2400 rad/s
+corrected p95 velocity excess: 3.2400 rad/s
+max tracking p95: 0.2746 rad
+```
+
+This recurrent export is not robot-deployable without a hidden-state runtime
+adapter, and it is not a useful sim warm start. Plain supervised recurrent BC
+is worse than the feed-forward live-oracle PPO-loc result and worse than the
+phase/contact modulation diagnostic. The current trainable-parent blocker is
+not solved by adding hidden state to the same BC objective.
+
+Close the plain BC compression family for this aggregate. The next aligned
+branch should be a gate-aware/on-policy behavior-preservation objective or an
+explicit branch/router mechanism trained against closed-loop gate outcomes, not
+another one-shot BC compression variant.
+
 ## 2026-07-05 Iter24 PPO-Loc Step-0 Diagnostic
 
 After the live-oracle Iter24 candidate became the latest useful z=0.0075
