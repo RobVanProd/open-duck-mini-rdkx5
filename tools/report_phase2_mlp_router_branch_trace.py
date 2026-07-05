@@ -75,13 +75,15 @@ def read_trace(path: Path) -> list[dict[str, Any]]:
     return rows
 
 
-def bool_summary(mask: np.ndarray, values: np.ndarray) -> dict[str, Any]:
+def bool_summary(
+    mask: np.ndarray, values: np.ndarray, threshold: float, direction: str
+) -> dict[str, Any]:
     if mask.size == 0:
         return {"samples": 0, "branch_b_pct": None, "logit_p50": None, "logit_p05": None, "logit_p95": None}
     selected = values[mask] if mask.dtype == bool else values[np.asarray(mask, dtype=bool)]
     if selected.size == 0:
         return {"samples": 0, "branch_b_pct": None, "logit_p50": None, "logit_p05": None, "logit_p95": None}
-    branch = selected >= 0.0
+    branch = selected >= threshold if direction == "ge" else selected <= threshold
     return {
         "samples": int(selected.size),
         "branch_b_pct": float(np.mean(branch) * 100.0),
@@ -91,7 +93,13 @@ def bool_summary(mask: np.ndarray, values: np.ndarray) -> dict[str, Any]:
     }
 
 
-def summarize_windows(rows: list[dict[str, Any]], logits: np.ndarray, tail_ticks: int) -> dict[str, Any]:
+def summarize_windows(
+    rows: list[dict[str, Any]],
+    logits: np.ndarray,
+    tail_ticks: int,
+    threshold: float,
+    direction: str,
+) -> dict[str, Any]:
     n = len(rows)
     all_mask = np.ones((n,), dtype=bool)
     first_mask = np.zeros((n,), dtype=bool)
@@ -109,13 +117,13 @@ def summarize_windows(rows: list[dict[str, Any]], logits: np.ndarray, tail_ticks
         float((row.get("local_linvel_m_s") or [0.0])[0]) < 0.0 for row in rows
     ], dtype=bool)
     return {
-        "all": bool_summary(all_mask, logits),
-        "first_ticks": bool_summary(first_mask, logits),
-        "tail_ticks": bool_summary(tail_mask, logits),
-        "push_ticks": bool_summary(push_mask, logits),
-        "single_support": bool_summary(single_support, logits),
-        "double_support": bool_summary(double_support, logits),
-        "reverse_vx": bool_summary(reverse, logits),
+        "all": bool_summary(all_mask, logits, threshold, direction),
+        "first_ticks": bool_summary(first_mask, logits, threshold, direction),
+        "tail_ticks": bool_summary(tail_mask, logits, threshold, direction),
+        "push_ticks": bool_summary(push_mask, logits, threshold, direction),
+        "single_support": bool_summary(single_support, logits, threshold, direction),
+        "double_support": bool_summary(double_support, logits, threshold, direction),
+        "reverse_vx": bool_summary(reverse, logits, threshold, direction),
     }
 
 
@@ -131,6 +139,8 @@ def write_markdown(path: Path, report: dict[str, Any]) -> None:
         "",
         f"- trace: `{report['trace']}`",
         f"- gate_npz: `{report['gate_npz']}`",
+        f"- threshold: `{report['threshold']}`",
+        f"- direction: `{report['direction']}`",
         f"- samples: `{report['samples']}`",
         f"- termination: `{report['termination_reason']}`",
         "",
@@ -170,6 +180,8 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--trace", required=True)
     parser.add_argument("--gate-npz", required=True)
+    parser.add_argument("--threshold", type=float, default=0.0)
+    parser.add_argument("--direction", choices=["ge", "le"], default="ge")
     parser.add_argument("--tail-ticks", type=int, default=80)
     parser.add_argument("--output-md", required=True)
     parser.add_argument("--output-json", required=True)
@@ -190,8 +202,9 @@ def main() -> int:
     termination = "duration_complete"
     if rows and bool(rows[-1].get("done", False)):
         termination = "fall_or_nan"
-    windows = summarize_windows(rows, logits, int(args.tail_ticks))
-    branch_b_pct = float(np.mean(logits >= 0.0) * 100.0)
+    windows = summarize_windows(rows, logits, int(args.tail_ticks), float(args.threshold), args.direction)
+    selected_b = logits >= float(args.threshold) if args.direction == "ge" else logits <= float(args.threshold)
+    branch_b_pct = float(np.mean(selected_b) * 100.0)
     first_branch_b_pct = windows["first_ticks"]["branch_b_pct"]
     if first_branch_b_pct is not None and first_branch_b_pct >= 80.0:
         status = "HOLD_ROUTER_STARTUP_BRANCH_B_ON_FAILED_TRACE"
@@ -212,6 +225,8 @@ def main() -> int:
         "status": status,
         "trace": rel(trace_path),
         "gate_npz": rel(gate_path),
+        "threshold": float(args.threshold),
+        "direction": args.direction,
         "samples": int(len(rows)),
         "termination_reason": termination,
         "branch_b_pct": branch_b_pct,

@@ -1,0 +1,50 @@
+{
+  "status": "PASS_PHASE2_ROUTER_WARMSTART_SIM_GATE",
+  "no_robot_tests": true,
+  "no_ssh": true,
+  "no_deploy": true,
+  "no_grounded_replay": true,
+  "runtime_behavior_changed": false,
+  "candidate": "policy/candidates/phase2_full8_router_tneg1p8_20260705/candidate.onnx",
+  "candidate_sha256": "f3e88820b87025788c97636599cd2caf6ef249f7cb7e50ddde31ff5c1c5457d0",
+  "candidate_package": "policy/candidates/phase2_full8_router_tneg1p8_20260705/CANDIDATE_PACKAGE.md",
+  "candidate_metadata": "policy/candidates/phase2_full8_router_tneg1p8_20260705/candidate_metadata.json",
+  "package_status": "READY_FOR_SIM_GATE_REVIEW",
+  "contract": {
+    "input": "obs[1,101]",
+    "output": "continuous_actions[1,14]",
+    "status": "PASS_POLICY_CONTRACT"
+  },
+  "router": {
+    "branch_a_policy": "policy/candidates/phase2_parent_pair_lateral_seed7_weighted_command_gated_zero0020_20260705/candidate.onnx",
+    "branch_b_policy": "policy/candidates/phase2_z0075_iter25_dual_anchor_weight4_history_context_rate150_20260704/candidate.onnx",
+    "gate_npz": "outputs/analysis/phase2_full8_mlp_router_gate_seed0_seed5_startup_cost_wide/gate_mlp.npz",
+    "threshold": -1.8,
+    "direction": "ge"
+  },
+  "x008_gate": {
+    "artifact": "outputs/analysis/phase2_full8_mlp_router_seed0_seed5_startup_cost_wide_tneg1p8_x008_full8_gate.json",
+    "status": "PASS_CANDIDATE_SEED_SWEEP",
+    "seeds": 8,
+    "passes": 8,
+    "falls": 0,
+    "mean_vx_m_s": 0.0276,
+    "mean_track_ratio": 0.3456,
+    "mean_body_pitch_p95_rad": 0.1859,
+    "mean_base_height_min_m": 0.1580,
+    "p95_velocity_excess_rad_s": 0.0,
+    "max_velocity_excess_rad_s": 0.0
+  },
+  "x000_gate": {
+    "artifact": "outputs/analysis/phase2_full8_mlp_router_seed0_seed5_startup_cost_wide_tneg1p8_x000_full8_gate.json",
+    "status": "PASS_CANDIDATE_SEED_SWEEP",
+    "seeds": 8,
+    "passes": 8,
+    "falls": 0,
+    "mean_vx_m_s": 0.0007,
+    "p95_velocity_excess_rad_s": 0.0,
+    "max_velocity_excess_rad_s": 0.0
+  },
+  "decision": "Promote this artifact as the current offline Phase 2 warm-start candidate for review and domain-randomization planning. This does not approve robot testing.",
+  "recommended_next": "Start narrow Phase 2 domain-randomization training/eval from this warm-start candidate, preserving x=0.08 and x=0.0 full-8 corrected-bridge gates."
+}

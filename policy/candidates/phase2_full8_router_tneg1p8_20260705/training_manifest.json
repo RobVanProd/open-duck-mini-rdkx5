@@ -1,0 +1,47 @@
+{
+  "status": "PASS_ROUTED_COMPOSITION_MANIFEST",
+  "platform": "offline_cpu_eval",
+  "created_utc": "2026-07-05T21:00:00Z",
+  "candidate_kind": "composed_obs_mlp_router",
+  "actuator_bridge_enabled": true,
+  "actuator_bridge_fit": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+  "source_gate_npz": "outputs/analysis/phase2_full8_mlp_router_gate_seed0_seed5_startup_cost_wide/gate_mlp.npz",
+  "source_gate_npz_sha256": "1492635af6ca5a4c0a1b7d39077f29ec58bf3eae6fb4bb9f262e74ed3c07d36e",
+  "gate_threshold": -1.8,
+  "gate_direction": "ge",
+  "branch_a_policy": "policy/candidates/phase2_parent_pair_lateral_seed7_weighted_command_gated_zero0020_20260705/candidate.onnx",
+  "branch_b_policy": "policy/candidates/phase2_z0075_iter25_dual_anchor_weight4_history_context_rate150_20260704/candidate.onnx",
+  "candidate_sha256": "f3e88820b87025788c97636599cd2caf6ef249f7cb7e50ddde31ff5c1c5457d0",
+  "onnx_verify": "policy/candidates/phase2_full8_router_tneg1p8_20260705/onnx_verify.json",
+  "onnx_verify_sha256": "3115d53161b24622e0b47bf0e98122de587004ce2b8197b3a6390557709be1e9",
+  "candidate_gate_x008": "outputs/analysis/phase2_full8_mlp_router_seed0_seed5_startup_cost_wide_tneg1p8_x008_full8_gate.json",
+  "candidate_gate_x008_sha256": "d8e0a5f163ab5968496ec6a0c99d2af4d577bfd907b3a2f2f6de30e93e30d34a",
+  "candidate_gate_x000": "outputs/analysis/phase2_full8_mlp_router_seed0_seed5_startup_cost_wide_tneg1p8_x000_full8_gate.json",
+  "candidate_gate_x000_sha256": "b105135a0c383f2c6a1c593cd529d87de5068bbfd6dcb8e9e6540bc2901d3e76",
+  "gate_summary": {
+    "x008": {
+      "task": "rough_terrain_backlash",
+      "terrain_hfield_z_scale": 0.0075,
+      "eval_push_enable": true,
+      "seeds": 8,
+      "passes": 8,
+      "falls": 0,
+      "mean_vx_m_s": 0.0276,
+      "mean_track_ratio": 0.3456,
+      "p95_velocity_excess_rad_s": 0.0,
+      "max_velocity_excess_rad_s": 0.0
+    },
+    "x000": {
+      "task": "rough_terrain_backlash",
+      "terrain_hfield_z_scale": 0.0075,
+      "eval_push_enable": true,
+      "seeds": 8,
+      "passes": 8,
+      "falls": 0,
+      "mean_vx_m_s": 0.0007,
+      "p95_velocity_excess_rad_s": 0.0,
+      "max_velocity_excess_rad_s": 0.0
+    }
+  },
+  "command_shell": "compose_obs_mlp_gated_onnx_policy.py --threshold -1.8 followed by corrected-bridge rough_terrain_backlash x=0.08/x=0.0 full-8 CPU gates"
+}

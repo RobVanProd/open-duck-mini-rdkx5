@@ -1208,6 +1208,71 @@ stable deployable router. The next valid branch is a stateful/prefix router or
 trainable closed-loop mixture with rollout-level cost, not more source-label or
 single-threshold correction.
 
+### Full-8 Router Threshold -1.8 Warm-Start Pass
+
+The threshold probes bracketed the router conflict:
+
+```text
+threshold  0.0: seed 0 PASS, seed 5 HOLD, seed 7 PASS
+threshold -2.0: seed 0 HOLD, seed 5 PASS, seed 7 PASS
+```
+
+The seed-0/seed-5 startup logit traces suggested a narrow midpoint. A targeted
+`threshold=-1.8` candidate was composed and screened:
+
+```text
+outputs/analysis/PHASE2_FULL8_MLP_ROUTER_SEED0_SEED5_STARTUP_COST_WIDE_TNEG1P8_X008_SEED0_5_7_GATE.md
+outputs/analysis/phase2_full8_mlp_router_seed0_seed5_startup_cost_wide_tneg1p8_x008_seed0_5_7_gate.json
+outputs/analysis/PHASE2_FULL8_MLP_ROUTER_SEED0_SEED5_STARTUP_COST_WIDE_TNEG1P8_X008_FULL8_GATE.md
+outputs/analysis/phase2_full8_mlp_router_seed0_seed5_startup_cost_wide_tneg1p8_x008_full8_gate.json
+outputs/analysis/PHASE2_FULL8_MLP_ROUTER_SEED0_SEED5_STARTUP_COST_WIDE_TNEG1P8_X000_FULL8_GATE.md
+outputs/analysis/phase2_full8_mlp_router_seed0_seed5_startup_cost_wide_tneg1p8_x000_full8_gate.json
+outputs/analysis/PHASE2_FULL8_ROUTER_TNEG1P8_CANDIDATE_DECISION.md
+outputs/analysis/phase2_full8_router_tneg1p8_candidate_decision.json
+```
+
+Decision:
+
+```text
+PASS_PHASE2_ROUTER_WARMSTART_SIM_GATE
+```
+
+Candidate package:
+
+```text
+policy/candidates/phase2_full8_router_tneg1p8_20260705/candidate.onnx
+sha256: f3e88820b87025788c97636599cd2caf6ef249f7cb7e50ddde31ff5c1c5457d0
+package status: READY_FOR_SIM_GATE_REVIEW
+```
+
+The `x=0.08` corrected-bridge rough/push full-8 gate passed:
+
+```text
+8/8 PASS, 0 falls
+mean vx: 0.0276 m/s
+mean track ratio: 0.3456
+mean body pitch p95: 0.1859 rad
+mean base height min: 0.1580 m
+p95 velocity excess: 0.0000 rad/s
+max velocity excess: 0.0000 rad/s
+```
+
+The `x=0.0` command-preservation gate also passed:
+
+```text
+8/8 PASS, 0 falls
+mean vx: 0.0007 m/s
+double support: 100%
+p95 velocity excess: 0.0000 rad/s
+max velocity excess: 0.0000 rad/s
+```
+
+This is the current offline Phase 2 warm-start candidate. It is slow and not
+robot-approved, but it clears the corrected-bridge x=0.08 and x=0.0 full-8
+rough/push gates required before domain-randomized robustness work can resume.
+Next offline step: start narrow DR from this candidate and preserve these two
+gates at every stage.
+
 ### Trainable Compression Hold
 
 The command-gated ONNX was distilled into PPO-compatible single-MLP students
