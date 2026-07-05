@@ -1,6 +1,6 @@
 # Phase 2 Domain-Randomized Robustness Training
 
-status: `HOLD_STAGE_A_RATE165_STANDSTILL_REGRESSION`
+status: `HOLD_TASK_MATCHED_TRAINABLE_POLICY_MISSING`
 
 ## Objective
 
@@ -13,6 +13,51 @@ randomization while preserving:
 - and the slow in-envelope `x=0.08` gait.
 
 Robot validation is out of scope. No SSH, no deploy, no grounded replay.
+
+## 2026-07-05 Trainable-Policy Branch Decision
+
+The latest consolidated branch decision is:
+
+```text
+outputs/analysis/PHASE2_TRAINABLE_POLICY_BRANCH_DECISION.md
+outputs/analysis/phase2_trainable_policy_branch_decision.json
+```
+
+Decision:
+
+```text
+HOLD_TASK_MATCHED_TRAINABLE_POLICY_MISSING
+```
+
+Phase 2 has in-envelope deployable walkers, but no current trainable PPO/DR
+warm-start preserves the task-matched z=0.0075 rough-terrain intermediate-push
+behavior. Long domain-randomization training should not launch until a
+task-matched step-0 trainable policy clears that gate.
+
+Current evidence:
+
+- The deployable rate150 boundary candidate is useful but not promotable at the
+  harder z=0.0075 intermediate-push boundary: `6/8` duration complete, `2/8`
+  falls/terminations, mean track ratio `0.5622`, zero p95 corrected velocity
+  excess.
+- Iter24 is the latest useful live-oracle deployable analysis baseline: `4/5`
+  compact z=0.0075 rough+push pass, with seed6 failing.
+- Iter27 regressed the same BC-only live-oracle rung to `2/5`, so continuing
+  that rung as-is is closed for now.
+- Current PPO-compatible step-0 parents do not clear the task-matched gate:
+  `limit198_step0` is `0/5`, `rate165_step0` is `0/5`, and the Iter24
+  PPO-loc step0 is `2/5`.
+- Full-observation trace analysis of the Iter24 PPO-loc step0 shows close
+  manifest coverage and low nearest-action mismatch, so the regression is a
+  closed-loop stability/representation issue rather than missing labels or
+  local BC fit.
+
+Required next condition before Phase 2 DR resumes: produce a trainable policy
+class/objective whose step-0 export preserves the deployable behavior under the
+canonical z=0.0075 rough+push corrected-bridge gate. Candidate next branches are
+recurrent/hidden-state export, validation-aware mixture/ensemble diagnostics,
+or PPO fine-tuning only after the task-matched behavior-preservation gate
+passes.
 
 ## 2026-07-05 Iter24 PPO-Loc Step-0 Diagnostic
 
