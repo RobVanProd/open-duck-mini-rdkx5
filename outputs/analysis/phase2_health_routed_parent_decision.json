@@ -1,0 +1,45 @@
+{
+  "status": "HOLD_STATIC_PARENT_NOT_READY",
+  "routed_manifest": {
+    "path": "outputs/analysis/phase2_health_routed_parent_manifest.json",
+    "status": "PASS_BC_TRACE_MANIFEST_READY",
+    "dataset_id": "70e54aa35a944114",
+    "samples": 3750,
+    "seeds": [0, 1, 2, 6, 7]
+  },
+  "ppo_loc_parent": {
+    "fit_status": "PASS_PPO_LOC_BC_FIT_SMOKE",
+    "fit_json": "outputs/analysis/phase2_health_routed_parent_ppo_loc.json",
+    "gate_json": "outputs/analysis/phase2_health_routed_parent_gate.json",
+    "compact_gate_passes": 1,
+    "compact_gate_total": 5,
+    "decision": "not_promotable"
+  },
+  "phase_modulated_parent": {
+    "fit_status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE",
+    "fit_json": "outputs/analysis/phase2_health_routed_parent_phase_modulated.json",
+    "gate_json": "outputs/analysis/phase2_health_routed_parent_phase_modulated_gate.json",
+    "context_indices": [6, 99, 100],
+    "compact_gate_passes": 4,
+    "compact_gate_total": 5,
+    "passing_seeds": [0, 1, 2, 6],
+    "failing_seeds": [7],
+    "seed7": {
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "samples": 300,
+      "mean_local_vx_m_s": -0.0419,
+      "track_ratio": -0.5236,
+      "base_height_min_m": 0.0673
+    },
+    "decision": "best_static_parent_so_far_but_not_phase2_dr_ready"
+  },
+  "decision": "do_not_launch_phase2_domain_randomization_yet",
+  "recommended_next_branch": "LIVE_ORACLE_DAGGER_PHASE_STUDENT",
+  "blocked_actions": [
+    "robot_validation",
+    "ssh",
+    "deploy",
+    "grounded_replay",
+    "long_phase2_domain_randomization_from_static_parent"
+  ]
+}

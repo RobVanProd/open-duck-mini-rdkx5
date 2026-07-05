@@ -217,6 +217,37 @@ behavior-preserving parent, or to implement a true online parallel-prefix
 wrapper only if the router behavior needs to be replayed without precomputed
 traces.
 
+## 2026-07-05 Health-Routed Parent Compression
+
+The selected health-routed traces were converted into a compact BC manifest and
+used to train two single-policy parents:
+
+```text
+outputs/analysis/PHASE2_HEALTH_ROUTED_PARENT_MANIFEST.md
+outputs/analysis/PHASE2_HEALTH_ROUTED_PARENT_PPO_LOC.md
+outputs/analysis/PHASE2_HEALTH_ROUTED_PARENT_GATE.md
+outputs/analysis/PHASE2_HEALTH_ROUTED_PARENT_PHASE_MODULATED.md
+outputs/analysis/PHASE2_HEALTH_ROUTED_PARENT_PHASE_MODULATED_GATE.md
+outputs/analysis/PHASE2_HEALTH_ROUTED_PARENT_DECISION.md
+```
+
+Decision:
+
+```text
+HOLD_STATIC_PARENT_NOT_READY
+```
+
+The PPO-loc parent fit the labels but did not preserve the closed-loop behavior
+under the compact z=0.0075 rough+push gate. The phase-modulated parent is much
+better, passing seeds `0,1,2,6`, but seed `7` still fell at `300` samples with
+reverse velocity. That makes it the best static compression attempt so far, but
+not a valid Phase 2 domain-randomization warm start.
+
+This result narrows the next branch: phase/context conditioning helps, but pure
+static BC still leaves a seed-specific closed-loop failure. Phase 2 DR remains
+blocked until live closed-loop correction or a memory/state policy clears the
+compact behavior-preservation gate.
+
 ## 2026-07-05 Iter24 PPO-Loc Step-0 Diagnostic
 
 After the live-oracle Iter24 candidate became the latest useful z=0.0075
