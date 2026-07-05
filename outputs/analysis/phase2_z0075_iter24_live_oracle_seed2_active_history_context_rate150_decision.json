@@ -1,0 +1,58 @@
+{
+  "status": "HOLD_ITER24_LIVE_ORACLE_SEED6_REGRESSION",
+  "candidate": {
+    "path": "policy/candidates/phase2_z0075_iter24_live_oracle_seed2_active_history_context_rate150_20260704/candidate.onnx",
+    "onnx_sha256": "31a5c2d20d0ae33733c82d0280ca8a297035d74b2a62cc35055b11ebeb152670",
+    "npz_sha256": "ed24bdae116c628f72b4a96eb8dfb88ae060c9987ee348447fc8e25650083c5e",
+    "contract": "obs[1,101] -> continuous_actions[1,14]"
+  },
+  "inputs": {
+    "student_policy": "policy/candidates/phase2_z0075_iter23_live_oracle_resetsettle10_history_context_rate150_20260704/candidate.onnx",
+    "aggregate_manifest": "outputs/analysis/live_oracle_dagger_phase_student/iter_024_history_context_resetsettle10_seed2_active/live_oracle_dagger_aggregate_manifest.json",
+    "aggregate_manifest_sha256": "3532495e898a2166846f082254384b3a7de88c49637ff713136a7b4dd7c8be6a",
+    "live_oracle_run": "outputs/analysis/live_oracle_dagger_iter24_history_context_resetsettle10_seed2_active_run.json",
+    "live_oracle_run_sha256": "2fc9cff08b631dfca0697084fe6dac0d0b423dcbaacb0b5022dda32cfdea66dd"
+  },
+  "fit_metrics": {
+    "samples": 67219,
+    "target_rate_p95_rad_s": 1.3694801330566406,
+    "target_rate_max_rad_s": 9.827526092529297,
+    "training_status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE"
+  },
+  "gate": {
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.0075,
+    "bridge_mode": "fitted",
+    "fit_json": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+    "reset_mode": "home-support",
+    "reset_settle_ticks": 10,
+    "pushes": {
+      "enabled": true,
+      "interval_s": [1.0, 1.5],
+      "magnitude": [0.075, 0.125],
+      "recovery_window_s": 1.2
+    },
+    "x008": {
+      "json": "outputs/analysis/phase2_z0075_iter24_live_oracle_seed2_active_history_context_rate150_x008_seed0_1_2_6_7_screen.json",
+      "json_sha256": "14b6ea7cee12ce4f890550933289b6aa297c140a70b1f19319f9281ab94d8ce9",
+      "seeds": {
+        "0": {"status": "PASS_CANDIDATE_SIM_GATE", "samples": 750, "termination": "duration_complete", "track_ratio": 0.3256, "mean_local_vx": 0.0261, "max_vel_excess": 0.0},
+        "1": {"status": "PASS_CANDIDATE_SIM_GATE", "samples": 750, "termination": "duration_complete", "track_ratio": 0.3584, "mean_local_vx": 0.0287, "max_vel_excess": 0.0},
+        "2": {"status": "PASS_CANDIDATE_SIM_GATE", "samples": 750, "termination": "duration_complete", "track_ratio": 0.3278, "mean_local_vx": 0.0262, "max_vel_excess": 0.0},
+        "6": {"status": "HOLD_CANDIDATE_FALL_OR_TERMINATION", "samples": 250, "termination": "fall_or_nan", "track_ratio": -0.5659, "mean_local_vx": -0.0453, "max_vel_excess": 0.0},
+        "7": {"status": "PASS_CANDIDATE_SIM_GATE", "samples": 750, "termination": "duration_complete", "track_ratio": 0.3437, "mean_local_vx": 0.0275, "max_vel_excess": 0.0}
+      }
+    },
+    "x0": {
+      "json": "outputs/analysis/phase2_z0075_iter24_live_oracle_seed2_active_history_context_rate150_x0_seed0_1_screen.json",
+      "json_sha256": "8f91f0dc873d77f466086f5f88093fadaab5a8bb796fb8df45f738275c21171d",
+      "seeds": {
+        "0": {"status": "PASS_CANDIDATE_SIM_GATE", "samples": 750, "termination": "duration_complete", "mean_local_vx": 0.0007, "max_vel_excess": 0.0},
+        "1": {"status": "PASS_CANDIDATE_SIM_GATE", "samples": 750, "termination": "duration_complete", "mean_local_vx": 0.0009, "max_vel_excess": 0.0}
+      }
+    }
+  },
+  "interpretation": "Iter24 recovered seed2 but regressed seed6, so the live-oracle history-context loop is still trading seed-specific stability failures.",
+  "promotion": "not_promoted",
+  "next_recommendation": "Compare iter23/iter24 seed2 and seed6 traces before another live-oracle iteration; keep any further correction inside the aggregate live-oracle loop."
+}
