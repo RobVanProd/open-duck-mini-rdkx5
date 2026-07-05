@@ -1,0 +1,106 @@
+{
+  "status": "HOLD_ITER27_LIVE_ORACLE_MULTI_SEED_REGRESSION",
+  "candidate": {
+    "path": "policy/candidates/phase2_z0075_iter27_live_oracle_seed6_active_history_context_rate150_20260705/candidate.onnx",
+    "onnx_sha256": "e072b44e6e1f0e8be2487c1c79849f8decf325824ebec55c27859c5e54207d6a",
+    "npz_path": "policy/candidates/phase2_z0075_iter27_live_oracle_seed6_active_history_context_rate150_20260705/student.npz",
+    "npz_sha256": "0c370948f3b058341049dca47d1cfd46aae5a3e941367416a16bfe6345a927d9"
+  },
+  "aggregate_manifest": {
+    "path": "outputs/analysis/live_oracle_dagger_phase_student/iter_027_history_context_resetsettle10_seed6_active/live_oracle_dagger_aggregate_manifest.json",
+    "sha256": "ccf4639771c78d6d24638bc9a5db9d51098f767b356791afeeab06c8151eff46",
+    "samples": 71969
+  },
+  "gate": {
+    "command_x": 0.08,
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.0075,
+    "reset_mode": "home-support",
+    "reset_settle_ticks": 10,
+    "push_enabled": true,
+    "push_magnitude_min": 0.075,
+    "push_magnitude_max": 0.125,
+    "screen_json": "outputs/analysis/phase2_z0075_iter27_live_oracle_seed6_active_history_context_rate150_x008_seed0_1_2_6_7_screen.json",
+    "screen_json_sha256": "80d4e8ec2d2cd2e77f34bcf0e17588d8a43bf5e39f0db5b6e19541731626ef14",
+    "pass_count": 2,
+    "fall_count": 3,
+    "max_velocity_envelope_excess_rad_s": 0.0,
+    "seeds": [
+      {
+        "seed": 0,
+        "status": "PASS_CANDIDATE_SIM_GATE",
+        "samples": 750,
+        "termination": "duration_complete",
+        "track_ratio": 0.3395,
+        "mean_local_vx_m_s": 0.0272,
+        "body_pitch_p95_rad": 0.1793,
+        "base_height_min_m": 0.1587,
+        "max_pitch_vel_p95_rad_s": 1.5389,
+        "max_tracking_p95_rad": 0.1848,
+        "max_velocity_envelope_excess_rad_s": 0.0
+      },
+      {
+        "seed": 1,
+        "status": "PASS_CANDIDATE_SIM_GATE",
+        "samples": 750,
+        "termination": "duration_complete",
+        "track_ratio": 0.383,
+        "mean_local_vx_m_s": 0.0306,
+        "body_pitch_p95_rad": 0.1897,
+        "base_height_min_m": 0.1576,
+        "max_pitch_vel_p95_rad_s": 1.5272,
+        "max_tracking_p95_rad": 0.1843,
+        "max_velocity_envelope_excess_rad_s": 0.0
+      },
+      {
+        "seed": 2,
+        "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+        "samples": 307,
+        "termination": "fall_or_nan",
+        "track_ratio": -0.4823,
+        "mean_local_vx_m_s": -0.0386,
+        "body_pitch_p95_rad": 0.1841,
+        "base_height_min_m": 0.0701,
+        "max_pitch_vel_p95_rad_s": 1.5546,
+        "max_tracking_p95_rad": 0.1753,
+        "max_velocity_envelope_excess_rad_s": 0.0
+      },
+      {
+        "seed": 6,
+        "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+        "samples": 390,
+        "termination": "fall_or_nan",
+        "track_ratio": 0.9697,
+        "mean_local_vx_m_s": 0.0776,
+        "body_pitch_p95_rad": 0.4099,
+        "base_height_min_m": 0.0005,
+        "max_pitch_vel_p95_rad_s": 1.5506,
+        "max_tracking_p95_rad": 0.1868,
+        "max_velocity_envelope_excess_rad_s": 0.0
+      },
+      {
+        "seed": 7,
+        "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+        "samples": 611,
+        "termination": "fall_or_nan",
+        "track_ratio": 0.0141,
+        "mean_local_vx_m_s": 0.0011,
+        "body_pitch_p95_rad": 0.2035,
+        "base_height_min_m": 0.0817,
+        "max_pitch_vel_p95_rad_s": 1.5395,
+        "max_tracking_p95_rad": 0.1827,
+        "max_velocity_envelope_excess_rad_s": 0.0
+      }
+    ]
+  },
+  "decision": {
+    "promote": false,
+    "run_x0_gate": false,
+    "run_robot_validation": false,
+    "recommended_next": [
+      "Stop continuing this BC-only live-oracle rung as-is.",
+      "Use iter24 as the latest useful deployable baseline for analysis.",
+      "Change policy class or optimization objective before another expensive gate."
+    ]
+  }
+}
