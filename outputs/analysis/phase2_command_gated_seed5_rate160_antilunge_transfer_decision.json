@@ -1,0 +1,53 @@
+{
+  "status": "PASS_SEED5_RATE160_ANTILUNGE_TRANSFER_DATA_READY",
+  "generated_at": "2026-07-05T18:14:08.666290+00:00",
+  "scope": "offline data curation only; no training, robot, SSH, deploy, grounded replay, or runtime behavior change",
+  "relabel_artifact": "outputs/analysis/phase2_command_gated_seed5_rate160_antilunge_relabel.json",
+  "manifest_artifact": "outputs/analysis/phase2_command_gated_seed5_rate160_antilunge_manifest.json",
+  "dataset_id": "aa55227d46236696",
+  "entries": 1,
+  "samples": 24,
+  "selection": {
+    "missing_pass_ticks": 0,
+    "sample_weight": 6.0,
+    "tick_end": 157,
+    "tick_start": 80
+  },
+  "score": {
+    "centers": [
+      0.18180135445248696,
+      0.7258947020576847,
+      0.7251333700072381,
+      0.7244772161206892,
+      0.17845622209771989
+    ],
+    "indices": [
+      88,
+      46,
+      60,
+      74,
+      18
+    ],
+    "threshold": 5.0,
+    "weights": [
+      86.55429661437518,
+      21.415742138194684,
+      21.318853297934535,
+      21.19476673366079,
+      85.38839236668272
+    ]
+  },
+  "summary": {
+    "action_delta_max": 0.2640313617885113,
+    "action_delta_p50": 0.03110097162425518,
+    "action_delta_p95": 0.12318237847648561,
+    "score_p50": 6.505734837043746,
+    "score_p95": 8.292117712565966,
+    "selected_samples": 24
+  },
+  "interpretation": [
+    "This prepares a narrow seed-5 anti-lunge transfer dataset using command-gated failure observations and rate160 stable actions.",
+    "The artifact is not a trained candidate and is not promotable by itself.",
+    "The next bounded step is to merge this manifest into the command-gated/source manifest with low weight, train one student, and gate seed5 plus regression-control seeds before any full-8 rerun."
+  ]
+}

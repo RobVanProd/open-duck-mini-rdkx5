@@ -578,6 +578,32 @@ The next source branch should transfer the anti-lunge/stability behavior into
 the faster command-gated source without inheriting rate160's instantaneous
 envelope excess or low-progress hold.
 
+A narrow transfer dataset was prepared from that comparison:
+
+```text
+outputs/analysis/PHASE2_COMMAND_GATED_SEED5_RATE160_ANTILUNGE_RELABEL.md
+outputs/analysis/phase2_command_gated_seed5_rate160_antilunge_relabel.json
+outputs/analysis/PHASE2_COMMAND_GATED_SEED5_RATE160_ANTILUNGE_MANIFEST.md
+outputs/analysis/phase2_command_gated_seed5_rate160_antilunge_manifest.json
+outputs/analysis/PHASE2_COMMAND_GATED_SEED5_RATE160_ANTILUNGE_TRANSFER_DECISION.md
+```
+
+Decision:
+
+```text
+PASS_SEED5_RATE160_ANTILUNGE_TRANSFER_DATA_READY
+```
+
+The curation uses the existing early-lunge score definition
+`obs[88,46,60,74,18]`, threshold `5.0`, and replaces selected command-gated
+seed-5 failure actions with aligned rate160 seed-5 stable actions over ticks
+`80-157`. It selected `24` samples, dataset id `aa55227d46236696`, with sample
+weight `6.0`.
+
+This is not a trained candidate. The next bounded step is to merge this
+manifest into the command-gated/source data at low weight, train one student,
+then gate seed 5 plus regression-control seeds before any full-8 rerun.
+
 ### Trainable Compression Hold
 
 The command-gated ONNX was distilled into PPO-compatible single-MLP students
