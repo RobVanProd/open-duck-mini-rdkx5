@@ -677,6 +677,60 @@ x=0.08 compact gate: 5/5 PASS_CANDIDATE_SIM_GATE, zero p95 and max corrected vel
 x=0.0  compact gate: 5/5 PASS_CANDIDATE_SIM_GATE, mean |vx| <= 0.005 m/s
 ```
 
+### Gate-Aware PPO Parent Iter0 Hold
+
+The bounded local ROCm gate-aware parent smoke was run from the PPO step-0
+checkpoint:
+
+```text
+outputs/phase2_domain_randomization/gate_aware_parent_iter0_local_smoke/smoke_20260705T151050Z_gpu
+outputs/analysis/PHASE2_GATE_AWARE_PARENT_ITER0_LOCAL_SMOKE_DECISION.md
+outputs/analysis/phase2_gate_aware_parent_iter0_local_smoke_decision.json
+```
+
+The smoke completed and exported three ONNX checkpoints:
+
+| step | sha256 |
+|---:|---|
+| `15360` | `8179d5686d3dc242c3a05f4d47747c62ab1e60256009605a1e65e0b6053acfc2` |
+| `30720` | `9d246a73b1542e669e38b69094dbce6f1b998ae0ac1493f3dd09d6cdc3a5e84d` |
+| `46080` | `a1fc8cc37925e469c1a9a85ca9e301343979065bbf3735678d7e0d3fc726cf0a` |
+
+The compact x=0.08 corrected-bridge rough+push gate rejected all exports:
+
+```text
+outputs/analysis/PHASE2_GATE_AWARE_PARENT_ITER0_LOCAL_SMOKE_X008_GATE.md
+outputs/analysis/phase2_gate_aware_parent_iter0_local_smoke_x008_gate.json
+```
+
+Result:
+
+```text
+iter0_15360: 0/5 pass, mean vx 0.0015 m/s, track ratio 0.0186
+iter0_30720: 0/5 pass, mean vx 0.0015 m/s, track ratio 0.0193
+iter0_46080: 0/5 pass, mean vx 0.0016 m/s, track ratio 0.0194
+```
+
+All 15 policy/seed rollouts completed duration without falling, but every run
+held for low forward progress. The candidates spent `100%` of the rollouts in
+double support with `0%` single support. Corrected p95 velocity excess was zero
+for all exports, so this was not an envelope failure. It was a rewarded
+standstill/freeze regression.
+
+Decision:
+
+```text
+HOLD_GATE_AWARE_PARENT_REWARDED_FREEZE
+```
+
+This hits the pre-registered stop condition from
+`PHASE2_GATE_AWARE_PARENT_NEXT_BRANCH`: the first bounded on-policy iteration
+lowered the x=0.08 pass count below the step-0 `3/5` baseline. Do not run long
+Phase 2 DR from these exports, and do not repeat the same restore-policy-KL
+reward-side PPO objective. The next trainable-parent attempt must change the
+behavior-preservation structure so PPO cannot improve reward by erasing the
+moving gait.
+
 ## 2026-07-05 Iter24 PPO-Loc Step-0 Diagnostic
 
 After the live-oracle Iter24 candidate became the latest useful z=0.0075
