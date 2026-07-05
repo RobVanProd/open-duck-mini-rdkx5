@@ -1,0 +1,45 @@
+{
+  "status": "HOLD_STATIC_PHASE_MODULATED_LIVE_CORRECTION",
+  "initial_phase_modulated_parent": {
+    "gate_json": "outputs/analysis/phase2_health_routed_parent_phase_modulated_gate.json",
+    "passes": 4,
+    "total": 5,
+    "passing_seeds": [0, 1, 2, 6],
+    "failing_seeds": [7]
+  },
+  "focused_seed7_live_correction": {
+    "iteration_dir": "outputs/analysis/phase2_health_routed_parent_live_seed7_iter1",
+    "fit_json": "outputs/analysis/phase2_health_routed_parent_live_seed7_iter1_phase_modulated.json",
+    "gate_json": "outputs/analysis/phase2_health_routed_parent_live_seed7_iter1_phase_modulated_gate.json",
+    "passes": 3,
+    "total": 5,
+    "passing_seeds": [0, 2, 6],
+    "failing_seeds": [1, 7],
+    "interpretation": "seed7 improved but seed1 regressed"
+  },
+  "full_compact_live_correction": {
+    "iteration_dir": "outputs/analysis/phase2_health_routed_parent_live_compact_iter2",
+    "aggregate_manifest": "outputs/analysis/phase2_health_routed_parent_live_compact_iter2/live_oracle_dagger_aggregate_manifest.json",
+    "dataset_id": "3fbfc23526cdaaf6",
+    "entries": 12,
+    "samples": 8550,
+    "fit_json": "outputs/analysis/phase2_health_routed_parent_live_compact_iter2_phase_modulated.json",
+    "gate_json": "outputs/analysis/phase2_health_routed_parent_live_compact_iter2_phase_modulated_gate.json",
+    "passes": 2,
+    "total": 5,
+    "passing_seeds": [2, 6],
+    "failing_seeds": [0, 1, 7],
+    "mean_track_ratio": 0.1719,
+    "mean_vx_m_s": 0.0138,
+    "corrected_velocity_excess": 0.0
+  },
+  "decision": "do_not_launch_phase2_domain_randomization_from_static_parent",
+  "recommended_next": "frame_stacked_or_recurrent_live_oracle_student",
+  "blocked_actions": [
+    "robot_validation",
+    "ssh",
+    "deploy",
+    "grounded_replay",
+    "domain_randomization_from_static_phase_modulated_parent"
+  ]
+}

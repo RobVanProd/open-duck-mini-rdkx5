@@ -248,6 +248,33 @@ static BC still leaves a seed-specific closed-loop failure. Phase 2 DR remains
 blocked until live closed-loop correction or a memory/state policy clears the
 compact behavior-preservation gate.
 
+## 2026-07-05 Live-Correction Static Parent Check
+
+The next check tested whether live-oracle relabeling on the student's own
+visited states could rescue the static phase-modulated parent:
+
+```text
+outputs/analysis/PHASE2_HEALTH_ROUTED_PARENT_LIVE_CORRECTION_DECISION.md
+outputs/analysis/phase2_health_routed_parent_live_correction_decision.json
+```
+
+Decision:
+
+```text
+HOLD_STATIC_PHASE_MODULATED_LIVE_CORRECTION
+```
+
+Two bounded live-correction attempts were run:
+
+- focused seed-7 correction: seed `7` improved, but seed `1` regressed;
+- full compact correction: aggregate manifest `3fbfc23526cdaaf6`, `8550`
+  samples, but the retrained static parent regressed to `2/5` compact passes.
+
+This closes the current static phase-modulated BC rescue path. Live relabeling
+produces useful data, but compressing it back into the same static parent class
+trades failures across seeds. The next branch should test observation history
+or recurrent state before Phase 2 domain randomization resumes.
+
 ## 2026-07-05 Iter24 PPO-Loc Step-0 Diagnostic
 
 After the live-oracle Iter24 candidate became the latest useful z=0.0075

@@ -1,0 +1,104 @@
+{
+  "activation": "swish",
+  "config": {
+    "batch_size": 512,
+    "learning_rate": 0.001,
+    "seed": 0,
+    "steps": 5000,
+    "target_rate_limit_rad_s": 2.0,
+    "target_rate_scale": 0.1
+  },
+  "context_hidden_sizes": [
+    64
+  ],
+  "context_indices": [
+    6,
+    99,
+    100
+  ],
+  "exported_onnx": "outputs/analysis/phase2_health_routed_parent_live_seed7_iter1_phase_modulated/candidate.onnx",
+  "loss_rows": [
+    {
+      "loss": 0.18487553298473358,
+      "step": 1
+    },
+    {
+      "loss": 0.00016399470041505992,
+      "step": 500
+    },
+    {
+      "loss": 8.876455103745684e-05,
+      "step": 1000
+    },
+    {
+      "loss": 0.00010162701801164076,
+      "step": 1500
+    },
+    {
+      "loss": 8.322047506226227e-05,
+      "step": 2000
+    },
+    {
+      "loss": 4.418440948938951e-05,
+      "step": 2500
+    },
+    {
+      "loss": 0.00011947115126531571,
+      "step": 3000
+    },
+    {
+      "loss": 3.506730718072504e-05,
+      "step": 3500
+    },
+    {
+      "loss": 3.167060640407726e-05,
+      "step": 4000
+    },
+    {
+      "loss": 5.495031291502528e-05,
+      "step": 4500
+    },
+    {
+      "loss": 2.6322053599869832e-05,
+      "step": 5000
+    }
+  ],
+  "manifest": "outputs/analysis/phase2_health_routed_parent_live_seed7_iter1/live_oracle_dagger_aggregate_manifest.json",
+  "modulation_scale": 0.5,
+  "onnx_verify": {
+    "max_abs_error": 2.384185791015625e-07,
+    "p95_abs_error": 1.1920928955078125e-07,
+    "path": "outputs/analysis/phase2_health_routed_parent_live_seed7_iter1_phase_modulated/candidate.onnx",
+    "samples_checked": 64
+  },
+  "sample_weight": {
+    "max": 5.0,
+    "p50": 1.0,
+    "p95": 5.0,
+    "weighted_samples": 8528.0
+  },
+  "samples": 4800,
+  "saved_npz": "outputs/analysis/phase2_health_routed_parent_live_seed7_iter1_phase_modulated/candidate_mlp.npz",
+  "status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE",
+  "target_rate": {
+    "max_rad_s": 2.525317430496216,
+    "p50_rad_s": 0.2969786524772644,
+    "p95_rad_s": 1.4028591752052306,
+    "p99_rad_s": 1.572436369657517,
+    "pair_count": 4793
+  },
+  "train_metrics": {
+    "mae": 0.004538921449963807,
+    "max_abs_error": 0.18596057406142597,
+    "p50_abs_error": 0.0036987847415730357,
+    "p95_abs_error": 0.011465173959732053,
+    "p99_abs_error": 0.016172026842832556,
+    "pred_action_saturation_pct": 0.0,
+    "rmse": 0.005971724907370063,
+    "samples": 4800
+  },
+  "trunk_hidden_sizes": [
+    512,
+    256
+  ]
+}
