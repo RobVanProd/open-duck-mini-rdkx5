@@ -14,6 +14,61 @@ randomization while preserving:
 
 Robot validation is out of scope. No SSH, no deploy, no grounded replay.
 
+## 2026-07-05 Iter24 PPO-Loc Step-0 Diagnostic
+
+After the live-oracle Iter24 candidate became the latest useful z=0.0075
+baseline, a PPO-compatible `tanh(loc)` surrogate and Orbax step-0 checkpoint
+were built from its aggregate manifest:
+
+```text
+outputs/analysis/PPO_LOC_ITER24_LIVE_ORACLE_SEED2_ACTIVE_RATE150_STUDENT.md
+outputs/analysis/PPO_LOC_ITER24_LIVE_ORACLE_SEED2_ACTIVE_RATE150_STEP0_FIDELITY.md
+outputs/analysis/PPO_LOC_ITER24_LIVE_ORACLE_SEED2_ACTIVE_RATE150_STEP0_DECISION.md
+```
+
+The step-0 export fidelity is excellent:
+
+```text
+p95 abs action error: 1.4156e-7
+max abs action error: 2.9802e-7
+```
+
+However, the task-matched corrected-bridge rough+push compact gate regressed:
+
+```text
+outputs/analysis/PPO_LOC_ITER24_LIVE_ORACLE_SEED2_ACTIVE_RATE150_STEP0_X008_SEED0_1_2_6_7_SCREEN.md
+```
+
+Result:
+
+- pass: seeds `1,2`
+- hold/fall: seeds `0,6,7`
+- max corrected velocity-envelope excess: `0`
+- mean track ratio: `0.1160`
+
+A follow-up full-observation trace replay on seeds `0,1,6,7` shows the
+regression is not explained by missing manifest coverage or a local action-fit
+failure:
+
+```text
+outputs/analysis/PPO_LOC_ITER24_STEP0_TRACE_FAILURE_DECISION.md
+```
+
+All traced seeds have low nearest-manifest distance and low nearest-action
+mismatch against the Iter24 aggregate:
+
+```text
+nearest distance p95: 0.2228-0.3357
+nearest action L1 p95: 0.0209-0.0271
+```
+
+Decision: do not launch long PPO/domain-randomization training from this
+step-0 checkpoint as-is. Action fidelity and manifest coverage are insufficient
+warm-start gates. The next aligned Phase 2 attempt must preserve behavior under
+the task-matched corrected-bridge closed-loop gate before any large PPO/DR run,
+or it must add an explicit closed-loop behavior-preservation/training structure
+that survives seed perturbations.
+
 ## 2026-07-03 Limit198 PPO-Loc Trainable Warm-Start
 
 The current deployable Phase 2 baseline is:
