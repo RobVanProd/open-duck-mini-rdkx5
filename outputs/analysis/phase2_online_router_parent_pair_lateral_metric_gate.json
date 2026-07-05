@@ -1,0 +1,232 @@
+{
+  "decision": "eval_only_router_objective_found_not_deployable_parent",
+  "generated_at": "2026-07-05T10:02:00Z",
+  "guardrails": [
+    "no_robot",
+    "no_ssh",
+    "no_deploy",
+    "no_grounded_replay",
+    "no_runtime_behavior_change"
+  ],
+  "next_required": "distill_or_train a single parent/wrapper objective that preserves the lower-lateral routed behavior before Phase 2 DR",
+  "pass_count": 5,
+  "policies": [
+    "phase_mod_parent",
+    "rich_context_parent"
+  ],
+  "prefix_ticks": 100,
+  "routes": [
+    {
+      "candidates": [
+        {
+          "base_height_min_m": 0.1573447585105896,
+          "body_pitch_p95_rad": 0.1994461400249657,
+          "mean_local_vx_m_s": 0.021728255880550326,
+          "pass": true,
+          "policy": "phase_mod_parent",
+          "prefix_abs_lateral_v_mean_m_s": 0.048877865478862074,
+          "prefix_abs_pitch_max_rad": 0.18644794142319335,
+          "status": "PASS_CANDIDATE_SIM_GATE",
+          "track_ratio": 0.2716031985068791
+        },
+        {
+          "base_height_min_m": 0.15913419425487518,
+          "body_pitch_p95_rad": 0.16610380076586062,
+          "mean_local_vx_m_s": 0.023172676663578994,
+          "pass": true,
+          "policy": "rich_context_parent",
+          "prefix_abs_lateral_v_mean_m_s": 0.04867931621614843,
+          "prefix_abs_pitch_max_rad": 0.1869061640270405,
+          "status": "PASS_CANDIDATE_SIM_GATE",
+          "track_ratio": 0.2896584582947374
+        }
+      ],
+      "seed": 0,
+      "selected_metric_value": 0.04867931621614843,
+      "selected_pass": true,
+      "selected_policy": "rich_context_parent",
+      "selected_status": "PASS_CANDIDATE_SIM_GATE",
+      "selected_summary": {
+        "base_height_min_m": 0.15913419425487518,
+        "body_pitch_p95_rad": 0.16610380076586062,
+        "max_velocity_envelope_excess_rad_s": 0.0,
+        "max_velocity_envelope_max_excess_rad_s": null,
+        "mean_local_vx_m_s": 0.023172676663578994,
+        "track_ratio": 0.2896584582947374
+      },
+      "selection_metric": "min_prefix_abs_lateral_v_mean_m_s"
+    },
+    {
+      "candidates": [
+        {
+          "base_height_min_m": 0.15537245571613312,
+          "body_pitch_p95_rad": 0.20772505471640126,
+          "mean_local_vx_m_s": 0.025842922405068143,
+          "pass": true,
+          "policy": "phase_mod_parent",
+          "prefix_abs_lateral_v_mean_m_s": 0.05383064804133028,
+          "prefix_abs_pitch_max_rad": 0.2194134267521905,
+          "status": "PASS_CANDIDATE_SIM_GATE",
+          "track_ratio": 0.32303653006335176
+        },
+        {
+          "base_height_min_m": -0.008957752026617527,
+          "body_pitch_p95_rad": 0.9035911121795815,
+          "mean_local_vx_m_s": 0.13820647001873865,
+          "pass": false,
+          "policy": "rich_context_parent",
+          "prefix_abs_lateral_v_mean_m_s": 0.05389018044341356,
+          "prefix_abs_pitch_max_rad": 0.20738969516032077,
+          "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+          "track_ratio": 1.727580875234233
+        }
+      ],
+      "seed": 1,
+      "selected_metric_value": 0.05383064804133028,
+      "selected_pass": true,
+      "selected_policy": "phase_mod_parent",
+      "selected_status": "PASS_CANDIDATE_SIM_GATE",
+      "selected_summary": {
+        "base_height_min_m": 0.15537245571613312,
+        "body_pitch_p95_rad": 0.20772505471640126,
+        "max_velocity_envelope_excess_rad_s": 0.0,
+        "max_velocity_envelope_max_excess_rad_s": null,
+        "mean_local_vx_m_s": 0.025842922405068143,
+        "track_ratio": 0.32303653006335176
+      },
+      "selection_metric": "min_prefix_abs_lateral_v_mean_m_s"
+    },
+    {
+      "candidates": [
+        {
+          "base_height_min_m": 0.15917275846004486,
+          "body_pitch_p95_rad": 0.1763858521992976,
+          "mean_local_vx_m_s": 0.026277181704994292,
+          "pass": true,
+          "policy": "phase_mod_parent",
+          "prefix_abs_lateral_v_mean_m_s": 0.04796103304601274,
+          "prefix_abs_pitch_max_rad": 0.18644794142319335,
+          "status": "PASS_CANDIDATE_SIM_GATE",
+          "track_ratio": 0.3284647713124286
+        },
+        {
+          "base_height_min_m": 0.15685239434242249,
+          "body_pitch_p95_rad": 0.17632146413894684,
+          "mean_local_vx_m_s": 0.023778284668611982,
+          "pass": true,
+          "policy": "rich_context_parent",
+          "prefix_abs_lateral_v_mean_m_s": 0.047982501366641374,
+          "prefix_abs_pitch_max_rad": 0.18937902820604802,
+          "status": "PASS_CANDIDATE_SIM_GATE",
+          "track_ratio": 0.2972285583576498
+        }
+      ],
+      "seed": 2,
+      "selected_metric_value": 0.04796103304601274,
+      "selected_pass": true,
+      "selected_policy": "phase_mod_parent",
+      "selected_status": "PASS_CANDIDATE_SIM_GATE",
+      "selected_summary": {
+        "base_height_min_m": 0.15917275846004486,
+        "body_pitch_p95_rad": 0.1763858521992976,
+        "max_velocity_envelope_excess_rad_s": 0.0,
+        "max_velocity_envelope_max_excess_rad_s": null,
+        "mean_local_vx_m_s": 0.026277181704994292,
+        "track_ratio": 0.3284647713124286
+      },
+      "selection_metric": "min_prefix_abs_lateral_v_mean_m_s"
+    },
+    {
+      "candidates": [
+        {
+          "base_height_min_m": 0.15717685222625732,
+          "body_pitch_p95_rad": 0.18496016379104316,
+          "mean_local_vx_m_s": 0.02407263019917688,
+          "pass": true,
+          "policy": "phase_mod_parent",
+          "prefix_abs_lateral_v_mean_m_s": 0.052759721442125734,
+          "prefix_abs_pitch_max_rad": 0.25816345748634495,
+          "status": "PASS_CANDIDATE_SIM_GATE",
+          "track_ratio": 0.300907877489711
+        },
+        {
+          "base_height_min_m": 0.15754219889640808,
+          "body_pitch_p95_rad": 0.18113779675728628,
+          "mean_local_vx_m_s": 0.025265688540646807,
+          "pass": true,
+          "policy": "rich_context_parent",
+          "prefix_abs_lateral_v_mean_m_s": 0.05311961733154021,
+          "prefix_abs_pitch_max_rad": 0.2260353615606568,
+          "status": "PASS_CANDIDATE_SIM_GATE",
+          "track_ratio": 0.31582110675808506
+        }
+      ],
+      "seed": 6,
+      "selected_metric_value": 0.052759721442125734,
+      "selected_pass": true,
+      "selected_policy": "phase_mod_parent",
+      "selected_status": "PASS_CANDIDATE_SIM_GATE",
+      "selected_summary": {
+        "base_height_min_m": 0.15717685222625732,
+        "body_pitch_p95_rad": 0.18496016379104316,
+        "max_velocity_envelope_excess_rad_s": 0.0,
+        "max_velocity_envelope_max_excess_rad_s": null,
+        "mean_local_vx_m_s": 0.02407263019917688,
+        "track_ratio": 0.300907877489711
+      },
+      "selection_metric": "min_prefix_abs_lateral_v_mean_m_s"
+    },
+    {
+      "candidates": [
+        {
+          "base_height_min_m": 0.06727110594511032,
+          "body_pitch_p95_rad": 0.17802859236138668,
+          "mean_local_vx_m_s": -0.04188446531964776,
+          "pass": false,
+          "policy": "phase_mod_parent",
+          "prefix_abs_lateral_v_mean_m_s": 0.052378452345728875,
+          "prefix_abs_pitch_max_rad": 0.19411931007049268,
+          "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+          "track_ratio": -0.523555816495597
+        },
+        {
+          "base_height_min_m": 0.15890316665172577,
+          "body_pitch_p95_rad": 0.177501017787433,
+          "mean_local_vx_m_s": 0.026418171000909447,
+          "pass": true,
+          "policy": "rich_context_parent",
+          "prefix_abs_lateral_v_mean_m_s": 0.05234193853102624,
+          "prefix_abs_pitch_max_rad": 0.1897310259148833,
+          "status": "PASS_CANDIDATE_SIM_GATE",
+          "track_ratio": 0.33022713751136806
+        }
+      ],
+      "seed": 7,
+      "selected_metric_value": 0.05234193853102624,
+      "selected_pass": true,
+      "selected_policy": "rich_context_parent",
+      "selected_status": "PASS_CANDIDATE_SIM_GATE",
+      "selected_summary": {
+        "base_height_min_m": 0.15890316665172577,
+        "body_pitch_p95_rad": 0.177501017787433,
+        "max_velocity_envelope_excess_rad_s": 0.0,
+        "max_velocity_envelope_max_excess_rad_s": null,
+        "mean_local_vx_m_s": 0.026418171000909447,
+        "track_ratio": 0.33022713751136806
+      },
+      "selection_metric": "min_prefix_abs_lateral_v_mean_m_s"
+    }
+  ],
+  "scope": "offline_eval_only_parent_pair_prefix_metric_router",
+  "seeds": [
+    0,
+    1,
+    2,
+    6,
+    7
+  ],
+  "selection_rule": "select the parent with lower prefix_abs_lateral_v_mean_m_s over the first 100 ticks",
+  "source_router_json": "outputs/analysis/phase2_online_router_parent_pair_gate.json",
+  "status": "PASS_PREFIX_LATERAL_PARENT_PAIR_ROUTER_COMPACT",
+  "total_count": 5
+}

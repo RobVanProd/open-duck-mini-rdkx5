@@ -1,0 +1,448 @@
+{
+  "config": {
+    "knn_k": 3,
+    "pitch_guard_limit_rad": 0.2,
+    "pitch_guard_scale": 1.0,
+    "policies": [
+      "phase_mod_parent",
+      "rich_context_parent"
+    ],
+    "policy_onehot_scale": 5.0,
+    "prefix_ticks": 100,
+    "seeds": [
+      0,
+      1,
+      2,
+      6,
+      7
+    ],
+    "sweep_json": [
+      "outputs/analysis/phase2_health_routed_parent_phase_modulated_trace_gate.json",
+      "outputs/analysis/phase2_online_router_fresh_rich_context_parent_gate.json"
+    ],
+    "target_track_ratio": 0.35,
+    "trace_roots": [
+      "outputs/analysis/phase2_health_routed_parent_phase_modulated_trace_gate",
+      "outputs/analysis/phase2_online_router_fresh_rich_context_parent_gate"
+    ]
+  },
+  "generated_at": "2026-07-05T10:01:05Z",
+  "guardrails": [
+    "No seed-id routing feature.",
+    "No training.",
+    "No robot tests.",
+    "No SSH.",
+    "No deploy.",
+    "No grounded replay.",
+    "No runtime behavior change."
+  ],
+  "next_required": [
+    "Do not launch Phase 2 DR.",
+    "Inspect failed routed seeds before adding router complexity."
+  ],
+  "routes": [
+    {
+      "candidates": [
+        {
+          "base_height_min_m": 0.1573447585105896,
+          "body_pitch_p95_rad": 0.1994461400249657,
+          "max_tracking_p95_rad": 0.1865058362483978,
+          "max_velocity_envelope_excess_rad_s": 0.0,
+          "max_velocity_envelope_max_excess_rad_s": null,
+          "mean_local_vx_m_s": 0.021728255880550326,
+          "pass": true,
+          "policy": "phase_mod_parent",
+          "policy_path": "outputs/analysis/phase2_health_routed_parent_phase_modulated/candidate.onnx",
+          "prefix_health": {
+            "prefix_abs_lateral_v_mean_m_s": 0.048877865478862074,
+            "prefix_abs_pitch_max_rad": 0.18644794142319335,
+            "prefix_base_height_min_m": 0.15917275846004486,
+            "prefix_vx_mean_m_s": 0.03055917125660926
+          },
+          "router_pass_score": 1.0,
+          "router_score": 1.0,
+          "samples": 750,
+          "seed": 0,
+          "status": "PASS_CANDIDATE_SIM_GATE",
+          "termination": "duration_complete",
+          "trace": "outputs/analysis/phase2_health_routed_parent_phase_modulated_trace_gate/phase_mod_parent/seed_000/trace.jsonl",
+          "trace_sha256": "a68cd483ac04fb266804141634d2f6710960ea2ff4a2b9a9bccd6a5892c0e549",
+          "track_ratio": 0.2716031985068791
+        },
+        {
+          "base_height_min_m": 0.15913419425487518,
+          "body_pitch_p95_rad": 0.16610380076586062,
+          "max_tracking_p95_rad": 0.18079808950424192,
+          "max_velocity_envelope_excess_rad_s": 0.0,
+          "max_velocity_envelope_max_excess_rad_s": null,
+          "mean_local_vx_m_s": 0.023172676663578994,
+          "pass": true,
+          "policy": "rich_context_parent",
+          "policy_path": "outputs/analysis/phase2_online_router_fresh_rich_context_parent/candidate.onnx",
+          "prefix_health": {
+            "prefix_abs_lateral_v_mean_m_s": 0.04867931621614843,
+            "prefix_abs_pitch_max_rad": 0.1869061640270405,
+            "prefix_base_height_min_m": 0.15913419425487518,
+            "prefix_vx_mean_m_s": 0.029592152290279047
+          },
+          "router_pass_score": 1.0,
+          "router_score": 1.0,
+          "samples": 750,
+          "seed": 0,
+          "status": "PASS_CANDIDATE_SIM_GATE",
+          "termination": "duration_complete",
+          "trace": "outputs/analysis/phase2_online_router_fresh_rich_context_parent_gate/rich_context_parent/seed_000/trace.jsonl",
+          "trace_sha256": "1e1f54285379183578b78ea8975f5d2cc1d3157c235ee3cf40ed403a02f3491b",
+          "track_ratio": 0.2896584582947374
+        }
+      ],
+      "seed": 0,
+      "selected_pass": true,
+      "selected_policy": "rich_context_parent",
+      "selected_prefix_health": {
+        "prefix_abs_lateral_v_mean_m_s": 0.04867931621614843,
+        "prefix_abs_pitch_max_rad": 0.1869061640270405,
+        "prefix_base_height_min_m": 0.15913419425487518,
+        "prefix_vx_mean_m_s": 0.029592152290279047
+      },
+      "selected_raw_score": 1.0,
+      "selected_score": 1.0,
+      "selected_status": "PASS_CANDIDATE_SIM_GATE",
+      "selected_summary": {
+        "base_height_min_m": 0.15913419425487518,
+        "body_pitch_p95_rad": 0.16610380076586062,
+        "max_tracking_p95_rad": 0.18079808950424192,
+        "max_velocity_envelope_excess_rad_s": 0.0,
+        "max_velocity_envelope_max_excess_rad_s": null,
+        "mean_local_vx_m_s": 0.023172676663578994,
+        "samples": 750,
+        "termination": "duration_complete",
+        "track_ratio": 0.2896584582947374
+      },
+      "status": "PASS_ROUTER_SEED"
+    },
+    {
+      "candidates": [
+        {
+          "base_height_min_m": 0.15537245571613312,
+          "body_pitch_p95_rad": 0.20772505471640126,
+          "max_tracking_p95_rad": 0.18724524974822992,
+          "max_velocity_envelope_excess_rad_s": 0.0,
+          "max_velocity_envelope_max_excess_rad_s": null,
+          "mean_local_vx_m_s": 0.025842922405068143,
+          "pass": true,
+          "policy": "phase_mod_parent",
+          "policy_path": "outputs/analysis/phase2_health_routed_parent_phase_modulated/candidate.onnx",
+          "prefix_health": {
+            "prefix_abs_lateral_v_mean_m_s": 0.05383064804133028,
+            "prefix_abs_pitch_max_rad": 0.2194134267521905,
+            "prefix_base_height_min_m": 0.1579817533493042,
+            "prefix_vx_mean_m_s": 0.031414953041821715
+          },
+          "router_pass_score": 1.0,
+          "router_score": 0.9805865732478095,
+          "samples": 750,
+          "seed": 1,
+          "status": "PASS_CANDIDATE_SIM_GATE",
+          "termination": "duration_complete",
+          "trace": "outputs/analysis/phase2_health_routed_parent_phase_modulated_trace_gate/phase_mod_parent/seed_001/trace.jsonl",
+          "trace_sha256": "1c1687c1a0065e221058b64022bba5c7353f53f0cad6c4d8c85b905451aa67c9",
+          "track_ratio": 0.32303653006335176
+        },
+        {
+          "base_height_min_m": -0.008957752026617527,
+          "body_pitch_p95_rad": 0.9035911121795815,
+          "max_tracking_p95_rad": 0.20004165172576904,
+          "max_velocity_envelope_excess_rad_s": 0.0,
+          "max_velocity_envelope_max_excess_rad_s": null,
+          "mean_local_vx_m_s": 0.13820647001873865,
+          "pass": false,
+          "policy": "rich_context_parent",
+          "policy_path": "outputs/analysis/phase2_online_router_fresh_rich_context_parent/candidate.onnx",
+          "prefix_health": {
+            "prefix_abs_lateral_v_mean_m_s": 0.05389018044341356,
+            "prefix_abs_pitch_max_rad": 0.20738969516032077,
+            "prefix_base_height_min_m": 0.15913419425487518,
+            "prefix_vx_mean_m_s": 0.03005875293398276
+          },
+          "router_pass_score": 1.0,
+          "router_score": 0.9926103048396793,
+          "samples": 161,
+          "seed": 1,
+          "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+          "termination": "fall_or_nan",
+          "trace": "outputs/analysis/phase2_online_router_fresh_rich_context_parent_gate/rich_context_parent/seed_001/trace.jsonl",
+          "trace_sha256": "ca9d4a3153da1bfa87d0b06167bae4e5dffb0f0c3608f600e2ed05ecfd5784b2",
+          "track_ratio": 1.727580875234233
+        }
+      ],
+      "seed": 1,
+      "selected_pass": false,
+      "selected_policy": "rich_context_parent",
+      "selected_prefix_health": {
+        "prefix_abs_lateral_v_mean_m_s": 0.05389018044341356,
+        "prefix_abs_pitch_max_rad": 0.20738969516032077,
+        "prefix_base_height_min_m": 0.15913419425487518,
+        "prefix_vx_mean_m_s": 0.03005875293398276
+      },
+      "selected_raw_score": 1.0,
+      "selected_score": 0.9926103048396793,
+      "selected_status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "selected_summary": {
+        "base_height_min_m": -0.008957752026617527,
+        "body_pitch_p95_rad": 0.9035911121795815,
+        "max_tracking_p95_rad": 0.20004165172576904,
+        "max_velocity_envelope_excess_rad_s": 0.0,
+        "max_velocity_envelope_max_excess_rad_s": null,
+        "mean_local_vx_m_s": 0.13820647001873865,
+        "samples": 161,
+        "termination": "fall_or_nan",
+        "track_ratio": 1.727580875234233
+      },
+      "status": "HOLD_ROUTER_SEED"
+    },
+    {
+      "candidates": [
+        {
+          "base_height_min_m": 0.15917275846004486,
+          "body_pitch_p95_rad": 0.1763858521992976,
+          "max_tracking_p95_rad": 0.18569091558456413,
+          "max_velocity_envelope_excess_rad_s": 0.0,
+          "max_velocity_envelope_max_excess_rad_s": null,
+          "mean_local_vx_m_s": 0.026277181704994292,
+          "pass": true,
+          "policy": "phase_mod_parent",
+          "policy_path": "outputs/analysis/phase2_health_routed_parent_phase_modulated/candidate.onnx",
+          "prefix_health": {
+            "prefix_abs_lateral_v_mean_m_s": 0.04796103304601274,
+            "prefix_abs_pitch_max_rad": 0.18644794142319335,
+            "prefix_base_height_min_m": 0.15917275846004486,
+            "prefix_vx_mean_m_s": 0.03000940523139434
+          },
+          "router_pass_score": 0.6863587842136767,
+          "router_score": 0.6863587842136767,
+          "samples": 750,
+          "seed": 2,
+          "status": "PASS_CANDIDATE_SIM_GATE",
+          "termination": "duration_complete",
+          "trace": "outputs/analysis/phase2_health_routed_parent_phase_modulated_trace_gate/phase_mod_parent/seed_002/trace.jsonl",
+          "trace_sha256": "e3ed62b32e0fdab742fa2547947b05a67506f66868f4291e1d2531a79713902c",
+          "track_ratio": 0.3284647713124286
+        },
+        {
+          "base_height_min_m": 0.15685239434242249,
+          "body_pitch_p95_rad": 0.17632146413894684,
+          "max_tracking_p95_rad": 0.1834719121456146,
+          "max_velocity_envelope_excess_rad_s": 0.0,
+          "max_velocity_envelope_max_excess_rad_s": null,
+          "mean_local_vx_m_s": 0.023778284668611982,
+          "pass": true,
+          "policy": "rich_context_parent",
+          "policy_path": "outputs/analysis/phase2_online_router_fresh_rich_context_parent/candidate.onnx",
+          "prefix_health": {
+            "prefix_abs_lateral_v_mean_m_s": 0.047982501366641374,
+            "prefix_abs_pitch_max_rad": 0.18937902820604802,
+            "prefix_base_height_min_m": 0.1578904241323471,
+            "prefix_vx_mean_m_s": 0.028334207381121815
+          },
+          "router_pass_score": 1.0,
+          "router_score": 1.0,
+          "samples": 750,
+          "seed": 2,
+          "status": "PASS_CANDIDATE_SIM_GATE",
+          "termination": "duration_complete",
+          "trace": "outputs/analysis/phase2_online_router_fresh_rich_context_parent_gate/rich_context_parent/seed_002/trace.jsonl",
+          "trace_sha256": "09ece49db1f61666be9e280383203071097f8ba8394974b504e37e3d81531858",
+          "track_ratio": 0.2972285583576498
+        }
+      ],
+      "seed": 2,
+      "selected_pass": true,
+      "selected_policy": "rich_context_parent",
+      "selected_prefix_health": {
+        "prefix_abs_lateral_v_mean_m_s": 0.047982501366641374,
+        "prefix_abs_pitch_max_rad": 0.18937902820604802,
+        "prefix_base_height_min_m": 0.1578904241323471,
+        "prefix_vx_mean_m_s": 0.028334207381121815
+      },
+      "selected_raw_score": 1.0,
+      "selected_score": 1.0,
+      "selected_status": "PASS_CANDIDATE_SIM_GATE",
+      "selected_summary": {
+        "base_height_min_m": 0.15685239434242249,
+        "body_pitch_p95_rad": 0.17632146413894684,
+        "max_tracking_p95_rad": 0.1834719121456146,
+        "max_velocity_envelope_excess_rad_s": 0.0,
+        "max_velocity_envelope_max_excess_rad_s": null,
+        "mean_local_vx_m_s": 0.023778284668611982,
+        "samples": 750,
+        "termination": "duration_complete",
+        "track_ratio": 0.2972285583576498
+      },
+      "status": "PASS_ROUTER_SEED"
+    },
+    {
+      "candidates": [
+        {
+          "base_height_min_m": 0.15717685222625732,
+          "body_pitch_p95_rad": 0.18496016379104316,
+          "max_tracking_p95_rad": 0.18676291704177853,
+          "max_velocity_envelope_excess_rad_s": 0.0,
+          "max_velocity_envelope_max_excess_rad_s": null,
+          "mean_local_vx_m_s": 0.02407263019917688,
+          "pass": true,
+          "policy": "phase_mod_parent",
+          "policy_path": "outputs/analysis/phase2_health_routed_parent_phase_modulated/candidate.onnx",
+          "prefix_health": {
+            "prefix_abs_lateral_v_mean_m_s": 0.052759721442125734,
+            "prefix_abs_pitch_max_rad": 0.25816345748634495,
+            "prefix_base_height_min_m": 0.15717685222625732,
+            "prefix_vx_mean_m_s": 0.03700454290024936
+          },
+          "router_pass_score": 0.7235357311613375,
+          "router_score": 0.6653722736749925,
+          "samples": 750,
+          "seed": 6,
+          "status": "PASS_CANDIDATE_SIM_GATE",
+          "termination": "duration_complete",
+          "trace": "outputs/analysis/phase2_health_routed_parent_phase_modulated_trace_gate/phase_mod_parent/seed_006/trace.jsonl",
+          "trace_sha256": "fa1f6bf05ccad9ff0c144a98412db71c7cf8753816487381a66ec242b2c9088c",
+          "track_ratio": 0.300907877489711
+        },
+        {
+          "base_height_min_m": 0.15754219889640808,
+          "body_pitch_p95_rad": 0.18113779675728628,
+          "max_tracking_p95_rad": 0.18711497783660885,
+          "max_velocity_envelope_excess_rad_s": 0.0,
+          "max_velocity_envelope_max_excess_rad_s": null,
+          "mean_local_vx_m_s": 0.025265688540646807,
+          "pass": true,
+          "policy": "rich_context_parent",
+          "policy_path": "outputs/analysis/phase2_online_router_fresh_rich_context_parent/candidate.onnx",
+          "prefix_health": {
+            "prefix_abs_lateral_v_mean_m_s": 0.05311961733154021,
+            "prefix_abs_pitch_max_rad": 0.2260353615606568,
+            "prefix_base_height_min_m": 0.15754219889640808,
+            "prefix_vx_mean_m_s": 0.03091314230579883
+          },
+          "router_pass_score": 0.6100451798888803,
+          "router_score": 0.5840098183282235,
+          "samples": 750,
+          "seed": 6,
+          "status": "PASS_CANDIDATE_SIM_GATE",
+          "termination": "duration_complete",
+          "trace": "outputs/analysis/phase2_online_router_fresh_rich_context_parent_gate/rich_context_parent/seed_006/trace.jsonl",
+          "trace_sha256": "d9cd4e4d3a0543a9e301a09f9bc2364b0b7c8d4f16ada49ada548f3192d880a5",
+          "track_ratio": 0.31582110675808506
+        }
+      ],
+      "seed": 6,
+      "selected_pass": true,
+      "selected_policy": "phase_mod_parent",
+      "selected_prefix_health": {
+        "prefix_abs_lateral_v_mean_m_s": 0.052759721442125734,
+        "prefix_abs_pitch_max_rad": 0.25816345748634495,
+        "prefix_base_height_min_m": 0.15717685222625732,
+        "prefix_vx_mean_m_s": 0.03700454290024936
+      },
+      "selected_raw_score": 0.7235357311613375,
+      "selected_score": 0.6653722736749925,
+      "selected_status": "PASS_CANDIDATE_SIM_GATE",
+      "selected_summary": {
+        "base_height_min_m": 0.15717685222625732,
+        "body_pitch_p95_rad": 0.18496016379104316,
+        "max_tracking_p95_rad": 0.18676291704177853,
+        "max_velocity_envelope_excess_rad_s": 0.0,
+        "max_velocity_envelope_max_excess_rad_s": null,
+        "mean_local_vx_m_s": 0.02407263019917688,
+        "samples": 750,
+        "termination": "duration_complete",
+        "track_ratio": 0.300907877489711
+      },
+      "status": "PASS_ROUTER_SEED"
+    },
+    {
+      "candidates": [
+        {
+          "base_height_min_m": 0.06727110594511032,
+          "body_pitch_p95_rad": 0.17802859236138668,
+          "max_tracking_p95_rad": 0.17313620448112488,
+          "max_velocity_envelope_excess_rad_s": 0.0,
+          "max_velocity_envelope_max_excess_rad_s": null,
+          "mean_local_vx_m_s": -0.04188446531964776,
+          "pass": false,
+          "policy": "phase_mod_parent",
+          "policy_path": "outputs/analysis/phase2_health_routed_parent_phase_modulated/candidate.onnx",
+          "prefix_health": {
+            "prefix_abs_lateral_v_mean_m_s": 0.052378452345728875,
+            "prefix_abs_pitch_max_rad": 0.19411931007049268,
+            "prefix_base_height_min_m": 0.15917275846004486,
+            "prefix_vx_mean_m_s": 0.028676453073276206
+          },
+          "router_pass_score": 1.0,
+          "router_score": 1.0,
+          "samples": 300,
+          "seed": 7,
+          "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+          "termination": "fall_or_nan",
+          "trace": "outputs/analysis/phase2_health_routed_parent_phase_modulated_trace_gate/phase_mod_parent/seed_007/trace.jsonl",
+          "trace_sha256": "37c42e4d8cad3e8c1a000fafb88b771c04a3709babba2106df2be14ce7820efa",
+          "track_ratio": -0.523555816495597
+        },
+        {
+          "base_height_min_m": 0.15890316665172577,
+          "body_pitch_p95_rad": 0.177501017787433,
+          "max_tracking_p95_rad": 0.1834941267967224,
+          "max_velocity_envelope_excess_rad_s": 0.0,
+          "max_velocity_envelope_max_excess_rad_s": null,
+          "mean_local_vx_m_s": 0.026418171000909447,
+          "pass": true,
+          "policy": "rich_context_parent",
+          "policy_path": "outputs/analysis/phase2_online_router_fresh_rich_context_parent/candidate.onnx",
+          "prefix_health": {
+            "prefix_abs_lateral_v_mean_m_s": 0.05234193853102624,
+            "prefix_abs_pitch_max_rad": 0.1897310259148833,
+            "prefix_base_height_min_m": 0.15913419425487518,
+            "prefix_vx_mean_m_s": 0.028297666292637587
+          },
+          "router_pass_score": 0.6163166918998642,
+          "router_score": 0.6163166918998642,
+          "samples": 750,
+          "seed": 7,
+          "status": "PASS_CANDIDATE_SIM_GATE",
+          "termination": "duration_complete",
+          "trace": "outputs/analysis/phase2_online_router_fresh_rich_context_parent_gate/rich_context_parent/seed_007/trace.jsonl",
+          "trace_sha256": "c676870d6f927ec5649bd1cf3f5a5ee33c57eedf41d18e64fb071d2e6ec258c1",
+          "track_ratio": 0.33022713751136806
+        }
+      ],
+      "seed": 7,
+      "selected_pass": false,
+      "selected_policy": "phase_mod_parent",
+      "selected_prefix_health": {
+        "prefix_abs_lateral_v_mean_m_s": 0.052378452345728875,
+        "prefix_abs_pitch_max_rad": 0.19411931007049268,
+        "prefix_base_height_min_m": 0.15917275846004486,
+        "prefix_vx_mean_m_s": 0.028676453073276206
+      },
+      "selected_raw_score": 1.0,
+      "selected_score": 1.0,
+      "selected_status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "selected_summary": {
+        "base_height_min_m": 0.06727110594511032,
+        "body_pitch_p95_rad": 0.17802859236138668,
+        "max_tracking_p95_rad": 0.17313620448112488,
+        "max_velocity_envelope_excess_rad_s": 0.0,
+        "max_velocity_envelope_max_excess_rad_s": null,
+        "mean_local_vx_m_s": -0.04188446531964776,
+        "samples": 300,
+        "termination": "fall_or_nan",
+        "track_ratio": -0.523555816495597
+      },
+      "status": "HOLD_ROUTER_SEED"
+    }
+  ],
+  "scope": "phase2_health_gated_router_gate",
+  "status": "HOLD_HEALTH_GATED_ROUTER_PARTIAL",
+  "summary": "The health-gated router improves coverage but does not clear all compact seeds."
+}

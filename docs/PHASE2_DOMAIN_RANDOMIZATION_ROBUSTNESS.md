@@ -344,6 +344,64 @@ is still not a single deployable/trainable parent. Phase 2 DR remains blocked
 until a parent or explicit wrapper objective preserves this routed behavior
 under the compact corrected-bridge gate.
 
+## 2026-07-05 Parent-Pair Lateral Student
+
+The fresh router source was compressed into richer-context phase-modulated
+parents. A first rich-context parent fit the fresh selected manifest cleanly
+but only cleared `4/5` compact rough+push seeds:
+
+```text
+outputs/analysis/PHASE2_ONLINE_ROUTER_FRESH_RICH_CONTEXT_PARENT.md
+outputs/analysis/PHASE2_ONLINE_ROUTER_FRESH_RICH_CONTEXT_PARENT_GATE.md
+```
+
+It fixed the old seed-`7` failure but regressed seed `1`. The previous
+small-context phase-modulated parent was rerun with full traces and showed the
+complementary pattern: seed `1` passed, seed `7` failed.
+
+A lower-prefix-lateral parent-pair router selected passing source traces for all
+compact seeds:
+
+```text
+outputs/analysis/PHASE2_ONLINE_ROUTER_PARENT_PAIR_LATERAL_METRIC_GATE.md
+outputs/analysis/phase2_online_router_parent_pair_lateral_metric_gate.json
+```
+
+Those selected traces were converted into a manifest:
+
+```text
+outputs/analysis/phase2_online_router_parent_pair_lateral_selected_manifest.json
+dataset_id: 6ccbb7ea49f243c6
+entries: 5
+samples: 3750
+```
+
+A seed-`7`-weighted rich-context student trained from that manifest became the
+first single ONNX parent in this branch to clear the compact `x=0.08`
+rough+push corrected-bridge gate:
+
+```text
+outputs/analysis/PHASE2_PARENT_PAIR_LATERAL_SEED7_WEIGHTED_STUDENT_DECISION.md
+outputs/analysis/phase2_parent_pair_lateral_seed7_weighted_student_decision.json
+```
+
+Decision:
+
+```text
+HOLD_COMMAND_SEMANTICS_X0
+```
+
+Result:
+
+- `x=0.08`: `5/5` compact seeds pass, zero corrected-envelope velocity excess.
+- `x=0.0`: `3/5` compact seeds pass; seeds `1` and `6` fall, and pass seeds
+  still drift forward.
+
+This is meaningful progress but not a Phase 2 DR warm start. The parent
+preserves the movement behavior at `x=0.08`, but it does not preserve command
+semantics. Do not launch domain-randomized training from it until a
+zero-command path or command-gated parent clears both compact gates.
+
 ## 2026-07-05 Iter24 PPO-Loc Step-0 Diagnostic
 
 After the live-oracle Iter24 candidate became the latest useful z=0.0075
