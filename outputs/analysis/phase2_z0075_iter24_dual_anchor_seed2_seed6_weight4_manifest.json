@@ -1,0 +1,74 @@
+{
+  "status": "PASS_WEIGHTED_DUAL_ANCHOR_MANIFEST_READY",
+  "dataset_id": "6efaaf96baee2fe4",
+  "command_x": 0.08,
+  "trace_globs": [
+    "outputs/analysis/live_oracle_dagger_phase_student/iter_024_history_context_resetsettle10_seed2_active/rollouts_x008/student/seed_006/trace.jsonl",
+    "outputs/analysis/phase2_z0075_iter24_live_oracle_seed2_active_history_context_rate150_trace_seed2_6/iter24/seed_002/trace.jsonl"
+  ],
+  "summary": {
+    "entries": 2,
+    "samples": 1500,
+    "bc_ready_entries": 2
+  },
+  "entries": [
+    {
+      "entry_id": "b2a19af23c5d99a6",
+      "source_path": "outputs/analysis/live_oracle_dagger_phase_student/iter_024_history_context_resetsettle10_seed2_active/rollouts_x008/student/seed_006/trace.jsonl",
+      "source_name": "iter_024_history_context_resetsettle10_seed2_active/rollouts_x008/student/seed_006/trace.jsonl",
+      "mode": "fitted",
+      "start_tick": 0,
+      "end_tick": 749,
+      "raw_trace_exists": true,
+      "bc_ready": true,
+      "obs_state_dim_ok": true,
+      "action_dim_ok": true,
+      "done_inside_window": false,
+      "samples": 750,
+      "mean_vx_m_s": 0.026488368024098843,
+      "vy_abs_p95_m_s": 0.15534531474113464,
+      "body_pitch_abs_p95_rad": 0.1714267676292238,
+      "base_height_min_m": 0.1577288657426834,
+      "sent_target_velocity_p95_rad_s": 1.4320865273475647,
+      "joint_tracking_p95_rad": 0.1392368137836456,
+      "contact_pct": {
+        "01": 7.333333333333333,
+        "10": 16.400000000000002,
+        "11": 76.26666666666667
+      },
+      "sample_weight": 4.0,
+      "sample_weight_reason": "dual_anchor_preserve_iter23_seed6_and_iter24_seed2_passes"
+    },
+    {
+      "entry_id": "98126049a27694d8",
+      "source_path": "outputs/analysis/phase2_z0075_iter24_live_oracle_seed2_active_history_context_rate150_trace_seed2_6/iter24/seed_002/trace.jsonl",
+      "source_name": "analysis/phase2_z0075_iter24_live_oracle_seed2_active_history_context_rate150_trace_seed2_6/iter24/seed_002/trace.jsonl",
+      "mode": "fitted",
+      "start_tick": 0,
+      "end_tick": 749,
+      "raw_trace_exists": true,
+      "bc_ready": true,
+      "obs_state_dim_ok": true,
+      "action_dim_ok": true,
+      "done_inside_window": false,
+      "samples": 750,
+      "mean_vx_m_s": 0.02622257473571032,
+      "vy_abs_p95_m_s": 0.15976584702730173,
+      "body_pitch_abs_p95_rad": 0.1822142898701311,
+      "base_height_min_m": 0.1590012162923813,
+      "sent_target_velocity_p95_rad_s": 1.443188637495041,
+      "joint_tracking_p95_rad": 0.13966822624206537,
+      "contact_pct": {
+        "01": 8.533333333333333,
+        "10": 15.466666666666667,
+        "11": 76.0
+      },
+      "sample_weight": 4.0,
+      "sample_weight_reason": "dual_anchor_preserve_iter23_seed6_and_iter24_seed2_passes"
+    }
+  ],
+  "weighting": {
+    "entry_sample_weight": 4.0,
+    "reason": "protect both sides of the iter23/iter24 seed2-seed6 stability trade"
+  }
+}
