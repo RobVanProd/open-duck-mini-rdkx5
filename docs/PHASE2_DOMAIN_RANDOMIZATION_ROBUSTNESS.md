@@ -177,6 +177,46 @@ canonical z=0.0075 rough+push compact screen. Only if that online router gate
 passes should it generate behavior-preservation rollouts for a trainable Phase
 2 parent.
 
+## 2026-07-05 Health-Gated Router Gate
+
+The next router check applied the health-gated route to the final-candidate
+full rollouts:
+
+```text
+outputs/analysis/PHASE2_HEALTH_GATED_ROUTER_GATE.md
+outputs/analysis/phase2_health_gated_router_gate.json
+```
+
+Decision:
+
+```text
+PASS_HEALTH_GATED_ROUTER_COMPACT
+```
+
+This is an eval-only speculative router gate, not a deployable policy. It
+treats the existing per-candidate traces as parallel prefix branches: score
+each candidate from the first `100` ticks using leave-one-seed-out kNN plus the
+prefix pitch guard, select a branch, then evaluate that selected branch's full
+rollout. Seed ID is not used as a routing feature and the selected branch's
+own pass/fail is not used during selection.
+
+Result on compact z=0.0075 rough+push seeds:
+
+| seed | selected policy | selected status | track ratio | mean vx |
+|---:|---|---|---:|---:|
+| `0` | `iter24` | `PASS_CANDIDATE_SIM_GATE` | `0.3256` | `0.0261` |
+| `1` | `iter25` | `PASS_CANDIDATE_SIM_GATE` | `0.3567` | `0.0285` |
+| `2` | `iter24` | `PASS_CANDIDATE_SIM_GATE` | `0.3278` | `0.0262` |
+| `6` | `iter25` | `PASS_CANDIDATE_SIM_GATE` | `0.3273` | `0.0262` |
+| `7` | `iter24` | `PASS_CANDIDATE_SIM_GATE` | `0.3437` | `0.0275` |
+
+This reopens a narrow router/mixture path as a behavior-preservation target, but
+it still does not authorize Phase 2 DR from the router itself. The next aligned
+step is to use the selected branch traces to produce a single trainable
+behavior-preserving parent, or to implement a true online parallel-prefix
+wrapper only if the router behavior needs to be replayed without precomputed
+traces.
+
 ## 2026-07-05 Iter24 PPO-Loc Step-0 Diagnostic
 
 After the live-oracle Iter24 candidate became the latest useful z=0.0075
