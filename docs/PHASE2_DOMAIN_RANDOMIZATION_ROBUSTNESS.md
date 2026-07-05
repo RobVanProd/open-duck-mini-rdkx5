@@ -503,6 +503,49 @@ without a seed-5 recovery branch or a router/wrapper source that covers seed 5.
 Since the full `x=0.08` gate already fails, the full `x=0.0` gate was not rerun
 for this decision.
 
+### Rate160 z=0.0075 Intermediate-Push Transfer Hold
+
+The earlier `phase_mod_rate160` candidate had passed a full `z=0.0026`
+gentle-push screen, so it was re-tested against the actual hard boundary:
+`x=0.08`, `z=0.0075`, rough terrain, intermediate pushes `0.075-0.125`,
+corrected bridge, home-support reset, settle ticks `10`, seeds `0-7`.
+
+Artifacts:
+
+```text
+outputs/analysis/PHASE2_RATE160_Z0075_INTERMEDIATE_PUSH_X008_FULL8_GATE.md
+outputs/analysis/phase2_rate160_z0075_intermediate_push_x008_full8_gate.json
+outputs/analysis/PHASE2_RATE160_Z0075_INTERMEDIATE_PUSH_X008_FULL8_DECISION.md
+outputs/analysis/phase2_rate160_z0075_intermediate_push_x008_full8_decision.json
+```
+
+Decision:
+
+```text
+HOLD_RATE160_Z0075_INTERMEDIATE_PUSH_TARGET_VELOCITY_LOW_PROGRESS
+```
+
+Result:
+
+```text
+duration_complete: 8/8
+falls: 0/8
+HOLD_CANDIDATE_TARGET_VELOCITY: 7/8
+HOLD_CANDIDATE_LOW_FORWARD_PROGRESS: 1/8
+mean track ratio: 0.3218
+mean vx: 0.0257 m/s
+max p95 corrected velocity excess: 0.0000 rad/s
+max instantaneous corrected velocity excess: 0.1379 rad/s
+max tracking p95: 0.1935 rad
+```
+
+This candidate removes the command-gated source's seed-5 lunge/fall, but it
+does so by trading into strict target-velocity holds and lower forward
+progress. It is useful evidence that seed-5 stability exists, but it is not a
+promotable Phase 2 source. Do not run `x=0.0` promotion gates for this
+candidate unless a later wrapper removes the instantaneous envelope excess and
+low-progress regression at `x=0.08`.
+
 ### Trainable Compression Hold
 
 The command-gated ONNX was distilled into PPO-compatible single-MLP students
