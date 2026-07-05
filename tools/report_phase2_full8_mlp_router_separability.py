@@ -100,6 +100,9 @@ def load_dataset(
     extra_negative_traces: list[Path],
     extra_negative_first_ticks: int | None,
     extra_negative_weight: float,
+    extra_positive_traces: list[Path],
+    extra_positive_first_ticks: int | None,
+    extra_positive_weight: float,
 ) -> tuple[dict[str, np.ndarray], list[dict[str, Any]]]:
     manifest = json.loads(manifest_path.read_text())
     train_x = []
@@ -145,6 +148,23 @@ def load_dataset(
                 "test_samples": 0,
                 "branch": "negative_correction",
                 "weight": float(extra_negative_weight),
+            }
+        )
+    for trace_path in extra_positive_traces:
+        obs = load_obs(trace_path)
+        if extra_positive_first_ticks is not None:
+            obs = obs[: max(1, min(int(extra_positive_first_ticks), int(obs.shape[0])))]
+        train_x.append(obs)
+        train_y.append(np.ones((int(obs.shape[0]),), dtype=np.float64))
+        train_w.append(np.full((int(obs.shape[0]),), float(extra_positive_weight), dtype=np.float64))
+        entries.append(
+            {
+                "source_path": rel(trace_path),
+                "samples": int(obs.shape[0]),
+                "train_samples": int(obs.shape[0]),
+                "test_samples": 0,
+                "branch": "positive_correction",
+                "weight": float(extra_positive_weight),
             }
         )
     if not train_x:
@@ -305,8 +325,10 @@ def write_markdown(path: Path, report: dict[str, Any]) -> None:
         f"- positive_marker: `{report['positive_marker']}`",
         f"- hidden_sizes: `{report['config']['hidden_sizes']}`",
         f"- train/test split per trace: `{100.0 * (1.0 - report['config']['test_fraction']):.1f}%` / `{100.0 * report['config']['test_fraction']:.1f}%`",
-        f"- correction traces: `{report['config']['extra_negative_trace_count']}`",
-        f"- correction weight: `{report['config']['extra_negative_weight']}`",
+        f"- branch-A correction traces: `{report['config']['extra_negative_trace_count']}`",
+        f"- branch-A correction weight: `{report['config']['extra_negative_weight']}`",
+        f"- branch-B correction traces: `{report['config']['extra_positive_trace_count']}`",
+        f"- branch-B correction weight: `{report['config']['extra_positive_weight']}`",
         "",
         "## Results",
         "",
@@ -366,6 +388,19 @@ def parse_args() -> argparse.Namespace:
         help="Use only the first N ticks from each extra negative trace.",
     )
     parser.add_argument("--extra-negative-weight", type=float, default=1.0)
+    parser.add_argument(
+        "--extra-positive-trace",
+        action="append",
+        default=[],
+        help="Trace JSONL whose observations should be branch-B/positive corrective samples.",
+    )
+    parser.add_argument(
+        "--extra-positive-first-ticks",
+        type=int,
+        default=None,
+        help="Use only the first N ticks from each extra positive trace.",
+    )
+    parser.add_argument("--extra-positive-weight", type=float, default=1.0)
     parser.add_argument("--output-md", default=str(DEFAULT_OUTPUT_MD))
     parser.add_argument("--output-json", default=str(DEFAULT_OUTPUT_JSON))
     parser.add_argument("--save-npz", default=str(DEFAULT_SAVE_NPZ))
@@ -375,6 +410,7 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
     args = parse_args()
     extra_negative_traces = [Path(item) for item in args.extra_negative_trace]
+    extra_positive_traces = [Path(item) for item in args.extra_positive_trace]
     data, entries = load_dataset(
         Path(args.manifest),
         args.positive_marker,
@@ -382,6 +418,9 @@ def main() -> int:
         extra_negative_traces,
         args.extra_negative_first_ticks,
         float(args.extra_negative_weight),
+        extra_positive_traces,
+        args.extra_positive_first_ticks,
+        float(args.extra_positive_weight),
     )
     fit = train_classifier(data, args)
     save_gate_npz(Path(args.save_npz), fit)
@@ -425,6 +464,9 @@ def main() -> int:
             "extra_negative_trace_count": len(extra_negative_traces),
             "extra_negative_first_ticks": args.extra_negative_first_ticks,
             "extra_negative_weight": float(args.extra_negative_weight),
+            "extra_positive_trace_count": len(extra_positive_traces),
+            "extra_positive_first_ticks": args.extra_positive_first_ticks,
+            "extra_positive_weight": float(args.extra_positive_weight),
         },
         "saved_npz": rel(Path(args.save_npz)),
         "saved_npz_sha256": sha256(Path(args.save_npz)),

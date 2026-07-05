@@ -1017,6 +1017,91 @@ seed 0 startup on branch A while preserving seed 5 startup/trajectory on
 branch B. Do not start Phase 2 domain-randomization training until the
 composed deployable candidate clears the canonical corrected-bridge gate.
 
+### Full-8 MLP Router Seed0/Seed5 Startup-Cost Wide Hold
+
+The failed seed-5 rollout from the seed0-startup-cost router was rerun with
+full-observation tracing and replayed through the saved gate:
+
+```text
+outputs/analysis/PHASE2_FULL8_MLP_ROUTER_SEED0_STARTUP_COST_SEED5_TRACE_GATE.md
+outputs/analysis/phase2_full8_mlp_router_seed0_startup_cost_seed5_trace_gate.json
+outputs/analysis/PHASE2_FULL8_MLP_ROUTER_SEED0_STARTUP_COST_SEED5_BRANCH_TRACE.md
+outputs/analysis/phase2_full8_mlp_router_seed0_startup_cost_seed5_branch_trace.json
+```
+
+The seed-5 trace showed the opposite startup error from seed 0:
+
+```text
+seed 5: HOLD, 158 samples, vx 0.1298 m/s, track_ratio 1.6227, base min 0.0149
+all ticks branch B: 25.95%
+first 80 ticks branch B: 0.00%
+tail 80 ticks branch B: 51.25%
+single-support branch B: 70.00%
+double-support branch B: 18.98%
+```
+
+The router diagnostic was then extended to accept branch-B corrective traces:
+
+```text
+--extra-positive-trace
+--extra-positive-first-ticks
+--extra-positive-weight
+```
+
+A narrow symmetric `128,64` gate using seed 0 as branch-A correction and seed 5
+as branch-B correction failed held-out separability:
+
+```text
+status: HOLD_MLP_ROUTER_OVERLAP
+test balanced accuracy: 79.24%
+test positive selected: 66.00%
+test negative false selected: 7.52%
+```
+
+A wider `256,128,64` gate passed the trace-label thresholds:
+
+```text
+outputs/analysis/PHASE2_FULL8_MLP_ROUTER_SEED0_SEED5_STARTUP_COST_WIDE_SEPARABILITY.md
+outputs/analysis/phase2_full8_mlp_router_seed0_seed5_startup_cost_wide_separability.json
+outputs/analysis/PHASE2_FULL8_MLP_ROUTER_SEED0_SEED5_STARTUP_COST_WIDE_X008_SEED0_5_7_GATE.md
+outputs/analysis/phase2_full8_mlp_router_seed0_seed5_startup_cost_wide_x008_seed0_5_7_gate.json
+outputs/analysis/PHASE2_FULL8_MLP_ROUTER_SEED0_SEED5_STARTUP_COST_WIDE_DECISION.md
+outputs/analysis/phase2_full8_mlp_router_seed0_seed5_startup_cost_wide_decision.json
+```
+
+Decision:
+
+```text
+HOLD_FULL8_MLP_ROUTER_SEED5_CLOSED_LOOP_LUNGE
+```
+
+The wide gate and composed ONNX verified:
+
+```text
+test balanced accuracy: 88.52%
+test positive selected: 80.67%
+test negative false selected: 3.62%
+gate_npz_sha256: 1492635af6ca5a4c0a1b7d39077f29ec58bf3eae6fb4bb9f262e74ed3c07d36e
+candidate_sha256: 29e9e05cf877c6ead2ae1e05e5d27c32faec1adc75122d516b6db679c9786f6c
+onnx_verify_sha256: aa20259c72fc4c1b0b4e844059e8834f574312cd74c2544e8556de95ba7a54d0
+```
+
+The hard closed-loop screen remained `2/3`:
+
+```text
+seed 0: PASS, 750 samples, vx 0.0268 m/s, track_ratio 0.3348, base min 0.1591
+seed 5: HOLD, 161 samples, vx 0.1296 m/s, track_ratio 1.6196, base min 0.0132
+seed 7: PASS, 750 samples, vx 0.0254 m/s, track_ratio 0.3178, base min 0.1572
+velocity excess: 0.0000 p95 and 0.0000 instantaneous
+```
+
+This closes the simple label-weighting variant: a wide stateless MLP gate can
+fit the seed-0/seed-5 startup labels, but source-label classification still
+does not produce stable closed-loop seed-5 behavior. The next attempt needs
+rollout-level costs, a stateful/prefix router, or another closed-loop-aware
+router objective. Do not promote another stateless source-label router solely
+because its held-out branch labels separate.
+
 ### Trainable Compression Hold
 
 The command-gated ONNX was distilled into PPO-compatible single-MLP students

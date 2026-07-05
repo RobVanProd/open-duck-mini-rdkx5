@@ -1,0 +1,101 @@
+{
+  "status": "HOLD_FULL8_MLP_ROUTER_SEED5_CLOSED_LOOP_LUNGE",
+  "no_robot_tests": true,
+  "no_ssh": true,
+  "no_deploy": true,
+  "no_grounded_replay": true,
+  "runtime_behavior_changed": false,
+  "seed5_trace": {
+    "trace_gate_md": "outputs/analysis/PHASE2_FULL8_MLP_ROUTER_SEED0_STARTUP_COST_SEED5_TRACE_GATE.md",
+    "branch_trace_md": "outputs/analysis/PHASE2_FULL8_MLP_ROUTER_SEED0_STARTUP_COST_SEED5_BRANCH_TRACE.md",
+    "samples": 158,
+    "mean_local_vx_m_s": 0.1298,
+    "track_ratio": 1.6227,
+    "base_height_min_m": 0.0149,
+    "branch_b_pct_all": 25.95,
+    "branch_b_pct_first_80": 0.0,
+    "branch_b_pct_tail_80": 51.25,
+    "branch_b_pct_single_support": 70.0,
+    "branch_b_pct_double_support": 18.98
+  },
+  "narrow_symmetric_gate": {
+    "status": "HOLD_MLP_ROUTER_OVERLAP",
+    "hidden_sizes": [
+      128,
+      64
+    ],
+    "test_balanced_accuracy_pct": 79.24,
+    "test_positive_selected_pct": 66.0,
+    "test_negative_false_selected_pct": 7.52
+  },
+  "wide_symmetric_gate": {
+    "status": "PASS_MLP_ROUTER_SEPARABLE",
+    "hidden_sizes": [
+      256,
+      128,
+      64
+    ],
+    "test_balanced_accuracy_pct": 88.52,
+    "test_positive_selected_pct": 80.67,
+    "test_negative_false_selected_pct": 3.62,
+    "gate_npz": "outputs/analysis/phase2_full8_mlp_router_gate_seed0_seed5_startup_cost_wide/gate_mlp.npz",
+    "gate_npz_sha256": "1492635af6ca5a4c0a1b7d39077f29ec58bf3eae6fb4bb9f262e74ed3c07d36e",
+    "candidate": "outputs/analysis/phase2_full8_mlp_router_seed0_seed5_startup_cost_wide_candidate/candidate.onnx",
+    "candidate_sha256": "29e9e05cf877c6ead2ae1e05e5d27c32faec1adc75122d516b6db679c9786f6c",
+    "onnx_verify": "outputs/analysis/phase2_full8_mlp_router_seed0_seed5_startup_cost_wide_candidate/onnx_verify.json",
+    "onnx_verify_sha256": "aa20259c72fc4c1b0b4e844059e8834f574312cd74c2544e8556de95ba7a54d0"
+  },
+  "closed_loop_screen": {
+    "policy_label": "full8_mlp_router_seed0_seed5_startup_cost_wide",
+    "command_x": 0.08,
+    "task": "rough_terrain_backlash",
+    "bridge_mode": "fitted",
+    "terrain_hfield_z_scale": 0.0075,
+    "reset_mode": "home-support",
+    "eval_push_enable": true,
+    "seeds": [
+      {
+        "seed": 0,
+        "status": "PASS_CANDIDATE_SIM_GATE",
+        "samples": 750,
+        "mean_local_vx_m_s": 0.026784851087315473,
+        "track_ratio": 0.3348106385914434,
+        "body_pitch_p95_rad": 0.1668,
+        "base_height_min_m": 0.15909793972969055,
+        "max_pitch_vel_limit_excess_rad_s": 0.0,
+        "max_pitch_vel_max_limit_excess_rad_s": 0.0
+      },
+      {
+        "seed": 5,
+        "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+        "samples": 161,
+        "mean_local_vx_m_s": 0.12956675657747974,
+        "track_ratio": 1.6195844572184968,
+        "body_pitch_p95_rad": 0.8511,
+        "base_height_min_m": 0.013245953246951103,
+        "max_pitch_vel_limit_excess_rad_s": 0.0,
+        "max_pitch_vel_max_limit_excess_rad_s": 0.0
+      },
+      {
+        "seed": 7,
+        "status": "PASS_CANDIDATE_SIM_GATE",
+        "samples": 750,
+        "mean_local_vx_m_s": 0.025423385701375083,
+        "track_ratio": 0.31779232126718854,
+        "body_pitch_p95_rad": 0.1914,
+        "base_height_min_m": 0.157230943441391,
+        "max_pitch_vel_limit_excess_rad_s": 0.0,
+        "max_pitch_vel_max_limit_excess_rad_s": 0.0
+      }
+    ],
+    "passes": 2,
+    "runs": 3,
+    "falls": 1,
+    "mean_track_ratio": 0.7574,
+    "mean_vx_m_s": 0.0606,
+    "p95_velocity_excess_rad_s": 0.0,
+    "max_velocity_excess_rad_s": 0.0
+  },
+  "decision": "The wide symmetric stateless MLP gate fits the startup labels and verifies as ONNX, but the closed-loop candidate still fails seed 5 by lunging/falling inside the corrected envelope. Do not promote.",
+  "recommended_next": "Move from source-label classification to a closed-loop-aware router objective or stateful/prefix router with rollout-level costs before any full-8 or domain-randomization promotion."
+}
