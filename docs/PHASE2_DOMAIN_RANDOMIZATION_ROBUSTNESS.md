@@ -533,6 +533,48 @@ envelope-excess issue. The next trainable-warm-start branch should inspect the
 seed-6 state/phase branch behavior or move to a representation with stronger
 branch/phase structure, rather than launch DR or repeat scalar weighting.
 
+### Phase/Contact-Modulated Representation Hold
+
+The next representation rung trained a shared-trunk phase/contact-modulated BC
+student from the live-oracle iter2 aggregate while preserving the deployed ONNX
+contract:
+
+```text
+outputs/analysis/PHASE2_COMMAND_GATED_ZERO0020_LIVE_ORACLE_ITER2_PHASE_CONTACT_MODULATED_BC_STUDENT.md
+outputs/analysis/PHASE2_COMMAND_GATED_ZERO0020_LIVE_ORACLE_ITER2_PHASE_CONTACT_MODULATED_BC_STUDENT_X008_GATE.md
+outputs/analysis/PHASE2_COMMAND_GATED_ZERO0020_LIVE_ORACLE_ITER2_PHASE_CONTACT_MODULATED_DECISION.md
+```
+
+Decision:
+
+```text
+HOLD_PHASE_CONTACT_MODULATED_MOVING_GATE
+```
+
+The student used context indices `[6,97,98,99,100]` for command, foot-contact,
+and phase modulation. It fit the labels cleanly (`p95 abs error 0.009653`,
+ONNX max action error `6e-8`) and stayed inside the corrected velocity envelope,
+but failed the canonical compact moving gate:
+
+```text
+x=0.08 compact z=0.0075 rough+push gate: 2/5 pass
+passes: seeds 1,7
+falls: seeds 0,2,6
+p95 corrected velocity excess: 0 on all seeds
+```
+
+The failed seeds are lunge/fall failures rather than quiet or over-envelope
+failures: seeds `0`, `2`, and `6` reach track ratios `1.41-1.68` before
+falling, with body pitch p95 `0.72-0.91 rad`. Do not run the zero-command gate
+or launch DR from this student; the moving gate already rejects it.
+
+This closes the simple feed-forward phase/contact modulation rung for the
+current live-oracle iter2 aggregate. The remaining trainable-parent gap is a
+closed-loop stability/branching problem, not target-rate compliance or local BC
+fit. The next branch should use a stronger branch-aware structure,
+recurrent/hidden-state export, or an on-policy objective that directly
+preserves the compact rough+push closed-loop gate.
+
 ## 2026-07-05 Iter24 PPO-Loc Step-0 Diagnostic
 
 After the live-oracle Iter24 candidate became the latest useful z=0.0075
