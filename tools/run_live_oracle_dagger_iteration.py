@@ -103,6 +103,7 @@ def write_markdown(path: Path, payload: dict[str, Any]) -> None:
         f"- jax_platform: `{payload['jax_platform']}`",
         f"- terrain_hfield_z_scale: `{payload['terrain_hfield_z_scale']}`",
         f"- reset_mode: `{payload['reset_mode']}`",
+        f"- reset_settle_ticks: `{payload['reset_settle_ticks']}`",
         f"- eval_push_enable: `{payload['eval_push_enable']}`",
         f"- eval_push_interval_s: `{payload['eval_push_interval_min_s']}`-`{payload['eval_push_interval_max_s']}`",
         f"- eval_push_magnitude: `{payload['eval_push_magnitude_min']}`-`{payload['eval_push_magnitude_max']}`",
@@ -201,6 +202,16 @@ def main() -> int:
         help=(
             "Eval reset convention passed to candidate rollouts. Use home-support "
             "for current corrected Phase 2 gates."
+        ),
+    )
+    parser.add_argument(
+        "--reset-settle-ticks",
+        type=int,
+        default=0,
+        help=(
+            "Eval reset settle ticks passed to candidate rollouts. Default 0 "
+            "preserves historical live-oracle behavior; current corrected Phase 2 "
+            "compact gates use 10."
         ),
     )
     parser.add_argument(
@@ -350,6 +361,8 @@ def main() -> int:
         common_eval.extend(["--terrain-hfield-z-scale", str(args.terrain_hfield_z_scale)])
     if args.reset_mode != "playground":
         common_eval.extend(["--reset-mode", args.reset_mode])
+    if int(args.reset_settle_ticks) > 0:
+        common_eval.extend(["--reset-settle-ticks", str(args.reset_settle_ticks)])
     if args.eval_push_enable:
         common_eval.append("--eval-push-enable")
     if args.eval_push_interval_min_s is not None:
@@ -578,6 +591,7 @@ def main() -> int:
         "jax_platform": args.jax_platform,
         "terrain_hfield_z_scale": args.terrain_hfield_z_scale,
         "reset_mode": args.reset_mode,
+        "reset_settle_ticks": int(args.reset_settle_ticks),
         "eval_push_enable": bool(args.eval_push_enable),
         "eval_push_interval_min_s": args.eval_push_interval_min_s,
         "eval_push_interval_max_s": args.eval_push_interval_max_s,

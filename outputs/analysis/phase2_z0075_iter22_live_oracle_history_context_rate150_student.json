@@ -1,0 +1,201 @@
+{
+  "activation": "swish",
+  "config": {
+    "batch_size": 512,
+    "learning_rate": 0.001,
+    "seed": 43,
+    "steps": 9000,
+    "target_rate_limit_rad_s": 1.5,
+    "target_rate_scale": 0.1
+  },
+  "context_hidden_sizes": [
+    256,
+    128
+  ],
+  "context_indices": [
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    63,
+    64,
+    65,
+    66,
+    67,
+    68,
+    69,
+    70,
+    71,
+    72,
+    73,
+    74,
+    75,
+    76,
+    77,
+    78,
+    79,
+    80,
+    81,
+    82,
+    83,
+    84,
+    85,
+    86,
+    87,
+    88,
+    89,
+    90,
+    91,
+    92,
+    93,
+    94,
+    95,
+    96,
+    97,
+    98,
+    99,
+    100
+  ],
+  "exported_onnx": "policy/candidates/phase2_z0075_iter22_live_oracle_history_context_rate150_20260704/candidate.onnx",
+  "loss_rows": [
+    {
+      "loss": 0.20210003852844238,
+      "step": 1
+    },
+    {
+      "loss": 0.0010143162216991186,
+      "step": 500
+    },
+    {
+      "loss": 0.0005662483163177967,
+      "step": 1000
+    },
+    {
+      "loss": 0.00046837367699481547,
+      "step": 1500
+    },
+    {
+      "loss": 0.00044108342262916267,
+      "step": 2000
+    },
+    {
+      "loss": 0.0003504154155962169,
+      "step": 2500
+    },
+    {
+      "loss": 0.00047832168638706207,
+      "step": 3000
+    },
+    {
+      "loss": 0.0006349433097057045,
+      "step": 3500
+    },
+    {
+      "loss": 0.00048602130846120417,
+      "step": 4000
+    },
+    {
+      "loss": 0.0002957418328151107,
+      "step": 4500
+    },
+    {
+      "loss": 0.0003541171026881784,
+      "step": 5000
+    },
+    {
+      "loss": 0.0003922003379557282,
+      "step": 5500
+    },
+    {
+      "loss": 0.0003445607144385576,
+      "step": 6000
+    },
+    {
+      "loss": 0.00028730009216815233,
+      "step": 6500
+    },
+    {
+      "loss": 0.0003060486342292279,
+      "step": 7000
+    },
+    {
+      "loss": 0.0003210031136404723,
+      "step": 7500
+    },
+    {
+      "loss": 0.0005111054633744061,
+      "step": 8000
+    },
+    {
+      "loss": 0.00027103160391561687,
+      "step": 8500
+    },
+    {
+      "loss": 0.0002683887432795018,
+      "step": 9000
+    }
+  ],
+  "manifest": "outputs/analysis/live_oracle_dagger_phase_student/iter_022_history_context/live_oracle_dagger_aggregate_manifest.json",
+  "modulation_scale": 0.75,
+  "onnx_verify": {
+    "max_abs_error": 2.384185791015625e-07,
+    "p95_abs_error": 1.1920928955078125e-07,
+    "path": "policy/candidates/phase2_z0075_iter22_live_oracle_history_context_rate150_20260704/candidate.onnx",
+    "samples_checked": 64
+  },
+  "sample_weight": {
+    "max": 8.0,
+    "p50": 3.0,
+    "p95": 5.0,
+    "weighted_samples": 171673.65625
+  },
+  "samples": 57928,
+  "saved_npz": "policy/candidates/phase2_z0075_iter22_live_oracle_history_context_rate150_20260704/candidate_mlp.npz",
+  "status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE",
+  "target_rate": {
+    "max_rad_s": 10.117900848388672,
+    "p50_rad_s": 0.18166005611419678,
+    "p95_rad_s": 1.378187894821167,
+    "p99_rad_s": 1.543063759803772,
+    "pair_count": 57823
+  },
+  "train_metrics": {
+    "mae": 0.009129433875097528,
+    "max_abs_error": 0.537118673324585,
+    "p50_abs_error": 0.004788600221243833,
+    "p95_abs_error": 0.030974836274981495,
+    "p99_abs_error": 0.059031581402661695,
+    "pred_action_saturation_pct": 0.0,
+    "rmse": 0.0159133597551272,
+    "samples": 57928
+  },
+  "trunk_hidden_sizes": [
+    512,
+    256
+  ]
+}
