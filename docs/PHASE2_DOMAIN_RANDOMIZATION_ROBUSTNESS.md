@@ -128,6 +128,40 @@ routing feature. The router has to choose from observation/history, pass the
 same compact z=0.0075 rough+push gate, and only then generate a trainable
 behavior-preservation target for Phase 2 DR.
 
+## 2026-07-05 Observation Router Diagnostic
+
+The offline observation/history router diagnostic was corrected to use the
+trace directory policy labels (`iter24`, `iter25`, `iter26`, `iter27`) rather
+than full ONNX paths when loading final-candidate trace rows:
+
+```text
+outputs/analysis/PHASE2_OBSERVATION_ROUTER_DIAGNOSTIC.md
+outputs/analysis/phase2_observation_router_diagnostic.json
+```
+
+Decision:
+
+```text
+HOLD_ROUTER_NEAR_MISS
+```
+
+The observation/history router improves over a single fixed candidate but does
+not recover the full oracle seed-level route. Best leave-one-seed-out result:
+
+- prefix ticks: `25`
+- kNN k: `3`
+- policy-onehot scale: `5.0`
+- pass: `4/5`
+- selected passing candidates for seeds `0,1,2,7`
+- missed seed `6` by selecting failing `iter24`; seed `6` had passing routes
+  through `iter25` and `iter26`
+
+This is diagnostic-only evidence. It does not justify launching a deployable
+online router or Phase 2 DR from the router branch. The next evidence-aligned
+work is either to inspect the seed-6 miss with stronger non-seed routing
+features or to move to a recurrent/hidden-state policy class or a different
+closed-loop behavior-preservation objective.
+
 ## 2026-07-05 Iter24 PPO-Loc Step-0 Diagnostic
 
 After the live-oracle Iter24 candidate became the latest useful z=0.0075
