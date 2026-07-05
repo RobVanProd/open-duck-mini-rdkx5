@@ -679,6 +679,56 @@ work is therefore an eval-only full-8 router/wrapper/source that keeps passing
 branches separate long enough to cover all seeds, not another tiny seed-specific
 single-MLP relabel.
 
+### Full-8 Router Source Selected
+
+The passing branch behavior was then materialized as full-observation source
+traces:
+
+```text
+outputs/analysis/PHASE2_FULL8_ROUTER_SOURCE_COMMAND_GATED_TRACES.md
+outputs/analysis/phase2_full8_router_source_command_gated_traces.json
+outputs/analysis/PHASE2_FULL8_ROUTER_SOURCE_ITER25_SEED5_TRACE.md
+outputs/analysis/phase2_full8_router_source_iter25_seed5_trace.json
+outputs/analysis/PHASE2_FULL8_ROUTER_SOURCE_SELECTED_MANIFEST.md
+outputs/analysis/phase2_full8_router_source_selected_manifest.json
+outputs/analysis/PHASE2_FULL8_ROUTER_SOURCE_SELECTED_DECISION.md
+outputs/analysis/phase2_full8_router_source_selected_decision.json
+```
+
+Decision:
+
+```text
+PASS_FULL8_ROUTER_SOURCE_SELECTED
+```
+
+Selected route:
+
+```text
+seeds 0,1,2,3,4,6,7 -> command_gated_zero0020
+seed 5              -> iter25
+```
+
+Hard-screen result:
+
+```text
+x=0.08 z=0.0075 rough+push selected source: 8/8 pass
+falls: 0
+mean vx: 0.0261 m/s
+mean track ratio: 0.3262
+max body pitch p95: 0.1917 rad
+min base height: 0.1581 m
+max p95 corrected velocity excess: 0.0000 rad/s
+max instantaneous corrected velocity excess: 0.0000 rad/s
+manifest dataset_id: e395c159e077d118
+manifest entries/samples: 8 / 6000
+```
+
+This is the current best full-8 behavior-preservation source, but it is not a
+deployable runtime policy because the route is assembled from evaluated seed
+coverage. Use it as the next behavior-preservation target. Phase 2 DR remains
+blocked until a trainable parent or a deployable/eval-safe wrapper preserves
+this behavior and also clears the `x=0.0` command-semantics gate.
+
 ### Trainable Compression Hold
 
 The command-gated ONNX was distilled into PPO-compatible single-MLP students
