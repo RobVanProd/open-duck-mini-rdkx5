@@ -56,6 +56,16 @@ No Stage A GPU checkpoint has been produced from these attempts.
 
 ## Preferred Path: Adopt An Existing Session
 
+Before choosing a runtime, run the guard report:
+
+```bash
+python3 tools/report_phase2_runtime_availability.py
+```
+
+It records whether a Colab session is adoptable, whether local ROCm has active
+GPU owner processes, and whether Stage A checkpoints already exist. Do not
+start local ROCm Stage A if the report lists unrelated GPU owner processes.
+
 If a Colab CLI session is already visible and kept alive by a browser tab, use
 the adoption path. This avoids forcing the agent to allocate a new runtime.
 
