@@ -1,0 +1,125 @@
+# Phase 2 Stage A Colab Runbook
+
+Last updated: 2026-07-06
+
+## Scope
+
+This runbook is for the current Phase 2 Stage A rate175 robustness run.
+It is offline sim/training only:
+
+- no robot
+- no SSH
+- no deploy
+- no grounded replay
+- no runtime behavior change
+
+The Stage A run is only useful if it produces checkpoints that can be swept and
+gated against the corrected actuator bridge. CPU smoke runs are wiring evidence
+only and are not promotable.
+
+## Current Stage A Inputs
+
+- workflow: `phase2-stage-a-narrow`
+- launcher: `tools/launch_phase2_stage_a_rate175_colab.py`
+- workflow driver: `tools/run_colab_cli_cuda_workflow.py`
+- warm start checkpoint:
+  `outputs/analysis/ppo_bc_command_conditioned_rate175_step0_checkpoint`
+- behavior prior:
+  `outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate/candidate_mlp.npz`
+- behavior prior scale: `-0.6`
+- behavior prior Huber delta: `0.05`
+- restore-policy KL scale: `4.0`
+- corrected bridge gate remains authoritative
+
+## Known Allocation Results
+
+Current committed allocation evidence:
+
+- `outputs/analysis/PHASE2_STAGE_A_RATE175_DETACHED_RETRY_STATUS.md`
+- `outputs/analysis/PHASE2_STAGE_A_RATE175_A100_ALLOCATION_STATUS.md`
+- `outputs/analysis/PHASE2_STAGE_A_RATE175_L4_ALLOCATION_STATUS.md`
+
+Observed state:
+
+- T4: six detached allocation attempts returned `HOLD_SERVICE_UNAVAILABLE`
+- A100: backend rejected accelerator `A100`
+- L4: backend rejected accelerator `L4`
+
+No Stage A GPU checkpoint has been produced from these attempts.
+
+## Preferred Path: Adopt An Existing Session
+
+If a Colab CLI session is already visible and kept alive by a browser tab, use
+the adoption path. This avoids forcing the agent to allocate a new runtime.
+
+Preflight without starting training:
+
+```bash
+python3 tools/launch_phase2_stage_a_rate175_colab.py \
+  --adopt-existing-session \
+  --no-create \
+  --attempts 1 \
+  --delay-s 0 \
+  --output-dir outputs/analysis/phase2_stage_a_rate175_colab_adopt_preflight
+```
+
+Run Stage A on the adopted session:
+
+```bash
+python3 tools/launch_phase2_stage_a_rate175_colab.py \
+  --adopt-existing-session \
+  --no-create \
+  --run-workflow \
+  --output-dir outputs/analysis/phase2_stage_a_rate175_colab_adopt_existing
+```
+
+The launcher will only adopt a unique locally tracked session from
+`colab status`. It will not adopt orphaned server assignments shown as `?`.
+If multiple named sessions are active, stop the extras or use the explicit
+session path below.
+
+## Explicit Session Path
+
+If the session name is known:
+
+```bash
+python3 tools/launch_phase2_stage_a_rate175_colab.py \
+  --session open-duck-t4-stagea \
+  --no-create \
+  --run-workflow \
+  --output-dir outputs/analysis/phase2_stage_a_rate175_colab_named_existing
+```
+
+Use this only when `colab status -s open-duck-t4-stagea` shows the session.
+
+## Allocate And Run Path
+
+When no session exists and T4 allocation is available:
+
+```bash
+python3 tools/launch_phase2_stage_a_rate175_colab.py \
+  --session open-duck-t4-stagea \
+  --accelerator T4 \
+  --attempts 6 \
+  --delay-s 300 \
+  --run-workflow \
+  --output-dir outputs/analysis/phase2_stage_a_rate175_colab_retry_detached
+```
+
+A100 and L4 are not currently reliable for this account/runtime through the CLI
+allocation path because the backend rejected both in the latest committed
+checks.
+
+## Success Criteria For This Runbook
+
+The runbook has not succeeded until all of the following are true:
+
+1. Stage A GPU training starts from the rate175 checkpoint and behavior prior.
+2. At least one post-step checkpoint is exported and downloaded.
+3. The checkpoint sweep runs against the corrected actuator bridge.
+4. The selected checkpoint passes the required x=0.08 and x=0.0 corrected
+   bridge gates for the current Stage A curriculum.
+5. The selected checkpoint hash and gate artifacts are committed.
+
+Until then, Phase 2 remains open and robot validation remains blocked.
+
