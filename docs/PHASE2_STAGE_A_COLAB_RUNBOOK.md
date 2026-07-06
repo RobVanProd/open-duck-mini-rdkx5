@@ -135,3 +135,21 @@ The runbook has not succeeded until all of the following are true:
 5. The selected checkpoint hash and gate artifacts are committed.
 
 Until then, Phase 2 remains open and robot validation remains blocked.
+
+## Post-Run Checkpoint Readiness
+
+After any Stage A GPU run, first scan the artifact root:
+
+```bash
+python3 tools/report_phase2_stage_a_postrun_status.py
+```
+
+If the report returns `PASS_STAGE_A_CHECKPOINTS_READY`, run the
+`sweep_command_shell` recorded in:
+
+```text
+outputs/analysis/phase2_stage_a_postrun_status.json
+```
+
+If it returns `HOLD_STAGE_A_CHECKPOINTS_MISSING`, the run did not produce a
+usable checkpoint and must not advance to Stage B/C/D or robot validation.

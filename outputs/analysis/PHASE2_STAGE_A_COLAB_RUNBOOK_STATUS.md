@@ -1,7 +1,7 @@
 # Phase 2 Stage A Colab Runbook Status
 
-status: `HOLD_COLAB_GPU_ALLOCATION`
-generated_at: `2026-07-06T10:26:43Z`
+status: `HOLD_STAGE_A_CHECKPOINTS_MISSING`
+generated_at: `2026-07-06T10:29:47Z`
 
 Offline only. No robot, SSH, deploy, grounded replay, training-result promotion,
 or runtime behavior change was performed.
@@ -26,6 +26,12 @@ Current allocation state:
 - T4: latest six-attempt detached retry held at `HOLD_SERVICE_UNAVAILABLE`
 - A100: backend rejected accelerator
 - L4: backend rejected accelerator
+
+Post-run checkpoint state:
+
+- artifact root: `outputs/analysis/colab_cli_stage_a_rate175_prior`
+- exported ONNX checkpoints: `0`
+- post-run report: `outputs/analysis/PHASE2_STAGE_A_POSTRUN_STATUS.md`
 
 ## Next Valid Command
 
