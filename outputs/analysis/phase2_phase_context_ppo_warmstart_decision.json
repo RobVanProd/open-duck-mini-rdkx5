@@ -1,0 +1,57 @@
+{
+  "audit_status": "PASS_PHASE2_READY_TO_DRY_RUN",
+  "bc_npz": "outputs/analysis/phase2_health_routed_pass_parent_phase_mod_rate150_student/candidate_mlp.npz",
+  "bc_npz_sha256": "1e22aa3c06a451e3ee4da32e58c6b45b881cdf87ea8ed8738c541b6dccb3e9c8",
+  "checkpoint": "outputs/analysis/phase2_health_routed_parent_phase_mod_rate150_step0_checkpoint",
+  "checkpoint_abs": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/phase2_health_routed_parent_phase_mod_rate150_step0_checkpoint",
+  "checkpoint_present": true,
+  "decision": "Stage A DR may proceed from the verified phase/context-preserving PPO step-0 checkpoint. Robot validation remains blocked.",
+  "fidelity": {
+    "mae": 0.0,
+    "max_abs_error": 0.0,
+    "p50_abs_error": 0.0,
+    "p95_abs_error": 0.0,
+    "p99_abs_error": 0.0,
+    "rmse": 0.0,
+    "samples": 3750
+  },
+  "next_work": [
+    "Launch Stage A dry-run PPO from the absolute checkpoint path recorded here.",
+    "Use --ppo_policy_network phase_modulated and matching context/trunk settings when restoring.",
+    "Start with narrow randomization on rough_terrain_backlash and re-run corrected-bridge x=0.08/x=0.0 full8 gates after the stage."
+  ],
+  "reference_parent_onnx": "policy/candidates/phase2_health_routed_parent_phase_mod_rate150_20260706/candidate.onnx",
+  "reference_parent_onnx_sha256": "5cadefcb3582043eb989a0e7c65ea9e2702a0815ba46c9ffe1c70b1f68f1db8f",
+  "scope": "Offline sim/training readiness only; no robot, SSH, deploy, grounded replay, or robot runtime changes.",
+  "status": "PASS_PHASE_CONTEXT_PPO_WARMSTART_READY",
+  "step0_onnx": "outputs/analysis/phase2_health_routed_parent_phase_mod_rate150_step0.onnx",
+  "step0_onnx_sha256": "5d41eab6945f7e64e5b3d9c15ab38ba388ba38e616fd5c04bbf46f5b9237d626",
+  "x000_gate": {
+    "duration_complete": 8,
+    "falls": 0,
+    "max_abs_mean_local_vx_threshold_m_s": 0.005,
+    "max_pitch_vel_p95_rad_s_max": 0.03477856516838074,
+    "max_tracking_p95_rad_max": 0.043770873546600336,
+    "max_velocity_excess_max": 0.0,
+    "mean_local_vx_m_s": 0.0008205422659510191,
+    "p95_velocity_excess_max": 0.0,
+    "path": "outputs/analysis/phase2_health_routed_parent_phase_mod_rate150_step0_x000_full8_gate.json",
+    "push_success_rate_mean": 0.9185897435897437,
+    "runs": 8,
+    "sha256": "cb7bd7196e91368ced45abc5d7c8c5efebd45d780f6018ed4e4c46f490cc809a"
+  },
+  "x008_gate": {
+    "duration_complete": 8,
+    "falls": 0,
+    "max_pitch_vel_p95_rad_s_max": 1.5613740682601929,
+    "max_tracking_p95_rad_max": 0.19142853617668146,
+    "max_velocity_excess_max": 0.0,
+    "mean_local_vx_m_s": 0.0277739713485289,
+    "p95_velocity_excess_max": 0.0,
+    "path": "outputs/analysis/phase2_health_routed_parent_phase_mod_rate150_step0_x008_full8_gate.json",
+    "push_success_rate_mean": 0.9185897435897437,
+    "runs": 8,
+    "sha256": "b77d1f3df15a10caa2616f7e460080546e422b26880ba16308a3e562807eb4bc",
+    "track_ratio_mean": 0.3471746418566113
+  }
+}

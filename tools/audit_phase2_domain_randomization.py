@@ -93,11 +93,11 @@ def warmstart_fidelity_status(path: Path) -> dict[str, Any]:
     info["max_abs_error"] = payload.get("fidelity", {}).get("max_abs_error")
     info["reference_onnx"] = payload.get("reference_onnx")
     info["output_checkpoint"] = payload.get("output_checkpoint")
-    info["status"] = (
-        "PASS"
-        if payload.get("status") == "PASS_PPO_BC_WARMSTART_STEP0_EXPORT_FIDELITY"
-        else "HOLD"
-    )
+    pass_statuses = {
+        "PASS_PPO_BC_WARMSTART_STEP0_EXPORT_FIDELITY",
+        "PASS_PHASE_MODULATED_PPO_WARMSTART_STEP0_EXPORT_FIDELITY",
+    }
+    info["status"] = "PASS" if payload.get("status") in pass_statuses else "HOLD"
     return info
 
 
@@ -152,6 +152,10 @@ def audit(args: argparse.Namespace) -> dict[str, Any]:
     checkpoint_present = restore_checkpoint is not None and restore_checkpoint.exists()
     fidelity_pass = fidelity.get("status") == "PASS"
     compression_hold = compression_decision.get("status") == "HOLD"
+    phase_preserving_fidelity = (
+        fidelity.get("report_status")
+        == "PASS_PHASE_MODULATED_PPO_WARMSTART_STEP0_EXPORT_FIDELITY"
+    )
 
     hooks: dict[str, dict[str, Any]] = {
         "friction_randomization": {
@@ -285,12 +289,14 @@ def audit(args: argparse.Namespace) -> dict[str, Any]:
         "warmstart_fidelity": fidelity,
         "compression_decision": compression_decision,
         "status": "PASS_TRAINABLE_CHECKPOINT_PRESENT"
-        if checkpoint_present and fidelity_pass and not compression_hold
+        if checkpoint_present and fidelity_pass and (not compression_hold or phase_preserving_fidelity)
         else "HOLD_TRAINABLE_WARMSTART_CHECKPOINT_MISSING",
         "reason": (
             "A verified PPO step-0 Orbax checkpoint exists and no newer "
             "compression decision rejects it."
             if checkpoint_present and fidelity_pass and not compression_hold
+            else "A verified phase/context-preserving PPO step-0 Orbax checkpoint exists. The older PPO-loc compression hold is retained as historical evidence but no longer blocks the Phase 2 dry-run gate."
+            if checkpoint_present and fidelity_pass and phase_preserving_fidelity
             else (
                 "The current deployable parent is phase/context-conditioned and "
                 "passes the corrected-bridge gates, but the standard PPO-loc "
@@ -395,17 +401,24 @@ def write_markdown(result: dict[str, Any], path: Path) -> None:
         lines.extend(f"- `{warning}`" for warning in result["warnings"])
     else:
         lines.append("- none")
-    lines.extend(
-        [
-            "",
-            "## Recommendation",
-            "",
-            "Do not launch Stage A DR until the passing phase/context-conditioned",
-            "parent is available as a restorable PPO checkpoint. The next aligned",
-            "work is a phase/context-preserving PPO actor/export path, followed by",
-            "the same corrected-bridge x=0.08 and x=0.0 full8 gates.",
-        ]
-    )
+    lines.extend(["", "## Recommendation", ""])
+    if result["blockers"]:
+        lines.extend(
+            [
+                "Do not launch Stage A DR until the passing phase/context-conditioned",
+                "parent is available as a restorable PPO checkpoint and the",
+                "corrected-bridge x=0.08 and x=0.0 full8 gates pass.",
+            ]
+        )
+    else:
+        lines.extend(
+            [
+                "The Phase 2 warm-start dry-run prerequisites are satisfied.",
+                "The next aligned work is Stage A domain-randomized PPO from",
+                "the verified phase/context-preserving checkpoint, with narrow",
+                "randomization first and corrected-bridge gates after the stage.",
+            ]
+        )
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(lines) + "\n")
 

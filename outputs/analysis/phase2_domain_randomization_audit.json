@@ -1,7 +1,5 @@
 {
-  "blockers": [
-    "HOLD_TRAINABLE_WARMSTART_CHECKPOINT_MISSING"
-  ],
+  "blockers": [],
   "files": {
     "common_randomize": "../Open_Duck_Playground/playground/common/randomize.py",
     "common_runner": "../Open_Duck_Playground/playground/common/runner.py",
@@ -73,11 +71,11 @@
   },
   "playground_path": "../Open_Duck_Playground",
   "rough_floor_friction_xml": "1.0",
-  "status": "HOLD_PHASE2_NOT_READY",
+  "status": "PASS_PHASE2_READY_TO_DRY_RUN",
   "trainable_warmstart": {
     "candidate_mlp_npz": {
       "exists": true,
-      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/phase2_health_routed_pass_parent_phase_mod_rate150_student/candidate_mlp.npz",
+      "path": "outputs/analysis/phase2_health_routed_pass_parent_phase_mod_rate150_student/candidate_mlp.npz",
       "sha256": "1e22aa3c06a451e3ee4da32e58c6b45b881cdf87ea8ed8738c541b6dccb3e9c8",
       "size_bytes": 888338
     },
@@ -90,32 +88,37 @@
         "Build a step-0 checkpoint with action fidelity to the passing parent.",
         "Re-run x=0.08 and x=0.0 rough+push full8 gates before Stage A DR."
       ],
-      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/phase2_ppo_loc_compression_seed5_augmentation_decision.json",
+      "path": "outputs/analysis/phase2_ppo_loc_compression_seed5_augmentation_decision.json",
       "sha256": "b9b37458fb9620811bb1a1e0cb8006a161dc551c529e11ff7efcf91d9eee4912",
       "size_bytes": 2484,
       "status": "HOLD"
     },
     "policy_onnx": {
       "exists": true,
-      "path": "/home/lsd/robots/open-duck-mini-rdkx5/policy/candidates/phase2_health_routed_parent_phase_mod_rate150_20260706/candidate.onnx",
+      "path": "policy/candidates/phase2_health_routed_parent_phase_mod_rate150_20260706/candidate.onnx",
       "sha256": "5cadefcb3582043eb989a0e7c65ea9e2702a0815ba46c9ffe1c70b1f68f1db8f",
       "size_bytes": 885758
     },
-    "reason": "The current deployable parent is phase/context-conditioned and passes the corrected-bridge gates, but the standard PPO-loc compression path is rejected by the latest seed-tradeoff decision. A phase/context-preserving restorable PPO actor is required before Phase 2 DR can launch.",
+    "reason": "A verified phase/context-preserving PPO step-0 Orbax checkpoint exists. The older PPO-loc compression hold is retained as historical evidence but no longer blocks the Phase 2 dry-run gate.",
     "required_by_phase2": true,
     "restore_checkpoint": {
-      "exists": false,
-      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/phase2_health_routed_parent_phase_mod_rate150_step0_checkpoint",
+      "exists": true,
+      "path": "outputs/analysis/phase2_health_routed_parent_phase_mod_rate150_step0_checkpoint",
       "sha256": null,
       "size_bytes": null
     },
-    "status": "HOLD_TRAINABLE_WARMSTART_CHECKPOINT_MISSING",
+    "status": "PASS_TRAINABLE_CHECKPOINT_PRESENT",
     "warmstart_fidelity": {
-      "exists": false,
-      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/phase2_health_routed_parent_phase_mod_rate150_step0_fidelity.json",
-      "sha256": null,
-      "size_bytes": null,
-      "status": "MISSING"
+      "exists": true,
+      "max_abs_error": 0.0,
+      "output_checkpoint": "outputs/analysis/phase2_health_routed_parent_phase_mod_rate150_step0_checkpoint",
+      "p95_abs_error": 0.0,
+      "path": "outputs/analysis/phase2_health_routed_parent_phase_mod_rate150_step0_fidelity.json",
+      "reference_onnx": "policy/candidates/phase2_health_routed_parent_phase_mod_rate150_20260706/candidate.onnx",
+      "report_status": "PASS_PHASE_MODULATED_PPO_WARMSTART_STEP0_EXPORT_FIDELITY",
+      "sha256": "b7c16cb76f50a29e0e55c926ca315c9663cf7ba9efda3f225e0710fdbd6c2017",
+      "size_bytes": 2085,
+      "status": "PASS"
     }
   },
   "warnings": []

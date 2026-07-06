@@ -1,0 +1,54 @@
+{
+  "architecture": {
+    "activation": "swish",
+    "context_hidden_sizes": [
+      64
+    ],
+    "context_indices": [
+      6,
+      99,
+      100
+    ],
+    "modulation_scale": 0.5,
+    "output_mode": "tanh_normal_logits_with_phase_modulated_loc",
+    "policy_network_kind": "phase_modulated",
+    "trunk_hidden_sizes": [
+      512,
+      256
+    ]
+  },
+  "bc_npz": "outputs/analysis/phase2_health_routed_pass_parent_phase_mod_rate150_student/candidate_mlp.npz",
+  "bc_npz_sha256": "1e22aa3c06a451e3ee4da32e58c6b45b881cdf87ea8ed8738c541b6dccb3e9c8",
+  "fidelity": {
+    "mae": 0.0,
+    "max_abs_error": 0.0,
+    "p50_abs_error": 0.0,
+    "p95_abs_error": 0.0,
+    "p99_abs_error": 0.0,
+    "rmse": 0.0,
+    "samples": 3750
+  },
+  "manifest": "outputs/analysis/phase2_health_routed_parent_manifest.json",
+  "mapping": {
+    "bc_context": "policy params context_0..N",
+    "bc_output": "policy params output loc layer",
+    "bc_trunk": "policy params trunk_0..N",
+    "normalizer": "Brax running-stat normalizer kept for critic; actor uses fixed BC normalizers",
+    "scale_logits": "policy params scale_logits constant initialization",
+    "value_network": "fresh PPO value initialization"
+  },
+  "output_checkpoint": "outputs/analysis/phase2_health_routed_parent_phase_mod_rate150_step0_checkpoint",
+  "output_checkpoint_abs": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/phase2_health_routed_parent_phase_mod_rate150_step0_checkpoint",
+  "output_onnx": "outputs/analysis/phase2_health_routed_parent_phase_mod_rate150_step0.onnx",
+  "output_onnx_sha256": "5d41eab6945f7e64e5b3d9c15ab38ba388ba38e616fd5c04bbf46f5b9237d626",
+  "pass_thresholds": {
+    "max_abs_error": 0.0001,
+    "p95_abs_error": 1e-05
+  },
+  "reference_onnx": "policy/candidates/phase2_health_routed_parent_phase_mod_rate150_20260706/candidate.onnx",
+  "reference_onnx_sha256": "5cadefcb3582043eb989a0e7c65ea9e2702a0815ba46c9ffe1c70b1f68f1db8f",
+  "samples_checked": 3750,
+  "scale_logit": -2.0,
+  "scale_std": 0.1279280110429725,
+  "status": "PASS_PHASE_MODULATED_PPO_WARMSTART_STEP0_EXPORT_FIDELITY"
+}
