@@ -1,7 +1,7 @@
 # Phase 2 Stage A Colab Runbook Status
 
-status: `HOLD_STAGE_A_CHECKPOINTS_MISSING`
-generated_at: `2026-07-06T10:32:37Z`
+status: `HOLD_GPU_RUNTIME_UNAVAILABLE`
+generated_at: `2026-07-06T10:38:01Z`
 
 Offline only. No robot, SSH, deploy, grounded replay, training-result promotion,
 or runtime behavior change was performed.
@@ -26,6 +26,10 @@ Current allocation state:
 - T4: latest six-attempt detached retry held at `HOLD_SERVICE_UNAVAILABLE`
 - A100: backend rejected accelerator
 - L4: backend rejected accelerator
+- 2026-07-06 single T4 probe: `HOLD_SERVICE_UNAVAILABLE`
+- 2026-07-06 single A100 probe: `HOLD_ACCELERATOR_REJECTED`
+- local ROCm: `rocm:0` visible, but Stage A local smoke was not started
+  because an unrelated `train_dreamer.py` GPU workload is active
 
 Post-run checkpoint state:
 

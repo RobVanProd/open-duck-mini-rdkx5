@@ -44,6 +44,13 @@ Observed state:
 - T4: six detached allocation attempts returned `HOLD_SERVICE_UNAVAILABLE`
 - A100: backend rejected accelerator `A100`
 - L4: backend rejected accelerator `L4`
+- 2026-07-06 follow-up single probes:
+  - T4: `HOLD_SERVICE_UNAVAILABLE`
+  - A100: `HOLD_ACCELERATOR_REJECTED`
+- 2026-07-06 local ROCm check:
+  - Open Duck env still sees `rocm:0`
+  - local ROCm Stage A was not started because another GPU workload was active
+    (`train_dreamer.py --logdir ...run11_20260706_continued`)
 
 No Stage A GPU checkpoint has been produced from these attempts.
 
