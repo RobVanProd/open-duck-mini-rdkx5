@@ -1375,6 +1375,8 @@ def build_remote_driver(
         phase2_restore_kl = "1.5"
     else:
         phase2_restore_kl = "1.0"
+    if args.phase2_restore_policy_kl_scale is not None:
+        phase2_restore_kl = cli_value(args.phase2_restore_policy_kl_scale)
     phase2_actuator_tracking = (
         "-0.005"
         if (run_phase2_z002_tracking_margin or run_phase2_z002_teacher_continuity or run_phase2_motion_floor_like)
@@ -3203,6 +3205,16 @@ def main() -> int:
             "For Phase 2 workflows, stop after training artifacts are packaged. "
             "Use this when Colab transport is unstable during the slower CPU gate; "
             "run gates later from the downloaded ONNX."
+        ),
+    )
+    parser.add_argument(
+        "--phase2-restore-policy-kl-scale",
+        type=float,
+        default=None,
+        help=(
+            "Override the workflow default restore-policy KL scale for Phase 2 "
+            "training commands. This is preferred over duplicating "
+            "--restore-policy-kl-scale through --phase2-final-training-args-json."
         ),
     )
     parser.add_argument(

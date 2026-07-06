@@ -59,6 +59,6 @@ python3 tools/run_colab_cli_cuda_workflow.py \
   --candidate-behavior-prior-mlp-npz outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate/candidate_mlp.npz \
   --candidate-behavior-prior-scale -0.6 \
   --candidate-behavior-prior-huber-delta 0.05 \
-  --phase2-final-training-args-json '["--restore-policy-kl-scale","4.0"]' \
+  --phase2-restore-policy-kl-scale 4.0 \
   --output-root outputs/analysis/colab_cli_stage_a_rate175_prior
 ```
