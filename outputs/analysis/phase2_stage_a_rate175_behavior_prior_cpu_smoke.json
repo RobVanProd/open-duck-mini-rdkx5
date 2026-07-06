@@ -1,0 +1,55 @@
+{
+  "status": "PASS_WIRING_SMOKE_NOT_PROMOTABLE",
+  "generated_at": "2026-07-06T09:21:00Z",
+  "no_robot_ssh_deploy_grounded_replay": true,
+  "purpose": "Verify corrected Phase 2 Stage A command wiring from the true Phase 1 rate175 trainable checkpoint with behavior-prior continuity and corrected actuator bridge.",
+  "platform": "cpu",
+  "not_promotable": true,
+  "run": {
+    "status": "PASS_SMOKE_RUN",
+    "returncode": 0,
+    "elapsed_s": 90.01,
+    "output_dir": "outputs/phase2_domain_randomization/stage_a_rate175_behavior_prior_cpu_smoke/smoke_20260706T091913Z_cpu",
+    "exported_onnx": "outputs/phase2_domain_randomization/stage_a_rate175_behavior_prior_cpu_smoke/smoke_20260706T091913Z_cpu/2026_07_06_052007_512.onnx",
+    "exported_onnx_sha256": "f3f7f717ec29372220c0b1c73ce841eb777afd8f7b311eced0b2a564d6d75abb",
+    "final_step": 512,
+    "final_reward": 4.824737548828125,
+    "final_reward_std": 3.2537131309509277
+  },
+  "inputs": {
+    "task": "flat_terrain_backlash",
+    "pushes": "disabled",
+    "timesteps": 320,
+    "ppo_num_envs": 2,
+    "restore_checkpoint_path": "outputs/analysis/ppo_bc_command_conditioned_rate175_step0_checkpoint",
+    "restore_policy_kl_scale": 4.0,
+    "phase1_step0_onnx": "outputs/analysis/ppo_bc_command_conditioned_rate175_step0.onnx",
+    "phase1_step0_onnx_sha256": "432acd77dbd2d672516ddb886687661334da455c97bb0708541db8ff54a2bd61",
+    "behavior_prior_mlp_npz": "outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate/candidate_mlp.npz",
+    "behavior_prior_mlp_npz_sha256": "312f1ef0ba758af5fdeae900ce0a34dab659fe348a9f389988ddaaaa15659497",
+    "behavior_prior_scale": -0.6,
+    "behavior_prior_huber_delta": 0.05,
+    "actuator_bridge": {
+      "enabled": true,
+      "delay_min_ticks": 3,
+      "delay_max_ticks": 3,
+      "tau_min_s": 0.06,
+      "tau_max_s": 0.1,
+      "velocity_limit_min_rad_s": 2.0,
+      "velocity_limit_max_rad_s": 3.25,
+      "per_joint_variation": 0.05
+    }
+  },
+  "evidence": {
+    "manifest": "outputs/phase2_domain_randomization/stage_a_rate175_behavior_prior_cpu_smoke/smoke_20260706T091913Z_cpu/smoke_manifest.final.json",
+    "stdout": "outputs/phase2_domain_randomization/stage_a_rate175_behavior_prior_cpu_smoke/smoke_20260706T091913Z_cpu/stdout.txt",
+    "stderr": "outputs/phase2_domain_randomization/stage_a_rate175_behavior_prior_cpu_smoke/smoke_20260706T091913Z_cpu/stderr.txt",
+    "stdout_confirms": [
+      "Enabled restore-policy KL loss: scale=4.0",
+      "Observation size: 101",
+      "action output shape (1, 14)",
+      "default PPO MLP export shape"
+    ]
+  },
+  "decision": "The corrected Stage A rate175 behavior-prior command path is runnable. Run the valid Stage A GPU job from the same checkpoint before any Phase 2 gate decision."
+}
