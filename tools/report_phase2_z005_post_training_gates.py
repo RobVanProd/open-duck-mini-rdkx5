@@ -41,11 +41,21 @@ REGRESSION_GATES = [
 def required_gates_from_manifest(manifest: dict[str, Any]) -> list[str]:
     results = manifest.get("results") if isinstance(manifest.get("results"), list) else []
     names = [str(item.get("name")) for item in results if item.get("name")]
-    primary = [
+    primary_no_push = [
         name
         for name in names
         if name.endswith("_no_push")
         and name not in REGRESSION_GATES
+    ]
+    primary_prefixes = {
+        name[: -len("_no_push")]
+        for name in primary_no_push
+    }
+    primary = [
+        name
+        for name in names
+        if name not in REGRESSION_GATES
+        and any(name.startswith(prefix) for prefix in primary_prefixes)
     ]
     if primary:
         return primary + [name for name in REGRESSION_GATES if name in names]

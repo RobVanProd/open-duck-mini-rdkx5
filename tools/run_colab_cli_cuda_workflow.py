@@ -215,6 +215,36 @@ def tar_filter(member: tarfile.TarInfo) -> tarfile.TarInfo | None:
             (
                 "outputs",
                 "analysis",
+                "phase2_health_routed_parent_phase_mod_rate150_step0.onnx",
+            ),
+            (
+                "outputs",
+                "analysis",
+                "phase2_health_routed_parent_phase_mod_rate150_step0_checkpoint",
+            ),
+            (
+                "outputs",
+                "analysis",
+                "PHASE2_PHASE_CONTEXT_PPO_WARMSTART_DECISION.md",
+            ),
+            (
+                "outputs",
+                "analysis",
+                "phase2_phase_context_ppo_warmstart_decision.json",
+            ),
+            (
+                "outputs",
+                "analysis",
+                "PHASE2_DOMAIN_RANDOMIZATION_AUDIT.md",
+            ),
+            (
+                "outputs",
+                "analysis",
+                "phase2_domain_randomization_audit.json",
+            ),
+            (
+                "outputs",
+                "analysis",
                 "ppo_bc_command_conditioned_dagger_seed5_x0_step0_checkpoint",
             ),
             (
@@ -387,12 +417,15 @@ def required_rdk_package_paths(
         "phase2-right-swing-phase-lift",
         "phase2-right-swing-phase-advance",
         "phase2-right-swing-phase-single-support",
+        "phase2-stage-a-narrow",
         "phase2-z005-support",
         "phase2-z005-motion-floor",
     }
     if workflow not in phase2_terrain_workflows:
         return list(extra_paths or [])
-    if workflow == "phase2-z002-tracking-margin":
+    if workflow == "phase2-stage-a-narrow":
+        recipe_json = "outputs/analysis/phase2_domain_randomization_audit.json"
+    elif workflow == "phase2-z002-tracking-margin":
         recipe_json = "outputs/analysis/phase2_z002_tracking_margin_next_recipe.json"
     elif workflow == "phase2-z002-teacher-continuity":
         recipe_json = "outputs/analysis/phase2_z002_teacher_continuity_next_recipe.json"
@@ -416,11 +449,26 @@ def required_rdk_package_paths(
         "outputs/analysis/actuator_response_fit_corrected_knee.json",
         recipe_json,
         "tools/run_actuator_bridge_training_smoke.py",
-        "outputs/analysis/phase2_limit198_ppo_loc_warmstart_candidate/candidate_mlp.npz",
-        "outputs/analysis/phase2_limit198_ppo_loc_warmstart_candidate/candidate.onnx",
-        "outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0.onnx",
-        "outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0_checkpoint",
     ]
+    if workflow == "phase2-stage-a-narrow":
+        paths.extend(
+            [
+                "outputs/analysis/phase2_health_routed_parent_phase_mod_rate150_step0.onnx",
+                "outputs/analysis/phase2_health_routed_parent_phase_mod_rate150_step0_checkpoint",
+                "outputs/analysis/PHASE2_PHASE_CONTEXT_PPO_WARMSTART_DECISION.md",
+                "outputs/analysis/phase2_phase_context_ppo_warmstart_decision.json",
+                "outputs/analysis/PHASE2_DOMAIN_RANDOMIZATION_AUDIT.md",
+            ]
+        )
+    else:
+        paths.extend(
+            [
+                "outputs/analysis/phase2_limit198_ppo_loc_warmstart_candidate/candidate_mlp.npz",
+                "outputs/analysis/phase2_limit198_ppo_loc_warmstart_candidate/candidate.onnx",
+                "outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0.onnx",
+                "outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0_checkpoint",
+            ]
+        )
     if workflow in {"phase2-z002-tracking-margin", "phase2-z002-teacher-continuity"}:
         paths.append("tools/report_phase2_z002_tracking_margin_post_training_gates.py")
         paths.append(
@@ -430,7 +478,7 @@ def required_rdk_package_paths(
         )
     else:
         paths.append("tools/report_phase2_z005_post_training_gates.py")
-        if workflow != "phase2-z005-support":
+        if workflow not in {"phase2-z005-support", "phase2-stage-a-narrow"}:
             paths.append(
                 "outputs/phase2_domain_randomization/"
                 "stage_a2_preserve_narrow_flat_no_push_gpu/"
@@ -994,6 +1042,7 @@ def build_remote_driver(
     run_phase2_right_swing_phase_single_support = (
         args.workflow == "phase2-right-swing-phase-single-support"
     )
+    run_phase2_stage_a_narrow = args.workflow == "phase2-stage-a-narrow"
     run_phase2_z005_support = args.workflow == "phase2-z005-support"
     run_phase2_z005_motion_floor = args.workflow == "phase2-z005-motion-floor"
     run_phase2_z005_like = run_phase2_z005_support or run_phase2_z005_motion_floor
@@ -1006,6 +1055,7 @@ def build_remote_driver(
         or run_phase2_right_swing_phase_lift
         or run_phase2_right_swing_phase_advance
         or run_phase2_right_swing_phase_single_support
+        or run_phase2_stage_a_narrow
     )
     run_phase2_terrain_like = run_phase2_z005_like or run_phase2_intermediate_terrain_like
     run_phase2_motion_floor_like = (
@@ -1030,6 +1080,7 @@ def build_remote_driver(
         or run_phase2_right_swing_phase_lift
         or run_phase2_right_swing_phase_advance
         or run_phase2_right_swing_phase_single_support
+        or run_phase2_stage_a_narrow
         or run_phase2_z005_support
         or run_phase2_z005_motion_floor
     )
@@ -1060,6 +1111,7 @@ def build_remote_driver(
             "phase2-right-swing-phase-lift",
             "phase2-right-swing-phase-advance",
             "phase2-right-swing-phase-single-support",
+            "phase2-stage-a-narrow",
             "phase2-z005-support",
             "phase2-z005-motion-floor",
             "all",
@@ -1225,6 +1277,9 @@ def build_remote_driver(
     elif run_phase2_right_swing_phase_single_support:
         phase2_recipe_id = "right_swing_phase_single_support"
         phase2_default_candidate_name = "phase2_right_swing_phase_single_support_cuda"
+    elif run_phase2_stage_a_narrow:
+        phase2_recipe_id = "stage_a_narrow"
+        phase2_default_candidate_name = "phase2_stage_a_narrow_phase_context_cuda"
     elif run_phase2_z005_motion_floor:
         phase2_recipe_id = "z005_motion_floor"
         phase2_default_candidate_name = "phase2_z005_motion_floor_cuda"
@@ -1253,7 +1308,7 @@ def build_remote_driver(
         else (
             "122880"
             if (run_phase2_z002_tracking_margin or run_phase2_z002_teacher_continuity or run_phase2_motion_floor_like)
-            else ("81920" if run_phase2_z005_support else ("80000" if (run_phase2_b0f or run_phase2_b0g) else "160000"))
+            else ("163840" if run_phase2_stage_a_narrow else ("81920" if run_phase2_z005_support else ("80000" if (run_phase2_b0f or run_phase2_b0g) else "160000")))
         )
     )
     phase2_ppo_num_envs = (
@@ -1286,15 +1341,17 @@ def build_remote_driver(
         if args.phase2_ppo_num_updates_per_batch is not None
         else "2"
     )
-    phase2_lr = "0.000002" if (run_phase2_z002_tracking_margin or run_phase2_z002_teacher_continuity) else ("0.000004" if run_phase2_motion_floor_like else ("0.000003" if (run_phase2_b0f or run_phase2_b0g or run_phase2_z005_support) else ("0.000012" if run_phase2_b0e else "0.000015")))
-    phase2_clip = "0.015" if (run_phase2_z002_tracking_margin or run_phase2_z002_teacher_continuity) else ("0.025" if run_phase2_motion_floor_like else ("0.02" if (run_phase2_b0f or run_phase2_b0g or run_phase2_z005_support) else ("0.04" if run_phase2_b0e else "0.05")))
-    phase2_max_grad_norm = "0.08" if (run_phase2_z002_tracking_margin or run_phase2_z002_teacher_continuity) else ("0.12" if run_phase2_motion_floor_like else ("0.1" if (run_phase2_b0f or run_phase2_b0g or run_phase2_z005_support) else ("0.2" if run_phase2_b0e else "0.25")))
+    phase2_lr = "0.000002" if (run_phase2_z002_tracking_margin or run_phase2_z002_teacher_continuity) else ("0.000004" if run_phase2_motion_floor_like else ("0.000006" if run_phase2_stage_a_narrow else ("0.000003" if (run_phase2_b0f or run_phase2_b0g or run_phase2_z005_support) else ("0.000012" if run_phase2_b0e else "0.000015"))))
+    phase2_clip = "0.015" if (run_phase2_z002_tracking_margin or run_phase2_z002_teacher_continuity) else ("0.025" if run_phase2_motion_floor_like else ("0.025" if run_phase2_stage_a_narrow else ("0.02" if (run_phase2_b0f or run_phase2_b0g or run_phase2_z005_support) else ("0.04" if run_phase2_b0e else "0.05"))))
+    phase2_max_grad_norm = "0.08" if (run_phase2_z002_tracking_margin or run_phase2_z002_teacher_continuity) else ("0.12" if run_phase2_motion_floor_like else ("0.12" if run_phase2_stage_a_narrow else ("0.1" if (run_phase2_b0f or run_phase2_b0g or run_phase2_z005_support) else ("0.2" if run_phase2_b0e else "0.25"))))
     if run_phase2_z002_teacher_continuity:
         phase2_restore_kl = "7.5"
     elif run_phase2_z002_tracking_margin:
         phase2_restore_kl = "6.0"
     elif run_phase2_motion_floor_like:
         phase2_restore_kl = "3.0"
+    elif run_phase2_stage_a_narrow:
+        phase2_restore_kl = "1.0"
     elif run_phase2_z005_support:
         phase2_restore_kl = "4.0"
     elif run_phase2_b0f or run_phase2_b0g:
@@ -1336,25 +1393,25 @@ def build_remote_driver(
         if phase2_motion_preserve
         else ""
     )
-    phase2_dr_friction_min = "0.98" if run_phase2_terrain_like else ("0.95" if (run_phase2_b0f or run_phase2_b0g) else "0.8")
-    phase2_dr_friction_max = "1.02" if run_phase2_terrain_like else ("1.05" if (run_phase2_b0f or run_phase2_b0g) else "1.1")
+    phase2_dr_friction_min = "0.98" if (run_phase2_terrain_like or run_phase2_stage_a_narrow) else ("0.95" if (run_phase2_b0f or run_phase2_b0g) else "0.8")
+    phase2_dr_friction_max = "1.02" if (run_phase2_terrain_like or run_phase2_stage_a_narrow) else ("1.05" if (run_phase2_b0f or run_phase2_b0g) else "1.1")
     phase2_dr_frictionloss_scale_min = "0.995" if (run_phase2_b0f or run_phase2_b0g or run_phase2_terrain_like) else "0.98"
     phase2_dr_frictionloss_scale_max = "1.005" if (run_phase2_b0f or run_phase2_b0g or run_phase2_terrain_like) else "1.02"
     phase2_dr_armature_scale_min = "1.0"
     phase2_dr_armature_scale_max = "1.005" if (run_phase2_b0f or run_phase2_b0g or run_phase2_terrain_like) else "1.02"
-    phase2_dr_com_jitter_m = "0.002" if run_phase2_terrain_like else ("0.003" if (run_phase2_b0f or run_phase2_b0g) else "0.01")
-    phase2_dr_mass_scale_min = "0.995" if (run_phase2_b0f or run_phase2_b0g or run_phase2_terrain_like) else "0.98"
-    phase2_dr_mass_scale_max = "1.005" if (run_phase2_b0f or run_phase2_b0g or run_phase2_terrain_like) else "1.02"
+    phase2_dr_com_jitter_m = "0.002" if (run_phase2_terrain_like or run_phase2_stage_a_narrow) else ("0.003" if (run_phase2_b0f or run_phase2_b0g) else "0.01")
+    phase2_dr_mass_scale_min = "0.99" if run_phase2_stage_a_narrow else ("0.995" if (run_phase2_b0f or run_phase2_b0g or run_phase2_terrain_like) else "0.98")
+    phase2_dr_mass_scale_max = "1.01" if run_phase2_stage_a_narrow else ("1.005" if (run_phase2_b0f or run_phase2_b0g or run_phase2_terrain_like) else "1.02")
     phase2_dr_torso_mass_delta_min = "-0.005" if (run_phase2_b0f or run_phase2_b0g or run_phase2_terrain_like) else "-0.02"
     phase2_dr_torso_mass_delta_max = "0.005" if (run_phase2_b0f or run_phase2_b0g or run_phase2_terrain_like) else "0.02"
     phase2_dr_qpos_jitter_rad = "0.002" if run_phase2_terrain_like else ("0.003" if (run_phase2_b0f or run_phase2_b0g) else "0.006")
-    phase2_dr_actuator_gain_scale_min = "0.995" if (run_phase2_b0f or run_phase2_b0g or run_phase2_terrain_like) else "0.98"
-    phase2_dr_actuator_gain_scale_max = "1.005" if (run_phase2_b0f or run_phase2_b0g or run_phase2_terrain_like) else "1.02"
-    phase2_dr_leg_geometry_jitter_scale = "0.001" if (run_phase2_b0f or run_phase2_b0g or run_phase2_terrain_like) else "0.003"
-    phase2_push_interval_min_s = "1.0" if (run_phase2_b0f or run_phase2_b0g) else "7"
-    phase2_push_interval_max_s = "1.5" if run_phase2_b0g else ("2.0" if run_phase2_b0f else "12")
-    phase2_push_magnitude_min = "0.05" if run_phase2_b0g else ("0.03" if run_phase2_b0f else "0.02")
-    phase2_push_magnitude_max = "0.1" if run_phase2_b0g else ("0.08" if run_phase2_b0f else "0.1")
+    phase2_dr_actuator_gain_scale_min = "0.99" if run_phase2_stage_a_narrow else ("0.995" if (run_phase2_b0f or run_phase2_b0g or run_phase2_terrain_like) else "0.98")
+    phase2_dr_actuator_gain_scale_max = "1.01" if run_phase2_stage_a_narrow else ("1.005" if (run_phase2_b0f or run_phase2_b0g or run_phase2_terrain_like) else "1.02")
+    phase2_dr_leg_geometry_jitter_scale = "0.002" if run_phase2_stage_a_narrow else ("0.001" if (run_phase2_b0f or run_phase2_b0g or run_phase2_terrain_like) else "0.003")
+    phase2_push_interval_min_s = "1.0" if (run_phase2_b0f or run_phase2_b0g or run_phase2_stage_a_narrow) else "7"
+    phase2_push_interval_max_s = "1.5" if (run_phase2_b0g or run_phase2_stage_a_narrow) else ("2.0" if run_phase2_b0f else "12")
+    phase2_push_magnitude_min = "0.075" if run_phase2_stage_a_narrow else ("0.05" if run_phase2_b0g else ("0.03" if run_phase2_b0f else "0.02"))
+    phase2_push_magnitude_max = "0.125" if run_phase2_stage_a_narrow else ("0.1" if run_phase2_b0g else ("0.08" if run_phase2_b0f else "0.1"))
     phase2_noise_level = "0.25" if (run_phase2_b0f or run_phase2_b0g) else "0.5"
     phase2_noise_joint_pos = "0.004" if (run_phase2_b0f or run_phase2_b0g) else "0.0075"
     phase2_noise_joint_vel = "0.4" if (run_phase2_b0f or run_phase2_b0g) else "0.75"
@@ -1371,6 +1428,10 @@ def build_remote_driver(
         else ""
     )
     phase2_restore_checkpoint = (
+        "/content/open-duck-mini-rdkx5/outputs/analysis/"
+        "phase2_health_routed_parent_phase_mod_rate150_step0_checkpoint"
+        if run_phase2_stage_a_narrow
+        else
         "/content/open-duck-mini-rdkx5/outputs/phase2_domain_randomization/"
         "stage_c0_terrain_z002_preserve_from_a2_gpu/smoke_20260628T103743Z_gpu/"
         "2026_06_28_064431_245760"
@@ -1414,7 +1475,9 @@ def build_remote_driver(
         )
     )
     phase2_push_enable_arg = (
-        '"--no-push-enable",'
+        '"--push-enable",'
+        if run_phase2_stage_a_narrow
+        else '"--no-push-enable",'
         if run_phase2_terrain_like
         else '"--push-enable",'
     )
@@ -1593,8 +1656,8 @@ def build_remote_driver(
     if args.phase2_target_rate_scale is not None:
         phase2_target_rate_scale = cli_value(args.phase2_target_rate_scale)
     phase2_bridge_delay_max = "3" if run_phase2_terrain_like else "4"
-    phase2_bridge_tau_max = "0.14" if run_phase2_terrain_like else "0.1"
-    phase2_bridge_per_joint_variation = "0.1" if run_phase2_terrain_like else "0.05"
+    phase2_bridge_tau_max = "0.1" if run_phase2_stage_a_narrow else ("0.14" if run_phase2_terrain_like else "0.1")
+    phase2_bridge_per_joint_variation = "0.05" if run_phase2_stage_a_narrow else ("0.1" if run_phase2_terrain_like else "0.05")
     phase2_terrain_hfield_z_scale = (
         "0.002"
         if run_phase2_z002_tracking_margin or run_phase2_z002_teacher_continuity
@@ -1608,7 +1671,7 @@ def build_remote_driver(
         or run_phase2_right_swing_phase_single_support
         else "0.0025"
         if run_phase2_z0025_boundary
-        else ("0.005" if run_phase2_z005_like else "0.002")
+        else ("0.0075" if run_phase2_stage_a_narrow else ("0.005" if run_phase2_z005_like else "0.002"))
     )
     if args.phase2_terrain_hfield_z_scale is not None:
         phase2_terrain_hfield_z_scale = cli_value(args.phase2_terrain_hfield_z_scale)
@@ -1629,7 +1692,7 @@ def build_remote_driver(
                         or run_phase2_right_swing_phase_advance
                         or run_phase2_right_swing_phase_single_support
                     )
-                    else "0.005"
+                        else ("0.0075" if run_phase2_stage_a_narrow else "0.005")
                 )
             )
         )
@@ -1653,7 +1716,7 @@ def build_remote_driver(
                         or run_phase2_right_swing_phase_advance
                         or run_phase2_right_swing_phase_single_support
                     )
-                    else "z005"
+                        else ("z0075" if run_phase2_stage_a_narrow else "z005")
                 )
             )
         )
@@ -1664,6 +1727,23 @@ def build_remote_driver(
         "tools/report_phase2_z002_tracking_margin_post_training_gates.py"
         if run_phase2_z002_tracking_margin or run_phase2_z002_teacher_continuity
         else "tools/report_phase2_z005_post_training_gates.py"
+    )
+    phase2_policy_network_arg = (
+        '"--ppo-policy-network", "phase_modulated",'
+        '"--phase-modulated-policy-hidden-sizes", "512,256",'
+        '"--phase-modulated-context-hidden-sizes", "64",'
+        '"--phase-modulated-context-indices", "6,99,100",'
+        '"--phase-modulated-activation", "swish",'
+        '"--phase-modulated-scale", "0.5",'
+        '"--phase-modulated-init-scale-logit", "-2",'
+        if run_phase2_stage_a_narrow
+        else ""
+    )
+    phase2_primary_push_gate_specs = (
+        '{"name": f"{primary_label}_x008_gentle_push", "command_x": 0.08, "terrain_z": primary_terrain_z, "push": True},\n'
+        '                {"name": f"{primary_label}_x000_gentle_push", "command_x": 0.0, "terrain_z": primary_terrain_z, "push": True},'
+        if run_phase2_stage_a_narrow
+        else ""
     )
     return textwrap.dedent(
         f"""
@@ -1912,6 +1992,7 @@ def build_remote_driver(
             gate_specs = [
                 {{"name": f"{{primary_label}}_x008_no_push", "command_x": 0.08, "terrain_z": primary_terrain_z, "push": False}},
                 {{"name": f"{{primary_label}}_x000_no_push", "command_x": 0.0, "terrain_z": primary_terrain_z, "push": False}},
+                {phase2_primary_push_gate_specs}
                 {{"name": "z002_x008_no_push_regression", "command_x": 0.08, "terrain_z": 0.002, "push": False}},
                 {{"name": "z002_x000_no_push_regression", "command_x": 0.0, "terrain_z": 0.002, "push": False}},
                 {{"name": "z002_x008_gentle_push_regression", "command_x": 0.08, "terrain_z": 0.002, "push": True}},
@@ -2223,6 +2304,7 @@ def build_remote_driver(
                 "--ppo-num-updates-per-batch", "{phase2_ppo_num_updates_per_batch}",
                 "--restore-checkpoint-path",
                 "{phase2_restore_checkpoint}",
+                {phase2_policy_network_arg}
                 "--ppo-learning-rate", "{phase2_lr}",
                 "--ppo-entropy-cost", "0.001",
                 "--ppo-clipping-epsilon", "{phase2_clip}",
@@ -2850,6 +2932,7 @@ def main() -> int:
             "phase2-right-swing-phase-lift",
             "phase2-right-swing-phase-advance",
             "phase2-right-swing-phase-single-support",
+            "phase2-stage-a-narrow",
             "phase2-z005-support",
             "phase2-z005-motion-floor",
             "staged-curriculum",
