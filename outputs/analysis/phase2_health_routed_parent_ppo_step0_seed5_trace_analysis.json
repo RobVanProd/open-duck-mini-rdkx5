@@ -1,0 +1,91 @@
+{
+  "status": "HOLD_POST_PUSH_SEED5_MARGIN",
+  "scope": "offline_phase2_seed5_trace_analysis",
+  "robot_touched": false,
+  "ssh_performed": false,
+  "deploy_performed": false,
+  "trained": false,
+  "inputs": {
+    "phase_parent": "outputs/analysis/phase2_health_routed_pass_parent_phase_mod_rate150_student/candidate.onnx",
+    "ppo_step0": "outputs/analysis/phase2_health_routed_parent_ppo_loc_rate150_step0.onnx",
+    "ppo_step0_checkpoint": "outputs/analysis/phase2_health_routed_parent_ppo_loc_rate150_step0_checkpoint",
+    "comparison_report": "outputs/analysis/PHASE2_HEALTH_ROUTED_PARENT_PPO_STEP0_SEED5_TRACE_COMPARE.md",
+    "comparison_json": "outputs/analysis/phase2_health_routed_parent_ppo_step0_seed5_trace_compare.json"
+  },
+  "gate_split": {
+    "phase_parent": {
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "samples": 750,
+      "termination": "duration_complete",
+      "mean_vx_m_s": 0.0296,
+      "track_ratio": 0.37,
+      "base_height_min_m": 0.1588,
+      "max_vel_p95_rad_s": 1.5335,
+      "max_tracking_p95_rad": 0.1874
+    },
+    "ppo_step0": {
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "samples": 625,
+      "termination": "fall_or_nan",
+      "mean_vx_m_s": 0.001,
+      "track_ratio": 0.0122,
+      "base_height_min_m": 0.0819,
+      "max_vel_p95_rad_s": 1.5172,
+      "max_tracking_p95_rad": 0.1755
+    }
+  },
+  "same_observation_action_delta": {
+    "phase_parent_observations": {
+      "abs_p50": 0.0024890359,
+      "abs_p95": 0.0079589731,
+      "abs_p99": 0.0108627601,
+      "abs_max": 0.0171248019
+    },
+    "ppo_step0_observations": {
+      "abs_p50": 0.002624182,
+      "abs_p95": 0.0097785573,
+      "abs_p99": 0.0320710499,
+      "abs_max": 0.2783097923,
+      "window_p95_max": {
+        "0_100": [0.0067740083, 0.0125514269],
+        "100_300": [0.0087175604, 0.0222640187],
+        "300_500": [0.0071184389, 0.0162253603],
+        "500_625": [0.0320845786, 0.2783097923],
+        "600_625": [0.1040329773, 0.2783097923]
+      },
+      "first_max_delta_tick": {
+        "gt_0p02": 248,
+        "gt_0p05": 618,
+        "gt_0p10": 619,
+        "gt_0p20": 622
+      }
+    }
+  },
+  "rollout_divergence": {
+    "same_tick_horizon": 625,
+    "base_height_diff_p50_m": 0.0002459288,
+    "base_height_abs_diff_p95_m": 0.0119876027,
+    "base_height_max_abs_diff_m": 0.0810656026,
+    "base_height_final_diff_m": -0.0810656026,
+    "body_pitch_diff_p50_rad": -0.0119960161,
+    "body_pitch_abs_diff_p95_rad": 0.3251719452,
+    "body_pitch_max_abs_diff_rad": 1.5783217002,
+    "vx_diff_mean_m_s": -0.0291983904,
+    "vx_diff_abs_p95_m_s": 0.1361703832,
+    "first_base_height_abs_diff_tick": {
+      "gt_0p01": 541,
+      "gt_0p02": 606,
+      "gt_0p04": 622,
+      "gt_0p06": 624
+    }
+  },
+  "decision": {
+    "classification": "post_push_seed5_margin_loss",
+    "stage_a_dr_allowed_from_this_step0": false,
+    "next": [
+      "Weight or augment seed-5 post-push parent trace samples around ticks 500-625 in the PPO-compatible manifest.",
+      "Rebuild the PPO-loc prior and step-0 checkpoint.",
+      "Run x=0.08 seed-5 screen, then full8 x=0.08 and x=0.0 gates before any DR training."
+    ]
+  }
+}
