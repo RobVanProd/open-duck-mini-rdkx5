@@ -1,0 +1,59 @@
+{
+  "artifact_root": "outputs/analysis/colab_cli_exec_smoke/open-duck-t4-stagea-phase2-stage-a-narrow-20260706T071729Z/extracted_artifacts/open_duck_colab_cli_phase2-stage-a-narrow_20260706T071755Z",
+  "colab_session": "open-duck-t4-stagea",
+  "decision": "Do not promote any Stage A T4 checkpoint from this run.",
+  "hardware": "Tesla T4",
+  "no_robot_ssh_deploy_grounded_replay": true,
+  "status": "HOLD_STAGE_A_NARROW_CHECKPOINT_REJECTED",
+  "training_run": {
+    "elapsed_s": 1440.38,
+    "remote_dir": "/content/open_duck_training_phase2_stage_a_narrow_cli/smoke_20260706T070404Z_gpu",
+    "returncode": 0,
+    "status": "PASS_SMOKE_RUN"
+  },
+  "transport": {
+    "detached_console": "HOLD_REMOTE_NO_SENTINEL after artifacts were produced",
+    "exec_remote_without_memory_flags": "HOLD_CUDA_OOM_DURING_ENV_CONSTRUCTION",
+    "exec_remote_with_memory_flags": "PASS_STAGE_A_EXEC_PATH",
+    "memory_flags": {
+      "XLA_PYTHON_CLIENT_MEM_FRACTION": "0.50",
+      "XLA_PYTHON_CLIENT_PREALLOCATE": "false"
+    }
+  },
+  "checkpoints": [
+    {
+      "decision": "HOLD_REJECT_CANDIDATE_CHECKPOINT",
+      "max_pitch_sent_target_velocity_p95_rad_s": 2.8246,
+      "max_pitch_tracking_p95_rad": 0.2655,
+      "sha256": "7945342301c8619e5515d3fb280d13e6a865224e6e0b909a7100604745f8b98c",
+      "step": 81920,
+      "x0_status": "HOLD_CANDIDATE_TRACKING",
+      "x008_mean_local_vx_m_s": 0.0147,
+      "x008_status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "x008_track_ratio": 0.1834
+    },
+    {
+      "decision": "HOLD_REJECT_CANDIDATE_CHECKPOINT",
+      "max_pitch_sent_target_velocity_p95_rad_s": 2.8254,
+      "max_pitch_tracking_p95_rad": 0.2661,
+      "sha256": "267ab535ab48a83a28520eca527b2e93490e0fb18310f42202b9c5615a415d91",
+      "step": 163840,
+      "x0_status": "HOLD_CANDIDATE_TRACKING",
+      "x008_mean_local_vx_m_s": 0.0168,
+      "x008_status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "x008_track_ratio": 0.2101
+    },
+    {
+      "decision": "HOLD_REJECT_CANDIDATE_CHECKPOINT",
+      "max_pitch_sent_target_velocity_p95_rad_s": 3.3749,
+      "max_pitch_tracking_p95_rad": 0.2664,
+      "sha256": "bbdb4a70e2d30ab1e9a8eca0758472e27f5671788f4a5558a9a2d4c05abc6c3e",
+      "step": 245760,
+      "x0_status": "HOLD_CANDIDATE_TRACKING",
+      "x008_mean_local_vx_m_s": 0.0207,
+      "x008_status": "HOLD_CANDIDATE_TRACKING",
+      "x008_track_ratio": 0.2581
+    }
+  ],
+  "recommended_next": "Keep the proven exec-remote memory-safe T4 path, but adjust the Stage A recipe before launching another full run. The observed failure is tracking plateau plus low progress/over-envelope, not infrastructure."
+}

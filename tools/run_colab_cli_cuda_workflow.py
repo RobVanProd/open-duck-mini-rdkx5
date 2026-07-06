@@ -1393,6 +1393,12 @@ def build_remote_driver(
         if phase2_motion_preserve
         else ""
     )
+    phase2_memory_args = (
+        '"--xla-python-client-preallocate", "false",'
+        '"--xla-python-client-mem-fraction", "0.50",'
+        if run_phase2_stage_a_narrow
+        else ""
+    )
     phase2_dr_friction_min = "0.98" if (run_phase2_terrain_like or run_phase2_stage_a_narrow) else ("0.95" if (run_phase2_b0f or run_phase2_b0g) else "0.8")
     phase2_dr_friction_max = "1.02" if (run_phase2_terrain_like or run_phase2_stage_a_narrow) else ("1.05" if (run_phase2_b0f or run_phase2_b0g) else "1.1")
     phase2_dr_frictionloss_scale_min = "0.995" if (run_phase2_b0f or run_phase2_b0g or run_phase2_terrain_like) else "0.98"
@@ -2284,12 +2290,14 @@ def build_remote_driver(
 
         if {run_phase2_cuda_recipe!r}:
             candidate_name = {args.candidate_name!r} or "{phase2_default_candidate_name}"
+            run(["rm", "-rf", "{phase2_output_root}"], cwd=RDK, timeout=300, check=False)
             phase2_b0d_cmd = [
                 PYTHON, "tools/run_actuator_bridge_training_smoke.py",
                 "--playground-path", str(PLAYGROUND),
                 "--env-python", PYTHON,
                 "--platform", "gpu",
                 "--jax-platforms", "cuda",
+                {phase2_memory_args}
                 "--run",
                 "--output-root", "{phase2_output_root}",
                 "--task", "rough_terrain_backlash",
