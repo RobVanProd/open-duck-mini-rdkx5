@@ -1,0 +1,58 @@
+{
+  "status": "HOLD_STAGE_A_SMOKE_POLICY_REGRESSED",
+  "scope": "offline_phase2_domain_randomization_stage_a_smoke",
+  "robot_touched": false,
+  "ssh_performed": false,
+  "deploy_performed": false,
+  "training_smoke": {
+    "status": "PASS_SMOKE_RUN",
+    "platform": "cpu",
+    "manifest": "outputs/phase2_domain_randomization/health_routed_parent_stage_a_ppo_loc_prior_smoke/smoke_20260706T032431Z_cpu/smoke_manifest.final.json",
+    "manifest_sha256": "d05d60f6755dc24e99e290e594a9022c07090c3be6a7ccc4c7eb97ead55c41b7",
+    "elapsed_s": 300.0785,
+    "exported_onnx": "outputs/phase2_domain_randomization/health_routed_parent_stage_a_ppo_loc_prior_smoke/smoke_20260706T032431Z_cpu/2026_07_05_232735_40960.onnx",
+    "exported_onnx_sha256": "bfe62f293a2fe8c8787632717edcc4642413b4f03b25a187ab5e3800628e21b2"
+  },
+  "behavior_prior": {
+    "status": "PASS_PPO_LOC_BC_FIT_SMOKE",
+    "npz": "outputs/analysis/phase2_health_routed_pass_parent_ppo_loc_rate150_prior/candidate_mlp.npz",
+    "npz_sha256": "a4898be376c496b7f8de96844cb64827ac26b19c575482c622d129bdaefe2e16",
+    "onnx": "outputs/analysis/phase2_health_routed_pass_parent_ppo_loc_rate150_prior/candidate.onnx",
+    "onnx_sha256": "3bb1f33da245ee5e79df9ba55407e465e32ee4b56749c49be0dc5fa80f4dd0e6",
+    "fit_report": "outputs/analysis/PHASE2_HEALTH_ROUTED_PASS_PARENT_PPO_LOC_RATE150_PRIOR.md",
+    "fit_json": "outputs/analysis/phase2_health_routed_pass_parent_ppo_loc_rate150_prior.json"
+  },
+  "x008_screen": {
+    "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+    "report": "outputs/analysis/PHASE2_STAGE_A_PPO_LOC_PRIOR_SMOKE_X008_SEED0_SCREEN.md",
+    "json": "outputs/analysis/phase2_stage_a_ppo_loc_prior_smoke_x008_seed0_screen.json",
+    "json_sha256": "18bd3518222229dcb542606f2c558e17455776e757fb89e4044ff8bd0f390b05",
+    "command_x": 0.08,
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.0075,
+    "pushes_enabled": true,
+    "seed": 0,
+    "samples": 750,
+    "termination": "duration_complete",
+    "mean_local_vx_m_s": 0.0010024778,
+    "track_ratio": 0.0125309723,
+    "body_pitch_p95_rad": 0.0900943667,
+    "base_height_min_m": 0.1597603261,
+    "max_pitch_vel_p95_rad_s": 0.0996895134,
+    "max_tracking_p95_rad": 0.0437639952,
+    "velocity_envelope_excess_rad_s": 0.0,
+    "single_support_pct": 0.0,
+    "double_support_pct": 100.0,
+    "min_swing_segment_count": 0
+  },
+  "decision": {
+    "promote_smoke_onnx": false,
+    "continue_from_smoke_checkpoint": false,
+    "next": [
+      "Use the PPO-loc prior as a behavior-prior or restore/fidelity anchor, not as the replacement parent.",
+      "Add a step-0/pre-update fidelity gate before PPO updates.",
+      "Reduce or stage PPO update strength so Stage A cannot erase single-support motion.",
+      "Gate future checkpoints on x=0.08 and x=0.0 corrected-bridge rough+push screens before promotion."
+    ]
+  }
+}
