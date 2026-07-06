@@ -144,6 +144,11 @@ After any Stage A GPU run, first scan the artifact root:
 python3 tools/report_phase2_stage_a_postrun_status.py
 ```
 
+`tools/launch_phase2_stage_a_rate175_colab.py --run-workflow` runs this scan
+automatically after the workflow command returns and records the result in its
+retry JSON/markdown. Running the scanner manually is still useful when artifacts
+are copied into the artifact root outside the launcher.
+
 If the report returns `PASS_STAGE_A_CHECKPOINTS_READY`, run the
 `sweep_command_shell` recorded in:
 

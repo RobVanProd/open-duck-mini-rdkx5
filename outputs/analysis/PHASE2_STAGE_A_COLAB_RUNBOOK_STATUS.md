@@ -1,7 +1,7 @@
 # Phase 2 Stage A Colab Runbook Status
 
 status: `HOLD_STAGE_A_CHECKPOINTS_MISSING`
-generated_at: `2026-07-06T10:29:47Z`
+generated_at: `2026-07-06T10:32:37Z`
 
 Offline only. No robot, SSH, deploy, grounded replay, training-result promotion,
 or runtime behavior change was performed.
@@ -32,6 +32,8 @@ Post-run checkpoint state:
 - artifact root: `outputs/analysis/colab_cli_stage_a_rate175_prior`
 - exported ONNX checkpoints: `0`
 - post-run report: `outputs/analysis/PHASE2_STAGE_A_POSTRUN_STATUS.md`
+- launcher now runs the post-run checkpoint scan automatically after any
+  `--run-workflow` attempt
 
 ## Next Valid Command
 

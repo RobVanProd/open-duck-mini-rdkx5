@@ -167,6 +167,31 @@ def stage_a_workflow_command(args: argparse.Namespace) -> list[str]:
     return command
 
 
+def postrun_scan_command(args: argparse.Namespace) -> list[str]:
+    return [
+        sys.executable,
+        "tools/report_phase2_stage_a_postrun_status.py",
+        "--artifact-root",
+        str(args.workflow_output_root),
+        "--output-md",
+        str(args.output_dir / "PHASE2_STAGE_A_POSTRUN_STATUS.md"),
+        "--output-json",
+        str(args.output_dir / "phase2_stage_a_postrun_status.json"),
+    ]
+
+
+def read_postrun_status(output_dir: Path) -> str | None:
+    path = output_dir / "phase2_stage_a_postrun_status.json"
+    if not path.exists():
+        return None
+    try:
+        payload = json.loads(path.read_text())
+    except json.JSONDecodeError:
+        return None
+    status = payload.get("status")
+    return str(status) if status else None
+
+
 def write_reports(payload: dict[str, object], output_dir: Path) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
     json_path = output_dir / "phase2_stage_a_rate175_colab_retry.json"
@@ -201,6 +226,18 @@ def write_reports(payload: dict[str, object], output_dir: Path) -> None:
     else:
         workflow_lines = [f"- workflow_started: `{payload.get('workflow_started')}`"]
 
+    postrun = payload.get("postrun_result")
+    postrun_lines = []
+    if isinstance(postrun, dict):
+        postrun_lines = [
+            f"- postrun_scan_started: `{payload.get('postrun_scan_started')}`",
+            f"- postrun_returncode: `{postrun.get('returncode')}`",
+            f"- postrun_timed_out: `{postrun.get('timed_out')}`",
+            f"- postrun_status: `{payload.get('postrun_status')}`",
+        ]
+    else:
+        postrun_lines = [f"- postrun_scan_started: `{payload.get('postrun_scan_started')}`"]
+
     md_path.write_text(
         "\n".join(
             [
@@ -220,6 +257,10 @@ def write_reports(payload: dict[str, object], output_dir: Path) -> None:
                 "## Workflow",
                 "",
                 *workflow_lines,
+                "",
+                "## Post-Run Checkpoint Scan",
+                "",
+                *postrun_lines,
                 "",
                 "## Next",
                 "",
@@ -317,8 +358,10 @@ def main() -> int:
         "wait_interval_s": args.wait_interval_s,
         "no_create": args.no_create,
         "workflow_started": False,
+        "postrun_scan_started": False,
         "allocation_attempts": [],
         "workflow_command": stage_a_workflow_command(args),
+        "postrun_command": postrun_scan_command(args),
     }
 
     session_ready = False
@@ -427,16 +470,37 @@ def main() -> int:
         )
         payload["workflow_started"] = True
         payload["workflow_result"] = workflow_result
-        payload["status"] = (
-            "PASS_WORKFLOW_COMMAND_COMPLETED"
-            if workflow_result.get("returncode") == 0
-            else "HOLD_WORKFLOW_COMMAND_FAILED"
-        )
-        payload["decision"] = (
-            "Inspect the downloaded Stage A artifacts and run checkpoint sweep."
-            if workflow_result.get("returncode") == 0
-            else "Workflow command failed; inspect stdout/stderr in the JSON report."
-        )
+        postrun_result = run_command(postrun_scan_command(args), timeout_s=300)
+        postrun_status = read_postrun_status(args.output_dir)
+        payload["postrun_scan_started"] = True
+        payload["postrun_result"] = postrun_result
+        payload["postrun_status"] = postrun_status
+        workflow_ok = workflow_result.get("returncode") == 0
+        if postrun_status == "PASS_STAGE_A_CHECKPOINTS_READY":
+            payload["status"] = "PASS_STAGE_A_CHECKPOINTS_READY"
+            payload["decision"] = (
+                "Run the sweep_command_shell recorded in the post-run status JSON."
+            )
+        elif postrun_status == "HOLD_STAGE_A_CHECKPOINTS_MISSING":
+            payload["status"] = (
+                "HOLD_STAGE_A_CHECKPOINTS_MISSING"
+                if workflow_ok
+                else "HOLD_WORKFLOW_COMMAND_FAILED"
+            )
+            payload["decision"] = (
+                "No Stage A ONNX checkpoints were found after the workflow. "
+                "Inspect workflow stdout/stderr and rerun on a GPU session."
+            )
+        else:
+            payload["status"] = (
+                "PASS_WORKFLOW_COMMAND_COMPLETED"
+                if workflow_ok
+                else "HOLD_WORKFLOW_COMMAND_FAILED"
+            )
+            payload["decision"] = (
+                "Workflow command returned, but post-run checkpoint scan did "
+                "not produce a readable status. Inspect the JSON report."
+            )
     elif session_ready:
         payload["status"] = "PASS_SESSION_READY_WORKFLOW_NOT_STARTED"
         payload["decision"] = (
