@@ -127,6 +127,17 @@ def build_command(args: argparse.Namespace, output_dir: Path) -> list[str]:
     }
     for flag, value in optional_ppo_overrides.items():
         append_optional(command, flag, value)
+    optional_policy_network_overrides = {
+        "--ppo_policy_network": args.ppo_policy_network,
+        "--phase_modulated_policy_hidden_sizes": args.phase_modulated_policy_hidden_sizes,
+        "--phase_modulated_context_hidden_sizes": args.phase_modulated_context_hidden_sizes,
+        "--phase_modulated_context_indices": args.phase_modulated_context_indices,
+        "--phase_modulated_activation": args.phase_modulated_activation,
+        "--phase_modulated_scale": args.phase_modulated_scale,
+        "--phase_modulated_init_scale_logit": args.phase_modulated_init_scale_logit,
+    }
+    for flag, value in optional_policy_network_overrides.items():
+        append_optional(command, flag, value)
     optional_runner_overrides = {
         "--tracking_lin_vel_scale": args.tracking_lin_vel_scale,
         "--tracking_ang_vel_scale": args.tracking_ang_vel_scale,
@@ -703,6 +714,22 @@ def main() -> int:
     parser.add_argument("--ppo-learning-rate-schedule-min-lr", type=float, default=None)
     parser.add_argument("--ppo-learning-rate-schedule-max-lr", type=float, default=None)
     parser.add_argument(
+        "--ppo-policy-network",
+        choices=["mlp", "phase_modulated"],
+        default=None,
+        help="Optional Playground runner --ppo_policy_network override.",
+    )
+    parser.add_argument("--phase-modulated-policy-hidden-sizes", default=None)
+    parser.add_argument("--phase-modulated-context-hidden-sizes", default=None)
+    parser.add_argument("--phase-modulated-context-indices", default=None)
+    parser.add_argument(
+        "--phase-modulated-activation",
+        choices=["swish", "tanh"],
+        default=None,
+    )
+    parser.add_argument("--phase-modulated-scale", type=float, default=None)
+    parser.add_argument("--phase-modulated-init-scale-logit", type=float, default=None)
+    parser.add_argument(
         "--restore-policy-kl-scale",
         type=float,
         default=None,
@@ -1121,6 +1148,15 @@ def main() -> int:
             "learning_rate_schedule_min_lr": args.ppo_learning_rate_schedule_min_lr,
             "learning_rate_schedule_max_lr": args.ppo_learning_rate_schedule_max_lr,
             "restore_policy_kl_scale": args.restore_policy_kl_scale,
+        },
+        "policy_network": {
+            "ppo_policy_network": args.ppo_policy_network,
+            "phase_modulated_policy_hidden_sizes": args.phase_modulated_policy_hidden_sizes,
+            "phase_modulated_context_hidden_sizes": args.phase_modulated_context_hidden_sizes,
+            "phase_modulated_context_indices": args.phase_modulated_context_indices,
+            "phase_modulated_activation": args.phase_modulated_activation,
+            "phase_modulated_scale": args.phase_modulated_scale,
+            "phase_modulated_init_scale_logit": args.phase_modulated_init_scale_logit,
         },
         "training_recipe_overrides": {
             "tracking_lin_vel_scale": args.tracking_lin_vel_scale,
