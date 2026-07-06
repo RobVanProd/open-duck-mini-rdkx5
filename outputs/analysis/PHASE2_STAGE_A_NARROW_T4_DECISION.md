@@ -1,7 +1,7 @@
 # Phase 2 Stage A Narrow T4 Decision
 
-status: `HOLD_STAGE_A_NARROW_CHECKPOINT_REJECTED`
-generated_at: `2026-07-06T08:02:00Z`
+status: `HOLD_STAGE_A_FLAT_CHECKPOINT_REJECTED`
+generated_at: `2026-07-06T08:36:00Z`
 
 Offline only. No robot, SSH, deploy, grounded replay, or runtime behavior change was performed.
 
@@ -17,44 +17,54 @@ Offline only. No robot, SSH, deploy, grounded replay, or runtime behavior change
 
 ## Transport Findings
 
-- Detached Colab console mode lost the remote exit sentinel after training artifacts were produced.
+- The first detached Colab console attempt completed training but lost the remote exit sentinel after artifacts were produced.
 - Plain `colab exec` reached the training command but hit CUDA OOM during MJX env construction.
-- `colab exec` with `XLA_PYTHON_CLIENT_PREALLOCATE=false` and `XLA_PYTHON_CLIENT_MEM_FRACTION=0.50` completed a bounded Stage A diagnostic and packaged artifacts.
-- The Stage A workflow now defaults to those T4-safe memory flags and clears the remote Stage A output root before training to avoid stale artifact mixing.
+- `colab exec` with `XLA_PYTHON_CLIENT_PREALLOCATE=false` and `XLA_PYTHON_CLIENT_MEM_FRACTION=0.50` is the working T4 path.
+- A stale Colab T4 session had to be stopped and recreated before the corrected Stage A run.
+- The prior T4 artifact used rough terrain/push difficulty and is superseded for Stage A curriculum decisions.
 
-## Stage A Run
+## Corrected Stage A Run
 
-- remote run: `/content/open_duck_training_phase2_stage_a_narrow_cli/smoke_20260706T070404Z_gpu`
-- local artifact root: `outputs/analysis/colab_cli_exec_smoke/open-duck-t4-stagea-phase2-stage-a-narrow-20260706T071729Z/extracted_artifacts/open_duck_colab_cli_phase2-stage-a-narrow_20260706T071755Z`
+This is the first fair Stage A run after aligning the workflow with the requested curriculum:
+
+- task: `flat_terrain_backlash`
+- pushes: `disabled`
+- terrain heightfield: `none`
+- narrow DR: enabled
+- corrected actuator bridge: enabled
+- remote run: `/content/open_duck_training_phase2_stage_a_narrow_cli/smoke_20260706T081336Z_gpu`
+- local artifact root: `outputs/analysis/colab_cli_stage_a_flat/open-duck-t4-stagea-phase2-stage-a-narrow-20260706T081244Z/extracted_artifacts/open_duck_colab_cli_phase2-stage-a-narrow_20260706T081308Z`
 - training status: `PASS_SMOKE_RUN`
 - return code: `0`
-- elapsed: `1440.38s`
+- elapsed: `870.09s`
 - reward steps:
-  - `0`: `40.2120`
-  - `81920`: `45.7926`
-  - `163840`: `45.9004`
-  - `245760`: `52.6605`
+  - `0`: `42.9856`
+  - `81920`: `54.6414`
+  - `163840`: `51.1143`
+  - `245760`: `51.4577`
 
 ## Exported Checkpoints
 
 | step | sha256 |
 |---:|---|
-| `81920` | `7945342301c8619e5515d3fb280d13e6a865224e6e0b909a7100604745f8b98c` |
-| `163840` | `267ab535ab48a83a28520eca527b2e93490e0fb18310f42202b9c5615a415d91` |
-| `245760` | `bbdb4a70e2d30ab1e9a8eca0758472e27f5671788f4a5558a9a2d4c05abc6c3e` |
+| `81920` | `30a7cf3a964a4cb9891db46b23aaebec214741871a678fe735d46321728dd28b` |
+| `163840` | `99d4922bab86670f59b1ad1526af9a3685c7e4a4ffe0e9a11f83999ff18d5c28` |
+| `245760` | `2ed742ac1af9ca71699d2ce029285e8debb67ce88389bbd29ac961b5fd14941d` |
 
 ## Checkpoint Triage
 
 Triage command: `tools/sweep_candidate_checkpoints.py`, corrected bridge, fitted mode, CPU eval, commands `0.0,0.08`, duration `1.0s`.
 
-| checkpoint | x=0.0 status | x=0.08 status | x=0.08 vx | x=0.08 track ratio | max pitch vel p95 | max tracking p95 | decision |
-|---|---|---|---:|---:|---:|---:|---|
-| `81920` | `HOLD_CANDIDATE_TRACKING` | `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` | `0.0147` | `0.1834` | `2.8246` | `0.2655` | `HOLD_REJECT_CANDIDATE_CHECKPOINT` |
-| `163840` | `HOLD_CANDIDATE_TRACKING` | `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` | `0.0168` | `0.2101` | `2.8254` | `0.2661` | `HOLD_REJECT_CANDIDATE_CHECKPOINT` |
-| `245760` | `HOLD_CANDIDATE_TRACKING` | `HOLD_CANDIDATE_TRACKING` | `0.0207` | `0.2581` | `3.3749` | `0.2664` | `HOLD_REJECT_CANDIDATE_CHECKPOINT` |
+| checkpoint | x=0.0 status | x=0.08 status | x=0.08 vx | x=0.08 track ratio | max pitch vel p95 | envelope | max tracking p95 | decision |
+|---|---|---|---:|---:|---:|---|---:|---|
+| `81920` | `HOLD_CANDIDATE_TRACKING` | `HOLD_CANDIDATE_TRACKING` | `0.0222` | `0.2781` | `3.3839` | `ABOVE_MEASURED_ENVELOPE` | `0.2651` | `HOLD_REJECT_CANDIDATE_CHECKPOINT` |
+| `163840` | `HOLD_CANDIDATE_TRACKING` | `HOLD_CANDIDATE_TRACKING` | `0.0213` | `0.2664` | `3.4042` | `ABOVE_MEASURED_ENVELOPE` | `0.2655` | `HOLD_REJECT_CANDIDATE_CHECKPOINT` |
+| `245760` | `HOLD_CANDIDATE_TRACKING` | `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` | `0.0154` | `0.1919` | `2.8349` | `INSIDE_MEASURED_ENVELOPE` | `0.2659` | `HOLD_REJECT_CANDIDATE_CHECKPOINT` |
 
 ## Decision
 
-Stage A narrow DR can run on Colab T4 when using `colab exec` plus explicit XLA memory controls, but this Stage A run did not produce a promotable checkpoint. The latest checkpoint improved forward motion, but it exceeded the corrected velocity envelope and remained on the tracking plateau.
+The corrected Stage A flat/no-push curriculum runs successfully on Colab T4 with pinned JAX `0.7.2` and explicit memory controls, but it did not produce a promotable checkpoint.
 
-Next aligned work is a recipe adjustment that preserves the Stage A execution path while adding a stronger continuity/teacher constraint or reducing the DR/push difficulty. Do not promote any Stage A T4 checkpoint from this run to robot validation.
+The early checkpoints preserve some forward motion but exceed the corrected velocity envelope and remain on the tracking plateau. The latest checkpoint stays inside the envelope but loses too much forward progress. Do not promote any checkpoint from this run to full gates or robot validation.
+
+Next aligned work is a Stage A recipe change that keeps the flat/no-push curriculum but restores behavior continuity more directly. The failure is no longer Colab infrastructure; it is the same deployable-student plateau: tracking p95 around `0.265 rad`, with either over-envelope motion or low progress.
