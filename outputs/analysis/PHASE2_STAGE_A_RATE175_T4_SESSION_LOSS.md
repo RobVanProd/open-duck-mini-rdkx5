@@ -55,4 +55,4 @@ The local `colab exec` process remained blocked after the remote session disappe
 
 This run is useful evidence that the valid Stage A command starts correctly on T4 and reaches the first PPO evaluation from the true rate175 warm-start, but it produced no checkpoint and cannot be swept or promoted.
 
-Next step remains the same: rerun the valid Stage A rate175 workflow on a stable Colab T4 session, then sweep exported checkpoints. Do not substitute this partial run or the CPU smoke for a Phase 2 gate.
+Next step remains the same: rerun the valid Stage A rate175 workflow on a stable Colab T4 session, then sweep exported checkpoints. Prefer the retry launcher's detached console mode so a disappearing hosted runtime is recorded by polling rather than leaving a local `colab exec` wait behind. Do not substitute this partial run or the CPU smoke for a Phase 2 gate.

@@ -63,7 +63,7 @@ def session_exists(status_result: dict[str, object]) -> bool:
 
 
 def stage_a_workflow_command(args: argparse.Namespace) -> list[str]:
-    return [
+    command = [
         sys.executable,
         "tools/run_colab_cli_cuda_workflow.py",
         "--session",
@@ -72,12 +72,11 @@ def stage_a_workflow_command(args: argparse.Namespace) -> list[str]:
         "phase2-stage-a-narrow",
         "--run",
         "--skip-audit",
-        "--exec-remote",
-        "--exec-remote-timeout-s",
-        str(args.exec_remote_timeout_s),
         "--phase2-skip-post-training-gates",
         "--remote-artifact-interval-s",
         "0",
+        "--timeout-s",
+        str(args.workflow_timeout_s),
         "--candidate-behavior-prior-mlp-npz",
         "outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate/candidate_mlp.npz",
         "--candidate-behavior-prior-scale",
@@ -89,6 +88,9 @@ def stage_a_workflow_command(args: argparse.Namespace) -> list[str]:
         "--output-root",
         str(args.workflow_output_root),
     ]
+    if args.execution_mode == "exec":
+        command.extend(["--exec-remote", "--exec-remote-timeout-s", str(args.exec_remote_timeout_s)])
+    return command
 
 
 def write_reports(payload: dict[str, object], output_dir: Path) -> None:
@@ -162,7 +164,17 @@ def main() -> int:
     parser.add_argument("--delay-s", type=float, default=300.0)
     parser.add_argument("--status-timeout-s", type=int, default=30)
     parser.add_argument("--new-timeout-s", type=int, default=60)
+    parser.add_argument("--workflow-timeout-s", type=int, default=14400)
     parser.add_argument("--exec-remote-timeout-s", type=int, default=14400)
+    parser.add_argument(
+        "--execution-mode",
+        choices=["detached", "exec"],
+        default="detached",
+        help=(
+            "Use detached console polling by default. The exec mode blocks "
+            "inside colab exec and can hang if the hosted runtime disappears."
+        ),
+    )
     parser.add_argument(
         "--run-workflow",
         action="store_true",
