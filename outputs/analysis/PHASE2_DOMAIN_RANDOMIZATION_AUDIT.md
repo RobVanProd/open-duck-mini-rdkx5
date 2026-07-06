@@ -1,7 +1,7 @@
 # Phase 2 Domain Randomization Audit
 
-status: `PASS_PHASE2_READY_TO_DRY_RUN`
-playground_path: `/home/lsd/robots/Open_Duck_Playground`
+status: `HOLD_PHASE2_NOT_READY`
+playground_path: `../Open_Duck_Playground`
 
 This is an offline static audit. It did not train, SSH, deploy, or move the robot.
 
@@ -26,23 +26,25 @@ This is an offline static audit. It did not train, SSH, deploy, or move the robo
 
 ## Warm-Start Gate
 
-status: `PASS_TRAINABLE_CHECKPOINT_PRESENT`
+status: `HOLD_TRAINABLE_WARMSTART_CHECKPOINT_MISSING`
 
-A verified PPO step-0 Orbax checkpoint exists for the promoted rate165 candidate. The fidelity report proves the exported checkpoint policy matches the PPO-loc warm-start ONNX at action level before PPO updates.
+The current deployable parent is phase/context-conditioned and passes the corrected-bridge gates, but the standard PPO-loc compression path is rejected by the latest seed-tradeoff decision. A phase/context-preserving restorable PPO actor is required before Phase 2 DR can launch.
 
 Artifacts:
 
-- ONNX: `/home/lsd/robots/open-duck-mini-rdkx5/policy/candidates/phase2_corrected_live_oracle_iter1_rate165_20260703/candidate.onnx`
+- ONNX: `/home/lsd/robots/open-duck-mini-rdkx5/policy/candidates/phase2_health_routed_parent_phase_mod_rate150_20260706/candidate.onnx`
 - ONNX exists: `True`
-- ONNX sha256: `e06643e5790217075d9c7a0d1e1ac262652058592b374ac0446bdd0426d0ea33`
-- BC MLP NPZ: `/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/phase2_rate165_ppo_loc_warmstart_candidate/candidate_mlp.npz`
+- ONNX sha256: `5cadefcb3582043eb989a0e7c65ea9e2702a0815ba46c9ffe1c70b1f68f1db8f`
+- BC MLP NPZ: `/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/phase2_health_routed_pass_parent_phase_mod_rate150_student/candidate_mlp.npz`
 - BC MLP NPZ exists: `True`
-- BC MLP NPZ sha256: `08aa820651b20ab43d65dde63382e7e8b7998ae213d4f1bd67eeaa7385d52205`
-- restore checkpoint: `/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/phase2_rate165_ppo_loc_warmstart_step0_checkpoint`
-- restore checkpoint exists: `True`
-- warm-start fidelity status: `PASS_PPO_BC_WARMSTART_STEP0_EXPORT_FIDELITY`
-- warm-start fidelity p95 abs error: `1.1920928955078125e-07`
-- warm-start fidelity max abs error: `2.682209014892578e-07`
+- BC MLP NPZ sha256: `1e22aa3c06a451e3ee4da32e58c6b45b881cdf87ea8ed8738c541b6dccb3e9c8`
+- restore checkpoint: `/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/phase2_health_routed_parent_phase_mod_rate150_step0_checkpoint`
+- restore checkpoint exists: `False`
+- warm-start fidelity status: `None`
+- warm-start fidelity p95 abs error: `None`
+- warm-start fidelity max abs error: `None`
+- compression decision: `/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/phase2_ppo_loc_compression_seed5_augmentation_decision.json`
+- compression decision status: `HOLD_PPO_LOC_COMPRESSION_SEED_TRADEOFF`
 
 ## Terrain / Contact
 
@@ -51,7 +53,7 @@ Artifacts:
 
 ## Blockers
 
-- none
+- `HOLD_TRAINABLE_WARMSTART_CHECKPOINT_MISSING`
 
 ## Warnings
 
@@ -59,7 +61,7 @@ Artifacts:
 
 ## Recommendation
 
-Use the verified step-0 PPO checkpoint as the Phase 2 trainable
-warm-start. Before the full curriculum, add or configure staged DR
-range controls and leg-geometry jitter, then run Stage A and gate it
-against the corrected bridge before advancing.
+Do not launch Stage A DR until the passing phase/context-conditioned
+parent is available as a restorable PPO checkpoint. The next aligned
+work is a phase/context-preserving PPO actor/export path, followed by
+the same corrected-bridge x=0.08 and x=0.0 full8 gates.

@@ -22,17 +22,19 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_PLAYGROUND = ROOT.parent / "Open_Duck_Playground"
 DEFAULT_POLICY = (
     ROOT
-    / "policy/candidates/phase2_corrected_live_oracle_iter1_rate165_20260703/candidate.onnx"
+    / "policy/candidates/phase2_health_routed_parent_phase_mod_rate150_20260706/candidate.onnx"
 )
 DEFAULT_POLICY_NPZ = (
-    ROOT
-    / "outputs/analysis/phase2_rate165_ppo_loc_warmstart_candidate/candidate_mlp.npz"
+    ROOT / "outputs/analysis/phase2_health_routed_pass_parent_phase_mod_rate150_student/candidate_mlp.npz"
 )
 DEFAULT_RESTORE_CHECKPOINT = (
-    ROOT / "outputs/analysis/phase2_rate165_ppo_loc_warmstart_step0_checkpoint"
+    ROOT / "outputs/analysis/phase2_health_routed_parent_phase_mod_rate150_step0_checkpoint"
 )
 DEFAULT_WARMSTART_FIDELITY = (
-    ROOT / "outputs/analysis/phase2_rate165_ppo_loc_warmstart_step0_export_fidelity.json"
+    ROOT / "outputs/analysis/phase2_health_routed_parent_phase_mod_rate150_step0_fidelity.json"
+)
+DEFAULT_COMPRESSION_DECISION = (
+    ROOT / "outputs/analysis/phase2_ppo_loc_compression_seed5_augmentation_decision.json"
 )
 DEFAULT_OUTPUT_MD = ROOT / "outputs/analysis/PHASE2_DOMAIN_RANDOMIZATION_AUDIT.md"
 DEFAULT_OUTPUT_JSON = ROOT / "outputs/analysis/phase2_domain_randomization_audit.json"
@@ -99,6 +101,30 @@ def warmstart_fidelity_status(path: Path) -> dict[str, Any]:
     return info
 
 
+def compression_decision_status(path: Path) -> dict[str, Any]:
+    info = file_info(path)
+    info["status"] = "MISSING"
+    if not path.exists():
+        return info
+    try:
+        payload = json.loads(path.read_text())
+    except json.JSONDecodeError as exc:
+        info["status"] = "INVALID_JSON"
+        info["error"] = str(exc)
+        return info
+    decision_status = payload.get("status")
+    info["decision_status"] = decision_status
+    info["decision"] = payload.get("decision")
+    info["next_work"] = payload.get("next_work")
+    if decision_status == "PASS_PHASE_CONTEXT_PPO_WARMSTART_READY":
+        info["status"] = "PASS"
+    elif isinstance(decision_status, str) and decision_status.startswith("HOLD_"):
+        info["status"] = "HOLD"
+    else:
+        info["status"] = "UNKNOWN"
+    return info
+
+
 def audit(args: argparse.Namespace) -> dict[str, Any]:
     playground = Path(args.playground_path)
     common_randomize = playground / "playground/common/randomize.py"
@@ -122,8 +148,10 @@ def audit(args: argparse.Namespace) -> dict[str, Any]:
     restore_checkpoint = Path(args.restore_checkpoint) if args.restore_checkpoint else None
     warmstart_fidelity = Path(args.warmstart_fidelity)
     fidelity = warmstart_fidelity_status(warmstart_fidelity)
+    compression_decision = compression_decision_status(Path(args.compression_decision))
     checkpoint_present = restore_checkpoint is not None and restore_checkpoint.exists()
     fidelity_pass = fidelity.get("status") == "PASS"
+    compression_hold = compression_decision.get("status") == "HOLD"
 
     hooks: dict[str, dict[str, Any]] = {
         "friction_randomization": {
@@ -255,18 +283,26 @@ def audit(args: argparse.Namespace) -> dict[str, Any]:
         "candidate_mlp_npz": file_info(candidate_npz),
         "restore_checkpoint": file_info(restore_checkpoint) if restore_checkpoint else None,
         "warmstart_fidelity": fidelity,
+        "compression_decision": compression_decision,
         "status": "PASS_TRAINABLE_CHECKPOINT_PRESENT"
-        if checkpoint_present and fidelity_pass
+        if checkpoint_present and fidelity_pass and not compression_hold
         else "HOLD_TRAINABLE_WARMSTART_CHECKPOINT_MISSING",
         "reason": (
-            "A verified PPO step-0 Orbax checkpoint exists for the promoted "
-            "rate165 candidate. The fidelity report proves the exported "
-            "checkpoint policy matches the PPO-loc warm-start ONNX at action "
-            "level before PPO updates."
-            if checkpoint_present and fidelity_pass
-            else "Current Playground PPO warm-start path uses --restore_checkpoint_path "
-            "for an Orbax checkpoint. The deployable candidate must be "
-            "converted or recovered as a trainable checkpoint before Phase 2."
+            "A verified PPO step-0 Orbax checkpoint exists and no newer "
+            "compression decision rejects it."
+            if checkpoint_present and fidelity_pass and not compression_hold
+            else (
+                "The current deployable parent is phase/context-conditioned and "
+                "passes the corrected-bridge gates, but the standard PPO-loc "
+                "compression path is rejected by the latest seed-tradeoff "
+                "decision. A phase/context-preserving restorable PPO actor is "
+                "required before Phase 2 DR can launch."
+                if compression_hold
+                else "Current Playground PPO warm-start path uses "
+                "--restore_checkpoint_path for an Orbax checkpoint. The "
+                "deployable candidate must be converted or recovered as a "
+                "trainable checkpoint before Phase 2."
+            )
         ),
     }
 
@@ -338,6 +374,8 @@ def write_markdown(result: dict[str, Any], path: Path) -> None:
             f"- warm-start fidelity status: `{result['trainable_warmstart']['warmstart_fidelity'].get('report_status')}`",
             f"- warm-start fidelity p95 abs error: `{result['trainable_warmstart']['warmstart_fidelity'].get('p95_abs_error')}`",
             f"- warm-start fidelity max abs error: `{result['trainable_warmstart']['warmstart_fidelity'].get('max_abs_error')}`",
+            f"- compression decision: `{result['trainable_warmstart']['compression_decision']['path']}`",
+            f"- compression decision status: `{result['trainable_warmstart']['compression_decision'].get('decision_status')}`",
             "",
             "## Terrain / Contact",
             "",
@@ -362,10 +400,10 @@ def write_markdown(result: dict[str, Any], path: Path) -> None:
             "",
             "## Recommendation",
             "",
-            "Use the verified step-0 PPO checkpoint as the Phase 2 trainable",
-            "warm-start. Before the full curriculum, add or configure staged DR",
-            "range controls and leg-geometry jitter, then run Stage A and gate it",
-            "against the corrected bridge before advancing.",
+            "Do not launch Stage A DR until the passing phase/context-conditioned",
+            "parent is available as a restorable PPO checkpoint. The next aligned",
+            "work is a phase/context-preserving PPO actor/export path, followed by",
+            "the same corrected-bridge x=0.08 and x=0.0 full8 gates.",
         ]
     )
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -379,6 +417,7 @@ def main() -> int:
     parser.add_argument("--candidate-npz", default=str(DEFAULT_POLICY_NPZ))
     parser.add_argument("--restore-checkpoint", default=str(DEFAULT_RESTORE_CHECKPOINT))
     parser.add_argument("--warmstart-fidelity", default=str(DEFAULT_WARMSTART_FIDELITY))
+    parser.add_argument("--compression-decision", default=str(DEFAULT_COMPRESSION_DECISION))
     parser.add_argument("--output-md", default=str(DEFAULT_OUTPUT_MD))
     parser.add_argument("--output-json", default=str(DEFAULT_OUTPUT_JSON))
     args = parser.parse_args()

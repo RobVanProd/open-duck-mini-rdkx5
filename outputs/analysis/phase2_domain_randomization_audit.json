@@ -1,13 +1,15 @@
 {
-  "blockers": [],
+  "blockers": [
+    "HOLD_TRAINABLE_WARMSTART_CHECKPOINT_MISSING"
+  ],
   "files": {
-    "common_randomize": "/home/lsd/robots/Open_Duck_Playground/playground/common/randomize.py",
-    "common_runner": "/home/lsd/robots/Open_Duck_Playground/playground/common/runner.py",
-    "constants": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/constants.py",
-    "flat_xml": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/scene_flat_terrain_backlash.xml",
-    "joystick": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/joystick.py",
-    "rough_xml": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/scene_rough_terrain_backlash.xml",
-    "runner": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/runner.py"
+    "common_randomize": "../Open_Duck_Playground/playground/common/randomize.py",
+    "common_runner": "../Open_Duck_Playground/playground/common/runner.py",
+    "constants": "../Open_Duck_Playground/playground/open_duck_mini_v2/constants.py",
+    "flat_xml": "../Open_Duck_Playground/playground/open_duck_mini_v2/xmls/scene_flat_terrain_backlash.xml",
+    "joystick": "../Open_Duck_Playground/playground/open_duck_mini_v2/joystick.py",
+    "rough_xml": "../Open_Duck_Playground/playground/open_duck_mini_v2/xmls/scene_rough_terrain_backlash.xml",
+    "runner": "../Open_Duck_Playground/playground/open_duck_mini_v2/runner.py"
   },
   "flat_floor_friction_xml": "0.6",
   "hooks": {
@@ -69,42 +71,51 @@
       "status": "PRESENT"
     }
   },
-  "playground_path": "/home/lsd/robots/Open_Duck_Playground",
+  "playground_path": "../Open_Duck_Playground",
   "rough_floor_friction_xml": "1.0",
-  "status": "PASS_PHASE2_READY_TO_DRY_RUN",
+  "status": "HOLD_PHASE2_NOT_READY",
   "trainable_warmstart": {
     "candidate_mlp_npz": {
       "exists": true,
-      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/phase2_rate165_ppo_loc_warmstart_candidate/candidate_mlp.npz",
-      "sha256": "08aa820651b20ab43d65dde63382e7e8b7998ae213d4f1bd67eeaa7385d52205",
-      "size_bytes": 876828
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/phase2_health_routed_pass_parent_phase_mod_rate150_student/candidate_mlp.npz",
+      "sha256": "1e22aa3c06a451e3ee4da32e58c6b45b881cdf87ea8ed8738c541b6dccb3e9c8",
+      "size_bytes": 888338
+    },
+    "compression_decision": {
+      "decision": "Do not launch Stage A DR from any PPO-loc step-0 variant in this report.",
+      "decision_status": "HOLD_PPO_LOC_COMPRESSION_SEED_TRADEOFF",
+      "exists": true,
+      "next_work": [
+        "Preserve phase/context conditioning in the restorable PPO actor path.",
+        "Build a step-0 checkpoint with action fidelity to the passing parent.",
+        "Re-run x=0.08 and x=0.0 rough+push full8 gates before Stage A DR."
+      ],
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/phase2_ppo_loc_compression_seed5_augmentation_decision.json",
+      "sha256": "b9b37458fb9620811bb1a1e0cb8006a161dc551c529e11ff7efcf91d9eee4912",
+      "size_bytes": 2484,
+      "status": "HOLD"
     },
     "policy_onnx": {
       "exists": true,
-      "path": "/home/lsd/robots/open-duck-mini-rdkx5/policy/candidates/phase2_corrected_live_oracle_iter1_rate165_20260703/candidate.onnx",
-      "sha256": "e06643e5790217075d9c7a0d1e1ac262652058592b374ac0446bdd0426d0ea33",
-      "size_bytes": 886302
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/policy/candidates/phase2_health_routed_parent_phase_mod_rate150_20260706/candidate.onnx",
+      "sha256": "5cadefcb3582043eb989a0e7c65ea9e2702a0815ba46c9ffe1c70b1f68f1db8f",
+      "size_bytes": 885758
     },
-    "reason": "A verified PPO step-0 Orbax checkpoint exists for the promoted rate165 candidate. The fidelity report proves the exported checkpoint policy matches the PPO-loc warm-start ONNX at action level before PPO updates.",
+    "reason": "The current deployable parent is phase/context-conditioned and passes the corrected-bridge gates, but the standard PPO-loc compression path is rejected by the latest seed-tradeoff decision. A phase/context-preserving restorable PPO actor is required before Phase 2 DR can launch.",
     "required_by_phase2": true,
     "restore_checkpoint": {
-      "exists": true,
-      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/phase2_rate165_ppo_loc_warmstart_step0_checkpoint",
+      "exists": false,
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/phase2_health_routed_parent_phase_mod_rate150_step0_checkpoint",
       "sha256": null,
       "size_bytes": null
     },
-    "status": "PASS_TRAINABLE_CHECKPOINT_PRESENT",
+    "status": "HOLD_TRAINABLE_WARMSTART_CHECKPOINT_MISSING",
     "warmstart_fidelity": {
-      "exists": true,
-      "max_abs_error": 2.682209014892578e-07,
-      "output_checkpoint": "outputs/analysis/phase2_rate165_ppo_loc_warmstart_step0_checkpoint",
-      "p95_abs_error": 1.1920928955078125e-07,
-      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/phase2_rate165_ppo_loc_warmstart_step0_export_fidelity.json",
-      "reference_onnx": "outputs/analysis/phase2_rate165_ppo_loc_warmstart_candidate/candidate.onnx",
-      "report_status": "PASS_PPO_BC_WARMSTART_STEP0_EXPORT_FIDELITY",
-      "sha256": "f541998aec1ec3d4d29ac588b39fb866cbad74a5bd21a97d0f40e89d143cf8f0",
-      "size_bytes": 1285,
-      "status": "PASS"
+      "exists": false,
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/phase2_health_routed_parent_phase_mod_rate150_step0_fidelity.json",
+      "sha256": null,
+      "size_bytes": null,
+      "status": "MISSING"
     }
   },
   "warnings": []
