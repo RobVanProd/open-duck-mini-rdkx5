@@ -1399,6 +1399,11 @@ def build_remote_driver(
         if run_phase2_stage_a_narrow
         else ""
     )
+    phase2_training_task = (
+        "flat_terrain_backlash"
+        if run_phase2_stage_a_narrow
+        else "rough_terrain_backlash"
+    )
     phase2_dr_friction_min = "0.98" if (run_phase2_terrain_like or run_phase2_stage_a_narrow) else ("0.95" if (run_phase2_b0f or run_phase2_b0g) else "0.8")
     phase2_dr_friction_max = "1.02" if (run_phase2_terrain_like or run_phase2_stage_a_narrow) else ("1.05" if (run_phase2_b0f or run_phase2_b0g) else "1.1")
     phase2_dr_frictionloss_scale_min = "0.995" if (run_phase2_b0f or run_phase2_b0g or run_phase2_terrain_like) else "0.98"
@@ -1481,7 +1486,7 @@ def build_remote_driver(
         )
     )
     phase2_push_enable_arg = (
-        '"--push-enable",'
+        '"--no-push-enable",'
         if run_phase2_stage_a_narrow
         else '"--no-push-enable",'
         if run_phase2_terrain_like
@@ -1681,6 +1686,11 @@ def build_remote_driver(
     )
     if args.phase2_terrain_hfield_z_scale is not None:
         phase2_terrain_hfield_z_scale = cli_value(args.phase2_terrain_hfield_z_scale)
+    phase2_terrain_hfield_arg = (
+        ""
+        if run_phase2_stage_a_narrow and args.phase2_terrain_hfield_z_scale is None
+        else f'"--terrain-hfield-z-scale", "{phase2_terrain_hfield_z_scale}",'
+    )
     phase2_primary_terrain_z = (
         "0.002"
         if run_phase2_z002_tracking_margin or run_phase2_z002_teacher_continuity
@@ -1729,6 +1739,13 @@ def build_remote_driver(
     )
     if args.phase2_terrain_hfield_z_scale is not None:
         phase2_primary_terrain_label = terrain_label(phase2_terrain_hfield_z_scale)
+    if run_phase2_stage_a_narrow and args.phase2_terrain_hfield_z_scale is None:
+        phase2_primary_terrain_z_expr = "None"
+        phase2_primary_terrain_label = "flat"
+        phase2_gate_task = "flat_terrain_backlash"
+    else:
+        phase2_primary_terrain_z_expr = f'float("{phase2_primary_terrain_z}")'
+        phase2_gate_task = "rough_terrain_backlash"
     phase2_post_training_reporter = (
         "tools/report_phase2_z002_tracking_margin_post_training_gates.py"
         if run_phase2_z002_tracking_margin or run_phase2_z002_teacher_continuity
@@ -1745,11 +1762,21 @@ def build_remote_driver(
         if run_phase2_stage_a_narrow
         else ""
     )
-    phase2_primary_push_gate_specs = (
-        '{"name": f"{primary_label}_x008_gentle_push", "command_x": 0.08, "terrain_z": primary_terrain_z, "push": True},\n'
-        '                {"name": f"{primary_label}_x000_gentle_push", "command_x": 0.0, "terrain_z": primary_terrain_z, "push": True},'
+    phase2_primary_push_gate_specs = ""
+    phase2_regression_gate_specs = (
+        ""
         if run_phase2_stage_a_narrow
-        else ""
+        else (
+            '{"name": "z002_x008_no_push_regression", "command_x": 0.08, "terrain_z": 0.002, "push": False},\n'
+            '                {"name": "z002_x000_no_push_regression", "command_x": 0.0, "terrain_z": 0.002, "push": False},\n'
+            '                {"name": "z002_x008_gentle_push_regression", "command_x": 0.08, "terrain_z": 0.002, "push": True},\n'
+            '                {"name": "z002_x000_gentle_push_regression", "command_x": 0.0, "terrain_z": 0.002, "push": True},'
+        )
+    )
+    phase2_regression_note = (
+        "- Later terrain/push gates are intentionally omitted from Stage A."
+        if run_phase2_stage_a_narrow
+        else "- The z=0.002 no-push and gentle-push gates are regression checks for the packaged gain099 candidate behavior."
     )
     return textwrap.dedent(
         f"""
@@ -1943,12 +1970,11 @@ def build_remote_driver(
                 "--env-python", PYTHON,
                 "--seeds", "0-7",
                 "--command-x", str(spec["command_x"]),
-                "--task", "rough_terrain_backlash",
+                "--task", "{phase2_gate_task}",
                 "--duration", "15",
                 "--bridge-mode", "fitted",
                 "--mode-name", "fitted",
                 "--jax-platform", "cpu",
-                "--terrain-hfield-z-scale", str(spec["terrain_z"]),
                 "--sim-preflight-timeout-s", "600",
                 "--closed-loop-timeout-s", "2400",
                 "--output-dir", str(gate_dir),
@@ -1956,6 +1982,8 @@ def build_remote_driver(
                 "--output-json", str(gate_dir / "candidate_seed_sweep.json"),
                 "--run",
             ]
+            if spec.get("terrain_z") is not None:
+                gate_cmd.extend(["--terrain-hfield-z-scale", str(spec["terrain_z"])])
             if spec.get("push"):
                 gate_cmd.extend([
                     "--eval-push-enable",
@@ -1994,15 +2022,12 @@ def build_remote_driver(
 
         def run_phase2_z005_post_training_gates(policy, candidate_name):
             primary_label = "{phase2_primary_terrain_label}"
-            primary_terrain_z = float("{phase2_primary_terrain_z}")
+            primary_terrain_z = {phase2_primary_terrain_z_expr}
             gate_specs = [
                 {{"name": f"{{primary_label}}_x008_no_push", "command_x": 0.08, "terrain_z": primary_terrain_z, "push": False}},
                 {{"name": f"{{primary_label}}_x000_no_push", "command_x": 0.0, "terrain_z": primary_terrain_z, "push": False}},
                 {phase2_primary_push_gate_specs}
-                {{"name": "z002_x008_no_push_regression", "command_x": 0.08, "terrain_z": 0.002, "push": False}},
-                {{"name": "z002_x000_no_push_regression", "command_x": 0.0, "terrain_z": 0.002, "push": False}},
-                {{"name": "z002_x008_gentle_push_regression", "command_x": 0.08, "terrain_z": 0.002, "push": True}},
-                {{"name": "z002_x000_gentle_push_regression", "command_x": 0.0, "terrain_z": 0.002, "push": True}},
+                {phase2_regression_gate_specs}
             ]
             results = [run_seed_gate(policy, candidate_name, spec) for spec in gate_specs]
             manifest = {{
@@ -2048,8 +2073,8 @@ def build_remote_driver(
                 "",
                 "## Interpretation",
                 "",
-                f"- The {{primary_label}} x=0.08 gate is the immediate terrain-rung target.",
-                "- The z=0.002 no-push and gentle-push gates are regression checks for the packaged gain099 candidate behavior.",
+                f"- The {{primary_label}} x=0.08 gate is the immediate Stage A target.",
+                "{phase2_regression_note}",
                 "- Robot validation remains blocked regardless of these results.",
             ])
             out_md.write_text("\\n".join(lines).rstrip() + "\\n")
@@ -2300,7 +2325,7 @@ def build_remote_driver(
                 {phase2_memory_args}
                 "--run",
                 "--output-root", "{phase2_output_root}",
-                "--task", "rough_terrain_backlash",
+                "--task", "{phase2_training_task}",
                 "--num-timesteps", "{phase2_num_timesteps}",
                 "--export-min-step", "1",
                 "--ppo-num-envs", "{phase2_ppo_num_envs}",
@@ -2381,7 +2406,7 @@ def build_remote_driver(
                 "--actuator-bridge-velocity-limit-min-rad-s", "2",
                 "--actuator-bridge-velocity-limit-max-rad-s", "3.25",
                 "--actuator-bridge-per-joint-variation", "{phase2_bridge_per_joint_variation}",
-                "--terrain-hfield-z-scale", "{phase2_terrain_hfield_z_scale}",
+                {phase2_terrain_hfield_arg}
                 "--timeout-s", "{args.candidate_timeout_s}",
                 {phase2_final_training_args}
             ]
