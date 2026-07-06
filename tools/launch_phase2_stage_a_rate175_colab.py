@@ -333,6 +333,16 @@ def main() -> int:
         ),
     )
     parser.add_argument(
+        "--allow-colab-allocation",
+        action="store_true",
+        help=(
+            "Permit this helper to call `colab new`, which can consume Colab "
+            "compute units. Without this explicit opt-in, the helper only uses "
+            "already visible sessions and fails closed when the named session "
+            "is missing."
+        ),
+    )
+    parser.add_argument(
         "--output-dir",
         type=Path,
         default=DEFAULT_OUTPUT_DIR,
@@ -357,6 +367,7 @@ def main() -> int:
         "wait_timeout_s": args.wait_timeout_s,
         "wait_interval_s": args.wait_interval_s,
         "no_create": args.no_create,
+        "allow_colab_allocation": args.allow_colab_allocation,
         "workflow_started": False,
         "postrun_scan_started": False,
         "allocation_attempts": [],
@@ -420,6 +431,21 @@ def main() -> int:
                     "detail": (
                         f"session {args.session!r} is not visible and "
                         "--no-create was requested"
+                    ),
+                    "result": status_result,
+                }
+            )
+            break
+
+        if not args.allow_colab_allocation:
+            allocation_attempts.append(
+                {
+                    "attempt": index,
+                    "command_label": "colab new",
+                    "status": "HOLD_COLAB_ALLOCATION_DISABLED",
+                    "detail": (
+                        f"session {args.session!r} is not visible and "
+                        "`colab new` requires --allow-colab-allocation"
                     ),
                     "result": status_result,
                 }
@@ -507,11 +533,24 @@ def main() -> int:
             "Run again with --run-workflow, or execute the recorded workflow_command."
         )
     else:
-        payload["status"] = "HOLD_COLAB_GPU_ALLOCATION"
-        payload["decision"] = (
-            "No Colab GPU session became available. Retry later; do not substitute "
-            "CPU smoke for a Phase 2 gate."
-        )
+        attempt_statuses = [
+            item.get("status")
+            for item in allocation_attempts
+            if isinstance(item, dict)
+        ]
+        if "HOLD_COLAB_ALLOCATION_DISABLED" in attempt_statuses:
+            payload["status"] = "HOLD_COLAB_ALLOCATION_DISABLED"
+            payload["decision"] = (
+                "No existing Colab session is visible, and credit-consuming "
+                "`colab new` is disabled unless --allow-colab-allocation is "
+                "explicitly provided. Prefer adopting a browser-kept session."
+            )
+        else:
+            payload["status"] = "HOLD_COLAB_GPU_ALLOCATION"
+            payload["decision"] = (
+                "No Colab GPU session became available. Retry later; do not substitute "
+                "CPU smoke for a Phase 2 gate."
+            )
 
     write_reports(payload, args.output_dir)
     print(json.dumps({"status": payload["status"], "output_dir": str(args.output_dir)}, sort_keys=True))

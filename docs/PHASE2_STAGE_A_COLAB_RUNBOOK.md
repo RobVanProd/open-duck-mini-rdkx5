@@ -157,12 +157,15 @@ Use this only when `colab status -s open-duck-t4-stagea` shows the session.
 
 ## Allocate And Run Path
 
-When no session exists and T4 allocation is available:
+Allocation can consume Colab compute units and is disabled by default in the
+launcher. Prefer the adopt-existing-session path above. Use this only when an
+operator explicitly approves spending compute units:
 
 ```bash
 python3 tools/launch_phase2_stage_a_rate175_colab.py \
   --session open-duck-t4-stagea \
   --accelerator T4 \
+  --allow-colab-allocation \
   --attempts 6 \
   --delay-s 300 \
   --run-workflow \
