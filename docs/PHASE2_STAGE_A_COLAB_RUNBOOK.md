@@ -113,6 +113,21 @@ python3 tools/wait_and_launch_phase2_stage_a.py \
   --output-dir outputs/analysis/phase2_stage_a_wait_and_launch
 ```
 
+If the intended next action is to wait for the local ROCm GPU to become free
+instead of waiting only for Colab, use:
+
+```bash
+python3 tools/wait_and_launch_phase2_stage_a.py \
+  --timeout-s 86400 \
+  --interval-s 60 \
+  --stop-when-local-rocm-free \
+  --output-dir outputs/analysis/phase2_stage_a_wait_for_gpu_free
+```
+
+This mode does not start local training. It only exits at a safe handoff point
+when `tools/report_phase2_runtime_availability.py` reports local ROCm has no
+active GPU owner processes.
+
 Dry-run the wrapper without launching:
 
 ```bash

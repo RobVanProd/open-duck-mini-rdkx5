@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
-"""Wait for an adoptable Colab runtime, then launch Phase 2 Stage A.
+"""Wait for a usable GPU runtime for Phase 2 Stage A.
 
 This helper exists for unattended handoff. It polls the runtime availability
 guard and only starts the Stage A launcher when a named Colab session is already
-visible. It does not allocate a runtime, use local ROCm, SSH, deploy, touch the
-robot, run grounded replay, or promote a training result.
+visible. Optionally, it can stop when local ROCm becomes free so an operator can
+start an explicit local debug/fallback run. It does not allocate a runtime, start
+local ROCm training, SSH, deploy, touch the robot, run grounded replay, or
+promote a training result.
 """
 
 from __future__ import annotations
@@ -193,6 +195,15 @@ def main() -> int:
         action="store_true",
         help="Poll once and report the decision without launching Stage A.",
     )
+    parser.add_argument(
+        "--stop-when-local-rocm-free",
+        action="store_true",
+        help=(
+            "Stop successfully when the runtime guard reports local ROCm appears "
+            "available. This does not launch local training; it only creates a "
+            "safe handoff point for an explicit local debug/fallback command."
+        ),
+    )
     args = parser.parse_args()
 
     output_dir = args.output_dir
@@ -210,6 +221,7 @@ def main() -> int:
         "launch_started": False,
         "postrun_scan_started": False,
         "dry_run": args.dry_run,
+        "stop_when_local_rocm_free": args.stop_when_local_rocm_free,
         "checks": [],
     }
 
@@ -234,6 +246,14 @@ def main() -> int:
             selected = True
             payload["status"] = "PASS_COLAB_SESSION_AVAILABLE"
             payload["decision"] = "Colab session is visible; Stage A launch is authorized."
+            break
+        if status == "PASS_LOCAL_ROCM_APPEARS_AVAILABLE" and args.stop_when_local_rocm_free:
+            payload["status"] = "PASS_LOCAL_ROCM_APPEARS_AVAILABLE"
+            payload["decision"] = (
+                "Local ROCm appears free. This wrapper did not start training; "
+                "run an explicit local Stage A debug/fallback command only if "
+                "version skew is acceptable and canonical gates will be checked."
+            )
             break
         if args.dry_run:
             payload["status"] = str(status or "HOLD_RUNTIME_STATUS_UNKNOWN")
