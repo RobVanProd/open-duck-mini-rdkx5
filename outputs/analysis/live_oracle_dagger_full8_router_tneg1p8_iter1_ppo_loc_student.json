@@ -1,0 +1,105 @@
+{
+  "status": "PASS_PPO_LOC_BC_FIT_SMOKE",
+  "manifest": "outputs/analysis/live_oracle_dagger_full8_router_tneg1p8/iter_001/live_oracle_dagger_aggregate_manifest.json",
+  "samples": 18836,
+  "hidden_sizes": [
+    512,
+    256
+  ],
+  "activation": "swish",
+  "saved_npz": "outputs/analysis/live_oracle_dagger_full8_router_tneg1p8_iter1_ppo_loc_student/candidate_mlp.npz",
+  "exported_onnx": "outputs/analysis/live_oracle_dagger_full8_router_tneg1p8_iter1_ppo_loc_student/candidate.onnx",
+  "train_metrics": {
+    "samples": 18836,
+    "mae": 0.0037528161981693173,
+    "rmse": 0.005606839265458475,
+    "p50_abs_error": 0.0024900830634435826,
+    "p95_abs_error": 0.011881204851401787,
+    "p99_abs_error": 0.01981412632195731,
+    "max_abs_error": 0.0918329641465971,
+    "pred_action_saturation_pct": 0.0
+  },
+  "target_rate": {
+    "pair_count": 18810,
+    "p50_rad_s": 0.11224831726512688,
+    "p95_rad_s": 1.308459186608294,
+    "p99_rad_s": 1.5435687142209542,
+    "max_rad_s": 2.1173951344970527
+  },
+  "sample_weight": {
+    "p50": 1.0,
+    "p95": 5.0,
+    "max": 5.0,
+    "weighted_samples": 38022.0
+  },
+  "loss_rows": [
+    {
+      "step": 1,
+      "loss": 0.18516351282596588
+    },
+    {
+      "step": 1000,
+      "loss": 9.216199396178126e-05
+    },
+    {
+      "step": 2000,
+      "loss": 6.870378274470568e-05
+    },
+    {
+      "step": 3000,
+      "loss": 6.062394822947681e-05
+    },
+    {
+      "step": 4000,
+      "loss": 6.111690163379535e-05
+    },
+    {
+      "step": 5000,
+      "loss": 4.845429793931544e-05
+    },
+    {
+      "step": 6000,
+      "loss": 5.096014865557663e-05
+    },
+    {
+      "step": 7000,
+      "loss": 4.280946450307965e-05
+    },
+    {
+      "step": 8000,
+      "loss": 4.5732766011497006e-05
+    },
+    {
+      "step": 9000,
+      "loss": 4.179635288892314e-05
+    },
+    {
+      "step": 10000,
+      "loss": 3.910496161552146e-05
+    },
+    {
+      "step": 11000,
+      "loss": 3.668184217531234e-05
+    },
+    {
+      "step": 12000,
+      "loss": 3.4847951610572636e-05
+    }
+  ],
+  "onnx_verify": {
+    "path": "outputs/analysis/live_oracle_dagger_full8_router_tneg1p8_iter1_ppo_loc_student/candidate.onnx",
+    "samples_checked": 64,
+    "max_abs_error": 1.2191374497427798e-07,
+    "p95_abs_error": 7.553925710636442e-08
+  },
+  "config": {
+    "steps": 12000,
+    "batch_size": 1024,
+    "learning_rate": 0.0005,
+    "target_rate_scale": 0.05,
+    "target_rate_limit_rad_s": 2.0,
+    "action_scale_rad": 0.25,
+    "dt_s": 0.02,
+    "seed": 3
+  }
+}

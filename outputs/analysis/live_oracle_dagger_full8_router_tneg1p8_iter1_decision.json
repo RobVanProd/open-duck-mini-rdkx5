@@ -1,0 +1,76 @@
+{
+  "status": "HOLD_LIVE_ORACLE_ITER1_SHIFTED_FAILURE_SURFACE",
+  "scope": "offline_data_collection_bc_fit_and_corrected_bridge_gate",
+  "no_robot_ssh_deploy_grounded_replay_or_dr_training": true,
+  "inputs": {
+    "student_policy": "outputs/analysis/phase2_full8_router_tneg1p8_ppo_loc_bc_seed56_weighted_student/candidate.onnx",
+    "teacher_manifest": "outputs/analysis/phase2_full8_router_tneg1p8_bc_trace_manifest.json",
+    "base_manifest": "outputs/analysis/phase2_full8_router_tneg1p8_bc_trace_manifest_seed56_weighted.json",
+    "iteration_artifact_md": "outputs/analysis/LIVE_ORACLE_DAGGER_FULL8_ROUTER_TNEG1P8_ITER1_DATA.md",
+    "iteration_artifact_json": "outputs/analysis/live_oracle_dagger_full8_router_tneg1p8_iter1_data.json",
+    "aggregate_manifest": "outputs/analysis/live_oracle_dagger_full8_router_tneg1p8/iter_001/live_oracle_dagger_aggregate_manifest.json"
+  },
+  "aggregate": {
+    "entries": 26,
+    "samples": 18836,
+    "weighted_samples_in_student_fit": 38022.0,
+    "x008_relabel_samples": 5336,
+    "x000_relabel_samples": 1500
+  },
+  "student_fit": {
+    "status": "PASS_PPO_LOC_BC_FIT_SMOKE",
+    "artifact_md": "outputs/analysis/LIVE_ORACLE_DAGGER_FULL8_ROUTER_TNEG1P8_ITER1_PPO_LOC_STUDENT.md",
+    "artifact_json": "outputs/analysis/live_oracle_dagger_full8_router_tneg1p8_iter1_ppo_loc_student.json",
+    "onnx": "outputs/analysis/live_oracle_dagger_full8_router_tneg1p8_iter1_ppo_loc_student/candidate.onnx",
+    "onnx_sha256": "aaaf462d781c07c9c46e5b6b6ee6c5b56eed087db290127168303d37972f96cd",
+    "npz_sha256": "6b55da25affc6444e29ca9592dc79667708ab8962ceecf12f64f7fe4d2c5c5e9",
+    "mae": 0.003753,
+    "p95_abs_error": 0.011881,
+    "max_abs_error": 0.091833,
+    "target_rate_p95_rad_s": 1.308459,
+    "target_rate_max_rad_s": 2.117395,
+    "onnx_p95_abs_error": 0.00000008,
+    "onnx_max_abs_error": 0.00000012
+  },
+  "x008_gate": {
+    "artifact_md": "outputs/analysis/LIVE_ORACLE_DAGGER_FULL8_ROUTER_TNEG1P8_ITER1_PPO_LOC_X008_GATE.md",
+    "artifact_json": "outputs/analysis/live_oracle_dagger_full8_router_tneg1p8_iter1_ppo_loc_x008_gate.json",
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.0075,
+    "bridge": "corrected_fitted",
+    "reset_mode": "home-support",
+    "reset_settle_ticks": 10,
+    "pushes_enabled": true,
+    "push_magnitude_range": [0.075, 0.125],
+    "seeds": [0, 1, 2, 3, 4, 5, 6, 7],
+    "duration_complete": 6,
+    "falls": 2,
+    "failed_seeds": [4, 6],
+    "samples_mean": 706.0,
+    "samples_min": 564,
+    "samples_max": 750,
+    "mean_vx_m_s": 0.027321490674862267,
+    "mean_track_ratio": 0.3415186334357783,
+    "mean_body_pitch_p95_rad": 0.2012881973996219,
+    "mean_base_height_min_m": 0.12768117331143003,
+    "p95_velocity_excess_mean_rad_s": 0.0,
+    "p95_velocity_excess_max_rad_s": 0.0,
+    "max_velocity_excess_mean_rad_s": 0.08781000971794128,
+    "max_velocity_excess_max_rad_s": 0.7024800777435303,
+    "max_tracking_p95_mean_rad": 0.18998868241906164,
+    "max_tracking_p95_max_rad": 0.19539102911949158
+  },
+  "comparison_to_starting_student": {
+    "starting_failed_seeds": [5, 6],
+    "iter1_failed_seeds": [4, 6],
+    "seed5": "recovered_to_duration_complete",
+    "seed4": "regressed_from_duration_complete_to_fall",
+    "seed6": "still_fails_and_earlier_than_before"
+  },
+  "x000_full8_gate": {
+    "status": "SKIPPED",
+    "reason": "x=0.08 corrected-bridge rough/push gate already failed 2/8, so this student is not promotable."
+  },
+  "decision": "Do not launch domain-randomized PPO from this iteration-1 student.",
+  "recommended_next": "Run a second live-oracle iteration from iter1 with seed-4/seed-6 active relabel emphasis or move to a stateful/branch-aware student; do not start DR from this ONNX."
+}
