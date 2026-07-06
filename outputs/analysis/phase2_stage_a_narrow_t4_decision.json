@@ -1,14 +1,15 @@
 {
   "artifact_root": "outputs/analysis/colab_cli_stage_a_flat/open-duck-t4-stagea-phase2-stage-a-narrow-20260706T081244Z/extracted_artifacts/open_duck_colab_cli_phase2-stage-a-narrow_20260706T081308Z",
   "colab_session": "open-duck-t4-stagea",
-  "decision": "Do not promote any corrected Stage A flat/no-push T4 checkpoint from this run.",
+  "decision": "Do not promote any corrected flat/no-push T4 checkpoint from this run. This run is superseded for Phase 2 because it used the phase-modulated health-routed parent checkpoint instead of the Phase 1 rate175 trainable checkpoint.",
   "hardware": "Tesla T4",
   "no_robot_ssh_deploy_grounded_replay": true,
-  "status": "HOLD_STAGE_A_FLAT_CHECKPOINT_REJECTED",
+  "status": "HOLD_STAGE_A_FLAT_WRONG_WARMSTART_SUPERSEDED",
   "stage_a_curriculum": {
     "pushes": "disabled",
     "task": "flat_terrain_backlash",
-    "terrain_hfield": "none"
+    "terrain_hfield": "none",
+    "warmstart_issue": "used phase2_health_routed_parent_phase_mod_rate150_step0_checkpoint instead of ppo_bc_command_conditioned_rate175_step0_checkpoint"
   },
   "training_run": {
     "elapsed_s": 870.09,
@@ -64,5 +65,5 @@
       "x008_track_ratio": 0.1919
     }
   ],
-  "recommended_next": "Keep the proven exec-remote memory-safe T4 path, but revise the flat Stage A recipe around stronger behavior continuity before launching another full run. The observed failure is the deployable-student tracking plateau with a tradeoff between over-envelope motion and low progress."
+  "recommended_next": "Keep the proven exec-remote memory-safe T4 path, but rerun Stage A from outputs/analysis/ppo_bc_command_conditioned_rate175_step0_checkpoint with the matching default PPO network and an explicit behavior-prior continuity hook. The prior run is useful infrastructure evidence but not the authoritative Phase 2 warm-start verdict."
 }

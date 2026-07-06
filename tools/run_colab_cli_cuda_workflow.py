@@ -176,6 +176,21 @@ def tar_filter(member: tarfile.TarInfo) -> tarfile.TarInfo | None:
             (
                 "outputs",
                 "analysis",
+                "ppo_bc_command_conditioned_rate175_step0.onnx",
+            ),
+            (
+                "outputs",
+                "analysis",
+                "ppo_bc_command_conditioned_rate175_step0_checkpoint",
+            ),
+            (
+                "outputs",
+                "analysis",
+                "ppo_bc_command_conditioned_rate175_step0_export_fidelity.json",
+            ),
+            (
+                "outputs",
+                "analysis",
                 "phase2_rate165_ppo_loc_warmstart_candidate",
                 "candidate_mlp.npz",
             ),
@@ -453,10 +468,10 @@ def required_rdk_package_paths(
     if workflow == "phase2-stage-a-narrow":
         paths.extend(
             [
-                "outputs/analysis/phase2_health_routed_parent_phase_mod_rate150_step0.onnx",
-                "outputs/analysis/phase2_health_routed_parent_phase_mod_rate150_step0_checkpoint",
-                "outputs/analysis/PHASE2_PHASE_CONTEXT_PPO_WARMSTART_DECISION.md",
-                "outputs/analysis/phase2_phase_context_ppo_warmstart_decision.json",
+                "policy/candidates/corrected_bridge_cmd_conditioned_rate175_20260627/candidate.onnx",
+                "outputs/analysis/ppo_bc_command_conditioned_rate175_step0.onnx",
+                "outputs/analysis/ppo_bc_command_conditioned_rate175_step0_checkpoint",
+                "outputs/analysis/ppo_bc_command_conditioned_rate175_step0_export_fidelity.json",
                 "outputs/analysis/PHASE2_DOMAIN_RANDOMIZATION_AUDIT.md",
             ]
         )
@@ -1279,7 +1294,7 @@ def build_remote_driver(
         phase2_default_candidate_name = "phase2_right_swing_phase_single_support_cuda"
     elif run_phase2_stage_a_narrow:
         phase2_recipe_id = "stage_a_narrow"
-        phase2_default_candidate_name = "phase2_stage_a_narrow_phase_context_cuda"
+        phase2_default_candidate_name = "phase2_stage_a_narrow_rate175_cuda"
     elif run_phase2_z005_motion_floor:
         phase2_recipe_id = "z005_motion_floor"
         phase2_default_candidate_name = "phase2_z005_motion_floor_cuda"
@@ -1440,7 +1455,7 @@ def build_remote_driver(
     )
     phase2_restore_checkpoint = (
         "/content/open-duck-mini-rdkx5/outputs/analysis/"
-        "phase2_health_routed_parent_phase_mod_rate150_step0_checkpoint"
+        "ppo_bc_command_conditioned_rate175_step0_checkpoint"
         if run_phase2_stage_a_narrow
         else
         "/content/open-duck-mini-rdkx5/outputs/phase2_domain_randomization/"
@@ -1751,17 +1766,7 @@ def build_remote_driver(
         if run_phase2_z002_tracking_margin or run_phase2_z002_teacher_continuity
         else "tools/report_phase2_z005_post_training_gates.py"
     )
-    phase2_policy_network_arg = (
-        '"--ppo-policy-network", "phase_modulated",'
-        '"--phase-modulated-policy-hidden-sizes", "512,256",'
-        '"--phase-modulated-context-hidden-sizes", "64",'
-        '"--phase-modulated-context-indices", "6,99,100",'
-        '"--phase-modulated-activation", "swish",'
-        '"--phase-modulated-scale", "0.5",'
-        '"--phase-modulated-init-scale-logit", "-2",'
-        if run_phase2_stage_a_narrow
-        else ""
-    )
+    phase2_policy_network_arg = ""
     phase2_primary_push_gate_specs = ""
     phase2_regression_gate_specs = (
         ""

@@ -1,6 +1,6 @@
 # Phase 2 Stage A Narrow T4 Decision
 
-status: `HOLD_STAGE_A_FLAT_CHECKPOINT_REJECTED`
+status: `HOLD_STAGE_A_FLAT_WRONG_WARMSTART_SUPERSEDED`
 generated_at: `2026-07-06T08:36:00Z`
 
 Offline only. No robot, SSH, deploy, grounded replay, or runtime behavior change was performed.
@@ -23,9 +23,9 @@ Offline only. No robot, SSH, deploy, grounded replay, or runtime behavior change
 - A stale Colab T4 session had to be stopped and recreated before the corrected Stage A run.
 - The prior T4 artifact used rough terrain/push difficulty and is superseded for Stage A curriculum decisions.
 
-## Corrected Stage A Run
+## Corrected Flat Run
 
-This is the first fair Stage A run after aligning the workflow with the requested curriculum:
+This run corrected the Stage A surface and push curriculum, but it was later found to use the phase-modulated health-routed parent checkpoint instead of the Phase 1 `corrected_bridge_cmd_conditioned_rate175` trainable checkpoint required by the Phase 2 goal. Treat this as a useful Colab/T4 and recipe diagnostic, not as the final Stage A curriculum verdict.
 
 - task: `flat_terrain_backlash`
 - pushes: `disabled`
@@ -63,8 +63,8 @@ Triage command: `tools/sweep_candidate_checkpoints.py`, corrected bridge, fitted
 
 ## Decision
 
-The corrected Stage A flat/no-push curriculum runs successfully on Colab T4 with pinned JAX `0.7.2` and explicit memory controls, but it did not produce a promotable checkpoint.
+The corrected flat/no-push curriculum runs successfully on Colab T4 with pinned JAX `0.7.2` and explicit memory controls, but this run is superseded for Phase 2 decision-making because it used the wrong warm-start lineage.
 
 The early checkpoints preserve some forward motion but exceed the corrected velocity envelope and remain on the tracking plateau. The latest checkpoint stays inside the envelope but loses too much forward progress. Do not promote any checkpoint from this run to full gates or robot validation.
 
-Next aligned work is a Stage A recipe change that keeps the flat/no-push curriculum but restores behavior continuity more directly. The failure is no longer Colab infrastructure; it is the same deployable-student plateau: tracking p95 around `0.265 rad`, with either over-envelope motion or low progress.
+Next aligned work is to rerun Stage A with the Phase 1 `ppo_bc_command_conditioned_rate175_step0_checkpoint`, the matching default PPO network shape, and an explicit behavior-prior continuity hook. The failure is no longer Colab infrastructure; the remaining question is whether the true Phase 1 warm-start can survive narrow flat DR without collapsing back to the deployable-student tracking plateau.
