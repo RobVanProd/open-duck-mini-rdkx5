@@ -1,0 +1,53 @@
+{
+  "status": "HOLD_COLAB_SESSION_LOST_BEFORE_CHECKPOINT",
+  "generated_at": "2026-07-06T09:45:00Z",
+  "no_robot_ssh_deploy_grounded_replay": true,
+  "training_started": true,
+  "checkpoint_exported": false,
+  "checkpoint_sweep_possible": false,
+  "session": {
+    "name": "open-duck-t4-stagea",
+    "hardware": "Tesla T4",
+    "final_colab_status": "Session not found / no active sessions"
+  },
+  "remote_run": {
+    "path": "/content/open_duck_training_phase2_stage_a_narrow_cli/smoke_20260706T093240Z_gpu",
+    "last_manifest_status": "RUNNING",
+    "last_manifest_elapsed_s": 540.04,
+    "last_manifest_returncode": null,
+    "last_observed_step": 0,
+    "last_observed_reward": 43.062255859375,
+    "last_observed_reward_std": 39.42291259765625
+  },
+  "command_confirmed": {
+    "task": "flat_terrain_backlash",
+    "pushes": "disabled",
+    "terrain_hfield": "none",
+    "num_timesteps": 163840,
+    "ppo_num_envs": 64,
+    "restore_checkpoint_path": "outputs/analysis/ppo_bc_command_conditioned_rate175_step0_checkpoint",
+    "restore_policy_kl_scale": 4.0,
+    "behavior_prior_mlp_npz": "outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate/candidate_mlp.npz",
+    "behavior_prior_scale": -0.6,
+    "corrected_actuator_bridge": true,
+    "actuator_bridge_delay_ticks": 3,
+    "actuator_bridge_velocity_limit_range_rad_s": [
+      2.0,
+      3.25
+    ]
+  },
+  "evidence": {
+    "stdout_confirmed": [
+      "Observation size: 101",
+      "14-actuator Open Duck Mini v2 order",
+      "Enabled restore-policy KL loss: scale=4.0",
+      "STEP: 0 reward: 43.062255859375 reward_std: 39.42291259765625",
+      "Skipping checkpoint/export at step 0; export_min_step=1"
+    ],
+    "final_colab_status_output": [
+      "[colab] Session 'open-duck-t4-stagea' not found.",
+      "[colab] No active sessions found on server."
+    ]
+  },
+  "decision": "The valid Stage A command starts correctly but this Colab runtime disappeared before any checkpoint export. Rerun on a stable T4 session and sweep exported checkpoints; do not promote this partial run."
+}
