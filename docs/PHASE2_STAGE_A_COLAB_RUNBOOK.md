@@ -103,6 +103,24 @@ python3 tools/launch_phase2_stage_a_rate175_colab.py \
   --output-dir outputs/analysis/phase2_stage_a_rate175_colab_wait_adopt
 ```
 
+For unattended handoff, use the wrapper that polls the runtime guard and only
+launches once a named Colab session is visible:
+
+```bash
+python3 tools/wait_and_launch_phase2_stage_a.py \
+  --timeout-s 86400 \
+  --interval-s 60 \
+  --output-dir outputs/analysis/phase2_stage_a_wait_and_launch
+```
+
+Dry-run the wrapper without launching:
+
+```bash
+python3 tools/wait_and_launch_phase2_stage_a.py \
+  --dry-run \
+  --output-dir outputs/analysis/phase2_stage_a_wait_and_launch_dryrun
+```
+
 The launcher will only adopt a unique locally tracked session from
 `colab status`. It will not adopt orphaned server assignments shown as `?`.
 If multiple named sessions are active, stop the extras or use the explicit
