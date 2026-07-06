@@ -1,0 +1,61 @@
+{
+  "status": "HOLD_COLAB_GPU_ALLOCATION",
+  "generated_at": "2026-07-06T09:28:00Z",
+  "no_robot_ssh_deploy_grounded_replay": true,
+  "training_started": false,
+  "valid_stage_a_gpu_run_started": false,
+  "context": {
+    "restore_checkpoint_path": "outputs/analysis/ppo_bc_command_conditioned_rate175_step0_checkpoint",
+    "behavior_prior_mlp_npz": "outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate/candidate_mlp.npz",
+    "task": "flat_terrain_backlash",
+    "pushes": "disabled",
+    "corrected_actuator_bridge": "enabled"
+  },
+  "allocation_attempts": [
+    {
+      "session": "open-duck-t4-stagea",
+      "command": "colab new -s open-duck-t4-stagea --gpu T4",
+      "status": "HOLD_SERVICE_UNAVAILABLE",
+      "stderr_excerpt": "ColabRequestError: Failed to issue request POST ... accelerator=T4: Service Unavailable"
+    },
+    {
+      "session": "open-duck-l4-stagea",
+      "command": "colab new -s open-duck-l4-stagea --gpu L4",
+      "status": "HOLD_ACCELERATOR_REJECTED",
+      "stderr_excerpt": "Backend rejected accelerator 'L4'. You may not have quota or entitlement for this accelerator on your account."
+    },
+    {
+      "session": "open-duck-a100-stagea",
+      "command": "colab new -s open-duck-a100-stagea --gpu A100",
+      "status": "HOLD_ACCELERATOR_REJECTED",
+      "stderr_excerpt": "Backend rejected accelerator 'A100'. You may not have quota or entitlement for this accelerator on your account."
+    }
+  ],
+  "decision": "Retry T4 later with the validated rate175 Stage A workflow. Do not substitute CPU smoke for a Phase 2 gate.",
+  "recommended_next_command": [
+    "python3",
+    "tools/run_colab_cli_cuda_workflow.py",
+    "--session",
+    "open-duck-t4-stagea",
+    "--workflow",
+    "phase2-stage-a-narrow",
+    "--run",
+    "--skip-audit",
+    "--exec-remote",
+    "--exec-remote-timeout-s",
+    "14400",
+    "--phase2-skip-post-training-gates",
+    "--remote-artifact-interval-s",
+    "0",
+    "--candidate-behavior-prior-mlp-npz",
+    "outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate/candidate_mlp.npz",
+    "--candidate-behavior-prior-scale",
+    "-0.6",
+    "--candidate-behavior-prior-huber-delta",
+    "0.05",
+    "--phase2-final-training-args-json",
+    "[\"--restore-policy-kl-scale\",\"4.0\"]",
+    "--output-root",
+    "outputs/analysis/colab_cli_stage_a_rate175_prior"
+  ]
+}
