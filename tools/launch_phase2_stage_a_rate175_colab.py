@@ -12,6 +12,7 @@ import argparse
 import datetime as dt
 import json
 from pathlib import Path
+import re
 import subprocess
 import sys
 import time
@@ -60,6 +61,43 @@ def session_exists(status_result: dict[str, object]) -> bool:
     if status_result.get("returncode") not in {0, None}:
         return False
     return "not found" not in text and "session '" not in text
+
+
+def parse_session_names(text: str) -> list[str]:
+    names: list[str] = []
+    seen: set[str] = set()
+    for line in text.splitlines():
+        stripped = line.strip()
+        if " | Hardware: " not in stripped:
+            continue
+        match = re.match(r"^\[([^\]]+)\]\s+", stripped)
+        if not match:
+            continue
+        name = match.group(1).strip()
+        if not name or name in {"?", "colab"} or name in seen:
+            continue
+        seen.add(name)
+        names.append(name)
+    return names
+
+
+def find_unique_existing_session(timeout_s: int) -> dict[str, object]:
+    result = run_command(["colab", "status"], timeout_s=timeout_s)
+    combined = f"{result.get('stdout') or ''}\n{result.get('stderr') or ''}"
+    names = parse_session_names(combined)
+    status = "HOLD_NO_EXISTING_SESSION"
+    selected = None
+    if len(names) == 1:
+        status = "PASS_UNIQUE_EXISTING_SESSION"
+        selected = names[0]
+    elif len(names) > 1:
+        status = "HOLD_MULTIPLE_EXISTING_SESSIONS"
+    return {
+        "status": status,
+        "selected_session": selected,
+        "session_names": names,
+        "result": result,
+    }
 
 
 def stage_a_workflow_command(args: argparse.Namespace) -> list[str]:
@@ -181,6 +219,23 @@ def main() -> int:
         help="Launch the valid Stage A workflow after a session is visible.",
     )
     parser.add_argument(
+        "--adopt-existing-session",
+        action="store_true",
+        help=(
+            "Before allocating, adopt the unique locally tracked active Colab "
+            "session reported by `colab status`. This is intended for a "
+            "browser-kept-alive CLI session."
+        ),
+    )
+    parser.add_argument(
+        "--no-create",
+        action="store_true",
+        help=(
+            "Do not call `colab new`. Use this with --adopt-existing-session "
+            "for a preflight that only uses an already visible session."
+        ),
+    )
+    parser.add_argument(
         "--output-dir",
         type=Path,
         default=DEFAULT_OUTPUT_DIR,
@@ -200,6 +255,8 @@ def main() -> int:
         "session": args.session,
         "accelerator": args.accelerator,
         "attempts_requested": args.attempts,
+        "adopt_existing_session": args.adopt_existing_session,
+        "no_create": args.no_create,
         "workflow_started": False,
         "allocation_attempts": [],
         "workflow_command": stage_a_workflow_command(args),
@@ -207,7 +264,27 @@ def main() -> int:
 
     session_ready = False
     allocation_attempts: list[dict[str, object]] = []
+    if args.adopt_existing_session:
+        adopt_result = find_unique_existing_session(args.status_timeout_s)
+        payload["adopt_existing_session_result"] = adopt_result
+        if adopt_result.get("status") == "PASS_UNIQUE_EXISTING_SESSION":
+            args.session = str(adopt_result["selected_session"])
+            payload["session"] = args.session
+            payload["workflow_command"] = stage_a_workflow_command(args)
+            allocation_attempts.append(
+                {
+                    "attempt": 0,
+                    "command_label": "colab status",
+                    "status": "PASS_ADOPTED_EXISTING_SESSION",
+                    "detail": f"adopted unique session {args.session}",
+                    "result": adopt_result.get("result"),
+                }
+            )
+            session_ready = True
+
     for index in range(1, args.attempts + 1):
+        if session_ready:
+            break
         status_result = run_command(
             ["colab", "status", "-s", args.session],
             timeout_s=args.status_timeout_s,
@@ -223,6 +300,21 @@ def main() -> int:
                 }
             )
             session_ready = True
+            break
+
+        if args.no_create:
+            allocation_attempts.append(
+                {
+                    "attempt": index,
+                    "command_label": "colab new",
+                    "status": "HOLD_NO_CREATE_SESSION_MISSING",
+                    "detail": (
+                        f"session {args.session!r} is not visible and "
+                        "--no-create was requested"
+                    ),
+                    "result": status_result,
+                }
+            )
             break
 
         new_result = run_command(
@@ -255,6 +347,12 @@ def main() -> int:
 
     payload["allocation_attempts"] = allocation_attempts
     payload["session_ready"] = session_ready
+
+    if session_ready:
+        url_result = run_command(["colab", "url", "-s", args.session], timeout_s=args.status_timeout_s)
+        payload["session_url_result"] = url_result
+        if url_result.get("returncode") == 0:
+            payload["session_url"] = (url_result.get("stdout") or "").strip()
 
     if session_ready and args.run_workflow:
         workflow_result = run_command(
