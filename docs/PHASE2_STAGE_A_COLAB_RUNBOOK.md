@@ -73,6 +73,19 @@ python3 tools/launch_phase2_stage_a_rate175_colab.py \
   --output-dir outputs/analysis/phase2_stage_a_rate175_colab_adopt_existing
 ```
 
+Bounded wait for a session, then run Stage A when it appears:
+
+```bash
+python3 tools/launch_phase2_stage_a_rate175_colab.py \
+  --adopt-existing-session \
+  --wait-for-existing-session \
+  --wait-timeout-s 3600 \
+  --wait-interval-s 30 \
+  --no-create \
+  --run-workflow \
+  --output-dir outputs/analysis/phase2_stage_a_rate175_colab_wait_adopt
+```
+
 The launcher will only adopt a unique locally tracked session from
 `colab status`. It will not adopt orphaned server assignments shown as `?`.
 If multiple named sessions are active, stop the extras or use the explicit
@@ -122,4 +135,3 @@ The runbook has not succeeded until all of the following are true:
 5. The selected checkpoint hash and gate artifacts are committed.
 
 Until then, Phase 2 remains open and robot validation remains blocked.
-

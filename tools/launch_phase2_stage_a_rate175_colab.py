@@ -100,6 +100,42 @@ def find_unique_existing_session(timeout_s: int) -> dict[str, object]:
     }
 
 
+def wait_for_unique_existing_session(
+    *, timeout_s: float, interval_s: float, status_timeout_s: int
+) -> dict[str, object]:
+    started = time.monotonic()
+    checks: list[dict[str, object]] = []
+    selected = None
+    final_status = "HOLD_WAIT_TIMEOUT"
+    while True:
+        check = find_unique_existing_session(status_timeout_s)
+        checks.append(
+            {
+                "elapsed_s": round(time.monotonic() - started, 3),
+                "status": check.get("status"),
+                "selected_session": check.get("selected_session"),
+                "session_names": check.get("session_names"),
+            }
+        )
+        if check.get("status") == "PASS_UNIQUE_EXISTING_SESSION":
+            selected = check.get("selected_session")
+            final_status = "PASS_UNIQUE_EXISTING_SESSION"
+            break
+        if check.get("status") == "HOLD_MULTIPLE_EXISTING_SESSIONS":
+            final_status = "HOLD_MULTIPLE_EXISTING_SESSIONS"
+            break
+        elapsed = time.monotonic() - started
+        if elapsed >= timeout_s:
+            break
+        time.sleep(min(interval_s, max(0.0, timeout_s - elapsed)))
+    return {
+        "status": final_status,
+        "selected_session": selected,
+        "checks": checks,
+        "elapsed_s": round(time.monotonic() - started, 3),
+    }
+
+
 def stage_a_workflow_command(args: argparse.Namespace) -> list[str]:
     command = [
         sys.executable,
@@ -228,6 +264,26 @@ def main() -> int:
         ),
     )
     parser.add_argument(
+        "--wait-for-existing-session",
+        action="store_true",
+        help=(
+            "When adopting an existing session, poll for a unique visible "
+            "session before falling back to allocation/no-create behavior."
+        ),
+    )
+    parser.add_argument(
+        "--wait-timeout-s",
+        type=float,
+        default=0.0,
+        help="Maximum seconds to wait for a unique existing session.",
+    )
+    parser.add_argument(
+        "--wait-interval-s",
+        type=float,
+        default=30.0,
+        help="Polling interval for --wait-for-existing-session.",
+    )
+    parser.add_argument(
         "--no-create",
         action="store_true",
         help=(
@@ -256,6 +312,9 @@ def main() -> int:
         "accelerator": args.accelerator,
         "attempts_requested": args.attempts,
         "adopt_existing_session": args.adopt_existing_session,
+        "wait_for_existing_session": args.wait_for_existing_session,
+        "wait_timeout_s": args.wait_timeout_s,
+        "wait_interval_s": args.wait_interval_s,
         "no_create": args.no_create,
         "workflow_started": False,
         "allocation_attempts": [],
@@ -265,7 +324,14 @@ def main() -> int:
     session_ready = False
     allocation_attempts: list[dict[str, object]] = []
     if args.adopt_existing_session:
-        adopt_result = find_unique_existing_session(args.status_timeout_s)
+        if args.wait_for_existing_session:
+            adopt_result = wait_for_unique_existing_session(
+                timeout_s=max(0.0, args.wait_timeout_s),
+                interval_s=max(1.0, args.wait_interval_s),
+                status_timeout_s=args.status_timeout_s,
+            )
+        else:
+            adopt_result = find_unique_existing_session(args.status_timeout_s)
         payload["adopt_existing_session_result"] = adopt_result
         if adopt_result.get("status") == "PASS_UNIQUE_EXISTING_SESSION":
             args.session = str(adopt_result["selected_session"])
