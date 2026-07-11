@@ -108,6 +108,16 @@ x=0.08. No checkpoint passed both compact gates, so do not run seeds 40-71 or
 tune the termination threshold/warmup. The direct termination did not solve
 the reset-robustness objective mismatch. Preserve this negative result and
 require a new, separately preregistered hypothesis before further training.
+
+The next hypothesis is now evidence-backed and preregistered. Across the two
+direct-outcome experiments, 8/12 evaluations passed the training bridge-error
+surrogate while failing the actual-joint compact gate; the gate p95 was about
+2.04-2.25 times the surrogate. The new default-off reward directly measures
+six-pitch-joint sent-target versus actual-position error. CPU contract checks
+passed with both GPUs hidden. Its fixed scale -0.007914891239136222 was derived
+from frozen x=0/x=0.08 traces to match the existing bridge penalty magnitude.
+Run only the registered one-factor compact-gated experiment; do not tune its
+scale, delta, joints, aggregation, KL, or training length after outcomes.
 ```
 
 Robotics operating model:

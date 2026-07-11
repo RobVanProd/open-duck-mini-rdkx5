@@ -139,6 +139,13 @@ def build_command(args: argparse.Namespace, output_dir: Path) -> list[str]:
     for flag, value in optional_policy_network_overrides.items():
         append_optional(command, flag, value)
     optional_runner_overrides = {
+        "--joint_target_tracking_scale": args.joint_target_tracking_scale,
+        "--joint_target_tracking_huber_delta": (
+            args.joint_target_tracking_huber_delta
+        ),
+        "--joint_target_tracking_joint_indices": (
+            args.joint_target_tracking_joint_indices
+        ),
         "--tracking_lin_vel_scale": args.tracking_lin_vel_scale,
         "--tracking_ang_vel_scale": args.tracking_ang_vel_scale,
         "--tracking_sigma": args.tracking_sigma,
@@ -344,6 +351,22 @@ def build_command(args: argparse.Namespace, output_dir: Path) -> list[str]:
                 cli_value(args.behavior_prior_huber_delta),
             ]
         )
+        if args.behavior_prior_joint_weights:
+            command.extend(
+                [
+                    "--behavior_prior_joint_weights",
+                    args.behavior_prior_joint_weights,
+                ]
+            )
+        if args.behavior_prior_temporal_rate_limit_rad_s > 0:
+            command.extend(
+                [
+                    "--behavior_prior_temporal_rate_limit_rad_s",
+                    cli_value(args.behavior_prior_temporal_rate_limit_rad_s),
+                    "--behavior_prior_temporal_rate_limit_joint_indices",
+                    args.behavior_prior_temporal_rate_limit_joint_indices,
+                ]
+            )
     if not args.disable_actuator_bridge:
         command.append("--enable_actuator_bridge")
         command.extend(
@@ -799,6 +822,15 @@ def main() -> int:
             "reward the cost."
         ),
     )
+    parser.add_argument("--joint-target-tracking-scale", type=float, default=None)
+    parser.add_argument(
+        "--joint-target-tracking-huber-delta", type=float, default=None
+    )
+    parser.add_argument(
+        "--joint-target-tracking-joint-indices",
+        default=None,
+        help="Comma-separated actuator indices forwarded to the Playground runner.",
+    )
     parser.add_argument(
         "--push-recovery-actuator-tracking-scale",
         type=float,
@@ -867,6 +899,23 @@ def main() -> int:
     parser.add_argument("--behavior-prior-mlp-npz", default=None)
     parser.add_argument("--behavior-prior-scale", type=float, default=-0.05)
     parser.add_argument("--behavior-prior-huber-delta", type=float, default=0.05)
+    parser.add_argument(
+        "--behavior-prior-joint-weights",
+        default=None,
+        help=(
+            "Optional 14-value comma-separated action-order weights forwarded "
+            "to the default-off Playground behavior-prior cost."
+        ),
+    )
+    parser.add_argument(
+        "--behavior-prior-temporal-rate-limit-rad-s",
+        type=float,
+        default=0.0,
+    )
+    parser.add_argument(
+        "--behavior-prior-temporal-rate-limit-joint-indices",
+        default="2,3,4,11,12,13",
+    )
     parser.add_argument("--action-rate-huber-delta", type=float, default=None)
     parser.add_argument("--action-magnitude-huber-delta", type=float, default=None)
     parser.add_argument("--target-rate-huber-delta", type=float, default=None)
@@ -1129,6 +1178,13 @@ def main() -> int:
             "mlp_npz": args.behavior_prior_mlp_npz,
             "scale": args.behavior_prior_scale,
             "huber_delta": args.behavior_prior_huber_delta,
+            "joint_weights": args.behavior_prior_joint_weights,
+            "temporal_rate_limit_rad_s": (
+                args.behavior_prior_temporal_rate_limit_rad_s
+            ),
+            "temporal_rate_limit_joint_indices": (
+                args.behavior_prior_temporal_rate_limit_joint_indices
+            ),
         },
         "target_rate_scale": args.target_rate_scale,
         "actuator_tracking_scale": args.actuator_tracking_scale,
@@ -1159,6 +1215,13 @@ def main() -> int:
             "phase_modulated_init_scale_logit": args.phase_modulated_init_scale_logit,
         },
         "training_recipe_overrides": {
+            "joint_target_tracking_scale": args.joint_target_tracking_scale,
+            "joint_target_tracking_huber_delta": (
+                args.joint_target_tracking_huber_delta
+            ),
+            "joint_target_tracking_joint_indices": (
+                args.joint_target_tracking_joint_indices
+            ),
             "tracking_lin_vel_scale": args.tracking_lin_vel_scale,
             "tracking_ang_vel_scale": args.tracking_ang_vel_scale,
             "tracking_sigma": args.tracking_sigma,

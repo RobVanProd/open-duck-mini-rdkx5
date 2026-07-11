@@ -118,6 +118,14 @@ This repository controls work around a real biped robot. Preserve safety and evi
   runtime disappeared during its CPU sweep, but all checkpoints were recovered
   from a valid artifact snapshot and the exact sweep was completed with local
   CPU-only JAX. This exact direct-termination route is closed.
+- A source-and-data audit confirms the next objective mismatch: the existing
+  actuator-tracking reward measures mean sent-vs-bridge-applied error, while
+  the compact gate measures worst pitch-chain sent-vs-actual-joint error. In
+  8/12 completed compact evaluations the surrogate passed while the joint gate
+  failed. A default-off six-pitch-joint direct cost now passes its CPU-only
+  contract. Its preregistered scale is -0.007914891239136222, calibrated from
+  frozen x=0/x=0.08 traces to equal the existing bridge penalty's mean reward
+  contribution. Do not tune scale, delta, indices, aggregation, KL, or length.
 - Do not change gains, offsets, IMU remaps, action scale, or phase timing without a reviewed evidence-backed task.
 - Do not deploy behavior changes to the robot unless explicitly requested.
 - Do not run moving hardware tests unless Rob is physically present and explicitly approves that exact test.

@@ -154,7 +154,11 @@ def stage_a_workflow_command(args: argparse.Namespace) -> list[str]:
         "--phase2-num-timesteps",
         (
             "163840"
-            if args.disable_behavior_prior or args.enable_command_progress_failure
+            if (
+                args.disable_behavior_prior
+                or args.enable_command_progress_failure
+                or args.enable_joint_target_tracking
+            )
             else "40960"
         ),
         "--phase2-restore-policy-kl-scale",
@@ -190,6 +194,22 @@ def stage_a_workflow_command(args: argparse.Namespace) -> list[str]:
                         "0.25",
                         "--command-progress-failure-warmup-steps",
                         "30",
+                    ]
+                ),
+            ]
+        )
+    if args.enable_joint_target_tracking:
+        command.extend(
+            [
+                "--phase2-final-training-args-json",
+                json.dumps(
+                    [
+                        "--joint-target-tracking-scale",
+                        "-0.007914891239136222",
+                        "--joint-target-tracking-huber-delta",
+                        "0.03",
+                        "--joint-target-tracking-joint-indices",
+                        "2,3,4,11,12,13",
                     ]
                 ),
             ]
@@ -344,6 +364,14 @@ def main() -> int:
         ),
     )
     parser.add_argument(
+        "--enable-joint-target-tracking",
+        action="store_true",
+        help=(
+            "Preregistered one-factor Stage A diagnostic: add the data-calibrated "
+            "direct pitch-chain sent-target versus actual-position cost."
+        ),
+    )
+    parser.add_argument(
         "--adopt-existing-session",
         action="store_true",
         help=(
@@ -402,10 +430,17 @@ def main() -> int:
         default=ROOT / "outputs" / "analysis" / "colab_cli_stage_a_rate175_prior",
     )
     args = parser.parse_args()
-    if args.disable_behavior_prior and args.enable_command_progress_failure:
+    one_factor_modes = sum(
+        bool(value)
+        for value in (
+            args.disable_behavior_prior,
+            args.enable_command_progress_failure,
+            args.enable_joint_target_tracking,
+        )
+    )
+    if one_factor_modes > 1:
         parser.error(
-            "--disable-behavior-prior and --enable-command-progress-failure "
-            "are separate one-factor experiments and cannot be combined"
+            "Stage A one-factor experiment flags cannot be combined"
         )
 
     payload: dict[str, object] = {
@@ -426,6 +461,7 @@ def main() -> int:
         "enable_command_progress_failure": (
             args.enable_command_progress_failure
         ),
+        "enable_joint_target_tracking": args.enable_joint_target_tracking,
         "postrun_scan_started": False,
         "allocation_attempts": [],
         "workflow_command": stage_a_workflow_command(args),
