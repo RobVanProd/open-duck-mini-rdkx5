@@ -1,7 +1,7 @@
 # Phase 2 Stage A Post-Run Status
 
 status: `HOLD_STAGE_A_CHECKPOINTS_MISSING`
-generated_at: `2026-07-06T10:29:47Z`
+generated_at: `2026-07-11T01:50:29Z`
 
 Offline only. No robot, SSH, deploy, grounded replay, training-result
 promotion, or runtime behavior change was performed.

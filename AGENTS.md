@@ -5,7 +5,111 @@ This repository controls work around a real biped robot. Preserve safety and evi
 ## Core Rules
 
 - Never tune before evidence.
-- Do not train a new policy yet.
+- Do not start unregistered or ad hoc policy training. The authorized offline
+  joint-weighted, 2.0 rad/s temporally bounded behavior-teacher causal smoke
+  completed on 2026-07-11. None of its 40,960, 81,920, or 122,880 checkpoints
+  passed the compact corrected-bridge x=0.08 gate, so the branch is closed:
+  do not promote it, run extended seed evaluation, or train it further. No
+  additional policy training is authorized.
+- The authorized offline phase-action-delta causal screen completed and failed
+  its consistency rule: seeds 1 and 3 improved, seed 6 regressed sharply, all
+  three high-progress cohort seeds regressed, and overall mean progress fell.
+  The route is closed. Do not tune its scale, export it, promote it, deploy it,
+  or use it for training. No additional eval intervention or policy training is
+  authorized without a new evidence-backed, pre-registered task.
+- One non-interventional CPU-only baseline data expansion is authorized: run
+  the original rate175 step-163,840 policy for 1 second at x=0.08 on new seeds
+  8-23, using the same corrected fitted bridge and 2.0 rad/s pitch-chain limiter
+  as the matched control, with full-observation traces. Its only purpose is to
+  measure whether the isolated seed-6 reset state recurs and whether nearby
+  states have consistent outcomes. No policy/action modifier, training,
+  promotion, deployment, robot access, Colab, or GPU use is authorized.
+- One held-out continuation of that same non-interventional baseline collection
+  is authorized on seeds 24-39. Freeze the discovery metrics before running:
+  primary = first-10-tick teacher-disagreement p95 ROC AUC for fall versus
+  duration-complete; secondary = first-20-tick disagreement mean ROC AUC. Use
+  the same policy, x=0.08, 1-second duration, bridge, limiter, tracing, and CPU
+  platform. Do not fit a threshold, alter actions, train, promote, deploy, use
+  the robot, allocate Colab, or use any GPU.
+- The held-out baseline block completed. Teacher disagreement replicated as a
+  fall-ranking diagnostic, but no threshold is authorized; the two held-out
+  positives are insufficient for calibration. Baseline seeds 8-39 produced
+  7/32 one-second falls and only 3/32 passes. Do not collect more seeds, tune a
+  monitor threshold, change reset behavior, or run another intervention without
+  a new reviewed evidence task. Training, promotion, deployment, robot access,
+  Colab, and GPU use remain unauthorized.
+- One reset-only CPU causal screen is authorized on the seven observed one-
+  second fall seeds `9,12,14,19,20,36,37`: preserve the original rate175 step-
+  163,840 policy, canonical playground reset, x=0.08 command, corrected fitted
+  bridge, and 2.0 rad/s pitch limiter, changing only `reset_settle_ticks` from
+  0 to 10. Run 1 second with full traces. No alternative settle count, home-
+  support reset, action change, training, promotion, deployment, robot, Colab,
+  or GPU use is authorized.
+- The settle-10 failure-seed screen completed with 7/7 falls, all earlier than
+  the matched settle-0 controls. The route is closed. Do not tune settle ticks,
+  substitute home-support reset, fit a disagreement threshold, or attempt an
+  active recovery without a separately reviewed task. No training, promotion,
+  deployment, robot access, Colab, or GPU use is authorized.
+- A subsequent offline, saved-JSON threshold-transfer audit did not alter any
+  runtime behavior. A discovery-fitted first-10-tick p95 cutoff transferred to
+  held-out seeds, but the reverse held-out-fitted cutoff detected only 1/5
+  discovery failures (sensitivity 0.20). Threshold transfer is asymmetric, so
+  no start-paused cutoff is calibrated or authorized. Do not implement or tune
+  a runtime gate from these 32 traces. More independent failure positives or a
+  separately reviewed multivariate reset-health study are required first.
+- The preregistered saved-trace multivariate reset-health study also failed.
+  Nearest failure-versus-completion reset risk had transfer AUC 0.750/0.764;
+  equal-weight combination tied disagreement at 1.000 discovery-to-held-out but
+  reduced reverse-transfer AUC from 0.909 to 0.818. Close this exact normalized
+  101-observation nearest-neighbor/equal-weight route. Do not tune its distance,
+  weights, features, or threshold post hoc. The remaining supported diagnostic
+  hypothesis is the simpler temporal disagreement ranking, which requires new
+  independent failure positives before calibration.
+- That independent validation is complete on seeds 40-71: 11/32 fell and only
+  4/32 passed. First-10-tick p95 disagreement retained ranking information
+  (AUC 0.823), but the frozen 0.08247255 cutoff produced TP/FN/TN/FP
+  9/2/16/5 (sensitivity 0.818, specificity 0.762). Reject this cutoff as a
+  simulator or robot safety gate. Do not collect more threshold-only seeds,
+  refit the cutoff, or add post-hoc reset features. The next evidence problem
+  is an outcome-aligned active-recovery target or a separately preregistered
+  policy-objective experiment; neither is currently authorized for deployment.
+- A preregistered first-0.20-second physical-signature analysis across seed
+  blocks 8-23, 24-39, and 40-71 found two replicated fall correlates: absolute
+  pitch growth (AUC 0.855/0.750/0.753) and actuator tracking error
+  (0.945/0.821/0.827). Joint localization identified only the right knee as
+  consistent across all blocks (AUC 0.727/0.929/0.753; failure mean tracking
+  error about 0.36-0.44 rad versus 0.22-0.24 rad completed). This is a candidate
+  causal-screen variable, not permission to change a gain, limiter, target, or
+  policy. Establish whether target demand/rate drives the error before
+  preregistering any matched CPU intervention.
+- The saved-trace mechanism audit rejected right-knee target demand and rate
+  saturation: no demand feature met the frozen cross-block rule, saturation was
+  absent, and demand/error correlations were near zero or negative. Error-
+  origin analysis instead found tick-0 absolute mismatch replicated
+  (AUC 0.709/0.893/0.753) while later growth did not. Do not lower the limiter.
+  The only preregistered next causal screen is a default-off eval-only bridge
+  initialization that starts actuator index 12 from measured reset position on
+  seeds 40-71 under the frozen pass rule. No other joint or parameter change is
+  authorized by this evidence.
+- The preregistered right-knee bridge reset-alignment causal screen failed and
+  was stopped after seeds 40-50. It reached 6 falls (limit 5), created a new
+  fall on baseline-complete seed 50, and recovered only seed 49. Early tracking
+  error decreased on 4/6 tested baseline-fall seeds without reliable outcome
+  recovery. Close this exact route: do not tune alignment duration, scale,
+  offsets, other joints, gains, or limiters. Treat right-knee mismatch as a
+  diagnostic symptom/partial mediator, not a recovery target. The remaining
+  evidence-supported learning question is direct canonical-reset outcome
+  robustness under a separately preregistered objective, not another local
+  action correction.
+- The preregistered no-behavior-prior Stage A Colab branch completed. All three
+  checkpoints passed x=0 but failed x=0.08: step 81,920 held for low progress;
+  steps 163,840 and 245,760 held for tracking (p95 about 0.216 rad). No expanded
+  seed sweep is authorized or needed; close the branch without tuning KL,
+  timesteps, or reintroducing a modified prior. Higher training reward did not
+  align with the compact gate. The next objective audit should consider the
+  default-off command-progress failure termination, which directly matches the
+  measured positive-command no-progress outcome, as a separate one-factor
+  hypothesis from the original baseline recipe.
 - Do not change gains, offsets, IMU remaps, action scale, or phase timing without a reviewed evidence-backed task.
 - Do not deploy behavior changes to the robot unless explicitly requested.
 - Do not run moving hardware tests unless Rob is physically present and explicitly approves that exact test.

@@ -151,17 +151,49 @@ def stage_a_workflow_command(args: argparse.Namespace) -> list[str]:
         "0",
         "--timeout-s",
         str(args.workflow_timeout_s),
-        "--candidate-behavior-prior-mlp-npz",
-        "outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate/candidate_mlp.npz",
-        "--candidate-behavior-prior-scale",
-        "-0.6",
-        "--candidate-behavior-prior-huber-delta",
-        "0.05",
+        "--phase2-num-timesteps",
+        (
+            "163840"
+            if args.disable_behavior_prior or args.enable_command_progress_failure
+            else "40960"
+        ),
         "--phase2-restore-policy-kl-scale",
         "4.0",
         "--output-root",
         str(args.workflow_output_root),
     ]
+    if not args.disable_behavior_prior:
+        command.extend(
+            [
+                "--candidate-behavior-prior-mlp-npz",
+                "outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate/candidate_mlp.npz",
+                "--candidate-behavior-prior-scale",
+                "-0.6",
+                "--candidate-behavior-prior-huber-delta",
+                "0.05",
+                "--candidate-behavior-prior-joint-weights",
+                "0.25,0.5,1,2,2,0.25,0.25,0.25,0.25,0.25,0.5,1,2,2",
+                "--candidate-behavior-prior-temporal-rate-limit-rad-s",
+                "2.0",
+                "--candidate-behavior-prior-temporal-rate-limit-joint-indices",
+                "2,3,4,11,12,13",
+            ]
+        )
+    if args.enable_command_progress_failure:
+        command.extend(
+            [
+                "--phase2-final-training-args-json",
+                json.dumps(
+                    [
+                        "--command-progress-failure-enable",
+                        "--command-progress-failure-min-ratio",
+                        "0.25",
+                        "--command-progress-failure-warmup-steps",
+                        "30",
+                    ]
+                ),
+            ]
+        )
     if args.execution_mode == "exec":
         command.extend(["--exec-remote", "--exec-remote-timeout-s", str(args.exec_remote_timeout_s)])
     return command
@@ -296,6 +328,22 @@ def main() -> int:
         help="Launch the valid Stage A workflow after a session is visible.",
     )
     parser.add_argument(
+        "--disable-behavior-prior",
+        action="store_true",
+        help=(
+            "Preregistered one-factor Stage A diagnostic: omit all behavior-"
+            "prior arguments while preserving the remaining workflow command."
+        ),
+    )
+    parser.add_argument(
+        "--enable-command-progress-failure",
+        action="store_true",
+        help=(
+            "Preregistered one-factor Stage A diagnostic: enable positive-"
+            "command progress-failure termination at ratio 0.25 after 30 ticks."
+        ),
+    )
+    parser.add_argument(
         "--adopt-existing-session",
         action="store_true",
         help=(
@@ -354,6 +402,11 @@ def main() -> int:
         default=ROOT / "outputs" / "analysis" / "colab_cli_stage_a_rate175_prior",
     )
     args = parser.parse_args()
+    if args.disable_behavior_prior and args.enable_command_progress_failure:
+        parser.error(
+            "--disable-behavior-prior and --enable-command-progress-failure "
+            "are separate one-factor experiments and cannot be combined"
+        )
 
     payload: dict[str, object] = {
         "status": "HOLD_COLAB_GPU_ALLOCATION",
@@ -369,6 +422,10 @@ def main() -> int:
         "no_create": args.no_create,
         "allow_colab_allocation": args.allow_colab_allocation,
         "workflow_started": False,
+        "disable_behavior_prior": args.disable_behavior_prior,
+        "enable_command_progress_failure": (
+            args.enable_command_progress_failure
+        ),
         "postrun_scan_started": False,
         "allocation_attempts": [],
         "workflow_command": stage_a_workflow_command(args),

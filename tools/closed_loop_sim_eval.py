@@ -61,6 +61,11 @@ class ClosedLoopConfig:
     eval_role: str = "reproduction"
     mjx_step_loop_mode: str = "default"
     policy_action_gain: float = 1.0
+    policy_phase_action_delta_json: Path | None = None
+    policy_phase_action_delta_scale: float = 1.0
+    policy_phase_action_delta_min_command_x: float = 0.02
+    policy_action_rate_limit_rad_s: float | None = None
+    policy_action_rate_limit_joint_indices: tuple[int, ...] = (2, 3, 4, 11, 12, 13)
     max_motor_velocity_override_rad_s: float | None = None
     forward_diagnostic_required_ratio: float = 0.5
     forward_diagnostic_deadband: float = 0.02
@@ -82,6 +87,7 @@ class ClosedLoopConfig:
     terrain_hfield_z_scale: float | None = None
     reset_settle_ticks: int = 0
     reset_mode: str = "playground"
+    bridge_reset_align_joint_indices: tuple[int, ...] = ()
 
 
 @contextlib.contextmanager
@@ -794,6 +800,9 @@ def classify_candidate_gate(
 ) -> dict:
     """Classify a candidate policy directly instead of asking it to reproduce failure."""
     velocity_limits = pitch_chain_velocity_limits_from_fit(fit or {})
+    # Float32 target construction can exceed an exact decimal limit by roughly
+    # 1e-6 rad/s. Do not turn numerical representation noise into a policy hold.
+    velocity_tolerance_rad_s = 1.0e-5
     thresholds = {
         "max_action_saturation_pct": 1.0,
         "max_pitch_tracking_p95_rad": 0.20,
@@ -871,7 +880,10 @@ def classify_candidate_gate(
                     velocity_value,
                 )
                 limit = velocity_limits.get(joint)
-                if finite(limit) and velocity_value > float(limit):
+                if (
+                    finite(limit)
+                    and velocity_value > float(limit) + velocity_tolerance_rad_s
+                ):
                     per_joint_velocity_violations.append(
                         {
                             "joint": joint,
@@ -887,7 +899,10 @@ def classify_candidate_gate(
                     velocity_max_value,
                 )
                 limit = velocity_limits.get(joint)
-                if finite(limit) and velocity_max_value > float(limit):
+                if (
+                    finite(limit)
+                    and velocity_max_value > float(limit) + velocity_tolerance_rad_s
+                ):
                     per_joint_velocity_max_violations.append(
                         {
                             "joint": joint,
@@ -1129,6 +1144,26 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             "error": f"ONNX Runtime session failed: {type(exc).__name__}: {exc}",
         }
     policy = policy_metadata(session, config.policy_path)
+    phase_action_delta = None
+    if config.policy_phase_action_delta_json is not None:
+        try:
+            phase_payload = json.loads(config.policy_phase_action_delta_json.read_text())
+            phase_action_delta = np.asarray(
+                phase_payload["phase_action_coefficient_delta"], dtype=np.float32
+            )
+        except Exception as exc:
+            return {
+                "status": "HOLD_POLICY_PHASE_DELTA_CONTRACT",
+                "error": f"failed to load phase action delta: {type(exc).__name__}: {exc}",
+            }
+        if phase_action_delta.shape != (3, config.expected_action_dim):
+            return {
+                "status": "HOLD_POLICY_PHASE_DELTA_CONTRACT",
+                "error": (
+                    f"phase action delta shape {phase_action_delta.shape} != "
+                    f"{(3, config.expected_action_dim)}"
+                ),
+            }
     try:
         policy_io = init_policy_io_state(session, config)
     except ValueError as exc:
@@ -1490,6 +1525,13 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
         "terrain_override": terrain_override,
         "reset_settle_ticks": int(config.reset_settle_ticks),
         "reset_mode": config.reset_mode,
+        "bridge_reset_align_joint_indices": list(
+            config.bridge_reset_align_joint_indices
+        ),
+        "bridge_reset_alignment_description": (
+            "Default-off eval-only diagnostic: initialize only the selected "
+            "actuator-bridge applied targets from measured reset joint positions."
+        ),
         "reset_settle_duration_s": float(config.reset_settle_ticks) * float(env.dt),
         "reset_settle_description": (
             "Eval-only default-off diagnostic. When nonzero, reset physics is "
@@ -1512,13 +1554,29 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             for _ in range(int(config.reset_settle_ticks)):
                 state = settle_reset_step_runner(state, settle_target)
             state = refresh_obs_jit(state)
-        initial_target = np.asarray(jax.device_get(state.info["motor_targets"]), dtype=float)
+        initial_target = np.asarray(
+            jax.device_get(state.info["motor_targets"]), dtype=float
+        )
+        if config.bridge_reset_align_joint_indices:
+            reset_actual = np.asarray(
+                jax.device_get(env.get_actuator_joints_qpos(state.data.qpos)),
+                dtype=float,
+            )
+            indices = np.asarray(config.bridge_reset_align_joint_indices, dtype=int)
+            if np.any(indices < 0) or np.any(indices >= initial_target.size):
+                raise ValueError(
+                    "bridge_reset_align_joint_indices outside actuator contract: "
+                    f"{config.bridge_reset_align_joint_indices}"
+                )
+            initial_target = initial_target.copy()
+            initial_target[indices] = reset_actual[indices]
         bridge = ActuatorBridgeModel(params, initial_target=initial_target)
         termination_reason = None
         hidden_state = {
             name: value.copy()
             for name, value in policy_io["hidden_state"].items()
         }
+        previous_rate_bounded_action: np.ndarray | None = None
 
         for tick in range(sim_steps):
             obs = np.asarray(jax.device_get(state.obs["state"]), dtype=np.float32)
@@ -1540,9 +1598,44 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                     "status": "HOLD_POLICY_SIM_CONTRACT_MISMATCH",
                     "error": f"action shape {action.shape} != {(config.expected_action_dim,)}",
                 }
-            action = np.clip(
+            policy_base_action = np.clip(
                 action * float(config.policy_action_gain), -1.0, 1.0
             ).astype(np.float32)
+            phase_correction = np.zeros(config.expected_action_dim, dtype=np.float32)
+            if (
+                phase_action_delta is not None
+                and float(config.command_x)
+                >= float(config.policy_phase_action_delta_min_command_x)
+            ):
+                phase_features = np.asarray(
+                    [1.0, float(obs[99]), float(obs[100])], dtype=np.float32
+                )
+                phase_correction = (
+                    phase_features @ phase_action_delta
+                    * float(config.policy_phase_action_delta_scale)
+                ).astype(np.float32)
+            raw_action = np.clip(
+                policy_base_action + phase_correction, -1.0, 1.0
+            ).astype(np.float32)
+            action = raw_action.copy()
+            if (
+                config.policy_action_rate_limit_rad_s is not None
+                and previous_rate_bounded_action is not None
+            ):
+                max_action_delta = (
+                    float(config.policy_action_rate_limit_rad_s)
+                    * float(env.dt)
+                    / float(env._config.action_scale)
+                )
+                indices = np.asarray(
+                    config.policy_action_rate_limit_joint_indices, dtype=int
+                )
+                action[indices] = np.clip(
+                    action[indices],
+                    previous_rate_bounded_action[indices] - max_action_delta,
+                    previous_rate_bounded_action[indices] + max_action_delta,
+                )
+            previous_rate_bounded_action = action.copy()
             (
                 state,
                 action_w_delay,
@@ -1610,6 +1703,9 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                     0.0,
                 ],
                 "action": action.astype(float).tolist(),
+                "policy_base_action": policy_base_action.astype(float).tolist(),
+                "policy_phase_action_correction": phase_correction.astype(float).tolist(),
+                "policy_raw_action": raw_action.astype(float).tolist(),
                 "action_w_delay": np.asarray(
                     jax.device_get(action_w_delay), dtype=float
                 ).tolist(),
@@ -1773,6 +1869,19 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             "stateful": bool(state_input_names),
         },
         "policy_action_gain": float(config.policy_action_gain),
+        "policy_phase_action_delta_json": (
+            None
+            if config.policy_phase_action_delta_json is None
+            else str(config.policy_phase_action_delta_json)
+        ),
+        "policy_phase_action_delta_scale": float(config.policy_phase_action_delta_scale),
+        "policy_phase_action_delta_min_command_x": float(
+            config.policy_phase_action_delta_min_command_x
+        ),
+        "policy_action_rate_limit_rad_s": config.policy_action_rate_limit_rad_s,
+        "policy_action_rate_limit_joint_indices": list(
+            config.policy_action_rate_limit_joint_indices
+        ),
         "command": [
             float(config.command_x),
             float(config.command_y),

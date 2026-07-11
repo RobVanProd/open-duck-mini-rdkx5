@@ -280,6 +280,26 @@ def run_one(
         "--output-dir",
         str(output_dir),
     ]
+    if args.policy_action_rate_limit_rad_s is not None:
+        command.extend(
+            [
+                "--policy-action-rate-limit-rad-s",
+                str(args.policy_action_rate_limit_rad_s),
+                "--policy-action-rate-limit-joint-indices",
+                str(args.policy_action_rate_limit_joint_indices),
+            ]
+        )
+    if args.policy_phase_action_delta_json:
+        command.extend(
+            [
+                "--policy-phase-action-delta-json",
+                str(Path(args.policy_phase_action_delta_json)),
+                "--policy-phase-action-delta-scale",
+                str(args.policy_phase_action_delta_scale),
+                "--policy-phase-action-delta-min-command-x",
+                str(args.policy_phase_action_delta_min_command_x),
+            ]
+        )
     if seed in set(args.trace_seeds):
         command.extend(["--trace-jsonl", str(output_dir / "trace.jsonl")])
         if args.trace_full_obs:
@@ -325,6 +345,13 @@ def run_one(
         command.extend(["--reset-settle-ticks", str(args.reset_settle_ticks)])
     if args.reset_mode != "playground":
         command.extend(["--reset-mode", args.reset_mode])
+    if args.bridge_reset_align_joint_indices:
+        command.extend(
+            [
+                "--bridge-reset-align-joint-indices",
+                args.bridge_reset_align_joint_indices,
+            ]
+        )
     result: dict[str, Any] = {
         "policy": str(policy),
         "policy_label": label,
@@ -591,6 +618,21 @@ def main() -> int:
             "policy exactly."
         ),
     )
+    parser.add_argument(
+        "--policy-action-rate-limit-rad-s",
+        type=float,
+        default=None,
+        help="Eval-only temporal policy-action rate bound; omitted by default.",
+    )
+    parser.add_argument("--policy-phase-action-delta-json", default=None)
+    parser.add_argument("--policy-phase-action-delta-scale", type=float, default=1.0)
+    parser.add_argument(
+        "--policy-phase-action-delta-min-command-x", type=float, default=0.02
+    )
+    parser.add_argument(
+        "--policy-action-rate-limit-joint-indices",
+        default="2,3,4,11,12,13",
+    )
     parser.add_argument("--jax-platform", default="cpu")
     parser.add_argument("--trace-seeds", type=parse_int_list, default=[])
     parser.add_argument(
@@ -668,6 +710,13 @@ def main() -> int:
         ),
     )
     parser.add_argument(
+        "--bridge-reset-align-joint-indices",
+        default="",
+        help=(
+            "Default-off eval-only diagnostic passed through to closed-loop eval."
+        ),
+    )
+    parser.add_argument(
         "--min-swing-segments-per-foot",
         type=int,
         default=None,
@@ -742,6 +791,9 @@ def main() -> int:
                     "terrain_hfield_z_scale": args.terrain_hfield_z_scale,
                     "reset_settle_ticks": args.reset_settle_ticks,
                     "reset_mode": args.reset_mode,
+                    "bridge_reset_align_joint_indices": (
+                        args.bridge_reset_align_joint_indices
+                    ),
                     "min_swing_segments_per_foot": args.min_swing_segments_per_foot,
                     "min_swing_rel_x_range_p95_m": (
                         args.min_swing_rel_x_range_p95_m
@@ -783,6 +835,9 @@ def main() -> int:
             "terrain_hfield_z_scale": args.terrain_hfield_z_scale,
             "reset_settle_ticks": args.reset_settle_ticks,
             "reset_mode": args.reset_mode,
+            "bridge_reset_align_joint_indices": (
+                args.bridge_reset_align_joint_indices
+            ),
             "min_swing_segments_per_foot": args.min_swing_segments_per_foot,
             "min_swing_rel_x_range_p95_m": args.min_swing_rel_x_range_p95_m,
             "min_swing_peak_lift_m": args.min_swing_peak_lift_m,

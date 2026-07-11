@@ -1,0 +1,94 @@
+{
+  "status": "THRESHOLD_TRANSFER_ASYMMETRIC_NO_RUNTIME_GATE",
+  "inputs": {
+    "discovery": "outputs/analysis/phase2_stage_a_teacher_correction_early_warning_seed8_23.json",
+    "heldout": "outputs/analysis/phase2_stage_a_teacher_correction_early_warning_heldout_seed24_39.json"
+  },
+  "statistic": "p95",
+  "window_ticks": 10,
+  "selection": "maximize balanced accuracy; ties: sensitivity, specificity, lower threshold",
+  "directions": [
+    {
+      "fit_block": "discovery",
+      "test_block": "heldout",
+      "threshold": 0.08247255182143001,
+      "fit_metrics": {
+        "tp": 5,
+        "fn": 0,
+        "tn": 10,
+        "fp": 1,
+        "sensitivity": 1.0,
+        "specificity": 0.9090909090909091,
+        "balanced_accuracy": 0.9545454545454546,
+        "positive_predictive_value": 0.8333333333333334,
+        "negative_predictive_value": 1.0,
+        "flagged_seeds": [
+          9,
+          12,
+          13,
+          14,
+          19,
+          20
+        ]
+      },
+      "transfer_metrics": {
+        "tp": 2,
+        "fn": 0,
+        "tn": 14,
+        "fp": 0,
+        "sensitivity": 1.0,
+        "specificity": 1.0,
+        "balanced_accuracy": 1.0,
+        "positive_predictive_value": 1.0,
+        "negative_predictive_value": 1.0,
+        "flagged_seeds": [
+          36,
+          37
+        ]
+      }
+    },
+    {
+      "fit_block": "heldout",
+      "test_block": "discovery",
+      "threshold": 0.08765778238680899,
+      "fit_metrics": {
+        "tp": 2,
+        "fn": 0,
+        "tn": 14,
+        "fp": 0,
+        "sensitivity": 1.0,
+        "specificity": 1.0,
+        "balanced_accuracy": 1.0,
+        "positive_predictive_value": 1.0,
+        "negative_predictive_value": 1.0,
+        "flagged_seeds": [
+          36,
+          37
+        ]
+      },
+      "transfer_metrics": {
+        "tp": 1,
+        "fn": 4,
+        "tn": 10,
+        "fp": 1,
+        "sensitivity": 0.2,
+        "specificity": 0.9090909090909091,
+        "balanced_accuracy": 0.5545454545454546,
+        "positive_predictive_value": 0.5,
+        "negative_predictive_value": 0.7142857142857143,
+        "flagged_seeds": [
+          13,
+          20
+        ]
+      }
+    }
+  ],
+  "stable_full_sensitivity_transfer": false,
+  "decision": "Do not select or implement a runtime start-paused threshold.",
+  "limitations": [
+    "Only seven failures are present across 32 traces, including two in the held-out block.",
+    "This evaluates seed-block transfer, not probability calibration or robot safety.",
+    "Thresholds and performance are based on saved simulation traces only."
+  ],
+  "offline_only": true
+}

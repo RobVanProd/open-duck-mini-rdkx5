@@ -599,6 +599,26 @@ def run_closed_loop_worker(args) -> dict:
                 str(args.max_motor_velocity_override_rad_s),
             ]
         )
+    if args.policy_action_rate_limit_rad_s is not None:
+        cmd.extend(
+            [
+                "--policy-action-rate-limit-rad-s",
+                str(args.policy_action_rate_limit_rad_s),
+                "--policy-action-rate-limit-joint-indices",
+                str(args.policy_action_rate_limit_joint_indices),
+            ]
+        )
+    if args.policy_phase_action_delta_json:
+        cmd.extend(
+            [
+                "--policy-phase-action-delta-json",
+                str(args.policy_phase_action_delta_json),
+                "--policy-phase-action-delta-scale",
+                str(args.policy_phase_action_delta_scale),
+                "--policy-phase-action-delta-min-command-x",
+                str(args.policy_phase_action_delta_min_command_x),
+            ]
+        )
     if args.inspect_policy_io:
         cmd.append("--inspect-policy-io")
     if args.policy_obs_input_name:
@@ -638,6 +658,13 @@ def run_closed_loop_worker(args) -> dict:
         cmd.extend(["--reset-settle-ticks", str(args.reset_settle_ticks)])
     if args.reset_mode != "playground":
         cmd.extend(["--reset-mode", args.reset_mode])
+    if args.bridge_reset_align_joint_indices:
+        cmd.extend(
+            [
+                "--bridge-reset-align-joint-indices",
+                args.bridge_reset_align_joint_indices,
+            ]
+        )
     env = build_jax_env(args.jax_platform, args.jax_platforms)
     try:
         result = subprocess.run(
@@ -1279,6 +1306,32 @@ def main() -> int:
         ),
     )
     parser.add_argument(
+        "--policy-action-rate-limit-rad-s",
+        type=float,
+        default=None,
+        help=(
+            "Eval-only temporal rate bound applied to selected policy actions "
+            "before action history and delay. Omit to preserve the policy."
+        ),
+    )
+    parser.add_argument(
+        "--policy-phase-action-delta-json",
+        default=None,
+        help=(
+            "Eval-only JSON containing a 3x14 phase_action_coefficient_delta. "
+            "The correction uses [1, obs[99], obs[100]] and is default-off."
+        ),
+    )
+    parser.add_argument("--policy-phase-action-delta-scale", type=float, default=1.0)
+    parser.add_argument(
+        "--policy-phase-action-delta-min-command-x", type=float, default=0.02
+    )
+    parser.add_argument(
+        "--policy-action-rate-limit-joint-indices",
+        default="2,3,4,11,12,13",
+        help="Comma-separated action indices for the eval-only policy rate bound.",
+    )
+    parser.add_argument(
         "--forward-diagnostic-required-ratio",
         type=float,
         default=0.5,
@@ -1421,6 +1474,14 @@ def main() -> int:
         ),
     )
     parser.add_argument(
+        "--bridge-reset-align-joint-indices",
+        default="",
+        help=(
+            "Default-off eval-only diagnostic. Comma-separated actuator indices "
+            "whose bridge initial applied target is set to measured reset position."
+        ),
+    )
+    parser.add_argument(
         "--_closed-loop-worker",
         action="store_true",
         help=argparse.SUPPRESS,
@@ -1493,6 +1554,25 @@ def main() -> int:
                         eval_role=args.eval_role,
                         mjx_step_loop_mode=args.mjx_step_loop_mode,
                         policy_action_gain=args.policy_action_gain,
+                        policy_phase_action_delta_json=(
+                            None
+                            if args.policy_phase_action_delta_json is None
+                            else Path(args.policy_phase_action_delta_json)
+                        ),
+                        policy_phase_action_delta_scale=(
+                            args.policy_phase_action_delta_scale
+                        ),
+                        policy_phase_action_delta_min_command_x=(
+                            args.policy_phase_action_delta_min_command_x
+                        ),
+                        policy_action_rate_limit_rad_s=(
+                            args.policy_action_rate_limit_rad_s
+                        ),
+                        policy_action_rate_limit_joint_indices=tuple(
+                            int(item.strip())
+                            for item in args.policy_action_rate_limit_joint_indices.split(",")
+                            if item.strip()
+                        ),
                         max_motor_velocity_override_rad_s=(
                             args.max_motor_velocity_override_rad_s
                         ),
@@ -1530,6 +1610,11 @@ def main() -> int:
                         terrain_hfield_z_scale=args.terrain_hfield_z_scale,
                         reset_settle_ticks=args.reset_settle_ticks,
                         reset_mode=args.reset_mode,
+                        bridge_reset_align_joint_indices=tuple(
+                            int(item.strip())
+                            for item in args.bridge_reset_align_joint_indices.split(",")
+                            if item.strip()
+                        ),
                     )
                 )
             if args._closed_loop_worker_json:
