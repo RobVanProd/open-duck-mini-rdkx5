@@ -110,6 +110,14 @@ This repository controls work around a real biped robot. Preserve safety and evi
   default-off command-progress failure termination, which directly matches the
   measured positive-command no-progress outcome, as a separate one-factor
   hypothesis from the original baseline recipe.
+- The preregistered command-progress failure branch is complete and rejected.
+  No checkpoint passed both compact commands: step 81,920 failed x=0.08
+  progress; step 163,840 reached ratio 0.287 but failed tracking at x=0 and
+  x=0.08; step 245,760 failed x=0 tracking and x=0.08 progress. Do not run the
+  seeds 40-71 expansion or tune the 0.25 ratio / 30-tick warmup. The Colab
+  runtime disappeared during its CPU sweep, but all checkpoints were recovered
+  from a valid artifact snapshot and the exact sweep was completed with local
+  CPU-only JAX. This exact direct-termination route is closed.
 - Do not change gains, offsets, IMU remaps, action scale, or phase timing without a reviewed evidence-backed task.
 - Do not deploy behavior changes to the robot unless explicitly requested.
 - Do not run moving hardware tests unless Rob is physically present and explicitly approves that exact test.

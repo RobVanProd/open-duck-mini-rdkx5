@@ -99,6 +99,15 @@ did not, confirming objective mismatch. The next separable hypothesis is the
 existing default-off positive-command progress-failure termination, configured
 to the measured compact threshold and warmup, from the original prior-enabled
 baseline recipe—not another teacher or diagnostic-correlate loss.
+
+The one-factor command-progress failure test is also complete and rejected.
+Step 81,920 preserved x=0 but reached only 0.0104 m/s (ratio 0.1295) at x=0.08.
+Step 163,840 reached 0.0230 m/s (ratio 0.2870) but failed tracking at both x=0
+and x=0.08. Step 245,760 failed x=0 tracking and reached only 0.0155 m/s at
+x=0.08. No checkpoint passed both compact gates, so do not run seeds 40-71 or
+tune the termination threshold/warmup. The direct termination did not solve
+the reset-robustness objective mismatch. Preserve this negative result and
+require a new, separately preregistered hypothesis before further training.
 ```
 
 Robotics operating model:

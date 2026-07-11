@@ -2,7 +2,7 @@
 
 Date: 2026-07-11
 
-Status: **PRE-REGISTERED; NOT LAUNCHED**
+Status: **COMPLETED; NO CHECKPOINT PASSED BOTH COMPACT GATES; BRANCH CLOSED**
 
 Replay the original authoritative prior-enabled Stage A recipe from the same
 rate175 step-0 checkpoint with one change only:
