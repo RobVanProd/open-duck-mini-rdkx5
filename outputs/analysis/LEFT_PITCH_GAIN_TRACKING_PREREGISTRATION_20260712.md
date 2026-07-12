@@ -54,3 +54,11 @@ EEPROM, and all other gains.
    every attempt, including aborts. No EEPROM write occurs.
 
 No grounded movement is authorized by this experiment.
+
+## Runner readiness
+
+`scripts/collect_left_pitch_gain_x0.sh` is syntax-checked and refusal-tested. It
+is fixed to x=0, 15 seconds, gains 31/34, exact artifact hashes, isolated logs,
+physical-presence and exact-confirmation gates. Its cleanup restores normal RAM
+gains and disables torque on success, abort, or failure. The runner has no
+x=0.08 or grounded command path and has not been deployed or run.

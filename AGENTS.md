@@ -251,6 +251,11 @@ This repository controls work around a real biped robot. Preserve safety and evi
   left knee P 30->34, derived from measured error ratios, with every other
   variable frozen. First run suspended x=0 only after explicit approval, then
   restore body/head P 30/8, D 0 and torque off. x=0.08 remains a separate gate.
+- The dedicated runner `scripts/collect_left_pitch_gain_x0.sh` is ready but not
+  deployed/run. It is fixed to suspended x=0, 15 seconds, P 31/34, exact hashes,
+  physical presence and exact confirmation; it cannot run x=0.08 or grounded.
+  Every exit invokes `restore_runtime_gains_and_turn_off.py`. Explicit approval
+  of this gain-change x=0 stage is still required despite general x=0 clearance.
 - Rob confirmed candidate 5's final suspended x=0 run looked symmetric. The
   full gate is closed as `PASS_X0`: zero CRC/reset/write errors, clean timing
   and tracking, symmetric motion, and torque-off cleanup. Candidate 5 remains
