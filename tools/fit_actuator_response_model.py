@@ -80,7 +80,7 @@ def grid(start, stop, step):
     return values
 
 
-def load_records(path, startup_ticks):
+def load_records(path, startup_ticks, phase=None):
     records = []
     with open(path) as f:
         for line_no, line in enumerate(f, 1):
@@ -93,6 +93,8 @@ def load_records(path, startup_ticks):
                 print(f"Skipping invalid JSON line {line_no}: {exc}")
                 continue
             tick = record.get("tick")
+            if phase is not None and record.get("phase") != phase:
+                continue
             if tick is not None and int(tick) <= startup_ticks:
                 continue
             records.append(record)
@@ -125,7 +127,11 @@ def joint_series(records, joint_name):
         target = vector(record, "action", "motor_targets_sent_rad")
         if target is None:
             target = record.get("joints", {}).get("commanded_position_rad")
+        if target is None:
+            target = record.get("target_rad")
         actual = record.get("joints", {}).get("actual_position_rad")
+        if actual is None:
+            actual = record.get("actual_rad")
         if target is None or actual is None:
             previous_record = record
             continue
@@ -478,7 +484,7 @@ def collect_bus(records):
 
 
 def analyze_file(path, args):
-    records = load_records(path, args.startup_ticks)
+    records = load_records(path, args.startup_ticks, args.phase)
     results = {}
     for joint in args.joints:
         samples = joint_series(records, joint)
@@ -645,6 +651,7 @@ def main():
     parser.add_argument("--output-md", default=None)
     parser.add_argument("--output-json", default=None)
     parser.add_argument("--startup-ticks", type=int, default=50)
+    parser.add_argument("--phase", default=None, help="Optional flat-log phase selector")
     parser.add_argument("--delay-min", type=int, default=0)
     parser.add_argument("--delay-max", type=int, default=10)
     parser.add_argument("--tau-min", type=float, default=0.02)

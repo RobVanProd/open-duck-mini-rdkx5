@@ -48,6 +48,15 @@ def parse_hidden_sizes(text: str) -> list[int]:
     return [int(part.strip()) for part in text.split(",") if part.strip()]
 
 
+def parse_rate_limits(text: str, action_dim: int, fallback: float) -> np.ndarray:
+    if not text.strip():
+        return np.full((action_dim,), float(fallback), dtype=np.float32)
+    values = np.asarray([float(part.strip()) for part in text.split(",")], dtype=np.float32)
+    if values.shape != (action_dim,) or not np.all(np.isfinite(values)) or np.any(values <= 0):
+        raise argparse.ArgumentTypeError(f"expected {action_dim} finite positive rate limits")
+    return values
+
+
 def parse_phase_rate_spec(text: str, action_dim: int) -> np.ndarray:
     """Return an [8, action_dim] mask from `joint=bin|bin,...`."""
     mask = np.zeros((8, int(action_dim)), dtype=np.float32)
@@ -154,6 +163,9 @@ def train_model(
     if np.any(context_indices < 0) or np.any(context_indices >= obs.shape[1]):
         raise ValueError("context indices out of observation bounds")
     action_dim = int(actions.shape[1])
+    target_rate_limits = parse_rate_limits(
+        args.target_rate_limits_rad_s, action_dim, args.target_rate_limit_rad_s
+    )
     hidden_dim = int(trunk_hidden[-1])
     activation_name = str(args.activation)
 
@@ -216,7 +228,7 @@ def train_model(
         _, pair_pred0 = forward(model_params, pair_x0, pair_c0)
         _, pair_pred1 = forward(model_params, pair_x1, pair_c1)
         target_rate = jnp.abs(pair_pred1 - pair_pred0) * float(args.action_scale_rad) / float(args.dt_s)
-        excess = jnp.maximum(target_rate - float(args.target_rate_limit_rad_s), 0.0)
+        excess = jnp.maximum(target_rate - jnp.asarray(target_rate_limits), 0.0)
         rate_penalty = jnp.mean(excess**2)
         local_excess = jnp.maximum(target_rate - float(args.phase_rate_limit_rad_s), 0.0)
         local_denom = jnp.maximum(jnp.sum(pair_mask), 1.0)
@@ -500,6 +512,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--log-every", type=int, default=500)
     parser.add_argument("--target-rate-scale", type=float, default=0.1)
     parser.add_argument("--target-rate-limit-rad-s", type=float, default=3.75)
+    parser.add_argument("--target-rate-limits-rad-s", default="")
     parser.add_argument("--phase-rate-spec", default="")
     parser.add_argument("--phase-rate-scale", type=float, default=0.0)
     parser.add_argument("--phase-rate-limit-rad-s", type=float, default=1.2)
@@ -515,6 +528,9 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
     args = parse_args()
     obs, actions, pairs, weights = read_manifest_samples(Path(args.manifest))
+    target_rate_limits = parse_rate_limits(
+        args.target_rate_limits_rad_s, actions.shape[1], args.target_rate_limit_rad_s
+    )
     fit = train_model(obs, actions, pairs, weights, args)
     save_npz(Path(args.save_npz), fit)
     onnx_verify = export_onnx(Path(args.export_onnx), fit, obs)
@@ -540,6 +556,7 @@ def main() -> int:
             "learning_rate": float(args.learning_rate),
             "target_rate_scale": float(args.target_rate_scale),
             "target_rate_limit_rad_s": float(args.target_rate_limit_rad_s),
+            "target_rate_limits_rad_s": target_rate_limits.tolist(),
             "phase_rate_spec": args.phase_rate_spec,
             "phase_rate_scale": float(args.phase_rate_scale),
             "phase_rate_limit_rad_s": float(args.phase_rate_limit_rad_s),

@@ -40,6 +40,14 @@ class PhaseRateObjectiveTest(unittest.TestCase):
             with self.subTest(spec=spec), self.assertRaises((argparse.ArgumentTypeError, ValueError)):
                 MODULE.parse_phase_rate_spec(spec, 14)
 
+    def test_per_joint_rate_limits_are_exact_and_fail_closed(self):
+        values = MODULE.parse_rate_limits("1,2,3", 3, 9.0)
+        np.testing.assert_array_equal(values, [1, 2, 3])
+        np.testing.assert_array_equal(MODULE.parse_rate_limits("", 3, 9.0), [9, 9, 9])
+        for text in ("1,2", "1,0,3", "1,nan,3"):
+            with self.subTest(text=text), self.assertRaises(argparse.ArgumentTypeError):
+                MODULE.parse_rate_limits(text, 3, 9.0)
+
 
 if __name__ == "__main__":
     unittest.main()

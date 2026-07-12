@@ -382,3 +382,11 @@ Do not proceed to grounded walking until low-risk gates pass.
   `outputs/analysis/PHASE2_RATE165_PHASE_LOCAL_COMPACT_RESULT_20260712.md`.
   Close this objective without tuning or longer training; do not allocate
   Colab. Preserve the promoted rate165 candidate unchanged.
+- 2026-07-12: Fixed-target P30/P31-34 system identification is stable across
+  phases and finds materially tighter pitch-chain effective velocity limits.
+  The exact per-joint 7000-step BC refit reduced rates but failed frozen motion
+  floors and retained velocity excess. See
+  `outputs/analysis/RATE165_HARDWARE_CALIBRATED_REFIT_RESULT_20260712.md`.
+  Close supervised rate-penalty refits. The only supported distinct policy
+  class is separately preregistered constrained optimization against the new
+  fixed-target bridge; no robot/deployment/grounded action is authorized.
