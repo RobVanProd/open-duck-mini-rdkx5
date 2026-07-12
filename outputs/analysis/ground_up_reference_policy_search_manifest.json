@@ -1,0 +1,158 @@
+{
+  "commands_x": [
+    0.0,
+    0.08
+  ],
+  "compute_units": {
+    "calibration_max": 3,
+    "consumed": 0,
+    "finalist_training_max": 38,
+    "hard_total": 94,
+    "heldout_eval_max": 12,
+    "interruption_reserve": 6,
+    "search_max": 35
+  },
+  "contract": {
+    "action_scale_rad": 0.25,
+    "action_shape": [
+      1,
+      14
+    ],
+    "control_hz": 50,
+    "observation_shape": [
+      1,
+      101
+    ],
+    "pitch_chain_indices": [
+      2,
+      3,
+      4,
+      11,
+      12,
+      13
+    ],
+    "pitch_chain_velocity_limits_rad_s": [
+      1.5,
+      1.5,
+      1.75,
+      1.25,
+      1.0,
+      1.25
+    ]
+  },
+  "families": [
+    "upstream_control",
+    "residual_reference",
+    "phase_residual",
+    "recurrent_residual",
+    "imitation_decay",
+    "asymmetric_critic"
+  ],
+  "hardware_authorized": false,
+  "local_gpu_authorized": false,
+  "objective": "more robust than BEST_WALK_ONNX_2 under measured RDK-X5 constraints",
+  "rungs": {
+    "broad": {
+      "derived_after_calibration": true,
+      "timesteps": null
+    },
+    "calibration": {
+      "derived_after_steps_per_unit_measurement": true,
+      "timesteps": null
+    },
+    "final": {
+      "derived_after_calibration": true,
+      "timesteps": null
+    },
+    "medium": {
+      "derived_after_calibration": true,
+      "timesteps": null
+    }
+  },
+  "schema_version": "ground_up_reference_policy_search.v1",
+  "seed_splits": {
+    "development": [
+      100,
+      101,
+      102,
+      103,
+      104,
+      105,
+      106,
+      107,
+      108,
+      109,
+      110,
+      111,
+      112,
+      113,
+      114,
+      115
+    ],
+    "final_held_out": [
+      1000,
+      1001,
+      1002,
+      1003,
+      1004,
+      1005,
+      1006,
+      1007,
+      1008,
+      1009,
+      1010,
+      1011,
+      1012,
+      1013,
+      1014,
+      1015,
+      1016,
+      1017,
+      1018,
+      1019,
+      1020,
+      1021,
+      1022,
+      1023,
+      1024,
+      1025,
+      1026,
+      1027,
+      1028,
+      1029,
+      1030,
+      1031
+    ],
+    "search_validation": [
+      200,
+      201,
+      202,
+      203,
+      204,
+      205,
+      206,
+      207,
+      208,
+      209,
+      210,
+      211,
+      212,
+      213,
+      214,
+      215
+    ]
+  },
+  "sources": {
+    "actuator_fit": "outputs/analysis/fixed_target_p30_actuator_fit_20260712.json",
+    "baseline": {
+      "path": "policy/BEST_WALK_ONNX_2.onnx",
+      "sha256": "3c606f9381a1710cc8fecdb7442787dcbfce3ee9bc02a6f1224774ab2b3a1067"
+    },
+    "playground_control_commit": "b9be205ac64488c23504ca42e5ec790337adeec3",
+    "reference": {
+      "path": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/data/polynomial_coefficients.pkl",
+      "sha256": "5850c0610ed89e2860e7047f9ee27d8412462e1199752952c3c2a0efd2cb7a25"
+    }
+  },
+  "status": "FROZEN_AWAITING_CPU_CONTRACTS_AND_COLAB_CALIBRATION"
+}

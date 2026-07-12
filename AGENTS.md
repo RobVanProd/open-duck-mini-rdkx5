@@ -14,6 +14,13 @@ This repository controls work around a real biped robot. Preserve safety and evi
 - Do not substitute runtime limiters, command wrappers, gain changes, transport
   changes, or incidental telemetry investigations for the policy architecture
   named by the recorded plan.
+- The active ground-up policy search is preregistered in
+  `outputs/analysis/GROUND_UP_REFERENCE_POLICY_SEARCH_PREREGISTRATION_20260712.md`.
+  `BEST_WALK_ONNX_2` is the frozen comparison baseline, not a teacher or warm
+  start. The upstream recipe is a protected control, not an assumed winner.
+  Total Colab use is capped at 94 compute units and begins only with a capped
+  throughput/control calibration after CPU contracts pass. RDK access and all
+  local GPUs remain unauthorized.
 - Do not start unregistered or ad hoc policy training. The authorized offline
   joint-weighted, 2.0 rad/s temporally bounded behavior-teacher causal smoke
   completed on 2026-07-11. None of its 40,960, 81,920, or 122,880 checkpoints
