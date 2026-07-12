@@ -228,6 +228,13 @@ This repository controls work around a real biped robot. Preserve safety and evi
   CRC/reset/write errors, zero control overruns, dt max 0.02066 s, and zero
   tracking spikes >0.05 rad. Visual symmetry confirmation is pending. Keep the
   return-delay EEPROM unchanged.
+- Candidate-5 x=0.08 readiness is green but the motor stage is not authorized:
+  live rate165/config/HWI/walker/diagnostic/turn-off hashes match, start_paused
+  is true, and the RDK is idle with no tty owner. The dedicated runner
+  `scripts/collect_grounded_rate165_gate4_x008.sh` is suspended-only, fixed at
+  x=0.08 for 15 seconds, requires physical-presence and exact confirmation,
+  isolates logs, and performs independent torque-off. Obtain explicit x=0.08
+  approval before running it; stop for review afterward with no grounded step.
 - Rob confirmed candidate 5's final suspended x=0 run looked symmetric. The
   full gate is closed as `PASS_X0`: zero CRC/reset/write errors, clean timing
   and tracking, symmetric motion, and torque-off cleanup. Candidate 5 remains
