@@ -79,6 +79,42 @@ def git_commit(path):
     path = Path(path).expanduser()
     if not path.exists():
         return None
+
+
+def git_dirty(path):
+    path = Path(path).expanduser()
+    if not path.exists():
+        return None
+    try:
+        proc = subprocess.run(
+            ["git", "-C", str(path), "status", "--porcelain"],
+            text=True,
+            capture_output=True,
+            timeout=2,
+        )
+        if proc.returncode != 0:
+            return None
+        return bool(proc.stdout.strip())
+    except Exception:
+        return None
+
+
+def file_record(path):
+    path = Path(path).expanduser()
+    return {
+        "path": str(path),
+        "present": path.is_file(),
+        "sha256": sha256_path(path),
+    }
+
+
+def policy_inventory(home, runtime_path):
+    candidates = set(Path(home).glob("*.onnx"))
+    if runtime_path:
+        runtime = Path(runtime_path)
+        candidates.update(runtime.glob("*.onnx"))
+        candidates.update((runtime / "policies").glob("*.onnx"))
+    return [file_record(path) for path in sorted(candidates, key=lambda p: str(p))]
     try:
         return (
             subprocess.check_output(
@@ -144,8 +180,16 @@ def local_snapshot(config_path="~/duck_config.json"):
         "pygame",
         "scipy",
     ]
+    instrumentation_paths = []
+    if runtime_path:
+        runtime = Path(runtime_path)
+        instrumentation_paths = [
+            runtime / "mini_bdx_runtime" / "mini_bdx_runtime" / "telemetry.py",
+            runtime / "scripts" / "sim2real_diagnostics.py",
+            runtime / "scripts" / "v2_rl_walk_auto.py",
+        ]
     return {
-        "schema_version": "open_duck_mini_config_snapshot_v1",
+        "schema_version": "open_duck_mini_config_snapshot_v2",
         "snapshot_utc": dt.datetime.now(dt.timezone.utc).isoformat(),
         "hostname": socket.gethostname(),
         "platform": platform.platform(),
@@ -167,6 +211,9 @@ def local_snapshot(config_path="~/duck_config.json"):
         else sha256_path(onnx_policy_path),
         "runtime_path": runtime_path,
         "runtime_git_commit": None if runtime_path is None else git_commit(runtime_path),
+        "runtime_git_dirty": None if runtime_path is None else git_dirty(runtime_path),
+        "runtime_instrumentation": [file_record(path) for path in instrumentation_paths],
+        "onnx_policy_inventory": policy_inventory(home, runtime_path),
         "python_env_path": python_env_path,
         "packages": {
             name: package_version(name) for name in package_names
@@ -179,6 +226,7 @@ def local_snapshot(config_path="~/duck_config.json"):
 
 def ssh_snapshot(
     target,
+    config_path="~/duck_config.json",
     connect_timeout=5,
     temp_known_hosts=False,
     identity_file=None,
@@ -189,13 +237,9 @@ def ssh_snapshot(
     remote_code = f"""
 import base64
 import json
-import pathlib
-import runpy
-
-script = pathlib.Path('/tmp/snapshot_robot_config_inline.py')
-script.write_bytes(base64.b64decode('{encoded}'))
-ns = runpy.run_path(str(script))
-print(json.dumps(ns['local_snapshot'](), sort_keys=True))
+namespace = {{'__name__': 'snapshot_robot_config_inline'}}
+exec(compile(base64.b64decode('{encoded}'), '<snapshot_robot_config_inline>', 'exec'), namespace)
+print(json.dumps(namespace['local_snapshot']({config_path!r}), sort_keys=True))
 """
     cmd = [
         "ssh",
@@ -258,6 +302,7 @@ def main():
     if args.ssh:
         snapshot = ssh_snapshot(
             args.ssh,
+            config_path=args.config_path,
             connect_timeout=args.connect_timeout,
             temp_known_hosts=args.ssh_temp_known_hosts,
             identity_file=args.identity_file,

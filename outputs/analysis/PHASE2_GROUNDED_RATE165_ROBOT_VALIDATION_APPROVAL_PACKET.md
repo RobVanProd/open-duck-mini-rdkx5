@@ -16,13 +16,15 @@ Status: **READY FOR OPERATOR REVIEW; HARDWARE ACTION NOT AUTHORIZED**
 ## Why Hardware Is Still Held
 
 The June 21 first-evidence packet passed the available software/electrical
-checks, but it did not freshly prove physical joint geometry. The live
-`left_knee` soft offset was `-1.4880 rad`. Repository policy treats this as a
-hard physical start-pose gate, not as automatic evidence of a bad offset.
+checks, but it did not freshly prove current physical joint geometry. The
+historical `left_knee` soft offset was `-1.4880 rad`; it was corrected to
+`0.0371 rad` on June 27. A post-correction snapshot and supported low-speed
+tracking evidence confirm that correction. The old value is not current.
 
-Do not recalibrate merely because the number is large. First command supported
-home pose and compare the real hip/knee/ankle/foot geometry with the documented
-home reference. Leave offsets unchanged if geometry and tracking are correct.
+The remaining gate is freshness and full-pose evidence: first capture the
+current configuration, then command supported home pose and compare the real
+hip/knee/ankle/foot geometry with the documented home reference. Leave offsets
+unchanged if geometry and tracking are correct.
 
 ## Required Operator Conditions
 

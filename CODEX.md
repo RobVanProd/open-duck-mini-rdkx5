@@ -144,7 +144,9 @@ start candidate. It is not unsupported-reset recovery and is not robot approval.
 
 An operator approval packet now defines the remaining hardware path. Do not
 skip to candidate replay: first capture a read-only snapshot and freshly verify
-the supported physical home pose, especially left-knee geometry. Paused policy
+the supported physical home pose. The historical left-knee offset of -1.4880
+rad was corrected to 0.0371 rad on June 27 and must not be called current.
+Paused policy
 staging, suspended x=0, suspended x=0.08, and grounded replay each require a
 separate explicit approval. No SSH, copy, configuration write, or motion is
 authorized by the offline package.

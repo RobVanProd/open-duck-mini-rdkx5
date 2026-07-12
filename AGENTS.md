@@ -148,8 +148,9 @@ This repository controls work around a real biped robot. Preserve safety and evi
   explicit reviewed hardware-validation request.
 - The grounded rate165 operator packet is prepared, but no hardware action is
   authorized. The next physical gate is supported home-pose geometry, not
-  policy replay, because the large left-knee soft offset requires fresh visual
-  confirmation. Approval is stage-specific: snapshot/home pose, paused staging,
+  policy replay. The historical `left_knee=-1.4880` offset was corrected to
+  `0.0371` on June 27; do not describe the old value as live. A fresh snapshot
+  and full-pose visual confirmation are still required. Approval is stage-specific: snapshot/home pose, paused staging,
   suspended x=0, suspended x=0.08, and grounded replay are separate gates.
 - Do not change gains, offsets, IMU remaps, action scale, or phase timing without a reviewed evidence-backed task.
 - Do not deploy behavior changes to the robot unless explicitly requested.

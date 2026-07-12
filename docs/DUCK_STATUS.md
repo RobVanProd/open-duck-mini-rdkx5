@@ -338,7 +338,11 @@ home_pose_log_test had small compensated tracking errors
 ```
 
 That does not prove the physical joint geometry is still calibrated to spec.
-The large live `left_knee` offset (`-1.4880 rad`) makes this a hard gate.
+The historical `left_knee` offset (`-1.4880 rad`) was corrected to `0.0371 rad`
+on 2026-06-27 and validated by a post-correction snapshot plus supported
+low-speed tracking. The old value is not live. This remains a hard gate because
+the current full physical pose has not been freshly verified, not because the
+historical offset remains configured.
 
 Before any next robot validation:
 
