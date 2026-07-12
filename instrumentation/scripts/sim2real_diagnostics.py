@@ -507,6 +507,7 @@ def cmd_policy_replay(args):
             )
             if value is not None
         },
+        "motor_velocity_limits_rad_s": args.motor_velocity_limits_rad_s,
     }
     required_telemetry_args = {
         "log_telemetry",
@@ -656,6 +657,12 @@ def main():
         p.add_argument("--command-x", type=float, default=0.0)
         p.add_argument("--action_scale", type=float, default=0.25)
         p.add_argument("--max_motor_velocity", type=float, default=5.24)
+        p.add_argument(
+            "--motor-velocity-limits-rad-s",
+            dest="motor_velocity_limits_rad_s",
+            type=lambda text: [float(item.strip()) for item in text.split(",")],
+            default=None,
+        )
         p.add_argument("--telemetry-read-voltage", action="store_true")
         p.add_argument("--telemetry-every-n", type=int, default=1)
         p.add_argument("--left-hip-pitch-kp", type=float, default=None)

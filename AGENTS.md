@@ -411,3 +411,8 @@ Do not proceed to grounded walking until low-risk gates pass.
   `outputs/analysis/RATE165_HARD_VECTOR_PROJECTION_RESULT_20260712.md`.
   Any staged hash review, suspended x=0, or suspended x=.08 is a separate
   physical gate; grounded remains blocked.
+- 2026-07-12: Runtime/diagnostic support for the exact default-off vector is
+  locally ready and fail-closed. It is not deployed. Review packet:
+  `outputs/analysis/RATE165_HARD_VECTOR_RUNTIME_APPROVAL_PACKET_20260712.md`.
+  Next action requires explicit stage-only approval; it must not initialize HWI
+  or motors. Suspended x=0 and x=.08 remain later, separate approvals.
