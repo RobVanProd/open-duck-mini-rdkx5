@@ -191,7 +191,9 @@ x0, and x008 came from servo ID 13 (`right_knee`), dominated by checksum XOR
 target speed; no battery voltage exists. Treat localized ID-13 response signal
 integrity as the leading hypothesis, not a proven power cause. The minimum next
 proposed test is torque-disabled position/velocity polling of IDs 12/13/14 with
-no targets or policy; it remains undeployed and unapproved.
+homologous left-knee ID 23 added as a control, no targets or policy. No
+authoritative physical chain topology was found; the test remains undeployed
+and unapproved.
 ```
 
 Robotics operating model:

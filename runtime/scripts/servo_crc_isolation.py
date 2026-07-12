@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Torque-disabled CRC isolation for right-leg servo IDs 12, 13, and 14.
+"""Torque-disabled CRC isolation for IDs 12, 13, 14, and left-knee control 23.
 
 This sends torque-disable writes, then position/velocity reads only. It never
 sends a position target, enables torque, loads a policy, or changes EEPROM.
@@ -30,7 +30,8 @@ def main():
 
     cfg = DuckConfig()
     hwi = HWI(cfg)
-    targets = [(12, "right_hip_pitch"), (13, "right_knee"), (14, "right_ankle")]
+    targets = [(12, "right_hip_pitch"), (13, "right_knee"),
+               (14, "right_ankle"), (23, "left_knee")]
     counts = collections.Counter()
     errors = []
     started = time.monotonic()

@@ -183,7 +183,8 @@ This repository controls work around a real biped robot. Preserve safety and evi
   concentrated at high right-knee target speed or one gait phase; battery
   voltage was not captured. Leading branch is localized ID-13 signal integrity.
   Do not repeat policy motion. Next proposed test is torque-disabled read-only
-  polling of IDs 12/13/14, requiring separate approval.
+  polling of IDs 12/13/14 plus homologous left-knee ID 23, requiring separate
+  approval. No authoritative physical bus topology is documented.
 - Do not change gains, offsets, IMU remaps, action scale, or phase timing without a reviewed evidence-backed task.
 - Do not deploy behavior changes to the robot unless explicitly requested.
 - Do not run moving hardware tests unless Rob is physically present and explicitly approves that exact test.

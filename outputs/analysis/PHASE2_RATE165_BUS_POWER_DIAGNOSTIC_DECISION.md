@@ -57,7 +57,8 @@ Then, if separately approved, run the torque-disabled polling diagnostic:
 
 ```text
 runtime/scripts/servo_crc_isolation.py
-IDs: 12 right_hip_pitch, 13 right_knee, 14 right_ankle
+IDs: 12 right_hip_pitch, 13 right_knee, 14 right_ankle,
+     23 left_knee (homologous-servo control)
 operations: raw position and velocity reads
 rate: 50 cycles/s
 duration: 15 s
@@ -68,17 +69,18 @@ policy: none
 
 This control distinguishes an ID-13 read-response fault at zero motor load from
 a fault that appears only under commanded motion/load. IDs 12 and 14 are
-same-leg controls; numeric adjacency does not by itself prove physical bus
-topology.
+same-leg numeric-neighbor controls, while ID 23 is the homologous left-knee
+control. The repository contains no authoritative wiring/daisy-chain diagram,
+so numeric adjacency must not be presented as physical bus topology.
 
 ## Preregistered Interpretation
 
-- ID 13 red/yellow while IDs 12/14 remain green with torque disabled:
+- ID 13 red/yellow while IDs 12/14/23 remain green with torque disabled:
   localized servo/connector/cable response path remains primary; correct that
   physical/electrical fault before any policy repeat.
-- all three IDs degrade with torque disabled: investigate shared bus adapter,
+- all control IDs degrade with torque disabled: investigate shared bus adapter,
   cable, ground, termination, baud/signal integrity, and supply before motion.
-- all three are green torque-disabled: load-dependent EMI/power/cable-motion
+- all four are green torque-disabled: load-dependent EMI/power/cable-motion
   remains plausible; the next test must add real voltage measurement and a
   bounded non-policy load, under a new motor authorization.
 
