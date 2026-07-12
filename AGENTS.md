@@ -208,6 +208,12 @@ This repository controls work around a real biped robot. Preserve safety and evi
   underlying ID-13 checksum corruption remains a separate signal-integrity
   issue. Candidate 4 is currently staged on the RDK; do not infer x=0.08 or
   grounded authorization from the suspended x=0 result.
+- Rob visually confirmed the candidate-4 clean `x=0.00` run was symmetric, so
+  the suspended gate passes with the retained 1.87% CRC warning. Next checksum
+  diagnosis should be torque-disabled read-order A/B evidence: canonical order,
+  ID 13 last, and a small 12/13/14/23 control. Do not write the STS3215 EEPROM
+  return-delay register unless read-only ordering evidence first supports a
+  response-collision mechanism.
 - CRC localization across home/x0/x008 shows every corrupt response is servo ID
   13 (`right_knee`), usually with checksum high-bit flips. Events are not
   concentrated at high right-knee target speed or one gait phase; battery

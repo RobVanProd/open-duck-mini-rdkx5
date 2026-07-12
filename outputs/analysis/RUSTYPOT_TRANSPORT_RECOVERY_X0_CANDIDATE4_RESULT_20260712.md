@@ -2,7 +2,7 @@
 
 Date: 2026-07-12
 
-Status: `NUMERIC_PASS_WITH_CRC_WARNING_VISUAL_PENDING`
+Status: `PASS_WITH_CRC_WARNING`
 
 ## Contract
 
@@ -48,6 +48,12 @@ The efficient compatibility-preserving implementation is:
 
 No full garbage collection, library upgrade, gain/offset change, or additional
 bus transaction is used on the clean path.
+
+## Visual gate
+
+Rob reported that the final clean run looked symmetric. This closes the visual
+portion and makes the suspended `x=0.00` gate a pass with the retained 1.87%
+checksum warning.
 
 Raw evidence remains outside Git by default at:
 
