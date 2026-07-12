@@ -608,6 +608,8 @@ def run_closed_loop_worker(args) -> dict:
                 str(args.policy_action_rate_limit_joint_indices),
             ]
         )
+        if args.policy_action_rate_limit_values:
+            cmd.extend(["--policy-action-rate-limit-values", str(args.policy_action_rate_limit_values)])
     if args.policy_phase_action_delta_json:
         cmd.extend(
             [
@@ -1332,6 +1334,11 @@ def main() -> int:
         help="Comma-separated action indices for the eval-only policy rate bound.",
     )
     parser.add_argument(
+        "--policy-action-rate-limit-values",
+        default=None,
+        help="Optional comma-separated per-index rad/s values; requires the scalar switch to enable.",
+    )
+    parser.add_argument(
         "--forward-diagnostic-required-ratio",
         type=float,
         default=0.5,
@@ -1571,6 +1578,11 @@ def main() -> int:
                         policy_action_rate_limit_joint_indices=tuple(
                             int(item.strip())
                             for item in args.policy_action_rate_limit_joint_indices.split(",")
+                            if item.strip()
+                        ),
+                        policy_action_rate_limit_values=tuple(
+                            float(item.strip())
+                            for item in (args.policy_action_rate_limit_values or "").split(",")
                             if item.strip()
                         ),
                         max_motor_velocity_override_rad_s=(

@@ -2,6 +2,7 @@ import time
 import pickle
 
 import numpy as np
+from motor_velocity_limits import parse_motor_velocity_limits
 from mini_bdx_runtime.rustypot_position_hwi import HWI
 from mini_bdx_runtime.onnx_infer import OnnxInfer
 
@@ -43,6 +44,7 @@ class RLWalk:
         telemetry_read_voltage: bool = False,
         telemetry_every_n: int = 1,
         kp_overrides: dict[str, float] | None = None,
+        motor_velocity_limits_rad_s: list[float] | None = None,
     ):
 
         self.duck_config = DuckConfig(config_json_path=duck_config_path)
@@ -58,6 +60,10 @@ class RLWalk:
 
         self.num_dofs = 14
         self.max_motor_velocity = 5.24  # rad/s
+        self.motor_velocity_limits = np.full(self.num_dofs, self.max_motor_velocity)
+        parsed_velocity_limits = parse_motor_velocity_limits(motor_velocity_limits_rad_s)
+        if parsed_velocity_limits is not None:
+            self.motor_velocity_limits = np.asarray(parsed_velocity_limits, dtype=float)
 
         # Control
         self.control_freq = control_freq
@@ -253,6 +259,7 @@ class RLWalk:
                 "paused": self.paused,
                 "action_scale": self.action_scale,
                 "max_motor_velocity_rad_s": self.max_motor_velocity,
+                "motor_velocity_limits_rad_s": self.motor_velocity_limits.tolist(),
                 "cutoff_frequency_hz": self.cutoff_frequency,
                 "kp_overrides": self.kp_overrides,
                 "effective_kps": self.effective_kps,
@@ -524,9 +531,9 @@ class RLWalk:
                 self.motor_targets = np.clip(
                     self.motor_targets,
                     self.prev_motor_targets
-                    - self.max_motor_velocity * (1 / self.control_freq),  # control dt
+                    - self.motor_velocity_limits * (1 / self.control_freq),  # control dt
                     self.prev_motor_targets
-                    + self.max_motor_velocity * (1 / self.control_freq),  # control dt
+                    + self.motor_velocity_limits * (1 / self.control_freq),  # control dt
                 )
 
                 if self.action_filter is not None:
@@ -659,6 +666,11 @@ if __name__ == "__main__":
     parser.add_argument("--telemetry-read-voltage", action="store_true")
     parser.add_argument("--telemetry-every-n", type=int, default=1)
     parser.add_argument(
+        "--motor-velocity-limits-rad-s",
+        default=None,
+        help="Default-off comma-separated 14-value target slew limits in action order.",
+    )
+    parser.add_argument(
         "--controller",
         type=str,
         default="f710",
@@ -688,6 +700,9 @@ if __name__ == "__main__":
         telemetry_path=args.telemetry_path,
         telemetry_read_voltage=args.telemetry_read_voltage,
         telemetry_every_n=args.telemetry_every_n,
+        motor_velocity_limits_rad_s=parse_motor_velocity_limits(
+            args.motor_velocity_limits_rad_s
+        ),
     )
     print("Done instantiating RLWalk")
     

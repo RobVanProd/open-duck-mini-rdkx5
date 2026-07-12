@@ -397,3 +397,17 @@ Do not proceed to grounded walking until low-risk gates pass.
   `outputs/analysis/HARDWARE_VECTOR_BRIDGE_CONSTRAINED_PPO_PREREGISTRATION_20260712.md`.
   One self-cleaning Colab T4 job is authorized; local GPUs and robot actions
   remain prohibited.
+- 2026-07-12: The one authorized hardware-vector constrained PPO Colab job
+  completed 245,760 steps and the T4 session was stopped. All checkpoints
+  eliminated velocity excess by collapsing to double-support standing
+  (vx <=0.0003 m/s, zero single support). Close penalty-based constrained PPO
+  without tuning and do not spend another Colab job on it. Result:
+  `outputs/analysis/HARDWARE_VECTOR_BRIDGE_CONSTRAINED_PPO_RESULT_20260712.md`.
+- 2026-07-12: Exact hard-vector projection of the unchanged rate165 trajectory
+  passes the hardware-calibrated bridge at x=.08 and x=0, both 8/8. x=.08 has
+  vx 0.0291, ratio 0.3635, 22.93% single support, and zero velocity excess;
+  x=0 remains still with pitch-chain p95 <=0.0642. A default-off, fail-closed
+  14-value runtime limiter is implemented and tested but not deployed. See
+  `outputs/analysis/RATE165_HARD_VECTOR_PROJECTION_RESULT_20260712.md`.
+  Any staged hash review, suspended x=0, or suspended x=.08 is a separate
+  physical gate; grounded remains blocked.

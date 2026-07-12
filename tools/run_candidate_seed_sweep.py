@@ -289,6 +289,11 @@ def run_one(
                 str(args.policy_action_rate_limit_joint_indices),
             ]
         )
+        if args.policy_action_rate_limit_values:
+            command.extend([
+                "--policy-action-rate-limit-values",
+                str(args.policy_action_rate_limit_values),
+            ])
     if args.policy_phase_action_delta_json:
         command.extend(
             [
@@ -633,6 +638,7 @@ def main() -> int:
         "--policy-action-rate-limit-joint-indices",
         default="2,3,4,11,12,13",
     )
+    parser.add_argument("--policy-action-rate-limit-values", default=None)
     parser.add_argument("--jax-platform", default="cpu")
     parser.add_argument("--trace-seeds", type=parse_int_list, default=[])
     parser.add_argument(

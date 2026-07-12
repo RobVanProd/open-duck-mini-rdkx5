@@ -66,6 +66,7 @@ class ClosedLoopConfig:
     policy_phase_action_delta_min_command_x: float = 0.02
     policy_action_rate_limit_rad_s: float | None = None
     policy_action_rate_limit_joint_indices: tuple[int, ...] = (2, 3, 4, 11, 12, 13)
+    policy_action_rate_limit_values: tuple[float, ...] = ()
     max_motor_velocity_override_rad_s: float | None = None
     forward_diagnostic_required_ratio: float = 0.5
     forward_diagnostic_deadband: float = 0.02
@@ -1622,14 +1623,16 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                 config.policy_action_rate_limit_rad_s is not None
                 and previous_rate_bounded_action is not None
             ):
-                max_action_delta = (
-                    float(config.policy_action_rate_limit_rad_s)
-                    * float(env.dt)
-                    / float(env._config.action_scale)
-                )
                 indices = np.asarray(
                     config.policy_action_rate_limit_joint_indices, dtype=int
                 )
+                if config.policy_action_rate_limit_values:
+                    rate_limits = np.asarray(config.policy_action_rate_limit_values, dtype=float)
+                    if rate_limits.shape != indices.shape:
+                        raise ValueError("policy action rate-limit values/indices length mismatch")
+                else:
+                    rate_limits = np.full(indices.shape, float(config.policy_action_rate_limit_rad_s))
+                max_action_delta = rate_limits * float(env.dt) / float(env._config.action_scale)
                 action[indices] = np.clip(
                     action[indices],
                     previous_rate_bounded_action[indices] - max_action_delta,
@@ -1882,6 +1885,7 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
         "policy_action_rate_limit_joint_indices": list(
             config.policy_action_rate_limit_joint_indices
         ),
+        "policy_action_rate_limit_values": list(config.policy_action_rate_limit_values),
         "command": [
             float(config.command_x),
             float(config.command_y),
