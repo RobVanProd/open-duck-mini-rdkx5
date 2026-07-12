@@ -281,6 +281,11 @@ This repository controls work around a real biped robot. Preserve safety and evi
   clean. Normal gains were restored and torque disabled. Do not tune gains
   upward post hoc. The runs had different IMU/closed-loop states, so the only
   supported next gain question is a separately approved fixed-target A/B replay.
+- Fixed-target gain A/B is prepared offline, not authorized: replay the exact
+  clean P30 x=0.08 target sequence (747 ticks, artifact SHA 3f5fd9c3...) once at
+  P30 and once at P31/34, policy/IMU disabled, with normal-gain/torque-off
+  between and after phases. Support gains only if both target joints improve
+  p95 >=10% without >10% regression on any-joint p95/max. Do not tune afterward.
 - Rob confirmed candidate 5's final suspended x=0 run looked symmetric. The
   full gate is closed as `PASS_X0`: zero CRC/reset/write errors, clean timing
   and tracking, symmetric motion, and torque-off cleanup. Candidate 5 remains
