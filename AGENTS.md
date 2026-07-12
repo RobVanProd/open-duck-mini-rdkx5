@@ -451,3 +451,11 @@ Do not proceed to grounded walking until low-risk gates pass.
   pre-vector rate165 x=0 traces and the limiter was inactive, so this is policy
   zero-command dither, not a limiter regression or right-knee fault. Do not run
   x=.08; resolve the zero-command contract and timing digitally first.
+- 2026-07-12: The preregistered command-local zero-action hold passed offline
+  on CPU. ONNX branch error is exactly zero; x=0 is 8/8 duration-complete with
+  zero pitch-chain velocity, and x=.08 is 8/8 with metrics numerically
+  identical to unchanged hard-vector rate165. This supports fixing the policy
+  zero-command contract, not knee calibration or servo compensation. The two
+  repeat-only timing gaps remain unresolved, so this is stage-review evidence
+  only and no physical motion is authorized. See
+  `outputs/analysis/RATE165_ZERO_COMMAND_HOLD_RESULT_20260712.md`.
