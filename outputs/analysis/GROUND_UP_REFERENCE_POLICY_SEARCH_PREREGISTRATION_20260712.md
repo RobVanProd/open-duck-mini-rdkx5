@@ -38,12 +38,12 @@ constructed from the pinned control commit plus an explicit, hashed patch.
 The first search compares mechanisms, not tiny reward perturbations:
 
 1. `upstream_control`: canonical reference-imitation PPO.
-2. `residual_reference`: policy outputs bounded residuals around reference
-   targets, with the reference and residual separately observable in reports.
-3. `phase_residual`: shared policy with explicit reference phase and bounded
-   residual action; no independently trained phase heads.
-4. `recurrent_residual`: small recurrent state for contact/actuator history,
-   still trained closed-loop rather than by supervised BC.
+2. `reference_conditioned_final_action`: actor receives the envelope-projected
+   reference action as an explicit policy feature and emits final actions.
+3. `phase_moe_final_action`: shared experts with smooth command/phase routing
+   emit final actions; no independently trained or hard-switched phase heads.
+4. `recurrent_final_action`: small recurrent state for contact/actuator history,
+   trained closed-loop rather than by supervised BC, emitting final actions.
 5. `imitation_decay`: canonical policy whose imitation weight decays only after
    nominal gait metrics are reached.
 6. `symmetric_critic_ablation`: both actor and critic see the canonical
@@ -52,9 +52,9 @@ The first search compares mechanisms, not tiny reward perturbations:
 
 Architecture audit amendment before family search: a recurrent finalist uses
 policy ABI v2 (`obs,state_in -> action,state_out`) and requires the new RDK
-runtime. Stateless finalists retain ABI v1 (`obs -> action`). Residual/reference
-families must export the reference/residual composition inside the policy graph
-and emit final actions; an RDK-side action wrapper is forbidden.
+runtime. Stateless finalists retain ABI v1 (`obs -> action`). Reference-
+conditioned families must emit final actions. The projected reference is an
+input feature under policy ABI v2, not a post-policy action wrapper.
 
 No command-gated wrapper, runtime limiter, existing-policy behavior prior,
 DAgger teacher, supervised student, or policy warm start is part of this

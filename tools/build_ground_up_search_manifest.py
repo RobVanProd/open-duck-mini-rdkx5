@@ -51,9 +51,9 @@ def main() -> int:
 
     families = [
         "upstream_control",
-        "residual_reference",
-        "phase_residual",
-        "recurrent_residual",
+        "reference_conditioned_final_action",
+        "phase_moe_final_action",
+        "recurrent_final_action",
         "imitation_decay",
         "symmetric_critic_ablation",
     ]
