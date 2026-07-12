@@ -62,6 +62,19 @@ Stop on wrong joint/side/sign, unexpected motion, large lean, visibly wrong
 left knee geometry, or repeated bus errors. If geometry is wrong, stop and
 review soft offsets separately; do not continue to policy replay.
 
+Analyze the telemetry component separately from the visual pose decision:
+
+```bash
+python3 tools/evaluate_supported_home_telemetry.py \
+  <home_pose.jsonl> \
+  --terminal-log <home_pose_terminal.log> \
+  --output-md <supported_home_telemetry_gate.md> \
+  --output-json <supported_home_telemetry_gate.json>
+```
+
+`PASS_TELEMETRY_COMPONENT` is necessary but cannot approve Gate 1 without the
+operator's physical-geometry confirmation.
+
 ### Gate 2 — Candidate Staging, Paused
 
 Only after Gate 1 passes and staging is explicitly approved:

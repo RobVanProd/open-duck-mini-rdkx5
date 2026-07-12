@@ -109,7 +109,7 @@ done
 SSH_OPTS=(
   -i "$IDENTITY_FILE"
   -o "UserKnownHostsFile=$KNOWN_HOSTS"
-  -o "StrictHostKeyChecking=no"
+  -o "StrictHostKeyChecking=yes"
   -o "ConnectTimeout=5"
 )
 
@@ -231,7 +231,7 @@ A. Read-only snapshot
     --ssh $(quote "$SSH_TARGET") \\
     --identity-file $(quote "$IDENTITY_FILE") \\
     --known-hosts $(quote "$KNOWN_HOSTS") \\
-    --strict-host-key-checking no \\
+    --strict-host-key-checking yes \\
     --output-dir $(quote "$OUTPUT_DIR")
 
 B. Home pose log, run on robot only when physically present
@@ -279,7 +279,7 @@ run_readonly() {
     --ssh "$SSH_TARGET" \
     --identity-file "$IDENTITY_FILE" \
     --known-hosts "$KNOWN_HOSTS" \
-    --strict-host-key-checking no \
+    --strict-host-key-checking yes \
     --output-dir "$OUTPUT_DIR"
   python3 tools/summarize_first_evidence.py "$OUTPUT_DIR" \
     --output outputs/analysis/FIRST_EVIDENCE_SUMMARY.md
