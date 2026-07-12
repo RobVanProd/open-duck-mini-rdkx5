@@ -55,11 +55,11 @@ def main() -> int:
         "phase_residual",
         "recurrent_residual",
         "imitation_decay",
-        "asymmetric_critic",
+        "symmetric_critic_ablation",
     ]
     manifest = {
         "schema_version": "ground_up_reference_policy_search.v1",
-        "status": "FROZEN_AWAITING_CPU_CONTRACTS_AND_COLAB_CALIBRATION",
+        "status": "SCALED_T4_PROBE_PASS_READY_FOR_RECIPE_FAMILY_IMPLEMENTATION",
         "objective": "more robust than BEST_WALK_ONNX_2 under measured RDK-X5 constraints",
         "sources": {
             "baseline": {"path": str(BASELINE.relative_to(ROOT)), "sha256": BASELINE_SHA},
@@ -82,6 +82,9 @@ def main() -> int:
             "final_held_out": list(range(1000, 1032)),
         },
         "commands_x": [0.0, 0.08],
+        "dependency_contract": {
+            "jax": "0.8.2", "jaxlib": "0.8.2", "mujoco": "3.9.0", "playground": "0.0.5"
+        },
         "compute_units": {
             "hard_total": 94,
             "calibration_max": 3,
@@ -89,7 +92,7 @@ def main() -> int:
             "finalist_training_max": 38,
             "heldout_eval_max": 12,
             "interruption_reserve": 6,
-            "consumed": 0,
+            "consumed": 6,
         },
         "rungs": {
             "calibration": {"timesteps": None, "derived_after_steps_per_unit_measurement": True},

@@ -46,8 +46,15 @@ The first search compares mechanisms, not tiny reward perturbations:
    still trained closed-loop rather than by supervised BC.
 5. `imitation_decay`: canonical policy whose imitation weight decays only after
    nominal gait metrics are reached.
-6. `asymmetric_critic`: deployable actor sees the canonical 101-vector; the
-   training-only critic may see privileged simulator state.
+6. `symmetric_critic_ablation`: both actor and critic see the canonical
+   101-vector. This is compared with the upstream control, which already uses a
+   privileged 212-value asymmetric critic; it is not a duplicate family.
+
+Architecture audit amendment before family search: a recurrent finalist uses
+policy ABI v2 (`obs,state_in -> action,state_out`) and requires the new RDK
+runtime. Stateless finalists retain ABI v1 (`obs -> action`). Residual/reference
+families must export the reference/residual composition inside the policy graph
+and emit final actions; an RDK-side action wrapper is forbidden.
 
 No command-gated wrapper, runtime limiter, existing-policy behavior prior,
 DAgger teacher, supervised student, or policy warm start is part of this
