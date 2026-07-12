@@ -214,6 +214,12 @@ This repository controls work around a real biped robot. Preserve safety and evi
   ID 13 last, and a small 12/13/14/23 control. Do not write the STS3215 EEPROM
   return-delay register unless read-only ordering evidence first supports a
   response-collision mechanism.
+- The authorized torque-disabled ordering test completed: canonical 12/13/14,
+  ID-13-last 12/14/13, and 12/13/14/23 each completed 1,490 synchronous reads
+  with zero CRC errors/resets (4,470 total), max call <=1.34 ms, and clean
+  torque-off cleanup. Reject a simple static response-order collision and do
+  not write return-delay EEPROM. Remaining discriminators are full 14-servo
+  response density versus torque/current/supply-ground noise or powered state.
 - CRC localization across home/x0/x008 shows every corrupt response is servo ID
   13 (`right_knee`), usually with checksum high-bit flips. Events are not
   concentrated at high right-knee target speed or one gait phase; battery
