@@ -177,6 +177,13 @@ write errors, tracking spikes, or timing overruns. Seven recovered CRC reads
 passed. Rob reported small equal-amplitude, opposite-phase bilateral leg motion,
 so the visual gate passes. Gate 3 passes with warning; x=0.08 is still
 unapproved.
+
+Gate 4 suspended x=0.08 was then authorized and completed for 15 seconds. Rob
+reported a similar but more aggressive suspended pattern. Rate165 reduced pitch
+target velocity p95 to 0.93-1.69 rad/s and tracking p95 was 0.034-0.058 rad.
+However, 25 recovered CRC reads (3.35%) exceeded the 2% red threshold and bus
+events correlated with tracking spikes. Gate 4 is a hard hold and grounded
+replay is blocked. Torque cleanup and no-runtime verification passed.
 ```
 
 Robotics operating model:

@@ -173,6 +173,11 @@ This repository controls work around a real biped robot. Preserve safety and evi
   as a warning. Torque cleanup and no-runtime checks passed. Rob reported small
   equal, opposite-phase bilateral leg motion, closing the visual gate. Gate 3
   passes with warning; x=0.08 is not authorized.
+- Gate 4 suspended x=0.08 was authorized and completed for 15 seconds. Rob said
+  it looked similar but more aggressive. Target velocity p95 was 0.93-1.69
+  rad/s and pitch tracking p95 0.034-0.058 rad, but 25 recovered CRC reads
+  (3.35%) exceeded the 2% red threshold and correlated with tracking spikes.
+  Gate 4 holds; grounded replay is blocked. Torque cleanup completed.
 - Do not change gains, offsets, IMU remaps, action scale, or phase timing without a reviewed evidence-backed task.
 - Do not deploy behavior changes to the robot unless explicitly requested.
 - Do not run moving hardware tests unless Rob is physically present and explicitly approves that exact test.
