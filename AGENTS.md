@@ -416,3 +416,6 @@ Do not proceed to grounded walking until low-risk gates pass.
   `outputs/analysis/RATE165_HARD_VECTOR_RUNTIME_APPROVAL_PACKET_20260712.md`.
   Next action requires explicit stage-only approval; it must not initialize HWI
   or motors. Suspended x=0 and x=.08 remain later, separate approvals.
+- The stage-only runner is `scripts/stage_rate165_hard_vector_runtime.sh`.
+  It is refusal-tested and side-by-side only; do not run it without explicit
+  stage approval and a fresh snapshot. It has no installation or motion path.

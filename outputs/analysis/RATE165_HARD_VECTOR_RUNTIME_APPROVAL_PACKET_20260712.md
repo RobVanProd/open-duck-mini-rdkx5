@@ -43,3 +43,11 @@ Abort on unexpected motion, wrong side/sign, jerk, asymmetry, timing overrun,
 CRC/write burst, tracking spike, or operator concern. No current approval to
 stage, deploy, initialize HWI, or move motors is inferred from offline results.
 
+## Stage runner readiness
+
+`scripts/stage_rate165_hard_vector_runtime.sh` is syntax-checked and
+refusal-tested. It requires `--run`, `--i-approve-stage-only`, a fresh snapshot,
+the exact local/live hashes, an idle runtime, and an unowned serial port. It
+copies only into a side-by-side stage directory and verifies the result. It
+cannot replace live files, import HWI, open serial, enable torque, or run a
+motor command.
