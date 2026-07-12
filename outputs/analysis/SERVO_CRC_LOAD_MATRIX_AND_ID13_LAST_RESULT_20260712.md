@@ -2,7 +2,7 @@
 
 Date: 2026-07-12
 
-Status: `PASS_ID13_LAST_RUNTIME_FIX_X0_VISUAL_PENDING`
+Status: `PASS_ID13_LAST_RUNTIME_FIX_X0`
 
 ## Causal matrix
 
@@ -46,7 +46,7 @@ cleanup:                     passed
 ```
 
 This is the first completely green live bus result in the current sequence.
-Visual symmetry confirmation remains required to close the full gate.
+Rob confirmed that the final run looked symmetric, closing the visual gate.
 
 Evidence hashes:
 

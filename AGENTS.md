@@ -228,6 +228,10 @@ This repository controls work around a real biped robot. Preserve safety and evi
   CRC/reset/write errors, zero control overruns, dt max 0.02066 s, and zero
   tracking spikes >0.05 rad. Visual symmetry confirmation is pending. Keep the
   return-delay EEPROM unchanged.
+- Rob confirmed candidate 5's final suspended x=0 run looked symmetric. The
+  full gate is closed as `PASS_X0`: zero CRC/reset/write errors, clean timing
+  and tracking, symmetric motion, and torque-off cleanup. Candidate 5 remains
+  staged on the RDK. This does not authorize x=0.08 or grounded movement.
 - CRC localization across home/x0/x008 shows every corrupt response is servo ID
   13 (`right_knee`), usually with checksum high-bit flips. Events are not
   concentrated at high right-knee target speed or one gait phase; battery
