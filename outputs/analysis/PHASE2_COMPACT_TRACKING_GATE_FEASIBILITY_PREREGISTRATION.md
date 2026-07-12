@@ -2,7 +2,7 @@
 
 Date: 2026-07-11
 
-Status: **PRE-REGISTERED; NOT RUN**
+Status: **COMPLETED; MIXED RESULT; GATE IS RESET-SENSITIVE**
 
 ## Question
 
