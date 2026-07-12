@@ -157,6 +157,12 @@ This repository controls work around a real biped robot. Preserve safety and evi
   canonical instrumentation hashes match. The board clock is incorrectly at
   year 2000; use trusted `collector_utc` for freshness and retain the clock
   warning. Gate 1 is not authorized.
+- Gate 1 was later explicitly authorized and passed on the stand with Rob's
+  visual report that home looked really good. Pitch tracking p95 was
+  0.000-0.005 rad with no sustained violations. Retain a warning for 3 recovered
+  CRC/read retries (1.46%, zero writes, no control impact). Torque-off cleanup
+  completed. The board clock subsequently self-synchronized. Gate 2 is not
+  authorized.
 - Do not change gains, offsets, IMU remaps, action scale, or phase timing without a reviewed evidence-backed task.
 - Do not deploy behavior changes to the robot unless explicitly requested.
 - Do not run moving hardware tests unless Rob is physically present and explicitly approves that exact test.

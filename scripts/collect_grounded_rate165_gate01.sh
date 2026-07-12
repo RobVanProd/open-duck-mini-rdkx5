@@ -77,7 +77,7 @@ snapshot_command() {
 }
 
 remote_home_command() {
-  printf 'mkdir -p %q && cd %q && set -o pipefail && %q sim2real_diagnostics.py home_pose_log_test --onnx_model_path %q --telemetry-path %q --i-understand-this-moves-the-robot 2>&1 | tee %q' \
+  printf 'mkdir -p %q && cd %q && set -o pipefail && %q sim2real_diagnostics.py home_pose_log_test --onnx_model_path %q --telemetry-path %q --torque-off-on-exit --i-understand-this-moves-the-robot 2>&1 | tee %q' \
     "$ROBOT_LOG_DIR" "$ROBOT_RUNTIME/scripts" "$ROBOT_PYTHON" "$ROBOT_POLICY" \
     "$REMOTE_TELEMETRY" "$REMOTE_TERMINAL"
 }

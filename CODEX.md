@@ -156,6 +156,13 @@ The corrected config hash, paused startup, baseline policy, and canonical
 instrumentation hashes all match. The board clock reports year 2000, so trusted
 workstation `collector_utc` is the freshness source. Motors were untouched and
 Gate 1 remains separately unapproved.
+
+Gate 1 was then authorized and passed: Rob reported the supported home pose
+looked really good; pitch-chain tracking p95 was 0.000-0.005 rad, IMU was stable,
+and there were no sustained errors or write failures. Three recovered read CRC
+retries (1.46%) remain a warning without correlated control damage. Torque-off
+cleanup completed. The board clock self-synchronized and a fresh snapshot is
+within 0.662 s of collector UTC. Gate 2 remains separately unapproved.
 ```
 
 Robotics operating model:

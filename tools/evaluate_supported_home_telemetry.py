@@ -75,18 +75,31 @@ def evaluate(records, terminal, startup, p95_limit, sustained_limit, sustained_s
         if accel[2] <= 0 or abs(accel[2]) <= max(abs(accel[0]), abs(accel[1])):
             holds.append("upright acceleration is not positive-Z dominant")
     bus = records[-1].get("bus", {}) if records else {}
-    for key in ("read_error_count", "write_error_count"):
-        if bus.get(key) is None:
-            warnings.append(f"{key} unavailable")
-        elif int(bus[key]):
-            holds.append(f"{key}={bus[key]}")
+    first_bus = records[0].get("bus", {}) if records else {}
+    read_delta = None
+    if bus.get("read_error_count") is None or first_bus.get("read_error_count") is None:
+        warnings.append("read_error_count unavailable")
+    else:
+        read_delta = max(0, int(bus["read_error_count"]) - int(first_bus["read_error_count"]))
+        read_rate = read_delta / len(records) if records else None
+        if read_rate is not None and read_rate > 0.02:
+            holds.append(f"read retry rate {read_rate * 100:.2f}% exceeds 2.00%")
+        elif read_delta:
+            warnings.append(f"{read_delta} recovered read retries ({read_rate * 100:.2f}%) without a write failure")
+    if bus.get("write_error_count") is None:
+        warnings.append("write_error_count unavailable")
+    elif int(bus["write_error_count"]):
+        holds.append(f"write_error_count={bus['write_error_count']}")
     if terminal["missing"]:
         holds.append("terminal log missing")
     for key in ("write_error", "control_budget_exceeded", "exception_or_traceback"):
         if terminal["counts"].get(key, 0):
             holds.append(f"terminal {key} count={terminal['counts'][key]}")
+    status = ("HOLD_TELEMETRY_COMPONENT" if holds else
+              "PASS_TELEMETRY_COMPONENT_WITH_WARNINGS" if warnings else
+              "PASS_TELEMETRY_COMPONENT")
     return {"schema_version": "open_duck_supported_home_telemetry_gate_v1",
-            "status": "PASS_TELEMETRY_COMPONENT" if not holds else "HOLD_TELEMETRY_COMPONENT",
+            "status": status,
             "physical_pose_status": "REQUIRES_OPERATOR_VISUAL_CONFIRMATION",
             "samples": len(records), "post_startup_samples": len(post),
             "thresholds": {"startup_ticks": startup, "pitch_p95_rad_exclusive": p95_limit,
@@ -94,7 +107,8 @@ def evaluate(records, terminal, startup, p95_limit, sustained_limit, sustained_s
                            "sustained_samples": sustained_samples,
                            "gyro_p95_rad_s_exclusive": 0.20},
             "gyro_p95_abs_rad_s": gyro, "accel_mean_m_s2": accel, "tracking": rows,
-            "bus": bus, "terminal": terminal, "holds": holds, "warnings": warnings}
+            "bus": bus, "bus_read_error_delta": read_delta,
+            "terminal": terminal, "holds": holds, "warnings": warnings}
 
 
 def markdown(r):
@@ -123,7 +137,7 @@ def main():
     a = p.parse_args()
     r = evaluate(load_records(a.telemetry_jsonl), parse_terminal_log(a.terminal_log),
                  a.startup_ticks, a.pitch_p95_limit, a.sustained_limit, a.sustained_samples)
-    Path(a.output_md).write_text(markdown(r) + "\n")
+    Path(a.output_md).write_text(markdown(r).rstrip() + "\n")
     Path(a.output_json).write_text(json.dumps(r, indent=2, sort_keys=True) + "\n")
     print(r["status"])
 

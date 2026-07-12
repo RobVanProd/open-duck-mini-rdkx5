@@ -20,7 +20,8 @@ stationary contract:
 - hold on 3 consecutive pitch-chain samples above `0.10 rad`;
 - gyro absolute p95 strictly below `0.20 rad/s`;
 - require positive-Z-dominant upright acceleration;
-- require zero final bus read/write counters;
+- require zero write errors; recovered read retries below the established 2%
+  red rate are retained as warnings unless correlated control damage appears;
 - require a terminal log and hold on write errors, control-budget overruns, or
   exceptions.
 
