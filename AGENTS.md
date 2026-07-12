@@ -286,6 +286,14 @@ This repository controls work around a real biped robot. Preserve safety and evi
   P30 and once at P31/34, policy/IMU disabled, with normal-gain/torque-off
   between and after phases. Support gains only if both target joints improve
   p95 >=10% without >10% regression on any-joint p95/max. Do not tune afterward.
+- Fixed-target A/B completed: hip p95 improved only 0.66%, knee 7.06%, below
+  the frozen 10% rule; knee max worsened 15.00%, neck max 32.89%, head roll max
+  26.33%, head yaw max 16.14%, and right hip pitch max 11.73%. Zero bus/write
+  errors; normal gains restored and torque off. Reject P31/34 and do not raise
+  gains post hoc. Remaining supported class is offline target-trajectory shaping
+  with motion preservation, not offsets or gains.
+- Rob reported no visible difference between fixed-target P30 and P31/34. This
+  agrees with the insufficient numeric effect and closes the gain visual review.
 - Rob confirmed candidate 5's final suspended x=0 run looked symmetric. The
   full gate is closed as `PASS_X0`: zero CRC/reset/write errors, clean timing
   and tracking, symmetric motion, and torque-off cleanup. Candidate 5 remains
