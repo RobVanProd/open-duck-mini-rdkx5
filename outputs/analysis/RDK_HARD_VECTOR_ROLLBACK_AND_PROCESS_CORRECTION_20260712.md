@@ -31,6 +31,11 @@ Both restored Python files compile. Before and after rollback, no runtime was
 active and `/dev/ttyACM0` had no owner. No HWI import, serial open, torque
 operation, policy replay, or motor command occurred.
 
+The inactive side-by-side directories
+`/home/sunrise/rate165_hard_vector_stage_20260712` and
+`/home/sunrise/rate165_zero_hold_timing_stage_20260712` were removed after the
+live rollback. The exact pre-install backup was retained for audit and recovery.
+
 ## How the plan was broken
 
 The frozen hard-vector projection preregistration said a pass authorized

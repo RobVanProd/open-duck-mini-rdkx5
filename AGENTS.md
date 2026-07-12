@@ -458,5 +458,6 @@ Do not proceed to grounded walking until low-risk gates pass.
   pre-install backup. Live walker/diagnostic hashes are restored to
   `b9732b...`/`f28433...`; the added velocity-limit parser is absent. The ONNX,
   config, and ID13-last HWI remain unchanged. Runtime is idle, serial is free,
-  and no motor access occurred. See
+  no motor access occurred, and both off-plan side-by-side stage directories
+  were removed. The exact pre-install backup remains for audit. See
   `outputs/analysis/RDK_HARD_VECTOR_ROLLBACK_AND_PROCESS_CORRECTION_20260712.md`.
