@@ -261,6 +261,11 @@ This repository controls work around a real biped robot. Preserve safety and evi
   tripping a `time.time()` duration guard. Motion, bus, and cleanup were clean.
   Runtime duration/filter guards now use `time.monotonic()`. Repeat the same
   already-authorized x=0 stage with gains and thresholds unchanged.
+- The monotonic-clock repeat completed 747/747 at suspended x=0 with P 31/34:
+  zero CRC/reset/write/control errors, dt max 0.02015 s, zero tracking spikes
+  >0.05 rad, hip/knee p95 0.0086/0.0123 rad. Normal gains were restored and
+  torque disabled; no runtime/port owner remains. Numeric x=0 passes, but visual
+  symmetry/no-oscillation confirmation is pending. x=0.08 is not authorized.
 - Rob confirmed candidate 5's final suspended x=0 run looked symmetric. The
   full gate is closed as `PASS_X0`: zero CRC/reset/write errors, clean timing
   and tracking, symmetric motion, and torque-off cleanup. Candidate 5 remains
