@@ -411,11 +411,11 @@ class RLWalk:
         i = 0
         try:
             print("Starting")
-            start_t = time.time()
+            start_t = time.monotonic()
             while True:
                 if (
                     self.max_runtime_seconds is not None
-                    and time.time() - start_t >= self.max_runtime_seconds
+                    and time.monotonic() - start_t >= self.max_runtime_seconds
                 ):
                     print("Max runtime reached")
                     break
@@ -533,7 +533,7 @@ class RLWalk:
                     self.action_filter.push(self.motor_targets)
                     filtered_motor_targets = self.action_filter.get_filtered_action()
                     if (
-                        time.time() - start_t > 1
+                        time.monotonic() - start_t > 1
                     ):  # give time to the filter to stabilize
                         self.motor_targets = filtered_motor_targets
 

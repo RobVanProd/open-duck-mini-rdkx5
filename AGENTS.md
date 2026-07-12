@@ -256,6 +256,11 @@ This repository controls work around a real biped robot. Preserve safety and evi
   physical presence and exact confirmation; it cannot run x=0.08 or grounded.
   Every exit invokes `restore_runtime_gains_and_turn_off.py`. Explicit approval
   of this gain-change x=0 stage is still required despite general x=0 clearance.
+- The first authorized gain x=0 attempt produced only 299 samples/5.989 s and is
+  invalid: the freshly booted RDK wall clock stepped from year 2000 to 2026,
+  tripping a `time.time()` duration guard. Motion, bus, and cleanup were clean.
+  Runtime duration/filter guards now use `time.monotonic()`. Repeat the same
+  already-authorized x=0 stage with gains and thresholds unchanged.
 - Rob confirmed candidate 5's final suspended x=0 run looked symmetric. The
   full gate is closed as `PASS_X0`: zero CRC/reset/write errors, clean timing
   and tracking, symmetric motion, and torque-off cleanup. Candidate 5 remains

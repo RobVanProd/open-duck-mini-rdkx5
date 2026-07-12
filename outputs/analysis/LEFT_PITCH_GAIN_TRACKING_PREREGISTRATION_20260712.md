@@ -62,3 +62,12 @@ is fixed to x=0, 15 seconds, gains 31/34, exact artifact hashes, isolated logs,
 physical-presence and exact-confirmation gates. Its cleanup restores normal RAM
 gains and disables torque on success, abort, or failure. The runner has no
 x=0.08 or grounded command path and has not been deployed or run.
+
+## First x=0 attempt invalidated by clock step
+
+The first authorized attempt was safe and clean but captured only 299 samples
+(5.989 seconds monotonic). The RDK booted at year 2000 and its wall clock stepped
+to 2026 during the run; the runtime used `time.time()` for its duration guard,
+so the step ended the process early. Do not grade this attempt. The runtime
+duration and filter-settle guards now use `time.monotonic()`. The same frozen
+gain stage must be repeated; no gain or gate changed.
