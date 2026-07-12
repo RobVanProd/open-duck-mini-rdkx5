@@ -428,3 +428,9 @@ Do not proceed to grounded walking until low-risk gates pass.
   the port is unowned, no runtime is active, and HWI/motors were not engaged.
   See `outputs/analysis/RATE165_HARD_VECTOR_STAGE_RESULT_20260712.md`. The next
   gate is separate approval for backup-backed live installation only.
+- 2026-07-12: Backup-backed hard-vector live installation was explicitly
+  approved and passed. Candidate hashes are live, baseline walker/diagnostic
+  backups match, all files compile, the port is unowned, no runtime is active,
+  and HWI/motors were not engaged. See
+  `outputs/analysis/RATE165_HARD_VECTOR_INSTALL_RESULT_20260712.md`. Suspended
+  x=0 is the next separate approval; x=.08 and grounded remain unauthorized.

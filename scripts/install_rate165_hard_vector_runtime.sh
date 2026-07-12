@@ -72,7 +72,7 @@ remote_manifest=$(ssh -n "${SSH_OPTS[@]}" "$SSH_TARGET" "set -eu
   test \"\$(sha256sum '$RUNTIME/scripts/v2_rl_walk_mujoco.py' | cut -d ' ' -f1)\" = '$WALKER_SHA'
   test \"\$(sha256sum '$RUNTIME/scripts/motor_velocity_limits.py' | cut -d ' ' -f1)\" = '$PARSER_SHA'
   test \"\$(sha256sum '$RUNTIME/scripts/sim2real_diagnostics.py' | cut -d ' ' -f1)\" = '$DIAG_SHA'
-  ps -eo comm=,args= | awk '\''\$1 ~ /^python/ && \$0 ~ /(v2_rl_walk|sim2real_diagnostics|mini_bdx_runtime)/ {found=1} END {exit found}'\''
+  ps -eo comm=,args= | awk '\$1 ~ /^python/ && \$0 ~ /(v2_rl_walk|sim2real_diagnostics|mini_bdx_runtime)/ {found=1} END {exit found}'
   ! fuser /dev/ttyACM0 >/dev/null 2>&1
   printf '{\"status\":\"PASS_LIVE_INSTALL_NO_HWI\",\"backup\":\"%s\",\"hwi_initialized\":false,\"motors_engaged\":false}\n' \"\$backup\"")
 mkdir -p "$(dirname "$OUTPUT")"; printf '%s\n' "$remote_manifest" > "$OUTPUT"
