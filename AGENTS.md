@@ -434,3 +434,10 @@ Do not proceed to grounded walking until low-risk gates pass.
   and HWI/motors were not engaged. See
   `outputs/analysis/RATE165_HARD_VECTOR_INSTALL_RESULT_20260712.md`. Suspended
   x=0 is the next separate approval; x=.08 and grounded remain unauthorized.
+- 2026-07-12: The hard-vector suspended x=0 gate was explicitly approved and
+  completed 747/747. Exact vector telemetry, zero CRC/read/write/reset errors,
+  clean timing, zero >0.05 tracking spikes, and torque-off/idle cleanup all
+  pass. Numeric status is `PASS_NUMERIC_AWAIT_VISUAL`; neck/head yaw retain a
+  warning-only p95 0.0219/0.0280. See
+  `outputs/analysis/RATE165_HARD_VECTOR_X0_RESULT_20260712.md`. Do not infer
+  x=.08 approval before visual x=0 confirmation and a separate explicit gate.
