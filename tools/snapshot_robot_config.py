@@ -233,6 +233,7 @@ def ssh_snapshot(
     known_hosts=None,
     strict_host_key_checking=None,
 ):
+    collector_utc = dt.datetime.now(dt.timezone.utc)
     encoded = base64.b64encode(Path(__file__).read_bytes()).decode("ascii")
     remote_code = f"""
 import base64
@@ -270,7 +271,21 @@ print(json.dumps(namespace['local_snapshot']({config_path!r}), sort_keys=True))
     )
     if proc.returncode != 0:
         raise RuntimeError(proc.stderr.strip() or proc.stdout.strip())
-    return json.loads(proc.stdout.strip().splitlines()[-1])
+    snapshot = json.loads(proc.stdout.strip().splitlines()[-1])
+    snapshot["collector_utc"] = collector_utc.isoformat()
+    snapshot["snapshot_utc_source"] = "remote_system_clock"
+    try:
+        remote_utc = dt.datetime.fromisoformat(snapshot["snapshot_utc"].replace("Z", "+00:00"))
+        snapshot["remote_clock_offset_from_collector_s"] = (
+            remote_utc - collector_utc
+        ).total_seconds()
+        snapshot["remote_clock_plausible"] = abs(
+            snapshot["remote_clock_offset_from_collector_s"]
+        ) <= 300
+    except Exception:
+        snapshot["remote_clock_offset_from_collector_s"] = None
+        snapshot["remote_clock_plausible"] = False
+    return snapshot
 
 
 def main():

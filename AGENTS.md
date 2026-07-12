@@ -152,6 +152,11 @@ This repository controls work around a real biped robot. Preserve safety and evi
   `0.0371` on June 27; do not describe the old value as live. A fresh snapshot
   and full-pose visual confirmation are still required. Approval is stage-specific: snapshot/home pose, paused staging,
   suspended x=0, suspended x=0.08, and grounded replay are separate gates.
+- Gate 0 was captured read-only on 2026-07-12 with motors untouched. The live
+  config exactly matches the corrected June-27 hash, `start_paused=true`, and
+  canonical instrumentation hashes match. The board clock is incorrectly at
+  year 2000; use trusted `collector_utc` for freshness and retain the clock
+  warning. Gate 1 is not authorized.
 - Do not change gains, offsets, IMU remaps, action scale, or phase timing without a reviewed evidence-backed task.
 - Do not deploy behavior changes to the robot unless explicitly requested.
 - Do not run moving hardware tests unless Rob is physically present and explicitly approves that exact test.

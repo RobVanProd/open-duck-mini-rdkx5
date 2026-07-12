@@ -124,7 +124,8 @@ import datetime as dt, json, sys
 data=json.load(open(sys.argv[1]))
 assert data.get("schema_version") == "open_duck_mini_config_snapshot_v2", "Gate 0 snapshot must use v2 schema"
 assert data.get("snapshot_utc"), "Gate 0 snapshot timestamp missing"
-stamp=dt.datetime.fromisoformat(data["snapshot_utc"].replace("Z", "+00:00"))
+trusted_time=data.get("collector_utc") or data["snapshot_utc"]
+stamp=dt.datetime.fromisoformat(trusted_time.replace("Z", "+00:00"))
 age=(dt.datetime.now(dt.timezone.utc)-stamp).total_seconds()
 assert -300 <= age <= 86400, f"Gate 0 snapshot must be no more than 24 hours old; age_s={age:.0f}"
 PY

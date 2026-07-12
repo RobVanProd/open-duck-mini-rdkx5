@@ -150,6 +150,12 @@ Paused policy
 staging, suspended x=0, suspended x=0.08, and grounded replay each require a
 separate explicit approval. No SSH, copy, configuration write, or motion is
 authorized by the offline package.
+
+Gate 0 was subsequently authorized and completed read-only on 2026-07-12.
+The corrected config hash, paused startup, baseline policy, and canonical
+instrumentation hashes all match. The board clock reports year 2000, so trusted
+workstation `collector_utc` is the freshness source. Motors were untouched and
+Gate 1 remains separately unapproved.
 ```
 
 Robotics operating model:
