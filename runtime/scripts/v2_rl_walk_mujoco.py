@@ -43,7 +43,6 @@ class RLWalk:
         telemetry_path: str | None = None,
         telemetry_read_voltage: bool = False,
         telemetry_every_n: int = 1,
-        log_stage_timing: bool = False,
         kp_overrides: dict[str, float] | None = None,
         motor_velocity_limits_rad_s: list[float] | None = None,
     ):
@@ -88,10 +87,6 @@ class RLWalk:
         self.telemetry_path = telemetry_path
         self.telemetry_read_voltage = bool(telemetry_read_voltage)
         self.telemetry_every_n = max(1, int(telemetry_every_n or 1))
-        self.log_stage_timing = bool(log_stage_timing)
-        if self.log_stage_timing and not self.log_telemetry:
-            raise ValueError("stage timing requires telemetry logging")
-        self._previous_telemetry_log_s = None
         self.kp_overrides = dict(kp_overrides or {})
         self.effective_kps = None
         self.telemetry_logger = None
@@ -216,7 +211,6 @@ class RLWalk:
         motor_targets_post_rate_limit,
         motor_targets_sent,
         previous_motor_targets_for_tracking,
-        stage_timing_s=None,
     ):
         if not self.log_telemetry or self.telemetry_logger is None:
             return
@@ -273,7 +267,6 @@ class RLWalk:
                 "imitation_i": self.imitation_i,
                 "imitation_phase": self.imitation_phase,
                 "feet_contacts": feet_contacts,
-                "stage_timing_s": stage_timing_s,
             },
             "imu": {
                 "imu_upside_down": self.duck_config.imu_upside_down,
@@ -493,12 +486,7 @@ class RLWalk:
                     continue
 
                 telemetry_t_mono = time.monotonic() if self.log_telemetry else None
-                stage_timing = {} if self.log_stage_timing else None
-                stage_t0 = time.perf_counter() if stage_timing is not None else None
                 obs = self.get_obs()
-                if stage_timing is not None:
-                    stage_t1 = time.perf_counter()
-                    stage_timing["observation_s"] = stage_t1 - stage_t0
                 if obs is None:
                     continue
 
@@ -527,11 +515,7 @@ class RLWalk:
                         print("BREAKING ")
                         break
 
-                policy_t0 = time.perf_counter() if stage_timing is not None else None
                 action = self.policy.infer(obs)
-                if stage_timing is not None:
-                    policy_t1 = time.perf_counter()
-                    stage_timing["policy_inference_s"] = policy_t1 - policy_t0
 
                 self.last_last_last_action = self.last_last_action.copy()
                 self.last_last_action = self.last_action.copy()
@@ -571,18 +555,8 @@ class RLWalk:
                     self.motor_targets, list(self.hwi.joints.keys())
                 )
 
-                write_t0 = time.perf_counter() if stage_timing is not None else None
                 self.hwi.set_position_all(action_dict)
-                if stage_timing is not None:
-                    write_t1 = time.perf_counter()
-                    stage_timing["motor_write_s"] = write_t1 - write_t0
-                    stage_timing["target_preparation_s"] = write_t0 - policy_t1
-                    stage_timing["work_pre_telemetry_s"] = write_t1 - stage_t0
-                    stage_timing["previous_telemetry_log_s"] = self._previous_telemetry_log_s
 
-                telemetry_log_t0 = (
-                    time.perf_counter() if stage_timing is not None else None
-                )
                 self._log_policy_tick(
                     tick=i,
                     t_mono=telemetry_t_mono,
@@ -593,12 +567,7 @@ class RLWalk:
                     motor_targets_post_rate_limit=motor_targets_post_rate_limit,
                     motor_targets_sent=motor_targets_sent,
                     previous_motor_targets_for_tracking=previous_motor_targets_for_tracking,
-                    stage_timing_s=stage_timing,
                 )
-                if stage_timing is not None:
-                    self._previous_telemetry_log_s = (
-                        time.perf_counter() - telemetry_log_t0
-                    )
 
                 i += 1
 
@@ -697,11 +666,6 @@ if __name__ == "__main__":
     parser.add_argument("--telemetry-read-voltage", action="store_true")
     parser.add_argument("--telemetry-every-n", type=int, default=1)
     parser.add_argument(
-        "--log-stage-timing",
-        action="store_true",
-        help="Add opt-in per-stage monotonic durations to telemetry records.",
-    )
-    parser.add_argument(
         "--motor-velocity-limits-rad-s",
         default=None,
         help="Default-off comma-separated 14-value target slew limits in action order.",
@@ -736,7 +700,6 @@ if __name__ == "__main__":
         telemetry_path=args.telemetry_path,
         telemetry_read_voltage=args.telemetry_read_voltage,
         telemetry_every_n=args.telemetry_every_n,
-        log_stage_timing=args.log_stage_timing,
         motor_velocity_limits_rad_s=parse_motor_velocity_limits(
             args.motor_velocity_limits_rad_s
         ),
