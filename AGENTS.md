@@ -220,6 +220,14 @@ This repository controls work around a real biped robot. Preserve safety and evi
   torque-off cleanup. Reject a simple static response-order collision and do
   not write return-delay EEPROM. Remaining discriminators are full 14-servo
   response density versus torque/current/supply-ground noise or powered state.
+- The matched load/order matrix resolved the checksum mechanism. Full-14
+  canonical reads reproduced ID-13 CRC errors torque-off (13/1490, replicated
+  10/1490) and static-home torque-on (8/1490); full-14 with ID 13 last produced
+  0/1490. Candidate 5 requests ID 13 last and remaps returned values to the
+  unchanged canonical joint order. Suspended x=0 then passed 747/747 with zero
+  CRC/reset/write errors, zero control overruns, dt max 0.02066 s, and zero
+  tracking spikes >0.05 rad. Visual symmetry confirmation is pending. Keep the
+  return-delay EEPROM unchanged.
 - CRC localization across home/x0/x008 shows every corrupt response is servo ID
   13 (`right_knee`), usually with checksum high-bit flips. Events are not
   concentrated at high right-knee target speed or one gait phase; battery

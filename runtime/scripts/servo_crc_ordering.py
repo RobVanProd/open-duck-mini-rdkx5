@@ -11,6 +11,8 @@ ORDERS = {
     "canonical": [12, 13, 14],
     "id13_last": [12, 14, 13],
     "four_servo_control": [12, 13, 14, 23],
+    "full14_canonical": [20, 21, 22, 23, 24, 30, 31, 32, 33, 10, 11, 12, 13, 14],
+    "full14_id13_last": [20, 21, 22, 23, 24, 30, 31, 32, 33, 10, 11, 12, 14, 13],
 }
 
 
@@ -19,6 +21,11 @@ def parse_args():
     parser.add_argument("--duration-per-order", type=float, default=15.0)
     parser.add_argument("--rate-hz", type=float, default=50.0)
     parser.add_argument("--output", required=True)
+    parser.add_argument(
+        "--orders",
+        default=",".join(ORDERS),
+        help="Comma-separated fixed order names",
+    )
     parser.add_argument("--i-understand-this-disables-torque", action="store_true")
     return parser.parse_args()
 
@@ -34,6 +41,10 @@ def main():
     from mini_bdx_runtime.rustypot_position_hwi import HWI
 
     hwi = HWI(DuckConfig())
+    selected = args.orders.split(",")
+    unknown = [name for name in selected if name not in ORDERS]
+    if unknown:
+        raise SystemExit(f"unknown order names: {unknown}")
     result = {
         "schema_version": "open_duck_servo_crc_ordering_v1",
         "duration_per_order_s": args.duration_per_order,
@@ -49,7 +60,8 @@ def main():
     try:
         hwi.turn_off()
         print("TORQUE_DISABLED_ALL_JOINTS", flush=True)
-        for name, ids in ORDERS.items():
+        for name in selected:
+            ids = ORDERS[name]
             started = time.monotonic()
             attempts = 0
             start_errors = hwi.read_error_count

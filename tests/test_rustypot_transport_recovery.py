@@ -22,7 +22,10 @@ class FakeIO:
         self.calls += 1
         if self.fail_first and self.calls == 1:
             raise OSError("Checksum error")
-        return [float(self.generation)] * len(ids)
+        return [float(servo_id) for servo_id in ids]
+
+    def read_present_velocity(self, ids):
+        return [float(servo_id) for servo_id in ids]
 
 
 class FakeRustypot(types.ModuleType):
@@ -92,7 +95,7 @@ class TransportRecoveryTest(unittest.TestCase):
 
         values = hwi._retry("read_present_position", [12, 13, 14])
 
-        self.assertEqual(values, [2.0, 2.0, 2.0])
+        self.assertEqual(values, [12.0, 13.0, 14.0])
         self.assertEqual(hwi.read_error_count, 1)
         self.assertEqual(hwi.transport_reset_count, 1)
         self.assertEqual(
@@ -108,9 +111,23 @@ class TransportRecoveryTest(unittest.TestCase):
 
         values = hwi._retry("read_present_position", [13])
 
-        self.assertEqual(values, [1.0])
+        self.assertEqual(values, [13.0])
         self.assertEqual(hwi.transport_reset_count, 0)
         self.assertEqual(len(fake.opens), 1)
+
+    def test_id13_is_read_last_but_values_return_in_canonical_joint_order(self):
+        fake = FakeRustypot()
+        HWI = load_hwi(fake)
+        hwi = HWI(Config(), "/dev/fake-servo")
+        fake.opens[0][2]().fail_first = False
+
+        positions = hwi._read_all_in_joint_order("read_present_position")
+        velocities = hwi._read_all_in_joint_order("read_present_velocity")
+        canonical_ids = list(hwi.joints.values())
+
+        self.assertEqual(hwi.read_ids[-1], 13)
+        self.assertEqual(positions, [float(value) for value in canonical_ids])
+        self.assertEqual(velocities, [float(value) for value in canonical_ids])
 
 
 if __name__ == "__main__":

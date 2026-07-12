@@ -69,6 +69,13 @@ class HWI:
         }
 
         self.joints_offsets = self.duck_config.joints_offset
+        canonical_ids = list(self.joints.values())
+        # Full-bus evidence shows ID 13's checksum is corrupted when ID 14
+        # responds after it. Request ID 13 last, then restore canonical joint
+        # order before exposing values to observations or telemetry.
+        self.read_ids = [servo_id for servo_id in canonical_ids if servo_id != 13]
+        if 13 in canonical_ids:
+            self.read_ids.append(13)
 
         # Per-joint direction sign (all +1 = stock). The left_knee motor was
         # physically re-flipped to match the right knee, so no software flip
@@ -201,15 +208,18 @@ class HWI:
             list(ids_positions.values()),
         )
 
+    def _read_all_in_joint_order(self, operation):
+        values_in_bus_order = self._retry(operation, self.read_ids)
+        by_id = dict(zip(self.read_ids, values_in_bus_order))
+        return [by_id[servo_id] for servo_id in self.joints.values()]
+
     def get_present_positions(self, ignore=[]):
         """
         Returns the present positions in radians
         """
 
         try:
-            present_positions = self._retry(
-                "read_present_position", list(self.joints.values())
-            )
+            present_positions = self._read_all_in_joint_order("read_present_position")
         except Exception as e:
             print(e)
             return None
@@ -226,9 +236,7 @@ class HWI:
         Returns the present velocities in rad/s (default) or rev/min
         """
         try:
-            present_velocities = self._retry(
-                "read_present_velocity", list(self.joints.values())
-            )
+            present_velocities = self._read_all_in_joint_order("read_present_velocity")
         except Exception as e:
             print(e)
             return None
