@@ -275,6 +275,12 @@ This repository controls work around a real biped robot. Preserve safety and evi
   fixed 15-second x=0.08 only, isolated logs, and restores normal gains/torque
   off on every exit. It has no x=0 or grounded path. Explicit x=0.08 approval is
   still required before running it.
+- The authorized P31/34 suspended x=0.08 trial completed and is rejected: hip
+  p95 0.0514 versus 0.0513 baseline, knee 0.0569 versus 0.0572 (only 0.0003 rad
+  better), and head yaw 0.0558; Gate 4 remains HOLD_TRACKING. Rob said it looked
+  clean. Normal gains were restored and torque disabled. Do not tune gains
+  upward post hoc. The runs had different IMU/closed-loop states, so the only
+  supported next gain question is a separately approved fixed-target A/B replay.
 - Rob confirmed candidate 5's final suspended x=0 run looked symmetric. The
   full gate is closed as `PASS_X0`: zero CRC/reset/write errors, clean timing
   and tracking, symmetric motion, and torque-off cleanup. Candidate 5 remains
