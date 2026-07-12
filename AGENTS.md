@@ -390,3 +390,10 @@ Do not proceed to grounded walking until low-risk gates pass.
   Close supervised rate-penalty refits. The only supported distinct policy
   class is separately preregistered constrained optimization against the new
   fixed-target bridge; no robot/deployment/grounded action is authorized.
+- 2026-07-12: The default-off hardware-vector training bridge now accepts exact
+  per-joint delay/tau/velocity vectors plus a per-joint target-rate excess cost.
+  CPU state assertions and a PPO update/export smoke passed. The exact
+  constrained recipe is preregistered in
+  `outputs/analysis/HARDWARE_VECTOR_BRIDGE_CONSTRAINED_PPO_PREREGISTRATION_20260712.md`.
+  One self-cleaning Colab T4 job is authorized; local GPUs and robot actions
+  remain prohibited.
