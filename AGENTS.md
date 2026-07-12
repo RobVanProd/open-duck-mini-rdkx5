@@ -132,6 +132,13 @@ This repository controls work around a real biped robot. Preserve safety and evi
   rad. No seeds 40-71 expansion is authorized. Close the exact pitch-chain
   mean-cost formulation at scale -0.007914891239136222; do not increase its
   scale or tune delta, indices, aggregation, KL, or training length post hoc.
+- Compact-gate feasibility was audited with the frozen rate-bounded teacher.
+  Discovery seeds 0-7 produced 1/8 passes; independent seeds 8-23 produced
+  only 1/16 passes and 5/16 falls. Those five fall seeds exactly match the
+  baseline fall set, so the teacher does not recover the unsupported-start
+  states. Do not weaken the compact gate or resume broad-reset scalar training.
+  Keep normal grounded `home-support` walking and unsupported `playground`
+  reset recovery as separate contracts, as established in prior project docs.
 - Do not change gains, offsets, IMU remaps, action scale, or phase timing without a reviewed evidence-backed task.
 - Do not deploy behavior changes to the robot unless explicitly requested.
 - Do not run moving hardware tests unless Rob is physically present and explicitly approves that exact test.

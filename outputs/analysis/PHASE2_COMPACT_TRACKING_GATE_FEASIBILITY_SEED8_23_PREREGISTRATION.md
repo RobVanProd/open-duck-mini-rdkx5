@@ -2,7 +2,7 @@
 
 Date: 2026-07-11
 
-Status: **PRE-REGISTERED; NOT RUN**
+Status: **COMPLETED; FAILS PASS-COUNT AND STABILITY CRITERIA**
 
 Repeat the frozen seed 0-7 feasibility audit on independent seeds 8-23 with no
 changes: rate-bounded teacher, `x=0.08`, `flat_terrain_backlash`, fitted bridge,

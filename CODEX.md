@@ -126,6 +126,14 @@ the 32-seed expansion or increase the cost after seeing this result. The exact
 mean pitch-chain tracking surrogate at the calibrated equal-contribution scale
 is closed. Preserve the default-off implementation for auditability, but do
 not promote it into a canonical recipe.
+
+The compact-gate feasibility audit is also complete. The rate-bounded teacher
+passed only 1/8 discovery and 1/16 independent one-second playground resets;
+the independent block had 5/16 falls, exactly the same seeds as the Stage A
+baseline. It is not a stable oracle and does not justify changing the gate.
+Suspend further scalar training on broad randomized starts. Re-anchor normal
+walking work to the explicit `home-support` contract and treat unsupported
+`playground` reset recovery as a separate research objective.
 ```
 
 Robotics operating model:
