@@ -139,6 +139,13 @@ This repository controls work around a real biped robot. Preserve safety and evi
   states. Do not weaken the compact gate or resume broad-reset scalar training.
   Keep normal grounded `home-support` walking and unsupported `playground`
   reset recovery as separate contracts, as established in prior project docs.
+- The normal-start track is re-anchored to
+  `phase2_corrected_live_oracle_iter1_rate165_20260703`. Candidate hashes match,
+  its authoritative home-support result is 8/8 pass at x=0 and x=0.08, and
+  current-tool seed-0 regressions reproduce the recorded 15-second metrics
+  exactly. Treat it as offline-ready for grounded-start review only. Do not
+  infer unsupported-start recovery, deploy it, or move the robot without an
+  explicit reviewed hardware-validation request.
 - Do not change gains, offsets, IMU remaps, action scale, or phase timing without a reviewed evidence-backed task.
 - Do not deploy behavior changes to the robot unless explicitly requested.
 - Do not run moving hardware tests unless Rob is physically present and explicitly approves that exact test.

@@ -134,6 +134,13 @@ baseline. It is not a stable oracle and does not justify changing the gate.
 Suspend further scalar training on broad randomized starts. Re-anchor normal
 walking work to the explicit `home-support` contract and treat unsupported
 `playground` reset recovery as a separate research objective.
+
+Normal-start work is now re-anchored to the preserved corrected live-oracle
+iter1 rate165 candidate. Its hashes match, the authoritative `home-support`
+gates remain 8/8 pass at both commands, and current-tool seed-0 regressions
+reproduce the old metrics exactly (x=0.08 ratio 0.3400, tracking 0.1827; x=0
+tracking 0.0317; zero velocity excess). This is the current offline grounded-
+start candidate. It is not unsupported-reset recovery and is not robot approval.
 ```
 
 Robotics operating model:

@@ -2,7 +2,7 @@
 
 Date: 2026-07-11
 
-Status: **PRE-REGISTERED; NOT RUN**
+Status: **COMPLETED; BOTH COMMANDS PASS**
 
 The preserved candidate
 `policy/candidates/phase2_corrected_live_oracle_iter1_rate165_20260703` has
