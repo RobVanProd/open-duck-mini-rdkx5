@@ -441,3 +441,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   warning-only p95 0.0219/0.0280. See
   `outputs/analysis/RATE165_HARD_VECTOR_X0_RESULT_20260712.md`. Do not infer
   x=.08 approval before visual x=0 confirmation and a separate explicit gate.
+- 2026-07-12: An operator-requested identical hard-vector x=0 repeat completed
+  with zero bus errors and no tracking spikes, but held on two isolated control
+  gaps: 0.06212 s at tick 250 and 0.06087 s at tick 540. Torque-off/idle cleanup
+  passed. Status is `HOLD_CONTROL_IMPACT_AND_VISUAL_ASYMMETRY`; see
+  `outputs/analysis/RATE165_HARD_VECTOR_X0_REPEAT_RESULT_20260712.md`. Rob
+  reported noticeably greater left-leg motion; telemetry confirms left/right
+  knee actual ranges 0.023/0.003 rad. The asymmetry is equally present in
+  pre-vector rate165 x=0 traces and the limiter was inactive, so this is policy
+  zero-command dither, not a limiter regression or right-knee fault. Do not run
+  x=.08; resolve the zero-command contract and timing digitally first.
