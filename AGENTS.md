@@ -459,3 +459,12 @@ Do not proceed to grounded walking until low-risk gates pass.
   repeat-only timing gaps remain unresolved, so this is stage-review evidence
   only and no physical motion is authorized. See
   `outputs/analysis/RATE165_ZERO_COMMAND_HOLD_RESULT_20260712.md`.
+- 2026-07-12: Opt-in per-stage timing instrumentation and an offline CPU
+  component benchmark pass locally. Policy inference, JSON serialization, and
+  buffered telemetry writes are orders of magnitude below the observed 61--62
+  ms gaps, leaving serial I/O or scheduler delay unresolved. The read-only RDK
+  snapshot initially timed out. After a power reset, the snapshot and idle
+  checks passed and isolated files were copied, but the RDK dropped offline
+  again before hashes could be verified. Treat the stage as incomplete and
+  unverified; nothing was installed. Resolve power stability before retry. See
+  `outputs/analysis/RATE165_ZERO_HOLD_TIMING_AUDIT_20260712.md`.

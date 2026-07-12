@@ -514,6 +514,7 @@ def cmd_policy_replay(args):
         "telemetry_path",
         "telemetry_read_voltage",
         "telemetry_every_n",
+        "log_stage_timing",
     }
     supported = set(inspect.signature(RLWalk.__init__).parameters)
     missing = sorted(required_telemetry_args - supported)
@@ -529,6 +530,7 @@ def cmd_policy_replay(args):
             "telemetry_path": args.telemetry_path,
             "telemetry_read_voltage": args.telemetry_read_voltage,
             "telemetry_every_n": args.telemetry_every_n,
+            "log_stage_timing": args.log_stage_timing,
         }
     )
     rl = RLWalk(args.onnx_model_path, **kwargs)
@@ -665,6 +667,7 @@ def main():
         )
         p.add_argument("--telemetry-read-voltage", action="store_true")
         p.add_argument("--telemetry-every-n", type=int, default=1)
+        p.add_argument("--log-stage-timing", action="store_true")
         p.add_argument("--left-hip-pitch-kp", type=float, default=None)
         p.add_argument("--left-knee-kp", type=float, default=None)
         p.add_argument("--i-understand-this-moves-the-robot", action="store_true")
