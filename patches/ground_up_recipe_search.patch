@@ -1,0 +1,47 @@
+diff --git a/playground/common/runner.py b/playground/common/runner.py
+--- a/playground/common/runner.py
++++ b/playground/common/runner.py
+@@ -90,6 +90,7 @@ class BaseRunner(ABC):
+         self.ppo_training_params = dict(self.ppo_params)
+         self.ppo_params.network_factory.value_obs_key = self.args.critic_observation
+         for config_key, arg_name in (
++            ("seed", "ppo_seed"),
+             ("num_envs", "ppo_num_envs"),
+             ("num_evals", "ppo_num_evals"),
+             ("episode_length", "ppo_episode_length"),
+@@ -99,6 +100,14 @@ class BaseRunner(ABC):
+             ("num_updates_per_batch", "ppo_num_updates_per_batch"),
+         ):
+             self.ppo_training_params[config_key] = getattr(self.args, arg_name)
++        for config_key, arg_name in (
++            ("learning_rate", "ppo_learning_rate"),
++            ("discounting", "ppo_discounting"),
++            ("entropy_cost", "ppo_entropy_cost"),
++        ):
++            value = getattr(self.args, arg_name)
++            if value is not None:
++                self.ppo_training_params[config_key] = value
+         # self.ppo_training_params["num_timesteps"] = 150000000 * 20
+         
+ 
+diff --git a/playground/open_duck_mini_v2/runner.py b/playground/open_duck_mini_v2/runner.py
+--- a/playground/open_duck_mini_v2/runner.py
++++ b/playground/open_duck_mini_v2/runner.py
+@@ -45,6 +45,7 @@ def main() -> None:
+     )
+     # parser.add_argument("--num_timesteps", type=int, default=300000000)
+     parser.add_argument("--num_timesteps", type=int, default=150000000)
++    parser.add_argument("--ppo_seed", type=int, default=0)
+     parser.add_argument("--ppo_num_envs", type=int, default=8192)
+     parser.add_argument("--ppo_num_evals", type=int, default=15)
+     parser.add_argument("--ppo_episode_length", type=int, default=1000)
+@@ -52,6 +53,9 @@ def main() -> None:
+     parser.add_argument("--ppo_batch_size", type=int, default=256)
+     parser.add_argument("--ppo_num_minibatches", type=int, default=32)
+     parser.add_argument("--ppo_num_updates_per_batch", type=int, default=4)
++    parser.add_argument("--ppo_learning_rate", type=float, default=None)
++    parser.add_argument("--ppo_discounting", type=float, default=None)
++    parser.add_argument("--ppo_entropy_cost", type=float, default=None)
+     parser.add_argument("--imitation_scale", type=float, default=None)
+     parser.add_argument("--reference_feature_table_path", default=None)
+     parser.add_argument(
