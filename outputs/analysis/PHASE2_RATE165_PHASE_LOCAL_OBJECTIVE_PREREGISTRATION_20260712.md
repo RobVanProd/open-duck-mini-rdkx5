@@ -40,6 +40,13 @@ filter or target rewrite.
 3. Compare against the exact rate165 parent on the existing corrected bridge.
 4. Allocate Colab only if the compact screen passes every rule below.
 
+Frozen compact-fit parameters (selected before running the fit): retain the
+parent fit's global rate limit `1.65 rad/s`, global rate scale `0.2`, seed `2`,
+architecture, context indices, optimizer, and data manifest; add phase-local
+limit `1.2 rad/s`, scale `0.2`, and mapping
+`2=1|2,3=0|1,11=5|6,12=4|5`. Run `1000` steps for this compact screen. There
+is no parameter sweep.
+
 ## Frozen pass rules
 
 The compact candidate must satisfy all of the following:
@@ -58,4 +65,3 @@ The compact candidate must satisfy all of the following:
 Any failure closes this objective without parameter sweeping. Passing the
 compact screen authorizes a separately logged Colab training proposal only; it
 does not authorize hardware movement or grounded replay.
-

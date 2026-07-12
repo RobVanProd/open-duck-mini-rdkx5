@@ -1,0 +1,85 @@
+{
+  "activation": "swish",
+  "config": {
+    "batch_size": 512,
+    "learning_rate": 0.001,
+    "phase_rate_limit_rad_s": 1.2,
+    "phase_rate_scale": 0.2,
+    "phase_rate_spec": "2=1|2,3=0|1,11=5|6,12=4|5",
+    "seed": 2,
+    "steps": 1000,
+    "target_rate_limit_rad_s": 1.65,
+    "target_rate_scale": 0.2
+  },
+  "context_hidden_sizes": [
+    64
+  ],
+  "context_indices": [
+    6,
+    97,
+    98,
+    99,
+    100
+  ],
+  "exported_onnx": "outputs/analysis/phase2_rate165_phase_local_compact_student/candidate.onnx",
+  "loss_rows": [
+    {
+      "loss": 0.3168768584728241,
+      "step": 1
+    },
+    {
+      "loss": 0.0011608359636738896,
+      "step": 250
+    },
+    {
+      "loss": 0.0005168731440789998,
+      "step": 500
+    },
+    {
+      "loss": 0.0007847467786632478,
+      "step": 750
+    },
+    {
+      "loss": 0.0007103889947757125,
+      "step": 1000
+    }
+  ],
+  "manifest": "outputs/analysis/phase2_z0026_corrected_source_live_oracle_iter1_run/live_oracle_dagger_aggregate_manifest.json",
+  "modulation_scale": 0.5,
+  "onnx_verify": {
+    "max_abs_error": 3.501772880554199e-07,
+    "p95_abs_error": 1.4901161193847656e-07,
+    "path": "outputs/analysis/phase2_rate165_phase_local_compact_student/candidate.onnx",
+    "samples_checked": 64
+  },
+  "sample_weight": {
+    "max": 5.0,
+    "p50": 3.0,
+    "p95": 5.0,
+    "weighted_samples": 61504.0
+  },
+  "samples": 21000,
+  "saved_npz": "outputs/analysis/phase2_rate165_phase_local_compact_student/candidate_mlp.npz",
+  "status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE",
+  "target_rate": {
+    "max_rad_s": 2.162907361984253,
+    "p50_rad_s": 0.21153828501701355,
+    "p95_rad_s": 1.290893316268921,
+    "p99_rad_s": 1.607529878616333,
+    "pair_count": 20972
+  },
+  "train_metrics": {
+    "mae": 0.014994332276470184,
+    "max_abs_error": 0.9958133101463318,
+    "p50_abs_error": 0.009809374809265137,
+    "p95_abs_error": 0.04479884806630169,
+    "p99_abs_error": 0.08746090531349182,
+    "pred_action_saturation_pct": 0.0,
+    "rmse": 0.027699442763383802,
+    "samples": 21000
+  },
+  "trunk_hidden_sizes": [
+    512,
+    256
+  ]
+}

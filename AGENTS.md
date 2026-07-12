@@ -375,3 +375,10 @@ Do not proceed to grounded walking until low-risk gates pass.
   `outputs/analysis/PHASE2_RATE165_PHASE_LOCAL_OBJECTIVE_PREREGISTRATION_20260712.md`.
   It must pass the unchanged x=0/x=0.08 bridge gates and its 95% motion floors;
   no GPU, Colab, deployment, robot motion, or grounded replay is authorized.
+- 2026-07-12: The preregistered phase-local temporal objective was implemented
+  and screened once on CPU. It terminated after 72 samples, moved backward,
+  violated base-height and velocity-envelope gates, and heavily saturated
+  several actions. Result:
+  `outputs/analysis/PHASE2_RATE165_PHASE_LOCAL_COMPACT_RESULT_20260712.md`.
+  Close this objective without tuning or longer training; do not allocate
+  Colab. Preserve the promoted rate165 candidate unchanged.

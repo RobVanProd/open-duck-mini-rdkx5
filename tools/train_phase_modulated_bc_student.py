@@ -48,6 +48,37 @@ def parse_hidden_sizes(text: str) -> list[int]:
     return [int(part.strip()) for part in text.split(",") if part.strip()]
 
 
+def parse_phase_rate_spec(text: str, action_dim: int) -> np.ndarray:
+    """Return an [8, action_dim] mask from `joint=bin|bin,...`."""
+    mask = np.zeros((8, int(action_dim)), dtype=np.float32)
+    if not text.strip():
+        return mask
+    for item in text.split(","):
+        joint_text, sep, bins_text = item.strip().partition("=")
+        if not sep:
+            raise argparse.ArgumentTypeError(f"invalid phase-rate item {item!r}")
+        joint = int(joint_text)
+        if not 0 <= joint < action_dim:
+            raise argparse.ArgumentTypeError(f"joint index {joint} outside [0,{action_dim})")
+        for bin_text in bins_text.split("|"):
+            phase_bin = int(bin_text)
+            if not 0 <= phase_bin < 8:
+                raise argparse.ArgumentTypeError(f"phase bin {phase_bin} outside [0,8)")
+            mask[phase_bin, joint] = 1.0
+    return mask
+
+
+def phase_rate_pair_mask(obs: np.ndarray, pairs: np.ndarray, spec: str) -> np.ndarray:
+    """Map each consecutive pair's newer phase observation to a joint mask."""
+    table = parse_phase_rate_spec(spec, 14)
+    if not len(pairs):
+        return np.zeros((0, 14), dtype=np.float32)
+    phase = obs[pairs[:, 1]][:, [99, 100]]
+    angle = np.mod(np.arctan2(phase[:, 1], phase[:, 0]), 2.0 * np.pi)
+    bins = np.minimum((angle / (np.pi / 4.0)).astype(np.int64), 7)
+    return table[bins]
+
+
 def init_layer(rng: np.random.Generator, in_dim: int, out_dim: int) -> tuple[np.ndarray, np.ndarray]:
     scale = math.sqrt(2.0 / max(in_dim + out_dim, 1))
     return (
@@ -151,6 +182,7 @@ def train_model(
     opt_state = optimizer.init(params)
     rng = np.random.default_rng(int(args.seed))
     pair_count = int(pairs.shape[0])
+    phase_pair_mask = phase_rate_pair_mask(obs, pairs, args.phase_rate_spec)
     pair_batch_size = max(1, min(int(args.batch_size), pair_count if pair_count else 1))
 
     def activate(values):
@@ -177,7 +209,7 @@ def train_model(
         loc = modulated @ out_w + out_b
         return loc, jnp.tanh(loc)
 
-    def loss_fn(model_params, batch_x, batch_c, batch_y, batch_w, pair_x0, pair_c0, pair_x1, pair_c1):
+    def loss_fn(model_params, batch_x, batch_c, batch_y, batch_w, pair_x0, pair_c0, pair_x1, pair_c1, pair_mask):
         _, pred = forward(model_params, batch_x, batch_c)
         per_sample = jnp.mean((pred - batch_y) ** 2, axis=1)
         supervised = jnp.sum(per_sample * batch_w) / jnp.maximum(jnp.sum(batch_w), 1.0e-9)
@@ -186,12 +218,15 @@ def train_model(
         target_rate = jnp.abs(pair_pred1 - pair_pred0) * float(args.action_scale_rad) / float(args.dt_s)
         excess = jnp.maximum(target_rate - float(args.target_rate_limit_rad_s), 0.0)
         rate_penalty = jnp.mean(excess**2)
-        return supervised + float(args.target_rate_scale) * rate_penalty
+        local_excess = jnp.maximum(target_rate - float(args.phase_rate_limit_rad_s), 0.0)
+        local_denom = jnp.maximum(jnp.sum(pair_mask), 1.0)
+        local_penalty = jnp.sum((local_excess**2) * pair_mask) / local_denom
+        return supervised + float(args.target_rate_scale) * rate_penalty + float(args.phase_rate_scale) * local_penalty
 
     @jax.jit
-    def step(model_params, state, batch_x, batch_c, batch_y, batch_w, pair_x0, pair_c0, pair_x1, pair_c1):
+    def step(model_params, state, batch_x, batch_c, batch_y, batch_w, pair_x0, pair_c0, pair_x1, pair_c1, pair_mask):
         loss, grads = jax.value_and_grad(loss_fn)(
-            model_params, batch_x, batch_c, batch_y, batch_w, pair_x0, pair_c0, pair_x1, pair_c1
+            model_params, batch_x, batch_c, batch_y, batch_w, pair_x0, pair_c0, pair_x1, pair_c1, pair_mask
         )
         updates, state = optimizer.update(grads, state, model_params)
         return optax.apply_updates(model_params, updates), state, loss
@@ -218,6 +253,7 @@ def train_model(
             jnp.asarray(normed_context[p0], dtype=jnp.float32),
             jnp.asarray(normed_obs[p1], dtype=jnp.float32),
             jnp.asarray(normed_context[p1], dtype=jnp.float32),
+            jnp.asarray(phase_pair_mask[pair_idx] if pair_count else np.zeros((pair_batch_size, action_dim)), dtype=jnp.float32),
         )
         if train_step == 1 or train_step % max(1, int(args.log_every)) == 0 or train_step == int(args.steps):
             loss_rows.append({"step": train_step, "loss": float(loss)})
@@ -464,6 +500,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--log-every", type=int, default=500)
     parser.add_argument("--target-rate-scale", type=float, default=0.1)
     parser.add_argument("--target-rate-limit-rad-s", type=float, default=3.75)
+    parser.add_argument("--phase-rate-spec", default="")
+    parser.add_argument("--phase-rate-scale", type=float, default=0.0)
+    parser.add_argument("--phase-rate-limit-rad-s", type=float, default=1.2)
     parser.add_argument("--action-scale-rad", type=float, default=0.25)
     parser.add_argument("--dt-s", type=float, default=0.02)
     parser.add_argument("--save-npz", default="outputs/analysis/phase_modulated_bc_student_candidate/candidate_mlp.npz")
@@ -501,6 +540,9 @@ def main() -> int:
             "learning_rate": float(args.learning_rate),
             "target_rate_scale": float(args.target_rate_scale),
             "target_rate_limit_rad_s": float(args.target_rate_limit_rad_s),
+            "phase_rate_spec": args.phase_rate_spec,
+            "phase_rate_scale": float(args.phase_rate_scale),
+            "phase_rate_limit_rad_s": float(args.phase_rate_limit_rad_s),
             "seed": int(args.seed),
         },
     }
