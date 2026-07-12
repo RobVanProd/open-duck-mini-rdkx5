@@ -406,23 +406,16 @@ Do not proceed to grounded walking until low-risk gates pass.
 - 2026-07-12: Exact hard-vector projection of the unchanged rate165 trajectory
   passes the hardware-calibrated bridge at x=.08 and x=0, both 8/8. x=.08 has
   vx 0.0291, ratio 0.3635, 22.93% single support, and zero velocity excess;
-  x=0 remains still with pitch-chain p95 <=0.0642. A default-off, fail-closed
-  14-value runtime limiter is implemented and tested but not deployed. See
+  x=0 remains still with pitch-chain p95 <=0.0642. See
   `outputs/analysis/RATE165_HARD_VECTOR_PROJECTION_RESULT_20260712.md`.
-  Any staged hash review, suspended x=0, or suspended x=.08 is a separate
-  physical gate; grounded remains blocked.
-- 2026-07-12: Runtime/diagnostic support for the exact default-off vector is
-  locally ready and fail-closed. It is not deployed. Review packet:
+  The frozen preregistration authorizes architecture work only, not a runtime
+  limiter or hardware path. A policy must internalize the envelope and pass
+  the frozen offline clearance gates before any robot validation.
+- 2026-07-12: The runtime-vector approval packet is superseded as off-plan and
+  retained only as an audit record:
   `outputs/analysis/RATE165_HARD_VECTOR_RUNTIME_APPROVAL_PACKET_20260712.md`.
-  Next action requires explicit stage-only approval; it must not initialize HWI
-  or motors. Suspended x=0 and x=.08 remain later, separate approvals.
-- The stage-only runner is `scripts/stage_rate165_hard_vector_runtime.sh`.
-  It is refusal-tested and side-by-side only; do not run it without explicit
-  stage approval and a fresh snapshot. It has no installation or motion path.
-- Later locked runners are prepared: `scripts/install_rate165_hard_vector_runtime.sh`
-  (backup + live install, no HWI) and `scripts/collect_rate165_hard_vector_x0.sh`
-  (suspended x=0 only, 15 s, independent torque-off). Both are refusal-tested;
-  stage, install, and x=0 each require separate explicit approval.
+  Do not use its stage, install, or motion runners for policy qualification.
+  The active track is policy development and offline clearance only.
 - 2026-07-12: The side-by-side vector stage was explicitly approved and passed.
   All three staged hashes match; live walker/diagnostic hashes are unchanged,
   the port is unowned, no runtime is active, and HWI/motors were not engaged.

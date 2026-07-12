@@ -1,6 +1,11 @@
 # Rate165 Hard-Vector Runtime Approval Packet
 
-status: `READY_FOR_SEPARATE_STAGE_APPROVAL`
+status: `SUPERSEDED_OFF_PLAN_DO_NOT_USE`
+
+This packet was created after the hard-vector projection result incorrectly
+expanded an offline architecture-only pass into a runtime path. The frozen
+preregistration did not authorize that expansion. Retain this file only as an
+audit record; do not use it to stage, install, or run hardware.
 
 ## Evidence basis
 

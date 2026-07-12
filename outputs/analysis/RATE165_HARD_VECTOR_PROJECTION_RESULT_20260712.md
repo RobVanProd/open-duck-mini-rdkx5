@@ -1,6 +1,6 @@
 # Rate165 Hard-Vector Projection Result
 
-status: `PASS_OFFLINE_CANDIDATE_RUNTIME_REVIEW_REQUIRED`
+status: `PASS_OFFLINE_ARCHITECTURE_WORK_ONLY`
 
 The exact preregistered rate projection passes both unchanged fixed-target P30
 bridge gates. This was offline only; the robot and deployed runtime were not
@@ -30,10 +30,7 @@ constraint is enforced exactly. Learned BC and PPO penalties failed because
 they changed the behavior globally and converged toward standing; this is not
 evidence that walking itself is infeasible.
 
-A default-off runtime vector limiter and fail-closed parser now exist with unit
-tests. They preserve the original scalar `5.24 rad/s` behavior unless the
-14-value option is explicitly supplied. No deployment or motor test is
-authorized by this result. The next physical sequence, if separately approved,
-is staged hash review, suspended x=0, then separately approved suspended x=.08;
-grounded remains blocked.
-
+Per the frozen preregistration, this pass authorizes architecture work only.
+It does not authorize a runtime limiter review, deployment, staging, or motor
+test. A policy candidate must internalize the measured envelope while passing
+the frozen x=0 and x=.08 gates before any robot-clearance process begins.
