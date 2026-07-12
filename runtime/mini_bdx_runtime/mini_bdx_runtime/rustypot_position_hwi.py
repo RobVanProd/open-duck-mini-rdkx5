@@ -1,3 +1,4 @@
+import gc
 import time
 
 import numpy as np
@@ -79,13 +80,29 @@ class HWI:
         self.kds = np.ones(len(self.joints)) * 0  # default kd
         self.low_torque_kps = np.ones(len(self.joints)) * 2
 
-        self.io = rustypot.feetech(usb_port, 1000000)
+        self.usb_port = usb_port
+        self.baudrate = 1000000
+        self.io = self._open_transport()
         self.read_error_count = 0
         self.write_error_count = 0
+        self.transport_reset_count = 0
         self.last_error = None
         self.last_error_op = None
         self.last_error_time_monotonic_s = None
         self.retry_error_counts = {}
+
+    def _open_transport(self):
+        return rustypot.feetech(self.usb_port, self.baudrate)
+
+    def _reset_transport(self):
+        """Drop a possibly desynchronized port and reopen it with identical settings."""
+        self.io = None
+        # A bound PyO3 method can keep the Rust IO object, and therefore the tty,
+        # alive until its reference is released. Collection makes that release
+        # deterministic before reopening the same exclusive serial device.
+        gc.collect()
+        self.io = self._open_transport()
+        self.transport_reset_count += 1
 
     def _record_retry_error(self, op_name, exc):
         kind = "read" if op_name.lower().startswith(("read", "get")) else "write"
@@ -99,15 +116,25 @@ class HWI:
         self.retry_error_counts[op_name] = self.retry_error_counts.get(op_name, 0) + 1
 
     def _retry(self, fn, *args, tries=8):
-        """Retry a servo-bus op through intermittent checksum/serial glitches."""
+        """Retry a bus op on a fresh transport after checksum/serial corruption."""
         last = None
         op_name = getattr(fn, "__name__", fn.__class__.__name__)
-        for _ in range(tries):
+        for attempt in range(tries):
             try:
                 return fn(*args)
             except Exception as e:
                 self._record_retry_error(op_name, e)
                 last = e
+                if attempt + 1 >= tries:
+                    break
+
+                # Do not retry on the same receive buffer. Rustypot 0.1.0 can
+                # leave bytes from a failed sync read queued, and its next send
+                # asserts that the input buffer is empty. Release the bound
+                # method first so its PyO3 IO/tty handle can be destroyed.
+                fn = None
+                self._reset_transport()
+                fn = getattr(self.io, op_name)
                 time.sleep(0.003)
         raise last
 

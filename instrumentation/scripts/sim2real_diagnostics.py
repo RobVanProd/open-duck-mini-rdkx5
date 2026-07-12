@@ -220,6 +220,9 @@ def make_record(
             "write_error_count": None
             if hwi is None
             else getattr(hwi, "write_error_count", None),
+            "transport_reset_count": None
+            if hwi is None
+            else getattr(hwi, "transport_reset_count", None),
             "last_error": None if hwi is None else getattr(hwi, "last_error", None),
         },
     }

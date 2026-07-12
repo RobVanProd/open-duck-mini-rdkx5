@@ -297,6 +297,9 @@ class RLWalk:
             "bus": {
                 "read_error_count": getattr(self.hwi, "read_error_count", None),
                 "write_error_count": getattr(self.hwi, "write_error_count", None),
+                "transport_reset_count": getattr(
+                    self.hwi, "transport_reset_count", None
+                ),
                 "last_error": getattr(self.hwi, "last_error", None),
             },
         }

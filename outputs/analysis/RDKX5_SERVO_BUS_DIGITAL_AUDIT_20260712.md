@@ -45,6 +45,20 @@ The current evidence does not support RDK CPU overload, USB enumeration failure,
 3. If compatible, stage a reversible board-side environment copy; do not replace the working environment.
 4. Any live bus read or motor test requires explicit approval and a defined abort/cleanup contract.
 
+## Implemented offline candidate
+
+The runtime candidate now preserves Rustypot 0.1.0's API and all servo semantics,
+but changes error recovery in `rustypot_position_hwi.HWI._retry`: after a bus
+exception it releases the old PyO3 IO object, reopens the same serial path at
+1,000,000 baud, and retries on the fresh handle. This prevents repeated retries
+against a partially consumed receive buffer and avoids the old core's next-send
+empty-buffer assertion. The clean path does not reopen or add a transaction.
+
+`transport_reset_count` is exposed in telemetry. CPU-only mock tests prove that
+an injected checksum error produces one reopen with the unchanged port/baud
+contract and that a clean operation produces zero reopens. This is a repository
+candidate only; it has not been copied to the RDK or exercised against the bus.
+
 Sources:
 
 - Frank Fu RDK X5 guide: https://frankfu.blog/openai/understanding-reinforcement-learning-through-openduck/
