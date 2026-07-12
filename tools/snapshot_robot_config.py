@@ -186,7 +186,9 @@ def local_snapshot(config_path="~/duck_config.json"):
         instrumentation_paths = [
             runtime / "mini_bdx_runtime" / "mini_bdx_runtime" / "telemetry.py",
             runtime / "scripts" / "sim2real_diagnostics.py",
+            runtime / "scripts" / "v2_rl_walk_mujoco.py",
             runtime / "scripts" / "v2_rl_walk_auto.py",
+            runtime / "scripts" / "turn_off.py",
         ]
     return {
         "schema_version": "open_duck_mini_config_snapshot_v2",

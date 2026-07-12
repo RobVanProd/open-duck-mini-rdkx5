@@ -108,6 +108,18 @@ Pass requires:
 - no sustained post-startup pitch error `>0.10 rad`;
 - no saturation bursts, repeated write errors, or visible twitch/asymmetry.
 
+The stage-specific runner defaults to plan-only and contains no nonzero or
+grounded mode:
+
+```bash
+bash scripts/collect_grounded_rate165_gate3_x0.sh
+```
+
+Its `--run` mode requires a fresh reviewed Gate-2 snapshot, physical-presence
+flag, exact typed confirmation, live candidate/config/runtime hash checks, and
+an absent walker process. It runs exactly 15 seconds and always attempts
+torque-off cleanup.
+
 ### Gate 4 — Suspended `x=0.08`
 
 Requires another explicit approval and only follows a reviewed Gate 3 pass.
