@@ -423,3 +423,8 @@ Do not proceed to grounded walking until low-risk gates pass.
   (backup + live install, no HWI) and `scripts/collect_rate165_hard_vector_x0.sh`
   (suspended x=0 only, 15 s, independent torque-off). Both are refusal-tested;
   stage, install, and x=0 each require separate explicit approval.
+- 2026-07-12: The side-by-side vector stage was explicitly approved and passed.
+  All three staged hashes match; live walker/diagnostic hashes are unchanged,
+  the port is unowned, no runtime is active, and HWI/motors were not engaged.
+  See `outputs/analysis/RATE165_HARD_VECTOR_STAGE_RESULT_20260712.md`. The next
+  gate is separate approval for backup-backed live installation only.

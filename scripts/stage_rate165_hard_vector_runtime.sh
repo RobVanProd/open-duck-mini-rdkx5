@@ -73,12 +73,12 @@ test "$(sha256sum '"$LIVE_RUNTIME"'/mini_bdx_runtime/mini_bdx_runtime/rustypot_p
 test "$(sha256sum '"$LIVE_RUNTIME"'/scripts/v2_rl_walk_mujoco.py | cut -d " " -f1)" = "'"$LIVE_WALKER_SHA"'"
 test "$(sha256sum '"$LIVE_RUNTIME"'/scripts/sim2real_diagnostics.py | cut -d " " -f1)" = "'"$LIVE_DIAG_SHA"'"
 ps -eo comm=,args= | awk '\''$1 ~ /^python/ && $0 ~ /(v2_rl_walk|sim2real_diagnostics|mini_bdx_runtime)/ {found=1} END {exit found}'\''
-! fuser /dev/ttyACM0 >/dev/null 2>&1
-mkdir -p '"$STAGE_DIR"''
+! fuser /dev/ttyACM0 >/dev/null 2>&1'
 ssh -n "${SSH_OPTS[@]}" "$SSH_TARGET" "$preflight"
 
 read -r -p "Type STAGE_RATE165_HARD_VECTOR_SIDE_BY_SIDE to continue: " confirmation
 [[ "$confirmation" == "STAGE_RATE165_HARD_VECTOR_SIDE_BY_SIDE" ]] || { echo "Aborted."; exit 1; }
+ssh -n "${SSH_OPTS[@]}" "$SSH_TARGET" "mkdir -p '$STAGE_DIR'"
 
 scp "${SSH_OPTS[@]}" "$LOCAL_WALKER" "$SSH_TARGET:$STAGE_DIR/v2_rl_walk_mujoco.py"
 scp "${SSH_OPTS[@]}" "$LOCAL_PARSER" "$SSH_TARGET:$STAGE_DIR/motor_velocity_limits.py"
@@ -88,7 +88,7 @@ remote_manifest=$(ssh -n "${SSH_OPTS[@]}" "$SSH_TARGET" "set -eu
   test \"\$(sha256sum '$STAGE_DIR/v2_rl_walk_mujoco.py' | cut -d ' ' -f1)\" = '$WALKER_SHA'
   test \"\$(sha256sum '$STAGE_DIR/motor_velocity_limits.py' | cut -d ' ' -f1)\" = '$PARSER_SHA'
   test \"\$(sha256sum '$STAGE_DIR/sim2real_diagnostics.py' | cut -d ' ' -f1)\" = '$DIAG_SHA'
-  ps -eo comm=,args= | awk '\''\$1 ~ /^python/ && \$0 ~ /(v2_rl_walk|sim2real_diagnostics|mini_bdx_runtime)/ {found=1} END {exit found}'\''
+  ps -eo comm=,args= | awk '\$1 ~ /^python/ && \$0 ~ /(v2_rl_walk|sim2real_diagnostics|mini_bdx_runtime)/ {found=1} END {exit found}'
   ! fuser /dev/ttyACM0 >/dev/null 2>&1
   python3 - <<'PY'
 import hashlib,json,pathlib
