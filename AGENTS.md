@@ -146,6 +146,11 @@ This repository controls work around a real biped robot. Preserve safety and evi
   exactly. Treat it as offline-ready for grounded-start review only. Do not
   infer unsupported-start recovery, deploy it, or move the robot without an
   explicit reviewed hardware-validation request.
+- The grounded rate165 operator packet is prepared, but no hardware action is
+  authorized. The next physical gate is supported home-pose geometry, not
+  policy replay, because the large left-knee soft offset requires fresh visual
+  confirmation. Approval is stage-specific: snapshot/home pose, paused staging,
+  suspended x=0, suspended x=0.08, and grounded replay are separate gates.
 - Do not change gains, offsets, IMU remaps, action scale, or phase timing without a reviewed evidence-backed task.
 - Do not deploy behavior changes to the robot unless explicitly requested.
 - Do not run moving hardware tests unless Rob is physically present and explicitly approves that exact test.

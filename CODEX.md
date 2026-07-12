@@ -141,6 +141,13 @@ gates remain 8/8 pass at both commands, and current-tool seed-0 regressions
 reproduce the old metrics exactly (x=0.08 ratio 0.3400, tracking 0.1827; x=0
 tracking 0.0317; zero velocity excess). This is the current offline grounded-
 start candidate. It is not unsupported-reset recovery and is not robot approval.
+
+An operator approval packet now defines the remaining hardware path. Do not
+skip to candidate replay: first capture a read-only snapshot and freshly verify
+the supported physical home pose, especially left-knee geometry. Paused policy
+staging, suspended x=0, suspended x=0.08, and grounded replay each require a
+separate explicit approval. No SSH, copy, configuration write, or motion is
+authorized by the offline package.
 ```
 
 Robotics operating model:
