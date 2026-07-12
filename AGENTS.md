@@ -292,6 +292,12 @@ This repository controls work around a real biped robot. Preserve safety and evi
   errors; normal gains restored and torque off. Reject P31/34 and do not raise
   gains post hoc. Remaining supported class is offline target-trajectory shaping
   with motion preservation, not offsets or gains.
+- Offline hardware-fit tail caps (hip 2.5, knee 3.25 rad/s) affect only 0.134%
+  of targets and predict no hip p95 change / only 0.00043 rad knee improvement.
+  A cap strong enough to approach the knee gate would alter targets by about
+  4.4 deg across ~14% of samples. Close alignment, P31/34, and tail-limit local
+  fixes. The remaining honest route is a separately preregistered motion-
+  preserving policy/trajectory objective; grounded remains blocked.
 - Rob reported no visible difference between fixed-target P30 and P31/34. This
   agrees with the insufficient numeric effect and closes the gain visual review.
 - Rob confirmed candidate 5's final suspended x=0 run looked symmetric. The
