@@ -5,6 +5,15 @@ This repository controls work around a real biped robot. Preserve safety and evi
 ## Core Rules
 
 - Never tune before evidence.
+- Frozen preregistration text is the authority boundary: a result may report
+  pass/fail but may not broaden what the preregistration says a pass authorizes.
+- On the active policy track, do not access the robot by SSH, stage files,
+  install files, or run hardware until an explicit repository policy-clearance
+  artifact authorizes the hardware phase. User approval does not substitute
+  for a missing project clearance gate.
+- Do not substitute runtime limiters, command wrappers, gain changes, transport
+  changes, or incidental telemetry investigations for the policy architecture
+  named by the recorded plan.
 - Do not start unregistered or ad hoc policy training. The authorized offline
   joint-weighted, 2.0 rad/s temporally bounded behavior-teacher causal smoke
   completed on 2026-07-11. None of its 40,960, 81,920, or 122,880 checkpoints
@@ -422,11 +431,11 @@ Do not proceed to grounded walking until low-risk gates pass.
   See `outputs/analysis/RATE165_HARD_VECTOR_STAGE_RESULT_20260712.md`. The next
   gate is separate approval for backup-backed live installation only.
 - 2026-07-12: Backup-backed hard-vector live installation was explicitly
-  approved and passed. Candidate hashes are live, baseline walker/diagnostic
-  backups match, all files compile, the port is unowned, no runtime is active,
-  and HWI/motors were not engaged. See
-  `outputs/analysis/RATE165_HARD_VECTOR_INSTALL_RESULT_20260712.md`. Suspended
-  x=0 is the next separate approval; x=.08 and grounded remain unauthorized.
+  approved and passed at that time. Candidate hashes were made live; baseline
+  walker/diagnostic backups matched, all files compiled, the port was unowned,
+  no runtime was active, and HWI/motors were not engaged. See
+  `outputs/analysis/RATE165_HARD_VECTOR_INSTALL_RESULT_20260712.md`. This was
+  later identified as off-plan and rolled back; it is history, not current state.
 - 2026-07-12: The hard-vector suspended x=0 gate was explicitly approved and
   completed 747/747. Exact vector telemetry, zero CRC/read/write/reset errors,
   clean timing, zero >0.05 tracking spikes, and torque-off/idle cleanup all
@@ -443,4 +452,11 @@ Do not proceed to grounded walking until low-risk gates pass.
   knee actual ranges 0.023/0.003 rad. The asymmetry is equally present in
   pre-vector rate165 x=0 traces and the limiter was inactive, so this is policy
   zero-command dither, not a limiter regression or right-knee fault. Do not run
-  x=.08; resolve the zero-command contract and timing digitally first.
+  x=.08. This run is retained as operational evidence only and provides no
+  policy-qualification credit.
+- 2026-07-12: The RDK hard-vector installation was rolled back from its exact
+  pre-install backup. Live walker/diagnostic hashes are restored to
+  `b9732b...`/`f28433...`; the added velocity-limit parser is absent. The ONNX,
+  config, and ID13-last HWI remain unchanged. Runtime is idle, serial is free,
+  and no motor access occurred. See
+  `outputs/analysis/RDK_HARD_VECTOR_ROLLBACK_AND_PROCESS_CORRECTION_20260712.md`.
