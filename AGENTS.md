@@ -419,3 +419,7 @@ Do not proceed to grounded walking until low-risk gates pass.
 - The stage-only runner is `scripts/stage_rate165_hard_vector_runtime.sh`.
   It is refusal-tested and side-by-side only; do not run it without explicit
   stage approval and a fresh snapshot. It has no installation or motion path.
+- Later locked runners are prepared: `scripts/install_rate165_hard_vector_runtime.sh`
+  (backup + live install, no HWI) and `scripts/collect_rate165_hard_vector_x0.sh`
+  (suspended x=0 only, 15 s, independent torque-off). Both are refusal-tested;
+  stage, install, and x=0 each require separate explicit approval.

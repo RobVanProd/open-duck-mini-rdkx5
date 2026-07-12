@@ -51,3 +51,16 @@ the exact local/live hashes, an idle runtime, and an unowned serial port. It
 copies only into a side-by-side stage directory and verifies the result. It
 cannot replace live files, import HWI, open serial, enable torque, or run a
 motor command.
+
+The later installation and motor gates are also prepared but remain separately
+locked:
+
+- `scripts/install_rate165_hard_vector_runtime.sh` installs only from the
+  verified stage, creates a board-local backup, compiles/verifies hashes, and
+  has no HWI or motor path.
+- `scripts/collect_rate165_hard_vector_x0.sh` is suspended-only, fixed at x=0
+  for 15 seconds, requires physical presence plus exact confirmation, and runs
+  independent torque-off cleanup. It has no x=.08 or grounded path.
+
+Both scripts are syntax-checked and refusal-tested. Their existence does not
+authorize either step.
