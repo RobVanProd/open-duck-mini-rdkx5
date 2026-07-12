@@ -126,6 +126,12 @@ This repository controls work around a real biped robot. Preserve safety and evi
   contract. Its preregistered scale is -0.007914891239136222, calibrated from
   frozen x=0/x=0.08 traces to equal the existing bridge penalty's mean reward
   contribution. Do not tune scale, delta, indices, aggregation, KL, or length.
+- The preregistered direct joint-target tracking experiment is complete and
+  rejected. All checkpoints preserved x=0, but step 81,920 failed x=0.08
+  progress and steps 163,840/245,760 failed x=0.08 tracking at 0.21784/0.21703
+  rad. No seeds 40-71 expansion is authorized. Close the exact pitch-chain
+  mean-cost formulation at scale -0.007914891239136222; do not increase its
+  scale or tune delta, indices, aggregation, KL, or training length post hoc.
 - Do not change gains, offsets, IMU remaps, action scale, or phase timing without a reviewed evidence-backed task.
 - Do not deploy behavior changes to the robot unless explicitly requested.
 - Do not run moving hardware tests unless Rob is physically present and explicitly approves that exact test.

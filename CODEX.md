@@ -118,6 +118,14 @@ passed with both GPUs hidden. Its fixed scale -0.007914891239136222 was derived
 from frozen x=0/x=0.08 traces to match the existing bridge penalty magnitude.
 Run only the registered one-factor compact-gated experiment; do not tune its
 scale, delta, joints, aggregation, KL, or training length after outcomes.
+
+That direct joint-target experiment is now complete and rejected. All three
+checkpoints passed x=0. Step 81,920 failed x=0.08 progress; steps 163,840 and
+245,760 met progress but failed tracking at 0.21784 and 0.21703 rad. Do not run
+the 32-seed expansion or increase the cost after seeing this result. The exact
+mean pitch-chain tracking surrogate at the calibrated equal-contribution scale
+is closed. Preserve the default-off implementation for auditability, but do
+not promote it into a canonical recipe.
 ```
 
 Robotics operating model:
