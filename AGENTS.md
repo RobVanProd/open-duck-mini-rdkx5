@@ -367,3 +367,11 @@ Collect first evidence:
 6. Foot contact test.
 
 Do not proceed to grounded walking until low-risk gates pass.
+- 2026-07-12: The fixed-target gain A/B produced no visible distinction and
+  failed its frozen numeric rule. The clean ID13-last `x=0.08` trace instead
+  shows phase-localized left pitch-chain tracking error. The only open local
+  policy route is the offline-only, motion-preserving phase/joint temporal
+  objective preregistered in
+  `outputs/analysis/PHASE2_RATE165_PHASE_LOCAL_OBJECTIVE_PREREGISTRATION_20260712.md`.
+  It must pass the unchanged x=0/x=0.08 bridge gates and its 95% motion floors;
+  no GPU, Colab, deployment, robot motion, or grounded replay is authorized.
