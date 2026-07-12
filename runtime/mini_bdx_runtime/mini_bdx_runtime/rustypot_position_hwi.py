@@ -1,4 +1,3 @@
-import gc
 import time
 
 import numpy as np
@@ -98,11 +97,21 @@ class HWI:
         """Drop a possibly desynchronized port and reopen it with identical settings."""
         self.io = None
         # A bound PyO3 method can keep the Rust IO object, and therefore the tty,
-        # alive until its reference is released. Collection makes that release
-        # deterministic before reopening the same exclusive serial device.
-        gc.collect()
+        # alive until its reference is released. Operations are passed by name,
+        # so CPython reference counting releases it here without a full cyclic
+        # garbage collection pause in the real-time control loop.
         self.io = self._open_transport()
         self.transport_reset_count += 1
+
+    @staticmethod
+    def _call_transport(fn, args):
+        """Call in an isolated frame so a PyO3 exception cannot retain the tty."""
+        try:
+            return True, fn(*args), None
+        except Exception as exc:
+            # Return inert diagnostics, not the exception/traceback. Retaining
+            # that traceback also retains `fn` and its exclusive serial handle.
+            return False, None, (type(exc), str(exc))
 
     def _record_retry_error(self, op_name, exc):
         kind = "read" if op_name.lower().startswith(("read", "get")) else "write"
@@ -115,42 +124,44 @@ class HWI:
         self.last_error_time_monotonic_s = time.monotonic()
         self.retry_error_counts[op_name] = self.retry_error_counts.get(op_name, 0) + 1
 
-    def _retry(self, fn, *args, tries=8):
+    def _retry(self, op_name, *args, tries=8):
         """Retry a bus op on a fresh transport after checksum/serial corruption."""
         last = None
-        op_name = getattr(fn, "__name__", fn.__class__.__name__)
         for attempt in range(tries):
-            try:
-                return fn(*args)
-            except Exception as e:
-                self._record_retry_error(op_name, e)
-                last = e
-                if attempt + 1 >= tries:
-                    break
+            fn = getattr(self.io, op_name)
+            ok, result, error = self._call_transport(fn, args)
+            fn = None
+            if ok:
+                return result
 
-                # Do not retry on the same receive buffer. Rustypot 0.1.0 can
-                # leave bytes from a failed sync read queued, and its next send
-                # asserts that the input buffer is empty. Release the bound
-                # method first so its PyO3 IO/tty handle can be destroyed.
-                fn = None
-                self._reset_transport()
-                fn = getattr(self.io, op_name)
-                time.sleep(0.003)
+            error_type, error_text = error
+            error_value = error_type(error_text)
+            self._record_retry_error(op_name, error_value)
+            last = error_value
+            if attempt + 1 >= tries:
+                break
+
+            # Do not retry on the same receive buffer. Rustypot 0.1.0 can
+            # leave bytes from a failed sync read queued, and its next send
+            # asserts that the input buffer is empty. Release the bound
+            # method first so its PyO3 IO/tty handle can be destroyed.
+            self._reset_transport()
+            time.sleep(0.003)
         raise last
 
     def set_kps(self, kps):
         self.kps = kps
-        self._retry(self.io.set_kps, list(self.joints.values()), self.kps)
+        self._retry("set_kps", list(self.joints.values()), self.kps)
 
     def set_kds(self, kds):
         self.kds = kds
-        self._retry(self.io.set_kds, list(self.joints.values()), self.kds)
+        self._retry("set_kds", list(self.joints.values()), self.kds)
 
     def set_kp(self, id, kp):
-        self._retry(self.io.set_kps, [id], [kp])
+        self._retry("set_kps", [id], [kp])
 
     def turn_on(self):
-        self._retry(self.io.set_kps, list(self.joints.values()), self.low_torque_kps)
+        self._retry("set_kps", list(self.joints.values()), self.low_torque_kps)
         print("turn on : low KPS set")
         time.sleep(1)
 
@@ -159,11 +170,11 @@ class HWI:
 
         time.sleep(1)
 
-        self._retry(self.io.set_kps, list(self.joints.values()), self.kps)
+        self._retry("set_kps", list(self.joints.values()), self.kps)
         print("turn on : high kps")
 
     def turn_off(self):
-        self._retry(self.io.disable_torque, list(self.joints.values()))
+        self._retry("disable_torque", list(self.joints.values()))
 
     def set_position(self, joint_name, pos):
         """
@@ -171,7 +182,7 @@ class HWI:
         """
         id = self.joints[joint_name]
         pos = self.joints_dir[joint_name] * pos + self.joints_offsets[joint_name]
-        self._retry(self.io.write_goal_position, [id], [pos])
+        self._retry("write_goal_position", [id], [pos])
 
     def set_position_all(self, joints_positions):
         """
@@ -185,7 +196,7 @@ class HWI:
         }
 
         self._retry(
-            self.io.write_goal_position,
+            "write_goal_position",
             list(self.joints.values()),
             list(ids_positions.values()),
         )
@@ -197,7 +208,7 @@ class HWI:
 
         try:
             present_positions = self._retry(
-                self.io.read_present_position, list(self.joints.values())
+                "read_present_position", list(self.joints.values())
             )
         except Exception as e:
             print(e)
@@ -216,7 +227,7 @@ class HWI:
         """
         try:
             present_velocities = self._retry(
-                self.io.read_present_velocity, list(self.joints.values())
+                "read_present_velocity", list(self.joints.values())
             )
         except Exception as e:
             print(e)

@@ -9,10 +9,11 @@ ROBOT_PYTHON="/home/sunrise/duck_env/bin/python"
 CANDIDATE="/home/sunrise/phase2_grounded_rate165_20260712_e06643e5.onnx"
 CANDIDATE_SHA="e06643e5790217075d9c7a0d1e1ac262652058592b374ac0446bdd0426d0ea33"
 CONFIG_SHA="131a7b8fce1107b14f4727562f44f9e17324caf7fc22512ad7115911f050991b"
-DIAGNOSTIC_SHA="d2e8df200fae773ed2c45200da9b67ab1e809db537d5cb93756c73bece1cd33b"
-WALKER_SHA="fd9991f8136f3ff23bd696f10ea4f2296257a9d827078dc0a728ee3e9dddf91d"
+DIAGNOSTIC_SHA="083af9c85b797699ebd44b1b98de29b931cd27e8cbeaf06d10914d2559e5a698"
+WALKER_SHA="d81ad59c29e3a24d5c8e278eaf0898b4d3505ad22bb60ee74776537202eb2dfc"
+HWI_SHA="057bebc75a0960a6433b0ecd3f6991a06d24d6d6c6a2201522c762ebc778a9fe"
 TURN_OFF_SHA="99451bfa66f838e617585be695e03970b789222e00724fadc40f722b5f2c2090"
-OUTPUT_DIR="outputs/first_evidence/$(date -u +%Y%m%dT%H%M%SZ)_grounded_rate165_gate3_x0"
+OUTPUT_DIR="outputs/first_evidence/$(date -u +%Y%m%dT%H%M%SZ)_rustypot_recovery_gate3_x0"
 GATE2_SNAPSHOT=""
 RUN=0
 PRESENT=0
@@ -52,15 +53,15 @@ done
 SSH_OPTS=(-i "$IDENTITY_FILE" -o "UserKnownHostsFile=$KNOWN_HOSTS"
   -o "StrictHostKeyChecking=yes" -o "ConnectTimeout=5")
 REMOTE_LOG_DIR="/home/sunrise/duck_logs"
-REMOTE_JSONL="$REMOTE_LOG_DIR/grounded_rate165_gate3_x0.jsonl"
-REMOTE_TERMINAL="$REMOTE_LOG_DIR/grounded_rate165_gate3_x0_terminal.log"
+REMOTE_JSONL="$REMOTE_LOG_DIR/rustypot_recovery_gate3_x0.jsonl"
+REMOTE_TERMINAL="$REMOTE_LOG_DIR/rustypot_recovery_gate3_x0_terminal.log"
 LOCAL_JSONL="$OUTPUT_DIR/suspended_x0.jsonl"
 LOCAL_TERMINAL="$OUTPUT_DIR/suspended_x0_terminal.log"
 LOCAL_ANALYSIS="$OUTPUT_DIR/suspended_x0_gate.md"
 
 remote_replay() {
-  printf 'mkdir -p %q && cd %q && set -o pipefail && printf "\\n" | %q sim2real_diagnostics.py suspended_policy_replay --onnx_model_path %q --command-x 0.0 --duration 15 --action_scale 0.25 --telemetry-path %q --telemetry-every-n 1 --i-understand-this-moves-the-robot 2>&1 | tee %q' \
-    "$REMOTE_LOG_DIR" "$ROBOT_RUNTIME/scripts" "$ROBOT_PYTHON" "$CANDIDATE" \
+  printf 'mkdir -p %q && rm -f %q %q && cd %q && set -o pipefail && printf "\\n" | %q sim2real_diagnostics.py suspended_policy_replay --onnx_model_path %q --command-x 0.0 --duration 15 --action_scale 0.25 --telemetry-path %q --telemetry-every-n 1 --i-understand-this-moves-the-robot 2>&1 | tee %q' \
+    "$REMOTE_LOG_DIR" "$REMOTE_JSONL" "$REMOTE_TERMINAL" "$ROBOT_RUNTIME/scripts" "$ROBOT_PYTHON" "$CANDIDATE" \
     "$REMOTE_JSONL" "$REMOTE_TERMINAL"
 }
 
@@ -97,7 +98,7 @@ PY
 
 # Literal substitutions in this reviewed remote shell program are intentional.
 # shellcheck disable=SC2016
-remote_preflight='set -eu; test "$(sha256sum /home/sunrise/phase2_grounded_rate165_20260712_e06643e5.onnx | cut -d " " -f1)" = "'"$CANDIDATE_SHA"'"; test "$(sha256sum /home/sunrise/duck_config.json | cut -d " " -f1)" = "'"$CONFIG_SHA"'"; test "$(sha256sum /home/sunrise/project/Open_Duck_Mini_Runtime-2_RDK_X5/scripts/sim2real_diagnostics.py | cut -d " " -f1)" = "'"$DIAGNOSTIC_SHA"'"; test "$(sha256sum /home/sunrise/project/Open_Duck_Mini_Runtime-2_RDK_X5/scripts/v2_rl_walk_mujoco.py | cut -d " " -f1)" = "'"$WALKER_SHA"'"; test "$(sha256sum /home/sunrise/project/Open_Duck_Mini_Runtime-2_RDK_X5/scripts/turn_off.py | cut -d " " -f1)" = "'"$TURN_OFF_SHA"'"; python3 -c "import json; assert json.load(open(\"/home/sunrise/duck_config.json\"))[\"start_paused\"] is True"; ps -eo comm=,args= | awk '\''$1 ~ /^python/ && $0 ~ /(v2_rl_walk|run_xbox_walk|sim2real_diagnostics|mini_bdx_runtime)/ {found=1} END {exit found}'\'''
+remote_preflight='set -eu; test "$(sha256sum /home/sunrise/phase2_grounded_rate165_20260712_e06643e5.onnx | cut -d " " -f1)" = "'"$CANDIDATE_SHA"'"; test "$(sha256sum /home/sunrise/duck_config.json | cut -d " " -f1)" = "'"$CONFIG_SHA"'"; test "$(sha256sum /home/sunrise/project/Open_Duck_Mini_Runtime-2_RDK_X5/scripts/sim2real_diagnostics.py | cut -d " " -f1)" = "'"$DIAGNOSTIC_SHA"'"; test "$(sha256sum /home/sunrise/project/Open_Duck_Mini_Runtime-2_RDK_X5/scripts/v2_rl_walk_mujoco.py | cut -d " " -f1)" = "'"$WALKER_SHA"'"; test "$(sha256sum /home/sunrise/project/Open_Duck_Mini_Runtime-2_RDK_X5/mini_bdx_runtime/mini_bdx_runtime/rustypot_position_hwi.py | cut -d " " -f1)" = "'"$HWI_SHA"'"; test "$(sha256sum /home/sunrise/project/Open_Duck_Mini_Runtime-2_RDK_X5/scripts/turn_off.py | cut -d " " -f1)" = "'"$TURN_OFF_SHA"'"; python3 -c "import json; assert json.load(open(\"/home/sunrise/duck_config.json\"))[\"start_paused\"] is True"; ps -eo comm=,args= | awk '\''$1 ~ /^python/ && $0 ~ /(v2_rl_walk|run_xbox_walk|sim2real_diagnostics|mini_bdx_runtime)/ {found=1} END {exit found}'\'''
 # shellcheck disable=SC2029
 ssh -n "${SSH_OPTS[@]}" "$SSH_TARGET" "$remote_preflight"
 

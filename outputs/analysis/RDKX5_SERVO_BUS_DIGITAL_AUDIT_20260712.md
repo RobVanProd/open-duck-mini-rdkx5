@@ -59,6 +59,12 @@ an injected checksum error produces one reopen with the unchanged port/baud
 contract and that a clean operation produces zero reopens. This is a repository
 candidate only; it has not been copied to the RDK or exercised against the bus.
 
+Candidate 1 was subsequently exercised at suspended `x=0.00` and rejected: an
+exception traceback retained the exclusive serial handle, so reopen failed as
+busy. Candidate 2 isolates the call in a short-lived frame and the regression
+test now explicitly models exclusive-open behavior. See
+`RUSTYPOT_TRANSPORT_RECOVERY_X0_ATTEMPT1_20260712.md`.
+
 Sources:
 
 - Frank Fu RDK X5 guide: https://frankfu.blog/openai/understanding-reinforcement-learning-through-openduck/

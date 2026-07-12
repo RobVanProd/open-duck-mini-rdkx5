@@ -178,6 +178,36 @@ This repository controls work around a real biped robot. Preserve safety and evi
   rad/s and pitch tracking p95 0.034-0.058 rad, but 25 recovered CRC reads
   (3.35%) exceeded the 2% red threshold and correlated with tracking spikes.
   Gate 4 holds; grounded replay is blocked. Torque cleanup completed.
+- While the robot remains on its stand, Rob has given continuing authorization
+  for suspended `x=0.00` movement tests of the Rustypot transport work. This
+  authorization does not include a nonzero command or grounded movement. Keep
+  the existing 15-second contract, automatic torque-off, and abort conditions.
+- Rustypot transport-reopen candidate 1 failed its first live `x=0.00` test on
+  the first ID-13 CRC event: the Python exception traceback retained the old
+  exclusive PyO3 serial handle, reopen returned `Device or resource busy`, and
+  `self.io=None` caused cascading read failures. Independent torque-off ran,
+  no process/port owner remained, and the exact pre-test runtime hashes were
+  restored. Do not redeploy candidate 1. Candidate 2 isolates calls in a
+  short-lived frame and has an exclusive-handle CPU regression test.
+- Candidate 2 also failed live on the first ID-13 CRC because the caller passed
+  a bound PyO3 method into `_retry`, retaining the exclusive handle outside the
+  helper frame. Cleanup and exact baseline restoration again passed. A no-bus-
+  IO probe proved the adapter can close/reopen immediately, ruling out USB
+  release latency. Candidate 3 passes operation names rather than bound methods.
+- Candidate 3 recovered all 11 live ID-13 CRC events without a busy-port or
+  `NoneType` cascade and preserved tracking below 0.03 rad, but each recovery
+  incurred about 98 ms and the gate held on 11 control-budget violations. The
+  delay matches explicit `gc.collect()` on the RDK, not serial reopen (measured
+  near 0.35 ms). Candidate 4 removes full cyclic GC; operation-name ownership
+  allows normal CPython reference counting to close the PyO3 handle.
+- Candidate 4 clean suspended `x=0.00` completed 747/747 samples and recovered
+  all 14 ID-13 CRC events with 14 transport resets, zero write errors, zero
+  control-budget overruns, dt max 0.02015 s, and zero tracking spikes above
+  0.05 rad. Numeric gate passes with a 1.87% read-error warning; visual operator
+  confirmation is still required. The recovery boundary is solved, but the
+  underlying ID-13 checksum corruption remains a separate signal-integrity
+  issue. Candidate 4 is currently staged on the RDK; do not infer x=0.08 or
+  grounded authorization from the suspended x=0 result.
 - CRC localization across home/x0/x008 shows every corrupt response is servo ID
   13 (`right_knee`), usually with checksum high-bit flips. Events are not
   concentrated at high right-knee target speed or one gait phase; battery

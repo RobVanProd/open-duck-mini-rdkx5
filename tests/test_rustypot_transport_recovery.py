@@ -2,6 +2,7 @@ import importlib.util
 import sys
 import types
 import unittest
+import weakref
 from pathlib import Path
 
 
@@ -30,9 +31,11 @@ class FakeRustypot(types.ModuleType):
         self.opens = []
 
     def feetech(self, port, baudrate):
+        if self.opens and self.opens[-1][2]() is not None:
+            raise OSError("Device or resource busy")
         generation = len(self.opens) + 1
         io = FakeIO(generation, fail_first=(generation == 1))
-        self.opens.append((port, baudrate, io))
+        self.opens.append((port, baudrate, weakref.ref(io)))
         return io
 
 
@@ -87,7 +90,7 @@ class TransportRecoveryTest(unittest.TestCase):
         HWI = load_hwi(fake)
         hwi = HWI(Config(), "/dev/fake-servo")
 
-        values = hwi._retry(hwi.io.read_present_position, [12, 13, 14])
+        values = hwi._retry("read_present_position", [12, 13, 14])
 
         self.assertEqual(values, [2.0, 2.0, 2.0])
         self.assertEqual(hwi.read_error_count, 1)
@@ -101,9 +104,9 @@ class TransportRecoveryTest(unittest.TestCase):
         fake = FakeRustypot()
         HWI = load_hwi(fake)
         hwi = HWI(Config(), "/dev/fake-servo")
-        fake.opens[0][2].fail_first = False
+        fake.opens[0][2]().fail_first = False
 
-        values = hwi._retry(hwi.io.read_present_position, [13])
+        values = hwi._retry("read_present_position", [13])
 
         self.assertEqual(values, [1.0])
         self.assertEqual(hwi.transport_reset_count, 0)
