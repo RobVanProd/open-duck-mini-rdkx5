@@ -235,6 +235,14 @@ This repository controls work around a real biped robot. Preserve safety and evi
   x=0.08 for 15 seconds, requires physical-presence and exact confirmation,
   isolates logs, and performs independent torque-off. Obtain explicit x=0.08
   approval before running it; stop for review afterward with no grounded step.
+- Candidate-5 suspended x=0.08 was explicitly authorized and completed once:
+  747/747 samples, zero CRC/reset/write errors, zero control overruns, and dt
+  max 0.02029 s. Rob said it looked clean. The CRC/bus-control-impact objective
+  is resolved, but Gate 4 remains `HOLD_TRACKING`: left hip pitch p95 0.0513 rad
+  and left knee p95 0.0572 rad exceed the unchanged 0.05 threshold, with 143
+  post-startup tracking events above 0.05 and no bus/timing correlation. Do not
+  weaken the gate or proceed grounded. Any tracking intervention is a separate
+  evidence task and no additional motor test is authorized by this result.
 - Rob confirmed candidate 5's final suspended x=0 run looked symmetric. The
   full gate is closed as `PASS_X0`: zero CRC/reset/write errors, clean timing
   and tracking, symmetric motion, and torque-off cleanup. Candidate 5 remains
