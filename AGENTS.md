@@ -266,6 +266,15 @@ This repository controls work around a real biped robot. Preserve safety and evi
   >0.05 rad, hip/knee p95 0.0086/0.0123 rad. Normal gains were restored and
   torque disabled; no runtime/port owner remains. Numeric x=0 passes, but visual
   symmetry/no-oscillation confirmation is pending. x=0.08 is not authorized.
+- Rob confirmed the P31/34 suspended x=0 repeat looked normal. The gain trial
+  passes x=0 numerically and visually. A single suspended x=0.08 validation may
+  be prepared with identical gains and rollback, but requires separate explicit
+  approval; do not infer grounded authorization.
+- `scripts/collect_left_pitch_gain_x008.sh` is prepared and refusal-tested for
+  the separately gated P31/34 suspended x=0.08 validation. It has exact hashes,
+  fixed 15-second x=0.08 only, isolated logs, and restores normal gains/torque
+  off on every exit. It has no x=0 or grounded path. Explicit x=0.08 approval is
+  still required before running it.
 - Rob confirmed candidate 5's final suspended x=0 run looked symmetric. The
   full gate is closed as `PASS_X0`: zero CRC/reset/write errors, clean timing
   and tracking, symmetric motion, and torque-off cleanup. Candidate 5 remains

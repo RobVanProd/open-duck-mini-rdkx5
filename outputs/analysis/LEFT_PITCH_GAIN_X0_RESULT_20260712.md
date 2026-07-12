@@ -2,7 +2,7 @@
 
 Date: 2026-07-12
 
-Status: `NUMERIC_PASS_VISUAL_PENDING`
+Status: `PASS_X0_GAIN_TRIAL`
 
 Frozen intervention:
 
@@ -37,6 +37,14 @@ Cleanup printed `DEFAULT_RUNTIME_GAINS_RESTORED_AND_TORQUE_DISABLED` and
 post-run checks found no runtime or `/dev/ttyACM0` owner. Visual symmetry and
 absence of oscillation/buzzing remain required before requesting a separate
 x=0.08 stage.
+
+Rob subsequently reported that everything looked normal. This closes the x=0
+visual gate; a separately approved x=0.08 trial may be prepared.
+
+The dedicated `scripts/collect_left_pitch_gain_x008.sh` runner is now prepared,
+syntax-checked, and refusal-tested. It is fixed to the same P31/34 intervention,
+x=0.08, 15 seconds, exact hashes, isolated logs, and normal-gain/torque-off
+cleanup. It contains no grounded continuation and has not been run.
 
 Evidence hashes:
 
