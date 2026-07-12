@@ -184,6 +184,14 @@ target velocity p95 to 0.93-1.69 rad/s and tracking p95 was 0.034-0.058 rad.
 However, 25 recovered CRC reads (3.35%) exceeded the 2% red threshold and bus
 events correlated with tracking spikes. Gate 4 is a hard hold and grounded
 replay is blocked. Torque cleanup and no-runtime verification passed.
+
+The follow-on offline localization found every CRC-corrupt packet across home,
+x0, and x008 came from servo ID 13 (`right_knee`), dominated by checksum XOR
+0x80/0xc0. Events span gait phases and are not concentrated at peak right-knee
+target speed; no battery voltage exists. Treat localized ID-13 response signal
+integrity as the leading hypothesis, not a proven power cause. The minimum next
+proposed test is torque-disabled position/velocity polling of IDs 12/13/14 with
+no targets or policy; it remains undeployed and unapproved.
 ```
 
 Robotics operating model:

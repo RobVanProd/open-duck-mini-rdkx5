@@ -178,6 +178,12 @@ This repository controls work around a real biped robot. Preserve safety and evi
   rad/s and pitch tracking p95 0.034-0.058 rad, but 25 recovered CRC reads
   (3.35%) exceeded the 2% red threshold and correlated with tracking spikes.
   Gate 4 holds; grounded replay is blocked. Torque cleanup completed.
+- CRC localization across home/x0/x008 shows every corrupt response is servo ID
+  13 (`right_knee`), usually with checksum high-bit flips. Events are not
+  concentrated at high right-knee target speed or one gait phase; battery
+  voltage was not captured. Leading branch is localized ID-13 signal integrity.
+  Do not repeat policy motion. Next proposed test is torque-disabled read-only
+  polling of IDs 12/13/14, requiring separate approval.
 - Do not change gains, offsets, IMU remaps, action scale, or phase timing without a reviewed evidence-backed task.
 - Do not deploy behavior changes to the robot unless explicitly requested.
 - Do not run moving hardware tests unless Rob is physically present and explicitly approves that exact test.
