@@ -56,6 +56,16 @@
         "action_scale": { "type": ["number", "null"] },
         "max_motor_velocity_rad_s": { "type": ["number", "null"] },
         "cutoff_frequency_hz": { "type": ["number", "null"] },
+        "kp_overrides": {
+          "type": "object",
+          "additionalProperties": { "type": "number", "minimum": 0, "maximum": 254 }
+        },
+        "effective_kps": {
+          "type": ["array", "null"],
+          "minItems": 14,
+          "maxItems": 14,
+          "items": { "type": "number", "minimum": 0, "maximum": 254 }
+        },
         "commands": {
           "type": "array",
           "minItems": 7,

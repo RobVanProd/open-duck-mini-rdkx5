@@ -42,6 +42,7 @@ class RLWalk:
         telemetry_path: str | None = None,
         telemetry_read_voltage: bool = False,
         telemetry_every_n: int = 1,
+        kp_overrides: dict[str, float] | None = None,
     ):
 
         self.duck_config = DuckConfig(config_json_path=duck_config_path)
@@ -80,6 +81,8 @@ class RLWalk:
         self.telemetry_path = telemetry_path
         self.telemetry_read_voltage = bool(telemetry_read_voltage)
         self.telemetry_every_n = max(1, int(telemetry_every_n or 1))
+        self.kp_overrides = dict(kp_overrides or {})
+        self.effective_kps = None
         self.telemetry_logger = None
         self.telemetry_norm = None
         self._telemetry_utc_timestamp = None
@@ -251,6 +254,8 @@ class RLWalk:
                 "action_scale": self.action_scale,
                 "max_motor_velocity_rad_s": self.max_motor_velocity,
                 "cutoff_frequency_hz": self.cutoff_frequency,
+                "kp_overrides": self.kp_overrides,
+                "effective_kps": self.effective_kps,
                 "commands": self.last_commands,
                 "imitation_i": self.imitation_i,
                 "imitation_phase": self.imitation_phase,
@@ -371,6 +376,18 @@ class RLWalk:
 
         # lower head kps
         kps[5:9] = [8, 8, 8, 8]
+
+        joint_names = list(self.hwi.joints.keys())
+        unknown = sorted(set(self.kp_overrides) - set(joint_names))
+        if unknown:
+            raise ValueError(f"unknown kp override joints: {unknown}")
+        for joint_name, value in self.kp_overrides.items():
+            if not 0 <= value <= 254:
+                raise ValueError(f"kp override out of range for {joint_name}: {value}")
+            kps[joint_names.index(joint_name)] = value
+        self.effective_kps = list(kps)
+        if self.kp_overrides:
+            print(f"KP_OVERRIDES={self.kp_overrides}", flush=True)
 
         self.hwi.set_kps(kps)
         self.hwi.set_kds(kds)

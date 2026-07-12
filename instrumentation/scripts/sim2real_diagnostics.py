@@ -499,6 +499,14 @@ def cmd_policy_replay(args):
         "fixed_command_x": args.command_x,
         "max_runtime_seconds": args.duration,
         "force_unpaused": False,
+        "kp_overrides": {
+            name: value
+            for name, value in (
+                ("left_hip_pitch", args.left_hip_pitch_kp),
+                ("left_knee", args.left_knee_kp),
+            )
+            if value is not None
+        },
     }
     required_telemetry_args = {
         "log_telemetry",
@@ -650,6 +658,8 @@ def main():
         p.add_argument("--max_motor_velocity", type=float, default=5.24)
         p.add_argument("--telemetry-read-voltage", action="store_true")
         p.add_argument("--telemetry-every-n", type=int, default=1)
+        p.add_argument("--left-hip-pitch-kp", type=float, default=None)
+        p.add_argument("--left-knee-kp", type=float, default=None)
         p.add_argument("--i-understand-this-moves-the-robot", action="store_true")
         p.set_defaults(func=cmd_policy_replay, mode=name)
 

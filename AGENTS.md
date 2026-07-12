@@ -243,6 +243,14 @@ This repository controls work around a real biped robot. Preserve safety and evi
   post-startup tracking events above 0.05 and no bus/timing correlation. Do not
   weaken the gate or proceed grounded. Any tracking intervention is a separate
   evidence task and no additional motor test is authorized by this result.
+- The x=0.08 tracking miss is small in angle but dynamic, not physical alignment:
+  0.0513 rad=2.939 deg and 0.0572 rad=3.278 deg versus 0.05 rad=2.865 deg;
+  signed means are near zero and error rises with target rate. Reject offsets.
+  A saved-trace slew cap would distort the knee target by up to about 4.4 deg.
+  The preregistered default-off intervention is left hip pitch P 30->31 and
+  left knee P 30->34, derived from measured error ratios, with every other
+  variable frozen. First run suspended x=0 only after explicit approval, then
+  restore body/head P 30/8, D 0 and torque off. x=0.08 remains a separate gate.
 - Rob confirmed candidate 5's final suspended x=0 run looked symmetric. The
   full gate is closed as `PASS_X0`: zero CRC/reset/write errors, clean timing
   and tracking, symmetric motion, and torque-off cleanup. Candidate 5 remains
