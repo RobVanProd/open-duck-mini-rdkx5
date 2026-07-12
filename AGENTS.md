@@ -154,15 +154,19 @@ This repository controls work around a real biped robot. Preserve safety and evi
   suspended x=0, suspended x=0.08, and grounded replay are separate gates.
 - Gate 0 was captured read-only on 2026-07-12 with motors untouched. The live
   config exactly matches the corrected June-27 hash, `start_paused=true`, and
-  canonical instrumentation hashes match. The board clock is incorrectly at
-  year 2000; use trusted `collector_utc` for freshness and retain the clock
-  warning. Gate 1 is not authorized.
+  canonical instrumentation hashes match. The board initially booted at year
+  2000, then self-synchronized; use trusted `collector_utc` when remote time is
+  implausible and retain the historical clock warning.
 - Gate 1 was later explicitly authorized and passed on the stand with Rob's
   visual report that home looked really good. Pitch tracking p95 was
   0.000-0.005 rad with no sustained violations. Retain a warning for 3 recovered
   CRC/read retries (1.46%, zero writes, no control impact). Torque-off cleanup
-  completed. The board clock subsequently self-synchronized. Gate 2 is not
-  authorized.
+  completed. The board clock subsequently self-synchronized.
+- Gate 2 file staging was authorized on 2026-07-12. The rate165 candidate is on
+  the board at `/home/sunrise/phase2_grounded_rate165_20260712_e06643e5.onnx`
+  with exact SHA256 `e06643e...ea33`; config and baseline hashes are unchanged,
+  no runtime was active, and no motor hardware was initialized. Paused runtime
+  start/suspended x=0 still requires separate explicit approval.
 - Do not change gains, offsets, IMU remaps, action scale, or phase timing without a reviewed evidence-backed task.
 - Do not deploy behavior changes to the robot unless explicitly requested.
 - Do not run moving hardware tests unless Rob is physically present and explicitly approves that exact test.

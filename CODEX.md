@@ -154,15 +154,21 @@ authorized by the offline package.
 Gate 0 was subsequently authorized and completed read-only on 2026-07-12.
 The corrected config hash, paused startup, baseline policy, and canonical
 instrumentation hashes all match. The board clock reports year 2000, so trusted
-workstation `collector_utc` is the freshness source. Motors were untouched and
-Gate 1 remains separately unapproved.
+workstation `collector_utc` is the freshness source. Motors were untouched at
+that checkpoint.
 
 Gate 1 was then authorized and passed: Rob reported the supported home pose
 looked really good; pitch-chain tracking p95 was 0.000-0.005 rad, IMU was stable,
 and there were no sustained errors or write failures. Three recovered read CRC
 retries (1.46%) remain a warning without correlated control damage. Torque-off
 cleanup completed. The board clock self-synchronized and a fresh snapshot is
-within 0.662 s of collector UTC. Gate 2 remains separately unapproved.
+within 0.662 s of collector UTC.
+
+Gate 2 file staging was then authorized and completed without motor access.
+The rate165 candidate is staged under a new versioned filename with exact hash;
+the baseline and config remain unchanged and no runtime process was active.
+Paused runtime start and suspended x=0 were deliberately not inferred from the
+file-copy approval and remain separately unapproved.
 ```
 
 Robotics operating model:
