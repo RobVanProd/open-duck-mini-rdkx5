@@ -10,7 +10,9 @@
     "hard_total": 94,
     "heldout_eval_max": 12,
     "interruption_reserve": 6,
-    "search_max": 35
+    "search_max": 35,
+    "recipe_search_within_search_max": 15,
+    "mechanism_search_min_if_recipe_uses_full_cap": 20
   },
   "contract": {
     "action_scale_rad": 0.25,
@@ -74,6 +76,39 @@
       "derived_after_calibration": true,
       "timesteps": null
     }
+  },
+  "recipe_search": {
+    "canonical": {
+      "discounting": 0.97,
+      "entropy_cost": 0.005,
+      "imitation_scale": 1.0,
+      "learning_rate": 0.0003,
+      "policy_hidden_layer_sizes": [512, 256, 128],
+      "ppo_clipping_epsilon": 0.2,
+      "ppo_num_updates_per_batch": 4,
+      "ppo_unroll_length": 20
+    },
+    "candidates": [
+      {"id": "R00", "change": "canonical", "value": null},
+      {"id": "R01", "change": "learning_rate", "value": 0.0001},
+      {"id": "R02", "change": "learning_rate", "value": 0.001},
+      {"id": "R03", "change": "discounting", "value": 0.99},
+      {"id": "R04", "change": "entropy_cost", "value": 0.001},
+      {"id": "R05", "change": "entropy_cost", "value": 0.01},
+      {"id": "R06", "change": "ppo_unroll_length", "value": 10},
+      {"id": "R07", "change": "ppo_unroll_length", "value": 40},
+      {"id": "R08", "change": "imitation_scale", "value": 0.5},
+      {"id": "R09", "change": "imitation_scale", "value": 2.0}
+    ],
+    "medium_promotions": {
+      "canonical_protected": true,
+      "max_noncanonical": 3,
+      "max_recipes_to_family_search": 2,
+      "ties_retain_canonical": true
+    },
+    "preregistration": "outputs/analysis/GROUND_UP_PPO_RECIPE_SEARCH_PREREGISTRATION_20260712.md",
+    "selection_uses_training_reward": false,
+    "status": "PREREGISTERED_BEFORE_RECIPE_SEARCH_COMPUTE"
   },
   "schema_version": "ground_up_reference_policy_search.v1",
   "seed_splits": {
@@ -160,5 +195,5 @@
       "sha256": "5850c0610ed89e2860e7047f9ee27d8412462e1199752952c3c2a0efd2cb7a25"
     }
   },
-  "status": "SCALED_T4_PROBE_PASS_READY_FOR_RECIPE_FAMILY_IMPLEMENTATION"
+  "status": "RECIPE_SEARCH_PREREGISTERED_REFERENCE_FAMILY_CPU_CONTRACT_PASS"
 }

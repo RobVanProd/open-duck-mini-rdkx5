@@ -10,11 +10,15 @@ ABI v1 baseline:
 
 ABI v2 reference-conditioned feed-forward:
 
-`obs[1,101], projected_reference_action[1,14] -> final_action[1,14]`
+`obs_with_projected_reference[1,115] -> final_action[1,14]`
+
+The 115-vector is the canonical 101-vector followed by the deterministic
+projected-reference feature `[14]`. The runtime constructs and records the
+concatenated input before inference; no post-policy composition is permitted.
 
 ABI v2 recurrent:
 
-`obs[1,101], projected_reference_action[1,14], state_in[1,N] -> final_action[1,14], state_out[1,N]`
+`obs_with_projected_reference[1,115], state_in[1,N] -> final_action[1,14], state_out[1,N]`
 
 The policy always returns final normalized actions. The RDK never blends,
 gates, scales, limits, or otherwise reinterprets policy output as part of

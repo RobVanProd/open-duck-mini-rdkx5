@@ -84,6 +84,13 @@ Protected rule: `upstream_control` remains through the first medium rung even
 if its early learning curve is slower. Other families are ranked only after a
 minimum gait-emergence window measured from the control calibration.
 
+The shared PPO recipe is itself searched before policy mechanisms, under
+`outputs/analysis/GROUND_UP_PPO_RECIPE_SEARCH_PREREGISTRATION_20260712.md`.
+That bounded one-factor screen receives at most 15 of the 35 broad/medium
+search units. At most two validated recipes advance to the mechanism-family
+comparison. This amendment was made before recipe or family-search compute;
+the earlier calibration/probe runs are controls and are not ranked candidates.
+
 Elimination order:
 
 1. NaN, export failure, contract mismatch, or repeated early termination.
