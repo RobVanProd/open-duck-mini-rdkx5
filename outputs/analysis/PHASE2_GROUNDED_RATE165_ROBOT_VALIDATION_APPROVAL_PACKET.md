@@ -46,6 +46,16 @@ Capture current runtime revision, `duck_config.json`, policy hashes,
 `start_paused`, IMU configuration, joint offsets, and instrumentation status.
 No writes and no motion.
 
+The stage-specific helper defaults to plan-only mode:
+
+```bash
+bash scripts/collect_grounded_rate165_gate01.sh
+```
+
+Run `--run-gate0` only after explicit Gate-0 approval. Gate 1 is a distinct
+mode and requires the reviewed v2 snapshot path; snapshots older than 24 hours
+are rejected.
+
 ### Gate 1 — Supported Physical Home Pose
 
 Command and hold runtime home pose only, with the robot supported. Compare the
