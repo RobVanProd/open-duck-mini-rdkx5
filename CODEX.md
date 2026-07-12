@@ -169,6 +169,14 @@ The rate165 candidate is staged under a new versioned filename with exact hash;
 the baseline and config remain unchanged and no runtime process was active.
 Paused runtime start and suspended x=0 were deliberately not inferred from the
 file-copy approval and remain separately unapproved.
+
+Gate 3 suspended x=0 was then authorized and completed for exactly 15 seconds.
+Numeric result has no holds: pitch-chain p95 0.0053-0.0130 rad, zero saturation,
+write errors, tracking spikes, or timing overruns. Seven recovered CRC reads
+(0.94%) remain a yellow warning. Torque cleanup and no-runtime verification
+passed. Rob reported small equal-amplitude, opposite-phase bilateral leg motion,
+so the visual gate passes. Gate 3 passes with warning; x=0.08 is still
+unapproved.
 ```
 
 Robotics operating model:

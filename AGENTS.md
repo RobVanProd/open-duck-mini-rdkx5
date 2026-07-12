@@ -167,6 +167,12 @@ This repository controls work around a real biped robot. Preserve safety and evi
   with exact SHA256 `e06643e...ea33`; config and baseline hashes are unchanged,
   no runtime was active, and no motor hardware was initialized. Paused runtime
   start/suspended x=0 still requires separate explicit approval.
+- Gate 3 suspended x=0 was authorized and completed for 15 seconds. Numeric
+  gates have no holds: pitch p95 0.0053-0.0130 rad, zero saturation/write
+  errors/tracking spikes, stable timing. Retain 7 recovered CRC reads (0.94%)
+  as a warning. Torque cleanup and no-runtime checks passed. Rob reported small
+  equal, opposite-phase bilateral leg motion, closing the visual gate. Gate 3
+  passes with warning; x=0.08 is not authorized.
 - Do not change gains, offsets, IMU remaps, action scale, or phase timing without a reviewed evidence-backed task.
 - Do not deploy behavior changes to the robot unless explicitly requested.
 - Do not run moving hardware tests unless Rob is physically present and explicitly approves that exact test.

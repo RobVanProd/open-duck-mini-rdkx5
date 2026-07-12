@@ -97,9 +97,9 @@ PY
 
 # Literal substitutions in this reviewed remote shell program are intentional.
 # shellcheck disable=SC2016
-remote_preflight='set -eu; test "$(sha256sum /home/sunrise/phase2_grounded_rate165_20260712_e06643e5.onnx | cut -d " " -f1)" = "'"$CANDIDATE_SHA"'"; test "$(sha256sum /home/sunrise/duck_config.json | cut -d " " -f1)" = "'"$CONFIG_SHA"'"; test "$(sha256sum /home/sunrise/project/Open_Duck_Mini_Runtime-2_RDK_X5/scripts/sim2real_diagnostics.py | cut -d " " -f1)" = "'"$DIAGNOSTIC_SHA"'"; test "$(sha256sum /home/sunrise/project/Open_Duck_Mini_Runtime-2_RDK_X5/scripts/v2_rl_walk_mujoco.py | cut -d " " -f1)" = "'"$WALKER_SHA"'"; test "$(sha256sum /home/sunrise/project/Open_Duck_Mini_Runtime-2_RDK_X5/scripts/turn_off.py | cut -d " " -f1)" = "'"$TURN_OFF_SHA"'"; python3 -c "import json; assert json.load(open(\"/home/sunrise/duck_config.json\"))[\"start_paused\"] is True"; ! ps -eo args= | grep -Eq "[v]2_rl_walk|[r]un_xbox_walk|[s]im2real_diagnostics|[m]ini_bdx_runtime"'
+remote_preflight='set -eu; test "$(sha256sum /home/sunrise/phase2_grounded_rate165_20260712_e06643e5.onnx | cut -d " " -f1)" = "'"$CANDIDATE_SHA"'"; test "$(sha256sum /home/sunrise/duck_config.json | cut -d " " -f1)" = "'"$CONFIG_SHA"'"; test "$(sha256sum /home/sunrise/project/Open_Duck_Mini_Runtime-2_RDK_X5/scripts/sim2real_diagnostics.py | cut -d " " -f1)" = "'"$DIAGNOSTIC_SHA"'"; test "$(sha256sum /home/sunrise/project/Open_Duck_Mini_Runtime-2_RDK_X5/scripts/v2_rl_walk_mujoco.py | cut -d " " -f1)" = "'"$WALKER_SHA"'"; test "$(sha256sum /home/sunrise/project/Open_Duck_Mini_Runtime-2_RDK_X5/scripts/turn_off.py | cut -d " " -f1)" = "'"$TURN_OFF_SHA"'"; python3 -c "import json; assert json.load(open(\"/home/sunrise/duck_config.json\"))[\"start_paused\"] is True"; ps -eo comm=,args= | awk '\''$1 ~ /^python/ && $0 ~ /(v2_rl_walk|run_xbox_walk|sim2real_diagnostics|mini_bdx_runtime)/ {found=1} END {exit found}'\'''
 # shellcheck disable=SC2029
-ssh "${SSH_OPTS[@]}" "$SSH_TARGET" "$remote_preflight"
+ssh -n "${SSH_OPTS[@]}" "$SSH_TARGET" "$remote_preflight"
 
 cat <<'EOF'
 GATE 3 ENGAGES MOTORS AND RUNS THE CANDIDATE FOR 15 SECONDS AT x=0.
@@ -114,14 +114,14 @@ cleanup_needed=1
 cleanup() {
   [[ "$cleanup_needed" -eq 1 ]] || return 0
   # shellcheck disable=SC2029
-  ssh "${SSH_OPTS[@]}" "$SSH_TARGET" \
+  ssh -n "${SSH_OPTS[@]}" "$SSH_TARGET" \
     "cd '$ROBOT_RUNTIME/scripts' && '$ROBOT_PYTHON' turn_off.py" || true
 }
 trap cleanup EXIT
 
 # The reviewed fixed remote command is assembled locally.
 # shellcheck disable=SC2029
-ssh "${SSH_OPTS[@]}" "$SSH_TARGET" "$(remote_replay)"
+ssh -n "${SSH_OPTS[@]}" "$SSH_TARGET" "$(remote_replay)"
 scp "${SSH_OPTS[@]}" "$SSH_TARGET:$REMOTE_JSONL" "$LOCAL_JSONL"
 scp "${SSH_OPTS[@]}" "$SSH_TARGET:$REMOTE_TERMINAL" "$LOCAL_TERMINAL"
 python3 tools/analyze_suspended_replay.py "$LOCAL_JSONL" \
