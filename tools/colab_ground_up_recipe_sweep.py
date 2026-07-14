@@ -153,6 +153,8 @@ def main() -> int:
                 "--reference_start_phase",
                 str(candidate.get("reference_start_phase", 0)),
             ])
+        if candidate.get("ground_up_signed_progress_objective"):
+            command.append("--ground_up_signed_progress_objective")
         if config["shared"]["ground_up_command_curriculum"]:
             command.append("--ground_up_command_curriculum")
         training = run(command, cwd=ROOT, timeout=7200, capture=True)
