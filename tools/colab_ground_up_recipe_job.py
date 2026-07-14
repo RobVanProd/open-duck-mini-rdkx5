@@ -94,10 +94,11 @@ def main() -> int:
     versions = run(
         [sys.executable, "-c", "import importlib.metadata as md; import jax,jaxlib,mujoco; "
          "print(jax.__version__,jaxlib.__version__,mujoco.__version__,md.version('playground')); "
-         "print(jax.devices())"],
+         "print(jax.devices()); print('HAS_GPU',any(d.platform=='gpu' for d in jax.devices()))"],
         capture=True,
     ).stdout
-    if "GpuDevice" not in versions and "CUDA" not in versions:
+    print("JOB_DEVICE_CONTRACT=" + versions, flush=True)
+    if "HAS_GPU True" not in versions:
         raise SystemExit("Colab job did not expose a JAX GPU device")
 
     output = OUT_ROOT / args.recipe_id
