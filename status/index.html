@@ -81,12 +81,12 @@
     <section class="hero">
       <div class="card">
         <div class="label">Current operation</div>
-        <div class="big amber" id="operation">Actor-SWA screen closed</div>
-        <div class="metric" id="operation-detail">All 48 preregistered cumulative-average cells completed on CPU. Every cell walked 600 ticks with bilateral support, zero saturation, and zero measured rate excess, but no averaged checkpoint cleared .20 rad tracking. Actor averaging preserved gait but did not repair the gate.</div>
+        <div class="big amber" id="operation">Nominal winner selected</div>
+        <div class="metric" id="operation-detail">The actual-centered G1/T2 formulation passes all six 600-tick nominal cells at both half and final checkpoints. Worst tracking is .181667 rad and minimum forward velocity is .08338 m/s. The separately preregistered x=0 preservation gate is next.</div>
       </div>
       <div class="card">
         <div class="label">Offline winner</div>
-        <div class="big" id="winner">No Stage-1 winner</div>
+        <div class="big" id="winner">G1 / T2 nominal</div>
         <div class="metric">Robot clearance: <strong style="color:var(--red)">NO</strong></div>
       </div>
       <div class="card">
@@ -160,6 +160,7 @@
           <li>A preregistered smooth-occupancy diagnostic improved exact-occupancy ranking from 20 to 14 discordant pairs, but worsened p95 ranking from 17 to 20. It fails the frozen dual-ranking rule, so no surrogate or training run advances.</li>
           <li>Actor-only cumulative averaging also fails: unchanged T2 half/final is .21767/.21530, unchanged T3 is .22404/.21492, R3 T2 is .22102/.21761, and R3 T3 is .22189/.21141. All 48 cells walk, but no checkpoint clears .20.</li>
           <li>Error decomposition is exact across 156 traces: all 3,329 failing events are compound sub-threshold accumulation. Bridge and servo components are each below .20 alone and align in sign every time; their sum crosses the gate.</li>
+          <li>The actual-centered guard repairs that exact mechanism. G1/T2 passes both half and final over all commands/seeds, with worst tracking .18167 and minimum vx .08338. This is the first persistent nominal winner, not robot clearance.</li>
         </ol>
       </div>
       <div class="card">
@@ -191,7 +192,8 @@
           <li>Completed: test three preregistered smooth approximations to temporal occupancy on all 36 frozen traces; none beats both hinge baselines on occupancy and p95 rankings.</li>
           <li>Completed: run the frozen 48-cell actor-only cumulative-average screen; every policy retains gait but every checkpoint fails tracking.</li>
           <li>Completed: decompose all tail, rate, and actor-SWA traces; every failing event is compound accumulated lag, not bridge-only or servo-only corruption.</li>
-          <li>Current: run the frozen 72-cell CPU behavior screen for the actual-centered guard. Twelve ONNX variants passed absolute-bound, velocity-bound, nonpitch-identity, and guarded-state-feedback contracts before behavior.</li>
+          <li>Completed: run the frozen 72-cell actual-centered guard screen; G1/T2 is the first persistent full-horizon nominal winner.</li>
+          <li>Current: preregister and run x=0 preservation for both selected half/final checkpoints. Only that result can advance the offline candidate.</li>
           <li>Only a persistent nominal pass can authorize a separately preregistered x=0 preservation gate.</li>
           <li>Add x=0, randomization, delay, and pushes only after nominal gait emergence persists.</li>
           <li>Design RDK runtime only after an offline winner exists.</li>

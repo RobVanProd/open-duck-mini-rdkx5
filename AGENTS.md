@@ -755,3 +755,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   the preregistered 72-cell CPU behavior screen. No training, Colab, local GPU,
   RDK-X5, robot, deployment, torque, or motor access is authorized. See
   `outputs/analysis/GROUND_UP_ACTUAL_CENTERED_GUARD_TRANSFORM_CONTRACT_20260714.md`.
+- 2026-07-14: The 72-cell actual-centered guard screen produces the first
+  persistent full-horizon nominal winner in the ground-up route. G1 (.20 rad)
+  passes all six cells at both half/final for T2 (.18082/.18167 worst p95) and
+  T3 (.18299/.17929); the frozen largest-margin, lower-worst-tracking tie-break
+  selects `G1_EXACT_BOUNDARY/T2_EQUAL`, with minimum vx .08338 m/s. G2/T3 and
+  both G3 combinations also pass, while G2/T2 is rejected for a 579-tick
+  termination. This evidence supports the missing absolute sent-to-measured
+  invariant, not a narrower buffer. It authorizes only preregistration of the
+  x=0 preservation gate for both selected half/final policies. No x=0 run is
+  authorized before that preregistration, and no training, Colab, local GPU,
+  RDK-X5, robot, deployment, torque, or motor access is authorized. See
+  `outputs/analysis/GROUND_UP_ACTUAL_CENTERED_GUARD_SCREEN_RESULT_20260714.md`.
