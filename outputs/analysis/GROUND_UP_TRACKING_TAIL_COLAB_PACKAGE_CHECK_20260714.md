@@ -4,7 +4,7 @@ status: `PASS_COLAB_PACKAGE_CONTRACT`
 
 failed checks: `none`
 arms: `[('T1_QUARTER', -1643.0637410077638), ('T2_EQUAL', -6572.254964031055), ('T3_FOUR', -26289.01985612422)]`
-expected exports per arm: `[0, 501760, 1003520]`
+expected exports per arm: `[0, 512000, 1024000]`
 maximum hosted wall time: `14400` seconds
 maximum compute at reported 1.07 CU/hour: `4.28` CU
 

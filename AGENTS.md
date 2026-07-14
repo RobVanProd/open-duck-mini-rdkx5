@@ -631,7 +631,7 @@ Do not proceed to grounded walking until low-risk gates pass.
 - 2026-07-14: The fixed tracking-tail hosted package passes its local contract.
   T1/T2/T3 exactly match the preregistered scales, each independently restores
   the protected applied-target 1M checkpoint, each requests 1M additional steps
-  with step 0/501760/1003520 exports, and every uploaded asset hash and composed
+  with three quantized exports, and every uploaded asset hash and composed
   patch applies cleanly at control commit `b9be205`. The single-session four-
   hour wall cutoff is 4.28 compute units at the user-reported 1.07 CU/hour,
   below the frozen 6-CU ceiling. Training reward cannot select an arm. This
@@ -646,3 +646,11 @@ Do not proceed to grounded walking until low-risk gates pass.
   source for every arm. The session is limited by the preregistered package's
   four-hour wall cutoff. Behavior remains unevaluated; no local GPU, RDK-X5,
   robot, deployment, torque, or motor access is authorized.
+- 2026-07-14: Before any behavior result was read, the running T1 arm exposed a
+  mechanical checkpoint-schedule error in the package expectation: Brax uses
+  `ceil(1,000,000 / (2 * 20,480)) = 25` updates per evaluation epoch, so the
+  exact half/final steps are 512,000 and 1,024,000, not 501,760 and 1,003,520.
+  The training command, scale, source, gate, and selection rule are unchanged.
+  T1 is retained only if both corrected exports exist; the recovery path then
+  rebuilds the exact package and runs T2/T3 from the same protected source.
+  No reward or behavior outcome was inspected to make this correction.

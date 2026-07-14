@@ -88,7 +88,7 @@ def main() -> int:
         "cpu_smoke_passed": smoke["status"]
         == "PASS_CPU_TRACKING_TAIL_CONTINUATION_SMOKE",
         "arms_match_preregistration_exactly": list(job.ARMS) == expected_arms,
-        "half_and_final_steps_fixed": job.EXPECTED_STEPS == [0, 501760, 1003520],
+        "half_and_final_steps_fixed": job.EXPECTED_STEPS == [0, 512000, 1024000],
         "one_session_wall_ceiling_under_compute_ceiling_at_reported_rate": (
             job.MAX_HOSTED_SECONDS / 3600 * 1.07
             <= prereg["hosted_compute_unit_ceiling"]

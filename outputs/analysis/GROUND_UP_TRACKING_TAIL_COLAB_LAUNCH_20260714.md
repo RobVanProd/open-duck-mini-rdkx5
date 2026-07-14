@@ -14,5 +14,15 @@ status: `RUNNING_FIXED_HOSTED_SCREEN`
 - selection uses training reward: `false`
 - behavior status: `UNEVALUATED`
 
+## Mechanical schedule correction
+
+T1 emitted steps `0`, `512000`, and `1024000`. Brax computes 25 training
+updates per evaluation epoch from the frozen command, so these are the exact
+quantized half/final steps. The original supervisor predicted `501760` and
+`1003520` and stopped after T1 completed, before T2. No reward or behavior
+result was inspected. Recovery PID `5643` validates and retains only the three
+complete T1 exports, then runs unchanged T2 and T3 independently from the same
+protected source.
+
 This launch authorizes only the preregistered hosted training package. It does
 not authorize local GPU/iGPU, RDK-X5, robot, deployment, torque, or motor use.

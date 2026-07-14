@@ -55,7 +55,7 @@ ARMS = (
     ("T2_EQUAL", -6572.254964031055),
     ("T3_FOUR", -26289.01985612422),
 )
-EXPECTED_STEPS = [0, 501760, 1003520]
+EXPECTED_STEPS = [0, 512000, 1024000]
 MAX_HOSTED_SECONDS = 14400
 SCHEMA_VERSION = "ground_up_tracking_tail_colab_search.v1"
 RESULT_PREFIX = "GROUND_UP_TRACKING_TAIL_RESULT="
@@ -167,6 +167,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--asset-root", type=Path, default=DEFAULT_ASSETS)
     parser.add_argument("--validate-assets-only", action="store_true")
+    parser.add_argument("--resume-completed-arms", action="store_true")
     args = parser.parse_args()
     assets = args.asset_root.resolve()
     actual_hashes = validate_assets(assets)
@@ -182,7 +183,8 @@ def main() -> int:
     manifest = assets / "GROUND_UP_TRACKING_TAIL_manifest.json"
     shutil.rmtree(root, ignore_errors=True)
     shutil.rmtree(source_root, ignore_errors=True)
-    shutil.rmtree(output_root, ignore_errors=True)
+    if not args.resume_completed_arms:
+        shutil.rmtree(output_root, ignore_errors=True)
     artifact.unlink(missing_ok=True)
     manifest.unlink(missing_ok=True)
 
@@ -233,7 +235,7 @@ def main() -> int:
     if "HAS_GPU True" not in versions or "CudaDevice" not in versions:
         raise SystemExit("hosted search did not expose a JAX CUDA GPU")
 
-    output_root.mkdir(parents=True)
+    output_root.mkdir(parents=True, exist_ok=True)
     run_env = dict(os.environ)
     run_env["PYTHONPATH"] = str(root)
     arm_results = []
@@ -243,8 +245,38 @@ def main() -> int:
         if remaining <= 0:
             raise SystemExit("hosted wall-time ceiling reached before next arm")
         output = output_root / arm_name
-        output.mkdir()
         command = training_command(root, assets, output, source_checkpoint, scale)
+        if args.resume_completed_arms and output.is_dir():
+            checkpoints = sorted(path for path in output.iterdir() if path.is_dir())
+            onnx_files = sorted(output.glob("*.onnx"))
+            checkpoint_steps = sorted(
+                int(path.name.rsplit("_", 1)[1]) for path in checkpoints
+            )
+            onnx_steps = sorted(
+                int(path.stem.rsplit("_", 1)[1]) for path in onnx_files
+            )
+            if checkpoint_steps != EXPECTED_STEPS or onnx_steps != EXPECTED_STEPS:
+                raise SystemExit(
+                    f"incomplete existing {arm_name}: checkpoints={checkpoint_steps}, "
+                    f"onnx={onnx_steps}"
+                )
+            arm_results.append(
+                {
+                    "name": arm_name,
+                    "scale": scale,
+                    "command": command,
+                    "training_seconds": None,
+                    "checkpoint_steps": checkpoint_steps,
+                    "onnx": [
+                        {"name": path.name, "sha256": sha256(path)}
+                        for path in onnx_files
+                    ],
+                    "recovered_completed_arm": True,
+                    "behavior_status": "UNEVALUATED",
+                }
+            )
+            continue
+        output.mkdir()
         arm_started = time.monotonic()
         try:
             completed = run(
