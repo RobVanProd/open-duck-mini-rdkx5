@@ -574,3 +574,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   preregistration. No local GPU, RDK-X5, robot, deployment, torque, or motor
   access is authorized. See
   `outputs/analysis/GROUND_UP_APPLIED_TARGET_CONTINUATION_CPU_SMOKE_20260714.md`.
+- 2026-07-14: The single applied-target-state T4 continuation completed and its
+  8,161,319-byte archive reproduced manifest SHA-256 `3b7457fe...52c9e7`
+  locally before Colab was stopped; zero sessions remain. The 1M checkpoint is
+  the first complete nominal pass in this route: all six x=.074/.077/.080,
+  seeds 100/101 cells walk, transition bilaterally, have zero saturation/rate
+  excess, and track at .18877/.18502/.17679 rad. The 2M checkpoint retains gait
+  and zero saturation/rate excess but regresses tracking to
+  .21617/.21694/.20817, failing all six cells versus .20. The frozen two-
+  checkpoint persistence rule therefore rejects the exact arm without
+  cherry-picking 1M. Next work is a read-only 1M-to-2M drift audit; no further
+  training or x=0/robot/RDK/GPU gate is authorized. See
+  `outputs/analysis/GROUND_UP_APPLIED_TARGET_STATE_RESULT_20260714.md`.

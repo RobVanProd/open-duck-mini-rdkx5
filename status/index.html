@@ -81,8 +81,8 @@
     <section class="hero">
       <div class="card">
         <div class="label">Current operation</div>
-        <div class="big amber" id="operation">Applied-target continuation: training</div>
-        <div class="metric" id="operation-detail">The T4 device contract, protected step-zero export, and first trained 1,003,520 checkpoint/ONNX are complete. The single frozen run is training only to the final 2,007,040 boundary.</div>
+        <div class="big amber" id="operation">Applied-target arm rejected on persistence</div>
+        <div class="metric" id="operation-detail">1M is the first full nominal pass across all six cells, but 2M regresses tracking above .20 in all six. The frozen two-checkpoint rule rejects the exact arm. Next: read-only 1M→2M drift audit.</div>
       </div>
       <div class="card">
         <div class="label">Offline winner</div>
@@ -91,8 +91,8 @@
       </div>
       <div class="card">
         <div class="label">Compute</div>
-        <div class="big">1 active T4 session</div>
-        <div class="metric">Session: open-duck-applied-target. One frozen job only; balance is not estimated.</div>
+        <div class="big">0 active sessions</div>
+        <div class="metric">Artifact recovered and hash-verified; Colab stopped. Balance is not estimated.</div>
       </div>
     </section>
 
@@ -143,6 +143,8 @@
           <li>The 115-D observability audit proves the bridge's applied target is missing while the sent-target slot is redundant. An identical-observation fork changes next physics control by .0299975 rad, selecting a same-size applied-target slot rather than recurrence.</li>
           <li>The applied-target CPU contract passes all checks: the state remains 115-D, default-off output is exact, enabled obs[83:97] equals applied target with zero measured error, no other observation or physics value changes, and the .04 rad hidden-state fork is now fully visible in that slot.</li>
           <li>The protected Colab checkpoint required an explicit CPU topology remap; save/restore error is zero. With composed-checkout module precedence fixed, the 1,024-step smoke restores the protected source exactly, changes all 10 actor leaves, keeps metrics finite, and exports two valid hard-bounded stateful ONNX graphs.</li>
+          <li>The applied-target 1M checkpoint is the first full nominal pass: all six command/seed cells walk and clear tracking at .18877/.18502/.17679 with zero saturation and rate excess.</li>
+          <li>The 2M checkpoint still walks cleanly but tracking regresses to .21617/.21694/.20817, failing all six cells. The frozen persistence rule rejects the exact arm; 1M is not cherry-picked.</li>
         </ol>
       </div>
       <div class="card">
@@ -159,8 +161,9 @@
           <li>Completed: run the preregistered bridge-only T4 continuation, recover every artifact, stop Colab, and evaluate both checkpoints.</li>
           <li>Completed: audit actor state for the fitted 2–3 tick delay and lag.</li>
           <li>Completed: freeze and CPU-contract replacement of the redundant sent-target slot with applied-target state.</li>
-          <li>Next: package and run exactly one preregistered 2M-step T4 continuation from the protected bridge-only 1M checkpoint; recover and hash every artifact before stopping Colab.</li>
-          <li>Then evaluate both post-update checkpoints on CPU at x=.074/.077/.080, seeds 100/101, with the external evaluator supplying the same applied-target slot. Both checkpoints must pass all six runs.</li>
+          <li>Completed: run the single preregistered T4 continuation, recover/hash every artifact, stop Colab, and evaluate both checkpoints.</li>
+          <li>Current: perform a read-only 1M→2M audit of normalization, parameter/action drift, per-joint tracking, and training metrics.</li>
+          <li>Only a measured drift mechanism may justify a separately preregistered retention recipe.</li>
           <li>Only a persistent nominal pass can authorize a separately preregistered x=0 preservation gate.</li>
           <li>Add x=0, randomization, delay, and pushes only after nominal gait emergence persists.</li>
           <li>Design RDK runtime only after an offline winner exists.</li>
