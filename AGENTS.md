@@ -812,3 +812,12 @@ Do not proceed to grounded walking until low-risk gates pass.
   contracted and run next. No later stage, training, Colab, local GPU, RDK-X5,
   robot, deployment, torque, or motor access is authorized. See
   `outputs/analysis/GROUND_UP_OFFLINE_ROBUSTNESS_LADDER_PREREGISTRATION_20260714.md`.
+- 2026-07-14: The R1 measured-actuator-fit contract passes every frozen check:
+  both policy and P30/P31-34 fit hashes are exact, both fit schemas contain
+  finite combined models for the six pitch joints, both stateful policy
+  interfaces and shapes are exact, CPU inference is finite at all four
+  commands, and accelerators are disabled. This authorizes only the 16-cell R1
+  CPU behavior matrix: two checkpoints x two measured fits x four commands x
+  one mechanically derived seed. No R2+, training, Colab, local GPU, RDK-X5,
+  robot, deployment, torque, or motor access is authorized. See
+  `outputs/analysis/GROUND_UP_ROBUSTNESS_R1_CONTRACT_20260714.md`.
