@@ -628,3 +628,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   `outputs/analysis/GROUND_UP_TRACKING_TAIL_SEARCH_PREREGISTRATION_20260714.md`,
   and
   `outputs/analysis/GROUND_UP_TRACKING_TAIL_CONTINUATION_CPU_SMOKE_20260714.md`.
+- 2026-07-14: The fixed tracking-tail hosted package passes its local contract.
+  T1/T2/T3 exactly match the preregistered scales, each independently restores
+  the protected applied-target 1M checkpoint, each requests 1M additional steps
+  with step 0/501760/1003520 exports, and every uploaded asset hash and composed
+  patch applies cleanly at control commit `b9be205`. The single-session four-
+  hour wall cutoff is 4.28 compute units at the user-reported 1.07 CU/hour,
+  below the frozen 6-CU ceiling. Training reward cannot select an arm. This
+  authorizes the fixed hosted package only; behavior is unevaluated and no
+  local GPU, RDK-X5, robot, deployment, torque, or motor access follows. See
+  `outputs/analysis/GROUND_UP_TRACKING_TAIL_COLAB_PACKAGE_CHECK_20260714.md`.

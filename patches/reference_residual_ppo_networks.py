@@ -125,6 +125,9 @@ def export_reference_residual_onnx(
     obs_size: int,
     output_path: str | Path,
     hidden_layer_sizes: Sequence[int],
+    action_velocity_limits_rad_s: Sequence[float] | None = None,
+    control_dt: float = 0.02,
+    action_scale: float = 0.25,
 ) -> dict:
     """Export final deterministic action and verify ONNX against JAX."""
     import onnx
@@ -200,14 +203,78 @@ def export_reference_residual_onnx(
             helper.make_node(
                 "Add", ["reference_location", "residual_location"], ["anchored_location"]
             ),
-            helper.make_node("Tanh", ["anchored_location"], ["continuous_actions"]),
+            helper.make_node("Tanh", ["anchored_location"], ["raw_continuous_actions"]),
         ]
     )
+    inputs = [helper.make_tensor_value_info("obs", TensorProto.FLOAT, [1, obs_size])]
+    outputs = []
+    max_action_delta = None
+    if action_velocity_limits_rad_s is not None:
+        if control_dt <= 0.0 or action_scale <= 0.0:
+            raise ValueError("control_dt and action_scale must be positive")
+        limits = np.asarray(action_velocity_limits_rad_s, dtype=np.float32)
+        if limits.shape != (action_size,) or np.any(limits <= 0.0):
+            raise ValueError("action velocity limits must be positive and match action size")
+        max_action_delta = (limits * float(control_dt) / float(action_scale))[None, :]
+        initializers.append(numpy_helper.from_array(max_action_delta, name="max_action_delta"))
+        inputs.append(
+            helper.make_tensor_value_info(
+                "previous_action", TensorProto.FLOAT, [1, action_size]
+            )
+        )
+        nodes.extend(
+            [
+                helper.make_node(
+                    "Sub", ["previous_action", "max_action_delta"], ["action_min"]
+                ),
+                helper.make_node(
+                    "Add", ["previous_action", "max_action_delta"], ["action_max"]
+                ),
+                helper.make_node(
+                    "Min",
+                    ["raw_continuous_actions", "action_max"],
+                    ["actions_below_max"],
+                ),
+                helper.make_node(
+                    "Max",
+                    ["actions_below_max", "action_min"],
+                    ["continuous_actions"],
+                ),
+                helper.make_node(
+                    "Identity", ["continuous_actions"], ["previous_action_out"]
+                ),
+            ]
+        )
+        outputs.append(
+            helper.make_tensor_value_info(
+                "continuous_actions", TensorProto.FLOAT, [1, action_size]
+            )
+        )
+        outputs.append(
+            helper.make_tensor_value_info(
+                "previous_action_out", TensorProto.FLOAT, [1, action_size]
+            )
+        )
+    else:
+        nodes.append(
+            helper.make_node(
+                "Identity", ["raw_continuous_actions"], ["continuous_actions"]
+            )
+        )
+        outputs.append(
+            helper.make_tensor_value_info(
+                "continuous_actions", TensorProto.FLOAT, [1, action_size]
+            )
+        )
     graph = helper.make_graph(
         nodes,
-        "open_duck_reference_anchored_residual_final_action",
-        [helper.make_tensor_value_info("obs", TensorProto.FLOAT, [1, obs_size])],
-        [helper.make_tensor_value_info("continuous_actions", TensorProto.FLOAT, [1, action_size])],
+        (
+            "open_duck_reference_residual_hard_vector_final_action"
+            if max_action_delta is not None
+            else "open_duck_reference_anchored_residual_final_action"
+        ),
+        inputs,
+        outputs,
         initializer=initializers,
     )
     model = helper.make_model(
@@ -231,8 +298,22 @@ def export_reference_residual_onnx(
     logits = np.asarray(network.policy_network.apply(params[0], params[1], {"state": dummy}))
     expected = np.tanh(logits[:, :action_size])
     session = ort.InferenceSession(str(output_path), providers=["CPUExecutionProvider"])
-    actual = session.run(["continuous_actions"], {"obs": dummy})[0]
+    feed = {"obs": dummy}
+    if max_action_delta is not None:
+        previous_action = np.zeros((1, action_size), dtype=np.float32)
+        feed["previous_action"] = previous_action
+        expected = np.clip(
+            expected,
+            previous_action - max_action_delta,
+            previous_action + max_action_delta,
+        )
+    actual = session.run(["continuous_actions"], feed)[0]
     max_error = float(np.max(np.abs(expected - actual)))
     if max_error > 1.0e-5:
         raise ValueError(f"reference-residual ONNX mismatch: {max_error}")
-    return {"path": str(output_path), "max_action_error": max_error}
+    return {
+        "path": str(output_path),
+        "max_action_error": max_error,
+        "stateful_hard_vector": max_action_delta is not None,
+        "max_action_delta": None if max_action_delta is None else max_action_delta[0].tolist(),
+    }
