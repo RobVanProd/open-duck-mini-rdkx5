@@ -954,3 +954,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   GPU, RDK-X5, robot, deployment, torque, and motor access remain unauthorized.
   See
   `outputs/analysis/GROUND_UP_ROBUSTNESS_R2_TORSO_BODY_INDEX_CORRECTION_20260714.md`.
+- 2026-07-14: The corrected `TORSO_COM_X_NEG` condition fails all four frozen
+  checkpoint/fit matrices and stops R2. All 16 requested cells and exact
+  `trunk_assembly` body-2 readbacks are present on CPU. Every x=0 cell falls
+  after 47 samples (.94 s), with base height reaching .05631 m and mean vx
+  reversing to -.37185 m/s. Every moving cell falls after 41-42 samples;
+  minimum matrix mean vx ranges from -.39295 to -.41097 m/s. Both half/final
+  checkpoints fail under both P30 and P31/34 fits, so this is a persistent
+  torso-COM robustness failure rather than fit or checkpoint selection noise.
+  The frozen stop rule authorizes no `TORSO_COM_X_POS`, later R2 condition,
+  R3+, training, Colab, local GPU, RDK-X5, robot, deployment, torque, or motor
+  access. See
+  `outputs/analysis/GROUND_UP_ROBUSTNESS_R2_TORSO_COM_X_NEG_RESULT_20260714.md`.
