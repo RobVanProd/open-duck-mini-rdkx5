@@ -65,6 +65,11 @@ def main() -> int:
     parser.add_argument("--unroll-length", type=int, default=defaults.get("unroll_length", 20))
     parser.add_argument("--imitation-scale", type=float, default=defaults.get("imitation_scale", 1.0))
     parser.add_argument("--num-evals", type=int, default=defaults.get("num_evals", 3))
+    parser.add_argument(
+        "--ground-up-command-curriculum",
+        action="store_true",
+        default=defaults.get("ground_up_command_curriculum", False),
+    )
     args, _kernel_args = parser.parse_known_args()
 
     started = time.monotonic()
@@ -126,6 +131,8 @@ def main() -> int:
         "--imitation_scale", str(args.imitation_scale),
         "--critic_observation", "privileged_state",
     ]
+    if args.ground_up_command_curriculum:
+        command.append("--ground_up_command_curriculum")
     training_started = time.monotonic()
     training = run(command, cwd=ROOT, timeout=7200, capture=True)
     training_seconds = time.monotonic() - training_started
