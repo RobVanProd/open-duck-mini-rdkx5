@@ -1,0 +1,48 @@
+{
+  "schema_version": "ground_up_guard_winner_x0_preregistration.v1",
+  "status": "PREREGISTERED_CPU_ONLY",
+  "source_result": {
+    "path": "outputs/analysis/ground_up_actual_centered_guard_screen_result.json",
+    "status": "PASS_ACTUAL_CENTERED_GUARD_WITH_WINNER",
+    "decision": "ADVANCE_G1_EXACT_BOUNDARY_T2_EQUAL_TO_PREREGISTERED_X0_GATE"
+  },
+  "policies": [
+    {"step": 512000, "path": "outputs/analysis/ground_up_actual_centered_guard_policies/G1_EXACT_BOUNDARY/T2_EQUAL_512000.onnx"},
+    {"step": 1024000, "path": "outputs/analysis/ground_up_actual_centered_guard_policies/G1_EXACT_BOUNDARY/T2_EQUAL_1024000.onnx"}
+  ],
+  "matrix": {
+    "command_x": 0.0,
+    "seeds": [100, 101],
+    "duration_ticks": 600,
+    "behavior_cells": 4,
+    "task": "flat_terrain_backlash",
+    "reset_mode": "home-support"
+  },
+  "per_cell_gate": {
+    "samples": 600,
+    "termination_reason": "duration_complete",
+    "candidate_gate_status": "PASS_CANDIDATE_SIM_GATE",
+    "maximum_absolute_mean_local_velocity_m_s": 0.02,
+    "maximum_body_pitch_p95_rad": 0.25,
+    "minimum_base_height_m": 0.12,
+    "maximum_pitch_tracking_p95_rad": 0.2,
+    "maximum_action_saturation_pct": 0.0,
+    "maximum_sent_target_velocity_limit_excess_rad_s": 0.0,
+    "maximum_sent_target_velocity_max_limit_excess_rad_s": 0.0,
+    "finite_trace_required": true
+  },
+  "advance_rule": {
+    "requires_both_checkpoints_all_cells": true,
+    "result_if_pass": "ADVANCE_OFFLINE_NOMINAL_AND_X0_CANDIDATE_TO_PREREGISTERED_ROBUSTNESS_LADDER",
+    "result_if_fail": "HOLD_GUARD_WINNER_FOR_X0_REPAIR_WITHOUT_ROBOT_ACCESS",
+    "selection_uses_training_reward": false
+  },
+  "authority": {
+    "cpu_x0_eval": true,
+    "randomization_delay_push_gate": false,
+    "training": false,
+    "colab": false,
+    "local_gpu": false,
+    "rdk_or_robot": false
+  }
+}
