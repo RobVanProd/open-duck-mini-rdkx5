@@ -779,3 +779,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   robustness ladder, training, Colab, local GPU, RDK-X5, robot, deployment,
   torque, or motor access is authorized. See
   `outputs/analysis/GROUND_UP_GUARD_WINNER_X0_RESULT_20260714.md`.
+- 2026-07-14: The preregistered command-deadband repair transform passes every
+  frozen structural and CPU-inference check for both selected half/final G1/T2
+  policies. At x=0, action and recurrent state outputs are exactly zero; at
+  x=.074/.077/.080, both outputs are bit-exact to their guarded sources. The
+  original external interface, every source initializer, and the complete
+  source operator prefix are preserved, with exactly five wrapper nodes
+  appended. This authorizes only the frozen 16-cell local CPU behavior matrix.
+  No robustness ladder, training, Colab, local GPU, RDK-X5, robot, deployment,
+  torque, or motor access is authorized. See
+  `outputs/analysis/GROUND_UP_COMMAND_DEADBAND_REPAIR_TRANSFORM_CONTRACT_20260714.md`.
