@@ -1,0 +1,382 @@
+{
+  "curriculum": {
+    "action_delay_steps": [
+      0,
+      3
+    ],
+    "domain_randomization_active_from_first_update": true,
+    "implemented_single_stage": true,
+    "imu_delay_steps": [
+      0,
+      3
+    ],
+    "positive_command_range": [
+      0.04,
+      0.12
+    ],
+    "preregistered_order": [
+      "nominal_flat_backlash_reference_tracking",
+      "measured_actuator_model",
+      "zero_and_positive_command_mixture",
+      "sensor_mass_friction_initialization_variation",
+      "mild_pushes",
+      "rough_terrain_last"
+    ],
+    "push_interval_s": [
+      5.0,
+      10.0
+    ],
+    "pushes_active_from_first_update": true,
+    "reset_joint_multiplier_range": [
+      0.5,
+      1.5
+    ],
+    "sensor_noise_level": 1.0,
+    "zero_command_probability": 0.5
+  },
+  "decision": {
+    "clean_nominal_reference_bootstrap_was_used": false,
+    "next_experiment_requires_preregistration": true,
+    "reference_was_used_from_start": true,
+    "training_reward_is_policy_selection_metric": false
+  },
+  "objective": {
+    "scales": {
+      "action_rate": -0.5,
+      "alive": 20.0,
+      "imitation": 1.0,
+      "stand_still": -0.2,
+      "torques": -0.001,
+      "tracking_ang_vel": 6.0,
+      "tracking_lin_vel": 2.5
+    },
+    "stationary_vs_perfect_positive_core": [
+      {
+        "command_x": 0.04,
+        "perfect_positive_core_reward": 28.5,
+        "stationary_core_retention_fraction": 0.9870301569268606,
+        "stationary_positive_core_reward": 28.130359472415527,
+        "stationary_tracking_lin_reward_fraction": 0.8521437889662113
+      },
+      {
+        "command_x": 0.074,
+        "perfect_positive_core_reward": 28.5,
+        "stationary_core_retention_fraction": 0.9630119432342933,
+        "stationary_positive_core_reward": 27.44584038217736,
+        "stationary_tracking_lin_reward_fraction": 0.5783361528709442
+      },
+      {
+        "command_x": 0.08,
+        "perfect_positive_core_reward": 28.5,
+        "stationary_core_retention_fraction": 0.9585344231616709,
+        "stationary_positive_core_reward": 27.31823106010762,
+        "stationary_tracking_lin_reward_fraction": 0.5272924240430485
+      },
+      {
+        "command_x": 0.12,
+        "perfect_positive_core_reward": 28.5,
+        "stationary_core_retention_fraction": 0.9330638384808878,
+        "stationary_positive_core_reward": 26.592319396705303,
+        "stationary_tracking_lin_reward_fraction": 0.23692775868212176
+      }
+    ],
+    "total_step_reward_clipped_below_at_zero": true,
+    "tracking_sigma": 0.01,
+    "zero_command_imitation_masked": true
+  },
+  "reference": {
+    "closest_home_compatible_double_support_phase": {
+      "double_support": true,
+      "leg_pose_l1_error_from_home": 0.788892539333197,
+      "leg_pose_squared_error_from_home": 0.1126807559272507,
+      "phase": 20,
+      "reference_contacts": [
+        1,
+        1
+      ]
+    },
+    "cyclic_phase_vectors_after_first_step_have_unit_norm": true,
+    "dx_cells": [
+      -0.148,
+      -0.074,
+      0.0,
+      0.074,
+      0.148,
+      0.222
+    ],
+    "fps": 50,
+    "period_s": 0.54,
+    "phase_steps": 27,
+    "phase_zero": {
+      "double_support": false,
+      "leg_pose_l1_error_from_home": 1.35010412147331,
+      "leg_pose_squared_error_from_home": 0.36248964213862095,
+      "phase": 0,
+      "reference_contacts": [
+        1,
+        0
+      ]
+    },
+    "positive_command_mapping": [
+      {
+        "reference_dx": 0.074,
+        "sample_fraction": 0.8875011249887501
+      },
+      {
+        "reference_dx": 0.148,
+        "sample_fraction": 0.11249887501124989
+      }
+    ],
+    "reset_phase_vector": [
+      0.0,
+      0.0
+    ],
+    "reset_phase_vector_norm": 0.0
+  },
+  "schema_version": "ground_up_stage1_shared_setup_audit.v1",
+  "source_contract": {
+    "/home/lsd/robots/.ground_up_playground_control/playground/common/randomize.py": "db03f9ed29b28e92ad4d8a9aa6a64b8ed6de523cace5c5374c1dd7ecefd1fdf9",
+    "/home/lsd/robots/.ground_up_playground_control/playground/common/rewards.py": "f7e939a5dd221b9b5f6f9a0d04e5622cb94cf447d04cffcf14c9ff1e808f1340",
+    "/home/lsd/robots/.ground_up_playground_control/playground/open_duck_mini_v2/custom_rewards.py": "16fdf5ed409f9abcfa6f68465c4351081c0c255a6683c09aee110c557890cd0c",
+    "/home/lsd/robots/.ground_up_playground_control/playground/open_duck_mini_v2/data/polynomial_coefficients.pkl": "5850c0610ed89e2860e7047f9ee27d8412462e1199752952c3c2a0efd2cb7a25",
+    "/home/lsd/robots/.ground_up_playground_control/playground/open_duck_mini_v2/joystick.py": "8dab1d33a860826a0849f64936e87a6c9cc6ddf0e9cb12206561de3e5da3711b",
+    "/home/lsd/robots/.ground_up_playground_control/playground/open_duck_mini_v2/runner.py": "0ea41d2b26c6e8be4a7fd979b6d81a88d7414643ec9b977340891119d7947fad",
+    "/home/lsd/robots/.ground_up_playground_control/playground/open_duck_mini_v2/xmls/scene_flat_terrain_backlash.xml": "33af97247d6a876cf47c9e37185cb71bd09f6793bc0f62d90cbe2a91caa3ba63",
+    "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/GROUND_UP_REFERENCE_POLICY_SEARCH_PREREGISTRATION_20260712.md": "529af19c0227467ec3f4dc62967ba0442b04e1b460e7d64f6e5656b757378455"
+  },
+  "status": "OBJECTIVE_AND_CURRICULUM_MISMATCH_FOUND",
+  "training_objective_diagnostics_only": {
+    "M0_UPSTREAM": {
+      "event_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/ground_up_recipe_search/M0_UPSTREAM/events.out.tfevents.1784019200.4e59d60b6219",
+      "event_sha256": "ae99ce91613a2ac6fe0733319aebb471ec895ce20ce7c38b4a3e90b8a08cc1c2",
+      "series": {
+        "eval/avg_episode_length": [
+          {
+            "step": 0,
+            "value": 54.5234375
+          },
+          {
+            "step": 2007040,
+            "value": 221.7578125
+          },
+          {
+            "step": 4014080,
+            "value": 354.984375
+          },
+          {
+            "step": 6021120,
+            "value": 341.5078125
+          },
+          {
+            "step": 8028160,
+            "value": 382.7265625
+          }
+        ],
+        "eval/episode_reward": [
+          {
+            "step": 0,
+            "value": 14.735014915466309
+          },
+          {
+            "step": 2007040,
+            "value": 77.65215301513672
+          },
+          {
+            "step": 4014080,
+            "value": 146.21408081054688
+          },
+          {
+            "step": 6021120,
+            "value": 148.19781494140625
+          },
+          {
+            "step": 8028160,
+            "value": 170.33798217773438
+          }
+        ],
+        "eval/episode_reward/alive": [
+          {
+            "step": 0,
+            "value": 1090.46875
+          },
+          {
+            "step": 2007040,
+            "value": 4435.15625
+          },
+          {
+            "step": 4014080,
+            "value": 7099.6875
+          },
+          {
+            "step": 6021120,
+            "value": 6830.15625
+          },
+          {
+            "step": 8028160,
+            "value": 7654.53125
+          }
+        ],
+        "eval/episode_reward/imitation": [
+          {
+            "step": 0,
+            "value": -64.70755004882812
+          },
+          {
+            "step": 2007040,
+            "value": -34.5924186706543
+          },
+          {
+            "step": 4014080,
+            "value": 45.613929748535156
+          },
+          {
+            "step": 6021120,
+            "value": 102.11443328857422
+          },
+          {
+            "step": 8028160,
+            "value": 200.6237335205078
+          }
+        ],
+        "eval/episode_reward/tracking_lin_vel": [
+          {
+            "step": 0,
+            "value": 24.76708984375
+          },
+          {
+            "step": 2007040,
+            "value": 256.31268310546875
+          },
+          {
+            "step": 4014080,
+            "value": 581.7926025390625
+          },
+          {
+            "step": 6021120,
+            "value": 563.8513793945312
+          },
+          {
+            "step": 8028160,
+            "value": 643.7960205078125
+          }
+        ]
+      }
+    },
+    "M4_SYMCRIT": {
+      "event_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/ground_up_recipe_search/M4_SYMCRIT/events.out.tfevents.1784026644.fcd37d11687d",
+      "event_sha256": "0bb01d4c646dbb776c0c5e6cba6fd8d212337fa547daa039cecef2623ab1a351",
+      "series": {
+        "eval/avg_episode_length": [
+          {
+            "step": 0,
+            "value": 54.234375
+          },
+          {
+            "step": 2007040,
+            "value": 94.3359375
+          },
+          {
+            "step": 4014080,
+            "value": 229.4140625
+          },
+          {
+            "step": 6021120,
+            "value": 306.78125
+          },
+          {
+            "step": 8028160,
+            "value": 299.921875
+          }
+        ],
+        "eval/episode_reward": [
+          {
+            "step": 0,
+            "value": 14.672534942626953
+          },
+          {
+            "step": 2007040,
+            "value": 29.77981185913086
+          },
+          {
+            "step": 4014080,
+            "value": 80.90049743652344
+          },
+          {
+            "step": 6021120,
+            "value": 118.52434539794922
+          },
+          {
+            "step": 8028160,
+            "value": 119.91785430908203
+          }
+        ],
+        "eval/episode_reward/alive": [
+          {
+            "step": 0,
+            "value": 1084.6875
+          },
+          {
+            "step": 2007040,
+            "value": 1886.71875
+          },
+          {
+            "step": 4014080,
+            "value": 4588.28125
+          },
+          {
+            "step": 6021120,
+            "value": 6135.625
+          },
+          {
+            "step": 8028160,
+            "value": 5998.4375
+          }
+        ],
+        "eval/episode_reward/imitation": [
+          {
+            "step": 0,
+            "value": -64.92835998535156
+          },
+          {
+            "step": 2007040,
+            "value": -59.88981246948242
+          },
+          {
+            "step": 4014080,
+            "value": -55.52794647216797
+          },
+          {
+            "step": 6021120,
+            "value": -33.466766357421875
+          },
+          {
+            "step": 8028160,
+            "value": 10.747518539428711
+          }
+        ],
+        "eval/episode_reward/tracking_lin_vel": [
+          {
+            "step": 0,
+            "value": 24.596702575683594
+          },
+          {
+            "step": 2007040,
+            "value": 79.03773498535156
+          },
+          {
+            "step": 4014080,
+            "value": 283.11993408203125
+          },
+          {
+            "step": 6021120,
+            "value": 442.25042724609375
+          },
+          {
+            "step": 8028160,
+            "value": 444.90545654296875
+          }
+        ]
+      }
+    }
+  }
+}
