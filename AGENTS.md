@@ -733,3 +733,14 @@ Do not proceed to grounded walking until low-risk gates pass.
   deployment, torque, or motor access is authorized. Next work is read-only
   sent/applied/actual error decomposition. See
   `outputs/analysis/GROUND_UP_ACTOR_SWA_SCREEN_RESULT_20260714.md`.
+- 2026-07-14: The preregistered sent/applied/actual decomposition passes on all
+  156 committed traces (78 unique seed-100 traces) with exact seed-101
+  reproduction and <=1e-12 identity error. Across 68 failing unique traces,
+  all 3,329 above-.20-rad gate-joint events are compound: neither sent-to-
+  applied bridge error nor applied-to-actual servo error exceeds .20 alone,
+  and the two components align in sign in 100% of events. TAIL, RATE, and SWA
+  independently classify `COMPOUND_SUBTHRESHOLD`. This rejects another bridge-
+  only or servo-only retune and selects preregistration of an actual-position-
+  centered absolute target guard CPU contract. It authorizes no implementation,
+  training, Colab, local GPU, RDK-X5, robot, deployment, torque, or motor use.
+  See `outputs/analysis/GROUND_UP_TRACKING_ERROR_DECOMPOSITION_RESULT_20260714.md`.
