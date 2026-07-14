@@ -174,6 +174,13 @@ def evaluate(args: argparse.Namespace) -> dict[str, Any]:
                     seed=seed,
                     eval_role="candidate",
                     reset_mode=args.reset_mode,
+                    policy_action_rate_limit_rad_s=args.policy_action_rate_limit_rad_s,
+                    policy_action_rate_limit_joint_indices=tuple(
+                        parse_csv(args.policy_action_rate_limit_joint_indices, int)
+                    ),
+                    policy_action_rate_limit_values=tuple(
+                        parse_csv(args.policy_action_rate_limit_values, float)
+                    ),
                     reference_feature_table_path=reference,
                     reference_start_phase=args.reference_start_phase,
                     policy_state_input_names=state_input_names,
@@ -231,6 +238,13 @@ def evaluate(args: argparse.Namespace) -> dict[str, Any]:
             "minimum_emergence_duration_s": args.minimum_emergence_duration_s,
             "task": args.task,
             "reset_mode": args.reset_mode,
+            "policy_action_rate_limit_rad_s": args.policy_action_rate_limit_rad_s,
+            "policy_action_rate_limit_joint_indices": parse_csv(
+                args.policy_action_rate_limit_joint_indices, int
+            ),
+            "policy_action_rate_limit_values": parse_csv(
+                args.policy_action_rate_limit_values, float
+            ),
             "policy_state_input_names": list(state_input_names),
             "policy_state_output_names": list(state_output_names),
         },
@@ -316,6 +330,12 @@ def main() -> None:
             "Playground is retained only for explicit randomized-reset diagnostics."
         ),
     )
+    parser.add_argument("--policy-action-rate-limit-rad-s", type=float, default=None)
+    parser.add_argument(
+        "--policy-action-rate-limit-joint-indices",
+        default="2,3,4,11,12,13",
+    )
+    parser.add_argument("--policy-action-rate-limit-values", default="")
     parser.add_argument("--output-json", required=True)
     parser.add_argument("--output-md", default=None)
     args = parser.parse_args()

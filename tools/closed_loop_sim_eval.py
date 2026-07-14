@@ -1633,7 +1633,11 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             name: value.copy()
             for name, value in policy_io["hidden_state"].items()
         }
-        previous_rate_bounded_action: np.ndarray | None = None
+        previous_rate_bounded_action: np.ndarray | None = (
+            np.zeros(config.expected_action_dim, dtype=np.float32)
+            if config.policy_action_rate_limit_rad_s is not None
+            else None
+        )
 
         for tick in range(sim_steps):
             obs = np.asarray(jax.device_get(state.obs["state"]), dtype=np.float32)
