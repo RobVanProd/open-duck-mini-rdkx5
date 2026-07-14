@@ -513,3 +513,11 @@ Do not proceed to grounded walking until low-risk gates pass.
   This selects a bridge-only causal arm but does not authorize training. The
   rejected penalty stack must not be restored. See
   `outputs/analysis/GROUND_UP_MEASURED_BRIDGE_INTEGRATION_AUDIT_20260714.md`.
+- 2026-07-14: The measured-bridge-only continuation is preregistered before
+  implementation. It protects the 1,003,520 hard-vector checkpoint because it
+  has better tracking and zero saturation versus the later checkpoint. The
+  only causal change is deterministic fitted delay/tau after the existing hard
+  target limit; no bridge penalty, behavior prior, restore KL, or other reward
+  term is allowed. A passing CPU restore/update/export contract is required
+  before one frozen 2M-step hosted job. See
+  `outputs/analysis/GROUND_UP_MEASURED_BRIDGE_ONLY_CONTINUATION_PREREGISTRATION_20260714.md`.
