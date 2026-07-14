@@ -53,15 +53,17 @@ def sha256(path: Path) -> str:
 
 
 def main() -> int:
+    config_path = ASSETS / "ground_up_recipe_job_config.json"
+    defaults = json.loads(config_path.read_text()) if config_path.is_file() else {}
     parser = argparse.ArgumentParser()
-    parser.add_argument("--recipe-id", required=True)
-    parser.add_argument("--timesteps", type=int, required=True)
-    parser.add_argument("--seed", type=int, required=True)
-    parser.add_argument("--learning-rate", type=float, default=3e-4)
-    parser.add_argument("--discounting", type=float, default=0.97)
-    parser.add_argument("--entropy-cost", type=float, default=0.005)
-    parser.add_argument("--unroll-length", type=int, default=20)
-    parser.add_argument("--imitation-scale", type=float, default=1.0)
+    parser.add_argument("--recipe-id", default=defaults.get("recipe_id"), required="recipe_id" not in defaults)
+    parser.add_argument("--timesteps", type=int, default=defaults.get("timesteps"), required="timesteps" not in defaults)
+    parser.add_argument("--seed", type=int, default=defaults.get("seed"), required="seed" not in defaults)
+    parser.add_argument("--learning-rate", type=float, default=defaults.get("learning_rate", 3e-4))
+    parser.add_argument("--discounting", type=float, default=defaults.get("discounting", 0.97))
+    parser.add_argument("--entropy-cost", type=float, default=defaults.get("entropy_cost", 0.005))
+    parser.add_argument("--unroll-length", type=int, default=defaults.get("unroll_length", 20))
+    parser.add_argument("--imitation-scale", type=float, default=defaults.get("imitation_scale", 1.0))
     args = parser.parse_args()
 
     started = time.monotonic()
