@@ -690,3 +690,14 @@ Do not proceed to grounded walking until low-risk gates pass.
   `outputs/analysis/GROUND_UP_TRACKING_TAIL_RATE_BOUNDARY_AUDIT_20260714.md`,
   `outputs/analysis/GROUND_UP_STATEFUL_PITCH_RATE_BOUNDARY_SCREEN_PREREGISTRATION_20260714.md`,
   and `outputs/analysis/GROUND_UP_STATEFUL_PITCH_RATE_TRANSFORM_CONTRACT_20260714.md`.
+- 2026-07-14: The preregistered stateful pitch-rate boundary screen completed
+  all 72 CPU-only behavior cells. Every cell ran the full 600 ticks, walked
+  with bilateral transitions, and had zero action saturation and zero measured
+  pitch-chain rate excess. R1 T2 half/final worst tracking p95 is
+  .21493/.20887 and R1 T3 is .21985/.20074; R2 T2 is .21214/.20430 and R2 T3
+  is .21317/.19931; R3 T2 is .20789/.21070 and R3 T3 is .21298/.19852 versus
+  the unchanged <=.20 rad limit. No rate/tail combination passes both half and
+  final checkpoints, so the screen is closed without promoting the closest
+  result. No training, x=0 gate, local GPU, RDK-X5, robot, deployment, torque,
+  or motor access is authorized. See
+  `outputs/analysis/GROUND_UP_STATEFUL_PITCH_RATE_BOUNDARY_SCREEN_RESULT_20260714.md`.

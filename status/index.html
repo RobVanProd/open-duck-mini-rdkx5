@@ -81,8 +81,8 @@
     <section class="hero">
       <div class="card">
         <div class="label">Current operation</div>
-        <div class="big amber" id="operation">Tail formulation closed</div>
-        <div class="metric" id="operation-detail">All 36 full-horizon cells completed on CPU. Every arm walks 12 seconds with bilateral support, zero saturation, and zero measured rate excess, but no half/final pair clears .20 rad tracking. T2 is closest persistently at .21505; T3 final reaches .20410 but its half is .22048, so neither can advance.</div>
+        <div class="big amber" id="operation">Pitch-rate screen closed</div>
+        <div class="metric" id="operation-detail">All 72 preregistered stateful ONNX cells completed on CPU. Every cell walked 600 ticks with bilateral support, zero saturation, and zero measured rate excess, but none of the six rate/tail combinations cleared .20 rad tracking at both half and final checkpoints. No variant advances.</div>
       </div>
       <div class="card">
         <div class="label">Offline winner</div>
@@ -155,6 +155,8 @@
           <li>The hosted package contract passes: T1/T2/T3 use exactly the preregistered scales, independently restore the protected source, request 1M steps and three exports each, and cannot exceed 4.28 compute units at the reported rate before its wall cutoff.</li>
           <li>All 36 preregistered 600-tick cells completed on CPU. Every cell walks with bilateral support, zero saturation, and zero measured rate excess.</li>
           <li>T1 half/final worst tracking is .22883/.23242; T2 is .21505/.20972; T3 is .22048/.20410. No arm passes both checkpoints against the unchanged .20 limit, so the exact tail-exceedance formulation is closed.</li>
+          <li>The preregistered stateful pitch-rate boundary screen completed all 72 CPU-only cells. All cells remained full-duration walks with bilateral support, zero saturation, and zero measured rate excess.</li>
+          <li>R1 T2 half/final worst tracking is .21493/.20887 and R1 T3 is .21985/.20074; R2 T2 is .21214/.20430 and R2 T3 is .21317/.19931; R3 T2 is .20789/.21070 and R3 T3 is .21298/.19852. No combination passes both checkpoints, so the screen is closed without promoting a closest result.</li>
         </ol>
       </div>
       <div class="card">
@@ -182,7 +184,8 @@
           <li>Completed: the joint audit finds only left-knee/ankle exceedance, but rejects per-tick max because it is exactly 6× the closed mean objective on every trace.</li>
           <li>Completed: the occupancy audit finds T3 final misses the 30-tick boundary by only 1/7/3 ticks, but rejects linear hinge because its gate ranking is worse than squared hinge.</li>
           <li>Completed: 97.63% of gate-setting exceedance ticks occur at or within the two-tick lag window after a measured target-rate boundary; the odds ratio is 10.46.</li>
-          <li>Current: run the preregistered CPU-only stateful pitch-rate screen. Twelve ONNX variants pass exact graph, initializer, bound, and state-feedback checks; no training is involved.</li>
+          <li>Completed: run the preregistered CPU-only stateful pitch-rate screen. Twelve ONNX variants passed exact graph, initializer, bound, and state-feedback checks before all 72 behavior cells were evaluated.</li>
+          <li>Current: analyze the closed search families and preregister the next evidence-supported formulation before spending additional Colab compute. No hosted run is active or authorized.</li>
           <li>Only a persistent nominal pass can authorize a separately preregistered x=0 preservation gate.</li>
           <li>Add x=0, randomization, delay, and pushes only after nominal gait emergence persists.</li>
           <li>Design RDK runtime only after an offline winner exists.</li>
