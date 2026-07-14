@@ -1,0 +1,40 @@
+{
+  "schema_version": "ground_up_robustness_r2_torso_body_index_correction.v1",
+  "status": "INVALIDATE_FIRST_TORSO_COM_X_NEG_RESULT_AND_RERUN",
+  "invalid_result": {
+    "path": "outputs/analysis/ground_up_robustness_r2_TORSO_COM_X_NEG_result.json",
+    "sha256": "e8e64abb612cf10295bb4b4392668b91a4950544da68d40d4d67997eeeb8304b",
+    "reason": "body_ipos[1] targeted the massless base body",
+    "trace_files": 16,
+    "all_traces_byte_identical_to_armature_lo_default": true
+  },
+  "compiled_body_evidence": {
+    "incorrect_body": {
+      "id": 1,
+      "name": "base",
+      "mass_kg": 0.0
+    },
+    "correct_body": {
+      "id": 2,
+      "name": "trunk_assembly",
+      "mass_kg": 0.698526
+    }
+  },
+  "corrected_contract": {
+    "path": "outputs/analysis/ground_up_robustness_r2_evaluator_contract.json",
+    "sha256": "59a21318ce0b7a2c38796ab8a6bc6081558f216fee3db07767d1f818023b0428",
+    "status": "PASS_ROBUSTNESS_R2_EVALUATOR_CONTRACT",
+    "named_massive_body_exact": true,
+    "torso_com_smoke_changes_dynamics": true,
+    "default_off_600_tick_behavior_exact": true,
+    "cpu_only": true
+  },
+  "authority": {
+    "rerun_torso_com_x_neg_identically": true,
+    "run_condition_8_or_later": false,
+    "training": false,
+    "colab": false,
+    "local_gpu": false,
+    "rdk_or_robot": false
+  }
+}

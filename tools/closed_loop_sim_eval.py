@@ -107,7 +107,13 @@ R2_DYNAMICS_OVERRIDE_KEYS = {
 }
 
 
-def apply_eval_dynamics_override(model, override: Mapping[str, Any] | None, jp):
+def apply_eval_dynamics_override(
+    model,
+    override: Mapping[str, Any] | None,
+    jp,
+    *,
+    torso_body_id: int | None = None,
+):
     """Apply exactly one preregistered R2 dynamics axis to an MJX model."""
     if not override:
         return model, {"enabled": False, "key": None, "value": None, "readback": {}}
@@ -141,13 +147,26 @@ def apply_eval_dynamics_override(model, override: Mapping[str, Any] | None, jp):
         replacements["dof_armature"] = model.dof_armature.at[dof_ids].set(jp.asarray(after))
         readback.update({"before": before.tolist(), "after": after.tolist(), "changed_indices": dof_ids.tolist()})
     elif key == "torso_com_offset_m":
+        if torso_body_id is None:
+            raise ValueError("torso_com_offset_m requires a name-resolved torso_body_id")
         value = np.asarray(raw_value, dtype=float)
         if value.shape != (3,):
             raise ValueError("torso_com_offset_m must have exactly three values")
-        before = np.asarray(model.body_ipos)[1]
+        body_id = int(torso_body_id)
+        if body_id <= 0 or body_id >= int(model.nbody):
+            raise ValueError(f"invalid torso_body_id: {body_id}")
+        if float(np.asarray(model.body_mass)[body_id]) <= 0.0:
+            raise ValueError(f"torso_body_id {body_id} is massless")
+        before = np.asarray(model.body_ipos)[body_id]
         after = before + value
-        replacements["body_ipos"] = model.body_ipos.at[1].set(jp.asarray(after))
-        readback.update({"before": before.tolist(), "after": after.tolist(), "changed_indices": [[1, 0], [1, 1], [1, 2]]})
+        replacements["body_ipos"] = model.body_ipos.at[body_id].set(jp.asarray(after))
+        readback.update({
+            "body_id": body_id,
+            "body_mass_kg": float(np.asarray(model.body_mass)[body_id]),
+            "before": before.tolist(),
+            "after": after.tolist(),
+            "changed_indices": [[body_id, 0], [body_id, 1], [body_id, 2]],
+        })
         raw_value = value.tolist()
     elif key == "all_link_mass_scale":
         value = float(raw_value)
@@ -156,11 +175,18 @@ def apply_eval_dynamics_override(model, override: Mapping[str, Any] | None, jp):
         replacements["body_mass"] = jp.asarray(after)
         readback.update({"before": before.tolist(), "after": after.tolist(), "changed_indices": list(range(len(before)))})
     elif key == "torso_mass_add_kg":
+        if torso_body_id is None:
+            raise ValueError("torso_mass_add_kg requires a name-resolved torso_body_id")
         value = float(raw_value)
-        before = float(np.asarray(model.body_mass)[1])
+        body_id = int(torso_body_id)
+        if body_id <= 0 or body_id >= int(model.nbody):
+            raise ValueError(f"invalid torso_body_id: {body_id}")
+        before = float(np.asarray(model.body_mass)[body_id])
+        if before <= 0.0:
+            raise ValueError(f"torso_body_id {body_id} is massless")
         after = before + value
-        replacements["body_mass"] = model.body_mass.at[1].set(after)
-        readback.update({"before": before, "after": after, "changed_indices": [1]})
+        replacements["body_mass"] = model.body_mass.at[body_id].set(after)
+        readback.update({"body_id": body_id, "before": before, "after": after, "changed_indices": [body_id]})
     elif key == "joint_qpos0_offset_rad":
         value = np.asarray(raw_value, dtype=float)
         if value.ndim == 0:
@@ -1254,9 +1280,15 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             env = joystick.Joystick(
                 task=config.task, config=env_config, config_overrides=overrides
             )
+            torso_body_id = int(env.mj_model.body("trunk_assembly").id)
             env._mjx_model, dynamics_override = apply_eval_dynamics_override(
-                env.mjx_model, config.eval_dynamics_override, jp
+                env.mjx_model,
+                config.eval_dynamics_override,
+                jp,
+                torso_body_id=torso_body_id,
             )
+            if dynamics_override["key"] in {"torso_com_offset_m", "torso_mass_add_kg"}:
+                dynamics_override["readback"]["body_name"] = "trunk_assembly"
             if dynamics_override["key"] == "joint_qpos0_offset_rad":
                 addresses = np.asarray(
                     dynamics_override["readback"]["affected_joint_qpos_addrs"],

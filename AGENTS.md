@@ -941,3 +941,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   training, Colab, local GPU, RDK-X5, robot, deployment, torque, and motor
   access remain unauthorized. See
   `outputs/analysis/GROUND_UP_ROBUSTNESS_R2_ARMATURE_HI_RESULT_20260714.md`.
+- 2026-07-14: The first `TORSO_COM_X_NEG` formal pass is invalid evidence and
+  does not authorize condition 8. A post-aggregation causal audit found all 16
+  traces byte-identical to the default-armature traces. The evaluator had
+  mutated `body_ipos[1]`, but compiled body 1 is the massless `base`; the
+  intended inertial torso is body 2, `trunk_assembly`, at .698526 kg. The
+  evaluator now resolves `trunk_assembly` by name, rejects massless targets,
+  and records name/ID/mass. Its corrected contract passes exact identity,
+  default-off reproduction, CPU-only execution, and a new paired sensitivity
+  smoke proving the -.05 m COM shift changes dynamics. Only an identical
+  condition-7 rerun is authorized. Condition 8+, R3+, training, Colab, local
+  GPU, RDK-X5, robot, deployment, torque, and motor access remain unauthorized.
+  See
+  `outputs/analysis/GROUND_UP_ROBUSTNESS_R2_TORSO_BODY_INDEX_CORRECTION_20260714.md`.

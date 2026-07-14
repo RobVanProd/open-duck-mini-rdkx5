@@ -81,8 +81,8 @@
     <section class="hero">
       <div class="card">
         <div class="label">Current operation</div>
-        <div class="big amber" id="operation">R2 · torso COM X −0.05 m</div>
-        <div class="metric" id="operation-detail">The first six R2 conditions pass all 96 cells. Armature 1.05× reaches .18397 rad worst tracking. Only condition 7—the first torso-COM endpoint, X −0.05 m—is authorized next.</div>
+        <div class="big amber" id="operation">R2 · corrected condition-7 rerun</div>
+        <div class="metric" id="operation-detail">A causal audit invalidated the first torso-COM result: it targeted massless body 1. The corrected evaluator name-resolves the 0.698526 kg trunk and proves the shift changes dynamics. Only the identical X −0.05 m rerun is authorized.</div>
       </div>
       <div class="card">
         <div class="label">Offline winner</div>
@@ -216,7 +216,9 @@
           <li>Completed: joint friction loss 1.1× passes the complete 16-cell matrix.</li>
           <li>Completed: armature 1.0× passes the complete 16-cell matrix.</li>
           <li>Completed: armature 1.05× passes the complete 16-cell matrix.</li>
-          <li>Current: run only condition 7, torso COM X −0.05 m, across the complete matrix.</li>
+          <li>Completed: invalidate the first condition-7 result after proving it mutated massless body 1 and produced 16 traces identical to default.</li>
+          <li>Completed: correct torso COM/mass mutation to name-resolved <code>trunk_assembly</code> body 2 and pass identity plus dynamics-sensitivity contracts.</li>
+          <li>Current: rerun only condition 7, torso COM X −0.05 m, across the unchanged complete matrix.</li>
           <li>Design RDK runtime only after an offline winner exists.</li>
         </ol>
       </div>

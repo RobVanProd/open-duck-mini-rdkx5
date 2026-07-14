@@ -91,10 +91,18 @@ def main() -> int:
             },
         )
     baseline = env.mjx_model
+    torso_body_name = "trunk_assembly"
+    torso_body_id = int(env.mj_model.body(torso_body_name).id)
+    torso_body_mass_kg = float(env.mj_model.body_mass[torso_body_id])
     baseline_fields = {name: np.asarray(getattr(baseline, name)) for name in MODEL_FIELDS}
     condition_rows = []
     for condition in prereg["conditions_in_strict_order"]:
-        updated, report = apply_eval_dynamics_override(baseline, condition["override"], jp)
+        updated, report = apply_eval_dynamics_override(
+            baseline,
+            condition["override"],
+            jp,
+            torso_body_id=torso_body_id,
+        )
         output_fields = {name: np.asarray(getattr(updated, name)) for name in MODEL_FIELDS}
         changed = {name for name in MODEL_FIELDS if not np.array_equal(baseline_fields[name], output_fields[name])}
         key = next(iter(condition["override"]))
@@ -116,7 +124,9 @@ def main() -> int:
             "readback_finite": bool(readback_finite),
         })
 
-    default_model, default_report = apply_eval_dynamics_override(baseline, None, jp)
+    default_model, default_report = apply_eval_dynamics_override(
+        baseline, None, jp, torso_body_id=torso_body_id
+    )
     default_model_exact = all(
         np.array_equal(baseline_fields[name], np.asarray(getattr(default_model, name)))
         for name in MODEL_FIELDS
@@ -164,6 +174,33 @@ def main() -> int:
         and home_before.size == 14
         and np.allclose(home_after - home_before, 0.03, rtol=0.0, atol=1e-8)
     )
+    com_smoke_duration_s = 0.20
+    com_baseline_result = run_closed_loop_sim(
+        ClosedLoopConfig(duration_s=com_smoke_duration_s, **common)
+    )
+    com_shift_result = run_closed_loop_sim(
+        ClosedLoopConfig(
+            duration_s=com_smoke_duration_s,
+            eval_dynamics_override={"torso_com_offset_m": [-0.05, 0.0, 0.0]},
+            **common,
+        )
+    )
+    com_shift_report = com_shift_result.get("insertion_point", {}).get("dynamics_override", {})
+    com_named_massive_body_exact = (
+        torso_body_name == "trunk_assembly"
+        and torso_body_id == 2
+        and torso_body_mass_kg > 0.0
+        and com_shift_report.get("key") == "torso_com_offset_m"
+        and (com_shift_report.get("readback") or {}).get("body_name") == torso_body_name
+        and (com_shift_report.get("readback") or {}).get("body_id") == torso_body_id
+        and (com_shift_report.get("readback") or {}).get("body_mass_kg", 0.0) > 0.0
+    )
+    com_shift_changes_dynamics = (
+        com_baseline_result.get("status") not in {"HOLD_SIM_RUNTIME_ERROR", "HOLD_ENV_NOT_READY"}
+        and com_shift_result.get("status") not in {"HOLD_SIM_RUNTIME_ERROR", "HOLD_ENV_NOT_READY"}
+        and strip_wall_clock(com_baseline_result.get("modes", {}).get("fitted", {}))
+        != strip_wall_clock(com_shift_result.get("modes", {}).get("fitted", {}))
+    )
     checks = {
         "preregistration_status_valid": prereg["status"] == "PREREGISTERED_CONTRACT_REQUIRED_CPU_ONLY",
         "exact_20_conditions_320_max_cells": len(condition_rows) == 20 and prereg["matrix"]["maximum_cells"] == 320,
@@ -174,6 +211,8 @@ def main() -> int:
         "default_off_model_exact": default_model_exact and default_report["enabled"] is False,
         "default_off_600_tick_behavior_exact": default_off_exact,
         "joint_offset_reaches_home_support_reset": bool(qpos_home_propagated),
+        "torso_body_name_id_and_mass_exact": bool(com_named_massive_body_exact),
+        "torso_com_smoke_changes_dynamics": bool(com_shift_changes_dynamics),
         "cpu_only": jax.default_backend() == "cpu" and os.environ["CUDA_VISIBLE_DEVICES"] == "" and os.environ["JAX_PLATFORMS"] == "cpu",
     }
     failed = [key for key, value in checks.items() if not value]
@@ -188,6 +227,14 @@ def main() -> int:
         "default_off_result_status": default_result.get("status"),
         "qpos_smoke_status": qpos_result.get("status"),
         "qpos_smoke_readback": qpos_report,
+        "torso_body": {"name": torso_body_name, "id": torso_body_id, "mass_kg": torso_body_mass_kg},
+        "torso_com_smoke": {
+            "duration_s": com_smoke_duration_s,
+            "baseline_status": com_baseline_result.get("status"),
+            "shift_status": com_shift_result.get("status"),
+            "shift_readback": com_shift_report,
+            "dynamics_changed": bool(com_shift_changes_dynamics),
+        },
         "tool_hashes": {
             "closed_loop_sim_eval": sha256(Path(__file__).with_name("closed_loop_sim_eval.py")),
             "evaluate_ground_up_policy": sha256(Path(__file__).with_name("evaluate_ground_up_policy.py")),
