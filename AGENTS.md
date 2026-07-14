@@ -468,3 +468,21 @@ Do not proceed to grounded walking until low-risk gates pass.
   no motor access occurred, and both off-plan side-by-side stage directories
   were removed. The exact pre-install backup remains for audit. See
   `outputs/analysis/RDK_HARD_VECTOR_ROLLBACK_AND_PROCESS_CORRECTION_20260712.md`.
+- 2026-07-14: Correct deterministic-home evaluation superseded the earlier
+  randomized-reset classification of the ground-up reference-residual A/B. All
+  A0/A1 x=.074 runs at 3M/4M pass emergence; A1 4M is strongest at 0.06398 m/s.
+  Its x=.08 saturation is explained by fixed-command normalization, not robot
+  behavior. See `GROUND_UP_HOME_RESET_REFERENCE_RESIDUAL_AB_RESULT_20260714.md`.
+- 2026-07-14: Exact measured hard-vector projection preserves A1 4M gait 2/2
+  at x=.074 with 0.05345 m/s, bilateral transitions, no saturation, and zero
+  target-rate excess. The broader bridge gate still holds at tracking p95
+  0.20246 versus 0.20. This is offline evidence only.
+- 2026-07-14: Train-time hard-vector plus uniform x=[.074,.080) support now
+  passes its CPU transition/export contract. The returned observation carries
+  the realized bounded action, and stateful ONNX uses `obs, previous_action` to
+  produce `continuous_actions, previous_action_out`. The preregistered 1,024-
+  step CPU continuation smoke restored A1 4M exactly, updated all 10 policy
+  leaves with finite metrics, and passed chained ONNX bounds. One exact 2M-step
+  Colab continuation is authorized by
+  `GROUND_UP_HARD_VECTOR_COMMAND_SUPPORT_CONTINUATION_PREREGISTRATION_20260714.md`.
+  No local GPU, RDK-X5, deployment, robot, torque, or motor access is authorized.
