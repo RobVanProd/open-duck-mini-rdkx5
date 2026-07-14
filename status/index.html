@@ -81,8 +81,8 @@
     <section class="hero">
       <div class="card">
         <div class="label">Current operation</div>
-        <div class="big amber" id="operation">Reset-contract correctness repair</div>
-        <div class="metric" id="operation-detail">The feasibility audit found the oracle and policy evaluator used Playground's randomized reset despite the frozen deterministic-home contract. Affected negative results are being re-evaluated from home before any new search.</div>
+        <div class="big amber" id="operation">Hardware-vector survival diagnostic</div>
+        <div class="metric" id="operation-detail">Correct home-reset evaluation found nominal gait at x=.074 in all four saved checkpoints. A1 4M is strongest, but violates measured target-rate limits; CPU-only work is testing whether gait survives the frozen hardware vector.</div>
       </div>
       <div class="card">
         <div class="label">Offline winner</div>
@@ -122,23 +122,25 @@
           <li>Progress-conditioned survival tied O1 exactly: 2/8 moving passes, one persistent seed, six hard failures, and zero full checkpoint passes. The reward-objective family is closed.</li>
           <li>Direct reference execution is not a valid cloning label: every audited form moved backward on average, with 2–4 falls per 8 runs. The selected formulation anchors the actor at the projected reference and learns state-feedback residuals.</li>
           <li>The reference-residual software contract passed on CPU: initial JAX and ONNX actions match the projected reference within 2.98e-8, PPO log probability is finite, and a 1,024-step training smoke exported the correct final-action graph.</li>
-          <li>The causal A/B rejected reference anchoring: A0 scored 1/8 and A1 scored 0/8, with zero persistent seeds and zero full checkpoints in both arms.</li>
+          <li>The original causal A/B scored A0 at 1/8 and A1 at 0/8 under an unintended randomized reset. Those classifications are superseded by the corrected home-reset evaluation below.</li>
           <li>The exact-command audit found a concrete input mismatch: command [.074, 0, 0] receives nearest table cell [.074, -.037, -.074] because the table has no zero lateral/yaw cell.</li>
           <li>Exact interpolation removed that alias and changed actions by as much as .2120, but still scored 0/4: seed 100 moved backward and seed 101 fell at both commands. The lookup defect was real but not causal.</li>
-          <li>A body-frame gate audit corrected world-X displacement under randomized yaw. Only 2 runs changed across 62 saved evaluations and zero full checkpoints emerged, so no prior winner decision changes.</li>
+          <li>A body-frame gate audit corrected world-X displacement under randomized yaw. It changed only 2 of 62 historical randomized-reset runs, but those runs no longer decide the nominal home-reset gate.</li>
           <li>The new oracle shooting controller generated +.0899 m body-forward motion in seed 100 with bilateral transitions and zero rate excess, but touched saturation; seed 101 rolled, reversed, and fell. It is not a source pass.</li>
           <li>Doubling only the oracle horizon increased propulsion in both seeds, but both fell near 0.81 rad pitch while reaching 0.66–0.68 m/s against a 0.074 m/s command. The fixed shooting formulation is closed with 0/2 passes.</li>
           <li>Lexicographic viability removed the propulsion exploit but did not create a teacher: seed 100 became stable-but-slow and seed 101 still reversed and fell. It scored 0/2 and is closed without parameter tuning.</li>
           <li>The follow-up bank found 2,489/4,096 viable seed-100 horizons and 0/4,096 for seed 101, then exposed the causal mismatch: those probes used randomized joint/base reset state instead of the preregistered deterministic home state.</li>
+          <li>Correct home-reset re-evaluation found 8/8 x=.074 emergence passes across A0/A1 at 3M/4M. A1 4M reaches 0.0640 m/s with bilateral transitions, but exceeds measured per-joint rate limits by up to 4.24 rad/s.</li>
+          <li>The x=.08 failure is digitally explained: fixed-command training leaves command standard deviation at 1e-6, so a .006 command change becomes a normalized shift near 6000 and saturates the actor.</li>
         </ol>
       </div>
       <div class="card">
         <div class="label">Next decision sequence</div>
         <h2 style="margin-top:8px">No skipped gates</h2>
         <ol>
-          <li>Repair the ground-up evaluator to select and record <code>home-support</code> reset explicitly.</li>
-          <li>Validate deterministic home pose and zero base velocity at the simulator boundary.</li>
-          <li>Re-evaluate the latest saved causal A/B policies on CPU before interpreting their prior negative classifications.</li>
+          <li>Run a frozen CPU diagnostic of A1 4M with the measured per-joint action-rate vector.</li>
+          <li>If gait survives, preregister a command-distributed, hardware-vector-constrained learning recipe; otherwise close this bootstrap as non-transferable.</li>
+          <li>Spend no Colab compute until the corrected software contract passes.</li>
           <li>Require both randomized CPU seeds to complete with command-consistent gait, bilateral transitions, no saturation, and zero rate excess.</li>
           <li>Only a passing source may authorize collection design; no policy training or accelerator use follows automatically.</li>
           <li>Add x=0, randomization, delay, and pushes only after nominal gait emergence persists.</li>
