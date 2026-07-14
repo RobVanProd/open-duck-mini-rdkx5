@@ -81,8 +81,8 @@
     <section class="hero">
       <div class="card">
         <div class="label">Current operation</div>
-        <div class="big amber" id="operation">Hardware-vector survival diagnostic</div>
-        <div class="metric" id="operation-detail">Correct home-reset evaluation found nominal gait at x=.074 in all four saved checkpoints. A1 4M is strongest, but violates measured target-rate limits; CPU-only work is testing whether gait survives the frozen hardware vector.</div>
+        <div class="big amber" id="operation">Corrected training-contract build</div>
+        <div class="metric" id="operation-detail">A1 4M survives the measured hard vector 2/2 with 0.05345 m/s, bilateral transitions, and zero rate excess. Work is building a train-time hard-vector plus nondegenerate-command contract before any Colab spend.</div>
       </div>
       <div class="card">
         <div class="label">Offline winner</div>
@@ -132,15 +132,16 @@
           <li>The follow-up bank found 2,489/4,096 viable seed-100 horizons and 0/4,096 for seed 101, then exposed the causal mismatch: those probes used randomized joint/base reset state instead of the preregistered deterministic home state.</li>
           <li>Correct home-reset re-evaluation found 8/8 x=.074 emergence passes across A0/A1 at 3M/4M. A1 4M reaches 0.0640 m/s with bilateral transitions, but exceeds measured per-joint rate limits by up to 4.24 rad/s.</li>
           <li>The x=.08 failure is digitally explained: fixed-command training leaves command standard deviation at 1e-6, so a .006 command change becomes a normalized shift near 6000 and saturates the actor.</li>
+          <li>Measured hard-vector projection preserves A1 4M gait 2/2 and eliminates rate excess. The remaining candidate hold is pitch-chain tracking p95 0.20246 versus the frozen 0.20 limit.</li>
         </ol>
       </div>
       <div class="card">
         <div class="label">Next decision sequence</div>
         <h2 style="margin-top:8px">No skipped gates</h2>
         <ol>
-          <li>Run a frozen CPU diagnostic of A1 4M with the measured per-joint action-rate vector.</li>
-          <li>If gait survives, preregister a command-distributed, hardware-vector-constrained learning recipe; otherwise close this bootstrap as non-transferable.</li>
-          <li>Spend no Colab compute until the corrected software contract passes.</li>
+          <li>Implement the measured vector as a hard train-time transition, initialized from home action zero.</li>
+          <li>Train command support across x=.074–.080 so observation normalization is nondegenerate.</li>
+          <li>CPU-smoke the update and verify exported ONNX semantics before authorizing one Colab causal run.</li>
           <li>Require both randomized CPU seeds to complete with command-consistent gait, bilateral transitions, no saturation, and zero rate excess.</li>
           <li>Only a passing source may authorize collection design; no policy training or accelerator use follows automatically.</li>
           <li>Add x=0, randomization, delay, and pushes only after nominal gait emergence persists.</li>
