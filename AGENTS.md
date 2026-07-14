@@ -654,3 +654,14 @@ Do not proceed to grounded walking until low-risk gates pass.
   T1 is retained only if both corrected exports exist; the recovery path then
   rebuilds the exact package and runs T2/T3 from the same protected source.
   No reward or behavior outcome was inspected to make this correction.
+- 2026-07-14: The hosted tracking-tail screen completed and the 24,480,277-byte
+  archive reproduced SHA-256 `ae4c631a...d8ca60f` locally before Colab was
+  stopped; zero sessions remain. All 36 preregistered CPU behavior cells walk
+  for 600 ticks with bilateral transitions, zero saturation, and zero measured
+  rate excess. T1 half/final worst tracking p95 is .22883/.23242, T2 is
+  .21505/.20972, and T3 is .22048/.20410 versus the unchanged <=.20 limit.
+  No arm passes both checkpoints, so the exact squared tail-exceedance
+  formulation is closed without selecting T3 final or tuning another scale.
+  No x=0, local GPU, RDK-X5, robot, deployment, torque, or motor gate is
+  authorized. Next work is a read-only joint/phase trace audit. See
+  `outputs/analysis/GROUND_UP_TRACKING_TAIL_SEARCH_RESULT_20260714.md`.
