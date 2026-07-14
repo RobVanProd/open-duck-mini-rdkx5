@@ -800,3 +800,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   preregistration, training, Colab, local GPU, RDK-X5, robot, deployment,
   torque, or motor access is authorized. See
   `outputs/analysis/GROUND_UP_COMMAND_DEADBAND_REPAIR_RESULT_20260714.md`.
+- 2026-07-14: The offline robustness ladder is preregistered in the order
+  already frozen by the original ground-up plan. R1 tests both independently
+  measured P30 and P31/34 actuator fits; R2 isolates each pinned dynamics axis;
+  R3 isolates declared sensor noise from additional 0/1/2-tick delays; R4 uses
+  only the declared minimum .1 m/s push; R5 uses the established first rough
+  rung z=.002; R6 combines only independently passed z=.002 and .1 m/s push.
+  Seeds are mechanically derived from the committed repair-result hash. Both
+  half/final checkpoints must retain all prior gates, with a tooling contract
+  before every stage and an immediate stop at the first failure. Only R1 may be
+  contracted and run next. No later stage, training, Colab, local GPU, RDK-X5,
+  robot, deployment, torque, or motor access is authorized. See
+  `outputs/analysis/GROUND_UP_OFFLINE_ROBUSTNESS_LADDER_PREREGISTRATION_20260714.md`.

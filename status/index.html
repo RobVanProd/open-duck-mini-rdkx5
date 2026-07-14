@@ -81,8 +81,8 @@
     <section class="hero">
       <div class="card">
         <div class="label">Current operation</div>
-        <div class="big green" id="operation">Offline robustness preregistration</div>
-        <div class="metric" id="operation-detail">The command-deadband repair passed all 16 frozen CPU cells at both checkpoints. x=0 now holds for 600 ticks with zero saturation/rate excess, while the complete nominal gait gate remains unchanged. The next permitted work is preregistration—not execution—of the robustness ladder.</div>
+        <div class="big green" id="operation">R1 actuator-fit contract</div>
+        <div class="metric" id="operation-detail">The six-stage offline robustness ladder is now frozen. R1 asks whether both checkpoints retain x=0 and nominal gait under both independently measured P30 and P31/34 actuator fits. R1 tooling must pass before its 16 CPU cells run.</div>
       </div>
       <div class="card">
         <div class="label">Offline winner</div>
@@ -199,7 +199,8 @@
           <li>Completed: run the four-cell x=0 preservation gate; both checkpoints saturate and fall, so the nominal winner is held.</li>
           <li>Completed: preregister and CPU-contract a command-deadband zero-action wrapper; both half/final transforms are exact at x=0 and source-identical over x=.074–.080.</li>
           <li>Completed: run the frozen 16-cell CPU behavior matrix; both checkpoints preserve x=0 and the complete nominal gait gate.</li>
-          <li>Current: define and preregister the offline robustness ladder with frozen randomization, delay, and push levels before running any new behavior.</li>
+          <li>Completed: preregister the sequential offline robustness ladder—measured actuator A/B, isolated dynamics, isolated sensor/delay, minimum push, z=.002 terrain, then their passed combination.</li>
+          <li>Current: contract R1 and only then run its 16 CPU cells across both checkpoints and both independently measured actuator fits.</li>
           <li>Design RDK runtime only after an offline winner exists.</li>
         </ol>
       </div>
