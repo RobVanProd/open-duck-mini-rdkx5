@@ -81,8 +81,8 @@
     <section class="hero">
       <div class="card">
         <div class="label">Current operation</div>
-        <div class="big amber" id="operation">Corrected training-contract build</div>
-        <div class="metric" id="operation-detail">A1 4M survives the measured hard vector 2/2 with 0.05345 m/s, bilateral transitions, and zero rate excess. Work is building a train-time hard-vector plus nondegenerate-command contract before any Colab spend.</div>
+        <div class="big amber" id="operation">CPU update/export smoke</div>
+        <div class="metric" id="operation-detail">The hard-vector plus x=.074–.080 command-support contract passes on CPU, including realized-action observation alignment and a stateful two-input ONNX chain. The next gate is one finite CPU PPO update/export before any Colab spend.</div>
       </div>
       <div class="card">
         <div class="label">Offline winner</div>
@@ -133,15 +133,16 @@
           <li>Correct home-reset re-evaluation found 8/8 x=.074 emergence passes across A0/A1 at 3M/4M. A1 4M reaches 0.0640 m/s with bilateral transitions, but exceeds measured per-joint rate limits by up to 4.24 rad/s.</li>
           <li>The x=.08 failure is digitally explained: fixed-command training leaves command standard deviation at 1e-6, so a .006 command change becomes a normalized shift near 6000 and saturates the actor.</li>
           <li>Measured hard-vector projection preserves A1 4M gait 2/2 and eliminates rate excess. The remaining candidate hold is pitch-chain tracking p95 0.20246 versus the frozen 0.20 limit.</li>
+          <li>The corrected training/export contract passes every CPU check: 4,096 commands span x=.074–.080 with std .001744; first-tick targets obey all 14 measured limits; returned observations carry the realized bounded action; and the stateful ONNX chain has zero measured bound excess.</li>
         </ol>
       </div>
       <div class="card">
         <div class="label">Next decision sequence</div>
         <h2 style="margin-top:8px">No skipped gates</h2>
         <ol>
-          <li>Implement the measured vector as a hard train-time transition, initialized from home action zero.</li>
-          <li>Train command support across x=.074–.080 so observation normalization is nondegenerate.</li>
-          <li>CPU-smoke the update and verify exported ONNX semantics before authorizing one Colab causal run.</li>
+          <li>Completed: implement the measured vector as a hard train-time transition, initialized from home action zero.</li>
+          <li>Completed: sample command support across x=.074–.080 so observation normalization is nondegenerate.</li>
+          <li>Run one finite CPU PPO update and verify its exported stateful ONNX before authorizing one Colab causal continuation.</li>
           <li>Require both randomized CPU seeds to complete with command-consistent gait, bilateral transitions, no saturation, and zero rate excess.</li>
           <li>Only a passing source may authorize collection design; no policy training or accelerator use follows automatically.</li>
           <li>Add x=0, randomization, delay, and pushes only after nominal gait emergence persists.</li>
