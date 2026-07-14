@@ -156,6 +156,13 @@ def evaluate(args: argparse.Namespace) -> dict[str, Any]:
     seeds = parse_csv(args.seeds, int)
     state_input_names = tuple(parse_csv(args.policy_state_input_names, str))
     state_output_names = tuple(parse_csv(args.policy_state_output_names, str))
+    dynamics_override = (
+        None
+        if args.eval_dynamics_override_json is None
+        else json.loads(args.eval_dynamics_override_json)
+    )
+    if dynamics_override is not None and not isinstance(dynamics_override, dict):
+        raise ValueError("--eval-dynamics-override-json must decode to an object")
 
     runs: list[dict[str, Any]] = []
     for command_x in commands:
@@ -193,6 +200,7 @@ def evaluate(args: argparse.Namespace) -> dict[str, Any]:
                     policy_applied_target_observation=(
                         args.policy_applied_target_observation
                     ),
+                    eval_dynamics_override=dynamics_override,
                     trace_jsonl=trace_path,
                     trace_full_obs=bool(args.trace_full_obs),
                 )
@@ -261,6 +269,7 @@ def evaluate(args: argparse.Namespace) -> dict[str, Any]:
             "policy_applied_target_observation": bool(
                 args.policy_applied_target_observation
             ),
+            "eval_dynamics_override": dynamics_override,
             "trace_dir": None if args.trace_dir is None else str(args.trace_dir),
             "trace_full_obs": bool(args.trace_full_obs),
         },
@@ -352,6 +361,11 @@ def main() -> None:
         help="Two complete 27-tick reference periods at the frozen 50 Hz rate.",
     )
     parser.add_argument("--task", default="flat_terrain")
+    parser.add_argument(
+        "--eval-dynamics-override-json",
+        default=None,
+        help="R2 contract-only JSON object containing exactly one dynamics axis.",
+    )
     parser.add_argument(
         "--reset-mode",
         choices=("home-support", "playground"),

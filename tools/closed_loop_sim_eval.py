@@ -87,11 +87,105 @@ class ClosedLoopConfig:
     push_recovery_max_abs_pitch_rad: float = 0.8
     push_recovery_min_base_height_m: float = 0.08
     terrain_hfield_z_scale: float | None = None
+    eval_dynamics_override: Mapping[str, Any] | None = None
     reset_settle_ticks: int = 0
     reset_mode: str = "playground"
     bridge_reset_align_joint_indices: tuple[int, ...] = ()
     reference_feature_table_path: Path | None = None
     reference_start_phase: int | None = None
+
+
+R2_DYNAMICS_OVERRIDE_KEYS = {
+    "floor_friction",
+    "joint_frictionloss_scale",
+    "armature_scale",
+    "torso_com_offset_m",
+    "all_link_mass_scale",
+    "torso_mass_add_kg",
+    "joint_qpos0_offset_rad",
+    "kp_scale",
+}
+
+
+def apply_eval_dynamics_override(model, override: Mapping[str, Any] | None, jp):
+    """Apply exactly one preregistered R2 dynamics axis to an MJX model."""
+    if not override:
+        return model, {"enabled": False, "key": None, "value": None, "readback": {}}
+    if len(override) != 1:
+        raise ValueError("eval_dynamics_override must contain exactly one axis")
+    key, raw_value = next(iter(override.items()))
+    if key not in R2_DYNAMICS_OVERRIDE_KEYS:
+        raise ValueError(f"unsupported eval dynamics axis: {key}")
+
+    dof_ids = np.flatnonzero(np.asarray(model.dof_hasfrictionloss, dtype=bool))
+    joint_ids = np.asarray(model.dof_jntid, dtype=int)[dof_ids]
+    joint_qpos_addrs = np.asarray(model.jnt_qposadr, dtype=int)[joint_ids]
+    replacements = {}
+    readback = {"affected_dof_ids": dof_ids.tolist(), "affected_joint_qpos_addrs": joint_qpos_addrs.tolist()}
+
+    if key == "floor_friction":
+        value = float(raw_value)
+        before = float(np.asarray(model.geom_friction)[0, 0])
+        replacements["geom_friction"] = model.geom_friction.at[0, 0].set(value)
+        readback.update({"before": before, "after": value, "changed_indices": [[0, 0]]})
+    elif key == "joint_frictionloss_scale":
+        value = float(raw_value)
+        before = np.asarray(model.dof_frictionloss)[dof_ids]
+        after = before * value
+        replacements["dof_frictionloss"] = model.dof_frictionloss.at[dof_ids].set(jp.asarray(after))
+        readback.update({"before": before.tolist(), "after": after.tolist(), "changed_indices": dof_ids.tolist()})
+    elif key == "armature_scale":
+        value = float(raw_value)
+        before = np.asarray(model.dof_armature)[dof_ids]
+        after = before * value
+        replacements["dof_armature"] = model.dof_armature.at[dof_ids].set(jp.asarray(after))
+        readback.update({"before": before.tolist(), "after": after.tolist(), "changed_indices": dof_ids.tolist()})
+    elif key == "torso_com_offset_m":
+        value = np.asarray(raw_value, dtype=float)
+        if value.shape != (3,):
+            raise ValueError("torso_com_offset_m must have exactly three values")
+        before = np.asarray(model.body_ipos)[1]
+        after = before + value
+        replacements["body_ipos"] = model.body_ipos.at[1].set(jp.asarray(after))
+        readback.update({"before": before.tolist(), "after": after.tolist(), "changed_indices": [[1, 0], [1, 1], [1, 2]]})
+        raw_value = value.tolist()
+    elif key == "all_link_mass_scale":
+        value = float(raw_value)
+        before = np.asarray(model.body_mass)
+        after = before * value
+        replacements["body_mass"] = jp.asarray(after)
+        readback.update({"before": before.tolist(), "after": after.tolist(), "changed_indices": list(range(len(before)))})
+    elif key == "torso_mass_add_kg":
+        value = float(raw_value)
+        before = float(np.asarray(model.body_mass)[1])
+        after = before + value
+        replacements["body_mass"] = model.body_mass.at[1].set(after)
+        readback.update({"before": before, "after": after, "changed_indices": [1]})
+    elif key == "joint_qpos0_offset_rad":
+        value = np.asarray(raw_value, dtype=float)
+        if value.ndim == 0:
+            value = np.full(len(joint_qpos_addrs), float(value), dtype=float)
+        if value.shape != (len(joint_qpos_addrs),):
+            raise ValueError(f"joint_qpos0_offset_rad must be scalar or {len(joint_qpos_addrs)} values")
+        before = np.asarray(model.qpos0)[joint_qpos_addrs]
+        after = before + value
+        replacements["qpos0"] = model.qpos0.at[joint_qpos_addrs].set(jp.asarray(after))
+        readback.update({"before": before.tolist(), "after": after.tolist(), "offset": value.tolist(), "changed_indices": joint_qpos_addrs.tolist()})
+        raw_value = value.tolist()
+    elif key == "kp_scale":
+        value = float(raw_value)
+        before_gain = np.asarray(model.actuator_gainprm)[:, 0]
+        before_bias = np.asarray(model.actuator_biasprm)[:, 1]
+        after_gain = before_gain * value
+        after_bias = -after_gain
+        replacements["actuator_gainprm"] = model.actuator_gainprm.at[:, 0].set(jp.asarray(after_gain))
+        replacements["actuator_biasprm"] = model.actuator_biasprm.at[:, 1].set(jp.asarray(after_bias))
+        readback.update({"before_gain": before_gain.tolist(), "after_gain": after_gain.tolist(), "before_bias": before_bias.tolist(), "after_bias": after_bias.tolist(), "changed_indices": list(range(len(before_gain)))})
+    else:  # pragma: no cover - exhaustive key guard above
+        raise AssertionError(key)
+
+    updated = model.tree_replace(replacements)
+    return updated, {"enabled": True, "key": key, "value": raw_value, "readback": readback}
 
 
 def inject_policy_applied_target_observation(obs, applied_target, enabled: bool):
@@ -1160,6 +1254,20 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             env = joystick.Joystick(
                 task=config.task, config=env_config, config_overrides=overrides
             )
+            env._mjx_model, dynamics_override = apply_eval_dynamics_override(
+                env.mjx_model, config.eval_dynamics_override, jp
+            )
+            if dynamics_override["key"] == "joint_qpos0_offset_rad":
+                addresses = np.asarray(
+                    dynamics_override["readback"]["affected_joint_qpos_addrs"],
+                    dtype=int,
+                )
+                offsets = np.asarray(dynamics_override["value"], dtype=float)
+                init_before = np.asarray(env._init_q)[addresses]
+                init_after = init_before + offsets
+                env._init_q = env._init_q.at[addresses].set(jp.asarray(init_after))
+                dynamics_override["readback"]["home_init_before"] = init_before.tolist()
+                dynamics_override["readback"]["home_init_after"] = init_after.tolist()
     except Exception as exc:  # pragma: no cover - environment-dependent
         return {
             "status": "HOLD_SIM_RUNTIME_ERROR",
@@ -1616,6 +1724,7 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             else int(config.reference_start_phase)
         ),
         "terrain_override": terrain_override,
+        "dynamics_override": dynamics_override,
         "reset_settle_ticks": int(config.reset_settle_ticks),
         "reset_mode": config.reset_mode,
         "bridge_reset_align_joint_indices": list(
@@ -2031,6 +2140,7 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             "jax_backend": jax.default_backend(),
             "jax_devices": [str(device) for device in jax.devices()],
             "terrain_override": terrain_override,
+            "dynamics_override": dynamics_override,
         },
         "insertion_point": insertion_point,
         "real_x008_reference": REAL_X008_REFERENCE,

@@ -881,3 +881,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   execution. No R2 behavior before that contract, R3+, training, Colab, local
   GPU, RDK-X5, robot, deployment, torque, or motor access is authorized. See
   `outputs/analysis/GROUND_UP_ROBUSTNESS_R2_MATRIX_PREREGISTRATION_20260714.md`.
+- 2026-07-14: The R2 evaluator contract passes all frozen checks. All 20
+  conditions contain exactly one supported axis, direct MJX readback shows no
+  model fields outside the intended axis change, all readbacks are finite,
+  default-off model arrays are exact, and the complete default-off 600-tick
+  final/P30/x=.08 behavior reproduces the committed repaired-R1 result exactly
+  after excluding wall-clock time. The .03-rad initialization smoke proves all
+  14 offsets reach deterministic home-support reset. JAX and ONNX remain CPU
+  only. This authorizes sequential R2 behavior beginning only with
+  `FLOOR_FRICTION_LO`, stopping at its first failed condition. No R3+,
+  training, Colab, local GPU, RDK-X5, robot, deployment, torque, or motor
+  access is authorized. See
+  `outputs/analysis/GROUND_UP_ROBUSTNESS_R2_EVALUATOR_CONTRACT_20260714.md`.
