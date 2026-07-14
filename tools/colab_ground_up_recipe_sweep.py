@@ -114,12 +114,16 @@ def main() -> int:
             "--ppo_num_envs", "256",
             "--ppo_num_evals", str(config["num_evals"]),
             "--ppo_episode_length", "600",
-            "--ppo_unroll_length", str(config["shared"]["unroll_length"]),
+            "--ppo_unroll_length", str(candidate.get(
+                "unroll_length", config["shared"]["unroll_length"]
+            )),
             "--ppo_batch_size", "256",
             "--ppo_num_minibatches", "4",
             "--ppo_num_updates_per_batch", "4",
             "--ppo_learning_rate", str(candidate["learning_rate"]),
-            "--ppo_discounting", str(config["shared"]["discounting"]),
+            "--ppo_discounting", str(candidate.get(
+                "discounting", config["shared"]["discounting"]
+            )),
             "--ppo_entropy_cost", str(candidate["entropy_cost"]),
             "--imitation_scale", str(candidate["imitation_scale"]),
             "--critic_observation", "privileged_state",

@@ -1,0 +1,50 @@
+{
+  "schema_version": "ground_up_stage1_recipe_second_ring.v1",
+  "status": "PREREGISTERED_BEFORE_SECOND_RING_COMPUTE",
+  "training_seed": 100,
+  "timesteps": 8028160,
+  "num_evals": 5,
+  "shared": {
+    "discounting": 0.97,
+    "unroll_length": 20,
+    "ground_up_command_curriculum": true,
+    "extra_patches": [
+      "ground_up_reference_velocity_frame_fix.patch",
+      "ground_up_stage1_command_mixture.patch"
+    ]
+  },
+  "center_evidence_reused": "STAGE1MIX20",
+  "candidates": [
+    {
+      "id": "S1DISC_LO",
+      "learning_rate": 0.0003,
+      "discounting": 0.95,
+      "entropy_cost": 0.005,
+      "imitation_scale": 1.0
+    },
+    {
+      "id": "S1DISC_HI",
+      "learning_rate": 0.0003,
+      "discounting": 0.99,
+      "entropy_cost": 0.005,
+      "imitation_scale": 1.0
+    },
+    {
+      "id": "S1UNROLL_LO",
+      "learning_rate": 0.0003,
+      "unroll_length": 10,
+      "entropy_cost": 0.005,
+      "imitation_scale": 1.0
+    },
+    {
+      "id": "S1UNROLL_HI",
+      "learning_rate": 0.0003,
+      "unroll_length": 40,
+      "entropy_cost": 0.005,
+      "imitation_scale": 1.0
+    }
+  ],
+  "selection_uses_training_reward": false,
+  "robot_access_authorized": false,
+  "local_gpu_authorized": false
+}
