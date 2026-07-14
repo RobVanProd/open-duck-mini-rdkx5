@@ -26,3 +26,9 @@ reference phase, or simulator model changes. Previously saved policies must be
 re-evaluated; prior randomized-reset classifications are not silently reused.
 
 Local CPU only. No training, Colab, GPU, RDK-X5, or robot access is authorized.
+
+The hardware-vector diagnostic then exposed a reporting-only aggregation bug:
+a positive-command-only campaign was forced to overall hold because it had no
+x=0 rows. Absence of an unrequested x=0 condition is now treated as vacuously
+finite; when x=0 is requested, every x=0 row must still complete. Per-run
+emergence evidence and all behavior thresholds are unchanged.

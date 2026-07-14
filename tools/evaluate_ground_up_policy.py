@@ -208,7 +208,7 @@ def evaluate(args: argparse.Namespace) -> dict[str, Any]:
     moving = [row for row in runs if row["command_x"] > 0]
     zero = [row for row in runs if abs(row["command_x"]) <= 1.0e-12]
     moving_pass = bool(moving) and all(row["emergence"]["pass"] for row in moving)
-    zero_recorded_finite = bool(zero) and all(
+    zero_recorded_finite = (not zero) or all(
         row["emergence"].get("termination_reason") == "duration_complete"
         for row in zero
     )
