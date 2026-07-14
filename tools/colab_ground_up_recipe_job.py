@@ -64,7 +64,7 @@ def main() -> int:
     parser.add_argument("--entropy-cost", type=float, default=defaults.get("entropy_cost", 0.005))
     parser.add_argument("--unroll-length", type=int, default=defaults.get("unroll_length", 20))
     parser.add_argument("--imitation-scale", type=float, default=defaults.get("imitation_scale", 1.0))
-    args = parser.parse_args()
+    args, _kernel_args = parser.parse_known_args()
 
     started = time.monotonic()
     for name in PATCHES:
