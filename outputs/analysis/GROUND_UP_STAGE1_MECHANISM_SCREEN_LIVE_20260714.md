@@ -1,6 +1,6 @@
 # Ground-Up Stage-One Mechanism Screen: Live Evidence
 
-status: `RUNNING_PHASE_MOE`
+status: `RUNTIME_LOSS_RESUME_UNFINISHED_ONLY`
 
 The protected upstream control completed 8,028,160 seed-100 training steps and
 was evaluated at 6,021,120 and 8,028,160 using the frozen CPU gate.
@@ -18,6 +18,14 @@ The reference-conditioned family produces one isolated moving pass at 8M
 seed 100, but it is not persistent and that checkpoint has two hard failures.
 It does not meet the advancement rule.
 
-`M2_PHASE_MOE` is training. No final cross-family ranking or winner exists yet.
+The hosted runtime lost its entire `/content` filesystem while Colab still
+reported the session as BUSY. `M0_UPSTREAM` and `M1_REFCOND` artifacts were
+already downloaded and verified. `M2_PHASE_MOE` had only partial remote
+checkpoints and no completed archive, so it has no behavior evidence.
+
+The stale client was interrupted and the session stopped. Only
+`M2_PHASE_MOE`, `M3_RECURRENT`, and `M4_SYMCRIT` are eligible for an exact
+resume. Completed families will not be repeated. No final cross-family ranking
+or winner exists yet.
 Training reward is excluded. Evaluation used local CPU only; no local GPU,
 RDK-X5, or robot access occurred.
