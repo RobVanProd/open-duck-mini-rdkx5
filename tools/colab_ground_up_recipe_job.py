@@ -64,6 +64,7 @@ def main() -> int:
     parser.add_argument("--entropy-cost", type=float, default=defaults.get("entropy_cost", 0.005))
     parser.add_argument("--unroll-length", type=int, default=defaults.get("unroll_length", 20))
     parser.add_argument("--imitation-scale", type=float, default=defaults.get("imitation_scale", 1.0))
+    parser.add_argument("--num-evals", type=int, default=defaults.get("num_evals", 3))
     args, _kernel_args = parser.parse_known_args()
 
     started = time.monotonic()
@@ -112,7 +113,7 @@ def main() -> int:
         "--output_dir", str(output),
         "--ppo_seed", str(args.seed),
         "--ppo_num_envs", "256",
-        "--ppo_num_evals", "3",
+        "--ppo_num_evals", str(args.num_evals),
         "--ppo_episode_length", "600",
         "--ppo_unroll_length", str(args.unroll_length),
         "--ppo_batch_size", "256",
