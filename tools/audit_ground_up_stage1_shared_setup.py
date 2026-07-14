@@ -203,6 +203,13 @@ def main() -> int:
             "reset_joint_multiplier_range": [0.5, 1.5],
             "zero_command_probability": float(config.ground_up_zero_command_probability),
             "positive_command_range": [command_min, command_max],
+            "head_commands_random_during_ground_up_curriculum": True,
+            "head_command_ranges": {
+                "neck_pitch": list(map(float, config.neck_pitch_range)),
+                "head_pitch": list(map(float, config.head_pitch_range)),
+                "head_yaw": list(map(float, config.head_yaw_range)),
+                "head_roll": list(map(float, config.head_roll_range)),
+            },
         },
         "training_objective_diagnostics_only": training_metrics,
         "decision": {
@@ -225,6 +232,8 @@ def main() -> int:
         f"Reference phase 0 requests contacts `{phase_rows[0]['reference_contacts']}` and has home-pose squared leg error `{phase_rows[0]['leg_pose_squared_error_from_home']:.6f}`. The deterministic closest home-compatible double-support phase is `{best_double['phase']}`, with squared error `{best_double['leg_pose_squared_error_from_home']:.6f}`.",
         "",
         "The actor's reset phase feature is `[0,0]` (norm 0), while every normal cyclic phase feature after the first step has norm 1. Thus the first action of every episode receives an out-of-contract phase sentinel rather than the reset reference phase.",
+        "",
+        "The ground-up locomotion sampler also retains random neck/head commands over the upstream ranges; it does not create a locomotion-only reference stage.",
         "",
         "The continuous positive-command sampler does not produce a continuous reference target:",
         "",

@@ -10,6 +10,8 @@ Reference phase 0 requests contacts `[1, 0]` and has home-pose squared leg error
 
 The actor's reset phase feature is `[0,0]` (norm 0), while every normal cyclic phase feature after the first step has norm 1. Thus the first action of every episode receives an out-of-contract phase sentinel rather than the reset reference phase.
 
+The ground-up locomotion sampler also retains random neck/head commands over the upstream ranges; it does not create a locomotion-only reference stage.
+
 The continuous positive-command sampler does not produce a continuous reference target:
 
 | discrete reference dx | training-sample fraction |
