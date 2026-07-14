@@ -71,6 +71,15 @@ at which all of the following are true on two consecutive evaluations:
 4. the policy does not emit a constant saturated action vector;
 5. x=0 evaluation is finite and recorded.
 
+Each emergence rollout lasts at least `1.08 s`, equal to two complete 27-tick
+reference periods at 50 Hz. Positive-command evidence requires both positive
+world-frame displacement and positive mean local forward velocity. Each foot
+must independently show at least one contact transition. Shorter evaluator
+smokes are contract checks only and can never classify gait emergence. This
+clarification was frozen before recipe-search compute after a 0.1-second CPU
+smoke correctly exposed that initial transients were otherwise insufficiently
+constrained.
+
 This is an emergence measurement, not a policy-clearance gate. The measurement
 stops at the first qualifying pair or at the recipe-search compute cap. If no
 pair is found, recipe comparison is `NO_RESULT`; the window is not shortened to

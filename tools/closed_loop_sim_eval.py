@@ -89,6 +89,7 @@ class ClosedLoopConfig:
     reset_settle_ticks: int = 0
     reset_mode: str = "playground"
     bridge_reset_align_joint_indices: tuple[int, ...] = ()
+    reference_feature_table_path: Path | None = None
 
 
 @contextlib.contextmanager
@@ -313,6 +314,9 @@ def foot_clearance_summary(records: Sequence[Mapping[str, Any]]) -> dict:
         ]
         feet[name] = {
             "contact_pct": float(np.mean(contact) * 100.0),
+            "contact_transition_count": int(np.sum(contact[1:] != contact[:-1]))
+            if samples > 1
+            else 0,
             "swing_samples": int(np.sum(~contact)),
             "stance_samples": int(np.sum(contact)),
             "swing_segment_count": int(len(swing_segments)),
@@ -1012,6 +1016,17 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             "status": "HOLD_SIM_RUNTIME_ERROR",
             "error": f"policy missing: {config.policy_path}",
         }
+    if (
+        config.reference_feature_table_path is not None
+        and not config.reference_feature_table_path.exists()
+    ):
+        return {
+            "status": "HOLD_POLICY_SIM_CONTRACT_MISMATCH",
+            "error": (
+                "reference feature table missing: "
+                f"{config.reference_feature_table_path}"
+            ),
+        }
 
     try:
         import jax
@@ -1102,6 +1117,10 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
     try:
         with temporary_cwd(config.playground_root):
             env_config = joystick.default_config()
+            if config.reference_feature_table_path is not None:
+                env_config.reference_feature_table_path = str(
+                    config.reference_feature_table_path.resolve()
+                )
             applied_reward_overrides = apply_reward_overrides(
                 env_config, config.reward_overrides
             )
@@ -1523,6 +1542,11 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             0.0,
         ],
         "reward_overrides_applied": applied_reward_overrides,
+        "reference_feature_table_path": (
+            None
+            if config.reference_feature_table_path is None
+            else str(config.reference_feature_table_path.resolve())
+        ),
         "terrain_override": terrain_override,
         "reset_settle_ticks": int(config.reset_settle_ticks),
         "reset_mode": config.reset_mode,
