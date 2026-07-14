@@ -930,3 +930,8 @@ Do not proceed to grounded walking until low-risk gates pass.
   Condition 6+, R3+, training, Colab, local GPU, RDK-X5, robot, deployment,
   torque, and motor access remain unauthorized. See
   `outputs/analysis/GROUND_UP_ROBUSTNESS_R2_JOINT_FRICTIONLOSS_HI_RESULT_20260714.md`.
+- 2026-07-14: `ARMATURE_LO` passes all 16 cells with exact 1.0x readback and
+  reproduces the repaired-R1 default metrics. Only `ARMATURE_HI` is authorized
+  next. Condition 7+, R3+, training, Colab, local GPU, RDK-X5, robot,
+  deployment, torque, and motor access remain unauthorized. See
+  `outputs/analysis/GROUND_UP_ROBUSTNESS_R2_ARMATURE_LO_RESULT_20260714.md`.
