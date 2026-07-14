@@ -185,6 +185,9 @@ def evaluate(args: argparse.Namespace) -> dict[str, Any]:
                     reference_start_phase=args.reference_start_phase,
                     policy_state_input_names=state_input_names,
                     policy_state_output_names=state_output_names,
+                    policy_applied_target_observation=(
+                        args.policy_applied_target_observation
+                    ),
                 )
             )
             evidence = emergence_evidence(
@@ -247,6 +250,9 @@ def evaluate(args: argparse.Namespace) -> dict[str, Any]:
             ),
             "policy_state_input_names": list(state_input_names),
             "policy_state_output_names": list(state_output_names),
+            "policy_applied_target_observation": bool(
+                args.policy_applied_target_observation
+            ),
         },
         "aggregate": {
             "runs": len(runs),
@@ -310,6 +316,11 @@ def main() -> None:
         "--policy-state-output-names",
         default="",
         help="Comma-separated recurrent ONNX state outputs, for example h_out.",
+    )
+    parser.add_argument(
+        "--policy-applied-target-observation",
+        action="store_true",
+        help="Replace actor obs[83:97] with the external bridge-applied target.",
     )
     parser.add_argument("--commands", default="0.0,0.08")
     parser.add_argument("--seeds", default="100,101")

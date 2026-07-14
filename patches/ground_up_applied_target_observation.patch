@@ -1,0 +1,44 @@
+--- a/playground/open_duck_mini_v2/joystick.py
++++ b/playground/open_duck_mini_v2/joystick.py
+@@ -114,6 +114,7 @@
+             5.24, 5.24, 5.24, 5.24, 1.25, 1.00, 1.25,
+         ],
+         ground_up_measured_actuator_bridge=False,
++        ground_up_applied_target_observation=False,
+         ground_up_actuator_bridge_delay_ticks=[
+             3, 3, 3, 3, 3, 3, 2, 3, 3, 3, 2, 3, 2, 3,
+         ],
+@@ -707,7 +708,12 @@
+                 info["last_act"],  # 10
+                 info["last_last_act"],  # 10
+                 info["last_last_last_act"],  # 10
+-                info["motor_targets"],  # 10
++                jp.where(
++                    self._config.ground_up_measured_actuator_bridge
++                    & self._config.ground_up_applied_target_observation,
++                    info["ground_up_actuator_bridge_applied_targets"],
++                    info["motor_targets"],
++                ),  # 14: applied target when the causal-state repair is enabled
+                 contact,  # 2
+                 # info["current_reference_motion"],
+                 # info["imitation_i"],
+--- a/playground/open_duck_mini_v2/runner.py
++++ b/playground/open_duck_mini_v2/runner.py
+@@ -51,6 +51,9 @@
+         self.env_config.ground_up_measured_actuator_bridge = (
+             args.ground_up_measured_actuator_bridge
+         )
++        self.env_config.ground_up_applied_target_observation = (
++            args.ground_up_applied_target_observation
++        )
+         delay_ticks = [
+             int(value)
+             for value in args.ground_up_actuator_bridge_delay_ticks.split(",")
+@@ -129,6 +132,7 @@
+         default="5.24,5.24,1.50,1.50,1.75,5.24,5.24,5.24,5.24,5.24,5.24,1.25,1.00,1.25",
+     )
+     parser.add_argument("--ground_up_measured_actuator_bridge", action="store_true")
++    parser.add_argument("--ground_up_applied_target_observation", action="store_true")
+     parser.add_argument(
+         "--ground_up_actuator_bridge_delay_ticks",
+         default="3,3,3,3,3,3,2,3,3,3,2,3,2,3",

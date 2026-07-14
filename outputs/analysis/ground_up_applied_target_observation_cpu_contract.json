@@ -1,0 +1,82 @@
+{
+  "authority": {
+    "colab_training_authorized_by_this_result": false,
+    "gpu_authorized": false,
+    "robot_or_rdk_authorized": false
+  },
+  "checks": {
+    "actor_observation_remains_115_dimensional": true,
+    "applied_state_replaces_only_motor_target_slot": true,
+    "default_off_slot_remains_sent_target": true,
+    "enabled_slot_is_applied_target": true,
+    "evaluator_default_off_is_identity": true,
+    "evaluator_enabled_changes_no_other_actor_fields": true,
+    "evaluator_enabled_slot_is_applied_target": true,
+    "evaluator_privileged_slot_matches_actor_slot": true,
+    "feature_is_default_off": true,
+    "feature_requires_measured_bridge": true,
+    "hidden_applied_state_is_now_observable": true,
+    "hidden_state_fork_changes_only_replacement_slot": true,
+    "no_reward_or_cost_added": true,
+    "test_exercised_distinct_sent_and_applied_targets": true,
+    "toggle_changes_no_other_actor_observation_fields": true,
+    "toggle_changes_no_physics": true
+  },
+  "execution": {
+    "colab_access": false,
+    "jax_backend": "cpu",
+    "jax_devices": [
+      "TFRT_CPU_0"
+    ],
+    "local_gpu_access": false,
+    "rdk_access": false,
+    "robot_access": false
+  },
+  "failed_checks": [],
+  "inputs": {
+    "composed_joystick": {
+      "path": "/tmp/ground_up_applied_target_state_contract_20260714/playground/open_duck_mini_v2/joystick.py",
+      "sha256": "63652a948bad6510087a990875235c26041ddd9fc605ff73f17beb0c41782718"
+    },
+    "patch": {
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/patches/ground_up_applied_target_observation.patch",
+      "sha256": "bdcac27115fcbe855079f5365ac046e863a9b302ff16f560d12a26cd492f2821"
+    },
+    "playground_root": "/tmp/ground_up_applied_target_state_contract_20260714",
+    "reference_table": {
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/ground_up_projected_reference_feature_table.npz",
+      "sha256": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212"
+    }
+  },
+  "schema_version": "ground_up_applied_target_observation_contract.v1",
+  "source_checks": {
+    "applied_state_replaces_only_motor_target_slot": true,
+    "feature_is_default_off": true,
+    "feature_requires_measured_bridge": true,
+    "no_reward_or_cost_added": true
+  },
+  "status": "PASS_CPU_APPLIED_TARGET_OBSERVATION_CONTRACT",
+  "transition_contract": {
+    "checks": {
+      "actor_observation_remains_115_dimensional": true,
+      "default_off_slot_remains_sent_target": true,
+      "enabled_slot_is_applied_target": true,
+      "evaluator_default_off_is_identity": true,
+      "evaluator_enabled_changes_no_other_actor_fields": true,
+      "evaluator_enabled_slot_is_applied_target": true,
+      "evaluator_privileged_slot_matches_actor_slot": true,
+      "hidden_applied_state_is_now_observable": true,
+      "hidden_state_fork_changes_only_replacement_slot": true,
+      "test_exercised_distinct_sent_and_applied_targets": true,
+      "toggle_changes_no_other_actor_observation_fields": true,
+      "toggle_changes_no_physics": true
+    },
+    "hidden_fork_outside_slot_difference": 0.0,
+    "hidden_fork_slot_difference_rad": 0.04000000283122063,
+    "max_applied_slot_error_rad": 0.0,
+    "max_default_off_slot_error_rad": 0.0,
+    "max_outside_slot_toggle_error": 0.0,
+    "max_physics_toggle_error": 0.0,
+    "max_sent_applied_separation_rad": 0.10479999333620071
+  }
+}

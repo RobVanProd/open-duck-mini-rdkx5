@@ -561,3 +561,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   off/slot/fork/restore/update/export contract must pass before one frozen T4
   job. See
   `outputs/analysis/GROUND_UP_APPLIED_TARGET_STATE_CONTINUATION_PREREGISTRATION_20260714.md`.
+- 2026-07-14: The applied-target observation and continuation CPU gates pass.
+  The actor remains exactly 115-D; default-off behavior, all non-replacement
+  observation fields, and physics match exactly; enabled indices 83:97 equal
+  the bridge-applied target with zero measured error; and the prior 0.04 rad
+  hidden-state fork is visible only in that slot. The CUDA-sharded protected
+  checkpoint was explicitly remapped through a verified CPU target tree with
+  zero save/restore error. The final 1,024-step smoke restores the protected
+  source exactly, changes all 10 policy leaves, retains finite metrics, and
+  exports valid stateful hard-bounded ONNX at step zero and 1,024. This
+  authorizes only the single frozen 2M-step T4 continuation in the existing
+  preregistration. No local GPU, RDK-X5, robot, deployment, torque, or motor
+  access is authorized. See
+  `outputs/analysis/GROUND_UP_APPLIED_TARGET_CONTINUATION_CPU_SMOKE_20260714.md`.

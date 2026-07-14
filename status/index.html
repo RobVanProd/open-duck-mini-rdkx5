@@ -81,8 +81,8 @@
     <section class="hero">
       <div class="card">
         <div class="label">Current operation</div>
-        <div class="big amber" id="operation">Applied-target state preregistration</div>
-        <div class="metric" id="operation-detail">The 115-D audit proved observation aliasing: applied bridge state is missing, while the sent-target slot duplicates last action within 5.15e-8 rad. Work is freezing a same-size applied-target-slot continuation before any compute.</div>
+        <div class="big amber" id="operation">Applied-target continuation: CPU gate passed</div>
+        <div class="metric" id="operation-detail">The same-size causal-state repair passed default-off, hidden-fork, restore, one-update, and stateful ONNX contracts on CPU. One frozen 2M-step T4 continuation is now authorized; it has not started.</div>
       </div>
       <div class="card">
         <div class="label">Offline winner</div>
@@ -141,6 +141,8 @@
           <li>The bridge-only CPU contract passes: physics receives the bridged target exactly, no bridge penalty exists, protected restore error is zero, all 10 policy leaves update, and both stateful ONNX exports pass.</li>
           <li>Bridge-only training keeps gait and clears tracking at 1M x=.08 (.18858), but the other five command/checkpoint cells remain .20137–.21099 versus .20. Persistence fails, so the exact feedforward arm is closed.</li>
           <li>The 115-D observability audit proves the bridge's applied target is missing while the sent-target slot is redundant. An identical-observation fork changes next physics control by .0299975 rad, selecting a same-size applied-target slot rather than recurrence.</li>
+          <li>The applied-target CPU contract passes all checks: the state remains 115-D, default-off output is exact, enabled obs[83:97] equals applied target with zero measured error, no other observation or physics value changes, and the .04 rad hidden-state fork is now fully visible in that slot.</li>
+          <li>The protected Colab checkpoint required an explicit CPU topology remap; save/restore error is zero. With composed-checkout module precedence fixed, the 1,024-step smoke restores the protected source exactly, changes all 10 actor leaves, keeps metrics finite, and exports two valid hard-bounded stateful ONNX graphs.</li>
         </ol>
       </div>
       <div class="card">
@@ -156,9 +158,10 @@
           <li>Completed: freeze and CPU-contract one bridge-only continuation from the strongest hard-vector checkpoint.</li>
           <li>Completed: run the preregistered bridge-only T4 continuation, recover every artifact, stop Colab, and evaluate both checkpoints.</li>
           <li>Completed: audit actor state for the fitted 2–3 tick delay and lag.</li>
-          <li>Freeze and CPU-contract replacement of the redundant sent-target slot with applied-target state. No accelerator use is authorized before that contract passes.</li>
-          <li>Require both randomized CPU seeds to complete with command-consistent gait, bilateral transitions, no saturation, and zero rate excess.</li>
-          <li>Only a passing source may authorize collection design; no policy training or accelerator use follows automatically.</li>
+          <li>Completed: freeze and CPU-contract replacement of the redundant sent-target slot with applied-target state.</li>
+          <li>Next: package and run exactly one preregistered 2M-step T4 continuation from the protected bridge-only 1M checkpoint; recover and hash every artifact before stopping Colab.</li>
+          <li>Then evaluate both post-update checkpoints on CPU at x=.074/.077/.080, seeds 100/101, with the external evaluator supplying the same applied-target slot. Both checkpoints must pass all six runs.</li>
+          <li>Only a persistent nominal pass can authorize a separately preregistered x=0 preservation gate.</li>
           <li>Add x=0, randomization, delay, and pushes only after nominal gait emergence persists.</li>
           <li>Design RDK runtime only after an offline winner exists.</li>
         </ol>
@@ -174,7 +177,7 @@
 
     <footer>
       <span id="updated">Evidence snapshot: 2026-07-14</span>
-      <span>branch <code>codex/live-oracle-dagger-phase-student</code> · runtime-loss record <code>478ff9d</code></span>
+      <span>branch <code>codex/live-oracle-dagger-phase-student</code> · live evidence is repository-backed</span>
     </footer>
   </main>
 </body>

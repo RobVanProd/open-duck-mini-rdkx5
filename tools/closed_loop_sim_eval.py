@@ -77,6 +77,7 @@ class ClosedLoopConfig:
     policy_action_output_name: str | None = None
     policy_state_input_names: tuple[str, ...] = ()
     policy_state_output_names: tuple[str, ...] = ()
+    policy_applied_target_observation: bool = False
     eval_push_enable: bool = False
     eval_push_interval_min_s: float | None = None
     eval_push_interval_max_s: float | None = None
@@ -91,6 +92,19 @@ class ClosedLoopConfig:
     bridge_reset_align_joint_indices: tuple[int, ...] = ()
     reference_feature_table_path: Path | None = None
     reference_start_phase: int | None = None
+
+
+def inject_policy_applied_target_observation(obs, applied_target, enabled: bool):
+    """Replace only the redundant sent-target observation slot when enabled."""
+    if not enabled:
+        return obs
+    updated = dict(obs)
+    updated["state"] = obs["state"].at[83:97].set(applied_target)
+    if "privileged_state" in obs:
+        updated["privileged_state"] = obs["privileged_state"].at[83:97].set(
+            applied_target
+        )
+    return updated
 
 
 @contextlib.contextmanager
@@ -1220,7 +1234,14 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                 for geom_id in env._feet_geom_id
             ]
         )
-        obs = env._get_obs(state.data, state.info, contact)
+        applied_target = state.info.get(
+            "actuator_bridge_applied_targets", state.info["motor_targets"]
+        )
+        obs = inject_policy_applied_target_observation(
+            env._get_obs(state.data, state.info, contact),
+            applied_target,
+            config.policy_applied_target_observation,
+        )
         return state.replace(obs=obs)
 
     def set_reference_start(state):
@@ -1349,7 +1370,11 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
         state.info["swing_peak"] = jp.maximum(state.info["swing_peak"], p_fz)
         if hasattr(env, "_update_command_window_progress"):
             env._update_command_window_progress(state.info, data)
-        obs = env._get_obs(data, state.info, contact)
+        obs = inject_policy_applied_target_observation(
+            env._get_obs(data, state.info, contact),
+            applied_target,
+            config.policy_applied_target_observation,
+        )
         done = env._get_termination(data)
         if hasattr(env, "_get_command_progress_failure"):
             command_progress_failure = env._get_command_progress_failure(state.info)
@@ -1448,7 +1473,11 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
         state.info["last_contact"] = contact
         state.info["feet_air_time"] = jp.zeros_like(state.info["feet_air_time"])
         state.info["swing_peak"] = jp.zeros_like(state.info["swing_peak"])
-        obs = env._get_obs(data, state.info, contact)
+        obs = inject_policy_applied_target_observation(
+            env._get_obs(data, state.info, contact),
+            applied_target,
+            config.policy_applied_target_observation,
+        )
         return state.replace(data=data, obs=obs)
 
     def apply_eval_reset_mode(state):
@@ -1503,7 +1532,11 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             )
         state.info["action_history"] = jp.zeros_like(state.info["action_history"])
         state.info["imu_history"] = jp.zeros_like(state.info["imu_history"])
-        obs = env._get_obs(data, state.info, contact)
+        obs = inject_policy_applied_target_observation(
+            env._get_obs(data, state.info, contact),
+            env._default_actuator,
+            config.policy_applied_target_observation,
+        )
         return state.replace(data=data, obs=obs, done=jp.zeros_like(state.done))
 
     refresh_obs_jit = jax.jit(refresh_obs)
@@ -1530,9 +1563,13 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             "target = home + delayed_action * action_scale, and the built-in "
             "max_motor_velocity rate limit. The actuator bridge is inserted "
             "after that rate limit and before mjx_env.step. state.info['motor_targets'] "
-            "keeps the sent target so obs[83:97] remains commanded target history."
+            "keeps the sent target in environment info. obs[83:97] is the bridge-"
+            "applied target only when policy_applied_target_observation is enabled."
         ),
         "double_rate_limit": False,
+        "policy_applied_target_observation": bool(
+            config.policy_applied_target_observation
+        ),
         "mjx_step_loop_mode": config.mjx_step_loop_mode,
         "mjx_step_loop_description": (
             "default/scan uses mujoco_playground._src.mjx_env.step, which "
