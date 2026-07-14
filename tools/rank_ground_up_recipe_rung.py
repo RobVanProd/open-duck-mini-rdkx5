@@ -62,6 +62,7 @@ def summarize(candidate_id: str, paths: list[Path]) -> dict[str, object]:
         "hard_failures": sum(item["hard_failures"] for item in checkpoints),
     }
     score_key = [
+        int(score["hard_failures"] == 0),
         score["full_checkpoint_passes"],
         score["zero_finite_runs"],
         score["moving_pass_runs"],
