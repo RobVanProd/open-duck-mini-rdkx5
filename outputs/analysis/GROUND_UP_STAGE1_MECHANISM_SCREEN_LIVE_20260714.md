@@ -1,6 +1,6 @@
 # Ground-Up Stage-One Mechanism Screen: Live Evidence
 
-status: `RUNNING_SYMMETRIC_CRITIC`
+status: `RERUNNING_SYMMETRIC_CRITIC_AFTER_SECOND_RUNTIME_LOSS`
 
 The protected upstream control completed 8,028,160 seed-100 training steps and
 was evaluated at 6,021,120 and 8,028,160 using the frozen CPU gate.
@@ -33,6 +33,15 @@ The recurrent policy's stateful `h_in -> h_out` evaluator contract worked, but
 the learned behavior produced four hard failures and zero moving passes. It
 does not meet the advancement rule.
 
-`M4_SYMCRIT` is training. No final cross-family ranking or winner exists yet.
+The second hosted runtime also lost its entire `/content` filesystem while
+Colab still reported the execution as BUSY. `M2_PHASE_MOE` and `M3_RECURRENT`
+artifacts had already been downloaded and verified. `M4_SYMCRIT` had partial
+remote checkpoints but no completed archive, so it has no behavior evidence
+from that interrupted attempt. The stale execution was interrupted and the
+session stopped.
+
+`M4_SYMCRIT` is being rerun exactly, by itself. No completed candidate is being
+repeated and no recipe value has changed. No final cross-family ranking or
+winner exists yet.
 Training reward is excluded. Evaluation used local CPU only; no local GPU,
 RDK-X5, or robot access occurred.
