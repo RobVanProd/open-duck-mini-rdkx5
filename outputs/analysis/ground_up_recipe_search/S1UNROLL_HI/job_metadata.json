@@ -1,0 +1,68 @@
+{
+  "artifacts": {
+    "checkpoints": [
+      "2026_07_14_082234_0",
+      "2026_07_14_082652_2007040",
+      "2026_07_14_083252_4014080",
+      "2026_07_14_083530_6021120",
+      "2026_07_14_083807_8028160"
+    ],
+    "onnx": [
+      {
+        "name": "2026_07_14_082234_0.onnx",
+        "sha256": "fc8142d6a531a16d9075bb417a08e1db2489448cb7da58c877b09cb32095aa99"
+      },
+      {
+        "name": "2026_07_14_082652_2007040.onnx",
+        "sha256": "e418c593421615b3c3d08181beb98197ac9e9010cdead64de5210639c714d681"
+      },
+      {
+        "name": "2026_07_14_083252_4014080.onnx",
+        "sha256": "e3cfd0ff51ea8861b16835970e7bbb41ebd69fa17ce1d2cc62078f9b8c6ec288"
+      },
+      {
+        "name": "2026_07_14_083530_6021120.onnx",
+        "sha256": "2fdd4f01d28c07e075d1060ec48cbea8fc68a471641842966e39a5e90cfe2270"
+      },
+      {
+        "name": "2026_07_14_083807_8028160.onnx",
+        "sha256": "59ae38b7f3367055a76b6b3227d6d937e639eb45b78d41244f105625d9fbb846"
+      }
+    ]
+  },
+  "behavior_status": "UNEVALUATED",
+  "control_commit": "b9be205ac64488c23504ca42e5ec790337adeec3",
+  "execution": {
+    "cuda_visible_devices": null,
+    "total_seconds": 1434.819237035,
+    "training_seconds": 1382.833061935,
+    "versions_and_devices": [
+      "0.8.2 0.8.2 3.9.0 0.0.5",
+      "[CudaDevice(id=0)]",
+      "HAS_GPU True"
+    ]
+  },
+  "patches": {
+    "ground_up_recipe_search.patch": "3f5d892f5ce531207de6c86b18c9f5dbea83bc131a3fc2e5085851c2e4e3e5f8",
+    "ground_up_reference_conditioned.patch": "4138ecddb9ffc0df468a2780522c1732bc4b0e1a0865d181da1112d1c16902fb",
+    "ground_up_reference_velocity_frame_fix.patch": "b52cb6c5269cadd74a15d9b551bd5616130800fcd54298e00e15e07c6580dde9",
+    "ground_up_search_runner.patch": "6a176589b766de65ac2746c66f3387bfca5384d6ce4adf3703c752d8103a5e55",
+    "ground_up_stage1_command_mixture.patch": "17912ed37aceb430977daa2eead8ca24da7b20a03b220417d609bab368a0c6a3"
+  },
+  "recipe": {
+    "discounting": 0.97,
+    "entropy_cost": 0.005,
+    "ground_up_command_curriculum": true,
+    "imitation_scale": 1.0,
+    "learning_rate": 0.0003,
+    "num_evals": 5,
+    "recipe_id": "S1UNROLL_HI",
+    "seed": 100,
+    "timesteps": 8028160,
+    "unroll_length": 40
+  },
+  "recipe_id": "S1UNROLL_HI",
+  "schema_version": "ground_up_colab_recipe_job.v1",
+  "selection_uses_training_reward": false,
+  "status": "PASS_TRAINING_ARTIFACT_CONTRACT_ONLY"
+}

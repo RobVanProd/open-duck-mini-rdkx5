@@ -1,6 +1,6 @@
 # Ground-Up Stage-One Recipe Second Ring: Live Evidence
 
-status: `RUNTIME_LOSS_RESUME_UNFINISHED_ONLY`
+status: `SUPERSEDED_BY_FINAL_RESULT`
 
 The two preregistered discount candidates completed equal 8,028,160-step
 training and frozen CPU evaluation at 6,021,120 and 8,028,160 steps.
@@ -21,9 +21,8 @@ downloaded and verified. `S1UNROLL_HI` produced no recoverable artifact, so it
 is the only candidate eligible for an isolated exact rerun. No completed
 candidate will be repeated.
 
-The center control currently ranks ahead with zero hard failures and one
-nonpersistent moving pass. It is not a recipe winner. No final second-ring
-ranking exists until `S1UNROLL_HI` completes or is formally unavailable.
+The isolated `S1UNROLL_HI` rerun later completed. See
+`GROUND_UP_STAGE1_RECIPE_SECOND_RING_RESULT_20260714.md` for the final result.
 
 Training reward is excluded. Evaluation used local CPU only. No local GPU,
 RDK-X5, or robot access occurred.
