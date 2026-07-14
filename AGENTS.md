@@ -1015,3 +1015,9 @@ Do not proceed to grounded walking until low-risk gates pass.
   not retrain it. Correct only the deterministic export-name contract (and the
   analogous curriculum names `501760/1003520`), rerun the CPU package checker,
   and resume sequentially. No behavior result or selection changed.
+- 2026-07-14: Curriculum stage 1 completed at exact exports `0/512000` and
+  stopped at the remaining inferred `501760` assertion. The distinction is
+  `512000` for the two-evaluation 500k shape versus `501760/1003520` for the
+  three-evaluation 1M shape. Preserve stage 1 without retraining, correct both
+  500k-stage name assertions to `512000`, rerun the package checker, and resume.
+  No training or selection variable changed.

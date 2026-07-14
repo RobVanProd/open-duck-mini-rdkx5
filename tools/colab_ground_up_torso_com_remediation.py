@@ -62,9 +62,9 @@ ARMS = {
     ),
     "U_CURRICULUM": (
         {"distribution": "uniform", "min_x_m": -0.01, "max_x_m": 0.01,
-         "timesteps": 500_000, "evals": 2, "expected_steps": [0, 501_760]},
+         "timesteps": 500_000, "evals": 2, "expected_steps": [0, 512_000]},
         {"distribution": "uniform", "min_x_m": -0.03, "max_x_m": 0.03,
-         "timesteps": 500_000, "evals": 2, "expected_steps": [0, 501_760]},
+         "timesteps": 500_000, "evals": 2, "expected_steps": [0, 512_000]},
         {"distribution": "uniform", "min_x_m": -0.05, "max_x_m": 0.05,
          "timesteps": 1_000_000, "evals": 3, "expected_steps": [0, 501_760, 1_003_520]},
     ),
