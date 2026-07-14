@@ -26,6 +26,7 @@ SOURCE_CHECKPOINT = (
     / "A1_HARD_VECTOR_COMMAND_SUPPORT"
     / "2026_07_14_155545_1003520"
 )
+SOURCE_ARCHIVE = "A1_HARD_VECTOR_COMMAND_SUPPORT_artifacts.tar.gz"
 PATCHES = (
     "ground_up_search_runner.patch",
     "ground_up_reference_conditioned.patch",
@@ -51,6 +52,9 @@ EXPECTED_HASHES = {
     "ground_up_projected_reference_feature_table.npz": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212",
     "A1_HARD_VECTOR_COMMAND_SUPPORT_artifacts.tar.gz": "cfc895aca4ddf4ffb0eabf0ca338cd7dd03b19cc7d32125c53ad7ce36bb9ab83",
 }
+EXTRA_TRAINING_ARGS: tuple[str, ...] = ()
+SCHEMA_VERSION = "ground_up_measured_bridge_only_colab.v1"
+RESULT_PREFIX = "GROUND_UP_MEASURED_BRIDGE_RESULT="
 
 
 def sha256(path: Path) -> str:
@@ -124,7 +128,7 @@ def main() -> int:
 
     SOURCE_ROOT.mkdir(parents=True)
     with tarfile.open(
-        ASSETS / "A1_HARD_VECTOR_COMMAND_SUPPORT_artifacts.tar.gz", "r:gz"
+        ASSETS / SOURCE_ARCHIVE, "r:gz"
     ) as archive:
         archive.extractall(SOURCE_ROOT, filter="data")
     if not SOURCE_CHECKPOINT.is_dir():
@@ -202,6 +206,7 @@ def main() -> int:
         "--ground_up_signed_progress_objective",
         "--critic_observation", "privileged_state",
         "--restore_checkpoint_path", str(SOURCE_CHECKPOINT),
+        *EXTRA_TRAINING_ARGS,
     ]
     run_env = dict(os.environ)
     run_env["PYTHONPATH"] = str(ROOT)
@@ -227,7 +232,7 @@ def main() -> int:
         )
 
     metadata = {
-        "schema_version": "ground_up_measured_bridge_only_colab.v1",
+        "schema_version": SCHEMA_VERSION,
         "status": "PASS_TRAINING_ARTIFACT_CONTRACT_ONLY",
         "control_commit": CONTROL_COMMIT,
         "input_hashes": actual_hashes,
@@ -259,7 +264,7 @@ def main() -> int:
     }
     MANIFEST.write_text(json.dumps(final_manifest, indent=2, sort_keys=True) + "\n")
     print(
-        "GROUND_UP_MEASURED_BRIDGE_RESULT="
+        RESULT_PREFIX
         + json.dumps(
             {
                 "status": final_manifest["status"],
