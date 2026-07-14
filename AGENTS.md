@@ -542,3 +542,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   tuning. Next work is a read-only actor/actuator-state observability audit; no
   training is authorized. See
   `outputs/analysis/GROUND_UP_MEASURED_BRIDGE_ONLY_RESULT_20260714.md`.
+- 2026-07-14: The exact 115-D actuator-state observability audit passes and
+  selects an applied-target slot, not recurrence. The existing three action
+  histories cover the 2-3 tick delay within 5.15e-8 rad. The absolute sent-
+  target slot is an affine duplicate of last_act within 5.15e-8 rad, while
+  previous bridge-applied target is absent. A controlled identical-observation/
+  identical-action fork with only 0.04 rad hidden applied-state difference
+  changes next physics control by 0.0299975 rad and next qpos by 0.0028491 rad.
+  Replace the redundant sent-target slot with applied target while keeping 115
+  inputs; no training is authorized until separate preregistration/CPU proof.
+  See `outputs/analysis/GROUND_UP_ACTUATOR_OBSERVABILITY_AUDIT_20260714.md`.

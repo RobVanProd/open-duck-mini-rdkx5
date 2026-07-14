@@ -81,8 +81,8 @@
     <section class="hero">
       <div class="card">
         <div class="label">Current operation</div>
-        <div class="big amber" id="operation">Actuator-state observability audit</div>
-        <div class="metric" id="operation-detail">Bridge-only training produced one passing x=.08 cell at tracking p95 .18858, but five command/checkpoint cells remain .20137–.21099 versus .20. The exact arm is closed; work is auditing whether the actor lacks causal applied-target/delay state.</div>
+        <div class="big amber" id="operation">Applied-target state preregistration</div>
+        <div class="metric" id="operation-detail">The 115-D audit proved observation aliasing: applied bridge state is missing, while the sent-target slot duplicates last action within 5.15e-8 rad. Work is freezing a same-size applied-target-slot continuation before any compute.</div>
       </div>
       <div class="card">
         <div class="label">Offline winner</div>
@@ -140,6 +140,7 @@
           <li>The measured-bridge audit passes: five 256-tick CPU sequences agree within 1.43e-7 rad, all provenance and ordering checks pass, and the old collapse-inducing penalty stack remains excluded.</li>
           <li>The bridge-only CPU contract passes: physics receives the bridged target exactly, no bridge penalty exists, protected restore error is zero, all 10 policy leaves update, and both stateful ONNX exports pass.</li>
           <li>Bridge-only training keeps gait and clears tracking at 1M x=.08 (.18858), but the other five command/checkpoint cells remain .20137–.21099 versus .20. Persistence fails, so the exact feedforward arm is closed.</li>
+          <li>The 115-D observability audit proves the bridge's applied target is missing while the sent-target slot is redundant. An identical-observation fork changes next physics control by .0299975 rad, selecting a same-size applied-target slot rather than recurrence.</li>
         </ol>
       </div>
       <div class="card">
@@ -154,7 +155,8 @@
           <li>Completed: audit integration of the already measured per-joint delay/tau actuator transition into the ground-up stack.</li>
           <li>Completed: freeze and CPU-contract one bridge-only continuation from the strongest hard-vector checkpoint.</li>
           <li>Completed: run the preregistered bridge-only T4 continuation, recover every artifact, stop Colab, and evaluate both checkpoints.</li>
-          <li>Audit whether the actor receives sufficient causal state for the fitted 2–3 tick delay and lag. No new training is authorized by this audit alone.</li>
+          <li>Completed: audit actor state for the fitted 2–3 tick delay and lag.</li>
+          <li>Freeze and CPU-contract replacement of the redundant sent-target slot with applied-target state. No accelerator use is authorized before that contract passes.</li>
           <li>Require both randomized CPU seeds to complete with command-consistent gait, bilateral transitions, no saturation, and zero rate excess.</li>
           <li>Only a passing source may authorize collection design; no policy training or accelerator use follows automatically.</li>
           <li>Add x=0, randomization, delay, and pushes only after nominal gait emergence persists.</li>
