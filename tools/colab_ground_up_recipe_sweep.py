@@ -126,8 +126,25 @@ def main() -> int:
             )),
             "--ppo_entropy_cost", str(candidate["entropy_cost"]),
             "--imitation_scale", str(candidate["imitation_scale"]),
-            "--critic_observation", "privileged_state",
+            "--critic_observation", candidate.get(
+                "critic_observation", "privileged_state"
+            ),
         ]
+        if candidate.get("policy_architecture"):
+            command.extend([
+                "--policy_architecture", candidate["policy_architecture"]
+            ])
+        if candidate.get("recurrent_hidden_size"):
+            command.extend([
+                "--recurrent_hidden_size", str(candidate["recurrent_hidden_size"])
+            ])
+        if candidate.get("reference_feature_table_path"):
+            reference_table = ASSETS / candidate["reference_feature_table_path"]
+            if not reference_table.is_file():
+                raise SystemExit(f"missing reference table: {reference_table}")
+            command.extend([
+                "--reference_feature_table_path", str(reference_table)
+            ])
         if config["shared"]["ground_up_command_curriculum"]:
             command.append("--ground_up_command_curriculum")
         training = run(command, cwd=ROOT, timeout=7200, capture=True)
