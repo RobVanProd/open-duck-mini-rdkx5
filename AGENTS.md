@@ -638,3 +638,11 @@ Do not proceed to grounded walking until low-risk gates pass.
   authorizes the fixed hosted package only; behavior is unevaluated and no
   local GPU, RDK-X5, robot, deployment, torque, or motor access follows. See
   `outputs/analysis/GROUND_UP_TRACKING_TAIL_COLAB_PACKAGE_CHECK_20260714.md`.
+- 2026-07-14: The fixed tracking-tail search launched at
+  2026-07-14T18:36:34Z in the named Colab T4 session
+  `ground-up-tracking-tail-20260714`. All 15 assets uploaded successfully and
+  remote asset validation passed before background PID 845 started. The order
+  is fixed T1 -> T2 -> T3, with independent restore from the same protected 1M
+  source for every arm. The session is limited by the preregistered package's
+  four-hour wall cutoff. Behavior remains unevaluated; no local GPU, RDK-X5,
+  robot, deployment, torque, or motor access is authorized.
