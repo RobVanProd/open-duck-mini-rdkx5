@@ -531,3 +531,14 @@ Do not proceed to grounded walking until low-risk gates pass.
   maximum bound excess. This authorizes only the one frozen hosted continuation
   in the preregistration. No local GPU, RDK-X5, robot, deployment, or motor use.
   See `outputs/analysis/GROUND_UP_MEASURED_BRIDGE_CONTINUATION_CPU_SMOKE_20260714.md`.
+- 2026-07-14: The single measured-bridge-only T4 continuation completed and
+  was recovered/hash-verified before shutdown; Colab has zero active sessions.
+  All 12 post-update CPU runs walk with bilateral transitions, zero saturation,
+  and zero target-rate excess. The 1M x=.08 cell passes tracking at .18858 rad,
+  proving bridge training can clear the actuator gate without penalties or
+  gait collapse, but the other 1M cells are .20137/.21099 and all 2M cells are
+  .20332-.20832 versus the <=.20 threshold. The persistence rule therefore
+  rejects the exact feedforward bridge-only arm without checkpoint selection or
+  tuning. Next work is a read-only actor/actuator-state observability audit; no
+  training is authorized. See
+  `outputs/analysis/GROUND_UP_MEASURED_BRIDGE_ONLY_RESULT_20260714.md`.
