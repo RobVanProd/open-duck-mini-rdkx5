@@ -80,7 +80,16 @@ def emergence_evidence(
         reasons.append("standing_collapse_or_nonfinite")
 
     forward = fitted.get("forward_motion") or {}
-    progress = forward.get("progress_x_m")
+    world_progress = forward.get("progress_x_m")
+    progress = forward.get("body_forward_progress_m")
+    if progress is None:
+        mean_velocity = forward.get("mean_velocity_x_m_s")
+        elapsed_s = forward.get("elapsed_s")
+        progress = (
+            float(mean_velocity) * float(elapsed_s)
+            if finite(mean_velocity) and finite(elapsed_s)
+            else world_progress
+        )
     if command_x > 0 and (not finite(progress) or float(progress) <= 0.0):
         reasons.append("no_positive_forward_displacement")
     mean_velocity = forward.get("mean_velocity_x_m_s")
@@ -114,6 +123,7 @@ def emergence_evidence(
         "command_x": command_x,
         "termination_reason": fitted.get("termination_reason"),
         "progress_x_m": progress,
+        "world_progress_x_m": world_progress,
         "mean_velocity_x_m_s": mean_velocity,
         "requested_duration_s": requested_duration_s,
         "minimum_emergence_duration_s": minimum_duration_s,

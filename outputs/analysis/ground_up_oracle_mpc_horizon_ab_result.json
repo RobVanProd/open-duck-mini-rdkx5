@@ -1,0 +1,44 @@
+{
+  "schema_version": "ground_up_oracle_mpc_horizon_ab_result.v1",
+  "status": "NO_ORACLE_SHOOTING_MPC_SOURCE_WINNER",
+  "training_authorized": false,
+  "collection_authorized": false,
+  "hardware_authorized": false,
+  "protected_control": {
+    "arm": "C0_H8",
+    "source": "outputs/analysis/ground_up_oracle_shooting_mpc_body_frame_probe.json",
+    "source_sha256": "8d2e20054ed5f756dde3d8c957ce395e1e161c5acdb79cb0f93ca3e9af72f5b8",
+    "horizon_ticks": 8,
+    "passes": 0,
+    "required_passes": 2,
+    "seed_results": [
+      {"seed": 100, "duration_complete": true, "fell": false, "body_forward_progress_m": 0.08992605863559174, "mean_body_vx_m_s": 0.08326486910702938, "contact_transitions": [5, 6], "max_abs_action": 1.0, "max_rate_excess_rad_s": 8.881784197001252e-16, "result": "HOLD_SATURATION"},
+      {"seed": 101, "duration_complete": false, "fell": true, "body_forward_progress_m": -0.02910602925127909, "mean_body_vx_m_s": -0.0693000696459026, "contact_transitions": [1, 1], "max_abs_action": 0.917877101015168, "max_rate_excess_rad_s": 6.661338147750939e-16, "result": "HOLD_FALL_REVERSE"}
+    ]
+  },
+  "causal_arm": {
+    "arm": "C1_H16",
+    "source": "outputs/analysis/ground_up_oracle_shooting_mpc_h16_probe.json",
+    "source_sha256": "5212a0a6e2e559da52079b15badd2c2594f42c54bac9c9439dd3ecb765a99352",
+    "horizon_ticks": 16,
+    "passes": 0,
+    "required_passes": 2,
+    "seed_results": [
+      {"seed": 100, "duration_complete": false, "fell": true, "ticks": 47, "body_forward_progress_m": 0.21034706165102518, "mean_body_vx_m_s": 0.22377346984151614, "final_body_vx_m_s": 0.6837014436001794, "final_pitch_rad": 0.8078007226198562, "final_height_m": 0.11901487888826434, "contact_transitions": [9, 8], "max_abs_action": 0.9578170283888917, "max_rate_excess_rad_s": 4.440892098500626e-16, "result": "HOLD_PITCH_HEIGHT_FALL"},
+      {"seed": 101, "duration_complete": false, "fell": true, "ticks": 32, "body_forward_progress_m": 0.09527611290339469, "mean_body_vx_m_s": 0.1488689264115542, "final_body_vx_m_s": 0.6562183057373268, "final_pitch_rad": 0.8095897378730886, "final_height_m": 0.13448163266478677, "contact_transitions": [3, 1], "max_abs_action": 1.0, "max_rate_excess_rad_s": 8.881784197001252e-16, "result": "HOLD_PITCH_HEIGHT_FALL_AND_SATURATION"}
+    ]
+  },
+  "decision": {
+    "fixed_horizon_weight_formulation_closed": true,
+    "preregistered_prediction_falsified": true,
+    "reason": "H16 increased propulsion but both seeds pitched through the fall gate; zero source passes.",
+    "next_audit": "Separate bounded command tracking and viability constraints from the closed unbounded-propulsion objective before preregistering any new source probe."
+  },
+  "execution": {
+    "local_cpu_only": true,
+    "colab_access": false,
+    "gpu_access": false,
+    "rdk_x5_access": false,
+    "robot_access": false
+  }
+}

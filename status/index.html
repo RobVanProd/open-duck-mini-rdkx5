@@ -81,8 +81,8 @@
     <section class="hero">
       <div class="card">
         <div class="label">Current operation</div>
-        <div class="big amber" id="operation">Closed-loop source audit</div>
-        <div class="metric" id="operation-detail">Exact interpolation fixed the lookup alias but also failed 0/4. The projected reference is closed as an open-loop teacher; current work is selecting a genuinely corrective closed-loop source before more compute.</div>
+        <div class="big amber" id="operation">Oracle viability audit</div>
+        <div class="metric" id="operation-detail">H16 produced +0.2103 m and +0.0953 m body-forward travel, but both seeds pitched through the fall gate. The fixed horizon/weight formulation is closed; CPU-only work is separating bounded command tracking and viability from unbounded propulsion.</div>
       </div>
       <div class="card">
         <div class="label">Offline winner</div>
@@ -125,15 +125,19 @@
           <li>The causal A/B rejected reference anchoring: A0 scored 1/8 and A1 scored 0/8, with zero persistent seeds and zero full checkpoints in both arms.</li>
           <li>The exact-command audit found a concrete input mismatch: command [.074, 0, 0] receives nearest table cell [.074, -.037, -.074] because the table has no zero lateral/yaw cell.</li>
           <li>Exact interpolation removed that alias and changed actions by as much as .2120, but still scored 0/4: seed 100 moved backward and seed 101 fell at both commands. The lookup defect was real but not causal.</li>
+          <li>A body-frame gate audit corrected world-X displacement under randomized yaw. Only 2 runs changed across 62 saved evaluations and zero full checkpoints emerged, so no prior winner decision changes.</li>
+          <li>The new oracle shooting controller generated +.0899 m body-forward motion in seed 100 with bilateral transitions and zero rate excess, but touched saturation; seed 101 rolled, reversed, and fell. It is not a source pass.</li>
+          <li>Doubling only the oracle horizon increased propulsion in both seeds, but both fell near 0.81 rad pitch while reaching 0.66–0.68 m/s against a 0.074 m/s command. The fixed shooting formulation is closed with 0/2 passes.</li>
         </ol>
       </div>
       <div class="card">
         <div class="label">Next decision sequence</div>
         <h2 style="margin-top:8px">No skipped gates</h2>
         <ol>
-          <li>Audit available closed-loop corrective behavior sources against the original no-warm-start/no-existing-policy-teacher constraint.</li>
-          <li>Require a CPU simulation teacher/controller to produce persistent forward gait before using it for learning.</li>
-          <li>Preregister a new causal arm only after that source passes; spend no accelerator compute on another invalid reference variant.</li>
+          <li>Audit the terminal pitch/velocity traces and define a bounded command-tracking plus viability contract.</li>
+          <li>Preregister at most one materially new structural source probe; do not reopen the closed horizon/weight sweep.</li>
+          <li>Require both randomized CPU seeds to complete with command-consistent gait, bilateral transitions, no saturation, and zero rate excess.</li>
+          <li>Only a passing source may authorize collection design; no policy training or accelerator use follows automatically.</li>
           <li>Add x=0, randomization, delay, and pushes only after nominal gait emergence persists.</li>
           <li>Design RDK runtime only after an offline winner exists.</li>
         </ol>

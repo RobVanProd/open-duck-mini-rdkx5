@@ -1799,6 +1799,11 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             if record.get("local_linvel_m_s")
         ]
         local_vx = signed_stats(local_vx_values)
+        body_forward_progress = (
+            float(np.sum(local_vx_values) * float(env.dt))
+            if local_vx_values
+            else None
+        )
         reward_stats = signed_stats([record["reward"] for record in records])
         reward_terms = reward_term_summary(records)
         if config.trace_jsonl is not None:
@@ -1860,6 +1865,7 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                 "elapsed_s": elapsed_s,
                 "progress_x_m": progress_x,
                 "progress_y_m": progress_y,
+                "body_forward_progress_m": body_forward_progress,
                 "world_mean_velocity_x_m_s": world_mean_vx,
                 "mean_velocity_x_m_s": mean_vx,
                 "command_x_m_s": float(config.command_x),
