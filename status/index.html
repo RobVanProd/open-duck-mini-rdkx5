@@ -81,8 +81,8 @@
     <section class="hero">
       <div class="card">
         <div class="label">Current operation</div>
-        <div class="big amber" id="operation">Applied-target arm rejected on persistence</div>
-        <div class="metric" id="operation-detail">1M is the first full nominal pass across all six cells, but 2M regresses tracking above .20 in all six. The frozen two-checkpoint rule rejects the exact arm. Next: read-only 1M→2M drift audit.</div>
+        <div class="big amber" id="operation">Objective/gate mismatch isolated</div>
+        <div class="metric" id="operation-detail">The read-only 1M→2M audit passed every replay and restore check. Actor changes produce 6.75× more raw-action drift than normalizer changes, while hosted reward improves and the external tracking gate worsens. No new training recipe is authorized yet.</div>
       </div>
       <div class="card">
         <div class="label">Offline winner</div>
@@ -145,6 +145,8 @@
           <li>The protected Colab checkpoint required an explicit CPU topology remap; save/restore error is zero. With composed-checkout module precedence fixed, the 1,024-step smoke restores the protected source exactly, changes all 10 actor leaves, keeps metrics finite, and exports two valid hard-bounded stateful ONNX graphs.</li>
           <li>The applied-target 1M checkpoint is the first full nominal pass: all six command/seed cells walk and clear tracking at .18877/.18502/.17679 with zero saturation and rate excess.</li>
           <li>The 2M checkpoint still walks cleanly but tracking regresses to .21617/.21694/.20817, failing all six cells. The frozen persistence rule rejects the exact arm; 1M is not cherry-picked.</li>
+          <li>The read-only drift audit replayed both policies exactly on 324 CPU trace samples and restored matching finite checkpoint trees. Actor-only changes produce .09496 raw-action RMS drift versus .01407 from normalization, a 6.75× ratio.</li>
+          <li>Hosted reward improves by 16.73 from 1M to 2M while the largest external tracking regressions are left hip yaw +.02899 rad and left knee +.02816 rad. Their bridge-error deltas are 0 and +.000008 rad, isolating policy/objective drift rather than bridge corruption.</li>
         </ol>
       </div>
       <div class="card">
@@ -162,8 +164,9 @@
           <li>Completed: audit actor state for the fitted 2–3 tick delay and lag.</li>
           <li>Completed: freeze and CPU-contract replacement of the redundant sent-target slot with applied-target state.</li>
           <li>Completed: run the single preregistered T4 continuation, recover/hash every artifact, stop Colab, and evaluate both checkpoints.</li>
-          <li>Current: perform a read-only 1M→2M audit of normalization, parameter/action drift, per-joint tracking, and training metrics.</li>
-          <li>Only a measured drift mechanism may justify a separately preregistered retention recipe.</li>
+          <li>Completed: the read-only 1M→2M audit isolates actor drift at 6.75× the normalizer contribution and verifies exact ONNX trace replay.</li>
+          <li>Current: audit the reward contract against the external tracking gate and earlier failed retention mechanisms. The next causal arm must address the measured mismatch, not add an arbitrary penalty.</li>
+          <li>Only a uniquely supported causal mechanism may justify a separately preregistered run.</li>
           <li>Only a persistent nominal pass can authorize a separately preregistered x=0 preservation gate.</li>
           <li>Add x=0, randomization, delay, and pushes only after nominal gait emergence persists.</li>
           <li>Design RDK runtime only after an offline winner exists.</li>

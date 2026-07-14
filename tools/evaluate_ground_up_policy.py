@@ -160,6 +160,11 @@ def evaluate(args: argparse.Namespace) -> dict[str, Any]:
     runs: list[dict[str, Any]] = []
     for command_x in commands:
         for seed in seeds:
+            trace_path = None
+            if args.trace_dir is not None:
+                trace_path = args.trace_dir / (
+                    f"x{command_x:.3f}_seed{seed}_{policy.stem}.jsonl"
+                )
             result = run_closed_loop_sim(
                 ClosedLoopConfig(
                     policy_path=policy,
@@ -188,6 +193,8 @@ def evaluate(args: argparse.Namespace) -> dict[str, Any]:
                     policy_applied_target_observation=(
                         args.policy_applied_target_observation
                     ),
+                    trace_jsonl=trace_path,
+                    trace_full_obs=bool(args.trace_full_obs),
                 )
             )
             evidence = emergence_evidence(
@@ -205,6 +212,7 @@ def evaluate(args: argparse.Namespace) -> dict[str, Any]:
                     "emergence": evidence,
                     "modes": result.get("modes"),
                     "error": result.get("error"),
+                    "trace_jsonl": None if trace_path is None else str(trace_path),
                 }
             )
 
@@ -253,6 +261,8 @@ def evaluate(args: argparse.Namespace) -> dict[str, Any]:
             "policy_applied_target_observation": bool(
                 args.policy_applied_target_observation
             ),
+            "trace_dir": None if args.trace_dir is None else str(args.trace_dir),
+            "trace_full_obs": bool(args.trace_full_obs),
         },
         "aggregate": {
             "runs": len(runs),
@@ -322,6 +332,16 @@ def main() -> None:
         action="store_true",
         help="Replace actor obs[83:97] with the external bridge-applied target.",
     )
+    parser.add_argument(
+        "--trace-dir",
+        type=Path,
+        help="Optional output directory for one JSONL closed-loop trace per run.",
+    )
+    parser.add_argument(
+        "--trace-full-obs",
+        action="store_true",
+        help="Include the complete actor observation in traces (requires --trace-dir).",
+    )
     parser.add_argument("--commands", default="0.0,0.08")
     parser.add_argument("--seeds", default="100,101")
     parser.add_argument("--duration-s", type=float, default=5.0)
@@ -350,6 +370,10 @@ def main() -> None:
     parser.add_argument("--output-json", required=True)
     parser.add_argument("--output-md", default=None)
     args = parser.parse_args()
+    if args.trace_full_obs and args.trace_dir is None:
+        parser.error("--trace-full-obs requires --trace-dir")
+    if args.trace_dir is not None:
+        args.trace_dir.mkdir(parents=True, exist_ok=True)
     payload = evaluate(args)
     output_json = Path(args.output_json)
     output_json.parent.mkdir(parents=True, exist_ok=True)

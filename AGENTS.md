@@ -586,3 +586,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   cherry-picking 1M. Next work is a read-only 1M-to-2M drift audit; no further
   training or x=0/robot/RDK/GPU gate is authorized. See
   `outputs/analysis/GROUND_UP_APPLIED_TARGET_STATE_RESULT_20260714.md`.
+- 2026-07-14: The CPU-only applied-target 1M-to-2M drift audit passes all
+  checkpoint, finite-value, 324-sample trace, and exact ONNX replay checks.
+  Swapping only actor parameters produces .09496 raw-action RMS drift versus
+  .01407 from swapping only observation normalization, a 6.75x ratio. Hosted
+  evaluation reward improves by 16.73 while external joint-target tracking
+  regresses by up to .02899 rad; the corresponding bridge-error changes are
+  zero or negligible. This isolates actor/objective drift rather than bridge,
+  normalization, restore, checksum, or transport corruption. Prior failed
+  restore-KL/behavior-prior work is not revived. Next work is a read-only
+  reward-contract audit; no training, robot, RDK-X5, deployment, or GPU access
+  is authorized. See
+  `outputs/analysis/GROUND_UP_APPLIED_TARGET_DRIFT_AUDIT_20260714.md`.
