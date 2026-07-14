@@ -821,3 +821,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   one mechanically derived seed. No R2+, training, Colab, local GPU, RDK-X5,
   robot, deployment, torque, or motor access is authorized. See
   `outputs/analysis/GROUND_UP_ROBUSTNESS_R1_CONTRACT_20260714.md`.
+- 2026-07-14: R1 closes the frozen guarded/deadband policy as a robustness
+  winner at the first isolated stage. P30 still passes both checkpoints. Under
+  the independently measured P31/34 fit, all six moving cells remain upright,
+  bilateral, unsaturated, and below .20 rad tracking (.180555/.183142 worst),
+  while x=0 also passes. The sole hard failure is exact and persistent: the
+  policy reaches 1.750001 rad/s at the left ankle against P31/34's 1.50 rad/s
+  fitted limit, a .250001 rad/s excess in every moving cell at both checkpoints.
+  R2 and every later robustness stage are blocked. The next permitted work is
+  preregistration of a future formulation that trains against both measured
+  fits and their componentwise conservative velocity envelope; it is not yet
+  authorized to implement or train. No Colab, local GPU, RDK-X5, robot,
+  deployment, torque, or motor access is authorized. See
+  `outputs/analysis/GROUND_UP_ROBUSTNESS_R1_RESULT_20260714.md`.
