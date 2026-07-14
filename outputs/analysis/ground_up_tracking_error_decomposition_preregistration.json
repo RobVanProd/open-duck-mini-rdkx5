@@ -1,0 +1,39 @@
+{
+  "schema_version": "ground_up_tracking_error_decomposition_preregistration.v1",
+  "status": "PREREGISTERED_READ_ONLY_CPU_AUDIT",
+  "trace_families": {
+    "TAIL": {"root": "outputs/analysis/ground_up_tracking_tail_eval_traces", "expected_traces": 36},
+    "RATE": {"root": "outputs/analysis/ground_up_stateful_pitch_rate_boundary_eval_traces", "expected_traces": 72},
+    "SWA": {"root": "outputs/analysis/ground_up_actor_swa_eval_traces", "expected_traces": 48}
+  },
+  "unique_seed": 100,
+  "expected_unique_traces": 78,
+  "expected_rows_per_trace": 600,
+  "pitch_chain_indices": [2, 3, 4, 11, 12, 13],
+  "threshold_rad": 0.2,
+  "identity": "sent_minus_actual equals sent_minus_applied plus applied_minus_actual",
+  "event_scope": "ticks above 0.20 rad on the maximum-p95 pitch-chain joint of each failing unique trace",
+  "exclusive_event_classes": {
+    "BOTH_INDIVIDUALLY_SUFFICIENT": "absolute bridge and servo components are each greater than 0.20 rad",
+    "BRIDGE_ONLY_SUFFICIENT": "only absolute sent-minus-applied is greater than 0.20 rad",
+    "SERVO_ONLY_SUFFICIENT": "only absolute applied-minus-actual is greater than 0.20 rad",
+    "COMPOUND_SUBTHRESHOLD": "neither component is individually greater than 0.20 rad, but their sum is"
+  },
+  "classification_rule": {
+    "family_class": "strict majority event class within each family; otherwise MIXED",
+    "global_class": "same non-MIXED strict-majority class in TAIL, RATE, and SWA; otherwise MIXED",
+    "compound_followup": "If global class is COMPOUND_SUBTHRESHOLD and decomposition identity passes, preregister an actual-position-centered absolute sent-target guard CPU contract.",
+    "bridge_followup": "If global class is BRIDGE_ONLY_SUFFICIENT, return to measured bridge identification/order.",
+    "servo_followup": "If global class is SERVO_ONLY_SUFFICIENT, return to actuator/physics fit and low-level control.",
+    "mixed_followup": "No implementation selected; localize by joint and phase without training."
+  },
+  "authority": {
+    "read_committed_traces": true,
+    "write_audit_report": true,
+    "modify_policy_or_runtime": false,
+    "training": false,
+    "colab": false,
+    "local_gpu": false,
+    "rdk_or_robot": false
+  }
+}
