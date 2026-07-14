@@ -552,3 +552,12 @@ Do not proceed to grounded walking until low-risk gates pass.
   Replace the redundant sent-target slot with applied target while keeping 115
   inputs; no training is authorized until separate preregistration/CPU proof.
   See `outputs/analysis/GROUND_UP_ACTUATOR_OBSERVABILITY_AUDIT_20260714.md`.
+- 2026-07-14: The applied-target-state continuation is preregistered before
+  implementation. It protects the bridge-only 1M checkpoint because its mean
+  three-command tracking is .20031 versus .20550 at 2M and it already passes
+  x=.08. The sole change is replacing redundant sent-target obs indices 83:97
+  with bridge-applied target while keeping 115 inputs, sent action histories,
+  physics, reward, architecture, and ONNX interface unchanged. A CPU default-
+  off/slot/fork/restore/update/export contract must pass before one frozen T4
+  job. See
+  `outputs/analysis/GROUND_UP_APPLIED_TARGET_STATE_CONTINUATION_PREREGISTRATION_20260714.md`.
