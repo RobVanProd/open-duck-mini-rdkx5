@@ -81,8 +81,8 @@
     <section class="hero">
       <div class="card">
         <div class="label">Current operation</div>
-        <div class="big amber" id="operation">Reference-teacher audit</div>
-        <div class="metric" id="operation-detail">O2 tied O1 and is closed. Current work is measuring whether reference motion can initialize the policy through deterministic supervised targets before PPO.</div>
+        <div class="big amber" id="operation">Reference-residual A/B preregistered</div>
+        <div class="metric" id="operation-detail">The CPU architecture/export contract passed. Next compute is a frozen two-arm Colab test isolating reference anchoring from ordinary reference conditioning.</div>
       </div>
       <div class="card">
         <div class="label">Offline winner</div>
@@ -120,15 +120,17 @@
           <li>Signed progress preserved x=.074 seed 100 at both 3M and 4M, but still had six hard failures, two saturated x=.08 runs per checkpoint pair, and no full checkpoint pass. It is not a winner.</li>
           <li>Recorded return reconstructs to within 2.83e-5 at mature checkpoints, so clipping is not selected. Alive plus yaw tracking are 79.81–81.55% of final positive-scaled reward mass and are now the evidence-selected factor.</li>
           <li>Progress-conditioned survival tied O1 exactly: 2/8 moving passes, one persistent seed, six hard failures, and zero full checkpoint passes. The reward-objective family is closed.</li>
+          <li>Direct reference execution is not a valid cloning label: every audited form moved backward on average, with 2–4 falls per 8 runs. The selected formulation anchors the actor at the projected reference and learns state-feedback residuals.</li>
+          <li>The reference-residual software contract passed on CPU: initial JAX and ONNX actions match the projected reference within 2.98e-8, PPO log probability is finite, and a 1,024-step training smoke exported the correct final-action graph.</li>
         </ol>
       </div>
       <div class="card">
         <div class="label">Next decision sequence</div>
         <h2 style="margin-top:8px">No skipped gates</h2>
         <ol>
-          <li>Audit reference-motion fields, policy observations, and motor-target semantics as a deterministic supervised teacher.</li>
-          <li>Prove a CPU-only teacher target and initialization contract before spending more Colab compute.</li>
-          <li>Preregister one supervised-initialization versus random-initialization causal test under the unchanged behavior gate.</li>
+          <li>Run `A0_CURRENT_REFCOND` and `A1_REFERENCE_ANCHORED_RESIDUAL` with identical seed, data, objective, critic, and horizon in Colab.</li>
+          <li>Evaluate both 3M and 4M exports on CPU at x=.074/.08 and seeds 100/101 under the unchanged behavior gate.</li>
+          <li>Advance A1 only if all eight runs pass and it outranks A0; otherwise close the mechanism without post-hoc tuning.</li>
           <li>Add x=0, randomization, delay, and pushes only after nominal gait emergence persists.</li>
           <li>Design RDK runtime only after an offline winner exists.</li>
         </ol>

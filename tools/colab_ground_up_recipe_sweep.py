@@ -77,6 +77,12 @@ def main() -> int:
     for name in patches:
         run(["git", "apply", "--check", str(ASSETS / name)], cwd=ROOT)
         run(["git", "apply", str(ASSETS / name)], cwd=ROOT)
+    source_assets = tuple(config["shared"].get("extra_source_assets", ()))
+    for name in source_assets:
+        source = ASSETS / name
+        if not source.is_file():
+            raise SystemExit(f"missing uploaded source asset: {name}")
+        shutil.copy2(source, ROOT / "playground" / "common" / name)
 
     run([sys.executable, "-m", "pip", "install", "-q", "-U", "pip"], timeout=300)
     run([
@@ -172,6 +178,7 @@ def main() -> int:
             "shared": config["shared"],
             "control_commit": CONTROL_COMMIT,
             "patches": {name: sha256(ASSETS / name) for name in patches},
+            "source_assets": {name: sha256(ASSETS / name) for name in source_assets},
             "training_seed": config["training_seed"],
             "timesteps": config["timesteps"],
             "training_seconds": time.monotonic() - candidate_started,
