@@ -81,8 +81,8 @@
     <section class="hero">
       <div class="card">
         <div class="label">Current operation</div>
-        <div class="big amber" id="operation">Exact-command reference audit</div>
-        <div class="metric" id="operation-detail">A0 failed at 1/8 and reference-anchored A1 failed at 0/8. Current CPU-only work is auditing the discovered nearest-cell mismatch before any further compute.</div>
+        <div class="big amber" id="operation">Closed-loop source audit</div>
+        <div class="metric" id="operation-detail">Exact interpolation fixed the lookup alias but also failed 0/4. The projected reference is closed as an open-loop teacher; current work is selecting a genuinely corrective closed-loop source before more compute.</div>
       </div>
       <div class="card">
         <div class="label">Offline winner</div>
@@ -124,15 +124,16 @@
           <li>The reference-residual software contract passed on CPU: initial JAX and ONNX actions match the projected reference within 2.98e-8, PPO log probability is finite, and a 1,024-step training smoke exported the correct final-action graph.</li>
           <li>The causal A/B rejected reference anchoring: A0 scored 1/8 and A1 scored 0/8, with zero persistent seeds and zero full checkpoints in both arms.</li>
           <li>The exact-command audit found a concrete input mismatch: command [.074, 0, 0] receives nearest table cell [.074, -.037, -.074] because the table has no zero lateral/yaw cell.</li>
+          <li>Exact interpolation removed that alias and changed actions by as much as .2120, but still scored 0/4: seed 100 moved backward and seed 101 fell at both commands. The lookup defect was real but not causal.</li>
         </ol>
       </div>
       <div class="card">
         <div class="label">Next decision sequence</div>
         <h2 style="margin-top:8px">No skipped gates</h2>
         <ol>
-          <li>Construct an exact-command interpolated reference table on CPU and hash the transformation contract.</li>
-          <li>Run the interpolated reference directly through the existing CPU-only reference audit before considering training.</li>
-          <li>Authorize a new causal arm only if interpolation materially improves reference validity; otherwise close this reference source.</li>
+          <li>Audit available closed-loop corrective behavior sources against the original no-warm-start/no-existing-policy-teacher constraint.</li>
+          <li>Require a CPU simulation teacher/controller to produce persistent forward gait before using it for learning.</li>
+          <li>Preregister a new causal arm only after that source passes; spend no accelerator compute on another invalid reference variant.</li>
           <li>Add x=0, randomization, delay, and pushes only after nominal gait emergence persists.</li>
           <li>Design RDK runtime only after an offline winner exists.</li>
         </ol>
