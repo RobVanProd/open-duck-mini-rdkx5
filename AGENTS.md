@@ -924,3 +924,9 @@ Do not proceed to grounded walking until low-risk gates pass.
   Colab, local GPU, RDK-X5, robot, deployment, torque, and motor access remain
   unauthorized. See
   `outputs/analysis/GROUND_UP_ROBUSTNESS_R2_JOINT_FRICTIONLOSS_LO_RESULT_20260714.md`.
+- 2026-07-14: `JOINT_FRICTIONLOSS_HI` passes all 16 cells with exact 1.1x
+  readback. Worst tracking is .182750 rad and minimum vx is .082996 m/s; every
+  earlier hard gate remains green. Only `ARMATURE_LO` is authorized next.
+  Condition 6+, R3+, training, Colab, local GPU, RDK-X5, robot, deployment,
+  torque, and motor access remain unauthorized. See
+  `outputs/analysis/GROUND_UP_ROBUSTNESS_R2_JOINT_FRICTIONLOSS_HI_RESULT_20260714.md`.
