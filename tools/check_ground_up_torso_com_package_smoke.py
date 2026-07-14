@@ -145,6 +145,26 @@ def main() -> int:
         for _, _, stage, command in commands
     )
     expected_arm_names = [item["name"] for item in prereg["arms"]]
+    expected_hosted_exports = {
+        "U05_DIRECT": [[0, 1_003_520, 2_007_040]],
+        "A05_DIRECT": [[0, 1_003_520, 2_007_040]],
+        "U_CURRICULUM": [
+            [0, 501_760],
+            [0, 501_760],
+            [0, 501_760, 1_003_520],
+        ],
+    }
+    hosted_exports = {
+        arm_name: [stage["expected_steps"] for stage in stages]
+        for arm_name, stages in job.ARMS.items()
+    }
+    prereg_full_range_exports = {
+        item["name"]: item.get(
+            "full_range_checkpoint_steps",
+            item.get("full_range_checkpoint_steps_within_final_stage"),
+        )
+        for item in prereg["arms"]
+    }
     composed_hashes = {
         "randomize_py": sha256_file(composed / "playground/common/randomize.py"),
         "runner_py": sha256_file(composed / "playground/open_duck_mini_v2/runner.py"),
@@ -174,6 +194,13 @@ def main() -> int:
         "fresh_composed_sources_match_contract": composed_hashes == contract_hashes,
         "three_arms_and_stage_schedules_exact": list(job.ARMS) == expected_arm_names
         and len(commands) == 5,
+        "hosted_export_rounding_exact": hosted_exports == expected_hosted_exports
+        and prereg_full_range_exports
+        == {
+            "U05_DIRECT": [1_003_520, 2_007_040],
+            "A05_DIRECT": [1_003_520, 2_007_040],
+            "U_CURRICULUM": [501_760, 1_003_520],
+        },
         "all_training_commands_preserve_recipe_and_target_only_com": commands_exact,
         "hosted_wall_ceiling_fixed": job.MAX_HOSTED_SECONDS == 14_400,
         **checkpoint["checks"],

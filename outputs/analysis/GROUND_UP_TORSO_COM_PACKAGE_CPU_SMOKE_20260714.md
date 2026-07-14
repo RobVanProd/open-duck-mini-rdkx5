@@ -10,6 +10,7 @@ status: `PASS_GROUND_UP_TORSO_COM_PACKAGE_AND_CPU_SMOKE`
 - source_archive_and_member_exact: `True`
 - fresh_composed_sources_match_contract: `True`
 - three_arms_and_stage_schedules_exact: `True`
+- hosted_export_rounding_exact: `True`
 - all_training_commands_preserve_recipe_and_target_only_com: `True`
 - hosted_wall_ceiling_fixed: `True`
 - step_zero_exactly_matches_protected_source: `True`

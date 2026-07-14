@@ -54,19 +54,19 @@ EXPECTED_HASHES = {
 ARMS = {
     "U05_DIRECT": (
         {"distribution": "uniform", "min_x_m": -0.05, "max_x_m": 0.05,
-         "timesteps": 2_000_000, "evals": 3, "expected_steps": [0, 1_024_000, 2_048_000]},
+         "timesteps": 2_000_000, "evals": 3, "expected_steps": [0, 1_003_520, 2_007_040]},
     ),
     "A05_DIRECT": (
         {"distribution": "anchors", "min_x_m": -0.05, "max_x_m": 0.05,
-         "timesteps": 2_000_000, "evals": 3, "expected_steps": [0, 1_024_000, 2_048_000]},
+         "timesteps": 2_000_000, "evals": 3, "expected_steps": [0, 1_003_520, 2_007_040]},
     ),
     "U_CURRICULUM": (
         {"distribution": "uniform", "min_x_m": -0.01, "max_x_m": 0.01,
-         "timesteps": 500_000, "evals": 2, "expected_steps": [0, 512_000]},
+         "timesteps": 500_000, "evals": 2, "expected_steps": [0, 501_760]},
         {"distribution": "uniform", "min_x_m": -0.03, "max_x_m": 0.03,
-         "timesteps": 500_000, "evals": 2, "expected_steps": [0, 512_000]},
+         "timesteps": 500_000, "evals": 2, "expected_steps": [0, 501_760]},
         {"distribution": "uniform", "min_x_m": -0.05, "max_x_m": 0.05,
-         "timesteps": 1_000_000, "evals": 3, "expected_steps": [0, 512_000, 1_024_000]},
+         "timesteps": 1_000_000, "evals": 3, "expected_steps": [0, 501_760, 1_003_520]},
     ),
 }
 MAX_HOSTED_SECONDS = 14_400
@@ -177,7 +177,12 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--asset-root", type=Path, default=Path("/content"))
     parser.add_argument("--validate-assets-only", action="store_true")
-    parser.add_argument("--resume", action="store_true")
+    parser.add_argument(
+        "--resume",
+        action="store_true",
+        default=Path("/content/ground_up_torso_com_outputs").is_dir(),
+        help="reuse only stages that pass the exact export-step contract",
+    )
     args, _kernel_args = parser.parse_known_args()
     assets = args.asset_root.resolve()
     hashes = validate_assets(assets)

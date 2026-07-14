@@ -1007,3 +1007,11 @@ Do not proceed to grounded walking until low-risk gates pass.
   policy update occurred. The transport-only correction uses
   `parse_known_args`, leaving every frozen asset, arm, command, seed, schedule,
   and compute ceiling unchanged; repeat the CPU package checker before retry.
+- 2026-07-14: The retry completed the entire `U05_DIRECT` training command,
+  then stopped only at an incorrect predicted-export assertion. The remotely
+  observed checkpoint and ONNX steps are exactly `0/1003520/2007040`, matching
+  the established 256-environment hosted rounding from prior 2M jobs, rather
+  than CPU-smoke-derived `0/1024000/2048000`. Preserve this completed arm; do
+  not retrain it. Correct only the deterministic export-name contract (and the
+  analogous curriculum names `501760/1003520`), rerun the CPU package checker,
+  and resume sequentially. No behavior result or selection changed.
