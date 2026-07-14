@@ -68,14 +68,15 @@ def main() -> int:
     args, _kernel_args = parser.parse_known_args()
 
     started = time.monotonic()
-    for name in PATCHES:
+    patches = (*PATCHES, *tuple(defaults.get("extra_patches", ())))
+    for name in patches:
         if not (ASSETS / name).is_file():
             raise SystemExit(f"missing uploaded patch: {name}")
 
     shutil.rmtree(ROOT, ignore_errors=True)
     run(["git", "clone", "-q", "https://github.com/apirrone/Open_Duck_Playground.git", str(ROOT)])
     run(["git", "checkout", "-q", CONTROL_COMMIT], cwd=ROOT)
-    for name in PATCHES:
+    for name in patches:
         run(["git", "apply", "--check", str(ASSETS / name)], cwd=ROOT)
         run(["git", "apply", str(ASSETS / name)], cwd=ROOT)
 
@@ -140,7 +141,7 @@ def main() -> int:
         "status": "PASS_TRAINING_ARTIFACT_CONTRACT_ONLY",
         "recipe_id": args.recipe_id,
         "control_commit": CONTROL_COMMIT,
-        "patches": {name: sha256(ASSETS / name) for name in PATCHES},
+        "patches": {name: sha256(ASSETS / name) for name in patches},
         "recipe": vars(args),
         "execution": {
             "versions_and_devices": versions.splitlines(),

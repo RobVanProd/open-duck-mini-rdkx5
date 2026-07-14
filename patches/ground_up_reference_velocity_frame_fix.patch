@@ -1,0 +1,60 @@
+From 5f531898917cd4ae9fd18b53155caea46667dcdd Mon Sep 17 00:00:00 2001
+From: Rob Van <34406413+RobVanProd@users.noreply.github.com>
+Date: Mon, 13 Jul 2026 21:36:23 -0400
+Subject: [PATCH] Align imitation velocity with body-local command frame
+
+---
+ playground/open_duck_mini_v2/custom_rewards.py | 9 +++++----
+ playground/open_duck_mini_v2/joystick.py       | 3 ++-
+ 2 files changed, 7 insertions(+), 5 deletions(-)
+
+diff --git a/playground/open_duck_mini_v2/custom_rewards.py b/playground/open_duck_mini_v2/custom_rewards.py
+index 6b9fcdb..51afdde 100644
+--- a/playground/open_duck_mini_v2/custom_rewards.py
++++ b/playground/open_duck_mini_v2/custom_rewards.py
+@@ -3,7 +3,8 @@ import jax.numpy as jp
+ 
+ def reward_imitation(
+     base_qpos: jax.Array,
+-    base_qvel: jax.Array,
++    base_linvel: jax.Array,
++    base_angvel: jax.Array,
+     joints_qpos: jax.Array,
+     joints_qvel: jax.Array,
+     contacts: jax.Array,
+@@ -70,10 +71,10 @@ def reward_imitation(
+     )  # normalize the quat
+ 
+     ref_base_lin_vel = reference_frame[linear_vel_slice_start:linear_vel_slice_end]
+-    base_lin_vel = base_qvel[:3]
++    base_lin_vel = base_linvel
+ 
+     ref_base_ang_vel = reference_frame[angular_vel_slice_start:angular_vel_slice_end]
+-    base_ang_vel = base_qvel[3:6]
++    base_ang_vel = base_angvel
+ 
+     ref_joint_pos = reference_frame[joint_pos_slice_start:joint_pos_slice_end]
+     # remove neck head and antennas
+@@ -146,4 +147,4 @@ def reward_imitation(
+     )
+ 
+     reward *= cmd_norm > 0.01  # No reward for zero commands.
+-    return jp.nan_to_num(reward)
+\ No newline at end of file
++    return jp.nan_to_num(reward)
+diff --git a/playground/open_duck_mini_v2/joystick.py b/playground/open_duck_mini_v2/joystick.py
+index 1228f93..1d2f690 100644
+--- a/playground/open_duck_mini_v2/joystick.py
++++ b/playground/open_duck_mini_v2/joystick.py
+@@ -674,7 +674,8 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+             "alive": reward_alive(),
+             "imitation": reward_imitation(  # FIXME, this reward is so adhoc...
+                 self.get_floating_base_qpos(data.qpos),  # floating base qpos
+-                self.get_floating_base_qvel(data.qvel),  # floating base qvel
++                self.get_local_linvel(data),  # reference velocity is body-local
++                self.get_gyro(data),  # reference angular velocity is body-local
+                 self.get_actuator_joints_qpos(data.qpos),
+                 self.get_actuator_joints_qvel(data.qvel),
+                 contact,
+-- 
+2.53.0
