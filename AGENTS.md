@@ -789,3 +789,14 @@ Do not proceed to grounded walking until low-risk gates pass.
   No robustness ladder, training, Colab, local GPU, RDK-X5, robot, deployment,
   torque, or motor access is authorized. See
   `outputs/analysis/GROUND_UP_COMMAND_DEADBAND_REPAIR_TRANSFORM_CONTRACT_20260714.md`.
+- 2026-07-14: The frozen 16-cell command-deadband behavior matrix passes at
+  both half/final checkpoints. All four x=0 cells complete 600 ticks at home
+  with zero saturation and rate excess, |mean vx| .000658 m/s, and .030323 rad
+  worst pitch-chain tracking p95. The unchanged moving-command gates also pass:
+  half/final worst tracking is .180822/.181667 rad and minimum vx is
+  .083376/.095190 m/s. This repairs the isolated out-of-support zero-command
+  failure without changing the trained-command behavior. It authorizes only
+  preregistration of an offline robustness ladder. No robustness run before
+  preregistration, training, Colab, local GPU, RDK-X5, robot, deployment,
+  torque, or motor access is authorized. See
+  `outputs/analysis/GROUND_UP_COMMAND_DEADBAND_REPAIR_RESULT_20260714.md`.

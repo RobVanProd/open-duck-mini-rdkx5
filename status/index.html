@@ -81,12 +81,12 @@
     <section class="hero">
       <div class="card">
         <div class="label">Current operation</div>
-        <div class="big amber" id="operation">Deadband repair behavior gate</div>
-        <div class="metric" id="operation-detail">The preregistered half/final ONNX wrappers passed their CPU transform contract: exact zero action/state at x=0 and bit-exact source behavior at x=.074–.080. The frozen 16-cell x=0 plus nominal behavior matrix is now authorized.</div>
+        <div class="big green" id="operation">Offline robustness preregistration</div>
+        <div class="metric" id="operation-detail">The command-deadband repair passed all 16 frozen CPU cells at both checkpoints. x=0 now holds for 600 ticks with zero saturation/rate excess, while the complete nominal gait gate remains unchanged. The next permitted work is preregistration—not execution—of the robustness ladder.</div>
       </div>
       <div class="card">
         <div class="label">Offline winner</div>
-        <div class="big" id="winner">G1 / T2 nominal only</div>
+        <div class="big" id="winner">G1 / T2 + x=0 repair</div>
         <div class="metric">Robot clearance: <strong style="color:var(--red)">NO</strong></div>
       </div>
       <div class="card">
@@ -163,6 +163,7 @@
           <li>The actual-centered guard repairs that exact mechanism. G1/T2 passes both half and final over all commands/seeds, with worst tracking .18167 and minimum vx .08338. This is the first persistent nominal winner, not robot clearance.</li>
           <li>Direct x=0 does not preserve it: half/final fall at ticks 73/211 with 87.67%/95.73% saturation. This is an out-of-support command failure, while rate excess stays zero and tracking remains below .20 before termination.</li>
           <li>The preregistered deadband wrapper passes its transform contract on both checkpoints: outputs are exactly zero at x=0 and action/state outputs are bit-exact to the source policies at x=.074/.077/.080.</li>
+          <li>The full 16-cell behavior matrix passes. All x=0 cells hold home for 600 ticks with zero saturation/rate excess and .03032 rad tracking p95; moving-command worst tracking remains .18082/.18167 at half/final.</li>
         </ol>
       </div>
       <div class="card">
@@ -197,8 +198,8 @@
           <li>Completed: run the frozen 72-cell actual-centered guard screen; G1/T2 is the first persistent full-horizon nominal winner.</li>
           <li>Completed: run the four-cell x=0 preservation gate; both checkpoints saturate and fall, so the nominal winner is held.</li>
           <li>Completed: preregister and CPU-contract a command-deadband zero-action wrapper; both half/final transforms are exact at x=0 and source-identical over x=.074–.080.</li>
-          <li>Current: run the frozen 16-cell CPU behavior matrix across both checkpoints, x=0/.074/.077/.080, and seeds 100/101.</li>
-          <li>Preregister randomization, delay, and push gates only if both repaired checkpoints preserve x=0 and the complete nominal gait gate.</li>
+          <li>Completed: run the frozen 16-cell CPU behavior matrix; both checkpoints preserve x=0 and the complete nominal gait gate.</li>
+          <li>Current: define and preregister the offline robustness ladder with frozen randomization, delay, and push levels before running any new behavior.</li>
           <li>Design RDK runtime only after an offline winner exists.</li>
         </ol>
       </div>
