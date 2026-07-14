@@ -869,3 +869,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   R2 behavior, R3+, training, Colab, local GPU, RDK-X5, robot, deployment,
   torque, and motor access remain unauthorized. See
   `outputs/analysis/GROUND_UP_DUAL_FIT_CONSERVATIVE_ENVELOPE_REPAIR_RESULT_20260714.md`.
+- 2026-07-14: The exact R2 isolated-dynamics matrix is preregistered before its
+  evaluator contract or behavior. It contains 20 conditions in pinned source
+  order: friction, friction-loss, armature, six one-axis torso-COM endpoints,
+  link/torso mass, two deterministic home joint-offset corners, and KP. Every
+  condition must pass both repaired checkpoints, both measured actuator fits,
+  all four commands, the hash-derived seed, and 600 ticks: 16 cells each, 320
+  maximum. Conditions are strictly sequential and stop at the first failure.
+  The evaluator must first prove one-axis-only field/index mutation, endpoint
+  readback, home-reset propagation, default-off reproduction, and CPU-only
+  execution. No R2 behavior before that contract, R3+, training, Colab, local
+  GPU, RDK-X5, robot, deployment, torque, or motor access is authorized. See
+  `outputs/analysis/GROUND_UP_ROBUSTNESS_R2_MATRIX_PREREGISTRATION_20260714.md`.
