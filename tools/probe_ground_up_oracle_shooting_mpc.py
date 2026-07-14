@@ -83,9 +83,11 @@ def simulate_sequence(
     action_scale: float,
     env_rate_limit: float,
     measured_max_delta: np.ndarray,
+    command_x: float,
+    objective_mode: str,
     dt: float,
     n_substeps: int,
-) -> tuple[float, dict[str, float], np.ndarray]:
+) -> tuple[float, tuple[float, ...], dict[str, float], np.ndarray]:
     data = mujoco.MjData(model)
     mujoco.mj_copyData(data, model, source_data)
     bridge = clone_bridge(source_bridge)
@@ -97,6 +99,9 @@ def simulate_sequence(
     body_forward_progress = 0.0
     body_lateral_progress = 0.0
     min_height = float(data.qpos[2])
+    max_abs_tilt = 0.0
+    local_vx_values = []
+    local_vy_values = []
     fell = False
     for action in bounded:
         target = home + action * action_scale
@@ -108,9 +113,12 @@ def simulate_sequence(
         roll, pitch, current_yaw = rpy_from_wxyz(np.asarray(data.qpos[3:7]))
         local_vx = math.cos(current_yaw) * float(data.qvel[0]) + math.sin(current_yaw) * float(data.qvel[1])
         local_vy = -math.sin(current_yaw) * float(data.qvel[0]) + math.cos(current_yaw) * float(data.qvel[1])
+        local_vx_values.append(local_vx)
+        local_vy_values.append(local_vy)
         body_forward_progress += local_vx * dt
         body_lateral_progress += local_vy * dt
         min_height = min(min_height, float(data.qpos[2]))
+        max_abs_tilt = max(max_abs_tilt, abs(roll), abs(pitch))
         if not np.all(np.isfinite(data.qpos)) or min_height < 0.08 or max(abs(roll), abs(pitch)) > 0.8:
             fell = True
             break
@@ -124,6 +132,17 @@ def simulate_sequence(
     delta_mse = float(np.mean(np.square(np.diff(
         np.concatenate([source_action[None, :], bounded], axis=0), axis=0
     ))))
+    velocity_tracking_rmse = float(np.sqrt(np.mean(np.square(
+        np.asarray(local_vx_values, dtype=float) - command_x
+    ))))
+    lateral_velocity_rmse = float(np.sqrt(np.mean(np.square(local_vy_values))))
+    max_abs_action = float(np.max(np.abs(bounded)))
+    viability_violation = max(
+        float(fell),
+        max(0.0, max_abs_tilt / 0.25 - 1.0),
+        max(0.0, 0.12 / max(min_height, 1.0e-9) - 1.0),
+        max(0.0, max_abs_action / 0.999 - 1.0),
+    )
     score = (
         100.0 * body_forward_progress
         + 2.0 * final_vx
@@ -135,7 +154,20 @@ def simulate_sequence(
         - 0.10 * delta_mse
         - 100.0 * float(fell)
     )
-    return score, {
+    if objective_mode == "viability_command_lexicographic":
+        rank_key = (
+            float(viability_violation <= 0.0),
+            -viability_violation,
+            -velocity_tracking_rmse,
+            -lateral_velocity_rmse,
+            -abs(yaw_error),
+            -residual_mse,
+            -delta_mse,
+        )
+        score = -velocity_tracking_rmse if viability_violation <= 0.0 else -1.0 - viability_violation
+    else:
+        rank_key = (score,)
+    return score, rank_key, {
         "dx": body_forward_progress,
         "dy": body_lateral_progress,
         "world_dx": world_dx,
@@ -146,7 +178,12 @@ def simulate_sequence(
         "yaw": yaw_error,
         "world_yaw": yaw,
         "min_height": min_height,
+        "max_abs_tilt": max_abs_tilt,
+        "max_abs_action": max_abs_action,
         "fell": float(fell),
+        "viability_violation": viability_violation,
+        "velocity_tracking_rmse": velocity_tracking_rmse,
+        "lateral_velocity_rmse": lateral_velocity_rmse,
         "reference_residual_mse": residual_mse,
         "action_delta_mse": delta_mse,
     }, bounded
@@ -161,6 +198,11 @@ def main() -> None:
     parser.add_argument("--command-x", type=float, default=0.074)
     parser.add_argument("--duration-s", type=float, default=1.08)
     parser.add_argument("--horizon-ticks", type=int, default=8)
+    parser.add_argument(
+        "--objective-mode",
+        choices=("unbounded_progress", "viability_command_lexicographic"),
+        default="unbounded_progress",
+    )
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
 
@@ -253,19 +295,21 @@ def main() -> None:
             mean = future_reference[::block][:, LEG_INDICES].copy()
             std = np.full_like(mean, 0.20)
             best_score = -math.inf
+            best_key = None
             best_sequence = None
             best_metrics = None
             for _iteration in range(iterations):
                 samples = rng.normal(mean, std, size=(population, blocks, len(LEG_INDICES)))
                 samples = np.clip(samples, -1.0, 1.0)
                 scores = np.empty(population, dtype=float)
+                rank_keys = []
                 bounded_sequences = []
                 metrics = []
                 for candidate in range(population):
                     full_blocks = np.zeros((blocks, 14), dtype=float)
                     full_blocks[:, LEG_INDICES] = samples[candidate]
                     sequence = np.repeat(full_blocks, block, axis=0)
-                    score, item, bounded = simulate_sequence(
+                    score, rank_key, item, bounded = simulate_sequence(
                         mujoco=mujoco,
                         model=model,
                         source_data=data,
@@ -278,19 +322,23 @@ def main() -> None:
                         action_scale=action_scale,
                         env_rate_limit=float(env._config.max_motor_velocity),
                         measured_max_delta=max_delta,
+                        command_x=args.command_x,
+                        objective_mode=args.objective_mode,
                         dt=dt,
                         n_substeps=n_substeps,
                     )
                     scores[candidate] = score
+                    rank_keys.append(rank_key)
                     bounded_sequences.append(bounded)
                     metrics.append(item)
-                order = np.argsort(scores)[-elites:]
+                order = sorted(range(population), key=lambda index: rank_keys[index])[-elites:]
                 elite = samples[order]
                 mean = np.mean(elite, axis=0)
                 std = np.maximum(np.std(elite, axis=0), 0.03)
-                winner = int(np.argmax(scores))
-                if scores[winner] > best_score:
+                winner = max(range(population), key=lambda index: rank_keys[index])
+                if best_key is None or rank_keys[winner] > best_key:
                     best_score = float(scores[winner])
+                    best_key = rank_keys[winner]
                     best_sequence = bounded_sequences[winner]
                     best_metrics = metrics[winner]
 
@@ -336,6 +384,7 @@ def main() -> None:
                 "action": action.tolist(),
                 "action_rate_rad_s": rate.tolist(),
                 "shooting_score": best_score,
+                "shooting_rank_key": list(best_key) if best_key is not None else None,
                 "shooting_terminal": best_metrics,
             })
             previous_action = action.copy()
@@ -358,7 +407,12 @@ def main() -> None:
                 and len(actions) == sim_steps
                 and body_forward_progress > 0.0
                 and body_forward_progress / elapsed > 0.0
+                and body_forward_progress / elapsed >= 0.25 * args.command_x
+                and body_forward_progress / elapsed <= 1.35 * args.command_x
                 and np.all(contact_transitions > 0)
+                and max((abs(item["roll"]) for item in trace), default=0.0) <= 0.25
+                and max((abs(item["pitch"]) for item in trace), default=0.0) <= 0.25
+                and min((item["height"] for item in trace), default=1.0) >= 0.12
                 and (not action_array.size or float(np.max(np.abs(action_array))) < 0.999)
                 and float(np.max(excess)) <= 1.0e-6
             ) else "HOLD_SOURCE_PROBE",
@@ -370,6 +424,9 @@ def main() -> None:
             "world_progress_x_m": world_dx,
             "world_progress_y_m": world_dy,
             "mean_velocity_x_m_s": body_forward_progress / elapsed if elapsed else None,
+            "max_abs_roll_rad": max((abs(item["roll"]) for item in trace), default=None),
+            "max_abs_pitch_rad": max((abs(item["pitch"]) for item in trace), default=None),
+            "min_height_m": min((item["height"] for item in trace), default=None),
             "contact_transitions": contact_transitions.tolist(),
             "max_abs_action": float(np.max(np.abs(action_array))) if action_array.size else None,
             "max_rate_by_joint_rad_s": max_rate.tolist(),
@@ -404,7 +461,21 @@ def main() -> None:
             "iterations": iterations,
             "initial_std": 0.20,
             "minimum_std": 0.03,
-            "objective": "100*body_forward_progress + 2*final_body_vx - 25*abs(body_lateral_progress) - 12*(roll^2+pitch^2) - 3*body_yaw_delta^2 - 150*height_shortfall^2 - 0.25*reference_residual_MSE - 0.10*action_delta_MSE - 100*fall",
+            "objective_mode": args.objective_mode,
+            "objective": (
+                "lexicographic(feasible(max_abs_roll_pitch<=0.25,min_height>=0.12,max_abs_action<0.999,no_fall),-viability_violation,-body_vx_tracking_RMSE,-body_vy_RMSE,-abs(relative_yaw),-reference_residual_MSE,-action_delta_MSE)"
+                if args.objective_mode == "viability_command_lexicographic"
+                else "100*body_forward_progress + 2*final_body_vx - 25*abs(body_lateral_progress) - 12*(roll^2+pitch^2) - 3*body_yaw_delta^2 - 150*height_shortfall^2 - 0.25*reference_residual_MSE - 0.10*action_delta_MSE - 100*fall"
+            ),
+            "source_gate": {
+                "mean_body_vx_ratio": [0.25, 1.35],
+                "max_abs_roll_rad": 0.25,
+                "max_abs_pitch_rad": 0.25,
+                "min_height_m": 0.12,
+                "max_abs_action_exclusive": 0.999,
+                "max_rate_excess_rad_s": 0.0,
+                "bilateral_contact_transitions": True,
+            },
         },
         "passes": passes,
         "required_passes": len(seeds),

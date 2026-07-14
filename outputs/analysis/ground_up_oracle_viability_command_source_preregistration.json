@@ -1,0 +1,14 @@
+{
+  "schema_version": "ground_up_oracle_viability_command_source_preregistration.v1",
+  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "arm": "V1_VIABILITY_COMMAND_LEXICOGRAPHIC",
+  "protected_source": "outputs/analysis/ground_up_oracle_shooting_mpc_h16_probe.json",
+  "protected_source_sha256": "5212a0a6e2e559da52079b15badd2c2594f42c54bac9c9439dd3ecb765a99352",
+  "frozen_search": {"horizon_ticks": 16, "population": 64, "elites": 8, "iterations": 4, "action_block_ticks": 2, "initial_std": 0.20, "minimum_std": 0.03},
+  "frozen_eval": {"command_x_m_s": 0.074, "duration_s": 1.08, "seeds": [100, 101]},
+  "candidate_ranking": ["predicted_viability", "negative_worst_normalized_violation", "negative_body_vx_tracking_rmse", "negative_body_vy_rmse", "negative_abs_relative_yaw", "negative_reference_residual_mse", "negative_action_delta_mse"],
+  "predicted_viability": {"no_fall": true, "max_abs_roll_rad": 0.25, "max_abs_pitch_rad": 0.25, "min_height_m": 0.12, "max_abs_action_exclusive": 0.999},
+  "advancement": {"required_passes": 2, "mean_body_vx_command_ratio": [0.25, 1.35], "bilateral_contact_transitions": true, "max_abs_roll_rad": 0.25, "max_abs_pitch_rad": 0.25, "min_height_m": 0.12, "max_abs_action_exclusive": 0.999, "max_rate_excess_rad_s": 0.0},
+  "on_failure": "CLOSE_WITHOUT_PARAMETER_RETRY",
+  "authorization": {"training": false, "collection": false, "colab": false, "gpu": false, "rdk_x5": false, "robot": false}
+}
