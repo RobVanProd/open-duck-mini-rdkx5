@@ -173,6 +173,15 @@ def write_json(path: Path, payload: dict) -> None:
     path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
 
 
+def write_artifact_snapshot(output_root: Path, artifact: Path) -> dict:
+    temporary = artifact.with_suffix(artifact.suffix + ".tmp")
+    temporary.unlink(missing_ok=True)
+    with tarfile.open(temporary, "w:gz") as archive:
+        archive.add(output_root, arcname=output_root.name)
+    temporary.replace(artifact)
+    return {"sha256": sha256(artifact), "bytes": artifact.stat().st_size}
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--asset-root", type=Path, default=Path("/content"))
@@ -286,6 +295,15 @@ def main() -> int:
                 "completed_arms": results,
                 "current_arm": {"name": arm_name, "stages": stage_results},
             })
+            snapshot = write_artifact_snapshot(output_root, artifact)
+            print(RESULT_PREFIX + json.dumps({
+                "status": "PARTIAL_RECOVERABLE_ARTIFACT",
+                "completed_arm": arm_name,
+                "completed_stage": stage_index,
+                "artifact": str(artifact),
+                "artifact_sha256": snapshot["sha256"],
+                "artifact_bytes": snapshot["bytes"],
+            }, sort_keys=True), flush=True)
         results.append({"name": arm_name, "stages": stage_results, "behavior_status": "UNEVALUATED"})
 
     metadata = {
@@ -307,8 +325,7 @@ def main() -> int:
         "robot_access": False,
     }
     write_json(output_root / "job_metadata.json", metadata)
-    with tarfile.open(artifact, "w:gz") as archive:
-        archive.add(output_root, arcname=output_root.name)
+    write_artifact_snapshot(output_root, artifact)
     final = {
         **metadata,
         "artifact": str(artifact),

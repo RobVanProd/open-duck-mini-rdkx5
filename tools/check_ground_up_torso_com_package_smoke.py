@@ -8,6 +8,8 @@ import importlib.util
 import json
 import os
 from pathlib import Path
+import tarfile
+import tempfile
 
 import jax
 import numpy as np
@@ -41,6 +43,29 @@ def load_job(path: Path):
 def value_after(command: list[str], flag: str) -> str:
     index = command.index(flag)
     return command[index + 1]
+
+
+def check_partial_artifact_snapshots(job) -> bool:
+    with tempfile.TemporaryDirectory(prefix="torso_com_snapshot_") as temporary:
+        root = Path(temporary)
+        output = root / "outputs"
+        output.mkdir()
+        (output / "stage.txt").write_text("one\n")
+        artifact = root / "artifact.tar.gz"
+        first = job.write_artifact_snapshot(output, artifact)
+        (output / "stage.txt").write_text("two\n")
+        second = job.write_artifact_snapshot(output, artifact)
+        with tarfile.open(artifact, "r:gz") as archive:
+            member = archive.extractfile("outputs/stage.txt")
+            content = member.read() if member is not None else b""
+        return (
+            first["bytes"] > 0
+            and len(first["sha256"]) == 64
+            and second["bytes"] > 0
+            and len(second["sha256"]) == 64
+            and content == b"two\n"
+            and not artifact.with_suffix(artifact.suffix + ".tmp").exists()
+        )
 
 
 def inspect_onnx(path: Path) -> dict:
@@ -203,6 +228,8 @@ def main() -> int:
         },
         "all_training_commands_preserve_recipe_and_target_only_com": commands_exact,
         "hosted_wall_ceiling_fixed": job.MAX_HOSTED_SECONDS == 14_400,
+        "atomic_partial_artifact_snapshot_rebuilds_exact":
+        check_partial_artifact_snapshots(job),
         **checkpoint["checks"],
         "all_actor_leaves_changed": checkpoint["changed_policy_leaf_count"]
         == checkpoint["policy_leaf_count"],

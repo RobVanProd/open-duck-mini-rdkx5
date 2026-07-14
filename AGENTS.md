@@ -1027,3 +1027,11 @@ Do not proceed to grounded walking until low-risk gates pass.
   `1003520/2007040`. Preserve all five completed stage outputs, restore the
   preregistered curriculum names, rerun the package checker, then use one
   reporting-only resume to validate and archive without retraining.
+- 2026-07-14: Before the final reporting-only resume, Colab marked the session
+  lost (404/401) and the file API no longer exposed the completed outputs. No
+  checkpoint or ONNX from that session is recoverable evidence. The exact
+  search remains within its 8-unit ceiling and may be rerun unchanged, but the
+  transport must first atomically rebuild a downloadable partial archive after
+  every completed stage. CPU-check and commit that recovery-only change before
+  allocating a replacement session; download each partial snapshot while the
+  session remains live.

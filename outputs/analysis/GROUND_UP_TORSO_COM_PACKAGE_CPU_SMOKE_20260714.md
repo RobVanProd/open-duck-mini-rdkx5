@@ -13,6 +13,7 @@ status: `PASS_GROUND_UP_TORSO_COM_PACKAGE_AND_CPU_SMOKE`
 - hosted_export_rounding_exact: `True`
 - all_training_commands_preserve_recipe_and_target_only_com: `True`
 - hosted_wall_ceiling_fixed: `True`
+- atomic_partial_artifact_snapshot_rebuilds_exact: `True`
 - step_zero_exactly_matches_protected_source: `True`
 - all_checkpoint_leaves_finite: `True`
 - at_least_one_policy_leaf_changed: `True`
