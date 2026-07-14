@@ -902,3 +902,12 @@ Do not proceed to grounded walking until low-risk gates pass.
   change. Condition 2+, R3+, training, Colab, local GPU, RDK-X5, robot,
   deployment, torque, and motor access remain unauthorized. See
   `outputs/analysis/GROUND_UP_ROBUSTNESS_R2_REPORTING_CONTRACT_20260714.md`.
+- 2026-07-14: The evidence-complete `FLOOR_FRICTION_LO` rerun passes all 16
+  cells with exact per-run 1.0 -> .5 floor-friction readback. Both actuator
+  fits and both checkpoints preserve x=0, bilateral gait, zero saturation and
+  measured-envelope excess. Worst tracking remains .183170 rad and minimum vx
+  remains .084912 m/s across the matrix; no measurable behavior regression is
+  present in this flat-contact suite. Only `FLOOR_FRICTION_HI` is authorized
+  next. Condition 3+, R3+, training, Colab, local GPU, RDK-X5, robot,
+  deployment, torque, and motor access remain unauthorized. See
+  `outputs/analysis/GROUND_UP_ROBUSTNESS_R2_FLOOR_FRICTION_LO_RESULT_20260714.md`.
