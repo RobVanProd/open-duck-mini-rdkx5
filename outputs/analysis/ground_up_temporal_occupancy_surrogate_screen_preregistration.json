@@ -1,0 +1,67 @@
+{
+  "schema_version": "ground_up_temporal_occupancy_surrogate_screen_preregistration.v1",
+  "status": "PREREGISTERED_CPU_DIAGNOSTIC_ONLY",
+  "created_utc": "2026-07-14T19:53:23Z",
+  "causal_question": "Can a smooth per-tick occupancy surrogate rank the exact 0.20-rad temporal exceedance quantity more faithfully than the closed squared and rejected linear hinges?",
+  "inputs": {
+    "trace_root": "outputs/analysis/ground_up_tracking_tail_eval_traces",
+    "expected_trace_count": 36,
+    "expected_rows_per_trace": 600,
+    "unique_ranking_seed": 100,
+    "expected_unique_policy_command_rows": 18,
+    "temporal_occupancy_audit": {
+      "path": "outputs/analysis/ground_up_tracking_tail_temporal_occupancy_audit.json",
+      "sha256": "bd55a0ecb0e6e137c917f387e854a51bdd9445294c4da5dd204292f8694cdbee"
+    },
+    "tracking_tail_result": {
+      "path": "outputs/analysis/ground_up_tracking_tail_search_result.json",
+      "sha256": "d789415302d6a6e579f364cf09c3248bd911ac3e525be10ff5b4498ff2592c6e"
+    },
+    "pitch_rate_result": {
+      "path": "outputs/analysis/ground_up_stateful_pitch_rate_boundary_screen_result.json",
+      "sha256": "4466731ce663ecace6f115bd49644a050cb96a7b98b6c19b7c3034e84d51b606"
+    }
+  },
+  "definition": {
+    "pitch_chain_indices": [2, 3, 4, 11, 12, 13],
+    "threshold_rad": 0.2,
+    "exact_gate_quantity": "maximum over pitch-chain joints of the fraction of 600 ticks with absolute sent-target-to-actual error greater than 0.20 rad",
+    "smooth_surrogate": "mean over ticks and pitch-chain joints of sigmoid((absolute_error - 0.20) / temperature)",
+    "baselines": ["six_joint_squared_hinge_mean", "six_joint_linear_hinge_mean"]
+  },
+  "temperature_derivation": {
+    "source": "maximum conditional RMS excess among T3 final seed-100 commands in the frozen temporal-occupancy audit",
+    "source_rad": 0.01345617569523898,
+    "multipliers": [0.25, 0.5, 1.0]
+  },
+  "candidates": [
+    {"name": "S1_QUARTER_RMS", "temperature_rad": 0.003364043923809745},
+    {"name": "S2_HALF_RMS", "temperature_rad": 0.00672808784761949},
+    {"name": "S3_FULL_RMS", "temperature_rad": 0.01345617569523898}
+  ],
+  "scoring": {
+    "rows": "seed 100 only, one row per policy/checkpoint/command; seed 101 remains an exact-reproduction check",
+    "primary": "ordered-pair discordances against exact maximum-joint exceedance occupancy, excluding target ties",
+    "secondary": "ordered-pair discordances against maximum-joint p95, matching the prior audit",
+    "tertiary": "absolute Pearson correlation with exact occupancy, higher is better",
+    "selection_order": ["lower_primary_discordance", "lower_secondary_discordance", "higher_exact_occupancy_correlation", "larger_temperature"]
+  },
+  "advance_rule": {
+    "requires_all_input_hashes": true,
+    "requires_complete_finite_matrix": true,
+    "requires_seed_100_101_surrogate_reproduction": true,
+    "requires_primary_discordance_below_both_hinge_baselines": true,
+    "requires_secondary_discordance_below_both_hinge_baselines": true,
+    "result_if_pass": "AUTHORIZE_IMPLEMENTATION_CONTRACT_ONLY",
+    "result_if_no_pass": "CLOSE_SMOOTH_OCCUPANCY_SURROGATE_FAMILY"
+  },
+  "authority": {
+    "read_frozen_traces": true,
+    "write_diagnostic_report": true,
+    "modify_training_code": false,
+    "training": false,
+    "colab": false,
+    "local_gpu": false,
+    "rdk_or_robot": false
+  }
+}
