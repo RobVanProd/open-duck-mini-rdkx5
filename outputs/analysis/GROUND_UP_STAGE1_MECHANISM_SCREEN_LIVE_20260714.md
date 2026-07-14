@@ -1,6 +1,6 @@
 # Ground-Up Stage-One Mechanism Screen: Live Evidence
 
-status: `RERUNNING_SYMMETRIC_CRITIC_AFTER_SECOND_RUNTIME_LOSS`
+status: `SUPERSEDED_BY_FINAL_RESULT`
 
 The protected upstream control completed 8,028,160 seed-100 training steps and
 was evaluated at 6,021,120 and 8,028,160 using the frozen CPU gate.
@@ -40,8 +40,9 @@ remote checkpoints but no completed archive, so it has no behavior evidence
 from that interrupted attempt. The stale execution was interrupted and the
 session stopped.
 
-`M4_SYMCRIT` is being rerun exactly, by itself. No completed candidate is being
-repeated and no recipe value has changed. No final cross-family ranking or
-winner exists yet.
+`M4_SYMCRIT` completed its exact rerun and CPU evaluation. The final result is
+`NO_STAGE1_MECHANISM_WINNER`; see
+`GROUND_UP_STAGE1_MECHANISM_SCREEN_RESULT_20260714.md`. No completed candidate
+was repeated and no recipe value changed.
 Training reward is excluded. Evaluation used local CPU only; no local GPU,
 RDK-X5, or robot access occurred.
