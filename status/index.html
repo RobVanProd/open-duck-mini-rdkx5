@@ -81,8 +81,8 @@
     <section class="hero">
       <div class="card">
         <div class="label">Current operation</div>
-        <div class="big green" id="operation">R2 · floor friction 0.5</div>
-        <div class="metric" id="operation-detail">The R2 evaluator contract passed all 20 one-axis readbacks, exact default-off 600-tick reproduction, home-offset propagation, and CPU-only checks. The first sequential condition—floor friction 0.5—is now authorized for its 16 cells.</div>
+        <div class="big amber" id="operation">R2 condition 1 exact rerun</div>
+        <div class="metric" id="operation-detail">The first floor-friction outputs were not aggregated because the wrapper omitted per-run model readback. A serialization-only reporting contract now passes. The same 16 cells must be rerun unchanged; condition 2+ remains blocked.</div>
       </div>
       <div class="card">
         <div class="label">Offline winner</div>
@@ -209,7 +209,8 @@
           <li>Completed: repeat the frozen 16 R1 cells; the repaired policy passes both measured actuator fits at both checkpoints.</li>
           <li>Completed: freeze the exact 20-condition R2 matrix—320 cells maximum, sequential, stopping at the first failure.</li>
           <li>Completed: contract one-axis model mutation, readback, home-reset propagation, exact 600-tick default-off behavior, and CPU-only execution.</li>
-          <li>Current: run only R2 condition 1, floor friction 0.5, across both checkpoints, both fits, and all four commands.</li>
+          <li>Completed: detect and contract a reporting-only fix for omitted per-run model readback; the first unaggregated outputs are invalid.</li>
+          <li>Current: overwrite them with the identical 16-cell floor-friction 0.5 rerun, then aggregate once.</li>
           <li>Design RDK runtime only after an offline winner exists.</li>
         </ol>
       </div>

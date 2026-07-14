@@ -893,3 +893,12 @@ Do not proceed to grounded walking until low-risk gates pass.
   training, Colab, local GPU, RDK-X5, robot, deployment, torque, or motor
   access is authorized. See
   `outputs/analysis/GROUND_UP_ROBUSTNESS_R2_EVALUATOR_CONTRACT_20260714.md`.
+- 2026-07-14: The first condition-1 outputs are invalid evidence and were not
+  aggregated because the campaign wrapper retained the requested override but
+  discarded the simulator's per-run model readback. A serialization-only fix
+  now copies that readback into every run. Its CPU smoke records floor friction
+  1.0 -> .5 and changed index [0,0] exactly. The identical 16 condition-1 cells
+  must be rerun and overwrite the invalid outputs; no behavior parameter may
+  change. Condition 2+, R3+, training, Colab, local GPU, RDK-X5, robot,
+  deployment, torque, and motor access remain unauthorized. See
+  `outputs/analysis/GROUND_UP_ROBUSTNESS_R2_REPORTING_CONTRACT_20260714.md`.

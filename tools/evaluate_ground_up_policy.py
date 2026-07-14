@@ -219,6 +219,11 @@ def evaluate(args: argparse.Namespace) -> dict[str, Any]:
                     "candidate_gate": result.get("candidate_gate"),
                     "emergence": evidence,
                     "modes": result.get("modes"),
+                    "dynamics_override": (
+                        (result.get("insertion_point") or {}).get(
+                            "dynamics_override"
+                        )
+                    ),
                     "error": result.get("error"),
                     "trace_jsonl": None if trace_path is None else str(trace_path),
                 }
