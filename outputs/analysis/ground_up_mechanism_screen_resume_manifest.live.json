@@ -63,6 +63,71 @@
       "timesteps": 8028160,
       "training_seconds": 1407.4582059949998,
       "training_seed": 100
+    },
+    {
+      "artifact": "/content/M3_RECURRENT_ground_up_recipe_artifacts.tar.gz",
+      "artifact_bytes": 5570198,
+      "artifact_sha256": "17ba25bcf9cef9b21691e284dcb67661a16522e032c00eb60a748721803d9af7",
+      "behavior_status": "UNEVALUATED",
+      "candidate": {
+        "critic_observation": "privileged_state",
+        "entropy_cost": 0.005,
+        "id": "M3_RECURRENT",
+        "imitation_scale": 1.0,
+        "learning_rate": 0.0003,
+        "policy_architecture": "recurrent",
+        "recurrent_hidden_size": 64
+      },
+      "checkpoints": [
+        "2026_07_14_102411_0",
+        "2026_07_14_102832_2007040",
+        "2026_07_14_103434_4014080",
+        "2026_07_14_103709_6021120",
+        "2026_07_14_103944_8028160"
+      ],
+      "control_commit": "b9be205ac64488c23504ca42e5ec790337adeec3",
+      "onnx": [
+        {
+          "name": "2026_07_14_102411_0.onnx",
+          "sha256": "af46cc412582ff8231a46878c2a3d05df139f3996f58fe7668bd0f6805e42eff"
+        },
+        {
+          "name": "2026_07_14_102832_2007040.onnx",
+          "sha256": "f830b9e8e82721ec50e08b47c1bb7ce91d27d189b3d7fa774d75a5f6c0587a54"
+        },
+        {
+          "name": "2026_07_14_103434_4014080.onnx",
+          "sha256": "863a2826bd80fadd15886b60443cd91ffd4d1b92729d4c054c1a25f7871f4e26"
+        },
+        {
+          "name": "2026_07_14_103709_6021120.onnx",
+          "sha256": "9e548d5c817a4585c4420ca87d2484eaf8e183f9bac3a0e4530a10e78a8708c2"
+        },
+        {
+          "name": "2026_07_14_103944_8028160.onnx",
+          "sha256": "ac422ed4370f40709ec3485f2a5e581caa1d15a770c08bc66c41583b542c1e24"
+        }
+      ],
+      "patches": {
+        "ground_up_recipe_search.patch": "3f5d892f5ce531207de6c86b18c9f5dbea83bc131a3fc2e5085851c2e4e3e5f8",
+        "ground_up_reference_conditioned.patch": "4138ecddb9ffc0df468a2780522c1732bc4b0e1a0865d181da1112d1c16902fb",
+        "ground_up_search_runner.patch": "6a176589b766de65ac2746c66f3387bfca5384d6ce4adf3703c752d8103a5e55",
+        "ground_up_stage1_mechanism_stack.patch": "cf5155dfd54a4699865b9823e8bf090f9f54b0e53df5583eb448e315d60053dc"
+      },
+      "schema_version": "ground_up_colab_recipe_sweep_candidate.v1",
+      "selection_uses_training_reward": false,
+      "shared": {
+        "discounting": 0.97,
+        "extra_patches": [
+          "ground_up_stage1_mechanism_stack.patch"
+        ],
+        "ground_up_command_curriculum": true,
+        "unroll_length": 20
+      },
+      "status": "PASS_TRAINING_ARTIFACT_CONTRACT_ONLY",
+      "timesteps": 8028160,
+      "training_seconds": 1330.884586521,
+      "training_seed": 100
     }
   ],
   "device_contract": [
@@ -70,7 +135,7 @@
     "[CudaDevice(id=0)]",
     "HAS_GPU True"
   ],
-  "elapsed_seconds": 1463.375542475,
+  "elapsed_seconds": 2794.5096147639997,
   "schema_version": "ground_up_colab_recipe_sweep.v1",
   "selection_uses_training_reward": false,
   "status": "RUNNING"
