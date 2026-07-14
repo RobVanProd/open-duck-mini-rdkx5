@@ -144,6 +144,8 @@ def evaluate(args: argparse.Namespace) -> dict[str, Any]:
     fit = json.loads(fit_path.read_text())
     commands = parse_csv(args.commands, float)
     seeds = parse_csv(args.seeds, int)
+    state_input_names = tuple(parse_csv(args.policy_state_input_names, str))
+    state_output_names = tuple(parse_csv(args.policy_state_output_names, str))
 
     runs: list[dict[str, Any]] = []
     for command_x in commands:
@@ -162,6 +164,8 @@ def evaluate(args: argparse.Namespace) -> dict[str, Any]:
                     seed=seed,
                     eval_role="candidate",
                     reference_feature_table_path=reference,
+                    policy_state_input_names=state_input_names,
+                    policy_state_output_names=state_output_names,
                 )
             )
             evidence = emergence_evidence(
@@ -213,6 +217,8 @@ def evaluate(args: argparse.Namespace) -> dict[str, Any]:
             "duration_s": args.duration_s,
             "minimum_emergence_duration_s": args.minimum_emergence_duration_s,
             "task": args.task,
+            "policy_state_input_names": list(state_input_names),
+            "policy_state_output_names": list(state_output_names),
         },
         "aggregate": {
             "runs": len(runs),
@@ -266,6 +272,16 @@ def main() -> None:
     parser.add_argument("--fit", default=str(DEFAULT_FIT))
     parser.add_argument("--reference-feature-table", default=None)
     parser.add_argument("--expected-observation-dim", type=int, default=101)
+    parser.add_argument(
+        "--policy-state-input-names",
+        default="",
+        help="Comma-separated recurrent ONNX state inputs, for example h_in.",
+    )
+    parser.add_argument(
+        "--policy-state-output-names",
+        default="",
+        help="Comma-separated recurrent ONNX state outputs, for example h_out.",
+    )
     parser.add_argument("--commands", default="0.0,0.08")
     parser.add_argument("--seeds", default="100,101")
     parser.add_argument("--duration-s", type=float, default=5.0)
