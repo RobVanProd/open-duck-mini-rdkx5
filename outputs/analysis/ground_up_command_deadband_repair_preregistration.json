@@ -1,0 +1,67 @@
+{
+  "schema_version": "ground_up_command_deadband_repair_preregistration.v1",
+  "status": "PREREGISTERED_CPU_ONLY",
+  "causal_basis": {
+    "x0_result": "outputs/analysis/ground_up_guard_winner_x0_result.json",
+    "decision": "PREREGISTER_COMMAND_DEADBAND_ZERO_ACTION_REPAIR",
+    "half_fall_tick": 73,
+    "final_fall_tick": 211,
+    "half_action_saturation_pct": 87.67123287671232,
+    "final_action_saturation_pct": 95.73459715639811,
+    "training_command_support_x": [0.074, 0.08]
+  },
+  "source_policies": [
+    {"step": 512000, "path": "outputs/analysis/ground_up_actual_centered_guard_policies/G1_EXACT_BOUNDARY/T2_EQUAL_512000.onnx"},
+    {"step": 1024000, "path": "outputs/analysis/ground_up_actual_centered_guard_policies/G1_EXACT_BOUNDARY/T2_EQUAL_1024000.onnx"}
+  ],
+  "transform": {
+    "command_x_observation_index": 6,
+    "zero_deadband_absolute_command_x": 0.01,
+    "zero_command_action": "14 normalized zeros, corresponding to home actuator targets",
+    "zero_command_state_output": "same 14 normalized zeros",
+    "positive_support_behavior": "for x >= 0.074, continuous_actions and previous_action_out must be bit-exact to source",
+    "intermediate_command_behavior": "not authorized or evaluated by this repair",
+    "source_graph_policy": "source operators and initializers unchanged; append command predicate and two output selectors while preserving external names"
+  },
+  "contract_before_behavior": [
+    "source hashes exact",
+    "external graph interface unchanged",
+    "source operators and initializers preserved",
+    "x=0 action and state outputs exactly zero for randomized noncommand observations and prior states",
+    "x=.074/.077/.080 action and state outputs bit-exact to source",
+    "all outputs finite on CPU"
+  ],
+  "behavior_matrix": {
+    "checkpoints": [512000, 1024000],
+    "commands_x": [0.0, 0.074, 0.077, 0.08],
+    "seeds": [100, 101],
+    "duration_ticks": 600,
+    "cells": 16
+  },
+  "x0_gate": {
+    "samples": 600,
+    "termination_reason": "duration_complete",
+    "candidate_gate_status": "PASS_CANDIDATE_SIM_GATE",
+    "maximum_absolute_mean_local_velocity_m_s": 0.02,
+    "maximum_body_pitch_p95_rad": 0.25,
+    "minimum_base_height_m": 0.12,
+    "maximum_pitch_tracking_p95_rad": 0.2,
+    "maximum_action_saturation_pct": 0.0,
+    "maximum_rate_excess_rad_s": 0.0
+  },
+  "nominal_gate": "unchanged six-cell 600-tick candidate gate at each checkpoint",
+  "advance_rule": {
+    "requires_both_checkpoints_x0_and_nominal": true,
+    "result_if_pass": "ADVANCE_OFFLINE_CANDIDATE_TO_PREREGISTERED_ROBUSTNESS_LADDER",
+    "result_if_fail": "HOLD_AND_CLOSE_COMMAND_DEADBAND_REPAIR",
+    "selection_uses_training_reward": false
+  },
+  "authority": {
+    "cpu_transform_contract_and_behavior": true,
+    "robustness_ladder": false,
+    "training": false,
+    "colab": false,
+    "local_gpu": false,
+    "rdk_or_robot": false
+  }
+}
