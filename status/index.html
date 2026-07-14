@@ -157,6 +157,7 @@
           <li>T1 half/final worst tracking is .22883/.23242; T2 is .21505/.20972; T3 is .22048/.20410. No arm passes both checkpoints against the unchanged .20 limit, so the exact tail-exceedance formulation is closed.</li>
           <li>The preregistered stateful pitch-rate boundary screen completed all 72 CPU-only cells. All cells remained full-duration walks with bilateral support, zero saturation, and zero measured rate excess.</li>
           <li>R1 T2 half/final worst tracking is .21493/.20887 and R1 T3 is .21985/.20074; R2 T2 is .21214/.20430 and R2 T3 is .21317/.19931; R3 T2 is .20789/.21070 and R3 T3 is .21298/.19852. No combination passes both checkpoints, so the screen is closed without promoting a closest result.</li>
+          <li>A preregistered smooth-occupancy diagnostic improved exact-occupancy ranking from 20 to 14 discordant pairs, but worsened p95 ranking from 17 to 20. It fails the frozen dual-ranking rule, so no surrogate or training run advances.</li>
         </ol>
       </div>
       <div class="card">
@@ -185,7 +186,8 @@
           <li>Completed: the occupancy audit finds T3 final misses the 30-tick boundary by only 1/7/3 ticks, but rejects linear hinge because its gate ranking is worse than squared hinge.</li>
           <li>Completed: 97.63% of gate-setting exceedance ticks occur at or within the two-tick lag window after a measured target-rate boundary; the odds ratio is 10.46.</li>
           <li>Completed: run the preregistered CPU-only stateful pitch-rate screen. Twelve ONNX variants passed exact graph, initializer, bound, and state-feedback checks before all 72 behavior cells were evaluated.</li>
-          <li>Current: analyze the closed search families and preregister the next evidence-supported formulation before spending additional Colab compute. No hosted run is active or authorized.</li>
+          <li>Completed: test three preregistered smooth approximations to temporal occupancy on all 36 frozen traces; none beats both hinge baselines on occupancy and p95 rankings.</li>
+          <li>Current: test whether actor-only averaging of compatible mature checkpoints is a valid CPU-side mechanism for the measured actor drift before considering additional Colab compute.</li>
           <li>Only a persistent nominal pass can authorize a separately preregistered x=0 preservation gate.</li>
           <li>Add x=0, randomization, delay, and pushes only after nominal gait emergence persists.</li>
           <li>Design RDK runtime only after an offline winner exists.</li>

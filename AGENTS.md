@@ -701,3 +701,12 @@ Do not proceed to grounded walking until low-risk gates pass.
   result. No training, x=0 gate, local GPU, RDK-X5, robot, deployment, torque,
   or motor access is authorized. See
   `outputs/analysis/GROUND_UP_STATEFUL_PITCH_RATE_BOUNDARY_SCREEN_RESULT_20260714.md`.
+- 2026-07-14: The preregistered smooth temporal-occupancy diagnostic closed
+  without a winner. All 36 frozen 600-tick traces and three input hashes pass,
+  and seed-100/101 diagnostics reproduce exactly. The best smooth candidate
+  reduces exact-occupancy rank discordance from 20 to 14 pairs, but its p95
+  discordance is 20 versus 17 for the closed squared hinge. No candidate beats
+  both hinge baselines on both frozen rankings, so no occupancy surrogate,
+  implementation, or training run advances. No Colab, local GPU, RDK-X5,
+  robot, deployment, torque, or motor access is authorized. See
+  `outputs/analysis/GROUND_UP_TEMPORAL_OCCUPANCY_SURROGATE_SCREEN_RESULT_20260714.md`.
