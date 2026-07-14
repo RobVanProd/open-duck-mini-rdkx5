@@ -1,0 +1,32 @@
+{
+  "schema_version": "ground_up_stateful_pitch_rate_boundary_screen_preregistration.v1",
+  "status": "PREREGISTERED_CPU_ONLY",
+  "source_tail_arms": ["T2_EQUAL", "T3_FOUR"],
+  "source_steps": [512000, 1024000],
+  "pitch_chain_indices": [2, 3, 4, 11, 12, 13],
+  "transform": "multiply only pitch-chain values of stateful ONNX max_action_delta initializer",
+  "derivation": {
+    "t3_final_worst_tracking_p95_rad": 0.20410053133964537,
+    "tracking_limit_rad": 0.2,
+    "gate_ratio": 0.9799092569101565,
+    "gap": 0.020090743089843488
+  },
+  "arms": [
+    {"name": "R1_GATE_GAP", "multiplier": 0.9799092569101565},
+    {"name": "R2_DOUBLE_GAP", "multiplier": 0.959818513820313},
+    {"name": "R3_FOUR_GAP", "multiplier": 0.919637027640626}
+  ],
+  "commands_x": [0.074, 0.077, 0.08],
+  "seeds": [100, 101],
+  "duration_ticks": 600,
+  "tracking_limit_rad": 0.2,
+  "requires_half_and_final_checkpoint_pass": true,
+  "selection_order": ["least_rate_reduction", "lower_worst_tracking_p95", "higher_minimum_forward_velocity"],
+  "selection_uses_training_reward": false,
+  "authority": {
+    "cpu_policy_transform_and_eval": true,
+    "training": false,
+    "local_gpu": false,
+    "rdk_or_robot": false
+  }
+}

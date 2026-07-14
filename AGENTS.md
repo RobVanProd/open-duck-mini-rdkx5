@@ -676,3 +676,17 @@ Do not proceed to grounded walking until low-risk gates pass.
   is authorized. Next is a read-only phase/rate-boundary audit. See
   `outputs/analysis/GROUND_UP_TRACKING_TAIL_JOINT_PHASE_AUDIT_20260714.md` and
   `outputs/analysis/GROUND_UP_TRACKING_TAIL_TEMPORAL_OCCUPANCY_AUDIT_20260714.md`.
+- 2026-07-14: The phase/rate-boundary audit selects a CPU-only stateful ONNX
+  A/B. Across all 36 traces, 97.6268% of gate-setting exceedance ticks occur at
+  or within two ticks after the measured target-rate boundary versus 79.7326%
+  elsewhere (odds ratio 10.4565), and at least 88.31% of each trace's events
+  lie in four reference-period bins. Three pitch-rate multipliers are frozen
+  from 1x/2x/4x the exact T3-final .2041005-to-.20 gap before outcomes. All 12
+  transformed T2/T3 half/final ONNX policies pass graph/interface, non-target
+  initializer identity, exact pitch-delta, eight-tick bound, and state-output
+  checks. This authorizes only the preregistered 72-cell local CPU screen; it
+  does not authorize training, local GPU, x=0, RDK-X5, robot, deployment,
+  torque, or motor use. See
+  `outputs/analysis/GROUND_UP_TRACKING_TAIL_RATE_BOUNDARY_AUDIT_20260714.md`,
+  `outputs/analysis/GROUND_UP_STATEFUL_PITCH_RATE_BOUNDARY_SCREEN_PREREGISTRATION_20260714.md`,
+  and `outputs/analysis/GROUND_UP_STATEFUL_PITCH_RATE_TRANSFORM_CONTRACT_20260714.md`.
