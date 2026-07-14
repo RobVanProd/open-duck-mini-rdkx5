@@ -80,7 +80,7 @@ transition and command support. Freeze:
 - seed `100`, 256 environments, 2,000,000 requested new steps, three exports
   (restored step zero and the runner's expected rounded steps 1,003,520 and
   2,007,040);
-- episode length `1,000`, unroll `20`, batch size `256`, 32 minibatches, four
+- episode length `600`, unroll `20`, batch size `256`, four minibatches, four
   updates per batch;
 - LR `3e-4`, discount `0.97`, entropy `0.005`, imitation `1.0`;
 - every environment, reset, phase, objective, table, command range, and hard
