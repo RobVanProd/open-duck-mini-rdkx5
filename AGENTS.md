@@ -710,3 +710,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   implementation, or training run advances. No Colab, local GPU, RDK-X5,
   robot, deployment, torque, or motor access is authorized. See
   `outputs/analysis/GROUND_UP_TEMPORAL_OCCUPANCY_SURROGATE_SCREEN_RESULT_20260714.md`.
+- 2026-07-14: Actor-only cumulative checkpoint averaging is preregistered as
+  the next CPU stabilization screen, based on measured 6.749x actor-dominant
+  drift and repeated half/final gate instability. Transfer of the published
+  SWA mechanism to this PPO trajectory is treated as an inference to test, not
+  an assumed result. All eight T2/T3 cumulative-half/final ONNX policies pass
+  exact archive/member hash, identical graph, actor arithmetic, current-
+  checkpoint normalizer, nonactor initializer, pitch-rate delta, finite CPU
+  inference, state-feedback, and chained-bound checks; maximum bound excess is
+  2.98e-8 rad. This authorizes only the frozen 48-cell CPU behavior screen. No
+  training, Colab, local GPU, RDK-X5, robot, deployment, torque, or motor access
+  is authorized. See `outputs/analysis/GROUND_UP_ACTOR_SWA_SCREEN_PREREGISTRATION_20260714.md`
+  and `outputs/analysis/GROUND_UP_ACTOR_SWA_TRANSFORM_CONTRACT_20260714.md`.
