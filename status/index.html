@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Open Duck Mini — Evidence Status</title>
+  <style>
+    :root {
+      --ink: #f4f0e6;
+      --muted: #aaa89f;
+      --paper: #111311;
+      --panel: #191c19;
+      --line: #30352f;
+      --green: #70d68b;
+      --amber: #f2bc61;
+      --red: #ed7b6f;
+      --blue: #76b9e6;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 12% -10%, #263425 0, transparent 32rem),
+        radial-gradient(circle at 95% 15%, #1c2d37 0, transparent 28rem),
+        var(--paper);
+      font: 15px/1.55 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+    main { width: min(1180px, calc(100% - 32px)); margin: 0 auto; padding: 46px 0 72px; }
+    header { display: flex; justify-content: space-between; gap: 24px; align-items: flex-start; margin-bottom: 30px; }
+    .eyebrow { color: var(--green); text-transform: uppercase; letter-spacing: .18em; font-size: 12px; }
+    h1 { margin: 8px 0 6px; font: 700 clamp(30px, 6vw, 64px)/1.02 system-ui, sans-serif; letter-spacing: -.05em; }
+    .subtitle { color: var(--muted); max-width: 720px; }
+    .live { display: flex; align-items: center; gap: 9px; color: var(--green); white-space: nowrap; padding-top: 7px; }
+    .dot { width: 9px; height: 9px; border-radius: 50%; background: currentColor; box-shadow: 0 0 16px currentColor; animation: pulse 1.8s infinite; }
+    @keyframes pulse { 50% { opacity: .35; } }
+    .hero, .grid, .mechanisms { display: grid; gap: 14px; }
+    .hero { grid-template-columns: 1.7fr 1fr 1fr; margin-bottom: 14px; }
+    .grid { grid-template-columns: 1fr 1fr; margin-bottom: 14px; }
+    .mechanisms { grid-template-columns: repeat(5, 1fr); }
+    .card { border: 1px solid var(--line); border-radius: 15px; background: color-mix(in srgb, var(--panel) 94%, transparent); padding: 20px; box-shadow: 0 18px 55px #0004; }
+    .label { color: var(--muted); text-transform: uppercase; letter-spacing: .12em; font-size: 11px; }
+    .big { margin-top: 10px; font: 650 clamp(21px, 3vw, 36px)/1.15 system-ui, sans-serif; letter-spacing: -.025em; }
+    .big.amber { color: var(--amber); }
+    .metric { margin-top: 8px; color: var(--muted); }
+    .metric strong { color: var(--ink); font-size: 20px; }
+    h2 { margin: 0 0 15px; font: 650 20px/1.2 system-ui, sans-serif; }
+    ol { margin: 0; padding-left: 20px; }
+    li + li { margin-top: 9px; }
+    code { color: #c9e6ff; overflow-wrap: anywhere; }
+    .candidate { min-height: 178px; position: relative; overflow: hidden; }
+    .candidate::before { content: ''; position: absolute; inset: 0 auto 0 0; width: 3px; background: var(--line); }
+    .candidate.eliminated::before { background: var(--red); }
+    .candidate.running::before { background: var(--amber); }
+    .candidate .name { margin: 8px 0 16px; font: 650 17px/1.2 system-ui, sans-serif; }
+    .status { display: inline-block; border: 1px solid currentColor; border-radius: 999px; padding: 3px 8px; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; }
+    .eliminated .status { color: var(--red); }
+    .running .status { color: var(--amber); }
+    .facts { margin-top: 15px; color: var(--muted); font-size: 12px; }
+    .facts b { color: var(--ink); }
+    .constraints { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .chip { border: 1px solid var(--line); border-radius: 999px; padding: 5px 9px; color: var(--muted); font-size: 11px; }
+    footer { margin-top: 22px; color: var(--muted); font-size: 11px; display: flex; justify-content: space-between; gap: 12px; }
+    a { color: var(--blue); }
+    @media (max-width: 900px) { .hero, .mechanisms { grid-template-columns: 1fr 1fr; } .hero .card:first-child { grid-column: 1 / -1; } }
+    @media (max-width: 620px) { header { display: block; } .live { margin-top: 12px; } .hero, .grid, .mechanisms { grid-template-columns: 1fr; } .hero .card:first-child { grid-column: auto; } }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div>
+        <div class="eyebrow">Open Duck Mini / evidence console</div>
+        <h1>Policy search status</h1>
+        <div class="subtitle">Ground-up, reference-motion policy development. Decisions come from frozen offline gates—not reward curves, visual preference, or robot improvisation.</div>
+      </div>
+      <div class="live"><span class="dot"></span><span id="page-state">LIVE STATUS</span></div>
+    </header>
+
+    <section class="hero">
+      <div class="card">
+        <div class="label">Current operation</div>
+        <div class="big amber" id="operation">M4 symmetric-critic training</div>
+        <div class="metric" id="operation-detail">Exact seed-100 rerun on Colab T4 after a hosted-runtime reset. No recipe values changed.</div>
+      </div>
+      <div class="card">
+        <div class="label">Offline winner</div>
+        <div class="big" id="winner">None yet</div>
+        <div class="metric">Robot clearance: <strong style="color:var(--red)">NO</strong></div>
+      </div>
+      <div class="card">
+        <div class="label">Compute</div>
+        <div class="big">91.29 CU</div>
+        <div class="metric">Last user-reported balance before this run. Not estimated live.</div>
+      </div>
+    </section>
+
+    <section class="card" style="margin-bottom:14px">
+      <div class="label">Preregistered structural screen</div>
+      <h2 style="margin-top:8px">Five mechanisms, one unchanged behavior gate</h2>
+      <div class="mechanisms">
+        <div class="card candidate eliminated"><span class="status">eliminated</span><div class="name">M0 · Upstream</div><div class="facts"><b>0</b> full · <b>0</b> moving<br><b>1</b> hard failure</div></div>
+        <div class="card candidate eliminated"><span class="status">eliminated</span><div class="name">M1 · Ref-conditioned</div><div class="facts"><b>0</b> full · <b>1</b> isolated moving<br><b>2</b> hard failures</div></div>
+        <div class="card candidate eliminated"><span class="status">eliminated</span><div class="name">M2 · Phase MoE</div><div class="facts"><b>0</b> full · <b>0</b> moving<br><b>2</b> hard failures</div></div>
+        <div class="card candidate eliminated"><span class="status">eliminated</span><div class="name">M3 · Recurrent</div><div class="facts"><b>0</b> full · <b>0</b> moving<br><b>4</b> hard failures</div></div>
+        <div class="card candidate running"><span class="status" id="m4-state">training</span><div class="name">M4 · Symmetric critic</div><div class="facts" id="m4-facts">Step 2,007,040 exported<br>6M / 8M gate pending</div></div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <div class="label">What the evidence says</div>
+        <h2 style="margin-top:8px">Scalar tuning did not solve behavior emergence</h2>
+        <ol>
+          <li>Learning rate, entropy, imitation scale, discount, and unroll searches produced no persistent gait and no full checkpoint pass.</li>
+          <li>Four structurally different policy/critic mechanisms also failed the frozen advancement rule.</li>
+          <li>M4 decides whether this screen has a qualifier. If it does not, the recorded next branch is a reference/command curriculum or objective audit—not another arbitrary scalar sweep.</li>
+        </ol>
+      </div>
+      <div class="card">
+        <div class="label">Next decision sequence</div>
+        <h2 style="margin-top:8px">No skipped gates</h2>
+        <ol>
+          <li>Finish and immediately recover M4 artifact.</li>
+          <li>Evaluate 6M and 8M checkpoints on local CPU at x=0 and x=.08, seeds 100/101.</li>
+          <li>Rank all five candidates using hard failures first.</li>
+          <li>Replicate only a qualifying mechanism; otherwise preregister the next offline branch.</li>
+          <li>Design RDK runtime only after an offline winner exists.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="label">Authority boundary</div>
+      <h2 style="margin-top:8px">Offline only</h2>
+      <div>The baseline <code>BEST_WALK_ONNX_2.onnx</code> remains a frozen comparator, not a teacher or warm start. No new policy is cleared for the robot. No robot, RDK-X5, iGPU, or onboard GPU access is part of this work.</div>
+      <div class="constraints"><span class="chip">Robot blocked</span><span class="chip">RDK blocked</span><span class="chip">Local iGPU blocked</span><span class="chip">Onboard GPU occupied</span><span class="chip">Local eval CPU-only</span><span class="chip">Colab training only</span></div>
+    </section>
+
+    <footer>
+      <span id="updated">Evidence snapshot: 2026-07-14</span>
+      <span>branch <code>codex/live-oracle-dagger-phase-student</code> · runtime-loss record <code>478ff9d</code></span>
+    </footer>
+  </main>
+</body>
+</html>
