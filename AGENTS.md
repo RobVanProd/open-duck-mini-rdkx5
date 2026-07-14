@@ -911,3 +911,9 @@ Do not proceed to grounded walking until low-risk gates pass.
   next. Condition 3+, R3+, training, Colab, local GPU, RDK-X5, robot,
   deployment, torque, and motor access remain unauthorized. See
   `outputs/analysis/GROUND_UP_ROBUSTNESS_R2_FLOOR_FRICTION_LO_RESULT_20260714.md`.
+- 2026-07-14: `FLOOR_FRICTION_HI` also passes all 16 cells with exact per-run
+  1.0 readback. It is the model's default boundary and reproduces the repaired
+  R1 metrics exactly. Only `JOINT_FRICTIONLOSS_LO` is authorized next;
+  condition 4+, R3+, training, Colab, local GPU, RDK-X5, robot, deployment,
+  torque, and motor access remain unauthorized. See
+  `outputs/analysis/GROUND_UP_ROBUSTNESS_R2_FLOOR_FRICTION_HI_RESULT_20260714.md`.

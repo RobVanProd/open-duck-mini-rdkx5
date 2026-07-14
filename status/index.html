@@ -81,8 +81,8 @@
     <section class="hero">
       <div class="card">
         <div class="label">Current operation</div>
-        <div class="big green" id="operation">R2 · floor friction 1.0</div>
-        <div class="metric" id="operation-detail">Condition 1 passes all 16 cells with exact floor-friction 0.5 readback and no gait, x=0, tracking, saturation, or rate regression. Only condition 2—floor friction 1.0—is authorized next.</div>
+        <div class="big green" id="operation">R2 · friction loss 0.9×</div>
+        <div class="metric" id="operation-detail">Both floor-friction endpoints pass all 32 cells. Condition 2 exactly reproduces the baseline boundary. Only condition 3—joint friction loss scaled to 0.9×—is authorized next.</div>
       </div>
       <div class="card">
         <div class="label">Offline winner</div>
@@ -211,7 +211,8 @@
           <li>Completed: contract one-axis model mutation, readback, home-reset propagation, exact 600-tick default-off behavior, and CPU-only execution.</li>
           <li>Completed: detect and contract a reporting-only fix for omitted per-run model readback; the first unaggregated outputs are invalid.</li>
           <li>Completed: the evidence-complete floor-friction 0.5 rerun passes all 16 cells.</li>
-          <li>Current: run only condition 2, floor friction 1.0, across both checkpoints, both fits, and all four commands.</li>
+          <li>Completed: floor friction 1.0 passes all 16 cells and reproduces the default boundary exactly.</li>
+          <li>Current: run only condition 3, joint friction loss 0.9×, across the complete 16-cell matrix.</li>
           <li>Design RDK runtime only after an offline winner exists.</li>
         </ol>
       </div>
