@@ -521,3 +521,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   term is allowed. A passing CPU restore/update/export contract is required
   before one frozen 2M-step hosted job. See
   `outputs/analysis/GROUND_UP_MEASURED_BRIDGE_ONLY_CONTINUATION_PREREGISTRATION_20260714.md`.
+- 2026-07-14: The measured-bridge implementation and CPU continuation contract
+  pass. The composed patch applies cleanly after the hard-vector stack; compiled
+  physics control equals the bridged target exactly, independent-model error is
+  <=2.24e-7 rad, sent-target observation history is preserved, and no bridge
+  reward/cost exists. The 1,024-step smoke restored the protected 1,003,520
+  checkpoint with zero parameter error, changed all 10 policy leaves, kept all
+  parameters/metrics finite, and exported valid stateful ONNX with 2.98e-8
+  maximum bound excess. This authorizes only the one frozen hosted continuation
+  in the preregistration. No local GPU, RDK-X5, robot, deployment, or motor use.
+  See `outputs/analysis/GROUND_UP_MEASURED_BRIDGE_CONTINUATION_CPU_SMOKE_20260714.md`.
