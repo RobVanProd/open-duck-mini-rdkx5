@@ -2,7 +2,7 @@
 """Run one frozen ground-up PPO recipe job on an existing Colab GPU VM.
 
 This file is sent with ``colab exec``. Patch assets must already be uploaded to
-``/content/ground_up_assets``. It never accesses the robot or a local GPU.
+``/content``. It never accesses the robot or a local GPU.
 """
 
 from __future__ import annotations
@@ -20,7 +20,7 @@ import time
 
 
 ROOT = Path("/content/ground_up_recipe_playground")
-ASSETS = Path("/content/ground_up_assets")
+ASSETS = Path("/content")
 OUT_ROOT = Path("/content/ground_up_recipe_outputs")
 CONTROL_COMMIT = "b9be205ac64488c23504ca42e5ec790337adeec3"
 PATCHES = (
