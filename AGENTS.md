@@ -846,3 +846,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   authorized before its contract, and no training, Colab, local GPU, RDK-X5,
   robot, deployment, torque, or motor access is authorized. See
   `outputs/analysis/GROUND_UP_DUAL_FIT_CONSERVATIVE_ENVELOPE_REPAIR_PREREGISTRATION_20260714.md`.
+- 2026-07-14: The dual-fit conservative-envelope transform passes after one
+  pre-behavior contract correction: randomized measured joint offsets were
+  made physically consistent with the chained previous target so the existing
+  downstream actual-position guard would not correctly override the upstream
+  rate clamp for impossible states. Both policies change only
+  `max_action_delta[0,4]` from the stored float32 .14 to .12; every node,
+  interface, and other initializer is exact. x=0 action/state remain exactly
+  zero, CPU outputs are finite, maximum chained left-ankle delta is .120000124
+  with 1.24e-7 numerical excess inside the frozen 5e-7 tolerance. This
+  authorizes only the preregistered 16-cell dual-fit CPU behavior repeat. No
+  R2+, training, Colab, local GPU, RDK-X5, robot, deployment, torque, or motor
+  access is authorized. See
+  `outputs/analysis/GROUND_UP_DUAL_FIT_CONSERVATIVE_ENVELOPE_TRANSFORM_CONTRACT_20260714.md`.
