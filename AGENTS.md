@@ -990,3 +990,14 @@ Do not proceed to grounded walking until low-risk gates pass.
   authorized; local GPU, condition 8+, R3+, RDK-X5, robot, deployment, torque,
   and motor access remain unauthorized. See
   `outputs/analysis/GROUND_UP_TORSO_COM_REMEDIATION_SEARCH_PREREGISTRATION_20260714.md`.
+- 2026-07-14: The torso-COM hosted package and 1,024-step CPU smoke pass with
+  zero failed checks. The protected source restores exactly at step zero, all
+  actor leaves change after the finite update, both stateful ONNX exports pass
+  interface and conservative rate-bound checks, the tail metric is finite and
+  nonzero, every uploaded asset hash matches, and a fresh composition matches
+  the randomizer contract. This authorizes only the frozen sequential
+  `U05_DIRECT`, `A05_DIRECT`, and `U_CURRICULUM` Colab search under its maximum
+  8-compute-unit ceiling. It does not authorize a closest-result promotion,
+  condition 8+, R3+, local GPU, RDK-X5, robot, deployment, torque, or motor
+  access. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_PACKAGE_CPU_SMOKE_20260714.md`.
