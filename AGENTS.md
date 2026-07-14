@@ -966,3 +966,27 @@ Do not proceed to grounded walking until low-risk gates pass.
   R3+, training, Colab, local GPU, RDK-X5, robot, deployment, torque, or motor
   access. See
   `outputs/analysis/GROUND_UP_ROBUSTNESS_R2_TORSO_COM_X_NEG_RESULT_20260714.md`.
+- 2026-07-14: The condition-7 failure exposes the same torso-index defect in
+  the training pipeline: upstream `playground/common/randomize.py` declares
+  `TORSO_BODY_ID = 1`, so its advertised COM jitter and added torso mass target
+  the massless outer `base`, not .698526 kg `trunk_assembly` body 2. The new
+  ground-up patch corrects the default index and adds a targeted X-COM
+  randomizer that the runner enables independently of nominal deterministic
+  reset/command/noise/push controls after resolving the torso by name. Its CPU
+  contract passes: 4,096 uniform samples cover -.04999 to +.04999 m, exact
+  anchors have counts 1378/1372/1346, only `body_ipos[2,0]` changes, and the
+  default randomizer now changes body 2 while body 1 stays massless and exact.
+  See `outputs/analysis/GROUND_UP_TORSO_COM_RANDOMIZER_CONTRACT_20260714.md`.
+- 2026-07-14: A three-arm torso-COM remediation search is preregistered before
+  package work or compute: direct uniform +/-.05 m, direct categorical
+  -.05/0/+.05 m anchors, and a uniform .01 -> .03 -> .05 m curriculum. Every
+  arm restores the same raw T2 final checkpoint, preserves the proven nominal
+  recipe, uses the conservative 1.50 rad/s left-ankle limit, and changes only
+  the COM sampling schedule/distribution. A CPU restore/1,024-step/package
+  contract is required before a maximum 8-Colab-unit sequential search. Every
+  evaluated export receives the same guard/deadband/envelope transforms and
+  must persist at two checkpoints across nominal R1 plus both X COM endpoints
+  under both actuator fits. No closest arm can advance. Colab is not yet
+  authorized; local GPU, condition 8+, R3+, RDK-X5, robot, deployment, torque,
+  and motor access remain unauthorized. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_REMEDIATION_SEARCH_PREREGISTRATION_20260714.md`.

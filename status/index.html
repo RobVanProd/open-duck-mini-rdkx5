@@ -81,8 +81,8 @@
     <section class="hero">
       <div class="card">
         <div class="label">Current operation</div>
-        <div class="big red" id="operation">R2 stopped · condition 7 failed</div>
-        <div class="metric" id="operation-detail">The corrected torso COM X −0.05 m endpoint fails all four checkpoint/fit matrices. Every x=0 cell falls at 47 samples; every moving cell falls at 41–42 samples. The frozen stop rule blocks condition 8 and every later robustness stage.</div>
+        <div class="big amber" id="operation">COM remediation · CPU package contract</div>
+        <div class="metric" id="operation-detail">R2 remains stopped at condition 7. The same massless-body index defect existed in training, so the policy never saw real torso COM jitter. The corrected targeted randomizer passes CPU sampling/identity checks; a frozen three-arm search is preregistered, but Colab is not yet authorized.</div>
       </div>
       <div class="card">
         <div class="label">Offline winner</div>
@@ -220,7 +220,9 @@
           <li>Completed: correct torso COM/mass mutation to name-resolved <code>trunk_assembly</code> body 2 and pass identity plus dynamics-sensitivity contracts.</li>
           <li>Completed: rerun condition 7 against the actual 0.698526 kg torso; all 16 cells have exact requested/readback evidence.</li>
           <li>Stopped: condition 7 fails all four matrices—x=0 falls at 47 samples and moving commands fall at 41–42 samples.</li>
-          <li>Current: R2 is closed at its first failed condition. Condition 8+, R3+, training, Colab, RDK-X5, and robot work are not authorized by this result.</li>
+          <li>Completed: trace the failure into training—upstream COM jitter and torso mass targeted massless body 1, so the policy had no real torso-uncertainty exposure.</li>
+          <li>Completed: contract a name-checked targeted torso-X randomizer; uniform and exact-anchor distributions change only <code>body_ipos[2,0]</code>.</li>
+          <li>Current: build and CPU-smoke the preregistered uniform/direct, anchor/direct, and .01→.03→.05 curriculum package. Colab remains blocked until that contract passes.</li>
           <li>Design RDK runtime only after an offline winner exists.</li>
         </ol>
       </div>
