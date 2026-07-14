@@ -151,7 +151,7 @@ def main() -> int:
         "U_CURRICULUM": [
             [0, 512_000],
             [0, 512_000],
-            [0, 501_760, 1_003_520],
+            [0, 512_000, 1_024_000],
         ],
     }
     hosted_exports = {
@@ -199,7 +199,7 @@ def main() -> int:
         == {
             "U05_DIRECT": [1_003_520, 2_007_040],
             "A05_DIRECT": [1_003_520, 2_007_040],
-            "U_CURRICULUM": [501_760, 1_003_520],
+            "U_CURRICULUM": [512_000, 1_024_000],
         },
         "all_training_commands_preserve_recipe_and_target_only_com": commands_exact,
         "hosted_wall_ceiling_fixed": job.MAX_HOSTED_SECONDS == 14_400,

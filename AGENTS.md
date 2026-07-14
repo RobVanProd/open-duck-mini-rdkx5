@@ -1021,3 +1021,9 @@ Do not proceed to grounded walking until low-risk gates pass.
   three-evaluation 1M shape. Preserve stage 1 without retraining, correct both
   500k-stage name assertions to `512000`, rerun the package checker, and resume.
   No training or selection variable changed.
+- 2026-07-14: Curriculum stages 2 and 3 completed. Stage 2 exported
+  `0/512000`; stage 3 exported `0/512000/1024000`, proving the original
+  curriculum naming was correct. Only the direct 2M arms use
+  `1003520/2007040`. Preserve all five completed stage outputs, restore the
+  preregistered curriculum names, rerun the package checker, then use one
+  reporting-only resume to validate and archive without retraining.
