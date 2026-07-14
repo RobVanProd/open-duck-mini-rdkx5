@@ -49,8 +49,9 @@
   "contract_before_behavior": [
     "archive and source member hashes exact",
     "graph inputs and outputs unchanged",
-    "all source nodes and initializers unchanged",
-    "only appended guard nodes and guard constants",
+    "all source operator types, attributes, upstream inputs, and initializers unchanged",
+    "the two terminal source tensor names are retargeted internally so appended guard nodes can emit the original external output names",
+    "only appended guard operators and guard constants beyond that terminal tensor-name retargeting",
     "nonpitch output equals source exactly",
     "pitch sent target remains within measured actual plus or minus frozen margin",
     "all output deltas remain within existing per-joint velocity limits on reachable chained inputs",

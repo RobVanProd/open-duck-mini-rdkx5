@@ -22,6 +22,11 @@ The existing per-joint velocity boundary remains first in the chain. A CPU
 contract must prove both bounds along reachable chained inputs; it must reject
 any candidate for which the intervals conflict.
 
+To preserve the external interface, the two existing terminal output tensors
+are renamed internally and the appended guard emits the original
+`continuous_actions` and `previous_action_out` names. Source operator types,
+attributes, upstream inputs, and initializers remain unchanged.
+
 ## Frozen margins
 
 The hardware threshold is `0.20 rad`, control period is `0.02 s`, and the
