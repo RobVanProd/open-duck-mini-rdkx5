@@ -744,3 +744,14 @@ Do not proceed to grounded walking until low-risk gates pass.
   centered absolute target guard CPU contract. It authorizes no implementation,
   training, Colab, local GPU, RDK-X5, robot, deployment, torque, or motor use.
   See `outputs/analysis/GROUND_UP_TRACKING_ERROR_DECOMPOSITION_RESULT_20260714.md`.
+- 2026-07-14: The actual-position-centered target guard is preregistered at
+  .20/.1825/.165 rad, derived from the .20 tracking boundary and zero/half/full
+  one-tick buffer at the 1.75 rad/s maximum pitch rate. All 12 T2/T3 half/final
+  stateful ONNX variants pass exact archive, interface, source initializer and
+  operator-prefix, 13-node append, reachable chained CPU inference, realized-
+  state feedback, nonpitch identity, absolute-guard, and existing velocity-
+  boundary checks. Maximum guard excess and nonpitch error are zero; velocity
+  numerical excess is 1.04e-7 normalized action units. This authorizes only
+  the preregistered 72-cell CPU behavior screen. No training, Colab, local GPU,
+  RDK-X5, robot, deployment, torque, or motor access is authorized. See
+  `outputs/analysis/GROUND_UP_ACTUAL_CENTERED_GUARD_TRANSFORM_CONTRACT_20260714.md`.
