@@ -1473,24 +1473,34 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
         state.info["last_last_act"] = jp.zeros(env.mjx_model.nu)
         state.info["last_last_last_act"] = jp.zeros(env.mjx_model.nu)
         state.info["motor_targets"] = env._default_actuator
-        state.info["actuator_bridge_target_history"] = jp.tile(
-            env._default_actuator,
-            env._config.actuator_bridge.delay_max_ticks + 1,
-        )
-        state.info["actuator_bridge_applied_targets"] = env._default_actuator
-        state.info["target_velocity"] = jp.zeros(env.mjx_model.nu)
+        if "actuator_bridge_target_history" in state.info:
+            history = state.info["actuator_bridge_target_history"]
+            history_ticks = int(history.size) // int(env.mjx_model.nu)
+            state.info["actuator_bridge_target_history"] = jp.tile(
+                env._default_actuator,
+                history_ticks,
+            )
+        if "actuator_bridge_applied_targets" in state.info:
+            state.info["actuator_bridge_applied_targets"] = env._default_actuator
+        if "target_velocity" in state.info:
+            state.info["target_velocity"] = jp.zeros(env.mjx_model.nu)
         state.info["last_contact"] = contact
         state.info["feet_air_time"] = jp.zeros_like(state.info["feet_air_time"])
         state.info["swing_peak"] = jp.zeros_like(state.info["swing_peak"])
-        state.info["foot_stance_height"] = data.site_xpos[env._feet_site_id][..., -1]
-        state.info["foot_stance_forward_x"] = env._foot_forward_x(data)
-        state.info["swing_peak_lift"] = jp.zeros_like(state.info["swing_peak_lift"])
-        state.info["swing_peak_forward_advance"] = jp.zeros_like(
-            state.info["swing_peak_forward_advance"]
-        )
-        state.info["forward_swing_steps"] = jp.zeros_like(
-            state.info["forward_swing_steps"]
-        )
+        if "foot_stance_height" in state.info:
+            state.info["foot_stance_height"] = data.site_xpos[env._feet_site_id][..., -1]
+        if "foot_stance_forward_x" in state.info:
+            state.info["foot_stance_forward_x"] = env._foot_forward_x(data)
+        if "swing_peak_lift" in state.info:
+            state.info["swing_peak_lift"] = jp.zeros_like(state.info["swing_peak_lift"])
+        if "swing_peak_forward_advance" in state.info:
+            state.info["swing_peak_forward_advance"] = jp.zeros_like(
+                state.info["swing_peak_forward_advance"]
+            )
+        if "forward_swing_steps" in state.info:
+            state.info["forward_swing_steps"] = jp.zeros_like(
+                state.info["forward_swing_steps"]
+            )
         state.info["action_history"] = jp.zeros_like(state.info["action_history"])
         state.info["imu_history"] = jp.zeros_like(state.info["imu_history"])
         obs = env._get_obs(data, state.info, contact)

@@ -14,6 +14,13 @@ The wrapper now:
 - records the selected reset mode in every evaluation artifact;
 - retains `playground` only as an explicit diagnostic option.
 
+The first repaired invocation exposed a second boundary assumption before any
+policy result was emitted: `home-support` expected optional in-environment
+actuator-bridge and foot-history fields that do not exist in the pinned base
+Playground checkout. Optional histories are now reset only when present, using
+their actual stored shape rather than a non-existent config. The external
+fitted bridge remains the sole actuator model for this evaluator.
+
 No behavior threshold, actuator bridge, command, seed, duration, policy,
 reference phase, or simulator model changes. Previously saved policies must be
 re-evaluated; prior randomized-reset classifications are not silently reused.
