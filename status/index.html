@@ -81,8 +81,8 @@
     <section class="hero">
       <div class="card">
         <div class="label">Current operation</div>
-        <div class="big amber" id="operation">Reference-residual A/B training</div>
-        <div class="metric" id="operation-detail">A0 is complete and failed at 1/8 passing runs. A1 is training in the active Colab T4 session; selection ignores reward and waits for its recovered 3M/4M exports plus the frozen CPU gate.</div>
+        <div class="big amber" id="operation">Exact-command reference audit</div>
+        <div class="metric" id="operation-detail">A0 failed at 1/8 and reference-anchored A1 failed at 0/8. Current CPU-only work is auditing the discovered nearest-cell mismatch before any further compute.</div>
       </div>
       <div class="card">
         <div class="label">Offline winner</div>
@@ -91,8 +91,8 @@
       </div>
       <div class="card">
         <div class="label">Compute</div>
-        <div class="big">1 active T4</div>
-        <div class="metric">Session: <code>open-duck-reference-residual-ab</code>. Balance is not estimated.</div>
+        <div class="big">0 active sessions</div>
+        <div class="metric">Both archives recovered; Colab stopped. Balance is not estimated.</div>
       </div>
     </section>
 
@@ -122,15 +122,17 @@
           <li>Progress-conditioned survival tied O1 exactly: 2/8 moving passes, one persistent seed, six hard failures, and zero full checkpoint passes. The reward-objective family is closed.</li>
           <li>Direct reference execution is not a valid cloning label: every audited form moved backward on average, with 2–4 falls per 8 runs. The selected formulation anchors the actor at the projected reference and learns state-feedback residuals.</li>
           <li>The reference-residual software contract passed on CPU: initial JAX and ONNX actions match the projected reference within 2.98e-8, PPO log probability is finite, and a 1,024-step training smoke exported the correct final-action graph.</li>
+          <li>The causal A/B rejected reference anchoring: A0 scored 1/8 and A1 scored 0/8, with zero persistent seeds and zero full checkpoints in both arms.</li>
+          <li>The exact-command audit found a concrete input mismatch: command [.074, 0, 0] receives nearest table cell [.074, -.037, -.074] because the table has no zero lateral/yaw cell.</li>
         </ol>
       </div>
       <div class="card">
         <div class="label">Next decision sequence</div>
         <h2 style="margin-top:8px">No skipped gates</h2>
         <ol>
-          <li>Run `A0_CURRENT_REFCOND` and `A1_REFERENCE_ANCHORED_RESIDUAL` with identical seed, data, objective, critic, and horizon in Colab.</li>
-          <li>Evaluate both 3M and 4M exports on CPU at x=.074/.08 and seeds 100/101 under the unchanged behavior gate.</li>
-          <li>Advance A1 only if all eight runs pass and it outranks A0; otherwise close the mechanism without post-hoc tuning.</li>
+          <li>Construct an exact-command interpolated reference table on CPU and hash the transformation contract.</li>
+          <li>Run the interpolated reference directly through the existing CPU-only reference audit before considering training.</li>
+          <li>Authorize a new causal arm only if interpolation materially improves reference validity; otherwise close this reference source.</li>
           <li>Add x=0, randomization, delay, and pushes only after nominal gait emergence persists.</li>
           <li>Design RDK runtime only after an offline winner exists.</li>
         </ol>
