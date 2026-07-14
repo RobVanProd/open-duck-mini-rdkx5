@@ -1,0 +1,96 @@
+{
+  "authority": {
+    "colab": false,
+    "command_deadband_repair_preregistration": true,
+    "local_gpu": false,
+    "rdk_or_robot": false,
+    "robustness_ladder": false,
+    "training": false
+  },
+  "checkpoints": {
+    "1024000": {
+      "cells": [
+        {
+          "action_saturation_pct": 95.73459715639811,
+          "body_pitch_p95_rad": 0.03560999055653398,
+          "candidate_gate_status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+          "max_rate_excess_rad_s": 0.0,
+          "mean_local_velocity_m_s": -0.014837593409628095,
+          "minimum_base_height_m": 0.03792882338166237,
+          "pass": false,
+          "pitch_tracking_p95_rad": 0.07179683446884155,
+          "rate_excess_rad_s": 0.0,
+          "samples": 211,
+          "seed": 100,
+          "termination_reason": "fall_or_nan"
+        },
+        {
+          "action_saturation_pct": 95.73459715639811,
+          "body_pitch_p95_rad": 0.03560999055653398,
+          "candidate_gate_status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+          "max_rate_excess_rad_s": 0.0,
+          "mean_local_velocity_m_s": -0.014837593409628095,
+          "minimum_base_height_m": 0.03792882338166237,
+          "pass": false,
+          "pitch_tracking_p95_rad": 0.07179683446884155,
+          "rate_excess_rad_s": 0.0,
+          "samples": 211,
+          "seed": 101,
+          "termination_reason": "fall_or_nan"
+        }
+      ],
+      "checkpoint_pass": false,
+      "execution_platform": "cpu",
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/ground_up_guard_winner_x0_T2_EQUAL_1024000_eval.json",
+      "sha256": "8007c6379b67e9dd21fc6c2e14a6c4bca92b208b1cb33d5b2d707a5504c032d6"
+    },
+    "512000": {
+      "cells": [
+        {
+          "action_saturation_pct": 87.67123287671232,
+          "body_pitch_p95_rad": 0.045003876789878855,
+          "candidate_gate_status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+          "max_rate_excess_rad_s": 0.0,
+          "mean_local_velocity_m_s": -0.05282164553789524,
+          "minimum_base_height_m": 0.044850945472717285,
+          "pass": false,
+          "pitch_tracking_p95_rad": 0.1595897436141968,
+          "rate_excess_rad_s": 0.0,
+          "samples": 73,
+          "seed": 100,
+          "termination_reason": "fall_or_nan"
+        },
+        {
+          "action_saturation_pct": 87.67123287671232,
+          "body_pitch_p95_rad": 0.045003876789878855,
+          "candidate_gate_status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+          "max_rate_excess_rad_s": 0.0,
+          "mean_local_velocity_m_s": -0.05282164553789524,
+          "minimum_base_height_m": 0.044850945472717285,
+          "pass": false,
+          "pitch_tracking_p95_rad": 0.1595897436141968,
+          "rate_excess_rad_s": 0.0,
+          "samples": 73,
+          "seed": 101,
+          "termination_reason": "fall_or_nan"
+        }
+      ],
+      "checkpoint_pass": false,
+      "execution_platform": "cpu",
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/ground_up_guard_winner_x0_T2_EQUAL_512000_eval.json",
+      "sha256": "5455e27ddce27d9165ad271189a1aa39a7b053ed5c2d7ae0f70f1b7e9ea86930"
+    }
+  },
+  "checks": {
+    "all_cells_cpu_only": true,
+    "all_four_cells_present": true,
+    "preregistration_status_valid": true,
+    "source_nominal_winner_exact": true
+  },
+  "decision": "PREREGISTER_COMMAND_DEADBAND_ZERO_ACTION_REPAIR",
+  "failed_checks": [],
+  "interpretation": "Both selected checkpoints fail x=0 with early termination and extreme action saturation. Their tracking and rate metrics remain inside bounds before termination, isolating the unsupported zero-command actor output rather than the actual-centered guard.",
+  "schema_version": "ground_up_guard_winner_x0_result.v1",
+  "status": "PASS_GUARD_WINNER_X0_NO_ADVANCE",
+  "x0_pass": false
+}

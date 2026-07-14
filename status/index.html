@@ -81,12 +81,12 @@
     <section class="hero">
       <div class="card">
         <div class="label">Current operation</div>
-        <div class="big amber" id="operation">Nominal winner selected</div>
-        <div class="metric" id="operation-detail">The actual-centered G1/T2 formulation passes all six 600-tick nominal cells at both half and final checkpoints. Worst tracking is .181667 rad and minimum forward velocity is .08338 m/s. The separately preregistered x=0 preservation gate is next.</div>
+        <div class="big amber" id="operation">Nominal winner held at x=0</div>
+        <div class="metric" id="operation-detail">G1/T2 passes both nominal checkpoints, but direct x=0 evaluation saturates and falls: half at tick 73 and final at tick 211. Rate and tracking remain in bounds before termination, isolating unsupported zero-command actor output. A deadband repair is next.</div>
       </div>
       <div class="card">
         <div class="label">Offline winner</div>
-        <div class="big" id="winner">G1 / T2 nominal</div>
+        <div class="big" id="winner">G1 / T2 nominal only</div>
         <div class="metric">Robot clearance: <strong style="color:var(--red)">NO</strong></div>
       </div>
       <div class="card">
@@ -161,6 +161,7 @@
           <li>Actor-only cumulative averaging also fails: unchanged T2 half/final is .21767/.21530, unchanged T3 is .22404/.21492, R3 T2 is .22102/.21761, and R3 T3 is .22189/.21141. All 48 cells walk, but no checkpoint clears .20.</li>
           <li>Error decomposition is exact across 156 traces: all 3,329 failing events are compound sub-threshold accumulation. Bridge and servo components are each below .20 alone and align in sign every time; their sum crosses the gate.</li>
           <li>The actual-centered guard repairs that exact mechanism. G1/T2 passes both half and final over all commands/seeds, with worst tracking .18167 and minimum vx .08338. This is the first persistent nominal winner, not robot clearance.</li>
+          <li>Direct x=0 does not preserve it: half/final fall at ticks 73/211 with 87.67%/95.73% saturation. This is an out-of-support command failure, while rate excess stays zero and tracking remains below .20 before termination.</li>
         </ol>
       </div>
       <div class="card">
@@ -193,7 +194,8 @@
           <li>Completed: run the frozen 48-cell actor-only cumulative-average screen; every policy retains gait but every checkpoint fails tracking.</li>
           <li>Completed: decompose all tail, rate, and actor-SWA traces; every failing event is compound accumulated lag, not bridge-only or servo-only corruption.</li>
           <li>Completed: run the frozen 72-cell actual-centered guard screen; G1/T2 is the first persistent full-horizon nominal winner.</li>
-          <li>Current: preregister and run x=0 preservation for both selected half/final checkpoints. Only that result can advance the offline candidate.</li>
+          <li>Completed: run the four-cell x=0 preservation gate; both checkpoints saturate and fall, so the nominal winner is held.</li>
+          <li>Current: preregister a command-deadband zero-action wrapper that is bit-exact at x=.074–.080, then repeat x=0 and nominal preservation before any robustness work.</li>
           <li>Only a persistent nominal pass can authorize a separately preregistered x=0 preservation gate.</li>
           <li>Add x=0, randomization, delay, and pushes only after nominal gait emergence persists.</li>
           <li>Design RDK runtime only after an offline winner exists.</li>

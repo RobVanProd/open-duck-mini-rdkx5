@@ -767,3 +767,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   authorized before that preregistration, and no training, Colab, local GPU,
   RDK-X5, robot, deployment, torque, or motor access is authorized. See
   `outputs/analysis/GROUND_UP_ACTUAL_CENTERED_GUARD_SCREEN_RESULT_20260714.md`.
+- 2026-07-14: The preregistered four-cell x=0 preservation gate rejects direct
+  promotion of the nominal G1/T2 winner. Both seeds reproduce exactly: half
+  terminates at tick 73 with 87.67% action saturation and final at tick 211
+  with 95.73% saturation. Rate excess remains zero and pre-termination
+  tracking is inside .20, isolating the actor's unsupported x=0 output rather
+  than the absolute guard. The command normalizer was trained only on
+  x=.074-.080, so x=0 is far out of support. This authorizes only
+  preregistration of a command-deadband zero-action repair that must preserve
+  positive-command outputs exactly. The nominal winner remains held; no
+  robustness ladder, training, Colab, local GPU, RDK-X5, robot, deployment,
+  torque, or motor access is authorized. See
+  `outputs/analysis/GROUND_UP_GUARD_WINNER_X0_RESULT_20260714.md`.
