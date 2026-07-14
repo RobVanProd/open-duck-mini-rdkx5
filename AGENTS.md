@@ -859,3 +859,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   R2+, training, Colab, local GPU, RDK-X5, robot, deployment, torque, or motor
   access is authorized. See
   `outputs/analysis/GROUND_UP_DUAL_FIT_CONSERVATIVE_ENVELOPE_TRANSFORM_CONTRACT_20260714.md`.
+- 2026-07-14: The preregistered 16-cell dual-fit repeat passes completely after
+  the single conservative left-ankle bound change. P30 half/final worst
+  tracking is .180856/.183170 rad with minimum vx .086462/.097620 m/s;
+  P31/34 is .178733/.181057 rad with minimum vx .084912/.096041 m/s. Both
+  checkpoints preserve x=0, bilateral gait, zero saturation, and zero measured
+  envelope excess under both hardware fits. This repairs and re-enters R1; it
+  authorizes only construction of the R2 isolated-dynamics evaluator contract.
+  R2 behavior, R3+, training, Colab, local GPU, RDK-X5, robot, deployment,
+  torque, and motor access remain unauthorized. See
+  `outputs/analysis/GROUND_UP_DUAL_FIT_CONSERVATIVE_ENVELOPE_REPAIR_RESULT_20260714.md`.

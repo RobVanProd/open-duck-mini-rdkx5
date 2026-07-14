@@ -81,8 +81,8 @@
     <section class="hero">
       <div class="card">
         <div class="label">Current operation</div>
-        <div class="big amber" id="operation">Dual-fit repair behavior repeat</div>
-        <div class="metric" id="operation-detail">The exact .14→.12 left-ankle transform passed: every node/interface/other initializer is unchanged, x=0 remains exact, and chained CPU inference stays within the 1.50 rad/s bound. The frozen 16-cell P30/P31-34 repeat is now authorized.</div>
+        <div class="big green" id="operation">R1 repaired · R2 contract next</div>
+        <div class="metric" id="operation-detail">The conservative left-ankle envelope passed all 16 dual-fit cells. Both checkpoints retain x=0 and nominal gait under P30 and P31/34 with zero saturation/rate excess and worst tracking ≤.18317 rad. Only the R2 isolated-dynamics evaluator contract is authorized next.</div>
       </div>
       <div class="card">
         <div class="label">Offline winner</div>
@@ -165,6 +165,7 @@
           <li>The preregistered deadband wrapper passes its transform contract on both checkpoints: outputs are exactly zero at x=0 and action/state outputs are bit-exact to the source policies at x=.074/.077/.080.</li>
           <li>The full 16-cell behavior matrix passes. All x=0 cells hold home for 600 ticks with zero saturation/rate excess and .03032 rad tracking p95; moving-command worst tracking remains .18082/.18167 at half/final.</li>
           <li>R1 preserves gait, x=0, tracking, and saturation under P31/34, but fails its left-ankle envelope in all six moving cells: 1.750001 versus 1.50 rad/s. The frozen policy closes at R1.</li>
+          <li>The one-variable conservative repair resolves R1: all 16 P30/P31-34 cells pass at both checkpoints, with worst tracking .18317 rad and zero envelope excess.</li>
         </ol>
       </div>
       <div class="card">
@@ -205,7 +206,8 @@
           <li>Completed: run R1. P30 passes; P31/34 isolates a persistent .250001 rad/s left-ankle envelope violation at both checkpoints.</li>
           <li>Completed: preregister a one-variable conservative-envelope feasibility test before spending Colab credit.</li>
           <li>Completed: contract the exact left-ankle .14→.12 ONNX constant change; graph identity, x=0, and chained rate checks pass.</li>
-          <li>Current: repeat the frozen 16 R1 cells under both measured actuator fits; R2+ remains blocked.</li>
+          <li>Completed: repeat the frozen 16 R1 cells; the repaired policy passes both measured actuator fits at both checkpoints.</li>
+          <li>Current: build and contract the R2 isolated-dynamics evaluator. No R2 behavior may run before that contract passes.</li>
           <li>Design RDK runtime only after an offline winner exists.</li>
         </ol>
       </div>
