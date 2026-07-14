@@ -81,8 +81,8 @@
     <section class="hero">
       <div class="card">
         <div class="label">Current operation</div>
-        <div class="big amber" id="operation">Objective/gate mismatch isolated</div>
-        <div class="metric" id="operation-detail">The read-only 1M→2M audit passed every replay and restore check. Actor changes produce 6.75× more raw-action drift than normalizer changes, while hosted reward improves and the external tracking gate worsens. No new training recipe is authorized yet.</div>
+        <div class="big amber" id="operation">Tail search CPU gate passed</div>
+        <div class="metric" id="operation-detail">The 600-tick audit isolated tracking-tail exceedance above the unchanged .20 rad gate. The default-off diagnostic and 1,024-step continuation now pass every CPU restore, update, metric, and stateful-ONNX check. Next: package the three preregistered Colab arms; no outcome-dependent tuning.</div>
       </div>
       <div class="card">
         <div class="label">Offline winner</div>
@@ -147,6 +147,11 @@
           <li>The 2M checkpoint still walks cleanly but tracking regresses to .21617/.21694/.20817, failing all six cells. The frozen persistence rule rejects the exact arm; 1M is not cherry-picked.</li>
           <li>The read-only drift audit replayed both policies exactly on 324 CPU trace samples and restored matching finite checkpoint trees. Actor-only changes produce .09496 raw-action RMS drift versus .01407 from normalization, a 6.75× ratio.</li>
           <li>Hosted reward improves by 16.73 from 1M to 2M while the largest external tracking regressions are left hip yaw +.02899 rad and left knee +.02816 rad. Their bridge-error deltas are 0 and +.000008 rad, isolating policy/objective drift rather than bridge corruption.</li>
+          <li>The 600-tick audit invalidates the apparent 1M pass: its tracking p95 rises to .21334–.22317 and first crosses .20 by cumulative tick 108–162. The prior 54-tick gate covered only 9% of the training episode.</li>
+          <li>Both applied-target checkpoints remain upright and walking for all 12 seconds with zero rate excess. BEST_WALK_ONNX_2 is much slower and has 3.61–3.87 rad/s rate excess, but all three policies still fail full-horizon tracking.</li>
+          <li>Mean pitch-chain error can improve while p95 and the fraction above .20 worsen. The next selected quantity is therefore tail exceedance above the existing gate, not another mean pseudo-Huber or behavior-retention penalty.</li>
+          <li>The tail diagnostic CPU contract matches its analytic definition, changes no default-off transition or observation, and reproduces all 3,600 frozen trace rows within 9.95e-11.</li>
+          <li>The preregistered continuation smoke restores the protected 1M checkpoint exactly, changes all 10 actor leaves, records a finite nonzero tail metric, and exports valid hard-bounded stateful ONNX at step 0 and 1,024.</li>
         </ol>
       </div>
       <div class="card">
@@ -165,8 +170,11 @@
           <li>Completed: freeze and CPU-contract replacement of the redundant sent-target slot with applied-target state.</li>
           <li>Completed: run the single preregistered T4 continuation, recover/hash every artifact, stop Colab, and evaluate both checkpoints.</li>
           <li>Completed: the read-only 1M→2M audit isolates actor drift at 6.75× the normalizer contribution and verifies exact ONNX trace replay.</li>
-          <li>Current: audit the reward contract against the external tracking gate and earlier failed retention mechanisms. The next causal arm must address the measured mismatch, not add an arbitrary penalty.</li>
-          <li>Only a uniquely supported causal mechanism may justify a separately preregistered run.</li>
+          <li>Completed: extend nominal evaluation to the complete 600-tick training horizon and compare both checkpoints with BEST_WALK_ONNX_2.</li>
+          <li>Completed: CPU-contract a default-off pitch-chain tail-exceedance diagnostic that exactly matches the existing .20 rad gate.</li>
+          <li>Completed: preregister and pass the restore/update/export CPU smoke for three fixed tail scales derived from frozen source statistics.</li>
+          <li>Current: package and launch the three sequential Colab arms under the fixed 6-compute-unit ceiling, then recover and hash every artifact.</li>
+          <li>Then evaluate each half/final checkpoint on the complete 600-tick, three-command, two-seed gate. Training reward cannot select a winner.</li>
           <li>Only a persistent nominal pass can authorize a separately preregistered x=0 preservation gate.</li>
           <li>Add x=0, randomization, delay, and pushes only after nominal gait emergence persists.</li>
           <li>Design RDK runtime only after an offline winner exists.</li>

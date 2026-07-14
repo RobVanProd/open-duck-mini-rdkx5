@@ -598,3 +598,33 @@ Do not proceed to grounded walking until low-risk gates pass.
   reward-contract audit; no training, robot, RDK-X5, deployment, or GPU access
   is authorized. See
   `outputs/analysis/GROUND_UP_APPLIED_TARGET_DRIFT_AUDIT_20260714.md`.
+- 2026-07-14: The nominal horizon audit rejects the apparent 1M pass as a
+  startup-window artifact. The old 54-tick screen covers only 9% of the
+  600-tick training episode. Applied-target 1M crosses the .20 rad tracking
+  limit by cumulative tick 108 at x=.074/.080 and tick 162 at x=.077; its
+  600-tick p95 is .21334-.22317. Both checkpoints still walk for all 600 ticks
+  with zero rate excess. `BEST_WALK_ONNX_2` is slower (.01443-.01749 m/s),
+  has 3.61-3.87 rad/s rate excess, and also fails full-horizon tracking. Future
+  nominal advancement now prospectively requires the complete 600-tick gate.
+  Mean error can improve while p95/exceedance frequency worsens, selecting a
+  default-off tail-exceedance diagnostic for CPU contract only; the earlier
+  failed mean pseudo-Huber, restore-KL, and behavior-prior recipes remain
+  closed. No training or hardware access is authorized. See
+  `outputs/analysis/GROUND_UP_NOMINAL_HORIZON_PERSISTENCE_AUDIT_20260714.md`,
+  `outputs/analysis/GROUND_UP_NOMINAL_HORIZON_GATE_AMENDMENT_20260714.md`, and
+  `outputs/analysis/GROUND_UP_TEMPORAL_TAIL_OBJECTIVE_DECISION_20260714.md`.
+- 2026-07-14: The tracking-tail implementation and continuation CPU gates pass.
+  The default-off pitch-chain diagnostic exactly implements squared exceedance
+  above the unchanged .20 rad tracking gate, leaves transition state and
+  observation unchanged, and matches NumPy over all 3,600 frozen trace rows
+  within 9.95e-11. The 1,024-step CPU continuation restores the protected 1M
+  source exactly, changes all 10 actor leaves, keeps every checkpoint and
+  metric finite, records the nonzero tail metric at steps 0 and 1,024, and
+  exports two valid hard-bounded stateful ONNX graphs. This authorizes only the
+  three fixed, sequential hosted arms in the preregistered <=6-compute-unit
+  search. It does not authorize local GPU/iGPU, RDK-X5, robot, deployment,
+  torque, or motor access. See
+  `outputs/analysis/GROUND_UP_TRACKING_TAIL_CPU_CONTRACT_20260714.md`,
+  `outputs/analysis/GROUND_UP_TRACKING_TAIL_SEARCH_PREREGISTRATION_20260714.md`,
+  and
+  `outputs/analysis/GROUND_UP_TRACKING_TAIL_CONTINUATION_CPU_SMOKE_20260714.md`.
