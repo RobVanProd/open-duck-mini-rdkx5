@@ -1,0 +1,61 @@
+{
+  "behavior_status": "UNEVALUATED",
+  "candidate": {
+    "entropy_cost": 0.005,
+    "id": "S1IMIT_HI",
+    "imitation_scale": 2.0,
+    "learning_rate": 0.0003
+  },
+  "checkpoints": [
+    "2026_07_14_054322_0",
+    "2026_07_14_054741_2007040",
+    "2026_07_14_055340_4014080",
+    "2026_07_14_055615_6021120",
+    "2026_07_14_055848_8028160"
+  ],
+  "control_commit": "b9be205ac64488c23504ca42e5ec790337adeec3",
+  "onnx": [
+    {
+      "name": "2026_07_14_054322_0.onnx",
+      "sha256": "fc8142d6a531a16d9075bb417a08e1db2489448cb7da58c877b09cb32095aa99"
+    },
+    {
+      "name": "2026_07_14_054741_2007040.onnx",
+      "sha256": "e54aa0f7a3bea1e8f9c78029264eebcf5507dbf710f93f2646863ab556b65a3f"
+    },
+    {
+      "name": "2026_07_14_055340_4014080.onnx",
+      "sha256": "925ba268cb807c0e4e8c5dff843cf2cf215ecc86d8598252f1dcd449c7628e73"
+    },
+    {
+      "name": "2026_07_14_055615_6021120.onnx",
+      "sha256": "525a5f0011eec5a13592a536d82c3d2493fcc9677e03e1d1828a3b374f99db6f"
+    },
+    {
+      "name": "2026_07_14_055848_8028160.onnx",
+      "sha256": "c83ca7b80733ea45c8e68046ea5417fc9e7bd9c34659d66ee0e2f5b660e74d77"
+    }
+  ],
+  "patches": {
+    "ground_up_recipe_search.patch": "3f5d892f5ce531207de6c86b18c9f5dbea83bc131a3fc2e5085851c2e4e3e5f8",
+    "ground_up_reference_conditioned.patch": "4138ecddb9ffc0df468a2780522c1732bc4b0e1a0865d181da1112d1c16902fb",
+    "ground_up_reference_velocity_frame_fix.patch": "b52cb6c5269cadd74a15d9b551bd5616130800fcd54298e00e15e07c6580dde9",
+    "ground_up_search_runner.patch": "6a176589b766de65ac2746c66f3387bfca5384d6ce4adf3703c752d8103a5e55",
+    "ground_up_stage1_command_mixture.patch": "17912ed37aceb430977daa2eead8ca24da7b20a03b220417d609bab368a0c6a3"
+  },
+  "schema_version": "ground_up_colab_recipe_sweep_candidate.v1",
+  "selection_uses_training_reward": false,
+  "shared": {
+    "discounting": 0.97,
+    "extra_patches": [
+      "ground_up_reference_velocity_frame_fix.patch",
+      "ground_up_stage1_command_mixture.patch"
+    ],
+    "ground_up_command_curriculum": true,
+    "unroll_length": 20
+  },
+  "status": "PASS_TRAINING_ARTIFACT_CONTRACT_ONLY",
+  "timesteps": 8028160,
+  "training_seconds": 1370.002761212,
+  "training_seed": 100
+}
