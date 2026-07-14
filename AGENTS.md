@@ -486,3 +486,20 @@ Do not proceed to grounded walking until low-risk gates pass.
   Colab continuation is authorized by
   `GROUND_UP_HARD_VECTOR_COMMAND_SUPPORT_CONTINUATION_PREREGISTRATION_20260714.md`.
   No local GPU, RDK-X5, deployment, robot, torque, or motor access is authorized.
+- 2026-07-14: The single authorized A1 hard-vector command-support T4
+  continuation completed at steps 0/1,003,520/2,007,040. Its 8.16 MB archive
+  and manifest were recovered and hash-verified before the session was stopped;
+  Colab then reported zero active sessions. This is a training-artifact pass
+  only. The two post-update stateful ONNX policies must now run the frozen local
+  CPU home-reset x=.074/.077/.080, seeds 100/101 behavior gate. Training reward
+  is excluded. No local GPU, RDK-X5, robot, deployment, torque, or motor access.
+- 2026-07-14: The A1 hard-vector command-support continuation is evaluated and
+  rejected. All 12 x=.074/.077/.080 home-reset runs at 1M/2M complete, walk,
+  retain bilateral transitions, and have zero target-rate excess, proving the
+  command-normalization and hard-vector mechanisms. Neither checkpoint passes
+  fitted tracking: 1M p95 is .212-.222 rad and 2M is .219-.239 versus .20; 2M
+  x=.08 also reaches 1.8519% saturation versus 1%. Close this exact continuation
+  without LR/reward/vector/range/horizon tuning. The next authorized work is a
+  read-only integration audit of the existing measured per-joint delay/tau
+  actuator bridge against the ground-up stack. It does not authorize training,
+  local GPU, RDK-X5, robot, deployment, torque, or motor access.

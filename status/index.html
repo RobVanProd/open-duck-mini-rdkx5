@@ -81,8 +81,8 @@
     <section class="hero">
       <div class="card">
         <div class="label">Current operation</div>
-        <div class="big amber" id="operation">Frozen Colab continuation prep</div>
-        <div class="metric" id="operation-detail">The A1 4M restore/update/export smoke passes on CPU: exact restore, finite update, all policy leaves changed, and stateful ONNX bound excess only 2.98e-8. One preregistered 2M-step hosted continuation is the next gate.</div>
+        <div class="big amber" id="operation">Measured actuator-dynamics gap audit</div>
+        <div class="metric" id="operation-detail">Both continuation checkpoints walk across x=.074–.080 with zero rate excess, but neither clears fitted tracking: p95 is .212–.239 versus .20. The exact route is closed; work is auditing the missing measured delay/tau training transition before any new experiment.</div>
       </div>
       <div class="card">
         <div class="label">Offline winner</div>
@@ -92,7 +92,7 @@
       <div class="card">
         <div class="label">Compute</div>
         <div class="big">0 active sessions</div>
-        <div class="metric">Both archives recovered; Colab stopped. Balance is not estimated.</div>
+        <div class="metric">Continuation recovered; Colab stopped. Balance is not estimated.</div>
       </div>
     </section>
 
@@ -135,6 +135,8 @@
           <li>Measured hard-vector projection preserves A1 4M gait 2/2 and eliminates rate excess. The remaining candidate hold is pitch-chain tracking p95 0.20246 versus the frozen 0.20 limit.</li>
           <li>The corrected training/export contract passes every CPU check: 4,096 commands span x=.074–.080 with std .001744; first-tick targets obey all 14 measured limits; returned observations carry the realized bounded action; and the stateful ONNX chain has zero measured bound excess.</li>
           <li>The preregistered 1,024-step CPU continuation smoke restored A1 4M with exact parameter equality, kept all parameters and metrics finite, changed all 10 policy leaves, and exported valid stateful ONNX at step 0 and 1,024.</li>
+          <li>The single frozen T4 continuation completed at 0/1,003,520/2,007,040. The 8.16 MB archive and manifest were hash-verified locally before the session was stopped.</li>
+          <li>Behavior evaluation is complete: all 12 post-update runs walk with bilateral transitions and zero rate excess, but 1M tracking is .212–.222 and 2M tracking is .219–.239; 2M x=.08 also reaches 1.85% saturation. Neither checkpoint passes.</li>
         </ol>
       </div>
       <div class="card">
@@ -144,7 +146,9 @@
           <li>Completed: implement the measured vector as a hard train-time transition, initialized from home action zero.</li>
           <li>Completed: sample command support across x=.074–.080 so observation normalization is nondegenerate.</li>
           <li>Completed: one finite CPU PPO update restored A1 exactly and verified both exported stateful ONNX graphs.</li>
-          <li>Run the single frozen 2,000,000-step Colab continuation and recover every checkpoint before local behavior evaluation.</li>
+          <li>Completed: the single frozen 2,000,000-step Colab continuation and every checkpoint were recovered before shutdown.</li>
+          <li>Completed: both post-update stateful ONNX checkpoints were evaluated at x=.074/.077/.080 on seeds 100/101; the route fails the frozen gate.</li>
+          <li>Audit integration of the already measured per-joint delay/tau actuator transition into the ground-up stack. No training is authorized by the audit alone.</li>
           <li>Require both randomized CPU seeds to complete with command-consistent gait, bilateral transitions, no saturation, and zero rate excess.</li>
           <li>Only a passing source may authorize collection design; no policy training or accelerator use follows automatically.</li>
           <li>Add x=0, randomization, delay, and pushes only after nominal gait emergence persists.</li>
