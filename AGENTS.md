@@ -1001,3 +1001,9 @@ Do not proceed to grounded walking until low-risk gates pass.
   condition 8+, R3+, local GPU, RDK-X5, robot, deployment, torque, or motor
   access. See
   `outputs/analysis/GROUND_UP_TORSO_COM_PACKAGE_CPU_SMOKE_20260714.md`.
+- 2026-07-14: The first hosted invocation exited before asset validation,
+  environment installation, or training because Colab injected its kernel
+  `-f` argument and the job used strict argument parsing. No checkpoint or
+  policy update occurred. The transport-only correction uses
+  `parse_known_args`, leaving every frozen asset, arm, command, seed, schedule,
+  and compute ceiling unchanged; repeat the CPU package checker before retry.

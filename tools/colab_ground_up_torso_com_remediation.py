@@ -178,7 +178,7 @@ def main() -> int:
     parser.add_argument("--asset-root", type=Path, default=Path("/content"))
     parser.add_argument("--validate-assets-only", action="store_true")
     parser.add_argument("--resume", action="store_true")
-    args = parser.parse_args()
+    args, _kernel_args = parser.parse_known_args()
     assets = args.asset_root.resolve()
     hashes = validate_assets(assets)
     if args.validate_assets_only:
