@@ -1,0 +1,66 @@
+{
+  "behavior_status": "UNEVALUATED",
+  "candidate": {
+    "critic_observation": "privileged_state",
+    "entropy_cost": 0.005,
+    "id": "B0_NOMINAL_PHASE0",
+    "imitation_scale": 1.0,
+    "learning_rate": 0.0003,
+    "nominal_reference_bootstrap": true,
+    "nominal_reference_command_x": 0.074,
+    "policy_architecture": "mlp",
+    "reference_start_phase": 0
+  },
+  "checkpoints": [
+    "2026_07_14_114725_0",
+    "2026_07_14_115036_1003520",
+    "2026_07_14_115508_2007040",
+    "2026_07_14_115632_3010560",
+    "2026_07_14_115755_4014080"
+  ],
+  "control_commit": "b9be205ac64488c23504ca42e5ec790337adeec3",
+  "onnx": [
+    {
+      "name": "2026_07_14_114725_0.onnx",
+      "sha256": "fc8142d6a531a16d9075bb417a08e1db2489448cb7da58c877b09cb32095aa99"
+    },
+    {
+      "name": "2026_07_14_115036_1003520.onnx",
+      "sha256": "d1327646b7244b13ba5e66d33b3cfb6909c63e3fcc883d40f985ff15ec51509c"
+    },
+    {
+      "name": "2026_07_14_115508_2007040.onnx",
+      "sha256": "891cf2b2bda604b32be6f15aa4114158a8a8b3f351215403e4d38afc1a94d729"
+    },
+    {
+      "name": "2026_07_14_115632_3010560.onnx",
+      "sha256": "0205c99492139e521b7eca457a000cf290330e40246c0299eb6b77a4452b5f4a"
+    },
+    {
+      "name": "2026_07_14_115755_4014080.onnx",
+      "sha256": "482f5b8f0cef10a3794015ff7dfe3bd2be5735fd5a8485419c9c9e9ddf8b0f46"
+    }
+  ],
+  "patches": {
+    "ground_up_nominal_reference_bootstrap.patch": "0d89b85815eb570115ec5f35d677aba68299f977b3e36c60b10dfa869533ebba",
+    "ground_up_recipe_search.patch": "3f5d892f5ce531207de6c86b18c9f5dbea83bc131a3fc2e5085851c2e4e3e5f8",
+    "ground_up_reference_conditioned.patch": "4138ecddb9ffc0df468a2780522c1732bc4b0e1a0865d181da1112d1c16902fb",
+    "ground_up_search_runner.patch": "6a176589b766de65ac2746c66f3387bfca5384d6ce4adf3703c752d8103a5e55",
+    "ground_up_stage1_mechanism_stack.patch": "cf5155dfd54a4699865b9823e8bf090f9f54b0e53df5583eb448e315d60053dc"
+  },
+  "schema_version": "ground_up_colab_recipe_sweep_candidate.v1",
+  "selection_uses_training_reward": false,
+  "shared": {
+    "discounting": 0.97,
+    "extra_patches": [
+      "ground_up_stage1_mechanism_stack.patch",
+      "ground_up_nominal_reference_bootstrap.patch"
+    ],
+    "ground_up_command_curriculum": false,
+    "unroll_length": 20
+  },
+  "status": "PASS_TRAINING_ARTIFACT_CONTRACT_ONLY",
+  "timesteps": 4014080,
+  "training_seconds": 1020.302910183,
+  "training_seed": 100
+}
