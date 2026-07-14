@@ -1,28 +1,28 @@
-From 1e16cb8142e8f890c34c45e8903764161186c7ae Mon Sep 17 00:00:00 2001
+From 8498400485175da3de573f0662d370b678c5da79 Mon Sep 17 00:00:00 2001
 From: Rob Van <34406413+RobVanProd@users.noreply.github.com>
-Date: Mon, 13 Jul 2026 22:04:01 -0400
+Date: Mon, 13 Jul 2026 22:07:47 -0400
 Subject: [PATCH] Add frozen ground-up stage-one command mixture
 
 ---
- playground/open_duck_mini_v2/joystick.py | 26 ++++++++++++++++++++++++
+ playground/open_duck_mini_v2/joystick.py | 20 ++++++++++++++++++++
  playground/open_duck_mini_v2/runner.py   |  2 ++
- 2 files changed, 28 insertions(+)
+ 2 files changed, 22 insertions(+)
 
 diff --git a/playground/open_duck_mini_v2/joystick.py b/playground/open_duck_mini_v2/joystick.py
-index 1d2f690..f73c5b5 100644
+index d9de808..592cb6d 100644
 --- a/playground/open_duck_mini_v2/joystick.py
 +++ b/playground/open_duck_mini_v2/joystick.py
-@@ -101,6 +101,9 @@ def default_config() -> config_dict.ConfigDict:
+@@ -100,6 +100,9 @@ def default_config() -> config_dict.ConfigDict:
+         head_roll_range=[-0.5, 0.5],
          head_range_factor=1.0,  # to make it easier
          reference_feature_table_path=None,
-         recurrent_hidden_dim=0,
 +        ground_up_command_curriculum=False,
 +        ground_up_forward_command_range=[0.04, 0.12],
 +        ground_up_zero_command_probability=0.5,
      )
  
  
-@@ -734,6 +737,29 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+@@ -729,6 +732,23 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
              maxval=self._config.head_roll_range[1] * self._config.head_range_factor,
          )
  
@@ -40,37 +40,31 @@ index 1d2f690..f73c5b5 100644
 +                jp.array([forward, 0.0, 0.0]),
 +            )
 +            return jp.hstack(
-+                [
-+                    locomotion,
-+                    neck_pitch,
-+                    head_pitch,
-+                    head_yaw,
-+                    head_roll,
-+                ]
++                [locomotion, neck_pitch, head_pitch, head_yaw, head_roll]
 +            )
 +
          # With 10% chance, set everything to zero.
          return jp.where(
              jax.random.bernoulli(rng4, p=0.1),
 diff --git a/playground/open_duck_mini_v2/runner.py b/playground/open_duck_mini_v2/runner.py
-index 0e6e4c8..d93be6f 100644
+index 29fb4ec..d24c924 100644
 --- a/playground/open_duck_mini_v2/runner.py
 +++ b/playground/open_duck_mini_v2/runner.py
-@@ -26,6 +26,7 @@ class OpenDuckMiniV2Runner(BaseRunner):
+@@ -24,6 +24,7 @@ class OpenDuckMiniV2Runner(BaseRunner):
+         if args.imitation_scale is not None:
+             self.env_config.reward_config.scales.imitation = args.imitation_scale
          self.env_config.reference_feature_table_path = args.reference_feature_table_path
-         if args.policy_architecture == "recurrent":
-             self.env_config.recurrent_hidden_dim = args.recurrent_hidden_size
 +        self.env_config.ground_up_command_curriculum = args.ground_up_command_curriculum
          self.env = self.env_file[1](task=args.task, config=self.env_config)
          self.eval_env = self.env_file[1](task=args.task, config=self.env_config)
          self.randomizer = randomize.domain_randomize
-@@ -64,6 +65,7 @@ def main() -> None:
-         default="mlp",
-     )
-     parser.add_argument("--recurrent_hidden_size", type=int, default=64)
-+    parser.add_argument("--ground_up_command_curriculum", action="store_true")
+@@ -58,6 +59,7 @@ def main() -> None:
+     parser.add_argument("--ppo_entropy_cost", type=float, default=None)
      parser.add_argument("--imitation_scale", type=float, default=None)
      parser.add_argument("--reference_feature_table_path", default=None)
++    parser.add_argument("--ground_up_command_curriculum", action="store_true")
      parser.add_argument(
+         "--critic_observation", choices=["privileged_state", "state"], default="privileged_state"
+     )
 -- 
 2.53.0
