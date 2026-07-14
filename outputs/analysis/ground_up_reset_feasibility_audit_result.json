@@ -1,0 +1,20 @@
+{
+  "schema_version": "ground_up_reset_feasibility_audit_result.v1",
+  "status": "RESET_CONTRACT_MISMATCH_FOUND",
+  "source": "outputs/analysis/ground_up_reset_feasibility_audit.json",
+  "source_sha256": "00af7f7cbcc31a9a3e06ca9446ef43797b7dd921429d094866ac8c9246149beb",
+  "finite_bank": {
+    "seed_100": {"fixed_feasible": 4, "fixed_total": 4, "bank_feasible": 2489, "bank_total": 4096},
+    "seed_101": {"fixed_feasible": 0, "fixed_total": 4, "bank_feasible": 0, "bank_total": 4096, "best_max_abs_tilt_rad": 0.31515506480122407, "conclusion": "NO_FEASIBLE_SEQUENCE_FOUND_NOT_PROOF_OF_INFEASIBILITY"}
+  },
+  "contract_mismatch": {
+    "intended_reset": "deterministic_home_zero_base_velocity",
+    "implemented_reset": "playground_randomized",
+    "playground_actuator_qpos_multiplier_range": [0.5, 1.5],
+    "playground_base_qvel_range": [-0.05, 0.05],
+    "oracle_outputs_affected": ["ground_up_oracle_shooting_mpc_body_frame_probe.json", "ground_up_oracle_shooting_mpc_h16_probe.json", "ground_up_oracle_viability_command_probe.json", "ground_up_reset_feasibility_audit.json"],
+    "ground_up_policy_evaluator_affected": true
+  },
+  "decision": "REPAIR_RESET_MODE_AND_REEVALUATE_SAVED_POLICIES_BEFORE_MORE_SEARCH",
+  "authorization": {"training": false, "collection": false, "colab": false, "gpu": false, "rdk_x5": false, "robot": false}
+}

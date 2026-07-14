@@ -173,6 +173,7 @@ def evaluate(args: argparse.Namespace) -> dict[str, Any]:
                     task=args.task,
                     seed=seed,
                     eval_role="candidate",
+                    reset_mode=args.reset_mode,
                     reference_feature_table_path=reference,
                     reference_start_phase=args.reference_start_phase,
                     policy_state_input_names=state_input_names,
@@ -229,6 +230,7 @@ def evaluate(args: argparse.Namespace) -> dict[str, Any]:
             "duration_s": args.duration_s,
             "minimum_emergence_duration_s": args.minimum_emergence_duration_s,
             "task": args.task,
+            "reset_mode": args.reset_mode,
             "policy_state_input_names": list(state_input_names),
             "policy_state_output_names": list(state_output_names),
         },
@@ -305,6 +307,15 @@ def main() -> None:
         help="Two complete 27-tick reference periods at the frozen 50 Hz rate.",
     )
     parser.add_argument("--task", default="flat_terrain")
+    parser.add_argument(
+        "--reset-mode",
+        choices=("home-support", "playground"),
+        default="home-support",
+        help=(
+            "Ground-up nominal gates require deterministic home-support. "
+            "Playground is retained only for explicit randomized-reset diagnostics."
+        ),
+    )
     parser.add_argument("--output-json", required=True)
     parser.add_argument("--output-md", default=None)
     args = parser.parse_args()

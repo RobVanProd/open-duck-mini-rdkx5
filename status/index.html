@@ -81,8 +81,8 @@
     <section class="hero">
       <div class="card">
         <div class="label">Current operation</div>
-        <div class="big amber" id="operation">Seed-101 feasibility audit</div>
-        <div class="metric" id="operation-detail">The viability/command source failed 0/2: seed 100 stayed upright but averaged only 0.1095x command; seed 101 had no feasible sampled horizon and rolled backward. The formulation is closed without retry.</div>
+        <div class="big amber" id="operation">Reset-contract correctness repair</div>
+        <div class="metric" id="operation-detail">The feasibility audit found the oracle and policy evaluator used Playground's randomized reset despite the frozen deterministic-home contract. Affected negative results are being re-evaluated from home before any new search.</div>
       </div>
       <div class="card">
         <div class="label">Offline winner</div>
@@ -129,15 +129,16 @@
           <li>The new oracle shooting controller generated +.0899 m body-forward motion in seed 100 with bilateral transitions and zero rate excess, but touched saturation; seed 101 rolled, reversed, and fell. It is not a source pass.</li>
           <li>Doubling only the oracle horizon increased propulsion in both seeds, but both fell near 0.81 rad pitch while reaching 0.66–0.68 m/s against a 0.074 m/s command. The fixed shooting formulation is closed with 0/2 passes.</li>
           <li>Lexicographic viability removed the propulsion exploit but did not create a teacher: seed 100 became stable-but-slow and seed 101 still reversed and fell. It scored 0/2 and is closed without parameter tuning.</li>
+          <li>The follow-up bank found 2,489/4,096 viable seed-100 horizons and 0/4,096 for seed 101, then exposed the causal mismatch: those probes used randomized joint/base reset state instead of the preregistered deterministic home state.</li>
         </ol>
       </div>
       <div class="card">
         <div class="label">Next decision sequence</div>
         <h2 style="margin-top:8px">No skipped gates</h2>
         <ol>
-          <li>Audit fixed home, exact-reference, and bounded direct-trajectory feasibility from the seed-101 reset.</li>
-          <li>Use that read-only result to distinguish an infeasible reset/bridge contract from insufficient action-sequence proposal support.</li>
-          <li>Do not reopen either closed shooting formulation or tune their parameters.</li>
+          <li>Repair the ground-up evaluator to select and record <code>home-support</code> reset explicitly.</li>
+          <li>Validate deterministic home pose and zero base velocity at the simulator boundary.</li>
+          <li>Re-evaluate the latest saved causal A/B policies on CPU before interpreting their prior negative classifications.</li>
           <li>Require both randomized CPU seeds to complete with command-consistent gait, bilateral transitions, no saturation, and zero rate excess.</li>
           <li>Only a passing source may authorize collection design; no policy training or accelerator use follows automatically.</li>
           <li>Add x=0, randomization, delay, and pushes only after nominal gait emergence persists.</li>
