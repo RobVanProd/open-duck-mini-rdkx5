@@ -1,0 +1,56 @@
+{
+  "checks": {
+    "action_dim_unchanged": true,
+    "cpu_only": true,
+    "observation_dim_unchanged": true,
+    "positive_command_alive_conditioned": true,
+    "positive_command_yaw_conditioned": true,
+    "progress_gate_exact": true,
+    "reward_scales_preserved": true,
+    "signed_progress_preserved": true,
+    "steps_finite": true,
+    "zero_command_alive_preserved": true,
+    "zero_command_yaw_preserved": true
+  },
+  "devices": [
+    "TFRT_CPU_0"
+  ],
+  "expected_gate": [
+    0.0,
+    0.0,
+    0.5,
+    1.0,
+    1.0
+  ],
+  "gate_velocity_ratios": [
+    -1.0,
+    0.0,
+    0.5,
+    1.0,
+    1.5
+  ],
+  "local_gpu_access": false,
+  "observed_gate": [
+    0.0,
+    0.0,
+    0.5,
+    1.0,
+    1.0
+  ],
+  "patch": "/home/lsd/robots/open-duck-mini-rdkx5/patches/ground_up_command_conditioned_survival.patch",
+  "patch_sha256": "b00d78a3a7c6f15562cdb14ccfd9129ce0001845bbbca8c343965f98a054dc7f",
+  "positive_command_probe": {
+    "alive": 0.0,
+    "command_x": 0.074,
+    "local_vx": -0.1110161542892456,
+    "progress_gate": 0.0,
+    "tracking_ang_vel": 0.0
+  },
+  "robot_access": false,
+  "schema_version": "ground_up_command_conditioned_survival_contract.v1",
+  "status": "PASS_CPU_CONTRACT",
+  "zero_command_probe": {
+    "alive": 20.0,
+    "tracking_ang_vel": 5.062190532684326
+  }
+}

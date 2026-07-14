@@ -155,6 +155,8 @@ def main() -> int:
             ])
         if candidate.get("ground_up_signed_progress_objective"):
             command.append("--ground_up_signed_progress_objective")
+        if candidate.get("ground_up_command_conditioned_survival"):
+            command.append("--ground_up_command_conditioned_survival")
         if config["shared"]["ground_up_command_curriculum"]:
             command.append("--ground_up_command_curriculum")
         training = run(command, cwd=ROOT, timeout=7200, capture=True)
