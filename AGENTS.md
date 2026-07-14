@@ -834,3 +834,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   authorized to implement or train. No Colab, local GPU, RDK-X5, robot,
   deployment, torque, or motor access is authorized. See
   `outputs/analysis/GROUND_UP_ROBUSTNESS_R1_RESULT_20260714.md`.
+- 2026-07-14: Before spending Colab credit, a one-variable dual-fit
+  conservative-envelope repair is preregistered. It changes only the existing
+  ONNX `max_action_delta[0,4]` left-ankle constant from .14 to .12 normalized
+  action/tick, exactly 1.50 rad/s x .02 s / .25 rad. Every node, interface,
+  other initializer, zero-command deadband, and actual-position guard must be
+  exact. After a transform contract, the repaired half/final policies must
+  repeat all 16 R1 cells under both P30 and P31/34 fits. Passing only re-enters
+  R1 and permits an R2 contract; failing closes the inference-only repair and
+  permits preregistration of dual-fit training. No transform or behavior is
+  authorized before its contract, and no training, Colab, local GPU, RDK-X5,
+  robot, deployment, torque, or motor access is authorized. See
+  `outputs/analysis/GROUND_UP_DUAL_FIT_CONSERVATIVE_ENVELOPE_REPAIR_PREREGISTRATION_20260714.md`.

@@ -1,0 +1,77 @@
+{
+  "schema_version": "ground_up_dual_fit_conservative_envelope_repair_preregistration.v1",
+  "status": "PREREGISTERED_CPU_ONLY",
+  "causal_basis": {
+    "r1_result": "outputs/analysis/ground_up_robustness_r1_result.json",
+    "r1_result_sha256": "6491c51fcb5198a1ee90258cb9f5ab069bcb36f477b3905f4cb7cc4bb52f20ee",
+    "r1_status": "PASS_ROBUSTNESS_R1_NO_ADVANCE",
+    "failure_count": 6,
+    "failure_scope": "every P31/34 moving cell at both checkpoints",
+    "only_failed_invariant": "left-ankle sent-target velocity envelope",
+    "observed_velocity_rad_s": 1.750001311302185,
+    "p30_limit_rad_s": 1.75,
+    "p31_34_limit_rad_s": 1.5,
+    "observed_excess_rad_s": 0.25000131130218506
+  },
+  "source_policies": [
+    {
+      "step": 512000,
+      "path": "outputs/analysis/ground_up_command_deadband_repair_policies/T2_EQUAL_512000.onnx",
+      "sha256": "5c0b20a186408077ac14bbf6c9cefb4c5421c2db0ac351641f7f89e05e52fe2b"
+    },
+    {
+      "step": 1024000,
+      "path": "outputs/analysis/ground_up_command_deadband_repair_policies/T2_EQUAL_1024000.onnx",
+      "sha256": "a964dc980bb2fc8aecc664a197964be18747188a880b570968774626bdd803a8"
+    }
+  ],
+  "transform": {
+    "initializer": "max_action_delta",
+    "left_ankle_action_index": 4,
+    "old_normalized_delta": 0.14,
+    "new_normalized_delta": 0.12,
+    "derivation": "1.50 rad/s * 0.02 s / 0.25 rad action scale",
+    "all_other_initializer_values_exact": true,
+    "all_nodes_and_external_interfaces_exact": true,
+    "deadband_and_actual_centered_guard_unchanged": true
+  },
+  "contract_before_behavior": [
+    "both source hashes exact",
+    "only max_action_delta[0,4] changes, from its stored float32 representation of .14 to .12",
+    "all graph nodes, other initializers, and external interfaces exact",
+    "x=0 action/state outputs remain exactly zero",
+    "all four command outputs finite on CPU",
+    "chained left-ankle sent target never exceeds 1.50 rad/s apart from <=2e-6 rad/s numerical tolerance",
+    "other five pitch-chain bounds are unchanged"
+  ],
+  "behavior_matrix": {
+    "checkpoints": [512000, 1024000],
+    "fits": [
+      "outputs/analysis/fixed_target_p30_actuator_fit_20260712.json",
+      "outputs/analysis/fixed_target_p31_34_actuator_fit_20260712.json"
+    ],
+    "commands_x": [0.0, 0.074, 0.077, 0.08],
+    "seeds": [167931544],
+    "duration_ticks": 600,
+    "cells": 16
+  },
+  "gate": {
+    "both_fits_both_checkpoints": "unchanged R1 x=0 and moving hard gates",
+    "requires_zero_rate_excess_against_each_fit": true,
+    "no_training_reward_selection": true
+  },
+  "advance_rule": {
+    "pass": "REENTER_R1_WITH_REPAIRED_POLICY_AND_AUTHORIZE_R2_CONTRACT_ONLY",
+    "fail": "CLOSE_INFERENCE_ONLY_REPAIR_AND_PREREGISTER_DUAL_FIT_TRAINING_SEARCH",
+    "no_post_outcome_parameter_tuning": true
+  },
+  "authority": {
+    "build_and_contract_transform": true,
+    "run_behavior_after_contract_pass": true,
+    "r2_or_later": false,
+    "training": false,
+    "colab": false,
+    "local_gpu": false,
+    "rdk_or_robot": false
+  }
+}
