@@ -722,3 +722,14 @@ Do not proceed to grounded walking until low-risk gates pass.
   training, Colab, local GPU, RDK-X5, robot, deployment, torque, or motor access
   is authorized. See `outputs/analysis/GROUND_UP_ACTOR_SWA_SCREEN_PREREGISTRATION_20260714.md`
   and `outputs/analysis/GROUND_UP_ACTOR_SWA_TRANSFORM_CONTRACT_20260714.md`.
+- 2026-07-14: The preregistered actor-SWA screen completed all 48 CPU-only
+  behavior cells. Every cell ran 600 ticks with bilateral gait, zero action
+  saturation, and zero measured rate excess, but no cumulative-average
+  checkpoint clears .20 rad tracking. Unchanged T2 half/final is
+  .21767/.21530, unchanged T3 is .22404/.21492, R3 T2 is .22102/.21761, and R3
+  T3 is .22189/.21141. Actor averaging therefore preserves gait but worsens or
+  fails to repair the gate; the formulation is closed without selecting the
+  closest result. No training, x=0 gate, Colab, local GPU, RDK-X5, robot,
+  deployment, torque, or motor access is authorized. Next work is read-only
+  sent/applied/actual error decomposition. See
+  `outputs/analysis/GROUND_UP_ACTOR_SWA_SCREEN_RESULT_20260714.md`.

@@ -81,8 +81,8 @@
     <section class="hero">
       <div class="card">
         <div class="label">Current operation</div>
-        <div class="big amber" id="operation">Pitch-rate screen closed</div>
-        <div class="metric" id="operation-detail">All 72 preregistered stateful ONNX cells completed on CPU. Every cell walked 600 ticks with bilateral support, zero saturation, and zero measured rate excess, but none of the six rate/tail combinations cleared .20 rad tracking at both half and final checkpoints. No variant advances.</div>
+        <div class="big amber" id="operation">Actor-SWA screen closed</div>
+        <div class="metric" id="operation-detail">All 48 preregistered cumulative-average cells completed on CPU. Every cell walked 600 ticks with bilateral support, zero saturation, and zero measured rate excess, but no averaged checkpoint cleared .20 rad tracking. Actor averaging preserved gait but did not repair the gate.</div>
       </div>
       <div class="card">
         <div class="label">Offline winner</div>
@@ -158,6 +158,7 @@
           <li>The preregistered stateful pitch-rate boundary screen completed all 72 CPU-only cells. All cells remained full-duration walks with bilateral support, zero saturation, and zero measured rate excess.</li>
           <li>R1 T2 half/final worst tracking is .21493/.20887 and R1 T3 is .21985/.20074; R2 T2 is .21214/.20430 and R2 T3 is .21317/.19931; R3 T2 is .20789/.21070 and R3 T3 is .21298/.19852. No combination passes both checkpoints, so the screen is closed without promoting a closest result.</li>
           <li>A preregistered smooth-occupancy diagnostic improved exact-occupancy ranking from 20 to 14 discordant pairs, but worsened p95 ranking from 17 to 20. It fails the frozen dual-ranking rule, so no surrogate or training run advances.</li>
+          <li>Actor-only cumulative averaging also fails: unchanged T2 half/final is .21767/.21530, unchanged T3 is .22404/.21492, R3 T2 is .22102/.21761, and R3 T3 is .22189/.21141. All 48 cells walk, but no checkpoint clears .20.</li>
         </ol>
       </div>
       <div class="card">
@@ -187,7 +188,8 @@
           <li>Completed: 97.63% of gate-setting exceedance ticks occur at or within the two-tick lag window after a measured target-rate boundary; the odds ratio is 10.46.</li>
           <li>Completed: run the preregistered CPU-only stateful pitch-rate screen. Twelve ONNX variants passed exact graph, initializer, bound, and state-feedback checks before all 72 behavior cells were evaluated.</li>
           <li>Completed: test three preregistered smooth approximations to temporal occupancy on all 36 frozen traces; none beats both hinge baselines on occupancy and p95 rankings.</li>
-          <li>Current: run the frozen 48-cell CPU behavior screen for eight actor-only cumulative-average policies. Their exact transform and stateful ONNX contract passes; no training or hosted session is involved.</li>
+          <li>Completed: run the frozen 48-cell actor-only cumulative-average screen; every policy retains gait but every checkpoint fails tracking.</li>
+          <li>Current: decompose the frozen sent-target error into bridge-lag and applied-target-to-actual components before selecting any new software or training mechanism.</li>
           <li>Only a persistent nominal pass can authorize a separately preregistered x=0 preservation gate.</li>
           <li>Add x=0, randomization, delay, and pushes only after nominal gait emergence persists.</li>
           <li>Design RDK runtime only after an offline winner exists.</li>
