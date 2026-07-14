@@ -665,3 +665,14 @@ Do not proceed to grounded walking until low-risk gates pass.
   No x=0, local GPU, RDK-X5, robot, deployment, torque, or motor gate is
   authorized. Next work is a read-only joint/phase trace audit. See
   `outputs/analysis/GROUND_UP_TRACKING_TAIL_SEARCH_RESULT_20260714.md`.
+- 2026-07-14: Read-only joint and temporal audits reject two tempting follow-
+  ups. Across all 36 traces, only left knee/ankle exceed .20 rad and the gate-
+  setting joint shifts with scale, but per-tick max joint cost is exactly 6x
+  the closed six-joint mean on every trace; it is only an untested stronger
+  scale. T3 final misses the 30-tick five-percent boundary by 1/7/3 ticks with
+  <.014 rad conditional RMS excess, but linear hinge has 21 gate-ranking
+  disagreements versus 17 for squared hinge and is not selected. Temporal
+  occupancy is the unresolved quantity; no trainable surrogate or hosted run
+  is authorized. Next is a read-only phase/rate-boundary audit. See
+  `outputs/analysis/GROUND_UP_TRACKING_TAIL_JOINT_PHASE_AUDIT_20260714.md` and
+  `outputs/analysis/GROUND_UP_TRACKING_TAIL_TEMPORAL_OCCUPANCY_AUDIT_20260714.md`.
