@@ -145,6 +145,14 @@ def main() -> int:
             command.extend([
                 "--reference_feature_table_path", str(reference_table)
             ])
+        if candidate.get("nominal_reference_bootstrap"):
+            command.append("--nominal_reference_bootstrap")
+            command.extend([
+                "--nominal_reference_command_x",
+                str(candidate.get("nominal_reference_command_x", 0.074)),
+                "--reference_start_phase",
+                str(candidate.get("reference_start_phase", 0)),
+            ])
         if config["shared"]["ground_up_command_curriculum"]:
             command.append("--ground_up_command_curriculum")
         training = run(command, cwd=ROOT, timeout=7200, capture=True)

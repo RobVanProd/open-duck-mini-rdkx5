@@ -90,6 +90,7 @@ class ClosedLoopConfig:
     reset_mode: str = "playground"
     bridge_reset_align_joint_indices: tuple[int, ...] = ()
     reference_feature_table_path: Path | None = None
+    reference_start_phase: int | None = None
 
 
 @contextlib.contextmanager
@@ -1222,6 +1223,22 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
         obs = env._get_obs(state.data, state.info, contact)
         return state.replace(obs=obs)
 
+    def set_reference_start(state):
+        if not joystick.USE_IMITATION_REWARD or config.reference_start_phase is None:
+            return state
+        phase = int(config.reference_start_phase) % int(env.PRM.nb_steps_in_period)
+        state.info["imitation_i"] = phase
+        state.info["imitation_phase"] = jp.array(
+            [
+                jp.cos((phase / env.PRM.nb_steps_in_period) * 2 * jp.pi),
+                jp.sin((phase / env.PRM.nb_steps_in_period) * 2 * jp.pi),
+            ]
+        )
+        state.info["current_reference_motion"] = env.PRM.get_reference_motion(
+            command[0], command[1], command[2], phase
+        )
+        return state
+
     def prepare_step(state, action):
         state.info["command"] = command
         if joystick.USE_IMITATION_REWARD:
@@ -1547,6 +1564,10 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             if config.reference_feature_table_path is None
             else str(config.reference_feature_table_path.resolve())
         ),
+        "reference_start_phase": (
+            None if config.reference_start_phase is None
+            else int(config.reference_start_phase)
+        ),
         "terrain_override": terrain_override,
         "reset_settle_ticks": int(config.reset_settle_ticks),
         "reset_mode": config.reset_mode,
@@ -1573,6 +1594,7 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
         state = env.reset(jax.random.PRNGKey(config.seed))
         state.info["command"] = command
         state = apply_eval_reset_mode(state)
+        state = set_reference_start(state)
         state = refresh_obs_jit(state)
         if config.reset_settle_ticks > 0:
             settle_target = state.info["motor_targets"]

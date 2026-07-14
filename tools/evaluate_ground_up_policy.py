@@ -164,6 +164,7 @@ def evaluate(args: argparse.Namespace) -> dict[str, Any]:
                     seed=seed,
                     eval_role="candidate",
                     reference_feature_table_path=reference,
+                    reference_start_phase=args.reference_start_phase,
                     policy_state_input_names=state_input_names,
                     policy_state_output_names=state_output_names,
                 )
@@ -211,6 +212,7 @@ def evaluate(args: argparse.Namespace) -> dict[str, Any]:
             "fit_sha256": sha256(fit_path),
             "reference_feature_table": None if reference is None else str(reference),
             "reference_feature_table_sha256": None if reference is None else sha256(reference),
+            "reference_start_phase": args.reference_start_phase,
             "expected_observation_dim": args.expected_observation_dim,
             "commands": commands,
             "seeds": seeds,
@@ -271,6 +273,7 @@ def main() -> None:
     parser.add_argument("--playground-root", required=True)
     parser.add_argument("--fit", default=str(DEFAULT_FIT))
     parser.add_argument("--reference-feature-table", default=None)
+    parser.add_argument("--reference-start-phase", type=int, default=None)
     parser.add_argument("--expected-observation-dim", type=int, default=101)
     parser.add_argument(
         "--policy-state-input-names",

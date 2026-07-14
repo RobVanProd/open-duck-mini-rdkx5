@@ -1,0 +1,51 @@
+{
+  "schema_version": "ground_up_nominal_reference_bootstrap_screen.v1",
+  "status": "PREREGISTERED_BEFORE_ACCELERATOR_COMPUTE",
+  "training_seed": 100,
+  "timesteps": 4014080,
+  "num_evals": 5,
+  "shared": {
+    "discounting": 0.97,
+    "unroll_length": 20,
+    "ground_up_command_curriculum": false,
+    "extra_patches": [
+      "ground_up_stage1_mechanism_stack.patch",
+      "ground_up_nominal_reference_bootstrap.patch"
+    ]
+  },
+  "candidates": [
+    {
+      "id": "B0_NOMINAL_PHASE0",
+      "learning_rate": 0.0003,
+      "entropy_cost": 0.005,
+      "imitation_scale": 1.0,
+      "policy_architecture": "mlp",
+      "critic_observation": "privileged_state",
+      "nominal_reference_bootstrap": true,
+      "nominal_reference_command_x": 0.074,
+      "reference_start_phase": 0
+    },
+    {
+      "id": "B1_NOMINAL_PHASE20",
+      "learning_rate": 0.0003,
+      "entropy_cost": 0.005,
+      "imitation_scale": 1.0,
+      "policy_architecture": "mlp",
+      "critic_observation": "privileged_state",
+      "nominal_reference_bootstrap": true,
+      "nominal_reference_command_x": 0.074,
+      "reference_start_phase": 20
+    }
+  ],
+  "evaluation": {
+    "checkpoints": [3010560, 4014080],
+    "commands": [0.074, 0.08],
+    "seeds": [100, 101],
+    "duration_s": 1.08,
+    "phase_matches_candidate": true
+  },
+  "selection_uses_training_reward": false,
+  "robot_access_authorized": false,
+  "rdkx5_access_authorized": false,
+  "local_gpu_authorized": false
+}
