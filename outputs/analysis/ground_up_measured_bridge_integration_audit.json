@@ -1,0 +1,180 @@
+{
+  "authority": {
+    "gpu_authorized": false,
+    "robot_or_rdk_authorized": false,
+    "training_authorized": false
+  },
+  "conclusion": "The exact causal next arm is technically composable as hard-bounded sent target -> measured delay/tau plus pitch-limit bridge -> physics, with sent target retained in history and actual joint state returned in observations. This audit does not authorize training. The previously rejected penalty stack must not be reintroduced.",
+  "frozen_vectors": {
+    "delay_ticks": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      2,
+      3,
+      3,
+      3,
+      2,
+      3,
+      2,
+      3
+    ],
+    "joint_order": [
+      "left_hip_yaw",
+      "left_hip_roll",
+      "left_hip_pitch",
+      "left_knee",
+      "left_ankle",
+      "neck_pitch",
+      "head_pitch",
+      "head_yaw",
+      "head_roll",
+      "right_hip_yaw",
+      "right_hip_roll",
+      "right_hip_pitch",
+      "right_knee",
+      "right_ankle"
+    ],
+    "non_pitch_velocity_semantics": "neutral_5.24_not_measured_fit",
+    "pitch_indices": [
+      2,
+      3,
+      4,
+      11,
+      12,
+      13
+    ],
+    "tau_s": [
+      0.015,
+      0.015,
+      0.005,
+      0.01,
+      0.01,
+      0.12,
+      0.12,
+      0.12,
+      0.12,
+      0.02,
+      0.035,
+      0.01,
+      0.03,
+      0.005
+    ],
+    "velocity_limit_rad_s": [
+      5.24,
+      5.24,
+      1.5,
+      1.5,
+      1.75,
+      5.24,
+      5.24,
+      5.24,
+      5.24,
+      5.24,
+      5.24,
+      1.25,
+      1.0,
+      1.25
+    ]
+  },
+  "inputs": {
+    "all_joint_fit": {
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/fixed_target_p30_all_joint_actuator_fit_20260712.json",
+      "sha256": "9e8db109c4650798027e1aca6e958434d50f72860b70588d1e5cc38b59073c3f"
+    },
+    "assembled_ground_up_joystick": {
+      "path": "/tmp/ground_up_hard_vector_contract_321019/playground/open_duck_mini_v2/joystick.py",
+      "sha256": "87c864ab4597710231aeb34472cc031c5687808343388ef6ef387524c38bdc24"
+    },
+    "bridge_training_joystick": {
+      "path": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/joystick.py",
+      "sha256": "f6a6a2b0e6bdd8f99c43f8cc6ca051a5c72aa74b428fba0bfa670ee2ea622cd3"
+    },
+    "closed_loop_evaluator": {
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/tools/closed_loop_sim_eval.py",
+      "sha256": "cb1e7cda4feee43b3e88d1c970436ebe1b4b9ca173c96736337c6f770841b7a2"
+    },
+    "hard_vector_patch": {
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/patches/ground_up_hard_vector_command_support.patch",
+      "sha256": "900e65beaa4aa714ec352a527bf3f1a85888c0c76dab8d4cbef2352fa4986875"
+    },
+    "offline_bridge_model": {
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/tools/actuator_bridge_model.py",
+      "sha256": "3c9f2714f394d6f9f0c7e7baa693311eb7cf562617cabc4cd03d063db09dadce"
+    },
+    "pitch_fit": {
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/fixed_target_p30_actuator_fit_20260712.json",
+      "sha256": "908ddb01e5d82e661d77b8f3cb186a84665695660b86b304c6d1ae89c79cdb0b"
+    },
+    "prior_preregistration": {
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/HARDWARE_VECTOR_BRIDGE_CONSTRAINED_PPO_PREREGISTRATION_20260712.md",
+      "sha256": "5228d206ff7cfdc4469ab6b67763d2b3206f3cdd4036366a4ad380c4bd7f6a57"
+    }
+  },
+  "parity": {
+    "all_finite": true,
+    "global_max_abs_error_rad": 1.4305114759416426e-07,
+    "sequences": {
+      "alternating": {
+        "finite": true,
+        "max_abs_error_rad": 6.675720221060999e-08,
+        "mean_abs_error_rad": 7.931779771298969e-09,
+        "steps": 256
+      },
+      "bounded_random": {
+        "finite": true,
+        "max_abs_error_rad": 1.130402647042672e-07,
+        "mean_abs_error_rad": 1.2051013503100404e-08,
+        "steps": 256
+      },
+      "chirp": {
+        "finite": true,
+        "max_abs_error_rad": 6.157886611735108e-08,
+        "mean_abs_error_rad": 5.8124390255515805e-09,
+        "steps": 256
+      },
+      "home_hold": {
+        "finite": true,
+        "max_abs_error_rad": 5.364418020903372e-09,
+        "mean_abs_error_rad": 1.6923461575565506e-09,
+        "steps": 256
+      },
+      "step": {
+        "finite": true,
+        "max_abs_error_rad": 1.4305114759416426e-07,
+        "mean_abs_error_rad": 1.5486741578684018e-08,
+        "steps": 256
+      }
+    },
+    "threshold_rad": 1e-06
+  },
+  "provenance_checks": {
+    "delay_matches_all_joint_combined_fit": true,
+    "non_pitch_velocity_is_neutral_5p24": true,
+    "pitch_velocity_matches_pitch_combined_fit": true,
+    "tau_matches_all_joint_combined_fit": true
+  },
+  "runtime": {
+    "dt_s": 0.02,
+    "jax_backend": "cpu",
+    "jax_version": "0.8.2",
+    "steps_per_sequence": 256
+  },
+  "schema_version": 1,
+  "scope": "read_only_measured_bridge_integration_audit",
+  "source_order_checks": {
+    "bridge_preserves_sent_target_for_observation_history": true,
+    "bridge_receives_sent_target_and_physics_receives_applied_target": true,
+    "ground_up_hard_limit_precedes_physics": true,
+    "ground_up_next_observation_follows_realized_history": true,
+    "ground_up_realized_action_precedes_reward": true,
+    "offline_evaluator_bridges_before_physics": true,
+    "offline_evaluator_preserves_sent_target_history": true,
+    "old_prereg_identifies_non_pitch_velocity_as_neutral": true,
+    "prior_penalty_route_explicitly_closed": true
+  },
+  "status": "PASS"
+}

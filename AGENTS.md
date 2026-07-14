@@ -503,3 +503,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   read-only integration audit of the existing measured per-joint delay/tau
   actuator bridge against the ground-up stack. It does not authorize training,
   local GPU, RDK-X5, robot, deployment, torque, or motor access.
+- 2026-07-14: The read-only measured-bridge integration audit passes. The JAX
+  training transition and independent NumPy evaluator agree within
+  1.4305115e-7 rad across five 256-tick deterministic sequences; all source
+  ordering and vector-provenance checks pass. The composable order is hard-
+  bounded sent target, then fitted delay/tau plus pitch-chain velocity bridge,
+  then physics, while observation history retains the sent target and actual
+  joint state. Non-pitch 5.24 rad/s values are neutral, not claimed as measured.
+  This selects a bridge-only causal arm but does not authorize training. The
+  rejected penalty stack must not be restored. See
+  `outputs/analysis/GROUND_UP_MEASURED_BRIDGE_INTEGRATION_AUDIT_20260714.md`.
