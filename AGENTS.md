@@ -1108,3 +1108,11 @@ Do not proceed to grounded walking until low-risk gates pass.
   authorized before that contract, and no outcome directly authorizes
   training, Colab, GPU/iGPU, RDK-X5, robot, deployment, torque, or motors. See
   `outputs/analysis/GROUND_UP_TORSO_COM_FULL_OBSERVATION_REPLAY_SENSITIVITY_PREREGISTRATION_20260715.md`.
+- 2026-07-15: The full-observation study contract passes all 15 source, graph,
+  CPU-provider, matrix/readback, append-only trace, comparison-normalizer, and
+  refusal checks without executing a simulator behavior cell. Exact hashes of
+  the replay and analysis tools are frozen in the JSON contract. This
+  authorizes only the one exact 144-cell CPU reporting replay; decode and actor
+  forks may follow only if all behavior fields reproduce. No training, Colab,
+  GPU/iGPU, RDK-X5, robot, deployment, torque, or motors are authorized. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_FULL_OBSERVATION_REPLAY_SENSITIVITY_CONTRACT_20260715.md`.
