@@ -2,7 +2,7 @@
 
 status: `PASS_RESET_COM_ESTIMATOR_COLAB_LAUNCH_CONTRACT`
 
-All 16 frozen launch checks pass. The contract created zero sessions, uploaded
+All 20 frozen launch checks pass. The contract created zero sessions, uploaded
 zero remote bytes, downloaded zero remote bytes, and ran zero training steps.
 
 ## Frozen launch
@@ -15,10 +15,17 @@ zero remote bytes, downloaded zero remote bytes, and ran zero training steps.
 - Compute ceiling: 2.0 units.
 - Resume/retry/adopt-existing-session surfaces: absent.
 - Allocation requires the explicit `--allow-colab-allocation` flag.
+- Cleanup becomes mandatory immediately before `colab new`, including a
+  partial-allocation/nonzero-CLI outcome.
+- A fixed 120-second stop reserve is subtracted from every allocation/status/
+  upload/exec/download work timeout.
 
 The external remaining-time timeout includes allocation and all 19 exact
 uploads, so remote setup and training cannot extend the total wall ceiling.
 Named-session cleanup is in `finally`; no command addresses another session.
+A passing recovery additionally requires stop return code zero and total
+allocation-through-cleanup time `<=2400.0` seconds. Recovered files remain
+nonpromotable if either cleanup condition fails.
 
 ## Compute-rate boundary
 
@@ -41,7 +48,7 @@ record preserves commands, stdout, rate projection, recovery hashes, cleanup,
 and elapsed session time.
 
 Contract JSON SHA-256:
-`54516485c35513eb7117e0e8797ab1e365bd71bcb62ee272178cf577031d2fa3`.
+`4d3b281ad35fed6d891a5382cd56a521427be17c6eaa74c9b7aa8ece9150abaf`.
 
 ## Authority
 

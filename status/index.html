@@ -82,7 +82,7 @@
       <div class="card">
         <div class="label">Current operation</div>
         <div class="big green" id="operation">Colab launch dry-run contracted · explicit approval pending</div>
-        <div class="metric" id="operation-detail">All 16 launch checks pass: fixed T4 session, 19 exact assets, total 2,400-second / 2.0-CU ceilings, rate fail-closed, no retry, named cleanup, and atomic recovery. No active sessions.</div>
+        <div class="metric" id="operation-detail">All 20 launch checks pass: fixed T4 session, 19 exact assets, total 2,400-second / 2.0-CU ceilings, 120-second stop reserve, mandatory cleanup, no retry, and atomic recovery. No active sessions.</div>
       </div>
       <div class="card">
         <div class="label">Remediation winner</div>
@@ -208,7 +208,7 @@
           <li>The CPU package contract passes: all noninserted checkpoint values and save/restore are bit-exact, new actor/critic rows are zero, and step-zero actor/critic error is exactly zero.</li>
           <li>Three reset cells independently reproduce the frozen latch at torso X-COM -.05/0/+.05 with maximum anchor error .000130 m/s²; default-off remains 115/226-D.</li>
           <li>The single-arm hosted package passes all 17 CPU checks. GPU-topology expansion is verified algebraically on CPU, every asset/command field is frozen, and no session or training has started.</li>
-          <li>The launch dry run passes all 16 checks with zero remote bytes and zero sessions. Allocation is impossible without the explicit approval flag.</li>
+          <li>The corrected launch dry run passes all 20 checks with zero remote bytes and zero sessions. Cleanup is armed before allocation, 120 seconds is reserved for stop, and pass requires cleanup inside the total ceiling.</li>
         </ol>
       </div>
       <div class="card">
