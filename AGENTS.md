@@ -1353,3 +1353,12 @@ Do not proceed to grounded walking until low-risk gates pass.
   response is mixed, and crossed localization is distributed/unresolved. No
   policy family, training, or hardware action is selected. See
   `outputs/analysis/GROUND_UP_TORSO_COM_EAGER_MJX_ACCELEROMETER_REPLAY_RESULT_20260715.md`.
+- 2026-07-15: An 11-point deterministic reset-COM estimator feasibility curve
+  is preregistered before any interior-offset sensor read. It calibrates only
+  at the existing -.05/0/+.05 anchors and evaluates a frozen piecewise-linear
+  estimator at eight held-out 1 cm interior offsets. Correct sign, strict
+  ordering, adjacent separation above 1e-3 m/s^2, and a 5 mm held-out error
+  ceiling select only a reset-latched estimator arm for separate
+  preregistration. A zero-outcome contract must pass first. No dynamic step,
+  actor, training, or hardware action is authorized. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_FEASIBILITY_PREREGISTRATION_20260715.md`.

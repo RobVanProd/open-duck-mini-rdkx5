@@ -138,7 +138,11 @@ by weak and nonlinear-center signatures. Frozen decision:
 `SUPPORT_PREREGISTERED_MATCHED_SENSOR_ACTOR_RESPONSE_STUDY`. That study is
 already complete in this chain and found material but mixed signed actor
 response with distributed/unresolved crossed localization. No policy family,
-training, or hardware action is selected.
+training, or hardware action is selected. The next read-only formulation gate
+is now preregistered as an 11-point eager reset-COM calibration curve: three
+existing anchors and eight held-out interior offsets under a frozen
+piecewise-linear estimator. Its zero-offset-outcome contract is next. No
+dynamic step, actor, training, or hardware action is authorized.
 ```
 
 Robotics operating model:
