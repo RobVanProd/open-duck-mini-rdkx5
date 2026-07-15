@@ -120,9 +120,10 @@ validity rule. Fresh nominal and fresh endpoint initialization match the
 oracle exactly, but the reconstructed `LIVE_FORWARD_REPRODUCTION` also matches
 exactly rather than reproducing the prior .0133886337 m/s^2 error. All seven
 variants match, so none selects a mechanism. The supported next evidence
-boundary is a separately preregistered, evaluator-in-situ tick-zero data
-provenance comparison against the standalone fresh data. No 144-cell retry,
-new sensor interpretation, actor work, or training is authorized.
+boundary is now preregistered as a four-variant JIT-boundary audit: exact eager
+closure, exact evaluator JIT closure, external model arguments, and paired
+endpoint JIT. Its zero-outcome contract is next. No 144-cell retry, new sensor
+interpretation, actor work, or training is authorized.
 ```
 
 Robotics operating model:

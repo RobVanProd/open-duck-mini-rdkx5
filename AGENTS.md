@@ -1305,3 +1305,11 @@ Do not proceed to grounded walking until low-risk gates pass.
   propagation. No 144-cell retry, actor, training, or hardware action is
   authorized. See
   `outputs/analysis/GROUND_UP_TORSO_COM_MJX_INITIALIZATION_ORDER_AUDIT_RESULT_20260715.md`.
+- 2026-07-15: A four-variant MJX JIT-boundary audit is preregistered before any
+  new endpoint read. It compares the exact eager branch closure, the exact
+  evaluator JIT closure, externally constructed model arguments, and paired
+  endpoint JIT evaluation at the same single tick-zero reset. Exact oracle,
+  prior-invalid reproduction, endpoint order, tolerances, and decision rules
+  are frozen. A zero-outcome contract must pass first. No dynamic step, actor,
+  training, or hardware action is authorized. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_MJX_JIT_BOUNDARY_AUDIT_PREREGISTRATION_20260715.md`.
