@@ -1652,3 +1652,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   transforms to the two post-update exports may follow; no training, Colab,
   local GPU/iGPU, RDK-X5, runtime, or robot action is authorized. See
   `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_HOSTED_ARTIFACT_CONTRACT_20260715.md`.
+- 2026-07-15: The reset-estimator behavior evaluator plumbing is preregistered
+  before implementation. It adds one default-false evaluator/CLI switch that
+  enables only the environment's existing reset-latched estimator input before
+  construction, preserving body-2 override-before-reset ordering. A CPU reset-
+  only contract must prove default-off 115-D identity and enabled 116-D latch
+  propagation at nominal/-.05/+.05 before the exact 12-matrix/48-cell frozen
+  behavior evaluation. Both checkpoints must pass every cell; no closest
+  promotion or reward selection is allowed. No training, Colab, local GPU/
+  iGPU, RDK-X5, runtime, or robot action is authorized. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_BEHAVIOR_EVALUATOR_PREREGISTRATION_20260715.md`.
