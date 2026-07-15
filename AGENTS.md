@@ -1175,3 +1175,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   may follow. No training, Colab, GPU/iGPU, RDK-X5, runtime, or robot action is
   authorized. See
   `outputs/analysis/GROUND_UP_TORSO_COM_SIGNED_CAUSAL_RESPONSE_RESULT_20260715.md`.
+- 2026-07-15: The next read-only localization study is preregistered before any
+  new simulator branch. Existing vectors show that physical COM pitch response
+  remains positive in every cell while actor-effect sign changes with time,
+  but cannot tell whether actor response or plant phase causes the mixture.
+  The crossed study freezes 36 traces x four target-state ticks x four donor
+  actor-response ticks = 576 cells. Donor ONNX offsets are transplanted around
+  each target baseline, preserving actual magnitude/asymmetry and exactly
+  reproducing the prior pair on the diagonal. A deterministic two-way effect
+  decomposition and all-six-policy persistence rule are frozen before outcomes.
+  A zero-formal-cell CPU contract must pass first. No training, Colab,
+  GPU/iGPU, RDK-X5, runtime, or robot action is authorized. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_CROSSED_PHASE_LOCALIZATION_PREREGISTRATION_20260715.md`.

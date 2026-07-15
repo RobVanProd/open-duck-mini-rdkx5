@@ -53,11 +53,18 @@ arm, memory/estimator, objective-sign, or actuator-effect family advances.
 
 The sign mixture localizes most strongly by fork time: corrective/amplifying
 counts are 19/7 at tick 0, 21/9 at tick 24, 16/15 at tick 32, and 11/24 at tick
-40. That pattern is descriptive and cannot override the policy persistence
-rule. The next boundary is a separate preregistration that resolves the
-time/phase-dependent sign mixture without selecting a training family in
-advance. Do not start objective, optimizer, memory, estimator, explicit-COM,
-range-change, training, tuning, Colab, GPU/iGPU, RDK-X5, runtime, or robot work.
+40. The physical COM pitch effect remains positive in every cell; the actor
+effect changes sign, but the current diagonal study cannot separate a changing
+actor response from changing plant-phase authority.
+
+The exact next study is now preregistered: cross four target physical-state
+ticks with actor-response offsets donated by all four ticks on the same 36
+traces. Its deterministic target/donor/interaction decomposition can select at
+most a further read-only attribution preregistration, never training. The next
+boundary is its zero-formal-cell CPU source/reconstruction/action-range
+contract. Do not run crossed outcomes or start objective, optimizer, memory,
+estimator, explicit-COM, range-change, training, tuning, Colab, GPU/iGPU,
+RDK-X5, runtime, or robot work before that contract passes.
 ```
 
 Robotics operating model:
