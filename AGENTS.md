@@ -1606,3 +1606,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   wall-only launcher contract may follow; no allocation, training, local GPU/
   iGPU, RDK-X5, runtime, or robot action is authorized yet. See
   `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_EPSILON_AWARE_HOSTED_EXPANSION_CONTRACT_20260715.md`.
+- 2026-07-15: The epsilon-aware wall-only launcher passes every zero-session
+  contract check. It freezes one fresh named T4, 24 exact assets, the original
+  job plus correction wrapper, 2,400-second total wall, 120-second stop
+  reserve, atomic recovery, and mandatory named cleanup. Compute is recorded
+  `UNMEASURED`; no billing/attestation input exists. Invalid execution fails
+  closed and cleanup runs. Continuing user authorization permits this one no-
+  retry launch without another numbers/approval prompt. Recovered artifacts
+  remain behavior-unevaluated; no local GPU/iGPU, RDK-X5, runtime, or robot
+  action is authorized. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_EPSILON_AWARE_WALL_LAUNCHER_CONTRACT_20260715.md`.
