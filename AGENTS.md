@@ -1212,3 +1212,14 @@ Do not proceed to grounded walking until low-risk gates pass.
   preregistration. No training, Colab, GPU/iGPU, RDK-X5, runtime, or robot
   action is authorized. See
   `outputs/analysis/GROUND_UP_TORSO_COM_CROSSED_PHASE_LOCALIZATION_RESULT_20260715.md`.
+- 2026-07-15: A matched-state physical accelerometer map is preregistered
+  before any sensor outcome. The prior signed/crossed studies reused a reset-
+  derived COM direction at every phase even though prior probes found it clean
+  only at reset. The new 144-cell CPU study uses identical nominal/COM-NEG/
+  COM-POS states at ticks 0/24/32/40, calls `mj_forward` without advancing time
+  or applying an action, and reads the name-resolved accelerometer. It freezes
+  magnitude, centering, direction, native-vs-saved readback, tick-zero anchor,
+  persistence, and next-study rules. A zero-formal-cell contract must pass
+  before physical COM sensor readback. No actor fork, dynamic step, training,
+  Colab, GPU/iGPU, RDK-X5, runtime, or robot action is authorized. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_MATCHED_ACCELEROMETER_MAP_PREREGISTRATION_20260715.md`.

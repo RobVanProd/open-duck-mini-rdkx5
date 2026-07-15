@@ -71,6 +71,15 @@ closest fraction or choose actor-action, plant-phase, joint-phase, objective,
 memory, estimator, policy, or training work. A new evidence question requires
 a separate preregistration. Training, tuning, Colab, GPU/iGPU, RDK-X5, runtime,
 and robot work remain unauthorized.
+
+The next neutral evidence question is now preregistered. The prior forks reused
+the reset-derived accelerometer COM vector at all phases; they never proved
+that vector equals the physical matched-state sensor difference mid-gait. The
+144-cell CPU map freezes identical-state nominal/COM-NEG/COM-POS `mj_forward`
+readback at ticks 0/24/32/40, without a dynamic step or actor call. The next
+boundary is its zero-outcome source/state/sensor/body-mutation contract. Do not
+read formal COM sensor outcomes, run actor branches, or start any training,
+Colab, GPU/iGPU, RDK-X5, runtime, or robot work before that contract passes.
 ```
 
 Robotics operating model:
