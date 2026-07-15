@@ -1456,3 +1456,14 @@ Do not proceed to grounded walking until low-risk gates pass.
   approval. No behavior evaluation, GPU/iGPU, RDK-X5, runtime, or robot action
   is authorized. See
   `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_RATE_ATTESTATION_CORRECTION_CONTRACT_20260715.md`.
+- 2026-07-15: A fresh idle Resources-UI reading is 79.36 available units,
+  approximately 0/hour, and zero sessions; CLI independently confirms zero
+  sessions. This falsifies positive-rate acquisition before allocation, so do
+  not launch with zero or reuse 1.07. A same-session pretraining handshake is
+  preregistered: after exact idle-T4 identity, wait at most 120 seconds for the
+  operator's two live UI values, validate the unchanged 2.0-CU projection,
+  then upload/train or fail closed. The operator explicitly approved one such
+  corrected launch after its zero-allocation contract passes. No upload,
+  training, behavior evaluation, local GPU/iGPU, RDK-X5, runtime, or robot
+  action is authorized before that contract. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_SAME_SESSION_RATE_HANDSHAKE_PREREGISTRATION_20260715.md`.
