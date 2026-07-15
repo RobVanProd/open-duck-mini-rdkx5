@@ -162,7 +162,15 @@ z=-1/0/+1. Three reset cells match an independent estimator implementation;
 default-off remains 115/226-D. This used zero dynamic steps and zero training.
 The next authority boundary is a separate hosted-training preregistration and
 package. No Colab session, training, behavior evaluation, GPU/iGPU, RDK-X5,
-runtime, or robot action is authorized now.
+runtime, or robot action is authorized now. That single-arm hosted package is
+now preregistered and passes all 17 CPU checks. It freezes one uninterrupted
+2M continuation, one session/process, no resume/retry, a 2,400-second wall
+ceiling, and 2.0-CU ceiling. Its hosted-topology expansion function matches the
+local contract with bit-exact preservation and zero step-zero actor/critic
+error, while every upload asset and exact training-command field validates.
+The contract used zero training and zero Colab sessions. The next boundary is
+a separate explicit hosted-run authorization; do not launch the job from the
+package contract alone.
 ```
 
 Robotics operating model:

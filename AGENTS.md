@@ -1390,3 +1390,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   No behavior evaluation, GPU/iGPU, RDK-X5, runtime, or robot action is
   authorized. See
   `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_INPUT_PACKAGE_CONTRACT_20260715.md`.
+- 2026-07-15: The one-arm hosted package for `RESET_EST_LATCH_U05` is now
+  preregistered and passes all 17 CPU contract checks. It freezes one
+  uninterrupted 2M continuation, exports at 0/1,003,520/2,007,040, one
+  session/process, no resume/retry, a 2,400-second wall ceiling, and a 2.0-CU
+  ceiling. The hosted-topology expansion function reproduces the local
+  expansion contract on CPU with bit-exact noninserted values/save-restore and
+  zero actor/critic error at z=-1/0/+1. Asset/archive validation and the exact
+  training command pass. This contract opened zero Colab sessions and ran zero
+  training steps. A separate explicit hosted-run authorization is still
+  required; do not launch Colab or PPO from this artifact. Behavior evaluation,
+  GPU/iGPU, RDK-X5, runtime, and robot work remain unauthorized. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_HOSTED_PACKAGE_CONTRACT_20260715.md`.
