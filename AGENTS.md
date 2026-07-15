@@ -1368,3 +1368,12 @@ Do not proceed to grounded walking until low-risk gates pass.
   executed zero formal sensor reads, dynamic steps, or actor calls. Only the
   frozen 11-point eager reset curve is authorized. See
   `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_FEASIBILITY_CONTRACT_20260715.md`.
+- 2026-07-15: The 11-point reset-COM estimator feasibility curve is valid and
+  selects `SUPPORT_RESET_LATCHED_PIECEWISE_LINEAR_COM_ESTIMATOR_ARM`. All
+  anchors are exact; all eight held-out estimates have correct sign and strict
+  order; maximum error is .0012139763 m versus the frozen .005 m ceiling; and
+  minimum adjacent sensor separation is .279735532 m/s^2 versus the .001
+  floor. This is one deterministic simulator reset only. It does not establish
+  noise, reset-pose, floor, hardware, or deployment robustness and authorizes
+  only a separate estimator-arm preregistration, not training. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_FEASIBILITY_RESULT_20260715.md`.

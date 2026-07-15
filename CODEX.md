@@ -144,7 +144,12 @@ existing anchors and eight held-out interior offsets under a frozen
 piecewise-linear estimator. Its zero-offset-outcome contract passes every
 frozen check with zero formal sensor reads, dynamic steps, or actor calls. The
 11-point eager reset curve is next. No dynamic step, actor, training, or
-hardware action is authorized.
+hardware action is authorized. That curve is now valid: all anchors are exact,
+all held-out signs and ordering pass, maximum offset error is 1.214 mm, and
+minimum adjacent sensor separation is .2797 m/s^2. Frozen decision:
+`SUPPORT_RESET_LATCHED_PIECEWISE_LINEAR_COM_ESTIMATOR_ARM`. This authorizes
+only a separate estimator-input arm preregistration; training and hardware
+remain unauthorized.
 ```
 
 Robotics operating model:
