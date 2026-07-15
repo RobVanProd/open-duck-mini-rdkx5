@@ -1128,3 +1128,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   `outputs/analysis/GROUND_UP_TORSO_COM_FULL_OBSERVATION_REPLAY_RESULT_20260715.md`
   and
   `outputs/analysis/GROUND_UP_TORSO_COM_FULL_OBSERVATION_ANALYSIS_IMPLEMENTATION_CORRECTION_20260715.md`.
+- 2026-07-15: The full-observation study completes with
+  `RESET_TRANSIENT_ONLY_UNDER_FROZEN_PROBES` plus
+  `SUBSTANTIAL_ACCEL_RESPONSE`. ACCEL3 and FULL115 both pass only at tick zero;
+  neither instantaneous ticks 24-40 nor any one fixed local-window width passes
+  the frozen persistence rule. This is probe-limited, not an information-
+  absence claim. Separately, all 576 identical-state ONNX forks reproduce
+  baseline action exactly and all six actors materially respond when only
+  `obs[3:6]` is changed: mid-gait p95 maximum differences are .07206-.12575
+  normalized action. Near-zero actor sensitivity is rejected, but corrective
+  sign is unknown. Only a separately preregistered read-only CPU signed causal-
+  response study is supported; no objective, memory, estimator, training,
+  Colab, GPU/iGPU, RDK-X5, or robot action is authorized. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_FULL_OBSERVATION_REPLAY_SENSITIVITY_RESULT_20260715.md`.

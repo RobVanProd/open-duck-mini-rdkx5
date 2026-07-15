@@ -35,10 +35,20 @@ Its exact-source/device/graph/replay contract passes, and the reporting-only
 replay now reproduces all 36 matrices/144 cells exactly with 40,520 full 115-D
 rows. Before analysis outcomes, the oversized primal window solve was replaced
 by its algebraically identical dual form when features exceed samples; fixed
-scores agree within 2.14e-14 and the corrected tool is re-contracted. The next
-step is the frozen descriptive instantaneous/local-window decode and
-identical-state obs[3:6] actor forks. Do not run training, tuning, Colab,
-GPU/iGPU, RDK-X5, runtime, or robot work.
+scores agree within 2.14e-14 and the corrected tool is re-contracted.
+
+The frozen analysis is complete. ACCEL3 and FULL115 both pass only at tick zero;
+no current-state tick 24-40 or one fixed local-window width passes the
+persistence rule, yielding a probe-limited reset-transient label. In contrast,
+all six actors show substantial identical-state response when only obs[3:6] is
+forked along the measured COM direction; mid-gait p95 maximum action differences
+are .07206-.12575 normalized action and baseline replay error is exactly zero.
+
+This rejects near-zero accelerometer sensitivity but does not establish whether
+the response sign is stabilizing or destabilizing. The next defensible boundary
+is a separately preregistered read-only CPU signed causal-response study. Do not
+start objective, optimizer, memory, estimator, explicit-COM, range-change,
+training, tuning, Colab, GPU/iGPU, RDK-X5, runtime, or robot work from this result.
 ```
 
 Robotics operating model:
