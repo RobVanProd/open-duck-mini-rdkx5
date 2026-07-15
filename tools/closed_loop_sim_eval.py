@@ -1332,7 +1332,7 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             branch_data = mjx.forward(branch_model, data)
             return env.get_accelerometer(branch_data)
 
-        com_accelerometer_map_runner = jax.jit(read_com_accelerometer)
+        com_accelerometer_map_runner = read_com_accelerometer
 
     try:
         session = ort.InferenceSession(str(config.policy_path), providers=["CPUExecutionProvider"])

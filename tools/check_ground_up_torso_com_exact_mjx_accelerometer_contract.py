@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Check the zero-COM-outcome exact MJX accelerometer replay contract."""
+"""Check the zero-COM-outcome eager-MJX accelerometer replay contract."""
 
 from __future__ import annotations
 
@@ -18,20 +18,22 @@ os.environ.setdefault("CUDA_VISIBLE_DEVICES", "")
 os.environ.setdefault("JAX_PLATFORMS", "cpu")
 
 REPO = Path(__file__).resolve().parents[1]
-PREREG = REPO / "outputs/analysis/GROUND_UP_TORSO_COM_EXACT_MJX_ACCELEROMETER_REPLAY_PREREGISTRATION_20260715.md"
+PREREG = REPO / "outputs/analysis/GROUND_UP_TORSO_COM_EAGER_MJX_ACCELEROMETER_REPLAY_PREREGISTRATION_20260715.md"
 PRIOR_MANIFEST = REPO / "outputs/analysis/ground_up_torso_com_full_obs_replay_manifest.json"
-INVALID_RESULT = REPO / "outputs/analysis/ground_up_torso_com_matched_accelerometer_map_result.json"
+INVALID_RESULT = REPO / "outputs/analysis/ground_up_torso_com_exact_mjx_accelerometer_map_result.json"
+JIT_RESULT = REPO / "outputs/analysis/ground_up_torso_com_mjx_jit_boundary_audit_result.json"
 CLOSED_LOOP = REPO / "tools/closed_loop_sim_eval.py"
 EVALUATOR = REPO / "tools/evaluate_ground_up_policy.py"
 STUDY_TOOL = REPO / "tools/run_ground_up_torso_com_exact_mjx_accelerometer_replay.py"
 SOURCE_MATRIX = REPO / "outputs/analysis/ground_up_torso_com_behavior_eval/NOMINAL_A05_DIRECT_1003520_p30.json"
 
 EXPECTED = {
-    "prereg": "f778f3164d140921e77d1b70aa8323facfb699e56f5605ada15f41e9fdda9c64",
+    "prereg": "82cb64126f717ff0e1ca244360eafeab2347cc83ba9da1f0d868dcd7128cd65a",
     "prior_manifest": "ac42abc8a940d97f0c0373ce624eaf2d2f803ac574e0de52c82303c7a759da07",
-    "invalid_result": "68e88dc9d2cb32cadb85c7ae6a69cea499653b507c78474555183b835b7801df",
-    "closed_loop_pre": "e6182ad45c0409820ad8086694a5d12b9c7154ed70a47a836895dc61ab55fd90",
-    "evaluator_pre": "b05f49e0692237aa6aff924d9fa41fe9ce06b46d806187597022ac52eb2a4d3a",
+    "invalid_result": "23b4ad8444fc4eaa9dd83dcffb64b3b070431f3b424a83d71bf9a5b2a5ffcf3b",
+    "jit_result": "11a50e76e84e0e0ae67d33dd12d587864ba9a557db27355d97743eab0f717575",
+    "closed_loop_pre": "d2c452b19826e4ff9e399bf61fe09e654514c4fc194966871e35fba0850f20d7",
+    "evaluator_pre": "347d3e4151d3f634710660b8c11bcce13724c66d33caafb5edbf86ebe2638030",
 }
 
 
@@ -111,11 +113,12 @@ def main() -> int:
     study = load_study()
     actual_sources = {
         "prereg": sha256(PREREG), "prior_manifest": sha256(PRIOR_MANIFEST),
-        "invalid_result": sha256(INVALID_RESULT),
+        "invalid_result": sha256(INVALID_RESULT), "jit_result": sha256(JIT_RESULT),
     }
     checks: dict[str, bool] = {}
     checks["frozen_source_hashes_exact"] = actual_sources == {
-        key: EXPECTED[key] for key in ("prereg", "prior_manifest", "invalid_result")
+        key: EXPECTED[key]
+        for key in ("prereg", "prior_manifest", "invalid_result", "jit_result")
     }
     checks["preinstrumentation_hashes_frozen_in_prereg"] = (
         EXPECTED["closed_loop_pre"] in prereg_text
@@ -128,6 +131,13 @@ def main() -> int:
         "if com_accelerometer_map_ticks:" in closed_text
         and "if tick in com_accelerometer_map_ticks:" in closed_text
         and "if com_accelerometer_map is not None:" in closed_text
+    )
+    checks["validated_eager_runner_exact"] = (
+        "com_accelerometer_map_runner = read_com_accelerometer" in closed_text
+        and "com_accelerometer_map_runner = jax.jit(read_com_accelerometer)"
+        not in closed_text
+        and json.loads(JIT_RESULT.read_text()).get("decision")
+        == "GENERAL_JIT_FORWARD_DISCREPANCY_OR_UNRESOLVED"
     )
     checks["append_only_trace_field_exact"] = (
         'record["torso_com_accelerometer_map"] = com_accelerometer_map' in closed_text
@@ -162,11 +172,11 @@ def main() -> int:
 
     failed = sorted(name for name, passed in checks.items() if not passed)
     status = (
-        "PASS_TORSO_COM_EXACT_MJX_ACCELEROMETER_CONTRACT"
-        if not failed else "FAIL_TORSO_COM_EXACT_MJX_ACCELEROMETER_CONTRACT"
+        "PASS_TORSO_COM_EAGER_MJX_ACCELEROMETER_CONTRACT"
+        if not failed else "FAIL_TORSO_COM_EAGER_MJX_ACCELEROMETER_CONTRACT"
     )
     payload = {
-        "schema_version": "ground_up_torso_com_exact_mjx_accelerometer_contract.v1",
+        "schema_version": "ground_up_torso_com_eager_mjx_accelerometer_contract.v1",
         "status": status, "checks": checks, "failed_checks": failed,
         "details": {
             "contract_tool_sha256": sha256(Path(__file__)),
@@ -187,7 +197,7 @@ def main() -> int:
             "training": False, "robot_or_rdk": False,
         },
         "authority": {
-            "formal_exact_mjx_replay_if_pass": True, "training": False,
+            "formal_eager_mjx_replay_if_pass": True, "training": False,
             "gpu_or_igpu": False, "robot_or_rdk": False,
         },
     }

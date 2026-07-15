@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run the preregistered exact MJX torso-COM accelerometer replay."""
+"""Run the preregistered eager-MJX torso-COM accelerometer replay."""
 
 from __future__ import annotations
 
@@ -22,7 +22,7 @@ REPO = Path(__file__).resolve().parents[1]
 EVALUATOR = REPO / "tools/evaluate_ground_up_policy.py"
 MATRIX_ROOT = REPO / "outputs/analysis/ground_up_torso_com_behavior_eval"
 PRIOR_MANIFEST = REPO / "outputs/analysis/ground_up_torso_com_full_obs_replay_manifest.json"
-INVALID_RESULT = REPO / "outputs/analysis/ground_up_torso_com_matched_accelerometer_map_result.json"
+INVALID_RESULT = REPO / "outputs/analysis/ground_up_torso_com_exact_mjx_accelerometer_map_result.json"
 DIRECTION = np.asarray(
     [1.1654748916625977, 0.11948448419570923, 1.0919904708862305], dtype=float
 )
@@ -150,8 +150,8 @@ def main() -> int:
     if os.environ.get("CUDA_VISIBLE_DEVICES") != "" or os.environ.get("JAX_PLATFORMS") != "cpu":
         raise RuntimeError("exact CPU environment required")
     contract = json.loads(args.contract.read_text())
-    if contract.get("status") != "PASS_TORSO_COM_EXACT_MJX_ACCELEROMETER_CONTRACT":
-        raise ValueError("passing exact-MJX accelerometer contract required")
+    if contract.get("status") != "PASS_TORSO_COM_EAGER_MJX_ACCELEROMETER_CONTRACT":
+        raise ValueError("passing eager-MJX accelerometer contract required")
     if contract["details"]["study_tool_sha256"] != sha256(Path(__file__)):
         raise ValueError("exact-MJX study tool changed after contract")
     if contract["details"]["evaluator_sha256"] != sha256(EVALUATOR):
@@ -321,10 +321,10 @@ def main() -> int:
         }
 
     if not validity["valid"]:
-        status = "INVALID_EXACT_MJX_ACCELEROMETER_REPLAY"
-        decision = "INVALID_EXACT_MJX_ACCELEROMETER_REPLAY"
+        status = "INVALID_EAGER_MJX_ACCELEROMETER_REPLAY"
+        decision = "INVALID_EAGER_MJX_ACCELEROMETER_REPLAY"
     else:
-        status = "PASS_EXACT_MJX_ACCELEROMETER_MAP_COMPLETE"
+        status = "PASS_EAGER_MJX_ACCELEROMETER_MAP_COMPLETE"
         if all(tick_summaries[str(tick)]["classification"] == "FIXED_COMPATIBLE_TICK" for tick in TICKS):
             decision = "SUPPORT_PREREGISTERED_FINE_GRAINED_COUPLING_MAP"
         elif (
@@ -342,17 +342,17 @@ def main() -> int:
         ):
             decision = "SUPPORT_PREREGISTERED_MATCHED_SENSOR_ACTOR_RESPONSE_STUDY"
         else:
-            decision = "EXACT_MJX_ACCELEROMETER_MAP_UNRESOLVED_NO_FAMILY_SELECTED"
+            decision = "EAGER_MJX_ACCELEROMETER_MAP_UNRESOLVED_NO_FAMILY_SELECTED"
 
     payload = {
-        "schema_version": "ground_up_torso_com_exact_mjx_accelerometer_map.v1",
+        "schema_version": "ground_up_torso_com_eager_mjx_accelerometer_map.v1",
         "status": status, "decision": decision, "validity": validity,
         "aggregate_counts": counts(cells), "tick_summaries": tick_summaries,
         "cells": cells, "traces": trace_records,
         "sources": {
             "contract_sha256": sha256(args.contract),
             "prior_manifest_sha256": sha256(PRIOR_MANIFEST),
-            "invalid_native_result_sha256": sha256(INVALID_RESULT),
+            "invalid_exact_mjx_result_sha256": sha256(INVALID_RESULT),
             "evaluator_sha256": sha256(EVALUATOR),
             "closed_loop_sha256": sha256(closed_loop),
         },
@@ -371,7 +371,7 @@ def main() -> int:
     args.output.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
 
     lines = [
-        "# Ground-Up Torso-COM Exact MJX Accelerometer-Replay Result", "",
+        "# Ground-Up Torso-COM Eager-MJX Accelerometer-Replay Result", "",
         f"status: `{status}`", f"decision: `{decision}`", "",
         "| tick | fixed compatible | weak | nonlinear center | rotated | tick class |",
         "|---:|---:|---:|---:|---:|---|",
@@ -396,7 +396,7 @@ def main() -> int:
         "status": status, "decision": decision,
         "aggregate": payload["aggregate_counts"], "validity": validity,
     }, sort_keys=True))
-    return 0 if status == "PASS_EXACT_MJX_ACCELEROMETER_MAP_COMPLETE" else 1
+    return 0 if status == "PASS_EAGER_MJX_ACCELEROMETER_MAP_COMPLETE" else 1
 
 
 if __name__ == "__main__":
