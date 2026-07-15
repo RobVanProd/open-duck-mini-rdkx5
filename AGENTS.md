@@ -1491,3 +1491,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   further Colab allocation, behavior evaluation, local GPU/iGPU, RDK-X5,
   runtime, or robot action is authorized. See
   `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_SAME_SESSION_HOSTED_LAUNCH_RESULT_20260715.md`.
+- 2026-07-15: The only supported successor is preregistered as a short T4
+  report-before-raise expansion diagnostic. It freezes the same restore and
+  expansion path, captures all per-z actor/critic errors, and terminates before
+  training. Wall/CU ceilings are 300 seconds/.25 units with a <=60-second live
+  rate handshake. The original 1e-7 threshold cannot be relaxed. A zero-session
+  package contract must pass first, then a new explicit approval is required;
+  the prior approval is consumed. No diagnostic allocation, PPO, behavior
+  evaluation, local GPU/iGPU, RDK-X5, runtime, or robot action is authorized
+  now. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_GPU_EXPANSION_DIAGNOSTIC_PREREGISTRATION_20260715.md`.
