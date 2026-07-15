@@ -130,8 +130,10 @@ Decision: `GENERAL_JIT_FORWARD_DISCREPANCY_OR_UNRESOLVED`. The next evidence
 boundary is now preregistered as an eager, default-off exact-map correction.
 Only the diagnostic runner's JIT wrapper may be removed; the original 36-run/
 144-cell corpus, validity anchor, classes, and decision thresholds are frozen.
-The zero-formal-cell byte-identity contract is next. No actor counterfactual,
-training, or hardware action is authorized.
+The zero-formal-cell contract passes: the complete default-off trace is
+field-for-field and byte-for-byte identical and contains zero map fields. The
+corrected 36-run/144-cell CPU reporting replay is next. No actor
+counterfactual, training, or hardware action is authorized.
 ```
 
 Robotics operating model:

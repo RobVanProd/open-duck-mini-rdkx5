@@ -1336,3 +1336,10 @@ Do not proceed to grounded walking until low-risk gates pass.
   A zero-formal-cell, byte-identical default-off contract must pass first. No
   actor counterfactual, training, or hardware action is authorized. See
   `outputs/analysis/GROUND_UP_TORSO_COM_EAGER_MJX_ACCELEROMETER_REPLAY_PREREGISTRATION_20260715.md`.
+- 2026-07-15: The eager-MJX replay zero-formal-cell contract passes all frozen
+  source, one-line correction, guard, branch, corpus, and CPU checks. Its
+  complete 600-tick default-off trace is field-for-field and byte-for-byte
+  identical to the frozen prior trace, contains zero map fields, and executes
+  zero formal COM cells. Only the corrected 36-run/144-cell reporting replay
+  is authorized. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_EAGER_MJX_ACCELEROMETER_REPLAY_CONTRACT_20260715.md`.
