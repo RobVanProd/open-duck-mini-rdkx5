@@ -1116,3 +1116,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   forks may follow only if all behavior fields reproduce. No training, Colab,
   GPU/iGPU, RDK-X5, robot, deployment, torque, or motors are authorized. See
   `outputs/analysis/GROUND_UP_TORSO_COM_FULL_OBSERVATION_REPLAY_SENSITIVITY_CONTRACT_20260715.md`.
+- 2026-07-15: The exact reporting replay passes all 36 matrices/144 cells on
+  CPU. All 40,520 full-observation rows are finite and contiguous; every
+  non-reporting behavior and dynamics-readback field reproduces exactly. Raw
+  traces total 282,562,344 bytes and have canonical manifest SHA-256
+  `7d7ccbe3...9c9f01`. Before any analysis outcome, the oversized primal ridge
+  solve was mechanically replaced by its algebraically identical dual form
+  when features exceed samples; fixed scores agree within 2.14e-14 and a new
+  zero-behavior-cell contract freezes the corrected analysis hash. Only the
+  preregistered decode and actor forks are authorized next. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_FULL_OBSERVATION_REPLAY_RESULT_20260715.md`
+  and
+  `outputs/analysis/GROUND_UP_TORSO_COM_FULL_OBSERVATION_ANALYSIS_IMPLEMENTATION_CORRECTION_20260715.md`.

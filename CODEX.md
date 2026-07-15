@@ -31,13 +31,14 @@ memory, estimator, explicit-COM, or range-narrowing family is selected.
 
 That CPU-only study is now frozen in
 `GROUND_UP_TORSO_COM_FULL_OBSERVATION_REPLAY_SENSITIVITY_PREREGISTRATION_20260715.md`.
-Its exact-source/device/graph/replay contract now passes with all 15 checks
-green and zero behavior cells executed. The next step is the one frozen
-reporting-only 144-cell replay with full observations, followed only on exact
-behavior reproduction by the
-descriptive instantaneous/local-window decode, and identical-state actor forks
-that change only obs[3:6]. Do not run sensitivity if replay reproduction fails,
-and do not run training, tuning, Colab, GPU/iGPU, RDK-X5, runtime, or robot work.
+Its exact-source/device/graph/replay contract passes, and the reporting-only
+replay now reproduces all 36 matrices/144 cells exactly with 40,520 full 115-D
+rows. Before analysis outcomes, the oversized primal window solve was replaced
+by its algebraically identical dual form when features exceed samples; fixed
+scores agree within 2.14e-14 and the corrected tool is re-contracted. The next
+step is the frozen descriptive instantaneous/local-window decode and
+identical-state obs[3:6] actor forks. Do not run training, tuning, Colab,
+GPU/iGPU, RDK-X5, runtime, or robot work.
 ```
 
 Robotics operating model:

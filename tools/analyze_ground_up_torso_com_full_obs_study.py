@@ -63,12 +63,49 @@ def ridge_scores(x_train: np.ndarray, x_test: np.ndarray, labels: np.ndarray) ->
     mean = np.mean(x_train, axis=0)
     std = np.std(x_train, axis=0)
     std = np.where(std == 0.0, 1.0, std)
-    train = np.column_stack([(x_train - mean) / std, np.ones(x_train.shape[0])])
-    test = np.column_stack([(x_test - mean) / std, np.ones(x_test.shape[0])])
-    reg = np.eye(train.shape[1])
-    reg[-1, -1] = 0.0
-    projection = np.linalg.solve(train.T @ train + reg, train.T)
-    return test @ projection @ np.eye(3)[labels]
+    train = (x_train - mean) / std
+    test = (x_test - mean) / std
+    targets = np.eye(3)[labels]
+    # The unpenalized bias is the training target mean because standardized
+    # training features have zero mean. Use the algebraically identical dual
+    # ridge solve when a flattened window has more features than samples.
+    intercept = np.mean(targets, axis=0, keepdims=True)
+    centered_targets = targets - intercept
+    if train.shape[1] <= train.shape[0]:
+        weights = np.linalg.solve(
+            train.T @ train + np.eye(train.shape[1]),
+            train.T @ centered_targets,
+        )
+        return test @ weights + intercept
+    dual = np.linalg.solve(
+        train @ train.T + np.eye(train.shape[0]),
+        centered_targets,
+    )
+    return test @ train.T @ dual + intercept
+
+
+def ridge_solver_equivalence_contract() -> float:
+    rng = np.random.default_rng(167931544)
+    maximum = 0.0
+    for rows, features in ((24, 5), (12, 30), (48, 115)):
+        train = rng.normal(size=(rows, features))
+        test = rng.normal(size=(9, features))
+        labels = np.arange(rows) % 3
+        mean, std = np.mean(train, axis=0), np.std(train, axis=0)
+        std = np.where(std == 0.0, 1.0, std)
+        standardized = (train - mean) / std
+        test_standardized = (test - mean) / std
+        augmented = np.column_stack([standardized, np.ones(rows)])
+        test_augmented = np.column_stack([test_standardized, np.ones(test.shape[0])])
+        regularizer = np.eye(features + 1)
+        regularizer[-1, -1] = 0.0
+        primal = test_augmented @ np.linalg.solve(
+            augmented.T @ augmented + regularizer,
+            augmented.T @ np.eye(3)[labels],
+        )
+        selected = ridge_scores(train, test, labels)
+        maximum = max(maximum, float(np.max(np.abs(primal - selected))))
+    return maximum
 
 
 def folds(samples: list[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -348,6 +385,9 @@ def main() -> int:
     replay = json.loads(args.replay_manifest.read_text())
     if replay.get("status") != "PASS_EXACT_FULL_OBSERVATION_REPLAY":
         raise RuntimeError("passing exact replay required")
+    solver_error = ridge_solver_equivalence_contract()
+    if solver_error > 1e-10:
+        raise RuntimeError(f"primal/dual ridge equivalence failed: {solver_error}")
     samples = load_samples(replay)
     decoded = decode(samples)
     actor = sensitivity(samples)
@@ -362,7 +402,7 @@ def main() -> int:
             "contract_sha256": sha256(args.contract),
             "replay_manifest_sha256": sha256(args.replay_manifest),
         },
-        "execution": {"cpu_only": True, "training": False, "robot_or_rdk": False, "p_value": None},
+        "execution": {"cpu_only": True, "training": False, "robot_or_rdk": False, "p_value": None, "ridge_primal_dual_max_error": solver_error},
         "authority": {"next_preregistration_only": True, "training": False, "gpu_or_igpu": False, "robot_or_rdk": False},
     }
     args.output_json.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
