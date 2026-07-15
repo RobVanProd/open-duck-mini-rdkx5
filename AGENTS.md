@@ -1279,3 +1279,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   No actor fork, training, Colab, GPU/iGPU, RDK-X5, runtime, or robot action is
   authorized. See
   `outputs/analysis/GROUND_UP_TORSO_COM_EXACT_MJX_ACCELEROMETER_REPLAY_RESULT_20260715.md`.
+- 2026-07-15: A deterministic seven-variant MJX initialization-order audit is
+  preregistered before any new endpoint sensor read. It freezes the exact
+  nominal/NEG/POS tick-zero trace oracle and compares fresh COM-model init,
+  unchanged live forward, isolated qacc-warmstart reset, isolated fresh
+  `_impl`, their combination, and two fresh-primary-copy variants. The 1e-3
+  endpoint tolerance and first-match causal decision are frozen. This is a
+  single-state methods audit only; a zero-outcome contract must pass first. No
+  dynamic step, actor/policy call, training, Colab, GPU/iGPU, RDK-X5, runtime,
+  or robot action is authorized. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_MJX_INITIALIZATION_ORDER_AUDIT_PREREGISTRATION_20260715.md`.
