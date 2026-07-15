@@ -23,6 +23,7 @@ SESSION = "open-duck-reset-estimator-t4"
 ACCELERATOR = "T4"
 MAX_SESSION_SECONDS = 2_400.0
 MAX_COMPUTE_UNITS = 2.0
+STOP_RESERVE_SECONDS = 120.0
 REMOTE_ROOT = Path("/content")
 REMOTE_MANIFEST = REMOTE_ROOT / "GROUND_UP_RESET_COM_ESTIMATOR_TRAINING_manifest.json"
 REMOTE_ARTIFACT = REMOTE_ROOT / "GROUND_UP_RESET_COM_ESTIMATOR_TRAINING_artifacts.tar.gz"
@@ -149,10 +150,10 @@ def remaining_seconds(started: float) -> float:
     return MAX_SESSION_SECONDS - (time.monotonic() - started)
 
 
-def require_remaining(started: float, label: str) -> float:
-    remaining = remaining_seconds(started)
+def require_work_remaining(started: float, label: str) -> float:
+    remaining = remaining_seconds(started) - STOP_RESERVE_SECONDS
     if remaining <= 0.0:
-        raise TimeoutError(f"session wall ceiling reached before {label}")
+        raise TimeoutError(f"stop reserve reached before {label}")
     return remaining
 
 
@@ -196,6 +197,7 @@ def build_plan(assets: Path, recovery: Path, colab: str, job: Any) -> dict[str, 
         "accelerator": ACCELERATOR,
         "maximum_session_seconds": MAX_SESSION_SECONDS,
         "maximum_compute_units": MAX_COMPUTE_UNITS,
+        "stop_reserve_seconds": STOP_RESERVE_SECONDS,
         "job": {"path": str(JOB), "sha256": sha256(JOB)},
         "uploads": uploads,
         "commands": commands,
@@ -281,11 +283,15 @@ def launch(
     manifest_tmp = manifest_final.with_suffix(manifest_final.suffix + ".tmp")
     artifact_tmp = artifact_final.with_suffix(artifact_final.suffix + ".tmp")
     try:
-        new_result = command_result(plan["commands"]["new"], timeout=120)
-        record["commands"].append(new_result)
         session_created = True
+        new_result = command_result(
+            plan["commands"]["new"],
+            timeout=min(120.0, require_work_remaining(session_started, "allocation")),
+        )
+        record["commands"].append(new_result)
         status_result = command_result(
-            plan["commands"]["status"], timeout=min(60.0, require_remaining(session_started, "status"))
+            plan["commands"]["status"],
+            timeout=min(60.0, require_work_remaining(session_started, "status")),
         )
         record["commands"].append(status_result)
         rate = parse_rate(status_result["stdout"])
@@ -299,22 +305,24 @@ def launch(
         for upload_command in plan["commands"]["uploads"]:
             result = command_result(
                 upload_command,
-                timeout=require_remaining(session_started, "asset upload"),
+                timeout=require_work_remaining(session_started, "asset upload"),
             )
             record["commands"].append(result)
-        exec_timeout = max(1.0, require_remaining(session_started, "hosted execution"))
+        exec_timeout = max(
+            1.0, require_work_remaining(session_started, "hosted execution")
+        )
         exec_command = [
             colab, "exec", "--session", SESSION, "--file", str(JOB.resolve()),
             "--timeout", f"{exec_timeout:.3f}",
         ]
-        exec_result = command_result(exec_command, timeout=exec_timeout + 30.0)
+        exec_result = command_result(exec_command, timeout=exec_timeout)
         record["commands"].append(exec_result)
         remote_result = extract_remote_result(exec_result["stdout"])
         record["remote_result"] = remote_result
         for download_command in plan["commands"]["downloads"]:
             result = command_result(
                 download_command,
-                timeout=require_remaining(session_started, "artifact download"),
+                timeout=require_work_remaining(session_started, "artifact download"),
             )
             record["commands"].append(result)
         verification = verify_downloads(manifest_tmp, artifact_tmp, remote_result, job)
@@ -328,13 +336,30 @@ def launch(
         raise
     finally:
         if session_created:
-            record["session_stop"] = command_result(
-                plan["commands"]["stop"], timeout=120, check=False
-            )
+            stop_timeout = max(1.0, min(120.0, max(1.0, remaining_seconds(session_started))))
+            try:
+                record["session_stop"] = command_result(
+                    plan["commands"]["stop"], timeout=stop_timeout, check=False
+                )
+            except Exception as stop_error:
+                record["session_stop"] = {
+                    "command": plan["commands"]["stop"],
+                    "returncode": None,
+                    "error": repr(stop_error),
+                }
         record["session_elapsed_seconds"] = time.monotonic() - session_started
-        record["session_wall_within_ceiling_before_stop"] = (
+        record["session_wall_within_ceiling"] = (
             record["session_elapsed_seconds"] <= MAX_SESSION_SECONDS
         )
+        stop_passed = (
+            isinstance(record["session_stop"], dict)
+            and record["session_stop"].get("returncode") == 0
+        )
+        record["session_stop_passed"] = stop_passed
+        if record["status"] == "PASS_HOSTED_ARTIFACTS_RECOVERED" and (
+            not stop_passed or not record["session_wall_within_ceiling"]
+        ):
+            record["status"] = "FAIL_HOSTED_CLEANUP_OR_SESSION_CEILING"
         record_path = Path(plan["recovery"]["launch_record"])
         if not record_path.exists() and not record_path.with_suffix(record_path.suffix + ".tmp").exists():
             write_json_atomic(record_path, record)
@@ -383,7 +408,7 @@ def main() -> int:
         "manifest": plan["recovery"]["manifest"],
         "artifact": plan["recovery"]["artifact"],
     }, sort_keys=True))
-    return 0
+    return 0 if record["status"] == "PASS_HOSTED_ARTIFACTS_RECOVERED" else 1
 
 
 if __name__ == "__main__":

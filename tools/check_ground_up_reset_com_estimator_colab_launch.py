@@ -22,11 +22,13 @@ LAUNCHER = REPO / "tools/launch_ground_up_reset_com_estimator_colab.py"
 JOB = REPO / "tools/colab_ground_up_reset_com_estimator_training.py"
 PREREG = REPO / "outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_HOSTED_LAUNCH_PREREGISTRATION_20260715.md"
 HOSTED_PACKAGE = REPO / "outputs/analysis/ground_up_reset_com_estimator_hosted_package_contract.json"
+CORRECTION = REPO / "outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_LAUNCH_CLEANUP_CORRECTION_PREREGISTRATION_20260715.md"
 EXPECTED_HASHES = {
-    "launcher": "0d6811855048131115e98715beffe6266570bf749ea965a797a647c97a2ea7bd",
+    "launcher": "28ac8fa42ec2959e5020efa5a0880e8fa80039c6022dc7eb55fc95e65c2c0299",
     "job": "a3e5fc38994cecd65d89fdc6b9ede23c2433e917b84583dfcced42c161e79d67",
     "prereg": "1d0e7c47cb44b13a177d9c836c1b6936579bcd29e69f1382e3fdedb0a4768d9f",
     "hosted_package": "96144a54c880a18e83e459a83e0eed771b1bc9bb55c8f147e7efc725cf4fc9c4",
+    "cleanup_correction": "5a1f7a71a586a10b8199cbf0b4cb2aadb315d9502e98be23059d48097fd8fa5b",
 }
 
 
@@ -65,6 +67,7 @@ def main() -> int:
     actual_hashes = {
         "launcher": sha256(LAUNCHER), "job": sha256(JOB),
         "prereg": sha256(PREREG), "hosted_package": sha256(HOSTED_PACKAGE),
+        "cleanup_correction": sha256(CORRECTION),
     }
     package = json.loads(HOSTED_PACKAGE.read_text())
     launcher = load_launcher()
@@ -123,6 +126,8 @@ def main() -> int:
         and plan["accelerator"] == "T4"
         and plan["maximum_session_seconds"] == 2400.0
         and plan["maximum_compute_units"] == 2.0,
+        "stop_reserve_exact": plan["stop_reserve_seconds"] == 120.0
+        and launcher.STOP_RESERVE_SECONDS == 120.0,
         "new_status_stop_commands_exact": plan["commands"]["new"]
         == ["colab", "new", "--session", "open-duck-reset-estimator-t4", "--gpu", "T4"]
         and plan["commands"]["status"]
@@ -149,9 +154,23 @@ def main() -> int:
         "rate_projection_boundary_operational": abs(projected_107 - 0.7133333333333334) < 1e-12
         and projected_107 <= 2.0 and projected_31 > 2.0
         and "if projected_units > MAX_COMPUTE_UNITS:" in source,
-        "remaining_time_exec_and_named_cleanup_present": "require_remaining(session_started, \"hosted execution\")"
-        in source and 'colab, "stop", "--session", SESSION' in source
-        and "finally:" in source,
+        "cleanup_required_before_allocation_call": source.index("session_created = True")
+        < source.index("new_result = command_result("),
+        "stop_reserve_applies_to_all_work": all(
+            fragment in source
+            for fragment in (
+                'require_work_remaining(session_started, "allocation")',
+                'require_work_remaining(session_started, "status")',
+                'require_work_remaining(session_started, "asset upload")',
+                'require_work_remaining(session_started, "hosted execution")',
+                'require_work_remaining(session_started, "artifact download")',
+            )
+        ),
+        "remaining_time_exec_and_named_cleanup_present": 'colab, "stop", "--session", SESSION'
+        in source and "finally:" in source,
+        "pass_requires_stop_and_total_wall": 'record["session_stop_passed"] = stop_passed'
+        in source and 'not stop_passed or not record["session_wall_within_ceiling"]'
+        in source and '"FAIL_HOSTED_CLEANUP_OR_SESSION_CEILING"' in source,
         "no_retry_or_session_reuse_surface": "--resume" not in source
         and "--adopt" not in source and "colab run" not in source,
         "atomic_recovery_present": "manifest_tmp.replace(manifest_final)" in source
