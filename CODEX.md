@@ -46,12 +46,15 @@ are .07206-.12575 normalized action and baseline replay error is exactly zero.
 
 This rejects near-zero accelerometer sensitivity but does not establish whether
 the response sign is stabilizing or destabilizing. The read-only CPU signed
-causal-response study is now preregistered: 144 nominal moving-state cells
-compare eight-tick physical COM +/- trajectories against actor obs[3:6] +/-
-trajectories from identical states. The next step is its reconstruction and
-branch-isolation contract only. Do not run formal forks or start objective,
-optimizer, memory, estimator, explicit-COM, range-change, training, tuning,
-Colab, GPU/iGPU, RDK-X5, runtime, or robot work before that contract passes.
+causal-response study is preregistered: 144 nominal moving-state cells compare
+eight-tick physical COM +/- trajectories against actor obs[3:6] +/- trajectories
+from identical states. Its pre-outcome contract now passes every check with zero
+formal cells: all six CPU ONNX graphs, recurrent state, the fitted actuator
+queue, saved sent/applied targets, exact matched-branch identity, and body-2-only
+COM mutation are verified. The next step is the exact frozen 144-cell run. Do
+not change the study or start objective, optimizer, memory, estimator,
+explicit-COM, range-change, training, tuning, Colab, GPU/iGPU, RDK-X5, runtime,
+or robot work.
 ```
 
 Robotics operating model:

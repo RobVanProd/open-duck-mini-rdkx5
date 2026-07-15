@@ -1152,3 +1152,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   No formal fork, training, Colab, GPU/iGPU, RDK-X5, or robot action is yet
   authorized. See
   `outputs/analysis/GROUND_UP_TORSO_COM_SIGNED_CAUSAL_RESPONSE_PREREGISTRATION_20260715.md`.
+- 2026-07-15: The signed causal-response pre-outcome contract passes every
+  check with zero formal cells executed. It locks 36 exact nominal moving
+  traces, all six CPU ONNX graphs, recurrent reconstruction, the fitted
+  actuator queue, saved sent/applied targets, exact matched-branch identity,
+  and a `trunk_assembly` body-2 X-COM-only mutation. Maximum baseline error is
+  zero, matched-branch error is zero, and the maximum bridge/target error is
+  5.15e-08 rad. The exact contracted tool may now run the frozen 144 cells;
+  no other study, training, Colab, GPU/iGPU, RDK-X5, runtime, or robot action
+  is authorized. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_SIGNED_CAUSAL_RESPONSE_CONTRACT_20260715.md`.
