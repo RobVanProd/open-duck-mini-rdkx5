@@ -1223,3 +1223,12 @@ Do not proceed to grounded walking until low-risk gates pass.
   before physical COM sensor readback. No actor fork, dynamic step, training,
   Colab, GPU/iGPU, RDK-X5, runtime, or robot action is authorized. See
   `outputs/analysis/GROUND_UP_TORSO_COM_MATCHED_ACCELEROMETER_MAP_PREREGISTRATION_20260715.md`.
+- 2026-07-15: The matched accelerometer-map pre-outcome contract passes every
+  check with zero formal sensor cells, zero dynamic steps, and zero actor calls.
+  It locks the exact 36 traces/144 states, CPU-only device, name-resolved
+  three-axis `accelerometer` at address 6 on `imu`, finite state schemas, and
+  body-2 X-only COM mutations. The exact tool may now read the frozen static
+  sensor map, subject to preregistered 1e-3 m/s^2 nominal-readback and tick-zero
+  direction validity gates. No actor fork, dynamic step, training, Colab,
+  GPU/iGPU, RDK-X5, runtime, or robot action is authorized. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_MATCHED_ACCELEROMETER_MAP_CONTRACT_20260715.md`.
