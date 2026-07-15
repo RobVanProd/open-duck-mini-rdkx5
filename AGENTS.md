@@ -1054,3 +1054,14 @@ Do not proceed to grounded walking until low-risk gates pass.
   needed. This authorizes only the preregistered CPU behavior matrices. No arm
   is selected, and local GPU, RDK-X5, and robot access remain unauthorized. See
   `outputs/analysis/GROUND_UP_TORSO_COM_EVAL_POLICY_TRANSFORM_CONTRACT_20260715.md`.
+- 2026-07-15: The frozen torso-COM remediation behavior evaluation is complete.
+  All 144 requested cells are present on CPU with exact evaluator configuration,
+  contracted policy path/hash, and per-run dynamics readback. All 12 nominal
+  matrices pass. All 12 corrected `TORSO_COM_X_NEG` matrices and all 12
+  symmetric `TORSO_COM_X_POS` matrices fail; every arm therefore passes only
+  4/12 matrices and 20/48 cells. No arm advances and no closest arm is promoted.
+  Decision: `CLOSE_EXACT_TARGETED_COM_FORMULATION_NO_WINNER`. This exact
+  formulation is closed. R2 resumption, R3+, training, Colab, runtime design,
+  local GPU/iGPU, RDK-X5, and robot access remain unauthorized; any next
+  hypothesis requires a separate preregistration. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_REMEDIATION_BEHAVIOR_DECISION_20260715.md`.
