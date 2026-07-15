@@ -81,8 +81,8 @@
     <section class="hero">
       <div class="card">
         <div class="label">Current operation</div>
-        <div class="big amber" id="operation">Exact MJX contract passed · 36-run replay next</div>
-        <div class="metric" id="operation-detail">Default-off instrumentation reproduces a full 600-tick prior trace byte-for-byte with zero map fields. The guarded COM branches use mjx.forward only. The frozen 12-matrix/36-run/144-cell replay is authorized.</div>
+        <div class="big red" id="operation">Exact MJX map invalid at anchor · initialization audit required</div>
+        <div class="metric" id="operation-detail">All 36 baseline traces and 21,600 rows reproduce exactly, with zero nominal observation error. But tick-zero COM direction misses the frozen anchor by .0133886 m/s² versus 1e-3, so all apparent map classes are unusable.</div>
       </div>
       <div class="card">
         <div class="label">Remediation winner</div>
@@ -190,6 +190,7 @@
           <li>The formal static map fails both readback validity gates. Reporting-only qpos/qvel/ctrl cannot reproduce the MJX actor sensor through native mj_forward; all apparent classes are invalid.</li>
           <li>The exact correction is preregistered: default-off append-only evaluator instrumentation, exact baseline replay, and live MJX state/model forwarding at four ticks.</li>
           <li>The pre-outcome contract passes: a complete default-off trace is byte-identical to its prior hash, and zero formal COM cells were read.</li>
+          <li>The full 36-run replay preserves all 21,600 baseline rows exactly, but fails the uniform tick-zero direction anchor. This localizes the method issue to COM model/data initialization ordering.</li>
         </ol>
       </div>
       <div class="card">
@@ -269,7 +270,8 @@
           <li>Next boundary: separately preregister exact CPU MJX replay/state cloning; do not relax tolerance or interpret invalid cell classes.</li>
           <li>Preregistered: exact 12-matrix/36-run CPU MJX sensor replay with baseline field identity and no dynamic COM branch.</li>
           <li>Completed: pass the append-only instrumentation/default-off contract with exact 600-tick trace identity.</li>
-          <li>Next boundary: run the frozen 12-matrix/36-run/144-cell exact MJX sensor replay.</li>
+          <li>Stopped invalid: all baseline rows are exact, but the tick-zero direction error .0133886 m/s² exceeds the frozen 1e-3 tolerance.</li>
+          <li>Next boundary: separately preregister a read-only MJX COM model/data initialization-order audit; do not interpret invalid classes.</li>
         </ol>
       </div>
     </section>
@@ -282,7 +284,7 @@
     </section>
 
     <footer>
-      <span id="updated">Evidence snapshot: 2026-07-15 · exact MJX sensor replay contract passed</span>
+      <span id="updated">Evidence snapshot: 2026-07-15 · exact MJX map invalid at anchor</span>
       <span>branch <code>codex/live-oracle-dagger-phase-student</code> · live evidence is repository-backed</span>
     </footer>
   </main>

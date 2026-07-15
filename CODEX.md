@@ -101,6 +101,19 @@ map fields; all new code is guarded and COM branches are `mjx.forward`-only.
 Post-instrumentation evaluator and study hashes are locked. The next boundary
 is the exact 12-matrix/36-run/144-cell formal replay. No outcome-dependent code
 or threshold change is permitted.
+
+The full exact-MJX replay is complete but invalid under its frozen anchor.
+Baseline evidence is exact—36 traces/21,600 rows have zero stripped-field
+mismatches and nominal actor observation error is zero—but every tick-zero COM
+half-direction misses frozen `d` by .0133886 m/s^2 versus the 1e-3 tolerance.
+No apparent map class may be used.
+
+This rules out native-engine mismatch, reporting-state indexing, and baseline
+instrumentation as explanations. The remaining discrepancy is between live
+nominal MJX data forwarded under a replaced COM model and MJX data initialized
+under that COM model. A separate read-only initialization-order audit is the
+next evidence boundary; do not relax the anchor, interpret invalid classes, or
+start actor, training, Colab, GPU/iGPU, RDK-X5, runtime, or robot work.
 ```
 
 Robotics operating model:

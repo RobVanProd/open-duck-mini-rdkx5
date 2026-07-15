@@ -1265,3 +1265,17 @@ Do not proceed to grounded walking until low-risk gates pass.
   training, Colab, GPU/iGPU, RDK-X5, runtime, or robot action is authorized.
   See
   `outputs/analysis/GROUND_UP_TORSO_COM_EXACT_MJX_ACCELEROMETER_REPLAY_CONTRACT_20260715.md`.
+- 2026-07-15: The exact 36-run MJX replay completes but is
+  `INVALID_EXACT_MJX_ACCELEROMETER_REPLAY`. Its baseline instrumentation is
+  proven exact: all 21,600 trace rows reproduce with zero mismatches after
+  stripping the append-only field, and nominal actor accelerometer error is
+  zero. However, all 36 tick-zero COM half-directions miss frozen `d` by
+  .0133886 m/s^2, above the frozen 1e-3 tolerance. Therefore none of the 144
+  apparent classes is interpretable or selectable. Do not relax tolerance or
+  use the closest table. The discrepancy is now localized to live nominal
+  `state.data` forwarded under a replaced COM model versus data initialized
+  under that COM model; the responsible initialization field is unproven. Only
+  a separately preregistered read-only initialization-order audit may follow.
+  No actor fork, training, Colab, GPU/iGPU, RDK-X5, runtime, or robot action is
+  authorized. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_EXACT_MJX_ACCELEROMETER_REPLAY_RESULT_20260715.md`.
