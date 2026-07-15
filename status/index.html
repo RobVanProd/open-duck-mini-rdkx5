@@ -81,8 +81,8 @@
     <section class="hero">
       <div class="card">
         <div class="label">Current operation</div>
-        <div class="big amber" id="operation">Same-session rate handshake contracted · launch approved</div>
-        <div class="metric" id="operation-detail">Idle Colab reports 0/hour, so the corrected launcher now requests only rate and available units after T4 identity and before any upload/training. All 20 checks pass; timeout or an over-2.0-CU projection stops cleanly.</div>
+        <div class="big amber" id="operation">Hosted expansion gate failed before PPO · no retry</div>
+        <div class="metric" id="operation-detail">The live 1.07/hour handshake and all 19 uploads passed. Hosted checkpoint expansion failed only step-zero output equivalence; the magnitude was not recovered. Cleanup passed, zero training steps, zero active sessions.</div>
       </div>
       <div class="card">
         <div class="label">Remediation winner</div>
@@ -92,7 +92,7 @@
       <div class="card">
         <div class="label">Compute</div>
         <div class="big">0 active sessions</div>
-        <div class="metric">The approved reset-estimator launch stopped after 14.39 seconds before upload/training. Consumption is unknown because the required rate field was absent; no value is inferred.</div>
+        <div class="metric">Latest T4 session stopped after 184.65 seconds. At the attested 1.07/hour rate, elapsed wall projects to .0549 units; this is not claimed as exact billing.</div>
       </div>
     </section>
 
@@ -212,6 +212,8 @@
           <li>The one approved live launch stopped at its rate check: session status omitted the required usage rate. Cleanup passed; no uploads or PPO steps occurred, and no session remains active.</li>
           <li>The CLI causal audit proves version 0.6.0 has no rate/balance output surface. A fresh operator-attestation correction is preregistered and passes all 20 zero-session checks.</li>
           <li>The corrected launcher rejects stale, future, missing, nonfinite, underfunded, and over-2.0-CU inputs before allocation while preserving all 19 assets and lifecycle gates.</li>
+          <li>The idle 0/hour reading falsified pre-allocation rate acquisition; the same-session handshake then passed all 20 checks and accepted the live 1.07/hour reading.</li>
+          <li>The approved launch uploaded all 19 assets but failed before PPO at hosted step-zero output equivalence. Error magnitude was not recovered; zero training steps.</li>
         </ol>
       </div>
       <div class="card">
@@ -318,7 +320,9 @@
           <li>Completed: freeze and contract the exact T4 CLI lifecycle, rate projection, 19 uploads, remaining-time execution, cleanup, and atomic recovery.</li>
           <li>Closed: the frozen no-retry rule ended the failed launch and required a separate launch-method correction before any further allocation.</li>
           <li>Completed: preregister, implement, and pass the 20-check rate-attestation correction without opening a session.</li>
-          <li>Current boundary: obtain a fresh Resources-UI rate, available balance, timezone-aware timestamp, and new explicit approval before one corrected launch.</li>
+          <li>Completed: same-session rate handshake passed, live 1.07/hour evidence validated, and all 19 assets uploaded.</li>
+          <li>Completed negative: hosted checkpoint expansion failed step-zero output equivalence before PPO; cleanup passed and no session remains.</li>
+          <li>Current boundary: separately preregister a report-before-raise GPU expansion diagnostic; do not retry or relax 1e-7.</li>
         </ol>
       </div>
     </section>
@@ -331,7 +335,7 @@
     </section>
 
     <footer>
-      <span id="updated">Evidence snapshot: 2026-07-15 · same-session rate handshake passes; one launch approved</span>
+      <span id="updated">Evidence snapshot: 2026-07-15 · hosted expansion failed before PPO; no retry</span>
       <span>branch <code>codex/live-oracle-dagger-phase-student</code> · live evidence is repository-backed</span>
     </footer>
   </main>

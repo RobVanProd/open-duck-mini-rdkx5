@@ -1477,3 +1477,17 @@ Do not proceed to grounded walking until low-risk gates pass.
   evaluation, local GPU/iGPU, RDK-X5, runtime, or robot action is authorized.
   See
   `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_SAME_SESSION_RATE_HANDSHAKE_CONTRACT_20260715.md`.
+- 2026-07-15: The approved interactive launch used a valid live 1.07/hour,
+  79.36-unit attestation and uploaded all 19 assets, but stopped before PPO at
+  the hosted checkpoint-expansion gate. The sole reported failure is
+  `step_zero_outputs_exact` against the frozen 1e-7 ceiling. The detailed
+  remote report was not in the failed-job recovery set, so the error magnitude
+  is unknown and must not be inferred or used to relax tolerance. Training
+  processes/steps are zero. Named cleanup passed after 184.648470 seconds and
+  no session remains; elapsed wall projects to .0548816 units at the attested
+  rate, not an exact billing claim. Decision:
+  `STOP_NO_RETRY_HOSTED_GPU_EXPANSION_EQUIVALENCE_FAILED`. Only a separately
+  preregistered report-before-raise GPU expansion diagnostic may follow. No
+  further Colab allocation, behavior evaluation, local GPU/iGPU, RDK-X5,
+  runtime, or robot action is authorized. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_SAME_SESSION_HOSTED_LAUNCH_RESULT_20260715.md`.

@@ -211,6 +211,15 @@ request, waits at most 120 seconds inside the unchanged wall/stop budgets, and
 blocks every upload/PPO step until the live UI rate and balance pass. The
 operator approved one such interactive launch; only the two live numbers are
 needed when requested.
+
+That approved launch completed the live handshake and all 19 uploads, then
+failed before PPO at hosted checkpoint expansion. The only reported failed
+check is `step_zero_outputs_exact` against 1e-7; its numeric magnitude was not
+recovered, so do not call it rounding drift or relax the gate. Training steps
+are zero. Cleanup passed after 184.648470 seconds and no session remains.
+Decision: `STOP_NO_RETRY_HOSTED_GPU_EXPANSION_EQUIVALENCE_FAILED`. The next
+evidence boundary is a separately preregistered report-before-raise GPU
+expansion diagnostic with no PPO, not a retry of this launch.
 ```
 
 Robotics operating model:
