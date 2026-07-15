@@ -1,0 +1,66 @@
+{
+  "authority": {
+    "colab": false,
+    "gpu_or_igpu": false,
+    "policy_training": false,
+    "rdk_or_robot": false,
+    "run_exact_read_only_cpu_probe_once": true,
+    "simulator_replay": false
+  },
+  "classes": [
+    "NEG",
+    "NOMINAL",
+    "POS"
+  ],
+  "decision": {
+    "instantaneous": "PASS_INSTANTANEOUS_IMU_COM_DECODE",
+    "none": "NO_STORED_IMU_PREFIX_DECODE_UNDER_FROZEN_LINEAR_PROBE",
+    "temporal": "PASS_TEMPORAL_IMU_COM_DECODE"
+  },
+  "feature": "obs0_6",
+  "folds": {
+    "arm": ["A05_DIRECT", "U05_DIRECT", "U_CURRICULUM"],
+    "command_x": [0.0, 0.074, 0.077, 0.08],
+    "fit": ["p30", "p31_34"]
+  },
+  "forbidden_features": [
+    "action",
+    "body_pitch_rad",
+    "local_linvel_m_s",
+    "actual_position_rad",
+    "applied_target_rad",
+    "foot_contacts",
+    "reward",
+    "done"
+  ],
+  "permutations": {
+    "count": 1000,
+    "matched_group": ["arm", "checkpoint", "fit", "command_x"],
+    "max_stat_over_windows": true,
+    "seed": 167931544
+  },
+  "probe": {
+    "bias": true,
+    "class_order": ["NEG", "NOMINAL", "POS"],
+    "l2": 1.0,
+    "standardization": "training_fold_only",
+    "type": "linear_ridge_one_hot"
+  },
+  "schema_version": "ground_up_torso_com_observability_decode_preregistration.v1",
+  "source": {
+    "decision_sha256": "855d1c160de979a609691204647f872f2343095579f873f6cf9eb0eefc777f1c",
+    "minimum_trace_ticks": 42,
+    "trace_bytes": 133772055,
+    "trace_count": 144,
+    "trace_manifest_sha256": "2b69f79d118c77c6dcd4f714c7ba6f45ea526b747f09de164d6cdebbcb1709f1",
+    "trace_root": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/ground_up_torso_com_behavior_eval/traces"
+  },
+  "status": "PREREGISTERED_READ_ONLY_CPU_LINEAR_DECODE",
+  "thresholds": {
+    "maximum_familywise_permutation_p": 0.01,
+    "minimum_fold_accuracy": 0.75,
+    "minimum_pooled_class_recall": 0.7,
+    "minimum_pooled_macro_f1_per_family": 0.8
+  },
+  "windows_ticks": [1, 2, 4, 8, 16, 24, 32, 40]
+}
