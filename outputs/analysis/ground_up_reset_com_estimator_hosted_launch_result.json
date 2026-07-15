@@ -1,0 +1,61 @@
+{
+  "schema_version": "ground_up_reset_estimator_hosted_launch_result.v1",
+  "status": "FAIL_HOSTED_LAUNCH_OR_RECOVERY",
+  "decision": "STOP_NO_RETRY_STATUS_RATE_UNAVAILABLE",
+  "date": "2026-07-15",
+  "arm": "RESET_EST_LATCH_U05",
+  "authority": {
+    "explicit_user_approval_received": true,
+    "single_session_authorized": true,
+    "retry_authorized": false,
+    "resume_authorized": false
+  },
+  "execution": {
+    "session_name": "open-duck-reset-estimator-t4",
+    "accelerator": "T4",
+    "session_created": true,
+    "session_count": 1,
+    "session_ready": true,
+    "uploads_started": false,
+    "training_processes_started": 0,
+    "training_steps": 0,
+    "artifacts_recovered": false,
+    "elapsed_seconds": 14.394865006000032,
+    "wall_ceiling_seconds": 2400.0,
+    "wall_ceiling_respected": true,
+    "compute_unit_ceiling": 2.0,
+    "reported_compute_rate_per_hour": null,
+    "compute_units_consumed": null,
+    "compute_usage_note": "The session-specific status response omitted a usage-rate field; no compute-unit consumption is inferred.",
+    "session_stop_returncode": 0,
+    "session_stop_passed": true,
+    "active_sessions_after_cleanup": 0
+  },
+  "failure": {
+    "stage": "POST_ALLOCATION_RATE_CHECK",
+    "message": "Colab status omitted the approximate compute-unit rate",
+    "status_stdout": "[open-duck-reset-estimator-t4] gpu-t4-s-kkb-usw1b1-3pi27hir6atch | Hardware: T4 | Variant: GPU | Status: IDLE\n",
+    "policy_behavior_evaluated": false
+  },
+  "evidence": {
+    "launch_plan": {
+      "path": "outputs/analysis/ground_up_reset_com_estimator_hosted_run_20260715/launch_plan.json",
+      "sha256": "4fc6fcee515bc99b15322248f57f82bdf042de14aac0ca50d971b9589baefa71",
+      "bytes": 22813
+    },
+    "launch_record": {
+      "path": "outputs/analysis/ground_up_reset_com_estimator_hosted_run_20260715/recovery/GROUND_UP_RESET_COM_ESTIMATOR_TRAINING_launch.json",
+      "sha256": "823c0875b280c1ebce8b9fa0dfb2acf74248e73cef5f4b17572aa92c15d8ed14",
+      "bytes": 25073
+    },
+    "launcher_sha256": "28ac8fa42ec2959e5020efa5a0880e8fa80039c6022dc7eb55fc95e65c2c0299",
+    "hosted_job_sha256": "a3e5fc38994cecd65d89fdc6b9ede23c2433e917b84583dfcced42c161e79d67"
+  },
+  "selection": {
+    "training_reward_used": false,
+    "policy_selected": false,
+    "closest_result_promoted": false,
+    "robot_clearance": false
+  },
+  "next_authority_boundary": "A separately preregistered launch-method correction is required before any further Colab allocation; this frozen no-retry launch may not be rerun."
+}

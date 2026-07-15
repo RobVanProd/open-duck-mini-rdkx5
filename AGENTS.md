@@ -1419,3 +1419,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_LAUNCH_CLEANUP_CORRECTION_PREREGISTRATION_20260715.md`
   and
   `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_COLAB_LAUNCH_CONTRACT_20260715.md`.
+- 2026-07-15: The single explicitly approved `RESET_EST_LATCH_U05` hosted
+  launch was attempted once and failed closed before upload or training. A
+  fresh T4 session reached READY, but session-specific `colab status` omitted
+  the compute-unit rate required by the frozen projection gate. The launcher
+  stopped the named session successfully after 14.394865 seconds; independent
+  inventory confirms no active sessions. Zero uploads, training processes, and
+  PPO steps occurred. Compute consumption is unknown and is not inferred from
+  the missing rate. Decision: `STOP_NO_RETRY_STATUS_RATE_UNAVAILABLE`. This is
+  a launch-method failure, not a policy result. Do not retry or resume this
+  launch. Any further allocation requires a separately preregistered method
+  correction and new explicit authorization. No behavior evaluation,
+  GPU/iGPU, RDK-X5, runtime, or robot action is authorized. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_HOSTED_LAUNCH_RESULT_20260715.md`.

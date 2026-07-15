@@ -179,6 +179,17 @@ requires successful stop inside the total wall ceiling. The dry run leaves activ
 sessions unchanged at none. Allocation is mechanically unavailable without
 `--allow-colab-allocation`, which still requires unmistakable user approval of
 the single hosted run.
+
+That single hosted launch was explicitly approved and attempted once. It
+created a fresh T4 session, but the session-specific `colab status` response
+omitted the compute-unit rate required by the frozen 2.0-CU projection gate.
+The launcher failed closed before any upload or PPO step, stopped the named
+session successfully after 14.394865 seconds, and an independent inventory
+confirmed zero active sessions. Compute-unit consumption is not inferred from
+the missing rate field. Decision: `STOP_NO_RETRY_STATUS_RATE_UNAVAILABLE`.
+This is a launch-method failure, not a policy result. The exact launch may not
+be retried or resumed; a separately preregistered launch-method correction and
+new explicit authorization are required before any further Colab allocation.
 ```
 
 Robotics operating model:

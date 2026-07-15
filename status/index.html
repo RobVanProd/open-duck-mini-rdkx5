@@ -81,8 +81,8 @@
     <section class="hero">
       <div class="card">
         <div class="label">Current operation</div>
-        <div class="big green" id="operation">Colab launch dry-run contracted · explicit approval pending</div>
-        <div class="metric" id="operation-detail">All 20 launch checks pass: fixed T4 session, 19 exact assets, total 2,400-second / 2.0-CU ceilings, 120-second stop reserve, mandatory cleanup, no retry, and atomic recovery. No active sessions.</div>
+        <div class="big amber" id="operation">Hosted launch stopped before training · no retry</div>
+        <div class="metric" id="operation-detail">The approved fresh T4 session reached READY, but its status response omitted the rate required by the frozen 2.0-CU projection gate. Fail-closed cleanup passed after 14.39 seconds; zero uploads, zero PPO steps, and zero active sessions.</div>
       </div>
       <div class="card">
         <div class="label">Remediation winner</div>
@@ -92,7 +92,7 @@
       <div class="card">
         <div class="label">Compute</div>
         <div class="big">0 active sessions</div>
-        <div class="metric">Hosted training completed in 3,272.11 seconds on the replacement run. All subsequent evaluation is local CPU-only.</div>
+        <div class="metric">The approved reset-estimator launch stopped after 14.39 seconds before upload/training. Consumption is unknown because the required rate field was absent; no value is inferred.</div>
       </div>
     </section>
 
@@ -207,8 +207,9 @@
           <li>The estimator-input arm is preregistered as one default-off coordinate at index 101, immediately before the unchanged final 14-D reference action.</li>
           <li>The CPU package contract passes: all noninserted checkpoint values and save/restore are bit-exact, new actor/critic rows are zero, and step-zero actor/critic error is exactly zero.</li>
           <li>Three reset cells independently reproduce the frozen latch at torso X-COM -.05/0/+.05 with maximum anchor error .000130 m/s²; default-off remains 115/226-D.</li>
-          <li>The single-arm hosted package passes all 17 CPU checks. GPU-topology expansion is verified algebraically on CPU, every asset/command field is frozen, and no session or training has started.</li>
+          <li>The single-arm hosted package passes all 17 CPU checks. GPU-topology expansion is verified algebraically on CPU and every asset/command field is frozen.</li>
           <li>The corrected launch dry run passes all 20 checks with zero remote bytes and zero sessions. Cleanup is armed before allocation, 120 seconds is reserved for stop, and pass requires cleanup inside the total ceiling.</li>
+          <li>The one approved live launch stopped at its rate check: session status omitted the required usage rate. Cleanup passed; no uploads or PPO steps occurred, and no session remains active.</li>
         </ol>
       </div>
       <div class="card">
@@ -302,17 +303,18 @@
           <li>Preregistered: one-line eager diagnostic runner correction; zero-formal-cell byte-identity contract next.</li>
           <li>Completed: eager correction contract passes; corrected 36-run/144-cell replay next.</li>
           <li>Completed valid: 36 runs, 21,600 exact baseline rows, 144 cells; decision supports the already-completed matched actor-response study.</li>
-          <li>Current evidence boundary: no policy family or training is selected; formulate the next preregistration from the combined weak/nonlinear mid-gait and mixed-response evidence.</li>
+          <li>That evidence boundary selected no policy family; the later reset-estimator feasibility chain supplied the next falsifiable arm.</li>
           <li>Preregistered: frozen reset-latched piecewise-linear estimator curve; zero-outcome contract next.</li>
           <li>Completed: reset-estimator contract passes; execute the frozen 11-point eager curve next.</li>
           <li>Completed valid: exact anchors, correct held-out signs/order, 1.214 mm worst error, .2797 m/s² minimum separation.</li>
           <li>Next boundary: preregister the estimator-input policy arm; no training or hardware action is authorized yet.</li>
           <li>Completed: preregister <code>RESET_EST_LATCH_U05</code> with the protected T2 recipe, fixed insertion index, normalizer state, checkpoint surgery, and unchanged future behavior gate.</li>
           <li>Completed: pass the CPU-only package contract with three resets, zero dynamic steps, zero training, and exact default-off behavior.</li>
-          <li>Next boundary: a separate hosted-training authorization and package must be frozen before any new Colab session. No training is authorized now.</li>
+          <li>Completed: freeze a separate hosted-training authorization and package before any Colab session.</li>
           <li>Completed: preregister and contract the hosted package—one 2M process, no resume/retry, 2,400-second wall and 2.0-CU ceilings.</li>
-          <li>Current boundary: explicit hosted-run authorization is required before opening the single Colab session.</li>
+          <li>Completed negative: the approved single launch reached a fresh T4 session but failed closed before upload/training because the required compute-rate field was absent.</li>
           <li>Completed: freeze and contract the exact T4 CLI lifecycle, rate projection, 19 uploads, remaining-time execution, cleanup, and atomic recovery.</li>
+          <li>Current boundary: the frozen no-retry rule closes this launch. A separate launch-method correction must be preregistered before any further allocation.</li>
         </ol>
       </div>
     </section>
@@ -325,7 +327,7 @@
     </section>
 
     <footer>
-      <span id="updated">Evidence snapshot: 2026-07-15 · Colab launch dry-run contracted; approval pending</span>
+      <span id="updated">Evidence snapshot: 2026-07-15 · approved launch failed closed before training; no retry</span>
       <span>branch <code>codex/live-oracle-dagger-phase-student</code> · live evidence is repository-backed</span>
     </footer>
   </main>
