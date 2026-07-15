@@ -1586,3 +1586,14 @@ Do not proceed to grounded walking until low-risk gates pass.
   epsilon-aware hosted expansion correction; no training, Colab, behavior,
   local GPU/iGPU, RDK-X5, runtime, or robot action is authorized. See
   `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_ACTION_DISTRIBUTION_ULP_SENSITIVITY_RESULT_20260715.md`.
+- 2026-07-15: The epsilon-aware hosted expansion correction is preregistered.
+  It preserves the original hosted source and raw failed report, and permits a
+  wrapper to continue only for the exact sole failure with all actor errors at
+  most float32 epsilon, zero critic error, exact GPU/source/ULP evidence, and
+  every other expansion check passing. A zero-session CPU contract is required
+  before one fresh no-retry T4 job under the original 2M recipe, 2,400-second
+  wall/120-second stop reserve, and `UNMEASURED` compute recording. Continuing
+  user authorization removes further billing/approval prompts but does not
+  broaden the frozen job. No local GPU/iGPU, RDK-X5, runtime, or robot action
+  is authorized. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_EPSILON_AWARE_HOSTED_EXPANSION_CORRECTION_PREREGISTRATION_20260715.md`.
