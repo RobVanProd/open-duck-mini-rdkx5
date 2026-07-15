@@ -1065,3 +1065,24 @@ Do not proceed to grounded walking until low-risk gates pass.
   local GPU/iGPU, RDK-X5, and robot access remain unauthorized; any next
   hypothesis requires a separate preregistration. See
   `outputs/analysis/GROUND_UP_TORSO_COM_REMEDIATION_BEHAVIOR_DECISION_20260715.md`.
+- 2026-07-15: A direct pre/post audit rejects missing corrected-axis exposure
+  as a sufficient causal explanation. Pre-remediation X_NEG fell at 41-47
+  ticks with mean vx down to -.410971 m/s; after 512K-2M steps of corrected
+  full-range training exposure, XNEG still falls at 42-55 ticks with mean vx
+  down to -.410235 m/s. XPOS has the opposite signed failure: all moving cells
+  reach .254248-.424365 m/s and fall, while every x=0 cell and the complete
+  nominal matrix remain stable. Tracking stays below .184 rad. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_EXPOSURE_HYPOTHESIS_AUDIT_20260715.md`.
+- 2026-07-15: The preregistered read-only CPU observability probe passes its
+  evidence contract and selects `PASS_INSTANTANEOUS_IMU_COM_DECODE`. The exact
+  tick-zero six-input gyro/accelerometer vector classifies NEG/NOMINAL/POS at
+  100% in every held-out arm, command, and actuator-fit fold; family-wise
+  permutation p is 1/1001. Raw audit shows gyro is zero and each COM class has
+  one distinct accelerometer vector repeated across all 48 traces. History is
+  not selected. Only a separately preregistered objective/exploitation study
+  is supported; no training, simulator replay, explicit COM input, range
+  narrowing, architecture change, Colab, GPU/iGPU, RDK-X5, or robot work is
+  authorized. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_OBSERVABILITY_DECODE_RESULT_20260715.md`
+  and
+  `outputs/analysis/GROUND_UP_TORSO_COM_INSTANTANEOUS_DECODE_RAW_AUDIT_20260715.md`.

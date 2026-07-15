@@ -81,8 +81,8 @@
     <section class="hero">
       <div class="card">
         <div class="label">Current operation</div>
-        <div class="big" id="operation" style="color:var(--red)">Targeted COM remediation · closed</div>
-        <div class="metric" id="operation-detail">All 144 preregistered CPU cells are complete with exact per-run model readback. Every arm passes nominal and fails both ±0.05 m COM endpoints; the formulation closes with no winner.</div>
+        <div class="big amber" id="operation">COM signal decodes instantly · exploitation gap</div>
+        <div class="metric" id="operation-detail">The exposure-only remediation is closed, but a frozen linear probe classifies −.05/0/+.05 m COM from the exact tick-zero accelerometer with 100% accuracy across every held-out arm, command, and fit. Memory is not selected.</div>
       </div>
       <div class="card">
         <div class="label">Remediation winner</div>
@@ -169,6 +169,9 @@
           <li>The targeted torso-COM training package, hosted archive, and six baked-in guard/deadband/conservative-envelope policy transforms pass their frozen contracts.</li>
           <li>All 12 remediation nominal matrices pass, but all 12 corrected X_NEG and all 12 symmetric X_POS matrices fail. Each arm passes exactly 4/12 matrices and 20/48 cells.</li>
           <li>No arm satisfies both-checkpoint persistence across every cell. The exact targeted-COM formulation is closed without ranking or promoting a closest arm.</li>
+          <li>Corrected full-range exposure reproduces the pre-remediation X_NEG reversal magnitude, falsifying missing axis exposure as a sufficient explanation. XPOS fails with the opposite signed forward runaway while nominal remains fully preserved.</li>
+          <li>The frozen CPU decode uses only saved <code>obs0_6</code> prefixes. N=1 is perfect in all nine group-held-out folds with family-wise p=1/1001.</li>
+          <li>Raw tick-zero audit finds zero gyro and one distinct accelerometer vector per COM class, repeated across all 48 arms/checkpoints/fits/commands. The information is instantaneous; history is not required.</li>
         </ol>
       </div>
       <div class="card">
@@ -229,6 +232,8 @@
           <li>Completed: run the three frozen arms sequentially on Colab, recover the final archive with exact hash, stop all sessions, and pass the local artifact contract.</li>
           <li>Completed: apply the frozen guard/deadband/envelope transforms and run all 144 preregistered CPU behavior cells on both full-range checkpoints per arm.</li>
           <li>Stopped: no arm advances. Any new hypothesis requires a separate preregistration; R2 resumption, R3+, training, runtime design, RDK-X5, and robot work remain unauthorized.</li>
+          <li>Completed: preregister, contract, and run the saved-trace COM observability decode on CPU without simulator replay or policy training.</li>
+          <li>Next boundary: separately preregister an objective/exploitation study of why the actor does not use its instantaneous accelerometer signature. Do not infer a memory arm.</li>
         </ol>
       </div>
     </section>
@@ -241,7 +246,7 @@
     </section>
 
     <footer>
-      <span id="updated">Evidence snapshot: 2026-07-15</span>
+      <span id="updated">Evidence snapshot: 2026-07-15 · instantaneous COM decode</span>
       <span>branch <code>codex/live-oracle-dagger-phase-student</code> · live evidence is repository-backed</span>
     </footer>
   </main>

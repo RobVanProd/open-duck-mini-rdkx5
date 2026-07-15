@@ -1,0 +1,2921 @@
+{
+  "authority": {
+    "colab": false,
+    "gpu_or_igpu": false,
+    "policy_training": false,
+    "rdk_or_robot": false,
+    "runtime_design": false,
+    "separate_preregistration_required": true,
+    "simulator_replay": false
+  },
+  "checks": {
+    "all_windows_pre_fall": true,
+    "class_balance_exact": true,
+    "cpu_only": true,
+    "matched_triplets_exact": true,
+    "matrix_trace_bijection_exact": true,
+    "only_obs0_6_used": true,
+    "preregistration_status_exact": true,
+    "trace_bytes_exact": true,
+    "trace_count_exact": true,
+    "trace_manifest_exact": true,
+    "training_reward_not_used": true
+  },
+  "corpus": {
+    "class_counts": {
+      "NEG": 48,
+      "NOMINAL": 48,
+      "POS": 48
+    },
+    "matrix_cells": 144,
+    "matrix_files": 36,
+    "minimum_ticks": 42,
+    "trace_bytes": 133772055,
+    "trace_files": 144,
+    "trace_manifest_sha256": "2b69f79d118c77c6dcd4f714c7ba6f45ea526b747f09de164d6cdebbcb1709f1",
+    "trace_reference_bijection": true,
+    "trace_root": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/ground_up_torso_com_behavior_eval/traces"
+  },
+  "decision": "PASS_INSTANTANEOUS_IMU_COM_DECODE",
+  "earliest_passing_window_ticks": 1,
+  "failed_checks": [],
+  "inputs": {
+    "preregistration": "/home/lsd/robots/open-duck-mini-rdkx5-com-decode/outputs/analysis/ground_up_torso_com_observability_decode_preregistration.json",
+    "preregistration_sha256": "0e09cc573a539e31c962ae927d073685c067fb39eda2f2be680a4833dd298199",
+    "source_decision": "/home/lsd/robots/open-duck-mini-rdkx5-com-decode/outputs/analysis/ground_up_torso_com_remediation_behavior_decision.json",
+    "source_decision_sha256": "855d1c160de979a609691204647f872f2343095579f873f6cf9eb0eefc777f1c"
+  },
+  "interpretation": "The exact instantaneous gyro/accelerometer input linearly decodes COM class. This supports a separately preregistered objective/exploitation study; it does not select memory.",
+  "permutation": {
+    "count": 1000,
+    "exceedances": 0,
+    "familywise_p_value": 0.000999000999000999,
+    "null_max": 0.3958333333333333,
+    "null_median": 0.3055555555555556,
+    "null_min": 0.16666666666666666,
+    "null_p95": 0.3333333333333333,
+    "observed_maximum_minimum_fold_accuracy": 1.0,
+    "seed": 167931544
+  },
+  "schema_version": "ground_up_torso_com_observability_decode_result.v1",
+  "selection_uses_training_reward": false,
+  "status": "PASS_TORSO_COM_OBSERVABILITY_DECODE_EVIDENCE",
+  "windows": {
+    "1": {
+      "checks": {
+        "familywise_permutation_p": true,
+        "minimum_fold_accuracy": true,
+        "minimum_pooled_class_recall": true,
+        "pooled_macro_f1_each_family": true
+      },
+      "families": {
+        "arm": {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              48,
+              0,
+              0
+            ],
+            [
+              0,
+              48,
+              0
+            ],
+            [
+              0,
+              0,
+              48
+            ]
+          ],
+          "macro_f1": 1.0,
+          "samples": 144
+        },
+        "command_x": {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              48,
+              0,
+              0
+            ],
+            [
+              0,
+              48,
+              0
+            ],
+            [
+              0,
+              0,
+              48
+            ]
+          ],
+          "macro_f1": 1.0,
+          "samples": 144
+        },
+        "fit": {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              48,
+              0,
+              0
+            ],
+            [
+              0,
+              48,
+              0
+            ],
+            [
+              0,
+              0,
+              48
+            ]
+          ],
+          "macro_f1": 1.0,
+          "samples": 144
+        }
+      },
+      "folds": [
+        {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              16,
+              0,
+              0
+            ],
+            [
+              0,
+              16,
+              0
+            ],
+            [
+              0,
+              0,
+              16
+            ]
+          ],
+          "family": "arm",
+          "held_out": "A05_DIRECT",
+          "macro_f1": 1.0,
+          "samples": 48
+        },
+        {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              16,
+              0,
+              0
+            ],
+            [
+              0,
+              16,
+              0
+            ],
+            [
+              0,
+              0,
+              16
+            ]
+          ],
+          "family": "arm",
+          "held_out": "U05_DIRECT",
+          "macro_f1": 1.0,
+          "samples": 48
+        },
+        {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              16,
+              0,
+              0
+            ],
+            [
+              0,
+              16,
+              0
+            ],
+            [
+              0,
+              0,
+              16
+            ]
+          ],
+          "family": "arm",
+          "held_out": "U_CURRICULUM",
+          "macro_f1": 1.0,
+          "samples": 48
+        },
+        {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              12,
+              0,
+              0
+            ],
+            [
+              0,
+              12,
+              0
+            ],
+            [
+              0,
+              0,
+              12
+            ]
+          ],
+          "family": "command_x",
+          "held_out": 0.0,
+          "macro_f1": 1.0,
+          "samples": 36
+        },
+        {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              12,
+              0,
+              0
+            ],
+            [
+              0,
+              12,
+              0
+            ],
+            [
+              0,
+              0,
+              12
+            ]
+          ],
+          "family": "command_x",
+          "held_out": 0.074,
+          "macro_f1": 1.0,
+          "samples": 36
+        },
+        {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              12,
+              0,
+              0
+            ],
+            [
+              0,
+              12,
+              0
+            ],
+            [
+              0,
+              0,
+              12
+            ]
+          ],
+          "family": "command_x",
+          "held_out": 0.077,
+          "macro_f1": 1.0,
+          "samples": 36
+        },
+        {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              12,
+              0,
+              0
+            ],
+            [
+              0,
+              12,
+              0
+            ],
+            [
+              0,
+              0,
+              12
+            ]
+          ],
+          "family": "command_x",
+          "held_out": 0.08,
+          "macro_f1": 1.0,
+          "samples": 36
+        },
+        {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              24,
+              0,
+              0
+            ],
+            [
+              0,
+              24,
+              0
+            ],
+            [
+              0,
+              0,
+              24
+            ]
+          ],
+          "family": "fit",
+          "held_out": "p30",
+          "macro_f1": 1.0,
+          "samples": 72
+        },
+        {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              24,
+              0,
+              0
+            ],
+            [
+              0,
+              24,
+              0
+            ],
+            [
+              0,
+              0,
+              24
+            ]
+          ],
+          "family": "fit",
+          "held_out": "p31_34",
+          "macro_f1": 1.0,
+          "samples": 72
+        }
+      ],
+      "minimum_fold_accuracy": 1.0,
+      "minimum_pooled_class_recall": 1.0,
+      "pass": true
+    },
+    "16": {
+      "checks": {
+        "familywise_permutation_p": true,
+        "minimum_fold_accuracy": false,
+        "minimum_pooled_class_recall": true,
+        "pooled_macro_f1_each_family": false
+      },
+      "families": {
+        "arm": {
+          "accuracy": 0.7361111111111112,
+          "class_recall": [
+            0.7291666666666666,
+            0.7291666666666666,
+            0.75
+          ],
+          "confusion": [
+            [
+              35,
+              13,
+              0
+            ],
+            [
+              4,
+              35,
+              9
+            ],
+            [
+              0,
+              12,
+              36
+            ]
+          ],
+          "macro_f1": 0.7423131325615567,
+          "samples": 144
+        },
+        "command_x": {
+          "accuracy": 0.8125,
+          "class_recall": [
+            0.75,
+            0.9791666666666666,
+            0.7083333333333334
+          ],
+          "confusion": [
+            [
+              36,
+              12,
+              0
+            ],
+            [
+              0,
+              47,
+              1
+            ],
+            [
+              0,
+              14,
+              34
+            ]
+          ],
+          "macro_f1": 0.8177598232362745,
+          "samples": 144
+        },
+        "fit": {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              48,
+              0,
+              0
+            ],
+            [
+              0,
+              48,
+              0
+            ],
+            [
+              0,
+              0,
+              48
+            ]
+          ],
+          "macro_f1": 1.0,
+          "samples": 144
+        }
+      },
+      "folds": [
+        {
+          "accuracy": 0.8333333333333334,
+          "class_recall": [
+            0.8125,
+            0.6875,
+            1.0
+          ],
+          "confusion": [
+            [
+              13,
+              3,
+              0
+            ],
+            [
+              0,
+              11,
+              5
+            ],
+            [
+              0,
+              0,
+              16
+            ]
+          ],
+          "family": "arm",
+          "held_out": "A05_DIRECT",
+          "macro_f1": 0.8315833074453765,
+          "samples": 48
+        },
+        {
+          "accuracy": 0.8333333333333334,
+          "class_recall": [
+            1.0,
+            0.5,
+            1.0
+          ],
+          "confusion": [
+            [
+              16,
+              0,
+              0
+            ],
+            [
+              4,
+              8,
+              4
+            ],
+            [
+              0,
+              0,
+              16
+            ]
+          ],
+          "family": "arm",
+          "held_out": "U05_DIRECT",
+          "macro_f1": 0.8148148148148149,
+          "samples": 48
+        },
+        {
+          "accuracy": 0.5416666666666666,
+          "class_recall": [
+            0.375,
+            1.0,
+            0.25
+          ],
+          "confusion": [
+            [
+              6,
+              10,
+              0
+            ],
+            [
+              0,
+              16,
+              0
+            ],
+            [
+              0,
+              12,
+              4
+            ]
+          ],
+          "family": "arm",
+          "held_out": "U_CURRICULUM",
+          "macro_f1": 0.5126823793490459,
+          "samples": 48
+        },
+        {
+          "accuracy": 0.3333333333333333,
+          "class_recall": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "confusion": [
+            [
+              0,
+              12,
+              0
+            ],
+            [
+              0,
+              12,
+              0
+            ],
+            [
+              0,
+              12,
+              0
+            ]
+          ],
+          "family": "command_x",
+          "held_out": 0.0,
+          "macro_f1": 0.16666666666666666,
+          "samples": 36
+        },
+        {
+          "accuracy": 0.9444444444444444,
+          "class_recall": [
+            1.0,
+            1.0,
+            0.8333333333333334
+          ],
+          "confusion": [
+            [
+              12,
+              0,
+              0
+            ],
+            [
+              0,
+              12,
+              0
+            ],
+            [
+              0,
+              2,
+              10
+            ]
+          ],
+          "family": "command_x",
+          "held_out": 0.074,
+          "macro_f1": 0.9440559440559441,
+          "samples": 36
+        },
+        {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              12,
+              0,
+              0
+            ],
+            [
+              0,
+              12,
+              0
+            ],
+            [
+              0,
+              0,
+              12
+            ]
+          ],
+          "family": "command_x",
+          "held_out": 0.077,
+          "macro_f1": 1.0,
+          "samples": 36
+        },
+        {
+          "accuracy": 0.9722222222222222,
+          "class_recall": [
+            1.0,
+            0.9166666666666666,
+            1.0
+          ],
+          "confusion": [
+            [
+              12,
+              0,
+              0
+            ],
+            [
+              0,
+              11,
+              1
+            ],
+            [
+              0,
+              0,
+              12
+            ]
+          ],
+          "family": "command_x",
+          "held_out": 0.08,
+          "macro_f1": 0.9721739130434783,
+          "samples": 36
+        },
+        {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              24,
+              0,
+              0
+            ],
+            [
+              0,
+              24,
+              0
+            ],
+            [
+              0,
+              0,
+              24
+            ]
+          ],
+          "family": "fit",
+          "held_out": "p30",
+          "macro_f1": 1.0,
+          "samples": 72
+        },
+        {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              24,
+              0,
+              0
+            ],
+            [
+              0,
+              24,
+              0
+            ],
+            [
+              0,
+              0,
+              24
+            ]
+          ],
+          "family": "fit",
+          "held_out": "p31_34",
+          "macro_f1": 1.0,
+          "samples": 72
+        }
+      ],
+      "minimum_fold_accuracy": 0.3333333333333333,
+      "minimum_pooled_class_recall": 0.7083333333333334,
+      "pass": false
+    },
+    "2": {
+      "checks": {
+        "familywise_permutation_p": true,
+        "minimum_fold_accuracy": false,
+        "minimum_pooled_class_recall": true,
+        "pooled_macro_f1_each_family": true
+      },
+      "families": {
+        "arm": {
+          "accuracy": 0.9444444444444444,
+          "class_recall": [
+            1.0,
+            0.8333333333333334,
+            1.0
+          ],
+          "confusion": [
+            [
+              48,
+              0,
+              0
+            ],
+            [
+              8,
+              40,
+              0
+            ],
+            [
+              0,
+              0,
+              48
+            ]
+          ],
+          "macro_f1": 0.9440559440559441,
+          "samples": 144
+        },
+        "command_x": {
+          "accuracy": 0.8888888888888888,
+          "class_recall": [
+            0.75,
+            0.9166666666666666,
+            1.0
+          ],
+          "confusion": [
+            [
+              36,
+              12,
+              0
+            ],
+            [
+              4,
+              44,
+              0
+            ],
+            [
+              0,
+              0,
+              48
+            ]
+          ],
+          "macro_f1": 0.888111888111888,
+          "samples": 144
+        },
+        "fit": {
+          "accuracy": 0.9583333333333334,
+          "class_recall": [
+            1.0,
+            0.875,
+            1.0
+          ],
+          "confusion": [
+            [
+              48,
+              0,
+              0
+            ],
+            [
+              6,
+              42,
+              0
+            ],
+            [
+              0,
+              0,
+              48
+            ]
+          ],
+          "macro_f1": 0.9581699346405229,
+          "samples": 144
+        }
+      },
+      "folds": [
+        {
+          "accuracy": 0.9583333333333334,
+          "class_recall": [
+            1.0,
+            0.875,
+            1.0
+          ],
+          "confusion": [
+            [
+              16,
+              0,
+              0
+            ],
+            [
+              2,
+              14,
+              0
+            ],
+            [
+              0,
+              0,
+              16
+            ]
+          ],
+          "family": "arm",
+          "held_out": "A05_DIRECT",
+          "macro_f1": 0.9581699346405229,
+          "samples": 48
+        },
+        {
+          "accuracy": 0.875,
+          "class_recall": [
+            1.0,
+            0.625,
+            1.0
+          ],
+          "confusion": [
+            [
+              16,
+              0,
+              0
+            ],
+            [
+              6,
+              10,
+              0
+            ],
+            [
+              0,
+              0,
+              16
+            ]
+          ],
+          "family": "arm",
+          "held_out": "U05_DIRECT",
+          "macro_f1": 0.8704453441295547,
+          "samples": 48
+        },
+        {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              16,
+              0,
+              0
+            ],
+            [
+              0,
+              16,
+              0
+            ],
+            [
+              0,
+              0,
+              16
+            ]
+          ],
+          "family": "arm",
+          "held_out": "U_CURRICULUM",
+          "macro_f1": 1.0,
+          "samples": 48
+        },
+        {
+          "accuracy": 0.6666666666666666,
+          "class_recall": [
+            0.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              0,
+              12,
+              0
+            ],
+            [
+              0,
+              12,
+              0
+            ],
+            [
+              0,
+              0,
+              12
+            ]
+          ],
+          "family": "command_x",
+          "held_out": 0.0,
+          "macro_f1": 0.5555555555555555,
+          "samples": 36
+        },
+        {
+          "accuracy": 0.9444444444444444,
+          "class_recall": [
+            1.0,
+            0.8333333333333334,
+            1.0
+          ],
+          "confusion": [
+            [
+              12,
+              0,
+              0
+            ],
+            [
+              2,
+              10,
+              0
+            ],
+            [
+              0,
+              0,
+              12
+            ]
+          ],
+          "family": "command_x",
+          "held_out": 0.074,
+          "macro_f1": 0.9440559440559441,
+          "samples": 36
+        },
+        {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              12,
+              0,
+              0
+            ],
+            [
+              0,
+              12,
+              0
+            ],
+            [
+              0,
+              0,
+              12
+            ]
+          ],
+          "family": "command_x",
+          "held_out": 0.077,
+          "macro_f1": 1.0,
+          "samples": 36
+        },
+        {
+          "accuracy": 0.9444444444444444,
+          "class_recall": [
+            1.0,
+            0.8333333333333334,
+            1.0
+          ],
+          "confusion": [
+            [
+              12,
+              0,
+              0
+            ],
+            [
+              2,
+              10,
+              0
+            ],
+            [
+              0,
+              0,
+              12
+            ]
+          ],
+          "family": "command_x",
+          "held_out": 0.08,
+          "macro_f1": 0.9440559440559441,
+          "samples": 36
+        },
+        {
+          "accuracy": 0.9583333333333334,
+          "class_recall": [
+            1.0,
+            0.875,
+            1.0
+          ],
+          "confusion": [
+            [
+              24,
+              0,
+              0
+            ],
+            [
+              3,
+              21,
+              0
+            ],
+            [
+              0,
+              0,
+              24
+            ]
+          ],
+          "family": "fit",
+          "held_out": "p30",
+          "macro_f1": 0.9581699346405229,
+          "samples": 72
+        },
+        {
+          "accuracy": 0.9583333333333334,
+          "class_recall": [
+            1.0,
+            0.875,
+            1.0
+          ],
+          "confusion": [
+            [
+              24,
+              0,
+              0
+            ],
+            [
+              3,
+              21,
+              0
+            ],
+            [
+              0,
+              0,
+              24
+            ]
+          ],
+          "family": "fit",
+          "held_out": "p31_34",
+          "macro_f1": 0.9581699346405229,
+          "samples": 72
+        }
+      ],
+      "minimum_fold_accuracy": 0.6666666666666666,
+      "minimum_pooled_class_recall": 0.75,
+      "pass": false
+    },
+    "24": {
+      "checks": {
+        "familywise_permutation_p": true,
+        "minimum_fold_accuracy": false,
+        "minimum_pooled_class_recall": true,
+        "pooled_macro_f1_each_family": true
+      },
+      "families": {
+        "arm": {
+          "accuracy": 0.8541666666666666,
+          "class_recall": [
+            0.9375,
+            0.75,
+            0.875
+          ],
+          "confusion": [
+            [
+              45,
+              3,
+              0
+            ],
+            [
+              0,
+              36,
+              12
+            ],
+            [
+              0,
+              6,
+              42
+            ]
+          ],
+          "macro_f1": 0.8551549652118914,
+          "samples": 144
+        },
+        "command_x": {
+          "accuracy": 0.9166666666666666,
+          "class_recall": [
+            1.0,
+            0.75,
+            1.0
+          ],
+          "confusion": [
+            [
+              48,
+              0,
+              0
+            ],
+            [
+              0,
+              36,
+              12
+            ],
+            [
+              0,
+              0,
+              48
+            ]
+          ],
+          "macro_f1": 0.9153439153439153,
+          "samples": 144
+        },
+        "fit": {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              48,
+              0,
+              0
+            ],
+            [
+              0,
+              48,
+              0
+            ],
+            [
+              0,
+              0,
+              48
+            ]
+          ],
+          "macro_f1": 1.0,
+          "samples": 144
+        }
+      },
+      "folds": [
+        {
+          "accuracy": 0.75,
+          "class_recall": [
+            1.0,
+            0.25,
+            1.0
+          ],
+          "confusion": [
+            [
+              16,
+              0,
+              0
+            ],
+            [
+              0,
+              4,
+              12
+            ],
+            [
+              0,
+              0,
+              16
+            ]
+          ],
+          "family": "arm",
+          "held_out": "A05_DIRECT",
+          "macro_f1": 0.709090909090909,
+          "samples": 48
+        },
+        {
+          "accuracy": 0.9791666666666666,
+          "class_recall": [
+            1.0,
+            1.0,
+            0.9375
+          ],
+          "confusion": [
+            [
+              16,
+              0,
+              0
+            ],
+            [
+              0,
+              16,
+              0
+            ],
+            [
+              0,
+              1,
+              15
+            ]
+          ],
+          "family": "arm",
+          "held_out": "U05_DIRECT",
+          "macro_f1": 0.9791463017269469,
+          "samples": 48
+        },
+        {
+          "accuracy": 0.8333333333333334,
+          "class_recall": [
+            0.8125,
+            1.0,
+            0.6875
+          ],
+          "confusion": [
+            [
+              13,
+              3,
+              0
+            ],
+            [
+              0,
+              16,
+              0
+            ],
+            [
+              0,
+              5,
+              11
+            ]
+          ],
+          "family": "arm",
+          "held_out": "U_CURRICULUM",
+          "macro_f1": 0.8371221796509153,
+          "samples": 48
+        },
+        {
+          "accuracy": 0.6666666666666666,
+          "class_recall": [
+            1.0,
+            0.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              12,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              12
+            ],
+            [
+              0,
+              0,
+              12
+            ]
+          ],
+          "family": "command_x",
+          "held_out": 0.0,
+          "macro_f1": 0.5555555555555555,
+          "samples": 36
+        },
+        {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              12,
+              0,
+              0
+            ],
+            [
+              0,
+              12,
+              0
+            ],
+            [
+              0,
+              0,
+              12
+            ]
+          ],
+          "family": "command_x",
+          "held_out": 0.074,
+          "macro_f1": 1.0,
+          "samples": 36
+        },
+        {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              12,
+              0,
+              0
+            ],
+            [
+              0,
+              12,
+              0
+            ],
+            [
+              0,
+              0,
+              12
+            ]
+          ],
+          "family": "command_x",
+          "held_out": 0.077,
+          "macro_f1": 1.0,
+          "samples": 36
+        },
+        {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              12,
+              0,
+              0
+            ],
+            [
+              0,
+              12,
+              0
+            ],
+            [
+              0,
+              0,
+              12
+            ]
+          ],
+          "family": "command_x",
+          "held_out": 0.08,
+          "macro_f1": 1.0,
+          "samples": 36
+        },
+        {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              24,
+              0,
+              0
+            ],
+            [
+              0,
+              24,
+              0
+            ],
+            [
+              0,
+              0,
+              24
+            ]
+          ],
+          "family": "fit",
+          "held_out": "p30",
+          "macro_f1": 1.0,
+          "samples": 72
+        },
+        {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              24,
+              0,
+              0
+            ],
+            [
+              0,
+              24,
+              0
+            ],
+            [
+              0,
+              0,
+              24
+            ]
+          ],
+          "family": "fit",
+          "held_out": "p31_34",
+          "macro_f1": 1.0,
+          "samples": 72
+        }
+      ],
+      "minimum_fold_accuracy": 0.6666666666666666,
+      "minimum_pooled_class_recall": 0.75,
+      "pass": false
+    },
+    "32": {
+      "checks": {
+        "familywise_permutation_p": true,
+        "minimum_fold_accuracy": true,
+        "minimum_pooled_class_recall": true,
+        "pooled_macro_f1_each_family": true
+      },
+      "families": {
+        "arm": {
+          "accuracy": 0.875,
+          "class_recall": [
+            1.0,
+            0.75,
+            0.875
+          ],
+          "confusion": [
+            [
+              48,
+              0,
+              0
+            ],
+            [
+              0,
+              36,
+              12
+            ],
+            [
+              0,
+              6,
+              42
+            ]
+          ],
+          "macro_f1": 0.8745098039215686,
+          "samples": 144
+        },
+        "command_x": {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              48,
+              0,
+              0
+            ],
+            [
+              0,
+              48,
+              0
+            ],
+            [
+              0,
+              0,
+              48
+            ]
+          ],
+          "macro_f1": 1.0,
+          "samples": 144
+        },
+        "fit": {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              48,
+              0,
+              0
+            ],
+            [
+              0,
+              48,
+              0
+            ],
+            [
+              0,
+              0,
+              48
+            ]
+          ],
+          "macro_f1": 1.0,
+          "samples": 144
+        }
+      },
+      "folds": [
+        {
+          "accuracy": 0.75,
+          "class_recall": [
+            1.0,
+            0.25,
+            1.0
+          ],
+          "confusion": [
+            [
+              16,
+              0,
+              0
+            ],
+            [
+              0,
+              4,
+              12
+            ],
+            [
+              0,
+              0,
+              16
+            ]
+          ],
+          "family": "arm",
+          "held_out": "A05_DIRECT",
+          "macro_f1": 0.709090909090909,
+          "samples": 48
+        },
+        {
+          "accuracy": 0.9791666666666666,
+          "class_recall": [
+            1.0,
+            1.0,
+            0.9375
+          ],
+          "confusion": [
+            [
+              16,
+              0,
+              0
+            ],
+            [
+              0,
+              16,
+              0
+            ],
+            [
+              0,
+              1,
+              15
+            ]
+          ],
+          "family": "arm",
+          "held_out": "U05_DIRECT",
+          "macro_f1": 0.9791463017269469,
+          "samples": 48
+        },
+        {
+          "accuracy": 0.8958333333333334,
+          "class_recall": [
+            1.0,
+            1.0,
+            0.6875
+          ],
+          "confusion": [
+            [
+              16,
+              0,
+              0
+            ],
+            [
+              0,
+              16,
+              0
+            ],
+            [
+              0,
+              5,
+              11
+            ]
+          ],
+          "family": "arm",
+          "held_out": "U_CURRICULUM",
+          "macro_f1": 0.8932265598932266,
+          "samples": 48
+        },
+        {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              12,
+              0,
+              0
+            ],
+            [
+              0,
+              12,
+              0
+            ],
+            [
+              0,
+              0,
+              12
+            ]
+          ],
+          "family": "command_x",
+          "held_out": 0.0,
+          "macro_f1": 1.0,
+          "samples": 36
+        },
+        {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              12,
+              0,
+              0
+            ],
+            [
+              0,
+              12,
+              0
+            ],
+            [
+              0,
+              0,
+              12
+            ]
+          ],
+          "family": "command_x",
+          "held_out": 0.074,
+          "macro_f1": 1.0,
+          "samples": 36
+        },
+        {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              12,
+              0,
+              0
+            ],
+            [
+              0,
+              12,
+              0
+            ],
+            [
+              0,
+              0,
+              12
+            ]
+          ],
+          "family": "command_x",
+          "held_out": 0.077,
+          "macro_f1": 1.0,
+          "samples": 36
+        },
+        {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              12,
+              0,
+              0
+            ],
+            [
+              0,
+              12,
+              0
+            ],
+            [
+              0,
+              0,
+              12
+            ]
+          ],
+          "family": "command_x",
+          "held_out": 0.08,
+          "macro_f1": 1.0,
+          "samples": 36
+        },
+        {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              24,
+              0,
+              0
+            ],
+            [
+              0,
+              24,
+              0
+            ],
+            [
+              0,
+              0,
+              24
+            ]
+          ],
+          "family": "fit",
+          "held_out": "p30",
+          "macro_f1": 1.0,
+          "samples": 72
+        },
+        {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              24,
+              0,
+              0
+            ],
+            [
+              0,
+              24,
+              0
+            ],
+            [
+              0,
+              0,
+              24
+            ]
+          ],
+          "family": "fit",
+          "held_out": "p31_34",
+          "macro_f1": 1.0,
+          "samples": 72
+        }
+      ],
+      "minimum_fold_accuracy": 0.75,
+      "minimum_pooled_class_recall": 0.75,
+      "pass": true
+    },
+    "4": {
+      "checks": {
+        "familywise_permutation_p": true,
+        "minimum_fold_accuracy": true,
+        "minimum_pooled_class_recall": true,
+        "pooled_macro_f1_each_family": true
+      },
+      "families": {
+        "arm": {
+          "accuracy": 0.8611111111111112,
+          "class_recall": [
+            0.8333333333333334,
+            0.9166666666666666,
+            0.8333333333333334
+          ],
+          "confusion": [
+            [
+              40,
+              8,
+              0
+            ],
+            [
+              4,
+              44,
+              0
+            ],
+            [
+              0,
+              8,
+              40
+            ]
+          ],
+          "macro_f1": 0.8644903137656761,
+          "samples": 144
+        },
+        "command_x": {
+          "accuracy": 0.9444444444444444,
+          "class_recall": [
+            0.9583333333333334,
+            0.9583333333333334,
+            0.9166666666666666
+          ],
+          "confusion": [
+            [
+              46,
+              2,
+              0
+            ],
+            [
+              2,
+              46,
+              0
+            ],
+            [
+              0,
+              4,
+              44
+            ]
+          ],
+          "macro_f1": 0.9449516908212562,
+          "samples": 144
+        },
+        "fit": {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              48,
+              0,
+              0
+            ],
+            [
+              0,
+              48,
+              0
+            ],
+            [
+              0,
+              0,
+              48
+            ]
+          ],
+          "macro_f1": 1.0,
+          "samples": 144
+        }
+      },
+      "folds": [
+        {
+          "accuracy": 0.7916666666666666,
+          "class_recall": [
+            0.75,
+            0.75,
+            0.875
+          ],
+          "confusion": [
+            [
+              12,
+              4,
+              0
+            ],
+            [
+              4,
+              12,
+              0
+            ],
+            [
+              0,
+              2,
+              14
+            ]
+          ],
+          "family": "arm",
+          "held_out": "A05_DIRECT",
+          "macro_f1": 0.7964052287581701,
+          "samples": 48
+        },
+        {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              16,
+              0,
+              0
+            ],
+            [
+              0,
+              16,
+              0
+            ],
+            [
+              0,
+              0,
+              16
+            ]
+          ],
+          "family": "arm",
+          "held_out": "U05_DIRECT",
+          "macro_f1": 1.0,
+          "samples": 48
+        },
+        {
+          "accuracy": 0.7916666666666666,
+          "class_recall": [
+            0.75,
+            1.0,
+            0.625
+          ],
+          "confusion": [
+            [
+              12,
+              4,
+              0
+            ],
+            [
+              0,
+              16,
+              0
+            ],
+            [
+              0,
+              6,
+              10
+            ]
+          ],
+          "family": "arm",
+          "held_out": "U_CURRICULUM",
+          "macro_f1": 0.796092796092796,
+          "samples": 48
+        },
+        {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              12,
+              0,
+              0
+            ],
+            [
+              0,
+              12,
+              0
+            ],
+            [
+              0,
+              0,
+              12
+            ]
+          ],
+          "family": "command_x",
+          "held_out": 0.0,
+          "macro_f1": 1.0,
+          "samples": 36
+        },
+        {
+          "accuracy": 0.9444444444444444,
+          "class_recall": [
+            0.8333333333333334,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              10,
+              2,
+              0
+            ],
+            [
+              0,
+              12,
+              0
+            ],
+            [
+              0,
+              0,
+              12
+            ]
+          ],
+          "family": "command_x",
+          "held_out": 0.074,
+          "macro_f1": 0.9440559440559441,
+          "samples": 36
+        },
+        {
+          "accuracy": 0.9444444444444444,
+          "class_recall": [
+            1.0,
+            0.8333333333333334,
+            1.0
+          ],
+          "confusion": [
+            [
+              12,
+              0,
+              0
+            ],
+            [
+              2,
+              10,
+              0
+            ],
+            [
+              0,
+              0,
+              12
+            ]
+          ],
+          "family": "command_x",
+          "held_out": 0.077,
+          "macro_f1": 0.9440559440559441,
+          "samples": 36
+        },
+        {
+          "accuracy": 0.8888888888888888,
+          "class_recall": [
+            1.0,
+            1.0,
+            0.6666666666666666
+          ],
+          "confusion": [
+            [
+              12,
+              0,
+              0
+            ],
+            [
+              0,
+              12,
+              0
+            ],
+            [
+              0,
+              4,
+              8
+            ]
+          ],
+          "family": "command_x",
+          "held_out": 0.08,
+          "macro_f1": 0.8857142857142858,
+          "samples": 36
+        },
+        {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              24,
+              0,
+              0
+            ],
+            [
+              0,
+              24,
+              0
+            ],
+            [
+              0,
+              0,
+              24
+            ]
+          ],
+          "family": "fit",
+          "held_out": "p30",
+          "macro_f1": 1.0,
+          "samples": 72
+        },
+        {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              24,
+              0,
+              0
+            ],
+            [
+              0,
+              24,
+              0
+            ],
+            [
+              0,
+              0,
+              24
+            ]
+          ],
+          "family": "fit",
+          "held_out": "p31_34",
+          "macro_f1": 1.0,
+          "samples": 72
+        }
+      ],
+      "minimum_fold_accuracy": 0.7916666666666666,
+      "minimum_pooled_class_recall": 0.8333333333333334,
+      "pass": true
+    },
+    "40": {
+      "checks": {
+        "familywise_permutation_p": true,
+        "minimum_fold_accuracy": true,
+        "minimum_pooled_class_recall": true,
+        "pooled_macro_f1_each_family": true
+      },
+      "families": {
+        "arm": {
+          "accuracy": 0.9236111111111112,
+          "class_recall": [
+            1.0,
+            0.8125,
+            0.9583333333333334
+          ],
+          "confusion": [
+            [
+              48,
+              0,
+              0
+            ],
+            [
+              0,
+              39,
+              9
+            ],
+            [
+              0,
+              2,
+              46
+            ]
+          ],
+          "macro_f1": 0.9232027926257227,
+          "samples": 144
+        },
+        "command_x": {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              48,
+              0,
+              0
+            ],
+            [
+              0,
+              48,
+              0
+            ],
+            [
+              0,
+              0,
+              48
+            ]
+          ],
+          "macro_f1": 1.0,
+          "samples": 144
+        },
+        "fit": {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              48,
+              0,
+              0
+            ],
+            [
+              0,
+              48,
+              0
+            ],
+            [
+              0,
+              0,
+              48
+            ]
+          ],
+          "macro_f1": 1.0,
+          "samples": 144
+        }
+      },
+      "folds": [
+        {
+          "accuracy": 0.8125,
+          "class_recall": [
+            1.0,
+            0.4375,
+            1.0
+          ],
+          "confusion": [
+            [
+              16,
+              0,
+              0
+            ],
+            [
+              0,
+              7,
+              9
+            ],
+            [
+              0,
+              0,
+              16
+            ]
+          ],
+          "family": "arm",
+          "held_out": "A05_DIRECT",
+          "macro_f1": 0.7963944856839872,
+          "samples": 48
+        },
+        {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              16,
+              0,
+              0
+            ],
+            [
+              0,
+              16,
+              0
+            ],
+            [
+              0,
+              0,
+              16
+            ]
+          ],
+          "family": "arm",
+          "held_out": "U05_DIRECT",
+          "macro_f1": 1.0,
+          "samples": 48
+        },
+        {
+          "accuracy": 0.9583333333333334,
+          "class_recall": [
+            1.0,
+            1.0,
+            0.875
+          ],
+          "confusion": [
+            [
+              16,
+              0,
+              0
+            ],
+            [
+              0,
+              16,
+              0
+            ],
+            [
+              0,
+              2,
+              14
+            ]
+          ],
+          "family": "arm",
+          "held_out": "U_CURRICULUM",
+          "macro_f1": 0.9581699346405229,
+          "samples": 48
+        },
+        {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              12,
+              0,
+              0
+            ],
+            [
+              0,
+              12,
+              0
+            ],
+            [
+              0,
+              0,
+              12
+            ]
+          ],
+          "family": "command_x",
+          "held_out": 0.0,
+          "macro_f1": 1.0,
+          "samples": 36
+        },
+        {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              12,
+              0,
+              0
+            ],
+            [
+              0,
+              12,
+              0
+            ],
+            [
+              0,
+              0,
+              12
+            ]
+          ],
+          "family": "command_x",
+          "held_out": 0.074,
+          "macro_f1": 1.0,
+          "samples": 36
+        },
+        {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              12,
+              0,
+              0
+            ],
+            [
+              0,
+              12,
+              0
+            ],
+            [
+              0,
+              0,
+              12
+            ]
+          ],
+          "family": "command_x",
+          "held_out": 0.077,
+          "macro_f1": 1.0,
+          "samples": 36
+        },
+        {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              12,
+              0,
+              0
+            ],
+            [
+              0,
+              12,
+              0
+            ],
+            [
+              0,
+              0,
+              12
+            ]
+          ],
+          "family": "command_x",
+          "held_out": 0.08,
+          "macro_f1": 1.0,
+          "samples": 36
+        },
+        {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              24,
+              0,
+              0
+            ],
+            [
+              0,
+              24,
+              0
+            ],
+            [
+              0,
+              0,
+              24
+            ]
+          ],
+          "family": "fit",
+          "held_out": "p30",
+          "macro_f1": 1.0,
+          "samples": 72
+        },
+        {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              24,
+              0,
+              0
+            ],
+            [
+              0,
+              24,
+              0
+            ],
+            [
+              0,
+              0,
+              24
+            ]
+          ],
+          "family": "fit",
+          "held_out": "p31_34",
+          "macro_f1": 1.0,
+          "samples": 72
+        }
+      ],
+      "minimum_fold_accuracy": 0.8125,
+      "minimum_pooled_class_recall": 0.8125,
+      "pass": true
+    },
+    "8": {
+      "checks": {
+        "familywise_permutation_p": true,
+        "minimum_fold_accuracy": false,
+        "minimum_pooled_class_recall": true,
+        "pooled_macro_f1_each_family": true
+      },
+      "families": {
+        "arm": {
+          "accuracy": 0.7986111111111112,
+          "class_recall": [
+            0.75,
+            0.875,
+            0.7708333333333334
+          ],
+          "confusion": [
+            [
+              36,
+              12,
+              0
+            ],
+            [
+              0,
+              42,
+              6
+            ],
+            [
+              0,
+              11,
+              37
+            ]
+          ],
+          "macro_f1": 0.8045641673960257,
+          "samples": 144
+        },
+        "command_x": {
+          "accuracy": 0.8888888888888888,
+          "class_recall": [
+            0.7083333333333334,
+            0.9791666666666666,
+            0.9791666666666666
+          ],
+          "confusion": [
+            [
+              34,
+              14,
+              0
+            ],
+            [
+              0,
+              47,
+              1
+            ],
+            [
+              0,
+              1,
+              47
+            ]
+          ],
+          "macro_f1": 0.8876601379650159,
+          "samples": 144
+        },
+        "fit": {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              48,
+              0,
+              0
+            ],
+            [
+              0,
+              48,
+              0
+            ],
+            [
+              0,
+              0,
+              48
+            ]
+          ],
+          "macro_f1": 1.0,
+          "samples": 144
+        }
+      },
+      "folds": [
+        {
+          "accuracy": 0.7916666666666666,
+          "class_recall": [
+            0.875,
+            0.625,
+            0.875
+          ],
+          "confusion": [
+            [
+              14,
+              2,
+              0
+            ],
+            [
+              0,
+              10,
+              6
+            ],
+            [
+              0,
+              2,
+              14
+            ]
+          ],
+          "family": "arm",
+          "held_out": "A05_DIRECT",
+          "macro_f1": 0.7925925925925926,
+          "samples": 48
+        },
+        {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              16,
+              0,
+              0
+            ],
+            [
+              0,
+              16,
+              0
+            ],
+            [
+              0,
+              0,
+              16
+            ]
+          ],
+          "family": "arm",
+          "held_out": "U05_DIRECT",
+          "macro_f1": 1.0,
+          "samples": 48
+        },
+        {
+          "accuracy": 0.6041666666666666,
+          "class_recall": [
+            0.375,
+            1.0,
+            0.4375
+          ],
+          "confusion": [
+            [
+              6,
+              10,
+              0
+            ],
+            [
+              0,
+              16,
+              0
+            ],
+            [
+              0,
+              9,
+              7
+            ]
+          ],
+          "family": "arm",
+          "held_out": "U_CURRICULUM",
+          "macro_f1": 0.5938670593402051,
+          "samples": 48
+        },
+        {
+          "accuracy": 0.6666666666666666,
+          "class_recall": [
+            0.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              0,
+              12,
+              0
+            ],
+            [
+              0,
+              12,
+              0
+            ],
+            [
+              0,
+              0,
+              12
+            ]
+          ],
+          "family": "command_x",
+          "held_out": 0.0,
+          "macro_f1": 0.5555555555555555,
+          "samples": 36
+        },
+        {
+          "accuracy": 0.9166666666666666,
+          "class_recall": [
+            0.8333333333333334,
+            1.0,
+            0.9166666666666666
+          ],
+          "confusion": [
+            [
+              10,
+              2,
+              0
+            ],
+            [
+              0,
+              12,
+              0
+            ],
+            [
+              0,
+              1,
+              11
+            ]
+          ],
+          "family": "command_x",
+          "held_out": 0.074,
+          "macro_f1": 0.9181671790367444,
+          "samples": 36
+        },
+        {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              12,
+              0,
+              0
+            ],
+            [
+              0,
+              12,
+              0
+            ],
+            [
+              0,
+              0,
+              12
+            ]
+          ],
+          "family": "command_x",
+          "held_out": 0.077,
+          "macro_f1": 1.0,
+          "samples": 36
+        },
+        {
+          "accuracy": 0.9722222222222222,
+          "class_recall": [
+            1.0,
+            0.9166666666666666,
+            1.0
+          ],
+          "confusion": [
+            [
+              12,
+              0,
+              0
+            ],
+            [
+              0,
+              11,
+              1
+            ],
+            [
+              0,
+              0,
+              12
+            ]
+          ],
+          "family": "command_x",
+          "held_out": 0.08,
+          "macro_f1": 0.9721739130434783,
+          "samples": 36
+        },
+        {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              24,
+              0,
+              0
+            ],
+            [
+              0,
+              24,
+              0
+            ],
+            [
+              0,
+              0,
+              24
+            ]
+          ],
+          "family": "fit",
+          "held_out": "p30",
+          "macro_f1": 1.0,
+          "samples": 72
+        },
+        {
+          "accuracy": 1.0,
+          "class_recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "confusion": [
+            [
+              24,
+              0,
+              0
+            ],
+            [
+              0,
+              24,
+              0
+            ],
+            [
+              0,
+              0,
+              24
+            ]
+          ],
+          "family": "fit",
+          "held_out": "p31_34",
+          "macro_f1": 1.0,
+          "samples": 72
+        }
+      ],
+      "minimum_fold_accuracy": 0.6041666666666666,
+      "minimum_pooled_class_recall": 0.7083333333333334,
+      "pass": false
+    }
+  }
+}

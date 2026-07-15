@@ -1,0 +1,85 @@
+{
+  "authority": {
+    "gpu_or_igpu": false,
+    "memory_selected": false,
+    "policy_training": false,
+    "rdk_or_robot": false,
+    "separate_objective_or_exploitation_preregistration_only": true
+  },
+  "checks": {
+    "decode_decision_instantaneous": true,
+    "decode_result_status_pass": true,
+    "earliest_window_one_tick": true,
+    "exact_48_per_class": true,
+    "n1_all_folds_perfect": true,
+    "one_unique_tick0_vector_per_class": true,
+    "tick0_accelerometer_distinct_all_classes": true,
+    "tick0_gyro_zero_all_classes": true
+  },
+  "classes": {
+    "NEG": {
+      "condition": "TORSO_COM_X_NEG",
+      "samples": 48,
+      "tick0_obs0_6": [
+        0.0,
+        0.0,
+        0.0,
+        -13.04679012298584,
+        0.7727481126785278,
+        28.672449111938477
+      ],
+      "unique_vectors": 1
+    },
+    "NOMINAL": {
+      "condition": "NOMINAL",
+      "samples": 48,
+      "tick0_obs0_6": [
+        0.0,
+        0.0,
+        0.0,
+        -11.879271507263184,
+        0.8971166610717773,
+        29.650177001953125
+      ],
+      "unique_vectors": 1
+    },
+    "POS": {
+      "condition": "TORSO_COM_X_POS",
+      "samples": 48,
+      "tick0_obs0_6": [
+        0.0,
+        0.0,
+        0.0,
+        -10.715840339660645,
+        1.0117170810699463,
+        30.856430053710938
+      ],
+      "unique_vectors": 1
+    }
+  },
+  "decode_result_sha256": "fd052680c67ea8af8a5f69bf130607c6cc307513f4503219728a67d6c76fc6f4",
+  "failed_checks": [],
+  "interpretation": "The instantaneous classification is carried by the exact tick-zero accelerometer, not gyro, and is invariant across arm, checkpoint, fit, and command within each COM class.",
+  "pairwise": [
+    {
+      "class_a": "NEG",
+      "class_b": "NOMINAL",
+      "euclidean_distance": 1.527913309321209,
+      "maximum_absolute_component_difference": 1.1675186157226562
+    },
+    {
+      "class_a": "NEG",
+      "class_b": "POS",
+      "euclidean_distance": 3.203155602568061,
+      "maximum_absolute_component_difference": 2.3309497833251953
+    },
+    {
+      "class_a": "NOMINAL",
+      "class_b": "POS",
+      "euclidean_distance": 1.6798070612090545,
+      "maximum_absolute_component_difference": 1.2062530517578125
+    }
+  ],
+  "schema_version": "ground_up_torso_com_instantaneous_decode_raw_audit.v1",
+  "status": "PASS_INSTANTANEOUS_IMU_COM_DECODE_RAW_AUDIT"
+}

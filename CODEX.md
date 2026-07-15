@@ -11,18 +11,23 @@ Build a robust reference-motion walking policy for Open Duck Mini through frozen
 Current next step:
 
 ```text
-The preregistered torso-COM remediation behavior evaluation is complete. All
-144 requested CPU-only cells have exact policy/configuration identity and
-per-run model readback. All six checkpoints pass the nominal R1 matrices, but
-every TORSO_COM_X_NEG and TORSO_COM_X_POS checkpoint/fit matrix fails. Each arm
-passes 4/12 matrices and 20/48 cells, so U_CURRICULUM, A05_DIRECT, and
-U05_DIRECT all fail the frozen advancement rule.
+The targeted-COM remediation is closed with no winner, and its causal audit
+rejects zero axis exposure as a sufficient explanation: corrected full-range
+training reproduces the pre-remediation X_NEG reversal magnitude, while X_POS
+fails with the opposite signed runaway and nominal remains fully preserved.
 
-Decision: CLOSE_EXACT_TARGETED_COM_FORMULATION_NO_WINNER. Do not promote a
-closest arm. No retry, midpoint, LR, reward, seed, architecture, bridge,
-command, reset, or horizon change is authorized from these outcomes. No R2
-resumption, R3+, training, Colab, runtime design, RDK-X5, GPU/iGPU, or robot
-work is authorized. Any next hypothesis requires a separate preregistration.
+The preregistered read-only decode then finds the decisive observation fact:
+COM class is linearly decoded from the exact tick-zero gyro/accelerometer actor
+input with 100% accuracy in every held-out arm, command, and fit fold
+(family-wise p=1/1001). Gyro is zero; the tick-zero accelerometer is an exact,
+distinct class signature repeated across all 48 traces per class. History is
+not required by this evidence, so do not select recurrence or a memory arm.
+
+The next defensible work is a separately preregistered objective/exploitation
+study of why the policy fails to use this instantaneous signal. Do not train,
+tune, replay the simulator, add an explicit COM input, narrow the certified
+range, or change architecture before that preregistration. R2 resumption, R3+,
+Colab, runtime design, RDK-X5, GPU/iGPU, and robot work remain unauthorized.
 ```
 
 Robotics operating model:
