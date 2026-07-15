@@ -1,0 +1,104 @@
+diff --git a/playground/open_duck_mini_v2/joystick.py b/playground/open_duck_mini_v2/joystick.py
+index 6c2d8bc..2ecfb92 100644
+--- a/playground/open_duck_mini_v2/joystick.py
++++ b/playground/open_duck_mini_v2/joystick.py
+@@ -129,6 +129,7 @@ def default_config() -> config_dict.ConfigDict:
+         ],
+         ground_up_measured_actuator_bridge=False,
+         ground_up_applied_target_observation=False,
++        ground_up_reset_com_estimator_input=False,
+         ground_up_tracking_tail_threshold_rad=0.20,
+         ground_up_actuator_bridge_delay_ticks=[
+             3, 3, 3, 3, 3, 3, 2, 3, 3, 3, 2, 3, 2, 3,
+@@ -145,6 +146,46 @@ def default_config() -> config_dict.ConfigDict:
+ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+     """Track a joystick command."""
+ 
++    _RESET_COM_ACCEL_NEGATIVE = jp.array(
++        [-13.04679012298584, 0.7727481126785278, 28.672449111938477]
++    )
++    _RESET_COM_ACCEL_NOMINAL = jp.array(
++        [-11.879271507263184, 0.8971166610717773, 29.650177001953125]
++    )
++    _RESET_COM_ACCEL_POSITIVE = jp.array(
++        [-10.715840339660645, 1.0117170810699463, 30.856430053710938]
++    )
++
++    def _ground_up_reset_com_estimate(self, accelerometer: jax.Array) -> jax.Array:
++        """Frozen three-anchor piecewise-linear reset X-COM estimate in metres."""
++        nominal = self._RESET_COM_ACCEL_NOMINAL
++        negative_direction = self._RESET_COM_ACCEL_NEGATIVE - nominal
++        positive_direction = self._RESET_COM_ACCEL_POSITIVE - nominal
++        delta = accelerometer - nominal
++        negative_fraction = jp.clip(
++            jp.dot(delta, negative_direction)
++            / jp.dot(negative_direction, negative_direction),
++            0.0,
++            1.0,
++        )
++        positive_fraction = jp.clip(
++            jp.dot(delta, positive_direction)
++            / jp.dot(positive_direction, positive_direction),
++            0.0,
++            1.0,
++        )
++        negative_residual = jp.linalg.norm(
++            accelerometer - (nominal + negative_fraction * negative_direction)
++        )
++        positive_residual = jp.linalg.norm(
++            accelerometer - (nominal + positive_fraction * positive_direction)
++        )
++        return jp.where(
++            negative_residual <= positive_residual,
++            -0.05 * negative_fraction,
++            0.05 * positive_fraction,
++        )
++
+     def __init__(
+         self,
+         task: str = "flat_terrain",
+@@ -379,6 +420,13 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+             ),
+             "policy_hidden": jp.zeros(self._config.recurrent_hidden_dim),
+         }
++        if self._config.ground_up_reset_com_estimator_input:
++            estimate_m = self._ground_up_reset_com_estimate(
++                self.get_accelerometer(data)
++            )
++            info["ground_up_reset_com_estimate_latched"] = jp.clip(
++                estimate_m / 0.05, -1.0, 1.0
++            )
+ 
+         metrics = {}
+         for k, v in self._config.reward_config.scales.items():
+@@ -734,6 +782,8 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+                 # info["imitation_i"],
+                 info["imitation_phase"],
+             ]
++        if self._config.ground_up_reset_com_estimator_input:
++            state_parts.append(info["ground_up_reset_com_estimate_latched"])
+         if self._reference_feature_actions is not None:
+             command3 = info["command"][:3]
+             command_index = jp.argmin(
+diff --git a/playground/open_duck_mini_v2/runner.py b/playground/open_duck_mini_v2/runner.py
+index 3075e0d..aeb1c80 100644
+--- a/playground/open_duck_mini_v2/runner.py
++++ b/playground/open_duck_mini_v2/runner.py
+@@ -54,6 +54,9 @@ class OpenDuckMiniV2Runner(BaseRunner):
+         self.env_config.ground_up_applied_target_observation = (
+             args.ground_up_applied_target_observation
+         )
++        self.env_config.ground_up_reset_com_estimator_input = (
++            args.ground_up_reset_com_estimator_input
++        )
+         self.env_config.reward_config.scales.tracking_tail_exceedance = (
+             args.ground_up_tracking_tail_exceedance_scale
+         )
+@@ -172,6 +175,7 @@ def main() -> None:
+     )
+     parser.add_argument("--ground_up_measured_actuator_bridge", action="store_true")
+     parser.add_argument("--ground_up_applied_target_observation", action="store_true")
++    parser.add_argument("--ground_up_reset_com_estimator_input", action="store_true")
+     parser.add_argument(
+         "--ground_up_tracking_tail_exceedance_scale", type=float, default=0.0
+     )
