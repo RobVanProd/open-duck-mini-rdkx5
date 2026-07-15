@@ -1567,3 +1567,11 @@ Do not proceed to grounded walking until low-risk gates pass.
   correction. No tolerance changes, training, Colab, behavior evaluation,
   local GPU/iGPU, RDK-X5, runtime, or robot action are authorized. See
   `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_ACTION_DISTRIBUTION_ULP_SENSITIVITY_PREREGISTRATION_20260715.md`.
+- 2026-07-15: The first ULP audit invocation stopped before actor restore or
+  outcome computation because raw Orbax restore tried to resolve protected
+  `cuda:0` sharding on the CPU host. A pre-outcome implementation correction
+  freezes the already-verified CPU template and standard target-tree restore
+  arguments, with exact source hash/shape/finite/CPU checks. No perturbation or
+  decision rule changes. Only the same CPU audit may be rerun; no training,
+  Colab, local GPU/iGPU, RDK-X5, runtime, or robot action is authorized. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_ACTION_DISTRIBUTION_ULP_RESTORE_CORRECTION_20260715.md`.
