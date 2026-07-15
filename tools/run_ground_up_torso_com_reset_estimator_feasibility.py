@@ -128,12 +128,16 @@ def run_contract(output: Path) -> int:
         model = model_for_offset(nominal, offset)
         delta = np.asarray(model.body_ipos) - base_ipos
         nonzero = int(np.count_nonzero(delta))
+        expected_x = np.asarray(
+            base_ipos[2, 0] + np.asarray(offset, dtype=base_ipos.dtype),
+            dtype=base_ipos.dtype,
+        )
         if offset == 0.0:
             mutations_exact = mutations_exact and nonzero == 0
         else:
             mutations_exact = mutations_exact and (
                 nonzero == 1
-                and delta[2, 0] == np.asarray(offset, dtype=delta.dtype)
+                and np.asarray(model.body_ipos)[2, 0] == expected_x
             )
     checks["body2_x_only_offset_models_exact"] = bool(mutations_exact)
     source = Path(__file__).read_text()
@@ -144,9 +148,10 @@ def run_contract(output: Path) -> int:
         "ERROR_CEILING_M = 0.005",
         "SEPARATION_FLOOR_M_S2 = 1e-3",
     ))
+    init_fragment = "data = " + "mjx_env.init(model, qpos=qpos, qvel=qvel, ctrl=ctrl)"
+    sensor_fragment = "jax.device_get(" + "data.sensordata[6:9])"
     checks["one_eager_sensor_read_per_offset_source_contract"] = (
-        source.count("data = mjx_env.init(model, qpos=qpos, qvel=qvel, ctrl=ctrl)") == 1
-        and source.count("jax.device_get(data.sensordata[6:9])") == 1
+        source.count(init_fragment) == 1 and source.count(sensor_fragment) == 1
         and "jax.jit(" not in source and "mjx.step(" not in source
     )
     checks["formal_offset_sensor_reads_zero"] = True
@@ -221,9 +226,13 @@ def run_study(contract_path: Path, output: Path, markdown: Path) -> int:
         model = model_for_offset(nominal, offset)
         delta = np.asarray(model.body_ipos) - base_ipos
         expected_nonzero = 0 if offset == 0.0 else 1
+        expected_x = np.asarray(
+            base_ipos[2, 0] + np.asarray(offset, dtype=base_ipos.dtype),
+            dtype=base_ipos.dtype,
+        )
         model_checks[str(offset)] = bool(
             np.count_nonzero(delta) == expected_nonzero
-            and (offset == 0.0 or delta[2, 0] == np.asarray(offset, dtype=delta.dtype))
+            and np.asarray(model.body_ipos)[2, 0] == expected_x
         )
         data = mjx_env.init(model, qpos=qpos, qvel=qvel, ctrl=ctrl)
         sensor_values[offset] = np.asarray(
