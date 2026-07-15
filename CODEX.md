@@ -57,14 +57,15 @@ counts are 19/7 at tick 0, 21/9 at tick 24, 16/15 at tick 32, and 11/24 at tick
 effect changes sign, but the current diagonal study cannot separate a changing
 actor response from changing plant-phase authority.
 
-The exact next study is now preregistered: cross four target physical-state
-ticks with actor-response offsets donated by all four ticks on the same 36
-traces. Its deterministic target/donor/interaction decomposition can select at
-most a further read-only attribution preregistration, never training. The next
-boundary is its zero-formal-cell CPU source/reconstruction/action-range
-contract. Do not run crossed outcomes or start objective, optimizer, memory,
-estimator, explicit-COM, range-change, training, tuning, Colab, GPU/iGPU,
-RDK-X5, runtime, or robot work before that contract passes.
+The exact next study is preregistered: cross four target physical-state ticks
+with actor-response offsets donated by all four ticks on the same 36 traces.
+Its zero-formal-cell CPU contract passes every check. The exact 576-cell index,
+six CPU graphs, recurrent/bridge/target reconstruction, nonzero offsets, and
+all 1,152 raw first actions are verified; no action clips. Formal execution
+must reproduce all 144 prior diagonal pitch/alignment results within 1e-12 or
+the study is invalid. The next boundary is the exact hash-locked crossed run.
+Do not start objective, optimizer, memory, estimator, explicit-COM,
+range-change, training, tuning, Colab, GPU/iGPU, RDK-X5, runtime, or robot work.
 ```
 
 Robotics operating model:

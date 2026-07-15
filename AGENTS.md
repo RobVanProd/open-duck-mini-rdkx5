@@ -1187,3 +1187,14 @@ Do not proceed to grounded walking until low-risk gates pass.
   A zero-formal-cell CPU contract must pass first. No training, Colab,
   GPU/iGPU, RDK-X5, runtime, or robot action is authorized. See
   `outputs/analysis/GROUND_UP_TORSO_COM_CROSSED_PHASE_LOCALIZATION_PREREGISTRATION_20260715.md`.
+- 2026-07-15: The crossed phase-localization pre-outcome contract passes all
+  checks with zero formal cells. It verifies the exact 36-trace, 576-cell
+  Cartesian index (144 diagonal and 432 off-diagonal), all six CPU ONNX graphs,
+  recurrent/bridge/target reconstruction, and nonzero donor offsets. All 1,152
+  planned first actions remain naturally inside [-1,1], spanning
+  -.969705-.972630, so no clipping or outcome repair is needed. Maximum
+  bridge/target error is 5.15e-08 rad. The hash-locked tool may now run the
+  exact matrix, subject to its 1e-12 diagonal-reproduction validity gate. No
+  training, Colab, GPU/iGPU, RDK-X5, runtime, or robot action is authorized.
+  See
+  `outputs/analysis/GROUND_UP_TORSO_COM_CROSSED_PHASE_LOCALIZATION_CONTRACT_20260715.md`.
