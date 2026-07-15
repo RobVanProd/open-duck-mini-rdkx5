@@ -1245,3 +1245,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   native state from reporting fields. No actor fork, training, Colab,
   GPU/iGPU, RDK-X5, runtime, or robot action is authorized. See
   `outputs/analysis/GROUND_UP_TORSO_COM_MATCHED_ACCELEROMETER_MAP_RESULT_20260715.md`.
+- 2026-07-15: The exact MJX correction is preregistered before instrumentation
+  or COM branch outcomes. It freezes default-off append-only evaluator fields,
+  the same 12 nominal matrices/36 moving runs/144 ticks, exact baseline trace
+  reproduction, live pre-policy MJX state cloning, body-2 X-only model forks,
+  `mjx.forward` without branch time advancement, and the same physical-map
+  thresholds as the invalid native attempt. A committed contract must prove
+  default-off behavior/schema identity and lock post-instrumentation hashes
+  before formal map readback. No actor fork, training, Colab, GPU/iGPU,
+  RDK-X5, runtime, or robot action is authorized. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_EXACT_MJX_ACCELEROMETER_REPLAY_PREREGISTRATION_20260715.md`.

@@ -81,8 +81,8 @@
     <section class="hero">
       <div class="card">
         <div class="label">Current operation</div>
-        <div class="big red" id="operation">Native matched sensor map invalid · exact MJX replay required</div>
-        <div class="metric" id="operation-detail">The frozen validity gates reject native reconstruction: nominal accelerometer error reaches 7.427465 m/s² and tick-zero direction error .173359 m/s² versus 1e-3 tolerances. Cell classes are unusable; no tolerance is changed.</div>
+        <div class="big amber" id="operation">Exact MJX sensor replay preregistered · instrumentation contract next</div>
+        <div class="metric" id="operation-detail">The correction branches the live pre-policy MJX state instead of rebuilding native state. Baseline traces must remain field-for-field exact; COM branches use mjx.forward only and never advance time.</div>
       </div>
       <div class="card">
         <div class="label">Remediation winner</div>
@@ -188,6 +188,7 @@
           <li>A 144-cell matched-state accelerometer map is preregistered to test the still-unproven assumption that the reset COM vector remains physically valid mid-gait.</li>
           <li>Its pre-outcome contract passes with zero formal cells, dynamic steps, or actor calls; sensor identity and body-2-only mutations are locked.</li>
           <li>The formal static map fails both readback validity gates. Reporting-only qpos/qvel/ctrl cannot reproduce the MJX actor sensor through native mj_forward; all apparent classes are invalid.</li>
+          <li>The exact correction is preregistered: default-off append-only evaluator instrumentation, exact baseline replay, and live MJX state/model forwarding at four ticks.</li>
         </ol>
       </div>
       <div class="card">
@@ -265,6 +266,8 @@
           <li>Completed: pass its zero-outcome source, state-index, sensor, body-mutation, and CPU contract.</li>
           <li>Stopped invalid: native nominal error 7.427465 m/s² and tick-zero direction error .173359 m/s² exceed frozen 1e-3 tolerances.</li>
           <li>Next boundary: separately preregister exact CPU MJX replay/state cloning; do not relax tolerance or interpret invalid cell classes.</li>
+          <li>Preregistered: exact 12-matrix/36-run CPU MJX sensor replay with baseline field identity and no dynamic COM branch.</li>
+          <li>Next boundary: pass the append-only instrumentation and default-off regression contract before formal sensor cells.</li>
         </ol>
       </div>
     </section>
@@ -277,7 +280,7 @@
     </section>
 
     <footer>
-      <span id="updated">Evidence snapshot: 2026-07-15 · native sensor map invalid, exact MJX replay required</span>
+      <span id="updated">Evidence snapshot: 2026-07-15 · exact MJX sensor replay preregistered</span>
       <span>branch <code>codex/live-oracle-dagger-phase-student</code> · live evidence is repository-backed</span>
     </footer>
   </main>

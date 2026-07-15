@@ -86,6 +86,14 @@ valid evidence boundary requires a separate preregistration for exact CPU MJX
 replay and state cloning, preserving observation-generation and solver state.
 Do not relax tolerances, reuse invalid classes, run actor branches, or start
 training, Colab, GPU/iGPU, RDK-X5, runtime, or robot work.
+
+The exact correction is now preregistered: add default-off append-only map
+fields to the existing CPU evaluator, replay the same 12 nominal matrices/36
+moving runs exactly, and at ticks 0/24/32/40 call `mjx.forward` on COM +/-
+models cloned from the live pre-policy MJX state. Every baseline trace must
+remain field-for-field identical after stripping only new reporting fields.
+The next boundary is the instrumentation/default-off regression contract; no
+formal COM branch may be read before it passes.
 ```
 
 Robotics operating model:
