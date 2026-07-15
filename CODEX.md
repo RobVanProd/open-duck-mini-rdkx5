@@ -141,8 +141,10 @@ response with distributed/unresolved crossed localization. No policy family,
 training, or hardware action is selected. The next read-only formulation gate
 is now preregistered as an 11-point eager reset-COM calibration curve: three
 existing anchors and eight held-out interior offsets under a frozen
-piecewise-linear estimator. Its zero-offset-outcome contract is next. No
-dynamic step, actor, training, or hardware action is authorized.
+piecewise-linear estimator. Its zero-offset-outcome contract passes every
+frozen check with zero formal sensor reads, dynamic steps, or actor calls. The
+11-point eager reset curve is next. No dynamic step, actor, training, or
+hardware action is authorized.
 ```
 
 Robotics operating model:

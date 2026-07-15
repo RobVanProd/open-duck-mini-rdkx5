@@ -1362,3 +1362,9 @@ Do not proceed to grounded walking until low-risk gates pass.
   preregistration. A zero-outcome contract must pass first. No dynamic step,
   actor, training, or hardware action is authorized. See
   `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_FEASIBILITY_PREREGISTRATION_20260715.md`.
+- 2026-07-15: The reset-COM estimator zero-outcome contract passes exact
+  upstream-source, body/sensor/reset, 11-offset split, model mutation, frozen
+  estimator source, one-read cardinality, no-JIT/no-step, and CPU checks. It
+  executed zero formal sensor reads, dynamic steps, or actor calls. Only the
+  frozen 11-point eager reset curve is authorized. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_FEASIBILITY_CONTRACT_20260715.md`.
