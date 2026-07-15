@@ -1046,3 +1046,11 @@ Do not proceed to grounded walking until low-risk gates pass.
   preregistered local CPU behavior evaluation; it does not make any arm a
   winner or authorize later robustness, local GPU, RDK-X5, or robot access.
   See `outputs/analysis/GROUND_UP_TORSO_COM_COLAB_ARTIFACT_CHECK_20260715.md`.
+- 2026-07-15: The six frozen full-range evaluation exports pass their transform
+  contract. Each source hash matches the recovered manifest; the 0.20-rad
+  actual-position guard and x=0 deadband CPU contracts pass; all source
+  initializers remain exact; and every source already contains the conservative
+  0.12 normalized left-ankle delta (1.50 rad/s), so no envelope mutation is
+  needed. This authorizes only the preregistered CPU behavior matrices. No arm
+  is selected, and local GPU, RDK-X5, and robot access remain unauthorized. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_EVAL_POLICY_TRANSFORM_CONTRACT_20260715.md`.
