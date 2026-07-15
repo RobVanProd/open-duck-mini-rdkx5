@@ -1035,3 +1035,14 @@ Do not proceed to grounded walking until low-risk gates pass.
   every completed stage. CPU-check and commit that recovery-only change before
   allocating a replacement session; download each partial snapshot while the
   session remains live.
+- 2026-07-15: The exact replacement search completed all three arms/five stages
+  in 3272.1054 hosted seconds. Atomic snapshots were downloaded after every
+  stage; the final 35,367,830-byte archive matches SHA-256
+  `364d889bee76a0dee0e2635f3847a5b63d8d92e37af8aa80070f325a8ecfe592`,
+  and Colab has zero active sessions. The local CPU artifact contract passes
+  all checks: every source hash, command, export step, curriculum restore link,
+  training log, event file, checkpoint, and all 13 ONNX hashes/interfaces/rate
+  bounds are exact. Behavior remains unevaluated. This authorizes only the
+  preregistered local CPU behavior evaluation; it does not make any arm a
+  winner or authorize later robustness, local GPU, RDK-X5, or robot access.
+  See `outputs/analysis/GROUND_UP_TORSO_COM_COLAB_ARTIFACT_CHECK_20260715.md`.

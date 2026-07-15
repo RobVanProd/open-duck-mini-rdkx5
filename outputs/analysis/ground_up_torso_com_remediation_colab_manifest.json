@@ -1,0 +1,627 @@
+{
+  "arms": [
+    {
+      "behavior_status": "UNEVALUATED",
+      "name": "U05_DIRECT",
+      "stages": [
+        {
+          "checkpoint_steps": [
+            0,
+            1003520,
+            2007040
+          ],
+          "checkpoints": [
+            {
+              "name": "2026_07_14_232938_0"
+            },
+            {
+              "name": "2026_07_14_233243_1003520"
+            },
+            {
+              "name": "2026_07_14_233707_2007040"
+            }
+          ],
+          "command": [
+            "/usr/bin/python3",
+            "playground/open_duck_mini_v2/runner.py",
+            "--task",
+            "flat_terrain_backlash",
+            "--env",
+            "joystick",
+            "--output_dir",
+            "/content/ground_up_torso_com_outputs/U05_DIRECT/stage1",
+            "--num_timesteps",
+            "2000000",
+            "--ppo_seed",
+            "100",
+            "--ppo_num_envs",
+            "256",
+            "--ppo_num_evals",
+            "3",
+            "--ppo_episode_length",
+            "600",
+            "--ppo_unroll_length",
+            "20",
+            "--ppo_batch_size",
+            "256",
+            "--ppo_num_minibatches",
+            "4",
+            "--ppo_num_updates_per_batch",
+            "4",
+            "--ppo_learning_rate",
+            "0.0003",
+            "--ppo_discounting",
+            "0.97",
+            "--ppo_entropy_cost",
+            "0.005",
+            "--policy_architecture",
+            "reference_residual",
+            "--imitation_scale",
+            "1.0",
+            "--reference_feature_table_path",
+            "/content/ground_up_projected_reference_feature_table.npz",
+            "--nominal_reference_bootstrap",
+            "--ground_up_torso_com_randomization",
+            "--ground_up_torso_com_x_min_m",
+            "-0.05",
+            "--ground_up_torso_com_x_max_m",
+            "0.05",
+            "--ground_up_torso_com_distribution",
+            "uniform",
+            "--ground_up_hard_vector_command_support",
+            "--ground_up_command_support_min_x",
+            "0.074",
+            "--ground_up_command_support_max_x",
+            "0.080",
+            "--ground_up_action_velocity_limits_rad_s",
+            "5.24,5.24,1.50,1.50,1.50,5.24,5.24,5.24,5.24,5.24,5.24,1.25,1.00,1.25",
+            "--ground_up_measured_actuator_bridge",
+            "--ground_up_actuator_bridge_delay_ticks",
+            "3,3,3,3,3,3,2,3,3,3,2,3,2,3",
+            "--ground_up_actuator_bridge_tau_s",
+            ".015,.015,.005,.010,.010,.120,.120,.120,.120,.020,.035,.010,.030,.005",
+            "--ground_up_applied_target_observation",
+            "--ground_up_tracking_tail_exceedance_scale",
+            "-6572.254964031055",
+            "--ground_up_tracking_tail_threshold_rad",
+            "0.20",
+            "--reference_start_phase",
+            "0",
+            "--ground_up_signed_progress_objective",
+            "--critic_observation",
+            "privileged_state",
+            "--restore_checkpoint_path",
+            "/content/ground_up_torso_com_source/ground_up_tracking_tail_outputs/T2_EQUAL/2026_07_14_190425_1024000"
+          ],
+          "distribution": "uniform",
+          "evals": 3,
+          "expected_steps": [
+            0,
+            1003520,
+            2007040
+          ],
+          "final_checkpoint": "/content/ground_up_torso_com_outputs/U05_DIRECT/stage1/2026_07_14_233707_2007040",
+          "max_x_m": 0.05,
+          "min_x_m": -0.05,
+          "onnx": [
+            {
+              "name": "2026_07_14_232938_0.onnx",
+              "sha256": "533495452253fadb5ec6d619d3c89859014c64b3e9cb154cac780cf42d734fbe"
+            },
+            {
+              "name": "2026_07_14_233243_1003520.onnx",
+              "sha256": "2ed4bca89114bb3ec5d842852179b9a29d22e52df9aed8295a23ef5e3216807a"
+            },
+            {
+              "name": "2026_07_14_233707_2007040.onnx",
+              "sha256": "ef508fd19596f55ad5e40ab0b76bee8385eb05db244defaf80e2e0ddf715a84e"
+            }
+          ],
+          "stage": 1,
+          "timesteps": 2000000,
+          "training_seconds": 848.3038209059998
+        }
+      ]
+    },
+    {
+      "behavior_status": "UNEVALUATED",
+      "name": "A05_DIRECT",
+      "stages": [
+        {
+          "checkpoint_steps": [
+            0,
+            1003520,
+            2007040
+          ],
+          "checkpoints": [
+            {
+              "name": "2026_07_14_234250_0"
+            },
+            {
+              "name": "2026_07_14_234554_1003520"
+            },
+            {
+              "name": "2026_07_14_235017_2007040"
+            }
+          ],
+          "command": [
+            "/usr/bin/python3",
+            "playground/open_duck_mini_v2/runner.py",
+            "--task",
+            "flat_terrain_backlash",
+            "--env",
+            "joystick",
+            "--output_dir",
+            "/content/ground_up_torso_com_outputs/A05_DIRECT/stage1",
+            "--num_timesteps",
+            "2000000",
+            "--ppo_seed",
+            "100",
+            "--ppo_num_envs",
+            "256",
+            "--ppo_num_evals",
+            "3",
+            "--ppo_episode_length",
+            "600",
+            "--ppo_unroll_length",
+            "20",
+            "--ppo_batch_size",
+            "256",
+            "--ppo_num_minibatches",
+            "4",
+            "--ppo_num_updates_per_batch",
+            "4",
+            "--ppo_learning_rate",
+            "0.0003",
+            "--ppo_discounting",
+            "0.97",
+            "--ppo_entropy_cost",
+            "0.005",
+            "--policy_architecture",
+            "reference_residual",
+            "--imitation_scale",
+            "1.0",
+            "--reference_feature_table_path",
+            "/content/ground_up_projected_reference_feature_table.npz",
+            "--nominal_reference_bootstrap",
+            "--ground_up_torso_com_randomization",
+            "--ground_up_torso_com_x_min_m",
+            "-0.05",
+            "--ground_up_torso_com_x_max_m",
+            "0.05",
+            "--ground_up_torso_com_distribution",
+            "anchors",
+            "--ground_up_hard_vector_command_support",
+            "--ground_up_command_support_min_x",
+            "0.074",
+            "--ground_up_command_support_max_x",
+            "0.080",
+            "--ground_up_action_velocity_limits_rad_s",
+            "5.24,5.24,1.50,1.50,1.50,5.24,5.24,5.24,5.24,5.24,5.24,1.25,1.00,1.25",
+            "--ground_up_measured_actuator_bridge",
+            "--ground_up_actuator_bridge_delay_ticks",
+            "3,3,3,3,3,3,2,3,3,3,2,3,2,3",
+            "--ground_up_actuator_bridge_tau_s",
+            ".015,.015,.005,.010,.010,.120,.120,.120,.120,.020,.035,.010,.030,.005",
+            "--ground_up_applied_target_observation",
+            "--ground_up_tracking_tail_exceedance_scale",
+            "-6572.254964031055",
+            "--ground_up_tracking_tail_threshold_rad",
+            "0.20",
+            "--reference_start_phase",
+            "0",
+            "--ground_up_signed_progress_objective",
+            "--critic_observation",
+            "privileged_state",
+            "--restore_checkpoint_path",
+            "/content/ground_up_torso_com_source/ground_up_tracking_tail_outputs/T2_EQUAL/2026_07_14_190425_1024000"
+          ],
+          "distribution": "anchors",
+          "evals": 3,
+          "expected_steps": [
+            0,
+            1003520,
+            2007040
+          ],
+          "final_checkpoint": "/content/ground_up_torso_com_outputs/A05_DIRECT/stage1/2026_07_14_235017_2007040",
+          "max_x_m": 0.05,
+          "min_x_m": -0.05,
+          "onnx": [
+            {
+              "name": "2026_07_14_234250_0.onnx",
+              "sha256": "533495452253fadb5ec6d619d3c89859014c64b3e9cb154cac780cf42d734fbe"
+            },
+            {
+              "name": "2026_07_14_234554_1003520.onnx",
+              "sha256": "284e75f3ea7cf7c7a4cf49c177db2a5a7653ea50f1ceea151be52be74e3ebd11"
+            },
+            {
+              "name": "2026_07_14_235017_2007040.onnx",
+              "sha256": "3079be1e8bcd850b104d5cb9a1163c4bd5d0fdd4236b36f53a3252821e1e4536"
+            }
+          ],
+          "stage": 1,
+          "timesteps": 2000000,
+          "training_seconds": 787.0328662010002
+        }
+      ]
+    },
+    {
+      "behavior_status": "UNEVALUATED",
+      "name": "U_CURRICULUM",
+      "stages": [
+        {
+          "checkpoint_steps": [
+            0,
+            512000
+          ],
+          "checkpoints": [
+            {
+              "name": "2026_07_14_235552_0"
+            },
+            {
+              "name": "2026_07_14_235821_512000"
+            }
+          ],
+          "command": [
+            "/usr/bin/python3",
+            "playground/open_duck_mini_v2/runner.py",
+            "--task",
+            "flat_terrain_backlash",
+            "--env",
+            "joystick",
+            "--output_dir",
+            "/content/ground_up_torso_com_outputs/U_CURRICULUM/stage1",
+            "--num_timesteps",
+            "500000",
+            "--ppo_seed",
+            "100",
+            "--ppo_num_envs",
+            "256",
+            "--ppo_num_evals",
+            "2",
+            "--ppo_episode_length",
+            "600",
+            "--ppo_unroll_length",
+            "20",
+            "--ppo_batch_size",
+            "256",
+            "--ppo_num_minibatches",
+            "4",
+            "--ppo_num_updates_per_batch",
+            "4",
+            "--ppo_learning_rate",
+            "0.0003",
+            "--ppo_discounting",
+            "0.97",
+            "--ppo_entropy_cost",
+            "0.005",
+            "--policy_architecture",
+            "reference_residual",
+            "--imitation_scale",
+            "1.0",
+            "--reference_feature_table_path",
+            "/content/ground_up_projected_reference_feature_table.npz",
+            "--nominal_reference_bootstrap",
+            "--ground_up_torso_com_randomization",
+            "--ground_up_torso_com_x_min_m",
+            "-0.01",
+            "--ground_up_torso_com_x_max_m",
+            "0.01",
+            "--ground_up_torso_com_distribution",
+            "uniform",
+            "--ground_up_hard_vector_command_support",
+            "--ground_up_command_support_min_x",
+            "0.074",
+            "--ground_up_command_support_max_x",
+            "0.080",
+            "--ground_up_action_velocity_limits_rad_s",
+            "5.24,5.24,1.50,1.50,1.50,5.24,5.24,5.24,5.24,5.24,5.24,1.25,1.00,1.25",
+            "--ground_up_measured_actuator_bridge",
+            "--ground_up_actuator_bridge_delay_ticks",
+            "3,3,3,3,3,3,2,3,3,3,2,3,2,3",
+            "--ground_up_actuator_bridge_tau_s",
+            ".015,.015,.005,.010,.010,.120,.120,.120,.120,.020,.035,.010,.030,.005",
+            "--ground_up_applied_target_observation",
+            "--ground_up_tracking_tail_exceedance_scale",
+            "-6572.254964031055",
+            "--ground_up_tracking_tail_threshold_rad",
+            "0.20",
+            "--reference_start_phase",
+            "0",
+            "--ground_up_signed_progress_objective",
+            "--critic_observation",
+            "privileged_state",
+            "--restore_checkpoint_path",
+            "/content/ground_up_torso_com_source/ground_up_tracking_tail_outputs/T2_EQUAL/2026_07_14_190425_1024000"
+          ],
+          "distribution": "uniform",
+          "evals": 2,
+          "expected_steps": [
+            0,
+            512000
+          ],
+          "final_checkpoint": "/content/ground_up_torso_com_outputs/U_CURRICULUM/stage1/2026_07_14_235821_512000",
+          "max_x_m": 0.01,
+          "min_x_m": -0.01,
+          "onnx": [
+            {
+              "name": "2026_07_14_235552_0.onnx",
+              "sha256": "533495452253fadb5ec6d619d3c89859014c64b3e9cb154cac780cf42d734fbe"
+            },
+            {
+              "name": "2026_07_14_235821_512000.onnx",
+              "sha256": "51fed6971a572c71a3e4aa43a5d421bd656e5a1beaca93feba0abb76f91348e5"
+            }
+          ],
+          "stage": 1,
+          "timesteps": 500000,
+          "training_seconds": 596.3740973029999
+        },
+        {
+          "checkpoint_steps": [
+            0,
+            512000
+          ],
+          "checkpoints": [
+            {
+              "name": "2026_07_15_000550_0"
+            },
+            {
+              "name": "2026_07_15_000822_512000"
+            }
+          ],
+          "command": [
+            "/usr/bin/python3",
+            "playground/open_duck_mini_v2/runner.py",
+            "--task",
+            "flat_terrain_backlash",
+            "--env",
+            "joystick",
+            "--output_dir",
+            "/content/ground_up_torso_com_outputs/U_CURRICULUM/stage2",
+            "--num_timesteps",
+            "500000",
+            "--ppo_seed",
+            "100",
+            "--ppo_num_envs",
+            "256",
+            "--ppo_num_evals",
+            "2",
+            "--ppo_episode_length",
+            "600",
+            "--ppo_unroll_length",
+            "20",
+            "--ppo_batch_size",
+            "256",
+            "--ppo_num_minibatches",
+            "4",
+            "--ppo_num_updates_per_batch",
+            "4",
+            "--ppo_learning_rate",
+            "0.0003",
+            "--ppo_discounting",
+            "0.97",
+            "--ppo_entropy_cost",
+            "0.005",
+            "--policy_architecture",
+            "reference_residual",
+            "--imitation_scale",
+            "1.0",
+            "--reference_feature_table_path",
+            "/content/ground_up_projected_reference_feature_table.npz",
+            "--nominal_reference_bootstrap",
+            "--ground_up_torso_com_randomization",
+            "--ground_up_torso_com_x_min_m",
+            "-0.03",
+            "--ground_up_torso_com_x_max_m",
+            "0.03",
+            "--ground_up_torso_com_distribution",
+            "uniform",
+            "--ground_up_hard_vector_command_support",
+            "--ground_up_command_support_min_x",
+            "0.074",
+            "--ground_up_command_support_max_x",
+            "0.080",
+            "--ground_up_action_velocity_limits_rad_s",
+            "5.24,5.24,1.50,1.50,1.50,5.24,5.24,5.24,5.24,5.24,5.24,1.25,1.00,1.25",
+            "--ground_up_measured_actuator_bridge",
+            "--ground_up_actuator_bridge_delay_ticks",
+            "3,3,3,3,3,3,2,3,3,3,2,3,2,3",
+            "--ground_up_actuator_bridge_tau_s",
+            ".015,.015,.005,.010,.010,.120,.120,.120,.120,.020,.035,.010,.030,.005",
+            "--ground_up_applied_target_observation",
+            "--ground_up_tracking_tail_exceedance_scale",
+            "-6572.254964031055",
+            "--ground_up_tracking_tail_threshold_rad",
+            "0.20",
+            "--reference_start_phase",
+            "0",
+            "--ground_up_signed_progress_objective",
+            "--critic_observation",
+            "privileged_state",
+            "--restore_checkpoint_path",
+            "/content/ground_up_torso_com_outputs/U_CURRICULUM/stage1/2026_07_14_235821_512000"
+          ],
+          "distribution": "uniform",
+          "evals": 2,
+          "expected_steps": [
+            0,
+            512000
+          ],
+          "final_checkpoint": "/content/ground_up_torso_com_outputs/U_CURRICULUM/stage2/2026_07_15_000822_512000",
+          "max_x_m": 0.03,
+          "min_x_m": -0.03,
+          "onnx": [
+            {
+              "name": "2026_07_15_000550_0.onnx",
+              "sha256": "51fed6971a572c71a3e4aa43a5d421bd656e5a1beaca93feba0abb76f91348e5"
+            },
+            {
+              "name": "2026_07_15_000822_512000.onnx",
+              "sha256": "70968459beeb0cd27b4b34e7c6c1e32f69325eb779a1a741908443fd77e8c1d8"
+            }
+          ],
+          "stage": 2,
+          "timesteps": 500000,
+          "training_seconds": 598.8849755349997
+        },
+        {
+          "checkpoint_steps": [
+            0,
+            512000,
+            1024000
+          ],
+          "checkpoints": [
+            {
+              "name": "2026_07_15_001157_0"
+            },
+            {
+              "name": "2026_07_15_001427_512000"
+            },
+            {
+              "name": "2026_07_15_001644_1024000"
+            }
+          ],
+          "command": [
+            "/usr/bin/python3",
+            "playground/open_duck_mini_v2/runner.py",
+            "--task",
+            "flat_terrain_backlash",
+            "--env",
+            "joystick",
+            "--output_dir",
+            "/content/ground_up_torso_com_outputs/U_CURRICULUM/stage3",
+            "--num_timesteps",
+            "1000000",
+            "--ppo_seed",
+            "100",
+            "--ppo_num_envs",
+            "256",
+            "--ppo_num_evals",
+            "3",
+            "--ppo_episode_length",
+            "600",
+            "--ppo_unroll_length",
+            "20",
+            "--ppo_batch_size",
+            "256",
+            "--ppo_num_minibatches",
+            "4",
+            "--ppo_num_updates_per_batch",
+            "4",
+            "--ppo_learning_rate",
+            "0.0003",
+            "--ppo_discounting",
+            "0.97",
+            "--ppo_entropy_cost",
+            "0.005",
+            "--policy_architecture",
+            "reference_residual",
+            "--imitation_scale",
+            "1.0",
+            "--reference_feature_table_path",
+            "/content/ground_up_projected_reference_feature_table.npz",
+            "--nominal_reference_bootstrap",
+            "--ground_up_torso_com_randomization",
+            "--ground_up_torso_com_x_min_m",
+            "-0.05",
+            "--ground_up_torso_com_x_max_m",
+            "0.05",
+            "--ground_up_torso_com_distribution",
+            "uniform",
+            "--ground_up_hard_vector_command_support",
+            "--ground_up_command_support_min_x",
+            "0.074",
+            "--ground_up_command_support_max_x",
+            "0.080",
+            "--ground_up_action_velocity_limits_rad_s",
+            "5.24,5.24,1.50,1.50,1.50,5.24,5.24,5.24,5.24,5.24,5.24,1.25,1.00,1.25",
+            "--ground_up_measured_actuator_bridge",
+            "--ground_up_actuator_bridge_delay_ticks",
+            "3,3,3,3,3,3,2,3,3,3,2,3,2,3",
+            "--ground_up_actuator_bridge_tau_s",
+            ".015,.015,.005,.010,.010,.120,.120,.120,.120,.020,.035,.010,.030,.005",
+            "--ground_up_applied_target_observation",
+            "--ground_up_tracking_tail_exceedance_scale",
+            "-6572.254964031055",
+            "--ground_up_tracking_tail_threshold_rad",
+            "0.20",
+            "--reference_start_phase",
+            "0",
+            "--ground_up_signed_progress_objective",
+            "--critic_observation",
+            "privileged_state",
+            "--restore_checkpoint_path",
+            "/content/ground_up_torso_com_outputs/U_CURRICULUM/stage2/2026_07_15_000822_512000"
+          ],
+          "distribution": "uniform",
+          "evals": 3,
+          "expected_steps": [
+            0,
+            512000,
+            1024000
+          ],
+          "final_checkpoint": "/content/ground_up_torso_com_outputs/U_CURRICULUM/stage3/2026_07_15_001644_1024000",
+          "max_x_m": 0.05,
+          "min_x_m": -0.05,
+          "onnx": [
+            {
+              "name": "2026_07_15_001157_0.onnx",
+              "sha256": "70968459beeb0cd27b4b34e7c6c1e32f69325eb779a1a741908443fd77e8c1d8"
+            },
+            {
+              "name": "2026_07_15_001427_512000.onnx",
+              "sha256": "fa85bde751c4abed5f8626ae06f91f2a1d7b0b8baee713a03c7421554615a57e"
+            },
+            {
+              "name": "2026_07_15_001644_1024000.onnx",
+              "sha256": "19f48caf7e3eb80610d98876870ab680f4db83ff50ff6dc69e8bef59512853a0"
+            }
+          ],
+          "stage": 3,
+          "timesteps": 1000000,
+          "training_seconds": 387.6990524349999
+        }
+      ]
+    }
+  ],
+  "artifact": "/content/GROUND_UP_TORSO_COM_REMEDIATION_artifacts.tar.gz",
+  "artifact_bytes": 35367830,
+  "artifact_sha256": "364d889bee76a0dee0e2635f3847a5b63d8d92e37af8aa80070f325a8ecfe592",
+  "behavior_status": "UNEVALUATED",
+  "control_commit": "b9be205ac64488c23504ca42e5ec790337adeec3",
+  "execution": {
+    "maximum_hosted_seconds": 14400,
+    "total_seconds": 3272.105431814,
+    "versions_and_devices": [
+      "0.8.2 0.8.2 3.9.0",
+      "[CudaDevice(id=0)]",
+      "HAS_GPU True"
+    ]
+  },
+  "input_hashes": {
+    "GROUND_UP_TRACKING_TAIL_artifacts.tar.gz": "ae4c631a6ce1c0b36c3231113740acc6c1b8a463c0911ce7cad30b8f8d8ca60f",
+    "ground_up_applied_target_observation.patch": "bdcac27115fcbe855079f5365ac046e863a9b302ff16f560d12a26cd492f2821",
+    "ground_up_hard_vector_command_support.patch": "900e65beaa4aa714ec352a527bf3f1a85888c0c76dab8d4cbef2352fa4986875",
+    "ground_up_measured_actuator_bridge.patch": "133531963abea46cd0394526a2fa88b018fc21ca68c365863304e3e96d6ca0df",
+    "ground_up_nominal_reference_bootstrap.patch": "0d89b85815eb570115ec5f35d677aba68299f977b3e36c60b10dfa869533ebba",
+    "ground_up_projected_reference_feature_table.npz": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212",
+    "ground_up_recipe_search.patch": "3f5d892f5ce531207de6c86b18c9f5dbea83bc131a3fc2e5085851c2e4e3e5f8",
+    "ground_up_reference_conditioned.patch": "4138ecddb9ffc0df468a2780522c1732bc4b0e1a0865d181da1112d1c16902fb",
+    "ground_up_reference_residual_actor.patch": "57bcf2394fa47745e9c26c6933e58a06c3799aba35e7000762befc5fac2f7d3b",
+    "ground_up_search_runner.patch": "6a176589b766de65ac2746c66f3387bfca5384d6ce4adf3703c752d8103a5e55",
+    "ground_up_signed_progress_objective.patch": "13ddc699d3a005416a5790152b4a9d4f442216cfec4a991f93be65bde85ffa5b",
+    "ground_up_stage1_mechanism_stack.patch": "cf5155dfd54a4699865b9823e8bf090f9f54b0e53df5583eb448e315d60053dc",
+    "ground_up_torso_com_randomization.patch": "524ff95a3d7018925e1ab958dfe067067e09f0cd718176c7cc46bb6b078d8e3a",
+    "ground_up_tracking_tail_exceedance.patch": "9f716243e0c4ef487ef4227ef0cb9f389ed43c0456435987ac0846e1b629811e",
+    "reference_residual_ppo_networks.py": "546f375fa3c2f34158f49f1ac07cdc5ff6dc41d1a94322f4334bd48835911630"
+  },
+  "local_gpu_access": false,
+  "rdk_access": false,
+  "robot_access": false,
+  "schema_version": "ground_up_torso_com_remediation_colab.v1",
+  "selection_uses_training_reward": false,
+  "source_checkpoint": "/content/ground_up_torso_com_source/ground_up_tracking_tail_outputs/T2_EQUAL/2026_07_14_190425_1024000",
+  "status": "PASS_TRAINING_ARTIFACT_CONTRACT_ONLY"
+}
