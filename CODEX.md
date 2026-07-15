@@ -94,6 +94,13 @@ models cloned from the live pre-policy MJX state. Every baseline trace must
 remain field-for-field identical after stripping only new reporting fields.
 The next boundary is the instrumentation/default-off regression contract; no
 formal COM branch may be read before it passes.
+
+That contract now passes. One complete 600-tick default-off CPU replay is
+field-for-field and byte-for-byte identical to the prior exact trace, with zero
+map fields; all new code is guarded and COM branches are `mjx.forward`-only.
+Post-instrumentation evaluator and study hashes are locked. The next boundary
+is the exact 12-matrix/36-run/144-cell formal replay. No outcome-dependent code
+or threshold change is permitted.
 ```
 
 Robotics operating model:

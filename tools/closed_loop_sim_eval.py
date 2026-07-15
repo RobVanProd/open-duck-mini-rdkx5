@@ -73,6 +73,7 @@ class ClosedLoopConfig:
     reward_overrides: Mapping[str, Any] | None = None
     trace_jsonl: Path | None = None
     trace_full_obs: bool = False
+    trace_com_accelerometer_map_ticks: tuple[int, ...] = ()
     policy_obs_input_name: str | None = None
     policy_action_output_name: str | None = None
     policy_state_input_names: tuple[str, ...] = ()
@@ -1311,6 +1312,28 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             with contextlib.suppress(OSError):
                 temp_scene_xml.unlink()
 
+    com_accelerometer_map_ticks = tuple(
+        int(tick) for tick in config.trace_com_accelerometer_map_ticks
+    )
+    if len(set(com_accelerometer_map_ticks)) != len(com_accelerometer_map_ticks):
+        raise ValueError("trace_com_accelerometer_map_ticks must be unique")
+    if any(tick < 0 for tick in com_accelerometer_map_ticks):
+        raise ValueError("trace_com_accelerometer_map_ticks must be nonnegative")
+    com_accelerometer_map_runner = None
+    com_negative_body_ipos = None
+    com_positive_body_ipos = None
+    if com_accelerometer_map_ticks:
+        nominal_body_ipos = env.mjx_model.body_ipos
+        com_negative_body_ipos = nominal_body_ipos.at[torso_body_id, 0].add(-0.05)
+        com_positive_body_ipos = nominal_body_ipos.at[torso_body_id, 0].add(0.05)
+
+        def read_com_accelerometer(data, body_ipos):
+            branch_model = env.mjx_model.replace(body_ipos=body_ipos)
+            branch_data = mjx.forward(branch_model, data)
+            return env.get_accelerometer(branch_data)
+
+        com_accelerometer_map_runner = jax.jit(read_com_accelerometer)
+
     try:
         session = ort.InferenceSession(str(config.policy_path), providers=["CPUExecutionProvider"])
     except Exception as exc:  # pragma: no cover - environment-dependent
@@ -1773,6 +1796,15 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             "policy hidden state, action history, reward counters, and sample "
             "counts are not advanced."
         ),
+        "trace_com_accelerometer_map": {
+            "enabled": bool(com_accelerometer_map_ticks),
+            "ticks": list(com_accelerometer_map_ticks),
+            "body_name": "trunk_assembly",
+            "body_id": int(torso_body_id),
+            "body_ipos_axis": 0,
+            "offsets_m": [-0.05, 0.05],
+            "branch_operation": "mjx.forward_only_no_time_advance",
+        },
     }
 
     for mode in available_modes(config.bridge_mode):
@@ -1823,6 +1855,29 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                 return {
                     "status": "HOLD_POLICY_SIM_CONTRACT_MISMATCH",
                     "error": f"obs shape {obs.shape} != {(config.expected_observation_dim,)}",
+                }
+            com_accelerometer_map = None
+            if tick in com_accelerometer_map_ticks:
+                negative_accelerometer = np.asarray(
+                    jax.device_get(
+                        com_accelerometer_map_runner(
+                            state.data, com_negative_body_ipos
+                        )
+                    ),
+                    dtype=float,
+                )
+                positive_accelerometer = np.asarray(
+                    jax.device_get(
+                        com_accelerometer_map_runner(
+                            state.data, com_positive_body_ipos
+                        )
+                    ),
+                    dtype=float,
+                )
+                com_accelerometer_map = {
+                    "nominal_actor_accelerometer_m_s2": obs[3:6].astype(float).tolist(),
+                    "negative_accelerometer_m_s2": negative_accelerometer.tolist(),
+                    "positive_accelerometer_m_s2": positive_accelerometer.tolist(),
                 }
             feed = {input_name: obs[None, :]}
             for state_name in state_input_names:
@@ -1974,6 +2029,8 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                 record["qvel"] = np.asarray(jax.device_get(state.data.qvel), dtype=float).tolist()
                 record["ctrl"] = np.asarray(jax.device_get(state.data.ctrl), dtype=float).tolist()
                 record["base_quat_wxyz"] = quat.astype(float).tolist()
+            if com_accelerometer_map is not None:
+                record["torso_com_accelerometer_map"] = com_accelerometer_map
             records.append(record)
             if done:
                 termination_reason = "fall_or_nan"

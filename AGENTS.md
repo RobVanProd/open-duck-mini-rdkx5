@@ -1255,3 +1255,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   before formal map readback. No actor fork, training, Colab, GPU/iGPU,
   RDK-X5, runtime, or robot action is authorized. See
   `outputs/analysis/GROUND_UP_TORSO_COM_EXACT_MJX_ACCELEROMETER_REPLAY_PREREGISTRATION_20260715.md`.
+- 2026-07-15: The exact-MJX pre-outcome contract passes all checks with zero
+  formal COM cells. The default-off append-only instrumentation is hash locked,
+  and a 600-tick CPU regression reproduces the prior full-observation trace
+  field-for-field and byte-for-byte (`e4a245...`) with zero map fields. Static
+  inspection verifies guarded default-off configuration and `mjx.forward`-only
+  COM branches with no time advancement. The exact tool may now replay the
+  frozen 12 matrices/36 moving runs/144 cells. No actor counterfactual,
+  training, Colab, GPU/iGPU, RDK-X5, runtime, or robot action is authorized.
+  See
+  `outputs/analysis/GROUND_UP_TORSO_COM_EXACT_MJX_ACCELEROMETER_REPLAY_CONTRACT_20260715.md`.
