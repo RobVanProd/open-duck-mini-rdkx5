@@ -57,15 +57,20 @@ counts are 19/7 at tick 0, 21/9 at tick 24, 16/15 at tick 32, and 11/24 at tick
 effect changes sign, but the current diagonal study cannot separate a changing
 actor response from changing plant-phase authority.
 
-The exact next study is preregistered: cross four target physical-state ticks
-with actor-response offsets donated by all four ticks on the same 36 traces.
-Its zero-formal-cell CPU contract passes every check. The exact 576-cell index,
-six CPU graphs, recurrent/bridge/target reconstruction, nonzero offsets, and
-all 1,152 raw first actions are verified; no action clips. Formal execution
-must reproduce all 144 prior diagonal pitch/alignment results within 1e-12 or
-the study is invalid. The next boundary is the exact hash-locked crossed run.
-Do not start objective, optimizer, memory, estimator, explicit-COM,
-range-change, training, tuning, Colab, GPU/iGPU, RDK-X5, runtime, or robot work.
+The exact 576-cell crossed target-state x donor-response study is complete and
+valid. All 144 diagonal cells reproduce the prior pitch/alignment result with
+zero error. Counts are 303 corrective, 207 amplifying, 66 intermediate, and
+zero negligible. Every checkpoint is `DISTRIBUTED_OR_UNRESOLVED`.
+
+Interaction is the largest descriptive fraction for all six checkpoints
+(.453109-.572954), but no checkpoint reaches the frozen .60 and 2x dominance
+rule. The grid shows real coupling: donor tick 40 is mostly corrective at target
+ticks 0/24/32 but amplifying at target tick 40. The frozen decision remains
+`CROSSED_LOCALIZATION_UNRESOLVED_NO_FAMILY_SELECTED`; do not promote the
+closest fraction or choose actor-action, plant-phase, joint-phase, objective,
+memory, estimator, policy, or training work. A new evidence question requires
+a separate preregistration. Training, tuning, Colab, GPU/iGPU, RDK-X5, runtime,
+and robot work remain unauthorized.
 ```
 
 Robotics operating model:

@@ -1198,3 +1198,17 @@ Do not proceed to grounded walking until low-risk gates pass.
   training, Colab, GPU/iGPU, RDK-X5, runtime, or robot action is authorized.
   See
   `outputs/analysis/GROUND_UP_TORSO_COM_CROSSED_PHASE_LOCALIZATION_CONTRACT_20260715.md`.
+- 2026-07-15: The exact 576-cell crossed phase-localization study completes on
+  CPU and passes its validity gate: all 144 diagonal pitch/alignment outcomes
+  reproduce with zero error, and no cell is negligible. Aggregate counts are
+  303 corrective, 207 amplifying, and 66 intermediate. All six checkpoints are
+  `DISTRIBUTED_OR_UNRESOLVED`. Interaction is the largest descriptive effect
+  for every checkpoint (.453109-.572954), but none reaches the frozen .60 and
+  2x dominance rule, so it cannot be promoted. The target/donor grid confirms
+  coupling—for donor tick 40 the response is mostly corrective at target ticks
+  0/24/32 but amplifying at target tick 40—without selecting an actor-action,
+  plant-phase, joint-phase, architecture, objective, estimator, policy, or
+  training family. Any further evidence step requires separate
+  preregistration. No training, Colab, GPU/iGPU, RDK-X5, runtime, or robot
+  action is authorized. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_CROSSED_PHASE_LOCALIZATION_RESULT_20260715.md`.
