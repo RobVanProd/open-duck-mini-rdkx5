@@ -1162,3 +1162,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   no other study, training, Colab, GPU/iGPU, RDK-X5, runtime, or robot action
   is authorized. See
   `outputs/analysis/GROUND_UP_TORSO_COM_SIGNED_CAUSAL_RESPONSE_CONTRACT_20260715.md`.
+- 2026-07-15: The exact 144-cell signed causal-response study completes on
+  CPU. Every physical and actor pitch effect is non-negligible, but all six
+  checkpoints are `MIXED_POLICY_RESPONSE`: aggregate counts are 67 corrective,
+  55 amplifying, 22 mixed, and zero negligible. No checkpoint meets either
+  systematic-sign rule, so neither sibling pair supports a family and the
+  frozen decision is `MIXED_SIGN_NO_POLICY_FAMILY_SELECTED`. The strongest
+  descriptive localization is temporal (tick 0: 19/7 corrective/amplifying;
+  tick 24: 21/9; tick 32: 16/15; tick 40: 11/24), but it cannot promote a
+  closest checkpoint or select memory, objective, estimator, actuator-effect,
+  policy, or training work. Only a separately preregistered localization study
+  may follow. No training, Colab, GPU/iGPU, RDK-X5, runtime, or robot action is
+  authorized. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_SIGNED_CAUSAL_RESPONSE_RESULT_20260715.md`.

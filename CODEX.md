@@ -44,17 +44,20 @@ all six actors show substantial identical-state response when only obs[3:6] is
 forked along the measured COM direction; mid-gait p95 maximum action differences
 are .07206-.12575 normalized action and baseline replay error is exactly zero.
 
-This rejects near-zero accelerometer sensitivity but does not establish whether
-the response sign is stabilizing or destabilizing. The read-only CPU signed
-causal-response study is preregistered: 144 nominal moving-state cells compare
-eight-tick physical COM +/- trajectories against actor obs[3:6] +/- trajectories
-from identical states. Its pre-outcome contract now passes every check with zero
-formal cells: all six CPU ONNX graphs, recurrent state, the fitted actuator
-queue, saved sent/applied targets, exact matched-branch identity, and body-2-only
-COM mutation are verified. The next step is the exact frozen 144-cell run. Do
-not change the study or start objective, optimizer, memory, estimator,
-explicit-COM, range-change, training, tuning, Colab, GPU/iGPU, RDK-X5, runtime,
-or robot work.
+The exact CPU signed causal-response study is complete. Across 144 nominal
+moving-state cells it finds 67 corrective, 55 amplifying, 22 intermediate, and
+zero negligible responses. Every one of the six checkpoints is
+`MIXED_POLICY_RESPONSE`; none meets the frozen systematic-sign rule. The frozen
+decision is therefore `MIXED_SIGN_NO_POLICY_FAMILY_SELECTED`—no checkpoint,
+arm, memory/estimator, objective-sign, or actuator-effect family advances.
+
+The sign mixture localizes most strongly by fork time: corrective/amplifying
+counts are 19/7 at tick 0, 21/9 at tick 24, 16/15 at tick 32, and 11/24 at tick
+40. That pattern is descriptive and cannot override the policy persistence
+rule. The next boundary is a separate preregistration that resolves the
+time/phase-dependent sign mixture without selecting a training family in
+advance. Do not start objective, optimizer, memory, estimator, explicit-COM,
+range-change, training, tuning, Colab, GPU/iGPU, RDK-X5, runtime, or robot work.
 ```
 
 Robotics operating model:
