@@ -79,6 +79,7 @@ class ClosedLoopConfig:
     policy_state_input_names: tuple[str, ...] = ()
     policy_state_output_names: tuple[str, ...] = ()
     policy_applied_target_observation: bool = False
+    policy_reset_com_estimator_input: bool = False
     eval_push_enable: bool = False
     eval_push_interval_min_s: float | None = None
     eval_push_interval_max_s: float | None = None
@@ -1253,6 +1254,13 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
     try:
         with temporary_cwd(config.playground_root):
             env_config = joystick.default_config()
+            if config.policy_reset_com_estimator_input:
+                if not hasattr(env_config, "ground_up_reset_com_estimator_input"):
+                    raise ValueError(
+                        "playground config does not expose "
+                        "ground_up_reset_com_estimator_input"
+                    )
+                env_config.ground_up_reset_com_estimator_input = True
             if config.reference_feature_table_path is not None:
                 env_config.reference_feature_table_path = str(
                     config.reference_feature_table_path.resolve()

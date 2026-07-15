@@ -200,6 +200,9 @@ def evaluate(args: argparse.Namespace) -> dict[str, Any]:
                     policy_applied_target_observation=(
                         args.policy_applied_target_observation
                     ),
+                    policy_reset_com_estimator_input=(
+                        args.policy_reset_com_estimator_input
+                    ),
                     eval_dynamics_override=dynamics_override,
                     trace_jsonl=trace_path,
                     trace_full_obs=bool(args.trace_full_obs),
@@ -277,6 +280,9 @@ def evaluate(args: argparse.Namespace) -> dict[str, Any]:
             "policy_applied_target_observation": bool(
                 args.policy_applied_target_observation
             ),
+            "policy_reset_com_estimator_input": bool(
+                args.policy_reset_com_estimator_input
+            ),
             "eval_dynamics_override": dynamics_override,
             "trace_dir": None if args.trace_dir is None else str(args.trace_dir),
             "trace_full_obs": bool(args.trace_full_obs),
@@ -348,6 +354,11 @@ def main() -> None:
         "--policy-applied-target-observation",
         action="store_true",
         help="Replace actor obs[83:97] with the external bridge-applied target.",
+    )
+    parser.add_argument(
+        "--policy-reset-com-estimator-input",
+        action="store_true",
+        help="Enable the environment's reset-latched torso-COM estimator input.",
     )
     parser.add_argument(
         "--trace-dir",
