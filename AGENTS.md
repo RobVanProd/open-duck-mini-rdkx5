@@ -1510,3 +1510,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   UI rate and available units are needed. No training, behavior evaluation,
   local GPU/iGPU, RDK-X5, runtime, or robot action is authorized. See
   `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_GPU_EXPANSION_DIAGNOSTIC_PACKAGE_CONTRACT_20260715.md`.
+- 2026-07-15: The first diagnostic allocation timed out after 60 seconds while
+  Resources UI still showed idle 0/hour. It performed zero uploads/diagnostic/
+  PPO work, stopped successfully after 74.175680 seconds, and left no session.
+  The operator then explicitly authorized completing the goal without further
+  billing-number input. A wall-only correction is preregistered: one fresh T4,
+  hard 300-second wall and 60-second stop reserve, exact 21 files, same no-PPO
+  wrapper, compute usage recorded `UNMEASURED`, and no rate/CU claim. A zero-
+  session contract must pass before allocation. No training, behavior
+  evaluation, local GPU/iGPU, RDK-X5, runtime, or robot action is authorized.
+  See
+  `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_GPU_DIAGNOSTIC_RATE_TIMEOUT_RESULT_20260715.md`
+  and
+  `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_GPU_DIAGNOSTIC_WALL_ONLY_CORRECTION_PREREGISTRATION_20260715.md`.
