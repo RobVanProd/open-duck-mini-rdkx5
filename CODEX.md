@@ -190,6 +190,18 @@ the missing rate field. Decision: `STOP_NO_RETRY_STATUS_RATE_UNAVAILABLE`.
 This is a launch-method failure, not a policy result. The exact launch may not
 be retried or resumed; a separately preregistered launch-method correction and
 new explicit authorization are required before any further Colab allocation.
+
+That launch-method correction is now preregistered, implemented, and passes
+all 20 zero-allocation checks. Colab CLI 0.6.0 source confirms there is no
+rate/balance output surface. The corrected launcher instead requires a fresh
+operator transcription from the Colab Resources UI: compute rate, available
+units, and timezone-aware observation time. It validates freshness and the
+projected 2.0-CU ceiling before the only allocation call, then uses named
+session status solely for idle-T4 identity. Rate 1.07 projects to .713333
+units; 3.0 passes exactly at 2.0 and 3.000001 fails. All 19 assets, the hosted
+job, wall/stop limits, recovery, and no-resume/no-retry rules remain exact.
+The next boundary is a fresh UI attestation plus new explicit approval. The
+contract itself opened zero sessions and authorizes no allocation.
 ```
 
 Robotics operating model:

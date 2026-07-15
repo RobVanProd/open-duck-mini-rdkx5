@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+from datetime import datetime, timezone
 import hashlib
 import importlib.util
 import json
@@ -30,10 +31,10 @@ REMOTE_ARTIFACT = REMOTE_ROOT / "GROUND_UP_RESET_COM_ESTIMATOR_TRAINING_artifact
 RESULT_PREFIX = "GROUND_UP_RESET_ESTIMATOR_RESULT="
 EXPECTED_CLI_VERSION = "0.6.0"
 EXPECTED_JOB_SHA256 = "a3e5fc38994cecd65d89fdc6b9ede23c2433e917b84583dfcced42c161e79d67"
-RATE_PATTERN = re.compile(
-    r"Usage rate:\s*approximately\s*([0-9]+(?:\.[0-9]+)?)\s*per hour",
-    re.IGNORECASE,
-)
+ATTESTATION_SOURCE = "COLAB_RESOURCES_UI_OPERATOR_ATTESTATION"
+MAX_ATTESTATION_AGE_SECONDS = 600.0
+MAX_ATTESTATION_FUTURE_SECONDS = 60.0
+MIN_AVAILABLE_COMPUTE_UNITS = 2.0
 
 
 def sha256(path: Path) -> str:
@@ -136,14 +137,65 @@ def cli_version(colab: str) -> dict[str, Any]:
     return result
 
 
-def parse_rate(status_output: str) -> float:
-    match = RATE_PATTERN.search(status_output)
-    if not match:
-        raise ValueError("Colab status omitted the approximate compute-unit rate")
-    rate = float(match.group(1))
-    if not math.isfinite(rate) or rate <= 0.0:
-        raise ValueError(f"invalid Colab compute-unit rate: {rate}")
-    return rate
+def validate_compute_attestation(
+    compute_rate_per_hour: float,
+    available_compute_units: float,
+    rate_observed_at: str,
+    *,
+    now: datetime | None = None,
+) -> dict[str, Any]:
+    if not math.isfinite(compute_rate_per_hour) or compute_rate_per_hour <= 0.0:
+        raise ValueError("compute rate must be finite and positive")
+    if (
+        not math.isfinite(available_compute_units)
+        or available_compute_units < MIN_AVAILABLE_COMPUTE_UNITS
+    ):
+        raise ValueError(
+            f"available compute units must be finite and at least {MIN_AVAILABLE_COMPUTE_UNITS}"
+        )
+    try:
+        observed = datetime.fromisoformat(rate_observed_at.replace("Z", "+00:00"))
+    except ValueError as error:
+        raise ValueError("rate observation timestamp must be ISO 8601") from error
+    if observed.tzinfo is None or observed.utcoffset() is None:
+        raise ValueError("rate observation timestamp must include a timezone")
+    checked_at = now or datetime.now(timezone.utc)
+    if checked_at.tzinfo is None or checked_at.utcoffset() is None:
+        raise ValueError("attestation validation time must include a timezone")
+    observed_utc = observed.astimezone(timezone.utc)
+    checked_utc = checked_at.astimezone(timezone.utc)
+    age_seconds = (checked_utc - observed_utc).total_seconds()
+    if age_seconds > MAX_ATTESTATION_AGE_SECONDS:
+        raise ValueError("compute-rate attestation is stale")
+    if age_seconds < -MAX_ATTESTATION_FUTURE_SECONDS:
+        raise ValueError("compute-rate attestation is too far in the future")
+    projected_units = compute_rate_per_hour * MAX_SESSION_SECONDS / 3600.0
+    if projected_units > MAX_COMPUTE_UNITS:
+        raise ValueError(
+            f"projected compute use {projected_units} exceeds {MAX_COMPUTE_UNITS}"
+        )
+    return {
+        "source": ATTESTATION_SOURCE,
+        "compute_rate_per_hour": compute_rate_per_hour,
+        "available_compute_units": available_compute_units,
+        "rate_observed_at": observed_utc.isoformat(),
+        "validated_at": checked_utc.isoformat(),
+        "age_seconds": age_seconds,
+        "maximum_age_seconds": MAX_ATTESTATION_AGE_SECONDS,
+        "maximum_future_seconds": MAX_ATTESTATION_FUTURE_SECONDS,
+        "minimum_available_compute_units": MIN_AVAILABLE_COMPUTE_UNITS,
+        "projected_max_compute_units": projected_units,
+    }
+
+
+def validate_session_status(status_output: str) -> None:
+    lines = [line.strip() for line in status_output.splitlines() if line.strip()]
+    pattern = re.compile(
+        rf"^\[{re.escape(SESSION)}\] [^|]+ \| Hardware: {re.escape(ACCELERATOR)} "
+        r"\| Variant: GPU \| Status: IDLE$"
+    )
+    if len(lines) != 1 or pattern.fullmatch(lines[0]) is None:
+        raise ValueError("named session status did not prove an idle T4 GPU")
 
 
 def remaining_seconds(started: float) -> float:
@@ -157,7 +209,13 @@ def require_work_remaining(started: float, label: str) -> float:
     return remaining
 
 
-def build_plan(assets: Path, recovery: Path, colab: str, job: Any) -> dict[str, Any]:
+def build_plan(
+    assets: Path,
+    recovery: Path,
+    colab: str,
+    job: Any,
+    compute_attestation: dict[str, Any],
+) -> dict[str, Any]:
     uploads = [
         {
             "local": str((assets / name).resolve()),
@@ -198,6 +256,7 @@ def build_plan(assets: Path, recovery: Path, colab: str, job: Any) -> dict[str, 
         "maximum_session_seconds": MAX_SESSION_SECONDS,
         "maximum_compute_units": MAX_COMPUTE_UNITS,
         "stop_reserve_seconds": STOP_RESERVE_SECONDS,
+        "compute_attestation": compute_attestation,
         "job": {"path": str(JOB), "sha256": sha256(JOB)},
         "uploads": uploads,
         "commands": commands,
@@ -294,14 +353,14 @@ def launch(
             timeout=min(60.0, require_work_remaining(session_started, "status")),
         )
         record["commands"].append(status_result)
-        rate = parse_rate(status_result["stdout"])
-        projected_units = rate * MAX_SESSION_SECONDS / 3600.0
-        record["compute_rate_per_hour"] = rate
-        record["projected_max_compute_units"] = projected_units
-        if projected_units > MAX_COMPUTE_UNITS:
-            raise RuntimeError(
-                f"projected compute use {projected_units} exceeds {MAX_COMPUTE_UNITS}"
-            )
+        validate_session_status(status_result["stdout"])
+        record["compute_attestation"] = plan["compute_attestation"]
+        record["compute_rate_per_hour"] = plan["compute_attestation"][
+            "compute_rate_per_hour"
+        ]
+        record["projected_max_compute_units"] = plan["compute_attestation"][
+            "projected_max_compute_units"
+        ]
         for upload_command in plan["commands"]["uploads"]:
             result = command_result(
                 upload_command,
@@ -373,9 +432,17 @@ def main() -> int:
     parser.add_argument("--source-archive", type=Path)
     parser.add_argument("--stage-assets", action="store_true")
     parser.add_argument("--allow-colab-allocation", action="store_true")
+    parser.add_argument("--compute-rate-per-hour", type=float, required=True)
+    parser.add_argument("--available-compute-units", type=float, required=True)
+    parser.add_argument("--rate-observed-at", required=True)
     parser.add_argument("--plan-output", type=Path, required=True)
     parser.add_argument("--colab-bin", default="colab")
     args = parser.parse_args()
+    compute_attestation = validate_compute_attestation(
+        args.compute_rate_per_hour,
+        args.available_compute_units,
+        args.rate_observed_at,
+    )
     if sha256(JOB) != EXPECTED_JOB_SHA256:
         raise RuntimeError("hosted job changed after launch preregistration")
     job = load_job()
@@ -389,7 +456,9 @@ def main() -> int:
     validate_staged_assets(assets, job)
     recovery.mkdir(parents=True, exist_ok=True)
     version = cli_version(args.colab_bin)
-    plan = build_plan(assets, recovery, args.colab_bin, job)
+    plan = build_plan(
+        assets, recovery, args.colab_bin, job, compute_attestation
+    )
     plan["cli_version"] = version
     plan["asset_staging"] = staging
     write_json_atomic(args.plan_output.resolve(), plan)

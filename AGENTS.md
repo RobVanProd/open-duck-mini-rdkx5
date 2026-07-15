@@ -1443,3 +1443,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   This preregistration does not authorize allocation, training, behavior
   evaluation, GPU/iGPU, RDK-X5, runtime, or robot action. See
   `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_RATE_ATTESTATION_CORRECTION_PREREGISTRATION_20260715.md`.
+- 2026-07-15: The rate-attestation launch correction contract passes all 20
+  frozen checks with zero sessions, remote bytes, training processes, or PPO
+  steps. It proves mandatory rate/balance/timestamp validation occurs before
+  allocation; 1.07/hour projects to .713333 units, 3.0/hour passes exactly at
+  2.0, and 3.000001 fails. Freshness boundaries are 600 seconds old and 60
+  seconds future; all invalid/nonfinite/missing controls fail. Captured real
+  status passes idle named-T4 identity without a rate, and all wrong-identity
+  controls fail. All 19 assets and prior lifecycle invariants remain exact.
+  Allocation remains unauthorized until the operator supplies a fresh Colab
+  Resources-UI rate, balance, timezone-aware timestamp, and new explicit
+  approval. No behavior evaluation, GPU/iGPU, RDK-X5, runtime, or robot action
+  is authorized. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_RATE_ATTESTATION_CORRECTION_CONTRACT_20260715.md`.
