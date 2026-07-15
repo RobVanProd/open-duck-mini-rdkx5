@@ -43,6 +43,7 @@
     .label { color: var(--muted); text-transform: uppercase; letter-spacing: .12em; font-size: 11px; }
     .big { margin-top: 10px; font: 650 clamp(21px, 3vw, 36px)/1.15 system-ui, sans-serif; letter-spacing: -.025em; }
     .big.amber { color: var(--amber); }
+    .big.red { color: var(--red); }
     .metric { margin-top: 8px; color: var(--muted); }
     .metric strong { color: var(--ink); font-size: 20px; }
     h2 { margin: 0 0 15px; font: 650 20px/1.2 system-ui, sans-serif; }
@@ -81,8 +82,8 @@
     <section class="hero">
       <div class="card">
         <div class="label">Current operation</div>
-        <div class="big amber" id="operation">Reset-estimator artifact recovered · CPU transforms next</div>
-        <div class="metric" id="operation-detail">The epsilon2 T4 job completed. All three checkpoints/ONNX exports, archive and manifest hashes, corrected expansion plus preserved raw failure, logs, wall limit, recovery, and cleanup pass. Behavior remains unevaluated.</div>
+        <div class="big red" id="operation">Reset-estimator arm closed · no advance</div>
+        <div class="metric" id="operation-detail">The frozen CPU evaluation is complete: 12/12 matrices and 48/48 cells are valid. RESET_EST_LATCH_U05 passes 4/12 matrices and 20/48 cells; nominal passes, but both signed torso-COM endpoints fail. No checkpoint is selected.</div>
       </div>
       <div class="card">
         <div class="label">Remediation winner</div>
@@ -219,7 +220,10 @@
           <li>The unchanged 1e-7 threshold fails. Only a CPU action-distribution/ULP sensitivity audit is selected; no tolerance change or training is authorized by this result.</li>
           <li>The frozen ULP audit passes all 58 perturbation cases. Maximum deterministic action difference is 1.18e-7 and the rigorous distribution W2/tanh upper bound is 4.80e-7, both below the established 1e-6 identity boundary.</li>
           <li>The first correction launch failed before restore/PPO because the wrapper imported JAX before upgrading it in-process. A one-line post-install import correction passed both contracts.</li>
-          <li>The fresh epsilon2 job completed and its local artifact contract passes all three checkpoints and ONNX exports. Reward and behavior remain unevaluated.</li>
+          <li>The fresh epsilon2 job completed and its local artifact contract passes all three checkpoints and ONNX exports.</li>
+          <li>The reset-estimator transform and corrected evaluator contracts pass. The initial stochastic-reset contract failure remains preserved; nominal reset produces ordered latches -1/approximately 0/+0.999989 before behavior.</li>
+          <li>The full 12-matrix/48-cell CPU behavior evaluation is valid. Both checkpoints pass nominal, XNEG fails x=0 and moving cells, and XPOS preserves x=0 but fails all moving cells.</li>
+          <li>Decision: <code>CLOSE_RESET_EST_LATCH_U05_NO_PASS</code>. The arm passes 4/12 matrices and 20/48 cells; no retry, midpoint, or closest checkpoint is promoted.</li>
         </ol>
       </div>
       <div class="card">
@@ -336,7 +340,9 @@
           <li>Completed: preregister and contract the epsilon-aware expansion and wall-only launch path.</li>
           <li>Completed: record the preinstall-JAX import failure, freeze the one-line correction, and pass both corrected contracts.</li>
           <li>Completed: run the fresh epsilon2 T4 job, recover all artifacts, stop Colab, and pass the local artifact contract.</li>
-          <li>Current boundary: contract the frozen guard/deadband/conservative-envelope graph transforms for both post-update policies on CPU.</li>
+          <li>Completed: contract both frozen transformed policies and the default-off reset-estimator evaluator plumbing on CPU.</li>
+          <li>Completed: run all 48 frozen behavior cells and validate exact per-run body-2 readback.</li>
+          <li>Closed: <code>RESET_EST_LATCH_U05</code> does not advance. A new evidence question requires a separate preregistration.</li>
         </ol>
       </div>
     </section>
@@ -345,12 +351,12 @@
       <div class="label">Authority boundary</div>
       <h2 style="margin-top:8px">Offline only</h2>
       <div>The baseline <code>BEST_WALK_ONNX_2.onnx</code> remains a frozen comparator, not a teacher or warm start. No new policy is cleared for the robot. No robot, RDK-X5, iGPU, or onboard GPU access is part of this work.</div>
-      <div class="constraints"><span class="chip">Robot blocked</span><span class="chip">RDK blocked</span><span class="chip">Local GPU / iGPU blocked</span><span class="chip">T4 diagnostic complete</span><span class="chip">Colab stopped</span><span class="chip">CPU audit next</span></div>
+      <div class="constraints"><span class="chip">Robot blocked</span><span class="chip">RDK blocked</span><span class="chip">Local GPU / iGPU blocked</span><span class="chip">Colab stopped</span><span class="chip">48 cells complete</span><span class="chip">Arm closed</span></div>
     </section>
 
     <footer>
-      <span id="updated">Evidence snapshot: 2026-07-15 · RESET_EST_LATCH_U05 artifacts recovered; CPU transforms next</span>
-      <span>branch <code>codex/live-oracle-dagger-phase-student</code> · live evidence is repository-backed</span>
+      <span id="updated">Evidence snapshot: 2026-07-15 · RESET_EST_LATCH_U05 closed after valid 48-cell CPU evaluation</span>
+      <span>branch <code>codex/torso-com-decode-probe</code> · live evidence is repository-backed</span>
     </footer>
   </main>
 </body>

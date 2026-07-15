@@ -1680,3 +1680,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   approval prompt. No training, Colab, GPU/iGPU, RDK-X5, runtime, or robot
   action is authorized. See
   `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_BEHAVIOR_EVALUATOR_CORRECTED_CONTRACT_20260715.md`.
+- 2026-07-15: The frozen RESET_EST_LATCH_U05 behavior evaluation is complete
+  and valid: 12 matrices/48 cells, exact CPU/config/policy/fit/readback
+  contracts, and no training-reward selection. Both checkpoints pass all four
+  nominal matrices. X_NEG fails x=0 and moving cells; X_POS passes x=0 but
+  fails every moving cell. The arm passes 4/12 matrices and 20/48 cells, so
+  decision `CLOSE_RESET_EST_LATCH_U05_NO_PASS` closes it without retry,
+  midpoint, or closest-checkpoint promotion. No new family is selected. Any
+  new evidence question requires a separate preregistration; training, Colab,
+  GPU/iGPU, RDK-X5, runtime, and robot work remain unauthorized. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_BEHAVIOR_DECISION_20260715.md`.
