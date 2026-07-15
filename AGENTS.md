@@ -1662,3 +1662,12 @@ Do not proceed to grounded walking until low-risk gates pass.
   promotion or reward selection is allowed. No training, Colab, local GPU/
   iGPU, RDK-X5, runtime, or robot action is authorized. See
   `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_BEHAVIOR_EVALUATOR_PREREGISTRATION_20260715.md`.
+- 2026-07-15: The first reset-only evaluator contract stopped before behavior:
+  the stochastic pre-reset saturated all three COM latches at +1 even though
+  the later home-support state was deterministic. The failed result is
+  preserved. A correction is preregistered to enable the existing nominal
+  reset together with the estimator input, matching hosted training and the
+  prior estimator package; the same zero-step CPU contract must pass before
+  behavior. No training, Colab, GPU/iGPU, RDK-X5, runtime, or robot action is
+  authorized. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_EVALUATOR_NOMINAL_RESET_CORRECTION_PREREGISTRATION_20260715.md`.
