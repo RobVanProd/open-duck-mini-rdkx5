@@ -1141,3 +1141,14 @@ Do not proceed to grounded walking until low-risk gates pass.
   response study is supported; no objective, memory, estimator, training,
   Colab, GPU/iGPU, RDK-X5, or robot action is authorized. See
   `outputs/analysis/GROUND_UP_TORSO_COM_FULL_OBSERVATION_REPLAY_SENSITIVITY_RESULT_20260715.md`.
+- 2026-07-15: The signed causal-response study is preregistered before any
+  physical fork. It freezes 144 nominal moving-state cells across all six
+  policies, both measured fits, three commands, and ticks 0/24/32/40. Each cell
+  compares the eight-tick pitch trajectory from physical COM +/- .05 m under
+  identical saved actions against the pitch trajectory from actor obs[3:6]
+  +/- the measured COM direction under nominal dynamics. Cosine <=-.25 is
+  corrective and >=+.25 amplifying, with policy/checkpoint persistence frozen
+  before outcomes. A CPU reconstruction/isolation contract must pass first.
+  No formal fork, training, Colab, GPU/iGPU, RDK-X5, or robot action is yet
+  authorized. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_SIGNED_CAUSAL_RESPONSE_PREREGISTRATION_20260715.md`.

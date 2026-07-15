@@ -45,10 +45,13 @@ forked along the measured COM direction; mid-gait p95 maximum action differences
 are .07206-.12575 normalized action and baseline replay error is exactly zero.
 
 This rejects near-zero accelerometer sensitivity but does not establish whether
-the response sign is stabilizing or destabilizing. The next defensible boundary
-is a separately preregistered read-only CPU signed causal-response study. Do not
-start objective, optimizer, memory, estimator, explicit-COM, range-change,
-training, tuning, Colab, GPU/iGPU, RDK-X5, runtime, or robot work from this result.
+the response sign is stabilizing or destabilizing. The read-only CPU signed
+causal-response study is now preregistered: 144 nominal moving-state cells
+compare eight-tick physical COM +/- trajectories against actor obs[3:6] +/-
+trajectories from identical states. The next step is its reconstruction and
+branch-isolation contract only. Do not run formal forks or start objective,
+optimizer, memory, estimator, explicit-COM, range-change, training, tuning,
+Colab, GPU/iGPU, RDK-X5, runtime, or robot work before that contract passes.
 ```
 
 Robotics operating model:
