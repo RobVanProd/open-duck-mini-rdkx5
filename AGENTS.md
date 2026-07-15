@@ -1432,3 +1432,14 @@ Do not proceed to grounded walking until low-risk gates pass.
   correction and new explicit authorization. No behavior evaluation,
   GPU/iGPU, RDK-X5, runtime, or robot action is authorized. See
   `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_HOSTED_LAUNCH_RESULT_20260715.md`.
+- 2026-07-15: The only supported successor to the failed hosted launch is now
+  preregistered as a rate-attestation launch-method correction. Colab CLI 0.6.0
+  source proves `status` and `sessions` expose no compute rate or balance; the
+  prior contract's synthetic rate fixture did not prove a real CLI field. The
+  correction freezes fresh operator-transcribed Colab Resources-UI rate,
+  balance, and timestamp inputs, validates the projected 2.0-CU ceiling and
+  freshness before allocation, and retains named T4 status only for identity.
+  A zero-session CPU contract must pass before any new approval is requested.
+  This preregistration does not authorize allocation, training, behavior
+  evaluation, GPU/iGPU, RDK-X5, runtime, or robot action. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_RATE_ATTESTATION_CORRECTION_PREREGISTRATION_20260715.md`.
