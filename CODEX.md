@@ -202,6 +202,15 @@ units; 3.0 passes exactly at 2.0 and 3.000001 fails. All 19 assets, the hosted
 job, wall/stop limits, recovery, and no-resume/no-retry rules remain exact.
 The next boundary is a fresh UI attestation plus new explicit approval. The
 contract itself opened zero sessions and authorizes no allocation.
+
+The operator's fresh idle reading (79.36 available, 0/hour, zero sessions)
+shows why that pre-allocation input cannot work: Colab exposes no positive T4
+rate while idle. The superseding same-session handshake is preregistered and
+passes all 20 zero-allocation checks. It verifies the named idle T4, emits one
+request, waits at most 120 seconds inside the unchanged wall/stop budgets, and
+blocks every upload/PPO step until the live UI rate and balance pass. The
+operator approved one such interactive launch; only the two live numbers are
+needed when requested.
 ```
 
 Robotics operating model:

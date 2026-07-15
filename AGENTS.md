@@ -1467,3 +1467,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   training, behavior evaluation, local GPU/iGPU, RDK-X5, runtime, or robot
   action is authorized before that contract. See
   `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_SAME_SESSION_RATE_HANDSHAKE_PREREGISTRATION_20260715.md`.
+- 2026-07-15: The same-session rate-handshake contract passes all 20 frozen
+  checks with zero sessions, remote bytes, or PPO steps. Exact order is idle-T4
+  identity, <=120-second local rate request, live attestation validation, then
+  upload/training. Timeout and every invalid rate/balance/time/source/session
+  control fail before upload. All 19 assets and lifecycle limits remain exact.
+  The operator approved one interactive corrected launch; after its request
+  marker only the live UI rate and available units are needed. No behavior
+  evaluation, local GPU/iGPU, RDK-X5, runtime, or robot action is authorized.
+  See
+  `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_SAME_SESSION_RATE_HANDSHAKE_CONTRACT_20260715.md`.

@@ -32,9 +32,11 @@ RESULT_PREFIX = "GROUND_UP_RESET_ESTIMATOR_RESULT="
 EXPECTED_CLI_VERSION = "0.6.0"
 EXPECTED_JOB_SHA256 = "a3e5fc38994cecd65d89fdc6b9ede23c2433e917b84583dfcced42c161e79d67"
 ATTESTATION_SOURCE = "COLAB_RESOURCES_UI_OPERATOR_ATTESTATION"
-MAX_ATTESTATION_AGE_SECONDS = 600.0
+MAX_ATTESTATION_AGE_SECONDS = 120.0
 MAX_ATTESTATION_FUTURE_SECONDS = 60.0
 MIN_AVAILABLE_COMPUTE_UNITS = 2.0
+ATTESTATION_WAIT_SECONDS = 120.0
+RATE_REQUEST_PREFIX = "GROUND_UP_RESET_ESTIMATOR_RATE_REQUEST="
 
 
 def sha256(path: Path) -> str:
@@ -142,8 +144,14 @@ def validate_compute_attestation(
     available_compute_units: float,
     rate_observed_at: str,
     *,
+    source: str = ATTESTATION_SOURCE,
+    session: str = SESSION,
     now: datetime | None = None,
 ) -> dict[str, Any]:
+    if source != ATTESTATION_SOURCE:
+        raise ValueError("compute-rate attestation source changed")
+    if session != SESSION:
+        raise ValueError("compute-rate attestation session changed")
     if not math.isfinite(compute_rate_per_hour) or compute_rate_per_hour <= 0.0:
         raise ValueError("compute rate must be finite and positive")
     if (
@@ -175,7 +183,8 @@ def validate_compute_attestation(
             f"projected compute use {projected_units} exceeds {MAX_COMPUTE_UNITS}"
         )
     return {
-        "source": ATTESTATION_SOURCE,
+        "source": source,
+        "session": session,
         "compute_rate_per_hour": compute_rate_per_hour,
         "available_compute_units": available_compute_units,
         "rate_observed_at": observed_utc.isoformat(),
@@ -188,6 +197,25 @@ def validate_compute_attestation(
     }
 
 
+def validate_attestation_payload(
+    payload: dict[str, Any], *, now: datetime | None = None,
+) -> dict[str, Any]:
+    expected = {
+        "source", "session", "compute_rate_per_hour",
+        "available_compute_units", "collector_received_at",
+    }
+    if not isinstance(payload, dict) or set(payload) != expected:
+        raise ValueError("compute-rate attestation schema changed")
+    return validate_compute_attestation(
+        payload["compute_rate_per_hour"],
+        payload["available_compute_units"],
+        payload["collector_received_at"],
+        source=payload["source"],
+        session=payload["session"],
+        now=now,
+    )
+
+
 def validate_session_status(status_output: str) -> None:
     lines = [line.strip() for line in status_output.splitlines() if line.strip()]
     pattern = re.compile(
@@ -196,6 +224,37 @@ def validate_session_status(status_output: str) -> None:
     )
     if len(lines) != 1 or pattern.fullmatch(lines[0]) is None:
         raise ValueError("named session status did not prove an idle T4 GPU")
+
+
+def wait_for_compute_attestation(
+    attestation_path: Path, session_started: float,
+) -> dict[str, Any]:
+    temporary = attestation_path.with_suffix(attestation_path.suffix + ".tmp")
+    if attestation_path.exists() or temporary.exists():
+        raise FileExistsError("attestation path must be absent before request")
+    timeout = min(
+        ATTESTATION_WAIT_SECONDS,
+        require_work_remaining(session_started, "rate attestation"),
+    )
+    request = {
+        "session": SESSION,
+        "attestation_file": str(attestation_path),
+        "timeout_seconds": timeout,
+        "required_values": ["compute_rate_per_hour", "available_compute_units"],
+    }
+    print(RATE_REQUEST_PREFIX + json.dumps(request, sort_keys=True), flush=True)
+    deadline = time.monotonic() + timeout
+    while time.monotonic() < deadline:
+        if attestation_path.exists():
+            if attestation_path.is_symlink() or not attestation_path.is_file():
+                raise ValueError("attestation must be a regular nonsymlink file")
+            try:
+                payload = json.loads(attestation_path.read_text())
+            except (json.JSONDecodeError, OSError) as error:
+                raise ValueError("attestation JSON is unreadable") from error
+            return validate_attestation_payload(payload)
+        time.sleep(0.25)
+    raise TimeoutError("operator compute-rate attestation timed out")
 
 
 def remaining_seconds(started: float) -> float:
@@ -214,7 +273,7 @@ def build_plan(
     recovery: Path,
     colab: str,
     job: Any,
-    compute_attestation: dict[str, Any],
+    attestation_path: Path,
 ) -> dict[str, Any]:
     uploads = [
         {
@@ -256,7 +315,14 @@ def build_plan(
         "maximum_session_seconds": MAX_SESSION_SECONDS,
         "maximum_compute_units": MAX_COMPUTE_UNITS,
         "stop_reserve_seconds": STOP_RESERVE_SECONDS,
-        "compute_attestation": compute_attestation,
+        "rate_handshake": {
+            "attestation_file": str(attestation_path),
+            "source": ATTESTATION_SOURCE,
+            "wait_seconds": ATTESTATION_WAIT_SECONDS,
+            "maximum_age_seconds": MAX_ATTESTATION_AGE_SECONDS,
+            "maximum_future_seconds": MAX_ATTESTATION_FUTURE_SECONDS,
+            "minimum_available_compute_units": MIN_AVAILABLE_COMPUTE_UNITS,
+        },
         "job": {"path": str(JOB), "sha256": sha256(JOB)},
         "uploads": uploads,
         "commands": commands,
@@ -354,11 +420,14 @@ def launch(
         )
         record["commands"].append(status_result)
         validate_session_status(status_result["stdout"])
-        record["compute_attestation"] = plan["compute_attestation"]
-        record["compute_rate_per_hour"] = plan["compute_attestation"][
+        attestation = wait_for_compute_attestation(
+            Path(plan["rate_handshake"]["attestation_file"]), session_started
+        )
+        record["compute_attestation"] = attestation
+        record["compute_rate_per_hour"] = attestation[
             "compute_rate_per_hour"
         ]
-        record["projected_max_compute_units"] = plan["compute_attestation"][
+        record["projected_max_compute_units"] = attestation[
             "projected_max_compute_units"
         ]
         for upload_command in plan["commands"]["uploads"]:
@@ -432,17 +501,15 @@ def main() -> int:
     parser.add_argument("--source-archive", type=Path)
     parser.add_argument("--stage-assets", action="store_true")
     parser.add_argument("--allow-colab-allocation", action="store_true")
-    parser.add_argument("--compute-rate-per-hour", type=float, required=True)
-    parser.add_argument("--available-compute-units", type=float, required=True)
-    parser.add_argument("--rate-observed-at", required=True)
+    parser.add_argument("--attestation-file", type=Path, required=True)
     parser.add_argument("--plan-output", type=Path, required=True)
     parser.add_argument("--colab-bin", default="colab")
     args = parser.parse_args()
-    compute_attestation = validate_compute_attestation(
-        args.compute_rate_per_hour,
-        args.available_compute_units,
-        args.rate_observed_at,
-    )
+    attestation_path = args.attestation_file.resolve()
+    if attestation_path.exists() or attestation_path.with_suffix(
+        attestation_path.suffix + ".tmp"
+    ).exists():
+        raise FileExistsError("attestation path must be absent before launch planning")
     if sha256(JOB) != EXPECTED_JOB_SHA256:
         raise RuntimeError("hosted job changed after launch preregistration")
     job = load_job()
@@ -457,7 +524,7 @@ def main() -> int:
     recovery.mkdir(parents=True, exist_ok=True)
     version = cli_version(args.colab_bin)
     plan = build_plan(
-        assets, recovery, args.colab_bin, job, compute_attestation
+        assets, recovery, args.colab_bin, job, attestation_path
     )
     plan["cli_version"] = version
     plan["asset_staging"] = staging
