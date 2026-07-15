@@ -1099,3 +1099,12 @@ Do not proceed to grounded walking until low-risk gates pass.
   supported. No replay, training, architecture change, Colab, GPU/iGPU,
   RDK-X5, or robot work is yet authorized. See
   `outputs/analysis/GROUND_UP_TORSO_COM_DECODE_INTERPRETATION_CORRECTION_20260715.md`.
+- 2026-07-15: The next read-only evidence study is preregistered before replay.
+  It freezes one exact 144-cell CPU reporting replay with full 115-D traces,
+  separate ACCEL3/FULL115 instantaneous and local-window probes with no
+  inferential p-value, and identical-state forks of all six contracted actors
+  changing only `obs[3:6]` along the measured COM direction. A source/device/
+  graph/reproduction contract must pass first. No replay or sensitivity is
+  authorized before that contract, and no outcome directly authorizes
+  training, Colab, GPU/iGPU, RDK-X5, robot, deployment, torque, or motors. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_FULL_OBSERVATION_REPLAY_SENSITIVITY_PREREGISTRATION_20260715.md`.

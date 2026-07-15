@@ -29,11 +29,14 @@ weight onto later command-dependent nuisance features even though tick zero is
 preserved exactly; it cannot select or reject memory. No objective, optimizer,
 memory, estimator, explicit-COM, or range-narrowing family is selected.
 
-The next defensible step is a separate preregistration for CPU-only simulator
-replay that records full 115-D observations at sliding mid-gait windows and a
-contracted sensitivity audit of all six actors to obs[3:6] at reset and
-mid-gait states. Do not run replay, sensitivity, training, tuning, Colab,
-GPU/iGPU, RDK-X5, runtime, or robot work before that contract.
+That CPU-only study is now frozen in
+`GROUND_UP_TORSO_COM_FULL_OBSERVATION_REPLAY_SENSITIVITY_PREREGISTRATION_20260715.md`.
+It requires an exact-source/device/graph/replay contract before any simulator
+run, then one reporting-only 144-cell replay with full observations, a
+descriptive instantaneous/local-window decode, and identical-state actor forks
+that change only obs[3:6]. The next step is the contract only. Do not run replay,
+sensitivity, training, tuning, Colab, GPU/iGPU, RDK-X5, runtime, or robot work
+before that contract passes.
 ```
 
 Robotics operating model:
