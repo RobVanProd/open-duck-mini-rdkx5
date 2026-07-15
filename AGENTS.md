@@ -1532,3 +1532,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   input. No training, behavior evaluation, local GPU/iGPU, RDK-X5, runtime, or
   robot action is authorized. See
   `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_GPU_DIAGNOSTIC_WALL_ONLY_CONTRACT_20260715.md`.
+- 2026-07-15: The wall-only T4 diagnostic recovered the exact report and
+  stopped before PPO. Actor error is exactly 1.1920928955078125e-07 at all
+  three z values; critic error is zero; every other expansion check passes.
+  Raw classification is invalid because its implementation expected the wrong
+  CPU-directory hash and literal `CudaDevice`. Direct extraction of the exact
+  archive yields 05c0...920e, matching the report, and named status proves T4
+  while the report says `cuda:0`. A CPU-only validity correction is
+  preregistered to verify these facts and apply the original 1e-7 classes
+  without altering the raw result. No new Colab, PPO, behavior evaluation,
+  local GPU/iGPU, RDK-X5, runtime, or robot action is authorized. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_GPU_EXPANSION_DIAGNOSTIC_RESULT_20260715.md`
+  and
+  `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_GPU_DIAGNOSTIC_VALIDITY_CORRECTION_PREREGISTRATION_20260715.md`.
