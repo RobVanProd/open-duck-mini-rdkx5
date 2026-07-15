@@ -1086,3 +1086,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   `outputs/analysis/GROUND_UP_TORSO_COM_OBSERVABILITY_DECODE_RESULT_20260715.md`
   and
   `outputs/analysis/GROUND_UP_TORSO_COM_INSTANTANEOUS_DECODE_RAW_AUDIT_20260715.md`.
+- 2026-07-15: The decode selection above is superseded after a nested-feature
+  audit. Tick-zero remains one exact accelerometer vector per COM class, but
+  the 144 rows are only three deterministic prototypes, so p=1/1001 is not an
+  inferential significance result. Prefix construction and training-fold
+  standardization preserve tick zero exactly at every N; a tick-zero-only
+  probe stays perfect. The all-feature ridge regresses at N=2/8/16 because it
+  reallocates weight onto later command-dependent nuisance dimensions. Thus
+  the N>1 table is not a monotone information test and selects neither memory
+  nor an objective/exploitation route. Only a separately preregistered
+  CPU-only full-115-D replay plus actor obs[3:6] sensitivity contract is
+  supported. No replay, training, architecture change, Colab, GPU/iGPU,
+  RDK-X5, or robot work is yet authorized. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_DECODE_INTERPRETATION_CORRECTION_20260715.md`.

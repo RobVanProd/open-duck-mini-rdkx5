@@ -16,18 +16,24 @@ rejects zero axis exposure as a sufficient explanation: corrected full-range
 training reproduces the pre-remediation X_NEG reversal magnitude, while X_POS
 fails with the opposite signed runaway and nominal remains fully preserved.
 
-The preregistered read-only decode then finds the decisive observation fact:
-COM class is linearly decoded from the exact tick-zero gyro/accelerometer actor
-input with 100% accuracy in every held-out arm, command, and fit fold
-(family-wise p=1/1001). Gyro is zero; the tick-zero accelerometer is an exact,
-distinct class signature repeated across all 48 traces per class. History is
-not required by this evidence, so do not select recurrence or a memory arm.
+The saved-trace decode preserves one deterministic measurement: under the
+eval reset protocol, tick-zero gyro is zero and the accelerometer is one exact,
+distinct vector for each COM class, repeated across all 48 traces per class.
+This proves only that reset-time acceleration encodes COM inside actor input.
 
-The next defensible work is a separately preregistered objective/exploitation
-study of why the policy fails to use this instantaneous signal. Do not train,
-tune, replay the simulator, add an explicit COM input, narrow the certified
-range, or change architecture before that preregistration. R2 resumption, R3+,
-Colab, runtime design, RDK-X5, GPU/iGPU, and robot work remain unauthorized.
+The original statistical and selection interpretation is superseded. Effective
+tick-zero n is three class prototypes, not 144 independent samples, so the
+1/1001 permutation value is not an inferential significance claim. The N>1
+prefix table is non-monotone because the fixed ridge reallocates regularized
+weight onto later command-dependent nuisance features even though tick zero is
+preserved exactly; it cannot select or reject memory. No objective, optimizer,
+memory, estimator, explicit-COM, or range-narrowing family is selected.
+
+The next defensible step is a separate preregistration for CPU-only simulator
+replay that records full 115-D observations at sliding mid-gait windows and a
+contracted sensitivity audit of all six actors to obs[3:6] at reset and
+mid-gait states. Do not run replay, sensitivity, training, tuning, Colab,
+GPU/iGPU, RDK-X5, runtime, or robot work before that contract.
 ```
 
 Robotics operating model:
