@@ -220,6 +220,13 @@ are zero. Cleanup passed after 184.648470 seconds and no session remains.
 Decision: `STOP_NO_RETRY_HOSTED_GPU_EXPANSION_EQUIVALENCE_FAILED`. The next
 evidence boundary is a separately preregistered report-before-raise GPU
 expansion diagnostic with no PPO, not a retry of this launch.
+
+That diagnostic is now preregistered and its zero-session package contract
+passes. A wrapper around only the frozen expansion function captures both pass
+and fail reports and terminates before the training command. The short launcher
+freezes 21 exact uploads, 300 seconds, .25 units, and 60-second rate/cleanup
+reserves. The next boundary is new explicit approval for one diagnostic T4;
+the package itself opened zero sessions and ran zero PPO steps.
 ```
 
 Robotics operating model:

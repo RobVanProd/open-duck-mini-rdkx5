@@ -1501,3 +1501,12 @@ Do not proceed to grounded walking until low-risk gates pass.
   evaluation, local GPU/iGPU, RDK-X5, runtime, or robot action is authorized
   now. See
   `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_GPU_EXPANSION_DIAGNOSTIC_PREREGISTRATION_20260715.md`.
+- 2026-07-15: The short GPU expansion diagnostic package contract passes all
+  frozen checks with zero sessions/remote bytes/PPO. Exact pass/fail fixtures
+  prove the wrapper captures the original report and stops before training.
+  The launcher freezes 21 uploads, 300 seconds, .25 units, 60-second handshake
+  and stop reserve, atomic recovery, and named cleanup. A new explicit approval
+  is required before one diagnostic allocation; after its marker only the live
+  UI rate and available units are needed. No training, behavior evaluation,
+  local GPU/iGPU, RDK-X5, runtime, or robot action is authorized. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_GPU_EXPANSION_DIAGNOSTIC_PACKAGE_CONTRACT_20260715.md`.
