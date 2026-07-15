@@ -245,6 +245,15 @@ corrected frozen-threshold result is
 expansion check passes. The 1e-7 threshold is not relaxed. The only selected
 next step is a separately preregistered CPU-only action-distribution/ULP
 sensitivity audit; it authorizes no training or hardware action.
+
+That CPU-only ULP audit now passes every frozen check. It covers all signed
+single-coordinate perturbations and both full 28-parameter corners at the
+measured epsilon. Maximum deterministic action change is 1.18213e-7, scale
+change 5.50010e-8, physical target displacement 2.95531e-8 rad, and rigorous
+Gaussian-W2/tanh upper bound 4.79740e-7—each below the established 1e-6 action-
+identity boundary. The original 1e-7 expansion check remains failed. The only
+selected next step is preregistration of an epsilon-aware hosted expansion-
+method correction; training and hardware remain unauthorized.
 ```
 
 Robotics operating model:

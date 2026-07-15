@@ -1575,3 +1575,14 @@ Do not proceed to grounded walking until low-risk gates pass.
   decision rule changes. Only the same CPU audit may be rerun; no training,
   Colab, local GPU/iGPU, RDK-X5, runtime, or robot action is authorized. See
   `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_ACTION_DISTRIBUTION_ULP_RESTORE_CORRECTION_20260715.md`.
+- 2026-07-15: The corrected CPU-only action-distribution ULP audit passes every
+  frozen check. Across all signed single-coordinate perturbations and both full
+  28-parameter corners at the measured float32-epsilon envelope, maximum
+  deterministic action difference is 1.18213e-7, scale difference 5.50010e-8,
+  physical target difference 2.95531e-8 rad, and rigorous Gaussian-W2/tanh
+  upper bound 4.79740e-7. All remain below the established 1e-6 action-
+  identity boundary and its 2.5e-7-rad physical image. The original 1e-7
+  expansion result remains failed. This selects only preregistration of an
+  epsilon-aware hosted expansion correction; no training, Colab, behavior,
+  local GPU/iGPU, RDK-X5, runtime, or robot action is authorized. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_ACTION_DISTRIBUTION_ULP_SENSITIVITY_RESULT_20260715.md`.
