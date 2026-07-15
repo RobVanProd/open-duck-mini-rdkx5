@@ -1318,3 +1318,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   It executed zero formal endpoint reads, dynamic steps, or actor calls. Only
   the frozen four-variant tick-zero audit is authorized. See
   `outputs/analysis/GROUND_UP_TORSO_COM_MJX_JIT_BOUNDARY_AUDIT_CONTRACT_20260715.md`.
+- 2026-07-15: The four-variant JIT-boundary audit is valid. The exact eager
+  closure matches the endpoint oracle with zero error. The exact evaluator JIT
+  closure misses by up to .0268936157 m/s^2 and reproduces the preceding
+  invalid half-direction exactly. External model arguments remain within
+  7.24196e-6 m/s^2 of that invalid direction; paired JIT reproduces it exactly.
+  Decision: `GENERAL_JIT_FORWARD_DISCREPANCY_OR_UNRESOLVED`. This selects only
+  an eager diagnostic-branch correction candidate for separate
+  preregistration; no map retry, actor, training, or hardware action is yet
+  authorized. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_MJX_JIT_BOUNDARY_AUDIT_RESULT_20260715.md`.

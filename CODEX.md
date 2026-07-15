@@ -123,9 +123,12 @@ variants match, so none selects a mechanism. The supported next evidence
 boundary is now preregistered as a four-variant JIT-boundary audit: exact eager
 closure, exact evaluator JIT closure, external model arguments, and paired
 endpoint JIT. Its zero-outcome contract passes every frozen check with zero
-endpoint reads, dynamic steps, or actor calls. The exact four-variant audit is
-next. No 144-cell retry, new sensor interpretation, actor work, or training is
-authorized.
+endpoint reads, dynamic steps, or actor calls. The audit is valid: eager
+forward matches the oracle exactly, while all three JIT forms miss; the exact
+evaluator JIT form reproduces the prior invalid direction bit-for-bit.
+Decision: `GENERAL_JIT_FORWARD_DISCREPANCY_OR_UNRESOLVED`. The next evidence
+boundary is a separate eager, default-off exact-map correction
+preregistration. No map retry, actor work, or training is authorized yet.
 ```
 
 Robotics operating model:
