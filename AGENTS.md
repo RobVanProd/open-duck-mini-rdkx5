@@ -1671,3 +1671,12 @@ Do not proceed to grounded walking until low-risk gates pass.
   behavior. No training, Colab, GPU/iGPU, RDK-X5, runtime, or robot action is
   authorized. See
   `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_EVALUATOR_NOMINAL_RESET_CORRECTION_PREREGISTRATION_20260715.md`.
+- 2026-07-15: The corrected reset-only CPU evaluator contract passes with zero
+  policy steps and zero behavior cells. Default-off remains 115-D/no latch;
+  enabled -.05/0/+.05 resets are 116-D and latch -1.0/-0.0000445/+0.999989
+  at index 101, matching the independent estimator within 1e-6. Body-2 X-only
+  readback, exact transformed graph identity, and CPU-only execution pass. The
+  exact frozen 12-matrix/48-cell behavior evaluation may proceed without a new
+  approval prompt. No training, Colab, GPU/iGPU, RDK-X5, runtime, or robot
+  action is authorized. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_BEHAVIOR_EVALUATOR_CORRECTED_CONTRACT_20260715.md`.

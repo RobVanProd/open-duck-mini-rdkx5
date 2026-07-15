@@ -21,12 +21,14 @@ import onnxruntime as ort
 
 REPO = Path(__file__).resolve().parents[1]
 PREREG = REPO / "outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_BEHAVIOR_EVALUATOR_PREREGISTRATION_20260715.md"
+CORRECTION = REPO / "outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_EVALUATOR_NOMINAL_RESET_CORRECTION_PREREGISTRATION_20260715.md"
 TRANSFORM = REPO / "outputs/analysis/ground_up_reset_com_estimator_eval_policy_transform_contract.json"
 FEATURE_TABLE = REPO / "outputs/analysis/ground_up_projected_reference_feature_table.npz"
 CLOSED_LOOP = REPO / "tools/closed_loop_sim_eval.py"
 CLI = REPO / "tools/evaluate_ground_up_policy.py"
 EXPECTED_HASHES = {
     "preregistration": "a462f6ecf5a5ca7260ceb31361d7f3cb0360216fd024d94aab67e17bb7d9506f",
+    "correction_preregistration": "2f04f677c6265b2a97bbbe4d31fa4c29b7ab1f481de405d1c7c3e3020b9a9770",
     "transform_contract": "391952c95cdcb1e2b1bcb460e46ca788be6fd5cc1d1a9d0a19ba294858c42149",
     "joystick": "4ddcfbda6f06f9d04acf4ee82deb364993da750adfb8487d032c16be38db3186",
     "runner": "e5ed1bac7ed181f02014487827f05f35fd421ff97ae50614de1b2ce8089f87a2",
@@ -61,6 +63,8 @@ def make_env(joystick: Any, enabled: bool) -> Any:
     config = joystick.default_config()
     config.reference_feature_table_path = str(FEATURE_TABLE)
     config.ground_up_reset_com_estimator_input = enabled
+    if enabled:
+        config.nominal_reference_bootstrap = True
     overrides = {
         "push_config.enable": False,
         "lin_vel_x": [0.0, 0.0],
@@ -155,9 +159,10 @@ def main() -> int:
     latches = [cell["latch"] for cell in cells]
     checks = {
         "preregistration_hash_exact": sha256(PREREG) == EXPECTED_HASHES["preregistration"],
+        "correction_preregistration_hash_exact": sha256(CORRECTION) == EXPECTED_HASHES["correction_preregistration"],
         "transform_contract_hash_and_status_exact": sha256(TRANSFORM) == EXPECTED_HASHES["transform_contract"] and transform["status"] == "PASS_RESET_ESTIMATOR_EVAL_POLICY_TRANSFORM_CONTRACT",
         "composed_sources_exact": composed_hashes == {key: EXPECTED_HASHES[key] for key in composed_hashes},
-        "evaluator_default_false_and_opt_in_exact": "policy_reset_com_estimator_input: bool = False" in source and "if config.policy_reset_com_estimator_input:" in source and "env_config.ground_up_reset_com_estimator_input = True" in source and '"--policy-reset-com-estimator-input"' in cli_source and "args.policy_reset_com_estimator_input" in cli_source,
+        "evaluator_default_false_and_opt_in_exact": "policy_reset_com_estimator_input: bool = False" in source and "if config.policy_reset_com_estimator_input:" in source and "env_config.ground_up_reset_com_estimator_input = True" in source and "env_config.nominal_reference_bootstrap = True" in source and '"--policy-reset-com-estimator-input"' in cli_source and "args.policy_reset_com_estimator_input" in cli_source,
         "dynamics_override_precedes_reset": source.index("apply_eval_dynamics_override(") < source.index("env.reset") and "env.mj_model.body(\"trunk_assembly\").id" in source,
         "default_off_115d_no_latch": disabled == {"observation_shape": [115], "latch_key_absent": True},
         "enabled_116d_latch_and_reference_contract": all(cell["observation_shape"] == [116] and cell["final_reference_action_size"] == 14 and abs(cell["observation_index_101"] - cell["latch"]) <= 1e-6 for cell in cells),
@@ -175,7 +180,7 @@ def main() -> int:
         "checks": checks,
         "failed_checks": failed,
         "execution": {"platform": "cpu", "policy_steps": 0, "formal_behavior_cells": 0},
-        "source_hashes": {"preregistration": sha256(PREREG), "closed_loop": sha256(CLOSED_LOOP), "cli": sha256(CLI), "transform_contract": sha256(TRANSFORM), **composed_hashes},
+        "source_hashes": {"preregistration": sha256(PREREG), "correction_preregistration": sha256(CORRECTION), "closed_loop": sha256(CLOSED_LOOP), "cli": sha256(CLI), "transform_contract": sha256(TRANSFORM), **composed_hashes},
         "policies": policy_rows,
         "reset_cells": cells,
         "default_off": disabled,

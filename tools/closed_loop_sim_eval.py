@@ -1261,6 +1261,7 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                         "ground_up_reset_com_estimator_input"
                     )
                 env_config.ground_up_reset_com_estimator_input = True
+                env_config.nominal_reference_bootstrap = True
             if config.reference_feature_table_path is not None:
                 env_config.reference_feature_table_path = str(
                     config.reference_feature_table_path.resolve()
