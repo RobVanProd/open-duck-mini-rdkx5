@@ -1616,3 +1616,18 @@ Do not proceed to grounded walking until low-risk gates pass.
   remain behavior-unevaluated; no local GPU/iGPU, RDK-X5, runtime, or robot
   action is authorized. See
   `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_EPSILON_AWARE_WALL_LAUNCHER_CONTRACT_20260715.md`.
+- 2026-07-15: The single epsilon-aware T4 launch failed before checkpoint
+  restore, expansion report, or PPO because the wrapper imported preinstalled
+  JAX before the original job upgraded JAX/JAXLIB in the same process. Orbax
+  then mixed the retained Python module with newly installed plugin binaries
+  and raised in the CUDA Triton dialect. All 24 uploads completed, no training
+  command/result artifact exists, cleanup passed after 89.500354 seconds, and
+  zero sessions remain; compute is `UNMEASURED`. Decision:
+  `STOP_NO_RETRY_PREINSTALL_JAX_IMPORT_CONTAMINATION`. A separately
+  preregistered correction moves only that import into the post-install
+  expansion callback and requires both wrapper and new wall-launch contracts
+  before one fresh authorized session. No local GPU/iGPU, RDK-X5, runtime, or
+  robot action is authorized. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_EPSILON_AWARE_HOSTED_LAUNCH_RESULT_20260715.md`
+  and
+  `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_POSTINSTALL_JAX_IMPORT_CORRECTION_PREREGISTRATION_20260715.md`.
