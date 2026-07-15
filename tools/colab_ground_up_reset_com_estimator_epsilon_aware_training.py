@@ -103,13 +103,13 @@ def correct_report(raw: dict[str, Any], *, live_gpu: bool) -> dict[str, Any]:
 
 
 def run(module: Any) -> int:
-    import jax
-
     load_ulp()
     original_expand = module.hosted_expand
     invocation_count = 0
 
     def epsilon_aware_expand(source: Path, destination: Path, report_path: Path) -> dict[str, Any]:
+        import jax
+
         nonlocal invocation_count
         invocation_count += 1
         if invocation_count != 1:

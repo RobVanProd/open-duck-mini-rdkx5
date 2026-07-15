@@ -21,12 +21,12 @@ PREREG = REPO / "outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_EPSILON_AW
 CONTRACT = REPO / "outputs/analysis/ground_up_reset_com_estimator_epsilon_aware_expansion_contract.json"
 ARCHIVE = REPO / "outputs/analysis/GROUND_UP_TRACKING_TAIL_artifacts.tar.gz"
 EXPECTED = {
-    "launcher": "6b04ae16ad145c1207a2ec402ec911de4bc4599fe34a9f2dbeec3ce5d3db8420",
+    "launcher": "33cbdc87a092f873dc789dc62257c0bb92a013ce207d753d05a3b1b4c9b35a2f",
     "base": "afb5acc580239f729d4d0832dd29a0c7163e87b63856ff6b1111eb393683e241",
-    "wrapper": "c1d88f6c48a6d2fb3191e4c25088f83e1163ff217058a94d79b2a17394aabda4",
+    "wrapper": "fc8e03fa7f0469a825a10a7fa70bdae81a45c2f7333b279f260984d39983f9ca",
     "hosted": "a3e5fc38994cecd65d89fdc6b9ede23c2433e917b84583dfcced42c161e79d67",
     "prereg": "22daea5aaddf8d480d5748d3c1d1053ff6dd7bff2d4ab04af2b69750d73a5947",
-    "contract": "61a5e25fa358a0fd61418ea305d15cdc6c37db8e4ce333bd2447b2e10692eeb0",
+    "contract": "a8e1c75dc9719350e106f22abf8473d93a73405f4d992c6fde2d31509b3e9032",
     "archive": "ae4c631a6ce1c0b36c3231113740acc6c1b8a463c0911ce7cad30b8f8d8ca60f",
 }
 
@@ -72,7 +72,7 @@ def main() -> int:
             calls.append(value)
             stdout = ""
             if value[1] == "status":
-                stdout = "[open-duck-reset-estimator-epsilon-t4] fixture | Hardware: T4 | Variant: GPU | Status: IDLE\n"
+                stdout = "[open-duck-reset-estimator-epsilon2-t4] fixture | Hardware: T4 | Variant: GPU | Status: IDLE\n"
             return {"command": value, "returncode": 0, "stdout": stdout, "elapsed_seconds": 0.0}
 
         launcher.command = fake_command
@@ -100,7 +100,7 @@ def main() -> int:
         "frozen_hashes_exact": hashes == EXPECTED,
         "exact_24_hash_locked_assets": summary["asset_count"] == 24
         and summary["upload_count"] == 24,
-        "fresh_named_t4_exact": summary["session"] == "open-duck-reset-estimator-epsilon-t4"
+        "fresh_named_t4_exact": summary["session"] == "open-duck-reset-estimator-epsilon2-t4"
         and launcher.ACCELERATOR == "T4",
         "wall_and_stop_reserve_exact": summary["maximum_session_seconds"] == 2_400.0
         and summary["stop_reserve_seconds"] == 120.0,
@@ -115,7 +115,7 @@ def main() -> int:
         "invalid_exec_fails_closed": failed_closed
         and record.get("status") == "FAIL_HOSTED_LAUNCH_OR_RECOVERY",
         "finally_cleanup_invoked_and_passed": record.get("session_stop_passed") is True
-        and calls[-1] == ["colab", "stop", "--session", "open-duck-reset-estimator-epsilon-t4"],
+        and calls[-1] == ["colab", "stop", "--session", "open-duck-reset-estimator-epsilon2-t4"],
         "no_remote_or_training_execution_in_contract": all(call[1] != "new" for call in [])
         and record.get("remote_result") is None,
         "original_recipe_and_exports_exact": job.ARM_NAME == "RESET_EST_LATCH_U05"

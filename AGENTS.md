@@ -1631,3 +1631,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_EPSILON_AWARE_HOSTED_LAUNCH_RESULT_20260715.md`
   and
   `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_POSTINSTALL_JAX_IMPORT_CORRECTION_PREREGISTRATION_20260715.md`.
+- 2026-07-15: The post-install JAX import correction passes both required CPU
+  contracts. Only `import jax` moved into the post-install expansion callback;
+  a simulated module proves `module.main()` begins before JAX import, and every
+  epsilon-aware pass/fail fixture remains unchanged. The rebuilt wall launcher
+  retains 24 assets, wall/cleanup/recovery rules, and `UNMEASURED` compute with
+  fresh session `open-duck-reset-estimator-epsilon2-t4`. Continuing user
+  authorization permits one fresh no-retry T4 launch without another billing/
+  approval prompt. No local GPU/iGPU, RDK-X5, runtime, or robot action is
+  authorized. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_POSTINSTALL_JAX_IMPORT_CORRECTION_CONTRACT_20260715.md`.

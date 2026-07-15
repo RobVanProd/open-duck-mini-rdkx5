@@ -9,6 +9,8 @@ import importlib.util
 import json
 from pathlib import Path
 import sys
+import tempfile
+from types import SimpleNamespace
 from typing import Any
 
 
@@ -18,12 +20,14 @@ HOSTED = REPO / "tools/colab_ground_up_reset_com_estimator_training.py"
 PREREG = REPO / "outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_EPSILON_AWARE_HOSTED_EXPANSION_CORRECTION_PREREGISTRATION_20260715.md"
 ULP_JSON = REPO / "outputs/analysis/ground_up_reset_com_estimator_action_distribution_ulp_sensitivity.json"
 ULP_MD = REPO / "outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_ACTION_DISTRIBUTION_ULP_SENSITIVITY_RESULT_20260715.md"
+IMPORT_CORRECTION = REPO / "outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_POSTINSTALL_JAX_IMPORT_CORRECTION_PREREGISTRATION_20260715.md"
 EXPECTED = {
-    "wrapper": "c1d88f6c48a6d2fb3191e4c25088f83e1163ff217058a94d79b2a17394aabda4",
+    "wrapper": "fc8e03fa7f0469a825a10a7fa70bdae81a45c2f7333b279f260984d39983f9ca",
     "hosted": "a3e5fc38994cecd65d89fdc6b9ede23c2433e917b84583dfcced42c161e79d67",
     "prereg": "22daea5aaddf8d480d5748d3c1d1053ff6dd7bff2d4ab04af2b69750d73a5947",
     "ulp_json": "a30df798a2dd659f0299c92586fb4b1eb48047a0323bb727426e59dcc95d9c7e",
     "ulp_md": "b08f138aa29af0798e2d626c0fb9a03e0f21289f1f1fa50326a2da61aaa0b3ff",
+    "import_correction": "4345ce86b3390d716b302c5df2d346487f28abf783217133e71af70bc2ba856d",
 }
 
 
@@ -79,7 +83,8 @@ def main() -> int:
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     paths = {"wrapper": WRAPPER, "hosted": HOSTED, "prereg": PREREG,
-             "ulp_json": ULP_JSON, "ulp_md": ULP_MD}
+             "ulp_json": ULP_JSON, "ulp_md": ULP_MD,
+             "import_correction": IMPORT_CORRECTION}
     hashes = {name: sha256(path) for name, path in paths.items()}
     wrapper = load(WRAPPER, "epsilon_wrapper_contract")
     hosted = load(HOSTED, "epsilon_hosted_contract")
@@ -95,6 +100,34 @@ def main() -> int:
     original_pass = fixture(0.0); original_pass["status"] = "PASS_HOSTED_CHECKPOINT_EXPANSION"; original_pass["failed_checks"] = []; original_pass["checks"]["step_zero_outputs_exact"] = True
 
     command = hosted.training_command(Path("/root"), Path("/assets"), Path("/arm"), Path("/restore"))
+    wrapper_source = WRAPPER.read_text()
+    run_prefix, callback_source = wrapper_source.split("    def epsilon_aware_expand", 1)
+    entered_with_jax_loaded: list[bool] = []
+    original_load_ulp = wrapper.load_ulp
+    with tempfile.TemporaryDirectory(prefix="epsilon_import_order_") as temporary:
+        report_path = Path(temporary) / "report.json"
+
+        def original_expand(_source: Path, _destination: Path, path: Path) -> None:
+            path.write_text(json.dumps(fixture()) + "\n")
+            raise RuntimeError("frozen original 1e-7 failure")
+
+        module = SimpleNamespace()
+        module.hosted_expand = original_expand
+
+        def module_main() -> int:
+            entered_with_jax_loaded.append("jax" in sys.modules)
+            module.hosted_expand(Path("source"), Path("destination"), report_path)
+            return 0
+
+        module.main = module_main
+        wrapper.load_ulp = lambda: ulp
+        import_order_failed_closed = False
+        try:
+            wrapper.run(module)
+        except Exception:
+            import_order_failed_closed = True
+        finally:
+            wrapper.load_ulp = original_load_ulp
     checks = {
         "frozen_hashes_exact": hashes == EXPECTED,
         "ulp_evidence_exact": ulp.get("status") == "PASS_ACTION_DISTRIBUTION_ULP_SENSITIVITY_AUDIT"
@@ -125,6 +158,10 @@ def main() -> int:
         "wrapper_changes_only_expansion_boundary": "module.hosted_expand = epsilon_aware_expand" in WRAPPER.read_text()
         and "result = module.main()" in WRAPPER.read_text()
         and "raw_original_1e7_report" in WRAPPER.read_text(),
+        "jax_import_deferred_until_expansion_callback": "import jax" not in run_prefix
+        and callback_source.split("try:", 1)[0].count("import jax") == 1
+        and entered_with_jax_loaded == [False]
+        and import_order_failed_closed,
     }
     failed = sorted(name for name, passed in checks.items() if not passed)
     result = {

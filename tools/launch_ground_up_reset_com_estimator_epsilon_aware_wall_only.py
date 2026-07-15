@@ -22,7 +22,7 @@ WRAPPER = REPO / "tools/colab_ground_up_reset_com_estimator_epsilon_aware_traini
 ULP_JSON = REPO / "outputs/analysis/ground_up_reset_com_estimator_action_distribution_ulp_sensitivity.json"
 PREREG = REPO / "outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_EPSILON_AWARE_HOSTED_EXPANSION_CORRECTION_PREREGISTRATION_20260715.md"
 CONTRACT = REPO / "outputs/analysis/ground_up_reset_com_estimator_epsilon_aware_expansion_contract.json"
-SESSION = "open-duck-reset-estimator-epsilon-t4"
+SESSION = "open-duck-reset-estimator-epsilon2-t4"
 ACCELERATOR = "T4"
 MAX_SESSION_SECONDS = 2_400.0
 STOP_RESERVE_SECONDS = 120.0
@@ -32,10 +32,10 @@ MANIFEST_NAME = "GROUND_UP_RESET_COM_ESTIMATOR_TRAINING_manifest.json"
 ARTIFACT_NAME = "GROUND_UP_RESET_COM_ESTIMATOR_TRAINING_artifacts.tar.gz"
 EXPECTED_EXTRA = {
     HOSTED.name: "a3e5fc38994cecd65d89fdc6b9ede23c2433e917b84583dfcced42c161e79d67",
-    WRAPPER.name: "c1d88f6c48a6d2fb3191e4c25088f83e1163ff217058a94d79b2a17394aabda4",
+    WRAPPER.name: "fc8e03fa7f0469a825a10a7fa70bdae81a45c2f7333b279f260984d39983f9ca",
     ULP_JSON.name: "a30df798a2dd659f0299c92586fb4b1eb48047a0323bb727426e59dcc95d9c7e",
     PREREG.name: "22daea5aaddf8d480d5748d3c1d1053ff6dd7bff2d4ab04af2b69750d73a5947",
-    CONTRACT.name: "61a5e25fa358a0fd61418ea305d15cdc6c37db8e4ce333bd2447b2e10692eeb0",
+    CONTRACT.name: "a8e1c75dc9719350e106f22abf8473d93a73405f4d992c6fde2d31509b3e9032",
 }
 
 
