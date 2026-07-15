@@ -1597,3 +1597,12 @@ Do not proceed to grounded walking until low-risk gates pass.
   broaden the frozen job. No local GPU/iGPU, RDK-X5, runtime, or robot action
   is authorized. See
   `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_EPSILON_AWARE_HOSTED_EXPANSION_CORRECTION_PREREGISTRATION_20260715.md`.
+- 2026-07-15: The epsilon-aware expansion wrapper passes its CPU-only contract
+  with zero sessions/remote bytes/PPO. It preserves the original source and raw
+  failure, accepts only the exact sole failure at <=float32 epsilon with zero
+  critic error and exact source/GPU/ULP evidence, and rejects over-epsilon,
+  nonzero-critic, wrong-source, extra-failure, original-pass, and missing-GPU
+  controls. The complete original 2M recipe and exports remain exact. Only the
+  wall-only launcher contract may follow; no allocation, training, local GPU/
+  iGPU, RDK-X5, runtime, or robot action is authorized yet. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_EPSILON_AWARE_HOSTED_EXPANSION_CONTRACT_20260715.md`.

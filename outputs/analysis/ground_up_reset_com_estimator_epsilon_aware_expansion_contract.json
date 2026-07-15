@@ -1,0 +1,190 @@
+{
+  "authority": {
+    "colab_now": false,
+    "local_gpu_or_igpu": false,
+    "robot_or_rdk": false,
+    "training_now": false,
+    "wall_only_launcher_contract_next_if_pass": true
+  },
+  "checks": {
+    "extra_failure_rejected": true,
+    "frozen_hashes_exact": true,
+    "no_gpu_proof_rejected": true,
+    "nonzero_critic_rejected": true,
+    "original_pass_not_reinterpreted": true,
+    "original_recipe_constants_exact": true,
+    "original_training_command_exact": true,
+    "over_epsilon_rejected": true,
+    "raw_failure_preserved_unchanged": true,
+    "threshold_exact_float32_epsilon": true,
+    "ulp_evidence_exact": true,
+    "valid_epsilon_fixture_passes": true,
+    "wrapper_changes_only_expansion_boundary": true,
+    "wrong_source_rejected": true
+  },
+  "execution": {
+    "behavior_cells": 0,
+    "colab_sessions_created": 0,
+    "cpu_only": true,
+    "remote_bytes": 0,
+    "robot_or_rdk": false,
+    "training_steps": 0
+  },
+  "failed_checks": [],
+  "original_training_command": [
+    "/usr/bin/python3",
+    "playground/open_duck_mini_v2/runner.py",
+    "--task",
+    "flat_terrain_backlash",
+    "--env",
+    "joystick",
+    "--output_dir",
+    "/arm",
+    "--num_timesteps",
+    "2000000",
+    "--ppo_seed",
+    "100",
+    "--ppo_num_envs",
+    "256",
+    "--ppo_num_evals",
+    "3",
+    "--ppo_episode_length",
+    "600",
+    "--ppo_unroll_length",
+    "20",
+    "--ppo_batch_size",
+    "256",
+    "--ppo_num_minibatches",
+    "4",
+    "--ppo_num_updates_per_batch",
+    "4",
+    "--ppo_learning_rate",
+    "0.0003",
+    "--ppo_discounting",
+    "0.97",
+    "--ppo_entropy_cost",
+    "0.005",
+    "--policy_architecture",
+    "reference_residual",
+    "--imitation_scale",
+    "1.0",
+    "--reference_feature_table_path",
+    "/assets/ground_up_projected_reference_feature_table.npz",
+    "--nominal_reference_bootstrap",
+    "--ground_up_reset_com_estimator_input",
+    "--ground_up_torso_com_randomization",
+    "--ground_up_torso_com_x_min_m",
+    "-0.05",
+    "--ground_up_torso_com_x_max_m",
+    "0.05",
+    "--ground_up_torso_com_distribution",
+    "uniform",
+    "--ground_up_hard_vector_command_support",
+    "--ground_up_command_support_min_x",
+    "0.074",
+    "--ground_up_command_support_max_x",
+    "0.080",
+    "--ground_up_action_velocity_limits_rad_s",
+    "5.24,5.24,1.50,1.50,1.50,5.24,5.24,5.24,5.24,5.24,5.24,1.25,1.00,1.25",
+    "--ground_up_measured_actuator_bridge",
+    "--ground_up_actuator_bridge_delay_ticks",
+    "3,3,3,3,3,3,2,3,3,3,2,3,2,3",
+    "--ground_up_actuator_bridge_tau_s",
+    ".015,.015,.005,.010,.010,.120,.120,.120,.120,.020,.035,.010,.030,.005",
+    "--ground_up_applied_target_observation",
+    "--ground_up_tracking_tail_exceedance_scale",
+    "-6572.254964031055",
+    "--ground_up_tracking_tail_threshold_rad",
+    "0.20",
+    "--reference_start_phase",
+    "0",
+    "--ground_up_signed_progress_objective",
+    "--critic_observation",
+    "privileged_state",
+    "--restore_checkpoint_path",
+    "/restore"
+  ],
+  "pass_fixture": {
+    "checks": {
+      "actor_errors_within_float32_epsilon": true,
+      "all_other_raw_checks_pass": true,
+      "cells_exact": true,
+      "critic_errors_zero": true,
+      "live_jax_gpu": true,
+      "raw_sole_failure_is_step_zero": true,
+      "raw_status_is_original_failure": true,
+      "report_device_exact_cuda0": true,
+      "six_errors_finite": true,
+      "source_directory_hash_exact": true
+    },
+    "failed_checks": [],
+    "maximum_actor_error": 1.1920928955078125e-07,
+    "maximum_critic_error": 0.0,
+    "raw_original_1e7_failed_checks_preserved": [
+      "step_zero_outputs_exact"
+    ],
+    "raw_original_1e7_report": {
+      "checks": {
+        "all_other_values_bit_exact": true,
+        "all_values_finite": true,
+        "expanded_shapes_exact": true,
+        "inserted_normalizer_exact": true,
+        "inserted_rows_zero": true,
+        "reference_tail_exact": true,
+        "save_restore_bit_exact": true,
+        "source_count_exact": true,
+        "source_shapes_exact": true,
+        "step_zero_outputs_exact": false
+      },
+      "devices": [
+        "cuda:0"
+      ],
+      "failed_checks": [
+        "step_zero_outputs_exact"
+      ],
+      "output_equivalence": [
+        {
+          "actor_max_abs_error": 1.1920928955078125e-07,
+          "critic_max_abs_error": 0.0,
+          "reference_tail_exact": true,
+          "z": -1.0
+        },
+        {
+          "actor_max_abs_error": 1.1920928955078125e-07,
+          "critic_max_abs_error": 0.0,
+          "reference_tail_exact": true,
+          "z": 0.0
+        },
+        {
+          "actor_max_abs_error": 1.1920928955078125e-07,
+          "critic_max_abs_error": 0.0,
+          "reference_tail_exact": true,
+          "z": 1.0
+        }
+      ],
+      "source_directory_sha256": "05c0c08468f02b96d7e4316fdae6527c6ee223fba507ce3f6a3221b2561a920e",
+      "status": "FAIL_HOSTED_CHECKPOINT_EXPANSION"
+    },
+    "raw_original_1e7_status_preserved": "FAIL_HOSTED_CHECKPOINT_EXPANSION",
+    "schema_version": "ground_up_reset_estimator_hosted_expansion_epsilon_aware.v1",
+    "status": "PASS_HOSTED_CHECKPOINT_EXPANSION_EPSILON_AWARE",
+    "threshold": {
+      "name": "float32_epsilon",
+      "value": 1.1920928955078125e-07
+    },
+    "ulp_evidence": {
+      "decision": "ULP_ENVELOPE_BELOW_EXISTING_ACTION_IDENTITY_BOUNDARY",
+      "path": "/content/ground_up_reset_com_estimator_action_distribution_ulp_sensitivity.json",
+      "sha256": "a30df798a2dd659f0299c92586fb4b1eb48047a0323bb727426e59dcc95d9c7e"
+    }
+  },
+  "schema_version": "ground_up_reset_estimator_epsilon_aware_expansion_contract.v1",
+  "source_hashes": {
+    "hosted": "a3e5fc38994cecd65d89fdc6b9ede23c2433e917b84583dfcced42c161e79d67",
+    "prereg": "22daea5aaddf8d480d5748d3c1d1053ff6dd7bff2d4ab04af2b69750d73a5947",
+    "ulp_json": "a30df798a2dd659f0299c92586fb4b1eb48047a0323bb727426e59dcc95d9c7e",
+    "ulp_md": "b08f138aa29af0798e2d626c0fb9a03e0f21289f1f1fa50326a2da61aaa0b3ff",
+    "wrapper": "c1d88f6c48a6d2fb3191e4c25088f83e1163ff217058a94d79b2a17394aabda4"
+  },
+  "status": "PASS_EPSILON_AWARE_HOSTED_EXPANSION_CONTRACT"
+}
