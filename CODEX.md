@@ -115,13 +115,13 @@ under that COM model. A separate read-only initialization-order audit is the
 next evidence boundary; do not relax the anchor, interpret invalid classes, or
 start actor, training, Colab, GPU/iGPU, RDK-X5, runtime, or robot work.
 
-The initialization question is now preregistered as a seven-variant,
-single-state CPU methods audit. It uses the exact frozen tick-zero NOMINAL/NEG/
-POS sensor vectors and tests fresh model initialization, unchanged live
-forward, qacc-warmstart reset, fresh MJX `_impl`, their combination, and fresh
-primary-data reconstruction. The next boundary is its zero-endpoint-outcome
-source/field/model contract. No 144-cell retry or new sensor interpretation is
-authorized before this mechanism is resolved.
+The initialization question is preregistered as a seven-variant, single-state
+CPU methods audit. Its pre-outcome contract passes all frozen source/trace,
+body/sensor, home-state, MJX-field, variant-source, and CPU checks with zero
+formal endpoint reads, dynamic steps, or actor calls. The authorized next
+operation is exactly the contracted seven-variant tick-zero audit. No 144-cell
+retry or new sensor interpretation is authorized before this mechanism is
+resolved.
 ```
 
 Robotics operating model:

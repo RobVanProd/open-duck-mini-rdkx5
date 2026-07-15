@@ -1289,3 +1289,9 @@ Do not proceed to grounded walking until low-risk gates pass.
   dynamic step, actor/policy call, training, Colab, GPU/iGPU, RDK-X5, runtime,
   or robot action is authorized. See
   `outputs/analysis/GROUND_UP_TORSO_COM_MJX_INITIALIZATION_ORDER_AUDIT_PREREGISTRATION_20260715.md`.
+- 2026-07-15: The initialization-order pre-outcome contract passes all source,
+  trace, body/sensor, home-state, MJX-field, variant-source, and CPU checks.
+  It executed zero formal endpoint reads, dynamic steps, or actor calls. The
+  committed contract authorizes only the frozen seven-variant tick-zero audit.
+  See
+  `outputs/analysis/GROUND_UP_TORSO_COM_MJX_INITIALIZATION_ORDER_AUDIT_CONTRACT_20260715.md`.
