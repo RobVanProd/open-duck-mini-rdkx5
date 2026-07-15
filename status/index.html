@@ -81,12 +81,12 @@
     <section class="hero">
       <div class="card">
         <div class="label">Current operation</div>
-        <div class="big amber" id="operation">COM remediation · behavior matrix active</div>
-        <div class="metric" id="operation-detail">The six full-range evaluation exports pass the frozen guard/deadband/conservative-envelope transform contract. CPU behavior matrices across both actuator fits and both ±0.05 m COM endpoints are now authorized; no arm is a winner yet.</div>
+        <div class="big" id="operation" style="color:var(--red)">Targeted COM remediation · closed</div>
+        <div class="metric" id="operation-detail">All 144 preregistered CPU cells are complete with exact per-run model readback. Every arm passes nominal and fails both ±0.05 m COM endpoints; the formulation closes with no winner.</div>
       </div>
       <div class="card">
-        <div class="label">Offline winner</div>
-        <div class="big" id="winner">G1 / T2 + x=0 repair</div>
+        <div class="label">Remediation winner</div>
+        <div class="big" id="winner">NONE</div>
         <div class="metric">Robot clearance: <strong style="color:var(--red)">NO</strong></div>
       </div>
       <div class="card">
@@ -166,6 +166,9 @@
           <li>The full 16-cell behavior matrix passes. All x=0 cells hold home for 600 ticks with zero saturation/rate excess and .03032 rad tracking p95; moving-command worst tracking remains .18082/.18167 at half/final.</li>
           <li>R1 preserves gait, x=0, tracking, and saturation under P31/34, but fails its left-ankle envelope in all six moving cells: 1.750001 versus 1.50 rad/s. The frozen policy closes at R1.</li>
           <li>The one-variable conservative repair resolves R1: all 16 P30/P31-34 cells pass at both checkpoints, with worst tracking .18317 rad and zero envelope excess.</li>
+          <li>The targeted torso-COM training package, hosted archive, and six baked-in guard/deadband/conservative-envelope policy transforms pass their frozen contracts.</li>
+          <li>All 12 remediation nominal matrices pass, but all 12 corrected X_NEG and all 12 symmetric X_POS matrices fail. Each arm passes exactly 4/12 matrices and 20/48 cells.</li>
+          <li>No arm satisfies both-checkpoint persistence across every cell. The exact targeted-COM formulation is closed without ranking or promoting a closest arm.</li>
         </ol>
       </div>
       <div class="card">
@@ -224,8 +227,8 @@
           <li>Completed: contract a name-checked targeted torso-X randomizer; uniform and exact-anchor distributions change only <code>body_ipos[2,0]</code>.</li>
           <li>Completed: package and CPU-smoke the preregistered uniform/direct, anchor/direct, and .01→.03→.05 curriculum search; the contract passes with zero failed checks.</li>
           <li>Completed: run the three frozen arms sequentially on Colab, recover the final archive with exact hash, stop all sessions, and pass the local artifact contract.</li>
-          <li>Current: apply the frozen guard/deadband/envelope transforms and run the preregistered CPU behavior gates on both full-range checkpoints per arm. No closest result may advance.</li>
-          <li>Design RDK runtime only after an offline winner exists.</li>
+          <li>Completed: apply the frozen guard/deadband/envelope transforms and run all 144 preregistered CPU behavior cells on both full-range checkpoints per arm.</li>
+          <li>Stopped: no arm advances. Any new hypothesis requires a separate preregistration; R2 resumption, R3+, training, runtime design, RDK-X5, and robot work remain unauthorized.</li>
         </ol>
       </div>
     </section>
@@ -234,11 +237,11 @@
       <div class="label">Authority boundary</div>
       <h2 style="margin-top:8px">Offline only</h2>
       <div>The baseline <code>BEST_WALK_ONNX_2.onnx</code> remains a frozen comparator, not a teacher or warm start. No new policy is cleared for the robot. No robot, RDK-X5, iGPU, or onboard GPU access is part of this work.</div>
-      <div class="constraints"><span class="chip">Robot blocked</span><span class="chip">RDK blocked</span><span class="chip">Local iGPU blocked</span><span class="chip">Onboard GPU occupied</span><span class="chip">Local eval CPU-only</span><span class="chip">Colab training only</span></div>
+      <div class="constraints"><span class="chip">Robot blocked</span><span class="chip">RDK blocked</span><span class="chip">GPU / iGPU blocked</span><span class="chip">Evaluation complete</span><span class="chip">Colab stopped</span><span class="chip">New preregistration required</span></div>
     </section>
 
     <footer>
-      <span id="updated">Evidence snapshot: 2026-07-14</span>
+      <span id="updated">Evidence snapshot: 2026-07-15</span>
       <span>branch <code>codex/live-oracle-dagger-phase-student</code> · live evidence is repository-backed</span>
     </footer>
   </main>
