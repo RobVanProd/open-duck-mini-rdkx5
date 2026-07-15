@@ -132,8 +132,13 @@ Only the diagnostic runner's JIT wrapper may be removed; the original 36-run/
 144-cell corpus, validity anchor, classes, and decision thresholds are frozen.
 The zero-formal-cell contract passes: the complete default-off trace is
 field-for-field and byte-for-byte identical and contains zero map fields. The
-corrected 36-run/144-cell CPU reporting replay is next. No actor
-counterfactual, training, or hardware action is authorized.
+corrected 36-run/144-cell replay is valid with zero baseline or tick-zero
+anchor error. Tick zero is uniformly compatible; mid-gait cells are dominated
+by weak and nonlinear-center signatures. Frozen decision:
+`SUPPORT_PREREGISTERED_MATCHED_SENSOR_ACTOR_RESPONSE_STUDY`. That study is
+already complete in this chain and found material but mixed signed actor
+response with distributed/unresolved crossed localization. No policy family,
+training, or hardware action is selected.
 ```
 
 Robotics operating model:

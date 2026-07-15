@@ -1343,3 +1343,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   zero formal COM cells. Only the corrected 36-run/144-cell reporting replay
   is authorized. See
   `outputs/analysis/GROUND_UP_TORSO_COM_EAGER_MJX_ACCELEROMETER_REPLAY_CONTRACT_20260715.md`.
+- 2026-07-15: The corrected eager-MJX 36-run/144-cell replay is valid. All
+  21,600 baseline rows match after stripping the append-only map field,
+  nominal observation error is zero, and all 36 tick-zero directions match the
+  frozen anchor exactly. Tick 0 is 36/36 compatible; ticks 24/32/40 are
+  dominated by weak and nonlinear-center signatures. Frozen decision:
+  `SUPPORT_PREREGISTERED_MATCHED_SENSOR_ACTOR_RESPONSE_STUDY`. That named study
+  is already complete: all six actors are materially responsive, signed
+  response is mixed, and crossed localization is distributed/unresolved. No
+  policy family, training, or hardware action is selected. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_EAGER_MJX_ACCELEROMETER_REPLAY_RESULT_20260715.md`.
