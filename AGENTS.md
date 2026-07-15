@@ -1557,3 +1557,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   Colab, behavior evaluation, local GPU/iGPU, RDK-X5, runtime, or robot action
   is authorized. See
   `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_GPU_DIAGNOSTIC_VALIDITY_CORRECTION_RESULT_20260715.md`.
+- 2026-07-15: The selected action-distribution ULP audit is preregistered before
+  outcome computation. It treats the measured one-float32-epsilon actor error
+  as an arbitrary coordinatewise box over all 28 NormalTanh parameters,
+  enumerates every signed coordinate plus the two full corners, and checks
+  deterministic mode, scale, physical target, and a rigorous diagonal-Gaussian
+  W2/tanh upper bound against the existing 1e-6 action-identity boundary. Only
+  a passing CPU audit may select a separate epsilon-aware expansion-method
+  correction. No tolerance changes, training, Colab, behavior evaluation,
+  local GPU/iGPU, RDK-X5, runtime, or robot action are authorized. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_ACTION_DISTRIBUTION_ULP_SENSITIVITY_PREREGISTRATION_20260715.md`.
