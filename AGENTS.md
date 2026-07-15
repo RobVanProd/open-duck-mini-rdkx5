@@ -1295,3 +1295,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   committed contract authorizes only the frozen seven-variant tick-zero audit.
   See
   `outputs/analysis/GROUND_UP_TORSO_COM_MJX_INITIALIZATION_ORDER_AUDIT_CONTRACT_20260715.md`.
+- 2026-07-15: The seven-variant initialization-order audit is invalid by its
+  frozen validity rule. Fresh nominal and fresh endpoint initialization match
+  the oracle exactly, but the reconstructed `LIVE_FORWARD_REPRODUCTION` also
+  matches exactly and therefore does not reproduce the prior .0133886337
+  m/s^2 half-direction error. All seven variants match and none is selectable.
+  This localizes the unmodeled factor to the difference between standalone
+  live-data reconstruction and the evaluator's actual tick-zero MJX data
+  propagation. No 144-cell retry, actor, training, or hardware action is
+  authorized. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_MJX_INITIALIZATION_ORDER_AUDIT_RESULT_20260715.md`.

@@ -115,13 +115,14 @@ under that COM model. A separate read-only initialization-order audit is the
 next evidence boundary; do not relax the anchor, interpret invalid classes, or
 start actor, training, Colab, GPU/iGPU, RDK-X5, runtime, or robot work.
 
-The initialization question is preregistered as a seven-variant, single-state
-CPU methods audit. Its pre-outcome contract passes all frozen source/trace,
-body/sensor, home-state, MJX-field, variant-source, and CPU checks with zero
-formal endpoint reads, dynamic steps, or actor calls. The authorized next
-operation is exactly the contracted seven-variant tick-zero audit. No 144-cell
-retry or new sensor interpretation is authorized before this mechanism is
-resolved.
+The seven-variant initialization-order audit is closed invalid by its frozen
+validity rule. Fresh nominal and fresh endpoint initialization match the
+oracle exactly, but the reconstructed `LIVE_FORWARD_REPRODUCTION` also matches
+exactly rather than reproducing the prior .0133886337 m/s^2 error. All seven
+variants match, so none selects a mechanism. The supported next evidence
+boundary is a separately preregistered, evaluator-in-situ tick-zero data
+provenance comparison against the standalone fresh data. No 144-cell retry,
+new sensor interpretation, actor work, or training is authorized.
 ```
 
 Robotics operating model:
