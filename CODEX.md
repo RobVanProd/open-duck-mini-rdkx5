@@ -122,8 +122,10 @@ exactly rather than reproducing the prior .0133886337 m/s^2 error. All seven
 variants match, so none selects a mechanism. The supported next evidence
 boundary is now preregistered as a four-variant JIT-boundary audit: exact eager
 closure, exact evaluator JIT closure, external model arguments, and paired
-endpoint JIT. Its zero-outcome contract is next. No 144-cell retry, new sensor
-interpretation, actor work, or training is authorized.
+endpoint JIT. Its zero-outcome contract passes every frozen check with zero
+endpoint reads, dynamic steps, or actor calls. The exact four-variant audit is
+next. No 144-cell retry, new sensor interpretation, actor work, or training is
+authorized.
 ```
 
 Robotics operating model:

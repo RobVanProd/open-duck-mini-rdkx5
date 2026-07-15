@@ -1313,3 +1313,8 @@ Do not proceed to grounded walking until low-risk gates pass.
   are frozen. A zero-outcome contract must pass first. No dynamic step, actor,
   training, or hardware action is authorized. See
   `outputs/analysis/GROUND_UP_TORSO_COM_MJX_JIT_BOUNDARY_AUDIT_PREREGISTRATION_20260715.md`.
+- 2026-07-15: The JIT-boundary zero-outcome contract passes exact source,
+  prior-result, model/body/sensor/reset, frozen-variant/order, and CPU checks.
+  It executed zero formal endpoint reads, dynamic steps, or actor calls. Only
+  the frozen four-variant tick-zero audit is authorized. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_MJX_JIT_BOUNDARY_AUDIT_CONTRACT_20260715.md`.
