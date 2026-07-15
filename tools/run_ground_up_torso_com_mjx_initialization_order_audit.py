@@ -149,7 +149,7 @@ def run_contract(output: Path) -> int:
     negative_delta = np.asarray(negative.body_ipos) - base_ipos
     positive_delta = np.asarray(positive.body_ipos) - base_ipos
     checks["trunk_body2_massive"] = body_id == 2 and float(env.mj_model.body_mass[body_id]) > 0.0
-    checks["body2_x_only_com_mutations_exact"] = (
+    checks["body2_x_only_com_mutations_exact"] = bool(
         np.count_nonzero(negative_delta) == 1 and np.count_nonzero(positive_delta) == 1
         and negative_delta[2, 0] == np.asarray(-0.05, dtype=negative_delta.dtype)
         and positive_delta[2, 0] == np.asarray(0.05, dtype=positive_delta.dtype)
