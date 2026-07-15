@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import ast
 import hashlib
 import importlib.util
 import json
@@ -148,11 +149,36 @@ def run_contract(output: Path) -> int:
         "ERROR_CEILING_M = 0.005",
         "SEPARATION_FLOOR_M_S2 = 1e-3",
     ))
-    init_fragment = "data = " + "mjx_env.init(model, qpos=qpos, qvel=qvel, ctrl=ctrl)"
-    sensor_fragment = "jax.device_get(" + "data.sensordata[6:9])"
+    tree = ast.parse(source)
+    calls = [node for node in ast.walk(tree) if isinstance(node, ast.Call)]
+    init_calls = sum(
+        isinstance(node.func, ast.Attribute)
+        and isinstance(node.func.value, ast.Name)
+        and node.func.value.id == "mjx_env" and node.func.attr == "init"
+        for node in calls
+    )
+    jit_calls = sum(
+        isinstance(node.func, ast.Attribute) and node.func.attr == "jit"
+        for node in calls
+    )
+    step_calls = sum(
+        isinstance(node.func, ast.Attribute)
+        and isinstance(node.func.value, ast.Name)
+        and node.func.value.id == "mjx" and node.func.attr == "step"
+        for node in calls
+    )
+    sensor_slices = sum(
+        isinstance(node, ast.Subscript)
+        and isinstance(node.value, ast.Attribute)
+        and isinstance(node.value.value, ast.Name)
+        and node.value.value.id == "data" and node.value.attr == "sensordata"
+        and isinstance(node.slice, ast.Slice)
+        and isinstance(node.slice.lower, ast.Constant) and node.slice.lower.value == 6
+        and isinstance(node.slice.upper, ast.Constant) and node.slice.upper.value == 9
+        for node in ast.walk(tree)
+    )
     checks["one_eager_sensor_read_per_offset_source_contract"] = (
-        source.count(init_fragment) == 1 and source.count(sensor_fragment) == 1
-        and "jax.jit(" not in source and "mjx.step(" not in source
+        init_calls == 1 and sensor_slices == 1 and jit_calls == 0 and step_calls == 0
     )
     checks["formal_offset_sensor_reads_zero"] = True
     failed = sorted(name for name, passed in checks.items() if not passed)
