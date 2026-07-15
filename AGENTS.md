@@ -1377,3 +1377,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   noise, reset-pose, floor, hardware, or deployment robustness and authorizes
   only a separate estimator-arm preregistration, not training. See
   `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_FEASIBILITY_RESULT_20260715.md`.
+- 2026-07-15: The selected reset-estimator input arm is preregistered as
+  `RESET_EST_LATCH_U05`. It adds one default-off normalized coordinate at
+  policy/privileged index 101, before the unchanged final 14-D reference
+  action, and expands the protected T2 checkpoint with coherent identity
+  normalizer state and zero actor/critic rows. The CPU package contract passes:
+  all other checkpoint values and save/restore are bit-exact; actor and critic
+  step-zero errors are zero at z=-1/0/+1; three torso-COM anchor resets match
+  the independent frozen estimator; and default-off remains 115/226-D. The
+  work used zero dynamic steps and zero training. A separate hosted-training
+  preregistration/package is required before any Colab session or PPO step.
+  No behavior evaluation, GPU/iGPU, RDK-X5, runtime, or robot action is
+  authorized. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_INPUT_PACKAGE_CONTRACT_20260715.md`.

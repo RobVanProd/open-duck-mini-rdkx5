@@ -149,7 +149,20 @@ all held-out signs and ordering pass, maximum offset error is 1.214 mm, and
 minimum adjacent sensor separation is .2797 m/s^2. Frozen decision:
 `SUPPORT_RESET_LATCHED_PIECEWISE_LINEAR_COM_ESTIMATOR_ARM`. This authorizes
 only a separate estimator-input arm preregistration; training and hardware
-remain unauthorized.
+remain unauthorized. That arm is now preregistered as
+`RESET_EST_LATCH_U05`: one normalized reset estimate inserted at observation
+index 101 before the unchanged final 14-D reference action, latched for the
+episode, with every prior recipe variable frozen.
+
+Its CPU package contract passes. The expanded 116/227-D checkpoint preserves
+every noninserted value bit-for-bit, initializes the new normalizer coordinate
+coherently at the protected count, uses exact zero actor/critic insertion rows,
+and reproduces both actor distribution and critic value with zero error for
+z=-1/0/+1. Three reset cells match an independent estimator implementation;
+default-off remains 115/226-D. This used zero dynamic steps and zero training.
+The next authority boundary is a separate hosted-training preregistration and
+package. No Colab session, training, behavior evaluation, GPU/iGPU, RDK-X5,
+runtime, or robot action is authorized now.
 ```
 
 Robotics operating model:
