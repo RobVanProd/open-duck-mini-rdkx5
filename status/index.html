@@ -81,8 +81,8 @@
     <section class="hero">
       <div class="card">
         <div class="label">Current operation</div>
-        <div class="big amber" id="operation">ULP sensitivity passed · method correction next</div>
-        <div class="metric" id="operation-detail">The complete measured 28-parameter error box stays below the established action-identity boundary: deterministic action 1.18e-7, target 2.96e-8 rad, and W2 upper bound 4.80e-7. The original 1e-7 raw gate remains failed.</div>
+        <div class="big amber" id="operation">Reset-estimator artifact recovered · CPU transforms next</div>
+        <div class="metric" id="operation-detail">The epsilon2 T4 job completed. All three checkpoints/ONNX exports, archive and manifest hashes, corrected expansion plus preserved raw failure, logs, wall limit, recovery, and cleanup pass. Behavior remains unevaluated.</div>
       </div>
       <div class="card">
         <div class="label">Remediation winner</div>
@@ -92,7 +92,7 @@
       <div class="card">
         <div class="label">Compute</div>
         <div class="big">0 active sessions</div>
-        <div class="metric">0 active sessions. Latest diagnostic stopped after 107.75 seconds; compute usage is recorded as unmeasured.</div>
+        <div class="metric">0 active sessions. Hosted execution 958.80 s; total session 1,068.78 s. Compute usage is recorded as unmeasured.</div>
       </div>
     </section>
 
@@ -218,6 +218,8 @@
           <li>The wall-only T4 report is valid after correcting two classifier-method defects. Actor error is exactly 1.1920928955078125e-07 at z=-1/0/+1; critic error and every other expansion check are exact.</li>
           <li>The unchanged 1e-7 threshold fails. Only a CPU action-distribution/ULP sensitivity audit is selected; no tolerance change or training is authorized by this result.</li>
           <li>The frozen ULP audit passes all 58 perturbation cases. Maximum deterministic action difference is 1.18e-7 and the rigorous distribution W2/tanh upper bound is 4.80e-7, both below the established 1e-6 identity boundary.</li>
+          <li>The first correction launch failed before restore/PPO because the wrapper imported JAX before upgrading it in-process. A one-line post-install import correction passed both contracts.</li>
+          <li>The fresh epsilon2 job completed and its local artifact contract passes all three checkpoints and ONNX exports. Reward and behavior remain unevaluated.</li>
         </ol>
       </div>
       <div class="card">
@@ -331,7 +333,10 @@
           <li>Completed: run the wall-only T4 diagnostic, recover its report, stop the session, and record compute usage as unmeasured.</li>
           <li>Completed: correct the raw classifier's source-hash/device predicates on CPU while preserving the original raw result.</li>
           <li>Completed: preregister and run the selected CPU-only action-distribution/ULP sensitivity audit.</li>
-          <li>Current boundary: preregister an epsilon-aware hosted expansion-method correction; the ULP result itself does not authorize training.</li>
+          <li>Completed: preregister and contract the epsilon-aware expansion and wall-only launch path.</li>
+          <li>Completed: record the preinstall-JAX import failure, freeze the one-line correction, and pass both corrected contracts.</li>
+          <li>Completed: run the fresh epsilon2 T4 job, recover all artifacts, stop Colab, and pass the local artifact contract.</li>
+          <li>Current boundary: contract the frozen guard/deadband/conservative-envelope graph transforms for both post-update policies on CPU.</li>
         </ol>
       </div>
     </section>
@@ -344,7 +349,7 @@
     </section>
 
     <footer>
-      <span id="updated">Evidence snapshot: 2026-07-15 · CPU ULP audit passed; expansion-method correction selected</span>
+      <span id="updated">Evidence snapshot: 2026-07-15 · RESET_EST_LATCH_U05 artifacts recovered; CPU transforms next</span>
       <span>branch <code>codex/live-oracle-dagger-phase-student</code> · live evidence is repository-backed</span>
     </footer>
   </main>

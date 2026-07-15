@@ -254,6 +254,17 @@ Gaussian-W2/tanh upper bound 4.79740e-7—each below the established 1e-6 action
 identity boundary. The original 1e-7 expansion check remains failed. The only
 selected next step is preregistration of an epsilon-aware hosted expansion-
 method correction; training and hardware remain unauthorized.
+
+The first corrected hosted launch then failed before checkpoint restore or PPO
+because the wrapper imported preinstall JAX before the frozen job upgraded
+JAX/JAXLIB in-process. Cleanup passed. A preregistered one-line import deferral
+passed both CPU contracts, and the fresh epsilon2 T4 job completed. The local
+artifact contract verifies the 10,067,634-byte archive, all three checkpoint
+and ONNX exports, exact hashes/interfaces, logs, command, expansion reports,
+and cleanup. Total session wall was 1,068.778 seconds; compute is unmeasured and
+zero sessions remain. Behavior and reward are unevaluated. The next boundary
+is the frozen local CPU graph-transform contract for the two post-update
+policies, not robot clearance.
 ```
 
 Robotics operating model:

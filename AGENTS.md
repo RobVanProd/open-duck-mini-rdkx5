@@ -1641,3 +1641,14 @@ Do not proceed to grounded walking until low-risk gates pass.
   approval prompt. No local GPU/iGPU, RDK-X5, runtime, or robot action is
   authorized. See
   `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_POSTINSTALL_JAX_IMPORT_CORRECTION_CONTRACT_20260715.md`.
+- 2026-07-15: The fresh epsilon2 T4 job completed and the reset-estimator hosted
+  artifact contract passes. All three 0/1,003,520/2,007,040 checkpoints and
+  ONNX exports, archive/manifest/directory/file hashes, exact 116-D CPU ONNX
+  interfaces, logs, command, corrected expansion plus preserved raw failure,
+  wall limits, recovery, and cleanup are exact. Hosted execution took 958.802
+  seconds; total session wall was 1,068.778 seconds, compute is `UNMEASURED`,
+  and zero sessions remain. Behavior and reward are unevaluated. Only a local
+  CPU contract applying the frozen guard/deadband/conservative-envelope
+  transforms to the two post-update exports may follow; no training, Colab,
+  local GPU/iGPU, RDK-X5, runtime, or robot action is authorized. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_HOSTED_ARTIFACT_CONTRACT_20260715.md`.
