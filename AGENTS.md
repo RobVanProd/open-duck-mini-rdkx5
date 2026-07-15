@@ -1545,3 +1545,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_GPU_EXPANSION_DIAGNOSTIC_RESULT_20260715.md`
   and
   `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_GPU_DIAGNOSTIC_VALIDITY_CORRECTION_PREREGISTRATION_20260715.md`.
+- 2026-07-15: The CPU-only diagnostic validity correction passes every frozen
+  check. Exact archive extraction reproduces hosted source hash `05c0...920e`,
+  the launch proves the named T4/GPU session, the report device is `cuda:0`,
+  and cleanup/report/training-zero evidence is exact. The corrected frozen-
+  threshold outcome is `FINITE_GPU_EQUIVALENCE_EXCEEDS_ORIGINAL_1E7`: actor
+  error is exactly one float32 epsilon (`1.1920928955078125e-07`) for all three
+  z values, critic error is zero, and every other expansion check passes. The
+  original 1e-7 threshold is not relaxed. Only a separately preregistered
+  CPU-only action-distribution/ULP sensitivity audit is selected; no training,
+  Colab, behavior evaluation, local GPU/iGPU, RDK-X5, runtime, or robot action
+  is authorized. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_GPU_DIAGNOSTIC_VALIDITY_CORRECTION_RESULT_20260715.md`.

@@ -234,6 +234,17 @@ continuing without further billing input. A separately preregistered wall-only
 correction now passes its zero-session contract: fixed fresh T4, 21 exact
 files, 300-second wall, 60-second stop reserve, report recovery, and no PPO.
 Compute units are explicitly `UNMEASURED`, not estimated.
+
+The wall-only T4 diagnostic then recovered the exact report and stopped before
+PPO. Its raw classifier used an incorrect CPU-directory hash and required the
+implementation-specific text `CudaDevice`; a preregistered CPU validity
+correction proves the recovered source and named T4/GPU device are exact. The
+corrected frozen-threshold result is
+`FINITE_GPU_EQUIVALENCE_EXCEEDS_ORIGINAL_1E7`: actor output differs by exactly
+`1.1920928955078125e-07` at z=-1/0/+1, critic output is exact, and every other
+expansion check passes. The 1e-7 threshold is not relaxed. The only selected
+next step is a separately preregistered CPU-only action-distribution/ULP
+sensitivity audit; it authorizes no training or hardware action.
 ```
 
 Robotics operating model:
