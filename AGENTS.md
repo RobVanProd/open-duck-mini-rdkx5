@@ -1232,3 +1232,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   direction validity gates. No actor fork, dynamic step, training, Colab,
   GPU/iGPU, RDK-X5, runtime, or robot action is authorized. See
   `outputs/analysis/GROUND_UP_TORSO_COM_MATCHED_ACCELEROMETER_MAP_CONTRACT_20260715.md`.
+- 2026-07-15: The formal matched accelerometer map is
+  `INVALID_MATCHED_ACCELEROMETER_READBACK`. Native `mj_forward` reconstructed
+  from saved reporting `qpos/qvel/ctrl` misses the saved MJX actor
+  accelerometer by up to 7.427465 m/s^2 (frozen tolerance 1e-3), and the native
+  tick-zero COM half-direction misses frozen `d` by .173359 m/s^2. Therefore
+  none of the 144 apparent direction classes is interpretable or selectable;
+  do not relax tolerance or use the closest table. This is a method failure,
+  not evidence for fixed, weak, rotated, or nonlinear COM sensing. A valid
+  successor must be separately preregistered and branch exact replayed MJX
+  environment state including observation/solver state, rather than rebuilding
+  native state from reporting fields. No actor fork, training, Colab,
+  GPU/iGPU, RDK-X5, runtime, or robot action is authorized. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_MATCHED_ACCELEROMETER_MAP_RESULT_20260715.md`.

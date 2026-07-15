@@ -81,8 +81,8 @@
     <section class="hero">
       <div class="card">
         <div class="label">Current operation</div>
-        <div class="big amber" id="operation">Matched accelerometer contract passed · 144 static cells next</div>
-        <div class="metric" id="operation-detail">All zero-outcome checks pass: exact states, CPU device, body-2 X-only COM mutation, and the three-axis accelerometer on imu. The next run performs static mj_forward readback only—no action or dynamic step.</div>
+        <div class="big red" id="operation">Native matched sensor map invalid · exact MJX replay required</div>
+        <div class="metric" id="operation-detail">The frozen validity gates reject native reconstruction: nominal accelerometer error reaches 7.427465 m/s² and tick-zero direction error .173359 m/s² versus 1e-3 tolerances. Cell classes are unusable; no tolerance is changed.</div>
       </div>
       <div class="card">
         <div class="label">Remediation winner</div>
@@ -187,6 +187,7 @@
           <li>The full crossed study is valid: all 144 diagonal cells reproduce exactly. Every checkpoint is distributed/unresolved; interaction is largest for all six but misses the frozen .60 and 2x rule.</li>
           <li>A 144-cell matched-state accelerometer map is preregistered to test the still-unproven assumption that the reset COM vector remains physically valid mid-gait.</li>
           <li>Its pre-outcome contract passes with zero formal cells, dynamic steps, or actor calls; sensor identity and body-2-only mutations are locked.</li>
+          <li>The formal static map fails both readback validity gates. Reporting-only qpos/qvel/ctrl cannot reproduce the MJX actor sensor through native mj_forward; all apparent classes are invalid.</li>
         </ol>
       </div>
       <div class="card">
@@ -262,7 +263,8 @@
           <li>Decision: <code>CROSSED_LOCALIZATION_UNRESOLVED_NO_FAMILY_SELECTED</code>. A further evidence question requires separate preregistration.</li>
           <li>Preregistered: static CPU nominal/COM-NEG/COM-POS accelerometer map at ticks 0/24/32/40.</li>
           <li>Completed: pass its zero-outcome source, state-index, sensor, body-mutation, and CPU contract.</li>
-          <li>Next boundary: read the exact 144 static sensor cells; native nominal and tick-zero direction must pass frozen 1e-3 tolerances.</li>
+          <li>Stopped invalid: native nominal error 7.427465 m/s² and tick-zero direction error .173359 m/s² exceed frozen 1e-3 tolerances.</li>
+          <li>Next boundary: separately preregister exact CPU MJX replay/state cloning; do not relax tolerance or interpret invalid cell classes.</li>
         </ol>
       </div>
     </section>
@@ -275,7 +277,7 @@
     </section>
 
     <footer>
-      <span id="updated">Evidence snapshot: 2026-07-15 · matched accelerometer contract passed</span>
+      <span id="updated">Evidence snapshot: 2026-07-15 · native sensor map invalid, exact MJX replay required</span>
       <span>branch <code>codex/live-oracle-dagger-phase-student</code> · live evidence is repository-backed</span>
     </footer>
   </main>

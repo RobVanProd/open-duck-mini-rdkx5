@@ -72,16 +72,20 @@ memory, estimator, policy, or training work. A new evidence question requires
 a separate preregistration. Training, tuning, Colab, GPU/iGPU, RDK-X5, runtime,
 and robot work remain unauthorized.
 
-The next neutral evidence question is preregistered. The prior forks reused
+The matched accelerometer-map attempt is complete but invalid. The prior forks reused
 the reset-derived accelerometer COM vector at all phases; they never proved
 that vector equals the physical matched-state sensor difference mid-gait. The
-144-cell CPU map freezes identical-state nominal/COM-NEG/COM-POS `mj_forward`
-readback at ticks 0/24/32/40, without a dynamic step or actor call. Its
-zero-outcome contract passes: all 144 states, CPU visibility, sensor identity,
-state schemas, and body-2-only COM mutations are exact. The next boundary is
-the hash-locked static readback with frozen native-vs-saved and tick-zero
-validity tolerances. Do not run actor branches, dynamic steps, training, Colab,
-GPU/iGPU, RDK-X5, runtime, or robot work.
+native static method then fails both frozen validity checks: reconstructed
+nominal sensor error reaches 7.427465 m/s^2 and tick-zero direction error
+reaches .173359 m/s^2, against 1e-3 tolerances. Its apparent cell classes have
+no authority and must not be interpreted.
+
+The failure shows that reporting-only `qpos/qvel/ctrl` is insufficient to
+reconstruct the MJX actor observation through native `mj_forward`. The next
+valid evidence boundary requires a separate preregistration for exact CPU MJX
+replay and state cloning, preserving observation-generation and solver state.
+Do not relax tolerances, reuse invalid classes, run actor branches, or start
+training, Colab, GPU/iGPU, RDK-X5, runtime, or robot work.
 ```
 
 Robotics operating model:
