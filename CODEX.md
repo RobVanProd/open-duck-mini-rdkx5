@@ -227,6 +227,13 @@ and fail reports and terminates before the training command. The short launcher
 freezes 21 exact uploads, 300 seconds, .25 units, and 60-second rate/cleanup
 reserves. The next boundary is new explicit approval for one diagnostic T4;
 the package itself opened zero sessions and ran zero PPO steps.
+
+The 60-second live-rate diagnostic attempt then timed out before upload while
+the UI still showed idle 0/hour; cleanup passed. The operator authorized
+continuing without further billing input. A separately preregistered wall-only
+correction now passes its zero-session contract: fixed fresh T4, 21 exact
+files, 300-second wall, 60-second stop reserve, report recovery, and no PPO.
+Compute units are explicitly `UNMEASURED`, not estimated.
 ```
 
 Robotics operating model:

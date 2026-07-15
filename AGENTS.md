@@ -1523,3 +1523,12 @@ Do not proceed to grounded walking until low-risk gates pass.
   `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_GPU_DIAGNOSTIC_RATE_TIMEOUT_RESULT_20260715.md`
   and
   `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_GPU_DIAGNOSTIC_WALL_ONLY_CORRECTION_PREREGISTRATION_20260715.md`.
+- 2026-07-15: The wall-only GPU diagnostic contract passes all frozen checks
+  with zero sessions/remote bytes/PPO. Billing-input/rate/CU-cap surfaces are
+  absent and usage is recorded `UNMEASURED`; exact fresh T4, 21 files,
+  300-second wall, 60-second stop reserve, no-PPO wrapper, classification,
+  atomic recovery, and cleanup remain enforced. The operator's continuing
+  authorization permits one diagnostic allocation without further billing
+  input. No training, behavior evaluation, local GPU/iGPU, RDK-X5, runtime, or
+  robot action is authorized. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_GPU_DIAGNOSTIC_WALL_ONLY_CONTRACT_20260715.md`.

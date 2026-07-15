@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 import argparse
-from datetime import datetime, timezone
 import hashlib
 import importlib.util
 import json
@@ -21,16 +20,12 @@ REPO = Path(__file__).resolve().parents[1]
 BASE_LAUNCHER = REPO / "tools/launch_ground_up_reset_com_estimator_colab.py"
 HOSTED_SOURCE = REPO / "tools/colab_ground_up_reset_com_estimator_training.py"
 WRAPPER = REPO / "tools/colab_ground_up_reset_com_estimator_gpu_expansion_diagnostic.py"
-SESSION = "open-duck-reset-estimator-expansion-diag-t4"
+SESSION = "open-duck-reset-estimator-expansion-diag2-t4"
 ACCELERATOR = "T4"
 MAX_SESSION_SECONDS = 300.0
-MAX_COMPUTE_UNITS = 0.25
 STOP_RESERVE_SECONDS = 60.0
-ATTESTATION_WAIT_SECONDS = 60.0
-ATTESTATION_SOURCE = "COLAB_RESOURCES_UI_OPERATOR_ATTESTATION"
 REMOTE_REPORT = Path("/content/GROUND_UP_RESET_COM_ESTIMATOR_GPU_EXPANSION_DIAGNOSTIC.json")
 RESULT_PREFIX = "GROUND_UP_RESET_ESTIMATOR_GPU_EXPANSION_DIAGNOSTIC_RESULT="
-RATE_REQUEST_PREFIX = "GROUND_UP_RESET_ESTIMATOR_GPU_DIAGNOSTIC_RATE_REQUEST="
 EXPECTED_HOSTED_SHA256 = "a3e5fc38994cecd65d89fdc6b9ede23c2433e917b84583dfcced42c161e79d67"
 EXPECTED_WRAPPER_SHA256 = "68a6f8c3001bfdce74346a02533ca76e9e122d0a5ea325c827625e6293fe14e4"
 EXPECTED_SOURCE_DIRECTORY_SHA256 = "b37a86f1b736d0d1276e60fb69d1f473683c593dec26f9592b0b794858dbb44a"
@@ -129,50 +124,7 @@ def validate_status(text: str) -> None:
         raise ValueError("diagnostic session is not the exact idle T4")
 
 
-def validate_attestation(value: dict[str, Any], *, now: datetime | None = None) -> dict[str, Any]:
-    expected = {"source", "session", "compute_rate_per_hour",
-                "available_compute_units", "collector_received_at"}
-    if not isinstance(value, dict) or set(value) != expected:
-        raise ValueError("diagnostic attestation schema changed")
-    if value["source"] != ATTESTATION_SOURCE or value["session"] != SESSION:
-        raise ValueError("diagnostic attestation identity changed")
-    rate, balance = value["compute_rate_per_hour"], value["available_compute_units"]
-    if not isinstance(rate, (int, float)) or not math.isfinite(rate) or rate <= 0:
-        raise ValueError("diagnostic rate invalid")
-    if not isinstance(balance, (int, float)) or not math.isfinite(balance) or balance < 0.25:
-        raise ValueError("diagnostic balance invalid")
-    observed = datetime.fromisoformat(value["collector_received_at"].replace("Z", "+00:00"))
-    if observed.tzinfo is None or observed.utcoffset() is None:
-        raise ValueError("diagnostic timestamp lacks timezone")
-    checked = (now or datetime.now(timezone.utc)).astimezone(timezone.utc)
-    age = (checked - observed.astimezone(timezone.utc)).total_seconds()
-    if age > 60.0 or age < -60.0:
-        raise ValueError("diagnostic attestation outside freshness bounds")
-    projected = rate * MAX_SESSION_SECONDS / 3600.0
-    if projected > MAX_COMPUTE_UNITS:
-        raise ValueError("diagnostic projected CU ceiling exceeded")
-    return {**value, "collector_received_at": observed.astimezone(timezone.utc).isoformat(),
-            "validated_at": checked.isoformat(), "age_seconds": age,
-            "projected_max_compute_units": projected}
-
-
-def wait_attestation(path: Path, started: float) -> dict[str, Any]:
-    if path.exists() or path.with_suffix(path.suffix + ".tmp").exists():
-        raise FileExistsError(path)
-    timeout = min(ATTESTATION_WAIT_SECONDS, work_timeout(started, "rate attestation"))
-    print(RATE_REQUEST_PREFIX + json.dumps(
-        {"session": SESSION, "attestation_file": str(path), "timeout_seconds": timeout,
-         "required_values": ["compute_rate_per_hour", "available_compute_units"]},
-        sort_keys=True), flush=True)
-    deadline = time.monotonic() + timeout
-    while time.monotonic() < deadline:
-        if path.is_file() and not path.is_symlink():
-            return validate_attestation(json.loads(path.read_text()))
-        time.sleep(0.25)
-    raise TimeoutError("diagnostic rate attestation timed out")
-
-
-def build_plan(assets: Path, recovery: Path, attestation: Path, colab: str) -> dict[str, Any]:
+def build_plan(assets: Path, recovery: Path, colab: str) -> dict[str, Any]:
     report = recovery / REMOTE_REPORT.name
     record = recovery / "GROUND_UP_RESET_COM_ESTIMATOR_GPU_EXPANSION_DIAGNOSTIC_launch.json"
     for path in (report, record):
@@ -184,10 +136,9 @@ def build_plan(assets: Path, recovery: Path, attestation: Path, colab: str) -> d
         "schema_version": "ground_up_reset_estimator_gpu_expansion_diagnostic_plan.v1",
         "status": "PASS_DRY_RUN_PLAN", "session": SESSION, "accelerator": ACCELERATOR,
         "maximum_session_seconds": MAX_SESSION_SECONDS,
-        "maximum_compute_units": MAX_COMPUTE_UNITS,
         "stop_reserve_seconds": STOP_RESERVE_SECONDS,
-        "attestation_wait_seconds": ATTESTATION_WAIT_SECONDS,
-        "attestation_file": str(attestation), "uploads": uploads,
+        "compute_units": "UNMEASURED",
+        "uploads": uploads,
         "commands": {
             "new": [colab, "new", "--session", SESSION, "--gpu", ACCELERATOR],
             "status": [colab, "status", "--session", SESSION],
@@ -246,7 +197,7 @@ def launch(plan: dict[str, Any], colab: str) -> dict[str, Any]:
         status = command_result(plan["commands"]["status"], timeout=min(30, work_timeout(started, "status")))
         record["commands"].append(status)
         validate_status(status["stdout"])
-        record["compute_attestation"] = wait_attestation(Path(plan["attestation_file"]), started)
+        record["compute_units"] = "UNMEASURED"
         for command in plan["commands"]["uploads"]:
             record["commands"].append(command_result(command, timeout=work_timeout(started, "upload")))
         exec_command = [*plan["commands"]["exec_prefix"], "--timeout", f"{work_timeout(started, 'diagnostic exec'):.3f}"]
@@ -288,23 +239,20 @@ def main() -> int:
     parser.add_argument("--recovery-dir", type=Path, required=True)
     parser.add_argument("--source-archive", type=Path)
     parser.add_argument("--stage-assets", action="store_true")
-    parser.add_argument("--attestation-file", type=Path, required=True)
     parser.add_argument("--plan-output", type=Path, required=True)
     parser.add_argument("--allow-colab-allocation", action="store_true")
     parser.add_argument("--colab-bin", default="colab")
     args = parser.parse_args()
     if sha256(HOSTED_SOURCE) != EXPECTED_HOSTED_SHA256 or sha256(WRAPPER) != EXPECTED_WRAPPER_SHA256:
         raise RuntimeError("diagnostic sources changed")
-    assets, recovery, attestation = args.assets.resolve(), args.recovery_dir.resolve(), args.attestation_file.resolve()
-    if attestation.exists() or attestation.with_suffix(attestation.suffix + ".tmp").exists():
-        raise FileExistsError(attestation)
+    assets, recovery = args.assets.resolve(), args.recovery_dir.resolve()
     if args.stage_assets:
         if args.source_archive is None:
             raise ValueError("--stage-assets requires --source-archive")
         stage_assets(assets, args.source_archive.resolve())
     validate_assets(assets)
     recovery.mkdir(parents=True, exist_ok=True)
-    plan = build_plan(assets, recovery, attestation, args.colab_bin)
+    plan = build_plan(assets, recovery, args.colab_bin)
     plan["allocation_authorized"] = bool(args.allow_colab_allocation)
     write_json_atomic(args.plan_output.resolve(), plan)
     if not args.allow_colab_allocation:
