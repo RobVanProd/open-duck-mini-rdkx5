@@ -127,8 +127,11 @@ endpoint reads, dynamic steps, or actor calls. The audit is valid: eager
 forward matches the oracle exactly, while all three JIT forms miss; the exact
 evaluator JIT form reproduces the prior invalid direction bit-for-bit.
 Decision: `GENERAL_JIT_FORWARD_DISCREPANCY_OR_UNRESOLVED`. The next evidence
-boundary is a separate eager, default-off exact-map correction
-preregistration. No map retry, actor work, or training is authorized yet.
+boundary is now preregistered as an eager, default-off exact-map correction.
+Only the diagnostic runner's JIT wrapper may be removed; the original 36-run/
+144-cell corpus, validity anchor, classes, and decision thresholds are frozen.
+The zero-formal-cell byte-identity contract is next. No actor counterfactual,
+training, or hardware action is authorized.
 ```
 
 Robotics operating model:

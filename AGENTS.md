@@ -1328,3 +1328,11 @@ Do not proceed to grounded walking until low-risk gates pass.
   preregistration; no map retry, actor, training, or hardware action is yet
   authorized. See
   `outputs/analysis/GROUND_UP_TORSO_COM_MJX_JIT_BOUNDARY_AUDIT_RESULT_20260715.md`.
+- 2026-07-15: A corrected exact 36-run/144-cell accelerometer replay is
+  preregistered before changing the evaluator. The only allowed executable
+  correction is replacing the default-off diagnostic runner's `jax.jit`
+  wrapper with the exact eager closure validated at zero oracle error. The
+  original corpus, ticks, anchor, classes, and decision thresholds are frozen.
+  A zero-formal-cell, byte-identical default-off contract must pass first. No
+  actor counterfactual, training, or hardware action is authorized. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_EAGER_MJX_ACCELEROMETER_REPLAY_PREREGISTRATION_20260715.md`.
