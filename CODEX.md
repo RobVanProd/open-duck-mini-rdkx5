@@ -170,7 +170,13 @@ local contract with bit-exact preservation and zero step-zero actor/critic
 error, while every upload asset and exact training-command field validates.
 The contract used zero training and zero Colab sessions. The next boundary is
 a separate explicit hosted-run authorization; do not launch the job from the
-package contract alone.
+package contract alone. The launch helper is now independently preregistered
+and passes all 16 zero-session checks: fixed T4/session/CLI, 19 exact assets,
+total 2,400-second and 2.0-CU ceilings, rate projection, remaining-time exec,
+no retry/reuse, named cleanup, and atomic recovery. The dry run leaves active
+sessions unchanged at none. Allocation is mechanically unavailable without
+`--allow-colab-allocation`, which still requires unmistakable user approval of
+the single hosted run.
 ```
 
 Robotics operating model:

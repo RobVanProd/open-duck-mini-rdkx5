@@ -1402,3 +1402,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   required; do not launch Colab or PPO from this artifact. Behavior evaluation,
   GPU/iGPU, RDK-X5, runtime, and robot work remain unauthorized. See
   `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_HOSTED_PACKAGE_CONTRACT_20260715.md`.
+- 2026-07-15: The hosted launch boundary is now frozen and passes all 16
+  zero-session checks. It fixes Colab CLI 0.6.0, a fresh named T4 session,
+  exactly 19 hash-locked uploads, total session wall time <=2,400 seconds,
+  projected compute <=2.0 units, remaining-time exec timeout, no resume/retry,
+  named-session-only `finally` cleanup, and atomic hash-verified recovery. The
+  1.07/hour control projects to .713333 units; a 3.10/hour control fails at
+  2.066667. Dry-run staging/plan passes, and session inventory remains no
+  active sessions before/after. The helper cannot allocate without explicit
+  `--allow-colab-allocation`. Do not supply it until the user unmistakably
+  approves the single hosted `RESET_EST_LATCH_U05` run. No training, behavior
+  evaluation, GPU/iGPU, RDK-X5, runtime, or robot action is authorized. See
+  `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_COLAB_LAUNCH_CONTRACT_20260715.md`.
