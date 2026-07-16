@@ -1690,3 +1690,17 @@ Do not proceed to grounded walking until low-risk gates pass.
   new evidence question requires a separate preregistration; training, Colab,
   GPU/iGPU, RDK-X5, runtime, and robot work remain unauthorized. See
   `outputs/analysis/GROUND_UP_TORSO_COM_RESET_ESTIMATOR_BEHAVIOR_DECISION_20260715.md`.
+- 2026-07-16: The preregistered oracle COM viability-funnel study completes
+  through its frozen Stage-B hard stop. Stage A localizes all 24 failing moving
+  endpoint cells and commits 298 exact four-tick states; 49 P30/x=.077 states
+  form the fixed two-sign/two-checkpoint design subset. The deterministic
+  six-pitch-joint screen finds valid sequences from 5/49 states at 8 ticks,
+  4/49 at 16 ticks, and 0/49 at 32 ticks. X_NEG first has no valid sequence at
+  tick 4 and X_POS at tick 12. Decision:
+  `HOLD_LOCAL_AUTHORITY_NOT_COMPOSABLE`. The frozen hard stop prohibits the
+  online planner and 48-cell Stage-C matrix, so neither ran. Do not promote a
+  closest sequence or tune horizons, basis, amplitudes, beam, margins, or
+  thresholds. Any gait-retraining or broader-controller branch requires a
+  separate preregistration. Training, hosted compute, GPU/iGPU, RDK-X5,
+  runtime, deployment, and robot work remain unauthorized; clearance is NO.
+  See `outputs/analysis/ORACLE_COM_RECEDING_HORIZON_RESULT.md`.

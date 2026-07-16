@@ -82,8 +82,8 @@
     <section class="hero">
       <div class="card">
         <div class="label">Current operation</div>
-        <div class="big red" id="operation">Oracle COM residual · partial hold</div>
-        <div class="metric" id="operation-detail">The CPU-only oracle feasibility study is complete. Local bounded pulses show corrective authority, but the frozen affine residual passes only 20/48 formal cells: nominal 16/16, X_NEG 0/16, and X_POS 4/16. Decision: HOLD_ORACLE_PARTIAL.</div>
+        <div class="big red" id="operation">Oracle COM funnel · not composable</div>
+        <div class="metric" id="operation-detail">The CPU-only viability-funnel screen is complete. Valid bounded sequences exist from 5/49 states at 8 ticks, 4/49 at 16 ticks, and 0/49 at 32 ticks. No horizon spans every state, so Stage C did not run. Decision: HOLD_LOCAL_AUTHORITY_NOT_COMPOSABLE.</div>
       </div>
       <div class="card">
         <div class="label">Remediation winner</div>
@@ -229,6 +229,9 @@
           <li>Local authority does not become sustained control: all four fixed scales fail every endpoint design cell. The selected .25 affine controller preserves nominal but does not arrest either signed failure.</li>
           <li>The complete formal matrix passes 20/48 cells: NOMINAL 16/16, XNEG 0/16, XPOS 4/16. XNEG falls at ticks 40-47; XPOS moving cells fall at ticks 52-57. Rate and envelope excess remain zero and tracking remains below .20 rad.</li>
           <li>Decision: <code>HOLD_ORACLE_PARTIAL</code>. This exact affine residual is insufficient; the passing local authority screen prevents a no-authority conclusion. No closest scale advances.</li>
+          <li>The follow-up viability-funnel study freezes 298 exact cadence states from all 24 failing moving cells; 49 P30/x=.077 states form the sequence-design subset.</li>
+          <li>Only 5/49 states admit an 8-tick sequence, 4/49 a 16-tick sequence, and 0/49 a 32-tick sequence. XNEG first has no valid sequence at tick 4; XPOS at tick 12.</li>
+          <li>Decision: <code>HOLD_LOCAL_AUTHORITY_NOT_COMPOSABLE</code>. The Stage-B hard stop blocks the online planner and 48-cell Stage-C matrix; no closest sequence advances.</li>
         </ol>
       </div>
       <div class="card">
@@ -352,7 +355,9 @@
           <li>Completed: pass default-off identity, preserve the initial one-ULP audit failure, and prove exact nominal identity after the nominal projection correction.</li>
           <li>Completed: pass the 38-state local corrective-authority screen and freeze the deterministic ridge controller plus .25 global scale before formal outcomes.</li>
           <li>Completed: run all 48 formal cells with per-cell JSON, full oracle traces, and exact per-run body-2 readback.</li>
-          <li>Held: <code>HOLD_ORACLE_PARTIAL</code>. Any sustained-correction localization, controller-class change, gait retraining, or estimator work requires a separate preregistration.</li>
+          <li>Completed: localize all 24 moving endpoint failures and commit all 298 cadence states before sequence optimization.</li>
+          <li>Completed: run the fixed 8/16/32-tick bounded sequence screen over all 49 design states.</li>
+          <li>Held: <code>HOLD_LOCAL_AUTHORITY_NOT_COMPOSABLE</code>. Stage C is skipped by the frozen rule; any gait retraining or broader controller requires a separate preregistration.</li>
         </ol>
       </div>
     </section>
@@ -361,11 +366,11 @@
       <div class="label">Authority boundary</div>
       <h2 style="margin-top:8px">Offline only</h2>
       <div>The baseline <code>BEST_WALK_ONNX_2.onnx</code> remains a frozen comparator, not a teacher or warm start. No new policy is cleared for the robot. No robot, RDK-X5, iGPU, or onboard GPU access is part of this work.</div>
-      <div class="constraints"><span class="chip">Robot blocked</span><span class="chip">RDK blocked</span><span class="chip">Local GPU / iGPU blocked</span><span class="chip">Colab stopped</span><span class="chip">48 oracle cells complete</span><span class="chip">HOLD_ORACLE_PARTIAL</span></div>
+      <div class="constraints"><span class="chip">Robot blocked</span><span class="chip">RDK blocked</span><span class="chip">Local GPU / iGPU blocked</span><span class="chip">Colab stopped</span><span class="chip">49 sequence states complete</span><span class="chip">HOLD_LOCAL_AUTHORITY_NOT_COMPOSABLE</span></div>
     </section>
 
     <footer>
-      <span id="updated">Evidence snapshot: 2026-07-15 · oracle phase-COM feasibility held after valid 48-cell CPU evaluation</span>
+      <span id="updated">Evidence snapshot: 2026-07-16 · oracle COM viability funnel held at frozen Stage-B hard stop</span>
       <span>branch <code>codex/torso-com-decode-probe</code> · live evidence is repository-backed</span>
     </footer>
   </main>

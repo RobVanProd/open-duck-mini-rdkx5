@@ -11,28 +11,25 @@ Build a robust reference-motion walking policy for Open Duck Mini through frozen
 Current next step:
 
 ```text
-The oracle phase-conditioned COM compensation feasibility study is complete.
-Its default-off contracts preserve all four nominal comparison cells exactly,
-including zero maximum numeric trace difference with the frozen controller
-loaded. The local 25-branch pulse screen finds bounded corrective authority in
-every one of 38 screened pre-fall states; 36 also clear the complete eight-tick
-hard gate.
+The preregistered oracle COM viability-funnel study is complete through its
+frozen Stage-B hard stop. Stage A localized all 24 failing moving endpoint
+cells and committed 298 exact four-tick states; 49 formed the fixed P30,
+x=.077, two-checkpoint/two-sign sequence-design subset. X_NEG meets the
+backward-velocity rule at tick 0 in every cell; X_POS meets the runaway rule at
+ticks 23-26, before the recorded fall.
 
-The preregistered affine residual fit does not turn that local authority into
-sustained endpoint recovery. None of four design cells survives at any frozen
-global scale .25/.50/.75/1.00. The selected .25 controller then completes the
-unchanged formal matrix at 20/48 cells: NOMINAL 16/16, X_NEG 0/16, X_POS 4/16.
-X_NEG still reverses and falls at ticks 40-47; X_POS x=0 survives, but every
-moving cell runs forward and terminates at ticks 52-57. Tracking remains below
-.20 rad and measured rate/envelope excess is zero, so survival and signed
-command response—not relaxed tracking—decide the result.
+The deterministic bounded screen finds valid sequences from only 5/49 states
+at 8 ticks, 4/49 at 16 ticks, and 0/49 at 32 ticks. X_NEG loses all valid
+sequences by tick 4 and X_POS by tick 12. No single frozen horizon works from
+every state, so the online planner and 48-cell Stage-C matrix were not run.
 
-Decision: HOLD_ORACLE_PARTIAL. The evidence rejects this exact fitted affine
-residual as sufficient, but does not support HOLD_NO_CORRECTIVE_AUTHORITY
-because the local pulse screen passed. No closest scale or controller is
-promoted. A narrower sustained-correction localization requires a separate
-preregistration. Training, Colab, local GPU/iGPU, RDK-X5, deployment, and robot
-use remain unauthorized; robot clearance is NO.
+Decision: HOLD_LOCAL_AUTHORITY_NOT_COMPOSABLE. The evidence preserves the
+earlier local pulse-authority finding but rejects an auditable viability funnel
+under this exact six-joint, +/-0.08 residual formulation. No closest sequence,
+sign, checkpoint or horizon is promoted. Any gait-retraining or broader
+controller branch requires a separate preregistration. Training, Colab, local
+GPU/iGPU, RDK-X5, deployment, and robot use remain unauthorized; robot
+clearance is NO.
 ```
 
 Robotics operating model:
