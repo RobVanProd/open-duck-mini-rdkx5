@@ -25,11 +25,18 @@ floor-friction, joint-friction and armature conditions, but fails the corrected
 signed torso-COM endpoint. Seven generic COM branches are closed. Do not reopen
 generic COM training.
 
-Review-authorized work is deployment-specific and CPU/read-only. The signed
-X-axis torso-COM break-radius curve is formally running across the complete
-16-cell matrix at every queried offset. The real-build COM audit is correctly
-held for missing as-built RDK-X5/battery masses, X placements and datum; do not
-invent those inputs from stock Pi geometry or nominal web weights.
+Review-authorized deployment-specific CPU work is complete. The signed X-axis
+torso-COM break-radius study passes its evidence contract over 15 points,
+60 matrices and 240 cells. Every sampled curve is monotone and every body-2
+X-only readback is exact. The composite winner's certified inner offsets are
+-0.02265625 m and +0.00546875 m; nearest observed failures are -0.02343750 m
+and +0.00625000 m. Do not symmetrize this sharply asymmetric envelope.
+
+The real-build COM audit is correctly held for missing as-built RDK-X5/battery
+masses, X placements and datum; do not invent those inputs from stock Pi
+geometry or nominal web weights. Populate the committed measurement template,
+then compare the complete uncertainty interval with one 0.00078125 m curve-
+resolution margin. Generic COM training remains forbidden.
 
 C1 is resolved at the offline contract boundary. The winner's 115-D stateful
 graph does not internalize the per-joint delay queues or lag state; its 14-D

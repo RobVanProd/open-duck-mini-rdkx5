@@ -1704,3 +1704,31 @@ Do not proceed to grounded walking until low-risk gates pass.
   separate preregistration. Training, hosted compute, GPU/iGPU, RDK-X5,
   runtime, deployment, and robot work remain unauthorized; clearance is NO.
   See `outputs/analysis/ORACLE_COM_RECEDING_HORIZON_RESULT.md`.
+- 2026-07-16: Review corrects the project headline. The protected
+  G1_EXACT_BOUNDARY/T2_EQUAL pair composed with the exact x=0 deadband and
+  conservative left-ankle envelope repair is the first persistent full-horizon
+  nominal winner. Both checkpoints pass the complete P30/P31-34 R1 matrix;
+  worst tracking is 0.183170038 rad and minimum vx is 0.084911748 m/s with zero
+  saturation, rate excess and envelope excess. `Remediation winner: NONE`
+  applies only to the closed torso-COM remediation arms. Robot clearance is
+  still NO; generic COM training must not reopen. See
+  `outputs/analysis/DEPLOYMENT_REVIEW_DECISION_20260716.md`.
+- 2026-07-16: C1 is resolved at the offline contract boundary. The winner ONNX
+  does not internalize fitted-bridge delay queues or lag state; its 14-D
+  previous-action state is the bounded-action chain. The host must supply the
+  bridge-realized target at obs[83:97]. The existing fitted forward observer
+  reconstructs all 9,600 frozen composite trace targets under both fits with
+  zero error. Runtime integration and hardware-fit selection remain blocked
+  behind a separate v2 implementation contract; no Gate 5 or robot clearance
+  follows. See `outputs/analysis/WINNER_V2_BRIDGE_OBSERVER_CONTRACT_20260716.md`.
+- 2026-07-16: The deployment-specific signed torso-COM break-radius curve
+  completes 15 points, 60 matrices and 240 CPU cells with exact per-run body-2
+  X-only readback and monotone sampled outcomes. Certified inner offsets are
+  -0.02265625 m and +0.00546875 m; nearest observed failures are -0.02343750 m
+  and +0.00625000 m. Only comparison with the separately contracted real-build
+  COM estimate is authorized. That estimate currently holds because no
+  as-built RDK-X5/battery mass ledger, trunk datum or X placements exist in the
+  workspace; do not substitute stock geometry or nominal web weights. No model
+  correction, training, Gate 5, RDK-X5 or robot action is authorized. See
+  `outputs/analysis/COMPOSITE_WINNER_TORSO_COM_BREAK_RADIUS_RESULT_20260716.md`
+  and `outputs/analysis/REAL_BUILD_TORSO_COM_INPUT_AUDIT_20260716.md`.
