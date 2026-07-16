@@ -31,6 +31,14 @@ from actuator_bridge_model import (
     passthrough_params,
     stress_params,
 )
+from oracle_phase_com_controller import (
+    FEATURE_NAMES as ORACLE_FEATURE_NAMES,
+    contact_mode as oracle_contact_mode,
+    evaluate_controller as evaluate_oracle_controller,
+    feature_vector as oracle_feature_vector,
+    load_controller as load_oracle_controller,
+    project_combined_action as project_oracle_combined_action,
+)
 
 
 REAL_X008_REFERENCE = {
@@ -95,6 +103,8 @@ class ClosedLoopConfig:
     bridge_reset_align_joint_indices: tuple[int, ...] = ()
     reference_feature_table_path: Path | None = None
     reference_start_phase: int | None = None
+    oracle_phase_com_controller_json: Path | None = None
+    trace_oracle_state: bool = False
 
 
 R2_DYNAMICS_OVERRIDE_KEYS = {
@@ -1371,6 +1381,22 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                     f"{(3, config.expected_action_dim)}"
                 ),
             }
+    oracle_controller = None
+    oracle_endpoint_offset_m = 0.0
+    if config.oracle_phase_com_controller_json is not None:
+        try:
+            oracle_controller = load_oracle_controller(
+                config.oracle_phase_com_controller_json
+            )
+        except Exception as exc:
+            return {
+                "status": "HOLD_ORACLE_CONTROLLER_CONTRACT",
+                "error": f"failed to load oracle controller: {type(exc).__name__}: {exc}",
+            }
+        if config.eval_dynamics_override:
+            offset = config.eval_dynamics_override.get("torso_com_offset_m")
+            if offset is not None:
+                oracle_endpoint_offset_m = float(np.asarray(offset, dtype=float)[0])
     try:
         policy_io = init_policy_io_state(session, config)
     except ValueError as exc:
@@ -1857,6 +1883,10 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             if config.policy_action_rate_limit_rad_s is not None
             else None
         )
+        previous_oracle_final_action = np.zeros(
+            config.expected_action_dim, dtype=np.float32
+        )
+        previous_whole_body_com: np.ndarray | None = None
 
         for tick in range(sim_steps):
             obs = np.asarray(jax.device_get(state.obs["state"]), dtype=np.float32)
@@ -1865,6 +1895,48 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                     "status": "HOLD_POLICY_SIM_CONTRACT_MISMATCH",
                     "error": f"obs shape {obs.shape} != {(config.expected_observation_dim,)}",
                 }
+            pre_qpos = np.asarray(jax.device_get(state.data.qpos), dtype=float)
+            pre_qvel = np.asarray(jax.device_get(state.data.qvel), dtype=float)
+            pre_base_addr = int(env._floating_base_qpos_addr)
+            pre_quat = pre_qpos[pre_base_addr + 3 : pre_base_addr + 7]
+            pre_pitch = quat_wxyz_to_pitch(pre_quat)
+            pre_roll = quat_wxyz_to_roll(pre_quat)
+            pre_contacts = np.asarray(
+                jax.device_get(state.info["last_contact"]), dtype=bool
+            )
+            pre_foot_site_pos = np.asarray(
+                jax.device_get(state.data.site_xpos[env._feet_site_id]), dtype=float
+            )
+            pre_whole_body_com = np.asarray(
+                jax.device_get(state.data.subtree_com[0]), dtype=float
+            )
+            if previous_whole_body_com is None:
+                base_qvel_addr = int(env._floating_base_qvel_addr)
+                pre_whole_body_com_velocity = pre_qvel[
+                    base_qvel_addr : base_qvel_addr + 3
+                ].copy()
+            else:
+                pre_whole_body_com_velocity = (
+                    pre_whole_body_com - previous_whole_body_com
+                ) / float(env.dt)
+            base_qvel_addr = int(env._floating_base_qvel_addr)
+            pre_angular_velocity = pre_qvel[
+                base_qvel_addr + 3 : base_qvel_addr + 6
+            ]
+            phase_index = int(np.asarray(jax.device_get(state.info["imitation_i"])))
+            phase_fraction = phase_index / float(env.PRM.nb_steps_in_period)
+            oracle_features, oracle_geometry = oracle_feature_vector(
+                phase_fraction=phase_fraction,
+                contacts=pre_contacts,
+                foot_positions=pre_foot_site_pos,
+                whole_body_com=pre_whole_body_com,
+                whole_body_com_velocity=pre_whole_body_com_velocity,
+                command_x=float(config.command_x),
+                pitch=pre_pitch,
+                pitch_rate=float(pre_angular_velocity[1]),
+                roll=pre_roll,
+                roll_rate=float(pre_angular_velocity[0]),
+            )
             com_accelerometer_map = None
             if tick in com_accelerometer_map_ticks:
                 negative_accelerometer = np.asarray(
@@ -1921,6 +1993,42 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                 policy_base_action + phase_correction, -1.0, 1.0
             ).astype(np.float32)
             action = raw_action.copy()
+            oracle_residual = np.zeros(config.expected_action_dim, dtype=np.float32)
+            oracle_evaluation = {
+                "endpoint_bank": "disabled",
+                "unclipped_corrected": [0.0] * 6,
+            }
+            oracle_projection = None
+            if oracle_controller is not None:
+                mode_name = oracle_contact_mode(pre_contacts)
+                oracle_residual, oracle_evaluation = evaluate_oracle_controller(
+                    oracle_controller,
+                    endpoint_offset_m=oracle_endpoint_offset_m,
+                    mode=mode_name,
+                    features=oracle_features,
+                    action_dim=config.expected_action_dim,
+                )
+                actual_pre = np.asarray(
+                    jax.device_get(env.get_actuator_joints_qpos(state.data.qpos)),
+                    dtype=float,
+                )
+                action, oracle_projection = project_oracle_combined_action(
+                    base_action=raw_action,
+                    residual_action=oracle_residual,
+                    previous_final_action=previous_oracle_final_action,
+                    actual_position_rad=actual_pre,
+                    default_position_rad=np.asarray(env._default_actuator, dtype=float),
+                    action_scale_rad=float(env._config.action_scale),
+                    max_action_delta=np.asarray(
+                        oracle_controller["max_action_delta"], dtype=float
+                    ),
+                    actual_centered_guard_rad=float(
+                        oracle_controller["actual_centered_guard_rad"]
+                    ),
+                )
+                previous_oracle_final_action = action.copy()
+                if "previous_action" in hidden_state:
+                    hidden_state["previous_action"] = action[None, :].astype(np.float32)
             if (
                 config.policy_action_rate_limit_rad_s is not None
                 and previous_rate_bounded_action is not None
@@ -2011,6 +2119,7 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                 "policy_base_action": policy_base_action.astype(float).tolist(),
                 "policy_phase_action_correction": phase_correction.astype(float).tolist(),
                 "policy_raw_action": raw_action.astype(float).tolist(),
+                "oracle_residual_action": oracle_residual.astype(float).tolist(),
                 "action_w_delay": np.asarray(
                     jax.device_get(action_w_delay), dtype=float
                 ).tolist(),
@@ -2032,6 +2141,45 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                 "reward_terms": reward_terms,
                 "done": done,
             }
+            if config.trace_oracle_state or oracle_controller is not None:
+                record["oracle_state"] = {
+                    "feature_names": list(ORACLE_FEATURE_NAMES),
+                    "features": oracle_features.tolist(),
+                    "phase_index": phase_index,
+                    "phase_fraction": phase_fraction,
+                    "contacts": pre_contacts.astype(int).tolist(),
+                    "contact_mode": oracle_geometry["contact_mode"],
+                    "whole_body_com_m": pre_whole_body_com.tolist(),
+                    "whole_body_com_velocity_m_s": pre_whole_body_com_velocity.tolist(),
+                    "support_centroid_m": oracle_geometry["support_centroid_m"],
+                    "support_relative_com_m": oracle_geometry[
+                        "support_relative_com_m"
+                    ],
+                    "pitch_rad": pre_pitch,
+                    "roll_rad": pre_roll,
+                    "pitch_rate_rad_s": float(pre_angular_velocity[1]),
+                    "roll_rate_rad_s": float(pre_angular_velocity[0]),
+                    "applied_target_rad": np.asarray(
+                        jax.device_get(
+                            state.info.get(
+                                "actuator_bridge_applied_targets",
+                                state.info["motor_targets"],
+                            )
+                        ),
+                        dtype=float,
+                    ).tolist(),
+                    "command_x_m_s": float(config.command_x),
+                    "endpoint_offset_m": oracle_endpoint_offset_m,
+                    "controller_evaluation": oracle_evaluation,
+                    "projection": (
+                        None
+                        if oracle_projection is None
+                        else {
+                            key: value.astype(float).tolist()
+                            for key, value in oracle_projection.items()
+                        }
+                    ),
+                }
             if config.trace_full_obs:
                 record["obs_state"] = obs.astype(float).tolist()
                 record["qpos"] = qpos.astype(float).tolist()
@@ -2041,6 +2189,7 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             if com_accelerometer_map is not None:
                 record["torso_com_accelerometer_map"] = com_accelerometer_map
             records.append(record)
+            previous_whole_body_com = pre_whole_body_com.copy()
             if done:
                 termination_reason = "fall_or_nan"
                 break
@@ -2191,6 +2340,12 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
         "policy_phase_action_delta_min_command_x": float(
             config.policy_phase_action_delta_min_command_x
         ),
+        "oracle_phase_com_controller_json": (
+            None
+            if config.oracle_phase_com_controller_json is None
+            else str(config.oracle_phase_com_controller_json)
+        ),
+        "trace_oracle_state": bool(config.trace_oracle_state),
         "policy_action_rate_limit_rad_s": config.policy_action_rate_limit_rad_s,
         "policy_action_rate_limit_joint_indices": list(
             config.policy_action_rate_limit_joint_indices
