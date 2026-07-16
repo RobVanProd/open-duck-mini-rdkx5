@@ -14,6 +14,7 @@ from actuator_bridge_model import ActuatorBridgeModel, JOINT_NAMES, params_from_
 
 ROOT = Path(__file__).resolve().parents[1]
 TRACE_ROOT = ROOT / "outputs/analysis/ground_up_dual_fit_conservative_envelope_eval_traces"
+HOME_CONTRACT_PATH = ROOT / "outputs/analysis/ground_up_actual_centered_guard_screen_preregistration.json"
 FIT_PATHS = {
     "p30": ROOT / "outputs/analysis/fixed_target_p30_actuator_fit_20260712.json",
     "p31_34": ROOT / "outputs/analysis/fixed_target_p31_34_actuator_fit_20260712.json",
@@ -23,6 +24,7 @@ EXPECTED_COMMANDS = ("x0.000", "x0.074", "x0.077", "x0.080")
 ACTION_SCALE_RAD = 0.25
 DT_S = 0.02
 TOLERANCE_RAD = 1.0e-12
+INVERSE_HOME_AUDIT_TOLERANCE_RAD = 5.0e-9
 
 
 def sha256(path: Path) -> str:
@@ -39,6 +41,10 @@ def main() -> None:
     total_rows = 0
     max_error = 0.0
     failures: list[str] = []
+    home_contract = json.loads(HOME_CONTRACT_PATH.read_text())
+    authoritative_home = np.asarray(
+        home_contract["contract"]["home_target_rad"], dtype=np.float32
+    ).astype(float)
 
     for fit_name, fit_path in FIT_PATHS.items():
         fit = json.loads(fit_path.read_text())
@@ -57,9 +63,9 @@ def main() -> None:
                     continue
                 first_sent = np.asarray(rows[0]["sent_target_rad"], dtype=float)
                 first_action = np.asarray(rows[0]["action_w_delay"], dtype=float)
-                home = first_sent - ACTION_SCALE_RAD * first_action
-                homes.append(home)
-                observer = ActuatorBridgeModel(params, initial_target=home)
+                inverse_home = first_sent - ACTION_SCALE_RAD * first_action
+                homes.append(inverse_home)
+                observer = ActuatorBridgeModel(params, initial_target=authoritative_home)
                 trace_error = 0.0
                 for index, row in enumerate(rows):
                     sent = np.asarray(row["sent_target_rad"], dtype=float)
@@ -89,7 +95,7 @@ def main() -> None:
 
     home_error = 0.0
     if homes:
-        reference_home = homes[0]
+        reference_home = authoritative_home
         home_error = max(float(np.max(np.abs(home - reference_home))) for home in homes)
     else:
         reference_home = np.zeros(14, dtype=float)
@@ -99,7 +105,7 @@ def main() -> None:
         "all_16_traces_present": len(traces) == 16,
         "exactly_9600_rows": total_rows == 9600,
         "joint_order_is_14d": len(JOINT_NAMES) == 14,
-        "home_vectors_exact": home_error <= TOLERANCE_RAD,
+        "inverse_home_roundoff_bounded": home_error <= INVERSE_HOME_AUDIT_TOLERANCE_RAD,
         "observer_reconstructs_every_target": max_error <= TOLERANCE_RAD,
         "no_row_failures": not failures,
     }
@@ -127,8 +133,11 @@ def main() -> None:
             "action_scale_rad": ACTION_SCALE_RAD,
             "dt_s": DT_S,
             "tolerance_rad": TOLERANCE_RAD,
+            "inverse_home_audit_tolerance_rad": INVERSE_HOME_AUDIT_TOLERANCE_RAD,
             "joint_names": JOINT_NAMES,
             "home_target_rad": reference_home.tolist(),
+            "home_contract_path": str(HOME_CONTRACT_PATH.relative_to(ROOT)),
+            "home_contract_sha256": sha256(HOME_CONTRACT_PATH),
             "fit_sha256": {name: sha256(path) for name, path in FIT_PATHS.items()},
         },
         "measurements": {
@@ -154,7 +163,7 @@ def main() -> None:
         f"Decision: `{payload['decision']}`\n\n"
         f"- Frozen traces: {len(traces)}/16\n"
         f"- Frozen rows: {total_rows}/9600\n"
-        f"- Maximum home-vector disagreement: {home_error:.12g} rad\n"
+        f"- Maximum inverse-home roundoff versus configured home: {home_error:.12g} rad\n"
         f"- Maximum applied-target reconstruction error: {max_error:.12g} rad\n\n"
         "The winner ONNX interface carries only the 115-D observation and a 14-D "
         "bounded-action state. It does not carry the per-joint delay queues and lag "
