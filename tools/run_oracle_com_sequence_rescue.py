@@ -79,7 +79,7 @@ def clone_bridge(source: ActuatorBridgeModel) -> ActuatorBridgeModel:
 
 def restore_bridge(payload: dict[str, Any], fit: dict[str, Any]) -> ActuatorBridgeModel:
     out = ActuatorBridgeModel(params_from_fit(fit), initial_target=np.asarray(payload["bridge_value_rad"], dtype=float))
-    out._queues = [np.asarray(queue, dtype=float) for queue in payload["bridge_queues_rad"]]
+    out._queues = [np.asarray(queue, dtype=float).tolist() for queue in payload["bridge_queues_rad"]]
     return out
 
 
