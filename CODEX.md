@@ -25,13 +25,19 @@ floor-friction, joint-friction and armature conditions, but fails the corrected
 signed torso-COM endpoint. Seven generic COM branches are closed. Do not reopen
 generic COM training.
 
-Review-authorized next work is deployment-specific and CPU/read-only: freeze
-and run an X-axis torso-COM break-radius curve for the composite winner; freeze
-an offline real-build COM estimate from CAD, component masses and placement;
-and resolve C1 by pinning the winner's 115-D stateful graph contract. Training
-obs[83:97] is the fitted bridge's realized output, while the native runtime
-currently supplies the prior sent target. Specify a v2 winner contract and
-prove a bridge observer or graph-internal state path before any Gate 5 plan.
+Review-authorized work is deployment-specific and CPU/read-only. The signed
+X-axis torso-COM break-radius curve is formally running across the complete
+16-cell matrix at every queried offset. The real-build COM audit is correctly
+held for missing as-built RDK-X5/battery masses, X placements and datum; do not
+invent those inputs from stock Pi geometry or nominal web weights.
+
+C1 is resolved at the offline contract boundary. The winner's 115-D stateful
+graph does not internalize the per-joint delay queues or lag state; its 14-D
+`previous_action` is the bounded-action chain. Therefore obs[83:97] must be
+provided by an external fitted-bridge forward observer. The existing observer
+reconstructs all 9,600 frozen composite trace targets under both fits with zero
+error and is pinned for the v2 contract. Native-runtime integration and the
+hardware-fit choice remain separately blocked before any Gate 5 plan.
 The legacy 101x14.v1 golden vector already passes and remains only a legacy
 stack contract. No training, hosted allocation, robot, RDK-X5, local GPU or
 iGPU access is authorized. Robot clearance remains NO.
