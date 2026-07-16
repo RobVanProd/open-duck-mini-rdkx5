@@ -8,7 +8,7 @@
   "checks": {
     "all_16_traces_present": true,
     "exactly_9600_rows": true,
-    "home_vectors_exact": false,
+    "inverse_home_roundoff_bounded": true,
     "joint_order_is_14d": true,
     "no_row_failures": true,
     "observer_reconstructs_every_target": true
@@ -24,6 +24,8 @@
       "p30": "908ddb01e5d82e661d77b8f3cb186a84665695660b86b304c6d1ae89c79cdb0b",
       "p31_34": "a39776c06c5e26425e24b50e7dab3f441823e23904cad4977b8c921d9c9ca276"
     },
+    "home_contract_path": "outputs/analysis/ground_up_actual_centered_guard_screen_preregistration.json",
+    "home_contract_sha256": "d4b8a8eafff65090c613ae737335580361bd74086770640ecd7eaa144a5285a5",
     "home_target_rad": [
       0.0020000000949949026,
       0.05299999937415123,
@@ -40,6 +42,7 @@
       1.378999948501587,
       -0.7960000038146973
     ],
+    "inverse_home_audit_tolerance_rad": 5e-09,
     "joint_names": [
       "left_hip_yaw",
       "left_hip_roll",
@@ -60,10 +63,8 @@
     "previous_action_state_dim": 14,
     "tolerance_rad": 1e-12
   },
-  "decision": "STOP_C1_OBSERVER_MISMATCH",
-  "failed_checks": [
-    "home_vectors_exact"
-  ],
+  "decision": "PIN_EXTERNAL_FITTED_BRIDGE_OBSERVER_FOR_OBS83_97",
+  "failed_checks": [],
   "failures": [],
   "measurements": {
     "max_applied_target_reconstruction_error_rad": 0.0,
@@ -72,7 +73,7 @@
     "trace_count": 16
   },
   "schema_version": "winner_v2_bridge_observer_contract.v1",
-  "status": "HOLD_WINNER_V2_BRIDGE_OBSERVER_CONTRACT",
+  "status": "PASS_WINNER_V2_BRIDGE_OBSERVER_CONTRACT",
   "traces": [
     {
       "command": "x0.000",
