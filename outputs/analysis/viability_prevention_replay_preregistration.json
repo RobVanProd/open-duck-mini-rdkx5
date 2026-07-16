@@ -1,0 +1,36 @@
+{
+  "schema_version": "viability_prevention_replay_preregistration.v1",
+  "status": "PREREGISTERED_BEFORE_B2_OUTCOMES",
+  "matrix": {
+    "policies": ["APPLIED_TARGET_1M", "TAIL_T2_EQUAL_1M", "BEST_WALK_ONNX_2"],
+    "commands_x": [0.074, 0.077, 0.08],
+    "seeds": [100, 101],
+    "fit": "p30",
+    "ticks": 600,
+    "cells": 18
+  },
+  "metric": {
+    "sha256": "370d1334e6c7a98df5122cfcc3ae6aad16c14ea33ba3271065d6d7521c714f6e",
+    "radius": 0.6954732013592478,
+    "sign_weights": {"X_NEG": 3.0, "X_POS": 1.0},
+    "per_tick_logging": true
+  },
+  "branch_rule": {
+    "fall": "non-duration termination or fewer than 600 samples",
+    "routed": "enters either frozen neighborhood with at least 4 ticks lead",
+    "positive": "each policy supplies at least one actual fall and every actual fall routes",
+    "negative": "close hosted viability-prevention branch without closest promotion"
+  },
+  "policy_hashes": {
+    "APPLIED_TARGET_1M": "bae176ffd2d7af4cfb85169c817a9b43bcbe4ac1e5d721dd16959e71aaaf51be",
+    "TAIL_T2_EQUAL_1M": "2f059550a82e129bff3d58a2b9249cf1d5c1ea75dc18200f1e158928f67e38a6",
+    "BEST_WALK_ONNX_2": "3c606f9381a1710cc8fecdb7442787dcbfce3ee9bc02a6f1224774ab2b3a1067"
+  },
+  "source_hashes": {
+    "tool": "287f2d8b810801beb40d256bec95e99d6273b7cf1ea2d3ae7a67c38d115f22d6",
+    "evaluator": "f35d35789d50baf557d3b2427dfe326ccc60c7607e79069e5a9dd51f2f01f8d6",
+    "markdown": "e0815d41e0510d1e269310b255b8721c2ae99b138008c831489fe818f5decb16"
+  },
+  "training_reward_selection": false,
+  "robot_clearance": "NO"
+}
