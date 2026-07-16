@@ -100,6 +100,10 @@ class RLWalk:
         self._telemetry_last_dof_pos = None
         self._telemetry_last_dof_vel = None
         self._telemetry_last_feet_contacts = None
+        self._telemetry_servo_current_raw = [None] * self.num_dofs
+        self._telemetry_servo_voltage_raw = [None] * self.num_dofs
+        self._telemetry_servo_voltage_v = [None] * self.num_dofs
+        self._telemetry_servo_temperature_raw = [None] * self.num_dofs
 
         self.hwi = HWI(self.duck_config, serial_port)
 
@@ -192,12 +196,22 @@ class RLWalk:
         except Exception:
             return None
 
-    def _telemetry_voltage(self):
-        # Voltage reads are intentionally opt-in and currently unavailable
-        # through the local HWI wrapper without adding new bus traffic.
+    def _telemetry_servo_health(self):
+        """Opt-in, one-servo-per-logged-tick health telemetry."""
         if not self.telemetry_read_voltage:
             return None
-        return None
+        sample = self.hwi.read_servo_health_round_robin()
+        index = sample["joint_index"]
+        current = sample.get("present_current_raw")
+        voltage_raw = sample.get("present_voltage_raw")
+        temperature = sample.get("present_temperature_raw")
+        self._telemetry_servo_current_raw[index] = current
+        self._telemetry_servo_voltage_raw[index] = voltage_raw
+        self._telemetry_servo_voltage_v[index] = (
+            None if voltage_raw is None else float(voltage_raw) * 0.1
+        )
+        self._telemetry_servo_temperature_raw[index] = temperature
+        return sample
 
     def _log_policy_tick(
         self,
@@ -216,6 +230,8 @@ class RLWalk:
             return
         if tick % self.telemetry_every_n != 0:
             return
+
+        servo_health_sample = self._telemetry_servo_health()
 
         if self._telemetry_last_tick_monotonic is None:
             dt_s = None
@@ -284,7 +300,11 @@ class RLWalk:
                 "actual_position_rad": actual_pos,
                 "actual_velocity_rad_s": actual_vel,
                 "tracking_error_rad": tracking_error,
-                "battery_voltage_v": self._telemetry_voltage(),
+                "battery_voltage_v": self._telemetry_servo_voltage_v if self.telemetry_read_voltage else None,
+                "present_current_raw": self._telemetry_servo_current_raw if self.telemetry_read_voltage else None,
+                "present_voltage_raw": self._telemetry_servo_voltage_raw if self.telemetry_read_voltage else None,
+                "present_temperature_raw": self._telemetry_servo_temperature_raw if self.telemetry_read_voltage else None,
+                "servo_health_sample": servo_health_sample,
             },
             "observation": {
                 "raw_vector": obs,

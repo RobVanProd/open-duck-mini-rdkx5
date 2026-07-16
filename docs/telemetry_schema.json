@@ -187,7 +187,39 @@
           "type": ["array", "null"],
           "minItems": 14,
           "maxItems": 14,
-          "items": { "type": "number" }
+          "items": { "type": ["number", "null"] }
+        },
+        "present_current_raw": {
+          "type": ["array", "null"],
+          "minItems": 14,
+          "maxItems": 14,
+          "items": { "type": ["number", "null"] }
+        },
+        "present_voltage_raw": {
+          "type": ["array", "null"],
+          "minItems": 14,
+          "maxItems": 14,
+          "items": { "type": ["number", "null"] }
+        },
+        "present_temperature_raw": {
+          "type": ["array", "null"],
+          "minItems": 14,
+          "maxItems": 14,
+          "items": { "type": ["number", "null"] }
+        },
+        "servo_health_sample": {
+          "type": ["object", "null"],
+          "properties": {
+            "joint_name": { "type": "string" },
+            "servo_id": { "type": "integer" },
+            "joint_index": { "type": "integer", "minimum": 0, "maximum": 13 },
+            "coverage_index": { "type": "integer", "minimum": 0, "maximum": 13 },
+            "coverage_size": { "type": "integer", "const": 14 },
+            "present_current_raw": { "type": ["number", "null"] },
+            "present_voltage_raw": { "type": ["number", "null"] },
+            "present_temperature_raw": { "type": ["number", "null"] },
+            "errors": { "type": "object" }
+          }
         }
       }
     },

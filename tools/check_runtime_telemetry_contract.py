@@ -34,6 +34,13 @@ REQUIRED_SCHEMA_PROPERTIES = {
     "action",
     "bus",
 }
+REQUIRED_JOINT_PROPERTIES = {
+    "battery_voltage_v",
+    "present_current_raw",
+    "present_voltage_raw",
+    "present_temperature_raw",
+    "servo_health_sample",
+}
 
 
 def fail(message):
@@ -62,6 +69,22 @@ def init_arg_names(init_node):
     args.extend(arg.arg for arg in init_node.args.args)
     args.extend(arg.arg for arg in init_node.args.kwonlyargs)
     return set(args)
+
+
+def check_default_off_guard(tree):
+    for node in tree.body:
+        if isinstance(node, ast.ClassDef) and node.name == "RLWalk":
+            for child in node.body:
+                if isinstance(child, ast.FunctionDef) and child.name == "_telemetry_servo_health":
+                    statements = [item for item in child.body if not isinstance(item, ast.Expr)]
+                    if not statements or not isinstance(statements[0], ast.If):
+                        fail("servo health helper does not begin with default-off guard")
+                    guarded = statements[0]
+                    if not guarded.body or not isinstance(guarded.body[0], ast.Return):
+                        fail("servo health default-off guard does not return before bus access")
+                    print("OK: extended servo health returns before HWI access when guard is false")
+                    return
+    fail("missing RLWalk._telemetry_servo_health")
 
 
 def add_argument_flags(tree):
@@ -94,6 +117,12 @@ def check_schema():
     missing_required = sorted((REQUIRED_SCHEMA_PROPERTIES - {"bus"}) - required)
     if missing_required:
         fail(f"telemetry schema missing required keys: {', '.join(missing_required)}")
+    joint_properties = set(
+        schema.get("properties", {}).get("joints", {}).get("properties", {})
+    )
+    missing_joint = sorted(REQUIRED_JOINT_PROPERTIES - joint_properties)
+    if missing_joint:
+        fail(f"telemetry schema missing joint health keys: {', '.join(missing_joint)}")
     print("OK: telemetry schema JSON parsed and required properties are present")
 
 
@@ -112,6 +141,8 @@ def main():
     if missing_flags:
         fail(f"v2_rl_walk_mujoco.py missing CLI flags: {', '.join(missing_flags)}")
     print("OK: v2_rl_walk_mujoco.py exposes telemetry CLI flags")
+
+    check_default_off_guard(tree)
 
     check_schema()
     print("OK: runtime telemetry contract check passed")

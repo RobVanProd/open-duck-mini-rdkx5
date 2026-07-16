@@ -96,6 +96,7 @@ class HWI:
         self.last_error_op = None
         self.last_error_time_monotonic_s = None
         self.retry_error_counts = {}
+        self._servo_health_cursor = 0
 
     def _open_transport(self):
         return rustypot.feetech(self.usb_port, self.baudrate)
@@ -212,6 +213,33 @@ class HWI:
         values_in_bus_order = self._retry(operation, self.read_ids)
         by_id = dict(zip(self.read_ids, values_in_bus_order))
         return [by_id[servo_id] for servo_id in self.joints.values()]
+
+    def read_servo_health_round_robin(self):
+        """Read current, voltage and temperature for one servo per call."""
+        servo_id = self.read_ids[self._servo_health_cursor]
+        self._servo_health_cursor = (self._servo_health_cursor + 1) % len(self.read_ids)
+        joint_name = next(name for name, value in self.joints.items() if value == servo_id)
+        operations = (
+            ("present_current_raw", "get_present_current"),
+            ("present_voltage_raw", "get_present_voltage"),
+            ("present_temperature_raw", "get_present_temperature"),
+        )
+        result = {
+            "joint_name": joint_name,
+            "servo_id": servo_id,
+            "joint_index": list(self.joints).index(joint_name),
+            "coverage_index": self._servo_health_cursor,
+            "coverage_size": len(self.read_ids),
+            "errors": {},
+        }
+        for field, operation in operations:
+            try:
+                values = self._retry(operation, [servo_id])
+                result[field] = None if not values else values[0]
+            except Exception as exc:
+                result[field] = None
+                result["errors"][field] = f"{type(exc).__name__}: {exc}"
+        return result
 
     def get_present_positions(self, ignore=[]):
         """

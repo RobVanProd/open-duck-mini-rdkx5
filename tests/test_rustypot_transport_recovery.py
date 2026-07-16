@@ -27,6 +27,15 @@ class FakeIO:
     def read_present_velocity(self, ids):
         return [float(servo_id) for servo_id in ids]
 
+    def get_present_current(self, ids):
+        return [1000 + servo_id for servo_id in ids]
+
+    def get_present_voltage(self, ids):
+        return [120 + servo_id for servo_id in ids]
+
+    def get_present_temperature(self, ids):
+        return [30 + servo_id for servo_id in ids]
+
 
 class FakeRustypot(types.ModuleType):
     def __init__(self):
@@ -128,6 +137,22 @@ class TransportRecoveryTest(unittest.TestCase):
         self.assertEqual(hwi.read_ids[-1], 13)
         self.assertEqual(positions, [float(value) for value in canonical_ids])
         self.assertEqual(velocities, [float(value) for value in canonical_ids])
+
+    def test_servo_health_round_robin_covers_all_ids_and_cycles(self):
+        fake = FakeRustypot()
+        HWI = load_hwi(fake)
+        hwi = HWI(Config(), "/dev/fake-servo")
+        fake.opens[0][2]().fail_first = False
+
+        samples = [hwi.read_servo_health_round_robin() for _ in range(15)]
+
+        self.assertEqual([sample["servo_id"] for sample in samples[:14]], hwi.read_ids)
+        self.assertEqual(samples[14]["servo_id"], hwi.read_ids[0])
+        self.assertEqual(samples[0]["coverage_size"], 14)
+        self.assertEqual(samples[0]["present_current_raw"], 1000 + hwi.read_ids[0])
+        self.assertEqual(samples[0]["present_voltage_raw"], 120 + hwi.read_ids[0])
+        self.assertEqual(samples[0]["present_temperature_raw"], 30 + hwi.read_ids[0])
+        self.assertEqual(samples[0]["errors"], {})
 
 
 if __name__ == "__main__":
