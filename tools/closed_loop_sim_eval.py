@@ -1999,6 +1999,7 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                 "unclipped_corrected": [0.0] * 6,
             }
             oracle_projection = None
+            oracle_previous_final_for_measurement = previous_oracle_final_action.copy()
             if oracle_controller is not None:
                 mode_name = oracle_contact_mode(pre_contacts)
                 oracle_residual, oracle_evaluation = evaluate_oracle_controller(
@@ -2008,24 +2009,29 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                     features=oracle_features,
                     action_dim=config.expected_action_dim,
                 )
-                actual_pre = np.asarray(
-                    jax.device_get(env.get_actuator_joints_qpos(state.data.qpos)),
-                    dtype=float,
-                )
-                action, oracle_projection = project_oracle_combined_action(
-                    base_action=raw_action,
-                    residual_action=oracle_residual,
-                    previous_final_action=previous_oracle_final_action,
-                    actual_position_rad=actual_pre,
-                    default_position_rad=np.asarray(env._default_actuator, dtype=float),
-                    action_scale_rad=float(env._config.action_scale),
-                    max_action_delta=np.asarray(
-                        oracle_controller["max_action_delta"], dtype=float
-                    ),
-                    actual_centered_guard_rad=float(
-                        oracle_controller["actual_centered_guard_rad"]
-                    ),
-                )
+                # The protected graph already contains these projections.  At
+                # nominal COM, the exact-zero residual therefore returns its
+                # output directly; redundantly applying the same float32
+                # projection can move a boundary value by one ULP.
+                if abs(oracle_endpoint_offset_m) >= 1e-12:
+                    actual_pre = np.asarray(
+                        jax.device_get(env.get_actuator_joints_qpos(state.data.qpos)),
+                        dtype=float,
+                    )
+                    action, oracle_projection = project_oracle_combined_action(
+                        base_action=raw_action,
+                        residual_action=oracle_residual,
+                        previous_final_action=previous_oracle_final_action,
+                        actual_position_rad=actual_pre,
+                        default_position_rad=np.asarray(env._default_actuator, dtype=float),
+                        action_scale_rad=float(env._config.action_scale),
+                        max_action_delta=np.asarray(
+                            oracle_controller["max_action_delta"], dtype=float
+                        ),
+                        actual_centered_guard_rad=float(
+                            oracle_controller["actual_centered_guard_rad"]
+                        ),
+                    )
                 previous_oracle_final_action = action.copy()
                 if "previous_action" in hidden_state:
                     hidden_state["previous_action"] = action[None, :].astype(np.float32)
@@ -2049,6 +2055,9 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                     previous_rate_bounded_action[indices] + max_action_delta,
                 )
             previous_rate_bounded_action = action.copy()
+            previous_sent_for_measurement = np.asarray(
+                jax.device_get(state.info["motor_targets"]), dtype=float
+            )
             (
                 state,
                 action_w_delay,
@@ -2076,6 +2085,40 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                 jax.device_get(env.get_actuator_joints_qpos(state.data.qpos)),
                 dtype=float,
             )
+            tracking_error = np.abs(applied_np - actual)
+            sent_velocity = np.abs(
+                (sent_np - previous_sent_for_measurement) / float(env.dt)
+            )
+            velocity_limits = pitch_chain_velocity_limits_from_fit(config.fit)
+            per_joint_rate_excess = np.zeros(config.expected_action_dim, dtype=float)
+            for joint_name, limit in velocity_limits.items():
+                joint_index = JOINT_NAMES.index(joint_name)
+                raw_excess = max(0.0, sent_velocity[joint_index] - float(limit))
+                per_joint_rate_excess[joint_index] = (
+                    0.0 if raw_excess <= 1.0e-5 else raw_excess
+                )
+            oracle_envelope_excess = 0.0
+            if oracle_projection is not None:
+                max_delta = np.asarray(
+                    oracle_controller["max_action_delta"], dtype=float
+                )
+                low = np.asarray(oracle_projection["guard_low_action"], dtype=float)
+                high = np.asarray(oracle_projection["guard_high_action"], dtype=float)
+                oracle_envelope_excess = max(
+                    float(
+                        np.max(
+                            np.maximum(
+                                np.abs(action - oracle_previous_final_for_measurement)
+                                - max_delta,
+                                0.0,
+                            )
+                        )
+                    ),
+                    float(np.max(np.maximum(low - action, 0.0))),
+                    float(np.max(np.maximum(action - high, 0.0))),
+                )
+                if oracle_envelope_excess <= 1.0e-7:
+                    oracle_envelope_excess = 0.0
             local_linvel = np.asarray(
                 jax.device_get(env.get_local_linvel(state.data)),
                 dtype=float,
@@ -2127,6 +2170,11 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                 "sent_target_rad": sent_np.tolist(),
                 "applied_target_rad": applied_np.tolist(),
                 "actual_position_rad": actual.tolist(),
+                "tracking_error_rad": tracking_error.tolist(),
+                "action_saturated": (np.abs(action) >= 1.0 - 1.0e-7).astype(int).tolist(),
+                "sent_target_velocity_rad_s": sent_velocity.tolist(),
+                "sent_target_rate_excess_rad_s": per_joint_rate_excess.tolist(),
+                "oracle_envelope_excess_normalized": oracle_envelope_excess,
                 "body_pitch_rad": quat_wxyz_to_pitch(quat),
                 "base_x_m": float(qpos[base_addr]),
                 "base_y_m": float(qpos[base_addr + 1]),
