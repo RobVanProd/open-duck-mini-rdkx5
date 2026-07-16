@@ -43,7 +43,7 @@ def main() -> None:
     failures: list[str] = []
     home_contract = json.loads(HOME_CONTRACT_PATH.read_text())
     authoritative_home = np.asarray(
-        home_contract["contract"]["home_target_rad"], dtype=np.float32
+        home_contract["guard_contract"]["home_target_rad"], dtype=np.float32
     ).astype(float)
 
     for fit_name, fit_path in FIT_PATHS.items():
