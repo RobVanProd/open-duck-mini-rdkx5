@@ -61,6 +61,8 @@ def load_trace(path: Path) -> list[dict[str, Any]]:
 
 def summarize(result: dict[str, Any], trace_path: Path, ordering: str,
               policy: Path, command_x: float, seed: int) -> dict[str, Any]:
+    if not trace_path.exists():
+        raise RuntimeError(f"evaluator returned without a trace: {result}")
     trace = load_trace(trace_path)
     mode = (result.get("modes") or {}).get("fitted") or {}
     gate = result.get("candidate_gate") or {}
@@ -104,8 +106,8 @@ def summarize(result: dict[str, Any], trace_path: Path, ordering: str,
         "candidate_tracking_p95_rad": metrics.get("max_pitch_tracking_p95_rad"),
         "maximum_saturated_actions_per_tick": saturation,
         "maximum_rate_excess_rad_s": rate_excess,
-        "phase_index_tick0": trace[0]["phase_index"] if trace else None,
-        "phase_index_tick_last": trace[-1]["phase_index"] if trace else None,
+        "phase_index_tick0": trace[0]["oracle_state"]["phase_index"] if trace else None,
+        "phase_index_tick_last": trace[-1]["oracle_state"]["phase_index"] if trace else None,
         "mean_vx_m_s": (mode.get("forward_motion") or {}).get("mean_velocity_x_m_s"),
         "trace_path": str(trace_path),
         "trace_sha256": sha256(trace_path),
@@ -158,6 +160,7 @@ def main() -> int:
                             policy_applied_target_observation=True,
                             policy_phase_advance_before_observation=advance_first,
                             trace_jsonl=trace_path,
+                            trace_oracle_state=True,
                         )
                     )
                     cell = summarize(result, trace_path, ordering, policy, command_x, seed)
