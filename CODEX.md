@@ -11,25 +11,25 @@ Build a robust reference-motion walking policy for Open Duck Mini through frozen
 Current next step:
 
 ```text
-The preregistered oracle COM viability-funnel study is complete through its
-frozen Stage-B hard stop. Stage A localized all 24 failing moving endpoint
-cells and committed 298 exact four-tick states; 49 formed the fixed P30,
-x=.077, two-checkpoint/two-sign sequence-design subset. X_NEG meets the
-backward-velocity rule at tick 0 in every cell; X_POS meets the runaway rule at
-ticks 23-26, before the recorded fall.
+The tail, viability-prevention and contract-closure program is complete.
+Tail scales T1/T2/T3 failed persistence and the scalar family is closed. C1
+found that training obs[83:97] is bridge-realized applied target while native
+runtime uses the prior slew-limited sent target; this remains a review-blocking
+contract mismatch. C2 measured phase ordering across 24 cells: both orderings
+passed, 0/12 pairs were material, and maximum tracking-p95 delta was .0072455
+rad, so keep observe-then-advance. C3 verified the June-21 legacy golden pair.
 
-The deterministic bounded screen finds valid sequences from only 5/49 states
-at 8 ticks, 4/49 at 16 ticks, and 0/49 at 32 ticks. X_NEG loses all valid
-sequences by tick 4 and X_POS by tick 12. No single frozen horizon works from
-every state, so the online planner and 48-cell Stage-C matrix were not run.
+B1 froze a 33-D proximity metric from 298 states without widening it. B2 ran
+18 full comparator cells; every trace completed 600 ticks, so zero actual falls
+provided viability-prevention labels. Decision:
+CLOSE_VIABILITY_PREVENTION_NO_ROUTED_FALL_CORPUS. No Colab or training ran.
+C4's guarded 14-tick servo-health round robin passes mock/schema/default-off
+contracts; RDK API binding and serial timing remain unverified.
 
-Decision: HOLD_LOCAL_AUTHORITY_NOT_COMPOSABLE. The evidence preserves the
-earlier local pulse-authority finding but rejects an auditable viability funnel
-under this exact six-joint, +/-0.08 residual formulation. No closest sequence,
-sign, checkpoint or horizon is promoted. Any gait-retraining or broader
-controller branch requires a separate preregistration. Training, Colab, local
-GPU/iGPU, RDK-X5, deployment, and robot use remain unauthorized; robot
-clearance is NO.
+Final decision: STOP_FOR_REVIEW_NO_NEW_FORMULATION. Phase A failed and B3 is
+negative, so the frozen stop rule prohibits automatically opening another
+formulation. Any future preregistration must cite CLOSED_BRANCHES_LEDGER_20260716.md
+and prove material novelty. Robot clearance remains NO.
 ```
 
 Robotics operating model:
