@@ -1,0 +1,1500 @@
+{
+  "checks": {
+    "all_design_readbacks_body2_x": true,
+    "authority_passed": true,
+    "four_scales_exact": true,
+    "residual_limit_exact": true,
+    "selected_scale_from_frozen_set": true,
+    "six_corrected_joints_exact": true
+  },
+  "controller_path": "/home/lsd/robots/open-duck-mini-rdkx5-com-decode/outputs/analysis/oracle_phase_com_controller.json",
+  "controller_sha256": "73bd9e647d18350b27feaa0220feb4167db187589d54d91859ac43973e1f5f1c",
+  "execution": {
+    "cpu_only": true,
+    "formal_matrix_cells": 0,
+    "robot_or_rdk": false,
+    "training": false
+  },
+  "failed_checks": [],
+  "fit_details": {
+    "negative/double_support": {
+      "coefficient_max_abs": 0.669996350864121,
+      "design_rank": 11,
+      "samples": 14
+    },
+    "negative/left_stance": {
+      "coefficient_max_abs": 0.07992007992007993,
+      "design_rank": 1,
+      "samples": 1
+    },
+    "negative/right_stance": {
+      "coefficient_max_abs": 0.04492318306596471,
+      "design_rank": 3,
+      "samples": 3
+    },
+    "negative/transition": {
+      "coefficient_max_abs": 0.0,
+      "design_rank": 0,
+      "samples": 0
+    },
+    "positive/double_support": {
+      "coefficient_max_abs": 0.22847336787653283,
+      "design_rank": 11,
+      "samples": 13
+    },
+    "positive/left_stance": {
+      "coefficient_max_abs": 0.03507255952950646,
+      "design_rank": 5,
+      "samples": 5
+    },
+    "positive/right_stance": {
+      "coefficient_max_abs": 0.0399800099950025,
+      "design_rank": 2,
+      "samples": 2
+    },
+    "positive/transition": {
+      "coefficient_max_abs": 0.0,
+      "design_rank": 0,
+      "samples": 0
+    }
+  },
+  "scale_results": [
+    {
+      "cells": [
+        {
+          "bilateral_transitions": true,
+          "command_consistent_forward": false,
+          "condition": "X_NEG",
+          "dynamics_readback": {
+            "enabled": true,
+            "key": "torso_com_offset_m",
+            "readback": {
+              "affected_dof_ids": [
+                6,
+                8,
+                10,
+                12,
+                14,
+                16,
+                17,
+                18,
+                19,
+                20,
+                22,
+                24,
+                26,
+                28
+              ],
+              "affected_joint_qpos_addrs": [
+                7,
+                9,
+                11,
+                13,
+                15,
+                17,
+                18,
+                19,
+                20,
+                21,
+                23,
+                25,
+                27,
+                29
+              ],
+              "after": [
+                -0.09832589998841286,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "before": [
+                -0.04832589998841286,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "body_id": 2,
+              "body_mass_kg": 0.6985260248184204,
+              "body_name": "trunk_assembly",
+              "changed_indices": [
+                [
+                  2,
+                  0
+                ],
+                [
+                  2,
+                  1
+                ],
+                [
+                  2,
+                  2
+                ]
+              ]
+            },
+            "value": [
+              -0.05,
+              0.0,
+              0.0
+            ]
+          },
+          "mean_vx_m_s": -0.37712397803330705,
+          "policy": "T2_EQUAL_512000",
+          "rate_excess_rad_s": 0.0,
+          "rate_max_excess_rad_s": 0.0,
+          "samples": 42,
+          "saturation_pct": 7.142857142857142,
+          "scale": 0.25,
+          "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+          "termination_reason": "fall_or_nan",
+          "tracking_p95_rad": 0.1522244989871979
+        },
+        {
+          "bilateral_transitions": true,
+          "command_consistent_forward": true,
+          "condition": "X_POS",
+          "dynamics_readback": {
+            "enabled": true,
+            "key": "torso_com_offset_m",
+            "readback": {
+              "affected_dof_ids": [
+                6,
+                8,
+                10,
+                12,
+                14,
+                16,
+                17,
+                18,
+                19,
+                20,
+                22,
+                24,
+                26,
+                28
+              ],
+              "affected_joint_qpos_addrs": [
+                7,
+                9,
+                11,
+                13,
+                15,
+                17,
+                18,
+                19,
+                20,
+                21,
+                23,
+                25,
+                27,
+                29
+              ],
+              "after": [
+                0.0016741000115871457,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "before": [
+                -0.04832589998841286,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "body_id": 2,
+              "body_mass_kg": 0.6985260248184204,
+              "body_name": "trunk_assembly",
+              "changed_indices": [
+                [
+                  2,
+                  0
+                ],
+                [
+                  2,
+                  1
+                ],
+                [
+                  2,
+                  2
+                ]
+              ]
+            },
+            "value": [
+              0.05,
+              0.0,
+              0.0
+            ]
+          },
+          "mean_vx_m_s": 0.365928021979366,
+          "policy": "T2_EQUAL_512000",
+          "rate_excess_rad_s": 0.0,
+          "rate_max_excess_rad_s": 0.0,
+          "samples": 52,
+          "saturation_pct": 0.0,
+          "scale": 0.25,
+          "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+          "termination_reason": "fall_or_nan",
+          "tracking_p95_rad": 0.17579258084297184
+        },
+        {
+          "bilateral_transitions": true,
+          "command_consistent_forward": false,
+          "condition": "X_NEG",
+          "dynamics_readback": {
+            "enabled": true,
+            "key": "torso_com_offset_m",
+            "readback": {
+              "affected_dof_ids": [
+                6,
+                8,
+                10,
+                12,
+                14,
+                16,
+                17,
+                18,
+                19,
+                20,
+                22,
+                24,
+                26,
+                28
+              ],
+              "affected_joint_qpos_addrs": [
+                7,
+                9,
+                11,
+                13,
+                15,
+                17,
+                18,
+                19,
+                20,
+                21,
+                23,
+                25,
+                27,
+                29
+              ],
+              "after": [
+                -0.09832589998841286,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "before": [
+                -0.04832589998841286,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "body_id": 2,
+              "body_mass_kg": 0.6985260248184204,
+              "body_name": "trunk_assembly",
+              "changed_indices": [
+                [
+                  2,
+                  0
+                ],
+                [
+                  2,
+                  1
+                ],
+                [
+                  2,
+                  2
+                ]
+              ]
+            },
+            "value": [
+              -0.05,
+              0.0,
+              0.0
+            ]
+          },
+          "mean_vx_m_s": -0.3921932666340754,
+          "policy": "T2_EQUAL_1024000",
+          "rate_excess_rad_s": 0.0,
+          "rate_max_excess_rad_s": 0.0,
+          "samples": 42,
+          "saturation_pct": 9.523809523809524,
+          "scale": 0.25,
+          "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+          "termination_reason": "fall_or_nan",
+          "tracking_p95_rad": 0.15038737952709202
+        },
+        {
+          "bilateral_transitions": true,
+          "command_consistent_forward": true,
+          "condition": "X_POS",
+          "dynamics_readback": {
+            "enabled": true,
+            "key": "torso_com_offset_m",
+            "readback": {
+              "affected_dof_ids": [
+                6,
+                8,
+                10,
+                12,
+                14,
+                16,
+                17,
+                18,
+                19,
+                20,
+                22,
+                24,
+                26,
+                28
+              ],
+              "affected_joint_qpos_addrs": [
+                7,
+                9,
+                11,
+                13,
+                15,
+                17,
+                18,
+                19,
+                20,
+                21,
+                23,
+                25,
+                27,
+                29
+              ],
+              "after": [
+                0.0016741000115871457,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "before": [
+                -0.04832589998841286,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "body_id": 2,
+              "body_mass_kg": 0.6985260248184204,
+              "body_name": "trunk_assembly",
+              "changed_indices": [
+                [
+                  2,
+                  0
+                ],
+                [
+                  2,
+                  1
+                ],
+                [
+                  2,
+                  2
+                ]
+              ]
+            },
+            "value": [
+              0.05,
+              0.0,
+              0.0
+            ]
+          },
+          "mean_vx_m_s": 0.38754879793744873,
+          "policy": "T2_EQUAL_1024000",
+          "rate_excess_rad_s": 0.0,
+          "rate_max_excess_rad_s": 0.0,
+          "samples": 55,
+          "saturation_pct": 0.0,
+          "scale": 0.25,
+          "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+          "termination_reason": "fall_or_nan",
+          "tracking_p95_rad": 0.17275102138519283
+        }
+      ],
+      "rank": [
+        0,
+        4,
+        4,
+        4,
+        2,
+        1,
+        -0.17579258084297184,
+        -0.25
+      ],
+      "scale": 0.25
+    },
+    {
+      "cells": [
+        {
+          "bilateral_transitions": true,
+          "command_consistent_forward": false,
+          "condition": "X_NEG",
+          "dynamics_readback": {
+            "enabled": true,
+            "key": "torso_com_offset_m",
+            "readback": {
+              "affected_dof_ids": [
+                6,
+                8,
+                10,
+                12,
+                14,
+                16,
+                17,
+                18,
+                19,
+                20,
+                22,
+                24,
+                26,
+                28
+              ],
+              "affected_joint_qpos_addrs": [
+                7,
+                9,
+                11,
+                13,
+                15,
+                17,
+                18,
+                19,
+                20,
+                21,
+                23,
+                25,
+                27,
+                29
+              ],
+              "after": [
+                -0.09832589998841286,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "before": [
+                -0.04832589998841286,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "body_id": 2,
+              "body_mass_kg": 0.6985260248184204,
+              "body_name": "trunk_assembly",
+              "changed_indices": [
+                [
+                  2,
+                  0
+                ],
+                [
+                  2,
+                  1
+                ],
+                [
+                  2,
+                  2
+                ]
+              ]
+            },
+            "value": [
+              -0.05,
+              0.0,
+              0.0
+            ]
+          },
+          "mean_vx_m_s": -0.38353247031392085,
+          "policy": "T2_EQUAL_512000",
+          "rate_excess_rad_s": 0.0,
+          "rate_max_excess_rad_s": 0.0,
+          "samples": 42,
+          "saturation_pct": 7.142857142857142,
+          "scale": 0.5,
+          "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+          "termination_reason": "fall_or_nan",
+          "tracking_p95_rad": 0.13806025981903078
+        },
+        {
+          "bilateral_transitions": true,
+          "command_consistent_forward": true,
+          "condition": "X_POS",
+          "dynamics_readback": {
+            "enabled": true,
+            "key": "torso_com_offset_m",
+            "readback": {
+              "affected_dof_ids": [
+                6,
+                8,
+                10,
+                12,
+                14,
+                16,
+                17,
+                18,
+                19,
+                20,
+                22,
+                24,
+                26,
+                28
+              ],
+              "affected_joint_qpos_addrs": [
+                7,
+                9,
+                11,
+                13,
+                15,
+                17,
+                18,
+                19,
+                20,
+                21,
+                23,
+                25,
+                27,
+                29
+              ],
+              "after": [
+                0.0016741000115871457,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "before": [
+                -0.04832589998841286,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "body_id": 2,
+              "body_mass_kg": 0.6985260248184204,
+              "body_name": "trunk_assembly",
+              "changed_indices": [
+                [
+                  2,
+                  0
+                ],
+                [
+                  2,
+                  1
+                ],
+                [
+                  2,
+                  2
+                ]
+              ]
+            },
+            "value": [
+              0.05,
+              0.0,
+              0.0
+            ]
+          },
+          "mean_vx_m_s": 0.38153257488632913,
+          "policy": "T2_EQUAL_512000",
+          "rate_excess_rad_s": 0.0,
+          "rate_max_excess_rad_s": 0.0,
+          "samples": 55,
+          "saturation_pct": 0.0,
+          "scale": 0.5,
+          "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+          "termination_reason": "fall_or_nan",
+          "tracking_p95_rad": 0.18121176958084104
+        },
+        {
+          "bilateral_transitions": true,
+          "command_consistent_forward": false,
+          "condition": "X_NEG",
+          "dynamics_readback": {
+            "enabled": true,
+            "key": "torso_com_offset_m",
+            "readback": {
+              "affected_dof_ids": [
+                6,
+                8,
+                10,
+                12,
+                14,
+                16,
+                17,
+                18,
+                19,
+                20,
+                22,
+                24,
+                26,
+                28
+              ],
+              "affected_joint_qpos_addrs": [
+                7,
+                9,
+                11,
+                13,
+                15,
+                17,
+                18,
+                19,
+                20,
+                21,
+                23,
+                25,
+                27,
+                29
+              ],
+              "after": [
+                -0.09832589998841286,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "before": [
+                -0.04832589998841286,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "body_id": 2,
+              "body_mass_kg": 0.6985260248184204,
+              "body_name": "trunk_assembly",
+              "changed_indices": [
+                [
+                  2,
+                  0
+                ],
+                [
+                  2,
+                  1
+                ],
+                [
+                  2,
+                  2
+                ]
+              ]
+            },
+            "value": [
+              -0.05,
+              0.0,
+              0.0
+            ]
+          },
+          "mean_vx_m_s": -0.4009903324767947,
+          "policy": "T2_EQUAL_1024000",
+          "rate_excess_rad_s": 0.0,
+          "rate_max_excess_rad_s": 0.0,
+          "samples": 42,
+          "saturation_pct": 11.904761904761903,
+          "scale": 0.5,
+          "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+          "termination_reason": "fall_or_nan",
+          "tracking_p95_rad": 0.14667807817459108
+        },
+        {
+          "bilateral_transitions": true,
+          "command_consistent_forward": true,
+          "condition": "X_POS",
+          "dynamics_readback": {
+            "enabled": true,
+            "key": "torso_com_offset_m",
+            "readback": {
+              "affected_dof_ids": [
+                6,
+                8,
+                10,
+                12,
+                14,
+                16,
+                17,
+                18,
+                19,
+                20,
+                22,
+                24,
+                26,
+                28
+              ],
+              "affected_joint_qpos_addrs": [
+                7,
+                9,
+                11,
+                13,
+                15,
+                17,
+                18,
+                19,
+                20,
+                21,
+                23,
+                25,
+                27,
+                29
+              ],
+              "after": [
+                0.0016741000115871457,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "before": [
+                -0.04832589998841286,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "body_id": 2,
+              "body_mass_kg": 0.6985260248184204,
+              "body_name": "trunk_assembly",
+              "changed_indices": [
+                [
+                  2,
+                  0
+                ],
+                [
+                  2,
+                  1
+                ],
+                [
+                  2,
+                  2
+                ]
+              ]
+            },
+            "value": [
+              0.05,
+              0.0,
+              0.0
+            ]
+          },
+          "mean_vx_m_s": 0.3694996015110519,
+          "policy": "T2_EQUAL_1024000",
+          "rate_excess_rad_s": 0.0,
+          "rate_max_excess_rad_s": 0.0,
+          "samples": 56,
+          "saturation_pct": 0.0,
+          "scale": 0.5,
+          "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+          "termination_reason": "fall_or_nan",
+          "tracking_p95_rad": 0.1749088168144226
+        }
+      ],
+      "rank": [
+        0,
+        4,
+        4,
+        4,
+        2,
+        1,
+        -0.18121176958084104,
+        -0.5
+      ],
+      "scale": 0.5
+    },
+    {
+      "cells": [
+        {
+          "bilateral_transitions": true,
+          "command_consistent_forward": false,
+          "condition": "X_NEG",
+          "dynamics_readback": {
+            "enabled": true,
+            "key": "torso_com_offset_m",
+            "readback": {
+              "affected_dof_ids": [
+                6,
+                8,
+                10,
+                12,
+                14,
+                16,
+                17,
+                18,
+                19,
+                20,
+                22,
+                24,
+                26,
+                28
+              ],
+              "affected_joint_qpos_addrs": [
+                7,
+                9,
+                11,
+                13,
+                15,
+                17,
+                18,
+                19,
+                20,
+                21,
+                23,
+                25,
+                27,
+                29
+              ],
+              "after": [
+                -0.09832589998841286,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "before": [
+                -0.04832589998841286,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "body_id": 2,
+              "body_mass_kg": 0.6985260248184204,
+              "body_name": "trunk_assembly",
+              "changed_indices": [
+                [
+                  2,
+                  0
+                ],
+                [
+                  2,
+                  1
+                ],
+                [
+                  2,
+                  2
+                ]
+              ]
+            },
+            "value": [
+              -0.05,
+              0.0,
+              0.0
+            ]
+          },
+          "mean_vx_m_s": -0.39115655972340774,
+          "policy": "T2_EQUAL_512000",
+          "rate_excess_rad_s": 0.0,
+          "rate_max_excess_rad_s": 0.0,
+          "samples": 43,
+          "saturation_pct": 9.30232558139535,
+          "scale": 0.75,
+          "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+          "termination_reason": "fall_or_nan",
+          "tracking_p95_rad": 0.151066529750824
+        },
+        {
+          "bilateral_transitions": true,
+          "command_consistent_forward": true,
+          "condition": "X_POS",
+          "dynamics_readback": {
+            "enabled": true,
+            "key": "torso_com_offset_m",
+            "readback": {
+              "affected_dof_ids": [
+                6,
+                8,
+                10,
+                12,
+                14,
+                16,
+                17,
+                18,
+                19,
+                20,
+                22,
+                24,
+                26,
+                28
+              ],
+              "affected_joint_qpos_addrs": [
+                7,
+                9,
+                11,
+                13,
+                15,
+                17,
+                18,
+                19,
+                20,
+                21,
+                23,
+                25,
+                27,
+                29
+              ],
+              "after": [
+                0.0016741000115871457,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "before": [
+                -0.04832589998841286,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "body_id": 2,
+              "body_mass_kg": 0.6985260248184204,
+              "body_name": "trunk_assembly",
+              "changed_indices": [
+                [
+                  2,
+                  0
+                ],
+                [
+                  2,
+                  1
+                ],
+                [
+                  2,
+                  2
+                ]
+              ]
+            },
+            "value": [
+              0.05,
+              0.0,
+              0.0
+            ]
+          },
+          "mean_vx_m_s": 0.3717759168939665,
+          "policy": "T2_EQUAL_512000",
+          "rate_excess_rad_s": 0.0,
+          "rate_max_excess_rad_s": 0.0,
+          "samples": 57,
+          "saturation_pct": 0.0,
+          "scale": 0.75,
+          "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+          "termination_reason": "fall_or_nan",
+          "tracking_p95_rad": 0.17910029888153078
+        },
+        {
+          "bilateral_transitions": true,
+          "command_consistent_forward": false,
+          "condition": "X_NEG",
+          "dynamics_readback": {
+            "enabled": true,
+            "key": "torso_com_offset_m",
+            "readback": {
+              "affected_dof_ids": [
+                6,
+                8,
+                10,
+                12,
+                14,
+                16,
+                17,
+                18,
+                19,
+                20,
+                22,
+                24,
+                26,
+                28
+              ],
+              "affected_joint_qpos_addrs": [
+                7,
+                9,
+                11,
+                13,
+                15,
+                17,
+                18,
+                19,
+                20,
+                21,
+                23,
+                25,
+                27,
+                29
+              ],
+              "after": [
+                -0.09832589998841286,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "before": [
+                -0.04832589998841286,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "body_id": 2,
+              "body_mass_kg": 0.6985260248184204,
+              "body_name": "trunk_assembly",
+              "changed_indices": [
+                [
+                  2,
+                  0
+                ],
+                [
+                  2,
+                  1
+                ],
+                [
+                  2,
+                  2
+                ]
+              ]
+            },
+            "value": [
+              -0.05,
+              0.0,
+              0.0
+            ]
+          },
+          "mean_vx_m_s": -0.3887517057185949,
+          "policy": "T2_EQUAL_1024000",
+          "rate_excess_rad_s": 0.0,
+          "rate_max_excess_rad_s": 0.0,
+          "samples": 43,
+          "saturation_pct": 2.3255813953488373,
+          "scale": 0.75,
+          "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+          "termination_reason": "fall_or_nan",
+          "tracking_p95_rad": 0.14479634761810303
+        },
+        {
+          "bilateral_transitions": true,
+          "command_consistent_forward": true,
+          "condition": "X_POS",
+          "dynamics_readback": {
+            "enabled": true,
+            "key": "torso_com_offset_m",
+            "readback": {
+              "affected_dof_ids": [
+                6,
+                8,
+                10,
+                12,
+                14,
+                16,
+                17,
+                18,
+                19,
+                20,
+                22,
+                24,
+                26,
+                28
+              ],
+              "affected_joint_qpos_addrs": [
+                7,
+                9,
+                11,
+                13,
+                15,
+                17,
+                18,
+                19,
+                20,
+                21,
+                23,
+                25,
+                27,
+                29
+              ],
+              "after": [
+                0.0016741000115871457,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "before": [
+                -0.04832589998841286,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "body_id": 2,
+              "body_mass_kg": 0.6985260248184204,
+              "body_name": "trunk_assembly",
+              "changed_indices": [
+                [
+                  2,
+                  0
+                ],
+                [
+                  2,
+                  1
+                ],
+                [
+                  2,
+                  2
+                ]
+              ]
+            },
+            "value": [
+              0.05,
+              0.0,
+              0.0
+            ]
+          },
+          "mean_vx_m_s": 0.37613140808402057,
+          "policy": "T2_EQUAL_1024000",
+          "rate_excess_rad_s": 0.0,
+          "rate_max_excess_rad_s": 0.0,
+          "samples": 57,
+          "saturation_pct": 0.0,
+          "scale": 0.75,
+          "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+          "termination_reason": "fall_or_nan",
+          "tracking_p95_rad": 0.17620449066162114
+        }
+      ],
+      "rank": [
+        0,
+        4,
+        4,
+        4,
+        2,
+        1,
+        -0.17910029888153078,
+        -0.75
+      ],
+      "scale": 0.75
+    },
+    {
+      "cells": [
+        {
+          "bilateral_transitions": true,
+          "command_consistent_forward": false,
+          "condition": "X_NEG",
+          "dynamics_readback": {
+            "enabled": true,
+            "key": "torso_com_offset_m",
+            "readback": {
+              "affected_dof_ids": [
+                6,
+                8,
+                10,
+                12,
+                14,
+                16,
+                17,
+                18,
+                19,
+                20,
+                22,
+                24,
+                26,
+                28
+              ],
+              "affected_joint_qpos_addrs": [
+                7,
+                9,
+                11,
+                13,
+                15,
+                17,
+                18,
+                19,
+                20,
+                21,
+                23,
+                25,
+                27,
+                29
+              ],
+              "after": [
+                -0.09832589998841286,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "before": [
+                -0.04832589998841286,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "body_id": 2,
+              "body_mass_kg": 0.6985260248184204,
+              "body_name": "trunk_assembly",
+              "changed_indices": [
+                [
+                  2,
+                  0
+                ],
+                [
+                  2,
+                  1
+                ],
+                [
+                  2,
+                  2
+                ]
+              ]
+            },
+            "value": [
+              -0.05,
+              0.0,
+              0.0
+            ]
+          },
+          "mean_vx_m_s": -0.40245634828542554,
+          "policy": "T2_EQUAL_512000",
+          "rate_excess_rad_s": 0.0,
+          "rate_max_excess_rad_s": 0.0,
+          "samples": 43,
+          "saturation_pct": 11.627906976744185,
+          "scale": 1.0,
+          "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+          "termination_reason": "fall_or_nan",
+          "tracking_p95_rad": 0.14426960945129394
+        },
+        {
+          "bilateral_transitions": true,
+          "command_consistent_forward": true,
+          "condition": "X_POS",
+          "dynamics_readback": {
+            "enabled": true,
+            "key": "torso_com_offset_m",
+            "readback": {
+              "affected_dof_ids": [
+                6,
+                8,
+                10,
+                12,
+                14,
+                16,
+                17,
+                18,
+                19,
+                20,
+                22,
+                24,
+                26,
+                28
+              ],
+              "affected_joint_qpos_addrs": [
+                7,
+                9,
+                11,
+                13,
+                15,
+                17,
+                18,
+                19,
+                20,
+                21,
+                23,
+                25,
+                27,
+                29
+              ],
+              "after": [
+                0.0016741000115871457,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "before": [
+                -0.04832589998841286,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "body_id": 2,
+              "body_mass_kg": 0.6985260248184204,
+              "body_name": "trunk_assembly",
+              "changed_indices": [
+                [
+                  2,
+                  0
+                ],
+                [
+                  2,
+                  1
+                ],
+                [
+                  2,
+                  2
+                ]
+              ]
+            },
+            "value": [
+              0.05,
+              0.0,
+              0.0
+            ]
+          },
+          "mean_vx_m_s": 0.3665841644469765,
+          "policy": "T2_EQUAL_512000",
+          "rate_excess_rad_s": 0.0,
+          "rate_max_excess_rad_s": 0.0,
+          "samples": 56,
+          "saturation_pct": 0.0,
+          "scale": 1.0,
+          "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+          "termination_reason": "fall_or_nan",
+          "tracking_p95_rad": 0.18429282307624817
+        },
+        {
+          "bilateral_transitions": true,
+          "command_consistent_forward": false,
+          "condition": "X_NEG",
+          "dynamics_readback": {
+            "enabled": true,
+            "key": "torso_com_offset_m",
+            "readback": {
+              "affected_dof_ids": [
+                6,
+                8,
+                10,
+                12,
+                14,
+                16,
+                17,
+                18,
+                19,
+                20,
+                22,
+                24,
+                26,
+                28
+              ],
+              "affected_joint_qpos_addrs": [
+                7,
+                9,
+                11,
+                13,
+                15,
+                17,
+                18,
+                19,
+                20,
+                21,
+                23,
+                25,
+                27,
+                29
+              ],
+              "after": [
+                -0.09832589998841286,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "before": [
+                -0.04832589998841286,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "body_id": 2,
+              "body_mass_kg": 0.6985260248184204,
+              "body_name": "trunk_assembly",
+              "changed_indices": [
+                [
+                  2,
+                  0
+                ],
+                [
+                  2,
+                  1
+                ],
+                [
+                  2,
+                  2
+                ]
+              ]
+            },
+            "value": [
+              -0.05,
+              0.0,
+              0.0
+            ]
+          },
+          "mean_vx_m_s": -0.3791150835364364,
+          "policy": "T2_EQUAL_1024000",
+          "rate_excess_rad_s": 0.0,
+          "rate_max_excess_rad_s": 0.0,
+          "samples": 43,
+          "saturation_pct": 13.953488372093023,
+          "scale": 1.0,
+          "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+          "termination_reason": "fall_or_nan",
+          "tracking_p95_rad": 0.14444435834884642
+        },
+        {
+          "bilateral_transitions": true,
+          "command_consistent_forward": true,
+          "condition": "X_POS",
+          "dynamics_readback": {
+            "enabled": true,
+            "key": "torso_com_offset_m",
+            "readback": {
+              "affected_dof_ids": [
+                6,
+                8,
+                10,
+                12,
+                14,
+                16,
+                17,
+                18,
+                19,
+                20,
+                22,
+                24,
+                26,
+                28
+              ],
+              "affected_joint_qpos_addrs": [
+                7,
+                9,
+                11,
+                13,
+                15,
+                17,
+                18,
+                19,
+                20,
+                21,
+                23,
+                25,
+                27,
+                29
+              ],
+              "after": [
+                0.0016741000115871457,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "before": [
+                -0.04832589998841286,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "body_id": 2,
+              "body_mass_kg": 0.6985260248184204,
+              "body_name": "trunk_assembly",
+              "changed_indices": [
+                [
+                  2,
+                  0
+                ],
+                [
+                  2,
+                  1
+                ],
+                [
+                  2,
+                  2
+                ]
+              ]
+            },
+            "value": [
+              0.05,
+              0.0,
+              0.0
+            ]
+          },
+          "mean_vx_m_s": 0.3468171915222631,
+          "policy": "T2_EQUAL_1024000",
+          "rate_excess_rad_s": 0.0,
+          "rate_max_excess_rad_s": 0.0,
+          "samples": 61,
+          "saturation_pct": 0.0,
+          "scale": 1.0,
+          "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+          "termination_reason": "fall_or_nan",
+          "tracking_p95_rad": 0.18339014053344727
+        }
+      ],
+      "rank": [
+        0,
+        4,
+        4,
+        4,
+        2,
+        1,
+        -0.18429282307624817,
+        -1.0
+      ],
+      "scale": 1.0
+    }
+  ],
+  "schema_version": "oracle_phase_com_controller_fit.v1",
+  "selected_rank": [
+    0,
+    4,
+    4,
+    4,
+    2,
+    1,
+    -0.17579258084297184,
+    -0.25
+  ],
+  "selected_scale": 0.25,
+  "source_hashes": {
+    "authority": "38b39f9ec9ab6485fb3689b720c0ff828b1e342379b79efa474d6a4dcecdcf68",
+    "tool": "74bb71fdd815ef92064c7bb4fd580700456d227cf74f02bd7c72bd759a189534"
+  },
+  "status": "PASS_ORACLE_PHASE_COM_CONTROLLER_FROZEN"
+}
