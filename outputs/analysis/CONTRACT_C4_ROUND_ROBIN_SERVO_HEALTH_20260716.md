@@ -19,6 +19,11 @@ false, the health helper returns before calling HWI and all extended arrays are
 reported as null. Mock tests prove 14-ID coverage, wraparound, values and the
 existing transport/order behavior. The schema and static runtime contract pass.
 
+Across 5,000 CPU/mock samples, the three-register round-robin helper's p95 was
+0.000002054 s and its incremental p95 over a no-op was 0.000001994 s, below
+the frozen 0.005 s mock budget. This is mock dispatch timing, not a claim about
+serial-bus or RDK timing.
+
 This is not an on-device API or timing validation. In particular,
 `get_present_temperature` is contracted against the mock but remains to be
 verified against the RDK-installed Rustypot build in a separately authorized
