@@ -1,0 +1,31 @@
+{
+  "schema_version": "viability_prevention_metric_preregistration.v1",
+  "status": "PREREGISTERED_BEFORE_COMPARATOR_REPLAY",
+  "source_state_count": 298,
+  "dimensions": 33,
+  "features": [
+    "14 actual actuator positions",
+    "14 corresponding actuator-joint velocities",
+    "base roll",
+    "base pitch",
+    "base height",
+    "left and right contact bits"
+  ],
+  "normalization": {
+    "joint_position_rad": 0.25,
+    "joint_velocity_rad_s": [5.24, 5.24, 1.5, 1.5, 1.5, 5.24, 5.24, 5.24, 5.24, 5.24, 5.24, 1.25, 1.0, 1.25],
+    "roll_rad": 0.2,
+    "pitch_rad": 0.2,
+    "height_m": 0.05,
+    "contacts": 1.0
+  },
+  "distance": "RMS normalized Euclidean",
+  "radius": "p95 nearest different-tick neighbor within identical condition-policy-fit-command trajectory",
+  "sign_weights": {"X_NEG": 3.0, "X_POS": 1.0},
+  "hashes": {
+    "tool": "f9825680d55f53446cd17df21af318d5d6f39bde691076cfa39a360820a89d75",
+    "markdown": "dbbed36c373b2371b30c3042fc44cda6c027fb740c9a473466404181d04c9715"
+  },
+  "no_post_replay_radius_change": true,
+  "robot_clearance": "NO"
+}
