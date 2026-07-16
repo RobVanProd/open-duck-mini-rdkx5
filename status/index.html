@@ -82,8 +82,8 @@
     <section class="hero">
       <div class="card">
         <div class="label">Current operation</div>
-        <div class="big red" id="operation">Reset-estimator arm closed · no advance</div>
-        <div class="metric" id="operation-detail">The frozen CPU evaluation is complete: 12/12 matrices and 48/48 cells are valid. RESET_EST_LATCH_U05 passes 4/12 matrices and 20/48 cells; nominal passes, but both signed torso-COM endpoints fail. No checkpoint is selected.</div>
+        <div class="big red" id="operation">Oracle COM residual · partial hold</div>
+        <div class="metric" id="operation-detail">The CPU-only oracle feasibility study is complete. Local bounded pulses show corrective authority, but the frozen affine residual passes only 20/48 formal cells: nominal 16/16, X_NEG 0/16, and X_POS 4/16. Decision: HOLD_ORACLE_PARTIAL.</div>
       </div>
       <div class="card">
         <div class="label">Remediation winner</div>
@@ -224,6 +224,11 @@
           <li>The reset-estimator transform and corrected evaluator contracts pass. The initial stochastic-reset contract failure remains preserved; nominal reset produces ordered latches -1/approximately 0/+0.999989 before behavior.</li>
           <li>The full 12-matrix/48-cell CPU behavior evaluation is valid. Both checkpoints pass nominal, XNEG fails x=0 and moving cells, and XPOS preserves x=0 but fails all moving cells.</li>
           <li>Decision: <code>CLOSE_RESET_EST_LATCH_U05_NO_PASS</code>. The arm passes 4/12 matrices and 20/48 cells; no retry, midpoint, or closest checkpoint is promoted.</li>
+          <li>The oracle phase-COM residual has exact default-off behavior: all four loaded-controller nominal comparison traces have zero maximum numeric difference and exactly zero residual.</li>
+          <li>The frozen 25-branch authority screen passes at both signs and checkpoints. All 38 screened states have an improving bounded pulse; 36 also clear every eight-tick hard gate.</li>
+          <li>Local authority does not become sustained control: all four fixed scales fail every endpoint design cell. The selected .25 affine controller preserves nominal but does not arrest either signed failure.</li>
+          <li>The complete formal matrix passes 20/48 cells: NOMINAL 16/16, XNEG 0/16, XPOS 4/16. XNEG falls at ticks 40-47; XPOS moving cells fall at ticks 52-57. Rate and envelope excess remain zero and tracking remains below .20 rad.</li>
+          <li>Decision: <code>HOLD_ORACLE_PARTIAL</code>. This exact affine residual is insufficient; the passing local authority screen prevents a no-authority conclusion. No closest scale advances.</li>
         </ol>
       </div>
       <div class="card">
@@ -343,6 +348,11 @@
           <li>Completed: contract both frozen transformed policies and the default-off reset-estimator evaluator plumbing on CPU.</li>
           <li>Completed: run all 48 frozen behavior cells and validate exact per-run body-2 readback.</li>
           <li>Closed: <code>RESET_EST_LATCH_U05</code> does not advance. A new evidence question requires a separate preregistration.</li>
+          <li>Completed: preregister the CPU-only phase/contact-conditioned simulator-oracle residual with frozen joints, limits, pulse bank, fit, matrix, and decisions.</li>
+          <li>Completed: pass default-off identity, preserve the initial one-ULP audit failure, and prove exact nominal identity after the nominal projection correction.</li>
+          <li>Completed: pass the 38-state local corrective-authority screen and freeze the deterministic ridge controller plus .25 global scale before formal outcomes.</li>
+          <li>Completed: run all 48 formal cells with per-cell JSON, full oracle traces, and exact per-run body-2 readback.</li>
+          <li>Held: <code>HOLD_ORACLE_PARTIAL</code>. Any sustained-correction localization, controller-class change, gait retraining, or estimator work requires a separate preregistration.</li>
         </ol>
       </div>
     </section>
@@ -351,11 +361,11 @@
       <div class="label">Authority boundary</div>
       <h2 style="margin-top:8px">Offline only</h2>
       <div>The baseline <code>BEST_WALK_ONNX_2.onnx</code> remains a frozen comparator, not a teacher or warm start. No new policy is cleared for the robot. No robot, RDK-X5, iGPU, or onboard GPU access is part of this work.</div>
-      <div class="constraints"><span class="chip">Robot blocked</span><span class="chip">RDK blocked</span><span class="chip">Local GPU / iGPU blocked</span><span class="chip">Colab stopped</span><span class="chip">48 cells complete</span><span class="chip">Arm closed</span></div>
+      <div class="constraints"><span class="chip">Robot blocked</span><span class="chip">RDK blocked</span><span class="chip">Local GPU / iGPU blocked</span><span class="chip">Colab stopped</span><span class="chip">48 oracle cells complete</span><span class="chip">HOLD_ORACLE_PARTIAL</span></div>
     </section>
 
     <footer>
-      <span id="updated">Evidence snapshot: 2026-07-15 · RESET_EST_LATCH_U05 closed after valid 48-cell CPU evaluation</span>
+      <span id="updated">Evidence snapshot: 2026-07-15 · oracle phase-COM feasibility held after valid 48-cell CPU evaluation</span>
       <span>branch <code>codex/torso-com-decode-probe</code> · live evidence is repository-backed</span>
     </footer>
   </main>

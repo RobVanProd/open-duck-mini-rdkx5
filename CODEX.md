@@ -11,22 +11,28 @@ Build a robust reference-motion walking policy for Open Duck Mini through frozen
 Current next step:
 
 ```text
-The RESET_EST_LATCH_U05 arm is closed by its frozen CPU behavior evaluation.
-All 12 matrices and 48 cells are present with exact policy, fit, CPU, command,
-seed, horizon, transform, and per-run body-2 model-readback contracts. Training
-reward was not used for selection.
+The oracle phase-conditioned COM compensation feasibility study is complete.
+Its default-off contracts preserve all four nominal comparison cells exactly,
+including zero maximum numeric trace difference with the frozen controller
+loaded. The local 25-branch pulse screen finds bounded corrective authority in
+every one of 38 screened pre-fall states; 36 also clear the complete eight-tick
+hard gate.
 
-Both checkpoints pass all four nominal checkpoint/fit matrices. Neither
-checkpoint passes either signed COM endpoint: X_NEG fails x=0 and moving cells
-with backward reversal, while X_POS preserves all four x=0 cells but fails all
-moving cells with forward runaway. The arm therefore passes 4/12 matrices and
-20/48 cells. Worst endpoint tracking p95 remains 0.186236 rad, so the closure is
-behavioral rather than a relaxed tracking decision.
+The preregistered affine residual fit does not turn that local authority into
+sustained endpoint recovery. None of four design cells survives at any frozen
+global scale .25/.50/.75/1.00. The selected .25 controller then completes the
+unchanged formal matrix at 20/48 cells: NOMINAL 16/16, X_NEG 0/16, X_POS 4/16.
+X_NEG still reverses and falls at ticks 40-47; X_POS x=0 survives, but every
+moving cell runs forward and terminates at ticks 52-57. Tracking remains below
+.20 rad and measured rate/envelope excess is zero, so survival and signed
+command response—not relaxed tracking—decide the result.
 
-Decision: CLOSE_RESET_EST_LATCH_U05_NO_PASS. No checkpoint is promoted, no
-retry or midpoint is allowed, and no new training family is selected. Any new
-evidence question requires a separate preregistration. Training, Colab, local
-GPU/iGPU, RDK-X5, runtime work, and robot use remain unauthorized.
+Decision: HOLD_ORACLE_PARTIAL. The evidence rejects this exact fitted affine
+residual as sufficient, but does not support HOLD_NO_CORRECTIVE_AUTHORITY
+because the local pulse screen passed. No closest scale or controller is
+promoted. A narrower sustained-correction localization requires a separate
+preregistration. Training, Colab, local GPU/iGPU, RDK-X5, deployment, and robot
+use remain unauthorized; robot clearance is NO.
 ```
 
 Robotics operating model:
