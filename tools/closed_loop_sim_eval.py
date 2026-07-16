@@ -103,6 +103,7 @@ class ClosedLoopConfig:
     bridge_reset_align_joint_indices: tuple[int, ...] = ()
     reference_feature_table_path: Path | None = None
     reference_start_phase: int | None = None
+    policy_phase_advance_before_observation: bool = False
     oracle_phase_com_controller_json: Path | None = None
     trace_oracle_state: bool = False
 
@@ -1458,7 +1459,8 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
         )
         return state
 
-    def prepare_step(state, action):
+    def advance_reference(state):
+        """Advance only the imitation phase/reference, without stepping physics."""
         state.info["command"] = command
         if joystick.USE_IMITATION_REWARD:
             state.info["imitation_i"] += 1
@@ -1483,6 +1485,12 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
         else:
             state.info["imitation_i"] = 0
             state.info["current_reference_motion"] = jp.zeros(0)
+        return state
+
+    def prepare_step(state, action):
+        state.info["command"] = command
+        if not config.policy_phase_advance_before_observation:
+            state = advance_reference(state)
 
         state.info["rng"], push1_rng, push2_rng, action_delay_rng = jax.random.split(
             state.info["rng"], 4
@@ -1739,6 +1747,7 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
 
     refresh_obs_jit = jax.jit(refresh_obs)
     prepare_step_jit = jax.jit(prepare_step)
+    advance_reference_jit = jax.jit(advance_reference)
     apply_motor_target_runner = (
         jax.jit(apply_motor_target)
         if config.mjx_step_loop_mode in {"default", "scan"}
@@ -1812,6 +1821,9 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
         "reference_start_phase": (
             None if config.reference_start_phase is None
             else int(config.reference_start_phase)
+        ),
+        "policy_phase_advance_before_observation": bool(
+            config.policy_phase_advance_before_observation
         ),
         "terrain_override": terrain_override,
         "dynamics_override": dynamics_override,
@@ -1889,6 +1901,9 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
         previous_whole_body_com: np.ndarray | None = None
 
         for tick in range(sim_steps):
+            if config.policy_phase_advance_before_observation:
+                state = advance_reference_jit(state)
+                state = refresh_obs_jit(state)
             obs = np.asarray(jax.device_get(state.obs["state"]), dtype=np.float32)
             if obs.shape != (config.expected_observation_dim,):
                 return {
@@ -2387,6 +2402,9 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
         "policy_phase_action_delta_scale": float(config.policy_phase_action_delta_scale),
         "policy_phase_action_delta_min_command_x": float(
             config.policy_phase_action_delta_min_command_x
+        ),
+        "policy_phase_advance_before_observation": bool(
+            config.policy_phase_advance_before_observation
         ),
         "oracle_phase_com_controller_json": (
             None
