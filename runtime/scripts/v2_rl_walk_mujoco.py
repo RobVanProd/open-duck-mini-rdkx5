@@ -5,6 +5,7 @@ import numpy as np
 from motor_velocity_limits import parse_motor_velocity_limits
 from mini_bdx_runtime.rustypot_position_hwi import HWI
 from mini_bdx_runtime.onnx_infer import OnnxInfer
+from mini_bdx_runtime.winner_v2 import WinnerV2ObservationAdapter, WinnerV2OnnxPolicy
 
 from mini_bdx_runtime.raw_imu import Imu
 from mini_bdx_runtime.poly_reference_motion import PolyReferenceMotion
@@ -45,6 +46,9 @@ class RLWalk:
         telemetry_every_n: int = 1,
         kp_overrides: dict[str, float] | None = None,
         motor_velocity_limits_rad_s: list[float] | None = None,
+        policy_contract: str = "legacy101_sent_target_v1",
+        winner_v2_fit_path: str | None = None,
+        winner_v2_reference_table_path: str | None = None,
     ):
 
         self.duck_config = DuckConfig(config_json_path=duck_config_path)
@@ -54,9 +58,24 @@ class RLWalk:
         self.max_runtime_seconds = max_runtime_seconds
         self.pitch_bias = pitch_bias
         self.cutoff_frequency = cutoff_frequency
+        if policy_contract == "ground_up115_applied_target_v2":
+            if float(control_freq) != 50.0 or float(action_scale) != 0.25:
+                raise ValueError("winner-v2 requires 50 Hz and action_scale=0.25")
+            if float(self.duck_config.phase_frequency_factor_offset) != 0.0:
+                raise ValueError("winner-v2 requires zero phase-frequency offset")
 
         self.onnx_model_path = onnx_model_path
-        self.policy = OnnxInfer(self.onnx_model_path, awd=True)
+        self.policy_contract = policy_contract
+        if self.policy_contract == "legacy101_sent_target_v1":
+            self.policy = OnnxInfer(self.onnx_model_path, awd=True)
+        elif self.policy_contract == "ground_up115_applied_target_v2":
+            if winner_v2_fit_path is None or winner_v2_reference_table_path is None:
+                raise ValueError("winner-v2 requires explicit fit and reference-table paths")
+            if cutoff_frequency is not None:
+                raise ValueError("winner-v2 forbids the optional action filter")
+            self.policy = WinnerV2OnnxPolicy(self.onnx_model_path)
+        else:
+            raise ValueError(f"unknown policy contract: {self.policy_contract}")
 
         self.num_dofs = 14
         self.max_motor_velocity = 5.24  # rad/s
@@ -106,6 +125,16 @@ class RLWalk:
         self._telemetry_servo_temperature_raw = [None] * self.num_dofs
 
         self.hwi = HWI(self.duck_config, serial_port)
+        self.init_pos = list(self.hwi.init_pos.values())
+        self.winner_v2_adapter = None
+        if self.policy_contract == "ground_up115_applied_target_v2":
+            self.winner_v2_adapter = WinnerV2ObservationAdapter(
+                winner_v2_fit_path,
+                winner_v2_reference_table_path,
+                self.init_pos,
+                phase_step=1,
+                action_filter_enabled=self.action_filter is not None,
+            )
 
         self.start()
 
@@ -123,8 +152,6 @@ class RLWalk:
         self.last_action = np.zeros(self.num_dofs)
         self.last_last_action = np.zeros(self.num_dofs)
         self.last_last_last_action = np.zeros(self.num_dofs)
-
-        self.init_pos = list(self.hwi.init_pos.values())
 
         self.motor_targets = np.array(self.init_pos.copy())
         self.prev_motor_targets = np.array(self.init_pos.copy())
@@ -149,6 +176,10 @@ class RLWalk:
         self.phase_frequency_factor_offset = (
             self.duck_config.phase_frequency_factor_offset
         )
+        if self.policy_contract == "ground_up115_applied_target_v2" and (
+            self.phase_frequency_factor != 1.0 or self.phase_frequency_factor_offset != 0.0
+        ):
+            raise ValueError("winner-v2 requires exact one-step phase advance")
 
         # Optional expression features
         if self.duck_config.eyes:
@@ -267,8 +298,18 @@ class RLWalk:
                 "onnx_sha256": self._telemetry_policy_sha256,
                 "input_name": getattr(self.policy, "input_name", "obs"),
                 "output_name": self._telemetry_policy_output_name,
-                "observation_dim": 101,
+                "observation_dim": 115
+                if self.policy_contract == "ground_up115_applied_target_v2"
+                else 101,
                 "action_dim": 14,
+                "policy_contract": self.policy_contract,
+                "winner_v2_policy_sha256": getattr(self.policy, "policy_sha256", None),
+                "winner_v2_fit_sha256": None
+                if self.winner_v2_adapter is None
+                else self.winner_v2_adapter.observer.fit_sha256,
+                "winner_v2_reference_table_sha256": None
+                if self.winner_v2_adapter is None
+                else self.winner_v2_adapter.reference.sha256,
             },
             "control": {
                 "control_freq_hz": self.control_freq,
@@ -339,6 +380,11 @@ class RLWalk:
 
     def get_obs(self):
 
+        if self.winner_v2_adapter is not None and (
+            self.phase_frequency_factor != 1.0 or self.phase_frequency_factor_offset != 0.0
+        ):
+            raise ValueError("winner-v2 phase advance changed from exactly one step")
+
         imu_data = self.imu.get_data()
 
         dof_pos = self.hwi.get_present_positions(
@@ -394,6 +440,11 @@ class RLWalk:
                 self.imitation_phase,
             ]
         )
+
+        if self.winner_v2_adapter is not None:
+            obs = self.winner_v2_adapter.compose(
+                obs, self.last_commands, self.imitation_i
+            )
 
         return obs
 
@@ -577,6 +628,9 @@ class RLWalk:
 
                 self.hwi.set_position_all(action_dict)
 
+                if self.winner_v2_adapter is not None:
+                    self.winner_v2_adapter.advance_sent_target(motor_targets_sent)
+
                 self._log_policy_tick(
                     tick=i,
                     t_mono=telemetry_t_mono,
@@ -691,6 +745,13 @@ if __name__ == "__main__":
         help="Default-off comma-separated 14-value target slew limits in action order.",
     )
     parser.add_argument(
+        "--policy-contract",
+        choices=["legacy101_sent_target_v1", "ground_up115_applied_target_v2"],
+        default="legacy101_sent_target_v1",
+    )
+    parser.add_argument("--winner-v2-fit-path", default=None)
+    parser.add_argument("--winner-v2-reference-table-path", default=None)
+    parser.add_argument(
         "--controller",
         type=str,
         default="f710",
@@ -723,6 +784,9 @@ if __name__ == "__main__":
         motor_velocity_limits_rad_s=parse_motor_velocity_limits(
             args.motor_velocity_limits_rad_s
         ),
+        policy_contract=args.policy_contract,
+        winner_v2_fit_path=args.winner_v2_fit_path,
+        winner_v2_reference_table_path=args.winner_v2_reference_table_path,
     )
     print("Done instantiating RLWalk")
     
