@@ -121,6 +121,7 @@ def main() -> int:
         default_canonical_hash = hashlib.sha256(
             canonical_result(temp / "default_off/eval.json")
         ).hexdigest()
+        default_trace_hash = sha256(default_trace)
         rows = [json.loads(line) for line in enabled_trace.read_text().splitlines() if line]
 
     plant = ActuatorBridgeModel(
@@ -165,7 +166,7 @@ def main() -> int:
     checks = {
         "prechange_evaluator_hash_frozen": baseline["evaluator_sha256"]
         == "f35d35789d50baf557d3b2427dfe326ccc60c7607e79069e5a9dd51f2f01f8d6",
-        "default_off_trace_byte_identical": sha256(default_trace)
+        "default_off_trace_byte_identical": default_trace_hash
         == baseline["raw_trace_sha256"],
         "default_off_canonical_result_exact": default_canonical_hash
         == baseline["canonical_result_sha256"],
@@ -202,7 +203,7 @@ def main() -> int:
         "checks": checks,
         "failed_checks": failed,
         "measurements": {
-            "default_off_trace_sha256": sha256(default_trace),
+            "default_off_trace_sha256": default_trace_hash,
             "default_off_canonical_result_sha256": default_canonical_hash,
             "enabled_rows": len(rows),
             "max_plant_reconstruction_error_rad": max_plant_reconstruction,
@@ -228,7 +229,7 @@ def main() -> int:
     out_md.write_text(
         "# Winner-v2 Observer Cross-Fit Default-Off Contract\n\n"
         f"Status: `{status}`\n\n"
-        f"- Default-off trace SHA-256: `{sha256(default_trace)}`\n"
+        f"- Default-off trace SHA-256: `{default_trace_hash}`\n"
         f"- Default-off canonical result SHA-256: `{default_canonical_hash}`\n"
         f"- Enabled implementation rows: {len(rows)}\n"
         f"- Plant reconstruction maximum error: {max_plant_reconstruction:.12g} rad\n"
