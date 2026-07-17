@@ -46,15 +46,26 @@ the exact projected-reference feature, carries ONNX state, preserves observe-
 then-advance ordering, and fails closed outside the protected command/timing/
 artifact contract. It passes 40,520 frozen observation rows, 9,600 bridge rows
 with zero reconstruction error, both persistent checkpoints, the legacy
-default-off golden vector, and all negative tests. It deliberately embeds no
-default hardware fit.
+default-off golden vector, and all negative tests.
 
-The two live deployment questions are measurements, not another policy search:
-(1) populate the committed as-built RDK-X5/battery mass, X-placement and datum
-template and compare its full uncertainty interval with the asymmetric COM
-bracket plus one 0.00078125 m margin; and (2) separately contract a read-only
-hardware actuator-response capture that selects or refits the v2 observer.
-Do not plan Gate 5 until both measurements pass their own frozen contracts.
+Actuator-fit provenance and the frozen CPU observer-by-plant cross-fit now
+resolve the remaining fit-selection question without new hardware capture.
+The body runtime used P30 semantics, the valid fixed-target P30 telemetry has
+747 samples with zero read/write/reset errors, and P31/34 was already rejected
+as a live gain route. The 32-cell cross-fit spans both checkpoints, both plant
+fits, both observer fits and all four commands; every cell passes. P30 observer
+semantics remain below .20 rad tracking under both measured plant fits, with
+minimum vx .084084972 m/s and zero rate/envelope excess. The winner-v2 runtime
+is therefore pinned to the measured P30 fit hash and rejects P31/34 or gain
+overrides before hardware initialization. This is an offline contract result,
+not a claim of current hardware health.
+
+The sole model-specific deployment measurement currently missing is the
+as-built RDK-X5/battery torso COM ledger. A 2026-07-17 repository re-audit found
+no new assembly CAD, component masses, common datum, X placements or uncertainty
+bounds. Populate the committed template and compare its complete uncertainty
+interval with the asymmetric COM bracket plus one 0.00078125 m margin. Do not
+plan Gate 5 until that measurement passes its frozen contract.
 The legacy 101x14.v1 golden vector already passes and remains only a legacy
 stack contract. No training, hosted allocation, robot, RDK-X5, local GPU or
 iGPU access is authorized. Robot clearance remains NO.

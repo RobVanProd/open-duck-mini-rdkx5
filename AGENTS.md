@@ -1748,3 +1748,26 @@ Do not proceed to grounded walking until low-risk gates pass.
   RDK-X5 access. The next deployment evidence remains the as-built torso-COM
   ledger and a separately contracted hardware-fit measurement/selection. See
   `outputs/analysis/WINNER_V2_RUNTIME_CONTRACT_20260717.md`.
+- 2026-07-17: Measured actuator-fit provenance selects P30 semantics for the
+  deployment observer: the body runtime used P30, the valid fixed-target P30
+  phase contains 747 samples with zero read/write/reset errors, and the frozen
+  P31/34 gain route was rejected. The preregistered CPU observer-by-plant
+  cross-fit then passed all 32 cells spanning both persistent checkpoints,
+  both measured plant fits, both observer fits and x=0/.074/.077/.080. The P30
+  observer passes both plant fits at worst tracking 0.183170038 rad and minimum
+  vx 0.084084972 m/s with zero rate/envelope excess. Decision
+  `PASS_P30_OBSERVER_MEASURED_CROSS_FIT_BRACKET` pins only the P30 fit hash in
+  winner-v2; P31/34 and gain overrides are rejected before hardware
+  initialization. This removes the need for a new capture solely to choose
+  between the two existing fits, but claims no current hardware health and
+  authorizes no Gate 5, deployment, RDK-X5 or robot use. See
+  `outputs/analysis/WINNER_V2_OBSERVER_CROSS_FIT_RESULT_20260717.md` and
+  `outputs/analysis/WINNER_V2_P30_OBSERVER_PIN_20260717.md`.
+- 2026-07-17: The real-build torso-COM input re-audit found no new RDK-X5
+  assembly CAD, installed-component mass ledger, common trunk datum, X
+  placements or uncertainty bounds. Decision remains
+  `HOLD_REAL_BUILD_COM_INPUTS_INCOMPLETE`; do not derive a numerical estimate
+  from stock geometry, nominal product weights or inference. Populate the
+  committed measurement template before comparing with the asymmetric break
+  radius. See
+  `outputs/analysis/REAL_BUILD_TORSO_COM_INPUT_REAUDIT_20260717.md`.

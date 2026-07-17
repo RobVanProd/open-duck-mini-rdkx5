@@ -82,8 +82,8 @@
     <section class="hero">
       <div class="card">
         <div class="label">Current operation</div>
-        <div class="big amber" id="operation">Winner-v2 runtime passes offline · measurements needed</div>
-        <div class="metric" id="operation-detail">C1 is implemented: 40,520 observation rows, 9,600 bridge rows at zero reconstruction error, both stateful checkpoints, and the legacy default-off path pass. No hardware fit is selected. Deployment still waits on the as-built torso-COM ledger and a separately contracted actuator-fit measurement.</div>
+        <div class="big amber" id="operation">P30 observer pinned · real-build COM measurement needed</div>
+        <div class="metric" id="operation-detail">C1 is implemented and the frozen 32-cell observer-by-plant cross-fit passes. P30 observer semantics pass both measured plant fits and are now pinned in winner-v2. The remaining model-specific deployment input is the measured as-built torso-COM ledger.</div>
       </div>
       <div class="card">
         <div class="label">Persistent full-horizon winner</div>
@@ -232,7 +232,9 @@
           <li>The complete formal matrix passes 20/48 cells: NOMINAL 16/16, XNEG 0/16, XPOS 4/16. XNEG falls at ticks 40-47; XPOS moving cells fall at ticks 52-57. Rate and envelope excess remain zero and tracking remains below .20 rad.</li>
           <li>Decision: <code>HOLD_ORACLE_PARTIAL</code>. This exact affine residual is insufficient; the passing local authority screen prevents a no-authority conclusion. No closest scale advances.</li>
           <li>C1 resolved offline: the explicit, default-off winner-v2 runtime supplies bridge-realized obs[83:97], appends the projected-reference feature, and carries the graph's 14-D state. It passes all 40,520 frozen observation rows and reconstructs all 9,600 bridge targets with zero error.</li>
-          <li>The v2 path accepts only the two protected policy hashes and explicit P30 or P31/34 fit artifacts; it rejects wrong hashes, wrong home/timing/phase, action filtering, nonfinite inputs, and commands outside stand or x=.074–.080. No default hardware fit is embedded.</li>
+          <li>The frozen observer-by-plant cross-fit passes all 32/32 cells: both checkpoints, P30 and P31/34 plants, P30 and P31/34 observers, and x=0/.074/.077/.080. Maximum observer/plant separation is .004135804 rad.</li>
+          <li>Measured P30 observer semantics pass both plant fits at worst tracking .183170038 rad, minimum vx .084084972 m/s, and zero rate/envelope excess. The v2 path is pinned to the P30 fit hash and rejects P31/34 or gain overrides before hardware initialization.</li>
+          <li>The 2026-07-17 real-build COM input re-audit found no new assembly CAD, installed-component masses, common datum, X locations or uncertainty bounds. No numerical estimate is invented; the prior hold remains.</li>
           <li>C3: June 21 telemetry supplies a valid adjacent tick-0/1 golden vector with exact previous-target and obs-then-advance phase chaining; no new hardware capture is needed.</li>
           <li>The follow-up viability-funnel study freezes 298 exact cadence states from all 24 failing moving cells; 49 P30/x=.077 states form the sequence-design subset.</li>
           <li>Only 5/49 states admit an 8-tick sequence, 4/49 a 16-tick sequence, and 0/49 a 32-tick sequence. XNEG first has no valid sequence at tick 4; XPOS at tick 12.</li>
@@ -373,8 +375,10 @@
           <li>Completed: add and CPU-contract guarded 14-tick round-robin servo-health telemetry.</li>
           <li>Completed: preregister and implement the default-off 115-D winner-v2 runtime contract with exact bridge observer, projected-reference suffix, stateful ONNX ABI, and legacy-path preservation.</li>
           <li>Completed: validate 40,520 full-observation rows, 9,600 bridge rows, both checkpoints, and all fail-closed negatives on CPU.</li>
+          <li>Completed: audit measured gain provenance and run the frozen 32-cell observer-by-plant cross-fit over both persistent checkpoints and both measured fits.</li>
+          <li>Completed: pin winner-v2 to P30 observer semantics after 32/32 cross-fit cells pass; reject P31/34 and gain overrides before hardware initialization.</li>
           <li>Next measurement: complete the as-built RDK-X5/battery torso mass, X-location, uncertainty and datum ledger; compare its interval with the asymmetric certified COM bracket.</li>
-          <li>Next separate contract: read-only actuator-response measurement to select or refit the v2 bridge observer. Do not plan Gate 5 before both measurement gates pass.</li>
+          <li>Do not plan Gate 5 until the real-build COM measurement passes its frozen contract. The cross-fit removes the need for a new capture solely to select between the two existing measured actuator fits.</li>
         </ol>
       </div>
     </section>
@@ -383,11 +387,11 @@
       <div class="label">Authority boundary</div>
       <h2 style="margin-top:8px">Offline only</h2>
       <div>The baseline <code>BEST_WALK_ONNX_2.onnx</code> remains a frozen comparator, not a teacher or warm start. No new policy is cleared for the robot. No robot, RDK-X5, iGPU, or onboard GPU access is part of this work.</div>
-      <div class="constraints"><span class="chip">Robot blocked</span><span class="chip">RDK blocked</span><span class="chip">Local GPU / iGPU blocked</span><span class="chip">0 hosted sessions</span><span class="chip">Winner-v2 offline pass</span><span class="chip">Measurements pending</span></div>
+      <div class="constraints"><span class="chip">Robot blocked</span><span class="chip">RDK blocked</span><span class="chip">Local GPU / iGPU blocked</span><span class="chip">0 hosted sessions</span><span class="chip">P30 observer pinned</span><span class="chip">Real COM pending</span></div>
     </section>
 
     <footer>
-      <span id="updated">Evidence snapshot: 2026-07-17 · winner-v2 offline contract passed · hardware measurements pending</span>
+      <span id="updated">Evidence snapshot: 2026-07-17 · P30 observer cross-fit passed · real-build COM measurement pending</span>
       <span>branch <code>codex/torso-com-decode-probe</code> · live evidence is repository-backed</span>
     </footer>
   </main>
