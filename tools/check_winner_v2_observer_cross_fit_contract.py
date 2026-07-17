@@ -26,12 +26,6 @@ P30 = ROOT / "outputs/analysis/fixed_target_p30_actuator_fit_20260712.json"
 P31 = ROOT / "outputs/analysis/fixed_target_p31_34_actuator_fit_20260712.json"
 REFERENCE = ROOT / "outputs/analysis/ground_up_projected_reference_feature_table.npz"
 BASELINE = ROOT / "outputs/analysis/winner_v2_observer_cross_fit_prechange_baseline.json"
-HOME = np.asarray(
-    [0.002, 0.053, -0.630, 1.368, -0.784, 0, 0, 0, 0, -0.003, -0.065, 0.635, 1.379, -0.796],
-    dtype=float,
-)
-
-
 def sha256(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as handle:
@@ -124,17 +118,18 @@ def main() -> int:
         default_trace_hash = sha256(default_trace)
         rows = [json.loads(line) for line in enabled_trace.read_text().splitlines() if line]
 
+    initial_readback = np.asarray(rows[0]["obs_state"][83:97], dtype=float)
     plant = ActuatorBridgeModel(
-        params_from_fit(json.loads(P30.read_text())), initial_target=HOME
+        params_from_fit(json.loads(P30.read_text())), initial_target=initial_readback
     )
     observer = ActuatorBridgeModel(
-        params_from_fit(json.loads(P31.read_text())), initial_target=HOME
+        params_from_fit(json.loads(P31.read_text())), initial_target=initial_readback
     )
     max_plant_reconstruction = 0.0
     max_observer_reconstruction = 0.0
     max_observation_timing = 0.0
     max_plant_observer_separation = 0.0
-    previous_observer = HOME.copy()
+    previous_observer = initial_readback.copy()
     for row in rows:
         obs = np.asarray(row["obs_state"], dtype=float)
         sent = np.asarray(row["sent_target_rad"], dtype=float)
