@@ -148,10 +148,20 @@ def evaluate(args: argparse.Namespace) -> dict[str, Any]:
     policy = Path(args.policy).resolve()
     playground = Path(args.playground_root).resolve()
     fit_path = Path(args.fit).resolve()
+    policy_observer_fit_path = (
+        None
+        if args.policy_observer_fit is None
+        else Path(args.policy_observer_fit).resolve()
+    )
     reference = (
         None if args.reference_feature_table is None else Path(args.reference_feature_table).resolve()
     )
     fit = json.loads(fit_path.read_text())
+    policy_observer_fit = (
+        None
+        if policy_observer_fit_path is None
+        else json.loads(policy_observer_fit_path.read_text())
+    )
     commands = parse_csv(args.commands, float)
     seeds = parse_csv(args.seeds, int)
     state_input_names = tuple(parse_csv(args.policy_state_input_names, str))
@@ -200,6 +210,7 @@ def evaluate(args: argparse.Namespace) -> dict[str, Any]:
                     policy_applied_target_observation=(
                         args.policy_applied_target_observation
                     ),
+                    policy_observer_fit=policy_observer_fit,
                     policy_reset_com_estimator_input=(
                         args.policy_reset_com_estimator_input
                     ),
@@ -354,6 +365,14 @@ def main() -> None:
         "--policy-applied-target-observation",
         action="store_true",
         help="Replace actor obs[83:97] with the external bridge-applied target.",
+    )
+    parser.add_argument(
+        "--policy-observer-fit",
+        default=None,
+        help=(
+            "Default-off evaluator contract: independent fitted bridge used only "
+            "for the actor applied-target observation."
+        ),
     )
     parser.add_argument(
         "--policy-reset-com-estimator-input",

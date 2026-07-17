@@ -87,6 +87,7 @@ class ClosedLoopConfig:
     policy_state_input_names: tuple[str, ...] = ()
     policy_state_output_names: tuple[str, ...] = ()
     policy_applied_target_observation: bool = False
+    policy_observer_fit: Mapping[str, Any] | None = None
     policy_reset_com_estimator_input: bool = False
     eval_push_enable: bool = False
     eval_push_interval_min_s: float | None = None
@@ -1551,7 +1552,13 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
         return data
 
     def apply_motor_target(
-        state, action, sent_target, applied_target, push, push_impulse
+        state,
+        action,
+        sent_target,
+        applied_target,
+        policy_observer_applied_target,
+        push,
+        push_impulse,
     ):
         if config.mjx_step_loop_mode in {"default", "scan"}:
             data = mjx_env.step(env.mjx_model, state.data, applied_target, env.n_substeps)
@@ -1578,7 +1585,7 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             env._update_command_window_progress(state.info, data)
         obs = inject_policy_applied_target_observation(
             env._get_obs(data, state.info, contact),
-            applied_target,
+            policy_observer_applied_target,
             config.policy_applied_target_observation,
         )
         done = env._get_termination(data)
@@ -1777,6 +1784,7 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
         "policy_applied_target_observation": bool(
             config.policy_applied_target_observation
         ),
+        "separate_policy_observer_fit": config.policy_observer_fit is not None,
         "mjx_step_loop_mode": config.mjx_step_loop_mode,
         "mjx_step_loop_description": (
             "default/scan uses mujoco_playground._src.mjx_env.step, which "
@@ -1885,6 +1893,14 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             initial_target = initial_target.copy()
             initial_target[indices] = reset_actual[indices]
         bridge = ActuatorBridgeModel(params, initial_target=initial_target)
+        policy_observer_bridge = (
+            None
+            if config.policy_observer_fit is None
+            else ActuatorBridgeModel(
+                mode_params("fitted", config.policy_observer_fit),
+                initial_target=initial_target,
+            )
+        )
         termination_reason = None
         hidden_state = {
             name: value.copy()
@@ -2088,11 +2104,17 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                 if mode == "vanilla"
                 else bridge.step(sent_np, float(env.dt))
             )
+            policy_observer_applied_np = (
+                applied_np.copy()
+                if policy_observer_bridge is None
+                else policy_observer_bridge.step(sent_np, float(env.dt))
+            )
             state = apply_motor_target_runner(
                 state,
                 jp.asarray(action),
                 sent_target,
                 jp.asarray(applied_np),
+                jp.asarray(policy_observer_applied_np),
                 push,
                 push_impulse,
             )
@@ -2204,6 +2226,10 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                 "reward_terms": reward_terms,
                 "done": done,
             }
+            if config.policy_observer_fit is not None:
+                record["policy_observer_applied_target_rad"] = (
+                    policy_observer_applied_np.tolist()
+                )
             if config.trace_oracle_state or oracle_controller is not None:
                 record["oracle_state"] = {
                     "feature_names": list(ORACLE_FEATURE_NAMES),
@@ -2380,7 +2406,7 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
         status = candidate_gate["status"]
     else:
         status = classify_closed_loop(modes) if "fitted" in modes else "PASS_CLOSED_LOOP_REPRODUCTION"
-    return {
+    result = {
         "status": status,
         "eval_role": config.eval_role,
         "candidate_gate": candidate_gate,
@@ -2465,3 +2491,6 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
         "real_x008_reference": REAL_X008_REFERENCE,
         "modes": modes,
     }
+    if config.policy_observer_fit is not None:
+        result["policy_observer_fit_enabled"] = True
+    return result
