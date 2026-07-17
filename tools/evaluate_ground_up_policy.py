@@ -228,8 +228,7 @@ def evaluate(args: argparse.Namespace) -> dict[str, Any]:
                 args.duration_s,
                 args.minimum_emergence_duration_s,
             )
-            runs.append(
-                {
+            run_payload = {
                     "command_x": command_x,
                     "seed": seed,
                     "status": result.get("status"),
@@ -244,7 +243,15 @@ def evaluate(args: argparse.Namespace) -> dict[str, Any]:
                     "error": result.get("error"),
                     "trace_jsonl": None if trace_path is None else str(trace_path),
                 }
-            )
+            if policy_observer_fit_path is not None:
+                run_payload["policy_observer_fit_enabled"] = bool(
+                    result.get("policy_observer_fit_enabled")
+                )
+                run_payload["policy_observer_fit"] = str(policy_observer_fit_path)
+                run_payload["policy_observer_fit_sha256"] = sha256(
+                    policy_observer_fit_path
+                )
+            runs.append(run_payload)
 
     moving = [row for row in runs if row["command_x"] > 0]
     zero = [row for row in runs if abs(row["command_x"]) <= 1.0e-12]
@@ -255,7 +262,7 @@ def evaluate(args: argparse.Namespace) -> dict[str, Any]:
     )
     emergence_pass = moving_pass and zero_recorded_finite
 
-    return {
+    payload = {
         "schema_version": "ground_up_policy_eval.v1",
         "status": "PASS_GAIT_EMERGENCE_CHECKPOINT" if emergence_pass else "HOLD_GAIT_NOT_EMERGED",
         "execution": {
@@ -308,6 +315,12 @@ def evaluate(args: argparse.Namespace) -> dict[str, Any]:
         },
         "runs": runs,
     }
+    if policy_observer_fit_path is not None:
+        payload["inputs"]["policy_observer_fit"] = str(policy_observer_fit_path)
+        payload["inputs"]["policy_observer_fit_sha256"] = sha256(
+            policy_observer_fit_path
+        )
+    return payload
 
 
 def write_markdown(payload: dict[str, Any], path: Path) -> None:
