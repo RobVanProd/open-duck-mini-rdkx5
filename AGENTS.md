@@ -1771,3 +1771,17 @@ Do not proceed to grounded walking until low-risk gates pass.
   committed measurement template before comparing with the asymmetric break
   radius. See
   `outputs/analysis/REAL_BUILD_TORSO_COM_INPUT_REAUDIT_20260717.md`.
+- 2026-07-17: Before any real-build values were entered, the torso-COM
+  measurement template's unauditable free-text frame transform was corrected
+  to a numeric v2 datum origin, datum uncertainty and +/- axis mapping. The
+  deterministic CPU calculator implements the frozen weighted-COM box-extrema
+  method and hashed asymmetric break-radius comparison. Five synthetic contract
+  cases pass. The untouched template fails closed on 46 missing/invalid fields,
+  sets `numerical_estimate_reported=false`, and emits no estimate. The physical
+  measurement packet is ready, but status remains
+  `HOLD_REAL_BUILD_COM_INPUTS_INCOMPLETE` until source-backed as-built values
+  are supplied. No threshold or authority changed; Gate 5, deployment, model
+  correction, RDK-X5 and robot use remain unauthorized. See
+  `outputs/analysis/REAL_BUILD_TORSO_COM_MEASUREMENT_SCHEMA_CORRECTION_20260717.md`,
+  `outputs/analysis/REAL_BUILD_TORSO_COM_CALCULATOR_CONTRACT_20260717.md`, and
+  `outputs/analysis/REAL_BUILD_TORSO_COM_MEASUREMENT_PACKET_20260717.md`.

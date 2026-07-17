@@ -66,6 +66,17 @@ no new assembly CAD, component masses, common datum, X placements or uncertainty
 bounds. Populate the committed template and compare its complete uncertainty
 interval with the asymmetric COM bracket plus one 0.00078125 m margin. Do not
 plan Gate 5 until that measurement passes its frozen contract.
+
+The measurement handoff is now executable and fail-closed. Before any build
+values existed, the v1 template's free-text-only frame transform was corrected
+to a numeric v2 datum origin, datum uncertainty and axis sign. The CPU
+calculator passes five contract cases, enumerates the frozen independent mass
+box extrema, applies position and common-datum uncertainty, and reads the
+certified bounds from the hashed break-radius result. The untouched template
+reports all 46 missing fields, emits no numerical estimate and remains
+`HOLD_REAL_BUILD_COM_INPUTS_INCOMPLETE`. Use
+`REAL_BUILD_TORSO_COM_MEASUREMENT_PACKET_20260717.md`; do not populate any field
+from nominal web weights or inference.
 The legacy 101x14.v1 golden vector already passes and remains only a legacy
 stack contract. No training, hosted allocation, robot, RDK-X5, local GPU or
 iGPU access is authorized. Robot clearance remains NO.

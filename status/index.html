@@ -83,7 +83,7 @@
       <div class="card">
         <div class="label">Current operation</div>
         <div class="big amber" id="operation">P30 observer pinned · real-build COM measurement needed</div>
-        <div class="metric" id="operation-detail">C1 is implemented and the frozen 32-cell observer-by-plant cross-fit passes. P30 observer semantics pass both measured plant fits and are now pinned in winner-v2. The remaining model-specific deployment input is the measured as-built torso-COM ledger.</div>
+        <div class="metric" id="operation-detail">C1 is implemented and the frozen 32-cell observer-by-plant cross-fit passes. P30 observer semantics are pinned in winner-v2. The real-build torso-COM measurement packet and fail-closed calculator are ready; all 46 build-specific fields remain unmeasured.</div>
       </div>
       <div class="card">
         <div class="label">Persistent full-horizon winner</div>
@@ -235,6 +235,8 @@
           <li>The frozen observer-by-plant cross-fit passes all 32/32 cells: both checkpoints, P30 and P31/34 plants, P30 and P31/34 observers, and x=0/.074/.077/.080. Maximum observer/plant separation is .004135804 rad.</li>
           <li>Measured P30 observer semantics pass both plant fits at worst tracking .183170038 rad, minimum vx .084084972 m/s, and zero rate/envelope excess. The v2 path is pinned to the P30 fit hash and rejects P31/34 or gain overrides before hardware initialization.</li>
           <li>The 2026-07-17 real-build COM input re-audit found no new assembly CAD, installed-component masses, common datum, X locations or uncertainty bounds. No numerical estimate is invented; the prior hold remains.</li>
+          <li>The measurement template now has an auditable numeric datum origin, uncertainty and axis transform. Its CPU calculator passes five contract cases and reads the frozen asymmetric bounds from the hashed break-radius result.</li>
+          <li>The untouched template fails closed on 46 missing fields with no estimate object. A physical measurement packet identifies the exact mass, placement, datum and evidence records needed.</li>
           <li>C3: June 21 telemetry supplies a valid adjacent tick-0/1 golden vector with exact previous-target and obs-then-advance phase chaining; no new hardware capture is needed.</li>
           <li>The follow-up viability-funnel study freezes 298 exact cadence states from all 24 failing moving cells; 49 P30/x=.077 states form the sequence-design subset.</li>
           <li>Only 5/49 states admit an 8-tick sequence, 4/49 a 16-tick sequence, and 0/49 a 32-tick sequence. XNEG first has no valid sequence at tick 4; XPOS at tick 12.</li>
@@ -378,6 +380,7 @@
           <li>Completed: audit measured gain provenance and run the frozen 32-cell observer-by-plant cross-fit over both persistent checkpoints and both measured fits.</li>
           <li>Completed: pin winner-v2 to P30 observer semantics after 32/32 cross-fit cells pass; reject P31/34 and gain overrides before hardware initialization.</li>
           <li>Next measurement: complete the as-built RDK-X5/battery torso mass, X-location, uncertainty and datum ledger; compare its interval with the asymmetric certified COM bracket.</li>
+          <li>Ready: use the v2 measurement template and packet; the deterministic calculator returns no numerical estimate until every required source-backed field is present.</li>
           <li>Do not plan Gate 5 until the real-build COM measurement passes its frozen contract. The cross-fit removes the need for a new capture solely to select between the two existing measured actuator fits.</li>
         </ol>
       </div>
@@ -391,7 +394,7 @@
     </section>
 
     <footer>
-      <span id="updated">Evidence snapshot: 2026-07-17 · P30 observer cross-fit passed · real-build COM measurement pending</span>
+      <span id="updated">Evidence snapshot: 2026-07-17 · P30 observer pinned · COM measurement packet ready</span>
       <span>branch <code>codex/torso-com-decode-probe</code> · live evidence is repository-backed</span>
     </footer>
   </main>
