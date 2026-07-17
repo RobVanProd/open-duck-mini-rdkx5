@@ -77,6 +77,15 @@ reports all 46 missing fields, emits no numerical estimate and remains
 `HOLD_REAL_BUILD_COM_INPUTS_INCOMPLETE`. Use
 `REAL_BUILD_TORSO_COM_MEASUREMENT_PACKET_20260717.md`; do not populate any field
 from nominal web weights or inference.
+
+The referenced Frank Fu RDK-X5 material has now been audited as a possible
+input source and closes negative. The authored article adapts OS, dependencies
+and runtime software, while physical construction points to the stock upstream
+Open Duck repository. The pinned 436-path upstream v2 tree has zero RDK/X5
+paths and retains Pi Zero plus stock battery assets. Neither source contains an
+RDK mount, installed masses, placements, datum or uncertainties; zero of 46
+measurement fields can be promoted. Do not treat the existence of the Frank Fu
+RDK runtime adaptation as mechanical equivalence evidence for this build.
 The legacy 101x14.v1 golden vector already passes and remains only a legacy
 stack contract. No training, hosted allocation, robot, RDK-X5, local GPU or
 iGPU access is authorized. Robot clearance remains NO.

@@ -1785,3 +1785,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   `outputs/analysis/REAL_BUILD_TORSO_COM_MEASUREMENT_SCHEMA_CORRECTION_20260717.md`,
   `outputs/analysis/REAL_BUILD_TORSO_COM_CALCULATOR_CONTRACT_20260717.md`, and
   `outputs/analysis/REAL_BUILD_TORSO_COM_MEASUREMENT_PACKET_20260717.md`.
+- 2026-07-17: The referenced Frank Fu RDK-X5 source trail was audited before
+  using it for real-build COM. The authored article adapts the OS, Python
+  dependencies and runtime, but sends physical construction back to upstream
+  stock Open Duck. The pinned upstream v2 tree at
+  `b23317a485b3cec7d8417f352478778b3475173c` has 436 paths, zero RDK/X5 paths,
+  and retains Pi Zero plus stock battery assets. The article and tree provide
+  no RDK mount, installed component masses, X placements, common datum or
+  uncertainties, so 0/46 measurement fields are promotable. Decision
+  `HOLD_SOURCE_DOCUMENTS_NOT_MEASUREMENT_EVIDENCE` closes the hypothesis that
+  this public material is already sufficient mechanical evidence. Do not use
+  stock geometry, nominal board weights or image scale inference. See
+  `outputs/analysis/FRANK_FU_RDK_X5_BUILD_SOURCE_AUDIT_20260717.md`.
