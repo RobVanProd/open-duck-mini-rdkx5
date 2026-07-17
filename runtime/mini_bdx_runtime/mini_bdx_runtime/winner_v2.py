@@ -29,10 +29,7 @@ POLICY_HASHES = {
     "0dfc24bde5d839e4d346dd8c08d9a7d0222a3847764ec6738bfc7f8d947f4ece",
 }
 REFERENCE_TABLE_HASH = "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212"
-FIT_HASHES = {
-    "908ddb01e5d82e661d77b8f3cb186a84665695660b86b304c6d1ae89c79cdb0b",
-    "a39776c06c5e26425e24b50e7dab3f441823e23904cad4977b8c921d9c9ca276",
-}
+P30_FIT_HASH = "908ddb01e5d82e661d77b8f3cb186a84665695660b86b304c6d1ae89c79cdb0b"
 HOME_TARGET_RAD = np.asarray(
     [
         0.002, 0.053, -0.630, 1.368, -0.784, 0.0, 0.0, 0.0, 0.0,
@@ -90,8 +87,11 @@ class FittedBridgeObserver:
     def __init__(self, fit_path: str | Path, initial_target: Sequence[float]):
         self.fit_path = str(Path(fit_path).resolve())
         self.fit_sha256 = sha256_file(fit_path)
-        if self.fit_sha256 not in FIT_HASHES:
-            raise ValueError(f"uncontracted actuator fit SHA-256: {self.fit_sha256}")
+        if self.fit_sha256 != P30_FIT_HASH:
+            raise ValueError(
+                "winner-v2 deployment observer is pinned to the measured P30 "
+                f"fit; received SHA-256 {self.fit_sha256}"
+            )
         with open(fit_path) as handle:
             self.params = _params_from_fit(json.load(handle))
         self._value = _finite_vector(initial_target, 14, "initial_target").copy()

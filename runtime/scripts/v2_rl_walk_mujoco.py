@@ -63,6 +63,8 @@ class RLWalk:
                 raise ValueError("winner-v2 requires 50 Hz and action_scale=0.25")
             if float(self.duck_config.phase_frequency_factor_offset) != 0.0:
                 raise ValueError("winner-v2 requires zero phase-frequency offset")
+            if kp_overrides:
+                raise ValueError("winner-v2 P30 observer contract forbids gain overrides")
 
         self.onnx_model_path = onnx_model_path
         self.policy_contract = policy_contract
