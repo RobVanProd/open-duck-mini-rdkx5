@@ -1732,3 +1732,19 @@ Do not proceed to grounded walking until low-risk gates pass.
   correction, training, Gate 5, RDK-X5 or robot action is authorized. See
   `outputs/analysis/COMPOSITE_WINNER_TORSO_COM_BREAK_RADIUS_RESULT_20260716.md`
   and `outputs/analysis/REAL_BUILD_TORSO_COM_INPUT_AUDIT_20260716.md`.
+- 2026-07-17: The winner-v2 native-runtime offline contract passes after one
+  preserved invalid checker invocation was corrected from the unrelated
+  21,600-row eager/JIT corpus to the frozen 144-trace/40,520-row full-
+  observation manifest. The default legacy 101-D CLI path and C3 golden vector
+  remain exact. The explicit v2 path validates either protected checkpoint,
+  requires an explicit contracted actuator fit and reference table, composes
+  the applied-target slot plus projected-reference suffix, carries exact 14-D
+  ONNX state, and fails closed on uncontracted commands, timing, phase, filter,
+  home, shapes, nonfinite values or hashes. All 40,520 observation rows, 9,600
+  bridge rows and both 256-step stateful sequences pass; runtime-to-recorded
+  bridge error is zero. Decision:
+  `PASS_WINNER_V2_RUNTIME_OFFLINE_CONTRACT_HOLD_HARDWARE_FIT_SELECTION`.
+  This selects no hardware fit and authorizes no deployment, Gate 5, robot or
+  RDK-X5 access. The next deployment evidence remains the as-built torso-COM
+  ledger and a separately contracted hardware-fit measurement/selection. See
+  `outputs/analysis/WINNER_V2_RUNTIME_CONTRACT_20260717.md`.

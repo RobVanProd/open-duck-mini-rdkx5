@@ -38,13 +38,23 @@ geometry or nominal web weights. Populate the committed measurement template,
 then compare the complete uncertainty interval with one 0.00078125 m curve-
 resolution margin. Generic COM training remains forbidden.
 
-C1 is resolved at the offline contract boundary. The winner's 115-D stateful
-graph does not internalize the per-joint delay queues or lag state; its 14-D
-`previous_action` is the bounded-action chain. Therefore obs[83:97] must be
-provided by an external fitted-bridge forward observer. The existing observer
-reconstructs all 9,600 frozen composite trace targets under both fits with zero
-error and is pinned for the v2 contract. Native-runtime integration and the
-hardware-fit choice remain separately blocked before any Gate 5 plan.
+C1 and the default-off native-runtime implementation are resolved offline. The
+winner's 115-D stateful graph does not internalize the per-joint delay queues
+or lag state; its 14-D `previous_action` is the bounded-action chain. The new
+explicit v2 path supplies obs[83:97] from the fitted-bridge observer, appends
+the exact projected-reference feature, carries ONNX state, preserves observe-
+then-advance ordering, and fails closed outside the protected command/timing/
+artifact contract. It passes 40,520 frozen observation rows, 9,600 bridge rows
+with zero reconstruction error, both persistent checkpoints, the legacy
+default-off golden vector, and all negative tests. It deliberately embeds no
+default hardware fit.
+
+The two live deployment questions are measurements, not another policy search:
+(1) populate the committed as-built RDK-X5/battery mass, X-placement and datum
+template and compare its full uncertainty interval with the asymmetric COM
+bracket plus one 0.00078125 m margin; and (2) separately contract a read-only
+hardware actuator-response capture that selects or refits the v2 observer.
+Do not plan Gate 5 until both measurements pass their own frozen contracts.
 The legacy 101x14.v1 golden vector already passes and remains only a legacy
 stack contract. No training, hosted allocation, robot, RDK-X5, local GPU or
 iGPU access is authorized. Robot clearance remains NO.
