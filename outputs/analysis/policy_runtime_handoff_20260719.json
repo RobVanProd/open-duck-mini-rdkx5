@@ -1,0 +1,104 @@
+{
+  "authority": {
+    "gate5": false,
+    "gpu_or_igpu": false,
+    "robot_clearance": false,
+    "robot_or_rdk_x5": false,
+    "runtime_deployment": false,
+    "training_or_hosted_compute": false
+  },
+  "disposition": "REQUIRES_REVIEWED_115_RUNTIME_V2",
+  "handoff": {
+    "artifact_root": "artifacts/runtime_handoff/rdkx5_native_20260719",
+    "manifest_sha256": "ba7143f5c653c0bb2f3f27930a7997dd5a2b90e3258bca516b7240bd0f21abd7",
+    "policy_commit": "reported externally after commit to avoid self-reference",
+    "policy_request_commit": "c18114c",
+    "reviewed_runtime_commit": "a6f62b25b5960987e3955bd327ac95ddbf25a336",
+    "runtime_branch": "agent/measurement-contract-evidence"
+  },
+  "input_contract": {
+    "inputs": [
+      {
+        "dtype": "float32",
+        "name": "obs",
+        "shape": [1, 115]
+      },
+      {
+        "dtype": "float32",
+        "name": "previous_action",
+        "shape": [1, 14]
+      }
+    ],
+    "outputs": [
+      {
+        "dtype": "float32",
+        "name": "continuous_actions",
+        "shape": [1, 14]
+      },
+      {
+        "dtype": "float32",
+        "name": "previous_action_out",
+        "shape": [1, 14]
+      }
+    ]
+  },
+  "measurements": {
+    "advanced_first_phase_first_divergence": {
+      "1024000": {
+        "max_action_error": 0.11153934895992279,
+        "tick": 0
+      },
+      "512000": {
+        "max_action_error": 0.10399797558784485,
+        "tick": 0
+      }
+    },
+    "cpu_smoke_status": "PASS_CPU_HANDOFF_INSPECTION_BLOCKED_FOR_RUNTIME_REVIEW",
+    "external_5p24_limiter_max_change_rad": 0.0,
+    "fresh_trace_to_frozen_max_error": 0.0,
+    "golden_action_max_error": 0.0,
+    "golden_chain_max_error": 0.0,
+    "golden_state_max_error": 0.0,
+    "independent_jax_from_onnx_initializers_max_error": 8.344650268554688e-7,
+    "legacy_commanded_target_first_divergence": {
+      "1024000": {
+        "max_action_error": 0.029209673404693604,
+        "obs83_97_max_error_rad": 0.029999971389770508,
+        "tick": 1
+      },
+      "512000": {
+        "max_action_error": 0.03518424555659294,
+        "obs83_97_max_error_rad": 0.029999971389770508,
+        "tick": 1
+      }
+    },
+    "observer_to_simulated_applied_target_max_error_rad": 0.0,
+    "packaged_full_trace_rows": 2400,
+    "x0_action_and_state_bit_exact_zero": true
+  },
+  "policy_candidates": [
+    {
+      "bytes": 906951,
+      "checkpoint_step": 512000,
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/policies/T2_EQUAL_512000.onnx",
+      "role": "persistent evidence checkpoint, not single deployment selection",
+      "sha256": "99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de"
+    },
+    {
+      "bytes": 906951,
+      "checkpoint_step": 1024000,
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/policies/T2_EQUAL_1024000.onnx",
+      "role": "persistent evidence checkpoint, not single deployment selection",
+      "sha256": "0dfc24bde5d839e4d346dd8c08d9a7d0222a3847764ec6738bfc7f8d947f4ece"
+    }
+  ],
+  "policy_handoff_status": "BLOCKED",
+  "schema_version": "policy_runtime_handoff_20260719.v1",
+  "selected_onnx_sha256": "NOT_READY",
+  "status": "BLOCKED_REQUIRES_REVIEWED_115_RUNTIME_V2",
+  "unresolved_blockers": [
+    "No single deployment checkpoint is selected; both graphs are persistence evidence.",
+    "The reviewed native runtime is the frozen 101-D v1 contract; a reviewed 115-D v2 implementation is absent.",
+    "The real-build torso COM/inertia audit is incomplete (46 required inputs missing), so robot clearance remains NO."
+  ]
+}

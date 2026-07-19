@@ -1806,3 +1806,17 @@ Do not proceed to grounded walking until low-risk gates pass.
   X-placement, datum and uncertainty record, not another simulator tune or a
   nominal web specification. See
   `outputs/analysis/POLICY_ROBOT_READINESS_REAUDIT_20260719.md`.
+- 2026-07-19: The native-runtime `Comms.md` request is answered by a hash-bound
+  policy package at `artifacts/runtime_handoff/rdkx5_native_20260719/`.
+  Disposition is `REQUIRES_REVIEWED_115_RUNTIME_V2`: both protected persistent
+  graphs require `obs[1,115]` plus `previous_action[1,14]`, and return final
+  action plus next state. Four fresh 600-tick CPU full-observation traces
+  reproduce the frozen P30 traces exactly; the package smoke verifies every
+  hash, both graph ABIs, five adjacent chained ticks per command/checkpoint,
+  bit-exact x=0 action/state, NaN rejection, and zero golden error. Legacy
+  commanded-target substitution first diverges at moving tick 1; an erroneous
+  advanced-first phase/reference diverges at tick 0. No single deployment
+  checkpoint is selected post hoc, so `SELECTED_ONNX_SHA256=NOT_READY`.
+  Runtime v2 review and the 46-field real-build COM audit remain blockers;
+  Gate 5 and robot clearance remain NO. See
+  `outputs/analysis/POLICY_RUNTIME_HANDOFF_20260719.md`.

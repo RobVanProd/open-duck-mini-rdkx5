@@ -95,8 +95,23 @@ hardware candidate; robot clearance remains NO. See
 `outputs/analysis/POLICY_ROBOT_READINESS_REAUDIT_20260719.md`.
 
 The legacy 101x14.v1 golden vector already passes and remains only a legacy
-stack contract. No training, hosted allocation, robot, RDK-X5, local GPU or
-iGPU access is authorized. Robot clearance remains NO.
+stack contract. The policy-side response to native-runtime Comms.md is now
+evidence-complete at artifacts/runtime_handoff/rdkx5_native_20260719/.
+Disposition is REQUIRES_REVIEWED_115_RUNTIME_V2: both protected graphs consume
+obs[1,115] plus previous_action[1,14] and return final action plus next state.
+The package carries both persistence checkpoints, exact observation/action/
+phase/P30 semantics, four lossless 600-tick traces, compact adjacent vectors,
+and a CPU fail-closed verifier. It passes with zero ONNX golden/state/chain
+error and exact x=0 zeros.
+
+Do not select one checkpoint post hoc. SELECTED_ONNX_SHA256 remains NOT_READY.
+The runtime team may use the package to review a versioned 115-D v2 interface,
+but this does not change Gate 5, runtime deployment, or robot authority. The
+other live blocker is unchanged: complete the source-backed 46-field as-built
+torso COM/inertia measurement and pass the frozen asymmetric bracket check.
+
+No training, hosted allocation, robot, RDK-X5, local GPU or iGPU access is
+authorized. Robot clearance remains NO.
 ```
 
 Robotics operating model:

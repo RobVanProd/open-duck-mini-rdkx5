@@ -1,0 +1,181 @@
+{
+  "dt_s": 0.02,
+  "equations": [
+    "queue_i.append(sent_i); retain delay_i+1 values; delayed_i=queue_i[0]",
+    "alpha_i=1-exp(-0.02/tau_i) when tau_i>0, otherwise desired_i=delayed_i",
+    "desired_i=previous_i+alpha_i*(delayed_i-previous_i)",
+    "step_i=clip(desired_i-previous_i, +/-velocity_limit_i*0.02)",
+    "value_i=previous_i+step_i"
+  ],
+  "fit_path": "observer/p30_actuator_fit.json",
+  "fit_provenance": {
+    "cross_fit_cells": "32/32 pass",
+    "cross_fit_result_sha256": "804165bd1fdf45fdb1ab8369617e460d65de60a9f6f0ced90337429b56162231",
+    "cross_fit_test": "P30 observer evaluated as a fixed artifact on both P30 and independently measured P31/34 plant matrices; both checkpoints, x=0/.074/.077/.080",
+    "fit_population": "P30 fixed-target hardware telemetry",
+    "maximum_P30_vs_P31_34_observer_separation_rad": 0.004135804,
+    "selection_metric": "p95_abs_error",
+    "startup_ticks_excluded": 10,
+    "telemetry_jsonl": "outputs/first_evidence/20260712T_fixed_target_gain_ab_run/fixed_target_gain_ab.jsonl"
+  },
+  "fit_sha256": "908ddb01e5d82e661d77b8f3cb186a84665695660b86b304c6d1ae89c79cdb0b",
+  "golden_agreement": "all 2400 packaged rows: observer estimate equals P30 simulated applied target exactly",
+  "host_code": "observer/winner_v2_contract.py:FittedBridgeObserver",
+  "initial_queue": "home repeated delay_ticks+1 per joint",
+  "initial_value_rad": [
+    0.0020000000949949026,
+    0.05299999937415123,
+    -0.6299999952316284,
+    1.3680000305175781,
+    -0.7839999794960022,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    -0.003000000026077032,
+    -0.06499999761581421,
+    0.6349999904632568,
+    1.378999948501587,
+    -0.7960000038146973
+  ],
+  "input": "confirmed logical sent target in rad; no hardware sensor input",
+  "inside_ONNX": false,
+  "joint_order": [
+    "left_hip_yaw",
+    "left_hip_roll",
+    "left_hip_pitch",
+    "left_knee",
+    "left_ankle",
+    "neck_pitch",
+    "head_pitch",
+    "head_yaw",
+    "head_roll",
+    "right_hip_yaw",
+    "right_hip_roll",
+    "right_hip_pitch",
+    "right_knee",
+    "right_ankle"
+  ],
+  "output": "estimated realized/applied absolute logical target in rad for next observation obs[83:97]",
+  "per_joint_parameters_and_fit_errors": {
+    "head_pitch": {
+      "delay_ticks": 0,
+      "fit_error_statistics": null,
+      "semantics": "pass-through; no measured P30 fit for this non-pitch joint",
+      "tau_s": 0.0,
+      "velocity_limit_rad_s": "infinity"
+    },
+    "head_roll": {
+      "delay_ticks": 0,
+      "fit_error_statistics": null,
+      "semantics": "pass-through; no measured P30 fit for this non-pitch joint",
+      "tau_s": 0.0,
+      "velocity_limit_rad_s": "infinity"
+    },
+    "head_yaw": {
+      "delay_ticks": 0,
+      "fit_error_statistics": null,
+      "semantics": "pass-through; no measured P30 fit for this non-pitch joint",
+      "tau_s": 0.0,
+      "velocity_limit_rad_s": "infinity"
+    },
+    "left_ankle": {
+      "delay_ticks": 3,
+      "mae": 0.003616227029071202,
+      "max_abs_error": 0.016276527500193594,
+      "p95_abs_error": 0.008898368929486755,
+      "p99_abs_error": 0.011318208723619877,
+      "rmse": 0.0045267217373034015,
+      "tau_s": 0.01,
+      "velocity_limit_rad_s": 1.75
+    },
+    "left_hip_pitch": {
+      "delay_ticks": 3,
+      "mae": 0.004587262051203014,
+      "max_abs_error": 0.02977848619741741,
+      "p95_abs_error": 0.011411345677811296,
+      "p99_abs_error": 0.017403133562889896,
+      "rmse": 0.005870830525296656,
+      "tau_s": 0.005,
+      "velocity_limit_rad_s": 1.5
+    },
+    "left_hip_roll": {
+      "delay_ticks": 0,
+      "fit_error_statistics": null,
+      "semantics": "pass-through; no measured P30 fit for this non-pitch joint",
+      "tau_s": 0.0,
+      "velocity_limit_rad_s": "infinity"
+    },
+    "left_hip_yaw": {
+      "delay_ticks": 0,
+      "fit_error_statistics": null,
+      "semantics": "pass-through; no measured P30 fit for this non-pitch joint",
+      "tau_s": 0.0,
+      "velocity_limit_rad_s": "infinity"
+    },
+    "left_knee": {
+      "delay_ticks": 3,
+      "mae": 0.005139638789295399,
+      "max_abs_error": 0.02073927016096766,
+      "p95_abs_error": 0.010790609808006335,
+      "p99_abs_error": 0.015956583244170913,
+      "rmse": 0.006178799321398994,
+      "tau_s": 0.01,
+      "velocity_limit_rad_s": 1.5
+    },
+    "neck_pitch": {
+      "delay_ticks": 0,
+      "fit_error_statistics": null,
+      "semantics": "pass-through; no measured P30 fit for this non-pitch joint",
+      "tau_s": 0.0,
+      "velocity_limit_rad_s": "infinity"
+    },
+    "right_ankle": {
+      "delay_ticks": 3,
+      "mae": 0.0034828706256960157,
+      "max_abs_error": 0.015893518420404096,
+      "p95_abs_error": 0.008371969803313645,
+      "p99_abs_error": 0.01087927269835852,
+      "rmse": 0.004347710941993698,
+      "tau_s": 0.005,
+      "velocity_limit_rad_s": 1.25
+    },
+    "right_hip_pitch": {
+      "delay_ticks": 3,
+      "mae": 0.0045286131250677234,
+      "max_abs_error": 0.017759037985565218,
+      "p95_abs_error": 0.010247621490466319,
+      "p99_abs_error": 0.01318441950078259,
+      "rmse": 0.005575361098093986,
+      "tau_s": 0.01,
+      "velocity_limit_rad_s": 1.25
+    },
+    "right_hip_roll": {
+      "delay_ticks": 0,
+      "fit_error_statistics": null,
+      "semantics": "pass-through; no measured P30 fit for this non-pitch joint",
+      "tau_s": 0.0,
+      "velocity_limit_rad_s": "infinity"
+    },
+    "right_hip_yaw": {
+      "delay_ticks": 0,
+      "fit_error_statistics": null,
+      "semantics": "pass-through; no measured P30 fit for this non-pitch joint",
+      "tau_s": 0.0,
+      "velocity_limit_rad_s": "infinity"
+    },
+    "right_knee": {
+      "delay_ticks": 2,
+      "mae": 0.003854932477173778,
+      "max_abs_error": 0.014417390083239834,
+      "p95_abs_error": 0.007383657789953091,
+      "p99_abs_error": 0.009608626513797923,
+      "rmse": 0.004456852063575982,
+      "tau_s": 0.03,
+      "velocity_limit_rad_s": 1.0
+    }
+  },
+  "schema_version": "winner_v2_p30_observer_handoff.v1",
+  "staleness_failure": "If any required sensor sample is stale, the target send is unconfirmed, the 20 ms tick is missed, or update count is ambiguous, invalidate the controller and stop inference; never silently reuse or double-step observer state.",
+  "timing": "obs[t] receives the observer value from the preceding confirmed transition; after action[t] is converted and sent, advance exactly once for obs[t+1]"
+}
