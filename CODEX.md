@@ -59,7 +59,13 @@ episode samples at each of 0/25/50/100% scale, full-inertia validity and bounds,
 native quantization and the measured bridge equation. Formal PPO steps and
 behavior cells remain zero.
 
-Next, run the single seed-100 no-retry CPU curriculum. Preserve the
+The single-process launch contract and driver validation now also pass with
+formal training steps and behavior cells still at zero. The driver is
+hash-bound to the protected archive, reference features, formal composed tree,
+preregistration and both prerequisite CPU contracts; it has no subprocess or
+retry surface and sees only `TFRT_CPU_0`.
+
+Next, run that single seed-100 no-retry CPU curriculum. Preserve the
 preregistered 25%/50%/100% schedule and export only the two full-domain
 checkpoints at 1,003,520 and 2,007,040 relative steps. After its artifact
 contract passes, run the exact 1,024-cell CPU matrix. Both checkpoints must pass

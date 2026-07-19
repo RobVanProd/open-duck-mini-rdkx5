@@ -2032,3 +2032,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   hosted/Colab, GPU/iGPU, RDK-X5, robot, runtime, Gate 5, deployment and
   clearance remain unauthorized. See
   `outputs/analysis/WINNER_V3_VARIABLE_CONFIGURATION_CURRICULUM_CONTRACT_20260719.md`.
+- 2026-07-19: The exact winner-v3 CPU curriculum launch is hash-frozen as
+  `PASS_WINNER_V3_CPU_CURRICULUM_LAUNCH_CONTRACT` and its read-only driver
+  validation passes on `TFRT_CPU_0`. One process restores and expands the
+  protected T2_EQUAL 512K checkpoint, then executes only 245,760 steps at 25%,
+  245,760 at 50%, and 2,007,040 at full domain with persistent full-domain
+  exports at 1,003,520 and 2,007,040. The driver has no subprocess or retry
+  surface, rejects any existing work/result path, checks finite metrics and
+  parameters, proves exact stage restore continuity, and fixes a 43,200-second
+  wall ceiling before outcome. Formal training steps and behavior cells remain
+  zero. This authorizes only that one CPU process; training reward has no
+  selection weight. No hosted/Colab, GPU/iGPU, RDK-X5, robot, runtime, Gate 5,
+  deployment or clearance is authorized. See
+  `outputs/analysis/WINNER_V3_CPU_CURRICULUM_LAUNCH_CONTRACT_20260719.md`.

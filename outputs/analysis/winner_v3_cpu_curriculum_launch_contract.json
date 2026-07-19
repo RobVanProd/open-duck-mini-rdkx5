@@ -1,0 +1,64 @@
+{
+  "authority": {
+    "frozen_cpu_evaluation_after_valid_artifact": false,
+    "gpu_or_igpu": false,
+    "hosted_or_colab": false,
+    "rdkx5_or_robot": false,
+    "robot_clearance": false,
+    "runtime_or_gate5": false,
+    "single_cpu_curriculum_after_pass": true
+  },
+  "checks": {
+    "behavior_cells_zero": true,
+    "composed_manifest_matches_formal_contract": true,
+    "cpu_device_guards_present": true,
+    "curriculum_contract_passed": true,
+    "formal_outcomes_zero": true,
+    "no_retry_work_root_guard_present": true,
+    "preregistration_authorizes_cpu_training": true,
+    "recurrent_contract_passed": true,
+    "single_process_driver_has_no_subprocess_surface": true,
+    "stage_schedule_literal_exact": true
+  },
+  "execution": {
+    "processes": 1,
+    "retry": false,
+    "seed": 100,
+    "stages": [
+      {
+        "deviation_scale": 0.25,
+        "id": "DOMAIN_25_PERCENT",
+        "steps": 245760
+      },
+      {
+        "deviation_scale": 0.5,
+        "id": "DOMAIN_50_PERCENT",
+        "steps": 245760
+      },
+      {
+        "deviation_scale": 1.0,
+        "id": "DOMAIN_100_PERCENT",
+        "persistent_exports_relative_steps": [
+          1003520,
+          2007040
+        ],
+        "steps": 2007040
+      }
+    ],
+    "wall_ceiling_seconds": 43200
+  },
+  "failed_checks": [],
+  "formal_behavior_cells_executed": 0,
+  "formal_training_steps_executed": 0,
+  "input_hashes": {
+    "composed_manifest": "a820f668872c522e8d6c35d82559991e27679b4d3f95ecff104236e5058a3a47",
+    "curriculum_cpu_contract": "2a94006e6fa167ed0921bec0b279d7e799747ec47e30b530ecd317c6167d737f",
+    "driver": "04ffaad11f14c25b34fa37571f6c804607832ed5692a5abb11c4a8377c143881",
+    "preregistration": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b",
+    "recurrent_cpu_contract": "9405056990fbd7b15082b2b80de986ac2a5644e95eef847d2d1c8394fd885933",
+    "reference_features": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212",
+    "source_archive": "ae4c631a6ce1c0b36c3231113740acc6c1b8a463c0911ce7cad30b8f8d8ca60f"
+  },
+  "schema_version": "winner_v3.cpu_curriculum_launch_contract.v1",
+  "status": "PASS_WINNER_V3_CPU_CURRICULUM_LAUNCH_CONTRACT"
+}
