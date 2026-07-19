@@ -1937,3 +1937,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   identity. Regenerate the asset lock against those current identities. Do not
   deploy or plan X5 preflight from the stale lock. See
   `outputs/analysis/WINNER_V2_OFFLINE_ASSET_LOCK_REVIEW_20260719.md`.
+- 2026-07-19: Policy independently accepts replacement offline asset-lock
+  SHA-256 `48fd6d81...4ef31` as
+  `PASS_FROZEN_OFFLINE_ASSET_LOCK_POLICY_REVIEW`. It binds final policy
+  acceptance commit `4c99b5e` / result SHA-256 `5380897c...b7ddc`, corrected
+  reduced SHA-256 `1292772e...dc5e`, unchanged formal SHA-256
+  `e1842ca6...9b14`, selected ONNX `99d3afce...304de`, corrected handoff
+  manifest `d771d188...c6827c5`, and runtime identity `7189559`. Policy and
+  runtime verifiers pass; runtime tests pass 254/254 and its manifest is clean.
+  The superseded lock `4da893b3...de940` remains revoked. This freezes offline
+  identities only. Powered-off direct COM evidence, policy robot clearance,
+  X5 no-servo CPU replay and separately reviewed Gate 5 remain pending and
+  unauthorized. See
+  `outputs/analysis/WINNER_V2_OFFLINE_ASSET_LOCK_REVIEW_20260719.md`.

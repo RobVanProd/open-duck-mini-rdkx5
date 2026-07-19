@@ -160,15 +160,15 @@ blocker only. The next policy datum is the powered-off direct COM packet; X5
 CPU-only replay under the same metric and a reviewed frozen asset set remain
 required before Gate 5 can be considered.
 
-The first runtime offline asset lock is deliberately held, not accepted. It
-pins the superseded `fab1fea` policy result and fails its own verifier against
-the current policy result. The reduced-report correction and policy
-revalidation are complete, but the old lock also predates the corrected
-runtime artifact and current verifier/test/manifest identities. Policy decision
-remains `HOLD_STALE_OFFLINE_ASSET_LOCK` for that old lock. Build a fresh lock
-against the final policy acceptance commit and corrected runtime identities. The recursive CPU
-PASS remains valid; the stale lock must not be used for deployment or X5
-preflight.
+The first runtime offline asset lock remains revoked. Its replacement at
+SHA-256 `48fd6d81...4ef31` now passes independent policy review as
+`PASS_FROZEN_OFFLINE_ASSET_LOCK_POLICY_REVIEW`. It binds final policy
+acceptance `4c99b5e` / `5380897c...b7ddc`, the corrected reduced artifact,
+unchanged formal result, selected graph, handoff package, and corrected runtime
+identity. Runtime tests pass 254/254 and its artifact manifest is clean. This
+freezes the reviewed offline identities only; powered-off direct COM, policy
+robot clearance, X5 no-servo CPU replay and separately reviewed Gate 5 remain
+required and unauthorized.
 
 The 46-field component ledger remains valid, but it is no longer the only
 measurement route. Before any physical value was read, a smaller direct route

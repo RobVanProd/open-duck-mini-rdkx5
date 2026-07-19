@@ -50,6 +50,16 @@ current verifier/test/manifest identities, so policy records
 revalidation are complete; regenerate a fresh lock against this final policy
 acceptance identity.
 
+The regenerated replacement lock at SHA-256
+`48fd6d81aa9f621d0167536829ed7df62fe1d3b92b161607315aec9e8f64ef31`
+now passes the independent policy review as
+`PASS_FROZEN_OFFLINE_ASSET_LOCK_POLICY_REVIEW`. It binds policy acceptance
+commit `4c99b5e3be203af419536382f11f3cce98283ba2`, policy result SHA-256
+`5380897c21d3e438dbc4216ba049bc14fb6beb227a13407943d4d092519b7ddc`,
+and runtime identity commit `71895596f620756f52cf2b5d513f671ede4d3d86`.
+The superseded lock remains revoked. This is an offline identity freeze only;
+robot clearance remains `NO`.
+
 ## 2026-07-19 selected-binary addendum
 
 The later prospective native-representation study removes the first blocker
