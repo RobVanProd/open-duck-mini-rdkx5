@@ -1,0 +1,189 @@
+{
+  "authority": {
+    "cpu_only": true,
+    "emit_passing_runtime_envelope": false,
+    "gate5_or_deployment": false,
+    "gpu_or_igpu": false,
+    "hosted_compute": false,
+    "preregister_replacement_study": true,
+    "rdkx5_or_robot": false,
+    "robot_clearance": false,
+    "training": false
+  },
+  "checks": {
+    "all_com_corners_inside_compiled_torso_aabb": true,
+    "compiled_nominal_inertia_triangle_valid": true,
+    "compiled_torso_name_id_massive": true,
+    "cpu_only_model_readback": true,
+    "current_candidate_fails_minimum_required_x_domain": true,
+    "derived_inertia_lower_bounds_positive": true,
+    "derived_mass_and_inertia_scales_span_nominal": true,
+    "frozen_com_xyz_endpoints_exact": true,
+    "frozen_mass_endpoints_exact": true,
+    "no_passing_runtime_envelope_emitted": true,
+    "optional_parts_use_aggregate_domain_not_manual_inventory": true,
+    "playground_clean_official_origin": true
+  },
+  "compiled_torso": {
+    "body_id": 2,
+    "geometry_aabb_m": {
+      "max": [
+        0.04603293675628423,
+        0.05500015009962982,
+        0.10789103308747082
+      ],
+      "min": [
+        -0.15400003603578855,
+        -0.055000357109437646,
+        -0.03510910453222782
+      ],
+      "size": [
+        0.20003297279207277,
+        0.11000050720906747,
+        0.14300013761969865
+      ]
+    },
+    "ipos_m": [
+      -0.0483259,
+      -9.97823e-05,
+      0.0384971
+    ],
+    "mass_kg": 0.698526,
+    "name": "trunk_assembly",
+    "principal_inertia_kg_m2": [
+      0.0034448951258009347,
+      0.0029271882823563265,
+      0.001676066591842733
+    ]
+  },
+  "current_candidate": {
+    "break_radius_bounds": {
+      "negative": {
+        "bracket_width_m": 0.0007812499999999972,
+        "certified_inner_pass_m": -0.022656250000000003,
+        "magnitude_inner_pass_m": 0.022656250000000003,
+        "magnitude_outer_fail_m": 0.0234375,
+        "observed_outer_fail_m": -0.0234375
+      },
+      "positive": {
+        "bracket_width_m": 0.0007812499999999998,
+        "certified_inner_pass_m": 0.0054687500000000005,
+        "magnitude_inner_pass_m": 0.0054687500000000005,
+        "magnitude_outer_fail_m": 0.00625,
+        "observed_outer_fail_m": 0.00625
+      }
+    },
+    "decision": "HOLD_POLICY_CONFIGURATION_SENSITIVITY_NO_PER_UNIT_MEASUREMENT",
+    "eligible_for_supported_envelope": false,
+    "selected_onnx_sha256": "99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de"
+  },
+  "decision": "PASS_VARIABLE_CONFIGURATION_DOMAIN_BASIS_CURRENT_CANDIDATE_HELD",
+  "failed_checks": [],
+  "frozen_continuous_domain": {
+    "all_link_mass_scale": [
+      0.9,
+      1.1
+    ],
+    "resulting_torso_mass_kg": [
+      0.5286734000000001,
+      0.8683786
+    ],
+    "resulting_torso_mass_scale": [
+      0.7568414060464465,
+      1.2431585939535537
+    ],
+    "torso_com_offset_m": {
+      "x": [
+        -0.05,
+        0.05
+      ],
+      "y": [
+        -0.05,
+        0.05
+      ],
+      "z": [
+        -0.05,
+        0.05
+      ]
+    },
+    "torso_inertia": {
+      "base_density_scale": [
+        0.9,
+        1.1
+      ],
+      "derivation": "frozen 0.9x/1.1x density scaling plus the parallel-axis upper bound from 0.1 kg at two orthogonal 0.05 m radii",
+      "principal_additive_allowance_abs_kg_m2": 0.0005000000000000001,
+      "principal_component_bounds_kg_m2": {
+        "ixx": [
+          0.0026004056132208414,
+          0.004289384638381029
+        ],
+        "iyy": [
+          0.002134469454120694,
+          0.0037199071105919594
+        ],
+        "izz": [
+          0.0010084599326584598,
+          0.0023436732510270066
+        ]
+      },
+      "principal_scale_bounds": {
+        "xx": [
+          0.754857700527603,
+          1.2451422994723973
+        ],
+        "yy": [
+          0.7291876190493937,
+          1.2708123809506064
+        ],
+        "zz": [
+          0.6016824973223287,
+          1.3983175026776715
+        ]
+      },
+      "product_additive_allowance_abs_kg_m2": 0.00025000000000000006,
+      "sampling_rule": "sample coupled mass/COM/inertia cells; reconstruct the full symmetric inertia tensor; accept only positive-definite tensors whose principal moments satisfy triangle inequalities"
+    },
+    "torso_mass_add_kg": [
+      -0.1,
+      0.1
+    ]
+  },
+  "observable_response_contract": {
+    "bounds_status": "PENDING_PASSING_REPLACEMENT_SIM_EVIDENCE",
+    "metric_count": 73,
+    "schema": "open_duck_x5.supported_configuration_envelope.v1",
+    "selection_rule": "freeze derivation and held-out split before replacement outcomes; derive bounds from passing simulated configuration cells only; physical calibration cannot widen them"
+  },
+  "optional_configuration_semantics": {
+    "discrete_eval_anchors": [
+      "nominal",
+      "mass_inertia_low",
+      "mass_inertia_high",
+      "com_x_neg",
+      "com_x_pos",
+      "com_y_neg",
+      "com_y_pos",
+      "com_z_neg",
+      "com_z_pos",
+      "eight_xyz_com_corners_with_coupled_mass_inertia"
+    ],
+    "manual_component_inventory_required": false,
+    "per_unit_mass_or_com_entry_required": false,
+    "supported_if": "the aggregate dynamics and later automatic response profile both remain inside the frozen continuous and observable-response domains"
+  },
+  "schema_version": "winner_v3.supported_configuration_basis.v1",
+  "sources": {
+    "break_radius_result": "outputs/analysis/composite_winner_torso_com_break_radius_result.json",
+    "break_radius_result_sha256": "6b84b34e7280b0f0d92109a70444d18af7b0196cd3555530b8f42e70dea54e32",
+    "playground_commit": "1e16cb8142e8f890c34c45e8903764161186c7ae",
+    "playground_repository": "apirrone/Open_Duck_Playground",
+    "r2_preregistration": "outputs/analysis/ground_up_robustness_r2_matrix_preregistration.json",
+    "r2_preregistration_sha256": "716bff40fc198137fb5619a9f6b390d81391a991d35e3daaa6af52e151a1f1d7",
+    "randomizer": "playground/common/randomize.py",
+    "randomizer_sha256": "db03f9ed29b28e92ad4d8a9aa6a64b8ed6de523cace5c5374c1dd7ecefd1fdf9",
+    "scene_xml": "playground/open_duck_mini_v2/xmls/scene_flat_terrain_backlash.xml",
+    "scene_xml_sha256": "33af97247d6a876cf47c9e37185cb71bd09f6793bc0f62d90cbe2a91caa3ba63"
+  },
+  "status": "PASS_VARIABLE_CONFIGURATION_DOMAIN_BASIS_CURRENT_CANDIDATE_HELD"
+}

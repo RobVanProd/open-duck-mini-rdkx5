@@ -1950,3 +1950,18 @@ Do not proceed to grounded walking until low-risk gates pass.
   X5 no-servo CPU replay and separately reviewed Gate 5 remain pending and
   unauthorized. See
   `outputs/analysis/WINNER_V2_OFFLINE_ASSET_LOCK_REVIEW_20260719.md`.
+- 2026-07-19: The no-per-unit-measurement product direction supersedes the
+  powered-off COM packet as an advancement gate. The existing selected graph
+  is held because its verified X-COM failure bracket lies well inside the
+  required `[-.05,+.05] m` domain. A CPU-only compiled-model audit now derives
+  the prospective replacement domain from the already-frozen R2 endpoints:
+  X/Y/Z COM each `+/-.05 m`, resulting torso mass
+  `.5286734-.8683786 kg`, and positive, triangle-valid inertia ranges coupled
+  to the frozen mass/placement bounds. Optional non-locomotion parts are
+  represented by aggregate dynamics rather than manual inventory. Decision:
+  `PASS_VARIABLE_CONFIGURATION_DOMAIN_BASIS_CURRENT_CANDIDATE_HELD`. It
+  authorizes only replacement-study preregistration. No passing runtime
+  envelope exists; training, hosted compute, GPU/iGPU, RDK-X5, automatic
+  calibration, X5 preflight, Gate 5, deployment and robot use remain
+  unauthorized. See
+  `outputs/analysis/WINNER_V3_SUPPORTED_CONFIGURATION_BASIS_20260719.md`.
