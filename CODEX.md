@@ -104,11 +104,21 @@ phase/P30 semantics, four lossless 600-tick traces, compact adjacent vectors,
 and a CPU fail-closed verifier. It passes with zero ONNX golden/state/chain
 error and exact x=0 zeros.
 
-Do not select one checkpoint post hoc. SELECTED_ONNX_SHA256 remains NOT_READY.
-The runtime team may use the package to review a versioned 115-D v2 interface,
-but this does not change Gate 5, runtime deployment, or robot authority. The
-other live blocker is unchanged: complete the source-backed 46-field as-built
-torso COM/inertia measurement and pass the frozen asymmetric bracket check.
+The old behavior tables do not contain a checkpoint-level tie-break, so no
+checkpoint is selected post hoc. A prospective selection screen is now frozen
+from native RDK-X5 input representation: BNO055 gyro/acceleration and STS3215
+position/velocity register resolution only. Its zero-behavior-cell contract
+passes with exact source graph semantics, zero NumPy quantizer error, exact x=0
+zeros, and finite 256-tick state chains on CPU. Only its 16-cell matrix may run
+next. Both checkpoints must pass before the preregistered lower-worst-tracking,
+higher-minimum-vx rule can select one original graph. Until then,
+SELECTED_ONNX_SHA256 remains NOT_READY.
+
+The runtime team may use the existing handoff package to review a versioned
+115-D v2 interface, but neither the package nor the selection contract changes
+Gate 5, runtime deployment, or robot authority. The other live blocker is
+unchanged: complete the source-backed 46-field as-built torso COM/inertia
+measurement and pass the frozen asymmetric bracket check.
 
 No training, hosted allocation, robot, RDK-X5, local GPU or iGPU access is
 authorized. Robot clearance remains NO.

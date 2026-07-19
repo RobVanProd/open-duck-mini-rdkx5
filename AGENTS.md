@@ -1820,3 +1820,19 @@ Do not proceed to grounded walking until low-risk gates pass.
   Runtime v2 review and the 46-field real-build COM audit remain blockers;
   Gate 5 and robot clearance remain NO. See
   `outputs/analysis/POLICY_RUNTIME_HANDOFF_20260719.md`.
+- 2026-07-19: A prospective single-checkpoint selection is preregistered from
+  native RDK-X5 representation evidence rather than the already-read behavior
+  tables. Eval-only wrappers quantize only BNO055 gyro/acceleration and STS3215
+  position/velocity input slices at their exact native register resolutions.
+  Their zero-behavior-cell contract passes every frozen source, ABI, graph,
+  initializer, slice-isolation, NumPy-equivalence, CPU-provider, x=0, and
+  256-tick state-chain check; maximum quantizer error is zero. Wrapper hashes
+  are `a24b74ff...3273` at 512K and `11c8d56...361a` at 1024K. Only the frozen
+  16-cell CPU matrix is authorized next. Both checkpoints must pass before the
+  lower-worst-tracking/higher-minimum-vx rule may select one original graph;
+  no sibling promotion is allowed. `SELECTED_ONNX_SHA256` remains `NOT_READY`
+  until that result. This screen covers finite representation only, not sensor
+  bias/noise/age, real COM, runtime review, Gate 5, RDK-X5, or robot clearance.
+  See
+  `outputs/analysis/WINNER_V2_NATIVE_QUANTIZED_CHECKPOINT_SELECTION_PREREGISTRATION_20260719.md`
+  and `outputs/analysis/WINNER_V2_NATIVE_QUANTIZED_EVAL_CONTRACT_20260719.md`.
