@@ -2002,3 +2002,19 @@ Do not proceed to grounded walking until low-risk gates pass.
   Gate 5, deployment or clearance. See
   `outputs/analysis/WINNER_V3_RECURRENT_ADAPTER_CPU_CONTRACT_20260719.md` and
   `outputs/analysis/WINNER_V3_RECURRENT_ADAPTER_NORMALIZER_COUNT_CORRECTION_20260719.md`.
+- 2026-07-19: The coupled winner-v3 configuration/actuator/sensor curriculum
+  implementation and its pre-outcome contract are frozen before candidate
+  training or behavior outcomes. It targets named inertial body 2, reconstructs
+  a positive-definite, triangle-valid full torso inertia tensor, uses one
+  all-link mass scale, samples the measured actuator interval plus fixed
+  episode delays/noise/native quantization, records exact readback, and gives
+  the actor no true configuration input. A development-only checker passes
+  bit-exact residual-off traces and 4,096 model plus episode samples at each of
+  0/25/50/100% scale; formal curriculum PPO steps and formal behavior cells are
+  both zero. Decision:
+  `PASS_WINNER_V3_CURRICULUM_PREOUTCOME_CONTRACT`. The next and only authorized
+  action is a fresh, independently composed, hash-locked formal CPU
+  implementation contract. Training remains prohibited until that formal
+  contract passes; hosted/Colab, GPU/iGPU, RDK-X5, robot, runtime, Gate 5,
+  deployment and clearance remain unauthorized. See
+  `outputs/analysis/WINNER_V3_VARIABLE_CONFIGURATION_CURRICULUM_PREOUTCOME_CONTRACT_20260719.md`.

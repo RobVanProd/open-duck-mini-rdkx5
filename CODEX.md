@@ -47,14 +47,25 @@ chain. Its initial one-check hold was a stale sibling-checkpoint count literal;
 a committed read-only audit corrected it to the protected 512K source count
 without rerunning the smoke.
 
-Next, implement the frozen coupled configuration/actuator/sensor curriculum and
-its default-off/readback contract, then run the single seed-100 no-retry CPU
-curriculum. Preserve the preregistered 25%/50%/100% schedule and export only the
-two full-domain checkpoints at 1,003,520 and 2,007,040 relative steps. After the
-artifact contract passes, run the exact 1,024-cell CPU matrix. Both checkpoints
-must pass nominal, 24 fixed anchors, 16 discovery coupled samples, 16
-independent heldout samples and six sensor/transport conditions under both
-actuator plants and x=0/.074/.077/.080. No closest result advances.
+The coupled configuration/actuator/sensor curriculum implementation is now
+hash-frozen before outcome work. It targets named inertial body 2, represents
+the full torso inertia tensor through principal inertia plus inertial-frame
+quaternion, uses one all-link mass scale, crosses the measured P30/P31-34
+actuator interval with fixed episode delays/noise/native quantization, records
+exact per-model and per-episode readback, and exposes no true configuration
+field to the actor. Its development checker passed bit-exact residual-off
+behavior plus 4,096 model and episode samples at each of 0/25/50/100% scale;
+formal PPO steps and behavior cells remain zero.
+
+Next, compose fresh independent baseline and winner-v3 trees from the pinned
+control commit and run the hash-locked formal CPU implementation contract. Only
+a formal pass may start the single seed-100 no-retry CPU curriculum. Preserve
+the preregistered 25%/50%/100% schedule and export only the two full-domain
+checkpoints at 1,003,520 and 2,007,040 relative steps. After its artifact
+contract passes, run the exact 1,024-cell CPU matrix. Both checkpoints must pass
+nominal, 24 fixed anchors, 16 discovery coupled samples, 16 independent heldout
+samples and six sensor/transport conditions under both actuator plants and
+x=0/.074/.077/.080. No closest result advances.
 
 Only a complete pass may begin the selected-policy commit, later clearance
 artifact commit, and still-later supported_configuration_envelope.v2 commit

@@ -1,0 +1,58 @@
+{
+  "authority": {
+    "cpu_curriculum_only_after_formal_contract_pass": true,
+    "formal_cpu_implementation_contract": true,
+    "gpu_or_igpu": false,
+    "hosted_or_colab": false,
+    "rdkx5_or_robot": false,
+    "robot_clearance": false,
+    "runtime_or_gate5": false
+  },
+  "checks": {
+    "formal_behavior_cells_zero": true,
+    "formal_matrix_unchanged_1024": true,
+    "formal_training_steps_zero": true,
+    "recurrent_cpu_contract_passed": true,
+    "replacement_preregistration_exact": true,
+    "single_candidate_unchanged": true,
+    "single_cpu_no_retry_schedule_unchanged": true
+  },
+  "failed_checks": [],
+  "formal_behavior_cells_executed": 0,
+  "formal_training_steps_executed": 0,
+  "implementation_contract": {
+    "actor_configuration_input": false,
+    "actuator_transition": "delay sent target; form home + gain*(delayed-home); first-order lag with sampled tau; apply conservative per-joint velocity envelope",
+    "default_off_requirement": "winner_v3 flag false must reproduce the pre-patch reset/step trace bit-exact",
+    "episode_randomization": [
+      "P30-to-P31/34 per-joint gain and tau interval",
+      "frozen fitted per-joint delay",
+      "fixed per-episode additional action delay",
+      "fixed per-episode IMU delay applied to gyro plus accelerometer",
+      "declared sensor noise scaled by curriculum fraction",
+      "frozen native input quantization sampled per episode"
+    ],
+    "inertia_validity": "sample frozen diagonal/product intervals, repeatedly contract halfway toward the nominal diagonal/zero products, accept only positive-definite and principal-triangle-valid tensors",
+    "model_randomization": [
+      "floor friction",
+      "per-joint frictionloss scale",
+      "per-joint armature scale",
+      "single all-link mass scale",
+      "torso mass addition",
+      "torso XYZ COM offset on trunk_assembly body 2",
+      "full symmetric torso inertia represented by principal inertia plus inertial-frame quaternion"
+    ],
+    "required_readback": "all changed model fields plus per-episode actuator, delay, sensor, quantization and curriculum values"
+  },
+  "input_hashes": {
+    "checker": "35aeb07cf16bcd3bd4c2683928fcea46e7d4108c5fbdb0bd223bb55c8f468f82",
+    "composer": "0ac87b7ddc80e0b0beabb23e50944a98243d943ed77b91604611294f18f34695",
+    "implementation": "77b255f22e3139e71328a97bbc9ef98084cd8a10862de1157347f010df08f471",
+    "integration_patch": "6d46087cfba3b15ffee24cdb09c69e64291245a0ebacc18a76171ab600f8a124",
+    "preregistration": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b",
+    "recurrent_cpu_contract": "9405056990fbd7b15082b2b80de986ac2a5644e95eef847d2d1c8394fd885933"
+  },
+  "next": "compose independent baseline and winner-v3 trees from the pinned control commit, then execute the hash-locked CPU curriculum implementation contract",
+  "schema_version": "winner_v3.variable_configuration_curriculum_preoutcome_contract.v1",
+  "status": "PASS_WINNER_V3_CURRICULUM_PREOUTCOME_CONTRACT"
+}

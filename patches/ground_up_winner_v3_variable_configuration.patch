@@ -1,0 +1,220 @@
+diff --git a/playground/open_duck_mini_v2/joystick.py b/playground/open_duck_mini_v2/joystick.py
+--- a/playground/open_duck_mini_v2/joystick.py
++++ b/playground/open_duck_mini_v2/joystick.py
+@@ -24,6 +24,7 @@ from mujoco_playground._src.collision import geoms_colliding
+
+ from . import constants
+ from . import base as open_duck_mini_v2_base
++from playground.common import winner_v3_variable_configuration as winner_v3
+
+ # from playground.common.utils import LowPassActionFilter
+ from playground.common.poly_reference_motion import PolyReferenceMotion
+@@ -139,4 +140,6 @@ def default_config() -> config_dict.ConfigDict:
+         ],
+         reference_start_phase=0,
+         ground_up_signed_progress_objective=False,
++        winner_v3_variable_configuration=False,
++        winner_v3_deviation_scale=0.0,
+     )
+@@ -332,6 +335,12 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+         else:
+             current_reference_motion = jp.zeros(0)
+
++        winner_v3_contract = None
++        if self._config.winner_v3_variable_configuration:
++            rng, winner_v3_rng = jax.random.split(rng)
++            winner_v3_contract = winner_v3.sample_episode_contract(
++                winner_v3_rng, self._config.winner_v3_deviation_scale
++            )
+         info = {
+             "rng": rng,
+             "step": 0,
+@@ -378,5 +387,20 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+             ),
+             "policy_hidden": jp.zeros(self._config.recurrent_hidden_dim),
+         }
++        if winner_v3_contract is not None:
++            info.update(
++                {
++                    "winner_v3_actuator_gain_ratio": winner_v3_contract["actuator_gain_ratio"],
++                    "winner_v3_actuator_tau_s": winner_v3_contract["actuator_tau_s"],
++                    "winner_v3_actuator_delay_ticks": winner_v3_contract["actuator_delay_ticks"],
++                    "winner_v3_additional_action_delay_ticks": winner_v3_contract["additional_action_delay_ticks"],
++                    "winner_v3_imu_delay_ticks": winner_v3_contract["imu_delay_ticks"],
++                    "winner_v3_native_quantization": winner_v3_contract["native_quantization"],
++                    "winner_v3_native_quantization_probability": winner_v3_contract["native_quantization_probability"],
++                    "winner_v3_sensor_noise_scales": winner_v3_contract["sensor_noise_scales"],
++                    "winner_v3_deviation_scale": winner_v3_contract["deviation_scale"],
++                    "winner_v3_imu_history": jp.zeros(18, dtype=jp.float32),
++                }
++            )
+
+         metrics = {}
+@@ -411,18 +435,27 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+         )
+         history_matrix = history.reshape((-1, self._actuators))
+-        delay_ticks = jp.asarray(
+-            self._config.ground_up_actuator_bridge_delay_ticks, dtype=jp.int32
+-        )
++        if self._config.winner_v3_variable_configuration:
++            delay_ticks = info["winner_v3_actuator_delay_ticks"]
++            tau_s = jp.maximum(info["winner_v3_actuator_tau_s"], 1.0e-4)
++            gain_ratio = info["winner_v3_actuator_gain_ratio"]
++        else:
++            delay_ticks = jp.asarray(
++                self._config.ground_up_actuator_bridge_delay_ticks, dtype=jp.int32
++            )
++            tau_s = jp.maximum(
++                jp.asarray(self._config.ground_up_actuator_bridge_tau_s), 1.0e-4
++            )
++            gain_ratio = jp.ones(self._actuators)
+         delayed_target = history_matrix[
+             delay_ticks, jp.arange(self._actuators)
+         ]
+         previous_applied = info["ground_up_actuator_bridge_applied_targets"]
+-        tau_s = jp.maximum(
+-            jp.asarray(self._config.ground_up_actuator_bridge_tau_s), 1.0e-4
++        home_relative_target = self._default_actuator + gain_ratio * (
++            delayed_target - self._default_actuator
+         )
+         alpha = 1.0 - jp.exp(-self.dt / tau_s)
+         lagged_target = previous_applied + alpha * (
+-            delayed_target - previous_applied
++            home_relative_target - previous_applied
+         )
+         max_step = (
+             jp.asarray(self._config.ground_up_action_velocity_limits_rad_s) * self.dt
+@@ -482,12 +515,15 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+             .set(action)
+         )
+         state.info["action_history"] = action_history
+-        action_idx = jax.random.randint(
+-            action_delay_rng,
+-            (1,),
+-            minval=self._config.noise_config.action_min_delay,
+-            maxval=self._config.noise_config.action_max_delay,
+-        )
++        if self._config.winner_v3_variable_configuration:
++            action_idx = state.info["winner_v3_additional_action_delay_ticks"]
++        else:
++            action_idx = jax.random.randint(
++                action_delay_rng,
++                (1,),
++                minval=self._config.noise_config.action_min_delay,
++                maxval=self._config.noise_config.action_max_delay,
++            )[0]
+         action_w_delay = action_history.reshape((-1, self._actuators))[
+-            action_idx[0]
++            action_idx
+         ]  # action with delay
+@@ -652,5 +688,17 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+             * self._config.noise_config.scales.accelerometer
+         )
+
++        if self._config.winner_v3_variable_configuration:
++            imu_pair = jp.hstack([noisy_gyro, noisy_accelerometer])
++            winner_v3_imu_history = (
++                jp.roll(info["winner_v3_imu_history"], 6).at[:6].set(imu_pair)
++            )
++            info["winner_v3_imu_history"] = winner_v3_imu_history
++            delayed_imu_pair = winner_v3_imu_history.reshape((-1, 6))[
++                info["winner_v3_imu_delay_ticks"]
++            ]
++            noisy_gyro = delayed_imu_pair[:3]
++            noisy_accelerometer = delayed_imu_pair[3:]
++
+         gravity = data.site_xmat[self._site_id].T @ jp.array([0, 0, -1])
+         info["rng"], noise_rng = jax.random.split(info["rng"])
+@@ -748,5 +796,10 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+             )
+             state_parts.append(reference_action)
+         state = jp.hstack(state_parts)
++        if self._config.winner_v3_variable_configuration:
++            native_state = winner_v3.native_quantize_observation(
++                state, home_rad=self._default_actuator
++            )
++            state = jp.where(info["winner_v3_native_quantization"], native_state, state)
+
+         accelerometer = self.get_accelerometer(data)
+diff --git a/playground/open_duck_mini_v2/runner.py b/playground/open_duck_mini_v2/runner.py
+--- a/playground/open_duck_mini_v2/runner.py
++++ b/playground/open_duck_mini_v2/runner.py
+@@ -1,7 +1,9 @@
+ """Runs training and evaluation loop for Open Duck Mini V2."""
+
+ import argparse
++import jax.numpy as jp
+
+ from playground.common import randomize
++from playground.common import winner_v3_variable_configuration as winner_v3
+ from playground.common.runner import BaseRunner
+ from playground.open_duck_mini_v2 import joystick, standing
+@@ -80,5 +82,9 @@ class OpenDuckMiniV2Runner(BaseRunner):
+         self.env_config.ground_up_signed_progress_objective = (
+             args.ground_up_signed_progress_objective
+         )
++        self.env_config.winner_v3_variable_configuration = (
++            args.winner_v3_variable_configuration
++        )
++        self.env_config.winner_v3_deviation_scale = args.winner_v3_deviation_scale
+         if args.nominal_reference_bootstrap:
+             self.env_config.noise_config.level = 0.0
+@@ -89,6 +95,44 @@ class OpenDuckMiniV2Runner(BaseRunner):
+             self.env_config.noise_config.imu_max_delay = 1
+             self.env_config.push_config.enable = False
++        if args.winner_v3_variable_configuration:
++            if not args.nominal_reference_bootstrap:
++                raise ValueError("winner-v3 requires deterministic nominal-reference reset")
++            if args.policy_architecture != "reference_residual_recurrent_adapter":
++                raise ValueError("winner-v3 requires the preregistered recurrent adapter")
++            if not (
++                args.ground_up_hard_vector_command_support
++                and args.ground_up_measured_actuator_bridge
++                and args.ground_up_applied_target_observation
++            ):
++                raise ValueError("winner-v3 requires hard-vector, measured bridge and applied-target observation")
++            if not bool(
++                jp.array_equal(
++                    jp.asarray(limits, dtype=jp.float32),
++                    winner_v3.CONSERVATIVE_VELOCITY_LIMITS_RAD_S,
++                )
++            ):
++                raise ValueError("winner-v3 conservative all-joint velocity vector changed")
++            self.env_config.noise_config.level = args.winner_v3_deviation_scale
++            self.env_config.noise_config.action_min_delay = 0
++            self.env_config.noise_config.action_max_delay = 3
++            self.env_config.noise_config.imu_min_delay = 0
++            self.env_config.noise_config.imu_max_delay = 3
++            self.env_config.push_config.enable = False
+         self.env = self.env_file[1](task=args.task, config=self.env_config)
+         self.eval_env = self.env_file[1](task=args.task, config=self.env_config)
+-        if args.ground_up_torso_com_randomization:
++        if args.winner_v3_variable_configuration:
++            torso_body_id = int(self.env.mj_model.body(winner_v3.TORSO_BODY_NAME).id)
++            torso_mass = float(self.env.mj_model.body_mass[torso_body_id])
++            if torso_body_id != winner_v3.TORSO_BODY_ID or torso_mass <= 0.0:
++                raise ValueError("winner-v3 named inertial torso contract failed")
++            self.randomizer = winner_v3.make_winner_v3_configuration_randomizer(
++                torso_body_id=torso_body_id,
++                deviation_scale=args.winner_v3_deviation_scale,
++            )
++            print(
++                "WINNER_V3_VARIABLE_CONFIGURATION="
++                f"name={winner_v3.TORSO_BODY_NAME},id={torso_body_id},mass={torso_mass},"
++                f"deviation_scale={args.winner_v3_deviation_scale}"
++            )
++        elif args.ground_up_torso_com_randomization:
+             torso_body_name = "trunk_assembly"
+@@ -198,5 +242,12 @@ def main() -> None:
+     )
+     parser.add_argument("--reference_start_phase", type=int, default=0)
+     parser.add_argument("--ground_up_signed_progress_objective", action="store_true")
++    parser.add_argument("--winner_v3_variable_configuration", action="store_true")
++    parser.add_argument(
++        "--winner_v3_deviation_scale",
++        type=float,
++        choices=[0.0, 0.25, 0.5, 1.0],
++        default=0.0,
++    )
+     parser.add_argument(
+         "--critic_observation", choices=["privileged_state", "state"], default="privileged_state"
