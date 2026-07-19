@@ -39,13 +39,21 @@ the base actor and adapter to train together without oracle/configuration
 inputs. Reward, privileged critic, commands and the baked hard-vector,
 actual-centered guard, conservative envelope and x=0 deadband remain fixed.
 
-Next, implement and run the preregistered CPU contract. It must prove exact
-restore, step-zero action equivalence, hidden-state evolution, finite 1,024-step
-updates to base and adapter leaves, CPU-only ONNX/JAX ABI agreement, and the
-frozen throughput ceiling. Only a contract pass authorizes the single no-retry
-CPU curriculum and then the exact 1,024-cell CPU matrix. Both full-domain
-checkpoints must pass nominal, 24 fixed anchors, 16 discovery coupled samples,
-16 independent heldout samples and six sensor/transport conditions under both
+The CPU contract now passes. It proves exact CPU remap/restore, 64/64 bit-exact
+step-zero actor logits, evolving recurrent state, finite 1,024-step updates to
+the protected base and both adapter families, zero initial ONNX action/hidden
+error, the exact three-input/three-output ABI, and a finite 256-tick state
+chain. Its initial one-check hold was a stale sibling-checkpoint count literal;
+a committed read-only audit corrected it to the protected 512K source count
+without rerunning the smoke.
+
+Next, implement the frozen coupled configuration/actuator/sensor curriculum and
+its default-off/readback contract, then run the single seed-100 no-retry CPU
+curriculum. Preserve the preregistered 25%/50%/100% schedule and export only the
+two full-domain checkpoints at 1,003,520 and 2,007,040 relative steps. After the
+artifact contract passes, run the exact 1,024-cell CPU matrix. Both checkpoints
+must pass nominal, 24 fixed anchors, 16 discovery coupled samples, 16
+independent heldout samples and six sensor/transport conditions under both
 actuator plants and x=0/.074/.077/.080. No closest result advances.
 
 Only a complete pass may begin the selected-policy commit, later clearance

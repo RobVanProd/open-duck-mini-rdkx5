@@ -1983,3 +1983,22 @@ Do not proceed to grounded walking until low-risk gates pass.
   contract is next. Colab/hosted compute, GPU/iGPU, RDK-X5, robot, serial,
   torque, motion, Gate 5 and deployment remain unauthorized. See
   `outputs/analysis/WINNER_V3_VARIABLE_CONFIGURATION_REPLACEMENT_PREREGISTRATION_20260719.md`.
+- 2026-07-19: The preregistered recurrent-adapter CPU contract passes on one
+  formal 1,024-step CPU smoke. Two pre-update implementation stops are logged:
+  archived CUDA sharding required the established CPU-template remap, then the
+  recurrent normalizer required a neutral `policy_hidden[64]` leaf. Neither
+  produced an optimizer update. The completed run initially held on a stale
+  literal copied from the sibling checkpoint (`8,048,640`); a committed
+  read-only audit, with no smoke rerun, proves both the protected T2_EQUAL 512K
+  source and expanded checkpoint use count `7,536,640` and corrects the result.
+  All 64 fixed/pseudorandom step-zero logits are bit-exact to the protected
+  actor; initial ONNX action/hidden errors are zero; base, adapter-state and
+  adapter-head parameters all update finitely; the trained CPU ONNX has exact
+  `obs + previous_action + h_in -> action + previous_action_out + h_out` ABI;
+  and a 256-tick state chain is finite. Decision:
+  `PASS_WINNER_V3_RECURRENT_ADAPTER_CPU_CONTRACT`. This is plumbing only and
+  authorizes implementation and execution of the single preregistered CPU
+  curriculum, not hosted/Colab, GPU/iGPU, RDK-X5, robot, runtime, motion,
+  Gate 5, deployment or clearance. See
+  `outputs/analysis/WINNER_V3_RECURRENT_ADAPTER_CPU_CONTRACT_20260719.md` and
+  `outputs/analysis/WINNER_V3_RECURRENT_ADAPTER_NORMALIZER_COUNT_CORRECTION_20260719.md`.

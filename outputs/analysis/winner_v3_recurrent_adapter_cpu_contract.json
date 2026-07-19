@@ -22,7 +22,7 @@
     "rdkx5_or_robot": false,
     "robot_clearance": false,
     "runtime_or_deployment": false,
-    "single_cpu_training_curriculum_after_pass": false
+    "single_cpu_training_curriculum_after_pass": true
   },
   "checks": {
     "adapter_head_exact_zero": true,
@@ -31,7 +31,7 @@
     "all_64_step_zero_logits_bit_exact": true,
     "cpu_only_jax": true,
     "established_cpu_restore_template_exact": true,
-    "expanded_hidden_normalizer_exact": false,
+    "expanded_hidden_normalizer_exact": true,
     "expanded_save_restore_bit_exact": true,
     "hidden_state_evolves": true,
     "initial_onnx_jax_within_1e_7": true,
@@ -55,9 +55,7 @@
     "TFRT_CPU_0"
   ],
   "expanded_checkpoint_directory_sha256": "82e3d1d62c3e1b8c416ebfd24967fdf4d009b27ae7df0f9cbe04d90bbbcce9a1",
-  "failed_checks": [
-    "expanded_hidden_normalizer_exact"
-  ],
+  "failed_checks": [],
   "initial_export": {
     "max_action_delta": [
       0.07999999821186066,
@@ -88,9 +86,17 @@
     "prereg": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b",
     "reference": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212"
   },
+  "normalizer_count_correction": {
+    "correction_artifact": "outputs/analysis/winner_v3_recurrent_adapter_normalizer_count_correction.json",
+    "incorrect_literal": 8048640,
+    "initial_result_commit": "215a84a1b526510bf7a82128ebff5637c2e216d8",
+    "initial_result_sha256": "73de2fe234c7581e6b06eff5b549ec898d50eec1d5471fb8de8f61f27db821ab",
+    "method": "read-only correction from the same formal expanded/source checkpoints; no smoke rerun",
+    "protected_source_count": 7536640
+  },
   "schema_version": "winner_v3.recurrent_adapter_cpu_contract.v1",
   "source_checkpoint_directory_sha256": "311ce59807ad872795dd95e4a30c626f11d3d80f1b3f78c5b2b997639da4d67e",
-  "status": "HOLD_WINNER_V3_RECURRENT_ADAPTER_CPU_CONTRACT",
+  "status": "PASS_WINNER_V3_RECURRENT_ADAPTER_CPU_CONTRACT",
   "step_zero_equivalence": [
     {
       "index": 0,
