@@ -99,6 +99,12 @@ class ClosedLoopConfig:
     push_recovery_min_base_height_m: float = 0.08
     terrain_hfield_z_scale: float | None = None
     eval_dynamics_override: Mapping[str, Any] | None = None
+    winner_v3_configuration_override: Mapping[str, Any] | None = None
+    winner_v3_sensor_noise_scales: Mapping[str, float] | None = None
+    winner_v3_native_quantization: bool = False
+    winner_v3_additional_action_delay_ticks: int = 0
+    winner_v3_imu_delay_ticks: int = 0
+    winner_v3_home_relative_actuator_gain: bool = False
     reset_settle_ticks: int = 0
     reset_mode: str = "playground"
     bridge_reset_align_joint_indices: tuple[int, ...] = ()
@@ -228,6 +234,177 @@ def apply_eval_dynamics_override(
     return updated, {"enabled": True, "key": key, "value": raw_value, "readback": readback}
 
 
+WINNER_V3_CONFIGURATION_KEYS = {
+    "all_link_mass_scale",
+    "torso_mass_add_kg",
+    "torso_com_offset_m",
+    "torso_inertia_tensor_kg_m2",
+}
+
+
+def _quat_to_mat_wxyz(quaternion: np.ndarray) -> np.ndarray:
+    w, x, y, z = np.asarray(quaternion, dtype=float)
+    return np.asarray(
+        [
+            [1 - 2 * (y * y + z * z), 2 * (x * y - z * w), 2 * (x * z + y * w)],
+            [2 * (x * y + z * w), 1 - 2 * (x * x + z * z), 2 * (y * z - x * w)],
+            [2 * (x * z - y * w), 2 * (y * z + x * w), 1 - 2 * (x * x + y * y)],
+        ],
+        dtype=float,
+    )
+
+
+def _mat_to_quat_wxyz(matrix: np.ndarray) -> np.ndarray:
+    """Match the winner-v3 sampler's deterministic scalar-first conversion."""
+    m = np.asarray(matrix, dtype=float)
+    q_abs = np.sqrt(
+        np.maximum(
+            np.asarray(
+                [
+                    1.0 + m[0, 0] + m[1, 1] + m[2, 2],
+                    1.0 + m[0, 0] - m[1, 1] - m[2, 2],
+                    1.0 - m[0, 0] + m[1, 1] - m[2, 2],
+                    1.0 - m[0, 0] - m[1, 1] + m[2, 2],
+                ],
+                dtype=float,
+            ),
+            0.0,
+        )
+    )
+    candidates = np.asarray(
+        [
+            [q_abs[0] ** 2, m[2, 1] - m[1, 2], m[0, 2] - m[2, 0], m[1, 0] - m[0, 1]],
+            [m[2, 1] - m[1, 2], q_abs[1] ** 2, m[1, 0] + m[0, 1], m[0, 2] + m[2, 0]],
+            [m[0, 2] - m[2, 0], m[1, 0] + m[0, 1], q_abs[2] ** 2, m[2, 1] + m[1, 2]],
+            [m[1, 0] - m[0, 1], m[0, 2] + m[2, 0], m[2, 1] + m[1, 2], q_abs[3] ** 2],
+        ],
+        dtype=float,
+    )
+    candidates /= 2.0 * np.maximum(q_abs[:, None], 0.1)
+    quaternion = candidates[int(np.argmax(q_abs))]
+    quaternion /= np.linalg.norm(quaternion)
+    return -quaternion if quaternion[0] < 0.0 else quaternion
+
+
+def _quat_mul_wxyz(left: np.ndarray, right: np.ndarray) -> np.ndarray:
+    w1, x1, y1, z1 = np.asarray(left, dtype=float)
+    w2, x2, y2, z2 = np.asarray(right, dtype=float)
+    result = np.asarray(
+        [
+            w1 * w2 - x1 * x2 - y1 * y2 - z1 * z2,
+            w1 * x2 + x1 * w2 + y1 * z2 - z1 * y2,
+            w1 * y2 - x1 * z2 + y1 * w2 + z1 * x2,
+            w1 * z2 + x1 * y2 - y1 * x2 + z1 * w2,
+        ],
+        dtype=float,
+    )
+    return result / np.linalg.norm(result)
+
+
+def _full_inertia_tensor(model, torso_body_id: int) -> np.ndarray:
+    nominal_rotation = _quat_to_mat_wxyz(np.asarray(model.body_iquat)[torso_body_id])
+    # This helper is called on an already-mutated model only for direct world-frame
+    # readback.  body_iquat and principal values define that tensor exactly.
+    return nominal_rotation @ np.diag(np.asarray(model.body_inertia)[torso_body_id]) @ nominal_rotation.T
+
+
+def apply_winner_v3_configuration_override(
+    model,
+    override: Mapping[str, Any] | None,
+    jp,
+    *,
+    torso_body_id: int,
+    torso_body_name: str,
+):
+    """Apply one complete frozen winner-v3 configuration and return readback."""
+    body_id = int(torso_body_id)
+    if body_id != 2 or torso_body_name != "trunk_assembly":
+        raise ValueError(
+            f"winner-v3 torso identity mismatch: {torso_body_name!r}/{body_id}"
+        )
+    nominal_mass = np.asarray(model.body_mass, dtype=float)
+    nominal_ipos = np.asarray(model.body_ipos, dtype=float)
+    nominal_inertia = np.asarray(model.body_inertia, dtype=float)
+    nominal_iquat = np.asarray(model.body_iquat, dtype=float)
+    if float(nominal_mass[body_id]) <= 0.0:
+        raise ValueError("winner-v3 torso must have positive compiled mass")
+
+    if override is None:
+        updated = model
+        requested = {
+            "all_link_mass_scale": 1.0,
+            "torso_mass_add_kg": 0.0,
+            "torso_com_offset_m": [0.0, 0.0, 0.0],
+            "torso_inertia_tensor_kg_m2": np.diag(nominal_inertia[body_id]).tolist(),
+        }
+    else:
+        requested = {key: override[key] for key in WINNER_V3_CONFIGURATION_KEYS}
+        if set(override) - (WINNER_V3_CONFIGURATION_KEYS | {"id", "sampling_role", "optional_configuration_semantics", "resulting_torso_mass_kg", "inertia_validity_contractions"}):
+            raise ValueError("winner-v3 configuration contains an unsupported key")
+        if not WINNER_V3_CONFIGURATION_KEYS <= set(override):
+            raise ValueError("winner-v3 configuration is incomplete")
+        link_scale = float(requested["all_link_mass_scale"])
+        torso_add = float(requested["torso_mass_add_kg"])
+        com_offset = np.asarray(requested["torso_com_offset_m"], dtype=float)
+        tensor = np.asarray(requested["torso_inertia_tensor_kg_m2"], dtype=float)
+        if com_offset.shape != (3,) or tensor.shape != (3, 3):
+            raise ValueError("winner-v3 COM/tensor shapes are invalid")
+        if not np.allclose(tensor, tensor.T, rtol=0.0, atol=1.0e-12):
+            raise ValueError("winner-v3 inertia tensor is not symmetric")
+        principal, eigenvectors = np.linalg.eigh(tensor)
+        if np.any(principal <= 0.0) or principal[2] >= principal[0] + principal[1]:
+            raise ValueError("winner-v3 inertia tensor is not positive triangle-valid")
+        if np.linalg.det(eigenvectors) < 0.0:
+            eigenvectors[:, 2] *= -1.0
+        delta_quat = _mat_to_quat_wxyz(eigenvectors)
+        sampled_iquat = _quat_mul_wxyz(nominal_iquat[body_id], delta_quat)
+        body_mass = nominal_mass * link_scale
+        body_mass[body_id] += torso_add
+        if body_mass[body_id] <= 0.0:
+            raise ValueError("winner-v3 resulting torso mass is not positive")
+        replacements = {
+            "body_mass": jp.asarray(body_mass),
+            "body_ipos": model.body_ipos.at[body_id].set(
+                jp.asarray(nominal_ipos[body_id] + com_offset)
+            ),
+            "body_inertia": model.body_inertia.at[body_id].set(jp.asarray(principal)),
+            "body_iquat": model.body_iquat.at[body_id].set(jp.asarray(sampled_iquat)),
+        }
+        updated = model.tree_replace(replacements)
+
+    actual_iquat = np.asarray(updated.body_iquat, dtype=float)[body_id]
+    nominal_rotation = _quat_to_mat_wxyz(nominal_iquat[body_id])
+    actual_rotation = _quat_to_mat_wxyz(actual_iquat)
+    relative_rotation = nominal_rotation.T @ actual_rotation
+    reconstructed = (
+        relative_rotation
+        @ np.diag(np.asarray(updated.body_inertia, dtype=float)[body_id])
+        @ relative_rotation.T
+    )
+    readback = {
+        "enabled": override is not None,
+        "body_name": torso_body_name,
+        "body_id": body_id,
+        "requested": requested,
+        "nominal": {
+            "all_body_mass_kg": nominal_mass.tolist(),
+            "torso_mass_kg": float(nominal_mass[body_id]),
+            "torso_body_ipos_m": nominal_ipos[body_id].tolist(),
+            "torso_principal_inertia_kg_m2": nominal_inertia[body_id].tolist(),
+            "torso_body_iquat_wxyz": nominal_iquat[body_id].tolist(),
+        },
+        "actual": {
+            "all_body_mass_kg": np.asarray(updated.body_mass, dtype=float).tolist(),
+            "torso_mass_kg": float(np.asarray(updated.body_mass)[body_id]),
+            "torso_body_ipos_m": np.asarray(updated.body_ipos)[body_id].astype(float).tolist(),
+            "torso_principal_inertia_kg_m2": np.asarray(updated.body_inertia)[body_id].astype(float).tolist(),
+            "torso_body_iquat_wxyz": actual_iquat.tolist(),
+            "torso_inertia_tensor_nominal_frame_kg_m2": reconstructed.tolist(),
+        },
+    }
+    return updated, readback
+
+
 def inject_policy_applied_target_observation(obs, applied_target, enabled: bool):
     """Replace only the redundant sent-target observation slot when enabled."""
     if not enabled:
@@ -239,6 +416,58 @@ def inject_policy_applied_target_observation(obs, applied_target, enabled: bool)
             applied_target
         )
     return updated
+
+
+WINNER_V3_SOFT_OFFSETS_RAD = np.asarray(
+    [
+        0.0844,
+        0.0721,
+        -0.0890,
+        0.0371,
+        -0.0767,
+        0.0245,
+        0.0,
+        -0.0890,
+        -0.0399,
+        0.0951,
+        -0.0476,
+        0.0660,
+        0.0798,
+        0.1887,
+    ],
+    dtype=np.float32,
+)
+WINNER_V3_CONSERVATIVE_VELOCITY_LIMITS_RAD_S = np.asarray(
+    [1.0, 0.75, 1.5, 1.5, 1.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.75, 1.25, 1.0, 1.25],
+    dtype=np.float64,
+)
+WINNER_V3_PITCH_CHAIN_INDICES = np.asarray([2, 3, 4, 11, 12, 13], dtype=int)
+
+
+def winner_v3_native_quantize_observation_numpy(
+    observation: np.ndarray, home_rad: np.ndarray
+) -> np.ndarray:
+    values = np.asarray(observation, dtype=np.float32)
+    if values.shape != (115,):
+        raise ValueError("winner-v3 native quantizer requires one 115-D observation")
+    result = values.copy()
+    gyro_lsb = np.float32(np.pi / (180.0 * 16.0))
+    accel_lsb = np.float32(0.01)
+    position_lsb = np.float32(2.0 * np.pi / 4096.0)
+    velocity_lsb = np.float32((2.0 * np.pi / 4095.0) * 0.05)
+    origin = (
+        np.asarray(home_rad, dtype=np.float32)
+        + WINNER_V3_SOFT_OFFSETS_RAD
+        + np.float32(np.pi)
+    )
+    result[0:3] = np.round(values[0:3] / gyro_lsb) * gyro_lsb
+    result[3:6] = np.round(values[3:6] / accel_lsb) * accel_lsb
+    result[13:27] = (
+        np.round((values[13:27] + origin) / position_lsb) * position_lsb
+        - origin
+    )
+    result[27:41] = np.round(values[27:41] / velocity_lsb) * velocity_lsb
+    return result.astype(np.float32)
 
 
 @contextlib.contextmanager
@@ -625,11 +854,18 @@ def init_policy_io_state(session, config: ClosedLoopConfig) -> dict:
     }
 
 
-def mode_params(mode: str, fit: Mapping[str, Any]) -> list[JointActuatorParams]:
+def mode_params(
+    mode: str,
+    fit: Mapping[str, Any],
+    *,
+    include_gain_ratio: bool = False,
+) -> list[JointActuatorParams]:
     if mode == "vanilla":
         return passthrough_params(len(JOINT_NAMES))
     if mode == "fitted":
-        return params_from_fit(fit, JOINT_NAMES)
+        return params_from_fit(
+            fit, JOINT_NAMES, include_gain_ratio=include_gain_ratio
+        )
     if mode == "stress":
         return stress_params(JOINT_NAMES)
     raise ValueError(f"unsupported bridge mode {mode}")
@@ -757,6 +993,18 @@ def per_joint_mode_summary(records: list[dict], dt_s: float) -> dict:
     pre_rate = np.asarray([record["target_pre_rate_limit_rad"] for record in records], dtype=float)
     applied = np.asarray([record["applied_target_rad"] for record in records], dtype=float)
     actual = np.asarray([record["actual_position_rad"] for record in records], dtype=float)
+    actuator_force = np.asarray(
+        [record.get("actuator_force_nm", [0.0] * len(JOINT_NAMES)) for record in records],
+        dtype=float,
+    )
+    current_a = np.abs(actuator_force) / 0.784532
+    conservative_rate_excess = np.asarray(
+        [
+            record.get("conservative_rate_excess_rad_s", [0.0] * len(JOINT_NAMES))
+            for record in records
+        ],
+        dtype=float,
+    )
 
     action_delta = np.vstack([np.zeros((1, actions.shape[1])), np.diff(actions, axis=0)])
     sent_velocity = vector_abs_velocity(sent, dt_s)
@@ -777,6 +1025,10 @@ def per_joint_mode_summary(records: list[dict], dt_s: float) -> dict:
             "rate_limiter_activation_pct": float(np.mean(rate_limit_delta[:, index] > 1e-8) * 100.0),
             "bridge_tracking_error_rad": abs_stats(bridge_tracking[:, index]),
             "joint_target_tracking_error_rad": abs_stats(joint_tracking[:, index]),
+            "current_a": abs_stats(current_a[:, index]),
+            "conservative_rate_excess_rad_s": abs_stats(
+                conservative_rate_excess[:, index]
+            ),
             "estimated_lag_sent_to_applied": best_lag(sent[:, index], applied[:, index], dt_s),
             "estimated_lag_sent_to_actual": best_lag(sent[:, index], actual[:, index], dt_s),
         }
@@ -1203,6 +1455,21 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
     command = jp.asarray(
         [config.command_x, config.command_y, config.command_yaw, 0.0, 0.0, 0.0, 0.0]
     )
+    if config.eval_dynamics_override and config.winner_v3_configuration_override:
+        return {
+            "status": "HOLD_SIM_RUNTIME_ERROR",
+            "error": "R2 and winner-v3 model overrides cannot be combined",
+        }
+    if int(config.winner_v3_additional_action_delay_ticks) not in (0, 1, 2):
+        return {
+            "status": "HOLD_SIM_RUNTIME_ERROR",
+            "error": "winner-v3 additional action delay must be 0, 1, or 2 ticks",
+        }
+    if int(config.winner_v3_imu_delay_ticks) not in (0, 1, 2):
+        return {
+            "status": "HOLD_SIM_RUNTIME_ERROR",
+            "error": "winner-v3 IMU delay must be 0, 1, or 2 ticks",
+        }
     overrides = {
         "push_config.enable": bool(config.eval_push_enable),
         "lin_vel_x": [config.command_x, config.command_x],
@@ -1214,10 +1481,43 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
         "head_roll_range": [0.0, 0.0],
         "noise_config.level": 0.0,
         "noise_config.action_min_delay": 0,
-        "noise_config.action_max_delay": 1,
+        "noise_config.action_max_delay": max(
+            1, int(config.winner_v3_additional_action_delay_ticks) + 1
+        ),
         "noise_config.imu_min_delay": 0,
         "noise_config.imu_max_delay": 1,
     }
+    sensor_scale_key_map = {
+        "hip_pos_rad": "hip_pos",
+        "knee_pos_rad": "knee_pos",
+        "ankle_pos_rad": "ankle_pos",
+        "joint_vel_rad_s": "joint_vel",
+        "gravity": "gravity",
+        "linvel_m_s": "linvel",
+        "gyro_rad_s": "gyro",
+        "accelerometer": "accelerometer",
+    }
+    effective_sensor_noise_scales = {
+        key: 0.0 for key in sensor_scale_key_map
+    }
+    if config.winner_v3_sensor_noise_scales is not None:
+        observed_sensor_keys = set(config.winner_v3_sensor_noise_scales)
+        if observed_sensor_keys != set(sensor_scale_key_map):
+            return {
+                "status": "HOLD_SIM_RUNTIME_ERROR",
+                "error": (
+                    "winner-v3 sensor scale keys differ from the frozen contract: "
+                    f"{sorted(observed_sensor_keys)}"
+                ),
+            }
+        overrides["noise_config.level"] = 1.0
+        for source_key, config_key in sensor_scale_key_map.items():
+            effective_sensor_noise_scales[source_key] = float(
+                config.winner_v3_sensor_noise_scales[source_key]
+            )
+            overrides[f"noise_config.scales.{config_key}"] = float(
+                config.winner_v3_sensor_noise_scales[source_key]
+            )
     if config.max_motor_velocity_override_rad_s is not None:
         overrides["max_motor_velocity"] = float(
             config.max_motor_velocity_override_rad_s
@@ -1322,6 +1622,15 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                 env._init_q = env._init_q.at[addresses].set(jp.asarray(init_after))
                 dynamics_override["readback"]["home_init_before"] = init_before.tolist()
                 dynamics_override["readback"]["home_init_after"] = init_after.tolist()
+            env._mjx_model, winner_v3_configuration_readback = (
+                apply_winner_v3_configuration_override(
+                    env.mjx_model,
+                    config.winner_v3_configuration_override,
+                    jp,
+                    torso_body_id=torso_body_id,
+                    torso_body_name="trunk_assembly",
+                )
+            )
     except Exception as exc:  # pragma: no cover - environment-dependent
         return {
             "status": "HOLD_SIM_RUNTIME_ERROR",
@@ -1502,13 +1811,18 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             .set(action)
         )
         state.info["action_history"] = action_history
-        action_idx = jax.random.randint(
-            action_delay_rng,
-            (1,),
-            minval=env._config.noise_config.action_min_delay,
-            maxval=env._config.noise_config.action_max_delay,
-        )
-        action_w_delay = action_history.reshape((-1, env._actuators))[action_idx[0]]
+        if int(config.winner_v3_additional_action_delay_ticks) > 0:
+            action_idx = jp.asarray(
+                int(config.winner_v3_additional_action_delay_ticks), dtype=jp.int32
+            )
+        else:
+            action_idx = jax.random.randint(
+                action_delay_rng,
+                (),
+                minval=env._config.noise_config.action_min_delay,
+                maxval=env._config.noise_config.action_max_delay,
+            )
+        action_w_delay = action_history.reshape((-1, env._actuators))[action_idx]
         push_theta = jax.random.uniform(push1_rng, maxval=2 * jp.pi)
         push_magnitude = jax.random.uniform(
             push2_rng,
@@ -1809,8 +2123,20 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                 config.push_recovery_min_base_height_m
             ),
         },
-        "noise_disabled": True,
-        "action_delay_disabled": True,
+        "noise_disabled": config.winner_v3_sensor_noise_scales is None,
+        "action_delay_disabled": int(config.winner_v3_additional_action_delay_ticks)
+        == 0,
+        "winner_v3_transport_readback": {
+            "sensor_noise_scales": (
+                dict(effective_sensor_noise_scales)
+            ),
+            "native_quantization": bool(config.winner_v3_native_quantization),
+            "additional_action_delay_ticks": int(
+                config.winner_v3_additional_action_delay_ticks
+            ),
+            "imu_delay_ticks": int(config.winner_v3_imu_delay_ticks),
+        },
+        "winner_v3_configuration_readback": winner_v3_configuration_readback,
         "command_pinned": [
             config.command_x,
             config.command_y,
@@ -1865,7 +2191,11 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
     for mode in available_modes(config.bridge_mode):
         start = time.monotonic()
         records: list[dict] = []
-        params = mode_params(mode, config.fit)
+        params = mode_params(
+            mode,
+            config.fit,
+            include_gain_ratio=bool(config.winner_v3_home_relative_actuator_gain),
+        )
         state = env.reset(jax.random.PRNGKey(config.seed))
         state.info["command"] = command
         state = apply_eval_reset_mode(state)
@@ -1892,13 +2222,32 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                 )
             initial_target = initial_target.copy()
             initial_target[indices] = reset_actual[indices]
-        bridge = ActuatorBridgeModel(params, initial_target=initial_target)
+        bridge = ActuatorBridgeModel(
+            params,
+            initial_target=initial_target,
+            home_target=(
+                np.asarray(env._default_actuator, dtype=float)
+                if config.winner_v3_home_relative_actuator_gain
+                else None
+            ),
+        )
         policy_observer_bridge = (
             None
             if config.policy_observer_fit is None
             else ActuatorBridgeModel(
-                mode_params("fitted", config.policy_observer_fit),
+                mode_params(
+                    "fitted",
+                    config.policy_observer_fit,
+                    include_gain_ratio=bool(
+                        config.winner_v3_home_relative_actuator_gain
+                    ),
+                ),
                 initial_target=initial_target,
+                home_target=(
+                    np.asarray(env._default_actuator, dtype=float)
+                    if config.winner_v3_home_relative_actuator_gain
+                    else None
+                ),
             )
         )
         termination_reason = None
@@ -1915,19 +2264,38 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             config.expected_action_dim, dtype=np.float32
         )
         previous_whole_body_com: np.ndarray | None = None
+        winner_v3_imu_history = np.zeros((3, 6), dtype=np.float32)
 
         for tick in range(sim_steps):
             if config.policy_phase_advance_before_observation:
                 state = advance_reference_jit(state)
                 state = refresh_obs_jit(state)
-            obs = np.asarray(jax.device_get(state.obs["state"]), dtype=np.float32)
+            obs_pre_transport = np.asarray(
+                jax.device_get(state.obs["state"]), dtype=np.float32
+            )
+            obs = obs_pre_transport.copy()
             if obs.shape != (config.expected_observation_dim,):
                 return {
                     "status": "HOLD_POLICY_SIM_CONTRACT_MISMATCH",
                     "error": f"obs shape {obs.shape} != {(config.expected_observation_dim,)}",
                 }
+            winner_v3_imu_history = np.roll(winner_v3_imu_history, 1, axis=0)
+            winner_v3_imu_history[0] = obs[0:6]
+            obs[0:6] = winner_v3_imu_history[
+                int(config.winner_v3_imu_delay_ticks)
+            ]
+            obs_post_imu_delay = obs.copy()
+            if config.winner_v3_native_quantization:
+                obs = winner_v3_native_quantize_observation_numpy(
+                    obs,
+                    np.asarray(env._default_actuator, dtype=np.float32),
+                )
             pre_qpos = np.asarray(jax.device_get(state.data.qpos), dtype=float)
             pre_qvel = np.asarray(jax.device_get(state.data.qvel), dtype=float)
+            pre_actual_position = np.asarray(
+                jax.device_get(env.get_actuator_joints_qpos(state.data.qpos)),
+                dtype=float,
+            )
             pre_base_addr = int(env._floating_base_qpos_addr)
             pre_quat = pre_qpos[pre_base_addr + 3 : pre_base_addr + 7]
             pre_pitch = quat_wxyz_to_pitch(pre_quat)
@@ -1994,9 +2362,19 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             feed = {input_name: obs[None, :]}
             for state_name in state_input_names:
                 feed[state_name] = hidden_state[state_name]
+            policy_state_input = {
+                name: np.asarray(hidden_state[name], dtype=np.float32).copy()
+                for name in state_input_names
+            }
             outputs = session.run([output_name, *state_output_names], feed)
             action = outputs[0][0]
-            for state_name, value in zip(state_input_names, outputs[1:], strict=True):
+            policy_state_output = {}
+            for state_name, output_state_name, value in zip(
+                state_input_names, state_output_names, outputs[1:], strict=True
+            ):
+                policy_state_output[output_state_name] = np.asarray(
+                    value, dtype=np.float32
+                ).copy()
                 hidden_state[state_name] = np.asarray(value, dtype=np.float32)
             action = np.asarray(action, dtype=np.float32)
             if action.shape != (config.expected_action_dim,):
@@ -2134,6 +2512,26 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                 per_joint_rate_excess[joint_index] = (
                     0.0 if raw_excess <= 1.0e-5 else raw_excess
                 )
+            conservative_raw_excess = np.maximum(
+                sent_velocity - WINNER_V3_CONSERVATIVE_VELOCITY_LIMITS_RAD_S,
+                0.0,
+            )
+            conservative_rate_excess = np.where(
+                conservative_raw_excess <= 1.0e-5,
+                0.0,
+                conservative_raw_excess,
+            )
+            guard_raw_excess = np.maximum(
+                np.abs(
+                    sent_np[WINNER_V3_PITCH_CHAIN_INDICES]
+                    - pre_actual_position[WINNER_V3_PITCH_CHAIN_INDICES]
+                )
+                - 0.20,
+                0.0,
+            )
+            actual_centered_guard_excess = np.where(
+                guard_raw_excess <= 1.0e-5, 0.0, guard_raw_excess
+            )
             oracle_envelope_excess = 0.0
             if oracle_projection is not None:
                 max_delta = np.asarray(
@@ -2165,6 +2563,10 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                 dtype=float,
             )
             qpos = np.asarray(jax.device_get(state.data.qpos), dtype=float)
+            qvel = np.asarray(jax.device_get(state.data.qvel), dtype=float)
+            actuator_force = np.asarray(
+                jax.device_get(state.data.actuator_force), dtype=float
+            )
             base_addr = int(env._floating_base_qpos_addr)
             quat = qpos[base_addr + 3 : base_addr + 7]
             contacts = np.asarray(jax.device_get(state.info["last_contact"]), dtype=bool)
@@ -2186,6 +2588,8 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                 "tick": tick,
                 "time_s": tick * float(env.dt),
                 "obs0_6": obs[:6].astype(float).tolist(),
+                "obs0_6_pre_transport": obs_pre_transport[:6].astype(float).tolist(),
+                "obs0_6_post_imu_delay": obs_post_imu_delay[:6].astype(float).tolist(),
                 "command": [
                     config.command_x,
                     config.command_y,
@@ -2199,6 +2603,14 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                 "policy_base_action": policy_base_action.astype(float).tolist(),
                 "policy_phase_action_correction": phase_correction.astype(float).tolist(),
                 "policy_raw_action": raw_action.astype(float).tolist(),
+                "policy_state_input": {
+                    name: value.astype(float).tolist()
+                    for name, value in policy_state_input.items()
+                },
+                "policy_state_output": {
+                    name: value.astype(float).tolist()
+                    for name, value in policy_state_output.items()
+                },
                 "oracle_residual_action": oracle_residual.astype(float).tolist(),
                 "action_w_delay": np.asarray(
                     jax.device_get(action_w_delay), dtype=float
@@ -2207,12 +2619,23 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                 "sent_target_rad": sent_np.tolist(),
                 "applied_target_rad": applied_np.tolist(),
                 "actual_position_rad": actual.tolist(),
+                "actual_position_pre_rad": pre_actual_position.tolist(),
                 "tracking_error_rad": tracking_error.tolist(),
+                "actuator_force_nm": actuator_force.tolist(),
                 "action_saturated": (np.abs(action) >= 1.0 - 1.0e-7).astype(int).tolist(),
                 "sent_target_velocity_rad_s": sent_velocity.tolist(),
                 "sent_target_rate_excess_rad_s": per_joint_rate_excess.tolist(),
+                "conservative_rate_excess_rad_s": conservative_rate_excess.tolist(),
+                "actual_centered_guard_excess_rad": actual_centered_guard_excess.tolist(),
                 "oracle_envelope_excess_normalized": oracle_envelope_excess,
                 "body_pitch_rad": quat_wxyz_to_pitch(quat),
+                "body_roll_rad": quat_wxyz_to_roll(quat),
+                "body_pitch_rate_rad_s": float(
+                    qvel[int(env._floating_base_qvel_addr) + 4]
+                ),
+                "body_roll_rate_rad_s": float(
+                    qvel[int(env._floating_base_qvel_addr) + 3]
+                ),
                 "base_x_m": float(qpos[base_addr]),
                 "base_y_m": float(qpos[base_addr + 1]),
                 "base_height_m": float(qpos[base_addr + 2]),
@@ -2271,8 +2694,14 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                 }
             if config.trace_full_obs:
                 record["obs_state"] = obs.astype(float).tolist()
+                record["obs_state_pre_transport"] = obs_pre_transport.astype(
+                    float
+                ).tolist()
+                record["obs_state_post_imu_delay"] = obs_post_imu_delay.astype(
+                    float
+                ).tolist()
                 record["qpos"] = qpos.astype(float).tolist()
-                record["qvel"] = np.asarray(jax.device_get(state.data.qvel), dtype=float).tolist()
+                record["qvel"] = qvel.tolist()
                 record["ctrl"] = np.asarray(jax.device_get(state.data.ctrl), dtype=float).tolist()
                 record["base_quat_wxyz"] = quat.astype(float).tolist()
             if com_accelerometer_map is not None:
@@ -2286,6 +2715,30 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
         wall_clock = time.monotonic() - start
         joints = per_joint_mode_summary(records, float(env.dt))
         body_pitch = signed_stats([record["body_pitch_rad"] for record in records])
+        body_roll = signed_stats([record["body_roll_rad"] for record in records])
+        body_pitch_rate_abs = abs_stats(
+            [record["body_pitch_rate_rad_s"] for record in records]
+        )
+        body_roll_rate_abs = abs_stats(
+            [record["body_roll_rate_rad_s"] for record in records]
+        )
+        accel_norm = signed_stats(
+            [float(np.linalg.norm(record["obs0_6"][3:6])) for record in records]
+        )
+        max_conservative_rate_excess = max(
+            (
+                max(record.get("conservative_rate_excess_rad_s", [0.0]))
+                for record in records
+            ),
+            default=0.0,
+        )
+        max_actual_centered_guard_excess = max(
+            (
+                max(record.get("actual_centered_guard_excess_rad", [0.0]))
+                for record in records
+            ),
+            default=0.0,
+        )
         base_x = signed_stats([record["base_x_m"] for record in records])
         base_y = signed_stats([record["base_y_m"] for record in records])
         base_height = signed_stats([record["base_height_m"] for record in records])
@@ -2353,6 +2806,16 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                 0.0,
             ],
             "body_pitch_rad": body_pitch,
+            "body_roll_rad": body_roll,
+            "body_pitch_rate_abs_rad_s": body_pitch_rate_abs,
+            "body_roll_rate_abs_rad_s": body_roll_rate_abs,
+            "accelerometer_norm_m_s2": accel_norm,
+            "max_conservative_rate_excess_rad_s": float(
+                max_conservative_rate_excess
+            ),
+            "max_actual_centered_guard_excess_rad": float(
+                max_actual_centered_guard_excess
+            ),
             "base_x_m": base_x,
             "base_y_m": base_y,
             "base_height_m": base_height,
@@ -2486,6 +2949,35 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             "jax_devices": [str(device) for device in jax.devices()],
             "terrain_override": terrain_override,
             "dynamics_override": dynamics_override,
+            "winner_v3_configuration_readback": winner_v3_configuration_readback,
+            "winner_v3_actuator_sensor_transport_readback": {
+                "actuator_fit": {
+                    "joint_names": list(JOINT_NAMES),
+                    "parameters": [
+                        {
+                            "delay_ticks": int(item.delay_ticks),
+                            "time_constant_s": float(item.tau_s),
+                            "gain_ratio": float(item.gain_ratio),
+                            "velocity_limit_rad_s": float(item.velocity_limit_rad_s),
+                        }
+                        for item in mode_params(
+                            "fitted",
+                            config.fit,
+                            include_gain_ratio=bool(
+                                config.winner_v3_home_relative_actuator_gain
+                            ),
+                        )
+                    ],
+                },
+                "additional_action_delay_ticks": int(
+                    config.winner_v3_additional_action_delay_ticks
+                ),
+                "imu_delay_ticks": int(config.winner_v3_imu_delay_ticks),
+                "native_quantization": bool(config.winner_v3_native_quantization),
+                "sensor_noise_scales": (
+                    dict(effective_sensor_noise_scales)
+                ),
+            },
         },
         "insertion_point": insertion_point,
         "real_x008_reference": REAL_X008_REFERENCE,

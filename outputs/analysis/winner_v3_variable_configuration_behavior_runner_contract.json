@@ -1,0 +1,100 @@
+{
+  "actuator_default_off": {
+    "bit_exact": true,
+    "max_abs_error": 0.0,
+    "steps": 128
+  },
+  "authority": {
+    "gpu_or_igpu": false,
+    "hosted_or_colab": false,
+    "one_frozen_1024_cell_cpu_execution": true,
+    "rdkx5_or_robot": false,
+    "retry": false,
+    "runtime_or_gate5": false,
+    "training": false
+  },
+  "checks": {
+    "actuator_default_off_bit_exact": true,
+    "condition_count_exact_64": true,
+    "cpu_environment_exact": true,
+    "curriculum_contract_passed": true,
+    "formal_behavior_cells_zero": true,
+    "formal_output_roots_absent": true,
+    "matrix_axes_exact": true,
+    "matrix_count_exact_1024": true,
+    "matrix_group_counts_exact": true,
+    "nonformal_full_stack_smoke_passed": true,
+    "playground_and_reference_exist": true,
+    "preregistration_exact": true,
+    "training_artifact_check_passed": true,
+    "transform_contract_passed_zero_outcome": true,
+    "two_policy_hashes_exact": true
+  },
+  "condition_count": 64,
+  "environment": {
+    "CUDA_VISIBLE_DEVICES": "",
+    "JAX_PLATFORMS": "cpu",
+    "robot_or_rdk_access": false
+  },
+  "failed_checks": [],
+  "formal_behavior_cells_executed": 0,
+  "group_counts": {
+    "DISCOVERY": 256,
+    "FIXED_ANCHOR": 384,
+    "HELDOUT": 256,
+    "NOMINAL": 32,
+    "SENSOR_TRANSPORT": 96
+  },
+  "input_hashes": {
+    "curriculum_contract": "2a94006e6fa167ed0921bec0b279d7e799747ec47e30b530ecd317c6167d737f",
+    "policy_1003520": "c8e03dd4afed4e7a96507e5089116944a048ac1d682210408a68cca1b8b6af7c",
+    "policy_2007040": "dfdd01bf4563e3d377ffcbe70515681e75a0d87797f3b6b9e4486d1b40ad569c",
+    "preregistration": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b",
+    "reference_feature_table": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212",
+    "training_artifact_check": "022c59bdf823e66b9dfac0d1e2c101783c1c196becc7006e569006929853efd6",
+    "transform_contract": "59bc042715e21b1ad5913e8b781b0d0867665c7a101c5e54511183532ef15a10"
+  },
+  "matrix_cells": 1024,
+  "matrix_plan_sha256": "10b5d3e407636d276275f3f39145233c3cd63688c3229235411ed2734651e073",
+  "nonformal_full_stack_smoke": {
+    "command_x_m_s": 0.076,
+    "cpu_only": true,
+    "formal": false,
+    "pass": true,
+    "readback_checks": {
+      "actuator_readback_exact": true,
+      "all_body_mass_readback_exact": true,
+      "body_identity_exact": true,
+      "configuration_enabled_exact": true,
+      "full_inertia_readback_exact": true,
+      "requested_inertia_tensor_exact": true,
+      "requested_scale_add_offset_exact": true,
+      "torso_com_readback_exact": true,
+      "transport_readback_exact": true
+    },
+    "samples": 2,
+    "seed": 2026071901,
+    "status_recorded_not_gating": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+    "termination_reason": "duration_complete",
+    "ticks": 2,
+    "trace": {
+      "all_values_finite": true,
+      "path": "/tmp/winner_v3_nonformal_contract_trace.jsonl",
+      "required_fields_every_tick": true,
+      "reset_h_exact_zero": true,
+      "reset_previous_action_exact_zero": true,
+      "rows": 2,
+      "sha256": "1a20998e22d6868df6881f3a7d767fcbae45858dd9967ea4bd5ace2655153ae6",
+      "ticks_contiguous": true
+    }
+  },
+  "runner_path": "tools/run_winner_v3_variable_configuration_behavior.py",
+  "runner_sha256": "d7bfd53119e0c9c071a85bdd4da6c70af2d4113a62c0533e13a07461f44a3b3f",
+  "schema_version": "winner_v3.variable_configuration_behavior_runner_contract.v1",
+  "status": "PASS_WINNER_V3_VARIABLE_CONFIGURATION_BEHAVIOR_RUNNER_CONTRACT",
+  "supporting_tool_hashes": {
+    "actuator_bridge_model.py": "bb5ddb1847e773ab21d8ddfadab307ceaf22599a51f686dbb4f6121cde2d0bec",
+    "closed_loop_sim_eval.py": "c978bf741b554c30d1e9ec3f842e78324c009b17883cf15dfdffa2d61127bb1a",
+    "evaluate_ground_up_policy.py": "e76937d5b0b53031fce2e67082be69485fa8d69492d7d7bbb7af3e63221d033d"
+  }
+}
