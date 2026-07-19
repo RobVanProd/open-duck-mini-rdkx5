@@ -24,6 +24,13 @@ The selected 512000-step ONNX remains byte-identical at
 `99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de`.
 See `WINNER_V2_ACTION_HISTORY_SEMANTICS_CORRECTION_CONTRACT_20260719.md`.
 
+The remaining fully recursive cross-CPU question now has a separate
+prospective contract in
+`WINNER_V2_RECURSIVE_CROSS_CPU_CLOSURE_PREREGISTRATION_20260719.md`.
+It preserves the direct `1e-6` same-input limit and judges recursive drift at
+the native STS3215 target representation. Its pre-outcome contract passes;
+the formal post-commit runtime rerun remains pending.
+
 ## 2026-07-19 selected-binary addendum
 
 The later prospective native-representation study removes the first blocker
@@ -119,7 +126,9 @@ non-identity limiter is compatible with the evidence.
 ## Remaining blockers
 
 1. The reviewed native runtime remains the frozen 101-D v1 implementation; a
-   reviewed 115-D v2 implementation has not passed its own contract.
+   reviewed 115-D v2 implementation has not passed its own contract. Its
+   recursive cross-CPU closure is preregistered but has not completed the
+   required post-commit formal rerun.
 2. The real-build torso COM/inertia input audit still has exactly 46 missing
    fields and reports no numerical estimate. Policy-side robot clearance is
    therefore NO.

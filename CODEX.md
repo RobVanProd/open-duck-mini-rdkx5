@@ -132,6 +132,16 @@ replacement manifest SHA-256 is `d771d188...c6827c5`. Fully recursive
 cross-CPU replay is still held for a separately frozen numeric-closure rule;
 the direct `1e-6` replay limit is not retroactively broadened.
 
+That recursive rule is now preregistered prospectively. Same-input ONNX
+semantics retain `1e-6`; recursive drift is evaluated at the frozen STS3215
+wire boundary using half one position count (`pi/4096`) and at most one raw
+goal count. The selected 512000 x=0/.080 cells gate the result; 1024000 remains
+audit-only. The pre-outcome checker passes every identity, matrix, history,
+source, offset and native-resolution check with zero formal result reads and
+zero recursive ticks. Next: the runtime side commits and runs the deterministic
+formal verifier after this preregistration commit, then policy independently
+reruns it and records the decision.
+
 The 46-field component ledger remains valid, but it is no longer the only
 measurement route. Before any physical value was read, a smaller direct route
 was preregistered: isolate the complete powered-off torso at the modeled hip-

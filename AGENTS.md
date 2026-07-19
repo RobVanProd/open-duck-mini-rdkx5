@@ -1885,3 +1885,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   byte-identical at `99d3afce...304de`. This is metadata/hash-chain repair,
   not recursive cross-CPU acceptance, runtime deployment, Gate 5, or robot
   clearance. The recursive closure rule requires a separate preregistration.
+- 2026-07-19: The selected winner-v2 recursive cross-CPU closure is now
+  preregistered before a formal rerun. Identical-input ONNX checks retain the
+  unchanged `1e-6` boundary. Fully recursive drift is judged separately at the
+  physical actuator boundary: maximum logical-target and P30-state difference
+  must be at most half one native STS3215 position count
+  (`pi/4096=.0007669903939428206 rad`), and the exact deployed conversion may
+  differ by at most one raw count. All history, exogenous-field, limiter,
+  saturation, measured-rate, envelope and x=0 gates remain unchanged. Only
+  the selected 512000 x=0/.080 cells decide; 1024000 is audit-only and cannot
+  advance. The pre-outcome contract passes with zero formal result reads and
+  zero recursive ticks. Any formal result must be generated after this commit
+  by a committed deterministic runtime verifier. No robot, RDK-X5, Gate 5,
+  deployment, GPU or iGPU authority follows.
