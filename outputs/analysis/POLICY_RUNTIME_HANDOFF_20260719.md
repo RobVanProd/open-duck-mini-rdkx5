@@ -34,6 +34,13 @@ reproduced the same decision on Linux CPU. Both selected cells have zero raw
 STS goal mismatches over 16,800 words. Decision is
 `PASS_RECURSIVE_BIT_EXACT_WIRE_CLOSURE`.
 
+Runtime commit `9c637ec` also supplies the requested dedicated reduced artifact
+at SHA-256 `4d403623...85ace`, byte-reproducible from the formal full result.
+Its teacher-forced observation gate is labeled `<=1e-6` rather than exact zero;
+all four recorded values are exactly `0.0`, and policy applies exact equality,
+so the decision is unchanged. That reporting-only defect must be corrected
+before the runtime/policy/config asset set is frozen.
+
 ## 2026-07-19 selected-binary addendum
 
 The later prospective native-representation study removes the first blocker

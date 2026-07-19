@@ -24,20 +24,31 @@ FORMAL_PATH = (
     RUNTIME
     / "artifacts/gates/phase_5_policy/winner_v2_runtime_v2_verification_20260719.json"
 )
+REDUCED_PATH = (
+    RUNTIME
+    / "artifacts/gates/phase_5_policy/"
+    "winner_v2_recursive_cross_cpu_closure_20260719.json"
+)
 OUTPUT_JSON = ANALYSIS / "winner_v2_recursive_cross_cpu_closure_result.json"
 OUTPUT_MD = ANALYSIS / "WINNER_V2_RECURSIVE_CROSS_CPU_CLOSURE_RESULT_20260719.md"
 
 PREREG_COMMIT = "182459eb4d5eb422a6936b7744f5730d22a9bb27"
 RUNTIME_REQUEST_COMMIT = "e9dc0735a177bb4215e24e2dd8406da01704d2f1"
 RUNTIME_RESULT_COMMIT = "f8def264c856db3905301f5473f5eb1775b3eec0"
+RUNTIME_REDUCED_RESULT_COMMIT = "9c637ec4a161d20b24b06e91dc309a49c46cf981"
 RUNTIME_RESULT_REPO_PATH = (
     "artifacts/gates/phase_5_policy/winner_v2_runtime_v2_verification_20260719.json"
 )
 FORMAL_RESULT_SHA256 = "e1842ca64e91056b96c297666803bdeec7c5ff2950d4dfe32e27044379049b14"
-RUNTIME_VERIFIER_SHA256 = "398d501b9d5a4649e6342c804fb278db7ba7ea754b5a756e4d5a8a3c2b23b212"
-RUNTIME_TEST_SHA256 = "e79a7fe0a9cec0df7a25017bfafe5799afd46696d5b4e41697fed4248a71e463"
+REDUCED_RESULT_REPO_PATH = (
+    "artifacts/gates/phase_5_policy/"
+    "winner_v2_recursive_cross_cpu_closure_20260719.json"
+)
+REDUCED_RESULT_SHA256 = "4d403623eb4822befde4b633425e344d010140316d7a4c1e48f4354e76285ace"
+RUNTIME_VERIFIER_SHA256 = "5f38094f98e939322c86234438207dabae8d96c9a7e65d1a77119e0323e96259"
+RUNTIME_TEST_SHA256 = "4f2da30687bf87c0fd8149dcce2966e22f4b950c10dda2ab91152119226f04fc"
 RUNTIME_ARTIFACT_MANIFEST_SHA256 = (
-    "2f7c1b30d5f91cf75cb8b9b8e6454619c31371f4423687c7b625091fc3d04768"
+    "fbc0369b07ad4b6586e0a9244e60052094b1d2236350a7ba8d7fe3a55f2ced95"
 )
 SELECTED_POLICY_SHA256 = "99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de"
 AUDIT_POLICY_SHA256 = "0dfc24bde5d839e4d346dd8c08d9a7d0222a3847764ec6738bfc7f8d947f4ece"
@@ -80,11 +91,16 @@ def main() -> int:
     prereg = json.loads(PREREG_PATH.read_text(encoding="utf-8"))
     formal_bytes = FORMAL_PATH.read_bytes()
     formal = json.loads(formal_bytes)
+    reduced_bytes = REDUCED_PATH.read_bytes()
+    reduced = json.loads(reduced_bytes)
     constants = prereg["frozen_constants"]
     identities = prereg["frozen_identities"]
 
     committed_result = git(
         "show", f"{RUNTIME_RESULT_COMMIT}:{RUNTIME_RESULT_REPO_PATH}"
+    )
+    committed_reduced_result = git(
+        "show", f"{RUNTIME_REDUCED_RESULT_COMMIT}:{REDUCED_RESULT_REPO_PATH}"
     )
     prereg_commit_time = int(
         policy_git("show", "-s", "--format=%ct", PREREG_COMMIT).decode().strip()
@@ -102,6 +118,28 @@ def main() -> int:
     formal_comms_text = git("show", f"{RUNTIME_RESULT_COMMIT}:Comms.md").decode(
         "utf-8"
     )
+    reduced_descends_from_formal = subprocess.run(
+        [
+            "git",
+            "merge-base",
+            "--is-ancestor",
+            RUNTIME_RESULT_COMMIT,
+            RUNTIME_REDUCED_RESULT_COMMIT,
+        ],
+        cwd=RUNTIME,
+        check=False,
+    ).returncode == 0
+    reduced_descends_from_request = subprocess.run(
+        [
+            "git",
+            "merge-base",
+            "--is-ancestor",
+            RUNTIME_REQUEST_COMMIT,
+            RUNTIME_REDUCED_RESULT_COMMIT,
+        ],
+        cwd=RUNTIME,
+        check=False,
+    ).returncode == 0
 
     provenance_checks = {
         "policy_preregistration_commit_exact": policy_git(
@@ -110,6 +148,10 @@ def main() -> int:
         == PREREG_COMMIT,
         "runtime_formal_commit_exact": git("rev-parse", f"{RUNTIME_RESULT_COMMIT}^{{commit}}").decode().strip()
         == RUNTIME_RESULT_COMMIT,
+        "runtime_reduced_commit_exact": git(
+            "rev-parse", f"{RUNTIME_REDUCED_RESULT_COMMIT}^{{commit}}"
+        ).decode().strip()
+        == RUNTIME_REDUCED_RESULT_COMMIT,
         "formal_commit_postdates_policy_preregistration": formal_commit_time
         > prereg_commit_time,
         "runtime_request_names_policy_preregistration": PREREG_COMMIT in request_text,
@@ -121,7 +163,14 @@ def main() -> int:
             and "invocation" in formal_comms_text
         ),
         "working_result_matches_formal_commit": formal_bytes == committed_result,
+        "working_reduced_result_matches_reduced_commit": reduced_bytes
+        == committed_reduced_result,
+        "reduced_commit_descends_from_formal_and_request": (
+            reduced_descends_from_formal and reduced_descends_from_request
+        ),
         "formal_result_sha256_exact": sha256_bytes(formal_bytes) == FORMAL_RESULT_SHA256,
+        "reduced_result_sha256_exact": sha256_bytes(reduced_bytes)
+        == REDUCED_RESULT_SHA256,
         "runtime_verifier_sha256_exact": sha256(
             RUNTIME / "src/open_duck_x5/winner_v2_verifier.py"
         )
@@ -144,14 +193,23 @@ def main() -> int:
             "formal_prior_runtime_outcome_weight"
         ]
         is False,
+        "reduced_binds_formal_result": reduced["formal_full_result_sha256"]
+        == FORMAL_RESULT_SHA256,
+        "reduced_binds_preregistration": reduced["recursive_preregistration"][
+            "commit"
+        ]
+        == PREREG_COMMIT,
     }
     require(provenance_checks)
 
     formal_cells = {cell_key(row): row for row in formal["recursive_runtime_cells"]}
+    reduced_cells = {cell_key(row): row for row in reduced["cells"]}
     expected_keys = {(512000, 0.0), (512000, 0.08), (1024000, 0.0), (1024000, 0.08)}
     matrix_checks = {
         "exact_four_cell_matrix": set(formal_cells) == expected_keys
         and len(formal["recursive_runtime_cells"]) == 4,
+        "reduced_exact_four_cell_matrix": set(reduced_cells) == expected_keys
+        and len(reduced["cells"]) == 4,
         "exact_2400_ticks": int(formal["ticks"]) == 2400
         and sum(int(row["ticks"]) for row in formal_cells.values()) == 2400,
         "selected_policy_identity": all(
@@ -168,8 +226,58 @@ def main() -> int:
             "audit_checkpoint_is_non_gating"
         ]
         is True,
+        "reduced_exact_two_selected_cells": sum(
+            bool(row["gating"]) for row in reduced_cells.values()
+        )
+        == 2,
+        "teacher_forced_observation_exact_zero_all_formal_cells": all(
+            float(row["max_abs_error"]["observation"]) == 0.0
+            for row in formal["semantic_cells"]
+        ),
+        "teacher_forced_observation_exact_zero_all_reduced_cells": all(
+            float(row["semantic_max_abs_error"]["observation"]) == 0.0
+            for row in reduced_cells.values()
+        ),
     }
     require(matrix_checks)
+
+    reduced_reporting_checks = {
+        "schema_exact": reduced["schema_version"]
+        == "open_duck_x5.winner_v2_recursive_closure_reduced.v1",
+        "status_exact": reduced["status"] == PASS_TOKEN,
+        "full_schema_exact": reduced["formal_full_result_schema_version"]
+        == formal["schema_version"],
+        "manifest_exact": reduced["manifest_sha256"]
+        == identities["handoff_manifest_sha256"],
+        "selected_policy_exact": reduced["selected_policy"]["sha256"]
+        == SELECTED_POLICY_SHA256,
+        "all_cells_600_ticks": all(
+            int(row["ticks"]) == 600 for row in reduced_cells.values()
+        ),
+        "all_cells_cpu_provider": all(
+            row["onnx_execution_provider"] == "CPUExecutionProvider"
+            for row in reduced_cells.values()
+        ),
+        "all_recorded_cell_gates_pass": all(
+            bool(row["all_cell_gates_passed"]) for row in reduced_cells.values()
+        ),
+        "all_selected_wire_words_exact": sum(
+            int(row["raw_goal_mismatch_count"])
+            for row in reduced_cells.values()
+            if bool(row["gating"])
+        )
+        == 0,
+        "all_first_mismatches_null": all(
+            row["first_raw_goal_mismatch"] is None
+            for row in reduced_cells.values()
+        ),
+        "all_per_joint_groups_present": all(
+            set(row["per_joint_max_abs_error"])
+            == {"logical_target_rad", "p30_observer_rad", "raw_goal_counts"}
+            for row in reduced_cells.values()
+        ),
+    }
+    require(reduced_reporting_checks)
 
     selected_cells = [row for key, row in formal_cells.items() if key[0] == 512000]
     selected_cell_checks: dict[str, bool] = {}
@@ -251,9 +359,19 @@ def main() -> int:
     # Independent policy-side replay. Importing the committed runtime verifier
     # reruns all semantic, fault-injection, recursive and wire-conversion cells.
     sys.path.insert(0, str(RUNTIME / "src"))
-    from open_duck_x5.winner_v2_verifier import verify_handoff
+    from open_duck_x5.winner_v2_verifier import (
+        reduce_recursive_result,
+        verify_handoff,
+    )
 
     independent = verify_handoff(PACKAGE, runtime_root=RUNTIME)
+    regenerated_reduced = reduce_recursive_result(
+        formal,
+        full_result_sha256=sha256_bytes(formal_bytes),
+    )
+    regenerated_reduced_bytes = (
+        json.dumps(regenerated_reduced, indent=2, sort_keys=True) + "\n"
+    ).encode("utf-8")
     independent_checks = {
         "independent_status_exact": independent["status"] == PASS_TOKEN,
         "independent_component_pass": independent["component_contract_passed"] is True,
@@ -270,6 +388,12 @@ def main() -> int:
             "onnx_execution_provider"
         ]
         == "CPUExecutionProvider",
+        "independent_teacher_forced_observation_exact_zero": all(
+            float(row["max_abs_error"]["observation"]) == 0.0
+            for row in independent["semantic_cells"]
+        ),
+        "reduced_byte_reproducible_from_formal_result": regenerated_reduced_bytes
+        == reduced_bytes,
     }
     require(independent_checks)
 
@@ -280,14 +404,18 @@ def main() -> int:
         "policy_preregistration_commit": PREREG_COMMIT,
         "runtime_request_commit": RUNTIME_REQUEST_COMMIT,
         "runtime_result_commit": RUNTIME_RESULT_COMMIT,
+        "runtime_reduced_result_commit": RUNTIME_REDUCED_RESULT_COMMIT,
         "runtime_commit_topology_note": (
             "The request and formal result are sibling commits from the same "
-            "runtime baseline and were subsequently merged. Formal validity is "
-            "bound to the earlier policy preregistration commit, not to ancestry "
-            "from the advisory runtime request commit."
+            "runtime baseline and were subsequently merged. The dedicated "
+            "reduced-result commit descends from that merge and therefore "
+            "contains both lineages. Formal validity remains bound to the earlier "
+            "policy preregistration commit."
         ),
         "runtime_result_path": RUNTIME_RESULT_REPO_PATH,
         "runtime_result_sha256": FORMAL_RESULT_SHA256,
+        "runtime_reduced_result_path": REDUCED_RESULT_REPO_PATH,
+        "runtime_reduced_result_sha256": REDUCED_RESULT_SHA256,
         "runtime_source_sha256": {
             "winner_v2_verifier.py": RUNTIME_VERIFIER_SHA256,
             "test_winner_v2.py": RUNTIME_TEST_SHA256,
@@ -317,14 +445,18 @@ def main() -> int:
         "checks": {
             "provenance": provenance_checks,
             "matrix": matrix_checks,
+            "reduced_reporting": reduced_reporting_checks,
             "cells": selected_cell_checks,
             "top_level": top_level_checks,
             "independent_replay": independent_checks,
         },
-        "filename_note": (
-            "The runtime updated its existing versioned v2 result path instead of "
-            "the suggested new filename. The preregistration froze result content, "
-            "method and post-commit ordering, not an exact filename; all are exact."
+        "reduced_reporting_note": (
+            "The dedicated reduced artifact is complete and byte-reproducible, "
+            "but its teacher-forced observation gate is named and implemented as "
+            "at_most_1e_6 instead of exact zero. All four formal and independent "
+            "values are exactly 0.0, and this checker applies exact equality, so "
+            "the discrepancy cannot change this decision. A reporting-only "
+            "runtime correction is requested before the asset set is frozen."
         ),
         "authority": {
             "closes_reviewed_cpu_recursive_numeric_blocker": True,
@@ -358,6 +490,8 @@ blocker for runtime-v2; it does not close physical COM, X5 CPU preflight, Gate
 
 - runtime result commit: `{RUNTIME_RESULT_COMMIT}`;
 - result SHA-256: `{FORMAL_RESULT_SHA256}`;
+- reduced artifact commit: `{RUNTIME_REDUCED_RESULT_COMMIT}`;
+- reduced artifact SHA-256: `{REDUCED_RESULT_SHA256}`;
 - provider: `CPUExecutionProvider`;
 - ticks: `{formal['ticks']}`;
 - direct same-input maximum: `{formal['policy_chain_max_abs_error']:.17g}`
@@ -369,16 +503,15 @@ blocker for runtime-v2; it does not close physical COM, X5 CPU preflight, Gate
 - saturation/rate/envelope classifications unchanged: `{str(formal_gate['selected_classifications_unchanged']).lower()}`.
 
 The 1024000 sibling was run and recorded but remained non-gating exactly as
-preregistered. The runtime reused its existing versioned v2 result filename;
-this is accepted because the preregistration froze content, method and formal
-post-commit ordering, not an exact result filename.
+preregistered. The dedicated reduced artifact is byte-reproducible from the
+formal full result and includes each required cell, identity, metric and role.
 
 The runtime-side request and formal-result commits were concurrent siblings
-from the same baseline and were subsequently merged. The formal result remains
-valid because the authoritative policy preregistration predates the formal
-commit, the formal verifier binds its exact commit, and the committed runtime
-record attests a fresh 2,400-tick post-preregistration invocation. The request
-commit itself was advisory, not the authority boundary.
+from the same baseline and were subsequently merged. The dedicated reduced-
+result commit descends from that merge. The formal result remains valid because
+the authoritative policy preregistration predates it, the verifier binds the
+exact preregistration commit, and the committed runtime record attests a fresh
+2,400-tick post-preregistration invocation.
 
 ## Independent policy-side replay
 
@@ -391,7 +524,12 @@ commit itself was advisory, not the authority boundary.
 
 All formal provenance, four-cell matrix, identity, completeness, fault-
 injection, same-input, native-resolution and authority checks pass. Runtime
-tests separately pass `246/246`, and the runtime artifact hash check is clean.
+tests separately pass `247/247`, and the runtime artifact hash check is clean.
+The reduced artifact describes teacher-forced observation with a `<=1e-6`
+gate, whereas the frozen rule is exact zero. Every formal and independent value
+is exactly `0.0`, and policy applies exact equality, so this reporting defect
+does not change the decision. Runtime has been asked to correct it before the
+asset set is frozen, without rerunning or changing formal outcome cells.
 
 ## Authority
 
@@ -404,6 +542,7 @@ robot, RDK-X5, motor, torque, deployment, GPU or iGPU action occurred here.
     OUTPUT_MD.write_text(markdown, encoding="utf-8")
     print(PASS_TOKEN)
     print(f"FORMAL_RESULT_SHA256={FORMAL_RESULT_SHA256}")
+    print(f"REDUCED_RESULT_SHA256={REDUCED_RESULT_SHA256}")
     print(
         "FORMAL_SELECTED_RAW_MISMATCHES="
         f"{formal_gate['selected_raw_goal_mismatch_count']}/16800"

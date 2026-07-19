@@ -148,8 +148,12 @@ pass `PASS_RECURSIVE_BIT_EXACT_WIRE_CLOSURE`. All four 600-tick cells run; the
 selected 512000 graph preserves x=0 exactly and produces zero mismatches over
 all 16,800 selected raw STS goal words on both CPUs. Formal moving-cell target
 and P30 maxima are `5.9604645e-7` and `5.6025073e-7 rad`; Linux target drift is
-zero and P30 drift is `5.9576471e-8 rad`. Runtime tests pass 246/246 and the
-artifact manifest is clean. This closes the reviewed CPU recursive-numeric
+zero and P30 drift is `5.9576471e-8 rad`. Runtime tests pass 247/247 and the
+artifact manifest is clean. The dedicated reduced artifact is byte-
+reproducible; its teacher-forced observation gate is labeled `<=1e-6` rather
+than exact zero, but all four formal and independent values are exactly zero
+and policy enforces the frozen equality. Correct that reporting-only defect
+before freezing assets. This closes the reviewed CPU recursive-numeric
 blocker only. The next policy datum is the powered-off direct COM packet; X5
 CPU-only replay under the same metric and a reviewed frozen asset set remain
 required before Gate 5 can be considered.

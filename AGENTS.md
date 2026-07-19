@@ -1914,7 +1914,10 @@ Do not proceed to grounded walking until low-risk gates pass.
   across all 16,800 selected raw STS goal words. Formal selected moving-cell
   target/P30 maxima are `5.9604645e-7`/`5.6025073e-7 rad`, far below the frozen
   half-count boundary. The 1024000 sibling remains audit-only. Runtime tests
-  pass 246/246 and its artifact manifest is clean. This closes only the
+  pass 247/247 and its artifact manifest is clean. The dedicated reduced result
+  is byte-reproducible; its observation gate is mislabeled `<=1e-6` although
+  all four values are exactly zero and policy enforces exact equality. Correct
+  that reporting-only defect before freezing assets. This closes only the
   reviewed CPU recursive-numeric blocker. Powered-off direct COM, a reviewed
   frozen asset set, X5 CPU-only replay, Gate 5, deployment and robot clearance
   remain incomplete and unauthorized. See

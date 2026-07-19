@@ -12,6 +12,8 @@ blocker for runtime-v2; it does not close physical COM, X5 CPU preflight, Gate
 
 - runtime result commit: `f8def264c856db3905301f5473f5eb1775b3eec0`;
 - result SHA-256: `e1842ca64e91056b96c297666803bdeec7c5ff2950d4dfe32e27044379049b14`;
+- reduced artifact commit: `9c637ec4a161d20b24b06e91dc309a49c46cf981`;
+- reduced artifact SHA-256: `4d403623eb4822befde4b633425e344d010140316d7a4c1e48f4354e76285ace`;
 - provider: `CPUExecutionProvider`;
 - ticks: `2400`;
 - direct same-input maximum: `4.76837158203125e-07`
@@ -23,16 +25,15 @@ blocker for runtime-v2; it does not close physical COM, X5 CPU preflight, Gate
 - saturation/rate/envelope classifications unchanged: `true`.
 
 The 1024000 sibling was run and recorded but remained non-gating exactly as
-preregistered. The runtime reused its existing versioned v2 result filename;
-this is accepted because the preregistration froze content, method and formal
-post-commit ordering, not an exact result filename.
+preregistered. The dedicated reduced artifact is byte-reproducible from the
+formal full result and includes each required cell, identity, metric and role.
 
 The runtime-side request and formal-result commits were concurrent siblings
-from the same baseline and were subsequently merged. The formal result remains
-valid because the authoritative policy preregistration predates the formal
-commit, the formal verifier binds its exact commit, and the committed runtime
-record attests a fresh 2,400-tick post-preregistration invocation. The request
-commit itself was advisory, not the authority boundary.
+from the same baseline and were subsequently merged. The dedicated reduced-
+result commit descends from that merge. The formal result remains valid because
+the authoritative policy preregistration predates it, the verifier binds the
+exact preregistration commit, and the committed runtime record attests a fresh
+2,400-tick post-preregistration invocation.
 
 ## Independent policy-side replay
 
@@ -45,7 +46,12 @@ commit itself was advisory, not the authority boundary.
 
 All formal provenance, four-cell matrix, identity, completeness, fault-
 injection, same-input, native-resolution and authority checks pass. Runtime
-tests separately pass `246/246`, and the runtime artifact hash check is clean.
+tests separately pass `247/247`, and the runtime artifact hash check is clean.
+The reduced artifact describes teacher-forced observation with a `<=1e-6`
+gate, whereas the frozen rule is exact zero. Every formal and independent value
+is exactly `0.0`, and policy applies exact equality, so this reporting defect
+does not change the decision. Runtime has been asked to correct it before the
+asset set is frozen, without rerunning or changing formal outcome cells.
 
 ## Authority
 
