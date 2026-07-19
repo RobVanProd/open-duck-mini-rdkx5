@@ -111,6 +111,12 @@ def expand_checkpoint(source: list[Any], networks: Any) -> list[Any]:
         initialized["params"][key] = copy.deepcopy(source_policy["params"][key])
     expanded = copy.deepcopy(source)
     expanded[1] = initialized
+    count = float(np.asarray(source[0]["count"]["lo"]))
+    expanded[0]["mean"]["policy_hidden"] = jnp.zeros((64,), dtype=jnp.float32)
+    expanded[0]["std"]["policy_hidden"] = jnp.ones((64,), dtype=jnp.float32)
+    expanded[0]["summed_variance"]["policy_hidden"] = jnp.full(
+        (64,), count, dtype=jnp.float32
+    )
     return expanded
 
 
@@ -359,6 +365,20 @@ def main() -> int:
             for leaf in jax.tree_util.tree_leaves(source_checkpoint)
         ),
         "expanded_save_restore_bit_exact": save_structure and save_error == 0.0,
+        "expanded_hidden_normalizer_exact": (
+            np.array_equal(
+                np.asarray(restored_expanded[0]["mean"]["policy_hidden"]),
+                np.zeros(64, dtype=np.float32),
+            )
+            and np.array_equal(
+                np.asarray(restored_expanded[0]["std"]["policy_hidden"]),
+                np.ones(64, dtype=np.float32),
+            )
+            and np.array_equal(
+                np.asarray(restored_expanded[0]["summed_variance"]["policy_hidden"]),
+                np.full(64, 8_048_640.0, dtype=np.float32),
+            )
+        ),
         "protected_base_actor_bit_exact": base_preserved,
         "adapter_head_exact_zero": adapter_head_zero,
         "all_64_step_zero_logits_bit_exact": all(row["logits_bit_exact"] for row in equivalence),
