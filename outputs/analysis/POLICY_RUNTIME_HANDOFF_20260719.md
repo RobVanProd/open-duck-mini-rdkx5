@@ -1,8 +1,8 @@
 # Policy Runtime Handoff
 
-Status: `BLOCKED_REQUIRES_REVIEWED_115_RUNTIME_V2`
+Status: `BLOCKED_FOR_COM_CLEARANCE_AND_X5_CPU_PREFLIGHT`
 
-Disposition: `REQUIRES_REVIEWED_115_RUNTIME_V2`
+Disposition: `CPU_RUNTIME_V2_ACCEPTED_BLOCKED_FOR_COM_AND_X5`
 
 Robot clearance: `NO`
 
@@ -24,15 +24,15 @@ The selected 512000-step ONNX remains byte-identical at
 `99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de`.
 See `WINNER_V2_ACTION_HISTORY_SEMANTICS_CORRECTION_CONTRACT_20260719.md`.
 
-The remaining fully recursive cross-CPU question now has a separate
+The fully recursive cross-CPU question has a separate
 prospective contract in
 `WINNER_V2_RECURSIVE_CROSS_CPU_CLOSURE_PREREGISTRATION_20260719.md`.
 It preserves the direct `1e-6` same-input limit and judges recursive drift at
-the native STS3215 target representation. Its pre-outcome contract passes;
-the formal post-commit runtime rerun remains pending. A separate policy-side
-Linux corroboration has since passed the frozen rule with bit-exact selected
-action/state/target/raw-goal output; that evidence does not substitute for the
-runtime agent's formal CPU result.
+the native STS3215 target representation. Its pre-outcome contract passed, the
+formal post-commit runtime result passed on Windows CPU, and policy independently
+reproduced the same decision on Linux CPU. Both selected cells have zero raw
+STS goal mismatches over 16,800 words. Decision is
+`PASS_RECURSIVE_BIT_EXACT_WIRE_CLOSURE`.
 
 ## 2026-07-19 selected-binary addendum
 
@@ -42,9 +42,9 @@ cells, and the preregistered first criterion selected the original 512000-step
 graph. `SELECTED_ONNX_SHA256` is now
 `99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de`.
 See `WINNER_V2_RUNTIME_SELECTED_BINARY_RELAY_20260719.md` for the exact relay.
-The reviewed runtime-v2 acceptance and 46-field real-build COM measurement
-remain incomplete, so the overall handoff status and robot clearance do not
-change.
+The reviewed CPU runtime-v2 recursive closure is now accepted. The powered-off
+direct-reaction real-build COM measurement, reviewed frozen asset set and X5
+CPU-only replay remain incomplete, so robot clearance does not change.
 
 The policy-side response to native-runtime `Comms.md` is complete and committed
 as a hash-bound package at
@@ -128,22 +128,21 @@ non-identity limiter is compatible with the evidence.
 
 ## Remaining blockers
 
-1. The reviewed native runtime remains the frozen 101-D v1 implementation; a
-   reviewed 115-D v2 implementation has not passed its own contract. Its
-   recursive cross-CPU closure is preregistered but has not completed the
-   required post-commit formal rerun.
-2. The real-build torso COM/inertia input audit still has exactly 46 missing
-   fields and reports no numerical estimate. Policy-side robot clearance is
-   therefore NO.
+1. Complete the 15-value powered-off direct-reaction torso-COM packet and pass
+   the frozen asymmetric COM interval check. The 46-field component ledger
+   remains a fallback, not a concurrent requirement.
+2. Freeze and review the exact runtime, selected policy and configuration asset
+   set.
+3. Run the same native-resolution verifier on the X5 CPU with no servo access.
 
-Passing this offline handoff can unblock a native-runtime v2 design/review, but
-cannot change Gate 5 from `NOT_RUN`, select a robot binary, or clear the robot.
+The CPU runtime-v2 contract and selected binary are resolved offline. They do
+not change Gate 5 from `NOT_RUN`, deploy an asset, or clear the robot.
 
 ## Relay fields
 
 ```text
 POLICY_HANDOFF_STATUS: BLOCKED
-DISPOSITION: REQUIRES_REVIEWED_115_RUNTIME_V2
+DISPOSITION: CPU_RUNTIME_V2_ACCEPTED_BLOCKED_FOR_COM_AND_X5
 POLICY_REPO_COMMIT: e0badd7aa79ff791212b8d3822f9eefdc4c162e0
 ARTIFACT_ROOT: artifacts/runtime_handoff/rdkx5_native_20260719
 HANDOFF_MANIFEST_SHA256: d771d188218152c782c7d688440e2dd2083b47fd9b883749123f89226c6827c5
@@ -151,5 +150,5 @@ SELECTED_CHECKPOINT_STEP: 512000
 SELECTED_ONNX_SHA256: 99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de
 INPUT_CONTRACT: obs float32[1,115] + previous_action float32[1,14] -> continuous_actions float32[1,14] + previous_action_out float32[1,14]
 ROBOT_CLEARANCE_IN_POLICY_REPO: false
-UNRESOLVED_BLOCKERS: reviewed native runtime v2 acceptance incomplete; real-build torso COM/inertia audit has 46 missing inputs and no numerical estimate; Gate 5 NOT_RUN and unauthorized
+UNRESOLVED_BLOCKERS: powered-off direct COM packet incomplete; reviewed frozen asset set incomplete; X5 CPU-only native-resolution replay not run; Gate 5 NOT_RUN and unauthorized
 ```

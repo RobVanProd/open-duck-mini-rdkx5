@@ -97,8 +97,10 @@ hardware candidate; robot clearance remains NO. See
 The legacy 101x14.v1 golden vector already passes and remains only a legacy
 stack contract. The policy-side response to native-runtime Comms.md is now
 evidence-complete at artifacts/runtime_handoff/rdkx5_native_20260719/.
-Disposition is REQUIRES_REVIEWED_115_RUNTIME_V2: both protected graphs consume
-obs[1,115] plus previous_action[1,14] and return final action plus next state.
+The initial package disposition required runtime-v2 review: both protected
+graphs consume obs[1,115] plus previous_action[1,14] and return final action
+plus next state. That CPU review and recursive closure now pass; physical COM,
+the frozen asset set and X5 CPU preflight remain.
 The package carries both persistence checkpoints, exact observation/action/
 phase/P30 semantics, four lossless 600-tick traces, compact adjacent vectors,
 and a CPU fail-closed verifier. It passes with zero ONNX golden/state/chain
@@ -129,8 +131,8 @@ source and all 2,400 golden rows exactly: observation history is `t-2/t-3/t-4`
 and the separate recurrent input is `t-1`. The selected 512000-step ONNX and
 all golden evidence remain byte-identical. Corrected schema is v1.1 and the
 replacement manifest SHA-256 is `d771d188...c6827c5`. Fully recursive
-cross-CPU replay is still held for a separately frozen numeric-closure rule;
-the direct `1e-6` replay limit is not retroactively broadened.
+cross-CPU replay was therefore evaluated under a separately frozen numeric-
+closure rule; the direct `1e-6` replay limit was not retroactively broadened.
 
 That recursive rule is now preregistered prospectively. Same-input ONNX
 semantics retain `1e-6`; recursive drift is evaluated at the frozen STS3215
@@ -138,16 +140,19 @@ wire boundary using half one position count (`pi/4096`) and at most one raw
 goal count. The selected 512000 x=0/.080 cells gate the result; 1024000 remains
 audit-only. The pre-outcome checker passes every identity, matrix, history,
 source, offset and native-resolution check with zero formal result reads and
-zero recursive ticks. Next: the runtime side commits and runs the deterministic
-formal verifier after this preregistration commit, then policy independently
-reruns it and records the decision.
+zero recursive ticks. The runtime then committed and ran its deterministic
+formal verifier, and policy independently reran it before accepting the result.
 
-The independent policy-side Linux replay has now completed after that commit.
-All four 600-tick cells pass the frozen rule; the selected 512000 graph is
-bit-exact in action/state/logical target and every raw STS goal word, with only
-`5.9576471e-8 rad` selected P30 reconstruction error. This is corroboration,
-not the formal runtime-CPU decision. The runtime-side committed post-prereg
-verifier/result remains the next acceptance input.
+The formal Windows CPU result and independent policy-side Linux replay now both
+pass `PASS_RECURSIVE_BIT_EXACT_WIRE_CLOSURE`. All four 600-tick cells run; the
+selected 512000 graph preserves x=0 exactly and produces zero mismatches over
+all 16,800 selected raw STS goal words on both CPUs. Formal moving-cell target
+and P30 maxima are `5.9604645e-7` and `5.6025073e-7 rad`; Linux target drift is
+zero and P30 drift is `5.9576471e-8 rad`. Runtime tests pass 246/246 and the
+artifact manifest is clean. This closes the reviewed CPU recursive-numeric
+blocker only. The next policy datum is the powered-off direct COM packet; X5
+CPU-only replay under the same metric and a reviewed frozen asset set remain
+required before Gate 5 can be considered.
 
 The 46-field component ledger remains valid, but it is no longer the only
 measurement route. Before any physical value was read, a smaller direct route

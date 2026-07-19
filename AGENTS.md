@@ -1808,7 +1808,7 @@ Do not proceed to grounded walking until low-risk gates pass.
   `outputs/analysis/POLICY_ROBOT_READINESS_REAUDIT_20260719.md`.
 - 2026-07-19: The native-runtime `Comms.md` request is answered by a hash-bound
   policy package at `artifacts/runtime_handoff/rdkx5_native_20260719/`.
-  Disposition is `REQUIRES_REVIEWED_115_RUNTIME_V2`: both protected persistent
+  Its initial disposition was `REQUIRES_REVIEWED_115_RUNTIME_V2`: both protected persistent
   graphs require `obs[1,115]` plus `previous_action[1,14]`, and return final
   action plus next state. Four fresh 600-tick CPU full-observation traces
   reproduce the frozen P30 traces exactly; the package smoke verifies every
@@ -1817,7 +1817,7 @@ Do not proceed to grounded walking until low-risk gates pass.
   commanded-target substitution first diverges at moving tick 1; an erroneous
   advanced-first phase/reference diverges at tick 0. No single deployment
   checkpoint is selected post hoc, so `SELECTED_ONNX_SHA256=NOT_READY`.
-  Runtime v2 review and the 46-field real-build COM audit remain blockers;
+  At that stage runtime v2 review and the real-build COM audit remained blockers;
   Gate 5 and robot clearance remain NO. See
   `outputs/analysis/POLICY_RUNTIME_HANDOFF_20260719.md`.
 - 2026-07-19: A prospective single-checkpoint selection is preregistered from
@@ -1907,3 +1907,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   This does not replace the required post-preregistration formal result from
   the runtime agent's CPU and does not grant runtime acceptance, X5/AArch64
   equivalence, COM clearance, Gate 5 or robot authority.
+- 2026-07-19: The formal post-preregistration runtime-CPU result is accepted as
+  `PASS_RECURSIVE_BIT_EXACT_WIRE_CLOSURE`. The formal Windows replay and an
+  independent policy-side Linux replay each complete all four 600-tick cells;
+  both selected 512000 cells preserve x=0 exactly and produce zero mismatches
+  across all 16,800 selected raw STS goal words. Formal selected moving-cell
+  target/P30 maxima are `5.9604645e-7`/`5.6025073e-7 rad`, far below the frozen
+  half-count boundary. The 1024000 sibling remains audit-only. Runtime tests
+  pass 246/246 and its artifact manifest is clean. This closes only the
+  reviewed CPU recursive-numeric blocker. Powered-off direct COM, a reviewed
+  frozen asset set, X5 CPU-only replay, Gate 5, deployment and robot clearance
+  remain incomplete and unauthorized. See
+  `outputs/analysis/WINNER_V2_RECURSIVE_CROSS_CPU_CLOSURE_RESULT_20260719.md`.
