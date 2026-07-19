@@ -1875,3 +1875,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   `outputs/analysis/REAL_BUILD_TORSO_COM_DIRECT_REACTION_CONTRACT_20260719.md`
   and
   `outputs/analysis/REAL_BUILD_TORSO_COM_DIRECT_REACTION_MEASUREMENT_PACKET_20260719.md`.
+- 2026-07-19: The runtime-v2 action-history metadata correction passes its
+  preregistered contract. Golden traces plus evaluator source establish
+  `obs[41:55]`, `obs[55:69]`, and `obs[69:83]` as final actions `t-2`, `t-3`,
+  and `t-4`; the separate recurrent `previous_action[t]` remains final action
+  `t-1`. All 2,400 packaged rows pass both exact checks. Package schema is now
+  `winner_v2_rdkx5_native_handoff.v1.1`, replacement manifest SHA-256 is
+  `d771d188...c6827c5`, and the selected original 512000-step ONNX remains
+  byte-identical at `99d3afce...304de`. This is metadata/hash-chain repair,
+  not recursive cross-CPU acceptance, runtime deployment, Gate 5, or robot
+  clearance. The recursive closure rule requires a separate preregistration.

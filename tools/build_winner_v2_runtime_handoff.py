@@ -26,7 +26,7 @@ from onnx import TensorProto, helper, numpy_helper, shape_inference
 import onnxruntime as ort
 
 
-SCHEMA_VERSION = "winner_v2_rdkx5_native_handoff.v1"
+SCHEMA_VERSION = "winner_v2_rdkx5_native_handoff.v1.1"
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT = REPO_ROOT / "artifacts/runtime_handoff/rdkx5_native_20260719"
 POLICY_DIR = (
@@ -44,6 +44,8 @@ POLICY_HASHES = {
     512000: "99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de",
     1024000: "0dfc24bde5d839e4d346dd8c08d9a7d0222a3847764ec6738bfc7f8d947f4ece",
 }
+SELECTED_STEP = 512000
+SELECTED_ONNX_SHA256 = POLICY_HASHES[SELECTED_STEP]
 FIT_HASH = "908ddb01e5d82e661d77b8f3cb186a84665695660b86b304c6d1ae89c79cdb0b"
 REFERENCE_HASH = "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212"
 JOINT_NAMES = [
@@ -317,27 +319,27 @@ def observation_slices(
                 "reset": [0.0] * 14, "first_tick": [0.0] * 14,
             },
             {
-                "start": 41, "end_exclusive": 55, "name": "last_final_action",
+                "start": 41, "end_exclusive": 55, "name": "final_action_t_minus_2",
                 "units": "normalized action", "scale": 1.0, "clipping": "already final bounded",
                 "frame": "joint_order", "sign": "joint logical sign", "joint_order": JOINT_NAMES,
-                "source_timing": "final graph/environment action from transition t-1",
-                "training_noise": "none", "delay_filter": "one-tick history", "privileged": False,
+                "source_timing": "final graph/environment action from control tick t-2",
+                "training_noise": "none", "delay_filter": "two-tick history", "privileged": False,
                 "reset": [0.0] * 14, "first_tick": [0.0] * 14,
             },
             {
-                "start": 55, "end_exclusive": 69, "name": "final_action_t_minus_2",
+                "start": 55, "end_exclusive": 69, "name": "final_action_t_minus_3",
                 "units": "normalized action", "scale": 1.0, "clipping": "already final bounded",
                 "frame": "joint_order", "sign": "joint logical sign", "joint_order": JOINT_NAMES,
-                "source_timing": "transition t-2", "training_noise": "none",
-                "delay_filter": "two-tick history", "privileged": False,
-                "reset": [0.0] * 14, "first_tick": [0.0] * 14,
-            },
-            {
-                "start": 69, "end_exclusive": 83, "name": "final_action_t_minus_3",
-                "units": "normalized action", "scale": 1.0, "clipping": "already final bounded",
-                "frame": "joint_order", "sign": "joint logical sign", "joint_order": JOINT_NAMES,
-                "source_timing": "transition t-3", "training_noise": "none",
+                "source_timing": "control tick t-3", "training_noise": "none",
                 "delay_filter": "three-tick history", "privileged": False,
+                "reset": [0.0] * 14, "first_tick": [0.0] * 14,
+            },
+            {
+                "start": 69, "end_exclusive": 83, "name": "final_action_t_minus_4",
+                "units": "normalized action", "scale": 1.0, "clipping": "already final bounded",
+                "frame": "joint_order", "sign": "joint logical sign", "joint_order": JOINT_NAMES,
+                "source_timing": "control tick t-4", "training_noise": "none",
+                "delay_filter": "four-tick history", "privileged": False,
                 "reset": [0.0] * 14, "first_tick": [0.0] * 14,
             },
             {
@@ -659,7 +661,11 @@ def main() -> int:
         candidates.append(
             {
                 "checkpoint_step": step,
-                "role": "persistent_evidence_checkpoint_not_single_deployment_selection",
+                "role": (
+                    "selected_runtime_v2_review_checkpoint"
+                    if step == SELECTED_STEP
+                    else "persistent_audit_sibling_not_selected_for_runtime"
+                ),
                 "path": f"policies/T2_EQUAL_{step}.onnx",
                 "bytes": policy.stat().st_size,
                 "sha256": expected_hash,
@@ -715,11 +721,12 @@ def main() -> int:
         "schema_version": SCHEMA_VERSION,
         "disposition": "REQUIRES_REVIEWED_115_RUNTIME_V2",
         "policy_handoff_status": "BLOCKED",
-        "single_selected_deployment_checkpoint": None,
-        "selected_onnx_sha256": "NOT_READY",
+        "single_selected_deployment_checkpoint": SELECTED_STEP,
+        "selected_onnx_sha256": SELECTED_ONNX_SHA256,
         "selection_reason": (
-            "The frozen evidence requires both persistent checkpoints and contains "
-            "no authority to choose one as the deployment binary post hoc."
+            "Both persistence checkpoints passed the prospectively frozen native-"
+            "representation matrix. The first ranking criterion selected 512000 "
+            "on lower worst tracking p95; training and simulator reward had no weight."
         ),
         "policy_candidates": candidates,
         "state_contract": {
@@ -987,12 +994,16 @@ def main() -> int:
         "manifest_self_hash": "not_included_to_avoid_self_reference",
         "policy_repository": "RobVanProd/open-duck-mini-rdkx5",
         "policy_branch": "codex/torso-com-decode-probe",
-        "policy_evidence_base_commit": "ef018c489640e5a499ca71b1bb915b67a0f0a524",
+        "policy_evidence_base_commit": "e0badd7aa79ff791212b8d3822f9eefdc4c162e0",
+        "handoff_metadata_correction_preidentity_commit": (
+            "aa6a4466d15ccd1bdcc02a50ec3267c5a9bc67f0"
+        ),
         "handoff_commit": "reported externally after commit; cannot be self-embedded",
         "dirty_state_at_generation": "package files intentionally uncommitted",
         "disposition": "REQUIRES_REVIEWED_115_RUNTIME_V2",
         "policy_handoff_status": "BLOCKED",
-        "selected_onnx_sha256": "NOT_READY",
+        "selected_checkpoint_step": SELECTED_STEP,
+        "selected_onnx_sha256": SELECTED_ONNX_SHA256,
         "robot_clearance": False,
         "files": [
             {

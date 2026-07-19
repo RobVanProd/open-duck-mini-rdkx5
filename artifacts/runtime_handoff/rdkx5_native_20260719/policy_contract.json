@@ -269,7 +269,7 @@
       "path": "policies/T2_EQUAL_512000.onnx",
       "producer_name": "open-duck-playground-ground-up",
       "producer_version": "",
-      "role": "persistent_evidence_checkpoint_not_single_deployment_selection",
+      "role": "selected_runtime_v2_review_checkpoint",
       "sha256": "99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de"
     },
     {
@@ -327,15 +327,15 @@
       "path": "policies/T2_EQUAL_1024000.onnx",
       "producer_name": "open-duck-playground-ground-up",
       "producer_version": "",
-      "role": "persistent_evidence_checkpoint_not_single_deployment_selection",
+      "role": "persistent_audit_sibling_not_selected_for_runtime",
       "sha256": "0dfc24bde5d839e4d346dd8c08d9a7d0222a3847764ec6738bfc7f8d947f4ece"
     }
   ],
   "policy_handoff_status": "BLOCKED",
-  "schema_version": "winner_v2_rdkx5_native_handoff.v1",
-  "selected_onnx_sha256": "NOT_READY",
-  "selection_reason": "The frozen evidence requires both persistent checkpoints and contains no authority to choose one as the deployment binary post hoc.",
-  "single_selected_deployment_checkpoint": null,
+  "schema_version": "winner_v2_rdkx5_native_handoff.v1.1",
+  "selected_onnx_sha256": "99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de",
+  "selection_reason": "Both persistence checkpoints passed the prospectively frozen native-representation matrix. The first ranking criterion selected 512000 on lower worst tracking p95; training and simulator reward had no weight.",
+  "single_selected_deployment_checkpoint": 512000,
   "state_contract": {
     "dtype": "float32",
     "initial_value": [

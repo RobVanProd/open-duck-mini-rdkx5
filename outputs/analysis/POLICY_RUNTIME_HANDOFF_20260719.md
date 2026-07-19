@@ -6,6 +6,24 @@ Disposition: `REQUIRES_REVIEWED_115_RUNTIME_V2`
 
 Robot clearance: `NO`
 
+## 2026-07-19 action-history correction addendum
+
+The runtime's independent assembler audit found that the original package
+metadata was one tick too recent for each embedded action-history slice. The
+golden traces and evaluator source are authoritative: `obs[41:55]`,
+`obs[55:69]`, and `obs[69:83]` contain final actions `t-2`, `t-3`, and `t-4`,
+while the separate recurrent `previous_action[t]` input remains final action
+`t-1`. A preregistered metadata/hash-chain correction now verifies both rules
+exactly over all 2,400 packaged ticks. It changes no ONNX, golden trace, P30
+fit, reference, behavior result, or authority boundary.
+
+The corrected package schema is `winner_v2_rdkx5_native_handoff.v1.1`; its
+replacement manifest SHA-256 is
+`d771d188218152c782c7d688440e2dd2083b47fd9b883749123f89226c6827c5`.
+The selected 512000-step ONNX remains byte-identical at
+`99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de`.
+See `WINNER_V2_ACTION_HISTORY_SEMANTICS_CORRECTION_CONTRACT_20260719.md`.
+
 ## 2026-07-19 selected-binary addendum
 
 The later prospective native-representation study removes the first blocker
@@ -46,7 +64,7 @@ The deterministic trace generator was rerun cleanly after it was added; all
 four cells again reproduced the frozen trace fields at zero error. See
 `outputs/analysis/winner_v2_runtime_handoff_trace_generation_20260719.json`.
 
-- Manifest SHA-256: `ba7143f5c653c0bb2f3f27930a7997dd5a2b90e3258bca516b7240bd0f21abd7`
+- Manifest SHA-256: `d771d188218152c782c7d688440e2dd2083b47fd9b883749123f89226c6827c5`
 - Package files hashed: 21, plus 13 external source artifacts.
 - CPU smoke: `PASS_CPU_HANDOFF_INSPECTION_BLOCKED_FOR_RUNTIME_REVIEW`.
 - Both ONNX graphs: exact names, shapes, dtypes, IR 10, opset 12, 40 nodes,
@@ -116,7 +134,7 @@ POLICY_HANDOFF_STATUS: BLOCKED
 DISPOSITION: REQUIRES_REVIEWED_115_RUNTIME_V2
 POLICY_REPO_COMMIT: e0badd7aa79ff791212b8d3822f9eefdc4c162e0
 ARTIFACT_ROOT: artifacts/runtime_handoff/rdkx5_native_20260719
-HANDOFF_MANIFEST_SHA256: ba7143f5c653c0bb2f3f27930a7997dd5a2b90e3258bca516b7240bd0f21abd7
+HANDOFF_MANIFEST_SHA256: d771d188218152c782c7d688440e2dd2083b47fd9b883749123f89226c6827c5
 SELECTED_CHECKPOINT_STEP: 512000
 SELECTED_ONNX_SHA256: 99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de
 INPUT_CONTRACT: obs float32[1,115] + previous_action float32[1,14] -> continuous_actions float32[1,14] + previous_action_out float32[1,14]

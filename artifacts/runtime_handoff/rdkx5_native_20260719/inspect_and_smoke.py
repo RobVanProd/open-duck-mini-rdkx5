@@ -102,16 +102,26 @@ def main() -> int:
     failures.extend(hash_failures)
 
     contract = json.loads((root / "policy_contract.json").read_text())
+    checks["schema_version_is_corrected_v1_1"] = (
+        manifest["schema_version"] == "winner_v2_rdkx5_native_handoff.v1.1"
+        and contract["schema_version"] == "winner_v2_rdkx5_native_handoff.v1.1"
+    )
     checks["disposition_requires_reviewed_115_v2"] = (
         contract["disposition"] == "REQUIRES_REVIEWED_115_RUNTIME_V2"
     )
-    checks["no_posthoc_single_checkpoint_selection"] = (
-        contract["selected_onnx_sha256"] == "NOT_READY"
-        and contract["single_selected_deployment_checkpoint"] is None
+    checks["selected_checkpoint_matches_prospective_policy_decision"] = (
+        contract["selected_onnx_sha256"]
+        == EXPECTED_POLICIES["policies/T2_EQUAL_512000.onnx"]
+        and contract["single_selected_deployment_checkpoint"] == 512000
+        and manifest["selected_checkpoint_step"] == 512000
+        and manifest["selected_onnx_sha256"]
+        == EXPECTED_POLICIES["policies/T2_EQUAL_512000.onnx"]
     )
     checks["robot_clearance_false"] = contract["authority"]["robot_clearance"] is False
 
     policy_results = []
+    history_max_error = 0.0
+    previous_action_history_max_error = 0.0
     for relative, expected_hash in EXPECTED_POLICIES.items():
         policy = root / relative
         model = onnx.load(str(policy))
@@ -155,6 +165,37 @@ def main() -> int:
         for command in [0.0, 0.08]:
             pack_path = root / "golden" / f"T2_EQUAL_{step}_x{command:.3f}.npz"
             with np.load(pack_path) as pack:
+                zeros = np.zeros(14, dtype=np.float32)
+                for tick in range(600):
+                    for start, lag in ((41, 2), (55, 3), (69, 4)):
+                        expected_history = (
+                            zeros if tick < lag else pack["final_action"][tick - lag]
+                        )
+                        history_max_error = max(
+                            history_max_error,
+                            float(
+                                np.max(
+                                    np.abs(
+                                        pack["obs"][tick, start : start + 14]
+                                        - expected_history
+                                    )
+                                )
+                            ),
+                        )
+                    expected_previous = (
+                        zeros if tick == 0 else pack["final_action"][tick - 1]
+                    )
+                    previous_action_history_max_error = max(
+                        previous_action_history_max_error,
+                        float(
+                            np.max(
+                                np.abs(
+                                    pack["previous_action_in"][tick]
+                                    - expected_previous
+                                )
+                            )
+                        ),
+                    )
                 state = np.zeros((1, 14), dtype=np.float32)
                 for tick in range(5):
                     expected_in = pack["previous_action_in"][tick][None]
@@ -218,6 +259,13 @@ def main() -> int:
         )
         failures.extend(f"{relative}:{item}" for item in local_failures)
 
+    checks["obs_action_histories_are_t_minus_2_3_4_all_2400_ticks"] = (
+        history_max_error == 0.0
+    )
+    checks["previous_action_is_t_minus_1_all_2400_ticks"] = (
+        previous_action_history_max_error == 0.0
+    )
+
     for name, passed in checks.items():
         if not passed:
             failures.append(name)
@@ -233,6 +281,11 @@ def main() -> int:
         "tolerance": TOLERANCE,
         "checks": checks,
         "policies": policy_results,
+        "history_semantics": {
+            "obs_t_minus_2_3_4_max_abs_error": history_max_error,
+            "previous_action_t_minus_1_max_abs_error": previous_action_history_max_error,
+            "ticks": 2400,
+        },
         "failures": failures,
         "authority": {
             "robot_clearance": False,

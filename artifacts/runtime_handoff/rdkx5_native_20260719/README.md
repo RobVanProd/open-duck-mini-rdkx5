@@ -28,9 +28,12 @@ outputs:
 ```
 
 The repository evidence requires both checkpoints to persist through the
-matrix. It does not select one checkpoint as the deployment binary. Choosing
-half or final after seeing the outcomes would be a new selection decision, so
-`SELECTED_ONNX_SHA256` remains `NOT_READY`. The two protected candidates are:
+matrix. A later prospective native-representation screen froze its ranking
+before outcomes; both checkpoints passed, and its first criterion selected the
+512000 graph on lower worst tracking p95. The selected runtime-v2 review binary
+is SHA-256
+`99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de`.
+The two protected persistence artifacts remain:
 
 | checkpoint | file | bytes | SHA-256 |
 |---:|---|---:|---|
@@ -81,11 +84,9 @@ margin is `[-0.021875, +0.0046875] m`; membership is unknown. Consequently
 
 Exact blockers:
 
-1. No single deployment checkpoint is selected; both graphs are persistence
-   evidence.
-2. The reviewed native runtime implements the frozen 101-D v1 contract, not
+1. The reviewed native runtime implements the frozen 101-D v1 contract, not
    this stateful 115-D v2 interface.
-3. The real-build torso COM/inertia audit is incomplete, so the policy
+2. The real-build torso COM measurement is incomplete, so the policy
    repository does not clear the robot.
 
 ## Observation contract
@@ -107,9 +108,9 @@ The host must provide raw float32 values. It must not normalize them again.
 | `6:13` | vx, vy, yaw rate, neck pitch, head pitch/yaw/roll | m/s, m/s, rad/s, rad; current command |
 | `13:27` | logical joint position minus home | rad, current sample, 14-joint order |
 | `27:41` | logical joint velocity × 0.05 | rad/s × 0.05 s, current sample |
-| `41:55` | final action t−1 | normalized action |
-| `55:69` | final action t−2 | normalized action |
-| `69:83` | final action t−3 | normalized action |
+| `41:55` | final action t−2 | normalized action |
+| `55:69` | final action t−3 | normalized action |
+| `69:83` | final action t−4 | normalized action |
 | `83:97` | bridge-realized target from preceding transition | absolute logical rad |
 | `97:99` | left/right contact | float32 1=contact, 0=no contact |
 | `99:101` | current gait phase | `[cos,sin]` |
@@ -149,7 +150,9 @@ and sign mapping; numerical similarity at reset is not a calibration proof.
 ## Stateful inference, phase, and reset
 
 `previous_action` is float32 `[1,14]` in normalized action units and the same
-joint order as the output. Initialize it to exact zeros. At tick `t`:
+joint order as the output. It contains final action `t-1`, separately from the
+older `t-2/t-3/t-4` action-history slices in the observation. Initialize every
+history and the recurrent input to exact zeros. At tick `t`:
 
 1. assemble `obs[t]` using current phase and the observer value from the
    preceding transition;
@@ -307,6 +310,6 @@ used for selection.
 ## Runtime review boundary
 
 The native-runtime agent can use this package to specify and review a versioned
-115-D v2 interface. A passing CPU verifier will establish tensor/semantic
-compatibility only. It will not select a deployment checkpoint, complete the
+115-D v2 interface around the selected 512000 graph. A passing CPU verifier
+will establish tensor/semantic compatibility only. It will not complete the
 real-build COM audit, change Gate 5 from `NOT_RUN`, or clear the robot.

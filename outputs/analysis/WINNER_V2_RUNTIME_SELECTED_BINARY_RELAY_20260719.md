@@ -11,7 +11,13 @@ G1/T2 composite graph for runtime-v2 review:
 - SHA-256: `99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de`
 - policy evidence commit: `e0badd7aa79ff791212b8d3822f9eefdc4c162e0`
 - formal result SHA-256: `38b7fc13522844fc3fe7be848f50d68d5cb26064ddb391dbf5e17ff6f31d284f`
-- handoff manifest SHA-256: `ba7143f5c653c0bb2f3f27930a7997dd5a2b90e3258bca516b7240bd0f21abd7`
+- handoff manifest SHA-256: `d771d188218152c782c7d688440e2dd2083b47fd9b883749123f89226c6827c5`
+
+The replacement manifest is the preregistered metadata-only correction of the
+action-history labels: the observation carries final actions `t-2/t-3/t-4`,
+and the separate recurrent input carries `t-1`. All 2,400 packaged rows pass
+both exact checks. The selected ONNX and all golden traces are byte-identical
+to the prior manifest chain.
 
 Both persistent checkpoints passed all eight frozen cells. The preregistered
 first ranking criterion selected 512000 because its worst pitch tracking p95
@@ -52,7 +58,7 @@ POLICY_HANDOFF_STATUS: BLOCKED
 DISPOSITION: REQUIRES_REVIEWED_115_RUNTIME_V2
 POLICY_REPO_COMMIT: e0badd7aa79ff791212b8d3822f9eefdc4c162e0
 ARTIFACT_ROOT: artifacts/runtime_handoff/rdkx5_native_20260719
-HANDOFF_MANIFEST_SHA256: ba7143f5c653c0bb2f3f27930a7997dd5a2b90e3258bca516b7240bd0f21abd7
+HANDOFF_MANIFEST_SHA256: d771d188218152c782c7d688440e2dd2083b47fd9b883749123f89226c6827c5
 SELECTED_CHECKPOINT_STEP: 512000
 SELECTED_ONNX: artifacts/runtime_handoff/rdkx5_native_20260719/policies/T2_EQUAL_512000.onnx
 SELECTED_ONNX_SHA256: 99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de

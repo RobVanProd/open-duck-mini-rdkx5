@@ -122,6 +122,16 @@ and robot authority remain unchanged. The other live blocker is unchanged:
 complete a source-backed as-built torso COM measurement and pass the frozen
 asymmetric bracket check.
 
+The runtime's independent full assembler found and localized a metadata defect
+in that package: its three embedded action-history slices were documented one
+tick too recently. The preregistered correction now matches both evaluator
+source and all 2,400 golden rows exactly: observation history is `t-2/t-3/t-4`
+and the separate recurrent input is `t-1`. The selected 512000-step ONNX and
+all golden evidence remain byte-identical. Corrected schema is v1.1 and the
+replacement manifest SHA-256 is `d771d188...c6827c5`. Fully recursive
+cross-CPU replay is still held for a separately frozen numeric-closure rule;
+the direct `1e-6` replay limit is not retroactively broadened.
+
 The 46-field component ledger remains valid, but it is no longer the only
 measurement route. Before any physical value was read, a smaller direct route
 was preregistered: isolate the complete powered-off torso at the modeled hip-
