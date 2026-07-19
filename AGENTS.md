@@ -2045,3 +2045,20 @@ Do not proceed to grounded walking until low-risk gates pass.
   selection weight. No hosted/Colab, GPU/iGPU, RDK-X5, robot, runtime, Gate 5,
   deployment or clearance is authorized. See
   `outputs/analysis/WINNER_V3_CPU_CURRICULUM_LAUNCH_CONTRACT_20260719.md`.
+- 2026-07-19: The only authorized winner-v3 CPU curriculum completed without
+  retry as `PASS_WINNER_V3_RECURRENT_ADAPTER_TRAINING_ARTIFACT`. PID 723798
+  executed all three frozen stages in 2,627.284 seconds, emitted exact stage
+  steps, preserved both restore boundaries at zero tree error, and produced
+  finite stateful ONNX graphs at full-domain steps 1,003,520
+  (`3d5e6dd4...ab77b04d`) and 2,007,040 (`fb725c5e...195544f0`). An independent
+  extraction audit passes archive SHA-256 `bee604f0...ce48d91`, 23,521,941
+  bytes / 171 safe members, every checkpoint and graph hash, finite leaves and
+  initializers, exact three-input/three-output ABI, one logged PID, and both
+  stage continuities. Decision:
+  `PASS_WINNER_V3_RECURRENT_ADAPTER_TRAINING_ARTIFACT_CHECK`. Training reward
+  has no selection weight and formal behavior cells remain zero. This
+  authorizes only the frozen 1,024-cell CPU behavior evaluation. It is not a
+  supported-configuration pass; hosted/Colab, GPU/iGPU, RDK-X5, robot, runtime,
+  Gate 5, deployment and clearance remain unauthorized. See
+  `outputs/analysis/WINNER_V3_RECURRENT_ADAPTER_TRAINING_RESULT_20260719.md` and
+  `outputs/analysis/WINNER_V3_RECURRENT_ADAPTER_TRAINING_ARTIFACT_CHECK_20260719.md`.

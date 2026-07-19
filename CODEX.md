@@ -48,7 +48,8 @@ a committed read-only audit corrected it to the protected 512K source count
 without rerunning the smoke.
 
 The coupled configuration/actuator/sensor curriculum implementation is now
-hash-frozen and its fresh formal CPU contract passes before outcome work. It targets named inertial body 2, represents
+hash-frozen and its fresh formal CPU contract passes before outcome work. It
+targets named inertial body 2, represents
 the full torso inertia tensor through principal inertia plus inertial-frame
 quaternion, uses one all-link mass scale, crosses the measured P30/P31-34
 actuator interval with fixed episode delays/noise/native quantization, records
@@ -59,16 +60,16 @@ episode samples at each of 0/25/50/100% scale, full-inertia validity and bounds,
 native quantization and the measured bridge equation. Formal PPO steps and
 behavior cells remain zero.
 
-The single-process launch contract and driver validation now also pass with
-formal training steps and behavior cells still at zero. The driver is
-hash-bound to the protected archive, reference features, formal composed tree,
-preregistration and both prerequisite CPU contracts; it has no subprocess or
-retry surface and sees only `TFRT_CPU_0`.
+The single seed-100 no-retry CPU curriculum and its independent artifact check
+now pass. One process completed 245,760 steps at 25%, 245,760 at 50%, and
+2,007,040 at full domain in 2,627.284 seconds total. Both stage transitions are
+bit-exact, all checkpoints and ONNX initializers are finite, and the two
+persistent stateful exports have SHA-256
+`3d5e6dd4...ab77b04d` (1,003,520) and `fb725c5e...195544f0`
+(2,007,040). Training reward remains telemetry with no selection weight. No
+formal behavior cell has run.
 
-Next, run that single seed-100 no-retry CPU curriculum. Preserve the
-preregistered 25%/50%/100% schedule and export only the two full-domain
-checkpoints at 1,003,520 and 2,007,040 relative steps. After its artifact
-contract passes, run the exact 1,024-cell CPU matrix. Both checkpoints must pass
+Next, run the exact frozen 1,024-cell CPU matrix. Both checkpoints must pass
 nominal, 24 fixed anchors, 16 discovery coupled samples, 16 independent heldout
 samples and six sensor/transport conditions under both actuator plants and
 x=0/.074/.077/.080. No closest result advances.
