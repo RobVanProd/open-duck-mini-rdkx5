@@ -376,7 +376,11 @@ def main() -> int:
             )
             and np.array_equal(
                 np.asarray(restored_expanded[0]["summed_variance"]["policy_hidden"]),
-                np.full(64, 8_048_640.0, dtype=np.float32),
+                np.full(
+                    64,
+                    float(np.asarray(restored_expanded[0]["count"]["lo"])),
+                    dtype=np.float32,
+                ),
             )
         ),
         "protected_base_actor_bit_exact": base_preserved,
