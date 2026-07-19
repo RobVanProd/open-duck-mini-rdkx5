@@ -31,22 +31,32 @@ inertia scales with positive-definite, triangle-valid coupled sampling.
 Optional non-locomotion configurations are represented by aggregate dynamics,
 not operator-entered component inventories.
 
-Next, preregister one replacement-policy study before reading any candidate
-outcome. It must freeze the architecture, domain sampler, optional-configuration
-anchors, fit/command/checkpoint matrix, held-out cells, 73 automatic-response
-bound derivations, pass/fail rule, stop rules, and artifact identities. The
-current graph is the mandatory first baseline and is already held by its
-hash-bound break-radius result. Only a replacement that passes every frozen
-nominal, signed/coupled configuration, actuator, command, safety and held-out
-cell may first publish a policy-clearance decision and later
-open_duck_x5.supported_configuration_envelope.v2 under the runtime's frozen
-Git-ancestry contract. Physical
-calibration may compare with that envelope but may never widen it.
+The replacement study is now prospectively frozen before new candidate
+outcomes. Its single candidate is R64_ZERO_INIT_RECURRENT_ADAPTER: restore the
+protected T2_EQUAL 512K PPO checkpoint, add a 64-state recurrent adapter with
+an exactly zero action head so step-zero actions preserve the base, then allow
+the base actor and adapter to train together without oracle/configuration
+inputs. Reward, privileged critic, commands and the baked hard-vector,
+actual-centered guard, conservative envelope and x=0 deadband remain fixed.
+
+Next, implement and run the preregistered CPU contract. It must prove exact
+restore, step-zero action equivalence, hidden-state evolution, finite 1,024-step
+updates to base and adapter leaves, CPU-only ONNX/JAX ABI agreement, and the
+frozen throughput ceiling. Only a contract pass authorizes the single no-retry
+CPU curriculum and then the exact 1,024-cell CPU matrix. Both full-domain
+checkpoints must pass nominal, 24 fixed anchors, 16 discovery coupled samples,
+16 independent heldout samples and six sensor/transport conditions under both
+actuator plants and x=0/.074/.077/.080. No closest result advances.
+
+Only a complete pass may begin the selected-policy commit, later clearance
+artifact commit, and still-later supported_configuration_envelope.v2 commit
+under the runtime Git-ancestry contract. Physical calibration may compare with
+that envelope but may never widen it.
 
 There is currently no passed supported-configuration envelope. Runtime's
 pending sentinels must remain. No robot, RDK-X5, serial, torque, motion,
 automatic calibration, X5 preflight, Gate 5, deployment, local GPU/iGPU,
-hosted training, or robot clearance is authorized by the domain-basis result.
+hosted training, or robot clearance is authorized by the preregistration.
 ```
 
 Robotics operating model:

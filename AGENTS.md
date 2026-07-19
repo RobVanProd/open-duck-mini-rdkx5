@@ -1965,3 +1965,21 @@ Do not proceed to grounded walking until low-risk gates pass.
   calibration, X5 preflight, Gate 5, deployment and robot use remain
   unauthorized. See
   `outputs/analysis/WINNER_V3_SUPPORTED_CONFIGURATION_BASIS_20260719.md`.
+- 2026-07-19: The replacement study is prospectively frozen before any new
+  candidate outcome as `R64_ZERO_INIT_RECURRENT_ADAPTER`. It restores the
+  protected T2_EQUAL 512K checkpoint, adds one deployable 64-state recurrent
+  adapter whose action head is exactly zero at initialization, preserves the
+  PPO reward/critic and baked hard-vector/actual-centered/envelope/deadband
+  stack, and permits no oracle or true configuration input. One CPU-only,
+  seed-100, no-retry curriculum scales the evidence-derived configuration
+  domain through 25%, 50%, then full range. Both checkpoints at 1,003,520 and
+  2,007,040 full-domain steps must pass the exact 1,024-cell matrix: nominal,
+  24 fixed aggregate anchors, 16 discovery coupled samples, 16 independently
+  seeded heldout samples, and six native sensor/transport conditions, crossed
+  with both actuator plants and x=0/.074/.077/.080. Every prior 600-tick gate
+  stays unchanged; all-joint current p95 must also remain <=.65 A. No closest
+  result can advance. Only a complete pass can begin the separate selected
+  policy -> clearance -> envelope Git sequence. The CPU implementation
+  contract is next. Colab/hosted compute, GPU/iGPU, RDK-X5, robot, serial,
+  torque, motion, Gate 5 and deployment remain unauthorized. See
+  `outputs/analysis/WINNER_V3_VARIABLE_CONFIGURATION_REPLACEMENT_PREREGISTRATION_20260719.md`.
