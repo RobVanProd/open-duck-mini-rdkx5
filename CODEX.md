@@ -104,21 +104,23 @@ phase/P30 semantics, four lossless 600-tick traces, compact adjacent vectors,
 and a CPU fail-closed verifier. It passes with zero ONNX golden/state/chain
 error and exact x=0 zeros.
 
-The old behavior tables do not contain a checkpoint-level tie-break, so no
-checkpoint is selected post hoc. A prospective selection screen is now frozen
-from native RDK-X5 input representation: BNO055 gyro/acceleration and STS3215
-position/velocity register resolution only. Its zero-behavior-cell contract
-passes with exact source graph semantics, zero NumPy quantizer error, exact x=0
-zeros, and finite 256-tick state chains on CPU. Only its 16-cell matrix may run
-next. Both checkpoints must pass before the preregistered lower-worst-tracking,
-higher-minimum-vx rule can select one original graph. Until then,
-SELECTED_ONNX_SHA256 remains NOT_READY.
+The old behavior tables did not contain a checkpoint-level tie-break, so the
+project did not select one post hoc. The prospective native-representation
+screen has now completed once: 16/16 cells and all 9,600 trace rows pass under
+the two measured plant fits. Both persistent checkpoints pass all eight sibling
+cells. The frozen first criterion selects the original 512000-step graph on
+lower worst tracking p95, .1809259653 versus .1818299592 rad. The selected
+ONNX SHA-256 is
+99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de.
+The finite-representation quantizer remains evaluation-only; it is not part of
+the deployed graph. Training and simulator reward had no selection weight.
 
-The runtime team may use the existing handoff package to review a versioned
-115-D v2 interface, but neither the package nor the selection contract changes
-Gate 5, runtime deployment, or robot authority. The other live blocker is
-unchanged: complete the source-backed 46-field as-built torso COM/inertia
-measurement and pass the frozen asymmetric bracket check.
+The runtime team may now accept the selected original graph through its
+versioned 115-D v2 review using the existing handoff package and selected-
+binary relay. Selection is not runtime acceptance. Gate 5, runtime deployment,
+and robot authority remain unchanged. The other live blocker is unchanged:
+complete the source-backed 46-field as-built torso COM/inertia measurement and
+pass the frozen asymmetric bracket check.
 
 No training, hosted allocation, robot, RDK-X5, local GPU or iGPU access is
 authorized. Robot clearance remains NO.

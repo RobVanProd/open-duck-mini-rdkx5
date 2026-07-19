@@ -1836,3 +1836,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   See
   `outputs/analysis/WINNER_V2_NATIVE_QUANTIZED_CHECKPOINT_SELECTION_PREREGISTRATION_20260719.md`
   and `outputs/analysis/WINNER_V2_NATIVE_QUANTIZED_EVAL_CONTRACT_20260719.md`.
+- 2026-07-19: The frozen native-representation selection completes once with
+  all 16/16 cells and 9,600/9,600 trace rows passing. Both persistent
+  checkpoints pass all eight sibling cells. The preregistered first criterion
+  selects the original 512000-step graph because worst tracking p95 is
+  .1809259653 rad versus .1818299592 rad at 1024000; reward has no selection
+  weight. `SELECTED_ONNX_SHA256` is now
+  `99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de`.
+  The eval quantizer is not deployed. This removes only the checkpoint-choice
+  blocker: reviewed stateful 115-D runtime-v2 acceptance, all 46 real-build COM
+  inputs, and Gate 5 remain incomplete. Robot clearance remains NO; no robot,
+  RDK-X5, motor, torque, GPU or iGPU access is authorized. See
+  `outputs/analysis/WINNER_V2_NATIVE_QUANTIZED_CHECKPOINT_SELECTION_RESULT_20260719.md`
+  and `outputs/analysis/WINNER_V2_RUNTIME_SELECTED_BINARY_RELAY_20260719.md`.

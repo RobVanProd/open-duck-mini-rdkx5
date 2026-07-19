@@ -6,6 +6,18 @@ Disposition: `REQUIRES_REVIEWED_115_RUNTIME_V2`
 
 Robot clearance: `NO`
 
+## 2026-07-19 selected-binary addendum
+
+The later prospective native-representation study removes the first blocker
+listed in this document. Both checkpoints passed all eight frozen sibling
+cells, and the preregistered first criterion selected the original 512000-step
+graph. `SELECTED_ONNX_SHA256` is now
+`99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de`.
+See `WINNER_V2_RUNTIME_SELECTED_BINARY_RELAY_20260719.md` for the exact relay.
+The reviewed runtime-v2 acceptance and 46-field real-build COM measurement
+remain incomplete, so the overall handoff status and robot clearance do not
+change.
+
 The policy-side response to native-runtime `Comms.md` is complete and committed
 as a hash-bound package at
 `artifacts/runtime_handoff/rdkx5_native_20260719/`. The request was read from
@@ -20,10 +32,13 @@ contract. Both persistent graphs have mandatory static float32 inputs
 `obs [1,115]` and `previous_action [1,14]`, and outputs
 `continuous_actions [1,14]` and `previous_action_out [1,14]`.
 
-No single deployment checkpoint is selected. The frozen policy evidence uses
-both 512000 and 1024000 as persistence checkpoints and contains no authority to
-choose one post hoc. Therefore `SELECTED_ONNX_SHA256` is `NOT_READY`; both exact
-candidate binaries and their hashes are included for runtime review.
+The original package includes both 512000 and 1024000 persistence checkpoints
+because its source behavior tables contained no authority to choose one post
+hoc. The later prospective native-representation screen selected 512000 under
+a criterion frozen before its outcomes. Both exact binaries remain in the
+package for audit, but only
+`T2_EQUAL_512000.onnx` (`99d3afce...304de`) is the selected runtime-v2 review
+candidate.
 
 ## Package checks
 
@@ -85,10 +100,9 @@ non-identity limiter is compatible with the evidence.
 
 ## Remaining blockers
 
-1. No single deployment checkpoint has been selected.
-2. The reviewed native runtime remains the frozen 101-D v1 implementation; a
+1. The reviewed native runtime remains the frozen 101-D v1 implementation; a
    reviewed 115-D v2 implementation has not passed its own contract.
-3. The real-build torso COM/inertia input audit still has exactly 46 missing
+2. The real-build torso COM/inertia input audit still has exactly 46 missing
    fields and reports no numerical estimate. Policy-side robot clearance is
    therefore NO.
 
@@ -100,11 +114,12 @@ cannot change Gate 5 from `NOT_RUN`, select a robot binary, or clear the robot.
 ```text
 POLICY_HANDOFF_STATUS: BLOCKED
 DISPOSITION: REQUIRES_REVIEWED_115_RUNTIME_V2
-POLICY_REPO_COMMIT: <full handoff commit reported after commit>
+POLICY_REPO_COMMIT: e0badd7aa79ff791212b8d3822f9eefdc4c162e0
 ARTIFACT_ROOT: artifacts/runtime_handoff/rdkx5_native_20260719
 HANDOFF_MANIFEST_SHA256: ba7143f5c653c0bb2f3f27930a7997dd5a2b90e3258bca516b7240bd0f21abd7
-SELECTED_ONNX_SHA256: NOT_READY
+SELECTED_CHECKPOINT_STEP: 512000
+SELECTED_ONNX_SHA256: 99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de
 INPUT_CONTRACT: obs float32[1,115] + previous_action float32[1,14] -> continuous_actions float32[1,14] + previous_action_out float32[1,14]
 ROBOT_CLEARANCE_IN_POLICY_REPO: false
-UNRESOLVED_BLOCKERS: no single deployment checkpoint selected; reviewed native runtime is 101-D v1, not stateful 115-D v2; real-build torso COM/inertia audit has 46 missing inputs and no numerical estimate
+UNRESOLVED_BLOCKERS: reviewed native runtime v2 acceptance incomplete; real-build torso COM/inertia audit has 46 missing inputs and no numerical estimate; Gate 5 NOT_RUN and unauthorized
 ```
