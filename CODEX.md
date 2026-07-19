@@ -86,6 +86,14 @@ paths and retains Pi Zero plus stock battery assets. Neither source contains an
 RDK mount, installed masses, placements, datum or uncertainties; zero of 46
 measurement fields can be promoted. Do not treat the existence of the Frank Fu
 RDK runtime adaptation as mechanical equivalence evidence for this build.
+
+A 2026-07-19 policy-readiness re-audit reran the fail-closed physical-COM
+calculator and all five CPU contract tests. The untouched template still has
+exactly 46 missing fields, reports no numerical estimate, and leaves status
+`HOLD_REAL_BUILD_COM_INPUTS_INCOMPLETE`. The composite remains an offline
+hardware candidate; robot clearance remains NO. See
+`outputs/analysis/POLICY_ROBOT_READINESS_REAUDIT_20260719.md`.
+
 The legacy 101x14.v1 golden vector already passes and remains only a legacy
 stack contract. No training, hosted allocation, robot, RDK-X5, local GPU or
 iGPU access is authorized. Robot clearance remains NO.

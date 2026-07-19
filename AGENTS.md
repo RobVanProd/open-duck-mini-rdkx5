@@ -1797,3 +1797,12 @@ Do not proceed to grounded walking until low-risk gates pass.
   this public material is already sufficient mechanical evidence. Do not use
   stock geometry, nominal board weights or image scale inference. See
   `outputs/analysis/FRANK_FU_RDK_X5_BUILD_SOURCE_AUDIT_20260717.md`.
+- 2026-07-19: The policy robot-readiness re-audit leaves the evidence boundary
+  unchanged. The G1/T2 composite and P30 observer remain a passing offline
+  hardware candidate, but the fail-closed real-build COM calculator still
+  finds exactly 46 missing physical fields and emits no numerical estimate.
+  Decision remains `HOLD_REAL_BUILD_COM_INPUTS_INCOMPLETE`; robot clearance is
+  NO. The next valid policy datum is the powered-off build-specific torso mass,
+  X-placement, datum and uncertainty record, not another simulator tune or a
+  nominal web specification. See
+  `outputs/analysis/POLICY_ROBOT_READINESS_REAUDIT_20260719.md`.

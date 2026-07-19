@@ -1,0 +1,47 @@
+{
+  "authority": {
+    "gate5_deployment_robot_rdk": false,
+    "model_correction": false,
+    "robot_clearance": false,
+    "training_gpu_igpu_hosted": false
+  },
+  "decision": "MEASURE_BUILD_SPECIFIC_MASS_AND_X_PLACEMENT",
+  "evaluated_source": {
+    "branch": "codex/torso-com-decode-probe",
+    "commit": "c86c3c9"
+  },
+  "measurement_gate": {
+    "allowed_error_interval_m": [
+      -0.021875000000000002,
+      0.004687500000000001
+    ],
+    "calculator_contract_tests_passed": 5,
+    "input_template": {
+      "missing_or_invalid_field_count": 46,
+      "path": "outputs/analysis/real_build_torso_com_measurement_template.json",
+      "sha256": "d9abf072ec2e9123f5214c8678860a7e043e83d4fd6a0400f49c98e2f6f21137"
+    },
+    "numerical_estimate_reported": false,
+    "tool": {
+      "path": "tools/evaluate_real_build_torso_com.py",
+      "sha256": "6c43b34a4fb1ffb9f9d84619e1c5c53d7812ecda0050e76bf4d98505b90a213a"
+    }
+  },
+  "policy": {
+    "candidate_class": "OFFLINE_HARDWARE_CANDIDATE",
+    "persistent_checkpoints": [
+      512000,
+      1024000
+    ],
+    "winner": "G1_EXACT_BOUNDARY/T2_EQUAL_COMPOSITE"
+  },
+  "robot_ready": false,
+  "schema_version": "policy_robot_readiness_reaudit.v1",
+  "status": "HOLD_REAL_BUILD_COM_INPUTS_INCOMPLETE",
+  "verified_metrics": {
+    "minimum_moving_mean_vx_m_s": 0.08408497237367556,
+    "observer_cross_fit_cells_passed": 32,
+    "rate_excess_rad_s": 0.0,
+    "worst_tracking_p95_rad": 0.1831700384616852
+  }
+}
