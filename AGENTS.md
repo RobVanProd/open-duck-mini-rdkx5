@@ -1862,3 +1862,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   tokens are fixed. Only the blank-template CPU calculator/contract is
   authorized next; robot clearance remains NO. See
   `outputs/analysis/REAL_BUILD_TORSO_COM_DIRECT_REACTION_PREREGISTRATION_20260719.md`.
+- 2026-07-19: The direct-reaction blank-template CPU contract passes all 14
+  checks with zero formal physical readings and no numerical estimate. Source
+  URDF/XML and break-radius hashes are exact; the datum remains X=-.019 m;
+  eight direct-route unit cases plus the five original ledger cases pass. The
+  direct template requires 15 numeric readings/uncertainties rather than 40
+  per-component numbers, while retaining exact specimen isolation, three
+  reload trials, total-mass consistency and evidence requirements. Status is
+  `HOLD_REAL_BUILD_DIRECT_COM_INPUTS_INCOMPLETE` until the powered-off operator
+  packet is populated. No physical action by the agent or robot/RDK-X5/Gate 5
+  authority follows. See
+  `outputs/analysis/REAL_BUILD_TORSO_COM_DIRECT_REACTION_CONTRACT_20260719.md`
+  and
+  `outputs/analysis/REAL_BUILD_TORSO_COM_DIRECT_REACTION_MEASUREMENT_PACKET_20260719.md`.

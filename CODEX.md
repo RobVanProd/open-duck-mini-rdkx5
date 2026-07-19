@@ -131,8 +131,13 @@ XML both place the physically identifiable bilateral hip-yaw-axis datum at
 X=-.019 m in `trunk_assembly`. Exact specimen, support-span, scale uncertainty,
 independent-total-mass, trial-overlap and unchanged COM comparison rules are
 frozen. Only its blank-template CPU calculator and zero-measurement contract
-may be implemented next; no physical value, robot action or clearance follows
-from preregistration.
+was authorized next. That contract now passes all 14 checks: eight direct-route
+unit cases and the five original component-ledger cases pass, source hashes and
+datum are exact, and the blank template reports no numerical estimate. The
+direct route needs 15 numeric readings/uncertainties instead of 40 component
+numbers. The remaining policy-side datum must come from the powered-off
+operator measurement packet; no physical value, robot action or clearance has
+been inferred.
 
 No training, hosted allocation, robot, RDK-X5, local GPU or iGPU access is
 authorized. Robot clearance remains NO.
