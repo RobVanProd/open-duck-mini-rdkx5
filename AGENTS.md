@@ -1914,10 +1914,14 @@ Do not proceed to grounded walking until low-risk gates pass.
   across all 16,800 selected raw STS goal words. Formal selected moving-cell
   target/P30 maxima are `5.9604645e-7`/`5.6025073e-7 rad`, far below the frozen
   half-count boundary. The 1024000 sibling remains audit-only. Runtime tests
-  pass 247/247 and its artifact manifest is clean. The dedicated reduced result
-  is byte-reproducible; its observation gate is mislabeled `<=1e-6` although
-  all four values are exactly zero and policy enforces exact equality. Correct
-  that reporting-only defect before freezing assets. This closes only the
+  pass 254/254 and its artifact manifest is clean. Runtime commit
+  `264ac40074992c72b295a7cbeb141df59ce3d613` corrects the dedicated reduced
+  result to the frozen `teacher_forced_observation_exact_zero` gate. Policy
+  independently reproduces corrected reduced SHA-256
+  `1292772e54f3734f2e48b5b0d75fb0c931949d3b7820598c4a9040a8b765dc5e`;
+  every one of its four observation values is exactly zero, the superseded
+  `teacher_forced_observation_at_most_1e_6` key is absent, and the formal full
+  result/hash is unchanged. This closes only the
   reviewed CPU recursive-numeric blocker. Powered-off direct COM, a reviewed
   frozen asset set, X5 CPU-only replay, Gate 5, deployment and robot clearance
   remain incomplete and unauthorized. See
@@ -1925,10 +1929,11 @@ Do not proceed to grounded walking until low-risk gates pass.
 - 2026-07-19: Policy review holds runtime offline asset-lock SHA-256
   `4da893b3...de940` as `HOLD_STALE_OFFLINE_ASSET_LOCK`. It was created
   concurrently and pins superseded policy result commit `fab1fea` / hash
-  `17ddae42...babf06a`, while the current dedicated-artifact acceptance at
-  `bc4132b` hashes to `852b7108...8f667`. The reduced runtime artifact also
-  retains the non-frozen `teacher_forced_observation_at_most_1e_6` gate name;
-  every value is actually zero, so the recursive PASS is unchanged. Correct
-  that reporting-only gate, let policy revalidate, and only then regenerate the
-  asset lock. Do not deploy or plan X5 preflight from the stale lock. See
+  `17ddae42...babf06a`, while the dedicated-artifact acceptance then at
+  `bc4132b` hashed to `852b7108...8f667`. The reduced-report defect is now
+  corrected and independently revalidated; the old lock nevertheless remains
+  explicitly stale/revoked because it predates the corrected runtime artifact,
+  current verifier/test/manifest identities, and this final policy acceptance
+  identity. Regenerate the asset lock against those current identities. Do not
+  deploy or plan X5 preflight from the stale lock. See
   `outputs/analysis/WINNER_V2_OFFLINE_ASSET_LOCK_REVIEW_20260719.md`.

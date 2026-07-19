@@ -91,7 +91,8 @@
       "manifest_exact": true,
       "schema_exact": true,
       "selected_policy_exact": true,
-      "status_exact": true
+      "status_exact": true,
+      "teacher_forced_observation_gate_exact_zero_only": true
     },
     "top_level": {
       "all_fault_injections_pass": true,
@@ -134,8 +135,8 @@
   "independent_policy_environment": {
     "cuda_visible_devices": "",
     "execution_provider": "CPUExecutionProvider",
-    "numpy": "2.4.6",
-    "onnxruntime": "1.26.0",
+    "numpy": "2.5.1",
+    "onnxruntime": "1.27.0",
     "platform": "Linux-7.0.0-27-generic-x86_64-with-glibc2.43",
     "python": "3.12.13"
   },
@@ -153,7 +154,7 @@
     "ticks": 2400
   },
   "policy_preregistration_commit": "182459eb4d5eb422a6936b7744f5730d22a9bb27",
-  "reduced_reporting_note": "The dedicated reduced artifact is complete and byte-reproducible, but its teacher-forced observation gate is named and implemented as at_most_1e_6 instead of exact zero. All four formal and independent values are exactly 0.0, and this checker applies exact equality, so the discrepancy cannot change this decision. A reporting-only runtime correction is requested before the asset set is frozen.",
+  "reduced_reporting_note": "The dedicated reduced artifact is complete and byte-reproducible. Its teacher-forced observation gate now requires exact zero, the old at_most_1e_6 key is absent, and all four formal and independent values are exactly 0.0. The correction changed no formal outcome cell.",
   "remaining_blockers": [
     "completed powered-off direct-reaction torso COM packet",
     "policy-side robot_clearance=true decision",
@@ -161,17 +162,17 @@
     "X5 CPU-only replay under this same frozen native-resolution metric"
   ],
   "runtime_commit_topology_note": "The request and formal result are sibling commits from the same runtime baseline and were subsequently merged. The dedicated reduced-result commit descends from that merge and therefore contains both lineages. Formal validity remains bound to the earlier policy preregistration commit.",
-  "runtime_reduced_result_commit": "9c637ec4a161d20b24b06e91dc309a49c46cf981",
+  "runtime_reduced_result_commit": "264ac40074992c72b295a7cbeb141df59ce3d613",
   "runtime_reduced_result_path": "artifacts/gates/phase_5_policy/winner_v2_recursive_cross_cpu_closure_20260719.json",
-  "runtime_reduced_result_sha256": "4d403623eb4822befde4b633425e344d010140316d7a4c1e48f4354e76285ace",
+  "runtime_reduced_result_sha256": "1292772e54f3734f2e48b5b0d75fb0c931949d3b7820598c4a9040a8b765dc5e",
   "runtime_request_commit": "e9dc0735a177bb4215e24e2dd8406da01704d2f1",
   "runtime_result_commit": "f8def264c856db3905301f5473f5eb1775b3eec0",
   "runtime_result_path": "artifacts/gates/phase_5_policy/winner_v2_runtime_v2_verification_20260719.json",
   "runtime_result_sha256": "e1842ca64e91056b96c297666803bdeec7c5ff2950d4dfe32e27044379049b14",
   "runtime_source_sha256": {
-    "artifacts_manifest.sha256": "fbc0369b07ad4b6586e0a9244e60052094b1d2236350a7ba8d7fe3a55f2ced95",
-    "test_winner_v2.py": "4f2da30687bf87c0fd8149dcce2966e22f4b950c10dda2ab91152119226f04fc",
-    "winner_v2_verifier.py": "5f38094f98e939322c86234438207dabae8d96c9a7e65d1a77119e0323e96259"
+    "artifacts_manifest.sha256": "e8e07170df3c218f2a0a2246a1385ac8bc8983f6735b7b6898ce0db2ce153720",
+    "test_winner_v2.py": "c174785969050eb6006166d6896219ace369695db1d2196a25f315d45faf3874",
+    "winner_v2_verifier.py": "44d185e61cf737c3d8ece664d8e8d10837a3e0087d96faea1dae02348a496a88"
   },
   "schema_version": "winner_v2.recursive_cross_cpu_closure_result.v1",
   "status": "PASS_RECURSIVE_BIT_EXACT_WIRE_CLOSURE"

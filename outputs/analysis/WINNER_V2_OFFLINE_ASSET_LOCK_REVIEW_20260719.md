@@ -10,13 +10,14 @@ the preregistered exact-zero teacher-forced observation gate.
 ## Current issues
 
 - `current_policy_acceptance_hash_exact`
-- `reduced_observation_gate_exact_zero`
+- `runtime:src/open_duck_x5/winner_v2_verifier.py`
+- `runtime_reduced_recursive_result_hash_exact`
 
 Locked policy result: `fab1feaa8d136fed0ab33d5590d0eec88ef90d8f` /
 `17ddae42b67cd17c559ca28be07f8e9439140c371745f37018a3d9eedbabf06a`.
 
 Current policy result SHA-256:
-`852b71085db8458f53a71b5964bbb9a2038c7d9fcd8ffae5e2a4e3fd1ef8f667`.
+`5380897c21d3e438dbc4216ba049bc14fb6beb227a13407943d4d092519b7ddc`.
 
 The present hold does not change the accepted recursive CPU outcome. It blocks
 freezing a stale deployment asset set. No formal outcome rerun, threshold

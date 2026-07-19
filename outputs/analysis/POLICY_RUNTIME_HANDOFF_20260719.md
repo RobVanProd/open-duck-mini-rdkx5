@@ -34,17 +34,21 @@ reproduced the same decision on Linux CPU. Both selected cells have zero raw
 STS goal mismatches over 16,800 words. Decision is
 `PASS_RECURSIVE_BIT_EXACT_WIRE_CLOSURE`.
 
-Runtime commit `9c637ec` also supplies the requested dedicated reduced artifact
-at SHA-256 `4d403623...85ace`, byte-reproducible from the formal full result.
-Its teacher-forced observation gate is labeled `<=1e-6` rather than exact zero;
-all four recorded values are exactly `0.0`, and policy applies exact equality,
-so the decision is unchanged. That reporting-only defect must be corrected
-before the runtime/policy/config asset set is frozen.
+Runtime commit `264ac40074992c72b295a7cbeb141df59ce3d613` supplies the
+corrected dedicated reduced artifact at SHA-256
+`1292772e54f3734f2e48b5b0d75fb0c931949d3b7820598c4a9040a8b765dc5e`,
+byte-reproducible from the unchanged formal full result. Its teacher-forced
+observation gate is exactly `teacher_forced_observation_exact_zero`; all four
+recorded values are exactly `0.0`, and the superseded at-most-`1e-6` key is
+absent. Policy independently revalidated the correction without changing any
+formal outcome cell.
 
 The runtime's first hash-only asset lock is not accepted. It pins the earlier
-`fab1fea` policy-result hash and fails closed against the current `bc4132b`
-result, so policy records `HOLD_STALE_OFFLINE_ASSET_LOCK`. Correct the reduced
-exact-zero gate and regenerate the lock only after policy revalidation.
+`fab1fea` policy-result hash and predates the corrected runtime artifact and
+current verifier/test/manifest identities, so policy records
+`HOLD_STALE_OFFLINE_ASSET_LOCK`. The exact-zero correction and policy
+revalidation are complete; regenerate a fresh lock against this final policy
+acceptance identity.
 
 ## 2026-07-19 selected-binary addendum
 

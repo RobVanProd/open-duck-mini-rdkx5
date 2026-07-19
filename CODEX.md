@@ -148,22 +148,25 @@ pass `PASS_RECURSIVE_BIT_EXACT_WIRE_CLOSURE`. All four 600-tick cells run; the
 selected 512000 graph preserves x=0 exactly and produces zero mismatches over
 all 16,800 selected raw STS goal words on both CPUs. Formal moving-cell target
 and P30 maxima are `5.9604645e-7` and `5.6025073e-7 rad`; Linux target drift is
-zero and P30 drift is `5.9576471e-8 rad`. Runtime tests pass 247/247 and the
-artifact manifest is clean. The dedicated reduced artifact is byte-
-reproducible; its teacher-forced observation gate is labeled `<=1e-6` rather
-than exact zero, but all four formal and independent values are exactly zero
-and policy enforces the frozen equality. Correct that reporting-only defect
-before freezing assets. This closes the reviewed CPU recursive-numeric
+zero and P30 drift is `5.9576471e-8 rad`. Runtime tests pass 254/254 and the
+artifact manifest is clean. Runtime commit
+`264ac40074992c72b295a7cbeb141df59ce3d613` supplies the byte-reproducible
+corrected reduced artifact at SHA-256
+`1292772e54f3734f2e48b5b0d75fb0c931949d3b7820598c4a9040a8b765dc5e`.
+Its gate is now the frozen `teacher_forced_observation_exact_zero`; all four
+values are exactly zero, and the old at-most-`1e-6` key is absent. The formal
+full result and hash are unchanged. This closes the reviewed CPU recursive-numeric
 blocker only. The next policy datum is the powered-off direct COM packet; X5
 CPU-only replay under the same metric and a reviewed frozen asset set remain
 required before Gate 5 can be considered.
 
 The first runtime offline asset lock is deliberately held, not accepted. It
 pins the superseded `fab1fea` policy result and fails its own verifier against
-the current `bc4132b` result; it also predates correction of the reduced
-artifact's exact-zero observation-gate label. Policy decision is
-`HOLD_STALE_OFFLINE_ASSET_LOCK`. Regenerate the reduced report without changing
-formal cells, revalidate policy, then build a fresh lock. The recursive CPU
+the current policy result. The reduced-report correction and policy
+revalidation are complete, but the old lock also predates the corrected
+runtime artifact and current verifier/test/manifest identities. Policy decision
+remains `HOLD_STALE_OFFLINE_ASSET_LOCK` for that old lock. Build a fresh lock
+against the final policy acceptance commit and corrected runtime identities. The recursive CPU
 PASS remains valid; the stale lock must not be used for deployment or X5
 preflight.
 
