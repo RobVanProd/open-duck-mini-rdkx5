@@ -2018,3 +2018,17 @@ Do not proceed to grounded walking until low-risk gates pass.
   contract passes; hosted/Colab, GPU/iGPU, RDK-X5, robot, runtime, Gate 5,
   deployment and clearance remain unauthorized. See
   `outputs/analysis/WINNER_V3_VARIABLE_CONFIGURATION_CURRICULUM_PREOUTCOME_CONTRACT_20260719.md`.
+- 2026-07-19: The fresh formal winner-v3 coupled-curriculum CPU contract passes
+  as `PASS_WINNER_V3_VARIABLE_CONFIGURATION_CURRICULUM_CONTRACT`. Independent
+  baseline and winner-v3 simulator compositions produce bit-exact default-off
+  traces across qpos/qvel/control/115-D observation/reward/done/targets/action/
+  phase/command. All 4,096 model and episode samples pass at each curriculum
+  fraction; the full inertia tensors remain positive-definite and
+  triangle-valid; exact readback, fixed delay support, native float32
+  quantization and the home-relative measured bridge equation pass. The run
+  used CPU JAX only and executed zero PPO steps and zero formal behavior cells.
+  This authorizes only the one frozen seed-100 no-retry CPU curriculum. It is
+  not behavior evidence or a passing supported-configuration envelope;
+  hosted/Colab, GPU/iGPU, RDK-X5, robot, runtime, Gate 5, deployment and
+  clearance remain unauthorized. See
+  `outputs/analysis/WINNER_V3_VARIABLE_CONFIGURATION_CURRICULUM_CONTRACT_20260719.md`.

@@ -1,0 +1,327 @@
+{
+  "authority": {
+    "gpu_or_igpu": false,
+    "hosted_or_colab": false,
+    "rdkx5_or_robot": false,
+    "robot_clearance": false,
+    "runtime_or_gate5": false,
+    "single_cpu_curriculum_after_pass": true
+  },
+  "baseline_composed_manifest_sha256": "3b53ae29ec97dab8c42a7ad8140159b43c4cad29b9c671d0412ea38c6f424f72",
+  "bridge": {
+    "max_abs_error_rad": 7.012486458179978e-08
+  },
+  "checks": {
+    "all_stage_episode_bounds_pass": true,
+    "all_stage_model_bounds_pass": true,
+    "cpu_only_jax": true,
+    "default_off_trace_bit_exact": true,
+    "fixed_episode_action_and_imu_delays_are_consumed": true,
+    "formal_behavior_cells_zero": true,
+    "formal_training_steps_zero": true,
+    "full_delay_support_observed": true,
+    "full_inertia_positive_triangle_and_bounds": true,
+    "full_randomizer_changes_only_allowed_model_fields": true,
+    "home_relative_gain_tau_bridge_equation_exact": true,
+    "native_quantizer_matches_independent_float32": true,
+    "native_quantizer_untargeted_slices_bit_exact": true,
+    "per_episode_readback_fields_complete": true,
+    "preoutcome_contract_hashes_exact": true,
+    "preregistration_still_exact": true,
+    "recurrent_cpu_contract_passed": true,
+    "scale_zero_episode_is_exact_p30_nominal": true,
+    "scale_zero_model_tree_bit_exact": true,
+    "true_configuration_not_appended_to_actor_observation": true
+  },
+  "default_off_trace": {
+    "baseline": {
+      "log_sha256": "118d20a68cc5cd9a8bd8a6d02321083f5900421d5d999a05cd24d1b35bd025b3",
+      "path": "/tmp/winner_v3_variable_config_formal_contract_9ed4109/baseline_default_off.npz",
+      "sha256": "98e0df635f2b245efb0319d3bbd0acf557bce4b39174956983bf983444b4b360"
+    },
+    "bit_exact": true,
+    "max_abs_error": 0.0,
+    "patched": {
+      "log_sha256": "b77ec12f9157809137d8734a6e0c291770b1946d21b18d7bff735b46e229bfc9",
+      "path": "/tmp/winner_v3_variable_config_formal_contract_9ed4109/patched_default_off.npz",
+      "sha256": "98e0df635f2b245efb0319d3bbd0acf557bce4b39174956983bf983444b4b360"
+    },
+    "per_field_max_abs_error": {
+      "applied_targets": 0.0,
+      "command": 0.0,
+      "ctrl": 0.0,
+      "done": 0.0,
+      "last_act": 0.0,
+      "motor_targets": 0.0,
+      "obs": 0.0,
+      "phase": 0.0,
+      "qpos": 0.0,
+      "qvel": 0.0,
+      "reward": 0.0
+    }
+  },
+  "devices": [
+    "TFRT_CPU_0"
+  ],
+  "episode_randomizer": {
+    "sample_count_per_stage": 4096,
+    "stages": {
+      "0.0": {
+        "action_delay_values": [
+          0
+        ],
+        "bounds_pass": true,
+        "imu_delay_values": [
+          0
+        ],
+        "native_probability": 0.0,
+        "native_true_count": 0
+      },
+      "0.25": {
+        "action_delay_values": [
+          0
+        ],
+        "bounds_pass": true,
+        "imu_delay_values": [
+          0
+        ],
+        "native_probability": 0.125,
+        "native_true_count": 548
+      },
+      "0.5": {
+        "action_delay_values": [
+          0,
+          1
+        ],
+        "bounds_pass": true,
+        "imu_delay_values": [
+          0,
+          1
+        ],
+        "native_probability": 0.25,
+        "native_true_count": 1054
+      },
+      "1.0": {
+        "action_delay_values": [
+          0,
+          1,
+          2
+        ],
+        "bounds_pass": true,
+        "imu_delay_values": [
+          0,
+          1,
+          2
+        ],
+        "native_probability": 0.5,
+        "native_true_count": 2088
+      }
+    }
+  },
+  "failed_checks": [],
+  "formal_behavior_cells_executed": 0,
+  "formal_training_steps_executed": 0,
+  "input_hashes": {
+    "checker": "35aeb07cf16bcd3bd4c2683928fcea46e7d4108c5fbdb0bd223bb55c8f468f82",
+    "composer": "0ac87b7ddc80e0b0beabb23e50944a98243d943ed77b91604611294f18f34695",
+    "implementation": "77b255f22e3139e71328a97bbc9ef98084cd8a10862de1157347f010df08f471",
+    "integration_patch": "6d46087cfba3b15ffee24cdb09c69e64291245a0ebacc18a76171ab600f8a124",
+    "preregistration": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b",
+    "recurrent_cpu_contract": "9405056990fbd7b15082b2b80de986ac2a5644e95eef847d2d1c8394fd885933"
+  },
+  "model_randomizer": {
+    "full_inertia": {
+      "diagonal_max": [
+        0.004289374686777592,
+        0.003719837637618184,
+        0.002343370346352458
+      ],
+      "diagonal_min": [
+        0.0026018028147518635,
+        0.002136434894055128,
+        0.0010084621608257294
+      ],
+      "maximum_absolute_products": [
+        0.00024999104789458215,
+        0.0002499786496628076,
+        0.00024999442393891513
+      ],
+      "minimum_eigenvalue": 0.0009759191889315844,
+      "minimum_triangle_margin": 6.346963346004486e-07
+    },
+    "sample_count_per_stage": 4096,
+    "stages": {
+      "0.0": {
+        "bounds_pass": true,
+        "changed_model_leaves": [],
+        "com_offset_max": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "com_offset_min": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "floor_min_max": [
+          1.0,
+          1.0
+        ],
+        "in_axes_dynamic": [
+          "body_inertia",
+          "body_ipos",
+          "body_iquat",
+          "body_mass",
+          "dof_armature",
+          "dof_frictionloss",
+          "geom_friction"
+        ],
+        "link_scale_min_max": [
+          1.0,
+          1.0
+        ],
+        "torso_mass_min_max": [
+          0.6985260248184204,
+          0.6985260248184204
+        ]
+      },
+      "0.25": {
+        "bounds_pass": true,
+        "changed_model_leaves": [
+          "body_inertia",
+          "body_ipos",
+          "body_iquat",
+          "body_mass",
+          "dof_armature",
+          "dof_frictionloss",
+          "geom_friction"
+        ],
+        "com_offset_max": [
+          0.012495234608650208,
+          0.012494799681007862,
+          0.012492809444665909
+        ],
+        "com_offset_min": [
+          -0.012483425438404083,
+          -0.012494325637817383,
+          -0.012499537318944931
+        ],
+        "floor_min_max": [
+          0.8750579357147217,
+          0.9999821186065674
+        ],
+        "in_axes_dynamic": [
+          "body_inertia",
+          "body_ipos",
+          "body_iquat",
+          "body_mass",
+          "dof_armature",
+          "dof_frictionloss",
+          "geom_friction"
+        ],
+        "link_scale_min_max": [
+          0.9750052690505981,
+          1.0249977111816406
+        ],
+        "torso_mass_min_max": [
+          0.6568803787231445,
+          0.7401580810546875
+        ]
+      },
+      "0.5": {
+        "bounds_pass": true,
+        "changed_model_leaves": [
+          "body_inertia",
+          "body_ipos",
+          "body_iquat",
+          "body_mass",
+          "dof_armature",
+          "dof_frictionloss",
+          "geom_friction"
+        ],
+        "com_offset_max": [
+          0.024990471079945564,
+          0.024989599362015724,
+          0.02498561516404152
+        ],
+        "com_offset_min": [
+          -0.024966847151517868,
+          -0.024988651275634766,
+          -0.02499907650053501
+        ],
+        "floor_min_max": [
+          0.7501159310340881,
+          0.9999642968177795
+        ],
+        "in_axes_dynamic": [
+          "body_inertia",
+          "body_ipos",
+          "body_iquat",
+          "body_mass",
+          "dof_armature",
+          "dof_frictionloss",
+          "geom_friction"
+        ],
+        "link_scale_min_max": [
+          0.9500104784965515,
+          1.0499953031539917
+        ],
+        "torso_mass_min_max": [
+          0.6152347326278687,
+          0.7817901968955994
+        ]
+      },
+      "1.0": {
+        "bounds_pass": true,
+        "changed_model_leaves": [
+          "body_inertia",
+          "body_ipos",
+          "body_iquat",
+          "body_mass",
+          "dof_armature",
+          "dof_frictionloss",
+          "geom_friction"
+        ],
+        "com_offset_max": [
+          0.04998094215989113,
+          0.04997919872403145,
+          0.04997123405337334
+        ],
+        "com_offset_min": [
+          -0.049933698028326035,
+          -0.04997730255126953,
+          -0.04999815300107002
+        ],
+        "floor_min_max": [
+          0.5002318620681763,
+          0.9999285936355591
+        ],
+        "in_axes_dynamic": [
+          "body_inertia",
+          "body_ipos",
+          "body_iquat",
+          "body_mass",
+          "dof_armature",
+          "dof_frictionloss",
+          "geom_friction"
+        ],
+        "link_scale_min_max": [
+          0.9000208973884583,
+          1.099990725517273
+        ],
+        "torso_mass_min_max": [
+          0.5319434404373169,
+          0.8650544285774231
+        ]
+      }
+    }
+  },
+  "native_quantizer": {
+    "max_abs_error": 0.0,
+    "vectors": 64
+  },
+  "schema_version": "winner_v3.variable_configuration_curriculum_contract.v1",
+  "status": "PASS_WINNER_V3_VARIABLE_CONFIGURATION_CURRICULUM_CONTRACT",
+  "winner_v3_composed_manifest_sha256": "a820f668872c522e8d6c35d82559991e27679b4d3f95ecff104236e5058a3a47"
+}
