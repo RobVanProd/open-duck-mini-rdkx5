@@ -1849,3 +1849,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   RDK-X5, motor, torque, GPU or iGPU access is authorized. See
   `outputs/analysis/WINNER_V2_NATIVE_QUANTIZED_CHECKPOINT_SELECTION_RESULT_20260719.md`
   and `outputs/analysis/WINNER_V2_RUNTIME_SELECTED_BINARY_RELAY_20260719.md`.
+- 2026-07-19: A direct powered-off torso-COM evidence route is preregistered
+  before any physical value is read. It measures the complete isolated
+  `trunk_assembly` counterpart from two support reactions over exactly three
+  reload trials, rather than reconstructing it from the 46-field component
+  ledger. The clean upstream URDF and simulator XML independently locate the
+  bilateral hip-yaw-axis datum at X=-.019 m. The specimen boundary excludes
+  both leg chains and the head/neck child at their modeled joints, requires all
+  deployment-fixed RDK/battery/thermal/wiring contents present, and permits no
+  powered or software action. Exact support/load uncertainties, total-mass
+  consistency, trial overlap, the frozen asymmetric COM bounds, and decision
+  tokens are fixed. Only the blank-template CPU calculator/contract is
+  authorized next; robot clearance remains NO. See
+  `outputs/analysis/REAL_BUILD_TORSO_COM_DIRECT_REACTION_PREREGISTRATION_20260719.md`.

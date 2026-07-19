@@ -119,8 +119,20 @@ The runtime team may now accept the selected original graph through its
 versioned 115-D v2 review using the existing handoff package and selected-
 binary relay. Selection is not runtime acceptance. Gate 5, runtime deployment,
 and robot authority remain unchanged. The other live blocker is unchanged:
-complete the source-backed 46-field as-built torso COM/inertia measurement and
-pass the frozen asymmetric bracket check.
+complete a source-backed as-built torso COM measurement and pass the frozen
+asymmetric bracket check.
+
+The 46-field component ledger remains valid, but it is no longer the only
+measurement route. Before any physical value was read, a smaller direct route
+was preregistered: isolate the complete powered-off torso at the modeled hip-
+yaw and neck-pitch child boundaries, then measure its X COM from two support
+reactions over three unload/reload trials. The clean upstream URDF and simulator
+XML both place the physically identifiable bilateral hip-yaw-axis datum at
+X=-.019 m in `trunk_assembly`. Exact specimen, support-span, scale uncertainty,
+independent-total-mass, trial-overlap and unchanged COM comparison rules are
+frozen. Only its blank-template CPU calculator and zero-measurement contract
+may be implemented next; no physical value, robot action or clearance follows
+from preregistration.
 
 No training, hosted allocation, robot, RDK-X5, local GPU or iGPU access is
 authorized. Robot clearance remains NO.
