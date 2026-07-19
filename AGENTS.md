@@ -1898,3 +1898,12 @@ Do not proceed to grounded walking until low-risk gates pass.
   zero recursive ticks. Any formal result must be generated after this commit
   by a committed deterministic runtime verifier. No robot, RDK-X5, Gate 5,
   deployment, GPU or iGPU authority follows.
+- 2026-07-19: A post-preregistration policy-side Linux CPU corroboration ran
+  the committed runtime-v2 transaction across all four 600-tick package cells
+  under the frozen native-resolution rule. Both selected 512000 cells pass
+  `PASS_RECURSIVE_BIT_EXACT_WIRE_CLOSURE`: action, recurrent state, logical
+  target and all 16,800 selected STS raw goal words are exact; selected P30
+  error is at most `5.9576471e-8 rad`. Both audit-only 1024000 cells also pass.
+  This does not replace the required post-preregistration formal result from
+  the runtime agent's CPU and does not grant runtime acceptance, X5/AArch64
+  equivalence, COM clearance, Gate 5 or robot authority.

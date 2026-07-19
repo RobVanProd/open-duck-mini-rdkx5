@@ -29,7 +29,10 @@ prospective contract in
 `WINNER_V2_RECURSIVE_CROSS_CPU_CLOSURE_PREREGISTRATION_20260719.md`.
 It preserves the direct `1e-6` same-input limit and judges recursive drift at
 the native STS3215 target representation. Its pre-outcome contract passes;
-the formal post-commit runtime rerun remains pending.
+the formal post-commit runtime rerun remains pending. A separate policy-side
+Linux corroboration has since passed the frozen rule with bit-exact selected
+action/state/target/raw-goal output; that evidence does not substitute for the
+runtime agent's formal CPU result.
 
 ## 2026-07-19 selected-binary addendum
 

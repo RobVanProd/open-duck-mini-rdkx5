@@ -142,6 +142,13 @@ zero recursive ticks. Next: the runtime side commits and runs the deterministic
 formal verifier after this preregistration commit, then policy independently
 reruns it and records the decision.
 
+The independent policy-side Linux replay has now completed after that commit.
+All four 600-tick cells pass the frozen rule; the selected 512000 graph is
+bit-exact in action/state/logical target and every raw STS goal word, with only
+`5.9576471e-8 rad` selected P30 reconstruction error. This is corroboration,
+not the formal runtime-CPU decision. The runtime-side committed post-prereg
+verifier/result remains the next acceptance input.
+
 The 46-field component ledger remains valid, but it is no longer the only
 measurement route. Before any physical value was read, a smaller direct route
 was preregistered: isolate the complete powered-off torso at the modeled hip-
