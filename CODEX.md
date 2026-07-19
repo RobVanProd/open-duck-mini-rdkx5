@@ -158,6 +158,15 @@ blocker only. The next policy datum is the powered-off direct COM packet; X5
 CPU-only replay under the same metric and a reviewed frozen asset set remain
 required before Gate 5 can be considered.
 
+The first runtime offline asset lock is deliberately held, not accepted. It
+pins the superseded `fab1fea` policy result and fails its own verifier against
+the current `bc4132b` result; it also predates correction of the reduced
+artifact's exact-zero observation-gate label. Policy decision is
+`HOLD_STALE_OFFLINE_ASSET_LOCK`. Regenerate the reduced report without changing
+formal cells, revalidate policy, then build a fresh lock. The recursive CPU
+PASS remains valid; the stale lock must not be used for deployment or X5
+preflight.
+
 The 46-field component ledger remains valid, but it is no longer the only
 measurement route. Before any physical value was read, a smaller direct route
 was preregistered: isolate the complete powered-off torso at the modeled hip-

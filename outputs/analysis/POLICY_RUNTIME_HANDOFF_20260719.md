@@ -41,6 +41,11 @@ all four recorded values are exactly `0.0`, and policy applies exact equality,
 so the decision is unchanged. That reporting-only defect must be corrected
 before the runtime/policy/config asset set is frozen.
 
+The runtime's first hash-only asset lock is not accepted. It pins the earlier
+`fab1fea` policy-result hash and fails closed against the current `bc4132b`
+result, so policy records `HOLD_STALE_OFFLINE_ASSET_LOCK`. Correct the reduced
+exact-zero gate and regenerate the lock only after policy revalidation.
+
 ## 2026-07-19 selected-binary addendum
 
 The later prospective native-representation study removes the first blocker

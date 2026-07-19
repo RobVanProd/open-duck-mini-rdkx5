@@ -1922,3 +1922,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   frozen asset set, X5 CPU-only replay, Gate 5, deployment and robot clearance
   remain incomplete and unauthorized. See
   `outputs/analysis/WINNER_V2_RECURSIVE_CROSS_CPU_CLOSURE_RESULT_20260719.md`.
+- 2026-07-19: Policy review holds runtime offline asset-lock SHA-256
+  `4da893b3...de940` as `HOLD_STALE_OFFLINE_ASSET_LOCK`. It was created
+  concurrently and pins superseded policy result commit `fab1fea` / hash
+  `17ddae42...babf06a`, while the current dedicated-artifact acceptance at
+  `bc4132b` hashes to `852b7108...8f667`. The reduced runtime artifact also
+  retains the non-frozen `teacher_forced_observation_at_most_1e_6` gate name;
+  every value is actually zero, so the recursive PASS is unchanged. Correct
+  that reporting-only gate, let policy revalidate, and only then regenerate the
+  asset lock. Do not deploy or plan X5 preflight from the stale lock. See
+  `outputs/analysis/WINNER_V2_OFFLINE_ASSET_LOCK_REVIEW_20260719.md`.
