@@ -298,7 +298,9 @@ def main() -> int:
             ],
         },
         "observable_response_contract": {
-            "schema": "open_duck_x5.supported_configuration_envelope.v1",
+            "schema": "open_duck_x5.supported_configuration_envelope.v2",
+            "clearance_schema": "open_duck_x5.policy_robot_clearance.v1",
+            "clearance_status": "NOT_AUTHORIZED_CURRENT_CANDIDATE_HELD",
             "metric_count": 73,
             "bounds_status": "PENDING_PASSING_REPLACEMENT_SIM_EVIDENCE",
             "selection_rule": (
@@ -354,9 +356,10 @@ dynamics. No manual inventory, mass, COM or inertia entry is required. A build
 is supportable only when both its aggregate configuration and later automatic
 response profile remain inside the frozen envelopes.
 
-The current `99d3afce…304de` graph cannot supply the runtime envelope: its
+The current `99d3afce…304de` graph cannot supply the runtime v2 envelope or a
+policy-clearance artifact: its
 verified X-COM bracket fails well inside the required `±0.05 m` domain. It
-remains held and no `supported_configuration_envelope.v1` is emitted. The 73
+remains held and no `supported_configuration_envelope.v2` is emitted. The 73
 automatic-response bounds remain pending a passing replacement and may not be
 widened from physical outcomes.
 

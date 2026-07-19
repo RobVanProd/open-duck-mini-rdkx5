@@ -38,7 +38,9 @@ bound derivations, pass/fail rule, stop rules, and artifact identities. The
 current graph is the mandatory first baseline and is already held by its
 hash-bound break-radius result. Only a replacement that passes every frozen
 nominal, signed/coupled configuration, actuator, command, safety and held-out
-cell may publish open_duck_x5.supported_configuration_envelope.v1. Physical
+cell may first publish a policy-clearance decision and later
+open_duck_x5.supported_configuration_envelope.v2 under the runtime's frozen
+Git-ancestry contract. Physical
 calibration may compare with that envelope but may never widen it.
 
 There is currently no passed supported-configuration envelope. Runtime's
