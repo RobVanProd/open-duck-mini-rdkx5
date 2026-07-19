@@ -22,6 +22,7 @@ os.environ["JAX_PLATFORMS"] = "cpu"
 os.environ["JAX_PLATFORM_NAME"] = "cpu"
 
 import flax
+from flax.training import orbax_utils
 import jax
 import jax.numpy as jnp
 import numpy as np
@@ -38,6 +39,12 @@ INTEGRATION_PATCH = ROOT / "patches/ground_up_reference_residual_recurrent_adapt
 SOURCE_MEMBER = Path("ground_up_tracking_tail_outputs/T2_EQUAL/2026_07_14_190026_512000")
 OUTPUT_JSON = ANALYSIS / "winner_v3_recurrent_adapter_cpu_contract.json"
 OUTPUT_MD = ANALYSIS / "WINNER_V3_RECURRENT_ADAPTER_CPU_CONTRACT_20260719.md"
+CPU_TEMPLATE = Path(
+    "/home/lsd/robots/open-duck-mini-rdkx5/outputs/"
+    "ground_up_torso_com_cpu_smoke/2026_07_14_180720_0"
+)
+CPU_TEMPLATE_SHA256 = "b37a86f1b736d0d1276e60fb69d1f473683c593dec26f9592b0b794858dbb44a"
+SOURCE_DIRECTORY_SHA256 = "311ce59807ad872795dd95e4a30c626f11d3d80f1b3f78c5b2b997639da4d67e"
 EXPECTED = {
     "prereg": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b",
     "archive": "ae4c631a6ce1c0b36c3231113740acc6c1b8a463c0911ce7cad30b8f8d8ca60f",
@@ -238,7 +245,15 @@ def main() -> int:
         archive.extractall(source_root, members=members, filter="data")
     source_path = source_root / SOURCE_MEMBER
     checkpointer = ocp.PyTreeCheckpointer()
-    source_checkpoint = checkpointer.restore(str(source_path))
+    if sha256_directory(CPU_TEMPLATE) != CPU_TEMPLATE_SHA256:
+        raise ValueError("established CPU restore template hash mismatch")
+    if sha256_directory(source_path) != SOURCE_DIRECTORY_SHA256:
+        raise ValueError("archive-extracted source directory hash mismatch")
+    cpu_template = checkpointer.restore(str(CPU_TEMPLATE))
+    restore_args = orbax_utils.restore_args_from_target(cpu_template)
+    source_checkpoint = checkpointer.restore(
+        str(source_path), item=cpu_template, restore_args=restore_args
+    )
     processor = normalizer_state(source_checkpoint[0])
     observation_size = {
         "state": (115,), "privileged_state": (226,), HIDDEN_OBSERVATION_KEY: (64,),
@@ -333,6 +348,16 @@ def main() -> int:
             np.asarray(source_checkpoint[0]["mean"]["state"]).shape == (115,)
             and np.asarray(source_checkpoint[0]["mean"]["privileged_state"]).shape == (226,)
         ),
+        "established_cpu_restore_template_exact": (
+            sha256_directory(CPU_TEMPLATE) == CPU_TEMPLATE_SHA256
+            and jax.tree_util.tree_structure(cpu_template)
+            == jax.tree_util.tree_structure(source_checkpoint)
+        ),
+        "remapped_source_leaves_cpu_only": all(
+            getattr(leaf, "sharding", None) is None
+            or all(device.platform == "cpu" for device in leaf.sharding.device_set)
+            for leaf in jax.tree_util.tree_leaves(source_checkpoint)
+        ),
         "expanded_save_restore_bit_exact": save_structure and save_error == 0.0,
         "protected_base_actor_bit_exact": base_preserved,
         "adapter_head_exact_zero": adapter_head_zero,
@@ -359,6 +384,10 @@ def main() -> int:
         "input_hashes": hashes,
         "devices": devices,
         "source_checkpoint_directory_sha256": sha256_directory(source_path),
+        "cpu_restore_template": {
+            "path": str(CPU_TEMPLATE),
+            "directory_sha256": sha256_directory(CPU_TEMPLATE),
+        },
         "expanded_checkpoint_directory_sha256": sha256_directory(expanded_path),
         "step_zero_equivalence": equivalence,
         "step_zero_max_abs_error": max(row["max_abs_error"] for row in equivalence),
