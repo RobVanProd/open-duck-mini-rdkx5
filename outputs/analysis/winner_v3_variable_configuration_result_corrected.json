@@ -1,0 +1,145 @@
+{
+  "authority": {
+    "policy_asset_and_clearance_commit_sequence": false,
+    "rdkx5_or_robot": false,
+    "robot_clearance": false,
+    "runtime_or_gate5": false,
+    "training_or_retry": false
+  },
+  "cells": 1024,
+  "decision": "HOLD_WINNER_V3_VARIABLE_CONFIGURATION_REPLACEMENT",
+  "early_termination_cells": 239,
+  "failed_validity_checks": [],
+  "failing_cells": 976,
+  "failing_cells_by_group": {
+    "DISCOVERY": 232,
+    "FIXED_ANCHOR": 372,
+    "HELDOUT": 244,
+    "NOMINAL": 32,
+    "SENSOR_TRANSPORT": 96
+  },
+  "failures_by_reason": {
+    "bilateral_transitions": 1,
+    "candidate_gate_pass": 251,
+    "current_p95_at_most_0p65": 944,
+    "duration_complete_600": 239,
+    "positive_command_consistent_motion": 107,
+    "trace_contract": 239,
+    "tracking_p95_at_most_0p20": 4,
+    "zero_command_base_height": 36,
+    "zero_command_velocity": 36,
+    "zero_envelope_excess": 34,
+    "zero_rate_excess": 12,
+    "zero_saturation": 38
+  },
+  "matrix_plan_sha256": "10b5d3e407636d276275f3f39145233c3cd63688c3229235411ed2734651e073",
+  "no_closest_promotion": true,
+  "passing_cells": 48,
+  "passing_cells_by_group": {
+    "DISCOVERY": 24,
+    "FIXED_ANCHOR": 12,
+    "HELDOUT": 12,
+    "NOMINAL": 0,
+    "SENSOR_TRANSPORT": 0
+  },
+  "per_checkpoint": {
+    "1003520": {
+      "all_512_cells_pass": false,
+      "cells": 512,
+      "minimum_moving_mean_vx_m_s": -0.38984812532693874,
+      "passing_cells": 24,
+      "policy_sha256": "c8e03dd4afed4e7a96507e5089116944a048ac1d682210408a68cca1b8b6af7c",
+      "worst_current_p95_a": 3.3742599276082648,
+      "worst_tracking_p95_rad": 0.2068457745015621
+    },
+    "2007040": {
+      "all_512_cells_pass": false,
+      "cells": 512,
+      "minimum_moving_mean_vx_m_s": -0.4086156654596815,
+      "passing_cells": 24,
+      "policy_sha256": "dfdd01bf4563e3d377ffcbe70515681e75a0d87797f3b6b9e4486d1b40ad569c",
+      "worst_current_p95_a": 3.612190809412914,
+      "worst_tracking_p95_rad": 0.1986330322921276
+    }
+  },
+  "preregistration_sha256": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b",
+  "process_cpu_attestation": {
+    "capture": {
+      "CUDA_VISIBLE_DEVICES": "",
+      "JAX_PLATFORMS": "cpu",
+      "boot_id": "a9bff33d-7cf5-4888-b71d-907a657bf6a4",
+      "capture_utc": "2026-07-19T22:08:39Z",
+      "cmdline": "/home/lsd/robots/envs/ground-up-control/bin/python tools/run_winner_v3_variable_configuration_behavior.py --execute",
+      "cpus_allowed_list": "0-31",
+      "exe": "/home/lsd/.local/share/uv/python/cpython-3.12.13-linux-x86_64-gnu/bin/python3.12",
+      "pid": "744427",
+      "pid_stat_start_ticks": "26275272",
+      "repository_head": "a90c28a24589d2d6eaea0790129701484eeaaac7",
+      "runner_sha256": "d7bfd53119e0c9c071a85bdd4da6c70af2d4113a62c0533e13a07461f44a3b3f",
+      "scope": "process-wide execution attestation only; no behavioral outcome correction",
+      "source": "/proc/744427/{stat,cmdline,exe,environ,status}; git rev-parse; sha256sum",
+      "threads": "255"
+    },
+    "current_read_only_cpu_check": {
+      "CUDA_VISIBLE_DEVICES": "",
+      "JAX_PLATFORMS": "cpu",
+      "jax_backend": "cpu",
+      "jax_device_platforms": [
+        "cpu"
+      ],
+      "jax_devices": [
+        "TFRT_CPU_0"
+      ]
+    },
+    "path": "outputs/analysis/winner_v3_formal_process_cpu_attestation_20260719.txt",
+    "sha256": "ae1c51c8947554765d225e613e9c6be1223b7b6ca46f1e9e958802cfa24dec2f"
+  },
+  "raw_result": {
+    "decision": "INVALID_WINNER_V3_VARIABLE_CONFIGURATION_STUDY",
+    "path": "outputs/analysis/winner_v3_variable_configuration_result.json",
+    "sha256": "8fa33f862b2f55f527712a766c5d9c96fc526734d75f27c666ed439cc2dbca44",
+    "status": "INVALID_WINNER_V3_VARIABLE_CONFIGURATION_RESULT"
+  },
+  "raw_result_md_sha256": "abac082e71cdd58e8f2f3551467e3bdcd5c82462ba18a7231b0c9ed5d84d958d",
+  "reporting_correction": {
+    "behavior_cells_rerun": 0,
+    "cell_or_trace_artifacts_mutated": false,
+    "cpu_only_cell_failure_removed": true,
+    "duration_and_trace_behavior_failures_preserved": true,
+    "physics_policy_threshold_or_gate_changes": 0,
+    "scope": [
+      "recognize TFRT_CPU_0 through device.platform == cpu rather than a CpuDevice display-name substring",
+      "treat an early-termination trace as complete evidence when its rows equal recorded samples and its hash, schema, finite-value, reset and readback audits pass"
+    ]
+  },
+  "runner_commit": "a90c28a24589d2d6eaea0790129701484eeaaac7",
+  "runner_contract_sha256": "025f5ec95d3a03dbaebf70a4a9c730b7264c89545663401f45eeede1d4eddccd",
+  "runner_sha256": "d7bfd53119e0c9c071a85bdd4da6c70af2d4113a62c0533e13a07461f44a3b3f",
+  "schema_version": "winner_v3.variable_configuration_result.reporting_corrected.v1",
+  "selected_policy": null,
+  "status": "HOLD_WINNER_V3_VARIABLE_CONFIGURATION_RESULT_REPORTING_CORRECTED",
+  "trace_manifest": {
+    "path": "outputs/analysis/winner_v3_variable_configuration_trace_manifest.json",
+    "sha256": "0f31debf81dc1d5091556cd394f9f1c74696e005a3517ba8ff37c36608c2f4f4",
+    "total_trace_bytes": 8147644105,
+    "trace_count": 1024
+  },
+  "training_or_simulator_reward_selection_weight": 0,
+  "transform_contract_sha256": "59bc042715e21b1ad5913e8b781b0d0867665c7a101c5e54511183532ef15a10",
+  "validity_checks": {
+    "all_1024_cells_present_unique": true,
+    "all_64_condition_artifacts_present": true,
+    "all_cpu_only_platform_attested": true,
+    "all_per_run_readbacks_exact": true,
+    "all_policy_hashes_exact": true,
+    "all_trace_evidence_consistent_with_recorded_termination": true,
+    "all_trace_hashes_exact": true,
+    "condition_to_cell_hashes_exact": true,
+    "early_termination_count_matches_raw_trace_contract_failures": true,
+    "no_training_or_simulator_reward_selection": true,
+    "physical_pass_matches_checks_without_cpu_label": true,
+    "raw_cpu_label_false_for_all_cells": true,
+    "raw_runner_and_matrix_hashes_preserved": true
+  },
+  "wall_seconds_original_run": 26772.001043319702
+}

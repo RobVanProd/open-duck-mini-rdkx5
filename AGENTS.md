@@ -2062,3 +2062,33 @@ Do not proceed to grounded walking until low-risk gates pass.
   Gate 5, deployment and clearance remain unauthorized. See
   `outputs/analysis/WINNER_V3_RECURRENT_ADAPTER_TRAINING_RESULT_20260719.md` and
   `outputs/analysis/WINNER_V3_RECURRENT_ADAPTER_TRAINING_ARTIFACT_CHECK_20260719.md`.
+- 2026-07-19/20: The only winner-v3 formal behavior run completed all 64
+  conditions / 1,024 cells in one CPU process with no retry in 26,772.001
+  seconds. The raw result SHA-256 `8fa33f86...bca44` is deliberately preserved
+  as `INVALID_WINNER_V3_VARIABLE_CONFIGURATION_RESULT`: its aggregate reporter
+  rejected JAX display name `TFRT_CPU_0` because it searched for the literal
+  `CpuDevice`, and it treated each expected early-termination trace as missing
+  evidence. A read-only correction reran zero behavior cells and changed no
+  graph, model, trace, threshold, seed, gate or physics value. It verifies all
+  1,024 trace hashes, exact trace-row/recorded-sample counts, finite/schema/reset
+  audits, condition-to-cell hashes, policy hashes and every per-run model
+  readback; process-wide CPU evidence is SHA-256 `ae1c51c...dec2f`.
+- 2026-07-19/20: The corrected result SHA-256 `bf072daf...cd0d9` is
+  `HOLD_WINNER_V3_VARIABLE_CONFIGURATION_RESULT_REPORTING_CORRECTED` with
+  frozen decision `HOLD_WINNER_V3_VARIABLE_CONFIGURATION_REPLACEMENT`.
+  Exactly 48/1,024 cells pass physical gates; each persistent checkpoint passes
+  24/512 and fails the all-cells rule. Physical failures are: all-joint current
+  p95 944, candidate gate 251, duration/trace 239, positive commanded motion
+  107, zero-command velocity/base-height 36 each, saturation 38, guard envelope
+  34, rate 12, tracking 4 and bilateral transitions 1. Negative X still
+  reverses/falls and positive X still runs away/falls. Correction JSON SHA-256
+  is `c1385765...420c`; the verified 1,024-entry trace manifest SHA-256 is
+  `0f31debf...2f4f4` and binds 8,147,644,105 local trace bytes. No replacement
+  graph, policy-clearance artifact or supported-configuration envelope exists;
+  runtime sentinels remain pending and robot clearance is false. This exact
+  replacement branch is closed. Any new formulation or training route requires
+  a separate preregistration. No hosted/Colab, GPU/iGPU, RDK-X5, robot, serial,
+  torque, motion, X5 preflight, Gate 5 or deployment action is authorized. See
+  `outputs/analysis/WINNER_V3_VARIABLE_CONFIGURATION_RESULT_CORRECTED_20260720.md`
+  and
+  `outputs/analysis/WINNER_V3_VARIABLE_CONFIGURATION_REPORTING_CORRECTION_20260720.md`.

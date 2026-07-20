@@ -15,74 +15,52 @@ Current next step:
 
 ```text
 The G1/T2 composite remains the first persistent full-horizon nominal/R1
-winner, and the selected 512K graph plus P30 observer retain their completed
-offline asset freeze. That graph is not robot-ready under the current product
-requirement: its verified X-COM failure bracket lies well inside the required
-[-.05,+.05] m supported-configuration range. Do not emit a passing runtime
-envelope for it and do not waive the failure with per-unit COM measurement.
+winner, but it is held from the supported-configuration and robot roles. The
+single preregistered winner-v3 replacement branch is now complete and closes
+negative. No replacement graph is selected.
 
-The powered-off direct-COM packet is superseded as an advancement requirement.
-The policy-side CPU audit now passes
-PASS_VARIABLE_CONFIGURATION_DOMAIN_BASIS_CURRENT_CANDIDATE_HELD. It derives
-the prospective replacement domain from the frozen R2 evidence and compiled
-trunk_assembly model: X/Y/Z COM each +/-.05 m; torso mass
-.5286734-.8683786 kg (scale .7568414-1.2431586); and evidence-derived principal
-inertia scales with positive-definite, triangle-valid coupled sampling.
-Optional non-locomotion configurations are represented by aggregate dynamics,
-not operator-entered component inventories.
+R64_ZERO_INIT_RECURRENT_ADAPTER completed its only seed-100 no-retry CPU
+curriculum and produced two persistent full-domain checkpoints. The evaluation
+graphs preserve the learned initializers and bake in the frozen hard-vector,
+actual-centered guard, conservative envelope and x=0 deadband. The exact
+1,024-cell matrix then ran once in one CPU process over nominal, 24 fixed
+anchors, 16 discovery samples, 16 independently seeded heldout samples and six
+sensor/transport conditions, crossed with both checkpoints, both measured
+actuator plants and x=0/.074/.077/.080.
 
-The replacement study is now prospectively frozen before new candidate
-outcomes. Its single candidate is R64_ZERO_INIT_RECURRENT_ADAPTER: restore the
-protected T2_EQUAL 512K PPO checkpoint, add a 64-state recurrent adapter with
-an exactly zero action head so step-zero actions preserve the base, then allow
-the base actor and adapter to train together without oracle/configuration
-inputs. Reward, privileged critic, commands and the baked hard-vector,
-actual-centered guard, conservative envelope and x=0 deadband remain fixed.
+The raw aggregate is preserved as INVALID because its reporter required a JAX
+device display string containing CpuDevice although this environment exposes
+TFRT_CPU_0, and because it treated each expected early-termination trace as
+missing evidence. The read-only reporting correction reran zero behavior cells
+and changed no graph, model, trace, threshold, seed, gate or physics value. It
+verifies all 1,024 cell/trace hashes, exact trace-row versus recorded-sample
+counts, finite/schema/reset audits and every per-run model readback; it accepts
+CPU through device.platform == cpu while preserving duration and trace-contract
+behavior failures.
 
-The CPU contract now passes. It proves exact CPU remap/restore, 64/64 bit-exact
-step-zero actor logits, evolving recurrent state, finite 1,024-step updates to
-the protected base and both adapter families, zero initial ONNX action/hidden
-error, the exact three-input/three-output ABI, and a finite 256-tick state
-chain. Its initial one-check hold was a stale sibling-checkpoint count literal;
-a committed read-only audit corrected it to the protected 512K source count
-without rerunning the smoke.
+Corrected decision: HOLD_WINNER_V3_VARIABLE_CONFIGURATION_REPLACEMENT. Only
+48/1,024 cells pass the physical gates; each checkpoint passes 24/512 and fails
+the frozen all-cells rule. Nominal passes 0/32 and sensor/transport passes 0/96.
+There are 944 all-joint current-p95 failures against the frozen .65 A cap, 239
+early terminations, 251 candidate-gate failures, 107 wrong-direction moving
+cells, four tracking failures, 38 saturation failures, 34 guard-envelope
+failures and 12 rate failures. The signed X mechanism also persists: negative
+X reverses and falls, while positive X runs away forward and falls. No closest
+cell, sibling checkpoint, aggregate score or training reward is promoted.
 
-The coupled configuration/actuator/sensor curriculum implementation is now
-hash-frozen and its fresh formal CPU contract passes before outcome work. It
-targets named inertial body 2, represents
-the full torso inertia tensor through principal inertia plus inertial-frame
-quaternion, uses one all-link mass scale, crosses the measured P30/P31-34
-actuator interval with fixed episode delays/noise/native quantization, records
-exact per-model and per-episode readback, and exposes no true configuration
-field to the actor. Independently composed baseline and winner-v3 trees produce
-bit-exact residual-off traces. The formal checker passes 4,096 model and
-episode samples at each of 0/25/50/100% scale, full-inertia validity and bounds,
-native quantization and the measured bridge equation. Formal PPO steps and
-behavior cells remain zero.
+The 7.6 GiB local trace corpus is preserved byte-for-byte and represented in
+Git by a verified 1,024-entry path/SHA/size/row manifest plus every compact cell
+and condition summary. The raw invalid result and corrected hold are both
+retained so the reporting history is auditable.
 
-The single seed-100 no-retry CPU curriculum and its independent artifact check
-now pass. One process completed 245,760 steps at 25%, 245,760 at 50%, and
-2,007,040 at full domain in 2,627.284 seconds total. Both stage transitions are
-bit-exact, all checkpoints and ONNX initializers are finite, and the two
-persistent stateful exports have SHA-256
-`3d5e6dd4...ab77b04d` (1,003,520) and `fb725c5e...195544f0`
-(2,007,040). Training reward remains telemetry with no selection weight. No
-formal behavior cell has run.
-
-Next, run the exact frozen 1,024-cell CPU matrix. Both checkpoints must pass
-nominal, 24 fixed anchors, 16 discovery coupled samples, 16 independent heldout
-samples and six sensor/transport conditions under both actuator plants and
-x=0/.074/.077/.080. No closest result advances.
-
-Only a complete pass may begin the selected-policy commit, later clearance
-artifact commit, and still-later supported_configuration_envelope.v2 commit
-under the runtime Git-ancestry contract. Physical calibration may compare with
-that envelope but may never widen it.
-
-There is currently no passed supported-configuration envelope. Runtime's
-pending sentinels must remain. No robot, RDK-X5, serial, torque, motion,
-automatic calibration, X5 preflight, Gate 5, deployment, local GPU/iGPU,
-hosted training, or robot clearance is authorized by the preregistration.
+This exact replacement branch is closed. Runtime must keep its pending
+sentinels: REPLACEMENT_SELECTED_ONNX, POLICY_ROBOT_CLEARANCE_ARTIFACT and
+SUPPORTED_CONFIGURATION_ENVELOPE_V2 remain NOT_AVAILABLE; robot_clearance is
+false and X5_CPU_PREFLIGHT/AUTOMATIC_CONFIGURATION/GATE_5 remain NOT_RUN. Any
+new architecture, current-model challenge, objective, seed, domain or training
+route requires a separately preregistered review; none is authorized by this
+negative result. No robot, RDK-X5, serial, torque, motion, local GPU/iGPU,
+hosted training, Gate 5 or deployment action is authorized.
 ```
 
 Robotics operating model:
