@@ -1,0 +1,90 @@
+{
+  "analysis_contract": {
+    "ceiling_tolerance_nm": 1e-06,
+    "expected_partition": {
+      "moving": 96,
+      "zero_command": 32
+    },
+    "joint_order": [
+      "left_hip_yaw",
+      "left_hip_roll",
+      "left_hip_pitch",
+      "left_knee",
+      "left_ankle",
+      "neck_pitch",
+      "head_pitch",
+      "head_yaw",
+      "head_roll",
+      "right_hip_yaw",
+      "right_hip_roll",
+      "right_hip_pitch",
+      "right_knee",
+      "right_ankle"
+    ],
+    "no_statistics_or_thresholds_may_be_changed_after_freeze": true,
+    "population": "all 128 trace identities and hashes embedded in the imported winner-v7 result",
+    "replay": [
+      "verify every source trace hash, row count, finite value, and contiguous tick",
+      "recompute per-joint peak torque and current from actuator_force_nm",
+      "recompute the strict consecutive duration above 2 A",
+      "apply both the 2.5 A peak-current and 1.91229675 N.m peak-torque gates",
+      "parse the scene include, STS3215 inherited force range, actuator count, names, and class binding",
+      "report peak joint/tick distributions and a seven-tick context around each trace peak"
+    ]
+  },
+  "authority": {
+    "read_only_cpu_analysis_only": true,
+    "runtime_robot_rdkx5_torque_motion_gate5": false,
+    "simulator_policy_behavior_run": false,
+    "training_gpu_colab": false
+  },
+  "causal_question": "Did the closed winner-v7 moving population fail the physical current/torque envelope because every moving trace saturated the simulator's uniformly inherited STS3215 force ceiling above the frozen manufacturer limit?",
+  "frozen_inputs": {
+    "audit_tool_sha256": "05d87e3e16412a26ab454fe78cd49b80a29ede467edb34de1322401783200407",
+    "current_gate_contract": {
+      "path": "outputs/analysis/winner_v3_current_gate_application_contract.json",
+      "sha256": "17e841450a2dde66182c3d41a06abf8d14366011f811bcde20adb1f1c8f68ddb"
+    },
+    "model_xml_filename": "open_duck_mini_v2_backlash.xml",
+    "model_xml_sha256": "eac956590161407d74af5f1883613cf491b85486f6a432abbe220c3b47b69002",
+    "scene_xml_filename": "scene_flat_terrain_backlash.xml",
+    "scene_xml_sha256": "65324e27a3a84e2e42d1073bfc636f9cdbf6bef7b1f20c1b5a886b8fd58fcc71",
+    "winner_v7_preregistration": {
+      "path": "outputs/analysis/winner_v7_full_behavior_revalidation_preregistration.json",
+      "sha256": "14e28d99727de9e53eafad5b521fc679793e1dafe10c8c323eea1415bacc63a3"
+    },
+    "winner_v7_result": {
+      "path": "outputs/analysis/winner_v7_full_behavior_revalidation_result.json",
+      "sha256": "f181b7337e67c0b0d11d9a96b84ca0506ae689b49c5cb6de66a9f9811eb4f41e"
+    }
+  },
+  "interpretation_constraints": [
+    "winner-v7 remains closed and is never retried or reclassified",
+    "the source torque-gate omission is reported even though it cannot change the already-failed result",
+    "a pass authorizes only a distinct zero-behavior default-off simulator contract",
+    "no policy weights, observations, actions, rewards, gates, current conversion, or traces may change"
+  ],
+  "schema_version": "open_duck_mini.winner_v7_actuator_force_limit_attribution_preregistration.v1",
+  "selection_rule": {
+    "all_checks_required": [
+      "source_winner_v7_remains_closed",
+      "source_population_complete",
+      "source_behavior_expectations_preserved",
+      "model_scene_binding_exact",
+      "all_14_actuators_share_sts3215_force_range",
+      "simulator_force_limit_exceeds_frozen_physical_limit",
+      "all_moving_traces_fail_peak_current",
+      "all_moving_traces_fail_peak_torque",
+      "all_moving_trace_peaks_hit_model_force_ceiling",
+      "all_moving_trace_peaks_are_head_roll",
+      "all_zero_traces_pass_peak_current_and_torque",
+      "no_trace_reaches_duration_trip",
+      "source_runner_omitted_frozen_torque_gate"
+    ],
+    "fail_decision": "CLOSE_PHYSICAL_FORCE_LIMIT_ATTRIBUTION_ROUTE",
+    "pass_decision": "SELECT_DISTINCT_PHYSICAL_STS3215_FORCE_LIMIT_CONTRACT",
+    "selected_limit": "min(1.91229675 N.m manufacturer stall torque, 2.5 A * 0.784532 N.m/A)"
+  },
+  "source_result_commit": "ed156f0",
+  "status": "FROZEN_WINNER_V7_ACTUATOR_FORCE_LIMIT_ATTRIBUTION"
+}
