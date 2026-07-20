@@ -1,0 +1,105 @@
+name: Winner v9 nominal CPU gate
+
+on:
+  push:
+    branches:
+      - codex/winner-v4-response-contract
+    paths:
+      - .github/workflows/winner-v9-nominal.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  nominal-gate:
+    name: Frozen 16-cell nominal gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+
+    steps:
+      - name: Checkout policy repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install frozen CPU evaluation environment
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install \
+            "jax[cpu]==0.7.2" \
+            "jaxlib==0.7.2" \
+            "playground==0.0.5" \
+            "mujoco==3.9.0" \
+            "mujoco-mjx==3.9.0" \
+            "onnxruntime==1.27.0" \
+            "ml-collections==1.1.0" \
+            "numpy==2.0.2" \
+            "matplotlib==3.10.0" \
+            "mediapy==1.2.6" \
+            "tensorflow==2.20.0" \
+            "protobuf==5.29.6" \
+            "onnx==1.22.0"
+
+      - name: Compose exact 115-D Playground
+        run: |
+          git clone --quiet https://github.com/RobVanProd/Open_Duck_Playground.git /tmp/playground-source
+          python tools/compose_winner_v7_playground.py \
+            --source-repository /tmp/playground-source \
+            --output-root /tmp/pg115-v9
+          python -m pip install --no-deps -e /tmp/pg115-v9
+
+      - name: Reconstruct hash-bound winner-v7 and winner-v9 graphs
+        run: |
+          python tools/run_winner_v7_inward_projection_contract.py \
+            --work-root /tmp/winner-v7 \
+            --output /tmp/winner-v7-contract.json
+          python tools/run_winner_v9_stored_bound_contract.py \
+            --source-half /tmp/winner-v7/winner_v7_half_inward_projection.onnx \
+            --source-final /tmp/winner-v7/winner_v7_final_inward_projection.onnx \
+            --model-xml /tmp/pg115-v9/playground/open_duck_mini_v2/xmls/open_duck_mini_v2_backlash.xml \
+            --scene-xml /tmp/pg115-v9/playground/open_duck_mini_v2/xmls/scene_flat_terrain_backlash.xml \
+            --work-root /tmp/winner-v9 \
+            --output /tmp/winner-v9-contract.json
+          cp /tmp/winner-v9/xmls/open_duck_mini_v2_backlash.xml \
+            /tmp/pg115-v9/playground/open_duck_mini_v2/xmls/open_duck_mini_v2_backlash.xml
+          cp /tmp/winner-v9/xmls/scene_flat_terrain_backlash.xml \
+            /tmp/pg115-v9/playground/open_duck_mini_v2/xmls/scene_flat_terrain_backlash.xml
+
+      - name: Run frozen winner-v9 nominal gate
+        run: |
+          python tools/run_winner_v9_nominal_behavior.py \
+            --playground-root /tmp/pg115-v9 \
+            --policy-half /tmp/winner-v9/winner_v9_half_stored_bound.onnx \
+            --policy-final /tmp/winner-v9/winner_v9_final_stored_bound.onnx \
+            --work-root /tmp/winner-v9-nominal \
+            --output /tmp/winner-v9-nominal-result.json
+
+      - name: Hash recovered evidence
+        if: always()
+        run: |
+          if test -f /tmp/winner-v9-nominal-result.json; then
+            sha256sum /tmp/winner-v9-nominal-result.json | tee /tmp/winner-v9-nominal-result.sha256
+          fi
+          if test -f /tmp/winner-v9-contract.json; then
+            sha256sum /tmp/winner-v9-contract.json | tee /tmp/winner-v9-contract.sha256
+          fi
+
+      - name: Upload raw gate evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: winner-v9-nominal-${{ github.run_id }}
+          if-no-files-found: warn
+          retention-days: 14
+          path: |
+            /tmp/winner-v9-contract.json
+            /tmp/winner-v9-contract.sha256
+            /tmp/winner-v9-nominal-result.json
+            /tmp/winner-v9-nominal-result.sha256
+            /tmp/winner-v9-nominal
