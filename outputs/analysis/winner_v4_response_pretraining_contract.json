@@ -1,0 +1,144 @@
+{
+  "authority": {
+    "gate5_or_deployment": false,
+    "gpu_or_igpu": false,
+    "hosted_cpu_allowed_if_local_cpu_unavailable": true,
+    "one_cpu_falsification_run": true,
+    "policy_architecture_implementation": false,
+    "ppo_or_training": false,
+    "rdkx5_or_robot": false,
+    "robot_clearance": false,
+    "runtime_implementation": false,
+    "serial_gpio_i2c": false,
+    "torque_or_motion": false
+  },
+  "decision": "AUTHORIZE_ONE_ZERO_PPO_CPU_RESPONSE_IDENTIFIABILITY_RUN",
+  "experiment": {
+    "actuator_fit_count": 2,
+    "actuator_transition": {
+      "delay_tau_velocity_limit": "selected measured fit",
+      "home_relative_gain_ratio": true,
+      "target_quantization": "STS3215 4096-count floor conversion before bridge"
+    },
+    "backend": "MuJoCo 3.9.0 CPU double precision",
+    "context_flattening": "runtime-reviewed exact 73-field order, float32",
+    "excitation": {
+      "frequency_hz": 50,
+      "joint_order": "runtime frozen logical order",
+      "one_joint_at_a_time": true,
+      "stage_ticks": 201,
+      "target_rad": "home + 0.015*sin(2*pi*t/40) + 0.005*sin(2*pi*t/20)",
+      "tick_count": 2814
+    },
+    "formal_behavior_cells": 0,
+    "profile_extraction": "runtime open_duck_x5.automatic_configuration_profile.v4 builder",
+    "repeats_per_endpoint_and_fit": 2,
+    "sensor_quantization": {
+      "acceleration_m_s2": 0.01,
+      "gyro_rad_s": "pi/(180*16)",
+      "present_current_a": 0.0065,
+      "present_position_rad": "nearest STS3215 4096-count position"
+    },
+    "torso_body": "trunk_assembly",
+    "torso_x_offsets_m": [
+      -0.05,
+      0.05
+    ],
+    "training_steps": 0
+  },
+  "hypothesis": "The runtime-exact 73-value automatic response context remains observable after physical sensor quantization and distinguishes the frozen -0.05 m and +0.05 m torso-X endpoints while the robot is feet-supported and otherwise unconstrained.",
+  "next_if_pass": "Freeze and run a separate zero-PPO policy implementation contract for the response branch, default-off protected-actor identity, ONNX ABI, rejection behavior, and normalization.",
+  "pass_requirements": [
+    "all frozen source hashes and versions match",
+    "model actuator order and home control equal the frozen 14-joint runtime values exactly",
+    "both foot contacts remain true for every accepted settle and excitation tick",
+    "all eight runtime-profile extractions complete with 73 finite float32 values",
+    "same fit, endpoint, and seed repeat produces a bit-exact 73-vector",
+    "for each actuator fit, the quantized -0.05 m and +0.05 m endpoint contexts are not bit-identical",
+    "the two policy and runtime field-order lists are exactly equal"
+  ],
+  "persistence_and_stop_rules": {
+    "if_any_source_or_contract_check_fails": "invalidate the run without training",
+    "if_endpoint_collapses": "close response73 before PPO",
+    "if_support_mode_fails": "hold and redesign the automatic response procedure before PPO",
+    "pass_requires_both_fits": true,
+    "retry_allowed": false,
+    "true_mass_com_inertia_or_component_identity_rescue_forbidden": true
+  },
+  "schema_version": "open_duck_mini.winner_v4_response_pretraining_contract.v1",
+  "sources": {
+    "actuator_fits": [
+      {
+        "id": "p30_all_joint",
+        "path": "outputs/analysis/fixed_target_p30_actuator_fit_20260712.json",
+        "sha256": "908ddb01e5d82e661d77b8f3cb186a84665695660b86b304c6d1ae89c79cdb0b"
+      },
+      {
+        "id": "p31_34_pitch_with_p30_nonpitch",
+        "path": "outputs/analysis/fixed_target_p31_34_actuator_fit_20260712.json",
+        "sha256": "a39776c06c5e26425e24b50e7dab3f441823e23904cad4977b8c921d9c9ca276"
+      }
+    ],
+    "interface": {
+      "path": "outputs/analysis/winner_v4_response_interface_preregistration.json",
+      "sha256": "562ea92c4ba9eb026263740a07fe349ed79e051f0a162e8dd476812f089b6adc"
+    },
+    "job": {
+      "path": "tools/run_winner_v4_response_identifiability_cpu.py",
+      "sha256": "f9fb15f3ea09ccade1363dae58bf3994ea879cbb2978d64d54e47201712a3d00"
+    },
+    "playground": {
+      "commit": "b9be205ac64488c23504ca42e5ec790337adeec3",
+      "repository": "https://github.com/apirrone/Open_Duck_Playground.git",
+      "scene": "playground/open_duck_mini_v2/xmls/scene_flat_terrain_backlash.xml"
+    },
+    "runtime_code": {
+      "configuration_collector_sha256": "d581e26b520e429e9efeddabe2f51a8f533b8b4851101a4abdc4da8b75f079a9",
+      "configuration_profile_sha256": "ea3262eac9a5a9f1d30ab8253ea758961a4525e65fab23c4e79c24f17b4bfc72",
+      "response_context_review_sha256": "9648d8927415ee23caf714e8d8767bd8e0b305d2ec4f2f0c11dbf0ddc635070d"
+    },
+    "runtime_review": {
+      "commit": "fc4eb2651113ef2bfc8839ec2289725cea8c3a51",
+      "path": "artifacts/gates/phase_0_audit/winner_v4_response_review/result.json",
+      "repository": "https://github.com/RobVanProd/open-duck-mini-rdkx5-native-runtime.git",
+      "sha256": "e860ac7c93565ef6bba9bc08435565faa75cca0768dc7392f6415b66629f55f8"
+    }
+  },
+  "status": "PREREGISTERED_CPU_FALSIFICATION_NOT_RUN",
+  "support_mode": {
+    "future_runtime_requirement": "Before physical policy conditioning, runtime must hash-bind this exact support-mode identifier to the raw calibration evidence and reject every other mode.",
+    "id": "feet_supported_flat_floor_free_body_passive_fall_catch_v1",
+    "manual_measurement_required": false,
+    "physical_boundary": [
+      "a rigid, level, stationary surface supports both feet",
+      "both frozen binary foot contacts remain true during the complete accepted home-settle and excitation population",
+      "the floating body is not suspended, clamped, or intentionally loaded at the torso, head, limbs, or external stand",
+      "a passive fall catch may surround the robot but must remain mechanically clear throughout accepted evidence",
+      "loss of either foot contact or contact with the passive catch aborts and discards the calibration"
+    ],
+    "rejected_modes": [
+      "free_hanging_or_suspended",
+      "torso_supported_or_clamped",
+      "feet_unloaded",
+      "single_foot_supported",
+      "passive_catch_touching_or_load_bearing"
+    ],
+    "simulator_realization": {
+      "accepted_contact_state": [
+        1,
+        1
+      ],
+      "control_period_s": 0.02,
+      "equality_or_support_constraints": false,
+      "external_forces": false,
+      "floating_base": true,
+      "floor_contact_is_physical": true,
+      "gravity_enabled": true,
+      "home_keyframe": "home",
+      "home_settle_ticks": 250,
+      "physics_substeps_per_control_tick": 10,
+      "scene": "flat_terrain_backlash",
+      "torso_support_contact": false
+    }
+  }
+}

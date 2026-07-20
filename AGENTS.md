@@ -2126,3 +2126,28 @@ Do not proceed to grounded walking until low-risk gates pass.
   runtime implementation, X5, robot, torque, motion, Gate 5, deployment, or
   clearance is authorized. See
   `outputs/analysis/WINNER_V4_RESPONSE_INTERFACE_PREREGISTRATION_20260720.md`.
+- 2026-07-20: Native-runtime review accepts the exact response73 field map and
+  73-value flattening order, but correctly holds implementation pending a
+  signed-X non-collapse test and an exact simulator realization of the physical
+  support mode. The review result is
+  `PASS_RESPONSE73_FIELD_MAP_HOLD_POLICY_CONDITIONING_READINESS`, SHA-256
+  `e860ac7c...f55f8`, at native-runtime commit
+  `fc4eb265...cca51`. This review does not authorize runtime implementation,
+  policy training, hosted compute, hardware, or deployment.
+- 2026-07-20: The single preregistered zero-PPO response73 CPU falsification
+  completed without a classified retry. All eight contexts are finite 73-value
+  float32 arrays, exact repeats are bit-identical, and both P30 and P31/34
+  distinguish signed X in 60/73 fields. It nevertheless fails the frozen
+  support boundary: the -0.05 m endpoint loses double-foot contact during
+  settle and finishes at base Z `-0.156836729809` m with roll
+  `-3.139646185483` rad, only `0.001946468107` rad from pi. Its later two-foot
+  excitation is therefore an inverted, invalid calibration state, not evidence
+  for policy conditioning. Formal result SHA-256 is
+  `b7eb0a5d...66730`; explanatory diagnostic SHA-256 is
+  `acf5af92...82e40`. Decision:
+  `HOLD_RESPONSE73_PRETRAINING_FALSIFICATION_FAILED` /
+  `DO_NOT_IMPLEMENT_OR_TRAIN_RESPONSE73`. No Colab session was opened. Any
+  replacement support or sign-preserving response mechanism requires a new
+  prospective contract and runtime review. See
+  `outputs/analysis/WINNER_V4_RESPONSE_IDENTIFIABILITY_RESULT_20260720.md` and
+  `outputs/analysis/WINNER_V4_SUPPORT_FAILURE_DIAGNOSTIC_20260720.md`.
