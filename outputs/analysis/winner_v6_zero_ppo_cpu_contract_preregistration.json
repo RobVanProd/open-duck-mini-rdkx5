@@ -1,0 +1,202 @@
+{
+  "all_or_nothing": true,
+  "authority": {
+    "colab_hosted_gpu_or_igpu": false,
+    "gate5_deployment_or_robot_clearance": false,
+    "one_exact_local_cpu_run": true,
+    "ppo_or_any_training": false,
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "runtime_v2_implementation": false
+  },
+  "decision": "AUTHORIZE_ONE_EXACT_CPU_ONLY_ZERO_PPO_CONTRACT_RUN",
+  "expected_abi": {
+    "calibrator": {
+      "inputs": [
+        {
+          "dtype": "float32",
+          "name": "obs",
+          "shape": [
+            1,
+            115
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "previous_action",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "h_in",
+          "shape": [
+            1,
+            64
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "dtype": "float32",
+          "name": "calibration_actions",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "previous_action_out",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "h_out",
+          "shape": [
+            1,
+            64
+          ]
+        }
+      ]
+    },
+    "locomotion": {
+      "inputs": [
+        {
+          "dtype": "float32",
+          "name": "obs",
+          "shape": [
+            1,
+            115
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "previous_action",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "h_in",
+          "shape": [
+            1,
+            64
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "calibration_context",
+          "shape": [
+            1,
+            64
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "dtype": "float32",
+          "name": "continuous_actions",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "previous_action_out",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "h_out",
+          "shape": [
+            1,
+            64
+          ]
+        }
+      ]
+    }
+  },
+  "fixed_initialization": {
+    "calibrator_action_head": "exact-zero float32 kernel and bias",
+    "calibrator_seed": 60720,
+    "hidden_state": "deterministic nonzero recurrent encoder, tanh bounded",
+    "locomotion_adapter_seed": 60721,
+    "locomotion_context_and_action_heads": "exact-zero float32 kernels and bias",
+    "true_configuration_labels": []
+  },
+  "hypothesis": "The reviewed two-graph interface can be initialized without changing either protected persistent G1/T2 checkpoint, while a nontrivial recurrent response state remains trainable through deployable next-response self-supervision and the graph itself enforces the measured action vector.",
+  "input_hashes": {
+    "checker": "26c804cae421d7cfb8cd1872187d8d80abe41f262acfb6252196fac516098000",
+    "importer": "38f7f4dac2c075be7b4f7f416a92379c2dfe14e060ecafd6bccb1e93fafcd125",
+    "interface_preregistration": "a66ff7138bdc474c5bd6d0a8899eba041d00305a3d3bd38fc13b0c00e4c3007e",
+    "network_source": "c4023e40baa25383455d4979b11f181b858603ec34005690b372e0a80f3c5321",
+    "protected_final": "0dfc24bde5d839e4d346dd8c08d9a7d0222a3847764ec6738bfc7f8d947f4ece",
+    "protected_half": "99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de",
+    "runtime_review_receipt": "96f4164e85a40c9f33dc04e9cfa85834b07b2c1238d87c4458173e1ad542e308"
+  },
+  "limitations": [
+    "This test establishes software mechanics, not support or walking behavior.",
+    "Temporary ONNX outputs from the contract are not candidate policies.",
+    "The frozen runtime-v1 101x14 path is not altered or evaluated here."
+  ],
+  "no_retry_or_tuning": "A failed formal run is recorded as a hold. Do not change seeds, populations, tolerance, weights, source, protected checkpoint, or pass rule and rerun.",
+  "numeric_tolerance": 1e-07,
+  "pass_authorizes_only": "write and review a separate, frozen CPU calibrator-training preregistration; it does not itself authorize any optimizer step",
+  "pass_rule": [
+    "all frozen hashes and both exact ABIs match",
+    "JAX and ONNX use CPU only",
+    "calibrator step-zero action and action state are exact zero in all 66 cases",
+    "calibrator hidden state is finite, tanh bounded, evolves, and receives finite nonzero auxiliary gradients",
+    "all 250 calibration ticks and both 32-tick locomotion handoff chains agree between JAX and ONNX within 1e-7",
+    "both protected G1/T2 checkpoints retain bit-exact action and previous-action outputs for all 66 identity cases",
+    "arbitrary calibration context has exact-zero effect before training",
+    "initial and deliberately nonzero-head stress graphs obey absolute and measured per-joint slew bounds",
+    "all nine invalid calibration handoffs fail before an armable context is returned",
+    "neither exported graph nor the auxiliary target uses a true configuration label"
+  ],
+  "protected_checkpoints": {
+    "final": {
+      "path": "outputs/analysis/ground_up_dual_fit_conservative_envelope_repair_policies/T2_EQUAL_1024000.onnx",
+      "role": "protected persistent G1/T2 final checkpoint after x=0 and envelope repairs",
+      "sha256": "0dfc24bde5d839e4d346dd8c08d9a7d0222a3847764ec6738bfc7f8d947f4ece"
+    },
+    "half": {
+      "path": "outputs/analysis/ground_up_dual_fit_conservative_envelope_repair_policies/T2_EQUAL_512000.onnx",
+      "role": "protected persistent G1/T2 half checkpoint after x=0 and envelope repairs",
+      "sha256": "99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de"
+    }
+  },
+  "schema_version": "winner_v6.zero_ppo_cpu_software_contract_preregistration.v1",
+  "status": "PREREGISTERED_NOT_RUN",
+  "test_population": {
+    "calibration_ticks": 250,
+    "invalid_handoff_cases": [
+      "wrong shape",
+      "wrong dtype",
+      "nonfinite",
+      "below bound",
+      "above bound",
+      "249 ticks",
+      "251 ticks",
+      "invalid tick",
+      "invalid support"
+    ],
+    "locomotion_ticks_per_checkpoint": 32,
+    "nonzero_head_bound_stress_cases_per_graph": 256,
+    "protected_checkpoint_count": 2,
+    "protected_identity_cases_per_checkpoint": 66,
+    "step_zero_case_rule": "two fixed plus 64 PCG64 observations; previous action exact zero; two zero and 64 pseudorandom hidden-state controls",
+    "step_zero_cases": 66
+  }
+}
