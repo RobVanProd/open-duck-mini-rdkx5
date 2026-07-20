@@ -23,7 +23,7 @@ CONTROL_DT_S = 0.02
 ACTION_SCALE_RAD = 0.25
 CALIBRATION_TICKS = 250
 VELOCITY_LIMITS_RAD_S = np.asarray(
-    [1.0, 0.75, 1.5, 1.5, 1.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.75, 1.25, 1.0, 1.25],
+    [5.24, 5.24, 1.5, 1.5, 1.5, 5.24, 5.24, 5.24, 5.24, 5.24, 5.24, 1.25, 1.0, 1.25],
     dtype=np.float32,
 )
 MAX_ACTION_DELTA = VELOCITY_LIMITS_RAD_S * np.float32(CONTROL_DT_S / ACTION_SCALE_RAD)

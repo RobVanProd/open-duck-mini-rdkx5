@@ -137,10 +137,11 @@
   },
   "hypothesis": "The reviewed two-graph interface can be initialized without changing either protected persistent G1/T2 checkpoint, while a nontrivial recurrent response state remains trainable through deployable next-response self-supervision and the graph itself enforces the measured action vector.",
   "input_hashes": {
-    "checker": "26c804cae421d7cfb8cd1872187d8d80abe41f262acfb6252196fac516098000",
+    "checker": "31b813f586adb5af70580d06d2dcb87a3953c79b10f6014c7ccf79208a0ab15a",
     "importer": "38f7f4dac2c075be7b4f7f416a92379c2dfe14e060ecafd6bccb1e93fafcd125",
     "interface_preregistration": "a66ff7138bdc474c5bd6d0a8899eba041d00305a3d3bd38fc13b0c00e4c3007e",
-    "network_source": "c4023e40baa25383455d4979b11f181b858603ec34005690b372e0a80f3c5321",
+    "network_source": "ee1a86d69e9f1348522c14b933d96d65863ea4751cb307d479dbde9173e64eca",
+    "pre_execution_amendment": "1b66725df99d6898d82dc5d835a13dbdf46ce5ae961e4c134f184168ce8a4926",
     "protected_final": "0dfc24bde5d839e4d346dd8c08d9a7d0222a3847764ec6738bfc7f8d947f4ece",
     "protected_half": "99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de",
     "runtime_review_receipt": "96f4164e85a40c9f33dc04e9cfa85834b07b2c1238d87c4458173e1ad542e308"
@@ -161,10 +162,15 @@
     "all 250 calibration ticks and both 32-tick locomotion handoff chains agree between JAX and ONNX within 1e-7",
     "both protected G1/T2 checkpoints retain bit-exact action and previous-action outputs for all 66 identity cases",
     "arbitrary calibration context has exact-zero effect before training",
-    "initial and deliberately nonzero-head stress graphs obey absolute and measured per-joint slew bounds",
+    "initial and deliberately nonzero-head stress graphs obey absolute and the protected winner-v2 per-joint slew bounds",
     "all nine invalid calibration handoffs fail before an armable context is returned",
     "neither exported graph nor the auxiliary target uses a true configuration label"
   ],
+  "pre_execution_amendment": {
+    "path": "outputs/analysis/winner_v6_zero_ppo_cpu_contract_preregistration_amendment.json",
+    "reason": "align the adapter projection with the protected winner-v2 deployment vector before any formal result existed",
+    "sha256": "1b66725df99d6898d82dc5d835a13dbdf46ce5ae961e4c134f184168ce8a4926"
+  },
   "protected_checkpoints": {
     "final": {
       "path": "outputs/analysis/ground_up_dual_fit_conservative_envelope_repair_policies/T2_EQUAL_1024000.onnx",
@@ -177,7 +183,7 @@
       "sha256": "99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de"
     }
   },
-  "schema_version": "winner_v6.zero_ppo_cpu_software_contract_preregistration.v1",
+  "schema_version": "winner_v6.zero_ppo_cpu_software_contract_preregistration.v2",
   "status": "PREREGISTERED_NOT_RUN",
   "test_population": {
     "calibration_ticks": 250,

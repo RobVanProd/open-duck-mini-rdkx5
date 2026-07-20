@@ -29,6 +29,7 @@ ANALYSIS = ROOT / "outputs/analysis"
 PREREGISTRATION = ANALYSIS / "winner_v6_zero_ppo_cpu_contract_preregistration.json"
 NETWORK_SOURCE = ROOT / "patches/winner_v6_dynamic_calibration_networks.py"
 IMPORTER = ROOT / "tools/import_winner_v6_zero_ppo_cpu_contract.py"
+AMENDMENT = ANALYSIS / "winner_v6_zero_ppo_cpu_contract_preregistration_amendment.json"
 sys.path.insert(0, str(NETWORK_SOURCE.parent))
 
 import winner_v6_dynamic_calibration_networks as networks  # noqa: E402
@@ -507,6 +508,7 @@ def main() -> int:
         "network_source": sha256(NETWORK_SOURCE),
         "checker": sha256(Path(__file__)),
         "importer": sha256(IMPORTER),
+        "pre_execution_amendment": sha256(AMENDMENT),
         "interface_preregistration": sha256(
             ANALYSIS / "winner_v6_dynamic_calibration_interface_preregistration.json"
         ),
@@ -527,6 +529,19 @@ def main() -> int:
 
     calibrator_parameters = networks.initialize_calibrator_parameters()
     locomotion_parameters = networks.initialize_locomotion_adapter_parameters()
+    protected_delta_vectors = []
+    for label in ("half", "final"):
+        protected_model = onnx.load(
+            ROOT / preregistration["protected_checkpoints"][label]["path"]
+        )
+        protected_initializers = networks.onnx_initializers(protected_model)
+        protected_delta_vectors.append(
+            np.asarray(protected_initializers["max_action_delta"]).reshape(-1)
+        )
+    projection_matches_protected = all(
+        np.array_equal(vector, networks.MAX_ACTION_DELTA)
+        for vector in protected_delta_vectors
+    )
     action_head_zero = bool(
         np.count_nonzero(np.asarray(calibrator_parameters["action_weight"])) == 0
         and np.count_nonzero(np.asarray(calibrator_parameters["action_bias"])) == 0
@@ -626,6 +641,7 @@ def main() -> int:
             "all_invalid_cases_rejected"
         ],
         "locomotion_context_heads_exact_zero": context_heads_zero,
+        "adapter_projection_matches_both_protected_checkpoints": projection_matches_protected,
         "protected_actions_and_state_bit_exact": all(
             row["protected_actions_bit_exact"]
             and row["protected_previous_action_state_bit_exact"]

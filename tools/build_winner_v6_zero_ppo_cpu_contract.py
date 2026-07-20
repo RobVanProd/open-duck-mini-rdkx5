@@ -17,6 +17,7 @@ RUNTIME_RECEIPT = ANALYSIS / "winner_v6_runtime_schema_review_receipt.json"
 NETWORK_SOURCE = ROOT / "patches/winner_v6_dynamic_calibration_networks.py"
 CHECKER = ROOT / "tools/check_winner_v6_zero_ppo_cpu_contract.py"
 IMPORTER = ROOT / "tools/import_winner_v6_zero_ppo_cpu_contract.py"
+AMENDMENT = ANALYSIS / "winner_v6_zero_ppo_cpu_contract_preregistration_amendment.json"
 PROTECTED = {
     "half": ROOT / (
         "outputs/analysis/ground_up_dual_fit_conservative_envelope_repair_policies/"
@@ -49,6 +50,9 @@ def main() -> int:
         raise ValueError("runtime has not authorized the zero-PPO CPU contract")
     if receipt["artifact_sha256"] != "f0b95db839cff0c0329ffb1d9458c06e1ec6e6432b2b3ef84ef5f451550547c8":
         raise ValueError("runtime review receipt does not identify the reviewed artifact")
+    amendment = json.loads(AMENDMENT.read_text(encoding="utf-8"))
+    if amendment["formal_run_started_before_amendment"]:
+        raise ValueError("cannot replace a preregistration after the formal run starts")
 
     calibrator_abi = {
         "inputs": [
@@ -87,13 +91,14 @@ def main() -> int:
         "network_source": sha256(NETWORK_SOURCE),
         "checker": sha256(CHECKER),
         "importer": sha256(IMPORTER),
+        "pre_execution_amendment": sha256(AMENDMENT),
         "interface_preregistration": sha256(INTERFACE),
         "runtime_review_receipt": sha256(RUNTIME_RECEIPT),
         "protected_half": protected_checkpoints["half"]["sha256"],
         "protected_final": protected_checkpoints["final"]["sha256"],
     }
     result = {
-        "schema_version": "winner_v6.zero_ppo_cpu_software_contract_preregistration.v1",
+        "schema_version": "winner_v6.zero_ppo_cpu_software_contract_preregistration.v2",
         "status": "PREREGISTERED_NOT_RUN",
         "decision": "AUTHORIZE_ONE_EXACT_CPU_ONLY_ZERO_PPO_CONTRACT_RUN",
         "hypothesis": (
@@ -115,6 +120,11 @@ def main() -> int:
             "locomotion_context_and_action_heads": "exact-zero float32 kernels and bias",
             "hidden_state": "deterministic nonzero recurrent encoder, tanh bounded",
             "true_configuration_labels": [],
+        },
+        "pre_execution_amendment": {
+            "path": str(AMENDMENT.relative_to(ROOT)).replace("\\", "/"),
+            "sha256": sha256(AMENDMENT),
+            "reason": "align the adapter projection with the protected winner-v2 deployment vector before any formal result existed",
         },
         "test_population": {
             "step_zero_cases": 66,
@@ -142,7 +152,7 @@ def main() -> int:
             "all 250 calibration ticks and both 32-tick locomotion handoff chains agree between JAX and ONNX within 1e-7",
             "both protected G1/T2 checkpoints retain bit-exact action and previous-action outputs for all 66 identity cases",
             "arbitrary calibration context has exact-zero effect before training",
-            "initial and deliberately nonzero-head stress graphs obey absolute and measured per-joint slew bounds",
+            "initial and deliberately nonzero-head stress graphs obey absolute and the protected winner-v2 per-joint slew bounds",
             "all nine invalid calibration handoffs fail before an armable context is returned",
             "neither exported graph nor the auxiliary target uses a true configuration label",
         ],
