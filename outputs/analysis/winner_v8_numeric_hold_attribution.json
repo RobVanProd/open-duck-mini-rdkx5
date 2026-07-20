@@ -1,0 +1,84 @@
+{
+  "authority": {
+    "robot_clearance": false,
+    "runtime_robot_torque_motion_gate5": false,
+    "winner_v9_preregistration_design": true,
+    "winner_v9_run_behavior_training_gpu_colab": false
+  },
+  "checks": {
+    "both_checkpoint_excesses_identical": true,
+    "formal_result_remains_hold": true,
+    "only_internal_safe_delta_checks_failed": true,
+    "safe_excess_below_one_float32_epsilon": true,
+    "safe_excess_smaller_than_inward_headroom": true,
+    "stored_full_measured_bound_has_zero_proven_excess": true,
+    "v8_close_rule_present": true,
+    "xml_and_graph_identity_checks_passed": true
+  },
+  "decision": "PREREGISTER_DISTINCT_WINNER_V9_STORED_BOUND_CONTRACT_ONLY",
+  "distinct_v9_hypothesis": {
+    "assertion": "compare final output to stored_max_action_delta with zero tolerance; the smaller internal delta is implementation headroom, not the public physical boundary",
+    "first_gate": "new zero-behavior CPU graph/XML contract only",
+    "internal_delta_equation": "nextafter(stored_delta - 4*float32_epsilon, -infinity)",
+    "internal_safe_max_action_delta": [
+      0.07999950647354126,
+      0.05999951437115669,
+      0.11999950557947159,
+      0.11999950557947159,
+      0.11999950557947159,
+      0.03999951481819153,
+      0.03999951481819153,
+      0.03999951481819153,
+      0.03999951481819153,
+      0.03999951481819153,
+      0.05999951437115669,
+      0.09999950230121613,
+      0.07999950647354126,
+      0.09999950230121613
+    ],
+    "stored_delta_equation": "nextafter(float32(rate*0.02/0.25), -infinity)",
+    "stored_max_action_delta": [
+      0.07999999076128006,
+      0.059999994933605194,
+      0.11999998986721039,
+      0.11999998986721039,
+      0.11999998986721039,
+      0.03999999538064003,
+      0.03999999538064003,
+      0.03999999538064003,
+      0.03999999538064003,
+      0.03999999538064003,
+      0.059999994933605194,
+      0.09999998658895493,
+      0.07999999076128006,
+      0.09999998658895493
+    ],
+    "tolerance_or_rate_change": false,
+    "why_distinct": "both named delta initializers differ from the closed winner-v8 graph and the public stored bound is analytically rounded inward"
+  },
+  "failed_checks": [],
+  "inputs": {
+    "preregistration": {
+      "path": "outputs/analysis/winner_v8_physical_envelope_contract_preregistration.json",
+      "sha256": "6a154286fa34d14875b1348ce55f96419beb428d4748a3519f5a5455530e159b"
+    },
+    "result": {
+      "path": "outputs/analysis/winner_v8_physical_envelope_contract_result.json",
+      "sha256": "ae741f83032da781cb549b0138122dc6ef45bf5e60c9e873b252b74bd09373de"
+    }
+  },
+  "numeric_evidence": {
+    "checkpoint_safe_delta_excess": [
+      2.9802322387695312e-08,
+      2.9802322387695312e-08
+    ],
+    "float32_epsilon": 1.1920928955078125e-07,
+    "maximum_safe_delta_excess": 2.9802322387695312e-08,
+    "minimum_internal_inward_headroom": 4.76837158203125e-07,
+    "stored_full_bound_excess_upper_bound": 0.0
+  },
+  "schema_version": "open_duck_mini.winner_v8_numeric_hold_attribution.v1",
+  "status": "PASS_WINNER_V8_HOLD_ATTRIBUTED_TO_INTERNAL_FLOAT32_ASSERTION",
+  "winner_v8_reclassified_or_retried": false,
+  "winner_v8_remains_closed": true
+}
