@@ -1,0 +1,106 @@
+{
+  "authority": {
+    "new_or_revised_contract_run": false,
+    "rdkx5_robot_torque_motion_gate5_deployment": false,
+    "robot_clearance": false,
+    "runtime_implementation": false,
+    "runtime_semantics_review_request": true,
+    "training_ppo_colab_gpu": false
+  },
+  "causal_attribution": "The exact-zero adapter was byte-for-byte inactive and its deliberately enabled stress graph obeyed the projection. The failing subcheck instead applied a previous-action slew assertion to the protected actor after its downstream actual-centered guard, using joint positions randomized independently of action state. That guard is intentionally downstream and can replace the upstream rate-bounded action when state and target diverge.",
+  "completed_result_reclassified": false,
+  "decision": "REQUEST_RUNTIME_BOUND_SEMANTICS_REVIEW_NO_RETRY",
+  "evidence": {
+    "combined_pass_rule_conflated_disabled_and_enabled_paths": true,
+    "default_off_protected_identity_passed_both_checkpoints": true,
+    "formal_fixture_randomizes_joint_state_independently": true,
+    "formal_status_remains_hold": true,
+    "jax_onnx_chain_itself_passed": true,
+    "nonzero_adapter_stress_passed_both_graphs": true,
+    "only_default_off_chain_bound_subchecks_failed": true,
+    "only_failed_check_was_combined_bound_check": true,
+    "prior_guard_contract_required_physical_joint_state_consistency": true,
+    "protected_guard_is_downstream_of_velocity_projection": true
+  },
+  "failed_evidence": [],
+  "formal_contract_retry_authorized": false,
+  "inputs": {
+    "checker": {
+      "path": "tools/check_winner_v6_zero_ppo_cpu_contract.py",
+      "sha256": "191f326129240c573e93ddcc2de56c93020589fb701cb4a311ce9742f86b77ef"
+    },
+    "formal_result": {
+      "path": "outputs/analysis/winner_v6_zero_ppo_cpu_contract_result.json",
+      "sha256": "5a99f94a4a4d0f3ffcf23e3d27a5d4c833b318b5cc8f677d6b851e3f619fe5c9"
+    },
+    "preregistration": {
+      "path": "outputs/analysis/winner_v6_zero_ppo_cpu_contract_preregistration.json",
+      "sha256": "aa3b847fc80a30501afdaa10f5f332ff9426166e425763bc36a4ecc67db40544"
+    },
+    "prior_transform": {
+      "path": "tools/build_ground_up_dual_fit_conservative_envelope_repair.py",
+      "sha256": "02cb67add5a9734a849c05edba92932af576f21d7b390cce45a503d63cecb9bb"
+    }
+  },
+  "proposed_if_runtime_accepts": [
+    "close the exact failed v3 contract permanently",
+    "freeze a separately named v6b zero-PPO contract before execution",
+    "do not change checkpoints, network weights, seeds, ABI, 1e-7 tolerance, or fail-closed cases",
+    "keep arbitrary-input bit-exact default-off identity",
+    "keep arbitrary-input enabled-adapter bound stress",
+    "use physically chained observation/action state only for the protected full-action sequence assertion"
+  ],
+  "protected_graphs": [
+    {
+      "actual_centered_guard_node": 33,
+      "final_action_node": 38,
+      "guard_is_downstream_of_velocity_projection": true,
+      "max_action_delta": [
+        0.41919997334480286,
+        0.41919997334480286,
+        0.11999999731779099,
+        0.11999999731779099,
+        0.11999999731779099,
+        0.41919997334480286,
+        0.41919997334480286,
+        0.41919997334480286,
+        0.41919997334480286,
+        0.41919997334480286,
+        0.41919997334480286,
+        0.09999999403953552,
+        0.07999999821186066,
+        0.09999999403953552
+      ],
+      "path": "outputs/analysis/ground_up_dual_fit_conservative_envelope_repair_policies/T2_EQUAL_512000.onnx",
+      "sha256": "99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de",
+      "velocity_projection_node": 20
+    },
+    {
+      "actual_centered_guard_node": 33,
+      "final_action_node": 38,
+      "guard_is_downstream_of_velocity_projection": true,
+      "max_action_delta": [
+        0.41919997334480286,
+        0.41919997334480286,
+        0.11999999731779099,
+        0.11999999731779099,
+        0.11999999731779099,
+        0.41919997334480286,
+        0.41919997334480286,
+        0.41919997334480286,
+        0.41919997334480286,
+        0.41919997334480286,
+        0.41919997334480286,
+        0.09999999403953552,
+        0.07999999821186066,
+        0.09999999403953552
+      ],
+      "path": "outputs/analysis/ground_up_dual_fit_conservative_envelope_repair_policies/T2_EQUAL_1024000.onnx",
+      "sha256": "0dfc24bde5d839e4d346dd8c08d9a7d0222a3847764ec6738bfc7f8d947f4ece",
+      "velocity_projection_node": 20
+    }
+  ],
+  "schema_version": "winner_v6.zero_ppo_contract_hold_attribution.v1",
+  "semantic_question_for_runtime": "Should the reviewed requirement distinguish (A) arbitrary-input bit-exact default-off delegation to the already accepted protected graph, (B) arbitrary-input graph-owned bounds when the new adapter is enabled, and (C) the protected full action contract on physically valid chained observations, rather than requiring the upstream previous-action delta after an actual-centered guard on impossible independent state pairs?",
+  "status": "PASS_HOLD_ATTRIBUTED_TO_CONTRACT_FIXTURE_SEMANTICS"
+}
