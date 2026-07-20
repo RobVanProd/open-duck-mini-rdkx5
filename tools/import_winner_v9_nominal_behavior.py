@@ -29,6 +29,11 @@ def sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def lf_sha256(path: Path) -> str:
+    """Hash the repository checkout representation used by the Linux runner."""
+    return hashlib.sha256(path.read_bytes().replace(b"\r\n", b"\n")).hexdigest()
+
+
 def flatten(payload: dict[str, Any]) -> list[dict[str, Any]]:
     return [
         row
@@ -51,7 +56,8 @@ def main() -> int:
     raw = json.loads(raw_path.read_text(encoding="utf-8"))
     prereg = json.loads(PREREG.read_text(encoding="utf-8"))
     prereg_sha = sha256(PREREG)
-    if raw["preregistration_sha256"] != prereg_sha:
+    execution_prereg_sha = lf_sha256(PREREG)
+    if raw["preregistration_sha256"] != execution_prereg_sha:
         raise ValueError("raw result does not bind the frozen nominal preregistration")
     if raw["status"] not in EXPECTED_STATUSES:
         raise ValueError(f"unexpected winner-v9 nominal status: {raw['status']}")
@@ -66,7 +72,7 @@ def main() -> int:
 
     blocks = flatten(raw)
     traces = [trace for block in blocks for trace in block["traces"]]
-    if set(raw["matrices"]) != {"P30", "P31_34"} or any(
+    if set(raw["matrices"]) != {"p30", "p31_34"} or any(
         set(rows) != {"half", "final"} for rows in raw["matrices"].values()
     ):
         raise ValueError("winner-v9 nominal result must contain the frozen four matrices")
@@ -93,6 +99,7 @@ def main() -> int:
         "onnx_binaries_committed": False,
         "preregistration_path": str(PREREG.relative_to(ROOT)).replace("\\", "/"),
         "preregistration_sha256": prereg_sha,
+        "execution_preregistration_lf_sha256": execution_prereg_sha,
         "raw_result_filename": raw_path.name,
         "raw_result_sha256": sha256(raw_path),
         "run_url": args.run_url,
