@@ -1,0 +1,162 @@
+{
+  "authority": {
+    "behavior_training_gpu_colab": false,
+    "nominal_preregistration_design": true,
+    "robot_clearance": false,
+    "runtime_robot_torque_motion_gate5": false
+  },
+  "checks": {
+    "all_14_actuators_inherit_inward_limit": true,
+    "both_115d_stateful_abis_exact": true,
+    "both_cpu_inference_contracts_pass": true,
+    "both_policy_graphs_byte_identical": true,
+    "cpu_only_no_behavior_or_training": true,
+    "frozen_input_hashes_exact": true,
+    "inward_float32_boundary_exact": true,
+    "scene_bytes_exact": true,
+    "xml_only_one_force_range_changed": true
+  },
+  "decision": "AUTHORIZE_SEPARATE_WINNER_V10_NOMINAL_PREREGISTRATION_ONLY",
+  "failed_checks": [],
+  "input_hashes": {
+    "builder": "d9284e61e98e7eed93ba3c4c05c8140825658e8a5745d0c0db7c08f75c9c1a32",
+    "importer": "5bea34b6afc5d4792056f71d655a73737eaa6001a56dda1663ba719be3dbea0c",
+    "numeric_attribution": "7d9bc4b80925ed6bd4b587e94d5effdddde346507963688a31db6eb107cde984",
+    "runner": "8ed21d304aa44776ab62350e1bfab20d5dc75b228a4794266ee93f2315b0d150",
+    "source_final": "d52b63241340d9d56671b95c58bb0fc72af0998fd47d4684719f6cd44f244a10",
+    "source_half": "cf001269908d86e47eaa145ffda1d87e946a314ecf51056dc086c4cf10164ab6",
+    "source_model_xml": "2132e477d2504faf08af4c5250952bd8b17611fb496ab15f30afc0371f327f9c",
+    "source_scene_xml": "65324e27a3a84e2e42d1073bfc636f9cdbf6bef7b1f20c1b5a886b8fd58fcc71",
+    "winner_v9_result": "78646dee9c0015b9311e985f1ff88a7ab660db16c8af8b148d72de581142d0fe"
+  },
+  "policies": [
+    {
+      "abi": {
+        "inputs": [
+          {
+            "dtype": "float",
+            "name": "obs",
+            "shape": [
+              1,
+              115
+            ]
+          },
+          {
+            "dtype": "float",
+            "name": "previous_action",
+            "shape": [
+              1,
+              14
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "dtype": "float",
+            "name": "continuous_actions",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "dtype": "float",
+            "name": "previous_action_out",
+            "shape": [
+              1,
+              14
+            ]
+          }
+        ]
+      },
+      "all_finite": true,
+      "byte_identical_to_source": true,
+      "label": "half",
+      "maximum_stored_delta_excess": 0.0,
+      "output_bytes": 907533,
+      "output_path": "D:\\odm\\winner-v10-inward-torque-f70cfd3\\winner_v10_half_inward_torque.onnx",
+      "output_sha256": "cf001269908d86e47eaa145ffda1d87e946a314ecf51056dc086c4cf10164ab6",
+      "source_path": "D:\\odm\\winner-v9-stored-bound-1fb33ec\\winner_v9_half_stored_bound.onnx",
+      "source_sha256": "cf001269908d86e47eaa145ffda1d87e946a314ecf51056dc086c4cf10164ab6",
+      "state_equals_action_bit_exact": true
+    },
+    {
+      "abi": {
+        "inputs": [
+          {
+            "dtype": "float",
+            "name": "obs",
+            "shape": [
+              1,
+              115
+            ]
+          },
+          {
+            "dtype": "float",
+            "name": "previous_action",
+            "shape": [
+              1,
+              14
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "dtype": "float",
+            "name": "continuous_actions",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "dtype": "float",
+            "name": "previous_action_out",
+            "shape": [
+              1,
+              14
+            ]
+          }
+        ]
+      },
+      "all_finite": true,
+      "byte_identical_to_source": true,
+      "label": "final",
+      "maximum_stored_delta_excess": 0.0,
+      "output_bytes": 907533,
+      "output_path": "D:\\odm\\winner-v10-inward-torque-f70cfd3\\winner_v10_final_inward_torque.onnx",
+      "output_sha256": "d52b63241340d9d56671b95c58bb0fc72af0998fd47d4684719f6cd44f244a10",
+      "source_path": "D:\\odm\\winner-v9-stored-bound-1fb33ec\\winner_v9_final_stored_bound.onnx",
+      "source_sha256": "d52b63241340d9d56671b95c58bb0fc72af0998fd47d4684719f6cd44f244a10",
+      "state_equals_action_bit_exact": true
+    }
+  ],
+  "preregistration_sha256": "2697ffbe63e2b96b7b072b9873c81c397814126b17b8b1c2c5089a23fc953123",
+  "repository_attribution": {
+    "contract_commit": "f70cfd3",
+    "onnx_xml_binaries_committed": false,
+    "raw_result_filename": "winner-v10-inward-torque-raw-f70cfd3.json",
+    "raw_result_sha256": "42f9829e74854472616a47cdb0ad628ff4a22216488d64642484def68cc71cf7"
+  },
+  "schema_version": "open_duck_mini.winner_v10_inward_torque_contract_result.v1",
+  "status": "PASS_WINNER_V10_INWARD_TORQUE_REPRESENTATION_CONTRACT",
+  "xml": {
+    "actuator_count": 14,
+    "all_actuators_inherit_sts3215": true,
+    "force_range_nm": [
+      -1.91229665,
+      1.91229665
+    ],
+    "only_exact_force_range_bytes_changed": true,
+    "output_model_path": "D:\\odm\\winner-v10-inward-torque-f70cfd3\\xmls\\open_duck_mini_v2_backlash.xml",
+    "output_model_sha256": "660fa8e4ac0d977806e881d008090e7153cd0608dbee05b88f957a91bde6f655",
+    "output_scene_path": "D:\\odm\\winner-v10-inward-torque-f70cfd3\\xmls\\scene_flat_terrain_backlash.xml",
+    "output_scene_sha256": "65324e27a3a84e2e42d1073bfc636f9cdbf6bef7b1f20c1b5a886b8fd58fcc71",
+    "represented_positive_float32_nm": 1.9122966527938843,
+    "source_model_path": "D:\\odm\\winner-v9-stored-bound-1fb33ec\\xmls\\open_duck_mini_v2_backlash.xml",
+    "source_model_sha256": "2132e477d2504faf08af4c5250952bd8b17611fb496ab15f30afc0371f327f9c",
+    "source_scene_path": "D:\\odm\\winner-v9-stored-bound-1fb33ec\\xmls\\scene_flat_terrain_backlash.xml",
+    "source_scene_sha256": "65324e27a3a84e2e42d1073bfc636f9cdbf6bef7b1f20c1b5a886b8fd58fcc71",
+    "sts3215_default_count": 1
+  }
+}
