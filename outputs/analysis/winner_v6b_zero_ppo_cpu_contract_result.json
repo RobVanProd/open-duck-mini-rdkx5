@@ -1,0 +1,387 @@
+{
+  "artifacts": {
+    "winner_v6b_calibrator_bound_stress.onnx": {
+      "bytes": 54902,
+      "sha256": "b0cc6ae2f158e02ab6f76215e906e27ea0106c32cf81c7857cdcf2c8601dcd99"
+    },
+    "winner_v6b_calibrator_step_zero.onnx": {
+      "bytes": 54902,
+      "sha256": "adda90e5acfb5205bce6f271b921c6127755981afc6d41c28a4a080d80a6de3b"
+    },
+    "winner_v6b_locomotion_bound_stress.onnx": {
+      "bytes": 982304,
+      "sha256": "b96c4967c8924af52e7f8b6ff3c631eea9269a870e562033ca0a252ce264bdbd"
+    },
+    "winner_v6b_locomotion_final_step_zero.onnx": {
+      "bytes": 982304,
+      "sha256": "c21d0250b4403caf879246fa18e5c198d430ca009bcaea40b5740c91b60d2267"
+    },
+    "winner_v6b_locomotion_half_step_zero.onnx": {
+      "bytes": 982304,
+      "sha256": "ae65b66c080304220221b5327619e1f62aa8c8265c3493a39060cb32fd8b17cd"
+    }
+  },
+  "authority": {
+    "colab_hosted_gpu_or_igpu": false,
+    "rdkx5_robot_torque_motion_gate5_or_deployment": false,
+    "robot_clearance": false,
+    "runtime_v2_implementation": false,
+    "separate_calibrator_training_preregistration_design": false,
+    "training_or_ppo": false
+  },
+  "auxiliary_trainability": {
+    "all_gradients_finite": true,
+    "auxiliary_target_indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      83,
+      84,
+      85,
+      86,
+      87,
+      88,
+      89,
+      90,
+      91,
+      92,
+      93,
+      94,
+      95,
+      96,
+      97,
+      98
+    ],
+    "gradient_norms": {
+      "action_bias": 0.005443693604320288,
+      "action_weight": 0.0030497668776661158,
+      "auxiliary_action_weight": 0.0,
+      "auxiliary_bias": 0.05725618451833725,
+      "auxiliary_hidden_weight": 0.03207395598292351,
+      "hidden_bias": 0.015762649476528168,
+      "hidden_weight": 0.007570790592581034,
+      "obs_weight": 0.027445578947663307,
+      "previous_action_weight": 0.0
+    },
+    "loss": 0.04310688003897667,
+    "response_encoder_receives_gradient": true
+  },
+  "calibration_chain": {
+    "action_bounds_hold": true,
+    "all_finite": true,
+    "context_max": 0.16093099117279053,
+    "context_min": -0.18368273973464966,
+    "context_read_only": true,
+    "hidden_changed_ticks": 250,
+    "max_action_error": 0.0,
+    "max_hidden_error": 8.731149137020111e-11,
+    "ticks": 250
+  },
+  "checks": {
+    "auxiliary_targets_deployable_observation_only": true,
+    "both_persistent_protected_checkpoints_checked": true,
+    "calibration_context_immutable_finite_bounded": true,
+    "calibrator_250_tick_chain_exact": true,
+    "calibrator_abi_exact": true,
+    "calibrator_action_head_exact_zero": true,
+    "calibrator_hidden_finite_bounded_and_evolves": true,
+    "calibrator_response_encoder_trainable": true,
+    "calibrator_step_zero_actions_exact_zero": true,
+    "default_off_arbitrary_input_identity_bit_exact": true,
+    "enabled_adapter_arbitrary_input_bounds_hold": true,
+    "failed_calibration_never_armable": true,
+    "failed_v6_result_remains_held": true,
+    "frozen_input_hashes_exact": true,
+    "jax_cpu_only": true,
+    "jax_onnx_full_handoff_chain_within_tolerance": true,
+    "locomotion_abis_exact": true,
+    "locomotion_context_heads_exact_zero": true,
+    "no_true_configuration_graph_input": true,
+    "onnxruntime_cpu_only": true,
+    "protected_physical_chains_hold_full_action_contract": false
+  },
+  "decision": "STOP_WINNER_V6_DYNAMIC_CALIBRATION_PATH",
+  "default_off_expansions": [
+    {
+      "abi": {
+        "inputs": [
+          {
+            "dtype": "float32",
+            "name": "obs",
+            "shape": [
+              1,
+              115
+            ]
+          },
+          {
+            "dtype": "float32",
+            "name": "previous_action",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "dtype": "float32",
+            "name": "h_in",
+            "shape": [
+              1,
+              64
+            ]
+          },
+          {
+            "dtype": "float32",
+            "name": "calibration_context",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "dtype": "float32",
+            "name": "continuous_actions",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "dtype": "float32",
+            "name": "previous_action_out",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "dtype": "float32",
+            "name": "h_out",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ]
+      },
+      "action_bounds_hold": false,
+      "context_branch_exact_zero_default_off": true,
+      "expanded_sha256": "ae65b66c080304220221b5327619e1f62aa8c8265c3493a39060cb32fd8b17cd",
+      "identity_cases": 66,
+      "jax_onnx_chain_ticks": 32,
+      "jax_onnx_max_action_error": 0.0,
+      "jax_onnx_max_hidden_error": 5.820766091346741e-11,
+      "protected_actions_bit_exact": true,
+      "protected_path": "outputs\\analysis\\ground_up_dual_fit_conservative_envelope_repair_policies\\T2_EQUAL_512000.onnx",
+      "protected_previous_action_state_bit_exact": true,
+      "protected_sha256": "99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de"
+    },
+    {
+      "abi": {
+        "inputs": [
+          {
+            "dtype": "float32",
+            "name": "obs",
+            "shape": [
+              1,
+              115
+            ]
+          },
+          {
+            "dtype": "float32",
+            "name": "previous_action",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "dtype": "float32",
+            "name": "h_in",
+            "shape": [
+              1,
+              64
+            ]
+          },
+          {
+            "dtype": "float32",
+            "name": "calibration_context",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "dtype": "float32",
+            "name": "continuous_actions",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "dtype": "float32",
+            "name": "previous_action_out",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "dtype": "float32",
+            "name": "h_out",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ]
+      },
+      "action_bounds_hold": false,
+      "context_branch_exact_zero_default_off": true,
+      "expanded_sha256": "c21d0250b4403caf879246fa18e5c198d430ca009bcaea40b5740c91b60d2267",
+      "identity_cases": 66,
+      "jax_onnx_chain_ticks": 32,
+      "jax_onnx_max_action_error": 0.0,
+      "jax_onnx_max_hidden_error": 8.731149137020111e-11,
+      "protected_actions_bit_exact": true,
+      "protected_path": "outputs\\analysis\\ground_up_dual_fit_conservative_envelope_repair_policies\\T2_EQUAL_1024000.onnx",
+      "protected_previous_action_state_bit_exact": true,
+      "protected_sha256": "0dfc24bde5d839e4d346dd8c08d9a7d0222a3847764ec6738bfc7f8d947f4ece"
+    }
+  ],
+  "devices": [
+    "TFRT_CPU_0"
+  ],
+  "enabled_stress_bounds": {
+    "calibrator_bounds_hold": true,
+    "cases_per_graph": 256,
+    "locomotion_bounds_hold": true
+  },
+  "fail_closed": {
+    "all_invalid_cases_rejected": true,
+    "invalid_cases": [
+      "above_bound",
+      "below_bound",
+      "invalid_support",
+      "invalid_tick",
+      "long_run",
+      "nonfinite",
+      "short_run",
+      "wrong_dtype",
+      "wrong_shape"
+    ],
+    "rejected_cases": [
+      "above_bound",
+      "below_bound",
+      "invalid_support",
+      "invalid_tick",
+      "long_run",
+      "nonfinite",
+      "short_run",
+      "wrong_dtype",
+      "wrong_shape"
+    ]
+  },
+  "failed_checks": [
+    "protected_physical_chains_hold_full_action_contract"
+  ],
+  "input_hashes": {
+    "base_checker": "191f326129240c573e93ddcc2de56c93020589fb701cb4a311ce9742f86b77ef",
+    "failed_v6_result": "5a99f94a4a4d0f3ffcf23e3d27a5d4c833b318b5cc8f677d6b851e3f619fe5c9",
+    "hold_attribution": "d318f2c0ef1931f30574f71e8f7f1bffd971bf16815f152c1213bc9dc4e2a3b3",
+    "importer": "63533d09ba08038414f146bff319b2991a6b904996229c5fb2f089f6d2bcd8c3",
+    "network_source": "cfff280a1c592043d7e1849c68a3c99b05574814180506e6608f17877a5dbb90",
+    "protected_final": "0dfc24bde5d839e4d346dd8c08d9a7d0222a3847764ec6738bfc7f8d947f4ece",
+    "protected_half": "99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de",
+    "runtime_review_receipt": "b38f105375df9752c60a81893fb4ff4dc44922e63ac2853f7e5fea5857b44b99",
+    "v6b_checker": "585ccea84aad5dcafd314d98bb39cc37c32496f850d7c5d08bba2dc716827c3b"
+  },
+  "limitations": [
+    "This is a software contract only; no behavior or support outcome was evaluated.",
+    "The failed winner-v6 formal result remains held and is not reclassified.",
+    "Temporary ONNX outputs are not deployable policies."
+  ],
+  "preregistration_sha256": "69cc4702bbf822cae286892bcdd6ee0d3be3b24d0556477ed0df4fab9da02784",
+  "protected_physical_chains": [
+    {
+      "absolute_and_delta_bounds_hold": false,
+      "action_history_chained": true,
+      "all_finite": true,
+      "applied_target_source": "guard_home + prior confirmed output * 0.25 rad",
+      "joint_state_source": "prior confirmed output * 0.25 rad",
+      "maximum_delta_excess": 1.2665987014770508e-07,
+      "protected_and_expanded_bit_exact": true,
+      "seed": 60742,
+      "ticks": 32
+    },
+    {
+      "absolute_and_delta_bounds_hold": false,
+      "action_history_chained": true,
+      "all_finite": true,
+      "applied_target_source": "guard_home + prior confirmed output * 0.25 rad",
+      "joint_state_source": "prior confirmed output * 0.25 rad",
+      "maximum_delta_excess": 1.2665987014770508e-07,
+      "protected_and_expanded_bit_exact": true,
+      "seed": 60752,
+      "ticks": 32
+    }
+  ],
+  "repository_attribution": {
+    "contract_commit": "6df45a56558e8fa6401977e075e247905237ddcd",
+    "preregistration_path": "outputs/analysis/winner_v6b_zero_ppo_cpu_contract_preregistration.json",
+    "preregistration_sha256": "69cc4702bbf822cae286892bcdd6ee0d3be3b24d0556477ed0df4fab9da02784",
+    "raw_result_filename": "winner_v6b_zero_ppo_cpu_contract_raw_6df45a5.json",
+    "raw_result_sha256": "211d1f555b66f1a2429bda1f15791387d36be1810f82126a2ea626c691b5fcf8"
+  },
+  "schema_version": "winner_v6b.zero_ppo_cpu_software_contract_result.v1",
+  "status": "HOLD_WINNER_V6B_ZERO_PPO_CPU_SOFTWARE_CONTRACT",
+  "step_zero": {
+    "actions_exact_zero": true,
+    "cases": 66,
+    "hidden_evolved_every_case": true,
+    "hidden_finite_bounded": true,
+    "max_action_error": 0.0,
+    "max_hidden_error": 8.731149137020111e-11
+  },
+  "versions": {
+    "jax": "0.6.2",
+    "numpy": "2.2.6",
+    "onnx": "1.17.0",
+    "onnxruntime": "1.22.1"
+  }
+}
