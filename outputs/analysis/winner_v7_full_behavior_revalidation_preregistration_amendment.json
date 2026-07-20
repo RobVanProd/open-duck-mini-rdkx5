@@ -1,0 +1,41 @@
+{
+  "schema_version": "winner_v7.full_behavior_revalidation_preregistration_amendment.v1",
+  "status": "PASS_PREFLIGHT_ONLY_ENVIRONMENT_CORRECTION",
+  "superseded_preregistration": {
+    "schema_version": "winner_v7.full_behavior_revalidation_preregistration.v1",
+    "sha256": "f3c4b15d1bba2abaea4856576471443d642272edd0e919d0a762075a53d7e8f6"
+  },
+  "formal_behavior_cells_executed": 0,
+  "preflight": {
+    "duration_ticks": 2,
+    "command_x": 0.0,
+    "policy_checkpoint": "half",
+    "result": "HOLD_POLICY_SIM_CONTRACT_MISMATCH",
+    "error": "env state obs (101,) != 115"
+  },
+  "cause": "The base Playground commit was clean but lacked the frozen applied-target/reference-residual patch composition used by the protected 115-D policy evaluations.",
+  "replacement": {
+    "schema_version": "winner_v7.full_behavior_revalidation_preregistration.v2",
+    "sha256": "14e28d99727de9e53eafad5b521fc679793e1dafe10c8c323eea1415bacc63a3"
+  },
+  "only_change": "Bind the already frozen 128-cell matrix to the exact reviewed 11-patch 115-D Playground composition and composed file hashes.",
+  "unchanged": [
+    "policies and graph hashes",
+    "conditions and order",
+    "fits",
+    "commands",
+    "seed",
+    "duration",
+    "behavior gates",
+    "current gates",
+    "pass rule",
+    "no-retry rule",
+    "authority boundary"
+  ],
+  "authority": {
+    "one_replacement_preregistration_before_any_formal_cell": true,
+    "behavior_executed": false,
+    "training_or_accelerator": false,
+    "runtime_robot_torque_motion": false
+  }
+}

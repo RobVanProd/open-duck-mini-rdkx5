@@ -7,12 +7,15 @@ import hashlib
 import json
 from pathlib import Path
 
+from compose_winner_v7_playground import NETWORK_HASH, PATCH_HASHES
+
 
 ROOT = Path(__file__).resolve().parents[1]
 ANALYSIS = ROOT / "outputs/analysis"
 OUTPUT_JSON = ANALYSIS / "winner_v7_full_behavior_revalidation_preregistration.json"
 OUTPUT_MD = ANALYSIS / "WINNER_V7_FULL_BEHAVIOR_REVALIDATION_PREREGISTRATION_20260720.md"
 RUNNER = ROOT / "tools/run_winner_v7_full_behavior_revalidation.py"
+COMPOSER = ROOT / "tools/compose_winner_v7_playground.py"
 TRANSFORMER = ROOT / "tools/run_winner_v7_inward_projection_contract.py"
 EVALUATOR = ROOT / "tools/evaluate_ground_up_policy.py"
 CLOSED_LOOP = ROOT / "tools/closed_loop_sim_eval.py"
@@ -30,6 +33,16 @@ FITS = {
     "p31_34": ANALYSIS / "fixed_target_p31_34_actuator_fit_20260712.json",
 }
 PLAYGROUND_COMMIT = "b9be205ac64488c23504ca42e5ec790337adeec3"
+PLAYGROUND_FILE_HASHES = {
+    "playground/common/phase_moe_networks.py": "e57f417358afd8fdc5daa0126da8d3216b6ac6c1c1871d46f92afbcb6f4a44e7",
+    "playground/common/recurrent_ppo_networks.py": "e68d12fc01a89876930d35fd39f6c9da45345dbf1962f2ebbf11f89478881b8b",
+    "playground/common/reference_residual_ppo_networks.py": NETWORK_HASH,
+    "playground/common/rewards.py": "cfd5ba21a0f0c6fa98cb4485dd7bfc724693df1841fe4bd6dd7bf9023c5a997a",
+    "playground/common/runner.py": "815658c9ba4a8e5d953540bba64e57095b1011dc3cfa728e2145df2b9b1d46f0",
+    "playground/open_duck_mini_v2/custom_rewards.py": "f0ae6e50c379626d43c7eaa317c4395e219288456a50f6a8097bfd1ea2399b32",
+    "playground/open_duck_mini_v2/joystick.py": "edcedfa787a48c4f1af4316a5140a87eca5072bf3b223f6d87a4a656630a6904",
+    "playground/open_duck_mini_v2/runner.py": "d116dabf84a0623313ea63ef4cb4cad6347e7f94bfd2e70b15b4901889e7e8dc",
+}
 
 
 def sha256(path: Path) -> str:
@@ -58,6 +71,7 @@ def main() -> int:
 
     frozen_paths = {
         "runner": RUNNER,
+        "composer": COMPOSER,
         "transformer": TRANSFORMER,
         "evaluator": EVALUATOR,
         "closed_loop": CLOSED_LOOP,
@@ -74,7 +88,7 @@ def main() -> int:
         "fit_p31_34": FITS["p31_34"],
     }
     result = {
-        "schema_version": "winner_v7.full_behavior_revalidation_preregistration.v1",
+        "schema_version": "winner_v7.full_behavior_revalidation_preregistration.v2",
         "status": "PREREGISTERED_NOT_RUN",
         "decision": "AUTHORIZE_ONE_EXACT_128_CELL_CPU_BEHAVIOR_REVALIDATION",
         "causal_question": (
@@ -84,6 +98,12 @@ def main() -> int:
         ),
         "playground": {
             "required_commit": PLAYGROUND_COMMIT,
+            "patches_in_order": [
+                {"name": name, "canonical_lf_sha256": digest}
+                for name, digest in PATCH_HASHES.items()
+            ],
+            "copied_network_canonical_lf_sha256": NETWORK_HASH,
+            "required_composed_file_hashes": PLAYGROUND_FILE_HASHES,
             "task": "flat_terrain_backlash",
             "reset_mode": "home-support",
         },

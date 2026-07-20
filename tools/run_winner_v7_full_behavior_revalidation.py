@@ -41,6 +41,7 @@ POLICY_SOURCE_PATHS = {
 }
 FROZEN_PATHS = {
     "runner": Path(__file__),
+    "composer": ROOT / "tools/compose_winner_v7_playground.py",
     "transformer": ROOT / "tools/run_winner_v7_inward_projection_contract.py",
     "evaluator": ROOT / "tools/evaluate_ground_up_policy.py",
     "closed_loop": ROOT / "tools/closed_loop_sim_eval.py",
@@ -71,6 +72,13 @@ def git_head(path: Path) -> str:
     return subprocess.check_output(
         ["git", "-C", str(path), "rev-parse", "HEAD"], text=True
     ).strip()
+
+
+def composed_playground_hashes(playground: Path, prereg: dict[str, Any]) -> dict[str, str]:
+    return {
+        name: sha256(playground / name)
+        for name in prereg["playground"]["required_composed_file_hashes"]
+    }
 
 
 def max_consecutive(mask: np.ndarray) -> int:
@@ -202,6 +210,9 @@ def main() -> int:
     observed_playground_commit = git_head(playground)
     if observed_playground_commit != prereg["playground"]["required_commit"]:
         raise ValueError("playground commit mismatch")
+    observed_playground_files = composed_playground_hashes(playground, prereg)
+    if observed_playground_files != prereg["playground"]["required_composed_file_hashes"]:
+        raise ValueError("composed 115-D Playground file hash mismatch")
 
     policy_paths = {}
     transformed_hashes = {}
@@ -304,6 +315,8 @@ def main() -> int:
         "frozen_input_hashes_exact": observed_hashes == prereg["input_hashes"],
         "playground_commit_exact": observed_playground_commit
         == prereg["playground"]["required_commit"],
+        "composed_115d_playground_files_exact": observed_playground_files
+        == prereg["playground"]["required_composed_file_hashes"],
         "transformed_policy_hashes_exact": transformed_hashes
         == {row["label"]: row["transformed_sha256"] for row in prereg["policies"]},
         "exactly_128_cells": len(condition_rows) == 8
@@ -342,6 +355,7 @@ def main() -> int:
         "preregistration_sha256": sha256(PREREGISTRATION),
         "input_hashes": observed_hashes,
         "playground_commit": observed_playground_commit,
+        "composed_playground_file_hashes": observed_playground_files,
         "transformed_policy_hashes": transformed_hashes,
         "conditions": condition_rows,
         "authority": {
