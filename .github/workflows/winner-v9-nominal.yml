@@ -63,10 +63,17 @@ jobs:
           from pathlib import Path
 
           for name in (
-              "winner_v6b_numeric_hold_attribution.json",
-              "winner_v8_numeric_hold_attribution.json",
+              "outputs/analysis/winner_v6b_numeric_hold_attribution.json",
+              "outputs/analysis/winner_v8_numeric_hold_attribution.json",
+              "outputs/analysis/winner_v9_stored_bound_contract_result.json",
+              "outputs/analysis/fixed_target_p30_actuator_fit_20260712.json",
+              "outputs/analysis/fixed_target_p31_34_actuator_fit_20260712.json",
+              "tools/evaluate_ground_up_policy.py",
+              "tools/closed_loop_sim_eval.py",
+              "tools/actuator_bridge_model.py",
+              "tools/aggregate_ground_up_robustness_r1.py",
           ):
-              path = Path("outputs/analysis") / name
+              path = Path(name)
               data = path.read_bytes().replace(b"\r\n", b"\n")
               path.write_bytes(data.replace(b"\n", b"\r\n"))
           PY
