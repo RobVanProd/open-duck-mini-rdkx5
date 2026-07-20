@@ -56,6 +56,16 @@ jobs:
 
       - name: Reconstruct hash-bound winner-v7 and winner-v9 graphs
         run: |
+          # This frozen attribution artifact was originally recorded with CRLF
+          # bytes. Reconstruct that byte representation before its SHA-256 is
+          # checked; the JSON meaning is unchanged.
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path("outputs/analysis/winner_v6b_numeric_hold_attribution.json")
+          data = path.read_bytes().replace(b"\r\n", b"\n")
+          path.write_bytes(data.replace(b"\n", b"\r\n"))
+          PY
           python tools/run_winner_v7_inward_projection_contract.py \
             --work-root /tmp/winner-v7 \
             --output /tmp/winner-v7-contract.json
