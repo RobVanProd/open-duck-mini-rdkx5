@@ -53,14 +53,34 @@ Git by a verified 1,024-entry path/SHA/size/row manifest plus every compact cell
 and condition summary. The raw invalid result and corrected hold are both
 retained so the reporting history is auditable.
 
+The runtime-requested read-only causal audit is complete at policy commit
+`9663c059adb3919ee414550097bba6bd31cecdc4`. All 1,024 trace hashes and replayed
+current/tracking metrics match. Removing only current for attribution, never
+reclassification, leaves 753 otherwise-passing cells; 705 cells fail current
+alone. Current exceedance follows the wrong-direction event in all 107
+wrong-direction/current failures, so it does not explain the signed sagittal
+failure. Negative X readback is exact and reverses/falls; positive X readback
+is exact and overspeeds/falls.
+
+Primary-source correction: Feetech's 2024 catalog does support 0.65 A as the
+ST-3215-C001 rated current at 7.4 V. It does not support the repository's exact
+0.784532 N.m/A conversion or define p95 over a 600-tick simulation as the rated
+current gate. The catalog rated-point quotient is 0.754357692 N.m/A, 4% below
+the repository conversion. The frozen outcome remains unchanged: all eight
+nominal x=0 cells take exact-zero graph action for 600 ticks, yet the identical
+home-hold result is 0.661276083 A, so policy training cannot make that frozen
+cell pass.
+
 This exact replacement branch is closed. Runtime must keep its pending
 sentinels: REPLACEMENT_SELECTED_ONNX, POLICY_ROBOT_CLEARANCE_ARTIFACT and
 SUPPORTED_CONFIGURATION_ENVELOPE_V2 remain NOT_AVAILABLE; robot_clearance is
-false and X5_CPU_PREFLIGHT/AUTOMATIC_CONFIGURATION/GATE_5 remain NOT_RUN. Any
-new architecture, current-model challenge, objective, seed, domain or training
-route requires a separately preregistered review; none is authorized by this
-negative result. No robot, RDK-X5, serial, torque, motion, local GPU/iGPU,
-hosted training, Gate 5 or deployment action is authorized.
+false and X5_CPU_PREFLIGHT/AUTOMATIC_CONFIGURATION/GATE_5 remain NOT_RUN. The
+next evidence boundary is prospective: freeze the current-gate application and
+conversion semantics from primary motor plus telemetry evidence, then freeze a
+runtime-reviewed automatic-response-conditioned ABI. Only if both contracts
+pass may one new training run be preregistered. No robot, RDK-X5, serial,
+torque, motion, local GPU/iGPU, hosted training, Gate 5 or deployment action is
+authorized.
 ```
 
 Robotics operating model:
