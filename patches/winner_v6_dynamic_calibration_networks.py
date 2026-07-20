@@ -240,6 +240,8 @@ def locomotion_step(
     previous_action: jax.Array,
     h_in: jax.Array,
     calibration_context: jax.Array,
+    *,
+    adapter_enabled: bool = False,
 ) -> tuple[jax.Array, jax.Array, jax.Array]:
     """Run the protected actor plus the exact-zero initialized response adapter."""
 
@@ -259,7 +261,11 @@ def locomotion_step(
         + calibration_context @ adapter_parameters["context_action_weight"]
         + adapter_parameters["action_bias"]
     ) * np.float32(ACTION_SCALE_RAD)
-    action = _bounded_action(protected_action + adapter_delta, previous_action)
+    action = (
+        _bounded_action(protected_action + adapter_delta, previous_action)
+        if adapter_enabled
+        else protected_action
+    )
     return action, action, h_out
 
 
@@ -268,6 +274,14 @@ def _add_array(initializers: list[Any], name: str, value: Any) -> None:
 
     initializers.append(
         numpy_helper.from_array(np.asarray(value, dtype=np.float32), name=name)
+    )
+
+
+def _add_bool(initializers: list[Any], name: str, value: bool) -> None:
+    from onnx import numpy_helper
+
+    initializers.append(
+        numpy_helper.from_array(np.asarray(value, dtype=np.bool_), name=name)
     )
 
 
@@ -343,6 +357,8 @@ def export_locomotion_onnx(
     protected_path: str | Path,
     adapter_parameters: Mapping[str, jax.Array],
     output_path: str | Path,
+    *,
+    adapter_enabled: bool = False,
 ) -> None:
     """Add the reviewed state/context ABI around a protected G1/T2 graph."""
 
@@ -374,6 +390,7 @@ def export_locomotion_onnx(
     _add_array(graph.initializer, "v6_max_action_delta", MAX_ACTION_DELTA[None, :])
     _add_array(graph.initializer, "v6_action_minimum", np.asarray(-1.0, np.float32))
     _add_array(graph.initializer, "v6_action_maximum", np.asarray(1.0, np.float32))
+    _add_bool(graph.initializer, "v6_adapter_enabled", adapter_enabled)
     graph.node.extend([
         helper.make_node("MatMul", ["obs", "v6_obs_weight"], ["v6_obs_hidden"]),
         helper.make_node("MatMul", ["previous_action", "v6_previous_action_weight"], ["v6_previous_hidden"]),
@@ -397,7 +414,8 @@ def export_locomotion_onnx(
         helper.make_node("Max", ["v6_slew_min_raw", "v6_action_minimum"], ["v6_slew_min"]),
         helper.make_node("Min", ["v6_slew_max_raw", "v6_action_maximum"], ["v6_slew_max"]),
         helper.make_node("Min", ["v6_absolute_action", "v6_slew_max"], ["v6_action_below_max"]),
-        helper.make_node("Max", ["v6_action_below_max", "v6_slew_min"], ["continuous_actions"]),
+        helper.make_node("Max", ["v6_action_below_max", "v6_slew_min"], ["v6_bounded_action"]),
+        helper.make_node("Where", ["v6_adapter_enabled", "v6_bounded_action", "protected_continuous_actions"], ["continuous_actions"]),
         helper.make_node("Identity", ["continuous_actions"], ["previous_action_out"]),
     ])
     graph.output.extend([

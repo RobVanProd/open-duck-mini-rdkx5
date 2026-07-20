@@ -593,6 +593,7 @@ def main() -> int:
         ROOT / preregistration["protected_checkpoints"]["half"]["path"],
         stressed_locomotion,
         stress_locomotion_path,
+        adapter_enabled=True,
     )
     stress_bounds = check_stress_bounds(
         stress_calibrator_path, stress_locomotion_path

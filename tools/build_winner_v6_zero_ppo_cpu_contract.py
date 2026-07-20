@@ -98,7 +98,7 @@ def main() -> int:
         "protected_final": protected_checkpoints["final"]["sha256"],
     }
     result = {
-        "schema_version": "winner_v6.zero_ppo_cpu_software_contract_preregistration.v2",
+        "schema_version": "winner_v6.zero_ppo_cpu_software_contract_preregistration.v3",
         "status": "PREREGISTERED_NOT_RUN",
         "decision": "AUTHORIZE_ONE_EXACT_CPU_ONLY_ZERO_PPO_CONTRACT_RUN",
         "hypothesis": (
@@ -118,6 +118,10 @@ def main() -> int:
             "locomotion_adapter_seed": 60721,
             "calibrator_action_head": "exact-zero float32 kernel and bias",
             "locomotion_context_and_action_heads": "exact-zero float32 kernels and bias",
+            "locomotion_adapter_enabled": (
+                "exact false in the zero-PPO export; exact true only in the "
+                "deliberately nonzero-head bound-stress export"
+            ),
             "hidden_state": "deterministic nonzero recurrent encoder, tanh bounded",
             "true_configuration_labels": [],
         },

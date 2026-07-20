@@ -131,17 +131,18 @@
     "calibrator_action_head": "exact-zero float32 kernel and bias",
     "calibrator_seed": 60720,
     "hidden_state": "deterministic nonzero recurrent encoder, tanh bounded",
+    "locomotion_adapter_enabled": "exact false in the zero-PPO export; exact true only in the deliberately nonzero-head bound-stress export",
     "locomotion_adapter_seed": 60721,
     "locomotion_context_and_action_heads": "exact-zero float32 kernels and bias",
     "true_configuration_labels": []
   },
   "hypothesis": "The reviewed two-graph interface can be initialized without changing either protected persistent G1/T2 checkpoint, while a nontrivial recurrent response state remains trainable through deployable next-response self-supervision and the graph itself enforces the measured action vector.",
   "input_hashes": {
-    "checker": "31b813f586adb5af70580d06d2dcb87a3953c79b10f6014c7ccf79208a0ab15a",
+    "checker": "191f326129240c573e93ddcc2de56c93020589fb701cb4a311ce9742f86b77ef",
     "importer": "38f7f4dac2c075be7b4f7f416a92379c2dfe14e060ecafd6bccb1e93fafcd125",
     "interface_preregistration": "a66ff7138bdc474c5bd6d0a8899eba041d00305a3d3bd38fc13b0c00e4c3007e",
-    "network_source": "ee1a86d69e9f1348522c14b933d96d65863ea4751cb307d479dbde9173e64eca",
-    "pre_execution_amendment": "1b66725df99d6898d82dc5d835a13dbdf46ce5ae961e4c134f184168ce8a4926",
+    "network_source": "cfff280a1c592043d7e1849c68a3c99b05574814180506e6608f17877a5dbb90",
+    "pre_execution_amendment": "b4922729490ed09af22eea29f0e4eafbf7bf843da05a9afd5ce1b0128e3ca234",
     "protected_final": "0dfc24bde5d839e4d346dd8c08d9a7d0222a3847764ec6738bfc7f8d947f4ece",
     "protected_half": "99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de",
     "runtime_review_receipt": "96f4164e85a40c9f33dc04e9cfa85834b07b2c1238d87c4458173e1ad542e308"
@@ -169,7 +170,7 @@
   "pre_execution_amendment": {
     "path": "outputs/analysis/winner_v6_zero_ppo_cpu_contract_preregistration_amendment.json",
     "reason": "align the adapter projection with the protected winner-v2 deployment vector before any formal result existed",
-    "sha256": "1b66725df99d6898d82dc5d835a13dbdf46ce5ae961e4c134f184168ce8a4926"
+    "sha256": "b4922729490ed09af22eea29f0e4eafbf7bf843da05a9afd5ce1b0128e3ca234"
   },
   "protected_checkpoints": {
     "final": {
@@ -183,7 +184,7 @@
       "sha256": "99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de"
     }
   },
-  "schema_version": "winner_v6.zero_ppo_cpu_software_contract_preregistration.v2",
+  "schema_version": "winner_v6.zero_ppo_cpu_software_contract_preregistration.v3",
   "status": "PREREGISTERED_NOT_RUN",
   "test_population": {
     "calibration_ticks": 250,

@@ -1,11 +1,17 @@
 {
-  "cause": "A pre-execution review compared the proposed adapter projection with the protected G1/T2 max_action_delta initializer. The draft used the later winner-v3 variable-configuration vector, which would have changed protected winner-v2 yaw, roll, neck, and head outputs and therefore made the required default-off identity impossible.",
-  "corrected_rule": "Use the selected winner-v2 deployment action vector already stored in both protected G1/T2 checkpoints: [5.24,5.24,1.5,1.5,1.5,5.24,5.24,5.24,5.24,5.24,5.24,1.25,1.0,1.25] rad/s. The new graph must reproduce the protected max_action_delta initializer exactly.",
+  "cause": "Two pre-execution reviews found contract-design errors before any formal result existed. The first draft used the later winner-v3 variable-configuration vector instead of the protected winner-v2 max_action_delta initializer. The second draft then reapplied the same projection after the protected graph, which changed float32 outputs by up to one ULP and could not satisfy bit-exact identity.",
+  "corrected_rule": "Use the selected winner-v2 deployment action vector already stored in both protected G1/T2 checkpoints: [5.24,5.24,1.5,1.5,1.5,5.24,5.24,5.24,5.24,5.24,5.24,1.25,1.0,1.25] rad/s. The exact-zero initialization exports an explicit false adapter-enabled initializer and bypasses the new projection byte-for-byte; nonzero-head stress enables the adapter and must pass the graph-owned projection.",
   "formal_result_observed_before_amendment": false,
   "formal_run_started_before_amendment": false,
-  "replacement": "winner_v6.zero_ppo_cpu_software_contract_preregistration.v2",
-  "schema_version": "winner_v6.zero_ppo_cpu_contract_preregistration_amendment.v1",
+  "replacement": "winner_v6.zero_ppo_cpu_software_contract_preregistration.v3",
+  "schema_version": "winner_v6.zero_ppo_cpu_contract_preregistration_amendment.v2",
   "status": "SUPERSEDE_DRAFT_BEFORE_FORMAL_RUN",
-  "superseded_commit": "deae06b",
-  "superseded_preregistration_sha256": "c25be24570914d414dbee01f2e4881951e61a8be8d25474d678f01b1c0f23807"
+  "superseded_commits": [
+    "deae06b",
+    "3f4761b"
+  ],
+  "superseded_preregistration_sha256": [
+    "c25be24570914d414dbee01f2e4881951e61a8be8d25474d678f01b1c0f23807",
+    "516243c1bf1a59b458686c735686b1f6839d298455e42013c73b6d39ed34db13"
+  ]
 }
