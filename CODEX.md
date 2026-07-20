@@ -62,25 +62,37 @@ wrong-direction/current failures, so it does not explain the signed sagittal
 failure. Negative X readback is exact and reverses/falls; positive X readback
 is exact and overspeeds/falls.
 
-Primary-source correction: Feetech's 2024 catalog does support 0.65 A as the
-ST-3215-C001 rated current at 7.4 V. It does not support the repository's exact
-0.784532 N.m/A conversion or define p95 over a 600-tick simulation as the rated
-current gate. The catalog rated-point quotient is 0.754357692 N.m/A, 4% below
-the repository conversion. The frozen outcome remains unchanged: all eight
-nominal x=0 cells take exact-zero graph action for 600 ticks, yet the identical
-home-hold result is 0.661276083 A, so policy training cannot make that frozen
-cell pass.
+Primary-source correction: Feetech's 2024 catalog supports 0.65 A as the
+ST-3215-C001 rated current at 7.4 V. Feetech's detailed STS3215 A/0
+specification dated 2020-04-10 also explicitly supports the repository's exact
+8 kg.cm/A = 0.784532 N.m/A conversion and documents 2.5 A stall current plus
+over-current protection above 2 A for 2 seconds. Neither source defines p95
+over a 600-tick simulation as the rated-current safety rule. The frozen outcome
+remains unchanged: all eight nominal x=0 cells take exact-zero graph action for
+600 ticks, yet the identical home-hold result is 0.661276083 A, so policy
+training cannot make that frozen cell pass.
 
-This exact replacement branch is closed. Runtime must keep its pending
+The prospective current-gate application contract now passes without
+reclassifying winner-v3. It retains 0.65 A p95 as a diagnostic, applies the
+documented stall envelope and >2 A for 2 s protection semantics prospectively,
+and authorizes only response-interface preregistration.
+
+The proposed `winner-v4-response73-r64` ABI is frozen for runtime schema review.
+It preserves obs[115], final-action, phase, previous-action and recurrent-state
+semantics, and adds one separate immutable response_context[73] input flattened
+from the existing automatic profile-v4 metrics. No true configuration or manual
+measurement is present. Training remains held until runtime accepts the exact
+field map and a zero-PPO CPU contract proves flattening, profile reproduction,
+baseline identity, deterministic response and signed-X non-collapse.
+
+This exact winner-v3 replacement branch is closed. Runtime must keep its pending
 sentinels: REPLACEMENT_SELECTED_ONNX, POLICY_ROBOT_CLEARANCE_ARTIFACT and
 SUPPORTED_CONFIGURATION_ENVELOPE_V2 remain NOT_AVAILABLE; robot_clearance is
 false and X5_CPU_PREFLIGHT/AUTOMATIC_CONFIGURATION/GATE_5 remain NOT_RUN. The
-next evidence boundary is prospective: freeze the current-gate application and
-conversion semantics from primary motor plus telemetry evidence, then freeze a
-runtime-reviewed automatic-response-conditioned ABI. Only if both contracts
-pass may one new training run be preregistered. No robot, RDK-X5, serial,
-torque, motion, local GPU/iGPU, hosted training, Gate 5 or deployment action is
-authorized.
+next evidence boundary is runtime review of the response-conditioned ABI. Only
+after that review and its CPU contract pass may one new training run be
+preregistered. No robot, RDK-X5, serial, torque, motion, local GPU/iGPU, hosted
+training, Gate 5 or deployment action is authorized.
 ```
 
 Robotics operating model:

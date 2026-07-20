@@ -2092,3 +2092,37 @@ Do not proceed to grounded walking until low-risk gates pass.
   `outputs/analysis/WINNER_V3_VARIABLE_CONFIGURATION_RESULT_CORRECTED_20260720.md`
   and
   `outputs/analysis/WINNER_V3_VARIABLE_CONFIGURATION_REPORTING_CORRECTION_20260720.md`.
+- 2026-07-20: The runtime-requested read-only failure attribution rehashes and
+  replays all 1,024 committed cells/traces without changing the completed
+  result. Exactly 705 cells fail only the frozen current-p95 check; current
+  exceedance follows direction loss in all 107 wrong-direction/current cases,
+  so current does not explain the signed-X mechanism. Negative X reverses/falls
+  and positive X overspeeds/falls with exact model, command, and reset readback.
+  The first corrected source review found Feetech's 2024 catalog support for
+  the 0.65 A rated point. See
+  `outputs/analysis/WINNER_V3_FAILURE_ATTRIBUTION_20260720.md`.
+- 2026-07-20: A second prospective source correction finds Feetech's detailed
+  STS3215 A/0 specification dated 2020-04-10. It explicitly reports the exact
+  `8 kg.cm/A = 0.784532 N.m/A` motor constant, 0.65 A rated current, 2.5 A
+  stall current, 19.5 kg.cm stall torque, and over-current protection above
+  2 A for 2 s. The completed winner-v3 gate remains unchanged. Prospective
+  candidates report 0.65 A p95 diagnostically, reject torque/current beyond
+  the stall envelope, and reject 100 consecutive 50 Hz ticks strictly above
+  2 A. Decision `PASS_PROSPECTIVE_CURRENT_GATE_APPLICATION_CONTRACT` authorizes
+  only response-interface preregistration. No training, hosted compute,
+  runtime implementation, hardware, or robot action is authorized. See
+  `outputs/analysis/WINNER_V3_CURRENT_GATE_APPLICATION_CONTRACT_20260720.md`.
+- 2026-07-20: The proposed automatic-response policy ABI is preregistered for
+  runtime schema review only as `winner-v4-response73-r64`. It preserves the
+  115-D observation, 14-D final action, phase, previous-action, and 64-state
+  meanings while adding a separate immutable `response_context[1,73]` input.
+  Its exact order is the runtime profile-v4 five response metrics for each of
+  14 frozen joints followed by the three body-response metrics. It contains no
+  true mass, COM, inertia, component identity, or manual measurement. Before
+  PPO, runtime/policy flattening, profile reproduction, zero-init actor
+  identity, rejection behavior, repeat determinism, and signed-X context
+  non-collapse must pass on CPU. Status is
+  `PREREGISTERED_PENDING_RUNTIME_REVIEW`; no training, Colab, GPU/iGPU,
+  runtime implementation, X5, robot, torque, motion, Gate 5, deployment, or
+  clearance is authorized. See
+  `outputs/analysis/WINNER_V4_RESPONSE_INTERFACE_PREREGISTRATION_20260720.md`.
