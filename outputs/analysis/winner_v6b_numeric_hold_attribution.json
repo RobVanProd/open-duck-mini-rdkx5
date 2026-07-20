@@ -1,0 +1,59 @@
+{
+  "authority": {
+    "behavior_evaluation": false,
+    "colab_gpu_runtime_robot_torque_motion": false,
+    "dynamic_calibrator_or_training": false,
+    "robot_clearance": false,
+    "v7_transform_contract_preregistration": true,
+    "v7_transform_contract_run": false
+  },
+  "checks": {
+    "all_other_software_contract_checks_passed": true,
+    "both_checkpoint_excesses_identical": true,
+    "enabled_adapter_bounds_passed": true,
+    "formal_result_remains_hold": true,
+    "maximum_excess_below_two_float32_epsilons": true,
+    "only_physical_chain_check_failed": true,
+    "protected_identity_remained_exact": true,
+    "v6b_preregistered_close_rule_present": true
+  },
+  "completed_results_reclassified": false,
+  "decision": "PREREGISTER_DISTINCT_V7_INWARD_PROJECTION_TRANSFORM_ONLY",
+  "distinct_v7_hypothesis": {
+    "after_first_gate": "separately preregister complete x=0, nominal, actuator-fit, current, and robustness behavior revalidation; do not attach or train a calibrator",
+    "change": "Create a new protected-base graph whose final output, after the actual-centered guard and deadband, is projected with each stored winner-v2 delta reduced inward by exactly four float32 epsilons.",
+    "first_gate": "CPU graph transformation contract only",
+    "fixed_analytic_margin": 4.76837158203125e-07,
+    "post_outcome_margin_tuning": false,
+    "tolerance_change": false,
+    "why_distinct": "This changes the protected graph output and therefore cannot be a v6/v6b default-off identity retry. It requires its own graph contract and full behavior revalidation before any response calibrator."
+  },
+  "failed_checks": [],
+  "inputs": {
+    "preregistration": {
+      "path": "outputs/analysis/winner_v6b_zero_ppo_cpu_contract_preregistration.json",
+      "sha256": "69cc4702bbf822cae286892bcdd6ee0d3be3b24d0556477ed0df4fab9da02784"
+    },
+    "result": {
+      "path": "outputs/analysis/winner_v6b_zero_ppo_cpu_contract_result.json",
+      "sha256": "a1b1bcb81646e332707ba9961f8d4c78f3acd307df4eed161bf8f61d28f21612"
+    }
+  },
+  "numeric_evidence": {
+    "checkpoint_maximum_delta_excess": [
+      1.2665987014770508e-07,
+      1.2665987014770508e-07
+    ],
+    "excess_over_epsilon_ratio": 1.0625,
+    "float32_epsilon": 1.1920928955078125e-07,
+    "frozen_v6b_tolerance": 1e-07,
+    "margin_derivation": "4 * float32 machine epsilon",
+    "margin_rate_rad_s": 5.9604644775390625e-06,
+    "margin_target_rad": 1.1920928955078125e-07,
+    "proposed_inward_margin_normalized_action": 4.76837158203125e-07
+  },
+  "schema_version": "winner_v6b.numeric_hold_attribution.v1",
+  "status": "PASS_V6B_HOLD_ATTRIBUTED_TO_FLOAT32_BOUNDARY",
+  "winner_v6_dynamic_calibration_closed": true,
+  "winner_v6_or_v6b_retry_authorized": false
+}
