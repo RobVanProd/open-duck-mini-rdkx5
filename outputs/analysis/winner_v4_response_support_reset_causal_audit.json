@@ -1,0 +1,61 @@
+{
+  "authority": {
+    "cpu_only": true,
+    "policy_or_runtime_implementation": false,
+    "robot_or_rdk": false,
+    "training": false
+  },
+  "cases": {
+    "corrected_negative_x": {
+      "final_base_pitch_rad": 0.03708477246686406,
+      "final_base_roll_rad": -3.139658722150751,
+      "final_base_xyz_m": [
+        -0.23707424305052413,
+        0.004370013686480711,
+        -0.15683238955240503
+      ],
+      "final_base_yaw_rad": -2.9723174341223606,
+      "setconst_order": "before_episode_qpos",
+      "torso_x_offset_m": -0.05,
+      "upright": false
+    },
+    "corrected_nominal": {
+      "final_base_pitch_rad": -0.002486049121264777,
+      "final_base_roll_rad": -0.00012743602401436673,
+      "final_base_xyz_m": [
+        -0.006497393144430947,
+        -0.0004917959592379926,
+        0.15974188547231713
+      ],
+      "final_base_yaw_rad": 0.0001310621104927416,
+      "setconst_order": "before_episode_qpos",
+      "torso_x_offset_m": 0.0,
+      "upright": true
+    },
+    "legacy_nominal": {
+      "final_base_pitch_rad": 0.07973132987016564,
+      "final_base_roll_rad": -3.1397770259173394,
+      "final_base_xyz_m": [
+        -0.2562306727949668,
+        -0.005985804463424366,
+        -0.15852715699508244
+      ],
+      "final_base_yaw_rad": -3.106978318504986,
+      "setconst_order": "after_home_qpos",
+      "torso_x_offset_m": 0.0,
+      "upright": false
+    }
+  },
+  "checks": {
+    "corrected_nominal_upright": true,
+    "formal_result_immutable": true,
+    "legacy_nominal_inverted": true,
+    "negative_x_remains_unsupported_after_reset_fix": true,
+    "no_retry_or_reclassification": true
+  },
+  "decision": "KEEP_RESPONSE73_CLOSED_REQUIRE_PROSPECTIVE_REPLACEMENT",
+  "finding": "The completed response73 harness called mj_setConst after loading the home episode qpos. That changes MuJoCo reference constants and makes the nominal case invert. Correct ordering restores nominal home support, but the -0.05 m X endpoint still falls, so the completed gate remains failed and cannot be retried.",
+  "formal_result_sha256": "b7eb0a5d8ccdfa4034fec85fdd98cd21e6888f7d4bd5b106c6e2052a07966730",
+  "schema_version": "winner_v4.response_support_reset_causal_audit.v1",
+  "status": "PASS_RESPONSE_SUPPORT_RESET_CAUSAL_AUDIT"
+}
