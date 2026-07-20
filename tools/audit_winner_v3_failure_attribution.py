@@ -462,11 +462,13 @@ def build_markdown(result: dict[str, Any]) -> str:
     signed = result["signed_x"]
     baseline = result["nominal_baseline_comparison"]["summary"]
     lines = [
-        "# Winner-v3 Failure Attribution — 2026-07-20",
+        "# Winner-v3 Failure Attribution — 2026-07-20 (corrected primary-source audit)",
         "",
         f"status: `{result['status']}`",
         "",
         f"decision: `{result['decision']}`",
+        "",
+        "Correction: the first published audit consulted the current Feetech product page but missed Feetech's 2024 catalog, which explicitly lists `650 mA` rated current at `7.4 V`. This version supersedes the current-provenance interpretation only. It does not change any cell, metric, threshold, or the completed winner-v3 result.",
         "",
         "## Evidence result",
         "",
@@ -476,7 +478,9 @@ def build_markdown(result: dict[str, Any]) -> str:
         "",
         "The completed gate is unchanged. Its metric is per-joint p95 over every recorded tick of `abs(MuJoCo actuator_force Nm) / 0.784532 Nm/A`; the cell value is the maximum of 14 joint p95 values. The `0.65 A` threshold and `8 kgf.cm/A` conversion first appear together in preregistration commit `58a8a1d`; no older repository source, manufacturer citation, measured torque-current fit, voltage dependence, or uncertainty is supplied.",
         "",
-        "The manufacturer's STS3215-C001 page reports rated torque `6.5 kg.cm @ 6 V`, peak stall torque `19.5 kg.cm @ 6 V`, and stall current `2.0 A @ 6 V`; it does not report a `0.65 A` rated-current limit or an `8 kg.cm/A` conversion. Runtime's `0.0065 A/count` is a telemetry-register scale, not evidence for a 100-count safety cap. Source: https://www.feetechrc.com/74v-19-kgcm-plastic-case-metal-tooth-magnetic-code-double-axis-ttl-series-steering-gear.html",
+        "Feetech's 2024 catalog reports rated torque `5 kg.cm @ 7.4 V`, rated current `0.65 A @ 7.4 V`, peak stall torque `19.5 kg.cm @ 7.4 V`, and stall current `2.5 A @ 7.4 V`. Thus `0.65 A` has primary-source support as a rated operating point. The catalog does not specify a p95-over-600-ticks safety rule, a duty/thermal population, or the repository's `8 kg.cm/A` conversion. The rated-point quotient is `0.754357692 N.m/A`; the repository uses `0.784532 N.m/A`, exactly 4% higher. Runtime's `0.0065 A/count` correctly makes `0.65 A` equal 100 telemetry counts, but that scale alone does not define a p95 safety contract. Catalog: https://www.feetechrc.com/Data/feetechrc/upload/file/20240706/2024%E9%A3%9E%E7%89%B9%E5%AE%A3%E4%BC%A0%E5%86%8C.pdf",
+        "",
+        "Feetech's current product page separately reports the 6 V operating point (`6.5 kg.cm` rated torque, `19.5 kg.cm` peak stall torque, `2.0 A` stall current) but no rated current. These sources are voltage-specific rather than interchangeable. Product page: https://www.feetechrc.com/74v-19-kgcm-plastic-case-metal-tooth-magnetic-code-double-axis-ttl-series-steering-gear.html",
         "",
         f"The infeasibility is deterministic: all eight nominal x=0 cells have exact-zero graph actions for all 600 ticks, yet the identical home-hold right-knee p95 is `{result['current_provenance']['x0_home_hold']['worst_current_p95_a']:.9f} A`, above `0.65 A`. Training policy weights cannot change that cell while the x=0 deadband, home/reset, model, and threshold remain frozen.",
         "",
@@ -504,7 +508,7 @@ def build_markdown(result: dict[str, Any]) -> str:
             "",
             "The deployable 115-D observation contains IMU, command, joint state, action history, P30 applied-target observer state, contacts, phase, and projected reference action. It contains no torso mass, COM XYZ, inertia tensor, all-link mass scale, actuator-fit identity, delay scalar, or transport-condition identifier. Those quantities can affect dynamic response but are not uniquely identified as physical parameters by the current interface or the frozen automatic response profile.",
             "",
-            "Broad latent-domain exposure plus a 64-state recurrent adapter therefore tested implicit online adaptation; it did not clear signed X or the full coupled matrix. Repeating blind domain randomization is not selected. The falsifiable follow-up is ordered: (1) prospectively repair the current/torque contract from documented motor limits and measured telemetry without changing this result; (2) freeze and runtime-review an automatic-response-conditioned interface or estimator that uses no manual per-build measurement; (3) only then preregister one training run and the unchanged full behavior matrix.",
+            "Broad latent-domain exposure plus a 64-state recurrent adapter therefore tested implicit online adaptation; it did not clear signed X or the full coupled matrix. Repeating blind domain randomization is not selected. The falsifiable follow-up is ordered: (1) prospectively define the current/torque gate application from documented motor limits, duty/aggregation semantics, and measured telemetry without changing this result; (2) freeze and runtime-review an automatic-response-conditioned interface or estimator that uses no manual per-build measurement; (3) only then preregister one training run and the unchanged full behavior matrix.",
             "",
             "No new training is authorized by this audit alone. No policy is selected and robot clearance remains false.",
         ]
@@ -640,9 +644,9 @@ def main() -> int:
         "sensor_noise_scale",
     ]
     result = {
-        "schema_version": "winner_v3.failure_attribution.v1",
-        "status": "PASS_WINNER_V3_READ_ONLY_FAILURE_ATTRIBUTION",
-        "decision": "HOLD_TRAINING_PENDING_CURRENT_CONTRACT_CORRECTION_AND_RESPONSE_CONDITIONING_PREREGISTRATION",
+        "schema_version": "winner_v3.failure_attribution.v2",
+        "status": "PASS_WINNER_V3_READ_ONLY_FAILURE_ATTRIBUTION_CORRECTED",
+        "decision": "HOLD_TRAINING_PENDING_CURRENT_GATE_APPLICATION_CONTRACT_AND_RESPONSE_CONDITIONING_PREREGISTRATION",
         "authority": {
             "training": False,
             "hosted_compute": False,
@@ -698,19 +702,49 @@ def main() -> int:
                 "conversion_first_appears_with_threshold": True,
                 "older_repository_source_found": False,
                 "manufacturer_or_measured_fit_cited_in_contract": False,
+                "external_primary_support_for_threshold_found_after_contract": True,
+                "external_primary_support_for_exact_conversion_found": False,
+                "external_primary_support_for_p95_application_found": False,
                 "runtime_register_scale_a_per_count": 0.0065,
                 "threshold_equivalent_register_counts": 100,
-                "evidence_for_100_count_cap_found": False,
+                "rated_current_equals_100_register_counts": True,
+                "evidence_for_p95_100_count_safety_gate_found": False,
             },
-            "manufacturer_primary_source": {
-                "url": "https://www.feetechrc.com/74v-19-kgcm-plastic-case-metal-tooth-magnetic-code-double-axis-ttl-series-steering-gear.html",
-                "accessed": "2026-07-20",
-                "model": "ST-3215-C001 / STS3215 7.4V 19kg.cm",
-                "rated_torque_kgf_cm_at_6v": 6.5,
-                "peak_stall_torque_kgf_cm_at_6v": 19.5,
-                "stall_current_a_at_6v": 2.0,
-                "rated_current_a_reported": None,
-                "eight_kgf_cm_per_a_reported": False,
+            "manufacturer_primary_sources": [
+                {
+                    "url": "https://www.feetechrc.com/Data/feetechrc/upload/file/20240706/2024%E9%A3%9E%E7%89%B9%E5%AE%A3%E4%BC%A0%E5%86%8C.pdf",
+                    "accessed": "2026-07-20",
+                    "document": "Feetech 2024 product catalog",
+                    "model": "ST-3215-C001",
+                    "rated_torque_kgf_cm_at_7p4v": 5.0,
+                    "rated_current_a_at_7p4v": 0.65,
+                    "peak_stall_torque_kgf_cm_at_7p4v": 19.5,
+                    "stall_current_a_at_7p4v": 2.5,
+                    "eight_kgf_cm_per_a_reported": False,
+                    "p95_duty_or_thermal_rule_reported": False
+                },
+                {
+                    "url": "https://www.feetechrc.com/74v-19-kgcm-plastic-case-metal-tooth-magnetic-code-double-axis-ttl-series-steering-gear.html",
+                    "accessed": "2026-07-20",
+                    "document": "Feetech ST-3215-C001 product page",
+                    "model": "ST-3215-C001",
+                    "rated_torque_kgf_cm_at_6v": 6.5,
+                    "peak_stall_torque_kgf_cm_at_6v": 19.5,
+                    "stall_current_a_at_6v": 2.0,
+                    "rated_current_a_reported": None,
+                    "eight_kgf_cm_per_a_reported": False,
+                    "p95_duty_or_thermal_rule_reported": False
+                }
+            ],
+            "rated_point_comparison_not_a_validated_motor_fit": {
+                "catalog_rated_point_nm_per_a": (5.0 * 0.0980665) / 0.65,
+                "repository_nm_per_a": CURRENT_NM_PER_A,
+                "repository_ratio_relative_difference": CURRENT_NM_PER_A / ((5.0 * 0.0980665) / 0.65) - 1.0,
+                "x0_home_hold_current_if_rated_point_quotient_were_used_a": (
+                    max(row["metrics"]["worst_current_p95_a"] for row in x0_nominal)
+                    * CURRENT_NM_PER_A
+                    / ((5.0 * 0.0980665) / 0.65)
+                ),
             },
             "x0_home_hold": {
                 "cells": len(x0_nominal),
@@ -721,8 +755,8 @@ def main() -> int:
                 "policy_can_change_cell_under_frozen_deadband": False,
             },
             "descriptive_alternative_counts_not_reclassification": {
-                "cells_with_p95_torque_at_or_below_official_rated_6p5kgf_cm": sum(
-                    row["metrics"]["worst_current_p95_a"] * CURRENT_NM_PER_A <= 6.5 * 0.0980665
+                "cells_with_p95_torque_at_or_below_official_rated_5kgf_cm_at_7p4v": sum(
+                    row["metrics"]["worst_current_p95_a"] * CURRENT_NM_PER_A <= 5.0 * 0.0980665
                     for row in rows
                 ),
                 "cells_with_p95_torque_at_or_below_official_peak_19p5kgf_cm": sum(
@@ -781,7 +815,7 @@ def main() -> int:
         },
         "mechanism_selection": {
             "selected": [
-                "CURRENT_CONTRACT_NOT_EVIDENCE_GROUNDED_AND_INFEASIBLE_AT_FROZEN_X0",
+                "CURRENT_GATE_APPLICATION_AND_CONVERSION_UNVALIDATED_AND_INFEASIBLE_AT_FROZEN_X0",
                 "SIGNED_SAGITTAL_CONFIGURATION_REQUIRES_STRUCTURED_AUTOMATIC_RESPONSE_CONDITIONING",
             ],
             "not_selected": [
@@ -791,7 +825,7 @@ def main() -> int:
                 "MANUAL_PER_BUILD_COM_MEASUREMENT",
             ],
             "ordered_next_boundary": [
-                "prospective current/torque contract correction from primary motor and measured telemetry evidence",
+                "prospective current/torque gate application contract from primary motor and measured telemetry evidence",
                 "prospective automatic-response-conditioned ABI and estimator contract reviewed by runtime",
                 "one separately preregistered training run only after both contracts pass",
                 "unchanged complete supported-configuration behavior matrix",

@@ -1,8 +1,10 @@
-# Winner-v3 Failure Attribution — 2026-07-20
+# Winner-v3 Failure Attribution — 2026-07-20 (corrected primary-source audit)
 
-status: `PASS_WINNER_V3_READ_ONLY_FAILURE_ATTRIBUTION`
+status: `PASS_WINNER_V3_READ_ONLY_FAILURE_ATTRIBUTION_CORRECTED`
 
-decision: `HOLD_TRAINING_PENDING_CURRENT_CONTRACT_CORRECTION_AND_RESPONSE_CONDITIONING_PREREGISTRATION`
+decision: `HOLD_TRAINING_PENDING_CURRENT_GATE_APPLICATION_CONTRACT_AND_RESPONSE_CONDITIONING_PREREGISTRATION`
+
+Correction: the first published audit consulted the current Feetech product page but missed Feetech's 2024 catalog, which explicitly lists `650 mA` rated current at `7.4 V`. This version supersedes the current-provenance interpretation only. It does not change any cell, metric, threshold, or the completed winner-v3 result.
 
 ## Evidence result
 
@@ -12,7 +14,9 @@ All `1024` committed cells and all `1024` local traces were read, rehashed, and 
 
 The completed gate is unchanged. Its metric is per-joint p95 over every recorded tick of `abs(MuJoCo actuator_force Nm) / 0.784532 Nm/A`; the cell value is the maximum of 14 joint p95 values. The `0.65 A` threshold and `8 kgf.cm/A` conversion first appear together in preregistration commit `58a8a1d`; no older repository source, manufacturer citation, measured torque-current fit, voltage dependence, or uncertainty is supplied.
 
-The manufacturer's STS3215-C001 page reports rated torque `6.5 kg.cm @ 6 V`, peak stall torque `19.5 kg.cm @ 6 V`, and stall current `2.0 A @ 6 V`; it does not report a `0.65 A` rated-current limit or an `8 kg.cm/A` conversion. Runtime's `0.0065 A/count` is a telemetry-register scale, not evidence for a 100-count safety cap. Source: https://www.feetechrc.com/74v-19-kgcm-plastic-case-metal-tooth-magnetic-code-double-axis-ttl-series-steering-gear.html
+Feetech's 2024 catalog reports rated torque `5 kg.cm @ 7.4 V`, rated current `0.65 A @ 7.4 V`, peak stall torque `19.5 kg.cm @ 7.4 V`, and stall current `2.5 A @ 7.4 V`. Thus `0.65 A` has primary-source support as a rated operating point. The catalog does not specify a p95-over-600-ticks safety rule, a duty/thermal population, or the repository's `8 kg.cm/A` conversion. The rated-point quotient is `0.754357692 N.m/A`; the repository uses `0.784532 N.m/A`, exactly 4% higher. Runtime's `0.0065 A/count` correctly makes `0.65 A` equal 100 telemetry counts, but that scale alone does not define a p95 safety contract. Catalog: https://www.feetechrc.com/Data/feetechrc/upload/file/20240706/2024%E9%A3%9E%E7%89%B9%E5%AE%A3%E4%BC%A0%E5%86%8C.pdf
+
+Feetech's current product page separately reports the 6 V operating point (`6.5 kg.cm` rated torque, `19.5 kg.cm` peak stall torque, `2.0 A` stall current) but no rated current. These sources are voltage-specific rather than interchangeable. Product page: https://www.feetechrc.com/74v-19-kgcm-plastic-case-metal-tooth-magnetic-code-double-axis-ttl-series-steering-gear.html
 
 The infeasibility is deterministic: all eight nominal x=0 cells have exact-zero graph actions for all 600 ticks, yet the identical home-hold right-knee p95 is `0.661276083 A`, above `0.65 A`. Training policy weights cannot change that cell while the x=0 deadband, home/reset, model, and threshold remain frozen.
 
@@ -41,6 +45,6 @@ All `16/16` historical G1/T2 nominal cells and all `16/16` like-for-like winner-
 
 The deployable 115-D observation contains IMU, command, joint state, action history, P30 applied-target observer state, contacts, phase, and projected reference action. It contains no torso mass, COM XYZ, inertia tensor, all-link mass scale, actuator-fit identity, delay scalar, or transport-condition identifier. Those quantities can affect dynamic response but are not uniquely identified as physical parameters by the current interface or the frozen automatic response profile.
 
-Broad latent-domain exposure plus a 64-state recurrent adapter therefore tested implicit online adaptation; it did not clear signed X or the full coupled matrix. Repeating blind domain randomization is not selected. The falsifiable follow-up is ordered: (1) prospectively repair the current/torque contract from documented motor limits and measured telemetry without changing this result; (2) freeze and runtime-review an automatic-response-conditioned interface or estimator that uses no manual per-build measurement; (3) only then preregister one training run and the unchanged full behavior matrix.
+Broad latent-domain exposure plus a 64-state recurrent adapter therefore tested implicit online adaptation; it did not clear signed X or the full coupled matrix. Repeating blind domain randomization is not selected. The falsifiable follow-up is ordered: (1) prospectively define the current/torque gate application from documented motor limits, duty/aggregation semantics, and measured telemetry without changing this result; (2) freeze and runtime-review an automatic-response-conditioned interface or estimator that uses no manual per-build measurement; (3) only then preregister one training run and the unchanged full behavior matrix.
 
 No new training is authorized by this audit alone. No policy is selected and robot clearance remains false.

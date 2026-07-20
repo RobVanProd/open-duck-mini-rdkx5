@@ -133268,26 +133268,52 @@
     },
     "descriptive_alternative_counts_not_reclassification": {
       "cells_with_p95_torque_at_or_below_official_peak_19p5kgf_cm": 667,
-      "cells_with_p95_torque_at_or_below_official_rated_6p5kgf_cm": 192,
+      "cells_with_p95_torque_at_or_below_official_rated_5kgf_cm_at_7p4v": 60,
       "maximum_recorded_p95_torque_nm": 2.8338792800903323
     },
     "frozen_gate_unchanged": true,
-    "manufacturer_primary_source": {
-      "accessed": "2026-07-20",
-      "eight_kgf_cm_per_a_reported": false,
-      "model": "ST-3215-C001 / STS3215 7.4V 19kg.cm",
-      "peak_stall_torque_kgf_cm_at_6v": 19.5,
-      "rated_current_a_reported": null,
-      "rated_torque_kgf_cm_at_6v": 6.5,
-      "stall_current_a_at_6v": 2.0,
-      "url": "https://www.feetechrc.com/74v-19-kgcm-plastic-case-metal-tooth-magnetic-code-double-axis-ttl-series-steering-gear.html"
+    "manufacturer_primary_sources": [
+      {
+        "accessed": "2026-07-20",
+        "document": "Feetech 2024 product catalog",
+        "eight_kgf_cm_per_a_reported": false,
+        "model": "ST-3215-C001",
+        "p95_duty_or_thermal_rule_reported": false,
+        "peak_stall_torque_kgf_cm_at_7p4v": 19.5,
+        "rated_current_a_at_7p4v": 0.65,
+        "rated_torque_kgf_cm_at_7p4v": 5.0,
+        "stall_current_a_at_7p4v": 2.5,
+        "url": "https://www.feetechrc.com/Data/feetechrc/upload/file/20240706/2024%E9%A3%9E%E7%89%B9%E5%AE%A3%E4%BC%A0%E5%86%8C.pdf"
+      },
+      {
+        "accessed": "2026-07-20",
+        "document": "Feetech ST-3215-C001 product page",
+        "eight_kgf_cm_per_a_reported": false,
+        "model": "ST-3215-C001",
+        "p95_duty_or_thermal_rule_reported": false,
+        "peak_stall_torque_kgf_cm_at_6v": 19.5,
+        "rated_current_a_reported": null,
+        "rated_torque_kgf_cm_at_6v": 6.5,
+        "stall_current_a_at_6v": 2.0,
+        "url": "https://www.feetechrc.com/74v-19-kgcm-plastic-case-metal-tooth-magnetic-code-double-axis-ttl-series-steering-gear.html"
+      }
+    ],
+    "rated_point_comparison_not_a_validated_motor_fit": {
+      "catalog_rated_point_nm_per_a": 0.7543576923076923,
+      "repository_nm_per_a": 0.784532,
+      "repository_ratio_relative_difference": 0.040000000000000036,
+      "x0_home_hold_current_if_rated_point_quotient_were_used_a": 0.6877271260867694
     },
     "repository_provenance": {
       "conversion_first_appears_with_threshold": true,
-      "evidence_for_100_count_cap_found": false,
+      "evidence_for_p95_100_count_safety_gate_found": false,
+      "external_primary_support_for_exact_conversion_found": false,
+      "external_primary_support_for_p95_application_found": false,
+      "external_primary_support_for_threshold_found_after_contract": true,
       "introduced_commit": "58a8a1dd6c8b5519826cc7cbce2a02d48e11af5f",
       "manufacturer_or_measured_fit_cited_in_contract": false,
       "older_repository_source_found": false,
+      "rated_current_equals_100_register_counts": true,
       "runtime_register_scale_a_per_count": 0.0065,
       "threshold_equivalent_register_counts": 100,
       "threshold_source_path": "tools/build_winner_v3_replacement_preregistration.py"
@@ -133327,7 +133353,7 @@
       "current_before": 4
     }
   },
-  "decision": "HOLD_TRAINING_PENDING_CURRENT_CONTRACT_CORRECTION_AND_RESPONSE_CONDITIONING_PREREGISTRATION",
+  "decision": "HOLD_TRAINING_PENDING_CURRENT_GATE_APPLICATION_CONTRACT_AND_RESPONSE_CONDITIONING_PREREGISTRATION",
   "input_hashes": {
     "artifacts/runtime_handoff/rdkx5_native_20260719/observation_map.json": "f0b78431a3a98d418fbe04eebeb0316538121d1199d35f38dbdd0528ee1917a7",
     "outputs/analysis/winner_v3_variable_configuration_behavior_runner_contract.json": "025f5ec95d3a03dbaebf70a4a9c730b7264c89545663401f45eeede1d4eddccd",
@@ -133344,13 +133370,13 @@
       "MANUAL_PER_BUILD_COM_MEASUREMENT"
     ],
     "ordered_next_boundary": [
-      "prospective current/torque contract correction from primary motor and measured telemetry evidence",
+      "prospective current/torque gate application contract from primary motor and measured telemetry evidence",
       "prospective automatic-response-conditioned ABI and estimator contract reviewed by runtime",
       "one separately preregistered training run only after both contracts pass",
       "unchanged complete supported-configuration behavior matrix"
     ],
     "selected": [
-      "CURRENT_CONTRACT_NOT_EVIDENCE_GROUNDED_AND_INFEASIBLE_AT_FROZEN_X0",
+      "CURRENT_GATE_APPLICATION_AND_CONVERSION_UNVALIDATED_AND_INFEASIBLE_AT_FROZEN_X0",
       "SIGNED_SAGITTAL_CONFIGURATION_REQUIRES_STRUCTURED_AUTOMATIC_RESPONSE_CONDITIONING"
     ]
   },
@@ -134089,7 +134115,7 @@
     "untransformed_control_arm_in_matrix": false,
     "x0_cells_all_actions_exact_zero": true
   },
-  "schema_version": "winner_v3.failure_attribution.v1",
+  "schema_version": "winner_v3.failure_attribution.v2",
   "signed_x": {
     "COM_X_NEG": {
       "body_readback_all_exact": true,
@@ -137552,5 +137578,5 @@
       }
     }
   },
-  "status": "PASS_WINNER_V3_READ_ONLY_FAILURE_ATTRIBUTION"
+  "status": "PASS_WINNER_V3_READ_ONLY_FAILURE_ATTRIBUTION_CORRECTED"
 }
