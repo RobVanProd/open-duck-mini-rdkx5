@@ -1,0 +1,99 @@
+{
+  "authority": {
+    "behavior_training_gpu_colab": false,
+    "one_zero_behavior_cpu_contract": true,
+    "robot_clearance": false,
+    "runtime_robot_torque_motion_gate5": false
+  },
+  "causal_hypothesis": "Changing only the STS3215 XML torque limit from the nearest float32 above the frozen decimal boundary to the next representable value inward removes the winner-v9 numeric hold while leaving both stateful policies byte-identical.",
+  "expected_abi": {
+    "inputs": [
+      {
+        "dtype": "float",
+        "name": "obs",
+        "shape": [
+          1,
+          115
+        ]
+      },
+      {
+        "dtype": "float",
+        "name": "previous_action",
+        "shape": [
+          1,
+          14
+        ]
+      }
+    ],
+    "outputs": [
+      {
+        "dtype": "float",
+        "name": "continuous_actions",
+        "shape": [
+          1,
+          14
+        ]
+      },
+      {
+        "dtype": "float",
+        "name": "previous_action_out",
+        "shape": [
+          1,
+          14
+        ]
+      }
+    ]
+  },
+  "frozen_sources": {
+    "source_final": {
+      "filename": "winner_v9_final_stored_bound.onnx",
+      "sha256": "d52b63241340d9d56671b95c58bb0fc72af0998fd47d4684719f6cd44f244a10"
+    },
+    "source_half": {
+      "filename": "winner_v9_half_stored_bound.onnx",
+      "sha256": "cf001269908d86e47eaa145ffda1d87e946a314ecf51056dc086c4cf10164ab6"
+    },
+    "source_model_xml": {
+      "filename": "open_duck_mini_v2_backlash.xml",
+      "sha256": "2132e477d2504faf08af4c5250952bd8b17611fb496ab15f30afc0371f327f9c"
+    },
+    "source_scene_xml": {
+      "filename": "scene_flat_terrain_backlash.xml",
+      "sha256": "65324e27a3a84e2e42d1073bfc636f9cdbf6bef7b1f20c1b5a886b8fd58fcc71"
+    }
+  },
+  "input_hashes": {
+    "builder": "d9284e61e98e7eed93ba3c4c05c8140825658e8a5745d0c0db7c08f75c9c1a32",
+    "importer": "5bea34b6afc5d4792056f71d655a73737eaa6001a56dda1663ba719be3dbea0c",
+    "numeric_attribution": "7d9bc4b80925ed6bd4b587e94d5effdddde346507963688a31db6eb107cde984",
+    "runner": "8ed21d304aa44776ab62350e1bfab20d5dc75b228a4794266ee93f2315b0d150",
+    "source_final": "d52b63241340d9d56671b95c58bb0fc72af0998fd47d4684719f6cd44f244a10",
+    "source_half": "cf001269908d86e47eaa145ffda1d87e946a314ecf51056dc086c4cf10164ab6",
+    "source_model_xml": "2132e477d2504faf08af4c5250952bd8b17611fb496ab15f30afc0371f327f9c",
+    "source_scene_xml": "65324e27a3a84e2e42d1073bfc636f9cdbf6bef7b1f20c1b5a886b8fd58fcc71",
+    "winner_v9_result": "78646dee9c0015b9311e985f1ff88a7ab660db16c8af8b148d72de581142d0fe"
+  },
+  "no_retry_or_tuning": "A failure closes this exact winner-v10 representation route. Do not change the source graphs, inward equation, XML decimal, ABI, population, tolerance, or gate.",
+  "pass_authorizes_only": "write a separately frozen complete 16-cell winner-v10 nominal behavior/current/torque preregistration",
+  "pass_rule": [
+    "all frozen input hashes and both 115+14 stateful ABIs match",
+    "both winner-v10 policy outputs are byte-identical copies of winner-v9",
+    "256 arbitrary CPU inferences per checkpoint are finite, state-exact, and obey the stored measured action delta",
+    "exactly one XML force-range token changes and all 14 actuators inherit it",
+    "the positive XML torque parses to the one-step-inward float32 value below the unchanged frozen decimal gate",
+    "scene bytes remain exact; no behavior, training, simulator rollout, GPU, runtime, or robot work occurs"
+  ],
+  "schema_version": "open_duck_mini.winner_v10_inward_torque_contract_preregistration.v1",
+  "status": "FROZEN_WINNER_V10_INWARD_TORQUE_REPRESENTATION_CONTRACT_NOT_RUN",
+  "transform": {
+    "equation": "nextafter(float32(frozen_decimal_torque_gate_nm), -infinity)",
+    "frozen_decimal_torque_gate_nm": 1.91229675,
+    "inward_float32_torque_nm": 1.9122966527938843,
+    "inward_xml_decimal": "1.91229665",
+    "nearest_float32_torque_nm": 1.9122967720031738,
+    "output_force_range_xml": "forcerange=\"-1.91229665 1.91229665\"",
+    "policy_graph_change": false,
+    "source_force_range_xml": "forcerange=\"-1.91229675 1.91229675\"",
+    "tolerance_current_rate_or_duration_gate_change": false
+  }
+}
