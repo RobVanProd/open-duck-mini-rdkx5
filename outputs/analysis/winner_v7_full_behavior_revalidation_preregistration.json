@@ -1,0 +1,182 @@
+{
+  "all_or_nothing": true,
+  "authority": {
+    "one_exact_local_cpu_behavior_run": true,
+    "raw_and_large_artifacts_external_to_repository": true,
+    "rdkx5_robot_torque_motion_deployment": false,
+    "robot_clearance": false,
+    "runtime_implementation_or_gate5": false,
+    "training_ppo_colab_gpu_igpu": false
+  },
+  "behavior_gates": {
+    "known_boundary": "TORSO_COM_X_NEG must remain a non-pass across all four checkpoint/fit matrices; it has no advancement or closest-result role.",
+    "moving": {
+      "bilateral_transitions": true,
+      "candidate_gate_status": "PASS_CANDIDATE_SIM_GATE",
+      "maximum_action_saturation_pct": 0.0,
+      "maximum_pitch_tracking_p95_rad": 0.2,
+      "maximum_rate_excess_rad_s": 0.0,
+      "positive_mean_local_velocity": true,
+      "samples": 600,
+      "termination_reason": "duration_complete"
+    },
+    "x0": {
+      "candidate_gate_status": "PASS_CANDIDATE_SIM_GATE",
+      "maximum_absolute_mean_local_velocity_m_s": 0.02,
+      "maximum_action_saturation_pct": 0.0,
+      "maximum_body_pitch_p95_rad": 0.25,
+      "maximum_pitch_tracking_p95_rad": 0.2,
+      "maximum_rate_excess_rad_s": 0.0,
+      "minimum_base_height_m": 0.12,
+      "samples": 600,
+      "termination_reason": "duration_complete"
+    }
+  },
+  "causal_question": "Does the distinct inward-rounded protected base retain every established nominal and passed-R2 behavior gate, remain inside the prospective current protection envelope, and reproduce rather than hide the known first R2 boundary?",
+  "current_gate": {
+    "all_joints_must_pass": true,
+    "per_joint_peak_current_a_max": 2.5,
+    "population": "every recorded tick, including early-terminated cells",
+    "rated_current_p95_a": 0.65,
+    "rated_current_p95_role": "reported diagnostic only; not candidate pass/fail",
+    "sample_clock": "exact simulator 50 Hz ticks",
+    "strict_overcurrent_max_consecutive_ticks": 99,
+    "strict_overcurrent_threshold_a": 2.0
+  },
+  "decision": "AUTHORIZE_ONE_EXACT_128_CELL_CPU_BEHAVIOR_REVALIDATION",
+  "input_hashes": {
+    "actuator_model": "82184df17195cf7241a70e806741a0fdb4e49904fd12b4ee8fe7a38617602472",
+    "aggregator": "e584d4c69aef918914679078b6ae024e13b578d5d7cc74ca93a8b2c6adde5f67",
+    "closed_loop": "4e14624d2fbf5d641936986fc231ec6c4f9dbb9a6c284571419e3aff85675b41",
+    "current_contract": "17e841450a2dde66182c3d41a06abf8d14366011f811bcde20adb1f1c8f68ddb",
+    "evaluator": "e9fd1a434ccaa647efc0ed1ce8fddafca9a0fd753c37a2d7d050975d9deb0227",
+    "fit_p30": "a58db8ffc505d2bb64cba7f5618d0e2c65904fc9f9ac37b560a1231e090f5f4f",
+    "fit_p31_34": "2740513f6bdeb4ad3cc5dd6dc1709319389a593fd153c1ce5abae03b66131a57",
+    "r2_evaluator_contract": "9853ded9d9df4619093708442c070166c90044b2403f929352036fb15d65540d",
+    "r2_preregistration": "23ad95ed02d6302c321c8bd9f52b29512ee9c19a404a31eaf9fa0ca2807273b0",
+    "r2_reporting_contract": "0bd91d9e64a8d6f77d7d5a381da83476e89fab94e9177571f410fd97abcf776a",
+    "reference_feature_table": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212",
+    "runner": "40f7eb2b9b4d9088ac2bbbfb88113f92cc408262024b3133098a56e9bcbb6fcf",
+    "transformer": "8aaa73e1eda903eadb29547ca5c3556e78ee265cfee03092cfc3dc7e175a7eab",
+    "v7_preregistration": "683e861ca71b2113683f27f980c144df3577fde5f134e4ed7abd3a61de1db77a",
+    "v7_result": "0655ea0a5e5708d0bff4ea3e084a0aef7c463f58eb7f6d3e0b16e283718b7fe2"
+  },
+  "matrix": {
+    "cells_per_condition": 16,
+    "checkpoints": [
+      "half",
+      "final"
+    ],
+    "commands_x": [
+      0.0,
+      0.074,
+      0.077,
+      0.08
+    ],
+    "conditions_in_order": [
+      {
+        "expected": "PASS",
+        "id": "NOMINAL",
+        "override": null
+      },
+      {
+        "expected": "PASS",
+        "id": "FLOOR_FRICTION_LO",
+        "override": {
+          "floor_friction": 0.5
+        }
+      },
+      {
+        "expected": "PASS",
+        "id": "FLOOR_FRICTION_HI",
+        "override": {
+          "floor_friction": 1.0
+        }
+      },
+      {
+        "expected": "PASS",
+        "id": "JOINT_FRICTIONLOSS_LO",
+        "override": {
+          "joint_frictionloss_scale": 0.9
+        }
+      },
+      {
+        "expected": "PASS",
+        "id": "JOINT_FRICTIONLOSS_HI",
+        "override": {
+          "joint_frictionloss_scale": 1.1
+        }
+      },
+      {
+        "expected": "PASS",
+        "id": "ARMATURE_LO",
+        "override": {
+          "armature_scale": 1.0
+        }
+      },
+      {
+        "expected": "PASS",
+        "id": "ARMATURE_HI",
+        "override": {
+          "armature_scale": 1.05
+        }
+      },
+      {
+        "expected": "KNOWN_BOUNDARY_FAILURE",
+        "id": "TORSO_COM_X_NEG",
+        "override": {
+          "torso_com_offset_m": [
+            -0.05,
+            0.0,
+            0.0
+          ]
+        }
+      }
+    ],
+    "duration_ticks": 600,
+    "fits": [
+      {
+        "id": "p30",
+        "path": "outputs/analysis/fixed_target_p30_actuator_fit_20260712.json",
+        "sha256": "a58db8ffc505d2bb64cba7f5618d0e2c65904fc9f9ac37b560a1231e090f5f4f"
+      },
+      {
+        "id": "p31_34",
+        "path": "outputs/analysis/fixed_target_p31_34_actuator_fit_20260712.json",
+        "sha256": "2740513f6bdeb4ad3cc5dd6dc1709319389a593fd153c1ce5abae03b66131a57"
+      }
+    ],
+    "frequency_hz": 50,
+    "seed": 167931544,
+    "total_cells": 128
+  },
+  "no_retry_or_tuning": "A failed formal run closes this exact winner-v7 protected base. Do not change the projection margin, current rule, gates, conditions, populations, seed, duration, fit, checkpoint, simulator revision, or tolerance.",
+  "pass_authorizes_only": "design and runtime review of a distinct winner-v7 automatic-calibration interface preregistration; no optimizer or behavior training",
+  "pass_rule": [
+    "all frozen hashes, transformed policy hashes, playground commit, and CPU-only attestations match",
+    "all 128 cells and raw trace hashes are present with exact policy, fit, command, seed, duration, and dynamics readbacks",
+    "nominal plus the six previously passed R2 conditions pass every unchanged x=0 and moving gate under both checkpoints and both actuator fits",
+    "every recorded joint tick passes the 2.5 A peak and fewer-than-100-consecutive-ticks-above-2.0-A protection rule",
+    "TORSO_COM_X_NEG remains a non-pass in all four checkpoint/fit matrices and cannot be promoted",
+    "no training, reward selection, tolerance change, retry, or closest-result promotion occurs"
+  ],
+  "playground": {
+    "required_commit": "b9be205ac64488c23504ca42e5ec790337adeec3",
+    "reset_mode": "home-support",
+    "task": "flat_terrain_backlash"
+  },
+  "policies": [
+    {
+      "label": "half",
+      "source_sha256": "99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de",
+      "transformed_sha256": "456c6f804a81f04a8e9f4b7423c63c6f870623b92ba7a876b1172046b7f0fdbb"
+    },
+    {
+      "label": "final",
+      "source_sha256": "0dfc24bde5d839e4d346dd8c08d9a7d0222a3847764ec6738bfc7f8d947f4ece",
+      "transformed_sha256": "3fd56c98162502b5ec430a4c383128df5996bd69cde7c079c1c5f5344103eb0c"
+    }
+  ],
+  "schema_version": "winner_v7.full_behavior_revalidation_preregistration.v1",
+  "status": "PREREGISTERED_NOT_RUN"
+}
