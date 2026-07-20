@@ -1,0 +1,331 @@
+{
+  "after_runtime_review_only": {
+    "cpu_software_contract": [
+      "calibrator and locomotion ABI names/shapes/dtypes exact",
+      "calibrator initial action exact zero while hidden response state remains trainable",
+      "locomotion default-off protected action/state bit-exact for fixed and pseudorandom inputs",
+      "auxiliary predictor receives no true configuration label",
+      "all exported actions obey the conservative per-joint vector",
+      "JAX and ONNX chained calibration/handoff/locomotion agree within 1e-7"
+    ],
+    "support_pass": {
+      "all cells": true,
+      "current_rule": "prospective documented stall/2A-for-2s protection contract",
+      "duration_ticks": 250,
+      "maximum_abs_tilt_rad": 0.35,
+      "maximum_final_window_gyro_rad_s": 0.05,
+      "minimum_base_z_m": 0.1,
+      "two_foot_contact_failure_ticks": 0
+    },
+    "training_order": [
+      "train only the calibrator/response encoder on support and self-supervised next-response prediction",
+      "freeze it and require a complete unseen support gate under both actuator fits",
+      "only after support passes, train one response-conditioned locomotion continuation",
+      "evaluate both persistent checkpoints on the unchanged full behavior/current matrix"
+    ]
+  },
+  "authority": {
+    "gate5_or_deployment": false,
+    "gpu_or_igpu": false,
+    "rdkx5_robot_torque_or_motion": false,
+    "robot_clearance": false,
+    "runtime_implementation": false,
+    "runtime_review_only": true,
+    "training_ppo_or_colab": false
+  },
+  "calibration_sequence": {
+    "command_vector": "all seven command fields exact zero",
+    "duration_ticks": 250,
+    "frequency_hz": 50,
+    "handoff": [
+      "require every calibration tick and support/safety predicate to pass",
+      "freeze final h_out as calibration_context",
+      "carry final calibration action as locomotion previous_action",
+      "retain the final applied-target observer in obs[83:97]",
+      "reset locomotion h_in to zero and locomotion phase to [1,0]"
+    ],
+    "per_tick_order": [
+      "fresh servo, IMU, and contact samples",
+      "compose exact versioned 115-D observation",
+      "infer calibrator with chained previous_action and h",
+      "apply graph-bounded target through the selected measured actuator transition",
+      "commit state only after confirmed target send"
+    ],
+    "phase": "held at winner-v2 phase index zero [1,0] throughout calibration",
+    "projected_reference": "x=0 reference action in obs[101:115] throughout calibration",
+    "start_paused_semantics": "calibration is a separate explicitly authorized startup mode; after a valid handoff the runtime remains paused and holds the final safe target until the controller explicitly unpauses",
+    "support_mode": "flat rigid floor, both feet initially loaded, no torso/limb/head support or external applied force; passive fall catch mechanically clear"
+  },
+  "causal_hypothesis": "The old recurrent actor had no calibration-only objective and its exact x=0 deadband prevented corrective startup action. The response73 procedure fell before profiling, while winner-v5 proved that a one-shot decision and one fixed pose are non-universal. A dedicated response policy that changes its bounded action every tick and exports its learned sensor-history state may stabilize the support phase and expose configuration response without manual measurement.",
+  "closed_routes_not_reopened": [
+    "blind walking-time R64 recurrent adapter",
+    "open-loop response73 joint excitation from unsupported home",
+    "one-shot IMU threshold plus fixed recovery target",
+    "manual mass, center-of-mass, dimension, or component inventory",
+    "true configuration parameters as actor inputs"
+  ],
+  "context_contract": {
+    "bounds": [
+      -1.0,
+      1.0
+    ],
+    "dimension": 64,
+    "dtype": "float32",
+    "field_order": [
+      "learned_response_latent[0]",
+      "learned_response_latent[1]",
+      "learned_response_latent[2]",
+      "learned_response_latent[3]",
+      "learned_response_latent[4]",
+      "learned_response_latent[5]",
+      "learned_response_latent[6]",
+      "learned_response_latent[7]",
+      "learned_response_latent[8]",
+      "learned_response_latent[9]",
+      "learned_response_latent[10]",
+      "learned_response_latent[11]",
+      "learned_response_latent[12]",
+      "learned_response_latent[13]",
+      "learned_response_latent[14]",
+      "learned_response_latent[15]",
+      "learned_response_latent[16]",
+      "learned_response_latent[17]",
+      "learned_response_latent[18]",
+      "learned_response_latent[19]",
+      "learned_response_latent[20]",
+      "learned_response_latent[21]",
+      "learned_response_latent[22]",
+      "learned_response_latent[23]",
+      "learned_response_latent[24]",
+      "learned_response_latent[25]",
+      "learned_response_latent[26]",
+      "learned_response_latent[27]",
+      "learned_response_latent[28]",
+      "learned_response_latent[29]",
+      "learned_response_latent[30]",
+      "learned_response_latent[31]",
+      "learned_response_latent[32]",
+      "learned_response_latent[33]",
+      "learned_response_latent[34]",
+      "learned_response_latent[35]",
+      "learned_response_latent[36]",
+      "learned_response_latent[37]",
+      "learned_response_latent[38]",
+      "learned_response_latent[39]",
+      "learned_response_latent[40]",
+      "learned_response_latent[41]",
+      "learned_response_latent[42]",
+      "learned_response_latent[43]",
+      "learned_response_latent[44]",
+      "learned_response_latent[45]",
+      "learned_response_latent[46]",
+      "learned_response_latent[47]",
+      "learned_response_latent[48]",
+      "learned_response_latent[49]",
+      "learned_response_latent[50]",
+      "learned_response_latent[51]",
+      "learned_response_latent[52]",
+      "learned_response_latent[53]",
+      "learned_response_latent[54]",
+      "learned_response_latent[55]",
+      "learned_response_latent[56]",
+      "learned_response_latent[57]",
+      "learned_response_latent[58]",
+      "learned_response_latent[59]",
+      "learned_response_latent[60]",
+      "learned_response_latent[61]",
+      "learned_response_latent[62]",
+      "learned_response_latent[63]"
+    ],
+    "hash_binding": "calibrator graph, locomotion graph, raw per-tick calibration evidence, duck_config, runtime build, and supported configuration envelope",
+    "immutable_after_successful_handoff": true,
+    "invalid_if": [
+      "missing, stale, nonfinite, out of [-1,1], wrong shape/order",
+      "calibration timing or support-mode mismatch",
+      "any failed bus transaction, stale sensor, lost contact, watchdog event, or safety gate",
+      "configuration changed after calibration"
+    ],
+    "manual_or_true_configuration_fields": [],
+    "runtime_scaling": "none"
+  },
+  "decision": "REQUEST_RUNTIME_V2_DYNAMIC_CALIBRATION_SCHEMA_REVIEW_NO_IMPLEMENTATION",
+  "graphs": {
+    "calibrator": {
+      "action_head": "new calibration-only residual head; graph-owned conservative measured per-joint hard-vector projection; no x=0 deadband",
+      "action_semantics": "unchanged normalized 14-action logical order",
+      "id": "winner-v6-dynamic-support-calibrator",
+      "initial_state": "h_in and previous_action exact float32 zeros",
+      "inputs": [
+        {
+          "dtype": "float32",
+          "name": "obs",
+          "shape": [
+            1,
+            115
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "previous_action",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "h_in",
+          "shape": [
+            1,
+            64
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "dtype": "float32",
+          "name": "calibration_actions",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "previous_action_out",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "h_out",
+          "shape": [
+            1,
+            64
+          ]
+        }
+      ],
+      "state_update": "learned recurrent response encoder consumes only deployable observation, previous action, and previous hidden state; h_out is tanh-bounded",
+      "training_only_auxiliary_head": "predict next deployable joint-state, IMU, contact, and applied-target observation fields from h_out and the realized bounded action; not exported"
+    },
+    "locomotion": {
+      "context_semantics": "the exact final calibrator h_out, immutable for the locomotion episode; no runtime scaling, interpretation, substitution, or default",
+      "id": "winner-v6-response-conditioned-locomotion",
+      "initialization": "protected G1/T2 locomotion actor plus an exact-zero context branch; default-off action and recurrent outputs must be bit-exact",
+      "inputs": [
+        {
+          "dtype": "float32",
+          "name": "obs",
+          "shape": [
+            1,
+            115
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "previous_action",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "h_in",
+          "shape": [
+            1,
+            64
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "calibration_context",
+          "shape": [
+            1,
+            64
+          ]
+        }
+      ],
+      "locomotion_state_reset": "h_in exact zero at handoff",
+      "outputs": [
+        {
+          "dtype": "float32",
+          "name": "continuous_actions",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "previous_action_out",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "h_out",
+          "shape": [
+            1,
+            64
+          ]
+        }
+      ]
+    }
+  },
+  "required_runtime_review": [
+    "Can a default-off runtime-v2 run the calibrator without weakening v1 101x14?",
+    "Can it preserve winner-v2 obs[83:97], projected-reference, phase, and action-state semantics for every calibration tick?",
+    "Can it freeze and pass h_out[64] byte-for-byte as locomotion calibration_context[64] with no Python scaling?",
+    "Can it carry final previous_action and applied-target observer state across the graph handoff exactly once?",
+    "Can start_paused remain true after calibration while holding the last safe target?",
+    "Can every stale/failed/nonfinite/support-mode path prevent arming and torque off safely?",
+    "Does any proposed behavior conflict with the frozen v1 path or existing hardware-gate authority?"
+  ],
+  "schema_version": "winner_v6.dynamic_calibration_interface_preregistration.v1",
+  "sources": {
+    "current_gate_application": {
+      "path": "outputs/analysis/winner_v3_current_gate_application_contract.json",
+      "sha256": "17e841450a2dde66182c3d41a06abf8d14366011f811bcde20adb1f1c8f68ddb"
+    },
+    "winner_v3_failure_attribution": {
+      "path": "outputs/analysis/winner_v3_failure_attribution.json",
+      "sha256": "aebccef11fa96d374d547a0362f4d6e490d843c9aa059ae86891ee7b7a724934"
+    },
+    "winner_v3_result": {
+      "path": "outputs/analysis/winner_v3_variable_configuration_result_corrected.json",
+      "sha256": "bf072daf10473a43207e0f0a3d42c9c787edfedda9dbac03a5ac6f4ab07cd0d9"
+    },
+    "winner_v4_interface": {
+      "path": "outputs/analysis/winner_v4_response_interface_preregistration.json",
+      "sha256": "562ea92c4ba9eb026263740a07fe349ed79e051f0a162e8dd476812f089b6adc"
+    },
+    "winner_v4_result": {
+      "path": "outputs/analysis/winner_v4_response_identifiability_result.json",
+      "sha256": "b7eb0a5d8ccdfa4034fec85fdd98cd21e6888f7d4bd5b106c6e2052a07966730"
+    },
+    "winner_v5_result": {
+      "path": "outputs/analysis/winner_v5_automatic_support_recovery_result.json",
+      "sha256": "641b164d451cca6d83f94dc6f4b1f9961b5c774c28a3e738d04c480d5e798653"
+    }
+  },
+  "status": "PREREGISTERED_PENDING_RUNTIME_REVIEW",
+  "stop_rules": [
+    "no training before runtime review and zero-PPO CPU software contract pass",
+    "close if the calibrator cannot pass every unseen support cell under both fits",
+    "do not tune locomotion using a failed or closest calibration checkpoint",
+    "do not append true mass, COM, inertia, component identity, scale, or caliper data",
+    "do not weaken the completed winner-v3, response73, or winner-v5 results",
+    "no runtime implementation, robot, RDK, torque, motion, Gate 5, or deployment from this artifact"
+  ],
+  "versioning": {
+    "observation_contract": "winner-v2-115d",
+    "reason": "The existing runtime review proves winner-v2 115-D semantics are not interchangeable with frozen v1 101-D semantics. No shared-slice shortcut or silent 101/115 conversion is permitted.",
+    "required_path": "default-off versioned runtime-v2 only",
+    "runtime_v1_101x14_contract_unchanged": true
+  }
+}
