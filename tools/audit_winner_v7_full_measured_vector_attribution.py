@@ -15,6 +15,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 ANALYSIS = ROOT / "outputs" / "analysis"
 PREREG = ANALYSIS / "winner_v7_full_measured_vector_attribution_preregistration.json"
+AMENDMENT = ANALYSIS / "winner_v7_full_measured_vector_attribution_preregistration_amendment.json"
 OUTPUT_JSON = ANALYSIS / "winner_v7_full_measured_vector_attribution.json"
 OUTPUT_MD = ANALYSIS / "WINNER_V7_FULL_MEASURED_VECTOR_ATTRIBUTION_20260720.md"
 
@@ -76,6 +77,7 @@ def audit_trace(
     current_limit_a: float,
     torque_limit_nm: float,
     tolerance: float,
+    field_zero_threshold: float,
 ) -> dict[str, Any]:
     trace_spec = spec["trace"]
     path = Path(trace_spec["path"])
@@ -98,8 +100,10 @@ def audit_trace(
             recorded_full = [float(value) for value in row["conservative_rate_excess_rad_s"]]
             if not all(len(values) == len(JOINT_NAMES) for values in (velocity, force, recorded_graph, recorded_full)):
                 raise ValueError(f"wrong vector width: {path}:{line_index}")
-            expected_graph = [max(value - limit, 0.0) for value, limit in zip(velocity, graph_rates, strict=True)]
-            expected_full = [max(value - limit, 0.0) for value, limit in zip(velocity, full_rates, strict=True)]
+            raw_graph = [max(value - limit, 0.0) for value, limit in zip(velocity, graph_rates, strict=True)]
+            raw_full = [max(value - limit, 0.0) for value, limit in zip(velocity, full_rates, strict=True)]
+            expected_graph = [0.0 if value <= field_zero_threshold else value for value in raw_graph]
+            expected_full = [0.0 if value <= field_zero_threshold else value for value in raw_full]
             graph_field_error = max(graph_field_error, *(abs(a - b) for a, b in zip(recorded_graph, expected_graph, strict=True)))
             full_field_error = max(full_field_error, *(abs(a - b) for a, b in zip(recorded_full, expected_full, strict=True)))
             graph_excess_max = max(graph_excess_max, *expected_graph)
@@ -175,12 +179,20 @@ def main() -> int:
     if OUTPUT_JSON.exists() or OUTPUT_MD.exists():
         raise FileExistsError("full measured-vector attribution already exists")
     prereg = load(PREREG)
+    amendment = load(AMENDMENT)
+    if amendment["original_preregistration_sha256"] != sha256(PREREG):
+        raise ValueError("amendment does not bind the frozen preregistration")
+    if amendment["corrected_audit_tool_sha256"] != sha256(Path(__file__)):
+        raise ValueError("corrected audit-tool hash mismatch")
+    evaluator_path = ROOT / amendment["source_evaluator"]["path"]
+    if sha256(evaluator_path) != amendment["source_evaluator"]["sha256"]:
+        raise ValueError("source evaluator hash mismatch")
     frozen = prereg["frozen_inputs"]
     resolved: dict[str, Path] = {}
     for name, item in frozen.items():
         if name == "audit_tool_sha256":
-            if sha256(Path(__file__)) != item:
-                raise ValueError("audit-tool hash mismatch")
+            if amendment["superseded_audit_tool_sha256"] != item:
+                raise ValueError("amendment does not bind the superseded audit tool")
             continue
         path = ROOT / item["path"]
         if sha256(path) != item["sha256"]:
@@ -197,6 +209,7 @@ def main() -> int:
         for joint in JOINT_NAMES
     ]
     tolerance = float(prereg["analysis_contract"]["numeric_tolerance"])
+    field_zero_threshold = float(amendment["correction"]["recorded_rate_excess_zero_threshold_rad_s"])
     mismatch_indices = [
         index for index, (graph, full) in enumerate(zip(graph_rates, full_rates, strict=True))
         if graph - full > tolerance
@@ -212,6 +225,7 @@ def main() -> int:
             current_limit_a=float(gate["per_joint_peak_current_a_max"]),
             torque_limit_nm=float(gate["per_joint_peak_torque_nm_max"]),
             tolerance=tolerance,
+            field_zero_threshold=field_zero_threshold,
         )
         for spec in iter_trace_specs(source)
     ]
@@ -259,6 +273,7 @@ def main() -> int:
         "status": "PASS_WINNER_V7_FULL_MEASURED_VECTOR_ATTRIBUTION" if selected else "HOLD_WINNER_V7_FULL_MEASURED_VECTOR_ATTRIBUTION",
         "decision": decision,
         "preregistration_sha256": sha256(PREREG),
+        "preregistration_amendment_sha256": sha256(AMENDMENT),
         "checks": checks,
         "failed_selection_checks": [key for key in selection_keys if not checks[key]],
         "vectors": {
