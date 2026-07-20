@@ -52,6 +52,25 @@ jobs:
           python tools/compose_winner_v7_playground.py \
             --source-repository /tmp/playground-source \
             --output-root /tmp/pg115-v9
+          python - <<'PY'
+          from pathlib import Path
+
+          root = Path("/tmp/pg115-v9")
+          for name in (
+              "playground/common/phase_moe_networks.py",
+              "playground/common/recurrent_ppo_networks.py",
+              "playground/common/rewards.py",
+              "playground/common/runner.py",
+              "playground/open_duck_mini_v2/custom_rewards.py",
+              "playground/open_duck_mini_v2/joystick.py",
+              "playground/open_duck_mini_v2/runner.py",
+              "playground/open_duck_mini_v2/xmls/open_duck_mini_v2_backlash.xml",
+              "playground/open_duck_mini_v2/xmls/scene_flat_terrain_backlash.xml",
+          ):
+              path = root / name
+              data = path.read_bytes().replace(b"\r\n", b"\n")
+              path.write_bytes(data.replace(b"\n", b"\r\n"))
+          PY
           python -m pip install --no-deps -e /tmp/pg115-v9
 
       - name: Reconstruct hash-bound winner-v7 and winner-v9 graphs
@@ -87,6 +106,18 @@ jobs:
             --scene-xml /tmp/pg115-v9/playground/open_duck_mini_v2/xmls/scene_flat_terrain_backlash.xml \
             --work-root /tmp/winner-v9 \
             --output /tmp/winner-v9-contract.json
+          python - <<'PY'
+          from hashlib import sha256
+          from pathlib import Path
+
+          path = Path("/tmp/winner-v9/xmls/open_duck_mini_v2_backlash.xml")
+          data = path.read_bytes().replace(b"\r\n", b"\n")
+          path.write_bytes(data.replace(b"\n", b"\r\n"))
+          observed = sha256(path.read_bytes()).hexdigest()
+          expected = "2132e477d2504faf08af4c5250952bd8b17611fb496ab15f30afc0371f327f9c"
+          if observed != expected:
+              raise SystemExit(f"physical XML reconstruction mismatch: {observed}")
+          PY
           cp /tmp/winner-v9/xmls/open_duck_mini_v2_backlash.xml \
             /tmp/pg115-v9/playground/open_duck_mini_v2/xmls/open_duck_mini_v2_backlash.xml
           cp /tmp/winner-v9/xmls/scene_flat_terrain_backlash.xml \
