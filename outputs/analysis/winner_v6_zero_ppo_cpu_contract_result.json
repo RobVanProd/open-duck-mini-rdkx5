@@ -1,0 +1,362 @@
+{
+  "artifacts": {
+    "winner_v6_calibrator_bound_stress.onnx": {
+      "bytes": 54902,
+      "sha256": "b0cc6ae2f158e02ab6f76215e906e27ea0106c32cf81c7857cdcf2c8601dcd99"
+    },
+    "winner_v6_calibrator_step_zero.onnx": {
+      "bytes": 54902,
+      "sha256": "adda90e5acfb5205bce6f271b921c6127755981afc6d41c28a4a080d80a6de3b"
+    },
+    "winner_v6_locomotion_bound_stress.onnx": {
+      "bytes": 982304,
+      "sha256": "b96c4967c8924af52e7f8b6ff3c631eea9269a870e562033ca0a252ce264bdbd"
+    },
+    "winner_v6_locomotion_final_step_zero.onnx": {
+      "bytes": 982304,
+      "sha256": "c21d0250b4403caf879246fa18e5c198d430ca009bcaea40b5740c91b60d2267"
+    },
+    "winner_v6_locomotion_half_step_zero.onnx": {
+      "bytes": 982304,
+      "sha256": "ae65b66c080304220221b5327619e1f62aa8c8265c3493a39060cb32fd8b17cd"
+    }
+  },
+  "authority": {
+    "colab_hosted_gpu_or_igpu": false,
+    "rdkx5_robot_torque_motion_gate5_or_deployment": false,
+    "robot_clearance": false,
+    "runtime_v2_implementation": false,
+    "separate_calibrator_training_preregistration_design": false,
+    "training_or_ppo": false
+  },
+  "auxiliary_trainability": {
+    "all_gradients_finite": true,
+    "auxiliary_target_indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      83,
+      84,
+      85,
+      86,
+      87,
+      88,
+      89,
+      90,
+      91,
+      92,
+      93,
+      94,
+      95,
+      96,
+      97,
+      98
+    ],
+    "gradient_norms": {
+      "action_bias": 0.005443693604320288,
+      "action_weight": 0.0030497668776661158,
+      "auxiliary_action_weight": 0.0,
+      "auxiliary_bias": 0.05725618451833725,
+      "auxiliary_hidden_weight": 0.03207395598292351,
+      "hidden_bias": 0.015762649476528168,
+      "hidden_weight": 0.007570790592581034,
+      "obs_weight": 0.027445578947663307,
+      "previous_action_weight": 0.0
+    },
+    "loss": 0.04310688003897667,
+    "response_encoder_receives_gradient": true
+  },
+  "calibration_chain": {
+    "action_bounds_hold": true,
+    "all_finite": true,
+    "context_max": 0.16093099117279053,
+    "context_min": -0.18368273973464966,
+    "context_read_only": true,
+    "hidden_changed_ticks": 250,
+    "max_action_error": 0.0,
+    "max_hidden_error": 8.731149137020111e-11,
+    "ticks": 250
+  },
+  "checks": {
+    "adapter_projection_matches_both_protected_checkpoints": true,
+    "auxiliary_targets_deployable_observation_only": true,
+    "both_persistent_protected_checkpoints_checked": true,
+    "calibration_context_immutable_finite_bounded": true,
+    "calibrator_250_tick_chain_exact": true,
+    "calibrator_abi_exact": true,
+    "calibrator_action_head_exact_zero": true,
+    "calibrator_hidden_evolves": true,
+    "calibrator_hidden_finite_bounded": true,
+    "calibrator_response_encoder_trainable": true,
+    "calibrator_step_zero_actions_exact_zero": true,
+    "failed_calibration_never_armable": true,
+    "frozen_input_hashes_exact": true,
+    "graph_owned_action_bounds_hold": false,
+    "jax_cpu_only": true,
+    "jax_onnx_full_handoff_chain_within_tolerance": true,
+    "locomotion_abis_exact": true,
+    "locomotion_context_heads_exact_zero": true,
+    "no_true_configuration_graph_input": true,
+    "onnxruntime_cpu_only": true,
+    "protected_actions_and_state_bit_exact": true
+  },
+  "decision": "STOP_AND_REVIEW_ZERO_PPO_CONTRACT_FAILURE",
+  "devices": [
+    "TFRT_CPU_0"
+  ],
+  "fail_closed": {
+    "all_invalid_cases_rejected": true,
+    "invalid_cases": [
+      "above_bound",
+      "below_bound",
+      "invalid_support",
+      "invalid_tick",
+      "long_run",
+      "nonfinite",
+      "short_run",
+      "wrong_dtype",
+      "wrong_shape"
+    ],
+    "rejected_cases": [
+      "above_bound",
+      "below_bound",
+      "invalid_support",
+      "invalid_tick",
+      "long_run",
+      "nonfinite",
+      "short_run",
+      "wrong_dtype",
+      "wrong_shape"
+    ]
+  },
+  "failed_checks": [
+    "graph_owned_action_bounds_hold"
+  ],
+  "input_hashes": {
+    "checker": "191f326129240c573e93ddcc2de56c93020589fb701cb4a311ce9742f86b77ef",
+    "importer": "38f7f4dac2c075be7b4f7f416a92379c2dfe14e060ecafd6bccb1e93fafcd125",
+    "interface_preregistration": "a66ff7138bdc474c5bd6d0a8899eba041d00305a3d3bd38fc13b0c00e4c3007e",
+    "network_source": "cfff280a1c592043d7e1849c68a3c99b05574814180506e6608f17877a5dbb90",
+    "pre_execution_amendment": "b4922729490ed09af22eea29f0e4eafbf7bf843da05a9afd5ce1b0128e3ca234",
+    "protected_final": "0dfc24bde5d839e4d346dd8c08d9a7d0222a3847764ec6738bfc7f8d947f4ece",
+    "protected_half": "99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de",
+    "runtime_review_receipt": "96f4164e85a40c9f33dc04e9cfa85834b07b2c1238d87c4458173e1ad542e308"
+  },
+  "limitations": [
+    "This is an ABI, initialization, bound, state-chain, and numerical-equivalence contract only.",
+    "No PPO update, simulator behavior outcome, support pass, gait claim, or policy selection is produced.",
+    "The exported ONNX files are temporary contract artifacts and are not deployable policies."
+  ],
+  "preregistration_sha256": "aa3b847fc80a30501afdaa10f5f332ff9426166e425763bc36a4ecc67db40544",
+  "protected_expansions": [
+    {
+      "abi": {
+        "inputs": [
+          {
+            "dtype": "float32",
+            "name": "obs",
+            "shape": [
+              1,
+              115
+            ]
+          },
+          {
+            "dtype": "float32",
+            "name": "previous_action",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "dtype": "float32",
+            "name": "h_in",
+            "shape": [
+              1,
+              64
+            ]
+          },
+          {
+            "dtype": "float32",
+            "name": "calibration_context",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "dtype": "float32",
+            "name": "continuous_actions",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "dtype": "float32",
+            "name": "previous_action_out",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "dtype": "float32",
+            "name": "h_out",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ]
+      },
+      "action_bounds_hold": false,
+      "context_branch_exact_zero_default_off": true,
+      "expanded_sha256": "ae65b66c080304220221b5327619e1f62aa8c8265c3493a39060cb32fd8b17cd",
+      "identity_cases": 66,
+      "jax_onnx_chain_ticks": 32,
+      "jax_onnx_max_action_error": 0.0,
+      "jax_onnx_max_hidden_error": 5.820766091346741e-11,
+      "protected_actions_bit_exact": true,
+      "protected_path": "outputs\\analysis\\ground_up_dual_fit_conservative_envelope_repair_policies\\T2_EQUAL_512000.onnx",
+      "protected_previous_action_state_bit_exact": true,
+      "protected_sha256": "99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de"
+    },
+    {
+      "abi": {
+        "inputs": [
+          {
+            "dtype": "float32",
+            "name": "obs",
+            "shape": [
+              1,
+              115
+            ]
+          },
+          {
+            "dtype": "float32",
+            "name": "previous_action",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "dtype": "float32",
+            "name": "h_in",
+            "shape": [
+              1,
+              64
+            ]
+          },
+          {
+            "dtype": "float32",
+            "name": "calibration_context",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "dtype": "float32",
+            "name": "continuous_actions",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "dtype": "float32",
+            "name": "previous_action_out",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "dtype": "float32",
+            "name": "h_out",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ]
+      },
+      "action_bounds_hold": false,
+      "context_branch_exact_zero_default_off": true,
+      "expanded_sha256": "c21d0250b4403caf879246fa18e5c198d430ca009bcaea40b5740c91b60d2267",
+      "identity_cases": 66,
+      "jax_onnx_chain_ticks": 32,
+      "jax_onnx_max_action_error": 0.0,
+      "jax_onnx_max_hidden_error": 8.731149137020111e-11,
+      "protected_actions_bit_exact": true,
+      "protected_path": "outputs\\analysis\\ground_up_dual_fit_conservative_envelope_repair_policies\\T2_EQUAL_1024000.onnx",
+      "protected_previous_action_state_bit_exact": true,
+      "protected_sha256": "0dfc24bde5d839e4d346dd8c08d9a7d0222a3847764ec6738bfc7f8d947f4ece"
+    }
+  ],
+  "repository_attribution": {
+    "contract_commit": "e46d29e7541ef49e6d60ff3638b7ef1233356f03",
+    "preregistration_path": "outputs/analysis/winner_v6_zero_ppo_cpu_contract_preregistration.json",
+    "preregistration_sha256": "aa3b847fc80a30501afdaa10f5f332ff9426166e425763bc36a4ecc67db40544",
+    "raw_result_filename": "winner_v6_zero_ppo_cpu_contract_raw_e46d29e.json",
+    "raw_result_sha256": "a1ca885f80858d4652854cac69e88c81c1b86be6929f8bfda542bd08d69d6f5a"
+  },
+  "schema_version": "winner_v6.zero_ppo_cpu_software_contract_result.v1",
+  "status": "HOLD_WINNER_V6_ZERO_PPO_CPU_SOFTWARE_CONTRACT",
+  "step_zero": {
+    "actions_exact_zero": true,
+    "cases": 66,
+    "hidden_evolved_every_case": true,
+    "hidden_finite_bounded": true,
+    "max_action_error": 0.0,
+    "max_hidden_error": 8.731149137020111e-11
+  },
+  "stress_bounds": {
+    "calibrator_bounds_hold": true,
+    "cases_per_graph": 256,
+    "locomotion_bounds_hold": true
+  },
+  "versions": {
+    "jax": "0.6.2",
+    "numpy": "2.2.6",
+    "onnx": "1.17.0",
+    "onnxruntime": "1.22.1"
+  }
+}
