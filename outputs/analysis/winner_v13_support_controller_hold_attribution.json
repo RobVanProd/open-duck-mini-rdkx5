@@ -1,0 +1,219 @@
+{
+  "authority": {
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false
+  },
+  "decision": "KEEP_GATE_HOLD_CORRECT_REPORTING_BEFORE_CAUSAL_REPAIR",
+  "evidence_selected_next_step": {
+    "authorized": "preregister one CPU-only graph-owned calibration-action amplitude diagnostic using corrected normalized predictor scoring",
+    "flat_transport_kernel_selected": false,
+    "not_authorized": [
+      "response-conditioned locomotion training",
+      "checkpoint selection",
+      "runtime deployment",
+      "Gate 5",
+      "robot or RDK-X5 access"
+    ],
+    "reason_flat_transport_not_selected": "All 16 heldout contexts remain separated at both checkpoints and physical failures occur by ticks 28-68; no long-range context collapse is observed."
+  },
+  "execution": {
+    "locomotion_steps": 0,
+    "new_behavior_cells": 0,
+    "new_optimizer_updates": 0,
+    "robot_or_rdk_access": 0
+  },
+  "formal_result": {
+    "decision": "DO_NOT_TRAIN_RESPONSE_CONDITIONED_LOCOMOTION",
+    "path": "outputs/analysis/winner_v13_support_controller_gate_result.json",
+    "sha256": "350bd845a27bf0257e2569f5bc1027a76f8e0fcb551cffff745cb43068f9ad2a",
+    "status": "HOLD_WINNER_V13_SUPPORT_CONTROLLER_GATE"
+  },
+  "physical_failure": {
+    "all_failures_are_roll_pitch_only": true,
+    "all_failures_have_negative_torso_com_x": true,
+    "checkpoint_results": {
+      "final": {
+        "all_16_contexts_separate": true,
+        "all_32_repeats_bit_exact": true,
+        "failed_terminal_checks": {
+          "roll_pitch": 11
+        },
+        "failure_configuration_ids": [
+          "COM_CORNER_01",
+          "COM_CORNER_03",
+          "COM_X_NEG",
+          "DISCOVERY_03",
+          "HELDOUT_04",
+          "HELDOUT_09"
+        ],
+        "failure_configuration_x_offsets_m": {
+          "COM_CORNER_01": -0.05,
+          "COM_CORNER_03": -0.05,
+          "COM_X_NEG": -0.05,
+          "DISCOVERY_03": -0.046875,
+          "HELDOUT_04": -0.046875,
+          "HELDOUT_09": -0.040625
+        },
+        "failure_count": 11,
+        "legacy_reported_prediction_metrics": {
+          "P30_ALL_JOINT": {
+            "constant_normalized_prediction_mse": 0.10702576619710175,
+            "learned_normalized_prediction_mse": 39991430794.452805,
+            "learned_strictly_below_constant": false
+          },
+          "P31_34_PITCH_WITH_P30_NONPITCH": {
+            "constant_normalized_prediction_mse": 0.11888621241949922,
+            "learned_normalized_prediction_mse": 39994591519.45499,
+            "learned_strictly_below_constant": false
+          }
+        },
+        "minimum_context_linf_separation": 8.666515350341797e-05,
+        "sensor_transport_failure_count": 0,
+        "terminal_pitch_rad_max": -0.3517105399181918,
+        "terminal_pitch_rad_min": -0.37848288496422683,
+        "terminal_tick_max": 65,
+        "terminal_tick_min": 28
+      },
+      "half": {
+        "all_16_contexts_separate": true,
+        "all_32_repeats_bit_exact": true,
+        "failed_terminal_checks": {
+          "roll_pitch": 15
+        },
+        "failure_configuration_ids": [
+          "COM_CORNER_00",
+          "COM_CORNER_01",
+          "COM_CORNER_02",
+          "COM_CORNER_03",
+          "COM_X_NEG",
+          "DISCOVERY_03",
+          "HELDOUT_04",
+          "HELDOUT_09"
+        ],
+        "failure_configuration_x_offsets_m": {
+          "COM_CORNER_00": -0.05,
+          "COM_CORNER_01": -0.05,
+          "COM_CORNER_02": -0.05,
+          "COM_CORNER_03": -0.05,
+          "COM_X_NEG": -0.05,
+          "DISCOVERY_03": -0.046875,
+          "HELDOUT_04": -0.046875,
+          "HELDOUT_09": -0.040625
+        },
+        "failure_count": 15,
+        "legacy_reported_prediction_metrics": {
+          "P30_ALL_JOINT": {
+            "constant_normalized_prediction_mse": 0.12278914847220151,
+            "learned_normalized_prediction_mse": 39981898217.87747,
+            "learned_strictly_below_constant": false
+          },
+          "P31_34_PITCH_WITH_P30_NONPITCH": {
+            "constant_normalized_prediction_mse": 0.12309969509001542,
+            "learned_normalized_prediction_mse": 39981610105.175064,
+            "learned_strictly_below_constant": false
+          }
+        },
+        "minimum_context_linf_separation": 3.936886787414551e-05,
+        "sensor_transport_failure_count": 0,
+        "terminal_pitch_rad_max": -0.3574087548452494,
+        "terminal_pitch_rad_min": -0.3836970013028062,
+        "terminal_tick_max": 68,
+        "terminal_tick_min": 28
+      }
+    },
+    "classification": "NEGATIVE_X_EARLY_PITCH_INSTABILITY",
+    "formal_hold_remains_outcome_determining": true,
+    "sensor_transport_failures": 0
+  },
+  "reporting_defect": {
+    "checks": {
+      "gate_action_is_onnx_output_not_predictor_output": true,
+      "gate_imports_legacy_coordinate_helper": true,
+      "legacy_and_normalized_h_out_ast_identical": true,
+      "legacy_and_normalized_hidden_pre_ast_identical": true,
+      "legacy_gate_treats_prediction_as_raw": true,
+      "stage1_predicts_normalized_coordinates": true,
+      "support_training_imports_legacy_helper": true
+    },
+    "classification": "NORMALIZED_PREDICTION_MISREAD_AS_RAW_RESPONSE",
+    "constant_contact_amplification": {
+      "correct_normalized_target": [
+        0.0,
+        0.0
+      ],
+      "correct_zero_prediction_squared_error_per_contact": 0.0,
+      "legacy_zero_prediction_squared_error_per_contact": 1000000000000.0,
+      "target_mean": [
+        1.0,
+        1.0
+      ],
+      "target_raw": [
+        1.0,
+        1.0
+      ],
+      "target_std": [
+        9.999999974752427e-07,
+        9.999999974752427e-07
+      ]
+    },
+    "correct_formula": "square(prediction_normalized - ((target_raw - target_mean) / target_std))",
+    "formal_predictor_comparison_must_be_recomputed": true,
+    "legacy_formula": "square((prediction_normalized - target_raw) / target_std)",
+    "outcome_effect": "REPORTING_ONLY_ACTION_AND_PHYSICS_UNCHANGED"
+  },
+  "schema_version": "winner_v13.support_controller_hold_attribution.v1",
+  "source_manifest_sha256": "f4c9b548d2ffe0f92c3c38b8fc8dfdc97a332449a2535e51e669ce73858ee191",
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v13_support_controller_hold_attribution.py",
+      "sha256": "c9c43d0493b7803fd2505dcf5f0c5ff15395315ffe6c65d751f25ceae71de138"
+    },
+    "configuration_domain": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v3_variable_configuration_replacement_preregistration.json",
+      "sha256": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b"
+    },
+    "formal_gate_importer": {
+      "hash_mode": "lf",
+      "path": "tools/import_winner_v13_support_controller_gate_result.py",
+      "sha256": "29850072ae7df1e60b46624e54949616735247b564614317f62cc6552e2caca5"
+    },
+    "formal_gate_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v13_support_controller_gate_result.json",
+      "sha256": "ad6e0ea99cf0d96fbcd336d7984467efccdd430591201d6fd5242a328518ce05"
+    },
+    "legacy_training_primitives": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_calibrator_training.py",
+      "sha256": "f5736a357d73baedae2bba1d15254dd688bddf3761eb731d757a971783c77227"
+    },
+    "normalized_stage1_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v13_normalized_response_stage1_v2_result.json",
+      "sha256": "45e12b9993ce5c8f9811af7350ed3198f9376d0d4ea9b25de8b1aee608a5bcc7"
+    },
+    "normalized_training_primitives": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v13_normalized_calibrator_training.py",
+      "sha256": "b57ae2823cff90bfd8d78317adb1dfe9607bcae069a4d985863144b4e12ec3ca"
+    },
+    "reviewed_base_gate_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_support_gate.py",
+      "sha256": "18873eee55c77a278fc065de64c0b912803bf29b4440cde7f3adaabe1297baca"
+    },
+    "support_training_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v13_support_controller_training.py",
+      "sha256": "d683b92c6c8dc307ab4dda15dda025d03601f2ac266edc75811f0b08d1441625"
+    },
+    "winner_v13_gate_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v13_support_controller_gate.py",
+      "sha256": "f30750ad0f3514a692c0fd4dc59a51f34eda9dadd3123f19a073c4fc99d9c66f"
+    }
+  },
+  "status": "PASS_WINNER_V13_SUPPORT_CONTROLLER_HOLD_ATTRIBUTION"
+}
