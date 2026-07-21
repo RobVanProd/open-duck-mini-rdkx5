@@ -1,0 +1,1981 @@
+{
+  "authority": {
+    "pass_authorizes_only": "a separate automatic support-controller preregistration",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false
+  },
+  "checkpoint_results": [
+    {
+      "checker_nonzero_bounded_action_ticks": 4787,
+      "checker_onnx_ticks": 5101,
+      "checker_same_input_max_abs_errors": {
+        "action": 0.0,
+        "hidden": 8.731149137020111e-11,
+        "previous_action_out": 0.0
+      },
+      "checks": {
+        "all_16_plant_contexts_separate": true,
+        "checker_nonzero_bounded_action_observed": true,
+        "checker_previous_action_out_equals_action_bit_exact": true,
+        "checker_same_input_all_outputs_at_most_1e_7": true,
+        "checker_zero_previous_action_exact_zero": true,
+        "deployable_onnx_abi_exact": true,
+        "deployable_onnx_chain_at_most_1e_7": true,
+        "deployable_onnx_training_only_tensors_absent": true,
+        "exact_32_heldout_cells": true,
+        "heldout_repeat_bit_exact": true,
+        "learned_prediction_beats_constant_per_plant": true
+      },
+      "context_separation": [
+        {
+          "configuration_id": "HELDOUT_00",
+          "final_valid_h_out_linf_plant_separation": 0.30001768469810486,
+          "separation_above_1e_7": true
+        },
+        {
+          "configuration_id": "HELDOUT_01",
+          "final_valid_h_out_linf_plant_separation": 0.20763148367404938,
+          "separation_above_1e_7": true
+        },
+        {
+          "configuration_id": "HELDOUT_02",
+          "final_valid_h_out_linf_plant_separation": 0.331170916557312,
+          "separation_above_1e_7": true
+        },
+        {
+          "configuration_id": "HELDOUT_03",
+          "final_valid_h_out_linf_plant_separation": 0.3086196184158325,
+          "separation_above_1e_7": true
+        },
+        {
+          "configuration_id": "HELDOUT_04",
+          "final_valid_h_out_linf_plant_separation": 0.13121943175792694,
+          "separation_above_1e_7": true
+        },
+        {
+          "configuration_id": "HELDOUT_05",
+          "final_valid_h_out_linf_plant_separation": 0.40822964906692505,
+          "separation_above_1e_7": true
+        },
+        {
+          "configuration_id": "HELDOUT_06",
+          "final_valid_h_out_linf_plant_separation": 0.206200510263443,
+          "separation_above_1e_7": true
+        },
+        {
+          "configuration_id": "HELDOUT_07",
+          "final_valid_h_out_linf_plant_separation": 0.1374192237854004,
+          "separation_above_1e_7": true
+        },
+        {
+          "configuration_id": "HELDOUT_08",
+          "final_valid_h_out_linf_plant_separation": 0.4096505045890808,
+          "separation_above_1e_7": true
+        },
+        {
+          "configuration_id": "HELDOUT_09",
+          "final_valid_h_out_linf_plant_separation": 0.07970975339412689,
+          "separation_above_1e_7": true
+        },
+        {
+          "configuration_id": "HELDOUT_10",
+          "final_valid_h_out_linf_plant_separation": 0.3922424912452698,
+          "separation_above_1e_7": true
+        },
+        {
+          "configuration_id": "HELDOUT_11",
+          "final_valid_h_out_linf_plant_separation": 0.21379971504211426,
+          "separation_above_1e_7": true
+        },
+        {
+          "configuration_id": "HELDOUT_12",
+          "final_valid_h_out_linf_plant_separation": 0.5907884836196899,
+          "separation_above_1e_7": true
+        },
+        {
+          "configuration_id": "HELDOUT_13",
+          "final_valid_h_out_linf_plant_separation": 0.5318165421485901,
+          "separation_above_1e_7": true
+        },
+        {
+          "configuration_id": "HELDOUT_14",
+          "final_valid_h_out_linf_plant_separation": 0.4013277590274811,
+          "separation_above_1e_7": true
+        },
+        {
+          "configuration_id": "HELDOUT_15",
+          "final_valid_h_out_linf_plant_separation": 0.23516727983951569,
+          "separation_above_1e_7": true
+        }
+      ],
+      "failed_checks": [],
+      "graph_contract": {
+        "abi_exact": true,
+        "all_chain_outputs_finite": true,
+        "all_initializers_finite": true,
+        "bytes": 54896,
+        "chain_ticks": 256,
+        "forbidden_training_or_privileged_tokens": [],
+        "initializer_count": 9,
+        "inputs": [
+          {
+            "name": "obs",
+            "shape": [
+              1,
+              115
+            ]
+          },
+          {
+            "name": "previous_action",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_in",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "jax_onnx_at_most_1e_7": true,
+        "jax_onnx_max_abs_error": 8.731149137020111e-11,
+        "outputs": [
+          {
+            "name": "calibration_actions",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "previous_action_out",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_out",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/graphs/winner_v13_normalized_response_half.onnx",
+        "previous_action_out_equals_action_bit_exact": true,
+        "sha256": "8a49705fe21c65e17115f5c9c63c7d8dee15b0f105038dbafd23355d4ac74d6c",
+        "training_only_tensors_absent": true
+      },
+      "heldout_batch_sha256": "dd3d27311e10ec9ecf4a03b78d8eeb4a924ec474941e736547996963ac3448e3",
+      "heldout_episode_receipts_sha256": "c9c5f4bdb54905363acb693fde63e0cc569360d7876315f86ec98d52e1db6391",
+      "heldout_repeat_batch_sha256": "dd3d27311e10ec9ecf4a03b78d8eeb4a924ec474941e736547996963ac3448e3",
+      "heldout_repeat_episode_receipts_sha256": "c9c5f4bdb54905363acb693fde63e0cc569360d7876315f86ec98d52e1db6391",
+      "label": "half",
+      "predictor_by_plant": {
+        "P30_ALL_JOINT": {
+          "constant_normalized_mse_all_50": 0.9087911046565219,
+          "constant_normalized_mse_noncontact_48": 0.9466574006838769,
+          "contact_normalized_mse": 0.00020797590884841127,
+          "learned_normalized_mse_all_50": 0.8897118824779978,
+          "learned_normalized_mse_noncontact_48": 0.9267745452517123,
+          "learned_strictly_below_constant": true,
+          "valid_transition_count": 2534
+        },
+        "P31_34_PITCH_WITH_P30_NONPITCH": {
+          "constant_normalized_mse_all_50": 1.0706870313411008,
+          "constant_normalized_mse_noncontact_48": 1.1152989909803133,
+          "contact_normalized_mse": 0.00045821283562367957,
+          "learned_normalized_mse_all_50": 1.051949555166469,
+          "learned_normalized_mse_noncontact_48": 1.0957616944302542,
+          "learned_strictly_below_constant": true,
+          "valid_transition_count": 2567
+        }
+      },
+      "snapshot": {
+        "array_count": 30,
+        "bit_exact_readback": true,
+        "bytes": 184678,
+        "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_050.npz",
+        "sha256": "bf93de29547c4ca3a6ebbf55e162b8103dbc9cc35204e2b742368927da043775"
+      },
+      "update": 50
+    },
+    {
+      "checker_nonzero_bounded_action_ticks": 5268,
+      "checker_onnx_ticks": 5586,
+      "checker_same_input_max_abs_errors": {
+        "action": 0.0,
+        "hidden": 8.731149137020111e-11,
+        "previous_action_out": 0.0
+      },
+      "checks": {
+        "all_16_plant_contexts_separate": true,
+        "checker_nonzero_bounded_action_observed": true,
+        "checker_previous_action_out_equals_action_bit_exact": true,
+        "checker_same_input_all_outputs_at_most_1e_7": true,
+        "checker_zero_previous_action_exact_zero": true,
+        "deployable_onnx_abi_exact": true,
+        "deployable_onnx_chain_at_most_1e_7": true,
+        "deployable_onnx_training_only_tensors_absent": true,
+        "exact_32_heldout_cells": true,
+        "heldout_repeat_bit_exact": true,
+        "learned_prediction_beats_constant_per_plant": true
+      },
+      "context_separation": [
+        {
+          "configuration_id": "HELDOUT_00",
+          "final_valid_h_out_linf_plant_separation": 0.4143250286579132,
+          "separation_above_1e_7": true
+        },
+        {
+          "configuration_id": "HELDOUT_01",
+          "final_valid_h_out_linf_plant_separation": 0.23068450391292572,
+          "separation_above_1e_7": true
+        },
+        {
+          "configuration_id": "HELDOUT_02",
+          "final_valid_h_out_linf_plant_separation": 0.5091374516487122,
+          "separation_above_1e_7": true
+        },
+        {
+          "configuration_id": "HELDOUT_03",
+          "final_valid_h_out_linf_plant_separation": 0.7314236760139465,
+          "separation_above_1e_7": true
+        },
+        {
+          "configuration_id": "HELDOUT_04",
+          "final_valid_h_out_linf_plant_separation": 0.08179251849651337,
+          "separation_above_1e_7": true
+        },
+        {
+          "configuration_id": "HELDOUT_05",
+          "final_valid_h_out_linf_plant_separation": 0.2707290053367615,
+          "separation_above_1e_7": true
+        },
+        {
+          "configuration_id": "HELDOUT_06",
+          "final_valid_h_out_linf_plant_separation": 0.20263336598873138,
+          "separation_above_1e_7": true
+        },
+        {
+          "configuration_id": "HELDOUT_07",
+          "final_valid_h_out_linf_plant_separation": 0.34331846237182617,
+          "separation_above_1e_7": true
+        },
+        {
+          "configuration_id": "HELDOUT_08",
+          "final_valid_h_out_linf_plant_separation": 0.6116743087768555,
+          "separation_above_1e_7": true
+        },
+        {
+          "configuration_id": "HELDOUT_09",
+          "final_valid_h_out_linf_plant_separation": 0.07595416903495789,
+          "separation_above_1e_7": true
+        },
+        {
+          "configuration_id": "HELDOUT_10",
+          "final_valid_h_out_linf_plant_separation": 0.44888436794281006,
+          "separation_above_1e_7": true
+        },
+        {
+          "configuration_id": "HELDOUT_11",
+          "final_valid_h_out_linf_plant_separation": 0.5577108263969421,
+          "separation_above_1e_7": true
+        },
+        {
+          "configuration_id": "HELDOUT_12",
+          "final_valid_h_out_linf_plant_separation": 0.36002182960510254,
+          "separation_above_1e_7": true
+        },
+        {
+          "configuration_id": "HELDOUT_13",
+          "final_valid_h_out_linf_plant_separation": 0.4931938350200653,
+          "separation_above_1e_7": true
+        },
+        {
+          "configuration_id": "HELDOUT_14",
+          "final_valid_h_out_linf_plant_separation": 0.307599812746048,
+          "separation_above_1e_7": true
+        },
+        {
+          "configuration_id": "HELDOUT_15",
+          "final_valid_h_out_linf_plant_separation": 0.37464553117752075,
+          "separation_above_1e_7": true
+        }
+      ],
+      "failed_checks": [],
+      "graph_contract": {
+        "abi_exact": true,
+        "all_chain_outputs_finite": true,
+        "all_initializers_finite": true,
+        "bytes": 54896,
+        "chain_ticks": 256,
+        "forbidden_training_or_privileged_tokens": [],
+        "initializer_count": 9,
+        "inputs": [
+          {
+            "name": "obs",
+            "shape": [
+              1,
+              115
+            ]
+          },
+          {
+            "name": "previous_action",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_in",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "jax_onnx_at_most_1e_7": true,
+        "jax_onnx_max_abs_error": 5.820766091346741e-11,
+        "outputs": [
+          {
+            "name": "calibration_actions",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "previous_action_out",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_out",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/graphs/winner_v13_normalized_response_final.onnx",
+        "previous_action_out_equals_action_bit_exact": true,
+        "sha256": "0e0a7cf4b92741f2af7b5eb3392c9df503d60e5a5c4641b19bc91a4c3439887e",
+        "training_only_tensors_absent": true
+      },
+      "heldout_batch_sha256": "e2713d5d8ca9071ec2129bbdd05aecea541653f15c71aa13f28acc9ed166561f",
+      "heldout_episode_receipts_sha256": "38012f5ed2e408e70a114e94da3fbb7201625cef3446095c766f66106073fb01",
+      "heldout_repeat_batch_sha256": "e2713d5d8ca9071ec2129bbdd05aecea541653f15c71aa13f28acc9ed166561f",
+      "heldout_repeat_episode_receipts_sha256": "38012f5ed2e408e70a114e94da3fbb7201625cef3446095c766f66106073fb01",
+      "label": "final",
+      "predictor_by_plant": {
+        "P30_ALL_JOINT": {
+          "constant_normalized_mse_all_50": 1.017420735567805,
+          "constant_normalized_mse_noncontact_48": 1.059813266216464,
+          "contact_normalized_mse": 0.00024685714031129254,
+          "learned_normalized_mse_all_50": 0.9850068653083868,
+          "learned_normalized_mse_noncontact_48": 1.02603853231539,
+          "learned_strictly_below_constant": true,
+          "valid_transition_count": 2957
+        },
+        "P31_34_PITCH_WITH_P30_NONPITCH": {
+          "constant_normalized_mse_all_50": 1.09215788775818,
+          "constant_normalized_mse_noncontact_48": 1.1376644664147704,
+          "contact_normalized_mse": 0.0004055807098737028,
+          "learned_normalized_mse_all_50": 1.0661785490237208,
+          "learned_normalized_mse_noncontact_48": 1.1105857560367975,
+          "learned_strictly_below_constant": true,
+          "valid_transition_count": 2629
+        }
+      },
+      "snapshot": {
+        "array_count": 30,
+        "bit_exact_readback": true,
+        "bytes": 189027,
+        "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_100.npz",
+        "sha256": "8c1392c738eddfb098e61c1a6ae2f863eda883e1eba6ac546aef695da6f163af"
+      },
+      "update": 100
+    }
+  ],
+  "checks": {
+    "action_head_bit_exact": true,
+    "both_checkpoints_pass_heldout_gate": true,
+    "exact_100_immutable_snapshots": true,
+    "exact_100_optimizer_updates": true,
+    "half_and_final_evaluated": true
+  },
+  "cross_run_diagnostic": {
+    "episode_receipt_hashes_exact": false,
+    "half_final_graph_sha256_exact": false,
+    "heldout_context_separation_max_abs_delta": 8.940696716308594e-08,
+    "heldout_predictor_metric_max_abs_delta": 3.935980430469499e-10,
+    "normalization_exact": true,
+    "role": "diagnostic_only_not_a_post_hoc_gate",
+    "scientific_and_deployable_gate_outcomes_exact": true,
+    "training_loss_max_abs_delta": 1.1920928955078125e-06,
+    "training_population_counts_exact": true
+  },
+  "decision": "AUTHORIZE_SUPPORT_CONTROLLER_PREREGISTRATION_ONLY",
+  "elapsed_seconds": 1196.662249909,
+  "execution": {
+    "formal_support_cells": 0,
+    "heldout_evaluation_cells": 64,
+    "heldout_repeat_cells": 64,
+    "locomotion_steps": 0,
+    "robot_or_rdk_access": 0,
+    "stage1_optimizer_updates": 100,
+    "stage2_optimizer_updates": 0,
+    "training_episode_slots": 2000000
+  },
+  "failed_checks": [],
+  "metrics": [
+    {
+      "completed_episodes": 39,
+      "episode_receipts_sha256": "760ffd9c31fbf617365cb00a7edefe92c291253c1d183fde5e650d8b36edfef8",
+      "loss": 0.9647879004478455,
+      "sampled_count": 14113,
+      "update": 1,
+      "valid_transition_count": 14072
+    },
+    {
+      "completed_episodes": 29,
+      "episode_receipts_sha256": "eecc70d16245611fb523437795d2bfa6e65d093747996625f83af125fdd07368",
+      "loss": 1.0247561931610107,
+      "sampled_count": 13595,
+      "update": 2,
+      "valid_transition_count": 13544
+    },
+    {
+      "completed_episodes": 29,
+      "episode_receipts_sha256": "4732594f1eeaf7bc372683e2389b6b754a295099dadac3fb6a21969ea9f7841e",
+      "loss": 1.0499510765075684,
+      "sampled_count": 13280,
+      "update": 3,
+      "valid_transition_count": 13229
+    },
+    {
+      "completed_episodes": 35,
+      "episode_receipts_sha256": "11b533ae5fbd9c6108fd64580bc84aed100ea301cbfc2e8a25222ff22d0eca66",
+      "loss": 1.0092800855636597,
+      "sampled_count": 14020,
+      "update": 4,
+      "valid_transition_count": 13975
+    },
+    {
+      "completed_episodes": 27,
+      "episode_receipts_sha256": "f937bc8d1916da73cd83280ff3daf3bd3135b30f2fab2eab38dee33c98120489",
+      "loss": 1.0198031663894653,
+      "sampled_count": 13565,
+      "update": 5,
+      "valid_transition_count": 13512
+    },
+    {
+      "completed_episodes": 32,
+      "episode_receipts_sha256": "53cbd7e3d4e0a4e5233c54e6ec26df78cc5c2c8b8cfbff2a2d42f93492d06667",
+      "loss": 1.0119229555130005,
+      "sampled_count": 13750,
+      "update": 6,
+      "valid_transition_count": 13702
+    },
+    {
+      "completed_episodes": 33,
+      "episode_receipts_sha256": "a737ab9ab37614824be048e1dd112a1e299fa6bfeef2f2f12846c34ee66e2413",
+      "loss": 1.0720338821411133,
+      "sampled_count": 13256,
+      "update": 7,
+      "valid_transition_count": 13209
+    },
+    {
+      "completed_episodes": 33,
+      "episode_receipts_sha256": "2c2292a0a92f2bcde9947e5796221638f9bf9f66b61eda511a666a95223aba8a",
+      "loss": 1.035260558128357,
+      "sampled_count": 13337,
+      "update": 8,
+      "valid_transition_count": 13290
+    },
+    {
+      "completed_episodes": 41,
+      "episode_receipts_sha256": "9b7dc6c39d4c03a79785480ef1d05e2a0230b79d23d5a43519fb31ce6dc07dec",
+      "loss": 0.9405323266983032,
+      "sampled_count": 14522,
+      "update": 9,
+      "valid_transition_count": 14483
+    },
+    {
+      "completed_episodes": 23,
+      "episode_receipts_sha256": "065eb438d1108e14a20bf1bddbf6ef2aef4f0b8f8fe3bca29911eb18a628abe3",
+      "loss": 1.0168954133987427,
+      "sampled_count": 12197,
+      "update": 10,
+      "valid_transition_count": 12140
+    },
+    {
+      "completed_episodes": 32,
+      "episode_receipts_sha256": "b90ee73c09257650f78811b41f9baed3f5648ed20c18c62ba4436c5238c26343",
+      "loss": 0.9733383059501648,
+      "sampled_count": 13948,
+      "update": 11,
+      "valid_transition_count": 13900
+    },
+    {
+      "completed_episodes": 33,
+      "episode_receipts_sha256": "dd4e9f1a1a50e1e819417cf1e88632ff75a2ccc3bf911fcff54a64ae87dd6ec5",
+      "loss": 1.0253169536590576,
+      "sampled_count": 13390,
+      "update": 12,
+      "valid_transition_count": 13343
+    },
+    {
+      "completed_episodes": 25,
+      "episode_receipts_sha256": "9ed8dcba5db6a834f5b425348bcab52efa9d198d5b93efaedb98e5f94ac819b8",
+      "loss": 0.9827349185943604,
+      "sampled_count": 12614,
+      "update": 13,
+      "valid_transition_count": 12559
+    },
+    {
+      "completed_episodes": 36,
+      "episode_receipts_sha256": "af4c9f96a1ee2f63e3587c328b2041aa68fbd17f2cc9db63bf81e39186de05c4",
+      "loss": 1.014366626739502,
+      "sampled_count": 13905,
+      "update": 14,
+      "valid_transition_count": 13861
+    },
+    {
+      "completed_episodes": 32,
+      "episode_receipts_sha256": "676888a278a8127a879854b5d99aa25f13d05ce3f8e41f61741306058665d85e",
+      "loss": 1.0200517177581787,
+      "sampled_count": 14105,
+      "update": 15,
+      "valid_transition_count": 14057
+    },
+    {
+      "completed_episodes": 37,
+      "episode_receipts_sha256": "4d33d240fc7b854ffa5979e85495639c5d860c1d4844005330a96d164e3de31c",
+      "loss": 0.9915531873703003,
+      "sampled_count": 13705,
+      "update": 16,
+      "valid_transition_count": 13662
+    },
+    {
+      "completed_episodes": 33,
+      "episode_receipts_sha256": "30527242e3f427b0c57019baf364d6b9aba84e4a377bd5fdecafc1ea645d8b94",
+      "loss": 1.0316669940948486,
+      "sampled_count": 13826,
+      "update": 17,
+      "valid_transition_count": 13779
+    },
+    {
+      "completed_episodes": 31,
+      "episode_receipts_sha256": "f1efe9c2ba7746946f0ce905ff6d07818277fa5113d6b057be3bb015574019b3",
+      "loss": 1.0532217025756836,
+      "sampled_count": 14248,
+      "update": 18,
+      "valid_transition_count": 14199
+    },
+    {
+      "completed_episodes": 30,
+      "episode_receipts_sha256": "7fa0c74f94c9ee37fbc91fab0a275ff326707024b866e380be4d0390580d18bf",
+      "loss": 1.0000267028808594,
+      "sampled_count": 13333,
+      "update": 19,
+      "valid_transition_count": 13283
+    },
+    {
+      "completed_episodes": 28,
+      "episode_receipts_sha256": "7d0d733899aca14ce18428caf996690ae7da5ab1d5902b17560c82f5dbae60f4",
+      "loss": 0.9547464847564697,
+      "sampled_count": 13198,
+      "update": 20,
+      "valid_transition_count": 13146
+    },
+    {
+      "completed_episodes": 29,
+      "episode_receipts_sha256": "3f451947810808e5f781e85c12184a177fe0c3650a008d4c2fdf01b98d406c90",
+      "loss": 0.9842005968093872,
+      "sampled_count": 13855,
+      "update": 21,
+      "valid_transition_count": 13804
+    },
+    {
+      "completed_episodes": 29,
+      "episode_receipts_sha256": "443db27f20970f95d1113242e9373d443c9e4b6ae7dc7f31275564f65daf38e2",
+      "loss": 0.9330887198448181,
+      "sampled_count": 12795,
+      "update": 22,
+      "valid_transition_count": 12744
+    },
+    {
+      "completed_episodes": 34,
+      "episode_receipts_sha256": "c45413651f8dfc9a439a9f3bee02fac374bd61287c5f24bba94450624feba3eb",
+      "loss": 1.0361052751541138,
+      "sampled_count": 13415,
+      "update": 23,
+      "valid_transition_count": 13369
+    },
+    {
+      "completed_episodes": 38,
+      "episode_receipts_sha256": "8f011355bc3c60bc46dd95108747b45e9f8cd7d009085f4a021fec632b370da1",
+      "loss": 0.9524524807929993,
+      "sampled_count": 14229,
+      "update": 24,
+      "valid_transition_count": 14187
+    },
+    {
+      "completed_episodes": 30,
+      "episode_receipts_sha256": "ad8c5c265c4b713747d7b524201627e77a6dbc0bd5dc9e91538f8df9626e5cee",
+      "loss": 0.9535486698150635,
+      "sampled_count": 13766,
+      "update": 25,
+      "valid_transition_count": 13716
+    },
+    {
+      "completed_episodes": 32,
+      "episode_receipts_sha256": "b6837f96456e181cf1889a7ba0fa53354bf580cedcf57848e0df6ba67c839ed6",
+      "loss": 0.9844722151756287,
+      "sampled_count": 13846,
+      "update": 26,
+      "valid_transition_count": 13798
+    },
+    {
+      "completed_episodes": 37,
+      "episode_receipts_sha256": "87004b73786e275a3c75df769aa716c98f090f8fb3bfb880b3d55eef48033c4b",
+      "loss": 0.9671052098274231,
+      "sampled_count": 13736,
+      "update": 27,
+      "valid_transition_count": 13693
+    },
+    {
+      "completed_episodes": 36,
+      "episode_receipts_sha256": "cb6f612ad54af5d85c44590ccdb0b9706e7eee96debae4304fb895e80784f3d8",
+      "loss": 1.002557396888733,
+      "sampled_count": 14072,
+      "update": 28,
+      "valid_transition_count": 14028
+    },
+    {
+      "completed_episodes": 34,
+      "episode_receipts_sha256": "18c011a419cf87bf527eecb8cfae32ac371f20f61da7022678105464ce761349",
+      "loss": 0.9948957562446594,
+      "sampled_count": 13321,
+      "update": 29,
+      "valid_transition_count": 13275
+    },
+    {
+      "completed_episodes": 34,
+      "episode_receipts_sha256": "b69882d6a3c0f3f1fedfdcb1a934afa31e89f45dd2947ddeceab5552b9656a89",
+      "loss": 1.0316499471664429,
+      "sampled_count": 13846,
+      "update": 30,
+      "valid_transition_count": 13800
+    },
+    {
+      "completed_episodes": 32,
+      "episode_receipts_sha256": "9b281051fac745e5c504257cb1855ebb9b5a0e8708054064de009b50df5a921a",
+      "loss": 0.9764613509178162,
+      "sampled_count": 13988,
+      "update": 31,
+      "valid_transition_count": 13940
+    },
+    {
+      "completed_episodes": 35,
+      "episode_receipts_sha256": "3ea1dffae3e9fd6629143879acf080907286047cdc8058d102f47ba18c7d7d1c",
+      "loss": 0.9626741409301758,
+      "sampled_count": 13776,
+      "update": 32,
+      "valid_transition_count": 13731
+    },
+    {
+      "completed_episodes": 34,
+      "episode_receipts_sha256": "7c93a7486e7534a9e2c7790d296b370d5699428e93f98fe254ab772b97e0285e",
+      "loss": 0.9808497428894043,
+      "sampled_count": 14237,
+      "update": 33,
+      "valid_transition_count": 14191
+    },
+    {
+      "completed_episodes": 38,
+      "episode_receipts_sha256": "a188368f67a81899bb276e3ee3e9fe2a20648d7500987bd3c0432d51dfe91a9b",
+      "loss": 0.9553578495979309,
+      "sampled_count": 14444,
+      "update": 34,
+      "valid_transition_count": 14402
+    },
+    {
+      "completed_episodes": 37,
+      "episode_receipts_sha256": "d7217e2b34e1ab663ead747451f29156bb5e440c6f2eb3206c78b4daefb060ba",
+      "loss": 1.0052368640899658,
+      "sampled_count": 14029,
+      "update": 35,
+      "valid_transition_count": 13986
+    },
+    {
+      "completed_episodes": 33,
+      "episode_receipts_sha256": "6533d19c5bf15cb57960de6911d1192936931859aac61d2116fe78e41f5a39f5",
+      "loss": 0.9668798446655273,
+      "sampled_count": 13703,
+      "update": 36,
+      "valid_transition_count": 13656
+    },
+    {
+      "completed_episodes": 32,
+      "episode_receipts_sha256": "9056f01bbee2ba0e38313d7d0c5d8948a4bfedeb5e9d1474b36e533f27701d2f",
+      "loss": 1.0107498168945312,
+      "sampled_count": 13921,
+      "update": 37,
+      "valid_transition_count": 13873
+    },
+    {
+      "completed_episodes": 31,
+      "episode_receipts_sha256": "43837726010b076113c8829e84314221653e9e0067828566cbb2a0d352a74c2f",
+      "loss": 1.0014384984970093,
+      "sampled_count": 13706,
+      "update": 38,
+      "valid_transition_count": 13657
+    },
+    {
+      "completed_episodes": 35,
+      "episode_receipts_sha256": "d5bcb06036bf18d08025744cda6741187cca755a2cde7c56ce6dd9ec7d74a8d0",
+      "loss": 1.0180959701538086,
+      "sampled_count": 14279,
+      "update": 39,
+      "valid_transition_count": 14234
+    },
+    {
+      "completed_episodes": 30,
+      "episode_receipts_sha256": "b08272346b0ff1efd3137aac1caa687b07aa70bfb183dcdbdbbb68b795417a33",
+      "loss": 0.9247003793716431,
+      "sampled_count": 13714,
+      "update": 40,
+      "valid_transition_count": 13664
+    },
+    {
+      "completed_episodes": 26,
+      "episode_receipts_sha256": "837d88d186056c55cbbb6e7f8b72b9e99380602233220778746b1067a457f701",
+      "loss": 0.9948562383651733,
+      "sampled_count": 13184,
+      "update": 41,
+      "valid_transition_count": 13130
+    },
+    {
+      "completed_episodes": 26,
+      "episode_receipts_sha256": "a168b1e698c0630a6b714fa7ff6049afebd3fb700be002ffc1697f0efd62b0a1",
+      "loss": 1.02534818649292,
+      "sampled_count": 13394,
+      "update": 42,
+      "valid_transition_count": 13340
+    },
+    {
+      "completed_episodes": 38,
+      "episode_receipts_sha256": "c2cb8e3434c5a829a164a7798136c28128d41efdd037b08d94300ad9711aefbf",
+      "loss": 0.9589754343032837,
+      "sampled_count": 13975,
+      "update": 43,
+      "valid_transition_count": 13933
+    },
+    {
+      "completed_episodes": 41,
+      "episode_receipts_sha256": "84db17c8641f4ff46e8f17eb24c144bd2b2d1a63ad2f20a324cfddaf2f66c677",
+      "loss": 0.9765122532844543,
+      "sampled_count": 14600,
+      "update": 44,
+      "valid_transition_count": 14561
+    },
+    {
+      "completed_episodes": 29,
+      "episode_receipts_sha256": "afa90242f872b2eb50e5edcb236ccd10ba3326da406008541d960a98a89736b4",
+      "loss": 1.0124934911727905,
+      "sampled_count": 13689,
+      "update": 45,
+      "valid_transition_count": 13638
+    },
+    {
+      "completed_episodes": 30,
+      "episode_receipts_sha256": "7ae392d81e85d9826f346ef981e460bc946d3b6c2134f7ad69de6a88c6cfbee8",
+      "loss": 1.0284981727600098,
+      "sampled_count": 13199,
+      "update": 46,
+      "valid_transition_count": 13149
+    },
+    {
+      "completed_episodes": 33,
+      "episode_receipts_sha256": "ba25ae615fee982998979f8d9aa7570edec73f3aa36de5715b26f646f5a1f391",
+      "loss": 0.9819173216819763,
+      "sampled_count": 13907,
+      "update": 47,
+      "valid_transition_count": 13860
+    },
+    {
+      "completed_episodes": 27,
+      "episode_receipts_sha256": "49ae3a2c36838d9a056f64cacf05a4e1568293595f9ecb58e99c5331b9d79b5a",
+      "loss": 0.9928261041641235,
+      "sampled_count": 13581,
+      "update": 48,
+      "valid_transition_count": 13528
+    },
+    {
+      "completed_episodes": 31,
+      "episode_receipts_sha256": "1cb9e4d109dc89662608740d40bc29fcac82a8bbc8729f5ce79f58acbb3f54f8",
+      "loss": 0.9716996550559998,
+      "sampled_count": 13696,
+      "update": 49,
+      "valid_transition_count": 13647
+    },
+    {
+      "completed_episodes": 33,
+      "episode_receipts_sha256": "39b80585dc4a3c7c599550723305562e3e2206758c63c42dd30778afb5134d50",
+      "loss": 0.9654012322425842,
+      "sampled_count": 14098,
+      "update": 50,
+      "valid_transition_count": 14051
+    },
+    {
+      "completed_episodes": 28,
+      "episode_receipts_sha256": "80a229c9a69497be80a48c6a700118d5201214e46c1378d826c88a0c6e0784c6",
+      "loss": 0.991112232208252,
+      "sampled_count": 13569,
+      "update": 51,
+      "valid_transition_count": 13517
+    },
+    {
+      "completed_episodes": 33,
+      "episode_receipts_sha256": "463a3d50e85b6d01e2cdea4cab9d72275c55791be3e724445930d190aeaf73b3",
+      "loss": 0.9522624611854553,
+      "sampled_count": 13756,
+      "update": 52,
+      "valid_transition_count": 13709
+    },
+    {
+      "completed_episodes": 31,
+      "episode_receipts_sha256": "1eb4a1db3edfde9e1aed563d204d96c479abf4e79c4372ab117093d174bc6356",
+      "loss": 0.9764282703399658,
+      "sampled_count": 13322,
+      "update": 53,
+      "valid_transition_count": 13273
+    },
+    {
+      "completed_episodes": 34,
+      "episode_receipts_sha256": "505e0bcecaf8460a6d32b041046f510fc0125d525882e0af5ba12148b961f08c",
+      "loss": 0.9945935606956482,
+      "sampled_count": 13784,
+      "update": 54,
+      "valid_transition_count": 13738
+    },
+    {
+      "completed_episodes": 34,
+      "episode_receipts_sha256": "8ab6a2ba47a300375e73ec2d064b5465c563e08265840fc3138bf6fbb461bca6",
+      "loss": 1.012549877166748,
+      "sampled_count": 13568,
+      "update": 55,
+      "valid_transition_count": 13522
+    },
+    {
+      "completed_episodes": 31,
+      "episode_receipts_sha256": "1930598af5434d17652f6181a197388976413f2fad213406ceb93c902ae2208b",
+      "loss": 0.9756057262420654,
+      "sampled_count": 13621,
+      "update": 56,
+      "valid_transition_count": 13572
+    },
+    {
+      "completed_episodes": 33,
+      "episode_receipts_sha256": "bc3f5b59bf27500178832c4a3513aeb8a54678203cedfabf2adaee991ccc856e",
+      "loss": 0.9894593954086304,
+      "sampled_count": 13155,
+      "update": 57,
+      "valid_transition_count": 13108
+    },
+    {
+      "completed_episodes": 34,
+      "episode_receipts_sha256": "6e0c2e006942bcb0e7afd47c66b38c1d2e6e87117ee29da913e68993b5bd1239",
+      "loss": 0.9550608396530151,
+      "sampled_count": 13990,
+      "update": 58,
+      "valid_transition_count": 13944
+    },
+    {
+      "completed_episodes": 30,
+      "episode_receipts_sha256": "bd468025f983047e41be157b047177eaa2bb344f9ab010fb90c00ba919b31b65",
+      "loss": 0.9379270672798157,
+      "sampled_count": 13742,
+      "update": 59,
+      "valid_transition_count": 13692
+    },
+    {
+      "completed_episodes": 30,
+      "episode_receipts_sha256": "34db8ae060beea4040b6f3664059f2adde335832ecb91b82b9364e4d61620085",
+      "loss": 0.9907300472259521,
+      "sampled_count": 13554,
+      "update": 60,
+      "valid_transition_count": 13504
+    },
+    {
+      "completed_episodes": 34,
+      "episode_receipts_sha256": "b0f8128f786eedd57924ff834c73cfaa98f3a072f0eec4065ee8c7aaed239ef3",
+      "loss": 0.9877809882164001,
+      "sampled_count": 14210,
+      "update": 61,
+      "valid_transition_count": 14164
+    },
+    {
+      "completed_episodes": 26,
+      "episode_receipts_sha256": "f81605ccbe112c572023670d91b3ae610643569aeed4506870c95958b61b3917",
+      "loss": 0.9558194279670715,
+      "sampled_count": 13603,
+      "update": 62,
+      "valid_transition_count": 13549
+    },
+    {
+      "completed_episodes": 28,
+      "episode_receipts_sha256": "8831ce9075beee4cbb33fc95f99b08306dafd199cc7189d53affdedfe1cbabde",
+      "loss": 0.9269437193870544,
+      "sampled_count": 13532,
+      "update": 63,
+      "valid_transition_count": 13480
+    },
+    {
+      "completed_episodes": 34,
+      "episode_receipts_sha256": "0a46208a68b8efdc8bcbb37485b6764ab20e63854563afbdf098ff77b6b4868c",
+      "loss": 1.0113331079483032,
+      "sampled_count": 13788,
+      "update": 64,
+      "valid_transition_count": 13742
+    },
+    {
+      "completed_episodes": 34,
+      "episode_receipts_sha256": "92758a99cf50718162befb3a13ca1886b5fd020a62b11cd7371da9954c532eaf",
+      "loss": 0.9657297134399414,
+      "sampled_count": 14005,
+      "update": 65,
+      "valid_transition_count": 13959
+    },
+    {
+      "completed_episodes": 32,
+      "episode_receipts_sha256": "cff6a198881bd6481eb3a018933cc75abc18effd7b4699cc38a7a87702211342",
+      "loss": 0.9365150928497314,
+      "sampled_count": 13435,
+      "update": 66,
+      "valid_transition_count": 13387
+    },
+    {
+      "completed_episodes": 31,
+      "episode_receipts_sha256": "9a3b347696066026ea8d25bf8eba5cc2380f527a42688dfe529b4fbaf26cc7a1",
+      "loss": 1.010221242904663,
+      "sampled_count": 13698,
+      "update": 67,
+      "valid_transition_count": 13649
+    },
+    {
+      "completed_episodes": 30,
+      "episode_receipts_sha256": "7d03548ca7f0ce6c51dacd79e8786b7e5dc00162b10c9889300f53a3f0b8c9d1",
+      "loss": 0.9730408191680908,
+      "sampled_count": 13745,
+      "update": 68,
+      "valid_transition_count": 13695
+    },
+    {
+      "completed_episodes": 34,
+      "episode_receipts_sha256": "743c40f8eee425ddbdc7bb34f930d1618f7c43cb8b95b370e30b714075d09472",
+      "loss": 0.9936590790748596,
+      "sampled_count": 13371,
+      "update": 69,
+      "valid_transition_count": 13325
+    },
+    {
+      "completed_episodes": 31,
+      "episode_receipts_sha256": "d615e145f0f48c7eba2622b4c9de9fba06596a3cdc9e52b7c5c83969f141235b",
+      "loss": 1.048313856124878,
+      "sampled_count": 13757,
+      "update": 70,
+      "valid_transition_count": 13708
+    },
+    {
+      "completed_episodes": 33,
+      "episode_receipts_sha256": "41bf7b631d0aa5b133c958559c0d7194e744b5ca2d2cb7e06270fef6a338a03e",
+      "loss": 1.0080454349517822,
+      "sampled_count": 13056,
+      "update": 71,
+      "valid_transition_count": 13009
+    },
+    {
+      "completed_episodes": 34,
+      "episode_receipts_sha256": "57b435cdd9ddaeedac114cd2152dde02d039c5c706755f4cdc7f5386f8ace34c",
+      "loss": 1.0165969133377075,
+      "sampled_count": 13637,
+      "update": 72,
+      "valid_transition_count": 13591
+    },
+    {
+      "completed_episodes": 31,
+      "episode_receipts_sha256": "99c59b1ad921f85fb1ee7c2f378e5a76e8c16674f7a779962a6e987492cd628e",
+      "loss": 0.9619726538658142,
+      "sampled_count": 13793,
+      "update": 73,
+      "valid_transition_count": 13744
+    },
+    {
+      "completed_episodes": 30,
+      "episode_receipts_sha256": "ae0302aad06cd17fa14c60f06ad05333788074bcfccf235c6a79506b31b91ad8",
+      "loss": 1.005720615386963,
+      "sampled_count": 13251,
+      "update": 74,
+      "valid_transition_count": 13201
+    },
+    {
+      "completed_episodes": 30,
+      "episode_receipts_sha256": "ab04d67bebce240d9094e5aad814ec71f1c884ff5a8107adc640f53ac9dfff99",
+      "loss": 0.9650654792785645,
+      "sampled_count": 13296,
+      "update": 75,
+      "valid_transition_count": 13246
+    },
+    {
+      "completed_episodes": 37,
+      "episode_receipts_sha256": "b585f862d894a8a5c69250617373819a974068e1c1783b1faf2f7d8bc7d4734c",
+      "loss": 0.9876220226287842,
+      "sampled_count": 14127,
+      "update": 76,
+      "valid_transition_count": 14084
+    },
+    {
+      "completed_episodes": 32,
+      "episode_receipts_sha256": "c2724d2144d31206ef7fb8a950203954b426010e777c72acdb81f8ddb8bb1314",
+      "loss": 1.0148801803588867,
+      "sampled_count": 13552,
+      "update": 77,
+      "valid_transition_count": 13504
+    },
+    {
+      "completed_episodes": 32,
+      "episode_receipts_sha256": "4a26f41c8f08a7ea0730ea475a99325925b71601343a53e3d788a9fbe09b0779",
+      "loss": 0.9578911066055298,
+      "sampled_count": 13682,
+      "update": 78,
+      "valid_transition_count": 13634
+    },
+    {
+      "completed_episodes": 36,
+      "episode_receipts_sha256": "5f55c99dd93b16c28482103152033732699f084492fb89ee02c2f632563eff28",
+      "loss": 0.967573881149292,
+      "sampled_count": 14532,
+      "update": 79,
+      "valid_transition_count": 14488
+    },
+    {
+      "completed_episodes": 29,
+      "episode_receipts_sha256": "3ba1260e032d0255c0d18174f40c15734354341204282c6417dc4b2d7df2fa60",
+      "loss": 0.9897846579551697,
+      "sampled_count": 13896,
+      "update": 80,
+      "valid_transition_count": 13845
+    },
+    {
+      "completed_episodes": 34,
+      "episode_receipts_sha256": "4280cdeeee18226b51f2ba2145da0f50fe96da5c04a4389f4d34e982f6042ad6",
+      "loss": 1.0637598037719727,
+      "sampled_count": 14395,
+      "update": 81,
+      "valid_transition_count": 14349
+    },
+    {
+      "completed_episodes": 33,
+      "episode_receipts_sha256": "67cdf6be8e3277f0fd428f2dde719c1836b4ba4dc8cc633c623a7bc6f4923421",
+      "loss": 0.9643589854240417,
+      "sampled_count": 13726,
+      "update": 82,
+      "valid_transition_count": 13679
+    },
+    {
+      "completed_episodes": 34,
+      "episode_receipts_sha256": "994cb2f935bedc60f64754429e4779914c978c200751f3cf8256011a418b96ef",
+      "loss": 0.9753236174583435,
+      "sampled_count": 13890,
+      "update": 83,
+      "valid_transition_count": 13844
+    },
+    {
+      "completed_episodes": 33,
+      "episode_receipts_sha256": "c3dd37bbe9c111ab7db85727e0ef855d79c67f6d0088d279063d8cccae0d9e98",
+      "loss": 0.9815225601196289,
+      "sampled_count": 13185,
+      "update": 84,
+      "valid_transition_count": 13138
+    },
+    {
+      "completed_episodes": 38,
+      "episode_receipts_sha256": "8b6d5f5731b2f85b1beb4b73e14b2d8ca0d5ca11d4bdb0b71492bd194b68b8d0",
+      "loss": 0.961525022983551,
+      "sampled_count": 14418,
+      "update": 85,
+      "valid_transition_count": 14376
+    },
+    {
+      "completed_episodes": 34,
+      "episode_receipts_sha256": "1e08a10cd52e718f93ae30e29c2ca8976c18597ab19dc45b161a7674457f7de5",
+      "loss": 0.9781432747840881,
+      "sampled_count": 13775,
+      "update": 86,
+      "valid_transition_count": 13729
+    },
+    {
+      "completed_episodes": 39,
+      "episode_receipts_sha256": "27c51ed2316dfa78cf7878f5a21017d0dc487d08c194150e1c4b30254b74d3d5",
+      "loss": 1.0380282402038574,
+      "sampled_count": 14517,
+      "update": 87,
+      "valid_transition_count": 14476
+    },
+    {
+      "completed_episodes": 31,
+      "episode_receipts_sha256": "39eedd206bd97c6aaca9cb02c02f7889a8ba0902e85e093896babc217bea792b",
+      "loss": 0.9590868353843689,
+      "sampled_count": 14054,
+      "update": 88,
+      "valid_transition_count": 14005
+    },
+    {
+      "completed_episodes": 32,
+      "episode_receipts_sha256": "1d37490555631743cb6795e3cd5b285db23f9d395f30a461eccbee1cd86e4465",
+      "loss": 0.9904406666755676,
+      "sampled_count": 13301,
+      "update": 89,
+      "valid_transition_count": 13253
+    },
+    {
+      "completed_episodes": 30,
+      "episode_receipts_sha256": "a8b670dfd07ae1ab652671d6ca81dc2fb0de4189b1f1e57037385d8cc80477d3",
+      "loss": 0.9691370725631714,
+      "sampled_count": 13942,
+      "update": 90,
+      "valid_transition_count": 13892
+    },
+    {
+      "completed_episodes": 31,
+      "episode_receipts_sha256": "9f778435917dce1c721188d4a411b7c11db014265bba787fca4f799d116fcb42",
+      "loss": 0.9351291060447693,
+      "sampled_count": 13701,
+      "update": 91,
+      "valid_transition_count": 13652
+    },
+    {
+      "completed_episodes": 33,
+      "episode_receipts_sha256": "7034f93783d3aba5a47c41b36945532e822be24779937cdfb7d07e66952c21b5",
+      "loss": 0.9659295082092285,
+      "sampled_count": 14099,
+      "update": 92,
+      "valid_transition_count": 14052
+    },
+    {
+      "completed_episodes": 34,
+      "episode_receipts_sha256": "eff65e172b10af06e1640396ee8ca22d4a44742df1d20e55372ebad1d8653253",
+      "loss": 0.9460114240646362,
+      "sampled_count": 13974,
+      "update": 93,
+      "valid_transition_count": 13928
+    },
+    {
+      "completed_episodes": 28,
+      "episode_receipts_sha256": "83c4df346dd9e58056e941c3a803cc3957b4ce999f92e405b9b15c27f041f0c1",
+      "loss": 0.944703221321106,
+      "sampled_count": 12999,
+      "update": 94,
+      "valid_transition_count": 12947
+    },
+    {
+      "completed_episodes": 24,
+      "episode_receipts_sha256": "4ff570a71fab489d188cd7dbb52c14acc24104db62bc5d4535fe81fbd65571f2",
+      "loss": 0.9703025817871094,
+      "sampled_count": 13123,
+      "update": 95,
+      "valid_transition_count": 13067
+    },
+    {
+      "completed_episodes": 35,
+      "episode_receipts_sha256": "49f7de38ecf616c60ae43b86a9ca115f8c1c88a0964673df3fe9eaecd630feb0",
+      "loss": 0.9903512597084045,
+      "sampled_count": 13750,
+      "update": 96,
+      "valid_transition_count": 13705
+    },
+    {
+      "completed_episodes": 28,
+      "episode_receipts_sha256": "73d9a6dee50c18ba02d8c2f009fe79757bd5cdbd96f9c6b43f5571cd461b3fcf",
+      "loss": 0.9846194386482239,
+      "sampled_count": 13922,
+      "update": 97,
+      "valid_transition_count": 13870
+    },
+    {
+      "completed_episodes": 37,
+      "episode_receipts_sha256": "83d1dfab1e4c0cf7b3344970015c1cc4489fb44a839a43f49c8f13cb93a8081e",
+      "loss": 0.9612457752227783,
+      "sampled_count": 14047,
+      "update": 98,
+      "valid_transition_count": 14004
+    },
+    {
+      "completed_episodes": 30,
+      "episode_receipts_sha256": "967bca2377aff2c97627ec9fe78636daee5ddfa00619eaf59c52f8939731dca6",
+      "loss": 1.0424079895019531,
+      "sampled_count": 13041,
+      "update": 99,
+      "valid_transition_count": 12991
+    },
+    {
+      "completed_episodes": 28,
+      "episode_receipts_sha256": "d216676761970f22cc6ae82cbc47828467ac7d49aeb062df9745a55c20b32c1a",
+      "loss": 1.0174896717071533,
+      "sampled_count": 13466,
+      "update": 100,
+      "valid_transition_count": 13414
+    }
+  ],
+  "normalization": {
+    "contact_mean": [
+      1.0,
+      1.0
+    ],
+    "contact_std": [
+      9.999999974752427e-07,
+      9.999999974752427e-07
+    ],
+    "target_mean_sha256": "8cbb0fd5ae80a0184bcacb1f375be9deac613f5f2c95cacb092a72a78b48e56f",
+    "target_std_sha256": "6304d3439d63f61ae3896c04d8e4e3112103be55e34eb256a551266b388e0700"
+  },
+  "repository_attribution": {
+    "artifact_zip_bytes": 18283184,
+    "artifact_zip_sha256": "b3ff19186ef39e8a72f9e43095d373840fb0b1562a2f7bed83a74c9f10cf6680",
+    "github_artifact_digest": "sha256:b3ff19186ef39e8a72f9e43095d373840fb0b1562a2f7bed83a74c9f10cf6680",
+    "github_artifact_id": 8492593761,
+    "github_artifact_name": "winner-v13-normalized-response-stage1-v2-29822834921",
+    "github_run_attempt": 1,
+    "github_run_head_sha": "0b1dac9ea47a93861f72fa5dd393134f36d6db02",
+    "github_run_id": 29822834921,
+    "importer_lf_sha256": "830617899b07ea56459cc055e0a514b6ac190d19643f807101978589f78eef30",
+    "log_sha256": "450fc55db5c2fa73edcde67c4ffd9c82a586f3821f24b7e4020a16c064b6a8df",
+    "preregistration_lf_sha256": "6d1721b34b501f5e62fffe666b968cfea053a333c6378afb9fc64604c521b436",
+    "raw_result_receipt_sha256": "972dd5da828a413a2f3ad0c91bf0a41e18a691838850046d086634aadbb8fd5a",
+    "raw_result_sha256": "3964c3f0e6958a32ffb467cb4d645d47fa7862da5f73afe16732a7e71130f50e",
+    "repository": "RobVanProd/open-duck-mini-rdkx5",
+    "runner_lf_sha256": "e266114a6826ee13b21a0a9f9a7632f7a7c15ff04584430ed4b2ab26f3008190",
+    "workflow_lf_sha256": "d2c404d608d49693c5a969221c2012cc1dc78b33c9723c90770e58572c84a920"
+  },
+  "schema_version": "winner_v13.normalized_response_stage1_result.v2",
+  "snapshot_manifest": [
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 180594,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_001.npz",
+      "sha256": "af2c767df65c844e7af0d96b6b5c70a56d44d37bab2a09c39f8f10e0e99347c1"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 180614,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_002.npz",
+      "sha256": "c84868690b35995feb25b72744d3912ceeb5e3dab5e37c04b0061e7d96761fdf"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 180574,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_003.npz",
+      "sha256": "2ec67ad2cbab590ad967ff763fe3aad70bf5e420af4ea90be27c03606961866f"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 180752,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_004.npz",
+      "sha256": "ea027c4035c30e1930feb143c3cf1406d448293eea494b2bb61c58d5ac0f18b3"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 180857,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_005.npz",
+      "sha256": "cc42638bf76a9a33acaf5d0129360a785b08a14e8668a63007963baa856384db"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 180867,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_006.npz",
+      "sha256": "1cdb26d6314fbe1778721616f474d66baa622cd7a5e0008c38262b9ef56da0a8"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 180965,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_007.npz",
+      "sha256": "138bead37547a5e61e7c34e600c62b4533d00d564e7e7a02b571eb816501350e"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 181035,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_008.npz",
+      "sha256": "fa9b9e1c5ee9e1e85cb3f7953d04fe4cd1953e016e59394a49283b66ddbf5b7b"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 181103,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_009.npz",
+      "sha256": "f7bd12ef92a69a974ce3c926790534be0b65e5bc4a76df039679f4142d270a76"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 181234,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_010.npz",
+      "sha256": "995e81a7a220bfe5d4edb5916ec625c4ea8327d0009de306e9284b50201745dc"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 181345,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_011.npz",
+      "sha256": "69b0eefce4492b145a15c83fc6d047c0dba49dad6455e8b2e49e31d0eb9506d7"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 181380,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_012.npz",
+      "sha256": "e5019537ff358fac75a42c20bcb6937594a411bd9474cafd8cf76332c5ae8735"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 181505,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_013.npz",
+      "sha256": "4c8d5e157f729ba679cd41fc828908f02e1cf4581917705777992fc375638203"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 181580,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_014.npz",
+      "sha256": "f149b7f070361a1398d1662cc2be9935edbcfa08adffb5d695427b3aea2921ae"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 181725,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_015.npz",
+      "sha256": "f5947f01be5487e235ad94ae707b3dd2a06c4846c5043af1a6f3115246d91a7b"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 181768,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_016.npz",
+      "sha256": "24ce2a5700b81b3f8c16999f7b339b5a63c5fb45a1fc3981ec82dbe3f330d8a3"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 181885,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_017.npz",
+      "sha256": "42f9954c8a87f548c30384f654c4ae091f9885a385ba961cf25a43584e075d4a"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 181950,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_018.npz",
+      "sha256": "7ee8daf3ea9797b0c0cd920a3f49785941eb6ea00df111172f2d2fb7b40db84d"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 182110,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_019.npz",
+      "sha256": "081940bad59de7b9f2dcb5695633ac62745029879d3d5ac1946910d486b8cfcd"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 182120,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_020.npz",
+      "sha256": "c4a9f006c4693f2ebac499039eaa68f703626dca96ba9ab4d3643b6743259156"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 182231,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_021.npz",
+      "sha256": "149bcf76fc12fc61a17358b737433b8e1104cdd3147e476aa5ae754d053c0ea1"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 182262,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_022.npz",
+      "sha256": "dc7e5e86ac01f271e8456a49c4323f5636e8a6a27dffdc725d5efbf43e9881ff"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 182402,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_023.npz",
+      "sha256": "69997630e7fe79daef7049b199ebb801f899e67d5932f0e7f1ad8be02a79db7d"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 182492,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_024.npz",
+      "sha256": "464c4f7d6b83037b319a23907e9014cbc96e14689ccc6607a82e02d17e895054"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 182531,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_025.npz",
+      "sha256": "47a60fefa31ff33123cd28d251347eab483fb9fb5d4b7511fcfeb7e4e5cbdfab"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 182631,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_026.npz",
+      "sha256": "016b8738407215f07e9081af10fd99f0eaca06fe895c3ac98ca7a72cc73ccca9"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 182677,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_027.npz",
+      "sha256": "c77977f60aaf9e1ea81a9977ec06d75854ac6689b53fc34ea01948246c69b51b"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 182748,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_028.npz",
+      "sha256": "ade54cac1087decd9a06ecb6228a67ab0d0e191d302f620f436174174ee6cc54"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 182867,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_029.npz",
+      "sha256": "e5d0be51a84e0172ee06c9e36916ba4cc1e6d7afb3811b64ec49c9b928d8edba"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 182908,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_030.npz",
+      "sha256": "5492fae93cc2eca38baef64f67a1eb92bcace9280a4ee5c048c44877a0b5b724"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 183024,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_031.npz",
+      "sha256": "a67845f1387c8f0f6265d5adaac6197d0888319e850503e85da109fcde718e38"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 183128,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_032.npz",
+      "sha256": "4025add04caa31393ef8d04dd1d615aaa90ea143b312d0803fe92270af67e0d1"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 183223,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_033.npz",
+      "sha256": "525f115c334f66171693612267a4515a53e88943576ac55dd25c216f9f1c004c"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 183296,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_034.npz",
+      "sha256": "48616338b6674793f7ca590939ebcf16513ccd200c2262d3f7890aa5d46aacb2"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 183460,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_035.npz",
+      "sha256": "907eb4f4e2065a56500932821fb69a437c86ca956994d92fdbfddead95901ad6"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 183369,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_036.npz",
+      "sha256": "321ce852acb38465d3ce0151cde4101c31610f51335ce56d3d65e0e6f1faa346"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 183486,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_037.npz",
+      "sha256": "5fa4af9d092d53b77b093f03022414a41e96603abd4ee8fe297d605ef2037c94"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 183600,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_038.npz",
+      "sha256": "a645a96dd70accbb178aa3742031f2c1d1dcad631c56dd52a5ecce5efb466e39"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 183635,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_039.npz",
+      "sha256": "2f857238b3cb1439b42b9e16ea898d2ef21865abf382740368e21394627dc5ee"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 183790,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_040.npz",
+      "sha256": "b581b513780efca3e2e2338b589490dd5b23bf0eac53186f8d5a4be036264c2d"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 183892,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_041.npz",
+      "sha256": "886276411733b40a4faea2f5ecc231abebd471bb3f0765d278d45f4ee6c3cb60"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 183893,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_042.npz",
+      "sha256": "d50e7ce12b5489009ddf029ce5ccd0db3a8bbacc65a5528de4f3b612d67d7f79"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 184009,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_043.npz",
+      "sha256": "2504f4b37a24e4c022bf1aaef3159710c2036cd48fcea0eccd61027608f69b3d"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 184199,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_044.npz",
+      "sha256": "4057722ad0c1c288c07f379c7941cc0e97f0ab066045e780b99b75e0da5572a0"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 184172,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_045.npz",
+      "sha256": "cc645c7a8fad56b61e739ea128b47e944535294f770ebe4e20845b84be879245"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 184331,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_046.npz",
+      "sha256": "70e0f7e4e72ee0d0e06199edeeffd46b3f46f589ff2497a9e6797760af575e46"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 184355,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_047.npz",
+      "sha256": "4bd27fe9dd980966a59be01441a460b54f06bf975e2528314579f784b8f6a23d"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 184492,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_048.npz",
+      "sha256": "5ba2aa087ae0b8568217da942afa02f5906d613f2c070865640fde6a4cd71d0f"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 184564,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_049.npz",
+      "sha256": "4fb856ec92556742619c9384253b74dbfff493535667e1c214d8ef585ff002c3"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 184678,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_050.npz",
+      "sha256": "bf93de29547c4ca3a6ebbf55e162b8103dbc9cc35204e2b742368927da043775"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 184735,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_051.npz",
+      "sha256": "4dd933e58058ceef65396f9a7a69c32cf33dc02308e0db4968957bd0381b7e37"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 184808,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_052.npz",
+      "sha256": "812f911f3fd7ac6b39757684503c1372961d0b937b730778e284156b49d245e3"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 184944,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_053.npz",
+      "sha256": "e44ef738f06b2bd88e9fc90c7ede44780f478add97a89350ae09c125f6c07afd"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 185035,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_054.npz",
+      "sha256": "b9592bf8baf2dea1be055d6b640a5800edfc37c979c0edcb55815c4734c5510a"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 185026,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_055.npz",
+      "sha256": "f62bf7e09839a50fe3e96cf7463153c330524ff41b32a1aadac8de3d4e5ef5d6"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 185070,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_056.npz",
+      "sha256": "6416d0245ddc214a65bdb5d2fa1e4fdead72aabe8fb84f7159961fd6c8f99ff3"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 185286,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_057.npz",
+      "sha256": "7f6ef2ad30e3e84b9d8192892c626e1ec222a7c7953fbbcbf7f96d404e4dbd86"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 185309,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_058.npz",
+      "sha256": "9aca21cca9e5c875fca4eaaa0ca291280fbf7c3d03cff476a53c893b3b5f4088"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 185455,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_059.npz",
+      "sha256": "5d18f1564386a844566a01ecaf75560381db85a65b734a0dfcabdfe98e179ab7"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 185522,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_060.npz",
+      "sha256": "92d78b73b9981ee7b1c95f007b878ac5b12c29f82b15e87029f721757f694a9d"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 185524,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_061.npz",
+      "sha256": "2272f91e085e312da9bf238b8a023e83e9eb7e97984f01cd464bf1a98e03a08b"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 185699,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_062.npz",
+      "sha256": "2655c4fb1197fb7bead8b107d6254953bab5d219c127edf7f050c152857ee481"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 185754,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_063.npz",
+      "sha256": "e58c27198850361ab90a206434b4daabbd6e9953c0dad1c4ee4ed33de66a96c3"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 185842,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_064.npz",
+      "sha256": "62c7aec0bf871218118fe0845d6c27d65c517dc0cc6d2402d1576e0e91d048b4"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 185989,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_065.npz",
+      "sha256": "6bd228d61dfff7983bcb1ce15384568f4b9c2351ebdf39ce5c8b25dece0d2dbe"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 185989,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_066.npz",
+      "sha256": "a2e17fd83a7f142943c2b911a9ec46c111a9c0a9862581e9e8367eab0fcea093"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 186141,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_067.npz",
+      "sha256": "6a6cd02c0b8b4bbefa2adcca72f905fe1926673f0e9e8a43e282064e95c1a7c6"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 186241,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_068.npz",
+      "sha256": "e73818297e6c0eb9afc0b6d27d69de54aa0664ff32b6fcf1084e839f96124bb3"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 186305,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_069.npz",
+      "sha256": "245288fed7aabf9db7c3aad82d952f153060d543c02b6a4641734966e73c27c6"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 186425,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_070.npz",
+      "sha256": "ee347212a94e5862359749f60e43a023a950aa7ac8c23ee3ed803dd1c25e6ace"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 186482,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_071.npz",
+      "sha256": "1867431f9900c352e9223c83c6cc7236fd86b5a1b16e4b26130c23171b62c3b3"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 186538,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_072.npz",
+      "sha256": "126691f6569e53e2f0e8db8a79583c5993314de5aaa8f155300530e1de13e9a3"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 186621,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_073.npz",
+      "sha256": "13373465849f6583ab497290c6982a95bf3ed46b7462dafc75bc637775bd9141"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 186765,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_074.npz",
+      "sha256": "f5cfd55df4a4f254e2bf861a24674e68c59877c034f72a8b69b5676a5bb9b375"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 186806,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_075.npz",
+      "sha256": "33c80a8e0fec1c312e4be3be79d2b0bff355f28416de68f7da19cf2ddc09dfe3"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 186943,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_076.npz",
+      "sha256": "1a08d1d44df8c410c8e1938db3349cf5e4094bac11e063a4b7036907b5a7a912"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 186962,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_077.npz",
+      "sha256": "83b1472f29b66f3150754b0e0f07b1c68fdc25022d86c098146e260596c30baa"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 187074,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_078.npz",
+      "sha256": "cc5248561d9f37fb77ab4e6da27d3da9da44beb77cc56953238f2262262277dc"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 187140,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_079.npz",
+      "sha256": "15b78251a9f6a44ace43d9952b722f0bf83dbebb39429b54d9e49c3776eb301e"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 187247,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_080.npz",
+      "sha256": "0e30ae13eacd56cd24de94e2d367a7f9dfd73742eef70e64cd14dbc26860f2f6"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 187334,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_081.npz",
+      "sha256": "ba50e410bf5b378fa6cacd83ae2f5ebe7a86f16cc1321e67461f2553d9d4b2b6"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 187397,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_082.npz",
+      "sha256": "0eab19bd818e40bf686e3d3aa911e3e288470fddd7a9dd311590dc8ee5bc5a4e"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 187547,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_083.npz",
+      "sha256": "35747b8bd5383f8915ed1b44d4d103cb444f79117415d4118debf911a9fd0154"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 187610,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_084.npz",
+      "sha256": "832e951cefeb70e3f003c9122299dd35053e8bdebcf0191f6058c21f8d6bb9ba"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 187689,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_085.npz",
+      "sha256": "773e0c1da8b71d220140a528d0a05fe1cdd6f9e3578017f6bcadf286952d789f"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 187844,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_086.npz",
+      "sha256": "469d6836ece4dbe1a3632bb5a6f41fc25275222ce7caa2b6db0b757526d6fb00"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 187897,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_087.npz",
+      "sha256": "744d3105f178289b04819dd8efdccb76fcc60bc0221519c8db0dba9d5669cac6"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 187948,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_088.npz",
+      "sha256": "576dc54e5b5be4c4ffe22320ee069fc4ff6020dd09fe0603881c8b19e773a9f7"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 188034,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_089.npz",
+      "sha256": "e1381f67a9f7171e748b787fbe804f8a38473ee4208b13e53d61a2e89a1659e7"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 188134,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_090.npz",
+      "sha256": "e4a020017b2d965a5d590e2760f82ce1ac5c7772b607911aa9de5a6ec8a3df1b"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 188264,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_091.npz",
+      "sha256": "a6290ffaafd86be73cc6556bae4a458fd591e23949ba265f51669ec34933a47c"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 188315,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_092.npz",
+      "sha256": "85be00c3657e11ce22ba59cb6c4eadd1c5a0eab5d01809b8b4cb882384248888"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 188365,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_093.npz",
+      "sha256": "b1a33900f25dbc87ffbf513524e8f596ecfaa7389f13f22397107c18f39dca26"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 188512,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_094.npz",
+      "sha256": "03556450f5020a257f53e24230f30a7928ecdd73cde7459b697648c57a00be5c"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 188591,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_095.npz",
+      "sha256": "983d4ee48adbf4050eea11bc3786f4f77026c4b36cf552193b2560aa6d06e3ae"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 188655,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_096.npz",
+      "sha256": "74157443c4c3534d027b678ea69950e5d558dbf5398d1d9ad8ebb0847c194eb7"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 188708,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_097.npz",
+      "sha256": "2df5d898535c63654c6b85975ebb4e14d16915d44bbffc512418e6e027ad5124"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 188848,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_098.npz",
+      "sha256": "7d605d4f5f87c3482d84c2f78b0c66c2567e8104dad259ee537f2e86096b132d"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 188958,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_099.npz",
+      "sha256": "a7634f84de697b211d24854479608a91d0d7f895bcc1766c8cbf905ca9d6a156"
+    },
+    {
+      "array_count": 30,
+      "bit_exact_readback": true,
+      "bytes": 189027,
+      "path": "/tmp/winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_100.npz",
+      "sha256": "8c1392c738eddfb098e61c1a6ae2f863eda883e1eba6ac546aef695da6f163af"
+    }
+  ],
+  "sources": {
+    "checker_v2_cpu_result_lf_sha256": "88e6754707d40d2e1de485b80dd55f7713788aa8e965298a179b5fdf1ea4dd98",
+    "cpu_result_lf_sha256": "0e727ef188678e250e741e4ddcbead929aca2fc5a0cd944dcb02fd1e7956b0c1",
+    "preregistration_lf_sha256": "6d1721b34b501f5e62fffe666b968cfea053a333c6378afb9fc64604c521b436",
+    "runner_lf_sha256": "e266114a6826ee13b21a0a9f9a7632f7a7c15ff04584430ed4b2ab26f3008190",
+    "v13_primitives_lf_sha256": "b57ae2823cff90bfd8d78317adb1dfe9607bcae069a4d985863144b4e12ec3ca"
+  },
+  "status": "PASS_WINNER_V13_NORMALIZED_RESPONSE_STAGE1"
+}
