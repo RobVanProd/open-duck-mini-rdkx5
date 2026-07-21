@@ -85,6 +85,15 @@ def valid_artifact_check(builder) -> dict:
 def test_accepts_only_exact_green_artifact_check() -> None:
     builder = load_builder()
     builder.validate_artifact_check(valid_artifact_check(builder))
+    assert builder.lf_sha256(builder.CANONICAL_FIT) == (
+        "908ddb01e5d82e661d77b8f3cb186a84665695660b86b304c6d1ae89c79cdb0b"
+    )
+    assert builder.MODEL_SHA256 == (
+        "660fa8e4ac0d977806e881d008090e7153cd0608dbee05b88f957a91bde6f655"
+    )
+    assert builder.SCENE_SHA256 == (
+        "65324e27a3a84e2e42d1073bfc636f9cdbf6bef7b1f20c1b5a886b8fd58fcc71"
+    )
 
 
 @pytest.mark.parametrize(

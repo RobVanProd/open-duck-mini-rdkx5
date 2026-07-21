@@ -21,6 +21,11 @@ DEFAULT_MARKDOWN = (
     ANALYSIS / "WINNER_V12_CALIBRATOR_SUPPORT_GATE_CPU_CONTRACT_20260721.md"
 )
 EXPECTED_WORK_ROOT_NAME = "winner-v12-full-calibrator-training-work"
+CANONICAL_FIT = ANALYSIS / "fixed_target_p30_actuator_fit_20260712.json"
+MODEL_RELATIVE = "playground/open_duck_mini_v2/xmls/open_duck_mini_v2_backlash.xml"
+SCENE_RELATIVE = "playground/open_duck_mini_v2/xmls/scene_flat_terrain_backlash.xml"
+MODEL_SHA256 = "660fa8e4ac0d977806e881d008090e7153cd0608dbee05b88f957a91bde6f655"
+SCENE_SHA256 = "65324e27a3a84e2e42d1073bfc636f9cdbf6bef7b1f20c1b5a886b8fd58fcc71"
 EXPECTED_INPUTS = [
     {"name": "obs", "shape": [1, 115]},
     {"name": "previous_action", "shape": [1, 14]},
@@ -33,6 +38,7 @@ EXPECTED_OUTPUTS = [
 ]
 SOURCE_PATHS = {
     "builder": Path("tools/build_winner_v12_calibrator_support_gate_cpu_contract.py"),
+    "checker": Path("tools/check_winner_v12_calibrator_support_gate_cpu_contract.py"),
     "artifact_verifier": Path(
         "tools/check_winner_v12_full_calibrator_training_artifact.py"
     ),
@@ -49,6 +55,9 @@ SOURCE_PATHS = {
     "training_primitives": Path("patches/winner_v12_calibrator_training.py"),
     "deployable_network": Path("patches/winner_v12_decomposed_backend_networks.py"),
     "actuator_bridge": Path("tools/actuator_bridge_model.py"),
+    "canonical_p30_fit": Path(
+        "outputs/analysis/fixed_target_p30_actuator_fit_20260712.json"
+    ),
     "runtime_observer": Path(
         "artifacts/runtime_handoff/rdkx5_native_20260719/observer/winner_v2_contract.py"
     ),
@@ -283,6 +292,20 @@ def main() -> int:
             "training_result_sha256": artifact_check["training_result_sha256"],
         },
         "verified_checkpoints": checkpoints,
+        "immutable_gate_inputs": {
+            "canonical_p30_fit": {
+                "path": str(CANONICAL_FIT.relative_to(ROOT)).replace("\\", "/"),
+                "lf_sha256": lf_sha256(CANONICAL_FIT),
+            },
+            "playground_model": {
+                "relative_path": MODEL_RELATIVE,
+                "sha256": MODEL_SHA256,
+            },
+            "playground_scene": {
+                "relative_path": SCENE_RELATIVE,
+                "sha256": SCENE_SHA256,
+            },
+        },
         "software_versions": {
             "python": "3.12.13",
             "jax": "0.7.2",
