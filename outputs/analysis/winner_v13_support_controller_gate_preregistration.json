@@ -1,0 +1,345 @@
+{
+  "authority": {
+    "pass_authorizes_only": "a separate response-conditioned locomotion preregistration",
+    "response_conditioned_locomotion_training_authorized": false,
+    "robot_clearance": false
+  },
+  "binding_change_only": "The reviewed Winner-v12 evaluator, populations, thresholds, seeds, and all-or-nothing half/final rule are unchanged. Only the independently verified Winner-v13 snapshot and graph paths are bound.",
+  "decision": "AUTHORIZE_ONE_FROZEN_248_CELL_GATE_ONLY",
+  "execution_now": {
+    "formal_support_cells": 0,
+    "heldout_repeat_cells": 0,
+    "locomotion_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "future_frozen_support_gate": {
+    "all_cells_at_both_checkpoints_must_pass": true,
+    "cell_derivation": "56 model configurations x 2 actuator plants + 6 nominal-model sensor/transport conditions x 2 actuator plants",
+    "cells_per_checkpoint": 124,
+    "checkpoint_labels": [
+      "half",
+      "final"
+    ],
+    "duration_ticks": 250,
+    "executed_by_this_preregistration": false,
+    "gates": {
+      "duration_valid_ticks": 250,
+      "maximum_abs_roll_pitch_rad": 0.35,
+      "maximum_final_50_tick_gyro_xy_norm_rad_s": 0.05,
+      "minimum_base_z_m": 0.1,
+      "per_joint_peak_current_a_max": 2.5,
+      "per_joint_peak_torque_nm_max": 1.91229675,
+      "rated_current_p95_a": "0.65 diagnostic only; not candidate pass/fail",
+      "strict_overcurrent_max_consecutive_ticks": 99,
+      "strict_overcurrent_threshold_a": 2.0,
+      "two_foot_contact_failure_ticks": 0
+    },
+    "heldout_context_gate": {
+      "actions": "the checkpoint's bounded deployable calibrator actions",
+      "cells": "the existing 16 heldout configurations x 2 hidden plants within the 112 model/plant cells; no additional behavior cells",
+      "constant_baseline": "predict the frozen Stage-1 training target mean, equivalently zero in normalized target space, on the identical heldout rows",
+      "matched_plant_context_rule": "for every heldout configuration, start P30 and P31/34 from the same deterministic reset, initial observation, previous action, and h_in with no stochastic sensor perturbation; the deployable calibrator remains authoritative in each closed loop, and final h_out L-infinity separation must exceed 1e-7",
+      "normalization": "the frozen Stage-1 training normalization only",
+      "prediction_metric": "mean squared normalized next-response error over all 250 valid transitions using the frozen Stage-1 auxiliary predictor",
+      "repeat_rule": "repeat every heldout context cell from reset and require all actions, observations, predictions, and h_out values bit-exact",
+      "required_prediction_rule": "learned aggregate mean MSE must be strictly below the constant baseline separately for P30 and P31/34 at each checkpoint",
+      "stochastic_inputs": false,
+      "true_configuration_or_plant_label_enters_network": false
+    },
+    "pass_authorizes_only": "a separate response-conditioned locomotion-training preregistration; the calibrator checkpoint alone is not a deployable walking policy",
+    "selection_by_closest_result": false,
+    "sensor_noise_seed_derivation": "numpy SeedSequence([120120, 3, checkpoint_index, condition_index, plant_index]); checkpoint order half/final and plant order P30/P31-34",
+    "sensor_transport_population": [
+      {
+        "id": "NATIVE_INPUT_QUANTIZATION",
+        "native_quantization": true
+      },
+      {
+        "id": "DECLARED_SENSOR_NOISE",
+        "sensor_noise_scales": {
+          "accelerometer": 0.05,
+          "ankle_pos_rad": 0.08,
+          "gravity": 0.1,
+          "gyro_rad_s": 0.1,
+          "hip_pos_rad": 0.03,
+          "joint_vel_rad_s": 2.5,
+          "knee_pos_rad": 0.05,
+          "linvel_m_s": 0.1
+        }
+      },
+      {
+        "additional_action_delay_ticks": 1,
+        "id": "ACTION_DELAY_1"
+      },
+      {
+        "additional_action_delay_ticks": 2,
+        "id": "ACTION_DELAY_2"
+      },
+      {
+        "id": "IMU_DELAY_1",
+        "imu_delay_ticks": 1
+      },
+      {
+        "id": "IMU_DELAY_2",
+        "imu_delay_ticks": 2
+      }
+    ],
+    "sensor_transport_population_sha256": "de043aaf85b922df2677e300d952513f02dd87671846d50dbdb8d4bbe568cb7a"
+  },
+  "pass_rule": "All 124 main cells and 32 heldout repeats must pass independently at both half and final. No nearest checkpoint, reward selection, or partial promotion is allowed.",
+  "schema_version": "winner_v13.support_controller_gate_preregistration.v1",
+  "source_manifest_sha256": "d277cc6fa0924bb0c10191fabe64bcd35214fe99ec8ac5691db0535e3f4e19c5",
+  "sources": {
+    "base_gate_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_support_gate.py",
+      "sha256": "18873eee55c77a278fc065de64c0b912803bf29b4440cde7f3adaabe1297baca"
+    },
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v13_support_controller_gate_preregistration.py",
+      "sha256": "d93c65ba5f035e38b1ff8f1d2d59798c56d6dcf6d47b244456d9eef0fedbe97f"
+    },
+    "calibrator_design_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_calibrator_training_preregistration.json",
+      "sha256": "1ec76a587c6fa50b92866c1632a7046ae0c6687ed17b1636b664bf45c2e8ba34"
+    },
+    "canonical_p30_fit": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/fixed_target_p30_actuator_fit_20260712.json",
+      "sha256": "908ddb01e5d82e661d77b8f3cb186a84665695660b86b304c6d1ae89c79cdb0b"
+    },
+    "cpu_smoke": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_cpu_smoke.py",
+      "sha256": "b6ad53430f3f7cca3a91a90f72dab585cb05e3e2f74be2241af3fd9b6ee7ce87"
+    },
+    "deployable_network": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_decomposed_backend_networks.py",
+      "sha256": "f463223a33f80baf81b2604e0df22c647660f2752a7ca60b8c75a3441460d015"
+    },
+    "full_training_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_full_calibrator_training_preregistration.json",
+      "sha256": "99500648d6683097a13f894b0949bf4b5494e5653f36878710817bd0952f71dd"
+    },
+    "gate_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v13_support_controller_gate.py",
+      "sha256": "f30750ad0f3514a692c0fd4dc59a51f34eda9dadd3123f19a073c4fc99d9c66f"
+    },
+    "gate_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v13_support_controller_gate.py",
+      "sha256": "83247ed369810aa021175df4e3816e6545daa42992e35d6ce6e4460553a0f0ee"
+    },
+    "preregistration_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v13_support_controller_gate_preregistration.py",
+      "sha256": "13356a898c101ebdefe5962f8dd0cc173e840015f9bf9e031309dd32d47bd455"
+    },
+    "runtime_observer": {
+      "hash_mode": "lf",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/observer/winner_v2_contract.py",
+      "sha256": "5c90994a24aa223c94f3a51927228e97000f6118c927561a87a3f2684dcf4889"
+    },
+    "training_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v13_support_controller_training_preregistration.json",
+      "sha256": "73eff7d65244ad22f8ad015bdca6990e3179a2c91810fca4290bbb4586d4db8e"
+    },
+    "training_primitives": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_calibrator_training.py",
+      "sha256": "f5736a357d73baedae2bba1d15254dd688bddf3761eb731d757a971783c77227"
+    },
+    "training_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v13_support_controller_training_result.json",
+      "sha256": "1c8c07fa3ea5e5efd889dbc3963e004e8997894d67c5d8d2752c9ae8bc24307e"
+    },
+    "training_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v13_support_controller_training.py",
+      "sha256": "d683b92c6c8dc307ab4dda15dda025d03601f2ac266edc75811f0b08d1441625"
+    },
+    "variable_configuration_domain": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v3_variable_configuration_replacement_preregistration.json",
+      "sha256": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b"
+    },
+    "workflow": {
+      "hash_mode": "lf",
+      "path": ".github/workflows/winner-v13-support-controller-gate.yml",
+      "sha256": "2b2f986153b657c1e535a0a1f07a90e789b84c8ef5cecb919608d4d6f1833433"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V13_SUPPORT_CONTROLLER_GATE",
+  "training_artifact": {
+    "final": {
+      "graph": {
+        "abi_exact": true,
+        "all_chain_outputs_finite": true,
+        "all_initializers_finite": true,
+        "bytes": 54896,
+        "chain_ticks": 250,
+        "forbidden_training_or_privileged_tokens": [],
+        "initializer_count": 9,
+        "inputs": [
+          {
+            "name": "obs",
+            "shape": [
+              1,
+              115
+            ]
+          },
+          {
+            "name": "previous_action",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_in",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "jax_onnx_at_most_1e_7": true,
+        "jax_onnx_max_abs_error": 3.637978807091713e-12,
+        "outputs": [
+          {
+            "name": "calibration_actions",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "previous_action_out",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_out",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "path": "/tmp/winner-v13-support-controller-training-work/graphs/winner_v13_support_controller_final.onnx",
+        "previous_action_out_equals_action_bit_exact": true,
+        "sha256": "a2ea7944e6be1ccf9d43bd5f343d861a4e872212846ebd1e09db16486a922d35",
+        "training_only_tensors_absent": true
+      },
+      "snapshot": {
+        "array_count": 26,
+        "bit_exact_readback": true,
+        "bytes": 121634,
+        "path": "/tmp/winner-v13-support-controller-training-work/snapshots/snapshot_stage2_update_100.npz",
+        "sha256": "0783a13712516142bd8023ed02025bcab91bb61674f8095551f0b6cdc5e8febb"
+      }
+    },
+    "half": {
+      "graph": {
+        "abi_exact": true,
+        "all_chain_outputs_finite": true,
+        "all_initializers_finite": true,
+        "bytes": 54896,
+        "chain_ticks": 250,
+        "forbidden_training_or_privileged_tokens": [],
+        "initializer_count": 9,
+        "inputs": [
+          {
+            "name": "obs",
+            "shape": [
+              1,
+              115
+            ]
+          },
+          {
+            "name": "previous_action",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_in",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "jax_onnx_at_most_1e_7": true,
+        "jax_onnx_max_abs_error": 8.731149137020111e-11,
+        "outputs": [
+          {
+            "name": "calibration_actions",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "previous_action_out",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_out",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "path": "/tmp/winner-v13-support-controller-training-work/graphs/winner_v13_support_controller_half.onnx",
+        "previous_action_out_equals_action_bit_exact": true,
+        "sha256": "dc119b97562fb30de44090a65411c746d7d4dc2f3e90cd796a55be545c9aa774",
+        "training_only_tensors_absent": true
+      },
+      "snapshot": {
+        "array_count": 26,
+        "bit_exact_readback": true,
+        "bytes": 100685,
+        "path": "/tmp/winner-v13-support-controller-training-work/snapshots/snapshot_stage2_update_050.npz",
+        "sha256": "1334ac47cabd0cdd8067fc92a14e92863d82a305a16dc76c6b009d6137fcdfaf"
+      }
+    },
+    "repository_attribution": {
+      "artifact_zip_bytes": 9877339,
+      "artifact_zip_sha256": "f59d8471e14bf86eb3ca121877ad982c8e8005a15f7c84dd4f75699992a7345b",
+      "github_artifact_digest": "sha256:f59d8471e14bf86eb3ca121877ad982c8e8005a15f7c84dd4f75699992a7345b",
+      "github_artifact_id": 8495297905,
+      "github_artifact_name": "winner-v13-support-controller-training-29825555037",
+      "github_run_attempt": 1,
+      "github_run_head_sha": "7353a07d8b6573bfacf55a608e6e7588e6f961ae",
+      "github_run_id": 29825555037,
+      "importer_lf_sha256": "ff50f01d3aceb283b3ee2c8b708ce200c60784af1acd5ec7b15bcb762d36a1e7",
+      "log_sha256": "4e21537cdf66b30a65ac96f26c33e38ccd054c547c76c1ebc479ff19dd2c7719",
+      "preregistration_lf_sha256": "73eff7d65244ad22f8ad015bdca6990e3179a2c91810fca4290bbb4586d4db8e",
+      "raw_result_receipt_sha256": "ebeda6020d6b3874e24979b3d034f7583a72c47bbdb5de52c9c56c1bfa8a103b",
+      "raw_result_sha256": "3c2c1b0bc973556949a0a3ce406529db4ee2850dfa0e9b1046b3a38bfba9c112",
+      "repository": "RobVanProd/open-duck-mini-rdkx5",
+      "runner_lf_sha256": "d683b92c6c8dc307ab4dda15dda025d03601f2ac266edc75811f0b08d1441625",
+      "workflow_lf_sha256": "9a4114cebb198e95d8f1a2d1ca2d8ae409511af47007024c8c130eb17b91774f"
+    },
+    "source_stage1_snapshot": {
+      "bytes": 189027,
+      "frozen_stage1_tree_sha256": "cba038e870db351cf812ab0b502089c8488ca8845e768cf76885737daaffba96",
+      "sha256": "8c1392c738eddfb098e61c1a6ae2f863eda883e1eba6ac546aef695da6f163af"
+    }
+  }
+}
