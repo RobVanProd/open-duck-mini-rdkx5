@@ -53,6 +53,10 @@ SOURCES = {
     "p31_34_fit": ANALYSIS / "fixed_target_p31_34_actuator_fit_20260712.json",
     "runtime_observation_map": HANDOFF / "observation_map.json",
     "runtime_policy_contract": HANDOFF / "policy_contract.json",
+    "runtime_observer_contract": HANDOFF / "observer_contract.json",
+    "runtime_observer_cross_fit": (
+        ANALYSIS / "winner_v2_observer_cross_fit_result.json"
+    ),
     "runtime_p30_observer": HANDOFF / "observer/winner_v2_contract.py",
 }
 REFERENCE_TABLE = HANDOFF / "reference/ground_up_projected_reference_feature_table.npz"
@@ -94,6 +98,12 @@ def main() -> int:
         SOURCES["winner_v5_support_preregistration"].read_text(encoding="utf-8")
     )
     current_contract = json.loads(SOURCES["current_gate"].read_text(encoding="utf-8"))
+    observer_contract = json.loads(
+        SOURCES["runtime_observer_contract"].read_text(encoding="utf-8")
+    )
+    observer_cross_fit = json.loads(
+        SOURCES["runtime_observer_cross_fit"].read_text(encoding="utf-8")
+    )
     if v12["status"] != "PASS_WINNER_V12_ZERO_PPO_DECOMPOSED_BACKEND_MECHANICS":
         raise ValueError("Winner-v12 mechanics is not passing")
     if v12["decision"] != (
@@ -119,6 +129,14 @@ def main() -> int:
         "PASS_PROSPECTIVE_CURRENT_GATE_APPLICATION_CONTRACT"
     ):
         raise ValueError("the frozen prospective current gate is not valid")
+    if observer_cross_fit["status"] != ("PASS_P30_OBSERVER_MEASURED_CROSS_FIT_BRACKET"):
+        raise ValueError("the fixed P30 observer cross-fit gate is not valid")
+    if observer_contract["fit_path"] != "observer/p30_actuator_fit.json":
+        raise ValueError("runtime observation observer is not the fixed P30 fit")
+    if observer_contract["fit_provenance"]["cross_fit_result_sha256"] != sha256_lf(
+        SOURCES["runtime_observer_cross_fit"]
+    ):
+        raise ValueError("runtime P30 observer cross-fit receipt changed")
 
     requested = v11_interface["requested_interface"]
     if requested["observation_contract"] != "winner-v2-115d":
@@ -181,12 +199,25 @@ def main() -> int:
     }
     protected_policies = v12["protected_policy_hashes"]
     result = {
-        "schema_version": "winner_v12.calibrator_training_preregistration.v1",
+        "schema_version": "winner_v12.calibrator_training_preregistration.v2",
         "status": "PREREGISTERED_IMPLEMENTATION_NOT_RUN",
         "decision": (
             "AUTHORIZE_WINNER_V12_CALIBRATOR_IMPLEMENTATION_AND_CPU_SMOKE_CONTRACT_ONLY"
         ),
-        "contract_id": "winner-v12-two-stage-automatic-calibrator-r64",
+        "contract_id": "winner-v12-two-stage-automatic-calibrator-r64-fixed-p30",
+        "supersedes": {
+            "artifact_sha256": (
+                "4b1a1822e7e03d9bc3cb5773fdb28f7580210ef097c218d6da282e747d75909a"
+            ),
+            "commit": "5236e47f48feab09da44797445119d181a8ec310",
+            "disposition": "SUPERSEDED_BEFORE_ANY_OPTIMIZER_STEP",
+            "optimizer_steps_executed_under_superseded_contract": 0,
+            "reason": (
+                "the v1 wording selected the observation observer with the hidden "
+                "P30/P31 physical plant, which leaked a deployment-impossible plant "
+                "choice; v2 restores the reviewed fixed-P30 runtime semantics"
+            ),
+        },
         "causal_hypothesis": (
             "Winner-v10 fails hidden build variation because its walking actor receives "
             "no per-session response evidence. A 250-tick recurrent calibrator can "
@@ -201,6 +232,7 @@ def main() -> int:
             "manual_configuration_route_reopened": False,
             "protected_walking_policy_changed": False,
             "locomotion_adapter_trained_in_this_stage": False,
+            "fixed_p30_observer_cross_fit_pass": observer_cross_fit["status"],
         },
         "sources": sources,
         "protected_policies": protected_policies,
@@ -249,7 +281,13 @@ def main() -> int:
             "initial_hidden": "exact float32 zeros[1,64]",
             "projected_reference": "frozen x=0 phase-index-zero reference",
             "observation_order": "exact frozen winner-v2 115-D order",
-            "applied_target": "exact selected fitted P30/P31-34 forward observer",
+            "applied_target_observation": (
+                "exact fixed runtime P30 observer for every episode, including when "
+                "the hidden physical plant is P31/34"
+            ),
+            "hidden_physics_actuator_plant": (
+                "selected P30 or P31/34 plant; never exposed by changing obs[83:97]"
+            ),
             "action_boundary": (
                 "graph-owned Winner-v10 stored/inward vector; no host limiter"
             ),
@@ -272,8 +310,8 @@ def main() -> int:
                         "at tick t compose obs_t from the last committed valid state: "
                         "previous_action is realized action a_(t-1), obs[41:55], "
                         "obs[55:69], and obs[69:83] are a_(t-2), a_(t-3), and "
-                        "a_(t-4), and obs[83:97] is the selected P30/P31-34 applied "
-                        "target from tick t-1"
+                        "a_(t-4), and obs[83:97] is the fixed runtime P30 observer "
+                        "value from tick t-1 regardless of the hidden physical plant"
                     ),
                     (
                         "draw the seed-locked ternary increment for tick t and apply "
@@ -281,14 +319,17 @@ def main() -> int:
                         "a_(t-1), producing current realized action a_t"
                     ),
                     (
-                        "step the selected actuator observer and physics with a_t; the "
-                        "auxiliary predictor consumes current h_t and current realized "
-                        "a_t and targets the resulting next-tick deployable fields"
+                        "advance the fixed P30 observation observer from the sent "
+                        "target and independently step the selected hidden P30/P31-34 "
+                        "physical plant with a_t; the auxiliary predictor consumes "
+                        "current h_t and current realized a_t and targets the resulting "
+                        "next-tick deployable fields"
                     ),
                     (
                         "commit action history, applied-target observer state, sensors, "
                         "and recurrent h_out only after a valid transition; on tick "
-                        "t+1 previous_action is a_t and obs[83:97] is applied_target_t"
+                        "t+1 previous_action is a_t and obs[83:97] is the fixed P30 "
+                        "observation-observer value advanced from the sent target at t"
                     ),
                 ],
                 "trainable_leaves": [
@@ -304,6 +345,12 @@ def main() -> int:
                 "target": (
                     "next-tick values of the frozen deployable observation indices "
                     "[0:6], [13:41], and [83:99]"
+                ),
+                "target_semantics": (
+                    "target obs_(t+1)[83:97] is the fixed P30 observation-observer "
+                    "output; obs_(t+1)[97:99] and the physics-derived sensor/joint "
+                    "fields reflect the selected hidden plant, but no P31/34 parameter "
+                    "or plant label enters the observer or auxiliary routing"
                 ),
                 "loss": (
                     "mean squared error after per-field normalization computed from "
@@ -393,6 +440,8 @@ def main() -> int:
                 domain_prereg["training"]["domain_schedule"]
             ),
             "actuator_plants": evaluation["actuator_plants"],
+            "observation_observer": "fixed runtime P30 for every physical plant",
+            "physical_plant_identity_visible_to_network": False,
             "fixed_anchor_count": len(fixed_anchors),
             "discovery_count": len(discovery),
             "heldout_count": len(heldout),
@@ -417,6 +466,7 @@ def main() -> int:
             "current_estimator": current_contract["conversion"][
                 "per_tick_current_estimate_a"
             ],
+            "observation_observer": "fixed runtime P30 for both physical plants",
             "model_cells": 56,
             "actuator_plants_per_model": 2,
             "core_model_actuator_cells_per_checkpoint": 112,
@@ -433,10 +483,11 @@ def main() -> int:
             "before_any_optimizer_step": True,
             "checks": [
                 "compose the pinned simulator and reproduce every source/domain hash",
-                "reproduce exact 115-D observation, phase, history, P30/P31-34, reference, and action-bound semantics",
+                "reproduce exact 115-D observation, phase, history, fixed-P30 observation observer, selected hidden P30/P31-34 physical plant, reference, and action-bound semantics",
                 "prove stage-1 gradients update only encoder/auxiliary leaves while the action head stays exact zero",
                 "prove seed-locked bounded stage-1 exploration creates finite nonzero gradients for previous_action_weight and auxiliary_action_weight",
-                "prove the realized stage-1 exploration action is chained exactly into next-tick previous_action, t-2/t-3/t-4 action histories, and P30/P31-34 applied-target state",
+                "prove the realized stage-1 exploration action is chained exactly into next-tick previous_action, t-2/t-3/t-4 action histories, and fixed P30 observation-observer state",
+                "prove changing only the hidden P30/P31-34 physical plant never switches or parameterizes obs[83:97], which remains the fixed runtime P30 observer validated by the frozen cross-fit receipt",
                 "prove stage-2 finite nonzero gradients and its one optimizer update change every listed action/log_std/value leaf while every encoder/auxiliary leaf stays bit-exact",
                 "prove stage-2 validity, termination, terminal gyro bonus, and current-streak logic exactly reproduce the frozen future support gate quantities",
                 "read back the pinned XML force ranges and prove the independent 1.91229675 N.m / 19.5 kgf.cm peak-torque condition",
@@ -457,6 +508,7 @@ def main() -> int:
         "implementation_stop_rules": [
             "any source, domain, observation, action-bound, or ABI mismatch",
             "any mismatch in the realized-action history, previous_action, applied-target, auxiliary-target, or valid-state commit timing",
+            "any selected-plant identity, P31/34 parameter, or true physical response substituted into the fixed P30 obs[83:97] observer path",
             "any nonfinite parameter, gradient, metric, observation, action, or state",
             "any action-head change during stage 1 or encoder/auxiliary change during stage 2",
             "any protected-policy or locomotion-adapter change",
@@ -505,6 +557,10 @@ def main() -> int:
             "train only bounded support-action and training-only value heads. No mass, "
             "COM, inertia, dimension, component identity, scale, caliper, or other "
             "manual per-build input enters the graph.\n\n"
+            "This v2 artifact supersedes the zero-update v1 artifact: obs[83:97] is "
+            "always the reviewed fixed P30 runtime observer. P30/P31-34 selection "
+            "changes only hidden physics and sensor response; it never changes or "
+            "parameterizes the deployable observation path.\n\n"
             "The next permitted action is implementation and review of one CPU smoke "
             "contract. This artifact itself runs zero optimizer steps and zero formal "
             "support cells and does not authorize full training, locomotion training, "

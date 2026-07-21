@@ -24,6 +24,9 @@ def raw_sha256(path: Path) -> str:
 def test_training_prereg_follows_winner_v12_without_starting_training() -> None:
     artifact = load(ARTIFACT)
     assert artifact["status"] == "PREREGISTERED_IMPLEMENTATION_NOT_RUN"
+    assert artifact["schema_version"] == (
+        "winner_v12.calibrator_training_preregistration.v2"
+    )
     assert artifact["decision"] == (
         "AUTHORIZE_WINNER_V12_CALIBRATOR_IMPLEMENTATION_AND_CPU_SMOKE_CONTRACT_ONLY"
     )
@@ -38,10 +41,20 @@ def test_training_prereg_follows_winner_v12_without_starting_training() -> None:
         "manual_configuration_route_reopened": False,
         "protected_walking_policy_changed": False,
         "locomotion_adapter_trained_in_this_stage": False,
+        "fixed_p30_observer_cross_fit_pass": (
+            "PASS_P30_OBSERVER_MEASURED_CROSS_FIT_BRACKET"
+        ),
     }
     assert artifact["authority"]["optimizer_steps_now"] == 0
     assert artifact["authority"]["formal_support_cells_now"] == 0
     assert artifact["authority"]["full_calibrator_training"] is False
+    supersedes = artifact["supersedes"]
+    assert supersedes["artifact_sha256"] == (
+        "4b1a1822e7e03d9bc3cb5773fdb28f7580210ef097c218d6da282e747d75909a"
+    )
+    assert supersedes["commit"] == "5236e47f48feab09da44797445119d181a8ec310"
+    assert supersedes["disposition"] == "SUPERSEDED_BEFORE_ANY_OPTIMIZER_STEP"
+    assert supersedes["optimizer_steps_executed_under_superseded_contract"] == 0
 
 
 def test_training_prereg_is_automatic_and_preserves_both_runtime_contracts() -> None:
@@ -85,8 +98,10 @@ def test_two_stage_training_has_disjoint_trainable_leaves() -> None:
     transition_order = " ".join(stage1["transition_order"])
     assert "previous_action is realized action a_(t-1)" in transition_order
     assert "a_(t-2), a_(t-3), and a_(t-4)" in transition_order
-    assert "obs[83:97] is applied_target_t" in transition_order
+    assert "obs[83:97] is the fixed P30 observation-observer value" in transition_order
     assert "auxiliary predictor consumes current h_t" in transition_order
+    assert "target obs_(t+1)[83:97] is the fixed P30" in stage1["target_semantics"]
+    assert "no P31/34 parameter or plant label enters" in stage1["target_semantics"]
     assert "std=max(empirical_std,1e-6)" in stage1["loss"]
     assert "heldout cells excluded" in stage1["loss"]
     assert stage1["required_nonzero_gradient_paths"] == [
@@ -138,6 +153,14 @@ def test_episode_and_future_support_gate_are_exact() -> None:
     assert episode["phase"] == [1.0, 0.0]
     assert episode["phase_advances"] is False
     assert episode["x0_deadband_on_calibrator"] is False
+    assert episode["applied_target_observation"] == (
+        "exact fixed runtime P30 observer for every episode, including when the "
+        "hidden physical plant is P31/34"
+    )
+    assert (
+        "never exposed by changing obs[83:97]"
+        in episode["hidden_physics_actuator_plant"]
+    )
     gate = artifact["future_support_gate"]
     assert gate["duration_ticks"] == 250
     assert gate["maximum_abs_tilt_rad"] == 0.35
@@ -180,6 +203,10 @@ def test_hidden_domain_binds_all_frozen_model_populations() -> None:
         "P30_ALL_JOINT",
         "P31_34_PITCH_WITH_P30_NONPITCH",
     ]
+    assert (
+        domain["observation_observer"] == "fixed runtime P30 for every physical plant"
+    )
+    assert domain["physical_plant_identity_visible_to_network"] is False
     assert domain["heldout_never_used_for_training_normalization_or_checkpoint_choice"]
     for name in (
         "continuous_domain_canonical_sha256",
@@ -203,6 +230,8 @@ def test_cpu_smoke_is_required_before_full_training() -> None:
     assert smoke["formal_support_cells"] == 0
     checks = " ".join(smoke["checks"])
     assert "t-2/t-3/t-4 action histories" in checks
+    assert "fixed P30 observation-observer state" in checks
+    assert "never switches or parameterizes obs[83:97]" in checks
     assert "terminal gyro bonus" in checks
     assert "action/log_std/value leaf" in checks
     assert "auxiliary-target JAX routing" in checks

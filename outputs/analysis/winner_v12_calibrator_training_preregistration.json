@@ -34,10 +34,11 @@
   },
   "calibration_episode": {
     "action_boundary": "graph-owned Winner-v10 stored/inward vector; no host limiter",
-    "applied_target": "exact selected fitted P30/P31-34 forward observer",
+    "applied_target_observation": "exact fixed runtime P30 observer for every episode, including when the hidden physical plant is P31/34",
     "command": "exact float32 zeros[7]",
     "duration_ticks": 250,
     "frequency_hz": 50,
+    "hidden_physics_actuator_plant": "selected P30 or P31/34 plant; never exposed by changing obs[83:97]",
     "initial_hidden": "exact float32 zeros[1,64]",
     "initial_previous_action": "exact float32 zeros[1,14]",
     "observation_order": "exact frozen winner-v2 115-D order",
@@ -51,7 +52,7 @@
     "x0_deadband_on_calibrator": false
   },
   "causal_hypothesis": "Winner-v10 fails hidden build variation because its walking actor receives no per-session response evidence. A 250-tick recurrent calibrator can learn a deployable-observation-only response state, then use that fixed state encoder to learn graph-bounded support actions before locomotion, without any manual mass, COM, inertia, dimension, or component input.",
-  "contract_id": "winner-v12-two-stage-automatic-calibrator-r64",
+  "contract_id": "winner-v12-two-stage-automatic-calibrator-r64-fixed-p30",
   "decision": "AUTHORIZE_WINNER_V12_CALIBRATOR_IMPLEMENTATION_AND_CPU_SMOKE_CONTRACT_ONLY",
   "frozen_interface": {
     "calibration_ticks": 250,
@@ -211,6 +212,7 @@
     "minimum_base_z_m": 0.1,
     "model_cells": 56,
     "model_population": "24 fixed anchors + 16 discovery + 16 heldout",
+    "observation_observer": "fixed runtime P30 for both physical plants",
     "selection_by_training_reward": false,
     "sensor_transport_actuator_cells_per_checkpoint": 12,
     "sensor_transport_conditions_on_nominal_model": 6,
@@ -815,6 +817,8 @@
       "HELDOUT_15"
     ],
     "heldout_never_used_for_training_normalization_or_checkpoint_choice": true,
+    "observation_observer": "fixed runtime P30 for every physical plant",
+    "physical_plant_identity_visible_to_network": false,
     "sensor_transport_canonical_sha256": "de043aaf85b922df2677e300d952513f02dd87671846d50dbdb8d4bbe568cb7a",
     "sensor_transport_ids": [
       "NATIVE_INPUT_QUANTIZATION",
@@ -828,6 +832,7 @@
   "implementation_stop_rules": [
     "any source, domain, observation, action-bound, or ABI mismatch",
     "any mismatch in the realized-action history, previous_action, applied-target, auxiliary-target, or valid-state commit timing",
+    "any selected-plant identity, P31/34 parameter, or true physical response substituted into the fixed P30 obs[83:97] observer path",
     "any nonfinite parameter, gradient, metric, observation, action, or state",
     "any action-head change during stage 1 or encoder/auxiliary change during stage 2",
     "any protected-policy or locomotion-adapter change",
@@ -845,10 +850,11 @@
     "before_any_optimizer_step": true,
     "checks": [
       "compose the pinned simulator and reproduce every source/domain hash",
-      "reproduce exact 115-D observation, phase, history, P30/P31-34, reference, and action-bound semantics",
+      "reproduce exact 115-D observation, phase, history, fixed-P30 observation observer, selected hidden P30/P31-34 physical plant, reference, and action-bound semantics",
       "prove stage-1 gradients update only encoder/auxiliary leaves while the action head stays exact zero",
       "prove seed-locked bounded stage-1 exploration creates finite nonzero gradients for previous_action_weight and auxiliary_action_weight",
-      "prove the realized stage-1 exploration action is chained exactly into next-tick previous_action, t-2/t-3/t-4 action histories, and P30/P31-34 applied-target state",
+      "prove the realized stage-1 exploration action is chained exactly into next-tick previous_action, t-2/t-3/t-4 action histories, and fixed P30 observation-observer state",
+      "prove changing only the hidden P30/P31-34 physical plant never switches or parameterizes obs[83:97], which remains the fixed runtime P30 observer validated by the frozen cross-fit receipt",
       "prove stage-2 finite nonzero gradients and its one optimizer update change every listed action/log_std/value leaf while every encoder/auxiliary leaf stays bit-exact",
       "prove stage-2 validity, termination, terminal gyro bonus, and current-streak logic exactly reproduce the frozen future support gate quantities",
       "read back the pinned XML force ranges and prove the independent 1.91229675 N.m / 19.5 kgf.cm peak-torque condition",
@@ -866,12 +872,12 @@
     "stage_1_optimizer_updates": 1,
     "stage_2_optimizer_updates": 1
   },
-  "schema_version": "winner_v12.calibrator_training_preregistration.v1",
+  "schema_version": "winner_v12.calibrator_training_preregistration.v2",
   "sources": {
     "builder": {
       "hash_mode": "sha256 after CRLF-to-LF normalization",
       "path": "tools/build_winner_v12_calibrator_training_preregistration.py",
-      "sha256": "23c1e045cab566159df19ba5f59a7c9837703f172ef1de2d446963f3bc6fda69"
+      "sha256": "14c6334f7c646f5a836f04b07d477c0941e3a0c8df7c20edcf984f036da665aa"
     },
     "current_gate": {
       "hash_mode": "sha256 after CRLF-to-LF normalization",
@@ -892,6 +898,16 @@
       "hash_mode": "sha256 after CRLF-to-LF normalization",
       "path": "artifacts/runtime_handoff/rdkx5_native_20260719/observation_map.json",
       "sha256": "f0b78431a3a98d418fbe04eebeb0316538121d1199d35f38dbdd0528ee1917a7"
+    },
+    "runtime_observer_contract": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/observer_contract.json",
+      "sha256": "63261636dbec7259dbede679d8f22288608963634dcf3570bcc65d544e160350"
+    },
+    "runtime_observer_cross_fit": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "outputs/analysis/winner_v2_observer_cross_fit_result.json",
+      "sha256": "804165bd1fdf45fdb1ab8369617e460d65de60a9f6f0ced90337429b56162231"
     },
     "runtime_p30_observer": {
       "hash_mode": "sha256 after CRLF-to-LF normalization",
@@ -980,6 +996,13 @@
     }
   },
   "status": "PREREGISTERED_IMPLEMENTATION_NOT_RUN",
+  "supersedes": {
+    "artifact_sha256": "4b1a1822e7e03d9bc3cb5773fdb28f7580210ef097c218d6da282e747d75909a",
+    "commit": "5236e47f48feab09da44797445119d181a8ec310",
+    "disposition": "SUPERSEDED_BEFORE_ANY_OPTIMIZER_STEP",
+    "optimizer_steps_executed_under_superseded_contract": 0,
+    "reason": "the v1 wording selected the observation observer with the hidden P30/P31 physical plant, which leaked a deployment-impossible plant choice; v2 restores the reviewed fixed-P30 runtime semantics"
+  },
   "two_stage_training": {
     "joint_end_to_end_finetuning": false,
     "locomotion_training": false,
@@ -995,6 +1018,7 @@
       ],
       "rollout_action": "training-only seed-locked ternary exploration increments {-0.25,0,+0.25} times the per-joint inward action-delta vector, accumulated through the exact graph absolute/slew boundary; the actor action head remains exact zero; the exploration generator is training-only and is not exported or used at runtime, while its realized bounded action is committed through the normal previous_action and observation-state chain",
       "target": "next-tick values of the frozen deployable observation indices [0:6], [13:41], and [83:99]",
+      "target_semantics": "target obs_(t+1)[83:97] is the fixed P30 observation-observer output; obs_(t+1)[97:99] and the physics-derived sensor/joint fields reflect the selected hidden plant, but no P31/34 parameter or plant label enters the observer or auxiliary routing",
       "trainable_leaves": [
         "obs_weight",
         "previous_action_weight",
@@ -1005,10 +1029,10 @@
         "auxiliary_bias"
       ],
       "transition_order": [
-        "at tick t compose obs_t from the last committed valid state: previous_action is realized action a_(t-1), obs[41:55], obs[55:69], and obs[69:83] are a_(t-2), a_(t-3), and a_(t-4), and obs[83:97] is the selected P30/P31-34 applied target from tick t-1",
+        "at tick t compose obs_t from the last committed valid state: previous_action is realized action a_(t-1), obs[41:55], obs[55:69], and obs[69:83] are a_(t-2), a_(t-3), and a_(t-4), and obs[83:97] is the fixed runtime P30 observer value from tick t-1 regardless of the hidden physical plant",
         "draw the seed-locked ternary increment for tick t and apply the exact graph absolute/slew boundary relative to realized a_(t-1), producing current realized action a_t",
-        "step the selected actuator observer and physics with a_t; the auxiliary predictor consumes current h_t and current realized a_t and targets the resulting next-tick deployable fields",
-        "commit action history, applied-target observer state, sensors, and recurrent h_out only after a valid transition; on tick t+1 previous_action is a_t and obs[83:97] is applied_target_t"
+        "advance the fixed P30 observation observer from the sent target and independently step the selected hidden P30/P31-34 physical plant with a_t; the auxiliary predictor consumes current h_t and current realized a_t and targets the resulting next-tick deployable fields",
+        "commit action history, applied-target observer state, sensors, and recurrent h_out only after a valid transition; on tick t+1 previous_action is a_t and obs[83:97] is the fixed P30 observation-observer value advanced from the sent target at t"
       ],
       "true_configuration_label_used": false
     },
@@ -1058,6 +1082,7 @@
   },
   "why_this_follows_evidence": {
     "closed_winner_v11_preserved": true,
+    "fixed_p30_observer_cross_fit_pass": "PASS_P30_OBSERVER_MEASURED_CROSS_FIT_BRACKET",
     "locomotion_adapter_trained_in_this_stage": false,
     "manual_configuration_route_reopened": false,
     "protected_walking_policy_changed": false,
