@@ -1,0 +1,125 @@
+{
+  "authority": {
+    "pass_authorizes_only": "a fresh corrected Stage-1 v2 preregistration",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false
+  },
+  "checks": {
+    "action_head_parameters_exact_zero": true,
+    "all_outputs_finite": true,
+    "declared_learning_rate_matches_executed_constant": true,
+    "exact_256_same_input_cases": true,
+    "graph_previous_action_out_equals_action_bit_exact": true,
+    "nonzero_previous_action_can_produce_nonzero_bounded_action": true,
+    "same_input_action_error_at_most_1e_7": true,
+    "same_input_hidden_error_at_most_1e_7": true,
+    "same_input_previous_action_out_error_at_most_1e_7": true,
+    "standard_graph_contract_passes": true,
+    "zero_previous_action_produces_exact_zero_action": true
+  },
+  "decision": "AUTHORIZE_FRESH_STAGE1_V2_PREREGISTRATION_ONLY",
+  "execution": {
+    "formal_support_cells": 0,
+    "locomotion_steps": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0,
+    "simulation_cells": 0
+  },
+  "failed_checks": [],
+  "proof": {
+    "executed_stage1_learning_rate": 0.0001,
+    "maximum_action_error": 0.0,
+    "maximum_hidden_error": 8.731149137020111e-11,
+    "maximum_previous_action_out_error": 0.0,
+    "nonzero_graph_action_cases": 256,
+    "root_seed": 131314,
+    "same_input_cases": 256,
+    "standard_graph_contract": {
+      "abi_exact": true,
+      "all_chain_outputs_finite": true,
+      "all_initializers_finite": true,
+      "bytes": 54896,
+      "chain_ticks": 256,
+      "forbidden_training_or_privileged_tokens": [],
+      "initializer_count": 9,
+      "inputs": [
+        {
+          "name": "obs",
+          "shape": [
+            1,
+            115
+          ]
+        },
+        {
+          "name": "previous_action",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "name": "h_in",
+          "shape": [
+            1,
+            64
+          ]
+        }
+      ],
+      "jax_onnx_at_most_1e_7": true,
+      "jax_onnx_max_abs_error": 8.731149137020111e-11,
+      "outputs": [
+        {
+          "name": "calibration_actions",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "name": "previous_action_out",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "name": "h_out",
+          "shape": [
+            1,
+            64
+          ]
+        }
+      ],
+      "path": "/tmp/winner-v13-stage1-checker-v2-work/winner_v13_stage1_checker_v2_zero_cell.onnx",
+      "previous_action_out_equals_action_bit_exact": true,
+      "sha256": "ffcb14f2675cfcccba5d7ad71665a8300004579af92859b4239ca08f1cf07f1d",
+      "training_only_tensors_absent": true
+    }
+  },
+  "repository_attribution": {
+    "artifact_zip_bytes": 48906,
+    "artifact_zip_sha256": "b6e288a05120eace8c05eb59cf1f9f5480a943b388d1dddc5c65b5ec92387b8e",
+    "contract_lf_sha256": "f04e568bc0d55152c767a4a611668130b033a3261ab2f429cd2557f59362c5b5",
+    "github_artifact_digest": "sha256:b6e288a05120eace8c05eb59cf1f9f5480a943b388d1dddc5c65b5ec92387b8e",
+    "github_artifact_id": 8491881082,
+    "github_artifact_name": "winner-v13-stage1-checker-v2-cpu-29822328697",
+    "github_run_attempt": 1,
+    "github_run_head_sha": "33304c6887051ee030123b0546412bdecf982f2e",
+    "github_run_id": 29822328697,
+    "graph_artifact_sha256": "ffcb14f2675cfcccba5d7ad71665a8300004579af92859b4239ca08f1cf07f1d",
+    "importer_lf_sha256": "3508f2d772c8be4d280eeaeeed527971cc22ed179faad72c8408e7b09fdd9494",
+    "raw_result_receipt_sha256": "a30f0259604642883fdfaee4bb1ff3196e778f07bee25b45640e8f7b2f747b6c",
+    "raw_result_sha256": "d8d4698884a2eebc75cdd1f25027dc370ba290d5bba02ff470f5978fa38b0064",
+    "repository": "RobVanProd/open-duck-mini-rdkx5",
+    "runner_lf_sha256": "bef895b67706d2e6327c4b282dd486d15a94c193e6d921ec91a9fa80b4e76013",
+    "workflow_lf_sha256": "6967fb4cb2fdf2469ca4f75fd8a514d185bfb3feedfe6d91affd976b1491ecae"
+  },
+  "schema_version": "winner_v13.stage1_checker_v2_cpu_result.v2",
+  "sources": {
+    "contract_lf_sha256": "f04e568bc0d55152c767a4a611668130b033a3261ab2f429cd2557f59362c5b5",
+    "invalid_attribution_lf_sha256": "62fbbab025d9d700e066752c8ae3b7ae8a72985100e0794cb39eb20d875a1a17",
+    "runner_lf_sha256": "bef895b67706d2e6327c4b282dd486d15a94c193e6d921ec91a9fa80b4e76013",
+    "v13_primitives_lf_sha256": "b57ae2823cff90bfd8d78317adb1dfe9607bcae069a4d985863144b4e12ec3ca"
+  },
+  "status": "PASS_WINNER_V13_STAGE1_CHECKER_V2_CPU_CONTRACT"
+}
