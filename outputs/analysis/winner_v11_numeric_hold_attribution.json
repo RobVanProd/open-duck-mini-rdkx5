@@ -1,0 +1,92 @@
+{
+  "authority": {
+    "behavior_evaluation": false,
+    "robot_clearance": false,
+    "robot_rdk_torque_motion_gate5_deployment": false,
+    "runtime_implementation": false,
+    "training_or_optimizer": false,
+    "winner_v12_contract_run": false,
+    "winner_v12_preregistration_design": true
+  },
+  "causal_attribution": {
+    "failed_quantity": "full protected-policy JAX transcription versus the authoritative ONNX Runtime action on moving chains",
+    "interpretation": "The hold does not identify a calibration-mechanics, runtime, or physical-bound failure. It identifies an over-coupled comparison: new response mechanics were gated by the old protected actor's cross-backend floating-point reproduction even though deployment executes the exact ONNX graph and wrapper identity is bit-exact.",
+    "not_failed": [
+      "calibrator JAX/ONNX action and hidden math",
+      "new locomotion hidden-state math",
+      "protected ONNX versus default-off expanded ONNX identity",
+      "x=0 action and recurrent state",
+      "27-tick phase and t-2/t-3/t-4 histories",
+      "P30 applied-target ordering and projected reference",
+      "stored and inward-rounded graph action boundaries",
+      "CPU-only population and zero-PPO authority"
+    ]
+  },
+  "checks": {
+    "all_27_other_frozen_checks_passed": true,
+    "calibrator_jax_onnx_remained_within_1e_7": true,
+    "exact_onnx_wrapper_identity_passed": true,
+    "formal_result_remains_hold": true,
+    "moving_action_difference_is_four_float32_epsilons": true,
+    "new_hidden_math_remained_within_1e_7": true,
+    "observation_phase_history_p30_contract_exact": true,
+    "only_two_full_action_backend_checks_failed": true,
+    "population_and_cpu_authority_exact": true,
+    "runtime_handoff_previously_froze_1e_6_backend_scope": true,
+    "runtime_onnx_golden_identity_is_exact": true,
+    "stored_and_inward_bounds_passed": true,
+    "winner_v11_close_rule_preserved": true,
+    "winner_v11_error_below_both_frozen_runtime_observations": true,
+    "x0_action_state_exact_zero": true
+  },
+  "completed_winner_v11_reclassified_or_retried": false,
+  "decision": "PREREGISTER_DISTINCT_WINNER_V12_DECOMPOSED_BACKEND_CONTRACT_ONLY",
+  "distinct_winner_v12_hypothesis": {
+    "change": "Decompose backend validation. Gate protected behavior by exact ONNX-to-ONNX wrapper identity; gate only the newly introduced calibrator/response branch JAX-to-ONNX tensors at the unchanged 1e-7 tolerance; gate the final authoritative ONNX action by the unchanged stored/inward physical boundaries.",
+    "debug_mechanism": "Use a checker-only copy of the graph exposing the internal response delta. The deployable locomotion ABI remains unchanged.",
+    "first_gate": "new zero-PPO CPU decomposed-backend mechanics contract only",
+    "pass_authorizes_only": "a separately frozen Winner-v12 calibrator-training preregistration",
+    "protected_policy_or_physics_change": false,
+    "runtime_abi_change": false,
+    "tolerance_change": false,
+    "why_distinct": "Winner-v11 remains closed under its full-action backend rule. Winner-v12 changes the gated quantity and adds an explicit new-branch diagnostic output instead of changing the failed tolerance or rerunning the same contract."
+  },
+  "failed_checks": [],
+  "inputs": {
+    "preregistration": {
+      "path": "outputs/analysis/winner_v11_zero_ppo_cpu_mechanics_preregistration.json",
+      "sha256_lf": "adac3d194d6751b1f8a8119f3d77d4e97603834d782a477c3c88137e523162ca"
+    },
+    "result": {
+      "path": "outputs/analysis/winner_v11_zero_ppo_cpu_mechanics_result.json",
+      "sha256_lf": "f946b79b16a6769c87ebf31e4134d1c80c83bc6071bbeb5d61ecade387895a0a"
+    },
+    "runtime_golden_evidence": {
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/golden_evidence.json",
+      "sha256_lf": "3e9d501e087e8ef415beb2a8f0462f5ac1f1852a61aa968e490e8a65f0442a3f"
+    },
+    "runtime_handoff_manifest": {
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/manifest.json",
+      "sha256_lf": "d771d188218152c782c7d688440e2dd2083b47fd9b883749123f89226c6827c5"
+    },
+    "runtime_handoff_readme": {
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/README.md",
+      "sha256_lf": "2c0854ad8c13afb903e5ea85e1b9d03996fcd0745d2f13d3c0898b1693b36042"
+    }
+  },
+  "numeric_evidence": {
+    "float32_epsilon": 1.1920928955078125e-07,
+    "normalized_action_error_as_target_rad": 1.1920928955078125e-07,
+    "runtime_handoff_frozen_independent_jax_tolerance": 1e-06,
+    "runtime_handoff_moving_independent_jax_errors": {
+      "1024000": 5.364418029785156e-07,
+      "512000": 8.344650268554688e-07
+    },
+    "winner_v11_action_error_in_float32_epsilons": 4.0,
+    "winner_v11_frozen_tolerance": 1e-07,
+    "winner_v11_moving_max_action_error": 4.76837158203125e-07,
+    "winner_v11_moving_max_hidden_error": 8.940696716308594e-08
+  },
+  "schema_version": "winner_v11.numeric_hold_attribution.v1",
+  "status": "PASS_WINNER_V11_HOLD_ATTRIBUTED_TO_PROTECTED_BACKEND_COMPARISON"
+}
