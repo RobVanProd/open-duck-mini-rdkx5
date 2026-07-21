@@ -6,6 +6,7 @@
 - Correct formula: `prediction_normalized - ((raw - mean) / std)`
 - Optimizer updates / support cells / locomotion / robot: `0 / 0 / 0 / 0`
 - Corrected scale evaluations / sweeps: `1 / 0`
+- Pre-execution stop `29870820100`: package-test tolerance only; snapshot/simulation/updates `0 / 0 / 0`
 - Flat-transport equation: `not used`
 
 A pass authorizes only a separate two-update CPU proof. It does not

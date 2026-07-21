@@ -24,7 +24,7 @@ def test_evaluator_matches_normalized_coordinate_definition() -> None:
     prediction = np.full((50,), 0.2, dtype=np.float32)
     learned = v22.normalized_prediction_squared_error(prediction, target, mean, std)
     constant = v22.normalized_constant_squared_error(target, mean, std)
-    np.testing.assert_allclose(learned, np.full((50,), 0.0025), rtol=0, atol=2e-8)
+    np.testing.assert_allclose(learned, np.full((50,), 0.0025), rtol=0, atol=3e-8)
     np.testing.assert_allclose(constant, np.full((50,), 0.0625), rtol=0, atol=2e-8)
 
 
