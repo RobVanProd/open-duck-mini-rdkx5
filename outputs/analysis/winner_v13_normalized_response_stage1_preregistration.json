@@ -1,0 +1,166 @@
+{
+  "authority": {
+    "pass_authorizes_only": "a separate automatic support-controller preregistration",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false
+  },
+  "causal_hypothesis": "Winner-v12 failed because its auxiliary response head was trained in a numerically broken raw-coordinate objective. Predicting the same 50 response fields directly in frozen normalized coordinates should make the recurrent state configuration-sensitive before any support action is learned.",
+  "decision": "AUTHORIZE_ONE_100_UPDATE_STAGE1_RUN_ONLY",
+  "execution_now": {
+    "formal_support_cells": 0,
+    "locomotion_steps": 0,
+    "robot_or_rdk_access": 0,
+    "stage1_optimizer_updates": 0,
+    "stage2_optimizer_updates": 0
+  },
+  "frozen_training": {
+    "action_head": "initialized at exact zero and bit-exact frozen",
+    "environments_per_update": 80,
+    "learning_rate": 0.0003,
+    "normalization": "target mean/std frozen from update-0 training population; auxiliary head predicts normalized targets directly",
+    "optimizer_updates": 100,
+    "parameter_seed": 60720,
+    "persistent_checkpoints": {
+      "final": 100,
+      "half": 50
+    },
+    "persistent_snapshots": "atomic readback-verified snapshot after every update",
+    "stage": "response encoder only",
+    "ticks_per_environment": 250,
+    "trainable_leaves": [
+      "obs_weight",
+      "previous_action_weight",
+      "hidden_weight",
+      "hidden_bias",
+      "auxiliary_hidden_weight",
+      "auxiliary_action_weight",
+      "auxiliary_bias"
+    ],
+    "training_episode_slots": 2000000,
+    "training_root_seed": 120120
+  },
+  "heldout_gate": {
+    "cells": 64,
+    "checkpoints": [
+      "half",
+      "final"
+    ],
+    "deterministic_repeat_cells": 64,
+    "observability_rule": "At the final valid tick, h_out(P30) and h_out(P31_34) must differ by L-infinity > 1e-7 for every one of the 16 heldout configurations.",
+    "onnx_rule": "Action remains exact zero; 115/14/64 ABI and JAX/ONNX recurrent chain agree within 1e-7; training-only tensors remain absent.",
+    "population": "exact 16 HELDOUT configurations x P30/P31_34",
+    "predictor_rule": "Learned all-50 normalized MSE must be strictly below the exact zero normalized-coordinate predictor independently for P30 and P31_34.",
+    "repeat_rule": "batch arrays, episode receipts, and rollout evidence bit-exact",
+    "required_per_checkpoint_checks": [
+      "exact_32_heldout_cells",
+      "heldout_repeat_bit_exact",
+      "learned_prediction_beats_constant_per_plant",
+      "all_16_plant_contexts_separate",
+      "checker_onnx_action_exact_zero",
+      "checker_onnx_hidden_at_most_1e_7",
+      "deployable_onnx_abi_exact",
+      "deployable_onnx_training_only_tensors_absent",
+      "deployable_onnx_chain_at_most_1e_7"
+    ],
+    "root_seed": 131313,
+    "ticks_per_cell": 250
+  },
+  "pass_rule": "Every run-level and checkpoint-level check must pass at both half and final. No nearest or best checkpoint may be promoted.",
+  "required_run_checks": [
+    "exact_100_optimizer_updates",
+    "exact_100_immutable_snapshots",
+    "half_and_final_evaluated",
+    "both_checkpoints_pass_heldout_gate",
+    "action_head_bit_exact"
+  ],
+  "schema_version": "winner_v13.normalized_response_stage1_preregistration.v1",
+  "source_manifest_sha256": "9c6f8f333493cef62b83884c3c9467fb2fb3dd6f653909212eaf136f1c370f80",
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v13_normalized_response_stage1_preregistration.py",
+      "sha256": "af9ebf257c263d9bdc9f45281642106a0fe7a5d9ff1d9c5475864b49f1acacff"
+    },
+    "calibrator_design": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_calibrator_training_preregistration.json",
+      "sha256": "1ec76a587c6fa50b92866c1632a7046ae0c6687ed17b1636b664bf45c2e8ba34"
+    },
+    "canonical_p30_fit": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/fixed_target_p30_actuator_fit_20260712.json",
+      "sha256": "908ddb01e5d82e661d77b8f3cb186a84665695660b86b304c6d1ae89c79cdb0b"
+    },
+    "cpu_smoke": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_cpu_smoke.py",
+      "sha256": "b6ad53430f3f7cca3a91a90f72dab585cb05e3e2f74be2241af3fd9b6ee7ce87"
+    },
+    "deployable_network": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_decomposed_backend_networks.py",
+      "sha256": "f463223a33f80baf81b2604e0df22c647660f2752a7ca60b8c75a3441460d015"
+    },
+    "full_training_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_full_calibrator_training_preregistration.json",
+      "sha256": "99500648d6683097a13f894b0949bf4b5494e5653f36878710817bd0952f71dd"
+    },
+    "full_training_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_full_calibrator_training.py",
+      "sha256": "8cd2c9267f356adba1127f8fb837138bbe6e39b5c3326300eeed9fdd5b524610"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v13_normalized_response_stage1.py",
+      "sha256": "894a4ea04ac39376878387eea883fd9d296566f8596f58469c6a5e6c39229362"
+    },
+    "runtime_observer": {
+      "hash_mode": "lf",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/observer/winner_v2_contract.py",
+      "sha256": "5c90994a24aa223c94f3a51927228e97000f6118c927561a87a3f2684dcf4889"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v13_normalized_response_stage1.py",
+      "sha256": "8592fed720ec0361574e163f6c4330dc719236158254603cd85384fd30d4d612"
+    },
+    "v12_training_primitives": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_calibrator_training.py",
+      "sha256": "f5736a357d73baedae2bba1d15254dd688bddf3761eb731d757a971783c77227"
+    },
+    "v13_cpu_contract": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v13_normalized_response_cpu_contract.json",
+      "sha256": "bafe30101a5e825602742bb94d7e12e23b3b084c172285e55c3d4e6a4fac8867"
+    },
+    "v13_cpu_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v13_normalized_response_cpu_contract_result.json",
+      "sha256": "0e727ef188678e250e741e4ddcbead929aca2fc5a0cd944dcb02fd1e7956b0c1"
+    },
+    "v13_training_primitives": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v13_normalized_calibrator_training.py",
+      "sha256": "b57ae2823cff90bfd8d78317adb1dfe9607bcae069a4d985863144b4e12ec3ca"
+    },
+    "variable_configuration_domain": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v3_variable_configuration_replacement_preregistration.json",
+      "sha256": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b"
+    },
+    "workflow": {
+      "hash_mode": "lf",
+      "path": ".github/workflows/winner-v13-normalized-response-stage1.yml",
+      "sha256": "76d39a060acde20b4c1ea5cf356f3e11cece87f9f0438077ee59601080739d64"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V13_NORMALIZED_RESPONSE_STAGE1",
+  "stop_rules": [
+    "A HOLD does not authorize parameter tuning or Stage-2 support training.",
+    "A PASS authorizes only a separately preregistered support-controller run.",
+    "No formal support, locomotion, checkpoint selection, robot, or RDK access."
+  ]
+}
