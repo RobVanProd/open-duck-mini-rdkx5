@@ -161,9 +161,9 @@ def main() -> int:
         ),
         "authority": {
             "robot_clearance": False,
-            "deployment_checkpoint_selected": False,
+            "response_conditioned_locomotion_training_authorized": False,
             "pass_authorizes_only": (
-                "a separate formal deployment-checkpoint selection decision"
+                "a separate response-conditioned locomotion-training preregistration"
             ),
         },
         "sources": sources,

@@ -203,11 +203,11 @@ def validate_result(result: Mapping[str, Any]) -> None:
     }:
         raise ValueError("Winner-v20 formal gate execution changed")
     if result["authority"] != {
-        "robot_clearance": False,
-        "deployment_checkpoint_selected": False,
         "pass_authorizes_only": (
-            "a separate formal deployment-checkpoint selection decision"
+            "a separate response-conditioned locomotion-training preregistration"
         ),
+        "rdkx5_robot_serial_gpio_i2c_torque_motion": False,
+        "robot_clearance": False,
     }:
         raise ValueError("Winner-v20 formal gate authority changed")
     if result["sources"] != {
@@ -254,9 +254,9 @@ def validate_result(result: Mapping[str, Any]) -> None:
         )
         or result["decision"]
         != (
-            "AUTHORIZE_FORMAL_DEPLOYMENT_CHECKPOINT_SELECTION_ONLY"
+            "AUTHORIZE_RESPONSE_CONDITIONED_LOCOMOTION_PREREGISTRATION_ONLY"
             if passed
-            else "DO_NOT_SELECT_WINNER_V20_DEPLOYMENT_CHECKPOINT"
+            else "DO_NOT_TRAIN_RESPONSE_CONDITIONED_LOCOMOTION"
         )
     ):
         raise ValueError("Winner-v20 formal gate status changed")
@@ -320,8 +320,8 @@ def main() -> int:
                 "- Formal support cells / heldout repeats: `248 / 64`",
                 "- Locomotion training / robot access: `0 / 0`",
                 "",
-                "A PASS authorizes only a separate formal deployment-checkpoint",
-                "selection decision. It is not robot clearance.",
+                "A PASS authorizes only a separately preregistered response-conditioned",
+                "locomotion-training stage. It is not robot clearance.",
                 "",
             ]
         ),

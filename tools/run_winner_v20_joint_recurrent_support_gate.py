@@ -246,9 +246,9 @@ def main() -> int:
         else "HOLD_WINNER_V20_JOINT_RECURRENT_SUPPORT_GATE"
     )
     reviewed["decision"] = (
-        "AUTHORIZE_FORMAL_DEPLOYMENT_CHECKPOINT_SELECTION_ONLY"
+        "AUTHORIZE_RESPONSE_CONDITIONED_LOCOMOTION_PREREGISTRATION_ONLY"
         if passed
-        else "DO_NOT_SELECT_WINNER_V20_DEPLOYMENT_CHECKPOINT"
+        else "DO_NOT_TRAIN_RESPONSE_CONDITIONED_LOCOMOTION"
     )
     reviewed["sources"] = {
         "preregistration_lf_sha256": smoke.lf_sha256(PREREGISTRATION),
@@ -259,11 +259,11 @@ def main() -> int:
         "gate_runner_lf_sha256": smoke.lf_sha256(Path(__file__)),
     }
     reviewed["authority"] = {
-        "robot_clearance": False,
-        "deployment_checkpoint_selected": False,
         "pass_authorizes_only": (
-            "a separate formal deployment-checkpoint selection decision"
+            "a separate response-conditioned locomotion-training preregistration"
         ),
+        "rdkx5_robot_serial_gpio_i2c_torque_motion": False,
+        "robot_clearance": False,
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(
