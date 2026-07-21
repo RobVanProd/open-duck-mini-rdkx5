@@ -10,7 +10,9 @@ ANALYSIS = ROOT / "outputs/analysis"
 CONTRACT = ANALYSIS / "winner_v12_full_calibrator_training_launch_contract.json"
 CLAIM = ANALYSIS / "winner_v12_full_calibrator_training_authorization_claim.json"
 RUNNER = ROOT / "tools/run_winner_v12_full_calibrator_training.py"
-CPU_RESULT = ANALYSIS / "winner_v12_full_calibrator_training_cpu_contract_result.json"
+CPU_RESULT = (
+    ANALYSIS / "winner_v12_full_calibrator_training_cpu_contract_result_v2.json"
+)
 WORKFLOW = ROOT / ".github/workflows/winner-v12-full-calibrator-training.yml"
 
 
@@ -33,6 +35,9 @@ def test_launch_authorizes_one_exact_logical_run_only() -> None:
     )
     assert contract["decision"] == "AUTHORIZE_EXACTLY_ONE_LOGICAL_TRAINING_RUN"
     assert contract["logical_run_id"] == "winner-v12-full-calibrator-seed-120120"
+    assert contract["schema_version"] == (
+        "winner_v12.full_calibrator_training_launch_contract.v2"
+    )
     assert contract["execution_before_launch"] == {
         "formal_support_cells": 0,
         "locomotion_training_steps": 0,
@@ -42,6 +47,14 @@ def test_launch_authorizes_one_exact_logical_run_only() -> None:
     assert contract["failed_checks"] == []
     assert contract["checks"] and all(contract["checks"].values())
     assert contract["artifact_policy"]["retry"] is False
+    assert contract["superseded_preupdate_launch"] == {
+        "classification": "INVALID_PREUPDATE_STAGE1_NORMALIZATION_VALIDATION",
+        "commit": "011e68cbc7b687654e502130257ad5b8e7eb0fee",
+        "committed_snapshots": 0,
+        "github_run_id": 29807546004,
+        "optimizer_updates": 0,
+        "result_written": False,
+    }
     assert "does not authorize" in contract["pass_authorizes_only"]
 
 
@@ -55,6 +68,9 @@ def test_claim_binds_runner_result_and_exact_work_root() -> None:
     }
     assert claim["resolved_work_root"] == (
         "/tmp/winner-v12-full-calibrator-training-work"
+    )
+    assert claim["schema_version"] == (
+        "winner_v12.full_calibrator_training_authorization_claim.v2"
     )
     assert claim["runner_lf_sha256"] == lf_sha256(RUNNER)
     assert claim["cpu_result_sha256"] == lf_sha256(CPU_RESULT)

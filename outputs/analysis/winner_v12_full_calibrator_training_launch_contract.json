@@ -9,19 +9,20 @@
     "upload_work_root_even_on_failure": true
   },
   "authorization_claim": {
-    "lf_sha256": "aeee93ab587f589e89827e57303c68a769e6fd346cdadff207cac948ea06bfd7",
+    "lf_sha256": "514aefab71ab7fa1cca4ec60c437f15b06ea5855ac23c8c4dcfb707cbab6f183",
     "path": "outputs/analysis/winner_v12_full_calibrator_training_authorization_claim.json"
   },
   "authorization_claim_payload": {
-    "cpu_result_sha256": "a3bf0075a713bc51d1fc608d276f3c90b244126e779870b8d761af8810448664",
+    "cpu_result_sha256": "a0bb68bf88cefa1069fec732a89547029020fa017cd87b7f3c16e02a3adca9d7",
     "logical_run_id": "winner-v12-full-calibrator-seed-120120",
     "repository_relative_claim_path": "outputs/analysis/winner_v12_full_calibrator_training_authorization_claim.json",
     "resolved_work_root": "/tmp/winner-v12-full-calibrator-training-work",
-    "runner_lf_sha256": "37a52a038322a9b1dc781ccf67d4e73bd4e300d7aae9e462d10057881b58ce71",
-    "schema_version": "winner_v12.full_calibrator_training_authorization_claim.v1"
+    "runner_lf_sha256": "8cd2c9267f356adba1127f8fb837138bbe6e39b5c3326300eeed9fdd5b524610",
+    "schema_version": "winner_v12.full_calibrator_training_authorization_claim.v2"
   },
   "checks": {
     "claim_exact": true,
+    "corrected_cpu_result_attribution_exact": true,
     "cpu_contract_frozen_and_passed": true,
     "cpu_result_contract_identity_exact": true,
     "cpu_result_passed_zero_update": true,
@@ -31,12 +32,13 @@
     "runner_identity_matches_cpu_contract": true,
     "runner_requires_explicit_offline_training_flags": true,
     "schedule_exact": true,
+    "superseded_launch_failed_before_training": true,
     "workflow_exact_single_training_invocation": true,
     "workflow_has_no_gpu_surface": true,
     "workflow_one_shot_cpu_exact": true,
     "workflow_uploads_recovery_on_failure": true
   },
-  "cpu_result_sha256": "a3bf0075a713bc51d1fc608d276f3c90b244126e779870b8d761af8810448664",
+  "cpu_result_sha256": "a0bb68bf88cefa1069fec732a89547029020fa017cd87b7f3c16e02a3adca9d7",
   "decision": "AUTHORIZE_EXACTLY_ONE_LOGICAL_TRAINING_RUN",
   "execution_before_launch": {
     "formal_support_cells": 0,
@@ -55,7 +57,7 @@
   },
   "logical_run_id": "winner-v12-full-calibrator-seed-120120",
   "pass_authorizes_only": "one seed-120120 full automatic-calibrator training logical run; it does not authorize the 124-cell support gate, response-conditioned locomotion, deployment selection, Gate 5, or robot access",
-  "runner_lf_sha256": "37a52a038322a9b1dc781ccf67d4e73bd4e300d7aae9e462d10057881b58ce71",
+  "runner_lf_sha256": "8cd2c9267f356adba1127f8fb837138bbe6e39b5c3326300eeed9fdd5b524610",
   "schedule": {
     "episode_ticks": 250,
     "parameter_seed": 60720,
@@ -64,54 +66,67 @@
     "stage1_updates": 100,
     "stage2_updates": 100
   },
-  "schema_version": "winner_v12.full_calibrator_training_launch_contract.v1",
-  "source_manifest_sha256": "cda1f130f5b9061d9a7c73cf2fc60d98ae2935c866c0c3cee9b5520b8f5b7259",
+  "schema_version": "winner_v12.full_calibrator_training_launch_contract.v2",
+  "source_manifest_sha256": "ce9a4d99e84e6a18ccf2b3658c62f8dfdffd3f43b09511d322d871d116bced88",
   "sources": {
     "authorization_claim": {
       "hash_mode": "lf",
       "path": "outputs/analysis/winner_v12_full_calibrator_training_authorization_claim.json",
-      "sha256": "aeee93ab587f589e89827e57303c68a769e6fd346cdadff207cac948ea06bfd7"
+      "sha256": "514aefab71ab7fa1cca4ec60c437f15b06ea5855ac23c8c4dcfb707cbab6f183"
     },
     "builder": {
       "hash_mode": "lf",
       "path": "tools/build_winner_v12_full_calibrator_training_launch_contract.py",
-      "sha256": "5b0cedd8de66949f6f211d789bb6c36d6aaf2f565503e7770b8efff777af9aac"
+      "sha256": "618de6e5c4bf771d9554f8b175fc7f3d2e172950b273e40dcc4c9f9194b15f17"
     },
     "cpu_contract": {
       "hash_mode": "lf",
       "path": "outputs/analysis/winner_v12_full_calibrator_training_cpu_contract.json",
-      "sha256": "5795b079dfc47ab54a7d59faa217f282551fda0bb8c18f1857ceae9b79492eb6"
+      "sha256": "6288b4f9bc1919ecb2638fe1bc1f6908f7e720f40f7721b4677c81f151cb9505"
     },
     "cpu_result": {
       "hash_mode": "lf",
-      "path": "outputs/analysis/winner_v12_full_calibrator_training_cpu_contract_result.json",
-      "sha256": "a3bf0075a713bc51d1fc608d276f3c90b244126e779870b8d761af8810448664"
+      "path": "outputs/analysis/winner_v12_full_calibrator_training_cpu_contract_result_v2.json",
+      "sha256": "a0bb68bf88cefa1069fec732a89547029020fa017cd87b7f3c16e02a3adca9d7"
     },
     "cpu_result_importer": {
       "hash_mode": "lf",
-      "path": "tools/import_winner_v12_full_calibrator_training_cpu_contract_result.py",
-      "sha256": "3f9cb54bd6eb8de4aad704577bffaa0b0688c56b0f56ef1a80e4bed49f3c594e"
+      "path": "tools/import_winner_v12_full_calibrator_training_cpu_contract_result_v2.py",
+      "sha256": "e860410b803a09a11a75c72e2df626b3930aaa79f13e6819684c33fa7ed29f6a"
     },
     "preregistration": {
       "hash_mode": "lf",
       "path": "outputs/analysis/winner_v12_full_calibrator_training_preregistration.json",
       "sha256": "99500648d6683097a13f894b0949bf4b5494e5653f36878710817bd0952f71dd"
     },
+    "preupdate_failure_attribution": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_full_calibrator_training_preupdate_failure_attribution.json",
+      "sha256": "15786207c3f3fc88e69f7a4db61b0ef023267d7d82775022bafa65443a31721c"
+    },
     "runner": {
       "hash_mode": "lf",
       "path": "tools/run_winner_v12_full_calibrator_training.py",
-      "sha256": "37a52a038322a9b1dc781ccf67d4e73bd4e300d7aae9e462d10057881b58ce71"
+      "sha256": "8cd2c9267f356adba1127f8fb837138bbe6e39b5c3326300eeed9fdd5b524610"
     },
     "tests": {
       "hash_mode": "lf",
       "path": "tests/test_winner_v12_full_calibrator_training_launch_contract.py",
-      "sha256": "b65c64236fe700831d411db0de3ce05b00344aea334f7aea8ef8407d50e5477e"
+      "sha256": "bdda97c4a0a80beefce0b8ee9915586b3b1bdcfd91d61eb9e7bb2a17b395edc0"
     },
     "workflow": {
       "hash_mode": "lf",
       "path": ".github/workflows/winner-v12-full-calibrator-training.yml",
-      "sha256": "7a5b4a0d0c9b017689caa8fdcf61e8d799c9ab2661719c294fb527324f7adf68"
+      "sha256": "478ce5d882cb6a39603ae1480dd33bb558d81cc2d7ca82075363b7d343a1ca06"
     }
   },
-  "status": "PASS_WINNER_V12_FULL_CALIBRATOR_TRAINING_LAUNCH_FROZEN"
+  "status": "PASS_WINNER_V12_FULL_CALIBRATOR_TRAINING_LAUNCH_FROZEN",
+  "superseded_preupdate_launch": {
+    "classification": "INVALID_PREUPDATE_STAGE1_NORMALIZATION_VALIDATION",
+    "commit": "011e68cbc7b687654e502130257ad5b8e7eb0fee",
+    "committed_snapshots": 0,
+    "github_run_id": 29807546004,
+    "optimizer_updates": 0,
+    "result_written": false
+  }
 }

@@ -15,14 +15,19 @@ ANALYSIS = ROOT / "outputs/analysis"
 RUNNER = ROOT / "tools/run_winner_v12_full_calibrator_training.py"
 PREREGISTRATION = ANALYSIS / "winner_v12_full_calibrator_training_preregistration.json"
 CPU_CONTRACT = ANALYSIS / "winner_v12_full_calibrator_training_cpu_contract.json"
-CPU_RESULT = ANALYSIS / "winner_v12_full_calibrator_training_cpu_contract_result.json"
+CPU_RESULT = (
+    ANALYSIS / "winner_v12_full_calibrator_training_cpu_contract_result_v2.json"
+)
+PREUPDATE_FAILURE = (
+    ANALYSIS / "winner_v12_full_calibrator_training_preupdate_failure_attribution.json"
+)
 CLAIM = ANALYSIS / "winner_v12_full_calibrator_training_authorization_claim.json"
 OUTPUT = ANALYSIS / "winner_v12_full_calibrator_training_launch_contract.json"
 MARKDOWN = ANALYSIS / "WINNER_V12_FULL_CALIBRATOR_TRAINING_LAUNCH_CONTRACT_20260721.md"
 WORKFLOW = ROOT / ".github/workflows/winner-v12-full-calibrator-training.yml"
 TEST = ROOT / "tests/test_winner_v12_full_calibrator_training_launch_contract.py"
 IMPORTER = (
-    ROOT / "tools/import_winner_v12_full_calibrator_training_cpu_contract_result.py"
+    ROOT / "tools/import_winner_v12_full_calibrator_training_cpu_contract_result_v2.py"
 )
 EXACT_WORK_ROOT = "/tmp/winner-v12-full-calibrator-training-work"
 LOGICAL_RUN_ID = "winner-v12-full-calibrator-seed-120120"
@@ -62,6 +67,7 @@ def source_manifest() -> dict[str, dict[str, str]]:
         "cpu_contract": (CPU_CONTRACT, "lf"),
         "cpu_result": (CPU_RESULT, "lf"),
         "cpu_result_importer": (IMPORTER, "lf"),
+        "preupdate_failure_attribution": (PREUPDATE_FAILURE, "lf"),
         "preregistration": (PREREGISTRATION, "lf"),
         "runner": (RUNNER, "lf"),
         "tests": (TEST, "lf"),
@@ -81,6 +87,7 @@ def main() -> int:
     preregistration = json.loads(PREREGISTRATION.read_text(encoding="utf-8"))
     cpu_contract = json.loads(CPU_CONTRACT.read_text(encoding="utf-8"))
     cpu_result = json.loads(CPU_RESULT.read_text(encoding="utf-8"))
+    preupdate_failure = json.loads(PREUPDATE_FAILURE.read_text(encoding="utf-8"))
     runner_source = RUNNER.read_text(encoding="utf-8")
     workflow_source = WORKFLOW.read_text(encoding="utf-8")
     runner_module = ast.parse(runner_source)
@@ -89,7 +96,7 @@ def main() -> int:
     # working tree cannot freeze a CRLF-only identity that Linux cannot match.
     cpu_result_hash = lf_sha256(CPU_RESULT)
     claim_payload = {
-        "schema_version": "winner_v12.full_calibrator_training_authorization_claim.v1",
+        "schema_version": "winner_v12.full_calibrator_training_authorization_claim.v2",
         "logical_run_id": LOGICAL_RUN_ID,
         "resolved_work_root": EXACT_WORK_ROOT,
         "repository_relative_claim_path": str(CLAIM.relative_to(ROOT)).replace(
@@ -136,6 +143,24 @@ def main() -> int:
         },
         "cpu_result_contract_identity_exact": cpu_result.get("contract_lf_sha256")
         == lf_sha256(CPU_CONTRACT),
+        "corrected_cpu_result_attribution_exact": cpu_result.get(
+            "repository_attribution"
+        )
+        == {
+            "github_artifact_digest": "sha256:f02a902412abf23ef08832c3d73e3faee13f5af53cfe977bb3832c4b13fe853c",
+            "github_artifact_id": 8486408542,
+            "github_run_attempt": 1,
+            "github_run_commit": "35069ead37433e1b8d98c3082d4b163e06ec5fef",
+            "github_run_id": 29808349887,
+            "raw_result_sha256": "d0d035123122bc37462c2a6e83cb6a8bc82081f34cfdd3317fd79db3fbbc010e",
+        },
+        "superseded_launch_failed_before_training": preupdate_failure.get("status")
+        == "INVALID_PREUPDATE_STAGE1_NORMALIZATION_VALIDATION"
+        and preupdate_failure.get("decision")
+        == "AUTHORIZE_CORRECTED_RUNNER_AND_NEW_ZERO_UPDATE_CPU_CONTRACT_ONLY"
+        and preupdate_failure.get("execution", {}).get("optimizer_updates") == 0
+        and preupdate_failure.get("evidence", {}).get("committed_snapshots") == 0
+        and preupdate_failure.get("evidence", {}).get("result_written") is False,
         "runner_identity_matches_cpu_contract": (
             cpu_contract.get("sources", {}).get("runner", {}).get("sha256")
             == runner_hash
@@ -214,7 +239,7 @@ def main() -> int:
         raise SystemExit(f"Winner-v12 launch contract build failed: {failed}")
     sources = source_manifest()
     payload = {
-        "schema_version": "winner_v12.full_calibrator_training_launch_contract.v1",
+        "schema_version": "winner_v12.full_calibrator_training_launch_contract.v2",
         "status": "PASS_WINNER_V12_FULL_CALIBRATOR_TRAINING_LAUNCH_FROZEN",
         "decision": "AUTHORIZE_EXACTLY_ONE_LOGICAL_TRAINING_RUN",
         "logical_run_id": LOGICAL_RUN_ID,
@@ -249,6 +274,14 @@ def main() -> int:
             "locomotion_training_steps": 0,
             "robot_or_rdk_access": 0,
         },
+        "superseded_preupdate_launch": {
+            "github_run_id": preupdate_failure["attempt"]["github_run_id"],
+            "commit": preupdate_failure["attempt"]["commit"],
+            "optimizer_updates": 0,
+            "committed_snapshots": 0,
+            "result_written": False,
+            "classification": preupdate_failure["status"],
+        },
         "checks": checks,
         "failed_checks": [],
         "sources": sources,
@@ -275,7 +308,11 @@ def main() -> int:
                 "- Optimizer updates before launch: `0`",
                 "- Formal support/locomotion/robot execution: `0 / 0 / 0`",
                 "",
-                "This freezes one CPU-only seed-120120 logical training run with 100",
+                "The prior launch is formally superseded because it stopped after its",
+                "first rollout but before loss construction, every optimizer update, and",
+                "every snapshot. The corrected zero-update contract then passed on Linux.",
+                "",
+                "This freezes one corrected CPU-only seed-120120 logical training run with 100",
                 "Stage-1 and 100 Stage-2 updates. Every update commits an immutable",
                 "hash-verified recovery snapshot. The complete work root is uploaded even",
                 "if the process fails. No retry or alternate work root is authorized.",
