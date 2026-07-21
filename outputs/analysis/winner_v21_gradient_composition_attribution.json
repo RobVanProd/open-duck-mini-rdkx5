@@ -1,0 +1,83 @@
+{
+  "authority": {
+    "formal_support_cells_authorized_now": 0,
+    "locomotion_training_authorized": false,
+    "optimizer_updates_authorized_now": 0,
+    "pass_authorizes_only": "a separately hash-frozen two-update explicit-gradient CPU proof",
+    "robot_clearance": false,
+    "robot_or_rdk_access": false,
+    "winner_v21_training_authorized": false
+  },
+  "classification": {
+    "flat_transport_equation_selected": false,
+    "floating_accumulation_order_only": true,
+    "objective_or_gradient_partition_failure": false,
+    "rerun_of_source_contract_authorized": false,
+    "source_hold_relabelled_as_pass": false,
+    "threshold_relaxed": false
+  },
+  "correction": {
+    "all_other_population_objective_boundary_and_abi_terms_unchanged": true,
+    "composition": "explicit per-leaf float32 tree composition",
+    "gradient_used_by_optimizer": "g_ppo + frozen_scale * g_predictor",
+    "independent_combined_autodiff_graph": false,
+    "loss_for_logging": "ppo_loss + frozen_scale * predictor_loss",
+    "next_proof_optimizer_updates": 2,
+    "scale_recomputed_in_next_proof": false
+  },
+  "decision": "PREREGISTER_EXPLICITLY_COMPOSED_TWO_UPDATE_CPU_PROOF",
+  "frozen_predictor_scale": {
+    "evaluations": 1,
+    "ppo_action_head_gradient_rms": 0.2069233077113677,
+    "predictor_head_gradient_rms": 2465242278.990687,
+    "predictor_scale": 8.393629541414427e-11,
+    "sweep": false,
+    "value": 8.393629541414427e-11
+  },
+  "schema_version": "winner_v21.gradient_composition_attribution.v1",
+  "source_hold": {
+    "absolute_gradient_difference": 1.430511474609375e-06,
+    "artifact_zip_sha256": "ccbe26e22e7731c5b2612334c6ca250bae4fcd23f07ae18049ca17a95bb6a24d",
+    "failed_check": "combined_gradient_is_exact_sum_at_most_1e_6",
+    "github_run_id": 29861734584,
+    "maximum_combined_gradient": 14.056812286376953,
+    "optimizer_updates": 0,
+    "passing_checks": 16,
+    "relative_to_maximum_combined_gradient": 1.0176642082613167e-07,
+    "total_checks": 17
+  },
+  "source_manifest_sha256": "3566bd1a4e5ae5092839eb16d0be71a360c6dacccb9a07579504d73949d70378",
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v21_gradient_composition_attribution.py",
+      "sha256": "dfa555c2c0f6c492b8e9311d76f4a0a96780baf07c57b6752a525f66883f404f"
+    },
+    "contract": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v21_predictor_preserving_joint_cpu_contract.json",
+      "sha256": "42daca248961734e7ed02e6af378fca275ad518dbfb89972722f8cf948649ce9"
+    },
+    "importer": {
+      "hash_mode": "lf",
+      "path": "tools/import_winner_v21_predictor_preserving_joint_cpu_result.py",
+      "sha256": "2b751802248d216b4b0b29ef2eecac2fed67ef03a3ec6d6d66be632248ecce72"
+    },
+    "mechanics": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v21_predictor_preserving_joint_support.py",
+      "sha256": "2d274c6c7c63fa2de5e3a7114ac047df1346189e66ec7bf8d83221e2f93aef0a"
+    },
+    "result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v21_predictor_preserving_joint_cpu_result.json",
+      "sha256": "c3f3914aaea668751fa3a0228e85ba964a653c277406c47217b93657caf4536b"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v21_predictor_preserving_joint_cpu_contract.py",
+      "sha256": "6631e52ce7ab62c147e5abace5bcf8818a51dd9f7a44d03cc3cd3223379d4790"
+    }
+  },
+  "status": "PASS_WINNER_V21_GRADIENT_COMPOSITION_ATTRIBUTION"
+}
