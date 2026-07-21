@@ -35,6 +35,14 @@ SOURCE_PATHS = {
         "outputs/analysis/WINNER_V12_FULL_CALIBRATOR_TRAINING_CPU_CONTRACT_DISPATCH_ATTRIBUTION_20260721.md",
         "lf",
     ),
+    "serialization_failure_attribution": (
+        "outputs/analysis/winner_v12_full_calibrator_training_cpu_contract_serialization_failure_attribution.json",
+        "lf",
+    ),
+    "serialization_failure_attribution_markdown": (
+        "outputs/analysis/WINNER_V12_FULL_CALIBRATOR_TRAINING_CPU_CONTRACT_SERIALIZATION_FAILURE_ATTRIBUTION_20260721.md",
+        "lf",
+    ),
     "playground_composer": ("tools/compose_winner_v7_playground.py", "lf"),
     "winner_v7_transform": ("tools/run_winner_v7_inward_projection_contract.py", "lf"),
     "winner_v7_importer": (
@@ -225,6 +233,12 @@ def main() -> int:
             / "outputs/analysis/winner_v12_full_calibrator_training_cpu_contract_dispatch_attribution.json"
         ).read_text(encoding="utf-8")
     )
+    serialization_failure_attribution = json.loads(
+        (
+            ROOT
+            / "outputs/analysis/winner_v12_full_calibrator_training_cpu_contract_serialization_failure_attribution.json"
+        ).read_text(encoding="utf-8")
+    )
     source = RUNNER.read_text(encoding="utf-8")
     workflow_source = (
         ROOT / ".github/workflows/winner-v12-full-calibrator-training-cpu-contract.yml"
@@ -290,6 +304,20 @@ def main() -> int:
         and dispatch_attribution["attempt"]["github_run_created"] is False
         and dispatch_attribution["authority"]["optimizer_updates"] == 0
         and dispatch_attribution["authority"]["formal_cpu_contract_executed"] is False,
+        "serialization_failure_is_zero_update_only": serialization_failure_attribution.get(
+            "status"
+        )
+        == "INVALID_RESULT_SERIALIZATION_AFTER_ZERO_UPDATE_EXECUTION"
+        and serialization_failure_attribution.get("decision")
+        == "AUTHORIZE_ONE_CORRECTED_ZERO_UPDATE_CPU_CONTRACT_RUN_ONLY"
+        and serialization_failure_attribution["attempt"]["github_run_id"] == 29806564376
+        and serialization_failure_attribution["authority"]["optimizer_updates"] == 0
+        and serialization_failure_attribution["authority"][
+            "full_calibrator_training_executed"
+        ]
+        is False
+        and serialization_failure_attribution["authority"]["formal_cpu_contract_passed"]
+        is False,
         "workflow_is_one_shot_branch_path_cpu_contract": "workflow_dispatch:"
         not in workflow_source
         and "push:" in workflow_source
@@ -365,6 +393,15 @@ def main() -> int:
             "github_run_created": False,
             "optimizer_updates": 0,
             "formal_cpu_contract_executed": False,
+        },
+        "superseded_zero_update_serialization_failure": {
+            "status": serialization_failure_attribution["status"],
+            "github_run_id": serialization_failure_attribution["attempt"][
+                "github_run_id"
+            ],
+            "commit": serialization_failure_attribution["attempt"]["commit"],
+            "optimizer_updates": 0,
+            "formal_cpu_contract_passed": False,
         },
         "checks": checks,
         "failed_checks": [],

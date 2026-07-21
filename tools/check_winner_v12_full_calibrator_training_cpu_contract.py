@@ -126,6 +126,19 @@ def assert_raises(function, expected: type[BaseException]) -> bool:
     return False
 
 
+def normalize_check_bools(checks: Mapping[str, Any]) -> dict[str, bool]:
+    """Return strict JSON-native booleans without accepting truthy values."""
+    normalized = {}
+    for name, value in checks.items():
+        if not isinstance(value, (bool, np.bool_)):
+            raise TypeError(
+                f"CPU-contract check {name!r} is not a boolean: "
+                f"{type(value).__module__}.{type(value).__qualname__}"
+            )
+        normalized[name] = bool(value)
+    return normalized
+
+
 def main() -> int:
     import argparse
 
@@ -496,6 +509,7 @@ def main() -> int:
         and half["graph"]["jax_onnx_at_most_1e_7"]
         and half["graph"]["previous_action_out_equals_action_bit_exact"],
     }
+    checks = normalize_check_bools(checks)
     failed = sorted(name for name, passed in checks.items() if not passed)
     result = {
         "schema_version": "winner_v12.full_calibrator_training_cpu_contract_result.v1",

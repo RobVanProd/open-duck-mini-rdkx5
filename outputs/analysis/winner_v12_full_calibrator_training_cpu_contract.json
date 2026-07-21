@@ -11,6 +11,7 @@
     "runner_hashes_all_artifacts": true,
     "runner_requires_one_run_launch_claim": true,
     "schedule_exact": true,
+    "serialization_failure_is_zero_update_only": true,
     "workflow_is_one_shot_branch_path_cpu_contract": true,
     "zero_update_authority": true
   },
@@ -80,7 +81,7 @@
     "builder": {
       "hash_mode": "lf",
       "path": "tools/build_winner_v12_full_calibrator_training_cpu_contract.py",
-      "sha256": "f3256b0352aa66e5af90f9e8c4e76b049114781b52b68056a5cdeb25be584f5b"
+      "sha256": "a40978185aafa6b62d718bc24b46f554ded8f8ed9708ad6148c886e608595484"
     },
     "calibrator_design": {
       "hash_mode": "lf",
@@ -90,7 +91,7 @@
     "checker": {
       "hash_mode": "lf",
       "path": "tools/check_winner_v12_full_calibrator_training_cpu_contract.py",
-      "sha256": "0fe71c95ca69918ce94a6c1a7ce0a8d8f03f1a0df25827b8a6457b041e6e3fab"
+      "sha256": "fd3723136a6d4a6ec7a9f548aad701c8b5f9de417cab8948b6d959d97ddcd6fd"
     },
     "decomposed_network": {
       "hash_mode": "lf",
@@ -222,6 +223,16 @@
       "path": "artifacts/runtime_handoff/rdkx5_native_20260719/observer_contract.json",
       "sha256": "63261636dbec7259dbede679d8f22288608963634dcf3570bcc65d544e160350"
     },
+    "serialization_failure_attribution": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_full_calibrator_training_cpu_contract_serialization_failure_attribution.json",
+      "sha256": "60290d4413e475f94cda80820fc001665d49c31b208806d1ecfd3a46b992a541"
+    },
+    "serialization_failure_attribution_markdown": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/WINNER_V12_FULL_CALIBRATOR_TRAINING_CPU_CONTRACT_SERIALIZATION_FAILURE_ATTRIBUTION_20260721.md",
+      "sha256": "4d976efd773999a010acf018251412a8e7987e3342071dea029d939b11fea3e1"
+    },
     "smoke_contract": {
       "hash_mode": "lf",
       "path": "outputs/analysis/winner_v12_calibrator_cpu_smoke_contract.json",
@@ -235,7 +246,7 @@
     "tests": {
       "hash_mode": "lf",
       "path": "tests/test_winner_v12_full_calibrator_training_cpu_contract.py",
-      "sha256": "d3a00df9b89ad02e673a7146274d3c4211143bace889f26b8b9c15c91ced744c"
+      "sha256": "8dd520fa39ef6d6b5c173a8ef78da8e275b7931d090da77db3891c75ce78161b"
     },
     "training_primitives": {
       "hash_mode": "lf",
@@ -315,7 +326,7 @@
     "workflow": {
       "hash_mode": "lf",
       "path": ".github/workflows/winner-v12-full-calibrator-training-cpu-contract.yml",
-      "sha256": "e88503c2b6c2bdab1096001400837a37ae2fc3c1afe108659ba5ab2dd8ca18a0"
+      "sha256": "45f5493a8d91625d75741dd1c1212a7b7b6b168485bbb6af604d8d7eb6c0ea74"
     }
   },
   "status": "PASS_WINNER_V12_FULL_CALIBRATOR_TRAINING_CPU_CONTRACT_FROZEN",
@@ -325,5 +336,12 @@
     "optimizer_updates": 0,
     "status": "INVALID_PREEXECUTION_WORKFLOW_NOT_ON_DEFAULT_BRANCH",
     "workflow_commit": "e4d0e9cfc17aa8bee64a472a9364d4415a03d4bb"
+  },
+  "superseded_zero_update_serialization_failure": {
+    "commit": "f9842806abb382189665a074abf3a8a88785cbce",
+    "formal_cpu_contract_passed": false,
+    "github_run_id": 29806564376,
+    "optimizer_updates": 0,
+    "status": "INVALID_RESULT_SERIALIZATION_AFTER_ZERO_UPDATE_EXECUTION"
   }
 }

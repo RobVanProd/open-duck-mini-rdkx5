@@ -1,5 +1,7 @@
 name: Winner v12 full calibrator training CPU contract
 
+# Corrected one-shot: strict numpy.bool_ -> Python bool result serialization only.
+
 on:
   push:
     branches:
@@ -16,7 +18,7 @@ concurrency:
 
 jobs:
   contract:
-    name: One frozen zero-update full-training contract
+    name: One corrected frozen zero-update full-training contract
     runs-on: ubuntu-latest
     timeout-minutes: 180
 

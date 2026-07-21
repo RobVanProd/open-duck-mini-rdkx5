@@ -156,6 +156,14 @@ def test_checker_cannot_execute_an_optimizer_update() -> None:
     assert '"robot_or_rdk_access": 0' in source
 
 
+def test_checker_normalizes_only_boolean_check_values_for_json() -> None:
+    source = CHECKER.read_text(encoding="utf-8")
+    assert "def normalize_check_bools(" in source
+    assert "isinstance(value, (bool, np.bool_))" in source
+    assert "normalized[name] = bool(value)" in source
+    assert "checks = normalize_check_bools(checks)" in source
+
+
 def test_workflow_is_one_shot_branch_path_exact_cpu_run() -> None:
     source = WORKFLOW.read_text(encoding="utf-8")
     assert "workflow_dispatch:" not in source
@@ -185,6 +193,23 @@ def test_failed_manual_dispatch_is_recorded_as_zero_execution() -> None:
     assert attribution["attempt"]["github_run_created"] is False
     assert attribution["authority"]["optimizer_updates"] == 0
     assert attribution["authority"]["formal_cpu_contract_executed"] is False
+
+
+def test_failed_result_serialization_is_attributed_without_training_authority() -> None:
+    attribution = json.loads(
+        (
+            ROOT
+            / "outputs/analysis/winner_v12_full_calibrator_training_cpu_contract_serialization_failure_attribution.json"
+        ).read_text(encoding="utf-8")
+    )
+    assert (
+        attribution["status"]
+        == "INVALID_RESULT_SERIALIZATION_AFTER_ZERO_UPDATE_EXECUTION"
+    )
+    assert attribution["attempt"]["github_run_id"] == 29806564376
+    assert attribution["authority"]["optimizer_updates"] == 0
+    assert attribution["authority"]["full_calibrator_training_executed"] is False
+    assert attribution["authority"]["formal_cpu_contract_passed"] is False
 
 
 def test_every_workflow_python_tool_is_hash_bound() -> None:
