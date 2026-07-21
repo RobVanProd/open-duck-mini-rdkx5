@@ -1,0 +1,241 @@
+{
+  "authority": {
+    "pass_authorizes_only": "one separately frozen 248-cell support-gate run",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false
+  },
+  "checkpoint_graph_contracts": [
+    {
+      "independent_onnx_contract": {
+        "abi_exact": true,
+        "all_chain_outputs_finite": true,
+        "all_initializers_finite": true,
+        "bytes": 54896,
+        "chain_ticks": 250,
+        "forbidden_training_or_privileged_tokens": [],
+        "initializer_count": 9,
+        "inputs": [
+          {
+            "name": "obs",
+            "shape": [
+              1,
+              115
+            ]
+          },
+          {
+            "name": "previous_action",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_in",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "jax_onnx_at_most_1e_7": true,
+        "jax_onnx_max_abs_error": 7.450580596923828e-09,
+        "outputs": [
+          {
+            "name": "calibration_actions",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "previous_action_out",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_out",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "path": "/tmp/winner-v12-training-artifact/winner-v12-full-calibrator-training-work/winner_v12_calibrator_half.onnx",
+        "previous_action_out_equals_action_bit_exact": true,
+        "sha256": "9a9b5090d9dbb74e1ee2f822dac9b5fd8deee09d1b13419b222389abd5d2684a",
+        "training_only_tensors_absent": true
+      },
+      "label": "half",
+      "support_runner_all_outputs_finite": true,
+      "support_runner_chain_ticks": 250,
+      "support_runner_graph_boundary_exact": true,
+      "support_runner_jax_onnx_h_at_most_1e_7": true,
+      "support_runner_jax_onnx_h_max_abs_error": 8.731149137020111e-11,
+      "support_runner_previous_action_chain_bit_exact": true,
+      "update": 50
+    },
+    {
+      "independent_onnx_contract": {
+        "abi_exact": true,
+        "all_chain_outputs_finite": true,
+        "all_initializers_finite": true,
+        "bytes": 54896,
+        "chain_ticks": 250,
+        "forbidden_training_or_privileged_tokens": [],
+        "initializer_count": 9,
+        "inputs": [
+          {
+            "name": "obs",
+            "shape": [
+              1,
+              115
+            ]
+          },
+          {
+            "name": "previous_action",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_in",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "jax_onnx_at_most_1e_7": true,
+        "jax_onnx_max_abs_error": 7.450580596923828e-09,
+        "outputs": [
+          {
+            "name": "calibration_actions",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "previous_action_out",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_out",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "path": "/tmp/winner-v12-training-artifact/winner-v12-full-calibrator-training-work/winner_v12_calibrator_final.onnx",
+        "previous_action_out_equals_action_bit_exact": true,
+        "sha256": "e25a31f8e25d6e220d499af3d9ce7536096de7a279c0e63cfed799fb87833718",
+        "training_only_tensors_absent": true
+      },
+      "label": "final",
+      "support_runner_all_outputs_finite": true,
+      "support_runner_chain_ticks": 250,
+      "support_runner_graph_boundary_exact": true,
+      "support_runner_jax_onnx_h_at_most_1e_7": true,
+      "support_runner_jax_onnx_h_max_abs_error": 8.731149137020111e-11,
+      "support_runner_previous_action_chain_bit_exact": true,
+      "update": 100
+    }
+  ],
+  "checks": {
+    "all_independent_graph_contracts_pass": true,
+    "all_support_runner_graph_chains_pass": true,
+    "all_transport_primitives_exact": true,
+    "both_checkpoint_graphs_checked": true,
+    "contract_header_exact": true,
+    "formal_cells_zero": true,
+    "immutable_inputs_exact": true,
+    "jax_cpu_only": true,
+    "nominal_model_identity_exact": true,
+    "software_versions_exact": true,
+    "source_manifest_exact": true,
+    "training_files_match_artifact_verifier": true
+  },
+  "contract_lf_sha256": "1b806adb2d3f43149ca07e9e3adb5206b154bc21e2e0feca12f22ae1f6a2fd80",
+  "decision": "AUTHORIZE_ONE_FROZEN_248_CELL_SUPPORT_GATE_RUN_ONLY",
+  "execution": {
+    "formal_support_cells": 0,
+    "heldout_repeat_cells": 0,
+    "locomotion_training_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "immutable_inputs": {
+    "canonical_p30_fit_lf_sha256": "908ddb01e5d82e661d77b8f3cb186a84665695660b86b304c6d1ae89c79cdb0b",
+    "playground_model_sha256": "660fa8e4ac0d977806e881d008090e7153cd0608dbee05b88f957a91bde6f655",
+    "playground_scene_sha256": "65324e27a3a84e2e42d1073bfc636f9cdbf6bef7b1f20c1b5a886b8fd58fcc71"
+  },
+  "repository_attribution": {
+    "artifact_zip_bytes": 2339,
+    "artifact_zip_sha256": "593c905b2b11da94cd7983145527008e91d567232453ec5408b02ce739f88617",
+    "checker_lf_sha256": "d42b493f4ce956dc2838457277cdcfc93559670c0412a344cb310a5849c39957",
+    "cpu_contract_lf_sha256": "1b806adb2d3f43149ca07e9e3adb5206b154bc21e2e0feca12f22ae1f6a2fd80",
+    "cpu_contract_path": "outputs/analysis/winner_v12_calibrator_support_gate_cpu_contract.json",
+    "github_artifact_digest": "sha256:593c905b2b11da94cd7983145527008e91d567232453ec5408b02ce739f88617",
+    "github_artifact_id": 8489041513,
+    "github_artifact_name": "winner-v12-calibrator-support-gate-cpu-contract-29815172120",
+    "github_run_attempt": 1,
+    "github_run_head_sha": "939ed837eb1b025ba6c4b48e7a3a8a1bf5f307dd",
+    "github_run_id": 29815172120,
+    "importer_lf_sha256": "123caaadef4e7d4661f5513865164ebf57bb541f4a3d3f5d9431abfefb96a078",
+    "raw_result_receipt_sha256": "2e92342622391ecea8a4fcd29a4d17886aea924dbaf4855dc518710279091b45",
+    "raw_result_sha256": "c006465ed67aab04cecfba6fd6a806c8b5becf14cc20fc819860145484893f76",
+    "repository": "RobVanProd/open-duck-mini-rdkx5",
+    "workflow_lf_sha256": "529f8a69fa0d738b592952fdb1c7c8875409ab29deecb9a4d15a5efa30d4f60d",
+    "workflow_path": ".github/workflows/winner-v12-calibrator-support-gate-cpu-contract.yml"
+  },
+  "schema_version": "winner_v12.calibrator_support_gate_cpu_contract_result.v1",
+  "software_versions": {
+    "exact": true,
+    "expected": {
+      "jax": "0.7.2",
+      "jaxlib": "0.7.2",
+      "mujoco": "3.9.0",
+      "numpy": "2.0.2",
+      "onnx": "1.22.0",
+      "onnxruntime": "1.27.0",
+      "python": "3.12.13"
+    },
+    "observed": {
+      "jax": "0.7.2",
+      "jaxlib": "0.7.2",
+      "mujoco": "3.9.0",
+      "numpy": "2.0.2",
+      "onnx": "1.22.0",
+      "onnxruntime": "1.27.0",
+      "python": "3.12.13"
+    }
+  },
+  "status": "PASS_WINNER_V12_CALIBRATOR_SUPPORT_GATE_CPU_CONTRACT",
+  "training_files": {
+    "final": {
+      "checkpoint_sha256": "ee8f34386f1c7cc118ecf73f2fcdbdf32ec46c463921d5fbaeaae90185a051df",
+      "onnx_sha256": "e25a31f8e25d6e220d499af3d9ce7536096de7a279c0e63cfed799fb87833718",
+      "receipt_sha256": "9c2213afc68ace5a5b5d11a033b059422897bd3cae090822af037794f0006f98"
+    },
+    "half": {
+      "checkpoint_sha256": "9eff1cae34b1794028bef849ba2128d47264242cc7d454b40743880e500ce3b9",
+      "onnx_sha256": "9a9b5090d9dbb74e1ee2f822dac9b5fd8deee09d1b13419b222389abd5d2684a",
+      "receipt_sha256": "7b48dec60b886b273d381df8907ab95743f3e081dd9a772be1714c75c70647b6"
+    }
+  },
+  "transport_primitives": {
+    "identity_transport_exact": true,
+    "native_quantization_changes_only_declared_slots": true,
+    "one_tick_action_delay_exact": true,
+    "one_tick_imu_delay_exact": true,
+    "support_threshold_rejects_first_excess": true,
+    "support_thresholds_inclusive": true
+  }
+}
