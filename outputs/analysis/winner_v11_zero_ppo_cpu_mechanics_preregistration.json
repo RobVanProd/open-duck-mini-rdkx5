@@ -1,0 +1,398 @@
+{
+  "action_boundary": {
+    "all_reported_actions_judged_against_stored_delta": true,
+    "host_projection_or_limiter": false,
+    "inward_delta_initializer": "v7_safe_max_action_delta",
+    "inward_torque_is_plant_xml_semantics": true,
+    "maximum_internal_roundoff_excess": "at most two float32 epsilons while stored-bound excess remains zero",
+    "new_graphs_use_inward_delta": true,
+    "stored_delta_initializer": "max_action_delta",
+    "strict_maximum_excess": 0.0
+  },
+  "all_or_nothing": true,
+  "authority": {
+    "colab_hosted_gpu_or_igpu": false,
+    "formal_behavior_cells": 0,
+    "gate5_deployment_or_robot_clearance": false,
+    "one_exact_cpu_only_run": true,
+    "optimizer_steps": 0,
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "runtime_implementation": false,
+    "training_or_ppo": false
+  },
+  "contract_id": "winner-v11-zero-ppo-mechanics-r64",
+  "decision": "AUTHORIZE_ONE_EXACT_WINNER_V11_ZERO_PPO_CPU_MECHANICS_RUN",
+  "exact_sequence": {
+    "calibration_command": "exact float32 zeros[7]",
+    "calibration_phase": [
+      1.0,
+      0.0
+    ],
+    "calibration_phase_advances": false,
+    "calibration_ticks": 250,
+    "calibrator_initial_hidden": "exact float32 zeros[1,64]",
+    "calibrator_initial_previous_action": "exact float32 zeros[1,14]",
+    "context_bounds_inclusive": [
+      -1.0,
+      1.0
+    ],
+    "context_dtype": "float32",
+    "context_runtime_scaling": "none",
+    "context_session_local_immutable_nonpersistent": true,
+    "context_shape": [
+      1,
+      64
+    ],
+    "context_source": "exact final successful calibrator h_out",
+    "frequency_hz": 50,
+    "locomotion_initial_hidden": "exact float32 zeros[1,64]",
+    "locomotion_phase_reset": [
+      1.0,
+      0.0
+    ],
+    "p30_applied_target_handoff": "final confirmed obs[83:97]",
+    "paused_hold_target": "final confirmed safe calibration target",
+    "previous_action_handoff": "final confirmed previous_action_out",
+    "runtime_remains_paused_after_handoff": true
+  },
+  "expected_abi": {
+    "calibrator": {
+      "inputs": [
+        {
+          "dtype": "float32",
+          "name": "obs",
+          "shape": [
+            1,
+            115
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "previous_action",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "h_in",
+          "shape": [
+            1,
+            64
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "dtype": "float32",
+          "name": "calibration_actions",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "previous_action_out",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "h_out",
+          "shape": [
+            1,
+            64
+          ]
+        }
+      ]
+    },
+    "locomotion": {
+      "inputs": [
+        {
+          "dtype": "float32",
+          "name": "obs",
+          "shape": [
+            1,
+            115
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "previous_action",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "h_in",
+          "shape": [
+            1,
+            64
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "calibration_context",
+          "shape": [
+            1,
+            64
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "dtype": "float32",
+          "name": "continuous_actions",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "previous_action_out",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "h_out",
+          "shape": [
+            1,
+            64
+          ]
+        }
+      ]
+    }
+  },
+  "expected_result_checks": [
+    "frozen_lf_source_hashes_exact",
+    "protected_winner_v10_hashes_exact",
+    "protected_stored_and_inward_boundaries_exact",
+    "new_graphs_use_inward_boundary_exact",
+    "jax_cpu_only",
+    "onnxruntime_cpu_only",
+    "calibrator_abi_exact",
+    "locomotion_abis_exact",
+    "calibrator_action_head_exact_zero",
+    "calibrator_step_zero_actions_exact_zero",
+    "calibrator_hidden_finite_bounded_and_evolves",
+    "calibrator_response_encoder_trainable",
+    "calibrator_250_tick_chain_exact",
+    "sequence_and_handoff_exact",
+    "calibration_context_immutable_finite_bounded",
+    "failed_calibration_never_armable",
+    "locomotion_context_heads_exact_zero",
+    "default_off_arbitrary_input_identity_bit_exact",
+    "default_off_x0_exact_zero_and_identity",
+    "jax_onnx_chains_within_tolerance",
+    "enabled_graphs_strict_stored_bounds",
+    "protected_physical_chains_strict_and_exact",
+    "physical_chain_jax_onnx_within_tolerance",
+    "recurrent_previous_action_precondition_held",
+    "frozen_test_population_exact",
+    "no_true_configuration_graph_input",
+    "auxiliary_targets_deployable_observation_only",
+    "both_protected_checkpoints_checked",
+    "zero_optimizer_steps_and_behavior_cells"
+  ],
+  "hypothesis": "The reviewed automatic-calibration ABI can be initialized on the exact Winner-v10 protected graphs with no default-off action/state change, while the response state evolves and both future graph paths enforce the exact stored and inward-rounded measured action boundary.",
+  "mechanics_scope_boundary": {
+    "physical_support_mode_defined_or_executed": false,
+    "policy_graph_handoff_executed": true,
+    "runtime_arming_or_torque_off_executed": false,
+    "runtime_fail_closed_rules_executed": false,
+    "runtime_paused_hold_executed": false,
+    "runtime_process_persistence_executed": false
+  },
+  "no_retry_or_tuning": "A failed formal run is recorded as a Winner-v11 hold. Do not change seeds, populations, thresholds, weights, ABI, protected hashes, or pass rules and rerun.",
+  "not_a_v6_or_v6b_retry": {
+    "both_closed_results_preserved": true,
+    "closed_v6b_sha256": "44c8c8c86c91f0f8145c309656ce478d40603d06512ea40dcf963bfc2cd6a054",
+    "distinct_contract_name": "winner-v11-zero-ppo-mechanics-r64",
+    "distinct_protected_base": "Winner-v10 inward-torque representation",
+    "winner_v10_policy_hashes": {
+      "final": "d52b63241340d9d56671b95c58bb0fc72af0998fd47d4684719f6cd44f244a10",
+      "half": "cf001269908d86e47eaa145ffda1d87e946a314ecf51056dc086c4cf10164ab6"
+    },
+    "winner_v10_stored_bound_repair_required": true
+  },
+  "pass_authorizes_only": "write and review a separate calibrator-training preregistration; no optimizer step or support-mode behavior",
+  "pass_rule": [
+    "all LF-stable source hashes, protected policy hashes, ABIs, and CPU-only assertions match",
+    "all step-zero calibrator actions/action-state are exact zero while hidden state evolves and receives a finite nonzero observation-only auxiliary gradient",
+    "the exact 250-tick calibrator and both 32-tick locomotion JAX/ONNX chains agree within 1e-7",
+    "the calibration sequence and policy-side calibration-to-locomotion state/context/applied-target handoff are exact",
+    "all nine policy-side invalid context handoffs fail before a context is returned; runtime failure modes remain explicitly unexecuted",
+    "both protected Winner-v10 default-off graphs preserve action and previous_action_out bit-for-bit on arbitrary finite inputs",
+    "both protected default-off x0 populations remain exact-zero and bit-identical",
+    "both deliberately enabled stress graphs and calibrator obey the stored Winner-v10 action boundary with zero measured excess",
+    "both physically chained protected populations remain bit-identical and obey the stored boundary with zero measured excess",
+    "every recurrent previous_action input begins at exact zero or is the preceding finite graph state within [-1,1]",
+    "no true configuration label enters either graph or the auxiliary target"
+  ],
+  "protected_policies": {
+    "final": {
+      "committed_binary": false,
+      "role": "exact Winner-v10 protected final checkpoint",
+      "sha256": "d52b63241340d9d56671b95c58bb0fc72af0998fd47d4684719f6cd44f244a10"
+    },
+    "half": {
+      "committed_binary": false,
+      "role": "exact Winner-v10 protected half checkpoint",
+      "sha256": "cf001269908d86e47eaa145ffda1d87e946a314ecf51056dc086c4cf10164ab6"
+    }
+  },
+  "recurrent_state_precondition": {
+    "out_of_range_runtime_input": "reject before inference; not graph-clamped",
+    "previous_action_bounds_inclusive": [
+      -1.0,
+      1.0
+    ],
+    "previous_action_dtype": "float32",
+    "previous_action_finite": true,
+    "previous_action_shape": [
+      1,
+      14
+    ],
+    "source": "exact zero at reset, then the immediately preceding validated previous_action_out from the same graph"
+  },
+  "runtime_requirements_preserved_but_not_executed": [
+    "wrong policy, source, contract, reference, fit, config, or runtime hash",
+    "missing, stale, mixed-epoch, nonfinite, wrong-shape, or out-of-bound input",
+    "failed or ambiguous send, lost contact, bus, sensor, watchdog, or timing failure",
+    "missing, mutable, persisted, scaled, or invalid calibration context",
+    "any invalid handoff prevents locomotion arming",
+    "every future abort path torque-offs before exit"
+  ],
+  "runtime_review": {
+    "decision": "AUTHORIZE_POLICY_WINNER_V11_ZERO_PPO_CPU_MECHANICS_CONTRACT_ONLY",
+    "receipt_path": "outputs/analysis/winner_v11_runtime_rereview_receipt.json",
+    "receipt_sha256": "66a625180cf4a03470fa58e40c839c4a40a93c2ace5aa128f4aca2d3b9d17bb1",
+    "result_sha256": "6c4f05830d2f1b661bd27297a40e05da5256c701427d929cf1a480d731bfcf57",
+    "review_commit": "b91bf86e1e0dfa4aa2ba1c6eb8755b5edbad6fe1"
+  },
+  "schema_version": "winner_v11.zero_ppo_cpu_mechanics_preregistration.v1",
+  "sources": {
+    "base_v6_checker": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "tools/check_winner_v6_zero_ppo_cpu_contract.py",
+      "sha256": "191f326129240c573e93ddcc2de56c93020589fb701cb4a311ce9742f86b77ef"
+    },
+    "base_v6_network_source": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "patches/winner_v6_dynamic_calibration_networks.py",
+      "sha256": "cfff280a1c592043d7e1849c68a3c99b05574814180506e6608f17877a5dbb90"
+    },
+    "builder": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "tools/build_winner_v11_zero_ppo_cpu_mechanics_contract.py",
+      "sha256": "dbbabe64e51af93f211f2de61d918493307c0bb8a25d9350ac698d7ef7e41478"
+    },
+    "checker": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "tools/check_winner_v11_zero_ppo_cpu_mechanics.py",
+      "sha256": "719318fe9f439a91272179bbe96cd3f1c26984b58dfee5c866dec32556aa9f1e"
+    },
+    "closed_v6b_result": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "outputs/analysis/winner_v6b_zero_ppo_cpu_contract_result.json",
+      "sha256": "44c8c8c86c91f0f8145c309656ce478d40603d06512ea40dcf963bfc2cd6a054"
+    },
+    "importer": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "tools/import_winner_v11_zero_ppo_cpu_mechanics.py",
+      "sha256": "1c56057db326e3137014ad99f22d487a4655cc8f36e41e6888ebb8b8a5d9876f"
+    },
+    "interface_preregistration": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "outputs/analysis/winner_v11_dynamic_calibration_interface_preregistration.json",
+      "sha256": "2500c731a3413b08568e6e88b57300d2c8c86b61f9fe7418f3efa21ab639c8a2"
+    },
+    "network_source": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "patches/winner_v11_dynamic_calibration_networks.py",
+      "sha256": "3ac1166920ec1a3fbcfbca5a85870c6afc1dc0e5062023801edbed09fcdc4809"
+    },
+    "runtime_rereview_receipt": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "outputs/analysis/winner_v11_runtime_rereview_receipt.json",
+      "sha256": "66a625180cf4a03470fa58e40c839c4a40a93c2ace5aa128f4aca2d3b9d17bb1"
+    },
+    "v6b_numeric_attribution": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "outputs/analysis/winner_v6b_numeric_hold_attribution.json",
+      "sha256": "0b40472af2b427bdc20bd4985a83924f5018d7884cc32b678c958fe31f5dafff"
+    },
+    "winner_v10_nominal": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "outputs/analysis/winner_v10_nominal_behavior_result.json",
+      "sha256": "236772a969955bb49e35c685bab2ecb19ab912b6511b7bbdc22c199c6307fa0b"
+    },
+    "winner_v10_r2_condition7": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "outputs/analysis/winner_v10_r2_condition7_result.json",
+      "sha256": "4cccd7f93110c4b6f758b6979a008ad31c8791e2cd0d285db69a80d7bddb676d"
+    },
+    "winner_v10_representation": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "outputs/analysis/winner_v10_inward_torque_contract_result.json",
+      "sha256": "c66d36dd073464fbe09a1c68b9c6d5ca2acda8406e52570032df90c61b833a17"
+    },
+    "winner_v2_observation_map": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/observation_map.json",
+      "sha256": "f0b78431a3a98d418fbe04eebeb0316538121d1199d35f38dbdd0528ee1917a7"
+    },
+    "winner_v2_observer_source": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/observer/winner_v2_contract.py",
+      "sha256": "5c90994a24aa223c94f3a51927228e97000f6118c927561a87a3f2684dcf4889"
+    },
+    "winner_v2_p30_fit": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/observer/p30_actuator_fit.json",
+      "sha256": "908ddb01e5d82e661d77b8f3cb186a84665695660b86b304c6d1ae89c79cdb0b"
+    },
+    "winner_v2_policy_contract": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/policy_contract.json",
+      "sha256": "58831a252c43ba9577b9b743e69e0e3d739992d6e1fbae0ee1caba615014eba4"
+    },
+    "winner_v2_reference_table": {
+      "hash_mode": "raw sha256",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/reference/ground_up_projected_reference_feature_table.npz",
+      "sha256": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212"
+    }
+  },
+  "status": "PREREGISTERED_NOT_RUN",
+  "test_population": {
+    "action_history_lags": [
+      2,
+      3,
+      4
+    ],
+    "applied_target_source": "exact frozen P30 forward observer",
+    "calibration_ticks": 250,
+    "default_off_identity_cases_per_checkpoint": 66,
+    "default_off_x0_cases_per_checkpoint": 32,
+    "enabled_stress_cases_per_graph": 256,
+    "formal_behavior_cells": 0,
+    "invalid_handoff_cases": 9,
+    "invalid_handoff_scope": "policy-side calibration context validation only",
+    "locomotion_jax_onnx_ticks_per_checkpoint": 32,
+    "numeric_tolerance": 1e-07,
+    "optimizer_steps": 0,
+    "phase_period_ticks": 27,
+    "physical_chain_ticks_per_checkpoint": 32,
+    "step_zero_cases": 66
+  }
+}
