@@ -25,6 +25,9 @@ def load() -> dict:
 
 def test_gate_is_frozen_before_any_formal_cell() -> None:
     result = load()
+    assert result["schema_version"] == (
+        "winner_v12.calibrator_support_gate_preregistration.v2"
+    )
     assert result["status"] == "PREREGISTERED_WINNER_V12_CALIBRATOR_SUPPORT_GATE"
     assert result["decision"] == "AUTHORIZE_SUPPORT_GATE_CPU_CONTRACT_ONLY"
     assert result["execution_now"] == {
@@ -36,6 +39,16 @@ def test_gate_is_frozen_before_any_formal_cell() -> None:
     assert result["authority"]["robot_clearance"] is False
     assert result["failed_checks"] == []
     assert result["checks"] and all(result["checks"].values())
+    assert result["supersedes_preexecution_failure"] == {
+        "github_run_id": 29815413956,
+        "failed_launch_lf_sha256": (
+            "c753a29c2ef358bac0af3148b7a8816d1d64b048489d5d8a865a5ff0c7ffa74e"
+        ),
+        "formal_support_cells_completed": 0,
+        "only_change": (
+            "bind the separately frozen calibrator-design preregistration to Episode"
+        ),
+    }
 
 
 def test_gate_matrix_and_no_closest_selection_are_exact() -> None:

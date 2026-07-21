@@ -21,6 +21,7 @@ OUTPUT_MD = ANALYSIS / "WINNER_V12_CALIBRATOR_SUPPORT_GATE_RESULT_20260721.md"
 WORKFLOW = ROOT / ".github/workflows/winner-v12-calibrator-support-gate.yml"
 RUNNER = ROOT / "tools/run_winner_v12_calibrator_support_gate.py"
 PREREGISTRATION = ANALYSIS / "winner_v12_calibrator_support_gate_preregistration.json"
+CALIBRATOR_DESIGN = ANALYSIS / "winner_v12_calibrator_training_preregistration.json"
 DOMAIN = ANALYSIS / "winner_v3_variable_configuration_replacement_preregistration.json"
 TRAINING_RUNNER = ROOT / "tools/run_winner_v12_full_calibrator_training.py"
 RAW_RESULT_NAME = "winner-v12-calibrator-support-gate-result.json"
@@ -217,6 +218,7 @@ def validate_result(result: Mapping[str, Any]) -> None:
         raise ValueError("formal support-gate authority changed")
     if result["sources"] != {
         "preregistration_lf_sha256": lf_sha256(PREREGISTRATION),
+        "calibrator_design_lf_sha256": lf_sha256(CALIBRATOR_DESIGN),
         "domain_lf_sha256": lf_sha256(DOMAIN),
         "training_runner_lf_sha256": lf_sha256(TRAINING_RUNNER),
         "gate_runner_lf_sha256": lf_sha256(RUNNER),

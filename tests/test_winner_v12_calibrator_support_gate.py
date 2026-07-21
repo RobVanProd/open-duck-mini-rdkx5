@@ -39,6 +39,18 @@ def test_preregistered_gate_dimensions_are_unchanged() -> None:
     assert gate["all_cells_at_both_checkpoints_must_pass"] is True
 
 
+def test_episode_uses_separate_hash_bound_calibrator_design() -> None:
+    runner = load_runner()
+    full_training = json.loads(runner.PREREGISTRATION.read_text(encoding="utf-8"))
+    assert "hidden_configuration_domain" not in full_training
+    design = runner.load_calibrator_design(full_training)
+    assert "hidden_configuration_domain" in design
+    assert "continuous_training_domain" in design["hidden_configuration_domain"]
+    source = RUNNER.read_text(encoding="utf-8")
+    assert "design=preregistration" not in source
+    assert source.count("calibrator_design=calibrator_design") == 3
+
+
 def test_delayed_action_queue_is_exact() -> None:
     runner = load_runner()
     one = np.ones((14,), dtype=np.float32)

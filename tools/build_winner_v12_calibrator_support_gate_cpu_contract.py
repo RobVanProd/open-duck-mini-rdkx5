@@ -78,6 +78,17 @@ SOURCE_PATHS = {
     "support_gate_preregistration": Path(
         "outputs/analysis/winner_v12_calibrator_support_gate_preregistration.json"
     ),
+    "calibrator_design_preregistration": Path(
+        "outputs/analysis/winner_v12_calibrator_training_preregistration.json"
+    ),
+    "failed_formal_gate_attribution": Path(
+        "outputs/analysis/"
+        "winner_v12_calibrator_support_gate_preexecution_failure_attribution.json"
+    ),
+    "failed_formal_gate_attribution_tests": Path(
+        "tests/"
+        "test_winner_v12_calibrator_support_gate_preexecution_failure_attribution.py"
+    ),
     "variable_configuration_domain": Path(
         "outputs/analysis/winner_v3_variable_configuration_replacement_preregistration.json"
     ),

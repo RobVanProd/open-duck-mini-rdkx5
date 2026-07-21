@@ -33,6 +33,9 @@ import winner_v12_calibrator_training as training  # noqa: E402
 PREREGISTRATION = (
     ROOT / "outputs/analysis/winner_v12_full_calibrator_training_preregistration.json"
 )
+CALIBRATOR_DESIGN = (
+    ROOT / "outputs/analysis/winner_v12_calibrator_training_preregistration.json"
+)
 DOMAIN = (
     ROOT
     / "outputs/analysis/winner_v3_variable_configuration_replacement_preregistration.json"
@@ -271,7 +274,7 @@ def run_cell(
     scene: Path,
     configuration: Mapping[str, Any],
     plant: str,
-    design: Mapping[str, Any],
+    calibrator_design: Mapping[str, Any],
     observer_type: type[Any],
     canonical_fit: Path,
     session: Any,
@@ -288,7 +291,7 @@ def run_cell(
         scene,
         configuration,
         plant,
-        design,
+        calibrator_design,
         observer_type,
         canonical_fit,
     )
@@ -410,6 +413,32 @@ def checkpoint_paths(work_root: Path, label: str) -> tuple[Path, Path]:
     )
 
 
+def load_calibrator_design(
+    full_training_preregistration: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Load the Episode plant design, not the distinct full-training plan."""
+
+    source = full_training_preregistration.get("sources", {}).get(
+        "calibrator_design_preregistration", {}
+    )
+    if (
+        source.get("path")
+        != "outputs/analysis/winner_v12_calibrator_training_preregistration.json"
+        or source.get("hash_mode") != "lf"
+        or source.get("sha256") != smoke.lf_sha256(CALIBRATOR_DESIGN)
+    ):
+        raise ValueError("calibrator-design provenance changed")
+    design = json.loads(CALIBRATOR_DESIGN.read_text(encoding="utf-8"))
+    if (
+        design.get("status") != "PREREGISTERED_IMPLEMENTATION_NOT_RUN"
+        or "hidden_configuration_domain" not in design
+        or "continuous_training_domain"
+        not in design["hidden_configuration_domain"]
+    ):
+        raise ValueError("calibrator-design hidden configuration domain changed")
+    return design
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--training-work-root", type=Path, required=True)
@@ -436,6 +465,7 @@ def main() -> int:
     ):
         raise ValueError("support gate requires CPU-only JAX")
     preregistration = json.loads(PREREGISTRATION.read_text(encoding="utf-8"))
+    calibrator_design = load_calibrator_design(preregistration)
     domain = json.loads(DOMAIN.read_text(encoding="utf-8"))
     gate = preregistration["future_frozen_support_gate"]
     if (
@@ -496,7 +526,7 @@ def main() -> int:
                     scene=scene,
                     configuration=configuration,
                     plant=plant,
-                    design=preregistration,
+                    calibrator_design=calibrator_design,
                     observer_type=observer_type,
                     canonical_fit=args.canonical_fit,
                     session=session,
@@ -511,7 +541,7 @@ def main() -> int:
                         scene=scene,
                         configuration=configuration,
                         plant=plant,
-                        design=preregistration,
+                        calibrator_design=calibrator_design,
                         observer_type=observer_type,
                         canonical_fit=args.canonical_fit,
                         session=session,
@@ -543,7 +573,7 @@ def main() -> int:
                     scene=scene,
                     configuration=nominal,
                     plant=plant,
-                    design=preregistration,
+                    calibrator_design=calibrator_design,
                     observer_type=observer_type,
                     canonical_fit=args.canonical_fit,
                     session=session,
@@ -671,6 +701,7 @@ def main() -> int:
         "failed_checks": failed,
         "sources": {
             "preregistration_lf_sha256": smoke.lf_sha256(PREREGISTRATION),
+            "calibrator_design_lf_sha256": smoke.lf_sha256(CALIBRATOR_DESIGN),
             "domain_lf_sha256": smoke.lf_sha256(DOMAIN),
             "training_runner_lf_sha256": smoke.lf_sha256(
                 ROOT / "tools/run_winner_v12_full_calibrator_training.py"

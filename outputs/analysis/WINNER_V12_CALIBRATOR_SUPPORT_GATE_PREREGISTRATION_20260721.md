@@ -11,7 +11,10 @@ Both half and final must pass every support cell, every heldout repeat,
 the per-plant learned-vs-constant prediction test, and all 16 hidden-plant
 context separations. There is no closest-result selection.
 
-This freezes the evaluator before training results are inspected. It
-authorizes only a zero-cell CPU contract. The formal gate remains blocked
+The population, seeds, duration, simulator, thresholds, and selection
+rule remain byte-for-byte semantic carryovers from the preregistration
+frozen before training results. This revision only corrects the
+pre-execution Episode input binding attributed in run 29815413956.
+It authorizes only a new zero-cell CPU contract. The formal gate remains blocked
 until the complete training artifact and checkpoint hashes pass independent
 verification.

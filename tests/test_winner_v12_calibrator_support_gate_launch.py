@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import json
 from pathlib import Path
 
 import pytest
@@ -131,3 +132,19 @@ def test_formal_workflow_stays_dormant_until_launch_commit() -> None:
     assert "winner_v12_calibrator_support_gate_launch.json" in trigger
     assert "--formal-gate-authorized" in source
     assert "--zero-cell-contract-authorized" not in source
+
+
+def test_corrected_launch_binds_design_and_failed_attempt_attribution() -> None:
+    builder = load_builder()
+    assert builder.STATIC_SOURCES["calibrator_design_preregistration"] == Path(
+        "outputs/analysis/winner_v12_calibrator_training_preregistration.json"
+    )
+    assert builder.STATIC_SOURCES["failed_formal_gate_attribution"] == Path(
+        "outputs/analysis/"
+        "winner_v12_calibrator_support_gate_preexecution_failure_attribution.json"
+    )
+    failure = json.loads(
+        builder.FAILURE_ATTRIBUTION.read_text(encoding="utf-8")
+    )
+    assert failure["attempt"]["github_run_id"] == 29815413956
+    assert failure["execution"]["formal_support_cells_completed"] == 0

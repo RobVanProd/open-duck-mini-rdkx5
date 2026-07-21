@@ -1,0 +1,47 @@
+{
+  "attempt": {
+    "artifact_count": 0,
+    "commit": "b2231429cd3d0618cf03c8f68a1414f3cac6f650",
+    "conclusion": "failure",
+    "github_job_id": 88585511382,
+    "github_run_attempt": 1,
+    "github_run_id": 29815413956,
+    "github_run_url": "https://github.com/RobVanProd/open-duck-mini-rdkx5/actions/runs/29815413956"
+  },
+  "authority": {
+    "locomotion_training": false,
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false
+  },
+  "checks": {
+    "all_setup_and_provenance_steps_before_runner_passed": true,
+    "exception_is_before_first_completed_cell": true,
+    "failed_workflow_is_not_rerun": true,
+    "no_formal_result_was_produced": true,
+    "root_cause_is_input_binding_not_policy_behavior": true
+  },
+  "decision": "AUTHORIZE_ONE_PROVENANCE_BOUND_INPUT_BINDING_CORRECTION_ONLY",
+  "evidence": {
+    "captured_actions_log_bytes": 129353,
+    "captured_actions_log_sha256": "dca438853a77b92ff8c2e17fd528104639f8d41cecc0dd10906170da229f15b2",
+    "failed_launch_lf_sha256": "c753a29c2ef358bac0af3148b7a8816d1d64b048489d5d8a865a5ff0c7ffa74e",
+    "result_artifact_available": false,
+    "traceback_exception": "KeyError: 'hidden_configuration_domain'",
+    "traceback_gate_runner_line": 286,
+    "traceback_smoke_runner_line": 545
+  },
+  "execution": {
+    "formal_support_cells_completed": 0,
+    "heldout_repeat_cells_completed": 0,
+    "locomotion_training_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "root_cause": {
+    "correction": "Load and hash-bind outputs/analysis/winner_v12_calibrator_training_preregistration.json separately, then pass it to every Episode as calibrator_design.",
+    "expected_input": "winner_v12_calibrator_training_preregistration.json containing hidden_configuration_domain",
+    "observed_input": "winner_v12_full_calibrator_training_preregistration.json, which intentionally contains the training plan and no hidden_configuration_domain"
+  },
+  "schema_version": "winner_v12.calibrator_support_gate_preexecution_failure_attribution.v1",
+  "status": "ATTRIBUTED_WINNER_V12_SUPPORT_GATE_PREEXECUTION_FAILURE"
+}

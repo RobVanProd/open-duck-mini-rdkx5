@@ -5,6 +5,7 @@
     "robot_clearance": false
   },
   "checks": {
+    "binding_correction_only": true,
     "boundary_tests_present": true,
     "model_population_exact": true,
     "runner_has_context_and_prediction_gate": true,
@@ -162,7 +163,7 @@
     "exact half/final checkpoint and ONNX hashes frozen into a launch contract",
     "one zero-cell CPU contract of this gate implementation in the pinned CPU environment"
   ],
-  "schema_version": "winner_v12.calibrator_support_gate_preregistration.v1",
+  "schema_version": "winner_v12.calibrator_support_gate_preregistration.v2",
   "selection": {
     "all_cells_at_both_checkpoints_must_pass": true,
     "checkpoint_labels": [
@@ -172,7 +173,7 @@
     "selection_by_closest_result": false,
     "selection_by_training_reward": false
   },
-  "source_manifest_sha256": "826bbfade70e55f95b5f4668ddd4c75f55a0e5352979ad5941a56a4f2a416dc8",
+  "source_manifest_sha256": "039c5b1549f5fc5a6f9dbe0ba339e304e1c57e281f5f89a3bec9a66e9ffdc7f5",
   "sources": {
     "actuator_bridge": {
       "hash_mode": "lf",
@@ -182,7 +183,12 @@
     "builder": {
       "hash_mode": "lf",
       "path": "tools/build_winner_v12_calibrator_support_gate_preregistration.py",
-      "sha256": "1a50b2e46186408ce024eeea0a11f5b0fef7b685db27a587517ea4b355a403e0"
+      "sha256": "5e32ac10de1842d0831e7b064044e69b81c8d3f03f9c4aea681ac3ca19cc7886"
+    },
+    "calibrator_design_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_calibrator_training_preregistration.json",
+      "sha256": "1ec76a587c6fa50b92866c1632a7046ae0c6687ed17b1636b664bf45c2e8ba34"
     },
     "cpu_smoke": {
       "hash_mode": "lf",
@@ -193,6 +199,16 @@
       "hash_mode": "lf",
       "path": "patches/winner_v12_decomposed_backend_networks.py",
       "sha256": "f463223a33f80baf81b2604e0df22c647660f2752a7ca60b8c75a3441460d015"
+    },
+    "failed_formal_gate_attribution": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_calibrator_support_gate_preexecution_failure_attribution.json",
+      "sha256": "09051f5920003827489267acea2afa4c406d44329d7804637364c5bc6218aac7"
+    },
+    "failed_formal_gate_attribution_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v12_calibrator_support_gate_preexecution_failure_attribution.py",
+      "sha256": "54dadc11ca2bbea7923910022c236c7f7f811284d1333579f0ab20af2186a685"
     },
     "full_training_preregistration": {
       "hash_mode": "lf",
@@ -207,12 +223,12 @@
     "gate_runner": {
       "hash_mode": "lf",
       "path": "tools/run_winner_v12_calibrator_support_gate.py",
-      "sha256": "a1eec55878a4be15a0d566f49e901a4566f660922c4bae60faeb94d07b0e5777"
+      "sha256": "18873eee55c77a278fc065de64c0b912803bf29b4440cde7f3adaabe1297baca"
     },
     "gate_tests": {
       "hash_mode": "lf",
       "path": "tests/test_winner_v12_calibrator_support_gate.py",
-      "sha256": "34b028f18a701687e4de47155022b5945afa199c61307fc75a03f528fc7ed9ff"
+      "sha256": "7904a43b09c144b07c32c2a4321b14d0ddde57678b9fa7a75e03c0e48cb8c04d"
     },
     "runtime_observer": {
       "hash_mode": "lf",
@@ -231,6 +247,12 @@
     }
   },
   "status": "PREREGISTERED_WINNER_V12_CALIBRATOR_SUPPORT_GATE",
+  "supersedes_preexecution_failure": {
+    "failed_launch_lf_sha256": "c753a29c2ef358bac0af3148b7a8816d1d64b048489d5d8a865a5ff0c7ffa74e",
+    "formal_support_cells_completed": 0,
+    "github_run_id": 29815413956,
+    "only_change": "bind the separately frozen calibrator-design preregistration to Episode"
+  },
   "support_thresholds": {
     "duration_valid_ticks": 250,
     "maximum_abs_roll_pitch_rad": 0.35,

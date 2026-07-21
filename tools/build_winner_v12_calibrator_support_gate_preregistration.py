@@ -15,6 +15,16 @@ ANALYSIS = ROOT / "outputs/analysis"
 FULL_PREREGISTRATION = (
     ANALYSIS / "winner_v12_full_calibrator_training_preregistration.json"
 )
+CALIBRATOR_DESIGN = (
+    ANALYSIS / "winner_v12_calibrator_training_preregistration.json"
+)
+FAILURE_ATTRIBUTION = (
+    ANALYSIS / "winner_v12_calibrator_support_gate_preexecution_failure_attribution.json"
+)
+FAILURE_ATTRIBUTION_TEST = (
+    ROOT
+    / "tests/test_winner_v12_calibrator_support_gate_preexecution_failure_attribution.py"
+)
 DOMAIN = ANALYSIS / "winner_v3_variable_configuration_replacement_preregistration.json"
 RUNNER = ROOT / "tools/run_winner_v12_calibrator_support_gate.py"
 TEST = ROOT / "tests/test_winner_v12_calibrator_support_gate.py"
@@ -23,6 +33,9 @@ MARKDOWN = ANALYSIS / "WINNER_V12_CALIBRATOR_SUPPORT_GATE_PREREGISTRATION_202607
 SOURCE_PATHS = {
     "builder": (Path(__file__), "lf"),
     "full_training_preregistration": (FULL_PREREGISTRATION, "lf"),
+    "calibrator_design_preregistration": (CALIBRATOR_DESIGN, "lf"),
+    "failed_formal_gate_attribution": (FAILURE_ATTRIBUTION, "lf"),
+    "failed_formal_gate_attribution_tests": (FAILURE_ATTRIBUTION_TEST, "lf"),
     "variable_configuration_domain": (DOMAIN, "lf"),
     "gate_runner": (RUNNER, "lf"),
     "gate_tests": (TEST, "lf"),
@@ -76,6 +89,10 @@ def source_manifest() -> dict[str, dict[str, str]]:
 
 def main() -> int:
     full = json.loads(FULL_PREREGISTRATION.read_text(encoding="utf-8"))
+    calibrator_design = json.loads(CALIBRATOR_DESIGN.read_text(encoding="utf-8"))
+    failure_attribution = json.loads(
+        FAILURE_ATTRIBUTION.read_text(encoding="utf-8")
+    )
     domain = json.loads(DOMAIN.read_text(encoding="utf-8"))
     frozen = full["future_frozen_support_gate"]
     matrix = domain["evaluation_matrix"]
@@ -88,6 +105,17 @@ def main() -> int:
     runner = RUNNER.read_text(encoding="utf-8")
     tests = TEST.read_text(encoding="utf-8")
     checks = {
+        "binding_correction_only": failure_attribution.get("status")
+        == "ATTRIBUTED_WINNER_V12_SUPPORT_GATE_PREEXECUTION_FAILURE"
+        and failure_attribution.get("execution", {}).get(
+            "formal_support_cells_completed"
+        )
+        == 0
+        and failure_attribution.get("failed_checks") == []
+        and "hidden_configuration_domain" not in full
+        and "hidden_configuration_domain" in calibrator_design
+        and "calibrator_design=calibrator_design" in runner
+        and "design=preregistration" not in runner,
         "upstream_gate_exact": frozen["checkpoint_labels"] == ["half", "final"]
         and frozen["cells_per_checkpoint"] == 124
         and frozen["duration_ticks"] == 250
@@ -141,7 +169,7 @@ def main() -> int:
         raise SystemExit(f"support-gate preregistration failed: {failed}")
     sources = source_manifest()
     payload = {
-        "schema_version": "winner_v12.calibrator_support_gate_preregistration.v1",
+        "schema_version": "winner_v12.calibrator_support_gate_preregistration.v2",
         "status": "PREREGISTERED_WINNER_V12_CALIBRATOR_SUPPORT_GATE",
         "decision": "AUTHORIZE_SUPPORT_GATE_CPU_CONTRACT_ONLY",
         "selection": {
@@ -213,6 +241,14 @@ def main() -> int:
             "exact half/final checkpoint and ONNX hashes frozen into a launch contract",
             "one zero-cell CPU contract of this gate implementation in the pinned CPU environment",
         ],
+        "supersedes_preexecution_failure": {
+            "github_run_id": failure_attribution["attempt"]["github_run_id"],
+            "failed_launch_lf_sha256": failure_attribution["evidence"][
+                "failed_launch_lf_sha256"
+            ],
+            "formal_support_cells_completed": 0,
+            "only_change": "bind the separately frozen calibrator-design preregistration to Episode",
+        },
         "execution_now": {
             "formal_support_cells": 0,
             "heldout_repeat_cells": 0,
@@ -249,8 +285,11 @@ def main() -> int:
                 "the per-plant learned-vs-constant prediction test, and all 16 hidden-plant",
                 "context separations. There is no closest-result selection.",
                 "",
-                "This freezes the evaluator before training results are inspected. It",
-                "authorizes only a zero-cell CPU contract. The formal gate remains blocked",
+                "The population, seeds, duration, simulator, thresholds, and selection",
+                "rule remain byte-for-byte semantic carryovers from the preregistration",
+                "frozen before training results. This revision only corrects the",
+                "pre-execution Episode input binding attributed in run 29815413956.",
+                "It authorizes only a new zero-cell CPU contract. The formal gate remains blocked",
                 "until the complete training artifact and checkpoint hashes pass independent",
                 "verification.",
                 "",

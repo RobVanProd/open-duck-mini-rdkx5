@@ -72,6 +72,9 @@ def valid_result(importer) -> dict:
             "preregistration_lf_sha256": importer.lf_sha256(
                 importer.PREREGISTRATION
             ),
+            "calibrator_design_lf_sha256": importer.lf_sha256(
+                importer.CALIBRATOR_DESIGN
+            ),
             "domain_lf_sha256": importer.lf_sha256(importer.DOMAIN),
             "training_runner_lf_sha256": importer.lf_sha256(
                 importer.TRAINING_RUNNER

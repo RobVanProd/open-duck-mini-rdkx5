@@ -22,6 +22,9 @@ import build_winner_v12_calibrator_support_gate_cpu_contract as cpu_builder  # n
 OUTPUT = ANALYSIS / "winner_v12_calibrator_support_gate_launch.json"
 MARKDOWN = ANALYSIS / "WINNER_V12_CALIBRATOR_SUPPORT_GATE_LAUNCH_20260721.md"
 PREREGISTRATION = ANALYSIS / "winner_v12_calibrator_support_gate_preregistration.json"
+FAILURE_ATTRIBUTION = (
+    ANALYSIS / "winner_v12_calibrator_support_gate_preexecution_failure_attribution.json"
+)
 EXPECTED_ZERO_EXECUTION = {
     "formal_support_cells": 0,
     "heldout_repeat_cells": 0,
@@ -35,6 +38,17 @@ STATIC_SOURCES = {
     "gate_tests": Path("tests/test_winner_v12_calibrator_support_gate.py"),
     "gate_preregistration": Path(
         "outputs/analysis/winner_v12_calibrator_support_gate_preregistration.json"
+    ),
+    "calibrator_design_preregistration": Path(
+        "outputs/analysis/winner_v12_calibrator_training_preregistration.json"
+    ),
+    "failed_formal_gate_attribution": Path(
+        "outputs/analysis/"
+        "winner_v12_calibrator_support_gate_preexecution_failure_attribution.json"
+    ),
+    "failed_formal_gate_attribution_tests": Path(
+        "tests/"
+        "test_winner_v12_calibrator_support_gate_preexecution_failure_attribution.py"
     ),
     "zero_cell_checker": Path(
         "tools/check_winner_v12_calibrator_support_gate_cpu_contract.py"
@@ -292,6 +306,28 @@ def main() -> int:
         or not all(preregistration.get("checks", {}).values())
     ):
         raise ValueError("formal support gate is not preregistered exactly")
+    failure_attribution = json.loads(
+        FAILURE_ATTRIBUTION.read_text(encoding="utf-8")
+    )
+    if (
+        failure_attribution.get("status")
+        != "ATTRIBUTED_WINNER_V12_SUPPORT_GATE_PREEXECUTION_FAILURE"
+        or failure_attribution.get("decision")
+        != "AUTHORIZE_ONE_PROVENANCE_BOUND_INPUT_BINDING_CORRECTION_ONLY"
+        or failure_attribution.get("attempt", {}).get("github_run_id")
+        != 29815413956
+        or failure_attribution.get("attempt", {}).get("github_run_attempt") != 1
+        or failure_attribution.get("execution")
+        != {
+            "formal_support_cells_completed": 0,
+            "heldout_repeat_cells_completed": 0,
+            "locomotion_training_steps": 0,
+            "robot_or_rdk_access": 0,
+        }
+        or failure_attribution.get("failed_checks") != []
+        or not all(failure_attribution.get("checks", {}).values())
+    ):
+        raise ValueError("failed formal-gate attribution changed")
     sources = source_manifest(
         {
             "artifact_check_result": relative_repo_path(args.artifact_check),
@@ -300,7 +336,7 @@ def main() -> int:
         }
     )
     payload = {
-        "schema_version": "winner_v12.calibrator_support_gate_launch.v1",
+        "schema_version": "winner_v12.calibrator_support_gate_launch.v2",
         "status": "PASS_WINNER_V12_CALIBRATOR_SUPPORT_GATE_LAUNCH_FROZEN",
         "decision": "AUTHORIZE_ONE_FROZEN_248_CELL_SUPPORT_GATE_RUN_ONLY",
         "training_artifact": cpu_contract["artifact_verification"],
@@ -311,6 +347,14 @@ def main() -> int:
             "result_lf_sha256": lf_sha256(args.zero_cell_result),
         },
         "formal_gate": cpu_contract["formal_gate_after_contract"],
+        "supersedes_preexecution_failure": {
+            "github_run_id": failure_attribution["attempt"]["github_run_id"],
+            "failed_launch_lf_sha256": failure_attribution["evidence"][
+                "failed_launch_lf_sha256"
+            ],
+            "formal_support_cells_completed": 0,
+            "reason": "wrong preregistration object bound to Episode plant design",
+        },
         "execution_now": EXPECTED_ZERO_EXECUTION,
         "authority": {
             "robot_clearance": False,
