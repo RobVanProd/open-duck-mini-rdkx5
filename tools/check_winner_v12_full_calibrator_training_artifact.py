@@ -34,6 +34,7 @@ RESULT_NAME = "winner_v12_full_calibrator_training_result.json"
 ROOT_LOG_NAME = "winner-v12-full-calibrator-training.log"
 ROOT_RESULT_HASH_NAME = "winner-v12-full-calibrator-training-result.sha256"
 HEX64_RE = re.compile(r"[0-9a-f]{64}")
+GIT_OID_RE = re.compile(r"[0-9a-f]{40}")
 
 
 def sha256(path: Path) -> str:
@@ -55,6 +56,11 @@ def require_sha256(value: Any, label: str) -> None:
         raise ValueError(f"{label} SHA-256 is malformed")
 
 
+def require_git_oid(value: Any, label: str) -> None:
+    if GIT_OID_RE.fullmatch(str(value)) is None:
+        raise ValueError(f"{label} Git object ID is malformed")
+
+
 def repository_attribution(
     *,
     run_id: int,
@@ -65,7 +71,7 @@ def repository_attribution(
     artifact_digest: str,
     expected_zip_sha256: str,
 ) -> dict[str, Any]:
-    require_sha256(run_head_sha, "GitHub run head")
+    require_git_oid(run_head_sha, "GitHub run head")
     expected_name = f"winner-v12-full-calibrator-training-{run_id}"
     expected_digest = f"sha256:{expected_zip_sha256}"
     if (

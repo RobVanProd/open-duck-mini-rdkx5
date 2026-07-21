@@ -54,7 +54,9 @@ jobs:
         run: |
           python -m pytest -q \
             tests/test_winner_v12_full_calibrator_training_artifact_check.py \
-            tests/test_winner_v12_full_calibrator_training_artifact_check_launch.py
+            tests/test_winner_v12_full_calibrator_training_artifact_check_launch.py \
+            tests/test_winner_v12_full_calibrator_training_artifact_check_import.py \
+            tests/test_winner_v12_calibrator_support_gate_cpu_contract_builder.py
 
       - name: Resolve frozen artifact-check launch
         id: launch

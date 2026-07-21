@@ -33,6 +33,18 @@ SOURCE_PATHS = {
     "artifact_verifier_tests": Path(
         "tests/test_winner_v12_full_calibrator_training_artifact_check.py"
     ),
+    "artifact_check_importer": Path(
+        "tools/import_winner_v12_full_calibrator_training_artifact_check.py"
+    ),
+    "artifact_check_importer_tests": Path(
+        "tests/test_winner_v12_full_calibrator_training_artifact_check_import.py"
+    ),
+    "support_contract_builder": Path(
+        "tools/build_winner_v12_calibrator_support_gate_cpu_contract.py"
+    ),
+    "support_contract_builder_tests": Path(
+        "tests/test_winner_v12_calibrator_support_gate_cpu_contract_builder.py"
+    ),
     "training_launch_contract": Path(
         "outputs/analysis/winner_v12_full_calibrator_training_launch_contract.json"
     ),

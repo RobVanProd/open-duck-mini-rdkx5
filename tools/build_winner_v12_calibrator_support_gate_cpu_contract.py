@@ -7,6 +7,7 @@ import argparse
 import hashlib
 import json
 from pathlib import Path
+import re
 from typing import Any, Mapping
 
 
@@ -21,6 +22,13 @@ DEFAULT_MARKDOWN = (
     ANALYSIS / "WINNER_V12_CALIBRATOR_SUPPORT_GATE_CPU_CONTRACT_20260721.md"
 )
 EXPECTED_WORK_ROOT_NAME = "winner-v12-full-calibrator-training-work"
+ARTIFACT_CHECK_WORKFLOW = (
+    ROOT
+    / ".github/workflows/winner-v12-full-calibrator-training-artifact-check.yml"
+)
+ARTIFACT_CHECK_IMPORTER = (
+    ROOT / "tools/import_winner_v12_full_calibrator_training_artifact_check.py"
+)
 CANONICAL_FIT = ANALYSIS / "fixed_target_p30_actuator_fit_20260712.json"
 MODEL_RELATIVE = "playground/open_duck_mini_v2/xmls/open_duck_mini_v2_backlash.xml"
 SCENE_RELATIVE = "playground/open_duck_mini_v2/xmls/scene_flat_terrain_backlash.xml"
@@ -36,6 +44,7 @@ EXPECTED_OUTPUTS = [
     {"name": "previous_action_out", "shape": [1, 14]},
     {"name": "h_out", "shape": [1, 64]},
 ]
+GIT_OID_RE = re.compile(r"[0-9a-f]{40}")
 SOURCE_PATHS = {
     "workflow": Path(
         ".github/workflows/winner-v12-calibrator-support-gate-cpu-contract.yml"
@@ -44,6 +53,15 @@ SOURCE_PATHS = {
     "checker": Path("tools/check_winner_v12_calibrator_support_gate_cpu_contract.py"),
     "artifact_verifier": Path(
         "tools/check_winner_v12_full_calibrator_training_artifact.py"
+    ),
+    "artifact_check_launch": Path(
+        "outputs/analysis/winner_v12_full_calibrator_training_artifact_check_launch.json"
+    ),
+    "artifact_check_workflow": Path(
+        ".github/workflows/winner-v12-full-calibrator-training-artifact-check.yml"
+    ),
+    "artifact_check_importer": Path(
+        "tools/import_winner_v12_full_calibrator_training_artifact_check.py"
     ),
     "support_gate_preregistration": Path(
         "outputs/analysis/winner_v12_calibrator_support_gate_preregistration.json"
@@ -91,6 +109,11 @@ def require_sha256(value: Any, label: str) -> None:
         character not in "0123456789abcdef" for character in text
     ):
         raise ValueError(f"{label} SHA-256 is malformed")
+
+
+def require_git_oid(value: Any, label: str) -> None:
+    if GIT_OID_RE.fullmatch(str(value)) is None:
+        raise ValueError(f"{label} Git object ID is malformed")
 
 
 def validate_checkpoint_identity(label: str, identity: Mapping[str, Any]) -> None:
@@ -145,7 +168,66 @@ def validate_checkpoint_identity(label: str, identity: Mapping[str, Any]) -> Non
     require_sha256(graph["sha256"], f"{label} ONNX")
 
 
-def validate_artifact_check(result: Mapping[str, Any]) -> None:
+def validate_verification_attribution(value: Any) -> None:
+    expected_fields = {
+        "artifact_check_launch_lf_sha256",
+        "artifact_check_launch_path",
+        "artifact_zip_bytes",
+        "artifact_zip_sha256",
+        "github_artifact_digest",
+        "github_artifact_id",
+        "github_artifact_name",
+        "github_run_attempt",
+        "github_run_head_sha",
+        "github_run_id",
+        "importer_lf_sha256",
+        "raw_result_receipt_sha256",
+        "raw_result_sha256",
+        "repository",
+        "workflow_lf_sha256",
+        "workflow_path",
+    }
+    if not isinstance(value, dict) or set(value) != expected_fields:
+        raise ValueError("artifact-check verification attribution schema changed")
+    if (
+        value["repository"] != "RobVanProd/open-duck-mini-rdkx5"
+        or int(value["github_run_id"]) <= 0
+        or value["github_run_attempt"] != 1
+        or int(value["github_artifact_id"]) <= 0
+        or value["github_artifact_name"]
+        != (
+            "winner-v12-full-calibrator-training-artifact-check-"
+            f"{value['github_run_id']}"
+        )
+        or int(value["artifact_zip_bytes"]) <= 0
+        or value["github_artifact_digest"]
+        != f"sha256:{value['artifact_zip_sha256']}"
+        or value["artifact_check_launch_path"]
+        != "outputs/analysis/winner_v12_full_calibrator_training_artifact_check_launch.json"
+        or value["workflow_path"]
+        != ".github/workflows/winner-v12-full-calibrator-training-artifact-check.yml"
+    ):
+        raise ValueError("artifact-check verification attribution changed")
+    require_git_oid(value["github_run_head_sha"], "verification GitHub run head")
+    for key in (
+        "artifact_check_launch_lf_sha256",
+        "artifact_zip_sha256",
+        "importer_lf_sha256",
+        "raw_result_receipt_sha256",
+        "raw_result_sha256",
+        "workflow_lf_sha256",
+    ):
+        require_sha256(value[key], key)
+    if (
+        value["workflow_lf_sha256"] != lf_sha256(ARTIFACT_CHECK_WORKFLOW)
+        or value["importer_lf_sha256"] != lf_sha256(ARTIFACT_CHECK_IMPORTER)
+    ):
+        raise ValueError("artifact-check verification implementation changed")
+
+
+def validate_artifact_check(
+    result: Mapping[str, Any], *, require_verification_attribution: bool = True
+) -> None:
     if (
         result.get("schema_version")
         != "winner_v12.full_calibrator_training_artifact_check.v1"
@@ -208,12 +290,17 @@ def validate_artifact_check(result: Mapping[str, Any]) -> None:
         or attribution["github_artifact_digest"] != f"sha256:{artifact['sha256']}"
     ):
         raise ValueError("artifact repository attribution changed")
-    require_sha256(attribution["github_run_head_sha"], "GitHub run head")
+    require_git_oid(attribution["github_run_head_sha"], "GitHub run head")
     checkpoints = result.get("verified_checkpoints")
     if not isinstance(checkpoints, dict) or set(checkpoints) != {"half", "final"}:
         raise ValueError("verified half/final identity set changed")
     for label in ("half", "final"):
         validate_checkpoint_identity(label, checkpoints[label])
+    verification = result.get("verification_repository_attribution")
+    if require_verification_attribution:
+        validate_verification_attribution(verification)
+    elif verification is not None:
+        raise ValueError("raw artifact check unexpectedly contains import attribution")
 
 
 def bind_training_files(

@@ -52,7 +52,7 @@ def valid_identity(builder, label: str) -> dict:
 
 
 def valid_artifact_check(builder) -> dict:
-    return {
+    result = {
         "schema_version": "winner_v12.full_calibrator_training_artifact_check.v1",
         "status": "PASS_WINNER_V12_FULL_CALIBRATOR_TRAINING_ARTIFACT_CHECK",
         "decision": "AUTHORIZE_FROZEN_124_CELL_CALIBRATOR_GATE_ONLY",
@@ -69,7 +69,7 @@ def valid_artifact_check(builder) -> dict:
             "repository": "RobVanProd/open-duck-mini-rdkx5",
             "github_run_id": 29808732634,
             "github_run_attempt": 1,
-            "github_run_head_sha": "6" * 64,
+            "github_run_head_sha": "6" * 40,
             "github_artifact_id": 123,
             "github_artifact_name": ("winner-v12-full-calibrator-training-29808732634"),
             "github_artifact_digest": f"sha256:{'4' * 64}",
@@ -89,6 +89,33 @@ def valid_artifact_check(builder) -> dict:
             "pass_authorizes_only": "support gate",
         },
     }
+    result["verification_repository_attribution"] = {
+        "repository": "RobVanProd/open-duck-mini-rdkx5",
+        "github_run_id": 999,
+        "github_run_attempt": 1,
+        "github_run_head_sha": "7" * 40,
+        "github_artifact_id": 888,
+        "github_artifact_name": (
+            "winner-v12-full-calibrator-training-artifact-check-999"
+        ),
+        "github_artifact_digest": f"sha256:{'8' * 64}",
+        "artifact_zip_sha256": "8" * 64,
+        "artifact_zip_bytes": 1,
+        "raw_result_sha256": "9" * 64,
+        "raw_result_receipt_sha256": "a" * 64,
+        "artifact_check_launch_path": (
+            "outputs/analysis/"
+            "winner_v12_full_calibrator_training_artifact_check_launch.json"
+        ),
+        "artifact_check_launch_lf_sha256": "b" * 64,
+        "workflow_path": (
+            ".github/workflows/"
+            "winner-v12-full-calibrator-training-artifact-check.yml"
+        ),
+        "workflow_lf_sha256": builder.lf_sha256(builder.ARTIFACT_CHECK_WORKFLOW),
+        "importer_lf_sha256": builder.lf_sha256(builder.ARTIFACT_CHECK_IMPORTER),
+    }
+    return result
 
 
 def test_accepts_only_exact_green_artifact_check() -> None:
@@ -116,6 +143,22 @@ def test_rejects_artifact_check_that_is_not_fully_green(
     artifact = valid_artifact_check(builder)
     artifact[field] = value
     with pytest.raises(ValueError):
+        builder.validate_artifact_check(artifact)
+
+
+def test_requires_independent_verification_workflow_attribution() -> None:
+    builder = load_builder()
+    artifact = valid_artifact_check(builder)
+    artifact.pop("verification_repository_attribution")
+    with pytest.raises(ValueError, match="verification attribution"):
+        builder.validate_artifact_check(artifact)
+
+
+def test_rejects_verification_workflow_attribution_drift() -> None:
+    builder = load_builder()
+    artifact = valid_artifact_check(builder)
+    artifact["verification_repository_attribution"]["github_run_attempt"] = 2
+    with pytest.raises(ValueError, match="verification attribution"):
         builder.validate_artifact_check(artifact)
 
 
