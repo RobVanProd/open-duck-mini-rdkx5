@@ -2,9 +2,9 @@
 
 Status: `PREREGISTERED_PENDING_RUNTIME_REVIEW`
 
-Decision: `REQUEST_READ_ONLY_WINNER_V11_RUNTIME_SCHEMA_REVIEW`
+Decision: `REQUEST_READ_ONLY_WINNER_V11_RUNTIME_SCHEMA_REREVIEW_AFTER_LF_CORRECTION`
 
-JSON SHA-256: `045342b676d96557d451c6a85383f1381c3e3b2489cad3c2b943d85e0778adc6`
+JSON SHA-256: `2500c731a3413b08568e6e88b57300d2c8c86b61f9fe7418f3efa21ab639c8a2`
 
 Winner-v6/v6b remains closed. This request attaches the already-reviewed automatic per-session calibration ABI to the distinct Winner-v10 protected base, whose inward projection, stored bounds, torque representation, and nominal behavior were separately revalidated. It asks runtime only whether the unchanged schema can support a new zero-PPO mechanics contract.
 

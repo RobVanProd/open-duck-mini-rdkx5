@@ -18,7 +18,7 @@
     "mass_com_inertia_dimensions_or_component_identity_inputs": false
   },
   "causal_hypothesis": "Winner-v10's separately contracted inward projection, stored graph-owned bounds, inward torque representation, and complete nominal revalidation remove the protected float32-boundary defect that closed Winner-v6/v6b. The unchanged reviewed dynamic-calibration ABI can therefore be tested mechanically against this distinct protected base before any training.",
-  "decision": "REQUEST_READ_ONLY_WINNER_V11_RUNTIME_SCHEMA_REVIEW",
+  "decision": "REQUEST_READ_ONLY_WINNER_V11_RUNTIME_SCHEMA_REREVIEW_AFTER_LF_CORRECTION",
   "not_a_v6_or_v6b_retry": {
     "behavior_revalidation": {
       "nominal_pass": true,
@@ -26,7 +26,7 @@
       "r2_conditions_1_through_6_pass": true
     },
     "closed_result_preserved": true,
-    "closed_result_sha256": "a1b1bcb81646e332707ba9961f8d4c78f3acd307df4eed161bf8f61d28f21612",
+    "closed_result_sha256": "44c8c8c86c91f0f8145c309656ce478d40603d06512ea40dcf963bfc2cd6a054",
     "new_protected_base": "Winner-v10 inward-torque representation",
     "new_protected_policy_hashes": {
       "final": "d52b63241340d9d56671b95c58bb0fc72af0998fd47d4684719f6cd44f244a10",
@@ -37,6 +37,17 @@
   "policy_hashes": {
     "final": "d52b63241340d9d56671b95c58bb0fc72af0998fd47d4684719f6cd44f244a10",
     "half": "cf001269908d86e47eaa145ffda1d87e946a314ecf51056dc086c4cf10164ab6"
+  },
+  "pre_execution_hash_correction": {
+    "correction_scope": "metadata and LF-stable receipt hashes only",
+    "graph_abi_gate_or_authority_changed": false,
+    "runtime_hold_artifact_sha256": "a5496d7f23195975f83c2536cd0b5a962a074eaf9afdf7b4455b33f496c7c080",
+    "runtime_hold_commit": "9d9410f9ff892e467551e75332dd17bcdcd9f819",
+    "runtime_hold_status": "SCHEMA_FEASIBLE_HOLD_WINNER_V11_ZERO_PPO_HASH_BINDING",
+    "superseded_claimed_crlf_sha256": "045342b676d96557d451c6a85383f1381c3e3b2489cad3c2b943d85e0778adc6",
+    "superseded_committed_lf_sha256": "738cdfe131b5ba70eebbac3333c1b04016c7abdcb8a370c4c682bc3bc9a65424",
+    "superseded_policy_commit": "ed3385dbaf30a8cd1580baf452ff0d8406a1121b",
+    "zero_ppo_run_started": false
   },
   "requested_interface": {
     "calibration_ticks": 250,
@@ -164,49 +175,96 @@
     "observation_contract": "winner-v2-115d",
     "previous_action_and_applied_target_handoff": "carry final confirmed values",
     "runtime_v1_101x14_changed": false,
-    "runtime_v2_115d_semantics_changed": false
+    "runtime_v2_115d_semantics_changed": false,
+    "sequence_inherited_from_reviewed_winner_v6": {
+      "calibration_command": "exact float32 zeros[7]",
+      "calibration_phase": [
+        1.0,
+        0.0
+      ],
+      "calibration_phase_advances": false,
+      "calibrator_initial_hidden_state": "exact float32 zeros[1,64]",
+      "calibrator_initial_previous_action": "exact float32 zeros[1,14]",
+      "context_bounds_inclusive": [
+        -1.0,
+        1.0
+      ],
+      "context_order": "learned_response_latent[0:64]",
+      "frequency_hz": 50,
+      "paused_hold_target": "final confirmed safe calibration target",
+      "runtime_remains_paused_after_handoff": true
+    },
+    "x0_semantics": {
+      "default_off": "byte-exact Winner-v10 zero-action deadband",
+      "evidence": "all four Winner-v10 condition-7 x0 traces are byte-identical, exact-zero action/state, and terminate after 47 samples",
+      "future_enabled": "graph-authoritative and may be nonzero",
+      "future_enabled_requires_separate_behavior_gate": true,
+      "host_forces_zero": false
+    }
   },
+  "required_fail_closed_rules": [
+    "wrong policy, source, contract, reference, fit, config, or runtime hash",
+    "missing, stale, mixed-epoch, nonfinite, wrong-shape, or out-of-bound input",
+    "failed or ambiguous send, lost contact, bus, sensor, watchdog, or timing failure",
+    "missing, mutable, persisted, scaled, or invalid calibration context",
+    "any invalid handoff prevents locomotion arming",
+    "every future abort path torque-offs before exit"
+  ],
   "runtime_review_questions": [
     "Does the unchanged two-graph ABI remain implementable with the exact Winner-v10 base hashes?",
     "Can default-off delegation preserve Winner-v10 action and previous_action_out byte-for-byte without a host limiter?",
     "Can runtime carry the final confirmed previous action and applied-target observer state across the calibration-to-locomotion handoff?",
     "Can every context remain session-local, immutable, nonpersistent, and mandatory before locomotion arming?",
-    "Does Winner-v10's graph-owned inward torque representation require any runtime semantic change?",
+    "Does Winner-v10's plant/XML inward torque representation require no runtime semantic change?",
+    "Can runtime keep default-off x=0 byte-exact while leaving future enabled x=0 output graph-authoritative?",
     "May policy freeze one zero-PPO CPU mechanics contract before any support-mode or training proposal?"
   ],
-  "schema_version": "winner_v11.dynamic_calibration_interface_preregistration.v1",
+  "schema_version": "winner_v11.dynamic_calibration_interface_preregistration.v2",
   "sources": {
     "builder": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
       "path": "tools/build_winner_v11_dynamic_calibration_interface_preregistration.py",
-      "sha256": "a2c4bebf30f36d4f7ad542b60b0936c48749ebe0800809102db1512f8e437ca3"
+      "sha256": "0627a810c2caa99de62a2b0b815ef667ca97e2689facce86eb8a8ae14ac3c16a"
     },
     "closed_v6b_result": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
       "path": "outputs/analysis/winner_v6b_zero_ppo_cpu_contract_result.json",
-      "sha256": "a1b1bcb81646e332707ba9961f8d4c78f3acd307df4eed161bf8f61d28f21612"
+      "sha256": "44c8c8c86c91f0f8145c309656ce478d40603d06512ea40dcf963bfc2cd6a054"
+    },
+    "runtime_hash_review_receipt": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "outputs/analysis/winner_v11_runtime_hash_review_receipt.json",
+      "sha256": "20995a5c6116f2db5a5bf5d44cbab1e553dc00dcf42475d9b9971ebdb4b285e2"
     },
     "v6_network_source": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
       "path": "patches/winner_v6_dynamic_calibration_networks.py",
       "sha256": "cfff280a1c592043d7e1849c68a3c99b05574814180506e6608f17877a5dbb90"
     },
     "v6b_numeric_attribution": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
       "path": "outputs/analysis/winner_v6b_numeric_hold_attribution.json",
-      "sha256": "eb3ed6a951b76e4c88b9adcbb52de3b3a6a84719f469ebfcd788dcef65ee879c"
+      "sha256": "0b40472af2b427bdc20bd4985a83924f5018d7884cc32b678c958fe31f5dafff"
     },
     "winner_v10_nominal": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
       "path": "outputs/analysis/winner_v10_nominal_behavior_result.json",
-      "sha256": "eae89e89eb4b92c0414ee7e69c1b8e633d3408495216e55bf1d80bb467642690"
+      "sha256": "236772a969955bb49e35c685bab2ecb19ab912b6511b7bbdc22c199c6307fa0b"
     },
     "winner_v10_r2_condition6": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
       "path": "outputs/analysis/winner_v10_r2_condition6_result.json",
-      "sha256": "1787cea6abb1f94edaba605b4dae3436c274d3602a35a3339d93fbcf127fa3f9"
+      "sha256": "89cb884879448d480915870c169ed1af942c082ce092b00af5b0dbc0af3209a1"
     },
     "winner_v10_r2_condition7_hold": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
       "path": "outputs/analysis/winner_v10_r2_condition7_result.json",
-      "sha256": "70bd46ab3879a3d2b8e4aa8f1b0cb85563d6b1003705cbc8734848b23bccb274"
+      "sha256": "4cccd7f93110c4b6f758b6979a008ad31c8791e2cd0d285db69a80d7bddb676d"
     },
     "winner_v10_representation": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
       "path": "outputs/analysis/winner_v10_inward_torque_contract_result.json",
-      "sha256": "240f0e736b2e4c232c3caaba7700917c55bf825b5da07f729db51b3c5b6675e5"
+      "sha256": "c66d36dd073464fbe09a1c68b9c6d5ca2acda8406e52570032df90c61b833a17"
     }
   },
   "status": "PREREGISTERED_PENDING_RUNTIME_REVIEW",
@@ -222,9 +280,10 @@
     "calibrator_and_locomotion_jax_onnx_chain": true,
     "cpu_only": true,
     "default_off_action_and_previous_state_bit_exact_to_winner_v10": true,
-    "enabled_graph_owns_absolute_delta_guard_and_inward_torque_bounds": true,
+    "enabled_graph_owns_absolute_and_delta_action_guards": true,
     "formal_behavior_cells": 0,
     "invalid_handoffs_fail_closed": true,
-    "optimizer_steps": 0
+    "optimizer_steps": 0,
+    "winner_v10_inward_torque_is_plant_xml_not_runtime_abi": true
   }
 }

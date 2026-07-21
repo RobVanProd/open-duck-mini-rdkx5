@@ -24,6 +24,7 @@ SOURCES = {
     "winner_v10_r2_condition6": ANALYSIS / "winner_v10_r2_condition6_result.json",
     "winner_v10_r2_condition7_hold": ANALYSIS / "winner_v10_r2_condition7_result.json",
     "v6_network_source": ROOT / "patches/winner_v6_dynamic_calibration_networks.py",
+    "runtime_hash_review_receipt": ANALYSIS / "winner_v11_runtime_hash_review_receipt.json",
 }
 
 
@@ -33,6 +34,10 @@ def sha256(path: Path) -> str:
         for block in iter(lambda: stream.read(1024 * 1024), b""):
             digest.update(block)
     return digest.hexdigest()
+
+
+def lf_sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes().replace(b"\r\n", b"\n")).hexdigest()
 
 
 def tensor(name: str, shape: list[int]) -> dict[str, Any]:
@@ -66,6 +71,7 @@ def main() -> int:
     nominal = load("winner_v10_nominal")
     condition6 = load("winner_v10_r2_condition6")
     condition7 = load("winner_v10_r2_condition7_hold")
+    runtime_receipt = load("runtime_hash_review_receipt")
     if v6b["status"] != "HOLD_WINNER_V6B_ZERO_PPO_CPU_SOFTWARE_CONTRACT":
         raise ValueError("Winner-v6b must remain held")
     if not attribution["winner_v6_or_v6b_retry_authorized"] is False:
@@ -82,6 +88,16 @@ def main() -> int:
         or condition7["decision"] != "STOP_WINNER_V10_R2_AT_FIRST_FAILED_CONDITION"
     ):
         raise ValueError("Winner-v10 R2 terminal hold is not the reviewed result")
+    if (
+        runtime_receipt["status"]
+        != "SCHEMA_FEASIBLE_HOLD_WINNER_V11_ZERO_PPO_HASH_BINDING"
+        or runtime_receipt["decision"]
+        != "REQUEST_POLICY_LF_STABLE_HASH_CORRECTION_BEFORE_ZERO_PPO"
+        or not runtime_receipt["authority"][
+            "metadata_only_lf_stable_policy_correction"
+        ]
+    ):
+        raise ValueError("runtime did not authorize this metadata-only correction")
 
     policy_hashes = {"half": sha256(half), "final": sha256(final)}
     expected_policy_hashes = {
@@ -119,14 +135,15 @@ def main() -> int:
     sources = {
         name: {
             "path": str(path.relative_to(ROOT)).replace("\\", "/"),
-            "sha256": sha256(path),
+            "sha256": lf_sha256(path),
+            "hash_mode": "sha256 after CRLF-to-LF normalization",
         }
         for name, path in SOURCES.items()
     }
     payload = {
-        "schema_version": "winner_v11.dynamic_calibration_interface_preregistration.v1",
+        "schema_version": "winner_v11.dynamic_calibration_interface_preregistration.v2",
         "status": "PREREGISTERED_PENDING_RUNTIME_REVIEW",
-        "decision": "REQUEST_READ_ONLY_WINNER_V11_RUNTIME_SCHEMA_REVIEW",
+        "decision": "REQUEST_READ_ONLY_WINNER_V11_RUNTIME_SCHEMA_REREVIEW_AFTER_LF_CORRECTION",
         "causal_hypothesis": (
             "Winner-v10's separately contracted inward projection, stored graph-owned "
             "bounds, inward torque representation, and complete nominal revalidation "
@@ -146,6 +163,21 @@ def main() -> int:
             },
             "r2_resumption": False,
         },
+        "pre_execution_hash_correction": {
+            "correction_scope": "metadata and LF-stable receipt hashes only",
+            "graph_abi_gate_or_authority_changed": False,
+            "zero_ppo_run_started": False,
+            "superseded_policy_commit": runtime_receipt["reviewed_policy_commit"],
+            "superseded_claimed_crlf_sha256": runtime_receipt[
+                "reviewed_policy_artifact_claimed_sha256"
+            ],
+            "superseded_committed_lf_sha256": runtime_receipt[
+                "reviewed_policy_artifact_committed_sha256"
+            ],
+            "runtime_hold_commit": runtime_receipt["review_commit"],
+            "runtime_hold_artifact_sha256": runtime_receipt["artifact_sha256"],
+            "runtime_hold_status": runtime_receipt["status"],
+        },
         "requested_interface": {
             "contract_id": "winner-v11-dynamic-calibration-r64",
             "observation_contract": "winner-v2-115d",
@@ -162,12 +194,35 @@ def main() -> int:
             "runtime_v2_115d_semantics_changed": False,
             "host_action_projection_or_limiter_added": False,
             "normalization_location": "inside future ONNX graph",
+            "sequence_inherited_from_reviewed_winner_v6": {
+                "frequency_hz": 50,
+                "calibrator_initial_previous_action": "exact float32 zeros[1,14]",
+                "calibrator_initial_hidden_state": "exact float32 zeros[1,64]",
+                "calibration_command": "exact float32 zeros[7]",
+                "calibration_phase": [1.0, 0.0],
+                "calibration_phase_advances": False,
+                "context_order": "learned_response_latent[0:64]",
+                "context_bounds_inclusive": [-1.0, 1.0],
+                "runtime_remains_paused_after_handoff": True,
+                "paused_hold_target": "final confirmed safe calibration target",
+            },
+            "x0_semantics": {
+                "default_off": "byte-exact Winner-v10 zero-action deadband",
+                "future_enabled": "graph-authoritative and may be nonzero",
+                "host_forces_zero": False,
+                "future_enabled_requires_separate_behavior_gate": True,
+                "evidence": (
+                    "all four Winner-v10 condition-7 x0 traces are byte-identical, "
+                    "exact-zero action/state, and terminate after 47 samples"
+                ),
+            },
         },
         "zero_ppo_contract_requested_after_review_only": {
             "optimizer_steps": 0,
             "default_off_action_and_previous_state_bit_exact_to_winner_v10": True,
             "arbitrary_finite_default_off_population": True,
-            "enabled_graph_owns_absolute_delta_guard_and_inward_torque_bounds": True,
+            "enabled_graph_owns_absolute_and_delta_action_guards": True,
+            "winner_v10_inward_torque_is_plant_xml_not_runtime_abi": True,
             "calibrator_and_locomotion_jax_onnx_chain": True,
             "invalid_handoffs_fail_closed": True,
             "cpu_only": True,
@@ -181,12 +236,21 @@ def main() -> int:
             "future_support_mode_must_be_separately_preregistered": True,
             "future_calibration_action_must_be_graph_bounded": True,
         },
+        "required_fail_closed_rules": [
+            "wrong policy, source, contract, reference, fit, config, or runtime hash",
+            "missing, stale, mixed-epoch, nonfinite, wrong-shape, or out-of-bound input",
+            "failed or ambiguous send, lost contact, bus, sensor, watchdog, or timing failure",
+            "missing, mutable, persisted, scaled, or invalid calibration context",
+            "any invalid handoff prevents locomotion arming",
+            "every future abort path torque-offs before exit",
+        ],
         "runtime_review_questions": [
             "Does the unchanged two-graph ABI remain implementable with the exact Winner-v10 base hashes?",
             "Can default-off delegation preserve Winner-v10 action and previous_action_out byte-for-byte without a host limiter?",
             "Can runtime carry the final confirmed previous action and applied-target observer state across the calibration-to-locomotion handoff?",
             "Can every context remain session-local, immutable, nonpersistent, and mandatory before locomotion arming?",
-            "Does Winner-v10's graph-owned inward torque representation require any runtime semantic change?",
+            "Does Winner-v10's plant/XML inward torque representation require no runtime semantic change?",
+            "Can runtime keep default-off x=0 byte-exact while leaving future enabled x=0 output graph-authoritative?",
             "May policy freeze one zero-PPO CPU mechanics contract before any support-mode or training proposal?",
         ],
         "policy_hashes": policy_hashes,
@@ -211,11 +275,11 @@ def main() -> int:
     }
     output_json.parent.mkdir(parents=True, exist_ok=True)
     output_md.parent.mkdir(parents=True, exist_ok=True)
-    output_json.write_text(
-        json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    output_json.write_bytes(
+        (json.dumps(payload, indent=2, sort_keys=True) + "\n").encode("utf-8")
     )
     result_sha = sha256(output_json)
-    output_md.write_text(
+    markdown = (
         "# Winner-v11 Dynamic-Calibration Interface Preregistration\n\n"
         f"Status: `{payload['status']}`\n\n"
         f"Decision: `{payload['decision']}`\n\n"
@@ -228,9 +292,9 @@ def main() -> int:
         "No scales, calipers, mass, COM, inertia, dimensions, component identity, or "
         "manual per-build input is used. No zero-PPO run, training, hosted compute, "
         "runtime implementation, X5/robot access, torque, motion, Gate 5, deployment, "
-        "checkpoint selection, or robot clearance is authorized.\n",
-        encoding="utf-8",
+        "checkpoint selection, or robot clearance is authorized.\n"
     )
+    output_md.write_bytes(markdown.encode("utf-8"))
     print(json.dumps({"status": payload["status"], "sha256": result_sha}, sort_keys=True))
     return 0
 
