@@ -1,0 +1,311 @@
+{
+  "checks": {
+    "calibrator_only_scope_preserved": true,
+    "every_workflow_python_tool_hash_bound": true,
+    "onnx_contract_uses_nonzero_bank": true,
+    "preregistration_exact": true,
+    "runner_asserts_per_update_invariants": true,
+    "runner_has_atomic_hash_verified_recovery": true,
+    "runner_has_exact_population_and_seed_binding": true,
+    "runner_hashes_all_artifacts": true,
+    "runner_requires_one_run_launch_claim": true,
+    "schedule_exact": true,
+    "workflow_is_manual_single_cpu_contract": true,
+    "zero_update_authority": true
+  },
+  "decision": "AUTHORIZE_ONE_ZERO_UPDATE_FULL_TRAINING_CPU_CONTRACT_RUN_ONLY",
+  "expected_result": {
+    "decision": "AUTHORIZE_ONE_WINNER_V12_FULL_CALIBRATOR_TRAINING_RUN_ONLY",
+    "execution": {
+      "formal_support_cells": 0,
+      "locomotion_training_steps": 0,
+      "optimizer_updates": 0,
+      "robot_or_rdk_access": 0
+    },
+    "status": "PASS_WINNER_V12_FULL_CALIBRATOR_TRAINING_CPU_CONTRACT"
+  },
+  "failed_checks": [],
+  "formal_contract_execution": {
+    "actual_attempted_and_valid_transitions": "recorded separately in the formal result because invalid-support termination may end an episode early",
+    "formal_support_cells": 0,
+    "full_stage1_rollout_environments": 80,
+    "full_stage2_rollout_environments": 80,
+    "locomotion_training_steps": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0,
+    "stage1_scheduled_tick_slots_per_environment_capacity": 250,
+    "stage2_scheduled_tick_slots_per_environment_capacity": 250
+  },
+  "pass_authorizes_only": "one frozen, seed-120120, no-retry full calibrator training run with per-update recovery; it does not authorize the 124-cell gate, locomotion training, deployment, Gate 5, or robot access",
+  "platform": "CPU only",
+  "preregistration_lf_sha256": "99500648d6683097a13f894b0949bf4b5494e5653f36878710817bd0952f71dd",
+  "required_checks": [
+    "exact source, software, Playground, fit, population, seed and initialization identities",
+    "full 80-environment Stage-1 and Stage-2 no-update rollouts",
+    "independent full-population float64 Stage-1 normalizer recomputation and frozen lineage",
+    "finite objectives and gradients without calling Adam",
+    "fixed-P30 observer slot and exact previous-action chain",
+    "exact Stage-2 terminal masks and graph-owned action boundary",
+    "atomic snapshot readback, self-hash, receipt, lineage and newest-state selection",
+    "pending-artifact quarantine and stale-latest-pointer repair",
+    "nonzero 250-tick JAX/ONNX recurrent-chain equivalence",
+    "one logical-run authorization claim bound to one exact resolved work root",
+    "heldout configurations absent from normalization and optimizer populations"
+  ],
+  "schedule": {
+    "episode_ticks": 250,
+    "parameter_seed": 60720,
+    "root_seed": 120120,
+    "scheduled_tick_slots_per_update": 20000,
+    "stage1_updates": 100,
+    "stage2_updates": 100
+  },
+  "schema_version": "winner_v12.full_calibrator_training_cpu_contract.v1",
+  "software_versions": {
+    "jax": "0.7.2",
+    "jaxlib": "0.7.2",
+    "mujoco": "3.9.0",
+    "numpy": "2.0.2",
+    "onnx": "1.22.0",
+    "onnxruntime": "1.27.0",
+    "python": "3.12.13"
+  },
+  "sources": {
+    "actuator_bridge": {
+      "hash_mode": "lf",
+      "path": "tools/actuator_bridge_model.py",
+      "sha256": "bb5ddb1847e773ab21d8ddfadab307ceaf22599a51f686dbb4f6121cde2d0bec"
+    },
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v12_full_calibrator_training_cpu_contract.py",
+      "sha256": "6ddeb3a802e74872f616431bf976dc0048908248bfc3212be8c7bdff20c978f8"
+    },
+    "calibrator_design": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_calibrator_training_preregistration.json",
+      "sha256": "1ec76a587c6fa50b92866c1632a7046ae0c6687ed17b1636b664bf45c2e8ba34"
+    },
+    "checker": {
+      "hash_mode": "lf",
+      "path": "tools/check_winner_v12_full_calibrator_training_cpu_contract.py",
+      "sha256": "0fe71c95ca69918ce94a6c1a7ce0a8d8f03f1a0df25827b8a6457b041e6e3fab"
+    },
+    "decomposed_network": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_decomposed_backend_networks.py",
+      "sha256": "f463223a33f80baf81b2604e0df22c647660f2752a7ca60b8c75a3441460d015"
+    },
+    "domain": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v3_variable_configuration_replacement_preregistration.json",
+      "sha256": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b"
+    },
+    "p30_fit": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/fixed_target_p30_actuator_fit_20260712.json",
+      "sha256": "908ddb01e5d82e661d77b8f3cb186a84665695660b86b304c6d1ae89c79cdb0b"
+    },
+    "p31_34_fit": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/fixed_target_p31_34_actuator_fit_20260712.json",
+      "sha256": "a39776c06c5e26425e24b50e7dab3f441823e23904cad4977b8c921d9c9ca276"
+    },
+    "patch_applied_target": {
+      "hash_mode": "lf",
+      "path": "patches/ground_up_applied_target_observation.patch",
+      "sha256": "bdcac27115fcbe855079f5365ac046e863a9b302ff16f560d12a26cd492f2821"
+    },
+    "patch_hard_vector": {
+      "hash_mode": "lf",
+      "path": "patches/ground_up_hard_vector_command_support.patch",
+      "sha256": "900e65beaa4aa714ec352a527bf3f1a85888c0c76dab8d4cbef2352fa4986875"
+    },
+    "patch_measured_bridge": {
+      "hash_mode": "lf",
+      "path": "patches/ground_up_measured_actuator_bridge.patch",
+      "sha256": "133531963abea46cd0394526a2fa88b018fc21ca68c365863304e3e96d6ca0df"
+    },
+    "patch_nominal_bootstrap": {
+      "hash_mode": "lf",
+      "path": "patches/ground_up_nominal_reference_bootstrap.patch",
+      "sha256": "0d89b85815eb570115ec5f35d677aba68299f977b3e36c60b10dfa869533ebba"
+    },
+    "patch_recipe_search": {
+      "hash_mode": "lf",
+      "path": "patches/ground_up_recipe_search.patch",
+      "sha256": "3f5d892f5ce531207de6c86b18c9f5dbea83bc131a3fc2e5085851c2e4e3e5f8"
+    },
+    "patch_reference_conditioned": {
+      "hash_mode": "lf",
+      "path": "patches/ground_up_reference_conditioned.patch",
+      "sha256": "4138ecddb9ffc0df468a2780522c1732bc4b0e1a0865d181da1112d1c16902fb"
+    },
+    "patch_reference_residual": {
+      "hash_mode": "lf",
+      "path": "patches/ground_up_reference_residual_actor.patch",
+      "sha256": "57bcf2394fa47745e9c26c6933e58a06c3799aba35e7000762befc5fac2f7d3b"
+    },
+    "patch_search_runner": {
+      "hash_mode": "lf",
+      "path": "patches/ground_up_search_runner.patch",
+      "sha256": "6a176589b766de65ac2746c66f3387bfca5384d6ce4adf3703c752d8103a5e55"
+    },
+    "patch_signed_progress": {
+      "hash_mode": "lf",
+      "path": "patches/ground_up_signed_progress_objective.patch",
+      "sha256": "13ddc699d3a005416a5790152b4a9d4f442216cfec4a991f93be65bde85ffa5b"
+    },
+    "patch_stage1_mechanism": {
+      "hash_mode": "lf",
+      "path": "patches/ground_up_stage1_mechanism_stack.patch",
+      "sha256": "cf5155dfd54a4699865b9823e8bf090f9f54b0e53df5583eb448e315d60053dc"
+    },
+    "patch_tracking_tail": {
+      "hash_mode": "lf",
+      "path": "patches/ground_up_tracking_tail_exceedance.patch",
+      "sha256": "9f716243e0c4ef487ef4227ef0cb9f389ed43c0456435987ac0846e1b629811e"
+    },
+    "playground_composer": {
+      "hash_mode": "lf",
+      "path": "tools/compose_winner_v7_playground.py",
+      "sha256": "47d920af6438bcf93d65d1edfe0b2e20df8bfef298f3fd73fefc73cebcaf1bcd"
+    },
+    "preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_full_calibrator_training_preregistration.json",
+      "sha256": "99500648d6683097a13f894b0949bf4b5494e5653f36878710817bd0952f71dd"
+    },
+    "protected_t2_equal_final": {
+      "hash_mode": "raw",
+      "path": "outputs/analysis/ground_up_dual_fit_conservative_envelope_repair_policies/T2_EQUAL_1024000.onnx",
+      "sha256": "0dfc24bde5d839e4d346dd8c08d9a7d0222a3847764ec6738bfc7f8d947f4ece"
+    },
+    "protected_t2_equal_half": {
+      "hash_mode": "raw",
+      "path": "outputs/analysis/ground_up_dual_fit_conservative_envelope_repair_policies/T2_EQUAL_512000.onnx",
+      "sha256": "99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de"
+    },
+    "reference_residual_network": {
+      "hash_mode": "lf",
+      "path": "patches/reference_residual_ppo_networks.py",
+      "sha256": "546f375fa3c2f34158f49f1ac07cdc5ff6dc41d1a94322f4334bd48835911630"
+    },
+    "reference_table": {
+      "hash_mode": "raw",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/reference/ground_up_projected_reference_feature_table.npz",
+      "sha256": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_full_calibrator_training.py",
+      "sha256": "37a52a038322a9b1dc781ccf67d4e73bd4e300d7aae9e462d10057881b58ce71"
+    },
+    "runtime_observer": {
+      "hash_mode": "lf",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/observer/winner_v2_contract.py",
+      "sha256": "5c90994a24aa223c94f3a51927228e97000f6118c927561a87a3f2684dcf4889"
+    },
+    "runtime_observer_contract": {
+      "hash_mode": "lf",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/observer_contract.json",
+      "sha256": "63261636dbec7259dbede679d8f22288608963634dcf3570bcc65d544e160350"
+    },
+    "smoke_contract": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_calibrator_cpu_smoke_contract.json",
+      "sha256": "fb3b3114486f3e7154115557a5131a1e26f6ea5f0e70a5a3d114ffb01707aad7"
+    },
+    "smoke_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_cpu_smoke.py",
+      "sha256": "b6ad53430f3f7cca3a91a90f72dab585cb05e3e2f74be2241af3fd9b6ee7ce87"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v12_full_calibrator_training_cpu_contract.py",
+      "sha256": "3c37293be90921ebd894e082ff9ea2cd5ba0537d6b2f58451ed25924463119d5"
+    },
+    "training_primitives": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_calibrator_training.py",
+      "sha256": "f5736a357d73baedae2bba1d15254dd688bddf3761eb731d757a971783c77227"
+    },
+    "winner_v10_builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v10_inward_torque_preregistration.py",
+      "sha256": "d9284e61e98e7eed93ba3c4c05c8140825658e8a5745d0c0db7c08f75c9c1a32"
+    },
+    "winner_v10_importer": {
+      "hash_mode": "lf",
+      "path": "tools/import_winner_v10_inward_torque_contract.py",
+      "sha256": "5bea34b6afc5d4792056f71d655a73737eaa6001a56dda1663ba719be3dbea0c"
+    },
+    "winner_v10_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v10_inward_torque_contract_preregistration.json",
+      "sha256": "3c23565b7c99671ad0cf3aca4ad46e35af1874c8c7d63d95113bbf0e523c94ae"
+    },
+    "winner_v10_transform": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v10_inward_torque_contract.py",
+      "sha256": "8ed21d304aa44776ab62350e1bfab20d5dc75b228a4794266ee93f2315b0d150"
+    },
+    "winner_v6b_numeric_attribution": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v6b_numeric_hold_attribution.json",
+      "sha256": "0b40472af2b427bdc20bd4985a83924f5018d7884cc32b678c958fe31f5dafff"
+    },
+    "winner_v7_importer": {
+      "hash_mode": "lf",
+      "path": "tools/import_winner_v7_inward_projection_contract.py",
+      "sha256": "4eb600d24bcec70e243a0cb13aafb52cb546f77885dbd860effe8e6eeea5e4c8"
+    },
+    "winner_v7_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v7_inward_projection_preregistration.json",
+      "sha256": "6ed255948ded316bdd0bcbbf019f45bce32386b8bad09c0b3d9d26e233ae3df6"
+    },
+    "winner_v7_transform": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v7_inward_projection_contract.py",
+      "sha256": "8aaa73e1eda903eadb29547ca5c3556e78ee265cfee03092cfc3dc7e175a7eab"
+    },
+    "winner_v8_helper": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v8_physical_envelope_contract.py",
+      "sha256": "03041344ad7f56677752c60857c9ffb8138612121d94b43113c127da4cb7da7c"
+    },
+    "winner_v8_numeric_attribution": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v8_numeric_hold_attribution.json",
+      "sha256": "d697f170d5cc5c6f8ac44f6313d42101c3a07e80cee7dbfe3422c65f2d4f63b6"
+    },
+    "winner_v9_nominal_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v9_nominal_behavior_result.json",
+      "sha256": "4e5dc8e3e1ed4608589a71f48c438157cc43ad24b60407162869a14ede752d4a"
+    },
+    "winner_v9_numeric_attribution": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v9_numeric_torque_hold_attribution.json",
+      "sha256": "9efd766f700c4b0f921a8a40c5989e0eeec507f325f5cc3aebab7bf2b704203e"
+    },
+    "winner_v9_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v9_stored_bound_contract_preregistration.json",
+      "sha256": "0b241db38a2528967a6caec1a5d95085151a957b9dac1e50f8a01bb51c98bb4f"
+    },
+    "winner_v9_transform": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v9_stored_bound_contract.py",
+      "sha256": "c8e4b05417a28df2aee9002a7a5cf11ae7d7c1fd1b1b3d719a15e8ac337d9805"
+    },
+    "workflow": {
+      "hash_mode": "lf",
+      "path": ".github/workflows/winner-v12-full-calibrator-training-cpu-contract.yml",
+      "sha256": "d5d191387b393901495e7724ca03f8222147f8e273fd82eca1b9d07c7dfb5583"
+    }
+  },
+  "status": "PASS_WINNER_V12_FULL_CALIBRATOR_TRAINING_CPU_CONTRACT_FROZEN"
+}
