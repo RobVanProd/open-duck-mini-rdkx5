@@ -2167,3 +2167,23 @@ Do not proceed to grounded walking until low-risk gates pass.
   authorize the 124-cell support gate, response-conditioned locomotion,
   deployment selection, Gate 5, or robot access. See
   `outputs/analysis/WINNER_V12_FULL_CALIBRATOR_TRAINING_CPU_CONTRACT_RESULT_20260721.md`.
+- 2026-07-21: Winner-v22 completed the single normalized-predictor training run
+  and corrected-coordinate support gate. The learned predictor beats the
+  constant baseline at both checkpoints and both actuator plants, but physical
+  support still fails in 15/124 half and 14/124 final cells; every physical
+  failure is a negative-X roll/pitch boundary. The gate is therefore
+  `HOLD_WINNER_V22_NORMALIZED_PREDICTOR_SUPPORT_GATE` and response-conditioned
+  locomotion training remains prohibited. See
+  `outputs/analysis/WINNER_V22_NORMALIZED_PREDICTOR_SUPPORT_GATE_RESULT_20260721.md`
+  and `outputs/analysis/WINNER_V22_SUPPORT_HOLD_ATTRIBUTION_20260721.md`.
+- 2026-07-21: The preregistered read-only Winner-v23 negative-X response-use
+  diagnostic passed on GitHub run `29878611867`, attempt 1. Its exact original
+  artifact ZIP SHA-256 is `be3278db...2e83e87`. All 20 paired cells encode the
+  signed response by tick 0, beat the constant predictor on both signs, and
+  change action under the same-input hidden-state fork by tick 1. Positive-X
+  support passes 20/20 while negative-X support fails 17/20. Classification is
+  `RESPONSE_STATE_PRESENT_AND_USED_SUPPORT_CONTROL_INADEQUATE`; this authorizes
+  only a separately frozen negative-X support-control-objective CPU contract.
+  It does not authorize training, checkpoint selection, runtime work, RDK-X5,
+  robot access, Gate 5, deployment, or clearance. See
+  `outputs/analysis/WINNER_V23_NEGATIVE_X_RESPONSE_USE_DIAGNOSTIC_RESULT_20260721.md`.
