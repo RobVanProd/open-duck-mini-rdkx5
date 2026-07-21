@@ -230,20 +230,6 @@ def validate_result(result: Mapping[str, Any]) -> None:
         or not all(type(value) is bool for value in checks.values())
     ):
         raise ValueError("Winner-v13 formal support-gate checks changed")
-    failed = sorted(name for name, passed in checks.items() if not passed)
-    if result["failed_checks"] != failed:
-        raise ValueError("Winner-v13 formal support-gate failure accounting changed")
-    passed = not failed
-    if result["status"] != (
-        "PASS_WINNER_V13_SUPPORT_CONTROLLER_GATE"
-        if passed
-        else "HOLD_WINNER_V13_SUPPORT_CONTROLLER_GATE"
-    ) or result["decision"] != (
-        "AUTHORIZE_RESPONSE_CONDITIONED_LOCOMOTION_PREREGISTRATION_ONLY"
-        if passed
-        else "DO_NOT_TRAIN_RESPONSE_CONDITIONED_LOCOMOTION"
-    ):
-        raise ValueError("Winner-v13 formal support-gate status changed")
     if result["execution"] != {
         "formal_support_cells": 248,
         "heldout_repeat_cells": 64,
@@ -275,10 +261,33 @@ def validate_result(result: Mapping[str, Any]) -> None:
     identities = checkpoint_identities()
     for row, label in zip(rows, ("half", "final"), strict=True):
         validate_checkpoint_result(row, label, identities[label])
-    if passed and not all(
-        all(row["checks"].values()) and row["failed_checks"] == [] for row in rows
+    derived_checks = {
+        "both_checkpoints_evaluated": [row["label"] for row in rows]
+        == ["half", "final"],
+        "all_248_main_cells_pass": all(not row["failed_checks"] for row in rows),
+        "formal_cell_count_exact": sum(
+            len(row["core_model_plant_cells"])
+            + len(row["sensor_transport_plant_cells"])
+            for row in rows
+        )
+        == 248,
+    }
+    if checks != derived_checks:
+        raise ValueError("Winner-v13 formal support-gate summary is not rederived")
+    failed = sorted(name for name, passed in derived_checks.items() if not passed)
+    if result["failed_checks"] != failed:
+        raise ValueError("Winner-v13 formal support-gate failure accounting changed")
+    passed = not failed
+    if result["status"] != (
+        "PASS_WINNER_V13_SUPPORT_CONTROLLER_GATE"
+        if passed
+        else "HOLD_WINNER_V13_SUPPORT_CONTROLLER_GATE"
+    ) or result["decision"] != (
+        "AUTHORIZE_RESPONSE_CONDITIONED_LOCOMOTION_PREREGISTRATION_ONLY"
+        if passed
+        else "DO_NOT_TRAIN_RESPONSE_CONDITIONED_LOCOMOTION"
     ):
-        raise ValueError("Winner-v13 formal PASS has a failed checkpoint proof")
+        raise ValueError("Winner-v13 formal support-gate status changed")
 
 
 def main() -> int:

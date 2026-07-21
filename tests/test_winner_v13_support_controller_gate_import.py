@@ -207,6 +207,33 @@ def test_rejects_incomplete_population(tmp_path: Path) -> None:
         importer.validate_result(result)
 
 
+def test_rejects_global_pass_not_rederived_from_checkpoint_rows(
+    tmp_path: Path,
+) -> None:
+    importer = load_importer()
+    result = valid_result(importer, tmp_path)
+    result["checkpoint_results"][0]["checks"]["all_support_cells_pass"] = False
+    result["checkpoint_results"][0]["failed_checks"] = ["all_support_cells_pass"]
+    with pytest.raises(ValueError, match="not rederived"):
+        importer.validate_result(result)
+
+
+def test_accepts_exact_rederived_hold(tmp_path: Path) -> None:
+    importer = load_importer()
+    result = valid_result(importer, tmp_path)
+    result["checkpoint_results"][1]["checks"][
+        "learned_prediction_beats_constant_per_plant"
+    ] = False
+    result["checkpoint_results"][1]["failed_checks"] = [
+        "learned_prediction_beats_constant_per_plant"
+    ]
+    result["checks"]["all_248_main_cells_pass"] = False
+    result["failed_checks"] = ["all_248_main_cells_pass"]
+    result["status"] = "HOLD_WINNER_V13_SUPPORT_CONTROLLER_GATE"
+    result["decision"] = "DO_NOT_TRAIN_RESPONSE_CONDITIONED_LOCOMOTION"
+    importer.validate_result(result)
+
+
 @pytest.mark.parametrize(
     ("key", "value"),
     [
