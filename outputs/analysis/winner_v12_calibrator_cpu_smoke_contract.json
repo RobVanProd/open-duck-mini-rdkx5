@@ -1,0 +1,436 @@
+{
+  "authority": {
+    "formal_support_cells": 0,
+    "full_calibrator_training": false,
+    "hosted_gpu_or_igpu": false,
+    "locomotion_training_or_behavior_evaluation": false,
+    "optimizer_updates_authorized": {
+      "stage1": 1,
+      "stage2": 1
+    },
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false
+  },
+  "causal_scope": "implementation plumbing only: prove one two-stage update can consume deployable response evidence, preserve stage isolation, save/restore, and export the reviewed graph without privileged state",
+  "checks": {
+    "corrected_v2_preregistration_exact": true,
+    "deployable_mapping_excludes_training_heads": true,
+    "fixed_p30_observer_required": true,
+    "hidden_plant_separate_from_observer_literal": true,
+    "manual_single_run_workflow_frozen": true,
+    "mechanics_result_passed": true,
+    "network_routing_has_no_privileged_arguments": true,
+    "no_unbounded_retry_loop": true,
+    "nonfinite_evidence_fails_closed": true,
+    "one_update_per_stage_literal": true,
+    "phase_and_reference_frozen_literal": true,
+    "plants_balanced": true,
+    "playground_assets_fail_closed": true,
+    "population_exact": true,
+    "population_has_com_x_neg": true,
+    "population_has_no_heldout": true,
+    "protected_policies_not_inferred": true,
+    "software_versions_fail_closed": true,
+    "stage1_fixed_p30_observer_literal": true,
+    "support_boundaries_have_nextafter_canaries": true,
+    "terminal_action_retention_literal": true,
+    "zero_optimizer_steps_before_contract": true
+  },
+  "decision": "AUTHORIZE_ONE_WINNER_V12_CPU_SMOKE_ONLY",
+  "flat_transport_kernel": {
+    "implemented": false,
+    "reason": "the R64 calibrator has not yet shown a long-range transport failure; K_n,L remains a preregisterable future falsification, not an unmeasured architecture substitution"
+  },
+  "hyperparameters": {
+    "gradient_clipping": null,
+    "stage1": {
+      "adam_beta1": 0.9,
+      "adam_beta2": 0.999,
+      "adam_epsilon": 1e-08,
+      "bptt_ticks": 250,
+      "learning_rate": 0.0001,
+      "optimizer_updates": 1,
+      "ternary_probabilities": {
+        "-1": 0.3333333333333333,
+        "0": 0.3333333333333333,
+        "1": 0.3333333333333333
+      },
+      "weight_decay": 0.0
+    },
+    "stage2": {
+      "adam_beta1": 0.9,
+      "adam_beta2": 0.999,
+      "adam_epsilon": 1e-08,
+      "advantage_normalization": "all valid smoke transitions; float64 population mean/std; std floor 1e-6; cast float32",
+      "clip_epsilon": 0.2,
+      "entropy_coefficient": 0.001,
+      "gae_lambda": 0.95,
+      "gamma": 1.0,
+      "learning_rate": 0.0001,
+      "log_std_clamp": [
+        -5.0,
+        1.0
+      ],
+      "minibatches": 1,
+      "optimizer_updates": 1,
+      "ppo_epochs": 1,
+      "timeout_bootstrap": 0.0,
+      "value_coefficient": 0.5,
+      "weight_decay": 0.0
+    },
+    "target_normalization": "all valid Stage-1 smoke targets only; NumPy float64 population mean/std ddof=0; std=max(std,1e-6); cast mean/std to float32"
+  },
+  "observation_and_transition": {
+    "action_dim": 14,
+    "auxiliary_indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      83,
+      84,
+      85,
+      86,
+      87,
+      88,
+      89,
+      90,
+      91,
+      92,
+      93,
+      94,
+      95,
+      96,
+      97,
+      98
+    ],
+    "heldout_in_training_or_normalization": false,
+    "hidden_physical_plant": "alternating P30 and P31/34; affects bridge-driven physics/sensors only and never selects the observation observer",
+    "history_at_tick_t": "previous_action input is a_(t-1); obs[41:55], [55:69], [69:83] are a_(t-2), a_(t-3), a_(t-4)",
+    "obs_83_97": "fixed runtime P30 observer under both hidden physical plants; a canonical LF copy of the frozen fit is used only to satisfy the runtime observer's raw hash check",
+    "observation_dim": 115,
+    "stage1_target": "next valid obs_(t+1) at the 50 frozen indices",
+    "terminal_action_training_sample": "the action that creates an invalid transition is retained as an attempted PPO sample with reward 0 and done=1; its invalid next state is not committed and never enters Stage-1 targets",
+    "valid_commit": "current action, history, fixed observer output, and recurrent h_out commit only after a valid physics transition; invalid and padded ticks are masked"
+  },
+  "pass_authorizes_only": "one no-retry CPU smoke producing an auditable result; a pass permits only a separate prospective full-calibrator training preregistration",
+  "post_smoke_stop": true,
+  "protected_policies": {
+    "final": "d52b63241340d9d56671b95c58bb0fc72af0998fd47d4684719f6cd44f244a10",
+    "half": "cf001269908d86e47eaa145ffda1d87e946a314ecf51056dc086c4cf10164ab6"
+  },
+  "required_positive_proofs": [
+    "exact source/domain/XML/policy hashes and CPU-only execution",
+    "exact composition receipt and no unexpected dirty or untracked Playground asset",
+    "exact 16-row population, 250 transitions, 251-state timing, and balanced hidden plants",
+    "fixed-P30 obs[83:97] under both physically distinct P30/P31-34 plants",
+    "bit-exact NumPy/JAX graph action boundary and realized-action history chain",
+    "Stage 1 updates only encoder/auxiliary leaves and has nonzero previous-action and auxiliary-action gradients",
+    "Stage 2 updates every action/log_std/value leaf while encoder/auxiliary leaves stay bit-exact",
+    "validity, termination, current streak, and terminal gyro bonus match the frozen definitions",
+    "the failure-causing action is retained with reward zero/done and threshold boundaries pass deterministic nextafter canaries",
+    "independent XML force-range readback stays within 1.91229675 N.m",
+    "all parameters, gradients, losses, observations, actions, and metrics are finite",
+    "all train state saves/restores bit-exact",
+    "protected policies and the untrained locomotion adapter are bit-exact and unused",
+    "exported calibrator has exact three-input/three-output ABI, no training-only tensors, and 250-tick JAX/ONNX error <=1e-7"
+  ],
+  "schema_version": "winner_v12.calibrator_cpu_smoke_contract.v1",
+  "simulator": {
+    "asset_integrity": "the canonical composition receipt identity and every changed-file raw hash are pinned; git status must contain exactly those files plus the two reviewed XMLs and receipt, so mesh and other compiled assets remain clean at the pinned commit",
+    "backend": "classic MuJoCo CPU double-precision physics",
+    "command": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "composition": "hash-checked Winner-v7 115-D source tree with reviewed Winner-v10 XML copied into the existing asset directory",
+    "composition_receipt_canonical_lf_sha256": "628c35fab95e41a2fa82ae2255e0109502d72632c7ad408bf7e1294f5eb1c196",
+    "control_dt_s": 0.02,
+    "home_reset": "correct-order mj_setConst on default MjData, then exact home keyframe qpos, zero qvel, home ctrl, mj_forward",
+    "model_path": "playground/open_duck_mini_v2/xmls/open_duck_mini_v2_backlash.xml",
+    "model_sha256": "660fa8e4ac0d977806e881d008090e7153cd0608dbee05b88f957a91bde6f655",
+    "phase": [
+      1.0,
+      0.0
+    ],
+    "phase_advances": false,
+    "physics_substeps_per_tick": 10,
+    "playground_commit": "b9be205ac64488c23504ca42e5ec790337adeec3",
+    "projected_reference": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "reset_support": "flat rigid floor, both feet loaded, no torso/limb/head support or external force",
+    "scene_path": "playground/open_duck_mini_v2/xmls/scene_flat_terrain_backlash.xml",
+    "scene_sha256": "65324e27a3a84e2e42d1073bfc636f9cdbf6bef7b1f20c1b5a886b8fd58fcc71"
+  },
+  "smoke_population": {
+    "configuration_hashes": [
+      "e1f3ab4fe42b3934e2ba03d88430be964cebc81b181ff512e6e69ad4bd8857bb",
+      "a44f6c0794d58904e6a4d0813247c91761519e6bbb2aa0507885d0cc121e02d4",
+      "9a7278e95f2201ea287307618435401a48a64a248cb44b1ae011c22028da2bfe",
+      "1e25bbe862242f45be2b455c2bfcc8abcf6b0c91cf783711d192d985ec76e588",
+      "3dbc25a88a1bfcb6db93d8c59711e2d7ddbedde68d7a937341226e4259b99d45",
+      "1e2550ae0b2cb1d37db35d326738bc42fcc5c8f91ee3bd48985ca06a65425078",
+      "abbbdfa76be98e4a98b6086102c9b8d596524badda9fd1d848fafb8e695e926f",
+      "d5b8d16927d198da7eeaa6dff68056b898eb2b8f2925937bf1ca8e35b8671480",
+      "52c984e70c1c86d83350aaaea16f185d89e1f56b4444b7d75257172ce6c4b7af",
+      "4989f4556f7c2f1ec9c51ebd014701c0fc92eea09c76f807b8b907a2c9c6588c",
+      "9d4daf172f28c422fe93344424fae5cabc5d2a91b4620cc2d95e4ba42b9f7c57",
+      "f1f469ebf3966d4efd83addd44bb8e5777dae64e2269d71cd3a6a13d57e81b3a",
+      "fec00929e42089eb0fa613733a1fdf165278c349f3991c55b1d31f3da2a2bef3",
+      "9838791cc73b35016ec172d0aeef2430e6596be00c74d441c33e2989577fdb7c",
+      "f182221e7bfe1bc072b2a00015763fb78aeda219cdc379142d34cc4dce6b5b28",
+      "e79a3143da00f5ee5dd2537015644228a357a6531d6ca296d78dfb004ea26e87"
+    ],
+    "configuration_ids": [
+      "MASS_LOW",
+      "MASS_HIGH",
+      "COM_X_NEG",
+      "COM_X_POS",
+      "COM_Y_NEG",
+      "COM_Y_POS",
+      "COM_Z_NEG",
+      "COM_Z_POS",
+      "INERTIA_X_LOW",
+      "INERTIA_X_HIGH",
+      "INERTIA_Y_LOW",
+      "INERTIA_Y_HIGH",
+      "INERTIA_Z_LOW",
+      "INERTIA_Z_HIGH",
+      "COM_CORNER_00",
+      "COM_CORNER_01"
+    ],
+    "configuration_source": "first 16 fixed anchors in the frozen winner-v3 evaluation matrix; not discovery-selected and not heldout",
+    "environment_count": 16,
+    "observation_states_per_full_episode": 251,
+    "plant_assignments": [
+      "P30_ALL_JOINT",
+      "P31_34_PITCH_WITH_P30_NONPITCH",
+      "P30_ALL_JOINT",
+      "P31_34_PITCH_WITH_P30_NONPITCH",
+      "P30_ALL_JOINT",
+      "P31_34_PITCH_WITH_P30_NONPITCH",
+      "P30_ALL_JOINT",
+      "P31_34_PITCH_WITH_P30_NONPITCH",
+      "P30_ALL_JOINT",
+      "P31_34_PITCH_WITH_P30_NONPITCH",
+      "P30_ALL_JOINT",
+      "P31_34_PITCH_WITH_P30_NONPITCH",
+      "P30_ALL_JOINT",
+      "P31_34_PITCH_WITH_P30_NONPITCH",
+      "P30_ALL_JOINT",
+      "P31_34_PITCH_WITH_P30_NONPITCH"
+    ],
+    "population_sha256": "05d7f69e1f25752db8b4c71ed2d7c867531e9aeee3a0b7c6956bff096e10ea1e",
+    "prng_derivation": "NumPy SeedSequence([120120, stage_id, environment_index]) -> PCG64; stage_id 1 for ternary exploration and 2 for Gaussian exploration",
+    "root_seed": 120120,
+    "ticks_per_environment": 250
+  },
+  "software_versions": {
+    "jax": "0.7.2",
+    "jaxlib": "0.7.2",
+    "mujoco": "3.9.0",
+    "numpy": "2.0.2",
+    "onnx": "1.22.0",
+    "onnxruntime": "1.27.0",
+    "python": "3.12.13"
+  },
+  "sources": {
+    "actuator_bridge": {
+      "hash_mode": "lf",
+      "path": "tools/actuator_bridge_model.py",
+      "sha256": "bb5ddb1847e773ab21d8ddfadab307ceaf22599a51f686dbb4f6121cde2d0bec"
+    },
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v12_calibrator_cpu_smoke_contract.py",
+      "sha256": "adf36b8a55fd9251e678e951501e1179fcda6327a0314a4ccc91df709c66851c"
+    },
+    "calibrator_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_calibrator_training_preregistration.json",
+      "sha256": "1ec76a587c6fa50b92866c1632a7046ae0c6687ed17b1636b664bf45c2e8ba34"
+    },
+    "corrected_support_harness": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v5_automatic_support_recovery_cpu.py",
+      "sha256": "76f78f5c35fd90d8305023a5671aac496ff10f1252e8c4da83181f4eae951a18"
+    },
+    "current_gate": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v3_current_gate_application_contract.json",
+      "sha256": "17e841450a2dde66182c3d41a06abf8d14366011f811bcde20adb1f1c8f68ddb"
+    },
+    "decomposed_network": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_decomposed_backend_networks.py",
+      "sha256": "f463223a33f80baf81b2604e0df22c647660f2752a7ca60b8c75a3441460d015"
+    },
+    "domain_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v3_variable_configuration_replacement_preregistration.json",
+      "sha256": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b"
+    },
+    "importer": {
+      "hash_mode": "lf",
+      "path": "tools/import_winner_v12_calibrator_cpu_smoke.py",
+      "sha256": "66b08504a51043c9a597aaebd4a3a094631da84d0aac23592fdba5f749d0575f"
+    },
+    "mechanics_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_zero_ppo_decomposed_backend_preregistration.json",
+      "sha256": "959c3fec90c8102f3b425ed09183ce6c5fc58ce424debfa3665cc37d59ba89a9"
+    },
+    "mechanics_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_zero_ppo_decomposed_backend_result.json",
+      "sha256": "7950031566682086f2de6d30f388e53cc624146b3adb1dbfd2d3c005582a6090"
+    },
+    "p30_fit": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/fixed_target_p30_actuator_fit_20260712.json",
+      "sha256": "908ddb01e5d82e661d77b8f3cb186a84665695660b86b304c6d1ae89c79cdb0b"
+    },
+    "p31_34_fit": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/fixed_target_p31_34_actuator_fit_20260712.json",
+      "sha256": "a39776c06c5e26425e24b50e7dab3f441823e23904cad4977b8c921d9c9ca276"
+    },
+    "playground_composer": {
+      "hash_mode": "lf",
+      "path": "tools/compose_winner_v7_playground.py",
+      "sha256": "47d920af6438bcf93d65d1edfe0b2e20df8bfef298f3fd73fefc73cebcaf1bcd"
+    },
+    "reference_table": {
+      "hash_mode": "raw",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/reference/ground_up_projected_reference_feature_table.npz",
+      "sha256": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_cpu_smoke.py",
+      "sha256": "219dc028ae5b6dbeb439386402ead8a51fb2c57714e39285e7136259d33e74fb"
+    },
+    "runtime_observation_map": {
+      "hash_mode": "lf",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/observation_map.json",
+      "sha256": "f0b78431a3a98d418fbe04eebeb0316538121d1199d35f38dbdd0528ee1917a7"
+    },
+    "runtime_observer": {
+      "hash_mode": "lf",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/observer/winner_v2_contract.py",
+      "sha256": "5c90994a24aa223c94f3a51927228e97000f6118c927561a87a3f2684dcf4889"
+    },
+    "runtime_observer_contract": {
+      "hash_mode": "lf",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/observer_contract.json",
+      "sha256": "63261636dbec7259dbede679d8f22288608963634dcf3570bcc65d544e160350"
+    },
+    "runtime_observer_cross_fit": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v2_observer_cross_fit_result.json",
+      "sha256": "804165bd1fdf45fdb1ab8369617e460d65de60a9f6f0ced90337429b56162231"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v12_calibrator_cpu_smoke_contract.py",
+      "sha256": "e359282bf93250456da847ebb31ff0955b9dbd1b764b2e189a637b9f666b0e14"
+    },
+    "training_primitives": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_calibrator_training.py",
+      "sha256": "f5736a357d73baedae2bba1d15254dd688bddf3761eb731d757a971783c77227"
+    },
+    "winner_v10_nominal": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v10_nominal_behavior_result.json",
+      "sha256": "236772a969955bb49e35c685bab2ecb19ab912b6511b7bbdc22c199c6307fa0b"
+    },
+    "winner_v10_representation": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v10_inward_torque_contract_result.json",
+      "sha256": "c66d36dd073464fbe09a1c68b9c6d5ca2acda8406e52570032df90c61b833a17"
+    },
+    "winner_v11_network": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v11_dynamic_calibration_networks.py",
+      "sha256": "3ac1166920ec1a3fbcfbca5a85870c6afc1dc0e5062023801edbed09fcdc4809"
+    },
+    "winner_v6_network": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v6_dynamic_calibration_networks.py",
+      "sha256": "cfff280a1c592043d7e1849c68a3c99b05574814180506e6608f17877a5dbb90"
+    },
+    "workflow": {
+      "hash_mode": "lf",
+      "path": ".github/workflows/winner-v12-calibrator-cpu-smoke.yml",
+      "sha256": "5a58d91b0ac70252b4a44b83f9819b2a494938d00f3bd0526449db17e299e266"
+    }
+  },
+  "status": "PASS_WINNER_V12_CALIBRATOR_CPU_SMOKE_CONTRACT",
+  "support_logic": {
+    "both_contacts_required": true,
+    "current_nm_per_a": 0.784532,
+    "invalid_next_state_in_auxiliary_batch": false,
+    "invalid_transition_action_in_ppo_batch": true,
+    "invalid_transition_reward": 0.0,
+    "maximum_abs_roll_pitch_rad": 0.35,
+    "maximum_allowed_consecutive_overcurrent_ticks": 99,
+    "minimum_base_z_m": 0.1,
+    "per_joint_peak_current_a_max": 2.5,
+    "per_joint_peak_torque_nm_max": 1.91229675,
+    "per_valid_tick_reward": 1.0,
+    "strict_overcurrent_threshold_a": 2.0,
+    "strict_overcurrent_trip_ticks": 100,
+    "terminal_bonus": 250.0,
+    "terminal_bonus_condition": "all 250 transitions valid and max unbiased gyro-XY norm over final 50 ticks <=0.05 rad/s"
+  }
+}
