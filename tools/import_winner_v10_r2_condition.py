@@ -29,6 +29,45 @@ def flatten(payload: dict[str, Any]) -> list[dict[str, Any]]:
     return [row for fit in payload["matrices"].values() for row in fit.values()]
 
 
+def validate_complete_evaluation(
+    blocks: list[dict[str, Any]], traces: list[dict[str, Any]], *, is_hold: bool
+) -> None:
+    """Reject missing evidence while allowing a genuine early-termination HOLD."""
+    if len(blocks) != 4 or len(traces) != 16:
+        raise ValueError("R2 condition result does not contain all 16 cells")
+    if not all(
+        len(block["traces"]) == 4 and block["behavior"]["complete"]
+        for block in blocks
+    ):
+        raise ValueError("R2 condition behavior matrix is incomplete")
+    if not all(
+        0 < trace["rows"] <= 600 and trace["ticks_contiguous"] for trace in traces
+    ):
+        raise ValueError("R2 condition trace population is missing or noncontiguous")
+    if not is_hold:
+        if not all(trace["rows"] == 600 for trace in traces):
+            raise ValueError("passing R2 condition result has shortened traces")
+        return
+
+    for block in blocks:
+        behavior = block["behavior"]
+        cells = [behavior["x0"], *behavior["moving"]]
+        summaries = {float(trace["command_x"]): trace for trace in block["traces"]}
+        if len(cells) != 4 or len(summaries) != 4:
+            raise ValueError("R2 HOLD does not contain four distinct commands per block")
+        for cell in cells:
+            trace = summaries.get(float(cell["command_x"]))
+            if trace is None or trace["rows"] != cell["samples"]:
+                raise ValueError("R2 HOLD trace rows do not match behavior samples")
+            if trace["rows"] < 600 and (
+                cell["termination_reason"] != "fall_or_nan"
+                or not cell["candidate_gate_status"].startswith("HOLD_")
+            ):
+                raise ValueError(
+                    "shortened R2 HOLD trace lacks an explicit behavioral termination"
+                )
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--preregistration", type=Path, required=True)
@@ -37,6 +76,7 @@ def main() -> int:
     parser.add_argument("--output-md", type=Path, required=True)
     parser.add_argument("--contract-commit", required=True)
     parser.add_argument("--execution-commit", required=True)
+    parser.add_argument("--import-commit", required=True)
     parser.add_argument("--run-url", required=True)
     parser.add_argument("--artifact-name", required=True)
     args = parser.parse_args()
@@ -58,12 +98,11 @@ def main() -> int:
         raise ValueError("R2 condition policy hashes do not match")
     blocks = flatten(raw)
     traces = [trace for block in blocks for trace in block["traces"]]
-    if len(blocks) != 4 or len(traces) != 16 or not all(
-        trace["rows"] == 600 and trace["ticks_contiguous"] for trace in traces
-    ):
-        raise ValueError("R2 condition result is incomplete")
     failed = [name for name, passed in raw["checks"].items() if not passed]
-    if failed != raw["failed_checks"]:
+    recorded_failed = raw["failed_checks"]
+    if len(recorded_failed) != len(set(recorded_failed)) or set(failed) != set(
+        recorded_failed
+    ):
         raise ValueError("R2 condition failed-check list is inconsistent")
     expected_status = prereg["result_status"]["pass"] if not failed else prereg[
         "result_status"
@@ -73,11 +112,18 @@ def main() -> int:
     ]["hold"]
     if raw["status"] != expected_status or raw["decision"] != expected_decision:
         raise ValueError("R2 condition classification is inconsistent")
+    is_hold = bool(failed)
+    validate_complete_evaluation(blocks, traces, is_hold=is_hold)
+    if is_hold and raw["checks"]["all_four_behavior_matrices_pass"]:
+        raise ValueError("R2 HOLD lacks a failed behavior matrix")
     payload = dict(raw)
+    importer_at_import = sha256(Path(__file__).resolve())
+    importer_at_execution = raw["input_hashes"]["importer"]
     payload["repository_attribution"] = {
         "artifact_name": args.artifact_name,
         "contract_commit": args.contract_commit,
         "execution_commit": args.execution_commit,
+        "import_commit": args.import_commit,
         "run_url": args.run_url,
         "preregistration_path": str(prereg_path.relative_to(ROOT)).replace(
             "\\", "/"
@@ -86,6 +132,10 @@ def main() -> int:
         "execution_preregistration_lf_sha256": lf_sha256(prereg_path),
         "raw_result_filename": raw_path.name,
         "raw_result_sha256": sha256(raw_path),
+        "importer_at_execution_sha256": importer_at_execution,
+        "importer_at_import_sha256": importer_at_import,
+        "post_result_reporting_only_change": importer_at_import
+        != importer_at_execution,
         "trace_files_committed": False,
         "policy_binaries_committed": False,
     }
@@ -104,6 +154,10 @@ def main() -> int:
     worst_rate = max(
         trace["maximum_full_measured_vector_excess_rad_s"] for trace in traces
     )
+    row_counts = [trace["rows"] for trace in traces]
+    minimum_vx = min(
+        block["behavior"]["minimum_nominal_vx_m_s"] for block in blocks
+    )
     next_step = (
         prereg["pass_authorizes_only"]
         if not failed
@@ -115,6 +169,9 @@ def main() -> int:
         f"Decision: `{payload['decision']}`\n\n"
         f"- condition: `{payload['condition']}`\n"
         f"- failed checks: `{payload['failed_checks']}`\n"
+        f"- evaluated cells: `{len(traces)}`\n"
+        f"- recorded tick range per cell: `{min(row_counts)}..{max(row_counts)}`\n"
+        f"- minimum nominal vx: `{minimum_vx}` m/s\n"
         f"- worst tracking p95: `{worst_tracking}` rad\n"
         f"- worst peak current: `{worst_current}` A\n"
         f"- worst peak torque: `{worst_torque}` Nm\n"
