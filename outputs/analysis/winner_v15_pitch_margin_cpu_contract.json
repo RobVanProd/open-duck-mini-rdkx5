@@ -1,0 +1,153 @@
+{
+  "authority": {
+    "pass_authorizes_only": "a separate pitch-margin support-training preregistration",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false,
+    "support_training_authorized": false
+  },
+  "decision": "AUTHORIZE_ONE_RESTORED_PITCH_MARGIN_STAGE2_UPDATE_ONLY",
+  "execution_now": {
+    "formal_support_cells": 0,
+    "locomotion_steps": 0,
+    "robot_or_rdk_access": 0,
+    "stage2_optimizer_updates": 0
+  },
+  "frozen_cpu_proof": {
+    "population": "exact 40 training configurations x 2 hidden plants",
+    "requirements": [
+      "default-off batch, episodes, observations, returns, and advantages bit-exact to reviewed rollout",
+      "enabled path changes only reward-derived returns and advantages",
+      "reward and penalty match the frozen analytic formula bit-exactly",
+      "PPO masks and raw-to-bounded action path remain exact",
+      "all Stage-2 gradients and leaves nonzero/changed",
+      "all Stage-1 encoder/auxiliary leaves bit-exact frozen",
+      "atomic Stage-2 snapshot readback",
+      "115/14/64 ONNX ABI and chain <=1e-7"
+    ],
+    "rollout_update_index": 0,
+    "stage2_learning_rate": 0.0001,
+    "stage2_optimizer_updates": 1,
+    "ticks": 250,
+    "training_root_seed": 120120
+  },
+  "pass_rule": "Every check passes. A pass authorizes only a separate 100-update pitch-margin support-training preregistration.",
+  "schema_version": "winner_v15.pitch_margin_cpu_contract.v1",
+  "single_change": {
+    "all_observation_action_graph_dynamics_population_seed_and_mask_semantics": "unchanged",
+    "default_off": "bit-exact reviewed flat alive reward",
+    "enabled_valid_transition_reward": "1 - square(clip(max(0, -next_pitch_rad) / 0.35, 0, 1))",
+    "failure_transition_reward": 0.0,
+    "settled_terminal_bonus": 250.0,
+    "trainable_scale": null
+  },
+  "source_artifact": {
+    "artifact_zip_sha256": "b3ff19186ef39e8a72f9e43095d373840fb0b1562a2f7bed83a74c9f10cf6680",
+    "github_artifact_id": 8492593761,
+    "github_artifact_name": "winner-v13-normalized-response-stage1-v2-29822834921",
+    "github_run_attempt": 1,
+    "github_run_head_sha": "0b1dac9ea47a93861f72fa5dd393134f36d6db02",
+    "github_run_id": 29822834921,
+    "snapshot_bytes": 189027,
+    "snapshot_member": "winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_100.npz",
+    "snapshot_sha256": "8c1392c738eddfb098e61c1a6ae2f863eda883e1eba6ac546aef695da6f163af"
+  },
+  "source_manifest_sha256": "f9ae726df7c8952934705c75dc406bbc47d98a96b4d94aa23459d0727aeed65d",
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v15_pitch_margin_cpu_contract.py",
+      "sha256": "70ab4807befacacda1ab48f723315f6c0f672cd7a7af81582b726ec70914e8fe"
+    },
+    "calibrator_design": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_calibrator_training_preregistration.json",
+      "sha256": "1ec76a587c6fa50b92866c1632a7046ae0c6687ed17b1636b664bf45c2e8ba34"
+    },
+    "canonical_p30_fit": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/fixed_target_p30_actuator_fit_20260712.json",
+      "sha256": "908ddb01e5d82e661d77b8f3cb186a84665695660b86b304c6d1ae89c79cdb0b"
+    },
+    "cpu_smoke": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_cpu_smoke.py",
+      "sha256": "b6ad53430f3f7cca3a91a90f72dab585cb05e3e2f74be2241af3fd9b6ee7ce87"
+    },
+    "deployable_network": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_decomposed_backend_networks.py",
+      "sha256": "f463223a33f80baf81b2604e0df22c647660f2752a7ca60b8c75a3441460d015"
+    },
+    "environment_builder": {
+      "hash_mode": "lf",
+      "path": "tools/prepare_winner_v15_cpu_environment.py",
+      "sha256": "33e54c3a16d5684e2d2520270acf25a28df42dc89e9f302c1ef3bd5f37d867c2"
+    },
+    "full_training_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_full_calibrator_training_preregistration.json",
+      "sha256": "99500648d6683097a13f894b0949bf4b5494e5653f36878710817bd0952f71dd"
+    },
+    "full_training_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_full_calibrator_training.py",
+      "sha256": "8cd2c9267f356adba1127f8fb837138bbe6e39b5c3326300eeed9fdd5b524610"
+    },
+    "objective": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v15_pitch_margin_support.py",
+      "sha256": "561c20fc84ea51672c721bdb74d3ffab61162abf21ea565aeb3d3d8bd9002451"
+    },
+    "objective_attribution": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v15_pitch_margin_objective_attribution.json",
+      "sha256": "d506ef221c6bb042e87e2c5c85900675301c8cdad6035b60a00cd8fa1917fa09"
+    },
+    "objective_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v15_pitch_margin_support.py",
+      "sha256": "dfa9935b0aaf2fd2dd5535840d97f6e5cd58bf96a3b5a82ffaf45b786712eefb"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v15_pitch_margin_cpu_contract.py",
+      "sha256": "24252b18e1647611473ec9df6aba56982579e827106168c6e252ff1ce62224b0"
+    },
+    "runtime_observer": {
+      "hash_mode": "lf",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/observer/winner_v2_contract.py",
+      "sha256": "5c90994a24aa223c94f3a51927228e97000f6118c927561a87a3f2684dcf4889"
+    },
+    "stage1_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v13_normalized_response_stage1_v2_result.json",
+      "sha256": "45e12b9993ce5c8f9811af7350ed3198f9376d0d4ea9b25de8b1aee608a5bcc7"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v15_pitch_margin_cpu_contract.py",
+      "sha256": "0f3be20b8fe1c2ef7f9dc0855146735326d1409ae53f3530ffe07aa521c958ee"
+    },
+    "v12_training_primitives": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_calibrator_training.py",
+      "sha256": "f5736a357d73baedae2bba1d15254dd688bddf3761eb731d757a971783c77227"
+    },
+    "variable_configuration_domain": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v3_variable_configuration_replacement_preregistration.json",
+      "sha256": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b"
+    },
+    "winner_v14_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v14_support_action_diagnostic_result.json",
+      "sha256": "41b586b604e5ca34578f905f6ce5e85df4b91e460027b836ad18daa07465d1e4"
+    },
+    "workflow": {
+      "hash_mode": "lf",
+      "path": ".github/workflows/winner-v15-pitch-margin-cpu-contract.yml",
+      "sha256": "26fb4e9aef8b4028a0b1806b704678729c29ba141c0edf7d88e65574f70d8eb3"
+    }
+  },
+  "status": "FROZEN_WINNER_V15_PITCH_MARGIN_CPU_CONTRACT"
+}
