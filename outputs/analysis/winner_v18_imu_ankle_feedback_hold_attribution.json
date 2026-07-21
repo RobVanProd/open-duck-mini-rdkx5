@@ -1,0 +1,124 @@
+{
+  "activation_evidence": {
+    "BASELINE": {
+      "maximum": 0.0,
+      "mean": 0.0,
+      "minimum": 0.0
+    },
+    "CONSTANT_ANKLE_POS": {
+      "maximum": 1.0,
+      "mean": 1.0,
+      "minimum": 1.0
+    },
+    "RATE_BACKWARD": {
+      "maximum": 0.919852077960968,
+      "mean": 0.27362343746547896,
+      "minimum": 0.0
+    },
+    "RATE_OPPOSITE": {
+      "maximum": 0.17173191905021667,
+      "mean": 0.004691581901473303,
+      "minimum": 0.0
+    },
+    "TILT_BACKWARD": {
+      "maximum": 0.7445480823516846,
+      "mean": 0.2428351032237212,
+      "minimum": 0.0
+    },
+    "TILT_OPPOSITE": {
+      "maximum": 0.7208684682846069,
+      "mean": 0.029176521852302052,
+      "minimum": 0.0
+    },
+    "TILT_RATE_BACKWARD": {
+      "maximum": 0.9101871252059937,
+      "mean": 0.31290942492584384,
+      "minimum": 0.0
+    }
+  },
+  "authority": {
+    "authorizes_only": "one separately preregistered CPU-only magnitude feasibility diagnostic",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false
+  },
+  "causal_interpretation": "The deployable feedback signs are valid but the 0.03-rad ceiling supplies only 0.007-0.009 rad average correction in the backward modes, less than the constant intervention that produced the strongest survival evidence. A single frozen 1x/2x/3x ceiling screen can falsify insufficient feedback authority without changing the feedback law or tuning after results.",
+  "decision": "CLOSE_003_RAD_FEEDBACK_PREREGISTER_ONE_VARIABLE_MAGNITUDE_FEASIBILITY_SCREEN",
+  "execution": {
+    "new_diagnostic_cells": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failure_counts_half_final": {
+    "BASELINE": [
+      12,
+      12
+    ],
+    "CONSTANT_ANKLE_POS": [
+      8,
+      6
+    ],
+    "RATE_BACKWARD": [
+      12,
+      10
+    ],
+    "RATE_OPPOSITE": [
+      12,
+      10
+    ],
+    "TILT_BACKWARD": [
+      10,
+      10
+    ],
+    "TILT_OPPOSITE": [
+      11,
+      10
+    ],
+    "TILT_RATE_BACKWARD": [
+      10,
+      10
+    ]
+  },
+  "magnitude_basis": {
+    "combined_mean_activation": 0.31290942492584384,
+    "maximum_target_offsets_rad": [
+      0.03,
+      0.06,
+      0.09
+    ],
+    "one_over_mean_activation": 3.195812974431784,
+    "reason": "3x gives approximately the constant-0.03 average correction under the observed 0.313 mean activation; 2x is the preregistered bridge.",
+    "selected_multipliers": [
+      1,
+      2,
+      3
+    ]
+  },
+  "next_screen": {
+    "cells_per_checkpoint_intervention": 12,
+    "checkpoints": [
+      "half",
+      "final"
+    ],
+    "feedback_formula": "unchanged Winner-v18 TILT_RATE_BACKWARD",
+    "interventions": [
+      "BASELINE",
+      "CONSTANT_003",
+      "CONSTANT_006",
+      "CONSTANT_009",
+      "TILT_RATE_003",
+      "TILT_RATE_006",
+      "TILT_RATE_009"
+    ],
+    "optimizer_updates": 0,
+    "selection": "full 12-cell pass at both checkpoints; then smallest ceiling, minimum mean-squared action deviation, frozen order; no closest failure",
+    "total_cells": 168
+  },
+  "schema_version": "winner_v18.imu_ankle_feedback_hold_attribution.v1",
+  "source": {
+    "artifact_zip_sha256": "82c6c18265a667c7321591d6beb500fe12229a703c19883785e2c475b617988b",
+    "github_artifact_id": 8502731737,
+    "github_run_id": 29849401796,
+    "raw_result_sha256": "255acebb43108be5e4a62da0a8adfaacaf19e67197d4faf451bd7d4c6978b1b7"
+  },
+  "status": "PASS_WINNER_V18_IMU_ANKLE_FEEDBACK_HOLD_ATTRIBUTION"
+}
