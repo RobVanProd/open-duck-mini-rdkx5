@@ -1,0 +1,507 @@
+{
+  "architectural_scope": {
+    "calibration_context_used_for_walking_in_this_run": false,
+    "calibrator_only": true,
+    "flat_transport_kernel_added": false,
+    "locomotion_adapter_enabled": false,
+    "locomotion_adapter_training": false,
+    "protected_winner_v10_changed_or_inferred": false,
+    "quadratic_attention_added": false,
+    "reason_attention_is_deferred": "No evidence yet shows that the frozen R64 response state fails long-range transport; the proposed flat kernel remains a future one-factor falsification, not an unmeasured architecture change."
+  },
+  "artifact_contract": {
+    "atomic_recovery_snapshot_every_updates": 1,
+    "result_must_hash_every_checkpoint_graph_and_snapshot": true,
+    "resume_rule": "Only continue the same logical run from the newest hash-verified atomic per-update snapshot after process loss; an update is complete only after its snapshot rename commits, so no completed update may be replayed and no seed may change",
+    "snapshot_contains": [
+      "parameters",
+      "active optimizer state and exact count",
+      "frozen normalization",
+      "stage/update/scheduled-slot counters",
+      "source and contract hashes",
+      "metric history",
+      "cumulative actual sampled and valid-transition counts"
+    ],
+    "stage1_final_checkpoint": true,
+    "stage2_checkpoint_and_calibrator_onnx_at_each_persistent_checkpoint": true
+  },
+  "authority": {
+    "colab_or_other_hosted_compute_now": false,
+    "formal_support_cells_now": 0,
+    "full_calibrator_training_now": false,
+    "gate5_deployment_or_robot_clearance": false,
+    "implement_full_training_runner": true,
+    "local_gpu_or_igpu": false,
+    "locomotion_training_or_behavior_cells": false,
+    "optimizer_updates_now": 0,
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "run_fresh_cpu_implementation_contract": true
+  },
+  "causal_hypothesis": "A deployable-observation-only recurrent encoder trained to predict the next measured response, followed by a frozen-encoder support controller, can finish a safe 250-tick automatic calibration across the complete configuration envelope and produce a session context for later locomotion conditioning without manual per-build measurements.",
+  "checks": {
+    "evaluation_population_exact": true,
+    "heldout_excluded_from_training": true,
+    "recovery_pass_exact": true,
+    "recovery_zero_update_authority_exact": true,
+    "sensor_transport_population_exact": true,
+    "training_population_exact": true
+  },
+  "decision": "AUTHORIZE_FULL_CALIBRATOR_RUNNER_AND_CPU_CONTRACT_ONLY",
+  "frozen_interface": {
+    "applied_target_observer": "fixed P30 for every hidden physical plant",
+    "command": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "control_hz": 50,
+    "hidden_input": {
+      "dtype": "float32",
+      "name": "h_in",
+      "shape": [
+        1,
+        64
+      ]
+    },
+    "manual_measurement_input": false,
+    "observation": {
+      "dtype": "float32",
+      "name": "obs",
+      "shape": [
+        1,
+        115
+      ]
+    },
+    "outputs": [
+      {
+        "dtype": "float32",
+        "name": "calibration_actions",
+        "shape": [
+          1,
+          14
+        ]
+      },
+      {
+        "dtype": "float32",
+        "name": "previous_action_out",
+        "shape": [
+          1,
+          14
+        ]
+      },
+      {
+        "dtype": "float32",
+        "name": "h_out",
+        "shape": [
+          1,
+          64
+        ]
+      }
+    ],
+    "phase": [
+      1.0,
+      0.0
+    ],
+    "phase_advances": false,
+    "previous_action": {
+      "dtype": "float32",
+      "name": "previous_action",
+      "shape": [
+        1,
+        14
+      ]
+    },
+    "ticks": 250,
+    "true_configuration_input": false
+  },
+  "future_frozen_support_gate": {
+    "all_cells_at_both_checkpoints_must_pass": true,
+    "cell_derivation": "56 model configurations x 2 actuator plants + 6 nominal-model sensor/transport conditions x 2 actuator plants",
+    "cells_per_checkpoint": 124,
+    "checkpoint_labels": [
+      "half",
+      "final"
+    ],
+    "duration_ticks": 250,
+    "executed_by_this_preregistration": false,
+    "gates": {
+      "duration_valid_ticks": 250,
+      "maximum_abs_roll_pitch_rad": 0.35,
+      "maximum_final_50_tick_gyro_xy_norm_rad_s": 0.05,
+      "minimum_base_z_m": 0.1,
+      "per_joint_peak_current_a_max": 2.5,
+      "per_joint_peak_torque_nm_max": 1.91229675,
+      "rated_current_p95_a": "0.65 diagnostic only; not candidate pass/fail",
+      "strict_overcurrent_max_consecutive_ticks": 99,
+      "strict_overcurrent_threshold_a": 2.0,
+      "two_foot_contact_failure_ticks": 0
+    },
+    "heldout_context_gate": {
+      "actions": "the checkpoint's bounded deployable calibrator actions",
+      "cells": "the existing 16 heldout configurations x 2 hidden plants within the 112 model/plant cells; no additional behavior cells",
+      "constant_baseline": "predict the frozen Stage-1 training target mean, equivalently zero in normalized target space, on the identical heldout rows",
+      "matched_plant_context_rule": "for every heldout configuration, start P30 and P31/34 from the same deterministic reset, initial observation, previous action, and h_in with no stochastic sensor perturbation; the deployable calibrator remains authoritative in each closed loop, and final h_out L-infinity separation must exceed 1e-7",
+      "normalization": "the frozen Stage-1 training normalization only",
+      "prediction_metric": "mean squared normalized next-response error over all 250 valid transitions using the frozen Stage-1 auxiliary predictor",
+      "repeat_rule": "repeat every heldout context cell from reset and require all actions, observations, predictions, and h_out values bit-exact",
+      "required_prediction_rule": "learned aggregate mean MSE must be strictly below the constant baseline separately for P30 and P31/34 at each checkpoint",
+      "stochastic_inputs": false,
+      "true_configuration_or_plant_label_enters_network": false
+    },
+    "pass_authorizes_only": "a separate response-conditioned locomotion-training preregistration; the calibrator checkpoint alone is not a deployable walking policy",
+    "selection_by_closest_result": false,
+    "sensor_noise_seed_derivation": "numpy SeedSequence([120120, 3, checkpoint_index, condition_index, plant_index]); checkpoint order half/final and plant order P30/P31-34",
+    "sensor_transport_population": [
+      {
+        "id": "NATIVE_INPUT_QUANTIZATION",
+        "native_quantization": true
+      },
+      {
+        "id": "DECLARED_SENSOR_NOISE",
+        "sensor_noise_scales": {
+          "accelerometer": 0.05,
+          "ankle_pos_rad": 0.08,
+          "gravity": 0.1,
+          "gyro_rad_s": 0.1,
+          "hip_pos_rad": 0.03,
+          "joint_vel_rad_s": 2.5,
+          "knee_pos_rad": 0.05,
+          "linvel_m_s": 0.1
+        }
+      },
+      {
+        "additional_action_delay_ticks": 1,
+        "id": "ACTION_DELAY_1"
+      },
+      {
+        "additional_action_delay_ticks": 2,
+        "id": "ACTION_DELAY_2"
+      },
+      {
+        "id": "IMU_DELAY_1",
+        "imu_delay_ticks": 1
+      },
+      {
+        "id": "IMU_DELAY_2",
+        "imu_delay_ticks": 2
+      }
+    ],
+    "sensor_transport_population_sha256": "de043aaf85b922df2677e300d952513f02dd87671846d50dbdb8d4bbe568cb7a"
+  },
+  "implementation_contract_environment": {
+    "jax": "0.7.2",
+    "jaxlib": "0.7.2",
+    "mujoco": "3.9.0",
+    "numpy": "2.0.2",
+    "onnx": "1.22.0",
+    "onnxruntime": "1.27.0",
+    "platform": "CPU only",
+    "python": "3.12.13"
+  },
+  "parameter_initialization": {
+    "action_head_exact_zero": true,
+    "function": "winner_v12_calibrator_training.initialize_training_parameters",
+    "keys": [
+      "action_bias",
+      "action_weight",
+      "auxiliary_action_weight",
+      "auxiliary_bias",
+      "auxiliary_hidden_weight",
+      "hidden_bias",
+      "hidden_weight",
+      "obs_weight",
+      "previous_action_weight",
+      "training_only_log_std",
+      "training_only_value_bias",
+      "training_only_value_weight"
+    ],
+    "log_std_initialization": "elementwise log(0.25 * frozen inward action-delta vector)",
+    "seed": 60720,
+    "tree_hash_algorithm": "for each sorted leaf hash dtype text + compact JSON shape + contiguous raw bytes; canonical-JSON hash the leaf manifest",
+    "tree_sha256": "2b8cbc46517c1e6b073c7b93a9fe4c1b50e66e1ee7be514371bafd2b050e0127",
+    "value_head_exact_zero": true
+  },
+  "pass_authorizes_only": "one separately frozen full-training implementation/CPU contract; this preregistration does not itself authorize optimizer execution",
+  "persistent_checkpoints": [
+    {
+      "label": "half",
+      "stage2_scheduled_tick_slots": 1000000,
+      "stage2_update": 50
+    },
+    {
+      "label": "final",
+      "stage2_scheduled_tick_slots": 2000000,
+      "stage2_update": 100
+    }
+  ],
+  "population": {
+    "episodes_per_update": 80,
+    "heldout_configuration_count": 16,
+    "heldout_configuration_ids": [
+      "HELDOUT_00",
+      "HELDOUT_01",
+      "HELDOUT_02",
+      "HELDOUT_03",
+      "HELDOUT_04",
+      "HELDOUT_05",
+      "HELDOUT_06",
+      "HELDOUT_07",
+      "HELDOUT_08",
+      "HELDOUT_09",
+      "HELDOUT_10",
+      "HELDOUT_11",
+      "HELDOUT_12",
+      "HELDOUT_13",
+      "HELDOUT_14",
+      "HELDOUT_15"
+    ],
+    "heldout_configuration_sha256": "3ea74a227bbd9bc1e4cf76b80c780336a74776145eeaabc004c4d56c648809d6",
+    "heldout_never_enters_normalization_or_optimizer": true,
+    "hidden_plants": [
+      "P30_ALL_JOINT",
+      "P31_34_PITCH_WITH_P30_NONPITCH"
+    ],
+    "sample_accounting": "20,000 is the maximum scheduled horizon capacity per update; episodes stop on the frozen invalid-support condition, so actual sampled and valid-transition counts must be recorded separately",
+    "scheduled_tick_slots_per_update": 20000,
+    "ticks_per_episode": 250,
+    "training_configuration_count": 40,
+    "training_configuration_ids": [
+      "MASS_LOW",
+      "MASS_HIGH",
+      "COM_X_NEG",
+      "COM_X_POS",
+      "COM_Y_NEG",
+      "COM_Y_POS",
+      "COM_Z_NEG",
+      "COM_Z_POS",
+      "INERTIA_X_LOW",
+      "INERTIA_X_HIGH",
+      "INERTIA_Y_LOW",
+      "INERTIA_Y_HIGH",
+      "INERTIA_Z_LOW",
+      "INERTIA_Z_HIGH",
+      "COM_CORNER_00",
+      "COM_CORNER_01",
+      "COM_CORNER_02",
+      "COM_CORNER_03",
+      "COM_CORNER_04",
+      "COM_CORNER_05",
+      "COM_CORNER_06",
+      "COM_CORNER_07",
+      "OPTIONAL_AGGREGATE_LIGHT_FORWARD",
+      "OPTIONAL_AGGREGATE_HEAVY_AFT",
+      "DISCOVERY_00",
+      "DISCOVERY_01",
+      "DISCOVERY_02",
+      "DISCOVERY_03",
+      "DISCOVERY_04",
+      "DISCOVERY_05",
+      "DISCOVERY_06",
+      "DISCOVERY_07",
+      "DISCOVERY_08",
+      "DISCOVERY_09",
+      "DISCOVERY_10",
+      "DISCOVERY_11",
+      "DISCOVERY_12",
+      "DISCOVERY_13",
+      "DISCOVERY_14",
+      "DISCOVERY_15"
+    ],
+    "training_configuration_sha256": "7ad871441863c9750fcca31061e5b4ecd13164094623da55b15417fdc158f57d",
+    "training_cross_product": "40 configurations x 2 hidden plants"
+  },
+  "root_seed": 120120,
+  "schema_version": "winner_v12.full_calibrator_training_preregistration.v1",
+  "seed_derivation": "numpy SeedSequence([120120, stage, update_index, environment_index]); environment order is configuration-major then P30/P31-34",
+  "sources": {
+    "actuator_bridge": {
+      "hash_mode": "lf",
+      "path": "tools/actuator_bridge_model.py",
+      "sha256": "bb5ddb1847e773ab21d8ddfadab307ceaf22599a51f686dbb4f6121cde2d0bec"
+    },
+    "artifact_recovery_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_calibrator_artifact_recovery_result.json",
+      "sha256": "4f2ec76ea125ff7bb9f62eb384ace2da9315a35c12f89ce1d1cde4010d833358"
+    },
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v12_full_calibrator_training_preregistration.py",
+      "sha256": "436f22dc7927d30a21f7e9ca3aab10c925ee51876085f7910468835e7baa55c8"
+    },
+    "calibrator_design_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_calibrator_training_preregistration.json",
+      "sha256": "1ec76a587c6fa50b92866c1632a7046ae0c6687ed17b1636b664bf45c2e8ba34"
+    },
+    "calibrator_smoke_contract": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_calibrator_cpu_smoke_contract.json",
+      "sha256": "fb3b3114486f3e7154115557a5131a1e26f6ea5f0e70a5a3d114ffb01707aad7"
+    },
+    "calibrator_smoke_failure_attribution": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_calibrator_cpu_smoke_failure_attribution.json",
+      "sha256": "d5dbff4c477464f496845a871ca9c701aa52a79a2f2095e84e955aec962fffcb"
+    },
+    "calibrator_smoke_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_cpu_smoke.py",
+      "sha256": "b6ad53430f3f7cca3a91a90f72dab585cb05e3e2f74be2241af3fd9b6ee7ce87"
+    },
+    "current_gate": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v3_current_gate_application_contract.json",
+      "sha256": "17e841450a2dde66182c3d41a06abf8d14366011f811bcde20adb1f1c8f68ddb"
+    },
+    "decomposed_network": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_decomposed_backend_networks.py",
+      "sha256": "f463223a33f80baf81b2604e0df22c647660f2752a7ca60b8c75a3441460d015"
+    },
+    "domain_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v3_variable_configuration_replacement_preregistration.json",
+      "sha256": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b"
+    },
+    "p30_fit": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/fixed_target_p30_actuator_fit_20260712.json",
+      "sha256": "908ddb01e5d82e661d77b8f3cb186a84665695660b86b304c6d1ae89c79cdb0b"
+    },
+    "p31_34_fit": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/fixed_target_p31_34_actuator_fit_20260712.json",
+      "sha256": "a39776c06c5e26425e24b50e7dab3f441823e23904cad4977b8c921d9c9ca276"
+    },
+    "runtime_observer": {
+      "hash_mode": "lf",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/observer/winner_v2_contract.py",
+      "sha256": "5c90994a24aa223c94f3a51927228e97000f6118c927561a87a3f2684dcf4889"
+    },
+    "runtime_observer_contract": {
+      "hash_mode": "lf",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/observer_contract.json",
+      "sha256": "63261636dbec7259dbede679d8f22288608963634dcf3570bcc65d544e160350"
+    },
+    "runtime_reference_table": {
+      "hash_mode": "raw",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/reference/ground_up_projected_reference_feature_table.npz",
+      "sha256": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v12_full_calibrator_training_preregistration.py",
+      "sha256": "72041c69c502dbcb9a9aed943c255db9be255d42455c0ecb833672d0872bfd06"
+    },
+    "training_primitives": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_calibrator_training.py",
+      "sha256": "f5736a357d73baedae2bba1d15254dd688bddf3761eb731d757a971783c77227"
+    },
+    "winner_v11_network": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v11_dynamic_calibration_networks.py",
+      "sha256": "3ac1166920ec1a3fbcfbca5a85870c6afc1dc0e5062023801edbed09fcdc4809"
+    },
+    "winner_v6_network": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v6_dynamic_calibration_networks.py",
+      "sha256": "cfff280a1c592043d7e1849c68a3c99b05574814180506e6608f17877a5dbb90"
+    }
+  },
+  "stage1": {
+    "frozen_leaves": [
+      "action_weight",
+      "action_bias"
+    ],
+    "learning_rate": 0.0001,
+    "normalization": "float64 empirical mean/std from valid auxiliary targets in update 0 only; std=max(std,1e-6); cast once to float32 and freeze",
+    "optimizer": {
+      "beta1": 0.9,
+      "beta2": 0.999,
+      "epsilon": 1e-08,
+      "name": "Adam"
+    },
+    "optimizer_initialization": "fresh Adam count 0 with exact-zero m/v for only the seven encoder/auxiliary trainable leaves",
+    "purpose": "learn deployable-observation response state by full 250-tick BPTT",
+    "required_at_every_update": [
+      "finite loss, gradients, parameters, Adam moments, and normalization",
+      "nonzero valid transition count",
+      "no heldout configuration",
+      "exact 40x2 population and fixed-P30 observation slot"
+    ],
+    "rollout": "fresh seed-locked ternary exploration at every update through the exact graph absolute/inward rate boundary",
+    "scheduled_tick_slot_capacity": 2000000,
+    "trainable_leaves": [
+      "obs_weight",
+      "previous_action_weight",
+      "hidden_weight",
+      "hidden_bias",
+      "auxiliary_hidden_weight",
+      "auxiliary_action_weight",
+      "auxiliary_bias"
+    ],
+    "update_count": 100,
+    "updates": "one full-batch gradient and one Adam step per fresh rollout"
+  },
+  "stage2": {
+    "frozen_leaves": "all Stage-1 encoder and auxiliary leaves",
+    "learning_rate": 0.0001,
+    "log_std_clamp": [
+      -5.0,
+      1.0
+    ],
+    "optimizer": {
+      "beta1": 0.9,
+      "beta2": 0.999,
+      "epsilon": 1e-08,
+      "name": "Adam"
+    },
+    "optimizer_initialization": "fresh Adam count 0 with exact-zero m/v for only the two deployable action leaves and three training-only Stage-2 leaves",
+    "ppo": {
+      "clip_epsilon": 0.2,
+      "entropy_coefficient": 0.001,
+      "epochs_per_rollout": 1,
+      "fresh_rollouts_per_update": 1,
+      "gae_lambda": 0.95,
+      "gamma": 1.0,
+      "minibatches": 1,
+      "training_reward_selection_weight": "NONE",
+      "value_coefficient": 0.5
+    },
+    "purpose": "learn a bounded automatic support action with the Stage-1 encoder frozen",
+    "required_at_every_update": [
+      "finite loss, metrics, gradients, parameters, and Adam moments",
+      "nonzero valid transition count and exact terminal masking",
+      "all Stage-1 leaves bit-exact",
+      "graph-owned bounds and log-std clamp respected"
+    ],
+    "reward": "1 per valid support tick, zero after termination, plus 250 only for all 250 valid ticks with final-50-tick unbiased gyro-XY norm <=0.05 rad/s",
+    "scheduled_tick_slot_capacity": 2000000,
+    "stage1_to_stage2_handoff": "start from the exact final Stage-1 encoder/auxiliary leaves; retain the seed-60720 exact-zero action head, exact initial training-only log_std, and exact-zero value head; do not carry Stage-1 Adam state",
+    "trainable_leaves": [
+      "action_weight",
+      "action_bias",
+      "training_only_log_std",
+      "training_only_value_weight",
+      "training_only_value_bias"
+    ],
+    "update_count": 100
+  },
+  "status": "PREREGISTERED_WINNER_V12_FULL_CALIBRATOR_TRAINING",
+  "stop_rules": [
+    "stop before training if the fresh implementation/CPU contract does not pass",
+    "stop on source, contract, population, seed, environment, checkpoint, or graph hash drift",
+    "stop on nonfinite loss, metric, gradient, parameter, optimizer moment, state, action, observation, or sensor value",
+    "stop on zero valid transitions, malformed terminal masking, stale data, failed action commit, or support ambiguity",
+    "stop if Stage-1 frozen action leaves or Stage-2 frozen encoder/auxiliary leaves change",
+    "stop if any heldout row enters normalization or optimization",
+    "stop if graph-owned absolute/inward rate bounds, current/torque safety, or ONNX ABI checks fail",
+    "do not retry, tune, extend, choose a closest checkpoint, add attention, or begin locomotion training from a failed result"
+  ]
+}
