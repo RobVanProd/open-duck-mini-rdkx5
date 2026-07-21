@@ -35,6 +35,24 @@ RAW_RECEIPT_NAME = "winner-v20-joint-recurrent-support-gate-result.sha256"
 EXPECTED_REPOSITORY = "RobVanProd/open-duck-mini-rdkx5"
 HEX40_RE = re.compile(r"[0-9a-f]{40}")
 HEX64_RE = re.compile(r"[0-9a-f]{64}")
+REPOSITORY_ATTRIBUTION_FIELDS = {
+    "repository",
+    "github_run_id",
+    "github_run_attempt",
+    "github_run_head_sha",
+    "github_artifact_id",
+    "github_artifact_name",
+    "github_artifact_digest",
+    "artifact_zip_sha256",
+    "artifact_zip_bytes",
+    "raw_result_sha256",
+    "raw_result_receipt_sha256",
+    "preregistration_lf_sha256",
+    "workflow_lf_sha256",
+    "runner_lf_sha256",
+    "v15_importer_lf_sha256",
+    "importer_lf_sha256",
+}
 
 
 def _load_v15_importer():
@@ -166,7 +184,7 @@ def checkpoint_identities() -> dict[str, dict[str, str]]:
 
 
 def validate_result(result: Mapping[str, Any]) -> None:
-    expected_fields = {
+    raw_fields = {
         "authority",
         "checkpoint_results",
         "checks",
@@ -177,12 +195,53 @@ def validate_result(result: Mapping[str, Any]) -> None:
         "sources",
         "status",
     }
+    imported_fields = raw_fields | {"repository_attribution"}
     if (
-        set(result) != expected_fields
+        frozenset(result) not in {frozenset(raw_fields), frozenset(imported_fields)}
         or result["schema_version"]
         != "winner_v20.joint_recurrent_support_gate_result.v1"
     ):
         raise ValueError("Winner-v20 formal gate result schema changed")
+    if "repository_attribution" in result:
+        attribution = result["repository_attribution"]
+        if (
+            not isinstance(attribution, Mapping)
+            or set(attribution) != REPOSITORY_ATTRIBUTION_FIELDS
+            or attribution.get("repository") != EXPECTED_REPOSITORY
+            or type(attribution.get("github_run_id")) is not int
+            or attribution["github_run_id"] <= 0
+            or attribution.get("github_run_attempt") != 1
+            or HEX40_RE.fullmatch(str(attribution.get("github_run_head_sha")))
+            is None
+            or type(attribution.get("github_artifact_id")) is not int
+            or attribution["github_artifact_id"] <= 0
+            or attribution.get("github_artifact_name")
+            != (
+                "winner-v20-joint-recurrent-support-gate-"
+                f"{attribution['github_run_id']}"
+            )
+            or attribution.get("github_artifact_digest")
+            != f"sha256:{attribution.get('artifact_zip_sha256')}"
+            or type(attribution.get("artifact_zip_bytes")) is not int
+            or attribution["artifact_zip_bytes"] <= 0
+            or any(
+                HEX64_RE.fullmatch(str(attribution.get(name))) is None
+                for name in (
+                    "artifact_zip_sha256",
+                    "raw_result_sha256",
+                    "raw_result_receipt_sha256",
+                )
+            )
+            or attribution.get("preregistration_lf_sha256")
+            != lf_sha256(PREREGISTRATION)
+            or attribution.get("workflow_lf_sha256") != lf_sha256(WORKFLOW)
+            or attribution.get("runner_lf_sha256") != lf_sha256(RUNNER)
+            or attribution.get("v15_importer_lf_sha256")
+            != lf_sha256(V15_IMPORTER)
+            or attribution.get("importer_lf_sha256")
+            != lf_sha256(Path(__file__))
+        ):
+            raise ValueError("Winner-v20 imported repository attribution changed")
     checks = result["checks"]
     expected_checks = {
         "all_248_main_cells_pass",
@@ -303,6 +362,7 @@ def main() -> int:
         "v15_importer_lf_sha256": lf_sha256(V15_IMPORTER),
         "importer_lf_sha256": lf_sha256(Path(__file__)),
     }
+    validate_result(payload)
     OUTPUT_JSON.write_text(
         json.dumps(payload, allow_nan=False, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",

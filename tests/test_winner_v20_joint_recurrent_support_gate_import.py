@@ -4,6 +4,8 @@ import importlib.util
 import json
 from pathlib import Path
 
+import pytest
+
 
 ROOT = Path(__file__).resolve().parents[1]
 IMPORTER = ROOT / "tools/import_winner_v20_joint_recurrent_support_gate_result.py"
@@ -61,3 +63,13 @@ def test_imported_gate_result_is_strict_when_present() -> None:
     assert attribution["importer_lf_sha256"] == module.lf_sha256(
         module.Path(module.__file__)
     )
+
+
+def test_imported_gate_result_rejects_unrecognized_top_level_fields() -> None:
+    if not RESULT.exists():
+        return
+    module = load()
+    value = json.loads(RESULT.read_text(encoding="utf-8"))
+    value["unexpected"] = True
+    with pytest.raises(ValueError, match="schema changed"):
+        module.validate_result(value)
