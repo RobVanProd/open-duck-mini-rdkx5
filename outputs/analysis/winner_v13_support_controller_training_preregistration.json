@@ -1,0 +1,150 @@
+{
+  "authority": {
+    "formal_support_gate_authorized": false,
+    "pass_authorizes_only": "a separate 124-cell support/context gate preregistration",
+    "robot_clearance": false
+  },
+  "causal_hypothesis": "The frozen normalized-response encoder contains enough deployable state for a separately trained action/value head to complete safe automatic support calibration across the 40-configuration, two-plant envelope.",
+  "decision": "AUTHORIZE_ONE_100_UPDATE_SUPPORT_CONTROLLER_RUN_ONLY",
+  "deferred_architecture": {
+    "flat_long_range_kernel": "not selected",
+    "reason": "The 250-tick recurrent state has passed observability and one-update contracts; no evidence yet attributes failure to information transport."
+  },
+  "execution_now": {
+    "formal_support_cells": 0,
+    "locomotion_steps": 0,
+    "robot_or_rdk_access": 0,
+    "stage2_optimizer_updates": 0
+  },
+  "frozen_training": {
+    "environments_per_update": 80,
+    "frozen_leaves": [
+      "obs_weight",
+      "previous_action_weight",
+      "hidden_weight",
+      "hidden_bias",
+      "auxiliary_hidden_weight",
+      "auxiliary_action_weight",
+      "auxiliary_bias"
+    ],
+    "learning_rate": 0.0001,
+    "optimizer_updates": 100,
+    "persistent_checkpoints": {
+      "final": 100,
+      "half": 50
+    },
+    "persistent_snapshots": "atomic readback-verified snapshot after every update",
+    "scheduled_episode_slots": 2000000,
+    "source_stage1_snapshot_bytes": 189027,
+    "source_stage1_snapshot_sha256": "8c1392c738eddfb098e61c1a6ae2f863eda883e1eba6ac546aef695da6f163af",
+    "ticks_per_environment": 250,
+    "trainable_leaves": [
+      "action_bias",
+      "action_weight",
+      "training_only_log_std",
+      "training_only_value_bias",
+      "training_only_value_weight"
+    ],
+    "training_root_seed": 120120
+  },
+  "future_gate": {
+    "cells_per_checkpoint": 124,
+    "checkpoints": [
+      "half",
+      "final"
+    ],
+    "executed_now": false,
+    "pass_rule": "all cells at both checkpoints must pass; no closest selection"
+  },
+  "schema_version": "winner_v13.support_controller_training_preregistration.v1",
+  "source_manifest_sha256": "1e8eb5e03a3539621ed9d788cfa0c34100b4044039c952e378402ece44d1d04b",
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v13_support_controller_training_preregistration.py",
+      "sha256": "6c0e54d36cbddbdd51b094857fbd486f8903d368345bb911a93ae41138ea4eeb"
+    },
+    "calibrator_design": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_calibrator_training_preregistration.json",
+      "sha256": "1ec76a587c6fa50b92866c1632a7046ae0c6687ed17b1636b664bf45c2e8ba34"
+    },
+    "canonical_p30_fit": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/fixed_target_p30_actuator_fit_20260712.json",
+      "sha256": "908ddb01e5d82e661d77b8f3cb186a84665695660b86b304c6d1ae89c79cdb0b"
+    },
+    "cpu_smoke": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_cpu_smoke.py",
+      "sha256": "b6ad53430f3f7cca3a91a90f72dab585cb05e3e2f74be2241af3fd9b6ee7ce87"
+    },
+    "deployable_network": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_decomposed_backend_networks.py",
+      "sha256": "f463223a33f80baf81b2604e0df22c647660f2752a7ca60b8c75a3441460d015"
+    },
+    "full_training_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_full_calibrator_training_preregistration.json",
+      "sha256": "99500648d6683097a13f894b0949bf4b5494e5653f36878710817bd0952f71dd"
+    },
+    "full_training_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_full_calibrator_training.py",
+      "sha256": "8cd2c9267f356adba1127f8fb837138bbe6e39b5c3326300eeed9fdd5b524610"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v13_support_controller_training.py",
+      "sha256": "d683b92c6c8dc307ab4dda15dda025d03601f2ac266edc75811f0b08d1441625"
+    },
+    "runtime_observer": {
+      "hash_mode": "lf",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/observer/winner_v2_contract.py",
+      "sha256": "5c90994a24aa223c94f3a51927228e97000f6118c927561a87a3f2684dcf4889"
+    },
+    "stage1_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v13_normalized_response_stage1_v2_preregistration.json",
+      "sha256": "6d1721b34b501f5e62fffe666b968cfea053a333c6378afb9fc64604c521b436"
+    },
+    "stage1_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v13_normalized_response_stage1_v2_result.json",
+      "sha256": "45e12b9993ce5c8f9811af7350ed3198f9376d0d4ea9b25de8b1aee608a5bcc7"
+    },
+    "support_cpu_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v13_support_controller_cpu_result.json",
+      "sha256": "7567a86a6532eb585799dfa6fdf9b6097dbb4f0419c49faf4dc36b11c41095f6"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v13_support_controller_training.py",
+      "sha256": "8ba2a20345a84ff5b4c1909887c32ffb40931fc430651febf743dc867252f60c"
+    },
+    "v12_training_primitives": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_calibrator_training.py",
+      "sha256": "f5736a357d73baedae2bba1d15254dd688bddf3761eb731d757a971783c77227"
+    },
+    "v13_training_primitives": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v13_normalized_calibrator_training.py",
+      "sha256": "b57ae2823cff90bfd8d78317adb1dfe9607bcae069a4d985863144b4e12ec3ca"
+    },
+    "variable_configuration_domain": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v3_variable_configuration_replacement_preregistration.json",
+      "sha256": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b"
+    },
+    "workflow": {
+      "hash_mode": "lf",
+      "path": ".github/workflows/winner-v13-support-controller-training.yml",
+      "sha256": "9a4114cebb198e95d8f1a2d1ca2d8ae409511af47007024c8c130eb17b91774f"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V13_SUPPORT_CONTROLLER_TRAINING",
+  "training_success_rule": "Exact 100 finite Stage-2 updates; Stage-1 remains bit-exact; every Stage-2 leaf changes; every raw-to-bounded action check is exact; all 100 snapshots and both 115/14/64 ONNX checkpoints validate. Reward curves do not select or reject a checkpoint."
+}
