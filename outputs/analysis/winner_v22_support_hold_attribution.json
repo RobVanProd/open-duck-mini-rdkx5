@@ -1,0 +1,861 @@
+{
+  "authority": {
+    "manual_mass_com_inertia_measurements_required": false,
+    "pass_authorizes_only": "a separate read-only negative-X response-use diagnostic preregistration",
+    "response_conditioned_locomotion_training_authorized": false,
+    "robot_clearance": false
+  },
+  "causal_conclusion": "Correcting normalized predictor semantics repaired the auxiliary evidence: learned prediction beats the constant baseline in all four checkpoint/plant comparisons. It did not repair support. Every remaining failure is a roll/pitch boundary crossing under a negative-X torso-COM domain configuration, and the v22 failure counts are not better than v15. Prediction accuracy is therefore necessary but not sufficient; the next question is whether recurrent response state becomes informative early enough and changes the control action in the required direction before the negative-X fall.",
+  "checks": {
+    "all_winner_v22_failures_are_roll_pitch_only": true,
+    "all_winner_v22_failures_have_negative_torso_com_x": true,
+    "corrected_predictor_beats_constant_both_plants_both_checkpoints": true,
+    "no_response_conditioned_locomotion_or_robot_authority": true,
+    "only_physical_support_check_failed": true,
+    "winner_v22_does_not_pass_or_improve_over_v15_failure_count": true,
+    "winner_v22_gate_is_valid_hold_not_infrastructure_failure": true
+  },
+  "decision": "AUTHORIZE_NEGATIVE_X_RESPONSE_USE_DIAGNOSTIC_PREREGISTRATION_ONLY",
+  "execution": {
+    "locomotion_steps": 0,
+    "new_simulation_cells": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "lineage": {
+    "winner_v15": [
+      {
+        "all_physical_failures_have_negative_torso_com_x": true,
+        "core_cells": 112,
+        "failed_cell_keys": [
+          "COM_CORNER_01|P30_ALL_JOINT",
+          "COM_CORNER_01|P31_34_PITCH_WITH_P30_NONPITCH",
+          "COM_CORNER_03|P30_ALL_JOINT",
+          "COM_CORNER_03|P31_34_PITCH_WITH_P30_NONPITCH",
+          "COM_X_NEG|P30_ALL_JOINT",
+          "COM_X_NEG|P31_34_PITCH_WITH_P30_NONPITCH",
+          "DISCOVERY_03|P30_ALL_JOINT",
+          "DISCOVERY_03|P31_34_PITCH_WITH_P30_NONPITCH",
+          "HELDOUT_04|P30_ALL_JOINT",
+          "HELDOUT_04|P31_34_PITCH_WITH_P30_NONPITCH",
+          "HELDOUT_09|P30_ALL_JOINT",
+          "HELDOUT_09|P31_34_PITCH_WITH_P30_NONPITCH"
+        ],
+        "failed_configuration_ids": [
+          "COM_CORNER_01",
+          "COM_CORNER_03",
+          "COM_X_NEG",
+          "DISCOVERY_03",
+          "HELDOUT_04",
+          "HELDOUT_09"
+        ],
+        "failed_configuration_torso_com_offsets_m": {
+          "COM_CORNER_01": [
+            -0.05,
+            -0.05,
+            0.05
+          ],
+          "COM_CORNER_03": [
+            -0.05,
+            0.05,
+            0.05
+          ],
+          "COM_X_NEG": [
+            -0.05,
+            0.0,
+            0.0
+          ],
+          "DISCOVERY_03": [
+            -0.046875,
+            -0.021875000000000002,
+            -0.0031250000000000028
+          ],
+          "HELDOUT_04": [
+            -0.046875,
+            -0.015625,
+            0.015625
+          ],
+          "HELDOUT_09": [
+            -0.040625,
+            -0.0031250000000000028,
+            0.046875
+          ]
+        },
+        "failure_reasons": [
+          "roll_pitch"
+        ],
+        "heldout_context_separation_failures": 0,
+        "heldout_repeat_failures": 0,
+        "label": "half",
+        "learned_prediction_beats_constant_both_plants": false,
+        "physical_support_failures": 12,
+        "prediction_by_plant": {
+          "P30_ALL_JOINT": {
+            "constant_normalized_prediction_mse": 0.11973275659757077,
+            "learned_normalized_prediction_mse": 40001635091.56461,
+            "learned_strictly_below_constant": false
+          },
+          "P31_34_PITCH_WITH_P30_NONPITCH": {
+            "constant_normalized_prediction_mse": 0.11638307331468437,
+            "learned_normalized_prediction_mse": 40003300201.12663,
+            "learned_strictly_below_constant": false
+          }
+        },
+        "sensor_transport_failures": 0,
+        "update": 50
+      },
+      {
+        "all_physical_failures_have_negative_torso_com_x": true,
+        "core_cells": 112,
+        "failed_cell_keys": [
+          "COM_CORNER_01|P30_ALL_JOINT",
+          "COM_CORNER_01|P31_34_PITCH_WITH_P30_NONPITCH",
+          "COM_CORNER_03|P30_ALL_JOINT",
+          "COM_CORNER_03|P31_34_PITCH_WITH_P30_NONPITCH",
+          "COM_X_NEG|P30_ALL_JOINT",
+          "COM_X_NEG|P31_34_PITCH_WITH_P30_NONPITCH",
+          "DISCOVERY_03|P30_ALL_JOINT",
+          "DISCOVERY_03|P31_34_PITCH_WITH_P30_NONPITCH",
+          "HELDOUT_04|P30_ALL_JOINT",
+          "HELDOUT_04|P31_34_PITCH_WITH_P30_NONPITCH",
+          "HELDOUT_09|P30_ALL_JOINT",
+          "HELDOUT_09|P31_34_PITCH_WITH_P30_NONPITCH"
+        ],
+        "failed_configuration_ids": [
+          "COM_CORNER_01",
+          "COM_CORNER_03",
+          "COM_X_NEG",
+          "DISCOVERY_03",
+          "HELDOUT_04",
+          "HELDOUT_09"
+        ],
+        "failed_configuration_torso_com_offsets_m": {
+          "COM_CORNER_01": [
+            -0.05,
+            -0.05,
+            0.05
+          ],
+          "COM_CORNER_03": [
+            -0.05,
+            0.05,
+            0.05
+          ],
+          "COM_X_NEG": [
+            -0.05,
+            0.0,
+            0.0
+          ],
+          "DISCOVERY_03": [
+            -0.046875,
+            -0.021875000000000002,
+            -0.0031250000000000028
+          ],
+          "HELDOUT_04": [
+            -0.046875,
+            -0.015625,
+            0.015625
+          ],
+          "HELDOUT_09": [
+            -0.040625,
+            -0.0031250000000000028,
+            0.046875
+          ]
+        },
+        "failure_reasons": [
+          "roll_pitch"
+        ],
+        "heldout_context_separation_failures": 0,
+        "heldout_repeat_failures": 0,
+        "label": "final",
+        "learned_prediction_beats_constant_both_plants": false,
+        "physical_support_failures": 12,
+        "prediction_by_plant": {
+          "P30_ALL_JOINT": {
+            "constant_normalized_prediction_mse": 0.11649304643738606,
+            "learned_normalized_prediction_mse": 39957305684.84555,
+            "learned_strictly_below_constant": false
+          },
+          "P31_34_PITCH_WITH_P30_NONPITCH": {
+            "constant_normalized_prediction_mse": 0.11689592876991932,
+            "learned_normalized_prediction_mse": 39956906075.88531,
+            "learned_strictly_below_constant": false
+          }
+        },
+        "sensor_transport_failures": 0,
+        "update": 100
+      }
+    ],
+    "winner_v20": [
+      {
+        "all_physical_failures_have_negative_torso_com_x": true,
+        "core_cells": 112,
+        "failed_cell_keys": [
+          "COM_CORNER_00|P30_ALL_JOINT",
+          "COM_CORNER_00|P31_34_PITCH_WITH_P30_NONPITCH",
+          "COM_CORNER_01|P30_ALL_JOINT",
+          "COM_CORNER_01|P31_34_PITCH_WITH_P30_NONPITCH",
+          "COM_CORNER_02|P30_ALL_JOINT",
+          "COM_CORNER_02|P31_34_PITCH_WITH_P30_NONPITCH",
+          "COM_CORNER_03|P30_ALL_JOINT",
+          "COM_CORNER_03|P31_34_PITCH_WITH_P30_NONPITCH",
+          "COM_X_NEG|P30_ALL_JOINT",
+          "COM_X_NEG|P31_34_PITCH_WITH_P30_NONPITCH",
+          "DISCOVERY_03|P30_ALL_JOINT",
+          "DISCOVERY_03|P31_34_PITCH_WITH_P30_NONPITCH",
+          "HELDOUT_04|P30_ALL_JOINT",
+          "HELDOUT_04|P31_34_PITCH_WITH_P30_NONPITCH",
+          "HELDOUT_09|P30_ALL_JOINT",
+          "HELDOUT_09|P31_34_PITCH_WITH_P30_NONPITCH"
+        ],
+        "failed_configuration_ids": [
+          "COM_CORNER_00",
+          "COM_CORNER_01",
+          "COM_CORNER_02",
+          "COM_CORNER_03",
+          "COM_X_NEG",
+          "DISCOVERY_03",
+          "HELDOUT_04",
+          "HELDOUT_09"
+        ],
+        "failed_configuration_torso_com_offsets_m": {
+          "COM_CORNER_00": [
+            -0.05,
+            -0.05,
+            -0.05
+          ],
+          "COM_CORNER_01": [
+            -0.05,
+            -0.05,
+            0.05
+          ],
+          "COM_CORNER_02": [
+            -0.05,
+            0.05,
+            -0.05
+          ],
+          "COM_CORNER_03": [
+            -0.05,
+            0.05,
+            0.05
+          ],
+          "COM_X_NEG": [
+            -0.05,
+            0.0,
+            0.0
+          ],
+          "DISCOVERY_03": [
+            -0.046875,
+            -0.021875000000000002,
+            -0.0031250000000000028
+          ],
+          "HELDOUT_04": [
+            -0.046875,
+            -0.015625,
+            0.015625
+          ],
+          "HELDOUT_09": [
+            -0.040625,
+            -0.0031250000000000028,
+            0.046875
+          ]
+        },
+        "failure_reasons": [
+          "roll_pitch"
+        ],
+        "heldout_context_separation_failures": 0,
+        "heldout_repeat_failures": 0,
+        "label": "half",
+        "learned_prediction_beats_constant_both_plants": false,
+        "physical_support_failures": 16,
+        "prediction_by_plant": {
+          "P30_ALL_JOINT": {
+            "constant_normalized_prediction_mse": 0.22241860598263274,
+            "learned_normalized_prediction_mse": 44432280148.41974,
+            "learned_strictly_below_constant": false
+          },
+          "P31_34_PITCH_WITH_P30_NONPITCH": {
+            "constant_normalized_prediction_mse": 0.22788384074858092,
+            "learned_normalized_prediction_mse": 44432684812.91995,
+            "learned_strictly_below_constant": false
+          }
+        },
+        "sensor_transport_failures": 0,
+        "update": 50
+      },
+      {
+        "all_physical_failures_have_negative_torso_com_x": true,
+        "core_cells": 112,
+        "failed_cell_keys": [
+          "COM_CORNER_00|P30_ALL_JOINT",
+          "COM_CORNER_00|P31_34_PITCH_WITH_P30_NONPITCH",
+          "COM_CORNER_01|P30_ALL_JOINT",
+          "COM_CORNER_01|P31_34_PITCH_WITH_P30_NONPITCH",
+          "COM_CORNER_02|P30_ALL_JOINT",
+          "COM_CORNER_02|P31_34_PITCH_WITH_P30_NONPITCH",
+          "COM_CORNER_03|P30_ALL_JOINT",
+          "COM_CORNER_03|P31_34_PITCH_WITH_P30_NONPITCH",
+          "COM_X_NEG|P30_ALL_JOINT",
+          "COM_X_NEG|P31_34_PITCH_WITH_P30_NONPITCH",
+          "DISCOVERY_03|P30_ALL_JOINT",
+          "DISCOVERY_03|P31_34_PITCH_WITH_P30_NONPITCH",
+          "DISCOVERY_09|P30_ALL_JOINT",
+          "DISCOVERY_09|P31_34_PITCH_WITH_P30_NONPITCH",
+          "DISCOVERY_10|P30_ALL_JOINT",
+          "DISCOVERY_10|P31_34_PITCH_WITH_P30_NONPITCH",
+          "HELDOUT_04|P30_ALL_JOINT",
+          "HELDOUT_04|P31_34_PITCH_WITH_P30_NONPITCH",
+          "HELDOUT_09|P30_ALL_JOINT",
+          "HELDOUT_09|P31_34_PITCH_WITH_P30_NONPITCH"
+        ],
+        "failed_configuration_ids": [
+          "COM_CORNER_00",
+          "COM_CORNER_01",
+          "COM_CORNER_02",
+          "COM_CORNER_03",
+          "COM_X_NEG",
+          "DISCOVERY_03",
+          "DISCOVERY_09",
+          "DISCOVERY_10",
+          "HELDOUT_04",
+          "HELDOUT_09"
+        ],
+        "failed_configuration_torso_com_offsets_m": {
+          "COM_CORNER_00": [
+            -0.05,
+            -0.05,
+            -0.05
+          ],
+          "COM_CORNER_01": [
+            -0.05,
+            -0.05,
+            0.05
+          ],
+          "COM_CORNER_02": [
+            -0.05,
+            0.05,
+            -0.05
+          ],
+          "COM_CORNER_03": [
+            -0.05,
+            0.05,
+            0.05
+          ],
+          "COM_X_NEG": [
+            -0.05,
+            0.0,
+            0.0
+          ],
+          "DISCOVERY_03": [
+            -0.046875,
+            -0.021875000000000002,
+            -0.0031250000000000028
+          ],
+          "DISCOVERY_09": [
+            -0.040625,
+            -0.028125,
+            -0.015625
+          ],
+          "DISCOVERY_10": [
+            -0.034375,
+            0.04062500000000001,
+            -0.028125
+          ],
+          "HELDOUT_04": [
+            -0.046875,
+            -0.015625,
+            0.015625
+          ],
+          "HELDOUT_09": [
+            -0.040625,
+            -0.0031250000000000028,
+            0.046875
+          ]
+        },
+        "failure_reasons": [
+          "roll_pitch"
+        ],
+        "heldout_context_separation_failures": 0,
+        "heldout_repeat_failures": 0,
+        "label": "final",
+        "learned_prediction_beats_constant_both_plants": false,
+        "physical_support_failures": 20,
+        "prediction_by_plant": {
+          "P30_ALL_JOINT": {
+            "constant_normalized_prediction_mse": 0.5737657341038873,
+            "learned_normalized_prediction_mse": 48463688190.58649,
+            "learned_strictly_below_constant": false
+          },
+          "P31_34_PITCH_WITH_P30_NONPITCH": {
+            "constant_normalized_prediction_mse": 0.5760567142701035,
+            "learned_normalized_prediction_mse": 48463477084.57522,
+            "learned_strictly_below_constant": false
+          }
+        },
+        "sensor_transport_failures": 0,
+        "update": 100
+      }
+    ],
+    "winner_v21": [
+      {
+        "all_physical_failures_have_negative_torso_com_x": true,
+        "core_cells": 112,
+        "failed_cell_keys": [
+          "COM_CORNER_00|P30_ALL_JOINT",
+          "COM_CORNER_01|P30_ALL_JOINT",
+          "COM_CORNER_01|P31_34_PITCH_WITH_P30_NONPITCH",
+          "COM_CORNER_02|P30_ALL_JOINT",
+          "COM_CORNER_02|P31_34_PITCH_WITH_P30_NONPITCH",
+          "COM_CORNER_03|P30_ALL_JOINT",
+          "COM_CORNER_03|P31_34_PITCH_WITH_P30_NONPITCH",
+          "COM_X_NEG|P30_ALL_JOINT",
+          "COM_X_NEG|P31_34_PITCH_WITH_P30_NONPITCH",
+          "DISCOVERY_03|P30_ALL_JOINT",
+          "DISCOVERY_03|P31_34_PITCH_WITH_P30_NONPITCH",
+          "HELDOUT_04|P30_ALL_JOINT",
+          "HELDOUT_04|P31_34_PITCH_WITH_P30_NONPITCH",
+          "HELDOUT_09|P30_ALL_JOINT",
+          "HELDOUT_09|P31_34_PITCH_WITH_P30_NONPITCH"
+        ],
+        "failed_configuration_ids": [
+          "COM_CORNER_00",
+          "COM_CORNER_01",
+          "COM_CORNER_02",
+          "COM_CORNER_03",
+          "COM_X_NEG",
+          "DISCOVERY_03",
+          "HELDOUT_04",
+          "HELDOUT_09"
+        ],
+        "failed_configuration_torso_com_offsets_m": {
+          "COM_CORNER_00": [
+            -0.05,
+            -0.05,
+            -0.05
+          ],
+          "COM_CORNER_01": [
+            -0.05,
+            -0.05,
+            0.05
+          ],
+          "COM_CORNER_02": [
+            -0.05,
+            0.05,
+            -0.05
+          ],
+          "COM_CORNER_03": [
+            -0.05,
+            0.05,
+            0.05
+          ],
+          "COM_X_NEG": [
+            -0.05,
+            0.0,
+            0.0
+          ],
+          "DISCOVERY_03": [
+            -0.046875,
+            -0.021875000000000002,
+            -0.0031250000000000028
+          ],
+          "HELDOUT_04": [
+            -0.046875,
+            -0.015625,
+            0.015625
+          ],
+          "HELDOUT_09": [
+            -0.040625,
+            -0.0031250000000000028,
+            0.046875
+          ]
+        },
+        "failure_reasons": [
+          "roll_pitch"
+        ],
+        "heldout_context_separation_failures": 0,
+        "heldout_repeat_failures": 0,
+        "label": "half",
+        "learned_prediction_beats_constant_both_plants": false,
+        "physical_support_failures": 15,
+        "prediction_by_plant": {
+          "P30_ALL_JOINT": {
+            "constant_normalized_prediction_mse": 0.1293015512090518,
+            "learned_normalized_prediction_mse": 17815719039.675545,
+            "learned_strictly_below_constant": false
+          },
+          "P31_34_PITCH_WITH_P30_NONPITCH": {
+            "constant_normalized_prediction_mse": 0.12899752502576792,
+            "learned_normalized_prediction_mse": 17814882245.934425,
+            "learned_strictly_below_constant": false
+          }
+        },
+        "sensor_transport_failures": 0,
+        "update": 50
+      },
+      {
+        "all_physical_failures_have_negative_torso_com_x": true,
+        "core_cells": 112,
+        "failed_cell_keys": [
+          "COM_CORNER_00|P30_ALL_JOINT",
+          "COM_CORNER_00|P31_34_PITCH_WITH_P30_NONPITCH",
+          "COM_CORNER_01|P30_ALL_JOINT",
+          "COM_CORNER_01|P31_34_PITCH_WITH_P30_NONPITCH",
+          "COM_CORNER_02|P30_ALL_JOINT",
+          "COM_CORNER_02|P31_34_PITCH_WITH_P30_NONPITCH",
+          "COM_CORNER_03|P30_ALL_JOINT",
+          "COM_CORNER_03|P31_34_PITCH_WITH_P30_NONPITCH",
+          "COM_X_NEG|P30_ALL_JOINT",
+          "COM_X_NEG|P31_34_PITCH_WITH_P30_NONPITCH",
+          "DISCOVERY_03|P30_ALL_JOINT",
+          "DISCOVERY_03|P31_34_PITCH_WITH_P30_NONPITCH",
+          "HELDOUT_04|P30_ALL_JOINT",
+          "HELDOUT_04|P31_34_PITCH_WITH_P30_NONPITCH",
+          "HELDOUT_09|P30_ALL_JOINT",
+          "HELDOUT_09|P31_34_PITCH_WITH_P30_NONPITCH"
+        ],
+        "failed_configuration_ids": [
+          "COM_CORNER_00",
+          "COM_CORNER_01",
+          "COM_CORNER_02",
+          "COM_CORNER_03",
+          "COM_X_NEG",
+          "DISCOVERY_03",
+          "HELDOUT_04",
+          "HELDOUT_09"
+        ],
+        "failed_configuration_torso_com_offsets_m": {
+          "COM_CORNER_00": [
+            -0.05,
+            -0.05,
+            -0.05
+          ],
+          "COM_CORNER_01": [
+            -0.05,
+            -0.05,
+            0.05
+          ],
+          "COM_CORNER_02": [
+            -0.05,
+            0.05,
+            -0.05
+          ],
+          "COM_CORNER_03": [
+            -0.05,
+            0.05,
+            0.05
+          ],
+          "COM_X_NEG": [
+            -0.05,
+            0.0,
+            0.0
+          ],
+          "DISCOVERY_03": [
+            -0.046875,
+            -0.021875000000000002,
+            -0.0031250000000000028
+          ],
+          "HELDOUT_04": [
+            -0.046875,
+            -0.015625,
+            0.015625
+          ],
+          "HELDOUT_09": [
+            -0.040625,
+            -0.0031250000000000028,
+            0.046875
+          ]
+        },
+        "failure_reasons": [
+          "roll_pitch"
+        ],
+        "heldout_context_separation_failures": 0,
+        "heldout_repeat_failures": 0,
+        "label": "final",
+        "learned_prediction_beats_constant_both_plants": false,
+        "physical_support_failures": 16,
+        "prediction_by_plant": {
+          "P30_ALL_JOINT": {
+            "constant_normalized_prediction_mse": 0.22230358564446348,
+            "learned_normalized_prediction_mse": 2024354038.5101104,
+            "learned_strictly_below_constant": false
+          },
+          "P31_34_PITCH_WITH_P30_NONPITCH": {
+            "constant_normalized_prediction_mse": 0.22228123735090516,
+            "learned_normalized_prediction_mse": 2024130497.0218086,
+            "learned_strictly_below_constant": false
+          }
+        },
+        "sensor_transport_failures": 0,
+        "update": 100
+      }
+    ],
+    "winner_v22": [
+      {
+        "all_physical_failures_have_negative_torso_com_x": true,
+        "core_cells": 112,
+        "failed_cell_keys": [
+          "COM_CORNER_00|P30_ALL_JOINT",
+          "COM_CORNER_00|P31_34_PITCH_WITH_P30_NONPITCH",
+          "COM_CORNER_01|P30_ALL_JOINT",
+          "COM_CORNER_01|P31_34_PITCH_WITH_P30_NONPITCH",
+          "COM_CORNER_02|P30_ALL_JOINT",
+          "COM_CORNER_03|P30_ALL_JOINT",
+          "COM_CORNER_03|P31_34_PITCH_WITH_P30_NONPITCH",
+          "COM_X_NEG|P30_ALL_JOINT",
+          "COM_X_NEG|P31_34_PITCH_WITH_P30_NONPITCH",
+          "DISCOVERY_03|P30_ALL_JOINT",
+          "DISCOVERY_03|P31_34_PITCH_WITH_P30_NONPITCH",
+          "HELDOUT_04|P30_ALL_JOINT",
+          "HELDOUT_04|P31_34_PITCH_WITH_P30_NONPITCH",
+          "HELDOUT_09|P30_ALL_JOINT",
+          "HELDOUT_09|P31_34_PITCH_WITH_P30_NONPITCH"
+        ],
+        "failed_configuration_ids": [
+          "COM_CORNER_00",
+          "COM_CORNER_01",
+          "COM_CORNER_02",
+          "COM_CORNER_03",
+          "COM_X_NEG",
+          "DISCOVERY_03",
+          "HELDOUT_04",
+          "HELDOUT_09"
+        ],
+        "failed_configuration_torso_com_offsets_m": {
+          "COM_CORNER_00": [
+            -0.05,
+            -0.05,
+            -0.05
+          ],
+          "COM_CORNER_01": [
+            -0.05,
+            -0.05,
+            0.05
+          ],
+          "COM_CORNER_02": [
+            -0.05,
+            0.05,
+            -0.05
+          ],
+          "COM_CORNER_03": [
+            -0.05,
+            0.05,
+            0.05
+          ],
+          "COM_X_NEG": [
+            -0.05,
+            0.0,
+            0.0
+          ],
+          "DISCOVERY_03": [
+            -0.046875,
+            -0.021875000000000002,
+            -0.0031250000000000028
+          ],
+          "HELDOUT_04": [
+            -0.046875,
+            -0.015625,
+            0.015625
+          ],
+          "HELDOUT_09": [
+            -0.040625,
+            -0.0031250000000000028,
+            0.046875
+          ]
+        },
+        "failure_reasons": [
+          "roll_pitch"
+        ],
+        "heldout_context_separation_failures": 0,
+        "heldout_repeat_failures": 0,
+        "label": "half",
+        "learned_prediction_beats_constant_both_plants": true,
+        "physical_support_failures": 15,
+        "prediction_by_plant": {
+          "P30_ALL_JOINT": {
+            "constant_normalized_prediction_mse": 0.12558523050151288,
+            "learned_normalized_prediction_mse": 0.10528269511357272,
+            "learned_strictly_below_constant": true
+          },
+          "P31_34_PITCH_WITH_P30_NONPITCH": {
+            "constant_normalized_prediction_mse": 0.1286896412509575,
+            "learned_normalized_prediction_mse": 0.10829516325617065,
+            "learned_strictly_below_constant": true
+          }
+        },
+        "sensor_transport_failures": 0,
+        "update": 50
+      },
+      {
+        "all_physical_failures_have_negative_torso_com_x": true,
+        "core_cells": 112,
+        "failed_cell_keys": [
+          "COM_CORNER_01|P30_ALL_JOINT",
+          "COM_CORNER_01|P31_34_PITCH_WITH_P30_NONPITCH",
+          "COM_CORNER_02|P30_ALL_JOINT",
+          "COM_CORNER_02|P31_34_PITCH_WITH_P30_NONPITCH",
+          "COM_CORNER_03|P30_ALL_JOINT",
+          "COM_CORNER_03|P31_34_PITCH_WITH_P30_NONPITCH",
+          "COM_X_NEG|P30_ALL_JOINT",
+          "COM_X_NEG|P31_34_PITCH_WITH_P30_NONPITCH",
+          "DISCOVERY_03|P30_ALL_JOINT",
+          "DISCOVERY_03|P31_34_PITCH_WITH_P30_NONPITCH",
+          "HELDOUT_04|P30_ALL_JOINT",
+          "HELDOUT_04|P31_34_PITCH_WITH_P30_NONPITCH",
+          "HELDOUT_09|P30_ALL_JOINT",
+          "HELDOUT_09|P31_34_PITCH_WITH_P30_NONPITCH"
+        ],
+        "failed_configuration_ids": [
+          "COM_CORNER_01",
+          "COM_CORNER_02",
+          "COM_CORNER_03",
+          "COM_X_NEG",
+          "DISCOVERY_03",
+          "HELDOUT_04",
+          "HELDOUT_09"
+        ],
+        "failed_configuration_torso_com_offsets_m": {
+          "COM_CORNER_01": [
+            -0.05,
+            -0.05,
+            0.05
+          ],
+          "COM_CORNER_02": [
+            -0.05,
+            0.05,
+            -0.05
+          ],
+          "COM_CORNER_03": [
+            -0.05,
+            0.05,
+            0.05
+          ],
+          "COM_X_NEG": [
+            -0.05,
+            0.0,
+            0.0
+          ],
+          "DISCOVERY_03": [
+            -0.046875,
+            -0.021875000000000002,
+            -0.0031250000000000028
+          ],
+          "HELDOUT_04": [
+            -0.046875,
+            -0.015625,
+            0.015625
+          ],
+          "HELDOUT_09": [
+            -0.040625,
+            -0.0031250000000000028,
+            0.046875
+          ]
+        },
+        "failure_reasons": [
+          "roll_pitch"
+        ],
+        "heldout_context_separation_failures": 0,
+        "heldout_repeat_failures": 0,
+        "label": "final",
+        "learned_prediction_beats_constant_both_plants": true,
+        "physical_support_failures": 14,
+        "prediction_by_plant": {
+          "P30_ALL_JOINT": {
+            "constant_normalized_prediction_mse": 0.21643945126833525,
+            "learned_normalized_prediction_mse": 0.13932411074362816,
+            "learned_strictly_below_constant": true
+          },
+          "P31_34_PITCH_WITH_P30_NONPITCH": {
+            "constant_normalized_prediction_mse": 0.21805959964424632,
+            "learned_normalized_prediction_mse": 0.140906761383977,
+            "learned_strictly_below_constant": true
+          }
+        },
+        "sensor_transport_failures": 0,
+        "update": 100
+      }
+    ]
+  },
+  "next_diagnostic": {
+    "execution_now": false,
+    "may_not": [
+      "train or alter parameters",
+      "select a checkpoint",
+      "weaken the support gate",
+      "use manual mass or COM measurements",
+      "access the RDK or robot"
+    ],
+    "must_freeze_before_execution": [
+      "matched negative-X and nonnegative-X configuration pairs",
+      "both Winner-v22 checkpoints and both actuator plants",
+      "per-tick hidden, prediction, action, pitch, and target-response traces",
+      "same-input hidden-state action fork with no modified-physics rollout",
+      "timing and pass/fail metrics decided before execution"
+    ],
+    "type": "offline_cpu_read_only_negative_x_response_use"
+  },
+  "schema_version": "winner_v22.support_hold_attribution.v1",
+  "source_manifest_sha256": "dcca2af32ed5bee029c338d8b2031ebe7f1146d7470777a84e00e89c70444e4a",
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v22_support_hold_attribution.py",
+      "sha256": "dd0a438f9425e92553a9c96d68b18956712b14214f8ec87f0fe8494c7d4490f6"
+    },
+    "domain": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v3_variable_configuration_replacement_preregistration.json",
+      "sha256": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b"
+    },
+    "normalized_coordinate_adapter": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v22_normalized_support_gate.py",
+      "sha256": "2c13cdb767d222bed510c7d2f650b98566a107daa8f027373e001c5496e51f8a"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v22_support_hold_attribution.py",
+      "sha256": "cb57903faa4d168d68e93010100bc70a7eb4049ce00d68984094abc743faa977"
+    },
+    "winner_v15_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v15_pitch_margin_support_gate_result.json",
+      "sha256": "37b8dbcf043f5917de61bcc18a892e1ebad6e8ab02e2b2450a0461252f8e241d"
+    },
+    "winner_v20_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v20_joint_recurrent_support_gate_result.json",
+      "sha256": "32cabf9ec20a87c1488ad21363839d3587dff105a626150188d48cf2adfb21b3"
+    },
+    "winner_v21_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v21_predictor_preserving_support_gate_result.json",
+      "sha256": "766a350a0d54487c755af062e37c84397780998c6e06436ddc83a0b48c70db81"
+    },
+    "winner_v22_gate_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v22_normalized_predictor_support_gate_preregistration.json",
+      "sha256": "cbf44e5e48bfbf8f77b9b1cbc40d76e8f5a701a4c418818d1e7422ff7bdfe7bd"
+    },
+    "winner_v22_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v22_normalized_predictor_support_gate_result.json",
+      "sha256": "c5741850e832fa7bcc091bdffc58c2c9595cf4e0102631012bafeeb21427ee45"
+    },
+    "winner_v22_training_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v22_normalized_predictor_training_result.json",
+      "sha256": "10bae5bb32f32cc90e222eb1d6644d97e2a0253baa6ad1a37fe06fde48cf11c1"
+    }
+  },
+  "status": "PASS_WINNER_V22_SUPPORT_HOLD_ATTRIBUTION",
+  "winner_v22_delta": {
+    "common_failures": 13,
+    "new_at_final": [
+      "COM_CORNER_02|P31_34_PITCH_WITH_P30_NONPITCH"
+    ],
+    "recovered_at_final": [
+      "COM_CORNER_00|P30_ALL_JOINT",
+      "COM_CORNER_00|P31_34_PITCH_WITH_P30_NONPITCH"
+    ]
+  }
+}
