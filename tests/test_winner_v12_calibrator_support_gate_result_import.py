@@ -70,7 +70,7 @@ def valid_result(importer) -> dict:
         "failed_checks": [],
         "sources": {
             "preregistration_lf_sha256": importer.lf_sha256(
-                importer.PREREGISTRATION
+                importer.FULL_TRAINING_PREREGISTRATION
             ),
             "calibrator_design_lf_sha256": importer.lf_sha256(
                 importer.CALIBRATOR_DESIGN
@@ -152,6 +152,17 @@ def test_repository_attribution_is_exact() -> None:
 def test_validates_complete_pass_population_and_authority() -> None:
     importer = load_importer()
     importer.validate_result(valid_result(importer))
+
+
+def test_raw_result_preregistration_source_is_the_full_training_plan() -> None:
+    importer = load_importer()
+    result = valid_result(importer)
+    assert result["sources"]["preregistration_lf_sha256"] == importer.lf_sha256(
+        importer.FULL_TRAINING_PREREGISTRATION
+    )
+    assert result["sources"]["preregistration_lf_sha256"] != importer.lf_sha256(
+        importer.SUPPORT_GATE_PREREGISTRATION
+    )
 
 
 def test_rejects_incomplete_formal_population() -> None:
