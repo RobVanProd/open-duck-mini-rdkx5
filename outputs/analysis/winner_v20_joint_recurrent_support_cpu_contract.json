@@ -5,7 +5,7 @@
     "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
     "robot_clearance": false
   },
-  "decision": "AUTHORIZE_ONE_JOINT_RECURRENT_PPO_PROOF_UPDATE_ONLY",
+  "decision": "AUTHORIZE_EXACT_TWO_UPDATE_JOINT_RECURRENT_PPO_PROOF_ONLY",
   "execution_now": {
     "formal_support_cells": 0,
     "locomotion_steps": 0,
@@ -14,33 +14,45 @@
   },
   "frozen_cpu_proof": {
     "learning_rate": 0.0001,
-    "optimizer_updates": 1,
+    "optimizer_updates": 2,
     "population": "exact 40 training configurations x 2 hidden plants",
     "requirements": [
-      "Winner-v20 rollout equals Winner-v15 reward/action/mask/episode data bit-exactly",
-      "complete observation capture reconstructs the reviewed ONNX chain",
-      "full-BPTT source hidden replay error is at most 1e-6",
-      "all nine selected gradients are finite and nonzero",
-      "all nine selected leaves change after one Adam update",
+      "both Winner-v20 rollouts equal Winner-v15 reward/action/mask/episode data bit-exactly",
+      "both complete observation captures reconstruct the reviewed ONNX chain",
+      "sampled-tick full-BPTT hidden replay error is at most 1e-6 on both updates",
+      "update 1 recurrent gradients and deltas are exactly zero while all other selected leaves are nonzero",
+      "update 2 gradients and per-update deltas are finite and nonzero on all nine selected leaves",
+      "all nine cumulative leaf deltas are nonzero",
       "three auxiliary predictor leaves remain bit-exact",
       "snapshot and optimizer read back exactly",
       "115/14/64 ONNX ABI, graph bounds, and previous-action chain remain exact"
     ],
-    "rollout_update_index": 0,
-    "source_hidden_replay_tolerance": 1e-06,
+    "rollout_update_indices": [
+      0,
+      1
+    ],
+    "sampled_hidden_replay_tolerance": 1e-06,
     "ticks": 250,
     "training_root_seed": 120120
   },
   "pass_rule": "Every proof check passes. A pass authorizes only a separate preregistration for one 100-update causal A/B arm; it does not authorize that training now.",
-  "proof_correction": {
-    "behavior_or_objective_semantics_change": false,
-    "failed_artifact_id": 8503746957,
-    "failed_run_id": 29851858965,
-    "formal_result_present": false,
-    "fresh_run_required": true,
-    "only_change": "replace the incompatible inherited five-leaf snapshot loader with an exact Winner-v20 joint_recurrent_stage2 nine-leaf readback loader"
+  "proof_history": {
+    "invalid_snapshot_reader_run": {
+      "artifact_id": 8503746957,
+      "behavior_or_objective_semantics_change": false,
+      "correction": "exact Winner-v20 joint_recurrent_stage2 nine-leaf readback loader",
+      "formal_result_present": false,
+      "run_id": 29851858965
+    },
+    "valid_one_update_hold": {
+      "action_head_gradients_nonzero": true,
+      "artifact_id": 8503945380,
+      "classification": "ZERO_ACTION_HEAD_CHAIN_RULE_GATE",
+      "recurrent_gradients_exact_zero": true,
+      "run_id": 29852380511
+    }
   },
-  "schema_version": "winner_v20.joint_recurrent_support_cpu_contract.v1",
+  "schema_version": "winner_v20.joint_recurrent_support_cpu_contract.v2",
   "single_change": {
     "bit_exact_frozen_auxiliary_leaves": [
       "auxiliary_hidden_weight",
@@ -79,7 +91,7 @@
     "snapshot_member": "winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_100.npz",
     "snapshot_sha256": "8c1392c738eddfb098e61c1a6ae2f863eda883e1eba6ac546aef695da6f163af"
   },
-  "source_manifest_sha256": "00862635f99412d09ce0757394e423862faaaf1cf5c8a901f798991d187f908a",
+  "source_manifest_sha256": "70f9c476cdc136e2015c78e83000e461d8b89f197215b7df8a630aad478efa93",
   "sources": {
     "attribution": {
       "hash_mode": "lf",
@@ -99,7 +111,7 @@
     "builder": {
       "hash_mode": "lf",
       "path": "tools/build_winner_v20_joint_recurrent_support_cpu_contract.py",
-      "sha256": "5d31cb98b03156a75f43d5625c0d43f78e93294610d49cf5ba3cb6ea5f40d2e7"
+      "sha256": "53c8e08bfcf2681b8a83e92251bf735646d19152f023f1e8bd4a80b8249f4799"
     },
     "calibrator_design": {
       "hash_mode": "lf",
@@ -114,7 +126,7 @@
     "contract_tests": {
       "hash_mode": "lf",
       "path": "tests/test_winner_v20_joint_recurrent_support_cpu_contract.py",
-      "sha256": "b3e112c3e4339023dd371b7cd1ca51c7ef0a7a22fddaba7993d724bc3d90d320"
+      "sha256": "e2e573cb13758746499ccf38f1864e093b197f16eff48cdcc5494f40396ecabd"
     },
     "cpu_smoke": {
       "hash_mode": "lf",
@@ -144,12 +156,42 @@
     "mechanics": {
       "hash_mode": "lf",
       "path": "patches/winner_v20_joint_recurrent_support.py",
-      "sha256": "b03a5b003373b6f117848cf418550d16e22910b8d42e6ab44b1b8ad122581bd0"
+      "sha256": "276f0008049be9e28cbfc7cb430a5fec6c0a092c02e605f08f3ea95e2df942c7"
     },
     "mechanics_tests": {
       "hash_mode": "lf",
       "path": "tests/test_winner_v20_joint_recurrent_support.py",
-      "sha256": "57038becad03a3bc1d91a0a3765ea316b30f1ce345f91b9042a3cc3ebce928cb"
+      "sha256": "2c722e42b26517df148a7e931777c24b7a93e041e0565b3b33d1fb04b4487736"
+    },
+    "one_update_hold_attribution": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v20_joint_recurrent_support_cpu_hold_attribution.json",
+      "sha256": "0eb54aa23db4db8bb08d148f091833cc9521e3b7dce2fc576229c76b1d49c157"
+    },
+    "one_update_hold_builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v20_joint_recurrent_support_cpu_hold_attribution.py",
+      "sha256": "fe4dcb4bed099b2d846249ac808d1ed0402b34aa2866ccad0548e1288fe34f49"
+    },
+    "one_update_hold_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v20_joint_recurrent_support_cpu_hold_attribution.py",
+      "sha256": "9865f6f0eb5c9f407520d3ab4024b9289c10a7e904df2d89595d39dec4276444"
+    },
+    "one_update_import_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v20_joint_recurrent_support_cpu_import.py",
+      "sha256": "4d15352acf76c1669382d8fa4514d2f1607cbb89250fb3b2da7738747c089dbe"
+    },
+    "one_update_importer": {
+      "hash_mode": "lf",
+      "path": "tools/import_winner_v20_joint_recurrent_support_cpu_result.py",
+      "sha256": "fdd085aba6b469caa2404658e10fc79faaead52a0d17225ef5c7172c3ad9aaf4"
+    },
+    "one_update_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v20_joint_recurrent_support_cpu_result.json",
+      "sha256": "9fa34aacc6281dfd70c6608ba8f383df85436837c63a6f397ded2e1e3d15dfce"
     },
     "proof_failure_attribution": {
       "hash_mode": "lf",
@@ -169,7 +211,7 @@
     "runner": {
       "hash_mode": "lf",
       "path": "tools/run_winner_v20_joint_recurrent_support_cpu_contract.py",
-      "sha256": "31a7a799bd4f978677f526671abb80e1bd5bed7df08a3fea6f5446c0235199a3"
+      "sha256": "a3cdb920034073ac6703e2c1a1265c432ba89ab335c6475a44cf077e95d73c16"
     },
     "runtime_observer": {
       "hash_mode": "lf",
@@ -214,7 +256,7 @@
     "workflow": {
       "hash_mode": "lf",
       "path": ".github/workflows/winner-v20-joint-recurrent-support-cpu-contract.yml",
-      "sha256": "d873775b1d5b9f6b843ba922ab744120a153acd3cb30a52ddc5fa65ad5a407c3"
+      "sha256": "281a50858efb7492b05dba432547758665760d1e8d7efcc9aa0a751b0fbae8a3"
     }
   },
   "status": "FROZEN_WINNER_V20_JOINT_RECURRENT_SUPPORT_CPU_CONTRACT"

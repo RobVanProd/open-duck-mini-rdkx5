@@ -42,6 +42,8 @@ def test_joint_loss_recomputes_hidden_and_rollout_retains_observations() -> None
     assert "jax.lax.scan" in source
     assert "jax.vmap" in source
     assert 'batch["observations"]' in source
+    assert 'batch["valid_mask"][..., None] > 0' in source
+    assert '"sampled_hidden_replay_max_abs_error"' in source
     assert 'recurrent_batch["hidden"] = hidden' in source
     assert '"observations": observations' in source
     assert "v15.valid_transition_reward" in source

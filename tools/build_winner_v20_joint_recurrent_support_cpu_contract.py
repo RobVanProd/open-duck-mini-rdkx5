@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Freeze one Winner-v20 joint recurrent PPO proof update."""
+"""Freeze the exact two-update Winner-v20 joint recurrent PPO proof."""
 
 from __future__ import annotations
 
@@ -18,6 +18,7 @@ ATTRIBUTION = ANALYSIS / "winner_v20_joint_recurrent_support_attribution.json"
 PROOF_FAILURE = (
     ANALYSIS / "winner_v20_joint_recurrent_cpu_proof_failure_attribution.json"
 )
+CPU_HOLD = ANALYSIS / "winner_v20_joint_recurrent_support_cpu_hold_attribution.json"
 STAGE1_RESULT = ANALYSIS / "winner_v13_normalized_response_stage1_v2_result.json"
 SOURCES = {
     "builder": Path("tools/build_winner_v20_joint_recurrent_support_cpu_contract.py"),
@@ -48,6 +49,24 @@ SOURCES = {
     ),
     "proof_failure_tests": Path(
         "tests/test_winner_v20_joint_recurrent_cpu_proof_failure_attribution.py"
+    ),
+    "one_update_result": Path(
+        "outputs/analysis/winner_v20_joint_recurrent_support_cpu_result.json"
+    ),
+    "one_update_importer": Path(
+        "tools/import_winner_v20_joint_recurrent_support_cpu_result.py"
+    ),
+    "one_update_import_tests": Path(
+        "tests/test_winner_v20_joint_recurrent_support_cpu_import.py"
+    ),
+    "one_update_hold_attribution": Path(
+        "outputs/analysis/winner_v20_joint_recurrent_support_cpu_hold_attribution.json"
+    ),
+    "one_update_hold_builder": Path(
+        "tools/build_winner_v20_joint_recurrent_support_cpu_hold_attribution.py"
+    ),
+    "one_update_hold_tests": Path(
+        "tests/test_winner_v20_joint_recurrent_support_cpu_hold_attribution.py"
     ),
     "winner_v15_objective": Path("patches/winner_v15_pitch_margin_support.py"),
     "winner_v15_training_result": Path(
@@ -104,6 +123,7 @@ def main() -> int:
             raise FileExistsError(f"refusing to overwrite CPU contract: {path}")
     attribution = json.loads(ATTRIBUTION.read_text(encoding="utf-8"))
     proof_failure = json.loads(PROOF_FAILURE.read_text(encoding="utf-8"))
+    cpu_hold = json.loads(CPU_HOLD.read_text(encoding="utf-8"))
     stage1 = json.loads(STAGE1_RESULT.read_text(encoding="utf-8"))
     final_snapshot = stage1.get("snapshot_manifest", [{}])[-1]
     if (
@@ -122,6 +142,13 @@ def main() -> int:
         is not False
         or proof_failure.get("authority", {}).get("joint_recurrent_training_authorized")
         is not False
+        or cpu_hold.get("status")
+        != "PASS_WINNER_V20_JOINT_RECURRENT_SUPPORT_CPU_HOLD_ATTRIBUTION"
+        or cpu_hold.get("decision")
+        != "PREREGISTER_EXACT_TWO_UPDATE_JOINT_RECURRENT_CPU_CONTRACT"
+        or cpu_hold.get("next_contract", {}).get("optimizer_updates") != 2
+        or cpu_hold.get("authority", {}).get("joint_recurrent_training_authorized")
+        is not False
         or stage1.get("status") != "PASS_WINNER_V13_NORMALIZED_RESPONSE_STAGE1"
         or stage1.get("failed_checks") != []
         or final_snapshot.get("sha256")
@@ -138,9 +165,9 @@ def main() -> int:
         for name, path in SOURCES.items()
     }
     payload = {
-        "schema_version": "winner_v20.joint_recurrent_support_cpu_contract.v1",
+        "schema_version": "winner_v20.joint_recurrent_support_cpu_contract.v2",
         "status": "FROZEN_WINNER_V20_JOINT_RECURRENT_SUPPORT_CPU_CONTRACT",
-        "decision": "AUTHORIZE_ONE_JOINT_RECURRENT_PPO_PROOF_UPDATE_ONLY",
+        "decision": "AUTHORIZE_EXACT_TWO_UPDATE_JOINT_RECURRENT_PPO_PROOF_ONLY",
         "source_artifact": {
             "github_run_id": 29822834921,
             "github_run_attempt": 1,
@@ -187,31 +214,39 @@ def main() -> int:
             "population_seed_horizon_action_bound_change": False,
             "post_policy_wrapper": False,
         },
-        "proof_correction": {
-            "failed_run_id": 29851858965,
-            "failed_artifact_id": 8503746957,
-            "formal_result_present": False,
-            "behavior_or_objective_semantics_change": False,
-            "only_change": (
-                "replace the incompatible inherited five-leaf snapshot loader with an "
-                "exact Winner-v20 joint_recurrent_stage2 nine-leaf readback loader"
-            ),
-            "fresh_run_required": True,
+        "proof_history": {
+            "invalid_snapshot_reader_run": {
+                "run_id": 29851858965,
+                "artifact_id": 8503746957,
+                "formal_result_present": False,
+                "behavior_or_objective_semantics_change": False,
+                "correction": (
+                    "exact Winner-v20 joint_recurrent_stage2 nine-leaf readback loader"
+                ),
+            },
+            "valid_one_update_hold": {
+                "run_id": 29852380511,
+                "artifact_id": 8503945380,
+                "classification": "ZERO_ACTION_HEAD_CHAIN_RULE_GATE",
+                "recurrent_gradients_exact_zero": True,
+                "action_head_gradients_nonzero": True,
+            },
         },
         "frozen_cpu_proof": {
-            "optimizer_updates": 1,
+            "optimizer_updates": 2,
             "population": "exact 40 training configurations x 2 hidden plants",
             "ticks": 250,
-            "rollout_update_index": 0,
+            "rollout_update_indices": [0, 1],
             "training_root_seed": 120120,
             "learning_rate": 0.0001,
-            "source_hidden_replay_tolerance": 1.0e-6,
+            "sampled_hidden_replay_tolerance": 1.0e-6,
             "requirements": [
-                "Winner-v20 rollout equals Winner-v15 reward/action/mask/episode data bit-exactly",
-                "complete observation capture reconstructs the reviewed ONNX chain",
-                "full-BPTT source hidden replay error is at most 1e-6",
-                "all nine selected gradients are finite and nonzero",
-                "all nine selected leaves change after one Adam update",
+                "both Winner-v20 rollouts equal Winner-v15 reward/action/mask/episode data bit-exactly",
+                "both complete observation captures reconstruct the reviewed ONNX chain",
+                "sampled-tick full-BPTT hidden replay error is at most 1e-6 on both updates",
+                "update 1 recurrent gradients and deltas are exactly zero while all other selected leaves are nonzero",
+                "update 2 gradients and per-update deltas are finite and nonzero on all nine selected leaves",
+                "all nine cumulative leaf deltas are nonzero",
                 "three auxiliary predictor leaves remain bit-exact",
                 "snapshot and optimizer read back exactly",
                 "115/14/64 ONNX ABI, graph bounds, and previous-action chain remain exact",
@@ -250,13 +285,13 @@ def main() -> int:
                 f"- Status: `{payload['status']}`",
                 f"- Decision: `{payload['decision']}`",
                 "- Source: identical Winner-v13 Stage-1 update-100 snapshot",
-                "- Proof updates / support cells / robot: `1 / 0 / 0`",
+                "- Proof updates / support cells / robot: `2 / 0 / 0`",
                 "",
-                "This freezes a one-variable mechanics proof. The existing recurrent",
-                "core is differentiated through the complete 250-tick observation and",
-                "previous-action sequence. There are no new parameters, reward changes,",
-                "wrappers, or ABI changes. A pass authorizes only a separate training",
-                "preregistration.",
+                "Update 1 must reproduce the exact zero recurrent gradient imposed by",
+                "the source's zero action head. Update 2 is the first possible recurrent",
+                "gradient test and must change all nine selected leaves. Replay remains",
+                "`<=1e-6` on sampled ticks. No parameter, reward, wrapper, or ABI change",
+                "is introduced.",
                 "",
             ]
         ),

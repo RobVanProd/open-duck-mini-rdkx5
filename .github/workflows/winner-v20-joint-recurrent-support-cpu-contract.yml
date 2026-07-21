@@ -18,7 +18,7 @@ concurrency:
 
 jobs:
   cpu-contract:
-    name: One joint recurrent PPO proof update
+    name: Exact two-update joint recurrent PPO proof
     runs-on: ubuntu-latest
     timeout-minutes: 120
     env:
@@ -114,7 +114,7 @@ jobs:
             --work-root /tmp/winner-v20-environment \
             --fit-output /tmp/fixed_target_p30_actuator_fit_lf.json
 
-      - name: Run exactly one joint recurrent proof update
+      - name: Run exactly two joint recurrent proof updates
         run: |
           python tools/run_winner_v20_joint_recurrent_support_cpu_contract.py \
             --playground-root /tmp/pg115-v20-recurrent \

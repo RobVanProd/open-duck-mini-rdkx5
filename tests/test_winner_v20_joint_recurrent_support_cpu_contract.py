@@ -26,24 +26,18 @@ def test_contract_freezes_one_existing_abi_causal_change() -> None:
         "FROZEN_WINNER_V20_JOINT_RECURRENT_SUPPORT_CPU_CONTRACT"
     )
     assert value["decision"] == (
-        "AUTHORIZE_ONE_JOINT_RECURRENT_PPO_PROOF_UPDATE_ONLY"
+        "AUTHORIZE_EXACT_TWO_UPDATE_JOINT_RECURRENT_PPO_PROOF_ONLY"
     )
     assert value["source_artifact"]["snapshot_sha256"] == module.SNAPSHOT_SHA256
     assert value["source_artifact"]["snapshot_bytes"] == module.SNAPSHOT_BYTES
     assert value["single_change"]["new_parameters"] == 0
     assert value["single_change"]["onnx_abi_change"] is False
     assert value["single_change"]["reward_change_from_winner_v15"] is False
-    assert value["proof_correction"] == {
-        "failed_run_id": 29851858965,
-        "failed_artifact_id": 8503746957,
-        "formal_result_present": False,
-        "behavior_or_objective_semantics_change": False,
-        "only_change": (
-            "replace the incompatible inherited five-leaf snapshot loader with an "
-            "exact Winner-v20 joint_recurrent_stage2 nine-leaf readback loader"
-        ),
-        "fresh_run_required": True,
-    }
+    assert value["frozen_cpu_proof"]["optimizer_updates"] == 2
+    assert value["frozen_cpu_proof"]["rollout_update_indices"] == [0, 1]
+    assert value["proof_history"]["valid_one_update_hold"]["classification"] == (
+        "ZERO_ACTION_HEAD_CHAIN_RULE_GATE"
+    )
     module.validate_source_manifest(value)
 
 
@@ -55,11 +49,11 @@ def test_runner_is_one_cpu_update_with_no_behavior_or_hardware_gate() -> None:
     assert "v20.stage2_rollout" in source
     assert "v20.load_joint_snapshot" in source
     assert "loaded = full.load_snapshot(snapshot)" not in source
-    assert '"optimizer_updates": 1' in source
+    assert "for update_index in range(2)" in source
+    assert '"optimizer_updates": 2' in source
     assert '"formal_support_cells": 0' in source
     assert '"locomotion_steps": 0' in source
     assert '"robot_or_rdk_access": 0' in source
-    assert "for update_index in range" not in source
     assert "--hardware-authorized" not in source
 
 

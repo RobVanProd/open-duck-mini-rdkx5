@@ -180,7 +180,10 @@ def joint_recurrent_ppo_loss(
     hidden = recurrent_hidden_trajectory(
         trainable, batch["observations"], batch["previous_actions"]
     )
-    replay_error = jnp.max(jnp.abs(hidden - batch["hidden"]))
+    sampled = batch["valid_mask"][..., None] > 0
+    replay_error = jnp.max(
+        jnp.where(sampled, jnp.abs(hidden - batch["hidden"]), jnp.float32(0.0))
+    )
     recurrent_batch = dict(batch)
     recurrent_batch["hidden"] = hidden
     loss, metrics = base.stage2_ppo_loss(
@@ -190,7 +193,7 @@ def joint_recurrent_ppo_loss(
         value_coefficient=value_coefficient,
         entropy_coefficient=entropy_coefficient,
     )
-    return loss, {**metrics, "source_hidden_replay_max_abs_error": replay_error}
+    return loss, {**metrics, "sampled_hidden_replay_max_abs_error": replay_error}
 
 
 def stage2_rollout(
