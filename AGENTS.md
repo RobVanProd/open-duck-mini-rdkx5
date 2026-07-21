@@ -2151,3 +2151,19 @@ Do not proceed to grounded walking until low-risk gates pass.
   prospective contract and runtime review. See
   `outputs/analysis/WINNER_V4_RESPONSE_IDENTIFIABILITY_RESULT_20260720.md` and
   `outputs/analysis/WINNER_V4_SUPPORT_FAILURE_DIAGNOSTIC_20260720.md`.
+- 2026-07-21: The ground-up Winner-v12 full-calibrator trainer is frozen with
+  exact 80-environment Stage-1/Stage-2 populations, seed `120120`, 100 updates
+  per stage, atomic per-update recovery, strict Stage-2 realized-action and
+  terminal-mask checks, a 115-D nonzero recurrent ONNX chain, and a one-root
+  logical-run claim. The first formal zero-update CPU contract completed its
+  simulation work but failed only while serializing `numpy.bool_` check values;
+  run `29806564376` is permanently attributed with optimizer updates `0`.
+  The narrowly corrected, newly hash-frozen run `29806824132` then passed every
+  check in the exact Python 3.12.13 / JAX 0.7.2 / MuJoCo 3.9.0 / NumPy 2.0.2
+  CPU environment. Raw result SHA-256 is `faf520cc...a15c3`; optimizer updates,
+  formal support cells, locomotion steps, and robot access all remain `0`.
+  Decision `AUTHORIZE_ONE_WINNER_V12_FULL_CALIBRATOR_TRAINING_RUN_ONLY` permits
+  only one separately hash-bound seed-120120 calibrator run. It does not yet
+  authorize the 124-cell support gate, response-conditioned locomotion,
+  deployment selection, Gate 5, or robot access. See
+  `outputs/analysis/WINNER_V12_FULL_CALIBRATOR_TRAINING_CPU_CONTRACT_RESULT_20260721.md`.
