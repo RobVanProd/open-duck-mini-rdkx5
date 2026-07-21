@@ -172,8 +172,11 @@ def main() -> int:
         and '"new_checkpoints_written": 0' in runner_source
         and '"locomotion_behavior_cells": 0' in runner_source
         and '"robot_or_rdk_access": 0' in runner_source,
-        "workflow_is_disabled_before_review": "workflow_dispatch:" in workflow_source
-        and "push:" not in workflow_source
+        "workflow_is_one_shot_branch_path_launch": "push:" in workflow_source
+        and "codex/winner-v4-response-contract" in workflow_source
+        and ".github/workflows/winner-v12-calibrator-artifact-recovery.yml"
+        in workflow_source
+        and "workflow_dispatch:" not in workflow_source
         and "run-id: 29802206612" in workflow_source
         and "winner-v12-calibrator-cpu-smoke-29802206612" in workflow_source,
         "population_exact": len(population) == 16

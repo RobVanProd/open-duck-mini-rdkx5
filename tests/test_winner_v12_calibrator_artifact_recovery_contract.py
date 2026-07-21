@@ -99,10 +99,12 @@ def test_runner_repairs_only_the_failed_canary_and_proves_artifact_identity() ->
     assert "smoke.onnx_contract(" in source
 
 
-def test_workflow_is_reviewable_but_not_launchable_from_this_branch_yet() -> None:
+def test_workflow_is_one_shot_branch_path_launch() -> None:
     source = WORKFLOW.read_text(encoding="utf-8")
-    assert "workflow_dispatch:" in source
-    assert "push:" not in source
+    assert "push:" in source
+    assert "codex/winner-v4-response-contract" in source
+    assert ".github/workflows/winner-v12-calibrator-artifact-recovery.yml" in source
+    assert "workflow_dispatch:" not in source
     assert "run-id: 29802206612" in source
     assert "winner-v12-calibrator-cpu-smoke-29802206612" in source
     assert "run_winner_v12_calibrator_artifact_recovery.py" in source

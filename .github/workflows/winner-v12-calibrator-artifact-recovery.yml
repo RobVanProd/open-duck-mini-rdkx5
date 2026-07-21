@@ -1,7 +1,11 @@
 name: Winner v12 calibrator artifact recovery
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - codex/winner-v4-response-contract
+    paths:
+      - .github/workflows/winner-v12-calibrator-artifact-recovery.yml
 
 permissions:
   actions: read
