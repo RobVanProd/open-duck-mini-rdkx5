@@ -1,7 +1,11 @@
 name: Winner v12 calibrator CPU smoke
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - codex/winner-v4-response-contract
+    paths:
+      - .github/workflows/winner-v12-calibrator-cpu-smoke.yml
 
 permissions:
   contents: read

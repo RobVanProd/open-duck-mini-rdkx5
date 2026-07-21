@@ -287,9 +287,12 @@ def main() -> int:
             and '"software_versions_exact"' in runner_source
             and '"canonical_lf_sha256"' in runner_source
         ),
-        "manual_single_run_workflow_frozen": (
-            "workflow_dispatch:" in workflow_source
-            and "push:" not in workflow_source
+        "single_run_workflow_frozen": (
+            "push:" in workflow_source
+            and "workflow_dispatch:" not in workflow_source
+            and "codex/winner-v4-response-contract" in workflow_source
+            and ".github/workflows/winner-v12-calibrator-cpu-smoke.yml"
+            in workflow_source
             and 'python-version: "3.12.13"' in workflow_source
             and "fetch-depth: 0" in workflow_source
             and "matrix:" not in workflow_source

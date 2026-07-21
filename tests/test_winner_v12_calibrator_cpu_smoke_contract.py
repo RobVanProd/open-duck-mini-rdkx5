@@ -221,8 +221,9 @@ def test_runner_fails_closed_on_assets_versions_and_contract_line_endings() -> N
     workflow = (
         ROOT / ".github/workflows/winner-v12-calibrator-cpu-smoke.yml"
     ).read_text(encoding="utf-8")
-    assert "workflow_dispatch:" in workflow
-    assert "push:" not in workflow
+    assert "push:" in workflow
+    assert "workflow_dispatch:" not in workflow
+    assert "codex/winner-v4-response-contract" in workflow
     assert 'python-version: "3.12.13"' in workflow
     assert "fetch-depth: 0" in workflow
     assert "matrix:" not in workflow
