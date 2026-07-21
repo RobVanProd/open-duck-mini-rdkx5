@@ -1,6 +1,7 @@
 {
   "checks": {
     "calibrator_only_scope_preserved": true,
+    "dispatch_failure_is_preexecution_only": true,
     "every_workflow_python_tool_hash_bound": true,
     "onnx_contract_uses_nonzero_bank": true,
     "preregistration_exact": true,
@@ -10,7 +11,7 @@
     "runner_hashes_all_artifacts": true,
     "runner_requires_one_run_launch_claim": true,
     "schedule_exact": true,
-    "workflow_is_manual_single_cpu_contract": true,
+    "workflow_is_one_shot_branch_path_cpu_contract": true,
     "zero_update_authority": true
   },
   "decision": "AUTHORIZE_ONE_ZERO_UPDATE_FULL_TRAINING_CPU_CONTRACT_RUN_ONLY",
@@ -79,7 +80,7 @@
     "builder": {
       "hash_mode": "lf",
       "path": "tools/build_winner_v12_full_calibrator_training_cpu_contract.py",
-      "sha256": "6ddeb3a802e74872f616431bf976dc0048908248bfc3212be8c7bdff20c978f8"
+      "sha256": "f3256b0352aa66e5af90f9e8c4e76b049114781b52b68056a5cdeb25be584f5b"
     },
     "calibrator_design": {
       "hash_mode": "lf",
@@ -95,6 +96,16 @@
       "hash_mode": "lf",
       "path": "patches/winner_v12_decomposed_backend_networks.py",
       "sha256": "f463223a33f80baf81b2604e0df22c647660f2752a7ca60b8c75a3441460d015"
+    },
+    "dispatch_attribution": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_full_calibrator_training_cpu_contract_dispatch_attribution.json",
+      "sha256": "cefd6da862467446b4f3776115236cd8c7a8cb10430d8bb6df2f0cc514d42927"
+    },
+    "dispatch_attribution_markdown": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/WINNER_V12_FULL_CALIBRATOR_TRAINING_CPU_CONTRACT_DISPATCH_ATTRIBUTION_20260721.md",
+      "sha256": "00f42490870b64b53a362ce7b6f686ff19c76fccb3312d5aeca26b6aab894108"
     },
     "domain": {
       "hash_mode": "lf",
@@ -224,7 +235,7 @@
     "tests": {
       "hash_mode": "lf",
       "path": "tests/test_winner_v12_full_calibrator_training_cpu_contract.py",
-      "sha256": "3c37293be90921ebd894e082ff9ea2cd5ba0537d6b2f58451ed25924463119d5"
+      "sha256": "d3a00df9b89ad02e673a7146274d3c4211143bace889f26b8b9c15c91ced744c"
     },
     "training_primitives": {
       "hash_mode": "lf",
@@ -304,8 +315,15 @@
     "workflow": {
       "hash_mode": "lf",
       "path": ".github/workflows/winner-v12-full-calibrator-training-cpu-contract.yml",
-      "sha256": "d5d191387b393901495e7724ca03f8222147f8e273fd82eca1b9d07c7dfb5583"
+      "sha256": "e88503c2b6c2bdab1096001400837a37ae2fc3c1afe108659ba5ab2dd8ca18a0"
     }
   },
-  "status": "PASS_WINNER_V12_FULL_CALIBRATOR_TRAINING_CPU_CONTRACT_FROZEN"
+  "status": "PASS_WINNER_V12_FULL_CALIBRATOR_TRAINING_CPU_CONTRACT_FROZEN",
+  "superseded_preexecution_dispatch": {
+    "formal_cpu_contract_executed": false,
+    "github_run_created": false,
+    "optimizer_updates": 0,
+    "status": "INVALID_PREEXECUTION_WORKFLOW_NOT_ON_DEFAULT_BRANCH",
+    "workflow_commit": "e4d0e9cfc17aa8bee64a472a9364d4415a03d4bb"
+  }
 }

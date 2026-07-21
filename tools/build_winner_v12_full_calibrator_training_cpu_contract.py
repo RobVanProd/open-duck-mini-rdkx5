@@ -27,6 +27,14 @@ SOURCE_PATHS = {
         ".github/workflows/winner-v12-full-calibrator-training-cpu-contract.yml",
         "lf",
     ),
+    "dispatch_attribution": (
+        "outputs/analysis/winner_v12_full_calibrator_training_cpu_contract_dispatch_attribution.json",
+        "lf",
+    ),
+    "dispatch_attribution_markdown": (
+        "outputs/analysis/WINNER_V12_FULL_CALIBRATOR_TRAINING_CPU_CONTRACT_DISPATCH_ATTRIBUTION_20260721.md",
+        "lf",
+    ),
     "playground_composer": ("tools/compose_winner_v7_playground.py", "lf"),
     "winner_v7_transform": ("tools/run_winner_v7_inward_projection_contract.py", "lf"),
     "winner_v7_importer": (
@@ -211,6 +219,12 @@ def canonical_sha256(value: Any) -> str:
 
 def main() -> int:
     preregistration = json.loads(PREREGISTRATION.read_text(encoding="utf-8"))
+    dispatch_attribution = json.loads(
+        (
+            ROOT
+            / "outputs/analysis/winner_v12_full_calibrator_training_cpu_contract_dispatch_attribution.json"
+        ).read_text(encoding="utf-8")
+    )
     source = RUNNER.read_text(encoding="utf-8")
     workflow_source = (
         ROOT / ".github/workflows/winner-v12-full-calibrator-training-cpu-contract.yml"
@@ -271,9 +285,17 @@ def main() -> int:
         "onnx_contract_uses_nonzero_bank": "persistent ONNX observation bank lost nonzero coverage"
         in source
         and '"onnx_observation_bank"' in source,
-        "workflow_is_manual_single_cpu_contract": "workflow_dispatch:"
+        "dispatch_failure_is_preexecution_only": dispatch_attribution.get("status")
+        == "INVALID_PREEXECUTION_WORKFLOW_NOT_ON_DEFAULT_BRANCH"
+        and dispatch_attribution["attempt"]["github_run_created"] is False
+        and dispatch_attribution["authority"]["optimizer_updates"] == 0
+        and dispatch_attribution["authority"]["formal_cpu_contract_executed"] is False,
+        "workflow_is_one_shot_branch_path_cpu_contract": "workflow_dispatch:"
+        not in workflow_source
+        and "push:" in workflow_source
+        and "codex/winner-v4-response-contract" in workflow_source
+        and "- .github/workflows/winner-v12-full-calibrator-training-cpu-contract.yml"
         in workflow_source
-        and "push:" not in workflow_source
         and "matrix:" not in workflow_source
         and 'python-version: "3.12.13"' in workflow_source
         and "fetch-depth: 0" in workflow_source,
@@ -336,6 +358,13 @@ def main() -> int:
                 "locomotion_training_steps": 0,
                 "robot_or_rdk_access": 0,
             },
+        },
+        "superseded_preexecution_dispatch": {
+            "status": dispatch_attribution["status"],
+            "workflow_commit": dispatch_attribution["attempt"]["workflow_commit"],
+            "github_run_created": False,
+            "optimizer_updates": 0,
+            "formal_cpu_contract_executed": False,
         },
         "checks": checks,
         "failed_checks": [],

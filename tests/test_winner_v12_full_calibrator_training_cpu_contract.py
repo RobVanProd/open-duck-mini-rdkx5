@@ -156,15 +156,35 @@ def test_checker_cannot_execute_an_optimizer_update() -> None:
     assert '"robot_or_rdk_access": 0' in source
 
 
-def test_workflow_is_manual_exact_cpu_and_single_run() -> None:
+def test_workflow_is_one_shot_branch_path_exact_cpu_run() -> None:
     source = WORKFLOW.read_text(encoding="utf-8")
-    assert "workflow_dispatch:" in source
-    assert "push:" not in source
+    assert "workflow_dispatch:" not in source
+    assert "push:" in source
+    assert "codex/winner-v4-response-contract" in source
+    assert (
+        "- .github/workflows/winner-v12-full-calibrator-training-cpu-contract.yml"
+        in source
+    )
     assert "matrix:" not in source
     assert 'python-version: "3.12.13"' in source
     assert "fetch-depth: 0" in source
     assert "cuda" not in source.lower()
     assert "check_winner_v12_full_calibrator_training_cpu_contract.py" in source
+
+
+def test_failed_manual_dispatch_is_recorded_as_zero_execution() -> None:
+    attribution = json.loads(
+        (
+            ROOT
+            / "outputs/analysis/winner_v12_full_calibrator_training_cpu_contract_dispatch_attribution.json"
+        ).read_text(encoding="utf-8")
+    )
+    assert (
+        attribution["status"] == "INVALID_PREEXECUTION_WORKFLOW_NOT_ON_DEFAULT_BRANCH"
+    )
+    assert attribution["attempt"]["github_run_created"] is False
+    assert attribution["authority"]["optimizer_updates"] == 0
+    assert attribution["authority"]["formal_cpu_contract_executed"] is False
 
 
 def test_every_workflow_python_tool_is_hash_bound() -> None:

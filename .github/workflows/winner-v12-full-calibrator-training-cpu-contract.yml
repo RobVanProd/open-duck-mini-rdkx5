@@ -1,7 +1,11 @@
 name: Winner v12 full calibrator training CPU contract
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - codex/winner-v4-response-contract
+    paths:
+      - .github/workflows/winner-v12-full-calibrator-training-cpu-contract.yml
 
 permissions:
   contents: read
