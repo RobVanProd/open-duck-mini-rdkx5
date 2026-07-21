@@ -44,6 +44,31 @@ def test_raw_projection_is_algebraically_identical_to_denormalization() -> None:
     assert adapted["action_weight"] is source["action_weight"]
 
 
+def test_reviewed_raw_error_equals_direct_normalized_error() -> None:
+    source = parameters()
+    mean = np.linspace(-1.5, 1.5, 50, dtype=np.float32)
+    std = np.linspace(0.3, 2.0, 50, dtype=np.float32)
+    hidden = np.asarray([-0.2, 0.4, 0.8], dtype=np.float32)
+    action = np.asarray([0.7, -0.1], dtype=np.float32)
+    target_raw = np.linspace(-0.9, 1.1, 50, dtype=np.float32)
+    prediction_normalized = (
+        hidden @ source["auxiliary_hidden_weight"]
+        + action @ source["auxiliary_action_weight"]
+        + source["auxiliary_bias"]
+    )
+    adapted = gate.raw_coordinate_predictor_parameters(source, mean, std)
+    prediction_raw = (
+        hidden @ adapted["auxiliary_hidden_weight"]
+        + action @ adapted["auxiliary_action_weight"]
+        + adapted["auxiliary_bias"]
+    )
+    reviewed_error = np.square((prediction_raw - target_raw) / std)
+    direct_error = np.square(
+        prediction_normalized - ((target_raw - mean) / std)
+    )
+    np.testing.assert_allclose(reviewed_error, direct_error, rtol=5.0e-6, atol=5.0e-6)
+
+
 @pytest.mark.parametrize("bad_std", [np.zeros(50, dtype=np.float32), np.ones(49, dtype=np.float32)])
 def test_projection_rejects_invalid_target_statistics(bad_std: np.ndarray) -> None:
     with pytest.raises(ValueError):
