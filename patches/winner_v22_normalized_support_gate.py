@@ -12,7 +12,6 @@ from __future__ import annotations
 
 from typing import Any, Mapping
 
-import jax.numpy as jnp
 import numpy as np
 
 
@@ -43,9 +42,9 @@ def raw_coordinate_predictor_parameters(
         or bool(np.any(std_np <= 0.0))
     ):
         raise ValueError("Winner-v22 normalized target statistics changed")
-    hidden = jnp.asarray(parameters["auxiliary_hidden_weight"], dtype=jnp.float32)
-    action = jnp.asarray(parameters["auxiliary_action_weight"], dtype=jnp.float32)
-    bias = jnp.asarray(parameters["auxiliary_bias"], dtype=jnp.float32)
+    hidden = np.asarray(parameters["auxiliary_hidden_weight"], dtype=np.float32)
+    action = np.asarray(parameters["auxiliary_action_weight"], dtype=np.float32)
+    bias = np.asarray(parameters["auxiliary_bias"], dtype=np.float32)
     if (
         hidden.ndim != 2
         or action.ndim != 2
@@ -54,8 +53,8 @@ def raw_coordinate_predictor_parameters(
         or bias.shape != (TARGET_DIMENSION,)
     ):
         raise ValueError("Winner-v22 auxiliary predictor shapes changed")
-    mean = jnp.asarray(mean_np, dtype=jnp.float32)
-    std = jnp.asarray(std_np, dtype=jnp.float32)
+    mean = np.asarray(mean_np, dtype=np.float32)
+    std = np.asarray(std_np, dtype=np.float32)
     adapted = dict(parameters)
     adapted["auxiliary_hidden_weight"] = hidden * std
     adapted["auxiliary_action_weight"] = action * std

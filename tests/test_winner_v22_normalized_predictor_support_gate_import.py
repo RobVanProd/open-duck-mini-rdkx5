@@ -58,5 +58,3 @@ def test_imported_gate_rejects_unrecognized_fields_when_present() -> None:
     value["unexpected"] = True
     with pytest.raises(ValueError, match="schema changed"):
         module.validate_result(value)
-
-

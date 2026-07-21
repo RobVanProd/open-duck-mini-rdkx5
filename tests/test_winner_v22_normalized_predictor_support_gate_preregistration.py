@@ -39,4 +39,3 @@ def test_workflow_is_dormant_until_preregistration_exists() -> None:
     assert "winner_v22_normalized_predictor_support_gate_preregistration.json" in trigger
     assert "--formal-gate-authorized" in source
     assert "--hardware-authorized" not in source
-
