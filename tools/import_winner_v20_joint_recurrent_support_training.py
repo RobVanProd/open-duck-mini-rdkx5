@@ -84,6 +84,39 @@ LOSS_METRIC_KEYS = {
 }
 HEX40 = re.compile(r"[0-9a-f]{40}")
 HEX64 = re.compile(r"[0-9a-f]{64}")
+GRAPH_RECEIPT_KEYS = {
+    "label",
+    "update",
+    "path",
+    "sha256",
+    "bytes",
+    "contract",
+}
+GRAPH_CONTRACT_KEYS = {
+    "abi_exact",
+    "all_chain_outputs_finite",
+    "all_initializers_finite",
+    "bytes",
+    "chain_ticks",
+    "forbidden_training_or_privileged_tokens",
+    "initializer_count",
+    "inputs",
+    "jax_onnx_at_most_1e_7",
+    "jax_onnx_max_abs_error",
+    "outputs",
+    "path",
+    "previous_action_out_equals_action_bit_exact",
+    "sha256",
+    "training_only_tensors_absent",
+}
+SNAPSHOT_RECEIPT_KEYS = {
+    "path",
+    "sha256",
+    "bytes",
+    "array_count",
+    "bit_exact_readback",
+}
+SNAPSHOT_MANIFEST_KEYS = SNAPSHOT_RECEIPT_KEYS | {"update"}
 
 
 def _load_v15_importer():
@@ -162,7 +195,50 @@ def read_artifact(path: Path) -> dict[str, bytes]:
 def validate_graph(row: Mapping[str, Any], label: str, update: int) -> None:
     if set(row) != {"label", "update", "snapshot", "graph"}:
         raise ValueError(f"Winner-v20 {label} checkpoint schema changed")
-    V15.validate_graph(row, label, update)
+    receipt = row.get("graph")
+    if not isinstance(receipt, Mapping) or set(receipt) != GRAPH_RECEIPT_KEYS:
+        raise ValueError(f"Winner-v20 {label} graph receipt schema changed")
+    contract = receipt.get("contract")
+    expected_name = f"winner_v20_{label}.onnx"
+    if (
+        not isinstance(contract, Mapping)
+        or set(contract) != GRAPH_CONTRACT_KEYS
+        or row.get("label") != label
+        or row.get("update") != update
+        or receipt.get("label") != label
+        or receipt.get("update") != update
+        or PurePosixPath(str(receipt.get("path", "")).replace("\\", "/")).name
+        != expected_name
+        or contract.get("path") != receipt.get("path")
+        or contract.get("sha256") != receipt.get("sha256")
+        or contract.get("bytes") != receipt.get("bytes")
+        or contract.get("initializer_count") != 9
+        or contract.get("chain_ticks") != 250
+        or contract.get("forbidden_training_or_privileged_tokens") != []
+    ):
+        raise ValueError(f"Winner-v20 {label} graph receipt changed")
+    # Winner-v15's reviewed ABI verifier expects the ONNX contract directly in
+    # row["graph"]. Winner-v20 deliberately wraps that contract in a payload
+    # receipt so the ZIP bytes can be bound independently. Adapt only that
+    # serialization layer; keep every inherited ABI and numerical check.
+    V15.validate_graph(
+        {"label": label, "update": update, "graph": contract}, label, update
+    )
+
+
+def validate_checkpoint_snapshot_binding(
+    row: Mapping[str, Any], manifest_receipt: Mapping[str, Any], label: str
+) -> None:
+    checkpoint_receipt = row.get("snapshot")
+    if (
+        not isinstance(checkpoint_receipt, Mapping)
+        or set(checkpoint_receipt) != SNAPSHOT_RECEIPT_KEYS
+        or set(manifest_receipt) != SNAPSHOT_MANIFEST_KEYS
+        or manifest_receipt.get("update") != row.get("update")
+        or checkpoint_receipt
+        != {key: manifest_receipt[key] for key in SNAPSHOT_RECEIPT_KEYS}
+    ):
+        raise ValueError(f"Winner-v20 {label} checkpoint snapshot binding changed")
 
 
 def validate_result(value: Mapping[str, Any]) -> None:
@@ -286,7 +362,7 @@ def validate_result(value: Mapping[str, Any]) -> None:
         raise ValueError("Winner-v20 snapshot manifest changed")
     for index, receipt in enumerate(snapshots, 1):
         if (
-            set(receipt) != {"update", "path", "sha256", "bytes", "array_count", "bit_exact_readback"}
+            set(receipt) != SNAPSHOT_MANIFEST_KEYS
             or receipt.get("update") != index
             or PurePosixPath(str(receipt.get("path", "")).replace("\\", "/")).name
             != f"snapshot_joint_recurrent_update_{index:03d}.npz"
@@ -301,11 +377,8 @@ def validate_result(value: Mapping[str, Any]) -> None:
         raise ValueError("Winner-v20 checkpoints changed")
     validate_graph(checkpoints[0], "half", 50)
     validate_graph(checkpoints[1], "final", 100)
-    if (
-        checkpoints[0]["snapshot"] != snapshots[49]
-        or checkpoints[1]["snapshot"] != snapshots[99]
-    ):
-        raise ValueError("Winner-v20 checkpoint snapshot binding changed")
+    validate_checkpoint_snapshot_binding(checkpoints[0], snapshots[49], "half")
+    validate_checkpoint_snapshot_binding(checkpoints[1], snapshots[99], "final")
     if not finite(value.get("elapsed_seconds")) or value["elapsed_seconds"] <= 0.0:
         raise ValueError("Winner-v20 elapsed time changed")
 
