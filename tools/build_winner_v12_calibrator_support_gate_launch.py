@@ -48,6 +48,12 @@ STATIC_SOURCES = {
     "zero_cell_workflow": Path(
         ".github/workflows/winner-v12-calibrator-support-gate-cpu-contract.yml"
     ),
+    "formal_result_importer": Path(
+        "tools/import_winner_v12_calibrator_support_gate_result.py"
+    ),
+    "formal_result_importer_tests": Path(
+        "tests/test_winner_v12_calibrator_support_gate_result_import.py"
+    ),
     "cpu_smoke": Path("tools/run_winner_v12_calibrator_cpu_smoke.py"),
     "full_training_runner": Path("tools/run_winner_v12_full_calibrator_training.py"),
     "training_primitives": Path("patches/winner_v12_calibrator_training.py"),
