@@ -1,6 +1,6 @@
 name: Winner v12 full calibrator training CPU contract
 
-# Corrected one-shot: strict numpy.bool_ -> Python bool result serialization only.
+# Corrected one-shot: exact mixed-type Stage-1 normalization validation.
 
 on:
   push:
@@ -18,7 +18,7 @@ concurrency:
 
 jobs:
   contract:
-    name: One corrected frozen zero-update full-training contract
+    name: One corrected normalization-aware zero-update contract
     runs-on: ubuntu-latest
     timeout-minutes: 180
 

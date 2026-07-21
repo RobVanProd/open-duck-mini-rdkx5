@@ -95,11 +95,25 @@ def synthetic_metrics(
             else:
                 row["action_boundary"] = {
                     "attempted_samples": 1,
+                    "raw_sha256": f"{update + 200:064x}",
+                    "previous_action_sha256": f"{update + 300:064x}",
+                    "realized_action_sha256": f"{update + 400:064x}",
+                    "numpy_expected_sha256": f"{update + 500:064x}",
+                    "jax_expected_sha256": f"{update + 600:064x}",
                     "realized_equals_numpy_bit_exact": True,
                     "numpy_equals_jax_bit_exact": True,
                     "maximum_realized_numpy_error": 0.0,
                     "maximum_numpy_jax_error": 0.0,
                 }
+                row.update(
+                    {
+                        "policy_loss": 0.0,
+                        "value_loss": 0.0,
+                        "entropy": 0.0,
+                        "ratio_min": 1.0,
+                        "ratio_max": 1.0,
+                    }
+                )
             rows.append(row)
     return rows
 
@@ -212,6 +226,9 @@ def main() -> int:
             0,
         )
         normalization = stage1_evidence.pop("normalization")
+        validated_mean, validated_std = runner.validate_stage1_normalization(
+            normalization, stage1_batch
+        )
         stage1_receipt_hash = runner.validate_episode_receipts(
             stage1_episodes, population, stage=1, update_index=0
         )
@@ -398,6 +415,31 @@ def main() -> int:
         stale_latest_repaired = smoke.sha256(latest) == smoke.sha256(newest)
 
         clean_snapshot = runner.load_snapshot(newest)
+        metadata_schema_tampered = copy.deepcopy(clean_snapshot)
+        metadata_schema_tampered["metadata"]["unexpected"] = True
+        refresh_snapshot_integrity(metadata_schema_tampered)
+        exact_metadata_schema_rejects_extra = assert_raises(
+            lambda: runner.validate_resume(metadata_schema_tampered), ValueError
+        )
+        metric_schema_tampered = copy.deepcopy(clean_snapshot)
+        metric_schema_tampered["metadata"]["metrics"][-1]["unexpected"] = 1.0
+        refresh_snapshot_integrity(metric_schema_tampered)
+        exact_metric_schema_rejects_extra = assert_raises(
+            lambda: runner.validate_resume(metric_schema_tampered), ValueError
+        )
+        extra_member_arrays = runner._state_arrays(
+            clean_snapshot["parameters"],
+            clean_snapshot["optimizer"],
+            clean_snapshot["metadata"],
+            clean_snapshot["target_mean"],
+            clean_snapshot["target_std"],
+        )
+        extra_member_arrays["unexpected"] = np.asarray(1, dtype=np.int32)
+        extra_member_path = args.work_root / "snapshot_with_extra_member.npz"
+        np.savez_compressed(extra_member_path, **extra_member_arrays)
+        exact_archive_schema_rejects_extra = assert_raises(
+            lambda: runner.load_snapshot(extra_member_path), ValueError
+        )
         numerically_tampered = copy.deepcopy(clean_snapshot)
         numerically_tampered["parameters"]["obs_weight"][0, 0] += np.float32(0.25)
         self_hash_rejects_tamper = assert_raises(
@@ -466,6 +508,10 @@ def main() -> int:
             stage1_evidence["realized_action_chain_exact"]
         ),
         "stage1_normalizer_independently_recomputed_exact": normalizer_recomputed_exact,
+        "stage1_mixed_type_normalization_receipt_exact": np.array_equal(
+            validated_mean, target_mean
+        )
+        and np.array_equal(validated_std, target_std),
         "stage1_full_shape": stage1_batch["valid_mask"].shape == (80, 250),
         "stage2_full_shape": stage2_batch["valid_mask"].shape == (80, 250),
         "sample_accounting_valid": 0 < stage1_valid <= stage1_attempted <= 20_000
@@ -502,6 +548,9 @@ def main() -> int:
         "older_resume_rejected": older_resume_rejected,
         "stale_latest_repaired": stale_latest_repaired,
         "snapshot_self_hash_rejects_tamper": self_hash_rejects_tamper,
+        "snapshot_archive_schema_rejects_extra": exact_archive_schema_rejects_extra,
+        "snapshot_metadata_schema_rejects_extra": exact_metadata_schema_rejects_extra,
+        "snapshot_metric_schema_rejects_extra": exact_metric_schema_rejects_extra,
         "independent_stage1_lineage_rejects_tamper": independent_lineage_rejects_tamper,
         "independent_normalizer_lineage_rejects_tamper": independent_normalizer_lineage_rejects_tamper,
         "stage1_final_checkpoint_exact": bool(stage1_final),

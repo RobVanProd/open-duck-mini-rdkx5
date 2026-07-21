@@ -38,7 +38,7 @@ CPU_CONTRACT = (
 )
 CPU_RESULT = (
     ROOT
-    / "outputs/analysis/winner_v12_full_calibrator_training_cpu_contract_result.json"
+    / "outputs/analysis/winner_v12_full_calibrator_training_cpu_contract_result_v2.json"
 )
 LAUNCH_CONTRACT = (
     ROOT / "outputs/analysis/winner_v12_full_calibrator_training_launch_contract.json"
@@ -57,6 +57,72 @@ SNAPSHOT_NAME = "winner_v12_full_calibrator_latest.npz"
 RESULT_NAME = "winner_v12_full_calibrator_training_result.json"
 PERSISTENT = {50: "half", 100: "final"}
 COMMITTED_SNAPSHOT_RE = re.compile(r"snapshot_(stage1|stage2)_update_(\d{3})\.npz")
+SHA256_RE = re.compile(r"[0-9a-f]{64}")
+SNAPSHOT_METADATA_KEYS = frozenset(
+    {
+        "schema_version",
+        "logical_run_id",
+        "stage",
+        "completed_updates",
+        "root_seed",
+        "parameter_seed",
+        "preregistration_lf_sha256",
+        "cpu_contract_lf_sha256",
+        "cpu_contract_result_sha256",
+        "runner_lf_sha256",
+        "metrics",
+        "stage_scheduled_tick_slots",
+        "total_scheduled_tick_slots",
+        "cumulative_sampled_count",
+        "cumulative_valid_transition_count",
+        "frozen_stage1_tree_sha256",
+        "state_payload_sha256",
+        "metadata_payload_sha256",
+    }
+)
+STAGE1_METRIC_KEYS = frozenset(
+    {
+        "stage",
+        "update",
+        "loss",
+        "sampled_count",
+        "valid_transition_count",
+        "episode_receipts_sha256",
+        "frozen_target_mean_sha256",
+        "frozen_target_std_sha256",
+        "completed_episodes",
+    }
+)
+STAGE2_LOSS_METRIC_KEYS = frozenset(
+    {"policy_loss", "value_loss", "entropy", "ratio_min", "ratio_max"}
+)
+STAGE2_METRIC_KEYS = frozenset(
+    {
+        "stage",
+        "update",
+        "loss",
+        "sampled_count",
+        "valid_transition_count",
+        "episode_receipts_sha256",
+        "action_boundary",
+        "completed_episodes",
+        *STAGE2_LOSS_METRIC_KEYS,
+    }
+)
+ACTION_BOUNDARY_KEYS = frozenset(
+    {
+        "attempted_samples",
+        "raw_sha256",
+        "previous_action_sha256",
+        "realized_action_sha256",
+        "numpy_expected_sha256",
+        "jax_expected_sha256",
+        "realized_equals_numpy_bit_exact",
+        "numpy_equals_jax_bit_exact",
+        "maximum_realized_numpy_error",
+        "maximum_numpy_jax_error",
+    }
+)
 
 
 def validate_source_manifest(source_manifest: Mapping[str, Any]) -> None:
@@ -332,6 +398,71 @@ def stage1_rollout(
         )
 
 
+def validate_stage1_normalization(
+    normalization: Mapping[str, Any], batch: Mapping[str, np.ndarray]
+) -> tuple[np.ndarray, np.ndarray]:
+    """Validate the mixed-type receipt and return its numeric float32 arrays."""
+    expected_keys = {
+        "population",
+        "heldout_rows",
+        "dtype",
+        "valid_rows",
+        "mean_float64_sha256",
+        "empirical_std_float64_sha256",
+        "floored_std_float64_sha256",
+        "floored_fields",
+        "mean",
+        "std",
+    }
+    if set(normalization) != expected_keys:
+        raise ValueError("Stage-1 normalization schema changed")
+    if normalization["population"] != "all valid Stage-1 smoke transitions only":
+        raise ValueError("Stage-1 normalization population changed")
+    if normalization["heldout_rows"] != 0:
+        raise ValueError("heldout rows entered Stage-1 normalization")
+    if normalization["dtype"] != (
+        "float64 population mean/std (ddof=0), floor 1e-6, cast float32"
+    ):
+        raise ValueError("Stage-1 normalization arithmetic changed")
+    valid_mask = np.asarray(batch["valid_mask"], dtype=bool)
+    valid_targets = np.asarray(batch["targets"])[valid_mask].astype(np.float64)
+    if valid_targets.size == 0:
+        raise ValueError("Stage-1 normalization has no valid targets")
+    if normalization["valid_rows"] != int(valid_targets.shape[0]):
+        raise ValueError("Stage-1 normalization valid-row count changed")
+    mean64 = np.mean(valid_targets, axis=0, dtype=np.float64)
+    empirical_std64 = np.std(valid_targets, axis=0, dtype=np.float64, ddof=0)
+    floored_std64 = np.maximum(empirical_std64, 1.0e-6)
+    mean = np.asarray(normalization["mean"])
+    std = np.asarray(normalization["std"])
+    expected_shape = (int(training.AUXILIARY_INDICES.size),)
+    if (
+        mean.shape != expected_shape
+        or std.shape != expected_shape
+        or mean.dtype != np.dtype("float32")
+        or std.dtype != np.dtype("float32")
+    ):
+        raise ValueError("Stage-1 normalization array layout changed")
+    if not np.all(np.isfinite(mean)) or not np.all(np.isfinite(std)):
+        raise FloatingPointError("Stage-1 normalization contains nonfinite values")
+    checks = {
+        "mean_hash": normalization["mean_float64_sha256"] == smoke.array_sha256(mean64),
+        "empirical_std_hash": normalization["empirical_std_float64_sha256"]
+        == smoke.array_sha256(empirical_std64),
+        "floored_std_hash": normalization["floored_std_float64_sha256"]
+        == smoke.array_sha256(floored_std64),
+        "floored_fields": normalization["floored_fields"]
+        == int(np.sum(empirical_std64 < 1.0e-6)),
+        "mean_float32": np.array_equal(mean, mean64.astype(np.float32)),
+        "std_float32": np.array_equal(std, floored_std64.astype(np.float32)),
+        "std_floor": bool(np.all(std >= np.float32(1.0e-6))),
+    }
+    failed = sorted(name for name, passed in checks.items() if not passed)
+    if failed:
+        raise ValueError(f"Stage-1 normalization proof failed: {failed}")
+    return mean, std
+
+
 def stage2_rollout(
     mujoco: Any,
     scene: Path,
@@ -575,8 +706,36 @@ def newest_committed_snapshot(work_root: Path) -> Path:
 
 def load_snapshot(path: Path) -> dict[str, Any]:
     with np.load(path, allow_pickle=False) as archive:
+        if len(archive.files) != len(set(archive.files)):
+            raise ValueError("snapshot archive contains duplicate members")
         arrays = {name: archive[name].copy() for name in archive.files}
-    metadata = json.loads(str(arrays.pop("metadata_json")))
+    if "metadata_json" not in arrays:
+        raise ValueError("snapshot metadata member is absent")
+    metadata_array = np.asarray(arrays.pop("metadata_json"))
+    if metadata_array.shape != () or metadata_array.dtype.kind != "U":
+        raise ValueError("snapshot metadata member layout changed")
+    metadata = json.loads(str(metadata_array.item()))
+    if not isinstance(metadata, dict):
+        raise ValueError("snapshot metadata is not an object")
+    stage = metadata.get("stage")
+    if stage not in {"stage1", "stage2"}:
+        raise ValueError("snapshot stage is invalid")
+    parameter_keys = set(training.initialize_training_parameters(seed=PARAMETER_SEED))
+    optimizer_keys = (
+        set(training.ENCODER_AUXILIARY_KEYS)
+        if stage == "stage1"
+        else set(training.DEPLOYABLE_ACTION_KEYS + training.TRAINING_ONLY_STAGE2_KEYS)
+    )
+    expected_members = {
+        "target_mean",
+        "target_std",
+        "optimizer.count",
+        *(f"parameter.{key}" for key in parameter_keys),
+        *(f"optimizer.m.{key}" for key in optimizer_keys),
+        *(f"optimizer.v.{key}" for key in optimizer_keys),
+    }
+    if set(arrays) != expected_members:
+        raise ValueError("snapshot archive member schema changed")
     parameters = {
         name.removeprefix("parameter."): value
         for name, value in arrays.items()
@@ -599,8 +758,8 @@ def load_snapshot(path: Path) -> dict[str, Any]:
         "parameters": parameters,
         "optimizer": optimizer,
         "metadata": metadata,
-        "target_mean": arrays.get("target_mean"),
-        "target_std": arrays.get("target_std"),
+        "target_mean": arrays["target_mean"],
+        "target_std": arrays["target_std"],
     }
 
 
@@ -639,7 +798,28 @@ def snapshot_metadata(
 
 
 def validate_resume(snapshot: Mapping[str, Any]) -> None:
+    if set(snapshot) != {
+        "parameters",
+        "optimizer",
+        "metadata",
+        "target_mean",
+        "target_std",
+    }:
+        raise ValueError("snapshot decoded-state schema changed")
     metadata = snapshot["metadata"]
+    if not isinstance(metadata, Mapping) or set(metadata) != SNAPSHOT_METADATA_KEYS:
+        raise ValueError("snapshot metadata schema changed")
+    for key in (
+        "completed_updates",
+        "root_seed",
+        "parameter_seed",
+        "stage_scheduled_tick_slots",
+        "total_scheduled_tick_slots",
+        "cumulative_sampled_count",
+        "cumulative_valid_transition_count",
+    ):
+        if type(metadata[key]) is not int:
+            raise ValueError(f"snapshot metadata integer type changed: {key}")
     expected_state_hash = array_manifest_sha256(
         _numeric_state_arrays(
             snapshot["parameters"],
@@ -704,6 +884,8 @@ def validate_resume(snapshot: Mapping[str, Any]) -> None:
         else set(training.DEPLOYABLE_ACTION_KEYS + training.TRAINING_ONLY_STAGE2_KEYS)
     )
     optimizer = snapshot["optimizer"]
+    if not isinstance(optimizer, Mapping) or set(optimizer) != {"count", "m", "v"}:
+        raise ValueError("snapshot optimizer container schema changed")
     if set(optimizer["m"]) != optimizer_keys or set(optimizer["v"]) != optimizer_keys:
         raise ValueError("snapshot optimizer schema changed")
     if int(np.asarray(optimizer["count"])) != count:
@@ -764,6 +946,14 @@ def validate_resume(snapshot: Mapping[str, Any]) -> None:
     expected_metric_count = count if stage == "stage1" else STAGE1_UPDATES + count
     if not isinstance(metrics, list) or len(metrics) != expected_metric_count:
         raise ValueError("snapshot metric-history length changed")
+    for row in metrics:
+        if not isinstance(row, Mapping) or row.get("stage") not in {"stage1", "stage2"}:
+            raise ValueError("snapshot metric row is malformed")
+        expected_row_keys = (
+            STAGE1_METRIC_KEYS if row["stage"] == "stage1" else STAGE2_METRIC_KEYS
+        )
+        if set(row) != expected_row_keys:
+            raise ValueError("snapshot metric-row schema changed")
     expected_pairs = (
         [
             *(("stage1", update) for update in range(1, STAGE1_UPDATES + 1)),
@@ -784,13 +974,24 @@ def validate_resume(snapshot: Mapping[str, Any]) -> None:
     if not (0 < metric_valid <= metric_sampled <= expected_total):
         raise ValueError("snapshot cumulative sample accounting is invalid")
     for row in metrics:
+        if type(row["update"]) is not int:
+            raise ValueError("snapshot metric update type changed")
+        if (
+            type(row["sampled_count"]) is not int
+            or type(row["valid_transition_count"]) is not int
+        ):
+            raise ValueError("snapshot metric sample-count type changed")
+        if type(row["completed_episodes"]) is not int:
+            raise ValueError("snapshot completed-episode type changed")
+        if not np.isfinite(float(row["loss"])):
+            raise FloatingPointError("snapshot metric loss is nonfinite")
         sampled = int(row["sampled_count"])
         valid = int(row["valid_transition_count"])
         if not (0 < valid <= sampled <= SCHEDULED_TICK_SLOTS_PER_UPDATE):
             raise ValueError("snapshot per-update sample accounting is invalid")
         if not (0 <= int(row["completed_episodes"]) <= 80):
             raise ValueError("snapshot completed-episode count is invalid")
-        if len(str(row.get("episode_receipts_sha256", ""))) != 64:
+        if SHA256_RE.fullmatch(str(row["episode_receipts_sha256"])) is None:
             raise ValueError("snapshot episode-receipt hash is absent")
         if row["stage"] == "stage1" and (
             row.get("frozen_target_mean_sha256") != target_mean_sha256
@@ -798,7 +999,29 @@ def validate_resume(snapshot: Mapping[str, Any]) -> None:
         ):
             raise ValueError("snapshot Stage-1 normalization lineage changed")
         if row["stage"] == "stage2":
-            boundary = row.get("action_boundary") or {}
+            if any(not np.isfinite(float(row[key])) for key in STAGE2_LOSS_METRIC_KEYS):
+                raise FloatingPointError("snapshot Stage-2 metric is nonfinite")
+            boundary = row["action_boundary"]
+            if (
+                not isinstance(boundary, Mapping)
+                or set(boundary) != ACTION_BOUNDARY_KEYS
+            ):
+                raise ValueError("snapshot Stage-2 action-boundary schema changed")
+            if type(boundary["attempted_samples"]) is not int:
+                raise ValueError("snapshot Stage-2 action-boundary count type changed")
+            if (
+                type(boundary["realized_equals_numpy_bit_exact"]) is not bool
+                or type(boundary["numpy_equals_jax_bit_exact"]) is not bool
+            ):
+                raise ValueError(
+                    "snapshot Stage-2 action-boundary boolean type changed"
+                )
+            if not np.isfinite(
+                float(boundary["maximum_realized_numpy_error"])
+            ) or not np.isfinite(float(boundary["maximum_numpy_jax_error"])):
+                raise FloatingPointError(
+                    "snapshot Stage-2 action-boundary error is nonfinite"
+                )
             if (
                 boundary.get("attempted_samples") != sampled
                 or boundary.get("realized_equals_numpy_bit_exact") is not True
@@ -807,6 +1030,27 @@ def validate_resume(snapshot: Mapping[str, Any]) -> None:
                 or boundary.get("maximum_numpy_jax_error") != 0.0
             ):
                 raise ValueError("snapshot Stage-2 action-boundary evidence changed")
+            if any(
+                SHA256_RE.fullmatch(str(boundary[key])) is None
+                for key in (
+                    "raw_sha256",
+                    "previous_action_sha256",
+                    "realized_action_sha256",
+                    "numpy_expected_sha256",
+                    "jax_expected_sha256",
+                )
+            ):
+                raise ValueError("snapshot Stage-2 action-boundary hash changed")
+    for key in (
+        "preregistration_lf_sha256",
+        "cpu_contract_lf_sha256",
+        "cpu_contract_result_sha256",
+        "runner_lf_sha256",
+        "state_payload_sha256",
+        "metadata_payload_sha256",
+    ):
+        if SHA256_RE.fullmatch(str(metadata[key])) is None:
+            raise ValueError(f"snapshot metadata hash is malformed: {key}")
 
 
 def validate_stage2_lineage(snapshot: Mapping[str, Any], work_root: Path) -> None:
@@ -1311,10 +1555,11 @@ def main() -> int:
                 update_index,
             )
             normalization = evidence.pop("normalization")
-            if not training.finite_tree(
-                {"batch": batch_np, "normalization": normalization}
-            ):
+            if not training.finite_tree({"batch": batch_np}):
                 raise FloatingPointError(f"nonfinite Stage-1 rollout {update_index}")
+            normalization_mean, normalization_std = validate_stage1_normalization(
+                normalization, batch_np
+            )
             if not evidence.get("realized_action_chain_exact"):
                 raise ValueError("Stage-1 realized-action chain changed")
             if not evidence.get("fixed_p30_observer_slot_exact"):
@@ -1326,8 +1571,8 @@ def main() -> int:
                 update_index=update_index,
             )
             if update_index == 0:
-                target_mean = np.asarray(normalization["mean"], dtype=np.float32)
-                target_std = np.asarray(normalization["std"], dtype=np.float32)
+                target_mean = normalization_mean
+                target_std = normalization_std
             if target_mean is None or target_std is None:
                 raise AssertionError("Stage-1 normalization is absent")
             batch = {key: jnp.asarray(value) for key, value in batch_np.items()}

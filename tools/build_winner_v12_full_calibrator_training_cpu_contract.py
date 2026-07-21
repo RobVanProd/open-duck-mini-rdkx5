@@ -43,6 +43,14 @@ SOURCE_PATHS = {
         "outputs/analysis/WINNER_V12_FULL_CALIBRATOR_TRAINING_CPU_CONTRACT_SERIALIZATION_FAILURE_ATTRIBUTION_20260721.md",
         "lf",
     ),
+    "training_preupdate_failure_attribution": (
+        "outputs/analysis/winner_v12_full_calibrator_training_preupdate_failure_attribution.json",
+        "lf",
+    ),
+    "training_preupdate_failure_attribution_markdown": (
+        "outputs/analysis/WINNER_V12_FULL_CALIBRATOR_TRAINING_PREUPDATE_FAILURE_ATTRIBUTION_20260721.md",
+        "lf",
+    ),
     "playground_composer": ("tools/compose_winner_v7_playground.py", "lf"),
     "winner_v7_transform": ("tools/run_winner_v7_inward_projection_contract.py", "lf"),
     "winner_v7_importer": (
@@ -239,6 +247,12 @@ def main() -> int:
             / "outputs/analysis/winner_v12_full_calibrator_training_cpu_contract_serialization_failure_attribution.json"
         ).read_text(encoding="utf-8")
     )
+    training_preupdate_failure = json.loads(
+        (
+            ROOT
+            / "outputs/analysis/winner_v12_full_calibrator_training_preupdate_failure_attribution.json"
+        ).read_text(encoding="utf-8")
+    )
     source = RUNNER.read_text(encoding="utf-8")
     workflow_source = (
         ROOT / ".github/workflows/winner-v12-full-calibrator-training-cpu-contract.yml"
@@ -294,6 +308,10 @@ def main() -> int:
         and '"persistent_artifacts"' in source,
         "runner_asserts_per_update_invariants": "def validate_stage2_masks(" in source
         and "def validate_log_std(" in source
+        and "def validate_stage1_normalization(" in source
+        and "snapshot archive member schema changed" in source
+        and "snapshot metadata schema changed" in source
+        and "snapshot metric-row schema changed" in source
         and "Stage-1 fixed-P30 observation slot changed" in source
         and "Stage-2 changed frozen Stage-1 leaves" in source,
         "onnx_contract_uses_nonzero_bank": "persistent ONNX observation bank lost nonzero coverage"
@@ -318,6 +336,14 @@ def main() -> int:
         is False
         and serialization_failure_attribution["authority"]["formal_cpu_contract_passed"]
         is False,
+        "training_failure_is_preupdate_only": training_preupdate_failure.get("status")
+        == "INVALID_PREUPDATE_STAGE1_NORMALIZATION_VALIDATION"
+        and training_preupdate_failure.get("decision")
+        == "AUTHORIZE_CORRECTED_RUNNER_AND_NEW_ZERO_UPDATE_CPU_CONTRACT_ONLY"
+        and training_preupdate_failure["attempt"]["github_run_id"] == 29807546004
+        and training_preupdate_failure["execution"]["optimizer_updates"] == 0
+        and training_preupdate_failure["evidence"]["committed_snapshots"] == 0
+        and training_preupdate_failure["evidence"]["result_written"] is False,
         "workflow_is_one_shot_branch_path_cpu_contract": "workflow_dispatch:"
         not in workflow_source
         and "push:" in workflow_source
@@ -340,7 +366,7 @@ def main() -> int:
     if failed:
         raise SystemExit(f"full-training CPU contract build failed: {failed}")
     contract = {
-        "schema_version": "winner_v12.full_calibrator_training_cpu_contract.v1",
+        "schema_version": "winner_v12.full_calibrator_training_cpu_contract.v2",
         "status": "PASS_WINNER_V12_FULL_CALIBRATOR_TRAINING_CPU_CONTRACT_FROZEN",
         "decision": "AUTHORIZE_ONE_ZERO_UPDATE_FULL_TRAINING_CPU_CONTRACT_RUN_ONLY",
         "preregistration_lf_sha256": lf_sha256(PREREGISTRATION),
@@ -402,6 +428,14 @@ def main() -> int:
             "commit": serialization_failure_attribution["attempt"]["commit"],
             "optimizer_updates": 0,
             "formal_cpu_contract_passed": False,
+        },
+        "superseded_preupdate_training_failure": {
+            "status": training_preupdate_failure["status"],
+            "github_run_id": training_preupdate_failure["attempt"]["github_run_id"],
+            "commit": training_preupdate_failure["attempt"]["commit"],
+            "optimizer_updates": 0,
+            "committed_snapshots": 0,
+            "full_calibrator_training_started": False,
         },
         "checks": checks,
         "failed_checks": [],

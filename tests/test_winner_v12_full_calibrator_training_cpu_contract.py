@@ -128,6 +128,11 @@ def test_every_update_checks_masks_lineage_bounds_and_finiteness() -> None:
     source = RUNNER.read_text(encoding="utf-8")
     assert "Stage-1 fixed-P30 observation slot changed" in source
     assert "Stage-1 realized-action chain changed" in source
+    assert "def validate_stage1_normalization(" in source
+    assert "Stage-1 normalization proof failed" in source
+    assert "snapshot archive member schema changed" in source
+    assert "snapshot metadata schema changed" in source
+    assert "snapshot metric-row schema changed" in source
     assert "Stage-2 changed frozen Stage-1 leaves" in source
     assert "Stage-2 sample-mask active prefix is not exact one" in source
     assert "Stage-2 transition-mask active prefix is not exact one" in source
@@ -210,6 +215,25 @@ def test_failed_result_serialization_is_attributed_without_training_authority() 
     assert attribution["authority"]["optimizer_updates"] == 0
     assert attribution["authority"]["full_calibrator_training_executed"] is False
     assert attribution["authority"]["formal_cpu_contract_passed"] is False
+
+
+def test_failed_training_launch_is_attributed_before_optimizer_or_snapshot() -> None:
+    attribution = json.loads(
+        (
+            ROOT
+            / "outputs/analysis/winner_v12_full_calibrator_training_preupdate_failure_attribution.json"
+        ).read_text(encoding="utf-8")
+    )
+    assert attribution["status"] == (
+        "INVALID_PREUPDATE_STAGE1_NORMALIZATION_VALIDATION"
+    )
+    assert attribution["attempt"]["github_run_id"] == 29807546004
+    assert attribution["execution"]["optimizer_updates"] == 0
+    assert attribution["evidence"]["committed_snapshots"] == 0
+    assert attribution["evidence"]["result_written"] is False
+    assert attribution["decision"] == (
+        "AUTHORIZE_CORRECTED_RUNNER_AND_NEW_ZERO_UPDATE_CPU_CONTRACT_ONLY"
+    )
 
 
 def test_every_workflow_python_tool_is_hash_bound() -> None:
