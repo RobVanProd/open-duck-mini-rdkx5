@@ -18,14 +18,14 @@ import winner_v22_normalized_predictor as v22
 
 
 def test_evaluator_matches_normalized_coordinate_definition() -> None:
-    mean = np.linspace(-0.4, 0.6, 50, dtype=np.float32)
-    std = np.linspace(0.01, 0.5, 50, dtype=np.float32)
-    target = mean + 0.25 * std
-    prediction = np.full((50,), 0.2, dtype=np.float32)
+    mean = np.zeros((50,), dtype=np.float32)
+    std = np.full((50,), 0.5, dtype=np.float32)
+    target = np.full((50,), 0.125, dtype=np.float32)
+    prediction = np.full((50,), 0.1875, dtype=np.float32)
     learned = v22.normalized_prediction_squared_error(prediction, target, mean, std)
     constant = v22.normalized_constant_squared_error(target, mean, std)
-    np.testing.assert_allclose(learned, np.full((50,), 0.0025), rtol=0, atol=3e-8)
-    np.testing.assert_allclose(constant, np.full((50,), 0.0625), rtol=0, atol=2e-8)
+    np.testing.assert_array_equal(learned, np.full((50,), 0.00390625))
+    np.testing.assert_array_equal(constant, np.full((50,), 0.0625))
 
 
 def test_corrected_loss_uses_target_mean_and_stored_successor_mask() -> None:
