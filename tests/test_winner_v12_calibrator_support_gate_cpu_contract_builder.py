@@ -155,3 +155,18 @@ def test_bind_training_files_requires_verifier_hashes(tmp_path: Path) -> None:
     (work / "winner_v12_calibrator_final.onnx").write_bytes(b"changed")
     with pytest.raises(ValueError, match="differs"):
         builder.bind_training_files(work, artifact["verified_checkpoints"])
+
+
+def test_zero_cell_workflow_is_dormant_until_exact_contract_is_committed() -> None:
+    builder = load_builder()
+    workflow_path = (
+        ROOT / ".github/workflows/winner-v12-calibrator-support-gate-cpu-contract.yml"
+    )
+    source = workflow_path.read_text(encoding="utf-8")
+    trigger = source.split("permissions:", 1)[0]
+    assert workflow_path.name not in trigger
+    assert "winner_v12_calibrator_support_gate_cpu_contract.json" in trigger
+    assert "actions/download-artifact@v4" in source
+    assert "--zero-cell-contract-authorized" in source
+    assert "--formal-gate-authorized" not in source
+    assert builder.SOURCE_PATHS["workflow"] == workflow_path.relative_to(ROOT)

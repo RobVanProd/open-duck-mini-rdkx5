@@ -37,6 +37,9 @@ EXPECTED_OUTPUTS = [
     {"name": "h_out", "shape": [1, 64]},
 ]
 SOURCE_PATHS = {
+    "workflow": Path(
+        ".github/workflows/winner-v12-calibrator-support-gate-cpu-contract.yml"
+    ),
     "builder": Path("tools/build_winner_v12_calibrator_support_gate_cpu_contract.py"),
     "checker": Path("tools/check_winner_v12_calibrator_support_gate_cpu_contract.py"),
     "artifact_verifier": Path(
