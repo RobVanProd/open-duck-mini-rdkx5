@@ -32,6 +32,14 @@
     "training_root_seed": 120120
   },
   "pass_rule": "Every proof check passes. A pass authorizes only a separate preregistration for one 100-update causal A/B arm; it does not authorize that training now.",
+  "proof_correction": {
+    "behavior_or_objective_semantics_change": false,
+    "failed_artifact_id": 8503746957,
+    "failed_run_id": 29851858965,
+    "formal_result_present": false,
+    "fresh_run_required": true,
+    "only_change": "replace the incompatible inherited five-leaf snapshot loader with an exact Winner-v20 joint_recurrent_stage2 nine-leaf readback loader"
+  },
   "schema_version": "winner_v20.joint_recurrent_support_cpu_contract.v1",
   "single_change": {
     "bit_exact_frozen_auxiliary_leaves": [
@@ -71,7 +79,7 @@
     "snapshot_member": "winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_100.npz",
     "snapshot_sha256": "8c1392c738eddfb098e61c1a6ae2f863eda883e1eba6ac546aef695da6f163af"
   },
-  "source_manifest_sha256": "8cf0aa983cd6982d135e068c47410a9087d7ace417cf7dc6c84006d62fcdb807",
+  "source_manifest_sha256": "00862635f99412d09ce0757394e423862faaaf1cf5c8a901f798991d187f908a",
   "sources": {
     "attribution": {
       "hash_mode": "lf",
@@ -91,7 +99,7 @@
     "builder": {
       "hash_mode": "lf",
       "path": "tools/build_winner_v20_joint_recurrent_support_cpu_contract.py",
-      "sha256": "e5e897411e3fed59d7da60996c044a891b67067d21467932560e4b0e3206c522"
+      "sha256": "5d31cb98b03156a75f43d5625c0d43f78e93294610d49cf5ba3cb6ea5f40d2e7"
     },
     "calibrator_design": {
       "hash_mode": "lf",
@@ -106,7 +114,7 @@
     "contract_tests": {
       "hash_mode": "lf",
       "path": "tests/test_winner_v20_joint_recurrent_support_cpu_contract.py",
-      "sha256": "b6f2414f045bed7400848fb5d9c9b06ed69e1f32cd5076fc6a77cac63c3f069c"
+      "sha256": "b3e112c3e4339023dd371b7cd1ca51c7ef0a7a22fddaba7993d724bc3d90d320"
     },
     "cpu_smoke": {
       "hash_mode": "lf",
@@ -136,17 +144,32 @@
     "mechanics": {
       "hash_mode": "lf",
       "path": "patches/winner_v20_joint_recurrent_support.py",
-      "sha256": "a483c98061e28791e6a34ab2e4308308d63ab0478d1837898731e53c903a249f"
+      "sha256": "b03a5b003373b6f117848cf418550d16e22910b8d42e6ab44b1b8ad122581bd0"
     },
     "mechanics_tests": {
       "hash_mode": "lf",
       "path": "tests/test_winner_v20_joint_recurrent_support.py",
-      "sha256": "3e1ed194bb320a1af1f65f6bf590249d8f6cda97ad9344eecec836a5d34570b3"
+      "sha256": "57038becad03a3bc1d91a0a3765ea316b30f1ce345f91b9042a3cc3ebce928cb"
+    },
+    "proof_failure_attribution": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v20_joint_recurrent_cpu_proof_failure_attribution.json",
+      "sha256": "959d794ff6f84031c921cfd8bb167693b8de2f2b4ed9d3418a77e6ef4978c9bf"
+    },
+    "proof_failure_builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v20_joint_recurrent_cpu_proof_failure_attribution.py",
+      "sha256": "7b81be97591310207988bad5f2ab37593ddcf44b1abfbb6018bc0879120821c5"
+    },
+    "proof_failure_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v20_joint_recurrent_cpu_proof_failure_attribution.py",
+      "sha256": "fb7a16538208f0d9de7c97573aad1b502d33f04104ba65391335896a85535634"
     },
     "runner": {
       "hash_mode": "lf",
       "path": "tools/run_winner_v20_joint_recurrent_support_cpu_contract.py",
-      "sha256": "81c290298d492cf34c5f76751eba184ef868ee5c176caf4dc276cfac87f62e06"
+      "sha256": "31a7a799bd4f978677f526671abb80e1bd5bed7df08a3fea6f5446c0235199a3"
     },
     "runtime_observer": {
       "hash_mode": "lf",

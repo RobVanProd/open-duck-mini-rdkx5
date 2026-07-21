@@ -47,3 +47,11 @@ def test_joint_loss_recomputes_hidden_and_rollout_retains_observations() -> None
     assert "v15.valid_transition_reward" in source
     assert "maximum_target_offset" not in source
     assert "flat_transport" not in source
+
+
+def test_joint_snapshot_reader_requires_exact_stage_and_optimizer_schema() -> None:
+    source = PATCH.read_text(encoding="utf-8")
+    assert 'metadata.get("stage") != "joint_recurrent_stage2"' in source
+    assert "optimizer_keys = set(JOINT_TRAINABLE_KEYS)" in source
+    assert "base.DEPLOYABLE_CALIBRATOR_KEYS + base.TRAINING_ONLY_STAGE2_KEYS" in source
+    assert "Winner-v20 snapshot member schema changed" in source

@@ -33,6 +33,17 @@ def test_contract_freezes_one_existing_abi_causal_change() -> None:
     assert value["single_change"]["new_parameters"] == 0
     assert value["single_change"]["onnx_abi_change"] is False
     assert value["single_change"]["reward_change_from_winner_v15"] is False
+    assert value["proof_correction"] == {
+        "failed_run_id": 29851858965,
+        "failed_artifact_id": 8503746957,
+        "formal_result_present": False,
+        "behavior_or_objective_semantics_change": False,
+        "only_change": (
+            "replace the incompatible inherited five-leaf snapshot loader with an "
+            "exact Winner-v20 joint_recurrent_stage2 nine-leaf readback loader"
+        ),
+        "fresh_run_required": True,
+    }
     module.validate_source_manifest(value)
 
 
@@ -42,6 +53,8 @@ def test_runner_is_one_cpu_update_with_no_behavior_or_hardware_gate() -> None:
     assert "v20.joint_recurrent_ppo_loss" in source
     assert "v15.stage2_rollout" in source
     assert "v20.stage2_rollout" in source
+    assert "v20.load_joint_snapshot" in source
+    assert "loaded = full.load_snapshot(snapshot)" not in source
     assert '"optimizer_updates": 1' in source
     assert '"formal_support_cells": 0' in source
     assert '"locomotion_steps": 0' in source

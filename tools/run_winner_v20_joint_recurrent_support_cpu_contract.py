@@ -284,7 +284,10 @@ def main() -> int:
         restored["target_mean"],
         restored["target_std"],
     )
-    loaded = full.load_snapshot(snapshot)
+    loaded = v20.load_joint_snapshot(
+        snapshot,
+        expected_schema_version="winner_v20.joint_recurrent_support_cpu_snapshot.v1",
+    )
     hidden_replay_error = float(loss_metrics["source_hidden_replay_max_abs_error"])
     checks = {
         "source_stage1_snapshot_exact": True,

@@ -8,7 +8,7 @@ semantics are unchanged.
 
 from __future__ import annotations
 
-import math
+import json
 from pathlib import Path
 from typing import Any, Mapping, Sequence
 
@@ -66,6 +66,68 @@ def merge_joint_trainable(
         {key: jnp.asarray(value, dtype=jnp.float32) for key, value in trainable.items()}
     )
     return merged
+
+
+def load_joint_snapshot(
+    path: Path, *, expected_schema_version: str
+) -> dict[str, Any]:
+    """Read back the exact nine-leaf Winner-v20 optimizer schema."""
+
+    with np.load(path, allow_pickle=False) as archive:
+        if len(archive.files) != len(set(archive.files)):
+            raise ValueError("Winner-v20 snapshot contains duplicate members")
+        arrays = {name: archive[name].copy() for name in archive.files}
+    if "metadata_json" not in arrays:
+        raise ValueError("Winner-v20 snapshot metadata is absent")
+    metadata_array = np.asarray(arrays.pop("metadata_json"))
+    if metadata_array.shape != () or metadata_array.dtype.kind != "U":
+        raise ValueError("Winner-v20 snapshot metadata layout changed")
+    metadata = json.loads(str(metadata_array.item()))
+    if (
+        not isinstance(metadata, dict)
+        or metadata.get("schema_version") != expected_schema_version
+        or metadata.get("stage") != "joint_recurrent_stage2"
+    ):
+        raise ValueError("Winner-v20 snapshot metadata changed")
+    parameter_keys = set(
+        base.DEPLOYABLE_CALIBRATOR_KEYS + base.TRAINING_ONLY_STAGE2_KEYS
+    )
+    optimizer_keys = set(JOINT_TRAINABLE_KEYS)
+    expected_members = {
+        "target_mean",
+        "target_std",
+        "optimizer.count",
+        *(f"parameter.{key}" for key in parameter_keys),
+        *(f"optimizer.m.{key}" for key in optimizer_keys),
+        *(f"optimizer.v.{key}" for key in optimizer_keys),
+    }
+    if set(arrays) != expected_members:
+        raise ValueError("Winner-v20 snapshot member schema changed")
+    parameters = {
+        name.removeprefix("parameter."): value
+        for name, value in arrays.items()
+        if name.startswith("parameter.")
+    }
+    optimizer = {
+        "count": arrays["optimizer.count"],
+        "m": {
+            name.removeprefix("optimizer.m."): value
+            for name, value in arrays.items()
+            if name.startswith("optimizer.m.")
+        },
+        "v": {
+            name.removeprefix("optimizer.v."): value
+            for name, value in arrays.items()
+            if name.startswith("optimizer.v.")
+        },
+    }
+    return {
+        "parameters": parameters,
+        "optimizer": optimizer,
+        "metadata": metadata,
+        "target_mean": arrays["target_mean"],
+        "target_std": arrays["target_std"],
+    }
 
 
 def recurrent_hidden_trajectory(

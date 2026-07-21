@@ -15,6 +15,9 @@ ANALYSIS = ROOT / "outputs/analysis"
 OUTPUT = ANALYSIS / "winner_v20_joint_recurrent_support_cpu_contract.json"
 MARKDOWN = ANALYSIS / "WINNER_V20_JOINT_RECURRENT_SUPPORT_CPU_CONTRACT_20260721.md"
 ATTRIBUTION = ANALYSIS / "winner_v20_joint_recurrent_support_attribution.json"
+PROOF_FAILURE = (
+    ANALYSIS / "winner_v20_joint_recurrent_cpu_proof_failure_attribution.json"
+)
 STAGE1_RESULT = ANALYSIS / "winner_v13_normalized_response_stage1_v2_result.json"
 SOURCES = {
     "builder": Path("tools/build_winner_v20_joint_recurrent_support_cpu_contract.py"),
@@ -36,6 +39,15 @@ SOURCES = {
     ),
     "attribution_tests": Path(
         "tests/test_winner_v20_joint_recurrent_support_attribution.py"
+    ),
+    "proof_failure_attribution": Path(
+        "outputs/analysis/winner_v20_joint_recurrent_cpu_proof_failure_attribution.json"
+    ),
+    "proof_failure_builder": Path(
+        "tools/build_winner_v20_joint_recurrent_cpu_proof_failure_attribution.py"
+    ),
+    "proof_failure_tests": Path(
+        "tests/test_winner_v20_joint_recurrent_cpu_proof_failure_attribution.py"
     ),
     "winner_v15_objective": Path("patches/winner_v15_pitch_margin_support.py"),
     "winner_v15_training_result": Path(
@@ -91,6 +103,7 @@ def main() -> int:
         if path.exists():
             raise FileExistsError(f"refusing to overwrite CPU contract: {path}")
     attribution = json.loads(ATTRIBUTION.read_text(encoding="utf-8"))
+    proof_failure = json.loads(PROOF_FAILURE.read_text(encoding="utf-8"))
     stage1 = json.loads(STAGE1_RESULT.read_text(encoding="utf-8"))
     final_snapshot = stage1.get("snapshot_manifest", [{}])[-1]
     if (
@@ -100,6 +113,14 @@ def main() -> int:
         != "PREREGISTER_ONE_JOINT_RECURRENT_PPO_CPU_CONTRACT"
         or attribution.get("execution", {}).get("optimizer_updates") != 0
         or attribution.get("authority", {}).get("joint_recurrent_training_authorized")
+        is not False
+        or proof_failure.get("status")
+        != "INVALID_WINNER_V20_JOINT_RECURRENT_SUPPORT_CPU_CONTRACT_PROOF"
+        or proof_failure.get("decision")
+        != "CORRECT_ONLY_JOINT_SNAPSHOT_READER_AND_FRESHLY_PREREGISTER"
+        or proof_failure.get("failure", {}).get("behavior_or_objective_semantics_change")
+        is not False
+        or proof_failure.get("authority", {}).get("joint_recurrent_training_authorized")
         is not False
         or stage1.get("status") != "PASS_WINNER_V13_NORMALIZED_RESPONSE_STAGE1"
         or stage1.get("failed_checks") != []
@@ -165,6 +186,17 @@ def main() -> int:
             "reward_change_from_winner_v15": False,
             "population_seed_horizon_action_bound_change": False,
             "post_policy_wrapper": False,
+        },
+        "proof_correction": {
+            "failed_run_id": 29851858965,
+            "failed_artifact_id": 8503746957,
+            "formal_result_present": False,
+            "behavior_or_objective_semantics_change": False,
+            "only_change": (
+                "replace the incompatible inherited five-leaf snapshot loader with an "
+                "exact Winner-v20 joint_recurrent_stage2 nine-leaf readback loader"
+            ),
+            "fresh_run_required": True,
         },
         "frozen_cpu_proof": {
             "optimizer_updates": 1,
