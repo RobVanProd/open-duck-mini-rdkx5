@@ -25,6 +25,12 @@ SOURCES = {
     "preregistration_tests": Path(
         "tests/test_winner_v20_joint_recurrent_support_gate_preregistration.py"
     ),
+    "result_importer": Path(
+        "tools/import_winner_v20_joint_recurrent_support_gate_result.py"
+    ),
+    "result_importer_tests": Path(
+        "tests/test_winner_v20_joint_recurrent_support_gate_import.py"
+    ),
     "workflow": Path(".github/workflows/winner-v20-joint-recurrent-support-gate.yml"),
     "training_result": Path(
         "outputs/analysis/winner_v20_joint_recurrent_support_training_result.json"
