@@ -1,0 +1,230 @@
+{
+  "authority": {
+    "hosted_compute_gpu_or_igpu": false,
+    "rdkx5_robot_serial_gpio_i2c": false,
+    "robot_clearance": false,
+    "runtime_implementation": false,
+    "runtime_review_only": true,
+    "torque_motion_gate5_deployment": false,
+    "training_or_optimizer": false,
+    "zero_ppo_execution": false
+  },
+  "automatic_configuration": {
+    "context_persisted_between_boots": false,
+    "context_recomputed_each_process_start": true,
+    "future_calibration_action_must_be_graph_bounded": true,
+    "future_support_mode_must_be_separately_preregistered": true,
+    "manual_measurements_required": false,
+    "mass_com_inertia_dimensions_or_component_identity_inputs": false
+  },
+  "causal_hypothesis": "Winner-v10's separately contracted inward projection, stored graph-owned bounds, inward torque representation, and complete nominal revalidation remove the protected float32-boundary defect that closed Winner-v6/v6b. The unchanged reviewed dynamic-calibration ABI can therefore be tested mechanically against this distinct protected base before any training.",
+  "decision": "REQUEST_READ_ONLY_WINNER_V11_RUNTIME_SCHEMA_REVIEW",
+  "not_a_v6_or_v6b_retry": {
+    "behavior_revalidation": {
+      "nominal_pass": true,
+      "r2_condition_7_terminal_hold_preserved": true,
+      "r2_conditions_1_through_6_pass": true
+    },
+    "closed_result_preserved": true,
+    "closed_result_sha256": "a1b1bcb81646e332707ba9961f8d4c78f3acd307df4eed161bf8f61d28f21612",
+    "new_protected_base": "Winner-v10 inward-torque representation",
+    "new_protected_policy_hashes": {
+      "final": "d52b63241340d9d56671b95c58bb0fc72af0998fd47d4684719f6cd44f244a10",
+      "half": "cf001269908d86e47eaa145ffda1d87e946a314ecf51056dc086c4cf10164ab6"
+    },
+    "r2_resumption": false
+  },
+  "policy_hashes": {
+    "final": "d52b63241340d9d56671b95c58bb0fc72af0998fd47d4684719f6cd44f244a10",
+    "half": "cf001269908d86e47eaa145ffda1d87e946a314ecf51056dc086c4cf10164ab6"
+  },
+  "requested_interface": {
+    "calibration_ticks": 250,
+    "calibrator": {
+      "inputs": [
+        {
+          "dtype": "float32",
+          "name": "obs",
+          "shape": [
+            1,
+            115
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "previous_action",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "h_in",
+          "shape": [
+            1,
+            64
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "dtype": "float32",
+          "name": "calibration_actions",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "previous_action_out",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "h_out",
+          "shape": [
+            1,
+            64
+          ]
+        }
+      ]
+    },
+    "context_handoff": "final successful calibrator h_out becomes immutable session-local locomotion calibration_context without scaling or persistence",
+    "contract_id": "winner-v11-dynamic-calibration-r64",
+    "host_action_projection_or_limiter_added": false,
+    "locomotion": {
+      "inputs": [
+        {
+          "dtype": "float32",
+          "name": "obs",
+          "shape": [
+            1,
+            115
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "previous_action",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "h_in",
+          "shape": [
+            1,
+            64
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "calibration_context",
+          "shape": [
+            1,
+            64
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "dtype": "float32",
+          "name": "continuous_actions",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "previous_action_out",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "h_out",
+          "shape": [
+            1,
+            64
+          ]
+        }
+      ]
+    },
+    "locomotion_hidden_and_phase_start": "h_in=zeros[1,64]; phase=[1,0] exactly once",
+    "normalization_location": "inside future ONNX graph",
+    "observation_contract": "winner-v2-115d",
+    "previous_action_and_applied_target_handoff": "carry final confirmed values",
+    "runtime_v1_101x14_changed": false,
+    "runtime_v2_115d_semantics_changed": false
+  },
+  "runtime_review_questions": [
+    "Does the unchanged two-graph ABI remain implementable with the exact Winner-v10 base hashes?",
+    "Can default-off delegation preserve Winner-v10 action and previous_action_out byte-for-byte without a host limiter?",
+    "Can runtime carry the final confirmed previous action and applied-target observer state across the calibration-to-locomotion handoff?",
+    "Can every context remain session-local, immutable, nonpersistent, and mandatory before locomotion arming?",
+    "Does Winner-v10's graph-owned inward torque representation require any runtime semantic change?",
+    "May policy freeze one zero-PPO CPU mechanics contract before any support-mode or training proposal?"
+  ],
+  "schema_version": "winner_v11.dynamic_calibration_interface_preregistration.v1",
+  "sources": {
+    "builder": {
+      "path": "tools/build_winner_v11_dynamic_calibration_interface_preregistration.py",
+      "sha256": "a2c4bebf30f36d4f7ad542b60b0936c48749ebe0800809102db1512f8e437ca3"
+    },
+    "closed_v6b_result": {
+      "path": "outputs/analysis/winner_v6b_zero_ppo_cpu_contract_result.json",
+      "sha256": "a1b1bcb81646e332707ba9961f8d4c78f3acd307df4eed161bf8f61d28f21612"
+    },
+    "v6_network_source": {
+      "path": "patches/winner_v6_dynamic_calibration_networks.py",
+      "sha256": "cfff280a1c592043d7e1849c68a3c99b05574814180506e6608f17877a5dbb90"
+    },
+    "v6b_numeric_attribution": {
+      "path": "outputs/analysis/winner_v6b_numeric_hold_attribution.json",
+      "sha256": "eb3ed6a951b76e4c88b9adcbb52de3b3a6a84719f469ebfcd788dcef65ee879c"
+    },
+    "winner_v10_nominal": {
+      "path": "outputs/analysis/winner_v10_nominal_behavior_result.json",
+      "sha256": "eae89e89eb4b92c0414ee7e69c1b8e633d3408495216e55bf1d80bb467642690"
+    },
+    "winner_v10_r2_condition6": {
+      "path": "outputs/analysis/winner_v10_r2_condition6_result.json",
+      "sha256": "1787cea6abb1f94edaba605b4dae3436c274d3602a35a3339d93fbcf127fa3f9"
+    },
+    "winner_v10_r2_condition7_hold": {
+      "path": "outputs/analysis/winner_v10_r2_condition7_result.json",
+      "sha256": "70bd46ab3879a3d2b8e4aa8f1b0cb85563d6b1003705cbc8734848b23bccb274"
+    },
+    "winner_v10_representation": {
+      "path": "outputs/analysis/winner_v10_inward_torque_contract_result.json",
+      "sha256": "240f0e736b2e4c232c3caaba7700917c55bf825b5da07f729db51b3c5b6675e5"
+    }
+  },
+  "status": "PREREGISTERED_PENDING_RUNTIME_REVIEW",
+  "stop_rules": [
+    "do not run the zero-PPO contract before runtime review",
+    "do not retry or reclassify Winner-v6/v6b",
+    "do not continue R2 after the frozen condition-7 failure",
+    "do not define a physical support-mode excitation or train from this request",
+    "do not select a deployment checkpoint or set robot_clearance true"
+  ],
+  "zero_ppo_contract_requested_after_review_only": {
+    "arbitrary_finite_default_off_population": true,
+    "calibrator_and_locomotion_jax_onnx_chain": true,
+    "cpu_only": true,
+    "default_off_action_and_previous_state_bit_exact_to_winner_v10": true,
+    "enabled_graph_owns_absolute_delta_guard_and_inward_torque_bounds": true,
+    "formal_behavior_cells": 0,
+    "invalid_handoffs_fail_closed": true,
+    "optimizer_steps": 0
+  }
+}
