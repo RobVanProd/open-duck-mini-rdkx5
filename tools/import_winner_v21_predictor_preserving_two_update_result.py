@@ -176,7 +176,11 @@ def validate_result(result: Mapping[str, Any]) -> None:
         "sources",
         "authority",
     }
-    if set(result) not in {expected_fields, expected_fields | {"repository_attribution"}}:
+    observed_fields = frozenset(result)
+    if observed_fields not in {
+        frozenset(expected_fields),
+        frozenset(expected_fields | {"repository_attribution"}),
+    }:
         raise ValueError("Winner-v21 two-update result schema changed")
     if result.get("schema_version") != (
         "winner_v21.predictor_preserving_two_update_cpu_result.v1"
