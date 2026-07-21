@@ -1,0 +1,207 @@
+{
+  "authority": {
+    "locomotion_training_authorized": false,
+    "manual_mass_com_inertia_measurements_required": false,
+    "new_simulation_cells": 0,
+    "optimizer_updates_authorized_now": 0,
+    "pass_authorizes_only": "a separately hash-frozen zero-update normalized-semantics CPU contract",
+    "robot_clearance": false,
+    "robot_or_rdk_access": false
+  },
+  "decision": "AUTHORIZE_CORRECT_NORMALIZED_PREDICTOR_CPU_CONTRACT_ONLY",
+  "findings": {
+    "all_physical_failures_are_roll_pitch_only": true,
+    "completed_v21_result_remains_a_hold": true,
+    "flat_transport_equation_selected": false,
+    "v13_auxiliary_head_outputs_normalized_coordinates": true,
+    "v21_gate_compared_normalized_output_as_if_raw": true,
+    "v21_physical_support_still_fails_independently_of_predictor_metric": true,
+    "v21_predictor_metric_is_invalid_for_its_frozen_v13_head": true,
+    "v21_training_compared_normalized_output_as_if_raw": true
+  },
+  "schema_version": "winner_v21.normalized_semantics_attribution.v1",
+  "selected_next_contract": {
+    "first_step_only": "a separately hash-frozen zero-update formula/evaluator contract; no training",
+    "must_preserve": [
+      "identical Stage-1 source snapshot",
+      "identical 115-D observation, 14-D action, 64-state and previous_action ABI",
+      "identical PPO objective, population, seeds, action boundary and support matrix",
+      "no true configuration or plant label input",
+      "both half and final must pass; no closest-checkpoint selection"
+    ],
+    "name": "normalized_predictor_preserving_joint_recurrent_support",
+    "required_evaluator_formula": "square(prediction_normalized - normalized_target); constant = square(normalized_target)",
+    "required_formula": "prediction_normalized - ((next_response_raw - target_mean) / target_std)"
+  },
+  "source_manifest_sha256": "b7840236c9706a05fe2e75930637e561bc70b5f19f26d6faf0f567932d831279",
+  "source_stage1_normalized_predictor": {
+    "predictor_by_plant": {
+      "P30_ALL_JOINT": {
+        "constant_normalized_mse_all_50": 1.017420735567805,
+        "constant_normalized_mse_noncontact_48": 1.059813266216464,
+        "contact_normalized_mse": 0.00024685714031129254,
+        "learned_normalized_mse_all_50": 0.9850068653083868,
+        "learned_normalized_mse_noncontact_48": 1.02603853231539,
+        "learned_strictly_below_constant": true,
+        "valid_transition_count": 2957
+      },
+      "P31_34_PITCH_WITH_P30_NONPITCH": {
+        "constant_normalized_mse_all_50": 1.09215788775818,
+        "constant_normalized_mse_noncontact_48": 1.1376644664147704,
+        "contact_normalized_mse": 0.0004055807098737028,
+        "learned_normalized_mse_all_50": 1.0661785490237208,
+        "learned_normalized_mse_noncontact_48": 1.1105857560367975,
+        "learned_strictly_below_constant": true,
+        "valid_transition_count": 2629
+      }
+    },
+    "snapshot_sha256": "8c1392c738eddfb098e61c1a6ae2f863eda883e1eba6ac546aef695da6f163af"
+  },
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v21_normalized_semantics_attribution.py",
+      "sha256": "44f9aba4f2e3d4d2fb263cca3152f52dce87766e339e19c28bde1c7f7b52197d"
+    },
+    "gate_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v21_predictor_preserving_support_gate_result.json",
+      "sha256": "766a350a0d54487c755af062e37c84397780998c6e06436ddc83a0b48c70db81"
+    },
+    "stage1_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v13_normalized_response_stage1_v2_result.json",
+      "sha256": "45e12b9993ce5c8f9811af7350ed3198f9376d0d4ea9b25de8b1aee608a5bcc7"
+    },
+    "training_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v21_predictor_preserving_training_result.json",
+      "sha256": "a7270913092f3d4042357606f4c0fc46a3a4e9c2653cb17073434203a89abb78"
+    },
+    "v12_gate": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_support_gate.py",
+      "sha256": "18873eee55c77a278fc065de64c0b912803bf29b4440cde7f3adaabe1297baca"
+    },
+    "v13_evaluator": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v13_normalized_response_stage1.py",
+      "sha256": "894a4ea04ac39376878387eea883fd9d296566f8596f58469c6a5e6c39229362"
+    },
+    "v13_mechanics": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v13_normalized_calibrator_training.py",
+      "sha256": "b57ae2823cff90bfd8d78317adb1dfe9607bcae069a4d985863144b4e12ec3ca"
+    },
+    "v21_gate": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v21_predictor_preserving_support_gate.py",
+      "sha256": "3dae8e4969541f8b96f8ba8de0c8467ec9da71840d0ea257e69402fcf70050f2"
+    },
+    "v21_mechanics": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v21_predictor_preserving_joint_support.py",
+      "sha256": "2d274c6c7c63fa2de5e3a7114ac047df1346189e66ec7bf8d83221e2f93aef0a"
+    },
+    "v21_trainer": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v21_predictor_preserving_training.py",
+      "sha256": "e94d038265b237e8666c156d20fd9cc8c0214600fb109121d0991d18ee66e18a"
+    }
+  },
+  "status": "PASS_WINNER_V21_NORMALIZED_SEMANTICS_ATTRIBUTION",
+  "support_gate": {
+    "checkpoints": [
+      {
+        "all_heldout_contexts_separate": true,
+        "all_heldout_repeats_bit_exact": true,
+        "failing_configuration_ids": [
+          "COM_CORNER_00",
+          "COM_CORNER_01",
+          "COM_CORNER_02",
+          "COM_CORNER_03",
+          "COM_X_NEG",
+          "DISCOVERY_03",
+          "HELDOUT_04",
+          "HELDOUT_09"
+        ],
+        "failing_support_cells": 15,
+        "failure_tick_max": 58,
+        "failure_tick_min": 27,
+        "label": "half",
+        "passing_support_cells": 109,
+        "predictor": {
+          "P30_ALL_JOINT": {
+            "classification_valid_for_v13_normalized_head": false,
+            "reported_constant_mse": 0.1293015512090518,
+            "reported_learned_mse": 17815719039.675545,
+            "reported_learned_strictly_below_constant": false,
+            "reported_learned_to_constant_ratio": 137784263785.6022
+          },
+          "P31_34_PITCH_WITH_P30_NONPITCH": {
+            "classification_valid_for_v13_normalized_head": false,
+            "reported_constant_mse": 0.12899752502576792,
+            "reported_learned_mse": 17814882245.934425,
+            "reported_learned_strictly_below_constant": false,
+            "reported_learned_to_constant_ratio": 138102511985.21686
+          }
+        },
+        "terminal_failed_check_counts": {
+          "roll_pitch": 15
+        },
+        "total_support_cells": 124,
+        "update": 50
+      },
+      {
+        "all_heldout_contexts_separate": true,
+        "all_heldout_repeats_bit_exact": true,
+        "failing_configuration_ids": [
+          "COM_CORNER_00",
+          "COM_CORNER_01",
+          "COM_CORNER_02",
+          "COM_CORNER_03",
+          "COM_X_NEG",
+          "DISCOVERY_03",
+          "HELDOUT_04",
+          "HELDOUT_09"
+        ],
+        "failing_support_cells": 16,
+        "failure_tick_max": 48,
+        "failure_tick_min": 27,
+        "label": "final",
+        "passing_support_cells": 108,
+        "predictor": {
+          "P30_ALL_JOINT": {
+            "classification_valid_for_v13_normalized_head": false,
+            "reported_constant_mse": 0.22230358564446348,
+            "reported_learned_mse": 2024354038.5101104,
+            "reported_learned_strictly_below_constant": false,
+            "reported_learned_to_constant_ratio": 9106259049.495127
+          },
+          "P31_34_PITCH_WITH_P30_NONPITCH": {
+            "classification_valid_for_v13_normalized_head": false,
+            "reported_constant_mse": 0.22228123735090516,
+            "reported_learned_mse": 2024130497.0218086,
+            "reported_learned_strictly_below_constant": false,
+            "reported_learned_to_constant_ratio": 9106168928.807999
+          }
+        },
+        "terminal_failed_check_counts": {
+          "roll_pitch": 16
+        },
+        "total_support_cells": 124,
+        "update": 100
+      }
+    ],
+    "formal_support_cells": 248,
+    "heldout_repeat_cells": 64,
+    "result_decision": "DO_NOT_TRAIN_RESPONSE_CONDITIONED_LOCOMOTION",
+    "result_status": "HOLD_WINNER_V21_PREDICTOR_PRESERVING_SUPPORT_GATE"
+  },
+  "training_loss_reported_under_raw_coordinate_formula": {
+    "classification_valid_for_v13_normalized_head": false,
+    "update_1": 40095510528.0,
+    "update_100": 2126826624.0,
+    "update_50": 18199150592.0
+  }
+}
