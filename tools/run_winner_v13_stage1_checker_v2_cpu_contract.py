@@ -87,7 +87,10 @@ def main() -> int:
         raise ValueError("Winner-v13 checker-v2 requires CPU-only JAX")
     contract = json.loads(CONTRACT.read_text(encoding="utf-8"))
     if (
-        contract.get("status") != "FROZEN_WINNER_V13_STAGE1_CHECKER_V2_CPU_CONTRACT"
+        contract.get("schema_version")
+        != "winner_v13.stage1_checker_v2_cpu_contract.v2"
+        or contract.get("status")
+        != "FROZEN_WINNER_V13_STAGE1_CHECKER_V2_CPU_CONTRACT"
         or contract.get("decision") != "AUTHORIZE_ONE_ZERO_CELL_CHECKER_PROOF_ONLY"
         or contract.get("execution_now")
         != {
@@ -179,11 +182,15 @@ def main() -> int:
         "zero_previous_action_produces_exact_zero_action": bool(
             zero_previous_action_exact
         ),
-        "same_input_action_error_at_most_1e_7": maximum_errors[0] <= 1.0e-7,
-        "same_input_previous_action_out_error_at_most_1e_7": (
-            maximum_errors[1] <= 1.0e-7
+        "same_input_action_error_at_most_1e_7": bool(
+            maximum_errors[0] <= 1.0e-7
         ),
-        "same_input_hidden_error_at_most_1e_7": maximum_errors[2] <= 1.0e-7,
+        "same_input_previous_action_out_error_at_most_1e_7": (
+            bool(maximum_errors[1] <= 1.0e-7)
+        ),
+        "same_input_hidden_error_at_most_1e_7": bool(
+            maximum_errors[2] <= 1.0e-7
+        ),
         "graph_previous_action_out_equals_action_bit_exact": bool(
             state_equals_action
         ),
@@ -205,7 +212,7 @@ def main() -> int:
     if not all(math.isfinite(float(value)) for value in maximum_errors):
         raise FloatingPointError("checker-v2 produced a nonfinite comparison")
     result = {
-        "schema_version": "winner_v13.stage1_checker_v2_cpu_result.v1",
+        "schema_version": "winner_v13.stage1_checker_v2_cpu_result.v2",
         "status": (
             "PASS_WINNER_V13_STAGE1_CHECKER_V2_CPU_CONTRACT"
             if not failed

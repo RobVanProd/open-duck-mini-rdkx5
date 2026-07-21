@@ -21,6 +21,7 @@ def load():
 def test_contract_is_zero_cell_and_source_bound() -> None:
     module = load()
     value = json.loads(CONTRACT.read_text(encoding="utf-8"))
+    assert value["schema_version"] == "winner_v13.stage1_checker_v2_cpu_contract.v2"
     assert value["status"] == "FROZEN_WINNER_V13_STAGE1_CHECKER_V2_CPU_CONTRACT"
     assert value["decision"] == "AUTHORIZE_ONE_ZERO_CELL_CHECKER_PROOF_ONLY"
     assert value["execution_now"] == {
@@ -39,6 +40,7 @@ def test_runner_uses_same_input_reference_and_no_training() -> None:
     assert "previous_action" in source
     assert "hidden_inputs" in source
     assert "maximum_errors[2] <= 1.0e-7" in source
+    assert "bool(maximum_errors[1] <= 1.0e-7)" in source
     assert "v13.STAGE1_LEARNING_RATE == 0.0001" in source
     assert '"optimizer_updates": 0' in source
     assert "adam_step" not in source

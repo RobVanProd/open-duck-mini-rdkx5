@@ -15,6 +15,9 @@ ANALYSIS = ROOT / "outputs/analysis"
 OUTPUT = ANALYSIS / "winner_v13_stage1_checker_v2_cpu_contract.json"
 MARKDOWN = ANALYSIS / "WINNER_V13_STAGE1_CHECKER_V2_CPU_CONTRACT_20260721.md"
 INVALID = ANALYSIS / "winner_v13_normalized_response_stage1_invalid_attribution.json"
+SERIALIZATION_ATTRIBUTION = (
+    ANALYSIS / "winner_v13_stage1_checker_v2_cpu_serialization_failure_attribution.json"
+)
 SOURCES = {
     "builder": Path("tools/build_winner_v13_stage1_checker_v2_cpu_contract.py"),
     "runner": Path("tools/run_winner_v13_stage1_checker_v2_cpu_contract.py"),
@@ -22,6 +25,9 @@ SOURCES = {
     "workflow": Path(".github/workflows/winner-v13-stage1-checker-v2-cpu-contract.yml"),
     "invalid_attribution": Path(
         "outputs/analysis/winner_v13_normalized_response_stage1_invalid_attribution.json"
+    ),
+    "serialization_failure_attribution": Path(
+        "outputs/analysis/winner_v13_stage1_checker_v2_cpu_serialization_failure_attribution.json"
     ),
     "v13_primitives": Path("patches/winner_v13_normalized_calibrator_training.py"),
     "network": Path("patches/winner_v12_decomposed_backend_networks.py"),
@@ -54,6 +60,14 @@ def main() -> int:
         is not True
     ):
         raise ValueError("invalid attribution does not select this CPU contract")
+    serialization = json.loads(SERIALIZATION_ATTRIBUTION.read_text(encoding="utf-8"))
+    if (
+        serialization.get("status") != "INVALID_ZERO_RESULT_SERIALIZATION_FAILURE"
+        or serialization.get("artifact", {}).get("result_present") is not False
+        or serialization.get("decision")
+        != "CORRECT_SERIALIZATION_AND_LAUNCH_FRESH_ZERO_CELL_CONTRACT"
+    ):
+        raise ValueError("serialization attribution does not select a fresh contract")
     sources = {
         name: {
             "path": str(path).replace("\\", "/"),
@@ -63,7 +77,7 @@ def main() -> int:
         for name, path in SOURCES.items()
     }
     payload = {
-        "schema_version": "winner_v13.stage1_checker_v2_cpu_contract.v1",
+        "schema_version": "winner_v13.stage1_checker_v2_cpu_contract.v2",
         "status": "FROZEN_WINNER_V13_STAGE1_CHECKER_V2_CPU_CONTRACT",
         "decision": "AUTHORIZE_ONE_ZERO_CELL_CHECKER_PROOF_ONLY",
         "correction": {
@@ -79,6 +93,7 @@ def main() -> int:
                 "it; otherwise the frozen slew projection returns a bounded step toward zero."
             ),
             "learning_rate_for_fresh_run": 0.0001,
+            "serialization": "all comparison checks are converted to native bool",
         },
         "pass_rule": (
             "All same-input action/state checks, standard deployable graph checks, and the "
