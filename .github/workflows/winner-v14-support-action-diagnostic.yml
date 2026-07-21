@@ -1,0 +1,309 @@
+name: Winner v14 support-action diagnostic
+
+on:
+  push:
+    branches:
+      - codex/winner-v4-response-contract
+    paths:
+      - outputs/analysis/winner_v14_support_action_diagnostic_preregistration.json
+      - outputs/analysis/WINNER_V14_SUPPORT_ACTION_DIAGNOSTIC_PREREGISTRATION_20260721.md
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: winner-v14-support-action-diagnostic
+  cancel-in-progress: false
+
+jobs:
+  gate:
+    name: One frozen 1,560-cell offline support-action diagnostic
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+
+    steps:
+      - name: Reject workflow reruns
+        run: test "${{ github.run_attempt }}" = "1"
+
+      - name: Checkout frozen diagnostic
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up exact Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12.13"
+
+      - name: Install exact CPU environment
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install \
+            "jax[cpu]==0.7.2" \
+            "jaxlib==0.7.2" \
+            "mujoco==3.9.0" \
+            "numpy==2.0.2" \
+            "onnx==1.22.0" \
+            "onnxruntime==1.27.0" \
+            "pytest==8.4.2"
+
+      - name: Verify frozen diagnostic package
+        run: |
+          python -m pytest -q \
+            tests/test_winner_v14_support_action_diagnostic.py
+
+      - name: Resolve exact training artifact
+        id: training
+        shell: bash
+        run: |
+          python - <<'PY' >>"$GITHUB_OUTPUT"
+          import hashlib
+          import json
+          from pathlib import Path
+
+          path = Path("outputs/analysis/winner_v14_support_action_diagnostic_preregistration.json")
+          value = json.loads(path.read_text())
+          if value["status"] != "PREREGISTERED_WINNER_V14_SUPPORT_ACTION_DIAGNOSTIC":
+              raise SystemExit("support-action diagnostic is not preregistered")
+          if value["execution_now"] != {
+              "optimizer_updates": 0,
+              "main_cells": 0,
+              "repeat_cells": 0,
+              "locomotion_steps": 0,
+              "robot_or_rdk_access": 0,
+          }:
+              raise SystemExit("support-action diagnostic authority changed")
+          sources = value["sources"]
+          for name, item in sources.items():
+              observed = hashlib.sha256(
+                  Path(item["path"]).read_bytes().replace(b"\r\n", b"\n")
+              ).hexdigest()
+              if item["hash_mode"] != "lf" or observed != item["sha256"]:
+                  raise SystemExit(f"support-action source changed: {name}")
+          canonical = hashlib.sha256(
+              json.dumps(sources, sort_keys=True, separators=(",", ":")).encode()
+          ).hexdigest()
+          if canonical != value["source_manifest_sha256"]:
+              raise SystemExit("support-action source manifest changed")
+          attribution = value["training_artifact"]["repository_attribution"]
+          if attribution["repository"] != "RobVanProd/open-duck-mini-rdkx5":
+              raise SystemExit("support-action artifact repository changed")
+          if attribution["github_run_attempt"] != 1:
+              raise SystemExit("support-training source run was retried")
+          print(f"run_id={attribution['github_run_id']}")
+          print(f"artifact_name={attribution['github_artifact_name']}")
+          PY
+
+      - name: Download exact verified training artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ steps.training.outputs.artifact_name }}
+          path: /tmp/winner-v13-training-artifact
+          repository: RobVanProd/open-duck-mini-rdkx5
+          run-id: ${{ steps.training.outputs.run_id }}
+          github-token: ${{ github.token }}
+
+      - name: Verify extracted checkpoint identities
+        run: |
+          python - <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path, PurePosixPath
+
+          value = json.loads(
+              Path("outputs/analysis/winner_v14_support_action_diagnostic_preregistration.json").read_text()
+          )
+          root = Path(
+              "/tmp/winner-v13-training-artifact/"
+              "winner-v13-support-controller-training-work"
+          )
+          for label, update in (("half", 50), ("final", 100)):
+              expected = value["training_artifact"][label]
+              paths = {
+                  "snapshot": root / "snapshots" / f"snapshot_stage2_update_{update:03d}.npz",
+                  "graph": root / "graphs" / f"winner_v13_support_controller_{label}.onnx",
+              }
+              for kind, path in paths.items():
+                  receipt = expected[kind]
+                  observed = hashlib.sha256(path.read_bytes()).hexdigest()
+                  if observed != receipt["sha256"] or path.stat().st_size != receipt["bytes"]:
+                      raise SystemExit(f"{label} {kind} differs from imported artifact")
+          PY
+
+      - name: Compose exact 115-D Playground
+        run: |
+          git clone --quiet https://github.com/RobVanProd/Open_Duck_Playground.git \
+            /tmp/playground-source
+          python tools/compose_winner_v7_playground.py \
+            --source-repository /tmp/playground-source \
+            --output-root /tmp/pg115-v13-support-gate
+          python - <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path
+
+          root = Path("/tmp/pg115-v13-support-gate")
+          for name in (
+              "playground/common/phase_moe_networks.py",
+              "playground/common/recurrent_ppo_networks.py",
+              "playground/common/rewards.py",
+              "playground/common/runner.py",
+              "playground/open_duck_mini_v2/custom_rewards.py",
+              "playground/open_duck_mini_v2/joystick.py",
+              "playground/open_duck_mini_v2/runner.py",
+              "playground/open_duck_mini_v2/xmls/open_duck_mini_v2_backlash.xml",
+              "playground/open_duck_mini_v2/xmls/scene_flat_terrain_backlash.xml",
+          ):
+              path = root / name
+              data = path.read_bytes().replace(b"\r\n", b"\n")
+              path.write_bytes(data.replace(b"\n", b"\r\n"))
+          receipt_path = root / "winner_v7_playground_composition_receipt.json"
+          receipt = json.loads(receipt_path.read_text())
+          receipt["composed_file_hashes"] = {
+              relative: hashlib.sha256((root / relative).read_bytes()).hexdigest()
+              for relative in sorted(receipt["composed_file_hashes"])
+          }
+          receipt_bytes = (json.dumps(receipt, indent=2, sort_keys=True) + "\n").encode()
+          receipt_path.write_bytes(receipt_bytes)
+          expected = "628c35fab95e41a2fa82ae2255e0109502d72632c7ad408bf7e1294f5eb1c196"
+          if hashlib.sha256(receipt_bytes).hexdigest() != expected:
+              raise SystemExit("composition receipt reconstruction mismatch")
+          PY
+
+      - name: Reconstruct reviewed Windows-origin evidence bytes
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          for name in (
+              "outputs/analysis/winner_v6b_numeric_hold_attribution.json",
+              "outputs/analysis/winner_v8_numeric_hold_attribution.json",
+              "outputs/analysis/winner_v9_stored_bound_contract_result.json",
+              "outputs/analysis/winner_v9_nominal_behavior_result.json",
+              "outputs/analysis/winner_v9_numeric_torque_hold_attribution.json",
+              "outputs/analysis/winner_v10_inward_torque_contract_result.json",
+              "outputs/analysis/winner_v10_nominal_behavior_result.json",
+              "outputs/analysis/winner_v10_r2_condition1_result.json",
+              "outputs/analysis/winner_v10_r2_condition2_result.json",
+              "outputs/analysis/winner_v10_r2_condition3_result.json",
+              "outputs/analysis/winner_v10_r2_condition4_result.json",
+              "outputs/analysis/winner_v10_r2_condition5_result.json",
+              "outputs/analysis/winner_v10_r2_condition6_result.json",
+              "outputs/analysis/ground_up_robustness_r2_matrix_preregistration.json",
+              "outputs/analysis/ground_up_robustness_r2_evaluator_contract.json",
+              "outputs/analysis/ground_up_robustness_r2_reporting_contract.json",
+              "outputs/analysis/fixed_target_p30_actuator_fit_20260712.json",
+              "outputs/analysis/fixed_target_p31_34_actuator_fit_20260712.json",
+              "tools/evaluate_ground_up_policy.py",
+              "tools/closed_loop_sim_eval.py",
+              "tools/actuator_bridge_model.py",
+              "tools/aggregate_ground_up_robustness_r1.py",
+          ):
+              path = Path(name)
+              data = path.read_bytes().replace(b"\r\n", b"\n")
+              path.write_bytes(data.replace(b"\n", b"\r\n"))
+          PY
+
+      - name: Reconstruct exact Winner-v10 XML
+        run: |
+          python tools/run_winner_v7_inward_projection_contract.py \
+            --work-root /tmp/winner-v7 \
+            --output /tmp/winner-v7-contract.json
+          python tools/run_winner_v9_stored_bound_contract.py \
+            --source-half /tmp/winner-v7/winner_v7_half_inward_projection.onnx \
+            --source-final /tmp/winner-v7/winner_v7_final_inward_projection.onnx \
+            --model-xml /tmp/pg115-v13-support-gate/playground/open_duck_mini_v2/xmls/open_duck_mini_v2_backlash.xml \
+            --scene-xml /tmp/pg115-v13-support-gate/playground/open_duck_mini_v2/xmls/scene_flat_terrain_backlash.xml \
+            --work-root /tmp/winner-v9 \
+            --output /tmp/winner-v9-contract.json
+          python - <<'PY'
+          from hashlib import sha256
+          from pathlib import Path
+
+          path = Path("/tmp/winner-v9/xmls/open_duck_mini_v2_backlash.xml")
+          data = path.read_bytes().replace(b"\r\n", b"\n")
+          path.write_bytes(data.replace(b"\n", b"\r\n"))
+          expected = "2132e477d2504faf08af4c5250952bd8b17611fb496ab15f30afc0371f327f9c"
+          if sha256(path.read_bytes()).hexdigest() != expected:
+              raise SystemExit("winner-v9 XML reconstruction mismatch")
+          PY
+          python tools/run_winner_v10_inward_torque_contract.py \
+            --source-half /tmp/winner-v9/winner_v9_half_stored_bound.onnx \
+            --source-final /tmp/winner-v9/winner_v9_final_stored_bound.onnx \
+            --source-model-xml /tmp/winner-v9/xmls/open_duck_mini_v2_backlash.xml \
+            --source-scene-xml /tmp/winner-v9/xmls/scene_flat_terrain_backlash.xml \
+            --work-root /tmp/winner-v10 \
+            --output /tmp/winner-v10-contract.json
+
+      - name: Restore exact composed tree and canonical LF fit
+        run: |
+          python - <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path
+          import subprocess
+
+          root = Path("/tmp/pg115-v13-support-gate")
+          receipt = json.loads(
+              (root / "winner_v7_playground_composition_receipt.json").read_text()
+          )
+          composed = receipt["composed_file_hashes"]
+          for relative, expected in composed.items():
+              if hashlib.sha256((root / relative).read_bytes()).hexdigest() != expected:
+                  raise SystemExit(f"composed file reconstruction mismatch: {relative}")
+          allowed = set(composed) | {"winner_v7_playground_composition_receipt.json"}
+          status = subprocess.check_output(
+              ["git", "status", "--porcelain=v1"], cwd=root, text=True
+          ).splitlines()
+          for line in status:
+              relative = line[3:].replace("\\", "/")
+              if relative not in allowed:
+                  subprocess.run(
+                      ["git", "restore", "--source=HEAD", "--worktree", "--", relative],
+                      cwd=root,
+                      check=True,
+                  )
+          fit_source = Path("outputs/analysis/fixed_target_p30_actuator_fit_20260712.json")
+          fit_target = Path("/tmp/fixed_target_p30_actuator_fit_lf.json")
+          fit_target.write_bytes(fit_source.read_bytes().replace(b"\r\n", b"\n"))
+          expected_fit = "908ddb01e5d82e661d77b8f3cb186a84665695660b86b304c6d1ae89c79cdb0b"
+          if hashlib.sha256(fit_target.read_bytes()).hexdigest() != expected_fit:
+              raise SystemExit("canonical LF fit reconstruction mismatch")
+          PY
+          cp /tmp/winner-v10/xmls/open_duck_mini_v2_backlash.xml \
+            /tmp/pg115-v13-support-gate/playground/open_duck_mini_v2/xmls/open_duck_mini_v2_backlash.xml
+          cp /tmp/winner-v10/xmls/scene_flat_terrain_backlash.xml \
+            /tmp/pg115-v13-support-gate/playground/open_duck_mini_v2/xmls/scene_flat_terrain_backlash.xml
+
+      - name: Run exactly one frozen support-action diagnostic
+        run: |
+          python tools/run_winner_v14_support_action_diagnostic.py \
+            --training-work-root /tmp/winner-v13-training-artifact/winner-v13-support-controller-training-work \
+            --playground-root /tmp/pg115-v13-support-gate \
+            --canonical-fit /tmp/fixed_target_p30_actuator_fit_lf.json \
+            --output /tmp/winner-v14-support-action-diagnostic-result.json \
+            --offline-cpu-only \
+            --diagnostic-authorized
+
+      - name: Hash support-action diagnostic result
+        if: always()
+        run: |
+          result=/tmp/winner-v14-support-action-diagnostic-result.json
+          if test -f "$result"; then
+            sha256sum "$result" \
+              | tee /tmp/winner-v14-support-action-diagnostic-result.sha256
+          fi
+
+      - name: Upload only support-action diagnostic evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: winner-v14-support-action-diagnostic-${{ github.run_id }}
+          if-no-files-found: warn
+          retention-days: 14
+          compression-level: 6
+          path: |
+            /tmp/winner-v14-support-action-diagnostic-result.json
+            /tmp/winner-v14-support-action-diagnostic-result.sha256
+
