@@ -233,7 +233,13 @@ def reward_evidence(batch: Mapping[str, np.ndarray]) -> dict[str, Any]:
     if not np.any(valid):
         raise ValueError("pitch-margin reward evidence has no valid transitions")
     expected = np.asarray(valid_transition_reward(pitch, enabled=True), dtype=np.float32)
-    terminal_bonus = rewards - np.where(valid, expected, np.float32(0.0))
+    expected_base = np.where(valid, expected, np.float32(0.0)).astype(np.float32)
+    settled_bonus_mask = rewards > np.float32(1.0)
+    expected_final = expected_base.copy()
+    expected_final[settled_bonus_mask] = (
+        expected_final[settled_bonus_mask] + np.float32(250.0)
+    ).astype(np.float32)
+    terminal_bonus = rewards - expected_base
     return {
         "valid_transition_count": int(np.sum(valid)),
         "reward_min": float(np.min(rewards[valid])),
@@ -241,12 +247,8 @@ def reward_evidence(batch: Mapping[str, np.ndarray]) -> dict[str, Any]:
         "penalty_min": float(np.min(penalties[valid])),
         "penalty_max": float(np.max(penalties[valid])),
         "nonzero_penalty_count": int(np.sum(penalties[valid] > 0.0)),
-        "reward_formula_bit_exact": bool(
-            np.array_equal(
-                rewards[valid] - terminal_bonus[valid],
-                expected[valid],
-            )
-        ),
+        "settled_bonus_count": int(np.sum(settled_bonus_mask)),
+        "reward_formula_bit_exact": bool(np.array_equal(rewards, expected_final)),
         "penalty_formula_bit_exact": bool(
             np.array_equal(
                 penalties[valid],

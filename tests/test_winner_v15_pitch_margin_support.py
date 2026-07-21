@@ -43,3 +43,24 @@ def test_positive_pitch_is_not_penalized() -> None:
         module.valid_transition_reward(pitches, enabled=True),
         np.ones_like(pitches),
     )
+
+
+def test_reward_proof_compares_float32_terminal_bonus_directly() -> None:
+    module = load_module()
+    pitch = np.asarray([[-0.175, -0.1, 0.0]], dtype=np.float32)
+    valid = np.ones_like(pitch, dtype=np.float32)
+    expected = module.valid_transition_reward(pitch, enabled=True)
+    rewards = expected.copy()
+    rewards[0, 1] = np.float32(rewards[0, 1] + np.float32(250.0))
+    penalties = (np.float32(1.0) - expected).astype(np.float32)
+    proof = module.reward_evidence(
+        {
+            "valid_transition_mask": valid,
+            "rewards": rewards,
+            "applied_negative_pitch_penalty": penalties,
+            "next_pitch_rad": pitch,
+        }
+    )
+    assert proof["settled_bonus_count"] == 1
+    assert proof["reward_formula_bit_exact"] is True
+    assert proof["penalty_formula_bit_exact"] is True

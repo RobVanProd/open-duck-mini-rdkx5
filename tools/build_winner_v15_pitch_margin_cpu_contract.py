@@ -15,6 +15,9 @@ ANALYSIS = ROOT / "outputs/analysis"
 OUTPUT = ANALYSIS / "winner_v15_pitch_margin_cpu_contract.json"
 MARKDOWN = ANALYSIS / "WINNER_V15_PITCH_MARGIN_CPU_CONTRACT_20260721.md"
 ATTRIBUTION = ANALYSIS / "winner_v15_pitch_margin_objective_attribution.json"
+PROOF_FAILURE_ATTRIBUTION = (
+    ANALYSIS / "winner_v15_pitch_margin_cpu_proof_failure_attribution.json"
+)
 STAGE1_RESULT = ANALYSIS / "winner_v13_normalized_response_stage1_v2_result.json"
 SOURCES = {
     "builder": Path("tools/build_winner_v15_pitch_margin_cpu_contract.py"),
@@ -26,6 +29,15 @@ SOURCES = {
     "workflow": Path(".github/workflows/winner-v15-pitch-margin-cpu-contract.yml"),
     "objective_attribution": Path(
         "outputs/analysis/winner_v15_pitch_margin_objective_attribution.json"
+    ),
+    "proof_failure_attribution": Path(
+        "outputs/analysis/winner_v15_pitch_margin_cpu_proof_failure_attribution.json"
+    ),
+    "proof_failure_attribution_builder": Path(
+        "tools/build_winner_v15_pitch_margin_cpu_proof_failure_attribution.py"
+    ),
+    "proof_failure_attribution_test": Path(
+        "tests/test_winner_v15_pitch_margin_cpu_proof_failure_attribution.py"
     ),
     "winner_v14_result": Path(
         "outputs/analysis/winner_v14_support_action_diagnostic_result.json"
@@ -74,6 +86,7 @@ def main() -> int:
         if path.exists():
             raise FileExistsError(f"refusing to overwrite pitch-margin CPU contract: {path}")
     attribution = json.loads(ATTRIBUTION.read_text(encoding="utf-8"))
+    proof_failure = json.loads(PROOF_FAILURE_ATTRIBUTION.read_text(encoding="utf-8"))
     stage1 = json.loads(STAGE1_RESULT.read_text(encoding="utf-8"))
     final_snapshot = stage1.get("snapshot_manifest", [{}])[-1]
     if (
@@ -82,6 +95,12 @@ def main() -> int:
         or attribution.get("decision")
         != "PREREGISTER_ONE_SIDED_NEGATIVE_PITCH_MARGIN_CPU_CONTRACT"
         or attribution.get("execution_now", {}).get("optimizer_updates") != 0
+        or proof_failure.get("status")
+        != "INVALID_WINNER_V15_PITCH_MARGIN_CPU_CONTRACT_PROOF"
+        or proof_failure.get("decision")
+        != "CORRECT_ONLY_SETTLED_BONUS_REWARD_PROOF_AND_FRESHLY_PREREGISTER"
+        or proof_failure.get("failure", {}).get("objective_semantics_change") is not False
+        or proof_failure.get("execution", {}).get("support_training_updates") != 0
         or stage1.get("status") != "PASS_WINNER_V13_NORMALIZED_RESPONSE_STAGE1"
         or stage1.get("failed_checks") != []
         or final_snapshot.get("sha256")
@@ -98,9 +117,9 @@ def main() -> int:
         for name, path in SOURCES.items()
     }
     payload = {
-        "schema_version": "winner_v15.pitch_margin_cpu_contract.v1",
-        "status": "FROZEN_WINNER_V15_PITCH_MARGIN_CPU_CONTRACT",
-        "decision": "AUTHORIZE_ONE_RESTORED_PITCH_MARGIN_STAGE2_UPDATE_ONLY",
+        "schema_version": "winner_v15.pitch_margin_cpu_contract.v2",
+        "status": "FROZEN_WINNER_V15_PITCH_MARGIN_CPU_CONTRACT_V2",
+        "decision": "AUTHORIZE_ONE_PROOF_CORRECTED_PITCH_MARGIN_STAGE2_UPDATE_ONLY",
         "source_artifact": {
             "github_run_id": 29822834921,
             "github_run_attempt": 1,
@@ -124,6 +143,16 @@ def main() -> int:
             "settled_terminal_bonus": 250.0,
             "all_observation_action_graph_dynamics_population_seed_and_mask_semantics": "unchanged",
             "trainable_scale": None,
+        },
+        "proof_correction": {
+            "failed_run_id": 29836320395,
+            "only_failed_check": "enabled_reward_formula_bit_exact",
+            "support_training_updates": 0,
+            "objective_semantics_change": False,
+            "only_change": (
+                "construct expected float32 reward plus settled bonus directly; "
+                "do not subtract and re-add the bonus"
+            ),
         },
         "frozen_cpu_proof": {
             "stage2_optimizer_updates": 1,

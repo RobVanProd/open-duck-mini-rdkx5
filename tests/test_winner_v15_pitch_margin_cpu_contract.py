@@ -22,9 +22,9 @@ def load_runner():
 def test_contract_freezes_one_scale_free_reward_change() -> None:
     module = load_runner()
     value = json.loads(CONTRACT.read_text(encoding="utf-8"))
-    assert value["status"] == "FROZEN_WINNER_V15_PITCH_MARGIN_CPU_CONTRACT"
+    assert value["status"] == "FROZEN_WINNER_V15_PITCH_MARGIN_CPU_CONTRACT_V2"
     assert value["decision"] == (
-        "AUTHORIZE_ONE_RESTORED_PITCH_MARGIN_STAGE2_UPDATE_ONLY"
+        "AUTHORIZE_ONE_PROOF_CORRECTED_PITCH_MARGIN_STAGE2_UPDATE_ONLY"
     )
     assert value["source_artifact"]["snapshot_sha256"] == module.SNAPSHOT_SHA256
     assert value["source_artifact"]["snapshot_bytes"] == module.SNAPSHOT_BYTES
@@ -32,6 +32,16 @@ def test_contract_freezes_one_scale_free_reward_change() -> None:
     assert value["single_change"]["enabled_valid_transition_reward"] == (
         "1 - square(clip(max(0, -next_pitch_rad) / 0.35, 0, 1))"
     )
+    assert value["proof_correction"] == {
+        "failed_run_id": 29836320395,
+        "only_failed_check": "enabled_reward_formula_bit_exact",
+        "support_training_updates": 0,
+        "objective_semantics_change": False,
+        "only_change": (
+            "construct expected float32 reward plus settled bonus directly; "
+            "do not subtract and re-add the bonus"
+        ),
+    }
     module.validate_source_manifest(value)
 
 

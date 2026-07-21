@@ -5,7 +5,7 @@
     "robot_clearance": false,
     "support_training_authorized": false
   },
-  "decision": "AUTHORIZE_ONE_RESTORED_PITCH_MARGIN_STAGE2_UPDATE_ONLY",
+  "decision": "AUTHORIZE_ONE_PROOF_CORRECTED_PITCH_MARGIN_STAGE2_UPDATE_ONLY",
   "execution_now": {
     "formal_support_cells": 0,
     "locomotion_steps": 0,
@@ -31,7 +31,14 @@
     "training_root_seed": 120120
   },
   "pass_rule": "Every check passes. A pass authorizes only a separate 100-update pitch-margin support-training preregistration.",
-  "schema_version": "winner_v15.pitch_margin_cpu_contract.v1",
+  "proof_correction": {
+    "failed_run_id": 29836320395,
+    "objective_semantics_change": false,
+    "only_change": "construct expected float32 reward plus settled bonus directly; do not subtract and re-add the bonus",
+    "only_failed_check": "enabled_reward_formula_bit_exact",
+    "support_training_updates": 0
+  },
+  "schema_version": "winner_v15.pitch_margin_cpu_contract.v2",
   "single_change": {
     "all_observation_action_graph_dynamics_population_seed_and_mask_semantics": "unchanged",
     "default_off": "bit-exact reviewed flat alive reward",
@@ -51,12 +58,12 @@
     "snapshot_member": "winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_100.npz",
     "snapshot_sha256": "8c1392c738eddfb098e61c1a6ae2f863eda883e1eba6ac546aef695da6f163af"
   },
-  "source_manifest_sha256": "f9ae726df7c8952934705c75dc406bbc47d98a96b4d94aa23459d0727aeed65d",
+  "source_manifest_sha256": "742f1df2a6be0c31972279a9f7463b26217b52d4ea06eefffb8f09583634e589",
   "sources": {
     "builder": {
       "hash_mode": "lf",
       "path": "tools/build_winner_v15_pitch_margin_cpu_contract.py",
-      "sha256": "70ab4807befacacda1ab48f723315f6c0f672cd7a7af81582b726ec70914e8fe"
+      "sha256": "fa85d6d91e1ae621c0ddf3ad1c61a844c2bc32755f0d9a910b8a1d37a4c564bf"
     },
     "calibrator_design": {
       "hash_mode": "lf",
@@ -96,7 +103,7 @@
     "objective": {
       "hash_mode": "lf",
       "path": "patches/winner_v15_pitch_margin_support.py",
-      "sha256": "561c20fc84ea51672c721bdb74d3ffab61162abf21ea565aeb3d3d8bd9002451"
+      "sha256": "b2dfecf77971596e2c67a7185b1a9c1acea2d49ecbb04eaf846666239b3326e8"
     },
     "objective_attribution": {
       "hash_mode": "lf",
@@ -106,12 +113,27 @@
     "objective_tests": {
       "hash_mode": "lf",
       "path": "tests/test_winner_v15_pitch_margin_support.py",
-      "sha256": "dfa9935b0aaf2fd2dd5535840d97f6e5cd58bf96a3b5a82ffaf45b786712eefb"
+      "sha256": "d9e52bb7acfab79c9ab45a6cb095d390b99ec556cc3ef6b7aa99fd83d1321997"
+    },
+    "proof_failure_attribution": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v15_pitch_margin_cpu_proof_failure_attribution.json",
+      "sha256": "31cc496f5b2348a84aeea6d9f73ac3ac0137bc67a9d4a03d4066de2fc982881d"
+    },
+    "proof_failure_attribution_builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v15_pitch_margin_cpu_proof_failure_attribution.py",
+      "sha256": "5f35b37d0f9ac4a26144ed684b66f75a9313a6ab1b2da14bc43c1d0679674e9d"
+    },
+    "proof_failure_attribution_test": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v15_pitch_margin_cpu_proof_failure_attribution.py",
+      "sha256": "97582fdc16991f22cda5b24c48b4d8a828db4f97ac0088c66435f4baec4860d2"
     },
     "runner": {
       "hash_mode": "lf",
       "path": "tools/run_winner_v15_pitch_margin_cpu_contract.py",
-      "sha256": "24252b18e1647611473ec9df6aba56982579e827106168c6e252ff1ce62224b0"
+      "sha256": "9ee4813ef8ac5e8b3e2cd44d85632d0ede0b4f98e007c6668fa6adbc85dc61b1"
     },
     "runtime_observer": {
       "hash_mode": "lf",
@@ -126,7 +148,7 @@
     "tests": {
       "hash_mode": "lf",
       "path": "tests/test_winner_v15_pitch_margin_cpu_contract.py",
-      "sha256": "0f3be20b8fe1c2ef7f9dc0855146735326d1409ae53f3530ffe07aa521c958ee"
+      "sha256": "c821d464f6f93b0bea066f6f5fe88fdbb01d8401295d5589c7f982622e355173"
     },
     "v12_training_primitives": {
       "hash_mode": "lf",
@@ -149,5 +171,5 @@
       "sha256": "26fb4e9aef8b4028a0b1806b704678729c29ba141c0edf7d88e65574f70d8eb3"
     }
   },
-  "status": "FROZEN_WINNER_V15_PITCH_MARGIN_CPU_CONTRACT"
+  "status": "FROZEN_WINNER_V15_PITCH_MARGIN_CPU_CONTRACT_V2"
 }

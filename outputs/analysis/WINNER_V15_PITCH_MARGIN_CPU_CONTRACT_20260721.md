@@ -1,7 +1,7 @@
 # Winner-v15 pitch-margin CPU contract
 
-- Status: `FROZEN_WINNER_V15_PITCH_MARGIN_CPU_CONTRACT`
-- Decision: `AUTHORIZE_ONE_RESTORED_PITCH_MARGIN_STAGE2_UPDATE_ONLY`
+- Status: `FROZEN_WINNER_V15_PITCH_MARGIN_CPU_CONTRACT_V2`
+- Decision: `AUTHORIZE_ONE_PROOF_CORRECTED_PITCH_MARGIN_STAGE2_UPDATE_ONLY`
 - Source Stage-1 snapshot: `8c1392c7…6f163af`
 - Stage-2 updates: `1`
 - Formal support / locomotion / robot: `0 / 0 / 0`

@@ -114,10 +114,10 @@ def main() -> int:
         raise ValueError("Winner-v15 pitch-margin contract requires CPU-only JAX")
     contract = json.loads(CONTRACT.read_text(encoding="utf-8"))
     if (
-        contract.get("schema_version") != "winner_v15.pitch_margin_cpu_contract.v1"
-        or contract.get("status") != "FROZEN_WINNER_V15_PITCH_MARGIN_CPU_CONTRACT"
+        contract.get("schema_version") != "winner_v15.pitch_margin_cpu_contract.v2"
+        or contract.get("status") != "FROZEN_WINNER_V15_PITCH_MARGIN_CPU_CONTRACT_V2"
         or contract.get("decision")
-        != "AUTHORIZE_ONE_RESTORED_PITCH_MARGIN_STAGE2_UPDATE_ONLY"
+        != "AUTHORIZE_ONE_PROOF_CORRECTED_PITCH_MARGIN_STAGE2_UPDATE_ONLY"
         or contract.get("execution_now")
         != {
             "stage2_optimizer_updates": 0,
