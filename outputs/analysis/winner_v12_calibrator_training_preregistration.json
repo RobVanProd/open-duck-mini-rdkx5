@@ -1,0 +1,1067 @@
+{
+  "attention_or_architecture_scope": {
+    "flat_transport_kernel_added": false,
+    "quadratic_attention_added": false,
+    "reason": "Winner-v12 has not yet produced evidence that its R64 response state fails long-range transport; architecture changes remain a future falsification path, not a preference-driven substitution"
+  },
+  "authority": {
+    "colab_hosted_gpu_or_igpu": false,
+    "design_and_implement_cpu_smoke_contract": true,
+    "formal_support_cells_now": 0,
+    "full_calibrator_training": false,
+    "gate5_deployment_checkpoint_selection_robot_clearance": false,
+    "locomotion_training_or_behavior_evaluation": false,
+    "optimizer_steps_now": 0,
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "runtime_implementation": false
+  },
+  "automatic_only": {
+    "configuration_visible_only_to_simulator_randomizer": true,
+    "manual_measurements_required": false,
+    "mass_com_inertia_dimensions_component_identity_inputs": false,
+    "runtime_context_persisted_between_sessions": false,
+    "runtime_context_source": "final successful calibrator h_out[1,64]",
+    "training_data_routing": {
+      "action_head_input": "response encoder h_out[1,64] only",
+      "response_encoder_inputs": "deployable obs[1,115], previous_action[1,14], and h_in[1,64] only",
+      "simulator_randomizer_fields_concatenated_to_network_input": false,
+      "training_only_auxiliary_inputs": "response encoder h_out[1,64] and current realized action a_t[1,14] only",
+      "training_only_auxiliary_targets": "next valid deployable obs_(t+1) indices [0:6], [13:41], and [83:99] only",
+      "training_only_value_head_input": "response encoder h_out[1,64] only"
+    },
+    "true_configuration_actor_inputs": false,
+    "true_configuration_auxiliary_targets": false
+  },
+  "calibration_episode": {
+    "action_boundary": "graph-owned Winner-v10 stored/inward vector; no host limiter",
+    "applied_target": "exact selected fitted P30/P31-34 forward observer",
+    "command": "exact float32 zeros[7]",
+    "duration_ticks": 250,
+    "frequency_hz": 50,
+    "initial_hidden": "exact float32 zeros[1,64]",
+    "initial_previous_action": "exact float32 zeros[1,14]",
+    "observation_order": "exact frozen winner-v2 115-D order",
+    "phase": [
+      1.0,
+      0.0
+    ],
+    "phase_advances": false,
+    "projected_reference": "frozen x=0 phase-index-zero reference",
+    "support_mode": "flat rigid floor, both feet initially loaded, no torso/limb/head support or external applied force; passive fall catch mechanically clear",
+    "x0_deadband_on_calibrator": false
+  },
+  "causal_hypothesis": "Winner-v10 fails hidden build variation because its walking actor receives no per-session response evidence. A 250-tick recurrent calibrator can learn a deployable-observation-only response state, then use that fixed state encoder to learn graph-bounded support actions before locomotion, without any manual mass, COM, inertia, dimension, or component input.",
+  "contract_id": "winner-v12-two-stage-automatic-calibrator-r64",
+  "decision": "AUTHORIZE_WINNER_V12_CALIBRATOR_IMPLEMENTATION_AND_CPU_SMOKE_CONTRACT_ONLY",
+  "frozen_interface": {
+    "calibration_ticks": 250,
+    "calibrator": {
+      "inputs": [
+        {
+          "dtype": "float32",
+          "name": "obs",
+          "shape": [
+            1,
+            115
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "previous_action",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "h_in",
+          "shape": [
+            1,
+            64
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "dtype": "float32",
+          "name": "calibration_actions",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "previous_action_out",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "h_out",
+          "shape": [
+            1,
+            64
+          ]
+        }
+      ]
+    },
+    "context_handoff": "final successful calibrator h_out becomes immutable session-local locomotion calibration_context without scaling or persistence",
+    "locomotion": {
+      "inputs": [
+        {
+          "dtype": "float32",
+          "name": "obs",
+          "shape": [
+            1,
+            115
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "previous_action",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "h_in",
+          "shape": [
+            1,
+            64
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "calibration_context",
+          "shape": [
+            1,
+            64
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "dtype": "float32",
+          "name": "continuous_actions",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "previous_action_out",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "h_out",
+          "shape": [
+            1,
+            64
+          ]
+        }
+      ]
+    },
+    "observation_contract": "winner-v2-115d",
+    "previous_action_and_applied_target_handoff": "carry final confirmed values",
+    "runtime_v1_101x14_changed": false,
+    "runtime_v2_115d_semantics_changed": false
+  },
+  "future_support_gate": {
+    "actuator_plants_per_model": 2,
+    "all cells": true,
+    "all_cells_must_pass": true,
+    "core_model_actuator_cells_per_checkpoint": 112,
+    "current_estimator": "abs(MuJoCo data.actuator_force[joint] N.m) / 0.784532 N.m/A",
+    "current_rule": "prospective documented stall/2A-for-2s protection contract",
+    "current_safety": {
+      "all_joints_must_pass": true,
+      "early_terminated_population": "evaluate every recorded tick before termination",
+      "per_joint_peak_current_a_max": 2.5,
+      "per_joint_peak_torque_kgf_cm_max": 19.5,
+      "per_joint_peak_torque_nm_max": 1.91229675,
+      "rated_current_p95": {
+        "candidate_pass_fail": false,
+        "reason": "manufacturer evidence defines a rated operating point but does not define p95 over a 600-tick rollout as a safety or thermal rule",
+        "role": "reported diagnostic only",
+        "value_a": 0.65
+      },
+      "sample_clock": "exact simulator 50 Hz ticks",
+      "strict_overcurrent_max_consecutive_ticks": 99,
+      "strict_overcurrent_threshold_a": 2.0,
+      "strict_overcurrent_trip_duration_s": 2.0,
+      "strict_overcurrent_trip_ticks": 100
+    },
+    "duration_ticks": 250,
+    "executed_by_this_preregistration": false,
+    "final_window_gyro_definition": "maximum Euclidean norm of unbiased simulator gyro XY over the final 50 ticks",
+    "final_window_ticks": 50,
+    "maximum_abs_tilt_rad": 0.35,
+    "maximum_final_window_gyro_rad_s": 0.05,
+    "minimum_base_z_m": 0.1,
+    "model_cells": 56,
+    "model_population": "24 fixed anchors + 16 discovery + 16 heldout",
+    "selection_by_training_reward": false,
+    "sensor_transport_actuator_cells_per_checkpoint": 12,
+    "sensor_transport_conditions_on_nominal_model": 6,
+    "sensor_transport_population": [
+      {
+        "id": "NATIVE_INPUT_QUANTIZATION",
+        "native_quantization": true
+      },
+      {
+        "id": "DECLARED_SENSOR_NOISE",
+        "sensor_noise_scales": {
+          "accelerometer": 0.05,
+          "ankle_pos_rad": 0.08,
+          "gravity": 0.1,
+          "gyro_rad_s": 0.1,
+          "hip_pos_rad": 0.03,
+          "joint_vel_rad_s": 2.5,
+          "knee_pos_rad": 0.05,
+          "linvel_m_s": 0.1
+        }
+      },
+      {
+        "additional_action_delay_ticks": 1,
+        "id": "ACTION_DELAY_1"
+      },
+      {
+        "additional_action_delay_ticks": 2,
+        "id": "ACTION_DELAY_2"
+      },
+      {
+        "id": "IMU_DELAY_1",
+        "imu_delay_ticks": 1
+      },
+      {
+        "id": "IMU_DELAY_2",
+        "imu_delay_ticks": 2
+      }
+    ],
+    "total_cells_per_checkpoint": 124,
+    "two_foot_contact_failure_ticks": 0
+  },
+  "hidden_configuration_domain": {
+    "actuator_plants": [
+      "P30_ALL_JOINT",
+      "P31_34_PITCH_WITH_P30_NONPITCH"
+    ],
+    "continuous_domain_canonical_sha256": "8afd43cba5e7156b81eb0d08e82f74f365290895ed8135ff1947645c656bf6d8",
+    "continuous_training_domain": {
+      "actuator": {
+        "additional_action_delay_ticks": [
+          0,
+          2
+        ],
+        "imu_delay_ticks": [
+          0,
+          2
+        ],
+        "per_joint": {
+          "head_pitch": {
+            "conservative_velocity_limit_rad_s": 0.5,
+            "delay_ticks": [
+              2,
+              2
+            ],
+            "fit_p30": {
+              "delay_ticks": 2,
+              "gain_ratio": 0.7727338223615077,
+              "tau_s": 0.12,
+              "velocity_limit_rad_s": 0.5
+            },
+            "fit_p31_34": {
+              "delay_ticks": 2,
+              "gain_ratio": 0.7727338223615077,
+              "tau_s": 0.12,
+              "velocity_limit_rad_s": 0.5
+            },
+            "gain_ratio": [
+              0.7727338223615077,
+              0.7727338223615077
+            ],
+            "tau_s": [
+              0.12,
+              0.12
+            ]
+          },
+          "head_roll": {
+            "conservative_velocity_limit_rad_s": 0.5,
+            "delay_ticks": [
+              3,
+              3
+            ],
+            "fit_p30": {
+              "delay_ticks": 3,
+              "gain_ratio": 0.5261726355532654,
+              "tau_s": 0.12,
+              "velocity_limit_rad_s": 0.5
+            },
+            "fit_p31_34": {
+              "delay_ticks": 3,
+              "gain_ratio": 0.5261726355532654,
+              "tau_s": 0.12,
+              "velocity_limit_rad_s": 0.5
+            },
+            "gain_ratio": [
+              0.5261726355532654,
+              0.5261726355532654
+            ],
+            "tau_s": [
+              0.12,
+              0.12
+            ]
+          },
+          "head_yaw": {
+            "conservative_velocity_limit_rad_s": 0.5,
+            "delay_ticks": [
+              3,
+              3
+            ],
+            "fit_p30": {
+              "delay_ticks": 3,
+              "gain_ratio": 0.386645043126667,
+              "tau_s": 0.12,
+              "velocity_limit_rad_s": 0.5
+            },
+            "fit_p31_34": {
+              "delay_ticks": 3,
+              "gain_ratio": 0.386645043126667,
+              "tau_s": 0.12,
+              "velocity_limit_rad_s": 0.5
+            },
+            "gain_ratio": [
+              0.386645043126667,
+              0.386645043126667
+            ],
+            "tau_s": [
+              0.12,
+              0.12
+            ]
+          },
+          "left_ankle": {
+            "conservative_velocity_limit_rad_s": 1.5,
+            "delay_ticks": [
+              3,
+              3
+            ],
+            "fit_p30": {
+              "delay_ticks": 3,
+              "gain_ratio": 0.9162182282603282,
+              "tau_s": 0.01,
+              "velocity_limit_rad_s": 1.75
+            },
+            "fit_p31_34": {
+              "delay_ticks": 3,
+              "gain_ratio": 0.9021225632101694,
+              "tau_s": 0.01,
+              "velocity_limit_rad_s": 1.5
+            },
+            "gain_ratio": [
+              0.9021225632101694,
+              0.9162182282603282
+            ],
+            "tau_s": [
+              0.01,
+              0.01
+            ]
+          },
+          "left_hip_pitch": {
+            "conservative_velocity_limit_rad_s": 1.5,
+            "delay_ticks": [
+              3,
+              3
+            ],
+            "fit_p30": {
+              "delay_ticks": 3,
+              "gain_ratio": 1.03426574193671,
+              "tau_s": 0.005,
+              "velocity_limit_rad_s": 1.5
+            },
+            "fit_p31_34": {
+              "delay_ticks": 3,
+              "gain_ratio": 1.0290421775834944,
+              "tau_s": 0.005,
+              "velocity_limit_rad_s": 1.75
+            },
+            "gain_ratio": [
+              1.0290421775834944,
+              1.03426574193671
+            ],
+            "tau_s": [
+              0.005,
+              0.005
+            ]
+          },
+          "left_hip_roll": {
+            "conservative_velocity_limit_rad_s": 0.75,
+            "delay_ticks": [
+              3,
+              3
+            ],
+            "fit_p30": {
+              "delay_ticks": 3,
+              "gain_ratio": 0.8596445465043524,
+              "tau_s": 0.015,
+              "velocity_limit_rad_s": 0.75
+            },
+            "fit_p31_34": {
+              "delay_ticks": 3,
+              "gain_ratio": 0.8596445465043524,
+              "tau_s": 0.015,
+              "velocity_limit_rad_s": 0.75
+            },
+            "gain_ratio": [
+              0.8596445465043524,
+              0.8596445465043524
+            ],
+            "tau_s": [
+              0.015,
+              0.015
+            ]
+          },
+          "left_hip_yaw": {
+            "conservative_velocity_limit_rad_s": 1.0,
+            "delay_ticks": [
+              3,
+              3
+            ],
+            "fit_p30": {
+              "delay_ticks": 3,
+              "gain_ratio": 0.7469437079656184,
+              "tau_s": 0.015,
+              "velocity_limit_rad_s": 1.0
+            },
+            "fit_p31_34": {
+              "delay_ticks": 3,
+              "gain_ratio": 0.7469437079656184,
+              "tau_s": 0.015,
+              "velocity_limit_rad_s": 1.0
+            },
+            "gain_ratio": [
+              0.7469437079656184,
+              0.7469437079656184
+            ],
+            "tau_s": [
+              0.015,
+              0.015
+            ]
+          },
+          "left_knee": {
+            "conservative_velocity_limit_rad_s": 1.5,
+            "delay_ticks": [
+              3,
+              3
+            ],
+            "fit_p30": {
+              "delay_ticks": 3,
+              "gain_ratio": 0.8490159786673369,
+              "tau_s": 0.01,
+              "velocity_limit_rad_s": 1.5
+            },
+            "fit_p31_34": {
+              "delay_ticks": 3,
+              "gain_ratio": 0.8975311774483291,
+              "tau_s": 0.005,
+              "velocity_limit_rad_s": 1.75
+            },
+            "gain_ratio": [
+              0.8490159786673369,
+              0.8975311774483291
+            ],
+            "tau_s": [
+              0.005,
+              0.01
+            ]
+          },
+          "neck_pitch": {
+            "conservative_velocity_limit_rad_s": 0.5,
+            "delay_ticks": [
+              3,
+              3
+            ],
+            "fit_p30": {
+              "delay_ticks": 3,
+              "gain_ratio": 0.3158492371182989,
+              "tau_s": 0.12,
+              "velocity_limit_rad_s": 0.5
+            },
+            "fit_p31_34": {
+              "delay_ticks": 3,
+              "gain_ratio": 0.3158492371182989,
+              "tau_s": 0.12,
+              "velocity_limit_rad_s": 0.5
+            },
+            "gain_ratio": [
+              0.3158492371182989,
+              0.3158492371182989
+            ],
+            "tau_s": [
+              0.12,
+              0.12
+            ]
+          },
+          "right_ankle": {
+            "conservative_velocity_limit_rad_s": 1.25,
+            "delay_ticks": [
+              3,
+              3
+            ],
+            "fit_p30": {
+              "delay_ticks": 3,
+              "gain_ratio": 1.0452016907968515,
+              "tau_s": 0.005,
+              "velocity_limit_rad_s": 1.25
+            },
+            "fit_p31_34": {
+              "delay_ticks": 3,
+              "gain_ratio": 1.0452016907968515,
+              "tau_s": 0.005,
+              "velocity_limit_rad_s": 1.25
+            },
+            "gain_ratio": [
+              1.0452016907968515,
+              1.0452016907968515
+            ],
+            "tau_s": [
+              0.005,
+              0.005
+            ]
+          },
+          "right_hip_pitch": {
+            "conservative_velocity_limit_rad_s": 1.25,
+            "delay_ticks": [
+              3,
+              3
+            ],
+            "fit_p30": {
+              "delay_ticks": 3,
+              "gain_ratio": 0.9176126028700832,
+              "tau_s": 0.01,
+              "velocity_limit_rad_s": 1.25
+            },
+            "fit_p31_34": {
+              "delay_ticks": 3,
+              "gain_ratio": 0.9176126028700832,
+              "tau_s": 0.005,
+              "velocity_limit_rad_s": 1.25
+            },
+            "gain_ratio": [
+              0.9176126028700832,
+              0.9176126028700832
+            ],
+            "tau_s": [
+              0.005,
+              0.01
+            ]
+          },
+          "right_hip_roll": {
+            "conservative_velocity_limit_rad_s": 0.75,
+            "delay_ticks": [
+              2,
+              2
+            ],
+            "fit_p30": {
+              "delay_ticks": 2,
+              "gain_ratio": 0.753455844256772,
+              "tau_s": 0.035,
+              "velocity_limit_rad_s": 0.75
+            },
+            "fit_p31_34": {
+              "delay_ticks": 2,
+              "gain_ratio": 0.753455844256772,
+              "tau_s": 0.035,
+              "velocity_limit_rad_s": 0.75
+            },
+            "gain_ratio": [
+              0.753455844256772,
+              0.753455844256772
+            ],
+            "tau_s": [
+              0.035,
+              0.035
+            ]
+          },
+          "right_hip_yaw": {
+            "conservative_velocity_limit_rad_s": 0.5,
+            "delay_ticks": [
+              3,
+              3
+            ],
+            "fit_p30": {
+              "delay_ticks": 3,
+              "gain_ratio": 0.8584811176689752,
+              "tau_s": 0.02,
+              "velocity_limit_rad_s": 0.5
+            },
+            "fit_p31_34": {
+              "delay_ticks": 3,
+              "gain_ratio": 0.8584811176689752,
+              "tau_s": 0.02,
+              "velocity_limit_rad_s": 0.5
+            },
+            "gain_ratio": [
+              0.8584811176689752,
+              0.8584811176689752
+            ],
+            "tau_s": [
+              0.02,
+              0.02
+            ]
+          },
+          "right_knee": {
+            "conservative_velocity_limit_rad_s": 1.0,
+            "delay_ticks": [
+              2,
+              2
+            ],
+            "fit_p30": {
+              "delay_ticks": 2,
+              "gain_ratio": 0.887544942954098,
+              "tau_s": 0.03,
+              "velocity_limit_rad_s": 1.0
+            },
+            "fit_p31_34": {
+              "delay_ticks": 2,
+              "gain_ratio": 0.887544942954098,
+              "tau_s": 0.03,
+              "velocity_limit_rad_s": 1.0
+            },
+            "gain_ratio": [
+              0.887544942954098,
+              0.887544942954098
+            ],
+            "tau_s": [
+              0.03,
+              0.03
+            ]
+          }
+        },
+        "semantics": "home-relative first-order delayed target: actual = home + gain_ratio * lagged_slew_limited(target-home); sample integer delay and continuous tau/gain inside each frozen per-joint interval"
+      },
+      "all deviations scaled about nominal by the active curriculum fraction": true,
+      "armature_scale": [
+        1.0,
+        1.05
+      ],
+      "configuration": {
+        "all_link_mass_scale": [
+          0.9,
+          1.1
+        ],
+        "resulting_torso_mass_kg": [
+          0.5286734000000001,
+          0.8683786
+        ],
+        "resulting_torso_mass_scale": [
+          0.7568414060464465,
+          1.2431585939535537
+        ],
+        "torso_com_offset_m": {
+          "x": [
+            -0.05,
+            0.05
+          ],
+          "y": [
+            -0.05,
+            0.05
+          ],
+          "z": [
+            -0.05,
+            0.05
+          ]
+        },
+        "torso_inertia": {
+          "base_density_scale": [
+            0.9,
+            1.1
+          ],
+          "derivation": "frozen 0.9x/1.1x density scaling plus the parallel-axis upper bound from 0.1 kg at two orthogonal 0.05 m radii",
+          "principal_additive_allowance_abs_kg_m2": 0.0005000000000000001,
+          "principal_component_bounds_kg_m2": {
+            "ixx": [
+              0.0026004056132208414,
+              0.004289384638381029
+            ],
+            "iyy": [
+              0.002134469454120694,
+              0.0037199071105919594
+            ],
+            "izz": [
+              0.0010084599326584598,
+              0.0023436732510270066
+            ]
+          },
+          "principal_scale_bounds": {
+            "xx": [
+              0.754857700527603,
+              1.2451422994723973
+            ],
+            "yy": [
+              0.7291876190493937,
+              1.2708123809506064
+            ],
+            "zz": [
+              0.6016824973223287,
+              1.3983175026776715
+            ]
+          },
+          "product_additive_allowance_abs_kg_m2": 0.00025000000000000006,
+          "sampling_rule": "sample coupled mass/COM/inertia cells; reconstruct the full symmetric inertia tensor; accept only positive-definite tensors whose principal moments satisfy triangle inequalities"
+        },
+        "torso_mass_add_kg": [
+          -0.1,
+          0.1
+        ]
+      },
+      "coupled_sampler": "same positive-definite, triangle-valid full-tensor sampler frozen in this artifact",
+      "floor_friction": [
+        0.5,
+        1.0
+      ],
+      "joint_frictionloss_scale": [
+        0.9,
+        1.1
+      ],
+      "native_input_quantization_probability": 0.5,
+      "sensor_noise_maximum_scales": {
+        "accelerometer": 0.05,
+        "ankle_pos_rad": 0.08,
+        "gravity": 0.1,
+        "gyro_rad_s": 0.1,
+        "hip_pos_rad": 0.03,
+        "joint_vel_rad_s": 2.5,
+        "knee_pos_rad": 0.05,
+        "linvel_m_s": 0.1
+      }
+    },
+    "discovery_canonical_sha256": "ba0fcdd085072970c9e1fb7533fdbd22ad6198fd4c47c82aaea47d3877123e25",
+    "discovery_count": 16,
+    "discovery_ids": [
+      "DISCOVERY_00",
+      "DISCOVERY_01",
+      "DISCOVERY_02",
+      "DISCOVERY_03",
+      "DISCOVERY_04",
+      "DISCOVERY_05",
+      "DISCOVERY_06",
+      "DISCOVERY_07",
+      "DISCOVERY_08",
+      "DISCOVERY_09",
+      "DISCOVERY_10",
+      "DISCOVERY_11",
+      "DISCOVERY_12",
+      "DISCOVERY_13",
+      "DISCOVERY_14",
+      "DISCOVERY_15"
+    ],
+    "fixed_anchor_count": 24,
+    "fixed_anchor_ids": [
+      "MASS_LOW",
+      "MASS_HIGH",
+      "COM_X_NEG",
+      "COM_X_POS",
+      "COM_Y_NEG",
+      "COM_Y_POS",
+      "COM_Z_NEG",
+      "COM_Z_POS",
+      "INERTIA_X_LOW",
+      "INERTIA_X_HIGH",
+      "INERTIA_Y_LOW",
+      "INERTIA_Y_HIGH",
+      "INERTIA_Z_LOW",
+      "INERTIA_Z_HIGH",
+      "COM_CORNER_00",
+      "COM_CORNER_01",
+      "COM_CORNER_02",
+      "COM_CORNER_03",
+      "COM_CORNER_04",
+      "COM_CORNER_05",
+      "COM_CORNER_06",
+      "COM_CORNER_07",
+      "OPTIONAL_AGGREGATE_LIGHT_FORWARD",
+      "OPTIONAL_AGGREGATE_HEAVY_AFT"
+    ],
+    "fixed_anchors_canonical_sha256": "58567c5510b4ce458f3fa0be7f7de8899bc91c1182cea7395414d68e7696f54e",
+    "heldout_canonical_sha256": "3ea74a227bbd9bc1e4cf76b80c780336a74776145eeaabc004c4d56c648809d6",
+    "heldout_count": 16,
+    "heldout_ids": [
+      "HELDOUT_00",
+      "HELDOUT_01",
+      "HELDOUT_02",
+      "HELDOUT_03",
+      "HELDOUT_04",
+      "HELDOUT_05",
+      "HELDOUT_06",
+      "HELDOUT_07",
+      "HELDOUT_08",
+      "HELDOUT_09",
+      "HELDOUT_10",
+      "HELDOUT_11",
+      "HELDOUT_12",
+      "HELDOUT_13",
+      "HELDOUT_14",
+      "HELDOUT_15"
+    ],
+    "heldout_never_used_for_training_normalization_or_checkpoint_choice": true,
+    "sensor_transport_canonical_sha256": "de043aaf85b922df2677e300d952513f02dd87671846d50dbdb8d4bbe568cb7a",
+    "sensor_transport_ids": [
+      "NATIVE_INPUT_QUANTIZATION",
+      "DECLARED_SENSOR_NOISE",
+      "ACTION_DELAY_1",
+      "ACTION_DELAY_2",
+      "IMU_DELAY_1",
+      "IMU_DELAY_2"
+    ]
+  },
+  "implementation_stop_rules": [
+    "any source, domain, observation, action-bound, or ABI mismatch",
+    "any mismatch in the realized-action history, previous_action, applied-target, auxiliary-target, or valid-state commit timing",
+    "any nonfinite parameter, gradient, metric, observation, action, or state",
+    "any action-head change during stage 1 or encoder/auxiliary change during stage 2",
+    "any protected-policy or locomotion-adapter change",
+    "any true configuration field entering actor, critic, auxiliary target, or exported graph",
+    "any training-only exploration, auxiliary, log_std, or value tensor exported into the deployable graph",
+    "any mismatch from the frozen gyro-settling or current-safety criteria",
+    "any JAX/ONNX new-branch error above the unchanged 1e-7 threshold"
+  ],
+  "pass_authorizes_only": "freeze and run one exact CPU implementation smoke contract; it does not authorize the full calibrator training run",
+  "protected_policies": {
+    "final": "d52b63241340d9d56671b95c58bb0fc72af0998fd47d4684719f6cd44f244a10",
+    "half": "cf001269908d86e47eaa145ffda1d87e946a314ecf51056dc086c4cf10164ab6"
+  },
+  "required_implementation_contract": {
+    "before_any_optimizer_step": true,
+    "checks": [
+      "compose the pinned simulator and reproduce every source/domain hash",
+      "reproduce exact 115-D observation, phase, history, P30/P31-34, reference, and action-bound semantics",
+      "prove stage-1 gradients update only encoder/auxiliary leaves while the action head stays exact zero",
+      "prove seed-locked bounded stage-1 exploration creates finite nonzero gradients for previous_action_weight and auxiliary_action_weight",
+      "prove the realized stage-1 exploration action is chained exactly into next-tick previous_action, t-2/t-3/t-4 action histories, and P30/P31-34 applied-target state",
+      "prove stage-2 finite nonzero gradients and its one optimizer update change every listed action/log_std/value leaf while every encoder/auxiliary leaf stays bit-exact",
+      "prove stage-2 validity, termination, terminal gyro bonus, and current-streak logic exactly reproduce the frozen future support gate quantities",
+      "read back the pinned XML force ranges and prove the independent 1.91229675 N.m / 19.5 kgf.cm peak-torque condition",
+      "run one fixed 16-environment x 250-tick CPU smoke with one optimizer update per stage",
+      "keep every parameter and metric finite and reproduce save/restore exactly",
+      "export calibrator ONNX with the reviewed ABI and new-branch JAX/ONNX error <= 1e-7",
+      "prove protected policies and locomotion adapter parameters are bit-exact and unused",
+      "prove the exact actor and critic input schemas and auxiliary-target JAX routing contain only the frozen deployable observation, recurrent state, and action state, with no simulator-randomizer or true-configuration fields",
+      "prove the stage-1 exploration generator, stage-1 auxiliary predictor, training-only log_std, and training-only value head are absent from the deployable ONNX graph"
+    ],
+    "formal_support_cells": 0,
+    "smoke_environments": 16,
+    "smoke_seed": 120120,
+    "smoke_ticks_per_environment": 250,
+    "stage_1_optimizer_updates": 1,
+    "stage_2_optimizer_updates": 1
+  },
+  "schema_version": "winner_v12.calibrator_training_preregistration.v1",
+  "sources": {
+    "builder": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "tools/build_winner_v12_calibrator_training_preregistration.py",
+      "sha256": "23c1e045cab566159df19ba5f59a7c9837703f172ef1de2d446963f3bc6fda69"
+    },
+    "current_gate": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "outputs/analysis/winner_v3_current_gate_application_contract.json",
+      "sha256": "17e841450a2dde66182c3d41a06abf8d14366011f811bcde20adb1f1c8f68ddb"
+    },
+    "p30_fit": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "outputs/analysis/fixed_target_p30_actuator_fit_20260712.json",
+      "sha256": "908ddb01e5d82e661d77b8f3cb186a84665695660b86b304c6d1ae89c79cdb0b"
+    },
+    "p31_34_fit": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "outputs/analysis/fixed_target_p31_34_actuator_fit_20260712.json",
+      "sha256": "a39776c06c5e26425e24b50e7dab3f441823e23904cad4977b8c921d9c9ca276"
+    },
+    "runtime_observation_map": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/observation_map.json",
+      "sha256": "f0b78431a3a98d418fbe04eebeb0316538121d1199d35f38dbdd0528ee1917a7"
+    },
+    "runtime_p30_observer": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/observer/winner_v2_contract.py",
+      "sha256": "5c90994a24aa223c94f3a51927228e97000f6118c927561a87a3f2684dcf4889"
+    },
+    "runtime_policy_contract": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/policy_contract.json",
+      "sha256": "58831a252c43ba9577b9b743e69e0e3d739992d6e1fbae0ee1caba615014eba4"
+    },
+    "runtime_reference_table": {
+      "hash_mode": "raw sha256",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/reference/ground_up_projected_reference_feature_table.npz",
+      "sha256": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212"
+    },
+    "winner_v10_nominal": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "outputs/analysis/winner_v10_nominal_behavior_result.json",
+      "sha256": "236772a969955bb49e35c685bab2ecb19ab912b6511b7bbdc22c199c6307fa0b"
+    },
+    "winner_v10_r2_condition6": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "outputs/analysis/winner_v10_r2_condition6_result.json",
+      "sha256": "89cb884879448d480915870c169ed1af942c082ce092b00af5b0dbc0af3209a1"
+    },
+    "winner_v10_r2_condition7_hold": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "outputs/analysis/winner_v10_r2_condition7_result.json",
+      "sha256": "4cccd7f93110c4b6f758b6979a008ad31c8791e2cd0d285db69a80d7bddb676d"
+    },
+    "winner_v10_representation": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "outputs/analysis/winner_v10_inward_torque_contract_result.json",
+      "sha256": "c66d36dd073464fbe09a1c68b9c6d5ca2acda8406e52570032df90c61b833a17"
+    },
+    "winner_v11_interface": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "outputs/analysis/winner_v11_dynamic_calibration_interface_preregistration.json",
+      "sha256": "2500c731a3413b08568e6e88b57300d2c8c86b61f9fe7418f3efa21ab639c8a2"
+    },
+    "winner_v11_network": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "patches/winner_v11_dynamic_calibration_networks.py",
+      "sha256": "3ac1166920ec1a3fbcfbca5a85870c6afc1dc0e5062023801edbed09fcdc4809"
+    },
+    "winner_v12_mechanics_preregistration": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "outputs/analysis/winner_v12_zero_ppo_decomposed_backend_preregistration.json",
+      "sha256": "959c3fec90c8102f3b425ed09183ce6c5fc58ce424debfa3665cc37d59ba89a9"
+    },
+    "winner_v12_mechanics_result": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "outputs/analysis/winner_v12_zero_ppo_decomposed_backend_result.json",
+      "sha256": "7950031566682086f2de6d30f388e53cc624146b3adb1dbfd2d3c005582a6090"
+    },
+    "winner_v12_network": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "patches/winner_v12_decomposed_backend_networks.py",
+      "sha256": "f463223a33f80baf81b2604e0df22c647660f2752a7ca60b8c75a3441460d015"
+    },
+    "winner_v3_domain_basis": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "outputs/analysis/winner_v3_supported_configuration_basis.json",
+      "sha256": "d699dce08b24715a9e61e86feafab238192aeb92d130d24c9da05d50d0dbeb08"
+    },
+    "winner_v3_domain_preregistration": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "outputs/analysis/winner_v3_variable_configuration_replacement_preregistration.json",
+      "sha256": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b"
+    },
+    "winner_v3_failure_attribution": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "outputs/analysis/winner_v3_failure_attribution.json",
+      "sha256": "aebccef11fa96d374d547a0362f4d6e490d843c9aa059ae86891ee7b7a724934"
+    },
+    "winner_v5_support_preregistration": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "outputs/analysis/winner_v5_automatic_support_recovery_preregistration.json",
+      "sha256": "9acefe2b5dde95e40584ba77798c65a5e9eb269ea8d7dd5720fd667f23d6e219"
+    },
+    "winner_v6_interface": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "outputs/analysis/winner_v6_dynamic_calibration_interface_preregistration.json",
+      "sha256": "8f4fa5249a91adb139b7b30b4d4cb71c42fe24e56b7b75e270122b6d2b601f17"
+    }
+  },
+  "status": "PREREGISTERED_IMPLEMENTATION_NOT_RUN",
+  "two_stage_training": {
+    "joint_end_to_end_finetuning": false,
+    "locomotion_training": false,
+    "stage_1_response_encoder": {
+      "frozen_leaves": [
+        "action_weight",
+        "action_bias"
+      ],
+      "loss": "mean squared error after per-field normalization computed from training rollouts only, with float64 empirical mean and std=max(empirical_std,1e-6), then float32 normalized arrays; invalid/padded ticks masked and heldout cells excluded",
+      "required_nonzero_gradient_paths": [
+        "previous_action_weight",
+        "auxiliary_action_weight"
+      ],
+      "rollout_action": "training-only seed-locked ternary exploration increments {-0.25,0,+0.25} times the per-joint inward action-delta vector, accumulated through the exact graph absolute/slew boundary; the actor action head remains exact zero; the exploration generator is training-only and is not exported or used at runtime, while its realized bounded action is committed through the normal previous_action and observation-state chain",
+      "target": "next-tick values of the frozen deployable observation indices [0:6], [13:41], and [83:99]",
+      "trainable_leaves": [
+        "obs_weight",
+        "previous_action_weight",
+        "hidden_weight",
+        "hidden_bias",
+        "auxiliary_hidden_weight",
+        "auxiliary_action_weight",
+        "auxiliary_bias"
+      ],
+      "transition_order": [
+        "at tick t compose obs_t from the last committed valid state: previous_action is realized action a_(t-1), obs[41:55], obs[55:69], and obs[69:83] are a_(t-2), a_(t-3), and a_(t-4), and obs[83:97] is the selected P30/P31-34 applied target from tick t-1",
+        "draw the seed-locked ternary increment for tick t and apply the exact graph absolute/slew boundary relative to realized a_(t-1), producing current realized action a_t",
+        "step the selected actuator observer and physics with a_t; the auxiliary predictor consumes current h_t and current realized a_t and targets the resulting next-tick deployable fields",
+        "commit action history, applied-target observer state, sensors, and recurrent h_out only after a valid transition; on tick t+1 previous_action is a_t and obs[83:97] is applied_target_t"
+      ],
+      "true_configuration_label_used": false
+    },
+    "stage_2_support_controller": {
+      "algorithm": "recurrent PPO with training-only diagonal-Gaussian log_std and training-only value head; exact PPO and optimizer constants must be frozen by the implementation contract before the smoke",
+      "discount_factor_gamma": 1.0,
+      "frozen_leaves": "all stage-1 response encoder and auxiliary predictor leaves",
+      "maximum_return_without_terminal_success": 250.0,
+      "other_reward_terms": [],
+      "per_tick_reward": "1.0 for each valid transition: both contacts, base-z >= 0.1 m, absolute roll/pitch <= 0.35 rad, every absolute joint actuator force <= 1.91229675 N.m (19.5 kgf.cm), every joint current <= 2.5 A, and no joint's strictly-above-2.0-A streak reaches 100 ticks; 0.0 after termination",
+      "settled_full_horizon_return": 500.0,
+      "stochastic_policy": {
+        "deployable_export": "deterministic bounded action mean only",
+        "distribution": "training-only diagonal Gaussian",
+        "log_std_exported": false,
+        "log_std_initialization": "elementwise log(0.25 * per-joint inward action-delta vector)"
+      },
+      "terminal_success_bonus": {
+        "condition": "episode completes all 250 valid ticks and the maximum Euclidean norm of unbiased simulator gyro XY over the final 50 ticks is <= 0.05 rad/s",
+        "derivation": "equal to the 250-tick horizon with gamma fixed at 1.0, so a complete settled pass strictly dominates any non-settled or early-terminated return",
+        "value": 250.0
+      },
+      "trainable_leaves": [
+        "action_weight",
+        "action_bias",
+        "training_only_log_std",
+        "training_only_value_weight",
+        "training_only_value_bias"
+      ],
+      "training_reward_selection_weight": "NONE",
+      "transition_validity": {
+        "both_contacts_required": true,
+        "invalid_transition_terminates_episode": true,
+        "maximum_abs_roll_pitch_rad": 0.35,
+        "minimum_base_z_m": 0.1,
+        "per_joint_current_estimate": "abs(MuJoCo data.actuator_force[joint] N.m) / 0.784532 N.m/A",
+        "per_joint_peak_current_a_max": 2.5,
+        "per_joint_peak_torque_kgf_cm_max": 19.5,
+        "per_joint_peak_torque_nm_max": 1.91229675,
+        "strict_overcurrent_max_consecutive_ticks": 99,
+        "strict_overcurrent_threshold_a": 2.0,
+        "strict_overcurrent_trip_ticks": 100
+      },
+      "true_configuration_input_to_actor_or_critic": false
+    },
+    "stage_order_fixed": true
+  },
+  "why_this_follows_evidence": {
+    "closed_winner_v11_preserved": true,
+    "locomotion_adapter_trained_in_this_stage": false,
+    "manual_configuration_route_reopened": false,
+    "protected_walking_policy_changed": false,
+    "winner_v10_terminal_failure": "HOLD_WINNER_V10_R2_CONDITION7_TORSO_COM_X_NEG",
+    "winner_v12_mechanics_pass": "PASS_WINNER_V12_ZERO_PPO_DECOMPOSED_BACKEND_MECHANICS"
+  }
+}
