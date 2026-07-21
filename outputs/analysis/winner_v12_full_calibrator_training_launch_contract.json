@@ -1,0 +1,117 @@
+{
+  "artifact_policy": {
+    "half_and_final_checkpoint_and_onnx": true,
+    "immutable_snapshot_count_on_success": 201,
+    "resume": "only the same logical run from its newest committed hash-verified snapshot under a separately reviewed failure attribution",
+    "retry": false,
+    "snapshot_every_update": true,
+    "stage1_final_checkpoint": true,
+    "upload_work_root_even_on_failure": true
+  },
+  "authorization_claim": {
+    "lf_sha256": "aeee93ab587f589e89827e57303c68a769e6fd346cdadff207cac948ea06bfd7",
+    "path": "outputs/analysis/winner_v12_full_calibrator_training_authorization_claim.json"
+  },
+  "authorization_claim_payload": {
+    "cpu_result_sha256": "a3bf0075a713bc51d1fc608d276f3c90b244126e779870b8d761af8810448664",
+    "logical_run_id": "winner-v12-full-calibrator-seed-120120",
+    "repository_relative_claim_path": "outputs/analysis/winner_v12_full_calibrator_training_authorization_claim.json",
+    "resolved_work_root": "/tmp/winner-v12-full-calibrator-training-work",
+    "runner_lf_sha256": "37a52a038322a9b1dc781ccf67d4e73bd4e300d7aae9e462d10057881b58ce71",
+    "schema_version": "winner_v12.full_calibrator_training_authorization_claim.v1"
+  },
+  "checks": {
+    "claim_exact": true,
+    "cpu_contract_frozen_and_passed": true,
+    "cpu_result_contract_identity_exact": true,
+    "cpu_result_passed_zero_update": true,
+    "formal_support_and_robot_remain_zero": true,
+    "preregistration_exact": true,
+    "runner_has_atomic_per_update_recovery": true,
+    "runner_identity_matches_cpu_contract": true,
+    "runner_requires_explicit_offline_training_flags": true,
+    "schedule_exact": true,
+    "workflow_exact_single_training_invocation": true,
+    "workflow_has_no_gpu_surface": true,
+    "workflow_one_shot_cpu_exact": true,
+    "workflow_uploads_recovery_on_failure": true
+  },
+  "cpu_result_sha256": "a3bf0075a713bc51d1fc608d276f3c90b244126e779870b8d761af8810448664",
+  "decision": "AUTHORIZE_EXACTLY_ONE_LOGICAL_TRAINING_RUN",
+  "execution_before_launch": {
+    "formal_support_cells": 0,
+    "locomotion_training_steps": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "host": {
+    "device": "CPU only",
+    "provider": "GitHub Actions",
+    "reason": "the exact pinned CPU environment passed the formal zero-update contract and the measured contract runtime projects below the fixed wall ceiling",
+    "resolved_work_root": "/tmp/winner-v12-full-calibrator-training-work",
+    "runner": "ubuntu-latest",
+    "timeout_minutes": 240
+  },
+  "logical_run_id": "winner-v12-full-calibrator-seed-120120",
+  "pass_authorizes_only": "one seed-120120 full automatic-calibrator training logical run; it does not authorize the 124-cell support gate, response-conditioned locomotion, deployment selection, Gate 5, or robot access",
+  "runner_lf_sha256": "37a52a038322a9b1dc781ccf67d4e73bd4e300d7aae9e462d10057881b58ce71",
+  "schedule": {
+    "episode_ticks": 250,
+    "parameter_seed": 60720,
+    "root_seed": 120120,
+    "scheduled_tick_slots_per_update": 20000,
+    "stage1_updates": 100,
+    "stage2_updates": 100
+  },
+  "schema_version": "winner_v12.full_calibrator_training_launch_contract.v1",
+  "source_manifest_sha256": "cda1f130f5b9061d9a7c73cf2fc60d98ae2935c866c0c3cee9b5520b8f5b7259",
+  "sources": {
+    "authorization_claim": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_full_calibrator_training_authorization_claim.json",
+      "sha256": "aeee93ab587f589e89827e57303c68a769e6fd346cdadff207cac948ea06bfd7"
+    },
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v12_full_calibrator_training_launch_contract.py",
+      "sha256": "5b0cedd8de66949f6f211d789bb6c36d6aaf2f565503e7770b8efff777af9aac"
+    },
+    "cpu_contract": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_full_calibrator_training_cpu_contract.json",
+      "sha256": "5795b079dfc47ab54a7d59faa217f282551fda0bb8c18f1857ceae9b79492eb6"
+    },
+    "cpu_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_full_calibrator_training_cpu_contract_result.json",
+      "sha256": "a3bf0075a713bc51d1fc608d276f3c90b244126e779870b8d761af8810448664"
+    },
+    "cpu_result_importer": {
+      "hash_mode": "lf",
+      "path": "tools/import_winner_v12_full_calibrator_training_cpu_contract_result.py",
+      "sha256": "3f9cb54bd6eb8de4aad704577bffaa0b0688c56b0f56ef1a80e4bed49f3c594e"
+    },
+    "preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_full_calibrator_training_preregistration.json",
+      "sha256": "99500648d6683097a13f894b0949bf4b5494e5653f36878710817bd0952f71dd"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_full_calibrator_training.py",
+      "sha256": "37a52a038322a9b1dc781ccf67d4e73bd4e300d7aae9e462d10057881b58ce71"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v12_full_calibrator_training_launch_contract.py",
+      "sha256": "b65c64236fe700831d411db0de3ce05b00344aea334f7aea8ef8407d50e5477e"
+    },
+    "workflow": {
+      "hash_mode": "lf",
+      "path": ".github/workflows/winner-v12-full-calibrator-training.yml",
+      "sha256": "7a5b4a0d0c9b017689caa8fdcf61e8d799c9ab2661719c294fb527324f7adf68"
+    }
+  },
+  "status": "PASS_WINNER_V12_FULL_CALIBRATOR_TRAINING_LAUNCH_FROZEN"
+}
