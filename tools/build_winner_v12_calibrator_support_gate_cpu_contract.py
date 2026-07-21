@@ -183,6 +183,29 @@ def validate_artifact_check(result: Mapping[str, Any]) -> None:
         raise ValueError("artifact ZIP identity is incomplete")
     require_sha256(artifact.get("sha256"), "artifact ZIP")
     require_sha256(result.get("training_result_sha256"), "training result")
+    attribution = result.get("repository_attribution")
+    if (
+        not isinstance(attribution, dict)
+        or set(attribution)
+        != {
+            "repository",
+            "github_run_id",
+            "github_run_attempt",
+            "github_run_head_sha",
+            "github_artifact_id",
+            "github_artifact_name",
+            "github_artifact_digest",
+        }
+        or attribution["repository"] != "RobVanProd/open-duck-mini-rdkx5"
+        or int(attribution["github_run_id"]) <= 0
+        or attribution["github_run_attempt"] != 1
+        or int(attribution["github_artifact_id"]) <= 0
+        or attribution["github_artifact_name"]
+        != f"winner-v12-full-calibrator-training-{attribution['github_run_id']}"
+        or attribution["github_artifact_digest"] != f"sha256:{artifact['sha256']}"
+    ):
+        raise ValueError("artifact repository attribution changed")
+    require_sha256(attribution["github_run_head_sha"], "GitHub run head")
     checkpoints = result.get("verified_checkpoints")
     if not isinstance(checkpoints, dict) or set(checkpoints) != {"half", "final"}:
         raise ValueError("verified half/final identity set changed")
@@ -290,6 +313,7 @@ def main() -> int:
             "artifact_zip_sha256": artifact_check["artifact_zip"]["sha256"],
             "artifact_zip_bytes": artifact_check["artifact_zip"]["bytes"],
             "training_result_sha256": artifact_check["training_result_sha256"],
+            "repository_attribution": artifact_check["repository_attribution"],
         },
         "verified_checkpoints": checkpoints,
         "immutable_gate_inputs": {

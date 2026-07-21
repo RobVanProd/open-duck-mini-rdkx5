@@ -139,3 +139,38 @@ def test_verified_checkpoint_identity_rejects_wrong_boundary(
             receipt_path=path,
             graph_contract={},
         )
+
+
+def test_repository_attribution_binds_exact_run_and_artifact() -> None:
+    checker = load_checker()
+    result = checker.repository_attribution(
+        run_id=29808732634,
+        run_attempt=1,
+        run_head_sha="a" * 64,
+        artifact_id=123,
+        artifact_name="winner-v12-full-calibrator-training-29808732634",
+        artifact_digest=f"sha256:{'b' * 64}",
+        expected_zip_sha256="b" * 64,
+    )
+    assert result["repository"] == "RobVanProd/open-duck-mini-rdkx5"
+    assert result["github_run_id"] == 29808732634
+    assert result["github_artifact_id"] == 123
+
+
+def test_repository_attribution_rejects_rerun_or_digest_drift() -> None:
+    checker = load_checker()
+    arguments = {
+        "run_id": 29808732634,
+        "run_attempt": 1,
+        "run_head_sha": "a" * 64,
+        "artifact_id": 123,
+        "artifact_name": "winner-v12-full-calibrator-training-29808732634",
+        "artifact_digest": f"sha256:{'b' * 64}",
+        "expected_zip_sha256": "b" * 64,
+    }
+    with pytest.raises(ValueError, match="attribution"):
+        checker.repository_attribution(**{**arguments, "run_attempt": 2})
+    with pytest.raises(ValueError, match="attribution"):
+        checker.repository_attribution(
+            **{**arguments, "artifact_digest": f"sha256:{'c' * 64}"}
+        )

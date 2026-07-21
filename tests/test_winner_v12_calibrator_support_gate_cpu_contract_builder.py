@@ -65,6 +65,15 @@ def valid_artifact_check(builder) -> dict:
             "member_count": 415,
         },
         "training_result_sha256": "5" * 64,
+        "repository_attribution": {
+            "repository": "RobVanProd/open-duck-mini-rdkx5",
+            "github_run_id": 29808732634,
+            "github_run_attempt": 1,
+            "github_run_head_sha": "6" * 64,
+            "github_artifact_id": 123,
+            "github_artifact_name": ("winner-v12-full-calibrator-training-29808732634"),
+            "github_artifact_digest": f"sha256:{'4' * 64}",
+        },
         "verified_checkpoints": {
             label: valid_identity(builder, label) for label in ("half", "final")
         },

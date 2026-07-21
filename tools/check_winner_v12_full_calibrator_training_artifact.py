@@ -55,6 +55,38 @@ def require_sha256(value: Any, label: str) -> None:
         raise ValueError(f"{label} SHA-256 is malformed")
 
 
+def repository_attribution(
+    *,
+    run_id: int,
+    run_attempt: int,
+    run_head_sha: str,
+    artifact_id: int,
+    artifact_name: str,
+    artifact_digest: str,
+    expected_zip_sha256: str,
+) -> dict[str, Any]:
+    require_sha256(run_head_sha, "GitHub run head")
+    expected_name = f"winner-v12-full-calibrator-training-{run_id}"
+    expected_digest = f"sha256:{expected_zip_sha256}"
+    if (
+        run_id <= 0
+        or run_attempt != 1
+        or artifact_id <= 0
+        or artifact_name != expected_name
+        or artifact_digest != expected_digest
+    ):
+        raise ValueError("GitHub training artifact attribution changed")
+    return {
+        "repository": "RobVanProd/open-duck-mini-rdkx5",
+        "github_run_id": run_id,
+        "github_run_attempt": run_attempt,
+        "github_run_head_sha": run_head_sha,
+        "github_artifact_id": artifact_id,
+        "github_artifact_name": artifact_name,
+        "github_artifact_digest": artifact_digest,
+    }
+
+
 def safe_extract_zip(archive_path: Path, destination: Path) -> list[str]:
     """Extract only unique, regular, relative POSIX paths into a new directory."""
     if destination.exists():
@@ -366,12 +398,27 @@ def main() -> int:
     parser.add_argument("--extract-root", type=Path, required=True)
     parser.add_argument("--expected-zip-sha256", required=True)
     parser.add_argument("--expected-result-sha256", required=True)
+    parser.add_argument("--expected-github-run-id", type=int, required=True)
+    parser.add_argument("--expected-github-run-attempt", type=int, required=True)
+    parser.add_argument("--expected-github-run-head-sha", required=True)
+    parser.add_argument("--expected-github-artifact-id", type=int, required=True)
+    parser.add_argument("--expected-github-artifact-name", required=True)
+    parser.add_argument("--expected-github-artifact-digest", required=True)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     if args.output.exists():
         raise FileExistsError(f"refusing to overwrite artifact check: {args.output}")
     require_sha256(args.expected_zip_sha256, "expected artifact ZIP")
     require_sha256(args.expected_result_sha256, "expected training result")
+    attribution = repository_attribution(
+        run_id=args.expected_github_run_id,
+        run_attempt=args.expected_github_run_attempt,
+        run_head_sha=args.expected_github_run_head_sha,
+        artifact_id=args.expected_github_artifact_id,
+        artifact_name=args.expected_github_artifact_name,
+        artifact_digest=args.expected_github_artifact_digest,
+        expected_zip_sha256=args.expected_zip_sha256,
+    )
     if sha256(args.artifact_zip) != args.expected_zip_sha256:
         raise ValueError("artifact ZIP differs from the frozen GitHub digest")
     members = safe_extract_zip(args.artifact_zip, args.extract_root)
@@ -584,6 +631,8 @@ def main() -> int:
         == args.expected_zip_sha256,
         "artifact_zip_members_safe_unique": len(members) == len(set(members)),
         "artifact_file_inventory_exact": extracted_files == expected_artifact_files(),
+        "repository_attribution_exact": attribution["github_artifact_digest"]
+        == f"sha256:{args.expected_zip_sha256}",
         "training_result_hash_receipt_exact": root_result_hash_exact,
         "training_environment_exact_cpu_only": environment_exact,
         "authority_source_exact": authority_source_exact,
@@ -643,6 +692,7 @@ def main() -> int:
             "bytes": args.artifact_zip.stat().st_size,
             "member_count": len(members),
         },
+        "repository_attribution": attribution,
         "training_result_sha256": sha256(result_path),
         "verified_checkpoints": verified_checkpoints,
         "parameter_deltas": {"stage1": stage1_deltas, "stage2": stage2_deltas},
