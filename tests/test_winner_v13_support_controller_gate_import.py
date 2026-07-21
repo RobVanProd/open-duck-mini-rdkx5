@@ -11,6 +11,7 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 IMPORTER = ROOT / "tools/import_winner_v13_support_controller_gate_result.py"
+RESULT = ROOT / "outputs/analysis/winner_v13_support_controller_gate_result.json"
 
 
 def load_importer():
@@ -267,3 +268,59 @@ def test_importer_cannot_run_gate_training_inference_or_hardware() -> None:
     assert "onnxruntime" not in source
     assert "import jax" not in source
     assert "from jax" not in source
+
+
+def test_imported_gate_hold_is_exact_when_present() -> None:
+    if not RESULT.exists():
+        return
+    importer = load_importer()
+    value = json.loads(RESULT.read_text(encoding="utf-8"))
+    raw = dict(value)
+    raw.pop("repository_attribution")
+    importer.validate_result(raw)
+    assert value["status"] == "HOLD_WINNER_V13_SUPPORT_CONTROLLER_GATE"
+    assert value["decision"] == "DO_NOT_TRAIN_RESPONSE_CONDITIONED_LOCOMOTION"
+    assert value["failed_checks"] == ["all_248_main_cells_pass"]
+    assert value["repository_attribution"] == {
+        "repository": "RobVanProd/open-duck-mini-rdkx5",
+        "github_run_id": 29831347628,
+        "github_run_attempt": 1,
+        "github_run_head_sha": "737cf4a6ea2a3117086a6f91af9a9da3813b35ee",
+        "github_artifact_id": 8495490862,
+        "github_artifact_name": "winner-v13-support-controller-gate-29831347628",
+        "github_artifact_digest": (
+            "sha256:57a357f24a4439ad60b2441e260ae5c6f06598854b8f221c73ac2136ef997e95"
+        ),
+        "artifact_zip_sha256": (
+            "57a357f24a4439ad60b2441e260ae5c6f06598854b8f221c73ac2136ef997e95"
+        ),
+        "artifact_zip_bytes": 254003,
+        "raw_result_sha256": (
+            "988125d8b2ea8a1f108f8c4ffaa8c4a0df1b00bfe79b263fa6db98ec45b371a6"
+        ),
+        "raw_result_receipt_sha256": (
+            "2c7af5d018ee0985423696ada8d9ba0b8e12337a6dd2de0d04f1d86a48c07d24"
+        ),
+        "preregistration_lf_sha256": importer.lf_sha256(importer.PREREGISTRATION),
+        "workflow_lf_sha256": importer.lf_sha256(importer.WORKFLOW),
+        "runner_lf_sha256": importer.lf_sha256(importer.RUNNER),
+        "importer_lf_sha256": importer.lf_sha256(Path(importer.__file__)),
+    }
+    expected_failures = {"half": 15, "final": 11}
+    for checkpoint in value["checkpoint_results"]:
+        cells = (
+            checkpoint["core_model_plant_cells"]
+            + checkpoint["sensor_transport_plant_cells"]
+        )
+        failed = [cell for cell in cells if not cell["support_pass"]]
+        assert len(failed) == expected_failures[checkpoint["label"]]
+        assert all(cell["condition"] is None for cell in failed)
+        assert all(
+            sorted(
+                name
+                for name, passed in cell["terminal"]["checks"].items()
+                if not passed
+            )
+            == ["roll_pitch"]
+            for cell in failed
+        )
