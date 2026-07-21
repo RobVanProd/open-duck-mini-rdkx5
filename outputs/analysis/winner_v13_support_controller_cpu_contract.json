@@ -1,0 +1,122 @@
+{
+  "authority": {
+    "pass_authorizes_only": "a separate support-controller training preregistration",
+    "robot_clearance": false,
+    "support_controller_training_authorized": false
+  },
+  "decision": "AUTHORIZE_ONE_RESTORED_STAGE2_UPDATE_ONLY",
+  "execution_now": {
+    "formal_support_cells": 0,
+    "locomotion_steps": 0,
+    "robot_or_rdk_access": 0,
+    "stage2_optimizer_updates": 0
+  },
+  "frozen_cpu_proof": {
+    "population": "exact 40 training configurations x 2 hidden plants",
+    "requirements": [
+      "restore exact final Stage-1 v2 snapshot",
+      "validate PPO masks and raw-to-bounded action path",
+      "all Stage-2 gradients and leaves nonzero/changed",
+      "all Stage-1 encoder/auxiliary leaves bit-exact frozen",
+      "atomic Stage-2 snapshot readback",
+      "115/14/64 ONNX ABI and chain <=1e-7"
+    ],
+    "rollout_update_index": 0,
+    "stage2_learning_rate": 0.0001,
+    "stage2_optimizer_updates": 1,
+    "ticks": 250,
+    "training_root_seed": 120120
+  },
+  "pass_rule": "Every check passes. A pass authorizes only a separate 100-update support-controller training preregistration.",
+  "schema_version": "winner_v13.support_controller_cpu_contract.v1",
+  "source_artifact": {
+    "artifact_zip_sha256": "b3ff19186ef39e8a72f9e43095d373840fb0b1562a2f7bed83a74c9f10cf6680",
+    "github_artifact_id": 8492593761,
+    "github_artifact_name": "winner-v13-normalized-response-stage1-v2-29822834921",
+    "github_run_attempt": 1,
+    "github_run_head_sha": "0b1dac9ea47a93861f72fa5dd393134f36d6db02",
+    "github_run_id": 29822834921,
+    "snapshot_bytes": 189027,
+    "snapshot_member": "winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_100.npz",
+    "snapshot_sha256": "8c1392c738eddfb098e61c1a6ae2f863eda883e1eba6ac546aef695da6f163af"
+  },
+  "source_manifest_sha256": "2c810f6f2e1cfa83f7931642db78e3c698624a6cb2bf27ed02eb6a1b35c63cb5",
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v13_support_controller_cpu_contract.py",
+      "sha256": "b9f5e4fdd518055f676ece92e1eabc892fb5576be5860d5f228f58ab15638c69"
+    },
+    "calibrator_design": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_calibrator_training_preregistration.json",
+      "sha256": "1ec76a587c6fa50b92866c1632a7046ae0c6687ed17b1636b664bf45c2e8ba34"
+    },
+    "canonical_p30_fit": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/fixed_target_p30_actuator_fit_20260712.json",
+      "sha256": "908ddb01e5d82e661d77b8f3cb186a84665695660b86b304c6d1ae89c79cdb0b"
+    },
+    "cpu_smoke": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_cpu_smoke.py",
+      "sha256": "b6ad53430f3f7cca3a91a90f72dab585cb05e3e2f74be2241af3fd9b6ee7ce87"
+    },
+    "deployable_network": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_decomposed_backend_networks.py",
+      "sha256": "f463223a33f80baf81b2604e0df22c647660f2752a7ca60b8c75a3441460d015"
+    },
+    "full_training_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_full_calibrator_training_preregistration.json",
+      "sha256": "99500648d6683097a13f894b0949bf4b5494e5653f36878710817bd0952f71dd"
+    },
+    "full_training_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_full_calibrator_training.py",
+      "sha256": "8cd2c9267f356adba1127f8fb837138bbe6e39b5c3326300eeed9fdd5b524610"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v13_support_controller_cpu_contract.py",
+      "sha256": "969c65c34f6f878a8399dc3d7120efdb0edb62c42ca28d0e055156bad0fa0c90"
+    },
+    "runtime_observer": {
+      "hash_mode": "lf",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/observer/winner_v2_contract.py",
+      "sha256": "5c90994a24aa223c94f3a51927228e97000f6118c927561a87a3f2684dcf4889"
+    },
+    "stage1_v2_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v13_normalized_response_stage1_v2_result.json",
+      "sha256": "45e12b9993ce5c8f9811af7350ed3198f9376d0d4ea9b25de8b1aee608a5bcc7"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v13_support_controller_cpu_contract.py",
+      "sha256": "c48f0c00289b787965e53bba7d81ccb6bdec9380a38abed40c6e49ed86da9a94"
+    },
+    "v12_training_primitives": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_calibrator_training.py",
+      "sha256": "f5736a357d73baedae2bba1d15254dd688bddf3761eb731d757a971783c77227"
+    },
+    "v13_training_primitives": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v13_normalized_calibrator_training.py",
+      "sha256": "b57ae2823cff90bfd8d78317adb1dfe9607bcae069a4d985863144b4e12ec3ca"
+    },
+    "variable_configuration_domain": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v3_variable_configuration_replacement_preregistration.json",
+      "sha256": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b"
+    },
+    "workflow": {
+      "hash_mode": "lf",
+      "path": ".github/workflows/winner-v13-support-controller-cpu-contract.yml",
+      "sha256": "45ee02a230bb225b264969a9461cd78dc9e7dbed208b2a30421bd837f9740735"
+    }
+  },
+  "status": "FROZEN_WINNER_V13_SUPPORT_CONTROLLER_CPU_CONTRACT"
+}
