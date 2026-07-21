@@ -1,0 +1,223 @@
+{
+  "authority": {
+    "formal_support_gate_authorized": false,
+    "pass_authorizes_only": "a separate unchanged 124-cell support/context gate preregistration",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false
+  },
+  "causal_ab": {
+    "only_variable": "recompute and differentiate through the existing 64-state recurrent core instead of consuming a frozen cached hidden tensor",
+    "reference": "Winner-v15 action-head-only 100-update arm",
+    "same": [
+      "Winner-v13 Stage-1 update-100 source snapshot",
+      "40 configurations x 2 hidden plants per update",
+      "250 ticks and training root seed 120120",
+      "one-sided negative-pitch margin reward with no scalar",
+      "learning rate 0.0001 and 100 updates",
+      "half/final checkpoints at updates 50/100",
+      "graph-authoritative action bounds and unchanged future 124-cell gate"
+    ]
+  },
+  "causal_hypothesis": "Winner-v15's exact dense support reward reached only a linear action head while freezing the deployable recurrent encoder. The two-update proof shows the existing encoder becomes trainable as soon as the zero action head opens. Full-BPTT joint PPO can therefore learn the missing temporally integrated, multi-joint negative-X recovery without an output wrapper or ABI change.",
+  "decision": "AUTHORIZE_ONE_100_UPDATE_JOINT_RECURRENT_CAUSAL_AB_ONLY",
+  "execution_now": {
+    "formal_support_cells": 0,
+    "locomotion_steps": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0
+  },
+  "frozen_training": {
+    "bit_exact_frozen_leaves": [
+      "auxiliary_hidden_weight",
+      "auxiliary_action_weight",
+      "auxiliary_bias"
+    ],
+    "environments_per_update": 80,
+    "failure_transition_reward": 0.0,
+    "hidden_replay_max_abs_error": 1e-06,
+    "hidden_replay_population": "valid_mask == 1 sampled ticks only",
+    "learning_rate": 0.0001,
+    "objective": "one_sided_negative_pitch_margin",
+    "objective_scale": null,
+    "optimizer_updates": 100,
+    "persistent_checkpoints": {
+      "final": 100,
+      "half": 50
+    },
+    "persistent_snapshots": "atomic readback-verified snapshot after every update",
+    "pitch_boundary_rad": 0.35,
+    "scheduled_episode_slots": 2000000,
+    "settled_terminal_bonus": 250.0,
+    "source_stage1_snapshot_bytes": 189027,
+    "source_stage1_snapshot_sha256": "8c1392c738eddfb098e61c1a6ae2f863eda883e1eba6ac546aef695da6f163af",
+    "ticks_per_environment": 250,
+    "trainable_leaves": [
+      "obs_weight",
+      "previous_action_weight",
+      "hidden_weight",
+      "hidden_bias",
+      "action_weight",
+      "action_bias",
+      "training_only_log_std",
+      "training_only_value_weight",
+      "training_only_value_bias"
+    ],
+    "training_root_seed": 120120
+  },
+  "not_selected": [
+    "flat-transport kernel",
+    "another post-policy wrapper",
+    "reward or learning-rate search",
+    "new observation fields or ONNX ABI",
+    "manual build measurements"
+  ],
+  "post_training_selection": {
+    "authorized_now": false,
+    "checkpoint_rule": "both checkpoints must pass all formal cells; no closest failure or single-checkpoint cherry-pick",
+    "pass_authorizes_only": "a separately preregistered unchanged 124-cell support/context gate over both half and final checkpoints"
+  },
+  "schema_version": "winner_v20.joint_recurrent_support_training_preregistration.v1",
+  "source_manifest_sha256": "5fc7df4d2c353cb705a2e8cf341fa89787901d86ac6a33eaa2515e0184c8ee7d",
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v20_joint_recurrent_support_training_preregistration.py",
+      "sha256": "cc40153d573321c84aec29d60561c0cf0faa5117233f758726732591a177c80d"
+    },
+    "calibrator_design": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_calibrator_training_preregistration.json",
+      "sha256": "1ec76a587c6fa50b92866c1632a7046ae0c6687ed17b1636b664bf45c2e8ba34"
+    },
+    "canonical_p30_fit": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/fixed_target_p30_actuator_fit_20260712.json",
+      "sha256": "908ddb01e5d82e661d77b8f3cb186a84665695660b86b304c6d1ae89c79cdb0b"
+    },
+    "cpu_contract": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v20_joint_recurrent_support_cpu_contract.json",
+      "sha256": "7466469f3f52c4a5693c587006e7b195bde24a351a9b1b1a5914f3ecaf246db5"
+    },
+    "cpu_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v20_joint_recurrent_support_cpu_v2_result.json",
+      "sha256": "5327cb158e6b19a7818d62ef8b12bffdbf48c7f39fab5df766b47da450b80be2"
+    },
+    "cpu_result_importer": {
+      "hash_mode": "lf",
+      "path": "tools/import_winner_v20_joint_recurrent_support_cpu_v2_result.py",
+      "sha256": "38bc5d8191ab784a032ebdb128738c012c88e78899632e46f2b0298b3a4076db"
+    },
+    "cpu_result_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v20_joint_recurrent_support_cpu_v2_import.py",
+      "sha256": "a0d9239f949145cc9a09779b4c4fa5fdb66bfdf28ea67b6f436de23096913c43"
+    },
+    "cpu_smoke": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_cpu_smoke.py",
+      "sha256": "b6ad53430f3f7cca3a91a90f72dab585cb05e3e2f74be2241af3fd9b6ee7ce87"
+    },
+    "deployable_network": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_decomposed_backend_networks.py",
+      "sha256": "f463223a33f80baf81b2604e0df22c647660f2752a7ca60b8c75a3441460d015"
+    },
+    "environment_builder": {
+      "hash_mode": "lf",
+      "path": "tools/prepare_winner_v15_cpu_environment.py",
+      "sha256": "33e54c3a16d5684e2d2520270acf25a28df42dc89e9f302c1ef3bd5f37d867c2"
+    },
+    "full_training_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_full_calibrator_training_preregistration.json",
+      "sha256": "99500648d6683097a13f894b0949bf4b5494e5653f36878710817bd0952f71dd"
+    },
+    "full_training_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_full_calibrator_training.py",
+      "sha256": "8cd2c9267f356adba1127f8fb837138bbe6e39b5c3326300eeed9fdd5b524610"
+    },
+    "mechanics": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v20_joint_recurrent_support.py",
+      "sha256": "276f0008049be9e28cbfc7cb430a5fec6c0a092c02e605f08f3ea95e2df942c7"
+    },
+    "mechanism_attribution": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v20_joint_recurrent_support_attribution.json",
+      "sha256": "656b79fb0abbc64cd526f184977cecd15416fdd92ca15234b15a02a40f16317f"
+    },
+    "objective": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v15_pitch_margin_support.py",
+      "sha256": "b2dfecf77971596e2c67a7185b1a9c1acea2d49ecbb04eaf846666239b3326e8"
+    },
+    "one_update_hold_attribution": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v20_joint_recurrent_support_cpu_hold_attribution.json",
+      "sha256": "0eb54aa23db4db8bb08d148f091833cc9521e3b7dce2fc576229c76b1d49c157"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v20_joint_recurrent_support_training.py",
+      "sha256": "511d8458fdbfba3cdaddc6a29bc2ec8c13612fe79a8eaf4ccead4c983cb606e9"
+    },
+    "runtime_observer": {
+      "hash_mode": "lf",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/observer/winner_v2_contract.py",
+      "sha256": "5c90994a24aa223c94f3a51927228e97000f6118c927561a87a3f2684dcf4889"
+    },
+    "stage1_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v13_normalized_response_stage1_v2_result.json",
+      "sha256": "45e12b9993ce5c8f9811af7350ed3198f9376d0d4ea9b25de8b1aee608a5bcc7"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v20_joint_recurrent_support_training.py",
+      "sha256": "6f56f729429f6f9620e3245db511c71b8ead76ccea663c7cf910cd10a12fd3bc"
+    },
+    "v12_training_primitives": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_calibrator_training.py",
+      "sha256": "f5736a357d73baedae2bba1d15254dd688bddf3761eb731d757a971783c77227"
+    },
+    "variable_configuration_domain": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v3_variable_configuration_replacement_preregistration.json",
+      "sha256": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b"
+    },
+    "winner_v15_hold": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v15_pitch_margin_support_hold_attribution.json",
+      "sha256": "8b617b359b6209fea6f86c609bac78f09ae05fb2f7c01c2ddcb4e652c299850a"
+    },
+    "winner_v15_training_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v15_pitch_margin_support_training_preregistration.json",
+      "sha256": "2486c3afd4f5ecb5ee6f3d819b9a15d6dc6f69a9b76fea81f2d1be07f8e28b93"
+    },
+    "winner_v15_training_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v15_pitch_margin_support_training_result.json",
+      "sha256": "6014e6cf3492855f7c61aaa83a57e8058543237dd9ac0509149a0a20236b7980"
+    },
+    "workflow": {
+      "hash_mode": "lf",
+      "path": ".github/workflows/winner-v20-joint-recurrent-support-training.yml",
+      "sha256": "eca1539f93ae1400993e09a4dc94c486e32a2719b8a99144db5292f468ec2ad3"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V20_JOINT_RECURRENT_SUPPORT_TRAINING",
+  "stop_rules": [
+    "stop if sampled-tick hidden replay exceeds 1e-6",
+    "stop if reward, action boundary, masks, population, or seeds differ",
+    "stop if update 1 does not reproduce the zero-head chain-rule gate",
+    "stop if update 2 does not open all recurrent gradients and deltas",
+    "stop if any auxiliary predictor leaf changes",
+    "do not run the formal support gate from this workflow",
+    "do not select a checkpoint from training metrics"
+  ]
+}
