@@ -1,0 +1,115 @@
+{
+  "authority": {
+    "authorizes_only": "one separately frozen CPU mechanics contract",
+    "joint_recurrent_training_authorized": false,
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false
+  },
+  "causal_ab": {
+    "only_variable": "train and differentiate through the existing recurrent core instead of feeding a cached hidden tensor to an action-head-only PPO loss",
+    "reference": "Winner-v15 action-head-only PPO",
+    "same": [
+      "Winner-v13 Stage-1 source snapshot",
+      "80-environment population per update",
+      "250-tick horizon",
+      "training root seed 120120",
+      "one-sided negative-pitch reward with no scale",
+      "learning rate 0.0001",
+      "100 updates and half/final checkpoints",
+      "graph-authoritative bounds and unchanged 124-cell gate"
+    ]
+  },
+  "causal_chain": {
+    "contexts_remained_separate": true,
+    "persistent_failure_tick_ranges": {
+      "final": [
+        28,
+        62
+      ],
+      "half": [
+        28,
+        49
+      ]
+    },
+    "post_policy_wrapper_class_closed": true,
+    "reward_signal_present_every_v15_update": true,
+    "v15_action_head_and_training_only_leaves_changed": [
+      "action_bias",
+      "action_weight",
+      "training_only_log_std",
+      "training_only_value_bias",
+      "training_only_value_weight"
+    ],
+    "v15_persistent_failures_half_final": [
+      12,
+      12
+    ],
+    "v15_recurrent_encoder_bit_exact_frozen": true
+  },
+  "decision": "PREREGISTER_ONE_JOINT_RECURRENT_PPO_CPU_CONTRACT",
+  "execution": {
+    "formal_support_cells": 0,
+    "locomotion_steps": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0
+  },
+  "flat_transport_kernel": {
+    "reason": "Failures occur by ticks 28-62 while all contexts remain separated; the evidence does not identify long-range information transport as causal.",
+    "selected": false
+  },
+  "required_cpu_contract": {
+    "optimizer_updates": 1,
+    "pass_authorizes_only": "a separate preregistration for one 100-update joint-recurrent A/B arm",
+    "requirements": [
+      "source recurrent replay matches the cached rollout hidden trajectory",
+      "all selected recurrent/action/value/log-std gradients are finite and nonzero",
+      "all selected leaves change after one Adam update",
+      "auxiliary predictor leaves remain bit-exact",
+      "reward, rollout population, action bounds, and previous-action chain remain exact",
+      "updated ONNX retains the frozen 115/14/64 stateful ABI and JAX agreement"
+    ]
+  },
+  "schema_version": "winner_v20.joint_recurrent_support_attribution.v1",
+  "selected_mechanism": {
+    "bit_exact_frozen_leaves": [
+      "auxiliary_hidden_weight",
+      "auxiliary_action_weight",
+      "auxiliary_bias"
+    ],
+    "hypothesis": "The frozen response encoder exposes distinct contexts but cannot rotate its recurrent state toward the negative-X recovery decision. Joint PPO through the existing recurrent core can learn a temporally integrated, multi-joint recovery without a post-policy correction wrapper.",
+    "id": "JOINT_RECURRENT_PPO",
+    "new_parameters": 0,
+    "onnx_abi_change": false,
+    "population_seed_budget_change_from_v15": false,
+    "post_policy_wrapper": false,
+    "required_loss_change": "recompute the 64-state hidden trajectory from the frozen 115-D observation and 14-D previous-action sequences inside the PPO gradient using full BPTT",
+    "reward_change_from_v15": false,
+    "source_snapshot": "the identical Winner-v13 Stage-1 update-100 snapshot used to start Winner-v15",
+    "trainable_existing_leaves": [
+      "obs_weight",
+      "previous_action_weight",
+      "hidden_weight",
+      "hidden_bias",
+      "action_weight",
+      "action_bias",
+      "training_only_log_std",
+      "training_only_value_weight",
+      "training_only_value_bias"
+    ]
+  },
+  "sources": {
+    "winner_v15_hold": {
+      "path": "outputs/analysis/winner_v15_pitch_margin_support_hold_attribution.json",
+      "sha256": "3f2d477247a382f8b4d1cd7fb105b3aa458f9ca91f48f27849e94c9d728f383b"
+    },
+    "winner_v15_training": {
+      "path": "outputs/analysis/winner_v15_pitch_margin_support_training_result.json",
+      "sha256": "a56f54405bd4cc3c27138075f0d622266ab57f0fb835c82716ee4930d6c67107"
+    },
+    "winner_v19_hold": {
+      "path": "outputs/analysis/winner_v19_imu_ankle_feedback_magnitude_hold_attribution.json",
+      "sha256": "20c807edff31fae77ddf370cf064127231243bc959249593334ef56ca419028b"
+    }
+  },
+  "status": "PASS_WINNER_V20_JOINT_RECURRENT_SUPPORT_ATTRIBUTION"
+}
