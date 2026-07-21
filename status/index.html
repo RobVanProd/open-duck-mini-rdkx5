@@ -82,8 +82,8 @@
     <section class="hero">
       <div class="card">
         <div class="label">Current operation</div>
-        <div class="big amber" id="operation">Winner-v10 R2 stopped at condition 7</div>
-        <div class="metric" id="operation-detail">Conditions 1-6 pass. Under the frozen torso-COM X=-0.05 m endpoint, all 16 checkpoint/fit/command cells terminate after 42-47 ticks and move backward. The hash-verified result stops the sequential ladder. No later condition, training, runtime deployment, or robot work is authorized.</div>
+        <div class="big amber" id="operation">Winner-v11 zero-PPO mechanics held</div>
+        <div class="metric" id="operation-detail">The one frozen CPU-only run preserved the 27-tick phase, t-2/t-3/t-4 histories, P30 applied target, exact x=0, protected graph identity, and stored/inward action bounds. Its moving-chain JAX/ONNX action difference was 4.768e-7 against the frozen 1e-7 limit, so Winner-v11 is held without rerun or tuning. No training, runtime deployment, or robot work is authorized.</div>
       </div>
       <div class="card">
         <div class="label">Latest nominal candidate</div>
@@ -420,7 +420,9 @@
           <li>Closed: the original winner-v6/v6b zero-PPO contracts miss the protected float32 boundary and are not retried.</li>
           <li>Completed: the distinct winner-v7 through winner-v10 path repairs the protected graph representation, passes the exact nominal gate, and passes R2 floor friction, joint friction loss, and armature endpoints.</li>
           <li>Stopped: winner-v10 fails the frozen R2 torso-COM X=-0.05 m endpoint in all 16 cells after 42-47 ticks. Condition 8 and every later R2 condition remain unrun by rule.</li>
-          <li>Current boundary: no checkpoint is selected for deployment and robot clearance remains false. Any automatic dynamic-calibration successor must be a separately frozen contract built on the revalidated winner-v10 base; no v6/v6b retry or R2 continuation is allowed.</li>
+          <li>Completed: runtime rereview and independent policy audit accepted the Winner-v11 automatic-calibration ABI and exact Winner-v10 graph wrapper for one zero-PPO CPU mechanics run.</li>
+          <li>Held: Winner-v11 passes every frozen mechanics check except the two moving-chain JAX/ONNX tolerance checks. Maximum action difference is 4.768e-7 versus 1e-7; the exact run is not retried or retuned.</li>
+          <li>Current boundary: no checkpoint is selected for deployment and robot clearance remains false. Winner-v11 training is unauthorized. Any successor requires a separate evidence-derived hypothesis and preregistration; no v6/v6b retry, Winner-v11 threshold change, or R2 continuation is allowed.</li>
         </ol>
       </div>
     </section>
@@ -433,7 +435,7 @@
     </section>
 
     <footer>
-      <span id="updated">Evidence snapshot: 2026-07-20 · winner-v10 R2 condition 7 held · sequential ladder stopped · robot clearance false</span>
+      <span id="updated">Evidence snapshot: 2026-07-20 · winner-v11 zero-PPO mechanics held · no training authorized · robot clearance false</span>
       <span>branch <code>codex/winner-v4-response-contract</code> · live evidence is repository-backed</span>
     </footer>
   </main>
