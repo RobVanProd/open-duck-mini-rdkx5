@@ -1,0 +1,767 @@
+{
+  "authority": {
+    "behavior_evaluation": false,
+    "robot_clearance": false,
+    "robot_rdk_torque_motion_gate5_deployment": false,
+    "runtime_implementation": false,
+    "separate_training_preregistration_design": true,
+    "training_or_optimizer": false
+  },
+  "auxiliary_trainability": {
+    "all_gradients_finite": true,
+    "auxiliary_target_indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      83,
+      84,
+      85,
+      86,
+      87,
+      88,
+      89,
+      90,
+      91,
+      92,
+      93,
+      94,
+      95,
+      96,
+      97,
+      98
+    ],
+    "gradient_norms": {
+      "action_bias": 0.00786443892866373,
+      "action_weight": 0.0060122315771877766,
+      "auxiliary_action_weight": 0.0,
+      "auxiliary_bias": 0.11191115528345108,
+      "auxiliary_hidden_weight": 0.08575085550546646,
+      "hidden_bias": 0.03420701622962952,
+      "hidden_weight": 0.022323036566376686,
+      "obs_weight": 0.10164051502943039,
+      "previous_action_weight": 0.0
+    },
+    "loss": 0.15660446882247925,
+    "response_encoder_receives_gradient": true
+  },
+  "boundary_identity": {
+    "both_exact": true,
+    "policies": [
+      {
+        "inward_delta": [
+          0.07999950647354126,
+          0.05999951437115669,
+          0.11999950557947159,
+          0.11999950557947159,
+          0.11999950557947159,
+          0.03999951481819153,
+          0.03999951481819153,
+          0.03999951481819153,
+          0.03999951481819153,
+          0.03999951481819153,
+          0.05999951437115669,
+          0.09999950230121613,
+          0.07999950647354126,
+          0.09999950230121613
+        ],
+        "inward_exact": true,
+        "inward_strictly_inside_stored": true,
+        "label": "half",
+        "stored_delta": [
+          0.07999999076128006,
+          0.059999994933605194,
+          0.11999998986721039,
+          0.11999998986721039,
+          0.11999998986721039,
+          0.03999999538064003,
+          0.03999999538064003,
+          0.03999999538064003,
+          0.03999999538064003,
+          0.03999999538064003,
+          0.059999994933605194,
+          0.09999998658895493,
+          0.07999999076128006,
+          0.09999998658895493
+        ],
+        "stored_exact": true
+      },
+      {
+        "inward_delta": [
+          0.07999950647354126,
+          0.05999951437115669,
+          0.11999950557947159,
+          0.11999950557947159,
+          0.11999950557947159,
+          0.03999951481819153,
+          0.03999951481819153,
+          0.03999951481819153,
+          0.03999951481819153,
+          0.03999951481819153,
+          0.05999951437115669,
+          0.09999950230121613,
+          0.07999950647354126,
+          0.09999950230121613
+        ],
+        "inward_exact": true,
+        "inward_strictly_inside_stored": true,
+        "label": "final",
+        "stored_delta": [
+          0.07999999076128006,
+          0.059999994933605194,
+          0.11999998986721039,
+          0.11999998986721039,
+          0.11999998986721039,
+          0.03999999538064003,
+          0.03999999538064003,
+          0.03999999538064003,
+          0.03999999538064003,
+          0.03999999538064003,
+          0.059999994933605194,
+          0.09999998658895493,
+          0.07999999076128006,
+          0.09999998658895493
+        ],
+        "stored_exact": true
+      }
+    ]
+  },
+  "calibration_chain": {
+    "action_bounds_hold": true,
+    "all_finite": true,
+    "context_max": 0.2506510615348816,
+    "context_min": -0.27911853790283203,
+    "context_read_only": true,
+    "hidden_changed_ticks": 250,
+    "max_action_error": 0.0,
+    "max_hidden_error": 2.473825588822365e-10,
+    "ticks": 250
+  },
+  "checks": {
+    "calibration_sequence_handoff_and_fail_closed_exact": true,
+    "calibrator_abi_exact": true,
+    "calibrator_response_encoder_trainable": true,
+    "calibrator_step_zero_and_chain_within_1e_7": true,
+    "debug_output_absent_from_deployable_abi": true,
+    "default_response_branch_within_1e_7": true,
+    "deployable_exports_byte_exact_to_winner_v11": true,
+    "deployable_locomotion_abis_exact": true,
+    "enabled_response_branch_within_1e_7": true,
+    "frozen_population_exact_for_both_checkpoints": true,
+    "frozen_source_hashes_exact": true,
+    "full_authoritative_onnx_bounds_hold": true,
+    "jax_cpu_only": true,
+    "no_configuration_or_debug_tensor_in_deployable_inputs": true,
+    "onnxruntime_cpu_only": true,
+    "physical_onnx_chains_exact_and_bounded": true,
+    "protected_default_off_identity_bit_exact": true,
+    "protected_stored_and_inward_boundaries_exact": true,
+    "protected_winner_v10_hashes_exact": true,
+    "recurrent_previous_action_precondition_held": true,
+    "x0_exact_zero_and_identity": true,
+    "zero_optimizer_steps_and_behavior_cells": true
+  },
+  "decision": "AUTHORIZE_SEPARATE_WINNER_V12_TRAINING_PREREGISTRATION_ONLY",
+  "default_off_identities": [
+    {
+      "abi": {
+        "inputs": [
+          {
+            "dtype": "float32",
+            "name": "obs",
+            "shape": [
+              1,
+              115
+            ]
+          },
+          {
+            "dtype": "float32",
+            "name": "previous_action",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "dtype": "float32",
+            "name": "h_in",
+            "shape": [
+              1,
+              64
+            ]
+          },
+          {
+            "dtype": "float32",
+            "name": "calibration_context",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "dtype": "float32",
+            "name": "continuous_actions",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "dtype": "float32",
+            "name": "previous_action_out",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "dtype": "float32",
+            "name": "h_out",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ]
+      },
+      "all_finite": true,
+      "context_branch_exact_zero_default_off": true,
+      "expanded_sha256": "4677b2ed0e14256a13fddff210bb2175e73d68e0a3f13dec1a16a0871cc4db1f",
+      "identity_cases": 66,
+      "protected_actions_bit_exact": true,
+      "protected_path": "winner_v10_half.onnx",
+      "protected_previous_action_state_bit_exact": true,
+      "protected_sha256": "cf001269908d86e47eaa145ffda1d87e946a314ecf51056dc086c4cf10164ab6"
+    },
+    {
+      "abi": {
+        "inputs": [
+          {
+            "dtype": "float32",
+            "name": "obs",
+            "shape": [
+              1,
+              115
+            ]
+          },
+          {
+            "dtype": "float32",
+            "name": "previous_action",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "dtype": "float32",
+            "name": "h_in",
+            "shape": [
+              1,
+              64
+            ]
+          },
+          {
+            "dtype": "float32",
+            "name": "calibration_context",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "dtype": "float32",
+            "name": "continuous_actions",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "dtype": "float32",
+            "name": "previous_action_out",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "dtype": "float32",
+            "name": "h_out",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ]
+      },
+      "all_finite": true,
+      "context_branch_exact_zero_default_off": true,
+      "expanded_sha256": "4ebdafd0215684419368ec794f3c4495eb09c3db3f0e0f6dc67f207099670316",
+      "identity_cases": 66,
+      "protected_actions_bit_exact": true,
+      "protected_path": "winner_v10_final.onnx",
+      "protected_previous_action_state_bit_exact": true,
+      "protected_sha256": "d52b63241340d9d56671b95c58bb0fc72af0998fd47d4684719f6cd44f244a10"
+    }
+  ],
+  "default_off_x0_chains": [
+    {
+      "action_history_lags": [
+        2,
+        3,
+        4
+      ],
+      "actions_and_state_exact_zero": true,
+      "all_finite": true,
+      "applied_target_source": "exact frozen P30 forward observer",
+      "command_x": 0.0,
+      "exact_zero_and_identity": true,
+      "internal_roundoff_bounds": true,
+      "internal_roundoff_tolerance": 2.384185791015625e-07,
+      "jax_onnx_max_action_error": 0.0,
+      "jax_onnx_max_hidden_error": 2.9103830456733704e-11,
+      "maximum_internal_delta_excess": 0.0,
+      "maximum_stored_delta_excess": 0.0,
+      "observation_contract_exact": true,
+      "phase_period_ticks": 27,
+      "protected_and_expanded_bit_exact": true,
+      "recurrent_state_precondition_held": true,
+      "seed": 120160,
+      "strict_stored_bounds": true,
+      "ticks": 32
+    },
+    {
+      "action_history_lags": [
+        2,
+        3,
+        4
+      ],
+      "actions_and_state_exact_zero": true,
+      "all_finite": true,
+      "applied_target_source": "exact frozen P30 forward observer",
+      "command_x": 0.0,
+      "exact_zero_and_identity": true,
+      "internal_roundoff_bounds": true,
+      "internal_roundoff_tolerance": 2.384185791015625e-07,
+      "jax_onnx_max_action_error": 0.0,
+      "jax_onnx_max_hidden_error": 1.862645149230957e-09,
+      "maximum_internal_delta_excess": 0.0,
+      "maximum_stored_delta_excess": 0.0,
+      "observation_contract_exact": true,
+      "phase_period_ticks": 27,
+      "protected_and_expanded_bit_exact": true,
+      "recurrent_state_precondition_held": true,
+      "seed": 120170,
+      "strict_stored_bounds": true,
+      "ticks": 32
+    }
+  ],
+  "deployable_export_byte_identity": {
+    "final": true,
+    "half": true
+  },
+  "devices": [
+    "TFRT_CPU_0"
+  ],
+  "execution_counts": {
+    "formal_behavior_cells": 0,
+    "optimizer_steps": 0
+  },
+  "fail_closed": {
+    "all_invalid_cases_rejected": true,
+    "invalid_cases": [
+      "above_bound",
+      "below_bound",
+      "invalid_support",
+      "invalid_tick",
+      "long_run",
+      "nonfinite",
+      "short_run",
+      "wrong_dtype",
+      "wrong_shape"
+    ],
+    "rejected_cases": [
+      "above_bound",
+      "below_bound",
+      "invalid_support",
+      "invalid_tick",
+      "long_run",
+      "nonfinite",
+      "short_run",
+      "wrong_dtype",
+      "wrong_shape"
+    ]
+  },
+  "failed_checks": [],
+  "full_authoritative_onnx_stress": [
+    {
+      "all_finite": true,
+      "cases_per_graph": 256,
+      "internal_roundoff_bounds": {
+        "calibrator": true,
+        "locomotion": true
+      },
+      "internal_roundoff_tolerance": 2.384185791015625e-07,
+      "maximum_internal_excess": {
+        "calibrator": 2.9802322387695312e-08,
+        "locomotion": 2.9802322387695312e-08
+      },
+      "maximum_stored_excess": {
+        "calibrator": 0.0,
+        "locomotion": 0.0
+      },
+      "protected_label": "half",
+      "state_equals_action_bit_exact": true,
+      "strict_stored_bounds": {
+        "calibrator": true,
+        "locomotion": true
+      }
+    },
+    {
+      "all_finite": true,
+      "cases_per_graph": 256,
+      "internal_roundoff_bounds": {
+        "calibrator": true,
+        "locomotion": true
+      },
+      "internal_roundoff_tolerance": 2.384185791015625e-07,
+      "maximum_internal_excess": {
+        "calibrator": 2.9802322387695312e-08,
+        "locomotion": 2.9802322387695312e-08
+      },
+      "maximum_stored_excess": {
+        "calibrator": 0.0,
+        "locomotion": 0.0
+      },
+      "protected_label": "final",
+      "state_equals_action_bit_exact": true,
+      "strict_stored_bounds": {
+        "calibrator": true,
+        "locomotion": true
+      }
+    }
+  ],
+  "legacy_full_protected_jax_onnx_record_only": [
+    {
+      "gating": false,
+      "max_action_error": 4.76837158203125e-07,
+      "max_hidden_error": 8.940696716308594e-08,
+      "protected_label": "half",
+      "reason": "closed Winner-v11 quantity; protected ONNX is authoritative"
+    },
+    {
+      "gating": false,
+      "max_action_error": 4.76837158203125e-07,
+      "max_hidden_error": 1.1920928955078125e-07,
+      "protected_label": "final",
+      "reason": "closed Winner-v11 quantity; protected ONNX is authoritative"
+    }
+  ],
+  "limitations": [
+    "Winner-v11 remains closed and is not reclassified or rerun.",
+    "Checker-only response-delta outputs are not deployable graph outputs.",
+    "This run contains zero optimizer steps and zero behavior cells."
+  ],
+  "observed_test_population": {
+    "action_history_lags": [
+      2,
+      3,
+      4
+    ],
+    "applied_target_source": "exact frozen P30 forward observer",
+    "calibration_ticks": 250,
+    "default_off_identity_cases_per_checkpoint": 66,
+    "default_off_x0_ticks_per_checkpoint": 32,
+    "default_response_cases_per_checkpoint": 66,
+    "enabled_full_graph_cases_per_checkpoint": 256,
+    "enabled_response_cases_per_checkpoint": 256,
+    "formal_behavior_cells": 0,
+    "invalid_policy_handoff_cases": 9,
+    "new_branch_numeric_tolerance": 1e-07,
+    "optimizer_steps": 0,
+    "phase_period_ticks": 27,
+    "physical_chain_ticks_per_checkpoint": 32,
+    "step_zero_cases": 66
+  },
+  "preregistration_sha256": "959c3fec90c8102f3b425ed09183ce6c5fc58ce424debfa3665cc37d59ba89a9",
+  "protected_physical_chains": [
+    {
+      "action_history_lags": [
+        2,
+        3,
+        4
+      ],
+      "actions_and_state_exact_zero": false,
+      "all_finite": true,
+      "applied_target_source": "exact frozen P30 forward observer",
+      "command_x": 0.077,
+      "internal_roundoff_bounds": true,
+      "internal_roundoff_tolerance": 2.384185791015625e-07,
+      "jax_onnx_max_action_error": 4.76837158203125e-07,
+      "jax_onnx_max_hidden_error": 8.940696716308594e-08,
+      "maximum_internal_delta_excess": 2.9802322387695312e-08,
+      "maximum_stored_delta_excess": 0.0,
+      "observation_contract_exact": true,
+      "phase_period_ticks": 27,
+      "protected_and_expanded_bit_exact": true,
+      "recurrent_state_precondition_held": true,
+      "seed": 120180,
+      "strict_stored_bounds": true,
+      "ticks": 32
+    },
+    {
+      "action_history_lags": [
+        2,
+        3,
+        4
+      ],
+      "actions_and_state_exact_zero": false,
+      "all_finite": true,
+      "applied_target_source": "exact frozen P30 forward observer",
+      "command_x": 0.077,
+      "internal_roundoff_bounds": true,
+      "internal_roundoff_tolerance": 2.384185791015625e-07,
+      "jax_onnx_max_action_error": 4.76837158203125e-07,
+      "jax_onnx_max_hidden_error": 1.1920928955078125e-07,
+      "maximum_internal_delta_excess": 2.9802322387695312e-08,
+      "maximum_stored_delta_excess": 0.0,
+      "observation_contract_exact": true,
+      "phase_period_ticks": 27,
+      "protected_and_expanded_bit_exact": true,
+      "recurrent_state_precondition_held": true,
+      "seed": 120190,
+      "strict_stored_bounds": true,
+      "ticks": 32
+    }
+  ],
+  "protected_policy_hashes": {
+    "final": "d52b63241340d9d56671b95c58bb0fc72af0998fd47d4684719f6cd44f244a10",
+    "half": "cf001269908d86e47eaa145ffda1d87e946a314ecf51056dc086c4cf10164ab6"
+  },
+  "repository_attribution": {
+    "contract_commit": "94947c07aee3972fa642e905624c99551a6dde72",
+    "preregistration_path": "outputs/analysis/winner_v12_zero_ppo_decomposed_backend_preregistration.json",
+    "preregistration_sha256": "959c3fec90c8102f3b425ed09183ce6c5fc58ce424debfa3665cc37d59ba89a9",
+    "raw_result_filename": "winner-v12-zero-ppo-decomposed-backend-result.json",
+    "raw_result_sha256": "4a143653fe79e1eb16cfa5e41746c08a2cc0275ed71c8d031e46a11078c9b86a"
+  },
+  "response_branch_default": [
+    {
+      "all_finite": true,
+      "cases": 66,
+      "max_hidden_error": 5.820766091346741e-11,
+      "max_response_delta_abs": 0.0,
+      "max_response_delta_error": 0.0,
+      "protected_label": "half",
+      "providers": [
+        "CPUExecutionProvider"
+      ],
+      "seed": 120200
+    },
+    {
+      "all_finite": true,
+      "cases": 66,
+      "max_hidden_error": 5.820766091346741e-11,
+      "max_response_delta_abs": 0.0,
+      "max_response_delta_error": 0.0,
+      "protected_label": "final",
+      "providers": [
+        "CPUExecutionProvider"
+      ],
+      "seed": 120210
+    }
+  ],
+  "response_branch_enabled_stress": [
+    {
+      "all_finite": true,
+      "cases": 256,
+      "max_hidden_error": 8.731149137020111e-11,
+      "max_response_delta_abs": 0.2500000298023224,
+      "max_response_delta_error": 5.960464477539063e-08,
+      "protected_label": "half",
+      "providers": [
+        "CPUExecutionProvider"
+      ],
+      "seed": 120220
+    },
+    {
+      "all_finite": true,
+      "cases": 256,
+      "max_hidden_error": 8.731149137020111e-11,
+      "max_response_delta_abs": 0.2500000298023224,
+      "max_response_delta_error": 7.450580596923828e-08,
+      "protected_label": "final",
+      "providers": [
+        "CPUExecutionProvider"
+      ],
+      "seed": 120230
+    }
+  ],
+  "schema_version": "winner_v12.zero_ppo_decomposed_backend_result.v1",
+  "sequence_and_handoff": {
+    "all_exact": true,
+    "both_graph_handoffs_exact_and_finite": true,
+    "calibration_ticks": 250,
+    "calibrator_actions_exact_zero_all_ticks": true,
+    "command_exact_zero_all_ticks": true,
+    "context_exact_final_h_out": true,
+    "context_immutable_and_mutation_rejected": true,
+    "frequency_hz": 50,
+    "graph_handoffs": [
+      {
+        "applied_target_slot_exact_final_calibration_fixture": true,
+        "context_input_exact_final_calibrator_hidden": true,
+        "history_slots_exact_t_minus_2_3_4_reset": true,
+        "label": "half",
+        "locomotion_hidden_input_exact_zero": true,
+        "locomotion_phase_exact_reset": true,
+        "outputs_finite": true,
+        "previous_action_input_exact_final_calibrator_output": true,
+        "projected_reference_exact_phase_zero": true
+      },
+      {
+        "applied_target_slot_exact_final_calibration_fixture": true,
+        "context_input_exact_final_calibrator_hidden": true,
+        "history_slots_exact_t_minus_2_3_4_reset": true,
+        "label": "final",
+        "locomotion_hidden_input_exact_zero": true,
+        "locomotion_phase_exact_reset": true,
+        "outputs_finite": true,
+        "previous_action_input_exact_final_calibrator_output": true,
+        "projected_reference_exact_phase_zero": true
+      }
+    ],
+    "initial_hidden_exact_zero": true,
+    "initial_previous_action_exact_zero": true,
+    "p30_applied_target_exact_all_calibration_ticks": true,
+    "phase_advanced": false,
+    "phase_exact_one_zero_all_ticks": true,
+    "previous_action_exact_final_output": true,
+    "runtime_requirements_not_executed_by_policy_contract": [
+      "session-local nonpersistence across process starts",
+      "paused hold of the final confirmed safe physical calibration target",
+      "runtime arming and torque-off behavior"
+    ]
+  },
+  "source_hashes": {
+    "base_v6_checker": "191f326129240c573e93ddcc2de56c93020589fb701cb4a311ce9742f86b77ef",
+    "base_v6_network_source": "cfff280a1c592043d7e1849c68a3c99b05574814180506e6608f17877a5dbb90",
+    "builder": "a95994639894a17a6119bb82e285b0d9be381b40788cfa3732be38ad54b2923f",
+    "checker": "a834bcb93e610544bbe01f0b54d30d702aa0255294d8f935c52f22f9e4cdb2cd",
+    "closed_winner_v11_result": "f946b79b16a6769c87ebf31e4134d1c80c83bc6071bbeb5d61ecade387895a0a",
+    "importer": "429936ef7c95a8b7d1a463c465f0dbe59b1cdb6012cee7f0b23ee0776d76001e",
+    "network_source": "f463223a33f80baf81b2604e0df22c647660f2752a7ca60b8c75a3441460d015",
+    "runtime_rereview_receipt": "66a625180cf4a03470fa58e40c839c4a40a93c2ace5aa128f4aca2d3b9d17bb1",
+    "winner_v11_checker": "719318fe9f439a91272179bbe96cd3f1c26984b58dfee5c866dec32556aa9f1e",
+    "winner_v11_network_source": "3ac1166920ec1a3fbcfbca5a85870c6afc1dc0e5062023801edbed09fcdc4809",
+    "winner_v11_numeric_attribution": "e1ab186678e19ac36a029db9bba25126ea2b080f5c728fc4bc275ff03e017683",
+    "winner_v11_preregistration": "adac3d194d6751b1f8a8119f3d77d4e97603834d782a477c3c88137e523162ca",
+    "winner_v2_golden_evidence": "3e9d501e087e8ef415beb2a8f0462f5ac1f1852a61aa968e490e8a65f0442a3f",
+    "winner_v2_handoff_manifest": "d771d188218152c782c7d688440e2dd2083b47fd9b883749123f89226c6827c5",
+    "winner_v2_handoff_readme": "2c0854ad8c13afb903e5ea85e1b9d03996fcd0745d2f13d3c0898b1693b36042",
+    "winner_v2_observation_map": "f0b78431a3a98d418fbe04eebeb0316538121d1199d35f38dbdd0528ee1917a7",
+    "winner_v2_observer_source": "5c90994a24aa223c94f3a51927228e97000f6118c927561a87a3f2684dcf4889",
+    "winner_v2_p30_fit": "908ddb01e5d82e661d77b8f3cb186a84665695660b86b304c6d1ae89c79cdb0b",
+    "winner_v2_policy_contract": "58831a252c43ba9577b9b743e69e0e3d739992d6e1fbae0ee1caba615014eba4",
+    "winner_v2_reference_table": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212"
+  },
+  "status": "PASS_WINNER_V12_ZERO_PPO_DECOMPOSED_BACKEND_MECHANICS",
+  "step_zero": {
+    "actions_exact_zero": true,
+    "cases": 66,
+    "hidden_evolved_every_case": true,
+    "hidden_finite_bounded": true,
+    "max_action_error": 0.0,
+    "max_hidden_error": 2.9103830456733704e-11
+  },
+  "temporary_artifacts": {
+    "winner_v11_reference_final.onnx": {
+      "bytes": 982919,
+      "sha256": "4ebdafd0215684419368ec794f3c4495eb09c3db3f0e0f6dc67f207099670316"
+    },
+    "winner_v11_reference_half.onnx": {
+      "bytes": 982919,
+      "sha256": "4677b2ed0e14256a13fddff210bb2175e73d68e0a3f13dec1a16a0871cc4db1f"
+    },
+    "winner_v12_calibrator_step_zero.onnx": {
+      "bytes": 54896,
+      "sha256": "ffcb14f2675cfcccba5d7ad71665a8300004579af92859b4239ca08f1cf07f1d"
+    },
+    "winner_v12_calibrator_stress.onnx": {
+      "bytes": 54896,
+      "sha256": "a01067824f191781a1960344a1f36a407bd53181b50655a384c5c6c6b52cdf09"
+    },
+    "winner_v12_locomotion_final_debug.onnx": {
+      "bytes": 982983,
+      "sha256": "8412150c55b45399880739c4b608d7880ffa393a5649c7d394fab7b1e0435942"
+    },
+    "winner_v12_locomotion_final_step_zero.onnx": {
+      "bytes": 982919,
+      "sha256": "4ebdafd0215684419368ec794f3c4495eb09c3db3f0e0f6dc67f207099670316"
+    },
+    "winner_v12_locomotion_final_stress.onnx": {
+      "bytes": 982919,
+      "sha256": "ac05d31828f6472d2a99fb8b54e06daf59c59ce50d579f450811d10dba1f75fc"
+    },
+    "winner_v12_locomotion_final_stress_debug.onnx": {
+      "bytes": 982983,
+      "sha256": "b55b1b39aacbecd83312289f6f33cbb953ee69841abb9c7eca87585dcec259e9"
+    },
+    "winner_v12_locomotion_half_debug.onnx": {
+      "bytes": 982983,
+      "sha256": "19a04da348d236ea725fcddbce610cf6656907979b483257d168e6acd77d7f5a"
+    },
+    "winner_v12_locomotion_half_step_zero.onnx": {
+      "bytes": 982919,
+      "sha256": "4677b2ed0e14256a13fddff210bb2175e73d68e0a3f13dec1a16a0871cc4db1f"
+    },
+    "winner_v12_locomotion_half_stress.onnx": {
+      "bytes": 982919,
+      "sha256": "405dc31dfd55dfd37424ff5c0df91d95d3a0c5e8903263bf22fd1cfc47a2315e"
+    },
+    "winner_v12_locomotion_half_stress_debug.onnx": {
+      "bytes": 982983,
+      "sha256": "ce0393e44dedb835deff082c04eb8a6f9ddbede04dcde11da8e158ae93a851a5"
+    }
+  },
+  "versions": {
+    "jax": "0.7.2",
+    "numpy": "2.0.2",
+    "onnx": "1.22.0",
+    "onnxruntime": "1.27.0"
+  }
+}

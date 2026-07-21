@@ -82,8 +82,8 @@
     <section class="hero">
       <div class="card">
         <div class="label">Current operation</div>
-        <div class="big amber" id="operation">Winner-v11 zero-PPO mechanics held</div>
-        <div class="metric" id="operation-detail">The one frozen CPU-only run preserved the 27-tick phase, t-2/t-3/t-4 histories, P30 applied target, exact x=0, protected graph identity, and stored/inward action bounds. Its moving-chain JAX/ONNX action difference was 4.768e-7 against the frozen 1e-7 limit, so Winner-v11 is held without rerun or tuning. No training, runtime deployment, or robot work is authorized.</div>
+        <div class="big" id="operation">Winner-v12 zero-PPO mechanics passed</div>
+        <div class="metric" id="operation-detail">The one frozen CPU-only run passed all 22 checks. Both deployable graphs are byte-identical to Winner-v11; the new response branch stays within the unchanged 1e-7 backend threshold (worst 7.45e-8), and complete authoritative ONNX outputs obey the stored/inward physical bounds. This authorizes only a separate training preregistration—not training, behavior evaluation, runtime deployment, or robot work.</div>
       </div>
       <div class="card">
         <div class="label">Latest nominal candidate</div>
@@ -422,7 +422,9 @@
           <li>Stopped: winner-v10 fails the frozen R2 torso-COM X=-0.05 m endpoint in all 16 cells after 42-47 ticks. Condition 8 and every later R2 condition remain unrun by rule.</li>
           <li>Completed: runtime rereview and independent policy audit accepted the Winner-v11 automatic-calibration ABI and exact Winner-v10 graph wrapper for one zero-PPO CPU mechanics run.</li>
           <li>Held: Winner-v11 passes every frozen mechanics check except the two moving-chain JAX/ONNX tolerance checks. Maximum action difference is 4.768e-7 versus 1e-7; the exact run is not retried or retuned.</li>
-          <li>Current boundary: no checkpoint is selected for deployment and robot clearance remains false. Winner-v11 training is unauthorized. Any successor requires a separate evidence-derived hypothesis and preregistration; no v6/v6b retry, Winner-v11 threshold change, or R2 continuation is allowed.</li>
+          <li>Completed: numeric attribution preserves the Winner-v11 hold and preregisters a distinct Winner-v12 decomposed-backend question without changing its threshold, protected policy, deployable ABI, or physical bounds.</li>
+          <li>Passed: the only Winner-v12 zero-PPO CPU run passes all 22 frozen checks. The new calibrator/response backend error is at most 7.45e-8, both deployable exports are byte-identical to Winner-v11, and all authoritative ONNX bound checks remain green.</li>
+          <li>Current boundary: no checkpoint is selected for deployment and robot clearance remains false. A separate Winner-v12 training preregistration may now be designed and reviewed, but no optimizer step, behavior evaluation, runtime implementation, hardware, Gate 5, or deployment is authorized.</li>
         </ol>
       </div>
     </section>
@@ -435,7 +437,7 @@
     </section>
 
     <footer>
-      <span id="updated">Evidence snapshot: 2026-07-20 · winner-v11 zero-PPO mechanics held · no training authorized · robot clearance false</span>
+      <span id="updated">Evidence snapshot: 2026-07-20 · winner-v12 zero-PPO mechanics passed · training preregistration only · robot clearance false</span>
       <span>branch <code>codex/winner-v4-response-contract</code> · live evidence is repository-backed</span>
     </footer>
   </main>
