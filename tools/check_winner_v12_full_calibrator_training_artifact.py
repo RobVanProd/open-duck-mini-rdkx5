@@ -279,6 +279,87 @@ def optimizer_rows(
     ]
 
 
+def verified_checkpoint_identity(
+    *,
+    label: str,
+    update: int,
+    checkpoint_path: Path,
+    graph_path: Path,
+    receipt_path: Path,
+    graph_contract: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Return the exact identities the next frozen gate contract must consume."""
+    required_graph_fields = {
+        "abi_exact",
+        "all_chain_outputs_finite",
+        "all_initializers_finite",
+        "inputs",
+        "jax_onnx_at_most_1e_7",
+        "jax_onnx_max_abs_error",
+        "outputs",
+        "previous_action_out_equals_action_bit_exact",
+        "training_only_tensors_absent",
+    }
+    expected_updates = {"half": 50, "final": 100}
+    if label not in expected_updates or update != expected_updates[label]:
+        raise ValueError("verified checkpoint boundary changed")
+    if not required_graph_fields <= set(graph_contract):
+        raise ValueError("verified graph contract is incomplete")
+    expected_inputs = [
+        {"name": "obs", "shape": [1, 115]},
+        {"name": "previous_action", "shape": [1, 14]},
+        {"name": "h_in", "shape": [1, 64]},
+    ]
+    expected_outputs = [
+        {"name": "calibration_actions", "shape": [1, 14]},
+        {"name": "previous_action_out", "shape": [1, 14]},
+        {"name": "h_out", "shape": [1, 64]},
+    ]
+    if (
+        graph_contract["inputs"] != expected_inputs
+        or graph_contract["outputs"] != expected_outputs
+        or graph_contract["abi_exact"] is not True
+        or graph_contract["all_initializers_finite"] is not True
+        or graph_contract["all_chain_outputs_finite"] is not True
+        or graph_contract["training_only_tensors_absent"] is not True
+        or graph_contract["jax_onnx_at_most_1e_7"] is not True
+        or graph_contract["previous_action_out_equals_action_bit_exact"] is not True
+    ):
+        raise ValueError("verified graph contract did not pass exactly")
+    return {
+        "label": label,
+        "update": update,
+        "checkpoint": {
+            "file": checkpoint_path.name,
+            "sha256": sha256(checkpoint_path),
+            "bytes": checkpoint_path.stat().st_size,
+        },
+        "onnx": {
+            "file": graph_path.name,
+            "sha256": sha256(graph_path),
+            "bytes": graph_path.stat().st_size,
+            "inputs": graph_contract["inputs"],
+            "outputs": graph_contract["outputs"],
+            "abi_exact": graph_contract["abi_exact"],
+            "all_initializers_finite": graph_contract["all_initializers_finite"],
+            "all_chain_outputs_finite": graph_contract["all_chain_outputs_finite"],
+            "training_only_tensors_absent": graph_contract[
+                "training_only_tensors_absent"
+            ],
+            "jax_onnx_max_abs_error": graph_contract["jax_onnx_max_abs_error"],
+            "jax_onnx_at_most_1e_7": graph_contract["jax_onnx_at_most_1e_7"],
+            "previous_action_out_equals_action_bit_exact": graph_contract[
+                "previous_action_out_equals_action_bit_exact"
+            ],
+        },
+        "receipt": {
+            "file": receipt_path.name,
+            "sha256": sha256(receipt_path),
+            "bytes": receipt_path.stat().st_size,
+        },
+    }
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--artifact-zip", type=Path, required=True)
@@ -408,6 +489,7 @@ def main() -> int:
     half_path, _ = validate_checkpoint_copy("half", half_snapshot)
     final_path, _ = validate_checkpoint_copy("final", stage2_final)
     persistent_contracts = []
+    verified_checkpoints = {}
     for label, update, snapshot, checkpoint_path in (
         ("half", 50, half_snapshot, half_path),
         ("final", 100, stage2_final, final_path),
@@ -422,11 +504,8 @@ def main() -> int:
             training.deployable_parameters(snapshot["parameters"]),
             observations,
         )
-        receipt = json.loads(
-            (work / f"winner_v12_calibrator_{label}_receipt.json").read_text(
-                encoding="utf-8"
-            )
-        )
+        receipt_path = work / f"winner_v12_calibrator_{label}_receipt.json"
+        receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
         if normalized_path_value(receipt["graph"]) != normalized_path_value(
             observed_graph
         ):
@@ -434,6 +513,14 @@ def main() -> int:
         if receipt["checkpoint"]["sha256"] != sha256(checkpoint_path):
             raise ValueError(f"{label} checkpoint receipt hash changed")
         persistent_contracts.append(receipt)
+        verified_checkpoints[label] = verified_checkpoint_identity(
+            label=label,
+            update=update,
+            checkpoint_path=checkpoint_path,
+            graph_path=graph_path,
+            receipt_path=receipt_path,
+            graph_contract=observed_graph,
+        )
 
     stage1_receipt = json.loads(
         (work / "winner_v12_calibrator_stage1_final_receipt.json").read_text(
@@ -519,6 +606,10 @@ def main() -> int:
             row["m_nonzero"] and row["v_nonzero"] for row in stage2_moments
         ),
         "half_and_final_onnx_independently_exact": len(persistent_contracts) == 2,
+        "half_and_final_identities_exposed_for_gate": set(verified_checkpoints)
+        == {"half", "final"}
+        and verified_checkpoints["half"]["update"] == 50
+        and verified_checkpoints["final"]["update"] == 100,
         "training_population_and_accounting_exact": population_exact,
         "no_logged_traceback_or_hold": "Traceback (most recent call last)"
         not in log_text
@@ -553,6 +644,7 @@ def main() -> int:
             "member_count": len(members),
         },
         "training_result_sha256": sha256(result_path),
+        "verified_checkpoints": verified_checkpoints,
         "parameter_deltas": {"stage1": stage1_deltas, "stage2": stage2_deltas},
         "optimizer_moments": {"stage1": stage1_moments, "stage2": stage2_moments},
         "execution": {

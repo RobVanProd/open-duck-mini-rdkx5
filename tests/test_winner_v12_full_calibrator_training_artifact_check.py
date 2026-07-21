@@ -75,3 +75,67 @@ def test_safe_zip_rejects_symlink(tmp_path: Path) -> None:
         stream.writestr(link, "target")
     with pytest.raises(ValueError):
         checker.safe_extract_zip(archive, tmp_path / "extracted")
+
+
+def test_verified_checkpoint_identity_exposes_exact_gate_inputs(
+    tmp_path: Path,
+) -> None:
+    checker = load_checker()
+    checkpoint = tmp_path / "winner_v12_calibrator_half.npz"
+    graph = tmp_path / "winner_v12_calibrator_half.onnx"
+    receipt = tmp_path / "winner_v12_calibrator_half_receipt.json"
+    checkpoint.write_bytes(b"checkpoint")
+    graph.write_bytes(b"graph")
+    receipt.write_bytes(b"receipt")
+    graph_contract = {
+        "abi_exact": True,
+        "all_chain_outputs_finite": True,
+        "all_initializers_finite": True,
+        "inputs": [
+            {"name": "obs", "shape": [1, 115]},
+            {"name": "previous_action", "shape": [1, 14]},
+            {"name": "h_in", "shape": [1, 64]},
+        ],
+        "jax_onnx_at_most_1e_7": True,
+        "jax_onnx_max_abs_error": 0.0,
+        "outputs": [
+            {"name": "calibration_actions", "shape": [1, 14]},
+            {"name": "previous_action_out", "shape": [1, 14]},
+            {"name": "h_out", "shape": [1, 64]},
+        ],
+        "previous_action_out_equals_action_bit_exact": True,
+        "training_only_tensors_absent": True,
+    }
+    result = checker.verified_checkpoint_identity(
+        label="half",
+        update=50,
+        checkpoint_path=checkpoint,
+        graph_path=graph,
+        receipt_path=receipt,
+        graph_contract=graph_contract,
+    )
+    assert result["checkpoint"] == {
+        "file": checkpoint.name,
+        "sha256": checker.sha256(checkpoint),
+        "bytes": checkpoint.stat().st_size,
+    }
+    assert result["onnx"]["sha256"] == checker.sha256(graph)
+    assert result["receipt"]["sha256"] == checker.sha256(receipt)
+    assert result["update"] == 50
+
+
+def test_verified_checkpoint_identity_rejects_wrong_boundary(
+    tmp_path: Path,
+) -> None:
+    checker = load_checker()
+    path = tmp_path / "artifact"
+    path.write_bytes(b"artifact")
+    with pytest.raises(ValueError, match="boundary"):
+        checker.verified_checkpoint_identity(
+            label="half",
+            update=49,
+            checkpoint_path=path,
+            graph_path=path,
+            receipt_path=path,
+            graph_contract={},
+        )
