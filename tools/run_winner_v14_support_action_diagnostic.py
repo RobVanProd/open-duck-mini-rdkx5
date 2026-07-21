@@ -58,11 +58,11 @@ def canonical_sha256(value: Any) -> str:
 def validate_preregistration(value: Mapping[str, Any]) -> None:
     if (
         value.get("schema_version")
-        != "winner_v14.support_action_diagnostic_preregistration.v2"
+        != "winner_v14.support_action_diagnostic_preregistration.v3"
         or value.get("status")
-        != "PREREGISTERED_WINNER_V14_SUPPORT_ACTION_DIAGNOSTIC_V2"
+        != "PREREGISTERED_WINNER_V14_SUPPORT_ACTION_DIAGNOSTIC_V3"
         or value.get("decision")
-        != "AUTHORIZE_ONE_HASH_CORRECTED_CPU_ONLY_FIVE_SCALE_SUPPORT_DIAGNOSTIC"
+        != "AUTHORIZE_ONE_EPISODE_BINDING_CORRECTED_CPU_ONLY_FIVE_SCALE_SUPPORT_DIAGNOSTIC"
         or value.get("execution_now")
         != {
             "optimizer_updates": 0,
@@ -170,7 +170,7 @@ def run_cell(
 ) -> dict[str, Any]:
     import jax.numpy as jnp
 
-    episode = base.Episode(
+    episode = base.smoke.Episode(
         mujoco,
         scene,
         configuration,

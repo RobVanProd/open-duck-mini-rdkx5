@@ -18,6 +18,9 @@ FORMAL = ANALYSIS / "winner_v13_support_controller_gate_result.json"
 ATTRIBUTION = ANALYSIS / "winner_v13_support_controller_hold_attribution.json"
 V13_PREREG = ANALYSIS / "winner_v13_support_controller_gate_preregistration.json"
 TRAINING = ANALYSIS / "winner_v13_support_controller_training_result.json"
+EPISODE_BINDING_ATTRIBUTION = (
+    ANALYSIS / "winner_v14_support_action_episode_binding_failure_attribution.json"
+)
 EXPECTED_FORMAL_SHA256 = (
     "350bd845a27bf0257e2569f5bc1027a76f8e0fcb551cffff745cb43068f9ad2a"
 )
@@ -38,6 +41,15 @@ SOURCES = {
     ),
     "preexecution_failure_attribution": Path(
         "outputs/analysis/winner_v14_support_action_preexecution_failure_attribution.json"
+    ),
+    "episode_binding_failure_attribution": Path(
+        "outputs/analysis/winner_v14_support_action_episode_binding_failure_attribution.json"
+    ),
+    "episode_binding_failure_attribution_builder": Path(
+        "tools/build_winner_v14_support_action_episode_binding_failure_attribution.py"
+    ),
+    "episode_binding_failure_attribution_test": Path(
+        "tests/test_winner_v14_support_action_episode_binding_failure_attribution.py"
     ),
     "formal_gate_result": Path(
         "outputs/analysis/winner_v13_support_controller_gate_result.json"
@@ -104,6 +116,9 @@ def main() -> int:
             encoding="utf-8"
         )
     )
+    episode_binding = json.loads(
+        EPISODE_BINDING_ATTRIBUTION.read_text(encoding="utf-8")
+    )
     v13_prereg = json.loads(V13_PREREG.read_text(encoding="utf-8"))
     training = json.loads(TRAINING.read_text(encoding="utf-8"))
     if (
@@ -125,6 +140,13 @@ def main() -> int:
         or preexecution.get("decision")
         != "CORRECT_ONLY_FORMAL_RESULT_HASH_MODE_AND_FRESHLY_PREREGISTER"
         or preexecution.get("execution", {}).get("main_cells") != 0
+        or episode_binding.get("status")
+        != "INVALID_WINNER_V14_SUPPORT_ACTION_DIAGNOSTIC_EPISODE_BINDING"
+        or episode_binding.get("decision")
+        != "CORRECT_ONLY_REVIEWED_EPISODE_TYPE_BINDING_AND_FRESHLY_PREREGISTER"
+        or episode_binding.get("execution", {}).get("completed_main_cells") != 0
+        or episode_binding.get("execution", {}).get("completed_repeat_cells") != 0
+        or episode_binding.get("execution", {}).get("result_json_created") is not False
     ):
         raise ValueError("Winner-v14 diagnostic source evidence changed")
     old_gate = v13_prereg["future_frozen_support_gate"]
@@ -143,9 +165,9 @@ def main() -> int:
         for name, path in SOURCES.items()
     }
     payload = {
-        "schema_version": "winner_v14.support_action_diagnostic_preregistration.v2",
-        "status": "PREREGISTERED_WINNER_V14_SUPPORT_ACTION_DIAGNOSTIC_V2",
-        "decision": "AUTHORIZE_ONE_HASH_CORRECTED_CPU_ONLY_FIVE_SCALE_SUPPORT_DIAGNOSTIC",
+        "schema_version": "winner_v14.support_action_diagnostic_preregistration.v3",
+        "status": "PREREGISTERED_WINNER_V14_SUPPORT_ACTION_DIAGNOSTIC_V3",
+        "decision": "AUTHORIZE_ONE_EPISODE_BINDING_CORRECTED_CPU_ONLY_FIVE_SCALE_SUPPORT_DIAGNOSTIC",
         "causal_question": (
             "Can a fixed reduction of the deployable calibration action preserve "
             "identifiable response context while preventing the observed negative-X "
@@ -226,6 +248,22 @@ def main() -> int:
             "failed_run_repeat_cells": 0,
             "only_change": "formal result comparison uses LF-normalized SHA-256",
         },
+        "correction_history": [
+            {
+                "failed_run_id": 29833400247,
+                "completed_main_cells": 0,
+                "completed_repeat_cells": 0,
+                "result_json_created": False,
+                "only_change": "formal result comparison uses LF-normalized SHA-256",
+            },
+            {
+                "failed_run_id": 29833729219,
+                "completed_main_cells": 0,
+                "completed_repeat_cells": 0,
+                "result_json_created": False,
+                "only_change": "replace base.Episode with base.smoke.Episode",
+            },
+        ],
         "training_artifact": v13_prereg["training_artifact"],
         "execution_now": {
             "optimizer_updates": 0,

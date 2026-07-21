@@ -1,7 +1,7 @@
 # Winner-v14 support-action diagnostic preregistration
 
-- Status: `PREREGISTERED_WINNER_V14_SUPPORT_ACTION_DIAGNOSTIC_V2`
-- Decision: `AUTHORIZE_ONE_HASH_CORRECTED_CPU_ONLY_FIVE_SCALE_SUPPORT_DIAGNOSTIC`
+- Status: `PREREGISTERED_WINNER_V14_SUPPORT_ACTION_DIAGNOSTIC_V3`
+- Decision: `AUTHORIZE_ONE_EPISODE_BINDING_CORRECTED_CPU_ONLY_FIVE_SCALE_SUPPORT_DIAGNOSTIC`
 - Scales: `0 / .25 / .50 / .75 / 1.0`
 - Main / repeat cells: `1,240 / 320`
 - Training / locomotion / robot access: `0 / 0 / 0`

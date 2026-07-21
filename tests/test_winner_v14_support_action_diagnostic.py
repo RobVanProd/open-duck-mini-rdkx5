@@ -78,7 +78,7 @@ def test_transform_reapplies_absolute_and_rate_bounds() -> None:
 
 def test_preregistration_freezes_full_population_and_no_training() -> None:
     value = json.loads(PREREG.read_text(encoding="utf-8"))
-    assert value["status"] == "PREREGISTERED_WINNER_V14_SUPPORT_ACTION_DIAGNOSTIC_V2"
+    assert value["status"] == "PREREGISTERED_WINNER_V14_SUPPORT_ACTION_DIAGNOSTIC_V3"
     assert value["frozen_screen"]["scales"] == [0.0, 0.25, 0.5, 0.75, 1.0]
     assert value["frozen_screen"]["main_cells"] == 1240
     assert value["frozen_screen"]["repeat_cells"] == 320
@@ -89,6 +89,13 @@ def test_preregistration_freezes_full_population_and_no_training() -> None:
         "failed_run_main_cells": 0,
         "failed_run_repeat_cells": 0,
         "only_change": "formal result comparison uses LF-normalized SHA-256",
+    }
+    assert value["correction_history"][-1] == {
+        "failed_run_id": 29833729219,
+        "completed_main_cells": 0,
+        "completed_repeat_cells": 0,
+        "result_json_created": False,
+        "only_change": "replace base.Episode with base.smoke.Episode",
     }
     assert value["authority"]["robot_clearance"] is False
 
@@ -101,3 +108,5 @@ def test_runner_is_cpu_only_diagnostic_and_uses_normalized_stage1() -> None:
     assert "--hardware-authorized" not in source
     assert "adam_step" not in source
     assert "stage2_ppo_loss" not in source
+    assert "base.smoke.Episode(" in source
+    assert "base.Episode(" not in source

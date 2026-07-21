@@ -5,7 +5,23 @@
     "robot_clearance": false
   },
   "causal_question": "Can a fixed reduction of the deployable calibration action preserve identifiable response context while preventing the observed negative-X early pitch exits across the complete unchanged support gate?",
-  "decision": "AUTHORIZE_ONE_HASH_CORRECTED_CPU_ONLY_FIVE_SCALE_SUPPORT_DIAGNOSTIC",
+  "correction_history": [
+    {
+      "completed_main_cells": 0,
+      "completed_repeat_cells": 0,
+      "failed_run_id": 29833400247,
+      "only_change": "formal result comparison uses LF-normalized SHA-256",
+      "result_json_created": false
+    },
+    {
+      "completed_main_cells": 0,
+      "completed_repeat_cells": 0,
+      "failed_run_id": 29833729219,
+      "only_change": "replace base.Episode with base.smoke.Episode",
+      "result_json_created": false
+    }
+  ],
+  "decision": "AUTHORIZE_ONE_EPISODE_BINDING_CORRECTED_CPU_ONLY_FIVE_SCALE_SUPPORT_DIAGNOSTIC",
   "execution_now": {
     "locomotion_steps": 0,
     "main_cells": 0,
@@ -43,7 +59,7 @@
     "failed_run_repeat_cells": 0,
     "only_change": "formal result comparison uses LF-normalized SHA-256"
   },
-  "schema_version": "winner_v14.support_action_diagnostic_preregistration.v2",
+  "schema_version": "winner_v14.support_action_diagnostic_preregistration.v3",
   "scoring_correction": {
     "constant_baseline": "square((target_raw - target_mean) / target_std)",
     "formal_v13_result_is_not_rewritten": true,
@@ -65,12 +81,12 @@
     "source_action": "the frozen checkpoint's final bounded 14-D ONNX action",
     "state_feedback": "final_action is the next previous_action"
   },
-  "source_manifest_sha256": "ab00b8517041b303747aa84dd51a37ceab5bf6cf16dc67d90f17134fa8c864c7",
+  "source_manifest_sha256": "206729d42879e324fed59ee71f8a34bea8233860ddfb29f05fddaa88086cfe8c",
   "sources": {
     "builder": {
       "hash_mode": "lf",
       "path": "tools/build_winner_v14_support_action_diagnostic_preregistration.py",
-      "sha256": "f715d26a6095c915b7816bbcd445611ee433e30f013aefd5d30387c27a55a3e1"
+      "sha256": "81d578f14a428c36667e1df9e553bd6ea8226b809161b7ff3fdb235e07a0ffd7"
     },
     "canonical_p30_fit": {
       "hash_mode": "lf",
@@ -86,6 +102,21 @@
       "hash_mode": "lf",
       "path": "patches/winner_v12_decomposed_backend_networks.py",
       "sha256": "f463223a33f80baf81b2604e0df22c647660f2752a7ca60b8c75a3441460d015"
+    },
+    "episode_binding_failure_attribution": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v14_support_action_episode_binding_failure_attribution.json",
+      "sha256": "307ca99306156fbeacd2bbcdb14d7cc1ed4297698712bbee5dda43af7a54f035"
+    },
+    "episode_binding_failure_attribution_builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v14_support_action_episode_binding_failure_attribution.py",
+      "sha256": "648efa6731153727ca4c15f3b7366131fbf092e709ad0a305b06012cba18e1ac"
+    },
+    "episode_binding_failure_attribution_test": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v14_support_action_episode_binding_failure_attribution.py",
+      "sha256": "4dc8b25bbbb0daa2de17fd89a1ce002615b00ecc144a2281106b7f0a67e75b9a"
     },
     "formal_gate_preregistration": {
       "hash_mode": "lf",
@@ -135,7 +166,7 @@
     "runner": {
       "hash_mode": "lf",
       "path": "tools/run_winner_v14_support_action_diagnostic.py",
-      "sha256": "215e9b4d6644b124276a5599225b1d4023259c44a29293fdec7e41e58a7df01d"
+      "sha256": "70f40d3ddf739daade3fb433cd131f39f9bf7d689af930d517b403ced431de53"
     },
     "runtime_observer": {
       "hash_mode": "lf",
@@ -145,7 +176,7 @@
     "tests": {
       "hash_mode": "lf",
       "path": "tests/test_winner_v14_support_action_diagnostic.py",
-      "sha256": "032d1243235794882ffa03482a6751bda496ff2bfe0e76a8b9edca6eef6fb89e"
+      "sha256": "682a9feaa742b3ae8e219d414564560dd645f3bd40e485568cd3b0c371b5abc7"
     },
     "training_result": {
       "hash_mode": "lf",
@@ -160,10 +191,10 @@
     "workflow": {
       "hash_mode": "lf",
       "path": ".github/workflows/winner-v14-support-action-diagnostic.yml",
-      "sha256": "636f714e2247b37b2f999c8cef496feaaffdf23c94443cbf820adc4f9bf387c1"
+      "sha256": "5630ef79a17a22cdd2c77708b8c42707694f6601bc5871d57a95e3aa260f1847"
     }
   },
-  "status": "PREREGISTERED_WINNER_V14_SUPPORT_ACTION_DIAGNOSTIC_V2",
+  "status": "PREREGISTERED_WINNER_V14_SUPPORT_ACTION_DIAGNOSTIC_V3",
   "training_artifact": {
     "final": {
       "graph": {
