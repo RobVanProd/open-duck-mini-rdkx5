@@ -1,0 +1,323 @@
+{
+  "authority": {
+    "pass_authorizes_only": "one formal offline 248-cell support gate plus its 64 frozen heldout repeats",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false
+  },
+  "decision": "AUTHORIZE_ONE_FROZEN_248_CELL_SUPPORT_GATE_RUN_ONLY",
+  "execution_now": {
+    "formal_support_cells": 0,
+    "heldout_repeat_cells": 0,
+    "locomotion_training_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "formal_gate": {
+    "all_cells_at_both_checkpoints_must_pass": true,
+    "checkpoint_labels": [
+      "half",
+      "final"
+    ],
+    "duration_ticks_per_cell": 250,
+    "heldout_repeat_cells_total": 64,
+    "main_cells_per_checkpoint": 124,
+    "main_cells_total": 248
+  },
+  "immutable_gate_inputs": {
+    "canonical_p30_fit": {
+      "lf_sha256": "908ddb01e5d82e661d77b8f3cb186a84665695660b86b304c6d1ae89c79cdb0b",
+      "path": "outputs/analysis/fixed_target_p30_actuator_fit_20260712.json"
+    },
+    "playground_model": {
+      "relative_path": "playground/open_duck_mini_v2/xmls/open_duck_mini_v2_backlash.xml",
+      "sha256": "660fa8e4ac0d977806e881d008090e7153cd0608dbee05b88f957a91bde6f655"
+    },
+    "playground_scene": {
+      "relative_path": "playground/open_duck_mini_v2/xmls/scene_flat_terrain_backlash.xml",
+      "sha256": "65324e27a3a84e2e42d1073bfc636f9cdbf6bef7b1f20c1b5a886b8fd58fcc71"
+    }
+  },
+  "schema_version": "winner_v12.calibrator_support_gate_launch.v1",
+  "source_manifest_sha256": "ad304b67ef9b296e417eb61c751f7e3ba1d0ba406c21b7c6706ada0d9f0a8963",
+  "sources": {
+    "actuator_bridge": {
+      "hash_mode": "lf",
+      "path": "tools/actuator_bridge_model.py",
+      "sha256": "bb5ddb1847e773ab21d8ddfadab307ceaf22599a51f686dbb4f6121cde2d0bec"
+    },
+    "artifact_check_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_full_calibrator_training_artifact_check.json",
+      "sha256": "f5ac4af40396419fda8e8a84b7f94f4fc9cc5a850b96614b39d36e13313609e8"
+    },
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v12_calibrator_support_gate_launch.py",
+      "sha256": "ed3e8443976ab5aef17e5ba6e472b9381c5a44f45d14dfb1207ee619acc70570"
+    },
+    "canonical_p30_fit": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/fixed_target_p30_actuator_fit_20260712.json",
+      "sha256": "908ddb01e5d82e661d77b8f3cb186a84665695660b86b304c6d1ae89c79cdb0b"
+    },
+    "cpu_smoke": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_cpu_smoke.py",
+      "sha256": "b6ad53430f3f7cca3a91a90f72dab585cb05e3e2f74be2241af3fd9b6ee7ce87"
+    },
+    "deployable_network": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_decomposed_backend_networks.py",
+      "sha256": "f463223a33f80baf81b2604e0df22c647660f2752a7ca60b8c75a3441460d015"
+    },
+    "formal_result_importer": {
+      "hash_mode": "lf",
+      "path": "tools/import_winner_v12_calibrator_support_gate_result.py",
+      "sha256": "8656a5f2d4bba54dd6879ca98394c9aad838d8f4d3f6e710853dc678dec3190e"
+    },
+    "formal_result_importer_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v12_calibrator_support_gate_result_import.py",
+      "sha256": "921b03c4113e0a2bdc300a3ef576960d8b75ef144f37d0d2991798176ae15fd5"
+    },
+    "full_training_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_full_calibrator_training.py",
+      "sha256": "8cd2c9267f356adba1127f8fb837138bbe6e39b5c3326300eeed9fdd5b524610"
+    },
+    "gate_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_calibrator_support_gate_preregistration.json",
+      "sha256": "24cf524ba8d11fec2e426d9f5f803f104117bc5f3be7b3cee38c940cd6eec8df"
+    },
+    "gate_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_support_gate.py",
+      "sha256": "a1eec55878a4be15a0d566f49e901a4566f660922c4bae60faeb94d07b0e5777"
+    },
+    "gate_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v12_calibrator_support_gate.py",
+      "sha256": "34b028f18a701687e4de47155022b5945afa199c61307fc75a03f528fc7ed9ff"
+    },
+    "runtime_observer": {
+      "hash_mode": "lf",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/observer/winner_v2_contract.py",
+      "sha256": "5c90994a24aa223c94f3a51927228e97000f6118c927561a87a3f2684dcf4889"
+    },
+    "training_primitives": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_calibrator_training.py",
+      "sha256": "f5736a357d73baedae2bba1d15254dd688bddf3761eb731d757a971783c77227"
+    },
+    "variable_configuration_domain": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v3_variable_configuration_replacement_preregistration.json",
+      "sha256": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b"
+    },
+    "workflow": {
+      "hash_mode": "lf",
+      "path": ".github/workflows/winner-v12-calibrator-support-gate.yml",
+      "sha256": "fb27d734b0e60436a7e845ae790740ad3ad72d4148d9b05fca5e325dbf3f9a51"
+    },
+    "zero_cell_checker": {
+      "hash_mode": "lf",
+      "path": "tools/check_winner_v12_calibrator_support_gate_cpu_contract.py",
+      "sha256": "d42b493f4ce956dc2838457277cdcfc93559670c0412a344cb310a5849c39957"
+    },
+    "zero_cell_cpu_contract": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_calibrator_support_gate_cpu_contract.json",
+      "sha256": "1b806adb2d3f43149ca07e9e3adb5206b154bc21e2e0feca12f22ae1f6a2fd80"
+    },
+    "zero_cell_cpu_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_calibrator_support_gate_cpu_contract_result.json",
+      "sha256": "e6b266ea04f90bbd1600ff49f39018d5f41b62c95f58dfdee068f8b6dc3f078a"
+    },
+    "zero_cell_importer": {
+      "hash_mode": "lf",
+      "path": "tools/import_winner_v12_calibrator_support_gate_cpu_contract_result.py",
+      "sha256": "123caaadef4e7d4661f5513865164ebf57bb541f4a3d3f5d9431abfefb96a078"
+    },
+    "zero_cell_importer_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v12_calibrator_support_gate_cpu_contract_result_import.py",
+      "sha256": "27023680388b6910d74bcc28bac3d11c57dd306444f04fa76450d032ccea7ced"
+    },
+    "zero_cell_workflow": {
+      "hash_mode": "lf",
+      "path": ".github/workflows/winner-v12-calibrator-support-gate-cpu-contract.yml",
+      "sha256": "529f8a69fa0d738b592952fdb1c7c8875409ab29deecb9a4d15a5efa30d4f60d"
+    }
+  },
+  "status": "PASS_WINNER_V12_CALIBRATOR_SUPPORT_GATE_LAUNCH_FROZEN",
+  "training_artifact": {
+    "artifact_zip_bytes": 29503744,
+    "artifact_zip_sha256": "705a728e3241d1ccf35ebf3c0e8f4871918a68744dbaf6e8694082883901d6ae",
+    "repository_attribution": {
+      "github_artifact_digest": "sha256:705a728e3241d1ccf35ebf3c0e8f4871918a68744dbaf6e8694082883901d6ae",
+      "github_artifact_id": 8488811942,
+      "github_artifact_name": "winner-v12-full-calibrator-training-29808732634",
+      "github_run_attempt": 1,
+      "github_run_head_sha": "30ba44b2461d0f11da77ebfe42ac30446682c22d",
+      "github_run_id": 29808732634,
+      "repository": "RobVanProd/open-duck-mini-rdkx5"
+    },
+    "result_lf_sha256": "f5ac4af40396419fda8e8a84b7f94f4fc9cc5a850b96614b39d36e13313609e8",
+    "training_result_sha256": "4fcb52ba9838cbc436cd2ac26b4fbc6b6cc986781cb57f6810101051a4676ae7"
+  },
+  "verified_checkpoints": {
+    "final": {
+      "checkpoint": {
+        "bytes": 122426,
+        "file": "winner_v12_calibrator_final.npz",
+        "sha256": "ee8f34386f1c7cc118ecf73f2fcdbdf32ec46c463921d5fbaeaae90185a051df"
+      },
+      "label": "final",
+      "onnx": {
+        "bytes": 54896,
+        "file": "winner_v12_calibrator_final.onnx",
+        "sha256": "e25a31f8e25d6e220d499af3d9ce7536096de7a279c0e63cfed799fb87833718"
+      },
+      "onnx_abi": {
+        "abi_exact": true,
+        "all_chain_outputs_finite": true,
+        "all_initializers_finite": true,
+        "inputs": [
+          {
+            "name": "obs",
+            "shape": [
+              1,
+              115
+            ]
+          },
+          {
+            "name": "previous_action",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_in",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "jax_onnx_at_most_1e_7": true,
+        "jax_onnx_max_abs_error": 7.450580596923828e-09,
+        "outputs": [
+          {
+            "name": "calibration_actions",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "previous_action_out",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_out",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "previous_action_out_equals_action_bit_exact": true,
+        "training_only_tensors_absent": true
+      },
+      "receipt": {
+        "bytes": 2083,
+        "file": "winner_v12_calibrator_final_receipt.json",
+        "sha256": "9c2213afc68ace5a5b5d11a033b059422897bd3cae090822af037794f0006f98"
+      },
+      "update": 100
+    },
+    "half": {
+      "checkpoint": {
+        "bytes": 105836,
+        "file": "winner_v12_calibrator_half.npz",
+        "sha256": "9eff1cae34b1794028bef849ba2128d47264242cc7d454b40743880e500ce3b9"
+      },
+      "label": "half",
+      "onnx": {
+        "bytes": 54896,
+        "file": "winner_v12_calibrator_half.onnx",
+        "sha256": "9a9b5090d9dbb74e1ee2f822dac9b5fd8deee09d1b13419b222389abd5d2684a"
+      },
+      "onnx_abi": {
+        "abi_exact": true,
+        "all_chain_outputs_finite": true,
+        "all_initializers_finite": true,
+        "inputs": [
+          {
+            "name": "obs",
+            "shape": [
+              1,
+              115
+            ]
+          },
+          {
+            "name": "previous_action",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_in",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "jax_onnx_at_most_1e_7": true,
+        "jax_onnx_max_abs_error": 7.450580596923828e-09,
+        "outputs": [
+          {
+            "name": "calibration_actions",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "previous_action_out",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_out",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "previous_action_out_equals_action_bit_exact": true,
+        "training_only_tensors_absent": true
+      },
+      "receipt": {
+        "bytes": 2079,
+        "file": "winner_v12_calibrator_half_receipt.json",
+        "sha256": "7b48dec60b886b273d381df8907ab95743f3e081dd9a772be1714c75c70647b6"
+      },
+      "update": 50
+    }
+  },
+  "zero_cell_evidence": {
+    "contract_lf_sha256": "1b806adb2d3f43149ca07e9e3adb5206b154bc21e2e0feca12f22ae1f6a2fd80",
+    "result_lf_sha256": "e6b266ea04f90bbd1600ff49f39018d5f41b62c95f58dfdee068f8b6dc3f078a"
+  }
+}
