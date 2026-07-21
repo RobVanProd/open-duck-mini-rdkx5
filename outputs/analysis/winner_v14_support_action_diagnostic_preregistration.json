@@ -5,7 +5,7 @@
     "robot_clearance": false
   },
   "causal_question": "Can a fixed reduction of the deployable calibration action preserve identifiable response context while preventing the observed negative-X early pitch exits across the complete unchanged support gate?",
-  "decision": "AUTHORIZE_ONE_CPU_ONLY_FIVE_SCALE_SUPPORT_DIAGNOSTIC",
+  "decision": "AUTHORIZE_ONE_HASH_CORRECTED_CPU_ONLY_FIVE_SCALE_SUPPORT_DIAGNOSTIC",
   "execution_now": {
     "locomotion_steps": 0,
     "main_cells": 0,
@@ -14,8 +14,9 @@
     "robot_or_rdk_access": 0
   },
   "formal_result": {
+    "cross_platform_lf_sha256": "ad6e0ea99cf0d96fbcd336d7984467efccdd430591201d6fd5242a328518ce05",
     "path": "outputs/analysis/winner_v13_support_controller_gate_result.json",
-    "sha256": "350bd845a27bf0257e2569f5bc1027a76f8e0fcb551cffff745cb43068f9ad2a"
+    "windows_raw_sha256": "350bd845a27bf0257e2569f5bc1027a76f8e0fcb551cffff745cb43068f9ad2a"
   },
   "frozen_screen": {
     "cells_per_checkpoint_scale": 124,
@@ -36,7 +37,13 @@
     ],
     "sensor_noise_seed_includes_scale": false
   },
-  "schema_version": "winner_v14.support_action_diagnostic_preregistration.v1",
+  "preexecution_correction": {
+    "failed_run_id": 29833400247,
+    "failed_run_main_cells": 0,
+    "failed_run_repeat_cells": 0,
+    "only_change": "formal result comparison uses LF-normalized SHA-256"
+  },
+  "schema_version": "winner_v14.support_action_diagnostic_preregistration.v2",
   "scoring_correction": {
     "constant_baseline": "square((target_raw - target_mean) / target_std)",
     "formal_v13_result_is_not_rewritten": true,
@@ -58,12 +65,12 @@
     "source_action": "the frozen checkpoint's final bounded 14-D ONNX action",
     "state_feedback": "final_action is the next previous_action"
   },
-  "source_manifest_sha256": "2158652eed373a5d6495caf22184f6e7ff2a0b5dfe0e2adf42c7bbfed50732ae",
+  "source_manifest_sha256": "ab00b8517041b303747aa84dd51a37ceab5bf6cf16dc67d90f17134fa8c864c7",
   "sources": {
     "builder": {
       "hash_mode": "lf",
       "path": "tools/build_winner_v14_support_action_diagnostic_preregistration.py",
-      "sha256": "3d2b8e155ca38592d289f068ce5d3c16558fcc8d6aa3bf8ec568dcb965d6c4fe"
+      "sha256": "f715d26a6095c915b7816bbcd445611ee433e30f013aefd5d30387c27a55a3e1"
     },
     "canonical_p30_fit": {
       "hash_mode": "lf",
@@ -110,6 +117,11 @@
       "path": "patches/winner_v13_normalized_calibrator_training.py",
       "sha256": "b57ae2823cff90bfd8d78317adb1dfe9607bcae069a4d985863144b4e12ec3ca"
     },
+    "preexecution_failure_attribution": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v14_support_action_preexecution_failure_attribution.json",
+      "sha256": "a24aff6a97c5a0318e2bece638615c37d30942813c7edad3ebaa9dca89cab8a3"
+    },
     "primitives": {
       "hash_mode": "lf",
       "path": "patches/winner_v14_support_action_diagnostic.py",
@@ -123,7 +135,7 @@
     "runner": {
       "hash_mode": "lf",
       "path": "tools/run_winner_v14_support_action_diagnostic.py",
-      "sha256": "ffa4e61dbea67b416ba6a4bf07168735f849b6eb5f747386bbcb6b8f0c55b249"
+      "sha256": "215e9b4d6644b124276a5599225b1d4023259c44a29293fdec7e41e58a7df01d"
     },
     "runtime_observer": {
       "hash_mode": "lf",
@@ -133,7 +145,7 @@
     "tests": {
       "hash_mode": "lf",
       "path": "tests/test_winner_v14_support_action_diagnostic.py",
-      "sha256": "8d5e20904246f510284c4745ef7c4a8354c0bea895acd05c3a6097a32d5ce304"
+      "sha256": "032d1243235794882ffa03482a6751bda496ff2bfe0e76a8b9edca6eef6fb89e"
     },
     "training_result": {
       "hash_mode": "lf",
@@ -148,10 +160,10 @@
     "workflow": {
       "hash_mode": "lf",
       "path": ".github/workflows/winner-v14-support-action-diagnostic.yml",
-      "sha256": "45a2679d46c294c15642d88c5dbefbfd7f1efe778fd0a4db2bfa6ae72fc16983"
+      "sha256": "636f714e2247b37b2f999c8cef496feaaffdf23c94443cbf820adc4f9bf387c1"
     }
   },
-  "status": "PREREGISTERED_WINNER_V14_SUPPORT_ACTION_DIAGNOSTIC",
+  "status": "PREREGISTERED_WINNER_V14_SUPPORT_ACTION_DIAGNOSTIC_V2",
   "training_artifact": {
     "final": {
       "graph": {

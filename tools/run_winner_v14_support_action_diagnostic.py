@@ -34,8 +34,8 @@ V13_GATE_PREREGISTRATION = (
 )
 TRAINING_RESULT = ANALYSIS / "winner_v13_support_controller_training_result.json"
 DOMAIN = ANALYSIS / "winner_v3_variable_configuration_replacement_preregistration.json"
-EXPECTED_FORMAL_RESULT_SHA256 = (
-    "350bd845a27bf0257e2569f5bc1027a76f8e0fcb551cffff745cb43068f9ad2a"
+EXPECTED_FORMAL_RESULT_LF_SHA256 = (
+    "ad6e0ea99cf0d96fbcd336d7984467efccdd430591201d6fd5242a328518ce05"
 )
 CHECKPOINTS = (("half", 50), ("final", 100))
 TICKS = 250
@@ -58,11 +58,11 @@ def canonical_sha256(value: Any) -> str:
 def validate_preregistration(value: Mapping[str, Any]) -> None:
     if (
         value.get("schema_version")
-        != "winner_v14.support_action_diagnostic_preregistration.v1"
+        != "winner_v14.support_action_diagnostic_preregistration.v2"
         or value.get("status")
-        != "PREREGISTERED_WINNER_V14_SUPPORT_ACTION_DIAGNOSTIC"
+        != "PREREGISTERED_WINNER_V14_SUPPORT_ACTION_DIAGNOSTIC_V2"
         or value.get("decision")
-        != "AUTHORIZE_ONE_CPU_ONLY_FIVE_SCALE_SUPPORT_DIAGNOSTIC"
+        != "AUTHORIZE_ONE_HASH_CORRECTED_CPU_ONLY_FIVE_SCALE_SUPPORT_DIAGNOSTIC"
         or value.get("execution_now")
         != {
             "optimizer_updates": 0,
@@ -356,7 +356,7 @@ def main() -> int:
     validate_preregistration(preregistration)
     formal = json.loads(FORMAL_RESULT.read_text(encoding="utf-8"))
     if (
-        sha256(FORMAL_RESULT) != EXPECTED_FORMAL_RESULT_SHA256
+        lf_sha256(FORMAL_RESULT) != EXPECTED_FORMAL_RESULT_LF_SHA256
         or formal.get("status") != "HOLD_WINNER_V13_SUPPORT_CONTROLLER_GATE"
         or formal.get("decision") != "DO_NOT_TRAIN_RESPONSE_CONDITIONED_LOCOMOTION"
     ):

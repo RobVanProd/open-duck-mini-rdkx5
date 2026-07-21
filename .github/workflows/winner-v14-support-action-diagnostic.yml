@@ -64,7 +64,7 @@ jobs:
 
           path = Path("outputs/analysis/winner_v14_support_action_diagnostic_preregistration.json")
           value = json.loads(path.read_text())
-          if value["status"] != "PREREGISTERED_WINNER_V14_SUPPORT_ACTION_DIAGNOSTIC":
+          if value["status"] != "PREREGISTERED_WINNER_V14_SUPPORT_ACTION_DIAGNOSTIC_V2":
               raise SystemExit("support-action diagnostic is not preregistered")
           if value["execution_now"] != {
               "optimizer_updates": 0,
@@ -306,4 +306,3 @@ jobs:
           path: |
             /tmp/winner-v14-support-action-diagnostic-result.json
             /tmp/winner-v14-support-action-diagnostic-result.sha256
-

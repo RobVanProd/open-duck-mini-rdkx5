@@ -21,6 +21,9 @@ TRAINING = ANALYSIS / "winner_v13_support_controller_training_result.json"
 EXPECTED_FORMAL_SHA256 = (
     "350bd845a27bf0257e2569f5bc1027a76f8e0fcb551cffff745cb43068f9ad2a"
 )
+EXPECTED_FORMAL_LF_SHA256 = (
+    "ad6e0ea99cf0d96fbcd336d7984467efccdd430591201d6fd5242a328518ce05"
+)
 SCALES = [0.0, 0.25, 0.5, 0.75, 1.0]
 SOURCES = {
     "builder": Path(
@@ -32,6 +35,9 @@ SOURCES = {
     "workflow": Path(".github/workflows/winner-v14-support-action-diagnostic.yml"),
     "hold_attribution": Path(
         "outputs/analysis/winner_v13_support_controller_hold_attribution.json"
+    ),
+    "preexecution_failure_attribution": Path(
+        "outputs/analysis/winner_v14_support_action_preexecution_failure_attribution.json"
     ),
     "formal_gate_result": Path(
         "outputs/analysis/winner_v13_support_controller_gate_result.json"
@@ -93,10 +99,16 @@ def main() -> int:
 
     formal = json.loads(FORMAL.read_text(encoding="utf-8"))
     attribution = json.loads(ATTRIBUTION.read_text(encoding="utf-8"))
+    preexecution = json.loads(
+        (ANALYSIS / "winner_v14_support_action_preexecution_failure_attribution.json").read_text(
+            encoding="utf-8"
+        )
+    )
     v13_prereg = json.loads(V13_PREREG.read_text(encoding="utf-8"))
     training = json.loads(TRAINING.read_text(encoding="utf-8"))
     if (
         sha256(FORMAL) != EXPECTED_FORMAL_SHA256
+        or lf_sha256(FORMAL) != EXPECTED_FORMAL_LF_SHA256
         or formal.get("status") != "HOLD_WINNER_V13_SUPPORT_CONTROLLER_GATE"
         or attribution.get("status")
         != "PASS_WINNER_V13_SUPPORT_CONTROLLER_HOLD_ATTRIBUTION"
@@ -108,6 +120,11 @@ def main() -> int:
         is not False
         or training.get("status")
         != "PASS_WINNER_V13_SUPPORT_CONTROLLER_TRAINING_ARTIFACT"
+        or preexecution.get("status")
+        != "INVALID_WINNER_V14_SUPPORT_ACTION_DIAGNOSTIC_PREEXECUTION"
+        or preexecution.get("decision")
+        != "CORRECT_ONLY_FORMAL_RESULT_HASH_MODE_AND_FRESHLY_PREREGISTER"
+        or preexecution.get("execution", {}).get("main_cells") != 0
     ):
         raise ValueError("Winner-v14 diagnostic source evidence changed")
     old_gate = v13_prereg["future_frozen_support_gate"]
@@ -126,9 +143,9 @@ def main() -> int:
         for name, path in SOURCES.items()
     }
     payload = {
-        "schema_version": "winner_v14.support_action_diagnostic_preregistration.v1",
-        "status": "PREREGISTERED_WINNER_V14_SUPPORT_ACTION_DIAGNOSTIC",
-        "decision": "AUTHORIZE_ONE_CPU_ONLY_FIVE_SCALE_SUPPORT_DIAGNOSTIC",
+        "schema_version": "winner_v14.support_action_diagnostic_preregistration.v2",
+        "status": "PREREGISTERED_WINNER_V14_SUPPORT_ACTION_DIAGNOSTIC_V2",
+        "decision": "AUTHORIZE_ONE_HASH_CORRECTED_CPU_ONLY_FIVE_SCALE_SUPPORT_DIAGNOSTIC",
         "causal_question": (
             "Can a fixed reduction of the deployable calibration action preserve "
             "identifiable response context while preventing the observed negative-X "
@@ -200,7 +217,14 @@ def main() -> int:
         },
         "formal_result": {
             "path": str(FORMAL.relative_to(ROOT)).replace("\\", "/"),
-            "sha256": EXPECTED_FORMAL_SHA256,
+            "windows_raw_sha256": EXPECTED_FORMAL_SHA256,
+            "cross_platform_lf_sha256": EXPECTED_FORMAL_LF_SHA256,
+        },
+        "preexecution_correction": {
+            "failed_run_id": 29833400247,
+            "failed_run_main_cells": 0,
+            "failed_run_repeat_cells": 0,
+            "only_change": "formal result comparison uses LF-normalized SHA-256",
         },
         "training_artifact": v13_prereg["training_artifact"],
         "execution_now": {

@@ -78,12 +78,18 @@ def test_transform_reapplies_absolute_and_rate_bounds() -> None:
 
 def test_preregistration_freezes_full_population_and_no_training() -> None:
     value = json.loads(PREREG.read_text(encoding="utf-8"))
-    assert value["status"] == "PREREGISTERED_WINNER_V14_SUPPORT_ACTION_DIAGNOSTIC"
+    assert value["status"] == "PREREGISTERED_WINNER_V14_SUPPORT_ACTION_DIAGNOSTIC_V2"
     assert value["frozen_screen"]["scales"] == [0.0, 0.25, 0.5, 0.75, 1.0]
     assert value["frozen_screen"]["main_cells"] == 1240
     assert value["frozen_screen"]["repeat_cells"] == 320
     assert value["selection_rule"]["winner"] == "largest complete-pass scale"
     assert value["execution_now"]["optimizer_updates"] == 0
+    assert value["preexecution_correction"] == {
+        "failed_run_id": 29833400247,
+        "failed_run_main_cells": 0,
+        "failed_run_repeat_cells": 0,
+        "only_change": "formal result comparison uses LF-normalized SHA-256",
+    }
     assert value["authority"]["robot_clearance"] is False
 
 
