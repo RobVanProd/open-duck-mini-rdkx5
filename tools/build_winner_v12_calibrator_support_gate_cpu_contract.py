@@ -63,6 +63,18 @@ SOURCE_PATHS = {
     "artifact_check_importer": Path(
         "tools/import_winner_v12_full_calibrator_training_artifact_check.py"
     ),
+    "zero_cell_result_importer": Path(
+        "tools/import_winner_v12_calibrator_support_gate_cpu_contract_result.py"
+    ),
+    "zero_cell_result_importer_tests": Path(
+        "tests/test_winner_v12_calibrator_support_gate_cpu_contract_result_import.py"
+    ),
+    "formal_gate_launch_builder": Path(
+        "tools/build_winner_v12_calibrator_support_gate_launch.py"
+    ),
+    "formal_gate_launch_builder_tests": Path(
+        "tests/test_winner_v12_calibrator_support_gate_launch.py"
+    ),
     "support_gate_preregistration": Path(
         "outputs/analysis/winner_v12_calibrator_support_gate_preregistration.json"
     ),

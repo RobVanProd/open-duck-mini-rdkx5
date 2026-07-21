@@ -58,6 +58,33 @@ def valid_zero_cell_result() -> dict:
             for label in ("half", "final")
         ],
         "transport_primitives": {"all_exact": True},
+        "repository_attribution": {
+            "repository": "RobVanProd/open-duck-mini-rdkx5",
+            "github_run_id": 42,
+            "github_run_attempt": 1,
+            "github_run_head_sha": "b" * 40,
+            "github_artifact_id": 73,
+            "github_artifact_name": (
+                "winner-v12-calibrator-support-gate-cpu-contract-42"
+            ),
+            "github_artifact_digest": f"sha256:{'c' * 64}",
+            "artifact_zip_sha256": "c" * 64,
+            "artifact_zip_bytes": 1,
+            "raw_result_sha256": "d" * 64,
+            "raw_result_receipt_sha256": "e" * 64,
+            "cpu_contract_path": (
+                "outputs/analysis/"
+                "winner_v12_calibrator_support_gate_cpu_contract.json"
+            ),
+            "cpu_contract_lf_sha256": "a" * 64,
+            "workflow_path": (
+                ".github/workflows/"
+                "winner-v12-calibrator-support-gate-cpu-contract.yml"
+            ),
+            "workflow_lf_sha256": "f" * 64,
+            "checker_lf_sha256": "1" * 64,
+            "importer_lf_sha256": "2" * 64,
+        },
     }
 
 
@@ -85,6 +112,14 @@ def test_launch_rejects_zero_cell_authority_or_graph_drift(
         target = target[key]
     target[path[-1]] = value
     with pytest.raises(ValueError):
+        builder.validate_zero_cell_result(result, "a" * 64)
+
+
+def test_launch_requires_zero_cell_repository_attribution() -> None:
+    builder = load_builder()
+    result = valid_zero_cell_result()
+    result.pop("repository_attribution")
+    with pytest.raises(ValueError, match="repository attribution"):
         builder.validate_zero_cell_result(result, "a" * 64)
 
 

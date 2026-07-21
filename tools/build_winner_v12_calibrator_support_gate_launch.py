@@ -39,6 +39,15 @@ STATIC_SOURCES = {
     "zero_cell_checker": Path(
         "tools/check_winner_v12_calibrator_support_gate_cpu_contract.py"
     ),
+    "zero_cell_importer": Path(
+        "tools/import_winner_v12_calibrator_support_gate_cpu_contract_result.py"
+    ),
+    "zero_cell_importer_tests": Path(
+        "tests/test_winner_v12_calibrator_support_gate_cpu_contract_result_import.py"
+    ),
+    "zero_cell_workflow": Path(
+        ".github/workflows/winner-v12-calibrator-support-gate-cpu-contract.yml"
+    ),
     "cpu_smoke": Path("tools/run_winner_v12_calibrator_cpu_smoke.py"),
     "full_training_runner": Path("tools/run_winner_v12_full_calibrator_training.py"),
     "training_primitives": Path("patches/winner_v12_calibrator_training.py"),
@@ -66,8 +75,68 @@ def canonical_sha256(value: Any) -> str:
     ).hexdigest()
 
 
+def validate_zero_cell_repository_attribution(value: Any) -> None:
+    expected_fields = {
+        "artifact_zip_bytes",
+        "artifact_zip_sha256",
+        "checker_lf_sha256",
+        "cpu_contract_lf_sha256",
+        "cpu_contract_path",
+        "github_artifact_digest",
+        "github_artifact_id",
+        "github_artifact_name",
+        "github_run_attempt",
+        "github_run_head_sha",
+        "github_run_id",
+        "importer_lf_sha256",
+        "raw_result_receipt_sha256",
+        "raw_result_sha256",
+        "repository",
+        "workflow_lf_sha256",
+        "workflow_path",
+    }
+    if not isinstance(value, dict) or set(value) != expected_fields:
+        raise ValueError("zero-cell repository attribution schema changed")
+    run_id = value["github_run_id"]
+    if (
+        value["repository"] != "RobVanProd/open-duck-mini-rdkx5"
+        or int(run_id) <= 0
+        or value["github_run_attempt"] != 1
+        or len(str(value["github_run_head_sha"])) != 40
+        or any(character not in "0123456789abcdef" for character in value["github_run_head_sha"])
+        or int(value["github_artifact_id"]) <= 0
+        or value["github_artifact_name"]
+        != f"winner-v12-calibrator-support-gate-cpu-contract-{run_id}"
+        or value["github_artifact_digest"]
+        != f"sha256:{value['artifact_zip_sha256']}"
+        or int(value["artifact_zip_bytes"]) <= 0
+        or value["cpu_contract_path"]
+        != "outputs/analysis/winner_v12_calibrator_support_gate_cpu_contract.json"
+        or value["workflow_path"]
+        != ".github/workflows/winner-v12-calibrator-support-gate-cpu-contract.yml"
+    ):
+        raise ValueError("zero-cell repository attribution changed")
+    for key in (
+        "artifact_zip_sha256",
+        "checker_lf_sha256",
+        "cpu_contract_lf_sha256",
+        "importer_lf_sha256",
+        "raw_result_receipt_sha256",
+        "raw_result_sha256",
+        "workflow_lf_sha256",
+    ):
+        value_text = str(value[key])
+        if len(value_text) != 64 or any(
+            character not in "0123456789abcdef" for character in value_text
+        ):
+            raise ValueError(f"zero-cell {key} SHA-256 changed")
+
+
 def validate_zero_cell_result(
-    result: Mapping[str, Any], cpu_contract_lf_sha256: str
+    result: Mapping[str, Any],
+    cpu_contract_lf_sha256: str,
+    *,
+    require_repository_attribution: bool = True,
 ) -> None:
     if (
         result.get("schema_version")
@@ -131,6 +200,13 @@ def validate_zero_cell_result(
         or not all(primitives.values())
     ):
         raise ValueError("zero-cell transport proof changed")
+    attribution = result.get("repository_attribution")
+    if require_repository_attribution:
+        validate_zero_cell_repository_attribution(attribution)
+        if attribution["cpu_contract_lf_sha256"] != cpu_contract_lf_sha256:
+            raise ValueError("zero-cell attribution contract hash changed")
+    elif attribution is not None:
+        raise ValueError("raw zero-cell result unexpectedly has repository attribution")
 
 
 def relative_repo_path(path: Path) -> Path:
