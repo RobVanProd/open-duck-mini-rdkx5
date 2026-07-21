@@ -28,6 +28,7 @@
     "population_exact": true,
     "population_has_com_x_neg": true,
     "population_has_no_heldout": true,
+    "prior_attempt_was_preexecution_only": true,
     "protected_policies_not_inferred": true,
     "single_run_workflow_frozen": true,
     "software_versions_fail_closed": true,
@@ -165,7 +166,7 @@
     "protected policies and the untrained locomotion adapter are bit-exact and unused",
     "exported calibrator has exact three-input/three-output ABI, no training-only tensors, and 250-tick JAX/ONNX error <=1e-7"
   ],
-  "schema_version": "winner_v12.calibrator_cpu_smoke_contract.v1",
+  "schema_version": "winner_v12.calibrator_cpu_smoke_contract.v2",
   "simulator": {
     "asset_integrity": "the canonical composition receipt identity and every changed-file raw hash are pinned; git status must contain exactly those files plus the two reviewed XMLs and receipt, so mesh and other compiled assets remain clean at the pinned commit",
     "backend": "classic MuJoCo CPU double-precision physics",
@@ -292,7 +293,7 @@
     "builder": {
       "hash_mode": "lf",
       "path": "tools/build_winner_v12_calibrator_cpu_smoke_contract.py",
-      "sha256": "41641a6da5bd15e66e9c4bc10ea748a716833bc0f02eaa32e0e5912abc2f8eba"
+      "sha256": "de5add11ec2f4cd1f4bee3b880cbaa250f9a714ece6e6ce7ae62332ef04e2a6f"
     },
     "calibrator_preregistration": {
       "hash_mode": "lf",
@@ -323,6 +324,11 @@
       "hash_mode": "lf",
       "path": "tools/import_winner_v12_calibrator_cpu_smoke.py",
       "sha256": "66b08504a51043c9a597aaebd4a3a094631da84d0aac23592fdba5f749d0575f"
+    },
+    "invalid_preexecution_attempt": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_calibrator_cpu_smoke_preflight_failure_attribution.json",
+      "sha256": "df41a65c3c664116dfd1067a92f9c1fb9d1d95a706afd3751c5475aa2599f09c"
     },
     "mechanics_preregistration": {
       "hash_mode": "lf",
@@ -357,7 +363,7 @@
     "runner": {
       "hash_mode": "lf",
       "path": "tools/run_winner_v12_calibrator_cpu_smoke.py",
-      "sha256": "219dc028ae5b6dbeb439386402ead8a51fb2c57714e39285e7136259d33e74fb"
+      "sha256": "b6ad53430f3f7cca3a91a90f72dab585cb05e3e2f74be2241af3fd9b6ee7ce87"
     },
     "runtime_observation_map": {
       "hash_mode": "lf",
@@ -382,7 +388,7 @@
     "tests": {
       "hash_mode": "lf",
       "path": "tests/test_winner_v12_calibrator_cpu_smoke_contract.py",
-      "sha256": "e17c2676c6b9efc88aac38656c874929e34c93422a7511771290b0241b16024d"
+      "sha256": "1f4aaf26d2e10537d0904da5aec5b71e42e0d543bc07b38acd8b835185283c66"
     },
     "training_primitives": {
       "hash_mode": "lf",
@@ -416,6 +422,14 @@
     }
   },
   "status": "PASS_WINNER_V12_CALIBRATOR_CPU_SMOKE_CONTRACT",
+  "superseded_preexecution_attempt": {
+    "attribution": "outputs/analysis/winner_v12_calibrator_cpu_smoke_preflight_failure_attribution.json",
+    "calibrator_optimizer_updates": 0,
+    "result_artifact_created": false,
+    "run_id": 29801884782,
+    "smoke_physics_steps": 0,
+    "status": "INVALID_PREEXECUTION_PORCELAIN_PARSER_FAILURE"
+  },
   "support_logic": {
     "both_contacts_required": true,
     "current_nm_per_a": 0.784532,

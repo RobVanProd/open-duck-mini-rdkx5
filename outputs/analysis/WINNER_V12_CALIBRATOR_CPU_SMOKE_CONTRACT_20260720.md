@@ -2,6 +2,7 @@
 
 - Status: `PASS_WINNER_V12_CALIBRATOR_CPU_SMOKE_CONTRACT`
 - Decision: `AUTHORIZE_ONE_WINNER_V12_CPU_SMOKE_ONLY`
+- Superseded attempt: run `29801884782` was invalid before simulation (0 optimizer updates, 0 smoke physics steps)
 - Execution: one CPU-only 16-environment × 250-tick smoke
 - Optimizer: exactly one Stage-1 update and one Stage-2 update
 - Formal support cells: `0`

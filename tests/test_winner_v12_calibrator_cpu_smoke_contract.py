@@ -28,12 +28,24 @@ def function_arguments(path: Path, name: str) -> list[str]:
     raise AssertionError(f"missing function: {name}")
 
 
+def load_pure_function(path: Path, name: str):
+    module = ast.parse(path.read_text(encoding="utf-8"))
+    for node in module.body:
+        if isinstance(node, ast.FunctionDef) and node.name == name:
+            namespace: dict = {}
+            fragment = ast.Module(body=[node], type_ignores=[])
+            exec(compile(fragment, str(path), "exec"), namespace)
+            return namespace[name]
+    raise AssertionError(f"missing function: {name}")
+
+
 def load_contract() -> dict:
     return json.loads(CONTRACT.read_text(encoding="utf-8"))
 
 
 def test_contract_is_prospective_and_cpu_smoke_only() -> None:
     contract = load_contract()
+    assert contract["schema_version"] == "winner_v12.calibrator_cpu_smoke_contract.v2"
     assert contract["status"] == "PASS_WINNER_V12_CALIBRATOR_CPU_SMOKE_CONTRACT"
     assert contract["decision"] == "AUTHORIZE_ONE_WINNER_V12_CPU_SMOKE_ONLY"
     assert contract["authority"] == {
@@ -44,6 +56,14 @@ def test_contract_is_prospective_and_cpu_smoke_only() -> None:
         "optimizer_updates_authorized": {"stage1": 1, "stage2": 1},
         "rdkx5_robot_serial_gpio_i2c_torque_motion": False,
         "robot_clearance": False,
+    }
+    assert contract["superseded_preexecution_attempt"] == {
+        "run_id": 29801884782,
+        "status": "INVALID_PREEXECUTION_PORCELAIN_PARSER_FAILURE",
+        "calibrator_optimizer_updates": 0,
+        "smoke_physics_steps": 0,
+        "result_artifact_created": False,
+        "attribution": "outputs/analysis/winner_v12_calibrator_cpu_smoke_preflight_failure_attribution.json",
     }
 
 
@@ -227,6 +247,21 @@ def test_runner_fails_closed_on_assets_versions_and_contract_line_endings() -> N
     assert 'python-version: "3.12.13"' in workflow
     assert "fetch-depth: 0" in workflow
     assert "matrix:" not in workflow
+
+
+def test_porcelain_parser_preserves_first_status_path_character() -> None:
+    source = RUNNER.read_text(encoding="utf-8")
+    assert 'completed.stdout.rstrip("\\r\\n")' in source
+    parser = load_pure_function(RUNNER, "porcelain_paths")
+    assert parser(
+        " M playground/common/rewards.py\n"
+        "?? playground/common/new_file.py\n"
+        "R  old_name.py -> playground/common/renamed.py\n"
+    ) == {
+        "playground/common/rewards.py",
+        "playground/common/new_file.py",
+        "playground/common/renamed.py",
+    }
 
 
 def test_nonfinite_simulator_and_onnx_values_fail_closed() -> None:

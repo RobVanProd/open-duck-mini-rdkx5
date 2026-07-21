@@ -22,6 +22,10 @@ DOMAIN_PREREG = (
     ROOT
     / "outputs/analysis/winner_v3_variable_configuration_replacement_preregistration.json"
 )
+PREEXECUTION_ATTRIBUTION = (
+    ROOT
+    / "outputs/analysis/winner_v12_calibrator_cpu_smoke_preflight_failure_attribution.json"
+)
 TRAINING = ROOT / "patches/winner_v12_calibrator_training.py"
 RUNNER = ROOT / "tools/run_winner_v12_calibrator_cpu_smoke.py"
 WORKFLOW = ROOT / ".github/workflows/winner-v12-calibrator-cpu-smoke.yml"
@@ -63,6 +67,10 @@ SOURCE_PATHS = {
     ),
     "current_gate": (
         "outputs/analysis/winner_v3_current_gate_application_contract.json",
+        "lf",
+    ),
+    "invalid_preexecution_attempt": (
+        "outputs/analysis/winner_v12_calibrator_cpu_smoke_preflight_failure_attribution.json",
         "lf",
     ),
     "p30_fit": (
@@ -175,6 +183,7 @@ def source_manifest() -> dict[str, dict[str, str]]:
 def main() -> int:
     preregistration = json.loads(CALIBRATOR_PREREG.read_text(encoding="utf-8"))
     domain = json.loads(DOMAIN_PREREG.read_text(encoding="utf-8"))
+    preexecution = json.loads(PREEXECUTION_ATTRIBUTION.read_text(encoding="utf-8"))
     population = domain["evaluation_matrix"]["fixed_anchors"][:16]
     population_ids = [row["id"] for row in population]
     training_source = TRAINING.read_text(encoding="utf-8")
@@ -211,6 +220,17 @@ def main() -> int:
             "optimizer_steps_now"
         ]
         == 0,
+        "prior_attempt_was_preexecution_only": (
+            preexecution.get("status")
+            == "INVALID_PREEXECUTION_PORCELAIN_PARSER_FAILURE"
+            and preexecution.get("decision")
+            == "AUTHORIZE_PROSPECTIVE_CORRECTED_PREFLIGHT_CONTRACT_ONLY"
+            and preexecution["github"]["run_id"] == 29801884782
+            and preexecution["execution"]["calibrator_optimizer_updates"]
+            == {"stage1": 0, "stage2": 0}
+            and preexecution["execution"]["smoke_physics_steps"] == 0
+            and preexecution["execution"]["smoke_result_written"] is False
+        ),
         "mechanics_result_passed": preregistration["why_this_follows_evidence"][
             "winner_v12_mechanics_pass"
         ]
@@ -277,6 +297,8 @@ def main() -> int:
         ),
         "playground_assets_fail_closed": (
             "def validate_playground_tree(" in runner_source
+            and "def porcelain_paths(" in runner_source
+            and 'completed.stdout.rstrip("\\r\\n")' in runner_source
             and "PLAYGROUND_RECEIPT_LF_SHA256" in runner_source
             and '"status", "--porcelain=v1"' in runner_source
             and "observed_paths != expected_paths" in runner_source
@@ -308,7 +330,7 @@ def main() -> int:
     if failed:
         raise ValueError(f"Winner-v12 smoke contract checks failed: {failed}")
     payload = {
-        "schema_version": "winner_v12.calibrator_cpu_smoke_contract.v1",
+        "schema_version": "winner_v12.calibrator_cpu_smoke_contract.v2",
         "status": "PASS_WINNER_V12_CALIBRATOR_CPU_SMOKE_CONTRACT",
         "decision": "AUTHORIZE_ONE_WINNER_V12_CPU_SMOKE_ONLY",
         "causal_scope": (
@@ -316,6 +338,14 @@ def main() -> int:
             "deployable response evidence, preserve stage isolation, save/restore, "
             "and export the reviewed graph without privileged state"
         ),
+        "superseded_preexecution_attempt": {
+            "run_id": 29801884782,
+            "status": "INVALID_PREEXECUTION_PORCELAIN_PARSER_FAILURE",
+            "calibrator_optimizer_updates": 0,
+            "smoke_physics_steps": 0,
+            "result_artifact_created": False,
+            "attribution": "outputs/analysis/winner_v12_calibrator_cpu_smoke_preflight_failure_attribution.json",
+        },
         "smoke_population": {
             "root_seed": 120120,
             "environment_count": 16,
@@ -520,6 +550,7 @@ def main() -> int:
         "",
         f"- Status: `{payload['status']}`",
         f"- Decision: `{payload['decision']}`",
+        "- Superseded attempt: run `29801884782` was invalid before simulation (0 optimizer updates, 0 smoke physics steps)",
         "- Execution: one CPU-only 16-environment × 250-tick smoke",
         "- Optimizer: exactly one Stage-1 update and one Stage-2 update",
         "- Formal support cells: `0`",

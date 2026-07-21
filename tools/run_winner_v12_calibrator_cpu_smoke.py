@@ -166,7 +166,7 @@ def git_output(root: Path, *arguments: str) -> str:
     )
     if completed.returncode:
         raise RuntimeError(completed.stdout)
-    return completed.stdout.strip()
+    return completed.stdout.rstrip("\r\n")
 
 
 def git_bytes(root: Path, *arguments: str) -> bytes:
@@ -180,6 +180,18 @@ def git_bytes(root: Path, *arguments: str) -> bytes:
     if completed.returncode:
         raise RuntimeError(completed.stderr.decode(errors="replace"))
     return completed.stdout
+
+
+def porcelain_paths(output: str) -> set[str]:
+    paths: set[str] = set()
+    for line in output.rstrip("\r\n").splitlines():
+        if len(line) < 4:
+            raise ValueError(f"invalid git porcelain status line: {line!r}")
+        path = line[3:]
+        if " -> " in path:
+            path = path.split(" -> ", 1)[1]
+        paths.add(path.replace("\\", "/"))
+    return paths
 
 
 def validate_playground_tree(root: Path) -> dict[str, Any]:
@@ -209,13 +221,7 @@ def validate_playground_tree(root: Path) -> dict[str, Any]:
             if observed != expected:
                 raise ValueError(f"Winner-v10 XML drift: {relative}")
             checked[relative] = observed
-    status_lines = git_output(root, "status", "--porcelain=v1").splitlines()
-    observed_paths = set()
-    for line in status_lines:
-        path = line[3:]
-        if " -> " in path:
-            path = path.split(" -> ", 1)[1]
-        observed_paths.add(path.replace("\\", "/"))
+    observed_paths = porcelain_paths(git_output(root, "status", "--porcelain=v1"))
     expected_paths = set(composed_hashes) | {receipt_path.name}
     for relative, expected in overridden.items():
         head_bytes = git_bytes(root, "show", f"{CONTROL_COMMIT}:{relative}")

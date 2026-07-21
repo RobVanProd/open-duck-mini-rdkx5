@@ -1,0 +1,57 @@
+{
+  "artifact": {
+    "archive_digest": "sha256:b4d621f444c07d865e9b7879f981d51d67973510e85379ced47655f2f4eb1d72",
+    "artifact_id": 8484040446,
+    "files": {
+      "winner-v10-contract.json": {
+        "bytes": 5353,
+        "sha256": "bc4d56570f7c9a270770226c947239b54548cc4e8fd2128581cf1c4c13c724db"
+      },
+      "winner-v10-contract.sha256": {
+        "bytes": 96,
+        "sha256": "85c64102fe47531d03d943fdf8609bfe48376cc7118fdc320f1ced30025b27b0"
+      }
+    },
+    "name": "winner-v12-calibrator-cpu-smoke-29801884782",
+    "smoke_checkpoint_present": false,
+    "smoke_onnx_present": false,
+    "smoke_raw_result_present": false
+  },
+  "attribution": {
+    "actual_first_line_after_git_output": "M playground/common/rewards.py",
+    "actual_parsed_path": "layground/common/rewards.py",
+    "cause": "git_output used str.strip(), removing the first porcelain line's required leading status-column space before validate_playground_tree sliced from offset 3",
+    "expected_first_line": " M playground/common/rewards.py",
+    "expected_parsed_path": "playground/common/rewards.py",
+    "failure_class": "preexecution_string_parser_false_positive",
+    "github_error": "Playground tree contains unexpected dirty/untracked files: missing=['playground/common/rewards.py'], extra=['layground/common/rewards.py']"
+  },
+  "authority": {
+    "formal_support_cells": 0,
+    "full_calibrator_training": false,
+    "locomotion_behavior_evaluation": false,
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false
+  },
+  "decision": "AUTHORIZE_PROSPECTIVE_CORRECTED_PREFLIGHT_CONTRACT_ONLY",
+  "execution": {
+    "calibrator_optimizer_updates": {
+      "stage1": 0,
+      "stage2": 0
+    },
+    "failure_location": "validate_playground_tree after exact package-version import/validation but before training-parameter initialization, MuJoCo model construction, rollout, optimizer update, checkpoint, or ONNX export",
+    "protected_policy_reconstruction_completed": true,
+    "smoke_physics_steps": 0,
+    "smoke_result_written": false
+  },
+  "github": {
+    "commit": "534a0f88b080fa440b60ee3605e2be7cdf5aff86",
+    "conclusion": "failure",
+    "job_id": 88544400905,
+    "run_id": 29801884782,
+    "url": "https://github.com/RobVanProd/open-duck-mini-rdkx5/actions/runs/29801884782",
+    "workflow": "Winner v12 calibrator CPU smoke"
+  },
+  "schema_version": "winner_v12.calibrator_cpu_smoke_preflight_failure_attribution.v1",
+  "status": "INVALID_PREEXECUTION_PORCELAIN_PARSER_FAILURE"
+}
