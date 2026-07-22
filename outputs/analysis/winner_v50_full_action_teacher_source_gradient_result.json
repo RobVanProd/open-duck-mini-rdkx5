@@ -1,0 +1,227 @@
+{
+  "authority": {
+    "one_update_authorized": false,
+    "pass_authorizes_only": "one separately preregistered CPU-only one-update proof",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false,
+    "training_authorized": false
+  },
+  "checks": {
+    "action_boundary_exact": true,
+    "all_losses_metrics_gradients_finite": true,
+    "anchor_elements_exact": true,
+    "cpu_only_environment_exact": true,
+    "default_off_old_gradient_bit_exact": true,
+    "deployable_graph_exports_zero": true,
+    "episode_receipts_exact": true,
+    "exact_22_training_teacher_configuration_plant_rows": true,
+    "exact_80_episode_rollout_at_update_352": true,
+    "formal_support_cells_zero": true,
+    "full_mask_adds_all_valid_nonpitch_elements": true,
+    "full_mask_preserves_pitch_mask_bit_exact": true,
+    "full_selected_elements_exact": true,
+    "full_teacher_gradients_policy_only": true,
+    "heldout_teacher_rows_excluded": true,
+    "locomotion_training_steps_zero": true,
+    "new_direct_composition_at_most_4e_6": false,
+    "objective_transition_rule_exact": true,
+    "old_direct_composition_at_most_4e_6": false,
+    "old_selected_elements_exact": true,
+    "old_teacher_gradients_policy_only": true,
+    "optimizer_updates_zero": true,
+    "parameters_and_optimizer_unchanged": true,
+    "pitch_margin_reward_exact": true,
+    "ppo_hidden_replay_exact": true,
+    "predictor_successors_present": true,
+    "replacement_changes_all_policy_gradient_leaves": true,
+    "replacement_preserves_nonpolicy_gradients_bit_exact": true,
+    "robot_or_rdk_access_zero": true,
+    "transition_arrays_unchanged": true,
+    "v22_teacher_snapshot_exact": true,
+    "v46_final_source_snapshot_graph_exact": true
+  },
+  "decision": "DO_NOT_UPDATE_FULL_ACTION_TEACHER_POLICY",
+  "execution": {
+    "deployable_graph_exports": 0,
+    "formal_support_cells": 0,
+    "locomotion_training_steps": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0,
+    "rollout_episode_slots": 80,
+    "scheduled_rollout_ticks": 20000
+  },
+  "failed_checks": [
+    "new_direct_composition_at_most_4e_6",
+    "old_direct_composition_at_most_4e_6"
+  ],
+  "objective_evidence": {
+    "full_action_teacher_loss": 0.004192190710455179,
+    "full_action_teacher_scale": 136.35153198242188,
+    "full_selected_elements": 49854,
+    "full_teacher_gradient_max_abs": {
+      "action_bias": 0.012416236102581024,
+      "action_weight": 0.012025447562336922,
+      "auxiliary_action_weight": 0.0,
+      "auxiliary_bias": 0.0,
+      "auxiliary_hidden_weight": 0.0,
+      "hidden_bias": 0.0002418818767182529,
+      "hidden_weight": 0.00023266125936061144,
+      "obs_weight": 0.0024090725928545,
+      "previous_action_weight": 6.264870171435177e-05,
+      "training_only_log_std": 0.0,
+      "training_only_value_bias": 0.0,
+      "training_only_value_weight": 0.0
+    },
+    "new_direct_composition_max_abs_error": 4.76837158203125e-06,
+    "normalized_predictor_loss": 0.15022453665733337,
+    "old_direct_composition_max_abs_error": 4.76837158203125e-06,
+    "old_pitch_teacher_loss": 0.008906971663236618,
+    "old_pitch_teacher_scale": 58.436370849609375,
+    "old_selected_elements": 21366,
+    "old_teacher_gradient_max_abs": {
+      "action_bias": 0.028971215710043907,
+      "action_weight": 0.028059378266334534,
+      "auxiliary_action_weight": 0.0,
+      "auxiliary_bias": 0.0,
+      "auxiliary_hidden_weight": 0.0,
+      "hidden_bias": 0.0006823656149208546,
+      "hidden_weight": 0.0006558343884535134,
+      "obs_weight": 0.006790029350668192,
+      "previous_action_weight": 0.0001758686121320352,
+      "training_only_log_std": 0.0,
+      "training_only_value_bias": 0.0,
+      "training_only_value_weight": 0.0
+    },
+    "ppo_loss": 464.2024841308594,
+    "prefix_anchor_loss": 0.00015293186879716814,
+    "replacement_leaf_max_abs_delta": {
+      "action_bias": 0.7798015922307968,
+      "action_weight": 0.7555931806564331,
+      "auxiliary_action_weight": 0.0,
+      "auxiliary_bias": 0.0,
+      "auxiliary_hidden_weight": 0.0,
+      "hidden_bias": 0.006951808929443359,
+      "hidden_weight": 0.006675779819488525,
+      "obs_weight": 0.06830215454101562,
+      "previous_action_weight": 0.0017422139644622803,
+      "training_only_log_std": 0.0,
+      "training_only_value_bias": 0.0,
+      "training_only_value_weight": 0.0
+    }
+  },
+  "rollout_evidence": {
+    "episode_receipts_sha256": "3e8900b067d05adf439cb92eb715526eb7e2471d9f9bd1cb5e436832b3412afd",
+    "episode_slots": 80,
+    "roll_pitch_failure_count": 9,
+    "sampled_ticks": 18061,
+    "scheduled_ticks": 20000,
+    "update_index": 352,
+    "valid_transition_count": 18052
+  },
+  "schema_version": "winner_v50.full_action_teacher_source_gradient_result.v1",
+  "source_identity": {
+    "completed_updates": 352,
+    "graph_sha256": "e3d209fd7ae8266c4b06a7080e89571c96d75e2263a8d721900f3308ccaa7d2d",
+    "snapshot_sha256": "e32a7d5ee7fa272639fb58a2b500e394d983d4a984fb1ace1f7d87058c86e0df",
+    "teacher_snapshot_sha256": "ddc8c4b905bb9acac2d7d48c3e9c1f0c0ca0173a1ba21f375740b051bc48c806"
+  },
+  "source_manifest_sha256": "970d73015f491052193dc5b6cadc5cd8872657603a2c9cecaeb56c343c472c72",
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v50_full_action_teacher_source_gradient_contract.py",
+      "sha256": "8ac8b0122c350bf08d43d7463a922d585c17c0bf7969c6faaf8499956c259ca6"
+    },
+    "canonical_p30_fit": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/fixed_target_p30_actuator_fit_20260712.json",
+      "sha256": "908ddb01e5d82e661d77b8f3cb186a84665695660b86b304c6d1ae89c79cdb0b"
+    },
+    "configuration_domain": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v3_variable_configuration_replacement_preregistration.json",
+      "sha256": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b"
+    },
+    "cpu_smoke": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_cpu_smoke.py",
+      "sha256": "b6ad53430f3f7cca3a91a90f72dab585cb05e3e2f74be2241af3fd9b6ee7ce87"
+    },
+    "full_training": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_full_calibrator_training.py",
+      "sha256": "8cd2c9267f356adba1127f8fb837138bbe6e39b5c3326300eeed9fdd5b524610"
+    },
+    "full_training_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_full_calibrator_training_preregistration.json",
+      "sha256": "99500648d6683097a13f894b0949bf4b5494e5653f36878710817bd0952f71dd"
+    },
+    "pitch_teacher": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v43_static_target_teacher.py",
+      "sha256": "214df40f1b2033d190c4f601280679f7105267ddb8dbcd7a2fb0f6c3929242a3"
+    },
+    "pitch_training_teacher": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v44_static_target_teacher_source_gradient_contract.py",
+      "sha256": "051c12663666f870c642aac3874c77c5f2cc5137d28838685894e5694f7ca5ce"
+    },
+    "prefix_anchor": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v29_prefix_right_pitch_anchor.py",
+      "sha256": "7c01b3db8c359464d122fc4f915df02eb9833720ef65837a99c5838dd42db36f"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v50_full_action_teacher_source_gradient_contract.py",
+      "sha256": "0c235e882922867f8b8998bdb902d170b964641503b574f289a5e30f68ab4a42"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v50_full_action_teacher_source_gradient_contract.py",
+      "sha256": "513e4af719da1a6ae93c02495627fc68c33436e4c9816608752a8f060ca3298b"
+    },
+    "training_primitives": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_calibrator_training.py",
+      "sha256": "f5736a357d73baedae2bba1d15254dd688bddf3761eb731d757a971783c77227"
+    },
+    "winner_v22_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v22_normalized_predictor_training_result.json",
+      "sha256": "10bae5bb32f32cc90e222eb1d6644d97e2a0253baa6ad1a37fe06fde48cf11c1"
+    },
+    "winner_v42_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v42_static_target_teacher_table_result.json",
+      "sha256": "c465d9b3951941715ee0bb588a0ba24a9c4b15d7a2c99430340bcaea43964469"
+    },
+    "winner_v46_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v46_static_target_teacher_training_preregistration.json",
+      "sha256": "2104db32192eff8ac14f8be01c1abec0fddfad8ddbabab554183c3f668f9e7ce"
+    },
+    "winner_v46_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v46_static_target_teacher_training_result.json",
+      "sha256": "18f4eb5794cc29aae38167d0bd230a6001718f69f7408f08d425d7520d59941f"
+    },
+    "winner_v46_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v46_static_target_teacher_training.py",
+      "sha256": "c2bfaec2298c8b97489278112d932c11fc5392fc3250da99ec3fc1379062c0d2"
+    },
+    "winner_v49_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v49_full_action_teacher_abi_cpu_result.json",
+      "sha256": "8adddb000be52652e88c8452693c72671fe9e78ecf620ef8d419afdc30ee0f45"
+    },
+    "winner_v49_teacher": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v49_full_action_static_target_teacher.py",
+      "sha256": "cc51950e90ba221763304250a11500251d1df1b58586cb5da24f4d1621b67b26"
+    }
+  },
+  "status": "HOLD_WINNER_V50_FULL_ACTION_TEACHER_SOURCE_GRADIENT_CPU_PROOF"
+}

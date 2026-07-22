@@ -3229,3 +3229,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   CPU proof; training, checkpoint selection, deployment, and clearance remain
   false. See
   `outputs/analysis/WINNER_V50_FULL_ACTION_TEACHER_SOURCE_GRADIENT_CONTRACT_20260722.md`.
+- 2026-07-22: The sole Winner-v50 zero-update source-gradient proof is a
+  formal `HOLD`. Every source, rollout, transition, action-boundary, frozen
+  teacher-population, full-14D mask, gradient-scope, default-off, finite-value,
+  and no-mutation check passed. The replacement changed all six policy
+  gradient leaves and preserved every non-policy gradient bit-exactly. The
+  only failures were the separately computed old and new direct-versus-
+  composed absolute-gradient checks: both measured exactly
+  `4.76837158203125e-6`, just above the frozen `4e-6` bound. Result SHA-256:
+  `7f1a6ae0...58b79b1`. Do not widen V50 post hoc and do not run an optimizer
+  update. A separately frozen arithmetic-order audit with a mathematically
+  derived elementwise floating-point bound is required. See
+  `outputs/analysis/WINNER_V50_FULL_ACTION_TEACHER_SOURCE_GRADIENT_RESULT_20260722.md`.
