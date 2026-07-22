@@ -2486,3 +2486,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   scale. It does not authorize training, checkpoint selection, runtime work,
   RDK-X5, Gate 5, deployment, or clearance. See
   `outputs/analysis/WINNER_V29_PREFIX_RIGHT_PITCH_ANCHOR_CPU_RESULT_20260722.md`.
+- 2026-07-22: One Winner-v30 prefix right-pitch anchor one-update CPU proof is
+  preregistered. It restores the exact Winner-v24 final snapshot and Adam state
+  at count 200, reproduces the Winner-v29 update-200 batch, and adds the frozen
+  anchor gradient at exact scale `197.3112030029297` to the unchanged
+  Winner-v24 PPO/predictor gradient. It may execute exactly one Adam update to
+  count 201, then must strictly reduce selected same-batch anchor MSE, change
+  all twelve trainable leaves, save/read back the full snapshot, and export the
+  unchanged stateful hard-bounded ONNX ABI. Exactly one first-attempt CPU run is
+  authorized. Formal support, locomotion, RDK-X5, robot, torque, and hardware
+  remain zero. A pass may authorize only a separately frozen bounded training
+  preregistration; it does not itself authorize training, checkpoint selection,
+  runtime work, Gate 5, deployment, or clearance. See
+  `outputs/analysis/WINNER_V30_PREFIX_RIGHT_PITCH_ANCHOR_ONE_UPDATE_CPU_CONTRACT_20260722.md`.
