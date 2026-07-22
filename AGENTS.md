@@ -3811,3 +3811,14 @@ Do not proceed to grounded walking until low-risk gates pass.
   It does not select attention, the flat-transport equation, a checkpoint,
   deployment, Gate 5, RDK-X5/robot access, torque, motion, or clearance. See
   `outputs/analysis/WINNER_V66_FAILED_STEP_ATTRIBUTION_RESULT_20260722.md`.
+- 2026-07-22: Winner-v67 preregisters exactly one backtracked-Adam proof from
+  optimizer count `574` to `575`. It advances the inherited Adam moments once,
+  evaluates the clamped parameter delta in largest-first order
+  `1, 1/2, 1/4, 1/8, 1/16`, and commits the first strict same-batch descent.
+  Frozen V66 evidence requires the accepted fraction and loss to reproduce
+  exactly as `1/4` and `0.0033518008422`. The resulting snapshot and one
+  non-selected stateful ONNX must round-trip with the frozen `115+14+64` ABI.
+  Contract SHA-256: `5d4208c8...0354b04a`. This authorizes one update only,
+  with zero continuation, support cells, checkpoint selection, deployment,
+  Gate 5, RDK-X5/robot access, torque, motion, or clearance. See
+  `outputs/analysis/WINNER_V67_BACKTRACKED_ADAM_STEP_CONTRACT_20260722.md`.

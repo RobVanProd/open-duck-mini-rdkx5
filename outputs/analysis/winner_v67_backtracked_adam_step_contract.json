@@ -1,0 +1,117 @@
+{
+  "authority": {
+    "checkpoint_selection_authorized": false,
+    "continuation_authorized_now": false,
+    "deployment_authorized": false,
+    "gate5_authorized": false,
+    "pass_authorizes_only": "preregistration of a bounded deterministic backtracked-Adam continuation",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false,
+    "support_gate_authorized": false
+  },
+  "decision": "AUTHORIZE_EXACTLY_ONE_DETERMINISTIC_BACKTRACKED_ADAM_STEP",
+  "execution_now": {
+    "formal_support_cells": 0,
+    "locomotion_steps": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0
+  },
+  "objective": {
+    "attention_or_flat_transport_added": false,
+    "coefficient_or_length_search": false,
+    "persistent_teacher_scale": 136.35153198242188,
+    "update_gradient": "full_action_persistent_teacher_only"
+  },
+  "schema_version": "winner_v67.backtracked_adam_step_contract.v1",
+  "source_checkpoint": {
+    "completed_updates": 574,
+    "optimizer_count": 574,
+    "snapshot": {
+      "bytes": 195249,
+      "completed_updates": 574,
+      "metadata_payload_sha256": "0ec20c98e955b5ffc33160aba6b52072b6d17da2df3e70422d5d8d94dde30744",
+      "path": "D:/CodexArtifacts/open-duck-mini-rdkx5/winner-v65b-isolated-persistent-teacher-training/snapshots/snapshot_isolated_persistent_teacher_update_574.npz",
+      "sha256": "e255988ee27bbb3fb6b7842c01da69a68941e3127eb7ed0c7d707236da33ebce",
+      "state_payload_sha256": "36e0f3d54900290c29e79544d212bd4e0be816744debc9508eade9e7e49a1842"
+    }
+  },
+  "source_manifest_sha256": "f1d4ad60445819a7a12bc665c6faca2749bf7520722d0d9e92416123108f3e6e",
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v67_backtracked_adam_step.py",
+      "sha256": "f0a9c8d4f92ef4baffce40b723fc2fbae9911ebb4a3ffc2a538b68254dd3f958"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v67_backtracked_adam_step.py",
+      "sha256": "ca55b66b7e3952e57fba654fb3a636d7a177fd456121c97d711db725a2d1bd3b"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v67_backtracked_adam_step.py",
+      "sha256": "7326aa51e44e4857f74321d01f75911b331f73db8a34b517dde7e2785cdb7b16"
+    },
+    "v65b_stopped_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v65b_isolated_persistent_teacher_training_result.json",
+      "sha256": "2659432178c331b68dfd15961bff72e50d1289674ce8c24102e9d2a5ccb3ed86"
+    },
+    "v66_builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v66_failed_step_attribution.py",
+      "sha256": "5803b7f812780847d67de3399bb14e6617e57f2a6369ae50d061e8ff4223f44d"
+    },
+    "v66_contract": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v66_failed_step_attribution_preregistration.json",
+      "sha256": "159211e64f631b9f00cb3d74551ca69bd0801ced2539b0c49105719662a54630"
+    },
+    "v66_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v66_failed_step_attribution_result.json",
+      "sha256": "849b9cb2b57462ee40b7f95bddcc27c3599789012c84f891f00492f93948e6b3"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V67_BACKTRACKED_ADAM_STEP",
+  "step": {
+    "acceptance_rule": "first fraction with strict same-batch teacher-loss descent",
+    "completed_optimizer_count": 575,
+    "expected_accepted_fraction": 0.25,
+    "expected_loss_after": 0.0033518008422106504,
+    "expected_loss_before": 0.003351836698129773,
+    "fractions_largest_first": [
+      1.0,
+      0.5,
+      0.25,
+      0.125,
+      0.0625
+    ],
+    "optimizer_moments": "advance once from the exact full Adam proposal",
+    "parameter_delta": "scale the clamped full-Adam parameter delta by the accepted fraction",
+    "rollout_update_index": 574,
+    "source_optimizer_count": 574
+  },
+  "stop_rules": [
+    "stop if the V66 result or exact count-574 source differs",
+    "stop unless the full step fails and the first strict descent is exactly one quarter",
+    "stop unless optimizer count advances exactly 574 to 575",
+    "stop on any snapshot or ONNX round-trip mismatch",
+    "do not continue training or inspect support behavior"
+  ],
+  "teacher_checkpoint": {
+    "completed_updates": 100,
+    "optimizer_count": 100,
+    "snapshot": {
+      "bytes": 194808,
+      "completed_updates": 100,
+      "optimizer_count": 100,
+      "path": null,
+      "sha256": "ddc8c4b905bb9acac2d7d48c3e9c1f0c0ca0173a1ba21f375740b051bc48c806"
+    }
+  },
+  "transformation": {
+    "base": "Winner-v66 exact failed-step attribution runner",
+    "transformed_source_sha256": "414df8a531667929d80d2aa613168503eeead3e8f025d226023ffc1452d34b7f"
+  }
+}
