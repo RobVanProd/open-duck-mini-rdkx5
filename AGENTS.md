@@ -2454,3 +2454,19 @@ Do not proceed to grounded walking until low-risk gates pass.
   authorize a runtime wrapper, training, checkpoint selection, RDK-X5, robot,
   Gate 5, deployment, or clearance. See
   `outputs/analysis/WINNER_V28_PREFIX_JOINT_GROUP_CAUSAL_SCREEN_RESULT_20260722.md`.
+- 2026-07-22: One zero-update Winner-v29 prefix right-pitch-chain anchor CPU
+  contract is preregistered. It starts from the exact Winner-v24 final snapshot
+  at update 200 and compares only deterministic bounded action indices
+  `11/12/13` during ticks `0-7` of the eight V28-selected negative-X training
+  configurations (16 two-plant episode slots, 384 action elements) with the
+  Winner-v22 source evaluated on the same candidate observations and realized
+  previous-action history. The source is stop-gradient and keeps its own
+  shadow recurrent state. One analytic scale is calibrated by matching raw
+  anchor-gradient RMS to the unchanged Winner-v24 combined-gradient RMS over
+  the same recurrent/action leaves; no scale search is permitted. Exactly one
+  first-attempt CPU proof is authorized with 80 rollout slots and zero optimizer
+  updates, formal support cells, locomotion steps, or robot access. A pass may
+  authorize only a separately preregistered one-update CPU proof using the exact
+  recorded scale; it does not authorize training, checkpoint selection,
+  runtime work, RDK-X5, Gate 5, deployment, or clearance. See
+  `outputs/analysis/WINNER_V29_PREFIX_RIGHT_PITCH_ANCHOR_CPU_CONTRACT_20260722.md`.
