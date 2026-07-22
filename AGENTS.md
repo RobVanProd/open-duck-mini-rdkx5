@@ -2869,3 +2869,18 @@ Do not proceed to grounded walking until low-risk gates pass.
   optimizer updates, locomotion training, runtime target/wrapper, RDK-X5,
   robot, Gate 5, deployment, checkpoint selection, or clearance. See
   `outputs/analysis/WINNER_V42_STATIC_TARGET_TEACHER_TABLE_PREREGISTRATION_20260722.md`.
+- 2026-07-22: The sole Winner-v42 run `29903694895` passed; its original
+  3,777,480-byte ZIP exactly matches GitHub SHA-256
+  `301cad42...1f04550b`. All `15/15` Winner-v33 failure configurations have at
+  least one shared 250-tick static support target under both measured actuator
+  plants, with `2,351` shared targets across the tables and no holds. Per-
+  configuration shared counts range from `39` (`COM_CORNER_03`) to `227`
+  (`OPTIONAL_AGGREGATE_HEAVY_AFT`). All `21,870` candidate/plant cells retained
+  graph-bounded actions, and the exact selected target for every configuration
+  replayed identically under both plants. Classification:
+  `FULL_FAILURE_SET_STATIC_TARGET_TEACHER_TABLE_EXISTS`; decision:
+  `AUTHORIZE_STATIC_TARGET_TEACHER_ABI_CPU_CONTRACT_ONLY`. This establishes a
+  complete simulator supervision table; it does not authorize copying targets
+  into the runtime, training, selecting a checkpoint, RDK-X5/robot access,
+  Gate 5, deployment, or clearance. See
+  `outputs/analysis/WINNER_V42_STATIC_TARGET_TEACHER_TABLE_RESULT_20260722.md`.
