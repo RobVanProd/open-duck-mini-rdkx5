@@ -3690,3 +3690,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   equation and authorizes no committed update, support gate, deployment,
   Gate 5, RDK-X5/robot access, torque, motion, or clearance. See
   `outputs/analysis/WINNER_V63_PERSISTENT_TEACHER_CONFLICT_PREREGISTRATION_20260722.md`.
+- 2026-07-22: The first Winner-v63 invocation stopped before constructing its
+  rollout because it passed the exact count-`554` NPZ through the reviewed
+  support-gate loader, which deliberately validates and then converts the
+  snapshot to gate predictor coordinates and rewrites its stage to `stage2`.
+  No rollout episode, counterfactual step, result, update, support cell, or
+  robot access occurred. Winner-v63b freezes one source-fragment correction:
+  load the immutable training-coordinate NPZ directly and apply the existing
+  exact integrated-stage validator. Every objective, population, seed,
+  gradient, Adam, classification, and authority rule remains byte-identical.
+  Correction contract SHA-256: `45586f8d...3a024944`. The original V63 runner
+  remains unmodified. See
+  `outputs/analysis/WINNER_V63B_TRAINING_SNAPSHOT_LOADER_CORRECTION_20260722.md`.

@@ -1,0 +1,378 @@
+{
+  "authority": {
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "result_authorizes_only": "one separately preregistered CPU mechanism selected by the frozen classification",
+    "robot_clearance": false,
+    "training_authorized": false
+  },
+  "classification_rule": [
+    {
+      "classification": "INHERITED_ADAM_STATE_BLOCKS_ISOLATED_TEACHER_DESCENT",
+      "if": "teacher-only inherited-Adam same-batch loss does not decrease",
+      "next": "fresh-moment persistent-teacher step contract"
+    },
+    {
+      "classification": "INTEGRATED_STEP_BLOCKS_PERSISTENT_TEACHER_DESCENT",
+      "if": "integrated same-batch loss does not decrease",
+      "next": "isolated persistent-teacher step contract"
+    },
+    {
+      "classification": "OTHER_OBJECTIVES_OPPOSE_PERSISTENT_TEACHER_GRADIENT",
+      "if": "all non-persistent-teacher terms have negative dot product with the persistent-teacher gradient",
+      "next": "conflict-projected persistent-teacher step contract"
+    },
+    {
+      "classification": "TOTAL_GRADIENT_OPPOSES_PERSISTENT_TEACHER_GRADIENT",
+      "if": "the total gradient has nonpositive dot product with the persistent-teacher gradient",
+      "next": "isolated persistent-teacher step contract"
+    },
+    {
+      "next": "teacher-trajectory persistent-prefix contract",
+      "otherwise": "NO_LOCAL_OPTIMIZATION_CONFLICT"
+    }
+  ],
+  "correction": {
+    "corrected_source_sha256": "7800b2515e19840abb84b1c6976651cd477286950659776374d079cece23527b",
+    "frozen_runner_lf_sha256": "3db03bb7a29617be00361d7af56818260030f94568704c7eaaffa792a258bf6d",
+    "identity": "WINNER_V63B_EXACT_TRAINING_SNAPSHOT_LOADER_CORRECTION",
+    "invalid_invocation": {
+      "bytes": 1434,
+      "path": "outputs/analysis/winner_v63_persistent_teacher_conflict_invalid_invocation.json",
+      "sha256": "5fe6e0e729679517e8548fac3f12816b0dffd7219657759c60e59383c943582a"
+    },
+    "new_fragment_sha256": "ff429064c45dedca6b4a3d01dc23e49afdcc0357621d292a034c789f66749b6b",
+    "objective_rollout_gradient_adam_classification_or_authority_change": false,
+    "old_fragment_sha256": "e03cfef6b692dfdffe2ee6fff9d3c984d3e1fc59c165c855487db1e5b1469fa0",
+    "replacement_count": 1,
+    "semantic_change": "use the immutable training-coordinate snapshot after the reviewed loader's own exact integrated-stage validation instead of its gate-adapted copy"
+  },
+  "decision": "AUTHORIZE_ONE_ZERO_COMMIT_CPU_ATTRIBUTION_ONLY",
+  "evidence_selection": {
+    "flat_transport_or_attention_selected": false,
+    "v60_first_tick_teacher_loss_final": 0.0036237684544175863,
+    "v60_first_tick_teacher_loss_first": 0.0040571861900389194,
+    "v60_full_teacher_loss_final": 0.0032995049841701984,
+    "v60_full_teacher_loss_first": 0.0031359954737126827,
+    "v62_first_tick_pitch_rms_mean": 0.07728285739495369,
+    "v62_full_teacher_support": "13/13",
+    "v62_pitch_teacher_support": "12/13",
+    "v62_post_first_tick_pitch_rms_mean": 0.0817888110754449
+  },
+  "execution_now": {
+    "committed_optimizer_updates": 0,
+    "counterfactual_in_memory_adam_steps": 0,
+    "deployable_graph_exports": 0,
+    "formal_support_cells": 0,
+    "locomotion_training_steps": 0,
+    "robot_or_rdk_access": 0,
+    "rollout_episode_slots": 0,
+    "scheduled_rollout_ticks": 0
+  },
+  "frozen_execution": {
+    "committed_optimizer_updates": 0,
+    "counterfactual_in_memory_adam_steps": 2,
+    "deployable_graph_exports": 0,
+    "formal_support_cells": 0,
+    "locomotion_training_steps": 0,
+    "robot_or_rdk_access": 0,
+    "rollout_episode_slots": 80,
+    "scheduled_rollout_ticks": 20000
+  },
+  "frozen_objective": {
+    "analysis": "float64 dot products/cosines against the scaled persistent-teacher gradient over policy, recurrent-core, and action-head leaves",
+    "components": [
+      "PPO",
+      "normalized predictor x 380.9135437011719",
+      "prefix anchor x 197.3112030029297",
+      "full-action persistent teacher x 136.35153198242188",
+      "first-tick teacher x 136.35153198242188"
+    ],
+    "counterfactual": "evaluate exactly one integrated and one teacher-only Adam step in memory from the same immutable count-554 moments; write neither state",
+    "heldout_teacher_configuration_ids_forbidden": [
+      "HELDOUT_04",
+      "HELDOUT_07",
+      "HELDOUT_09",
+      "HELDOUT_15"
+    ],
+    "policy_gradient_leaves": [
+      "obs_weight",
+      "previous_action_weight",
+      "hidden_weight",
+      "hidden_bias",
+      "action_weight",
+      "action_bias"
+    ],
+    "population_episode_slots": 80,
+    "rollout_update_index": 554,
+    "training_teacher_configuration_ids": [
+      "COM_X_NEG",
+      "COM_CORNER_00",
+      "COM_CORNER_01",
+      "COM_CORNER_02",
+      "COM_CORNER_03",
+      "OPTIONAL_AGGREGATE_HEAVY_AFT",
+      "DISCOVERY_02",
+      "DISCOVERY_03",
+      "DISCOVERY_06",
+      "DISCOVERY_09",
+      "DISCOVERY_10"
+    ]
+  },
+  "frozen_source": {
+    "checkpoint_label": "final",
+    "completed_updates": 554,
+    "graph": {
+      "bytes": 54896,
+      "completed_updates": 554,
+      "contract": {
+        "abi_exact": true,
+        "all_chain_outputs_finite": true,
+        "all_initializers_finite": true,
+        "bytes": 54896,
+        "chain_ticks": 250,
+        "forbidden_training_or_privileged_tokens": [],
+        "initializer_count": 9,
+        "inputs": [
+          {
+            "name": "obs",
+            "shape": [
+              1,
+              115
+            ]
+          },
+          {
+            "name": "previous_action",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_in",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "jax_onnx_at_most_1e_7": true,
+        "jax_onnx_max_abs_error": 5.820766091346741e-11,
+        "outputs": [
+          {
+            "name": "calibration_actions",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "previous_action_out",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_out",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v60-integrated-numeric-guard-training\\graphs\\winner_v60_final.onnx",
+        "previous_action_out_equals_action_bit_exact": true,
+        "sha256": "4a6386d8dddfcc441f90bce4f64d7307144446bb3032c171c22cb2e299ac3939",
+        "training_only_tensors_absent": true
+      },
+      "label": "final",
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v60-integrated-numeric-guard-training\\graphs\\winner_v60_final.onnx",
+      "sha256": "4a6386d8dddfcc441f90bce4f64d7307144446bb3032c171c22cb2e299ac3939",
+      "v46_forbidden_tokens_present": []
+    },
+    "snapshot": {
+      "bytes": 195513,
+      "completed_updates": 554,
+      "metadata_payload_sha256": "c07c71829cbcc6690cc120b0b3f0157f7d7f2e9d7a80e7dd4143a339717c9cba",
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v60-integrated-numeric-guard-training\\snapshots\\snapshot_integrated_first_tick_teacher_update_554.npz",
+      "sha256": "c8eb7032dea20c2c197ab03f7544ea9be92d2694a3a3414656941978117d8802",
+      "state_payload_sha256": "cfb01e18755080d3e85b3eda178c9338a5c625e17212840ae958f42e2ca61d27"
+    },
+    "teacher_snapshot": {
+      "bytes": 194808,
+      "completed_updates": 100,
+      "sha256": "ddc8c4b905bb9acac2d7d48c3e9c1f0c0ca0173a1ba21f375740b051bc48c806"
+    },
+    "v60_result_sha256": "50622331dea979369bdea7bb001cd168f94162270a0ea0ec1bdb4d6d9f6b8b57",
+    "v62_result_sha256": "2da0c48a257e0bace9506998db95a9a7bbf8f736448a78db651742e5235251f5"
+  },
+  "pass_rule": {
+    "action_boundary_exact": true,
+    "all_losses_gradients_alignments_finite": true,
+    "anchor_elements_exact": true,
+    "composed_gradient_bit_exact": true,
+    "counterfactual_counts_exact": true,
+    "cpu_only_environment_exact": true,
+    "episode_receipts_exact": true,
+    "exact_80_episode_rollout_at_update_554": true,
+    "full_teacher_elements_and_rows_exact": true,
+    "hidden_replay_within_v59_bound": true,
+    "predictor_successors_present": true,
+    "reset_batch_exact_and_heldout_absent": true,
+    "reward_and_failure_transition_rule_exact": true,
+    "source_artifacts_exact": true,
+    "source_parameters_and_optimizer_unchanged": true,
+    "teacher_gradient_policy_only": true
+  },
+  "question": "Why did the already full-horizon teacher objective plateau even though the same full teacher rescues all 13 final failures: opposing integrated gradients, inherited Adam moments, or a remaining trajectory-distribution mismatch?",
+  "schema_version": "winner_v63.persistent_teacher_conflict_preregistration.v1",
+  "source_manifest_sha256": "c3bffb4b52c8e71ef7e1afdf905087102f3e38b4bb00a0e97cb12ad7e3113c9c",
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v63_persistent_teacher_conflict_preregistration.py",
+      "sha256": "4838ba7f5a9a2f3911e23b6f4b759fdfe51c8a6b0a4f49802f65dece11ff90c8"
+    },
+    "cpu_smoke": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_cpu_smoke.py",
+      "sha256": "b6ad53430f3f7cca3a91a90f72dab585cb05e3e2f74be2241af3fd9b6ee7ce87"
+    },
+    "full_training_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_full_calibrator_training_preregistration.json",
+      "sha256": "99500648d6683097a13f894b0949bf4b5494e5653f36878710817bd0952f71dd"
+    },
+    "full_training_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_full_calibrator_training.py",
+      "sha256": "8cd2c9267f356adba1127f8fb837138bbe6e39b5c3326300eeed9fdd5b524610"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v63_persistent_teacher_conflict_attribution.py",
+      "sha256": "3db03bb7a29617be00361d7af56818260030f94568704c7eaaffa792a258bf6d"
+    },
+    "support_gate_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_support_gate.py",
+      "sha256": "18873eee55c77a278fc065de64c0b912803bf29b4440cde7f3adaabe1297baca"
+    },
+    "teacher_table": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v42_static_target_teacher_table_result.json",
+      "sha256": "c465d9b3951941715ee0bb588a0ba24a9c4b15d7a2c99430340bcaea43964469"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v63_persistent_teacher_conflict.py",
+      "sha256": "68888d44a9804ba4c6adc9ceab6af455ce3fbb938489efc6e15995fe13734d71"
+    },
+    "training": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_calibrator_training.py",
+      "sha256": "f5736a357d73baedae2bba1d15254dd688bddf3761eb731d757a971783c77227"
+    },
+    "v20_recurrent": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v20_joint_recurrent_support.py",
+      "sha256": "276f0008049be9e28cbfc7cb430a5fec6c0a092c02e605f08f3ea95e2df942c7"
+    },
+    "v21_joint": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v21_predictor_preserving_joint_support.py",
+      "sha256": "2d274c6c7c63fa2de5e3a7114ac047df1346189e66ec7bf8d83221e2f93aef0a"
+    },
+    "v22_predictor": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v22_normalized_predictor.py",
+      "sha256": "cc8e0249033af7264ed7e6c6e3faa51e8dcef1471e0d2fdda5a89091e810ad17"
+    },
+    "v22_predictor_v2": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v22_normalized_predictor_v2.py",
+      "sha256": "2f67394c0fc7f5cec14370d38a6a860a9c7bb2ce409e8578466b278c7c8c5b2a"
+    },
+    "v24_failure_v3": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v24_symmetric_support_failure_v3.py",
+      "sha256": "337f93832a93c74425564b1ddf7c274426a2de0544b51a1c5de83922b287d787"
+    },
+    "v29_prefix_anchor": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v29_prefix_right_pitch_anchor.py",
+      "sha256": "7c01b3db8c359464d122fc4f915df02eb9833720ef65837a99c5838dd42db36f"
+    },
+    "v43_teacher": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v43_static_target_teacher.py",
+      "sha256": "214df40f1b2033d190c4f601280679f7105267ddb8dbcd7a2fb0f6c3929242a3"
+    },
+    "v49_full_teacher": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v49_full_action_static_target_teacher.py",
+      "sha256": "cc51950e90ba221763304250a11500251d1df1b58586cb5da24f4d1621b67b26"
+    },
+    "v50_teacher_helpers": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v50_full_action_teacher_source_gradient_contract.py",
+      "sha256": "0c235e882922867f8b8998bdb902d170b964641503b574f289a5e30f68ab4a42"
+    },
+    "v56_reset_teacher": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v56_first_tick_teacher_mapping.py",
+      "sha256": "7ab0b28e5dd0fa228252c82faf7bf4d9cef921427916dde6017accaf518ae009"
+    },
+    "v60_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v60_integrated_numeric_guard_training_preregistration.json",
+      "sha256": "e80415f002e0da9e574a4d87f2e4c270fb90f227f4e6474f9a156b2715bb70ef"
+    },
+    "v60_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v60_integrated_numeric_guard_training_result.json",
+      "sha256": "9cbc9e4b3c15550927096ae18507b3cfee0f46bfdc3dd158373bacae431b3bbc"
+    },
+    "v61_builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v61_integrated_support_gate_preregistration.py",
+      "sha256": "50fe732a5716ed0710de9188874ac90922f0c3c9eeacf62baa4d030628c982c8"
+    },
+    "v62_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v62_residual_teacher_causal_preregistration.json",
+      "sha256": "17f758afee5fd0c5d6d72f3e31f9a9a396164e8641ee5fa5b07c2c762e04a947"
+    },
+    "v62_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v62_residual_teacher_causal_result.json",
+      "sha256": "b9b4bc76ed91a4d05ab35acf5222797f469d2f6b3e108a85f1131f38970be7f1"
+    },
+    "v63_invalid_invocation": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v63_persistent_teacher_conflict_invalid_invocation.json",
+      "sha256": "5fe6e0e729679517e8548fac3f12816b0dffd7219657759c60e59383c943582a"
+    },
+    "v63b_builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v63b_training_snapshot_loader_correction.py",
+      "sha256": "e95df9a713f2b4dc28d18078073260c6991b753edaba8b5754d089019b5ea1c3"
+    },
+    "v63b_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v63b_training_snapshot_loader_correction.py",
+      "sha256": "f8cb4d2e0eff769fc0f05942216409ad95e9c6b379f9c5984e9a44743c27cd7f"
+    },
+    "v63b_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v63b_training_snapshot_loader_correction.py",
+      "sha256": "c9d2009dbb4ae65dc192dca5abd86a31d6aaa730626cb257c1d79a8db6a33858"
+    },
+    "variable_configuration_domain": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v3_variable_configuration_replacement_preregistration.json",
+      "sha256": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V63_PERSISTENT_TEACHER_CONFLICT_ATTRIBUTION"
+}
