@@ -3513,3 +3513,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   support evaluation, checkpoint selection, deployment, Gate 5, RDK-X5/robot
   access, torque, motion, or clearance. See
   `outputs/analysis/WINNER_V56_FIRST_TICK_TEACHER_GRADIENT_RESULT_20260722.md`.
+- 2026-07-22: Winner-v57 preregisters exactly one isolated CPU Adam update from
+  the V52 final optimizer count `453` to `454`. It must recompute the exact
+  V56 `44`-row/`616`-element reset objective and scaled gradient, retain the
+  complete inherited Adam moments, and reduce total, raw, and quantized reset
+  losses. It performs no PPO rollout and makes no integrated-objective claim.
+  The complete state must round-trip in one new snapshot, and one non-selected
+  ONNX must preserve the stateful `115+14+64` ABI, bounds, action chain, and
+  JAX agreement without privileged tokens. Contract SHA-256:
+  `6dbdf0ab...804cf05`. No continuation, support cell, checkpoint selection,
+  deployment, Gate 5, RDK-X5/robot access, torque, motion, or clearance is
+  authorized. A pass can authorize only a separately preregistered integrated
+  continuation. See
+  `outputs/analysis/WINNER_V57_FIRST_TICK_TEACHER_ONE_UPDATE_CONTRACT_20260722.md`.
