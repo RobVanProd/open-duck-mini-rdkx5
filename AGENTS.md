@@ -3050,3 +3050,20 @@ Do not proceed to grounded walking until low-risk gates pass.
   RDK-X5/robot access, Gate 5, deployment, and clearance remain unauthorized.
   See
   `outputs/analysis/WINNER_V46_STATIC_TARGET_TEACHER_TRAINING_RESULT_20260722.md`.
+- 2026-07-22: The passing imported Winner-v46 artifact now binds one exact
+  Winner-v47 formal support/context gate. Source-manifest SHA-256 is
+  `ab3d8718...4a779db`; the frozen checkpoint pairs are count-302 snapshot /
+  ONNX `d6067047...ff1d476b` / `b4326259...cfe41ac1` and count-352
+  `e32a7d5e...8c86e0df` / `e3d209fd...8ccaa7d2`. The reviewed physical
+  evaluator, populations, thresholds, seeds, and all-or-nothing persistence
+  rule are unchanged: 124 main cells and 32 heldout repeats at each of half
+  and final, 250 ticks per cell, all 16 heldout contexts separate at both
+  checkpoints, learned response prediction beating the constant baseline per
+  plant, and no closest-result promotion. The normalized auxiliary predictor
+  is projected exactly into the evaluator's raw scoring coordinates without
+  changing checkpoint or ONNX bytes. Exactly one first-attempt CPU gate is
+  authorized. It performs zero optimizer or locomotion-training steps and no
+  RDK-X5/robot work. A pass may authorize only a separately reviewed
+  response-conditioned locomotion-training preregistration; it is not
+  checkpoint selection, deployment, or robot clearance. See
+  `outputs/analysis/WINNER_V47_STATIC_TARGET_TEACHER_SUPPORT_GATE_PREREGISTRATION_20260722.md`.
