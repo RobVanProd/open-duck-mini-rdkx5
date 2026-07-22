@@ -3740,3 +3740,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   SHA-256: `7da49db3...f9d2af1a`. The original V64 transformed source remains
   frozen. See
   `outputs/analysis/WINNER_V64B_PREREGISTRATION_NAME_CORRECTION_20260722.md`.
+- 2026-07-22: Winner-v64b passes the isolated persistent-teacher one-step
+  proof from optimizer count `554` to `555`. The exact frozen loss reproduces
+  and falls `0.0034021961 -> 0.0033936996`; all 12 trainable leaves change and
+  all parameters, moments, losses, and metrics remain finite. The complete
+  snapshot round-trips at SHA-256 `4ed0d458...ad1f0e9`; the non-selected
+  stateful ONNX is `f6e341e2...ae45b80`, preserves the `115+14+64` ABI and
+  exact previous-action chain, and agrees with JAX within `5.82e-11`. Result
+  SHA-256: `03e83022...ca896800`. This authorizes only preregistration of a
+  bounded isolated-teacher continuation. No continuation, support cell,
+  checkpoint selection, deployment, Gate 5, RDK-X5/robot access, torque,
+  motion, or clearance has occurred. See
+  `outputs/analysis/WINNER_V64B_ISOLATED_PERSISTENT_TEACHER_STEP_RESULT_20260722.md`.
