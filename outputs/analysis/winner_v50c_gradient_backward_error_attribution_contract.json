@@ -1,0 +1,90 @@
+{
+  "attribution_rule": {
+    "all_noncomposition_v50_checks_must_reproduce": true,
+    "bound_formula": "sqrt(float32 epsilon)",
+    "float32_epsilon": 1.1920928955078125e-07,
+    "no_threshold_selected_from_unrecorded_leaf_scales": true,
+    "old_and_new_v50_absolute_errors_must_reproduce_bit_exact": true,
+    "per_leaf_max_absolute_error_over_leaf_max_magnitude_at_most_bound": true,
+    "per_leaf_rms_error_over_leaf_rms_magnitude_at_most_bound": true,
+    "relative_error_bound": 0.00034526698300124393,
+    "rerun_exact_v50_rollout": true,
+    "rollout_episode_slots": 80,
+    "sign_changes_allowed_only_inside_bound_times_leaf_max_magnitude": true,
+    "source_update": 352,
+    "ticks_per_slot": 250,
+    "zero_reference_leaves_must_be_bit_exact": true
+  },
+  "authority": {
+    "one_update_authorized": false,
+    "pass_authorizes_only": "one separately preregistered CPU-only one-update proof",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false,
+    "training_authorized": false
+  },
+  "decision": "AUTHORIZE_ONE_ZERO_UPDATE_SCALE_AWARE_GRADIENT_RECOMPUTATION_ONLY",
+  "execution_now": {
+    "deployable_graph_exports": 0,
+    "formal_support_cells": 0,
+    "locomotion_training_steps": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0,
+    "rollout_episode_slots": 0,
+    "scheduled_rollout_ticks": 0
+  },
+  "frozen_holds": {
+    "absolute_or_ulp_limits_changed": false,
+    "results_rewritten": false,
+    "winner_v50_status": "HOLD_WINNER_V50_FULL_ACTION_TEACHER_SOURCE_GRADIENT_CPU_PROOF",
+    "winner_v50b_result": {
+      "bytes": 9116,
+      "path": "outputs/analysis/winner_v50b_gradient_composition_ulp_attribution_result.json",
+      "sha256": "55b3b8ce8f16bf10f9870732c951e5719cc115123ae16cb1b2b838f53db4469a"
+    }
+  },
+  "schema_version": "winner_v50c.gradient_backward_error_attribution_contract.v1",
+  "source_manifest_sha256": "1eff9a5d71ab8252694dd96ae75aebe7f55ea52f6ce523a62cdf0adb0e6353f6",
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v50c_gradient_backward_error_attribution.py",
+      "sha256": "0a398a52fc38e2da680781bf66f6063274f7e77e73d7d44097f34bbc3b98d9d8"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v50c_gradient_backward_error_attribution.py",
+      "sha256": "3f7aba78810e1242240a16818b5f8d56da2078bf6fa9278609e7d6cfaedc2970"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v50c_gradient_backward_error_attribution.py",
+      "sha256": "a8601c868f4316b617ac3004a70cf74459f103ef28b44ae0436c79e5b71625ec"
+    },
+    "winner_v50_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v50_full_action_teacher_source_gradient_result.json",
+      "sha256": "37b80608ac5e60291a5f194345cdce9bbdda5607d6559e6be9dfc1e619b453b7"
+    },
+    "winner_v50_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v50_full_action_teacher_source_gradient_contract.py",
+      "sha256": "0c235e882922867f8b8998bdb902d170b964641503b574f289a5e30f68ab4a42"
+    },
+    "winner_v50b_contract": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v50b_gradient_composition_ulp_attribution_contract.json",
+      "sha256": "d25d829cb05b8560f4ec7cfc85f83ae40ca38c32528f63f69da6a2233206a49a"
+    },
+    "winner_v50b_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v50b_gradient_composition_ulp_attribution_result.json",
+      "sha256": "be2ac0a8c4664889b6db5a0e4cdc595430d621494a7469851672634fcff9599d"
+    },
+    "winner_v50b_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v50b_gradient_composition_ulp_attribution.py",
+      "sha256": "390253a2e80eba76b90fa1e409ed1687af8514a288e71f5a1452366290080879"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V50C_GRADIENT_BACKWARD_ERROR_ATTRIBUTION"
+}

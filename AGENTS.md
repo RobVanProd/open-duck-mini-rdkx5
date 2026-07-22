@@ -3268,3 +3268,17 @@ Do not proceed to grounded walking until low-risk gates pass.
   preregistered scale-aware backward-error attribution derived from float32
   epsilon is required. See
   `outputs/analysis/WINNER_V50B_GRADIENT_COMPOSITION_ULP_ATTRIBUTION_RESULT_20260722.md`.
+- 2026-07-22: Winner-v50c preregisters one zero-update, CPU-only scale-aware
+  backward-error attribution. It preserves the V50 absolute-error and V50b ULP
+  holds and reruns their exact `80 x 250` update-352 computation. Before any
+  leaf scale is measured, the bound is fixed to
+  `sqrt(float32 epsilon) = 0.00034526698300124393`. Every old and new gradient
+  leaf must pass both maximum-error/leaf-maximum and RMS-error/leaf-RMS ratios;
+  sign changes are allowed only inside that bound times the leaf maximum, and
+  zero-reference leaves must remain bit-exact. Both original absolute errors
+  and every non-composition check must reproduce. This changes neither prior
+  limit and executes zero optimizer updates, support cells, locomotion-training
+  steps, graph exports, RDK-X5/robot access, torque, or motion. A pass can
+  authorize only a separately preregistered one-update CPU proof; training,
+  deployment, checkpoint selection, and clearance remain false. See
+  `outputs/analysis/WINNER_V50C_GRADIENT_BACKWARD_ERROR_ATTRIBUTION_CONTRACT_20260722.md`.
