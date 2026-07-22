@@ -2541,3 +2541,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   support evaluation, checkpoint selection, runtime work, RDK-X5, robot,
   Gate 5, deployment, or clearance. See
   `outputs/analysis/WINNER_V31_CROSS_WORKER_REPLAY_ATTRIBUTION_RESULT_20260722.md`.
+- 2026-07-22: One bounded Winner-v32 prefix right-pitch anchor continuation is
+  preregistered from the preserved Winner-v30 snapshot and Adam state at count
+  201. It performs exactly 100 CPU-only updates (`201 -> 301`) over the
+  unchanged 80-environment, 250-tick population, with snapshots after every
+  update and fixed half/final checkpoints at counts `251/301`. The unchanged
+  Winner-v24 PPO/roll-pitch transition objective and Winner-v22 predictor scale
+  `380.9135437011719` are combined with the exact Winner-v29 eight-tick,
+  right-pitch-chain anchor at scale `197.3112030029297`; the Winner-v22 teacher
+  remains frozen and no action replacement or coefficient search is permitted.
+  Training performs zero formal support cells, locomotion, RDK-X5, or robot
+  work and cannot select a checkpoint. A passing artifact may authorize only a
+  separately preregistered support/context gate over both checkpoints. See
+  `outputs/analysis/WINNER_V32_PREFIX_RIGHT_PITCH_ANCHOR_TRAINING_PREREGISTRATION_20260722.md`.
