@@ -2237,3 +2237,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   training run, support gate, checkpoint selection, deployment, Gate 5, or
   robot access. See
   `outputs/analysis/WINNER_V24_BASELINE_ANCHORED_CPU_RESULT_V2_20260722.md`.
+- 2026-07-22: The separate Winner-v24 baseline-anchored one-update CPU proof is
+  frozen. It restores the exact final Winner-v22 snapshot and optimizer at
+  count 100, reconstructs only rollout index 100, applies the already-passed
+  analytic terminal delta, and may execute exactly one Adam update to count
+  101. It must prove all twelve leaves change, snapshot/optimizer/normalizer
+  readback is exact, and the stateful ONNX contract remains exact. Formal
+  support, locomotion, RDK-X5, robot, torque, and hardware access remain zero.
+  A pass may authorize only a separately frozen baseline-anchored training
+  preregistration; it does not itself authorize training or evaluation. See
+  `outputs/analysis/WINNER_V24_BASELINE_ANCHORED_ONE_UPDATE_CPU_CONTRACT_20260722.md`.
