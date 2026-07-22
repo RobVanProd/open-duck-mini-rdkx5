@@ -3526,3 +3526,18 @@ Do not proceed to grounded walking until low-risk gates pass.
   authorized. A pass can authorize only a separately preregistered integrated
   continuation. See
   `outputs/analysis/WINNER_V57_FIRST_TICK_TEACHER_ONE_UPDATE_CONTRACT_20260722.md`.
+- 2026-07-22: The sole Winner-v57 update passes all `17` checks. It recomputes
+  V56 exactly, retains the count-`453` Adam state, advances once to `454`, and
+  changes all 12 trainable leaves while leaving the source state unchanged.
+  Total/raw/quantized reset losses fall from
+  `0.0040755342/0.0040754895/0.0040755789` to
+  `0.0040571862/0.0040571410/0.0040572323`; pitch RMS falls from
+  `0.0957130641` to `0.0955589563`. The complete snapshot restores exactly
+  (SHA-256 `e111b81e...09e4f3c0`), and the non-selected stateful ONNX preserves
+  ABI, bounds, action chain, and JAX agreement within `8.731149137020111e-11`
+  (SHA-256 `3fdbac1f...27d64c8e`). Result SHA-256:
+  `66c075dd...b63351d2`. This authorizes only a separately preregistered
+  integrated continuation with the unchanged baseline objectives. It does not
+  authorize support evaluation, checkpoint selection, deployment, Gate 5,
+  RDK-X5/robot access, torque, motion, or clearance. See
+  `outputs/analysis/WINNER_V57_FIRST_TICK_TEACHER_ONE_UPDATE_RESULT_20260722.md`.
