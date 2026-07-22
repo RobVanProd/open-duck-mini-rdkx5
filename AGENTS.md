@@ -3702,3 +3702,17 @@ Do not proceed to grounded walking until low-risk gates pass.
   Correction contract SHA-256: `45586f8d...3a024944`. The original V63 runner
   remains unmodified. See
   `outputs/analysis/WINNER_V63B_TRAINING_SNAPSHOT_LOADER_CORRECTION_20260722.md`.
+- 2026-07-22: The corrected Winner-v63b attribution passes every frozen check
+  on the exact count-`554` update-index-`554` rollout. The full persistent-
+  teacher loss is `0.0034021961`. One counterfactual integrated step raises it
+  to `0.0034065784`, while the same teacher gradient isolated through the same
+  inherited Adam state lowers it to `0.0033936996`. The other objectives have
+  teacher-gradient dot product `-85.6093`; even the total integrated gradient
+  remains opposed at `-19.1884`. The action head carries the conflict while
+  recurrent-core terms are aligned. Classification:
+  `INTEGRATED_STEP_BLOCKS_PERSISTENT_TEACHER_DESCENT`. Result SHA-256:
+  `5e9b44fd...094225fb`. This selects only a separately preregistered isolated
+  persistent-teacher Adam-step proof. It does not select attention, coefficient
+  tuning, a checkpoint, deployment, Gate 5, RDK-X5/robot access, torque,
+  motion, or clearance. See
+  `outputs/analysis/WINNER_V63B_PERSISTENT_TEACHER_CONFLICT_RESULT_20260722.md`.
