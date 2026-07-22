@@ -2974,3 +2974,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   continuation preregistration; it cannot select a deployment checkpoint or
   grant clearance. See
   `outputs/analysis/WINNER_V45_STATIC_TARGET_TEACHER_ONE_UPDATE_CPU_CONTRACT_20260722.md`.
+- 2026-07-22: The sole Winner-v45 workflow run `29907921832` completed
+  successfully and uploaded immutable artifact `8524663581`, whose original
+  247,738-byte ZIP matches GitHub SHA-256 `5ff180cd...665523aa`. The frozen v1
+  importer validated the raw result, snapshot, ONNX bytes, attribution, and
+  complete pass contract, then failed only while rendering Markdown because
+  local variables `before` and `after` were not bound in `main`. No workflow
+  rerun or artifact mutation is authorized. One reporting-only importer-v2
+  correction is preregistered: preserve the complete v1 validation, bind those
+  two values from the already validated result, and import the same ZIP once.
+  Optimizer updates, formal support cells, continuation training, RDK-X5/robot
+  access, checkpoint selection, and clearance remain unauthorized. See
+  `outputs/analysis/WINNER_V45_IMPORTER_V2_CORRECTION_PREREGISTRATION_20260722.md`.
