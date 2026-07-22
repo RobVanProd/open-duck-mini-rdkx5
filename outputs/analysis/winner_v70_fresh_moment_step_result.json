@@ -1,0 +1,255 @@
+{
+  "authority": {
+    "checkpoint_selection_authorized": false,
+    "continuation_authorized_now": false,
+    "deployment_authorized": false,
+    "gate5_authorized": false,
+    "pass_authorizes_only": "preregistration of a bounded fresh-moment safeguarded continuation",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false,
+    "support_gate_authorized": false
+  },
+  "checks": {
+    "all_other_optimizer_moments_bit_exact_before_step": true,
+    "all_parameters_optimizer_losses_metrics_finite": true,
+    "all_six_policy_leaves_changed": true,
+    "exact_six_teacher_active_moment_keys_reset": true,
+    "first_accepted_fraction_strictly_descends": true,
+    "formal_support_continuation_robot_zero": true,
+    "largest_first_fraction_order_exact": true,
+    "onnx_abi_exact": true,
+    "onnx_jax_chain_at_most_1e_7": true,
+    "onnx_previous_action_chain_exact": true,
+    "onnx_training_only_tensors_absent": true,
+    "optimizer_count_601_to_602_exact": true,
+    "snapshot_readback_exact": true,
+    "v69_attribution_and_count_601_source_exact": true
+  },
+  "decision": "PREREGISTER_BOUNDED_FRESH_MOMENT_SAFEGUARDED_CONTINUATION_ONLY",
+  "execution": {
+    "continuation_optimizer_updates": 0,
+    "formal_support_cells": 0,
+    "locomotion_steps": 0,
+    "optimizer_updates": 1,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "graph": {
+    "bytes": 54896,
+    "completed_updates": 602,
+    "contract": {
+      "abi_exact": true,
+      "all_chain_outputs_finite": true,
+      "all_initializers_finite": true,
+      "bytes": 54896,
+      "chain_ticks": 250,
+      "forbidden_training_or_privileged_tokens": [],
+      "initializer_count": 9,
+      "inputs": [
+        {
+          "name": "obs",
+          "shape": [
+            1,
+            115
+          ]
+        },
+        {
+          "name": "previous_action",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "name": "h_in",
+          "shape": [
+            1,
+            64
+          ]
+        }
+      ],
+      "jax_onnx_at_most_1e_7": true,
+      "jax_onnx_max_abs_error": 8.731149137020111e-11,
+      "outputs": [
+        {
+          "name": "calibration_actions",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "name": "previous_action_out",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "name": "h_out",
+          "shape": [
+            1,
+            64
+          ]
+        }
+      ],
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v70-fresh-moment-step\\graphs\\winner_v70_fresh_moment_update_602.onnx",
+      "previous_action_out_equals_action_bit_exact": true,
+      "sha256": "45ac3122addc7938511bd255ca25fab0ced03f9ef5fd6aa969a83ca306ed9ac4",
+      "training_only_tensors_absent": true
+    },
+    "label": "proof",
+    "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v70-fresh-moment-step\\graphs\\winner_v70_fresh_moment_update_602.onnx",
+    "sha256": "45ac3122addc7938511bd255ca25fab0ced03f9ef5fd6aa969a83ca306ed9ac4",
+    "v46_forbidden_tokens_present": []
+  },
+  "optimization": {
+    "accepted_fraction": 0.125,
+    "accepted_loss": 0.0031710141338407993,
+    "accepted_loss_delta": -1.8693972378969193e-06,
+    "backtracking_rows": [
+      {
+        "fraction": 1.0,
+        "loss": 0.003298263531178236,
+        "loss_delta": 0.00012538000009953976
+      },
+      {
+        "fraction": 0.5,
+        "loss": 0.003195566590875387,
+        "loss_delta": 2.268305979669094e-05
+      },
+      {
+        "fraction": 0.25,
+        "loss": 0.0031741790007799864,
+        "loss_delta": 1.2954697012901306e-06
+      },
+      {
+        "fraction": 0.125,
+        "loss": 0.0031710141338407993,
+        "loss_delta": -1.8693972378969193e-06
+      },
+      {
+        "fraction": 0.0625,
+        "loss": 0.003171320538967848,
+        "loss_delta": -1.5629921108484268e-06
+      },
+      {
+        "fraction": 0.03125,
+        "loss": 0.0031719477847218513,
+        "loss_delta": -9.35746356844902e-07
+      },
+      {
+        "fraction": 0.015625,
+        "loss": 0.0031723754946142435,
+        "loss_delta": -5.080364644527435e-07
+      },
+      {
+        "fraction": 0.0078125,
+        "loss": 0.0031726204324513674,
+        "loss_delta": -2.630986273288727e-07
+      },
+      {
+        "fraction": 0.00390625,
+        "loss": 0.003172749886289239,
+        "loss_delta": -1.3364478945732117e-07
+      },
+      {
+        "fraction": 0.001953125,
+        "loss": 0.003172816475853324,
+        "loss_delta": -6.705522537231445e-08
+      },
+      {
+        "fraction": 0.0009765625,
+        "loss": 0.0031728490721434355,
+        "loss_delta": -3.4458935260772705e-08
+      }
+    ],
+    "fresh_full_step_loss": 0.003298263531178236,
+    "leaf_max_abs_delta": {
+      "action_bias": 2.6588328182697296e-05,
+      "action_weight": 2.6588328182697296e-05,
+      "auxiliary_action_weight": 1.6391277313232422e-07,
+      "auxiliary_bias": 1.1548399925231934e-07,
+      "auxiliary_hidden_weight": 1.7881393432617188e-07,
+      "hidden_bias": 2.6584137231111526e-05,
+      "hidden_weight": 2.6584137231111526e-05,
+      "obs_weight": 2.6588328182697296e-05,
+      "previous_action_weight": 2.656877040863037e-05,
+      "training_only_log_std": 0.0,
+      "training_only_value_bias": 8.568167686462402e-08,
+      "training_only_value_weight": 1.2665987014770508e-07
+    },
+    "loss_before": 0.0031728835310786963,
+    "optimizer_count_after": 602,
+    "optimizer_count_before": 601,
+    "reset_moment_keys": [
+      "action_bias",
+      "action_weight",
+      "hidden_bias",
+      "hidden_weight",
+      "obs_weight",
+      "previous_action_weight"
+    ]
+  },
+  "schema_version": "winner_v70.fresh_moment_step_result.v1",
+  "snapshot": {
+    "bytes": 194956,
+    "completed_updates": 602,
+    "metadata_payload_sha256": "cbfa25c238f75f2c1dd0d09753c33286cd4e2abd794194198f369aaa6989012a",
+    "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v70-fresh-moment-step\\snapshots\\snapshot_fresh_moment_update_602.npz",
+    "sha256": "24fd0b25de5cd5e198a61288cff2d6e437e251a63fa1a05213d33d585838ec7b",
+    "state_payload_sha256": "df75505e730d9488d36a8a04ae0ef238b7dba9a0be330eadc9b65cc136a7fd9b"
+  },
+  "source": {
+    "episode_receipts_sha256": "106fd9b8d3c58f8663b3d39694e7520339408820f62d2e182bda15e78122f323",
+    "optimizer_count": 601,
+    "rollout_update_index": 601,
+    "snapshot": {
+      "bytes": 195247,
+      "completed_updates": 601,
+      "metadata_payload_sha256": "2db6787c9d94b73543ba2c47aaa2826bd4b370e0db7d86f6c441614e7eb63d59",
+      "path": "D:/CodexArtifacts/open-duck-mini-rdkx5/winner-v68-backtracked-adam-continuation/snapshots/snapshot_backtracked_adam_update_601.npz",
+      "sha256": "3e3725f1ae5220569422c9ed7a7e7f33fd8799f2e2d90bef66f1493607ac4078",
+      "state_payload_sha256": "f42894aa89339f1a3bb7dc37e441ebf5844c7e3778df985e3bb7ba3b9aceabd8"
+    }
+  },
+  "source_manifest_sha256": "4dfb5f26f1a2727cb2080d682ac51ec69e9e1204188abf9411fc5ddb3738dfd9",
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v70_fresh_moment_step.py",
+      "sha256": "a226a972af4af3ce331fca86833e1bbc63a144b16a2f17af4a6ea9c17ddd503f"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v70_fresh_moment_step.py",
+      "sha256": "0dbce32328d0daed2ce05a4604149a56e44f1ca539354b9dbf0baa0cd0f4e3fc"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v70_fresh_moment_step.py",
+      "sha256": "0eec43fa0aa9fbecc53ef3daa465747f693b2c77b3e7e08a995d9651da30bb62"
+    },
+    "v68_stopped_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v68_backtracked_adam_continuation_result.json",
+      "sha256": "0621f43f97f82814a6c15212a7ba72bf01da79edac99f25a8ded549ee985ba2f"
+    },
+    "v69_builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v69_count602_direction_attribution.py",
+      "sha256": "009c168017ada0b0a73842288d1d1f634754c867703965b1c00f85b8470f2d80"
+    },
+    "v69_contract": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v69_count602_direction_attribution_preregistration.json",
+      "sha256": "38b9ddaecc3662790a019d716c9fd5fd9f7d220310a1f0a26b3ccbf04abef94a"
+    },
+    "v69_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v69_count602_direction_attribution_result.json",
+      "sha256": "8b02ec895705bfb194602fe094b0ff1235d3827646bc043d10097050454a23cd"
+    }
+  },
+  "status": "PASS_WINNER_V70_FRESH_MOMENT_STEP"
+}

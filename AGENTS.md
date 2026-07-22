@@ -3897,3 +3897,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   continuation, support cells, checkpoint selection, deployment, Gate 5,
   RDK-X5/robot access, torque, motion, or clearance. See
   `outputs/analysis/WINNER_V70_FRESH_MOMENT_STEP_CONTRACT_20260722.md`.
+- 2026-07-22: Winner-v70 passes the fresh-moment proof from optimizer count
+  `601` to `602`. It resets exactly the six teacher-active policy `m/v` leaves,
+  preserves the global count and every other moment, and accepts fraction
+  `1/8`. Same-batch loss falls `0.0031728835 -> 0.0031710141`, a much larger
+  descent than the one-quantum inherited-Adam change. The snapshot is
+  `24fd0b25...838ec7b`; the non-selected stateful ONNX is
+  `45ac3122...6ed9ac4` and passes ABI, JAX agreement, and previous-action
+  chaining. Result SHA-256: `36156741...a7140792`. This authorizes only
+  preregistration of a bounded fresh-moment safeguarded continuation; support,
+  checkpoint selection, deployment, Gate 5, RDK-X5/robot access, torque,
+  motion, and clearance remain zero. See
+  `outputs/analysis/WINNER_V70_FRESH_MOMENT_STEP_RESULT_20260722.md`.
