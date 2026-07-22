@@ -3887,3 +3887,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   transport equation, checkpoint selection, support, deployment, Gate 5,
   RDK-X5/robot access, torque, motion, and clearance remain unselected. See
   `outputs/analysis/WINNER_V69_COUNT602_DIRECTION_ATTRIBUTION_RESULT_20260722.md`.
+- 2026-07-22: Winner-v70 preregisters exactly one fresh-moment teacher step
+  from optimizer count `601` to `602`. It zeros Adam `m/v` for only the six
+  teacher-active policy leaves, preserves the global count and all other
+  moments, then accepts the first strict same-batch descent from the frozen
+  largest-first grid through `1/1024`. The resulting snapshot and one
+  non-selected stateful ONNX must round-trip exactly. Contract SHA-256:
+  `2e24de44...6374bb3b`. This authorizes one update only, with zero
+  continuation, support cells, checkpoint selection, deployment, Gate 5,
+  RDK-X5/robot access, torque, motion, or clearance. See
+  `outputs/analysis/WINNER_V70_FRESH_MOMENT_STEP_CONTRACT_20260722.md`.
