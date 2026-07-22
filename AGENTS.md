@@ -4011,3 +4011,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   pitch-head continuation. It selects no checkpoint and grants no support,
   deployment, Gate 5, RDK-X5/robot access, torque, motion, or clearance. See
   `outputs/analysis/WINNER_V80_PITCH_ACTION_HEAD_STEP_RESULT_20260722.md`.
+- 2026-07-22: Winner-v81 accepts and atomically snapshots `18` localized
+  pitch-head updates at counts `657..674`, then stops before count `675` and
+  before either persistence endpoint. Every frozen fraction through `1/1024`
+  increases the same-batch float32 pitch-teacher loss; the smallest delta is
+  only `+1.3969839e-9`. The teacher-gradient dot proposed delta remains
+  negative (`-6.5645268e-7`), so the preregistered stale-moment reset condition
+  is false and no reset is attempted. Result SHA-256:
+  `dfdd8088...ec021e2`. No endpoint graph, support gate, checkpoint selection,
+  deployment, Gate 5, RDK-X5/robot access, torque, motion, or clearance is
+  authorized. The only selected next step is a separately preregistered
+  zero-update count-`675` direction/precision attribution. See
+  `outputs/analysis/WINNER_V81_PITCH_ACTION_HEAD_CONTINUATION_RESULT_20260722.md`.
