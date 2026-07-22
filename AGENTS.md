@@ -2398,3 +2398,17 @@ Do not proceed to grounded walking until low-risk gates pass.
   objective change, training, checkpoint selection, runtime, RDK-X5, robot,
   Gate 5, deployment, or clearance. See
   `outputs/analysis/WINNER_V26_RECURRENT_CREDIT_DIAGNOSTIC_RESULT_20260722.md`.
+- 2026-07-22: One zero-update Winner-v27 early-prefix source-recovery scan is
+  preregistered. For Winner-v24 half/final, the exact candidate trajectory is
+  captured at ticks `0/4/8/12/16/20` in the ten negative-X configurations and
+  both actuator plants. Candidate continuation and Winner-v22 source recovery
+  start from the same candidate physical/bridge/observer/history snapshot and
+  captured observation; the source hidden state is advanced prospectively on
+  the candidate observation/action history. All branches are right-censored at
+  absolute tick 52. Early physical-state lock-in requires source recovery in
+  all tick-0 cells for both checkpoints and at most 25% of tick-20 cells.
+  Exactly one first-attempt CPU run is authorized: 40 candidate prefixes, 240
+  forks, and 720 branch rollouts. Optimizer updates, locomotion, checkpoint
+  selection, runtime, RDK-X5, robot, Gate 5, deployment, and clearance remain
+  unauthorized. See
+  `outputs/analysis/WINNER_V27_EARLY_PREFIX_RECOVERY_SCAN_PREREGISTRATION_20260722.md`.
