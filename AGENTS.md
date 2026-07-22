@@ -2527,3 +2527,17 @@ Do not proceed to grounded walking until low-risk gates pass.
   runtime work, RDK-X5, robot, Gate 5, deployment, and clearance remain
   unauthorized. See
   `outputs/analysis/WINNER_V31_CROSS_WORKER_REPLAY_ATTRIBUTION_PREREGISTRATION_20260722.md`.
+- 2026-07-22: The sole Winner-v31 saved-result-only attribution passed on
+  GitHub run `29890211264`; its original 2,417-byte ZIP exactly matches GitHub
+  SHA-256 `da49ac7f...d0eeb29`. The three V29/V30 replay differences are only
+  `7/1/4` float32 ULPs for anchor/PPO/predictor loss. The actual one-update
+  anchor improvement is `0.0001267446642`, `622,130.5x` larger than the
+  cross-worker anchor delta. The exact two replay checks remain the only V30
+  holds, while every non-replay update, snapshot, graph, and state-chain check
+  passes; execution remains zero simulation/update/support/locomotion/robot.
+  Classification: `CROSS_WORKER_FLOAT_REPLAY_ONLY`. This authorizes only a
+  separately frozen bounded prefix-anchor training preregistration using the
+  preserved count-201 artifact. It does not yet authorize that training,
+  support evaluation, checkpoint selection, runtime work, RDK-X5, robot,
+  Gate 5, deployment, or clearance. See
+  `outputs/analysis/WINNER_V31_CROSS_WORKER_REPLAY_ATTRIBUTION_RESULT_20260722.md`.
