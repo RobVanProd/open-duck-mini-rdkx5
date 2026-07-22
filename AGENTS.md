@@ -2800,3 +2800,21 @@ Do not proceed to grounded walking until low-risk gates pass.
   controller feasibility design. Simulation, training, checkpoint selection,
   RDK-X5, robot, Gate 5, deployment, and clearance remain unauthorized. See
   `outputs/analysis/WINNER_V40_RESPONSE_JACOBIAN_INVALIDITY_ATTRIBUTION_RESULT_20260722.md`.
+- 2026-07-22: One Winner-v41 full-horizon static-equilibrium feasibility
+  screen is preregistered for `COM_X_NEG`. It exhausts the fixed nine-level
+  Cartesian grid over the unchanged reviewed bilateral hip-pitch/knee/ankle
+  basis: `9^3=729` time-invariant targets and `1,458` target/plant cells. Each
+  target is held for all 250 ticks and reaches the plant only through the exact
+  graph absolute/rate boundary; one identical target must pass both P30 and
+  P31/34. This is materially different from the closed shooting routes: there
+  is no receding horizon, action sequence, CEM population update, covariance,
+  elite selection, local pulse composition, response Jacobian, or changing
+  plan. The finite grid is exhausted once with no refinement. A deterministic
+  diagnostic best may be reported on HOLD but cannot be promoted. Exactly one
+  formal CPU-only screen is authorized, with zero optimizer updates,
+  locomotion training, RDK-X5, or robot work. A pass may authorize only a
+  separately frozen static-target teacher contract; a hold closes this exact
+  equilibrium route without changing the grid, bounds, basis, or promoting a
+  closest result. It is not a runtime target/wrapper, checkpoint selection,
+  Gate 5 authorization, or robot clearance. See
+  `outputs/analysis/WINNER_V41_STATIC_EQUILIBRIUM_TARGET_FEASIBILITY_PREREGISTRATION_20260722.md`.

@@ -1,0 +1,185 @@
+{
+  "authority": {
+    "pass_authorizes_only": "one separately frozen static-target teacher contract",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false,
+    "runtime_static_target_or_action_wrapper_authorized": false,
+    "training_authorized": false
+  },
+  "decision": "AUTHORIZE_ONE_CPU_ONLY_FULL_HORIZON_STATIC_TARGET_SCREEN",
+  "execution_now": {
+    "candidate_plant_cells": 0,
+    "locomotion_training_steps": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0,
+    "static_target_candidates": 0
+  },
+  "interpretation": {
+    "hold": "Close the exact nine-level static-equilibrium route without grid refinement, changed bounds, another basis, or closest promotion.",
+    "pass": "A shared static support target exists; authorize only a separately frozen static-target teacher contract."
+  },
+  "material_difference_from_closed_routes": {
+    "bounded_six_joint_receding_horizon": "Tests a global equilibrium posture from reset rather than composability of local pulses from already-failing states.",
+    "fixed_shooting_mpc": "No receding horizon, sampled action sequence, short-horizon objective, or per-tick replanning; each candidate is one constant full-episode target.",
+    "winner_v38_cem": "Keeps the reviewed basis unchanged but removes population adaptation, covariance, elites, warm state, and changing plans; the finite grid is exhausted once with no refinement.",
+    "winner_v39_response_inversion": "No local Jacobian, response target, least-squares inverse, or terminal-truncated probe; only direct full-horizon equilibrium evidence decides."
+  },
+  "pass_rule": {
+    "all_candidate_actions_graph_bounded": true,
+    "at_least_one_shared_target_passes_both_plants": true,
+    "closest_result_selection": false,
+    "exact_1458_candidate_plant_cells": true,
+    "exact_729_static_targets": true,
+    "selected_target_replay_exact": true
+  },
+  "question": "Does one time-invariant target in the reviewed bilateral pitch basis, ramped only by the unchanged graph boundary, hold COM_X_NEG for all 250 ticks under both actuator plants?",
+  "schema_version": "winner_v41.static_equilibrium_target_feasibility_preregistration.v1",
+  "screen": {
+    "actuator_plants": [
+      "P30_ALL_JOINT",
+      "P31_34_PITCH_WITH_P30_NONPITCH"
+    ],
+    "candidate_count": 729,
+    "configuration_ids": [
+      "COM_X_NEG"
+    ],
+    "controlled_action_indices": [
+      2,
+      3,
+      4,
+      11,
+      12,
+      13
+    ],
+    "coordinate_order": [
+      "hip_pitch_magnitude",
+      "knee",
+      "ankle"
+    ],
+    "duration_ticks": 250,
+    "grid_dimensions": 3,
+    "grid_values": [
+      -1.0,
+      -0.75,
+      -0.5,
+      -0.25,
+      0.0,
+      0.25,
+      0.5,
+      0.75,
+      1.0
+    ],
+    "plant_semantics": "one shared target must pass both measured actuator plants",
+    "selection": "Exhaust all 729 targets; pass only if at least one target passes both plants. A deterministic diagnostic best may be reported on HOLD but cannot be promoted.",
+    "target_semantics": "one time-invariant raw action target for all 250 ticks"
+  },
+  "source_manifest_sha256": "17675ebc596640f39e339d9063e5add611794bda5fb38a928893846381fd43b8",
+  "source_result": {
+    "repository_attribution": {
+      "artifact_zip_bytes": 1895,
+      "artifact_zip_sha256": "1536a4600050b92146c214ba8bca1f0be45d47d9183e55c8f94461dc51b5c1f4",
+      "github_artifact_digest": "sha256:1536a4600050b92146c214ba8bca1f0be45d47d9183e55c8f94461dc51b5c1f4",
+      "github_artifact_id": 8521925815,
+      "github_artifact_name": "winner-v40-response-jacobian-invalidity-attribution-29901125171",
+      "github_run_attempt": 1,
+      "github_run_head_sha": "8d269f77ec7d8d9e4ef84d25e48c844f6d74d8b1",
+      "github_run_id": 29901125171,
+      "importer_lf_sha256": "809b2da544388a2ff490f25cfc7ab90a0180d514c7cb01b4ffcd13b77240d74c",
+      "preregistration_lf_sha256": "a60fddb9ac591bde48dd8a24e3b729b8534691ffcc4ba60918ffc24db1c6f767",
+      "raw_result_receipt_sha256": "112ceac38a695cafd223263988ab3df6faa8dc0b30a5859bea5cd59f216768b0",
+      "raw_result_sha256": "00cc3bf951a33ee7b4e4099a0fe1d65b8dc22a69ae3c78cb84e01a5755c17594",
+      "repository": "RobVanProd/open-duck-mini-rdkx5",
+      "runner_lf_sha256": "e5679013e20fa506e9f75c6d864ea3deadbd27487e0a0da63e43a8949a30ce3a",
+      "workflow_lf_sha256": "3c4e2cf4a3ed83adbb27dd403a90f0254e1ac7d99d2195a4d6b618435a0b96e1"
+    },
+    "winner_v40_result_lf_sha256": "32513cc11c3dc45db30b2498a609d7a2aa2fd7a3ebd6014c94363544500aebed"
+  },
+  "sources": {
+    "base_gate_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_support_gate.py",
+      "sha256": "18873eee55c77a278fc065de64c0b912803bf29b4440cde7f3adaabe1297baca"
+    },
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v41_static_equilibrium_target_feasibility_preregistration.py",
+      "sha256": "efbe5ac751439ce4cdeb24d9d96620daa9f5636c89b05334cea3a077314350bb"
+    },
+    "calibrator_design": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_calibrator_training_preregistration.json",
+      "sha256": "1ec76a587c6fa50b92866c1632a7046ae0c6687ed17b1636b664bf45c2e8ba34"
+    },
+    "canonical_p30_fit": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/fixed_target_p30_actuator_fit_20260712.json",
+      "sha256": "908ddb01e5d82e661d77b8f3cb186a84665695660b86b304c6d1ae89c79cdb0b"
+    },
+    "closed_branches_ledger": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/CLOSED_BRANCHES_LEDGER_20260716.md",
+      "sha256": "3e859d55d96bf6dd6a94a542c4f2cd5088ad2be1e1121e82515248b55234be82"
+    },
+    "configuration_domain": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v3_variable_configuration_replacement_preregistration.json",
+      "sha256": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b"
+    },
+    "cpu_smoke": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_cpu_smoke.py",
+      "sha256": "b6ad53430f3f7cca3a91a90f72dab585cb05e3e2f74be2241af3fd9b6ee7ce87"
+    },
+    "environment_preparation": {
+      "hash_mode": "lf",
+      "path": "tools/prepare_winner_v15_cpu_environment.py",
+      "sha256": "33e54c3a16d5684e2d2520270acf25a28df42dc89e9f302c1ef3bd5f37d867c2"
+    },
+    "preregistration_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v41_static_equilibrium_target_feasibility_preregistration.py",
+      "sha256": "48a4d66801d45b919b2f91a26461cf03ca4454ab0e5354a805569aae20b8c821"
+    },
+    "result_importer": {
+      "hash_mode": "lf",
+      "path": "tools/import_winner_v41_static_equilibrium_target_feasibility.py",
+      "sha256": "111aa4d591f40a055bfc5d5c4f67c5d8f71c53939ede66520440ad6cd6ebe462"
+    },
+    "result_importer_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v41_static_equilibrium_target_feasibility_import.py",
+      "sha256": "861e418695633a3bd95007119228d1a9c31bba380d90aca8cf8c047615f17e7d"
+    },
+    "reviewed_mirror_basis": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v16_support_action_direction.py",
+      "sha256": "1b34b8d26743904e005d844e5f7e07e53f78a555a8a99f0035d3f0a778352c33"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v41_static_equilibrium_target_feasibility.py",
+      "sha256": "111ae5870e94be1b6d859e78c1043d093c345436bb3db834cdc9b9ede4d8724b"
+    },
+    "runner_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v41_static_equilibrium_target_feasibility.py",
+      "sha256": "a801ee876422f6bc29e55d277c5210040892538f5830b33b10f811983ee61382"
+    },
+    "runtime_observer": {
+      "hash_mode": "lf",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/observer/winner_v2_contract.py",
+      "sha256": "5c90994a24aa223c94f3a51927228e97000f6118c927561a87a3f2684dcf4889"
+    },
+    "winner_v40_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v40_response_jacobian_invalidity_attribution_result.json",
+      "sha256": "32513cc11c3dc45db30b2498a609d7a2aa2fd7a3ebd6014c94363544500aebed"
+    },
+    "workflow": {
+      "hash_mode": "lf",
+      "path": ".github/workflows/winner-v41-static-equilibrium-target-feasibility.yml",
+      "sha256": "fbbf9c1a3f7de6e2ccab933a7aa2706e5d9ef4fb0a93f892e3d2ab1ee7b0c372"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V41_STATIC_EQUILIBRIUM_TARGET_FEASIBILITY"
+}
