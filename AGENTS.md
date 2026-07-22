@@ -2637,3 +2637,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   training, checkpoint selection, RDK-X5, robot, Gate 5, deployment, or
   clearance. See
   `outputs/analysis/WINNER_V35_FULL_HORIZON_SOURCE_CONTINUATION_PREREGISTRATION_20260722.md`.
+- 2026-07-22: The sole Winner-v35 formal run `29896417197` completed HOLD; its
+  original 27,001-byte ZIP exactly matches GitHub SHA-256
+  `ee461896...0dc9fe`. All 60 cells execute the exact hybrid, all actions remain
+  graph-bounded, and every tick-8 handoff changes the action by `0.12019-0.12171`
+  rad. Only `14/60` cells pass the complete 250-tick support gate: the hybrid
+  recovers `9/55` Winner-v34 failures and preserves all `5/5` existing passes.
+  The other 46 cells terminate at ticks 24-48. Thus V28's reported recovery was
+  a short-horizon survival lead, not a full support-valid teacher.
+  Classification: `HYBRID_TEACHER_NOT_FULL_HORIZON_FEASIBLE`; decision:
+  `CLOSE_V28_HYBRID_TEACHER_ROUTE`. Do not represent, distill, extend, or deploy
+  this hybrid. No checkpoint is selected and robot clearance remains false.
+  See
+  `outputs/analysis/WINNER_V35_FULL_HORIZON_SOURCE_CONTINUATION_RESULT_20260722.md`.
