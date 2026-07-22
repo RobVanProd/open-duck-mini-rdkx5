@@ -3854,3 +3854,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   length search, support evaluation, checkpoint selection, deployment,
   Gate 5, RDK-X5/robot access, torque, motion, or clearance is included. See
   `outputs/analysis/WINNER_V68_BACKTRACKED_ADAM_CONTINUATION_PREREGISTRATION_20260722.md`.
+- 2026-07-22: Winner-v68 atomically preserves `26` accepted updates at counts
+  `576..601`, then stops at attempted count `602` because none of the frozen
+  fractions through `1/16` strictly decreases its same-batch teacher loss.
+  Result SHA-256: `87c90a0b...e1b6ccb1`; every durable parameter/optimizer
+  snapshot round-trips exactly. Accepted fractions were held in the in-memory
+  metrics list but not snapshot metadata, so the pre-result stop leaves their
+  history explicitly `NOT_PERSISTED` rather than reconstructed. Count `605`
+  was not reached, no endpoint ONNX exists, and support, checkpoint selection,
+  deployment, Gate 5, RDK-X5/robot access, torque, motion, and clearance remain
+  zero. The only selected next step is a zero-update count-`602` direction and
+  plateau attribution. See
+  `outputs/analysis/WINNER_V68_BACKTRACKED_ADAM_STOPPED_RESULT_20260722.md`.
