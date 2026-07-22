@@ -2247,3 +2247,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   A pass may authorize only a separately frozen baseline-anchored training
   preregistration; it does not itself authorize training or evaluation. See
   `outputs/analysis/WINNER_V24_BASELINE_ANCHORED_ONE_UPDATE_CPU_CONTRACT_20260722.md`.
+- 2026-07-22: First-attempt one-update run `29881265608` completed and its
+  original ZIP matches GitHub SHA-256 `f3966403...0e7510fd`. The frozen importer
+  stopped before reading the result because GitHub preserved the work-directory
+  prefix for the snapshot and ONNX while the importer expected those two names
+  flattened. Do not rerun or alter the artifact. A separately versioned path
+  correction may accept only the two observed prefixed names while preserving
+  the exact four-member inventory and every safety, size, digest, result, and
+  authority check. No additional optimizer update or training is authorized
+  until that unchanged ZIP passes strict corrected import. See
+  `outputs/analysis/WINNER_V24_ONE_UPDATE_IMPORTER_PATH_CORRECTION_20260722.md`.

@@ -1,0 +1,45 @@
+{
+  "authority": {
+    "artifact_or_result_rewritten": false,
+    "new_workflow_run_authorized": false,
+    "optimizer_or_training_authorized": false,
+    "pass_authorizes_only": "strict import of the unchanged first-attempt artifact with its exact GitHub-preserved member paths",
+    "robot_or_rdk_access": false
+  },
+  "correction": {
+    "actual_members": [
+      "winner-v24-baseline-anchored-one-update-result.json",
+      "winner-v24-baseline-anchored-one-update-result.sha256",
+      "winner-v24-baseline-anchored-one-update-work/winner_v24_baseline_anchored_update_101.npz",
+      "winner-v24-baseline-anchored-one-update-work/winner_v24_baseline_anchored_update_101.onnx"
+    ],
+    "all_member_safety_size_hash_and_result_validation_unchanged": true,
+    "frozen_importer_expected_members": [
+      "winner-v24-baseline-anchored-one-update-result.json",
+      "winner-v24-baseline-anchored-one-update-result.sha256",
+      "winner_v24_baseline_anchored_update_101.npz",
+      "winner_v24_baseline_anchored_update_101.onnx"
+    ],
+    "one_variable": "replace only the two flattened binary member names with the exact GitHub-preserved work-directory paths",
+    "rejected_before_result_read": true
+  },
+  "failed_checks": [],
+  "first_attempt_artifact": {
+    "artifact_id": 8514874700,
+    "artifact_name": "winner-v24-baseline-anchored-one-update-29881265608",
+    "artifact_zip_bytes": 244766,
+    "artifact_zip_sha256": "f39664030c24bd0ae8ed4b60982dc46ac3f3a2e7daba5ed2d0e4f30d0e7510fd",
+    "github_run_attempt": 1,
+    "github_run_head_sha": "8660d8fe9d176ad71999a029c7f1d3af63ed900d",
+    "github_run_id": 29881265608,
+    "workflow_conclusion": "success"
+  },
+  "reason": "GitHub upload-artifact retained the common work-directory prefix for the snapshot and ONNX; the frozen importer assumed those two files would be flattened and stopped before reading the result",
+  "schema_version": "winner_v24.one_update_importer_path_correction.v1",
+  "sources": {
+    "contract_lf_sha256": "099bebbc04cc641c268474c6e22376d18b93983c3a59a79d7755eb75619915a0",
+    "frozen_importer_lf_sha256": "79808e19be92754118af94c565ef11d0031e30790e370f75aa15d1483e1277f8",
+    "runner_lf_sha256": "9852844b6efd630151720c9380b2ea017997bba3bd5b071bdf3139680207ce89"
+  },
+  "status": "FROZEN_WINNER_V24_ONE_UPDATE_IMPORTER_PATH_CORRECTION"
+}
