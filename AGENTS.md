@@ -3919,3 +3919,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   transport equation, support evaluation, checkpoint selection, deployment,
   Gate 5, RDK-X5/robot access, torque, motion, or clearance is included. See
   `outputs/analysis/WINNER_V71_FRESH_MOMENT_SAFEGUARDED_CONTINUATION_PREREGISTRATION_20260722.md`.
+- 2026-07-22: The first Winner-v71 invocation completed its first in-memory
+  rollout and safeguarded proposal, then stopped before snapshot or result
+  persistence because the metrics block referenced the removed V68 local
+  `full_loss`. Winner-v71b binds that local to the already computed active
+  fraction-`1` row. Correction contract SHA-256:
+  `c15d9edd...6324dc10`. It changes no objective, rollout, gradient, safeguard,
+  moment reset, Adam state, parameter, artifact, or authority. No durable
+  update, support cell, checkpoint selection, deployment, Gate 5, RDK-X5/robot
+  access, torque, motion, or clearance occurred. See
+  `outputs/analysis/WINNER_V71B_FULL_LOSS_BINDING_CORRECTION_20260722.md`.
