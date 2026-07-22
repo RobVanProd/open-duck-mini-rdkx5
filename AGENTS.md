@@ -3636,3 +3636,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   separately preregistered unchanged half/final offline support gate, not
   deployment, Gate 5, RDK-X5/robot access, torque, motion, or clearance. See
   `outputs/analysis/WINNER_V60_INTEGRATED_NUMERIC_GUARD_TRAINING_RESULT_20260722.md`.
+- 2026-07-22: Winner-v61 binds the exact Winner-v60 count-`504/554`
+  snapshots and graphs to the unchanged reviewed Winner-v12 offline support
+  gate: `124` main cells plus `32` heldout repeats per checkpoint, identical
+  thresholds, seeds, P30/P31-34 plants, sensor/transport/context checks, and an
+  all-or-nothing persistence rule. Preregistration SHA-256:
+  `a52b2878...8bacbf6a`. A hold selects nothing; a complete two-checkpoint pass
+  selects the fixed final count-`554` endpoint, never the closest metric. No
+  optimizer update, locomotion training, robot/RDK access, torque, or motion is
+  authorized. See
+  `outputs/analysis/WINNER_V61_INTEGRATED_SUPPORT_GATE_PREREGISTRATION_20260722.md`.
