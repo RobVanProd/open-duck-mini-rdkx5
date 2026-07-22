@@ -3541,3 +3541,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   authorize support evaluation, checkpoint selection, deployment, Gate 5,
   RDK-X5/robot access, torque, motion, or clearance. See
   `outputs/analysis/WINNER_V57_FIRST_TICK_TEACHER_ONE_UPDATE_RESULT_20260722.md`.
+- 2026-07-22: Winner-v58 preregisters the sole integrated `100`-update CPU
+  continuation from the exact V57 count-`454` state to half/final counts
+  `504/554`. It retains the unchanged V52 PPO, normalized-predictor, prefix-
+  anchor, and full-horizon full-action-teacher objectives, and adds only the
+  V56/V57 first-tick reset term over the frozen `44` raw/native rows and `616`
+  action elements at scale `136.35153198242188`. No attention, flat-transport
+  equation, ABI change, coefficient search, support evaluation, or checkpoint
+  selection is included. Preregistration SHA-256:
+  `28dc79f2...ac6fd9a`. A passing training artifact may authorize only a
+  separately preregistered unchanged half/final support gate; it cannot grant
+  deployment, Gate 5, RDK-X5/robot access, torque, motion, or clearance. See
+  `outputs/analysis/WINNER_V58_INTEGRATED_FIRST_TICK_TRAINING_PREREGISTRATION_20260722.md`.
