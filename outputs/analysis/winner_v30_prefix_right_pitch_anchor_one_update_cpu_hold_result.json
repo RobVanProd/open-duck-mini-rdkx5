@@ -1,0 +1,600 @@
+{
+  "authority": {
+    "formal_support_gate_executed": false,
+    "pass_authorizes_only": "a separate frozen prefix right-pitch anchor training preregistration",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false,
+    "training_executed": false
+  },
+  "checks": {
+    "action_boundary_exact": true,
+    "all_12_combined_gradients_nonzero": true,
+    "all_12_trainable_leaves_changed": true,
+    "all_losses_metrics_parameters_optimizer_finite": true,
+    "exact_80_episode_population": true,
+    "exact_v29_anchor_loss_gradient_and_scale_reproduced": false,
+    "exact_v29_update_200_batch_reproduced": false,
+    "exactly_one_optimizer_update_200_to_201": true,
+    "formal_support_locomotion_robot_zero": true,
+    "onnx_abi_exact": true,
+    "onnx_jax_chain_at_most_1e_7": true,
+    "onnx_previous_action_chain_exact": true,
+    "onnx_training_only_tensors_absent": true,
+    "pitch_margin_reward_exact": true,
+    "same_batch_anchor_loss_strictly_decreases": true,
+    "sampled_hidden_replay_at_most_1e_6": true,
+    "selected_384_anchor_elements_exact": true,
+    "snapshot_readback_exact": true,
+    "source_snapshot_and_optimizer_count_200_exact": true,
+    "source_state_unchanged_before_update": true,
+    "source_teacher_and_candidate_artifacts_exact": true,
+    "source_v29_zero_update_result_exact": true,
+    "stored_successor_mask_exact_nonzero": true,
+    "v24_baseline_objective_exact": true
+  },
+  "decision": "DO_NOT_TRAIN_PREFIX_RIGHT_PITCH_ANCHOR_OBJECTIVE",
+  "environment": {
+    "jax_backend": "cpu",
+    "jax_devices": [
+      "TFRT_CPU_0"
+    ],
+    "mujoco_version": "3.9.0"
+  },
+  "execution": {
+    "formal_support_cells": 0,
+    "locomotion_steps": 0,
+    "optimizer_updates": 1,
+    "robot_or_rdk_access": 0,
+    "rollout_episode_slots": 80
+  },
+  "failed_checks": [
+    "exact_v29_anchor_loss_gradient_and_scale_reproduced",
+    "exact_v29_update_200_batch_reproduced"
+  ],
+  "graph": {
+    "bytes": 54896,
+    "contract": {
+      "abi_exact": true,
+      "all_chain_outputs_finite": true,
+      "all_initializers_finite": true,
+      "bytes": 54896,
+      "chain_ticks": 250,
+      "forbidden_training_or_privileged_tokens": [],
+      "initializer_count": 9,
+      "inputs": [
+        {
+          "name": "obs",
+          "shape": [
+            1,
+            115
+          ]
+        },
+        {
+          "name": "previous_action",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "name": "h_in",
+          "shape": [
+            1,
+            64
+          ]
+        }
+      ],
+      "jax_onnx_at_most_1e_7": true,
+      "jax_onnx_max_abs_error": 0.0,
+      "outputs": [
+        {
+          "name": "calibration_actions",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "name": "previous_action_out",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "name": "h_out",
+          "shape": [
+            1,
+            64
+          ]
+        }
+      ],
+      "path": "/tmp/winner-v30-prefix-anchor-work/winner_v30_prefix_right_pitch_anchor_update_201.onnx",
+      "previous_action_out_equals_action_bit_exact": true,
+      "sha256": "d905d2541ae071644ba7d77eaf6b3c7467405d85a4c88fe3ae164ef792829df9",
+      "training_only_tensors_absent": true
+    },
+    "path": "/tmp/winner-v30-prefix-anchor-work/winner_v30_prefix_right_pitch_anchor_update_201.onnx",
+    "sha256": "d905d2541ae071644ba7d77eaf6b3c7467405d85a4c88fe3ae164ef792829df9"
+  },
+  "objective": {
+    "action_indices": [
+      11,
+      12,
+      13
+    ],
+    "anchor_scale": 197.3112030029297,
+    "baseline": "unchanged Winner-v24 baseline-anchored PPO gradient plus frozen Winner-v22 normalized-predictor gradient at scale 380.9135437011719",
+    "candidate_checkpoint": {
+      "label": "winner_v24_final",
+      "update": 200
+    },
+    "combined_gradient": "baseline combined gradient plus 197.3112030029297 times the frozen Winner-v29 prefix-anchor gradient",
+    "no_action_replacement": true,
+    "optimizer": "restore exact Winner-v24 Adam count 200 and execute one update to 201",
+    "post_update_gate": "on the identical frozen batch, selected raw anchor MSE must be finite and strictly lower after the update",
+    "prefix_ticks": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "rollout_update_index": 200,
+    "selected_elements": 384,
+    "selected_training_configuration_ids": [
+      "COM_X_NEG",
+      "COM_CORNER_00",
+      "COM_CORNER_01",
+      "COM_CORNER_02",
+      "COM_CORNER_03",
+      "DISCOVERY_03",
+      "DISCOVERY_09",
+      "DISCOVERY_10"
+    ],
+    "teacher_checkpoint": {
+      "label": "winner_v22_final",
+      "update": 100
+    }
+  },
+  "optimization": {
+    "anchor_loss_after": 0.0002305256057297811,
+    "anchor_loss_before": 0.00035727026988752186,
+    "anchor_loss_delta": -0.00012674466415774077,
+    "anchor_scale": 197.3112030029297,
+    "combined_gradient_max_abs": {
+      "action_bias": 2.6844534873962402,
+      "action_weight": 2.550581693649292,
+      "auxiliary_action_weight": 0.7280950546264648,
+      "auxiliary_bias": 6.364182949066162,
+      "auxiliary_hidden_weight": 6.180045127868652,
+      "hidden_bias": 0.8274809718132019,
+      "hidden_weight": 0.7911943793296814,
+      "obs_weight": 8.536738395690918,
+      "previous_action_weight": 0.09332045912742615,
+      "training_only_log_std": 0.02466980554163456,
+      "training_only_value_bias": 10.472320556640625,
+      "training_only_value_weight": 10.175700187683105
+    },
+    "combined_loss": 561.1220092773438,
+    "leaf_max_abs_delta": {
+      "action_bias": 9.145354852080345e-05,
+      "action_weight": 0.00014359503984451294,
+      "auxiliary_action_weight": 0.0003060493618249893,
+      "auxiliary_bias": 0.0002756742760539055,
+      "auxiliary_hidden_weight": 0.00029611377976834774,
+      "hidden_bias": 0.00023105659056454897,
+      "hidden_weight": 0.00027299136854708195,
+      "obs_weight": 0.0003019943833351135,
+      "previous_action_weight": 0.00030162371695041656,
+      "training_only_log_std": 7.677078247070312e-05,
+      "training_only_value_bias": 9.149126708507538e-05,
+      "training_only_value_weight": 0.00016853027045726776
+    },
+    "maximum_selected_action_delta_after": 0.023038659244775772,
+    "maximum_selected_action_delta_before": 0.028645988553762436,
+    "normalized_predictor_loss": 0.14490313827991486,
+    "optimizer_count_after": 201,
+    "optimizer_count_before": 200,
+    "ppo_loss": 505.8559265136719,
+    "predictor_scale": 380.9135437011719,
+    "snapshot_readback_exact": true,
+    "source_state_unchanged_before_update": true,
+    "trainable_leaves": [
+      "obs_weight",
+      "previous_action_weight",
+      "hidden_weight",
+      "hidden_bias",
+      "action_weight",
+      "action_bias",
+      "training_only_log_std",
+      "training_only_value_weight",
+      "training_only_value_bias",
+      "auxiliary_hidden_weight",
+      "auxiliary_action_weight",
+      "auxiliary_bias"
+    ]
+  },
+  "repository_attribution": {
+    "artifact_zip_bytes": 246907,
+    "artifact_zip_sha256": "50533add5c2f403ec4ffa6d7f82110a930636e47ec9bf7672038b99eece0fb86",
+    "correction_lf_sha256": "b22620dac03c08f1f07de7d8dab2e9b5b054cb26821de07724e3953727c33d8f",
+    "github_artifact_digest": "sha256:50533add5c2f403ec4ffa6d7f82110a930636e47ec9bf7672038b99eece0fb86",
+    "github_artifact_id": 8517769530,
+    "github_artifact_name": "winner-v30-prefix-right-pitch-anchor-one-update-29889578085",
+    "github_run_attempt": 1,
+    "github_run_head_sha": "92fe3e88c4d81ebed48a6c9d5e54f774aa25d0cf",
+    "github_run_id": 29889578085,
+    "graph_member": "winner-v30-prefix-anchor-work/winner_v30_prefix_right_pitch_anchor_update_201.onnx",
+    "graph_sha256": "d905d2541ae071644ba7d77eaf6b3c7467405d85a4c88fe3ae164ef792829df9",
+    "importer_lf_sha256": "86f5ab4decb736adc10a495c784ce91344505bf8c94b3043c90afa6b3159973c",
+    "raw_result_receipt_sha256": "74cf7d03a792a807211cab4ac6d4d76a68ffffc50782716c5f0d57e555cd97b4",
+    "raw_result_sha256": "5258f54830bdf42108952fb860161803356bd64c5b5e500e034af1542837fd64",
+    "repository": "RobVanProd/open-duck-mini-rdkx5",
+    "snapshot_member": "winner-v30-prefix-anchor-work/winner_v30_prefix_right_pitch_anchor_update_201.npz",
+    "snapshot_sha256": "405b61a905a47b4460b849b4329f218c9350b4522dfe03e9a46a6941105b7d2d"
+  },
+  "rollout": {
+    "changed_batch_keys": [
+      "advantages",
+      "returns",
+      "rewards"
+    ],
+    "episode_receipts_sha256": "fc23d743307e859e2a07832304dafe22d647df24d715b69937d4295b88f3618a",
+    "episode_slots": 80,
+    "exact_v29_batch_reproduced": false,
+    "exact_v29_objective_reproduced": false,
+    "roll_pitch_failure_count": 17,
+    "sampled_count": 16380,
+    "selected_anchor_elements": 384,
+    "stored_successor_transition_count": 16300,
+    "update_index": 200,
+    "valid_transition_count": 16363
+  },
+  "schema_version": "winner_v30.prefix_right_pitch_anchor_one_update_cpu_result.v1",
+  "snapshot": {
+    "bytes": 195001,
+    "completed_updates": 201,
+    "metadata_payload_sha256": "8f4f73e3bcd2632c69564f7ec470535ef8c42c882e63b9b33ccbdbc4822f4e3c",
+    "path": "/tmp/winner-v30-prefix-anchor-work/winner_v30_prefix_right_pitch_anchor_update_201.npz",
+    "sha256": "405b61a905a47b4460b849b4329f218c9350b4522dfe03e9a46a6941105b7d2d",
+    "state_payload_sha256": "a74303489a100e0e28a8db29bef48651aee78ab0d5696efba58fe3c072350ade"
+  },
+  "source_identity": {
+    "candidate_graph": {
+      "bytes": 54896,
+      "completed_updates": 200,
+      "contract": {
+        "abi_exact": true,
+        "all_chain_outputs_finite": true,
+        "all_initializers_finite": true,
+        "bytes": 54896,
+        "chain_ticks": 250,
+        "forbidden_training_or_privileged_tokens": [],
+        "initializer_count": 9,
+        "inputs": [
+          {
+            "name": "obs",
+            "shape": [
+              1,
+              115
+            ]
+          },
+          {
+            "name": "previous_action",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_in",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "jax_onnx_at_most_1e_7": true,
+        "jax_onnx_max_abs_error": 2.9103830456733704e-11,
+        "outputs": [
+          {
+            "name": "calibration_actions",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "previous_action_out",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_out",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "path": "/tmp/winner-v24-baseline-anchored-training-work/graphs/winner_v24_final.onnx",
+        "previous_action_out_equals_action_bit_exact": true,
+        "sha256": "6f3bde155507c91cb5cab3344edd91b05fa749f082fcc2ad01059e7c4b1dc425",
+        "training_only_tensors_absent": true
+      },
+      "label": "final",
+      "path": "/tmp/winner-v24-baseline-anchored-training-work/graphs/winner_v24_final.onnx",
+      "sha256": "6f3bde155507c91cb5cab3344edd91b05fa749f082fcc2ad01059e7c4b1dc425"
+    },
+    "candidate_snapshot": {
+      "bytes": 194740,
+      "completed_updates": 200,
+      "metadata_payload_sha256": "abc9a868bb104e828c5e176994855214b6e8c94e2b4451426149076db20ca3d6",
+      "path": "/tmp/winner-v24-baseline-anchored-training-work/snapshots/snapshot_baseline_anchored_update_200.npz",
+      "sha256": "1d4f172c190d1cecb7da7c615f099053deff7b4a55dddc76f57504770226d11e",
+      "state_payload_sha256": "3286622134af2415bf9173a8325983844703ed208aca3b0286a5ebc5462ee852"
+    },
+    "teacher_graph": {
+      "bytes": 54896,
+      "contract": {
+        "abi_exact": true,
+        "all_chain_outputs_finite": true,
+        "all_initializers_finite": true,
+        "bytes": 54896,
+        "chain_ticks": 250,
+        "forbidden_training_or_privileged_tokens": [],
+        "initializer_count": 9,
+        "inputs": [
+          {
+            "name": "obs",
+            "shape": [
+              1,
+              115
+            ]
+          },
+          {
+            "name": "previous_action",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_in",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "jax_onnx_at_most_1e_7": true,
+        "jax_onnx_max_abs_error": 0.0,
+        "outputs": [
+          {
+            "name": "calibration_actions",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "previous_action_out",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_out",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "path": "/tmp/winner-v22-normalized-predictor-training-work/graphs/winner_v22_final.onnx",
+        "previous_action_out_equals_action_bit_exact": true,
+        "sha256": "cb3380ed99b3e9d7e9000904a210227aa397db2a064aa80d8f70e77c8339783b",
+        "training_only_tensors_absent": true
+      },
+      "label": "final",
+      "path": "/tmp/winner-v22-normalized-predictor-training-work/graphs/winner_v22_final.onnx",
+      "sha256": "cb3380ed99b3e9d7e9000904a210227aa397db2a064aa80d8f70e77c8339783b",
+      "update": 100
+    },
+    "teacher_snapshot": {
+      "bytes": 194808,
+      "completed_updates": 100,
+      "metadata_payload_sha256": "9c6adf74ec64d10e3d0ee21d9b502f1bb4b9a4b02fcc946e2fdfbacc16e967e5",
+      "path": "/tmp/winner-v22-normalized-predictor-training-work/snapshots/snapshot_normalized_predictor_update_100.npz",
+      "sha256": "ddc8c4b905bb9acac2d7d48c3e9c1f0c0ca0173a1ba21f375740b051bc48c806",
+      "state_payload_sha256": "6743dfe113fef16a7a40caa77457a9e29ccd5c28696f8c70ce6a1793d27faea7",
+      "update": 100
+    }
+  },
+  "source_manifest_sha256": "30b82d8f9c34a5b1a7580cfcaa4ed178a5ac874c582c1b6244eae362d431db40",
+  "sources": {
+    "backend_networks": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_decomposed_backend_networks.py",
+      "sha256": "f463223a33f80baf81b2604e0df22c647660f2752a7ca60b8c75a3441460d015"
+    },
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v30_prefix_right_pitch_anchor_one_update_cpu_contract.py",
+      "sha256": "9118360a96f5dd6f554adb95afb466348835796f519f3999dbad76865d871372"
+    },
+    "calibrator_design": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_calibrator_training_preregistration.json",
+      "sha256": "1ec76a587c6fa50b92866c1632a7046ae0c6687ed17b1636b664bf45c2e8ba34"
+    },
+    "canonical_p30_fit": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/fixed_target_p30_actuator_fit_20260712.json",
+      "sha256": "908ddb01e5d82e661d77b8f3cb186a84665695660b86b304c6d1ae89c79cdb0b"
+    },
+    "configuration_domain": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v3_variable_configuration_replacement_preregistration.json",
+      "sha256": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b"
+    },
+    "cpu_smoke": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_cpu_smoke.py",
+      "sha256": "b6ad53430f3f7cca3a91a90f72dab585cb05e3e2f74be2241af3fd9b6ee7ce87"
+    },
+    "environment_preparation": {
+      "hash_mode": "lf",
+      "path": "tools/prepare_winner_v15_cpu_environment.py",
+      "sha256": "33e54c3a16d5684e2d2520270acf25a28df42dc89e9f302c1ef3bd5f37d867c2"
+    },
+    "full_training": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_full_calibrator_training.py",
+      "sha256": "8cd2c9267f356adba1127f8fb837138bbe6e39b5c3326300eeed9fdd5b524610"
+    },
+    "gradient_composition_mechanics": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v22_normalized_predictor_v2.py",
+      "sha256": "2f67394c0fc7f5cec14370d38a6a860a9c7bb2ce409e8578466b278c7c8c5b2a"
+    },
+    "joint_predictor_mechanics": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v21_predictor_preserving_joint_support.py",
+      "sha256": "2d274c6c7c63fa2de5e3a7114ac047df1346189e66ec7bf8d83221e2f93aef0a"
+    },
+    "normalized_predictor_mechanics": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v22_normalized_predictor.py",
+      "sha256": "cc8e0249033af7264ed7e6c6e3faa51e8dcef1471e0d2fdda5a89091e810ad17"
+    },
+    "pitch_margin_mechanics": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v15_pitch_margin_support.py",
+      "sha256": "b2dfecf77971596e2c67a7185b1a9c1acea2d49ecbb04eaf846666239b3326e8"
+    },
+    "preregistration_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v30_prefix_right_pitch_anchor_one_update_cpu_preregistration.py",
+      "sha256": "6f62a06a9bec91980756de17f11dcf2dc1f3c6f9bd2d1de5aead98f75e6bca75"
+    },
+    "recurrent_mechanics": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v20_joint_recurrent_support.py",
+      "sha256": "276f0008049be9e28cbfc7cb430a5fec6c0a092c02e605f08f3ea95e2df942c7"
+    },
+    "result_importer": {
+      "hash_mode": "lf",
+      "path": "tools/import_winner_v30_prefix_right_pitch_anchor_one_update_cpu_result.py",
+      "sha256": "f56202642c5fe5a3e08f2968c0439b88d9bc4acaa2309fd7a1c8a57b91c57cfe"
+    },
+    "result_importer_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v30_prefix_right_pitch_anchor_one_update_cpu_import.py",
+      "sha256": "1926817eada31755839619f37043dfe395e899dd643662abeb1dffdf011da9df"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v30_prefix_right_pitch_anchor_one_update_cpu_proof.py",
+      "sha256": "2054d68d6d622a5dbf3221a5e9dad9f22803b672e8902227d168f98442d9c102"
+    },
+    "runner_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v30_prefix_right_pitch_anchor_one_update_cpu_proof.py",
+      "sha256": "1c2e69739eefd79d70c60873d953e9cc7b367c45d6882a316d4ca4bda4fbd5c4"
+    },
+    "runtime_observer": {
+      "hash_mode": "lf",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/observer/winner_v2_contract.py",
+      "sha256": "5c90994a24aa223c94f3a51927228e97000f6118c927561a87a3f2684dcf4889"
+    },
+    "snapshot_mechanics": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v21_predictor_preserving_joint_support_v2.py",
+      "sha256": "6613a52d099646c4603808e58088360166abefe9f504c5fafb8604266419bd20"
+    },
+    "training_mechanics": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_calibrator_training.py",
+      "sha256": "f5736a357d73baedae2bba1d15254dd688bddf3761eb731d757a971783c77227"
+    },
+    "v22_support_gate": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v22_normalized_predictor_support_gate.py",
+      "sha256": "0a217b355f43b304187f02bc3025feb3d4aa26fb7b9fae7d0c395667ce501cd3"
+    },
+    "v24_baseline_objective": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v24_symmetric_support_failure_v2.py",
+      "sha256": "50be218d889ff37c5c8b59f75caf385db94f5b984a9894d0921adf369910fcb3"
+    },
+    "v24_common": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v24_symmetric_failure_cpu_contract.py",
+      "sha256": "dfecb9453c49a472c03e5d2d9c0f94da85a80c5619af7f89b8ff005e329ca263"
+    },
+    "v24_failure_mechanics": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v24_symmetric_support_failure.py",
+      "sha256": "98a149c6630a4a22837a98328989b572e9ace8a7fa889777b7b91d253abede9f"
+    },
+    "v24_training_objective": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v24_symmetric_support_failure_v3.py",
+      "sha256": "337f93832a93c74425564b1ddf7c274426a2de0544b51a1c5de83922b287d787"
+    },
+    "winner_v12_full_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_full_calibrator_training_preregistration.json",
+      "sha256": "99500648d6683097a13f894b0949bf4b5494e5653f36878710817bd0952f71dd"
+    },
+    "winner_v22_training_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v22_normalized_predictor_training_result.json",
+      "sha256": "10bae5bb32f32cc90e222eb1d6644d97e2a0253baa6ad1a37fe06fde48cf11c1"
+    },
+    "winner_v24_training_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v24_baseline_anchored_training_result.json",
+      "sha256": "2354e52b68645e67c7289c029e792429099d590cda54f3dbe99633b2bfe2983f"
+    },
+    "winner_v29_contract": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v29_prefix_right_pitch_anchor_cpu_contract.json",
+      "sha256": "9b1fbdd17b58e82cd6bccce1506d2b2d9464db6aadb905f04be84d64762ed7f7"
+    },
+    "winner_v29_objective": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v29_prefix_right_pitch_anchor.py",
+      "sha256": "7c01b3db8c359464d122fc4f915df02eb9833720ef65837a99c5838dd42db36f"
+    },
+    "winner_v29_objective_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v29_prefix_right_pitch_anchor.py",
+      "sha256": "89ba7b119bf4c82a1289bb0f72a7b0190f19f140f513169af1d27437167f53ac"
+    },
+    "winner_v29_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v29_prefix_right_pitch_anchor_cpu_result.json",
+      "sha256": "d77ec2d11cf92faccce8de75f4946fbdb5949bf0a4ddba8016953c726db81cda"
+    },
+    "winner_v29_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v29_prefix_right_pitch_anchor_cpu_contract.py",
+      "sha256": "87b98ef3d2334dc561c4d3f68d623dbe9ad6a5d2a40f06a079894760b2edaa95"
+    },
+    "workflow": {
+      "hash_mode": "lf",
+      "path": ".github/workflows/winner-v30-prefix-right-pitch-anchor-one-update-cpu-proof.yml",
+      "sha256": "704311f9d8c89bf732c28f958882eed01de8b48993c20ed6606c031fd9bd6d12"
+    }
+  },
+  "status": "HOLD_WINNER_V30_PREFIX_RIGHT_PITCH_ANCHOR_ONE_UPDATE_CPU_PROOF"
+}
