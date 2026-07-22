@@ -3676,3 +3676,17 @@ Do not proceed to grounded walking until low-risk gates pass.
   only a separately preregistered persistent-prefix mechanism; it authorizes no
   training, deployment, Gate 5, RDK-X5/robot access, torque, or motion. See
   `outputs/analysis/WINNER_V62_RESIDUAL_TEACHER_CAUSAL_RESULT_20260722.md`.
+- 2026-07-22: Winner-v63 preregisters one zero-commit CPU attribution from the
+  exact Winner-v60 final count-`554` state. It reconstructs the unchanged
+  `80`-episode rollout at update index `554`, separates the scaled PPO,
+  predictor, prefix-anchor, full-action persistent-teacher, and first-tick
+  teacher gradients, and reports float64 alignment over the policy,
+  recurrent-core, and action-head leaves. Two Adam steps are evaluated only in
+  memory from the same inherited moments: one integrated and one teacher-only;
+  neither state is written. The frozen classification distinguishes objective
+  opposition, inherited-moment opposition, and a remaining teacher-trajectory
+  distribution mismatch before selecting any new mechanism. Preregistration
+  SHA-256: `c60abbd0...294fbc07`. It adds no attention or flat-transport
+  equation and authorizes no committed update, support gate, deployment,
+  Gate 5, RDK-X5/robot access, torque, motion, or clearance. See
+  `outputs/analysis/WINNER_V63_PERSISTENT_TEACHER_CONFLICT_PREREGISTRATION_20260722.md`.
