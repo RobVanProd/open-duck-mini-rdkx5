@@ -2650,3 +2650,18 @@ Do not proceed to grounded walking until low-risk gates pass.
   this hybrid. No checkpoint is selected and robot clearance remains false.
   See
   `outputs/analysis/WINNER_V35_FULL_HORIZON_SOURCE_CONTINUATION_RESULT_20260722.md`.
+- 2026-07-22: One zero-update Winner-v36 support-oracle shooting feasibility
+  screen is preregistered. It tests only the frozen `COM_X_NEG` (`-0.05 m`
+  torso-X) anchor under both measured actuator plants for the complete 250-tick
+  support gate. A deterministic receding-horizon CEM controller may change only
+  the six pitch-chain actions `2/3/4/11/12/13`; population/elites/iterations
+  are `64/8/4`, horizon/block are `8/2` ticks, and every candidate and selected
+  action passes through the exact graph absolute/rate boundary and unchanged
+  actuator bridge. Both cells must pass and closest-result selection is
+  forbidden. Exactly one formal CPU-only screen is authorized, with zero
+  optimizer updates, locomotion training, RDK-X5, or robot work. A pass may
+  authorize only a separately frozen full-configuration oracle feasibility
+  screen; a hold neither proves physical uncontrollability nor permits tuning.
+  No controller deployment, checkpoint selection, Gate 5, or robot clearance
+  is authorized. See
+  `outputs/analysis/WINNER_V36_SUPPORT_ORACLE_SHOOTING_FEASIBILITY_PREREGISTRATION_20260722.md`.
