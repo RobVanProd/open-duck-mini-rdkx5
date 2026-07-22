@@ -1,0 +1,83 @@
+name: Winner v40 response Jacobian invalidity attribution
+
+on:
+  push:
+    branches:
+      - codex/winner-v4-response-contract
+    paths:
+      - outputs/analysis/winner_v40_response_jacobian_invalidity_attribution_preregistration.json
+      - outputs/analysis/WINNER_V40_RESPONSE_JACOBIAN_INVALIDITY_ATTRIBUTION_PREREGISTRATION_20260722.md
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: winner-v40-response-jacobian-invalidity-attribution
+  cancel-in-progress: false
+
+jobs:
+  attribution:
+    name: One saved-result-only V39 invalidity attribution
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Reject workflow reruns
+        run: test "${{ github.run_attempt }}" = "1"
+      - name: Checkout frozen attribution
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up exact Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12.13"
+      - name: Install exact test dependency
+        run: python -m pip install "pytest==8.4.2"
+      - name: Verify frozen attribution package
+        run: |
+          python -m pytest -q \
+            tests/test_winner_v40_response_jacobian_invalidity_attribution.py \
+            tests/test_winner_v40_response_jacobian_invalidity_attribution_preregistration.py \
+            tests/test_winner_v40_response_jacobian_invalidity_attribution_import.py
+      - name: Verify exact frozen source manifest
+        shell: bash
+        run: |
+          python - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+          value=json.loads(Path("outputs/analysis/winner_v40_response_jacobian_invalidity_attribution_preregistration.json").read_text())
+          if value["status"] != "PREREGISTERED_WINNER_V40_RESPONSE_JACOBIAN_INVALIDITY_ATTRIBUTION" or any(value["execution_now"].values()):
+              raise SystemExit("Winner-v40 authority changed")
+          sources=value["sources"]
+          for name,item in sources.items():
+              observed=hashlib.sha256(Path(item["path"]).read_bytes().replace(b"\r\n",b"\n")).hexdigest()
+              if item["hash_mode"] != "lf" or observed != item["sha256"]:
+                  raise SystemExit(f"Winner-v40 source changed: {name}")
+          canonical=hashlib.sha256(json.dumps(sources,sort_keys=True,separators=(",",":")).encode()).hexdigest()
+          if canonical != value["source_manifest_sha256"]:
+              raise SystemExit("Winner-v40 manifest changed")
+          PY
+      - name: Run exactly one saved-result-only attribution
+        run: |
+          python tools/run_winner_v40_response_jacobian_invalidity_attribution.py \
+            --output /tmp/winner-v40-response-jacobian-invalidity-attribution-result.json \
+            --offline-saved-result-only --invalidity-attribution-authorized
+      - name: Hash attribution result
+        if: always()
+        run: |
+          result=/tmp/winner-v40-response-jacobian-invalidity-attribution-result.json
+          if test -f "$result"; then
+            sha256sum "$result" | tee /tmp/winner-v40-response-jacobian-invalidity-attribution-result.sha256
+          fi
+      - name: Upload only attribution evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: winner-v40-response-jacobian-invalidity-attribution-${{ github.run_id }}
+          if-no-files-found: warn
+          retention-days: 14
+          compression-level: 6
+          path: |
+            /tmp/winner-v40-response-jacobian-invalidity-attribution-result.json
+            /tmp/winner-v40-response-jacobian-invalidity-attribution-result.sha256

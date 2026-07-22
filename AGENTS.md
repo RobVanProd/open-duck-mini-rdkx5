@@ -2770,3 +2770,17 @@ Do not proceed to grounded walking until low-risk gates pass.
   frozen saved-result analysis. No checkpoint is selected and robot clearance
   remains false. See
   `outputs/analysis/WINNER_V39_RESPONSE_JACOBIAN_FEASIBILITY_RESULT_20260722.md`.
+- 2026-07-22: One Winner-v40 saved-result-only attribution is preregistered
+  against the committed Winner-v39 INVALID artifact. It executes no simulator,
+  controller, optimizer, training, RDK-X5, or robot work and cannot rerun V39.
+  It tests whether every V39 Jacobian before the first rank loss is full-row-
+  rank, whether all rank losses lie within two ticks of the actual terminal and
+  are accounted for by terminal-truncated plus/minus branches with identical
+  pitch/pitch-rate responses, and whether both bounded nonzero recorded
+  controllers still fail support earlier than V38. A pass closes only the
+  exact V39 controller without converting its INVALID result to HOLD or making
+  a family/controllability claim; it may authorize only a separately frozen
+  nonlocal support-controller feasibility design. A hold preserves
+  `DO_NOT_SELECT_NEXT_POLICY_MECHANISM`. No checkpoint selection, simulation,
+  training, Gate 5, deployment, or clearance is authorized. See
+  `outputs/analysis/WINNER_V40_RESPONSE_JACOBIAN_INVALIDITY_ATTRIBUTION_PREREGISTRATION_20260722.md`.
