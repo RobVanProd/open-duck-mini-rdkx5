@@ -3876,3 +3876,14 @@ Do not proceed to grounded walking until low-risk gates pass.
   coefficient, checkpoint, support, deployment, Gate 5, RDK-X5/robot access,
   torque, motion, or clearance is authorized. See
   `outputs/analysis/WINNER_V69_COUNT602_DIRECTION_ATTRIBUTION_PREREGISTRATION_20260722.md`.
+- 2026-07-22: Winner-v69 reproduces the count-`602` grid exhaustion and
+  classifies it as `INHERITED_ADAM_MOMENT_DIRECTION_OPPOSES_TEACHER`. The
+  teacher-gradient dot inherited-Adam delta is positive (`+4.88614e-8`), while
+  a norm-matched instantaneous negative-gradient step lowers loss by
+  `8.07690e-7` and all five tested fractions descend. Adam at `1/1024` changes
+  loss by only one float32 quantum, so grid extension is not selected over the
+  causal stale-moment result. Result SHA-256: `cd1c25f0...caf85b75`. This
+  selects one fresh-moment teacher-step proof only; attention, the flat-
+  transport equation, checkpoint selection, support, deployment, Gate 5,
+  RDK-X5/robot access, torque, motion, and clearance remain unselected. See
+  `outputs/analysis/WINNER_V69_COUNT602_DIRECTION_ATTRIBUTION_RESULT_20260722.md`.
