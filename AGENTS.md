@@ -3211,3 +3211,21 @@ Do not proceed to grounded walking until low-risk gates pass.
   source-gradient CPU contract. No optimizer update, training, simulator
   behavior, export, RDK-X5/robot access, torque, motion, deployment, checkpoint
   selection, or clearance is authorized.
+- 2026-07-22: Winner-v50 preregisters one zero-update CPU source-gradient
+  proof at the actual terminal Winner-v46 optimizer state (`final`, update
+  `352`). This source is selected only because it is the terminal state of the
+  sole completed V46 training arm; it is not a deployment-checkpoint
+  selection. The exact `80 x 250` rollout replaces the old six-action teacher
+  mean with the proven full-`14`-action mean at algebraic scale
+  `136.35153198242188`, without additive double-counting, scale search, action
+  replacement, or transition mutation. It must preserve the old pitch mask,
+  add the eight valid non-pitch elements on exactly `22` frozen training plant
+  rows, exclude all held-out teacher rows, change every policy-gradient leaf,
+  preserve all non-policy gradients, and match both old and new direct
+  gradients within `4e-6`. Default-off must reproduce the exact old V46
+  gradient. This proof executes zero optimizer updates, support cells,
+  locomotion-training steps, graph exports, RDK-X5/robot access, torque, or
+  motion. A pass can authorize only a separately preregistered one-update
+  CPU proof; training, checkpoint selection, deployment, and clearance remain
+  false. See
+  `outputs/analysis/WINNER_V50_FULL_ACTION_TEACHER_SOURCE_GRADIENT_CONTRACT_20260722.md`.
