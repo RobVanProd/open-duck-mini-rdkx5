@@ -3788,3 +3788,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   unauthorized. The only selected next step is a zero-update fixed-batch
   attribution of the failed count-575 step. See
   `outputs/analysis/WINNER_V65B_ISOLATED_PERSISTENT_TEACHER_STOPPED_RESULT_20260722.md`.
+- 2026-07-22: Winner-v66 preregisters one zero-update attribution at the exact
+  count-`574` boundary using rollout update index `574`. It evaluates the
+  failed inherited-Adam proposal and a norm-matched instantaneous negative
+  teacher-gradient proposal over the fixed fractions
+  `1/16, 1/8, 1/4, 1/2, 3/4, 1`. The frozen classification distinguishes
+  inherited-moment opposition, full-step overshoot, gradient-direction or
+  curvature failure, and a float32 plateau. Contract SHA-256:
+  `9c945ee7...7a7dbea4`. No proposal is committed; no coefficient, length,
+  checkpoint, or support selection is authorized. It adds no attention or
+  flat-transport equation and authorizes no deployment, Gate 5, RDK-X5/robot
+  access, torque, motion, or clearance. See
+  `outputs/analysis/WINNER_V66_FAILED_STEP_ATTRIBUTION_PREREGISTRATION_20260722.md`.
