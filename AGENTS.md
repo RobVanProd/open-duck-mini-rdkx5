@@ -2369,3 +2369,17 @@ Do not proceed to grounded walking until low-risk gates pass.
   objective change, training, checkpoint selection, runtime, RDK-X5, robot,
   Gate 5, deployment, or clearance. See
   `outputs/analysis/WINNER_V25_DIRECTIONAL_SUPPORT_CONTROL_DIAGNOSTIC_RESULT_20260722.md`.
+- 2026-07-22: One zero-update Winner-v26 recurrent-credit diagnostic is
+  preregistered. It runs the exact Winner-v22 final policy for 20 valid ticks
+  through the same ten negative-X configurations and both actuator plants,
+  then clones the full MuJoCo integration state and supplies the captured
+  observation, previous action, and recurrent hidden state identically to the
+  Winner-v22 source and Winner-v24 half/final branches. Each branch then evolves
+  its own closed-loop observation/action/hidden chain for at most 32 ticks,
+  covering the complete recorded Winner-v24 failure window. Post-prefix
+  regression requires both candidates to terminate earlier on at least 75% of
+  branches with median lead at least one tick. Exactly one first-attempt CPU
+  run is authorized. Optimizer updates, locomotion, checkpoint selection,
+  runtime, RDK-X5, robot, Gate 5, deployment, and clearance remain
+  unauthorized. See
+  `outputs/analysis/WINNER_V26_RECURRENT_CREDIT_DIAGNOSTIC_PREREGISTRATION_20260722.md`.
