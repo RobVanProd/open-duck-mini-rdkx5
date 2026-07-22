@@ -2884,3 +2884,20 @@ Do not proceed to grounded walking until low-risk gates pass.
   into the runtime, training, selecting a checkpoint, RDK-X5/robot access,
   Gate 5, deployment, or clearance. See
   `outputs/analysis/WINNER_V42_STATIC_TARGET_TEACHER_TABLE_RESULT_20260722.md`.
+- 2026-07-22: One zero-update Winner-v43 static-target teacher ABI CPU proof is
+  preregistered against the exact imported Winner-v42 table. It converts each
+  selected three-coordinate target into the reviewed 14-action mirror basis,
+  applies the inherited inward graph boundary relative to the realized
+  previous action, stops gradients through the target and previous-action
+  path, and supervises only indices `2/3/4/11/12/13`. The exact proof covers
+  15 configurations, both actuator-plant rows, 250 ticks, and 45,000 valid
+  pitch elements. Privileged configuration IDs are training-label lookup keys
+  only; they are not actor inputs and no deployable graph field is added.
+  Non-pitch teacher gradients must be exact zero and the default-off loss and
+  gradients must be bit-exact to baseline. The enabled unit scale is diagnostic
+  only and cannot be carried into training. Exactly one hosted CPU proof is
+  authorized with zero optimizer updates, simulator behavior ticks, training,
+  graph export, RDK-X5, or robot work. A pass may authorize only a separately
+  preregistered zero-update source-gradient contract; it cannot train, select a
+  checkpoint, change the runtime, or grant clearance. See
+  `outputs/analysis/WINNER_V43_STATIC_TARGET_TEACHER_ABI_CPU_CONTRACT_20260722.md`.

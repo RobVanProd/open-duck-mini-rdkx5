@@ -1,0 +1,86 @@
+name: Winner v43 static target teacher ABI CPU
+
+on:
+  push:
+    branches:
+      - codex/winner-v4-response-contract
+    paths:
+      - outputs/analysis/winner_v43_static_target_teacher_abi_cpu_contract.json
+      - outputs/analysis/WINNER_V43_STATIC_TARGET_TEACHER_ABI_CPU_CONTRACT_20260722.md
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: winner-v43-static-target-teacher-abi-cpu
+  cancel-in-progress: false
+
+jobs:
+  proof:
+    name: One zero-update CPU-only static-target teacher ABI proof
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Reject workflow reruns
+        run: test "${{ github.run_attempt }}" = "1"
+      - name: Checkout frozen teacher ABI contract
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up exact Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12.13"
+      - name: Install exact CPU environment
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install "jax[cpu]==0.7.2" "jaxlib==0.7.2" "numpy==2.0.2" "pytest==8.4.2"
+      - name: Verify frozen teacher ABI package
+        run: |
+          python -m pytest -q \
+            tests/test_winner_v43_static_target_teacher.py \
+            tests/test_winner_v43_static_target_teacher_abi_cpu_contract.py \
+            tests/test_winner_v43_static_target_teacher_abi_cpu_preregistration.py \
+            tests/test_winner_v43_static_target_teacher_abi_cpu_import.py
+      - name: Verify exact source manifest
+        shell: bash
+        run: |
+          python - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+          value=json.loads(Path("outputs/analysis/winner_v43_static_target_teacher_abi_cpu_contract.json").read_text())
+          if value["status"] != "PREREGISTERED_WINNER_V43_STATIC_TARGET_TEACHER_ABI_CPU_CONTRACT" or any(value["execution_now"].values()):
+              raise SystemExit("Winner-v43 authority changed")
+          sources=value["sources"]
+          for name,item in sources.items():
+              observed=hashlib.sha256(Path(item["path"]).read_bytes().replace(b"\r\n",b"\n")).hexdigest()
+              if item["hash_mode"] != "lf" or observed != item["sha256"]:
+                  raise SystemExit(f"Winner-v43 source changed: {name}")
+          canonical=hashlib.sha256(json.dumps(sources,sort_keys=True,separators=(",",":")).encode()).hexdigest()
+          if canonical != value["source_manifest_sha256"]:
+              raise SystemExit("Winner-v43 manifest changed")
+          PY
+      - name: Run exactly one zero-update CPU teacher ABI proof
+        run: |
+          python tools/run_winner_v43_static_target_teacher_abi_cpu_contract.py \
+            --output /tmp/winner-v43-static-target-teacher-abi-cpu-result.json \
+            --offline-cpu-only --teacher-abi-authorized
+      - name: Hash teacher ABI result
+        if: always()
+        run: |
+          result=/tmp/winner-v43-static-target-teacher-abi-cpu-result.json
+          if test -f "$result"; then
+            sha256sum "$result" | tee /tmp/winner-v43-static-target-teacher-abi-cpu-result.sha256
+          fi
+      - name: Upload only teacher ABI evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: winner-v43-static-target-teacher-abi-cpu-${{ github.run_id }}
+          if-no-files-found: warn
+          retention-days: 14
+          compression-level: 6
+          path: |
+            /tmp/winner-v43-static-target-teacher-abi-cpu-result.json
+            /tmp/winner-v43-static-target-teacher-abi-cpu-result.sha256
