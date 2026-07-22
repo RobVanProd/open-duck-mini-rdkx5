@@ -4171,3 +4171,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   selection, deployment, Gate 5, RDK-X5/robot access, torque, motion, or
   clearance. See
   `outputs/analysis/WINNER_V89_TEACHER_GRADIENT_TRANSFER_PREREGISTRATION_20260722.md`.
+- 2026-07-22: Winner-v89 completes all `48` gradient evaluations and proves
+  the per-configuration static teacher is nontransferable. At half, only
+  `4/5/5` of `12` recurrent/action/combined leave-one-ID-out gradient dots are
+  positive; at final the counts are `5/6/5`. Every group's summed dot is
+  negative at both endpoints; combined sums are `-0.1477082/-0.2016173`.
+  Thus descending the teacher loss on eleven configurations usually harms the
+  twelfth, explaining the nonpersistent table-imitation results. Result
+  SHA-256: `0197add1...fd250a20`. No teacher-gradient step or checkpoint is
+  selected. Only a separately preregistered outcome-aligned mechanism
+  diagnostic may follow. No optimizer update, snapshot, ONNX, support cell,
+  deployment, Gate 5, RDK-X5/robot access, torque, motion, or clearance
+  occurred. See
+  `outputs/analysis/WINNER_V89_TEACHER_GRADIENT_TRANSFER_RESULT_20260722.md`.
