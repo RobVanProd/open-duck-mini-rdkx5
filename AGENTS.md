@@ -3716,3 +3716,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   tuning, a checkpoint, deployment, Gate 5, RDK-X5/robot access, torque,
   motion, or clearance. See
   `outputs/analysis/WINNER_V63B_PERSISTENT_TEACHER_CONFLICT_RESULT_20260722.md`.
+- 2026-07-22: Winner-v64 preregisters exactly one isolated persistent-teacher
+  Adam step from the immutable Winner-v60 final optimizer count `554` to
+  `555`. It recomputes the exact update-index-`554` rollout and full-14D
+  teacher gradient at scale `136.35153198242188`, retains the inherited Adam
+  state, and excludes the measured-opposing PPO, predictor, prefix-anchor, and
+  first-tick gradients. The frozen same-batch expectation is
+  `0.0034021961 -> 0.0033936996`; there is no coefficient search. A complete
+  snapshot and one non-selected stateful ONNX must round-trip with the
+  `115+14+64` ABI and action chain. Contract SHA-256:
+  `611c38f2...5a88ff40`. It authorizes one update only, with zero continuation,
+  support cells, deployment selection, Gate 5, RDK-X5/robot access, torque,
+  motion, or clearance. See
+  `outputs/analysis/WINNER_V64_ISOLATED_PERSISTENT_TEACHER_STEP_CONTRACT_20260722.md`.
