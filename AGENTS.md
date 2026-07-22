@@ -2297,3 +2297,17 @@ Do not proceed to grounded walking until low-risk gates pass.
   checkpoint selection, locomotion training, runtime work, RDK-X5, robot,
   Gate 5, deployment, or clearance. See
   `outputs/analysis/WINNER_V24_BASELINE_ANCHORED_TRAINING_RESULT_20260722.md`.
+- 2026-07-22: The Winner-v24 half/final support gate is separately
+  preregistered as
+  `PREREGISTERED_WINNER_V24_BASELINE_ANCHORED_SUPPORT_GATE`. It binds the exact
+  count-150/count-200 snapshot and ONNX hashes to the unchanged reviewed
+  124-cell-per-checkpoint evaluator, 32 heldout repeats per checkpoint, 16
+  heldout context checks per checkpoint, normalized-predictor-versus-constant
+  rule, and all-or-nothing two-checkpoint decision. The checkpoint-boundary
+  adapter explicitly changes only the evaluator labels from the inherited
+  `50/100` to `150/200`; it does not alter cells, physics, seeds, thresholds,
+  predictor coordinates, or policy bytes. No closest-checkpoint selection is
+  permitted. Exactly one first-attempt CPU gate is authorized. Locomotion,
+  checkpoint selection, runtime implementation, RDK-X5, robot, torque, motion,
+  Gate 5, deployment, and clearance remain unauthorized. See
+  `outputs/analysis/WINNER_V24_BASELINE_ANCHORED_SUPPORT_GATE_PREREGISTRATION_20260722.md`.

@@ -1,0 +1,447 @@
+{
+  "authority": {
+    "pass_authorizes_only": "a separate response-conditioned locomotion-training preregistration",
+    "response_conditioned_locomotion_training_authorized": false,
+    "robot_clearance": false
+  },
+  "binding_change_only": "The reviewed Winner-v12 physical evaluator, populations, thresholds, seeds, constant baseline, and all-or-nothing half/final rule are unchanged. The verified Winner-v24 count-150/count-200 paths are bound read-only and their normalized auxiliary head is projected exactly into the raw scoring coordinates.",
+  "decision": "AUTHORIZE_ONE_FROZEN_WINNER_V24_248_CELL_GATE_ONLY",
+  "execution_now": {
+    "formal_support_cells": 0,
+    "heldout_repeat_cells": 0,
+    "locomotion_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "future_frozen_support_gate": {
+    "all_cells_at_both_checkpoints_must_pass": true,
+    "cell_derivation": "56 model configurations x 2 actuator plants + 6 nominal-model sensor/transport conditions x 2 actuator plants",
+    "cells_per_checkpoint": 124,
+    "checkpoint_labels": [
+      "half",
+      "final"
+    ],
+    "duration_ticks": 250,
+    "executed_by_this_preregistration": false,
+    "gates": {
+      "duration_valid_ticks": 250,
+      "maximum_abs_roll_pitch_rad": 0.35,
+      "maximum_final_50_tick_gyro_xy_norm_rad_s": 0.05,
+      "minimum_base_z_m": 0.1,
+      "per_joint_peak_current_a_max": 2.5,
+      "per_joint_peak_torque_nm_max": 1.91229675,
+      "rated_current_p95_a": "0.65 diagnostic only; not candidate pass/fail",
+      "strict_overcurrent_max_consecutive_ticks": 99,
+      "strict_overcurrent_threshold_a": 2.0,
+      "two_foot_contact_failure_ticks": 0
+    },
+    "heldout_context_gate": {
+      "actions": "the checkpoint's bounded deployable calibrator actions",
+      "cells": "the existing 16 heldout configurations x 2 hidden plants within the 112 model/plant cells; no additional behavior cells",
+      "constant_baseline": "predict the frozen Stage-1 training target mean, equivalently zero in normalized target space, on the identical heldout rows",
+      "matched_plant_context_rule": "for every heldout configuration, start P30 and P31/34 from the same deterministic reset, initial observation, previous action, and h_in with no stochastic sensor perturbation; the deployable calibrator remains authoritative in each closed loop, and final h_out L-infinity separation must exceed 1e-7",
+      "normalization": "the frozen Stage-1 training normalization only",
+      "prediction_metric": "mean squared normalized next-response error over all 250 valid transitions using the frozen Stage-1 auxiliary predictor",
+      "repeat_rule": "repeat every heldout context cell from reset and require all actions, observations, predictions, and h_out values bit-exact",
+      "required_prediction_rule": "learned aggregate mean MSE must be strictly below the constant baseline separately for P30 and P31/34 at each checkpoint",
+      "stochastic_inputs": false,
+      "true_configuration_or_plant_label_enters_network": false
+    },
+    "pass_authorizes_only": "a separate response-conditioned locomotion-training preregistration; the calibrator checkpoint alone is not a deployable walking policy",
+    "predictor_scoring": {
+      "checkpoint_and_onnx_bytes_unchanged": true,
+      "constant_error": "mean(square((target_mean - target_raw) / target_std))",
+      "evaluated_coordinates": "raw through exact in-memory affine projection",
+      "head_output_coordinates": "normalized",
+      "learned_error": "mean(square((prediction_raw - target_raw) / target_std))",
+      "physical_support_population_thresholds_seeds_unchanged": true,
+      "projection": {
+        "auxiliary_action_weight": "normalized_weight * target_std",
+        "auxiliary_bias": "normalized_bias * target_std + target_mean",
+        "auxiliary_hidden_weight": "normalized_weight * target_std"
+      }
+    },
+    "selection_by_closest_result": false,
+    "sensor_noise_seed_derivation": "numpy SeedSequence([120120, 3, checkpoint_index, condition_index, plant_index]); checkpoint order half/final and plant order P30/P31-34",
+    "sensor_transport_population": [
+      {
+        "id": "NATIVE_INPUT_QUANTIZATION",
+        "native_quantization": true
+      },
+      {
+        "id": "DECLARED_SENSOR_NOISE",
+        "sensor_noise_scales": {
+          "accelerometer": 0.05,
+          "ankle_pos_rad": 0.08,
+          "gravity": 0.1,
+          "gyro_rad_s": 0.1,
+          "hip_pos_rad": 0.03,
+          "joint_vel_rad_s": 2.5,
+          "knee_pos_rad": 0.05,
+          "linvel_m_s": 0.1
+        }
+      },
+      {
+        "additional_action_delay_ticks": 1,
+        "id": "ACTION_DELAY_1"
+      },
+      {
+        "additional_action_delay_ticks": 2,
+        "id": "ACTION_DELAY_2"
+      },
+      {
+        "id": "IMU_DELAY_1",
+        "imu_delay_ticks": 1
+      },
+      {
+        "id": "IMU_DELAY_2",
+        "imu_delay_ticks": 2
+      }
+    ],
+    "sensor_transport_population_sha256": "de043aaf85b922df2677e300d952513f02dd87671846d50dbdb8d4bbe568cb7a"
+  },
+  "pass_rule": {
+    "all_124_main_cells_at_both_checkpoints": true,
+    "all_16_heldout_contexts_separate_at_both_checkpoints": true,
+    "all_32_heldout_repeats_at_both_checkpoints": true,
+    "closest_checkpoint_selection": false,
+    "learned_prediction_beats_constant_per_plant": true
+  },
+  "schema_version": "winner_v24.baseline_anchored_support_gate_preregistration.v1",
+  "source_manifest_sha256": "1e9e9a2d402f8f0d22240358b20afa3307150acbfa717cc69de0a87e4fdb4717",
+  "sources": {
+    "base_gate_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_support_gate.py",
+      "sha256": "18873eee55c77a278fc065de64c0b912803bf29b4440cde7f3adaabe1297baca"
+    },
+    "baseline_anchored_mechanics": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v24_symmetric_support_failure_v2.py",
+      "sha256": "50be218d889ff37c5c8b59f75caf385db94f5b984a9894d0921adf369910fcb3"
+    },
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v24_baseline_anchored_support_gate_preregistration.py",
+      "sha256": "7b417af39126ae1cc87f1edd5e474b4cd611bde0ef4f0eff6bdccc6bdb3bda47"
+    },
+    "calibrator_design_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_calibrator_training_preregistration.json",
+      "sha256": "1ec76a587c6fa50b92866c1632a7046ae0c6687ed17b1636b664bf45c2e8ba34"
+    },
+    "canonical_p30_fit": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/fixed_target_p30_actuator_fit_20260712.json",
+      "sha256": "908ddb01e5d82e661d77b8f3cb186a84665695660b86b304c6d1ae89c79cdb0b"
+    },
+    "coordinate_adapter": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v22_normalized_support_gate.py",
+      "sha256": "2c13cdb767d222bed510c7d2f650b98566a107daa8f027373e001c5496e51f8a"
+    },
+    "coordinate_adapter_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v22_normalized_support_gate.py",
+      "sha256": "31b3ca211f1e8b3c35bec6ad6b617f825367fee6d1bcef0bc87ef0e2a747e221"
+    },
+    "cpu_smoke": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_cpu_smoke.py",
+      "sha256": "b6ad53430f3f7cca3a91a90f72dab585cb05e3e2f74be2241af3fd9b6ee7ce87"
+    },
+    "deployable_network": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_decomposed_backend_networks.py",
+      "sha256": "f463223a33f80baf81b2604e0df22c647660f2752a7ca60b8c75a3441460d015"
+    },
+    "environment_preparation": {
+      "hash_mode": "lf",
+      "path": "tools/prepare_winner_v15_cpu_environment.py",
+      "sha256": "33e54c3a16d5684e2d2520270acf25a28df42dc89e9f302c1ef3bd5f37d867c2"
+    },
+    "explicit_gradient_mechanics": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v22_normalized_predictor_v2.py",
+      "sha256": "2f67394c0fc7f5cec14370d38a6a860a9c7bb2ce409e8578466b278c7c8c5b2a"
+    },
+    "full_training_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_full_calibrator_training_preregistration.json",
+      "sha256": "99500648d6683097a13f894b0949bf4b5494e5653f36878710817bd0952f71dd"
+    },
+    "gate_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v24_baseline_anchored_support_gate.py",
+      "sha256": "b5dce694f0e9271fed96db2fe34f2b16363f6d5de4f90557c98b4929f99b5ffa"
+    },
+    "gate_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v24_baseline_anchored_support_gate.py",
+      "sha256": "621b7fb03d37777b4b0e16be3e1e4ec4ae8b9506681a7d9e045c3c788eca95fc"
+    },
+    "joint_recurrent_mechanics": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v21_predictor_preserving_joint_support.py",
+      "sha256": "2d274c6c7c63fa2de5e3a7114ac047df1346189e66ec7bf8d83221e2f93aef0a"
+    },
+    "objective_mechanics": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v24_symmetric_support_failure_v3.py",
+      "sha256": "337f93832a93c74425564b1ddf7c274426a2de0544b51a1c5de83922b287d787"
+    },
+    "pitch_margin_patch": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v15_pitch_margin_support.py",
+      "sha256": "b2dfecf77971596e2c67a7185b1a9c1acea2d49ecbb04eaf846666239b3326e8"
+    },
+    "preregistration_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v24_baseline_anchored_support_gate_preregistration.py",
+      "sha256": "d9bff73f00c038916d41eefd39e2aa3eba81255472a18d52edbc2a0b8739946d"
+    },
+    "result_importer": {
+      "hash_mode": "lf",
+      "path": "tools/import_winner_v24_baseline_anchored_support_gate_result.py",
+      "sha256": "ce817216fec82c1cfc553057053a4bba8be4115ff832b540e1f2becde920661c"
+    },
+    "result_importer_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v24_baseline_anchored_support_gate_import.py",
+      "sha256": "dd299e6513bcbf262a62a6fd24384f73fe731ed61ca586793197e10aa13d4dba"
+    },
+    "runtime_observer": {
+      "hash_mode": "lf",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/observer/winner_v2_contract.py",
+      "sha256": "5c90994a24aa223c94f3a51927228e97000f6118c927561a87a3f2684dcf4889"
+    },
+    "training_importer": {
+      "hash_mode": "lf",
+      "path": "tools/import_winner_v24_baseline_anchored_training.py",
+      "sha256": "6a33cae9cf720c7841c1a27507e0790f8b0e04649b847d39f7813a1ceae9d4a3"
+    },
+    "training_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v24_baseline_anchored_training_preregistration.json",
+      "sha256": "8659a2937f2c119b2f6fc3a83e3ebda85355c98dbbdddb3c6f57da0219cc16cc"
+    },
+    "training_primitives": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_calibrator_training.py",
+      "sha256": "f5736a357d73baedae2bba1d15254dd688bddf3761eb731d757a971783c77227"
+    },
+    "training_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v24_baseline_anchored_training_result.json",
+      "sha256": "2354e52b68645e67c7289c029e792429099d590cda54f3dbe99633b2bfe2983f"
+    },
+    "training_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v24_baseline_anchored_training.py",
+      "sha256": "9546fb60993463eb1d480523afe0e94166f37d873aeeb3b73eb22f9f45b0b315"
+    },
+    "variable_configuration_domain": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v3_variable_configuration_replacement_preregistration.json",
+      "sha256": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b"
+    },
+    "workflow": {
+      "hash_mode": "lf",
+      "path": ".github/workflows/winner-v24-baseline-anchored-support-gate.yml",
+      "sha256": "9f1ae7965d406d3064ba8d4485ad5a898e526be31d1a25d682e21a8ace0a93a4"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V24_BASELINE_ANCHORED_SUPPORT_GATE",
+  "training_artifact": {
+    "final": {
+      "graph": {
+        "bytes": 54896,
+        "completed_updates": 200,
+        "contract": {
+          "abi_exact": true,
+          "all_chain_outputs_finite": true,
+          "all_initializers_finite": true,
+          "bytes": 54896,
+          "chain_ticks": 250,
+          "forbidden_training_or_privileged_tokens": [],
+          "initializer_count": 9,
+          "inputs": [
+            {
+              "name": "obs",
+              "shape": [
+                1,
+                115
+              ]
+            },
+            {
+              "name": "previous_action",
+              "shape": [
+                1,
+                14
+              ]
+            },
+            {
+              "name": "h_in",
+              "shape": [
+                1,
+                64
+              ]
+            }
+          ],
+          "jax_onnx_at_most_1e_7": true,
+          "jax_onnx_max_abs_error": 2.9103830456733704e-11,
+          "outputs": [
+            {
+              "name": "calibration_actions",
+              "shape": [
+                1,
+                14
+              ]
+            },
+            {
+              "name": "previous_action_out",
+              "shape": [
+                1,
+                14
+              ]
+            },
+            {
+              "name": "h_out",
+              "shape": [
+                1,
+                64
+              ]
+            }
+          ],
+          "path": "/tmp/winner-v24-baseline-anchored-training-work/graphs/winner_v24_final.onnx",
+          "previous_action_out_equals_action_bit_exact": true,
+          "sha256": "6f3bde155507c91cb5cab3344edd91b05fa749f082fcc2ad01059e7c4b1dc425",
+          "training_only_tensors_absent": true
+        },
+        "label": "final",
+        "path": "/tmp/winner-v24-baseline-anchored-training-work/graphs/winner_v24_final.onnx",
+        "sha256": "6f3bde155507c91cb5cab3344edd91b05fa749f082fcc2ad01059e7c4b1dc425"
+      },
+      "snapshot": {
+        "bytes": 194740,
+        "completed_updates": 200,
+        "metadata_payload_sha256": "abc9a868bb104e828c5e176994855214b6e8c94e2b4451426149076db20ca3d6",
+        "path": "/tmp/winner-v24-baseline-anchored-training-work/snapshots/snapshot_baseline_anchored_update_200.npz",
+        "sha256": "1d4f172c190d1cecb7da7c615f099053deff7b4a55dddc76f57504770226d11e",
+        "state_payload_sha256": "3286622134af2415bf9173a8325983844703ed208aca3b0286a5ebc5462ee852"
+      }
+    },
+    "half": {
+      "graph": {
+        "bytes": 54896,
+        "completed_updates": 150,
+        "contract": {
+          "abi_exact": true,
+          "all_chain_outputs_finite": true,
+          "all_initializers_finite": true,
+          "bytes": 54896,
+          "chain_ticks": 250,
+          "forbidden_training_or_privileged_tokens": [],
+          "initializer_count": 9,
+          "inputs": [
+            {
+              "name": "obs",
+              "shape": [
+                1,
+                115
+              ]
+            },
+            {
+              "name": "previous_action",
+              "shape": [
+                1,
+                14
+              ]
+            },
+            {
+              "name": "h_in",
+              "shape": [
+                1,
+                64
+              ]
+            }
+          ],
+          "jax_onnx_at_most_1e_7": true,
+          "jax_onnx_max_abs_error": 1.4551915228366852e-11,
+          "outputs": [
+            {
+              "name": "calibration_actions",
+              "shape": [
+                1,
+                14
+              ]
+            },
+            {
+              "name": "previous_action_out",
+              "shape": [
+                1,
+                14
+              ]
+            },
+            {
+              "name": "h_out",
+              "shape": [
+                1,
+                64
+              ]
+            }
+          ],
+          "path": "/tmp/winner-v24-baseline-anchored-training-work/graphs/winner_v24_half.onnx",
+          "previous_action_out_equals_action_bit_exact": true,
+          "sha256": "a36d7634a603cdd831783f6d20c8e215de7b4edeed1ca3c9b138eb26e0846fd3",
+          "training_only_tensors_absent": true
+        },
+        "label": "half",
+        "path": "/tmp/winner-v24-baseline-anchored-training-work/graphs/winner_v24_half.onnx",
+        "sha256": "a36d7634a603cdd831783f6d20c8e215de7b4edeed1ca3c9b138eb26e0846fd3"
+      },
+      "snapshot": {
+        "bytes": 194515,
+        "completed_updates": 150,
+        "metadata_payload_sha256": "a3931e38c7c5e2bc04c8c7d060c9df070a500bb3064720bc9323ad11614ff705",
+        "path": "/tmp/winner-v24-baseline-anchored-training-work/snapshots/snapshot_baseline_anchored_update_150.npz",
+        "sha256": "9eddf37b9abb6ffd66efa8fe41f8ddfbee4d3439941d6038b7ddcbcfe12da971",
+        "state_payload_sha256": "28009936e425bba84535f294b9cbe3ca4c94124bfcef45de4fd33b8e94c4c5a3"
+      }
+    },
+    "objective": {
+      "advantage_operation": "add only the analytically propagated -250 terminal reward delta, then renormalize sampled advantages",
+      "anchor": "recorded baseline returns and rederived values",
+      "baseline_gae_reconstruction": false,
+      "failure_selector": "terminal.checks.roll_pitch is false",
+      "modified_batch_keys": [
+        "advantages",
+        "returns",
+        "rewards"
+      ],
+      "reads_hidden_configuration": false,
+      "roll_pitch_failure_penalty": -250.0,
+      "settled_success_bonus": 250.0,
+      "zero_failure_behavior": "bit-exact batch no-op"
+    },
+    "repository_attribution": {
+      "artifact_zip_bytes": 19174111,
+      "artifact_zip_sha256": "0e819dab14a15e6c4d708339b318a6484d3cba3143ecf2220bc38a43b2f0a4a1",
+      "github_artifact_digest": "sha256:0e819dab14a15e6c4d708339b318a6484d3cba3143ecf2220bc38a43b2f0a4a1",
+      "github_artifact_id": 8515766691,
+      "github_artifact_name": "winner-v24-baseline-anchored-training-29882025982",
+      "github_run_attempt": 1,
+      "github_run_head_sha": "5fa6a29aca076245ef9daf2e450636f396ff4210",
+      "github_run_id": 29882025982,
+      "importer_lf_sha256": "6a33cae9cf720c7841c1a27507e0790f8b0e04649b847d39f7813a1ceae9d4a3",
+      "raw_result_receipt_sha256": "0624b7412aba1d1e8db728dfdafc808673bf3fe62e8c423f09fd67a7b7d6aca7",
+      "raw_result_sha256": "8dc2e2cb4d3ebba20dc3c5f47124b69d545c9ab84ce64d4524ad24d6db8f94f7",
+      "repository": "RobVanProd/open-duck-mini-rdkx5"
+    },
+    "source_snapshot": {
+      "bytes": 194808,
+      "completed_updates": 100,
+      "optimizer_count": 100,
+      "sha256": "ddc8c4b905bb9acac2d7d48c3e9c1f0c0ca0173a1ba21f375740b051bc48c806"
+    }
+  }
+}
