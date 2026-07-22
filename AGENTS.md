@@ -2327,3 +2327,18 @@ Do not proceed to grounded walking until low-risk gates pass.
   Gate 5, deployment, or clearance. A new policy mechanism requires separate
   prospective evidence. See
   `outputs/analysis/WINNER_V24_BASELINE_ANCHORED_SUPPORT_GATE_RESULT_20260722.md`.
+- 2026-07-22: A saved-result-only Winner-v22-to-v24 support-regression
+  attribution executed zero new simulation cells and passed. Winner-v24
+  recovered `0/15` half and `0/14` final Winner-v22 failures, added `5` and `6`
+  failures respectively, and made every shared failure occur strictly earlier
+  (median `-3` ticks at both checkpoints; maxima `-2/-1`). All failures remain
+  negative-X roll/pitch-only while response encoding/use and every nonphysical
+  support check remain green. Classification:
+  `PASS_WINNER_V24_SUPPORT_REGRESSION_ATTRIBUTION`. The scalar symmetric
+  terminal-penalty route is causally closed; observability is not the remaining
+  blocker. This authorizes only a separately preregistered zero-update
+  same-state directional support-control diagnostic that tests actor-action
+  changes against short-horizon cloned-state pitch response. It does not
+  authorize another loss, training, checkpoint selection, runtime, RDK-X5,
+  robot, Gate 5, deployment, or clearance. See
+  `outputs/analysis/WINNER_V24_SUPPORT_REGRESSION_ATTRIBUTION_20260722.md`.
