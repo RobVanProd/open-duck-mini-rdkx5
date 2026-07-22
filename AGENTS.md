@@ -3255,3 +3255,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   preregistered one-update CPU proof; training, deployment, checkpoint
   selection, and clearance remain false. See
   `outputs/analysis/WINNER_V50B_GRADIENT_COMPOSITION_ULP_ATTRIBUTION_CONTRACT_20260722.md`.
+- 2026-07-22: The sole Winner-v50b ULP attribution is a formal `HOLD`. The
+  exact V50 rollout, scalar evidence, source identity, both
+  `4.76837158203125e-6` absolute errors, and every non-composition check
+  reproduced bit-exactly. However, old/new direct-versus-composed gradients
+  reach `36,608 / 16,440` signed-float32 ULP versus the frozen eight-ULP rule.
+  Small absolute differences span many ULPs in gradient elements near zero,
+  so the ULP metric is not scale-invariant here; do not widen it post hoc.
+  Result SHA-256: `55b3b8ce...3db4469a`. No optimizer update, support gate,
+  export, locomotion training, RDK-X5/robot access, torque, motion, deployment,
+  checkpoint selection, or clearance is authorized. A separately
+  preregistered scale-aware backward-error attribution derived from float32
+  epsilon is required. See
+  `outputs/analysis/WINNER_V50B_GRADIENT_COMPOSITION_ULP_ATTRIBUTION_RESULT_20260722.md`.
