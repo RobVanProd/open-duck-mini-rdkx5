@@ -3123,3 +3123,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   locomotion, RDK-X5, robot, torque, or motion work and cannot select a
   checkpoint or grant clearance. See
   `outputs/analysis/WINNER_V48_STATIC_TEACHER_CAUSAL_DIAGNOSTIC_PREREGISTRATION_20260722.md`.
+- 2026-07-22: The sole Winner-v48 execution completed all `128` frozen CPU
+  cells but is formally `INVALID`, not a policy result, because the
+  preregistered whole-public-dictionary bit-exact comparison rejected
+  cross-host float64 MuJoCo evidence differences of roughly machine precision.
+  The four float32 action/observation/prediction/hidden trace hashes match the
+  imported V47b cells exactly, as do support outcomes and terminal ticks; the
+  failed check is only `all_graph_cells_bit_exact_to_v47b`. The captured but
+  not yet promotable causal values are full teacher `32/32`, pitch-only rescue
+  `25/28`, and pitch/non-pitch interaction `3/28`. No rerun, optimizer,
+  locomotion, RDK-X5, robot, torque, motion, checkpoint selection, or clearance
+  is authorized by this invalid result. Result SHA-256:
+  `cc4ec3cb...756e31cc`. A separately frozen evidence-only comparator
+  correction is required before interpreting the captured cells.
