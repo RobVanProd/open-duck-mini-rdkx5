@@ -3172,3 +3172,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   static-teacher mechanism preregistration. Training, RDK-X5/robot access,
   torque, motion, deployment, and clearance remain false. See
   `outputs/analysis/WINNER_V48C_CAUSAL_POPULATION_SCOPE_PREREGISTRATION_20260722.md`.
+- 2026-07-22: The sole Winner-v48c captured causal-population audit passes.
+  All `28/28` formal V47b failure pairs retain all four exact trace hashes and
+  exact discrete outcomes. The full 14-D Winner-v42 teacher passes `32/32`
+  captured cells. Of the `28` failures, `25` are classified
+  `pitch_output_causal` and `3` are `pitch_nonpitch_interaction`; none is
+  teacher-insufficient or non-pitch-only. The evidence-selected problem class
+  is therefore `FULL_14D_STATIC_TEACHER_MAPPING`, proving that the old
+  six-pitch-element supervision omitted a necessary part of the control label.
+  Decision: authorize only a separately preregistered full-14D static-teacher
+  mechanism. No training, checkpoint selection, locomotion, RDK-X5/robot
+  access, torque, motion, deployment, or clearance is authorized by this
+  audit. See
+  `outputs/analysis/WINNER_V48C_CAUSAL_POPULATION_SCOPE_RESULT_20260722.md`.
