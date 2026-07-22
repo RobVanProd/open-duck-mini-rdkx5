@@ -3295,3 +3295,18 @@ Do not proceed to grounded walking until low-risk gates pass.
   support evaluation, deployment, RDK-X5/robot access, torque, motion,
   checkpoint selection, or clearance. See
   `outputs/analysis/WINNER_V50C_GRADIENT_BACKWARD_ERROR_ATTRIBUTION_RESULT_20260722.md`.
+- 2026-07-22: Winner-v51 preregisters exactly one CPU Adam update from the
+  terminal Winner-v46 source at optimizer count `352` to `353`. It recomputes
+  the exact V50 `80 x 250` update-352 rollout, replaces the old six-action
+  teacher gradient with the proven full-`14`-action gradient at algebraic scale
+  `136.35153198242188`, and performs no scale search or action replacement.
+  The proof must supervise exactly `22` frozen training plant rows, exclude all
+  held-out labels, reduce same-batch full-action teacher MSE, change every
+  trainable leaf, preserve every frozen parameter leaf, round-trip the complete
+  snapshot and Adam state, and export one non-selected candidate graph with the
+  unchanged stateful hard-bounded `115/14/64` ABI and no training-only tensors.
+  It executes zero support cells, continuation updates, RDK-X5/robot access,
+  torque, or motion. A pass can authorize only a separately preregistered
+  bounded continuation; it cannot select a deployment checkpoint or grant
+  clearance. See
+  `outputs/analysis/WINNER_V51_FULL_ACTION_TEACHER_ONE_UPDATE_CPU_CONTRACT_20260722.md`.
