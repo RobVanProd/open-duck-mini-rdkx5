@@ -3392,3 +3392,18 @@ Do not proceed to grounded walking until low-risk gates pass.
   frozen, separately authorized suspended Gate 5 after runtime asset freeze
   and no-servo preflight. See
   `outputs/analysis/WINNER_V53_FULL_ACTION_TEACHER_SUPPORT_GATE_PREREGISTRATION_20260722.md`.
+- 2026-07-22: The sole Winner-v53 gate is a formal `HOLD`. The V52 half/final
+  checkpoints pass `110/124` and `112/124` main cells, so the unchanged
+  all-`248` rule fails and the preregistered fixed-endpoint rule selects no
+  checkpoint. At both checkpoints every sensor/transport cell, all `32`
+  held-out repeats, all `16` context-separation checks, both per-plant
+  predictor-baseline checks, every previous-action chain, and every JAX/ONNX
+  hidden comparison pass. All failures are early negative-pitch terminations
+  in core variable-configuration cells across both P30 and P31/34; final fails
+  the six IDs `COM_X_NEG`, `COM_CORNER_01`, `COM_CORNER_03`, `DISCOVERY_03`,
+  `HELDOUT_04`, and `HELDOUT_09`. Current, torque, overcurrent, base height,
+  contacts, finite values, ABI, and sensor transport do not set the hold.
+  Result SHA-256: `6fb272a5...ab41579`. V53 is closed without a retry or
+  threshold change. Robot clearance remains false; no asset freeze, runtime
+  update, Gate 5, X5/robot access, torque, or motion is authorized. See
+  `outputs/analysis/WINNER_V53_FULL_ACTION_TEACHER_SUPPORT_GATE_RESULT_20260722.md`.
