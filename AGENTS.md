@@ -3965,3 +3965,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   only the unchanged two-endpoint persistence gate, with zero deployment,
   Gate 5, RDK-X5/robot access, torque, motion, or clearance. See
   `outputs/analysis/WINNER_V75_FUNCTIONAL_NUMERIC_GUARD_CONTINUATION_RESULT_20260722.md`.
+- 2026-07-22: Winner-v76 executes the unchanged `248` main-cell plus `64`
+  heldout-repeat persistence gate on exact Winner-v75 counts `605/655`.
+  Half/final retain `10/9` roll/pitch failures; all contacts, height, current,
+  torque, finite-state, state-chain, JAX/ONNX, repeatability, and context checks
+  pass. The half predictor still beats constant on both plants, while the final
+  predictor regresses to `0.48976/0.49075` versus constant `0.22134/0.22116`.
+  Result SHA-256: `19e71696...fa44737`. The all-or-nothing rule selects no
+  checkpoint and leaves `robot_clearance: false`; no deployment, Gate 5,
+  RDK-X5/robot access, torque, or motion is authorized. See
+  `outputs/analysis/WINNER_V76_INTEGRATED_SUPPORT_GATE_RESULT_20260722.md`.
