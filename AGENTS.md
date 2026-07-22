@@ -3613,3 +3613,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   Winner-v58 retry, support evaluation, checkpoint selection, deployment,
   Gate 5, RDK-X5/robot access, torque, motion, or clearance. See
   `outputs/analysis/WINNER_V59_HIDDEN_REPLAY_NUMERIC_ATTRIBUTION_RESULT_20260722.md`.
+- 2026-07-22: Winner-v60 preregisters one new complete `100`-update CPU arm
+  from the immutable V57 optimizer count `454`, with half/final counts
+  `504/554`. A source diff proves that the only executable change from
+  Winner-v58 is the V59-selected hidden-replay numeric guard
+  `1e-6 -> 2e-6` plus contract/result names and guard validation. All PPO,
+  predictor, prefix-anchor, full-action-teacher, and first-tick objectives,
+  coefficients, population, seeds, ABI, and checkpoint schedule are unchanged.
+  Preregistration SHA-256: `15db0395...8bf6860c`. No attention or flat-
+  transport mechanism is added. A pass authorizes only a separately
+  preregistered unchanged half/final support gate; it does not authorize
+  deployment, Gate 5, RDK-X5/robot access, torque, motion, or clearance. See
+  `outputs/analysis/WINNER_V60_INTEGRATED_NUMERIC_GUARD_TRAINING_PREREGISTRATION_20260722.md`.
