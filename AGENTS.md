@@ -2623,3 +2623,17 @@ Do not proceed to grounded walking until low-risk gates pass.
   train the failed soft-anchor or eight-tick replacement route. No checkpoint
   is selected and robot clearance remains false. See
   `outputs/analysis/WINNER_V34_PREFIX_RIGHT_PITCH_HARD_INTERVENTION_RESULT_20260722.md`.
+- 2026-07-22: One zero-update Winner-v35 full-horizon source-continuation
+  feasibility test is preregistered. It reuses the exact 60-cell Winner-v34
+  matrix. Ticks 0-7 preserve the V28 hybrid prefix (Winner-v32 candidate with
+  Winner-v22 right-pitch actions); at tick 8 Winner-v22 final takes all 14
+  actions from its shadow recurrent state through tick 249. The committed
+  Winner-v34 replacement cells are the comparator and are not rerun. A pass
+  requires all 60 hybrid cells, all 55 prior failures recovered, all 5 prior
+  passes preserved, graph-bound actions, and a nonzero handoff in every cell.
+  Exactly one formal CPU run is authorized. This resolves whether V28's
+  short-horizon survival lead is a complete support-valid teacher; it does not
+  authorize a runtime hybrid, action wrapper, optimizer update, locomotion
+  training, checkpoint selection, RDK-X5, robot, Gate 5, deployment, or
+  clearance. See
+  `outputs/analysis/WINNER_V35_FULL_HORIZON_SOURCE_CONTINUATION_PREREGISTRATION_20260722.md`.

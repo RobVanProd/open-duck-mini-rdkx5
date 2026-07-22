@@ -1,0 +1,303 @@
+{
+  "artifact_inputs": {
+    "winner_v22_training": {
+      "artifact_zip_bytes": 19215207,
+      "artifact_zip_sha256": "9b06e6b3e129a1cb7d59b8383174ba4c7ae2b77837b85671a48b2ccb1fe93b45",
+      "github_artifact_digest": "sha256:9b06e6b3e129a1cb7d59b8383174ba4c7ae2b77837b85671a48b2ccb1fe93b45",
+      "github_artifact_id": 8513413219,
+      "github_artifact_name": "winner-v22-normalized-predictor-training-29872492309",
+      "github_run_attempt": 1,
+      "github_run_head_sha": "161af0031fb35225a689e516b2963bcdc8564ab3",
+      "github_run_id": 29872492309,
+      "importer_lf_sha256": "3211c965c43e2a88897958c4036e2b7c17d0d43616a612eb68d917fab4a9e96b",
+      "raw_result_receipt_sha256": "8559a510b5421c8ffb41ed06be185023287fc5a5254a17a659e30087ecea5d3a",
+      "raw_result_sha256": "da09efe6b4e54b08855d40891e7d7f0460ad231cbe0e6d5cfc654cedc9b8fe52",
+      "repository": "RobVanProd/open-duck-mini-rdkx5"
+    },
+    "winner_v32_training": {
+      "artifact_zip_bytes": 19252514,
+      "artifact_zip_sha256": "7c96795537f1697fca03cf33e0ec6f27edbfd3d22b8ca84fd3ed613e9af4d8ac",
+      "github_artifact_digest": "sha256:7c96795537f1697fca03cf33e0ec6f27edbfd3d22b8ca84fd3ed613e9af4d8ac",
+      "github_artifact_id": 8519404679,
+      "github_artifact_name": "winner-v32-prefix-right-pitch-anchor-training-29890876702",
+      "github_run_attempt": 1,
+      "github_run_head_sha": "4f7c2638f28451dfe37470a34bd22983c2c9b1f9",
+      "github_run_id": 29890876702,
+      "importer_lf_sha256": "0af667b7d9448d9f6c463a565c196eb64bbc7c8e41af88b125c6c2c150b8f830",
+      "raw_result_receipt_sha256": "7e3fa006b7119a363d8eb7228936fb1c5fbff93717002a678247245c15d930a2",
+      "raw_result_sha256": "58e124199c2747bfa1f3187ae8cc5d546718a73bf11bc21bd6272a3727710bb5",
+      "repository": "RobVanProd/open-duck-mini-rdkx5"
+    }
+  },
+  "authority": {
+    "pass_authorizes_only": "one separately frozen CPU teacher-representation contract",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false,
+    "runtime_hybrid_or_action_wrapper_authorized": false,
+    "training_authorized": false
+  },
+  "decision": "AUTHORIZE_ONE_ZERO_UPDATE_FULL_HORIZON_SOURCE_CONTINUATION_ONLY",
+  "decision_tree": {
+    "full_horizon_feasible": "AUTHORIZE_HYBRID_TEACHER_REPRESENTATION_CPU_CONTRACT_PREREGISTRATION_ONLY",
+    "invalid": "DO_NOT_SELECT_NEXT_POLICY_MECHANISM",
+    "not_full_horizon_feasible": "CLOSE_V28_HYBRID_TEACHER_ROUTE"
+  },
+  "diagnostic": {
+    "action_delta_epsilon": 1e-06,
+    "actuator_plants": [
+      "P30_ALL_JOINT",
+      "P31_34_PITCH_WITH_P30_NONPITCH"
+    ],
+    "candidate_checkpoints": [
+      {
+        "label": "half",
+        "update": 251
+      },
+      {
+        "label": "final",
+        "update": 301
+      }
+    ],
+    "configuration_ids": [
+      "COM_X_NEG",
+      "COM_CORNER_00",
+      "COM_CORNER_01",
+      "COM_CORNER_02",
+      "COM_CORNER_03",
+      "OPTIONAL_AGGREGATE_HEAVY_AFT",
+      "DISCOVERY_02",
+      "DISCOVERY_03",
+      "DISCOVERY_06",
+      "DISCOVERY_09",
+      "DISCOVERY_10",
+      "HELDOUT_04",
+      "HELDOUT_07",
+      "HELDOUT_09",
+      "HELDOUT_15"
+    ],
+    "duration_ticks": 250,
+    "expected_hybrid_cells": 60,
+    "prefix_replaced_action_indices": [
+      11,
+      12,
+      13
+    ],
+    "prefix_ticks": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "reference": "The 60 Winner-v34 RIGHT_PITCH_REPLACED cells are the exact no-source-continuation comparator and are read from the verified result, not rerun.",
+    "semantics": "At ticks 0-7, run the Winner-v32 candidate while replacing only action indices 11/12/13 with Winner-v22 final actions computed on the shared observation and realized previous-action history. Winner-v22 keeps its own shadow recurrent state. From tick 8 through 249, Winner-v22 final controls all 14 actions from that shadow state. No candidate action is used after the handoff.",
+    "source_checkpoint": {
+      "graph": {
+        "bytes": 54896,
+        "contract": {
+          "abi_exact": true,
+          "all_chain_outputs_finite": true,
+          "all_initializers_finite": true,
+          "bytes": 54896,
+          "chain_ticks": 250,
+          "forbidden_training_or_privileged_tokens": [],
+          "initializer_count": 9,
+          "inputs": [
+            {
+              "name": "obs",
+              "shape": [
+                1,
+                115
+              ]
+            },
+            {
+              "name": "previous_action",
+              "shape": [
+                1,
+                14
+              ]
+            },
+            {
+              "name": "h_in",
+              "shape": [
+                1,
+                64
+              ]
+            }
+          ],
+          "jax_onnx_at_most_1e_7": true,
+          "jax_onnx_max_abs_error": 0.0,
+          "outputs": [
+            {
+              "name": "calibration_actions",
+              "shape": [
+                1,
+                14
+              ]
+            },
+            {
+              "name": "previous_action_out",
+              "shape": [
+                1,
+                14
+              ]
+            },
+            {
+              "name": "h_out",
+              "shape": [
+                1,
+                64
+              ]
+            }
+          ],
+          "path": "/tmp/winner-v22-normalized-predictor-training-work/graphs/winner_v22_final.onnx",
+          "previous_action_out_equals_action_bit_exact": true,
+          "sha256": "cb3380ed99b3e9d7e9000904a210227aa397db2a064aa80d8f70e77c8339783b",
+          "training_only_tensors_absent": true
+        },
+        "label": "final",
+        "path": "/tmp/winner-v22-normalized-predictor-training-work/graphs/winner_v22_final.onnx",
+        "sha256": "cb3380ed99b3e9d7e9000904a210227aa397db2a064aa80d8f70e77c8339783b",
+        "update": 100
+      },
+      "label": "winner_v22_final",
+      "update": 100
+    },
+    "source_continuation_ticks": {
+      "first": 8,
+      "last": 249
+    }
+  },
+  "execution_now": {
+    "hybrid_support_cells": 0,
+    "locomotion_training_steps": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0
+  },
+  "pass_rule": {
+    "all_55_v34_failures_recovered": true,
+    "all_5_v34_passes_preserved": true,
+    "all_60_hybrid_cells_pass_support": true,
+    "all_actions_obey_graph_boundary": true,
+    "closest_result_selection": false,
+    "every_tick8_handoff_changes_an_action": true
+  },
+  "question": "Does the exact V28 hybrid recovery remain support-valid for the complete 250-tick gate over the expanded Winner-v34 60-cell matrix?",
+  "schema_version": "winner_v35.full_horizon_source_continuation_preregistration.v1",
+  "source_manifest_sha256": "9cb8df23678a511d1ea47ea0152c65b3d241dcbf9172e5986aa383378275dc9b",
+  "source_results": {
+    "winner_v28_result_lf_sha256": "6aeeecdbc7664a56bca7077bc52e26fd2d19a01344596a98e547f4693b582fb0",
+    "winner_v34_result_lf_sha256": "8044c46dfcc06be9485c0c4993f1a4b2727bb46d9a06cbe8c5b3268376b98475"
+  },
+  "sources": {
+    "base_gate_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_support_gate.py",
+      "sha256": "18873eee55c77a278fc065de64c0b912803bf29b4440cde7f3adaabe1297baca"
+    },
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v35_full_horizon_source_continuation_preregistration.py",
+      "sha256": "69e762cf1fe345e249a84e32d0f18f9a6aa08a74b0196781c342635abeb97bf8"
+    },
+    "calibrator_design": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_calibrator_training_preregistration.json",
+      "sha256": "1ec76a587c6fa50b92866c1632a7046ae0c6687ed17b1636b664bf45c2e8ba34"
+    },
+    "canonical_p30_fit": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/fixed_target_p30_actuator_fit_20260712.json",
+      "sha256": "908ddb01e5d82e661d77b8f3cb186a84665695660b86b304c6d1ae89c79cdb0b"
+    },
+    "configuration_domain": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v3_variable_configuration_replacement_preregistration.json",
+      "sha256": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b"
+    },
+    "cpu_smoke": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_cpu_smoke.py",
+      "sha256": "b6ad53430f3f7cca3a91a90f72dab585cb05e3e2f74be2241af3fd9b6ee7ce87"
+    },
+    "environment_preparation": {
+      "hash_mode": "lf",
+      "path": "tools/prepare_winner_v15_cpu_environment.py",
+      "sha256": "33e54c3a16d5684e2d2520270acf25a28df42dc89e9f302c1ef3bd5f37d867c2"
+    },
+    "preregistration_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v35_full_horizon_source_continuation_preregistration.py",
+      "sha256": "0aae59bb022a553911ec3c3f8c3e5b9b8176e5c11488e4b780d9d6dfa341d5d4"
+    },
+    "result_importer": {
+      "hash_mode": "lf",
+      "path": "tools/import_winner_v35_full_horizon_source_continuation.py",
+      "sha256": "bd5e6968a09eec62ceb2ffa9391c673d31737b1048bb54e265218e571433b622"
+    },
+    "result_importer_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v35_full_horizon_source_continuation_import.py",
+      "sha256": "d07b326b9d89e8dfeeb4f858b57e4e910ff06afdc8e64de12d017f639f84c598"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v35_full_horizon_source_continuation.py",
+      "sha256": "e420496c1527d58ca6723440a0f749726c23b89099bf4fd5e7a43b086d55de5d"
+    },
+    "runner_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v35_full_horizon_source_continuation.py",
+      "sha256": "6d35f886e5b1426f9646a073eac08458400c157507ed429e0247d417d5e4d371"
+    },
+    "runtime_observer": {
+      "hash_mode": "lf",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/observer/winner_v2_contract.py",
+      "sha256": "5c90994a24aa223c94f3a51927228e97000f6118c927561a87a3f2684dcf4889"
+    },
+    "winner_v22_training_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v22_normalized_predictor_training_result.json",
+      "sha256": "10bae5bb32f32cc90e222eb1d6644d97e2a0253baa6ad1a37fe06fde48cf11c1"
+    },
+    "winner_v28_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v28_prefix_joint_group_causal_screen_result.json",
+      "sha256": "6aeeecdbc7664a56bca7077bc52e26fd2d19a01344596a98e547f4693b582fb0"
+    },
+    "winner_v28_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v28_prefix_joint_group_causal_screen.py",
+      "sha256": "f5a5422e38861145cb6ccd47c52eb97a2d9700e4c7585edb3e7eeb079ae95b5b"
+    },
+    "winner_v32_training_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v32_prefix_right_pitch_anchor_training_result.json",
+      "sha256": "8233bb150687c61ecfd730922f7e3924dfe415d6454a84e4a62599eb4c5a3046"
+    },
+    "winner_v34_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v34_prefix_right_pitch_hard_intervention_preregistration.json",
+      "sha256": "9a87c2ae9ec69c591a7548dad377af3148ba485a04d97237d5a471d3d60ee781"
+    },
+    "winner_v34_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v34_prefix_right_pitch_hard_intervention_result.json",
+      "sha256": "8044c46dfcc06be9485c0c4993f1a4b2727bb46d9a06cbe8c5b3268376b98475"
+    },
+    "winner_v34_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v34_prefix_right_pitch_hard_intervention.py",
+      "sha256": "663fb3323ecf06634d09b12e88fe16b469121203a36a5ac492591abd0e330bc7"
+    },
+    "workflow": {
+      "hash_mode": "lf",
+      "path": ".github/workflows/winner-v35-full-horizon-source-continuation.yml",
+      "sha256": "18587f265bbe9fea1865b07812357aef951169a3439ff2e5760a716d722d8091"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V35_FULL_HORIZON_SOURCE_CONTINUATION"
+}
