@@ -2695,3 +2695,17 @@ Do not proceed to grounded walking until low-risk gates pass.
   No controller deployment, checkpoint selection, Gate 5, or robot clearance
   is authorized. See
   `outputs/analysis/WINNER_V37_WARM_STARTED_SHOOTING_FEASIBILITY_PREREGISTRATION_20260722.md`.
+- 2026-07-22: The sole Winner-v37 formal run `29898430330` completed HOLD; its
+  original 99,031-byte ZIP exactly matches GitHub SHA-256
+  `d9677b83...0cf30445`. Both tick-0 actions reproduce V36 exactly, every later
+  tick uses a nontrivial shifted proposal mean, and all selected actions remain
+  graph-bounded. Neither plant passes: P30 terminates on `roll_pitch` at tick 46
+  and P31/34 at tick 37, respectively 9 and 15 ticks earlier than V36. The
+  warm-started trajectory also develops more roll (`-0.07165/-0.15592 rad` at
+  termination) while pitch crosses `-0.35514/-0.35911 rad`. Classification:
+  `STATEFUL_PROPOSAL_NOT_FULL_HORIZON_FEASIBLE`; decision:
+  `CLOSE_WARM_STARTED_SHOOTING_PROPOSAL_MECHANISM`. Do not alter the warm-start
+  transform, covariance, horizon, population, pitch-joint set, or objective and
+  rerun this route. No checkpoint is selected and robot clearance remains
+  false. See
+  `outputs/analysis/WINNER_V37_WARM_STARTED_SHOOTING_FEASIBILITY_RESULT_20260722.md`.
