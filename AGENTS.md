@@ -4046,3 +4046,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   deployment, Gate 5, RDK-X5/robot access, torque, motion, or clearance is
   authorized. See
   `outputs/analysis/WINNER_V83_COUNT675_NEGATIVE_GRADIENT_STEP_RESULT_20260722.md`.
+- 2026-07-22: Winner-v84 completes all `80` remaining negative-gradient
+  pitch-head updates from count `675` through `755`, reaching the original
+  persistence endpoints `705/755`. Sixty-nine updates accept the full
+  norm-matched step and eleven accept `1/2`; every update strictly descends its
+  same-batch teacher loss. All non-pitch/predictor parameters and all Adam
+  `m/v` elements remain bit-exact. Half/final snapshot SHA-256 values are
+  `a39e76e0...1849e05c / 45528bb2...d8c2de1e`; ONNX values are
+  `f2f6d6ac...0c644727 / de20542d...5b489173`; result SHA-256 is
+  `f7203610...16764bae`. This authorizes only the unchanged full persistence
+  gate. Neither endpoint is selected, and deployment, Gate 5, RDK-X5/robot
+  access, torque, motion, and clearance remain unauthorized. See
+  `outputs/analysis/WINNER_V84_NEGATIVE_GRADIENT_PITCH_HEAD_CONTINUATION_RESULT_20260722.md`.
