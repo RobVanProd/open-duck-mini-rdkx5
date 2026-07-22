@@ -3568,3 +3568,14 @@ Do not proceed to grounded walking until low-risk gates pass.
   checkpoint selection, deployment, Gate 5, RDK-X5/robot access, torque,
   motion, or clearance. See
   `outputs/analysis/WINNER_V58A_GUARD_FAILURE_ATTRIBUTION_PREREGISTRATION_20260722.md`.
+- 2026-07-22: Winner-v58a executed zero rollouts and zero optimizer updates: it
+  failed during source-snapshot validation because its transformed validator
+  referenced a nonexistent `source_result["teacher"]` key. It created neither
+  output nor work root. Winner-v58b corrects only that validation expression by
+  comparing the snapshot metadata to the already frozen teacher snapshot hash
+  `ddc8c4b9...bc48c806`; its rollout, reported predicates, zero-update boundary,
+  and authority are otherwise unchanged. Preregistration SHA-256:
+  `a7654ff5...ebb6d36`. It does not authorize retry, training, support
+  evaluation, deployment, Gate 5, RDK-X5/robot access, torque, motion, or
+  clearance. See
+  `outputs/analysis/WINNER_V58B_GUARD_FAILURE_ATTRIBUTION_PREREGISTRATION_20260722.md`.
