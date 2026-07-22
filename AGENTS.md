@@ -3764,3 +3764,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   length search, support evaluation, checkpoint selection, deployment,
   Gate 5, RDK-X5/robot access, torque, motion, or clearance is included. See
   `outputs/analysis/WINNER_V65_ISOLATED_PERSISTENT_TEACHER_TRAINING_PREREGISTRATION_20260722.md`.
+- 2026-07-22: The first Winner-v65 invocation stopped while opening its
+  preregistration file, before loading a source artifact, creating the work
+  root, constructing a rollout, or committing an optimizer update. The
+  transformed runner retained the superseded integrated-first-tick contract
+  filename instead of the frozen isolated-teacher filename. Winner-v65b
+  freezes exactly one filename replacement and preserves the objective,
+  rollout, gradient, inherited Adam state, `605/655` checkpoint schedule, and
+  offline authority byte-for-byte. Correction contract SHA-256:
+  `03ef8930...2f504b4`. It adds no attention or flat-transport equation and
+  authorizes no support evaluation, checkpoint selection, deployment, Gate 5,
+  RDK-X5/robot access, torque, motion, or clearance. See
+  `outputs/analysis/WINNER_V65B_PREREGISTRATION_PATH_CORRECTION_20260722.md`.
