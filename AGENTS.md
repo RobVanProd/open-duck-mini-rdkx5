@@ -2224,3 +2224,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   check. It authorizes no optimizer update, training, robot access, or result
   classification until the unchanged ZIP passes the corrected importer. See
   `outputs/analysis/WINNER_V24_BASELINE_IMPORTER_CORRECTION_20260722.md`.
+- 2026-07-22: The separately versioned corrected importer accepted the exact
+  unchanged run-`29880437377` ZIP and recorded
+  `PASS_WINNER_V24_BASELINE_ANCHORED_CPU_CONTRACT`. All checks pass: 12
+  roll/pitch failures and 22 settled successes are present; the analytic delta
+  spans 447 sampled cells; default-off and non-objective arrays remain exact;
+  the normalized predictor is bit-exact; PPO action-head and recurrent
+  gradients change; and composition error is `3.948807716369629e-7` versus the
+  frozen `2e-6` bound. Optimizer updates, formal support cells, locomotion
+  steps, and robot access remain zero. This authorizes only a separately
+  frozen one-update baseline-anchored CPU proof. It does not authorize a full
+  training run, support gate, checkpoint selection, deployment, Gate 5, or
+  robot access. See
+  `outputs/analysis/WINNER_V24_BASELINE_ANCHORED_CPU_RESULT_V2_20260722.md`.
