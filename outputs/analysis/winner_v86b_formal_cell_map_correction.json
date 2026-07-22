@@ -1,0 +1,59 @@
+{
+  "authority": {
+    "checkpoint_selection_authorized": false,
+    "deployment_authorized": false,
+    "diagnostic_authorized": true,
+    "gate5_authorized": false,
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "result_authorizes": "causal diagnosis and a separate prospective mechanism preregistration only",
+    "robot_clearance": false,
+    "support_gate_authorized_now": false,
+    "training_authorized_now": false
+  },
+  "correction": {
+    "arms_pairs_thresholds_artifacts_authority_unchanged": true,
+    "corrected_runner_lf_sha256": "bf3e2a9a6d969a0b099b7031522dfa73df843bc7c73f75f86ab4daacd20081c0",
+    "new": "core_model_plant_cells",
+    "old": "core_model_plant_cells + sensor_transport_plant_cells",
+    "original_runner_lf_sha256": "026ed77ad27ee83dad206c9a9effa62dfa4b63d6af2c43664dac1687b0fe018d",
+    "reason": "the 12 frozen residual failures are all core-model cells; the two formal populations intentionally overlap and cannot form one unique-key map"
+  },
+  "decision": "RERUN_EXACT_V86_DIAGNOSTIC_WITH_CORE_FORMAL_MAP_ONLY",
+  "failure": {
+    "diagnostic_cells_completed": 0,
+    "exception": "ValueError: Winner-v86 formal cell population contains duplicates",
+    "optimizer_updates": 0,
+    "result_written": false,
+    "stage": "formal-cell map construction before the first gate.run_cell call"
+  },
+  "schema_version": "winner_v86b.formal_cell_map_correction.v1",
+  "source_manifest_sha256": "c2e98d4c19976b12ddac8f1392e9b539224c7a808a4c1acc2e1d7a029a37da03",
+  "sources": {
+    "correction_builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v86b_formal_cell_map_correction.py",
+      "sha256": "5fa8d71c9e27d97cffd16ea7104225dd265ac7a4b0297e15d0101a6e4190ac59"
+    },
+    "correction_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v86b_formal_cell_map_correction.py",
+      "sha256": "0bc7902ddae90dc8fb3cd3c16a2bce0e1265b17f6beb010032da2670101e0ca1"
+    },
+    "correction_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v86b_formal_cell_map_correction.py",
+      "sha256": "9e093b3aa31e643beabd0edf2a5d1764bce68d359b3456e13cabfcd33bdfcf5f"
+    },
+    "v86_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v86_residual_pitch_causal_preregistration.json",
+      "sha256": "193035e3a0e55c1660492423025f72835c3aa1782ed7ff16de1cea7fbb887e3f"
+    },
+    "v86_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v86_residual_pitch_causal.py",
+      "sha256": "026ed77ad27ee83dad206c9a9effa62dfa4b63d6af2c43664dac1687b0fe018d"
+    }
+  },
+  "status": "CORRECTED_WINNER_V86_FORMAL_CELL_MAP_PRE_SIMULATION"
+}
