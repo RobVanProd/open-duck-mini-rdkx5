@@ -1,0 +1,161 @@
+{
+  "authority": {
+    "pass_authorizes_only": "one separately preregistered residual-teacher causal diagnostic",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false,
+    "runtime_static_target_or_action_wrapper_authorized": false,
+    "training_authorized": false
+  },
+  "decision": "AUTHORIZE_ONE_CPU_ONLY_COM_CORNER_07_TEACHER_TABLE",
+  "execution_now": {
+    "candidate_plant_cells": 0,
+    "configuration_tables": 0,
+    "locomotion_training_steps": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0,
+    "selected_target_replay_cells": 0,
+    "static_target_candidates": 0
+  },
+  "pass_rule": {
+    "all_candidate_actions_graph_bounded": true,
+    "closest_result_selection": false,
+    "configuration_has_a_shared_two_plant_support_target": true,
+    "exact_1458_candidate_plant_cells": true,
+    "exact_1_configuration_table": true,
+    "exact_729_targets": true,
+    "selected_target_replay_exact": true
+  },
+  "question": "Does the unchanged Winner-v42 729-target equilibrium grid contain a shared two-plant full-horizon static target for the sole current failure configuration absent from the frozen teacher table?",
+  "schema_version": "winner_v78.missing_teacher_extension_preregistration.v1",
+  "screen": {
+    "actuator_plants": [
+      "P30_ALL_JOINT",
+      "P31_34_PITCH_WITH_P30_NONPITCH"
+    ],
+    "configuration_ids": [
+      "COM_CORNER_07"
+    ],
+    "duration_ticks": 250,
+    "grid_values": [
+      -1.0,
+      -0.75,
+      -0.5,
+      -0.25,
+      0.0,
+      0.25,
+      0.5,
+      0.75,
+      1.0
+    ],
+    "maximum_candidate_plant_cells": 1458,
+    "selection": "unchanged Winner-v41 deterministic shared-target key",
+    "target_semantics": "one selected time-invariant target for COM_CORNER_07",
+    "targets_per_configuration": 729
+  },
+  "source_attribution": {
+    "missing_teacher_configuration_ids": [
+      "COM_CORNER_07"
+    ],
+    "v42_teacher_configuration_ids": [
+      "COM_CORNER_00",
+      "COM_CORNER_01",
+      "COM_CORNER_02",
+      "COM_CORNER_03",
+      "COM_X_NEG",
+      "DISCOVERY_02",
+      "DISCOVERY_03",
+      "DISCOVERY_06",
+      "DISCOVERY_09",
+      "DISCOVERY_10",
+      "HELDOUT_04",
+      "HELDOUT_07",
+      "HELDOUT_09",
+      "HELDOUT_15",
+      "OPTIONAL_AGGREGATE_HEAVY_AFT"
+    ],
+    "v76_final_failed_cells": 9,
+    "v76_final_failed_configuration_ids": [
+      "COM_CORNER_01",
+      "COM_CORNER_03",
+      "COM_CORNER_07",
+      "COM_X_NEG",
+      "DISCOVERY_03"
+    ],
+    "v76_result_sha256": "19e71696f223b2585f80457095cbdf577d91846c6cf16c2bb739c0ef5fa44737",
+    "v77b_invalid_invocation_sha256": "5b05b110f190c24e594273f5b1aff88ce468bbadd6ae90fe6c9cc5ddb029717c"
+  },
+  "source_manifest_sha256": "f6d9d3a19d2dd97fda25d16a5e833dbae533175d283b80550b63468521f9c23f",
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v78_missing_teacher_extension_preregistration.py",
+      "sha256": "ed2581280c766bda261a3cba290d4d9b405f966f90f0880575d928e75916248f"
+    },
+    "calibrator_design": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_calibrator_training_preregistration.json",
+      "sha256": "1ec76a587c6fa50b92866c1632a7046ae0c6687ed17b1636b664bf45c2e8ba34"
+    },
+    "configuration_domain": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v3_variable_configuration_replacement_preregistration.json",
+      "sha256": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v78_missing_teacher_extension.py",
+      "sha256": "c0cb8fdd774089cbb6a446a5eaa0328f0a9c9076c13cd4ee7ffd1d75c8e1d7e2"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v78_missing_teacher_extension.py",
+      "sha256": "c98f7ed185c7fc37b2b1d2f9d12870cb899a32092c74e2800a8ea02dde84104b"
+    },
+    "v34_reviewed_modules": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v34_prefix_right_pitch_hard_intervention.py",
+      "sha256": "663fb3323ecf06634d09b12e88fe16b469121203a36a5ac492591abd0e330bc7"
+    },
+    "v41_corrected_expansion": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v41_v2_static_equilibrium_target_feasibility.py",
+      "sha256": "79001821b6d4ed040a363df737324daadc8b6929165e676ff9a95fdfbb440810"
+    },
+    "v41_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v41_static_equilibrium_target_feasibility.py",
+      "sha256": "111ae5870e94be1b6d859e78c1043d093c345436bb3db834cdc9b9ede4d8724b"
+    },
+    "v42_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v42_static_target_teacher_table_preregistration.json",
+      "sha256": "e0fc2585062230365b0cef857600382a934af637aefb3cd06f4dabf7eb9ba32d"
+    },
+    "v42_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v42_static_target_teacher_table_result.json",
+      "sha256": "c465d9b3951941715ee0bb588a0ba24a9c4b15d7a2c99430340bcaea43964469"
+    },
+    "v42_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v42_static_target_teacher_table.py",
+      "sha256": "67194905e8a06d5167f699019ea24c82e6d76ea78a0bf365fc570e81cb147abc"
+    },
+    "v76_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v76_integrated_support_gate_result.json",
+      "sha256": "cb84f2f645497527aec9898e620fe051e0ff9660217d14ce424e5993cc62edf0"
+    },
+    "v77b_correction": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v77b_population_authorization_correction.json",
+      "sha256": "e425155303006cf68884844b72e3fe44e64f4c129d1c26f500acfea51aea5bf4"
+    },
+    "v77b_invalid_invocation": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v77b_residual_teacher_causal_invalid_invocation.json",
+      "sha256": "5b05b110f190c24e594273f5b1aff88ce468bbadd6ae90fe6c9cc5ddb029717c"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V78_MISSING_TEACHER_EXTENSION"
+}
