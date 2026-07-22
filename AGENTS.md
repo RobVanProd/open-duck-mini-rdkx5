@@ -2383,3 +2383,18 @@ Do not proceed to grounded walking until low-risk gates pass.
   runtime, RDK-X5, robot, Gate 5, deployment, and clearance remain
   unauthorized. See
   `outputs/analysis/WINNER_V26_RECURRENT_CREDIT_DIAGNOSTIC_PREREGISTRATION_20260722.md`.
+- 2026-07-22: The sole first-attempt Winner-v26 recurrent-credit diagnostic
+  passed on GitHub run `29886426953`; its original 1,963,488-byte ZIP exactly
+  matches GitHub SHA-256 `4bceda8e...d7c7ac3`. All 20 source prefixes, 40
+  candidate branches, and 80 recurrent rollouts passed, with bit-exact source
+  clone repeats and changed initial candidate actions in all 40 branches.
+  Starting from the exact Winner-v22 tick-20 physical/observation/action/hidden
+  state, neither Winner-v24 half nor final terminated before the source in any
+  branch (`0/20` each; median lead `0`). Classification:
+  `NO_DOMINANT_POST_PREFIX_RECURRENT_REGRESSION`. The support regression is
+  therefore already embedded before tick 20 rather than caused by later
+  recurrent closed-loop accumulation. This authorizes only a separately
+  preregistered early-prefix divergence diagnostic. It does not authorize an
+  objective change, training, checkpoint selection, runtime, RDK-X5, robot,
+  Gate 5, deployment, or clearance. See
+  `outputs/analysis/WINNER_V26_RECURRENT_CREDIT_DIAGNOSTIC_RESULT_20260722.md`.
