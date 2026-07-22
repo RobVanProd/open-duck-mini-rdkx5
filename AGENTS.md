@@ -3407,3 +3407,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   threshold change. Robot clearance remains false; no asset freeze, runtime
   update, Gate 5, X5/robot access, torque, or motion is authorized. See
   `outputs/analysis/WINNER_V53_FULL_ACTION_TEACHER_SUPPORT_GATE_RESULT_20260722.md`.
+- 2026-07-22: Winner-v54 preregisters one read-only residual-teacher causal
+  diagnostic on the exact V52 final checkpoint and the exact `12` V53 final
+  failures: six frozen configuration IDs across both P30 and P31/34. Four
+  unchanged V48 intervention arms produce `48` cells: graph, full 14-D teacher,
+  pitch teacher, and graph pitch with non-pitch outputs zeroed. Every graph cell
+  must reproduce V53 bit-exactly before classification. Full-teacher failure
+  means the table is insufficient; otherwise the two single interventions
+  classify pitch output, non-pitch output, or their interaction. No arm,
+  threshold, population, or classification rule may change post hoc.
+  Preregistration SHA-256: `eeaca113...d1b2b24b`. This diagnostic performs no
+  optimizer update, locomotion training, RDK-X5/robot access, torque, or motion
+  and cannot select a checkpoint or grant clearance. See
+  `outputs/analysis/WINNER_V54_RESIDUAL_TEACHER_CAUSAL_PREREGISTRATION_20260722.md`.
