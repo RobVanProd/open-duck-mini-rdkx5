@@ -2986,3 +2986,18 @@ Do not proceed to grounded walking until low-risk gates pass.
   Optimizer updates, formal support cells, continuation training, RDK-X5/robot
   access, checkpoint selection, and clearance remain unauthorized. See
   `outputs/analysis/WINNER_V45_IMPORTER_V2_CORRECTION_PREREGISTRATION_20260722.md`.
+- 2026-07-22: The preregistered Winner-v45 importer-v2 correction imported the
+  same immutable run-`29907921832` artifact without rerun or mutation. All
+  frozen proof checks pass. The sole Adam update advances count `251 -> 252`;
+  same-batch static-target teacher loss decreases from `0.0119318310` to
+  `0.0115688266`, the independently recomputed scale differs from the frozen
+  `58.436370849609375` by only `6.53e-8` relative, all 12 trainable leaves
+  change, and every frozen parameter leaf remains bit-exact. Snapshot SHA-256
+  is `72c2e0bf...6e4832b`; ONNX SHA-256 is
+  `8571f827...e490d242`. The graph preserves the exact stateful `115/14/64`
+  ABI, JAX/ONNX agreement, previous-action chain, and contains no teacher or
+  privileged configuration token. Decision:
+  `AUTHORIZE_STATIC_TARGET_TEACHER_TRAINING_PREREGISTRATION_ONLY`. No formal
+  support cell, continuation update, RDK-X5/robot access, checkpoint selection,
+  or clearance occurred. See
+  `outputs/analysis/WINNER_V45_STATIC_TARGET_TEACHER_ONE_UPDATE_CPU_RESULT_20260722.md`.
