@@ -2724,3 +2724,17 @@ Do not proceed to grounded walking until low-risk gates pass.
   controller deployment, checkpoint selection, Gate 5, or robot clearance is
   authorized. See
   `outputs/analysis/WINNER_V38_MIRRORED_PITCH_SHOOTING_FEASIBILITY_PREREGISTRATION_20260722.md`.
+- 2026-07-22: The sole Winner-v38 formal run `29899217913` completed HOLD; its
+  original 251,940-byte ZIP exactly matches GitHub SHA-256
+  `25d3e19c...985abb0c`. Both cells use the exact three-dimensional mirrored
+  basis and graph-bounded actions. Mirroring suppresses the V37 roll growth and
+  extends survival versus V36 from `55/52` to `69/161` ticks, but neither plant
+  passes the complete 250-tick gate. Both still terminate only on pitch-led
+  `roll_pitch` crossings (`pitch=-0.40746/-0.37829 rad`,
+  `roll=-0.01842/-0.01720 rad`). Classification:
+  `MIRRORED_PITCH_SUBSPACE_NOT_FULL_HORIZON_FEASIBLE`; decision:
+  `CLOSE_MIRRORED_PITCH_SHOOTING_MECHANISM`. The large P31/34 survival gain is
+  evidence, not a selectable closest result. Do not tune the basis, horizon,
+  population, objective, covariance, or add another axis to this route. No
+  checkpoint is selected and robot clearance remains false. See
+  `outputs/analysis/WINNER_V38_MIRRORED_PITCH_SHOOTING_FEASIBILITY_RESULT_20260722.md`.
