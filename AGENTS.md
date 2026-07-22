@@ -4128,3 +4128,19 @@ Do not proceed to grounded walking until low-risk gates pass.
   zero optimizer updates/support cells, selects no checkpoint, and grants no
   deployment, Gate 5, RDK-X5/robot access, torque, motion, or clearance. See
   `outputs/analysis/WINNER_V87_PITCH_HEAD_LINEAR_FEASIBILITY_RESULT_20260722.md`.
+- 2026-07-22: Winner-v88 preregisters the first evidence-authorized diagnostic
+  use of the provided flat-transport equation
+  `K_n,L = rho^L I_n + q(1-rho^L) C_n`. It does not select or search `rho/q`;
+  instead it tests the exact span of the identity/current observation and the
+  causal uniform-prefix mean defined by the final row of `C_n`. On both exact
+  V84 endpoints, three float32-scored linear-probe families are compared:
+  current observation, current plus causal mean, and hidden plus current plus
+  causal mean. Each uses the exact `12` teacher configurations, `24` plant
+  episodes, and `12` leave-one-ID-out folds; total fits are `78`. A family is
+  viable only if both full-fit and heldout bounded pitch MSE beat the unchanged
+  source. Flat transport is selected only if additionally better than current
+  observation alone. Contract SHA-256: `ca6f072b...850472ba`. This changes no
+  architecture, writes no policy artifact, performs zero optimizer updates or
+  support cells, and grants no checkpoint selection, deployment, Gate 5,
+  RDK-X5/robot access, torque, motion, or clearance. See
+  `outputs/analysis/WINNER_V88_FLAT_TRANSPORT_REPRESENTATION_PREREGISTRATION_20260722.md`.

@@ -1,0 +1,120 @@
+{
+  "authority": {
+    "checkpoint_selection_authorized": false,
+    "deployment_authorized": false,
+    "diagnostic_authorized": true,
+    "equation_policy_mechanism_authorized_now": false,
+    "gate5_authorized": false,
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false,
+    "support_gate_authorized_now": false,
+    "training_authorized_now": false
+  },
+  "classification_rule": {
+    "checkpoint_priority": "half, then final",
+    "endpoint_family_priority": "flat_transport_basis if selected; else current_observation if viable; else hidden_plus_flat_transport if viable; else none",
+    "family_viable": "full-fit MSE and aggregate leave-one-configuration-out MSE are both strictly below the unchanged source-policy MSE",
+    "flat_transport_selected_for_endpoint": "flat_transport_basis is viable and its heldout MSE is strictly below current_observation heldout MSE",
+    "result_authority": "one separately preregistered CPU mechanism proof for the selected family only; no policy artifact is written here"
+  },
+  "decision": "AUTHORIZE_ONE_READ_ONLY_TWO_ENDPOINT_FEATURE_FAMILY_AUDIT_ONLY",
+  "equation_boundary": {
+    "c_n_final_row": "(1/n, ..., 1/n)",
+    "policy_architecture_changed": false,
+    "provided_equation": "K_n,L = rho^L I_n + q(1-rho^L) C_n",
+    "rho_or_q_selected_or_searched": false,
+    "tested_component": "the exact causal prefix mean C_n x alongside the identity/current observation x as separate linear-probe basis columns"
+  },
+  "execution_now": {
+    "formal_support_cells": 0,
+    "least_squares_fits": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0,
+    "snapshot_or_onnx_writes": 0,
+    "stage2_rollout_episodes": 0
+  },
+  "feature_families": {
+    "current_observation": "obs_t[115]",
+    "flat_transport_basis": "concat(obs_t[115], causal_mean(obs_0..obs_t)[115])",
+    "hidden_plus_flat_transport": "concat(hidden_t[64], obs_t[115], causal_mean(obs_0..obs_t)[115])"
+  },
+  "fit": {
+    "coefficients_cast_to_float32_before_scoring": true,
+    "cross_validation": "12 leave-one-configuration-out folds per family/endpoint",
+    "families": [
+      "current_observation",
+      "flat_transport_basis",
+      "hidden_plus_flat_transport"
+    ],
+    "hyperparameter_or_rho_q_search": false,
+    "intercept": true,
+    "rcond": null,
+    "solver": "numpy.linalg.lstsq",
+    "target": "float64 arctanh of six static raw teacher actions",
+    "total_least_squares_fits": 78,
+    "training_only_standardization": "per-column float32 mean/std from each fit's training rows; std below 1e-6 maps to 1"
+  },
+  "frozen_source": {
+    "checkpoint_labels_updates": {
+      "final": 755,
+      "half": 705
+    },
+    "pitch_indices": [
+      2,
+      3,
+      4,
+      11,
+      12,
+      13
+    ],
+    "selected_teacher_configurations": 12,
+    "selected_teacher_episodes_per_checkpoint": 24,
+    "source_mse_by_checkpoint": {
+      "final": 0.008862325535017935,
+      "half": 0.008179905217339514
+    },
+    "training_population_episodes": 80,
+    "v87_result_sha256": "c54bbad33bffec85d7ddafb6ccb45231f83929eadae8c5eb2fb9edb1f94298ac"
+  },
+  "question": "Does the causal uniform-history component from C_n expose a heldout-transferable pitch-teacher signal that is absent from the frozen recurrent hidden state?",
+  "schema_version": "winner_v88.flat_transport_representation_preregistration.v1",
+  "source_manifest_sha256": "220ef301958cb755d7e71703fc5c3c28705fff8a1d62010801400ccd8288558f",
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v88_flat_transport_representation_preregistration.py",
+      "sha256": "8c8558b88fb86b45025ce324df5186b3b4d6fb4bfa0e66647fb664cad2fe4403"
+    },
+    "recurrent_policy": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v29_prefix_right_pitch_anchor.py",
+      "sha256": "7c01b3db8c359464d122fc4f915df02eb9833720ef65837a99c5838dd42db36f"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v88_flat_transport_representation.py",
+      "sha256": "2c68e9ae0ed494e87da18881b4e7900fa3b1e435388f133ed57877f9ca564761"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v88_flat_transport_representation.py",
+      "sha256": "d36cdd1b46b3ed57258e0d511edab69fae59b2b7f027cba5a0300c3bd379ad02"
+    },
+    "v87_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v87_pitch_head_linear_feasibility_result.json",
+      "sha256": "ef3062756f8bcdf5ac39d78723262e1998de03e6de7ef40cfd16e6e81fe632b1"
+    },
+    "v87_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v87_pitch_head_linear_feasibility.py",
+      "sha256": "ff4fd30434a5090cbb760eddf230b9c5082e0dbab4deed97c2d725155c0de730"
+    },
+    "v87b_correction": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v87b_teacher_population_correction.json",
+      "sha256": "12c3afd70f1c0570ee73121e8894081f93e073ca7be0d75ddcf7717d6e3f87a0"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V88_FLAT_TRANSPORT_REPRESENTATION_DIAGNOSTIC"
+}
