@@ -3031,3 +3031,22 @@ Do not proceed to grounded walking until low-risk gates pass.
   and performs zero gate cells, optimizer updates, RDK-X5/robot access,
   checkpoint selection, or clearance. Only a later hash-bound contract built
   from a passing imported Winner-v46 result can authorize execution.
+- 2026-07-22: The sole Winner-v46 first-attempt CPU arm completed successfully
+  at GitHub run `29909100403`, launch head
+  `1a1f6d1803b390168f0bf9b60c257e0180ba8484`, and artifact ID
+  `8527007840`. The preserved 19,252,851-byte original ZIP exactly matches
+  GitHub SHA-256 `fb6edf22...372e12c2`. The strict importer validated all 104
+  members, all 100 consecutive snapshots from counts `253..352`, every
+  update receipt and objective invariant, all 12 nonzero cumulative leaf
+  deltas, frozen parameter leaves, and both exact stateful `115/14/64` ONNX
+  contracts. The count-302 half snapshot/graph SHA-256 values are
+  `d6067047...ff1d476b` / `b4326259...cfe41ac1`; count-352 final values are
+  `e32a7d5e...8c86e0df` / `e3d209fd...8ccaa7d2`. Static-target teacher loss is
+  `0.0118446639` at the first continuation update, `0.0089533264` at half,
+  and `0.0094035575` at final; these are training diagnostics, not behavior
+  or checkpoint-selection evidence. Decision:
+  `AUTHORIZE_STATIC_TARGET_TEACHER_SUPPORT_GATE_PREREGISTRATION_ONLY`.
+  Formal support cells, locomotion training, checkpoint selection,
+  RDK-X5/robot access, Gate 5, deployment, and clearance remain unauthorized.
+  See
+  `outputs/analysis/WINNER_V46_STATIC_TARGET_TEACHER_TRAINING_RESULT_20260722.md`.
