@@ -1,0 +1,97 @@
+name: Winner v37 warm started shooting feasibility
+
+on:
+  push:
+    branches:
+      - codex/winner-v4-response-contract
+    paths:
+      - outputs/analysis/winner_v37_warm_started_shooting_feasibility_preregistration.json
+      - outputs/analysis/WINNER_V37_WARM_STARTED_SHOOTING_FEASIBILITY_PREREGISTRATION_20260722.md
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: winner-v37-warm-started-shooting-feasibility
+  cancel-in-progress: false
+
+jobs:
+  diagnostic:
+    name: One CPU-only stateful-proposal COM_X_NEG screen
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    steps:
+      - name: Reject workflow reruns
+        run: test "${{ github.run_attempt }}" = "1"
+      - name: Checkout frozen diagnostic
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up exact Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12.13"
+      - name: Install exact CPU environment
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install \
+            "jax[cpu]==0.7.2" "jaxlib==0.7.2" "mujoco==3.9.0" \
+            "numpy==2.0.2" "onnx==1.22.0" "onnxruntime==1.27.0" "pytest==8.4.2"
+      - name: Verify frozen diagnostic package
+        run: |
+          python -m pytest -q \
+            tests/test_winner_v37_warm_started_shooting_feasibility.py \
+            tests/test_winner_v37_warm_started_shooting_feasibility_preregistration.py \
+            tests/test_winner_v37_warm_started_shooting_feasibility_import.py
+      - name: Verify exact frozen source manifest
+        shell: bash
+        run: |
+          python - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+          value=json.loads(Path("outputs/analysis/winner_v37_warm_started_shooting_feasibility_preregistration.json").read_text())
+          if value["status"] != "PREREGISTERED_WINNER_V37_WARM_STARTED_SHOOTING_FEASIBILITY" or any(value["execution_now"].values()):
+              raise SystemExit("Winner-v37 authority changed")
+          sources=value["sources"]
+          for name,item in sources.items():
+              observed=hashlib.sha256(Path(item["path"]).read_bytes().replace(b"\r\n",b"\n")).hexdigest()
+              if item["hash_mode"] != "lf" or observed != item["sha256"]:
+                  raise SystemExit(f"Winner-v37 source changed: {name}")
+          canonical=hashlib.sha256(json.dumps(sources,sort_keys=True,separators=(",",":")).encode()).hexdigest()
+          if canonical != value["source_manifest_sha256"]:
+              raise SystemExit("Winner-v37 manifest changed")
+          PY
+      - name: Prepare exact reviewed simulation environment
+        run: |
+          git clone --quiet https://github.com/RobVanProd/Open_Duck_Playground.git /tmp/playground-source
+          python tools/prepare_winner_v15_cpu_environment.py \
+            --source-repository /tmp/playground-source \
+            --output-root /tmp/pg115-v37-warm-started \
+            --work-root /tmp/winner-v37-warm-started-environment \
+            --fit-output /tmp/fixed_target_p30_actuator_fit_lf.json
+      - name: Run exactly one CPU-only warm-started shooting screen
+        run: |
+          python tools/run_winner_v37_warm_started_shooting_feasibility.py \
+            --playground-root /tmp/pg115-v37-warm-started \
+            --canonical-fit /tmp/fixed_target_p30_actuator_fit_lf.json \
+            --output /tmp/winner-v37-warm-started-shooting-feasibility-result.json \
+            --offline-cpu-only --oracle-feasibility-authorized
+      - name: Hash diagnostic result
+        if: always()
+        run: |
+          result=/tmp/winner-v37-warm-started-shooting-feasibility-result.json
+          if test -f "$result"; then
+            sha256sum "$result" | tee /tmp/winner-v37-warm-started-shooting-feasibility-result.sha256
+          fi
+      - name: Upload only diagnostic evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: winner-v37-warm-started-shooting-feasibility-${{ github.run_id }}
+          if-no-files-found: warn
+          retention-days: 14
+          compression-level: 6
+          path: |
+            /tmp/winner-v37-warm-started-shooting-feasibility-result.json
+            /tmp/winner-v37-warm-started-shooting-feasibility-result.sha256

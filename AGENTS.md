@@ -2679,3 +2679,19 @@ Do not proceed to grounded walking until low-risk gates pass.
   controllability. No checkpoint is selected and robot clearance remains
   false. See
   `outputs/analysis/WINNER_V36_SUPPORT_ORACLE_SHOOTING_FEASIBILITY_RESULT_20260722.md`.
+- 2026-07-22: One zero-update Winner-v37 warm-started shooting feasibility
+  screen is preregistered. It repeats only V36's two `COM_X_NEG` plant cells
+  and preserves the six pitch-chain joints, 250 ticks, 8-tick horizon,
+  2-tick blocks, `64/8/4` CEM compute, covariance reset, objective, action
+  boundary, actuator plants, PRNG seed, and support gate. The sole change is
+  proposal memory: after tick 0, shift the prior winning raw plan by one tick,
+  repeat its terminal action, and average adjacent pairs back into four blocks
+  for the next mean. Tick-0 actions must reproduce V36 exactly; every later
+  tick must exercise the warm start. Both plants must pass; closest-result
+  selection is forbidden. Exactly one formal CPU-only screen is authorized,
+  with zero optimizer updates, locomotion training, RDK-X5, or robot work. A
+  pass may authorize only a separately frozen full-configuration warm-started
+  oracle screen; a hold closes this proposal-memory mechanism without tuning.
+  No controller deployment, checkpoint selection, Gate 5, or robot clearance
+  is authorized. See
+  `outputs/analysis/WINNER_V37_WARM_STARTED_SHOOTING_FEASIBILITY_PREREGISTRATION_20260722.md`.
