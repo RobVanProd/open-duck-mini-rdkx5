@@ -3602,3 +3602,14 @@ Do not proceed to grounded walking until low-risk gates pass.
   access, torque, motion, or clearance. A pass can authorize only a separately
   preregistered continuation with the exact numeric replay guard. See
   `outputs/analysis/WINNER_V59_HIDDEN_REPLAY_NUMERIC_ATTRIBUTION_PREREGISTRATION_20260722.md`.
+- 2026-07-22: Winner-v59 passes all `12` zero-update numeric checks. Replaying
+  the rollout through the original eager recurrence is bit-exact; only
+  eager-versus-`jax.lax.scan` float32 ordering differs, with hidden maximum
+  `1.125037670135498e-6`. Its maximum mean-action/value/log-probability/ratio
+  deltas are `1.4901161e-7 / 1.1920929e-6 / 1.1444092e-5 / 1.1444092e-5`,
+  and PPO-loss delta is exact zero. Result SHA-256:
+  `2bc02511...c946c39b`. This authorizes only a separately preregistered new
+  continuation with the exact `2e-6` replay guard; it does not authorize a
+  Winner-v58 retry, support evaluation, checkpoint selection, deployment,
+  Gate 5, RDK-X5/robot access, torque, motion, or clearance. See
+  `outputs/analysis/WINNER_V59_HIDDEN_REPLAY_NUMERIC_ATTRIBUTION_RESULT_20260722.md`.
