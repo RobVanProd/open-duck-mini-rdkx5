@@ -2187,3 +2187,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   It does not authorize training, checkpoint selection, runtime work, RDK-X5,
   robot access, Gate 5, deployment, or clearance. See
   `outputs/analysis/WINNER_V23_NEGATIVE_X_RESPONSE_USE_DIAGNOSTIC_RESULT_20260721.md`.
+- 2026-07-21/22: The first Winner-v24 symmetric support-failure zero-update
+  proof is preserved as `HOLD_WINNER_V24_SYMMETRIC_FAILURE_CPU_CONTRACT` from
+  GitHub run `29879542867`, attempt 1, artifact ZIP SHA-256
+  `0fe26cbd...4bc64a9a`. It applied no optimizer update. Twelve roll/pitch
+  failures and 22 settled successes were present; default-off was bit-exact;
+  enabled mode changed only reward/return/advantage; predictor loss and
+  gradients stayed bit-exact; and PPO action-head/recurrent gradients changed.
+  The sole failed check is baseline GAE replay: return max error
+  `1.52587890625e-5`, exactly one float32 ULP at the existing 250-point terminal
+  scale, while advantage error `9.536743e-7` passed. Do not relax or rerun this
+  contract and do not run an optimizer update from it. A prospective,
+  read-only attribution is required before any baseline-anchored correction.
+  See `outputs/analysis/WINNER_V24_SYMMETRIC_FAILURE_CPU_RESULT_20260721.md`.
