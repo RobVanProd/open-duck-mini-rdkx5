@@ -1,0 +1,131 @@
+{
+  "authority": {
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "result_authorizes_only": "one separate CPU mechanism preregistration",
+    "robot_clearance": false,
+    "training_authorized": false
+  },
+  "causal_question": "Do the 15 exact raw reset inputs distinguished by Winner-v55 remain label-separable after the already frozen native BNO055 and servo quantization?",
+  "classification": {
+    "NATIVE_QUANTIZATION_CREATES_RESET_LABEL_CONFLICT": "at least one exact quantized input maps to multiple teacher labels",
+    "NATIVE_RESET_LABELS_REMAIN_SEPARABLE": "every exact quantized input maps to one teacher label",
+    "decision_if_conflict": "AUTHORIZE_UNIVERSAL_FIRST_ACTION_FEASIBILITY_PREREGISTRATION_ONLY",
+    "decision_if_separable": "AUTHORIZE_FIRST_TICK_TEACHER_MAPPING_CPU_CONTRACT_PREREGISTRATION_ONLY"
+  },
+  "decision": "AUTHORIZE_ONE_READ_ONLY_30_ROW_CPU_ATTRIBUTION_ONLY",
+  "execution_now": {
+    "locomotion_steps": 0,
+    "optimizer_updates": 0,
+    "reset_rows": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_steps": 0
+  },
+  "frozen_attribution": {
+    "collision": "one exact quantized reset-input hash maps to more than one exact bounded-teacher-action hash",
+    "input": "quantized obs[115] + zero previous_action[14] + zero h_in[64]",
+    "raw_observation_hash_must_reproduce_v55": true,
+    "rows": 30,
+    "transport": "run_winner_v12_calibrator_support_gate.native_quantize_observation with no random noise, delay, rounding change, or fitted threshold"
+  },
+  "frozen_source": {
+    "bounded_teacher_labels": 4,
+    "checkpoint_label": "final",
+    "completed_updates": 453,
+    "plants": [
+      "P30_ALL_JOINT",
+      "P31_34_PITCH_WITH_P30_NONPITCH"
+    ],
+    "raw_unique_graph_actions": 15,
+    "raw_unique_reset_inputs": 15,
+    "teacher_configuration_ids": [
+      "COM_CORNER_00",
+      "COM_CORNER_01",
+      "COM_CORNER_02",
+      "COM_CORNER_03",
+      "COM_X_NEG",
+      "DISCOVERY_02",
+      "DISCOVERY_03",
+      "DISCOVERY_06",
+      "DISCOVERY_09",
+      "DISCOVERY_10",
+      "HELDOUT_04",
+      "HELDOUT_07",
+      "HELDOUT_09",
+      "HELDOUT_15",
+      "OPTIONAL_AGGREGATE_HEAVY_AFT"
+    ],
+    "v55_result_sha256": "4ded36d436484af1b801d078a436b654d3aabc2507a26565117af3703008ed0e"
+  },
+  "pass_rule": {
+    "all_graph_actions_within_boundary": true,
+    "all_initial_contacts_double": true,
+    "all_raw_observation_hashes_match_v55": true,
+    "all_values_finite": true,
+    "exact_30_rows": true
+  },
+  "schema_version": "winner_v55b.native_reset_quantization_preregistration.v1",
+  "source_manifest_sha256": "e827f7c84d5d03b0ef11b43a8cce026633d71ab452cd31513bd0de392b8a24ed",
+  "sources": {
+    "base_gate_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_full_calibrator_training_preregistration.json",
+      "sha256": "99500648d6683097a13f894b0949bf4b5494e5653f36878710817bd0952f71dd"
+    },
+    "base_gate_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_support_gate.py",
+      "sha256": "18873eee55c77a278fc065de64c0b912803bf29b4440cde7f3adaabe1297baca"
+    },
+    "base_smoke_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_cpu_smoke.py",
+      "sha256": "b6ad53430f3f7cca3a91a90f72dab585cb05e3e2f74be2241af3fd9b6ee7ce87"
+    },
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v55b_native_reset_quantization_preregistration.py",
+      "sha256": "3ab7d3b55adda6bd98c249b22d19d0e32b2ee039dca298f2b8f89956285e5d2d"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v55b_native_reset_quantization.py",
+      "sha256": "d9e58e4ccbc0e1c8224955405edafc73326d12ceb108907c035a05ac82b3c2a0"
+    },
+    "teacher_table": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v42_static_target_teacher_table_result.json",
+      "sha256": "c465d9b3951941715ee0bb588a0ba24a9c4b15d7a2c99430340bcaea43964469"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v55b_native_reset_quantization.py",
+      "sha256": "4114ce0e5118d533929309fb853dd7efc91d37eab59fcdea5a13051a25dce4a6"
+    },
+    "v54_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v54_residual_teacher_causal.py",
+      "sha256": "8a2b87a9b3832b9b73dbc53295f402bac0a007e5c6f83c7af9a3d487242850d1"
+    },
+    "v55_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v55_reset_label_handoff_preregistration.json",
+      "sha256": "fba0b2b4712ef7a4e021d0850fea881e655135e7886a30961c8c5034ac2f841e"
+    },
+    "v55_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v55_reset_label_handoff_result.json",
+      "sha256": "9053729f378add7edd9f7d7972012e8cbaade2e040849ce7391bc6d2fb06a8f1"
+    },
+    "v55_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v55_reset_label_handoff.py",
+      "sha256": "91d47c840c43a17ed5d90521542acf6bee1e59dcb6c8f50d6fc0ee06f3a4c1eb"
+    },
+    "variable_configuration_domain": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v3_variable_configuration_replacement_preregistration.json",
+      "sha256": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V55B_NATIVE_RESET_QUANTIZATION_ATTRIBUTION"
+}

@@ -3461,3 +3461,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   change. No optimizer update, checkpoint selection, deployment, Gate 5,
   RDK-X5/robot access, torque, motion, or clearance is authorized. See
   `outputs/analysis/WINNER_V55_RESET_LABEL_HANDOFF_RESULT_20260722.md`.
+- 2026-07-22: Winner-v55b preregisters one zero-step, read-only native-reset
+  quantization attribution. It reconstructs all `30` V55 reset rows, requires
+  every raw observation hash to reproduce, then applies the support gate's
+  already frozen BNO055 and servo quantization with no noise, delay, fitted
+  threshold, or physics step. One exact quantized `115+14+64` input mapping to
+  multiple bounded V42 labels is the sole collision rule. Preregistration
+  SHA-256: `3944cc29...66921d2`. A conflict can select only a universal-first-
+  action feasibility preregistration; preserved separability can select only a
+  first-tick teacher-mapping CPU contract. No optimizer update, training,
+  deployment, Gate 5, RDK-X5/robot access, torque, motion, or clearance is
+  authorized. See
+  `outputs/analysis/WINNER_V55B_NATIVE_RESET_QUANTIZATION_PREREGISTRATION_20260722.md`.
