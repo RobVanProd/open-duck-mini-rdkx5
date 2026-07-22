@@ -2283,3 +2283,17 @@ Do not proceed to grounded walking until low-risk gates pass.
   torque, and hardware remain unauthorized. A training pass may authorize only
   a separately frozen support gate. See
   `outputs/analysis/WINNER_V24_BASELINE_ANCHORED_TRAINING_PREREGISTRATION_20260722.md`.
+- 2026-07-22: The sole first-attempt Winner-v24 baseline-anchored continuation
+  completed on GitHub run `29882025982` and passed the frozen strict importer.
+  The original 19,174,111-byte ZIP exactly matches GitHub SHA-256
+  `0e819dab...b2f0a4a1`; optimizer count is exactly `100 -> 200`, all 100
+  atomic snapshots and all twelve trainable-leaf gradients/deltas pass, and
+  the count-150/count-200 stateful ONNX hashes are
+  `a36d7634...e0846fd3` / `6f3bde15...b1dc425`. Every rollout retained
+  observed roll/pitch failure evidence (1,487 total), so the objective never
+  used its zero-failure no-op branch. Decision:
+  `PASS_WINNER_V24_BASELINE_ANCHORED_TRAINING_ARTIFACT`. This authorizes only a
+  separately frozen 248-cell half/final support gate; it does not authorize
+  checkpoint selection, locomotion training, runtime work, RDK-X5, robot,
+  Gate 5, deployment, or clearance. See
+  `outputs/analysis/WINNER_V24_BASELINE_ANCHORED_TRAINING_RESULT_20260722.md`.
