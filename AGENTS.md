@@ -3434,3 +3434,17 @@ Do not proceed to grounded walking until low-risk gates pass.
   not authorize coefficient tuning, continuation, checkpoint selection,
   deployment, Gate 5, RDK-X5/robot access, torque, motion, or clearance. See
   `outputs/analysis/WINNER_V54_RESIDUAL_TEACHER_CAUSAL_RESULT_20260722.md`.
+- 2026-07-22: Winner-v55 preregisters one read-only reset-label collision and
+  delayed-teacher handoff diagnostic. The reset audit hashes the exact
+  `115+14+64` float32 input and bounded privileged label over all `15` V42
+  teacher configurations and both plants (`30` rows), with collision defined
+  only by one exact input mapping to multiple exact labels. The handoff audit
+  runs the six V54 failures across both plants at ticks
+  `0/1/2/4/8/12/16/20/250` (`108` cells). Tick `0` must reproduce V54's full
+  teacher and tick `250` its unchanged graph bit-exactly. If a collision exists,
+  the greatest positive tick passing all `12` cells may select only a separate
+  delayed-teacher mechanism CPU contract. Preregistration SHA-256:
+  `1a37167f...ea72d66`. This executes no optimizer update, locomotion training,
+  graph selection, RDK-X5/robot access, torque, or motion and cannot grant
+  clearance. See
+  `outputs/analysis/WINNER_V55_RESET_LABEL_HANDOFF_PREREGISTRATION_20260722.md`.
