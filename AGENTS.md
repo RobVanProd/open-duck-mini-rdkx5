@@ -2784,3 +2784,19 @@ Do not proceed to grounded walking until low-risk gates pass.
   `DO_NOT_SELECT_NEXT_POLICY_MECHANISM`. No checkpoint selection, simulation,
   training, Gate 5, deployment, or clearance is authorized. See
   `outputs/analysis/WINNER_V40_RESPONSE_JACOBIAN_INVALIDITY_ATTRIBUTION_PREREGISTRATION_20260722.md`.
+- 2026-07-22: The sole Winner-v40 attribution run `29901125171` passed; its
+  original 1,895-byte ZIP exactly matches GitHub SHA-256
+  `1536a460...51b5c1f4`. Every V39 Jacobian before tick 30 is full-row-rank.
+  Rank loss begins at tick 30 in both plants and is confined to the final
+  two/one ticks before the recorded terminals at `32/31`; every missing column
+  is accounted for by plus/minus branches that terminate before the eight-tick
+  horizon with identical pitch/pitch-rate responses. Both recorded controllers
+  nevertheless use bounded nonzero actions, fail support, and terminate
+  `37/130` ticks earlier than V38. Classification:
+  `TERMINAL_TRUNCATION_EXPLAINS_RANK_INVALIDITY_NOT_SUPPORT_FAILURE`; decision:
+  `CLOSE_EXACT_V39_CONTROLLER_WITHOUT_RERUN`. This does not convert V39 to a
+  valid HOLD result and does not reject the response-inversion family or prove
+  uncontrollability. It authorizes only a separately frozen nonlocal support-
+  controller feasibility design. Simulation, training, checkpoint selection,
+  RDK-X5, robot, Gate 5, deployment, and clearance remain unauthorized. See
+  `outputs/analysis/WINNER_V40_RESPONSE_JACOBIAN_INVALIDITY_ATTRIBUTION_RESULT_20260722.md`.
