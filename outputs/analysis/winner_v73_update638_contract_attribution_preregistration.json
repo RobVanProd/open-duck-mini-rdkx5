@@ -1,0 +1,115 @@
+{
+  "authority": {
+    "checkpoint_selection_authorized": false,
+    "deployment_authorized": false,
+    "diagnostic_authorized": true,
+    "formal_support_gate_authorized": false,
+    "optimizer_updates_authorized": 0,
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false
+  },
+  "decision": "AUTHORIZE_ONE_ZERO_UPDATE_UPDATE638_CONTRACT_ATTRIBUTION_ONLY",
+  "diagnostic": {
+    "attempted_optimizer_count": 638,
+    "checks": [
+      "sampled_hidden_replay_max_abs_error <= 2e-6",
+      "stored successor transition count exact and positive",
+      "anchor and teacher selected-element counts exact",
+      "anchor, teacher, and reset gradient supports exact",
+      "reset sample and selected-element counts exact"
+    ],
+    "environments": 80,
+    "rollout_update_index": 637,
+    "source_optimizer_count": 637,
+    "threshold_or_architecture_change": false,
+    "ticks_per_environment": 250
+  },
+  "execution_now": {
+    "formal_support_cells": 0,
+    "locomotion_steps": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0
+  },
+  "prior_invocation": {
+    "attempted_optimizer_count": 638,
+    "durable_graph_count": 1,
+    "durable_snapshot_count": 35,
+    "exception": "ValueError: Winner-v71 replay/teacher contract changed at 638",
+    "last_durable_optimizer_count": 637,
+    "result_written": false,
+    "status": "STOPPED_WINNER_V71B_REPLAY_TEACHER_CONTRACT_AT_638"
+  },
+  "schema_version": "winner_v73.update638_contract_attribution_preregistration.v1",
+  "source_checkpoint": {
+    "completed_updates": 637,
+    "graph": {
+      "bytes": 54896,
+      "completed_updates": 605,
+      "label": "half",
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v71b-fresh-moment-safeguarded-continuation\\graphs\\winner_v71_half.onnx",
+      "sha256": "e2b97fe6b18c09c69fd9a9d8a1fe9e39cfa6b2a806f20bd05a215253830d5eab"
+    },
+    "optimizer_count": 637,
+    "snapshot": {
+      "bytes": 195327,
+      "completed_updates": 637,
+      "optimizer_count": 637,
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v71b-fresh-moment-safeguarded-continuation\\snapshots\\snapshot_fresh_moment_safeguarded_update_637.npz",
+      "sha256": "ab653455ee3d79b053d3f242192de02536e838accd5ba872042a959dde231d5b"
+    }
+  },
+  "source_manifest_sha256": "aafde03477c7fc860cdcabb870bc70633bbf78602866799ee68ee049bb88d2b5",
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v73_update638_contract_attribution.py",
+      "sha256": "06ecf93e8a2ac53dba7e9d9702dda7a0d5618487064ba9be738148d3bfdfa357"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v73_update638_contract_attribution.py",
+      "sha256": "4bb2f61cad8b27e3b75febc7977c493f1933228860c1ad124258722789d3674d"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v73_update638_contract_attribution.py",
+      "sha256": "bbb7067a850535f58c392c5fec8bb6bd6049f64f4db509904af3cf013c0a07fa"
+    },
+    "v71b_builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v71b_full_loss_binding_correction.py",
+      "sha256": "ed29ac5a1c8a8f205a8ac049408cdd7d2023d80348d09ee3518335586d45c208"
+    },
+    "v71b_contract": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v71b_full_loss_binding_correction.json",
+      "sha256": "f0353230595698f8aa65de191b3521b05cf56c27fa2aa6230b4e63decd9442d3"
+    },
+    "v71b_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v71b_full_loss_binding_correction.py",
+      "sha256": "5c6e2e6a601536227d451bde7855b454753e9f2f507f12a1981dc5c4cada56da"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V73_UPDATE638_CONTRACT_ATTRIBUTION",
+  "stop_rules": [
+    "write no optimizer update, snapshot, or ONNX graph",
+    "do not relax the 2e-6 replay threshold",
+    "classify the exact failed invariant before proposing any continuation"
+  ],
+  "teacher_checkpoint": {
+    "completed_updates": 100,
+    "optimizer_count": 100,
+    "snapshot": {
+      "bytes": 194808,
+      "completed_updates": 100,
+      "optimizer_count": 100,
+      "path": null,
+      "sha256": "ddc8c4b905bb9acac2d7d48c3e9c1f0c0ca0173a1ba21f375740b051bc48c806"
+    }
+  },
+  "transformation": {
+    "transformed_source_sha256": "7b62c7193227a85a7f84cb9d2f76c072050fd0c8a310952a755bc94ab1a4bb44",
+    "v71b_corrected_source_sha256": "e4fde7915dfe8ac2d8a7ad07600cf8ce9778084f9a5620f0b66b788ecc137be1"
+  }
+}
