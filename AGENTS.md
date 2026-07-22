@@ -3091,3 +3091,22 @@ Do not proceed to grounded walking until low-risk gates pass.
   locomotion, RDK-X5/robot, Gate 5, deployment, and clearance remain zero or
   false. See
   `outputs/analysis/WINNER_V47B_SUPPORT_GATE_EXECUTION_CORRECTION_PREREGISTRATION_20260722.md`.
+- 2026-07-22: The sole corrected Winner-v47b run `29914814609` completed all
+  `248` main cells and `64` heldout repeats and produced a genuine policy HOLD.
+  Its original 248,630-byte ZIP exactly matches GitHub SHA-256
+  `c26ee2fa...50a08bc0`. Half passes `108/124` support cells and final passes
+  `112/124`; both fail the unchanged all-cells persistence rule, so neither
+  checkpoint is selected. Every sensor/transport cell passes. Both checkpoints
+  also pass exact cell counts, previous-action chaining, JAX/ONNX hidden-state
+  agreement, all 32 heldout repeats, all 16 heldout context separations, and
+  learned response prediction versus the constant baseline separately per
+  plant. Every failed cell is an early roll/pitch-only terminal under both P30
+  and P31/34. Persistent failures are `COM_CORNER_01`, `COM_CORNER_03`,
+  `COM_X_NEG`, `DISCOVERY_03`, `HELDOUT_04`, and `HELDOUT_09`; half additionally
+  fails `COM_CORNER_00` and `COM_CORNER_02`. Failure ticks span `30..66` at
+  half and `29..55` at final. Decision:
+  `DO_NOT_TRAIN_RESPONSE_CONDITIONED_LOCOMOTION`. This closes the exact static-
+  target-teacher continuation; no closest checkpoint, extra updates, or
+  locomotion training is promoted. RDK-X5/robot access, Gate 5, deployment,
+  and clearance remain unauthorized. See
+  `outputs/analysis/WINNER_V47B_SUPPORT_GATE_EXECUTION_CORRECTION_RESULT_20260722.md`.
