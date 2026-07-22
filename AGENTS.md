@@ -3499,3 +3499,17 @@ Do not proceed to grounded walking until low-risk gates pass.
   separately preregistered single CPU Adam update, not training continuation,
   checkpoint selection, deployment, Gate 5, or clearance. See
   `outputs/analysis/WINNER_V56_FIRST_TICK_TEACHER_GRADIENT_CONTRACT_20260722.md`.
+- 2026-07-22: The Winner-v56 zero-update proof passes all nine checks. Its
+  `44` raw/native-quantized training rows and `616` full-action elements contain
+  no held-out label. Reset loss is `0.004075534176081419`; pitch RMS is
+  `0.0957130640745163` versus `0.01616910845041275` off-pitch, directly matching
+  V54's causal localization. JAX/ONNX action error is at most
+  `2.2351741790771484e-8`. At scale `136.35153198242188`, only the exact four
+  mapping leaves `obs_weight/hidden_bias/action_weight/action_bias` have
+  nonzero gradients; every recurrent, predictor, value, and distribution leaf
+  is zero, and default-off is bit-exact. Result SHA-256:
+  `6363c17a...9051c1a8`. This authorizes only preregistration of one CPU Adam
+  update from count `453` to `454`; it does not authorize continuation,
+  support evaluation, checkpoint selection, deployment, Gate 5, RDK-X5/robot
+  access, torque, motion, or clearance. See
+  `outputs/analysis/WINNER_V56_FIRST_TICK_TEACHER_GRADIENT_RESULT_20260722.md`.
