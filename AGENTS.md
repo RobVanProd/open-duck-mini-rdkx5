@@ -2569,3 +2569,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   gate over both checkpoints, not runtime, RDK-X5, robot, Gate 5, deployment,
   or clearance. See
   `outputs/analysis/WINNER_V32_PREFIX_RIGHT_PITCH_ANCHOR_TRAINING_RESULT_20260722.md`.
+- 2026-07-22: One Winner-v33 read-only support gate is preregistered for the
+  exact Winner-v32 count-251/count-301 snapshots and ONNX graphs. It reuses the
+  reviewed physical evaluator, populations, seeds, thresholds, normalized-head
+  affine scoring projection, and all-or-nothing rule that previously exposed
+  Winner-v24's negative-X failures: 124 main cells and 32 heldout repeats per
+  checkpoint, with all 16 heldout contexts separate and learned prediction
+  required to beat the constant baseline per plant. Both checkpoints must pass;
+  closest-result selection is forbidden. The gate executes 248 main cells and
+  64 repeats, but zero optimizer updates, locomotion training, RDK-X5, or robot
+  work. A pass may authorize only a separately preregistered response-
+  conditioned locomotion-training design; it is not checkpoint selection or
+  robot clearance. See
+  `outputs/analysis/WINNER_V33_PREFIX_RIGHT_PITCH_ANCHOR_SUPPORT_GATE_PREREGISTRATION_20260722.md`.
