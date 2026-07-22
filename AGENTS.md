@@ -2200,3 +2200,17 @@ Do not proceed to grounded walking until low-risk gates pass.
   contract and do not run an optimizer update from it. A prospective,
   read-only attribution is required before any baseline-anchored correction.
   See `outputs/analysis/WINNER_V24_SYMMETRIC_FAILURE_CPU_RESULT_20260721.md`.
+- 2026-07-22: The read-only Winner-v24 GAE attribution passed. The prior return
+  discrepancy equals exactly one float32 ULP at 250, its advantage replay
+  already passed the original threshold, and all 20 other causal/locality
+  checks passed. The old result is not rewritten, its threshold is not
+  relaxed, and it must not be rerun. The separately versioned baseline-anchored
+  zero-update contract is now frozen: recorded baseline returns plus rederived
+  values are authoritative, and only the analytically propagated `-250`
+  terminal delta is added before advantage renormalization. One first-attempt
+  CPU proof is authorized with 80 rollout slots and zero optimizer updates,
+  formal support cells, locomotion steps, and robot access. A pass may authorize
+  only a separately preregistered one-update CPU proof; it does not authorize
+  training, checkpoint selection, deployment, Gate 5, or robot access. See
+  `outputs/analysis/WINNER_V24_GAE_ONE_ULP_ATTRIBUTION_20260722.md` and
+  `outputs/analysis/WINNER_V24_BASELINE_ANCHORED_CPU_CONTRACT_20260722.md`.
