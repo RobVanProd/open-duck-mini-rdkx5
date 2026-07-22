@@ -1,0 +1,188 @@
+{
+  "authority": {
+    "checkpoint_selection_authorized": false,
+    "deployment_authorized": false,
+    "diagnostic_authorized": true,
+    "gate5_authorized": false,
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "result_authorizes": "causal diagnosis and a separate prospective mechanism preregistration only",
+    "robot_clearance": false,
+    "support_gate_authorized_now": false,
+    "training_authorized_now": false
+  },
+  "causal_question": "After the localized Winner-v84 correction, are all twelve residual half/final plant failures still rescued specifically by replacing the six pitch outputs with the replay-bound static teacher?",
+  "checks": {
+    "all_12_graph_cells_bit_exact_to_v85": true,
+    "all_12_source_graph_cells_fail": true,
+    "all_jax_onnx_hidden_errors_at_most_1e_7": true,
+    "all_previous_action_chains_exact": true,
+    "all_values_finite": true,
+    "exact_48_cells": true
+  },
+  "classification_rule": "Use the unchanged Winner-v48 failed-pair classifier independently for each exact pair; select a subsequent mechanism only from the complete 12-pair classification counts.",
+  "decision": "AUTHORIZE_ONE_READ_ONLY_12_PAIR_FOUR_ARM_DIAGNOSTIC_ONLY",
+  "execution_now": {
+    "diagnostic_cells": 0,
+    "locomotion_training_steps": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0
+  },
+  "frozen_source": {
+    "arms": [
+      "graph",
+      "full_teacher",
+      "pitch_teacher",
+      "nonpitch_zero"
+    ],
+    "checkpoint_labels_updates": {
+      "final": 755,
+      "half": 705
+    },
+    "diagnostic_cells": 48,
+    "failure_pair_count": 12,
+    "failure_pairs": [
+      {
+        "checkpoint_label": "half",
+        "checkpoint_update": 705,
+        "configuration_id": "COM_CORNER_01",
+        "formal_cell_sha256": "5dd7a7d1bda12d56cfa354e8704876209d4b8ca7ab576183ce40f9c9dde31f90",
+        "plant": "P30_ALL_JOINT"
+      },
+      {
+        "checkpoint_label": "half",
+        "checkpoint_update": 705,
+        "configuration_id": "COM_CORNER_01",
+        "formal_cell_sha256": "9e0d070e99d3a12f88a925be5e5e2eb6b769d2b681a0c19e705f8c3945039c20",
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+      },
+      {
+        "checkpoint_label": "half",
+        "checkpoint_update": 705,
+        "configuration_id": "COM_CORNER_03",
+        "formal_cell_sha256": "df39a5e524ca28b2a1c9f1b457f7ad2aaba783e02c54dbf3f7d2a451bc85c048",
+        "plant": "P30_ALL_JOINT"
+      },
+      {
+        "checkpoint_label": "half",
+        "checkpoint_update": 705,
+        "configuration_id": "COM_CORNER_03",
+        "formal_cell_sha256": "dd4d9df052cdee9bea703484e99ba9bf80c6a36742534541d1ca96e5dcbdc9d6",
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+      },
+      {
+        "checkpoint_label": "final",
+        "checkpoint_update": 755,
+        "configuration_id": "COM_X_NEG",
+        "formal_cell_sha256": "a769d6001b5d7ba6dee32c3da14f0717751df1d1fc1fe9e3eb1b59856c45f12a",
+        "plant": "P30_ALL_JOINT"
+      },
+      {
+        "checkpoint_label": "final",
+        "checkpoint_update": 755,
+        "configuration_id": "COM_X_NEG",
+        "formal_cell_sha256": "8167d5c55d5d56470017fcdcd8b1d7ddbf15687cc87df408d7f21eeb9a2cd798",
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+      },
+      {
+        "checkpoint_label": "final",
+        "checkpoint_update": 755,
+        "configuration_id": "COM_CORNER_01",
+        "formal_cell_sha256": "581424be067fa4239cc8712f58d99606fe4e14553e9acb3c8f9909f7c23ed852",
+        "plant": "P30_ALL_JOINT"
+      },
+      {
+        "checkpoint_label": "final",
+        "checkpoint_update": 755,
+        "configuration_id": "COM_CORNER_01",
+        "formal_cell_sha256": "2db70f42d81ecdf27b64d288051a97869b92a3f0f136d439488c8a362fe3843b",
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+      },
+      {
+        "checkpoint_label": "final",
+        "checkpoint_update": 755,
+        "configuration_id": "COM_CORNER_03",
+        "formal_cell_sha256": "89c4cc74e9c26235914da4fbfd632cd2aebc6b7706d6b9899ec9b262753aeb29",
+        "plant": "P30_ALL_JOINT"
+      },
+      {
+        "checkpoint_label": "final",
+        "checkpoint_update": 755,
+        "configuration_id": "COM_CORNER_03",
+        "formal_cell_sha256": "0ecffecb189dd63fe24550d02c3e3aac9258c0a678e8ad6ce54cabc8142cbdd2",
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+      },
+      {
+        "checkpoint_label": "final",
+        "checkpoint_update": 755,
+        "configuration_id": "DISCOVERY_03",
+        "formal_cell_sha256": "15f66c99644915ee26002c71328ef9d7fcceeb93b439746d7372154f2d52ce42",
+        "plant": "P30_ALL_JOINT"
+      },
+      {
+        "checkpoint_label": "final",
+        "checkpoint_update": 755,
+        "configuration_id": "DISCOVERY_03",
+        "formal_cell_sha256": "1d2da732ab6d7e1c199609ea2953ba09fdd005ed53a2c1fe39ebc9d121f0b6ad",
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+      }
+    ],
+    "predictor_failure_recorded_but_not_modified": true,
+    "teacher_table": "the exact complete replay-bound table used by Winner-v80/v84",
+    "v85_result_sha256": "ea25f93a79157e0dac380d3c2f6d7ddf596ae4cfd1c951245cb4cb4b2ddcc4e4"
+  },
+  "schema_version": "winner_v86.residual_pitch_causal_preregistration.v1",
+  "source_manifest_sha256": "5474464931e37da692599bfd24b3f22d0dadf04a5bd4ca8f29f3cca8ea65b8bd",
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v86_residual_pitch_causal_preregistration.py",
+      "sha256": "56d549b29ede1139339a118b0c2228b6573581dede08eedd2e8d335d291776b3"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v86_residual_pitch_causal.py",
+      "sha256": "026ed77ad27ee83dad206c9a9effa62dfa4b63d6af2c43664dac1687b0fe018d"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v86_residual_pitch_causal.py",
+      "sha256": "59f74b15df5f022f682ee560a80d4925ba9744ee84821615cf2ccec3a17c19de"
+    },
+    "v48_intervention": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v48_static_teacher_causal_diagnostic.py",
+      "sha256": "892db8ce547e8a2ee74b9f2352201c8b6334a201fd8cbfdc38f849d65fbc00ac"
+    },
+    "v80_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v80_pitch_action_head_step_result.json",
+      "sha256": "21eb055fb302e816c00b285897c85ef5741b4fc4fe8e64ccb2d066204ed08cf9"
+    },
+    "v80c_builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v80c_action_boundary_check_correction.py",
+      "sha256": "48abb910399f50c6044a4f831408c62638cbbc7705aaa0e6dbeb7b01a9726cf7"
+    },
+    "v84_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v84_negative_gradient_pitch_head_continuation_result.json",
+      "sha256": "1a4f5da556c1d2cc64510da55f01136a157fd202ae22b5028b651396933e99ff"
+    },
+    "v85_builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v85_integrated_support_gate_preregistration.py",
+      "sha256": "ba96527dc77934420e3ab1adea704c1d0ac2a83966404b58b6e77b5f4e2a85fd"
+    },
+    "v85_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v85_integrated_support_gate_preregistration.json",
+      "sha256": "13b6e6c5f5d29253d33b80b65db8adb11015faecc51670610cc4d902a851c6ad"
+    },
+    "v85_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v85_integrated_support_gate_result.json",
+      "sha256": "e0323d1dedc24984cf6919724ccb1463ff8c2e43f89da3e5cd8ecb8349966518"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V86_RESIDUAL_PITCH_CAUSAL_DIAGNOSTIC"
+}
