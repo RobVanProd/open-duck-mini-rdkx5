@@ -2957,3 +2957,20 @@ Do not proceed to grounded walking until low-risk gates pass.
   this scale once, verify the changed/frozen leaves and export contract, then
   stop. See
   `outputs/analysis/WINNER_V44_STATIC_TARGET_TEACHER_SOURCE_GRADIENT_RESULT_20260722.md`.
+- 2026-07-22: One Winner-v45 one-update static-target-teacher CPU proof is
+  preregistered from Winner-v32 half at optimizer count `251`. It must
+  reproduce the exact 80-slot update-251 rollout dimensions and unchanged
+  Winner-v32 objective, attach only the 11 training-population teacher labels,
+  exclude `HELDOUT_04/07/09/15`, and apply the sole frozen Winner-v44 float32
+  scale `58.436370849609375`. Exactly one Adam update to count `252` is
+  authorized. Pass requires lower same-batch teacher MSE, all 12 trainable
+  leaves changed, every frozen parameter leaf bit-exact, exact snapshot
+  readback, and an unchanged stateful `115/14/64` hard-bounded ONNX ABI with no
+  teacher/configuration-table state. Cross-worker rollout byte hashes are
+  recorded but are not pass gates; exact source artifact bytes, dimensions,
+  masks, objective mechanics, and counts remain gates. The workflow performs
+  zero formal support cells, continuation-training updates, RDK-X5/robot
+  access, or motion. A pass may authorize only a separately frozen bounded
+  continuation preregistration; it cannot select a deployment checkpoint or
+  grant clearance. See
+  `outputs/analysis/WINNER_V45_STATIC_TARGET_TEACHER_ONE_UPDATE_CPU_CONTRACT_20260722.md`.
