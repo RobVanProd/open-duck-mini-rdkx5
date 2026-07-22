@@ -1,0 +1,132 @@
+{
+  "authority": {
+    "checkpoint_selection_authorized": false,
+    "continuation_authorized_now": false,
+    "deployment_authorized": false,
+    "gate5_authorized": false,
+    "one_step_proof_authorized": true,
+    "pass_authorizes_only": "preregistration of a bounded negative-gradient pitch-head continuation",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false,
+    "support_gate_authorized": false
+  },
+  "decision": "AUTHORIZE_EXACTLY_ONE_COUNT675_NEGATIVE_GRADIENT_STEP_PROOF",
+  "execution_now": {
+    "formal_support_cells": 0,
+    "locomotion_steps": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0
+  },
+  "pass_rule": {
+    "all_optimizer_m_and_v_elements_bit_exact": true,
+    "first_strict_descent_fraction_selected": true,
+    "only_pitch_action_head_parameter_elements_change": true,
+    "same_batch_predictor_loss_bit_exact": true,
+    "snapshot_digest_readback_exact": true,
+    "stateful_onnx_contract_exact": true,
+    "v82_geometry_bit_exact_reproduced": true
+  },
+  "schema_version": "winner_v83.count675_negative_gradient_step_preregistration.v1",
+  "source": {
+    "attribution_result_sha256": "5d7a3b646fa191b8c46c90173e08ef77177e8a5d06455a39273b5dbf415ebc37",
+    "episode_receipts_sha256": "055c3faeadbe0f40932ff0f946afaf2176d7caa3219e939cc2f1a23f6e986e86",
+    "optimizer_count": 674,
+    "snapshot": {
+      "bytes": 196031,
+      "completed_updates": 674,
+      "metadata_payload_sha256": "c1827066bbed2cb0ecf14870123c24d415a6b596a411d14c926867395ea8b50c",
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v81-pitch-action-head-continuation\\snapshots\\snapshot_pitch_action_head_update_674.npz",
+      "sha256": "bfcc8f4c3cc22e3259decafb2f5a557a55e94534a2464933d061b6facbe80057",
+      "state_payload_sha256": "cc35199c3dead86f20df306dce7d7f64df90728e34e6a33ba58f7cc843892e47"
+    },
+    "target_optimizer_count": 675
+  },
+  "source_manifest_sha256": "452b774b16ae4952dbf33870fad6c100af1a0f92fd479ef3c53c30cd7f4c9c4b",
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v83_count675_negative_gradient_step_preregistration.py",
+      "sha256": "1b576b5fe5f3b2eae132e0ddc34bf0b087b3abe6626b880c552fa30ea73986ef"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v83_count675_negative_gradient_step.py",
+      "sha256": "58c2b4fdef1bdced283cf91c100f778045139ff31541875b847dadfdb67ffc73"
+    },
+    "snapshot_abi": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v22_normalized_predictor_v2.py",
+      "sha256": "2f67394c0fc7f5cec14370d38a6a860a9c7bb2ce409e8578466b278c7c8c5b2a"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v83_count675_negative_gradient_step.py",
+      "sha256": "6aff28f5a926ec5d41e5e894e10b3af4ec41bfc06a226f091e466b340a7dfa37"
+    },
+    "v46_graph_receipt": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v46_static_target_teacher_training.py",
+      "sha256": "c2bfaec2298c8b97489278112d932c11fc5392fc3250da99ec3fc1379062c0d2"
+    },
+    "v81_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v81_pitch_action_head_continuation_result.json",
+      "sha256": "9b5b9950040023ec72e4276f9f487e546dac733d264313ae7ff6a06ec73054ca"
+    },
+    "v81_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v81_pitch_action_head_continuation.py",
+      "sha256": "7bdedcb448c262d85032c83ac0e213de106e7380b99960753f91fd1f745f9c07"
+    },
+    "v82_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v82_count675_direction_precision_attribution_preregistration.json",
+      "sha256": "0ad540b040a9b4bda50e0be9f3f2509dfef22a4716d4090b612c8f4e78522d5e"
+    },
+    "v82_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v82_count675_direction_precision_attribution_result.json",
+      "sha256": "980aaa72209e1e48d66ed73931a9482b8961f950b8023f19f8b484f6dd60fbc1"
+    },
+    "v82_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v82_count675_direction_precision_attribution.py",
+      "sha256": "02479e549b0f4cf84e32640b9d5c8cf212ba9e4c695b4e65a4fbce34fb207ce8"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V83_COUNT675_NEGATIVE_GRADIENT_STEP",
+  "step": {
+    "acceptance_rule": "first strict same-batch pitch-teacher-loss descent",
+    "attention_or_flat_transport_added": false,
+    "direction": "instantaneous negative projected pitch-teacher gradient",
+    "direction_l2_norm": "match the inherited Adam full parameter-delta L2 norm",
+    "expected_first_descent_fraction_from_read_only_attribution": 0.5,
+    "fractions_largest_first": [
+      1.0,
+      0.5,
+      0.25,
+      0.125,
+      0.0625,
+      0.03125,
+      0.015625,
+      0.0078125,
+      0.00390625,
+      0.001953125,
+      0.0009765625,
+      0.00048828125,
+      0.000244140625
+    ],
+    "mutable_parameter_slices": [
+      "action_weight[:, [2,3,4,11,12,13]]",
+      "action_bias[[2,3,4,11,12,13]]"
+    ],
+    "optimizer_count_transition": [
+      674,
+      675
+    ],
+    "optimizer_m_and_v_transition": "all elements bit-exact preserved",
+    "rollout_update_index": 674,
+    "snapshot_count": 1,
+    "stateful_onnx_count": 1
+  }
+}
