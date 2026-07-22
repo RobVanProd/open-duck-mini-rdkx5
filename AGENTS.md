@@ -3147,3 +3147,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   torque, or motion. A pass can authorize only a separate full-14D static-
   teacher mechanism preregistration; training and clearance remain false. See
   `outputs/analysis/WINNER_V48B_EVIDENCE_COMPARATOR_CORRECTION_PREREGISTRATION_20260722.md`.
+- 2026-07-22: The sole Winner-v48b captured-evidence audit is also formally
+  `INVALID`; preserve it rather than widening its preregistered tolerance. Its
+  maximum shared float64 diagnostic difference is
+  `1.7110757255522913e-12`, above the frozen `1e-12` bookkeeping limit. One
+  full-duration graph control (`final / COM_CORNER_02 / P30`) also differs only
+  in its observation hash while retaining the exact action, prediction, and
+  hidden hashes and the same full support outcome. All `28` graph-failing pairs
+  that define the causal classification retain all four exact trace hashes and
+  exact discrete outcomes. Result SHA-256:
+  `dc764b82...00df91c`. This invalid audit authorizes no policy interpretation,
+  training, deployment, or robot work. A separately frozen causal-population
+  scope audit, with no movable float tolerance and no new physics cells, is
+  required.
