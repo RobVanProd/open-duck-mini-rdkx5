@@ -4156,3 +4156,18 @@ Do not proceed to grounded walking until low-risk gates pass.
   optimizer update, support cell, checkpoint selection, deployment, Gate 5,
   RDK-X5/robot access, torque, motion, or clearance occurred. See
   `outputs/analysis/WINNER_V88_FLAT_TRANSPORT_REPRESENTATION_RESULT_20260722.md`.
+- 2026-07-22: Winner-v89 preregisters one zero-update teacher-gradient
+  transfer audit on the exact V84 half/final checkpoints. Each endpoint uses
+  the exact `12` teacher configurations in `12` leave-one-ID-out folds. For
+  every fold it computes the persistent six-pitch loss gradient on the other
+  `11` IDs and on the held-out ID, then measures float64
+  `dot(g_train, g_heldout)` separately over recurrent core, action head, and
+  their union. Positive dot means an infinitesimal negative training-gradient
+  step also descends heldout loss. A group is coherent only at `12/12`
+  positive folds; half has priority over final. Action-head-only coherence is
+  report-only because V87 already closed that route. Contract SHA-256:
+  `6a82ab9a...46e991ac`. This performs `48` gradient evaluations but no
+  optimizer step, parameter commit, snapshot, ONNX, support cell, checkpoint
+  selection, deployment, Gate 5, RDK-X5/robot access, torque, motion, or
+  clearance. See
+  `outputs/analysis/WINNER_V89_TEACHER_GRADIENT_TRANSFER_PREREGISTRATION_20260722.md`.
