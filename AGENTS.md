@@ -2920,3 +2920,21 @@ Do not proceed to grounded walking until low-risk gates pass.
   considered. Training, graph changes, checkpoint selection, runtime work,
   RDK-X5/robot access, Gate 5, deployment, and clearance remain unauthorized.
   See `outputs/analysis/WINNER_V43_STATIC_TARGET_TEACHER_ABI_CPU_RESULT_20260722.md`.
+- 2026-07-22: One zero-update Winner-v44 source-gradient CPU proof is
+  preregistered. The continuation source is Winner-v32 half at update 251,
+  selected only because it passed `99/124` identical Winner-v33 support cells
+  versus final's `94/124`; this is not deployment-checkpoint selection. The
+  proof reproduces its exact 80-slot update-251 rollout and complete existing
+  objective (PPO + normalized predictor at `380.9135437011719` + prefix anchor
+  at `197.3112030029297`), then measures the raw Winner-v43 teacher gradient.
+  Teacher labels cover only the 11 V42 configurations present in the training
+  population, exactly two plant rows each. `HELDOUT_04/07/09/15` labels are
+  explicitly excluded to prevent heldout leakage. A single scale is derived by
+  matching baseline and teacher gradient RMS over the same recurrent-core and
+  action-head leaves; V43's diagnostic unit scale is not carried forward. The
+  default-off gradient and transition arrays must remain bit-exact, and no
+  action is replaced. Exactly one hosted CPU proof is authorized with zero
+  optimizer updates, formal support cells, locomotion training, graph exports,
+  RDK-X5, or robot work. A pass may authorize only a separately preregistered
+  one-update CPU proof using the recorded scale. See
+  `outputs/analysis/WINNER_V44_STATIC_TARGET_TEACHER_SOURCE_GRADIENT_CONTRACT_20260722.md`.

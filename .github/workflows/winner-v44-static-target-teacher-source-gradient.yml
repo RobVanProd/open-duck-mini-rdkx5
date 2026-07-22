@@ -1,0 +1,126 @@
+name: Winner v44 static target teacher source gradient
+
+on:
+  push:
+    branches:
+      - codex/winner-v4-response-contract
+    paths:
+      - outputs/analysis/winner_v44_static_target_teacher_source_gradient_contract.json
+      - outputs/analysis/WINNER_V44_STATIC_TARGET_TEACHER_SOURCE_GRADIENT_CONTRACT_20260722.md
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: winner-v44-static-target-teacher-source-gradient
+  cancel-in-progress: false
+
+jobs:
+  proof:
+    name: One zero-update CPU source-gradient proof
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Reject workflow reruns
+        run: test "${{ github.run_attempt }}" = "1"
+      - name: Checkout frozen source-gradient contract
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up exact Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12.13"
+      - name: Install exact CPU environment
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install \
+            "jax[cpu]==0.7.2" "jaxlib==0.7.2" "mujoco==3.9.0" \
+            "numpy==2.0.2" "onnx==1.22.0" "onnxruntime==1.27.0" "pytest==8.4.2"
+      - name: Verify frozen source-gradient package
+        run: |
+          python -m pytest -q \
+            tests/test_winner_v43_static_target_teacher.py \
+            tests/test_winner_v44_static_target_teacher_source_gradient_contract.py \
+            tests/test_winner_v44_static_target_teacher_source_gradient_preregistration.py \
+            tests/test_winner_v44_static_target_teacher_source_gradient_import.py
+      - name: Resolve exact source artifacts and verify manifest
+        id: inputs
+        shell: bash
+        run: |
+          python - <<'PY' >>"$GITHUB_OUTPUT"
+          import hashlib, json
+          from pathlib import Path
+          value=json.loads(Path("outputs/analysis/winner_v44_static_target_teacher_source_gradient_contract.json").read_text())
+          if value["status"] != "PREREGISTERED_WINNER_V44_STATIC_TARGET_TEACHER_SOURCE_GRADIENT_CONTRACT" or any(value["execution_now"].values()):
+              raise SystemExit("Winner-v44 authority changed")
+          sources=value["sources"]
+          for name,item in sources.items():
+              observed=hashlib.sha256(Path(item["path"]).read_bytes().replace(b"\r\n",b"\n")).hexdigest()
+              if item["hash_mode"] != "lf" or observed != item["sha256"]:
+                  raise SystemExit(f"Winner-v44 source changed: {name}")
+          canonical=hashlib.sha256(json.dumps(sources,sort_keys=True,separators=(",",":")).encode()).hexdigest()
+          if canonical != value["source_manifest_sha256"]:
+              raise SystemExit("Winner-v44 manifest changed")
+          v32=value["artifact_inputs"]["winner_v32"]["repository_attribution"]
+          v22=value["artifact_inputs"]["winner_v22"]["repository_attribution"]
+          for name,item in (("v32",v32),("v22",v22)):
+              if item["repository"] != "RobVanProd/open-duck-mini-rdkx5" or item["github_run_attempt"] != 1:
+                  raise SystemExit(f"Winner-v44 {name} attribution changed")
+          print(f"v32_run_id={v32['github_run_id']}")
+          print(f"v32_artifact_name={v32['github_artifact_name']}")
+          print(f"v22_run_id={v22['github_run_id']}")
+          print(f"v22_artifact_name={v22['github_artifact_name']}")
+          PY
+      - name: Download exact Winner-v32 source artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ steps.inputs.outputs.v32_artifact_name }}
+          path: /tmp/winner-v32-source
+          repository: RobVanProd/open-duck-mini-rdkx5
+          run-id: ${{ steps.inputs.outputs.v32_run_id }}
+          github-token: ${{ github.token }}
+      - name: Download exact Winner-v22 teacher artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ steps.inputs.outputs.v22_artifact_name }}
+          path: /tmp/winner-v22-teacher
+          repository: RobVanProd/open-duck-mini-rdkx5
+          run-id: ${{ steps.inputs.outputs.v22_run_id }}
+          github-token: ${{ github.token }}
+      - name: Prepare exact reviewed simulation environment
+        run: |
+          git clone --quiet https://github.com/RobVanProd/Open_Duck_Playground.git /tmp/playground-source
+          python tools/prepare_winner_v15_cpu_environment.py \
+            --source-repository /tmp/playground-source \
+            --output-root /tmp/pg115-v44-source-gradient \
+            --work-root /tmp/winner-v44-source-gradient-environment \
+            --fit-output /tmp/fixed_target_p30_actuator_fit_lf.json
+      - name: Run exactly one zero-update CPU source-gradient proof
+        run: |
+          python tools/run_winner_v44_static_target_teacher_source_gradient_contract.py \
+            --playground-root /tmp/pg115-v44-source-gradient \
+            --canonical-fit /tmp/fixed_target_p30_actuator_fit_lf.json \
+            --v32-training-work-root /tmp/winner-v32-source/winner-v32-prefix-anchor-training-work \
+            --v22-training-work-root /tmp/winner-v22-teacher/winner-v22-normalized-predictor-training-work \
+            --output /tmp/winner-v44-static-target-teacher-source-gradient-result.json \
+            --offline-cpu-only --source-gradient-proof-authorized
+      - name: Hash source-gradient result
+        if: always()
+        run: |
+          result=/tmp/winner-v44-static-target-teacher-source-gradient-result.json
+          if test -f "$result"; then
+            sha256sum "$result" | tee /tmp/winner-v44-static-target-teacher-source-gradient-result.sha256
+          fi
+      - name: Upload only source-gradient evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: winner-v44-static-target-teacher-source-gradient-${{ github.run_id }}
+          if-no-files-found: warn
+          retention-days: 14
+          compression-level: 6
+          path: |
+            /tmp/winner-v44-static-target-teacher-source-gradient-result.json
+            /tmp/winner-v44-static-target-teacher-source-gradient-result.sha256
