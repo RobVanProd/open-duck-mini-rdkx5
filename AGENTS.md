@@ -2499,3 +2499,17 @@ Do not proceed to grounded walking until low-risk gates pass.
   preregistration; it does not itself authorize training, checkpoint selection,
   runtime work, Gate 5, deployment, or clearance. See
   `outputs/analysis/WINNER_V30_PREFIX_RIGHT_PITCH_ANCHOR_ONE_UPDATE_CPU_CONTRACT_20260722.md`.
+- 2026-07-22: The sole first-attempt Winner-v30 run `29889578085` completed
+  one optimizer update and uploaded its result, count-201 snapshot, and ONNX,
+  but the frozen runner classified it HOLD because two cross-run byte-exact
+  replay checks failed. Every other check passed, including count `200 -> 201`,
+  all twelve nonzero gradients and leaf changes, same-batch anchor-loss
+  reduction, snapshot readback, and stateful ONNX validation. Do not rerun or
+  alter the artifact. A strict import-only correction is frozen for the exact
+  246,907-byte artifact ZIP SHA-256 `50533add...0fb86`; it changes no threshold
+  or result and authorizes no additional optimizer update. After unchanged
+  import, only a separately preregistered saved-result attribution may examine
+  whether cross-worker floating replay—not the update contract—caused the two
+  mismatches. Training, support evaluation, runtime work, RDK-X5, robot, Gate 5,
+  deployment, and clearance remain unauthorized. See
+  `outputs/analysis/WINNER_V30_ONE_UPDATE_HOLD_IMPORT_CORRECTION_20260722.md`.
