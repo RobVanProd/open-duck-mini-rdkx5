@@ -3420,3 +3420,17 @@ Do not proceed to grounded walking until low-risk gates pass.
   optimizer update, locomotion training, RDK-X5/robot access, torque, or motion
   and cannot select a checkpoint or grant clearance. See
   `outputs/analysis/WINNER_V54_RESIDUAL_TEACHER_CAUSAL_PREREGISTRATION_20260722.md`.
+- 2026-07-22: The sole Winner-v54 residual-teacher diagnostic passes all seven
+  formal checks. All `12` unchanged graph cells reproduce Winner-v53
+  bit-exactly and fail; the frozen full `14`-action teacher passes all `12`,
+  the pitch-only teacher passes `11`, and zeroing non-pitch outputs passes none.
+  The frozen classification is therefore `11` pitch-output-causal cells and
+  one pitch/non-pitch interaction at
+  `DISCOVERY_03 / P31_34_PITCH_WITH_P30_NONPITCH`; the teacher is sufficient
+  in every cell. Candidate-versus-teacher RMS averages `0.08516398383512673`
+  over pitch-chain actions and only `0.006177789539157603` over non-pitch
+  actions. Result SHA-256: `74d2e7f2...a3de2680`. This selects an audit of
+  early configuration identifiability before any new optimizer run; it does
+  not authorize coefficient tuning, continuation, checkpoint selection,
+  deployment, Gate 5, RDK-X5/robot access, torque, motion, or clearance. See
+  `outputs/analysis/WINNER_V54_RESIDUAL_TEACHER_CAUSAL_RESULT_20260722.md`.
