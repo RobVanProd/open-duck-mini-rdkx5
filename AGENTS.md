@@ -3136,3 +3136,14 @@ Do not proceed to grounded walking until low-risk gates pass.
   is authorized by this invalid result. Result SHA-256:
   `cc4ec3cb...756e31cc`. A separately frozen evidence-only comparator
   correction is required before interpreting the captured cells.
+- 2026-07-22: Winner-v48b preregisters that evidence-only correction with no
+  physics rerun. It requires all four float32 trace hashes to match exactly for
+  every one of the `32` graph cells; support outcomes, terminal ticks, checks,
+  contacts, valid-tick counts, state chaining, and hashes remain exact. Only
+  shared float64 terminal/summary diagnostics use absolute tolerance `1e-12`
+  with relative tolerance zero. This is a bookkeeping comparator, not a
+  behavior threshold. It audits the already captured `128` cells and executes
+  zero new cells, optimizer updates, locomotion steps, RDK-X5/robot access,
+  torque, or motion. A pass can authorize only a separate full-14D static-
+  teacher mechanism preregistration; training and clearance remain false. See
+  `outputs/analysis/WINNER_V48B_EVIDENCE_COMPARATOR_CORRECTION_PREREGISTRATION_20260722.md`.

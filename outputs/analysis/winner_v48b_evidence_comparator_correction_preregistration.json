@@ -1,0 +1,84 @@
+{
+  "authority": {
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false,
+    "training_authorized": false
+  },
+  "captured_findings_not_yet_promoted": {
+    "formal_failed_pairs": 28,
+    "full_teacher_support_pass_count": 32,
+    "pitch_nonpitch_interaction": 3,
+    "pitch_output_causal": 25
+  },
+  "decision": "AUTHORIZE_ONE_CAPTURED_EVIDENCE_AUDIT_ONLY",
+  "exact_correction": {
+    "cells_policy_checkpoint_plant_or_action_change": false,
+    "new_discrete_rule": "support outcome, terminal tick, validity checks, contacts, valid tick count, previous-action chaining, and string/hash evidence must match exactly",
+    "new_float64_rule": {
+      "absolute_tolerance": 1e-12,
+      "behavior_threshold_or_selection_change": false,
+      "relative_tolerance": 0.0,
+      "scope": "shared terminal and episode diagnostic leaves only"
+    },
+    "new_trace_rule": "all four float32 action, observation, prediction, and hidden trace SHA-256 values must match exactly for all 32 graph cells",
+    "old_comparator": "whole Python public-cell dictionary equality",
+    "rejected_values": "float64 MuJoCo terminal/summary diagnostics differing only below the frozen absolute bookkeeping tolerance"
+  },
+  "execution_now": {
+    "captured_cell_audits": 0,
+    "locomotion_steps": 0,
+    "new_diagnostic_cells": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0
+  },
+  "invalid_execution": {
+    "diagnostic_cells_already_executed": 128,
+    "failed_check": "all_graph_cells_bit_exact_to_v47b",
+    "other_validity_checks_passed": 6,
+    "rerun_authorized": false,
+    "v48_result_sha256": "cc4ec3cb64c60aa1b498da0286ecbdadac01f7f6344123893105830f756e31cc"
+  },
+  "pass_authorizes_only": "the captured causal classification and a separate full-14D teacher mechanism preregistration",
+  "pass_rule": {
+    "all_other_v48_validity_checks_remain_true": true,
+    "all_shared_float64_differences_at_most_1e_12": true,
+    "exact_128_captured_cells": true,
+    "exact_32_graph_discrete_outcomes": true,
+    "exact_32_graph_trace_hash_sets": true
+  },
+  "schema_version": "winner_v48b.evidence_comparator_correction_preregistration.v1",
+  "source_manifest_sha256": "0beac485ecc739d133fe097dbfdad547d165123668bd24705f74eadf597fd4a7",
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v48b_evidence_comparator_correction_preregistration.py",
+      "sha256": "276eea6197c803031119ae03d72f55a9cc237dc8bd33e379c3b3b75524fc4723"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v48b_evidence_comparator_correction.py",
+      "sha256": "1c7891cfc15b4913228170c62aa7efed26c8c9a942ea2490213a4e332c4dd824"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v48b_evidence_comparator_correction.py",
+      "sha256": "26be818e39910cb5a55ddb0250eb22af1e9b90d6ae4a9a73cd9186b833a5df3f"
+    },
+    "v47b_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v47b_support_gate_execution_correction_result.json",
+      "sha256": "3e0ebfb0560f65958054f1f5c91eff063f2744b40f9bcd698a8dc60ab163d30a"
+    },
+    "v48_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v48_static_teacher_causal_diagnostic_preregistration.json",
+      "sha256": "4c1edc9b9bbdee630a497ac293ae04029dc77f70696595fde611eacef70a79c1"
+    },
+    "v48_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v48_static_teacher_causal_diagnostic_result.json",
+      "sha256": "732e63e91037ba0409e0ad435ca80bdf455194a2d74ad2d364ca8834a5c34374"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V48B_EVIDENCE_COMPARATOR_CORRECTION"
+}
