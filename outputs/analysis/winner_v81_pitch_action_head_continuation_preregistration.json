@@ -1,0 +1,229 @@
+{
+  "authority": {
+    "checkpoint_selection_authorized": false,
+    "deployment_authorized": false,
+    "gate5_authorized": false,
+    "pass_authorizes_only": "the unchanged persistence gate for counts 705 and 755",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false,
+    "support_gate_authorized_now": false,
+    "training_authorized": true
+  },
+  "continuation": {
+    "acceptance_rule": "first strict same-batch pitch-teacher-loss descent",
+    "conditional_moment_reset": "only the two mutable moment slices, only after inherited-grid exhaustion with nonnegative teacher-gradient dot proposed delta",
+    "environments_per_update": 80,
+    "final_optimizer_count": 755,
+    "fractions_largest_first": [
+      1.0,
+      0.5,
+      0.25,
+      0.125,
+      0.0625,
+      0.03125,
+      0.015625,
+      0.0078125,
+      0.00390625,
+      0.001953125,
+      0.0009765625
+    ],
+    "half_optimizer_count": 705,
+    "mutable_parameter_slices": [
+      "action_weight[:, [2,3,4,11,12,13]]",
+      "action_bias[[2,3,4,11,12,13]]"
+    ],
+    "optimizer_updates": 99,
+    "persistent_checkpoints": [
+      705,
+      755
+    ],
+    "pitch_action_indices": [
+      2,
+      3,
+      4,
+      11,
+      12,
+      13
+    ],
+    "preserve_bit_exact": "all other parameter elements and optimizer moment elements",
+    "snapshot_every_accepted_update": true,
+    "source_optimizer_count": 656,
+    "ticks_per_environment": 250
+  },
+  "decision": "AUTHORIZE_ONE_99_UPDATE_PITCH_ACTION_HEAD_CONTINUATION_ONLY",
+  "execution_now": {
+    "formal_support_cells": 0,
+    "locomotion_steps": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0
+  },
+  "objective": {
+    "attention_or_flat_transport_added": false,
+    "coefficient_or_length_search": false,
+    "heldout_teacher_labels_forbidden": true,
+    "pitch_teacher_scale": 58.436370849609375,
+    "ppo_predictor_anchor_first_tick_gradient_scale": 0.0,
+    "supervised_action_indices": [
+      2,
+      3,
+      4,
+      11,
+      12,
+      13
+    ],
+    "teacher_configuration_ids": [
+      "COM_X_NEG",
+      "COM_CORNER_00",
+      "COM_CORNER_01",
+      "COM_CORNER_02",
+      "COM_CORNER_03",
+      "COM_CORNER_07",
+      "OPTIONAL_AGGREGATE_HEAVY_AFT",
+      "DISCOVERY_02",
+      "DISCOVERY_03",
+      "DISCOVERY_06",
+      "DISCOVERY_09",
+      "DISCOVERY_10"
+    ]
+  },
+  "pass_rule": {
+    "all_99_snapshots_digest_readback_exact": true,
+    "all_unselected_parameter_and_moment_elements_bit_exact": true,
+    "every_update_strict_same_batch_descent": true,
+    "exact_99_updates_657_through_755": true,
+    "half_and_final_stateful_onnx_contracts_exact": true,
+    "no_posthoc_length_coefficient_or_checkpoint_change": true,
+    "same_batch_predictor_loss_bit_exact_every_update": true
+  },
+  "schema_version": "winner_v81.pitch_action_head_continuation_preregistration.v1",
+  "source": {
+    "graph": {
+      "bytes": 54896,
+      "completed_updates": 656,
+      "contract": {
+        "abi_exact": true,
+        "all_chain_outputs_finite": true,
+        "all_initializers_finite": true,
+        "bytes": 54896,
+        "chain_ticks": 250,
+        "forbidden_training_or_privileged_tokens": [],
+        "initializer_count": 9,
+        "inputs": [
+          {
+            "name": "obs",
+            "shape": [
+              1,
+              115
+            ]
+          },
+          {
+            "name": "previous_action",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_in",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "jax_onnx_at_most_1e_7": true,
+        "jax_onnx_max_abs_error": 8.731149137020111e-11,
+        "outputs": [
+          {
+            "name": "calibration_actions",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "previous_action_out",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_out",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v80c-pitch-action-head-step\\graphs\\winner_v80_pitch_action_head_update_656.onnx",
+        "previous_action_out_equals_action_bit_exact": true,
+        "sha256": "38e9dd4886593c4e3a996ec74493748138295e9740098a9594020ed152249210",
+        "training_only_tensors_absent": true
+      },
+      "label": "proof",
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v80c-pitch-action-head-step\\graphs\\winner_v80_pitch_action_head_update_656.onnx",
+      "sha256": "38e9dd4886593c4e3a996ec74493748138295e9740098a9594020ed152249210",
+      "v46_forbidden_tokens_present": []
+    },
+    "optimizer_count": 656,
+    "snapshot": {
+      "bytes": 196195,
+      "completed_updates": 656,
+      "metadata_payload_sha256": "b5804cafa323dc4c188d022b0b8e64a1a8717d34f22f62eedd398bf857858d7b",
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v80c-pitch-action-head-step\\snapshots\\snapshot_pitch_action_head_update_656.npz",
+      "sha256": "6d0cbb20c0985ba2926471a6d5902d6f969ce2e82bb04471a3ddc308f183ce71",
+      "state_payload_sha256": "16ece5901d4bc79624c203a6ad5ef046817adbc172cd5908cc787adcef2bd6ca"
+    },
+    "v80_result_sha256": "7cff575bf948705bfd3b3d9c5a4867ce0a7611a5800f3b4051996446714181db"
+  },
+  "source_manifest_sha256": "29771087dd4ac824b036c04605368aaed409266f34cdd4a0316e3eceb7e22592",
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v81_pitch_action_head_continuation_preregistration.py",
+      "sha256": "edb45f4180c3c9b6fb91a1811157ee7a1bfc4a153a0864a7119ed13830b3f4a6"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v81_pitch_action_head_continuation.py",
+      "sha256": "7bdedcb448c262d85032c83ac0e213de106e7380b99960753f91fd1f745f9c07"
+    },
+    "snapshot_abi": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v22_normalized_predictor_v2.py",
+      "sha256": "2f67394c0fc7f5cec14370d38a6a860a9c7bb2ce409e8578466b278c7c8c5b2a"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v81_pitch_action_head_continuation.py",
+      "sha256": "31facdd5362b45b6d3dccf9629ca587311fc5204b602b20e2121a48f0c6bd6df"
+    },
+    "v46_graph_receipt": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v46_static_target_teacher_training.py",
+      "sha256": "c2bfaec2298c8b97489278112d932c11fc5392fc3250da99ec3fc1379062c0d2"
+    },
+    "v80_contract": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v80_pitch_action_head_step_contract.json",
+      "sha256": "d6635e44e649430f84d73eeb7e522ad1bd38f5ae16f0bb3fd5d70248562b1bf4"
+    },
+    "v80_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v80_pitch_action_head_step_result.json",
+      "sha256": "21eb055fb302e816c00b285897c85ef5741b4fc4fe8e64ccb2d066204ed08cf9"
+    },
+    "v80c_builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v80c_action_boundary_check_correction.py",
+      "sha256": "48abb910399f50c6044a4f831408c62638cbbc7705aaa0e6dbeb7b01a9726cf7"
+    },
+    "v80c_correction": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v80c_action_boundary_check_correction.json",
+      "sha256": "b7ecd61c13ab150bc9e90b5969f8a45b6da23dd5871e20e00e6b593373fd9e3f"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V81_PITCH_ACTION_HEAD_CONTINUATION"
+}
