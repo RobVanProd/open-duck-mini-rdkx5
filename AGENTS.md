@@ -3832,3 +3832,14 @@ Do not proceed to grounded walking until low-risk gates pass.
   or authority and authorizes no continuation, support cell, checkpoint,
   deployment, Gate 5, RDK-X5/robot access, torque, motion, or clearance. See
   `outputs/analysis/WINNER_V67B_SOURCE_DECISION_CORRECTION_20260722.md`.
+- 2026-07-22: The corrected Winner-v67b proof passes exactly one deterministic
+  backtracked-Adam step from optimizer count `574` to `575`. Largest-first
+  fractions reject `1` and `1/2`, then accept `1/4`; same-batch teacher loss
+  falls `0.0033518367 -> 0.0033518008`. The exact snapshot is
+  `c234bacd...ff26654b`; the non-selected stateful ONNX is
+  `a21a1c07...b71e331e` and passes ABI, JAX agreement, and previous-action
+  chaining. Result SHA-256: `90614ecf...442c6b66`. This authorizes only
+  preregistration of a bounded deterministic backtracked-Adam continuation.
+  No support cell, checkpoint selection, deployment, Gate 5, RDK-X5/robot
+  access, torque, motion, or clearance has occurred. See
+  `outputs/analysis/WINNER_V67_BACKTRACKED_ADAM_STEP_RESULT_20260722.md`.
