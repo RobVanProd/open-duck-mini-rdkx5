@@ -2257,3 +2257,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   authority check. No additional optimizer update or training is authorized
   until that unchanged ZIP passes strict corrected import. See
   `outputs/analysis/WINNER_V24_ONE_UPDATE_IMPORTER_PATH_CORRECTION_20260722.md`.
+- 2026-07-22: The path-corrected strict importer accepted the exact unchanged
+  run-`29881265608` ZIP and recorded
+  `PASS_WINNER_V24_BASELINE_ANCHORED_ONE_UPDATE_CPU_PROOF`. Optimizer count is
+  exactly `100 -> 101`; all twelve combined gradients are nonzero; all twelve
+  trainable leaves change; snapshot, optimizer, target-normalizer, and stateful
+  ONNX readback checks pass. The artifact ZIP SHA-256 is
+  `f3966403...0e7510fd`, snapshot SHA-256 is `ab3bbdfb...a3e94a3`, and ONNX
+  SHA-256 is `52a1d942...bebb48c`. Formal support, locomotion, and robot access
+  remain zero. This authorizes only a separately frozen baseline-anchored
+  training preregistration; it does not yet authorize the training run,
+  support gate, checkpoint selection, deployment, Gate 5, or robot access. See
+  `outputs/analysis/WINNER_V24_BASELINE_ANCHORED_ONE_UPDATE_CPU_RESULT_V2_20260722.md`.

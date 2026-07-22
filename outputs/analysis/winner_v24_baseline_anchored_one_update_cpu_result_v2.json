@@ -1,0 +1,289 @@
+{
+  "authority": {
+    "formal_support_gate_executed": false,
+    "manual_mass_com_inertia_measurements_required": false,
+    "pass_authorizes_only": "a separate frozen baseline-anchored training preregistration",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false,
+    "training_executed": false
+  },
+  "checks": {
+    "action_boundary_exact": true,
+    "all_12_combined_gradients_nonzero": true,
+    "all_12_trainable_leaves_changed": true,
+    "all_losses_metrics_parameters_optimizer_finite": true,
+    "analytic_delta_nonzero": true,
+    "default_off_batch_bit_exact": true,
+    "episode_receipts_exact": true,
+    "exact_80_episode_population": true,
+    "exactly_one_optimizer_update_100_to_101": true,
+    "failure_and_success_population_present": true,
+    "formal_support_locomotion_robot_zero": true,
+    "objective_locality_exact": true,
+    "onnx_abi_exact": true,
+    "onnx_jax_chain_at_most_1e_7": true,
+    "onnx_previous_action_chain_exact": true,
+    "onnx_training_only_tensors_absent": true,
+    "pitch_margin_reward_exact": true,
+    "sampled_hidden_replay_at_most_1e_6": true,
+    "snapshot_readback_exact": true,
+    "source_snapshot_and_optimizer_count_100_exact": true,
+    "source_state_unchanged_before_update": true,
+    "source_zero_update_result_exact": true,
+    "stored_successor_mask_exact_nonzero": true
+  },
+  "decision": "AUTHORIZE_SEPARATE_BASELINE_ANCHORED_TRAINING_PREREGISTRATION_ONLY",
+  "environment": {
+    "jax_backend": "cpu",
+    "jax_devices": [
+      "TFRT_CPU_0"
+    ]
+  },
+  "execution": {
+    "formal_support_cells": 0,
+    "locomotion_steps": 0,
+    "optimizer_updates": 1,
+    "robot_or_rdk_access": 0,
+    "rollout_episode_slots": 80
+  },
+  "failed_checks": [],
+  "graph": {
+    "bytes": 54896,
+    "contract": {
+      "abi_exact": true,
+      "all_chain_outputs_finite": true,
+      "all_initializers_finite": true,
+      "bytes": 54896,
+      "chain_ticks": 250,
+      "forbidden_training_or_privileged_tokens": [],
+      "initializer_count": 9,
+      "inputs": [
+        {
+          "name": "obs",
+          "shape": [
+            1,
+            115
+          ]
+        },
+        {
+          "name": "previous_action",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "name": "h_in",
+          "shape": [
+            1,
+            64
+          ]
+        }
+      ],
+      "jax_onnx_at_most_1e_7": true,
+      "jax_onnx_max_abs_error": 0.0,
+      "outputs": [
+        {
+          "name": "calibration_actions",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "name": "previous_action_out",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "name": "h_out",
+          "shape": [
+            1,
+            64
+          ]
+        }
+      ],
+      "path": "/tmp/winner-v24-baseline-anchored-one-update-work/winner_v24_baseline_anchored_update_101.onnx",
+      "previous_action_out_equals_action_bit_exact": true,
+      "sha256": "52a1d942549af34b0186fbc8524e8fc028bf9ec06d6d308f37b4b0963bebb48c",
+      "training_only_tensors_absent": true
+    },
+    "path": "/tmp/winner-v24-baseline-anchored-one-update-work/winner_v24_baseline_anchored_update_101.onnx",
+    "sha256": "52a1d942549af34b0186fbc8524e8fc028bf9ec06d6d308f37b4b0963bebb48c"
+  },
+  "objective": {
+    "advantage_operation": "add only the analytically propagated -250 terminal reward delta, then renormalize sampled advantages",
+    "anchor": "recorded baseline returns and rederived values",
+    "baseline_gae_reconstruction": false,
+    "failure_selector": "terminal.checks.roll_pitch is false",
+    "modified_batch_keys": [
+      "advantages",
+      "returns",
+      "rewards"
+    ],
+    "reads_hidden_configuration": false,
+    "roll_pitch_failure_penalty": -250.0,
+    "settled_success_bonus": 250.0,
+    "source_rollout_update_index": 100
+  },
+  "optimization": {
+    "all_finite": true,
+    "combined_gradient_max_abs": {
+      "action_bias": 0.995462954044342,
+      "action_weight": 0.8767377138137817,
+      "auxiliary_action_weight": 0.8743177652359009,
+      "auxiliary_bias": 8.366119384765625,
+      "auxiliary_hidden_weight": 7.403587341308594,
+      "hidden_bias": 0.8309686183929443,
+      "hidden_weight": 0.7350705862045288,
+      "obs_weight": 8.17962646484375,
+      "previous_action_weight": 0.08315154165029526,
+      "training_only_log_std": 0.022614892572164536,
+      "training_only_value_bias": 10.781593322753906,
+      "training_only_value_weight": 9.5469331741333
+    },
+    "combined_loss": 463.978759765625,
+    "leaf_max_abs_delta": {
+      "action_bias": 3.448117058724165e-05,
+      "action_weight": 7.798592559993267e-05,
+      "auxiliary_action_weight": 0.0002088099718093872,
+      "auxiliary_bias": 0.00015989207895472646,
+      "auxiliary_hidden_weight": 0.0002167932689189911,
+      "hidden_bias": 0.00020422600209712982,
+      "hidden_weight": 0.00022214092314243317,
+      "obs_weight": 0.0002201506868004799,
+      "previous_action_weight": 0.0002208128571510315,
+      "training_only_log_std": 6.389617919921875e-05,
+      "training_only_value_bias": 9.792577475309372e-05,
+      "training_only_value_weight": 0.00019640568643808365
+    },
+    "normalized_predictor_loss": 0.11871901154518127,
+    "optimizer_count_after": 101,
+    "optimizer_count_before": 100,
+    "ppo_loss": 418.757080078125,
+    "predictor_scale": 380.9135437011719,
+    "snapshot_readback_exact": true,
+    "source_state_unchanged_before_update": true,
+    "trainable_leaves": [
+      "obs_weight",
+      "previous_action_weight",
+      "hidden_weight",
+      "hidden_bias",
+      "action_weight",
+      "action_bias",
+      "training_only_log_std",
+      "training_only_value_weight",
+      "training_only_value_bias",
+      "auxiliary_hidden_weight",
+      "auxiliary_action_weight",
+      "auxiliary_bias"
+    ]
+  },
+  "repository_attribution": {
+    "artifact_zip_bytes": 244766,
+    "artifact_zip_sha256": "f39664030c24bd0ae8ed4b60982dc46ac3f3a2e7daba5ed2d0e4f30d0e7510fd",
+    "contract_lf_sha256": "099bebbc04cc641c268474c6e22376d18b93983c3a59a79d7755eb75619915a0",
+    "github_artifact_digest": "sha256:f39664030c24bd0ae8ed4b60982dc46ac3f3a2e7daba5ed2d0e4f30d0e7510fd",
+    "github_artifact_id": 8514874700,
+    "github_artifact_name": "winner-v24-baseline-anchored-one-update-29881265608",
+    "github_run_attempt": 1,
+    "github_run_head_sha": "8660d8fe9d176ad71999a029c7f1d3af63ed900d",
+    "github_run_id": 29881265608,
+    "graph_member_sha256": "52a1d942549af34b0186fbc8524e8fc028bf9ec06d6d308f37b4b0963bebb48c",
+    "importer_lf_sha256": "8643ebab647261f4bfe07a5b7020a4f1716d51591e5e684c970e08281e041d57",
+    "mechanics_lf_sha256": "50be218d889ff37c5c8b59f75caf385db94f5b984a9894d0921adf369910fcb3",
+    "raw_result_receipt_sha256": "9838bf26d5730637cee275f0f293fc3f3fae9fcd5a03afa60058c6ed592cf987",
+    "raw_result_sha256": "4736bf76d4402bd08645a5cbcb7cfd41bdab4d183ed05e36e27c77271b31e1b6",
+    "repository": "RobVanProd/open-duck-mini-rdkx5",
+    "runner_lf_sha256": "9852844b6efd630151720c9380b2ea017997bba3bd5b071bdf3139680207ce89",
+    "snapshot_member_sha256": "ab3bbdfb5f7906886589740de55a87480217524de43a53b742ea51596a3e94a3",
+    "workflow_lf_sha256": "cec08704ee235e5f2191308ad85399e5a192e7185ef7f281c59b333b9d4f1298"
+  },
+  "rollout": {
+    "action_boundary": {
+      "attempted_samples": 17447,
+      "jax_expected_sha256": "3ef01b1110f282033825b7d39bc9cf35122ebd0fb8e680e5d0f038c5918b449a",
+      "maximum_numpy_jax_error": 0.0,
+      "maximum_realized_numpy_error": 0.0,
+      "numpy_equals_jax_bit_exact": true,
+      "numpy_expected_sha256": "3ef01b1110f282033825b7d39bc9cf35122ebd0fb8e680e5d0f038c5918b449a",
+      "previous_action_sha256": "f03644465bf5f88a7784cd9659cde5ee0d5cbb83f1306cc14ae25b96eb9b8d1b",
+      "raw_sha256": "dba2c38cc7305743dbb058061843b4dce4ae9c2746a824383b49477f4d54ee35",
+      "realized_action_sha256": "3ef01b1110f282033825b7d39bc9cf35122ebd0fb8e680e5d0f038c5918b449a",
+      "realized_equals_numpy_bit_exact": true
+    },
+    "changed_batch_keys": [
+      "advantages",
+      "returns",
+      "rewards"
+    ],
+    "default_off_batch_bit_exact": true,
+    "episode_receipts_sha256": "f6c63987647893b55ddf0e11650b92ffcb2a3a931daa7d4a7a0b310f30a44336",
+    "episode_slots": 80,
+    "objective_evidence": {
+      "analytical_terminal_delta_max": 0.0,
+      "analytical_terminal_delta_min": -250.0,
+      "analytical_terminal_delta_nonzero_count": 447,
+      "analytical_terminal_delta_sha256": "cfe79716afa433dde1eef489e9827c514b7ecfa8bd682fab87be662fee8c1845",
+      "anchor": "recorded_baseline_returns_and_rederived_values",
+      "baseline_raw_advantages_sha256": "8929ee6c8ad87c586921409f5e10ee5dca4710ae0d9d106fc0a206b0b2ec362a",
+      "enabled": true,
+      "modified_batch_keys": [
+        "advantages",
+        "returns",
+        "rewards"
+      ],
+      "penalty": -250.0,
+      "roll_pitch_failure_count": 12,
+      "roll_pitch_failure_mask_sha256": "418eb2e94416ea63155a78b37e6eeb950966745b75edfee63b7f5734a5069d6c"
+    },
+    "objective_locality_exact": true,
+    "pitch_margin_reward": {
+      "all_penalties_in_unit_interval": true,
+      "all_rewards_nonnegative": true,
+      "nonzero_penalty_count": 10645,
+      "only_zero_or_settled_bonus": true,
+      "penalty_formula_bit_exact": true,
+      "penalty_max": 0.9903455376625061,
+      "penalty_min": 0.0,
+      "reward_formula_bit_exact": true,
+      "reward_max_without_terminal_bonus": 1.0,
+      "reward_min": 0.009654462337493896,
+      "settled_bonus_count": 22,
+      "valid_transition_count": 17435
+    },
+    "roll_pitch_failure_count": 12,
+    "sampled_count": 17447,
+    "sampled_hidden_replay_max_abs_error": 2.980232238769531e-07,
+    "settled_success_count": 22,
+    "stored_successor_mask_exact": true,
+    "stored_successor_transition_count": 17367,
+    "update_index": 100,
+    "valid_transition_count": 17435
+  },
+  "schema_version": "winner_v24.baseline_anchored_one_update_cpu_result.v1",
+  "snapshot": {
+    "bytes": 194957,
+    "completed_updates": 101,
+    "metadata_payload_sha256": "9051671ac9b918509fd422e33d6453766ae7c29869b41a7985bf8f021c9e2172",
+    "path": "/tmp/winner-v24-baseline-anchored-one-update-work/winner_v24_baseline_anchored_update_101.npz",
+    "sha256": "ab3bbdfb5f7906886589740de55a87480217524de43a53b742ea51596a3e94a3",
+    "state_payload_sha256": "f88c162f26624c92040c097280c40ae2250d95b103d00d2168768c42a84c8aee"
+  },
+  "source_snapshot": {
+    "bytes": 194808,
+    "completed_updates": 100,
+    "optimizer_count": 100,
+    "sha256": "ddc8c4b905bb9acac2d7d48c3e9c1f0c0ca0173a1ba21f375740b051bc48c806"
+  },
+  "sources": {
+    "contract_lf_sha256": "099bebbc04cc641c268474c6e22376d18b93983c3a59a79d7755eb75619915a0",
+    "mechanics_lf_sha256": "50be218d889ff37c5c8b59f75caf385db94f5b984a9894d0921adf369910fcb3",
+    "runner_lf_sha256": "9852844b6efd630151720c9380b2ea017997bba3bd5b071bdf3139680207ce89",
+    "v22_training_lf_sha256": "10bae5bb32f32cc90e222eb1d6644d97e2a0253baa6ad1a37fe06fde48cf11c1",
+    "zero_update_result_lf_sha256": "5db35926af0109f7aa41b862d8a308472492005facc53beabea5e3eda46b61b3"
+  },
+  "status": "PASS_WINNER_V24_BASELINE_ANCHORED_ONE_UPDATE_CPU_PROOF"
+}
