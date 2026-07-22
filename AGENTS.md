@@ -2440,3 +2440,17 @@ Do not proceed to grounded walking until low-risk gates pass.
   authorized. No action wrapper, objective, training, checkpoint selection,
   runtime, RDK-X5, robot, Gate 5, deployment, or clearance is authorized. See
   `outputs/analysis/WINNER_V28_PREFIX_JOINT_GROUP_CAUSAL_SCREEN_PREREGISTRATION_20260722.md`.
+- 2026-07-22: The sole first-attempt Winner-v28 prefix joint-group screen
+  passed on GitHub run `29887831090`; its original 272,475-byte ZIP exactly
+  matches GitHub SHA-256 `7d2f5719...479de7d`. All 240 prefix arms and 480
+  source-recovery/repeat rollouts passed. The unique frozen selection is
+  `RIGHT_PITCH_CHAIN` (right hip pitch, knee, ankle; action indices 11-13):
+  recovery rises from `.40 -> 1.00` at half and `.15 -> .95` at final, gains
+  `.60/.80`. Left pitch chain also helps (`.40/.70`) but is strictly weaker;
+  lateral and head groups fail the two-checkpoint selection rule.
+  Classification: `SINGLE_PREFIX_JOINT_GROUP_CAUSAL_LOCALIZATION`. This
+  authorizes only a separately preregistered CPU contract for an objective
+  targeting the selected early right-pitch-chain mechanism. It does not
+  authorize a runtime wrapper, training, checkpoint selection, RDK-X5, robot,
+  Gate 5, deployment, or clearance. See
+  `outputs/analysis/WINNER_V28_PREFIX_JOINT_GROUP_CAUSAL_SCREEN_RESULT_20260722.md`.
