@@ -3646,3 +3646,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   optimizer update, locomotion training, robot/RDK access, torque, or motion is
   authorized. See
   `outputs/analysis/WINNER_V61_INTEGRATED_SUPPORT_GATE_PREREGISTRATION_20260722.md`.
+- 2026-07-22: Winner-v61 executes the complete `248` main cells and `64`
+  heldout repeats. Half/final fail `11/13` main cells, exclusively on the
+  unchanged roll/pitch predicate; action chains, JAX/ONNX agreement,
+  repeatability, context separation, predictor advantage, contacts, height,
+  current, torque, and finite-state checks all pass. Result SHA-256:
+  `a238ea45...a5257255`. The fixed all-or-nothing persistence rule selects no
+  checkpoint, closes Winner-v60 as a deployment candidate, and leaves
+  `robot_clearance: false`. No retry, deployment, Gate 5, RDK-X5/robot access,
+  torque, or motion is authorized. See
+  `outputs/analysis/WINNER_V61_INTEGRATED_SUPPORT_GATE_RESULT_20260722.md`.
