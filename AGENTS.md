@@ -3067,3 +3067,27 @@ Do not proceed to grounded walking until low-risk gates pass.
   response-conditioned locomotion-training preregistration; it is not
   checkpoint selection, deployment, or robot clearance. See
   `outputs/analysis/WINNER_V47_STATIC_TARGET_TEACHER_SUPPORT_GATE_PREREGISTRATION_20260722.md`.
+- 2026-07-22: The first-attempt Winner-v47 workflow run `29914159165` failed
+  during package composition before checkpoint loading or any formal cell. All
+  checkout, dependency, source-manifest, Winner-v46 artifact, checkpoint-byte,
+  and environment-preparation steps passed. The unchanged Winner-v12 evaluator
+  then rejected the Winner-v47 manifest at `load_calibrator_design`: V47 named
+  the correct design source `calibrator_design`, while the reviewed loader
+  requires the provenance key `calibrator_design_preregistration`. The job
+  produced no result artifact and executed exactly zero support cells. Its
+  preserved 54,763-byte failed log has SHA-256
+  `db26d747...47ab1d5`. This is an execution-package failure, not a policy HOLD,
+  and the run is not retried or reclassified.
+- 2026-07-22: Winner-v47b preregisters one separately named first-attempt CPU
+  execution correction. Original V47 contract SHA-256 is
+  `4b2e2000...a1276132`; correction source-manifest SHA-256 is
+  `e0e8a438...318f4614`. The sole change routes the exact Winner-v12 full-
+  training preregistration into its unchanged calibrator-design provenance
+  loader. The exact Winner-v46 checkpoints, 124-cell/checkpoint population,
+  32 heldout repeats/checkpoint, thresholds, seeds, normalized-to-raw predictor
+  projection, both-checkpoint persistence rule, and no-closest-selection rule
+  are byte-for-byte inherited. No policy, checkpoint, gate, behavior, or
+  authority changes. One corrected CPU run is authorized; optimizer,
+  locomotion, RDK-X5/robot, Gate 5, deployment, and clearance remain zero or
+  false. See
+  `outputs/analysis/WINNER_V47B_SUPPORT_GATE_EXECUTION_CORRECTION_PREREGISTRATION_20260722.md`.
