@@ -3199,3 +3199,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   only a separately preregistered source-gradient CPU contract; training and
   clearance remain false. See
   `outputs/analysis/WINNER_V49_FULL_ACTION_TEACHER_ABI_CPU_CONTRACT_20260722.md`.
+- 2026-07-22: The sole Winner-v49 zero-update CPU ABI proof passes every check.
+  It selects exactly `105,000` valid action elements, matches the old raw and
+  graph-bounded targets bit-exactly, produces finite nonzero teacher gradients
+  on all `14` action indices, stops the target and previous-action paths, and
+  remains loss/gradient bit-exact when disabled. The algebraic full-action
+  scale is `136.35153198242188`, or `9.739395141601562` per element, and its
+  scaled pitch gradient differs from the old objective by exactly `0.0` when
+  non-pitch error is zero. Result SHA-256:
+  `9909e659...92856f9`. Decision: authorize only a separately preregistered
+  source-gradient CPU contract. No optimizer update, training, simulator
+  behavior, export, RDK-X5/robot access, torque, motion, deployment, checkpoint
+  selection, or clearance is authorized.
