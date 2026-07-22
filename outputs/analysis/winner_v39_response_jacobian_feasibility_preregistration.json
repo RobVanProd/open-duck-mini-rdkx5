@@ -1,0 +1,185 @@
+{
+  "authority": {
+    "pass_authorizes_only": "one separately frozen response-Jacobian teacher contract",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false,
+    "runtime_oracle_or_action_wrapper_authorized": false,
+    "training_authorized": false
+  },
+  "decision": "AUTHORIZE_ONE_CPU_ONLY_RESPONSE_JACOBIAN_COM_X_NEG_SCREEN",
+  "evidence_basis": {
+    "closed_family": "cold, warm-started, and mirrored stochastic CEM shooting did not yield a full-horizon teacher",
+    "new_family": "deterministic finite-difference local response inversion; no stochastic population, elite selection, CEM objective, or proposal state",
+    "v36_v37_v38_full_support_passes": [
+      0,
+      0,
+      0
+    ],
+    "v38_failure_check": "pitch-led roll_pitch only",
+    "v38_terminal_ticks": [
+      69,
+      161
+    ]
+  },
+  "execution_now": {
+    "locomotion_training_steps": 0,
+    "optimizer_updates": 0,
+    "response_jacobian_cells": 0,
+    "robot_or_rdk_access": 0
+  },
+  "interpretation": {
+    "hold": "Close this exact local response-Jacobian controller. Do not tune its finite difference scale, horizon, response coordinates, solver, or correction bound.",
+    "pass": "A bounded local response-Jacobian teacher exists at COM_X_NEG; authorize only a separate teacher-contract preregistration."
+  },
+  "pass_rule": {
+    "all_cells_use_nonzero_control": true,
+    "all_response_jacobians_full_row_rank": true,
+    "all_selected_actions_graph_bounded": true,
+    "both_plants_pass_full_250_tick_support_gate": true,
+    "closest_result_selection": false
+  },
+  "question": "Can deterministic local model-based feedback hold COM_X_NEG by measuring the exact eight-tick pitch/pitch-rate response Jacobian of the reviewed mirrored pitch coordinates and applying one minimum-norm correction per tick?",
+  "schema_version": "winner_v39.response_jacobian_feasibility_preregistration.v1",
+  "screen": {
+    "actuator_plants": [
+      "P30_ALL_JOINT",
+      "P31_34_PITCH_WITH_P30_NONPITCH"
+    ],
+    "configuration_ids": [
+      "COM_X_NEG"
+    ],
+    "constraints": "Every response rollout and selected action uses the exact graph action boundary and unchanged P30 or P31/34 actuator bridge.",
+    "control_dimensions": [
+      "hip_pitch_magnitude",
+      "knee",
+      "ankle"
+    ],
+    "controlled_action_indices": [
+      2,
+      3,
+      4,
+      11,
+      12,
+      13
+    ],
+    "correction_bound": "one finite-difference step per mirrored axis",
+    "duration_ticks": 250,
+    "expected_cells": 2,
+    "finite_difference_scale": "minimum paired graph action delta per mirrored axis",
+    "response_dimensions": [
+      "base_pitch_rad",
+      "body_pitch_rate_rad_s"
+    ],
+    "response_horizon_ticks": 8,
+    "solver": "numpy.linalg.lstsq(rcond=None), minimum-norm correction"
+  },
+  "source_manifest_sha256": "19d6adc864249c3c815b4bb89bee485b560407d9f5e6f1473075204f424f6930",
+  "source_result": {
+    "repository_attribution": {
+      "artifact_zip_bytes": 251940,
+      "artifact_zip_sha256": "25d3e19cf67d65f3bbb42480a37676e40c6d80fcd46139bc6c6d8829985abb0c",
+      "github_artifact_digest": "sha256:25d3e19cf67d65f3bbb42480a37676e40c6d80fcd46139bc6c6d8829985abb0c",
+      "github_artifact_id": 8521342177,
+      "github_artifact_name": "winner-v38-mirrored-pitch-shooting-feasibility-29899217913",
+      "github_run_attempt": 1,
+      "github_run_head_sha": "1a6bad6ace6759aacce6e781bb7895fb9cb312ed",
+      "github_run_id": 29899217913,
+      "importer_lf_sha256": "300e6076807cc40631c313e25719cf467e696c9991c29c579491a3b93bbe2cf7",
+      "preregistration_lf_sha256": "a6872e4010a531efd824513eaff554d6190da768dd57144eeecb761d91bd26a4",
+      "raw_result_receipt_sha256": "535d09b41a452a02b99ff3c2ffbc8c9df2b028cb31c0a90ca4a3086e97718bae",
+      "raw_result_sha256": "30540c829520aa27878d5d1aa226ac8f9384933ffce9fa68e18e946ccc5ac8fa",
+      "repository": "RobVanProd/open-duck-mini-rdkx5",
+      "runner_lf_sha256": "25fe019e34669736a2c4a095d2534b24489ec5609cf2d73ff408aabfe749b94a",
+      "workflow_lf_sha256": "aa62248eac92e65ac2df878dc605d75b18410ae2f14f6b75f0da0b347f0495e7"
+    },
+    "winner_v38_result_lf_sha256": "28eae675975392e9eaf6219b76fe03197a175b2be4196afbff261fe386c41c83"
+  },
+  "sources": {
+    "base_gate_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_support_gate.py",
+      "sha256": "18873eee55c77a278fc065de64c0b912803bf29b4440cde7f3adaabe1297baca"
+    },
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v39_response_jacobian_feasibility_preregistration.py",
+      "sha256": "78ab3d92ee6456fba93b85aaf8de9a38ae68c076d1d09bd5d9d17434433ec307"
+    },
+    "calibrator_design": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_calibrator_training_preregistration.json",
+      "sha256": "1ec76a587c6fa50b92866c1632a7046ae0c6687ed17b1636b664bf45c2e8ba34"
+    },
+    "canonical_p30_fit": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/fixed_target_p30_actuator_fit_20260712.json",
+      "sha256": "908ddb01e5d82e661d77b8f3cb186a84665695660b86b304c6d1ae89c79cdb0b"
+    },
+    "configuration_domain": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v3_variable_configuration_replacement_preregistration.json",
+      "sha256": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b"
+    },
+    "cpu_smoke": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_cpu_smoke.py",
+      "sha256": "b6ad53430f3f7cca3a91a90f72dab585cb05e3e2f74be2241af3fd9b6ee7ce87"
+    },
+    "environment_preparation": {
+      "hash_mode": "lf",
+      "path": "tools/prepare_winner_v15_cpu_environment.py",
+      "sha256": "33e54c3a16d5684e2d2520270acf25a28df42dc89e9f302c1ef3bd5f37d867c2"
+    },
+    "preregistration_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v39_response_jacobian_feasibility_preregistration.py",
+      "sha256": "e02d0fcf7a339fdc3e7e1c2e2fbe8eedc59b0382d601198ba6440f51a5e8a212"
+    },
+    "result_importer": {
+      "hash_mode": "lf",
+      "path": "tools/import_winner_v39_response_jacobian_feasibility.py",
+      "sha256": "773001aad7c24b8fe5c7c8b45df301354a565b3c7390a9a1c218a074872494bd"
+    },
+    "result_importer_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v39_response_jacobian_feasibility_import.py",
+      "sha256": "b8ff66d50d8c527a88398926ea3199dcac391b72d8f42161cef2d8aa58a8c848"
+    },
+    "reviewed_mirror_basis": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v16_support_action_direction.py",
+      "sha256": "1b34b8d26743904e005d844e5f7e07e53f78a555a8a99f0035d3f0a778352c33"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v39_response_jacobian_feasibility.py",
+      "sha256": "a42472d93c7e5eb97c3a67bc3e711e6c71f8b172d0009d644cebf4f452f8dc1b"
+    },
+    "runner_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v39_response_jacobian_feasibility.py",
+      "sha256": "86fb2a74bd30dffb8fecadc93109638404eece2d68b013e5b28185aec9554754"
+    },
+    "runtime_observer": {
+      "hash_mode": "lf",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/observer/winner_v2_contract.py",
+      "sha256": "5c90994a24aa223c94f3a51927228e97000f6118c927561a87a3f2684dcf4889"
+    },
+    "winner_v38_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v38_mirrored_pitch_shooting_feasibility_result.json",
+      "sha256": "28eae675975392e9eaf6219b76fe03197a175b2be4196afbff261fe386c41c83"
+    },
+    "winner_v38_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v38_mirrored_pitch_shooting_feasibility.py",
+      "sha256": "25fe019e34669736a2c4a095d2534b24489ec5609cf2d73ff408aabfe749b94a"
+    },
+    "workflow": {
+      "hash_mode": "lf",
+      "path": ".github/workflows/winner-v39-response-jacobian-feasibility.yml",
+      "sha256": "ac965e45a30864777d33b121c5d00d587f5f4093d56f0ec1e773d3f10002d31a"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V39_RESPONSE_JACOBIAN_FEASIBILITY"
+}

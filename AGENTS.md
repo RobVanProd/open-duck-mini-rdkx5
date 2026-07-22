@@ -2738,3 +2738,20 @@ Do not proceed to grounded walking until low-risk gates pass.
   population, objective, covariance, or add another axis to this route. No
   checkpoint is selected and robot clearance remains false. See
   `outputs/analysis/WINNER_V38_MIRRORED_PITCH_SHOOTING_FEASIBILITY_RESULT_20260722.md`.
+- 2026-07-22: One zero-update Winner-v39 response-Jacobian feasibility screen
+  is preregistered for only the two `COM_X_NEG` actuator-plant cells. At every
+  real tick it snapshots the exact simulator state, starts from the projected
+  previous action in the reviewed three-coordinate mirrored pitch basis, and
+  measures the eight-tick signed pitch/pitch-rate response to plus/minus one
+  minimum paired graph-action delta on each axis. It solves one deterministic
+  minimum-norm `numpy.linalg.lstsq(rcond=None)` correction, clips each axis to
+  that same finite-difference step, applies only the first graph-bounded tick,
+  and relinearizes. Both plants must pass all 250 ticks, every Jacobian must
+  retain full row rank, and closest-result selection is forbidden. Exactly one
+  formal CPU-only screen is authorized with zero optimizer updates, locomotion
+  training, RDK-X5, or robot work. A pass may authorize only a separately
+  frozen teacher contract; a hold closes this exact local controller without
+  tuning the response, perturbation, horizon, solver, or correction bound. It
+  is not a runtime wrapper, checkpoint selection, Gate 5 authorization, or
+  robot clearance. See
+  `outputs/analysis/WINNER_V39_RESPONSE_JACOBIAN_FEASIBILITY_PREREGISTRATION_20260722.md`.
