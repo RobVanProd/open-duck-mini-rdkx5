@@ -3185,3 +3185,17 @@ Do not proceed to grounded walking until low-risk gates pass.
   access, torque, motion, deployment, or clearance is authorized by this
   audit. See
   `outputs/analysis/WINNER_V48C_CAUSAL_POPULATION_SCOPE_RESULT_20260722.md`.
+- 2026-07-22: Winner-v49 preregisters the evidence-selected full-action static-
+  teacher ABI. It keeps the exact Winner-v42 raw and graph-bounded targets but
+  expands supervision from the old pitch indices `[2,3,4,11,12,13]` to all
+  `14` actions, including the eight causally required zero non-pitch targets.
+  The scale is algebraic, not tuned: `58.436370849609375 * 14 / 6 =
+  136.35153198242188`, making float32 scale-per-element bit-exact to the old
+  pitch objective. The zero-update CPU proof must select exactly `105,000`
+  valid elements, preserve the old scaled pitch gradient when non-pitch error
+  is zero, add gradients on all eight non-pitch elements when they differ, and
+  remain bit-exact when disabled. It executes no optimizer, simulator,
+  locomotion, export, RDK-X5/robot, torque, or motion work. A pass authorizes
+  only a separately preregistered source-gradient CPU contract; training and
+  clearance remain false. See
+  `outputs/analysis/WINNER_V49_FULL_ACTION_TEACHER_ABI_CPU_CONTRACT_20260722.md`.
