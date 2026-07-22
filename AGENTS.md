@@ -3988,3 +3988,14 @@ Do not proceed to grounded walking until low-risk gates pass.
   selection, deployment, Gate 5, RDK-X5/robot access, torque, motion, or
   clearance. See
   `outputs/analysis/WINNER_V78_MISSING_TEACHER_EXTENSION_RESULT_20260722.md`.
+- 2026-07-22: With complete replay-bound teacher coverage, Winner-v79 runs the
+  exact nine final Winner-v76 failures under four read-only arms. The unchanged
+  graph fails `0/9`; full-teacher and pitch-only teacher each rescue `9/9`;
+  non-pitch suppression rescues `0/9`. Every pair is therefore classified
+  `pitch_output_causal`. Previous-action chains, JAX/ONNX hidden agreement,
+  finite values, and bit-exact reproduction of the formal graph failures all
+  pass. Result SHA-256: `8e3effb6...87c3ebaf`. This selects only a separately
+  preregistered pitch-output correction mechanism. It performs zero optimizer
+  or locomotion steps and grants no checkpoint selection, deployment, Gate 5,
+  RDK-X5/robot access, torque, motion, or clearance. See
+  `outputs/analysis/WINNER_V79_COMPLETE_RESIDUAL_TEACHER_CAUSAL_RESULT_20260722.md`.
