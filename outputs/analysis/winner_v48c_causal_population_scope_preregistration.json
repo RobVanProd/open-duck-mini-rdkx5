@@ -1,0 +1,81 @@
+{
+  "authority": {
+    "pass_authorizes_only": "a separate full-14D static-teacher mechanism preregistration",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false,
+    "training_authorized": false
+  },
+  "decision": "AUTHORIZE_ONE_CAPTURED_CAUSAL_POPULATION_AUDIT_ONLY",
+  "execution_now": {
+    "captured_failure_pair_audits": 0,
+    "locomotion_steps": 0,
+    "new_diagnostic_cells": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0
+  },
+  "interpretation_rule": {
+    "pitch_nonpitch_interaction": "only the full 14-D teacher passes the failed pair",
+    "pitch_output_causal": "full teacher and pitch replacement pass while non-pitch-zero alone fails",
+    "selection": "if all 28 exact failure pairs are classified, full teacher is 32/32, and any interaction pair exists, authorize only a full-14D static-teacher mechanism preregistration"
+  },
+  "pass_rule": {
+    "all_four_trace_hashes_exact_for_each_failure_pair": true,
+    "all_non_comparator_v48_validity_checks_remain_true": true,
+    "exact_28_captured_classifications": true,
+    "exact_28_formal_failure_pairs": true,
+    "full_teacher_passes_all_32_captured_cells": true,
+    "support_outcome_terminal_tick_checks_contacts_and_valid_ticks_exact": true
+  },
+  "schema_version": "winner_v48c.causal_population_scope_preregistration.v1",
+  "scope": {
+    "captured_intervention_cells": 128,
+    "excluded_from_causal_claim": "the four full-duration graph control pairs that did not fail V47b",
+    "float_tolerance": null,
+    "new_physics_cells": 0,
+    "source_population": "the exact 28 checkpoint/configuration/plant pairs that failed the imported V47b graph support gate"
+  },
+  "source_manifest_sha256": "1ac20e24c0d95c8b05541882972f35cc7b77ed89729f924f6c70eae4b9d75d50",
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v48c_causal_population_scope_preregistration.py",
+      "sha256": "fda6c1ea345d1006c7d197a60f92df0ff79cbb001195fd8eafedc9c6081fcc4b"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v48c_causal_population_scope.py",
+      "sha256": "fcf1d968dd87074907dc83f4a6e865cb49f14472d2d6a212f9c5b77bc61f7637"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v48c_causal_population_scope.py",
+      "sha256": "368192f996f9ee5bf7f26f6f8f685434e0c022ac4a561daa485f2fc50946fc28"
+    },
+    "v47b_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v47b_support_gate_execution_correction_result.json",
+      "sha256": "3e0ebfb0560f65958054f1f5c91eff063f2744b40f9bcd698a8dc60ab163d30a"
+    },
+    "v48_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v48_static_teacher_causal_diagnostic_preregistration.json",
+      "sha256": "4c1edc9b9bbdee630a497ac293ae04029dc77f70696595fde611eacef70a79c1"
+    },
+    "v48_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v48_static_teacher_causal_diagnostic_result.json",
+      "sha256": "732e63e91037ba0409e0ad435ca80bdf455194a2d74ad2d364ca8834a5c34374"
+    },
+    "v48b_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v48b_evidence_comparator_correction_preregistration.json",
+      "sha256": "d5b8c294293348e580a2c3fdd4d69bb4f082abfad02810a90b40b5a9db8d8f9d"
+    },
+    "v48b_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v48b_evidence_comparator_correction_invalid_result.json",
+      "sha256": "c779cae54eeb9059017b00f8e48368bfdfd8c3e813b1d9650e69ef82cce2f568"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V48C_CAUSAL_POPULATION_SCOPE_AUDIT"
+}

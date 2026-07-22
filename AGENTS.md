@@ -3160,3 +3160,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   training, deployment, or robot work. A separately frozen causal-population
   scope audit, with no movable float tolerance and no new physics cells, is
   required.
+- 2026-07-22: Winner-v48c preregisters a no-tolerance scope audit over only the
+  exact `28` V47b graph-failing checkpoint/configuration/plant pairs that
+  define the causal claim. Every such pair must retain all four exact trace
+  hashes plus exact support outcome, terminal tick, validity checks, contacts,
+  valid-tick count, and previous-action chain. The four full-duration graph
+  pairs that formally passed are controls and are not used to prove failure
+  causality. The audit reads the already captured `128` intervention cells,
+  executes zero new physics cells, and cannot move any float tolerance. A pass
+  with any pitch/non-pitch interaction can authorize only a separate full-14D
+  static-teacher mechanism preregistration. Training, RDK-X5/robot access,
+  torque, motion, deployment, and clearance remain false. See
+  `outputs/analysis/WINNER_V48C_CAUSAL_POPULATION_SCOPE_PREREGISTRATION_20260722.md`.
