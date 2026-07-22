@@ -2355,3 +2355,17 @@ Do not proceed to grounded walking until low-risk gates pass.
   is authorized. Optimizer updates, locomotion, checkpoint selection, runtime,
   RDK-X5, robot, Gate 5, deployment, and clearance remain unauthorized. See
   `outputs/analysis/WINNER_V25_DIRECTIONAL_SUPPORT_CONTROL_DIAGNOSTIC_PREREGISTRATION_20260722.md`.
+- 2026-07-22: The sole first-attempt Winner-v25 directional diagnostic passed
+  on GitHub run `29885694381`; its original 430,165-byte ZIP exactly matches
+  GitHub SHA-256 `131cc002...db33e9`. All 800 candidate fork points and 1,600
+  five-tick rollouts completed, every source clone repeat was bit-exact, and
+  both candidates changed the action on 400/400 forks. Winner-v24 half was
+  locally destabilizing on 70% of forks with median absolute-pitch delta
+  `+0.00017136947` rad, below the frozen 75% rule; final was destabilizing on
+  9% with median delta `-0.00063347965` rad. Classification:
+  `NO_DOMINANT_SAME_STATE_LOCAL_DESTABILIZATION`. This rejects a five-tick
+  direct-action explanation and authorizes only a separately preregistered
+  longer-horizon recurrent-credit diagnostic. It does not authorize an
+  objective change, training, checkpoint selection, runtime, RDK-X5, robot,
+  Gate 5, deployment, or clearance. See
+  `outputs/analysis/WINNER_V25_DIRECTIONAL_SUPPORT_CONTROL_DIAGNOSTIC_RESULT_20260722.md`.
