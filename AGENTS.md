@@ -3361,3 +3361,18 @@ Do not proceed to grounded walking until low-risk gates pass.
   RDK-X5/robot access, torque, or motion is authorized. A pass authorizes only
   a separate half/final support-gate preregistration. See
   `outputs/analysis/WINNER_V52_FULL_ACTION_TEACHER_TRAINING_PREREGISTRATION_20260722.md`.
+- 2026-07-22: The sole Winner-v52 continuation passes all `22` checks after
+  exactly `100` optimizer updates (`354` through `453`) and `2,000,000`
+  scheduled episode slots on CPU. Every update selected the exact `22` frozen
+  teacher rows, supervised all `14` actions over its valid transitions,
+  excluded held-out labels, remained finite, preserved every action-boundary,
+  transition, hidden-replay, and frozen-leaf invariant, and wrote one verified
+  atomic snapshot. The count-`403` half graph SHA-256 is
+  `9bd297d6...60ca23d`; the count-`453` final graph SHA-256 is
+  `b710e8c1...b53b618b`. Both expose the exact stateful `115+14+64 ->
+  14+14+64` ABI, pass a 250-tick chain, and agree with JAX within
+  `8.731149137020111e-11`. Result SHA-256: `a964b30f...38b208b3`.
+  Neither checkpoint is selected by this training result. It authorizes only
+  preregistration of the unchanged half/final support gate and grants no robot
+  clearance, deployment, X5/robot access, torque, or motion. See
+  `outputs/analysis/WINNER_V52_FULL_ACTION_TEACHER_TRAINING_RESULT_20260722.md`.
