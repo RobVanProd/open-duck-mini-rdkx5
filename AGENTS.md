@@ -3929,3 +3929,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   update, support cell, checkpoint selection, deployment, Gate 5, RDK-X5/robot
   access, torque, motion, or clearance occurred. See
   `outputs/analysis/WINNER_V71B_FULL_LOSS_BINDING_CORRECTION_20260722.md`.
+- 2026-07-22: The corrected Winner-v71b continuation durably accepted counts
+  `603..637` and exported the frozen half endpoint at count `605`, then stopped
+  before count `638` because the sampled hidden replay error crossed the frozen
+  `2e-6` numeric guard. No count-`638` snapshot, final endpoint, or result was
+  written. The zero-update Winner-v73 replay isolates the sole failed invariant
+  as `3.7550926208496094e-6 > 2e-6`; all `18490` successor transitions, `384`
+  anchor elements, `22 / 59626` teacher rows/elements, and every gradient-
+  support predicate remain exact. Result SHA-256:
+  `7d3a0dd6...565b1a18`. This authorizes only a causal eager-versus-scan numeric
+  audit. It does not relax the threshold or authorize continuation, support,
+  checkpoint selection, deployment, Gate 5, RDK-X5/robot access, torque,
+  motion, or clearance. See
+  `outputs/analysis/WINNER_V73_UPDATE638_CONTRACT_ATTRIBUTION_RESULT_20260722.md`.
