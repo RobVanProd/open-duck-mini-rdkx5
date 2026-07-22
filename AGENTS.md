@@ -4115,3 +4115,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   ONNX, support cell, RDK-X5/robot access, torque, or motion occurred before
   the correction. See
   `outputs/analysis/WINNER_V87B_TEACHER_POPULATION_CORRECTION_20260722.md`.
+- 2026-07-22: Corrected Winner-v87 completes both exact endpoint audits and
+  rejects the frozen-hidden linear-head route. At half, source/full-fit/heldout
+  bounded pitch RMS is `0.090443 / 0.085178 / 0.124209`; at final it is
+  `0.094140 / 0.083779 / 0.121843`. Both `65`-column designs are full rank and
+  all `26` repeated least-squares fits are bit-exact. Thus a direct head fit
+  makes only a modest in-sample improvement and materially worsens
+  leave-one-configuration-out error at both endpoints. Result SHA-256:
+  `c54bbad3...f94298ac`. No source is selected for a fitted-head proof. The
+  only selected next work is a separately preregistered recurrent-
+  representation diagnostic. The audit writes no snapshot or ONNX, performs
+  zero optimizer updates/support cells, selects no checkpoint, and grants no
+  deployment, Gate 5, RDK-X5/robot access, torque, motion, or clearance. See
+  `outputs/analysis/WINNER_V87_PITCH_HEAD_LINEAR_FEASIBILITY_RESULT_20260722.md`.
