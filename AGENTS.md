@@ -2901,3 +2901,22 @@ Do not proceed to grounded walking until low-risk gates pass.
   preregistered zero-update source-gradient contract; it cannot train, select a
   checkpoint, change the runtime, or grant clearance. See
   `outputs/analysis/WINNER_V43_STATIC_TARGET_TEACHER_ABI_CPU_CONTRACT_20260722.md`.
+- 2026-07-22: The sole Winner-v43 run `29905544015` passed; its original
+  2,860-byte ZIP exactly matches GitHub SHA-256
+  `20b2e0a4...4166d539`. All 15 imported targets matched both Winner-v42 replay
+  hashes, the exact 30-row/250-tick teacher batch contained 45,000 valid pitch
+  elements, and the inherited inward boundary reached every selected raw
+  target. The raw teacher loss is `0.1167156175` in the synthetic proof, with
+  maximum raw/bounded target magnitude `0.75/0.75`. Teacher gradients are
+  finite and nonzero on all six reviewed pitch indices, exact zero on all
+  eight non-pitch indices, and exact zero through the stopped target/previous-
+  action path. Default-off loss and gradients are bit-exact to baseline; the
+  diagnostic unit-scale enabled path changes only pitch gradients.
+  Classification decision:
+  `AUTHORIZE_STATIC_TARGET_TEACHER_SOURCE_GRADIENT_CPU_CONTRACT_ONLY`. No unit
+  scale is selected for training. A separate zero-update source-rollout proof
+  must choose and bind the source checkpoint, measure the real teacher
+  gradient, and derive a single scale before an optimizer update can even be
+  considered. Training, graph changes, checkpoint selection, runtime work,
+  RDK-X5/robot access, Gate 5, deployment, and clearance remain unauthorized.
+  See `outputs/analysis/WINNER_V43_STATIC_TARGET_TEACHER_ABI_CPU_RESULT_20260722.md`.
