@@ -2582,3 +2582,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   conditioned locomotion-training design; it is not checkpoint selection or
   robot clearance. See
   `outputs/analysis/WINNER_V33_PREFIX_RIGHT_PITCH_ANCHOR_SUPPORT_GATE_PREREGISTRATION_20260722.md`.
+- 2026-07-22: The sole Winner-v33 gate run `29894528597` completed HOLD; its
+  original 254,300-byte ZIP exactly matches GitHub SHA-256
+  `9189e78d...9a6a9e0`. Both checkpoints, all 248 main cells, and all 64
+  heldout repeats were evaluated with exact graph/state chains and prediction
+  checks. Count 251 has 25 roll/pitch support failures and count 301 has 30.
+  The original V24 negative-X failure set remains, while count 251 additionally
+  fails `DISCOVERY_06`, `HELDOUT_07`, and one `HELDOUT_15` plant; count 301
+  additionally fails both plants for `OPTIONAL_AGGREGATE_HEAVY_AFT`,
+  `DISCOVERY_02/06`, `HELDOUT_07/15`. Thus the soft prefix anchor sharply
+  reduced its training MSE but did not repair closed-loop support and worsened
+  the unchanged gate. Decision: `DO_NOT_TRAIN_RESPONSE_CONDITIONED_LOCOMOTION`.
+  No checkpoint is selected and robot clearance remains false. See
+  `outputs/analysis/WINNER_V33_PREFIX_RIGHT_PITCH_ANCHOR_SUPPORT_GATE_RESULT_20260722.md`.
