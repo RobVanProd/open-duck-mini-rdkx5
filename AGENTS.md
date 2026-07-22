@@ -4073,3 +4073,17 @@ Do not proceed to grounded walking until low-risk gates pass.
   endpoint/plant failures. No deployment, Gate 5, RDK-X5/robot access, torque,
   or motion is authorized. See
   `outputs/analysis/WINNER_V85_INTEGRATED_SUPPORT_GATE_RESULT_20260722.md`.
+- 2026-07-22: Winner-v86 runs the exact twelve remaining Winner-v85
+  endpoint/configuration/plant failures under four read-only arms. The graph
+  and non-pitch-zero arms rescue `0/12`; full-teacher and pitch-only teacher
+  each rescue `12/12`. Every pair is therefore `pitch_output_causal`.
+  Previous-action chains, finite values, JAX/ONNX hidden agreement, and
+  bit-exact reproduction of the formal graph failures all pass. The graph's
+  post-first-tick pitch-action RMS disagreement from the successful teacher is
+  `0.1030442`. The frozen predictor remains worse than constant at both
+  endpoints/plants, but is not modified or selected as the locomotion cause.
+  Result SHA-256: `11225fed...3b10a8d5`. This selects only a separately
+  preregistered prospective pitch-output mechanism. It performs zero optimizer
+  or locomotion-training steps and grants no checkpoint selection, support,
+  deployment, Gate 5, RDK-X5/robot access, torque, motion, or clearance. See
+  `outputs/analysis/WINNER_V86_RESIDUAL_PITCH_CAUSAL_RESULT_20260722.md`.
