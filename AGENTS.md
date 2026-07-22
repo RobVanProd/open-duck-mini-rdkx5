@@ -3866,3 +3866,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   zero. The only selected next step is a zero-update count-`602` direction and
   plateau attribution. See
   `outputs/analysis/WINNER_V68_BACKTRACKED_ADAM_STOPPED_RESULT_20260722.md`.
+- 2026-07-22: Winner-v69 preregisters one zero-update count-`602`
+  attribution from the exact count-`601` snapshot. It must reproduce failure
+  of the original Adam grid, then measures fixed smaller Adam fractions through
+  `1/1024` and a norm-matched instantaneous negative teacher-gradient
+  direction. The frozen classification distinguishes stale-moment opposition,
+  descent below the old grid, a stalled Adam direction, and a float32 plateau.
+  Contract SHA-256: `106d0b40...9576757a`. No proposal is committed and no
+  coefficient, checkpoint, support, deployment, Gate 5, RDK-X5/robot access,
+  torque, motion, or clearance is authorized. See
+  `outputs/analysis/WINNER_V69_COUNT602_DIRECTION_ATTRIBUTION_PREREGISTRATION_20260722.md`.
