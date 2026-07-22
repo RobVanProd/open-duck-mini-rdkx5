@@ -1,0 +1,288 @@
+{
+  "authority": {
+    "checkpoint_selection_authorized": false,
+    "continuation_authorized_now": false,
+    "deployment_authorized": false,
+    "gate5_authorized": false,
+    "pass_authorizes_only": "one separately preregistered bounded pitch-head continuation",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false,
+    "support_gate_authorized": false
+  },
+  "decision": "AUTHORIZE_EXACTLY_ONE_PITCH_ACTION_HEAD_TEACHER_STEP",
+  "execution_now": {
+    "formal_support_cells": 0,
+    "locomotion_steps": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0
+  },
+  "objective": {
+    "attention_or_flat_transport_added": false,
+    "coefficient_or_length_search": false,
+    "heldout_teacher_labels_forbidden": true,
+    "per_selected_element_scale": 9.739395141601562,
+    "pitch_teacher_scale": 58.436370849609375,
+    "ppo_predictor_anchor_first_tick_gradient_scale": 0.0,
+    "supervised_action_indices": [
+      2,
+      3,
+      4,
+      11,
+      12,
+      13
+    ],
+    "teacher_configuration_ids": [
+      "COM_X_NEG",
+      "COM_CORNER_00",
+      "COM_CORNER_01",
+      "COM_CORNER_02",
+      "COM_CORNER_03",
+      "COM_CORNER_07",
+      "OPTIONAL_AGGREGATE_HEAVY_AFT",
+      "DISCOVERY_02",
+      "DISCOVERY_03",
+      "DISCOVERY_06",
+      "DISCOVERY_09",
+      "DISCOVERY_10"
+    ]
+  },
+  "pass_rule": {
+    "all_unselected_parameter_and_moment_elements_bit_exact": true,
+    "exact_12_training_teacher_configurations_each_two_plants": true,
+    "first_accepted_fraction_strictly_descends": true,
+    "no_heldout_teacher_label": true,
+    "projected_gradient_nonzero_only_on_two_allowed_slices": true,
+    "same_batch_predictor_loss_bit_exact": true,
+    "snapshot_readback_exact": true,
+    "stateful_onnx_contract_exact": true,
+    "unprojected_pitch_gradient_nonzero": true
+  },
+  "schema_version": "winner_v80.pitch_action_head_step_contract.v1",
+  "selection_evidence": {
+    "mechanism": "change only action_weight[:, pitch_indices] and action_bias[pitch_indices], preserving the recurrent representation, predictor, value head, distribution, and all non-pitch outputs",
+    "nine_of_nine_failures_pitch_output_causal": true,
+    "v76_final_predictor_regressed": true,
+    "v79_result_sha256": "8e3effb6bbe9a4e830efd4485cadb34446863eada581f6f4d78398c587c3ebaf"
+  },
+  "source_checkpoint": {
+    "completed_updates": 655,
+    "graph": {
+      "bytes": 54896,
+      "completed_updates": 655,
+      "contract": {
+        "abi_exact": true,
+        "all_chain_outputs_finite": true,
+        "all_initializers_finite": true,
+        "bytes": 54896,
+        "chain_ticks": 250,
+        "forbidden_training_or_privileged_tokens": [],
+        "initializer_count": 9,
+        "inputs": [
+          {
+            "name": "obs",
+            "shape": [
+              1,
+              115
+            ]
+          },
+          {
+            "name": "previous_action",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_in",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "jax_onnx_at_most_1e_7": true,
+        "jax_onnx_max_abs_error": 8.731149137020111e-11,
+        "outputs": [
+          {
+            "name": "calibration_actions",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "previous_action_out",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_out",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v75c-functional-numeric-guard-continuation\\graphs\\winner_v71_final.onnx",
+        "previous_action_out_equals_action_bit_exact": true,
+        "sha256": "abd438a70904d9fc117bd04520a7ea7555f310a2f0c5259027af0ee6752f9add",
+        "training_only_tensors_absent": true
+      },
+      "label": "final",
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v75c-functional-numeric-guard-continuation\\graphs\\winner_v71_final.onnx",
+      "sha256": "abd438a70904d9fc117bd04520a7ea7555f310a2f0c5259027af0ee6752f9add",
+      "v46_forbidden_tokens_present": []
+    },
+    "snapshot": {
+      "bytes": 195874,
+      "completed_updates": 655,
+      "metadata_payload_sha256": "4edbc5efc665d6f5d28e17747d1b6e79487281dc9179090911ca95ce4990010f",
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v75c-functional-numeric-guard-continuation\\snapshots\\snapshot_fresh_moment_safeguarded_update_655.npz",
+      "sha256": "00a68b8c0f08996afa770cd84218574872851e613cbb8441caa66af84ece73c6",
+      "state_payload_sha256": "82c174fffd41e91c0dfa3e713d0ea98a101927023946536300be3af6dcccc907"
+    }
+  },
+  "source_manifest_sha256": "733bccebffbe5c2def657f6a87d14457321b3a4dff7068289d5d548752b8b4b9",
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v80_pitch_action_head_step_contract.py",
+      "sha256": "9a9ae8bfac048e7bf4992688ebf0277179f7a35003b21f2c67599a80a4b68ca7"
+    },
+    "configuration_domain": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v3_variable_configuration_replacement_preregistration.json",
+      "sha256": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b"
+    },
+    "full_training_design": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_full_calibrator_training_preregistration.json",
+      "sha256": "99500648d6683097a13f894b0949bf4b5494e5653f36878710817bd0952f71dd"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v80_pitch_action_head_step.py",
+      "sha256": "1666e7194a9615c9bad0850db21cef2218edb72cb328a7bdffd3ef01a2dd8826"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v80_pitch_action_head_step.py",
+      "sha256": "b0b3966c441108d01bb6bb46569ab6926d6358237199ed84ee9041db0036640b"
+    },
+    "v42_teacher_table": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v42_static_target_teacher_table_result.json",
+      "sha256": "c465d9b3951941715ee0bb588a0ba24a9c4b15d7a2c99430340bcaea43964469"
+    },
+    "v43_teacher_abi": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v43_static_target_teacher.py",
+      "sha256": "214df40f1b2033d190c4f601280679f7105267ddb8dbcd7a2fb0f6c3929242a3"
+    },
+    "v44_training_population": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v44_static_target_teacher_source_gradient_contract.py",
+      "sha256": "051c12663666f870c642aac3874c77c5f2cc5137d28838685894e5694f7ca5ce"
+    },
+    "v46_graph_receipt": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v46_static_target_teacher_training.py",
+      "sha256": "c2bfaec2298c8b97489278112d932c11fc5392fc3250da99ec3fc1379062c0d2"
+    },
+    "v63_gradient_helpers": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v63_persistent_teacher_conflict_attribution.py",
+      "sha256": "3db03bb7a29617be00361d7af56818260030f94568704c7eaaffa792a258bf6d"
+    },
+    "v75_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v75_functional_numeric_guard_continuation_result.json",
+      "sha256": "1787d26b32a82eb2b6b27b56718c8315c78e1845f5e5c15444aa3cd15c1dcf02"
+    },
+    "v78_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v78_missing_teacher_extension_result.json",
+      "sha256": "754fd85423e5067c616eb8a32a71f00f6fa38844ef0a4cb4a85c9579b1642745"
+    },
+    "v79_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v79_complete_residual_teacher_causal_result.json",
+      "sha256": "217f5bc983a9f363bb66c8793615cd52352e192350eb7ef06b6b234c8ae5dbd5"
+    },
+    "v79b_module_stack": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v79b_preregistration_path_correction.py",
+      "sha256": "a93f823b0a08ec1c9fb297dc8db059f27ed0a498309079bab1c32dd091c6779f"
+    },
+    "v80_invalid_invocation": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v80_pitch_action_head_step_invalid_invocation.json",
+      "sha256": "6acd8f2134d4357e67f0558c028410ea2975e0e31be8e04b29911573d0534fcd"
+    },
+    "v80b_builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v80b_mask_indexing_correction.py",
+      "sha256": "72898ec81c6ddf7924940b31302317f26012b50fc5bafdd286efe42fb442c4fe"
+    },
+    "v80b_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v80b_mask_indexing_correction.py",
+      "sha256": "645f2a64d1fbbfe1f609a8b899b234fee6269832ffaad1d5fa21939bf192de65"
+    },
+    "v80b_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v80b_mask_indexing_correction.py",
+      "sha256": "9294028215cfbf41f3f797de4754803a21a53dd8b60f29abf36fdc5cc3095605"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V80_PITCH_ACTION_HEAD_STEP",
+  "step": {
+    "acceptance_rule": "first strict same-batch pitch-teacher-loss descent",
+    "allowed_parameter_slices": [
+      "action_weight[:, [2,3,4,11,12,13]]",
+      "action_bias[[2,3,4,11,12,13]]"
+    ],
+    "completed_optimizer_count": 656,
+    "fractions_largest_first": [
+      1.0,
+      0.5,
+      0.25,
+      0.125,
+      0.0625,
+      0.03125,
+      0.015625,
+      0.0078125,
+      0.00390625,
+      0.001953125,
+      0.0009765625
+    ],
+    "fresh_moment_slices": "the same two allowed parameter slices only",
+    "pitch_action_indices": [
+      2,
+      3,
+      4,
+      11,
+      12,
+      13
+    ],
+    "preserve_bit_exact": "all other parameter elements and optimizer moment elements",
+    "rollout_update_index": 655,
+    "source_optimizer_count": 655
+  },
+  "v80b": {
+    "corrected_source_sha256": "0a835e546c45ef7b128e2eb5d585caba70f1c3447265719bfafa6dc7a9839203",
+    "identity": "WINNER_V80B_MASK_INDEXING_CORRECTION",
+    "invalid_invocation": {
+      "bytes": 893,
+      "path": "outputs/analysis/winner_v80_pitch_action_head_step_invalid_invocation.json",
+      "sha256": "6acd8f2134d4357e67f0558c028410ea2975e0e31be8e04b29911573d0534fcd"
+    },
+    "new_fragment_sha256": "2a3bff753ceb57f6bbb6046bcb86e1951af640c0ef90742c95f2e28e313bca97",
+    "old_fragment_sha256": "e394741750d0765ad9d2330150bfc7e5d268cdb4379c7b46ea07c5c24e46a0d2",
+    "population_objective_gradient_optimizer_threshold_or_authority_change": false,
+    "replacement_count": 1,
+    "semantic_change": "select the environment view before the six pitch columns so the 250x1 validity vector broadcasts over 250x6 exactly as in Winner-v43"
+  }
+}
