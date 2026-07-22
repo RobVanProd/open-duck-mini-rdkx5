@@ -2709,3 +2709,18 @@ Do not proceed to grounded walking until low-risk gates pass.
   rerun this route. No checkpoint is selected and robot clearance remains
   false. See
   `outputs/analysis/WINNER_V37_WARM_STARTED_SHOOTING_FEASIBILITY_RESULT_20260722.md`.
+- 2026-07-22: One zero-update Winner-v38 mirrored-pitch shooting feasibility
+  screen is preregistered. It repeats only the two `COM_X_NEG` plant cells and
+  restores V36's cold per-tick proposal. The same six pitch joints remain
+  controlled, but CEM samples the reviewed three-coordinate bilateral basis:
+  opposite-sign hip-pitch magnitude and same-sign knee/ankle actions. The
+  250-tick duration, 8/2-tick horizon/block, `64/8/4` compute, covariance,
+  objective, graph action boundary, actuator plants, and support gate are
+  unchanged. Both cells must pass; closest-result selection is forbidden.
+  Exactly one formal CPU-only screen is authorized, with zero optimizer
+  updates, locomotion training, RDK-X5, or robot work. A pass may authorize
+  only a separately frozen negative-X mirrored-teacher contract; a hold closes
+  this exact subspace without tuning or adding another action axis. No
+  controller deployment, checkpoint selection, Gate 5, or robot clearance is
+  authorized. See
+  `outputs/analysis/WINNER_V38_MIRRORED_PITCH_SHOOTING_FEASIBILITY_PREREGISTRATION_20260722.md`.
