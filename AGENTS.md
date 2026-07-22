@@ -4058,3 +4058,18 @@ Do not proceed to grounded walking until low-risk gates pass.
   gate. Neither endpoint is selected, and deployment, Gate 5, RDK-X5/robot
   access, torque, motion, and clearance remain unauthorized. See
   `outputs/analysis/WINNER_V84_NEGATIVE_GRADIENT_PITCH_HEAD_CONTINUATION_RESULT_20260722.md`.
+- 2026-07-22: Winner-v85 runs the unchanged `248` main-cell plus `64`
+  heldout-repeat persistence gate on exact Winner-v84 counts `705/755`. The
+  half endpoint reduces the old ten roll/pitch failures to four, rescuing both
+  plants for `COM_X_NEG`, `DISCOVERY_03`, and `HELDOUT_09` without creating a
+  new failure. The final endpoint has eight roll/pitch failures, rescuing both
+  `COM_CORNER_07` plants but adding P30 `COM_X_NEG`. Both endpoints' frozen
+  predictors remain worse than the constant comparator on both plants; all
+  repeatability, context-separation, JAX/ONNX, previous-action, contact,
+  height, current, torque, and finite-state checks pass. Result SHA-256:
+  `ea25f93a...2ddcc4e4`. The all-or-nothing rule selects no checkpoint and
+  leaves `robot_clearance: false`. The only selected next work is a separately
+  preregistered read-only residual diagnostic on the twelve remaining
+  endpoint/plant failures. No deployment, Gate 5, RDK-X5/robot access, torque,
+  or motion is authorized. See
+  `outputs/analysis/WINNER_V85_INTEGRATED_SUPPORT_GATE_RESULT_20260722.md`.
