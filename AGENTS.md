@@ -3822,3 +3822,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   with zero continuation, support cells, checkpoint selection, deployment,
   Gate 5, RDK-X5/robot access, torque, motion, or clearance. See
   `outputs/analysis/WINNER_V67_BACKTRACKED_ADAM_STEP_CONTRACT_20260722.md`.
+- 2026-07-22: The first Winner-v67 invocation stopped during source-result
+  provenance validation, before artifact loading, work-root creation, rollout,
+  or update. Its global version transform changed the frozen V65b handoff
+  decision literal from `PREREGISTER_WINNER_V66_...` to
+  `PREREGISTER_WINNER_V67_...`. Winner-v67b restores exactly that one literal.
+  Correction contract SHA-256: `8f329afc...cd7db7cb`. It changes no step,
+  objective, fraction order, accepted fraction, inherited Adam state, artifact,
+  or authority and authorizes no continuation, support cell, checkpoint,
+  deployment, Gate 5, RDK-X5/robot access, torque, motion, or clearance. See
+  `outputs/analysis/WINNER_V67B_SOURCE_DECISION_CORRECTION_20260722.md`.
