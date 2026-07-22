@@ -2214,3 +2214,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   training, checkpoint selection, deployment, Gate 5, or robot access. See
   `outputs/analysis/WINNER_V24_GAE_ONE_ULP_ATTRIBUTION_20260722.md` and
   `outputs/analysis/WINNER_V24_BASELINE_ANCHORED_CPU_CONTRACT_20260722.md`.
+- 2026-07-22: First-attempt baseline-anchored run `29880437377` completed and
+  its original ZIP matches GitHub SHA-256 `54d0079b...58a732b`. The raw result
+  reports a full pass, but the frozen importer stopped before writing because
+  it carried an obsolete six-leaf gradient inventory while the frozen runner
+  emitted the exact twelve-leaf Winner-v21 trainable tree. Do not rerun or
+  alter the artifact. A separately versioned importer correction may change
+  only that expected key inventory and must reuse every other frozen strict
+  check. It authorizes no optimizer update, training, robot access, or result
+  classification until the unchanged ZIP passes the corrected importer. See
+  `outputs/analysis/WINNER_V24_BASELINE_IMPORTER_CORRECTION_20260722.md`.
