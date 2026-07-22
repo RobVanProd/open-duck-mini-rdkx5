@@ -3800,3 +3800,14 @@ Do not proceed to grounded walking until low-risk gates pass.
   flat-transport equation and authorizes no deployment, Gate 5, RDK-X5/robot
   access, torque, motion, or clearance. See
   `outputs/analysis/WINNER_V66_FAILED_STEP_ATTRIBUTION_PREREGISTRATION_20260722.md`.
+- 2026-07-22: Winner-v66 reproduces the failed count-`575` step and classifies
+  it as `INHERITED_ADAM_FULL_STEP_OVERSHOOT`. Same-batch teacher loss changes
+  `0.0033518367 -> 0.0033521873` at the full proposal even though the teacher-
+  gradient dot applied Adam delta is negative (`-3.14317e-7`), proving the
+  direction is locally descending. Fixed fractions `1/16, 1/8, 1/4` descend;
+  `1/2, 3/4, 1` do not, so the frozen largest-first halving rule would accept
+  exactly `1/4`. Result SHA-256: `dc25ee23...3cfc25de`. The diagnostic commits
+  zero updates and selects only one deterministic backtracked-Adam step proof.
+  It does not select attention, the flat-transport equation, a checkpoint,
+  deployment, Gate 5, RDK-X5/robot access, torque, motion, or clearance. See
+  `outputs/analysis/WINNER_V66_FAILED_STEP_ATTRIBUTION_RESULT_20260722.md`.
