@@ -3346,3 +3346,18 @@ Do not proceed to grounded walking until low-risk gates pass.
   only a separately preregistered bounded continuation. It does not select a
   deployment checkpoint, run support cells, or grant robot clearance. See
   `outputs/analysis/WINNER_V51B_FULL_ACTION_TEACHER_ONE_UPDATE_CPU_RESULT_20260722.md`.
+- 2026-07-22: Winner-v52 preregisters the sole bounded full-action-teacher
+  continuation. It inherits the exact Winner-v46 persistence design: `100`
+  optimizer updates, `80 x 250` scheduled ticks per update, immutable half/final
+  checkpoints after `50/100` updates, and no coefficient or duration search.
+  From the formal V51b source at count `353`, checkpoints are frozen at
+  `403/453`. The old pitch-only loss is replaced by the proven full-`14`-action
+  teacher at scale `136.35153198242188`; PPO, predictor, anchor, transition,
+  population, seeds, learning rate, and action boundary remain unchanged. The
+  execution source is an exact hash-bound transformation of the frozen V46
+  runner, with every replacement count preregistered. Every update must preserve
+  all source, mask, locality, finite-value, snapshot, and ONNX invariants.
+  Neither checkpoint is selected during training, and no formal support cell,
+  RDK-X5/robot access, torque, or motion is authorized. A pass authorizes only
+  a separate half/final support-gate preregistration. See
+  `outputs/analysis/WINNER_V52_FULL_ACTION_TEACHER_TRAINING_PREREGISTRATION_20260722.md`.
