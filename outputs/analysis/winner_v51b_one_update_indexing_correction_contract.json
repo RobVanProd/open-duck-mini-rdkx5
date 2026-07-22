@@ -1,0 +1,376 @@
+{
+  "artifact_inputs": {
+    "winner_v22_teacher_snapshot": {
+      "bytes": 194808,
+      "completed_updates": 100,
+      "metadata_payload_sha256": "9c6adf74ec64d10e3d0ee21d9b502f1bb4b9a4b02fcc946e2fdfbacc16e967e5",
+      "path": "/tmp/winner-v22-normalized-predictor-training-work/snapshots/snapshot_normalized_predictor_update_100.npz",
+      "sha256": "ddc8c4b905bb9acac2d7d48c3e9c1f0c0ca0173a1ba21f375740b051bc48c806",
+      "state_payload_sha256": "6743dfe113fef16a7a40caa77457a9e29ccd5c28696f8c70ce6a1793d27faea7"
+    },
+    "winner_v46_final": {
+      "completed_updates": 352,
+      "graph": {
+        "bytes": 54896,
+        "completed_updates": 352,
+        "contract": {
+          "abi_exact": true,
+          "all_chain_outputs_finite": true,
+          "all_initializers_finite": true,
+          "bytes": 54896,
+          "chain_ticks": 250,
+          "forbidden_training_or_privileged_tokens": [],
+          "initializer_count": 9,
+          "inputs": [
+            {
+              "name": "obs",
+              "shape": [
+                1,
+                115
+              ]
+            },
+            {
+              "name": "previous_action",
+              "shape": [
+                1,
+                14
+              ]
+            },
+            {
+              "name": "h_in",
+              "shape": [
+                1,
+                64
+              ]
+            }
+          ],
+          "jax_onnx_at_most_1e_7": true,
+          "jax_onnx_max_abs_error": 5.820766091346741e-11,
+          "outputs": [
+            {
+              "name": "calibration_actions",
+              "shape": [
+                1,
+                14
+              ]
+            },
+            {
+              "name": "previous_action_out",
+              "shape": [
+                1,
+                14
+              ]
+            },
+            {
+              "name": "h_out",
+              "shape": [
+                1,
+                64
+              ]
+            }
+          ],
+          "path": "/tmp/winner-v46-static-target-teacher-training-work/graphs/winner_v46_final.onnx",
+          "previous_action_out_equals_action_bit_exact": true,
+          "sha256": "e3d209fd7ae8266c4b06a7080e89571c96d75e2263a8d721900f3308ccaa7d2d",
+          "training_only_tensors_absent": true
+        },
+        "label": "final",
+        "path": "/tmp/winner-v46-static-target-teacher-training-work/graphs/winner_v46_final.onnx",
+        "sha256": "e3d209fd7ae8266c4b06a7080e89571c96d75e2263a8d721900f3308ccaa7d2d",
+        "v46_forbidden_tokens_present": []
+      },
+      "label": "final",
+      "snapshot": {
+        "bytes": 195379,
+        "completed_updates": 352,
+        "metadata_payload_sha256": "310ff743e4a87c86948ad99d2d8a5757dc9878f3cf99eece75e7ad5f9fa9263d",
+        "path": "/tmp/winner-v46-static-target-teacher-training-work/snapshots/snapshot_static_target_teacher_update_352.npz",
+        "sha256": "e32a7d5ee7fa272639fb58a2b500e394d983d4a984fb1ace1f7d87058c86e0df",
+        "state_payload_sha256": "ca68aa084fb05cada0eaa383df06461ba229d3ef1d3da2926ecbb1065088b123"
+      }
+    }
+  },
+  "authority": {
+    "continuation_training_authorized": false,
+    "one_update_authorized_by_this_preregistration": true,
+    "pass_authorizes_only": "one separately frozen bounded full-action continuation preregistration",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false,
+    "runtime_implementation_authorized": false
+  },
+  "correction": {
+    "corrected_source_sha256": "e8deeb1cfafd2c7b045574a76b0c11efc9ea573712312b0079578842d8cd07a9",
+    "frozen_runner_lf_sha256": "fe7a27df3a8a866dbee6b22200633f23a8b71e4735f8ff4d0fd5a8703739ac75",
+    "identity": "WINNER_V51B_ONE_UPDATE_INDEXING_CORRECTION",
+    "invalid_invocation": {
+      "bytes": 1382,
+      "path": "outputs/analysis/winner_v51_full_action_teacher_one_update_invalid_invocation.json",
+      "sha256": "bc9c408ed4282d8e0d6ee3c885c4daccf39ecc4839d9cab67d9da63939b39f3b"
+    },
+    "new_fragment_sha256": "daf0cb3d68a58b1272ee025f4a3e4ce74853d2a0f6e3cc4a62a8ffc66f2315c4",
+    "old_fragment_sha256": "8ec7896b9326f71890b49451c634fe7e75ed84a5c760724dabb64f45c5bf74b4",
+    "optimizer_objective_artifact_or_gate_change": false,
+    "replacement_count": 1,
+    "semantic_change": "index objective_evidence['full_teacher_gradient_max_abs'] before policy/nonpolicy gradient checks"
+  },
+  "decision": "AUTHORIZE_EXACT_ONE_FULL_ACTION_TEACHER_OPTIMIZER_UPDATE_ONLY",
+  "execution_future": {
+    "candidate_graph_exports": 1,
+    "continuation_training_updates": 0,
+    "formal_support_cells": 0,
+    "optimizer_updates": 1,
+    "robot_or_rdk_access": 0,
+    "rollout_episode_slots": 80,
+    "scheduled_rollout_ticks": 20000
+  },
+  "execution_now": {
+    "candidate_graph_exports": 0,
+    "continuation_training_updates": 0,
+    "formal_support_cells": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0,
+    "rollout_episode_slots": 0,
+    "scheduled_rollout_ticks": 0
+  },
+  "frozen_v50c_result": {
+    "bytes": 15648,
+    "path": "outputs/analysis/winner_v50c_gradient_backward_error_attribution_result.json",
+    "sha256": "ce3bbe554b9497b744f792e1e4b53986cc3c48efe582bff5ac23e6e51d2883d3"
+  },
+  "objective": {
+    "baseline": "unchanged Winner-v46 PPO plus normalized predictor plus prefix anchor",
+    "combined_gradient": "baseline composed gradient plus frozen-scale full-14D teacher gradient",
+    "deployable_abi": {
+      "inputs": [
+        [
+          "obs",
+          [
+            1,
+            115
+          ]
+        ],
+        [
+          "previous_action",
+          [
+            1,
+            14
+          ]
+        ],
+        [
+          "h_in",
+          [
+            1,
+            64
+          ]
+        ]
+      ],
+      "outputs": [
+        [
+          "calibration_actions",
+          [
+            1,
+            14
+          ]
+        ],
+        [
+          "previous_action_out",
+          [
+            1,
+            14
+          ]
+        ],
+        [
+          "h_out",
+          [
+            1,
+            64
+          ]
+        ]
+      ]
+    },
+    "episode_slots": 80,
+    "heldout_teacher_configuration_ids_excluded": [
+      "HELDOUT_04",
+      "HELDOUT_07",
+      "HELDOUT_09",
+      "HELDOUT_15"
+    ],
+    "no_action_replacement": true,
+    "optimizer": "restore exact Winner-v46 Adam count 352 and execute one update to 353",
+    "post_update_gate": "same frozen-batch full-action teacher MSE must be finite and strictly lower",
+    "predictor_scale": 380.9135437011719,
+    "prefix_anchor_scale": 197.3112030029297,
+    "result_optimizer_count": 353,
+    "rollout_update_index": 352,
+    "source_checkpoint": {
+      "label": "winner_v46_final",
+      "update": 352
+    },
+    "teacher_action_indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ],
+    "teacher_checkpoint": {
+      "label": "winner_v22_final",
+      "update": 100
+    },
+    "teacher_configuration_ids": [
+      "COM_X_NEG",
+      "COM_CORNER_00",
+      "COM_CORNER_01",
+      "COM_CORNER_02",
+      "COM_CORNER_03",
+      "OPTIONAL_AGGREGATE_HEAVY_AFT",
+      "DISCOVERY_02",
+      "DISCOVERY_03",
+      "DISCOVERY_06",
+      "DISCOVERY_09",
+      "DISCOVERY_10"
+    ],
+    "teacher_configuration_rows": 22,
+    "teacher_scale": 136.35153198242188,
+    "ticks_per_slot": 250
+  },
+  "pass_checks": [
+    "bind exact Winner-v46 final snapshot/graph, Winner-v22 teacher, and V50c pass",
+    "restore source parameters and Adam state exactly at count 352",
+    "recompute the exact 80-slot update-352 V50 rollout and full-action gradient",
+    "apply exactly the algebraic float32 teacher scale 136.35153198242188",
+    "exclude all heldout labels and supervise all 14 actions on exactly 22 plant rows",
+    "execute exactly one Adam update to count 353",
+    "strictly reduce same-batch full-action teacher MSE",
+    "change all trainable leaves while preserving every frozen parameter leaf",
+    "save and read back the complete parameter and optimizer state exactly",
+    "export one candidate graph with the unchanged stateful hard-bounded 115/14/64 ABI",
+    "exclude teacher and training-only state from the candidate graph",
+    "execute zero support cells, continuation updates, and robot access"
+  ],
+  "question": "Does exactly one Adam update from the terminal Winner-v46 state, using the frozen full-14D teacher replacement, preserve the complete stateful policy contract while reducing same-batch full-action teacher MSE?",
+  "schema_version": "winner_v51.full_action_teacher_one_update_cpu_contract.v1",
+  "source_manifest_sha256": "eb75b860bd7a839b3aa75bfd6dcc4455f518a50c3e6cf6e5ed2f22ac5f44e032",
+  "sources": {
+    "backend_networks": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_decomposed_backend_networks.py",
+      "sha256": "f463223a33f80baf81b2604e0df22c647660f2752a7ca60b8c75a3441460d015"
+    },
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v51_full_action_teacher_one_update_cpu_contract.py",
+      "sha256": "943462bc06f90ef793dfb23ff5d4157e4142f8bac22345a239f9f5485f62957c"
+    },
+    "canonical_p30_fit": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/fixed_target_p30_actuator_fit_20260712.json",
+      "sha256": "908ddb01e5d82e661d77b8f3cb186a84665695660b86b304c6d1ae89c79cdb0b"
+    },
+    "cpu_smoke": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_cpu_smoke.py",
+      "sha256": "b6ad53430f3f7cca3a91a90f72dab585cb05e3e2f74be2241af3fd9b6ee7ce87"
+    },
+    "joint_mechanics": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v21_predictor_preserving_joint_support.py",
+      "sha256": "2d274c6c7c63fa2de5e3a7114ac047df1346189e66ec7bf8d83221e2f93aef0a"
+    },
+    "prefix_anchor": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v29_prefix_right_pitch_anchor.py",
+      "sha256": "7c01b3db8c359464d122fc4f915df02eb9833720ef65837a99c5838dd42db36f"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v51_full_action_teacher_one_update_cpu_proof.py",
+      "sha256": "fe7a27df3a8a866dbee6b22200633f23a8b71e4735f8ff4d0fd5a8703739ac75"
+    },
+    "snapshot_mechanics": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v21_predictor_preserving_joint_support_v2.py",
+      "sha256": "6613a52d099646c4603808e58088360166abefe9f504c5fafb8604266419bd20"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v51_full_action_teacher_one_update_cpu_proof.py",
+      "sha256": "b6f84635a069515f6247d63bb6da1a67fc958ea8365bccdfc0dd5ea675d43030"
+    },
+    "training_mechanics": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_calibrator_training.py",
+      "sha256": "f5736a357d73baedae2bba1d15254dd688bddf3761eb731d757a971783c77227"
+    },
+    "winner_v22_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v22_normalized_predictor_training_result.json",
+      "sha256": "10bae5bb32f32cc90e222eb1d6644d97e2a0253baa6ad1a37fe06fde48cf11c1"
+    },
+    "winner_v46_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v46_static_target_teacher_training_preregistration.json",
+      "sha256": "2104db32192eff8ac14f8be01c1abec0fddfad8ddbabab554183c3f668f9e7ce"
+    },
+    "winner_v46_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v46_static_target_teacher_training_result.json",
+      "sha256": "18f4eb5794cc29aae38167d0bd230a6001718f69f7408f08d425d7520d59941f"
+    },
+    "winner_v49_teacher": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v49_full_action_static_target_teacher.py",
+      "sha256": "cc51950e90ba221763304250a11500251d1df1b58586cb5da24f4d1621b67b26"
+    },
+    "winner_v50_contract": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v50_full_action_teacher_source_gradient_contract.json",
+      "sha256": "e40a047112c63074e4f2cd4df7b8d70785dc7e6f9d3bf81476742d549e8b4972"
+    },
+    "winner_v50_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v50_full_action_teacher_source_gradient_result.json",
+      "sha256": "37b80608ac5e60291a5f194345cdce9bbdda5607d6559e6be9dfc1e619b453b7"
+    },
+    "winner_v50_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v50_full_action_teacher_source_gradient_contract.py",
+      "sha256": "0c235e882922867f8b8998bdb902d170b964641503b574f289a5e30f68ab4a42"
+    },
+    "winner_v50c_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v50c_gradient_backward_error_attribution_result.json",
+      "sha256": "77a513cd1fd72f3b2f66782707065129597b5429149e8886eff88f966d990ef1"
+    },
+    "winner_v51_invalid_invocation": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v51_full_action_teacher_one_update_invalid_invocation.json",
+      "sha256": "bc9c408ed4282d8e0d6ee3c885c4daccf39ecc4839d9cab67d9da63939b39f3b"
+    },
+    "winner_v51b_builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v51b_one_update_indexing_correction.py",
+      "sha256": "ed76362cb09413ff33e69710d898a5baae98f24a6da67383923d2952d0ed5498"
+    },
+    "winner_v51b_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v51b_one_update_indexing_correction.py",
+      "sha256": "c5b0ac0bd100b562bffd76bf6f957b63f03bac4009ebfbea415ddfb664e4f7f9"
+    },
+    "winner_v51b_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v51b_one_update_indexing_correction.py",
+      "sha256": "e2794ef20414beb3448ab3940abbd29b8870c27853e51b45897d33c3641194fa"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V51_FULL_ACTION_TEACHER_ONE_UPDATE_CPU_PROOF"
+}

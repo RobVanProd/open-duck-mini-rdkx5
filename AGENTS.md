@@ -3320,3 +3320,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   access, torque, motion, or clearance is authorized. Preserve the frozen V51
   runner; a separately preregistered one-line correction is required. See
   `outputs/analysis/WINNER_V51_FULL_ACTION_TEACHER_ONE_UPDATE_INVALID_INVOCATION_20260722.md`.
+- 2026-07-22: Winner-v51b preregisters the exact correction for the invalid
+  V51 proof without editing its frozen source. The correction replaces one and
+  only one two-line fragment so `full_gradient_max` indexes
+  `objective_evidence['full_teacher_gradient_max_abs']`; the complete corrected
+  source SHA-256 is frozen in the contract. Optimizer, objective, source
+  checkpoint, rollout, scale, snapshot, graph, and pass gates are unchanged.
+  The original invalid partial artifacts remain forbidden. V51b may execute
+  the same single CPU update from `352` to `353`, with zero support cells,
+  continuation updates, RDK-X5/robot access, torque, or motion. A pass can
+  authorize only a separately preregistered bounded continuation; it cannot
+  select a checkpoint or grant clearance. See
+  `outputs/analysis/WINNER_V51B_ONE_UPDATE_INDEXING_CORRECTION_CONTRACT_20260722.md`.
