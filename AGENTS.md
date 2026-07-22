@@ -3110,3 +3110,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   locomotion training is promoted. RDK-X5/robot access, Gate 5, deployment,
   and clearance remain unauthorized. See
   `outputs/analysis/WINNER_V47B_SUPPORT_GATE_EXECUTION_CORRECTION_RESULT_20260722.md`.
+- 2026-07-22: Winner-v48 preregisters one read-only CPU causal diagnostic for
+  the exact eight-configuration Winner-v47b failure union. Across both frozen
+  checkpoints and both actuator plants it runs `128` cells: the unchanged
+  graph, the full proven Winner-v42 static teacher, teacher pitch with graph
+  non-pitch outputs, and graph pitch with non-pitch outputs driven toward zero
+  through the unchanged action boundary. The unchanged graph arm must be
+  bit-exact to all `32` imported V47b cells, and the `28` actually failed pairs
+  are classified without a threshold or closest-result rule. The graph's
+  action-independent `h_out` is retained while the actually applied
+  intervention is chained as `previous_action`. This executes no optimizer,
+  locomotion, RDK-X5, robot, torque, or motion work and cannot select a
+  checkpoint or grant clearance. See
+  `outputs/analysis/WINNER_V48_STATIC_TEACHER_CAUSAL_DIAGNOSTIC_PREREGISTRATION_20260722.md`.
