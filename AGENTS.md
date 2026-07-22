@@ -2470,3 +2470,19 @@ Do not proceed to grounded walking until low-risk gates pass.
   recorded scale; it does not authorize training, checkpoint selection,
   runtime work, RDK-X5, Gate 5, deployment, or clearance. See
   `outputs/analysis/WINNER_V29_PREFIX_RIGHT_PITCH_ANCHOR_CPU_CONTRACT_20260722.md`.
+- 2026-07-22: The sole first-attempt Winner-v29 prefix right-pitch anchor CPU
+  proof passed on GitHub run `29888962404`; the original 6,404-byte ZIP exactly
+  matches GitHub SHA-256 `3ef70a19...3b5c9`. The exact update-200 batch contains
+  17 roll/pitch failures and all 384 selected prefix-action elements. Raw anchor
+  loss is `0.00035727047`, maximum selected source/candidate action difference
+  is `0.02864599`, and the frozen gradient-RMS scale is
+  `197.3112030029297`. All six intended recurrent/action leaves have nonzero
+  anchor gradients; value, log-std, and predictor leaves are exactly zero.
+  Source/candidate JAX-to-ONNX replay error is at most `8.74e-11`; default-off
+  gradients and all transition arrays are bit-exact; optimizer, formal support,
+  locomotion, and robot counts remain zero. Decision:
+  `PASS_WINNER_V29_PREFIX_RIGHT_PITCH_ANCHOR_CPU_CONTRACT`. This authorizes only
+  a separately preregistered one-update CPU proof using the exact recorded
+  scale. It does not authorize training, checkpoint selection, runtime work,
+  RDK-X5, Gate 5, deployment, or clearance. See
+  `outputs/analysis/WINNER_V29_PREFIX_RIGHT_PITCH_ANCHOR_CPU_RESULT_20260722.md`.
