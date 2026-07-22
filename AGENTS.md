@@ -2833,3 +2833,24 @@ Do not proceed to grounded walking until low-risk gates pass.
   robot, Gate 5, deployment, and clearance remain unauthorized. See
   `outputs/analysis/WINNER_V41_FIRST_ATTEMPT_FAILURE_RECEIPT_20260722.md` and
   `outputs/analysis/WINNER_V41_V2_RUNNER_CORRECTION_PREREGISTRATION_20260722.md`.
+- 2026-07-22: The sole corrected Winner-v41-v2 run `29902429818` passed; its
+  original 472,127-byte ZIP exactly matches GitHub SHA-256
+  `2ed01e17...788bf52d`. The complete 729-target grid produced 117 P30 passes,
+  103 P31/34 passes, and 100 identical targets that pass both plants for all
+  250 ticks. The deterministic selected target is candidate 275 with mirrored
+  coordinates `[-0.25,-0.25,+0.25]`, equivalent to normalized actions
+  `left hip pitch +0.25`, `right hip pitch -0.25`, both knees `-0.25`, and
+  both ankles `+0.25` (all other actions zero). Its exact replay completes
+  `250/250` under both plants, minimum base Z is `0.15 m`, maximum tilt is
+  `0.03159/0.03432 rad`, final-window gyro maxima are
+  `0.000344/0.000321 rad/s`, and current/torque maxima are
+  `1.2877/1.3969 A` and `1.0102/1.0959 N.m`. Classification:
+  `SHARED_FULL_HORIZON_STATIC_SUPPORT_TARGET_EXISTS`; decision:
+  `AUTHORIZE_STATIC_TARGET_TEACHER_CONTRACT_ONLY`. This proves bounded support
+  authority exists for the exact `COM_X_NEG` anchor; it does not authorize
+  sending the target to the runtime/robot, treating it as a deployable policy,
+  or assuming it generalizes to the full configuration population. A separate
+  static-target teacher contract is required before any training design.
+  Checkpoint selection, training, RDK-X5, robot, Gate 5, deployment, and
+  clearance remain unauthorized. See
+  `outputs/analysis/WINNER_V41_V2_STATIC_EQUILIBRIUM_TARGET_FEASIBILITY_RESULT_20260722.md`.
