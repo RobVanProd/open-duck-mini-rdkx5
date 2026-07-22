@@ -3448,3 +3448,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   graph selection, RDK-X5/robot access, torque, or motion and cannot grant
   clearance. See
   `outputs/analysis/WINNER_V55_RESET_LABEL_HANDOFF_PREREGISTRATION_20260722.md`.
+- 2026-07-22: The sole Winner-v55 audit passes all seven checks and falsifies
+  an exact raw-input reset collision: the `15` teacher configurations produce
+  `15` distinct untransported float32 reset inputs, `15` graph actions, and
+  four bounded teacher labels. Its handoff endpoints reproduce V54 bit-exactly,
+  but only immediate teacher control passes `12/12`; first-teacher ticks
+  `1/2/4/8/12/16/20/250` pass only `4/4/2/1/0/0/0/0`. One graph action is
+  therefore causal to eight failures. Result SHA-256:
+  `4ded36d4...3008ed0e`. The raw distinction is not yet a deployability claim:
+  V55 did not apply the support gate's separately declared native sensor
+  quantization, so that exact transport attribution must precede any training
+  change. No optimizer update, checkpoint selection, deployment, Gate 5,
+  RDK-X5/robot access, torque, motion, or clearance is authorized. See
+  `outputs/analysis/WINNER_V55_RESET_LABEL_HANDOFF_RESULT_20260722.md`.
