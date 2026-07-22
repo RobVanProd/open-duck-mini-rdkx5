@@ -3553,3 +3553,18 @@ Do not proceed to grounded walking until low-risk gates pass.
   separately preregistered unchanged half/final support gate; it cannot grant
   deployment, Gate 5, RDK-X5/robot access, torque, motion, or clearance. See
   `outputs/analysis/WINNER_V58_INTEGRATED_FIRST_TICK_TRAINING_PREREGISTRATION_20260722.md`.
+- 2026-07-22: The sole Winner-v58 run committed `22` atomic snapshots through
+  optimizer count `476`, then stopped before the count-`477` Adam step because
+  the inherited pre-update replay/teacher guard changed. No result, half/final
+  graph, support cell, retry, hardware access, or clearance was produced. The
+  count-`476` snapshot is SHA-256 `9835cbf0...b03bb54` and the exact stderr is
+  retained outside Git. Winner-v58a preregisters one zero-update reconstruction
+  of rollout index `476` that reports all `15` original guard predicates and
+  their raw values. Preregistration SHA-256: `b738ee35...90696a7`. It can
+  authorize only a separate retry preregistration when the sole failure is a
+  changed nonzero set among the four already allowed first-tick mapping leaves
+  while every forbidden gradient remains zero and all values remain finite.
+  It does not authorize a retry, training update, support evaluation,
+  checkpoint selection, deployment, Gate 5, RDK-X5/robot access, torque,
+  motion, or clearance. See
+  `outputs/analysis/WINNER_V58A_GUARD_FAILURE_ATTRIBUTION_PREREGISTRATION_20260722.md`.
