@@ -2427,3 +2427,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   checkpoint selection, runtime, RDK-X5, robot, Gate 5, deployment, or
   clearance. See
   `outputs/analysis/WINNER_V27_EARLY_PREFIX_RECOVERY_SCAN_RESULT_20260722.md`.
+- 2026-07-22: One zero-update Winner-v28 prefix joint-group causal screen is
+  preregistered. For ticks 0-7 it replaces exactly one anatomical group of the
+  Winner-v24 action with the Winner-v22 action computed on the same branch
+  observation and realized previous action: left lateral, left pitch chain,
+  head, right lateral, or right pitch chain; CONTROL changes nothing. At tick 8
+  Winner-v22 source recovery runs to the unchanged tick-52 boundary. A group is
+  selected only if recovery gain is at least 0.25 for both checkpoints and its
+  minimum checkpoint gain is strictly greater than every other group. The
+  screen is 240 prefix arms and 480 source-recovery/repeat rollouts, with zero
+  optimizer, locomotion, or robot work. Exactly one first-attempt CPU run is
+  authorized. No action wrapper, objective, training, checkpoint selection,
+  runtime, RDK-X5, robot, Gate 5, deployment, or clearance is authorized. See
+  `outputs/analysis/WINNER_V28_PREFIX_JOINT_GROUP_CAUSAL_SCREEN_PREREGISTRATION_20260722.md`.
