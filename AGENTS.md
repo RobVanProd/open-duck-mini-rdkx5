@@ -3473,3 +3473,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   deployment, Gate 5, RDK-X5/robot access, torque, motion, or clearance is
   authorized. See
   `outputs/analysis/WINNER_V55B_NATIVE_RESET_QUANTIZATION_PREREGISTRATION_20260722.md`.
+- 2026-07-22: The sole Winner-v55b attribution passes all five checks. Every
+  raw observation hash reproduces V55. Native sensor quantization changes
+  `16` fields per row (maximum delta `0.004612922668457031`) but preserves all
+  `15` reset inputs and all `15` graph actions; no quantized input maps to more
+  than one of the four bounded teacher labels. Classification:
+  `NATIVE_RESET_LABELS_REMAIN_SEPARABLE`. Result SHA-256:
+  `303fee53...2ad78e99`. Combined with V55's one-tick handoff failure, this
+  selects only a separately preregistered first-tick teacher-mapping CPU
+  contract using training labels; held-out labels remain forbidden. It does
+  not authorize an update, checkpoint selection, deployment, Gate 5,
+  RDK-X5/robot access, torque, motion, or clearance. See
+  `outputs/analysis/WINNER_V55B_NATIVE_RESET_QUANTIZATION_RESULT_20260722.md`.
