@@ -4087,3 +4087,19 @@ Do not proceed to grounded walking until low-risk gates pass.
   or locomotion-training steps and grants no checkpoint selection, support,
   deployment, Gate 5, RDK-X5/robot access, torque, motion, or clearance. See
   `outputs/analysis/WINNER_V86_RESIDUAL_PITCH_CAUSAL_RESULT_20260722.md`.
+- 2026-07-22: Winner-v87 preregisters one read-only representational
+  feasibility audit on the exact Winner-v84 half/final checkpoints. For each
+  endpoint it runs one frozen `80`-episode stage-2 rollout, takes the existing
+  `64`-D recurrent hidden state plus intercept, and fits the six pitch outputs
+  in teacher-logit space with `numpy.linalg.lstsq(rcond=None)`. The candidate
+  coefficients are cast to float32 before the unchanged affine, tanh, and
+  graph-authoritative action bound. Generalization is measured by exactly `16`
+  leave-one-configuration-out folds, removing both plants for each held-out
+  ID. An endpoint is feasible only if both its full-fit and aggregate held-out
+  bounded pitch MSE strictly beat its unchanged source. Half has fixed priority
+  over final for a later mechanism proof; this is not deployment selection.
+  Contract SHA-256: `6253c0bf...948de484`. The audit writes no snapshot or
+  ONNX, performs zero optimizer updates/support cells, and grants no checkpoint
+  selection, deployment, Gate 5, RDK-X5/robot access, torque, motion, or
+  clearance. See
+  `outputs/analysis/WINNER_V87_PITCH_HEAD_LINEAR_FEASIBILITY_PREREGISTRATION_20260722.md`.
