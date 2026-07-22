@@ -2610,3 +2610,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   checkpoint selection, RDK-X5, robot, Gate 5, deployment, and clearance remain
   unauthorized. See
   `outputs/analysis/WINNER_V34_PREFIX_RIGHT_PITCH_HARD_INTERVENTION_PREREGISTRATION_20260722.md`.
+- 2026-07-22: The sole Winner-v34 formal run `29895731264` completed HOLD; its
+  original 138,977-byte ZIP exactly matches GitHub SHA-256
+  `5553ab06...0207f3`. All 60 CONTROL cells reproduce the Winner-v33
+  action/hidden chains and support outcomes, with maximum redundant scalar
+  difference `3.25e-13`; all graph boundaries, state chains, and intervention
+  changes are valid. Exact Winner-v22 replacement of right hip pitch, knee,
+  and ankle at ticks 0-7 preserves all 5 cells that already passed but recovers
+  `0/55` failing cells; replacement support is therefore only `5/60`.
+  Classification: `NO_FULL_DIRECT_PREFIX_SUPPORT_RECOVERY`; decision:
+  `CLOSE_RIGHT_PITCH_PREFIX_REPLACEMENT_MECHANISM`. Do not extend, retune, or
+  train the failed soft-anchor or eight-tick replacement route. No checkpoint
+  is selected and robot clearance remains false. See
+  `outputs/analysis/WINNER_V34_PREFIX_RIGHT_PITCH_HARD_INTERVENTION_RESULT_20260722.md`.
