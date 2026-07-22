@@ -3909,3 +3909,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   checkpoint selection, deployment, Gate 5, RDK-X5/robot access, torque,
   motion, and clearance remain zero. See
   `outputs/analysis/WINNER_V70_FRESH_MOMENT_STEP_RESULT_20260722.md`.
+- 2026-07-22: Winner-v71 preregisters the remaining `53` updates from count
+  `602` to `655`, retaining endpoints `605/655`. Each update first tries the
+  inherited Adam direction with the fixed largest-first safeguard through
+  `1/1024`. Only after grid exhaustion with a nonnegative teacher-gradient dot
+  parameter delta may it reset the six teacher-active policy moments and retry
+  the same grid. Every snapshot now records accepted fraction, reset flag, and
+  reset keys. Contract SHA-256: `8b3a9dc0...048b138c`. No attention, flat-
+  transport equation, support evaluation, checkpoint selection, deployment,
+  Gate 5, RDK-X5/robot access, torque, motion, or clearance is included. See
+  `outputs/analysis/WINNER_V71_FRESH_MOMENT_SAFEGUARDED_CONTINUATION_PREREGISTRATION_20260722.md`.
