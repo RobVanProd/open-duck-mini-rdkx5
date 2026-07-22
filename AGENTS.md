@@ -3332,3 +3332,17 @@ Do not proceed to grounded walking until low-risk gates pass.
   authorize only a separately preregistered bounded continuation; it cannot
   select a checkpoint or grant clearance. See
   `outputs/analysis/WINNER_V51B_ONE_UPDATE_INDEXING_CORRECTION_CONTRACT_20260722.md`.
+- 2026-07-22: The corrected Winner-v51b one-update proof passes every check.
+  Optimizer count advances exactly `352 -> 353`; same-batch full-action teacher
+  loss falls from `0.004192190710455179` to `0.004095083102583885`. Every
+  trainable leaf changes, every frozen parameter leaf remains bit-exact, and
+  the complete snapshot/Adam state round-trips. The stateful hard-bounded
+  `115/14/64` candidate ONNX agrees with JAX within
+  `1.4551915228366852e-11` and contains no teacher/training-only state.
+  Snapshot SHA-256: `e0335fbc...e56a276e`; ONNX SHA-256:
+  `6d300081...5486eca2`; result SHA-256: `9e08a08b...bf92aa7`. The equal hashes
+  of the earlier invalid partial files now have an independently completed
+  formal proof, but only the V51b result is authoritative. This pass authorizes
+  only a separately preregistered bounded continuation. It does not select a
+  deployment checkpoint, run support cells, or grant robot clearance. See
+  `outputs/analysis/WINNER_V51B_FULL_ACTION_TEACHER_ONE_UPDATE_CPU_RESULT_20260722.md`.
