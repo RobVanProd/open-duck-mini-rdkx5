@@ -93,6 +93,13 @@ def load_corrected_importer():
         raise ValueError("Winner-v24 frozen importer key mismatch changed")
     module.GRADIENT_KEYS = set(CORRECTED_GRADIENT_KEYS)
     module.RECURRENT_KEYS = set(CORRECTED_RECURRENT_KEYS)
+    module.OUTPUT_JSON = (
+        ROOT / "outputs/analysis/winner_v24_baseline_anchored_cpu_result_v2.json"
+    )
+    module.OUTPUT_MD = (
+        ROOT
+        / "outputs/analysis/WINNER_V24_BASELINE_ANCHORED_CPU_RESULT_V2_20260722.md"
+    )
     # The unchanged importer's attribution logic binds the active importer.
     # Point its module-global __file__ at this narrowly corrected wrapper.
     module.__file__ = str(Path(__file__).resolve())

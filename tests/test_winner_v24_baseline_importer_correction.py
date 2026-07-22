@@ -6,6 +6,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 WRAPPER = ROOT / "tools/import_winner_v24_baseline_anchored_cpu_result_v2.py"
+RESULT = ROOT / "outputs/analysis/winner_v24_baseline_anchored_cpu_result_v2.json"
 
 
 def load():
@@ -32,3 +33,16 @@ def test_wrapper_changes_only_importer_key_inventory() -> None:
     assert Path(corrected.__file__).resolve() == WRAPPER.resolve()
     assert corrected.RAW_RESULT_NAME == "winner-v24-baseline-anchored-cpu-result.json"
     assert corrected.RAW_RECEIPT_NAME == "winner-v24-baseline-anchored-cpu-result.sha256"
+    assert corrected.OUTPUT_JSON == RESULT
+
+
+def test_corrected_imported_result_is_strict_when_present() -> None:
+    if not RESULT.exists():
+        return
+    module = load()
+    corrected = module.load_corrected_importer()
+    import json
+
+    value = json.loads(RESULT.read_text(encoding="utf-8"))
+    corrected.validate_result(value)
+    assert value["repository_attribution"]["github_run_attempt"] == 1
