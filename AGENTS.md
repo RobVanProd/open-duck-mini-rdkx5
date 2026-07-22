@@ -2412,3 +2412,18 @@ Do not proceed to grounded walking until low-risk gates pass.
   selection, runtime, RDK-X5, robot, Gate 5, deployment, and clearance remain
   unauthorized. See
   `outputs/analysis/WINNER_V27_EARLY_PREFIX_RECOVERY_SCAN_PREREGISTRATION_20260722.md`.
+- 2026-07-22: The sole first-attempt Winner-v27 early-prefix recovery scan
+  passed on GitHub run `29887070007`; its original 408,492-byte ZIP exactly
+  matches GitHub SHA-256 `c567ae46...f1a524e`. All 40 candidate prefixes, 240
+  forks, and 720 branch rollouts passed, including exact candidate continuation
+  replay, fork-zero Winner-v22 replay with tick-52 right censoring, and bit-
+  exact source repeats. Source recovery fractions for half at ticks
+  `0/4/8/12/16/20` are `1.00/.85/.40/.10/.05/0`; final is
+  `1.00/.95/.15/.15/.15/.15`. Classification:
+  `EARLY_PREFIX_PHYSICAL_STATE_LOCK_IN`. The harmful state is accumulated
+  largely between ticks 4 and 8, before later recurrence can repair it. This
+  authorizes only a separately preregistered prefix joint-group action causal
+  screen. It does not authorize an action wrapper, objective change, training,
+  checkpoint selection, runtime, RDK-X5, robot, Gate 5, deployment, or
+  clearance. See
+  `outputs/analysis/WINNER_V27_EARLY_PREFIX_RECOVERY_SCAN_RESULT_20260722.md`.
