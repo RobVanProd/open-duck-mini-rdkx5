@@ -3485,3 +3485,17 @@ Do not proceed to grounded walking until low-risk gates pass.
   not authorize an update, checkpoint selection, deployment, Gate 5,
   RDK-X5/robot access, torque, motion, or clearance. See
   `outputs/analysis/WINNER_V55B_NATIVE_RESET_QUANTIZATION_RESULT_20260722.md`.
+- 2026-07-22: Winner-v56 preregisters one zero-update first-tick teacher
+  gradient proof from the exact V52 final count-`453` snapshot. The batch is
+  the `11` frozen training configurations x two plants x raw/native-quantized
+  reset inputs (`44` rows, `616` full-action elements); held-out labels are
+  forbidden. The loss receives the unchanged V52 full-action coefficient
+  `136.35153198242188`, giving the complete critical reset map one objective-
+  term weight without a scale search. With zero previous action and zero
+  hidden input, only `obs_weight`, `hidden_bias`, `action_weight`, and
+  `action_bias` may receive gradients. Contract SHA-256:
+  `84774c59...7c0adca7`. This performs no simulator step, optimizer update,
+  export, RDK-X5/robot access, torque, or motion. A pass can authorize only a
+  separately preregistered single CPU Adam update, not training continuation,
+  checkpoint selection, deployment, Gate 5, or clearance. See
+  `outputs/analysis/WINNER_V56_FIRST_TICK_TEACHER_GRADIENT_CONTRACT_20260722.md`.
