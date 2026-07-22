@@ -2665,3 +2665,17 @@ Do not proceed to grounded walking until low-risk gates pass.
   No controller deployment, checkpoint selection, Gate 5, or robot clearance
   is authorized. See
   `outputs/analysis/WINNER_V36_SUPPORT_ORACLE_SHOOTING_FEASIBILITY_PREREGISTRATION_20260722.md`.
+- 2026-07-22: The sole Winner-v36 formal run `29897378894` completed HOLD; its
+  original 107,560-byte ZIP exactly matches GitHub SHA-256
+  `43f09ee5...fd9ac907`. The exact bounded six-pitch-joint shooting controller
+  produced `0/2` full-horizon support passes on `COM_X_NEG`. P30 terminates at
+  tick 55 and P31/34 at tick 52; both fail only `roll_pitch`, with minimum base
+  height still `0.13947/0.14032 m`, maximum tilt `0.40814/0.39300 rad`, and no
+  torque/current gate setting. Classification:
+  `THIS_SHOOTING_CONTROLLER_NOT_FULL_HORIZON_FEASIBLE`; decision:
+  `DO_NOT_USE_V36_SHOOTING_CONTROLLER_AS_TEACHER`. Do not tune its horizon,
+  population, pitch-joint set, objective, or use it as a policy/runtime action
+  wrapper. This result closes the exact controller, not physical
+  controllability. No checkpoint is selected and robot clearance remains
+  false. See
+  `outputs/analysis/WINNER_V36_SUPPORT_ORACLE_SHOOTING_FEASIBILITY_RESULT_20260722.md`.
