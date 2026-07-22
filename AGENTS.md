@@ -4023,3 +4023,14 @@ Do not proceed to grounded walking until low-risk gates pass.
   authorized. The only selected next step is a separately preregistered
   zero-update count-`675` direction/precision attribution. See
   `outputs/analysis/WINNER_V81_PITCH_ACTION_HEAD_CONTINUATION_RESULT_20260722.md`.
+- 2026-07-22: Winner-v82 bit-exactly reproduces the count-`675` stop and
+  classifies it as `ADAM_GEOMETRY_STALLED_NEGATIVE_GRADIENT_DESCENDS`.
+  Twenty-one inherited-Adam fractions through `1/1,048,576` never lower the
+  float32 teacher loss, while a norm-matched instantaneous negative gradient
+  strictly descends at every fraction from `1/2` through `1/4096`; its best
+  diagnostic fraction is `1/2` (`0.0072185365 -> 0.0071995878`). Result
+  SHA-256: `5d7a3b64...415ebc37`. This zero-update result selects only one
+  separately preregistered count-`675` negative-gradient step proof. It grants
+  no continuation, support, checkpoint selection, deployment, Gate 5,
+  RDK-X5/robot access, torque, motion, or clearance. See
+  `outputs/analysis/WINNER_V82_COUNT675_DIRECTION_PRECISION_ATTRIBUTION_RESULT_20260722.md`.
