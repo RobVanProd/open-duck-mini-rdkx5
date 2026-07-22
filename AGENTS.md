@@ -3019,3 +3019,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   checkpoint selection. A pass may authorize only a separately frozen
   half/final support and context gate. See
   `outputs/analysis/WINNER_V46_STATIC_TARGET_TEACHER_TRAINING_PREREGISTRATION_20260722.md`.
+- 2026-07-22: While the sole Winner-v46 arm is still running, the Winner-v47
+  support-gate package is pre-specified but inert. It binds no checkpoint and
+  cannot generate a contract until a strictly imported passing Winner-v46
+  artifact exists. The proposed evaluator is exactly the unchanged reviewed
+  124-cell-per-checkpoint physical support/context gate: both half and final,
+  250 ticks per cell, 248 main cells total, 64 heldout repeat cells, all 16
+  heldout contexts separate at both checkpoints, learned prediction beating
+  the constant baseline separately per plant, and no closest-result promotion.
+  This pre-specification occurs before observing either Winner-v46 checkpoint
+  and performs zero gate cells, optimizer updates, RDK-X5/robot access,
+  checkpoint selection, or clearance. Only a later hash-bound contract built
+  from a passing imported Winner-v46 result can authorize execution.
