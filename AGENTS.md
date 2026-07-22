@@ -2269,3 +2269,17 @@ Do not proceed to grounded walking until low-risk gates pass.
   training preregistration; it does not yet authorize the training run,
   support gate, checkpoint selection, deployment, Gate 5, or robot access. See
   `outputs/analysis/WINNER_V24_BASELINE_ANCHORED_ONE_UPDATE_CPU_RESULT_V2_20260722.md`.
+- 2026-07-22: One Winner-v24 baseline-anchored 100-update CPU continuation is
+  preregistered. It independently restores the exact Winner-v22 final snapshot
+  and optimizer at count 100, runs rollout indices 100-199 with the frozen
+  `-250` observed roll/pitch terminal objective, and ends at optimizer count
+  200. A rollout with no roll/pitch failures is a required bit-exact objective
+  no-op; successful elimination of failures must not abort training. There is
+  no coefficient, length, predictor-scale, or checkpoint search.
+  Atomic snapshots 101-200 and only count-150/count-200 half/final ONNX graphs
+  are retained. The workflow must stop on any transition, mask, hidden replay,
+  gradient, snapshot, or graph mismatch. Exactly one first-attempt run is
+  authorized. Formal support, checkpoint selection, locomotion, RDK-X5, robot,
+  torque, and hardware remain unauthorized. A training pass may authorize only
+  a separately frozen support gate. See
+  `outputs/analysis/WINNER_V24_BASELINE_ANCHORED_TRAINING_PREREGISTRATION_20260722.md`.
