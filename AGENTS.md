@@ -3241,3 +3241,17 @@ Do not proceed to grounded walking until low-risk gates pass.
   update. A separately frozen arithmetic-order audit with a mathematically
   derived elementwise floating-point bound is required. See
   `outputs/analysis/WINNER_V50_FULL_ACTION_TEACHER_SOURCE_GRADIENT_RESULT_20260722.md`.
+- 2026-07-22: Winner-v50b preregisters one zero-update, CPU-only arithmetic
+  attribution while preserving V50 as a hold. It reruns the exact V50
+  `80 x 250` update-352 rollout and captures every element of the old and new
+  direct/composed float32 gradient trees. The bound is the campaign's already
+  preregistered Winner-v31 maximum of eight signed-float32 ULP per element; it
+  was not selected from V50's unrecorded elementwise distances. Both
+  `4.76837158203125e-6` absolute errors, all scalar/rollout evidence, and every
+  non-composition check must reproduce exactly. The old `4e-6` V50 threshold
+  is not changed and V50 is not rewritten. This attribution executes zero
+  optimizer updates, support cells, locomotion-training steps, graph exports,
+  RDK-X5/robot access, torque, or motion. A pass can authorize only a separately
+  preregistered one-update CPU proof; training, deployment, checkpoint
+  selection, and clearance remain false. See
+  `outputs/analysis/WINNER_V50B_GRADIENT_COMPOSITION_ULP_ATTRIBUTION_CONTRACT_20260722.md`.
