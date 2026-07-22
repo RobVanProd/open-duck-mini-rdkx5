@@ -2818,3 +2818,18 @@ Do not proceed to grounded walking until low-risk gates pass.
   closest result. It is not a runtime target/wrapper, checkpoint selection,
   Gate 5 authorization, or robot clearance. See
   `outputs/analysis/WINNER_V41_STATIC_EQUILIBRIUM_TARGET_FEASIBILITY_PREREGISTRATION_20260722.md`.
+- 2026-07-22: Winner-v41 first attempt `29901924055` is preserved as
+  `INVALID_WINNER_V41_FIRST_ATTEMPT_NO_RESULT`. It passed tests, source hashes,
+  and environment preparation, then failed before candidate 0 reached MuJoCo:
+  the runner passed a single `(1,3)` static target to the frozen Winner-v38
+  helper that accepts exactly four `(4,3)` sequence blocks. No result or
+  artifact was produced and candidate/plant execution counts are `0/0`. Do not
+  rerun that workflow or infer efficacy. One versioned v2 correction is
+  preregistered: replace only that call with the same reviewed mirror-matrix
+  multiplication into indices `2/3/4/11/12/13`. The 729 targets, both plants,
+  250 ticks, action boundary, selection/pass rules, execution counts, and
+  authority are unchanged. Exactly one separately named corrected CPU run is
+  authorized. Optimizer updates, training, runtime target/wrapper, RDK-X5,
+  robot, Gate 5, deployment, and clearance remain unauthorized. See
+  `outputs/analysis/WINNER_V41_FIRST_ATTEMPT_FAILURE_RECEIPT_20260722.md` and
+  `outputs/analysis/WINNER_V41_V2_RUNNER_CORRECTION_PREREGISTRATION_20260722.md`.

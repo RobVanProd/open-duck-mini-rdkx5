@@ -1,0 +1,122 @@
+{
+  "authority": {
+    "first_attempt_rerun_authorized": false,
+    "one_versioned_corrected_run_authorized": true,
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false,
+    "runtime_static_target_or_action_wrapper_authorized": false,
+    "training_authorized": false
+  },
+  "correction": {
+    "changed_behavior": "accept exactly one three-coordinate static target",
+    "new_call": "coordinates @ v38.MIRROR_MATRIX.T into the same six indices",
+    "old_call": "v38.expand_mirrored_blocks(coordinates[None, :])",
+    "unchanged_behavior": "grid, basis, action boundary, plants, duration, selection, pass rule, execution counts, and authority"
+  },
+  "decision": "AUTHORIZE_ONE_CORRECTED_CPU_ONLY_V41_SCREEN",
+  "execution_now": {
+    "candidate_plant_cells": 0,
+    "locomotion_training_steps": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0,
+    "static_target_candidates": 0
+  },
+  "first_attempt": {
+    "artifact_count": 0,
+    "classification": "PRE_CANDIDATE_STATIC_TARGET_EXPANSION_SHAPE_DEFECT",
+    "decision": "AUTHORIZE_NARROW_V41_V2_RUNNER_CORRECTION_PREREGISTRATION_ONLY",
+    "failure": {
+      "exception": "ValueError",
+      "message": "Winner-v38 mirrored block sequence shape changed",
+      "source_call": "v38.expand_mirrored_blocks(coordinates[None, :])",
+      "source_line": 115,
+      "stage": "first candidate target expansion"
+    },
+    "github_run": {
+      "attempt": 1,
+      "conclusion": "failure",
+      "head_sha": "cd89be92cdd3b669cdb8ec5a50486dcc65484ca8",
+      "run_id": 29901924055,
+      "url": "https://github.com/RobVanProd/open-duck-mini-rdkx5/actions/runs/29901924055"
+    },
+    "schema_version": "winner_v41.first_attempt_failure_receipt.v1",
+    "status": "INVALID_WINNER_V41_FIRST_ATTEMPT_NO_RESULT",
+    "work_executed": {
+      "candidate_plant_cells": 0,
+      "optimizer_updates": 0,
+      "robot_or_rdk_access": 0,
+      "static_target_candidates": 0
+    }
+  },
+  "pass_rule": "unchanged winner_v41.static_equilibrium_target_feasibility_preregistration.v1",
+  "schema_version": "winner_v41.v2_runner_correction_preregistration.v1",
+  "source_manifest_sha256": "e1c13157ad0ec7fe523a3a6a667cfdf8c9b5c9ddb5d13e4c30386737055d8255",
+  "sources": {
+    "base_importer": {
+      "hash_mode": "lf",
+      "path": "tools/import_winner_v41_static_equilibrium_target_feasibility.py",
+      "sha256": "111aa4d591f40a055bfc5d5c4f67c5d8f71c53939ede66520440ad6cd6ebe462"
+    },
+    "base_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v41_static_equilibrium_target_feasibility_preregistration.json",
+      "sha256": "59173d447b5899e199fdadd09d5025ae2b2f93dd3c976069a294b2c92d7f0ae4"
+    },
+    "base_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v41_static_equilibrium_target_feasibility.py",
+      "sha256": "111ae5870e94be1b6d859e78c1043d093c345436bb3db834cdc9b9ede4d8724b"
+    },
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v41_v2_runner_correction_preregistration.py",
+      "sha256": "9c14eb80cf761eb19f10c3677dedb784b5a4f785ef57fe32123069105c651bed"
+    },
+    "corrected_result_importer": {
+      "hash_mode": "lf",
+      "path": "tools/import_winner_v41_v2_static_equilibrium_target_feasibility.py",
+      "sha256": "6e77d77ea25a5004e0dfe3e8f956dcd000be0b06376e2c4eff59c0e1e90b91c7"
+    },
+    "corrected_result_importer_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v41_v2_static_equilibrium_target_feasibility_import.py",
+      "sha256": "cebf91df9a94fbdc4000436147414f837d69c898865e96d4f1413f303e7582b8"
+    },
+    "corrected_workflow": {
+      "hash_mode": "lf",
+      "path": ".github/workflows/winner-v41-v2-static-equilibrium-target-feasibility.yml",
+      "sha256": "e5ca50d5fa771ce35c26ef0f9f650fea129f335fe4d8cf59b239e4b3ef2b003d"
+    },
+    "correction_preregistration_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v41_v2_runner_correction_preregistration.py",
+      "sha256": "005e9763e6f3d0c4f08e9c57296193e3c6cc68aa5d4366a4c39e05b02724dd0e"
+    },
+    "correction_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v41_v2_static_equilibrium_target_feasibility.py",
+      "sha256": "79001821b6d4ed040a363df737324daadc8b6929165e676ff9a95fdfbb440810"
+    },
+    "correction_runner_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v41_v2_static_equilibrium_target_feasibility.py",
+      "sha256": "1902cefb83e305098c1310b94cc3e8588031c1e70e4752d1b1c86190c34e718d"
+    },
+    "first_attempt_failure_markdown": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/WINNER_V41_FIRST_ATTEMPT_FAILURE_RECEIPT_20260722.md",
+      "sha256": "566fbf0ba22a1502decef8cf8d230c03f2b2feb46aa30938204a2ceb44acc07d"
+    },
+    "first_attempt_failure_receipt": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v41_first_attempt_failure_receipt.json",
+      "sha256": "9c036a711dee5ab5f950e6105a29f9f84ee5a7d029f203ea6329644bf85c355f"
+    },
+    "reviewed_mirror_basis": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v16_support_action_direction.py",
+      "sha256": "1b34b8d26743904e005d844e5f7e07e53f78a555a8a99f0035d3f0a778352c33"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V41_V2_RUNNER_CORRECTION"
+}
