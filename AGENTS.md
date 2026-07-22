@@ -2595,3 +2595,18 @@ Do not proceed to grounded walking until low-risk gates pass.
   the unchanged gate. Decision: `DO_NOT_TRAIN_RESPONSE_CONDITIONED_LOCOMOTION`.
   No checkpoint is selected and robot clearance remains false. See
   `outputs/analysis/WINNER_V33_PREFIX_RIGHT_PITCH_ANCHOR_SUPPORT_GATE_RESULT_20260722.md`.
+- 2026-07-22: One zero-update Winner-v34 direct right-pitch prefix
+  intervention is preregistered over the exact union of 15 Winner-v33 failing
+  configurations, both actuator plants, and both Winner-v32 checkpoints. It
+  runs 60 CONTROL and 60 `RIGHT_PITCH_REPLACED` cells for 250 ticks. At ticks
+  0-7 only, indices `11/12/13` are replaced by Winner-v22 final actions computed
+  on the candidate observation and realized previous-action history; Winner-v32
+  resumes unchanged at tick 8. CONTROL must reproduce the exact action/hidden
+  chains and support outcome from Winner-v33, with only `1e-12` tolerance for
+  redundant MuJoCo scalar summaries across CPU executions. A pass requires all
+  60 replacement cells to pass, including recovery of every original failure
+  and preservation of every original pass. Exactly one formal CPU run is
+  authorized. Optimizer updates, locomotion training, runtime wrappers,
+  checkpoint selection, RDK-X5, robot, Gate 5, deployment, and clearance remain
+  unauthorized. See
+  `outputs/analysis/WINNER_V34_PREFIX_RIGHT_PITCH_HARD_INTERVENTION_PREREGISTRATION_20260722.md`.
