@@ -3942,3 +3942,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   checkpoint selection, deployment, Gate 5, RDK-X5/robot access, torque,
   motion, or clearance. See
   `outputs/analysis/WINNER_V73_UPDATE638_CONTRACT_ATTRIBUTION_RESULT_20260722.md`.
+- 2026-07-22: Winner-v74 proves the count-`638` replay stop is the same
+  eager-versus-`lax.scan` float32 execution-order effect previously isolated by
+  Winner-v59. Eager replay is bit-exact; scan hidden maximum is
+  `3.7550926e-6`, but mean-action, value, log-probability/ratio, and PPO-loss
+  deltas are `1.63913e-7`, `4.76837e-6`, `7.62939e-6`, and exact `0`, all
+  inside the unchanged V59 functional bounds. Result SHA-256:
+  `c30027f0...81d6bc33`. This does not raise or search the raw scan threshold;
+  it authorizes only preregistration of a continuation guarded by bit-exact
+  eager replay and the fixed functional bounds. No optimizer update, support,
+  checkpoint selection, deployment, Gate 5, RDK-X5/robot access, torque,
+  motion, or clearance occurred. See
+  `outputs/analysis/WINNER_V74_UPDATE638_HIDDEN_REPLAY_NUMERIC_AUDIT_RESULT_20260722.md`.

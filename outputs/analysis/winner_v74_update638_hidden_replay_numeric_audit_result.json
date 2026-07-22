@@ -1,0 +1,129 @@
+{
+  "authority": {
+    "checkpoint_selection_authorized": false,
+    "continuation_authorized": false,
+    "deployment_authorized": false,
+    "diagnostic_authorized": true,
+    "formal_support_gate_authorized": false,
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false
+  },
+  "checks": {
+    "all_preupdate_values_finite": true,
+    "eager_replay_bit_exact_to_rollout": true,
+    "log_probability_delta_within_1e_4": true,
+    "mean_action_delta_within_1e_6": true,
+    "ppo_loss_delta_within_1e_4": true,
+    "probability_ratio_delta_within_1e_4": true,
+    "rollout_index_637_exact": true,
+    "scan_exceeds_legacy_2e_6_guard": true,
+    "scan_metric_reproduces_v73": true,
+    "source_count_637_exact": true,
+    "v73_sole_failure_is_hidden_replay_at_2e_6": true,
+    "value_delta_within_1e_5": true,
+    "would_complete_638_exact": true
+  },
+  "classification": "EAGER_SCAN_FLOAT32_DRIFT_WITH_BOUNDED_POLICY_EFFECT_AND_STALE_ABSOLUTE_SCAN_GUARD",
+  "decision": "PREREGISTER_FUNCTIONAL_NUMERIC_GUARD_CONTINUATION_ONLY",
+  "execution": {
+    "formal_support_cells": 0,
+    "locomotion_steps": 0,
+    "onnx_graphs_written": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0,
+    "rollout_update_indices": [
+      637
+    ],
+    "scheduled_episode_slots": 20000,
+    "snapshots_written": 0
+  },
+  "failed_checks": [],
+  "first_legacy_threshold_crossing": {
+    "absolute_error": 2.0489096641540527e-06,
+    "configuration_id": "DISCOVERY_15",
+    "environment": 78,
+    "hidden_index": 51,
+    "plant": "P30_ALL_JOINT",
+    "tick": 14
+  },
+  "maximum_error_location": {
+    "absolute_error": 3.7550926208496094e-06,
+    "configuration_id": "DISCOVERY_15",
+    "environment": 79,
+    "hidden_index": 49,
+    "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+    "tick": 19
+  },
+  "metrics": {
+    "eager_hidden_max_abs_error": 0.0,
+    "log_probability_max_abs_delta": 7.62939453125e-06,
+    "mean_action_max_abs_delta": 1.6391277313232422e-07,
+    "ppo_loss_abs_delta": 0.0,
+    "probability_ratio_max_abs_delta": 7.62939453125e-06,
+    "scan_hidden_max_abs_error": 3.7550926208496094e-06,
+    "scan_hidden_mean_abs_error": 1.720566134011392e-09,
+    "scan_hidden_p95_abs_error": 0.0,
+    "scan_hidden_p99_9_abs_error": 1.7881393432617188e-07,
+    "scan_hidden_p99_abs_error": 5.960464477539063e-08,
+    "value_max_abs_delta": 4.76837158203125e-06
+  },
+  "schema_version": "winner_v74.update638_hidden_replay_numeric_audit_result.v1",
+  "source_manifest_sha256": "ec25b4de720bee9baefcd9811bd32166afcd19b3001c1f2c8036bb1e26ba8118",
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v74_update638_hidden_replay_numeric_audit.py",
+      "sha256": "3bf6528c8f8db565d91e5292d865b66d676cca0b2756dabfccd66db6433548ad"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v74_update638_hidden_replay_numeric_audit.py",
+      "sha256": "2f465748719157529b18fc5ed3eff617e5e33843649bff8b11ebc10a61ec8e31"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v74_update638_hidden_replay_numeric_audit.py",
+      "sha256": "7b0c005798170e33d6eb324438d61a6a46b2d961abf3df59c0abbd9999ef9d30"
+    },
+    "v59_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v59_hidden_replay_numeric_attribution_preregistration.json",
+      "sha256": "2b6047e2f43ac123d4eaf90da601a632f87afb62a49fa80f3ee4b27c982b8597"
+    },
+    "v59_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v59_hidden_replay_numeric_attribution_result.json",
+      "sha256": "35480a277f3b98c80eaaf2383e221c84556b215dd9112495c658eaff1c8ff09d"
+    },
+    "v73_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v73_update638_contract_attribution_preregistration.json",
+      "sha256": "d88e9f870425d6d1a0bde173be7148aa3e96ec6a10db10dd2a441e90f54e041d"
+    },
+    "v73_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v73_update638_contract_attribution_result.json",
+      "sha256": "ae49c8189fe494a45b482e6423c6c158bdf9e844f1854071ecdbdd7b4e623fdf"
+    },
+    "v73b_builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v73b_empty_directory_check_correction.py",
+      "sha256": "529689f1ba12a40f75235fbcba8240974870ba157d43315fe3fede864c6bbf9a"
+    },
+    "v73b_correction": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v73b_empty_directory_check_correction.json",
+      "sha256": "47c76e5f988bc3ff182550345d1e1e702440813fa3f715eb83dd4717976a9dc2"
+    }
+  },
+  "status": "PASS_WINNER_V74_UPDATE638_HIDDEN_REPLAY_NUMERIC_AUDIT",
+  "thresholds": {
+    "eager_hidden_max_abs_error": 0.0,
+    "legacy_scan_hidden_max_abs_error": 2e-06,
+    "log_probability_max_abs_delta": 0.0001,
+    "mean_action_max_abs_delta": 1e-06,
+    "ppo_loss_abs_delta": 0.0001,
+    "probability_ratio_max_abs_delta": 0.0001,
+    "value_max_abs_delta": 1e-05
+  }
+}
