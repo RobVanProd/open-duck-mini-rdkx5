@@ -3625,3 +3625,14 @@ Do not proceed to grounded walking until low-risk gates pass.
   preregistered unchanged half/final support gate; it does not authorize
   deployment, Gate 5, RDK-X5/robot access, torque, motion, or clearance. See
   `outputs/analysis/WINNER_V60_INTEGRATED_NUMERIC_GUARD_TRAINING_PREREGISTRATION_20260722.md`.
+- 2026-07-22: Winner-v60 completes all `100` CPU updates from count `454` to
+  `554` with `100` digest-readback snapshots and all `23` artifact checks
+  passing. The maximum hidden replay error is `1.6093254e-6 < 2e-6`; all 12
+  trainable leaves change and every teacher, mask, boundary, finite-state, and
+  locality invariant holds. Half/final ONNX SHA-256 values are
+  `37e483f...7af0a02` / `4a6386d8...9ac3939`; both preserve the stateful ABI,
+  bounds, exact action chain, and JAX agreement. Result SHA-256:
+  `50622331...f6b8b57`. Neither checkpoint is selected. This authorizes only a
+  separately preregistered unchanged half/final offline support gate, not
+  deployment, Gate 5, RDK-X5/robot access, torque, motion, or clearance. See
+  `outputs/analysis/WINNER_V60_INTEGRATED_NUMERIC_GUARD_TRAINING_RESULT_20260722.md`.
