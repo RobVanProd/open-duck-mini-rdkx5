@@ -3376,3 +3376,19 @@ Do not proceed to grounded walking until low-risk gates pass.
   preregistration of the unchanged half/final support gate and grants no robot
   clearance, deployment, X5/robot access, torque, or motion. See
   `outputs/analysis/WINNER_V52_FULL_ACTION_TEACHER_TRAINING_RESULT_20260722.md`.
+- 2026-07-22: Winner-v53 preregisters exactly one unchanged `248`-cell CPU
+  support gate over the verified V52 count-`403` and count-`453` artifacts.
+  Each checkpoint must pass all `124` main cells, all `32` held-out repeats,
+  all `16` held-out context-separation checks, and learned-predictor-versus-
+  constant checks for both P30 and P31/34. The reviewed Winner-v12 physical
+  evaluator, variable-configuration population, sensor/transport conditions,
+  thresholds, seeds, and 250-tick duration are unchanged; the corrected base
+  calibrator-design provenance is supplied explicitly. Selection by closest
+  metric is forbidden. If and only if every check passes at both checkpoints,
+  the fixed terminal endpoint at update `453` is selected; any hold selects
+  nothing. Preregistration SHA-256: `c766c086...2b3d47e`. This gate is CPU-only
+  and performs no optimizer updates, RDK-X5/robot access, serial/GPIO/I2C,
+  torque, or motion. A pass may grant policy clearance only for a separately
+  frozen, separately authorized suspended Gate 5 after runtime asset freeze
+  and no-servo preflight. See
+  `outputs/analysis/WINNER_V53_FULL_ACTION_TEACHER_SUPPORT_GATE_PREREGISTRATION_20260722.md`.
