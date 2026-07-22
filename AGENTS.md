@@ -3843,3 +3843,14 @@ Do not proceed to grounded walking until low-risk gates pass.
   No support cell, checkpoint selection, deployment, Gate 5, RDK-X5/robot
   access, torque, motion, or clearance has occurred. See
   `outputs/analysis/WINNER_V67_BACKTRACKED_ADAM_STEP_RESULT_20260722.md`.
+- 2026-07-22: Winner-v68 preregisters the remaining bounded `80`-update
+  backtracked-Adam continuation from optimizer count `575` to `655`, retaining
+  the original unselected half/final endpoints `605/655`. Each update uses the
+  same full-14D persistent-teacher gradient and inherited Adam moments, then
+  accepts the first strict same-batch descent from the fixed largest-first grid
+  `1, 1/2, 1/4, 1/8, 1/16`. Every accepted update is atomically snapshotted;
+  endpoint ONNX graphs are exported only at `605/655`. Contract SHA-256:
+  `3482da83...30a68714`. No attention, flat-transport equation, coefficient or
+  length search, support evaluation, checkpoint selection, deployment,
+  Gate 5, RDK-X5/robot access, torque, motion, or clearance is included. See
+  `outputs/analysis/WINNER_V68_BACKTRACKED_ADAM_CONTINUATION_PREREGISTRATION_20260722.md`.
