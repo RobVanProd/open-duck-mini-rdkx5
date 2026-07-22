@@ -3282,3 +3282,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   authorize only a separately preregistered one-update CPU proof; training,
   deployment, checkpoint selection, and clearance remain false. See
   `outputs/analysis/WINNER_V50C_GRADIENT_BACKWARD_ERROR_ATTRIBUTION_CONTRACT_20260722.md`.
+- 2026-07-22: The sole Winner-v50c scale-aware attribution passes every check.
+  Against the frozen `sqrt(float32 epsilon) = 0.00034526698300124393` bound,
+  old/new maximum relative error is only
+  `7.29267879396252e-7 / 7.51381898651892e-7`, and maximum RMS-relative error
+  is `2.6416685503084517e-7 / 2.6547401864741865e-7`. No material sign changes
+  occur and zero-reference leaves remain bit-exact. The exact V50 absolute
+  errors and all non-composition evidence reproduce. Result SHA-256:
+  `ce3bbe55...1d2883d3`. V50 and V50b remain holds under their own unchanged
+  metrics; this pass authorizes only preregistration of one exact CPU optimizer
+  update from the frozen V46 terminal state. It does not authorize training,
+  support evaluation, deployment, RDK-X5/robot access, torque, motion,
+  checkpoint selection, or clearance. See
+  `outputs/analysis/WINNER_V50C_GRADIENT_BACKWARD_ERROR_ATTRIBUTION_RESULT_20260722.md`.
