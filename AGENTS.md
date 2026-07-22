@@ -3001,3 +3001,21 @@ Do not proceed to grounded walking until low-risk gates pass.
   support cell, continuation update, RDK-X5/robot access, checkpoint selection,
   or clearance occurred. See
   `outputs/analysis/WINNER_V45_STATIC_TARGET_TEACHER_ONE_UPDATE_CPU_RESULT_20260722.md`.
+- 2026-07-22: One Winner-v46 bounded static-target-teacher continuation is
+  preregistered from the exact passing Winner-v45 count-`252` snapshot. It
+  inherits Winner-v32's unchanged 100-update persistence length without a
+  coefficient or length search, yielding persistent half/final checkpoints at
+  counts `302/352`. Every update uses the complete existing PPO + normalized
+  predictor (`380.9135437011719`) + prefix anchor (`197.3112030029297`)
+  objective plus the sole frozen static-target-teacher scale
+  `58.436370849609375`. Labels cover exactly the 11 training configurations
+  and 22 plant rows; all four heldout labels remain excluded, supervision is
+  limited to pitch indices `2/3/4/11/12/13`, targets and previous-action paths
+  are stopped, and actions are never replaced. The workflow must preserve the
+  exact source snapshot/graph, Adam state, transition mechanics, bounded action
+  graph, all 12 updating leaves, frozen parameter leaves, atomic snapshots,
+  and stateful `115/14/64` ONNX ABI. Exactly one first-attempt CPU arm is
+  authorized. It performs zero formal support cells, RDK-X5/robot access, or
+  checkpoint selection. A pass may authorize only a separately frozen
+  half/final support and context gate. See
+  `outputs/analysis/WINNER_V46_STATIC_TARGET_TEACHER_TRAINING_PREREGISTRATION_20260722.md`.

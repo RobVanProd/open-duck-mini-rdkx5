@@ -1,0 +1,478 @@
+{
+  "authority": {
+    "formal_support_gate_authorized": false,
+    "pass_authorizes_only": "a separate static-target-teacher support gate preregistration",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false,
+    "training_authorized": true
+  },
+  "causal_hypothesis": "Winner-v42 proved a shared two-plant static support target for every failure configuration; V43/V44 isolated a training-only six-pitch gradient and its sole scale; V45 proved one exact update reduces same-batch teacher error while preserving the deployable graph. One inherited-length continuation now tests persistence.",
+  "decision": "AUTHORIZE_ONE_100_UPDATE_STATIC_TARGET_TEACHER_ARM_ONLY",
+  "execution_now": {
+    "formal_support_cells": 0,
+    "locomotion_steps": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0
+  },
+  "frozen_training": {
+    "coefficient_or_length_search": false,
+    "continuation_optimizer_updates": 100,
+    "duration_source": "inherit Winner-v32 100-update half/final persistence design without search",
+    "environments_per_update": 80,
+    "final_optimizer_count": 352,
+    "learning_rate": 0.0001,
+    "persistent_checkpoints": {
+      "final": 352,
+      "half": 302
+    },
+    "persistent_snapshots": "atomic digest-protected readback after every update",
+    "predictor_scale": 380.9135437011719,
+    "prefix_anchor_scale": 197.3112030029297,
+    "rollout_update_indices": [
+      252,
+      351
+    ],
+    "scheduled_episode_slots": 2000000,
+    "source_completed_updates": 252,
+    "source_optimizer_count": 252,
+    "static_target_teacher_scale": 58.436370849609375,
+    "ticks_per_environment": 250,
+    "training_root_seed": 120120
+  },
+  "objective": {
+    "combined_gradient": "existing Winner-v32 gradient plus exact frozen-scale static-target-teacher gradient",
+    "ppo": "unchanged Winner-v32 recurrent PPO objective and failure transition shaping",
+    "predictor": "unchanged normalized successor predictor at scale 380.9135437011719",
+    "prefix_anchor": "unchanged Winner-v32 prefix right-pitch anchor at scale 197.3112030029297",
+    "static_target_teacher": {
+      "action_indices": [
+        2,
+        3,
+        4,
+        11,
+        12,
+        13
+      ],
+      "action_replacement": false,
+      "actor_input_added": false,
+      "candidate": "deterministic graph-authoritative bounded recurrent mean",
+      "configuration_ids": [
+        "COM_X_NEG",
+        "COM_CORNER_00",
+        "COM_CORNER_01",
+        "COM_CORNER_02",
+        "COM_CORNER_03",
+        "OPTIONAL_AGGREGATE_HEAVY_AFT",
+        "DISCOVERY_02",
+        "DISCOVERY_03",
+        "DISCOVERY_06",
+        "DISCOVERY_09",
+        "DISCOVERY_10"
+      ],
+      "configuration_plant_rows": 22,
+      "heldout_ids_excluded": [
+        "HELDOUT_04",
+        "HELDOUT_07",
+        "HELDOUT_09",
+        "HELDOUT_15"
+      ],
+      "loss": "pitch-mask mean squared error",
+      "scale": 58.436370849609375,
+      "table": "exact imported Winner-v42 selected shared two-plant targets",
+      "target": "stop-gradient graph-bounded static target relative to realized previous action"
+    }
+  },
+  "post_training_selection": {
+    "authorized_now": false,
+    "checkpoint_rule": "both checkpoints remain evidence until one separately frozen support and context gate classifies both",
+    "pass_authorizes_only": "a separately preregistered half/final support and context gate"
+  },
+  "schema_version": "winner_v46.static_target_teacher_training_preregistration.v1",
+  "source_checkpoint": {
+    "completed_updates": 252,
+    "graph": {
+      "bytes": 54896,
+      "contract": {
+        "abi_exact": true,
+        "all_chain_outputs_finite": true,
+        "all_initializers_finite": true,
+        "bytes": 54896,
+        "chain_ticks": 250,
+        "forbidden_training_or_privileged_tokens": [],
+        "initializer_count": 9,
+        "inputs": [
+          {
+            "name": "obs",
+            "shape": [
+              1,
+              115
+            ]
+          },
+          {
+            "name": "previous_action",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_in",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "jax_onnx_at_most_1e_7": true,
+        "jax_onnx_max_abs_error": 0.0,
+        "outputs": [
+          {
+            "name": "calibration_actions",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "previous_action_out",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_out",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "path": "/tmp/winner-v45-static-target-teacher-one-update-work/winner_v45_static_target_teacher_update_252.onnx",
+        "previous_action_out_equals_action_bit_exact": true,
+        "sha256": "8571f8271aeeecd5cc54bfc0fe8a24156b5cabd3efd0e57efecc75c9e490d242",
+        "training_only_tensors_absent": true
+      },
+      "path": "/tmp/winner-v45-static-target-teacher-one-update-work/winner_v45_static_target_teacher_update_252.onnx",
+      "sha256": "8571f8271aeeecd5cc54bfc0fe8a24156b5cabd3efd0e57efecc75c9e490d242",
+      "v45_forbidden_tokens_present": []
+    },
+    "optimizer_count": 252,
+    "repository_attribution": {
+      "artifact_zip_bytes": 247738,
+      "artifact_zip_sha256": "5ff180cdd05eb00b77c136b0ac2747896cf77043dafb980a5fd661ce665523aa",
+      "contract_lf_sha256": "c414f99c0fb8ad03b65d8321898c72d280d12fb47ae25425a442a121b9dac3ec",
+      "github_artifact_digest": "sha256:5ff180cdd05eb00b77c136b0ac2747896cf77043dafb980a5fd661ce665523aa",
+      "github_artifact_id": 8524663581,
+      "github_artifact_name": "winner-v45-static-target-teacher-one-update-29907921832",
+      "github_run_attempt": 1,
+      "github_run_head_sha": "501e3b0f2295e2bf0d45252ed15300958d3883fc",
+      "github_run_id": 29907921832,
+      "graph_member": "winner-v45-static-target-teacher-one-update-work/winner_v45_static_target_teacher_update_252.onnx",
+      "graph_sha256": "8571f8271aeeecd5cc54bfc0fe8a24156b5cabd3efd0e57efecc75c9e490d242",
+      "importer_correction_contract_lf_sha256": "6da7e8dff8e21d7716a755f136dac3b3b87034525c3b1877c2cd99fb55142a6a",
+      "importer_correction_lf_sha256": "be0406c8590c356709037ece8424296f8641fb312cad0f6312a91bf2578a2e09",
+      "importer_lf_sha256": "1b3c8c59f32a181dc5d0df6aaed2252146de9c75cd9ab3f178149d392ec058ff",
+      "raw_result_receipt_sha256": "45f53029e39c71c47e24f7310511652de89c63b7b3de9b8b0ff0b48f0327568c",
+      "raw_result_sha256": "752b381e9956bf0703b633664798734eee0dccf4b54eddbec99ea829dc0ab2ed",
+      "repository": "RobVanProd/open-duck-mini-rdkx5",
+      "runner_lf_sha256": "b8f4c840c7f1422130f5b7f1a1be0da30eb1e96d850b511d9700781e0390e195",
+      "snapshot_member": "winner-v45-static-target-teacher-one-update-work/winner_v45_static_target_teacher_update_252.npz",
+      "snapshot_sha256": "72c2e0bf895e8968a0d851ee1079435daca6125a572943b557fe766fc6e4832b",
+      "workflow_lf_sha256": "89f064ea6e971a094c30d5125254ed316e0a4a5de95b5c3bcc45c89b55d870cf"
+    },
+    "snapshot": {
+      "bytes": 194856,
+      "completed_updates": 252,
+      "metadata_payload_sha256": "594fd30f87b98d0332b25295356428d436fcbc47d9271f1be80b6ebf92fe1259",
+      "path": "/tmp/winner-v45-static-target-teacher-one-update-work/winner_v45_static_target_teacher_update_252.npz",
+      "sha256": "72c2e0bf895e8968a0d851ee1079435daca6125a572943b557fe766fc6e4832b",
+      "state_payload_sha256": "3250142bc04b7edb56aebd3d3b0be1b49c0463de108878bd2e255904bd794718"
+    }
+  },
+  "source_manifest_sha256": "24ea4200db3dcc34bcb615e44b5aee88b4dd472b86b93953b1af2e3d37f46b49",
+  "sources": {
+    "base_training": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_calibrator_training.py",
+      "sha256": "f5736a357d73baedae2bba1d15254dd688bddf3761eb731d757a971783c77227"
+    },
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v46_static_target_teacher_training_preregistration.py",
+      "sha256": "05afacc366d5d4ba1c1b89826466ef2da04a266fc21462bf9b6141e31435113c"
+    },
+    "calibrator_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_calibrator_training_preregistration.json",
+      "sha256": "1ec76a587c6fa50b92866c1632a7046ae0c6687ed17b1636b664bf45c2e8ba34"
+    },
+    "canonical_p30_fit": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/fixed_target_p30_actuator_fit_20260712.json",
+      "sha256": "908ddb01e5d82e661d77b8f3cb186a84665695660b86b304c6d1ae89c79cdb0b"
+    },
+    "cpu_smoke": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_cpu_smoke.py",
+      "sha256": "b6ad53430f3f7cca3a91a90f72dab585cb05e3e2f74be2241af3fd9b6ee7ce87"
+    },
+    "domain": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v3_variable_configuration_replacement_preregistration.json",
+      "sha256": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b"
+    },
+    "environment_builder": {
+      "hash_mode": "lf",
+      "path": "tools/prepare_winner_v15_cpu_environment.py",
+      "sha256": "33e54c3a16d5684e2d2520270acf25a28df42dc89e9f302c1ef3bd5f37d867c2"
+    },
+    "full_training_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_full_calibrator_training_preregistration.json",
+      "sha256": "99500648d6683097a13f894b0949bf4b5494e5653f36878710817bd0952f71dd"
+    },
+    "full_training_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_full_calibrator_training.py",
+      "sha256": "8cd2c9267f356adba1127f8fb837138bbe6e39b5c3326300eeed9fdd5b524610"
+    },
+    "gradient_composition": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v22_normalized_predictor_v2.py",
+      "sha256": "2f67394c0fc7f5cec14370d38a6a860a9c7bb2ce409e8578466b278c7c8c5b2a"
+    },
+    "importer": {
+      "hash_mode": "lf",
+      "path": "tools/import_winner_v46_static_target_teacher_training.py",
+      "sha256": "fb0715a4be7a8ffb14b1d24c997e6f7000a82be6d5b87473227b8989811690a1"
+    },
+    "importer_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v46_static_target_teacher_training_import.py",
+      "sha256": "ab475589db0937960ca99054d383eae959f82959b2481e0d71c7e8573539be2b"
+    },
+    "joint_support": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v21_predictor_preserving_joint_support.py",
+      "sha256": "2d274c6c7c63fa2de5e3a7114ac047df1346189e66ec7bf8d83221e2f93aef0a"
+    },
+    "network_export": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_decomposed_backend_networks.py",
+      "sha256": "f463223a33f80baf81b2604e0df22c647660f2752a7ca60b8c75a3441460d015"
+    },
+    "normalized_predictor": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v22_normalized_predictor.py",
+      "sha256": "cc8e0249033af7264ed7e6c6e3faa51e8dcef1471e0d2fdda5a89091e810ad17"
+    },
+    "pitch_margin": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v15_pitch_margin_support.py",
+      "sha256": "b2dfecf77971596e2c67a7185b1a9c1acea2d49ecbb04eaf846666239b3326e8"
+    },
+    "prefix_anchor": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v29_prefix_right_pitch_anchor.py",
+      "sha256": "7c01b3db8c359464d122fc4f915df02eb9833720ef65837a99c5838dd42db36f"
+    },
+    "preregistration_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v46_static_target_teacher_training_preregistration.py",
+      "sha256": "adb2f4991931b06c21b7a200191b3b0592540e84706c2e50908b14a7f118e804"
+    },
+    "recurrent_support": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v20_joint_recurrent_support.py",
+      "sha256": "276f0008049be9e28cbfc7cb430a5fec6c0a092c02e605f08f3ea95e2df942c7"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v46_static_target_teacher_training.py",
+      "sha256": "c2bfaec2298c8b97489278112d932c11fc5392fc3250da99ec3fc1379062c0d2"
+    },
+    "runner_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v46_static_target_teacher_training.py",
+      "sha256": "486c59946bd236abcd2e18ce5b71b46b1c1e7a9096c192b400d92740e068ad12"
+    },
+    "runtime_observer": {
+      "hash_mode": "lf",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/observer/winner_v2_contract.py",
+      "sha256": "5c90994a24aa223c94f3a51927228e97000f6118c927561a87a3f2684dcf4889"
+    },
+    "snapshot_mechanics": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v21_predictor_preserving_joint_support_v2.py",
+      "sha256": "6613a52d099646c4603808e58088360166abefe9f504c5fafb8604266419bd20"
+    },
+    "static_target_teacher": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v43_static_target_teacher.py",
+      "sha256": "214df40f1b2033d190c4f601280679f7105267ddb8dbcd7a2fb0f6c3929242a3"
+    },
+    "transition": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v24_symmetric_support_failure.py",
+      "sha256": "98a149c6630a4a22837a98328989b572e9ace8a7fa889777b7b91d253abede9f"
+    },
+    "transition_v2": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v24_symmetric_support_failure_v2.py",
+      "sha256": "50be218d889ff37c5c8b59f75caf385db94f5b984a9894d0921adf369910fcb3"
+    },
+    "transition_v3": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v24_symmetric_support_failure_v3.py",
+      "sha256": "337f93832a93c74425564b1ddf7c274426a2de0544b51a1c5de83922b287d787"
+    },
+    "v22_gate_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v22_normalized_predictor_support_gate.py",
+      "sha256": "0a217b355f43b304187f02bc3025feb3d4aa26fb7b9fae7d0c395667ce501cd3"
+    },
+    "v22_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v22_normalized_predictor_training_result.json",
+      "sha256": "10bae5bb32f32cc90e222eb1d6644d97e2a0253baa6ad1a37fe06fde48cf11c1"
+    },
+    "v24_contract_common": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v24_symmetric_failure_cpu_contract.py",
+      "sha256": "dfecb9453c49a472c03e5d2d9c0f94da85a80c5619af7f89b8ff005e329ca263"
+    },
+    "v42_teacher_table": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v42_static_target_teacher_table_result.json",
+      "sha256": "c465d9b3951941715ee0bb588a0ba24a9c4b15d7a2c99430340bcaea43964469"
+    },
+    "v44_teacher_batch": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v44_static_target_teacher_source_gradient_contract.py",
+      "sha256": "051c12663666f870c642aac3874c77c5f2cc5137d28838685894e5694f7ca5ce"
+    },
+    "v45_contract": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v45_static_target_teacher_one_update_cpu_contract.json",
+      "sha256": "c414f99c0fb8ad03b65d8321898c72d280d12fb47ae25425a442a121b9dac3ec"
+    },
+    "v45_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v45_static_target_teacher_one_update_cpu_result.json",
+      "sha256": "50130622742e2a3777a462ddad8df8bbc7fd3ba366a931810912659efaf48a9d"
+    },
+    "workflow": {
+      "hash_mode": "lf",
+      "path": ".github/workflows/winner-v46-static-target-teacher-training.yml",
+      "sha256": "5609f250f35aedf4e456df30b7c8d6d4fafdc8bbc676f55bcc49acb4dff803b2"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V46_STATIC_TARGET_TEACHER_TRAINING",
+  "stop_rules": [
+    "stop if source snapshot, graph, Adam state, or teacher snapshot differs",
+    "stop if any environment, population, receipt, action boundary, reward, mask, or transition differs",
+    "stop if a heldout configuration receives a teacher label",
+    "stop unless every update selects exactly 22 configuration/plant rows and only six pitch indices",
+    "stop if teacher gradients affect value, log-std, or predictor leaves",
+    "stop if hidden replay exceeds 1e-6 or successor masks disagree",
+    "stop if any combined gradient, parameter delta, loss, metric, snapshot, or ONNX contract is invalid",
+    "do not run or inspect the formal support gate in this workflow",
+    "do not select a checkpoint from training losses or intermediate behavior"
+  ],
+  "teacher_checkpoint": {
+    "completed_updates": 100,
+    "graph": {
+      "bytes": 54896,
+      "contract": {
+        "abi_exact": true,
+        "all_chain_outputs_finite": true,
+        "all_initializers_finite": true,
+        "bytes": 54896,
+        "chain_ticks": 250,
+        "forbidden_training_or_privileged_tokens": [],
+        "initializer_count": 9,
+        "inputs": [
+          {
+            "name": "obs",
+            "shape": [
+              1,
+              115
+            ]
+          },
+          {
+            "name": "previous_action",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_in",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "jax_onnx_at_most_1e_7": true,
+        "jax_onnx_max_abs_error": 0.0,
+        "outputs": [
+          {
+            "name": "calibration_actions",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "previous_action_out",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_out",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "path": "/tmp/winner-v22-normalized-predictor-training-work/graphs/winner_v22_final.onnx",
+        "previous_action_out_equals_action_bit_exact": true,
+        "sha256": "cb3380ed99b3e9d7e9000904a210227aa397db2a064aa80d8f70e77c8339783b",
+        "training_only_tensors_absent": true
+      },
+      "label": "final",
+      "path": "/tmp/winner-v22-normalized-predictor-training-work/graphs/winner_v22_final.onnx",
+      "sha256": "cb3380ed99b3e9d7e9000904a210227aa397db2a064aa80d8f70e77c8339783b",
+      "update": 100
+    },
+    "optimizer_count": 100,
+    "repository_attribution": {
+      "artifact_zip_bytes": 19215207,
+      "artifact_zip_sha256": "9b06e6b3e129a1cb7d59b8383174ba4c7ae2b77837b85671a48b2ccb1fe93b45",
+      "github_artifact_digest": "sha256:9b06e6b3e129a1cb7d59b8383174ba4c7ae2b77837b85671a48b2ccb1fe93b45",
+      "github_artifact_id": 8513413219,
+      "github_artifact_name": "winner-v22-normalized-predictor-training-29872492309",
+      "github_run_attempt": 1,
+      "github_run_head_sha": "161af0031fb35225a689e516b2963bcdc8564ab3",
+      "github_run_id": 29872492309,
+      "importer_lf_sha256": "3211c965c43e2a88897958c4036e2b7c17d0d43616a612eb68d917fab4a9e96b",
+      "raw_result_receipt_sha256": "8559a510b5421c8ffb41ed06be185023287fc5a5254a17a659e30087ecea5d3a",
+      "raw_result_sha256": "da09efe6b4e54b08855d40891e7d7f0460ad231cbe0e6d5cfc654cedc9b8fe52",
+      "repository": "RobVanProd/open-duck-mini-rdkx5"
+    },
+    "snapshot": {
+      "bytes": 194808,
+      "completed_updates": 100,
+      "metadata_payload_sha256": "9c6adf74ec64d10e3d0ee21d9b502f1bb4b9a4b02fcc946e2fdfbacc16e967e5",
+      "path": "/tmp/winner-v22-normalized-predictor-training-work/snapshots/snapshot_normalized_predictor_update_100.npz",
+      "sha256": "ddc8c4b905bb9acac2d7d48c3e9c1f0c0ca0173a1ba21f375740b051bc48c806",
+      "state_payload_sha256": "6743dfe113fef16a7a40caa77457a9e29ccd5c28696f8c70ce6a1793d27faea7",
+      "update": 100
+    }
+  }
+}
