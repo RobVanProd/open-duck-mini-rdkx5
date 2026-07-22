@@ -2311,3 +2311,19 @@ Do not proceed to grounded walking until low-risk gates pass.
   checkpoint selection, runtime implementation, RDK-X5, robot, torque, motion,
   Gate 5, deployment, and clearance remain unauthorized. See
   `outputs/analysis/WINNER_V24_BASELINE_ANCHORED_SUPPORT_GATE_PREREGISTRATION_20260722.md`.
+- 2026-07-22: The sole Winner-v24 baseline-anchored support gate completed on
+  GitHub run `29883954243`; the original 251,272-byte ZIP exactly matches
+  GitHub SHA-256 `3e0e503a...6e1da1d6` and passes the strict importer. Both
+  count-150 and count-200 checkpoints fail exactly 20/124 physical support
+  cells. Every failure is roll/pitch-only, occurs at ticks 26-47, and covers
+  the same ten negative-X configurations under both P30 and P31/34 plants.
+  All sensor/transport cells pass; predictor-versus-constant, context
+  separation, repeatability, previous-action chaining, and JAX/ONNX checks all
+  pass. This regresses from Winner-v22's 15/124 and 14/124 support failures.
+  Decision: `HOLD_WINNER_V24_BASELINE_ANCHORED_SUPPORT_GATE` /
+  `DO_NOT_TRAIN_RESPONSE_CONDITIONED_LOCOMOTION`. Close this exact symmetric
+  terminal-penalty route; do not select a checkpoint, tune its coefficient or
+  length, rerun the gate, or proceed to locomotion, runtime, RDK-X5, robot,
+  Gate 5, deployment, or clearance. A new policy mechanism requires separate
+  prospective evidence. See
+  `outputs/analysis/WINNER_V24_BASELINE_ANCHORED_SUPPORT_GATE_RESULT_20260722.md`.
