@@ -3590,3 +3590,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   optimizer update, support evaluation, checkpoint selection, deployment,
   Gate 5, RDK-X5/robot access, torque, motion, or clearance. See
   `outputs/analysis/WINNER_V58B_GUARD_FAILURE_ATTRIBUTION_RESULT_20260722.md`.
+- 2026-07-22: Winner-v59 preregisters one zero-update CPU reconstruction of
+  rollout index `476` to distinguish execution-path arithmetic from a changed
+  recurrent policy. It compares the stored eager hidden trajectory with an
+  eager replay and `jax.lax.scan`, then bounds the scan-induced action, value,
+  log-probability, probability-ratio, and PPO-loss deltas. The hidden bound is
+  fixed at `2e-6`, the next power-of-two bound above the observed
+  `1.1250377e-6`; all downstream tolerances were frozen before execution.
+  Preregistration SHA-256: `5f477d20...71eb1c2`. It performs no Adam update,
+  support evaluation, checkpoint selection, deployment, Gate 5, RDK-X5/robot
+  access, torque, motion, or clearance. A pass can authorize only a separately
+  preregistered continuation with the exact numeric replay guard. See
+  `outputs/analysis/WINNER_V59_HIDDEN_REPLAY_NUMERIC_ATTRIBUTION_PREREGISTRATION_20260722.md`.
