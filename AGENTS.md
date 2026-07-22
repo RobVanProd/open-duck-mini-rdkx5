@@ -3999,3 +3999,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   or locomotion steps and grants no checkpoint selection, deployment, Gate 5,
   RDK-X5/robot access, torque, motion, or clearance. See
   `outputs/analysis/WINNER_V79_COMPLETE_RESIDUAL_TEACHER_CAUSAL_RESULT_20260722.md`.
+- 2026-07-22: Winner-v80 proves the V79-selected localized correction in one
+  safeguarded update from count `655` to `656`. Only the `384` values in the
+  six pitch columns of `action_weight` and the six pitch elements of
+  `action_bias` change; all recurrent, predictor, value, distribution,
+  non-pitch, and unselected optimizer-moment elements remain bit-exact. The
+  full fraction descends pitch-teacher loss `0.0071413545 -> 0.0069440729`,
+  while same-batch predictor loss is bit-exact. Snapshot/ONNX SHA-256 values
+  are `6d0cbb20...f183ce71 / 38e9dd48...2249210`; result SHA-256 is
+  `7cff575b...714181db`. This authorizes only preregistration of a bounded
+  pitch-head continuation. It selects no checkpoint and grants no support,
+  deployment, Gate 5, RDK-X5/robot access, torque, motion, or clearance. See
+  `outputs/analysis/WINNER_V80_PITCH_ACTION_HEAD_STEP_RESULT_20260722.md`.
