@@ -3310,3 +3310,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   bounded continuation; it cannot select a deployment checkpoint or grant
   clearance. See
   `outputs/analysis/WINNER_V51_FULL_ACTION_TEACHER_ONE_UPDATE_CPU_CONTRACT_20260722.md`.
+- 2026-07-22: The first Winner-v51 invocation is `INVALID`, not a policy
+  result. It completed the V50 recomputation and wrote a partial snapshot/ONNX,
+  but crashed before result serialization with `KeyError: 'hidden_bias'`.
+  Cause: the proof assigned the whole `objective_evidence` dictionary instead
+  of its nested `full_teacher_gradient_max_abs` dictionary. The partial files
+  are hash-recorded only to prevent accidental reuse and are not evidence.
+  No continuation, support evaluation, deployment selection, RDK-X5/robot
+  access, torque, motion, or clearance is authorized. Preserve the frozen V51
+  runner; a separately preregistered one-line correction is required. See
+  `outputs/analysis/WINNER_V51_FULL_ACTION_TEACHER_ONE_UPDATE_INVALID_INVOCATION_20260722.md`.
