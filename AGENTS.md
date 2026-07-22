@@ -4103,3 +4103,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   selection, deployment, Gate 5, RDK-X5/robot access, torque, motion, or
   clearance. See
   `outputs/analysis/WINNER_V87_PITCH_HEAD_LINEAR_FEASIBILITY_PREREGISTRATION_20260722.md`.
+- 2026-07-22: The first Winner-v87 invocation stopped before any rollout or
+  fit because its preregistration conflated the complete `16`-entry teacher
+  table with the exact `12` configurations selected by V80/V84 training.
+  Winner-v87b keeps all table entries but corrects the analyzed population to
+  `12` IDs / `24` two-plant episodes per endpoint, the leave-one-ID-out folds
+  to `12`, and total least-squares fits to `26`. The solver, hidden features,
+  teacher targets, endpoint priority, feasibility rule, checkpoints, and
+  authority are unchanged. Correction SHA-256:
+  `e942234b...7326fe06`. No rollout, fit, optimizer update, result, snapshot,
+  ONNX, support cell, RDK-X5/robot access, torque, or motion occurred before
+  the correction. See
+  `outputs/analysis/WINNER_V87B_TEACHER_POPULATION_CORRECTION_20260722.md`.
