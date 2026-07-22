@@ -4034,3 +4034,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   no continuation, support, checkpoint selection, deployment, Gate 5,
   RDK-X5/robot access, torque, motion, or clearance. See
   `outputs/analysis/WINNER_V82_COUNT675_DIRECTION_PRECISION_ATTRIBUTION_RESULT_20260722.md`.
+- 2026-07-22: Winner-v83 proves exactly one V82-selected negative-gradient
+  pitch-head step from count `674` to `675`. The frozen largest-first grid
+  rejects fraction `1` and accepts `1/2`; teacher loss falls
+  `0.0072185365 -> 0.0071995878`. Only the six pitch action-weight columns and
+  bias elements change, predictor loss is bit-exact, every Adam `m/v` element
+  remains bit-exact, and only the optimizer count advances. Snapshot/ONNX
+  SHA-256 values are `cae62d8f...f469827 / e1bc9fc0...103539`; result SHA-256
+  is `1ac6326f...0d22a98d`. This authorizes only preregistration of a bounded
+  negative-gradient pitch-head continuation. No support, checkpoint selection,
+  deployment, Gate 5, RDK-X5/robot access, torque, motion, or clearance is
+  authorized. See
+  `outputs/analysis/WINNER_V83_COUNT675_NEGATIVE_GRADIENT_STEP_RESULT_20260722.md`.

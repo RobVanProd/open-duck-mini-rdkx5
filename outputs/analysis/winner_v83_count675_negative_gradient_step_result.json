@@ -1,0 +1,286 @@
+{
+  "authority": {
+    "checkpoint_selection_authorized": false,
+    "continuation_authorized_now": false,
+    "deployment_authorized": false,
+    "gate5_authorized": false,
+    "one_step_proof_authorized": true,
+    "pass_authorizes_only": "preregistration of a bounded negative-gradient pitch-head continuation",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false,
+    "support_gate_authorized": false
+  },
+  "checks": {
+    "action_boundary_exact": true,
+    "all_optimizer_m_and_v_elements_bit_exact": true,
+    "all_values_finite": true,
+    "first_strict_descent_fraction_selected": true,
+    "only_pitch_action_head_parameter_elements_change": true,
+    "same_batch_predictor_loss_bit_exact": true,
+    "snapshot_digest_readback_exact": true,
+    "stateful_onnx_contract_exact": true,
+    "v82_geometry_bit_exact_reproduced": true
+  },
+  "decision": "PREREGISTER_BOUNDED_NEGATIVE_GRADIENT_PITCH_HEAD_CONTINUATION_ONLY",
+  "execution": {
+    "formal_support_cells": 0,
+    "locomotion_steps": 0,
+    "optimizer_updates": 1,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "graph": {
+    "bytes": 54896,
+    "completed_updates": 675,
+    "contract": {
+      "abi_exact": true,
+      "all_chain_outputs_finite": true,
+      "all_initializers_finite": true,
+      "bytes": 54896,
+      "chain_ticks": 250,
+      "forbidden_training_or_privileged_tokens": [],
+      "initializer_count": 9,
+      "inputs": [
+        {
+          "name": "obs",
+          "shape": [
+            1,
+            115
+          ]
+        },
+        {
+          "name": "previous_action",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "name": "h_in",
+          "shape": [
+            1,
+            64
+          ]
+        }
+      ],
+      "jax_onnx_at_most_1e_7": true,
+      "jax_onnx_max_abs_error": 8.731149137020111e-11,
+      "outputs": [
+        {
+          "name": "calibration_actions",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "name": "previous_action_out",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "name": "h_out",
+          "shape": [
+            1,
+            64
+          ]
+        }
+      ],
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v83-count675-negative-gradient-step\\graphs\\winner_v83_negative_gradient_update_675.onnx",
+      "previous_action_out_equals_action_bit_exact": true,
+      "sha256": "e1bc9fc02aab6253ab9d8c08b158cacd7bbbd96adab96a73dade90a229103539",
+      "training_only_tensors_absent": true
+    },
+    "label": "proof",
+    "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v83-count675-negative-gradient-step\\graphs\\winner_v83_negative_gradient_update_675.onnx",
+    "sha256": "e1bc9fc02aab6253ab9d8c08b158cacd7bbbd96adab96a73dade90a229103539",
+    "v46_forbidden_tokens_present": []
+  },
+  "optimization": {
+    "accepted_fraction": 0.5,
+    "adam_delta_l2": 0.004175163633979232,
+    "backtracking_rows": [
+      {
+        "changed_parameter_elements": 390,
+        "fraction": 1.0,
+        "loss": 0.007231252733618021,
+        "loss_delta": 1.2716278433799744e-05,
+        "max_abs_parameter_delta": 0.0005782665684819221
+      },
+      {
+        "changed_parameter_elements": 390,
+        "fraction": 0.5,
+        "loss": 0.007199587766081095,
+        "loss_delta": -1.8948689103126526e-05,
+        "max_abs_parameter_delta": 0.0002891337499022484
+      },
+      {
+        "changed_parameter_elements": 390,
+        "fraction": 0.25,
+        "loss": 0.007202778942883015,
+        "loss_delta": -1.575751230120659e-05,
+        "max_abs_parameter_delta": 0.00014456640928983688
+      },
+      {
+        "changed_parameter_elements": 390,
+        "fraction": 0.125,
+        "loss": 0.007209090981632471,
+        "loss_delta": -9.445473551750183e-06,
+        "max_abs_parameter_delta": 7.228367030620575e-05
+      },
+      {
+        "changed_parameter_elements": 390,
+        "fraction": 0.0625,
+        "loss": 0.00721342395991087,
+        "loss_delta": -5.112495273351669e-06,
+        "max_abs_parameter_delta": 3.6141835153102875e-05
+      },
+      {
+        "changed_parameter_elements": 390,
+        "fraction": 0.03125,
+        "loss": 0.007215884514153004,
+        "loss_delta": -2.651941031217575e-06,
+        "max_abs_parameter_delta": 1.807045191526413e-05
+      },
+      {
+        "changed_parameter_elements": 390,
+        "fraction": 0.015625,
+        "loss": 0.007217184640467167,
+        "loss_delta": -1.351814717054367e-06,
+        "max_abs_parameter_delta": 9.035691618919373e-06
+      },
+      {
+        "changed_parameter_elements": 390,
+        "fraction": 0.0078125,
+        "loss": 0.007217854261398315,
+        "loss_delta": -6.82193785905838e-07,
+        "max_abs_parameter_delta": 4.517845809459686e-06
+      },
+      {
+        "changed_parameter_elements": 390,
+        "fraction": 0.00390625,
+        "loss": 0.00721819419413805,
+        "loss_delta": -3.4226104617118835e-07,
+        "max_abs_parameter_delta": 2.2584572434425354e-06
+      },
+      {
+        "changed_parameter_elements": 390,
+        "fraction": 0.001953125,
+        "loss": 0.007218365091830492,
+        "loss_delta": -1.7136335372924805e-07,
+        "max_abs_parameter_delta": 1.1296942830085754e-06
+      },
+      {
+        "changed_parameter_elements": 390,
+        "fraction": 0.0009765625,
+        "loss": 0.007218450773507357,
+        "loss_delta": -8.568167686462402e-08,
+        "max_abs_parameter_delta": 5.6438148021698e-07
+      },
+      {
+        "changed_parameter_elements": 390,
+        "fraction": 0.00048828125,
+        "loss": 0.007218494080007076,
+        "loss_delta": -4.237517714500427e-08,
+        "max_abs_parameter_delta": 2.8219074010849e-07
+      },
+      {
+        "changed_parameter_elements": 390,
+        "fraction": 0.000244140625,
+        "loss": 0.007218516431748867,
+        "loss_delta": -2.0023435354232788e-08,
+        "max_abs_parameter_delta": 1.4156103134155273e-07
+      }
+    ],
+    "optimizer_count_after": 675,
+    "optimizer_count_before": 674,
+    "optimizer_m_and_v_bit_exact": true,
+    "predictor_loss_after": 0.47116246819496155,
+    "predictor_loss_before": 0.47116246819496155,
+    "scaled_teacher_gradient_l2": 1.2324919413229873,
+    "selected_parameter_max_abs_delta": {
+      "action_bias_pitch_max_abs": 0.0002891337499022484,
+      "action_weight_pitch_max_abs": 0.00028265081346035004
+    },
+    "teacher_loss_after": 0.007199587766081095,
+    "teacher_loss_before": 0.007218536455184221
+  },
+  "schema_version": "winner_v83.count675_negative_gradient_step_result.v1",
+  "snapshot": {
+    "bytes": 196179,
+    "completed_updates": 675,
+    "metadata_payload_sha256": "87fd9aad611a96a80cacb6d45d4f5466b81808bcf92e0030e626cc8b3d212c9f",
+    "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v83-count675-negative-gradient-step\\snapshots\\snapshot_negative_gradient_pitch_head_update_675.npz",
+    "sha256": "cae62d8f50005b30367ebef46ecbdc66d74c17b2b258f4991e2f8a8abf469827",
+    "state_payload_sha256": "9478f8640827047f67dd707fd76e930da0736864e1fff15de6e6c7cdbf18b778"
+  },
+  "source": {
+    "episode_receipts_sha256": "055c3faeadbe0f40932ff0f946afaf2176d7caa3219e939cc2f1a23f6e986e86",
+    "optimizer_count": 674,
+    "rollout_update_index": 674,
+    "snapshot": {
+      "bytes": 196031,
+      "completed_updates": 674,
+      "metadata_payload_sha256": "c1827066bbed2cb0ecf14870123c24d415a6b596a411d14c926867395ea8b50c",
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v81-pitch-action-head-continuation\\snapshots\\snapshot_pitch_action_head_update_674.npz",
+      "sha256": "bfcc8f4c3cc22e3259decafb2f5a557a55e94534a2464933d061b6facbe80057",
+      "state_payload_sha256": "cc35199c3dead86f20df306dce7d7f64df90728e34e6a33ba58f7cc843892e47"
+    }
+  },
+  "source_manifest_sha256": "452b774b16ae4952dbf33870fad6c100af1a0f92fd479ef3c53c30cd7f4c9c4b",
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v83_count675_negative_gradient_step_preregistration.py",
+      "sha256": "1b576b5fe5f3b2eae132e0ddc34bf0b087b3abe6626b880c552fa30ea73986ef"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v83_count675_negative_gradient_step.py",
+      "sha256": "58c2b4fdef1bdced283cf91c100f778045139ff31541875b847dadfdb67ffc73"
+    },
+    "snapshot_abi": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v22_normalized_predictor_v2.py",
+      "sha256": "2f67394c0fc7f5cec14370d38a6a860a9c7bb2ce409e8578466b278c7c8c5b2a"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v83_count675_negative_gradient_step.py",
+      "sha256": "6aff28f5a926ec5d41e5e894e10b3af4ec41bfc06a226f091e466b340a7dfa37"
+    },
+    "v46_graph_receipt": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v46_static_target_teacher_training.py",
+      "sha256": "c2bfaec2298c8b97489278112d932c11fc5392fc3250da99ec3fc1379062c0d2"
+    },
+    "v81_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v81_pitch_action_head_continuation_result.json",
+      "sha256": "9b5b9950040023ec72e4276f9f487e546dac733d264313ae7ff6a06ec73054ca"
+    },
+    "v81_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v81_pitch_action_head_continuation.py",
+      "sha256": "7bdedcb448c262d85032c83ac0e213de106e7380b99960753f91fd1f745f9c07"
+    },
+    "v82_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v82_count675_direction_precision_attribution_preregistration.json",
+      "sha256": "0ad540b040a9b4bda50e0be9f3f2509dfef22a4716d4090b612c8f4e78522d5e"
+    },
+    "v82_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v82_count675_direction_precision_attribution_result.json",
+      "sha256": "980aaa72209e1e48d66ed73931a9482b8961f950b8023f19f8b484f6dd60fbc1"
+    },
+    "v82_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v82_count675_direction_precision_attribution.py",
+      "sha256": "02479e549b0f4cf84e32640b9d5c8cf212ba9e4c695b4e65a4fbce34fb207ce8"
+    }
+  },
+  "status": "PASS_WINNER_V83_COUNT675_NEGATIVE_GRADIENT_STEP"
+}
