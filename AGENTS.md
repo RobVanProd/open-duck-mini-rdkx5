@@ -3729,3 +3729,14 @@ Do not proceed to grounded walking until low-risk gates pass.
   support cells, deployment selection, Gate 5, RDK-X5/robot access, torque,
   motion, or clearance. See
   `outputs/analysis/WINNER_V64_ISOLATED_PERSISTENT_TEACHER_STEP_CONTRACT_20260722.md`.
+- 2026-07-22: The first Winner-v64 invocation reconstructed the frozen rollout
+  and in-memory update, exported one non-selected graph, then stopped before
+  snapshot or result persistence because the injected metadata block referred
+  to `contract` while the validated base-runner local is `preregistration`.
+  The partial graph is retained and hashed; no snapshot, result, support cell,
+  or robot access occurred. Winner-v64b freezes one contiguous two-reference
+  local-name correction. It changes no objective, rollout, gradient, Adam
+  state, artifact schema, classification, or authority. Correction contract
+  SHA-256: `7da49db3...f9d2af1a`. The original V64 transformed source remains
+  frozen. See
+  `outputs/analysis/WINNER_V64B_PREREGISTRATION_NAME_CORRECTION_20260722.md`.

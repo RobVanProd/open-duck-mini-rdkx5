@@ -1,0 +1,392 @@
+{
+  "authority": {
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "result_authorizes_only": "one separately preregistered CPU mechanism selected by the frozen classification",
+    "robot_clearance": false,
+    "training_authorized": false
+  },
+  "classification_rule": [
+    {
+      "classification": "INHERITED_ADAM_STATE_BLOCKS_ISOLATED_TEACHER_DESCENT",
+      "if": "teacher-only inherited-Adam same-batch loss does not decrease",
+      "next": "fresh-moment persistent-teacher step contract"
+    },
+    {
+      "classification": "INTEGRATED_STEP_BLOCKS_PERSISTENT_TEACHER_DESCENT",
+      "if": "integrated same-batch loss does not decrease",
+      "next": "isolated persistent-teacher step contract"
+    },
+    {
+      "classification": "OTHER_OBJECTIVES_OPPOSE_PERSISTENT_TEACHER_GRADIENT",
+      "if": "all non-persistent-teacher terms have negative dot product with the persistent-teacher gradient",
+      "next": "conflict-projected persistent-teacher step contract"
+    },
+    {
+      "classification": "TOTAL_GRADIENT_OPPOSES_PERSISTENT_TEACHER_GRADIENT",
+      "if": "the total gradient has nonpositive dot product with the persistent-teacher gradient",
+      "next": "isolated persistent-teacher step contract"
+    },
+    {
+      "next": "teacher-trajectory persistent-prefix contract",
+      "otherwise": "NO_LOCAL_OPTIMIZATION_CONFLICT"
+    }
+  ],
+  "correction": {
+    "corrected_source_sha256": "7800b2515e19840abb84b1c6976651cd477286950659776374d079cece23527b",
+    "frozen_runner_lf_sha256": "3db03bb7a29617be00361d7af56818260030f94568704c7eaaffa792a258bf6d",
+    "identity": "WINNER_V63B_EXACT_TRAINING_SNAPSHOT_LOADER_CORRECTION",
+    "invalid_invocation": {
+      "bytes": 1434,
+      "path": "outputs/analysis/winner_v63_persistent_teacher_conflict_invalid_invocation.json",
+      "sha256": "5fe6e0e729679517e8548fac3f12816b0dffd7219657759c60e59383c943582a"
+    },
+    "new_fragment_sha256": "ff429064c45dedca6b4a3d01dc23e49afdcc0357621d292a034c789f66749b6b",
+    "objective_rollout_gradient_adam_classification_or_authority_change": false,
+    "old_fragment_sha256": "e03cfef6b692dfdffe2ee6fff9d3c984d3e1fc59c165c855487db1e5b1469fa0",
+    "replacement_count": 1,
+    "semantic_change": "use the immutable training-coordinate snapshot after the reviewed loader's own exact integrated-stage validation instead of its gate-adapted copy"
+  },
+  "decision": "AUTHORIZE_ONE_ZERO_COMMIT_CPU_ATTRIBUTION_ONLY",
+  "evidence_selection": {
+    "flat_transport_or_attention_selected": false,
+    "v60_first_tick_teacher_loss_final": 0.0036237684544175863,
+    "v60_first_tick_teacher_loss_first": 0.0040571861900389194,
+    "v60_full_teacher_loss_final": 0.0032995049841701984,
+    "v60_full_teacher_loss_first": 0.0031359954737126827,
+    "v62_first_tick_pitch_rms_mean": 0.07728285739495369,
+    "v62_full_teacher_support": "13/13",
+    "v62_pitch_teacher_support": "12/13",
+    "v62_post_first_tick_pitch_rms_mean": 0.0817888110754449
+  },
+  "execution_now": {
+    "committed_optimizer_updates": 0,
+    "counterfactual_in_memory_adam_steps": 0,
+    "deployable_graph_exports": 0,
+    "formal_support_cells": 0,
+    "locomotion_training_steps": 0,
+    "robot_or_rdk_access": 0,
+    "rollout_episode_slots": 0,
+    "scheduled_rollout_ticks": 0
+  },
+  "frozen_execution": {
+    "committed_optimizer_updates": 0,
+    "counterfactual_in_memory_adam_steps": 2,
+    "deployable_graph_exports": 0,
+    "formal_support_cells": 0,
+    "locomotion_training_steps": 0,
+    "robot_or_rdk_access": 0,
+    "rollout_episode_slots": 80,
+    "scheduled_rollout_ticks": 20000
+  },
+  "frozen_objective": {
+    "analysis": "float64 dot products/cosines against the scaled persistent-teacher gradient over policy, recurrent-core, and action-head leaves",
+    "components": [
+      "PPO",
+      "normalized predictor x 380.9135437011719",
+      "prefix anchor x 197.3112030029297",
+      "full-action persistent teacher x 136.35153198242188",
+      "first-tick teacher x 136.35153198242188"
+    ],
+    "counterfactual": "evaluate exactly one integrated and one teacher-only Adam step in memory from the same immutable count-554 moments; write neither state",
+    "heldout_teacher_configuration_ids_forbidden": [
+      "HELDOUT_04",
+      "HELDOUT_07",
+      "HELDOUT_09",
+      "HELDOUT_15"
+    ],
+    "policy_gradient_leaves": [
+      "obs_weight",
+      "previous_action_weight",
+      "hidden_weight",
+      "hidden_bias",
+      "action_weight",
+      "action_bias"
+    ],
+    "population_episode_slots": 80,
+    "rollout_update_index": 554,
+    "training_teacher_configuration_ids": [
+      "COM_X_NEG",
+      "COM_CORNER_00",
+      "COM_CORNER_01",
+      "COM_CORNER_02",
+      "COM_CORNER_03",
+      "OPTIONAL_AGGREGATE_HEAVY_AFT",
+      "DISCOVERY_02",
+      "DISCOVERY_03",
+      "DISCOVERY_06",
+      "DISCOVERY_09",
+      "DISCOVERY_10"
+    ]
+  },
+  "frozen_source": {
+    "checkpoint_label": "final",
+    "completed_updates": 554,
+    "graph": {
+      "bytes": 54896,
+      "completed_updates": 554,
+      "contract": {
+        "abi_exact": true,
+        "all_chain_outputs_finite": true,
+        "all_initializers_finite": true,
+        "bytes": 54896,
+        "chain_ticks": 250,
+        "forbidden_training_or_privileged_tokens": [],
+        "initializer_count": 9,
+        "inputs": [
+          {
+            "name": "obs",
+            "shape": [
+              1,
+              115
+            ]
+          },
+          {
+            "name": "previous_action",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_in",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "jax_onnx_at_most_1e_7": true,
+        "jax_onnx_max_abs_error": 5.820766091346741e-11,
+        "outputs": [
+          {
+            "name": "calibration_actions",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "previous_action_out",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_out",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v60-integrated-numeric-guard-training\\graphs\\winner_v60_final.onnx",
+        "previous_action_out_equals_action_bit_exact": true,
+        "sha256": "4a6386d8dddfcc441f90bce4f64d7307144446bb3032c171c22cb2e299ac3939",
+        "training_only_tensors_absent": true
+      },
+      "label": "final",
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v60-integrated-numeric-guard-training\\graphs\\winner_v60_final.onnx",
+      "sha256": "4a6386d8dddfcc441f90bce4f64d7307144446bb3032c171c22cb2e299ac3939",
+      "v46_forbidden_tokens_present": []
+    },
+    "snapshot": {
+      "bytes": 195513,
+      "completed_updates": 554,
+      "metadata_payload_sha256": "c07c71829cbcc6690cc120b0b3f0157f7d7f2e9d7a80e7dd4143a339717c9cba",
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v60-integrated-numeric-guard-training\\snapshots\\snapshot_integrated_first_tick_teacher_update_554.npz",
+      "sha256": "c8eb7032dea20c2c197ab03f7544ea9be92d2694a3a3414656941978117d8802",
+      "state_payload_sha256": "cfb01e18755080d3e85b3eda178c9338a5c625e17212840ae958f42e2ca61d27"
+    },
+    "teacher_snapshot": {
+      "bytes": 194808,
+      "completed_updates": 100,
+      "sha256": "ddc8c4b905bb9acac2d7d48c3e9c1f0c0ca0173a1ba21f375740b051bc48c806"
+    },
+    "v60_result_sha256": "50622331dea979369bdea7bb001cd168f94162270a0ea0ec1bdb4d6d9f6b8b57",
+    "v62_result_sha256": "2da0c48a257e0bace9506998db95a9a7bbf8f736448a78db651742e5235251f5"
+  },
+  "pass_rule": {
+    "action_boundary_exact": true,
+    "all_losses_gradients_alignments_finite": true,
+    "anchor_elements_exact": true,
+    "composed_gradient_bit_exact": true,
+    "counterfactual_counts_exact": true,
+    "cpu_only_environment_exact": true,
+    "episode_receipts_exact": true,
+    "exact_80_episode_rollout_at_update_554": true,
+    "full_teacher_elements_and_rows_exact": true,
+    "hidden_replay_within_v59_bound": true,
+    "predictor_successors_present": true,
+    "reset_batch_exact_and_heldout_absent": true,
+    "reward_and_failure_transition_rule_exact": true,
+    "source_artifacts_exact": true,
+    "source_parameters_and_optimizer_unchanged": true,
+    "teacher_gradient_policy_only": true
+  },
+  "question": "Why did the already full-horizon teacher objective plateau even though the same full teacher rescues all 13 final failures: opposing integrated gradients, inherited Adam moments, or a remaining trajectory-distribution mismatch?",
+  "schema_version": "winner_v63.persistent_teacher_conflict_preregistration.v1",
+  "source_manifest_sha256": "fadd831b0542576e0e9468e51b8cc92f5e4575fe11339196f7a23b554fa79c6f",
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v64_isolated_persistent_teacher_step.py",
+      "sha256": "027a391d541844954093620cdf6be5bd33accf478a54968fe84c3b151e0d7baf"
+    },
+    "networks": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_decomposed_backend_networks.py",
+      "sha256": "f463223a33f80baf81b2604e0df22c647660f2752a7ca60b8c75a3441460d015"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v64_isolated_persistent_teacher_step.py",
+      "sha256": "87e80c9b513fc64e8b095fb0cd97602fa52c98cc2ed71801e5d6a8bec25a114e"
+    },
+    "snapshot_io": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v22_normalized_predictor_v2.py",
+      "sha256": "2f67394c0fc7f5cec14370d38a6a860a9c7bb2ce409e8578466b278c7c8c5b2a"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v64_isolated_persistent_teacher_step.py",
+      "sha256": "79c045346215c1b2c191331e5b52a562139f663cf25821ec74926c736b3d9d7d"
+    },
+    "v60_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v60_integrated_numeric_guard_training_result.json",
+      "sha256": "9cbc9e4b3c15550927096ae18507b3cfee0f46bfdc3dd158373bacae431b3bbc"
+    },
+    "v62_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v62_residual_teacher_causal_result.json",
+      "sha256": "b9b4bc76ed91a4d05ab35acf5222797f469d2f6b3e108a85f1131f38970be7f1"
+    },
+    "v63_base_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v63_persistent_teacher_conflict_attribution.py",
+      "sha256": "3db03bb7a29617be00361d7af56818260030f94568704c7eaaffa792a258bf6d"
+    },
+    "v63b_builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v63b_training_snapshot_loader_correction.py",
+      "sha256": "e95df9a713f2b4dc28d18078073260c6991b753edaba8b5754d089019b5ea1c3"
+    },
+    "v63b_correction": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v63b_training_snapshot_loader_correction.json",
+      "sha256": "e5754b28add1c5aa06d1a54915af05548a9e10b792bbfba9f44a56718326dfa1"
+    },
+    "v63b_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v63b_persistent_teacher_conflict_result.json",
+      "sha256": "9cc70b6e02259516fc7d59132c019b5a234601bae5baa5d1a912fb41c4631b27"
+    },
+    "v63b_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v63b_training_snapshot_loader_correction.py",
+      "sha256": "f8cb4d2e0eff769fc0f05942216409ad95e9c6b379f9c5984e9a44743c27cd7f"
+    },
+    "v64_invalid_invocation": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v64_isolated_persistent_teacher_invalid_invocation.json",
+      "sha256": "2f5c811b90e1c21a00fb14bd0d951c9542d822ea8e0242ff785d007e263e4ec6"
+    },
+    "v64b_builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v64b_preregistration_name_correction.py",
+      "sha256": "3f8e454dcae70fdf3f8a4996c5e145a9ea7d9c509a8695fa3e1503cdd12966b5"
+    },
+    "v64b_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v64b_preregistration_name_correction.py",
+      "sha256": "be3c4b6ec806c3367297919d5b70ca42f2c1acb80c5beac3f1e4bee47d5b2442"
+    },
+    "v64b_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v64b_preregistration_name_correction.py",
+      "sha256": "09080c5d69420ee658dbabd0334bbb2fd9d3f3cf79755728aecdfb2fb3cf65ee"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V63_PERSISTENT_TEACHER_CONFLICT_ATTRIBUTION",
+  "v64": {
+    "authority": {
+      "continuation_training_authorized": false,
+      "formal_support_gate_authorized": false,
+      "one_optimizer_update_authorized": true,
+      "pass_authorizes_only": "one separately preregistered bounded isolated-teacher continuation",
+      "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+      "robot_clearance": false
+    },
+    "execution_future": {
+      "candidate_graph_exports": 1,
+      "continuation_updates": 0,
+      "formal_support_cells": 0,
+      "optimizer_updates": 1,
+      "robot_or_rdk_access": 0,
+      "rollout_episode_slots": 80,
+      "scheduled_rollout_ticks": 20000
+    },
+    "execution_now": {
+      "candidate_graph_exports": 0,
+      "continuation_updates": 0,
+      "formal_support_cells": 0,
+      "optimizer_updates": 0,
+      "robot_or_rdk_access": 0,
+      "rollout_episode_slots": 0,
+      "scheduled_rollout_ticks": 0
+    },
+    "identity": "WINNER_V64_ISOLATED_PERSISTENT_TEACHER_STEP",
+    "insertion_point_sha256": "0363f4dae41de38902b688cd8fd8974f1a2490acdcc374c98e9bc9745bc04684",
+    "insertion_sha256": "332d88c6d0fa0fbe939b93582deb1ccc23988a3d9b368bed73afaa96ed3e921c",
+    "objective": {
+      "attention_or_flat_transport_added": false,
+      "coefficient_search": false,
+      "expected_same_batch_loss_after": 0.003393699647858739,
+      "expected_same_batch_loss_before": 0.003402196103706956,
+      "inherited_adam_state": true,
+      "integrated_ppo_predictor_anchor_first_tick_gradients": false,
+      "loss": "full-14D persistent teacher MSE on the exact frozen on-policy rollout",
+      "result_optimizer_count": 555,
+      "rollout_update_index": 554,
+      "scale": 136.35153198242188
+    },
+    "pass_rule": {
+      "all_12_trainable_leaves_changed": true,
+      "all_parameters_optimizer_metrics_finite": true,
+      "exactly_one_optimizer_update_554_to_555": true,
+      "formal_support_continuation_robot_zero": true,
+      "onnx_abi_exact": true,
+      "onnx_jax_chain_at_most_1e_7": true,
+      "onnx_previous_action_chain_exact": true,
+      "onnx_training_only_tensors_absent": true,
+      "same_batch_loss_recomputes_counterfactual_exact": true,
+      "same_batch_teacher_loss_strictly_decreases": true,
+      "snapshot_readback_exact": true,
+      "v63b_attribution_valid": true
+    },
+    "replacement_count": 1,
+    "source": {
+      "completed_updates": 554,
+      "onnx_sha256": "4a6386d8dddfcc441f90bce4f64d7307144446bb3032c171c22cb2e299ac3939",
+      "optimizer_count": 554,
+      "snapshot_sha256": "c8eb7032dea20c2c197ab03f7544ea9be92d2694a3a3414656941978117d8802"
+    },
+    "transformed_source_sha256": "7916d5f02e83e98e82d567cab16123407befe4aa7c535d76b7d12be7be8c33b2"
+  },
+  "v64b": {
+    "corrected_source_sha256": "7ec3a189849f3fea427f645dfc9bf80595c3ad861319796dd8a9a4ec76538329",
+    "identity": "WINNER_V64B_PREREGISTRATION_LOCAL_NAME_CORRECTION",
+    "invalid_invocation": {
+      "bytes": 1495,
+      "path": "outputs/analysis/winner_v64_isolated_persistent_teacher_invalid_invocation.json",
+      "sha256": "2f5c811b90e1c21a00fb14bd0d951c9542d822ea8e0242ff785d007e263e4ec6"
+    },
+    "new_fragment_sha256": "c538f7e306afd9e8522d14e676a5d23e50c3d1cef3e39be1da9b4b1be6a0b3f1",
+    "objective_rollout_gradient_adam_artifact_schema_or_authority_change": false,
+    "old_fragment_sha256": "6d67753e9325094cceb32dda9508d2cc23d80f5b25840b69a5764f7978f19646",
+    "replacement_count": 1,
+    "semantic_change": "bind the already validated preregistration object under the base runner's actual local name during snapshot metadata persistence"
+  }
+}
