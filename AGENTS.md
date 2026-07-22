@@ -2938,3 +2938,22 @@ Do not proceed to grounded walking until low-risk gates pass.
   RDK-X5, or robot work. A pass may authorize only a separately preregistered
   one-update CPU proof using the recorded scale. See
   `outputs/analysis/WINNER_V44_STATIC_TARGET_TEACHER_SOURCE_GRADIENT_CONTRACT_20260722.md`.
+- 2026-07-22: The sole Winner-v44 run `29906883886` passed; its original
+  5,429-byte ZIP exactly matches GitHub SHA-256
+  `a799715b...e3895666`. The exact update-251 rollout reproduced 80 slots and
+  17 roll/pitch failures. The training-only table selected 22 configuration/
+  plant rows and 10,692 valid pitch elements; all four heldout labels remained
+  absent. Raw teacher loss is `0.0119318310`. Baseline gradient RMS is
+  `0.1813885089`, raw teacher gradient RMS is `0.00310403439`, and the sole
+  derived float32 teacher scale is `58.436370849609375`, yielding scaled RMS
+  `0.1813885045`. Teacher gradients are nonzero on all six recurrent/action
+  leaves and exact zero on value, log-std, and predictor leaves. Default-off
+  gradients and transition arrays are bit-exact; direct and composed enabled
+  gradients pass the frozen tolerances. Decision:
+  `AUTHORIZE_ONE_UPDATE_STATIC_TARGET_TEACHER_CPU_PROOF_PREREGISTRATION_ONLY`.
+  No optimizer step, formal support gate, graph export, training continuation,
+  deployment selection, RDK-X5/robot access, Gate 5, or clearance occurred. A
+  separate one-update CPU contract must restore the source exactly, apply only
+  this scale once, verify the changed/frozen leaves and export contract, then
+  stop. See
+  `outputs/analysis/WINNER_V44_STATIC_TARGET_TEACHER_SOURCE_GRADIENT_RESULT_20260722.md`.
