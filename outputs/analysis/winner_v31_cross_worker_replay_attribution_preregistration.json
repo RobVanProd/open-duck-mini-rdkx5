@@ -1,0 +1,103 @@
+{
+  "attribution_rule": {
+    "all_non_replay_checks_must_pass": true,
+    "failed_checks_must_equal": [
+      "exact_v29_anchor_loss_gradient_and_scale_reproduced",
+      "exact_v29_update_200_batch_reproduced"
+    ],
+    "float32_loss_pairs": [
+      "anchor_loss_before",
+      "ppo_loss",
+      "normalized_predictor_loss"
+    ],
+    "maximum_ulp_distance_each": 8,
+    "minimum_anchor_improvement_to_cross_worker_delta_ratio": 10000.0,
+    "old_hold_result_rewritten": false,
+    "rerun_authorized": false,
+    "same_failure_count_required": true,
+    "same_maximum_selected_action_delta_required": true,
+    "same_selected_element_count_required": true,
+    "snapshot_graph_and_update_checks_must_pass": true,
+    "thresholds_in_old_contract_changed": false
+  },
+  "authority": {
+    "pass_authorizes_only": "one separately frozen prefix right-pitch anchor training preregistration using the preserved count-201 artifact",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false,
+    "runtime_implementation_authorized": false,
+    "training_authorized": false
+  },
+  "decision": "AUTHORIZE_ONE_SAVED_RESULT_ONLY_REPLAY_ATTRIBUTION",
+  "decision_tree": {
+    "bounded_float_replay_only": "AUTHORIZE_PREFIX_RIGHT_PITCH_ANCHOR_TRAINING_PREREGISTRATION_USING_PRESERVED_COUNT_201_ARTIFACT_ONLY",
+    "unresolved": "DO_NOT_USE_WINNER_V30_ARTIFACT_FOR_TRAINING"
+  },
+  "execution_now": {
+    "formal_support_cells": 0,
+    "locomotion_steps": 0,
+    "new_simulation_cells": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0
+  },
+  "question": "Are Winner-v30's two exact-replay holds confined to bounded cross-worker float32 variation while the single update, snapshot, and ONNX contracts pass?",
+  "schema_version": "winner_v31.cross_worker_replay_attribution_preregistration.v1",
+  "source_manifest_sha256": "c0a5770a9c5228c52802cb97a9e814f899cfef3785d051232915334c33a0a902",
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v31_cross_worker_replay_attribution_preregistration.py",
+      "sha256": "406eb06a5df9311c1ab8ac2b64a88b8008598739cbf74b09d78c68d8d699f1be"
+    },
+    "preregistration_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v31_cross_worker_replay_attribution_preregistration.py",
+      "sha256": "8f0ecb9484ef5f42861e8b9d69e7e1a400bcb4e580dda5c30ed4a296efd28bae"
+    },
+    "result_importer": {
+      "hash_mode": "lf",
+      "path": "tools/import_winner_v31_cross_worker_replay_attribution.py",
+      "sha256": "b6606c331d9756c6e2d55f461371458a8d5ec7f8a2a6fb1751a8e74f535db3b6"
+    },
+    "result_importer_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v31_cross_worker_replay_attribution_import.py",
+      "sha256": "afcdacbe4e3ec0b581102aa011266a77fe4e5245f70612d7d3fee6e40b5e5eb4"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v31_cross_worker_replay_attribution.py",
+      "sha256": "92e1e76fe9b5fbbd13c6e65716c377c2f4308346e8a1d8904f337385a9d8b9be"
+    },
+    "runner_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v31_cross_worker_replay_attribution.py",
+      "sha256": "9a5e936cece48d897c0efe9a0e80d8fa182dbfccecf3bc7106c0327b48bd26db"
+    },
+    "winner_v29_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v29_prefix_right_pitch_anchor_cpu_result.json",
+      "sha256": "d77ec2d11cf92faccce8de75f4946fbdb5949bf0a4ddba8016953c726db81cda"
+    },
+    "winner_v30_contract": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v30_prefix_right_pitch_anchor_one_update_cpu_contract.json",
+      "sha256": "71c146cc51576a56b6f27dbc2cde5223d7b50c4c9f72605b92d8453be0cf7402"
+    },
+    "winner_v30_hold_correction": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v30_one_update_hold_import_correction.json",
+      "sha256": "b22620dac03c08f1f07de7d8dab2e9b5b054cb26821de07724e3953727c33d8f"
+    },
+    "winner_v30_hold_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v30_prefix_right_pitch_anchor_one_update_cpu_hold_result.json",
+      "sha256": "684f922d596cf0674a9925b79cf2778c7abc3820ebcee1aae231d41cda9c1994"
+    },
+    "workflow": {
+      "hash_mode": "lf",
+      "path": ".github/workflows/winner-v31-cross-worker-replay-attribution.yml",
+      "sha256": "102aa678efd20d47cf88191aee57fdd623770973870e685ac57b9b152ffca481"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V31_CROSS_WORKER_REPLAY_ATTRIBUTION"
+}

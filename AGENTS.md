@@ -2513,3 +2513,17 @@ Do not proceed to grounded walking until low-risk gates pass.
   mismatches. Training, support evaluation, runtime work, RDK-X5, robot, Gate 5,
   deployment, and clearance remain unauthorized. See
   `outputs/analysis/WINNER_V30_ONE_UPDATE_HOLD_IMPORT_CORRECTION_20260722.md`.
+- 2026-07-22: One saved-result-only Winner-v31 cross-worker replay attribution
+  is preregistered. It reads only the committed Winner-v29 result and preserved
+  Winner-v30 HOLD result; it executes zero simulation cells, optimizer updates,
+  support cells, locomotion steps, or robot work. The exact two failed replay
+  checks must remain the only failures, every non-replay update/snapshot/ONNX
+  check must pass, each of the three recorded loss pairs must differ by at most
+  eight float32 ULPs, and the measured anchor improvement must exceed the
+  largest cross-worker anchor delta by at least 10,000x. No V30 rerun, result
+  rewrite, or threshold change is authorized. A pass may authorize only a
+  separately frozen bounded training preregistration using the preserved
+  count-201 artifact; training, checkpoint selection, support evaluation,
+  runtime work, RDK-X5, robot, Gate 5, deployment, and clearance remain
+  unauthorized. See
+  `outputs/analysis/WINNER_V31_CROSS_WORKER_REPLAY_ATTRIBUTION_PREREGISTRATION_20260722.md`.
