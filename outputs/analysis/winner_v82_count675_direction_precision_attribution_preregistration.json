@@ -1,0 +1,154 @@
+{
+  "authority": {
+    "checkpoint_selection_authorized": false,
+    "continuation_authorized": false,
+    "deployment_authorized": false,
+    "diagnostic_authorized": true,
+    "gate5_authorized": false,
+    "pass_authorizes_only": "one separately preregistered count-675 step proof selected by the frozen classification",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false,
+    "support_gate_authorized": false
+  },
+  "classification_order": [
+    "ORIGINAL_COUNT675_GRID_EXHAUSTION_DID_NOT_REPRODUCE",
+    "ADAM_DIRECTION_NOT_FIRST_ORDER_DESCENT",
+    "ADAM_DESCENT_EXISTS_BELOW_ONE_OVER_1024",
+    "ADAM_GEOMETRY_STALLED_NEGATIVE_GRADIENT_DESCENDS",
+    "FLOAT32_TEACHER_LOSS_PLATEAU",
+    "FLOAT32_PARAMETER_PLATEAU",
+    "UNRESOLVED_COUNT675_GEOMETRY"
+  ],
+  "decision": "AUTHORIZE_ONE_ZERO_UPDATE_COUNT675_DIRECTION_PRECISION_ATTRIBUTION_ONLY",
+  "diagnostic": {
+    "arithmetic": "runtime float32 JAX objective and float32 parameters",
+    "attention_or_flat_transport_added": false,
+    "coefficient_or_training_length_search": false,
+    "committed_optimizer_updates": 0,
+    "extended_adam_fractions": [
+      1.0,
+      0.5,
+      0.25,
+      0.125,
+      0.0625,
+      0.03125,
+      0.015625,
+      0.0078125,
+      0.00390625,
+      0.001953125,
+      0.0009765625,
+      0.00048828125,
+      0.000244140625,
+      0.0001220703125,
+      6.103515625e-05,
+      3.0517578125e-05,
+      1.52587890625e-05,
+      7.62939453125e-06,
+      3.814697265625e-06,
+      1.9073486328125e-06,
+      9.5367431640625e-07
+    ],
+    "negative_gradient_fractions": [
+      1.0,
+      0.5,
+      0.25,
+      0.125,
+      0.0625,
+      0.03125,
+      0.015625,
+      0.0078125,
+      0.00390625,
+      0.001953125,
+      0.0009765625,
+      0.00048828125,
+      0.000244140625
+    ],
+    "negative_gradient_norm": "match the full inherited Adam parameter-delta L2 norm",
+    "original_adam_fractions": [
+      1.0,
+      0.5,
+      0.25,
+      0.125,
+      0.0625,
+      0.03125,
+      0.015625,
+      0.0078125,
+      0.00390625,
+      0.001953125,
+      0.0009765625
+    ],
+    "record_parameter_change_count_and_loss_ulp": true,
+    "rollout_update_index": 674
+  },
+  "execution_now": {
+    "formal_support_cells": 0,
+    "locomotion_steps": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0
+  },
+  "schema_version": "winner_v82.count675_direction_precision_attribution_preregistration.v1",
+  "source": {
+    "attempted_optimizer_count": 675,
+    "gradient_dot_proposed_delta": -6.564526847725087e-07,
+    "loss_before": 0.007218536455184221,
+    "optimizer_count": 674,
+    "snapshot": {
+      "bytes": 196031,
+      "completed_updates": 674,
+      "metadata_payload_sha256": "c1827066bbed2cb0ecf14870123c24d415a6b596a411d14c926867395ea8b50c",
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v81-pitch-action-head-continuation\\snapshots\\snapshot_pitch_action_head_update_674.npz",
+      "sha256": "bfcc8f4c3cc22e3259decafb2f5a557a55e94534a2464933d061b6facbe80057",
+      "state_payload_sha256": "cc35199c3dead86f20df306dce7d7f64df90728e34e6a33ba58f7cc843892e47"
+    },
+    "stopped_result_sha256": "dfdd8088214b32dc7db018ede13bcac92c4d17e9e880030490d9d4c42ec021e2"
+  },
+  "source_manifest_sha256": "5f0727381e15d41c20396747ebd17a7c5a79f395983913ba65a8a96e98cbff1e",
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v82_count675_direction_precision_attribution_preregistration.py",
+      "sha256": "b7c723fccfb919393a912249cc08e87184e23207d9ac39900b7a50e77a8cb4cc"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v82_count675_direction_precision_attribution.py",
+      "sha256": "02479e549b0f4cf84e32640b9d5c8cf212ba9e4c695b4e65a4fbce34fb207ce8"
+    },
+    "snapshot_abi": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v22_normalized_predictor_v2.py",
+      "sha256": "2f67394c0fc7f5cec14370d38a6a860a9c7bb2ce409e8578466b278c7c8c5b2a"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v82_count675_direction_precision_attribution.py",
+      "sha256": "6f5a5b193864ef334c54e59a4a1df54292def4fd157f096b0322c250cf712133"
+    },
+    "v80_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v80_pitch_action_head_step_result.json",
+      "sha256": "21eb055fb302e816c00b285897c85ef5741b4fc4fe8e64ccb2d066204ed08cf9"
+    },
+    "v80c_builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v80c_action_boundary_check_correction.py",
+      "sha256": "48abb910399f50c6044a4f831408c62638cbbc7705aaa0e6dbeb7b01a9726cf7"
+    },
+    "v81_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v81_pitch_action_head_continuation_preregistration.json",
+      "sha256": "f2eaa6d95387799e7431c64f7d1e373d388929aebbb886b4fe77ccb80cfb4a9a"
+    },
+    "v81_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v81_pitch_action_head_continuation_result.json",
+      "sha256": "9b5b9950040023ec72e4276f9f487e546dac733d264313ae7ff6a06ec73054ca"
+    },
+    "v81_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v81_pitch_action_head_continuation.py",
+      "sha256": "7bdedcb448c262d85032c83ac0e213de106e7380b99960753f91fd1f745f9c07"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V82_COUNT675_DIRECTION_PRECISION_ATTRIBUTION"
+}
