@@ -4144,3 +4144,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   support cells, and grants no checkpoint selection, deployment, Gate 5,
   RDK-X5/robot access, torque, motion, or clearance. See
   `outputs/analysis/WINNER_V88_FLAT_TRANSPORT_REPRESENTATION_PREREGISTRATION_20260722.md`.
+- 2026-07-22: Winner-v88 completes all `160` rollout episodes and `78`
+  repeated-fit checks. The flat `I_n + C_n` basis contains real signal: at the
+  half endpoint it reduces heldout RMS from current-observation `0.118308` to
+  `0.098380`, but this remains worse than the unchanged source's `0.090443`.
+  At final it regresses from current-observation `0.113438` to `0.117549`,
+  versus source `0.094140`; adding hidden state does not repair transfer.
+  Classification: `NO_LINEAR_OBSERVABLE_REPRESENTATION_SELECTED`. Result
+  SHA-256: `adf4a892...641faaae`. The equation was used diagnostically but no
+  `rho/q` or flat-transport policy mechanism is selected. No snapshot, ONNX,
+  optimizer update, support cell, checkpoint selection, deployment, Gate 5,
+  RDK-X5/robot access, torque, motion, or clearance occurred. See
+  `outputs/analysis/WINNER_V88_FLAT_TRANSPORT_REPRESENTATION_RESULT_20260722.md`.
