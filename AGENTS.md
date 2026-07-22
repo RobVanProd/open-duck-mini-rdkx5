@@ -2755,3 +2755,18 @@ Do not proceed to grounded walking until low-risk gates pass.
   is not a runtime wrapper, checkpoint selection, Gate 5 authorization, or
   robot clearance. See
   `outputs/analysis/WINNER_V39_RESPONSE_JACOBIAN_FEASIBILITY_PREREGISTRATION_20260722.md`.
+- 2026-07-22: The sole Winner-v39 formal run `29900500665` completed INVALID;
+  its original 82,534-byte ZIP exactly matches GitHub SHA-256
+  `c283b291...c5b0cea`. Both graph-bounded cells fail support earlier than V38,
+  at ticks `32/31`, and neither is a teacher candidate. The preregistered
+  validity rule also fails: P30 Jacobian ranks fall below two at ticks
+  `30/31/32`, and P31/34 at ticks `30/31`. In every rank-zero case all
+  eight-tick perturbation branches terminate before the requested commands can
+  produce distinct response samples, yielding identical pitch/pitch-rate
+  responses rather than an identifiable local map. The formal decision is
+  `DO_NOT_SELECT_NEXT_POLICY_MECHANISM`; do not relabel this INVALID artifact
+  as HOLD, rerun it, weaken the rank rule, or infer a clean controller-family
+  rejection from it. Any attribution or next mechanism requires a separate
+  frozen saved-result analysis. No checkpoint is selected and robot clearance
+  remains false. See
+  `outputs/analysis/WINNER_V39_RESPONSE_JACOBIAN_FEASIBILITY_RESULT_20260722.md`.
