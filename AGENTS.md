@@ -3954,3 +3954,14 @@ Do not proceed to grounded walking until low-risk gates pass.
   checkpoint selection, deployment, Gate 5, RDK-X5/robot access, torque,
   motion, or clearance occurred. See
   `outputs/analysis/WINNER_V74_UPDATE638_HIDDEN_REPLAY_NUMERIC_AUDIT_RESULT_20260722.md`.
+- 2026-07-22: Winner-v75 completes all `53` safeguarded updates from optimizer
+  count `602` through `655`. The legacy replay guard is retained as a fast
+  path; its sole crossing at count `638` passes bit-exact eager replay and all
+  unchanged V59 action/value/log-probability/ratio/PPO bounds. All updates
+  strictly decrease same-batch teacher loss, `53` snapshots are durable, and
+  the `605/655` stateful ONNX endpoints pass the frozen ABI. Half/final ONNX
+  SHA-256 values are `e2b97fe6...830d5eab / abd438a7...52f9add`; result SHA-256
+  is `42fd60cb...0a166383`. Neither checkpoint is selected yet. This authorizes
+  only the unchanged two-endpoint persistence gate, with zero deployment,
+  Gate 5, RDK-X5/robot access, torque, motion, or clearance. See
+  `outputs/analysis/WINNER_V75_FUNCTIONAL_NUMERIC_GUARD_CONTINUATION_RESULT_20260722.md`.
