@@ -4184,3 +4184,18 @@ Do not proceed to grounded walking until low-risk gates pass.
   deployment, Gate 5, RDK-X5/robot access, torque, motion, or clearance
   occurred. See
   `outputs/analysis/WINNER_V89_TEACHER_GRADIENT_TRANSFER_RESULT_20260722.md`.
+- 2026-07-22: Winner-v90 preregisters one saved-result-only intersection audit
+  over the exact V42 `15 configurations x 729 targets x 2 plants` capture.
+  A candidate belongs to the intersection only when its recorded
+  `shared_support_pass` is true in all `15` configuration tables. All candidate
+  indices and reconstructed float32 V41 coordinate hashes must reproduce. If
+  nonempty, exactly one universal target is selected by the unchanged V41 key
+  aggregated across all `30` captured cells: support count, minimum/sum valid
+  ticks, minimum base Z, negative worst tilt, negative worst final gyro,
+  negative coordinate norm, then negative index. Contract SHA-256:
+  `695d75a2...b236db39`. It runs zero new physics, optimizer updates, policy
+  artifacts, or hardware work. A nonempty intersection can authorize only a
+  separately preregistered full `124`-cell CPU feasibility gate, not training,
+  checkpoint selection, deployment, Gate 5, RDK-X5/robot access, torque,
+  motion, or clearance. See
+  `outputs/analysis/WINNER_V90_UNIVERSAL_TARGET_INTERSECTION_PREREGISTRATION_20260722.md`.
