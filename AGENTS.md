@@ -2554,3 +2554,18 @@ Do not proceed to grounded walking until low-risk gates pass.
   work and cannot select a checkpoint. A passing artifact may authorize only a
   separately preregistered support/context gate over both checkpoints. See
   `outputs/analysis/WINNER_V32_PREFIX_RIGHT_PITCH_ANCHOR_TRAINING_PREREGISTRATION_20260722.md`.
+- 2026-07-22: The sole Winner-v32 training run `29890876702` passed and its
+  original 19,252,514-byte ZIP exactly matches GitHub SHA-256
+  `7c967955...af4d8ac`. All 100 updates (`201 -> 301`), episode receipts,
+  action boundaries, V24 transition contracts, 384-element prefix-anchor
+  contracts, hidden replays, successor masks, gradients/deltas, atomic
+  snapshots, and both stateful ONNX exports pass; the frozen teacher remains
+  unchanged and formal support/locomotion/robot counts remain zero. The raw
+  anchor loss changes from `0.00023033652` on the first continuation batch to
+  `0.00000984033` at count 251 and `0.00001020137` at count 301; this is
+  diagnostic only. The exact count-251/count-301 ONNX SHA-256 values are
+  `445d9111...dc401c84` and `d9e073e8...9f0874c2`. Neither checkpoint is
+  selected. This authorizes only a separately preregistered unchanged support
+  gate over both checkpoints, not runtime, RDK-X5, robot, Gate 5, deployment,
+  or clearance. See
+  `outputs/analysis/WINNER_V32_PREFIX_RIGHT_PITCH_ANCHOR_TRAINING_RESULT_20260722.md`.
