@@ -3579,3 +3579,14 @@ Do not proceed to grounded walking until low-risk gates pass.
   evaluation, deployment, Gate 5, RDK-X5/robot access, torque, motion, or
   clearance. See
   `outputs/analysis/WINNER_V58B_GUARD_FAILURE_ATTRIBUTION_PREREGISTRATION_20260722.md`.
+- 2026-07-22: Winner-v58b passes its zero-update attribution. The sole failed
+  original predicate at rollout index `476` is hidden replay
+  `1.1250376701355e-6 > 1.0e-6`; every other one of the `15` replay, predictor,
+  teacher, anchor, and first-tick predicates passes. All four allowed first-
+  tick mapping gradients remain nonzero, all forbidden leaves remain exactly
+  zero, every value is finite, and optimizer count remains `476`. Result
+  SHA-256: `2070bcca...e91d3c3`. This closes a blind Winner-v58 retry. It does
+  not prove the hidden discrepancy harmless and does not authorize another
+  optimizer update, support evaluation, checkpoint selection, deployment,
+  Gate 5, RDK-X5/robot access, torque, motion, or clearance. See
+  `outputs/analysis/WINNER_V58B_GUARD_FAILURE_ATTRIBUTION_RESULT_20260722.md`.
