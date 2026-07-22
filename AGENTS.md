@@ -2854,3 +2854,18 @@ Do not proceed to grounded walking until low-risk gates pass.
   Checkpoint selection, training, RDK-X5, robot, Gate 5, deployment, and
   clearance remain unauthorized. See
   `outputs/analysis/WINNER_V41_V2_STATIC_EQUILIBRIUM_TARGET_FEASIBILITY_RESULT_20260722.md`.
+- 2026-07-22: One Winner-v42 static-target teacher-table screen is
+  preregistered over the exact 15-configuration Winner-v33 failure union. For
+  each configuration it exhausts the unchanged Winner-v41 `9^3=729` target
+  grid for 250 ticks under both P30 and P31/34 measured actuator plants, for
+  exactly `10,935` targets and at most `21,870` candidate/plant cells. The
+  deterministic Winner-v41 selection key is unchanged. All 15 tables execute;
+  a configuration with no shared two-plant support target records a diagnostic
+  best but cannot promote it. Pass requires every configuration to have at
+  least one shared target and may authorize only a separately frozen,
+  default-off static-target teacher ABI CPU contract. Hold closes this exact
+  table route without grid refinement, basis changes, or fitting only passing
+  configurations. Exactly one formal CPU-only run is authorized, with zero
+  optimizer updates, locomotion training, runtime target/wrapper, RDK-X5,
+  robot, Gate 5, deployment, checkpoint selection, or clearance. See
+  `outputs/analysis/WINNER_V42_STATIC_TARGET_TEACHER_TABLE_PREREGISTRATION_20260722.md`.
