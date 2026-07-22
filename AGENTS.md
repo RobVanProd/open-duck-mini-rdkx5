@@ -2342,3 +2342,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   authorize another loss, training, checkpoint selection, runtime, RDK-X5,
   robot, Gate 5, deployment, or clearance. See
   `outputs/analysis/WINNER_V24_SUPPORT_REGRESSION_ATTRIBUTION_20260722.md`.
+- 2026-07-22: One zero-update Winner-v25 same-state directional support-control
+  diagnostic is preregistered. It follows the exact 20-tick Winner-v22 final
+  recurrent trajectory through the ten negative-X failure configurations and
+  both actuator plants, then sends identical observation, previous-action, and
+  hidden-state inputs to Winner-v22 final and Winner-v24 half/final. At each of
+  800 candidate fork points it clones the exact MuJoCo integration state and
+  holds the source or candidate tick action for five ticks, with 1,600 total
+  short-horizon rollouts. A local-destabilization classification requires both
+  candidate checkpoints to increase absolute pitch on at least 75% of forks
+  and have median pitch delta above 1e-6 rad. Exactly one first-attempt CPU run
+  is authorized. Optimizer updates, locomotion, checkpoint selection, runtime,
+  RDK-X5, robot, Gate 5, deployment, and clearance remain unauthorized. See
+  `outputs/analysis/WINNER_V25_DIRECTIONAL_SUPPORT_CONTROL_DIAGNOSTIC_PREREGISTRATION_20260722.md`.
