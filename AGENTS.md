@@ -3776,3 +3776,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   authorizes no support evaluation, checkpoint selection, deployment, Gate 5,
   RDK-X5/robot access, torque, motion, or clearance. See
   `outputs/analysis/WINNER_V65B_PREREGISTRATION_PATH_CORRECTION_20260722.md`.
+- 2026-07-22: The corrected Winner-v65b arm completed and atomically preserved
+  `19` isolated persistent-teacher updates, optimizer counts `556..574`, then
+  stopped at attempted count `575` because the exact inherited-Adam step did
+  not strictly reduce its own frozen same-batch teacher loss. Result SHA-256:
+  `2c3a8798...f9135c74`; the 19-snapshot manifest is embedded and every
+  snapshot round-trips at its exact optimizer count. The preregistered half
+  and final counts `605/655` were not reached, no endpoint ONNX was exported,
+  and no support cell, checkpoint selection, deployment, Gate 5, robot/RDK
+  access, torque, motion, or clearance occurred. Blind retry and tuning remain
+  unauthorized. The only selected next step is a zero-update fixed-batch
+  attribution of the failed count-575 step. See
+  `outputs/analysis/WINNER_V65B_ISOLATED_PERSISTENT_TEACHER_STOPPED_RESULT_20260722.md`.
