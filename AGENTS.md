@@ -3752,3 +3752,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   checkpoint selection, deployment, Gate 5, RDK-X5/robot access, torque,
   motion, or clearance has occurred. See
   `outputs/analysis/WINNER_V64B_ISOLATED_PERSISTENT_TEACHER_STEP_RESULT_20260722.md`.
+- 2026-07-22: Winner-v65 preregisters one bounded `100`-update isolated
+  persistent-teacher continuation from optimizer count `555`, with unselected
+  half/final endpoints at `605/655`. Each update uses the exact `80 x 250`
+  on-policy rollout and the full-14D teacher at scale `136.35153198242188`.
+  PPO, normalized predictor, prefix anchor, and first-tick teacher are computed
+  only as invariance monitors and contribute exactly zero to the update.
+  Every update must strictly lower its own frozen same-batch teacher loss;
+  every state is atomically snapshotted. Contract SHA-256:
+  `74b6f8a4...7294dbb1`. No attention, flat-transport equation, coefficient or
+  length search, support evaluation, checkpoint selection, deployment,
+  Gate 5, RDK-X5/robot access, torque, motion, or clearance is included. See
+  `outputs/analysis/WINNER_V65_ISOLATED_PERSISTENT_TEACHER_TRAINING_PREREGISTRATION_20260722.md`.
