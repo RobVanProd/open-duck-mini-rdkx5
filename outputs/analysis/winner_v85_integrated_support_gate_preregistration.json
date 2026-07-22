@@ -1,0 +1,578 @@
+{
+  "authority": {
+    "formal_support_gate_authorized": true,
+    "pass_authorizes_only": "offline selection and asset freeze for separately authorized suspended Gate 5",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false
+  },
+  "binding_change_only": "The reviewed Winner-v12 evaluator, 248-cell population, 64 repeats, thresholds, seeds, P30/P31-34 plants, and all-or-nothing rule are unchanged. Only exact Winner-v84 count-705/count-755 artifacts are bound read-only.",
+  "causal_question": "Does Winner-v84 preserve the complete inherited variable-configuration, plant, sensor, transport, context, predictor, and repeatability envelope at both original persistence checkpoints?",
+  "decision": "AUTHORIZE_ONE_FROZEN_WINNER_V85_248_CELL_GATE_ONLY",
+  "execution_now": {
+    "formal_support_cells": 0,
+    "heldout_repeat_cells": 0,
+    "locomotion_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "future_frozen_support_gate": {
+    "all_cells_at_both_checkpoints_must_pass": true,
+    "cell_derivation": "56 model configurations x 2 actuator plants + 6 nominal-model sensor/transport conditions x 2 actuator plants",
+    "cells_per_checkpoint": 124,
+    "checkpoint_labels": [
+      "half",
+      "final"
+    ],
+    "duration_ticks": 250,
+    "executed_by_this_preregistration": false,
+    "gates": {
+      "duration_valid_ticks": 250,
+      "maximum_abs_roll_pitch_rad": 0.35,
+      "maximum_final_50_tick_gyro_xy_norm_rad_s": 0.05,
+      "minimum_base_z_m": 0.1,
+      "per_joint_peak_current_a_max": 2.5,
+      "per_joint_peak_torque_nm_max": 1.91229675,
+      "rated_current_p95_a": "0.65 diagnostic only; not candidate pass/fail",
+      "strict_overcurrent_max_consecutive_ticks": 99,
+      "strict_overcurrent_threshold_a": 2.0,
+      "two_foot_contact_failure_ticks": 0
+    },
+    "heldout_context_gate": {
+      "actions": "the checkpoint's bounded deployable calibrator actions",
+      "cells": "the existing 16 heldout configurations x 2 hidden plants within the 112 model/plant cells; no additional behavior cells",
+      "constant_baseline": "predict the frozen Stage-1 training target mean, equivalently zero in normalized target space, on the identical heldout rows",
+      "matched_plant_context_rule": "for every heldout configuration, start P30 and P31/34 from the same deterministic reset, initial observation, previous action, and h_in with no stochastic sensor perturbation; the deployable calibrator remains authoritative in each closed loop, and final h_out L-infinity separation must exceed 1e-7",
+      "normalization": "the frozen Stage-1 training normalization only",
+      "prediction_metric": "mean squared normalized next-response error over all 250 valid transitions using the frozen Stage-1 auxiliary predictor",
+      "repeat_rule": "repeat every heldout context cell from reset and require all actions, observations, predictions, and h_out values bit-exact",
+      "required_prediction_rule": "learned aggregate mean MSE must be strictly below the constant baseline separately for P30 and P31/34 at each checkpoint",
+      "stochastic_inputs": false,
+      "true_configuration_or_plant_label_enters_network": false
+    },
+    "pass_authorizes_only": "a separate response-conditioned locomotion-training preregistration; the calibrator checkpoint alone is not a deployable walking policy",
+    "predictor_scoring": {
+      "checkpoint_and_onnx_bytes_unchanged": true,
+      "constant_error": "mean(square((target_mean - target_raw) / target_std))",
+      "evaluated_coordinates": "raw through exact in-memory affine projection",
+      "head_output_coordinates": "normalized",
+      "learned_error": "mean(square((prediction_raw - target_raw) / target_std))",
+      "physical_support_population_thresholds_seeds_unchanged": true,
+      "projection": {
+        "auxiliary_action_weight": "normalized_weight * target_std",
+        "auxiliary_bias": "normalized_bias * target_std + target_mean",
+        "auxiliary_hidden_weight": "normalized_weight * target_std"
+      }
+    },
+    "selection_by_closest_result": false,
+    "sensor_noise_seed_derivation": "numpy SeedSequence([120120, 3, checkpoint_index, condition_index, plant_index]); checkpoint order half/final and plant order P30/P31-34",
+    "sensor_transport_population": [
+      {
+        "id": "NATIVE_INPUT_QUANTIZATION",
+        "native_quantization": true
+      },
+      {
+        "id": "DECLARED_SENSOR_NOISE",
+        "sensor_noise_scales": {
+          "accelerometer": 0.05,
+          "ankle_pos_rad": 0.08,
+          "gravity": 0.1,
+          "gyro_rad_s": 0.1,
+          "hip_pos_rad": 0.03,
+          "joint_vel_rad_s": 2.5,
+          "knee_pos_rad": 0.05,
+          "linvel_m_s": 0.1
+        }
+      },
+      {
+        "additional_action_delay_ticks": 1,
+        "id": "ACTION_DELAY_1"
+      },
+      {
+        "additional_action_delay_ticks": 2,
+        "id": "ACTION_DELAY_2"
+      },
+      {
+        "id": "IMU_DELAY_1",
+        "imu_delay_ticks": 1
+      },
+      {
+        "id": "IMU_DELAY_2",
+        "imu_delay_ticks": 2
+      }
+    ],
+    "sensor_transport_population_sha256": "de043aaf85b922df2677e300d952513f02dd87671846d50dbdb8d4bbe568cb7a"
+  },
+  "pass_rule": {
+    "all_124_main_cells_at_both_checkpoints": true,
+    "all_16_heldout_contexts_separate_at_both_checkpoints": true,
+    "all_32_heldout_repeats_at_both_checkpoints": true,
+    "closest_checkpoint_selection": false,
+    "learned_prediction_beats_constant_per_plant": true
+  },
+  "schema_version": "winner_v85.integrated_support_gate_preregistration.v1",
+  "selection_rule": {
+    "metric_ranking_or_closest_result": false,
+    "no_selection_if_hold": true,
+    "selected_checkpoint_if_pass": "final",
+    "selected_only_if_every_pass_rule_is_true_at_both_checkpoints": true,
+    "selected_update_if_pass": 755,
+    "selection_basis": "fixed terminal endpoint after half/final persistence"
+  },
+  "source_manifest_sha256": "794335ebf323744c54df51a092dfa65e63be08c5ea38ee624567c88245e4ade5",
+  "sources": {
+    "base_gate_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_full_calibrator_training_preregistration.json",
+      "sha256": "99500648d6683097a13f894b0949bf4b5494e5653f36878710817bd0952f71dd"
+    },
+    "base_gate_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_support_gate.py",
+      "sha256": "18873eee55c77a278fc065de64c0b912803bf29b4440cde7f3adaabe1297baca"
+    },
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v85_integrated_support_gate_preregistration.py",
+      "sha256": "ba96527dc77934420e3ab1adea704c1d0ac2a83966404b58b6e77b5f4e2a85fd"
+    },
+    "calibrator_design": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_calibrator_training_preregistration.json",
+      "sha256": "1ec76a587c6fa50b92866c1632a7046ae0c6687ed17b1636b664bf45c2e8ba34"
+    },
+    "canonical_p30_fit": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/fixed_target_p30_actuator_fit_20260712.json",
+      "sha256": "908ddb01e5d82e661d77b8f3cb186a84665695660b86b304c6d1ae89c79cdb0b"
+    },
+    "coordinate_adapter": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v22_normalized_support_gate.py",
+      "sha256": "2c13cdb767d222bed510c7d2f650b98566a107daa8f027373e001c5496e51f8a"
+    },
+    "cpu_smoke": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_cpu_smoke.py",
+      "sha256": "b6ad53430f3f7cca3a91a90f72dab585cb05e3e2f74be2241af3fd9b6ee7ce87"
+    },
+    "gate_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v85_integrated_support_gate.py",
+      "sha256": "0b438104c7fb9309650ee786c5618459685675ffae02b05c1039783c68641cd9"
+    },
+    "gate_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v85_integrated_support_gate.py",
+      "sha256": "8400e713b7901c12f9cae1c6a0c5232571ca36eba3da938f622e231e244e3170"
+    },
+    "joint_recurrent": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v21_predictor_preserving_joint_support.py",
+      "sha256": "2d274c6c7c63fa2de5e3a7114ac047df1346189e66ec7bf8d83221e2f93aef0a"
+    },
+    "normalized_checkpoint": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v22_normalized_predictor_v2.py",
+      "sha256": "2f67394c0fc7f5cec14370d38a6a860a9c7bb2ce409e8578466b278c7c8c5b2a"
+    },
+    "runtime_observer": {
+      "hash_mode": "lf",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/observer/winner_v2_contract.py",
+      "sha256": "5c90994a24aa223c94f3a51927228e97000f6118c927561a87a3f2684dcf4889"
+    },
+    "training_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v84_negative_gradient_pitch_head_continuation_preregistration.json",
+      "sha256": "89c76e8b6e806cb11e63634ca63318fa98aeae8c9c1b53341bad71661448d28a"
+    },
+    "training_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v84_negative_gradient_pitch_head_continuation_result.json",
+      "sha256": "1a4f5da556c1d2cc64510da55f01136a157fd202ae22b5028b651396933e99ff"
+    },
+    "training_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v84_negative_gradient_pitch_head_continuation.py",
+      "sha256": "8c194b206f0b6ef72875184283552fc3e38a1e764908c2cb8a0f0eefb0220b62"
+    },
+    "v53_reviewed_gate_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v53_full_action_teacher_support_gate.py",
+      "sha256": "406af17b3376317dd88f434a75265161471ae18b725fb5b9bb78edc4f478b8a6"
+    },
+    "v76_builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v76_integrated_support_gate_preregistration.py",
+      "sha256": "215481c4f8f1f1ae2910ec09e0a756596c76a3c9ee1f506316108f76fd0185dd"
+    },
+    "v76_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v76_integrated_support_gate.py",
+      "sha256": "5be85ad49589b3ae0239fa634c4e5543942a79ce8a6cee3875f58e35ca7eeb6e"
+    },
+    "variable_configuration_domain": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v3_variable_configuration_replacement_preregistration.json",
+      "sha256": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V85_INTEGRATED_SUPPORT_GATE",
+  "training_artifact": {
+    "final": {
+      "graph": {
+        "bytes": 54896,
+        "completed_updates": 755,
+        "contract": {
+          "abi_exact": true,
+          "all_chain_outputs_finite": true,
+          "all_initializers_finite": true,
+          "bytes": 54896,
+          "chain_ticks": 250,
+          "forbidden_training_or_privileged_tokens": [],
+          "initializer_count": 9,
+          "inputs": [
+            {
+              "name": "obs",
+              "shape": [
+                1,
+                115
+              ]
+            },
+            {
+              "name": "previous_action",
+              "shape": [
+                1,
+                14
+              ]
+            },
+            {
+              "name": "h_in",
+              "shape": [
+                1,
+                64
+              ]
+            }
+          ],
+          "jax_onnx_at_most_1e_7": true,
+          "jax_onnx_max_abs_error": 7.450580596923828e-09,
+          "outputs": [
+            {
+              "name": "calibration_actions",
+              "shape": [
+                1,
+                14
+              ]
+            },
+            {
+              "name": "previous_action_out",
+              "shape": [
+                1,
+                14
+              ]
+            },
+            {
+              "name": "h_out",
+              "shape": [
+                1,
+                64
+              ]
+            }
+          ],
+          "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v84-negative-gradient-pitch-head-continuation\\graphs\\winner_v84_final.onnx",
+          "previous_action_out_equals_action_bit_exact": true,
+          "sha256": "de20542d9c49849d974e063e03e8fd55d2310337ed1d8f2329453ee25b489173",
+          "training_only_tensors_absent": true
+        },
+        "label": "final",
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v84-negative-gradient-pitch-head-continuation\\graphs\\winner_v84_final.onnx",
+        "sha256": "de20542d9c49849d974e063e03e8fd55d2310337ed1d8f2329453ee25b489173",
+        "v46_forbidden_tokens_present": []
+      },
+      "snapshot": {
+        "bytes": 196128,
+        "completed_updates": 755,
+        "metadata_payload_sha256": "cefc6b32dc862f760fb4c6bc8d6753d66da1e2b484cb0d54d1b27100551ec149",
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v84-negative-gradient-pitch-head-continuation\\snapshots\\snapshot_negative_gradient_pitch_head_update_755.npz",
+        "sha256": "45528bb25cd993406d5c5527d0391411274f6c657dc486d622e35bcad8c2de1e",
+        "state_payload_sha256": "73aff60eafb6f8315fa46227f1af1faac0bcc143007d5da014b20ebedc150861"
+      }
+    },
+    "half": {
+      "graph": {
+        "bytes": 54896,
+        "completed_updates": 705,
+        "contract": {
+          "abi_exact": true,
+          "all_chain_outputs_finite": true,
+          "all_initializers_finite": true,
+          "bytes": 54896,
+          "chain_ticks": 250,
+          "forbidden_training_or_privileged_tokens": [],
+          "initializer_count": 9,
+          "inputs": [
+            {
+              "name": "obs",
+              "shape": [
+                1,
+                115
+              ]
+            },
+            {
+              "name": "previous_action",
+              "shape": [
+                1,
+                14
+              ]
+            },
+            {
+              "name": "h_in",
+              "shape": [
+                1,
+                64
+              ]
+            }
+          ],
+          "jax_onnx_at_most_1e_7": true,
+          "jax_onnx_max_abs_error": 8.731149137020111e-11,
+          "outputs": [
+            {
+              "name": "calibration_actions",
+              "shape": [
+                1,
+                14
+              ]
+            },
+            {
+              "name": "previous_action_out",
+              "shape": [
+                1,
+                14
+              ]
+            },
+            {
+              "name": "h_out",
+              "shape": [
+                1,
+                64
+              ]
+            }
+          ],
+          "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v84-negative-gradient-pitch-head-continuation\\graphs\\winner_v84_half.onnx",
+          "previous_action_out_equals_action_bit_exact": true,
+          "sha256": "f2f6d6ac0d184245d5abee92c57eb45828356ce63dafc97ce0bf38080c644727",
+          "training_only_tensors_absent": true
+        },
+        "label": "half",
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v84-negative-gradient-pitch-head-continuation\\graphs\\winner_v84_half.onnx",
+        "sha256": "f2f6d6ac0d184245d5abee92c57eb45828356ce63dafc97ce0bf38080c644727",
+        "v46_forbidden_tokens_present": []
+      },
+      "snapshot": {
+        "bytes": 196128,
+        "completed_updates": 705,
+        "metadata_payload_sha256": "00ac2da1195d3b6c65edeac38a70400805719d0785a57e4b90bf5168e1bd8042",
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v84-negative-gradient-pitch-head-continuation\\snapshots\\snapshot_negative_gradient_pitch_head_update_705.npz",
+        "sha256": "a39e76e0eaaeb795eb88ccd636e35fab073bcde4ebf19d6cc91a581b1849e05c",
+        "state_payload_sha256": "76b06a921d42380ecef634004bead746e0c3efbb74954dde91e2356c84b628ae"
+      }
+    },
+    "objective": {
+      "attention_or_flat_transport_added": false,
+      "coefficient_or_training_length_search": false,
+      "heldout_teacher_labels_forbidden": true,
+      "pitch_teacher_scale": 58.436370849609375,
+      "ppo_predictor_anchor_first_tick_gradient_scale": 0.0,
+      "supervised_action_indices": [
+        2,
+        3,
+        4,
+        11,
+        12,
+        13
+      ],
+      "teacher_configuration_ids": [
+        "COM_X_NEG",
+        "COM_CORNER_00",
+        "COM_CORNER_01",
+        "COM_CORNER_02",
+        "COM_CORNER_03",
+        "COM_CORNER_07",
+        "OPTIONAL_AGGREGATE_HEAVY_AFT",
+        "DISCOVERY_02",
+        "DISCOVERY_03",
+        "DISCOVERY_06",
+        "DISCOVERY_09",
+        "DISCOVERY_10"
+      ]
+    },
+    "result": {
+      "bytes": 130845,
+      "path": "outputs/analysis/winner_v84_negative_gradient_pitch_head_continuation_result.json",
+      "sha256": "f720361087d4188b7d65a3da76e53bb93c1fd4774918dd4d4da7b10516764bae"
+    },
+    "source_graph": {
+      "bytes": 54896,
+      "completed_updates": 675,
+      "contract": {
+        "abi_exact": true,
+        "all_chain_outputs_finite": true,
+        "all_initializers_finite": true,
+        "bytes": 54896,
+        "chain_ticks": 250,
+        "forbidden_training_or_privileged_tokens": [],
+        "initializer_count": 9,
+        "inputs": [
+          {
+            "name": "obs",
+            "shape": [
+              1,
+              115
+            ]
+          },
+          {
+            "name": "previous_action",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_in",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "jax_onnx_at_most_1e_7": true,
+        "jax_onnx_max_abs_error": 8.731149137020111e-11,
+        "outputs": [
+          {
+            "name": "calibration_actions",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "previous_action_out",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_out",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v83-count675-negative-gradient-step\\graphs\\winner_v83_negative_gradient_update_675.onnx",
+        "previous_action_out_equals_action_bit_exact": true,
+        "sha256": "e1bc9fc02aab6253ab9d8c08b158cacd7bbbd96adab96a73dade90a229103539",
+        "training_only_tensors_absent": true
+      },
+      "label": "proof",
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v83-count675-negative-gradient-step\\graphs\\winner_v83_negative_gradient_update_675.onnx",
+      "sha256": "e1bc9fc02aab6253ab9d8c08b158cacd7bbbd96adab96a73dade90a229103539",
+      "v46_forbidden_tokens_present": []
+    },
+    "source_snapshot": {
+      "bytes": 196179,
+      "completed_updates": 675,
+      "metadata_payload_sha256": "87fd9aad611a96a80cacb6d45d4f5466b81808bcf92e0030e626cc8b3d212c9f",
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v83-count675-negative-gradient-step\\snapshots\\snapshot_negative_gradient_pitch_head_update_675.npz",
+      "sha256": "cae62d8f50005b30367ebef46ecbdc66d74c17b2b258f4991e2f8a8abf469827",
+      "state_payload_sha256": "9478f8640827047f67dd707fd76e930da0736864e1fff15de6e6c7cdbf18b778"
+    },
+    "teacher_snapshot_sha256": "ddc8c4b905bb9acac2d7d48c3e9c1f0c0ca0173a1ba21f375740b051bc48c806"
+  },
+  "transformation": {
+    "base_v76_transformed_source_sha256": "68fbcee20b59462185210c0d35e931b38800e2f824383b20cd2e26062ea327b5",
+    "replacement_groups": 16,
+    "replacements": [
+      {
+        "new_sha256": "5350758760dc2975e2e1e56d2c54c2dfe17bd456d704fce19469bb9db76b9770",
+        "old_sha256": "76b78309ee692a4c11f68565f23b441cd3a048f44fb46d8271079b43506ac961",
+        "replacement_count": 26
+      },
+      {
+        "new_sha256": "2c9488d549f1ceac597f56f49fbe7cf1717901489c4f05e5d6ec47f616fb2670",
+        "old_sha256": "b675e0b94727e9e5d601ef45be71605569a78fd649c846e5228cc98d0b69414a",
+        "replacement_count": 3
+      },
+      {
+        "new_sha256": "f34cebf4b263a49e3fad88ea713340bfb9a4e944ebc8df040320f8c030646013",
+        "old_sha256": "510893fcdfa88bb5ae3a358ff0435f339850000e91a68984c37576d4fbde03f1",
+        "replacement_count": 6
+      },
+      {
+        "new_sha256": "6a5432ab53de7eee254bf9ec7fb58dbf4c07d1d944c423c16a0a3b5d37325b47",
+        "old_sha256": "56279780651e602c72908c6057ee509d3b5277563c9e094d516a6eb368d2e109",
+        "replacement_count": 1
+      },
+      {
+        "new_sha256": "e5fb97f66a6547793a88f0cf6aa26d33a395f3d40e39a1d094b66b48ae654d24",
+        "old_sha256": "c9dc1ee1077d296397992bf3c23e6dd216029e196d15659a4b209ba01c8d373a",
+        "replacement_count": 1
+      },
+      {
+        "new_sha256": "3718448927fa67587170326ee60503cbd8014e0e41d51d6343cb23cf65cae747",
+        "old_sha256": "e2286f78632d203e84feefbce4de35646281ec973b869b9e75c916fc52cda4f0",
+        "replacement_count": 1
+      },
+      {
+        "new_sha256": "06c917c8d4f3253e7aba539f43c0f0d8d9e58cc2d9bc580eccf98df5a76e5478",
+        "old_sha256": "24e89a2ffd23ba0f6cfef82d09f4a953cc92bf2e4024144fb49e906492bb92aa",
+        "replacement_count": 1
+      },
+      {
+        "new_sha256": "ceb255ffa4e628b8a226e052ed8e1d015b4f2c310c9b0ecb434396b661d5e7e9",
+        "old_sha256": "c0ceb78064f0f476ff10bfda0a671742ccb20bb0cbbde80121f50b760d881cf6",
+        "replacement_count": 1
+      },
+      {
+        "new_sha256": "b2e8c204997be965af7e12762a29ade19bd3a389bb3398dd7d2755375a260cb2",
+        "old_sha256": "e54c6821dfa8a716f942144926ebcad6312a0ed6897d635af43a7af8d83b5c17",
+        "replacement_count": 1
+      },
+      {
+        "new_sha256": "bd94717d91260895035088525e817ea10375454f03aa3bd8b28b355a4cee22c5",
+        "old_sha256": "90b5bc7f03c840b2efddb22ffdfc37dd12cb391b49aa0fc8751726c04d32ff30",
+        "replacement_count": 3
+      },
+      {
+        "new_sha256": "86ab8cbe5869bd1f9c70924e9c04fef3bbe3bbaaf4e816efeeaf7eb6a31937d2",
+        "old_sha256": "9f6cb78c09b22a1a10564f6be4a1784327a42ff11a10a31d355435db59f44710",
+        "replacement_count": 7
+      },
+      {
+        "new_sha256": "a440868cf4311953cb45c7ded9360009e1bb77775b6395a3e13aa9ef831794b1",
+        "old_sha256": "aee4848a8580f31102073d34012cb3700fee3e61f9fcfd725fcfe5fa4a220ec3",
+        "replacement_count": 1
+      },
+      {
+        "new_sha256": "369394c5377d52bbca22c97fee41949626012c028e59b3fb2b50022e61989e5b",
+        "old_sha256": "f68530691a3956e97292dbc50488718fa705da0d02f3fa47c617c162eb43ca8a",
+        "replacement_count": 1
+      },
+      {
+        "new_sha256": "1a8b11df16937aefc7bd370840c942615381ad229704689ddc21b2bf6586316d",
+        "old_sha256": "9c64e3f25e6dbe58c90afdb7b56c181128763782afbe1129aae1fd799b8f78c3",
+        "replacement_count": 1
+      },
+      {
+        "new_sha256": "74c803e48e9df7b0b70f8bbc1d9e2b95838ca97529723e9a65eefe9ae952da15",
+        "old_sha256": "ee65498ef7c2011682dedc2ec61e40698f11b749018b8cba2385e291b7b2b141",
+        "replacement_count": 1
+      },
+      {
+        "new_sha256": "1ef32e0f9867c3798e453c2162ba665486ff4d2d6b3047e07938925cc9bbc1a3",
+        "old_sha256": "78e51fb167b635e6e58b51137fb379b7d59c5ec8400f78a7a078a7c1f0722122",
+        "replacement_count": 1
+      }
+    ],
+    "transformed_source_sha256": "aefbae19d01bf3c0141fba9de5fbd60cb0f70e7a11737e0d6b1861dc38faf641"
+  }
+}
