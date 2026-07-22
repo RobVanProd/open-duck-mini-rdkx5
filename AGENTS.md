@@ -3666,3 +3666,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   only a separately preregistered mechanism selected from the fixed causal
   classes. See
   `outputs/analysis/WINNER_V62_RESIDUAL_TEACHER_CAUSAL_PREREGISTRATION_20260722.md`.
+- 2026-07-22: Winner-v62 passes all `8` causal checks over the exact `52`
+  cells. Full-teacher intervention stabilizes `13/13`; pitch-only stabilizes
+  `12/13`; nonpitch-zero stabilizes `0/13`. The fixed classification is `12`
+  pitch-output-causal and one pitch/nonpitch interaction. Mean pitch mismatch
+  is `0.0772829` rad RMS at tick zero and `0.0817888` after tick zero, proving
+  the Winner-v60 hold is a persistent pre-fall pitch-control mismatch rather
+  than a reset-only defect. Result SHA-256: `2da0c48a...235251f5`. This selects
+  only a separately preregistered persistent-prefix mechanism; it authorizes no
+  training, deployment, Gate 5, RDK-X5/robot access, torque, or motion. See
+  `outputs/analysis/WINNER_V62_RESIDUAL_TEACHER_CAUSAL_RESULT_20260722.md`.
