@@ -3975,3 +3975,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   checkpoint and leaves `robot_clearance: false`; no deployment, Gate 5,
   RDK-X5/robot access, torque, or motion is authorized. See
   `outputs/analysis/WINNER_V76_INTEGRATED_SUPPORT_GATE_RESULT_20260722.md`.
+- 2026-07-22: Winner-v77 stopped twice before episode construction and ran
+  zero diagnostic cells: first on a stale copied `52`-cell authorization
+  string, then because the current `COM_CORNER_07` failure was absent from the
+  older 15-configuration V42 teacher table. Winner-v78 applies the unchanged
+  V41/V42 `729`-target, two-plant search only to that missing configuration.
+  It finds `207` shared full-horizon targets and replay-verifies selected
+  coordinates `[0.25, -0.25, 0.25]` on both plants. Result SHA-256:
+  `a2fe4703...5537e2c4`. This completes teacher coverage and authorizes only a
+  separately preregistered read-only nine-pair causal diagnostic. It performs
+  zero optimizer or locomotion-training steps and grants no checkpoint
+  selection, deployment, Gate 5, RDK-X5/robot access, torque, motion, or
+  clearance. See
+  `outputs/analysis/WINNER_V78_MISSING_TEACHER_EXTENSION_RESULT_20260722.md`.
