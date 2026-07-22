@@ -3656,3 +3656,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   `robot_clearance: false`. No retry, deployment, Gate 5, RDK-X5/robot access,
   torque, or motion is authorized. See
   `outputs/analysis/WINNER_V61_INTEGRATED_SUPPORT_GATE_RESULT_20260722.md`.
+- 2026-07-22: Winner-v62 preregisters one read-only CPU replay of the exact
+  `13` Winner-v61 final failed configuration/plant pairs under the unchanged
+  graph, full-teacher, pitch-teacher, and nonpitch-zero interventions (`52`
+  cells total). It reports tick-zero and post-tick-zero pitch alignment
+  separately and freezes the prior V48/V54 causal classification. Contract
+  SHA-256: `d6415fa2...ba209f08`. It performs no optimizer update, locomotion
+  training, robot/RDK access, torque, or motion. A valid result can authorize
+  only a separately preregistered mechanism selected from the fixed causal
+  classes. See
+  `outputs/analysis/WINNER_V62_RESIDUAL_TEACHER_CAUSAL_PREREGISTRATION_20260722.md`.
