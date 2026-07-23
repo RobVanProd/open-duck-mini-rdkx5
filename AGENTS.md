@@ -4304,3 +4304,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   selection, deployment, Gate 5, hardware, motion, or clearance is authorized.
   See
   `outputs/analysis/WINNER_V94_STABLE_RESPONSE_READOUT_PREREGISTRATION_20260722.md`.
+- 2026-07-22: Winner-v94 holds only on its two predeclared numeric bounds. The
+  hidden-plus-bias design is full-rank `65/65`, all `112/112` traces pass, and
+  heldout float32 MSE improves dramatically to `0.007087/0.006905`, but
+  condition number `194311.27` gives `condition * eps32 = 0.023164 > 1e-3`
+  and float64/float32 maximum prediction delta `0.000707581 > 1e-4`. The
+  readout is not selected. The next permitted diagnostic is one
+  precision-derived SVD truncation whose cutoff is fixed solely by the already
+  registered `condition * eps32 <= 1e-3` requirement, not by heldout behavior.
+  No optimizer update, ONNX/snapshot write, checkpoint selection, deployment,
+  Gate 5, hardware, motion, or clearance is authorized. Result SHA-256:
+  `63acd383...743ff233`. See
+  `outputs/analysis/WINNER_V94_STABLE_RESPONSE_READOUT_RESULT_20260722.md`.
