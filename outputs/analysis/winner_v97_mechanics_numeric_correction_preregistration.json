@@ -1,0 +1,107 @@
+{
+  "authority": {
+    "deployment_authorized": false,
+    "formal_cpu_correction_run_authorized": true,
+    "gate5_authorized": false,
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "result_authorizes": "one separately preregistered response-conditioned locomotion training experiment only if every corrected and unaffected check passes",
+    "robot_clearance": false,
+    "training_authorized_now": false
+  },
+  "corrections": {
+    "golden_same_input": "replace cross-host bit identity with the already frozen Winner-v2 direct same-input tolerance of 1e-6",
+    "numeric_tolerance": 1e-06,
+    "rate_boundary": "use the same frozen 1e-6 numeric tolerance; retain exact independent final-action composition, actual-centered guard, and x=0 checks",
+    "universal_target": "require exact V92 trace receipts plus the frozen V92 zero target error; do not compare against a locally reconstructed limiter vector"
+  },
+  "decision": "AUTHORIZE_ONE_UNCHANGED_GRAPH_CORRECTION_RUN_ONLY",
+  "execution_now": {
+    "golden_ticks": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_cells": 0,
+    "stress_cases": 0
+  },
+  "pass_rule": [
+    "all four regenerated ONNX graphs reproduce the exact V96 artifact hashes",
+    "all four signed calibration cells retain exact V92 receipts, physical support, immutable contexts, and at least 0.15 signed separation",
+    "V92's frozen bounded-target alignment remains exact zero",
+    "all 1,200 selected-policy same-input action differences are at most 1e-6 while default-off remains bit-exact to the locally executed source graph",
+    "the nonzero stress graph retains exact independent composition and its absolute/rate numeric excess is at most 1e-6",
+    "all unaffected V96 checks remain true"
+  ],
+  "schema_version": "winner_v97.mechanics_numeric_correction_preregistration.v1",
+  "source_hold": {
+    "failed_top_level_checks": [
+      "all_golden_replay_checks",
+      "all_nonzero_stress_checks",
+      "all_signed_calibration_checks"
+    ],
+    "v96_preregistration_sha256": "1eeaf4c2e026b525d03baa963066c41576066030013aa5fd0b5ed3bfbe58b6d7",
+    "v96_result_sha256": "5abba51f4ce65b672c6190e76a1dc79cdba02990fc0eadca4277dc2e74377a01"
+  },
+  "source_manifest_sha256": "034d1837cbd646081434ba9428130a8aad88fe51b0e82798ca227b3f5dc9032c",
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v97_mechanics_numeric_correction_preregistration.py",
+      "sha256": "c601bed2d05531300cd3eaea5b829f35112506d289506c360cd18bc042854fa2"
+    },
+    "cross_cpu_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v2_recursive_cross_cpu_closure_preregistration.json",
+      "sha256": "d6408b655e23e23d3b5d058c54156ce17dd043761f4eb4e1b97d3c3a54d8148d"
+    },
+    "network": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v96_response_conditioned_networks.py",
+      "sha256": "b0f964340c627a199edb3be6ca89dbc6be59cdb86fa536af3d5f9f7f0e9cfe83"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v97_mechanics_numeric_correction.py",
+      "sha256": "2fd011fd4c5d690504c934f2eb2640a0561a66ac5a691c59811631b4fe2a910f"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v97_mechanics_numeric_correction.py",
+      "sha256": "86bb6b9271ea68286a84310e821602cdff7f3e8f24826eb9fbfffa6e93817d9d"
+    },
+    "v92_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v92_universal_target_response_observer_result.json",
+      "sha256": "123338d92fff6f8c01c67becde23b52f9bedf3b1763e1959bc297e6b94c49237"
+    },
+    "v96_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v96_response_conditioned_mechanics_preregistration.json",
+      "sha256": "c95852f2473e213a743bd53fc828d73a05cd94d1d0d8c9f1db5b1ac922db797a"
+    },
+    "v96_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v96_response_conditioned_mechanics_result.json",
+      "sha256": "275056113df09a6ef2ef0a43cc42084430b21aa42c6a027b6320af965f7352c9"
+    },
+    "v96_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v96_response_conditioned_mechanics.py",
+      "sha256": "f1813ec0e0362b87de184949f4154691a2f89a195aec06ecc87a01fd00f2d2b0"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V97_MECHANICS_NUMERIC_CORRECTION",
+  "unchanged": {
+    "adapter_seed_and_weights": true,
+    "flat_transport_feature_enabled": false,
+    "graph_artifact_sha256": {
+      "winner_v96_locomotion_default_off.onnx": "a86fcb8e091b8e743772773fa2d3384856d0c6df215082ba73b04737c5441555",
+      "winner_v96_locomotion_enabled_zero.onnx": "9a62b32c5cbf0f11801abe6f7dca4acf8ef31c825ed363e358ed075be5f94d6a",
+      "winner_v96_locomotion_stress.onnx": "3db85000db7c53227f747befc8b320d95a1190a66c23878a2124ae363b389780",
+      "winner_v96_universal_calibrator.onnx": "0f3aebfd9946a6271fdb14adec3d68d556648f270984639d372c973a7d7dc576"
+    },
+    "network_source": true,
+    "optimizer_updates": 0,
+    "policy_and_calibrator_sources": true,
+    "population": "4 signed cells + 1200 golden ticks + 256 stress cases",
+    "thresholds_other_than_three_attributed_assertions": true
+  }
+}

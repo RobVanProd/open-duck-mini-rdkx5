@@ -98,18 +98,26 @@ def test_runner_has_no_training_or_hardware_path() -> None:
     assert "flat_transport" not in NETWORK.read_text(encoding="utf-8")
 
 
-def test_formal_result_passes_every_mechanics_check() -> None:
+def test_formal_result_records_exact_hold_signature() -> None:
     value = json.loads(RESULT.read_text(encoding="utf-8"))
-    assert value["status"] == "PASS_WINNER_V96_RESPONSE_CONDITIONED_MECHANICS"
-    assert value["decision"] == "PREREGISTER_RESPONSE_CONDITIONED_LOCOMOTION_TRAINING"
-    assert value["failed_checks"] == []
-    assert all(value["checks"].values())
-    assert all(value["signed_calibration"]["checks"].values())
-    assert all(value["golden_replay"]["checks"].values())
-    assert all(value["nonzero_adapter_stress"]["checks"].values())
+    assert value["status"] == "HOLD_WINNER_V96_RESPONSE_CONDITIONED_MECHANICS"
+    assert value["decision"] == "DO_NOT_TRAIN_RESPONSE_CONDITIONED_LOCOMOTION"
+    assert value["failed_checks"] == [
+        "all_golden_replay_checks",
+        "all_nonzero_stress_checks",
+        "all_signed_calibration_checks",
+    ]
+    assert value["signed_calibration"]["checks"]["all_v92_receipts_exact"]
+    assert value["signed_calibration"]["checks"]["all_support_pass"]
+    assert value["golden_replay"]["checks"][
+        "adapter_disabled_action_and_state_bit_exact"
+    ]
+    assert value["nonzero_adapter_stress"]["checks"][
+        "stress_onnx_numpy_final_action_at_most_1e_minus_6"
+    ]
 
 
-def test_formal_result_preserves_default_off_and_graph_boundaries() -> None:
+def test_formal_result_preserves_default_off_and_attributes_boundary_hold() -> None:
     value = json.loads(RESULT.read_text(encoding="utf-8"))
     golden = value["golden_replay"]
     assert sum(row["ticks"] for row in golden["rows"]) == 1200
@@ -118,7 +126,7 @@ def test_formal_result_preserves_default_off_and_graph_boundaries() -> None:
     stress = value["nonzero_adapter_stress"]
     assert stress["cases"] == 256
     assert stress["maximum_adapter_delta_magnitude"] > 1.0e-4
-    assert stress["checks"]["absolute_and_rate_bounds_hold"]
+    assert stress["checks"]["absolute_and_rate_bounds_hold"] is False
     assert stress["checks"]["actual_centered_pitch_guard_holds"]
     assert stress["checks"]["x0_deadband_is_exact"]
     assert value["execution"] == {
