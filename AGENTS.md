@@ -4199,3 +4199,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   checkpoint selection, deployment, Gate 5, RDK-X5/robot access, torque,
   motion, or clearance. See
   `outputs/analysis/WINNER_V90_UNIVERSAL_TARGET_INTERSECTION_PREREGISTRATION_20260722.md`.
+- 2026-07-22: Winner-v90 verifies all `10,935` saved candidate receipts and
+  finds `25` exact V41 grid targets shared by all `15` V42 configuration
+  feasible sets. Every intersection target passes all `30` captured
+  configuration/plant cells for `250` ticks. The unchanged aggregate V41 key
+  selects candidate `536`, mirrored coordinates `[0.5, 0.25, 0.25]`; its worst
+  captured tilt/final gyro is `0.107803 rad / 0.001808 rad/s`. Result SHA-256:
+  `4c97d2ac...b1128f775`. The conflicting per-configuration labels were a
+  selector artifact, not a physical feasibility conflict. This authorizes only
+  a separately preregistered complete `124`-cell CPU universal-target
+  feasibility gate. It runs no new simulation itself and grants no training,
+  checkpoint selection, deployment, Gate 5, RDK-X5/robot access, torque,
+  motion, or clearance. See
+  `outputs/analysis/WINNER_V90_UNIVERSAL_TARGET_INTERSECTION_RESULT_20260722.md`.
