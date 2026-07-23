@@ -4328,3 +4328,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   optimizer, ONNX/snapshot write, checkpoint selection, deployment, Gate 5,
   hardware, motion, or clearance is authorized. See
   `outputs/analysis/WINNER_V95_PRECISION_TRUNCATED_READOUT_PREREGISTRATION_20260722.md`.
+- 2026-07-22: Winner-v95 passes the complete precision contract. The fixed
+  rule retains `28/65` directions, with condition `7294.139`,
+  `condition * eps32 = 0.000869529 <= 1e-3`, and heldout float64/float32
+  maximum delta `9.33107e-5 <= 1e-4`. Heldout normalized MSE remains
+  `0.009943/0.009649`, far below both the stale predictor and constant on both
+  plants; all `112/112` source traces pass. The frozen encoder, universal
+  action, exact-zero direct action weights, and stable response readout now
+  form an evidence-selected calibration-observer mechanism. This authorizes
+  only a separately preregistered response-conditioned locomotion CPU
+  contract. No optimizer update, ONNX/snapshot write, deployment-checkpoint
+  selection, deployment, Gate 5, hardware, motion, or robot clearance is
+  authorized. Result SHA-256: `034e2e65...106cab55`. See
+  `outputs/analysis/WINNER_V95_PRECISION_TRUNCATED_READOUT_RESULT_20260722.md`.
