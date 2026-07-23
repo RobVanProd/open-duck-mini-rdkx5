@@ -4240,3 +4240,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   artifact, checkpoint selection, deployment, Gate 5, RDK-X5/robot access,
   torque, motion, or clearance occurred. See
   `outputs/analysis/WINNER_V91_UNIVERSAL_TARGET_FULL_GATE_RESULT_20260722.md`.
+- 2026-07-22: Winner-v92 preregisters one CPU-only composition of the exact
+  Winner-v91 universal target with the exact Winner-v22 final response
+  observer. The final observer is selected before the new run because both
+  Winner-v22 endpoints pass predictor/context/repeatability checks and the
+  final endpoint has the larger saved heldout predictor advantage on both
+  actuator plants. The frozen gate requires all `124` support cells, all `32`
+  heldout repeats, all `16` cross-plant context separations, predictor advantage
+  over the constant comparator on both plants, exact bounded action and
+  previous-action chains, and JAX/ONNX hidden agreement. The flat-transport
+  feature is disabled. This authorizes no optimizer update, policy artifact,
+  checkpoint selection, deployment, Gate 5, hardware access, motion, or robot
+  clearance. See
+  `outputs/analysis/WINNER_V92_UNIVERSAL_TARGET_RESPONSE_OBSERVER_PREREGISTRATION_20260722.md`.
