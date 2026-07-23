@@ -4267,3 +4267,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   hardware access, motion, or robot clearance is authorized. Result SHA-256:
   `3f706f1a...94ae652`. See
   `outputs/analysis/WINNER_V92_UNIVERSAL_TARGET_RESPONSE_OBSERVER_RESULT_20260722.md`.
+- 2026-07-22: Winner-v93 preregisters a single readout-feasibility test before
+  changing the recurrent observer. It runs the frozen Winner-v22 final encoder
+  under the frozen universal action, fits exactly one minimum-norm float32
+  linear readout from `[h_out(64), realized_action(14), bias]` to the `50-D`
+  next response on the `24` fixed-anchor plus `16` discovery configurations,
+  and evaluates once on all `16` untouched heldout configurations under both
+  plants. The `19,920` fit and `7,968` heldout transitions, feature order,
+  frozen Winner-v22 normalization, and no-regularization solver are fixed.
+  Passing requires heldout MSE below both the frozen predictor and constant on
+  each plant. No recurrence/action parameters, optimizer, ONNX/snapshot,
+  flat-transport feature, hardware, motion, or clearance are authorized. See
+  `outputs/analysis/WINNER_V93_UNIVERSAL_RESPONSE_READOUT_PREREGISTRATION_20260722.md`.
