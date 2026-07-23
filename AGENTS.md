@@ -4408,3 +4408,25 @@ Do not proceed to grounded walking until low-risk gates pass.
   access, torque, motion, grounded walking, or robot clearance is authorized.
   See
   `outputs/analysis/WINNER_V103_RESPONSE_CONDITIONED_BEHAVIOR_RUNNER_CONTRACT_20260722.md`.
+- 2026-07-23: The single Winner-v102 L4 submission stopped after `1.93 s`
+  during its first local-module import. The frozen package contained the V96
+  adapter but omitted its direct
+  `winner_v6_dynamic_calibration_networks.py` dependency. The hosted result
+  has zero stages, optimizer steps, simulator locomotion steps, formal behavior
+  cells, and robot/RDK access; no training outcome exists. The result and
+  launch receipt were recovered at SHA-256
+  `c35b9d3e...d16d327d` / `fff8e16e...e11fe129`, and the L4 session was
+  stopped. Winner-v104 attributes only this archive import-closure defect at
+  SHA-256 `6d728c78...15ace985`.
+- 2026-07-23: Winner-v105 preregisters one replacement L4 submission after the
+  zero-optimizer package failure. It adds only the exact V6 dependency at
+  SHA-256 `cfff280a...7a5dbb90`, plus static and isolated import-closure
+  preflights; it reuses the exact Winner-v102 training driver,
+  preregistration, curriculum, stages, equations, exports, thresholds, and
+  no-reward-selection rule. The corrected 59,201,279-byte package passes at
+  SHA-256 `30db9b47...f105be70`; package and Colab CLI launch contracts pass
+  at `f243d3e6...7434d935` and `47bae534...bf86a257`. Exactly one CLI-created
+  L4 session is authorized without retry or resume. A passing training artifact
+  may unlock only the already frozen Winner-v103 CPU matrix. No deployment,
+  Gate 5, RDK-X5/robot access, torque, motion, grounded walking, or robot
+  clearance is authorized.

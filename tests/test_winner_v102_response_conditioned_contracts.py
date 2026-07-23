@@ -101,6 +101,93 @@ def test_v102_package_and_launch_contracts_do_not_broaden_authority() -> None:
         assert authority["rdkx5_or_robot"] is False
 
 
+def test_v104_attributes_v102_hold_before_training_and_v105_closes_imports() -> None:
+    hold = load("winner_v102_hosted_hold_result_20260723.json")
+    receipt = load("winner_v102_hosted_hold_launch_receipt_20260723.json")
+    attribution = load("winner_v104_hosted_package_failure_attribution.json")
+    prereg = load("winner_v105_hosted_packaging_correction_preregistration.json")
+    package = load("winner_v105_response_conditioned_hosted_package_contract.json")
+    launch = load("winner_v105_colab_cli_launch_contract.json")
+
+    assert hold["status"] == (
+        "HOLD_WINNER_V102_RESPONSE_CONDITIONED_HOSTED_CURRICULUM"
+    )
+    assert hold["stages"] == []
+    assert hold["formal_behavior_cells_executed"] == 0
+    assert hold["error"] == (
+        "ModuleNotFoundError: No module named "
+        "'winner_v6_dynamic_calibration_networks'"
+    )
+    assert receipt["status"] == "HOLD_WINNER_V102_COLAB_LAUNCH"
+    assert receipt["returncode"] == 1
+    assert receipt["output_archive_exists"] is False
+
+    assert attribution["status"] == (
+        "HOLD_WINNER_V104_V102_PACKAGE_IMPORT_CLOSURE"
+    )
+    assert attribution["failed_run"]["stages_started"] == 0
+    assert attribution["failed_run"]["optimizer_steps"] == 0
+    assert attribution["failed_run"]["simulator_locomotion_steps"] == 0
+    assert attribution["causal_attribution"][
+        "required_member_present_in_failed_package"
+    ] is False
+    assert attribution["authority"]["hosted_retry_authorized_now"] is False
+
+    assert prereg["status"] == (
+        "PREREGISTERED_WINNER_V105_HOSTED_PACKAGING_CORRECTION"
+    )
+    correction = prereg["correction"]
+    assert correction["add_exact_archive_member"].endswith(
+        "/winner_v6_dynamic_calibration_networks.py"
+    )
+    assert correction["reuse_exact_v102_training_driver"] is True
+    assert correction["reuse_exact_v102_training_preregistration"] is True
+    for field in (
+        "policy_equations_changed",
+        "calibrator_equations_changed",
+        "training_hyperparameters_changed",
+        "stage_schedule_changed",
+        "export_steps_changed",
+        "seeds_or_thresholds_changed",
+        "reward_or_selection_changed",
+    ):
+        assert correction[field] is False
+
+    assert package["status"] == (
+        "PASS_WINNER_V105_RESPONSE_CONDITIONED_HOSTED_PACKAGE"
+    )
+    assert package["failed_checks"] == []
+    assert package["checks"]["v6_dependency_present_and_exact"] is True
+    assert package["checks"]["static_import_closure_passed"] is True
+    assert package["checks"]["isolated_import_preflight_passed"] is True
+    assert package["archive"] == {
+        "path": (
+            "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\"
+            "winner-v105-response-conditioned-hosted-20260723.tar.gz"
+        ),
+        "bytes": 59_201_279,
+        "sha256": (
+            "30db9b47433543eeeff6e4db6548cd6479916a803891d3aafacd1b63f105be70"
+        ),
+    }
+
+    assert launch["status"] == "PASS_WINNER_V105_COLAB_CLI_LAUNCH_CONTRACT"
+    assert launch["failed_checks"] == []
+    assert launch["session"] == {
+        "accelerator": "L4",
+        "count": 1,
+        "max_wall_seconds": 21600,
+        "name": "winner-v105-response-20260723",
+    }
+    assert launch["recovery"]["retry"] is False
+    assert launch["recovery"]["resume"] is False
+    for name in ("launcher", "executor"):
+        assert hashlib.sha256((ROOT / "tools" / {
+            "launcher": "launch_winner_v105_response_conditioned_colab.py",
+            "executor": "execute_winner_v105_colab_cli.py",
+        }[name]).read_bytes()).hexdigest() == launch["hashes"][name]
+
+
 def test_response_path_does_not_eagerly_import_generic_tensorflow_exporter() -> None:
     patch = (ROOT / "patches/ground_up_response_conditioned_locomotion.patch").read_text(
         encoding="utf-8"
