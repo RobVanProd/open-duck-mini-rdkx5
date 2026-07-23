@@ -4279,3 +4279,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   each plant. No recurrence/action parameters, optimizer, ONNX/snapshot,
   flat-transport feature, hardware, motion, or clearance are authorized. See
   `outputs/analysis/WINNER_V93_UNIVERSAL_RESPONSE_READOUT_PREREGISTRATION_20260722.md`.
+- 2026-07-22: Winner-v93 passes: one frozen readout reduces heldout normalized
+  MSE from `0.930858/0.933975` (stale Winner-v22) and
+  `0.866829/0.869110` (constant) to `0.383592/0.373733` on the two plants.
+  All `112/112` source traces retain support. This proves the frozen recurrent
+  state contains transferable universal-action response information, so
+  recurrent retraining is not currently evidence-selected. The raw fit is not
+  itself selected: its design rank is `70/79` and maximum float32 coefficient
+  is `2.90354176e8`. A separate numeric-stability contract is required before
+  any readout artifact. No optimizer update, ONNX/snapshot, checkpoint
+  selection, deployment, Gate 5, hardware access, motion, or clearance is
+  authorized. Result SHA-256: `6990cd76...7a4a3cf2`. See
+  `outputs/analysis/WINNER_V93_UNIVERSAL_RESPONSE_READOUT_RESULT_20260722.md`.
