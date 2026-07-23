@@ -4212,3 +4212,17 @@ Do not proceed to grounded walking until low-risk gates pass.
   checkpoint selection, deployment, Gate 5, RDK-X5/robot access, torque,
   motion, or clearance. See
   `outputs/analysis/WINNER_V90_UNIVERSAL_TARGET_INTERSECTION_RESULT_20260722.md`.
+- 2026-07-22: Winner-v91 preregisters the complete CPU feasibility gate for
+  universal candidate `536`, mirrored coordinates `[0.5,0.25,0.25]`, expanded
+  to raw actions `left hip/knee/ankle=-0.5/.25/.25` and
+  `right hip/knee/ankle=.5/.25/.25` with every non-pitch action zero. At every
+  tick the full target replaces the actor action before the unchanged graph
+  boundary. The exact reviewed population is `112` core model/plant plus `12`
+  sensor-transport/plant cells, `250` ticks each, using the V84 half graph only
+  for frozen hidden/predictor instrumentation. Pass requires `124/124` support,
+  exact bounded target/action and previous-action chains, and JAX/ONNX hidden
+  error at most `1e-7`; predictor/context selection is excluded. Contract
+  SHA-256: `625093a9...6a0057ff`. No optimizer update, artifact write,
+  checkpoint selection, deployment, Gate 5, RDK-X5/robot access, torque,
+  motion, or clearance is authorized. See
+  `outputs/analysis/WINNER_V91_UNIVERSAL_TARGET_FULL_GATE_PREREGISTRATION_20260722.md`.
