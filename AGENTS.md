@@ -4316,3 +4316,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   Gate 5, hardware, motion, or clearance is authorized. Result SHA-256:
   `63acd383...743ff233`. See
   `outputs/analysis/WINNER_V94_STABLE_RESPONSE_READOUT_RESULT_20260722.md`.
+- 2026-07-22: Winner-v95 preregisters exactly one precision-derived truncated
+  SVD fit on the unchanged V94 data, feature basis, and `40/16` split. A
+  singular direction is retained iff its condition relative to the leading
+  direction is no greater than `1e-3 / eps(float32) = 8388.608`; equivalently
+  the relative singular-value cutoff is `0.000119209289551`. This rule is
+  derived only from V94's already-frozen numeric bound and sees no heldout
+  labels. Passing still requires heldout float64/float32 delta `<=1e-4`, MSE
+  below both comparators on each plant, and all `112` support traces. Direct
+  action weights remain exact zero. No alternative cutoff, rank, features,
+  optimizer, ONNX/snapshot write, checkpoint selection, deployment, Gate 5,
+  hardware, motion, or clearance is authorized. See
+  `outputs/analysis/WINNER_V95_PRECISION_TRUNCATED_READOUT_PREREGISTRATION_20260722.md`.
