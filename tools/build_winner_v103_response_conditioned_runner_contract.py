@@ -24,6 +24,9 @@ from run_winner_v3_variable_configuration_behavior import (  # noqa: E402
     sha256,
     trace_audit,
 )
+from run_winner_v103_response_conditioned_behavior import (  # noqa: E402
+    zero_cell_plan_contract,
+)
 
 ANALYSIS = ROOT / "outputs/analysis"
 PREREG = ANALYSIS / "winner_v103_response_conditioned_behavior_preregistration.json"
@@ -37,6 +40,7 @@ MARKDOWN = (
     ANALYSIS
     / "WINNER_V103_RESPONSE_CONDITIONED_BEHAVIOR_RUNNER_CONTRACT_20260722.md"
 )
+FORMAL_RUNNER = TOOLS / "run_winner_v103_response_conditioned_behavior.py"
 PREREG_SHA256 = (
     "1087c9a60b93c359be15d2423bf3f1fc1cbc740e3a7d6fc4a650f6b73cb7efcf"
 )
@@ -219,6 +223,7 @@ def build(
         raise ValueError("response calibrator changed")
     prereg = json.loads(BASE_PREREG.read_text(encoding="utf-8"))
     plan = matrix_plan(prereg)
+    formal_runner = zero_cell_plan_contract()
     smoke = full_stack_smoke(
         playground=playground,
         policy=policy,
@@ -232,6 +237,10 @@ def build(
         "matrix_1024_exact": len(plan) == 1024,
         "matrix_plan_sha256_exact": canonical_sha256(plan) == MATRIX_PLAN_SHA256,
         "full_stack_nonformal_smoke_passed": smoke["pass"],
+        "formal_runner_zero_cell_plan_passed": formal_runner["pass"],
+        "formal_runner_outputs_absent": formal_runner["checks"][
+            "formal_outputs_absent"
+        ],
         "formal_behavior_cells_zero": True,
         "all_values_finite": finite_tree(smoke),
         "cpu_environment_exact": True,
@@ -253,6 +262,8 @@ def build(
         "formal_behavior_cells_executed": 0,
         "matrix_cells": len(plan),
         "matrix_plan_sha256": canonical_sha256(plan),
+        "formal_runner_sha256": sha256(FORMAL_RUNNER),
+        "formal_runner_zero_cell_plan": formal_runner,
         "builder_path": str(builder.relative_to(ROOT)),
         "builder_sha256": sha256(builder),
         "supporting_tool_hashes": {
@@ -317,6 +328,11 @@ def main() -> int:
         "calibration and 250-tick home return, then one non-formal scored tick "
         "through the four-input stateful graph. The trace proves the 64-D "
         "context stayed immutable and the host changed no graph-owned action.\n\n"
+        "The same contract hash-freezes the formal runner that verifies the "
+        "hosted archive and both eligible ONNX receipts before creating any "
+        "cell output. Its zero-cell plan reproduces all 64 conditions and "
+        "1,024 cells and can select only the fixed final checkpoint after both "
+        "512-cell checkpoint populations pass.\n\n"
         "Formal behavior cells executed: `0`. A passing contract does not "
         "authorize formal evaluation until a valid Winner-v102 hosted artifact "
         "exists. It grants no robot, RDK-X5, Gate 5, torque, motion, deployment, "

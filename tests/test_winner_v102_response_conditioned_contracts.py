@@ -182,6 +182,20 @@ def test_v103_zero_cell_runner_contract_passes_exact_two_stage_smoke() -> None:
     assert contract["matrix_plan_sha256"] == (
         "10b5d3e407636d276275f3f39145233c3cd63688c3229235411ed2734651e073"
     )
+    formal_runner = ROOT / "tools/run_winner_v103_response_conditioned_behavior.py"
+    assert hashlib.sha256(formal_runner.read_bytes()).hexdigest() == (
+        contract["formal_runner_sha256"]
+    )
+    formal_plan = contract["formal_runner_zero_cell_plan"]
+    assert formal_plan["pass"] is True
+    assert formal_plan["failed_checks"] == []
+    assert formal_plan["formal_behavior_cells_executed"] == 0
+    assert formal_plan["matrix_cells"] == 1024
+    assert formal_plan["selection_rule"] == {
+        "both_checkpoints_must_pass_all_512": True,
+        "selected_step_if_both_pass": 2_007_040,
+        "no_closest_or_reward_selection": True,
+    }
     smoke = contract["nonformal_full_stack_smoke"]
     assert smoke["pass"] is True
     assert smoke["scored_ticks"] == 1

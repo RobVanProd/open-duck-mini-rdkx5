@@ -11,12 +11,14 @@
     "training": false
   },
   "builder_path": "tools\\build_winner_v103_response_conditioned_runner_contract.py",
-  "builder_sha256": "3d0fb6dfc71a78607c1a6356179c658c2f1dfdff33b6f0c522b861c18316830c",
+  "builder_sha256": "6af1120f713d9a8c3e856b2771a50b895e6ce4e0123a8ab66749c7de5fc266ee",
   "checks": {
     "all_values_finite": true,
     "calibrator_exact": true,
     "cpu_environment_exact": true,
     "formal_behavior_cells_zero": true,
+    "formal_runner_outputs_absent": true,
+    "formal_runner_zero_cell_plan_passed": true,
     "full_stack_nonformal_smoke_passed": true,
     "matrix_1024_exact": true,
     "matrix_plan_sha256_exact": true,
@@ -30,6 +32,58 @@
   },
   "failed_checks": [],
   "formal_behavior_cells_executed": 0,
+  "formal_runner_sha256": "cdba6011e79db34fa4c87b832816f62c7b968c74f4770f0ae2af5102744ef584",
+  "formal_runner_zero_cell_plan": {
+    "checks": {
+      "condition_count_exact_64": true,
+      "duration_exact_600": true,
+      "formal_outputs_absent": true,
+      "matrix_commands_exact": true,
+      "matrix_count_exact_1024": true,
+      "matrix_group_counts_exact": true,
+      "matrix_plan_sha256_exact": true,
+      "matrix_plants_exact": true,
+      "matrix_steps_exact": true
+    },
+    "condition_count": 64,
+    "failed_checks": [],
+    "formal_behavior_cells_executed": 0,
+    "group_counts": {
+      "DISCOVERY": 256,
+      "FIXED_ANCHOR": 384,
+      "HELDOUT": 256,
+      "NOMINAL": 32,
+      "SENSOR_TRANSPORT": 96
+    },
+    "matrix_cells": 1024,
+    "matrix_plan_sha256": "10b5d3e407636d276275f3f39145233c3cd63688c3229235411ed2734651e073",
+    "pass": true,
+    "response_cell_template": {
+      "action_dim": 14,
+      "calibration_ticks": 250,
+      "calibrator_sha256": "cb3380ed99b3e9d7e9000904a210227aa397db2a064aa80d8f70e77c8339783b",
+      "graph_authoritative_output": true,
+      "home_return_ticks": 250,
+      "observation_dim": 115,
+      "policy_inputs": [
+        "obs",
+        "previous_action",
+        "h_in",
+        "calibration_context"
+      ],
+      "policy_outputs": [
+        "continuous_actions",
+        "previous_action_out",
+        "h_out"
+      ],
+      "scored_ticks": 600
+    },
+    "selection_rule": {
+      "both_checkpoints_must_pass_all_512": true,
+      "no_closest_or_reward_selection": true,
+      "selected_step_if_both_pass": 2007040
+    }
+  },
   "input_hashes": {
     "calibrator": "cb3380ed99b3e9d7e9000904a210227aa397db2a064aa80d8f70e77c8339783b",
     "reference_features": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212",
@@ -131,7 +185,7 @@
     "scored_ticks": 1,
     "trace": {
       "all_values_finite": true,
-      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v103-runner-contract-20260722-rerun\\nonformal_smoke.jsonl",
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v103-formal-runner-contract-20260722\\nonformal_smoke.jsonl",
       "required_fields_every_tick": true,
       "reset_h_exact_zero": true,
       "reset_previous_action_exact_zero": true,
