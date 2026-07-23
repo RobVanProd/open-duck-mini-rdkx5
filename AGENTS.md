@@ -4341,3 +4341,36 @@ Do not proceed to grounded walking until low-risk gates pass.
   selection, deployment, Gate 5, hardware, motion, or robot clearance is
   authorized. Result SHA-256: `034e2e65...106cab55`. See
   `outputs/analysis/WINNER_V95_PRECISION_TRUNCATED_READOUT_RESULT_20260722.md`.
+- 2026-07-22: Winner-v98 through Winner-v100 preserve three pre-optimizer
+  failures rather than disguising them as training outcomes. Winner-v98 stopped
+  before reset on a composed-source working-directory binding; Winner-v99 ran
+  the exact 250-tick calibration and 250-tick home-return reset but exposed two
+  invalid checker interpretations; Winner-v100 passed the corrected manual
+  preflight and then stopped before PPO-environment construction because an
+  unused generic exporter eagerly imported TensorFlow. Across all three, PPO
+  locomotion and optimizer steps remained zero. Their attribution artifacts
+  authorize only the recorded source/checker/import corrections and no robot,
+  RDK-X5, deployment, Gate 5, torque, or motion work.
+- 2026-07-22: Winner-v101 passes the response-conditioned 1,024-step CPU
+  contract. The selected 512K source checkpoint restores exactly; step zero
+  reproduces all 1,200 frozen golden ticks within `2.39e-7`; automatic reset
+  produces one finite immutable 64-D build-response context after exactly
+  `250+250` non-PPO ticks; the protected actor/normalizer update is exactly
+  zero; all state/context/action adapter families and the critic update; and
+  step-0/step-1,024 ONNX graphs retain the exact `115+14+64+64` input and
+  `14+14+64` output ABI, graph-owned boundary, and exact x=0 behavior. Result
+  SHA-256: `4f44c2ff...d6e047d0`. This replaces the abandoned manual 46-field
+  COM worksheet with automatic response calibration; it does not select a
+  checkpoint or grant robot clearance.
+- 2026-07-22: Winner-v102 freezes the only next training action: one L4 GPU,
+  no-retry response-conditioned curriculum at domain scales `0.25 -> 0.5 ->
+  1.0` for `245760 + 245760 + 2007040` steps, with only the two full-domain
+  persistence exports eligible for later evaluation. Flat transport remains
+  disabled. The 59,176,688-byte bundle passes at SHA-256
+  `cbb6dd1e...a6b28017`; the package and Colab launch contracts pass at
+  `d4218997...c3909ea0` and `a8000d44...f21e0a29`. No Colab session has been
+  opened and no Winner-v102 optimizer or simulator step has run. A valid
+  training artifact can authorize only a separately preregistered CPU behavior
+  evaluation; it cannot select a deployment checkpoint, access the RDK-X5 or
+  robot, run Gate 5, energize torque, move hardware, or set
+  `robot_clearance: true`.

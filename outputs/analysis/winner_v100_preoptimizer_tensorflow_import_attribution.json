@@ -1,0 +1,56 @@
+{
+  "authority": {
+    "hosted_or_colab": false,
+    "optimizer_authorized_now": false,
+    "rdkx5_or_robot": false,
+    "retry_authorized_now": false,
+    "robot_clearance": false,
+    "torque_or_motion": false
+  },
+  "causal_attribution": {
+    "cause": "common/runner.py imports the TensorFlow-backed generic exporter at module load even though the selected response-conditioned architecture uses its dedicated ONNX exporter",
+    "generic_exporter_selected": false,
+    "policy_or_calibration_math_implicated": false,
+    "response_conditioned_exporter_requires_tensorflow": false,
+    "simulator_or_optimizer_implicated": false
+  },
+  "decision": "AUTHORIZE_LAZY_GENERIC_EXPORT_IMPORT_PREREGISTRATION_ONLY",
+  "execution_boundary": {
+    "automatic_calibration_ticks_completed": 250,
+    "home_return_ticks_completed": 250,
+    "manual_pretraining_contract_passed": true,
+    "optimizer_steps": 0,
+    "ppo_environment_constructed": false,
+    "ppo_locomotion_steps": 0,
+    "ppo_reset_completed": false,
+    "ppo_subprocess_started": true,
+    "robot_or_rdk_access": 0
+  },
+  "failure": {
+    "exception": "ModuleNotFoundError",
+    "import_chain": [
+      "open_duck_mini_v2/runner.py",
+      "common/runner.py",
+      "common/export_onnx.py",
+      "tensorflow"
+    ],
+    "log_path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v100-cpu-contract-20260722\\winner_v98_response_conditioned_cpu_smoke.log",
+    "log_sha256": "d0fc25b53f1f9dd4b1ecda841a7747db0313198ace9231c57ed88414652a7bab",
+    "missing_module": "tensorflow"
+  },
+  "preregistration_sha256": "16f52fc87b0e43682477a1d6aa9be7a1d42bfc916b371e20df4d912ba8ad27b8",
+  "preserved_preflight_artifacts": {
+    "expanded_checkpoint_directory_sha256": "2adfe8e85ca1154717548915f4c0cef0ea2ac7fab885230095b4ec455a3052ad",
+    "step_zero_onnx_sha256": "0076e743edb67bc8139d6c70ed6ee2973945c483640180b9de90da190a5a038e"
+  },
+  "prospective_correction": {
+    "import_generic_exporter_only_in_generic_branch": true,
+    "network_source_changed": false,
+    "new_run_requires_new_preregistration": true,
+    "remove_eager_generic_export_import": true,
+    "threshold_changed": false,
+    "training_hyperparameters_changed": false
+  },
+  "schema_version": "winner_v100.preoptimizer_tensorflow_import_attribution.v1",
+  "status": "HOLD_WINNER_V100_PREOPTIMIZER_UNUSED_TENSORFLOW_IMPORT"
+}
