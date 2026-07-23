@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 
@@ -110,3 +111,60 @@ def test_response_path_does_not_eagerly_import_generic_tensorflow_exporter() -> 
     assert patch.index(
         '+        elif self.args.policy_architecture == "response_conditioned_reference_residual":'
     ) < patch.index("+            from playground.common.export_onnx import export_onnx")
+
+
+def test_v103_freezes_full_matrix_and_selection_before_training_outcome() -> None:
+    prereg = load("winner_v103_response_conditioned_behavior_preregistration.json")
+    assert prereg["status"] == (
+        "PREREGISTERED_WINNER_V103_RESPONSE_CONDITIONED_CPU_BEHAVIOR_"
+        "AND_SELECTION_GATE"
+    )
+    matrix = prereg["formal_matrix"]
+    assert matrix["cells_total"] == 1024
+    assert matrix["cells_per_checkpoint"] == 512
+    assert matrix["conditions"] == 64
+    assert matrix["checkpoints_full_domain_relative_steps"] == [
+        1_003_520,
+        2_007_040,
+    ]
+    assert matrix["commands_x_m_s"] == [0.0, 0.074, 0.077, 0.08]
+    assert matrix["actuator_plants"] == [
+        "P30_ALL_JOINT",
+        "P31_34_PITCH_WITH_P30_NONPITCH",
+    ]
+    assert sum(matrix["group_cell_counts"].values()) == 1024
+
+    calibration = prereg["automatic_calibration_per_cell"]
+    assert calibration["calibration_ticks"] == 250
+    assert calibration["home_return_ticks"] == 250
+    assert calibration["ticks_count_toward_scored_duration"] is False
+    assert calibration["locomotion_phase_reset"] == [1.0, 0.0]
+    assert calibration["locomotion_hidden_reset"] == [0.0] * 64
+    assert calibration["locomotion_previous_action_reset"] == [0.0] * 14
+
+    selection = prereg["selection_rule"]
+    assert selection["both_checkpoints_must_pass_all_512_cells"] is True
+    assert selection["no_closest_checkpoint_or_metric_ranking"] is True
+    assert selection["no_selection_if_either_checkpoint_holds"] is True
+    assert selection["selected_checkpoint_if_both_pass"] == {
+        "label": "final",
+        "full_domain_relative_step": 2_007_040,
+    }
+    assert prereg["execution_now"] == {
+        "training_artifacts_observed": 0,
+        "formal_behavior_cells": 0,
+        "checkpoint_selected": False,
+        "robot_clearance": False,
+        "robot_or_rdk_access": 0,
+    }
+    assert all(value is False for value in prereg["authority_now"].values())
+    assert (
+        prereg["manual_measurement_disposition"][
+            "powered_off_46_field_com_packet_required"
+        ]
+        is False
+    )
+    builder = ROOT / prereg["frozen_sources"]["builder"]["path"]
+    assert hashlib.sha256(builder.read_bytes()).hexdigest() == (
+        prereg["frozen_sources"]["builder"]["sha256"]
+    )

@@ -4374,3 +4374,18 @@ Do not proceed to grounded walking until low-risk gates pass.
   evaluation; it cannot select a deployment checkpoint, access the RDK-X5 or
   robot, run Gate 5, energize torque, move hardware, or set
   `robot_clearance: true`.
+- 2026-07-22: Winner-v103 preregisters the post-V102 behavior and selection
+  gate before any hosted outcome exists. It inherits the exact Winner-v3
+  64-condition / 1,024-cell matrix at SHA-256
+  `10b5d3e4...651e073`, including both persistent checkpoints, both measured
+  actuator plants, commands `0/.074/.077/.080`, and every configuration,
+  sensor, transport, seed, current, tracking, gait, and x=0 threshold. Each
+  cell adds exactly 250 automatic-calibration ticks and 250 home-return ticks
+  in the same simulated build before its 600 scored ticks. Both checkpoints
+  must pass all 512 cells; only then is the fixed final checkpoint selected
+  by exact locomotion ONNX SHA-256 together with calibrator SHA-256
+  `cb3380ed...39783b`. No closest-result or reward selection is allowed. The
+  preregistration executes zero cells and authorizes none until both a valid
+  V102 artifact and a separate zero-cell runner contract pass. No robot,
+  RDK-X5, Gate 5, torque, motion, or grounded walking is authorized. Artifact
+  SHA-256: `1087c9a6...3cb7efcf`.
