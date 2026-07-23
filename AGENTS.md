@@ -4253,3 +4253,17 @@ Do not proceed to grounded walking until low-risk gates pass.
   checkpoint selection, deployment, Gate 5, hardware access, motion, or robot
   clearance. See
   `outputs/analysis/WINNER_V92_UNIVERSAL_TARGET_RESPONSE_OBSERVER_PREREGISTRATION_20260722.md`.
+- 2026-07-22: Winner-v92 holds only on response-predictor transfer. The frozen
+  universal action passes all `124/124` support cells with zero bounded-target
+  error; all `32/32` repeats are bit-exact; all `16/16` heldout configurations
+  separate the two actuator plants in recurrent state; and the minimum final
+  separation is `0.00108013`. The frozen Winner-v22 predictor is worse than the
+  constant comparator on both plants (`0.930028 > 0.866002` and
+  `0.933139 > 0.868278` normalized MSE), so the composition is not selected.
+  This attributes the hold to action-distribution-specific prediction, not
+  physical support or absent response state. It authorizes only a separately
+  preregistered CPU observer-feasibility diagnostic on the universal-action
+  traces. No training, artifact, checkpoint selection, deployment, Gate 5,
+  hardware access, motion, or robot clearance is authorized. Result SHA-256:
+  `3f706f1a...94ae652`. See
+  `outputs/analysis/WINNER_V92_UNIVERSAL_TARGET_RESPONSE_OBSERVER_RESULT_20260722.md`.
