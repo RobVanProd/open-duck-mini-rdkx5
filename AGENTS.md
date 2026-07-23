@@ -4226,3 +4226,17 @@ Do not proceed to grounded walking until low-risk gates pass.
   checkpoint selection, deployment, Gate 5, RDK-X5/robot access, torque,
   motion, or clearance is authorized. See
   `outputs/analysis/WINNER_V91_UNIVERSAL_TARGET_FULL_GATE_PREREGISTRATION_20260722.md`.
+- 2026-07-22: Winner-v91 passes the complete universal-target gate: all `112`
+  core model/plant cells and all `12` sensor-transport/plant cells complete
+  `250` ticks, with exact previous-action chains and zero bounded-target action
+  error. Worst tilt/current/torque are
+  `0.144712 rad / 1.830962 A / 1.436449 N.m`; worst final gyro is
+  `0.030830 rad/s`, minimum base Z is `0.15 m`, and maximum JAX/ONNX hidden
+  error is `8.73e-11`. Result SHA-256: `3d461116...6735c41c`. This proves one
+  configuration-independent support action spans the complete reviewed
+  population and removes the contradictory teacher-label requirement. It
+  authorizes only a separately preregistered CPU mechanism contract pairing
+  the fixed graph-bounded action with a response observer. No optimizer update,
+  artifact, checkpoint selection, deployment, Gate 5, RDK-X5/robot access,
+  torque, motion, or clearance occurred. See
+  `outputs/analysis/WINNER_V91_UNIVERSAL_TARGET_FULL_GATE_RESULT_20260722.md`.
