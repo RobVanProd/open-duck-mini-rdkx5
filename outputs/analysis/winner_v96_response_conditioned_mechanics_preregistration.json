@@ -1,0 +1,593 @@
+{
+  "authority": {
+    "checkpoint_selection_authorized": false,
+    "deployment_authorized": false,
+    "formal_cpu_contract_authorized": true,
+    "gate5_authorized": false,
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "result_authorizes": "one separately preregistered response-conditioned locomotion training experiment only if every check passes",
+    "robot_clearance": false,
+    "training_authorized_now": false
+  },
+  "binary_sources": {
+    "golden_x0": {
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/golden/T2_EQUAL_512000_x0.000.npz",
+      "sha256": "aa84f0cbd4e885f9dcc36c553c43e17030f32d0304dff2a7bf06f1f41c4cbe2e"
+    },
+    "golden_x008": {
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/golden/T2_EQUAL_512000_x0.080.npz",
+      "sha256": "0cfd9e99bf499028b5b7f285fa1964f65248795592cf9d072c4bc5aa1a56fb1c"
+    },
+    "protected_policy": {
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/policies/T2_EQUAL_512000.onnx",
+      "sha256": "99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de"
+    },
+    "winner_v22_final_onnx": {
+      "external_path_role": "--training-work-root/graphs/winner_v22_final.onnx",
+      "sha256": "cb3380ed99b3e9d7e9000904a210227aa397db2a064aa80d8f70e77c8339783b"
+    },
+    "winner_v22_final_snapshot": {
+      "external_path_role": "--training-work-root/snapshots/snapshot_normalized_predictor_update_100.npz",
+      "sha256": "ddc8c4b905bb9acac2d7d48c3e9c1f0c0ca0173a1ba21f375740b051bc48c806"
+    }
+  },
+  "decision": "AUTHORIZE_ONE_ZERO_UPDATE_CPU_MECHANICS_CONTRACT_ONLY",
+  "execution_now": {
+    "golden_ticks": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_cells": 0,
+    "stress_cases": 0
+  },
+  "expected_abi": {
+    "calibrator": {
+      "inputs": [
+        {
+          "dtype": "float32",
+          "name": "obs",
+          "shape": [
+            1,
+            115
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "previous_action",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "h_in",
+          "shape": [
+            1,
+            64
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "dtype": "float32",
+          "name": "calibration_actions",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "previous_action_out",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "h_out",
+          "shape": [
+            1,
+            64
+          ]
+        }
+      ]
+    },
+    "locomotion": {
+      "inputs": [
+        {
+          "dtype": "float32",
+          "name": "obs",
+          "shape": [
+            1,
+            115
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "previous_action",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "h_in",
+          "shape": [
+            1,
+            64
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "calibration_context",
+          "shape": [
+            1,
+            64
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "dtype": "float32",
+          "name": "continuous_actions",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "previous_action_out",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "h_out",
+          "shape": [
+            1,
+            64
+          ]
+        }
+      ]
+    }
+  },
+  "fixed_initialization": {
+    "action_heads_and_context_paths": "exact-zero at zero update",
+    "adapter_max_normalized": 0.25,
+    "adapter_seed": 60721,
+    "calibration_ticks": 250,
+    "flat_transport_feature_enabled": false,
+    "stable_v95_readout_exported": false
+  },
+  "hypothesis": "The exact Winner-v22 response encoder can drive the already-selected 512K locomotion graph through a default-disabled recurrent adapter without changing protected behavior, while an enabled nonzero adapter remains graph-bounded.",
+  "pass_rule": [
+    "all source hashes, exact ABIs, and CPU-only execution match",
+    "the exported universal calibrator exactly reproduces the four frozen signed-X V92 action, observation, hidden, and final-context receipts",
+    "same-plant COM_X_NEG versus COM_X_POS final context Linf separation is at least 0.15",
+    "the 250-tick handoff is immutable and all nine invalid handoffs fail closed",
+    "the adapter-disabled graph is bit-exact to all 1,200 selected-policy golden actions and previous-action outputs",
+    "the enabled exact-zero adapter changes actions by at most 1e-6 and x=0 remains exact zero",
+    "256 deterministic nonzero-adapter cases agree with JAX/NumPy references and obey graph absolute, rate, actual-centered guard, and x=0 deadband boundaries",
+    "the V95 stable readout identity remains bound but is not exported into either deployable graph"
+  ],
+  "schema_version": "winner_v96.response_conditioned_mechanics_preregistration.v1",
+  "source_evidence": {
+    "signed_response_receipts": [
+      {
+        "configuration_id": "COM_X_NEG",
+        "configuration_sha256": "9a7278e95f2201ea287307618435401a48a64a248cb44b1ae011c22028da2bfe",
+        "final_h_out": [
+          0.5618993043899536,
+          -0.6396389007568359,
+          -0.7179979085922241,
+          -0.7247302532196045,
+          -0.6888472437858582,
+          0.5780686140060425,
+          0.143589586019516,
+          0.7232493162155151,
+          -0.4428286552429199,
+          0.7327410578727722,
+          0.7945025563240051,
+          0.5401673913002014,
+          0.7426775097846985,
+          0.7472783327102661,
+          -0.6582521796226501,
+          -0.41029518842697144,
+          -0.711970865726471,
+          -0.5617082715034485,
+          0.7432374954223633,
+          0.21497277915477753,
+          0.8821656703948975,
+          0.6381697058677673,
+          0.6714262962341309,
+          -0.42252010107040405,
+          -0.6891380548477173,
+          0.492255300283432,
+          0.1554107367992401,
+          -0.6776207685470581,
+          0.7243763208389282,
+          0.3154807984828949,
+          -0.1667698472738266,
+          0.6773859858512878,
+          -0.4167744815349579,
+          0.5728859901428223,
+          -0.6443265676498413,
+          -0.7540989518165588,
+          0.05535687878727913,
+          -0.47053879499435425,
+          0.8382847905158997,
+          0.6092630624771118,
+          -0.10994461923837662,
+          -0.7277576923370361,
+          -0.735968291759491,
+          -0.23049183189868927,
+          0.3773696720600128,
+          -0.322844535112381,
+          0.026873869821429253,
+          -0.05334187671542168,
+          0.1814080774784088,
+          -0.5820786952972412,
+          -0.35074856877326965,
+          -0.19471155107021332,
+          -0.3135651648044586,
+          0.5663335919380188,
+          0.5528565049171448,
+          0.3764694929122925,
+          0.7900559306144714,
+          0.5509248375892639,
+          -0.5562677383422852,
+          -0.5250416994094849,
+          -0.8065596222877502,
+          -0.7118831872940063,
+          -0.6693205237388611,
+          0.7009857296943665
+        ],
+        "plant": "P30_ALL_JOINT",
+        "trace_hashes": {
+          "actions": "0329da7215c36aea194436d0a5e18622aa0717727110f20c185cc5c9902f6b05",
+          "hidden": "81f65010398b608477bbd5c1cd6805abcb477ec9f10a153f65ac98faa9745042",
+          "observations": "7e94684334737cbe23f89eab6b06287eae9d6f52d806da335ea6085ce3652712",
+          "predictions": "12be55f5810dbfdce81e37f8937de7fe8181eee11d799ce0974472521b099ca0"
+        }
+      },
+      {
+        "configuration_id": "COM_X_NEG",
+        "configuration_sha256": "9a7278e95f2201ea287307618435401a48a64a248cb44b1ae011c22028da2bfe",
+        "final_h_out": [
+          0.5623729228973389,
+          -0.6389886140823364,
+          -0.7175155282020569,
+          -0.7239581346511841,
+          -0.688844621181488,
+          0.5784518122673035,
+          0.1441466510295868,
+          0.723453164100647,
+          -0.444649875164032,
+          0.7323138117790222,
+          0.7945679426193237,
+          0.5394677519798279,
+          0.7430989146232605,
+          0.7469664216041565,
+          -0.6576683521270752,
+          -0.41121891140937805,
+          -0.7115415930747986,
+          -0.5629509687423706,
+          0.7426279187202454,
+          0.21391959488391876,
+          0.8821060061454773,
+          0.6384222507476807,
+          0.6710798144340515,
+          -0.42309311032295227,
+          -0.6882727146148682,
+          0.49311384558677673,
+          0.1534019410610199,
+          -0.677428662776947,
+          0.7232728004455566,
+          0.3162960708141327,
+          -0.16853013634681702,
+          0.676591694355011,
+          -0.4151923358440399,
+          0.5741910338401794,
+          -0.6437346339225769,
+          -0.753842830657959,
+          0.0568462498486042,
+          -0.4706820845603943,
+          0.838087797164917,
+          0.6088789701461792,
+          -0.10826042294502258,
+          -0.7273961305618286,
+          -0.7356240749359131,
+          -0.23043374717235565,
+          0.37642914056777954,
+          -0.3224870264530182,
+          0.02659551426768303,
+          -0.055420033633708954,
+          0.18341277539730072,
+          -0.5804740786552429,
+          -0.34951865673065186,
+          -0.19373838603496552,
+          -0.3136207163333893,
+          0.565326988697052,
+          0.5525545477867126,
+          0.37548208236694336,
+          0.7897452712059021,
+          0.5505842566490173,
+          -0.5559936761856079,
+          -0.5239613652229309,
+          -0.8065701723098755,
+          -0.7122905254364014,
+          -0.668739378452301,
+          0.7000842094421387
+        ],
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+        "trace_hashes": {
+          "actions": "0329da7215c36aea194436d0a5e18622aa0717727110f20c185cc5c9902f6b05",
+          "hidden": "3c61bc68800068f878c86b7bc3fe891ca4857f78c0b56438091a34c4f925777c",
+          "observations": "2338c7b716755d72ba0f647c0a7561d09e06735cdf155558c4cd68a5b5aafc2a",
+          "predictions": "9542db47b066b8c9f9a0faf8a78d5fbbece9189f3603f744ca34a39841a61b87"
+        }
+      },
+      {
+        "configuration_id": "COM_X_POS",
+        "configuration_sha256": "1e25bbe862242f45be2b455c2bfcc8abcf6b0c91cf783711d192d985ec76e588",
+        "final_h_out": [
+          0.5864159464836121,
+          -0.5800114274024963,
+          -0.6666620969772339,
+          -0.6763275265693665,
+          -0.6891211867332458,
+          0.6113051176071167,
+          0.19572941958904266,
+          0.7453023791313171,
+          -0.5298690795898438,
+          0.7087618708610535,
+          0.7933629751205444,
+          0.4604063034057617,
+          0.7587811946868896,
+          0.725068986415863,
+          -0.5933903455734253,
+          -0.47289466857910156,
+          -0.6632480621337891,
+          -0.641884982585907,
+          0.6819719076156616,
+          0.1933823823928833,
+          0.8776444792747498,
+          0.6339952349662781,
+          0.630408763885498,
+          -0.4576912224292755,
+          -0.6102839708328247,
+          0.5398696064949036,
+          0.00017748911341186613,
+          -0.6745133399963379,
+          0.6310926675796509,
+          0.3403495252132416,
+          -0.2904265224933624,
+          0.5985410213470459,
+          -0.26853010058403015,
+          0.6568529009819031,
+          -0.6039719581604004,
+          -0.7346952557563782,
+          0.17324446141719818,
+          -0.49828535318374634,
+          0.8159669041633606,
+          0.5625030994415283,
+          0.027879202738404274,
+          -0.6970388889312744,
+          -0.6964538097381592,
+          -0.24510879814624786,
+          0.2883308529853821,
+          -0.28426042199134827,
+          -0.05403878912329674,
+          -0.18923601508140564,
+          0.30457600951194763,
+          -0.4546560049057007,
+          -0.255591481924057,
+          -0.12485329061746597,
+          -0.3426887094974518,
+          0.48638156056404114,
+          0.548974871635437,
+          0.3356776833534241,
+          0.7680919170379639,
+          0.5213345885276794,
+          -0.5229201912879944,
+          -0.46168309450149536,
+          -0.8065978288650513,
+          -0.7407009601593018,
+          -0.629498302936554,
+          0.6078882813453674
+        ],
+        "plant": "P30_ALL_JOINT",
+        "trace_hashes": {
+          "actions": "0329da7215c36aea194436d0a5e18622aa0717727110f20c185cc5c9902f6b05",
+          "hidden": "44c8d16332b16329692970beb171233932be2b3bc3cc5dfce3426c180e3014c8",
+          "observations": "f970993fbd00378305d8a4249b7aafc2754c5f16e94862f5c669116c9b6222bd",
+          "predictions": "7663212fc6eea0847319f3e3756ca8023491b6994d065deb5c9acf71e3679396"
+        }
+      },
+      {
+        "configuration_id": "COM_X_POS",
+        "configuration_sha256": "1e25bbe862242f45be2b455c2bfcc8abcf6b0c91cf783711d192d985ec76e588",
+        "final_h_out": [
+          0.5867448449134827,
+          -0.5792090892791748,
+          -0.6660196781158447,
+          -0.675388753414154,
+          -0.689050555229187,
+          0.6115640997886658,
+          0.19621481001377106,
+          0.7453895807266235,
+          -0.5312923789024353,
+          0.7082191109657288,
+          0.7933410406112671,
+          0.45956531167030334,
+          0.7590603828430176,
+          0.7246836423873901,
+          -0.5926625728607178,
+          -0.47359639406204224,
+          -0.6626846194267273,
+          -0.6428067684173584,
+          0.6811834573745728,
+          0.19225798547267914,
+          0.8775309324264526,
+          0.6341385245323181,
+          0.6299410462379456,
+          -0.45814913511276245,
+          -0.6091629862785339,
+          0.5405580997467041,
+          -0.0018006525933742523,
+          -0.6742199659347534,
+          0.6296089291572571,
+          0.34102287888526917,
+          -0.2919546365737915,
+          0.5975474715232849,
+          -0.26670041680336,
+          0.6577675938606262,
+          -0.6032477617263794,
+          -0.7343345284461975,
+          0.17460396885871887,
+          -0.4982704818248749,
+          0.8156921863555908,
+          0.5620062351226807,
+          0.029565753415226936,
+          -0.6965885162353516,
+          -0.6959947943687439,
+          -0.24500378966331482,
+          0.28722479939460754,
+          -0.28384101390838623,
+          -0.05430690571665764,
+          -0.19107818603515625,
+          0.30630597472190857,
+          -0.4526470899581909,
+          -0.254271000623703,
+          -0.12384608387947083,
+          -0.3426175117492676,
+          0.48515188694000244,
+          0.5485945343971252,
+          0.3346458375453949,
+          0.7676990032196045,
+          0.5208781957626343,
+          -0.5225245952606201,
+          -0.4603997766971588,
+          -0.8065338730812073,
+          -0.7409534454345703,
+          -0.6287906169891357,
+          0.6066786050796509
+        ],
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+        "trace_hashes": {
+          "actions": "0329da7215c36aea194436d0a5e18622aa0717727110f20c185cc5c9902f6b05",
+          "hidden": "2b42e0d085fb32ae974869f1db27f51af0b4304c68b8eb96bdaa2c46dc92137a",
+          "observations": "f77926364c09012c8fa4509cb38cb9f7f53c459f3e69a780644358e46b1c28bb",
+          "predictions": "45ff31b1315c122c7e5d0d8d3923c1203d6c55c7a5473f0a9ceb718a243e17d3"
+        }
+      }
+    ],
+    "stable_readout": {
+      "action_weight_sha256": "ca60b6420be9701ec8be98a5c285062d54ed0d388d22f4a918511eb72d52c1c0",
+      "bias_sha256": "df5a280bc4e1a43c77274440d362212277af16a8feeb5809750d9b5e34432390",
+      "combined_coefficient_sha256": "ccab7d2ad3b2a29591f6696eba5c08a4b6446ebab3d246a46bbc6f2043419e76",
+      "hidden_weight_sha256": "5708a038a1b86a185dacde35d222d057c72647d9166bfcd7b61858a0b40df0dc",
+      "retained_rank": 28
+    },
+    "universal_target_action": [
+      0.0,
+      0.0,
+      -0.5,
+      0.25,
+      0.25,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.5,
+      0.25,
+      0.25
+    ],
+    "universal_target_candidate": 536,
+    "v92_limited_use": "signed response traces, deterministic contexts, physical support, and graph parity only; its failed frozen predictor is superseded by V95",
+    "v92_result_sha256": "3f706f1a36b66f7cd5d1a78d693162bdfa47dcf02fa18bb5556c6936494ae652",
+    "v95_result_sha256": "034e2e65c6d4f92082bfba63f8b2c57f6e79d0d2b97627f1021ff727106cab55"
+  },
+  "source_manifest_sha256": "65da5cd70ae101d4becd2bd70bf404798201f6f52c4c7104e9f6934e1922f468",
+  "sources": {
+    "base_gate": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_support_gate.py",
+      "sha256": "18873eee55c77a278fc065de64c0b912803bf29b4440cde7f3adaabe1297baca"
+    },
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v96_response_conditioned_mechanics_preregistration.py",
+      "sha256": "7003aa957b48371a5075eefb3e2c671377069bf1cc0a9eb8d9b1ab8f55e5b3e7"
+    },
+    "network": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v96_response_conditioned_networks.py",
+      "sha256": "b0f964340c627a199edb3be6ca89dbc6be59cdb86fa536af3d5f9f7f0e9cfe83"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v96_response_conditioned_mechanics.py",
+      "sha256": "f1813ec0e0362b87de184949f4154691a2f89a195aec06ecc87a01fd00f2d2b0"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v96_response_conditioned_mechanics.py",
+      "sha256": "7e47a1f580274e386f488e6ba8a003887cfe4f1cb7b9f69c5e246e8da681246a"
+    },
+    "v22_gate": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v22_normalized_predictor_support_gate.py",
+      "sha256": "0a217b355f43b304187f02bc3025feb3d4aa26fb7b9fae7d0c395667ce501cd3"
+    },
+    "v92_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v92_universal_target_response_observer_result.json",
+      "sha256": "123338d92fff6f8c01c67becde23b52f9bedf3b1763e1959bc297e6b94c49237"
+    },
+    "v92_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v92_universal_target_response_observer.py",
+      "sha256": "ff482915172c100bb879ced71d1c45b9e830013736e52a9905efa147375720c1"
+    },
+    "v95_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v95_precision_truncated_readout_result.json",
+      "sha256": "d1b40544948ace54163facc44fe49411d7a7520787a9471dae0df6cc85577cf2"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V96_RESPONSE_CONDITIONED_MECHANICS",
+  "test_population": {
+    "golden_commands_x": [
+      0.0,
+      0.08
+    ],
+    "golden_ticks": 1200,
+    "invalid_handoff_cases": 9,
+    "plants": [
+      "P30_ALL_JOINT",
+      "P31_34_PITCH_WITH_P30_NONPITCH"
+    ],
+    "signed_calibration_cells": 4,
+    "signed_configuration_ids": [
+      "COM_X_NEG",
+      "COM_X_POS"
+    ],
+    "stress_cases": 256
+  },
+  "thresholds": {
+    "calibrator_jax_onnx_hidden_max_abs_at_most": 1e-07,
+    "signed_context_linf_separation_same_plant_at_least": 0.15,
+    "stress_jax_onnx_hidden_and_delta_max_abs_at_most": 1e-06,
+    "stress_onnx_numpy_final_action_max_abs_at_most": 1e-06,
+    "zero_adapter_enabled_action_max_abs_delta_at_most": 1e-06
+  }
+}
