@@ -4,7 +4,6 @@ import hashlib
 import json
 from pathlib import Path
 
-
 ROOT = Path(__file__).resolve().parents[1]
 ANALYSIS = ROOT / "outputs/analysis"
 
@@ -168,3 +167,46 @@ def test_v103_freezes_full_matrix_and_selection_before_training_outcome() -> Non
     assert hashlib.sha256(builder.read_bytes()).hexdigest() == (
         prereg["frozen_sources"]["builder"]["sha256"]
     )
+
+
+def test_v103_zero_cell_runner_contract_passes_exact_two_stage_smoke() -> None:
+    contract = load(
+        "winner_v103_response_conditioned_behavior_runner_contract.json"
+    )
+    assert contract["status"] == (
+        "PASS_WINNER_V103_RESPONSE_CONDITIONED_BEHAVIOR_RUNNER_CONTRACT"
+    )
+    assert contract["failed_checks"] == []
+    assert contract["formal_behavior_cells_executed"] == 0
+    assert contract["matrix_cells"] == 1024
+    assert contract["matrix_plan_sha256"] == (
+        "10b5d3e407636d276275f3f39145233c3cd63688c3229235411ed2734651e073"
+    )
+    smoke = contract["nonformal_full_stack_smoke"]
+    assert smoke["pass"] is True
+    assert smoke["scored_ticks"] == 1
+    assert smoke["unscored_calibration_ticks"] == 250
+    assert smoke["unscored_home_return_ticks"] == 250
+    response = smoke["response_calibration"]
+    assert response["context_shape"] == [1, 64]
+    assert response["context_finite"] is True
+    assert response["locomotion_phase_reset"] == [1.0, 0.0]
+    assert response["locomotion_hidden_exact_zero"] is True
+    assert response["locomotion_previous_action_exact_zero"] is True
+    assert smoke["response_trace"] == {
+        "graph_authoritative_every_tick": True,
+        "host_action_delta_exact_zero": True,
+        "one_immutable_context_hash": True,
+        "rows": 1,
+    }
+    assert contract["authority"]["formal_execution_now"] is False
+    assert contract["authority"]["robot_clearance"] is False
+    assert contract["authority"]["rdkx5_or_robot"] is False
+    builder = ROOT / contract["builder_path"]
+    assert hashlib.sha256(builder.read_bytes()).hexdigest() == (
+        contract["builder_sha256"]
+    )
+    for name, expected in contract["supporting_tool_hashes"].items():
+        assert hashlib.sha256((ROOT / "tools" / name).read_bytes()).hexdigest() == (
+            expected
+        )

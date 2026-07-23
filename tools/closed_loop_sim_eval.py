@@ -9,16 +9,18 @@ training environment.
 from __future__ import annotations
 
 import contextlib
-from dataclasses import dataclass
+import hashlib
 import json
 import math
 import os
-from pathlib import Path
 import re
 import sys
 import tempfile
 import time
-from typing import Any, Iterable, Mapping, Sequence
+from collections.abc import Iterable, Mapping, Sequence
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Any
 
 import numpy as np
 
@@ -86,6 +88,12 @@ class ClosedLoopConfig:
     policy_action_output_name: str | None = None
     policy_state_input_names: tuple[str, ...] = ()
     policy_state_output_names: tuple[str, ...] = ()
+    policy_context_input_name: str | None = None
+    policy_graph_authoritative_output: bool = False
+    response_calibrator_path: Path | None = None
+    response_calibrator_sha256: str | None = None
+    response_calibration_ticks: int = 0
+    response_home_return_ticks: int = 0
     policy_applied_target_observation: bool = False
     policy_observer_fit: Mapping[str, Any] | None = None
     policy_reset_com_estimator_input: bool = False
@@ -813,6 +821,99 @@ def _shape_to_zeros(shape: Sequence[Any]) -> np.ndarray:
     return np.zeros(tuple(dims), dtype=np.float32)
 
 
+def _sha256_path(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as stream:
+        for block in iter(lambda: stream.read(1024 * 1024), b""):
+            digest.update(block)
+    return digest.hexdigest()
+
+
+def _array_sha256(value: np.ndarray) -> str:
+    return hashlib.sha256(
+        np.ascontiguousarray(value, dtype=np.float32).tobytes()
+    ).hexdigest()
+
+
+def response_calibration_observation(observation: np.ndarray) -> np.ndarray:
+    """Return the exact 115-D zero-command calibration observation."""
+
+    value = np.asarray(observation, dtype=np.float32).copy()
+    if value.shape != (115,):
+        raise ValueError(f"response calibration obs shape {value.shape} != (115,)")
+    value[6:13] = 0.0
+    value[99:101] = np.asarray([1.0, 0.0], dtype=np.float32)
+    value[101:115] = 0.0
+    return value
+
+
+def graph_authoritative_action(
+    action_output: np.ndarray,
+    *,
+    expected_action_dim: int,
+    previous_action_output: np.ndarray | None = None,
+) -> np.ndarray:
+    """Validate and return a graph-owned action without host mutation."""
+
+    action_batch = np.asarray(action_output, dtype=np.float32)
+    if action_batch.shape != (1, expected_action_dim):
+        raise ValueError(
+            f"graph action shape {action_batch.shape} != {(1, expected_action_dim)}"
+        )
+    action = action_batch[0].copy()
+    if not np.all(np.isfinite(action)):
+        raise ValueError("graph action contains nonfinite values")
+    if np.any(action < -1.0) or np.any(action > 1.0):
+        raise ValueError("graph action is outside the exact [-1, 1] boundary")
+    if previous_action_output is not None:
+        chained = np.asarray(previous_action_output, dtype=np.float32)
+        if chained.shape != action_batch.shape:
+            raise ValueError(
+                "graph previous_action_out shape "
+                f"{chained.shape} != {action_batch.shape}"
+            )
+        if not np.array_equal(chained, action_batch):
+            raise ValueError(
+                "graph previous_action_out is not bit-exact to continuous_actions"
+            )
+    return action
+
+
+def init_response_calibrator_io(session) -> dict[str, Any]:
+    inputs = session.get_inputs()
+    outputs = session.get_outputs()
+    input_names = [item.name for item in inputs]
+    output_names = [item.name for item in outputs]
+    if input_names != ["obs", "previous_action", "h_in"]:
+        raise ValueError(f"response calibrator input ABI changed: {input_names}")
+    if output_names != ["calibration_actions", "previous_action_out", "h_out"]:
+        raise ValueError(f"response calibrator output ABI changed: {output_names}")
+    expected_inputs = {
+        "obs": (1, 115),
+        "previous_action": (1, 14),
+        "h_in": (1, 64),
+    }
+    expected_outputs = {
+        "calibration_actions": (1, 14),
+        "previous_action_out": (1, 14),
+        "h_out": (1, 64),
+    }
+    for item in inputs:
+        if tuple(_shape_to_zeros(item.shape).shape) != expected_inputs[item.name]:
+            raise ValueError(
+                f"response calibrator input shape changed: {item.name}={item.shape}"
+            )
+    for item in outputs:
+        if tuple(_shape_to_zeros(item.shape).shape) != expected_outputs[item.name]:
+            raise ValueError(
+                f"response calibrator output shape changed: {item.name}={item.shape}"
+            )
+    return {
+        "input_names": input_names,
+        "output_names": output_names,
+    }
+
+
 def init_policy_io_state(session, config: ClosedLoopConfig) -> dict:
     inputs = session.get_inputs()
     outputs = session.get_outputs()
@@ -844,6 +945,57 @@ def init_policy_io_state(session, config: ClosedLoopConfig) -> dict:
     for name in config.policy_state_output_names:
         _node_by_name(outputs, name)
 
+    context_shape: list[Any] | None = None
+    if config.policy_context_input_name is not None:
+        context_name = config.policy_context_input_name
+        if context_name == obs_input_name or context_name in hidden_state:
+            raise ValueError("policy context input overlaps observation or state input")
+        context_node = _node_by_name(inputs, context_name)
+        context_shape = list(context_node.shape)
+        if tuple(_shape_to_zeros(context_node.shape).shape) != (1, 64):
+            raise ValueError(
+                f"policy context input shape {context_node.shape} != [1, 64]"
+            )
+        declared_inputs = {
+            obs_input_name,
+            *config.policy_state_input_names,
+            context_name,
+        }
+        if set(input_names) != declared_inputs:
+            raise ValueError(
+                "response-conditioned policy input set changed: "
+                f"{input_names} != {sorted(declared_inputs)}"
+            )
+        if (
+            obs_input_name != "obs"
+            or action_output_name != "continuous_actions"
+            or tuple(config.policy_state_input_names)
+            != ("h_in", "previous_action")
+            or tuple(config.policy_state_output_names)
+            != ("h_out", "previous_action_out")
+            or context_name != "calibration_context"
+            or set(output_names)
+            != {"continuous_actions", "h_out", "previous_action_out"}
+        ):
+            raise ValueError(
+                "response-conditioned policy ABI names differ from the frozen contract"
+            )
+        exact_shapes = {
+            "obs": (1, 115),
+            "h_in": (1, 64),
+            "previous_action": (1, 14),
+            "calibration_context": (1, 64),
+            "continuous_actions": (1, 14),
+            "h_out": (1, 64),
+            "previous_action_out": (1, 14),
+        }
+        for item in [*inputs, *outputs]:
+            if tuple(_shape_to_zeros(item.shape).shape) != exact_shapes[item.name]:
+                raise ValueError(
+                    f"response-conditioned policy shape changed: "
+                    f"{item.name}={item.shape}"
+                )
+
     return {
         "obs_input_name": obs_input_name,
         "action_output_name": action_output_name,
@@ -851,6 +1003,8 @@ def init_policy_io_state(session, config: ClosedLoopConfig) -> dict:
         "state_output_names": list(config.policy_state_output_names),
         "state_input_shapes": hidden_shapes,
         "hidden_state": hidden_state,
+        "context_input_name": config.policy_context_input_name,
+        "context_input_shape": context_shape,
     }
 
 
@@ -1417,6 +1571,64 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             "status": "HOLD_SIM_RUNTIME_ERROR",
             "error": f"policy missing: {config.policy_path}",
         }
+    response_prefix_enabled = config.response_calibrator_path is not None
+    if response_prefix_enabled:
+        if (
+            config.policy_context_input_name is None
+            or config.response_calibrator_sha256 is None
+            or config.response_calibration_ticks != 250
+            or config.response_home_return_ticks != 250
+            or config.expected_observation_dim != 115
+        ):
+            return {
+                "status": "HOLD_POLICY_IO_CONTRACT",
+                "error": (
+                    "response-conditioned evaluation requires a context input, "
+                    "an expected calibrator SHA-256, exact 250+250 prefix ticks, "
+                    "and a 115-D observation"
+                ),
+            }
+        if not config.response_calibrator_path.exists():
+            return {
+                "status": "HOLD_POLICY_IO_CONTRACT",
+                "error": (
+                    f"response calibrator missing: {config.response_calibrator_path}"
+                ),
+            }
+        observed_calibrator_sha256 = _sha256_path(config.response_calibrator_path)
+        if observed_calibrator_sha256 != config.response_calibrator_sha256:
+            return {
+                "status": "HOLD_POLICY_IO_CONTRACT",
+                "error": (
+                    "response calibrator SHA-256 changed: "
+                    f"{observed_calibrator_sha256}"
+                ),
+            }
+    elif any(
+        (
+            config.policy_context_input_name is not None,
+            config.response_calibrator_sha256 is not None,
+            config.response_calibration_ticks != 0,
+            config.response_home_return_ticks != 0,
+        )
+    ):
+        return {
+            "status": "HOLD_POLICY_IO_CONTRACT",
+            "error": "partial response-conditioned prefix configuration",
+        }
+    if config.policy_graph_authoritative_output and (
+        config.policy_action_gain != 1.0
+        or config.policy_phase_action_delta_json is not None
+        or config.policy_action_rate_limit_rad_s is not None
+        or config.oracle_phase_com_controller_json is not None
+    ):
+        return {
+            "status": "HOLD_POLICY_IO_CONTRACT",
+            "error": (
+                "graph-authoritative output forbids host gain, phase correction, "
+                "rate limiting, and oracle projection"
+            ),
+        }
     if (
         config.reference_feature_table_path is not None
         and not config.reference_feature_table_path.exists()
@@ -1671,6 +1883,23 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             "status": "HOLD_ENV_NOT_READY",
             "error": f"ONNX Runtime session failed: {type(exc).__name__}: {exc}",
         }
+    calibrator_session = None
+    calibrator_io = None
+    if response_prefix_enabled:
+        try:
+            calibrator_session = ort.InferenceSession(
+                str(config.response_calibrator_path),
+                providers=["CPUExecutionProvider"],
+            )
+            calibrator_io = init_response_calibrator_io(calibrator_session)
+        except Exception as exc:
+            return {
+                "status": "HOLD_POLICY_IO_CONTRACT",
+                "error": (
+                    "response calibrator session/ABI failed: "
+                    f"{type(exc).__name__}: {exc}"
+                ),
+            }
     policy = policy_metadata(session, config.policy_path)
     phase_action_delta = None
     if config.policy_phase_action_delta_json is not None:
@@ -1716,6 +1945,7 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
     output_name = policy_io["action_output_name"]
     state_input_names = tuple(policy_io["state_input_names"])
     state_output_names = tuple(policy_io["state_output_names"])
+    context_input_name = policy_io["context_input_name"]
 
     if int(env.action_size) != config.expected_action_dim:
         return {
@@ -2159,6 +2389,16 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
         "policy_phase_advance_before_observation": bool(
             config.policy_phase_advance_before_observation
         ),
+        "policy_graph_authoritative_output": bool(
+            config.policy_graph_authoritative_output
+        ),
+        "response_calibration_prefix": {
+            "enabled": bool(response_prefix_enabled),
+            "calibration_ticks": int(config.response_calibration_ticks),
+            "home_return_ticks": int(config.response_home_return_ticks),
+            "context_input_name": context_input_name,
+            "calibrator_sha256": config.response_calibrator_sha256,
+        },
         "terrain_override": terrain_override,
         "dynamics_override": dynamics_override,
         "reset_settle_ticks": int(config.reset_settle_ticks),
@@ -2265,6 +2505,206 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
         )
         previous_whole_body_com: np.ndarray | None = None
         winner_v3_imu_history = np.zeros((3, 6), dtype=np.float32)
+        response_context: np.ndarray | None = None
+        response_calibration_audit = {
+            "enabled": False,
+            "calibration_ticks": 0,
+            "home_return_ticks": 0,
+            "calibrator_sha256": None,
+            "context_sha256": None,
+            "context_shape": None,
+            "context_finite": None,
+            "locomotion_phase_reset": None,
+            "locomotion_hidden_exact_zero": None,
+            "locomotion_previous_action_exact_zero": None,
+        }
+
+        def prefix_observation(
+            current_state,
+            *,
+            calibration: bool,
+        ) -> np.ndarray:
+            nonlocal winner_v3_imu_history
+            value = np.asarray(
+                jax.device_get(current_state.obs["state"]), dtype=np.float32
+            ).copy()
+            if value.shape != (config.expected_observation_dim,):
+                raise ValueError(
+                    f"prefix obs shape {value.shape} != "
+                    f"{(config.expected_observation_dim,)}"
+                )
+            winner_v3_imu_history = np.roll(
+                winner_v3_imu_history, 1, axis=0
+            )
+            winner_v3_imu_history[0] = value[0:6]
+            value[0:6] = winner_v3_imu_history[
+                int(config.winner_v3_imu_delay_ticks)
+            ]
+            if config.winner_v3_native_quantization:
+                value = winner_v3_native_quantize_observation_numpy(
+                    value,
+                    np.asarray(env._default_actuator, dtype=np.float32),
+                )
+            if calibration:
+                value = response_calibration_observation(value)
+            return value
+
+        def apply_unscored_prefix_action(
+            current_state,
+            action: np.ndarray,
+            *,
+            _mode: str = mode,
+            _bridge: ActuatorBridgeModel = bridge,
+            _policy_observer_bridge: ActuatorBridgeModel | None = (
+                policy_observer_bridge
+            ),
+        ):
+            (
+                next_state,
+                _action_w_delay,
+                _pre_rate,
+                sent_target,
+                push,
+                push_impulse,
+            ) = prepare_step_jit(current_state, jp.asarray(action))
+            sent_np = np.asarray(jax.device_get(sent_target), dtype=float)
+            applied_np = (
+                sent_np.copy()
+                if _mode == "vanilla"
+                else _bridge.step(sent_np, float(env.dt))
+            )
+            policy_observer_applied_np = (
+                applied_np.copy()
+                if _policy_observer_bridge is None
+                else _policy_observer_bridge.step(sent_np, float(env.dt))
+            )
+            return apply_motor_target_runner(
+                next_state,
+                jp.asarray(action),
+                sent_target,
+                jp.asarray(applied_np),
+                jp.asarray(policy_observer_applied_np),
+                push,
+                push_impulse,
+            )
+
+        if response_prefix_enabled:
+            assert calibrator_session is not None
+            calibrator_previous = np.zeros(
+                (1, config.expected_action_dim), dtype=np.float32
+            )
+            calibrator_hidden = np.zeros((1, 64), dtype=np.float32)
+            try:
+                for _ in range(int(config.response_calibration_ticks)):
+                    calibration_obs = prefix_observation(
+                        state, calibration=True
+                    )
+                    calibration_outputs = calibrator_session.run(
+                        [
+                            "calibration_actions",
+                            "previous_action_out",
+                            "h_out",
+                        ],
+                        {
+                            "obs": calibration_obs[None, :],
+                            "previous_action": calibrator_previous,
+                            "h_in": calibrator_hidden,
+                        },
+                    )
+                    calibration_action = graph_authoritative_action(
+                        calibration_outputs[0],
+                        expected_action_dim=config.expected_action_dim,
+                        previous_action_output=calibration_outputs[1],
+                    )
+                    calibrator_previous = np.asarray(
+                        calibration_outputs[1], dtype=np.float32
+                    )
+                    calibrator_hidden = np.asarray(
+                        calibration_outputs[2], dtype=np.float32
+                    )
+                    if (
+                        calibrator_hidden.shape != (1, 64)
+                        or not np.all(np.isfinite(calibrator_hidden))
+                    ):
+                        raise ValueError(
+                            "response calibrator hidden output is invalid"
+                        )
+                    state = apply_unscored_prefix_action(
+                        state, calibration_action
+                    )
+                    if bool(np.asarray(jax.device_get(state.done))):
+                        raise ValueError("calibration prefix terminated early")
+
+                response_context = calibrator_hidden.copy()
+                zero_action = np.zeros(
+                    config.expected_action_dim, dtype=np.float32
+                )
+                for _ in range(int(config.response_home_return_ticks)):
+                    prefix_observation(state, calibration=False)
+                    state = apply_unscored_prefix_action(state, zero_action)
+                    if bool(np.asarray(jax.device_get(state.done))):
+                        raise ValueError("home-return prefix terminated early")
+            except ValueError as exc:
+                return {
+                    "status": "HOLD_RESPONSE_CALIBRATION_PREFIX",
+                    "error": str(exc),
+                    "policy": policy,
+                    "mode": mode,
+                }
+
+            state.info["step"] = jp.zeros_like(state.info["step"])
+            state.info["command"] = command
+            state = set_reference_start(state)
+            state = refresh_obs_jit(state)
+            state = state.replace(
+                reward=jp.zeros_like(state.reward),
+                done=jp.zeros_like(state.done),
+                metrics=jax.tree_util.tree_map(jp.zeros_like, state.metrics),
+            )
+            locomotion_phase = np.asarray(
+                jax.device_get(state.info["imitation_phase"]),
+                dtype=np.float32,
+            )
+            locomotion_previous_action = np.asarray(
+                jax.device_get(state.info["last_act"]), dtype=np.float32
+            )
+            response_calibration_audit = {
+                "enabled": True,
+                "calibration_ticks": int(config.response_calibration_ticks),
+                "home_return_ticks": int(config.response_home_return_ticks),
+                "calibrator_sha256": config.response_calibrator_sha256,
+                "calibrator_abi": calibrator_io,
+                "context_sha256": _array_sha256(response_context),
+                "context_shape": list(response_context.shape),
+                "context_finite": bool(np.all(np.isfinite(response_context))),
+                "locomotion_phase_reset": locomotion_phase.astype(float).tolist(),
+                "locomotion_hidden_exact_zero": all(
+                    np.count_nonzero(value) == 0
+                    for value in hidden_state.values()
+                ),
+                "locomotion_previous_action_exact_zero": bool(
+                    locomotion_previous_action.shape
+                    == (config.expected_action_dim,)
+                    and np.count_nonzero(locomotion_previous_action) == 0
+                ),
+            }
+            if (
+                response_calibration_audit["locomotion_phase_reset"]
+                != [1.0, 0.0]
+                or not response_calibration_audit[
+                    "locomotion_hidden_exact_zero"
+                ]
+                or not response_calibration_audit[
+                    "locomotion_previous_action_exact_zero"
+                ]
+            ):
+                return {
+                    "status": "HOLD_RESPONSE_CALIBRATION_PREFIX",
+                    "error": "locomotion handoff state differs from frozen contract",
+                    "policy": policy,
+                    "mode": mode,
+                    "response_calibration": response_calibration_audit,
+                }
 
         for tick in range(sim_steps):
             if config.policy_phase_advance_before_observation:
@@ -2362,12 +2802,28 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             feed = {input_name: obs[None, :]}
             for state_name in state_input_names:
                 feed[state_name] = hidden_state[state_name]
+            if context_input_name is not None:
+                if response_context is None:
+                    return {
+                        "status": "HOLD_POLICY_IO_CONTRACT",
+                        "error": "policy context input has no calibrated context",
+                        "policy": policy,
+                    }
+                if (
+                    _array_sha256(response_context)
+                    != response_calibration_audit["context_sha256"]
+                ):
+                    return {
+                        "status": "HOLD_POLICY_IO_CONTRACT",
+                        "error": "calibration context changed during locomotion",
+                        "policy": policy,
+                    }
+                feed[context_input_name] = response_context
             policy_state_input = {
                 name: np.asarray(hidden_state[name], dtype=np.float32).copy()
                 for name in state_input_names
             }
             outputs = session.run([output_name, *state_output_names], feed)
-            action = outputs[0][0]
             policy_state_output = {}
             for state_name, output_state_name, value in zip(
                 state_input_names, state_output_names, outputs[1:], strict=True
@@ -2376,15 +2832,37 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                     value, dtype=np.float32
                 ).copy()
                 hidden_state[state_name] = np.asarray(value, dtype=np.float32)
-            action = np.asarray(action, dtype=np.float32)
-            if action.shape != (config.expected_action_dim,):
-                return {
-                    "status": "HOLD_POLICY_SIM_CONTRACT_MISMATCH",
-                    "error": f"action shape {action.shape} != {(config.expected_action_dim,)}",
-                }
-            policy_base_action = np.clip(
-                action * float(config.policy_action_gain), -1.0, 1.0
-            ).astype(np.float32)
+            if config.policy_graph_authoritative_output:
+                previous_action_output = None
+                if "previous_action_out" in state_output_names:
+                    previous_action_output = outputs[
+                        1 + state_output_names.index("previous_action_out")
+                    ]
+                try:
+                    action = graph_authoritative_action(
+                        outputs[0],
+                        expected_action_dim=config.expected_action_dim,
+                        previous_action_output=previous_action_output,
+                    )
+                except ValueError as exc:
+                    return {
+                        "status": "HOLD_POLICY_SIM_CONTRACT_MISMATCH",
+                        "error": str(exc),
+                    }
+                policy_base_action = action.copy()
+            else:
+                action = np.asarray(outputs[0][0], dtype=np.float32)
+                if action.shape != (config.expected_action_dim,):
+                    return {
+                        "status": "HOLD_POLICY_SIM_CONTRACT_MISMATCH",
+                        "error": (
+                            f"action shape {action.shape} != "
+                            f"{(config.expected_action_dim,)}"
+                        ),
+                    }
+                policy_base_action = np.clip(
+                    action * float(config.policy_action_gain), -1.0, 1.0
+                ).astype(np.float32)
             phase_correction = np.zeros(config.expected_action_dim, dtype=np.float32)
             if (
                 phase_action_delta is not None
@@ -2398,9 +2876,12 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                     phase_features @ phase_action_delta
                     * float(config.policy_phase_action_delta_scale)
                 ).astype(np.float32)
-            raw_action = np.clip(
-                policy_base_action + phase_correction, -1.0, 1.0
-            ).astype(np.float32)
+            if config.policy_graph_authoritative_output:
+                raw_action = policy_base_action.copy()
+            else:
+                raw_action = np.clip(
+                    policy_base_action + phase_correction, -1.0, 1.0
+                ).astype(np.float32)
             action = raw_action.copy()
             oracle_residual = np.zeros(config.expected_action_dim, dtype=np.float32)
             oracle_evaluation = {
@@ -2603,6 +3084,22 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                 "policy_base_action": policy_base_action.astype(float).tolist(),
                 "policy_phase_action_correction": phase_correction.astype(float).tolist(),
                 "policy_raw_action": raw_action.astype(float).tolist(),
+                "policy_graph_authoritative_output": bool(
+                    config.policy_graph_authoritative_output
+                ),
+                "policy_host_action_delta_max_abs": float(
+                    np.max(
+                        np.abs(
+                            action
+                            - np.asarray(outputs[0][0], dtype=np.float32)
+                        )
+                    )
+                ),
+                "policy_calibration_context_sha256": (
+                    None
+                    if response_context is None
+                    else _array_sha256(response_context)
+                ),
                 "policy_state_input": {
                     name: value.astype(float).tolist()
                     for name, value in policy_state_input.items()
@@ -2854,11 +3351,23 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             "foot_clearance": foot_clearance,
             "joints": joints,
             "pitch_chain_summary": pitch_chain_summary(joints),
+            "response_calibration": response_calibration_audit,
+            "policy_graph_authoritative_output": bool(
+                config.policy_graph_authoritative_output
+            ),
+            "policy_host_action_delta_max_abs": max(
+                (
+                    float(record["policy_host_action_delta_max_abs"])
+                    for record in records
+                ),
+                default=0.0,
+            ),
             "policy_io": {
                 "obs_input_name": input_name,
                 "action_output_name": output_name,
                 "state_input_names": list(state_input_names),
                 "state_output_names": list(state_output_names),
+                "context_input_name": context_input_name,
                 "stateful": bool(state_input_names),
             },
         }
@@ -2880,7 +3389,23 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             "state_input_names": list(state_input_names),
             "state_output_names": list(state_output_names),
             "state_input_shapes": policy_io["state_input_shapes"],
+            "context_input_name": context_input_name,
+            "context_input_shape": policy_io["context_input_shape"],
             "stateful": bool(state_input_names),
+        },
+        "policy_graph_authoritative_output": bool(
+            config.policy_graph_authoritative_output
+        ),
+        "response_calibration": {
+            "enabled": bool(response_prefix_enabled),
+            "calibrator_path": (
+                None
+                if config.response_calibrator_path is None
+                else str(config.response_calibrator_path)
+            ),
+            "calibrator_sha256": config.response_calibrator_sha256,
+            "calibration_ticks": int(config.response_calibration_ticks),
+            "home_return_ticks": int(config.response_home_return_ticks),
         },
         "policy_action_gain": float(config.policy_action_gain),
         "policy_phase_action_delta_json": (
