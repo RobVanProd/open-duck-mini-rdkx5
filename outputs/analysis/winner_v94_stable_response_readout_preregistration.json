@@ -1,0 +1,123 @@
+{
+  "authority": {
+    "checkpoint_selection_authorized": false,
+    "deployment_authorized": false,
+    "formal_cpu_contract_authorized": true,
+    "gate5_authorized": false,
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "result_authorizes": "one separately preregistered response-conditioned locomotion CPU contract only if every pass condition is met",
+    "robot_clearance": false,
+    "training_authorized_now": false
+  },
+  "decision": "AUTHORIZE_ONE_FROZEN_NUMERIC_STABILITY_CONTRACT_ONLY",
+  "execution_now": {
+    "least_squares_fits": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0,
+    "snapshot_or_onnx_writes": 0,
+    "source_trace_cells": 0
+  },
+  "pass_rule": "the 65-column fit is full-rank; condition number times float32 epsilon is at most 1e-3; heldout float64-to-float32 prediction delta is at most 1e-4; the float32 readout beats the frozen predictor and constant on each plant; and all 112 source traces retain support",
+  "readout": {
+    "condition_number_times_float32_epsilon_at_most": 0.001,
+    "feature_dimension": 65,
+    "feature_order": [
+      "h_out[0:64]",
+      "bias"
+    ],
+    "flat_transport_feature_enabled": false,
+    "full_rank_required": 65,
+    "heldout_float64_vs_float32_max_abs_at_most": 0.0001,
+    "hyperparameter_or_alternative_feature_search": false,
+    "mapping": {
+      "auxiliary_action_weight": "exact zeros [14,50]",
+      "auxiliary_bias": "fit row 64",
+      "auxiliary_hidden_weight": "fit rows 0:64"
+    },
+    "policy_action_parameters_changed": false,
+    "rationale": "the calibration action is fixed and configuration-independent; removing its rank-deficient direct columns preserves the recurrent response path and yields an identifiable deployable parameterization",
+    "recurrent_parameters_changed": false,
+    "regularization": null,
+    "solver": "numpy.linalg.lstsq float64 rcond=None minimum-norm",
+    "stored_coefficient_dtype": "float32",
+    "target_dimension": 50
+  },
+  "schema_version": "winner_v94.stable_response_readout_preregistration.v1",
+  "source": {
+    "observer_label": "winner_v22_final",
+    "onnx_sha256": "cb3380ed99b3e9d7e9000904a210227aa397db2a064aa80d8f70e77c8339783b",
+    "snapshot_sha256": "ddc8c4b905bb9acac2d7d48c3e9c1f0c0ca0173a1ba21f375740b051bc48c806",
+    "universal_target_action": [
+      0.0,
+      0.0,
+      -0.5,
+      0.25,
+      0.25,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.5,
+      0.25,
+      0.25
+    ],
+    "universal_target_candidate": 536,
+    "universal_target_source_lf_sha256": "123338d92fff6f8c01c67becde23b52f9bedf3b1763e1959bc297e6b94c49237",
+    "v93_result_sha256": "6990cd76c61b18405bbf9e5edff46d2533e281553aa077780470912d7a4a3cf2"
+  },
+  "source_manifest_sha256": "d752cd3958069db0a9e5da745df2671d547d9bee83bd7858ac5fbfcf7ef138e8",
+  "sources": {
+    "base_gate": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_support_gate.py",
+      "sha256": "18873eee55c77a278fc065de64c0b912803bf29b4440cde7f3adaabe1297baca"
+    },
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v94_stable_response_readout_preregistration.py",
+      "sha256": "c40a9f17429fc4e69e3d804c22af8f6e41caee831830c9ce89b00812eee2a2c5"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v94_stable_response_readout.py",
+      "sha256": "edf0fd17c1d953d721078347f163133fa655476480ee189c5c93f44b60f3cd37"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v94_stable_response_readout.py",
+      "sha256": "8df171fcd08e578a94710be58e70a28d9636afcb4ee37574a32c58b34c200415"
+    },
+    "v22_gate": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v22_normalized_predictor_support_gate.py",
+      "sha256": "0a217b355f43b304187f02bc3025feb3d4aa26fb7b9fae7d0c395667ce501cd3"
+    },
+    "v92_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v92_universal_target_response_observer.py",
+      "sha256": "ff482915172c100bb879ced71d1c45b9e830013736e52a9905efa147375720c1"
+    },
+    "v93_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v93_universal_response_readout_result.json",
+      "sha256": "30ff11e912daa310f43005491c9d6f234a340e34e464e1d7781c3059fb059c85"
+    },
+    "v93_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v93_universal_response_readout.py",
+      "sha256": "a9a35a67e6661339c5ab95206f83ed0c5c4b2643faa993c58947b1e0bb9803dd"
+    }
+  },
+  "split": {
+    "actuator_plants": 2,
+    "fit_configurations": 40,
+    "fit_transitions": 19920,
+    "heldout_configurations": 16,
+    "heldout_data_used_during_fit_or_selection": false,
+    "heldout_transitions": 7968,
+    "ticks_per_cell": 250
+  },
+  "status": "PREREGISTERED_WINNER_V94_STABLE_RESPONSE_READOUT"
+}

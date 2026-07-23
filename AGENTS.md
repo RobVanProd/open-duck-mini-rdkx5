@@ -4291,3 +4291,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   selection, deployment, Gate 5, hardware access, motion, or clearance is
   authorized. Result SHA-256: `6990cd76...7a4a3cf2`. See
   `outputs/analysis/WINNER_V93_UNIVERSAL_RESPONSE_READOUT_RESULT_20260722.md`.
+- 2026-07-22: Winner-v94 preregisters the numeric-stability contract selected
+  by V93's `70/79` rank and `2.90e8` coefficient warning. Because calibration
+  uses one fixed configuration-independent action, the one tested identifiable
+  parameterization is `[h_out(64), bias] -> response(50)` with exact-zero
+  `14x50` direct action weights. It uses the unchanged `40/16` split and one
+  unregularized fit. Passing requires rank `65/65`,
+  `condition_number * eps(float32) <= 1e-3`, heldout float64/float32 prediction
+  delta `<= 1e-4`, advantage over both comparators per plant, and support in
+  all `112` traces. No alternative features or thresholds are searched. No
+  optimizer update, ONNX/snapshot write, flat-transport feature, checkpoint
+  selection, deployment, Gate 5, hardware, motion, or clearance is authorized.
+  See
+  `outputs/analysis/WINNER_V94_STABLE_RESPONSE_READOUT_PREREGISTRATION_20260722.md`.
