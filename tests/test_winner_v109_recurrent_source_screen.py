@@ -93,3 +93,23 @@ def test_v109_current_gate_rejects_peak_above_manufacturer_limit() -> None:
     metrics = prospective_current_metrics(force)
     assert metrics["pass"] is False
     assert metrics["checks"]["current_peak_at_most_2p5"] is False
+
+
+def test_v109_result_rejects_the_behavioral_source_on_peak_current_only() -> None:
+    path = ROOT / "outputs/analysis/winner_v109_recurrent_source_result.json"
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    assert digest(path) == (
+        "dd79fc3976e1e8aae37aba7a0838c20c2e10f34ab1337526c9eaea3d4860cf5b"
+    )
+    assert payload["status"] == "PASS_WINNER_V109_RECURRENT_SOURCE_SCREEN"
+    assert payload["failed_validity_checks"] == []
+    assert payload["decision"]["status"] == "REJECT_RECURRENT_SOURCE"
+    assert payload["summary"]["passing_cells"] == 4
+    assert payload["summary"]["failures_by_reason"] == {
+        "current_peak_at_most_2p5": 12
+    }
+    assert payload["summary"]["worst_tracking_p95_rad"] < 0.20
+    assert payload["summary"]["worst_peak_current_a"] > 2.5
+    assert payload["summary"]["worst_strict_over_2a_run_ticks"] == 9
+    assert payload["authority"]["gate5_authorized"] is False
+    assert payload["authority"]["robot_clearance"] is False
