@@ -1,0 +1,137 @@
+{
+  "authority": {
+    "behavior_evaluation_authorized": false,
+    "checkpoint_selection_authorized": false,
+    "colab_authorized": false,
+    "cpu_smoke_authorized": true,
+    "gate5_authorized": false,
+    "hosted_training_authorized": false,
+    "rdkx5_or_robot": false,
+    "robot_clearance": false,
+    "torque_or_motion": false
+  },
+  "checks": {
+    "all_input_hashes_exact": true,
+    "attribution_selects_v119_cpu_contract": true,
+    "default_off_patch_only": true,
+    "single_cpu_smoke_only": true,
+    "source_is_exact_v114_final": true,
+    "v114_validation_exact": true,
+    "v117_projection_exact": true
+  },
+  "cpu_smoke": {
+    "episode_length": 64,
+    "num_envs": 4,
+    "required_checks": [
+      "default-off transition is bit exact",
+      "enabled hierarchy matches its analytic definition",
+      "V117 rate vector and 0.165 guard are exact",
+      "exact V114-final restore at step zero",
+      "all policy leaves update and all values remain finite",
+      "postexport stateful ONNX chain feeds back final bounded action"
+    ],
+    "required_exports": [
+      0,
+      1024
+    ],
+    "seed": 100,
+    "timesteps": 1024,
+    "unroll_length": 8
+  },
+  "failed_checks": [],
+  "hosted_if_cpu_passes": {
+    "both_postupdate_checkpoints_required": true,
+    "exports": [
+      0,
+      1003520,
+      2007040
+    ],
+    "one_continuation_only": true,
+    "resume": false,
+    "retry": false,
+    "reward_curve_selection": false,
+    "separate_preregistration_required": true,
+    "timesteps": 2007040
+  },
+  "input_hashes": {
+    "attribution": "e22bf043da93921cbda62d7b96adf6a85db7830e091a6ac47f0e37a3ca83369f",
+    "composed_manifest": "88cdb1287461a82c6d2b79c467afd6c78fb232c0355e28e9bfc7291b8053917b",
+    "composer": "c3deb4f14a7835ff14d746e77c148c634084ef8f64952d3c663956e7ee3844ca",
+    "patch": "2cafd2280f5233c50bcad94d1c2d4d5f76065ca1e4f8bb657de4fdb7e597f94f",
+    "source_checkpoint": "3a31304fc673a4ec24cf7a2f099a51a9e120031787179afc973553f6dff92c26",
+    "source_onnx": "2915d664b3f66d03df30b2ad0c674b0f1b1ddeffb0f829bab669ec47442c4e8c",
+    "v114_validation": "d822de06ce69e349403e9ef9cacdb961dbaf15157b5e5d28907b8c95cde9ddae",
+    "v117_contract": "9aab1d09ffcff7608fa758ea891f4b2a6c54d90b00a056a4478c503514d05beb"
+  },
+  "objectives": {
+    "linear_peak_torque_scale": -307.48131091308585,
+    "linear_peak_torque_threshold_nm": 1.91229675,
+    "new_reward_term": false,
+    "reward_selection": false,
+    "tracking_tail_scale": -6572.254964031055,
+    "tracking_tail_threshold_rad": 0.2
+  },
+  "schema_version": "winner_v119.transition_cpu_preregistration.v1",
+  "source": {
+    "checkpoint_directory_sha256": "3a31304fc673a4ec24cf7a2f099a51a9e120031787179afc973553f6dff92c26",
+    "checkpoint_path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v114-extracted-20260724\\winner_v114_linear_torque_continuation\\training\\2026_07_24_173258_2007040",
+    "raw_onnx_path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v114-extracted-20260724\\winner_v114_linear_torque_continuation\\training\\2026_07_24_173258_2007040.onnx",
+    "raw_onnx_sha256": "2915d664b3f66d03df30b2ad0c674b0f1b1ddeffb0f829bab669ec47442c4e8c",
+    "selection": "V114 final is a continuation source because its V117 postexport form passes all eight nominal cells; it is not a deployment checkpoint until persistence and robustness",
+    "step": 2007040
+  },
+  "status": "PREREGISTERED_WINNER_V119_TRANSITION_CPU_SMOKE",
+  "transition": {
+    "actual_centered_guard_margin_rad": 0.165,
+    "applied_target_observation": true,
+    "default_enabled": false,
+    "order": [
+      "existing sent-target rate projection",
+      "G3 actual-position-centered pitch guard",
+      "final V117 rate projection",
+      "measured delay/tau actuator bridge"
+    ],
+    "pitch_chain_action_indices": [
+      2,
+      3,
+      4,
+      11,
+      12,
+      13
+    ],
+    "rate_limits_rad_s": [
+      0.9999999776482582,
+      0.7499999832361937,
+      1.4736209064722061,
+      1.4300791546702385,
+      1.3976470567286015,
+      0.4999999888241291,
+      0.4999999888241291,
+      0.4999999888241291,
+      0.4999999888241291,
+      0.4999999888241291,
+      0.7499999832361937,
+      1.2500000186264515,
+      0.9999999776482582,
+      1.2215287424623966
+    ],
+    "selected_normalized_action_delta": [
+      0.07999999821186066,
+      0.05999999865889549,
+      0.11788967251777649,
+      0.11440633237361908,
+      0.11181176453828812,
+      0.03999999910593033,
+      0.03999999910593033,
+      0.03999999910593033,
+      0.03999999910593033,
+      0.03999999910593033,
+      0.05999999865889549,
+      0.10000000149011612,
+      0.07999999821186066,
+      0.09772229939699173
+    ],
+    "x0_deadband_postexport": true,
+    "x0_deadband_training_support": false
+  }
+}
