@@ -1,0 +1,116 @@
+{
+  "authority": {
+    "behavior_evaluation": false,
+    "checkpoint_selection": false,
+    "cpu_transform_and_contract": true,
+    "gate5": false,
+    "hosted_training": false,
+    "rdkx5_or_robot": false,
+    "robot_clearance": false,
+    "torque_or_motion": false
+  },
+  "checks": {
+    "all_policy_contracts_pass": true,
+    "all_source_hashes_exact": true,
+    "output_hashes_distinct_by_checkpoint": true,
+    "output_hashes_distinct_from_sources": true,
+    "two_policies_transformed": true
+  },
+  "failed_checks": [],
+  "policies": [
+    {
+      "changed_initializers": [
+        "guard_margin"
+      ],
+      "graph_checks": {
+        "all_nonmargin_initializers_bit_exact": true,
+        "graph_inputs_exact": true,
+        "graph_outputs_exact": true,
+        "initializer_names_exact": true,
+        "nodes_bit_exact": true,
+        "only_guard_margin_changed": true,
+        "repaired_margin_exact": true,
+        "source_margin_exact": true
+      },
+      "id": "R64_RECURRENT_HALF",
+      "numeric_audit": {
+        "max_h_out_abs_error": 0.0,
+        "max_pitch_guard_excess_rad": 1.4901161193847656e-08,
+        "max_x0_action_abs_error": 0.0,
+        "max_x0_previous_action_abs_error": 0.0
+      },
+      "output_bytes": 957344,
+      "output_path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v110-pitch-guard-policies-v3-20260724\\R64_ZERO_INIT_RECURRENT_ADAPTER_1003520.onnx",
+      "output_sha256": "fd1d3b8ad42b99e92803133ee21da1a1092f9f86977a846fbbabf0db80c74c39",
+      "pass": true,
+      "runtime_checks": {
+        "all_256_outputs_finite": true,
+        "cpu_provider_exact": true,
+        "h_out_bit_exact_all_cases": true,
+        "pitch_target_within_g3_margin_all_cases": true,
+        "previous_action_out_equals_action_all_cases": true,
+        "x0_action_bit_exact_128_cases": true,
+        "x0_previous_action_bit_exact_128_cases": true
+      },
+      "source_path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v109-recurrent-source-policies-v3-20260724\\policies\\R64_ZERO_INIT_RECURRENT_ADAPTER_1003520.onnx",
+      "source_sha256": "c8e03dd4afed4e7a96507e5089116944a048ac1d682210408a68cca1b8b6af7c",
+      "step": 1003520
+    },
+    {
+      "changed_initializers": [
+        "guard_margin"
+      ],
+      "graph_checks": {
+        "all_nonmargin_initializers_bit_exact": true,
+        "graph_inputs_exact": true,
+        "graph_outputs_exact": true,
+        "initializer_names_exact": true,
+        "nodes_bit_exact": true,
+        "only_guard_margin_changed": true,
+        "repaired_margin_exact": true,
+        "source_margin_exact": true
+      },
+      "id": "R64_RECURRENT_FINAL",
+      "numeric_audit": {
+        "max_h_out_abs_error": 0.0,
+        "max_pitch_guard_excess_rad": 1.4901161193847656e-08,
+        "max_x0_action_abs_error": 0.0,
+        "max_x0_previous_action_abs_error": 0.0
+      },
+      "output_bytes": 957344,
+      "output_path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v110-pitch-guard-policies-v3-20260724\\R64_ZERO_INIT_RECURRENT_ADAPTER_2007040.onnx",
+      "output_sha256": "58373ef4d7656c5f1c3a6834aef2ecd4d9ccd0fb86a3c18593c891a70909a8ed",
+      "pass": true,
+      "runtime_checks": {
+        "all_256_outputs_finite": true,
+        "cpu_provider_exact": true,
+        "h_out_bit_exact_all_cases": true,
+        "pitch_target_within_g3_margin_all_cases": true,
+        "previous_action_out_equals_action_all_cases": true,
+        "x0_action_bit_exact_128_cases": true,
+        "x0_previous_action_bit_exact_128_cases": true
+      },
+      "source_path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v109-recurrent-source-policies-v3-20260724\\policies\\R64_ZERO_INIT_RECURRENT_ADAPTER_2007040.onnx",
+      "source_sha256": "dfdd01bf4563e3d377ffcbe70515681e75a0d87797f3b6b9e4486d1b40ad569c",
+      "step": 2007040
+    }
+  ],
+  "repair": {
+    "changed_initializer": "guard_margin",
+    "pitch_action_indices": [
+      2,
+      3,
+      4,
+      11,
+      12,
+      13
+    ],
+    "rationale": "G3 is the already-preregistered one-full-tick buffer and previously preserved persistent gait. Winner-v109 isolated all 12 moving failures to peak current on the left knee and left ankle while every noncurrent behavior metric passed.",
+    "repaired_guard": "G3_FULL_TICK_BUFFER",
+    "repaired_margin_rad": 0.16500000655651093,
+    "source_guard": "G1_EXACT_BOUNDARY",
+    "source_margin_rad": 0.20000000298023224
+  },
+  "schema_version": "winner_v110.pitch_guard_transform_contract.v1",
+  "status": "PASS_WINNER_V110_PITCH_GUARD_TRANSFORM_CONTRACT"
+}
