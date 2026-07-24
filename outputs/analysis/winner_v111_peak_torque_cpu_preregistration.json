@@ -1,0 +1,83 @@
+{
+  "authority": {
+    "behavior_evaluation_authorized": false,
+    "checkpoint_selection_authorized": false,
+    "cpu_smoke_authorized": true,
+    "gate5_authorized": false,
+    "hosted_training_authorized": false,
+    "rdkx5_or_robot": false,
+    "robot_clearance": false,
+    "torque_or_motion": false
+  },
+  "checks": {
+    "composed_manifest_exact": true,
+    "current_contract_exact": true,
+    "objective_patch_exact": true,
+    "single_scale_derived_before_training": true,
+    "source_archive_exact": true,
+    "source_checkpoint_exact": true,
+    "source_onnx_exact": true,
+    "v110_exact_rejection": true
+  },
+  "cpu_smoke": {
+    "episode_length": 64,
+    "num_envs": 4,
+    "required_checks": [
+      "source restore and step-zero parameter equality",
+      "default-off reward and transition equality",
+      "analytic hinge equality and threshold boundary",
+      "all metrics and parameters finite",
+      "all actor leaves update",
+      "stateful ONNX ABI and 256-tick CPU chain"
+    ],
+    "required_exports": [
+      0,
+      1024
+    ],
+    "seed": 100,
+    "timesteps": 1024,
+    "unroll_length": 8
+  },
+  "failed_checks": [],
+  "hosted_if_cpu_passes": {
+    "exports": [
+      0,
+      1003520,
+      2007040
+    ],
+    "full_variable_configuration": true,
+    "one_continuation_only": true,
+    "post_export_transform": "apply the exact G3 guard and deadband transform before behavior evaluation",
+    "selection_requires_both_postupdate_checkpoints": true,
+    "timesteps": 2007040
+  },
+  "input_hashes": {
+    "archive": "bee604f002df5082bce579734be5a7983f2b31a6026b1caaa34d64b26ce48d91",
+    "composed_manifest": "5c16eb0d8b66ed428e427913ca776a22e5320ebbe5aab93b584e6b6800363bed",
+    "composer": "5516a5a80167ebca6a7effcaef4a6160bbc100b2d658def2b4f0cc805b497655",
+    "current": "17e841450a2dde66182c3d41a06abf8d14366011f811bcde20adb1f1c8f68ddb",
+    "patch": "4f48578c5b309336e90fc13280b9d3e4a7ef6d14259cc23c8102b0c3a27e26de",
+    "v110": "0386bc3834fb451d9f6470187ed8447e971ad90021748379977b59fd19174404"
+  },
+  "objective": {
+    "all_joint": true,
+    "default_off_scale": 0.0,
+    "formula": "mean_j(max(abs(actuator_force_nm[j]) - 1.91229675, 0)^2)",
+    "name": "peak_torque_exceedance",
+    "no_current_p95_objective": true,
+    "observed_worst_scaled_cost": -6.753196897202126,
+    "observed_worst_unscaled_cost": 0.006753196897202126,
+    "scale": -1000.0,
+    "scale_derivation": "At the worst frozen G3 tick the weighted cost is -6.753, 33.77% of the +20 alive term before the common 0.02 dt. It is strong at the sparse failure boundary while the worst 600-tick mean weighted cost is only -0.0416.",
+    "threshold_nm": 1.91229675
+  },
+  "schema_version": "winner_v111.peak_torque_cpu_preregistration.v1",
+  "source": {
+    "checkpoint_directory_sha256": "70d589520d4280c9e2f276d45a3f12ccc90aa25a0691b5bd462cbde464419bbd",
+    "checkpoint_path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v111-recurrent-source-checkpoint-20260724\\winner_v3_recurrent_adapter_training\\stage3_domain_100_percent\\2026_07_19_171848_2007040",
+    "raw_onnx_path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v111-recurrent-source-checkpoint-20260724\\winner_v3_recurrent_adapter_training\\stage3_domain_100_percent\\2026_07_19_171848_2007040.onnx",
+    "raw_onnx_sha256": "fb725c5e8f45866c9b96e56b2429774f2e1ce73261ffb33ff534d977195544f0",
+    "selection": "latest full-domain recurrent checkpoint; both source checkpoints preserve nominal behavior, and the final has lower worst tracking p95 under Winner-v109"
+  },
+  "status": "PREREGISTERED_WINNER_V111_PEAK_TORQUE_CPU_SMOKE"
+}
