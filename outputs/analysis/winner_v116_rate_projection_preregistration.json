@@ -1,0 +1,132 @@
+{
+  "authority": {
+    "behavior_evaluation_authorized": false,
+    "checkpoint_selection_authorized": false,
+    "cpu_transform_authorized": true,
+    "full_matrix_authorized": false,
+    "gate5_authorized": false,
+    "rdkx5_or_robot": false,
+    "robot_clearance": false,
+    "torque_or_motion": false,
+    "training_authorized": false
+  },
+  "checks": {
+    "all_hashes_exact": true,
+    "attribution_correction_exact": true,
+    "both_checkpoints_required": true,
+    "formal_behavior_cells_zero": true,
+    "no_scalar_search": true,
+    "one_vector_only": true,
+    "source_contract_exact": true,
+    "transform_tool_exact": true,
+    "two_source_files_exact": true
+  },
+  "execution_now": {
+    "formal_behavior_cells": 0,
+    "policies_transformed": 0,
+    "robot_or_rdk_access": 0,
+    "training_steps": 0
+  },
+  "failed_checks": [],
+  "input_hashes": {
+    "transform_tool": "cf0907ac316726812e9d9379e8356b408cb61cee3e6f2bfeae946e0fcb0cbdc0",
+    "v115_attribution_correction": "fe970d631f0c089a4cddc5abcb63b527b69450f993aa4985013762982a5fae80",
+    "v115_source_contract": "bcbc71eda01eae4a50435a1c9356a048ae4fceec78c4f8f5382d223b7df88ac3"
+  },
+  "projection": {
+    "affected_joints": [
+      "left_hip_pitch",
+      "left_knee",
+      "left_ankle",
+      "right_ankle"
+    ],
+    "apply_identically_to_both_checkpoints": true,
+    "candidate_vectors": 1,
+    "current_normalized_action_delta": [
+      0.07999999821186066,
+      0.05999999865889549,
+      0.11999999731779099,
+      0.11999999731779099,
+      0.11999999731779099,
+      0.03999999910593033,
+      0.03999999910593033,
+      0.03999999910593033,
+      0.03999999910593033,
+      0.03999999910593033,
+      0.05999999865889549,
+      0.10000000149011612,
+      0.07999999821186066,
+      0.10000000149011612
+    ],
+    "current_rate_limit_rad_s": [
+      1.0,
+      0.75,
+      1.5,
+      1.5,
+      1.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.75,
+      1.25,
+      1.0,
+      1.25
+    ],
+    "formula": "L_selected[j] = L_current[j] * min(1, torque_limit / max_observed_torque[j]); affected float32 deltas move one ULP toward zero",
+    "scalar_search": false,
+    "selected_normalized_action_delta": [
+      0.07999999821186066,
+      0.05999999865889549,
+      0.11788967251777649,
+      0.11440633237361908,
+      0.11181176453828812,
+      0.03999999910593033,
+      0.03999999910593033,
+      0.03999999910593033,
+      0.03999999910593033,
+      0.03999999910593033,
+      0.05999999865889549,
+      0.10000000149011612,
+      0.07999999821186066,
+      0.09772229939699173
+    ],
+    "selected_rate_limit_rad_s": [
+      0.9999999776482582,
+      0.7499999832361937,
+      1.4736209064722061,
+      1.4300791546702385,
+      1.3976470567286015,
+      0.4999999888241291,
+      0.4999999888241291,
+      0.4999999888241291,
+      0.4999999888241291,
+      0.4999999888241291,
+      0.7499999832361937,
+      1.2500000186264515,
+      0.9999999776482582,
+      1.2215287424623966
+    ]
+  },
+  "schema_version": "winner_v116.rate_projection_preregistration.v1",
+  "sources": [
+    {
+      "bytes": 957344,
+      "filename": "V114_G3_DEADBAND_1003520.onnx",
+      "id": "V116_RATE_PROJECTED_HALF",
+      "output_filename": "V116_RATE_PROJECTED_1003520.onnx",
+      "sha256": "711be4c4dcfd1992b822de541ec50ce0d9d22e43fe0a9749563eec09e8b0cb97",
+      "step": 1003520
+    },
+    {
+      "bytes": 957344,
+      "filename": "V114_G3_DEADBAND_2007040.onnx",
+      "id": "V116_RATE_PROJECTED_FINAL",
+      "output_filename": "V116_RATE_PROJECTED_2007040.onnx",
+      "sha256": "762e96c322e0d9824665f8743c0f85c5ffc5f36a18c9a05168d60ca6c6442cce",
+      "step": 2007040
+    }
+  ],
+  "status": "PREREGISTERED_WINNER_V116_RATE_PROJECTION"
+}
