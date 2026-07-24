@@ -1,0 +1,183 @@
+{
+  "authority": {
+    "behavior_evaluation_authorized": false,
+    "checkpoint_selection_authorized": false,
+    "cpu_transform_authorized": true,
+    "full_matrix_authorized": false,
+    "gate5_authorized": false,
+    "rdkx5_or_robot": false,
+    "robot_clearance": false,
+    "torque_or_motion": false,
+    "training_authorized": false
+  },
+  "checks": {
+    "all_hashes_exact": true,
+    "attribution_exact": true,
+    "both_checkpoints_required": true,
+    "correct_postguard_placement_preserved": true,
+    "formal_behavior_cells_zero": true,
+    "no_scalar_search": true,
+    "nominal_split_exact": true,
+    "one_vector_only": true,
+    "source_contract_exact": true,
+    "training_steps_zero": true,
+    "two_source_files_exact": true
+  },
+  "execution_now": {
+    "colab_compute_units": 0,
+    "formal_behavior_cells": 0,
+    "policies_transformed": 0,
+    "robot_or_rdk_access": 0,
+    "training_steps": 0
+  },
+  "failed_checks": [],
+  "input_hashes": {
+    "transform_tool": "31b8a5e7c15b53466b0c1d0ed5d379793dfac5c924282386440476c6f9fbcb25",
+    "v117_attribution": "e52efe6c48cb7a25c1d9f15df8cde9d10de830dde2dceddbdc642e97e9d48893",
+    "v117_nominal_result": "0a3d04b478e46c5041b52554008cb5e8db800f0a2552932cd60cb8640efee09a",
+    "v117_source_contract": "9aab1d09ffcff7608fa758ea891f4b2a6c54d90b00a056a4478c503514d05beb"
+  },
+  "projection": {
+    "action_scale_rad": 0.25,
+    "affected_joints": [
+      "left_hip_pitch",
+      "left_knee",
+      "left_ankle",
+      "right_ankle"
+    ],
+    "apply_identically_to_both_checkpoints": true,
+    "candidate_vectors": 1,
+    "command_x_observation_index": 6,
+    "current_normalized_action_delta": [
+      0.07999999821186066,
+      0.05999999865889549,
+      0.11788967251777649,
+      0.11440633237361908,
+      0.11181176453828812,
+      0.03999999910593033,
+      0.03999999910593033,
+      0.03999999910593033,
+      0.03999999910593033,
+      0.03999999910593033,
+      0.05999999865889549,
+      0.10000000149011612,
+      0.07999999821186066,
+      0.09772229939699173
+    ],
+    "current_rate_limit_rad_s": [
+      0.9999999776482582,
+      0.7499999832361937,
+      1.4736209064722061,
+      1.4300791546702385,
+      1.3976470567286015,
+      0.4999999888241291,
+      0.4999999888241291,
+      0.4999999888241291,
+      0.4999999888241291,
+      0.4999999888241291,
+      0.7499999832361937,
+      1.2500000186264515,
+      0.9999999776482582,
+      1.2215287424623966
+    ],
+    "final_state_feedback": "final_bounded_action",
+    "formula": "L_next[j] = L_current[j] * min(1, torque_limit / max_observed_torque[j]); affected float32 deltas move one ULP toward zero",
+    "g3_margin_rad": 0.165,
+    "home_target_rad": [
+      0.002,
+      0.053,
+      -0.63,
+      1.368,
+      -0.784,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      -0.003,
+      -0.065,
+      0.635,
+      1.379,
+      -0.796
+    ],
+    "measured_joint_offset_indices": [
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26
+    ],
+    "pitch_chain_action_indices": [
+      2,
+      3,
+      4,
+      11,
+      12,
+      13
+    ],
+    "placement": "after_G3_before_restored_x0_deadband",
+    "scalar_search": false,
+    "selected_normalized_action_delta": [
+      0.07999999821186066,
+      0.05999999865889549,
+      0.11769283562898636,
+      0.11067210882902145,
+      0.10780472308397293,
+      0.03999999910593033,
+      0.03999999910593033,
+      0.03999999910593033,
+      0.03999999910593033,
+      0.03999999910593033,
+      0.05999999865889549,
+      0.10000000149011612,
+      0.07999999821186066,
+      0.09450547397136688
+    ],
+    "selected_rate_limit_rad_s": [
+      0.9999999776482582,
+      0.7499999832361937,
+      1.4711604453623295,
+      1.3834013603627682,
+      1.3475590385496616,
+      0.4999999888241291,
+      0.4999999888241291,
+      0.4999999888241291,
+      0.4999999888241291,
+      0.4999999888241291,
+      0.7499999832361937,
+      1.2500000186264515,
+      0.9999999776482582,
+      1.181318424642086
+    ],
+    "training_steps": 0,
+    "zero_deadband_absolute_command_x": 0.01
+  },
+  "schema_version": "winner_v118.rate_projection_preregistration.v1",
+  "sources": [
+    {
+      "bytes": 958446,
+      "filename": "V117_POSTGUARD_RATE_PROJECTED_1003520.onnx",
+      "id": "V118_RATE_PROJECTED_HALF",
+      "output_filename": "V118_RATE_PROJECTED_1003520.onnx",
+      "sha256": "dcc9bf69af0df6ac0a21704c462974c97d1f5d04b0923026769dc860184085a8",
+      "step": 1003520
+    },
+    {
+      "bytes": 958446,
+      "filename": "V117_POSTGUARD_RATE_PROJECTED_2007040.onnx",
+      "id": "V118_RATE_PROJECTED_FINAL",
+      "output_filename": "V118_RATE_PROJECTED_2007040.onnx",
+      "sha256": "ba931c72ad3b3eedad0c59e3f385a2a1575de90ee36d398dcdea0c0ff7267414",
+      "step": 2007040
+    }
+  ],
+  "status": "PREREGISTERED_WINNER_V118_RATE_PROJECTION"
+}
