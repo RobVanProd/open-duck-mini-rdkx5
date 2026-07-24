@@ -1,0 +1,432 @@
+{
+  "authority": {
+    "behavior_evaluation_authorized": false,
+    "full_matrix_authorized": false,
+    "gate5_authorized": false,
+    "rdkx5_or_robot": false,
+    "robot_clearance": false,
+    "torque_or_motion": false,
+    "training_authorized": false
+  },
+  "causal_readout": {
+    "not_proven": [
+      "Reward clipping and sparse running-maximum credit are a plausible cause, but the nominal traces do not isolate them as the sole cause.",
+      "A tighter static G3 margin has not been behavior-tested and is not selected by this attribution."
+    ],
+    "supported": [
+      "The exact episode-global peak formulation preserved gait and tracking but expanded the torque-exceedance population from 15 to 184 events.",
+      "The new failures are repeated gait-cycle loads rather than the V121 startup-localized signature.",
+      "A static sent-target guard at torque_limit/kp cannot explain or guarantee away every event because 35 V123 events occur without exceeding that sent-target error."
+    ]
+  },
+  "checks": {
+    "all_input_hashes_exact": true,
+    "all_v123_moving_cells_fail_torque": true,
+    "episode_peak_objective_expands_events": true,
+    "no_new_training_or_behavior_executed": true,
+    "static_sent_target_margin_not_sufficient_explanation": true,
+    "v121_comparison_exact": true,
+    "v122_cpu_mechanics_passed": true,
+    "v122_recovery_validation_passed": true,
+    "v123_events_distributed_beyond_startup": true,
+    "v123_joint_event_counts_exact": true,
+    "v123_only_zero_command_cells_pass": true,
+    "v123_result_valid_but_rejected": true,
+    "v123_transform_contract_passed": true,
+    "walking_and_tracking_preserved": true
+  },
+  "comparison": {
+    "v121": {
+      "passing_cells": 11,
+      "trace": {
+        "early_tick_0_31_events": 13,
+        "event_sent_error_above_static_margin": 10,
+        "event_sent_error_not_above_static_margin": 5,
+        "high_load_bridge_lag_max_rad": 0.07276369594637466,
+        "high_load_bridge_lag_p95_rad": 0.06101094855644237,
+        "high_load_bridge_lag_population": 2395,
+        "joint_event_counts": {
+          "left_knee": 13,
+          "right_ankle": 2
+        },
+        "moving_cells": 12,
+        "moving_torque_failures": 5,
+        "rows": [
+          {
+            "cell_pass": false,
+            "checkpoint_id": "V121_TRAIN_MATCHED_FINAL",
+            "command_x_m_s": 0.074,
+            "early_tick_0_31_events": 1,
+            "failure_reasons": [
+              "torque_peak_at_most_1p91229675_nm"
+            ],
+            "peak_torque_nm": 1.917562484741211,
+            "plant": "P30_ALL_JOINT",
+            "torque_exceed_events": 1,
+            "torque_exceed_ticks": 1
+          },
+          {
+            "cell_pass": false,
+            "checkpoint_id": "V121_TRAIN_MATCHED_FINAL",
+            "command_x_m_s": 0.077,
+            "early_tick_0_31_events": 3,
+            "failure_reasons": [
+              "torque_peak_at_most_1p91229675_nm"
+            ],
+            "peak_torque_nm": 1.9595699310302734,
+            "plant": "P30_ALL_JOINT",
+            "torque_exceed_events": 4,
+            "torque_exceed_ticks": 4
+          },
+          {
+            "cell_pass": true,
+            "checkpoint_id": "V121_TRAIN_MATCHED_FINAL",
+            "command_x_m_s": 0.08,
+            "early_tick_0_31_events": 0,
+            "failure_reasons": [],
+            "peak_torque_nm": 1.8867874145507812,
+            "plant": "P30_ALL_JOINT",
+            "torque_exceed_events": 0,
+            "torque_exceed_ticks": 0
+          },
+          {
+            "cell_pass": false,
+            "checkpoint_id": "V121_TRAIN_MATCHED_FINAL",
+            "command_x_m_s": 0.074,
+            "early_tick_0_31_events": 4,
+            "failure_reasons": [
+              "current_peak_at_most_2p5",
+              "torque_peak_at_most_1p91229675_nm"
+            ],
+            "peak_torque_nm": 2.098968505859375,
+            "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+            "torque_exceed_events": 5,
+            "torque_exceed_ticks": 5
+          },
+          {
+            "cell_pass": false,
+            "checkpoint_id": "V121_TRAIN_MATCHED_FINAL",
+            "command_x_m_s": 0.077,
+            "early_tick_0_31_events": 4,
+            "failure_reasons": [
+              "current_peak_at_most_2p5",
+              "torque_peak_at_most_1p91229675_nm"
+            ],
+            "peak_torque_nm": 2.0460128784179688,
+            "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+            "torque_exceed_events": 4,
+            "torque_exceed_ticks": 4
+          },
+          {
+            "cell_pass": false,
+            "checkpoint_id": "V121_TRAIN_MATCHED_FINAL",
+            "command_x_m_s": 0.08,
+            "early_tick_0_31_events": 1,
+            "failure_reasons": [
+              "current_peak_at_most_2p5",
+              "torque_peak_at_most_1p91229675_nm"
+            ],
+            "peak_torque_nm": 2.0921630859375,
+            "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+            "torque_exceed_events": 1,
+            "torque_exceed_ticks": 1
+          },
+          {
+            "cell_pass": true,
+            "checkpoint_id": "V121_TRAIN_MATCHED_HALF",
+            "command_x_m_s": 0.074,
+            "early_tick_0_31_events": 0,
+            "failure_reasons": [],
+            "peak_torque_nm": 1.8136653900146484,
+            "plant": "P30_ALL_JOINT",
+            "torque_exceed_events": 0,
+            "torque_exceed_ticks": 0
+          },
+          {
+            "cell_pass": true,
+            "checkpoint_id": "V121_TRAIN_MATCHED_HALF",
+            "command_x_m_s": 0.077,
+            "early_tick_0_31_events": 0,
+            "failure_reasons": [],
+            "peak_torque_nm": 1.846923828125,
+            "plant": "P30_ALL_JOINT",
+            "torque_exceed_events": 0,
+            "torque_exceed_ticks": 0
+          },
+          {
+            "cell_pass": true,
+            "checkpoint_id": "V121_TRAIN_MATCHED_HALF",
+            "command_x_m_s": 0.08,
+            "early_tick_0_31_events": 0,
+            "failure_reasons": [],
+            "peak_torque_nm": 1.8916711807250977,
+            "plant": "P30_ALL_JOINT",
+            "torque_exceed_events": 0,
+            "torque_exceed_ticks": 0
+          },
+          {
+            "cell_pass": true,
+            "checkpoint_id": "V121_TRAIN_MATCHED_HALF",
+            "command_x_m_s": 0.074,
+            "early_tick_0_31_events": 0,
+            "failure_reasons": [],
+            "peak_torque_nm": 1.8993339538574219,
+            "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+            "torque_exceed_events": 0,
+            "torque_exceed_ticks": 0
+          },
+          {
+            "cell_pass": true,
+            "checkpoint_id": "V121_TRAIN_MATCHED_HALF",
+            "command_x_m_s": 0.077,
+            "early_tick_0_31_events": 0,
+            "failure_reasons": [],
+            "peak_torque_nm": 1.834183692932129,
+            "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+            "torque_exceed_events": 0,
+            "torque_exceed_ticks": 0
+          },
+          {
+            "cell_pass": true,
+            "checkpoint_id": "V121_TRAIN_MATCHED_HALF",
+            "command_x_m_s": 0.08,
+            "early_tick_0_31_events": 0,
+            "failure_reasons": [],
+            "peak_torque_nm": 1.909637451171875,
+            "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+            "torque_exceed_events": 0,
+            "torque_exceed_ticks": 0
+          }
+        ],
+        "simultaneous_exceed_ticks": 0,
+        "static_torque_margin_rad": 0.1430289267015707,
+        "torque_exceed_events": 15,
+        "torque_exceed_ticks": 15
+      },
+      "worst_peak_current_a": 2.6754402699435778,
+      "worst_peak_torque_nm": 2.098968505859375,
+      "worst_tracking_p95_rad": 0.148289093375206
+    },
+    "v123": {
+      "minimum_moving_mean_vx_m_s": 0.10530956782866269,
+      "passing_cells": 4,
+      "trace": {
+        "early_tick_0_31_events": 5,
+        "event_sent_error_above_static_margin": 149,
+        "event_sent_error_not_above_static_margin": 35,
+        "high_load_bridge_lag_max_rad": 0.09224404991072399,
+        "high_load_bridge_lag_p95_rad": 0.061293761831466544,
+        "high_load_bridge_lag_population": 3027,
+        "joint_event_counts": {
+          "left_ankle": 13,
+          "left_knee": 148,
+          "right_ankle": 18,
+          "right_knee": 5
+        },
+        "moving_cells": 12,
+        "moving_torque_failures": 12,
+        "rows": [
+          {
+            "cell_pass": false,
+            "checkpoint_id": "V123_EPISODE_PEAK_FINAL",
+            "command_x_m_s": 0.074,
+            "early_tick_0_31_events": 0,
+            "failure_reasons": [
+              "torque_peak_at_most_1p91229675_nm"
+            ],
+            "peak_torque_nm": 1.9345703125,
+            "plant": "P30_ALL_JOINT",
+            "torque_exceed_events": 1,
+            "torque_exceed_ticks": 1
+          },
+          {
+            "cell_pass": false,
+            "checkpoint_id": "V123_EPISODE_PEAK_FINAL",
+            "command_x_m_s": 0.077,
+            "early_tick_0_31_events": 0,
+            "failure_reasons": [
+              "current_peak_at_most_2p5",
+              "torque_peak_at_most_1p91229675_nm"
+            ],
+            "peak_torque_nm": 2.049570083618164,
+            "plant": "P30_ALL_JOINT",
+            "torque_exceed_events": 15,
+            "torque_exceed_ticks": 15
+          },
+          {
+            "cell_pass": false,
+            "checkpoint_id": "V123_EPISODE_PEAK_FINAL",
+            "command_x_m_s": 0.08,
+            "early_tick_0_31_events": 0,
+            "failure_reasons": [
+              "current_peak_at_most_2p5",
+              "torque_peak_at_most_1p91229675_nm"
+            ],
+            "peak_torque_nm": 2.0749683380126953,
+            "plant": "P30_ALL_JOINT",
+            "torque_exceed_events": 15,
+            "torque_exceed_ticks": 15
+          },
+          {
+            "cell_pass": false,
+            "checkpoint_id": "V123_EPISODE_PEAK_FINAL",
+            "command_x_m_s": 0.074,
+            "early_tick_0_31_events": 0,
+            "failure_reasons": [
+              "current_peak_at_most_2p5",
+              "torque_peak_at_most_1p91229675_nm"
+            ],
+            "peak_torque_nm": 2.184053421020508,
+            "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+            "torque_exceed_events": 14,
+            "torque_exceed_ticks": 14
+          },
+          {
+            "cell_pass": false,
+            "checkpoint_id": "V123_EPISODE_PEAK_FINAL",
+            "command_x_m_s": 0.077,
+            "early_tick_0_31_events": 0,
+            "failure_reasons": [
+              "current_peak_at_most_2p5",
+              "torque_peak_at_most_1p91229675_nm"
+            ],
+            "peak_torque_nm": 2.2220382690429688,
+            "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+            "torque_exceed_events": 18,
+            "torque_exceed_ticks": 18
+          },
+          {
+            "cell_pass": false,
+            "checkpoint_id": "V123_EPISODE_PEAK_FINAL",
+            "command_x_m_s": 0.08,
+            "early_tick_0_31_events": 0,
+            "failure_reasons": [
+              "current_peak_at_most_2p5",
+              "torque_peak_at_most_1p91229675_nm"
+            ],
+            "peak_torque_nm": 2.130718231201172,
+            "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+            "torque_exceed_events": 21,
+            "torque_exceed_ticks": 21
+          },
+          {
+            "cell_pass": false,
+            "checkpoint_id": "V123_EPISODE_PEAK_HALF",
+            "command_x_m_s": 0.074,
+            "early_tick_0_31_events": 1,
+            "failure_reasons": [
+              "current_peak_at_most_2p5",
+              "torque_peak_at_most_1p91229675_nm"
+            ],
+            "peak_torque_nm": 2.1673812866210938,
+            "plant": "P30_ALL_JOINT",
+            "torque_exceed_events": 13,
+            "torque_exceed_ticks": 13
+          },
+          {
+            "cell_pass": false,
+            "checkpoint_id": "V123_EPISODE_PEAK_HALF",
+            "command_x_m_s": 0.077,
+            "early_tick_0_31_events": 0,
+            "failure_reasons": [
+              "current_peak_at_most_2p5",
+              "torque_peak_at_most_1p91229675_nm"
+            ],
+            "peak_torque_nm": 2.235597610473633,
+            "plant": "P30_ALL_JOINT",
+            "torque_exceed_events": 10,
+            "torque_exceed_ticks": 10
+          },
+          {
+            "cell_pass": false,
+            "checkpoint_id": "V123_EPISODE_PEAK_HALF",
+            "command_x_m_s": 0.08,
+            "early_tick_0_31_events": 0,
+            "failure_reasons": [
+              "current_peak_at_most_2p5",
+              "torque_peak_at_most_1p91229675_nm"
+            ],
+            "peak_torque_nm": 2.1268558502197266,
+            "plant": "P30_ALL_JOINT",
+            "torque_exceed_events": 10,
+            "torque_exceed_ticks": 10
+          },
+          {
+            "cell_pass": false,
+            "checkpoint_id": "V123_EPISODE_PEAK_HALF",
+            "command_x_m_s": 0.074,
+            "early_tick_0_31_events": 3,
+            "failure_reasons": [
+              "current_peak_at_most_2p5",
+              "torque_peak_at_most_1p91229675_nm"
+            ],
+            "peak_torque_nm": 2.246964454650879,
+            "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+            "torque_exceed_events": 30,
+            "torque_exceed_ticks": 30
+          },
+          {
+            "cell_pass": false,
+            "checkpoint_id": "V123_EPISODE_PEAK_HALF",
+            "command_x_m_s": 0.077,
+            "early_tick_0_31_events": 1,
+            "failure_reasons": [
+              "current_peak_at_most_2p5",
+              "torque_peak_at_most_1p91229675_nm"
+            ],
+            "peak_torque_nm": 2.140941619873047,
+            "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+            "torque_exceed_events": 19,
+            "torque_exceed_ticks": 19
+          },
+          {
+            "cell_pass": false,
+            "checkpoint_id": "V123_EPISODE_PEAK_HALF",
+            "command_x_m_s": 0.08,
+            "early_tick_0_31_events": 0,
+            "failure_reasons": [
+              "current_peak_at_most_2p5",
+              "torque_peak_at_most_1p91229675_nm"
+            ],
+            "peak_torque_nm": 2.1916141510009766,
+            "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+            "torque_exceed_events": 18,
+            "torque_exceed_ticks": 18
+          }
+        ],
+        "simultaneous_exceed_ticks": 0,
+        "static_torque_margin_rad": 0.1430289267015707,
+        "torque_exceed_events": 184,
+        "torque_exceed_ticks": 184
+      },
+      "worst_peak_current_a": 2.8640826054907627,
+      "worst_peak_torque_nm": 2.246964454650879,
+      "worst_tracking_p95_rad": 0.14829261898994447
+    }
+  },
+  "decision": {
+    "checkpoint_selection_authorized": false,
+    "next_action": "external causal review of a hard bridge-aware physical constraint before any successor preregistration",
+    "repeat_or_scalar_search_authorized": false,
+    "status": "CLOSE_V122_EPISODE_PEAK_OBJECTIVE",
+    "successor_behavior_screen_authorized": false,
+    "successor_training_authorized": false
+  },
+  "execution": {
+    "colab_compute_units": 0,
+    "new_behavior_cells": 0,
+    "new_training_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "input_hashes": {
+    "v121_result": "8bdefb90032facb4a3f3f7c833e608d2b35dac958ac0fcc2bbbd393ddcbb6047",
+    "v122_cpu_result": "56006d763f9a92ef2a40ea6e0501ef7181d5411569f411b43b85f6614f88689a",
+    "v122_recovery": "95e8240fa3aae8226a3f2bf2f9658b43ec61ecfd7356713fc3cd4a46146c1256",
+    "v123_preregistration": "b470600091b03cd93a67dc28cdbd3b298dd03679bd1716acb541fed9d1b15754",
+    "v123_result": "015fc6b85c5b3e3742f97c1e082987bc82c65da774e74d22b9a9e3c32907baa0",
+    "v123_transform": "b179214f576d3e8ba26d7aca04d9a2760ff26ff0bf518922e528b9fcfd3dce84"
+  },
+  "schema_version": "winner_v123.episode_peak_failure_attribution.v1",
+  "status": "PASS_WINNER_V123_EPISODE_PEAK_FAILURE_ATTRIBUTION"
+}

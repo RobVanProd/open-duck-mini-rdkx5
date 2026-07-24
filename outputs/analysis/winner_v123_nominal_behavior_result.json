@@ -1,0 +1,92 @@
+{
+  "authority": {
+    "behavior_evaluation_authorized": false,
+    "checkpoint_selection_authorized": false,
+    "full_frozen_matrix_preregistration_authorized": false,
+    "gate5_authorized": false,
+    "rdkx5_or_robot": false,
+    "robot_clearance": false,
+    "torque_or_motion": false
+  },
+  "cell_manifest_sha256": "212b17b3e879927db30149e738180ba56048c3532b1e543e5bfaaca81e297679",
+  "cpu_environment": {
+    "device_platforms": [
+      "cpu"
+    ],
+    "device_strings": [
+      "TFRT_CPU_0"
+    ],
+    "jax_backend": "cpu"
+  },
+  "decision": {
+    "next_action": "attribute the nominal failure before further policy work",
+    "persistent_both_checkpoint_pass": false,
+    "status": "REJECT_V123_NOMINAL_POLICY"
+  },
+  "evaluator_reuse": {
+    "current_or_torque_threshold_change": false,
+    "gate_change": false,
+    "kernel": "run_winner_v110_pitch_guard_behavior.execute",
+    "matrix_shape_change": false
+  },
+  "failed_validity_checks": [],
+  "input_hashes": {
+    "policies": {
+      "V123_EPISODE_PEAK_FINAL": "ef0e99ca0271cb07ca96d8ae3d5b4e6ad19f953b4ba9ab4c51c3377ea2ad7857",
+      "V123_EPISODE_PEAK_HALF": "a025cbc5e62ddc3efd8f2581f3fcc0d71382b36fd7a5f8c5e0973a1a505be54b"
+    },
+    "preregistration": "b470600091b03cd93a67dc28cdbd3b298dd03679bd1716acb541fed9d1b15754",
+    "reference_features": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212"
+  },
+  "per_checkpoint": [
+    {
+      "all_eight_cells_pass": false,
+      "cells": 8,
+      "checkpoint_id": "V123_EPISODE_PEAK_HALF",
+      "passing_cells": 2,
+      "step": 1003520,
+      "worst_peak_current_a": 2.8640826054907627,
+      "worst_peak_torque_nm": 2.246964454650879,
+      "worst_strict_over_2a_run_ticks": 10,
+      "worst_tracking_p95_rad": 0.1477702349424362
+    },
+    {
+      "all_eight_cells_pass": false,
+      "cells": 8,
+      "checkpoint_id": "V123_EPISODE_PEAK_FINAL",
+      "passing_cells": 2,
+      "step": 2007040,
+      "worst_peak_current_a": 2.8323105610006585,
+      "worst_peak_torque_nm": 2.2220382690429688,
+      "worst_strict_over_2a_run_ticks": 8,
+      "worst_tracking_p95_rad": 0.14829261898994447
+    }
+  ],
+  "run_root": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v123-nominal-run-20260724",
+  "schema_version": "winner_v123.nominal_behavior_result.v1",
+  "status": "PASS_WINNER_V123_NOMINAL_BEHAVIOR_VALID_RESULT",
+  "summary": {
+    "cells": 16,
+    "failures_by_reason": {
+      "current_peak_at_most_2p5": 11,
+      "torque_peak_at_most_1p91229675_nm": 12
+    },
+    "minimum_moving_mean_vx_m_s": 0.10530956782866269,
+    "passing_cells": 4,
+    "persistent_both_checkpoint_pass": false,
+    "worst_peak_current_a": 2.8640826054907627,
+    "worst_peak_torque_nm": 2.246964454650879,
+    "worst_strict_over_2a_run_ticks": 10,
+    "worst_tracking_p95_rad": 0.14829261898994447
+  },
+  "validity_checks": {
+    "all_cell_files_written": true,
+    "complete_manufacturer_gate_reported": true,
+    "cpu_environment_exact": true,
+    "matrix_16_exact": true,
+    "no_runner_exceptions": true,
+    "old_p95_current_not_used_for_pass_fail": true,
+    "policy_hashes_exact": true
+  },
+  "wall_seconds": 731.0913305282593
+}
