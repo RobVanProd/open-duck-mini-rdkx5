@@ -1,0 +1,88 @@
+{
+  "authority": {
+    "behavior_evaluation_authorized": false,
+    "checkpoint_selection_authorized": false,
+    "cpu_smoke_authorized": true,
+    "gate5_authorized": false,
+    "hosted_training_authorized": false,
+    "rdkx5_or_robot": false,
+    "robot_clearance": false,
+    "torque_or_motion": false
+  },
+  "checks": {
+    "all_input_hashes_exact": true,
+    "attribution_selects_linear_cpu_contract": true,
+    "linear_scale_derived_before_training": true,
+    "single_cpu_smoke_only": true,
+    "source_is_v112_final_checkpoint": true,
+    "squared_objective_disabled_for_isolation": true,
+    "v112_recovered_training_validation_exact": true
+  },
+  "cpu_smoke": {
+    "episode_length": 64,
+    "num_envs": 4,
+    "required_checks": [
+      "explicit CPU topology restore of the V112 GPU checkpoint",
+      "step-zero parameter equality",
+      "default-off reward equality",
+      "analytic linear hinge equality and finite nonzero metric",
+      "all actor leaves update",
+      "stateful ONNX ABI and 256-tick CPU chain"
+    ],
+    "required_exports": [
+      0,
+      1024
+    ],
+    "seed": 100,
+    "timesteps": 1024,
+    "unroll_length": 8
+  },
+  "failed_checks": [],
+  "hosted_if_cpu_passes": {
+    "exports": [
+      0,
+      1003520,
+      2007040
+    ],
+    "full_variable_configuration": true,
+    "one_continuation_only": true,
+    "post_export_transform": "apply the exact G3 guard and x=0 deadband before behavior",
+    "resume": false,
+    "retry": false,
+    "selection_requires_both_postupdate_checkpoints": true,
+    "timesteps": 2007040
+  },
+  "input_hashes": {
+    "attribution": "90a62c58f41178ce43a64af8a5bc8d7f51b613937395d7fe1418d6d7be8af198",
+    "composed_manifest": "d0bcf899e9be15b1ddd678ccb35036f6d750eae6aa65e9686fba2a1cf81a5a41",
+    "composer": "2fbf48c239e95736d499f6e050a2710e2e9323aee38f9a41501fd69dc73b262c",
+    "patch": "c0ecdefd7cc2379e9afa4e636e4d80d7e1510ef09edc07a9c55e695316508103",
+    "source_checkpoint": "d63309e0e0524d684813d1bf068e8642b21d2e829653d7716949614350f0423c",
+    "source_onnx": "6a400a7c465e56520e853d3607265e544888f86560d065f553a765b3d259563b",
+    "v112_validation": "895c010a015da4dc43bec2bf3752767c7633859adef2f1b277ef7315e941d4a7"
+  },
+  "objective": {
+    "all_joint": true,
+    "closed_alternative": "per-tick max squared hinge; it is exactly a 14x scalar multiple of the existing mean squared hinge on every trace",
+    "default_off_scale": 0.0,
+    "formula": "mean_j(max(abs(actuator_force_nm[j]) - 1.91229675, 0))",
+    "name": "linear_peak_torque_exceedance",
+    "scale_derivation": {
+      "linear_weighted_cost_at_same_v110_tick": -6.753196897202126,
+      "prior_squared_weighted_cost": -6.753196897202126,
+      "v110_worst_excess_nm": 0.30748131091308584
+    },
+    "squared_peak_torque_scale": 0.0,
+    "threshold_nm": 1.91229675,
+    "training_scale": -307.48131091308585
+  },
+  "schema_version": "winner_v114.linear_torque_cpu_preregistration.v1",
+  "source": {
+    "checkpoint_directory_sha256": "d63309e0e0524d684813d1bf068e8642b21d2e829653d7716949614350f0423c",
+    "checkpoint_path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v112-extracted-20260724\\winner_v112_peak_torque_continuation\\training\\2026_07_24_141819_2007040",
+    "raw_onnx_path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v112-extracted-20260724\\winner_v112_peak_torque_continuation\\training\\2026_07_24_141819_2007040.onnx",
+    "raw_onnx_sha256": "6a400a7c465e56520e853d3607265e544888f86560d065f553a765b3d259563b",
+    "selection": "V112 final is the only post-update checkpoint to pass any moving nominal cell and has the lowest hosted linear-boundary training metric; it is a continuation source, not a selected deployment checkpoint"
+  },
+  "status": "PREREGISTERED_WINNER_V114_LINEAR_TORQUE_CPU_SMOKE"
+}
