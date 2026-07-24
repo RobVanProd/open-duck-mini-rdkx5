@@ -87,3 +87,21 @@ def test_v108_attribution_requires_both_control_pass_and_graph_equivalence() -> 
             v107_expanded_initial_passing_cells=values[2],
         )
         assert held["status"] == "BASELINE_CONTROL_DID_NOT_ISOLATE_PREFIX"
+
+
+def test_v108_result_rejects_the_prefix_hypothesis() -> None:
+    path = ROOT / "outputs/analysis/winner_v108_prefix_handoff_result.json"
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    assert digest(path) == (
+        "a8e0026a566aa4bf01605692aa4cf1401442b1c3f9532dca40a701b81907b0c9"
+    )
+    assert payload["status"] == "PASS_WINNER_V108_PREFIX_HANDOFF_DIAGNOSTIC"
+    assert payload["failed_validity_checks"] == []
+    assert payload["decision"]["status"] == (
+        "BASELINE_CONTROL_DID_NOT_ISOLATE_PREFIX"
+    )
+    assert payload["summary"]["passing_cells"] == 0
+    assert payload["summary"]["minimum_moving_mean_vx_m_s"] > 0.08
+    assert payload["summary"]["worst_tracking_p95_rad"] > 0.20
+    assert payload["authority"]["hosted_training_authorized"] is False
+    assert payload["authority"]["robot_clearance"] is False
