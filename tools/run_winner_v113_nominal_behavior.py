@@ -39,6 +39,7 @@ def main() -> int:
     evaluator.RESULT_JSON = RESULT
     evaluator.RESULT_MD = MARKDOWN
     evaluator.PREREG_SHA256 = PREREG_SHA256
+    evaluator.PREREG_STATUS = "PREREGISTERED_WINNER_V113_NOMINAL_BEHAVIOR"
     evaluator.MATRIX_SHA256 = MATRIX_SHA256
     result = evaluator.execute(
         policy_root=args.policy_root.resolve(),

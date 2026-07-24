@@ -45,6 +45,7 @@ RESULT_MD = ANALYSIS / "WINNER_V110_PITCH_GUARD_BEHAVIOR_RESULT_20260724.md"
 PREREG_SHA256 = (
     "7698a551fa88cf1b0ca09503f383242e8735ce30436c189876bf4bde4b11b6d0"
 )
+PREREG_STATUS = "PREREGISTERED_WINNER_V110_PITCH_GUARD_BEHAVIOR"
 MATRIX_SHA256 = (
     "4297e953d16298f62159d7d3b33dc358f0813dd8f3d0d45d10c6963f4ba1ab3b"
 )
@@ -158,7 +159,7 @@ def execute(
     if (
         sha256(PREREG) != PREREG_SHA256
         or preregistration.get("status")
-        != "PREREGISTERED_WINNER_V110_PITCH_GUARD_BEHAVIOR"
+        != PREREG_STATUS
         or preregistration.get("failed_checks") != []
         or preregistration.get("matrix", {}).get("sha256") != MATRIX_SHA256
         or preregistration.get("authority", {}).get(
