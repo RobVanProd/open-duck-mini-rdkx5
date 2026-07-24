@@ -1,0 +1,196 @@
+{
+  "authority": {
+    "behavior_evaluation_authorized": false,
+    "checkpoint_selection_authorized": false,
+    "gate5_authorized": false,
+    "postexport_transform_preregistration_authorized": true,
+    "rdkx5_or_robot": false,
+    "robot_clearance": false,
+    "torque_or_motion": false
+  },
+  "checkpoints": [
+    {
+      "directory_sha256": "55ff06d786e2d39aecd6c2f29a23b46a8de1578afcc729d923ce6e216b99d1be",
+      "step": 0
+    },
+    {
+      "directory_sha256": "32a2ced7f154ee34a4d71beba6592daf0654a6b4b69181be3fa833c6a40ec35a",
+      "step": 1003520
+    },
+    {
+      "directory_sha256": "d63309e0e0524d684813d1bf068e8642b21d2e829653d7716949614350f0423c",
+      "step": 2007040
+    }
+  ],
+  "checks": {
+    "all_checkpoint_trees_finite": true,
+    "all_onnx_contracts_pass": true,
+    "all_postupdate_structures_exact": true,
+    "checkpoint_hashes_match_recovery_manifest": true,
+    "cpu_only_validation": true,
+    "every_policy_leaf_updated_at_both_checkpoints": true,
+    "formal_behavior_cells_zero": true,
+    "hosted_hold_is_post_training_inspection_only": true,
+    "local_exact_exports": true,
+    "no_training_retry_or_resume": true,
+    "onnx_hashes_match_recovery_manifest": true,
+    "recovery_input_hashes_exact": true,
+    "recovery_manifest_exact_exports": true,
+    "robot_or_rdk_access_zero": true,
+    "source_checkpoint_hash_exact": true,
+    "step_zero_source_parameters_bit_exact": true,
+    "step_zero_source_restore_structure_exact": true,
+    "training_metrics_all_finite": true,
+    "training_metrics_have_exact_export_steps": true
+  },
+  "classification": {
+    "correction_method": "read-only CPU topology remap using the exact source tree as Orbax restore template",
+    "failure_stage": "post_training_artifact_inspection",
+    "hosted_result": "HOLD_WINNER_V112_PEAK_TORQUE_HOSTED_CONTINUATION",
+    "training_completed": true,
+    "training_resume": false,
+    "training_retry": false
+  },
+  "failed_checks": [],
+  "input_hashes": {
+    "hosted_result": "5204d2ed83d62edfc0e9f91c04979f860d9d5d218e286ff1b3d1892d7e8b3401",
+    "launch_receipt": "91d01e3f7e652a661f3d8b41402603353edce259631672a8e6172c6455502668",
+    "recovery_archive": "2f4734ac2e973669fe204c006543421e34e8c1b3aa829fd9b049c0aebd0a64c5",
+    "recovery_manifest": "5f631a31c41aac5a4607de17bc4be9aa7a3709c5bf0b9d594c2997cf78c0297d",
+    "source_checkpoint": "70d589520d4280c9e2f276d45a3f12ccc90aa25a0691b5bd462cbde464419bbd"
+  },
+  "onnx": [
+    {
+      "abi_exact": true,
+      "chain_256_finite": true,
+      "cpu_provider_exact": true,
+      "initializers_finite": true,
+      "sha256": "fb725c5e8f45866c9b96e56b2429774f2e1ce73261ffb33ff534d977195544f0",
+      "step": 0
+    },
+    {
+      "abi_exact": true,
+      "chain_256_finite": true,
+      "cpu_provider_exact": true,
+      "initializers_finite": true,
+      "sha256": "eb691f6e85b58f3c514779926cc6aeb769091c3609f894e7e6cde8e538be6718",
+      "step": 1003520
+    },
+    {
+      "abi_exact": true,
+      "chain_256_finite": true,
+      "cpu_provider_exact": true,
+      "initializers_finite": true,
+      "sha256": "6a400a7c465e56520e853d3607265e544888f86560d065f553a765b3d259563b",
+      "step": 2007040
+    }
+  ],
+  "schema_version": "winner_v112.recovered_training_validation.v1",
+  "status": "PASS_WINNER_V112_RECOVERED_TRAINING_VALIDATION",
+  "trained_checkpoints": [
+    {
+      "every_policy_leaf_updated": true,
+      "policy_leaf_deltas": {
+        "1/params/adapter_hidden_bias": 0.016529036685824394,
+        "1/params/adapter_hidden_projection/kernel": 0.04099859297275543,
+        "1/params/adapter_location/bias": 0.008464417420327663,
+        "1/params/adapter_location/kernel": 0.034582123160362244,
+        "1/params/adapter_obs_projection/kernel": 0.0479774996638298,
+        "1/params/residual_location/bias": 0.008464466780424118,
+        "1/params/residual_location/kernel": 0.03435814753174782,
+        "1/params/residual_trunk/hidden_0/bias": 0.03751607984304428,
+        "1/params/residual_trunk/hidden_0/kernel": 0.33339256048202515,
+        "1/params/residual_trunk/hidden_1/bias": 0.05478229746222496,
+        "1/params/residual_trunk/hidden_1/kernel": 0.051997482776641846,
+        "1/params/residual_trunk/hidden_2/bias": 0.04219437018036842,
+        "1/params/residual_trunk/hidden_2/kernel": 0.04579940438270569,
+        "1/params/scale_logits/bias": 0.021849315613508224,
+        "1/params/scale_logits/kernel": 0.034863367676734924
+      },
+      "step": 1003520,
+      "structure_exact": true,
+      "tree_finite": true
+    },
+    {
+      "every_policy_leaf_updated": true,
+      "policy_leaf_deltas": {
+        "1/params/adapter_hidden_bias": 0.02363142929971218,
+        "1/params/adapter_hidden_projection/kernel": 0.05370859056711197,
+        "1/params/adapter_location/bias": 0.01240034680813551,
+        "1/params/adapter_location/kernel": 0.04065795987844467,
+        "1/params/adapter_obs_projection/kernel": 0.05251418054103851,
+        "1/params/residual_location/bias": 0.012400360777974129,
+        "1/params/residual_location/kernel": 0.0377332828938961,
+        "1/params/residual_trunk/hidden_0/bias": 0.04515078663825989,
+        "1/params/residual_trunk/hidden_0/kernel": 0.5965688824653625,
+        "1/params/residual_trunk/hidden_1/bias": 0.06301640719175339,
+        "1/params/residual_trunk/hidden_1/kernel": 0.06855732202529907,
+        "1/params/residual_trunk/hidden_2/bias": 0.04379427433013916,
+        "1/params/residual_trunk/hidden_2/kernel": 0.05833262577652931,
+        "1/params/scale_logits/bias": 0.027413498610258102,
+        "1/params/scale_logits/kernel": 0.06004205346107483
+      },
+      "step": 2007040,
+      "structure_exact": true,
+      "tree_finite": true
+    }
+  ],
+  "training_metric_evidence": {
+    "eval/avg_episode_length": [
+      {
+        "step": 0,
+        "value": 406.0703125
+      },
+      {
+        "step": 1003520,
+        "value": 470.0546875
+      },
+      {
+        "step": 2007040,
+        "value": 479.96875
+      }
+    ],
+    "eval/episode_cost/peak_torque_exceedance": [
+      {
+        "step": 0,
+        "value": 410.8663024902344
+      },
+      {
+        "step": 1003520,
+        "value": 147.5968017578125
+      },
+      {
+        "step": 2007040,
+        "value": 99.3287582397461
+      }
+    ],
+    "eval/episode_cost/tracking_tail_exceedance": [
+      {
+        "step": 0,
+        "value": 2.75828218460083
+      },
+      {
+        "step": 1003520,
+        "value": 0.3060462772846222
+      },
+      {
+        "step": 2007040,
+        "value": 0.13049715757369995
+      }
+    ],
+    "eval/episode_reward": [
+      {
+        "step": 0,
+        "value": 188.48989868164062
+      },
+      {
+        "step": 1003520,
+        "value": 227.31829833984375
+      },
+      {
+        "step": 2007040,
+        "value": 233.83145141601562
+      }
+    ]
+  }
+}
