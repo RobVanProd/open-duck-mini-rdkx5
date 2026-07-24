@@ -4,6 +4,12 @@ import hashlib
 import json
 from pathlib import Path
 
+import numpy as np
+
+from tools.run_winner_v110_pitch_guard_behavior import (
+    torque_metrics_from_trace,
+)
+
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -42,3 +48,21 @@ def test_v110_preregistration_freezes_complete_16_cell_screen() -> None:
     assert payload["authority"]["formal_behavior_cells_authorized"] == 16
     assert payload["authority"]["hosted_training_authorized"] is False
     assert payload["authority"]["gate5_authorized"] is False
+
+
+def test_v110_torque_gate_uses_the_manufacturer_peak_limit(
+    tmp_path: Path,
+) -> None:
+    rows = [{"actuator_force_nm": [0.0] * 14} for _ in range(3)]
+    rows[1]["actuator_force_nm"][4] = 1.91229675
+    path = tmp_path / "trace.jsonl"
+    path.write_text("\n".join(json.dumps(row) for row in rows) + "\n")
+    metrics = torque_metrics_from_trace(path)
+    assert metrics["check"] is True
+    assert metrics["worst_peak_torque_nm"] == 1.91229675
+
+    rows[1]["actuator_force_nm"][4] = float(
+        np.nextafter(1.91229675, np.inf)
+    )
+    path.write_text("\n".join(json.dumps(row) for row in rows) + "\n")
+    assert torque_metrics_from_trace(path)["check"] is False
