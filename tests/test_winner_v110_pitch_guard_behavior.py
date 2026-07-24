@@ -66,3 +66,22 @@ def test_v110_torque_gate_uses_the_manufacturer_peak_limit(
     )
     path.write_text("\n".join(json.dumps(row) for row in rows) + "\n")
     assert torque_metrics_from_trace(path)["check"] is False
+
+
+def test_v110_result_rejects_g3_on_both_peak_limits_only() -> None:
+    path = ROOT / "outputs/analysis/winner_v110_pitch_guard_behavior_result.json"
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    assert digest(path) == (
+        "0386bc3834fb451d9f6470187ed8447e971ad90021748379977b59fd19174404"
+    )
+    assert payload["status"] == "PASS_WINNER_V110_PITCH_GUARD_BEHAVIOR"
+    assert payload["failed_validity_checks"] == []
+    assert payload["decision"]["status"] == "REJECT_G3_REPAIR"
+    assert payload["summary"]["passing_cells"] == 4
+    assert payload["summary"]["failures_by_reason"] == {
+        "current_peak_at_most_2p5": 12,
+        "torque_peak_at_most_1p91229675_nm": 12,
+    }
+    assert payload["summary"]["worst_tracking_p95_rad"] < 0.20
+    assert payload["summary"]["minimum_moving_mean_vx_m_s"] > 0.0
+    assert payload["authority"]["gate5_authorized"] is False
