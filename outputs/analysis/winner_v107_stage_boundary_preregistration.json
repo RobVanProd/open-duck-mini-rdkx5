@@ -1,0 +1,423 @@
+{
+  "authority": {
+    "checkpoint_selection_authorized": false,
+    "formal_behavior_cells_authorized": 20,
+    "gate5_authorized": false,
+    "hosted_training_authorized": false,
+    "rdkx5_or_robot": false,
+    "robot_clearance": false,
+    "stage_boundary_diagnostic_authorized": true,
+    "torque_or_motion": false
+  },
+  "causal_question": "At which first frozen curriculum boundary does the exact response-conditioned actor lose the protected nominal gait?",
+  "checkpoints": [
+    {
+      "aliases": [
+        "stage1_0"
+      ],
+      "bytes": 983117,
+      "cumulative_optimizer_steps": 0,
+      "id": "EXPANDED_INITIAL",
+      "observed_sha256": "0076e743edb67bc8139d6c70ed6ee2973945c483640180b9de90da190a5a038e",
+      "relative_path": "stage1_domain_25_percent/2026_07_23_143437_0.onnx",
+      "sha256": "0076e743edb67bc8139d6c70ed6ee2973945c483640180b9de90da190a5a038e"
+    },
+    {
+      "aliases": [
+        "stage1_245760",
+        "stage2_0"
+      ],
+      "bytes": 983117,
+      "cumulative_optimizer_steps": 245760,
+      "id": "AFTER_DOMAIN_25_PERCENT",
+      "observed_sha256": "63f22d7cc253c0533291c4f996edf257a82f30d97a003b558651131268be7871",
+      "relative_path": "stage1_domain_25_percent/2026_07_23_144104_245760.onnx",
+      "sha256": "63f22d7cc253c0533291c4f996edf257a82f30d97a003b558651131268be7871"
+    },
+    {
+      "aliases": [
+        "stage2_245760",
+        "stage3_0"
+      ],
+      "bytes": 983117,
+      "cumulative_optimizer_steps": 491520,
+      "id": "AFTER_DOMAIN_50_PERCENT",
+      "observed_sha256": "e3c2d93b1d0e6c7a4f10d3d033a1c3b71b64d8737ace1a90bd3560a3c91b3fd5",
+      "relative_path": "stage2_domain_50_percent/2026_07_23_150629_245760.onnx",
+      "sha256": "e3c2d93b1d0e6c7a4f10d3d033a1c3b71b64d8737ace1a90bd3560a3c91b3fd5"
+    },
+    {
+      "aliases": [
+        "stage3_1003520"
+      ],
+      "bytes": 983117,
+      "cumulative_optimizer_steps": 1495040,
+      "id": "DOMAIN_100_PERCENT_HALF",
+      "observed_sha256": "86271b2bec3795df5f801ff640a78c409b69d26ba7c4c591e6329919e408292a",
+      "relative_path": "stage3_domain_100_percent/2026_07_23_153215_1003520.onnx",
+      "sha256": "86271b2bec3795df5f801ff640a78c409b69d26ba7c4c591e6329919e408292a"
+    },
+    {
+      "aliases": [
+        "stage3_2007040"
+      ],
+      "bytes": 983117,
+      "cumulative_optimizer_steps": 2498560,
+      "id": "DOMAIN_100_PERCENT_FINAL",
+      "observed_sha256": "24be9a6d565c4d2e841de82d11b1ecf226d27ad9b58a7edeb198a05e28844b13",
+      "relative_path": "stage3_domain_100_percent/2026_07_23_153822_2007040.onnx",
+      "sha256": "24be9a6d565c4d2e841de82d11b1ecf226d27ad9b58a7edeb198a05e28844b13"
+    }
+  ],
+  "checks": {
+    "all_checkpoint_bytes_exact": true,
+    "all_checkpoint_hashes_exact": true,
+    "attribution_authorizes_diagnostic": true,
+    "calibrator_exact": true,
+    "five_unique_checkpoints_exact": true,
+    "stage_continuity_aliases_preserved": true
+  },
+  "decision_rule": {
+    "expanded_initial_failure": "Select expansion/export or calibration-prefix integration, not curriculum training, as the first causal boundary.",
+    "first_transition": "First checkpoint in cumulative-step order that fails after at least one earlier checkpoint passes all four cells.",
+    "no_checkpoint_selection": true,
+    "no_reward_or_closest_ranking": true,
+    "no_training_until_result": true,
+    "per_checkpoint_requires_all_four_cells": true
+  },
+  "evaluator_corrections": {
+    "behavior_semantics_changed": false,
+    "cpu_only": "Require jax.default_backend() == 'cpu' and every jax device.platform == 'cpu'; do not parse rendered device names.",
+    "early_return": "Record simulator status/error and fail the cell without attempting absent environment/readback arithmetic.",
+    "formal_v103_result_unchanged": true,
+    "thresholds_changed": false
+  },
+  "failed_checks": [],
+  "input_hashes": {
+    "base_preregistration": "c8f986ceb24863f33c1fc99170548d2e255cb6a26737d3f74762f8dcd4485a24",
+    "calibrator": "cb3380ed99b3e9d7e9000904a210227aa397db2a064aa80d8f70e77c8339783b",
+    "reference_features": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212",
+    "v106_attribution": "64f1c3130f8ffe5dc245202d1b6c029c79019cd2cc434324292d024ee43d38c8"
+  },
+  "matrix": {
+    "calibration_ticks": 250,
+    "cells": 20,
+    "commands_x_m_s": [
+      0.0,
+      0.074,
+      0.077,
+      0.08
+    ],
+    "configuration": null,
+    "home_return_ticks": 250,
+    "plant": "P30_ALL_JOINT",
+    "rows": [
+      {
+        "checkpoint_id": "EXPANDED_INITIAL",
+        "checkpoint_sha256": "0076e743edb67bc8139d6c70ed6ee2973945c483640180b9de90da190a5a038e",
+        "command_x_m_s": 0.0,
+        "configuration": null,
+        "duration_ticks": 600,
+        "plant": "P30_ALL_JOINT",
+        "seed": 167931544,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "checkpoint_id": "EXPANDED_INITIAL",
+        "checkpoint_sha256": "0076e743edb67bc8139d6c70ed6ee2973945c483640180b9de90da190a5a038e",
+        "command_x_m_s": 0.074,
+        "configuration": null,
+        "duration_ticks": 600,
+        "plant": "P30_ALL_JOINT",
+        "seed": 167931544,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "checkpoint_id": "EXPANDED_INITIAL",
+        "checkpoint_sha256": "0076e743edb67bc8139d6c70ed6ee2973945c483640180b9de90da190a5a038e",
+        "command_x_m_s": 0.077,
+        "configuration": null,
+        "duration_ticks": 600,
+        "plant": "P30_ALL_JOINT",
+        "seed": 167931544,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "checkpoint_id": "EXPANDED_INITIAL",
+        "checkpoint_sha256": "0076e743edb67bc8139d6c70ed6ee2973945c483640180b9de90da190a5a038e",
+        "command_x_m_s": 0.08,
+        "configuration": null,
+        "duration_ticks": 600,
+        "plant": "P30_ALL_JOINT",
+        "seed": 167931544,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "checkpoint_id": "AFTER_DOMAIN_25_PERCENT",
+        "checkpoint_sha256": "63f22d7cc253c0533291c4f996edf257a82f30d97a003b558651131268be7871",
+        "command_x_m_s": 0.0,
+        "configuration": null,
+        "duration_ticks": 600,
+        "plant": "P30_ALL_JOINT",
+        "seed": 167931544,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "checkpoint_id": "AFTER_DOMAIN_25_PERCENT",
+        "checkpoint_sha256": "63f22d7cc253c0533291c4f996edf257a82f30d97a003b558651131268be7871",
+        "command_x_m_s": 0.074,
+        "configuration": null,
+        "duration_ticks": 600,
+        "plant": "P30_ALL_JOINT",
+        "seed": 167931544,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "checkpoint_id": "AFTER_DOMAIN_25_PERCENT",
+        "checkpoint_sha256": "63f22d7cc253c0533291c4f996edf257a82f30d97a003b558651131268be7871",
+        "command_x_m_s": 0.077,
+        "configuration": null,
+        "duration_ticks": 600,
+        "plant": "P30_ALL_JOINT",
+        "seed": 167931544,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "checkpoint_id": "AFTER_DOMAIN_25_PERCENT",
+        "checkpoint_sha256": "63f22d7cc253c0533291c4f996edf257a82f30d97a003b558651131268be7871",
+        "command_x_m_s": 0.08,
+        "configuration": null,
+        "duration_ticks": 600,
+        "plant": "P30_ALL_JOINT",
+        "seed": 167931544,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "checkpoint_id": "AFTER_DOMAIN_50_PERCENT",
+        "checkpoint_sha256": "e3c2d93b1d0e6c7a4f10d3d033a1c3b71b64d8737ace1a90bd3560a3c91b3fd5",
+        "command_x_m_s": 0.0,
+        "configuration": null,
+        "duration_ticks": 600,
+        "plant": "P30_ALL_JOINT",
+        "seed": 167931544,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "checkpoint_id": "AFTER_DOMAIN_50_PERCENT",
+        "checkpoint_sha256": "e3c2d93b1d0e6c7a4f10d3d033a1c3b71b64d8737ace1a90bd3560a3c91b3fd5",
+        "command_x_m_s": 0.074,
+        "configuration": null,
+        "duration_ticks": 600,
+        "plant": "P30_ALL_JOINT",
+        "seed": 167931544,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "checkpoint_id": "AFTER_DOMAIN_50_PERCENT",
+        "checkpoint_sha256": "e3c2d93b1d0e6c7a4f10d3d033a1c3b71b64d8737ace1a90bd3560a3c91b3fd5",
+        "command_x_m_s": 0.077,
+        "configuration": null,
+        "duration_ticks": 600,
+        "plant": "P30_ALL_JOINT",
+        "seed": 167931544,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "checkpoint_id": "AFTER_DOMAIN_50_PERCENT",
+        "checkpoint_sha256": "e3c2d93b1d0e6c7a4f10d3d033a1c3b71b64d8737ace1a90bd3560a3c91b3fd5",
+        "command_x_m_s": 0.08,
+        "configuration": null,
+        "duration_ticks": 600,
+        "plant": "P30_ALL_JOINT",
+        "seed": 167931544,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "checkpoint_id": "DOMAIN_100_PERCENT_HALF",
+        "checkpoint_sha256": "86271b2bec3795df5f801ff640a78c409b69d26ba7c4c591e6329919e408292a",
+        "command_x_m_s": 0.0,
+        "configuration": null,
+        "duration_ticks": 600,
+        "plant": "P30_ALL_JOINT",
+        "seed": 167931544,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "checkpoint_id": "DOMAIN_100_PERCENT_HALF",
+        "checkpoint_sha256": "86271b2bec3795df5f801ff640a78c409b69d26ba7c4c591e6329919e408292a",
+        "command_x_m_s": 0.074,
+        "configuration": null,
+        "duration_ticks": 600,
+        "plant": "P30_ALL_JOINT",
+        "seed": 167931544,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "checkpoint_id": "DOMAIN_100_PERCENT_HALF",
+        "checkpoint_sha256": "86271b2bec3795df5f801ff640a78c409b69d26ba7c4c591e6329919e408292a",
+        "command_x_m_s": 0.077,
+        "configuration": null,
+        "duration_ticks": 600,
+        "plant": "P30_ALL_JOINT",
+        "seed": 167931544,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "checkpoint_id": "DOMAIN_100_PERCENT_HALF",
+        "checkpoint_sha256": "86271b2bec3795df5f801ff640a78c409b69d26ba7c4c591e6329919e408292a",
+        "command_x_m_s": 0.08,
+        "configuration": null,
+        "duration_ticks": 600,
+        "plant": "P30_ALL_JOINT",
+        "seed": 167931544,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "checkpoint_id": "DOMAIN_100_PERCENT_FINAL",
+        "checkpoint_sha256": "24be9a6d565c4d2e841de82d11b1ecf226d27ad9b58a7edeb198a05e28844b13",
+        "command_x_m_s": 0.0,
+        "configuration": null,
+        "duration_ticks": 600,
+        "plant": "P30_ALL_JOINT",
+        "seed": 167931544,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "checkpoint_id": "DOMAIN_100_PERCENT_FINAL",
+        "checkpoint_sha256": "24be9a6d565c4d2e841de82d11b1ecf226d27ad9b58a7edeb198a05e28844b13",
+        "command_x_m_s": 0.074,
+        "configuration": null,
+        "duration_ticks": 600,
+        "plant": "P30_ALL_JOINT",
+        "seed": 167931544,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "checkpoint_id": "DOMAIN_100_PERCENT_FINAL",
+        "checkpoint_sha256": "24be9a6d565c4d2e841de82d11b1ecf226d27ad9b58a7edeb198a05e28844b13",
+        "command_x_m_s": 0.077,
+        "configuration": null,
+        "duration_ticks": 600,
+        "plant": "P30_ALL_JOINT",
+        "seed": 167931544,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "checkpoint_id": "DOMAIN_100_PERCENT_FINAL",
+        "checkpoint_sha256": "24be9a6d565c4d2e841de82d11b1ecf226d27ad9b58a7edeb198a05e28844b13",
+        "command_x_m_s": 0.08,
+        "configuration": null,
+        "duration_ticks": 600,
+        "plant": "P30_ALL_JOINT",
+        "seed": 167931544,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      }
+    ],
+    "scored_ticks": 600,
+    "seed": 167931544,
+    "sha256": "0ee5b189aaba40c70e4f34b4aec00118ac5923536fe78bf56c61c085bed3704d",
+    "transport": "default_off"
+  },
+  "schema_version": "winner_v107.stage_boundary_preregistration.v1",
+  "status": "PREREGISTERED_WINNER_V107_STAGE_BOUNDARY_DIAGNOSTIC"
+}
