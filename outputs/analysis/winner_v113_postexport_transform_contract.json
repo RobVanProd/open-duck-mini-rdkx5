@@ -1,0 +1,165 @@
+{
+  "authority": {
+    "behavior_evaluation_authorized": false,
+    "checkpoint_selection_authorized": false,
+    "gate5_authorized": false,
+    "nominal_behavior_preregistration_authorized": true,
+    "rdkx5_or_robot": false,
+    "robot_clearance": false,
+    "torque_or_motion": false
+  },
+  "checks": {
+    "all_append_exactly_13_guard_and_5_deadband_nodes": true,
+    "all_external_abis_exact": true,
+    "all_inference_contracts_pass": true,
+    "all_source_hashes_exact": true,
+    "all_source_initializers_preserved": true,
+    "all_source_nodes_preserved": true,
+    "all_source_rate_projections_exact": true,
+    "formal_behavior_cells_zero": true,
+    "two_postupdate_sources_transformed": true
+  },
+  "failed_checks": [],
+  "formal_behavior_cells_executed": 0,
+  "policies": [
+    {
+      "deadband_nodes_added": 5,
+      "graph_io": {
+        "inputs": {
+          "h_in": [
+            1,
+            64
+          ],
+          "obs": [
+            1,
+            115
+          ],
+          "previous_action": [
+            1,
+            14
+          ]
+        },
+        "outputs": {
+          "continuous_actions": [
+            1,
+            14
+          ],
+          "h_out": [
+            1,
+            64
+          ],
+          "previous_action_out": [
+            1,
+            14
+          ]
+        }
+      },
+      "guard_nodes_added": 13,
+      "id": "V112_PEAK_TORQUE_HALF",
+      "inference": {
+        "checks": {
+          "all_outputs_finite": true,
+          "cpu_provider_exact": true,
+          "g3_guard_enforced": true,
+          "positive_action_bit_exact_to_guarded": true,
+          "positive_hidden_bit_exact_to_guarded": true,
+          "positive_previous_bit_exact_to_guarded": true,
+          "zero_action_exact": true,
+          "zero_hidden_preserved": true,
+          "zero_previous_exact": true
+        },
+        "max_guard_excess_rad": 0.0,
+        "max_positive_action_error": 0.0,
+        "max_positive_hidden_error": 0.0,
+        "max_positive_previous_error": 0.0,
+        "max_zero_action": 0.0,
+        "max_zero_hidden_error": 0.0,
+        "max_zero_previous": 0.0,
+        "pass": true
+      },
+      "output_bytes": 957344,
+      "output_path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v113-postexport-policies-20260724\\V112_G3_DEADBAND_1003520.onnx",
+      "output_sha256": "e7a0ab69e0d23b48d2134cd9e108fe0a04e5daf4d896e01f2921ed1f22e4f19f",
+      "source_initializers_preserved": true,
+      "source_nodes_preserved": true,
+      "source_rate_projection_exact": true,
+      "source_sha256": "eb691f6e85b58f3c514779926cc6aeb769091c3609f894e7e6cde8e538be6718",
+      "step": 1003520
+    },
+    {
+      "deadband_nodes_added": 5,
+      "graph_io": {
+        "inputs": {
+          "h_in": [
+            1,
+            64
+          ],
+          "obs": [
+            1,
+            115
+          ],
+          "previous_action": [
+            1,
+            14
+          ]
+        },
+        "outputs": {
+          "continuous_actions": [
+            1,
+            14
+          ],
+          "h_out": [
+            1,
+            64
+          ],
+          "previous_action_out": [
+            1,
+            14
+          ]
+        }
+      },
+      "guard_nodes_added": 13,
+      "id": "V112_PEAK_TORQUE_FINAL",
+      "inference": {
+        "checks": {
+          "all_outputs_finite": true,
+          "cpu_provider_exact": true,
+          "g3_guard_enforced": true,
+          "positive_action_bit_exact_to_guarded": true,
+          "positive_hidden_bit_exact_to_guarded": true,
+          "positive_previous_bit_exact_to_guarded": true,
+          "zero_action_exact": true,
+          "zero_hidden_preserved": true,
+          "zero_previous_exact": true
+        },
+        "max_guard_excess_rad": 0.0,
+        "max_positive_action_error": 0.0,
+        "max_positive_hidden_error": 0.0,
+        "max_positive_previous_error": 0.0,
+        "max_zero_action": 0.0,
+        "max_zero_hidden_error": 0.0,
+        "max_zero_previous": 0.0,
+        "pass": true
+      },
+      "output_bytes": 957344,
+      "output_path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v113-postexport-policies-20260724\\V112_G3_DEADBAND_2007040.onnx",
+      "output_sha256": "e400498588ff29b8b987cea8456e25e265b0e46e92307b742d4b0288a376e7a8",
+      "source_initializers_preserved": true,
+      "source_nodes_preserved": true,
+      "source_rate_projection_exact": true,
+      "source_sha256": "6a400a7c465e56520e853d3607265e544888f86560d065f553a765b3d259563b",
+      "step": 2007040
+    }
+  ],
+  "schema_version": "winner_v113.postexport_transform_contract.v1",
+  "status": "PASS_WINNER_V113_POSTEXPORT_TRANSFORM_CONTRACT",
+  "transform": {
+    "deadband_abs_command_x": 0.01,
+    "g3_margin_rad": 0.165,
+    "order": [
+      "source conservative all-joint previous-action projection",
+      "G3 actual-centered pitch guard at 0.165 rad",
+      "exact x=0 command deadband"
+    ]
+  }
+}
