@@ -165,7 +165,7 @@ def main() -> int:
             "home_return_ticks": 0,
         }
         for policy in policies
-        for plant in ("P30_ALL_JOINT", "P31_34")
+        for plant in ("P30_ALL_JOINT", "P31_34_PITCH_WITH_P30_NONPITCH")
         for command in (0.0, 0.074, 0.077, 0.08)
     ]
     value = {

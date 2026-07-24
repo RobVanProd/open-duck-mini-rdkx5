@@ -16,7 +16,7 @@ def test_v109_preregistration_freezes_the_16_cell_recurrent_source_screen() -> N
     path = ROOT / "outputs/analysis/winner_v109_recurrent_source_preregistration.json"
     payload = json.loads(path.read_text(encoding="utf-8"))
     assert digest(path) == (
-        "71b98bd3bfad5c0fe74c645905b0fb5101c7c454154d587b88896d1750f1004d"
+        "b64578fa873d5397dfa96c4e089ec6757b255e30a69a90d2a353306d14933736"
     )
     assert payload["status"] == (
         "PREREGISTERED_WINNER_V109_RECURRENT_SOURCE_SCREEN"
@@ -24,7 +24,7 @@ def test_v109_preregistration_freezes_the_16_cell_recurrent_source_screen() -> N
     assert payload["failed_checks"] == []
     assert payload["matrix"]["cells"] == 16
     assert payload["matrix"]["sha256"] == (
-        "65619603579540a75006a0923c0fe6ab35499c5c02d92c91d91b58bbaa683406"
+        "9835cd79c64dd1a2b7ccbd1cc05d91a6c1b31dcfef31faf7ab1d2bfdf85ef11e"
     )
     assert len(payload["policies"]) == 2
     assert {
@@ -32,7 +32,7 @@ def test_v109_preregistration_freezes_the_16_cell_recurrent_source_screen() -> N
     } == {"R64_RECURRENT_HALF", "R64_RECURRENT_FINAL"}
     assert {row["plant"] for row in payload["matrix"]["rows"]} == {
         "P30_ALL_JOINT",
-        "P31_34",
+        "P31_34_PITCH_WITH_P30_NONPITCH",
     }
     assert {
         row["command_x_m_s"] for row in payload["matrix"]["rows"]
