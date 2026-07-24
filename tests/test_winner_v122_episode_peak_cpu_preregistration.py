@@ -50,3 +50,38 @@ def test_v122_runner_freezes_the_prereg_and_is_cpu_only() -> None:
         '"--ground_up_episode_peak_torque_increment_scale"' in source
     )
     assert '"--winner_v119_train_transition_match"' in source
+
+
+def test_v122_cpu_result_passes_before_any_hosted_authority() -> None:
+    value = load("winner_v122_episode_peak_cpu_result.json")
+    assert value["status"] == (
+        "PASS_WINNER_V122_EPISODE_PEAK_CPU_SMOKE"
+    )
+    assert value["failed_checks"] == []
+    assert all(value["checks"].values())
+    assert value["analytic_objective"]["max_abs_error_nm"] < 1.0e-7
+    assert len(value["training"]["policy_leaf_deltas"]) == 15
+    assert value["training"]["checkpoint_steps"] == [0, 1024]
+    assert value["training"]["onnx_steps"] == [0, 1024]
+    assert len(value["deployed_onnx"]) == 2
+    assert value["execution"]["formal_behavior_cells"] == 0
+    assert value["execution"]["colab_compute_units"] == 0
+    assert value["authority"]["hosted_preregistration_authorized"] is True
+    assert value["authority"]["hosted_training_authorized"] is False
+
+
+def test_v122_reward_mass_attribution_earns_only_preregistration() -> None:
+    value = load("winner_v122_cpu_reward_mass_attribution.json")
+    assert value["status"] == (
+        "PASS_WINNER_V122_CPU_REWARD_MASS_ATTRIBUTION"
+    )
+    assert value["failed_checks"] == []
+    assert all(value["checks"].values())
+    assert value["interpretation"]["scalar_search"] is False
+    assert value["interpretation"]["post_hoc_scale_change"] is False
+    assert value["decision"] == (
+        "PREREGISTER_ONE_V122_HOSTED_CONTINUATION"
+    )
+    assert value["execution"]["colab_compute_units"] == 0
+    assert value["authority"]["hosted_preregistration_authorized"] is True
+    assert value["authority"]["hosted_training_authorized"] is False

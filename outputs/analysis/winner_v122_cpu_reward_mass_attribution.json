@@ -1,0 +1,83 @@
+{
+  "authority": {
+    "behavior_evaluation_authorized": false,
+    "colab_authorized": false,
+    "gate5_authorized": false,
+    "hosted_preregistration_authorized": true,
+    "hosted_training_authorized": false,
+    "rdkx5_or_robot": false,
+    "robot_clearance": false,
+    "torque_or_motion": false
+  },
+  "checks": {
+    "all_input_hashes_exact": true,
+    "both_cpu_contracts_pass": true,
+    "exact_eval_steps_present": true,
+    "formal_behavior_not_rerun": true,
+    "objective_active_and_not_diluted": true,
+    "v122_episode_length_did_not_collapse": true,
+    "v122_eval_reward_did_not_collapse": true,
+    "v122_update_kl_below_smoke_hold": true,
+    "v122_update_losses_finite": true
+  },
+  "comparison": {
+    "v119_eval_episode_length": [
+      60.921875,
+      58.7890625
+    ],
+    "v119_eval_episode_reward": [
+      27.931774139404297,
+      25.225048065185547
+    ],
+    "v122_episode_peak_metric_rate_sum": [
+      1985.6881103515625,
+      2869.7177734375
+    ],
+    "v122_eval_episode_length": [
+      60.3515625,
+      61.1796875
+    ],
+    "v122_eval_episode_reward": [
+      26.750959396362305,
+      27.106586456298828
+    ],
+    "v122_scale_weighted_increment_integral": [
+      39.71376220703125,
+      57.39435546875
+    ],
+    "v122_training_kl_mean": [
+      0.02214934676885605
+    ],
+    "v122_training_policy_loss": [
+      -0.045776765793561935
+    ],
+    "v122_training_total_loss": [
+      0.05752912908792496
+    ],
+    "v122_training_value_loss": [
+      0.09909004718065262
+    ]
+  },
+  "decision": "PREREGISTER_ONE_V122_HOSTED_CONTINUATION",
+  "execution": {
+    "colab_compute_units": 0,
+    "formal_behavior_cells": 0,
+    "new_training_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "input_hashes": {
+    "v119_event": "a82e880295ec98bea511ecd26989f0fd977d29cedf47edefa811e17d64b19a3b",
+    "v119_result": "5761e21e652a66ae46cd8aff92dd84ee3eaeb3a088d2d1345b0218b5e62b94fb",
+    "v122_event": "d23c081f2e49b0820a9f9448fd5fd1dc15d9512e574e09f242238158c397a8e0",
+    "v122_result": "56006d763f9a92ef2a40ea6e0501ef7181d5411569f411b43b85f6614f88689a"
+  },
+  "interpretation": {
+    "large_metric_is_rate_sum": "The evaluator sums the scale-weighted cost rate without multiplying by dt; multiplying by 0.02 recovers the scale-weighted episode peak increment.",
+    "post_hoc_scale_change": false,
+    "reward_path": "The environment multiplies the summed scaled terms by dt and clips per-step reward at zero. The CPU smoke retains healthy episode reward and length while the objective is active.",
+    "scalar_search": false
+  },
+  "schema_version": "winner_v122.cpu_reward_mass_attribution.v1",
+  "status": "PASS_WINNER_V122_CPU_REWARD_MASS_ATTRIBUTION"
+}
