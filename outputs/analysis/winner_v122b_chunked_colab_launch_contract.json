@@ -1,0 +1,168 @@
+{
+  "authority": {
+    "additional_training_attempt": false,
+    "behavior_evaluation": false,
+    "checkpoint_selection": false,
+    "deployment": false,
+    "gate5": false,
+    "one_exact_chunked_cli_launch": true,
+    "rdkx5_or_robot": false,
+    "robot_clearance": false
+  },
+  "checks": {
+    "all_four_chunk_files_exact": true,
+    "executor_exact": true,
+    "hardware_or_robot_absent": true,
+    "launcher_exact": true,
+    "one_training_launch_without_retry_or_resume": true,
+    "package_contract_exact": true,
+    "pinned_software_exact": true,
+    "preregistration_exact": true,
+    "training_or_behavior_not_run_after_correction": true,
+    "training_payload_unchanged": true,
+    "transport_correction_exact": true
+  },
+  "chunks": [
+    {
+      "bytes": 25165824,
+      "name": "winner-v122-hosted-20260724.tar.gz.part000",
+      "sha256": "45ebabca4ef92199a28ffef57dffb91f911a422de808d473c992b9a473e4a515"
+    },
+    {
+      "bytes": 25165824,
+      "name": "winner-v122-hosted-20260724.tar.gz.part001",
+      "sha256": "1c23a3d498aadf86b7dfb5445a6bf3790eb1a64d9fbb07a12cc1b253a7bb39f9"
+    },
+    {
+      "bytes": 25165824,
+      "name": "winner-v122-hosted-20260724.tar.gz.part002",
+      "sha256": "ebd277f6697af454280ef276ce0465c4aa3833c3f10788eebe1180479bfe671b"
+    },
+    {
+      "bytes": 15724838,
+      "name": "winner-v122-hosted-20260724.tar.gz.part003",
+      "sha256": "1528871308924b806c2dfad64417f8285f630641e9bf09e5e9174280910843d3"
+    }
+  ],
+  "commands": [
+    [
+      "colab",
+      "new",
+      "--session",
+      "winner-v122b-episode-peak-20260724",
+      "--gpu",
+      "L4"
+    ],
+    [
+      "colab",
+      "upload",
+      "--session",
+      "winner-v122b-episode-peak-20260724",
+      "<CHUNK_ROOT>/winner-v122-hosted-20260724.tar.gz.part000",
+      "/content/winner-v122-hosted-20260724.tar.gz.part000"
+    ],
+    [
+      "colab",
+      "upload",
+      "--session",
+      "winner-v122b-episode-peak-20260724",
+      "<CHUNK_ROOT>/winner-v122-hosted-20260724.tar.gz.part001",
+      "/content/winner-v122-hosted-20260724.tar.gz.part001"
+    ],
+    [
+      "colab",
+      "upload",
+      "--session",
+      "winner-v122b-episode-peak-20260724",
+      "<CHUNK_ROOT>/winner-v122-hosted-20260724.tar.gz.part002",
+      "/content/winner-v122-hosted-20260724.tar.gz.part002"
+    ],
+    [
+      "colab",
+      "upload",
+      "--session",
+      "winner-v122b-episode-peak-20260724",
+      "<CHUNK_ROOT>/winner-v122-hosted-20260724.tar.gz.part003",
+      "/content/winner-v122-hosted-20260724.tar.gz.part003"
+    ],
+    [
+      "colab",
+      "upload",
+      "--session",
+      "winner-v122b-episode-peak-20260724",
+      "<LOCAL_LAUNCHER>",
+      "/content/launch_winner_v122_episode_peak_colab.py"
+    ],
+    [
+      "colab",
+      "exec",
+      "--session",
+      "winner-v122b-episode-peak-20260724",
+      "--file",
+      "<LOCAL_CHUNKED_EXECUTOR>",
+      "--timeout",
+      "21600"
+    ],
+    [
+      "colab",
+      "download",
+      "--session",
+      "winner-v122b-episode-peak-20260724",
+      "/content/winner_v122_result.json",
+      "<LOCAL_RESULT>"
+    ],
+    [
+      "colab",
+      "download",
+      "--session",
+      "winner-v122b-episode-peak-20260724",
+      "/content/winner_v122_artifacts.tar.gz",
+      "<LOCAL_ARCHIVE>"
+    ],
+    [
+      "colab",
+      "download",
+      "--session",
+      "winner-v122b-episode-peak-20260724",
+      "/content/winner_v122_launch_receipt.json",
+      "<LOCAL_RECEIPT>"
+    ],
+    [
+      "colab",
+      "stop",
+      "--session",
+      "winner-v122b-episode-peak-20260724"
+    ]
+  ],
+  "execution_now": {
+    "active_colab_sessions": 0,
+    "formal_behavior_cells": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_locomotion_steps": 0
+  },
+  "failed_checks": [],
+  "hashes": {
+    "executor": "e72fe79a36cc93d5d22c2b10424098a30d42658497ec5efe78251c34b9e314fe",
+    "launcher": "933871c0814ad0238b1a302aee9ae484a0ecd9ac60b2a8a5c3552739f33fb597",
+    "package_contract": "ac313412a362d33d1ed3803777aa0e0a45fca6c4a45cc69b235584a40107926d",
+    "preregistration": "fbbd796fdbf30d0e634ea712ceadd2946af035037bf6481f4ef3e1d0caed8c8e",
+    "transport_correction": "1f2816b15c18eda6cb9afc918334a8d10498905b67e0b7fffa843e6e8b7df8fb"
+  },
+  "recovery": {
+    "download_result_archive_receipt_before_stop": true,
+    "reconstruct_and_verify_package_before_launch": true,
+    "stop_session_after_pass_or_hold": true,
+    "training_resume": false,
+    "training_retry": false
+  },
+  "schema_version": "winner_v122b.chunked_colab_launch_contract.v1",
+  "session": {
+    "accelerator": "L4",
+    "max_wall_seconds": 21600,
+    "name": "winner-v122b-episode-peak-20260724",
+    "prior_prelaunch_transport_session_count": 1,
+    "training_session_count": 1
+  },
+  "status": "PASS_WINNER_V122B_CHUNKED_COLAB_LAUNCH_CONTRACT"
+}
