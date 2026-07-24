@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run the preregistered V119 transition-match CPU mechanics smoke."""
+"""Recover V119 CPU evidence after its reporting-only JSON bool failure."""
 
 from __future__ import annotations
 
@@ -8,9 +8,8 @@ import json
 import math
 import os
 from pathlib import Path
-import subprocess
 import sys
-import time
+import tempfile
 
 os.environ["CUDA_VISIBLE_DEVICES"] = ""
 os.environ["HIP_VISIBLE_DEVICES"] = ""
@@ -21,7 +20,6 @@ os.environ["JAX_PLATFORM_NAME"] = "cpu"
 from flax.training import orbax_utils
 import jax
 import numpy as np
-import onnx
 from orbax import checkpoint as ocp
 
 
@@ -29,134 +27,31 @@ ROOT = Path(__file__).resolve().parents[1]
 TOOLS = ROOT / "tools"
 sys.path.insert(0, str(TOOLS))
 
-from build_ground_up_actual_centered_guard_screen import (  # noqa: E402
-    append_guard,
-)
-from build_ground_up_command_deadband_repair import (  # noqa: E402
-    wrap as append_deadband,
-)
-from build_winner_v113_postexport_policies import (  # noqa: E402
-    graph_io,
-    sha256,
-)
-from build_winner_v117_postguard_rate_projection_policies import (  # noqa: E402
-    append_projection,
-    inference_contract,
-)
 from run_winner_v111_peak_torque_cpu_smoke import (  # noqa: E402
     sha256_directory,
     tree_errors,
 )
-from run_winner_v114_linear_torque_cpu_smoke import (  # noqa: E402
+from run_winner_v119_transition_cpu_smoke import (  # noqa: E402
+    MARKDOWN,
+    METRIC_TAG,
+    PREREG,
+    PREREG_SHA256,
+    RESULT,
+    deployed_onnx_contract,
     scalar_events,
+    sha256,
 )
 
 
-ANALYSIS = ROOT / "outputs/analysis"
-PREREG = ANALYSIS / "winner_v119_transition_cpu_preregistration.json"
-RESULT = ANALYSIS / "winner_v119_transition_cpu_result.json"
-MARKDOWN = (
-    ANALYSIS / "WINNER_V119_TRANSITION_CPU_RESULT_20260724.md"
+FAILED_STDERR_SHA256 = (
+    "3ee98ae25a5390f91a33f39de9ee0c5b08aca50a8fb8e1f1d416d9341ffb9159"
 )
-PREREG_SHA256 = (
-    "55f44915f750d29846df9aa0a5b6afaac3e12097e86ec4b26f7a637ffd1a2bee"
+FAILED_STDOUT_SHA256 = (
+    "cf0406ec4296d7e2dba1170821db35106e641985a007999a905dae2a5c00ae17"
 )
-REFERENCE = ANALYSIS / "ground_up_projected_reference_feature_table.npz"
-VELOCITY_LIMITS = (
-    "1.0,.75,1.4736209064722061,1.4300791546702385,"
-    "1.3976470567286015,.5,.5,.5,.5,.5,.75,1.25,1.0,"
-    "1.2215287424623966"
+TRAINING_LOG_SHA256 = (
+    "6cb2bc6fd45ea77abe1671d4a6add2e0c5584490e329a169a37c250196dc3084"
 )
-METRIC_TAG = "eval/episode_cost/linear_peak_torque_exceedance"
-
-
-def deployed_onnx_contract(
-    raw_path: Path,
-    output_path: Path,
-    *,
-    prereg: dict,
-) -> dict:
-    transition = prereg["transition"]
-    selected_delta = np.asarray(
-        transition["selected_normalized_action_delta"], dtype=np.float32
-    )
-    raw_model = onnx.load(raw_path)
-    guard_prereg = json.loads(
-        (
-            ANALYSIS
-            / "ground_up_actual_centered_guard_screen_preregistration.json"
-        ).read_text(encoding="utf-8")
-    )
-    deadband_prereg = json.loads(
-        (
-            ANALYSIS
-            / "ground_up_command_deadband_repair_preregistration.json"
-        ).read_text(encoding="utf-8")
-    )
-    guard = guard_prereg["guard_contract"]
-    guarded = append_guard(
-        raw_model,
-        obs_indices=np.asarray(
-            guard["measured_joint_offset_indices"], dtype=np.int64
-        ),
-        pitch_indices=np.asarray(
-            guard["pitch_chain_action_indices"], dtype=np.int64
-        ),
-        home=np.asarray(guard["home_target_rad"], dtype=np.float32),
-        action_scale=float(guard["action_scale_rad"]),
-        margin=float(transition["actual_centered_guard_margin_rad"]),
-    )
-    command_index = int(
-        deadband_prereg["transform"]["command_x_observation_index"]
-    )
-    deadband = float(
-        deadband_prereg["transform"][
-            "zero_deadband_absolute_command_x"
-        ]
-    )
-    deadbanded = append_deadband(
-        guarded, command_index=command_index, deadband=deadband
-    )
-    deployed = append_projection(
-        deadbanded,
-        selected_delta=selected_delta,
-        command_index=command_index,
-        deadband=deadband,
-    )
-    onnx.checker.check_model(deployed)
-    onnx.save(deployed, output_path)
-    changed_indices = np.asarray(
-        [2, 3, 4, 13], dtype=np.int64
-    )
-    inference = inference_contract(
-        raw_path,
-        output_path,
-        selected_delta=selected_delta,
-        changed_indices=changed_indices,
-        command_index=command_index,
-        deadband=deadband,
-        home=np.asarray(guard["home_target_rad"], dtype=np.float32),
-        pitch_indices=np.asarray(
-            guard["pitch_chain_action_indices"], dtype=np.int64
-        ),
-        actual_obs_indices=np.asarray(
-            guard["measured_joint_offset_indices"], dtype=np.int64
-        ),
-        action_scale=float(guard["action_scale_rad"]),
-        guard_margin=float(
-            transition["actual_centered_guard_margin_rad"]
-        ),
-    )
-    return {
-        "raw_sha256": sha256(raw_path),
-        "deployed_sha256": sha256(output_path),
-        "graph_io": graph_io(deployed),
-        "inference": inference,
-        "initializers_finite": all(
-            np.isfinite(onnx.numpy_helper.to_array(item)).all()
-            for item in deployed.graph.initializer
-        ),
-    }
 
 
 def main() -> int:
@@ -165,37 +60,34 @@ def main() -> int:
     parser.add_argument("--source-checkpoint", type=Path, required=True)
     parser.add_argument("--cpu-template", type=Path, required=True)
     parser.add_argument("--work-root", type=Path, required=True)
+    parser.add_argument("--launch-stdout", type=Path, required=True)
+    parser.add_argument("--launch-stderr", type=Path, required=True)
     args = parser.parse_args()
     playground = args.playground_root.resolve()
     source = args.source_checkpoint.resolve()
     cpu_template = args.cpu_template.resolve()
     work = args.work_root.resolve()
-    if work.exists():
-        raise FileExistsError(f"refusing to reuse V119 work root: {work}")
+    launch_stdout = args.launch_stdout.resolve()
+    launch_stderr = args.launch_stderr.resolve()
     if RESULT.exists() or MARKDOWN.exists():
-        raise FileExistsError("refusing to overwrite V119 CPU result")
+        raise FileExistsError("refusing to overwrite V119 recovered result")
     if sha256(PREREG) != PREREG_SHA256:
         raise ValueError("V119 preregistration changed")
     prereg = json.loads(PREREG.read_text(encoding="utf-8"))
+    stderr_text = launch_stderr.read_text(encoding="utf-8")
+    reporting_failure_exact = (
+        sha256(launch_stderr) == FAILED_STDERR_SHA256
+        and "TypeError: Object of type bool is not JSON serializable"
+        in stderr_text
+        and stderr_text.count("Traceback (most recent call last):") == 1
+    )
     if (
-        prereg.get("status")
-        != "PREREGISTERED_WINNER_V119_TRANSITION_CPU_SMOKE"
-        or prereg.get("failed_checks") != []
-        or prereg.get("authority", {}).get("cpu_smoke_authorized")
-        is not True
-        or sha256_directory(source)
-        != prereg["source"]["checkpoint_directory_sha256"]
+        sha256(launch_stdout) != FAILED_STDOUT_SHA256
+        or sha256(work / "training.log") != TRAINING_LOG_SHA256
+        or not reporting_failure_exact
     ):
-        raise ValueError("V119 CPU smoke is not authorized")
-    if subprocess.check_output(
-        ["git", "status", "--porcelain"], cwd=ROOT, text=True
-    ).strip():
-        raise RuntimeError("V119 execution requires a clean worktree")
+        raise ValueError("V119 failed-launch evidence changed")
 
-    work.mkdir(parents=True)
-    output = work / "smoke"
-    output.mkdir()
-    log = work / "training.log"
     sys.path.insert(0, str(playground))
     from playground.open_duck_mini_v2.joystick import (  # noqa: E402
         WINNER_V119_GUARD_MARGIN_RAD,
@@ -251,103 +143,7 @@ def main() -> int:
         prereg["transition"]["rate_limits_rad_s"], dtype=np.float32
     )
 
-    command = [
-        sys.executable,
-        "playground/open_duck_mini_v2/runner.py",
-        "--task",
-        "flat_terrain_backlash",
-        "--env",
-        "joystick",
-        "--output_dir",
-        str(output),
-        "--num_timesteps",
-        "1024",
-        "--ppo_seed",
-        "100",
-        "--ppo_num_envs",
-        "4",
-        "--ppo_num_evals",
-        "2",
-        "--ppo_episode_length",
-        "64",
-        "--ppo_unroll_length",
-        "8",
-        "--ppo_batch_size",
-        "4",
-        "--ppo_num_minibatches",
-        "1",
-        "--ppo_num_updates_per_batch",
-        "2",
-        "--ppo_learning_rate",
-        "0.0003",
-        "--ppo_discounting",
-        "0.97",
-        "--ppo_entropy_cost",
-        "0.005",
-        "--policy_architecture",
-        "reference_residual_recurrent_adapter",
-        "--recurrent_hidden_size",
-        "64",
-        "--imitation_scale",
-        "1.0",
-        "--reference_feature_table_path",
-        str(REFERENCE),
-        "--nominal_reference_bootstrap",
-        "--ground_up_hard_vector_command_support",
-        "--ground_up_command_support_min_x",
-        "0.074",
-        "--ground_up_command_support_max_x",
-        "0.080",
-        "--ground_up_action_velocity_limits_rad_s",
-        VELOCITY_LIMITS,
-        "--ground_up_measured_actuator_bridge",
-        "--ground_up_actuator_bridge_delay_ticks",
-        "3,3,3,3,3,3,2,3,3,3,2,3,2,3",
-        "--ground_up_actuator_bridge_tau_s",
-        ".015,.015,.005,.010,.010,.120,.120,.120,.120,.020,"
-        ".035,.010,.030,.005",
-        "--ground_up_applied_target_observation",
-        "--ground_up_tracking_tail_exceedance_scale",
-        "-6572.254964031055",
-        "--ground_up_tracking_tail_threshold_rad",
-        "0.20",
-        "--ground_up_peak_torque_exceedance_scale",
-        "0",
-        "--ground_up_linear_peak_torque_exceedance_scale",
-        "-307.48131091308585",
-        "--reference_start_phase",
-        "0",
-        "--ground_up_signed_progress_objective",
-        "--winner_v3_variable_configuration",
-        "--winner_v3_deviation_scale",
-        "1.0",
-        "--winner_v119_train_transition_match",
-        "--critic_observation",
-        "privileged_state",
-        "--restore_checkpoint_path",
-        str(source),
-    ]
-    environment = dict(os.environ)
-    environment["PYTHONPATH"] = str(playground)
-    started = time.monotonic()
-    completed = subprocess.run(
-        command,
-        cwd=playground,
-        env=environment,
-        text=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-        timeout=1800,
-        check=False,
-    )
-    elapsed = time.monotonic() - started
-    log.write_text(completed.stdout, encoding="utf-8")
-    if completed.returncode != 0:
-        raise RuntimeError(
-            f"V119 CPU runner failed rc={completed.returncode}; "
-            f"tail={completed.stdout[-5000:]}"
-        )
-
+    output = work / "smoke"
     checkpoints = sorted(path for path in output.iterdir() if path.is_dir())
     raw_graphs = sorted(output.glob("*.onnx"))
     checkpoint_steps = sorted(
@@ -358,7 +154,7 @@ def main() -> int:
     )
     if checkpoint_steps != [0, 1024] or onnx_steps != [0, 1024]:
         raise ValueError(
-            f"unexpected V119 exports: {checkpoint_steps}, {onnx_steps}"
+            f"unexpected recovered exports: {checkpoint_steps}, {onnx_steps}"
         )
     initial_checkpoint = next(
         path for path in checkpoints if path.name.endswith("_0")
@@ -400,15 +196,30 @@ def main() -> int:
     )
     event_file = next(output.glob("events.out.tfevents*"))
     metric_rows = scalar_events(event_file, METRIC_TAG)
+
+    existing_deployed = {
+        int(path.stem.rsplit("_", 1)[1]): path
+        for path in work.glob("v119_deployed_*.onnx")
+    }
     deployed_rows = []
-    for raw_path in raw_graphs:
-        step = int(raw_path.stem.rsplit("_", 1)[1])
-        deployed_path = work / f"v119_deployed_{step}.onnx"
-        row = deployed_onnx_contract(
-            raw_path, deployed_path, prereg=prereg
-        )
-        row["step"] = step
-        deployed_rows.append(row)
+    with tempfile.TemporaryDirectory(prefix="winner_v119_recover_") as tmp:
+        temporary = Path(tmp)
+        for raw_path in raw_graphs:
+            step = int(raw_path.stem.rsplit("_", 1)[1])
+            recovered_path = temporary / f"deployed_{step}.onnx"
+            row = deployed_onnx_contract(
+                raw_path, recovered_path, prereg=prereg
+            )
+            row["step"] = step
+            row["existing_deployed_sha256"] = sha256(
+                existing_deployed[step]
+            )
+            row["recovered_matches_existing"] = (
+                row["deployed_sha256"]
+                == row["existing_deployed_sha256"]
+            )
+            deployed_rows.append(row)
+
     expected_io = {
         "inputs": {
             "obs": [1, 115],
@@ -421,7 +232,22 @@ def main() -> int:
             "h_out": [1, 64],
         },
     }
+    earliest = min(
+        work.stat().st_ctime,
+        launch_stdout.stat().st_ctime,
+        launch_stderr.stat().st_ctime,
+    )
+    latest = max(
+        path.stat().st_mtime
+        for path in (
+            [work / "training.log", launch_stdout, launch_stderr]
+            + list(work.glob("v119_deployed_*.onnx"))
+        )
+    )
+    wall_upper_bound = float(latest - earliest)
     checks = {
+        "failed_launch_is_reporting_only": reporting_failure_exact,
+        "training_not_rerun": True,
         "cpu_only": jax.default_backend() == "cpu"
         and all(device.platform == "cpu" for device in jax.devices()),
         "default_off_config_exact_false": (
@@ -458,6 +284,9 @@ def main() -> int:
             math.isfinite(row["value"]) and row["value"] > 0.0
             for row in metric_rows
         ),
+        "both_existing_deployed_graphs_reproduce": all(
+            row["recovered_matches_existing"] for row in deployed_rows
+        ),
         "both_deployed_onnx_abis_exact": all(
             row["graph_io"] == expected_io for row in deployed_rows
         ),
@@ -467,18 +296,29 @@ def main() -> int:
         "both_deployed_initializers_finite": all(
             row["initializers_finite"] for row in deployed_rows
         ),
-        "wall_seconds_at_most_1800": elapsed <= 1800.0,
+        "wall_upper_bound_at_most_1800": wall_upper_bound <= 1800.0,
     }
     failed = sorted(name for name, passed in checks.items() if not passed)
     value = {
         "schema_version": "winner_v119.transition_cpu_result.v1",
         "status": (
-            "PASS_WINNER_V119_TRANSITION_CPU_SMOKE"
+            "PASS_WINNER_V119_TRANSITION_CPU_SMOKE_RECOVERED"
             if not failed
-            else "HOLD_WINNER_V119_TRANSITION_CPU_SMOKE"
+            else "HOLD_WINNER_V119_TRANSITION_CPU_SMOKE_RECOVERED"
         ),
         "failed_checks": failed,
         "checks": checks,
+        "recovery": {
+            "classification": "reporting_only",
+            "training_rerun": False,
+            "failed_launch_stdout_sha256": sha256(launch_stdout),
+            "failed_launch_stderr_sha256": sha256(launch_stderr),
+            "cause": (
+                "np.bool_ in the completed result payload was not converted "
+                "to a native JSON boolean"
+            ),
+            "wall_seconds_upper_bound": wall_upper_bound,
+        },
         "transition_contract": {
             "analytic_max_abs_error": analytic_error,
             "max_rate_excess_rad": max_rate_excess,
@@ -489,8 +329,6 @@ def main() -> int:
             "guard_margin_rad": float(margin),
         },
         "training": {
-            "command": command,
-            "elapsed_seconds": elapsed,
             "checkpoint_steps": checkpoint_steps,
             "onnx_steps": onnx_steps,
             "initial_checkpoint_sha256": sha256_directory(
@@ -498,7 +336,7 @@ def main() -> int:
             ),
             "final_checkpoint_sha256": sha256_directory(final_checkpoint),
             "event_sha256": sha256(event_file),
-            "log_sha256": sha256(log),
+            "log_sha256": sha256(work / "training.log"),
             "objective_metric": {
                 "tag": METRIC_TAG,
                 "events": metric_rows,
@@ -532,11 +370,11 @@ def main() -> int:
     MARKDOWN.write_text(
         "# Winner-v119 transition CPU result\n\n"
         f"Status: `{value['status']}`\n\n"
-        "The default-off transition, enabled analytic hierarchy, exact "
-        "V114-final restore, finite 1,024-step update, all actor leaves, and "
-        "both stateful postexport ONNX chains are checked on CPU. A pass "
-        "authorizes only a separate hosted preregistration; it does not "
-        "authorize Colab execution, behavior, Gate 5, or robot work.\n",
+        "The 1,024-step training was not rerun. Its exact checkpoints, event "
+        "file, raw ONNX, and already-written deployed ONNX were recovered "
+        "after a reporting-only NumPy-boolean serialization failure. All "
+        "mechanics, restore, update, and graph checks were recomputed. A pass "
+        "authorizes only a separate hosted preregistration.\n",
         encoding="utf-8",
     )
     print(value["status"])

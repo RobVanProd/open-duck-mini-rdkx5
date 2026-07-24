@@ -1,0 +1,239 @@
+{
+  "authority": {
+    "behavior_evaluation_authorized": false,
+    "checkpoint_selection_authorized": false,
+    "colab_authorized": false,
+    "gate5_authorized": false,
+    "hosted_preregistration_authorized": true,
+    "hosted_training_authorized": false,
+    "rdkx5_or_robot": false,
+    "robot_clearance": false,
+    "torque_or_motion": false
+  },
+  "checks": {
+    "both_deployed_initializers_finite": true,
+    "both_deployed_onnx_abis_exact": true,
+    "both_deployed_onnx_contracts_pass": true,
+    "both_existing_deployed_graphs_reproduce": true,
+    "cpu_only": true,
+    "default_off_config_exact_false": true,
+    "default_off_transition_bit_exact": true,
+    "enabled_final_rate_bound_exact": true,
+    "enabled_transition_matches_analytic": true,
+    "every_policy_leaf_updated": true,
+    "exact_exports_0_and_1024": true,
+    "failed_launch_is_reporting_only": true,
+    "guard_margin_exact": true,
+    "objective_metric_exact_steps": true,
+    "objective_metric_finite_nonzero": true,
+    "source_restore_parameters_bit_exact": true,
+    "source_restore_structure_exact": true,
+    "trained_structure_exact": true,
+    "trained_tree_all_finite": true,
+    "training_not_rerun": true,
+    "v117_rate_vector_float32_exact": true,
+    "wall_upper_bound_at_most_1800": true
+  },
+  "deployed_onnx": [
+    {
+      "deployed_sha256": "b88bc4a69cb9c1e060e73bceff58a4ac304cf1dd635a18dd17a4966c59a0abf6",
+      "existing_deployed_sha256": "b88bc4a69cb9c1e060e73bceff58a4ac304cf1dd635a18dd17a4966c59a0abf6",
+      "graph_io": {
+        "inputs": {
+          "h_in": [
+            1,
+            64
+          ],
+          "obs": [
+            1,
+            115
+          ],
+          "previous_action": [
+            1,
+            14
+          ]
+        },
+        "outputs": {
+          "continuous_actions": [
+            1,
+            14
+          ],
+          "h_out": [
+            1,
+            64
+          ],
+          "previous_action_out": [
+            1,
+            14
+          ]
+        }
+      },
+      "inference": {
+        "changed_projection_is_exercised": true,
+        "checks": {
+          "all_outputs_finite": true,
+          "changed_projection_is_exercised": true,
+          "cpu_provider_exact": true,
+          "g3_guard_preserved_in_consistent_chain": true,
+          "moving_rate_delta_enforced": true,
+          "realized_state_feedback_exact": true,
+          "recurrent_hidden_output_bit_exact": true,
+          "zero_action_exact": true,
+          "zero_previous_exact": true
+        },
+        "max_guard_excess_rad": 0.0,
+        "max_hidden_error": 0.0,
+        "max_moving_delta_excess": 2.2351741790771484e-08,
+        "max_state_error": 0.0,
+        "max_zero_action": 0.0,
+        "max_zero_previous": 0.0,
+        "pass": true
+      },
+      "initializers_finite": true,
+      "raw_sha256": "d8ad45888366b4ccc37cd4fc4c966f846740ab8967c20a04a71f35d763ce8bac",
+      "recovered_matches_existing": true,
+      "step": 0
+    },
+    {
+      "deployed_sha256": "5182ac6e1b03b9c43a59cf4694f268ec6a806b9a2fffc7d11a28da5a385d5072",
+      "existing_deployed_sha256": "5182ac6e1b03b9c43a59cf4694f268ec6a806b9a2fffc7d11a28da5a385d5072",
+      "graph_io": {
+        "inputs": {
+          "h_in": [
+            1,
+            64
+          ],
+          "obs": [
+            1,
+            115
+          ],
+          "previous_action": [
+            1,
+            14
+          ]
+        },
+        "outputs": {
+          "continuous_actions": [
+            1,
+            14
+          ],
+          "h_out": [
+            1,
+            64
+          ],
+          "previous_action_out": [
+            1,
+            14
+          ]
+        }
+      },
+      "inference": {
+        "changed_projection_is_exercised": true,
+        "checks": {
+          "all_outputs_finite": true,
+          "changed_projection_is_exercised": true,
+          "cpu_provider_exact": true,
+          "g3_guard_preserved_in_consistent_chain": true,
+          "moving_rate_delta_enforced": true,
+          "realized_state_feedback_exact": true,
+          "recurrent_hidden_output_bit_exact": true,
+          "zero_action_exact": true,
+          "zero_previous_exact": true
+        },
+        "max_guard_excess_rad": 0.0,
+        "max_hidden_error": 0.0,
+        "max_moving_delta_excess": 2.2351741790771484e-08,
+        "max_state_error": 0.0,
+        "max_zero_action": 0.0,
+        "max_zero_previous": 0.0,
+        "pass": true
+      },
+      "initializers_finite": true,
+      "raw_sha256": "202ff253567d63964331963572c3bb029094270662a129fc4fe460481b6117fe",
+      "recovered_matches_existing": true,
+      "step": 1024
+    }
+  ],
+  "failed_checks": [],
+  "input_hashes": {
+    "playground_manifest": "88cdb1287461a82c6d2b79c467afd6c78fb232c0355e28e9bfc7291b8053917b",
+    "preregistration": "55f44915f750d29846df9aa0a5b6afaac3e12097e86ec4b26f7a637ffd1a2bee",
+    "source_checkpoint": "3a31304fc673a4ec24cf7a2f099a51a9e120031787179afc973553f6dff92c26"
+  },
+  "recovery": {
+    "cause": "np.bool_ in the completed result payload was not converted to a native JSON boolean",
+    "classification": "reporting_only",
+    "failed_launch_stderr_sha256": "3ee98ae25a5390f91a33f39de9ee0c5b08aca50a8fb8e1f1d416d9341ffb9159",
+    "failed_launch_stdout_sha256": "cf0406ec4296d7e2dba1170821db35106e641985a007999a905dae2a5c00ae17",
+    "training_rerun": false,
+    "wall_seconds_upper_bound": 229.07046914100647
+  },
+  "schema_version": "winner_v119.transition_cpu_result.v1",
+  "status": "PASS_WINNER_V119_TRANSITION_CPU_SMOKE_RECOVERED",
+  "training": {
+    "checkpoint_steps": [
+      0,
+      1024
+    ],
+    "event_sha256": "a82e880295ec98bea511ecd26989f0fd977d29cedf47edefa811e17d64b19a3b",
+    "final_checkpoint_sha256": "3e69d05d4f13c43a8cf809e68447bacd32f35036ed692f72aaaca7c089a93156",
+    "initial_checkpoint_sha256": "16a867c653476d6829ddaf400e5f02fc21658a78d3efc5ddfd167cc497f3ac83",
+    "log_sha256": "6cb2bc6fd45ea77abe1671d4a6add2e0c5584490e329a169a37c250196dc3084",
+    "objective_metric": {
+      "events": [
+        {
+          "step": 0,
+          "value": 8.2709379196167
+        },
+        {
+          "step": 1024,
+          "value": 5.528546333312988
+        }
+      ],
+      "tag": "eval/episode_cost/linear_peak_torque_exceedance"
+    },
+    "onnx_steps": [
+      0,
+      1024
+    ],
+    "policy_leaf_deltas": {
+      "1/params/adapter_hidden_bias": 0.008534139022231102,
+      "1/params/adapter_hidden_projection/kernel": 0.010355964303016663,
+      "1/params/adapter_location/bias": 0.004492088686674833,
+      "1/params/adapter_location/kernel": 0.009148241952061653,
+      "1/params/adapter_obs_projection/kernel": 0.011133432388305664,
+      "1/params/residual_location/bias": 0.004492088221013546,
+      "1/params/residual_location/kernel": 0.008332695811986923,
+      "1/params/residual_trunk/hidden_0/bias": 0.007398257032036781,
+      "1/params/residual_trunk/hidden_0/kernel": 0.011053696274757385,
+      "1/params/residual_trunk/hidden_1/bias": 0.008588749915361404,
+      "1/params/residual_trunk/hidden_1/kernel": 0.011260741390287876,
+      "1/params/residual_trunk/hidden_2/bias": 0.007389355916529894,
+      "1/params/residual_trunk/hidden_2/kernel": 0.01105071883648634,
+      "1/params/scale_logits/bias": 0.007235631346702576,
+      "1/params/scale_logits/kernel": 0.0106736458837986
+    }
+  },
+  "transition_contract": {
+    "analytic_max_abs_error": 0.0,
+    "default_off_bit_exact": true,
+    "guard_margin_rad": 0.16500000655651093,
+    "max_rate_excess_rad": 2.0489096641540527e-08,
+    "rate_limits_float32": [
+      1.0,
+      0.75,
+      1.473620891571045,
+      1.4300791025161743,
+      1.3976470232009888,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.75,
+      1.25,
+      1.0,
+      1.2215287685394287
+    ]
+  }
+}
