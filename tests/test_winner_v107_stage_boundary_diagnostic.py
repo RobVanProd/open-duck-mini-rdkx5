@@ -81,3 +81,37 @@ def test_stage_decision_localizes_only_the_first_pass_to_fail_transition() -> No
         "first_failing_checkpoint_after_pass": None,
         "selected_causal_boundary": None,
     }
+
+
+def test_v107_result_selects_the_preoptimizer_integration_boundary() -> None:
+    path = ROOT / "outputs/analysis/winner_v107_stage_boundary_result.json"
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    assert digest(path) == (
+        "3f9bd6f9173131dbb17e9eef570831df5a67fc291bee094fe76b61772f8e6f6a"
+    )
+    assert payload["status"] == "PASS_WINNER_V107_STAGE_BOUNDARY_DIAGNOSTIC"
+    assert payload["failed_validity_checks"] == []
+    assert payload["cells"] == 20
+    assert payload["passing_cells"] == 5
+    assert payload["cpu_environment"] == {
+        "device_platforms": ["cpu"],
+        "device_strings": ["TFRT_CPU_0"],
+        "jax_backend": "cpu",
+    }
+    assert payload["decision"] == {
+        "first_failing_checkpoint_after_pass": "EXPANDED_INITIAL",
+        "first_passing_checkpoint": None,
+        "selected_causal_boundary": (
+            "EXPANSION_EXPORT_OR_CALIBRATION_PREFIX_INTEGRATION"
+        ),
+        "status": "EXPANDED_INITIAL_FAILED",
+    }
+    assert [row["passing_cells"] for row in payload["per_checkpoint"]] == [
+        1,
+        1,
+        1,
+        1,
+        1,
+    ]
+    assert payload["authority"]["hosted_training_authorized"] is False
+    assert payload["authority"]["robot_clearance"] is False
