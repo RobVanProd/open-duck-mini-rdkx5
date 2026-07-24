@@ -113,3 +113,26 @@ def test_v109_result_rejects_the_behavioral_source_on_peak_current_only() -> Non
     assert payload["summary"]["worst_strict_over_2a_run_ticks"] == 9
     assert payload["authority"]["gate5_authorized"] is False
     assert payload["authority"]["robot_clearance"] is False
+
+
+def test_v109_peak_attribution_selects_only_the_frozen_g3_screen() -> None:
+    path = ROOT / "outputs/analysis/winner_v109_peak_failure_attribution.json"
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    assert digest(path) == (
+        "128afe8af8d84b6fccb05487c9555250e01f60e83e37a49672966ede1e97bebd"
+    )
+    assert payload["status"] == (
+        "PASS_WINNER_V109_PEAK_FAILURE_ATTRIBUTION"
+    )
+    assert payload["failed_checks"] == []
+    assert payload["decision"]["status"] == (
+        "SELECT_FROZEN_G3_GUARD_FEASIBILITY_SCREEN"
+    )
+    assert payload["population"]["failure_joint_counts"] == {
+        "left_ankle": 12,
+        "left_knee": 12,
+        "right_knee": 2,
+    }
+    assert payload["population"]["maximum_overcurrent_streak_ticks"] == 9
+    assert payload["authority"]["hosted_training"] is False
+    assert payload["authority"]["gate5"] is False
