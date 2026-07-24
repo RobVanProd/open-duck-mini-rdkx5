@@ -4,6 +4,12 @@ import hashlib
 import json
 from pathlib import Path
 
+import numpy as np
+
+from tools.run_winner_v109_recurrent_source_screen import (
+    prospective_current_metrics,
+)
+
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -57,3 +63,33 @@ def test_v109_uses_the_prospective_manufacturer_backed_current_rule() -> None:
         "strict_overcurrent_threshold_a": 2.0,
     }
     assert payload["checks"]["prospective_current_rule_exact"] is True
+
+
+def test_v109_current_gate_uses_peak_and_strict_consecutive_duration() -> None:
+    force = np.zeros((600, 14), dtype=float)
+    force[10:109, 0] = 2.1 * 0.784532
+    metrics = prospective_current_metrics(force)
+    assert metrics["pass"] is True
+    assert metrics["worst_strict_over_2a_run_ticks"] == 99
+
+    force[109, 0] = 2.1 * 0.784532
+    metrics = prospective_current_metrics(force)
+    assert metrics["pass"] is False
+    assert metrics["checks"][
+        "overcurrent_gt_2a_at_most_99_consecutive_ticks"
+    ] is False
+
+
+def test_v109_current_gate_keeps_rated_p95_diagnostic_only() -> None:
+    force = np.full((600, 14), 0.7 * 0.784532, dtype=float)
+    metrics = prospective_current_metrics(force)
+    assert metrics["worst_p95_current_a_diagnostic_only"] > 0.65
+    assert metrics["pass"] is True
+
+
+def test_v109_current_gate_rejects_peak_above_manufacturer_limit() -> None:
+    force = np.zeros((600, 14), dtype=float)
+    force[40, 3] = 2.50001 * 0.784532
+    metrics = prospective_current_metrics(force)
+    assert metrics["pass"] is False
+    assert metrics["checks"]["current_peak_at_most_2p5"] is False
