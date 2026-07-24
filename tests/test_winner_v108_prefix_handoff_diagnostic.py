@@ -2,10 +2,16 @@ from __future__ import annotations
 
 import hashlib
 import json
+import sys
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "tools"))
+
+from run_winner_v108_prefix_handoff_diagnostic import (  # noqa: E402
+    select_attribution,
+)
 
 
 def digest(path: Path) -> str:
@@ -57,3 +63,27 @@ def test_v108_preregistration_proves_step_zero_graph_action_equivalence() -> Non
         "maximum_source_to_expanded_action_error": 0.0,
         "maximum_source_to_expanded_previous_action_error": 0.0,
     }
+
+
+def test_v108_attribution_requires_both_control_pass_and_graph_equivalence() -> None:
+    selected = select_attribution(
+        all_source_cells_pass=True,
+        graph_equivalence_exact=True,
+        v107_expanded_initial_passing_cells=1,
+    )
+    assert selected["status"] == "PREFIX_PHYSICAL_STATE_HANDOFF_ATTRIBUTED"
+    assert selected["selected_causal_boundary"] == (
+        "CALIBRATION_PREFIX_PHYSICAL_STATE_HANDOFF"
+    )
+
+    for values in (
+        (False, True, 1),
+        (True, False, 1),
+        (True, True, 4),
+    ):
+        held = select_attribution(
+            all_source_cells_pass=values[0],
+            graph_equivalence_exact=values[1],
+            v107_expanded_initial_passing_cells=values[2],
+        )
+        assert held["status"] == "BASELINE_CONTROL_DID_NOT_ISOLATE_PREFIX"
