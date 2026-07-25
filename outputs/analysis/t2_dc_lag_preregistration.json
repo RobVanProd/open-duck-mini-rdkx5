@@ -1,0 +1,212 @@
+{
+  "authority": {
+    "hosted_compute": false,
+    "offline_read_only": true,
+    "robot_or_rdk_access": false,
+    "training_steps": 0
+  },
+  "decision_rule": {
+    "bridge_lag_dominant": "lag-explained fraction >=0.70 on at least 4 of 6 pitch joints, where lag-explained=1-lag_residual_energy_fraction",
+    "missing_raw_trace": "no decomposition result; do not infer DC from aggregate p50/p95/max or refit summaries",
+    "posture_offset_dominant": "DC energy fraction >=0.50 on at least 4 of 6 pitch joints"
+  },
+  "execution": {
+    "authorized": false,
+    "performed": false,
+    "result": null,
+    "selection_weight": 0
+  },
+  "fit": {
+    "cross_correlation_lag_ticks": {
+      "left_ankle": 4,
+      "left_hip_pitch": 4,
+      "left_knee": 3,
+      "right_ankle": 4,
+      "right_hip_pitch": 4,
+      "right_knee": 4
+    },
+    "expected_sha256": "40d2aefbdaeac986fc856aade8170f2a9d72831613a7a30873bfff0846e4f1bb",
+    "hash_exact": true,
+    "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\actuator_response_fit_corrected_knee.json",
+    "sha256": "40d2aefbdaeac986fc856aade8170f2a9d72831613a7a30873bfff0846e4f1bb"
+  },
+  "frozen_method": {
+    "dc_energy_fraction": "mean(error)^2 / mean(error^2); a constant has zero temporal variance, so energy\u2014not var(constant)\u2014is the defined measure",
+    "dc_term": "mean(error) over the 696 post-startup samples",
+    "error": "sent_target(t)-actual(t)",
+    "home_offset_comparison": "compare signed DC terms with the frozen physical-start-pose calibration offsets before attributing them to dynamics",
+    "lag_residual": "sent_target shifted by the exact per-joint recorded cross-correlation lag minus actual over their common window",
+    "lag_residual_energy_fraction": "mean(lag_residual^2) / mean(error^2), with common-window unshifted error used as denominator",
+    "pitch_chain_joints": [
+      "left_hip_pitch",
+      "left_knee",
+      "left_ankle",
+      "right_hip_pitch",
+      "right_knee",
+      "right_ankle"
+    ]
+  },
+  "schema_version": "open_duck.t2_dc_lag_preregistration.v1",
+  "status": "HOLD_T2_REQUIRED_RAW_TELEMETRY_MISSING",
+  "tarball_inventory": [
+    {
+      "bytes": 270960,
+      "matches": [],
+      "member_count": 285,
+      "path": "D:\\open-duck-archive-20260725\\tarball-snapshots\\open-duck-x5-22b8e2c.tar.gz",
+      "sha256": "5e1fb02c819cb1ac8689c503a47ebd117f748b31c29ef4ba3410ce0411cf7a11"
+    },
+    {
+      "bytes": 245285,
+      "matches": [],
+      "member_count": 259,
+      "path": "D:\\open-duck-archive-20260725\\tarball-snapshots\\open-duck-x5-49b4325.tar.gz",
+      "sha256": "6349a3a0f025dd14bf042388940dd731fb29eed03f166a2f44babf4bf9c5c5e8"
+    },
+    {
+      "bytes": 245875,
+      "matches": [],
+      "member_count": 259,
+      "path": "D:\\open-duck-archive-20260725\\tarball-snapshots\\open-duck-x5-6138f02.tar.gz",
+      "sha256": "7b64f4ce322c1b8bf40a06858bc2b719e95be22b3ae04966c3e6c5e55a0156c7"
+    },
+    {
+      "bytes": 245839,
+      "matches": [],
+      "member_count": 259,
+      "path": "D:\\open-duck-archive-20260725\\tarball-snapshots\\open-duck-x5-71280f5.tar.gz",
+      "sha256": "b5e3ece86c6aea3ca346f3ddb9c50d935206abf4649389bc1e90801ab705f7c0"
+    },
+    {
+      "bytes": 227725,
+      "matches": [],
+      "member_count": 250,
+      "path": "D:\\open-duck-archive-20260725\\tarball-snapshots\\open-duck-x5-8c73aae-trace-analysis.tar.gz",
+      "sha256": "a90070d00e8f0eca704005aa241c36e7ab4aa782ca7f8af41253d3d4be41de77"
+    },
+    {
+      "bytes": 253306,
+      "matches": [],
+      "member_count": 271,
+      "path": "D:\\open-duck-archive-20260725\\tarball-snapshots\\open-duck-x5-8da00da.tar.gz",
+      "sha256": "d30dee91229cbe0c92c197c828c94081208b275ada5b71a74d9f4421b395a176"
+    },
+    {
+      "bytes": 264460,
+      "matches": [],
+      "member_count": 280,
+      "path": "D:\\open-duck-archive-20260725\\tarball-snapshots\\open-duck-x5-a5b5344.tar.gz",
+      "sha256": "730d53480de5cf3c64381c75984289994d4edb798e2b09aec31b1f8df7ff67f5"
+    },
+    {
+      "bytes": 264296,
+      "matches": [],
+      "member_count": 280,
+      "path": "D:\\open-duck-archive-20260725\\tarball-snapshots\\open-duck-x5-c8f2b2a.tar.gz",
+      "sha256": "8268d4fa33d02873e97a7b689e3c5c45f3f862a136b0e8f0043339e68ecc8b12"
+    },
+    {
+      "bytes": 212129,
+      "matches": [],
+      "member_count": 230,
+      "path": "D:\\open-duck-archive-20260725\\tarball-snapshots\\open-duck-x5-ce161b57-voltage84.tar.gz",
+      "sha256": "f1dc534c5f3c5d5b9577d41e2b4867a0ee20547f7c9721e5923a17100e7292ca"
+    },
+    {
+      "bytes": 502914,
+      "matches": [],
+      "member_count": 413,
+      "path": "D:\\open-duck-archive-20260725\\tarball-snapshots\\open-duck-x5-clearance-v2-9f3d6f5.tar.gz",
+      "sha256": "e354e15539ba9589d1230f6da027988af2c2a302a96a3a072879da3538485106"
+    },
+    {
+      "bytes": 503532,
+      "matches": [],
+      "member_count": 413,
+      "path": "D:\\open-duck-archive-20260725\\tarball-snapshots\\open-duck-x5-clearance-v2-de870de.tar.gz",
+      "sha256": "9caefc209dfb85bd1ca28d998e37bcf0832c361468cec0d8d46c97cf6d7c9c17"
+    },
+    {
+      "bytes": 219894,
+      "matches": [],
+      "member_count": 242,
+      "path": "D:\\open-duck-archive-20260725\\tarball-snapshots\\open-duck-x5-da28f532-voltage84-final.tar.gz",
+      "sha256": "4824de3166e45cd1b6eaad54396396b94fe821a218e50dfbf9aea1f233c39cd3"
+    },
+    {
+      "bytes": 216410,
+      "matches": [],
+      "member_count": 236,
+      "path": "D:\\open-duck-archive-20260725\\tarball-snapshots\\open-duck-x5-e83cf518-voltage84-recovery.tar.gz",
+      "sha256": "550c89a8aaa217b6c0e11fb80a1cea6b51e227bfb7b51d0351ab9537c4aa868c"
+    },
+    {
+      "bytes": 228796,
+      "matches": [],
+      "member_count": 250,
+      "path": "D:\\open-duck-archive-20260725\\tarball-snapshots\\open-duck-x5-fd276d4.tar.gz",
+      "sha256": "bb863be146e8e4d0dd145148ac2866be834d539db8890e0a64ed030ab381f0d9"
+    },
+    {
+      "bytes": 317818,
+      "matches": [],
+      "member_count": 315,
+      "path": "D:\\open-duck-archive-20260725\\tarball-snapshots\\open-duck-x5-gate3-1792d9c6975c328a7349efb5b4baec57852d39b3.tar.gz",
+      "sha256": "3ab9e7161e04f4faf39acaf03bca3ad4868eab7b16ec94f2861cb10b64866ed0"
+    },
+    {
+      "bytes": 326493,
+      "matches": [],
+      "member_count": 323,
+      "path": "D:\\open-duck-archive-20260725\\tarball-snapshots\\open-duck-x5-gate3-aac7410f241a5419af2257ba9635e6755d7b5ae8.repro.tar.gz",
+      "sha256": "d41e516ec52558ec169c0f8f017d8959aed657a999786ed5e8e7716895ced9a0"
+    },
+    {
+      "bytes": 326493,
+      "matches": [],
+      "member_count": 323,
+      "path": "D:\\open-duck-archive-20260725\\tarball-snapshots\\open-duck-x5-gate3-aac7410f241a5419af2257ba9635e6755d7b5ae8.tar.gz",
+      "sha256": "d41e516ec52558ec169c0f8f017d8959aed657a999786ed5e8e7716895ced9a0"
+    },
+    {
+      "bytes": 317818,
+      "matches": [],
+      "member_count": 315,
+      "path": "D:\\open-duck-archive-20260725\\tarball-snapshots\\open-duck-x5-gate3-verify.tar.gz",
+      "sha256": "3ab9e7161e04f4faf39acaf03bca3ad4868eab7b16ec94f2861cb10b64866ed0"
+    },
+    {
+      "bytes": 344516,
+      "matches": [],
+      "member_count": 334,
+      "path": "D:\\open-duck-archive-20260725\\tarball-snapshots\\open-duck-x5-gate4-c5f2759-a.tar.gz",
+      "sha256": "5ee4aa30fb11e411ec7cea797c70ebf5aa53d1278e8c873544825253b193ffc8"
+    },
+    {
+      "bytes": 344516,
+      "matches": [],
+      "member_count": 334,
+      "path": "D:\\open-duck-archive-20260725\\tarball-snapshots\\open-duck-x5-gate4-c5f2759-b.tar.gz",
+      "sha256": "5ee4aa30fb11e411ec7cea797c70ebf5aa53d1278e8c873544825253b193ffc8"
+    },
+    {
+      "bytes": 344859,
+      "matches": [],
+      "member_count": 334,
+      "path": "D:\\open-duck-archive-20260725\\tarball-snapshots\\open-duck-x5-gate4-runner-2d2e46c.tar.gz",
+      "sha256": "3405e48bec7a8b91fb436ecbe4f14fbd1dc8f320c7d1f28be9131171f92fd168"
+    }
+  ],
+  "trace": {
+    "git_history_commits": [],
+    "loose_archive_matches": [],
+    "raw_available": false,
+    "repo_path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\first_evidence\\20260627T221019Z_corrected_dynamic_replay\\suspended_policy_replay_x008_corrected_knee.jsonl",
+    "repo_path_exists": false,
+    "required_post_startup_samples": 696,
+    "required_relative_path": "outputs/first_evidence/20260627T221019Z_corrected_dynamic_replay/suspended_policy_replay_x008_corrected_knee.jsonl",
+    "required_samples": 747,
+    "startup_ticks_excluded": 50,
+    "tarball_matches": []
+  }
+}
