@@ -1,0 +1,450 @@
+{
+  "authority": {
+    "formal_screen_cells_after_contract_pass": 16,
+    "gate5": false,
+    "hosted_or_colab": false,
+    "nonformal_contract_runs": 1,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "causal_correction": {
+    "defect": "The all-tick projector required the graph's requested base action to already lie inside the intersection of absolute, frozen G3, and frozen rate bounds. The selected oracle specification instead requires clipping the requested action to that supreme feasible intersection before the torque test.",
+    "held_contract": {
+      "error": "base action violates the supreme oracle interval",
+      "path": "outputs\\analysis\\winner_v126_all_tick_oracle_cpu_contract.json",
+      "sha256": "0516ff2a35b780bfd2104555ea2694afe831df3e0c0d94f36516881bb8007a50",
+      "simulator_status": "HOLD_EXACT_TORQUE_ORACLE_CONTRACT",
+      "tick": 38
+    },
+    "no_matrix_change": true,
+    "no_parameter_change": true,
+    "no_threshold_change": true,
+    "single_correction": "Compute feasible_base=clip(requested_base, low, high), then run the unchanged exact torque projection from feasible_base. Log the base-feasibility clip separately from the torque clip."
+  },
+  "evidence": {
+    "evaluator": {
+      "path": "tools\\closed_loop_sim_eval_v126_all_tick.py",
+      "sha256": "9ac610245ea835f023c1e933ad1224bf0e4f1cd94ba84a224f29c9cde32fe21b"
+    },
+    "projector": {
+      "path": "tools\\exact_torque_oracle_all_tick.py",
+      "sha256": "b46e8c378b47bfdd3e399da26f6a7e25ee062f752f61d7838334dcb7caebb7d4"
+    },
+    "source_preregistration": {
+      "path": "outputs\\analysis\\winner_v126_all_tick_oracle_preregistration.json",
+      "sha256": "4c187ad4dfb160d1d811e457a0ddd095f0d30dbfba2ca9697269d2ee3fc45745"
+    }
+  },
+  "external_inputs": {
+    "playground": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v119-train-transition-playground-20260724",
+    "playground_manifest_sha256": "88cdb1287461a82c6d2b79c467afd6c78fb232c0355e28e9bfc7291b8053917b",
+    "policy_root": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v121-deployment-policies-20260724"
+  },
+  "formal_rule": {
+    "exact_all_tick_validity": [
+      "zero prediction mismatches",
+      "zero nonempty residual violations",
+      "zero unscheduled residual violations",
+      "all action-to-force maps used for projection are monotone"
+    ],
+    "final_checkpoint": "evaluated and reported; it has zero checkpoint-selection weight for earning the continuation",
+    "pass_authorizes_only": "one separately preregistered V127 constrained-continuation CPU contract",
+    "teacher_requirement": "all eight V121-half cells preserve every frozen behavior criterion"
+  },
+  "matrix": {
+    "axes": {
+      "checkpoints": 2,
+      "commands_m_s": [
+        0.0,
+        0.074,
+        0.077,
+        0.08
+      ],
+      "duration_ticks": 600,
+      "plants": 2,
+      "seed": 167931544
+    },
+    "cells": 16,
+    "rows": [
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "V121_TRAIN_MATCHED_HALF",
+        "command_x_m_s": 0.0,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "oracle_schedule_ticks": null,
+        "plant": "P30_ALL_JOINT",
+        "policy_sha256": "d4f280e8ebb4accd5c5c983bbf83042ec0162647efb446f0f6c8bffda42bc17a",
+        "seed": 167931544,
+        "step": 1003520,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "V121_TRAIN_MATCHED_HALF",
+        "command_x_m_s": 0.074,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "oracle_schedule_ticks": null,
+        "plant": "P30_ALL_JOINT",
+        "policy_sha256": "d4f280e8ebb4accd5c5c983bbf83042ec0162647efb446f0f6c8bffda42bc17a",
+        "seed": 167931544,
+        "step": 1003520,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "V121_TRAIN_MATCHED_HALF",
+        "command_x_m_s": 0.077,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "oracle_schedule_ticks": null,
+        "plant": "P30_ALL_JOINT",
+        "policy_sha256": "d4f280e8ebb4accd5c5c983bbf83042ec0162647efb446f0f6c8bffda42bc17a",
+        "seed": 167931544,
+        "step": 1003520,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "V121_TRAIN_MATCHED_HALF",
+        "command_x_m_s": 0.08,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "oracle_schedule_ticks": null,
+        "plant": "P30_ALL_JOINT",
+        "policy_sha256": "d4f280e8ebb4accd5c5c983bbf83042ec0162647efb446f0f6c8bffda42bc17a",
+        "seed": 167931544,
+        "step": 1003520,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "V121_TRAIN_MATCHED_HALF",
+        "command_x_m_s": 0.0,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "oracle_schedule_ticks": null,
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+        "policy_sha256": "d4f280e8ebb4accd5c5c983bbf83042ec0162647efb446f0f6c8bffda42bc17a",
+        "seed": 167931544,
+        "step": 1003520,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "V121_TRAIN_MATCHED_HALF",
+        "command_x_m_s": 0.074,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "oracle_schedule_ticks": null,
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+        "policy_sha256": "d4f280e8ebb4accd5c5c983bbf83042ec0162647efb446f0f6c8bffda42bc17a",
+        "seed": 167931544,
+        "step": 1003520,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "V121_TRAIN_MATCHED_HALF",
+        "command_x_m_s": 0.077,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "oracle_schedule_ticks": null,
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+        "policy_sha256": "d4f280e8ebb4accd5c5c983bbf83042ec0162647efb446f0f6c8bffda42bc17a",
+        "seed": 167931544,
+        "step": 1003520,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "V121_TRAIN_MATCHED_HALF",
+        "command_x_m_s": 0.08,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "oracle_schedule_ticks": null,
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+        "policy_sha256": "d4f280e8ebb4accd5c5c983bbf83042ec0162647efb446f0f6c8bffda42bc17a",
+        "seed": 167931544,
+        "step": 1003520,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "V121_TRAIN_MATCHED_FINAL",
+        "command_x_m_s": 0.0,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "oracle_schedule_ticks": null,
+        "plant": "P30_ALL_JOINT",
+        "policy_sha256": "bc54ea1bf39e617f76771e7416de91db2ccfe0b1bf903de08faaa64a67ce4aab",
+        "seed": 167931544,
+        "step": 2007040,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "V121_TRAIN_MATCHED_FINAL",
+        "command_x_m_s": 0.074,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "oracle_schedule_ticks": null,
+        "plant": "P30_ALL_JOINT",
+        "policy_sha256": "bc54ea1bf39e617f76771e7416de91db2ccfe0b1bf903de08faaa64a67ce4aab",
+        "seed": 167931544,
+        "step": 2007040,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "V121_TRAIN_MATCHED_FINAL",
+        "command_x_m_s": 0.077,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "oracle_schedule_ticks": null,
+        "plant": "P30_ALL_JOINT",
+        "policy_sha256": "bc54ea1bf39e617f76771e7416de91db2ccfe0b1bf903de08faaa64a67ce4aab",
+        "seed": 167931544,
+        "step": 2007040,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "V121_TRAIN_MATCHED_FINAL",
+        "command_x_m_s": 0.08,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "oracle_schedule_ticks": null,
+        "plant": "P30_ALL_JOINT",
+        "policy_sha256": "bc54ea1bf39e617f76771e7416de91db2ccfe0b1bf903de08faaa64a67ce4aab",
+        "seed": 167931544,
+        "step": 2007040,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "V121_TRAIN_MATCHED_FINAL",
+        "command_x_m_s": 0.0,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "oracle_schedule_ticks": null,
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+        "policy_sha256": "bc54ea1bf39e617f76771e7416de91db2ccfe0b1bf903de08faaa64a67ce4aab",
+        "seed": 167931544,
+        "step": 2007040,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "V121_TRAIN_MATCHED_FINAL",
+        "command_x_m_s": 0.074,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "oracle_schedule_ticks": null,
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+        "policy_sha256": "bc54ea1bf39e617f76771e7416de91db2ccfe0b1bf903de08faaa64a67ce4aab",
+        "seed": 167931544,
+        "step": 2007040,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "V121_TRAIN_MATCHED_FINAL",
+        "command_x_m_s": 0.077,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "oracle_schedule_ticks": null,
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+        "policy_sha256": "bc54ea1bf39e617f76771e7416de91db2ccfe0b1bf903de08faaa64a67ce4aab",
+        "seed": 167931544,
+        "step": 2007040,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "V121_TRAIN_MATCHED_FINAL",
+        "command_x_m_s": 0.08,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "oracle_schedule_ticks": null,
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+        "policy_sha256": "bc54ea1bf39e617f76771e7416de91db2ccfe0b1bf903de08faaa64a67ce4aab",
+        "seed": 167931544,
+        "step": 2007040,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      }
+    ],
+    "sha256": "d42564da4d09c8632d8975bf446ef293d22c6f6c675fdfe3ace71fcbc5801e76"
+  },
+  "nonformal_contract": {
+    "checkpoint_id": "V121_TRAIN_MATCHED_FINAL",
+    "command_x_m_s": 0.074,
+    "duration_ticks": 64,
+    "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+    "reason": "The sparse trace's first new unscheduled exceedance matured at tick 59; 64 ticks exercise its last controllable decision.",
+    "required": {
+      "at_least_one_projection": true,
+      "nonempty_residual_violations": 0,
+      "prediction_mismatches": 0,
+      "schedule_bypass_ticks": 0,
+      "scheduled_ticks": 64,
+      "unscheduled_residual_violations": 0
+    },
+    "seed": 167931544
+  },
+  "oracle": {
+    "action_delta": [
+      0.07999999821186066,
+      0.05999999865889549,
+      0.11788966506719589,
+      0.11440632492303848,
+      0.11181175708770752,
+      0.03999999910593033,
+      0.03999999910593033,
+      0.03999999910593033,
+      0.03999999910593033,
+      0.03999999910593033,
+      0.05999999865889549,
+      0.09999999403953552,
+      0.07999999821186066,
+      0.09772229939699173
+    ],
+    "action_scale_rad": 0.25,
+    "bisection_iterations": 32,
+    "bounds": "intersection of absolute [-1,1], exact V121 previous-action rate vector, and the 0.165-rad G3 actual-centered guard",
+    "causal_closure": "each source-tick predicted per-joint force is queued to t+delay and compared with the actual closed-loop force; error above 5e-6 N.m invalidates the screen because intervening projected policy actions made the purported exact branch non-exact",
+    "deployment_candidate": false,
+    "force_horizon": "per-joint fitted bridge delay_ticks; offset zero is the current transition",
+    "force_tolerance_nm": 5e-06,
+    "guard_rad": 0.165,
+    "maximum_coordinate_passes": 14,
+    "monotonicity_grid_points": 9,
+    "monotonicity_tolerance_nm": 5e-06,
+    "moving_tick_rule": "one exact base-action horizon rollout at every tick; projection only on predicted exceedance",
+    "nonempty_residual_rule": "a torque exceedance with a matured non-empty prediction is an oracle implementation failure; prehistory and explicitly empty intersections are logged separately",
+    "projection": "nearest safe coordinate by a nine-point monotonicity proof and 32 fixed bisections; empty intersections are logged, never claimed safe",
+    "purpose": "existence and locality screen only; simulator access makes this oracle unavailable to the RDK runtime",
+    "requested_base_rule": "clip into the supreme feasible interval and log exact per-joint displacement before torque projection",
+    "rollout": "clone MJX state.info/metrics, physical bridge, observer bridge, policy recurrent state, previous-action feedback, IMU history, phase, and RNG; set the candidate at the source tick; run the unchanged graph on later branch ticks",
+    "schedule": null,
+    "torque_limit_nm": 1.91229675,
+    "training_steps": 0,
+    "x0": "exact deadband zero bypasses the oracle"
+  },
+  "policies": [
+    {
+      "bytes": 958446,
+      "filename": "V121_DEPLOYMENT_1003520.onnx",
+      "id": "V121_TRAIN_MATCHED_HALF",
+      "sha256": "d4f280e8ebb4accd5c5c983bbf83042ec0162647efb446f0f6c8bffda42bc17a",
+      "step": 1003520
+    },
+    {
+      "bytes": 958446,
+      "filename": "V121_DEPLOYMENT_2007040.onnx",
+      "id": "V121_TRAIN_MATCHED_FINAL",
+      "sha256": "bc54ea1bf39e617f76771e7416de91db2ccfe0b1bf903de08faaa64a67ce4aab",
+      "step": 2007040
+    }
+  ],
+  "schema_version": "winner_v126.all_tick_supreme_clip_preregistration.v1",
+  "status": "PREREGISTERED_WINNER_V126_ALL_TICK_SUPREME_CLIP"
+}

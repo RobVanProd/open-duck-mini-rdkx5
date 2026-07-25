@@ -56,3 +56,28 @@ def test_recovered_all_tick_contract_holds_at_supreme_interval() -> None:
     assert result["formal_behavior_cells_executed"] == 0
     assert result["authority"]["formal_screen_cells"] == 0
     assert result["authority"]["training"] is False
+
+
+def test_supreme_clip_correction_passes_all_tick_contract() -> None:
+    prereg = load(
+        "winner_v126_all_tick_supreme_clip_preregistration.json"
+    )
+    result = load("winner_v126_all_tick_supreme_clip_cpu_contract.json")
+    assert (
+        prereg["status"]
+        == "PREREGISTERED_WINNER_V126_ALL_TICK_SUPREME_CLIP"
+    )
+    assert prereg["causal_correction"]["no_parameter_change"] is True
+    assert prereg["causal_correction"]["no_threshold_change"] is True
+    assert (
+        result["status"]
+        == "PASS_WINNER_V126_ALL_TICK_SUPREME_CLIP_CPU_CONTRACT"
+    )
+    assert not result["failed_checks"]
+    assert result["oracle"]["scheduled_ticks"] == 64
+    assert result["oracle"]["projected_joint_events"] > 0
+    assert result["oracle"]["prediction_mismatches"] == 0
+    assert result["oracle"]["nonempty_residual_violations"] == 0
+    assert result["oracle"]["unscheduled_residual_violations"] == 0
+    assert result["authority"]["formal_screen_cells"] == 16
+    assert result["authority"]["training"] is False
