@@ -1,0 +1,419 @@
+{
+  "authority": {
+    "candidate_selection": false,
+    "gate5": false,
+    "hosted_training": false,
+    "rdkx5_or_robot": false,
+    "robustness_matrix": false,
+    "torque_or_motion": false,
+    "v174_nominal_behavior_screen": true
+  },
+  "checks": {
+    "all_real_updates_accounted_once": true,
+    "all_synthetic_directions_norm_capped": true,
+    "all_trained_trees_finite": true,
+    "both_deployed_graph_contracts_pass": true,
+    "cost_first_branch_exact": true,
+    "cost_first_branch_exercised": true,
+    "cpu_only": true,
+    "dual_path_pinned_exactly_zero_and_uninitialized": true,
+    "every_actor_leaf_updated": true,
+    "every_cost_critic_leaf_updated": true,
+    "every_reward_critic_leaf_updated": true,
+    "real_constrained_directions_nonincreasing_within_tolerance": true,
+    "real_positive_cost_was_seen": true,
+    "real_tangent_retention_above_derived_floor": true,
+    "reward_only_branch_exact": true,
+    "reward_only_branch_exercised": true,
+    "source_restore_bit_exact": true,
+    "source_restore_structure_exact": true,
+    "step0_deployed_inference_matches_v121_half": true,
+    "tangent_branch_exact": true,
+    "trained_policy_structure_exact": true,
+    "wall_seconds_at_most_1800": true,
+    "zero_actor_directions_absent": true
+  },
+  "decision": "EARN_V174_NOMINAL_BEHAVIOR_SCREEN_ONLY",
+  "deployment": {
+    "graphs": {
+      "0": {
+        "deployed_sha256": "bee1d65fa0acd08f7ab5b8a10fe66ea64b9f933d06bbd47c6def168f7e06830f",
+        "graph_io": {
+          "inputs": {
+            "h_in": [
+              1,
+              64
+            ],
+            "obs": [
+              1,
+              115
+            ],
+            "previous_action": [
+              1,
+              14
+            ]
+          },
+          "outputs": {
+            "continuous_actions": [
+              1,
+              14
+            ],
+            "h_out": [
+              1,
+              64
+            ],
+            "previous_action_out": [
+              1,
+              14
+            ]
+          }
+        },
+        "inference": {
+          "changed_projection_is_exercised": true,
+          "checks": {
+            "all_outputs_finite": true,
+            "changed_projection_is_exercised": true,
+            "cpu_provider_exact": true,
+            "g3_guard_preserved_in_consistent_chain": true,
+            "moving_rate_delta_enforced": true,
+            "realized_state_feedback_exact": true,
+            "recurrent_hidden_output_bit_exact": true,
+            "zero_action_exact": true,
+            "zero_previous_exact": true
+          },
+          "max_guard_excess_rad": 0.0,
+          "max_hidden_error": 0.0,
+          "max_moving_delta_excess": 2.2351741790771484e-08,
+          "max_state_error": 0.0,
+          "max_zero_action": 0.0,
+          "max_zero_previous": 0.0,
+          "pass": true
+        },
+        "initializers_finite": true,
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v173-lexicographic-tangent-cpu-contract-20260725\\v173_deployed_0.onnx",
+        "raw_sha256": "2d3cfb686a9c9643d9414a99a10e4db3aee7fc8f63cbc2fd81f107b487cf1311",
+        "sha256": "bee1d65fa0acd08f7ab5b8a10fe66ea64b9f933d06bbd47c6def168f7e06830f"
+      },
+      "1024": {
+        "deployed_sha256": "5add16cb74d1809c9d5fb8647b19a37f52020e9f9f2de2c4e1feb0e1ffd7c3c0",
+        "graph_io": {
+          "inputs": {
+            "h_in": [
+              1,
+              64
+            ],
+            "obs": [
+              1,
+              115
+            ],
+            "previous_action": [
+              1,
+              14
+            ]
+          },
+          "outputs": {
+            "continuous_actions": [
+              1,
+              14
+            ],
+            "h_out": [
+              1,
+              64
+            ],
+            "previous_action_out": [
+              1,
+              14
+            ]
+          }
+        },
+        "inference": {
+          "changed_projection_is_exercised": true,
+          "checks": {
+            "all_outputs_finite": true,
+            "changed_projection_is_exercised": true,
+            "cpu_provider_exact": true,
+            "g3_guard_preserved_in_consistent_chain": true,
+            "moving_rate_delta_enforced": true,
+            "realized_state_feedback_exact": true,
+            "recurrent_hidden_output_bit_exact": true,
+            "zero_action_exact": true,
+            "zero_previous_exact": true
+          },
+          "max_guard_excess_rad": 0.0,
+          "max_hidden_error": 0.0,
+          "max_moving_delta_excess": 2.2351741790771484e-08,
+          "max_state_error": 0.0,
+          "max_zero_action": 0.0,
+          "max_zero_previous": 0.0,
+          "pass": true
+        },
+        "initializers_finite": true,
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v173-lexicographic-tangent-cpu-contract-20260725\\v173_deployed_1024.onnx",
+        "raw_sha256": "99961cab389e918b3750504da2056dc87bb8ae8e7c78a5b94f3fe1417e866a73",
+        "sha256": "5add16cb74d1809c9d5fb8647b19a37f52020e9f9f2de2c4e1feb0e1ffd7c3c0"
+      }
+    },
+    "step0_v121_half_max_abs_error": 0.0
+  },
+  "failed_checks": [],
+  "input_hashes": {
+    "builder": "15ada7f63d490b2a941e466c5ab8e004e493befca899672ac7fb25c27ae2d08a",
+    "composer": "6fb63e438e09dabc7ef25dc1e4bfb0c8b3d5676e1e7adb4ac8bbfc5fd05c67a6",
+    "direction_helper": "b7ff83f8d68f1034ab1ddb5562d4a32a384756a330bb150b8ca69d92a63f3841",
+    "preregistration": "2db3c53abd91b516672c3883a6ce5ab8b072b798cc19a226684ff14cd418a25b",
+    "runner": "8a0366891874cdaa1a474981b6adc8cee452a6ceaaed1a47ed3fb9efa9e81631",
+    "source_checkpoint": "29b6d1d707784cc49050ab4b5513c06b020ebf7cf02dba3bee304a74477348f8",
+    "update_patch": "0a5f45a20063363d5ec8730ba2c4f560cff99048d8118fd0dc2c9ef5e9b5620e",
+    "v121_half_deployed": "bee1d65fa0acd08f7ab5b8a10fe66ea64b9f933d06bbd47c6def168f7e06830f",
+    "v127_cpu_preregistration": "a77c677816714a0517c70f84c56d8c6a2b731ae135696c11b15ff51caf24bc34",
+    "v127_cpu_result": "cd728eb3cf2900f038c4134e3f603106238e960046b3482d4cd2b695b5a76ed4",
+    "v171a_correction": "41050b77ec796742edc669dad4180f4076620e48e3f6748b2181ee62f5fc09c7",
+    "v172_preregistration": "3399ed95731c378fb48dcbdd7a459c2543b26e718e772c7b9306cd7b40507e75",
+    "v172_result": "8411f70a33421d2b8ba1aa27cccecc1549bb453890965878bba76c5b173131ad",
+    "v173_manifest": "ba33a3467893c59ed4ff57388ef61ce3c1257b6abd38702b982fa3230438bfe7"
+  },
+  "schema_version": "winner_v173.lexicographic_tangent_cpu_result.v1",
+  "status": "PASS_WINNER_V173_LEXICOGRAPHIC_TANGENT_CPU_CONTRACT",
+  "synthetic": {
+    "cases": {
+      "cost_first": {
+        "direction": [
+          0.7071067690849304,
+          -0.7071067690849304
+        ],
+        "metrics": {
+          "clip_scale": 0.3535533845424652,
+          "clipped_direction_norm": 0.9999999403953552,
+          "cost_first_branch": 1.0,
+          "cost_gradient_norm": 2.8284270763397217,
+          "projection_active": 1.0,
+          "raw_direction_norm": 2.8284270763397217,
+          "reward_gradient_norm": 3.0,
+          "reward_only_branch": 0.0,
+          "selected_cost_derivative": -2.8284270763397217,
+          "tangent_branch": 0.0,
+          "tangent_cost_derivative": 0.0,
+          "tangent_reward_retention": 0.7071067690849304
+        }
+      },
+      "reward_only": {
+        "direction": [
+          -1.0,
+          -0.0
+        ],
+        "metrics": {
+          "clip_scale": 0.3333333432674408,
+          "clipped_direction_norm": 1.0,
+          "cost_first_branch": 0.0,
+          "cost_gradient_norm": 2.8284270763397217,
+          "projection_active": 1.0,
+          "raw_direction_norm": 3.0,
+          "reward_gradient_norm": 3.0,
+          "reward_only_branch": 1.0,
+          "selected_cost_derivative": 2.0,
+          "tangent_branch": 0.0,
+          "tangent_cost_derivative": 0.0,
+          "tangent_reward_retention": 0.7071067690849304
+        }
+      },
+      "tangent": {
+        "direction": [
+          -0.7071068286895752,
+          -0.7071068286895752
+        ],
+        "metrics": {
+          "clip_scale": 0.4714045524597168,
+          "clipped_direction_norm": 1.0,
+          "cost_first_branch": 0.0,
+          "cost_gradient_norm": 2.8284270763397217,
+          "projection_active": 1.0,
+          "raw_direction_norm": 2.1213202476501465,
+          "reward_gradient_norm": 3.0,
+          "reward_only_branch": 0.0,
+          "selected_cost_derivative": 0.0,
+          "tangent_branch": 1.0,
+          "tangent_cost_derivative": 0.0,
+          "tangent_reward_retention": 0.7071067690849304
+        }
+      }
+    },
+    "checks": {
+      "all_synthetic_directions_norm_capped": true,
+      "cost_first_branch_exact": true,
+      "reward_only_branch_exact": true,
+      "tangent_branch_exact": true
+    }
+  },
+  "training": {
+    "command": [
+      "D:\\CodexArtifacts\\venvs\\open-duck-policy-py31213\\Scripts\\python.exe",
+      "playground/open_duck_mini_v2/runner.py",
+      "--task",
+      "flat_terrain_backlash",
+      "--env",
+      "joystick",
+      "--output_dir",
+      "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v173-lexicographic-tangent-cpu-contract-20260725\\smoke",
+      "--num_timesteps",
+      "1024",
+      "--ppo_seed",
+      "100",
+      "--ppo_num_envs",
+      "4",
+      "--ppo_num_evals",
+      "2",
+      "--ppo_episode_length",
+      "64",
+      "--ppo_unroll_length",
+      "8",
+      "--ppo_batch_size",
+      "4",
+      "--ppo_num_minibatches",
+      "1",
+      "--ppo_num_updates_per_batch",
+      "2",
+      "--ppo_learning_rate",
+      "0.0003",
+      "--ppo_discounting",
+      "0.97",
+      "--ppo_entropy_cost",
+      "0.005",
+      "--policy_architecture",
+      "reference_residual_recurrent_adapter",
+      "--recurrent_hidden_size",
+      "64",
+      "--imitation_scale",
+      "1.0",
+      "--reference_feature_table_path",
+      "C:\\Users\\usa50\\AppData\\Local\\Temp\\open-duck-mini-rdkx5-policy-sparse\\outputs\\analysis\\ground_up_projected_reference_feature_table.npz",
+      "--nominal_reference_bootstrap",
+      "--ground_up_hard_vector_command_support",
+      "--ground_up_command_support_min_x",
+      "0.074",
+      "--ground_up_command_support_max_x",
+      "0.080",
+      "--ground_up_action_velocity_limits_rad_s",
+      "1.0,.75,1.4736209064722061,1.4300791546702385,1.3976470567286015,.5,.5,.5,.5,.5,.75,1.25,1.0,1.2215287424623966",
+      "--ground_up_measured_actuator_bridge",
+      "--ground_up_actuator_bridge_delay_ticks",
+      "3,3,3,3,3,3,2,3,3,3,2,3,2,3",
+      "--ground_up_actuator_bridge_tau_s",
+      ".015,.015,.005,.010,.010,.120,.120,.120,.120,.020,.035,.010,.030,.005",
+      "--ground_up_applied_target_observation",
+      "--ground_up_tracking_tail_exceedance_scale",
+      "-6572.254964031055",
+      "--ground_up_tracking_tail_threshold_rad",
+      "0.20",
+      "--ground_up_peak_torque_exceedance_scale",
+      "0",
+      "--ground_up_linear_peak_torque_exceedance_scale",
+      "0",
+      "--reference_start_phase",
+      "0",
+      "--ground_up_signed_progress_objective",
+      "--winner_v3_variable_configuration",
+      "--winner_v3_deviation_scale",
+      "1.0",
+      "--winner_v119_train_transition_match",
+      "--winner_v127_constrained_cost",
+      "--critic_observation",
+      "privileged_state",
+      "--restore_checkpoint_path",
+      "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v119-extracted-20260724\\winner_v119_transition_continuation\\training\\2026_07_24_193907_1003520"
+    ],
+    "cost_value_leaf_max_abs_delta": {
+      "params/hidden_0/bias": 0.010059372521936893,
+      "params/hidden_0/kernel": 0.01590682566165924,
+      "params/hidden_1/bias": 0.010454255156219006,
+      "params/hidden_1/kernel": 0.01429670862853527,
+      "params/hidden_2/bias": 0.007587281987071037,
+      "params/hidden_2/kernel": 0.012641982175409794,
+      "params/hidden_3/bias": 0.004563094582408667,
+      "params/hidden_3/kernel": 0.010218054056167603
+    },
+    "elapsed_seconds": 194.56299999996554,
+    "expected_actor_updates": 64,
+    "final_aux": {
+      "eta": 0.0,
+      "initial_cost": 0.0,
+      "initialized": false,
+      "lambda": 0.0,
+      "quarter_iterations": 8,
+      "step": 1024,
+      "total_training_iterations": 32,
+      "v171_cost_descent_derivative": -556.56884765625,
+      "v171_cost_gradient_norm": 23.591711044311523,
+      "v171_geometry_initialized": true,
+      "v171_projected_cost_derivative_after": -0.10290613025426865,
+      "v171_projected_reward_direction_retention": 0.7260667085647583,
+      "v171_projection_active": 1.0,
+      "v171_reward_cost_gradient_cosine": -0.6878432631492615,
+      "v171_reward_descent_cost_derivative_before": 366.2658386230469,
+      "v171_reward_gradient_norm": 22.570825576782227,
+      "v172_geometry_batch_cost": 0.1842728853225708,
+      "v173_cost_first_updates": 44.0,
+      "v173_cost_seen": true,
+      "v173_max_constrained_derivative_excess": 0.0,
+      "v173_min_tangent_retention": 0.48554039001464844,
+      "v173_projection_active_updates": 30.0,
+      "v173_reward_only_updates": 8.0,
+      "v173_tangent_updates": 12.0,
+      "v173_zero_direction_updates": 0.0
+    },
+    "initial_aux": {
+      "eta": 0.0,
+      "initial_cost": 0.0,
+      "initialized": false,
+      "lambda": 0.0,
+      "quarter_iterations": 8,
+      "step": 0,
+      "total_training_iterations": 32,
+      "v171_cost_descent_derivative": 0.0,
+      "v171_cost_gradient_norm": 0.0,
+      "v171_geometry_initialized": false,
+      "v171_projected_cost_derivative_after": 0.0,
+      "v171_projected_reward_direction_retention": 0.0,
+      "v171_projection_active": 0.0,
+      "v171_reward_cost_gradient_cosine": 0.0,
+      "v171_reward_descent_cost_derivative_before": 0.0,
+      "v171_reward_gradient_norm": 0.0,
+      "v172_geometry_batch_cost": 0.0,
+      "v173_cost_first_updates": 0.0,
+      "v173_cost_seen": false,
+      "v173_max_constrained_derivative_excess": 0.0,
+      "v173_min_tangent_retention": 1.0,
+      "v173_projection_active_updates": 0.0,
+      "v173_reward_only_updates": 0.0,
+      "v173_tangent_updates": 0.0,
+      "v173_zero_direction_updates": 0.0
+    },
+    "observed_actor_updates": 64.0,
+    "policy_leaf_max_abs_delta": {
+      "1/params/adapter_hidden_bias": 2.2559426724910736e-05,
+      "1/params/adapter_hidden_projection/kernel": 1.3627111911773682e-05,
+      "1/params/adapter_location/bias": 0.00025379564613103867,
+      "1/params/adapter_location/kernel": 0.00024418532848358154,
+      "1/params/adapter_obs_projection/kernel": 2.0770356059074402e-05,
+      "1/params/residual_location/bias": 0.00025379424914717674,
+      "1/params/residual_location/kernel": 0.0003617815673351288,
+      "1/params/residual_trunk/hidden_0/bias": 1.6450881958007812e-05,
+      "1/params/residual_trunk/hidden_0/kernel": 2.538040280342102e-05,
+      "1/params/residual_trunk/hidden_1/bias": 1.4620134606957436e-05,
+      "1/params/residual_trunk/hidden_1/kernel": 4.038214683532715e-05,
+      "1/params/residual_trunk/hidden_2/bias": 3.176182508468628e-05,
+      "1/params/residual_trunk/hidden_2/kernel": 5.359947681427002e-05,
+      "1/params/scale_logits/bias": 4.3295323848724365e-05,
+      "1/params/scale_logits/kernel": 9.445101022720337e-05
+    },
+    "reward_value_leaf_max_abs_delta": {
+      "2/params/hidden_0/bias": 0.008483894169330597,
+      "2/params/hidden_0/kernel": 0.01332014985382557,
+      "2/params/hidden_1/bias": 0.00793425738811493,
+      "2/params/hidden_1/kernel": 0.0119411526247859,
+      "2/params/hidden_2/bias": 0.0048291441053152084,
+      "2/params/hidden_2/kernel": 0.010647457093000412,
+      "2/params/hidden_3/bias": 0.0021004974842071533,
+      "2/params/hidden_3/kernel": 0.008245248347520828
+    }
+  }
+}
