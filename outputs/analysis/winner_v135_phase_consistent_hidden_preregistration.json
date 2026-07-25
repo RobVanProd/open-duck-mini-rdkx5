@@ -1,0 +1,56 @@
+{
+  "authority": {
+    "cpu_derivation_contract": true,
+    "formal_behavior": false,
+    "full_matrix": false,
+    "gate5": false,
+    "hosted_training": false,
+    "rdkx5_or_robot": false,
+    "startup_screen_preregistration": false,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "causal_prior": {
+    "interpretation": "the remaining hard-limit failure is concentrated in the zero-hidden recurrent startup transient",
+    "torque_projected_rows": 17,
+    "torque_projected_rows_ticks_16_through_28": 15
+  },
+  "checks": {
+    "all_input_hashes_exact": true,
+    "behavior_not_authorized": true,
+    "phase_period_and_selection_rule_frozen": true,
+    "read_only_cpu_inference": true,
+    "robot_surface_absent": true,
+    "teacher_distillation_family_closed": true,
+    "torque_projection_startup_concentration_source_backed": true,
+    "training_not_authorized": true,
+    "v131_teacher_green": true
+  },
+  "contract": {
+    "abi": "unchanged obs[115], previous_action[14], h_in[64]",
+    "cross_plant_hidden": "bit-exact across both x=0 traces",
+    "moving_tick_zero": "both x=.08 first actions must remain finite and inside the frozen final-action delta",
+    "x0": "warm hidden must retain exact zero action"
+  },
+  "derivation": {
+    "phase_period_ticks": 27,
+    "selected_tick": 594,
+    "selection": "last phase-zero tick strictly inside the frozen 600-tick home hold; no state or tick search",
+    "source": "V131 final checkpoint's two bit-identical x=0 home holds",
+    "vector": "policy_state_input.h_in[64]"
+  },
+  "failed_checks": [],
+  "input_hashes": {
+    "p30_x0_trace": "43e174e13e5334ba8a55368e7ee4baa8d1fd860c969c5473ec39155f249c58ae",
+    "p31_34_x0_trace": "d8c17da67ccc1e986ae090cd91594214eca0245c1b5755be5cf544f32d7722c9",
+    "phase_period_result": "f946b79b16a6769c87ebf31e4134d1c80c83bc6071bbeb5d61ecade387895a0a",
+    "runner": "b919e74b3323eaa9e3aa038e7bee77528ea619505b5accdc09b7f8568c190dd4",
+    "v121_transform": "4bd5eab5343cd8401db1789773fa3cc345727d903cb31222e0ea9870f0e9e640",
+    "v126_preregistration": "eb40f17d9c08b8362f068567e1620bdafef21ad9123a633c9536f3637a31c899",
+    "v131_behavior_result": "ab1535e11287f191e8ee6b4be5c020c44726c6263465c7cb760892387b07c9ea",
+    "v134_full_actor_result": "e25691c219eec4b76dea0f18b14e47b6fd840b6c0bc53c6c1817cdd5fbf3f387"
+  },
+  "schema_version": "winner_v135.phase_consistent_hidden_preregistration.v1",
+  "status": "PREREGISTERED_WINNER_V135_PHASE_CONSISTENT_HIDDEN",
+  "stop_rule": "if derivation, x=0 exactness, or first-action bounds fail, do not build or run a warm-start behavior evaluator"
+}

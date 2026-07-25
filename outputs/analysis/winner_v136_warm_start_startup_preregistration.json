@@ -1,0 +1,68 @@
+{
+  "authority": {
+    "dual_checkpoint_preregistration": false,
+    "formal_behavior": false,
+    "full_matrix": false,
+    "gate5": false,
+    "hosted_training": false,
+    "rdkx5_or_robot": false,
+    "startup_screen": true,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "checks": {
+    "all_input_hashes_exact": true,
+    "duration_64_ticks_only": true,
+    "evaluator_composition_green": true,
+    "formal_behavior_not_authorized": true,
+    "no_oracle_or_training": true,
+    "paired_zero_and_warm_initialization": true,
+    "robot_surface_absent": true,
+    "two_plants_x_point_08_only": true,
+    "v135_contract_green": true
+  },
+  "failed_checks": [],
+  "input_hashes": {
+    "base_preregistration": "c8f986ceb24863f33c1fc99170548d2e255cb6a26737d3f74762f8dcd4485a24",
+    "composed_evaluator": "1539ba18b5b207a15538a8a8611475f5c73bcd7164f2fe039cad8b279a587e43",
+    "composer": "b14f50fcfc814ec3e994efb850d1a1792e37bdbead1b8616bc767521855caee8",
+    "composition_manifest": "39e842470828208dfea08b17d936d3f0e6f0d45b8f9813a1edd139692e4a6f74",
+    "runner": "6d1a407614c39a9c46b336ea77d23dc6917305f53fc7c8c5a4ec11fef723b80c",
+    "v126_preregistration": "eb40f17d9c08b8362f068567e1620bdafef21ad9123a633c9536f3637a31c899",
+    "v135_contract": "068d8f450a72c584111b1855bd302f1be334367dd87f6a328e3be4f7c495dc85",
+    "v135_vector": "5f0eaefd2f9c5e8555345959b180f26095fa7a0175b9c151864a37490644f8c8"
+  },
+  "limits": {
+    "current_a": 2.5,
+    "pitch_tracking_p95_rad": 0.2,
+    "strict_current_a": 2.0,
+    "strict_current_max_run_ticks": 99,
+    "torque_nm": 1.91229675
+  },
+  "matrix": {
+    "cells": 4,
+    "checkpoint": "V121_TRAIN_MATCHED_FINAL",
+    "command_x_m_s": 0.08,
+    "initializations": [
+      "zero",
+      "warm"
+    ],
+    "oracle": false,
+    "plants": [
+      "P30_ALL_JOINT",
+      "P31_34_PITCH_WITH_P30_NONPITCH"
+    ],
+    "ticks": 64
+  },
+  "pass_rule": {
+    "baseline": "both zero-state cells reproduce at least one torque event",
+    "causal_direction": "warm peak torque is no worse than zero-state in each plant",
+    "state": "first h_in exactly matches its declared population",
+    "warm_behavior": "both warm cells complete 64 ticks with tracking <=.20, zero saturation, and zero rate excess",
+    "warm_safety": "both warm cells have zero torque/current events and peak torque/current inside the unchanged limits"
+  },
+  "question": "Does the phase-consistent x=0 recurrent state remove the measured x=.08 startup torque violation under both actuator fits without relying on the oracle?",
+  "schema_version": "winner_v136.warm_start_startup_preregistration.v1",
+  "status": "PREREGISTERED_WINNER_V136_WARM_START_STARTUP_SCREEN",
+  "stop_rule": "if any pass rule fails, close the warm-start mechanism; do not change the selected tick, average states, or try another hidden vector"
+}
