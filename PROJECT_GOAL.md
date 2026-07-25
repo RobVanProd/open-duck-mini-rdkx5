@@ -10,9 +10,11 @@ candidate policy.
 The initial mission was to prove the deployed robot's sensor observations,
 policy actions, joint commands, and real joint movement matched the policy and
 simulation contract closely enough to rerun the known baseline responsibly.
-That evidence has now shifted the project into the offline actuator-bridge
-training phase: generate a CUDA-backed candidate policy, review its `x=0.0`
-and `x=0.08` sim gates, and only then request robot-side suspended validation.
+That evidence has now shifted the project into an offline root-cause and
+gate-reconciliation phase. A new hosted training run is not earned until the
+preregistered T1/T2/T4 evidence packet has reported and the resulting
+mechanism is reviewed. Only a policy that clears the frozen offline gates can
+be prepared for robot-side suspended validation.
 
 The repository itself is part of the robot state. Keep documentation, evidence manifests, snapshots, runbooks, and status notes current whenever the board runtime, robot config, diagnostic results, or recommended next gate changes.
 
@@ -34,10 +36,20 @@ The repository itself is part of the robot state. Keep documentation, evidence m
 
 The original unresolved question was whether this came from policy behavior or
 from deployed observations/actions differing from the sim and policy contract.
-The current evidence no longer points first at gross IMU, foot-contact, joint
-order, or policy-file mismatch. It points to actuator dynamics: the `x=0.08`
-policy target waveform is much faster than the real pitch-chain actuator path
-can track.
+The completed 440-cell T1 accelerometer-bias dose-response now proves that the
+absolute attitude input is behaviorally first-order. With the unmodified
+baseline policy and no actuator bridge, adding `+1.6 m/s^2` to `obs[3]` at
+`x=0.08` reduced mean forward velocity from `0.0652339` to `0.00886518 m/s`,
+an `86.41%` degradation against the preregistered `40%` trigger. All 16
+primary cells completed without a fall. Mean body pitch shifted by only
+`-0.00445 rad`, so T1 establishes propulsion collapse but does not by itself
+reproduce or explain the direction of the physical forward lean.
+
+The actuator bridge also independently degrades the baseline and remains a
+real contributor. Its relative importance versus a static posture/IMU offset
+is unresolved because the exact T2 corrected-replay raw JSONL is unavailable.
+The next offline decision evidence is the preregistered T4 baseline-versus-all-
+gates matrix; no optimizer run is authorized before that report.
 
 ## Known Policy Contract
 
@@ -84,19 +96,25 @@ Runtime then applies rate limiting before sending servo targets.
 
 ## Current Root-Cause Ranking
 
-1. Dynamic actuator bandwidth / delay mismatch between sim and the real
-   pitch-chain joints.
-2. Policy target waveform too sharp for the measured effective velocity limits.
-3. Sim actuator model and training reward did not penalize target rate enough.
+1. Absolute pitch-reference mismatch: the real upright `accel_x` is about
+   `+1.6 m/s^2` relative to the policy's near-zero training center, and T1
+   shows this perturbation collapses vanilla-sim propulsion by `86.41%`.
+2. Dynamic actuator bandwidth / delay mismatch between sim and the real
+   pitch-chain joints. This remains independently supported, but is no longer
+   ranked ahead of the measured observation mismatch.
+3. Policy target waveform and training objective may be too sharp for the
+   measured effective velocity limits; current feasibility gates themselves
+   still require T4 reconciliation against the baseline.
 4. Servo bus CRC/read retries are a watch item, but not the leading cause
    unless they correlate with control damage.
 5. Ground contact/load dynamics remain untested with a new candidate.
 6. Contact/friction and TPU effects come later, after suspended candidate gates
    pass.
 
-Previously suspected gross IMU frame, foot-contact polarity, joint identity, and
-zero-command policy explosion are now downranked by home pose, IMU tilt, foot
-contact, joint identity, and suspended replay evidence.
+Gross IMU frame, foot-contact polarity, joint identity, and zero-command policy
+explosion remain downranked by home pose, IMU tilt, foot contact, joint
+identity, and suspended replay evidence. The newly promoted issue is a
+constant accelerometer offset within the otherwise-correct IMU frame.
 
 ## Definition Of Done
 
@@ -124,7 +142,8 @@ The sim-to-real bridge is done when:
 
 ## Non-Goals For Now
 
-- No retraining.
+- No retraining before the T1/T2/T4 decision packet is complete and a new run
+  is earned by a preregistered falsifier.
 - No gain tuning.
 - No joint offset edits.
 - No IMU remap edits.
