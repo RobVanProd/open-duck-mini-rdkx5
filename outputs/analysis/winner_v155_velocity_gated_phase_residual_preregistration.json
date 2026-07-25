@@ -1,0 +1,343 @@
+{
+  "authority": {
+    "behavior": false,
+    "cpu_graph_contract": true,
+    "gate5": false,
+    "hosted_training": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "checks": {
+    "all_inputs_exist_and_hash": true,
+    "finite_local_family_closed": true,
+    "midpoint_threshold_has_no_search": true,
+    "phase_contact_alignment_green": true,
+    "phase_only_mechanism_closed": true,
+    "phase_population_exact": true,
+    "right_ankle_velocity_strictly_separates": true,
+    "same_frozen_correction": true,
+    "training_behavior_and_robot_not_authorized": true,
+    "two_shadow_labels_exact": true,
+    "v140_source_green": true
+  },
+  "failed_checks": [],
+  "input_hashes": {
+    "first_shadow_trace": "eb432bdb64c251dcbb466bd795db381891837086dae9dcc7a2564a7f2a2930b5",
+    "runner": "8ab74bdc0030b229553cf1c0b5869d5647c74626794e3c719f8c2b0ba4addaa8",
+    "second_shadow_trace": "a816549061de726762ff01602a3366f78a919e9800132f8faca622836e39b731",
+    "source_deployed": "ae87508d7bd25c7821cb167d7a61d8eeaa28d7d153be72dd9d537236ae5e92f6",
+    "source_raw": "aa1025ae4bd2daf1c513cd81374e8eb7961308a41ca10bbe55f6284944fd6460",
+    "v121_transform": "4bd5eab5343cd8401db1789773fa3cc345727d903cb31222e0ea9870f0e9e640",
+    "v134_loader": "632a2e12ae10d940be38858c52e738281ca6a2de1736d1be90b8adcbdbd8baa8",
+    "v140_result": "44921665d80235246737b333a5149ceacb702d477dcc2c7496395bf0c42ba637",
+    "v144_correction": "4d955dacf6d30a0953c306ab6e7d9a1d87fea872a8b646aebd48c9e528c0dd0c",
+    "v145_loader": "b6f0cb28e86bc3561009af87ad5cc5136641e08057d54c81d74b119d627ded4c",
+    "v150_correction": "032641cb262a8138d8cf1b395d61d2b71cca560590652ae0b92090c945531e00",
+    "v151_result": "fbc794b6d12bbe8f60087f8d417a201ccf5b259f5f2514c730ba4af2ef4a90f2",
+    "v152_alignment": "15d2a253d638dac796e0021cdb46daf70aee08ad3dd56ed1c265031548cfaaf7",
+    "v153_result": "4548d098902dd260561fb10e3c0a437c68980e9c775cb9c08423336afbf2ee1f",
+    "v154_result": "ae5d4348222d16adae8dc34b61d135ea3fdd76c9c154bc09daaf0301bc69df7b"
+  },
+  "mechanism": {
+    "contact": [
+      0.0,
+      1.0
+    ],
+    "correction": 0.002124011516571045,
+    "correction_joint": 13,
+    "forward_predictor": false,
+    "negative_population": "all other matching phase/contact rows in both frozen 600-tick traces",
+    "optimizer_or_training": false,
+    "phase": [
+      -0.8354877829551697,
+      -0.5495090484619141
+    ],
+    "phase_radius_squared": 0.013477568509731697,
+    "positive_population": "the original tick-394 precursor, its inherited intervention state on the displaced trace, and the displaced tick-583 precursor",
+    "postprocess": "frozen G3 guard, x=0 deadband, and final rate projection",
+    "source": "V140 selected raw actor; no V148/V151 centers",
+    "state_feature": {
+      "name": "right ankle observed joint velocity",
+      "obs_index": 40,
+      "reason": "the same joint's measured velocity is the direct frozen-observation state variable; no scan over the 115 observation fields"
+    },
+    "threshold": 0.041486894711852074,
+    "threshold_rule": "midpoint between maximum negative and minimum positive"
+  },
+  "pass_rule": {
+    "causal_targets": "both known precursor actions receive the frozen correction",
+    "classification": "all 3 positives and all 39 negatives exact",
+    "deployment": "existing deployment graph contract green",
+    "scope": "only right ankle changes inside phase/contact/velocity gate",
+    "state": "final action feedback exact; h_out exact",
+    "x0": "exact zero"
+  },
+  "schema_version": "winner_v155.velocity_gated_phase_residual_preregistration.v1",
+  "separation": {
+    "margin": 0.0021380670368671417,
+    "negative_max": 0.0404178611934185,
+    "population": [
+      {
+        "positive": false,
+        "tick": 43,
+        "trace": "first",
+        "value": 0.03297966346144676
+      },
+      {
+        "positive": false,
+        "tick": 70,
+        "trace": "first",
+        "value": 0.03128154203295708
+      },
+      {
+        "positive": false,
+        "tick": 97,
+        "trace": "first",
+        "value": 0.03833263739943504
+      },
+      {
+        "positive": false,
+        "tick": 124,
+        "trace": "first",
+        "value": 0.037511300295591354
+      },
+      {
+        "positive": false,
+        "tick": 151,
+        "trace": "first",
+        "value": 0.038547854870557785
+      },
+      {
+        "positive": false,
+        "tick": 178,
+        "trace": "first",
+        "value": 0.03685230761766434
+      },
+      {
+        "positive": false,
+        "tick": 205,
+        "trace": "first",
+        "value": 0.038542937487363815
+      },
+      {
+        "positive": false,
+        "tick": 232,
+        "trace": "first",
+        "value": 0.03724130243062973
+      },
+      {
+        "positive": false,
+        "tick": 259,
+        "trace": "first",
+        "value": 0.03993763402104378
+      },
+      {
+        "positive": false,
+        "tick": 286,
+        "trace": "first",
+        "value": 0.03121696412563324
+      },
+      {
+        "positive": false,
+        "tick": 313,
+        "trace": "first",
+        "value": 0.03922363743185997
+      },
+      {
+        "positive": false,
+        "tick": 340,
+        "trace": "first",
+        "value": 0.0404178611934185
+      },
+      {
+        "positive": false,
+        "tick": 367,
+        "trace": "first",
+        "value": 0.025456581264734268
+      },
+      {
+        "positive": true,
+        "tick": 394,
+        "trace": "first",
+        "value": 0.04574128985404968
+      },
+      {
+        "positive": false,
+        "tick": 421,
+        "trace": "first",
+        "value": 0.023410895839333534
+      },
+      {
+        "positive": false,
+        "tick": 448,
+        "trace": "first",
+        "value": 0.03852273151278496
+      },
+      {
+        "positive": false,
+        "tick": 475,
+        "trace": "first",
+        "value": 0.03422721475362778
+      },
+      {
+        "positive": false,
+        "tick": 502,
+        "trace": "first",
+        "value": 0.031181609258055687
+      },
+      {
+        "positive": false,
+        "tick": 529,
+        "trace": "first",
+        "value": 0.030128423124551773
+      },
+      {
+        "positive": false,
+        "tick": 556,
+        "trace": "first",
+        "value": 0.035014696419239044
+      },
+      {
+        "positive": false,
+        "tick": 583,
+        "trace": "first",
+        "value": 0.03508564457297325
+      },
+      {
+        "positive": false,
+        "tick": 43,
+        "trace": "second",
+        "value": 0.03297966346144676
+      },
+      {
+        "positive": false,
+        "tick": 70,
+        "trace": "second",
+        "value": 0.03128154203295708
+      },
+      {
+        "positive": false,
+        "tick": 97,
+        "trace": "second",
+        "value": 0.03833263739943504
+      },
+      {
+        "positive": false,
+        "tick": 124,
+        "trace": "second",
+        "value": 0.037511300295591354
+      },
+      {
+        "positive": false,
+        "tick": 151,
+        "trace": "second",
+        "value": 0.038547854870557785
+      },
+      {
+        "positive": false,
+        "tick": 178,
+        "trace": "second",
+        "value": 0.03685230761766434
+      },
+      {
+        "positive": false,
+        "tick": 205,
+        "trace": "second",
+        "value": 0.038542937487363815
+      },
+      {
+        "positive": false,
+        "tick": 232,
+        "trace": "second",
+        "value": 0.03724130243062973
+      },
+      {
+        "positive": false,
+        "tick": 259,
+        "trace": "second",
+        "value": 0.03993763402104378
+      },
+      {
+        "positive": false,
+        "tick": 286,
+        "trace": "second",
+        "value": 0.03121696412563324
+      },
+      {
+        "positive": false,
+        "tick": 313,
+        "trace": "second",
+        "value": 0.03922363743185997
+      },
+      {
+        "positive": false,
+        "tick": 340,
+        "trace": "second",
+        "value": 0.0404178611934185
+      },
+      {
+        "positive": false,
+        "tick": 367,
+        "trace": "second",
+        "value": 0.025456581264734268
+      },
+      {
+        "positive": true,
+        "tick": 394,
+        "trace": "second",
+        "value": 0.04574128985404968
+      },
+      {
+        "positive": false,
+        "tick": 421,
+        "trace": "second",
+        "value": 0.023518702015280724
+      },
+      {
+        "positive": false,
+        "tick": 448,
+        "trace": "second",
+        "value": 0.03498680144548416
+      },
+      {
+        "positive": false,
+        "tick": 475,
+        "trace": "second",
+        "value": 0.03799012675881386
+      },
+      {
+        "positive": false,
+        "tick": 502,
+        "trace": "second",
+        "value": 0.034994062036275864
+      },
+      {
+        "positive": false,
+        "tick": 529,
+        "trace": "second",
+        "value": 0.038966771215200424
+      },
+      {
+        "positive": false,
+        "tick": 556,
+        "trace": "second",
+        "value": 0.034778427332639694
+      },
+      {
+        "positive": true,
+        "tick": 583,
+        "trace": "second",
+        "value": 0.042555928230285645
+      }
+    ],
+    "positive_min": 0.042555928230285645,
+    "positive_values": [
+      0.04574128985404968,
+      0.04574128985404968,
+      0.042555928230285645
+    ]
+  },
+  "status": "PREREGISTERED_WINNER_V155_VELOCITY_GATED_PHASE_RESIDUAL",
+  "stop_rule": "any graph-contract or subsequent one-cell behavior failure closes this state-triggered residual; do not alter the feature, threshold rule, phase, contact, radius, correction, or tolerance"
+}
