@@ -35,8 +35,11 @@ def test_v158_result_when_present() -> None:
     if not path.exists():
         return
     result = json.loads(path.read_text(encoding="utf-8"))
-    assert result["status"] == "PASS_WINNER_V158_X077_SHADOW_CENSUS"
-    assert result["failed_checks"] == []
+    assert sha256(
+        "winner_v158_x077_shadow_census_result.json"
+    ) == "f43f4c2f7c21efd58e231ea00c88dc233852f7af54600f5cb220be2c09bfe8bb"
+    assert result["status"] == "HOLD_WINNER_V158_X077_SHADOW_CENSUS"
+    assert result["failed_checks"] == ["torque_failure_reproduced"]
     assert result["checks"]["shadow_action_never_applied"] is True
     assert result["checks"][
         "every_violation_has_safe_nonempty_precursor_label"
@@ -44,3 +47,28 @@ def test_v158_result_when_present() -> None:
     assert result["oracle"]["rows"] == 600
     assert result["torque"]["events"] > 0
     assert result["authority"]["candidate_behavior"] is False
+
+
+def test_v158_reporting_correction_when_present() -> None:
+    path = (
+        ANALYSIS
+        / "winner_v158_x077_shadow_census_reporting_correction.json"
+    )
+    if not path.exists():
+        return
+    result = json.loads(path.read_text(encoding="utf-8"))
+    assert sha256(
+        "winner_v158_x077_shadow_census_reporting_correction.json"
+    ) == "96feb1995018d2b8614406d9e922794d14beb03b2407330e25b71a46aab4b08b"
+    assert result["status"] == (
+        "PASS_WINNER_V158_X077_SHADOW_CENSUS_REPORTING_CORRECTION"
+    )
+    assert result["failed_checks"] == []
+    assert result["census"]["violating_joints"] == [3, 13]
+    assert [
+        (event["tick"], event["joint"])
+        for event in result["census"]["events"]
+    ] == [(30, 3), (208, 13)]
+    assert result["checks"]["policy_action_unchanged"] is True
+    assert result["decision"] == "EARN_V159_POLICY_SPACE_REDESIGN_AUDIT"
+    assert result["authority"]["training"] is False

@@ -1,0 +1,89 @@
+{
+  "authority": {
+    "candidate_behavior": false,
+    "gate5": false,
+    "hosted_training": false,
+    "mechanism_classification": true,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "census": {
+    "events": [
+      {
+        "actual_force_nm": 1.926767349243164,
+        "joint": 3,
+        "projected_force_nm": -1.870330810546875,
+        "source_action_delta": 0.01920485496520996,
+        "source_empty_joint_indices": [],
+        "source_projected_joint_indices": [
+          1,
+          3,
+          7
+        ],
+        "source_tick": 27,
+        "tick": 30
+      },
+      {
+        "actual_force_nm": 1.9383525848388672,
+        "joint": 13,
+        "projected_force_nm": -1.9122953414916992,
+        "source_action_delta": 0.011286139488220215,
+        "source_empty_joint_indices": [],
+        "source_projected_joint_indices": [
+          6,
+          8,
+          13
+        ],
+        "source_tick": 205,
+        "tick": 208
+      }
+    ],
+    "maximum_clip_linf": 0.0261757011413577,
+    "peak_nm": 1.9383525848388672,
+    "projected_by_joint": {
+      "0": 1,
+      "1": 2,
+      "10": 1,
+      "11": 0,
+      "12": 0,
+      "13": 1,
+      "2": 0,
+      "3": 5,
+      "4": 0,
+      "5": 0,
+      "6": 1,
+      "7": 4,
+      "8": 1,
+      "9": 0
+    },
+    "projected_joint_events": 16,
+    "violating_joints": [
+      3,
+      13
+    ]
+  },
+  "checks": {
+    "actual_torque_failure_present": true,
+    "all_raw_shadow_validity_checks_green": true,
+    "both_events_have_safe_nonempty_precursors": true,
+    "only_expected_shadow_and_torque_checks_false": true,
+    "policy_action_unchanged": true,
+    "preregistration_requires_shadow_not_application": true,
+    "raw_hold_is_reporting_only": true,
+    "read_only_no_rerun_training_hosted_compute_or_robot": true,
+    "two_events_are_left_knee_and_right_ankle": true
+  },
+  "decision": "EARN_V159_POLICY_SPACE_REDESIGN_AUDIT",
+  "diagnosis": "the x=.077 failure is multi-joint and command-dependent: the left-knee startup precursor requires +0.019204855 action and the later right-ankle precursor requires +0.011286139, far outside V155's frozen +0.002124012 one-joint correction",
+  "failed_checks": [],
+  "input_hashes": {
+    "preregistration": "87e7dcb899422553628aab28d91d5922cf14c3ac51060411c3b2c7ad03c744ea",
+    "raw_result": "f43f4c2f7c21efd58e231ea00c88dc233852f7af54600f5cb220be2c09bfe8bb",
+    "runner": "f299d6d0a118313d220b50eace70ee10826a58f5ae074d0b1bd79c8c77dfd42c",
+    "trace": "150f5fd6778cc8db172e3c9ba5f80f338412f339cfe4958eacedd034330bde65"
+  },
+  "reporting_issue": "the reused exact-oracle cell classifier expects oracle corrections to be applied; V158 deliberately ran shadow-only, so its four application-success checks and the original torque gate must remain false",
+  "schema_version": "winner_v158.x077_shadow_census_reporting_correction.v1",
+  "status": "PASS_WINNER_V158_X077_SHADOW_CENSUS_REPORTING_CORRECTION"
+}
