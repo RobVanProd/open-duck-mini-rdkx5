@@ -107,3 +107,28 @@ def test_v138_v2_preregistration_keeps_matrix_and_stop_rule() -> None:
     assert v2["pass_rule"] == v1["pass_rule"]
     assert v2["stop_rule"] == v1["stop_rule"]
     assert v2["mechanism"] == v1["mechanism"]
+
+
+def test_v138_phase20_closes_on_first_moving_cell() -> None:
+    result = load("winner_v138_phase20_start_result_v2.json")
+    assert sha256("winner_v138_phase20_start_result_v2.json") == (
+        "8e0ee98ac9208496bc357ede853a2bee3269426b506666359f2a5267fc8a502d"
+    )
+    assert result["status"] == "HOLD_WINNER_V138_PHASE20_START_SCREEN"
+    assert result["decision"] == "CLOSE_PHASE20_START"
+    assert result["summary"]["cells_completed"] == 2
+    assert result["summary"]["passing_cells"] == 1
+    moving = result["cells"][1]
+    assert moving["identity"]["command_x_m_s"] == 0.074
+    assert moving["failure_reasons"] == [
+        "current_peak_at_most_2p5",
+        "torque_peak_at_most_1p91229675_nm",
+    ]
+    assert moving["torque_gate"]["worst_peak_torque_nm"] > 2.04
+    assert moving["prospective_current_gate"]["worst_peak_current_a"] > 2.60
+    assert moving["metrics"]["candidate_gate_status"] == (
+        "PASS_CANDIDATE_SIM_GATE"
+    )
+    assert moving["metrics"]["worst_tracking_p95_rad"] < 0.15
+    assert result["selection"]["other_phases_evaluated"] == []
+    assert result["authority"]["training"] is False
