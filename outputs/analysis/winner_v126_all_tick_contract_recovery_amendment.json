@@ -1,0 +1,41 @@
+{
+  "allowed_change": "Persist status/error/tick immediately after the simulator call and classify an absent trace as a deterministic HOLD. The oracle, policy, plant, matrix, thresholds, and 64-tick input are unchanged.",
+  "authority": {
+    "formal_behavior_cells": 0,
+    "gate5": false,
+    "hosted_or_colab": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "authorized_recovery_executions": 1,
+  "checks": {
+    "first_run_result_absent": true,
+    "first_run_root_exists": true,
+    "first_run_trace_absent": true,
+    "first_runner_failed_while_reading_absent_trace": true,
+    "preregistration_exact": true,
+    "stdout_empty": true
+  },
+  "failed_checks": [],
+  "first_execution": {
+    "result_exists": false,
+    "run_root": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v126-all-tick-oracle-contract-20260724",
+    "runner_sha256": "9cdb4f86b165c9ff8c11539aadc165e418734e936675db5e3528505c1a6a3128",
+    "selection_weight": 0,
+    "stderr": {
+      "bytes": 1386,
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v126-all-tick-oracle-contract-20260724.stderr.log",
+      "sha256": "67c167b170c4f9ee33fb1fbc50458380f62bdb141b1db8aecef5afa00d15ab08"
+    },
+    "stdout": {
+      "bytes": 0,
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v126-all-tick-oracle-contract-20260724.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "trace_exists": false
+  },
+  "reason": "The first runner invoked the simulator but then raised while unconditionally reading a trace that the simulator had not written. It serialized neither the simulator HOLD nor a contract result. Therefore the execution is invalid and has no selection weight.",
+  "schema_version": "winner_v126.all_tick_contract_recovery_amendment.v1",
+  "status": "PREREGISTERED_WINNER_V126_ALL_TICK_CONTRACT_RECOVERY"
+}
