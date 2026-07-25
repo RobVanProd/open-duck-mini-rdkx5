@@ -1,0 +1,76 @@
+{
+  "authority": {
+    "candidate_selection": false,
+    "gate5": false,
+    "hosted_training": false,
+    "one_1024_step_cpu_audit": true,
+    "optimizer_implementation": false,
+    "rdkx5_or_robot": false,
+    "robustness_matrix": false,
+    "torque_or_motion": false,
+    "v173_cpu_contract_design": false
+  },
+  "checks": {
+    "cpu_only_no_hosted_compute_or_hardware": true,
+    "frozen_v127_smoke_hash_exact": true,
+    "one_audit_run_only_no_control_rerun": true,
+    "retention_floor_exactly_one_over_32": true,
+    "source_checkpoint_hash_exact": true,
+    "v127_cpu_schedule_green_and_first_positive_cost_present": true,
+    "v171_stated_geometry_contract_green": true,
+    "v171a_withdraws_zero_cost_causal_promotion": true,
+    "v172_source_is_audit_only": true
+  },
+  "correction_scope": {
+    "defect": "V171 captured a zero-realized-cost batch, so its cost gradient could be induced by the fresh cost-value baseline",
+    "single_change": "capture geometry only on the first rollout batch whose raw mean episode torque-exceedance cost is strictly positive",
+    "unchanged": [
+      "V127 rollout, policy update, cost critic, dual, RNG, and export",
+      "V171 reward/cost objective definitions and tangent equation",
+      "32-iteration 1024-step CPU schedule"
+    ]
+  },
+  "decision_rule": {
+    "green": "earn V173 lexicographic tangent-update CPU implementation contract only",
+    "hold": "close this optimizer geometry without alternate capture batch, threshold, projection, retention floor, or rerun",
+    "pass_requires": [
+      "a strictly positive raw-cost batch is captured",
+      "captured cost equals V127's frozen first positive J_C0 exactly",
+      "reward and cost actor gradients are finite and nonzero",
+      "the tangent direction is first-order cost-nonincreasing",
+      "the tangent direction retains at least 1/32 reward norm",
+      "the cost-only direction has exact derivative -||g_C||^2",
+      "all instrumented train/export artifacts are bit-exact to frozen V127"
+    ],
+    "retention_floor": 0.03125,
+    "retention_floor_derivation": "one average iteration of the frozen 32-iteration V127 CPU proposal, inherited unchanged from V163/V171"
+  },
+  "external_paths": {
+    "frozen_v127_smoke": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v127-constrained-cpu-contract-20260724\\smoke",
+    "playground": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v172-positive-cost-geometry-playground-20260725",
+    "source_checkpoint": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v119-extracted-20260724\\winner_v119_transition_continuation\\training\\2026_07_24_193907_1003520"
+  },
+  "failed_checks": [],
+  "input_hashes": {
+    "builder": "cd7f1b2afb1d87eb28596dfed65d51cf52cae22c9649c34c75d9c653ad9e764c",
+    "capture_patch": "59cb897f28e2da205c90c25e1f77491afad8062ca2dde3e0e3c845498339c0a7",
+    "composer": "5e7a5f42bada5f0913bb61c8a75bd1922fc3548452c0d0e265d30847c1bdfc03",
+    "frozen_smoke": "48b65984c41bae4e46580e7d778bd18300f84c4b27b1ddc7f8d17faf303a1fa9",
+    "runner": "c65570c7b411b04f29053bfd679d38d133069f256317992f0013eee29041a200",
+    "source_checkpoint": "29b6d1d707784cc49050ab4b5513c06b020ebf7cf02dba3bee304a74477348f8",
+    "v127_cpu_preregistration": "a77c677816714a0517c70f84c56d8c6a2b731ae135696c11b15ff51caf24bc34",
+    "v127_cpu_result": "cd728eb3cf2900f038c4134e3f603106238e960046b3482d4cd2b695b5a76ed4",
+    "v171_helper": "dfbadab3ef4021c71c27c358135bed87307c04f53310fdf9093f6436e00008c3",
+    "v171_result": "1bf894907305bbbe5ca587f3dac7acab21e1a5467d3a6f5828c266b9ecc83780",
+    "v171a_correction": "41050b77ec796742edc669dad4180f4076620e48e3f6748b2181ee62f5fc09c7",
+    "v172_manifest": "4f1fe4cf24b6d291be216961d11754daa755d4b5aa81d1ea8ca8e4be03f726e8"
+  },
+  "method": {
+    "capture_condition": "raw batch_cost > 0, first occurrence only",
+    "control": "reuse the already hash-frozen V127 1024-step CPU smoke; no control rerun",
+    "required_identity": "step-0/1024 policy, normalizer, reward critic, cost critic, dual state, and raw ONNX are bit-exact to frozen V127",
+    "run": "one 1024-step instrumented CPU smoke"
+  },
+  "schema_version": "winner_v172.positive_cost_geometry_preregistration.v1",
+  "status": "PREREGISTERED_WINNER_V172_POSITIVE_COST_GEOMETRY"
+}
