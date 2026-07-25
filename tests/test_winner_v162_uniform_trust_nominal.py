@@ -36,12 +36,20 @@ def test_v162_result_when_present() -> None:
     if not path.exists():
         return
     result = json.loads(path.read_text(encoding="utf-8"))
-    assert result["status"] == "PASS_WINNER_V162_UNIFORM_TRUST_NOMINAL"
-    assert result["failed_checks"] == []
-    assert result["summary"]["completed_cells"] == 16
-    assert result["summary"]["passing_cells"] == 16
-    assert all(row["all_eight_pass"] for row in result["per_checkpoint"])
+    assert sha256(path) == (
+        "3a9fe947295905df9775496cd394b07d08006b67642b4355acfa5ffe0ce870f6"
+    )
+    assert result["status"] == "HOLD_WINNER_V162_UNIFORM_TRUST_NOMINAL"
+    assert result["failed_checks"] == [
+        "both_checkpoints_all_eight_cells_pass"
+    ]
+    assert result["summary"]["completed_cells"] == 4
+    assert result["summary"]["passing_cells"] == 3
+    assert result["cells"][-1]["identity"]["command_x_m_s"] == 0.08
+    assert result["cells"][-1]["failure_reasons"] == [
+        "torque_peak_at_most_1p91229675_nm"
+    ]
     assert result["decision"] == (
-        "EARN_V163_COMPLETE_FROZEN_ROBUSTNESS_PREREGISTRATION"
+        "CLOSE_UNIFORM_TRUST_PROJECTION_NO_ALPHA_RETRY"
     )
     assert result["authority"]["training"] is False
