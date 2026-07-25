@@ -162,3 +162,35 @@ def test_v127c_is_a_pretraining_path_correction_not_a_training_retry() -> None:
     assert launch["failed_checks"] == []
     assert launch["authority"]["one_corrected_exact_cli_launch"] is True
     assert launch["authority"]["training_retry"] is False
+
+
+def test_v127d_corrects_only_the_pre_driver_archive_root() -> None:
+    correction = load("winner_v127_archive_root_correction.json")
+    prereg = load("winner_v127d_hosted_preregistration.json")
+    package = load("winner_v127d_hosted_package_contract.json")
+    launch = load("winner_v127d_colab_launch_contract.json")
+    assert correction["status"] == (
+        "PASS_WINNER_V127_ARCHIVE_ROOT_CORRECTION"
+    )
+    assert correction["failed_checks"] == []
+    assert correction["checks"]["prior_driver_never_started"] is True
+    assert correction["checks"]["prior_optimizer_steps_zero"] is True
+    assert correction["checks"]["prior_simulator_steps_zero"] is True
+    assert correction["correction"]["training_payload_unchanged"] is True
+    assert prereg["status"] == (
+        "PREREGISTERED_WINNER_V127D_HOSTED_CONTINUATION"
+    )
+    assert prereg["failed_checks"] == []
+    assert prereg["training"]["retry"] is False
+    assert prereg["training"]["resume"] is False
+    assert package["status"] == "PASS_WINNER_V127_HOSTED_PACKAGE"
+    assert package["failed_checks"] == []
+    assert launch["status"] == "PASS_WINNER_V127D_COLAB_LAUNCH_CONTRACT"
+    assert launch["failed_checks"] == []
+    assert launch["archive_roots"] == [
+        "winner_v127d_constrained_bundle"
+    ]
+    assert launch["authority"][
+        "one_archive_root_corrected_exact_cli_launch"
+    ] is True
+    assert launch["authority"]["training_retry"] is False

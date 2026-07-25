@@ -1,0 +1,45 @@
+{
+  "authority": {
+    "behavior_evaluation": false,
+    "gate5": false,
+    "one_corrected_pre_driver_launch": true,
+    "rdkx5_or_robot": false,
+    "training_resume": false,
+    "training_retry": false
+  },
+  "checks": {
+    "failed_session_stopped": true,
+    "launcher_expected_corrected_root": true,
+    "launcher_returned_before_driver_artifacts": true,
+    "old_archive_has_single_wrong_root": true,
+    "old_package_exact": true,
+    "only_tar_arcname_changes": true,
+    "prior_behavior_cells_zero": true,
+    "prior_driver_never_started": true,
+    "prior_optimizer_steps_zero": true,
+    "prior_simulator_steps_zero": true
+  },
+  "correction": {
+    "driver_unchanged": true,
+    "launcher_unchanged": true,
+    "new": "archive.add(bundle, arcname=bundle_name)",
+    "old": "archive.add(bundle, arcname=BUNDLE_NAME)",
+    "training_payload_unchanged": true
+  },
+  "decision": "AUTHORIZE_ONE_V127D_PRE_DRIVER_PACKAGING_CORRECTION",
+  "evidence": {
+    "old_package": {
+      "archive_roots": [
+        "winner_v127_constrained_bundle"
+      ],
+      "bytes": 91369273,
+      "sha256": "27806832880000d19cb8b5e45c08e3aa50882c13cda4b2421fd7eb81ee6f2355"
+    },
+    "session_log_sha256": "536fc0d646b1d5d092b978b98fa17a915ef33cbb8c18bee3af290dc14dae3d07",
+    "stderr_sha256": "e01a25d36a5d1ac76067f24b2c0c2775733b5af56dcf55e1dfbf0773aae77460",
+    "stdout_sha256": "aa2954484f8d227a9f29a1bc8cc8e212c56dd231c1a9ad8a0776be8b2b4c8fe4"
+  },
+  "failed_checks": [],
+  "schema_version": "winner_v127.archive_root_correction.v1",
+  "status": "PASS_WINNER_V127_ARCHIVE_ROOT_CORRECTION"
+}

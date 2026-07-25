@@ -72,31 +72,43 @@ def main() -> int:
     parser.add_argument("--staging-root", type=Path, required=True)
     parser.add_argument("--output-archive", type=Path, required=True)
     parser.add_argument("--corrected", action="store_true")
+    parser.add_argument("--archive-root-corrected", action="store_true")
     args = parser.parse_args()
+    if args.corrected and args.archive_root_corrected:
+        raise ValueError("select only one corrected V127 package variant")
     playground = args.playground_root.resolve()
     source = args.source_checkpoint.resolve()
     staging = args.staging_root.resolve()
     archive_path = args.output_archive.resolve()
-    preregistration = (
-        ANALYSIS / "winner_v127c_hosted_preregistration.json"
-        if args.corrected
-        else PREREG
-    )
-    contract_path = (
-        ANALYSIS / "winner_v127c_hosted_package_contract.json"
-        if args.corrected
-        else CONTRACT
-    )
-    markdown_path = (
-        ANALYSIS / "WINNER_V127C_HOSTED_PACKAGE_CONTRACT_20260724.md"
-        if args.corrected
-        else MARKDOWN
-    )
-    bundle_name = (
-        "winner_v127c_constrained_bundle"
-        if args.corrected
-        else BUNDLE_NAME
-    )
+    if args.archive_root_corrected:
+        preregistration = (
+            ANALYSIS / "winner_v127d_hosted_preregistration.json"
+        )
+        contract_path = (
+            ANALYSIS / "winner_v127d_hosted_package_contract.json"
+        )
+        markdown_path = (
+            ANALYSIS
+            / "WINNER_V127D_HOSTED_PACKAGE_CONTRACT_20260724.md"
+        )
+        bundle_name = "winner_v127d_constrained_bundle"
+    elif args.corrected:
+        preregistration = (
+            ANALYSIS / "winner_v127c_hosted_preregistration.json"
+        )
+        contract_path = (
+            ANALYSIS / "winner_v127c_hosted_package_contract.json"
+        )
+        markdown_path = (
+            ANALYSIS
+            / "WINNER_V127C_HOSTED_PACKAGE_CONTRACT_20260724.md"
+        )
+        bundle_name = "winner_v127c_constrained_bundle"
+    else:
+        preregistration = PREREG
+        contract_path = CONTRACT
+        markdown_path = MARKDOWN
+        bundle_name = BUNDLE_NAME
     for path in (staging, archive_path, contract_path, markdown_path):
         if path.exists():
             raise FileExistsError(f"refusing to overwrite V127: {path}")
@@ -106,6 +118,7 @@ def main() -> int:
         not in (
             "PREREGISTERED_WINNER_V127_HOSTED_CONTINUATION",
             "PREREGISTERED_WINNER_V127C_HOSTED_CONTINUATION",
+            "PREREGISTERED_WINNER_V127D_HOSTED_CONTINUATION",
         )
         or prereg.get("failed_checks") != []
         or not any(
@@ -113,6 +126,10 @@ def main() -> int:
             for key in (
                 "one_hosted_gpu_continuation_after_package_contract",
                 "one_corrected_hosted_continuation_after_package",
+                (
+                    "one_archive_root_corrected_hosted_continuation_"
+                    "after_package"
+                ),
             )
         )
     ):
@@ -128,8 +145,15 @@ def main() -> int:
         "reference_features": sha256(REFERENCE),
     }
     correction = ANALYSIS / "winner_v127_pretraining_launch_correction.json"
-    if args.corrected:
+    archive_root_correction = (
+        ANALYSIS / "winner_v127_archive_root_correction.json"
+    )
+    if args.corrected or args.archive_root_corrected:
         observed["pretraining_launch_correction"] = sha256(correction)
+    if args.archive_root_corrected:
+        observed["archive_root_correction"] = sha256(
+            archive_root_correction
+        )
     if observed != prereg["input_hashes"]:
         raise ValueError("V127 package inputs changed")
 
@@ -137,8 +161,10 @@ def main() -> int:
     assets = bundle / "assets"
     assets.mkdir(parents=True)
     bundled_files = [preregistration, CPU_RESULT, CPU_PREREG, DRIVER]
-    if args.corrected:
+    if args.corrected or args.archive_root_corrected:
         bundled_files.append(correction)
+    if args.archive_root_corrected:
+        bundled_files.append(archive_root_correction)
     for path in bundled_files:
         shutil.copy2(path, bundle / path.name)
     shutil.copy2(REFERENCE, assets / REFERENCE.name)
@@ -222,7 +248,7 @@ def main() -> int:
     archive_path.parent.mkdir(parents=True, exist_ok=True)
     temporary = archive_path.with_suffix(archive_path.suffix + ".tmp")
     with tarfile.open(temporary, "w:gz") as archive:
-        archive.add(bundle, arcname=BUNDLE_NAME)
+        archive.add(bundle, arcname=bundle_name)
     temporary.replace(archive_path)
     contract = {
         "schema_version": "winner_v127.hosted_package.v1",

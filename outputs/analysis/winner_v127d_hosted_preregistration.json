@@ -1,0 +1,82 @@
+{
+  "authority": {
+    "additional_training_or_retry": false,
+    "behavior_evaluation": false,
+    "gate5": false,
+    "one_archive_root_corrected_hosted_continuation_after_package": true,
+    "rdkx5_or_robot": false
+  },
+  "checks": {
+    "archive_root_correction_green": true,
+    "both_postupdate_checkpoints_required": true,
+    "both_prior_drivers_never_reached_optimizer": true,
+    "both_prior_launches_had_zero_simulator_steps": true,
+    "cpu_contract_green": true,
+    "no_training_retry_or_resume": true,
+    "only_archive_root_changes": true,
+    "pretraining_correction_green": true,
+    "robot_surface_absent": true,
+    "single_continuation_only": true,
+    "training_command_and_objective_unchanged": true,
+    "v127c_preregistration_green": true
+  },
+  "corrections": {
+    "archive_root": {
+      "driver_unchanged": true,
+      "launcher_unchanged": true,
+      "new": "archive.add(bundle, arcname=bundle_name)",
+      "old": "archive.add(bundle, arcname=BUNDLE_NAME)",
+      "training_payload_unchanged": true
+    },
+    "pretraining_cwd": {
+      "new": "subprocess.run(command, cwd=playground, ...)",
+      "old": "subprocess.run(command, cwd=bundle, ...)",
+      "package_assets_unchanged": true,
+      "training_command_unchanged": true,
+      "training_objective_unchanged": true,
+      "training_source_unchanged": true
+    }
+  },
+  "failed_checks": [],
+  "input_hashes": {
+    "archive_root_correction": "34ded142f76edcd63e7a460b3e7b02e91e5224c3f719d16cdcefac143e9d84fc",
+    "composed_manifest": "3514416307e1f12e72feb4228f50a42ae02ca91b86d9dbc339448cf1b2ac6564",
+    "cpu_preregistration": "a77c677816714a0517c70f84c56d8c6a2b731ae135696c11b15ff51caf24bc34",
+    "cpu_result": "cd728eb3cf2900f038c4134e3f603106238e960046b3482d4cd2b695b5a76ed4",
+    "driver": "6cb6af6d4b00198c9601ebf9caf27547d0759880ac00bee07ccca196235d658c",
+    "pretraining_launch_correction": "3ed76e4cda5bbfb45a2ac9d3696ca0b0f43b6a69782614f1af7be544f9aab497",
+    "reference_features": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212",
+    "source_checkpoint": "29b6d1d707784cc49050ab4b5513c06b020ebf7cf02dba3bee304a74477348f8"
+  },
+  "schema_version": "winner_v127d.hosted_preregistration.v1",
+  "status": "PREREGISTERED_WINNER_V127D_HOSTED_CONTINUATION",
+  "stop_rule": "either post-update checkpoint failing any nominal cell closes V127; no eta changes or additional continuation",
+  "training": {
+    "batch_size": 256,
+    "cost_discount": 1.0,
+    "dense_cost": "sum_j max(abs(actuator_force_nm[j])-1.91229675,0)",
+    "discounting": 0.97,
+    "dual_eta": "1/(ceil(K/4)*first_positive_batch_cost)",
+    "entropy_cost": 0.005,
+    "episode_length": 600,
+    "exports": [
+      0,
+      1003520,
+      2007040
+    ],
+    "learning_rate": 0.0003,
+    "num_envs": 256,
+    "num_minibatches": 4,
+    "num_updates_per_batch": 4,
+    "old_linear_torque_scale": 0.0,
+    "old_squared_torque_scale": 0.0,
+    "resume": false,
+    "retry": false,
+    "seed": 100,
+    "source": "exact_v121_half_raw_checkpoint",
+    "source_step": 1003520,
+    "timesteps": 2007040,
+    "tracking_tail_scale": -6572.254964031055,
+    "unroll_length": 20
+  }
+}
