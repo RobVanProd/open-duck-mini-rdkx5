@@ -43,6 +43,7 @@ from build_winner_v169_v128_final_r2_anchor_preregistration import (  # noqa: E4
 
 PREREG = ANALYSIS / "winner_v169_v128_final_r2_anchor_preregistration.json"
 CORRECTION = ANALYSIS / "winner_v169b_execution_input_correction.json"
+IO_CORRECTION = ANALYSIS / "winner_v169d_policy_io_correction.json"
 RESULT = ANALYSIS / "winner_v169_v128_final_r2_anchor_result.json"
 MARKDOWN = ANALYSIS / "WINNER_V169_V128_FINAL_R2_ANCHOR_RESULT_20260725.md"
 
@@ -61,11 +62,12 @@ def main() -> int:
     work = args.work_root.resolve()
     prereg = json.loads(PREREG.read_text(encoding="utf-8"))
     correction = json.loads(CORRECTION.read_text(encoding="utf-8"))
+    io_correction = json.loads(IO_CORRECTION.read_text(encoding="utf-8"))
     observed_hashes = {
         name: sha256(path) for name, path in frozen_paths().items()
     }
     expected_hashes = dict(prereg["input_hashes"])
-    expected_hashes["runner"] = correction["corrected_runner_sha256"]
+    expected_hashes["runner"] = io_correction["corrected_runner_sha256"]
     observed_playground = {
         name: sha256(playground / name)
         for name in prereg["playground"]["required_file_hashes"]
@@ -79,6 +81,13 @@ def main() -> int:
         or correction.get("preregistration_sha256") != sha256(PREREG)
         or correction.get("prior_runner_sha256")
         != prereg["input_hashes"]["runner"]
+        or io_correction.get("status")
+        != "FROZEN_WINNER_V169D_POLICY_IO_CORRECTION"
+        or io_correction.get("preregistration_sha256") != sha256(PREREG)
+        or io_correction.get("execution_input_correction_sha256")
+        != sha256(CORRECTION)
+        or io_correction.get("prior_runner_sha256")
+        != correction["corrected_runner_sha256"]
         or expected_hashes != observed_hashes
         or sha256(policy) != prereg["policy"]["sha256"]
         or observed_playground
@@ -102,17 +111,22 @@ def main() -> int:
         eval_path = block / "eval.json"
         trace_dir = block / "traces"
         trace_dir.mkdir()
+        evaluation_args = eval_args(
+            policy,
+            playground,
+            fit_path,
+            override,
+            eval_path,
+            trace_dir,
+            evaluator_matrix,
+        )
+        evaluation_args.policy_state_input_names = "h_in,previous_action"
+        evaluation_args.policy_state_output_names = (
+            "h_out,previous_action_out"
+        )
         with contextlib.redirect_stdout(io.StringIO()):
             evaluation = evaluate(
-                eval_args(
-                    policy,
-                    playground,
-                    fit_path,
-                    override,
-                    eval_path,
-                    trace_dir,
-                    evaluator_matrix,
-                )
+                evaluation_args
             )
         eval_path.write_text(
             json.dumps(evaluation, indent=2, sort_keys=True) + "\n",
@@ -190,6 +204,7 @@ def main() -> int:
         "checks": checks,
         "input_hashes": observed_hashes,
         "execution_input_correction_sha256": sha256(CORRECTION),
+        "policy_io_correction_sha256": sha256(IO_CORRECTION),
         "policy": prereg["policy"],
         "condition": condition,
         "matrices": matrices,
