@@ -1,0 +1,143 @@
+{
+  "advance_rule": "a green CPU contract earns exactly one separately preregistered 16-cell dual-checkpoint nominal matrix",
+  "authority": {
+    "behavior": false,
+    "checkpoint_selection": false,
+    "cpu_graph_contract": true,
+    "gate5": false,
+    "hosted_training": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "checks": {
+    "candidate_raws_exact": true,
+    "constrained_signature_exact_two_then_eight": true,
+    "cpu_only_no_training_hosted_compute_or_hardware": true,
+    "lagrangian_training_remains_closed": true,
+    "one_common_alpha_no_behavior_selection": true,
+    "preservation_limit_inherited_exactly_from_v140": true,
+    "source_dataset_exact_8x600": true,
+    "source_half_green_eight_of_eight": true,
+    "source_raw_exact": true,
+    "v160_shadow_census_green": true
+  },
+  "contract_gates": {
+    "both_candidates_distinct_from_source": true,
+    "both_deployment_graph_contracts": true,
+    "both_selected_mse": "<=frozen absolute limit",
+    "selected_alpha": "strictly between zero and one",
+    "selected_common_budget_utilization": ">=0.99",
+    "selected_pair_distinct_from_each_other": true,
+    "source_trace_reproduction_linf": "<=1e-6",
+    "x0_exact": true
+  },
+  "failed_checks": [],
+  "input_hashes": {
+    "builder": "c523fe83947fad9dccc6866e8cc59186bb5cd3612e5a61ca2bc2427e05f09895",
+    "deploy_tool": "ca59440ded91cf70d96cc02a6a5e53c5700ccf3cc31084bf6b177ad3311cd0cc",
+    "final_raw": "9f67fc3539963f682ba1361debf26ff35961bb9e3b787a3aa8e60fa7bc77a837",
+    "half_raw": "685c1b7053943d4340346777420198bba6e77eaf8521c5156f6025b1485a8247",
+    "runner": "2570c420a9587d2b051e079e44e32ad7be0a87ba3811b04ae9cf13e0dd6bc985",
+    "source_raw": "2d3cfb686a9c9643d9414a99a10e4db3aee7fc8f63cbc2fd81f107b487cf1311",
+    "v121_behavior": "8bdefb90032facb4a3f3f7c833e608d2b35dac958ac0fcc2bbbd393ddcbb6047",
+    "v121_transform": "4bd5eab5343cd8401db1789773fa3cc345727d903cb31222e0ea9870f0e9e640",
+    "v128_attribution": "3fcf28bc2a70d35008968881afe45e6865ddb8f19e30bb13bf9737584a92e6d1",
+    "v128_behavior": "c703a5024dee3bcd32fb549e3c561c09d164d1f766c91ebc882fab7173c0e35a",
+    "v128_transform": "2dac89511e532156d3d4f589aa9b6defe7641fe6d73c221a5cdb72c34bf283e0",
+    "v140_result": "44921665d80235246737b333a5149ceacb702d477dcc2c7496395bf0c42ba637",
+    "v140_runner": "db60701cde771326a96d2a0c4bbfd12c63c21527bcd8a67ca8ffbc827bd35271",
+    "v160_result": "bf50eade4c73a6f5769cb8dcda8f1d5138be085848446a83cf9bad990c74965f"
+  },
+  "projection": {
+    "absolute_action_mse_limit": 1.9116589101031422e-07,
+    "alpha_interval": [
+      0.0,
+      1.0
+    ],
+    "behavior_or_torque_used_for_alpha": false,
+    "bisection_steps": 20,
+    "formula": "theta_i(alpha)=theta_source+alpha*(theta_v128_i-theta_source), same alpha for i=half/final",
+    "optimizer_or_training": false,
+    "preservation_ratio": 0.01,
+    "selection": "largest common alpha for which both deployed policies' action MSE from the green source is <= the frozen limit",
+    "source_corrected_baseline_mse": 1.9116589101031423e-05
+  },
+  "schema_version": "winner_v161.uniform_trust_projection_preregistration.v1",
+  "scope": "does not resume or retry PPO-Lagrangian; it is a uniform deterministic post-training transform of both frozen outputs",
+  "source_dataset": {
+    "rows": 4800,
+    "selection_data": "only V121-half source-policy observations, recurrent states, previous actions, and recorded source actions",
+    "traces": [
+      {
+        "name": "v121_train_matched_half_p30_all_joint_x0.000_seed167931544.jsonl",
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v121-nominal-run-20260724\\traces\\v121_train_matched_half_p30_all_joint_x0.000_seed167931544.jsonl",
+        "rows": 600,
+        "sha256": "17b0a5c3c3db418aee2544076c851ca638055fb76c3a4b497f47b3e306aaeff0"
+      },
+      {
+        "name": "v121_train_matched_half_p30_all_joint_x0.074_seed167931544.jsonl",
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v121-nominal-run-20260724\\traces\\v121_train_matched_half_p30_all_joint_x0.074_seed167931544.jsonl",
+        "rows": 600,
+        "sha256": "1abc0536a5d566f597dcca85a32acaa63387dea641cdd2f8785ae22e1368f3d2"
+      },
+      {
+        "name": "v121_train_matched_half_p30_all_joint_x0.077_seed167931544.jsonl",
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v121-nominal-run-20260724\\traces\\v121_train_matched_half_p30_all_joint_x0.077_seed167931544.jsonl",
+        "rows": 600,
+        "sha256": "57f70439a7a51d1c8625e615cfa5a86f0d1d79bafe1791f103cfb6f7b7944a83"
+      },
+      {
+        "name": "v121_train_matched_half_p30_all_joint_x0.080_seed167931544.jsonl",
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v121-nominal-run-20260724\\traces\\v121_train_matched_half_p30_all_joint_x0.080_seed167931544.jsonl",
+        "rows": 600,
+        "sha256": "1c88e7271977f6caf0cf3da90aff156bd21f0735b391b58ab7746cd708ed9b04"
+      },
+      {
+        "name": "v121_train_matched_half_p31_34_pitch_with_p30_nonpitch_x0.000_seed167931544.jsonl",
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v121-nominal-run-20260724\\traces\\v121_train_matched_half_p31_34_pitch_with_p30_nonpitch_x0.000_seed167931544.jsonl",
+        "rows": 600,
+        "sha256": "79d321e4a4dd518b6d05fbb3abcd48ca4b95a184713b6f3c4c6cac48a6d0b654"
+      },
+      {
+        "name": "v121_train_matched_half_p31_34_pitch_with_p30_nonpitch_x0.074_seed167931544.jsonl",
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v121-nominal-run-20260724\\traces\\v121_train_matched_half_p31_34_pitch_with_p30_nonpitch_x0.074_seed167931544.jsonl",
+        "rows": 600,
+        "sha256": "0e1e77d1329af21c69a91f8f1a208f1554575c2a7c5d55667623afcde67cb0d1"
+      },
+      {
+        "name": "v121_train_matched_half_p31_34_pitch_with_p30_nonpitch_x0.077_seed167931544.jsonl",
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v121-nominal-run-20260724\\traces\\v121_train_matched_half_p31_34_pitch_with_p30_nonpitch_x0.077_seed167931544.jsonl",
+        "rows": 600,
+        "sha256": "d55ef370c738a05df98507d83473a992d9f1b5915c30c57b3f295e23342d81d0"
+      },
+      {
+        "name": "v121_train_matched_half_p31_34_pitch_with_p30_nonpitch_x0.080_seed167931544.jsonl",
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v121-nominal-run-20260724\\traces\\v121_train_matched_half_p31_34_pitch_with_p30_nonpitch_x0.080_seed167931544.jsonl",
+        "rows": 600,
+        "sha256": "b5cea58ec0e42c353fe3ef7a81d07c31b833335366538f7392d947ff3188346e"
+      }
+    ]
+  },
+  "sources": {
+    "candidates": [
+      {
+        "id": "V128_CONSTRAINED_HALF",
+        "raw_path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v127d-hosted-extracted-20260724\\winner_v127_constrained_continuation\\training\\2026_07_25_020309_1003520.onnx",
+        "raw_sha256": "685c1b7053943d4340346777420198bba6e77eaf8521c5156f6025b1485a8247"
+      },
+      {
+        "id": "V128_CONSTRAINED_FINAL",
+        "raw_path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v127d-hosted-extracted-20260724\\winner_v127_constrained_continuation\\training\\2026_07_25_020652_2007040.onnx",
+        "raw_sha256": "9f67fc3539963f682ba1361debf26ff35961bb9e3b787a3aa8e60fa7bc77a837"
+      }
+    ],
+    "green_anchor": {
+      "id": "V121_TRAIN_MATCHED_HALF",
+      "raw_path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v119-extracted-20260724\\winner_v119_transition_continuation\\training\\2026_07_24_193907_1003520.onnx",
+      "raw_sha256": "2d3cfb686a9c9643d9414a99a10e4db3aee7fc8f63cbc2fd81f107b487cf1311"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V161_UNIFORM_TRUST_PROJECTION",
+  "stop_rule": "contract failure closes uniform trust projection; no behavior run and no alpha selected from behavior"
+}
