@@ -77,6 +77,9 @@ def test_v164_result_when_present() -> None:
     if not path.exists():
         return
     value = json.loads(path.read_text(encoding="utf-8"))
+    assert sha256(path) == (
+        "0247a88fe1567a0b8f28dbe7fe53481fb9327b9c0a9b4fd97a8722001d0cf1ac"
+    )
     assert value["status"] in {
         "PASS_WINNER_V164_STATE_COHERENCE",
         "HOLD_WINNER_V164_STATE_COHERENCE",
