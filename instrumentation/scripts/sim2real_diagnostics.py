@@ -16,12 +16,13 @@ RUNTIME_ROOT = SCRIPT_DIR.parent
 sys.path.insert(0, str(RUNTIME_ROOT / "mini_bdx_runtime"))
 sys.path.insert(0, str(SCRIPT_DIR))
 
-from mini_bdx_runtime.telemetry import (
+from mini_bdx_runtime.telemetry import (  # noqa: E402
     SCHEMA_VERSION,
     JsonlTelemetryLogger,
     default_telemetry_path,
     extract_onnx_obs_normalization,
     normalize_observation,
+    require_onnx_obs_normalization,
     sha256_file,
     utc_timestamp,
 )
@@ -296,6 +297,7 @@ def cmd_home_pose_log_test(args):
     imu = Imu(args.control_freq, upside_down=cfg.imu_upside_down)
     feet = FeetContacts()
     norm = extract_onnx_obs_normalization(args.onnx_model_path)
+    require_onnx_obs_normalization(norm, args.onnx_model_path)
     logger = make_logger(args.telemetry_path, "home_pose_log_test")
     try:
         hwi.turn_on()
@@ -319,6 +321,7 @@ def cmd_imu_tilt_test(args):
     imu = Imu(args.control_freq, upside_down=cfg.imu_upside_down)
     feet = FeetContacts()
     norm = extract_onnx_obs_normalization(args.onnx_model_path)
+    require_onnx_obs_normalization(norm, args.onnx_model_path)
     logger = make_logger(args.telemetry_path, "imu_tilt_test")
     home = None if hwi is None else np.asarray(list(hwi.init_pos.values()), dtype=float)
     zeros = np.zeros(14)

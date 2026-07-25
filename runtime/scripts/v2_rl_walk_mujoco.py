@@ -205,6 +205,7 @@ class RLWalk:
             JsonlTelemetryLogger,
             extract_onnx_obs_normalization,
             normalize_observation,
+            require_onnx_obs_normalization,
             sha256_file,
             timestamp_slug,
             utc_timestamp,
@@ -220,6 +221,9 @@ class RLWalk:
         self._telemetry_policy_sha256 = sha256_file(self.onnx_model_path)
         self._telemetry_policy_output_name = self._policy_output_name()
         self.telemetry_norm = extract_onnx_obs_normalization(self.onnx_model_path)
+        require_onnx_obs_normalization(
+            self.telemetry_norm, self.onnx_model_path
+        )
         self.telemetry_logger = JsonlTelemetryLogger(self.telemetry_path)
         print("telemetry:", self.telemetry_logger.path, flush=True)
 
