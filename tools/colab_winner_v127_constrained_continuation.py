@@ -147,7 +147,14 @@ def runner_command(
 
 
 def validate_bundle(bundle: Path) -> dict[str, Any]:
-    prereg_path = bundle / "winner_v127_hosted_preregistration.json"
+    corrected_prereg = (
+        bundle / "winner_v127c_hosted_preregistration.json"
+    )
+    prereg_path = (
+        corrected_prereg
+        if corrected_prereg.is_file()
+        else bundle / "winner_v127_hosted_preregistration.json"
+    )
     cpu_result_path = bundle / "winner_v127_constrained_cpu_result.json"
     cpu_prereg_path = (
         bundle / "winner_v127_constrained_cpu_preregistration.json"
@@ -161,7 +168,10 @@ def validate_bundle(bundle: Path) -> dict[str, Any]:
     cpu_result = json.loads(cpu_result_path.read_text(encoding="utf-8"))
     if (
         prereg.get("status")
-        != "PREREGISTERED_WINNER_V127_HOSTED_CONTINUATION"
+        not in (
+            "PREREGISTERED_WINNER_V127_HOSTED_CONTINUATION",
+            "PREREGISTERED_WINNER_V127C_HOSTED_CONTINUATION",
+        )
         or prereg.get("failed_checks") != []
         or cpu_result.get("status")
         != "PASS_WINNER_V127_CONSTRAINED_CPU_CONTRACT"
@@ -178,6 +188,9 @@ def validate_bundle(bundle: Path) -> dict[str, Any]:
         "source_checkpoint": directory_sha256(source),
         "reference_features": sha256(reference),
     }
+    correction = bundle / "winner_v127_pretraining_launch_correction.json"
+    if correction.is_file():
+        observed["pretraining_launch_correction"] = sha256(correction)
     if observed != prereg["input_hashes"]:
         raise ValueError(f"V127 bundle inputs changed: {observed}")
     manifest = json.loads(
@@ -240,7 +253,7 @@ def run(
     started = time.monotonic()
     completed = subprocess.run(
         command,
-        cwd=bundle,
+        cwd=playground,
         env=environment,
         text=True,
         stdout=subprocess.PIPE,

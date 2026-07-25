@@ -15,11 +15,11 @@ import tarfile
 
 
 PACKAGE_SHA256 = (
-    "43ae2e4d7dbed79f00024b0681ab29016147522eb6034000714d9bf729f6e6ea"
+    "27806832880000d19cb8b5e45c08e3aa50882c13cda4b2421fd7eb81ee6f2355"
 )
-PACKAGE_BYTES = 91_368_425
+PACKAGE_BYTES = 91_369_273
 PREREGISTRATION_SHA256 = (
-    "77ded43e7cf27e3854bbe06b04bdb519b420a7691089d8ecb3b43e0dd60fa3a0"
+    "a4ff39895c251fb2951ff6f67ca33d488c34bb7f6be56b1cf3a979e94373f370"
 )
 CPU_RESULT_SHA256 = (
     "cd728eb3cf2900f038c4134e3f603106238e960046b3482d4cd2b695b5a76ed4"
@@ -28,12 +28,15 @@ CPU_PREREGISTRATION_SHA256 = (
     "a77c677816714a0517c70f84c56d8c6a2b731ae135696c11b15ff51caf24bc34"
 )
 PACKAGE_MANIFEST_SHA256 = (
-    "62d3696b06803bcdf97f0dbcf5a93e56adaba8ba554193b8dc1ea3a8326c208c"
+    "f16a6046addb4e7458e28f2ade9390ce1354c3a8b59ae7e858d39b4b10333c65"
 )
 DRIVER_SHA256 = (
-    "cf4ba7f91dbf134e67cf2d83e98c2515d4e4c545e3c8d30c475b3e695e444c6d"
+    "c12799e46b6f44382d4c9f1e3cd681452bf134a5bb691426b0bfb73973fdabc2"
 )
-BUNDLE_NAME = "winner_v127_constrained_bundle"
+CORRECTION_SHA256 = (
+    "3ed76e4cda5bbfb45a2ac9d3696ca0b0f43b6a69782614f1af7be544f9aab497"
+)
+BUNDLE_NAME = "winner_v127c_constrained_bundle"
 EXPECTED_VERSIONS = {
     "brax": "0.14.2",
     "flax": "0.11.2",
@@ -122,19 +125,21 @@ def main() -> int:
     with tarfile.open(package, "r:gz") as archive:
         archive.extractall(args.extract_root, filter="data")
     bundle = args.extract_root / BUNDLE_NAME
-    prereg = bundle / "winner_v127_hosted_preregistration.json"
+    prereg = bundle / "winner_v127c_hosted_preregistration.json"
     cpu_result = bundle / "winner_v127_constrained_cpu_result.json"
     cpu_prereg = (
         bundle / "winner_v127_constrained_cpu_preregistration.json"
     )
     manifest = bundle / "winner_v127_package_manifest.json"
     driver = bundle / "colab_winner_v127_constrained_continuation.py"
+    correction = bundle / "winner_v127_pretraining_launch_correction.json"
     if (
         sha256(prereg) != PREREGISTRATION_SHA256
         or sha256(cpu_result) != CPU_RESULT_SHA256
         or sha256(cpu_prereg) != CPU_PREREGISTRATION_SHA256
         or sha256(manifest) != PACKAGE_MANIFEST_SHA256
         or sha256(driver) != DRIVER_SHA256
+        or sha256(correction) != CORRECTION_SHA256
     ):
         raise ValueError("V127 extracted package identity changed")
 
@@ -208,6 +213,7 @@ def main() -> int:
         "cpu_preregistration_sha256": CPU_PREREGISTRATION_SHA256,
         "package_manifest_sha256": PACKAGE_MANIFEST_SHA256,
         "driver_sha256": DRIVER_SHA256,
+        "pretraining_launch_correction_sha256": CORRECTION_SHA256,
         "software_versions": observed_versions,
         "command": command,
         "retry": False,

@@ -71,23 +71,50 @@ def main() -> int:
     parser.add_argument("--source-checkpoint", type=Path, required=True)
     parser.add_argument("--staging-root", type=Path, required=True)
     parser.add_argument("--output-archive", type=Path, required=True)
+    parser.add_argument("--corrected", action="store_true")
     args = parser.parse_args()
     playground = args.playground_root.resolve()
     source = args.source_checkpoint.resolve()
     staging = args.staging_root.resolve()
     archive_path = args.output_archive.resolve()
-    for path in (staging, archive_path, CONTRACT, MARKDOWN):
+    preregistration = (
+        ANALYSIS / "winner_v127c_hosted_preregistration.json"
+        if args.corrected
+        else PREREG
+    )
+    contract_path = (
+        ANALYSIS / "winner_v127c_hosted_package_contract.json"
+        if args.corrected
+        else CONTRACT
+    )
+    markdown_path = (
+        ANALYSIS / "WINNER_V127C_HOSTED_PACKAGE_CONTRACT_20260724.md"
+        if args.corrected
+        else MARKDOWN
+    )
+    bundle_name = (
+        "winner_v127c_constrained_bundle"
+        if args.corrected
+        else BUNDLE_NAME
+    )
+    for path in (staging, archive_path, contract_path, markdown_path):
         if path.exists():
             raise FileExistsError(f"refusing to overwrite V127: {path}")
-    prereg = json.loads(PREREG.read_text(encoding="utf-8"))
+    prereg = json.loads(preregistration.read_text(encoding="utf-8"))
     if (
         prereg.get("status")
-        != "PREREGISTERED_WINNER_V127_HOSTED_CONTINUATION"
-        or prereg.get("failed_checks") != []
-        or prereg.get("authority", {}).get(
-            "one_hosted_gpu_continuation_after_package_contract"
+        not in (
+            "PREREGISTERED_WINNER_V127_HOSTED_CONTINUATION",
+            "PREREGISTERED_WINNER_V127C_HOSTED_CONTINUATION",
         )
-        is not True
+        or prereg.get("failed_checks") != []
+        or not any(
+            prereg.get("authority", {}).get(key) is True
+            for key in (
+                "one_hosted_gpu_continuation_after_package_contract",
+                "one_corrected_hosted_continuation_after_package",
+            )
+        )
     ):
         raise ValueError("V127 hosted preregistration is not green")
     observed = {
@@ -100,13 +127,19 @@ def main() -> int:
         "source_checkpoint": directory_sha256(source),
         "reference_features": sha256(REFERENCE),
     }
+    correction = ANALYSIS / "winner_v127_pretraining_launch_correction.json"
+    if args.corrected:
+        observed["pretraining_launch_correction"] = sha256(correction)
     if observed != prereg["input_hashes"]:
         raise ValueError("V127 package inputs changed")
 
-    bundle = staging / BUNDLE_NAME
+    bundle = staging / bundle_name
     assets = bundle / "assets"
     assets.mkdir(parents=True)
-    for path in (PREREG, CPU_RESULT, CPU_PREREG, DRIVER):
+    bundled_files = [preregistration, CPU_RESULT, CPU_PREREG, DRIVER]
+    if args.corrected:
+        bundled_files.append(correction)
+    for path in bundled_files:
         shutil.copy2(path, bundle / path.name)
     shutil.copy2(REFERENCE, assets / REFERENCE.name)
     shutil.copytree(source, assets / "source_checkpoint")
@@ -169,7 +202,7 @@ def main() -> int:
     members = file_manifest(bundle)
     manifest = {
         "schema_version": "winner_v127.hosted_bundle_manifest.v1",
-        "preregistration_sha256": sha256(PREREG),
+        "preregistration_sha256": sha256(preregistration),
         "input_hashes": observed,
         "member_count_excluding_manifest": len(members),
         "members": members,
@@ -225,11 +258,11 @@ def main() -> int:
             "rdkx5_or_robot": False,
         },
     }
-    CONTRACT.write_text(
+    contract_path.write_text(
         json.dumps(contract, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
-    MARKDOWN.write_text(
+    markdown_path.write_text(
         "# Winner V127 hosted package\n\n"
         f"- Status: `{contract['status']}`\n"
         f"- Archive bytes: `{contract['archive']['bytes']}`\n"
@@ -241,7 +274,7 @@ def main() -> int:
     print(contract["status"])
     print(f"archive_sha256={contract['archive']['sha256']}")
     print(f"archive_bytes={contract['archive']['bytes']}")
-    print(f"contract_sha256={sha256(CONTRACT)}")
+    print(f"contract_sha256={sha256(contract_path)}")
     return 0
 
 

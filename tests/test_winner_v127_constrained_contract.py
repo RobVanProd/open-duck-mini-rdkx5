@@ -138,3 +138,27 @@ def test_v127_chunked_transport_preserves_the_frozen_training_payload() -> None:
     assert launch["authority"]["one_exact_chunked_cli_launch"] is True
     assert launch["authority"]["training_retry"] is False
     assert launch["authority"]["training_resume"] is False
+
+
+def test_v127c_is_a_pretraining_path_correction_not_a_training_retry() -> None:
+    correction = load("winner_v127_pretraining_launch_correction.json")
+    prereg = load("winner_v127c_hosted_preregistration.json")
+    launch = load("winner_v127c_colab_launch_contract.json")
+    assert correction["status"] == (
+        "PASS_WINNER_V127_PRETRAINING_LAUNCH_CORRECTION"
+    )
+    assert correction["failed_checks"] == []
+    assert correction["checks"]["optimizer_steps_zero"] is True
+    assert correction["checks"]["simulator_locomotion_steps_zero"] is True
+    assert correction["correction"]["training_command_unchanged"] is True
+    assert correction["correction"]["old"] != correction["correction"]["new"]
+    assert prereg["status"] == (
+        "PREREGISTERED_WINNER_V127C_HOSTED_CONTINUATION"
+    )
+    assert prereg["failed_checks"] == []
+    assert prereg["training"]["retry"] is False
+    assert prereg["training"]["resume"] is False
+    assert launch["status"] == "PASS_WINNER_V127C_COLAB_LAUNCH_CONTRACT"
+    assert launch["failed_checks"] == []
+    assert launch["authority"]["one_corrected_exact_cli_launch"] is True
+    assert launch["authority"]["training_retry"] is False
