@@ -1,0 +1,360 @@
+{
+  "authority": {
+    "checkpoint_selection": false,
+    "cpu_behavior_cells": 16,
+    "full_robustness": false,
+    "gate5": false,
+    "hosted_training": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "candidate_pair": {
+    "common_alpha": 0.0015716552734375,
+    "policies": {
+      "final": {
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v161-uniform-trust-projection-20260725\\winner_v161_final_selected_deployed.onnx",
+        "sha256": "1f06526b400babca00ecaec6230d6cb5d10748a2eb857e84390b65e893e201b5"
+      },
+      "half": {
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v161-uniform-trust-projection-20260725\\winner_v161_half_selected_deployed.onnx",
+        "sha256": "ff743dfa583348318353aa77da4916d5ecf2f33225a6fa223e863fe858b899fc"
+      }
+    }
+  },
+  "checks": {
+    "cpu_only_no_training_hosted_compute_or_hardware": true,
+    "frozen_gate_unchanged": true,
+    "matrix_exact_16": true,
+    "no_behavior_reuse": true,
+    "same_common_alpha_for_both": true,
+    "two_checkpoints_eight_each": true,
+    "two_policy_hashes_exact_and_distinct": true,
+    "v161_contract_green": true
+  },
+  "decision_rule": {
+    "all_16_pass": "earn separate complete frozen robustness-matrix preregistration; not Gate 5",
+    "any_failure": "close uniform trust projection; no alpha adjustment, retry, or checkpoint selection",
+    "behavior_or_reward_selection": false
+  },
+  "failed_checks": [],
+  "gate": {
+    "conversion_nm_per_a": 0.784532,
+    "noncurrent_behavior": "unchanged 600-tick candidate, gait, forward-motion, tracking, saturation, rate, envelope, x=0, trace, readback, and CPU checks",
+    "per_joint_peak_current_a_max": 2.5,
+    "per_joint_peak_torque_nm_max": 1.91229675,
+    "rated_current_p95_a": 0.65,
+    "rated_current_p95_role": "reported diagnostic only",
+    "strict_overcurrent_max_consecutive_ticks": 99,
+    "strict_overcurrent_threshold_a": 2.0
+  },
+  "input_hashes": {
+    "base_preregistration": "c8f986ceb24863f33c1fc99170548d2e255cb6a26737d3f74762f8dcd4485a24",
+    "builder": "f7ea29418983bd2128788ad297426eb1debb591d0c61ff02433fba2fe19315f8",
+    "cell_runner": "41cc51abb21dde2fde8fa4cbf36ad50212794fea0a38eb73b2c3705ee96ac034",
+    "composed_evaluator": "1539ba18b5b207a15538a8a8611475f5c73bcd7164f2fe039cad8b279a587e43",
+    "composition_manifest": "39e842470828208dfea08b17d936d3f0e6f0d45b8f9813a1edd139692e4a6f74",
+    "final_policy": "1f06526b400babca00ecaec6230d6cb5d10748a2eb857e84390b65e893e201b5",
+    "half_policy": "ff743dfa583348318353aa77da4916d5ecf2f33225a6fa223e863fe858b899fc",
+    "runner": "6f46de6a5aad09dc7c4830a4e5df3b376fb251334edb875d2dfdf9bb6a48ff88",
+    "v121_nominal_preregistration": "9c10dc3de6ea4b5f0f5fe00b287a53e7dc17f1e77b34da84916f90ba285770f5",
+    "v126_preregistration": "eb40f17d9c08b8362f068567e1620bdafef21ad9123a633c9536f3637a31c899",
+    "v161_result": "9392b27929c4e391d2b3a6ea1b8a8b965fef6550ab56beb28c15911f370b5d12"
+  },
+  "matrix": {
+    "cells": 16,
+    "execution": "checkpoint-major, source matrix order, stop at first failed cell",
+    "rows": [
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "V161_TRUST_PROJECTED_HALF",
+        "command_x_m_s": 0.0,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "plant": "P30_ALL_JOINT",
+        "policy_sha256": "ff743dfa583348318353aa77da4916d5ecf2f33225a6fa223e863fe858b899fc",
+        "seed": 167931544,
+        "step": 1003520,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "V161_TRUST_PROJECTED_HALF",
+        "command_x_m_s": 0.074,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "plant": "P30_ALL_JOINT",
+        "policy_sha256": "ff743dfa583348318353aa77da4916d5ecf2f33225a6fa223e863fe858b899fc",
+        "seed": 167931544,
+        "step": 1003520,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "V161_TRUST_PROJECTED_HALF",
+        "command_x_m_s": 0.077,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "plant": "P30_ALL_JOINT",
+        "policy_sha256": "ff743dfa583348318353aa77da4916d5ecf2f33225a6fa223e863fe858b899fc",
+        "seed": 167931544,
+        "step": 1003520,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "V161_TRUST_PROJECTED_HALF",
+        "command_x_m_s": 0.08,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "plant": "P30_ALL_JOINT",
+        "policy_sha256": "ff743dfa583348318353aa77da4916d5ecf2f33225a6fa223e863fe858b899fc",
+        "seed": 167931544,
+        "step": 1003520,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "V161_TRUST_PROJECTED_HALF",
+        "command_x_m_s": 0.0,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+        "policy_sha256": "ff743dfa583348318353aa77da4916d5ecf2f33225a6fa223e863fe858b899fc",
+        "seed": 167931544,
+        "step": 1003520,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "V161_TRUST_PROJECTED_HALF",
+        "command_x_m_s": 0.074,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+        "policy_sha256": "ff743dfa583348318353aa77da4916d5ecf2f33225a6fa223e863fe858b899fc",
+        "seed": 167931544,
+        "step": 1003520,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "V161_TRUST_PROJECTED_HALF",
+        "command_x_m_s": 0.077,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+        "policy_sha256": "ff743dfa583348318353aa77da4916d5ecf2f33225a6fa223e863fe858b899fc",
+        "seed": 167931544,
+        "step": 1003520,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "V161_TRUST_PROJECTED_HALF",
+        "command_x_m_s": 0.08,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+        "policy_sha256": "ff743dfa583348318353aa77da4916d5ecf2f33225a6fa223e863fe858b899fc",
+        "seed": 167931544,
+        "step": 1003520,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "V161_TRUST_PROJECTED_FINAL",
+        "command_x_m_s": 0.0,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "plant": "P30_ALL_JOINT",
+        "policy_sha256": "1f06526b400babca00ecaec6230d6cb5d10748a2eb857e84390b65e893e201b5",
+        "seed": 167931544,
+        "step": 2007040,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "V161_TRUST_PROJECTED_FINAL",
+        "command_x_m_s": 0.074,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "plant": "P30_ALL_JOINT",
+        "policy_sha256": "1f06526b400babca00ecaec6230d6cb5d10748a2eb857e84390b65e893e201b5",
+        "seed": 167931544,
+        "step": 2007040,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "V161_TRUST_PROJECTED_FINAL",
+        "command_x_m_s": 0.077,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "plant": "P30_ALL_JOINT",
+        "policy_sha256": "1f06526b400babca00ecaec6230d6cb5d10748a2eb857e84390b65e893e201b5",
+        "seed": 167931544,
+        "step": 2007040,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "V161_TRUST_PROJECTED_FINAL",
+        "command_x_m_s": 0.08,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "plant": "P30_ALL_JOINT",
+        "policy_sha256": "1f06526b400babca00ecaec6230d6cb5d10748a2eb857e84390b65e893e201b5",
+        "seed": 167931544,
+        "step": 2007040,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "V161_TRUST_PROJECTED_FINAL",
+        "command_x_m_s": 0.0,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+        "policy_sha256": "1f06526b400babca00ecaec6230d6cb5d10748a2eb857e84390b65e893e201b5",
+        "seed": 167931544,
+        "step": 2007040,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "V161_TRUST_PROJECTED_FINAL",
+        "command_x_m_s": 0.074,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+        "policy_sha256": "1f06526b400babca00ecaec6230d6cb5d10748a2eb857e84390b65e893e201b5",
+        "seed": 167931544,
+        "step": 2007040,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "V161_TRUST_PROJECTED_FINAL",
+        "command_x_m_s": 0.077,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+        "policy_sha256": "1f06526b400babca00ecaec6230d6cb5d10748a2eb857e84390b65e893e201b5",
+        "seed": 167931544,
+        "step": 2007040,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "V161_TRUST_PROJECTED_FINAL",
+        "command_x_m_s": 0.08,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+        "policy_sha256": "1f06526b400babca00ecaec6230d6cb5d10748a2eb857e84390b65e893e201b5",
+        "seed": 167931544,
+        "step": 2007040,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      }
+    ]
+  },
+  "schema_version": "winner_v162.uniform_trust_nominal_preregistration.v1",
+  "status": "PREREGISTERED_WINNER_V162_UNIFORM_TRUST_NOMINAL"
+}
