@@ -20,10 +20,10 @@ from closed_loop_sim_eval_t1_accel_bias import (
 
 ROOT = Path(__file__).resolve().parents[1]
 ANALYSIS = ROOT / "outputs" / "analysis"
-PREREG = ANALYSIS / "t1_accel_bias_v3_preregistration.json"
+PREREG = ANALYSIS / "t1_accel_bias_v4_preregistration.json"
 CONTRACT = ANALYSIS / "t1_accel_bias_v2_contract_result.json"
-OUTPUT = ANALYSIS / "t1_accel_bias_v3_dose_response_result.json"
-MARKDOWN = ANALYSIS / "T1_ACCEL_BIAS_V3_DOSE_RESPONSE_RESULT_20260725.md"
+OUTPUT = ANALYSIS / "t1_accel_bias_v4_dose_response_result.json"
+MARKDOWN = ANALYSIS / "T1_ACCEL_BIAS_V4_DOSE_RESPONSE_RESULT_20260725.md"
 CURRENT_TO_TORQUE = 0.784532
 
 
@@ -154,6 +154,21 @@ def run_or_load_cell(
         cached = json.loads(raw_path.read_text(encoding="utf-8"))
         if cached.get("cell_contract_sha256") == contract_hash:
             return cached, True
+        for prior in prereg["execution_contract"][
+            "accepted_prior_cell_contracts"
+        ]:
+            prior_path = Path(prior["preregistration_path"])
+            if sha256(prior_path) != prior["preregistration_sha256"]:
+                raise RuntimeError("accepted prior T1 preregistration changed")
+            prior_prereg = json.loads(prior_path.read_text(encoding="utf-8"))
+            if (
+                prior_prereg.get("preregistered_contract_sha256")
+                != prior["preregistered_contract_sha256"]
+            ):
+                raise RuntimeError("accepted prior T1 contract SHA mismatch")
+            prior_hash = canonical_sha256(cell_contract(prior_prereg, cell))
+            if cached.get("cell_contract_sha256") == prior_hash:
+                return cached, True
     result = run_closed_loop_sim(
         ClosedLoopConfig(
             policy_path=policy,
@@ -401,14 +416,29 @@ def main() -> int:
             "decision and is intended only for resumable execution."
         ),
     )
+    parser.add_argument("--shard-count", type=int, default=1)
+    parser.add_argument("--shard-index", type=int, default=0)
     args = parser.parse_args()
+    prereg = json.loads(PREREG.read_text(encoding="utf-8"))
+    verify_inputs(prereg)
+    frozen_shards = int(
+        prereg["execution_contract"]["parallel_execution"]["shard_count"]
+    )
+    if args.shard_count not in {1, frozen_shards}:
+        raise ValueError(
+            f"--shard-count must be 1 or frozen value {frozen_shards}"
+        )
+    if not 0 <= args.shard_index < args.shard_count:
+        raise ValueError("--shard-index outside shard count")
     compile_cache_root = args.compile_cache_root.resolve()
+    if args.shard_count > 1:
+        compile_cache_root = compile_cache_root / (
+            f"shard_{args.shard_index}_of_{args.shard_count}"
+        )
     compile_cache_root.mkdir(parents=True, exist_ok=True)
     os.environ.setdefault(
         "JAX_COMPILATION_CACHE_DIR", str(compile_cache_root)
     )
-    prereg = json.loads(PREREG.read_text(encoding="utf-8"))
-    verify_inputs(prereg)
     policy = Path(prereg["input_paths"]["policy"])
     fit = json.loads(
         Path(prereg["input_paths"]["fit"]).read_text(encoding="utf-8")
@@ -418,7 +448,12 @@ def main() -> int:
     rows = []
     cache_hits = 0
     new_cells = 0
-    for index, cell in enumerate(prereg["matrix"], start=1):
+    selected_matrix = [
+        (index, cell)
+        for index, cell in enumerate(prereg["matrix"], start=1)
+        if (index - 1) % args.shard_count == args.shard_index
+    ]
+    for index, cell in selected_matrix:
         if args.max_new_cells is not None and new_cells >= args.max_new_cells:
             break
         payload, cached = run_or_load_cell(
@@ -435,7 +470,8 @@ def main() -> int:
             flush=True,
         )
 
-    complete = len(rows) == len(prereg["matrix"])
+    complete_shard = len(rows) == len(selected_matrix)
+    complete = args.shard_count == 1 and len(rows) == len(prereg["matrix"])
     groups = []
     if complete:
         for bias in prereg["frozen_configuration"]["biases_m_s2"]:
@@ -456,11 +492,15 @@ def main() -> int:
         decision = decide(prereg, groups)
     else:
         decision = {
-            "status": "PARTIAL_T1_MATRIX_NO_DECISION",
-            "reason": "result requires all preregistered cells",
+            "status": (
+                "COMPLETE_T1_EXECUTION_SHARD_NO_DECISION"
+                if complete_shard and args.shard_count > 1
+                else "PARTIAL_T1_MATRIX_NO_DECISION"
+            ),
+            "reason": "result requires the unsharded 440-cell aggregation",
         }
     payload = {
-        "schema_version": "open_duck.t1_accel_bias_dose_response_result.v3",
+        "schema_version": "open_duck.t1_accel_bias_dose_response_result.v4",
         "status": decision["status"],
         "preregistered_contract_sha256": prereg[
             "preregistered_contract_sha256"
@@ -472,19 +512,32 @@ def main() -> int:
         "new_cells": new_cells,
         "cache_root": str(cache_root),
         "jax_compilation_cache_root": str(compile_cache_root),
+        "execution_shard": {
+            "count": args.shard_count,
+            "index": args.shard_index,
+            "expected_cells": len(selected_matrix),
+            "complete": complete_shard,
+        },
         "groups": groups,
         "decision": decision,
         "authority": prereg["authority"],
     }
     payload["result_sha256"] = canonical_sha256(payload)
-    OUTPUT.write_text(
+    result_path = (
+        OUTPUT
+        if args.shard_count == 1
+        else cache_root
+        / f"shard_{args.shard_index}_of_{args.shard_count}_progress.json"
+    )
+    result_path.write_text(
         json.dumps(payload, allow_nan=False, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
     if complete:
         write_markdown(payload)
     print(decision["status"])
-    print(f"sha256={sha256(OUTPUT)}")
+    print(f"result_path={result_path}")
+    print(f"sha256={sha256(result_path)}")
     return 0 if complete else 2
 
 

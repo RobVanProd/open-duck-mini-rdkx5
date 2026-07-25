@@ -13,11 +13,13 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 ANALYSIS = ROOT / "outputs" / "analysis"
-OUTPUT = ANALYSIS / "t1_accel_bias_v3_preregistration.json"
-MARKDOWN = ANALYSIS / "T1_ACCEL_BIAS_V3_PREREGISTRATION_20260725.md"
+OUTPUT = ANALYSIS / "t1_accel_bias_v4_preregistration.json"
+MARKDOWN = ANALYSIS / "T1_ACCEL_BIAS_V4_PREREGISTRATION_20260725.md"
 V1_PREREG = ANALYSIS / "t1_accel_bias_preregistration.json"
 V2_PREREG = ANALYSIS / "t1_accel_bias_v2_preregistration.json"
 V2_CONTRACT = ANALYSIS / "t1_accel_bias_v2_contract_result.json"
+V3_PREREG = ANALYSIS / "t1_accel_bias_v3_preregistration.json"
+V3_PARTIAL = ANALYSIS / "t1_accel_bias_v3_dose_response_result.json"
 POLICY = ROOT / "policy" / "BEST_WALK_ONNX_2.onnx"
 FIT = ANALYSIS / "actuator_response_fit_corrected_knee.json"
 PUBLISHED_AUDIT = ANALYSIS / "published_policy_propulsion_x008_straight_audit.json"
@@ -82,6 +84,8 @@ def main() -> int:
         "v1_preregistration": V1_PREREG,
         "v2_preregistration": V2_PREREG,
         "v2_contract_result": V2_CONTRACT,
+        "v3_preregistration": V3_PREREG,
+        "v3_partial_result": V3_PARTIAL,
     }
     missing = sorted(name for name, path in paths.items() if not path.is_file())
     hashes = {
@@ -123,7 +127,7 @@ def main() -> int:
         else "HOLD_T1_ACCEL_BIAS_PREREGISTRATION"
     )
     payload = {
-        "schema_version": "open_duck.t1_accel_bias_preregistration.v3",
+        "schema_version": "open_duck.t1_accel_bias_preregistration.v4",
         "status": status,
         "missing_inputs": missing,
         "failed_checks": failed_checks,
@@ -144,15 +148,15 @@ def main() -> int:
             "is a first-order cause of BEST_WALK's x=0.08 behavior mismatch."
         ),
         "supersedes": {
-            "schema_version": "open_duck.t1_accel_bias_preregistration.v2",
+            "schema_version": "open_duck.t1_accel_bias_preregistration.v3",
             "preregistered_contract_sha256": (
-                "d8abf9a32d81d413fa3d8c2fa1f2d57c2a032d1525eef8d3cd627820e75994bd"
+                "63c0df92cf4a22230a954dcd9413ac7d91ad6ac9b19f8b19e3ea8a6ec96e82ab"
             ),
             "reason": (
-                "the first 250-tick cell completed but the matrix runner "
-                "rejected a legitimate Infinity lag-summary sentinel before "
-                "writing a cell artifact; no matrix cell or decision was "
-                "produced"
+                "two cells established an approximately 82-second CPU cost "
+                "per cell, making the serial matrix roughly ten hours; v4 "
+                "adds a fixed three-way disjoint execution shard without "
+                "changing cells or aggregation"
             ),
             "decision_weight": 0,
             "scientific_contract_changes": "none",
@@ -251,6 +255,24 @@ def main() -> int:
                     "and compilation caching"
                 ),
             },
+            "accepted_prior_cell_contracts": [
+                {
+                    "preregistration_path": str(V3_PREREG),
+                    "preregistration_sha256": hashes["v3_preregistration"],
+                    "preregistered_contract_sha256": (
+                        "63c0df92cf4a22230a954dcd9413ac7d91ad6ac9b19f8b19e3ea8a6ec96e82ab"
+                    ),
+                    "partial_result_path": str(V3_PARTIAL),
+                    "partial_result_sha256": hashes["v3_partial_result"],
+                    "completed_cells": 2,
+                    "decision_weight": 0,
+                    "reuse_basis": (
+                        "the two cached cells use the identical scientific "
+                        "matrix, evaluator, policy, simulator, bias insertion, "
+                        "and cell metrics; v4 changes only scheduling"
+                    ),
+                }
+            ],
             "zero_bias_equivalence": (
                 "T1 evaluator and original evaluator must produce identical "
                 "zero-bias trace and result payloads after removing only "
@@ -275,6 +297,18 @@ def main() -> int:
                 "cache; cache contents are not scientific inputs and cannot "
                 "change cell configuration or decision logic"
             ),
+            "parallel_execution": {
+                "shard_count": 3,
+                "partition": (
+                    "zero-based canonical matrix index modulo 3; shards are "
+                    "disjoint and cover every cell exactly once"
+                ),
+                "aggregation": (
+                    "only the unsharded final pass may aggregate, after all "
+                    "440 accepted cache cells exist"
+                ),
+                "selection_effect": "none",
+            },
             "result_requires_all_cells": True,
         },
         "authority": {
@@ -301,7 +335,7 @@ def main() -> int:
         encoding="utf-8",
     )
     MARKDOWN.write_text(
-        "# T1 accelerometer-bias dose-response v3 preregistration\n\n"
+        "# T1 accelerometer-bias dose-response v4 preregistration\n\n"
         f"- Status: `{status}`\n"
         f"- Contract SHA-256: `{payload['preregistered_contract_sha256']}`\n"
         f"- Matrix SHA-256: `{payload['matrix_sha256']}`\n"
@@ -309,10 +343,9 @@ def main() -> int:
         "- Primary decision: compare +1.6 m/s^2 against zero at x=0.08.\n"
         "- No policy, normalizer, simulator model, actuator bridge, or gate "
         "is changed.\n"
-        "- V2 is superseded because the matrix serializer rejected a "
-        "legitimate Infinity lag sentinel before saving its first cell. V3 "
-        "encodes diagnostic sentinels losslessly and enables a persistent "
-        "JAX compilation cache; the scientific contract is unchanged.\n"
+        "- V3 measured about 82 seconds per CPU cell. V4 freezes a disjoint "
+        "three-way index-modulo shard and reuses the two hash-valid V3 cells; "
+        "the scientific contract is unchanged.\n"
         "- The zero-bias equivalence contract must pass before the matrix.\n",
         encoding="utf-8",
     )
