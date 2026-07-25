@@ -22,18 +22,23 @@ V150_CORRECTION = (
 )
 V151_RESULT = ANALYSIS / "winner_v151_bounded_two_center_result.json"
 V152_ALIGNMENT = ANALYSIS / "winner_v152_phase_contact_alignment.json"
+V1_PREREG = (
+    ANALYSIS / "winner_v153_phase_contact_residual_preregistration.json"
+)
 V134_LOADER = (
     ROOT / "training/winner_v134_full_actor_teacher_distillation.py"
 )
 V145_LOADER = ROOT / "training/winner_v145_on_policy_dagger.py"
-OUTPUT = ANALYSIS / "winner_v153_phase_contact_residual_preregistration.json"
+OUTPUT = (
+    ANALYSIS / "winner_v153_phase_contact_residual_preregistration_v2.json"
+)
 MARKDOWN = (
     ANALYSIS
-    / "WINNER_V153_PHASE_CONTACT_RESIDUAL_PREREGISTRATION_20260725.md"
+    / "WINNER_V153_PHASE_CONTACT_RESIDUAL_PREREGISTRATION_V2_20260725.md"
 )
 EXPECTED = {
     "runner": (
-        "92edc4beae586f405e53932b227f4d9158637369c40d046e1df0c3e1eba4bf65"
+        "3b7bb32f05d38a054115079524b9d633668c37eeac23d52f3fad3192277ec6e9"
     ),
     "v121_transform": (
         "4bd5eab5343cd8401db1789773fa3cc345727d903cb31222e0ea9870f0e9e640"
@@ -52,6 +57,9 @@ EXPECTED = {
     ),
     "v152_alignment": (
         "15d2a253d638dac796e0021cdb46daf70aee08ad3dd56ed1c265031548cfaaf7"
+    ),
+    "v1_preregistration": (
+        "7970123f7ad206b8dc1b10f657107f3c1d266f1247daf41bc60d6bc905b1734a"
     ),
     "v134_loader": (
         "632a2e12ae10d940be38858c52e738281ca6a2de1736d1be90b8adcbdbd8baa8"
@@ -109,6 +117,7 @@ def main() -> int:
         "v150_correction": sha256(V150_CORRECTION),
         "v151_result": sha256(V151_RESULT),
         "v152_alignment": sha256(V152_ALIGNMENT),
+        "v1_preregistration": sha256(V1_PREREG),
         "v134_loader": sha256(V134_LOADER),
         "v145_loader": sha256(V145_LOADER),
         "source_raw": sha256(source_raw),
@@ -170,6 +179,20 @@ def main() -> int:
         "failed_checks": failed,
         "checks": checks,
         "input_hashes": input_hashes,
+        "supersedes": {
+            "artifact": (
+                "winner_v153_phase_contact_residual_preregistration.json"
+            ),
+            "reason": (
+                "The first execution stopped before producing a result "
+                "because the runner requested a full oracle action vector "
+                "from a compact reporting artifact that stores only the "
+                "delta. V2 reads that vector from the already frozen and "
+                "hashed first shadow trace. The mechanism, source policy, "
+                "phase, contact, amplitude, radius rule, tolerance, pass "
+                "rule, and stop rule are unchanged."
+            ),
+        },
         "mechanism": {
             "source": "V140 selected raw actor",
             "trigger": {
@@ -234,7 +257,7 @@ def main() -> int:
         encoding="utf-8",
     )
     MARKDOWN.write_text(
-        "# Winner V153 phase/contact residual preregistration\n\n"
+        "# Winner V153 phase/contact residual preregistration V2\n\n"
         f"- Status: `{payload['status']}`\n"
         "- Start fresh from V140 and apply one right-ankle correction at "
         "the shared gait phase under right-foot support.\n"

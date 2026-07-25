@@ -36,7 +36,12 @@ import winner_v145_on_policy_dagger as dagger  # noqa: E402
 
 
 ANALYSIS = ROOT / "outputs/analysis"
-PREREG = ANALYSIS / "winner_v153_phase_contact_residual_preregistration.json"
+PREREG = (
+    ANALYSIS / "winner_v153_phase_contact_residual_preregistration_v2.json"
+)
+V1_PREREG = (
+    ANALYSIS / "winner_v153_phase_contact_residual_preregistration.json"
+)
 V121_TRANSFORM = ANALYSIS / "winner_v121_deployment_transform_contract.json"
 V140_RESULT = ANALYSIS / "winner_v140_preservation_projected_actor_result.json"
 V144_CORRECTION = (
@@ -233,6 +238,7 @@ def main() -> int:
         "v150_correction": sha256(V150_CORRECTION),
         "v151_result": sha256(V151_RESULT),
         "v152_alignment": sha256(V152_ALIGNMENT),
+        "v1_preregistration": sha256(V1_PREREG),
         "v134_loader": sha256(
             TRAINING / "winner_v134_full_actor_teacher_distillation.py"
         ),
@@ -261,6 +267,14 @@ def main() -> int:
     teacher = v134.load_teacher_dataset(teacher_root)
     first_shadow = dagger.load_shadow_dataset(first_shadow_trace)
     second_shadow = dagger.load_shadow_dataset(second_shadow_trace)
+    first_records = [
+        json.loads(line)
+        for line in first_shadow_trace.read_text(encoding="utf-8").splitlines()
+        if line
+    ]
+    first_oracle = first_records[int(first_label["source_tick"])][
+        "exact_torque_oracle"
+    ]
     data = {
         "obs": np.concatenate(
             [teacher["obs"], first_shadow["obs"], second_shadow["obs"]],
@@ -328,7 +342,7 @@ def main() -> int:
     second_index = 4_800 + 600 + int(second_label["source_tick"])
     first_delta = float(delta[first_index, RIGHT_ANKLE])
     second_delta = float(delta[second_index, RIGHT_ANKLE])
-    first_target = float(first_label["final_action"][RIGHT_ANKLE])
+    first_target = float(first_oracle["final_action"][RIGHT_ANKLE])
     second_target = float(second_label["final_action"][RIGHT_ANKLE])
     x0 = np.abs(data["obs"][:, 6]) <= 0.01
     checks = {

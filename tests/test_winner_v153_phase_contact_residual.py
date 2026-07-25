@@ -37,3 +37,24 @@ def test_v153_preregisters_one_fixed_phase_contact_residual() -> None:
     assert mechanism["optimizer_or_training"] is False
     assert prereg["authority"]["behavior"] is False
     assert prereg["authority"]["hosted_training"] is False
+
+
+def test_v153_v2_changes_only_the_oracle_vector_source() -> None:
+    prereg = load(
+        "winner_v153_phase_contact_residual_preregistration_v2.json"
+    )
+    assert sha256(
+        "winner_v153_phase_contact_residual_preregistration_v2.json"
+    ) == "106464cb98dce8391ace0d52b7fb0f3ec9a5040dcb7942fd9e450ab9fd79654f"
+    assert prereg["status"] == (
+        "PREREGISTERED_WINNER_V153_PHASE_CONTACT_RESIDUAL"
+    )
+    assert prereg["failed_checks"] == []
+    assert prereg["input_hashes"]["v1_preregistration"] == (
+        "7970123f7ad206b8dc1b10f657107f3c1d266f1247daf41bc60d6bc905b1734a"
+    )
+    assert "stopped before producing a result" in prereg["supersedes"][
+        "reason"
+    ]
+    assert prereg["mechanism"]["correction"]["value"] > 0
+    assert prereg["authority"]["behavior"] is False
