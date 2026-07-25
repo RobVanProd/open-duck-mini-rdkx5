@@ -52,3 +52,22 @@ def test_v144_preregisters_one_read_only_causal_trace() -> None:
     )
     assert prereg["authority"]["training"] is False
     assert prereg["authority"]["hosted_training"] is False
+
+
+def test_v144_v2_corrects_only_preexecution_hash_map() -> None:
+    prereg = load("winner_v144_shadow_oracle_preregistration_v2.json")
+    assert sha256(
+        "winner_v144_shadow_oracle_preregistration_v2.json"
+    ) == "f9a501840d5a82c0df86614fb57faabbf96f68b069b980621d7dbd71106643eb"
+    assert prereg["status"] == (
+        "PREREGISTERED_WINNER_V144_SHADOW_ORACLE_CAUSAL_SCREEN"
+    )
+    assert prereg["failed_checks"] == []
+    assert prereg["supersedes"]["artifact"] == (
+        "winner_v144_shadow_oracle_preregistration.json"
+    )
+    assert "observed-hash map omitted" in prereg["supersedes"]["reason"]
+    assert prereg["matrix"]["cells"] == 1
+    assert prereg["method"]["policy_action_committed"] == (
+        "unmodified V140 action"
+    )

@@ -28,16 +28,16 @@ V142_ATTRIBUTION = (
     ANALYSIS / "winner_v142_transferred_load_attribution.json"
 )
 PROJECTOR = ROOT / "tools/exact_torque_oracle_two_fit.py"
-OUTPUT = ANALYSIS / "winner_v144_shadow_oracle_preregistration.json"
+OUTPUT = ANALYSIS / "winner_v144_shadow_oracle_preregistration_v2.json"
 MARKDOWN = (
-    ANALYSIS / "WINNER_V144_SHADOW_ORACLE_PREREGISTRATION_20260725.md"
+    ANALYSIS / "WINNER_V144_SHADOW_ORACLE_PREREGISTRATION_V2_20260725.md"
 )
 EXPECTED = {
     "composer": (
         "0218f1104c4f62e7e54bf68938276a831015dffad5b47a734d019a8d65e3ae28"
     ),
     "runner": (
-        "258873b83083503051307fe7a9da69da403490634b0dea6803f461f1fe528915"
+        "e26d8a28c94e38b000b62a0323099cb5af19f5f14bf330be0fd6627ceb91e4e5"
     ),
     "v126_preregistration": (
         "eb40f17d9c08b8362f068567e1620bdafef21ad9123a633c9536f3637a31c899"
@@ -139,7 +139,7 @@ def main() -> int:
     }
     failed = sorted(name for name, passed in checks.items() if not passed)
     payload = {
-        "schema_version": "winner_v144.shadow_oracle_preregistration.v1",
+        "schema_version": "winner_v144.shadow_oracle_preregistration.v2",
         "status": (
             "PREREGISTERED_WINNER_V144_SHADOW_ORACLE_CAUSAL_SCREEN"
             if not failed
@@ -148,6 +148,16 @@ def main() -> int:
         "failed_checks": failed,
         "checks": checks,
         "input_hashes": input_hashes,
+        "supersedes": {
+            "artifact": "winner_v144_shadow_oracle_preregistration.json",
+            "reason": (
+                "The first invocation stopped before evaluator loading "
+                "because the runner's observed-hash map omitted the already "
+                "frozen composer entry present in the preregistration. V2 "
+                "adds only that provenance key; the cell, evaluator, method, "
+                "pass rules, and stop rules are unchanged."
+            ),
+        },
         "question": (
             "Does the exact two-fit oracle directly label the controllable "
             "precursor of every torque event on the unmodified V140 "

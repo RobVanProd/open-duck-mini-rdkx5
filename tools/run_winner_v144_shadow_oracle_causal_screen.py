@@ -29,7 +29,8 @@ import run_winner_v126_exact_oracle_behavior as v126_behavior  # noqa: E402
 
 
 ANALYSIS = ROOT / "outputs/analysis"
-PREREG = ANALYSIS / "winner_v144_shadow_oracle_preregistration.json"
+PREREG = ANALYSIS / "winner_v144_shadow_oracle_preregistration_v2.json"
+COMPOSER = ROOT / "tools/compose_winner_v144_shadow_oracle_evaluator.py"
 V126_PREREG = (
     ANALYSIS / "winner_v126_all_tick_supreme_clip_preregistration.json"
 )
@@ -110,6 +111,7 @@ def main() -> int:
         v141_result["new_final_cells"][1]["trace"]["path"]
     )
     observed_hashes = {
+        "composer": sha256(COMPOSER),
         "runner": sha256(Path(__file__).resolve()),
         "v126_preregistration": sha256(V126_PREREG),
         "base_preregistration": sha256(BASE_PREREG),
