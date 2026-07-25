@@ -46,6 +46,12 @@ V126_PREREG = (
 BASE_PREREG = v126_behavior.BASE_PREREG
 V140_RESULT = ANALYSIS / "winner_v140_preservation_projected_actor_result.json"
 V169_RESULT = ANALYSIS / "winner_v169_v128_final_r2_anchor_result.json"
+EXECUTION_CORRECTION = (
+    ANALYSIS / "winner_v170b_execution_input_correction.json"
+)
+EXECUTION_CORRECTION_SHA256 = (
+    "1aea59bfff28f4646d620b5f358d8f9106fbfacdfd1bf79fbc82d4a412b3ea58"
+)
 BUILDER = (
     TOOLS
     / "build_winner_v170_exact_oracle_r2_feasibility_preregistration.py"
@@ -148,6 +154,9 @@ def main() -> int:
         raise RuntimeError("V170 execution requires a clean worktree")
 
     prereg = json.loads(PREREG.read_text(encoding="utf-8"))
+    correction = json.loads(
+        EXECUTION_CORRECTION.read_text(encoding="utf-8")
+    )
     v126 = json.loads(V126_PREREG.read_text(encoding="utf-8"))
     base = json.loads(BASE_PREREG.read_text(encoding="utf-8"))
     v140 = json.loads(V140_RESULT.read_text(encoding="utf-8"))
@@ -163,13 +172,29 @@ def main() -> int:
             policy=policy,
         ).items()
     }
+    expected_except_runner = {
+        name: value
+        for name, value in prereg.get("input_hashes", {}).items()
+        if name != "runner"
+    }
+    observed_except_runner = {
+        name: value
+        for name, value in observed_hashes.items()
+        if name != "runner"
+    }
     if (
         prereg.get("status")
         != "PREREGISTERED_WINNER_V170_EXACT_ORACLE_R2_FEASIBILITY"
         or prereg.get("failed_checks") != []
-        or prereg.get("input_hashes") != observed_hashes
+        or expected_except_runner != observed_except_runner
+        or correction.get("status")
+        != "FROZEN_WINNER_V170B_EXECUTION_INPUT_CORRECTION"
+        or sha256(EXECUTION_CORRECTION) != EXECUTION_CORRECTION_SHA256
+        or correction.get("preregistration_sha256") != sha256(PREREG)
+        or correction.get("prior_runner_sha256")
+        != prereg.get("input_hashes", {}).get("runner")
     ):
-        raise ValueError("V170 preregistration changed")
+        raise ValueError("V170 preregistration or correction changed")
     matrix = prereg["matrix"]["rows"]
     if len(matrix) != 1:
         raise ValueError("V170 must contain exactly one cell")
@@ -200,7 +225,6 @@ def main() -> int:
                     base, shadow
                 ),
                 exact_torque_oracle_maximum_fit_passes=14,
-                exact_torque_oracle_apply=True,
             )
         )
 

@@ -1,0 +1,29 @@
+{
+  "authority": {
+    "candidate_selection": false,
+    "corrected_cpu_execution": true,
+    "full_matrix": false,
+    "gate5": false,
+    "hosted_training": false,
+    "later_r2_condition": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "correction": "Remove exact_torque_oracle_apply=True from the dataclass replacement. The frozen V131 composed evaluator predates that later shadow-mode switch and applies the exact oracle whenever exact_torque_oracle_enabled=True, which the unchanged V126 cell helper already sets.",
+  "failed_attempt": {
+    "behavior_cells_completed": 0,
+    "failure": "ClosedLoopConfig.__init__() got an unexpected keyword argument 'exact_torque_oracle_apply'",
+    "mechanism_outcome_observed": false,
+    "policy_ticks_completed": 0,
+    "result_path": "outputs/analysis/winner_v170a_execution_invalid_result.json",
+    "result_sha256": "93cf2ff22d819796cdede847973962ad2d20bca86c805fef3f6d37b3bdb0c160",
+    "simulation_started": false
+  },
+  "mechanism_change": false,
+  "matrix_change": false,
+  "prior_runner_sha256": "44525bf5e5fac548f744f7600f19ad6eb42084d01ec65b95d7346fd4534f27ca",
+  "preregistration_sha256": "bbcea0e1d45f51dfa55ad8fff920d54a8757f614eb6cef5148087ed8d9e8306c",
+  "schema_version": "winner_v170b.execution_input_correction.v1",
+  "status": "FROZEN_WINNER_V170B_EXECUTION_INPUT_CORRECTION"
+}
