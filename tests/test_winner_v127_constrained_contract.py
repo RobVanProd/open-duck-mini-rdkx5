@@ -194,3 +194,26 @@ def test_v127d_corrects_only_the_pre_driver_archive_root() -> None:
         "one_archive_root_corrected_exact_cli_launch"
     ] is True
     assert launch["authority"]["training_retry"] is False
+
+
+def test_v127_recovery_and_v128_nominal_gate_are_frozen() -> None:
+    recovery = load("winner_v127_recovered_training_validation.json")
+    transform = load("winner_v128_deployment_transform_contract.json")
+    nominal = load("winner_v128_nominal_behavior_preregistration.json")
+    assert recovery["status"] == (
+        "PASS_WINNER_V127_RECOVERED_TRAINING_VALIDATION"
+    )
+    assert recovery["failed_checks"] == []
+    assert all(recovery["checks"].values())
+    assert transform["status"] == (
+        "PASS_WINNER_V128_DEPLOYMENT_TRANSFORM_CONTRACT"
+    )
+    assert transform["failed_checks"] == []
+    assert transform["formal_behavior_cells_executed"] == 0
+    assert nominal["status"] == (
+        "PREREGISTERED_WINNER_V128_NOMINAL_BEHAVIOR"
+    )
+    assert nominal["failed_checks"] == []
+    assert nominal["matrix"]["cells"] == 16
+    assert nominal["execution_now"]["formal_behavior_cells"] == 0
+    assert nominal["authority"]["full_matrix_authorized"] is False
