@@ -129,3 +129,24 @@ def test_v148_residual_graph_gates_exactly_inside_radius(
     assert np.array_equal(outside[0], outside[1])
     assert np.array_equal(inside[2], hidden)
     assert np.array_equal(outside[2], hidden)
+
+
+def test_v148_changes_only_the_frozen_center_element() -> None:
+    result = load("winner_v148_single_center_residual_result.json")
+    assert sha256("winner_v148_single_center_residual_result.json") == (
+        "a7c0087dc18db1b4371b3ea7598bf768bb55fef881b57b0732e97e766be72d3d"
+    )
+    assert result["status"] == (
+        "PASS_WINNER_V148_SINGLE_CENTER_RESIDUAL"
+    )
+    assert result["failed_checks"] == []
+    assert result["aggregate"]["rows"] == 5_400
+    assert result["aggregate"]["gate_rows"] == [5_194]
+    assert result["aggregate"]["changed_elements"] == [[5_194, 13]]
+    assert result["aggregate"]["preservation_linf"] == 0
+    assert result["center"]["center_error"] <= 1.0e-7
+    assert result["artifact"]["deployed"]["inference"]["pass"] is True
+    assert result["decision"] == (
+        "EARN_ONE_V149_SINGLE_CENTER_CAUSAL_BEHAVIOR_PREREGISTRATION"
+    )
+    assert result["authority"]["behavior"] is False
