@@ -1,0 +1,186 @@
+{
+  "authority": {
+    "candidate_selection": false,
+    "gate5": false,
+    "hosted_preregistration_design": false,
+    "hosted_training": false,
+    "maximum_cpu_cells": 6,
+    "rdkx5_or_robot": false,
+    "robustness_matrix": false,
+    "torque_or_motion": false
+  },
+  "checks": {
+    "candidate_policy_hash_exact": true,
+    "cpu_only_zero_new_training": true,
+    "moving_matrix_exact_six_in_frozen_risk_order": true,
+    "source_v121_half_exact_eight_of_eight": true,
+    "v170_nearby_safe_r2_gait_green": true,
+    "v173_cpu_contract_green": true,
+    "v173_preregistration_exact": true,
+    "x0_graph_invariants_exact": true
+  },
+  "decision_rule": {
+    "green": "all six moving cells pass every unchanged gate, both x0 invariants are exact, and worst torque is strictly below the V121-half source value; earn one hosted preregistration",
+    "hold": "stop at the first failed moving cell or reject a complete matrix that does not strictly improve source worst torque; close this optimizer without another CPU step count, lr, norm cap, source, or retry"
+  },
+  "external_inputs": {
+    "evaluator_root": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v131-two-fit-evaluator-smoke-20260724",
+    "playground": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v119-train-transition-playground-20260724",
+    "policy": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v173-lexicographic-tangent-cpu-contract-20260725\\v173_deployed_1024.onnx"
+  },
+  "failed_checks": [],
+  "gate": {
+    "conversion_nm_per_a": 0.784532,
+    "noncurrent_behavior": "unchanged 600-tick candidate, gait, forward-motion, tracking, saturation, rate, envelope, x=0, trace, readback, and CPU checks",
+    "per_joint_peak_current_a_max": 2.5,
+    "per_joint_peak_torque_nm_max": 1.91229675,
+    "rated_current_p95_a": 0.65,
+    "rated_current_p95_role": "reported diagnostic only",
+    "strict_overcurrent_max_consecutive_ticks": 99,
+    "strict_overcurrent_threshold_a": 2.0
+  },
+  "input_hashes": {
+    "base_preregistration": "c8f986ceb24863f33c1fc99170548d2e255cb6a26737d3f74762f8dcd4485a24",
+    "builder": "ab4402c1ac1f4016ade13c607c9d13a497f0f0e412cd3535fc5f9afae8dc1ce8",
+    "cell_runner": "41cc51abb21dde2fde8fa4cbf36ad50212794fea0a38eb73b2c3705ee96ac034",
+    "composed_evaluator": "3e71d2c9fce67aee83528c60b1bf888deda160d8f53035eff7b30ba64e46161b",
+    "composition_manifest": "6dc9332fe32b275f3f1788a017c626b830fae71458c5d9d0286051499332562d",
+    "policy": "5add16cb74d1809c9d5fb8647b19a37f52020e9f9f2de2c4e1feb0e1ffd7c3c0",
+    "runner": "1ee45d5ba885ce7779d3dd56e356e66bb92760fc064e24bf0dfce7c63aceb62e",
+    "v121_preregistration": "9c10dc3de6ea4b5f0f5fe00b287a53e7dc17f1e77b34da84916f90ba285770f5",
+    "v121_result": "8bdefb90032facb4a3f3f7c833e608d2b35dac958ac0fcc2bbbd393ddcbb6047",
+    "v126_preregistration": "eb40f17d9c08b8362f068567e1620bdafef21ad9123a633c9536f3637a31c899",
+    "v170_result": "8f3d4103c9b74b7a1ec80e360861ecaadc97f71daaf23fa6d99b2ad46318f40b",
+    "v173_preregistration": "2db3c53abd91b516672c3883a6ce5ab8b072b798cc19a226684ff14cd418a25b",
+    "v173_result": "504ba613a135bab3f7be47605936d6065fc08d60d9adb74ff6d55aba7eae3411"
+  },
+  "matrix": {
+    "moving_cells": 6,
+    "rows_in_source_margin_risk_order": [
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "V173_TANGENT_CPU_1024",
+        "command_x_m_s": 0.08,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+        "policy_sha256": "5add16cb74d1809c9d5fb8647b19a37f52020e9f9f2de2c4e1feb0e1ffd7c3c0",
+        "seed": 167931544,
+        "step": 1024,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "V173_TANGENT_CPU_1024",
+        "command_x_m_s": 0.074,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+        "policy_sha256": "5add16cb74d1809c9d5fb8647b19a37f52020e9f9f2de2c4e1feb0e1ffd7c3c0",
+        "seed": 167931544,
+        "step": 1024,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "V173_TANGENT_CPU_1024",
+        "command_x_m_s": 0.08,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "plant": "P30_ALL_JOINT",
+        "policy_sha256": "5add16cb74d1809c9d5fb8647b19a37f52020e9f9f2de2c4e1feb0e1ffd7c3c0",
+        "seed": 167931544,
+        "step": 1024,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "V173_TANGENT_CPU_1024",
+        "command_x_m_s": 0.077,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "plant": "P30_ALL_JOINT",
+        "policy_sha256": "5add16cb74d1809c9d5fb8647b19a37f52020e9f9f2de2c4e1feb0e1ffd7c3c0",
+        "seed": 167931544,
+        "step": 1024,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "V173_TANGENT_CPU_1024",
+        "command_x_m_s": 0.077,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+        "policy_sha256": "5add16cb74d1809c9d5fb8647b19a37f52020e9f9f2de2c4e1feb0e1ffd7c3c0",
+        "seed": 167931544,
+        "step": 1024,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "V173_TANGENT_CPU_1024",
+        "command_x_m_s": 0.074,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "plant": "P30_ALL_JOINT",
+        "policy_sha256": "5add16cb74d1809c9d5fb8647b19a37f52020e9f9f2de2c4e1feb0e1ffd7c3c0",
+        "seed": 167931544,
+        "step": 1024,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      }
+    ],
+    "stop_on_first_failure": true,
+    "x0_cells_by_exact_graph_invariant": 2
+  },
+  "policy": {
+    "id": "V173_TANGENT_CPU_1024",
+    "new_training_in_v174": false,
+    "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v173-lexicographic-tangent-cpu-contract-20260725\\v173_deployed_1024.onnx",
+    "sha256": "5add16cb74d1809c9d5fb8647b19a37f52020e9f9f2de2c4e1feb0e1ffd7c3c0"
+  },
+  "schema_version": "winner_v174.tangent_nominal_preregistration.v1",
+  "source_baseline": {
+    "all_eight_cells_pass": true,
+    "policy": "V121_TRAIN_MATCHED_HALF",
+    "strict_improvement_required": true,
+    "worst_peak_torque_nm": 1.909637451171875
+  },
+  "status": "PREREGISTERED_WINNER_V174_TANGENT_NOMINAL"
+}
