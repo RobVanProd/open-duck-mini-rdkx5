@@ -42,6 +42,7 @@ from build_winner_v169_v128_final_r2_anchor_preregistration import (  # noqa: E4
 
 
 PREREG = ANALYSIS / "winner_v169_v128_final_r2_anchor_preregistration.json"
+CORRECTION = ANALYSIS / "winner_v169b_execution_input_correction.json"
 RESULT = ANALYSIS / "winner_v169_v128_final_r2_anchor_result.json"
 MARKDOWN = ANALYSIS / "WINNER_V169_V128_FINAL_R2_ANCHOR_RESULT_20260725.md"
 
@@ -59,9 +60,12 @@ def main() -> int:
     policy = args.policy.resolve()
     work = args.work_root.resolve()
     prereg = json.loads(PREREG.read_text(encoding="utf-8"))
+    correction = json.loads(CORRECTION.read_text(encoding="utf-8"))
     observed_hashes = {
         name: sha256(path) for name, path in frozen_paths().items()
     }
+    expected_hashes = dict(prereg["input_hashes"])
+    expected_hashes["runner"] = correction["corrected_runner_sha256"]
     observed_playground = {
         name: sha256(playground / name)
         for name in prereg["playground"]["required_file_hashes"]
@@ -70,7 +74,12 @@ def main() -> int:
         prereg.get("status")
         != "PREREGISTERED_WINNER_V169_V128_FINAL_R2_ANCHOR_SCREEN"
         or prereg.get("failed_checks") != []
-        or prereg.get("input_hashes") != observed_hashes
+        or correction.get("status")
+        != "FROZEN_WINNER_V169B_EXECUTION_INPUT_CORRECTION"
+        or correction.get("preregistration_sha256") != sha256(PREREG)
+        or correction.get("prior_runner_sha256")
+        != prereg["input_hashes"]["runner"]
+        or expected_hashes != observed_hashes
         or sha256(policy) != prereg["policy"]["sha256"]
         or observed_playground
         != prereg["playground"]["required_file_hashes"]
@@ -81,6 +90,8 @@ def main() -> int:
     condition = prereg["condition"]
     override = condition["override"]
     matrix = prereg["matrix"]
+    evaluator_matrix = dict(matrix)
+    evaluator_matrix["frequency_hz"] = 50
     protection_gate = prereg["protection_gate"]
     matrices = {}
     all_traces = []
@@ -100,7 +111,7 @@ def main() -> int:
                     override,
                     eval_path,
                     trace_dir,
-                    matrix,
+                    evaluator_matrix,
                 )
             )
         eval_path.write_text(
@@ -133,7 +144,7 @@ def main() -> int:
         }
     checks = {
         "frozen_input_hashes_exact": observed_hashes
-        == prereg["input_hashes"],
+        == expected_hashes,
         "policy_hash_exact": sha256(policy) == prereg["policy"]["sha256"],
         "playground_commit_and_files_exact": (
             git_head(playground) == prereg["playground"]["required_commit"]
@@ -178,6 +189,7 @@ def main() -> int:
         "failed_checks": failed,
         "checks": checks,
         "input_hashes": observed_hashes,
+        "execution_input_correction_sha256": sha256(CORRECTION),
         "policy": prereg["policy"],
         "condition": condition,
         "matrices": matrices,
