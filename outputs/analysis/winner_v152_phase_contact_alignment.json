@@ -1,0 +1,221 @@
+{
+  "authority": {
+    "behavior": false,
+    "gate5": false,
+    "hosted_training": false,
+    "policy_change": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false,
+    "training": false,
+    "v153_preregistration": true
+  },
+  "checks": {
+    "all_input_hashes_exact": true,
+    "both_events_are_right_ankle": true,
+    "contact_gate_removes_startup_double_support": true,
+    "correction_rule_is_max_without_search": true,
+    "event_separation_is_seven_periods": true,
+    "finite_local_family_is_closed": true,
+    "no_simulation_training_or_policy_change": true,
+    "oracle_labels_same_sign_nonzero": true,
+    "phase_recurrence_exact_27_ticks": true,
+    "precursor_contact_bit_exact_right_support": true,
+    "precursor_phase_bit_exact": true
+  },
+  "decision": "EARN_V153_PHASE_CONTACT_RESIDUAL_PREREGISTRATION",
+  "events": {
+    "first": {
+      "actual_force_nm": 1.920832633972168,
+      "joint": 13,
+      "projected_force_nm": -1.9122962951660156,
+      "source_action_delta": 0.002124011516571045,
+      "source_empty_joint_indices": [],
+      "source_projected_joint_indices": [
+        8,
+        10,
+        13
+      ],
+      "source_tick": 394,
+      "tick": 397
+    },
+    "gait_periods_apart": 7,
+    "second": {
+      "actual_force_nm": 1.9200553894042969,
+      "base_action": [
+        0.11835576593875885,
+        0.3900794982910156,
+        -0.2859025001525879,
+        0.07789945602416992,
+        0.40424370765686035,
+        0.22671055793762207,
+        -0.5812497138977051,
+        -0.43937423825263977,
+        -0.2653627097606659,
+        -0.24395520985126495,
+        -0.05857488885521889,
+        0.9308292865753174,
+        -0.355072021484375,
+        0.5368061065673828
+      ],
+      "final_action": [
+        0.11835576593875885,
+        0.3900794982910156,
+        -0.2859025001525879,
+        0.07789945602416992,
+        0.40424370765686035,
+        0.22671055793762207,
+        -0.5812497138977051,
+        -0.43937423825263977,
+        -0.2653627097606659,
+        -0.24395520985126495,
+        -0.05857488885521889,
+        0.9308292865753174,
+        -0.355072021484375,
+        0.5388380885124207
+      ],
+      "joint": 13,
+      "projected_force_nm": -1.9117708206176758,
+      "source_action_delta": 0.002031981945037842,
+      "source_empty_joint_indices": [],
+      "source_projected_joint_indices": [
+        6,
+        8,
+        13
+      ],
+      "source_tick": 583,
+      "tick": 586
+    },
+    "source_tick_separation": 189
+  },
+  "failed_checks": [],
+  "input_hashes": {
+    "first_trace": "eb432bdb64c251dcbb466bd795db381891837086dae9dcc7a2564a7f2a2930b5",
+    "second_trace": "a816549061de726762ff01602a3366f78a919e9800132f8faca622836e39b731",
+    "v144_correction": "4d955dacf6d30a0953c306ab6e7d9a1d87fea872a8b646aebd48c9e528c0dd0c",
+    "v150_correction": "032641cb262a8138d8cf1b395d61d2b71cca560590652ae0b92090c945531e00",
+    "v151_result": "fbc794b6d12bbe8f60087f8d417a201ccf5b259f5f2514c730ba4af2ef4a90f2"
+  },
+  "phase_contact": {
+    "contacts": [
+      0,
+      1
+    ],
+    "period_ticks": 27,
+    "phase": [
+      -0.8354877829551697,
+      -0.5495090484619141
+    ],
+    "phase_contact_ticks_first": [
+      43,
+      70,
+      97,
+      124,
+      151,
+      178,
+      205,
+      232,
+      259,
+      286,
+      313,
+      340,
+      367,
+      394,
+      421,
+      448,
+      475,
+      502,
+      529,
+      556,
+      583
+    ],
+    "phase_contact_ticks_second": [
+      43,
+      70,
+      97,
+      124,
+      151,
+      178,
+      205,
+      232,
+      259,
+      286,
+      313,
+      340,
+      367,
+      394,
+      421,
+      448,
+      475,
+      502,
+      529,
+      556,
+      583
+    ],
+    "phase_recurrence_ticks_first": [
+      16,
+      43,
+      70,
+      97,
+      124,
+      151,
+      178,
+      205,
+      232,
+      259,
+      286,
+      313,
+      340,
+      367,
+      394,
+      421,
+      448,
+      475,
+      502,
+      529,
+      556,
+      583
+    ],
+    "phase_recurrence_ticks_second": [
+      16,
+      43,
+      70,
+      97,
+      124,
+      151,
+      178,
+      205,
+      232,
+      259,
+      286,
+      313,
+      340,
+      367,
+      394,
+      421,
+      448,
+      475,
+      502,
+      529,
+      556,
+      583
+    ]
+  },
+  "schema_version": "winner_v152.phase_contact_alignment.v1",
+  "selected_mechanism": {
+    "class": "phase-and-contact-synchronous right-ankle feedforward residual",
+    "contacts": [
+      0,
+      1
+    ],
+    "correction": 0.002124011516571045,
+    "correction_rule": "maximum of the two same-sign exact-oracle labels",
+    "phase": [
+      -0.8354877829551697,
+      -0.5495090484619141
+    ],
+    "radius_rule": "half the Euclidean distance to the nearest distinct frozen phase sample",
+    "source": "V140 raw actor; no V148/V151 state-local centers",
+    "why_distinct": "the trigger is the deterministic periodic gait phase and support side, not proximity to either high-dimensional event state"
+  },
+  "status": "PASS_WINNER_V152_PHASE_CONTACT_ALIGNMENT"
+}
