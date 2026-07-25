@@ -9,6 +9,9 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
 ANALYSIS = ROOT / "outputs/analysis"
+RESULT_SHA256 = (
+    "b9a1db8b8243bae1fe9edc9ba3e01885e5b30f05f68bbef06579665f79d424e5"
+)
 
 
 def sha256(path: Path) -> str:
@@ -48,18 +51,22 @@ def test_v166_result_when_present() -> None:
     path = ANALYSIS / "winner_v166_continuous_reference_result.json"
     if not path.exists():
         return
+    assert sha256(path) == RESULT_SHA256
     value = json.loads(path.read_text(encoding="utf-8"))
-    assert value["status"] in {
-        "PASS_WINNER_V166_CONTINUOUS_REFERENCE",
-        "HOLD_WINNER_V166_CONTINUOUS_REFERENCE",
-    }
+    assert value["status"] == "HOLD_WINNER_V166_CONTINUOUS_REFERENCE"
+    assert value["failed_checks"] == ["cell_pass"]
+    assert value["cell"]["pass"] is False
+    assert value["cell"]["torque_gate"]["worst_peak_torque_nm"] == (
+        2.0642929077148438
+    )
+    assert value["cadence"]["audit"]["checks"][
+        "all_reference_actions_match_interpolation"
+    ]
+    assert value["cadence"]["audit"]["checks"][
+        "all_phase_increments_match_factor"
+    ]
     assert value["authority"]["production_contract_change"] is False
     assert value["authority"]["training"] is False
-    if value["status"].startswith("PASS_"):
-        assert value["decision"] == (
-            "EARN_REVIEWED_CONTINUOUS_REFERENCE_ADAPTER_CONTRACT_DECISION"
-        )
-    else:
-        assert value["decision"] == (
-            "CLOSE_CONTINUOUS_REFERENCE_CADENCE_EXPANSION_NO_RETRY"
-        )
+    assert value["decision"] == (
+        "CLOSE_CONTINUOUS_REFERENCE_CADENCE_EXPANSION_NO_RETRY"
+    )
