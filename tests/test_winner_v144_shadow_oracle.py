@@ -71,3 +71,38 @@ def test_v144_v2_corrects_only_preexecution_hash_map() -> None:
     assert prereg["method"]["policy_action_committed"] == (
         "unmodified V140 action"
     )
+
+
+def test_v144_reclassifies_only_expected_shadow_bookkeeping() -> None:
+    result = load("winner_v144_shadow_oracle_result.json")
+    assert sha256("winner_v144_shadow_oracle_result.json") == (
+        "fee8bde0006f9b5501e7d6fd1b9a8e11e131d7002315d6ae38019a6440ac01d7"
+    )
+    assert result["failed_checks"] == [
+        "source_behavior_failure_is_torque_only"
+    ]
+    assert all(
+        value == 0.0
+        for value in result["trajectory_reproduction_linf"].values()
+    )
+    event = result["torque"]["event_rows"]
+    assert len(event) == 1
+    assert event[0]["tick"] == 397
+    assert event[0]["joint"] == 13
+    assert event[0]["source_tick"] == 394
+    correction = load("winner_v144_shadow_oracle_reporting_correction.json")
+    assert sha256(
+        "winner_v144_shadow_oracle_reporting_correction.json"
+    ) == "4d955dacf6d30a0953c306ab6e7d9a1d87fea872a8b646aebd48c9e528c0dd0c"
+    assert correction["status"] == (
+        "PASS_WINNER_V144_SHADOW_ORACLE_REPORTING_CORRECTION"
+    )
+    assert correction["failed_checks"] == []
+    assert correction["reporting_correction"]["rerun"] is False
+    assert correction["reporting_correction"]["data_or_threshold_change"] is (
+        False
+    )
+    assert correction["decision"] == (
+        "EARN_ONE_V145_ON_POLICY_DAGGER_CPU_PREREGISTRATION"
+    )
+    assert correction["authority"]["training"] is False
