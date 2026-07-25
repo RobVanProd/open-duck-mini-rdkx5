@@ -1,0 +1,32 @@
+{
+  "authority": {
+    "behavior_evaluation_authorized": false,
+    "checkpoint_selection_authorized": false,
+    "deployment_transform_preregistration_authorized": true,
+    "gate5_authorized": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false,
+    "transform_execution_authorized": false
+  },
+  "checks": {
+    "input_hashes_exact": true,
+    "no_behavior_training_or_hardware": true,
+    "recovered_graphs_are_raw_training_exports": true,
+    "recovery_validation_green": true,
+    "v121_deployment_hierarchy_green": true
+  },
+  "correction": {
+    "correct_authority": "deployment_transform_preregistration_authorized",
+    "evidence_or_metric_change": false,
+    "reason": "the recovered 954,952-byte ONNX files are raw training exports; the exact frozen V121 deployment hierarchy must be applied uniformly before any nominal behavior cell",
+    "superseded_authority": "nominal_behavior_preregistration_authorized",
+    "training_or_transform_change": false
+  },
+  "failed_checks": [],
+  "input_hashes": {
+    "v121_transform": "4bd5eab5343cd8401db1789773fa3cc345727d903cb31222e0ea9870f0e9e640",
+    "validation": "62d21c0aa931a0667b9ee7996a28d39ec3826eda5f37368d1e91b65dd68e3b51"
+  },
+  "schema_version": "winner_v175.postrecovery_authority_correction.v1",
+  "status": "PASS_WINNER_V175_POSTRECOVERY_AUTHORITY_CORRECTION"
+}
