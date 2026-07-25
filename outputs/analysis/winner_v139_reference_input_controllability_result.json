@@ -1,0 +1,335 @@
+{
+  "authority": {
+    "behavior_evaluation": false,
+    "gate5": false,
+    "hosted_training": false,
+    "rdkx5_or_robot": false,
+    "reference_artifact_change": false,
+    "shared_reference_synthesis_preregistration": false,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "checks": {
+    "all_candidate_reference_values_within_unit_box": true,
+    "all_jacobians_and_solutions_finite": true,
+    "cpu_only": true,
+    "every_event_nonlinearly_improves": false,
+    "exact_17_torque_projected_rows": true,
+    "linear_minimum_norm_fit_ratio_at_most_point25": false,
+    "no_behavior_training_or_hosted_compute": true,
+    "nonlinear_fit_ratio_at_most_point25": false,
+    "source_actions_reproduce_recorded_base": true
+  },
+  "decision": "CLOSE_REFERENCE_INPUT_REDIRECTION",
+  "failed_checks": [
+    "every_event_nonlinearly_improves",
+    "linear_minimum_norm_fit_ratio_at_most_point25",
+    "nonlinear_fit_ratio_at_most_point25"
+  ],
+  "input_hashes": {
+    "cpu_template": "217a1551c4cc778e4b957636a40ca6e01eafa51efeaef905eb73e9debc7c26e5",
+    "network_source": "ffd07d0a6e96d846aa1f62a8d131bf892f10db6b2a22710affe3946b7b145ebd",
+    "runner": "7f1272ad9cbf34b802b8e544313357582facd73c198da01486ddf9a0fb2a5fda",
+    "source_checkpoint": "c1d9b8574c941e2279294de14aca1cb57d4736bdc63635b5aaf1e205fa7f86c1",
+    "teacher_loader": "632a2e12ae10d940be38858c52e738281ca6a2de1736d1be90b8adcbdbd8baa8",
+    "v121_transform": "4bd5eab5343cd8401db1789773fa3cc345727d903cb31222e0ea9870f0e9e640",
+    "v131_behavior_result": "ab1535e11287f191e8ee6b4be5c020c44726c6263465c7cb760892387b07c9ea",
+    "v138_phase20_result": "8e0ee98ac9208496bc357ede853a2bee3269426b506666359f2a5267fc8a502d"
+  },
+  "method": {
+    "actor_policy_and_state": "frozen V121 final, recorded previous_action and h_in",
+    "bounds": "candidate reference must remain in [-1,1]",
+    "population": "17 V131 torque-projected final-checkpoint rows",
+    "selection_or_parameter_search": false,
+    "solver": "one local Jacobian per row; NumPy minimum-L2 least-squares reference delta; one nonlinear actor readback",
+    "variables": "obs[101:115] reference input only"
+  },
+  "rows": [
+    {
+      "candidate_reference_linf": 0.469302362090818,
+      "command_x_m_s": 0.07999999821186066,
+      "jacobian_min_singular": 0.0,
+      "jacobian_rank": 7,
+      "key": "v121_train_matched_final_p30_all_joint_x0.080_seed167931544.jsonl:018",
+      "linear_error_mse": 2.132102670863834e-28,
+      "nonlinear_error_mse": 4.3319316883616565e-11,
+      "nonlinear_ratio_to_source": 4.681102260421027e-05,
+      "phase": [
+        -0.49999991059303284,
+        -0.866025447845459
+      ],
+      "reference_delta_linf": 0.0015743888817795343,
+      "source_error_mse": 9.254084716303623e-07
+    },
+    {
+      "candidate_reference_linf": 0.5094798207382167,
+      "command_x_m_s": 0.07400000095367432,
+      "jacobian_min_singular": 0.0,
+      "jacobian_rank": 5,
+      "key": "v121_train_matched_final_p31_34_pitch_with_p30_nonpitch_x0.074_seed167931544.jsonl:017",
+      "linear_error_mse": 0.00010796459954715561,
+      "nonlinear_error_mse": 0.00010796459537232295,
+      "nonlinear_ratio_to_source": 1.0,
+      "phase": [
+        -0.6862415671348572,
+        -0.7273737192153931
+      ],
+      "reference_delta_linf": 1.3847612576748806e-10,
+      "source_error_mse": 0.00010796459537232295
+    },
+    {
+      "candidate_reference_linf": 0.4295006397949125,
+      "command_x_m_s": 0.07699999958276749,
+      "jacobian_min_singular": 0.0,
+      "jacobian_rank": 5,
+      "key": "v121_train_matched_final_p30_all_joint_x0.077_seed167931544.jsonl:028",
+      "linear_error_mse": 3.163648671440049e-05,
+      "nonlinear_error_mse": 3.163648580084555e-05,
+      "nonlinear_ratio_to_source": 1.0,
+      "phase": [
+        0.9730448722839355,
+        0.23061586916446686
+      ],
+      "reference_delta_linf": 6.699473978807197e-08,
+      "source_error_mse": 3.163648580084555e-05
+    },
+    {
+      "candidate_reference_linf": 0.40560176968574524,
+      "command_x_m_s": 0.07699999958276749,
+      "jacobian_min_singular": 0.0,
+      "jacobian_rank": 3,
+      "key": "v121_train_matched_final_p31_34_pitch_with_p30_nonpitch_x0.077_seed167931544.jsonl:027",
+      "linear_error_mse": 4.6648360730776926e-05,
+      "nonlinear_error_mse": 4.664835796575062e-05,
+      "nonlinear_ratio_to_source": 1.0,
+      "phase": [
+        1.0,
+        0.0
+      ],
+      "reference_delta_linf": 1.9553789075529864e-12,
+      "source_error_mse": 4.664835796575062e-05
+    },
+    {
+      "candidate_reference_linf": 0.2668212652206421,
+      "command_x_m_s": 0.07400000095367432,
+      "jacobian_min_singular": 0.0,
+      "jacobian_rank": 3,
+      "key": "v121_train_matched_final_p30_all_joint_x0.074_seed167931544.jsonl:024",
+      "linear_error_mse": 1.3286791958729996e-05,
+      "nonlinear_error_mse": 1.3286791727296077e-05,
+      "nonlinear_ratio_to_source": 1.0,
+      "phase": [
+        0.7660443186759949,
+        -0.642787754535675
+      ],
+      "reference_delta_linf": 9.162994786572018e-12,
+      "source_error_mse": 1.3286791727296077e-05
+    },
+    {
+      "candidate_reference_linf": 0.4295006394386293,
+      "command_x_m_s": 0.07699999958276749,
+      "jacobian_min_singular": 0.0,
+      "jacobian_rank": 4,
+      "key": "v121_train_matched_final_p31_34_pitch_with_p30_nonpitch_x0.077_seed167931544.jsonl:028",
+      "linear_error_mse": 3.3049692876017745e-05,
+      "nonlinear_error_mse": 3.304969141026959e-05,
+      "nonlinear_ratio_to_source": 1.0,
+      "phase": [
+        0.9730448722839355,
+        0.23061586916446686
+      ],
+      "reference_delta_linf": 5.129754449279063e-12,
+      "source_error_mse": 3.304969141026959e-05
+    },
+    {
+      "candidate_reference_linf": 0.3403776884078979,
+      "command_x_m_s": 0.07999999821186066,
+      "jacobian_min_singular": 0.0,
+      "jacobian_rank": 3,
+      "key": "v121_train_matched_final_p30_all_joint_x0.080_seed167931544.jsonl:565",
+      "linear_error_mse": 1.2158834615710085e-05,
+      "nonlinear_error_mse": 1.215883548866259e-05,
+      "nonlinear_ratio_to_source": 1.0,
+      "phase": [
+        0.893632709980011,
+        -0.4487990736961365
+      ],
+      "reference_delta_linf": 8.445011550720243e-12,
+      "source_error_mse": 1.215883548866259e-05
+    },
+    {
+      "candidate_reference_linf": 0.4056017696857453,
+      "command_x_m_s": 0.07699999958276749,
+      "jacobian_min_singular": 0.0,
+      "jacobian_rank": 2,
+      "key": "v121_train_matched_final_p30_all_joint_x0.077_seed167931544.jsonl:027",
+      "linear_error_mse": 6.0546658886551086e-05,
+      "nonlinear_error_mse": 6.0546659369720146e-05,
+      "nonlinear_ratio_to_source": 1.0,
+      "phase": [
+        1.0,
+        0.0
+      ],
+      "reference_delta_linf": 1.4294079717610232e-11,
+      "source_error_mse": 6.0546659369720146e-05
+    },
+    {
+      "candidate_reference_linf": 0.5094682790712272,
+      "command_x_m_s": 0.07699999958276749,
+      "jacobian_min_singular": 0.0,
+      "jacobian_rank": 5,
+      "key": "v121_train_matched_final_p31_34_pitch_with_p30_nonpitch_x0.077_seed167931544.jsonl:017",
+      "linear_error_mse": 9.656758905483738e-31,
+      "nonlinear_error_mse": 2.605149518331018e-07,
+      "nonlinear_ratio_to_source": 0.006266834204589898,
+      "phase": [
+        -0.6862415671348572,
+        -0.7273737192153931
+      ],
+      "reference_delta_linf": 0.00019183458454844504,
+      "source_error_mse": 4.157042349106632e-05
+    },
+    {
+      "candidate_reference_linf": 0.37006101012229914,
+      "command_x_m_s": 0.07400000095367432,
+      "jacobian_min_singular": 0.0,
+      "jacobian_rank": 3,
+      "key": "v121_train_matched_final_p31_34_pitch_with_p30_nonpitch_x0.074_seed167931544.jsonl:026",
+      "linear_error_mse": 1.1153243668309593e-07,
+      "nonlinear_error_mse": 1.1153243661965462e-07,
+      "nonlinear_ratio_to_source": 1.0,
+      "phase": [
+        0.9730448722839355,
+        -0.23061595857143402
+      ],
+      "reference_delta_linf": 2.6139953510233616e-11,
+      "source_error_mse": 1.1153243661965462e-07
+    },
+    {
+      "candidate_reference_linf": 0.34037768840789795,
+      "command_x_m_s": 0.07400000095367432,
+      "jacobian_min_singular": 0.0,
+      "jacobian_rank": 1,
+      "key": "v121_train_matched_final_p30_all_joint_x0.074_seed167931544.jsonl:025",
+      "linear_error_mse": 3.095493324524666e-05,
+      "nonlinear_error_mse": 3.095493229920976e-05,
+      "nonlinear_ratio_to_source": 1.0,
+      "phase": [
+        0.893632709980011,
+        -0.4487990736961365
+      ],
+      "reference_delta_linf": 0.0,
+      "source_error_mse": 3.095493229920976e-05
+    },
+    {
+      "candidate_reference_linf": 0.5296508073806763,
+      "command_x_m_s": 0.07400000095367432,
+      "jacobian_min_singular": 0.0,
+      "jacobian_rank": 3,
+      "key": "v121_train_matched_final_p31_34_pitch_with_p30_nonpitch_x0.074_seed167931544.jsonl:016",
+      "linear_error_mse": 2.1319890141695275e-05,
+      "nonlinear_error_mse": 2.131989094777964e-05,
+      "nonlinear_ratio_to_source": 1.0,
+      "phase": [
+        -0.8354877829551697,
+        -0.5495090484619141
+      ],
+      "reference_delta_linf": 3.6251885975832313e-12,
+      "source_error_mse": 2.131989094777964e-05
+    },
+    {
+      "candidate_reference_linf": 0.40560176968574524,
+      "command_x_m_s": 0.07400000095367432,
+      "jacobian_min_singular": 0.0,
+      "jacobian_rank": 2,
+      "key": "v121_train_matched_final_p31_34_pitch_with_p30_nonpitch_x0.074_seed167931544.jsonl:027",
+      "linear_error_mse": 4.869134614133535e-05,
+      "nonlinear_error_mse": 4.869134500040673e-05,
+      "nonlinear_ratio_to_source": 1.0,
+      "phase": [
+        1.0,
+        0.0
+      ],
+      "reference_delta_linf": 0.0,
+      "source_error_mse": 4.869134500040673e-05
+    },
+    {
+      "candidate_reference_linf": 0.46914905310026594,
+      "command_x_m_s": 0.07699999958276749,
+      "jacobian_min_singular": 0.0,
+      "jacobian_rank": 4,
+      "key": "v121_train_matched_final_p30_all_joint_x0.077_seed167931544.jsonl:018",
+      "linear_error_mse": 2.2010627935854123e-34,
+      "nonlinear_error_mse": 9.778543699212605e-07,
+      "nonlinear_ratio_to_source": 0.022538476912301368,
+      "phase": [
+        -0.49999991059303284,
+        -0.866025447845459
+      ],
+      "reference_delta_linf": 3.810573103806408e-07,
+      "source_error_mse": 4.3386000470491126e-05
+    },
+    {
+      "candidate_reference_linf": 0.46914905086479153,
+      "command_x_m_s": 0.07999999821186066,
+      "jacobian_min_singular": 0.0,
+      "jacobian_rank": 7,
+      "key": "v121_train_matched_final_p31_34_pitch_with_p30_nonpitch_x0.080_seed167931544.jsonl:018",
+      "linear_error_mse": 0.0001735624854048682,
+      "nonlinear_error_mse": 0.00017356248281430453,
+      "nonlinear_ratio_to_source": 1.0,
+      "phase": [
+        -0.49999991059303284,
+        -0.866025447845459
+      ],
+      "reference_delta_linf": 2.877616356460936e-08,
+      "source_error_mse": 0.00017356248281430453
+    },
+    {
+      "candidate_reference_linf": 0.26682126522064203,
+      "command_x_m_s": 0.07999999821186066,
+      "jacobian_min_singular": 0.0,
+      "jacobian_rank": 4,
+      "key": "v121_train_matched_final_p31_34_pitch_with_p30_nonpitch_x0.080_seed167931544.jsonl:402",
+      "linear_error_mse": 6.603695839300729e-06,
+      "nonlinear_error_mse": 6.603695965168299e-06,
+      "nonlinear_ratio_to_source": 1.0,
+      "phase": [
+        0.7660443186759949,
+        -0.642787754535675
+      ],
+      "reference_delta_linf": 1.1389678073282745e-11,
+      "source_error_mse": 6.603695965168299e-06
+    },
+    {
+      "candidate_reference_linf": 0.4690833279677464,
+      "command_x_m_s": 0.07699999958276749,
+      "jacobian_min_singular": 3.5813693219962185e-78,
+      "jacobian_rank": 6,
+      "key": "v121_train_matched_final_p31_34_pitch_with_p30_nonpitch_x0.077_seed167931544.jsonl:018",
+      "linear_error_mse": 3.264749774877745e-29,
+      "nonlinear_error_mse": 4.050149868817243e-07,
+      "nonlinear_ratio_to_source": 0.04064334144340691,
+      "phase": [
+        -0.49999991059303284,
+        -0.866025447845459
+      ],
+      "reference_delta_linf": 0.0039026669786308282,
+      "source_error_mse": 9.96510061668232e-06
+    }
+  ],
+  "schema_version": "winner_v139.reference_input_controllability.v1",
+  "status": "HOLD_WINNER_V139_REFERENCE_INPUT_CONTROLLABILITY",
+  "summary": {
+    "candidate_reference_linf_max": 0.5296508073806763,
+    "linear_mse": 3.4502076972851246e-05,
+    "linear_ratio_to_source": 0.8595405761054247,
+    "minimum_jacobian_rank": 1,
+    "nonlinear_mse": 3.4598750062286854e-05,
+    "nonlinear_ratio_to_source": 0.86194896569463,
+    "reference_delta_linf_max": 0.0039026669786308282,
+    "rows": 17,
+    "source_mse": 4.0140137571142986e-05,
+    "worst_event_nonlinear_ratio": 1.0
+  }
+}
