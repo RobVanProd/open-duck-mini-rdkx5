@@ -33,3 +33,22 @@ def test_v151_preregisters_a_hard_two_center_family_bound() -> None:
     assert prereg["mechanism"]["optimizer_or_training"] is False
     assert prereg["authority"]["behavior"] is False
     assert prereg["authority"]["hosted_training"] is False
+
+
+def test_v151_closes_before_behavior_on_frozen_target_tolerance() -> None:
+    result = load("winner_v151_bounded_two_center_result.json")
+    assert sha256("winner_v151_bounded_two_center_result.json") == (
+        "fbc794b6d12bbe8f60087f8d417a201ccf5b259f5f2514c730ba4af2ef4a90f2"
+    )
+    assert result["status"] == "HOLD_WINNER_V151_BOUNDED_TWO_CENTER"
+    assert result["failed_checks"] == ["center_matches_oracle_target"]
+    assert result["aggregate"]["rows"] == 6_000
+    assert result["aggregate"]["second_gate_rows"] == [5_983]
+    assert result["aggregate"]["changed_elements"] == [[5_983, 13]]
+    assert result["aggregate"]["preservation_linf"] == 0
+    assert result["checks"]["first_center_parameters_bit_exact"] is True
+    assert result["checks"]["deployment_contract_green"] is True
+    assert 1.7e-7 < result["second_center"]["center_error"] < 1.9e-7
+    assert result["decision"] == "CLOSE_FINITE_LOCAL_RESIDUAL_FAMILY"
+    assert result["family_bound"]["third_center_permitted"] is False
+    assert result["authority"]["behavior"] is False
