@@ -1,0 +1,66 @@
+{
+  "authority": {
+    "behavior": false,
+    "cpu_contract_preregistration": true,
+    "gate5": false,
+    "hosted_training": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "checks": {
+    "candidate_preserves_teacher_state_peak_joint": true,
+    "closed_loop_action_shift_at_peak_tick": true,
+    "left_knee_repaired_below_limit": true,
+    "new_peak_right_ankle": true,
+    "no_new_behavior_or_training": true,
+    "peak_joint_has_exact_zero_teacher_delta": true,
+    "peak_tick_has_no_torque_teacher_label": true,
+    "right_ankle_transferred_above_limit": true,
+    "source_peak_left_knee": true,
+    "v140_cpu_projection_green": true,
+    "v141_only_failure_torque": true
+  },
+  "decision": "PREREGISTER_TORQUE_ONLY_PRESERVATION_CONSTRAINED_ACTOR_CPU",
+  "diagnosis": "the aggregate-preservation projection repaired the labeled left-knee startup peak but changed the closed-loop trajectory enough to move the mature right ankle above the torque box; the candidate still exactly preserves the right-ankle output on the corresponding unwrapped teacher state, so this is a trajectory-transfer effect rather than a direct label there",
+  "failed_checks": [],
+  "input_hashes": {
+    "new_trace": "10471d5a15ccf4f55d188778f9226e94f5c5a050061fcb703a7e2e22a0c7a532",
+    "source_trace": "43710046f3abae7a84a691f77e2ca02533a8a484097c538768a0f4237d61de3a",
+    "teacher_trace": "c023d1b83015fa143898203bf96de46e6d40c0ac4ba87719c138f3e16d2d7ec0",
+    "v121_result": "8bdefb90032facb4a3f3f7c833e608d2b35dac958ac0fcc2bbbd393ddcbb6047",
+    "v140_result": "44921665d80235246737b333a5149ceacb702d477dcc2c7496395bf0c42ba637",
+    "v141_result": "08ecfbeb87a09781228d0657e795e106a1f4fae0e60b844f7055dacead21929b"
+  },
+  "projected": {
+    "left_knee_peak_nm": 1.8921623229980469,
+    "peak": {
+      "joint": 13,
+      "tick": 397,
+      "torque_nm": 1.920832633972168
+    },
+    "right_ankle_action_at_peak": 0.4282350540161133,
+    "right_ankle_peak_nm": 1.920832633972168
+  },
+  "schema_version": "winner_v142.transferred_load_attribution.v1",
+  "source": {
+    "left_knee_peak_nm": 1.917562484741211,
+    "peak": {
+      "joint": 3,
+      "tick": 28,
+      "torque_nm": 1.917562484741211
+    },
+    "right_ankle_peak_nm": 1.8844728469848633
+  },
+  "status": "PASS_WINNER_V142_TRANSFERRED_LOAD_ATTRIBUTION",
+  "teacher_at_new_peak": {
+    "candidate_on_teacher_minus_base": 0.0,
+    "candidate_on_teacher_right_ankle_action": 0.42297816276550293,
+    "projected_joint_indices": [],
+    "projected_minus_source_action": 0.045764923095703125,
+    "projected_right_ankle_action": 0.4282350540161133,
+    "right_ankle_action_delta": 0.0,
+    "source_right_ankle_action": 0.38247013092041016,
+    "tick": 397
+  }
+}
