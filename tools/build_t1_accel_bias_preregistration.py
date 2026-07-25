@@ -13,8 +13,9 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 ANALYSIS = ROOT / "outputs" / "analysis"
-OUTPUT = ANALYSIS / "t1_accel_bias_preregistration.json"
-MARKDOWN = ANALYSIS / "T1_ACCEL_BIAS_PREREGISTRATION_20260725.md"
+OUTPUT = ANALYSIS / "t1_accel_bias_v2_preregistration.json"
+MARKDOWN = ANALYSIS / "T1_ACCEL_BIAS_V2_PREREGISTRATION_20260725.md"
+V1_PREREG = ANALYSIS / "t1_accel_bias_preregistration.json"
 POLICY = ROOT / "policy" / "BEST_WALK_ONNX_2.onnx"
 FIT = ANALYSIS / "actuator_response_fit_corrected_knee.json"
 PUBLISHED_AUDIT = ANALYSIS / "published_policy_propulsion_x008_straight_audit.json"
@@ -76,6 +77,7 @@ def main() -> int:
         "t1_evaluator": T1_EVALUATOR,
         "contract_runner": CONTRACT_RUNNER,
         "matrix_runner": MATRIX_RUNNER,
+        "v1_preregistration": V1_PREREG,
     }
     missing = sorted(name for name, path in paths.items() if not path.is_file())
     hashes = {
@@ -117,7 +119,7 @@ def main() -> int:
         else "HOLD_T1_ACCEL_BIAS_PREREGISTRATION"
     )
     payload = {
-        "schema_version": "open_duck.t1_accel_bias_preregistration.v1",
+        "schema_version": "open_duck.t1_accel_bias_preregistration.v2",
         "status": status,
         "missing_inputs": missing,
         "failed_checks": failed_checks,
@@ -137,6 +139,19 @@ def main() -> int:
             "A constant +1.6 m/s^2 error in raw policy observation element 3 "
             "is a first-order cause of BEST_WALK's x=0.08 behavior mismatch."
         ),
+        "supersedes": {
+            "schema_version": "open_duck.t1_accel_bias_preregistration.v1",
+            "preregistered_contract_sha256": (
+                "e0b081b1d4ae41a199ff29684d636aa5761c7eada69b12dfededab54ffddf4d0"
+            ),
+            "reason": (
+                "the pre-matrix comparison harness rejected a legitimate "
+                "Infinity summary sentinel while serializing a five-tick "
+                "smoke result; no contract result or matrix cell was produced"
+            ),
+            "decision_weight": 0,
+            "scientific_contract_changes": "none",
+        },
         "insertion_contract": {
             "observation_index": 3,
             "quantity": "raw local-frame accelerometer x in m/s^2",
@@ -259,7 +274,7 @@ def main() -> int:
         encoding="utf-8",
     )
     MARKDOWN.write_text(
-        "# T1 accelerometer-bias dose-response preregistration\n\n"
+        "# T1 accelerometer-bias dose-response v2 preregistration\n\n"
         f"- Status: `{status}`\n"
         f"- Contract SHA-256: `{payload['preregistered_contract_sha256']}`\n"
         f"- Matrix SHA-256: `{payload['matrix_sha256']}`\n"
@@ -267,6 +282,9 @@ def main() -> int:
         "- Primary decision: compare +1.6 m/s^2 against zero at x=0.08.\n"
         "- No policy, normalizer, simulator model, actuator bridge, or gate "
         "is changed.\n"
+        "- V1 is superseded because its comparison serializer rejected a "
+        "legitimate Infinity summary sentinel before producing any result; "
+        "the scientific contract is unchanged.\n"
         "- The zero-bias equivalence contract must pass before the matrix.\n",
         encoding="utf-8",
     )

@@ -20,10 +20,10 @@ from closed_loop_sim_eval_t1_accel_bias import (
 
 ROOT = Path(__file__).resolve().parents[1]
 ANALYSIS = ROOT / "outputs" / "analysis"
-PREREG = ANALYSIS / "t1_accel_bias_preregistration.json"
-CONTRACT = ANALYSIS / "t1_accel_bias_contract_result.json"
-OUTPUT = ANALYSIS / "t1_accel_bias_dose_response_result.json"
-MARKDOWN = ANALYSIS / "T1_ACCEL_BIAS_DOSE_RESPONSE_RESULT_20260725.md"
+PREREG = ANALYSIS / "t1_accel_bias_v2_preregistration.json"
+CONTRACT = ANALYSIS / "t1_accel_bias_v2_contract_result.json"
+OUTPUT = ANALYSIS / "t1_accel_bias_v2_dose_response_result.json"
+MARKDOWN = ANALYSIS / "T1_ACCEL_BIAS_V2_DOSE_RESPONSE_RESULT_20260725.md"
 CURRENT_TO_TORQUE = 0.784532
 
 
@@ -433,7 +433,7 @@ def main() -> int:
             "reason": "result requires all preregistered cells",
         }
     payload = {
-        "schema_version": "open_duck.t1_accel_bias_dose_response_result.v1",
+        "schema_version": "open_duck.t1_accel_bias_dose_response_result.v2",
         "status": decision["status"],
         "preregistered_contract_sha256": prereg[
             "preregistered_contract_sha256"

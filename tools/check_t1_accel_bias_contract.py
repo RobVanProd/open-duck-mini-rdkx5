@@ -24,9 +24,9 @@ from closed_loop_sim_eval_t1_accel_bias import (
 
 ROOT = Path(__file__).resolve().parents[1]
 ANALYSIS = ROOT / "outputs" / "analysis"
-PREREG = ANALYSIS / "t1_accel_bias_preregistration.json"
-OUTPUT = ANALYSIS / "t1_accel_bias_contract_result.json"
-MARKDOWN = ANALYSIS / "T1_ACCEL_BIAS_CONTRACT_RESULT_20260725.md"
+PREREG = ANALYSIS / "t1_accel_bias_v2_preregistration.json"
+OUTPUT = ANALYSIS / "t1_accel_bias_v2_contract_result.json"
+MARKDOWN = ANALYSIS / "T1_ACCEL_BIAS_V2_CONTRACT_RESULT_20260725.md"
 
 
 def sha256(path: Path) -> str:
@@ -39,7 +39,7 @@ def sha256(path: Path) -> str:
 
 def canonical(value: Any) -> str:
     return json.dumps(
-        value, allow_nan=False, separators=(",", ":"), sort_keys=True
+        value, allow_nan=True, separators=(",", ":"), sort_keys=True
     )
 
 
@@ -201,7 +201,7 @@ def main() -> int:
         else "HOLD_T1_ACCEL_BIAS_CONTRACT"
     )
     payload = {
-        "schema_version": "open_duck.t1_accel_bias_contract_result.v1",
+        "schema_version": "open_duck.t1_accel_bias_contract_result.v2",
         "status": status,
         "preregistered_contract_sha256": prereg[
             "preregistered_contract_sha256"
