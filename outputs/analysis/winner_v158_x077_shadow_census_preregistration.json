@@ -1,0 +1,75 @@
+{
+  "authority": {
+    "behavior_candidate": false,
+    "gate5": false,
+    "hosted_training": false,
+    "mechanism_classification": false,
+    "one_cpu_shadow_cell": true,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "checks": {
+    "closed_v155_policy_not_reused": true,
+    "composed_shadow_evaluator_green": true,
+    "no_training_behavior_selection_colab_or_robot": true,
+    "one_shadow_cell_only": true,
+    "oracle_actions_never_applied": true,
+    "selected_failure_is_p30_x077_torque_only": true,
+    "selected_row_exact": true,
+    "v140_source_graph_green": true,
+    "v155_state_trigger_family_closed": true
+  },
+  "failed_checks": [],
+  "green_followup": "earn only a read-only mechanism-classification audit; no training or hosted compute",
+  "input_hashes": {
+    "base_preregistration": "c8f986ceb24863f33c1fc99170548d2e255cb6a26737d3f74762f8dcd4485a24",
+    "composed_evaluator": "43bf3373085ccddd6d56a0bc245e033dca67b15599baef6babc8abe24e118de1",
+    "composer": "0218f1104c4f62e7e54bf68938276a831015dffad5b47a734d019a8d65e3ae28",
+    "composition_manifest": "f07967333233c179145fc1b3232ca1d076bd55bbdeb1b0397381ed344298b05f",
+    "projector": "c9894fa982d0837fbd6281dc778248365c9079e60680c928fd34a50c2e55eb27",
+    "runner": "94555f8000e8af9a7eecc96e65217518936056b7c53412cf2fbdf3d23fa39c82",
+    "selected_policy": "ae87508d7bd25c7821cb167d7a61d8eeaa28d7d153be72dd9d537236ae5e92f6",
+    "v126_preregistration": "eb40f17d9c08b8362f068567e1620bdafef21ad9123a633c9536f3637a31c899",
+    "v140_result": "44921665d80235246737b333a5149ceacb702d477dcc2c7496395bf0c42ba637",
+    "v155_result": "71276cb1abb4f3e1649b6ca4e6b4711e6fabdd552c6be2344c32c7cec3d389a6",
+    "v157_result": "430df5f76cc60f69bfa189a19d6d58e9b856c415c5006ab31ff981adef8fdc9d"
+  },
+  "matrix": {
+    "cells": 1,
+    "row": {
+      "calibration_ticks": 0,
+      "checkpoint_id": "V121_TRAIN_MATCHED_FINAL",
+      "command_x_m_s": 0.077,
+      "configuration": null,
+      "duration_ticks": 600,
+      "home_return_ticks": 0,
+      "oracle_schedule_ticks": null,
+      "plant": "P30_ALL_JOINT",
+      "policy_sha256": "bc54ea1bf39e617f76771e7416de91db2ccfe0b1bf903de08faaa64a67ce4aab",
+      "seed": 167931544,
+      "step": 2007040,
+      "transport": {
+        "additional_action_delay_ticks": 0,
+        "imu_delay_ticks": 0,
+        "native_quantization": false,
+        "sensor_noise_scales": null
+      }
+    }
+  },
+  "method": {
+    "application": false,
+    "census": "all actual torque violations, delay-aligned source ticks, joint identities, action deltas, and empty intersections",
+    "oracle": "exact two-fit projection computed and logged every tick",
+    "policy": "unmodified V140 selected deployed graph"
+  },
+  "pass_rule": {
+    "labels": "every actual violation has a nonempty, nonzero, safe delay-aligned oracle label",
+    "scope": "reporting/diagnosis only; no candidate advancement",
+    "trace": "600 ticks, CPU only, no oracle action application"
+  },
+  "question": "On the unmodified V140 P30 x=.077 trajectory, which joints and precursor states require exact two-fit torque corrections, and are all violations controllable?",
+  "schema_version": "winner_v158.x077_shadow_census_preregistration.v1",
+  "status": "PREREGISTERED_WINNER_V158_X077_SHADOW_CENSUS",
+  "stop_rule": "if any violation is unlabeled, empty, or the shadow changes the policy action, close deployable residual learning from this source and escalate directly to gait-level redesign"
+}
