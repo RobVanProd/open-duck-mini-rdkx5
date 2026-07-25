@@ -1,0 +1,47 @@
+{
+  "authority": {
+    "behavior": false,
+    "cpu_graph_audit": true,
+    "gate5": false,
+    "hosted_training": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "checks": {
+    "all_input_hashes_exact": true,
+    "fixed_twenty_step_bisection": true,
+    "robot_surface_absent": true,
+    "selection_uses_only_preservation": true,
+    "source_and_candidate_exports_exist": true,
+    "training_not_authorized": true,
+    "v145_closed_only_on_shadow_preservation": true
+  },
+  "failed_checks": [],
+  "input_hashes": {
+    "candidate_raw": "229564750101b99e215c159c640d2af457d4acd5b2d7a993346e02b83d0a6c5b",
+    "runner": "f059ae7c256b2938c1cfce1716d239cebb8d1394ad2b4eb9feb74d8292a034f7",
+    "shadow_trace": "eb432bdb64c251dcbb466bd795db381891837086dae9dcc7a2564a7f2a2930b5",
+    "source_raw": "aa1025ae4bd2daf1c513cd81374e8eb7961308a41ca10bbe55f6284944fd6460",
+    "v121_transform": "4bd5eab5343cd8401db1789773fa3cc345727d903cb31222e0ea9870f0e9e640",
+    "v134_loader": "632a2e12ae10d940be38858c52e738281ca6a2de1736d1be90b8adcbdbd8baa8",
+    "v145_loader": "b6f0cb28e86bc3561009af87ad5cc5136641e08057d54c81d74b119d627ded4c",
+    "v145_result": "d1b9ee041130fd50b8be357749f2c8cdf38a884b8bde527eabfb19c80a3b14a8"
+  },
+  "method": {
+    "bisection_steps": 20,
+    "correction_selection_weight": 0,
+    "optimizer_or_training": false,
+    "path": "exact ONNX initializer interpolation",
+    "selection": "largest alpha satisfying all three preservation ratios <=0.01"
+  },
+  "pass_rule": {
+    "correction": "overall, teacher, and shadow ratios all <=0.95",
+    "export": "selected stateful ONNX contract passes",
+    "preservation": "overall, teacher, and shadow ratios all <=0.01"
+  },
+  "question": "Does any point on the already-computed V140-to-V145 actor direction satisfy both the frozen 1% preservation and 5% correction-improvement rules on overall, teacher, and shadow subsets?",
+  "schema_version": "winner_v146.dagger_direction_preregistration.v1",
+  "status": "PREREGISTERED_WINNER_V146_DAGGER_DIRECTION_FEASIBILITY",
+  "stop_rule": "if the preservation-selected point misses any correction gate, close the entire global V145 direction; do not adjust alpha using correction outcomes and do not run behavior"
+}
