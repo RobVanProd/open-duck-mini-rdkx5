@@ -46,6 +46,9 @@ def test_v155_graph_contract_when_present() -> None:
     if not path.exists():
         return
     result = json.loads(path.read_text(encoding="utf-8"))
+    assert sha256(
+        "winner_v155_velocity_gated_phase_residual_result.json"
+    ) == "71276cb1abb4f3e1649b6ca4e6b4711e6fabdd552c6be2344c32c7cec3d389a6"
     assert result["status"] == (
         "PASS_WINNER_V155_VELOCITY_GATED_PHASE_RESIDUAL"
     )
