@@ -1,0 +1,118 @@
+{
+  "authority": {
+    "behavior_evaluation": false,
+    "formal_training": false,
+    "full_matrix": false,
+    "gate5": false,
+    "hosted_training": false,
+    "observation_residual_cpu_contract": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false
+  },
+  "checks": {
+    "all_probe_values_finite": true,
+    "both_cross_plant_preservation_below_one_percent": false,
+    "cpu_only_read_only_audit": true,
+    "dataset_exact": true,
+    "no_training_behavior_or_hosted_compute": true,
+    "p30_to_p31_improves_corrected_rows": true,
+    "p31_to_p30_improves_corrected_rows": false,
+    "state_corrected_error_at_most_quarter_baseline": true,
+    "state_preservation_error_at_most_one_percent_baseline": false,
+    "state_probe_beats_hidden_by_four_x": false,
+    "v129_formal_closed_without_behavior": true
+  },
+  "combined_fit": {
+    "current_hidden": {
+      "active_features": 64,
+      "baseline_corrected_mse": 3.6449737898416506e-05,
+      "coefficient_l2": 0.04003135244157281,
+      "corrected_mse": 4.1693184856088854e-07,
+      "corrected_ratio_to_zero_predictor": 0.011438541745426417,
+      "error_linf": 0.0360392476209665,
+      "prediction_linf": 0.044694584797118,
+      "preservation_mse": 1.9153805311837283e-06,
+      "preservation_ratio_to_corrected_baseline": 0.05254854058270028,
+      "rank": 65,
+      "smallest_singular": 5.253930164413767
+    },
+    "normalized_obs": {
+      "active_features": 105,
+      "baseline_corrected_mse": 3.6449737898416506e-05,
+      "coefficient_l2": 48.26216807009592,
+      "corrected_mse": 1.5061449666392338e-07,
+      "corrected_ratio_to_zero_predictor": 0.004132114669347637,
+      "error_linf": 0.032327180201398506,
+      "prediction_linf": 0.046836003005878354,
+      "preservation_mse": 1.2320089110586895e-06,
+      "preservation_ratio_to_corrected_baseline": 0.033800213172786954,
+      "rank": 106,
+      "smallest_singular": 2.594559228406188e-05
+    },
+    "normalized_obs_plus_h_in": {
+      "active_features": 169,
+      "baseline_corrected_mse": 3.6449737898416506e-05,
+      "coefficient_l2": 351.5175997511043,
+      "corrected_mse": 4.427481382262305e-08,
+      "corrected_ratio_to_zero_predictor": 0.0012146812672841328,
+      "error_linf": 0.03529018887288679,
+      "prediction_linf": 0.04767806823821247,
+      "preservation_mse": 7.951949893092888e-07,
+      "preservation_ratio_to_corrected_baseline": 0.021816205963550554,
+      "rank": 170,
+      "smallest_singular": 2.099461580887579e-05
+    }
+  },
+  "cross_plant_fit": {
+    "p30_to_p31_34": {
+      "active_features": 169,
+      "baseline_corrected_mse": 4.894868564700246e-05,
+      "coefficient_l2": 1.6196062258134016,
+      "corrected_mse": 3.163617711948588e-05,
+      "corrected_ratio_to_zero_predictor": 0.6463131073147258,
+      "error_linf": 0.03934163647761171,
+      "prediction_linf": 0.014638471132147354,
+      "preservation_mse": 7.234458429671776e-08,
+      "preservation_ratio_to_corrected_baseline": 0.001477967862476161,
+      "rank": 170,
+      "smallest_singular": 1.3832526535714283e-05
+    },
+    "p31_34_to_p30": {
+      "active_features": 169,
+      "baseline_corrected_mse": 5.20236852695162e-06,
+      "coefficient_l2": 660.3292475559475,
+      "corrected_mse": 3.191378033856463e-05,
+      "corrected_ratio_to_zero_predictor": 6.134471284229614,
+      "error_linf": 0.04262030254562336,
+      "prediction_linf": 0.04262030254562336,
+      "preservation_mse": 1.2912504590064139e-05,
+      "preservation_ratio_to_corrected_baseline": 2.48204342371538,
+      "rank": 170,
+      "smallest_singular": 1.3507190617147737e-05
+    }
+  },
+  "dataset": {
+    "corrected_rows": 14,
+    "fit": "float64 class-balanced unregularized least squares; no fitted scalar or behavior selection",
+    "preservation_rows": 4786,
+    "rows": 4800,
+    "target": "explicit oracle final action minus V121-final base action on projected rows; exact zero elsewhere"
+  },
+  "decision": "NO_OBSERVATION_RESIDUAL_TRAINING",
+  "failed_mechanism_checks": [
+    "both_cross_plant_preservation_below_one_percent",
+    "p31_to_p30_improves_corrected_rows",
+    "state_preservation_error_at_most_one_percent_baseline",
+    "state_probe_beats_hidden_by_four_x"
+  ],
+  "failed_validity_checks": [],
+  "input_hashes": {
+    "audit_runner": "e872728eeb6832aa8ba0450b45b29aa724ccfade40e8129b5c56454ba40f8001",
+    "cpu_template": "217a1551c4cc778e4b957636a40ca6e01eafa51efeaef905eb73e9debc7c26e5",
+    "source_checkpoint": "c1d9b8574c941e2279294de14aca1cb57d4736bdc63635b5aaf1e205fa7f86c1",
+    "v129_formal_result": "2b083d958ee29b3fd0cee90c73de610ed73a1b9ccd23a2a6b360242d95a5e909"
+  },
+  "interpretation": "This falsifies only a linear correction readout over the frozen deployable state. It does not prove that a nonlinear gait-level policy cannot exist.",
+  "schema_version": "winner_v130.oracle_correction_feature_audit.v1",
+  "status": "PASS_WINNER_V130_ORACLE_CORRECTION_FEATURE_AUDIT"
+}
