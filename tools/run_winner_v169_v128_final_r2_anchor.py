@@ -232,9 +232,9 @@ def main() -> int:
         encoding="utf-8",
     )
     worst_torque = max(
-        float(trace["peak_torque_nm"])
+        float(trace["worst_peak_torque_nm"])
         for trace in all_traces
-        if trace["peak_torque_nm"] is not None
+        if trace["worst_peak_torque_nm"] is not None
     )
     MARKDOWN.write_text(
         "# Winner V169 V128-final first-R2 anchor result\n\n"
