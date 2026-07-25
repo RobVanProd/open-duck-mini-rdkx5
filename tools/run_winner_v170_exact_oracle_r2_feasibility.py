@@ -52,6 +52,12 @@ EXECUTION_CORRECTION = (
 EXECUTION_CORRECTION_SHA256 = (
     "1aea59bfff28f4646d620b5f358d8f9106fbfacdfd1bf79fbc82d4a412b3ea58"
 )
+REPORTING_CORRECTION = (
+    ANALYSIS / "winner_v170c_reporting_key_correction.json"
+)
+REPORTING_CORRECTION_SHA256 = (
+    "66b2c3e0a899a6876addd1f6ad385237ca2cd06711026644324d385cf2e6b91b"
+)
 BUILDER = (
     TOOLS
     / "build_winner_v170_exact_oracle_r2_feasibility_preregistration.py"
@@ -157,6 +163,9 @@ def main() -> int:
     correction = json.loads(
         EXECUTION_CORRECTION.read_text(encoding="utf-8")
     )
+    reporting_correction = json.loads(
+        REPORTING_CORRECTION.read_text(encoding="utf-8")
+    )
     v126 = json.loads(V126_PREREG.read_text(encoding="utf-8"))
     base = json.loads(BASE_PREREG.read_text(encoding="utf-8"))
     v140 = json.loads(V140_RESULT.read_text(encoding="utf-8"))
@@ -193,6 +202,15 @@ def main() -> int:
         or correction.get("preregistration_sha256") != sha256(PREREG)
         or correction.get("prior_runner_sha256")
         != prereg.get("input_hashes", {}).get("runner")
+        or reporting_correction.get("status")
+        != "FROZEN_WINNER_V170C_REPORTING_KEY_CORRECTION"
+        or sha256(REPORTING_CORRECTION) != REPORTING_CORRECTION_SHA256
+        or reporting_correction.get("preregistration_sha256")
+        != sha256(PREREG)
+        or reporting_correction.get("execution_correction_sha256")
+        != sha256(EXECUTION_CORRECTION)
+        or reporting_correction.get("prior_runner_sha256")
+        != "107fd5fe4d0452fb2ca2a62d60c67fdb3fad64c75ff3ba8388a91c0a0d51b09b"
     ):
         raise ValueError("V170 preregistration or correction changed")
     matrix = prereg["matrix"]["rows"]
@@ -267,16 +285,20 @@ def main() -> int:
                 "zero_empty_intersections"
             ],
             "strict_torque_peak": float(
-                cell["torque_gate"]["peak_torque_nm"]
+                cell["torque_gate"]["worst_peak_torque_nm"]
             )
             <= TORQUE_LIMIT_NM,
             "strict_current_peak": float(
-                cell["prospective_current_gate"]["peak_current_a"]
+                cell["prospective_current_gate"]["worst_peak_current_a"]
             )
             <= CURRENT_LIMIT_A,
             "floor_friction_readback_exact": all(
                 cell["readback_checks"].values()
             ),
+            "deterministic_trace_reproduction_exact": sha256(trace_path)
+            == reporting_correction["failed_attempt"][
+                "complete_trace_sha256"
+            ],
         }
         cell["strict_checks"] = strict_checks
         for name, passed in strict_checks.items():

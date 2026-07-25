@@ -1,0 +1,34 @@
+{
+  "authority": {
+    "candidate_selection": false,
+    "corrected_cpu_execution": true,
+    "full_matrix": false,
+    "gate5": false,
+    "hosted_training": false,
+    "later_r2_condition": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "correction": "Read worst_peak_torque_nm and worst_peak_current_a from the already-frozen gate helpers. The invalid wrapper requested nonexistent singular keys peak_torque_nm and peak_current_a after the simulator had completed.",
+  "deterministic_recovery_rule": "The corrected rerun must reproduce the complete prior 600-row JSONL trace byte-for-byte at SHA-256 fe8079fd2da73c83a238e40e22b25076bf660e7243b965e32c0f8ba8b8902b8e. Any mismatch invalidates V170 rather than selecting between runs.",
+  "execution_correction_sha256": "1aea59bfff28f4646d620b5f358d8f9106fbfacdfd1bf79fbc82d4a412b3ea58",
+  "failed_attempt": {
+    "behavior_cells_completed": 1,
+    "complete_trace_bytes": 15813321,
+    "complete_trace_rows": 600,
+    "complete_trace_sha256": "fe8079fd2da73c83a238e40e22b25076bf660e7243b965e32c0f8ba8b8902b8e",
+    "failure": "KeyError: 'peak_torque_nm'",
+    "mechanism_result_emitted": false,
+    "policy_ticks_completed": 600,
+    "result_path": "outputs/analysis/winner_v170b_reporting_invalid_result.json",
+    "result_sha256": "491ca050ac0e56e104572f774f0e83b0afc5f1f5c5f409dec886a52bfc75ec0a",
+    "simulation_started": true
+  },
+  "mechanism_change": false,
+  "matrix_change": false,
+  "prior_runner_sha256": "107fd5fe4d0452fb2ca2a62d60c67fdb3fad64c75ff3ba8388a91c0a0d51b09b",
+  "preregistration_sha256": "bbcea0e1d45f51dfa55ad8fff920d54a8757f614eb6cef5148087ed8d9e8306c",
+  "schema_version": "winner_v170c.reporting_key_correction.v1",
+  "status": "FROZEN_WINNER_V170C_REPORTING_KEY_CORRECTION"
+}
