@@ -60,3 +60,37 @@ def test_v143_resets_every_non_torque_target_to_source(monkeypatch) -> None:
     assert int(np.sum(dataset["corrected"])) == 17
     assert int(np.sum(dataset["supreme_only_reset_to_source"])) == 54
     assert dataset["correction_weight"] == 4_783 / 17
+
+
+def test_v143_closes_on_full_dataset_preservation_hold() -> None:
+    result = load("winner_v143_torque_only_actor_cpu_result.json")
+    assert sha256("winner_v143_torque_only_actor_cpu_result.json") == (
+        "ca47293d465aa4e3b816d50331d12ec4a88e22b34112204f22f8adecfe16c6f0"
+    )
+    assert result["status"] == (
+        "HOLD_WINNER_V143_TORQUE_ONLY_ACTOR_CPU_CONTRACT"
+    )
+    assert result["failed_checks"] == [
+        "full_preservation_leakage_within_one_percent"
+    ]
+    assert (
+        result["smoke"]["metrics"][
+            "corrected_ratio_to_zero_predictor"
+        ]
+        < 0.91
+    )
+    assert (
+        result["smoke"]["metrics"][
+            "preservation_ratio_to_corrected_baseline"
+        ]
+        < 0.01
+    )
+    assert (
+        result["full_dataset"]["metrics"][
+            "preservation_ratio_to_corrected_baseline"
+        ]
+        > 0.01
+    )
+    assert result["decision"] == "CLOSE_TORQUE_ONLY_ACTOR_DISTILLATION"
+    assert result["authority"]["behavior_evaluation"] is False
+    assert result["authority"]["hosted_training"] is False
