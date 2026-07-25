@@ -38,6 +38,9 @@ def test_v161_result_when_present() -> None:
     if not path.exists():
         return
     result = json.loads(path.read_text(encoding="utf-8"))
+    assert sha256(path) == (
+        "9392b27929c4e391d2b3a6ea1b8a8b965fef6550ab56beb28c15911f370b5d12"
+    )
     assert result["status"] == (
         "PASS_WINNER_V161_UNIFORM_TRUST_PROJECTION"
     )
