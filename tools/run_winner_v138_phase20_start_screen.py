@@ -9,7 +9,6 @@ import hashlib
 import importlib.util
 import io
 import json
-import math
 import os
 from pathlib import Path
 import sys
@@ -46,19 +45,23 @@ from run_winner_v3_variable_configuration_behavior import (  # noqa: E402
 
 
 ANALYSIS = ROOT / "outputs/analysis"
-PREREG = ANALYSIS / "winner_v138_phase20_start_preregistration.json"
+PREREG = ANALYSIS / "winner_v138_phase20_start_preregistration_v2.json"
 AUDIT = ANALYSIS / "winner_v138_phase20_start_audit_v2.json"
+AMENDMENT = ANALYSIS / "winner_v138_phase_identity_amendment.json"
 V126_PREREG = (
     ANALYSIS / "winner_v126_all_tick_supreme_clip_preregistration.json"
 )
 BASE_PREREG = (
     ANALYSIS / "winner_v3_variable_configuration_replacement_preregistration.json"
 )
-OUTPUT = ANALYSIS / "winner_v138_phase20_start_result.json"
-MARKDOWN = ANALYSIS / "WINNER_V138_PHASE20_START_RESULT_20260725.md"
+OUTPUT = ANALYSIS / "winner_v138_phase20_start_result_v2.json"
+MARKDOWN = ANALYSIS / "WINNER_V138_PHASE20_START_RESULT_V2_20260725.md"
 TORQUE_LIMIT_NM = 1.91229675
 SELECTED_PHASE = 20
-PERIOD_TICKS = 27
+FROZEN_PHASE20_VECTOR = np.asarray(
+    [-0.058144647628068924, -0.9983081817626953],
+    dtype=np.float64,
+)
 
 
 def sha256(path: Path) -> str:
@@ -88,13 +91,7 @@ def trace_contract(path: Path, command_x: float) -> dict[str, Any]:
         if line
     ]
     first = np.asarray(rows[0]["obs_state"], dtype=np.float64)
-    expected_phase = np.asarray(
-        [
-            math.cos(2.0 * math.pi * SELECTED_PHASE / PERIOD_TICKS),
-            math.sin(2.0 * math.pi * SELECTED_PHASE / PERIOD_TICKS),
-        ],
-        dtype=np.float64,
-    )
+    expected_phase = FROZEN_PHASE20_VECTOR
     observed_phase = first[99:101]
     first_h = np.asarray(
         rows[0]["policy_state_input"]["h_in"][0], dtype=np.float32
@@ -268,6 +265,7 @@ def main() -> int:
             raise FileExistsError(f"refusing to overwrite V138: {path}")
     prereg = json.loads(PREREG.read_text(encoding="utf-8"))
     audit = json.loads(AUDIT.read_text(encoding="utf-8"))
+    amendment = json.loads(AMENDMENT.read_text(encoding="utf-8"))
     v126 = json.loads(V126_PREREG.read_text(encoding="utf-8"))
     base_prereg = json.loads(BASE_PREREG.read_text(encoding="utf-8"))
     manifest_path = evaluator_root / "composition_manifest.json"
@@ -276,6 +274,7 @@ def main() -> int:
     observed_hashes = {
         "runner": sha256(Path(__file__).resolve()),
         "audit": sha256(AUDIT),
+        "phase_identity_amendment": sha256(AMENDMENT),
         "v126_preregistration": sha256(V126_PREREG),
         "base_preregistration": sha256(BASE_PREREG),
         "composition_manifest": sha256(manifest_path),
@@ -283,11 +282,13 @@ def main() -> int:
     }
     if (
         prereg.get("status")
-        != "PREREGISTERED_WINNER_V138_PHASE20_START_SCREEN"
+        != "PREREGISTERED_WINNER_V138_PHASE20_START_SCREEN_V2"
         or prereg.get("failed_checks") != []
         or prereg.get("input_hashes") != observed_hashes
         or audit.get("decision")
         != "EARN_ONE_V138_PHASE20_DUAL_CHECKPOINT_CPU_PREREGISTRATION"
+        or amendment.get("decision")
+        != "EARN_ONE_V138_PHASE20_START_PREREGISTRATION_V2"
         or manifest.get("status")
         != "PASS_WINNER_V136_WARM_START_EVALUATOR_COMPOSITION"
     ):
@@ -361,7 +362,16 @@ def main() -> int:
             break
     all_pass = len(cells) == 16 and all(cell["pass"] for cell in cells)
     payload = {
-        "schema_version": "winner_v138.phase20_start_result.v1",
+        "schema_version": "winner_v138.phase20_start_result.v2",
+        "supersedes": {
+            "artifact": "winner_v138_phase20_start_result.json",
+            "reason": (
+                "V1 stopped after one x=0 cell because host-float64 phase "
+                "trigonometry differed from the evaluator's exact float32 "
+                "phase-20 vector. V2 uses the bit-exact frozen source vector; "
+                "phase, matrix, thresholds, policy, and stop rule are unchanged."
+            ),
+        },
         "status": (
             "PASS_WINNER_V138_PHASE20_START_SCREEN"
             if all_pass
@@ -418,7 +428,7 @@ def main() -> int:
         encoding="utf-8",
     )
     MARKDOWN.write_text(
-        "# Winner V138 phase-20 start result\n\n"
+        "# Winner V138 phase-20 start result V2\n\n"
         f"- Status: `{payload['status']}`\n"
         f"- Cells: `{len(cells)}/16`; passing: "
         f"`{payload['summary']['passing_cells']}`.\n"

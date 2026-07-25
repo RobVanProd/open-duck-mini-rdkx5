@@ -14,23 +14,29 @@ ANALYSIS = ROOT / "outputs/analysis"
 RUNNER = ROOT / "tools/run_winner_v138_phase20_start_screen.py"
 AUDITOR = ROOT / "tools/audit_winner_v138_phase20_start.py"
 AUDIT = ANALYSIS / "winner_v138_phase20_start_audit_v2.json"
+AMENDMENT = ANALYSIS / "winner_v138_phase_identity_amendment.json"
 V126_PREREG = (
     ANALYSIS / "winner_v126_all_tick_supreme_clip_preregistration.json"
 )
 BASE_PREREG = (
     ANALYSIS / "winner_v3_variable_configuration_replacement_preregistration.json"
 )
-OUTPUT = ANALYSIS / "winner_v138_phase20_start_preregistration.json"
-MARKDOWN = ANALYSIS / "WINNER_V138_PHASE20_START_PREREGISTRATION_20260725.md"
+OUTPUT = ANALYSIS / "winner_v138_phase20_start_preregistration_v2.json"
+MARKDOWN = (
+    ANALYSIS / "WINNER_V138_PHASE20_START_PREREGISTRATION_V2_20260725.md"
+)
 EXPECTED = {
     "runner": (
-        "ef12e1c8e1377aae5d2b5005cd54b155e901fa6dd30c6d0e58e339e6cd615af3"
+        "c91a99c36492bad4a10d7ee0cce7d08a940e1f2d83a16267fb422d669a06265e"
     ),
     "auditor": (
         "e80188ef592097492342390d5276ca82f8714a24f5c4261f551f1882381910d5"
     ),
     "audit": (
         "9046d387dcc8bd59d1c2449138f4c72edea3ae13cdc46ebc6b6ae4f1cee145f7"
+    ),
+    "phase_identity_amendment": (
+        "34320cb682d5b8462488a3bd7c506db5e2a6b2adc01d81336bb279914589aeaa"
     ),
     "v126_preregistration": (
         "eb40f17d9c08b8362f068567e1620bdafef21ad9123a633c9536f3637a31c899"
@@ -67,11 +73,13 @@ def main() -> int:
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     evaluator_path = Path(manifest["output"]["path"])
     audit = json.loads(AUDIT.read_text(encoding="utf-8"))
+    amendment = json.loads(AMENDMENT.read_text(encoding="utf-8"))
     v126 = json.loads(V126_PREREG.read_text(encoding="utf-8"))
     input_hashes = {
         "runner": sha256(RUNNER),
         "auditor": sha256(AUDITOR),
         "audit": sha256(AUDIT),
+        "phase_identity_amendment": sha256(AMENDMENT),
         "v126_preregistration": sha256(V126_PREREG),
         "base_preregistration": sha256(BASE_PREREG),
         "composition_manifest": sha256(manifest_path),
@@ -101,6 +109,12 @@ def main() -> int:
             manifest.get("status")
             == "PASS_WINNER_V136_WARM_START_EVALUATOR_COMPOSITION"
         ),
+        "phase_identity_amendment_green": (
+            amendment.get("status")
+            == "PASS_WINNER_V138_PHASE_IDENTITY_AMENDMENT"
+            and amendment.get("decision")
+            == "EARN_ONE_V138_PHASE20_START_PREREGISTRATION_V2"
+        ),
         "matrix_exact_16": (
             len(matrix) == 16
             and {row["checkpoint_id"] for row in matrix}
@@ -125,9 +139,19 @@ def main() -> int:
     }
     failed = sorted(name for name, passed in checks.items() if not passed)
     payload = {
-        "schema_version": "winner_v138.phase20_start_preregistration.v1",
+        "schema_version": "winner_v138.phase20_start_preregistration.v2",
+        "supersedes": {
+            "artifact": "winner_v138_phase20_start_preregistration.json",
+            "reason": (
+                "V1's first x=0 cell passed every behavior check but stopped "
+                "on a host-float64 phase-vector comparison. V2 uses the "
+                "bit-exact frozen evaluator phase-20 vector. Phase selection, "
+                "matrix, thresholds, policy, ordering, and stop rule are "
+                "unchanged."
+            ),
+        },
         "status": (
-            "PREREGISTERED_WINNER_V138_PHASE20_START_SCREEN"
+            "PREREGISTERED_WINNER_V138_PHASE20_START_SCREEN_V2"
             if not failed
             else "HOLD_WINNER_V138_PHASE20_START_PREREGISTRATION"
         ),
@@ -201,7 +225,7 @@ def main() -> int:
         encoding="utf-8",
     )
     MARKDOWN.write_text(
-        "# Winner V138 phase-20 start preregistration\n\n"
+        "# Winner V138 phase-20 start preregistration V2\n\n"
         f"- Status: `{payload['status']}`\n"
         "- One phase (`20/27`) selected from reference geometry before "
         "behavior.\n"

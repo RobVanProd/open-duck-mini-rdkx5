@@ -1,0 +1,54 @@
+{
+  "amendment": {
+    "behavior_thresholds_changed": false,
+    "change": "compare the first phase observation to the bit-exact frozen V131 phase-20 vector",
+    "matrix_changed": false,
+    "policy_changed": false,
+    "selected_phase": 20,
+    "selected_phase_changed": false,
+    "stop_rule_changed": false
+  },
+  "attribution": {
+    "cause": "the V1 runner synthesized an expected sine/cosine vector with host float64 math instead of comparing to the exact float32 phase vector already emitted by the frozen evaluator",
+    "frozen_source_phase20_vector": [
+      -0.058144647628068924,
+      -0.9983081817626953
+    ],
+    "observed_phase_vector": [
+      -0.058144647628068924,
+      -0.9983081817626953
+    ],
+    "old_host_float64_linf": 1.812824073146868e-07,
+    "source_vs_observed_linf": 0.0
+  },
+  "authority": {
+    "gate5": false,
+    "hosted_training": false,
+    "moving_behavior": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false,
+    "training": false,
+    "v2_preregistration": true
+  },
+  "checks": {
+    "all_input_hashes_exact": true,
+    "all_nonphase_checks_green": true,
+    "host_float64_difference_explains_failure": true,
+    "no_training_or_moving_behavior": true,
+    "observed_vector_bit_exact_to_frozen_phase20": true,
+    "only_failure_is_phase_identity": true,
+    "selection_and_behavior_thresholds_unchanged": true,
+    "source_trace_hash_frozen": true,
+    "v1_stopped_before_moving_behavior": true
+  },
+  "decision": "EARN_ONE_V138_PHASE20_START_PREREGISTRATION_V2",
+  "failed_checks": [],
+  "input_hashes": {
+    "audit": "9046d387dcc8bd59d1c2449138f4c72edea3ae13cdc46ebc6b6ae4f1cee145f7",
+    "preregistration": "f163fdef586739fe8c769727c06b2a056c308947c41744a685312f71b7889eb8",
+    "result": "c7b2fb1831dcf1bf1e9ba8d8d894e001765339fcef51f2564e3f93b400b3bd9b",
+    "runner": "ef12e1c8e1377aae5d2b5005cd54b155e901fa6dd30c6d0e58e339e6cd615af3"
+  },
+  "schema_version": "winner_v138.phase_identity_amendment.v1",
+  "status": "PASS_WINNER_V138_PHASE_IDENTITY_AMENDMENT"
+}
