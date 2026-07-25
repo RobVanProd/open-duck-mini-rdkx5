@@ -1,0 +1,146 @@
+{
+  "authority": {
+    "behavior_evaluation": false,
+    "gate5": false,
+    "one_exact_chunked_cli_launch": true,
+    "rdkx5_or_robot": false,
+    "training_resume": false,
+    "training_retry": false
+  },
+  "checks": {
+    "all_chunks_exact": true,
+    "executor_exact": true,
+    "executor_reconstructs_exact_package": true,
+    "l4_exact": true,
+    "launcher_exact": true,
+    "no_training_retry_or_resume": true,
+    "robot_surface_absent": true,
+    "transport_correction_green": true
+  },
+  "chunks": [
+    {
+      "bytes": 25165824,
+      "name": "winner-v127-hosted-20260724.tar.gz.part000",
+      "sha256": "5e838461b9c24daec9fbc0abb27347a852c244f5438a0006b213cfe28660befc"
+    },
+    {
+      "bytes": 25165824,
+      "name": "winner-v127-hosted-20260724.tar.gz.part001",
+      "sha256": "bb5b04bf558e5f81760210509a3f1d2647d100514c56aec8559d667d8cbdb418"
+    },
+    {
+      "bytes": 25165824,
+      "name": "winner-v127-hosted-20260724.tar.gz.part002",
+      "sha256": "8458335fd742119e352f4fe590e205f7f1156090f7b97b5478f90846ec4a52dd"
+    },
+    {
+      "bytes": 15870953,
+      "name": "winner-v127-hosted-20260724.tar.gz.part003",
+      "sha256": "cd85be7150efd7d80419cb95a203a26722789d214822a969fff37fb64946694d"
+    }
+  ],
+  "commands": [
+    [
+      "colab",
+      "new",
+      "--session",
+      "winner-v127b-constrained-20260724",
+      "--gpu",
+      "L4"
+    ],
+    [
+      "colab",
+      "upload",
+      "--session",
+      "winner-v127b-constrained-20260724",
+      "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v127-upload-chunks-20260724\\winner-v127-hosted-20260724.tar.gz.part000",
+      "/content/winner-v127-hosted-20260724.tar.gz.part000"
+    ],
+    [
+      "colab",
+      "upload",
+      "--session",
+      "winner-v127b-constrained-20260724",
+      "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v127-upload-chunks-20260724\\winner-v127-hosted-20260724.tar.gz.part001",
+      "/content/winner-v127-hosted-20260724.tar.gz.part001"
+    ],
+    [
+      "colab",
+      "upload",
+      "--session",
+      "winner-v127b-constrained-20260724",
+      "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v127-upload-chunks-20260724\\winner-v127-hosted-20260724.tar.gz.part002",
+      "/content/winner-v127-hosted-20260724.tar.gz.part002"
+    ],
+    [
+      "colab",
+      "upload",
+      "--session",
+      "winner-v127b-constrained-20260724",
+      "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v127-upload-chunks-20260724\\winner-v127-hosted-20260724.tar.gz.part003",
+      "/content/winner-v127-hosted-20260724.tar.gz.part003"
+    ],
+    [
+      "colab",
+      "upload",
+      "--session",
+      "winner-v127b-constrained-20260724",
+      "C:\\Users\\usa50\\AppData\\Local\\Temp\\open-duck-mini-rdkx5-policy-sparse\\tools\\launch_winner_v127_constrained_colab.py",
+      "/content/launch_winner_v127_constrained_colab.py"
+    ],
+    [
+      "colab",
+      "exec",
+      "--session",
+      "winner-v127b-constrained-20260724",
+      "--file",
+      "C:\\Users\\usa50\\AppData\\Local\\Temp\\open-duck-mini-rdkx5-policy-sparse\\tools\\execute_winner_v127b_chunked_colab_cli.py",
+      "--timeout",
+      "21600"
+    ],
+    [
+      "colab",
+      "download",
+      "--session",
+      "winner-v127b-constrained-20260724",
+      "/content/winner_v127_result.json",
+      "<LOCAL_RESULT>"
+    ],
+    [
+      "colab",
+      "download",
+      "--session",
+      "winner-v127b-constrained-20260724",
+      "/content/winner_v127_artifacts.tar.gz",
+      "<LOCAL_ARCHIVE>"
+    ],
+    [
+      "colab",
+      "download",
+      "--session",
+      "winner-v127b-constrained-20260724",
+      "/content/winner_v127_launch_receipt.json",
+      "<LOCAL_RECEIPT>"
+    ],
+    [
+      "colab",
+      "stop",
+      "--session",
+      "winner-v127b-constrained-20260724"
+    ]
+  ],
+  "failed_checks": [],
+  "hashes": {
+    "correction": "caf84014413283bc2489e3326577443532f2cebcd0436ec0a73188d7d065ac66",
+    "executor": "7dadda2e6a314f46b4ac7a5058ef2965e19348af1b8b333689ef8eccd922eab8",
+    "launcher": "7947aa8798d415e257a143cdfc3a25addc8b068985e06758727c918edad9cfbf"
+  },
+  "schema_version": "winner_v127b.chunked_launch_contract.v1",
+  "session": {
+    "accelerator": "L4",
+    "count": 1,
+    "max_wall_seconds": 21600,
+    "name": "winner-v127b-constrained-20260724"
+  },
+  "status": "PASS_WINNER_V127B_CHUNKED_COLAB_LAUNCH_CONTRACT"
+}

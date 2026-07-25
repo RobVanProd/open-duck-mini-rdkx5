@@ -114,3 +114,27 @@ def test_v127_hosted_contract_is_one_run_without_selection_authority() -> None:
     assert launch["session"]["count"] == 1
     assert launch["authority"]["one_exact_cli_launch"] is True
     assert launch["authority"]["behavior_evaluation"] is False
+
+
+def test_v127_chunked_transport_preserves_the_frozen_training_payload() -> None:
+    correction = load("winner_v127_upload_transport_correction.json")
+    launch = load("winner_v127b_chunked_colab_launch_contract.json")
+    assert correction["status"] == (
+        "PASS_WINNER_V127_UPLOAD_TRANSPORT_CORRECTION"
+    )
+    assert correction["failed_checks"] == []
+    assert correction["checks"]["training_payload_unchanged"] is True
+    assert correction["prior_prelaunch_attempt"]["executor_started"] is False
+    assert correction["prior_prelaunch_attempt"]["optimizer_steps"] == 0
+    assert correction["prior_prelaunch_attempt"]["session_stopped"] is True
+    assert len(correction["chunks"]) == 4
+    assert correction["reconstruction"]["sha256"] == (
+        correction["package"]["sha256"]
+    )
+    assert launch["status"] == (
+        "PASS_WINNER_V127B_CHUNKED_COLAB_LAUNCH_CONTRACT"
+    )
+    assert launch["failed_checks"] == []
+    assert launch["authority"]["one_exact_chunked_cli_launch"] is True
+    assert launch["authority"]["training_retry"] is False
+    assert launch["authority"]["training_resume"] is False
