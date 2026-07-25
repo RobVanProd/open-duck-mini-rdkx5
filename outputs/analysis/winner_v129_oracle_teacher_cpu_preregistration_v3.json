@@ -1,0 +1,90 @@
+{
+  "authority": {
+    "behavior_evaluation": false,
+    "cpu_contract_authorized": true,
+    "formal_distillation_preregistration": false,
+    "formal_distillation_training": false,
+    "full_matrix": false,
+    "gate5": false,
+    "hosted_training": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false
+  },
+  "checks": {
+    "all_input_hashes_exact": true,
+    "all_other_policy_and_value_leaves_frozen": true,
+    "behavior_not_authorized": true,
+    "class_weight_derived_without_search": true,
+    "dataset_audit_green": true,
+    "final_teacher_selection_is_mechanism_derived": true,
+    "formal_training_not_authorized": true,
+    "half_teacher_identity_is_not_trained": true,
+    "only_adapter_location_head_trainable": true,
+    "ppo_lagrangian_closed_no_retry": true,
+    "robot_surface_absent": true,
+    "two_update_smoke_only": true
+  },
+  "dataset": {
+    "corrected_rows": 14,
+    "inputs": [
+      "obs[115]",
+      "previous_action[14]",
+      "h_in[64]"
+    ],
+    "preservation_rows": 4786,
+    "preservation_weight": 1.0,
+    "rows": 4800,
+    "source": "V121 final exact-oracle closed-loop traces",
+    "targets": [
+      "oracle final action[14]",
+      "teacher h_out[64]"
+    ],
+    "teacher_correction_weight": "4786/14"
+  },
+  "failed_checks": [],
+  "input_hashes": {
+    "cpu_template": "217a1551c4cc778e4b957636a40ca6e01eafa51efeaef905eb73e9debc7c26e5",
+    "dataset_audit": "9fa2e685c5df292f8f817bb81e5fb5b08e2e924963cbd310f8ac08d334dfc224",
+    "runner": "ca59440ded91cf70d96cc02a6a5e53c5700ccf3cc31084bf6b177ad3311cd0cc",
+    "source_checkpoint": "c1d9b8574c941e2279294de14aca1cb57d4736bdc63635b5aaf1e205fa7f86c1",
+    "training_module": "2ecdae3fbe9c50cf10833651fa2dae9af7326d8af728cf1c7cc0630323a57a98",
+    "v121_final_deployed": "bc54ea1bf39e617f76771e7416de91db2ccfe0b1bf903de08faaa64a67ce4aab",
+    "v121_transform": "4bd5eab5343cd8401db1789773fa3cc345727d903cb31222e0ea9870f0e9e640",
+    "v128_attribution": "3fcf28bc2a70d35008968881afe45e6865ddb8f19e30bb13bf9737584a92e6d1"
+  },
+  "objective": {
+    "action": "class-balanced mean squared error on the exact final deployment action",
+    "frozen_leaves": "all other normalizer/policy/value leaves",
+    "hidden": "unweighted mean squared error on teacher h_out",
+    "reward_or_ppo": false,
+    "total": "action_mse + hidden_mse",
+    "trainable_leaves": [
+      "policy/adapter_location/kernel",
+      "policy/adapter_location/bias"
+    ]
+  },
+  "pass_rule": {
+    "changed_leaves": "exactly the two adapter_location leaves",
+    "exports": "both 115/14/64 stateful ABI contracts pass",
+    "loss": "action and total loss both decrease",
+    "step_zero": "deployed inference matches V121 final <=1e-7"
+  },
+  "schema_version": "winner_v129.oracle_teacher_cpu_preregistration.v3",
+  "smoke": {
+    "batch": "all 14 corrected rows plus 242 preservation rows",
+    "batch_size": 256,
+    "exports": [
+      0,
+      2
+    ],
+    "learning_rate": 0.0003,
+    "learning_rate_source": "frozen V121 PPO value, not searched",
+    "optimizer": "Adam",
+    "updates": 2
+  },
+  "status": "PREREGISTERED_WINNER_V129_ORACLE_TEACHER_CPU_CONTRACT",
+  "supersedes": {
+    "artifact": "winner_v129_oracle_teacher_cpu_preregistration_v2.json",
+    "reason": "the v2 CPU runner restored the hosted normalizer as a plain dictionary; v3 applies the previously validated read-only RunningStatisticsState CPU topology remap; execution stopped before any optimizer update"
+  }
+}
