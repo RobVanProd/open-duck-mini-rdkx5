@@ -92,3 +92,34 @@ def test_v145_changes_only_projected_joint_targets(monkeypatch) -> None:
         dataset["target_action"][~dataset["joint_mask"]]
     ) == 0
     assert dataset["correction_weight"] == 5_379 / 21
+
+
+def test_v145_closes_on_shadow_preservation_gate() -> None:
+    result = load("winner_v145_on_policy_dagger_cpu_result.json")
+    assert sha256("winner_v145_on_policy_dagger_cpu_result.json") == (
+        "d1b9ee041130fd50b8be357749f2c8cdf38a884b8bde527eabfb19c80a3b14a8"
+    )
+    assert result["status"] == (
+        "HOLD_WINNER_V145_ON_POLICY_DAGGER_CPU_CONTRACT"
+    )
+    assert result["failed_checks"] == [
+        "shadow_preservation_ratio_at_most_point01"
+    ]
+    assert result["reconstruction"]["step_zero_deployed_linf"] == 0
+    assert result["training"]["metrics"][
+        "corrected_ratio_to_zero_predictor"
+    ] < 0.95
+    assert result["training"]["metrics"][
+        "preservation_ratio_to_corrected_baseline"
+    ] < 0.01
+    assert result["training"]["teacher_metrics"][
+        "preservation_ratio_to_corrected_baseline"
+    ] < 0.01
+    assert result["training"]["shadow_metrics"][
+        "corrected_ratio_to_zero_predictor"
+    ] < 0.65
+    assert result["training"]["shadow_metrics"][
+        "preservation_ratio_to_corrected_baseline"
+    ] > 0.069
+    assert result["decision"] == "CLOSE_ONE_STEP_ON_POLICY_DAGGER"
+    assert result["authority"]["behavior"] is False
