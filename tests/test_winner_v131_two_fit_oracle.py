@@ -43,3 +43,22 @@ def test_v131_behavior_preregistration_freezes_only_eight_cpu_cells() -> None:
     assert prereg["authority"]["formal_behavior_cells"] == 8
     assert prereg["authority"]["training"] is False
     assert prereg["authority"]["rdkx5_or_robot"] is False
+
+
+def test_v131_two_fit_teacher_passes_every_frozen_cell() -> None:
+    result = load("winner_v131_two_fit_oracle_behavior_result.json")
+    assert sha256("winner_v131_two_fit_oracle_behavior_result.json") == (
+        "ab1535e11287f191e8ee6b4be5c020c44726c6263465c7cb760892387b07c9ea"
+    )
+    assert result["status"] == (
+        "PASS_WINNER_V131_TWO_FIT_ORACLE_BEHAVIOR_VALID_RESULT"
+    )
+    assert result["failed_validity_checks"] == []
+    assert result["summary"]["passing_cells"] == 8
+    assert result["summary"]["robust_safe_rows"] == 3_600
+    assert result["summary"]["x0_bypass_rows"] == 1_200
+    assert result["summary"]["empty_intersection_events"] == 0
+    assert result["summary"]["projected_joint_events"] == 45
+    assert result["decision"] == (
+        "EARN_ONE_V132_ROBUST_TEACHER_DATASET_AUDIT"
+    )
