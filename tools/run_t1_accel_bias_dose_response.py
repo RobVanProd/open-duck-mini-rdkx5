@@ -20,10 +20,10 @@ from closed_loop_sim_eval_t1_accel_bias import (
 
 ROOT = Path(__file__).resolve().parents[1]
 ANALYSIS = ROOT / "outputs" / "analysis"
-PREREG = ANALYSIS / "t1_accel_bias_v2_preregistration.json"
+PREREG = ANALYSIS / "t1_accel_bias_v3_preregistration.json"
 CONTRACT = ANALYSIS / "t1_accel_bias_v2_contract_result.json"
-OUTPUT = ANALYSIS / "t1_accel_bias_v2_dose_response_result.json"
-MARKDOWN = ANALYSIS / "T1_ACCEL_BIAS_V2_DOSE_RESPONSE_RESULT_20260725.md"
+OUTPUT = ANALYSIS / "t1_accel_bias_v3_dose_response_result.json"
+MARKDOWN = ANALYSIS / "T1_ACCEL_BIAS_V3_DOSE_RESPONSE_RESULT_20260725.md"
 CURRENT_TO_TORQUE = 0.784532
 
 
@@ -47,6 +47,18 @@ def finite(value: Any) -> bool:
     return isinstance(value, (int, float)) and math.isfinite(float(value))
 
 
+def encode_nonfinite(value: Any) -> Any:
+    if isinstance(value, dict):
+        return {key: encode_nonfinite(item) for key, item in value.items()}
+    if isinstance(value, list):
+        return [encode_nonfinite(item) for item in value]
+    if isinstance(value, float) and not math.isfinite(value):
+        if math.isnan(value):
+            return "NaN"
+        return "Infinity" if value > 0.0 else "-Infinity"
+    return value
+
+
 def token(value: float) -> str:
     return f"{value:+.3f}".replace("+", "p").replace("-", "m").replace(".", "p")
 
@@ -61,11 +73,14 @@ def verify_inputs(prereg: dict[str, Any]) -> None:
     contract = json.loads(CONTRACT.read_text(encoding="utf-8"))
     if contract.get("status") != "PASS_T1_ACCEL_BIAS_CONTRACT":
         raise RuntimeError(f"T1 evaluator contract is not green: {contract}")
+    accepted = prereg["execution_contract"]["accepted_pre_matrix_contract"]
+    if sha256(CONTRACT) != accepted["sha256"]:
+        raise RuntimeError("accepted T1 evaluator contract result hash changed")
     if (
         contract.get("preregistered_contract_sha256")
-        != prereg["preregistered_contract_sha256"]
+        != accepted["preregistered_contract_sha256"]
     ):
-        raise RuntimeError("T1 evaluator contract targets another preregistration")
+        raise RuntimeError("accepted T1 evaluator contract has wrong preregistration")
 
 
 def cell_contract(
@@ -161,7 +176,7 @@ def run_or_load_cell(
         "cell_contract_sha256": contract_hash,
         "cell_contract": contract,
         "metrics": extract_metrics(result),
-        "closed_loop_result": result,
+        "closed_loop_result": encode_nonfinite(result),
     }
     raw_path.parent.mkdir(parents=True, exist_ok=True)
     temporary = raw_path.with_suffix(".tmp")
@@ -371,6 +386,13 @@ def main() -> int:
         ),
     )
     parser.add_argument(
+        "--compile-cache-root",
+        type=Path,
+        default=Path(
+            r"D:\CodexArtifacts\open-duck-policy\jax_compilation_cache"
+        ),
+    )
+    parser.add_argument(
         "--max-new-cells",
         type=int,
         default=None,
@@ -380,6 +402,11 @@ def main() -> int:
         ),
     )
     args = parser.parse_args()
+    compile_cache_root = args.compile_cache_root.resolve()
+    compile_cache_root.mkdir(parents=True, exist_ok=True)
+    os.environ.setdefault(
+        "JAX_COMPILATION_CACHE_DIR", str(compile_cache_root)
+    )
     prereg = json.loads(PREREG.read_text(encoding="utf-8"))
     verify_inputs(prereg)
     policy = Path(prereg["input_paths"]["policy"])
@@ -433,7 +460,7 @@ def main() -> int:
             "reason": "result requires all preregistered cells",
         }
     payload = {
-        "schema_version": "open_duck.t1_accel_bias_dose_response_result.v2",
+        "schema_version": "open_duck.t1_accel_bias_dose_response_result.v3",
         "status": decision["status"],
         "preregistered_contract_sha256": prereg[
             "preregistered_contract_sha256"
@@ -444,6 +471,7 @@ def main() -> int:
         "cache_hits": cache_hits,
         "new_cells": new_cells,
         "cache_root": str(cache_root),
+        "jax_compilation_cache_root": str(compile_cache_root),
         "groups": groups,
         "decision": decision,
         "authority": prereg["authority"],

@@ -7,7 +7,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tools"))
 
-from run_t1_accel_bias_dose_response import decide  # noqa: E402
+from run_t1_accel_bias_dose_response import decide, encode_nonfinite  # noqa: E402
 
 
 COMMANDS = [0.0, 0.04, 0.074, 0.077, 0.08]
@@ -120,3 +120,12 @@ def test_nonprimary_large_change_is_inconclusive() -> None:
     result = decide(prereg(), rows)
     assert result["status"] == "INCONCLUSIVE_T1_T2_RAW_TELEMETRY_REQUIRED"
     assert result["close_rule"]["passed"] is False
+
+
+def test_nonfinite_diagnostic_values_are_losslessly_labeled() -> None:
+    result = encode_nonfinite(
+        {"values": [1.0, float("inf"), float("-inf"), float("nan")]}
+    )
+    assert result == {
+        "values": [1.0, "Infinity", "-Infinity", "NaN"]
+    }
