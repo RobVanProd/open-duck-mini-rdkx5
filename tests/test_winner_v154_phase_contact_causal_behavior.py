@@ -38,3 +38,31 @@ def test_v154_preregisters_only_the_original_causal_cell() -> None:
     assert prereg["authority"]["additional_behavior"] is False
     assert prereg["authority"]["training"] is False
     assert prereg["authority"]["policy_deployment"] is False
+
+
+def test_v154_closes_phase_only_trigger_after_torque_worsens() -> None:
+    result = load("winner_v154_phase_contact_causal_behavior_result.json")
+    assert sha256(
+        "winner_v154_phase_contact_causal_behavior_result.json"
+    ) == "ae5d4348222d16adae8dc34b61d135ea3fdd76c9c154bc09daaf0301bc69df7b"
+    assert result["status"] == (
+        "HOLD_WINNER_V154_PHASE_CONTACT_CAUSAL_BEHAVIOR"
+    )
+    assert result["failed_checks"] == [
+        "cell_all_frozen_gates_pass",
+        "torque_gate_green",
+    ]
+    assert result["causal_contract"]["failed_checks"] == []
+    assert result["causal_contract"]["first_activation_tick"] == 43
+    assert result["causal_contract"]["gate"]["active_ticks"] == list(
+        range(43, 584, 27)
+    )
+    assert result["causal_contract"]["state_prefix_obs_linf"] == 0
+    assert result["cell"]["metrics"]["candidate_gate_status"] == (
+        "PASS_CANDIDATE_SIM_GATE"
+    )
+    assert 1.971 < result["cell"]["torque_gate"][
+        "worst_peak_torque_nm"
+    ] < 1.972
+    assert result["decision"] == "CLOSE_PHASE_CONTACT_RESIDUAL"
+    assert result["authority"]["additional_behavior"] is False
