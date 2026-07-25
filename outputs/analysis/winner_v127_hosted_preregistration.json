@@ -1,0 +1,98 @@
+{
+  "authority": {
+    "additional_training_or_retry": false,
+    "behavior_evaluation": false,
+    "checkpoint_selection": false,
+    "gate5": false,
+    "one_hosted_gpu_continuation_after_package_contract": true,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false
+  },
+  "checks": {
+    "both_postupdate_checkpoints_required": true,
+    "cpu_contract_green": true,
+    "dense_cost_outside_reward": true,
+    "exact_v121_half_source": true,
+    "first_positive_batch_dual_derivation": true,
+    "no_dual_scalar_search": true,
+    "no_retry_or_resume": true,
+    "oracle_screen_green": true,
+    "robot_surface_absent": true,
+    "separate_cost_critic": true,
+    "single_continuation_only": true
+  },
+  "decision": "AUTHORIZE_ONE_HASH_FROZEN_V127_GPU_CONTINUATION_WITHOUT_RETRY",
+  "evidence_basis": {
+    "cpu_contract_failed_checks": [],
+    "cpu_derived_eta": 0.6536062955856323,
+    "cpu_final_lambda": 6.96565055847168,
+    "cpu_first_positive_batch_cost": 0.1912466287612915,
+    "cpu_policy_and_cost_critic_all_leaves_updated": true,
+    "cpu_step0_v121_half_max_abs_error": 5.960464477539063e-08,
+    "oracle_cells_passed": 16,
+    "oracle_empty_intersections": 0,
+    "oracle_torque_projections": 15,
+    "oracle_total_cells": 16
+  },
+  "failed_checks": [],
+  "falsifiable_prediction": {
+    "expected_direction": "the later checkpoint should be at least as torque-safe as the half checkpoint because violations are no longer an unpriced reward trade",
+    "failure": "either checkpoint fails any nominal cell; close V127 without eta changes, retry, resume, or a second continuation",
+    "success": "both half and final pass all 16 nominal physical cells"
+  },
+  "input_hashes": {
+    "composed_manifest": "3514416307e1f12e72feb4228f50a42ae02ca91b86d9dbc339448cf1b2ac6564",
+    "cpu_preregistration": "a77c677816714a0517c70f84c56d8c6a2b731ae135696c11b15ff51caf24bc34",
+    "cpu_result": "cd728eb3cf2900f038c4134e3f603106238e960046b3482d4cd2b695b5a76ed4",
+    "driver": "cf4ba7f91dbf134e67cf2d83e98c2515d4e4c545e3c8d30c475b3e695e444c6d",
+    "reference_features": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212",
+    "source_checkpoint": "29b6d1d707784cc49050ab4b5513c06b020ebf7cf02dba3bee304a74477348f8"
+  },
+  "post_training": {
+    "checkpoint_cherry_pick": false,
+    "cpu_topology_validation_before_behavior": true,
+    "deployment_transform_both_postupdate_checkpoints": true,
+    "full_frozen_robustness_only_after_nominal_pass": true,
+    "nominal_cells_first": 16
+  },
+  "schema_version": "winner_v127.hosted_preregistration.v1",
+  "status": "PREREGISTERED_WINNER_V127_HOSTED_CONTINUATION",
+  "training": {
+    "architecture": "reference_residual_recurrent_adapter",
+    "batch_size": 256,
+    "cost_critic": "separate privileged-state value network",
+    "cost_discount": 1.0,
+    "dense_cost": "sum_j max(abs(actuator_force_nm[j])-1.91229675,0)",
+    "deviation_scale": 1.0,
+    "discounting": 0.97,
+    "dual_eta": "1/(ceil(K/4)*first_positive_batch_cost)",
+    "dual_scalars_searched": 0,
+    "entropy_cost": 0.005,
+    "episode_length": 600,
+    "exports": [
+      0,
+      1003520,
+      2007040
+    ],
+    "full_variable_configuration": true,
+    "learning_rate": 0.0003,
+    "num_envs": 256,
+    "num_minibatches": 4,
+    "num_updates_per_batch": 4,
+    "old_linear_torque_scale": 0.0,
+    "old_squared_torque_scale": 0.0,
+    "recurrent_hidden_size": 64,
+    "resume": false,
+    "retry": false,
+    "reward_curve_selection": false,
+    "seed": 100,
+    "source": "exact_v121_half_raw_checkpoint",
+    "source_step": 1003520,
+    "timesteps": 2007040,
+    "tracking_tail_scale": -6572.254964031055,
+    "tracking_tail_threshold_rad": 0.2,
+    "transition_match_enabled": true,
+    "unroll_length": 20,
+    "wall_ceiling_seconds": 21600
+  }
+}

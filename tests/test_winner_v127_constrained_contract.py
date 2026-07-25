@@ -87,3 +87,30 @@ def test_v127_cpu_result_when_present_is_decisive() -> None:
     assert value["authority"]["hosted_preregistration_authorized"] is True
     assert value["authority"]["hosted_run_authorized"] is False
     assert value["authority"]["robot_or_rdk"] is False
+
+
+def test_v127_hosted_contract_is_one_run_without_selection_authority() -> None:
+    prereg = load("winner_v127_hosted_preregistration.json")
+    package = load("winner_v127_hosted_package_contract.json")
+    launch = load("winner_v127_colab_cli_launch_contract.json")
+    assert prereg["status"] == (
+        "PREREGISTERED_WINNER_V127_HOSTED_CONTINUATION"
+    )
+    assert prereg["failed_checks"] == []
+    assert prereg["training"]["timesteps"] == 2_007_040
+    assert prereg["training"]["exports"] == [0, 1_003_520, 2_007_040]
+    assert prereg["training"]["old_squared_torque_scale"] == 0.0
+    assert prereg["training"]["old_linear_torque_scale"] == 0.0
+    assert prereg["training"]["dual_scalars_searched"] == 0
+    assert prereg["training"]["retry"] is False
+    assert prereg["training"]["resume"] is False
+    assert prereg["authority"]["behavior_evaluation"] is False
+    assert package["status"] == "PASS_WINNER_V127_HOSTED_PACKAGE"
+    assert package["failed_checks"] == []
+    assert package["authority"]["one_hash_exact_hosted_continuation"] is True
+    assert launch["status"] == "PASS_WINNER_V127_COLAB_CLI_LAUNCH_CONTRACT"
+    assert launch["failed_checks"] == []
+    assert launch["session"]["accelerator"] == "L4"
+    assert launch["session"]["count"] == 1
+    assert launch["authority"]["one_exact_cli_launch"] is True
+    assert launch["authority"]["behavior_evaluation"] is False

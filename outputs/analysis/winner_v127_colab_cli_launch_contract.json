@@ -1,0 +1,110 @@
+{
+  "authority": {
+    "additional_attempt": false,
+    "behavior_evaluation": false,
+    "deployment": false,
+    "gate5": false,
+    "one_exact_cli_launch": true,
+    "rdkx5_or_robot": false
+  },
+  "checks": {
+    "hosted_preregistration_green": true,
+    "l4_exact": true,
+    "no_retry_or_resume": true,
+    "package_bytes_exact": true,
+    "package_contract_green": true,
+    "package_hash_exact": true,
+    "pinned_software_exact": true,
+    "robot_surface_absent": true,
+    "training_or_behavior_not_run": true
+  },
+  "commands": [
+    [
+      "colab",
+      "new",
+      "--session",
+      "winner-v127-constrained-20260724",
+      "--gpu",
+      "L4"
+    ],
+    [
+      "colab",
+      "upload",
+      "--session",
+      "winner-v127-constrained-20260724",
+      "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v127-hosted-20260724.tar.gz",
+      "/content/winner-v127-hosted-20260724.tar.gz"
+    ],
+    [
+      "colab",
+      "upload",
+      "--session",
+      "winner-v127-constrained-20260724",
+      "C:\\Users\\usa50\\AppData\\Local\\Temp\\open-duck-mini-rdkx5-policy-sparse\\tools\\launch_winner_v127_constrained_colab.py",
+      "/content/launch_winner_v127_constrained_colab.py"
+    ],
+    [
+      "colab",
+      "exec",
+      "--session",
+      "winner-v127-constrained-20260724",
+      "--file",
+      "C:\\Users\\usa50\\AppData\\Local\\Temp\\open-duck-mini-rdkx5-policy-sparse\\tools\\execute_winner_v127_colab_cli.py",
+      "--timeout",
+      "21600"
+    ],
+    [
+      "colab",
+      "download",
+      "--session",
+      "winner-v127-constrained-20260724",
+      "/content/winner_v127_result.json",
+      "<LOCAL_RESULT>"
+    ],
+    [
+      "colab",
+      "download",
+      "--session",
+      "winner-v127-constrained-20260724",
+      "/content/winner_v127_artifacts.tar.gz",
+      "<LOCAL_ARCHIVE>"
+    ],
+    [
+      "colab",
+      "download",
+      "--session",
+      "winner-v127-constrained-20260724",
+      "/content/winner_v127_launch_receipt.json",
+      "<LOCAL_RECEIPT>"
+    ],
+    [
+      "colab",
+      "stop",
+      "--session",
+      "winner-v127-constrained-20260724"
+    ]
+  ],
+  "failed_checks": [],
+  "hashes": {
+    "executor": "35e7f086166d8c2844a92970c3eaf0b8e3d057d2e0a2a3fb10450a279db2580c",
+    "launcher": "7947aa8798d415e257a143cdfc3a25addc8b068985e06758727c918edad9cfbf",
+    "package": "43ae2e4d7dbed79f00024b0681ab29016147522eb6034000714d9bf729f6e6ea",
+    "package_contract": "014bac73eb270560b141027037eeb11a67f9a57056c0930487e0d18b68a22a5c",
+    "preregistration": "77ded43e7cf27e3854bbe06b04bdb519b420a7691089d8ecb3b43e0dd60fa3a0"
+  },
+  "package_bytes": 91368425,
+  "recovery": {
+    "download_result_archive_receipt_before_stop": true,
+    "resume": false,
+    "retry": false,
+    "stop_session_after_pass_or_hold": true
+  },
+  "schema_version": "winner_v127.colab_cli_launch_contract.v1",
+  "session": {
+    "accelerator": "L4",
+    "count": 1,
+    "max_wall_seconds": 21600,
+    "name": "winner-v127-constrained-20260724"
+  },
+  "status": "PASS_WINNER_V127_COLAB_CLI_LAUNCH_CONTRACT"
+}
