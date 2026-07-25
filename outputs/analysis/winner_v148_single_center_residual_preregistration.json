@@ -1,0 +1,57 @@
+{
+  "authority": {
+    "behavior": false,
+    "cpu_graph_contract": true,
+    "gate5": false,
+    "hosted_training": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "checks": {
+    "all_input_hashes_exact": true,
+    "behavior_not_authorized": true,
+    "frozen_safety_projection_reapplied": true,
+    "global_and_head_dagger_closed": true,
+    "radius_formula_has_no_search": true,
+    "robot_surface_absent": true,
+    "single_center_single_joint_only": true,
+    "v144_exact_event_label_green": true
+  },
+  "failed_checks": [],
+  "input_hashes": {
+    "runner": "1c84ee636e1aa41fda2fb3452c011d0927dd26a42733af231e8e5e2e32612dbc",
+    "shadow_trace": "eb432bdb64c251dcbb466bd795db381891837086dae9dcc7a2564a7f2a2930b5",
+    "source_deployed": "ae87508d7bd25c7821cb167d7a61d8eeaa28d7d153be72dd9d537236ae5e92f6",
+    "source_raw": "aa1025ae4bd2daf1c513cd81374e8eb7961308a41ca10bbe55f6284944fd6460",
+    "v121_transform": "4bd5eab5343cd8401db1789773fa3cc345727d903cb31222e0ea9870f0e9e640",
+    "v134_loader": "632a2e12ae10d940be38858c52e738281ca6a2de1736d1be90b8adcbdbd8baa8",
+    "v140_result": "44921665d80235246737b333a5149ceacb702d477dcc2c7496395bf0c42ba637",
+    "v144_correction": "4d955dacf6d30a0953c306ab6e7d9a1d87fea872a8b646aebd48c9e528c0dd0c",
+    "v145_loader": "b6f0cb28e86bc3561009af87ad5cc5136641e08057d54c81d74b119d627ded4c",
+    "v147_result": "cf46b78e3a1e5777d324ce744952406a949ddd34b54d12e7d25fe1f265b83b91"
+  },
+  "mechanism": {
+    "center": "V144 shadow trajectory tick 394",
+    "correction": "exact two-fit oracle final-minus-base action at the center",
+    "deployment_abi": "unchanged 115/14/64 stateful ONNX",
+    "feature": "obs[115] concatenated with h_in[64]",
+    "joint": "right ankle / action index 13",
+    "normalization": "z-score over the frozen 4,800+600 aggregate; dimensions with std<1e-6 contribute zero",
+    "optimizer_or_training": false,
+    "outside_radius": "bit-exact V140 action",
+    "postprocess": "frozen G3 guard, x=0 deadband, and final rate projection are reapplied after the residual",
+    "radius": "half the normalized Euclidean distance to the nearest other aggregate row",
+    "source": "V140 selected raw actor"
+  },
+  "pass_rule": {
+    "gate": "exactly one of 5,400 aggregate rows activates",
+    "preservation": "all other aggregate actions bit-exact",
+    "safety": "reapplied deployment transform contract passes",
+    "state": "previous_action_out equals final action; h_out exact",
+    "target": "center right ankle matches exact oracle <=1e-7"
+  },
+  "schema_version": "winner_v148.single_center_residual_preregistration.v1",
+  "status": "PREREGISTERED_WINNER_V148_SINGLE_CENTER_RESIDUAL",
+  "stop_rule": "if the graph changes any other aggregate row/element, misses the center target, or fails the deployment contract, close the local residual; do not change center, radius, feature, or correction"
+}
