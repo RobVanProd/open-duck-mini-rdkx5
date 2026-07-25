@@ -58,3 +58,24 @@ def test_v153_v2_changes_only_the_oracle_vector_source() -> None:
     ]
     assert prereg["mechanism"]["correction"]["value"] > 0
     assert prereg["authority"]["behavior"] is False
+
+
+def test_v153_graph_contract_is_phase_periodic_and_deployable() -> None:
+    result = load("winner_v153_phase_contact_residual_result.json")
+    assert sha256("winner_v153_phase_contact_residual_result.json") == (
+        "4548d098902dd260561fb10e3c0a437c68980e9c775cb9c08423336afbf2ee1f"
+    )
+    assert result["status"] == "PASS_WINNER_V153_PHASE_CONTACT_RESIDUAL"
+    assert result["failed_checks"] == []
+    assert result["gate"]["aggregate_gate_count"] == 168
+    assert result["gate"]["contact"] == [0, 1]
+    assert result["correction"]["joint"] == 13
+    assert result["correction"]["value"] > 0
+    assert result["correction"]["first_target_error"] <= 5.0e-7
+    assert result["checks"]["changes_only_right_ankle"] is True
+    assert result["checks"]["x0_deadband_remains_exact"] is True
+    assert result["artifact"]["deployed"]["inference"]["pass"] is True
+    assert result["decision"] == (
+        "EARN_ONE_V154_PHASE_CONTACT_CAUSAL_BEHAVIOR_PREREGISTRATION"
+    )
+    assert result["authority"]["behavior"] is False
