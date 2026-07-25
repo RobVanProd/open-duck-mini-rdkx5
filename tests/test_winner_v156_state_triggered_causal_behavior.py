@@ -43,12 +43,39 @@ def test_v156_result_when_present() -> None:
     if not path.exists():
         return
     result = json.loads(path.read_text(encoding="utf-8"))
+    assert sha256(
+        "winner_v156_state_triggered_causal_behavior_result.json"
+    ) == "72b4f83a377c7ef0f4a8520cafb212437683a6ef67b2c3b7cd6429e7a4c01abd"
     assert result["status"] == (
-        "PASS_WINNER_V156_STATE_TRIGGERED_CAUSAL_BEHAVIOR"
+        "HOLD_WINNER_V156_STATE_TRIGGERED_CAUSAL_BEHAVIOR"
+    )
+    assert result["cell"]["failure_reasons"] == ["trace_contract"]
+    assert result["cell"]["torque_gate"]["check"] is True
+
+
+def test_v156_reporting_correction_when_present() -> None:
+    path = (
+        ANALYSIS
+        / "winner_v156_state_triggered_causal_behavior_reporting_"
+        "correction.json"
+    )
+    if not path.exists():
+        return
+    result = json.loads(path.read_text(encoding="utf-8"))
+    assert sha256(
+        "winner_v156_state_triggered_causal_behavior_reporting_"
+        "correction.json"
+    ) == "afa8879e460df0b1b7d3ead25ef55f82e37a1ce1612320925d709bfb48187038"
+    assert result["status"] == (
+        "PASS_WINNER_V156_STATE_TRIGGERED_CAUSAL_BEHAVIOR_"
+        "REPORTING_CORRECTION"
     )
     assert result["failed_checks"] == []
-    assert result["cell"]["pass"] is True
-    assert result["causal_contract"]["gate"]["active_ticks"] == [394, 583]
+    assert result["incident"]["blocks_byte_identical"] is True
+    assert result["incident"]["scientific_rerun"] is False
+    assert result["corrected_causal_contract"]["rows"] == 600
+    assert result["corrected_causal_contract"]["active_ticks"] == [394, 583]
+    assert result["cell_metrics"]["worst_peak_torque_nm"] <= 1.91229675
     assert result["decision"] == (
         "EARN_V157_DUAL_CHECKPOINT_FULL_MATRIX_PREREGISTRATION"
     )
