@@ -63,3 +63,24 @@ def test_v159_preregistration_when_present() -> None:
     assert result["matrix"]["row"]["phase_frequency_factor"] == 0.95
     assert result["matrix"]["row"]["phase_frequency_factor_offset"] == -0.05
     assert result["authority"]["training"] is False
+
+
+def test_v159_invalidity_when_present() -> None:
+    path = ANALYSIS / "winner_v159_cadence_screen_invalidity.json"
+    if not path.exists():
+        return
+    result = json.loads(path.read_text(encoding="utf-8"))
+    assert sha256(path) == (
+        "031c97f83051d3007f1c9a5fa3ef90bcfaba6f0c692029b92765d59baf4cdac4"
+    )
+    assert result["status"] == (
+        "PASS_WINNER_V159_CADENCE_INVALIDITY_ATTRIBUTION"
+    )
+    assert result["failed_checks"] == []
+    assert result["observed_exception"]["behavior_ticks_completed"] == 0
+    assert result["selection_weight"] == 0
+    assert result["decision"] == (
+        "CLOSE_POSTEXPORT_CADENCE_MECHANISM_AS_NONDEPLOYABLE_"
+        "UNDER_FROZEN_CONTRACT"
+    )
+    assert result["authority"]["runtime_or_observation_contract_change"] is False
