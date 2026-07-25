@@ -1,0 +1,161 @@
+diff --git a/playground/common/winner_v127_constrained_ppo_train.py b/playground/common/winner_v127_constrained_ppo_train.py
+index b749d95..0000000 100644
+--- a/playground/common/winner_v127_constrained_ppo_train.py
++++ b/playground/common/winner_v127_constrained_ppo_train.py
+@@ -43,6 +43,7 @@ import optax
+ 
+ from playground.common import winner_v127_constrained_ppo_losses as ppo_losses
++from playground.common import winner_v171_gradient_geometry as v171_geometry
+ 
+ InferenceParams = Tuple[running_statistics.NestedMeanStd, Params]
+ Metrics = types.Metrics
+@@ -60,6 +61,15 @@ class TrainingState:
+   dual_eta: jax.Array
+   dual_initial_cost: jax.Array
+   dual_initialized: jax.Array
++  v171_geometry_initialized: jax.Array
++  v171_reward_gradient_norm: jax.Array
++  v171_cost_gradient_norm: jax.Array
++  v171_reward_cost_gradient_cosine: jax.Array
++  v171_reward_descent_cost_derivative_before: jax.Array
++  v171_projected_cost_derivative_after: jax.Array
++  v171_projected_reward_direction_retention: jax.Array
++  v171_projection_active: jax.Array
++  v171_cost_descent_derivative: jax.Array
+ 
+ 
+ def _unpmap(v):
+@@ -527,6 +537,34 @@ def train(
+       loss_fn, pmap_axis_name=_PMAP_AXIS_NAME, has_aux=True
+   )
+ 
++  actor_objective = functools.partial(
++      v171_geometry.compute_actor_objective,
++      ppo_network=ppo_network,
++      entropy_cost=entropy_cost,
++      discounting=discounting,
++      reward_scaling=reward_scaling,
++      gae_lambda=gae_lambda,
++      clipping_epsilon=clipping_epsilon,
++      normalize_advantage=normalize_advantage,
++  )
++  reward_actor_loss_and_pgrad_fn = gradients.loss_and_pgrad(
++      functools.partial(actor_objective, objective='reward'),
++      pmap_axis_name=_PMAP_AXIS_NAME,
++      has_aux=True,
++  )
++  cost_actor_loss_and_pgrad_fn = gradients.loss_and_pgrad(
++      functools.partial(actor_objective, objective='cost'),
++      pmap_axis_name=_PMAP_AXIS_NAME,
++      has_aux=True,
++  )
++
+   steps_between_logging = training_metrics_steps or env_step_per_training_step
+   metrics_aggregator = metric_logger.EpisodeMetricsLogger(
+       steps_between_logging=steps_between_logging,
+@@ -543,6 +581,22 @@ def train(
+     (_, metrics), grads = loss_and_pgrad_fn(
+         params, normalizer_params, data, key_loss, dual_lambda
+     )
++    (_, _), reward_actor_grads = reward_actor_loss_and_pgrad_fn(
++        params, normalizer_params, data, key_loss
++    )
++    (_, _), cost_actor_grads = cost_actor_loss_and_pgrad_fn(
++        params, normalizer_params, data, key_loss
++    )
++    geometry = v171_geometry.tangent_geometry(
++        reward_actor_grads.policy, cost_actor_grads.policy
++    )
++    for name, value in geometry.items():
++      metrics[f'winner_v171_{name}'] = value
+ 
+     if lr_is_adaptive_kl:
+       kl_mean = metrics['kl_mean']
+@@ -701,6 +755,26 @@ def train(
+           until_count=normalize_until_count,
+       )
+ 
++    def first_geometry(name):
++      return jnp.ravel(metrics[f'winner_v171_{name}'])[0]
++
++    geometry_values = {
++        name: jnp.where(
++            training_state.v171_geometry_initialized,
++            getattr(training_state, f'v171_{name}'),
++            first_geometry(name),
++        )
++        for name in (
++            'reward_gradient_norm',
++            'cost_gradient_norm',
++            'reward_cost_gradient_cosine',
++            'reward_descent_cost_derivative_before',
++            'projected_cost_derivative_after',
++            'projected_reward_direction_retention',
++            'projection_active',
++            'cost_descent_derivative',
++        )
++    }
+     new_training_state = TrainingState(
+         optimizer_state=optimizer_state,
+         params=params,
+@@ -713,6 +787,15 @@ def train(
+         dual_eta=dual_eta,
+         dual_initial_cost=dual_initial_cost,
+         dual_initialized=dual_initialized,
++        v171_geometry_initialized=jnp.asarray(True),
++        v171_reward_gradient_norm=geometry_values['reward_gradient_norm'],
++        v171_cost_gradient_norm=geometry_values['cost_gradient_norm'],
++        v171_reward_cost_gradient_cosine=geometry_values['reward_cost_gradient_cosine'],
++        v171_reward_descent_cost_derivative_before=geometry_values['reward_descent_cost_derivative_before'],
++        v171_projected_cost_derivative_after=geometry_values['projected_cost_derivative_after'],
++        v171_projected_reward_direction_retention=geometry_values['projected_reward_direction_retention'],
++        v171_projection_active=geometry_values['projection_active'],
++        v171_cost_descent_derivative=geometry_values['cost_descent_derivative'],
+     )
+     metrics['winner_v127_batch_episode_cost'] = batch_cost
+     metrics['winner_v127_dual_eta'] = dual_eta
+@@ -803,6 +886,15 @@ def train(
+       dual_eta=jnp.asarray(0.0, dtype=jnp.float32),
+       dual_initial_cost=jnp.asarray(0.0, dtype=jnp.float32),
+       dual_initialized=jnp.asarray(False),
++      v171_geometry_initialized=jnp.asarray(False),
++      v171_reward_gradient_norm=jnp.asarray(0.0, dtype=jnp.float32),
++      v171_cost_gradient_norm=jnp.asarray(0.0, dtype=jnp.float32),
++      v171_reward_cost_gradient_cosine=jnp.asarray(0.0, dtype=jnp.float32),
++      v171_reward_descent_cost_derivative_before=jnp.asarray(0.0, dtype=jnp.float32),
++      v171_projected_cost_derivative_after=jnp.asarray(0.0, dtype=jnp.float32),
++      v171_projected_reward_direction_retention=jnp.asarray(0.0, dtype=jnp.float32),
++      v171_projection_active=jnp.asarray(0.0, dtype=jnp.float32),
++      v171_cost_descent_derivative=jnp.asarray(0.0, dtype=jnp.float32),
+   )
+ 
+   if restore_checkpoint_path is not None:
+@@ -901,6 +993,15 @@ def train(
+           'total_training_iterations': total_training_iterations,
+           'quarter_iterations': dual_quarter_iterations,
++          'v171_geometry_initialized': bool(_unpmap(training_state.v171_geometry_initialized)),
++          'v171_reward_gradient_norm': float(_unpmap(training_state.v171_reward_gradient_norm)),
++          'v171_cost_gradient_norm': float(_unpmap(training_state.v171_cost_gradient_norm)),
++          'v171_reward_cost_gradient_cosine': float(_unpmap(training_state.v171_reward_cost_gradient_cosine)),
++          'v171_reward_descent_cost_derivative_before': float(_unpmap(training_state.v171_reward_descent_cost_derivative_before)),
++          'v171_projected_cost_derivative_after': float(_unpmap(training_state.v171_projected_cost_derivative_after)),
++          'v171_projected_reward_direction_retention': float(_unpmap(training_state.v171_projected_reward_direction_retention)),
++          'v171_projection_active': float(_unpmap(training_state.v171_projection_active)),
++          'v171_cost_descent_derivative': float(_unpmap(training_state.v171_cost_descent_derivative)),
+       },
+   )
+ 
+@@ -943,6 +1044,15 @@ def train(
+             'total_training_iterations': total_training_iterations,
+             'quarter_iterations': dual_quarter_iterations,
++            'v171_geometry_initialized': bool(_unpmap(training_state.v171_geometry_initialized)),
++            'v171_reward_gradient_norm': float(_unpmap(training_state.v171_reward_gradient_norm)),
++            'v171_cost_gradient_norm': float(_unpmap(training_state.v171_cost_gradient_norm)),
++            'v171_reward_cost_gradient_cosine': float(_unpmap(training_state.v171_reward_cost_gradient_cosine)),
++            'v171_reward_descent_cost_derivative_before': float(_unpmap(training_state.v171_reward_descent_cost_derivative_before)),
++            'v171_projected_cost_derivative_after': float(_unpmap(training_state.v171_projected_cost_derivative_after)),
++            'v171_projected_reward_direction_retention': float(_unpmap(training_state.v171_projected_reward_direction_retention)),
++            'v171_projection_active': float(_unpmap(training_state.v171_projection_active)),
++            'v171_cost_descent_derivative': float(_unpmap(training_state.v171_cost_descent_derivative)),
+         },
+     )
