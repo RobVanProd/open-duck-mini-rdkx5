@@ -38,6 +38,9 @@ def test_v160_result_when_present() -> None:
     if not path.exists():
         return
     result = json.loads(path.read_text(encoding="utf-8"))
+    assert sha256(path) == (
+        "bf50eade4c73a6f5769cb8dcda8f1d5138be085848446a83cf9bad990c74965f"
+    )
     assert result["status"] == "PASS_WINNER_V160_REMAINING_SHADOW_CENSUS"
     assert result["failed_checks"] == []
     assert result["aggregate"]["cells"] == 4
