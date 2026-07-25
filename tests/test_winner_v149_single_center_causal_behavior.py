@@ -38,3 +38,33 @@ def test_v149_preregisters_only_the_isolated_causal_cell() -> None:
     assert prereg["authority"]["additional_behavior"] is False
     assert prereg["authority"]["training"] is False
     assert prereg["authority"]["policy_deployment"] is False
+
+
+def test_v149_closes_after_fixing_the_original_but_inducing_late_torque() -> None:
+    result = load("winner_v149_single_center_causal_behavior_result.json")
+    assert sha256(
+        "winner_v149_single_center_causal_behavior_result.json"
+    ) == "67ac7db8517bd72c32bf3b171e400aa40a73508d8acc3eaf8d33373fef0654f1"
+    assert result["status"] == (
+        "HOLD_WINNER_V149_SINGLE_CENTER_CAUSAL_BEHAVIOR"
+    )
+    assert result["failed_checks"] == [
+        "cell_all_frozen_gates_pass",
+        "torque_event_removed",
+    ]
+    assert result["causal_contract"]["failed_checks"] == []
+    assert result["causal_contract"]["gate"]["active_ticks"] == [394]
+    assert result["causal_contract"]["state_prefix_obs_linf"] == 0
+    assert result["causal_contract"]["state_prefix_hidden_linf"] == 0
+    assert (
+        result["causal_contract"]["center_action_linf_to_oracle"]
+        <= 1.0e-7
+    )
+    assert 1.9200 < result["cell"]["torque_gate"][
+        "worst_peak_torque_nm"
+    ] < 1.9201
+    assert result["cell"]["metrics"]["candidate_gate_status"] == (
+        "PASS_CANDIDATE_SIM_GATE"
+    )
+    assert result["decision"] == "CLOSE_SINGLE_CENTER_LOCAL_RESIDUAL"
+    assert result["authority"]["additional_behavior"] is False
