@@ -1,0 +1,152 @@
+{
+  "authority": {
+    "behavior_evaluation": false,
+    "gate5": false,
+    "one_exact_chunked_cli_launch": true,
+    "rdkx5_or_robot": false,
+    "training_resume": false,
+    "training_retry": false
+  },
+  "checks": {
+    "executor_pins_package_and_launcher": true,
+    "four_chunks_exact": true,
+    "launcher_pins_package_and_inputs": true,
+    "no_training_retry_or_resume": true,
+    "package_exact": true,
+    "robot_surface_absent": true,
+    "single_l4_session": true,
+    "upload_transport_green": true,
+    "v175_package_green": true,
+    "v175_preregistration_green": true
+  },
+  "chunks": [
+    {
+      "bytes": 25165824,
+      "name": "winner-v175-hosted-20260725.tar.gz.part000",
+      "sha256": "c5b5c12a19d156e4e45478291114f4a5e508f229b48179d10cbe7ab30cc26388"
+    },
+    {
+      "bytes": 25165824,
+      "name": "winner-v175-hosted-20260725.tar.gz.part001",
+      "sha256": "5314b6050ee975d3a6079621b14ba21d15ed180352f766ba89441ad1ae16ad0e"
+    },
+    {
+      "bytes": 25165824,
+      "name": "winner-v175-hosted-20260725.tar.gz.part002",
+      "sha256": "00c0386476e5023419869fcf67a0519519f5deb8cc51096839443c85c8d2bff8"
+    },
+    {
+      "bytes": 24528020,
+      "name": "winner-v175-hosted-20260725.tar.gz.part003",
+      "sha256": "7a08e657c70448d346dd9141bc274ac951def477c39a42e235b24c0b542e3930"
+    }
+  ],
+  "commands": [
+    [
+      "colab",
+      "new",
+      "--session",
+      "winner-v175-tangent-20260725",
+      "--gpu",
+      "L4"
+    ],
+    [
+      "colab",
+      "upload",
+      "--session",
+      "winner-v175-tangent-20260725",
+      "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v175-upload-chunks-20260725\\winner-v175-hosted-20260725.tar.gz.part000",
+      "/content/winner-v175-hosted-20260725.tar.gz.part000"
+    ],
+    [
+      "colab",
+      "upload",
+      "--session",
+      "winner-v175-tangent-20260725",
+      "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v175-upload-chunks-20260725\\winner-v175-hosted-20260725.tar.gz.part001",
+      "/content/winner-v175-hosted-20260725.tar.gz.part001"
+    ],
+    [
+      "colab",
+      "upload",
+      "--session",
+      "winner-v175-tangent-20260725",
+      "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v175-upload-chunks-20260725\\winner-v175-hosted-20260725.tar.gz.part002",
+      "/content/winner-v175-hosted-20260725.tar.gz.part002"
+    ],
+    [
+      "colab",
+      "upload",
+      "--session",
+      "winner-v175-tangent-20260725",
+      "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v175-upload-chunks-20260725\\winner-v175-hosted-20260725.tar.gz.part003",
+      "/content/winner-v175-hosted-20260725.tar.gz.part003"
+    ],
+    [
+      "colab",
+      "upload",
+      "--session",
+      "winner-v175-tangent-20260725",
+      "C:\\Users\\usa50\\AppData\\Local\\Temp\\open-duck-mini-rdkx5-policy-sparse\\tools\\launch_winner_v175_tangent_colab.py",
+      "/content/launch_winner_v175_tangent_colab.py"
+    ],
+    [
+      "colab",
+      "exec",
+      "--session",
+      "winner-v175-tangent-20260725",
+      "--file",
+      "C:\\Users\\usa50\\AppData\\Local\\Temp\\open-duck-mini-rdkx5-policy-sparse\\tools\\execute_winner_v175_chunked_colab_cli.py",
+      "--timeout",
+      "21600"
+    ],
+    [
+      "colab",
+      "download",
+      "--session",
+      "winner-v175-tangent-20260725",
+      "/content/winner_v175_result.json",
+      "<LOCAL_RESULT>"
+    ],
+    [
+      "colab",
+      "download",
+      "--session",
+      "winner-v175-tangent-20260725",
+      "/content/winner_v175_artifacts.tar.gz",
+      "<LOCAL_ARCHIVE>"
+    ],
+    [
+      "colab",
+      "download",
+      "--session",
+      "winner-v175-tangent-20260725",
+      "/content/winner_v175_launch_receipt.json",
+      "<LOCAL_RECEIPT>"
+    ],
+    [
+      "colab",
+      "stop",
+      "--session",
+      "winner-v175-tangent-20260725"
+    ]
+  ],
+  "failed_checks": [],
+  "hashes": {
+    "builder": "fe86e57a4cf92136acb7a9fcf0800386dec08908de75173c31004f2a3f971fc9",
+    "executor": "9c5c551d069294202d9ecebb8635a7960e590ac18475679b070cddaaafb10411",
+    "launcher": "df3dde041600031269d18c8f7dac69ae80075f68a32835aa5de460900cfc3145",
+    "package": "8f9b1d8246ff16678478bc64c08af627122fe2dc29958f6e8cc189552f04ff2f",
+    "package_contract": "755362bcc66dfa532bd2bebbb55d71ea85cb5ba6d07dd43b6249a814ff0db6f5",
+    "preregistration": "a6f2bd5377a2e9dd5659755a203c8900b548797ad8ca7b1455428dda41a226bc",
+    "transport_contract": "bbfd3a9a52328d3b889bbe0b6d890a0044ff70409032de68a38b3382213eb932"
+  },
+  "schema_version": "winner_v175.colab_launch_contract.v1",
+  "session": {
+    "accelerator": "L4",
+    "count": 1,
+    "max_wall_seconds": 21600,
+    "name": "winner-v175-tangent-20260725"
+  },
+  "status": "PASS_WINNER_V175_COLAB_LAUNCH_CONTRACT"
+}
