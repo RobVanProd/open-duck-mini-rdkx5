@@ -38,13 +38,19 @@ def test_v157_result_when_present() -> None:
     if not path.exists():
         return
     result = json.loads(path.read_text(encoding="utf-8"))
-    assert result["status"] == "PASS_WINNER_V157_DUAL_CHECKPOINT_NOMINAL"
-    assert result["failed_checks"] == []
-    assert result["summary"]["combined_cells_passing"] == 16
+    assert sha256(
+        "winner_v157_dual_checkpoint_nominal_result.json"
+    ) == "430df5f76cc60f69bfa189a19d6d58e9b856c415c5006ab31ff981adef8fdc9d"
+    assert result["status"] == "HOLD_WINNER_V157_DUAL_CHECKPOINT_NOMINAL"
+    assert result["failed_checks"] == [
+        "combined_reused_and_new_cells_16_of_16"
+    ]
+    assert result["summary"]["combined_cells_passing"] == 10
     assert result["summary"]["combined_cells_required"] == 16
-    assert result["summary"]["new_final_cells_completed"] == 6
-    assert result["summary"]["new_final_cells_passing"] == 6
-    assert result["decision"] == (
-        "EARN_V158_FROZEN_ROBUSTNESS_LADDER_PREREGISTRATION"
-    )
+    assert result["summary"]["new_final_cells_completed"] == 1
+    assert result["summary"]["new_final_cells_passing"] == 0
+    assert result["new_final_cells"][0]["failure_reasons"] == [
+        "torque_peak_at_most_1p91229675_nm"
+    ]
+    assert result["decision"] == "CLOSE_VELOCITY_GATED_PHASE_RESIDUAL"
     assert result["authority"]["policy_deployment"] is False
