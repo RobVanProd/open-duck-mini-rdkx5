@@ -1,0 +1,93 @@
+{
+  "authority": {
+    "cpu_behavior_cell": true,
+    "gate5": false,
+    "hosted_training": false,
+    "production_contract_change": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "checks": {
+    "composition_green": true,
+    "cpu_only_no_training": true,
+    "default_off_production_contract_unchanged": true,
+    "integer_fast_path_present": true,
+    "policy_hash_unchanged": true,
+    "same_one_point_factor_and_cell": true,
+    "v159_failed_only_before_behavior_on_fractional_index": true
+  },
+  "decision_rule": {
+    "failure_closes": "continuous reference/cadence expansion; no factor or interpolation retry",
+    "pass": "cell passes every unchanged gate, phase increments match 0.95, and all 600 reference-action slots match interpolation",
+    "pass_earns": "a reviewed continuous-reference adapter contract decision, not training"
+  },
+  "failed_checks": [],
+  "gates": {
+    "all_existing_candidate_checks": true,
+    "bilateral_transitions": true,
+    "duration_ticks_exact": 600,
+    "positive_command_consistent_motion": true,
+    "torque_peak_nm_at_most": 1.91229675,
+    "tracking_p95_rad_at_most": 0.2,
+    "zero_rate_excess": true
+  },
+  "input_hashes": {
+    "base_preregistration": "c8f986ceb24863f33c1fc99170548d2e255cb6a26737d3f74762f8dcd4485a24",
+    "builder": "32025627bfcccf8896758b843f8b0a6a60ce421a8fe299a7bc8616c3e557f24f",
+    "cell_runner": "41cc51abb21dde2fde8fa4cbf36ad50212794fea0a38eb73b2c3705ee96ac034",
+    "composer": "2a8328a6f94f36e187d80973f270256c310c141449a7aafa78d0bfe6592758ee",
+    "evaluator": "7214a6ed5c306f6cf70a6e2aa7d0665f15e47271510cd4014ecda246c9ffa1a2",
+    "evaluator_manifest": "3617361d73b320228ad08e2546ce8fa662b2646f3587ec5b434f1828e8fd2be2",
+    "playground_joystick": "912adf04a2ce1cee3c01458d02b58bf7b9ac8a4fc1ba38adac525db24835d19b",
+    "playground_manifest": "320f2380892fa1fadfb69a70d0ef4422441b62d7c62a1bbe1a46ec53b24d27c4",
+    "reference_feature_table": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212",
+    "runner": "9ba38054cbc40f2ed4fe400af1ab2f8fbba1a4db7ddaf295e5c786b696ce82ad",
+    "selected_policy": "ae87508d7bd25c7821cb167d7a61d8eeaa28d7d153be72dd9d537236ae5e92f6",
+    "v126_preregistration": "eb40f17d9c08b8362f068567e1620bdafef21ad9123a633c9536f3637a31c899",
+    "v140_result": "44921665d80235246737b333a5149ceacb702d477dcc2c7496395bf0c42ba637",
+    "v159_invalidity": "031c97f83051d3007f1c9a5fa3ef90bcfaba6f0c692029b92765d59baf4cdac4",
+    "v159_preregistration": "8f2cbd258ad974d3fe82c561e68f18222e9237ade5de081c24eb02e0cd561408"
+  },
+  "matrix": {
+    "cells": 1,
+    "row": {
+      "checkpoint_id": "V140_SELECTED_FINAL",
+      "command_x_m_s": 0.077,
+      "configuration": null,
+      "duration_ticks": 600,
+      "phase_frequency_factor": 0.95,
+      "phase_frequency_factor_offset": -0.05,
+      "plant": "P30_ALL_JOINT",
+      "seed": 167931544
+    }
+  },
+  "mechanism": {
+    "contract_role": "offline evidence for a possible reviewed policy-adapter expansion; not an authorized production change",
+    "factor": 0.95,
+    "integer_phase": "bit-exact original table row through where",
+    "reference_action": "cyclic linear interpolation of adjacent 14-D table rows",
+    "reference_motion": "existing polynomial evaluation already continuous"
+  },
+  "paths": {
+    "base_preregistration": "C:\\Users\\usa50\\AppData\\Local\\Temp\\open-duck-mini-rdkx5-policy-sparse\\outputs\\analysis\\winner_v3_variable_configuration_replacement_preregistration.json",
+    "builder": "C:\\Users\\usa50\\AppData\\Local\\Temp\\open-duck-mini-rdkx5-policy-sparse\\tools\\build_winner_v166_continuous_reference_preregistration.py",
+    "cell_runner": "C:\\Users\\usa50\\AppData\\Local\\Temp\\open-duck-mini-rdkx5-policy-sparse\\tools\\run_winner_v141_projected_final_behavior.py",
+    "composer": "C:\\Users\\usa50\\AppData\\Local\\Temp\\open-duck-mini-rdkx5-policy-sparse\\tools\\compose_winner_v166_continuous_reference_playground.py",
+    "evaluator": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v159-cadence-evaluator-20260725\\closed_loop_sim_eval_v159_cadence.py",
+    "evaluator_manifest": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v159-cadence-evaluator-20260725\\composition_manifest.json",
+    "playground_joystick": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v166-continuous-reference-playground-20260725\\playground\\open_duck_mini_v2\\joystick.py",
+    "playground_manifest": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v166-continuous-reference-playground-20260725\\V166_COMPOSITION_MANIFEST.json",
+    "reference_feature_table": "C:\\Users\\usa50\\AppData\\Local\\Temp\\open-duck-mini-rdkx5-policy-sparse\\outputs\\analysis\\ground_up_projected_reference_feature_table.npz",
+    "runner": "C:\\Users\\usa50\\AppData\\Local\\Temp\\open-duck-mini-rdkx5-policy-sparse\\tools\\run_winner_v166_continuous_reference.py",
+    "selected_policy": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v140-preservation-projected-actor-20260725\\winner_v140_deployed_selected.onnx",
+    "v126_preregistration": "C:\\Users\\usa50\\AppData\\Local\\Temp\\open-duck-mini-rdkx5-policy-sparse\\outputs\\analysis\\winner_v126_all_tick_supreme_clip_preregistration.json",
+    "v140_result": "C:\\Users\\usa50\\AppData\\Local\\Temp\\open-duck-mini-rdkx5-policy-sparse\\outputs\\analysis\\winner_v140_preservation_projected_actor_result.json",
+    "v159_invalidity": "C:\\Users\\usa50\\AppData\\Local\\Temp\\open-duck-mini-rdkx5-policy-sparse\\outputs\\analysis\\winner_v159_cadence_screen_invalidity.json",
+    "v159_preregistration": "C:\\Users\\usa50\\AppData\\Local\\Temp\\open-duck-mini-rdkx5-policy-sparse\\outputs\\analysis\\winner_v159_cadence_screen_preregistration.json"
+  },
+  "playground_root": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v166-continuous-reference-playground-20260725",
+  "playground_tree_sha256": "ac49d0079f38acdca4febb6b743aac98ad0495483a1d95a04ad31b69954fbc59",
+  "schema_version": "winner_v166.continuous_reference_preregistration.v1",
+  "status": "PREREGISTERED_WINNER_V166_CONTINUOUS_REFERENCE"
+}
