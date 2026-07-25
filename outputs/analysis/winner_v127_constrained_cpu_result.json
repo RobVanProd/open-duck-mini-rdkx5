@@ -1,0 +1,331 @@
+{
+  "authority": {
+    "gate5": false,
+    "hosted_preregistration_authorized": true,
+    "hosted_run_authorized": false,
+    "robot_or_rdk": false,
+    "torque_or_motion": false
+  },
+  "checks": {
+    "both_deployed_initializers_finite": true,
+    "both_deployed_onnx_abis_exact": true,
+    "both_deployed_onnx_contracts_pass": true,
+    "cost_critic_structure_exact": true,
+    "cpu_only": true,
+    "default_off_config_exact_false": true,
+    "dense_cost_matches_source_law": true,
+    "every_cost_critic_leaf_updated": true,
+    "every_policy_leaf_updated": true,
+    "initial_dual_state_exact": true,
+    "smoke_dual_state_obeys_zero_or_initialized_branch": true,
+    "source_checkpoint_has_only_three_deployable_trees": true,
+    "source_restore_parameters_bit_exact": true,
+    "source_restore_structure_exact": true,
+    "step0_deployed_inference_matches_v121_half": true,
+    "synthetic_first_positive_cost_initializes_derived_eta": true,
+    "synthetic_persistent_cost_lambda_monotone": true,
+    "synthetic_persistent_cost_reaches_one_by_quarter": true,
+    "synthetic_zero_cost_leaves_dual_uninitialized": true,
+    "trained_cost_critic_tree_finite": true,
+    "trained_policy_structure_exact": true,
+    "trained_policy_tree_finite": true,
+    "wall_seconds_at_most_1800": true
+  },
+  "cost_law": {
+    "analytic": 0.6754064559936523,
+    "forces_nm": [
+      0.0,
+      1.9122967720031738,
+      -2.0,
+      2.5,
+      0.25,
+      0.25,
+      0.25,
+      0.25,
+      0.25,
+      0.25,
+      0.25,
+      0.25,
+      0.25,
+      0.25
+    ],
+    "max_abs_error": 0.0,
+    "observed": 0.6754064559936523
+  },
+  "decision": "EARN_ONE_V127_HOSTED_PREREGISTRATION",
+  "deployment": {
+    "graphs": {
+      "0": {
+        "deployed_sha256": "bee1d65fa0acd08f7ab5b8a10fe66ea64b9f933d06bbd47c6def168f7e06830f",
+        "graph_io": {
+          "inputs": {
+            "h_in": [
+              1,
+              64
+            ],
+            "obs": [
+              1,
+              115
+            ],
+            "previous_action": [
+              1,
+              14
+            ]
+          },
+          "outputs": {
+            "continuous_actions": [
+              1,
+              14
+            ],
+            "h_out": [
+              1,
+              64
+            ],
+            "previous_action_out": [
+              1,
+              14
+            ]
+          }
+        },
+        "inference": {
+          "changed_projection_is_exercised": true,
+          "checks": {
+            "all_outputs_finite": true,
+            "changed_projection_is_exercised": true,
+            "cpu_provider_exact": true,
+            "g3_guard_preserved_in_consistent_chain": true,
+            "moving_rate_delta_enforced": true,
+            "realized_state_feedback_exact": true,
+            "recurrent_hidden_output_bit_exact": true,
+            "zero_action_exact": true,
+            "zero_previous_exact": true
+          },
+          "max_guard_excess_rad": 0.0,
+          "max_hidden_error": 0.0,
+          "max_moving_delta_excess": 2.2351741790771484e-08,
+          "max_state_error": 0.0,
+          "max_zero_action": 0.0,
+          "max_zero_previous": 0.0,
+          "pass": true
+        },
+        "initializers_finite": true,
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v127-constrained-cpu-contract-20260724\\v127_deployed_0.onnx",
+        "raw_sha256": "2d3cfb686a9c9643d9414a99a10e4db3aee7fc8f63cbc2fd81f107b487cf1311",
+        "step": 0
+      },
+      "1024": {
+        "deployed_sha256": "24afa91fe2327ea8f400af91fd9e94f37cb8d033fcbbef9e0ca795592fe4053a",
+        "graph_io": {
+          "inputs": {
+            "h_in": [
+              1,
+              64
+            ],
+            "obs": [
+              1,
+              115
+            ],
+            "previous_action": [
+              1,
+              14
+            ]
+          },
+          "outputs": {
+            "continuous_actions": [
+              1,
+              14
+            ],
+            "h_out": [
+              1,
+              64
+            ],
+            "previous_action_out": [
+              1,
+              14
+            ]
+          }
+        },
+        "inference": {
+          "changed_projection_is_exercised": true,
+          "checks": {
+            "all_outputs_finite": true,
+            "changed_projection_is_exercised": true,
+            "cpu_provider_exact": true,
+            "g3_guard_preserved_in_consistent_chain": true,
+            "moving_rate_delta_enforced": true,
+            "realized_state_feedback_exact": true,
+            "recurrent_hidden_output_bit_exact": true,
+            "zero_action_exact": true,
+            "zero_previous_exact": true
+          },
+          "max_guard_excess_rad": 0.0,
+          "max_hidden_error": 0.0,
+          "max_moving_delta_excess": 2.2351741790771484e-08,
+          "max_state_error": 0.0,
+          "max_zero_action": 0.0,
+          "max_zero_previous": 0.0,
+          "pass": true
+        },
+        "initializers_finite": true,
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v127-constrained-cpu-contract-20260724\\v127_deployed_1024.onnx",
+        "raw_sha256": "2fbb837b23ed35c460f877ff9c5189b819572b8cd8dc5258b2cb4578ce4b8a90",
+        "step": 1024
+      }
+    },
+    "step0_v121_half_max_abs_error": 5.960464477539063e-08
+  },
+  "failed_checks": [],
+  "input_hashes": {
+    "builder": "fcfde3e0fa21e46f3bf8630f5e60fd8742de6638434dea28c1b0d22dec893def",
+    "composed_manifest": "3514416307e1f12e72feb4228f50a42ae02ca91b86d9dbc339448cf1b2ac6564",
+    "composer": "36c378e968ffbb824ff12264f7afc49ffc5661195d208823c51193f04c61cd4e",
+    "losses": "996e292f76a4071f2c3117b0f1dacd9b1a3bf9e31d6d97128ce2f054f9bc6ff1",
+    "oracle_result": "bd967fde399a0b429c3707589ae40c790d66d5d719f9b2035848ba2596b3436f",
+    "patch": "5fecffd0c64a3380e6ae7c5c3a68130c13bbf3a91566828fa95f635dc07297d5",
+    "retro_audit": "776f94604438819204c014025228e89e4ba100fb92cdf3533bd3bfb095315c97",
+    "runner": "6b0cfcba898659e19e8aff4a99f25540b8739f9d92957c549fe470f7fb65bc72",
+    "source_checkpoint_directory": "29b6d1d707784cc49050ab4b5513c06b020ebf7cf02dba3bee304a74477348f8",
+    "train": "b749d956c4651e5a9037b542e946fcc81425915c17495e1b68ee27f4a7435615"
+  },
+  "schema_version": "winner_v127.constrained_cpu_result.v1",
+  "status": "PASS_WINNER_V127_CONSTRAINED_CPU_CONTRACT",
+  "training": {
+    "aux": {
+      "0": {
+        "eta": 0.0,
+        "initial_cost": 0.0,
+        "initialized": false,
+        "lambda": 0.0,
+        "quarter_iterations": 8,
+        "step": 0,
+        "total_training_iterations": 32
+      },
+      "1024": {
+        "eta": 0.6536062955856323,
+        "initial_cost": 0.1912466287612915,
+        "initialized": true,
+        "lambda": 6.96565055847168,
+        "quarter_iterations": 8,
+        "step": 1024,
+        "total_training_iterations": 32
+      }
+    },
+    "command": [
+      "D:\\CodexArtifacts\\venvs\\open-duck-policy-py31213\\Scripts\\python.exe",
+      "playground/open_duck_mini_v2/runner.py",
+      "--task",
+      "flat_terrain_backlash",
+      "--env",
+      "joystick",
+      "--output_dir",
+      "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v127-constrained-cpu-contract-20260724\\smoke",
+      "--num_timesteps",
+      "1024",
+      "--ppo_seed",
+      "100",
+      "--ppo_num_envs",
+      "4",
+      "--ppo_num_evals",
+      "2",
+      "--ppo_episode_length",
+      "64",
+      "--ppo_unroll_length",
+      "8",
+      "--ppo_batch_size",
+      "4",
+      "--ppo_num_minibatches",
+      "1",
+      "--ppo_num_updates_per_batch",
+      "2",
+      "--ppo_learning_rate",
+      "0.0003",
+      "--ppo_discounting",
+      "0.97",
+      "--ppo_entropy_cost",
+      "0.005",
+      "--policy_architecture",
+      "reference_residual_recurrent_adapter",
+      "--recurrent_hidden_size",
+      "64",
+      "--imitation_scale",
+      "1.0",
+      "--reference_feature_table_path",
+      "C:\\Users\\usa50\\AppData\\Local\\Temp\\open-duck-mini-rdkx5-policy-sparse\\outputs\\analysis\\ground_up_projected_reference_feature_table.npz",
+      "--nominal_reference_bootstrap",
+      "--ground_up_hard_vector_command_support",
+      "--ground_up_command_support_min_x",
+      "0.074",
+      "--ground_up_command_support_max_x",
+      "0.080",
+      "--ground_up_action_velocity_limits_rad_s",
+      "1.0,.75,1.4736209064722061,1.4300791546702385,1.3976470567286015,.5,.5,.5,.5,.5,.75,1.25,1.0,1.2215287424623966",
+      "--ground_up_measured_actuator_bridge",
+      "--ground_up_actuator_bridge_delay_ticks",
+      "3,3,3,3,3,3,2,3,3,3,2,3,2,3",
+      "--ground_up_actuator_bridge_tau_s",
+      ".015,.015,.005,.010,.010,.120,.120,.120,.120,.020,.035,.010,.030,.005",
+      "--ground_up_applied_target_observation",
+      "--ground_up_tracking_tail_exceedance_scale",
+      "-6572.254964031055",
+      "--ground_up_tracking_tail_threshold_rad",
+      "0.20",
+      "--ground_up_peak_torque_exceedance_scale",
+      "0",
+      "--ground_up_linear_peak_torque_exceedance_scale",
+      "0",
+      "--reference_start_phase",
+      "0",
+      "--ground_up_signed_progress_objective",
+      "--winner_v3_variable_configuration",
+      "--winner_v3_deviation_scale",
+      "1.0",
+      "--winner_v119_train_transition_match",
+      "--winner_v127_constrained_cost",
+      "--critic_observation",
+      "privileged_state",
+      "--restore_checkpoint_path",
+      "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v119-extracted-20260724\\winner_v119_transition_continuation\\training\\2026_07_24_193907_1003520"
+    ],
+    "completed_smoke_reused": true,
+    "cost_checkpoint_sha256": {
+      "0": "50f03e2c34aa97579f1cd26157a5c0e3a1f5a0242e6753b164dd064f86968046",
+      "1024": "e38809651683d6ab7bfd72652554fa29180d3a3ef075a300097736573efeead3"
+    },
+    "cost_leaf_max_abs_delta": {
+      "params/hidden_0/bias": 0.010725104250013828,
+      "params/hidden_0/kernel": 0.01623162254691124,
+      "params/hidden_1/bias": 0.012405318208038807,
+      "params/hidden_1/kernel": 0.014770861715078354,
+      "params/hidden_2/bias": 0.007820949889719486,
+      "params/hidden_2/kernel": 0.011611424386501312,
+      "params/hidden_3/bias": 0.00526835024356842,
+      "params/hidden_3/kernel": 0.012118078768253326
+    },
+    "elapsed_seconds": 273.09260869026184,
+    "policy_checkpoint_sha256": {
+      "0": "580321a0b6e23b4fc0adfb1a9c29fe3563cab933198b29d3d0009d262e15c0ca",
+      "1024": "5cae253a1555e3cd940dc4e733df7320691d302bd9fae66323c34c0ac7f89d28"
+    },
+    "policy_leaf_max_abs_delta": {
+      "1/params/adapter_hidden_bias": 0.006560790352523327,
+      "1/params/adapter_hidden_projection/kernel": 0.010808929800987244,
+      "1/params/adapter_location/bias": 0.004262959584593773,
+      "1/params/adapter_location/kernel": 0.011400740593671799,
+      "1/params/adapter_obs_projection/kernel": 0.01077214628458023,
+      "1/params/residual_location/bias": 0.004262950737029314,
+      "1/params/residual_location/kernel": 0.010195678099989891,
+      "1/params/residual_trunk/hidden_0/bias": 0.007003165781497955,
+      "1/params/residual_trunk/hidden_0/kernel": 0.011283859610557556,
+      "1/params/residual_trunk/hidden_1/bias": 0.0075416346080601215,
+      "1/params/residual_trunk/hidden_1/kernel": 0.011319715529680252,
+      "1/params/residual_trunk/hidden_2/bias": 0.0069382525980472565,
+      "1/params/residual_trunk/hidden_2/kernel": 0.011636685580015182,
+      "1/params/scale_logits/bias": 0.005665287375450134,
+      "1/params/scale_logits/kernel": 0.009621408767998219
+    },
+    "raw_onnx_sha256": {
+      "0": "2d3cfb686a9c9643d9414a99a10e4db3aee7fc8f63cbc2fd81f107b487cf1311",
+      "1024": "2fbb837b23ed35c460f877ff9c5189b819572b8cd8dc5258b2cb4578ce4b8a90"
+    }
+  }
+}

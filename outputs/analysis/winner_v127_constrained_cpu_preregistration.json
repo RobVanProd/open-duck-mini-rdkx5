@@ -1,0 +1,138 @@
+{
+  "authority": {
+    "colab_authorized": false,
+    "cpu_contract_authorized": true,
+    "gate5": false,
+    "robot_or_rdk": false,
+    "torque_or_motion": false
+  },
+  "cpu_contract": {
+    "default_off": [
+      "transition, observation, physics and reward exact",
+      "policy export ABI unchanged"
+    ],
+    "required": [
+      "CPU only",
+      "step-0 source normalizer/policy/reward-value bit exact",
+      "fresh cost critic deterministic and finite",
+      "every policy and cost-critic leaf changes",
+      "dual state stays exactly zero if the source smoke has no violation",
+      "otherwise J_C0 is finite/positive and eta/lambda follow the rule",
+      "step-0 and step-1024 deployment graphs pass the 115/14/64 ABI",
+      "step-0 deployed inference equals V121-half"
+    ],
+    "smoke": {
+      "batch_size": 4,
+      "episode_length": 64,
+      "num_envs": 4,
+      "num_minibatches": 1,
+      "num_updates_per_batch": 2,
+      "steps": 1024,
+      "unroll_length": 8
+    },
+    "source_law": "dense cost agrees exactly with source actuator_force",
+    "synthetic_dual": [
+      "zero cost pins lambda and eta at zero without initialization",
+      "first positive cost initializes the exact derived eta",
+      "persistent J_C0 cost reaches lambda=1 after ceil(K/4) violating batches",
+      "lambda is monotone"
+    ]
+  },
+  "dual": {
+    "J_C0": "first positive continuation rollout batch cost, used once",
+    "K": "total training-step calls fixed by the requested step budget",
+    "batch_cost": "mean over rollout rows of sum_t dense_cost_t",
+    "development_falsifier": "The initial 1024-step development smoke observed zero cost in its first batch, disproving the literal first-batch divisor before preregistration. No hosted run was made.",
+    "eta": "1/(ceil(K/4)*J_C0)",
+    "initial_lambda": 0.0,
+    "tunable_dual_scalars": 0,
+    "update": "lambda=max(0,lambda+eta*J_C)",
+    "update_order": "collect batch, update dual once, then PPO SGD",
+    "zero_cost_batches": "leave lambda=eta=0 and the dual uninitialized; the first violating batch initializes and updates it"
+  },
+  "external_paths": {
+    "playground": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v127-constrained-playground-v3-20260724",
+    "source_checkpoint": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v119-extracted-20260724\\winner_v119_transition_continuation\\training\\2026_07_24_193907_1003520"
+  },
+  "failed_checks": [],
+  "hosted_gate": {
+    "authorized_now": false,
+    "both_checkpoint_rule": true,
+    "continuations": 1,
+    "earned_only_if": "every CPU-contract check passes",
+    "exports": [
+      0,
+      1003520,
+      2007040
+    ],
+    "retry_or_resume": false
+  },
+  "input_hashes": {
+    "builder": "fcfde3e0fa21e46f3bf8630f5e60fd8742de6638434dea28c1b0d22dec893def",
+    "composed_manifest": "3514416307e1f12e72feb4228f50a42ae02ca91b86d9dbc339448cf1b2ac6564",
+    "composer": "36c378e968ffbb824ff12264f7afc49ffc5661195d208823c51193f04c61cd4e",
+    "losses": "996e292f76a4071f2c3117b0f1dacd9b1a3bf9e31d6d97128ce2f054f9bc6ff1",
+    "oracle_result": "bd967fde399a0b429c3707589ae40c790d66d5d719f9b2035848ba2596b3436f",
+    "patch": "5fecffd0c64a3380e6ae7c5c3a68130c13bbf3a91566828fa95f635dc07297d5",
+    "retro_audit": "776f94604438819204c014025228e89e4ba100fb92cdf3533bd3bfb095315c97",
+    "runner": "6b0cfcba898659e19e8aff4a99f25540b8739f9d92957c549fe470f7fb65bc72",
+    "source_checkpoint_directory": "29b6d1d707784cc49050ab4b5513c06b020ebf7cf02dba3bee304a74477348f8",
+    "train": "b749d956c4651e5a9037b542e946fcc81425915c17495e1b68ee27f4a7435615"
+  },
+  "objective": {
+    "actor_advantage": "(A_R-lambda*A_C)/(1+lambda)",
+    "advantage_normalization": "reward and cost independently use the frozen PPO per-minibatch rule",
+    "cost": "sum_j max(abs(actuator_force_nm[j])-1.91229675,0)",
+    "cost_added_to_reward": false,
+    "cost_discount": 1.0,
+    "cost_gae_lambda": "same frozen V121 GAE lambda",
+    "cost_value_loss_coefficient": "same frozen reward-value coefficient",
+    "reward_pipeline": "bit-identical V121 reward with old torque scales zero",
+    "torque_limit_nm": 1.91229675
+  },
+  "recovery": {
+    "authorized": true,
+    "elapsed_upper_bound_seconds": 273.09260869026184,
+    "launch_runner_sha256": "9a7d19efd351589c4f1bd5580d1000059e87fccff086263353831b5976db8146",
+    "reason": "The hash-frozen formal 1024-step subprocess completed, but the evidence runner exited during postprocessing. Reuse only these immutable outputs; do not rerun training.",
+    "smoke_directory_sha256": "48b65984c41bae4e46580e7d778bd18300f84c4b27b1ddc7f8d17faf303a1fa9",
+    "training_log_sha256": "8187365965bbc45705ba6fee2069d9f4d5c1af422620d80cd22b0ed217a7e5da"
+  },
+  "restore_correction": {
+    "forbidden_claim": "optimizer or RNG restored from V121",
+    "fresh_deterministic_state": [
+      "Adam optimizer using frozen V121 continuation semantics",
+      "RNG from ppo_seed=100",
+      "cost critic from the third deterministic network key"
+    ],
+    "not_present_in_source": [
+      "optimizer state",
+      "RNG state",
+      "cost critic"
+    ],
+    "restored_bit_exact": [
+      "normalizer",
+      "policy",
+      "reward-value critic"
+    ],
+    "source_checkpoint_payload": "normalizer, policy, reward-value only"
+  },
+  "schema_version": "winner_v127.constrained_cpu_preregistration.v1",
+  "selection": {
+    "causal_mechanism": [
+      "dense per-tick all-joint torque exceedance",
+      "cost never enters the clipped reward",
+      "separate cost critic and gamma_C=1 cost GAE",
+      "derived adaptive dual price"
+    ],
+    "oracle_existence_evidence": {
+      "cells_passed": "16/16",
+      "empty_intersections": 0,
+      "max_torque_projection_normalized": 0.049293758384906655,
+      "torque_projections": 15
+    },
+    "retro_audit_correction": "Frozen V115 evaluation traces show no reward clipping at the observed event ticks: intended and realized linear-hinge price are both 0.5862355. V127 is selected for dense adaptive pricing and separate precursor-state credit, not a false V115 clip claim.",
+    "source_checkpoint": "V121-half raw training state (V119-half)"
+  },
+  "status": "PREREGISTERED_WINNER_V127_CONSTRAINED_CPU_CONTRACT"
+}
