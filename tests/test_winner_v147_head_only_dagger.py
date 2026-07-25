@@ -88,3 +88,34 @@ def test_v147_gradient_mask_freezes_trunk_and_unlabeled_columns() -> None:
     assert np.count_nonzero(
         np.asarray(masked["params"]["scale_logits"]["kernel"])
     ) == 0
+
+
+def test_v147_closes_on_same_shadow_preservation_gate() -> None:
+    result = load("winner_v147_head_only_dagger_cpu_result.json")
+    assert sha256("winner_v147_head_only_dagger_cpu_result.json") == (
+        "cf46b78e3a1e5777d324ce744952406a949ddd34b54d12e7d25fe1f265b83b91"
+    )
+    assert result["status"] == (
+        "HOLD_WINNER_V147_HEAD_ONLY_DAGGER_CPU_CONTRACT"
+    )
+    assert result["failed_checks"] == [
+        "shadow_preservation_ratio_at_most_point01"
+    ]
+    assert result["training"]["metrics"][
+        "corrected_ratio_to_zero_predictor"
+    ] < 0.95
+    assert result["training"]["metrics"][
+        "preservation_ratio_to_corrected_baseline"
+    ] < 0.01
+    assert result["training"]["teacher_metrics"][
+        "preservation_ratio_to_corrected_baseline"
+    ] < 0.01
+    assert result["training"]["shadow_metrics"][
+        "preservation_ratio_to_corrected_baseline"
+    ] > 0.082
+    assert result["training"]["hidden_linf"] == 0
+    assert result["training"]["changed_leaves"] == result["training"][
+        "expected_changed_leaves"
+    ]
+    assert result["decision"] == "CLOSE_HEAD_ONLY_DAGGER"
+    assert result["authority"]["behavior"] is False
