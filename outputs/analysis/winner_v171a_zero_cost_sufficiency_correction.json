@@ -1,0 +1,45 @@
+{
+  "authority": {
+    "candidate_selection": false,
+    "gate5": false,
+    "hosted_training": false,
+    "optimizer_implementation": false,
+    "positive_cost_cpu_audit": true,
+    "rdkx5_or_robot": false,
+    "robustness_matrix": false,
+    "torque_or_motion": false
+  },
+  "checks": {
+    "cost_critic_was_fresh_not_restored": true,
+    "dual_eta_and_lambda_remained_zero": true,
+    "dual_never_initialized": true,
+    "one_training_iteration_exact": true,
+    "realized_batch_cost_was_zero": true,
+    "v171_stated_contract_passed": true
+  },
+  "correction": {
+    "reason": "with zero realized cost, the nonzero normalized cost advantage and actor gradient can be induced by the random cost-value baseline rather than observed violations",
+    "still_valid": [
+      "the V171 instrumentation was update-bit-exact to V127",
+      "the Euclidean tangent formula and numerical checks passed"
+    ],
+    "withdrawn_inference": "V171 does not establish a causally meaningful torque-safety direction because its sole rollout batch had zero realized torque cost while the cost critic was freshly initialized"
+  },
+  "decision": "HOLD_V171_CAUSAL_PROMOTION_REQUIRE_FIRST_POSITIVE_COST_BATCH",
+  "failed_checks": [],
+  "input_hashes": {
+    "builder": "cf0b7773596555f4b31bdf62260d020583f9d606f041fbea9f8b99daf88e8591",
+    "v171_result": "1bf894907305bbbe5ca587f3dac7acab21e1a5467d3a6f5828c266b9ecc83780",
+    "v171_step32_aux": "19d4ea60d879d336d03066c90dc1a2f7a3c3d6873294f3d218c63481c84c29bf"
+  },
+  "next_falsifier": "capture the first batch with raw realized batch_cost>0 under the unchanged 1024-step V127 CPU schedule; require the instrumented training outputs to remain bit-exact to frozen V127",
+  "observed": {
+    "batch_cost": 0.0,
+    "dual_eta": 0.0,
+    "dual_initialized": false,
+    "dual_lambda": 0.0,
+    "recorded_cost_gradient_norm": 54.60348129272461
+  },
+  "schema_version": "winner_v171a.zero_cost_correction.v1",
+  "status": "CORRECTED_WINNER_V171_CAUSAL_SUFFICIENCY"
+}
