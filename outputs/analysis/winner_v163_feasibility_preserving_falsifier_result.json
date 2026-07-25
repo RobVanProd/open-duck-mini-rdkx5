@@ -1,0 +1,5037 @@
+{
+  "accepted": {
+    "all_eight_nominal_cells_pass": true,
+    "alpha": 0.03125,
+    "policy": {
+      "bytes": 958446,
+      "graph_io": {
+        "inputs": {
+          "h_in": [
+            1,
+            64
+          ],
+          "obs": [
+            1,
+            115
+          ],
+          "previous_action": [
+            1,
+            14
+          ]
+        },
+        "outputs": {
+          "continuous_actions": [
+            1,
+            14
+          ],
+          "h_out": [
+            1,
+            64
+          ],
+          "previous_action_out": [
+            1,
+            14
+          ]
+        }
+      },
+      "inference": {
+        "changed_projection_is_exercised": true,
+        "checks": {
+          "all_outputs_finite": true,
+          "changed_projection_is_exercised": true,
+          "cpu_provider_exact": true,
+          "g3_guard_preserved_in_consistent_chain": true,
+          "moving_rate_delta_enforced": true,
+          "realized_state_feedback_exact": true,
+          "recurrent_hidden_output_bit_exact": true,
+          "zero_action_exact": true,
+          "zero_previous_exact": true
+        },
+        "max_guard_excess_rad": 0.0,
+        "max_hidden_error": 0.0,
+        "max_moving_delta_excess": 2.2351741790771484e-08,
+        "max_state_error": 0.0,
+        "max_zero_action": 0.0,
+        "max_zero_previous": 0.0,
+        "pass": true
+      },
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v163-feasibility-preserving-falsifier-20260725\\policies\\winner_v163_a05_0p03125000_deployed.onnx",
+      "sha256": "f39afd0172441fa4bb347693f5cd00a8794abd5c8062f4fa7a034fddaecf49ea"
+    },
+    "source_reserve_strictly_improved": true,
+    "worst_peak_torque_nm": 1.9052104949951172
+  },
+  "authority": {
+    "full_robustness": false,
+    "gate5": false,
+    "hosted_training": false,
+    "next_cpu_contract": true,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "cpu_only": true,
+  "decision": "EARN_V164_FEASIBILITY_PRESERVING_UPDATE_CPU_CONTRACT_ONLY",
+  "failed_checks": [],
+  "input_hashes": {
+    "base_preregistration": "c8f986ceb24863f33c1fc99170548d2e255cb6a26737d3f74762f8dcd4485a24",
+    "builder": "5b9d4844ffc74de7e1d663df5e2840fc4d99ecc8319a0d04b889469dd4bc915e",
+    "cell_runner": "41cc51abb21dde2fde8fa4cbf36ad50212794fea0a38eb73b2c3705ee96ac034",
+    "composed_evaluator": "1539ba18b5b207a15538a8a8611475f5c73bcd7164f2fe039cad8b279a587e43",
+    "composition_manifest": "39e842470828208dfea08b17d936d3f0e6f0d45b8f9813a1edd139692e4a6f74",
+    "deployer": "ca59440ded91cf70d96cc02a6a5e53c5700ccf3cc31084bf6b177ad3311cd0cc",
+    "interpolator": "db60701cde771326a96d2a0c4bbfd12c63c21527bcd8a67ca8ffbc827bd35271",
+    "preregistration": "44904cbe0f2e53cd7955fb3163971cc6025a81e13031e6273c65f8a1ff4d2d9e",
+    "proposal_raw": "2fbb837b23ed35c460f877ff9c5189b819572b8cd8dc5258b2cb4578ce4b8a90",
+    "runner": "66148623ecee731ead7e1e0ea22e64e520c70aedc7c3ad5c3198734977598cad",
+    "source_raw": "2d3cfb686a9c9643d9414a99a10e4db3aee7fc8f63cbc2fd81f107b487cf1311",
+    "v121_preregistration": "9c10dc3de6ea4b5f0f5fe00b287a53e7dc17f1e77b34da84916f90ba285770f5",
+    "v121_result": "8bdefb90032facb4a3f3f7c833e608d2b35dac958ac0fcc2bbbd393ddcbb6047",
+    "v126_preregistration": "eb40f17d9c08b8362f068567e1620bdafef21ad9123a633c9536f3637a31c899",
+    "v127_cpu_result": "cd728eb3cf2900f038c4134e3f603106238e960046b3482d4cd2b695b5a76ed4",
+    "v162_result": "3a9fe947295905df9775496cd394b07d08006b67642b4355acfa5ffe0ce870f6"
+  },
+  "schema_version": "winner_v163.feasibility_preserving_falsifier_result.v1",
+  "status": "PASS_WINNER_V163_FEASIBILITY_PRESERVING_FALSIFIER",
+  "summary": {
+    "alphas_attempted": 6,
+    "moving_cells_executed": 12,
+    "source_worst_peak_torque_nm": 1.909637451171875,
+    "wall_seconds": 698.7991466522217
+  },
+  "trials": [
+    {
+      "all_eight_nominal_cells_pass": false,
+      "alpha": 1.0,
+      "alpha_index": 0,
+      "cells": [
+        {
+          "cell_sha256": "9b35861b08a9fbc3695b8fdaeec4fe48fbec2689e736b194f5bc8ec02e4c9e8e",
+          "failure_reasons": [
+            "current_peak_at_most_2p5",
+            "torque_peak_at_most_1p91229675_nm"
+          ],
+          "identity": {
+            "calibration_ticks": 0,
+            "checkpoint_id": "V163_ALPHA_1.00000000",
+            "command_x_m_s": 0.08,
+            "configuration": null,
+            "duration_ticks": 600,
+            "home_return_ticks": 0,
+            "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+            "policy_sha256": "6c123f50063142554bb4f3807afdeaa1cb88a0bd20f23829c048d88433e22df9",
+            "seed": 167931544,
+            "step": 1003520,
+            "transport": {
+              "additional_action_delay_ticks": 0,
+              "imu_delay_ticks": 0,
+              "native_quantization": false,
+              "sensor_noise_scales": null
+            }
+          },
+          "metrics": {
+            "accelerometer_norm_p95_m_s2": 15.59586229818941,
+            "body_pitch_p95_abs_rad": 0.03832221420461925,
+            "body_pitch_rate_p95_abs_rad_s": 0.8310636371374129,
+            "body_roll_rate_p95_abs_rad_s": 1.3815263211727138,
+            "candidate_gate_status": "PASS_CANDIDATE_SIM_GATE",
+            "checks": {
+              "bilateral_transitions": true,
+              "candidate_gate_pass": true,
+              "cpu_only": true,
+              "current_peak_at_most_2p5": false,
+              "duration_complete_600": true,
+              "oracle_disabled": true,
+              "overcurrent_gt_2a_at_most_99_consecutive_ticks": true,
+              "per_run_readback_exact": true,
+              "phase0_first_observation_exact": true,
+              "positive_command_consistent_motion": true,
+              "torque_peak_at_most_1p91229675_nm": false,
+              "trace_contract": true,
+              "tracking_p95_at_most_0p20": true,
+              "x0_deadband_exact": true,
+              "zero_command_base_height": true,
+              "zero_command_pitch": true,
+              "zero_command_velocity": true,
+              "zero_envelope_excess": true,
+              "zero_rate_excess": true,
+              "zero_recurrent_state_exact": true,
+              "zero_saturation": true
+            },
+            "current_p95_a_by_joint": {
+              "head_pitch": 0.33768517311954566,
+              "head_roll": 0.26211057486213707,
+              "head_yaw": 0.18432863958442328,
+              "left_ankle": 1.9109655792783558,
+              "left_hip_pitch": 1.9941501209282972,
+              "left_hip_roll": 1.2522434570527337,
+              "left_hip_yaw": 0.5378221792287431,
+              "left_knee": 2.230603202125125,
+              "neck_pitch": 0.2604568850450556,
+              "right_ankle": 2.217837008176505,
+              "right_hip_pitch": 1.5384264751765608,
+              "right_hip_roll": 1.010518995020141,
+              "right_hip_yaw": 0.44086798205387845,
+              "right_knee": 1.76727618289981
+            },
+            "left_contact_transition_count": 42,
+            "max_actual_centered_guard_excess_rad": 0.0,
+            "max_conservative_rate_excess_rad_s": 0.0,
+            "mean_local_vx_m_s": 0.061870697978980996,
+            "minimum_base_height_m": 0.15153080224990845,
+            "right_contact_transition_count": 43,
+            "samples": 600,
+            "saturation_pct_by_joint": {
+              "head_pitch": 0.0,
+              "head_roll": 0.0,
+              "head_yaw": 0.0,
+              "left_ankle": 0.0,
+              "left_hip_pitch": 0.0,
+              "left_hip_roll": 0.0,
+              "left_hip_yaw": 0.0,
+              "left_knee": 0.0,
+              "neck_pitch": 0.0,
+              "right_ankle": 0.0,
+              "right_hip_pitch": 0.0,
+              "right_hip_roll": 0.0,
+              "right_hip_yaw": 0.0,
+              "right_knee": 0.0
+            },
+            "termination_reason": "duration_complete",
+            "tracking_p95_rad_by_joint": {
+              "head_pitch": 0.06701369732618331,
+              "head_roll": 0.06590465777553614,
+              "head_yaw": 0.10748785845935344,
+              "left_ankle": 0.14715076386928558,
+              "left_hip_pitch": 0.14967448115348814,
+              "left_hip_roll": 0.08527215756475924,
+              "left_hip_yaw": 0.04277506470680235,
+              "left_knee": 0.1432725667953491,
+              "neck_pitch": 0.10255215922370552,
+              "right_ankle": 0.14618942141532895,
+              "right_hip_pitch": 0.12740831673145295,
+              "right_hip_roll": 0.0888669978827238,
+              "right_hip_yaw": 0.05308023206889629,
+              "right_knee": 0.12500221729278563
+            },
+            "worst_current_p95_a": 2.230603202125125,
+            "worst_saturation_pct": 0.0,
+            "worst_tracking_p95_rad": 0.14967448115348814
+          },
+          "model_readback": {
+            "actual": {
+              "all_body_mass_kg": [
+                0.0,
+                0.0,
+                0.6985260248184204,
+                0.06648000329732895,
+                0.07515999674797058,
+                0.12407000362873077,
+                0.07259000092744827,
+                0.07524000108242035,
+                0.06617999821901321,
+                0.016937799751758575,
+                0.09180989861488342,
+                0.4066070020198822,
+                0.06648000329732895,
+                0.07515999674797058,
+                0.12407000362873077,
+                0.07259000092744827,
+                0.07524000108242035,
+                0.0
+              ],
+              "torso_body_ipos_m": [
+                -0.04832589998841286,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "torso_body_iquat_wxyz": [
+                0.5054987668991089,
+                0.49069473147392273,
+                0.49620741605758667,
+                0.5074129104614258
+              ],
+              "torso_inertia_tensor_nominal_frame_kg_m2": [
+                [
+                  0.0034448949301507967,
+                  9.752039707786026e-11,
+                  8.014266836416753e-11
+                ],
+                [
+                  9.752039707786026e-11,
+                  0.0029271881125270574,
+                  7.284993129176153e-11
+                ],
+                [
+                  8.014266836416753e-11,
+                  7.284993129176153e-11,
+                  0.001676066443158942
+                ]
+              ],
+              "torso_mass_kg": 0.6985260248184204,
+              "torso_principal_inertia_kg_m2": [
+                0.0034448951482772827,
+                0.0029271882958710194,
+                0.0016760665457695723
+              ]
+            },
+            "body_id": 2,
+            "body_name": "trunk_assembly",
+            "enabled": false,
+            "nominal": {
+              "all_body_mass_kg": [
+                0.0,
+                0.0,
+                0.6985260248184204,
+                0.06648000329732895,
+                0.07515999674797058,
+                0.12407000362873077,
+                0.07259000092744827,
+                0.07524000108242035,
+                0.06617999821901321,
+                0.016937799751758575,
+                0.09180989861488342,
+                0.4066070020198822,
+                0.06648000329732895,
+                0.07515999674797058,
+                0.12407000362873077,
+                0.07259000092744827,
+                0.07524000108242035,
+                0.0
+              ],
+              "torso_body_ipos_m": [
+                -0.04832589998841286,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "torso_body_iquat_wxyz": [
+                0.5054987668991089,
+                0.49069473147392273,
+                0.49620741605758667,
+                0.5074129104614258
+              ],
+              "torso_mass_kg": 0.6985260248184204,
+              "torso_principal_inertia_kg_m2": [
+                0.0034448951482772827,
+                0.0029271882958710194,
+                0.0016760665457695723
+              ]
+            },
+            "requested": {
+              "all_link_mass_scale": 1.0,
+              "torso_com_offset_m": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "torso_inertia_tensor_kg_m2": [
+                [
+                  0.0034448951482772827,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0029271882958710194,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0016760665457695723
+                ]
+              ],
+              "torso_mass_add_kg": 0.0
+            }
+          },
+          "pass": false,
+          "policy": {
+            "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v163-feasibility-preserving-falsifier-20260725\\policies\\winner_v163_a00_1p00000000_deployed.onnx",
+            "sha256": "6c123f50063142554bb4f3807afdeaa1cb88a0bd20f23829c048d88433e22df9"
+          },
+          "policy_contract": {
+            "first_h_in_linf": 0.0,
+            "first_phase": [
+              1.0,
+              0.0
+            ],
+            "first_phase_linf_error": 0.0,
+            "first_previous_action_linf": 0.0,
+            "oracle_rows": 0,
+            "rows": 600,
+            "sha256": "7411fc20450d02a5c4ddf651a30f42f4d1bde1c6de5219419342d88b8548a543",
+            "x0_action_nonzero_values": null
+          },
+          "prospective_current_gate": {
+            "checks": {
+              "current_peak_at_most_2p5": false,
+              "overcurrent_gt_2a_at_most_99_consecutive_ticks": true
+            },
+            "conversion_nm_per_a": 0.784532,
+            "longest_strict_over_2a_run_ticks_by_joint": [
+              0,
+              0,
+              3,
+              11,
+              4,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              2,
+              3
+            ],
+            "p95_current_a_by_joint": [
+              0.537822179228743,
+              1.2522434570527339,
+              1.9941501209282972,
+              2.230603202125125,
+              1.9109655792783558,
+              0.2604568850450556,
+              0.3376851731195457,
+              0.18432863958442328,
+              0.26211057486213707,
+              0.44086798205387845,
+              1.010518995020141,
+              1.5384264751765608,
+              1.76727618289981,
+              2.2178370081765055
+            ],
+            "pass": false,
+            "peak_current_a_by_joint": [
+              0.884376885389126,
+              1.5452956891723955,
+              2.1491562948248175,
+              2.8203855597974634,
+              2.6346010915111053,
+              0.36682560323862334,
+              0.37690251795948104,
+              0.2165482514935385,
+              0.2822455796531573,
+              0.6241068204245599,
+              1.5666012962532576,
+              1.9623738218506084,
+              2.184067009356374,
+              2.47582960760165
+            ],
+            "samples": 600,
+            "worst_p95_current_a_diagnostic_only": 2.230603202125125,
+            "worst_peak_current_a": 2.8203855597974634,
+            "worst_strict_over_2a_run_ticks": 11
+          },
+          "readback_checks": {
+            "actuator_readback_exact": true,
+            "all_body_mass_readback_exact": true,
+            "body_identity_exact": true,
+            "configuration_enabled_exact": true,
+            "full_inertia_readback_exact": true,
+            "requested_inertia_tensor_exact": true,
+            "requested_scale_add_offset_exact": true,
+            "torso_com_readback_exact": true,
+            "transport_readback_exact": true
+          },
+          "robot_clearance": false,
+          "schema_version": "winner_v141.projected_final_cell.v1",
+          "simulator": {
+            "error": null,
+            "status": "PASS_CANDIDATE_SIM_GATE"
+          },
+          "status": "HOLD_WINNER_V141_PROJECTED_FINAL_CELL",
+          "torque_gate": {
+            "check": false,
+            "limit_nm": 1.91229675,
+            "peak_torque_nm_by_joint": [
+              0.6938219666481018,
+              1.2123339176177979,
+              1.686081886291504,
+              2.2126827239990234,
+              2.0669288635253906,
+              0.28778642416000366,
+              0.2956920862197876,
+              0.16988903284072876,
+              0.2214306890964508,
+              0.4896317720413208,
+              1.2290488481521606,
+              1.5395450592041016,
+              1.713470458984375,
+              1.9423675537109375
+            ],
+            "worst_peak_torque_nm": 2.2126827239990234
+          },
+          "trace": {
+            "all_values_finite": true,
+            "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v163-feasibility-preserving-falsifier-20260725\\traces\\v163_a00_1p00000000_p31_34_pitch_with_p30_nonpitch_x0.080_seed167931544.jsonl",
+            "required_fields_every_tick": true,
+            "reset_h_exact_zero": true,
+            "reset_previous_action_exact_zero": true,
+            "rows": 600,
+            "sha256": "7411fc20450d02a5c4ddf651a30f42f4d1bde1c6de5219419342d88b8548a543",
+            "ticks_contiguous": true
+          },
+          "training_or_simulator_reward_selection_weight": 0
+        }
+      ],
+      "changed_initializers": [
+        "obs_mean",
+        "obs_std",
+        "trunk_0_weight",
+        "trunk_0_bias",
+        "trunk_1_weight",
+        "trunk_1_bias",
+        "trunk_2_weight",
+        "trunk_2_bias",
+        "base_residual_weight",
+        "base_residual_bias",
+        "adapter_weight",
+        "adapter_bias",
+        "adapter_obs_weight",
+        "adapter_hidden_weight",
+        "adapter_hidden_bias"
+      ],
+      "completed_moving_cells": 1,
+      "deployed": {
+        "bytes": 958446,
+        "graph_io": {
+          "inputs": {
+            "h_in": [
+              1,
+              64
+            ],
+            "obs": [
+              1,
+              115
+            ],
+            "previous_action": [
+              1,
+              14
+            ]
+          },
+          "outputs": {
+            "continuous_actions": [
+              1,
+              14
+            ],
+            "h_out": [
+              1,
+              64
+            ],
+            "previous_action_out": [
+              1,
+              14
+            ]
+          }
+        },
+        "inference": {
+          "changed_projection_is_exercised": true,
+          "checks": {
+            "all_outputs_finite": true,
+            "changed_projection_is_exercised": true,
+            "cpu_provider_exact": true,
+            "g3_guard_preserved_in_consistent_chain": true,
+            "moving_rate_delta_enforced": true,
+            "realized_state_feedback_exact": true,
+            "recurrent_hidden_output_bit_exact": true,
+            "zero_action_exact": true,
+            "zero_previous_exact": true
+          },
+          "max_guard_excess_rad": 0.0,
+          "max_hidden_error": 0.0,
+          "max_moving_delta_excess": 2.2351741790771484e-08,
+          "max_state_error": 0.0,
+          "max_zero_action": 0.0,
+          "max_zero_previous": 0.0,
+          "pass": true
+        },
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v163-feasibility-preserving-falsifier-20260725\\policies\\winner_v163_a00_1p00000000_deployed.onnx",
+        "sha256": "6c123f50063142554bb4f3807afdeaa1cb88a0bd20f23829c048d88433e22df9"
+      },
+      "raw": {
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v163-feasibility-preserving-falsifier-20260725\\policies\\winner_v163_a00_1p00000000_raw.onnx",
+        "sha256": "2fbb837b23ed35c460f877ff9c5189b819572b8cd8dc5258b2cb4578ce4b8a90"
+      },
+      "six_moving_cells_pass": false,
+      "source_reserve_strictly_improved": false,
+      "source_worst_peak_torque_nm": 1.909637451171875,
+      "two_x0_cells_exact_by_invariant": true,
+      "worst_peak_torque_nm": 2.2126827239990234
+    },
+    {
+      "all_eight_nominal_cells_pass": false,
+      "alpha": 0.5,
+      "alpha_index": 1,
+      "cells": [
+        {
+          "cell_sha256": "d9b35fc2f19bfb9295ed539dcba22dbd217eded3705ee0f380780f339a92caae",
+          "failure_reasons": [
+            "current_peak_at_most_2p5",
+            "torque_peak_at_most_1p91229675_nm"
+          ],
+          "identity": {
+            "calibration_ticks": 0,
+            "checkpoint_id": "V163_ALPHA_0.50000000",
+            "command_x_m_s": 0.08,
+            "configuration": null,
+            "duration_ticks": 600,
+            "home_return_ticks": 0,
+            "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+            "policy_sha256": "c249767d614bc1953dada3d1b24356d6b1a133ce8099c1d513921fd80c8d58f8",
+            "seed": 167931544,
+            "step": 1003520,
+            "transport": {
+              "additional_action_delay_ticks": 0,
+              "imu_delay_ticks": 0,
+              "native_quantization": false,
+              "sensor_noise_scales": null
+            }
+          },
+          "metrics": {
+            "accelerometer_norm_p95_m_s2": 16.384074080015253,
+            "body_pitch_p95_abs_rad": 0.0486008525395634,
+            "body_pitch_rate_p95_abs_rad_s": 0.7017256051301953,
+            "body_roll_rate_p95_abs_rad_s": 1.4325463056564325,
+            "candidate_gate_status": "PASS_CANDIDATE_SIM_GATE",
+            "checks": {
+              "bilateral_transitions": true,
+              "candidate_gate_pass": true,
+              "cpu_only": true,
+              "current_peak_at_most_2p5": false,
+              "duration_complete_600": true,
+              "oracle_disabled": true,
+              "overcurrent_gt_2a_at_most_99_consecutive_ticks": true,
+              "per_run_readback_exact": true,
+              "phase0_first_observation_exact": true,
+              "positive_command_consistent_motion": true,
+              "torque_peak_at_most_1p91229675_nm": false,
+              "trace_contract": true,
+              "tracking_p95_at_most_0p20": true,
+              "x0_deadband_exact": true,
+              "zero_command_base_height": true,
+              "zero_command_pitch": true,
+              "zero_command_velocity": true,
+              "zero_envelope_excess": true,
+              "zero_rate_excess": true,
+              "zero_recurrent_state_exact": true,
+              "zero_saturation": true
+            },
+            "current_p95_a_by_joint": {
+              "head_pitch": 0.30545350401311305,
+              "head_roll": 0.2543741030738104,
+              "head_yaw": 0.14749166812112813,
+              "left_ankle": 2.0564766077214323,
+              "left_hip_pitch": 1.7696053264834366,
+              "left_hip_roll": 1.3429645143713431,
+              "left_hip_yaw": 0.5507759036220292,
+              "left_knee": 2.167473996214301,
+              "neck_pitch": 0.23242135327785443,
+              "right_ankle": 2.2181872822944158,
+              "right_hip_pitch": 1.5470555689371177,
+              "right_hip_roll": 1.012861631724396,
+              "right_hip_yaw": 0.4602416151009341,
+              "right_knee": 1.9544172568276323
+            },
+            "left_contact_transition_count": 44,
+            "max_actual_centered_guard_excess_rad": 0.0,
+            "max_conservative_rate_excess_rad_s": 0.0,
+            "mean_local_vx_m_s": 0.07540025180089288,
+            "minimum_base_height_m": 0.15153080224990845,
+            "right_contact_transition_count": 43,
+            "samples": 600,
+            "saturation_pct_by_joint": {
+              "head_pitch": 0.0,
+              "head_roll": 0.0,
+              "head_yaw": 0.0,
+              "left_ankle": 0.0,
+              "left_hip_pitch": 0.0,
+              "left_hip_roll": 0.0,
+              "left_hip_yaw": 0.0,
+              "left_knee": 0.0,
+              "neck_pitch": 0.0,
+              "right_ankle": 0.0,
+              "right_hip_pitch": 0.0,
+              "right_hip_roll": 0.0,
+              "right_hip_yaw": 0.0,
+              "right_knee": 0.0
+            },
+            "termination_reason": "duration_complete",
+            "tracking_p95_rad_by_joint": {
+              "head_pitch": 0.06406399235129356,
+              "head_roll": 0.07627463628305123,
+              "head_yaw": 0.10829626452177761,
+              "left_ankle": 0.14751198589801787,
+              "left_hip_pitch": 0.14654695987701413,
+              "left_hip_roll": 0.08455848917365073,
+              "left_hip_yaw": 0.049968508258461934,
+              "left_knee": 0.14503614902496337,
+              "neck_pitch": 0.09953803354874252,
+              "right_ankle": 0.14680380523204803,
+              "right_hip_pitch": 0.13709571063518525,
+              "right_hip_roll": 0.09342620745301247,
+              "right_hip_yaw": 0.05784332323819399,
+              "right_knee": 0.1260158598423004
+            },
+            "worst_current_p95_a": 2.2181872822944158,
+            "worst_saturation_pct": 0.0,
+            "worst_tracking_p95_rad": 0.14751198589801787
+          },
+          "model_readback": {
+            "actual": {
+              "all_body_mass_kg": [
+                0.0,
+                0.0,
+                0.6985260248184204,
+                0.06648000329732895,
+                0.07515999674797058,
+                0.12407000362873077,
+                0.07259000092744827,
+                0.07524000108242035,
+                0.06617999821901321,
+                0.016937799751758575,
+                0.09180989861488342,
+                0.4066070020198822,
+                0.06648000329732895,
+                0.07515999674797058,
+                0.12407000362873077,
+                0.07259000092744827,
+                0.07524000108242035,
+                0.0
+              ],
+              "torso_body_ipos_m": [
+                -0.04832589998841286,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "torso_body_iquat_wxyz": [
+                0.5054987668991089,
+                0.49069473147392273,
+                0.49620741605758667,
+                0.5074129104614258
+              ],
+              "torso_inertia_tensor_nominal_frame_kg_m2": [
+                [
+                  0.0034448949301507967,
+                  9.752039707786026e-11,
+                  8.014266836416753e-11
+                ],
+                [
+                  9.752039707786026e-11,
+                  0.0029271881125270574,
+                  7.284993129176153e-11
+                ],
+                [
+                  8.014266836416753e-11,
+                  7.284993129176153e-11,
+                  0.001676066443158942
+                ]
+              ],
+              "torso_mass_kg": 0.6985260248184204,
+              "torso_principal_inertia_kg_m2": [
+                0.0034448951482772827,
+                0.0029271882958710194,
+                0.0016760665457695723
+              ]
+            },
+            "body_id": 2,
+            "body_name": "trunk_assembly",
+            "enabled": false,
+            "nominal": {
+              "all_body_mass_kg": [
+                0.0,
+                0.0,
+                0.6985260248184204,
+                0.06648000329732895,
+                0.07515999674797058,
+                0.12407000362873077,
+                0.07259000092744827,
+                0.07524000108242035,
+                0.06617999821901321,
+                0.016937799751758575,
+                0.09180989861488342,
+                0.4066070020198822,
+                0.06648000329732895,
+                0.07515999674797058,
+                0.12407000362873077,
+                0.07259000092744827,
+                0.07524000108242035,
+                0.0
+              ],
+              "torso_body_ipos_m": [
+                -0.04832589998841286,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "torso_body_iquat_wxyz": [
+                0.5054987668991089,
+                0.49069473147392273,
+                0.49620741605758667,
+                0.5074129104614258
+              ],
+              "torso_mass_kg": 0.6985260248184204,
+              "torso_principal_inertia_kg_m2": [
+                0.0034448951482772827,
+                0.0029271882958710194,
+                0.0016760665457695723
+              ]
+            },
+            "requested": {
+              "all_link_mass_scale": 1.0,
+              "torso_com_offset_m": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "torso_inertia_tensor_kg_m2": [
+                [
+                  0.0034448951482772827,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0029271882958710194,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0016760665457695723
+                ]
+              ],
+              "torso_mass_add_kg": 0.0
+            }
+          },
+          "pass": false,
+          "policy": {
+            "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v163-feasibility-preserving-falsifier-20260725\\policies\\winner_v163_a01_0p50000000_deployed.onnx",
+            "sha256": "c249767d614bc1953dada3d1b24356d6b1a133ce8099c1d513921fd80c8d58f8"
+          },
+          "policy_contract": {
+            "first_h_in_linf": 0.0,
+            "first_phase": [
+              1.0,
+              0.0
+            ],
+            "first_phase_linf_error": 0.0,
+            "first_previous_action_linf": 0.0,
+            "oracle_rows": 0,
+            "rows": 600,
+            "sha256": "b9986768631684a0fa38e1e2d48e44a6d7ab6f8ced3143e1a765ce98a34ec51d",
+            "x0_action_nonzero_values": null
+          },
+          "prospective_current_gate": {
+            "checks": {
+              "current_peak_at_most_2p5": false,
+              "overcurrent_gt_2a_at_most_99_consecutive_ticks": true
+            },
+            "conversion_nm_per_a": 0.784532,
+            "longest_strict_over_2a_run_ticks_by_joint": [
+              0,
+              0,
+              2,
+              5,
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              3,
+              3
+            ],
+            "p95_current_a_by_joint": [
+              0.5507759036220293,
+              1.3429645143713431,
+              1.7696053264834366,
+              2.167473996214301,
+              2.0564766077214323,
+              0.23242135327785443,
+              0.30545350401311305,
+              0.14749166812112813,
+              0.2543741030738104,
+              0.4602416151009341,
+              1.012861631724396,
+              1.5470555689371177,
+              1.9544172568276323,
+              2.2181872822944158
+            ],
+            "pass": false,
+            "peak_current_a_by_joint": [
+              0.8460483694806139,
+              1.5368181195096957,
+              2.107513607136962,
+              2.5398939718637092,
+              2.6228742325297367,
+              0.4094573685778795,
+              0.37222611840507813,
+              0.21497135698237055,
+              0.27370643243263904,
+              0.5972692618107706,
+              1.4008791837755326,
+              1.7376343496338122,
+              2.2912826165043696,
+              2.48628981507907
+            ],
+            "samples": 600,
+            "worst_p95_current_a_diagnostic_only": 2.2181872822944158,
+            "worst_peak_current_a": 2.6228742325297367,
+            "worst_strict_over_2a_run_ticks": 5
+          },
+          "readback_checks": {
+            "actuator_readback_exact": true,
+            "all_body_mass_readback_exact": true,
+            "body_identity_exact": true,
+            "configuration_enabled_exact": true,
+            "full_inertia_readback_exact": true,
+            "requested_inertia_tensor_exact": true,
+            "requested_scale_add_offset_exact": true,
+            "torso_com_readback_exact": true,
+            "transport_readback_exact": true
+          },
+          "robot_clearance": false,
+          "schema_version": "winner_v141.projected_final_cell.v1",
+          "simulator": {
+            "error": null,
+            "status": "PASS_CANDIDATE_SIM_GATE"
+          },
+          "status": "HOLD_WINNER_V141_PROJECTED_FINAL_CELL",
+          "torque_gate": {
+            "check": false,
+            "limit_nm": 1.91229675,
+            "peak_torque_nm_by_joint": [
+              0.663752019405365,
+              1.2056829929351807,
+              1.653411865234375,
+              1.9926280975341797,
+              2.0577287673950195,
+              0.321232408285141,
+              0.29202330112457275,
+              0.16865190863609314,
+              0.21473145484924316,
+              0.4685768485069275,
+              1.0990345478057861,
+              1.363229751586914,
+              1.7975845336914062,
+              1.9505739212036133
+            ],
+            "worst_peak_torque_nm": 2.0577287673950195
+          },
+          "trace": {
+            "all_values_finite": true,
+            "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v163-feasibility-preserving-falsifier-20260725\\traces\\v163_a01_0p50000000_p31_34_pitch_with_p30_nonpitch_x0.080_seed167931544.jsonl",
+            "required_fields_every_tick": true,
+            "reset_h_exact_zero": true,
+            "reset_previous_action_exact_zero": true,
+            "rows": 600,
+            "sha256": "b9986768631684a0fa38e1e2d48e44a6d7ab6f8ced3143e1a765ce98a34ec51d",
+            "ticks_contiguous": true
+          },
+          "training_or_simulator_reward_selection_weight": 0
+        }
+      ],
+      "changed_initializers": [
+        "obs_mean",
+        "obs_std",
+        "trunk_0_weight",
+        "trunk_0_bias",
+        "trunk_1_weight",
+        "trunk_1_bias",
+        "trunk_2_weight",
+        "trunk_2_bias",
+        "base_residual_weight",
+        "base_residual_bias",
+        "adapter_weight",
+        "adapter_bias",
+        "adapter_obs_weight",
+        "adapter_hidden_weight",
+        "adapter_hidden_bias"
+      ],
+      "completed_moving_cells": 1,
+      "deployed": {
+        "bytes": 958446,
+        "graph_io": {
+          "inputs": {
+            "h_in": [
+              1,
+              64
+            ],
+            "obs": [
+              1,
+              115
+            ],
+            "previous_action": [
+              1,
+              14
+            ]
+          },
+          "outputs": {
+            "continuous_actions": [
+              1,
+              14
+            ],
+            "h_out": [
+              1,
+              64
+            ],
+            "previous_action_out": [
+              1,
+              14
+            ]
+          }
+        },
+        "inference": {
+          "changed_projection_is_exercised": true,
+          "checks": {
+            "all_outputs_finite": true,
+            "changed_projection_is_exercised": true,
+            "cpu_provider_exact": true,
+            "g3_guard_preserved_in_consistent_chain": true,
+            "moving_rate_delta_enforced": true,
+            "realized_state_feedback_exact": true,
+            "recurrent_hidden_output_bit_exact": true,
+            "zero_action_exact": true,
+            "zero_previous_exact": true
+          },
+          "max_guard_excess_rad": 0.0,
+          "max_hidden_error": 0.0,
+          "max_moving_delta_excess": 2.2351741790771484e-08,
+          "max_state_error": 0.0,
+          "max_zero_action": 0.0,
+          "max_zero_previous": 0.0,
+          "pass": true
+        },
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v163-feasibility-preserving-falsifier-20260725\\policies\\winner_v163_a01_0p50000000_deployed.onnx",
+        "sha256": "c249767d614bc1953dada3d1b24356d6b1a133ce8099c1d513921fd80c8d58f8"
+      },
+      "raw": {
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v163-feasibility-preserving-falsifier-20260725\\policies\\winner_v163_a01_0p50000000_raw.onnx",
+        "sha256": "60e47b3a798340762813244a26a235fb062509def097011d94a1fee9f3cae0df"
+      },
+      "six_moving_cells_pass": false,
+      "source_reserve_strictly_improved": false,
+      "source_worst_peak_torque_nm": 1.909637451171875,
+      "two_x0_cells_exact_by_invariant": true,
+      "worst_peak_torque_nm": 2.0577287673950195
+    },
+    {
+      "all_eight_nominal_cells_pass": false,
+      "alpha": 0.25,
+      "alpha_index": 2,
+      "cells": [
+        {
+          "cell_sha256": "3a2eeb9e9ebba3b429d64b91363846f54e68fdabcdfaec0d9ede1dc842f02955",
+          "failure_reasons": [
+            "current_peak_at_most_2p5",
+            "torque_peak_at_most_1p91229675_nm"
+          ],
+          "identity": {
+            "calibration_ticks": 0,
+            "checkpoint_id": "V163_ALPHA_0.25000000",
+            "command_x_m_s": 0.08,
+            "configuration": null,
+            "duration_ticks": 600,
+            "home_return_ticks": 0,
+            "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+            "policy_sha256": "5c01d3209dd3060297d0912738c50054c32441e2d1177ed0de7e44687d40d596",
+            "seed": 167931544,
+            "step": 1003520,
+            "transport": {
+              "additional_action_delay_ticks": 0,
+              "imu_delay_ticks": 0,
+              "native_quantization": false,
+              "sensor_noise_scales": null
+            }
+          },
+          "metrics": {
+            "accelerometer_norm_p95_m_s2": 16.098657653887503,
+            "body_pitch_p95_abs_rad": 0.042368018808708115,
+            "body_pitch_rate_p95_abs_rad_s": 0.5376781582832335,
+            "body_roll_rate_p95_abs_rad_s": 1.5784927487373337,
+            "candidate_gate_status": "PASS_CANDIDATE_SIM_GATE",
+            "checks": {
+              "bilateral_transitions": true,
+              "candidate_gate_pass": true,
+              "cpu_only": true,
+              "current_peak_at_most_2p5": false,
+              "duration_complete_600": true,
+              "oracle_disabled": true,
+              "overcurrent_gt_2a_at_most_99_consecutive_ticks": true,
+              "per_run_readback_exact": true,
+              "phase0_first_observation_exact": true,
+              "positive_command_consistent_motion": true,
+              "torque_peak_at_most_1p91229675_nm": false,
+              "trace_contract": true,
+              "tracking_p95_at_most_0p20": true,
+              "x0_deadband_exact": true,
+              "zero_command_base_height": true,
+              "zero_command_pitch": true,
+              "zero_command_velocity": true,
+              "zero_envelope_excess": true,
+              "zero_rate_excess": true,
+              "zero_recurrent_state_exact": true,
+              "zero_saturation": true
+            },
+            "current_p95_a_by_joint": {
+              "head_pitch": 0.2969010915963022,
+              "head_roll": 0.2516443748740774,
+              "head_yaw": 0.16770531250580528,
+              "left_ankle": 2.124692294650054,
+              "left_hip_pitch": 1.5744617379867183,
+              "left_hip_roll": 1.3362074315508135,
+              "left_hip_yaw": 0.7309498320647781,
+              "left_knee": 2.1198149570019833,
+              "neck_pitch": 0.245034299450834,
+              "right_ankle": 2.131916523589965,
+              "right_hip_pitch": 1.5099124115197642,
+              "right_hip_roll": 1.0927375781437212,
+              "right_hip_yaw": 0.49951793156379193,
+              "right_knee": 1.8367024215560772
+            },
+            "left_contact_transition_count": 52,
+            "max_actual_centered_guard_excess_rad": 0.0,
+            "max_conservative_rate_excess_rad_s": 0.0,
+            "mean_local_vx_m_s": 0.09861031236350148,
+            "minimum_base_height_m": 0.15153080224990845,
+            "right_contact_transition_count": 43,
+            "samples": 600,
+            "saturation_pct_by_joint": {
+              "head_pitch": 0.0,
+              "head_roll": 0.0,
+              "head_yaw": 0.0,
+              "left_ankle": 0.0,
+              "left_hip_pitch": 0.0,
+              "left_hip_roll": 0.0,
+              "left_hip_yaw": 0.0,
+              "left_knee": 0.0,
+              "neck_pitch": 0.0,
+              "right_ankle": 0.0,
+              "right_hip_pitch": 0.0,
+              "right_hip_roll": 0.0,
+              "right_hip_yaw": 0.0,
+              "right_knee": 0.0
+            },
+            "termination_reason": "duration_complete",
+            "tracking_p95_rad_by_joint": {
+              "head_pitch": 0.056609268859028804,
+              "head_roll": 0.08321585753001273,
+              "head_yaw": 0.11588993798941373,
+              "left_ankle": 0.14372536838054656,
+              "left_hip_pitch": 0.13134820163249966,
+              "left_hip_roll": 0.08975867703557014,
+              "left_hip_yaw": 0.06646638941019772,
+              "left_knee": 0.1447266697883606,
+              "neck_pitch": 0.10169268981553614,
+              "right_ankle": 0.14691175818443297,
+              "right_hip_pitch": 0.13651959896087645,
+              "right_hip_roll": 0.09595306906849146,
+              "right_hip_yaw": 0.04679673667997122,
+              "right_knee": 0.11842869520187374
+            },
+            "worst_current_p95_a": 2.131916523589965,
+            "worst_saturation_pct": 0.0,
+            "worst_tracking_p95_rad": 0.14691175818443297
+          },
+          "model_readback": {
+            "actual": {
+              "all_body_mass_kg": [
+                0.0,
+                0.0,
+                0.6985260248184204,
+                0.06648000329732895,
+                0.07515999674797058,
+                0.12407000362873077,
+                0.07259000092744827,
+                0.07524000108242035,
+                0.06617999821901321,
+                0.016937799751758575,
+                0.09180989861488342,
+                0.4066070020198822,
+                0.06648000329732895,
+                0.07515999674797058,
+                0.12407000362873077,
+                0.07259000092744827,
+                0.07524000108242035,
+                0.0
+              ],
+              "torso_body_ipos_m": [
+                -0.04832589998841286,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "torso_body_iquat_wxyz": [
+                0.5054987668991089,
+                0.49069473147392273,
+                0.49620741605758667,
+                0.5074129104614258
+              ],
+              "torso_inertia_tensor_nominal_frame_kg_m2": [
+                [
+                  0.0034448949301507967,
+                  9.752039707786026e-11,
+                  8.014266836416753e-11
+                ],
+                [
+                  9.752039707786026e-11,
+                  0.0029271881125270574,
+                  7.284993129176153e-11
+                ],
+                [
+                  8.014266836416753e-11,
+                  7.284993129176153e-11,
+                  0.001676066443158942
+                ]
+              ],
+              "torso_mass_kg": 0.6985260248184204,
+              "torso_principal_inertia_kg_m2": [
+                0.0034448951482772827,
+                0.0029271882958710194,
+                0.0016760665457695723
+              ]
+            },
+            "body_id": 2,
+            "body_name": "trunk_assembly",
+            "enabled": false,
+            "nominal": {
+              "all_body_mass_kg": [
+                0.0,
+                0.0,
+                0.6985260248184204,
+                0.06648000329732895,
+                0.07515999674797058,
+                0.12407000362873077,
+                0.07259000092744827,
+                0.07524000108242035,
+                0.06617999821901321,
+                0.016937799751758575,
+                0.09180989861488342,
+                0.4066070020198822,
+                0.06648000329732895,
+                0.07515999674797058,
+                0.12407000362873077,
+                0.07259000092744827,
+                0.07524000108242035,
+                0.0
+              ],
+              "torso_body_ipos_m": [
+                -0.04832589998841286,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "torso_body_iquat_wxyz": [
+                0.5054987668991089,
+                0.49069473147392273,
+                0.49620741605758667,
+                0.5074129104614258
+              ],
+              "torso_mass_kg": 0.6985260248184204,
+              "torso_principal_inertia_kg_m2": [
+                0.0034448951482772827,
+                0.0029271882958710194,
+                0.0016760665457695723
+              ]
+            },
+            "requested": {
+              "all_link_mass_scale": 1.0,
+              "torso_com_offset_m": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "torso_inertia_tensor_kg_m2": [
+                [
+                  0.0034448951482772827,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0029271882958710194,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0016760665457695723
+                ]
+              ],
+              "torso_mass_add_kg": 0.0
+            }
+          },
+          "pass": false,
+          "policy": {
+            "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v163-feasibility-preserving-falsifier-20260725\\policies\\winner_v163_a02_0p25000000_deployed.onnx",
+            "sha256": "5c01d3209dd3060297d0912738c50054c32441e2d1177ed0de7e44687d40d596"
+          },
+          "policy_contract": {
+            "first_h_in_linf": 0.0,
+            "first_phase": [
+              1.0,
+              0.0
+            ],
+            "first_phase_linf_error": 0.0,
+            "first_previous_action_linf": 0.0,
+            "oracle_rows": 0,
+            "rows": 600,
+            "sha256": "e9a11b5a794968863b3c59bba0dbc23a90f31d70040b220825a1b6af2ae678fc",
+            "x0_action_nonzero_values": null
+          },
+          "prospective_current_gate": {
+            "checks": {
+              "current_peak_at_most_2p5": false,
+              "overcurrent_gt_2a_at_most_99_consecutive_ticks": true
+            },
+            "conversion_nm_per_a": 0.784532,
+            "longest_strict_over_2a_run_ticks_by_joint": [
+              0,
+              0,
+              1,
+              5,
+              4,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              3,
+              3
+            ],
+            "p95_current_a_by_joint": [
+              0.7309498320647781,
+              1.3362074315508132,
+              1.5744617379867185,
+              2.119814957001983,
+              2.124692294650054,
+              0.245034299450834,
+              0.2969010915963022,
+              0.16770531250580528,
+              0.2516443748740774,
+              0.4995179315637919,
+              1.0927375781437212,
+              1.5099124115197642,
+              1.8367024215560772,
+              2.1319165235899655
+            ],
+            "pass": false,
+            "peak_current_a_by_joint": [
+              0.8692528141957232,
+              1.472080618711829,
+              2.0339943336640505,
+              2.6121538874113903,
+              2.485306397548654,
+              0.40672626523465916,
+              0.34890657190083246,
+              0.21129360790143475,
+              0.27211225365940606,
+              0.633917519522227,
+              1.351778811848981,
+              1.682170330276198,
+              2.4043841416774288,
+              2.3623962245969423
+            ],
+            "samples": 600,
+            "worst_p95_current_a_diagnostic_only": 2.1319165235899655,
+            "worst_peak_current_a": 2.6121538874113903,
+            "worst_strict_over_2a_run_ticks": 5
+          },
+          "readback_checks": {
+            "actuator_readback_exact": true,
+            "all_body_mass_readback_exact": true,
+            "body_identity_exact": true,
+            "configuration_enabled_exact": true,
+            "full_inertia_readback_exact": true,
+            "requested_inertia_tensor_exact": true,
+            "requested_scale_add_offset_exact": true,
+            "torso_com_readback_exact": true,
+            "transport_readback_exact": true
+          },
+          "robot_clearance": false,
+          "schema_version": "winner_v141.projected_final_cell.v1",
+          "simulator": {
+            "error": null,
+            "status": "PASS_CANDIDATE_SIM_GATE"
+          },
+          "status": "HOLD_WINNER_V141_PROJECTED_FINAL_CELL",
+          "torque_gate": {
+            "check": false,
+            "limit_nm": 1.91229675,
+            "peak_torque_nm_by_joint": [
+              0.6819566488265991,
+              1.1548943519592285,
+              1.595733642578125,
+              2.049318313598633,
+              1.9498023986816406,
+              0.31908977031707764,
+              0.2737283706665039,
+              0.16576659679412842,
+              0.21348077058792114,
+              0.49732857942581177,
+              1.0605137348175049,
+              1.319716453552246,
+              1.8863162994384766,
+              1.8533754348754883
+            ],
+            "worst_peak_torque_nm": 2.049318313598633
+          },
+          "trace": {
+            "all_values_finite": true,
+            "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v163-feasibility-preserving-falsifier-20260725\\traces\\v163_a02_0p25000000_p31_34_pitch_with_p30_nonpitch_x0.080_seed167931544.jsonl",
+            "required_fields_every_tick": true,
+            "reset_h_exact_zero": true,
+            "reset_previous_action_exact_zero": true,
+            "rows": 600,
+            "sha256": "e9a11b5a794968863b3c59bba0dbc23a90f31d70040b220825a1b6af2ae678fc",
+            "ticks_contiguous": true
+          },
+          "training_or_simulator_reward_selection_weight": 0
+        }
+      ],
+      "changed_initializers": [
+        "obs_mean",
+        "obs_std",
+        "trunk_0_weight",
+        "trunk_0_bias",
+        "trunk_1_weight",
+        "trunk_1_bias",
+        "trunk_2_weight",
+        "trunk_2_bias",
+        "base_residual_weight",
+        "base_residual_bias",
+        "adapter_weight",
+        "adapter_bias",
+        "adapter_obs_weight",
+        "adapter_hidden_weight",
+        "adapter_hidden_bias"
+      ],
+      "completed_moving_cells": 1,
+      "deployed": {
+        "bytes": 958446,
+        "graph_io": {
+          "inputs": {
+            "h_in": [
+              1,
+              64
+            ],
+            "obs": [
+              1,
+              115
+            ],
+            "previous_action": [
+              1,
+              14
+            ]
+          },
+          "outputs": {
+            "continuous_actions": [
+              1,
+              14
+            ],
+            "h_out": [
+              1,
+              64
+            ],
+            "previous_action_out": [
+              1,
+              14
+            ]
+          }
+        },
+        "inference": {
+          "changed_projection_is_exercised": true,
+          "checks": {
+            "all_outputs_finite": true,
+            "changed_projection_is_exercised": true,
+            "cpu_provider_exact": true,
+            "g3_guard_preserved_in_consistent_chain": true,
+            "moving_rate_delta_enforced": true,
+            "realized_state_feedback_exact": true,
+            "recurrent_hidden_output_bit_exact": true,
+            "zero_action_exact": true,
+            "zero_previous_exact": true
+          },
+          "max_guard_excess_rad": 0.0,
+          "max_hidden_error": 0.0,
+          "max_moving_delta_excess": 2.2351741790771484e-08,
+          "max_state_error": 0.0,
+          "max_zero_action": 0.0,
+          "max_zero_previous": 0.0,
+          "pass": true
+        },
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v163-feasibility-preserving-falsifier-20260725\\policies\\winner_v163_a02_0p25000000_deployed.onnx",
+        "sha256": "5c01d3209dd3060297d0912738c50054c32441e2d1177ed0de7e44687d40d596"
+      },
+      "raw": {
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v163-feasibility-preserving-falsifier-20260725\\policies\\winner_v163_a02_0p25000000_raw.onnx",
+        "sha256": "ee12f0f5ac50343faf2eb3f6333efbab08108d9c5a7143b1360e30195e068200"
+      },
+      "six_moving_cells_pass": false,
+      "source_reserve_strictly_improved": false,
+      "source_worst_peak_torque_nm": 1.909637451171875,
+      "two_x0_cells_exact_by_invariant": true,
+      "worst_peak_torque_nm": 2.049318313598633
+    },
+    {
+      "all_eight_nominal_cells_pass": false,
+      "alpha": 0.125,
+      "alpha_index": 3,
+      "cells": [
+        {
+          "cell_sha256": "ee7c2fb97a6921a1833ade9dee600c6edf029c73430eb913cf90b7cad349eb0f",
+          "failure_reasons": [
+            "torque_peak_at_most_1p91229675_nm"
+          ],
+          "identity": {
+            "calibration_ticks": 0,
+            "checkpoint_id": "V163_ALPHA_0.12500000",
+            "command_x_m_s": 0.08,
+            "configuration": null,
+            "duration_ticks": 600,
+            "home_return_ticks": 0,
+            "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+            "policy_sha256": "bbe4634823e801cb86059bb6bacf137aae9bafca969e3b868e3806b276fe22fb",
+            "seed": 167931544,
+            "step": 1003520,
+            "transport": {
+              "additional_action_delay_ticks": 0,
+              "imu_delay_ticks": 0,
+              "native_quantization": false,
+              "sensor_noise_scales": null
+            }
+          },
+          "metrics": {
+            "accelerometer_norm_p95_m_s2": 15.08103007134327,
+            "body_pitch_p95_abs_rad": 0.047826804454883985,
+            "body_pitch_rate_p95_abs_rad_s": 0.523484870791435,
+            "body_roll_rate_p95_abs_rad_s": 1.5172138154506671,
+            "candidate_gate_status": "PASS_CANDIDATE_SIM_GATE",
+            "checks": {
+              "bilateral_transitions": true,
+              "candidate_gate_pass": true,
+              "cpu_only": true,
+              "current_peak_at_most_2p5": true,
+              "duration_complete_600": true,
+              "oracle_disabled": true,
+              "overcurrent_gt_2a_at_most_99_consecutive_ticks": true,
+              "per_run_readback_exact": true,
+              "phase0_first_observation_exact": true,
+              "positive_command_consistent_motion": true,
+              "torque_peak_at_most_1p91229675_nm": false,
+              "trace_contract": true,
+              "tracking_p95_at_most_0p20": true,
+              "x0_deadband_exact": true,
+              "zero_command_base_height": true,
+              "zero_command_pitch": true,
+              "zero_command_velocity": true,
+              "zero_envelope_excess": true,
+              "zero_rate_excess": true,
+              "zero_recurrent_state_exact": true,
+              "zero_saturation": true
+            },
+            "current_p95_a_by_joint": {
+              "head_pitch": 0.28859251263299257,
+              "head_roll": 0.24465350246573855,
+              "head_yaw": 0.1830514465799851,
+              "left_ankle": 2.0673043507863933,
+              "left_hip_pitch": 1.5154209476260172,
+              "left_hip_roll": 1.3085895815738913,
+              "left_hip_yaw": 0.7906956645694371,
+              "left_knee": 2.137633777607186,
+              "neck_pitch": 0.25668062611688114,
+              "right_ankle": 2.050898964956831,
+              "right_hip_pitch": 1.465854941478173,
+              "right_hip_roll": 1.0743253869224558,
+              "right_hip_yaw": 0.5446541389920343,
+              "right_knee": 1.7938393965891295
+            },
+            "left_contact_transition_count": 52,
+            "max_actual_centered_guard_excess_rad": 0.0,
+            "max_conservative_rate_excess_rad_s": 0.0,
+            "mean_local_vx_m_s": 0.10268145258489919,
+            "minimum_base_height_m": 0.15153080224990845,
+            "right_contact_transition_count": 47,
+            "samples": 600,
+            "saturation_pct_by_joint": {
+              "head_pitch": 0.0,
+              "head_roll": 0.0,
+              "head_yaw": 0.0,
+              "left_ankle": 0.0,
+              "left_hip_pitch": 0.0,
+              "left_hip_roll": 0.0,
+              "left_hip_yaw": 0.0,
+              "left_knee": 0.0,
+              "neck_pitch": 0.0,
+              "right_ankle": 0.0,
+              "right_hip_pitch": 0.0,
+              "right_hip_roll": 0.0,
+              "right_hip_yaw": 0.0,
+              "right_knee": 0.0
+            },
+            "termination_reason": "duration_complete",
+            "tracking_p95_rad_by_joint": {
+              "head_pitch": 0.056413724273443204,
+              "head_roll": 0.08129736459814012,
+              "head_yaw": 0.11664372086524963,
+              "left_ankle": 0.14105186462402342,
+              "left_hip_pitch": 0.11779356598854065,
+              "left_hip_roll": 0.09363664276897908,
+              "left_hip_yaw": 0.07335277606034651,
+              "left_knee": 0.14567134976387025,
+              "neck_pitch": 0.10608771590050309,
+              "right_ankle": 0.14370686411857606,
+              "right_hip_pitch": 0.13644216656684874,
+              "right_hip_roll": 0.09384061004966497,
+              "right_hip_yaw": 0.04780417196452617,
+              "right_knee": 0.12080932855606079
+            },
+            "worst_current_p95_a": 2.137633777607186,
+            "worst_saturation_pct": 0.0,
+            "worst_tracking_p95_rad": 0.14567134976387025
+          },
+          "model_readback": {
+            "actual": {
+              "all_body_mass_kg": [
+                0.0,
+                0.0,
+                0.6985260248184204,
+                0.06648000329732895,
+                0.07515999674797058,
+                0.12407000362873077,
+                0.07259000092744827,
+                0.07524000108242035,
+                0.06617999821901321,
+                0.016937799751758575,
+                0.09180989861488342,
+                0.4066070020198822,
+                0.06648000329732895,
+                0.07515999674797058,
+                0.12407000362873077,
+                0.07259000092744827,
+                0.07524000108242035,
+                0.0
+              ],
+              "torso_body_ipos_m": [
+                -0.04832589998841286,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "torso_body_iquat_wxyz": [
+                0.5054987668991089,
+                0.49069473147392273,
+                0.49620741605758667,
+                0.5074129104614258
+              ],
+              "torso_inertia_tensor_nominal_frame_kg_m2": [
+                [
+                  0.0034448949301507967,
+                  9.752039707786026e-11,
+                  8.014266836416753e-11
+                ],
+                [
+                  9.752039707786026e-11,
+                  0.0029271881125270574,
+                  7.284993129176153e-11
+                ],
+                [
+                  8.014266836416753e-11,
+                  7.284993129176153e-11,
+                  0.001676066443158942
+                ]
+              ],
+              "torso_mass_kg": 0.6985260248184204,
+              "torso_principal_inertia_kg_m2": [
+                0.0034448951482772827,
+                0.0029271882958710194,
+                0.0016760665457695723
+              ]
+            },
+            "body_id": 2,
+            "body_name": "trunk_assembly",
+            "enabled": false,
+            "nominal": {
+              "all_body_mass_kg": [
+                0.0,
+                0.0,
+                0.6985260248184204,
+                0.06648000329732895,
+                0.07515999674797058,
+                0.12407000362873077,
+                0.07259000092744827,
+                0.07524000108242035,
+                0.06617999821901321,
+                0.016937799751758575,
+                0.09180989861488342,
+                0.4066070020198822,
+                0.06648000329732895,
+                0.07515999674797058,
+                0.12407000362873077,
+                0.07259000092744827,
+                0.07524000108242035,
+                0.0
+              ],
+              "torso_body_ipos_m": [
+                -0.04832589998841286,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "torso_body_iquat_wxyz": [
+                0.5054987668991089,
+                0.49069473147392273,
+                0.49620741605758667,
+                0.5074129104614258
+              ],
+              "torso_mass_kg": 0.6985260248184204,
+              "torso_principal_inertia_kg_m2": [
+                0.0034448951482772827,
+                0.0029271882958710194,
+                0.0016760665457695723
+              ]
+            },
+            "requested": {
+              "all_link_mass_scale": 1.0,
+              "torso_com_offset_m": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "torso_inertia_tensor_kg_m2": [
+                [
+                  0.0034448951482772827,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0029271882958710194,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0016760665457695723
+                ]
+              ],
+              "torso_mass_add_kg": 0.0
+            }
+          },
+          "pass": false,
+          "policy": {
+            "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v163-feasibility-preserving-falsifier-20260725\\policies\\winner_v163_a03_0p12500000_deployed.onnx",
+            "sha256": "bbe4634823e801cb86059bb6bacf137aae9bafca969e3b868e3806b276fe22fb"
+          },
+          "policy_contract": {
+            "first_h_in_linf": 0.0,
+            "first_phase": [
+              1.0,
+              0.0
+            ],
+            "first_phase_linf_error": 0.0,
+            "first_previous_action_linf": 0.0,
+            "oracle_rows": 0,
+            "rows": 600,
+            "sha256": "4d559d61d2793ec1d6ffd5d57487a52dc069542c5e2d26304a3228d78ba88996",
+            "x0_action_nonzero_values": null
+          },
+          "prospective_current_gate": {
+            "checks": {
+              "current_peak_at_most_2p5": true,
+              "overcurrent_gt_2a_at_most_99_consecutive_ticks": true
+            },
+            "conversion_nm_per_a": 0.784532,
+            "longest_strict_over_2a_run_ticks_by_joint": [
+              0,
+              0,
+              0,
+              10,
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              2,
+              3
+            ],
+            "p95_current_a_by_joint": [
+              0.7906956645694371,
+              1.3085895815738913,
+              1.5154209476260172,
+              2.137633777607186,
+              2.067304350786393,
+              0.25668062611688114,
+              0.28859251263299257,
+              0.1830514465799851,
+              0.24465350246573855,
+              0.5446541389920343,
+              1.0743253869224558,
+              1.465854941478173,
+              1.7938393965891295,
+              2.050898964956831
+            ],
+            "pass": true,
+            "peak_current_a_by_joint": [
+              0.9086728597441838,
+              1.4723602058960017,
+              1.9610536841027317,
+              2.4172500145351883,
+              2.495369104985968,
+              0.3499670658438422,
+              0.339173291102261,
+              0.2135021187320648,
+              0.27859096489221624,
+              0.6382915394589648,
+              1.2261166804774035,
+              1.6069662401195324,
+              2.1820807247522946,
+              2.3221806471448203
+            ],
+            "samples": 600,
+            "worst_p95_current_a_diagnostic_only": 2.137633777607186,
+            "worst_peak_current_a": 2.495369104985968,
+            "worst_strict_over_2a_run_ticks": 10
+          },
+          "readback_checks": {
+            "actuator_readback_exact": true,
+            "all_body_mass_readback_exact": true,
+            "body_identity_exact": true,
+            "configuration_enabled_exact": true,
+            "full_inertia_readback_exact": true,
+            "requested_inertia_tensor_exact": true,
+            "requested_scale_add_offset_exact": true,
+            "torso_com_readback_exact": true,
+            "transport_readback_exact": true
+          },
+          "robot_clearance": false,
+          "schema_version": "winner_v141.projected_final_cell.v1",
+          "simulator": {
+            "error": null,
+            "status": "PASS_CANDIDATE_SIM_GATE"
+          },
+          "status": "HOLD_WINNER_V141_PROJECTED_FINAL_CELL",
+          "torque_gate": {
+            "check": false,
+            "limit_nm": 1.91229675,
+            "peak_torque_nm_by_joint": [
+              0.712882936000824,
+              1.155113697052002,
+              1.5385093688964844,
+              1.8964099884033203,
+              1.9576969146728516,
+              0.2745603621006012,
+              0.26609230041503906,
+              0.16749924421310425,
+              0.2185635268688202,
+              0.5007601380348206,
+              0.9619277715682983,
+              1.260716438293457,
+              1.7119121551513672,
+              1.8218250274658203
+            ],
+            "worst_peak_torque_nm": 1.9576969146728516
+          },
+          "trace": {
+            "all_values_finite": true,
+            "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v163-feasibility-preserving-falsifier-20260725\\traces\\v163_a03_0p12500000_p31_34_pitch_with_p30_nonpitch_x0.080_seed167931544.jsonl",
+            "required_fields_every_tick": true,
+            "reset_h_exact_zero": true,
+            "reset_previous_action_exact_zero": true,
+            "rows": 600,
+            "sha256": "4d559d61d2793ec1d6ffd5d57487a52dc069542c5e2d26304a3228d78ba88996",
+            "ticks_contiguous": true
+          },
+          "training_or_simulator_reward_selection_weight": 0
+        }
+      ],
+      "changed_initializers": [
+        "obs_mean",
+        "obs_std",
+        "trunk_0_weight",
+        "trunk_0_bias",
+        "trunk_1_weight",
+        "trunk_1_bias",
+        "trunk_2_weight",
+        "trunk_2_bias",
+        "base_residual_weight",
+        "base_residual_bias",
+        "adapter_weight",
+        "adapter_bias",
+        "adapter_obs_weight",
+        "adapter_hidden_weight",
+        "adapter_hidden_bias"
+      ],
+      "completed_moving_cells": 1,
+      "deployed": {
+        "bytes": 958446,
+        "graph_io": {
+          "inputs": {
+            "h_in": [
+              1,
+              64
+            ],
+            "obs": [
+              1,
+              115
+            ],
+            "previous_action": [
+              1,
+              14
+            ]
+          },
+          "outputs": {
+            "continuous_actions": [
+              1,
+              14
+            ],
+            "h_out": [
+              1,
+              64
+            ],
+            "previous_action_out": [
+              1,
+              14
+            ]
+          }
+        },
+        "inference": {
+          "changed_projection_is_exercised": true,
+          "checks": {
+            "all_outputs_finite": true,
+            "changed_projection_is_exercised": true,
+            "cpu_provider_exact": true,
+            "g3_guard_preserved_in_consistent_chain": true,
+            "moving_rate_delta_enforced": true,
+            "realized_state_feedback_exact": true,
+            "recurrent_hidden_output_bit_exact": true,
+            "zero_action_exact": true,
+            "zero_previous_exact": true
+          },
+          "max_guard_excess_rad": 0.0,
+          "max_hidden_error": 0.0,
+          "max_moving_delta_excess": 2.2351741790771484e-08,
+          "max_state_error": 0.0,
+          "max_zero_action": 0.0,
+          "max_zero_previous": 0.0,
+          "pass": true
+        },
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v163-feasibility-preserving-falsifier-20260725\\policies\\winner_v163_a03_0p12500000_deployed.onnx",
+        "sha256": "bbe4634823e801cb86059bb6bacf137aae9bafca969e3b868e3806b276fe22fb"
+      },
+      "raw": {
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v163-feasibility-preserving-falsifier-20260725\\policies\\winner_v163_a03_0p12500000_raw.onnx",
+        "sha256": "42ff3bc46442c67516ca20cd01bcaa5c6a0946d41461afe1fa4033309d1803ca"
+      },
+      "six_moving_cells_pass": false,
+      "source_reserve_strictly_improved": false,
+      "source_worst_peak_torque_nm": 1.909637451171875,
+      "two_x0_cells_exact_by_invariant": true,
+      "worst_peak_torque_nm": 1.9576969146728516
+    },
+    {
+      "all_eight_nominal_cells_pass": false,
+      "alpha": 0.0625,
+      "alpha_index": 4,
+      "cells": [
+        {
+          "cell_sha256": "93db71bb5ecbd78cd2355084ef43f137884bfeb07f3987f0acae4a8ac4118bdb",
+          "failure_reasons": [],
+          "identity": {
+            "calibration_ticks": 0,
+            "checkpoint_id": "V163_ALPHA_0.06250000",
+            "command_x_m_s": 0.08,
+            "configuration": null,
+            "duration_ticks": 600,
+            "home_return_ticks": 0,
+            "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+            "policy_sha256": "b22bfc08ef566818a26d518860a7c48b74d39d9d510e0bb9c93f9132ac14dd49",
+            "seed": 167931544,
+            "step": 1003520,
+            "transport": {
+              "additional_action_delay_ticks": 0,
+              "imu_delay_ticks": 0,
+              "native_quantization": false,
+              "sensor_noise_scales": null
+            }
+          },
+          "metrics": {
+            "accelerometer_norm_p95_m_s2": 13.926648009697708,
+            "body_pitch_p95_abs_rad": 0.04290852987152822,
+            "body_pitch_rate_p95_abs_rad_s": 0.5311995595693588,
+            "body_roll_rate_p95_abs_rad_s": 1.5111245870590198,
+            "candidate_gate_status": "PASS_CANDIDATE_SIM_GATE",
+            "checks": {
+              "bilateral_transitions": true,
+              "candidate_gate_pass": true,
+              "cpu_only": true,
+              "current_peak_at_most_2p5": true,
+              "duration_complete_600": true,
+              "oracle_disabled": true,
+              "overcurrent_gt_2a_at_most_99_consecutive_ticks": true,
+              "per_run_readback_exact": true,
+              "phase0_first_observation_exact": true,
+              "positive_command_consistent_motion": true,
+              "torque_peak_at_most_1p91229675_nm": true,
+              "trace_contract": true,
+              "tracking_p95_at_most_0p20": true,
+              "x0_deadband_exact": true,
+              "zero_command_base_height": true,
+              "zero_command_pitch": true,
+              "zero_command_velocity": true,
+              "zero_envelope_excess": true,
+              "zero_rate_excess": true,
+              "zero_recurrent_state_exact": true,
+              "zero_saturation": true
+            },
+            "current_p95_a_by_joint": {
+              "head_pitch": 0.30200068586083534,
+              "head_roll": 0.23146951181498748,
+              "head_yaw": 0.18116362528859237,
+              "left_ankle": 2.00735484129731,
+              "left_hip_pitch": 1.4898266250895014,
+              "left_hip_roll": 1.3113323698380153,
+              "left_hip_yaw": 0.7994619004023175,
+              "left_knee": 2.116936424601456,
+              "neck_pitch": 0.2474905735303732,
+              "right_ankle": 1.9802526321407625,
+              "right_hip_pitch": 1.4146893319579241,
+              "right_hip_roll": 1.0761156338060685,
+              "right_hip_yaw": 0.5453413707485872,
+              "right_knee": 1.7911480660423535
+            },
+            "left_contact_transition_count": 62,
+            "max_actual_centered_guard_excess_rad": 0.0,
+            "max_conservative_rate_excess_rad_s": 0.0,
+            "mean_local_vx_m_s": 0.10475286843255162,
+            "minimum_base_height_m": 0.15153080224990845,
+            "right_contact_transition_count": 43,
+            "samples": 600,
+            "saturation_pct_by_joint": {
+              "head_pitch": 0.0,
+              "head_roll": 0.0,
+              "head_yaw": 0.0,
+              "left_ankle": 0.0,
+              "left_hip_pitch": 0.0,
+              "left_hip_roll": 0.0,
+              "left_hip_yaw": 0.0,
+              "left_knee": 0.0,
+              "neck_pitch": 0.0,
+              "right_ankle": 0.0,
+              "right_hip_pitch": 0.0,
+              "right_hip_roll": 0.0,
+              "right_hip_yaw": 0.0,
+              "right_knee": 0.0
+            },
+            "termination_reason": "duration_complete",
+            "tracking_p95_rad_by_joint": {
+              "head_pitch": 0.05579815804958341,
+              "head_roll": 0.08003542320802808,
+              "head_yaw": 0.11629363857209683,
+              "left_ankle": 0.1415669649839401,
+              "left_hip_pitch": 0.11491581499576568,
+              "left_hip_roll": 0.09560959096997976,
+              "left_hip_yaw": 0.07709699487313626,
+              "left_knee": 0.14580482244491577,
+              "neck_pitch": 0.10284411481115967,
+              "right_ankle": 0.1435459464788437,
+              "right_hip_pitch": 0.13624959886074067,
+              "right_hip_roll": 0.09354464076459407,
+              "right_hip_yaw": 0.04756559096276759,
+              "right_knee": 0.12040355205535883
+            },
+            "worst_current_p95_a": 2.116936424601456,
+            "worst_saturation_pct": 0.0,
+            "worst_tracking_p95_rad": 0.14580482244491577
+          },
+          "model_readback": {
+            "actual": {
+              "all_body_mass_kg": [
+                0.0,
+                0.0,
+                0.6985260248184204,
+                0.06648000329732895,
+                0.07515999674797058,
+                0.12407000362873077,
+                0.07259000092744827,
+                0.07524000108242035,
+                0.06617999821901321,
+                0.016937799751758575,
+                0.09180989861488342,
+                0.4066070020198822,
+                0.06648000329732895,
+                0.07515999674797058,
+                0.12407000362873077,
+                0.07259000092744827,
+                0.07524000108242035,
+                0.0
+              ],
+              "torso_body_ipos_m": [
+                -0.04832589998841286,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "torso_body_iquat_wxyz": [
+                0.5054987668991089,
+                0.49069473147392273,
+                0.49620741605758667,
+                0.5074129104614258
+              ],
+              "torso_inertia_tensor_nominal_frame_kg_m2": [
+                [
+                  0.0034448949301507967,
+                  9.752039707786026e-11,
+                  8.014266836416753e-11
+                ],
+                [
+                  9.752039707786026e-11,
+                  0.0029271881125270574,
+                  7.284993129176153e-11
+                ],
+                [
+                  8.014266836416753e-11,
+                  7.284993129176153e-11,
+                  0.001676066443158942
+                ]
+              ],
+              "torso_mass_kg": 0.6985260248184204,
+              "torso_principal_inertia_kg_m2": [
+                0.0034448951482772827,
+                0.0029271882958710194,
+                0.0016760665457695723
+              ]
+            },
+            "body_id": 2,
+            "body_name": "trunk_assembly",
+            "enabled": false,
+            "nominal": {
+              "all_body_mass_kg": [
+                0.0,
+                0.0,
+                0.6985260248184204,
+                0.06648000329732895,
+                0.07515999674797058,
+                0.12407000362873077,
+                0.07259000092744827,
+                0.07524000108242035,
+                0.06617999821901321,
+                0.016937799751758575,
+                0.09180989861488342,
+                0.4066070020198822,
+                0.06648000329732895,
+                0.07515999674797058,
+                0.12407000362873077,
+                0.07259000092744827,
+                0.07524000108242035,
+                0.0
+              ],
+              "torso_body_ipos_m": [
+                -0.04832589998841286,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "torso_body_iquat_wxyz": [
+                0.5054987668991089,
+                0.49069473147392273,
+                0.49620741605758667,
+                0.5074129104614258
+              ],
+              "torso_mass_kg": 0.6985260248184204,
+              "torso_principal_inertia_kg_m2": [
+                0.0034448951482772827,
+                0.0029271882958710194,
+                0.0016760665457695723
+              ]
+            },
+            "requested": {
+              "all_link_mass_scale": 1.0,
+              "torso_com_offset_m": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "torso_inertia_tensor_kg_m2": [
+                [
+                  0.0034448951482772827,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0029271882958710194,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0016760665457695723
+                ]
+              ],
+              "torso_mass_add_kg": 0.0
+            }
+          },
+          "pass": true,
+          "policy": {
+            "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v163-feasibility-preserving-falsifier-20260725\\policies\\winner_v163_a04_0p06250000_deployed.onnx",
+            "sha256": "b22bfc08ef566818a26d518860a7c48b74d39d9d510e0bb9c93f9132ac14dd49"
+          },
+          "policy_contract": {
+            "first_h_in_linf": 0.0,
+            "first_phase": [
+              1.0,
+              0.0
+            ],
+            "first_phase_linf_error": 0.0,
+            "first_previous_action_linf": 0.0,
+            "oracle_rows": 0,
+            "rows": 600,
+            "sha256": "40c8742aba4c6dc9db4effa9d1d7a209a665004bc20993cbc564303fc5c3965e",
+            "x0_action_nonzero_values": null
+          },
+          "prospective_current_gate": {
+            "checks": {
+              "current_peak_at_most_2p5": true,
+              "overcurrent_gt_2a_at_most_99_consecutive_ticks": true
+            },
+            "conversion_nm_per_a": 0.784532,
+            "longest_strict_over_2a_run_ticks_by_joint": [
+              0,
+              0,
+              0,
+              9,
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              3
+            ],
+            "p95_current_a_by_joint": [
+              0.7994619004023175,
+              1.3113323698380153,
+              1.4898266250895014,
+              2.116936424601456,
+              2.00735484129731,
+              0.2474905735303732,
+              0.3020006858608354,
+              0.18116362528859237,
+              0.23146951181498748,
+              0.5453413707485872,
+              1.0761156338060685,
+              1.4146893319579243,
+              1.7911480660423535,
+              1.9802526321407625
+            ],
+            "pass": true,
+            "peak_current_a_by_joint": [
+              0.913479404093828,
+              1.481742787117904,
+              1.8112715359626572,
+              2.3877839565162833,
+              2.3766187030961663,
+              0.3380022158694243,
+              0.3789529252764525,
+              0.2153083431115549,
+              0.2739054863518055,
+              0.6481319446949503,
+              1.2390343681339688,
+              1.581437499011652,
+              1.9952022196583041,
+              2.26295314116895
+            ],
+            "samples": 600,
+            "worst_p95_current_a_diagnostic_only": 2.116936424601456,
+            "worst_peak_current_a": 2.3877839565162833,
+            "worst_strict_over_2a_run_ticks": 9
+          },
+          "readback_checks": {
+            "actuator_readback_exact": true,
+            "all_body_mass_readback_exact": true,
+            "body_identity_exact": true,
+            "configuration_enabled_exact": true,
+            "full_inertia_readback_exact": true,
+            "requested_inertia_tensor_exact": true,
+            "requested_scale_add_offset_exact": true,
+            "torso_com_readback_exact": true,
+            "transport_readback_exact": true
+          },
+          "robot_clearance": false,
+          "schema_version": "winner_v141.projected_final_cell.v1",
+          "simulator": {
+            "error": null,
+            "status": "PASS_CANDIDATE_SIM_GATE"
+          },
+          "status": "PASS_WINNER_V141_PROJECTED_FINAL_CELL",
+          "torque_gate": {
+            "check": true,
+            "limit_nm": 1.91229675,
+            "peak_torque_nm_by_joint": [
+              0.7166538238525391,
+              1.1624746322631836,
+              1.4210004806518555,
+              1.8732929229736328,
+              1.8645334243774414,
+              0.2651735544204712,
+              0.29730069637298584,
+              0.16891628503799438,
+              0.2148876190185547,
+              0.5084802508354187,
+              0.9720621109008789,
+              1.2406883239746094,
+              1.5652999877929688,
+              1.7753591537475586
+            ],
+            "worst_peak_torque_nm": 1.8732929229736328
+          },
+          "trace": {
+            "all_values_finite": true,
+            "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v163-feasibility-preserving-falsifier-20260725\\traces\\v163_a04_0p06250000_p31_34_pitch_with_p30_nonpitch_x0.080_seed167931544.jsonl",
+            "required_fields_every_tick": true,
+            "reset_h_exact_zero": true,
+            "reset_previous_action_exact_zero": true,
+            "rows": 600,
+            "sha256": "40c8742aba4c6dc9db4effa9d1d7a209a665004bc20993cbc564303fc5c3965e",
+            "ticks_contiguous": true
+          },
+          "training_or_simulator_reward_selection_weight": 0
+        },
+        {
+          "cell_sha256": "0667d6196da349d609811989ff1694e6f7498d1670628aa826828cd63b002952",
+          "failure_reasons": [
+            "torque_peak_at_most_1p91229675_nm"
+          ],
+          "identity": {
+            "calibration_ticks": 0,
+            "checkpoint_id": "V163_ALPHA_0.06250000",
+            "command_x_m_s": 0.074,
+            "configuration": null,
+            "duration_ticks": 600,
+            "home_return_ticks": 0,
+            "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+            "policy_sha256": "b22bfc08ef566818a26d518860a7c48b74d39d9d510e0bb9c93f9132ac14dd49",
+            "seed": 167931544,
+            "step": 1003520,
+            "transport": {
+              "additional_action_delay_ticks": 0,
+              "imu_delay_ticks": 0,
+              "native_quantization": false,
+              "sensor_noise_scales": null
+            }
+          },
+          "metrics": {
+            "accelerometer_norm_p95_m_s2": 14.981019051075775,
+            "body_pitch_p95_abs_rad": 0.03996817611367872,
+            "body_pitch_rate_p95_abs_rad_s": 0.4662953987717623,
+            "body_roll_rate_p95_abs_rad_s": 1.5756034731864925,
+            "candidate_gate_status": "PASS_CANDIDATE_SIM_GATE",
+            "checks": {
+              "bilateral_transitions": true,
+              "candidate_gate_pass": true,
+              "cpu_only": true,
+              "current_peak_at_most_2p5": true,
+              "duration_complete_600": true,
+              "oracle_disabled": true,
+              "overcurrent_gt_2a_at_most_99_consecutive_ticks": true,
+              "per_run_readback_exact": true,
+              "phase0_first_observation_exact": true,
+              "positive_command_consistent_motion": true,
+              "torque_peak_at_most_1p91229675_nm": false,
+              "trace_contract": true,
+              "tracking_p95_at_most_0p20": true,
+              "x0_deadband_exact": true,
+              "zero_command_base_height": true,
+              "zero_command_pitch": true,
+              "zero_command_velocity": true,
+              "zero_envelope_excess": true,
+              "zero_rate_excess": true,
+              "zero_recurrent_state_exact": true,
+              "zero_saturation": true
+            },
+            "current_p95_a_by_joint": {
+              "head_pitch": 0.3232840095392196,
+              "head_roll": 0.25354323150201935,
+              "head_yaw": 0.19360566524808384,
+              "left_ankle": 1.9748264526941957,
+              "left_hip_pitch": 1.4902403533422546,
+              "left_hip_roll": 1.362892577161839,
+              "left_hip_yaw": 0.7771231389024199,
+              "left_knee": 2.094406924621878,
+              "neck_pitch": 0.2699781971618329,
+              "right_ankle": 2.062820623269781,
+              "right_hip_pitch": 1.4439774874359432,
+              "right_hip_roll": 1.0885471892461531,
+              "right_hip_yaw": 0.5672038273695784,
+              "right_knee": 1.8480667896751828
+            },
+            "left_contact_transition_count": 56,
+            "max_actual_centered_guard_excess_rad": 0.0,
+            "max_conservative_rate_excess_rad_s": 0.0,
+            "mean_local_vx_m_s": 0.1051530526423206,
+            "minimum_base_height_m": 0.15153080224990845,
+            "right_contact_transition_count": 45,
+            "samples": 600,
+            "saturation_pct_by_joint": {
+              "head_pitch": 0.0,
+              "head_roll": 0.0,
+              "head_yaw": 0.0,
+              "left_ankle": 0.0,
+              "left_hip_pitch": 0.0,
+              "left_hip_roll": 0.0,
+              "left_hip_yaw": 0.0,
+              "left_knee": 0.0,
+              "neck_pitch": 0.0,
+              "right_ankle": 0.0,
+              "right_hip_pitch": 0.0,
+              "right_hip_roll": 0.0,
+              "right_hip_yaw": 0.0,
+              "right_knee": 0.0
+            },
+            "termination_reason": "duration_complete",
+            "tracking_p95_rad_by_joint": {
+              "head_pitch": 0.05653397217392921,
+              "head_roll": 0.10345648014917969,
+              "head_yaw": 0.11842712778598068,
+              "left_ankle": 0.13849010169506074,
+              "left_hip_pitch": 0.12359464466571807,
+              "left_hip_roll": 0.09512513503432274,
+              "left_hip_yaw": 0.07468850528821348,
+              "left_knee": 0.14442203044891358,
+              "neck_pitch": 0.11688964939676225,
+              "right_ankle": 0.1464180737733841,
+              "right_hip_pitch": 0.13565291166305543,
+              "right_hip_roll": 0.09228113163262605,
+              "right_hip_yaw": 0.04835375887341797,
+              "right_knee": 0.11565130352973937
+            },
+            "worst_current_p95_a": 2.094406924621878,
+            "worst_saturation_pct": 0.0,
+            "worst_tracking_p95_rad": 0.1464180737733841
+          },
+          "model_readback": {
+            "actual": {
+              "all_body_mass_kg": [
+                0.0,
+                0.0,
+                0.6985260248184204,
+                0.06648000329732895,
+                0.07515999674797058,
+                0.12407000362873077,
+                0.07259000092744827,
+                0.07524000108242035,
+                0.06617999821901321,
+                0.016937799751758575,
+                0.09180989861488342,
+                0.4066070020198822,
+                0.06648000329732895,
+                0.07515999674797058,
+                0.12407000362873077,
+                0.07259000092744827,
+                0.07524000108242035,
+                0.0
+              ],
+              "torso_body_ipos_m": [
+                -0.04832589998841286,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "torso_body_iquat_wxyz": [
+                0.5054987668991089,
+                0.49069473147392273,
+                0.49620741605758667,
+                0.5074129104614258
+              ],
+              "torso_inertia_tensor_nominal_frame_kg_m2": [
+                [
+                  0.0034448949301507967,
+                  9.752039707786026e-11,
+                  8.014266836416753e-11
+                ],
+                [
+                  9.752039707786026e-11,
+                  0.0029271881125270574,
+                  7.284993129176153e-11
+                ],
+                [
+                  8.014266836416753e-11,
+                  7.284993129176153e-11,
+                  0.001676066443158942
+                ]
+              ],
+              "torso_mass_kg": 0.6985260248184204,
+              "torso_principal_inertia_kg_m2": [
+                0.0034448951482772827,
+                0.0029271882958710194,
+                0.0016760665457695723
+              ]
+            },
+            "body_id": 2,
+            "body_name": "trunk_assembly",
+            "enabled": false,
+            "nominal": {
+              "all_body_mass_kg": [
+                0.0,
+                0.0,
+                0.6985260248184204,
+                0.06648000329732895,
+                0.07515999674797058,
+                0.12407000362873077,
+                0.07259000092744827,
+                0.07524000108242035,
+                0.06617999821901321,
+                0.016937799751758575,
+                0.09180989861488342,
+                0.4066070020198822,
+                0.06648000329732895,
+                0.07515999674797058,
+                0.12407000362873077,
+                0.07259000092744827,
+                0.07524000108242035,
+                0.0
+              ],
+              "torso_body_ipos_m": [
+                -0.04832589998841286,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "torso_body_iquat_wxyz": [
+                0.5054987668991089,
+                0.49069473147392273,
+                0.49620741605758667,
+                0.5074129104614258
+              ],
+              "torso_mass_kg": 0.6985260248184204,
+              "torso_principal_inertia_kg_m2": [
+                0.0034448951482772827,
+                0.0029271882958710194,
+                0.0016760665457695723
+              ]
+            },
+            "requested": {
+              "all_link_mass_scale": 1.0,
+              "torso_com_offset_m": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "torso_inertia_tensor_kg_m2": [
+                [
+                  0.0034448951482772827,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0029271882958710194,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0016760665457695723
+                ]
+              ],
+              "torso_mass_add_kg": 0.0
+            }
+          },
+          "pass": false,
+          "policy": {
+            "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v163-feasibility-preserving-falsifier-20260725\\policies\\winner_v163_a04_0p06250000_deployed.onnx",
+            "sha256": "b22bfc08ef566818a26d518860a7c48b74d39d9d510e0bb9c93f9132ac14dd49"
+          },
+          "policy_contract": {
+            "first_h_in_linf": 0.0,
+            "first_phase": [
+              1.0,
+              0.0
+            ],
+            "first_phase_linf_error": 0.0,
+            "first_previous_action_linf": 0.0,
+            "oracle_rows": 0,
+            "rows": 600,
+            "sha256": "102b784865e1562ea871f64fa5af8d1943eccbcc32b6c2326632cb2f36318f75",
+            "x0_action_nonzero_values": null
+          },
+          "prospective_current_gate": {
+            "checks": {
+              "current_peak_at_most_2p5": true,
+              "overcurrent_gt_2a_at_most_99_consecutive_ticks": true
+            },
+            "conversion_nm_per_a": 0.784532,
+            "longest_strict_over_2a_run_ticks_by_joint": [
+              0,
+              0,
+              0,
+              7,
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              2,
+              3
+            ],
+            "p95_current_a_by_joint": [
+              0.7771231389024199,
+              1.362892577161839,
+              1.4902403533422544,
+              2.094406924621878,
+              1.9748264526941957,
+              0.2699781971618329,
+              0.3232840095392196,
+              0.19360566524808384,
+              0.25354323150201935,
+              0.5672038273695784,
+              1.0885471892461531,
+              1.4439774874359435,
+              1.8480667896751828,
+              2.062820623269781
+            ],
+            "pass": true,
+            "peak_current_a_by_joint": [
+              0.9676222220566695,
+              1.541640694537563,
+              1.9038489306245285,
+              2.438394099237368,
+              2.2766431884217924,
+              0.3306995581658658,
+              0.4026175492237723,
+              0.21069697796738346,
+              0.27443624615306395,
+              0.653967111568104,
+              1.3807864380555765,
+              1.6318616554754388,
+              2.1986565979843817,
+              2.4178918494623325
+            ],
+            "samples": 600,
+            "worst_p95_current_a_diagnostic_only": 2.094406924621878,
+            "worst_peak_current_a": 2.438394099237368,
+            "worst_strict_over_2a_run_ticks": 7
+          },
+          "readback_checks": {
+            "actuator_readback_exact": true,
+            "all_body_mass_readback_exact": true,
+            "body_identity_exact": true,
+            "configuration_enabled_exact": true,
+            "full_inertia_readback_exact": true,
+            "requested_inertia_tensor_exact": true,
+            "requested_scale_add_offset_exact": true,
+            "torso_com_readback_exact": true,
+            "transport_readback_exact": true
+          },
+          "robot_clearance": false,
+          "schema_version": "winner_v141.projected_final_cell.v1",
+          "simulator": {
+            "error": null,
+            "status": "PASS_CANDIDATE_SIM_GATE"
+          },
+          "status": "HOLD_WINNER_V141_PROJECTED_FINAL_CELL",
+          "torque_gate": {
+            "check": false,
+            "limit_nm": 1.91229675,
+            "peak_torque_nm_by_joint": [
+              0.759130597114563,
+              1.2094664573669434,
+              1.4936304092407227,
+              1.9129981994628906,
+              1.7860994338989258,
+              0.25944438576698303,
+              0.3158663511276245,
+              0.16529852151870728,
+              0.21530401706695557,
+              0.5130581259727478,
+              1.0832711458206177,
+              1.280247688293457,
+              1.7249164581298828,
+              1.8969135284423828
+            ],
+            "worst_peak_torque_nm": 1.9129981994628906
+          },
+          "trace": {
+            "all_values_finite": true,
+            "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v163-feasibility-preserving-falsifier-20260725\\traces\\v163_a04_0p06250000_p31_34_pitch_with_p30_nonpitch_x0.074_seed167931544.jsonl",
+            "required_fields_every_tick": true,
+            "reset_h_exact_zero": true,
+            "reset_previous_action_exact_zero": true,
+            "rows": 600,
+            "sha256": "102b784865e1562ea871f64fa5af8d1943eccbcc32b6c2326632cb2f36318f75",
+            "ticks_contiguous": true
+          },
+          "training_or_simulator_reward_selection_weight": 0
+        }
+      ],
+      "changed_initializers": [
+        "obs_mean",
+        "obs_std",
+        "trunk_0_weight",
+        "trunk_0_bias",
+        "trunk_1_weight",
+        "trunk_1_bias",
+        "trunk_2_weight",
+        "trunk_2_bias",
+        "base_residual_weight",
+        "base_residual_bias",
+        "adapter_weight",
+        "adapter_bias",
+        "adapter_obs_weight",
+        "adapter_hidden_weight",
+        "adapter_hidden_bias"
+      ],
+      "completed_moving_cells": 2,
+      "deployed": {
+        "bytes": 958446,
+        "graph_io": {
+          "inputs": {
+            "h_in": [
+              1,
+              64
+            ],
+            "obs": [
+              1,
+              115
+            ],
+            "previous_action": [
+              1,
+              14
+            ]
+          },
+          "outputs": {
+            "continuous_actions": [
+              1,
+              14
+            ],
+            "h_out": [
+              1,
+              64
+            ],
+            "previous_action_out": [
+              1,
+              14
+            ]
+          }
+        },
+        "inference": {
+          "changed_projection_is_exercised": true,
+          "checks": {
+            "all_outputs_finite": true,
+            "changed_projection_is_exercised": true,
+            "cpu_provider_exact": true,
+            "g3_guard_preserved_in_consistent_chain": true,
+            "moving_rate_delta_enforced": true,
+            "realized_state_feedback_exact": true,
+            "recurrent_hidden_output_bit_exact": true,
+            "zero_action_exact": true,
+            "zero_previous_exact": true
+          },
+          "max_guard_excess_rad": 0.0,
+          "max_hidden_error": 0.0,
+          "max_moving_delta_excess": 2.2351741790771484e-08,
+          "max_state_error": 0.0,
+          "max_zero_action": 0.0,
+          "max_zero_previous": 0.0,
+          "pass": true
+        },
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v163-feasibility-preserving-falsifier-20260725\\policies\\winner_v163_a04_0p06250000_deployed.onnx",
+        "sha256": "b22bfc08ef566818a26d518860a7c48b74d39d9d510e0bb9c93f9132ac14dd49"
+      },
+      "raw": {
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v163-feasibility-preserving-falsifier-20260725\\policies\\winner_v163_a04_0p06250000_raw.onnx",
+        "sha256": "a154624bba2c30f7ad975c58c7f7ea007803df4e45b291dd9c8eb08e2c258e21"
+      },
+      "six_moving_cells_pass": false,
+      "source_reserve_strictly_improved": false,
+      "source_worst_peak_torque_nm": 1.909637451171875,
+      "two_x0_cells_exact_by_invariant": true,
+      "worst_peak_torque_nm": 1.9129981994628906
+    },
+    {
+      "all_eight_nominal_cells_pass": true,
+      "alpha": 0.03125,
+      "alpha_index": 5,
+      "cells": [
+        {
+          "cell_sha256": "f451808e8cf61514d3f37397dd280248397179c3ab2697eaa87b74a9d755abbb",
+          "failure_reasons": [],
+          "identity": {
+            "calibration_ticks": 0,
+            "checkpoint_id": "V163_ALPHA_0.03125000",
+            "command_x_m_s": 0.08,
+            "configuration": null,
+            "duration_ticks": 600,
+            "home_return_ticks": 0,
+            "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+            "policy_sha256": "f39afd0172441fa4bb347693f5cd00a8794abd5c8062f4fa7a034fddaecf49ea",
+            "seed": 167931544,
+            "step": 1003520,
+            "transport": {
+              "additional_action_delay_ticks": 0,
+              "imu_delay_ticks": 0,
+              "native_quantization": false,
+              "sensor_noise_scales": null
+            }
+          },
+          "metrics": {
+            "accelerometer_norm_p95_m_s2": 14.420822945130118,
+            "body_pitch_p95_abs_rad": 0.033199060675137525,
+            "body_pitch_rate_p95_abs_rad_s": 0.4939893245697021,
+            "body_roll_rate_p95_abs_rad_s": 1.5100563824176778,
+            "candidate_gate_status": "PASS_CANDIDATE_SIM_GATE",
+            "checks": {
+              "bilateral_transitions": true,
+              "candidate_gate_pass": true,
+              "cpu_only": true,
+              "current_peak_at_most_2p5": true,
+              "duration_complete_600": true,
+              "oracle_disabled": true,
+              "overcurrent_gt_2a_at_most_99_consecutive_ticks": true,
+              "per_run_readback_exact": true,
+              "phase0_first_observation_exact": true,
+              "positive_command_consistent_motion": true,
+              "torque_peak_at_most_1p91229675_nm": true,
+              "trace_contract": true,
+              "tracking_p95_at_most_0p20": true,
+              "x0_deadband_exact": true,
+              "zero_command_base_height": true,
+              "zero_command_pitch": true,
+              "zero_command_velocity": true,
+              "zero_envelope_excess": true,
+              "zero_rate_excess": true,
+              "zero_recurrent_state_exact": true,
+              "zero_saturation": true
+            },
+            "current_p95_a_by_joint": {
+              "head_pitch": 0.2978078619716228,
+              "head_roll": 0.24388733671326282,
+              "head_yaw": 0.18641077017007715,
+              "left_ankle": 2.0176905109181282,
+              "left_hip_pitch": 1.507149360782265,
+              "left_hip_roll": 1.341637485711074,
+              "left_hip_yaw": 0.8167916827557694,
+              "left_knee": 2.078286900059638,
+              "neck_pitch": 0.24333102849342883,
+              "right_ankle": 1.9316861501763363,
+              "right_hip_pitch": 1.439720407877977,
+              "right_hip_roll": 1.0899527150473702,
+              "right_hip_yaw": 0.5387926069714384,
+              "right_knee": 1.8133466806674456
+            },
+            "left_contact_transition_count": 54,
+            "max_actual_centered_guard_excess_rad": 0.0,
+            "max_conservative_rate_excess_rad_s": 0.0,
+            "mean_local_vx_m_s": 0.1085952907645454,
+            "minimum_base_height_m": 0.15153080224990845,
+            "right_contact_transition_count": 49,
+            "samples": 600,
+            "saturation_pct_by_joint": {
+              "head_pitch": 0.0,
+              "head_roll": 0.0,
+              "head_yaw": 0.0,
+              "left_ankle": 0.0,
+              "left_hip_pitch": 0.0,
+              "left_hip_roll": 0.0,
+              "left_hip_yaw": 0.0,
+              "left_knee": 0.0,
+              "neck_pitch": 0.0,
+              "right_ankle": 0.0,
+              "right_hip_pitch": 0.0,
+              "right_hip_roll": 0.0,
+              "right_hip_yaw": 0.0,
+              "right_knee": 0.0
+            },
+            "termination_reason": "duration_complete",
+            "tracking_p95_rad_by_joint": {
+              "head_pitch": 0.055726018920540785,
+              "head_roll": 0.07850673254579305,
+              "head_yaw": 0.11680857501924036,
+              "left_ankle": 0.1390650451183319,
+              "left_hip_pitch": 0.11403767764568326,
+              "left_hip_roll": 0.09624925702810286,
+              "left_hip_yaw": 0.07746613989584147,
+              "left_knee": 0.14520499706268308,
+              "neck_pitch": 0.10226020955014974,
+              "right_ankle": 0.14077202081680296,
+              "right_hip_pitch": 0.13432642519474028,
+              "right_hip_roll": 0.09468152094632387,
+              "right_hip_yaw": 0.04663672000169754,
+              "right_knee": 0.11867848634719845
+            },
+            "worst_current_p95_a": 2.078286900059638,
+            "worst_saturation_pct": 0.0,
+            "worst_tracking_p95_rad": 0.14520499706268308
+          },
+          "model_readback": {
+            "actual": {
+              "all_body_mass_kg": [
+                0.0,
+                0.0,
+                0.6985260248184204,
+                0.06648000329732895,
+                0.07515999674797058,
+                0.12407000362873077,
+                0.07259000092744827,
+                0.07524000108242035,
+                0.06617999821901321,
+                0.016937799751758575,
+                0.09180989861488342,
+                0.4066070020198822,
+                0.06648000329732895,
+                0.07515999674797058,
+                0.12407000362873077,
+                0.07259000092744827,
+                0.07524000108242035,
+                0.0
+              ],
+              "torso_body_ipos_m": [
+                -0.04832589998841286,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "torso_body_iquat_wxyz": [
+                0.5054987668991089,
+                0.49069473147392273,
+                0.49620741605758667,
+                0.5074129104614258
+              ],
+              "torso_inertia_tensor_nominal_frame_kg_m2": [
+                [
+                  0.0034448949301507967,
+                  9.752039707786026e-11,
+                  8.014266836416753e-11
+                ],
+                [
+                  9.752039707786026e-11,
+                  0.0029271881125270574,
+                  7.284993129176153e-11
+                ],
+                [
+                  8.014266836416753e-11,
+                  7.284993129176153e-11,
+                  0.001676066443158942
+                ]
+              ],
+              "torso_mass_kg": 0.6985260248184204,
+              "torso_principal_inertia_kg_m2": [
+                0.0034448951482772827,
+                0.0029271882958710194,
+                0.0016760665457695723
+              ]
+            },
+            "body_id": 2,
+            "body_name": "trunk_assembly",
+            "enabled": false,
+            "nominal": {
+              "all_body_mass_kg": [
+                0.0,
+                0.0,
+                0.6985260248184204,
+                0.06648000329732895,
+                0.07515999674797058,
+                0.12407000362873077,
+                0.07259000092744827,
+                0.07524000108242035,
+                0.06617999821901321,
+                0.016937799751758575,
+                0.09180989861488342,
+                0.4066070020198822,
+                0.06648000329732895,
+                0.07515999674797058,
+                0.12407000362873077,
+                0.07259000092744827,
+                0.07524000108242035,
+                0.0
+              ],
+              "torso_body_ipos_m": [
+                -0.04832589998841286,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "torso_body_iquat_wxyz": [
+                0.5054987668991089,
+                0.49069473147392273,
+                0.49620741605758667,
+                0.5074129104614258
+              ],
+              "torso_mass_kg": 0.6985260248184204,
+              "torso_principal_inertia_kg_m2": [
+                0.0034448951482772827,
+                0.0029271882958710194,
+                0.0016760665457695723
+              ]
+            },
+            "requested": {
+              "all_link_mass_scale": 1.0,
+              "torso_com_offset_m": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "torso_inertia_tensor_kg_m2": [
+                [
+                  0.0034448951482772827,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0029271882958710194,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0016760665457695723
+                ]
+              ],
+              "torso_mass_add_kg": 0.0
+            }
+          },
+          "pass": true,
+          "policy": {
+            "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v163-feasibility-preserving-falsifier-20260725\\policies\\winner_v163_a05_0p03125000_deployed.onnx",
+            "sha256": "f39afd0172441fa4bb347693f5cd00a8794abd5c8062f4fa7a034fddaecf49ea"
+          },
+          "policy_contract": {
+            "first_h_in_linf": 0.0,
+            "first_phase": [
+              1.0,
+              0.0
+            ],
+            "first_phase_linf_error": 0.0,
+            "first_previous_action_linf": 0.0,
+            "oracle_rows": 0,
+            "rows": 600,
+            "sha256": "c897b599c614ac51aaaaba0ee8c28d964a203bde7b34cc61e5a119db23fab857",
+            "x0_action_nonzero_values": null
+          },
+          "prospective_current_gate": {
+            "checks": {
+              "current_peak_at_most_2p5": true,
+              "overcurrent_gt_2a_at_most_99_consecutive_ticks": true
+            },
+            "conversion_nm_per_a": 0.784532,
+            "longest_strict_over_2a_run_ticks_by_joint": [
+              0,
+              0,
+              0,
+              8,
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              2
+            ],
+            "p95_current_a_by_joint": [
+              0.8167916827557694,
+              1.341637485711074,
+              1.507149360782265,
+              2.078286900059638,
+              2.0176905109181282,
+              0.24333102849342883,
+              0.2978078619716228,
+              0.18641077017007715,
+              0.2438873367132628,
+              0.5387926069714383,
+              1.0899527150473702,
+              1.439720407877977,
+              1.8133466806674456,
+              1.9316861501763363
+            ],
+            "pass": true,
+            "peak_current_a_by_joint": [
+              0.9182733366302731,
+              1.4351805805850604,
+              1.787250134456404,
+              2.3951212967061393,
+              2.251565433597947,
+              0.35946733199734354,
+              0.34791175815366987,
+              0.22566758010860447,
+              0.2871906260236567,
+              0.6292558590748157,
+              1.1771450098253056,
+              1.60224851028573,
+              2.03270580142395,
+              2.255582979874865
+            ],
+            "samples": 600,
+            "worst_p95_current_a_diagnostic_only": 2.078286900059638,
+            "worst_peak_current_a": 2.3951212967061393,
+            "worst_strict_over_2a_run_ticks": 8
+          },
+          "readback_checks": {
+            "actuator_readback_exact": true,
+            "all_body_mass_readback_exact": true,
+            "body_identity_exact": true,
+            "configuration_enabled_exact": true,
+            "full_inertia_readback_exact": true,
+            "requested_inertia_tensor_exact": true,
+            "requested_scale_add_offset_exact": true,
+            "torso_com_readback_exact": true,
+            "transport_readback_exact": true
+          },
+          "robot_clearance": false,
+          "schema_version": "winner_v141.projected_final_cell.v1",
+          "simulator": {
+            "error": null,
+            "status": "PASS_CANDIDATE_SIM_GATE"
+          },
+          "status": "PASS_WINNER_V141_PROJECTED_FINAL_CELL",
+          "torque_gate": {
+            "check": true,
+            "limit_nm": 1.91229675,
+            "peak_torque_nm_by_joint": [
+              0.7204148173332214,
+              1.1259450912475586,
+              1.4021549224853516,
+              1.879049301147461,
+              1.7664251327514648,
+              0.2820136249065399,
+              0.27294790744781494,
+              0.17704343795776367,
+              0.22531023621559143,
+              0.49367135763168335,
+              0.9235079288482666,
+              1.2570152282714844,
+              1.5947227478027344,
+              1.7695770263671875
+            ],
+            "worst_peak_torque_nm": 1.879049301147461
+          },
+          "trace": {
+            "all_values_finite": true,
+            "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v163-feasibility-preserving-falsifier-20260725\\traces\\v163_a05_0p03125000_p31_34_pitch_with_p30_nonpitch_x0.080_seed167931544.jsonl",
+            "required_fields_every_tick": true,
+            "reset_h_exact_zero": true,
+            "reset_previous_action_exact_zero": true,
+            "rows": 600,
+            "sha256": "c897b599c614ac51aaaaba0ee8c28d964a203bde7b34cc61e5a119db23fab857",
+            "ticks_contiguous": true
+          },
+          "training_or_simulator_reward_selection_weight": 0
+        },
+        {
+          "cell_sha256": "4e907d60679bdef92717e0a62eaed43358ae93cc33688e2ddd695992f4a2859a",
+          "failure_reasons": [],
+          "identity": {
+            "calibration_ticks": 0,
+            "checkpoint_id": "V163_ALPHA_0.03125000",
+            "command_x_m_s": 0.074,
+            "configuration": null,
+            "duration_ticks": 600,
+            "home_return_ticks": 0,
+            "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+            "policy_sha256": "f39afd0172441fa4bb347693f5cd00a8794abd5c8062f4fa7a034fddaecf49ea",
+            "seed": 167931544,
+            "step": 1003520,
+            "transport": {
+              "additional_action_delay_ticks": 0,
+              "imu_delay_ticks": 0,
+              "native_quantization": false,
+              "sensor_noise_scales": null
+            }
+          },
+          "metrics": {
+            "accelerometer_norm_p95_m_s2": 14.865923821671375,
+            "body_pitch_p95_abs_rad": 0.03896149958033369,
+            "body_pitch_rate_p95_abs_rad_s": 0.4455935716629028,
+            "body_roll_rate_p95_abs_rad_s": 1.5415406227111814,
+            "candidate_gate_status": "PASS_CANDIDATE_SIM_GATE",
+            "checks": {
+              "bilateral_transitions": true,
+              "candidate_gate_pass": true,
+              "cpu_only": true,
+              "current_peak_at_most_2p5": true,
+              "duration_complete_600": true,
+              "oracle_disabled": true,
+              "overcurrent_gt_2a_at_most_99_consecutive_ticks": true,
+              "per_run_readback_exact": true,
+              "phase0_first_observation_exact": true,
+              "positive_command_consistent_motion": true,
+              "torque_peak_at_most_1p91229675_nm": true,
+              "trace_contract": true,
+              "tracking_p95_at_most_0p20": true,
+              "x0_deadband_exact": true,
+              "zero_command_base_height": true,
+              "zero_command_pitch": true,
+              "zero_command_velocity": true,
+              "zero_envelope_excess": true,
+              "zero_rate_excess": true,
+              "zero_recurrent_state_exact": true,
+              "zero_saturation": true
+            },
+            "current_p95_a_by_joint": {
+              "head_pitch": 0.31715716599529487,
+              "head_roll": 0.25181010625547806,
+              "head_yaw": 0.190440738323248,
+              "left_ankle": 1.90420315543091,
+              "left_hip_pitch": 1.4478887298030527,
+              "left_hip_roll": 1.3635548720967812,
+              "left_hip_yaw": 0.7997488989261142,
+              "left_knee": 2.1524554235980564,
+              "neck_pitch": 0.2758133925255286,
+              "right_ankle": 2.0755002059711294,
+              "right_hip_pitch": 1.4427508290552968,
+              "right_hip_roll": 1.0893225270537406,
+              "right_hip_yaw": 0.5789054703220268,
+              "right_knee": 1.8285919620221607
+            },
+            "left_contact_transition_count": 58,
+            "max_actual_centered_guard_excess_rad": 0.0,
+            "max_conservative_rate_excess_rad_s": 0.0,
+            "mean_local_vx_m_s": 0.10550766530711068,
+            "minimum_base_height_m": 0.15153080224990845,
+            "right_contact_transition_count": 45,
+            "samples": 600,
+            "saturation_pct_by_joint": {
+              "head_pitch": 0.0,
+              "head_roll": 0.0,
+              "head_yaw": 0.0,
+              "left_ankle": 0.0,
+              "left_hip_pitch": 0.0,
+              "left_hip_roll": 0.0,
+              "left_hip_yaw": 0.0,
+              "left_knee": 0.0,
+              "neck_pitch": 0.0,
+              "right_ankle": 0.0,
+              "right_hip_pitch": 0.0,
+              "right_hip_roll": 0.0,
+              "right_hip_yaw": 0.0,
+              "right_knee": 0.0
+            },
+            "termination_reason": "duration_complete",
+            "tracking_p95_rad_by_joint": {
+              "head_pitch": 0.058252906706184146,
+              "head_roll": 0.10355326086282728,
+              "head_yaw": 0.11843272354453802,
+              "left_ankle": 0.13693811297416686,
+              "left_hip_pitch": 0.11850190162658691,
+              "left_hip_roll": 0.09600451625883578,
+              "left_hip_yaw": 0.07596314875409006,
+              "left_knee": 0.14488052725791928,
+              "neck_pitch": 0.11718939808197319,
+              "right_ankle": 0.14518109858036038,
+              "right_hip_pitch": 0.13871870934963218,
+              "right_hip_roll": 0.09136293940246105,
+              "right_hip_yaw": 0.04846276491880416,
+              "right_knee": 0.11764841079711913
+            },
+            "worst_current_p95_a": 2.1524554235980564,
+            "worst_saturation_pct": 0.0,
+            "worst_tracking_p95_rad": 0.14518109858036038
+          },
+          "model_readback": {
+            "actual": {
+              "all_body_mass_kg": [
+                0.0,
+                0.0,
+                0.6985260248184204,
+                0.06648000329732895,
+                0.07515999674797058,
+                0.12407000362873077,
+                0.07259000092744827,
+                0.07524000108242035,
+                0.06617999821901321,
+                0.016937799751758575,
+                0.09180989861488342,
+                0.4066070020198822,
+                0.06648000329732895,
+                0.07515999674797058,
+                0.12407000362873077,
+                0.07259000092744827,
+                0.07524000108242035,
+                0.0
+              ],
+              "torso_body_ipos_m": [
+                -0.04832589998841286,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "torso_body_iquat_wxyz": [
+                0.5054987668991089,
+                0.49069473147392273,
+                0.49620741605758667,
+                0.5074129104614258
+              ],
+              "torso_inertia_tensor_nominal_frame_kg_m2": [
+                [
+                  0.0034448949301507967,
+                  9.752039707786026e-11,
+                  8.014266836416753e-11
+                ],
+                [
+                  9.752039707786026e-11,
+                  0.0029271881125270574,
+                  7.284993129176153e-11
+                ],
+                [
+                  8.014266836416753e-11,
+                  7.284993129176153e-11,
+                  0.001676066443158942
+                ]
+              ],
+              "torso_mass_kg": 0.6985260248184204,
+              "torso_principal_inertia_kg_m2": [
+                0.0034448951482772827,
+                0.0029271882958710194,
+                0.0016760665457695723
+              ]
+            },
+            "body_id": 2,
+            "body_name": "trunk_assembly",
+            "enabled": false,
+            "nominal": {
+              "all_body_mass_kg": [
+                0.0,
+                0.0,
+                0.6985260248184204,
+                0.06648000329732895,
+                0.07515999674797058,
+                0.12407000362873077,
+                0.07259000092744827,
+                0.07524000108242035,
+                0.06617999821901321,
+                0.016937799751758575,
+                0.09180989861488342,
+                0.4066070020198822,
+                0.06648000329732895,
+                0.07515999674797058,
+                0.12407000362873077,
+                0.07259000092744827,
+                0.07524000108242035,
+                0.0
+              ],
+              "torso_body_ipos_m": [
+                -0.04832589998841286,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "torso_body_iquat_wxyz": [
+                0.5054987668991089,
+                0.49069473147392273,
+                0.49620741605758667,
+                0.5074129104614258
+              ],
+              "torso_mass_kg": 0.6985260248184204,
+              "torso_principal_inertia_kg_m2": [
+                0.0034448951482772827,
+                0.0029271882958710194,
+                0.0016760665457695723
+              ]
+            },
+            "requested": {
+              "all_link_mass_scale": 1.0,
+              "torso_com_offset_m": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "torso_inertia_tensor_kg_m2": [
+                [
+                  0.0034448951482772827,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0029271882958710194,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0016760665457695723
+                ]
+              ],
+              "torso_mass_add_kg": 0.0
+            }
+          },
+          "pass": true,
+          "policy": {
+            "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v163-feasibility-preserving-falsifier-20260725\\policies\\winner_v163_a05_0p03125000_deployed.onnx",
+            "sha256": "f39afd0172441fa4bb347693f5cd00a8794abd5c8062f4fa7a034fddaecf49ea"
+          },
+          "policy_contract": {
+            "first_h_in_linf": 0.0,
+            "first_phase": [
+              1.0,
+              0.0
+            ],
+            "first_phase_linf_error": 0.0,
+            "first_previous_action_linf": 0.0,
+            "oracle_rows": 0,
+            "rows": 600,
+            "sha256": "75c3a5e745e94cfb06df53650f33605c6c6ab9e625c1e67b7fde6f84f1d6f217",
+            "x0_action_nonzero_values": null
+          },
+          "prospective_current_gate": {
+            "checks": {
+              "current_peak_at_most_2p5": true,
+              "overcurrent_gt_2a_at_most_99_consecutive_ticks": true
+            },
+            "conversion_nm_per_a": 0.784532,
+            "longest_strict_over_2a_run_ticks_by_joint": [
+              0,
+              0,
+              0,
+              7,
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              3
+            ],
+            "p95_current_a_by_joint": [
+              0.7997488989261142,
+              1.3635548720967812,
+              1.4478887298030527,
+              2.1524554235980564,
+              1.90420315543091,
+              0.2758133925255286,
+              0.31715716599529487,
+              0.19044073832324798,
+              0.25181010625547806,
+              0.5789054703220268,
+              1.0893225270537406,
+              1.4427508290552968,
+              1.8285919620221607,
+              2.0755002059711294
+            ],
+            "pass": true,
+            "peak_current_a_by_joint": [
+              0.9250728513644881,
+              1.52777286630348,
+              1.8933109249741207,
+              2.3728783128105153,
+              2.223022013286813,
+              0.30862430758705106,
+              0.40339431535719145,
+              0.2229788327042907,
+              0.27896183577252587,
+              0.6790691783210078,
+              1.3925389765120133,
+              1.571778369596709,
+              2.138693656154491,
+              2.4149403812746306
+            ],
+            "samples": 600,
+            "worst_p95_current_a_diagnostic_only": 2.1524554235980564,
+            "worst_peak_current_a": 2.4149403812746306,
+            "worst_strict_over_2a_run_ticks": 7
+          },
+          "readback_checks": {
+            "actuator_readback_exact": true,
+            "all_body_mass_readback_exact": true,
+            "body_identity_exact": true,
+            "configuration_enabled_exact": true,
+            "full_inertia_readback_exact": true,
+            "requested_inertia_tensor_exact": true,
+            "requested_scale_add_offset_exact": true,
+            "torso_com_readback_exact": true,
+            "transport_readback_exact": true
+          },
+          "robot_clearance": false,
+          "schema_version": "winner_v141.projected_final_cell.v1",
+          "simulator": {
+            "error": null,
+            "status": "PASS_CANDIDATE_SIM_GATE"
+          },
+          "status": "PASS_WINNER_V141_PROJECTED_FINAL_CELL",
+          "torque_gate": {
+            "check": true,
+            "limit_nm": 1.91229675,
+            "peak_torque_nm_by_joint": [
+              0.7257492542266846,
+              1.1985867023468018,
+              1.4853630065917969,
+              1.8615989685058594,
+              1.7440319061279297,
+              0.24212564527988434,
+              0.3164757490158081,
+              0.1749340295791626,
+              0.21885448694229126,
+              0.5327515006065369,
+              1.0924913883209229,
+              1.2331104278564453,
+              1.6778736114501953,
+              1.8945980072021484
+            ],
+            "worst_peak_torque_nm": 1.8945980072021484
+          },
+          "trace": {
+            "all_values_finite": true,
+            "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v163-feasibility-preserving-falsifier-20260725\\traces\\v163_a05_0p03125000_p31_34_pitch_with_p30_nonpitch_x0.074_seed167931544.jsonl",
+            "required_fields_every_tick": true,
+            "reset_h_exact_zero": true,
+            "reset_previous_action_exact_zero": true,
+            "rows": 600,
+            "sha256": "75c3a5e745e94cfb06df53650f33605c6c6ab9e625c1e67b7fde6f84f1d6f217",
+            "ticks_contiguous": true
+          },
+          "training_or_simulator_reward_selection_weight": 0
+        },
+        {
+          "cell_sha256": "f9bb95443003c7327e5dbafafa8373af0466aa46f12e8225da8399e34d82da4a",
+          "failure_reasons": [],
+          "identity": {
+            "calibration_ticks": 0,
+            "checkpoint_id": "V163_ALPHA_0.03125000",
+            "command_x_m_s": 0.08,
+            "configuration": null,
+            "duration_ticks": 600,
+            "home_return_ticks": 0,
+            "plant": "P30_ALL_JOINT",
+            "policy_sha256": "f39afd0172441fa4bb347693f5cd00a8794abd5c8062f4fa7a034fddaecf49ea",
+            "seed": 167931544,
+            "step": 1003520,
+            "transport": {
+              "additional_action_delay_ticks": 0,
+              "imu_delay_ticks": 0,
+              "native_quantization": false,
+              "sensor_noise_scales": null
+            }
+          },
+          "metrics": {
+            "accelerometer_norm_p95_m_s2": 15.231863754849263,
+            "body_pitch_p95_abs_rad": 0.03637032451598598,
+            "body_pitch_rate_p95_abs_rad_s": 0.5161357074975965,
+            "body_roll_rate_p95_abs_rad_s": 1.4612415015697473,
+            "candidate_gate_status": "PASS_CANDIDATE_SIM_GATE",
+            "checks": {
+              "bilateral_transitions": true,
+              "candidate_gate_pass": true,
+              "cpu_only": true,
+              "current_peak_at_most_2p5": true,
+              "duration_complete_600": true,
+              "oracle_disabled": true,
+              "overcurrent_gt_2a_at_most_99_consecutive_ticks": true,
+              "per_run_readback_exact": true,
+              "phase0_first_observation_exact": true,
+              "positive_command_consistent_motion": true,
+              "torque_peak_at_most_1p91229675_nm": true,
+              "trace_contract": true,
+              "tracking_p95_at_most_0p20": true,
+              "x0_deadband_exact": true,
+              "zero_command_base_height": true,
+              "zero_command_pitch": true,
+              "zero_command_velocity": true,
+              "zero_envelope_excess": true,
+              "zero_rate_excess": true,
+              "zero_recurrent_state_exact": true,
+              "zero_saturation": true
+            },
+            "current_p95_a_by_joint": {
+              "head_pitch": 0.30404297907148364,
+              "head_roll": 0.2333403109573003,
+              "head_yaw": 0.1887256608852938,
+              "left_ankle": 2.0781407245861736,
+              "left_hip_pitch": 1.5607957595436435,
+              "left_hip_roll": 1.3025990538765757,
+              "left_hip_yaw": 0.8102049961680284,
+              "left_knee": 2.0180525155418096,
+              "neck_pitch": 0.26324538828297217,
+              "right_ankle": 1.944348592967699,
+              "right_hip_pitch": 1.3852859379361675,
+              "right_hip_roll": 1.087106893587644,
+              "right_hip_yaw": 0.5441056941617554,
+              "right_knee": 1.8999055357312393
+            },
+            "left_contact_transition_count": 56,
+            "max_actual_centered_guard_excess_rad": 0.0,
+            "max_conservative_rate_excess_rad_s": 0.0,
+            "mean_local_vx_m_s": 0.10803778712016841,
+            "minimum_base_height_m": 0.15153080224990845,
+            "right_contact_transition_count": 47,
+            "samples": 600,
+            "saturation_pct_by_joint": {
+              "head_pitch": 0.0,
+              "head_roll": 0.0,
+              "head_yaw": 0.0,
+              "left_ankle": 0.0,
+              "left_hip_pitch": 0.0,
+              "left_hip_roll": 0.0,
+              "left_hip_yaw": 0.0,
+              "left_knee": 0.0,
+              "neck_pitch": 0.0,
+              "right_ankle": 0.0,
+              "right_hip_pitch": 0.0,
+              "right_hip_roll": 0.0,
+              "right_hip_yaw": 0.0,
+              "right_knee": 0.0
+            },
+            "termination_reason": "duration_complete",
+            "tracking_p95_rad_by_joint": {
+              "head_pitch": 0.057554652169346805,
+              "head_roll": 0.07589150322601199,
+              "head_yaw": 0.11896664034575224,
+              "left_ankle": 0.14422064125537873,
+              "left_hip_pitch": 0.12795110642910004,
+              "left_hip_roll": 0.09648830015212297,
+              "left_hip_yaw": 0.07249985574744641,
+              "left_knee": 0.14642874002456666,
+              "neck_pitch": 0.10010994386393574,
+              "right_ankle": 0.14191728830337522,
+              "right_hip_pitch": 0.1397142380475998,
+              "right_hip_roll": 0.09569867234677076,
+              "right_hip_yaw": 0.04845526376739143,
+              "right_knee": 0.12312601208686826
+            },
+            "worst_current_p95_a": 2.0781407245861736,
+            "worst_saturation_pct": 0.0,
+            "worst_tracking_p95_rad": 0.14642874002456666
+          },
+          "model_readback": {
+            "actual": {
+              "all_body_mass_kg": [
+                0.0,
+                0.0,
+                0.6985260248184204,
+                0.06648000329732895,
+                0.07515999674797058,
+                0.12407000362873077,
+                0.07259000092744827,
+                0.07524000108242035,
+                0.06617999821901321,
+                0.016937799751758575,
+                0.09180989861488342,
+                0.4066070020198822,
+                0.06648000329732895,
+                0.07515999674797058,
+                0.12407000362873077,
+                0.07259000092744827,
+                0.07524000108242035,
+                0.0
+              ],
+              "torso_body_ipos_m": [
+                -0.04832589998841286,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "torso_body_iquat_wxyz": [
+                0.5054987668991089,
+                0.49069473147392273,
+                0.49620741605758667,
+                0.5074129104614258
+              ],
+              "torso_inertia_tensor_nominal_frame_kg_m2": [
+                [
+                  0.0034448949301507967,
+                  9.752039707786026e-11,
+                  8.014266836416753e-11
+                ],
+                [
+                  9.752039707786026e-11,
+                  0.0029271881125270574,
+                  7.284993129176153e-11
+                ],
+                [
+                  8.014266836416753e-11,
+                  7.284993129176153e-11,
+                  0.001676066443158942
+                ]
+              ],
+              "torso_mass_kg": 0.6985260248184204,
+              "torso_principal_inertia_kg_m2": [
+                0.0034448951482772827,
+                0.0029271882958710194,
+                0.0016760665457695723
+              ]
+            },
+            "body_id": 2,
+            "body_name": "trunk_assembly",
+            "enabled": false,
+            "nominal": {
+              "all_body_mass_kg": [
+                0.0,
+                0.0,
+                0.6985260248184204,
+                0.06648000329732895,
+                0.07515999674797058,
+                0.12407000362873077,
+                0.07259000092744827,
+                0.07524000108242035,
+                0.06617999821901321,
+                0.016937799751758575,
+                0.09180989861488342,
+                0.4066070020198822,
+                0.06648000329732895,
+                0.07515999674797058,
+                0.12407000362873077,
+                0.07259000092744827,
+                0.07524000108242035,
+                0.0
+              ],
+              "torso_body_ipos_m": [
+                -0.04832589998841286,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "torso_body_iquat_wxyz": [
+                0.5054987668991089,
+                0.49069473147392273,
+                0.49620741605758667,
+                0.5074129104614258
+              ],
+              "torso_mass_kg": 0.6985260248184204,
+              "torso_principal_inertia_kg_m2": [
+                0.0034448951482772827,
+                0.0029271882958710194,
+                0.0016760665457695723
+              ]
+            },
+            "requested": {
+              "all_link_mass_scale": 1.0,
+              "torso_com_offset_m": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "torso_inertia_tensor_kg_m2": [
+                [
+                  0.0034448951482772827,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0029271882958710194,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0016760665457695723
+                ]
+              ],
+              "torso_mass_add_kg": 0.0
+            }
+          },
+          "pass": true,
+          "policy": {
+            "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v163-feasibility-preserving-falsifier-20260725\\policies\\winner_v163_a05_0p03125000_deployed.onnx",
+            "sha256": "f39afd0172441fa4bb347693f5cd00a8794abd5c8062f4fa7a034fddaecf49ea"
+          },
+          "policy_contract": {
+            "first_h_in_linf": 0.0,
+            "first_phase": [
+              1.0,
+              0.0
+            ],
+            "first_phase_linf_error": 0.0,
+            "first_previous_action_linf": 0.0,
+            "oracle_rows": 0,
+            "rows": 600,
+            "sha256": "1de2648d35ec2bcc9e57b4157d60e59380f3a656cdf9fb742577fbc5a3a2a633",
+            "x0_action_nonzero_values": null
+          },
+          "prospective_current_gate": {
+            "checks": {
+              "current_peak_at_most_2p5": true,
+              "overcurrent_gt_2a_at_most_99_consecutive_ticks": true
+            },
+            "conversion_nm_per_a": 0.784532,
+            "longest_strict_over_2a_run_ticks_by_joint": [
+              0,
+              0,
+              0,
+              5,
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              2,
+              2
+            ],
+            "p95_current_a_by_joint": [
+              0.8102049961680283,
+              1.3025990538765757,
+              1.5607957595436435,
+              2.0180525155418096,
+              2.0781407245861736,
+              0.2632453882829722,
+              0.3040429790714836,
+              0.18872566088529377,
+              0.2333403109573003,
+              0.5441056941617554,
+              1.087106893587644,
+              1.3852859379361675,
+              1.8999055357312395,
+              1.944348592967699
+            ],
+            "pass": true,
+            "peak_current_a_by_joint": [
+              0.944970113979858,
+              1.4294233638344505,
+              1.8933899387435609,
+              2.240266464568008,
+              2.4284675386027814,
+              0.352509219913411,
+              0.3688238158828973,
+              0.21398235530574852,
+              0.28797973805855087,
+              0.6048245736395917,
+              1.2207612183544854,
+              1.5974541978753933,
+              2.2123271956939776,
+              2.355175581666567
+            ],
+            "samples": 600,
+            "worst_p95_current_a_diagnostic_only": 2.0781407245861736,
+            "worst_peak_current_a": 2.4284675386027814,
+            "worst_strict_over_2a_run_ticks": 5
+          },
+          "readback_checks": {
+            "actuator_readback_exact": true,
+            "all_body_mass_readback_exact": true,
+            "body_identity_exact": true,
+            "configuration_enabled_exact": true,
+            "full_inertia_readback_exact": true,
+            "requested_inertia_tensor_exact": true,
+            "requested_scale_add_offset_exact": true,
+            "torso_com_readback_exact": true,
+            "transport_readback_exact": true
+          },
+          "robot_clearance": false,
+          "schema_version": "winner_v141.projected_final_cell.v1",
+          "simulator": {
+            "error": null,
+            "status": "PASS_CANDIDATE_SIM_GATE"
+          },
+          "status": "PASS_WINNER_V141_PROJECTED_FINAL_CELL",
+          "torque_gate": {
+            "check": true,
+            "limit_nm": 1.91229675,
+            "peak_torque_nm_by_joint": [
+              0.741359293460846,
+              1.121428370475769,
+              1.4854249954223633,
+              1.7575607299804688,
+              1.9052104949951172,
+              0.27655476331710815,
+              0.2893540859222412,
+              0.1678760051727295,
+              0.22592931985855103,
+              0.4745042324066162,
+              0.957726240158081,
+              1.2532539367675781,
+              1.7356414794921875,
+              1.8477106094360352
+            ],
+            "worst_peak_torque_nm": 1.9052104949951172
+          },
+          "trace": {
+            "all_values_finite": true,
+            "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v163-feasibility-preserving-falsifier-20260725\\traces\\v163_a05_0p03125000_p30_all_joint_x0.080_seed167931544.jsonl",
+            "required_fields_every_tick": true,
+            "reset_h_exact_zero": true,
+            "reset_previous_action_exact_zero": true,
+            "rows": 600,
+            "sha256": "1de2648d35ec2bcc9e57b4157d60e59380f3a656cdf9fb742577fbc5a3a2a633",
+            "ticks_contiguous": true
+          },
+          "training_or_simulator_reward_selection_weight": 0
+        },
+        {
+          "cell_sha256": "858df8643cb1959a72af244acea279203f177d5c1829abd68eca3bb3bb8067b2",
+          "failure_reasons": [],
+          "identity": {
+            "calibration_ticks": 0,
+            "checkpoint_id": "V163_ALPHA_0.03125000",
+            "command_x_m_s": 0.077,
+            "configuration": null,
+            "duration_ticks": 600,
+            "home_return_ticks": 0,
+            "plant": "P30_ALL_JOINT",
+            "policy_sha256": "f39afd0172441fa4bb347693f5cd00a8794abd5c8062f4fa7a034fddaecf49ea",
+            "seed": 167931544,
+            "step": 1003520,
+            "transport": {
+              "additional_action_delay_ticks": 0,
+              "imu_delay_ticks": 0,
+              "native_quantization": false,
+              "sensor_noise_scales": null
+            }
+          },
+          "metrics": {
+            "accelerometer_norm_p95_m_s2": 15.522197773834554,
+            "body_pitch_p95_abs_rad": 0.0386426449919902,
+            "body_pitch_rate_p95_abs_rad_s": 0.49256134331226337,
+            "body_roll_rate_p95_abs_rad_s": 1.508283519744873,
+            "candidate_gate_status": "PASS_CANDIDATE_SIM_GATE",
+            "checks": {
+              "bilateral_transitions": true,
+              "candidate_gate_pass": true,
+              "cpu_only": true,
+              "current_peak_at_most_2p5": true,
+              "duration_complete_600": true,
+              "oracle_disabled": true,
+              "overcurrent_gt_2a_at_most_99_consecutive_ticks": true,
+              "per_run_readback_exact": true,
+              "phase0_first_observation_exact": true,
+              "positive_command_consistent_motion": true,
+              "torque_peak_at_most_1p91229675_nm": true,
+              "trace_contract": true,
+              "tracking_p95_at_most_0p20": true,
+              "x0_deadband_exact": true,
+              "zero_command_base_height": true,
+              "zero_command_pitch": true,
+              "zero_command_velocity": true,
+              "zero_envelope_excess": true,
+              "zero_rate_excess": true,
+              "zero_recurrent_state_exact": true,
+              "zero_saturation": true
+            },
+            "current_p95_a_by_joint": {
+              "head_pitch": 0.3183484676134865,
+              "head_roll": 0.2372385882284913,
+              "head_yaw": 0.19370784752616896,
+              "left_ankle": 2.018405646311384,
+              "left_hip_pitch": 1.5115772316418674,
+              "left_hip_roll": 1.3199063135069986,
+              "left_hip_yaw": 0.7902126701113008,
+              "left_knee": 1.970899407573199,
+              "neck_pitch": 0.27619129012314697,
+              "right_ankle": 1.966909029877004,
+              "right_hip_pitch": 1.4197682154978908,
+              "right_hip_roll": 1.1324267035645146,
+              "right_hip_yaw": 0.5217370707752437,
+              "right_knee": 1.8703427162346813
+            },
+            "left_contact_transition_count": 58,
+            "max_actual_centered_guard_excess_rad": 0.0,
+            "max_conservative_rate_excess_rad_s": 0.0,
+            "mean_local_vx_m_s": 0.10839346183541541,
+            "minimum_base_height_m": 0.15153080224990845,
+            "right_contact_transition_count": 47,
+            "samples": 600,
+            "saturation_pct_by_joint": {
+              "head_pitch": 0.0,
+              "head_roll": 0.0,
+              "head_yaw": 0.0,
+              "left_ankle": 0.0,
+              "left_hip_pitch": 0.0,
+              "left_hip_roll": 0.0,
+              "left_hip_yaw": 0.0,
+              "left_knee": 0.0,
+              "neck_pitch": 0.0,
+              "right_ankle": 0.0,
+              "right_hip_pitch": 0.0,
+              "right_hip_roll": 0.0,
+              "right_hip_yaw": 0.0,
+              "right_knee": 0.0
+            },
+            "termination_reason": "duration_complete",
+            "tracking_p95_rad_by_joint": {
+              "head_pitch": 0.05997216440737247,
+              "head_roll": 0.09124740064144134,
+              "head_yaw": 0.11944664306938649,
+              "left_ankle": 0.14021781384944912,
+              "left_hip_pitch": 0.1264400094747543,
+              "left_hip_roll": 0.09226659573614591,
+              "left_hip_yaw": 0.07374044787138698,
+              "left_knee": 0.1452997624874115,
+              "neck_pitch": 0.1073879207484424,
+              "right_ankle": 0.14458184242248534,
+              "right_hip_pitch": 0.13751164674758912,
+              "right_hip_roll": 0.09576800614595414,
+              "right_hip_yaw": 0.04630061537027358,
+              "right_knee": 0.11827032566070556
+            },
+            "worst_current_p95_a": 2.018405646311384,
+            "worst_saturation_pct": 0.0,
+            "worst_tracking_p95_rad": 0.1452997624874115
+          },
+          "model_readback": {
+            "actual": {
+              "all_body_mass_kg": [
+                0.0,
+                0.0,
+                0.6985260248184204,
+                0.06648000329732895,
+                0.07515999674797058,
+                0.12407000362873077,
+                0.07259000092744827,
+                0.07524000108242035,
+                0.06617999821901321,
+                0.016937799751758575,
+                0.09180989861488342,
+                0.4066070020198822,
+                0.06648000329732895,
+                0.07515999674797058,
+                0.12407000362873077,
+                0.07259000092744827,
+                0.07524000108242035,
+                0.0
+              ],
+              "torso_body_ipos_m": [
+                -0.04832589998841286,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "torso_body_iquat_wxyz": [
+                0.5054987668991089,
+                0.49069473147392273,
+                0.49620741605758667,
+                0.5074129104614258
+              ],
+              "torso_inertia_tensor_nominal_frame_kg_m2": [
+                [
+                  0.0034448949301507967,
+                  9.752039707786026e-11,
+                  8.014266836416753e-11
+                ],
+                [
+                  9.752039707786026e-11,
+                  0.0029271881125270574,
+                  7.284993129176153e-11
+                ],
+                [
+                  8.014266836416753e-11,
+                  7.284993129176153e-11,
+                  0.001676066443158942
+                ]
+              ],
+              "torso_mass_kg": 0.6985260248184204,
+              "torso_principal_inertia_kg_m2": [
+                0.0034448951482772827,
+                0.0029271882958710194,
+                0.0016760665457695723
+              ]
+            },
+            "body_id": 2,
+            "body_name": "trunk_assembly",
+            "enabled": false,
+            "nominal": {
+              "all_body_mass_kg": [
+                0.0,
+                0.0,
+                0.6985260248184204,
+                0.06648000329732895,
+                0.07515999674797058,
+                0.12407000362873077,
+                0.07259000092744827,
+                0.07524000108242035,
+                0.06617999821901321,
+                0.016937799751758575,
+                0.09180989861488342,
+                0.4066070020198822,
+                0.06648000329732895,
+                0.07515999674797058,
+                0.12407000362873077,
+                0.07259000092744827,
+                0.07524000108242035,
+                0.0
+              ],
+              "torso_body_ipos_m": [
+                -0.04832589998841286,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "torso_body_iquat_wxyz": [
+                0.5054987668991089,
+                0.49069473147392273,
+                0.49620741605758667,
+                0.5074129104614258
+              ],
+              "torso_mass_kg": 0.6985260248184204,
+              "torso_principal_inertia_kg_m2": [
+                0.0034448951482772827,
+                0.0029271882958710194,
+                0.0016760665457695723
+              ]
+            },
+            "requested": {
+              "all_link_mass_scale": 1.0,
+              "torso_com_offset_m": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "torso_inertia_tensor_kg_m2": [
+                [
+                  0.0034448951482772827,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0029271882958710194,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0016760665457695723
+                ]
+              ],
+              "torso_mass_add_kg": 0.0
+            }
+          },
+          "pass": true,
+          "policy": {
+            "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v163-feasibility-preserving-falsifier-20260725\\policies\\winner_v163_a05_0p03125000_deployed.onnx",
+            "sha256": "f39afd0172441fa4bb347693f5cd00a8794abd5c8062f4fa7a034fddaecf49ea"
+          },
+          "policy_contract": {
+            "first_h_in_linf": 0.0,
+            "first_phase": [
+              1.0,
+              0.0
+            ],
+            "first_phase_linf_error": 0.0,
+            "first_previous_action_linf": 0.0,
+            "oracle_rows": 0,
+            "rows": 600,
+            "sha256": "3fb297005b3357db4132aef622ec083c5d15e5d0dcb05b890b504fbe491e05be",
+            "x0_action_nonzero_values": null
+          },
+          "prospective_current_gate": {
+            "checks": {
+              "current_peak_at_most_2p5": true,
+              "overcurrent_gt_2a_at_most_99_consecutive_ticks": true
+            },
+            "conversion_nm_per_a": 0.784532,
+            "longest_strict_over_2a_run_ticks_by_joint": [
+              0,
+              0,
+              1,
+              9,
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              3
+            ],
+            "p95_current_a_by_joint": [
+              0.7902126701113008,
+              1.3199063135069986,
+              1.5115772316418676,
+              1.9708994075731987,
+              2.018405646311384,
+              0.27619129012314697,
+              0.3183484676134865,
+              0.19370784752616896,
+              0.2372385882284913,
+              0.5217370707752437,
+              1.1324267035645144,
+              1.4197682154978908,
+              1.8703427162346813,
+              1.966909029877004
+            ],
+            "pass": true,
+            "peak_current_a_by_joint": [
+              0.9561196406208655,
+              1.460961102108253,
+              2.0421643574241606,
+              2.3269555100119104,
+              2.286941721570974,
+              0.32571253573035136,
+              0.3904150881301967,
+              0.21794086917992087,
+              0.2733360553883884,
+              0.598886233017496,
+              1.3408530309300901,
+              1.5747419937489404,
+              2.097329340054355,
+              2.315985967620714
+            ],
+            "samples": 600,
+            "worst_p95_current_a_diagnostic_only": 2.018405646311384,
+            "worst_peak_current_a": 2.3269555100119104,
+            "worst_strict_over_2a_run_ticks": 9
+          },
+          "readback_checks": {
+            "actuator_readback_exact": true,
+            "all_body_mass_readback_exact": true,
+            "body_identity_exact": true,
+            "configuration_enabled_exact": true,
+            "full_inertia_readback_exact": true,
+            "requested_inertia_tensor_exact": true,
+            "requested_scale_add_offset_exact": true,
+            "torso_com_readback_exact": true,
+            "transport_readback_exact": true
+          },
+          "robot_clearance": false,
+          "schema_version": "winner_v141.projected_final_cell.v1",
+          "simulator": {
+            "error": null,
+            "status": "PASS_CANDIDATE_SIM_GATE"
+          },
+          "status": "PASS_WINNER_V141_PROJECTED_FINAL_CELL",
+          "torque_gate": {
+            "check": true,
+            "limit_nm": 1.91229675,
+            "peak_torque_nm_by_joint": [
+              0.7501064538955688,
+              1.146170735359192,
+              1.6021432876586914,
+              1.825571060180664,
+              1.7941789627075195,
+              0.255531907081604,
+              0.3062931299209595,
+              0.17098158597946167,
+              0.21444088220596313,
+              0.46984541416168213,
+              1.0519421100616455,
+              1.2354354858398438,
+              1.6454219818115234,
+              1.816965103149414
+            ],
+            "worst_peak_torque_nm": 1.825571060180664
+          },
+          "trace": {
+            "all_values_finite": true,
+            "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v163-feasibility-preserving-falsifier-20260725\\traces\\v163_a05_0p03125000_p30_all_joint_x0.077_seed167931544.jsonl",
+            "required_fields_every_tick": true,
+            "reset_h_exact_zero": true,
+            "reset_previous_action_exact_zero": true,
+            "rows": 600,
+            "sha256": "3fb297005b3357db4132aef622ec083c5d15e5d0dcb05b890b504fbe491e05be",
+            "ticks_contiguous": true
+          },
+          "training_or_simulator_reward_selection_weight": 0
+        },
+        {
+          "cell_sha256": "f036fb86fa3f2722365a65332065c1951f88d145676c0ddcdb195a2664361b48",
+          "failure_reasons": [],
+          "identity": {
+            "calibration_ticks": 0,
+            "checkpoint_id": "V163_ALPHA_0.03125000",
+            "command_x_m_s": 0.077,
+            "configuration": null,
+            "duration_ticks": 600,
+            "home_return_ticks": 0,
+            "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+            "policy_sha256": "f39afd0172441fa4bb347693f5cd00a8794abd5c8062f4fa7a034fddaecf49ea",
+            "seed": 167931544,
+            "step": 1003520,
+            "transport": {
+              "additional_action_delay_ticks": 0,
+              "imu_delay_ticks": 0,
+              "native_quantization": false,
+              "sensor_noise_scales": null
+            }
+          },
+          "metrics": {
+            "accelerometer_norm_p95_m_s2": 15.871278169052925,
+            "body_pitch_p95_abs_rad": 0.025167288804374358,
+            "body_pitch_rate_p95_abs_rad_s": 0.41597550362348534,
+            "body_roll_rate_p95_abs_rad_s": 1.50918983221054,
+            "candidate_gate_status": "PASS_CANDIDATE_SIM_GATE",
+            "checks": {
+              "bilateral_transitions": true,
+              "candidate_gate_pass": true,
+              "cpu_only": true,
+              "current_peak_at_most_2p5": true,
+              "duration_complete_600": true,
+              "oracle_disabled": true,
+              "overcurrent_gt_2a_at_most_99_consecutive_ticks": true,
+              "per_run_readback_exact": true,
+              "phase0_first_observation_exact": true,
+              "positive_command_consistent_motion": true,
+              "torque_peak_at_most_1p91229675_nm": true,
+              "trace_contract": true,
+              "tracking_p95_at_most_0p20": true,
+              "x0_deadband_exact": true,
+              "zero_command_base_height": true,
+              "zero_command_pitch": true,
+              "zero_command_velocity": true,
+              "zero_envelope_excess": true,
+              "zero_rate_excess": true,
+              "zero_recurrent_state_exact": true,
+              "zero_saturation": true
+            },
+            "current_p95_a_by_joint": {
+              "head_pitch": 0.325624055503534,
+              "head_roll": 0.24471603350702478,
+              "head_yaw": 0.1857128924477139,
+              "left_ankle": 1.9484213881034018,
+              "left_hip_pitch": 1.4478610749837486,
+              "left_hip_roll": 1.363818185483441,
+              "left_hip_yaw": 0.7967724426338263,
+              "left_knee": 2.075300301134446,
+              "neck_pitch": 0.26198936754987895,
+              "right_ankle": 1.968616031196024,
+              "right_hip_pitch": 1.45032490665436,
+              "right_hip_roll": 1.083603442044363,
+              "right_hip_yaw": 0.552558131367791,
+              "right_knee": 1.8228149614392795
+            },
+            "left_contact_transition_count": 68,
+            "max_actual_centered_guard_excess_rad": 0.0,
+            "max_conservative_rate_excess_rad_s": 0.0,
+            "mean_local_vx_m_s": 0.10673208412403862,
+            "minimum_base_height_m": 0.15153080224990845,
+            "right_contact_transition_count": 47,
+            "samples": 600,
+            "saturation_pct_by_joint": {
+              "head_pitch": 0.0,
+              "head_roll": 0.0,
+              "head_yaw": 0.0,
+              "left_ankle": 0.0,
+              "left_hip_pitch": 0.0,
+              "left_hip_roll": 0.0,
+              "left_hip_yaw": 0.0,
+              "left_knee": 0.0,
+              "neck_pitch": 0.0,
+              "right_ankle": 0.0,
+              "right_hip_pitch": 0.0,
+              "right_hip_roll": 0.0,
+              "right_hip_yaw": 0.0,
+              "right_knee": 0.0
+            },
+            "termination_reason": "duration_complete",
+            "tracking_p95_rad_by_joint": {
+              "head_pitch": 0.05780872777104375,
+              "head_roll": 0.0942173598334193,
+              "head_yaw": 0.11708358172327277,
+              "left_ankle": 0.13539025485515593,
+              "left_hip_pitch": 0.11626391708850857,
+              "left_hip_roll": 0.09406694099307059,
+              "left_hip_yaw": 0.0756074893288314,
+              "left_knee": 0.14473772048950193,
+              "neck_pitch": 0.10973055539652703,
+              "right_ankle": 0.14293621480464935,
+              "right_hip_pitch": 0.13452301323413848,
+              "right_hip_roll": 0.09372292663902043,
+              "right_hip_yaw": 0.04611427541822194,
+              "right_knee": 0.11729118824005123
+            },
+            "worst_current_p95_a": 2.075300301134446,
+            "worst_saturation_pct": 0.0,
+            "worst_tracking_p95_rad": 0.14473772048950193
+          },
+          "model_readback": {
+            "actual": {
+              "all_body_mass_kg": [
+                0.0,
+                0.0,
+                0.6985260248184204,
+                0.06648000329732895,
+                0.07515999674797058,
+                0.12407000362873077,
+                0.07259000092744827,
+                0.07524000108242035,
+                0.06617999821901321,
+                0.016937799751758575,
+                0.09180989861488342,
+                0.4066070020198822,
+                0.06648000329732895,
+                0.07515999674797058,
+                0.12407000362873077,
+                0.07259000092744827,
+                0.07524000108242035,
+                0.0
+              ],
+              "torso_body_ipos_m": [
+                -0.04832589998841286,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "torso_body_iquat_wxyz": [
+                0.5054987668991089,
+                0.49069473147392273,
+                0.49620741605758667,
+                0.5074129104614258
+              ],
+              "torso_inertia_tensor_nominal_frame_kg_m2": [
+                [
+                  0.0034448949301507967,
+                  9.752039707786026e-11,
+                  8.014266836416753e-11
+                ],
+                [
+                  9.752039707786026e-11,
+                  0.0029271881125270574,
+                  7.284993129176153e-11
+                ],
+                [
+                  8.014266836416753e-11,
+                  7.284993129176153e-11,
+                  0.001676066443158942
+                ]
+              ],
+              "torso_mass_kg": 0.6985260248184204,
+              "torso_principal_inertia_kg_m2": [
+                0.0034448951482772827,
+                0.0029271882958710194,
+                0.0016760665457695723
+              ]
+            },
+            "body_id": 2,
+            "body_name": "trunk_assembly",
+            "enabled": false,
+            "nominal": {
+              "all_body_mass_kg": [
+                0.0,
+                0.0,
+                0.6985260248184204,
+                0.06648000329732895,
+                0.07515999674797058,
+                0.12407000362873077,
+                0.07259000092744827,
+                0.07524000108242035,
+                0.06617999821901321,
+                0.016937799751758575,
+                0.09180989861488342,
+                0.4066070020198822,
+                0.06648000329732895,
+                0.07515999674797058,
+                0.12407000362873077,
+                0.07259000092744827,
+                0.07524000108242035,
+                0.0
+              ],
+              "torso_body_ipos_m": [
+                -0.04832589998841286,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "torso_body_iquat_wxyz": [
+                0.5054987668991089,
+                0.49069473147392273,
+                0.49620741605758667,
+                0.5074129104614258
+              ],
+              "torso_mass_kg": 0.6985260248184204,
+              "torso_principal_inertia_kg_m2": [
+                0.0034448951482772827,
+                0.0029271882958710194,
+                0.0016760665457695723
+              ]
+            },
+            "requested": {
+              "all_link_mass_scale": 1.0,
+              "torso_com_offset_m": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "torso_inertia_tensor_kg_m2": [
+                [
+                  0.0034448951482772827,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0029271882958710194,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0016760665457695723
+                ]
+              ],
+              "torso_mass_add_kg": 0.0
+            }
+          },
+          "pass": true,
+          "policy": {
+            "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v163-feasibility-preserving-falsifier-20260725\\policies\\winner_v163_a05_0p03125000_deployed.onnx",
+            "sha256": "f39afd0172441fa4bb347693f5cd00a8794abd5c8062f4fa7a034fddaecf49ea"
+          },
+          "policy_contract": {
+            "first_h_in_linf": 0.0,
+            "first_phase": [
+              1.0,
+              0.0
+            ],
+            "first_phase_linf_error": 0.0,
+            "first_previous_action_linf": 0.0,
+            "oracle_rows": 0,
+            "rows": 600,
+            "sha256": "374ac3df343d688e482cc6bec77141301d75acdd32aead2cb98fa7ba69021ec6",
+            "x0_action_nonzero_values": null
+          },
+          "prospective_current_gate": {
+            "checks": {
+              "current_peak_at_most_2p5": true,
+              "overcurrent_gt_2a_at_most_99_consecutive_ticks": true
+            },
+            "conversion_nm_per_a": 0.784532,
+            "longest_strict_over_2a_run_ticks_by_joint": [
+              0,
+              0,
+              0,
+              10,
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              3
+            ],
+            "p95_current_a_by_joint": [
+              0.7967724426338263,
+              1.363818185483441,
+              1.4478610749837486,
+              2.075300301134446,
+              1.9484213881034018,
+              0.26198936754987895,
+              0.325624055503534,
+              0.1857128924477139,
+              0.24471603350702478,
+              0.552558131367791,
+              1.083603442044363,
+              1.45032490665436,
+              1.8228149614392795,
+              1.968616031196024
+            ],
+            "pass": true,
+            "peak_current_a_by_joint": [
+              0.942996593138534,
+              1.4927881523378517,
+              1.8437668603422517,
+              2.28254734039365,
+              2.2306632525899,
+              0.32980362559267085,
+              0.3853322235118469,
+              0.21848393689526516,
+              0.2637769847564768,
+              0.6349848891826735,
+              1.3368391314425314,
+              1.5595616252448115,
+              2.1520311804359857,
+              2.3511568197931965
+            ],
+            "samples": 600,
+            "worst_p95_current_a_diagnostic_only": 2.075300301134446,
+            "worst_peak_current_a": 2.3511568197931965,
+            "worst_strict_over_2a_run_ticks": 10
+          },
+          "readback_checks": {
+            "actuator_readback_exact": true,
+            "all_body_mass_readback_exact": true,
+            "body_identity_exact": true,
+            "configuration_enabled_exact": true,
+            "full_inertia_readback_exact": true,
+            "requested_inertia_tensor_exact": true,
+            "requested_scale_add_offset_exact": true,
+            "torso_com_readback_exact": true,
+            "transport_readback_exact": true
+          },
+          "robot_clearance": false,
+          "schema_version": "winner_v141.projected_final_cell.v1",
+          "simulator": {
+            "error": null,
+            "status": "PASS_CANDIDATE_SIM_GATE"
+          },
+          "status": "PASS_WINNER_V141_PROJECTED_FINAL_CELL",
+          "torque_gate": {
+            "check": true,
+            "limit_nm": 1.91229675,
+            "peak_torque_nm_by_joint": [
+              0.7398110032081604,
+              1.1711400747299194,
+              1.4464941024780273,
+              1.790731430053711,
+              1.7500267028808594,
+              0.25874149799346924,
+              0.3023054599761963,
+              0.17140763998031616,
+              0.20694148540496826,
+              0.49816596508026123,
+              1.048793077468872,
+              1.2235260009765625,
+              1.6883373260498047,
+              1.844557762145996
+            ],
+            "worst_peak_torque_nm": 1.844557762145996
+          },
+          "trace": {
+            "all_values_finite": true,
+            "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v163-feasibility-preserving-falsifier-20260725\\traces\\v163_a05_0p03125000_p31_34_pitch_with_p30_nonpitch_x0.077_seed167931544.jsonl",
+            "required_fields_every_tick": true,
+            "reset_h_exact_zero": true,
+            "reset_previous_action_exact_zero": true,
+            "rows": 600,
+            "sha256": "374ac3df343d688e482cc6bec77141301d75acdd32aead2cb98fa7ba69021ec6",
+            "ticks_contiguous": true
+          },
+          "training_or_simulator_reward_selection_weight": 0
+        },
+        {
+          "cell_sha256": "e7f05d0425534c0c2f721069625a50cb9763332a4f5c963909d389b08dc00e9c",
+          "failure_reasons": [],
+          "identity": {
+            "calibration_ticks": 0,
+            "checkpoint_id": "V163_ALPHA_0.03125000",
+            "command_x_m_s": 0.074,
+            "configuration": null,
+            "duration_ticks": 600,
+            "home_return_ticks": 0,
+            "plant": "P30_ALL_JOINT",
+            "policy_sha256": "f39afd0172441fa4bb347693f5cd00a8794abd5c8062f4fa7a034fddaecf49ea",
+            "seed": 167931544,
+            "step": 1003520,
+            "transport": {
+              "additional_action_delay_ticks": 0,
+              "imu_delay_ticks": 0,
+              "native_quantization": false,
+              "sensor_noise_scales": null
+            }
+          },
+          "metrics": {
+            "accelerometer_norm_p95_m_s2": 14.894276548179473,
+            "body_pitch_p95_abs_rad": 0.04483148328503481,
+            "body_pitch_rate_p95_abs_rad_s": 0.40717191398143765,
+            "body_roll_rate_p95_abs_rad_s": 1.5679501473903654,
+            "candidate_gate_status": "PASS_CANDIDATE_SIM_GATE",
+            "checks": {
+              "bilateral_transitions": true,
+              "candidate_gate_pass": true,
+              "cpu_only": true,
+              "current_peak_at_most_2p5": true,
+              "duration_complete_600": true,
+              "oracle_disabled": true,
+              "overcurrent_gt_2a_at_most_99_consecutive_ticks": true,
+              "per_run_readback_exact": true,
+              "phase0_first_observation_exact": true,
+              "positive_command_consistent_motion": true,
+              "torque_peak_at_most_1p91229675_nm": true,
+              "trace_contract": true,
+              "tracking_p95_at_most_0p20": true,
+              "x0_deadband_exact": true,
+              "zero_command_base_height": true,
+              "zero_command_pitch": true,
+              "zero_command_velocity": true,
+              "zero_envelope_excess": true,
+              "zero_rate_excess": true,
+              "zero_recurrent_state_exact": true,
+              "zero_saturation": true
+            },
+            "current_p95_a_by_joint": {
+              "head_pitch": 0.3162996177794704,
+              "head_roll": 0.2534729548320846,
+              "head_yaw": 0.18966543090557236,
+              "left_ankle": 1.9550483337261682,
+              "left_hip_pitch": 1.5165665865030762,
+              "left_hip_roll": 1.3715376332233185,
+              "left_hip_yaw": 0.7760298808362649,
+              "left_knee": 1.9708043479305797,
+              "neck_pitch": 0.2783556064252353,
+              "right_ankle": 2.0248199233347113,
+              "right_hip_pitch": 1.4075715284874666,
+              "right_hip_roll": 1.1325154648980118,
+              "right_hip_yaw": 0.5478244734217161,
+              "right_knee": 1.904167416895195
+            },
+            "left_contact_transition_count": 64,
+            "max_actual_centered_guard_excess_rad": 0.0,
+            "max_conservative_rate_excess_rad_s": 0.0,
+            "mean_local_vx_m_s": 0.10884145984426141,
+            "minimum_base_height_m": 0.15153080224990845,
+            "right_contact_transition_count": 45,
+            "samples": 600,
+            "saturation_pct_by_joint": {
+              "head_pitch": 0.0,
+              "head_roll": 0.0,
+              "head_yaw": 0.0,
+              "left_ankle": 0.0,
+              "left_hip_pitch": 0.0,
+              "left_hip_roll": 0.0,
+              "left_hip_yaw": 0.0,
+              "left_knee": 0.0,
+              "neck_pitch": 0.0,
+              "right_ankle": 0.0,
+              "right_hip_pitch": 0.0,
+              "right_hip_roll": 0.0,
+              "right_hip_yaw": 0.0,
+              "right_knee": 0.0
+            },
+            "termination_reason": "duration_complete",
+            "tracking_p95_rad_by_joint": {
+              "head_pitch": 0.056505321338772764,
+              "head_roll": 0.10439003892242907,
+              "head_yaw": 0.11831816118210552,
+              "left_ankle": 0.14114347398281096,
+              "left_hip_pitch": 0.13120094537734983,
+              "left_hip_roll": 0.09551221057772637,
+              "left_hip_yaw": 0.07476023584604262,
+              "left_knee": 0.14460427165031434,
+              "neck_pitch": 0.11390718058682979,
+              "right_ankle": 0.14610637724399564,
+              "right_hip_pitch": 0.14043046236038206,
+              "right_hip_roll": 0.09329097196459771,
+              "right_hip_yaw": 0.04873258918523788,
+              "right_knee": 0.1205310821533203
+            },
+            "worst_current_p95_a": 2.0248199233347113,
+            "worst_saturation_pct": 0.0,
+            "worst_tracking_p95_rad": 0.14610637724399564
+          },
+          "model_readback": {
+            "actual": {
+              "all_body_mass_kg": [
+                0.0,
+                0.0,
+                0.6985260248184204,
+                0.06648000329732895,
+                0.07515999674797058,
+                0.12407000362873077,
+                0.07259000092744827,
+                0.07524000108242035,
+                0.06617999821901321,
+                0.016937799751758575,
+                0.09180989861488342,
+                0.4066070020198822,
+                0.06648000329732895,
+                0.07515999674797058,
+                0.12407000362873077,
+                0.07259000092744827,
+                0.07524000108242035,
+                0.0
+              ],
+              "torso_body_ipos_m": [
+                -0.04832589998841286,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "torso_body_iquat_wxyz": [
+                0.5054987668991089,
+                0.49069473147392273,
+                0.49620741605758667,
+                0.5074129104614258
+              ],
+              "torso_inertia_tensor_nominal_frame_kg_m2": [
+                [
+                  0.0034448949301507967,
+                  9.752039707786026e-11,
+                  8.014266836416753e-11
+                ],
+                [
+                  9.752039707786026e-11,
+                  0.0029271881125270574,
+                  7.284993129176153e-11
+                ],
+                [
+                  8.014266836416753e-11,
+                  7.284993129176153e-11,
+                  0.001676066443158942
+                ]
+              ],
+              "torso_mass_kg": 0.6985260248184204,
+              "torso_principal_inertia_kg_m2": [
+                0.0034448951482772827,
+                0.0029271882958710194,
+                0.0016760665457695723
+              ]
+            },
+            "body_id": 2,
+            "body_name": "trunk_assembly",
+            "enabled": false,
+            "nominal": {
+              "all_body_mass_kg": [
+                0.0,
+                0.0,
+                0.6985260248184204,
+                0.06648000329732895,
+                0.07515999674797058,
+                0.12407000362873077,
+                0.07259000092744827,
+                0.07524000108242035,
+                0.06617999821901321,
+                0.016937799751758575,
+                0.09180989861488342,
+                0.4066070020198822,
+                0.06648000329732895,
+                0.07515999674797058,
+                0.12407000362873077,
+                0.07259000092744827,
+                0.07524000108242035,
+                0.0
+              ],
+              "torso_body_ipos_m": [
+                -0.04832589998841286,
+                -9.978230082197115e-05,
+                0.03849710151553154
+              ],
+              "torso_body_iquat_wxyz": [
+                0.5054987668991089,
+                0.49069473147392273,
+                0.49620741605758667,
+                0.5074129104614258
+              ],
+              "torso_mass_kg": 0.6985260248184204,
+              "torso_principal_inertia_kg_m2": [
+                0.0034448951482772827,
+                0.0029271882958710194,
+                0.0016760665457695723
+              ]
+            },
+            "requested": {
+              "all_link_mass_scale": 1.0,
+              "torso_com_offset_m": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "torso_inertia_tensor_kg_m2": [
+                [
+                  0.0034448951482772827,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0029271882958710194,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0016760665457695723
+                ]
+              ],
+              "torso_mass_add_kg": 0.0
+            }
+          },
+          "pass": true,
+          "policy": {
+            "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v163-feasibility-preserving-falsifier-20260725\\policies\\winner_v163_a05_0p03125000_deployed.onnx",
+            "sha256": "f39afd0172441fa4bb347693f5cd00a8794abd5c8062f4fa7a034fddaecf49ea"
+          },
+          "policy_contract": {
+            "first_h_in_linf": 0.0,
+            "first_phase": [
+              1.0,
+              0.0
+            ],
+            "first_phase_linf_error": 0.0,
+            "first_previous_action_linf": 0.0,
+            "oracle_rows": 0,
+            "rows": 600,
+            "sha256": "33ac54e1ac0980d75032ec93494ccd5bf4cbf9aafeafc98302702326ab6ba76a",
+            "x0_action_nonzero_values": null
+          },
+          "prospective_current_gate": {
+            "checks": {
+              "current_peak_at_most_2p5": true,
+              "overcurrent_gt_2a_at_most_99_consecutive_ticks": true
+            },
+            "conversion_nm_per_a": 0.784532,
+            "longest_strict_over_2a_run_ticks_by_joint": [
+              0,
+              0,
+              0,
+              7,
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              2,
+              3
+            ],
+            "p95_current_a_by_joint": [
+              0.7760298808362649,
+              1.3715376332233185,
+              1.5165665865030762,
+              1.9708043479305797,
+              1.9550483337261684,
+              0.2783556064252353,
+              0.3162996177794704,
+              0.18966543090557236,
+              0.25347295483208465,
+              0.5478244734217161,
+              1.1325154648980116,
+              1.4075715284874664,
+              1.904167416895195,
+              2.0248199233347113
+            ],
+            "pass": true,
+            "peak_current_a_by_joint": [
+              0.9402023167671507,
+              1.5141633523156435,
+              1.898140489681592,
+              2.236257427466261,
+              2.2788689455270985,
+              0.3244839475903356,
+              0.385210815816111,
+              0.2206752774259976,
+              0.2739500835466722,
+              0.6492655643620812,
+              1.4138385056106106,
+              1.5180964146390827,
+              2.202920910341243,
+              2.3738981982345195
+            ],
+            "samples": 600,
+            "worst_p95_current_a_diagnostic_only": 2.0248199233347113,
+            "worst_peak_current_a": 2.3738981982345195,
+            "worst_strict_over_2a_run_ticks": 7
+          },
+          "readback_checks": {
+            "actuator_readback_exact": true,
+            "all_body_mass_readback_exact": true,
+            "body_identity_exact": true,
+            "configuration_enabled_exact": true,
+            "full_inertia_readback_exact": true,
+            "requested_inertia_tensor_exact": true,
+            "requested_scale_add_offset_exact": true,
+            "torso_com_readback_exact": true,
+            "transport_readback_exact": true
+          },
+          "robot_clearance": false,
+          "schema_version": "winner_v141.projected_final_cell.v1",
+          "simulator": {
+            "error": null,
+            "status": "PASS_CANDIDATE_SIM_GATE"
+          },
+          "status": "PASS_WINNER_V141_PROJECTED_FINAL_CELL",
+          "torque_gate": {
+            "check": true,
+            "limit_nm": 1.91229675,
+            "peak_torque_nm_by_joint": [
+              0.7376188039779663,
+              1.1879096031188965,
+              1.489151954650879,
+              1.754415512084961,
+              1.7878456115722656,
+              0.25456804037094116,
+              0.3022102117538452,
+              0.17312681674957275,
+              0.21492260694503784,
+              0.5093696117401123,
+              1.1092015504837036,
+              1.190995216369629,
+              1.728261947631836,
+              1.8623991012573242
+            ],
+            "worst_peak_torque_nm": 1.8623991012573242
+          },
+          "trace": {
+            "all_values_finite": true,
+            "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v163-feasibility-preserving-falsifier-20260725\\traces\\v163_a05_0p03125000_p30_all_joint_x0.074_seed167931544.jsonl",
+            "required_fields_every_tick": true,
+            "reset_h_exact_zero": true,
+            "reset_previous_action_exact_zero": true,
+            "rows": 600,
+            "sha256": "33ac54e1ac0980d75032ec93494ccd5bf4cbf9aafeafc98302702326ab6ba76a",
+            "ticks_contiguous": true
+          },
+          "training_or_simulator_reward_selection_weight": 0
+        }
+      ],
+      "changed_initializers": [
+        "obs_mean",
+        "obs_std",
+        "trunk_0_weight",
+        "trunk_0_bias",
+        "trunk_1_weight",
+        "trunk_1_bias",
+        "trunk_2_weight",
+        "trunk_2_bias",
+        "base_residual_weight",
+        "base_residual_bias",
+        "adapter_weight",
+        "adapter_bias",
+        "adapter_obs_weight",
+        "adapter_hidden_weight",
+        "adapter_hidden_bias"
+      ],
+      "completed_moving_cells": 6,
+      "deployed": {
+        "bytes": 958446,
+        "graph_io": {
+          "inputs": {
+            "h_in": [
+              1,
+              64
+            ],
+            "obs": [
+              1,
+              115
+            ],
+            "previous_action": [
+              1,
+              14
+            ]
+          },
+          "outputs": {
+            "continuous_actions": [
+              1,
+              14
+            ],
+            "h_out": [
+              1,
+              64
+            ],
+            "previous_action_out": [
+              1,
+              14
+            ]
+          }
+        },
+        "inference": {
+          "changed_projection_is_exercised": true,
+          "checks": {
+            "all_outputs_finite": true,
+            "changed_projection_is_exercised": true,
+            "cpu_provider_exact": true,
+            "g3_guard_preserved_in_consistent_chain": true,
+            "moving_rate_delta_enforced": true,
+            "realized_state_feedback_exact": true,
+            "recurrent_hidden_output_bit_exact": true,
+            "zero_action_exact": true,
+            "zero_previous_exact": true
+          },
+          "max_guard_excess_rad": 0.0,
+          "max_hidden_error": 0.0,
+          "max_moving_delta_excess": 2.2351741790771484e-08,
+          "max_state_error": 0.0,
+          "max_zero_action": 0.0,
+          "max_zero_previous": 0.0,
+          "pass": true
+        },
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v163-feasibility-preserving-falsifier-20260725\\policies\\winner_v163_a05_0p03125000_deployed.onnx",
+        "sha256": "f39afd0172441fa4bb347693f5cd00a8794abd5c8062f4fa7a034fddaecf49ea"
+      },
+      "raw": {
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v163-feasibility-preserving-falsifier-20260725\\policies\\winner_v163_a05_0p03125000_raw.onnx",
+        "sha256": "ce3580a59a29d0303a0f661048e108f3f5e70c5fc72a8bd62ababd84edebf057"
+      },
+      "six_moving_cells_pass": true,
+      "source_reserve_strictly_improved": true,
+      "source_worst_peak_torque_nm": 1.909637451171875,
+      "two_x0_cells_exact_by_invariant": true,
+      "worst_peak_torque_nm": 1.9052104949951172
+    }
+  ]
+}
