@@ -89,6 +89,7 @@ class ClosedLoopConfig:
     policy_state_input_names: tuple[str, ...] = ()
     policy_state_output_names: tuple[str, ...] = ()
     policy_context_input_name: str | None = None
+    policy_zero_context_input: bool = False
     policy_graph_authoritative_output: bool = False
     response_calibrator_path: Path | None = None
     response_calibrator_sha256: str | None = None
@@ -1572,6 +1573,15 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             "error": f"policy missing: {config.policy_path}",
         }
     response_prefix_enabled = config.response_calibrator_path is not None
+    zero_context_enabled = bool(config.policy_zero_context_input)
+    if response_prefix_enabled and zero_context_enabled:
+        return {
+            "status": "HOLD_POLICY_IO_CONTRACT",
+            "error": (
+                "response-calibrated and diagnostic-zero contexts are "
+                "mutually exclusive"
+            ),
+        }
     if response_prefix_enabled:
         if (
             config.policy_context_input_name is None
@@ -1602,6 +1612,21 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
                 "error": (
                     "response calibrator SHA-256 changed: "
                     f"{observed_calibrator_sha256}"
+                ),
+            }
+    elif zero_context_enabled:
+        if (
+            config.policy_context_input_name != "calibration_context"
+            or config.response_calibrator_sha256 is not None
+            or config.response_calibration_ticks != 0
+            or config.response_home_return_ticks != 0
+            or config.expected_observation_dim != 115
+        ):
+            return {
+                "status": "HOLD_POLICY_IO_CONTRACT",
+                "error": (
+                    "diagnostic-zero context requires calibration_context, "
+                    "no calibrator or prefix ticks, and a 115-D observation"
                 ),
             }
     elif any(
@@ -2518,6 +2543,16 @@ def run_closed_loop_sim(config: ClosedLoopConfig) -> dict:
             "locomotion_hidden_exact_zero": None,
             "locomotion_previous_action_exact_zero": None,
         }
+        if zero_context_enabled:
+            response_context = np.zeros((1, 64), dtype=np.float32)
+            response_calibration_audit.update(
+                {
+                    "mode": "diagnostic_zero",
+                    "context_sha256": _array_sha256(response_context),
+                    "context_shape": list(response_context.shape),
+                    "context_finite": True,
+                }
+            )
 
         def prefix_observation(
             current_state,
