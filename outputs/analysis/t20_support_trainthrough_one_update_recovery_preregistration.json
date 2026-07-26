@@ -1,0 +1,312 @@
+{
+  "assets": {
+    "cpu_topology_template": {
+      "kind": "directory",
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v119-transition-cpu-smoke-20260724\\smoke\\2026_07_24_150649_0",
+      "sha256": "16a867c653476d6829ddaf400e5f02fc21658a78d3efc5ddfd167cc497f3ac83"
+    },
+    "frozen_t18_context_abi_onnx": {
+      "bytes": 958485,
+      "kind": "file",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t8_state_coherent_handoff_assets_v2\\policies\\V121_DEPLOYMENT_1003520_T8_CONTEXT_ABI.onnx",
+      "sha256": "8749ba91e98c18b8c2d123bae3558154bc7221cc8b58c1a8ad6c9adc39d8ae4a"
+    },
+    "frozen_t18_wrapped_onnx": {
+      "bytes": 964682,
+      "kind": "file",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t18_rate_coherent_support_v1\\wrapped\\V121_TRAIN_MATCHED_HALF\\rate_coherent_support.onnx",
+      "sha256": "31d81484ab2faa301488a7eb4962f9ab7f56f8be1127d0126a25ba1c1d0aef1e"
+    },
+    "source_checkpoint": {
+      "kind": "directory",
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v119-extracted-20260724\\winner_v119_transition_continuation\\training\\2026_07_24_193907_1003520",
+      "sha256": "6f2d9856b5ab674f9f20f04c46be6dc00adc5eabc31826f16b4743c5172dfad8"
+    },
+    "source_v121_half_onnx": {
+      "bytes": 958446,
+      "kind": "file",
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v121-deployment-policies-20260724\\V121_DEPLOYMENT_1003520.onnx",
+      "sha256": "d4f280e8ebb4accd5c5c983bbf83042ec0162647efb446f0f6c8bffda42bc17a"
+    }
+  },
+  "authority": {
+    "checkpoint_selection": false,
+    "cpu_optimizer_steps_authorized": 1024,
+    "formal_behavior_cells": 0,
+    "gate5": false,
+    "hosted_or_colab_compute": false,
+    "hosted_training": false,
+    "policy_deployment": false,
+    "robot_or_rdk_access": false,
+    "torque_or_motion": false
+  },
+  "causal_basis": {
+    "first_attempt": "The launcher rejected mutually exclusive inherited V121 and T19 rate-vector validators before environment construction. It produced no checkpoint, ONNX, simulator cell, or optimizer step and has zero decision weight.",
+    "minimal_update": "Change no actor architecture, reward, rate vector, support action, map, bridge, or reset. Test only whether the existing V121 actor can update through the selected transition.",
+    "recovery": "T19's flag selects T19's already frozen full rate vector in the inherited Winner-v3 validator. Every other selector branch and all mechanism code remain byte-identical.",
+    "t18": "The zero-training physical support composition retained 25/32 cells, with the residual misses localized to saturation and two falls.",
+    "t19": "The train-through environment and complete episode reset passed every enabled check across 64 variable configurations and exact default-off parity."
+  },
+  "checks": {
+    "authority_unchanged": true,
+    "composed_v4_schema_exact": true,
+    "correction_changes_only_runner_validation": true,
+    "first_attempt_has_zero_decision_weight": true,
+    "fresh_run_no_reuse": true,
+    "original_contract_was_green": true,
+    "preoptimizer_attribution_passed": true
+  },
+  "contract": {
+    "cpu_topology_remap": "restore source into frozen CPU template, save once to the fresh work root, restore again, and require exact tree/leaf equality before training",
+    "first_attempt_artifact_reuse": false,
+    "optimizer_smoke": {
+      "batch_size": 4,
+      "discounting": 0.97,
+      "entropy_cost": 0.005,
+      "episode_length": 64,
+      "learning_rate": 0.0003,
+      "maximum_wall_seconds": 1800,
+      "num_envs": 4,
+      "num_evals": 2,
+      "num_minibatches": 1,
+      "seed": 100,
+      "simulator_steps_exact": 1024,
+      "unroll_length": 8,
+      "updates_per_batch": 2
+    },
+    "recovery_scope": "one fresh full execution from a new work root; no reuse of attempt-1 remap, event header, log, checkpoint, or output",
+    "required_exports": [
+      0,
+      1024
+    ],
+    "source": "V121_TRAIN_MATCHED_HALF",
+    "source_step": 1003520,
+    "step_1024_requirements": [
+      "tree structure exact and every actor/critic leaf finite",
+      "every actor and critic leaf changes",
+      "raw/context/wrapped graphs have exact ABI",
+      "context input remains bit-exactly ignored",
+      "physical wrapper matches T18 equations on 256 CPU cases",
+      "x=0 emits support exactly and previous_action_out is final action"
+    ],
+    "step_zero_requirements": [
+      "checkpoint tree exact to V121-half after CPU remap",
+      "raw ONNX byte-exact to frozen V121-half deployment graph",
+      "diagnostic context ABI byte-exact to T8/T18 source",
+      "physical support/rate wrapper byte-exact to T18 half"
+    ],
+    "unchanged_training_recipe": {
+      "actions": 14,
+      "full_episode_handoff_reset": true,
+      "policy_architecture": "reference_residual_recurrent_adapter",
+      "policy_observation_dim": 115,
+      "rate_limits_rad_s": [
+        1.0,
+        0.75,
+        1.5,
+        1.5,
+        1.5,
+        0.5,
+        0.5,
+        0.5,
+        0.5,
+        0.5,
+        0.75,
+        1.25,
+        1.0,
+        1.25
+      ],
+      "recurrent_hidden_size": 64,
+      "reference_support_x": [
+        0.074,
+        0.08
+      ],
+      "runtime_observation_dim": 101,
+      "t19_calibration_ticks": 250,
+      "t19_home_return_ticks": 0,
+      "t19_support_trainthrough": true,
+      "variable_configuration_scale": 1.0
+    }
+  },
+  "decision_rule": {
+    "fail": "Keep hosted training closed and file the exact failed check; no scalar, map, reset, support, or rate tuning.",
+    "partial_result_weight": 0,
+    "pass": "Every restore, update, export, graph, CPU, authority, and receipt check passes.",
+    "pass_next_action": "Earn only a separately preregistered, no-retry hosted continuation from V121-half through the exact T19 transition."
+  },
+  "failed_checks": [],
+  "playground": {
+    "final_python_hashes": {
+      "playground/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "playground/common/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "playground/common/export_onnx.py": "30bc705bf59babb59c5ba3045b601c838db00ebb569bb9fc6aa520f1e61139cc",
+      "playground/common/onnx_infer.py": "e610c2b94d15cd0ea4be1c0cee8853dc33b10c3b440e6d9bb1b1bb73168f34f2",
+      "playground/common/phase_moe_networks.py": "6480f59f4039884be6743828ffed1c31f76896830b2b38689cad038200283cb7",
+      "playground/common/plot_saved_obs.py": "911fe1de5668c31fdc2a10a4285b8343c04fd4f662a38207d6f06a91fd4e0a8e",
+      "playground/common/poly_reference_motion.py": "cc2430d82a9e41bf2081a4a9bed45731a43aad8b860e5b168f5850eb3748cf21",
+      "playground/common/poly_reference_motion_numpy.py": "585e783722ffb403a14288aafc1fcdf86c8a5d1b39949171a3b2d918028c4406",
+      "playground/common/randomize.py": "c6e7a48f714a2267b3b19d75ffc9ce3938350aabceb3eda61727a3c48f2d6dd8",
+      "playground/common/recurrent_ppo_networks.py": "a501000c6f959276514ba56f935d027b05b171a9ea62bb6a2bc1ecdd2fe8cb4e",
+      "playground/common/reference_residual_ppo_networks.py": "eeb1b758f32bb8a7e53cf59b269bed7f97126cf37ccc4d11090a5f8312b380e6",
+      "playground/common/reference_residual_recurrent_adapter_ppo_networks.py": "ffd07d0a6e96d846aa1f62a8d131bf892f10db6b2a22710affe3946b7b145ebd",
+      "playground/common/rewards.py": "9c327866f2632265f14ef81318046f887aafa64384a06efa6cb264e144bbb1d3",
+      "playground/common/rewards_numpy.py": "f1dba8838b29fdc4701bc3759e2533fa9d51ec550c8f70b83a23d3de64b97f48",
+      "playground/common/runner.py": "cc33330735fb984c384f85e5b7fa63cc53b98e670773ba7a676fb7d76c5adec4",
+      "playground/common/t19_support_trainthrough.py": "53e471c22316f120d71bdfa8790cb4cbfc1368aefe3a7224b484cd1de55a615c",
+      "playground/common/utils.py": "dbeb9fd88bb41aaca5ab242a954cbae7ae9755b7f13ff2d7d2b27cc9094a284c",
+      "playground/common/winner_v127_constrained_ppo_losses.py": "996e292f76a4071f2c3117b0f1dacd9b1a3bf9e31d6d97128ce2f054f9bc6ff1",
+      "playground/common/winner_v127_constrained_ppo_train.py": "9ac5b96d2f810644b4ee2e019c1a8e4f2e5a92b5f1e6455298df5c1ecaa896c0",
+      "playground/common/winner_v171_gradient_geometry.py": "dfbadab3ef4021c71c27c358135bed87307c04f53310fdf9093f6436e00008c3",
+      "playground/common/winner_v173_lexicographic_tangent.py": "b7ff83f8d68f1034ab1ddb5562d4a32a384756a330bb150b8ca69d92a63f3841",
+      "playground/common/winner_v3_variable_configuration.py": "daab44325e6dd98b8b4054fc5c5fe7391ca9e358e7aca97999ef1a2441285ab7",
+      "playground/common/winner_v98_response_calibration_wrapper.py": "04339bf7bbe16f2721ce92bbe62c458e70c1c8a5e9bdfe02424478ebc066a7ba",
+      "playground/common/winner_v98_response_conditioned_export.py": "83c8667828a51bdb379091fbf657725410bae5e0d655273f63cf47bdc913f28c",
+      "playground/common/winner_v98_response_conditioned_ppo_networks.py": "767b0d4dc7d72d6c126eca9ed1f0497ca38214a9e2caa57c8a1e6b5cea3ad17a",
+      "playground/open_duck_mini_v2/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "playground/open_duck_mini_v2/base.py": "0e90b98b113c2e5ff4abd34b64482e3f1b3d365ef95481d1838f8b855de99988",
+      "playground/open_duck_mini_v2/constants.py": "8fafc240bfb8e70c93b722d89148cffb03688882fd4e6250735eccdf53363374",
+      "playground/open_duck_mini_v2/custom_rewards.py": "16fdf5ed409f9abcfa6f68465c4351081c0c255a6683c09aee110c557890cd0c",
+      "playground/open_duck_mini_v2/custom_rewards_numpy.py": "51422e858c4058f5c114004ab6ebd7900cbae544f09aaf430f9398adf9032333",
+      "playground/open_duck_mini_v2/joystick.py": "9e12c97f620e24d90adce76aee290dc7636fad6c0b40895940e8d962b8e439b5",
+      "playground/open_duck_mini_v2/mujoco_infer.py": "67a933e043fe54a3bf252524e71fbb8a7eff973e8bb693d9fe1f1d6f323b11ed",
+      "playground/open_duck_mini_v2/mujoco_infer_base.py": "4c8fd11e4659126d49985a9c048e1cb5a5cfde5f4d54cdfe433e4b165d3b0ab1",
+      "playground/open_duck_mini_v2/ref_motion_viewer.py": "78c267d86d7de9a942c9bd4007990369eb39a7dae7a410acaa316dd9da0a5322",
+      "playground/open_duck_mini_v2/runner.py": "d3b7e6fa8f8b4ded865cf4e6854276260bacc564df6b29e617f15932a58c97f0",
+      "playground/open_duck_mini_v2/standing.py": "123419cb68f3dcf0908b3c77e4c98206de48d719058d38998ddcd69ef32dcdd6"
+    },
+    "manifest_sha256": "661dc52671da94d6b48e6115ef99273f18bcd30104ddd5b725333bb28ef2456d",
+    "path": "D:\\CodexProjects\\Open_Duck_Playground-composed-t19-v4"
+  },
+  "preregistered_contract_sha256": "7bb9930f7d1463fcb2be96f0ea5c6b2ed3b92b4b5a8a16ad47d955af535ed8be",
+  "question": "Can the exact V121-half tree be restored through a CPU topology remap, execute one finite 1,024-step PPO smoke through T19's support/reset transition, and export the exact T18 physical deployment hierarchy at step zero plus a valid updated graph?",
+  "schema_version": "open_duck.t20_support_trainthrough_one_update_preregistration.v2",
+  "sources": {
+    "builder": {
+      "bytes": 13945,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t20_support_trainthrough_one_update_preregistration.py",
+      "sha256": "0bed2324a5f8b3fc1bce9f658fcaac6dbf3dafcbac7fd730245b09110f425806"
+    },
+    "composed_manifest": {
+      "bytes": 5190,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\Open_Duck_Playground-composed-t19-v3\\T19_COMPOSED_SOURCE_MANIFEST.json",
+      "sha256": "8ed6da822b5cc6ec9d4b31be88aebc823ecd2820e043e25e6bd188a7ff906a1e"
+    },
+    "corrected_t19_patch": {
+      "bytes": 10746,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\patches\\winner_t19_support_trainthrough.patch",
+      "sha256": "2c1586d79c6b95898c57810b7cc33eb7bf111374caa7ec6f64331962d06b09a5"
+    },
+    "original_formal_runner": {
+      "bytes": 20852,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t20_support_trainthrough_one_update.py",
+      "sha256": "e21ba47dcfa4d15c8f5e2f85ea669855b2e576100f78979ef1e03bb30c9c2786"
+    },
+    "original_preregistration": {
+      "bytes": 14068,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t20_support_trainthrough_one_update_preregistration.json",
+      "sha256": "90be9dbd6af8a5a01f92bf0bfb0303e4f4b17c24bacb1bec94694fbf4b9f4108"
+    },
+    "preoptimizer_attribution": {
+      "bytes": 2719,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t20_preoptimizer_rate_selector_attribution.json",
+      "sha256": "a68e1a360181708be50b57840c9c1bdacaca5f0118dd4a086ef4d4c79a3347d5"
+    },
+    "recovery_builder": {
+      "bytes": 7458,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t20_support_trainthrough_one_update_recovery.py",
+      "sha256": "ab020ce572792a2ab08b11fbcf959e57d5568ac7976b33c1096c3c1bb865fee9"
+    },
+    "recovery_runner": {
+      "bytes": 644,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t20_support_trainthrough_one_update_recovery.py",
+      "sha256": "e67533784669e41c51841d9024c1a05771143f9e9a4f3ce2a21dd36aae5ad49d"
+    },
+    "recovery_test": {
+      "bytes": 1168,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t20_rate_selector_recovery.py",
+      "sha256": "b939d032c249bbad86f8a0bd2a9bf4e39c9dfda789a5eedda87db59bf39dfe0c"
+    },
+    "reference": {
+      "bytes": 259604,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\ground_up_projected_reference_feature_table.npz",
+      "sha256": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212"
+    },
+    "runner": {
+      "bytes": 20852,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t20_support_trainthrough_one_update.py",
+      "sha256": "e21ba47dcfa4d15c8f5e2f85ea669855b2e576100f78979ef1e03bb30c9c2786"
+    },
+    "t10_asset_manifest": {
+      "bytes": 6325,
+      "kind": "file",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t10_response_conditioned_assets_v1\\manifest.json",
+      "sha256": "a034fff84ea63167335f60eb507683ad1e967eb7949ed254fa01b1e2da79202f"
+    },
+    "t17_homeomorphism_wrapper": {
+      "bytes": 17272,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\t17_support_homeomorphism_onnx.py",
+      "sha256": "d936b705ad54169c4a05636c8713ac10a32e7357af11c8c86a2241f4904c9be4"
+    },
+    "t18_rate_wrapper": {
+      "bytes": 11322,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\t18_rate_coherent_support_onnx.py",
+      "sha256": "330d6fd0959ce75ec6010452ce1fff737349d9ab2aa1d6b982d7ddbbb4bdb937"
+    },
+    "t18_result": {
+      "bytes": 278351,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t18_rate_coherent_support_result.json",
+      "sha256": "bdf78ef2e0ae2c87db589f506ca5ee0c61edc555dc50d5a7633cee8235559feb"
+    },
+    "t19_corrected_result": {
+      "bytes": 3404,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t19_default_off_digest_correction_result.json",
+      "sha256": "63c16e62c08db732740b0049902e853abb710cafa12dce4ae68ac55a818aeeb3"
+    },
+    "t19_formal_result": {
+      "bytes": 3948,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t19_support_trainthrough_cpu_result.json",
+      "sha256": "a6f4e93cc4bab040dfa779be5f17dffbc80f7884fb6e6910bb1653c81eb71b13"
+    },
+    "t8_context_abi_builder": {
+      "bytes": 8987,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t8_state_coherent_handoff_assets.py",
+      "sha256": "14c269522905cc4e03624e0b9382eb1fdd50e90d823996c81bb9d1aded445f15"
+    },
+    "test": {
+      "bytes": 2184,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t20_support_trainthrough_one_update.py",
+      "sha256": "43970bcd7cf00557f065a1d789916ba6e080c0f995270294ba0b78d8be83dacf"
+    },
+    "v119_recovered_validation": {
+      "bytes": 7248,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\winner_v119_recovered_training_validation.json",
+      "sha256": "456121dc7680df6e66915fa67e59f088f718e08db1468d3523795f8dd56abb14"
+    },
+    "v4_composed_manifest": {
+      "bytes": 5190,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\Open_Duck_Playground-composed-t19-v4\\T19_COMPOSED_SOURCE_MANIFEST.json",
+      "sha256": "661dc52671da94d6b48e6115ef99273f18bcd30104ddd5b725333bb28ef2456d"
+    }
+  },
+  "status": "PREREGISTERED_T20_SUPPORT_TRAINTHROUGH_ONE_UPDATE"
+}

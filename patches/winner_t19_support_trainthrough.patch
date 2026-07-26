@@ -169,6 +169,37 @@ index 3c04098..8587e3d 100644
          self.env_config.winner_v127_constrained_cost = (
              args.winner_v127_constrained_cost
          )
+@@ -131,13 +134,19 @@ class OpenDuckMiniV2Runner(BaseRunner):
+             ):
+                 raise ValueError("winner-v3 requires hard-vector, measured bridge and applied-target observation")
+-            expected_limits = (
+-                jp.asarray(
+-                    joystick.WINNER_V119_RATE_LIMITS_RAD_S,
+-                    dtype=jp.float32,
+-                )
+-                if args.winner_v119_train_transition_match
+-                else winner_v3.CONSERVATIVE_VELOCITY_LIMITS_RAD_S
+-            )
++            if args.winner_t19_support_trainthrough:
++                from playground.common.t19_support_trainthrough import (
++                    RATE_LIMITS_RAD_S,
++                )
++
++                expected_limits = jp.asarray(
++                    RATE_LIMITS_RAD_S, dtype=jp.float32
++                )
++            else:
++                expected_limits = (
++                    jp.asarray(
++                        joystick.WINNER_V119_RATE_LIMITS_RAD_S,
++                        dtype=jp.float32,
++                    )
++                    if args.winner_v119_train_transition_match
++                    else winner_v3.CONSERVATIVE_VELOCITY_LIMITS_RAD_S
++                )
+             if not bool(
+                 jp.array_equal(
+                     jp.asarray(limits, dtype=jp.float32),
 @@ -154,8 +157,34 @@ class OpenDuckMiniV2Runner(BaseRunner):
              self.env_config.push_config.enable = False
          self.env = self.env_file[1](task=args.task, config=self.env_config)
