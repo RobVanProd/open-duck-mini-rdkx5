@@ -146,3 +146,57 @@ def test_t10_independent_auditor_does_not_import_runner() -> None:
         ROOT / "tools" / "audit_t10_response_conditioned_cpu_contract.py"
     ).read_text(encoding="utf-8")
     assert "run_" + "t10_response_conditioned_cpu_contract" not in source
+
+
+def test_t10_result_is_canonical_and_holds_hosted_training() -> None:
+    value = json.loads(
+        (
+            ANALYSIS
+            / "t10_response_conditioned_continuation_cpu_result.json"
+        ).read_text(encoding="utf-8")
+    )
+    basis = {
+        key: item for key, item in value.items() if key != "result_sha256"
+    }
+    assert canonical_sha256(basis) == value["result_sha256"]
+    assert value["status"] == "HOLD_T10_RESPONSE_CONDITIONED_CPU_CONTRACT"
+    assert value["decision"] == (
+        "HOLD_RESPONSE_CONDITIONED_HOSTED_CONTINUATION"
+    )
+    assert value["failed_checks"] == [
+        "trained_graph_uses_context_action"
+    ]
+    assert value["checks"]["both_context_families_updated"] is True
+    assert value["checks"]["trained_graph_uses_context_state"] is True
+    assert value["execution"] == {
+        "optimizer_steps": 1024,
+        "formal_behavior_cells": 0,
+        "hosted_or_colab_compute": 0,
+        "robot_or_rdk_access": 0,
+    }
+
+
+def test_t10_independent_audit_reproduces_the_single_hold() -> None:
+    value = json.loads(
+        (
+            ANALYSIS
+            / "t10_response_conditioned_continuation_cpu_independent_audit.json"
+        ).read_text(encoding="utf-8")
+    )
+    basis = {
+        key: item for key, item in value.items() if key != "audit_sha256"
+    }
+    assert canonical_sha256(basis) == value["audit_sha256"]
+    assert value["status"] == (
+        "HOLD_T10_RESPONSE_CONDITIONED_CPU_INDEPENDENT_AUDIT"
+    )
+    assert value["decision"] == (
+        "HOLD_RESPONSE_CONDITIONED_HOSTED_CONTINUATION"
+    )
+    assert value["issues"] == ["trained_context_action_effect"]
+    assert value["execution"] == {
+        "optimizer_steps": 0,
+        "formal_behavior_cells": 0,
+        "hosted_or_colab_compute": 0,
+        "robot_or_rdk_access": 0,
+    }
